@@ -1,0 +1,4 @@
+reachy-sdk
+numpy
+pyserial
+matplotlib
