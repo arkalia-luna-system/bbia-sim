@@ -3,4 +3,10 @@ speechrecognition
 pyaudio
 sounddevice
 numpy
-wave
+# Outils de développement
+ruff
+black
+isort
+# Si besoin de MySQL avec Python 3, installe mysqlclient ou PyMySQL :
+# mysqlclient
+# PyMySQL
