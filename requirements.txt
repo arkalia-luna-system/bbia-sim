@@ -1,4 +1,6 @@
-reachy-sdk
+pyttsx3
+speechrecognition
+pyaudio
+sounddevice
 numpy
-pyserial
-matplotlib
+wave
