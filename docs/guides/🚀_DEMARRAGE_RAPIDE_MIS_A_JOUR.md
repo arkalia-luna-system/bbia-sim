@@ -1,265 +1,85 @@
-# 🚀 Démarrage Rapide BBIA - Mis à Jour
+# 🚀 Premiers pas Reachy Mini avec BBIA
 
-## 🎯 **DÉMARRAGE EN 30 SECONDES**
-
-### 🚀 **Option 1 : Menu Interactif (Recommandé)**
-```bash
-./quick_start.sh
-```
-**Choisissez :**
-- **Option 1** : Test rapide BBIA
-- **Option 6** : Unity 3D (corrigé ✅)
-- **Option 7** : Test configuration Unity
-- **Option 8** : Corriger avertissements Unity
-
-### 🚀 **Option 2 : Simulation BBIA**
-```bash
-python3 test_bbia_reachy.py
-```
-**Vous verrez :**
-- 🤖 6 émotions BBIA
-- 🎤 Reconnaissance vocale
-- 📷 Vision par ordinateur
-- 🤖 Mouvements tête 6 DOF
-
-### 🚀 **Option 3 : Unity 3D**
-```bash
-./launch_unity.sh
-```
-**Vous verrez :**
-- 🎮 Modèle 3D Reachy Mini Wireless
-- 🎭 Expressions faciales animées
-- 🎪 Environnement interactif
+Bienvenue ! Ce guide vous explique comment utiliser BBIA pour simuler et programmer un Reachy Mini Wireless, en respectant les standards et comportements officiels.
 
 ---
 
-## 🎯 **SIMULATIONS DISPONIBLES**
+## 1. Installation rapide
 
-### 1️⃣ **BBIA de Base**
 ```bash
-python3 test_bbia_reachy.py
-```
-**Fonctionnalités :**
-- 🤖 6 émotions (neutral, happy, sad, angry, curious, excited)
-- 🎤 4 microphones simulés
-- 📷 Caméra grand angle avec reconnaissance d'objets
-- 🤖 Mouvements tête 6 DOF
-- 📡 Animation des antennes
-- 🗣️ Reconnaissance vocale
-- 🔋 Test de batterie
+# Cloner le dépôt
+ git clone https://github.com/arkalia-luna-system/bbia-sim.git
+ cd bbia-sim
 
-### 2️⃣ **Unity 3D**
-```bash
-./launch_unity.sh
-```
-**Fonctionnalités :**
-- 🎮 Modèle 3D complet de Reachy Mini Wireless
-- 🎭 Expressions faciales animées
-- 🤖 Mouvements fluides en temps réel
-- 🎪 Environnement 3D interactif
-- 🎯 Contrôles : souris + clavier
-
-### 3️⃣ **Démonstration Complète**
-```bash
-python3 demo_bbia_complete.py
-```
-**Fonctionnalités :**
-- 🔍 Test de tous les composants installés
-- 👁️ Démonstration pollen-vision
-- 🎭 Toutes les émotions BBIA
-- 🗣️ Reconnaissance vocale avancée
-- 📚 Liste des composants disponibles
-
-### 4️⃣ **Tutoriels Jupyter**
-```bash
-cd reachy_repos/reachy2-tutorials/
-jupyter lab
-```
-**Tutoriels disponibles :**
-- `1_Reachy_awakening.ipynb` - Éveil du robot
-- `2_Reachy_the_mime.ipynb` - Robot mime
-- `3_Reachy_the_greengrocer.ipynb` - Robot épicier
-
-### 5️⃣ **Vision par Ordinateur**
-```bash
-cd reachy_repos/pollen-vision/
-python3 -c "import pollen_vision; print('✅ Vision OK')"
-```
-**Fonctionnalités :**
-- 👁️ Reconnaissance d'objets en temps réel
-- 🎭 Détection de visages et expressions
-- 📊 Analyse de mouvements
-- 🎯 Suivi d'objets
-
----
-
-## 🎯 **VÉRIFICATIONS RAPIDES**
-
-### 🔍 **Vérifier les Dépôts**
-```bash
-ls -la reachy_repos/
-```
-**Résultat attendu :**
-```
-drwxr-xr-x  reachy-docs/
-drwxr-xr-x  pollen-vision/
-drwxr-xr-x  reachy2-tutorials/
-drwxr-xr-x  reachy-dashboard/
-drwxr-xr-x  reachy-face-tracking/
-drwxr-xr-x  reachy2-behaviors-dev/
-drwxr-xr-x  reachy2-sdk-audio-server-rs/
-drwxr-xr-x  reachy-unity-package/
-```
-
-### 🔍 **Vérifier les Packages**
-```bash
-pip list | grep -i reachy
-pip list | grep -i pollen
-```
-**Résultat attendu :**
-```
-reachy-sdk
-pollen-vision
-```
-
-### 🔍 **Tester pollen-vision**
-```bash
-python3 -c "import pollen_vision; print('✅ Vision OK')"
-```
-**Résultat attendu :**
-```
-✅ Vision OK
+# Installer les dépendances Python
+ python -m venv venv
+ source venv/bin/activate
+ pip install -r requirements.txt
 ```
 
 ---
 
-## 🎯 **EXPLORATION RAPIDE**
+## 2. Lancer la simulation BBIA
 
-### 📚 **Documentation Officielle**
 ```bash
-cd reachy_repos/reachy-docs
-ls -la content/
-```
+# Lancer la démo complète (tous modules)
+python tests/demo_bbia_complete.py
 
-### 🎓 **Tutoriels Jupyter**
-```bash
-cd reachy_repos/reachy2-tutorials
-ls -la *.ipynb
-```
-
-### 📊 **Dashboard Web**
-```bash
-cd reachy_repos/reachy-dashboard
-ls -la
-```
-
-### 🎯 **Suivi de Visage**
-```bash
-cd reachy_repos/reachy-face-tracking
-ls -la
+# Lancer un test de comportement individuel
+python src/bbia_sim/bbia_behavior.py
 ```
 
 ---
 
-## 🎯 **COMMANDES RAPIDES**
+## 3. Exemples de comportements Reachy Mini (BBIA)
 
-### 🎮 **Lancer toutes les simulations**
-```bash
-# Terminal 1 : BBIA de base
-python3 test_bbia_reachy.py
+| Comportement Reachy Mini | Exemple de code BBIA |
+|-------------------------|----------------------|
+| Saluer (wave)           | `manager.execute_behavior("greeting")` |
+| Tourner la tête (look)  | `manager.execute_behavior("wake_up")` ou `manager.execute_behavior("vision_tracking")` |
+| Bouger les antennes     | `manager.execute_behavior("antenna_animation", {"emotion": "happy"})` |
+| Écouter (listen)        | `manager.execute_behavior("conversation")` |
+| Répondre (answer)       | `manager.execute_behavior("conversation")` |
+| Reconnaître un visage   | `manager.execute_behavior("vision_tracking")` |
+| Réagir à une émotion    | `manager.execute_behavior("emotional_response", {"stimulus": "compliment"})` |
+| Mode simulation         | `python tests/demo_bbia_complete.py` |
 
-# Terminal 2 : Unity 3D
-./launch_unity.sh
+---
 
-# Terminal 3 : Démonstration complète
-python3 demo_bbia_complete.py
-```
+## 4. Ajouter un nouveau comportement
 
-### 🔍 **Vérifier l'installation**
-```bash
-# Vérifier les dépôts
-ls -la reachy_repos/
-
-# Vérifier les packages
-pip list | grep -i reachy
-pip list | grep -i pollen
-
-# Tester pollen-vision
-python3 -c "import pollen_vision; print('✅ Vision OK')"
-```
-
-### 📚 **Explorer les ressources**
-```bash
-# Documentation officielle
-cd reachy_repos/reachy-docs
-
-# Tutoriels Jupyter
-cd reachy_repos/reachy2-tutorials
-
-# Dashboard web
-cd reachy_repos/reachy-dashboard
+1. Créez une nouvelle classe héritant de `BBIABehavior` dans `bbia_behavior.py`.
+2. Ajoutez-la dans la méthode `_register_default_behaviors()` du `BBIABehaviorManager`.
+3. Testez avec :
+```python
+manager.execute_behavior("nom_du_comportement")
 ```
 
 ---
 
-## 🎯 **PROBLÈMES RÉSOLUS**
-
-### ✅ **Unity Corrigé**
-- **Problème** : Script ne trouvait pas Unity
-- **Solution** : Détection du dossier `reachy-bbia-unity`
-- **Résultat** : Unity fonctionne parfaitement
-
-### ✅ **Menu Interactif Corrigé**
-- **Problème** : Option 6 ne fonctionnait pas
-- **Solution** : Script `launch_unity.sh` créé
-- **Résultat** : Menu 100% fonctionnel
-
-### ✅ **Tous les Dépôts Installés**
-- **8 dépôts GitHub** installés avec succès
-- **pollen-vision** testé et fonctionnel
-- **Documentation** complète disponible
+## 5. Ressources utiles
+- [Documentation complète](📋_INDEX_DOCUMENTATION.md)
+- [Tableau de compatibilité Reachy Mini](📋_ETAT_ACTUEL_FINAL.md)
+- [Communauté Reachy](https://pollen-robotics.com/reachy)
 
 ---
 
-## 🌟 **RÉSUMÉ RAPIDE**
-
-### ✅ **Phase 1 Terminée**
-- **8 dépôts GitHub** installés avec succès
-- **pollen-vision** testé et fonctionnel
-- **Unity** corrigé et opérationnel
-- **Menu interactif** 100% fonctionnel
-- **Toutes les simulations** disponibles
-
-### 🎮 **Simulations Opérationnelles**
-1. **🤖 BBIA de base** : Émotions, mouvements, voix
-2. **🎮 Unity 3D** : Modèle complet interactif
-3. **👁️ Vision** : Reconnaissance d'objets
-4. **📚 Démonstration** : Tous les composants
-5. **🎛️ Menu** : Interface interactive
-6. **📓 Tutoriels** : Jupyter notebooks disponibles
-
-### 🚀 **Prêt pour la Phase 2**
-- **Tous les outils** installés
-- **Toutes les simulations** fonctionnelles
-- **Documentation** complète
-- **Tutoriels** accessibles
+**BBIA est 100% open source et compatible Reachy Mini Wireless.**
+N’hésitez pas à contribuer ou à proposer de nouveaux comportements ! 
 
 ---
 
-## 💡 **CONSEILS RAPIDES**
+## 🛠️ Conseils essentiels pour réussir avec BBIA
 
-1. **Commencez par le menu** : `./quick_start.sh`
-2. **Testez BBIA** : `python3 test_bbia_reachy.py`
-3. **Explorez Unity** : `./launch_unity.sh`
-4. **Étudiez les tutoriels** : `cd reachy_repos/reachy2-tutorials/`
-5. **Testez la vision** : `python3 -c "import pollen_vision; print('✅ Vision OK')"`
+- Teste tout régulièrement (tests unitaires, démo)
+- Sauvegarde et versionne ton code
+- Documente chaque étape et limitation
+- Prends soin de la sécurité (arrêt d’urgence, limites de mouvement)
+- Prépare la calibration et la configuration
+- Loggue toutes les erreurs et actions
+- Range et nettoie les fichiers
+- Prépare l’arrivée du vrai robot
+- Note et partage tes solutions
+- Demande de l’aide à la communauté si besoin
 
----
-
-**BBIA** - Brain-Based Interactive Agent  
-*Démarrage rapide mis à jour* 🚀✨
-
-**Version** : 2.0  
-**Date** : 15 juillet 2024  
-**Phase 1** : ✅ TERMINÉE  
-**Phase 2** : �� PRÊT À COMMENCER 
+--- 

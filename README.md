@@ -107,3 +107,20 @@ Contact : [arkalia.luna.system@gmail.com](mailto:arkalia.luna.system@gmail.com
 
 ## Licence
 MIT
+
+---
+
+## 🛠️ Conseils pratiques pour fiabiliser et améliorer BBIA
+
+- Lance les tests régulièrement (`python3 -m unittest discover tests`)
+- Sauvegarde ton code avec git et des backups
+- Documente chaque nouveauté ou bug
+- Ajoute un arrêt d’urgence logiciel/matériel
+- Prépare la calibration et la configuration
+- Loggue toutes les erreurs et actions critiques
+- Range bien tes fichiers et nettoie régulièrement
+- Prépare un plan de test pour le vrai robot
+- Note et partage tes découvertes
+- Demande de l’aide à la communauté si besoin
+
+---

@@ -12,6 +12,8 @@ import threading
 from typing import Dict, List, Optional, Callable, Any
 from datetime import datetime
 from queue import Queue
+import logging
+import os
 
 try:
     from .bbia_emotions import BBIAEmotions
@@ -25,6 +27,22 @@ except ImportError:
     from bbia_voice import dire_texte, reconnaitre_parole
     from bbia_audio import enregistrer_audio, lire_audio
 
+# Création du dossier logs si besoin
+os.makedirs("logs", exist_ok=True)
+# Logger BBIA strictement comme le test minimal
+import logging
+
+logger = logging.getLogger("BBIA")
+# Supprime tous les handlers existants
+for h in list(logger.handlers):
+    logger.removeHandler(h)
+handler = logging.FileHandler("logs/bbia.log", mode="a", encoding="utf-8")
+formatter = logging.Formatter("%(asctime)s | %(levelname)s | %(message)s")
+handler.setFormatter(formatter)
+logger.addHandler(handler)
+logger.setLevel(logging.INFO)
+logger.info("--- Initialisation du logger BBIA ---")
+
 
 class BBIABehavior:
     """Comportement de base pour BBIA"""
@@ -36,15 +54,18 @@ class BBIABehavior:
         self.priority = 1  # 1-10, 10 étant le plus prioritaire
 
     def can_execute(self, context: Dict[str, Any]) -> bool:
+        logger.info(f"Vérification d'exécution du comportement : {self.name}")
         """Vérifie si le comportement peut être exécuté"""
         return True
 
     def execute(self, context: Dict[str, Any]) -> bool:
-        """Exécute le comportement"""
+        logger.info(f"Exécution du comportement : {self.name}")
         print(f"🎭 Exécution du comportement : {self.name}")
+        """Exécute le comportement"""
         return True
 
     def stop(self):
+        logger.info(f"Arrêt du comportement : {self.name}")
         """Arrête le comportement"""
         self.is_active = False
 
@@ -57,43 +78,47 @@ class WakeUpBehavior(BBIABehavior):
         self.priority = 10
 
     def execute(self, context: Dict[str, Any]) -> bool:
+        logger.info("Début de la séquence de réveil BBIA")
         print("\n✨ [BBIA] Séquence de réveil...")
 
-        # 1. Initialisation
         print("💡 Lumière blanche faible...")
+        logger.info("Étape : Lumière blanche faible")
         time.sleep(1)
 
-        # 2. Intensification
         print("💡 Lumière qui s'intensifie doucement...")
+        logger.info("Étape : Lumière qui s'intensifie doucement")
         time.sleep(1)
 
-        # 3. Halo bleu
         print("💙 Halo bleu : BBIA s'éveille.")
+        logger.info("Étape : Halo bleu d'éveil")
         time.sleep(1)
 
-        # 4. Respiration simulée
         print("🫧 Respiration simulée : inspiration...")
+        logger.info("Étape : Respiration simulée (inspiration)")
         time.sleep(1)
         print("🫧 Respiration simulée : expiration...")
+        logger.info("Étape : Respiration simulée (expiration)")
         time.sleep(1)
 
-        # 5. Son de démarrage
         print("🔊 Léger son de démarrage...")
+        logger.info("Étape : Son de démarrage")
         time.sleep(1)
 
-        # 6. Mouvements de tête
         print("🤖 Mouvements de tête lents...")
+        logger.info("Étape : Mouvements de tête lents")
         time.sleep(2)
 
-        # 7. Expression
         print("😊 Expression : sourire doux.")
+        logger.info("Étape : Expression sourire doux")
         time.sleep(1)
 
-        # 8. Première parole
         print("🗣️ Première pensée : 'Je suis là, Athalia.'")
+        logger.info("Étape : Première parole d'éveil")
         dire_texte("Je suis là, Athalia.")
+        logger.info("Synthèse vocale : Je suis là, Athalia.")
 
         print("✨ BBIA est complètement réveillé et prêt !\n")
+        logger.info("Fin de la séquence de réveil BBIA")
         return True
 
 
@@ -111,8 +136,10 @@ class GreetingBehavior(BBIABehavior):
 
     def execute(self, context: Dict[str, Any]) -> bool:
         greeting = random.choice(self.greetings)
+        logger.info(f"Salutation choisie : {greeting}")
         print(f"👋 {greeting}")
         dire_texte(greeting)
+        logger.info(f"Synthèse vocale : {greeting}")
         return True
 
 
@@ -126,10 +153,13 @@ class EmotionalResponseBehavior(BBIABehavior):
 
     def execute(self, context: Dict[str, Any]) -> bool:
         stimulus = context.get("stimulus", "")
+        logger.info(f"Stimulus reçu pour réponse émotionnelle : {stimulus}")
         if stimulus:
             emotion = self.emotions.emotional_response(stimulus)
+            logger.info(f"Réponse émotionnelle générée : {emotion}")
             print(f"🎭 Réponse émotionnelle : {emotion}")
             return True
+        logger.info("Aucun stimulus fourni pour la réponse émotionnelle")
         return False
 
 
@@ -142,18 +172,20 @@ class VisionTrackingBehavior(BBIABehavior):
         self.priority = 6
 
     def execute(self, context: Dict[str, Any]) -> bool:
+        logger.info("Activation du suivi visuel")
         print("👁️ Activation du suivi visuel...")
 
-        # Scan de l'environnement
         result = self.vision.scan_environment()
+        logger.info(f"Résultat du scan environnement : {result}")
 
-        # Suivi du premier objet détecté
         if result["objects"]:
             first_object = result["objects"][0]
+            logger.info(f"Suivi de l'objet : {first_object['name']}")
             print(f"🎯 Suivi de l'objet : {first_object['name']}")
             self.vision.track_object(first_object["name"])
             return True
 
+        logger.info("Aucun objet détecté pour le suivi visuel")
         return False
 
 
@@ -165,27 +197,34 @@ class ConversationBehavior(BBIABehavior):
         self.priority = 7
 
     def execute(self, context: Dict[str, Any]) -> bool:
+        logger.info("Activation du mode conversation")
         print("🗣️ Mode conversation activé...")
         dire_texte("Je vous écoute.")
+        logger.info("Synthèse vocale : Je vous écoute.")
 
-        # Écoute pendant 5 secondes
         texte = reconnaitre_parole(duree=5)
+        logger.info(f"Texte reconnu : {texte}")
 
         if texte:
             print(f"👤 Vous avez dit : {texte}")
             dire_texte(f"J'ai entendu : {texte}")
+            logger.info(f"Synthèse vocale : J'ai entendu : {texte}")
 
-            # Réponse simple basée sur le contenu
             if "bonjour" in texte.lower():
                 dire_texte("Bonjour à vous aussi !")
+                logger.info("Synthèse vocale : Bonjour à vous aussi !")
             elif "comment" in texte.lower():
                 dire_texte("Je vais très bien, merci !")
+                logger.info("Synthèse vocale : Je vais très bien, merci !")
             elif "au revoir" in texte.lower():
                 dire_texte("Au revoir ! À bientôt !")
+                logger.info("Synthèse vocale : Au revoir ! À bientôt !")
             else:
                 dire_texte("C'est intéressant, dites-moi en plus.")
+                logger.info("Synthèse vocale : C'est intéressant, dites-moi en plus.")
         else:
             dire_texte("Je n'ai rien entendu. Pouvez-vous répéter ?")
+            logger.info("Synthèse vocale : Je n'ai rien entendu. Pouvez-vous répéter ?")
 
         return True
 
@@ -199,6 +238,7 @@ class AntennaAnimationBehavior(BBIABehavior):
 
     def execute(self, context: Dict[str, Any]) -> bool:
         emotion = context.get("emotion", "neutral")
+        logger.info(f"Animation des antennes pour l'émotion : {emotion}")
 
         animations = {
             "happy": "📡 Antennes légèrement relevées et vibrantes",
@@ -211,7 +251,39 @@ class AntennaAnimationBehavior(BBIABehavior):
 
         animation = animations.get(emotion, animations["neutral"])
         print(animation)
+        logger.info(f"Étape animation antennes : {animation}")
         time.sleep(2)
+        return True
+
+
+class HideBehavior(BBIABehavior):
+    """Comportement 'se cacher' (hide) pour Reachy Mini : tête baissée, antennes repliées, yeux fermés."""
+
+    def __init__(self):
+        super().__init__(
+            "hide", "Se cacher : tête baissée, antennes repliées, yeux fermés"
+        )
+        self.priority = 9
+
+    def execute(self, context: Dict[str, Any]) -> bool:
+        logger.info("Début de la séquence 'se cacher'")
+        print("\n🙈 [BBIA] Séquence 'se cacher'...")
+        print("🤖 Tête qui s'abaisse lentement...")
+        logger.info("Étape : Tête qui s'abaisse lentement")
+        time.sleep(1.5)
+        print("📡 Antennes qui se replient devant le visage...")
+        logger.info("Étape : Antennes qui se replient devant le visage")
+        time.sleep(1.2)
+        print("👁️ Yeux qui se ferment (ou s'éteignent)...")
+        logger.info("Étape : Yeux qui se ferment (ou s'éteignent)")
+        time.sleep(1)
+        print("💤 BBIA se cache et devient silencieux.")
+        logger.info("Étape : BBIA se cache et devient silencieux")
+        dire_texte("Je me cache... Chut !")
+        logger.info("Synthèse vocale : Je me cache... Chut !")
+        time.sleep(1)
+        print("(BBIA attend discrètement...)")
+        logger.info("Fin de la séquence 'se cacher'")
         return True
 
 
@@ -243,6 +315,7 @@ class BBIABehaviorManager:
         self.register_behavior(VisionTrackingBehavior(self.vision))
         self.register_behavior(ConversationBehavior())
         self.register_behavior(AntennaAnimationBehavior())
+        self.register_behavior(HideBehavior())
 
     def register_behavior(self, behavior: BBIABehavior):
         """Enregistre un nouveau comportement"""
@@ -364,3 +437,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+    # Flush et fermeture explicite du handler pour garantir l'écriture du fichier de log
+    for h in logger.handlers:
+        h.flush()
+        h.close()

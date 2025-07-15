@@ -8,6 +8,9 @@ Test du module BBIA Behavior Manager
 import unittest
 import sys
 import os
+import io
+import contextlib
+from unittest.mock import patch
 
 # Ajouter le chemin du module parent
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
@@ -21,6 +24,7 @@ from src.bbia_sim.bbia_behavior import (
     ConversationBehavior,
     AntennaAnimationBehavior,
     BBIABehaviorManager,
+    HideBehavior,  # Ajouté
 )
 
 
@@ -100,6 +104,42 @@ class TestAntennaAnimationBehavior(unittest.TestCase):
         """Test d'exécution sans émotion spécifiée"""
         behavior = AntennaAnimationBehavior()
         result = behavior.execute({})
+        self.assertTrue(result)
+
+
+class TestHideBehavior(unittest.TestCase):
+    """Tests pour le comportement 'se cacher' (HideBehavior)"""
+
+    def test_hide_creation(self):
+        """Test de création du comportement 'se cacher'"""
+        behavior = HideBehavior()
+        self.assertEqual(behavior.name, "hide")
+        self.assertEqual(behavior.priority, 9)
+
+    def test_hide_execute(self):
+        """Test d'exécution du comportement 'se cacher'"""
+        behavior = HideBehavior()
+        result = behavior.execute({})
+        self.assertTrue(result)
+
+    def test_hide_sequence_stdout_and_voice(self):
+        """Test avancé : vérifie la séquence console et la synthèse vocale pour 'se cacher'"""
+        behavior = HideBehavior()
+        output = io.StringIO()
+        # Correction : patcher dire_texte dans le namespace du module bbia_behavior
+        with patch("src.bbia_sim.bbia_behavior.dire_texte") as mock_dire_texte:
+            with contextlib.redirect_stdout(output):
+                result = behavior.execute({})
+        # Vérification de la sortie console
+        out = output.getvalue()
+        self.assertIn("🙈 [BBIA] Séquence 'se cacher'...", out)
+        self.assertIn("🤖 Tête qui s'abaisse lentement...", out)
+        self.assertIn("📡 Antennes qui se replient devant le visage...", out)
+        self.assertIn("👁️ Yeux qui se ferment (ou s'éteignent)...", out)
+        self.assertIn("💤 BBIA se cache et devient silencieux.", out)
+        self.assertIn("(BBIA attend discrètement...)", out)
+        # Vérification de la synthèse vocale
+        mock_dire_texte.assert_called_once_with("Je me cache... Chut !")
         self.assertTrue(result)
 
 
@@ -191,6 +231,7 @@ def main():
     suite.addTests(loader.loadTestsFromTestCase(TestWakeUpBehavior))
     suite.addTests(loader.loadTestsFromTestCase(TestGreetingBehavior))
     suite.addTests(loader.loadTestsFromTestCase(TestAntennaAnimationBehavior))
+    suite.addTests(loader.loadTestsFromTestCase(TestHideBehavior))  # Ajouté
     suite.addTests(loader.loadTestsFromTestCase(TestBBIABehaviorManager))
 
     # Exécuter les tests

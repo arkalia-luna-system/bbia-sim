@@ -256,3 +256,122 @@ Le projet BBIA dispose maintenant de **tous les outils nécessaires** pour déve
 **Phase 1** : ✅ TERMINÉE  
 **Phase 2** : 🚀 PRÊT À COMMENCER  
 **Statut** : 🎯 MISSION ACCOMPLIE 
+
+# Compatibilité BBIA / Reachy Mini Wireless
+
+| Comportement Reachy Mini         | Description                                 | Équivalent BBIA (module/fonction) | État         |
+|----------------------------------|---------------------------------------------|-----------------------------------|--------------|
+| Saluer (wave)                    | Fait signe de la main/antennes              | GreetingBehavior                  | ✅ ok        |
+| Tourner la tête (look)           | Bouge la tête à gauche/droite/haut/bas      | WakeUpBehavior, VisionTracking    | ✅ ok        |
+| Bouger les antennes (antennas)   | Anime les antennes selon l’émotion          | AntennaAnimationBehavior          | ✅ ok        |
+| Se cacher (hide)                 | Tête/antennes se baissent, “cache-cache”    | À faire                           | ⏳ à faire   |
+| Danser (dance)                   | Mouvement rythmé, “danse”                   | À faire                           | ⏳ à faire   |
+| Écouter (listen)                 | Se met en mode écoute, attend un son        | ConversationBehavior              | ✅ ok        |
+| Répondre (answer)                | Répond à une question                       | ConversationBehavior              | ✅ ok        |
+| Mode veille (sleep)              | Se met en veille, antennes/tête immobiles   | À faire                           | ⏳ à faire   |
+| Réagir à un bruit (react_sound)  | Bouge si bruit soudain                      | À faire                           | ⏳ à faire   |
+| Mode animal de compagnie (pet)   | Réagit aux caresses, interactions ludiques  | À faire                           | ⏳ à faire   |
+| Reconnaître un visage (face_rec) | Identifie et suit un visage                 | VisionTrackingBehavior            | ✅ ok        |
+| Réagir à une émotion (emotion)   | Change d’expression selon le contexte       | EmotionalResponseBehavior         | ✅ ok        |
+| Mode simulation                  | Teste les comportements en virtuel          | Simulation BBIA                   | ✅ ok        |
+| Mode autonome (autonomous)       | Enchaîne des comportements seul             | À faire                           | ⏳ à faire   |
+| Partage de scripts (community)   | Télécharge/partage des scripts              | À documenter                      | ⏳ à faire   |
+
+**Légende** : ✅ ok = déjà présent / ⏳ à faire = à implémenter ou à améliorer
+
+---
+
+## Actions à mener
+- [ ] Implémenter les comportements manquants (“se cacher”, “danser”, “veille”, “réagir à un bruit”, “pet”, “autonome”, “partage”)
+- [ ] Uniformiser les noms et l’API
+- [ ] Mettre à jour la doc utilisateur avec des exemples pour chaque comportement
+- [ ] Ajouter un guide “Premiers pas Reachy Mini avec BBIA” 
+
+## 🚨 Points critiques à ne pas oublier pour un vrai robot (priorité décroissante)
+
+1. **Sécurité et robustesse (PRIORITÉ ABSOLUE)**
+   - Arrêt d’urgence logiciel (commande ou bouton pour tout stopper)
+   - Gestion des exceptions globales (mise en sécurité du robot en cas d’erreur)
+   - Vérification du matériel avant chaque action (caméra, micro, moteurs)
+   - Limites logicielles sur les mouvements (éviter de casser le robot)
+   - Arrêt automatique en cas de surchauffe ou d’anomalie
+
+2. **Calibration et configuration**
+   - Fichier de configuration centralisé (`config.yaml` ou `.json`) pour tous les paramètres (vitesses, voix, chemins, options...)
+   - Procédure de calibration initiale (tête, antennes, caméra...)
+   - Mode “simulation” vs “réel” (ne pas envoyer de commandes physiques en simulation)
+
+3. **Gestion avancée des erreurs**
+   - Logs d’erreurs séparés (`logs/bbia_error.log`)
+   - Notification utilisateur en cas de bug (message vocal ou visuel)
+   - Redémarrage automatique de modules en cas de crash (optionnel)
+
+4. **Interface utilisateur**
+   - Interface web ou graphique pour piloter/tester le robot sans toucher au code
+   - Visualisation de l’état du robot (émotion, vision, logs en direct)
+   - Modification de la configuration via l’interface
+
+5. **Tests sur matériel réel**
+   - Scripts d’intégration pour tester chaque module sur le vrai robot
+   - Test global qui lance tous les modules en séquence
+
+6. **Mises à jour et maintenance**
+   - Script de mise à jour automatique (pull Git, update pip...)
+   - Sauvegarde/rotation automatique des logs
+
+7. **Accessibilité et internationalisation**
+   - Support multilingue (voix, interface)
+   - Accessibilité (messages vocaux, etc.)
+
+---
+
+**Conseil :**
+Commence toujours par la sécurité et la robustesse, puis la calibration/configuration, avant d’ajouter des interfaces ou des fonctionnalités avancées. Ce sont les fondations pour un robot fiable et sûr ! 
+
+---
+
+## 🛠️ Conseils pratiques pour fiabiliser et améliorer BBIA (à lire absolument)
+
+1. **Automatise les tests**
+   - Lance régulièrement `python3 -m unittest discover tests` pour vérifier que tout fonctionne après chaque modification.
+   - Ajoute des tests pour chaque nouveau comportement ou module.
+
+2. **Sauvegarde et versionne ton code**
+   - Utilise toujours `git add . && git commit -m "message" && git push` après chaque étape importante.
+   - Fais des sauvegardes régulières (cloud, disque externe).
+
+3. **Documente chaque nouveauté**
+   - Mets à jour le README et les guides dès que tu ajoutes une fonctionnalité ou découvres une astuce.
+   - Note les limitations, bugs connus, et solutions temporaires.
+
+4. **Sécurise le robot**
+   - Ajoute un bouton ou une commande d’arrêt d’urgence (logiciel ET matériel si possible).
+   - Vérifie les limites de mouvement dans le code pour éviter de casser le robot.
+
+5. **Prépare la calibration**
+   - Prévoyez un script ou une procédure pour calibrer les moteurs, la caméra, les capteurs.
+   - Note les valeurs de calibration dans un fichier de config (ex : `config.yaml`).
+
+6. **Gère les erreurs proprement**
+   - Ajoute des try/except autour des actions critiques (moteurs, audio, vision).
+   - Loggue toute erreur dans `logs/bbia.log` pour pouvoir diagnostiquer facilement.
+
+7. **Structure bien tes fichiers**
+   - Range les scripts, tests, logs, docs dans des dossiers dédiés (c’est déjà bien fait, continue ainsi !).
+   - Nettoie régulièrement les fichiers inutiles ou temporaires.
+
+8. **Prépare l’arrivée du vrai robot**
+   - Liste le matériel nécessaire (câbles, alimentation, outils).
+   - Prévois un plan de test “réel” dès réception du robot (checklist).
+
+9. **Reste curieuse et documente tes découvertes**
+   - Note chaque problème rencontré et comment tu l’as résolu.
+   - Partage tes astuces sur GitHub ou dans la doc pour aider d’autres débutants.
+
+10. **Demande de l’aide si besoin**
+    - N’hésite pas à demander sur les forums, Discord, ou GitHub de Reachy/BBIA.
+    - Personne ne réussit seule, la communauté est là pour ça !
+
+---
+
+**Bravo pour tout ce que tu as déjà accompli !** 
