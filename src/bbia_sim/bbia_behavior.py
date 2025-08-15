@@ -9,8 +9,7 @@ Comportements personnalisés, réactions automatiques, intégration avec les ém
 import time
 import random
 import threading
-from typing import Dict, List, Optional, Callable, Any
-from datetime import datetime
+from typing import Dict, List, Optional, Any
 from queue import Queue
 import logging
 import os
@@ -19,18 +18,15 @@ try:
     from .bbia_emotions import BBIAEmotions
     from .bbia_vision import BBIAVision
     from .bbia_voice import dire_texte, reconnaitre_parole
-    from .bbia_audio import enregistrer_audio, lire_audio
 except ImportError:
     # Pour les tests directs
     from bbia_emotions import BBIAEmotions
     from bbia_vision import BBIAVision
     from bbia_voice import dire_texte, reconnaitre_parole
-    from bbia_audio import enregistrer_audio, lire_audio
 
 # Création du dossier logs si besoin
 os.makedirs("logs", exist_ok=True)
 # Logger BBIA strictement comme le test minimal
-import logging
 
 logger = logging.getLogger("BBIA")
 # Supprime tous les handlers existants

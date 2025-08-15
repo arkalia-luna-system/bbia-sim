@@ -4,14 +4,18 @@ Contrôleur Python pour le simulateur Unity Reachy Mini Wireless
 Communication via fichiers temporaires
 """
 
-import os
 import time
-import json
 from pathlib import Path
+
 
 class UnityReachyMiniController:
     """Contrôleur pour le simulateur Unity Reachy Mini Wireless"""
-    def __init__(self, command_file: str = "reachy_commands.txt", response_file: str = "reachy_response.txt"):
+
+    def __init__(
+        self,
+        command_file: str = "reachy_commands.txt",
+        response_file: str = "reachy_response.txt",
+    ):
         self.command_file = Path(command_file)
         self.response_file = Path(response_file)
         self.last_response = ""
@@ -159,6 +163,7 @@ class UnityReachyMiniController:
         """
         print(help_text)
 
+
 def main():
     print("🤖 Contrôleur Unity Reachy Mini Wireless")
     print("=" * 50)
@@ -168,6 +173,7 @@ def main():
         print("💡 Assurez-vous que Unity est lancé avec la scène ReachyMiniSimulator")
         return
     import sys
+
     if len(sys.argv) > 1:
         command = sys.argv[1].lower()
         if command == "awake":
@@ -182,5 +188,6 @@ def main():
     else:
         controller.interactive_mode()
 
+
 if __name__ == "__main__":
-    main() 
+    main()

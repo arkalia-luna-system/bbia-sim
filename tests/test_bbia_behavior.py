@@ -19,9 +19,6 @@ from src.bbia_sim.bbia_behavior import (
     BBIABehavior,
     WakeUpBehavior,
     GreetingBehavior,
-    EmotionalResponseBehavior,
-    VisionTrackingBehavior,
-    ConversationBehavior,
     AntennaAnimationBehavior,
     BBIABehaviorManager,
     HideBehavior,  # Ajouté
@@ -239,25 +236,25 @@ def main():
     result = runner.run(suite)
 
     # Afficher le résumé
-    print(f"\n📊 Résumé des tests :")
+    print("\n📊 Résumé des tests :")
     print(f"   • Tests exécutés : {result.testsRun}")
     print(f"   • Échecs : {len(result.failures)}")
     print(f"   • Erreurs : {len(result.errors)}")
 
     if result.failures:
-        print(f"\n❌ Échecs :")
+        print("\n❌ Échecs :")
         for test, traceback in result.failures:
             print(f"   • {test}: {traceback}")
 
     if result.errors:
-        print(f"\n❌ Erreurs :")
+        print("\n❌ Erreurs :")
         for test, traceback in result.errors:
             print(f"   • {test}: {traceback}")
 
     if result.wasSuccessful():
-        print(f"\n✅ Tous les tests ont réussi !")
+        print("\n✅ Tous les tests ont réussi !")
     else:
-        print(f"\n❌ Certains tests ont échoué.")
+        print("\n❌ Certains tests ont échoué.")
 
     return result.wasSuccessful()
 

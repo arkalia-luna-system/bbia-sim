@@ -2,6 +2,7 @@
 
 import time
 
+
 def start_bbia_sim():
     print("\n✨ [BBIA] Initialisation du réveil...")
     time.sleep(1)
@@ -26,6 +27,7 @@ def start_bbia_sim():
     print("🗣️ Première pensée : 'Je suis là, Athalia.'")
     time.sleep(1)
     print("✨ BBIA est complètement réveillé et prêt !\n")
+
 
 if __name__ == "__main__":
     start_bbia_sim()
