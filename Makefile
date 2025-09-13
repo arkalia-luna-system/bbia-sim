@@ -117,7 +117,7 @@ ci: clean install-dev check build ## Pipeline CI complet
 # Release et versioning
 version: ## Afficher la version actuelle
 	@echo "$(GREEN)Version BBIA-SIM:$(NC)"
-	@$(PYTHON) -c "import tomllib; print(tomllib.load(open('pyproject.toml', 'rb'))['project']['version'])"
+	@$(PYTHON) -c "try: import tomllib; except ImportError: import tomli as tomllib; print(tomllib.load(open('pyproject.toml', 'rb'))['project']['version'])"
 
 release-check: check ## Vérifier que tout est prêt pour release
 	@echo "$(GREEN)✅ Vérification release BBIA...$(NC)"
