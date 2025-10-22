@@ -96,7 +96,7 @@ class TestMuJoCoSimulator:
                 nonlocal step_count
                 step_count += 1
                 if step_count >= 10:  # Arrêter après 10 steps
-                    raise KeyboardInterrupt()
+                    return  # Just return instead of raising KeyboardInterrupt
 
             mock_mujoco.mj_step = mock_mj_step
 

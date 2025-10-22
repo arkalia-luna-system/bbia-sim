@@ -7,7 +7,7 @@ name = "bbia-sim"
 version = "0.3.0"
 description = "BBIA - Moteur cognitif Python pour robot Reachy Mini Wireless"
 readme = "README.md"
-license = {text = "MIT"}
+license = "MIT"
 authors = [
     {name = "Arkalia Luna System", email = "arkalia.luna.system@gmail.com"}
 ]
@@ -27,7 +27,6 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
     "Topic :: Software Development :: Libraries :: Python Modules",
-    "License :: OSI Approved :: MIT License",
 ]
 requires-python = ">=3.9"
 dependencies = [
@@ -70,6 +69,7 @@ test = [
     "pytest>=7.0.0",
     "pytest-cov>=4.0.0",
     "pytest-mock>=3.10.0",
+    "pytest-asyncio>=0.21.0",
     "coverage>=7.0.0",
 ]
 
@@ -91,7 +91,7 @@ exclude = ["tests*", "*.__pycache__", "*.DS_Store"]
 bbia_sim = ["*.py", "*.txt", "*.wav"]
 
 [tool.setuptools.exclude-package-data]
-"*" = ["*._*", "*.DS_Store", "._*", "**/._*", "**/*._*", "__pycache__"]
+"*" = ["*._*", "*.DS_Store", "._*", "**/._*", "**/*._*", "__pycache__", "**/__pycache__"]
 
 # Configuration pytest moderne et complète
 [tool.pytest.ini_options]
