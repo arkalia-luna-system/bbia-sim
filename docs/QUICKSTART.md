@@ -63,6 +63,23 @@ mjpython -m bbia_sim --sim --verbose
 - **Erreur GLFW/EGL** : Installez les drivers graphiques
 - **Mode headless** : Utilisez `--headless` si pas d'affichage disponible
 
+### Assets officiels (optionnel)
+Pour utiliser les meshes officiels Reachy au lieu des placeholders :
+
+```bash
+# Structure des assets
+src/bbia_sim/sim/assets/
+├── meshes/                    # Placeholders actuels
+└── reachy_official/           # Assets officiels
+    ├── OFFICIAL_ASSETS.md     # Documentation
+    └── asset_mapping.py       # Mapping Python
+```
+
+**Migration :**
+1. Copiez les STL officiels dans `reachy_official/`
+2. Mettez à jour `asset_mapping.py`
+3. Redémarrez la simulation
+
 ## Démarrage API (2 min)
 
 ```bash

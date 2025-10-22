@@ -27,6 +27,7 @@
     - [macOS](#macos)
     - [Dépannage Mode 3D](#dépannage-mode-3d)
     - [Détermination durée headless garantie (tests)](#détermination-durée-headless-garantie-tests)
+    - [Utiliser les assets officiels](#utiliser-les-assets-officiels)
   - [API REST/WebSocket](#api-restwebsocket)
     - [Démarrage API](#démarrage-api)
     - [Authentification Bearer](#authentification-bearer)
@@ -142,6 +143,30 @@ La durée en mode headless est strictement respectée avec une tolérance de ±0
 - Utilisation de `time.monotonic()` pour éviter la dérive temporelle
 - Vérification après chaque step de simulation
 - Tests automatisés validant la précision temporelle
+
+### Utiliser les assets officiels
+Le simulateur utilise actuellement des meshes STL générés automatiquement. Pour utiliser les assets officiels Reachy :
+
+```bash
+# Structure des assets
+src/bbia_sim/sim/assets/
+├── meshes/                    # Meshes actuels (placeholders)
+│   ├── torso.stl
+│   ├── head.stl
+│   ├── upper_arm.stl
+│   ├── forearm.stl
+│   └── gripper.stl
+└── reachy_official/           # Assets officiels (à venir)
+    ├── OFFICIAL_ASSETS.md     # Documentation des mappings
+    └── asset_mapping.py       # Mapping Python
+```
+
+**Migration vers assets officiels :**
+1. Copiez les fichiers STL officiels dans `reachy_official/`
+2. Mettez à jour `asset_mapping.py` avec les chemins officiels
+3. Le MJCF utilisera automatiquement les assets officiels
+
+**Note :** Les noms de joints et la cinématique restent inchangés pour maintenir la compatibilité API.
 
 ## API REST/WebSocket
 
