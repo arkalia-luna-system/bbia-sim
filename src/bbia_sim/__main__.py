@@ -105,19 +105,31 @@ def run_simulation(args: argparse.Namespace) -> None:
     """
     logger.info("🚀 Démarrage de la simulation MuJoCo")
 
-    # Vérification macOS pour le viewer
-    if not args.headless and sys.platform == "darwin":
-        # Sur macOS, vérifier si mujoco.viewer est disponible
-        if importlib.util.find_spec("mujoco.viewer") is None:
-            logger.error(
-                "❌ Module mujoco.viewer non disponible.\n"
-                "💡 Solutions :\n"
-                "  • Installez : pip install mujoco-python-viewer\n"
-                "  • Ou utilisez : python -m bbia_sim --sim --headless"
-            )
-            sys.exit(2)
+    # Vérification multi-OS pour le viewer
+    if not args.headless:
+        if sys.platform == "darwin":
+            # Sur macOS, vérifier si mujoco.viewer est disponible
+            if importlib.util.find_spec("mujoco.viewer") is None:
+                logger.error(
+                    "❌ Module mujoco.viewer non disponible sur macOS.\n"
+                    "💡 Solutions :\n"
+                    "  • Utilisez : mjpython -m bbia_sim --sim --verbose\n"
+                    "  • Ou installez : pip install mujoco-python-viewer\n"
+                    "  • Ou utilisez : python -m bbia_sim --sim --headless"
+                )
+                sys.exit(2)
+            else:
+                logger.info("✅ Viewer MuJoCo disponible sur macOS")
         else:
-            logger.info("✅ Viewer MuJoCo disponible")
+            # Linux/Windows : vérifier la disponibilité du viewer
+            if importlib.util.find_spec("mujoco.viewer") is None:
+                logger.warning(
+                    "⚠️ Module mujoco.viewer non disponible.\n"
+                    "💡 Installez : pip install mujoco-python-viewer\n"
+                    "   Ou utilisez : python -m bbia_sim --sim --headless"
+                )
+            else:
+                logger.info("✅ Viewer MuJoCo disponible")
 
     # Détermination du modèle à utiliser
     if args.scene == "reachy_mini.xml":

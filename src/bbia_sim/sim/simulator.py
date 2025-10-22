@@ -92,13 +92,14 @@ class MuJoCoSimulator:
             mujoco.mj_step(self.model, self.data)
             step_count += 1
 
-            # Vérification de durée plus fréquente (tous les 10 steps)
-            if duration and step_count % 10 == 0:
-                if (time.monotonic() - start_time) >= duration:
-                    break
+            # Vérification de durée APRÈS chaque step pour un contrôle précis
+            if duration and (time.monotonic() - start_time) >= duration:
+                break
 
-            if step_count % 100 == 0:
-                logger.info(f"Step {step_count}")
+            # Log moins fréquent pour éviter le spam
+            if step_count % 1000 == 0:
+                elapsed = time.monotonic() - start_time
+                logger.info(f"Step {step_count} - Temps écoulé: {elapsed:.2f}s")
 
             # Limite de sécurité pour éviter les boucles infinies
             if duration is None and step_count > 10000:

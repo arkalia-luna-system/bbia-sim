@@ -14,7 +14,7 @@ class TestViewerSmoke:
 
     @pytest.mark.skipif(
         os.getenv("CI") or not os.getenv("DISPLAY"),
-        reason="Skip viewer tests in CI or headless environment"
+        reason="Skip viewer tests in CI or headless environment",
     )
     def test_viewer_import_and_init(self):
         """Test import et initialisation du viewer sans ouvrir de fenêtre."""
@@ -24,8 +24,9 @@ class TestViewerSmoke:
             print("✅ mujoco.viewer disponible")
 
         # Test avec un modèle minimal
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.xml', delete=False) as f:
-            f.write("""<?xml version="1.0"?>
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".xml", delete=False) as f:
+            f.write(
+                """<?xml version="1.0"?>
 <mujoco>
   <worldbody>
     <body name="torso">
@@ -36,7 +37,8 @@ class TestViewerSmoke:
       </body>
     </body>
   </worldbody>
-</mujoco>""")
+</mujoco>"""
+            )
             temp_model = f.name
 
         try:
@@ -59,7 +61,7 @@ class TestViewerSmoke:
 
     @pytest.mark.skipif(
         os.getenv("CI") or not os.getenv("DISPLAY"),
-        reason="Skip viewer tests in CI or headless environment"
+        reason="Skip viewer tests in CI or headless environment",
     )
     def test_viewer_launch_passive_import(self):
         """Test que launch_passive peut être importé (sans l'exécuter)."""
@@ -68,12 +70,13 @@ class TestViewerSmoke:
 
         # Vérifier que launch_passive existe
         import mujoco.viewer
-        assert hasattr(mujoco.viewer, 'launch_passive')
+
+        assert hasattr(mujoco.viewer, "launch_passive")
         print("✅ mujoco.viewer.launch_passive disponible")
 
     @pytest.mark.skipif(
         os.getenv("CI") or not os.getenv("DISPLAY"),
-        reason="Skip viewer tests in CI or headless environment"
+        reason="Skip viewer tests in CI or headless environment",
     )
     def test_viewer_platform_detection(self):
         """Test détection de plateforme pour le viewer."""
