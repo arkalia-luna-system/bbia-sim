@@ -1,14 +1,22 @@
 import unittest
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
+
 import src.bbia_sim.bbia_voice as bbia_voice
 
 
 class TestBBIAVoice(unittest.TestCase):
+    @patch("src.bbia_sim.bbia_voice.get_bbia_voice")
     @patch("src.bbia_sim.bbia_voice.pyttsx3.init")
-    def test_dire_texte(self, mock_init):
+    def test_dire_texte(self, mock_init, mock_get_voice):
         mock_engine = MagicMock()
         mock_init.return_value = mock_engine
+        mock_get_voice.return_value = "test_voice_id"
+
         bbia_voice.dire_texte("Bonjour")
+
+        mock_init.assert_called_once()
+        mock_get_voice.assert_called_once_with(mock_engine)
+        mock_engine.setProperty.assert_called()
         mock_engine.say.assert_called_with("Bonjour")
         mock_engine.runAndWait.assert_called()
 

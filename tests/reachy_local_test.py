@@ -4,8 +4,8 @@ Test du simulateur local Reachy pour BBIA
 Utilise le simulateur local au lieu du simulateur web
 """
 
-import sys
 import os
+import sys
 import time
 
 # Ajouter le répertoire src au path pour importer nos modules

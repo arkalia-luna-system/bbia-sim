@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 
 """
 BBIA Emotions - Module d'émotions avancé pour Reachy Mini Wireless
@@ -7,7 +6,6 @@ BBIA Emotions - Module d'émotions avancé pour Reachy Mini Wireless
 """
 
 import random
-from typing import Dict, List
 from datetime import datetime
 
 
@@ -126,19 +124,19 @@ class BBIAEmotions:
         print(f"   • Tête : {new_data['tete']}")
         print(f"   • Intensité : {self.emotion_intensity*100:.0f}%")
 
-    def get_current_emotion(self) -> Dict:
+    def get_current_emotion(self) -> dict:
         """Retourne l'émotion actuelle avec ses détails"""
         emotion_data = self.emotions[self.current_emotion].copy()
         emotion_data.update(
             {
                 "name": self.current_emotion,
-                "intensity": self.emotion_intensity,
+                "intensity": str(self.emotion_intensity),
                 "timestamp": datetime.now().isoformat(),
             }
         )
         return emotion_data
 
-    def get_emotion_history(self, limit: int = 10) -> List[Dict]:
+    def get_emotion_history(self, limit: int = 10) -> list[dict]:
         """Retourne l'historique des émotions"""
         return self.emotion_history[-limit:] if limit > 0 else self.emotion_history
 
@@ -199,9 +197,9 @@ class BBIAEmotions:
         print(f"🎨 Mélange d'émotions : {emotion1} + {emotion2} = {result_emotion}")
         return result_emotion
 
-    def get_emotion_stats(self) -> Dict:
+    def get_emotion_stats(self) -> dict:
         """Retourne les statistiques des émotions"""
-        emotion_counts = {}
+        emotion_counts: dict[str, int] = {}
         for entry in self.emotion_history:
             emotion = entry["emotion"]
             emotion_counts[emotion] = emotion_counts.get(emotion, 0) + 1

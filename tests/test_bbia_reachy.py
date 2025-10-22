@@ -4,9 +4,9 @@ Test BBIA pour Reachy Mini Wireless
 Simulation des fonctionnalités du robot avant livraison
 """
 
-import time
 import random
 import sys
+import time
 from datetime import datetime
 
 

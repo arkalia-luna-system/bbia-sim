@@ -1,0 +1,7 @@
+exclude_dirs:
+  - venv
+  - bbia-sim-backup
+  - __pycache__
+  - .git
+skips:
+  - B311

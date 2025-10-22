@@ -1,22 +1,21 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 
 """
 Démonstration complète de BBIA - Test d'intégration de tous les modules
 """
 
-import sys
 import os
+import sys
 import time
 
 # Ajouter le chemin du module parent
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
+from src.bbia_sim.bbia_audio import enregistrer_audio, lire_audio
+from src.bbia_sim.bbia_behavior import BBIABehaviorManager
 from src.bbia_sim.bbia_emotions import BBIAEmotions
 from src.bbia_sim.bbia_vision import BBIAVision
 from src.bbia_sim.bbia_voice import dire_texte, reconnaitre_parole
-from src.bbia_sim.bbia_audio import enregistrer_audio, lire_audio
-from src.bbia_sim.bbia_behavior import BBIABehaviorManager
 
 
 def test_emotions_module():

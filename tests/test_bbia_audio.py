@@ -1,6 +1,8 @@
 import unittest
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
+
 import numpy as np
+
 import src.bbia_sim.bbia_audio as bbia_audio
 
 

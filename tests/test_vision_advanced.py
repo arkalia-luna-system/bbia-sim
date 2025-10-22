@@ -1,22 +1,21 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 
 """
 Test Vision Avancée BBIA - Semaine 2
 Test intégré des modules BBIA Vision et BBIA Emotions
 """
 
-import sys
 import os
+import random
+import sys
 import time
 from datetime import datetime
-import random
 
 # Ajouter le chemin des modules BBIA
 sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src", "bbia_sim"))
 
-from bbia_vision import BBIAVision
 from bbia_emotions import BBIAEmotions
+from bbia_vision import BBIAVision
 
 
 def print_header():

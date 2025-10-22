@@ -1,5 +1,6 @@
-from reachy import parts, Reachy
 import time
+
+from reachy import Reachy, parts
 
 try:
     # Connexion à la simulation web

@@ -1,27 +1,26 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 
 """
 Test du module BBIA Behavior Manager
 """
 
-import unittest
-import sys
-import os
-import io
 import contextlib
+import io
+import os
+import sys
+import unittest
 from unittest.mock import patch
 
 # Ajouter le chemin du module parent
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 from src.bbia_sim.bbia_behavior import (
-    BBIABehavior,
-    WakeUpBehavior,
-    GreetingBehavior,
     AntennaAnimationBehavior,
+    BBIABehavior,
     BBIABehaviorManager,
+    GreetingBehavior,
     HideBehavior,  # Ajouté
+    WakeUpBehavior,
 )
 
 

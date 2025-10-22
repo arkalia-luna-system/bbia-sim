@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 
 """
 BBIA Vision - Module de vision avancé pour Reachy Mini Wireless
 Reconnaissance d'objets, détection de visages, suivi d'objets
 """
 
-from typing import List, Dict, Tuple, Optional, Any
 from datetime import datetime
+from typing import Any, Optional
 
 
 class BBIAVision:
@@ -36,7 +35,7 @@ class BBIAVision:
         print(f"   • Résolution : {self.specs['resolution']}")
         print(f"   • Champ de vision : {self.specs['fov']}")
 
-    def scan_environment(self) -> Dict[str, Any]:
+    def scan_environment(self) -> dict[str, Any]:
         """Scanne l'environnement et détecte les objets"""
         print("🔍 Scan de l'environnement...")
 
@@ -104,7 +103,7 @@ class BBIAVision:
             "timestamp": datetime.now().isoformat(),
         }
 
-    def recognize_object(self, object_name: str) -> Optional[Dict]:
+    def recognize_object(self, object_name: str) -> Optional[dict]:
         """Reconnaît un objet spécifique"""
         print(f"🔍 Reconnaissance de l'objet : {object_name}")
 
@@ -119,7 +118,7 @@ class BBIAVision:
         print(f"❌ Objet non trouvé : {object_name}")
         return None
 
-    def detect_faces(self) -> List[Dict]:
+    def detect_faces(self) -> list[dict]:
         """Détecte les visages dans le champ de vision"""
         print("👥 Détection de visages...")
 
@@ -159,7 +158,7 @@ class BBIAVision:
         else:
             print("ℹ️ Aucun suivi actif")
 
-    def get_focus_status(self) -> Dict:
+    def get_focus_status(self) -> dict:
         """Retourne le statut du focus actuel"""
         return {
             "tracking_active": self.tracking_active,
@@ -168,21 +167,21 @@ class BBIAVision:
             "faces_count": len(self.faces_detected),
         }
 
-    def analyze_emotion(self, face_data: Dict) -> str:
+    def analyze_emotion(self, face_data: dict) -> str:
         """Analyse l'émotion d'un visage"""
         detected_emotion = face_data.get("emotion", "neutral")
 
         print(f"🎭 Analyse d'émotion : {detected_emotion}")
         return detected_emotion
 
-    def calculate_distance(self, object_position: Tuple[float, float]) -> float:
+    def calculate_distance(self, object_position: tuple[float, float]) -> float:
         """Calcule la distance d'un objet"""
         # Simulation simple basée sur la position
         x, y = object_position
         distance = (x**2 + y**2) ** 0.5
         return distance
 
-    def get_vision_stats(self) -> Dict:
+    def get_vision_stats(self) -> dict:
         """Retourne les statistiques de vision"""
         return {
             "camera_active": self.camera_active,

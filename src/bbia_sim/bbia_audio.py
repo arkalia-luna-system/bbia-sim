@@ -4,10 +4,11 @@ Gestion de l'audio pour BBIA : enregistrement, lecture, détection de son.
 Compatible macOS, simple, portable, testé.
 """
 
-import sounddevice as sd
-import numpy as np
-import wave
 import logging
+import wave
+
+import numpy as np
+import sounddevice as sd
 
 logging.basicConfig(level=logging.INFO)
 

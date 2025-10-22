@@ -1,18 +1,17 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 
 """
 BBIA Behavior Manager - Module de gestion des comportements pour Reachy Mini Wireless
 Comportements personnalisés, réactions automatiques, intégration avec les émotions
 """
 
-import time
-import random
-import threading
-from typing import Dict, List, Optional, Any
-from queue import Queue
 import logging
 import os
+import random
+import threading
+import time
+from queue import Queue
+from typing import Any, Optional
 
 try:
     from .bbia_emotions import BBIAEmotions
@@ -20,9 +19,7 @@ try:
     from .bbia_voice import dire_texte, reconnaitre_parole
 except ImportError:
     # Pour les tests directs
-    from bbia_emotions import BBIAEmotions
-    from bbia_vision import BBIAVision
-    from bbia_voice import dire_texte, reconnaitre_parole
+    pass
 
 # Création du dossier logs si besoin
 os.makedirs("logs", exist_ok=True)
@@ -49,12 +46,12 @@ class BBIABehavior:
         self.is_active = False
         self.priority = 1  # 1-10, 10 étant le plus prioritaire
 
-    def can_execute(self, context: Dict[str, Any]) -> bool:
+    def can_execute(self, context: dict[str, Any]) -> bool:
         logger.info(f"Vérification d'exécution du comportement : {self.name}")
         """Vérifie si le comportement peut être exécuté"""
         return True
 
-    def execute(self, context: Dict[str, Any]) -> bool:
+    def execute(self, context: dict[str, Any]) -> bool:
         logger.info(f"Exécution du comportement : {self.name}")
         print(f"🎭 Exécution du comportement : {self.name}")
         """Exécute le comportement"""
@@ -73,7 +70,7 @@ class WakeUpBehavior(BBIABehavior):
         super().__init__("wake_up", "Séquence de réveil complète de BBIA")
         self.priority = 10
 
-    def execute(self, context: Dict[str, Any]) -> bool:
+    def execute(self, context: dict[str, Any]) -> bool:
         logger.info("Début de la séquence de réveil BBIA")
         print("\n✨ [BBIA] Séquence de réveil...")
 
@@ -130,7 +127,7 @@ class GreetingBehavior(BBIABehavior):
             "Bonjour ! Je suis BBIA, enchanté !",
         ]
 
-    def execute(self, context: Dict[str, Any]) -> bool:
+    def execute(self, context: dict[str, Any]) -> bool:
         greeting = random.choice(self.greetings)
         logger.info(f"Salutation choisie : {greeting}")
         print(f"👋 {greeting}")
@@ -147,7 +144,7 @@ class EmotionalResponseBehavior(BBIABehavior):
         self.emotions = emotions
         self.priority = 8
 
-    def execute(self, context: Dict[str, Any]) -> bool:
+    def execute(self, context: dict[str, Any]) -> bool:
         stimulus = context.get("stimulus", "")
         logger.info(f"Stimulus reçu pour réponse émotionnelle : {stimulus}")
         if stimulus:
@@ -167,7 +164,7 @@ class VisionTrackingBehavior(BBIABehavior):
         self.vision = vision
         self.priority = 6
 
-    def execute(self, context: Dict[str, Any]) -> bool:
+    def execute(self, context: dict[str, Any]) -> bool:
         logger.info("Activation du suivi visuel")
         print("👁️ Activation du suivi visuel...")
 
@@ -192,7 +189,7 @@ class ConversationBehavior(BBIABehavior):
         super().__init__("conversation", "Conversation interactive")
         self.priority = 7
 
-    def execute(self, context: Dict[str, Any]) -> bool:
+    def execute(self, context: dict[str, Any]) -> bool:
         logger.info("Activation du mode conversation")
         print("🗣️ Mode conversation activé...")
         dire_texte("Je vous écoute.")
@@ -232,7 +229,7 @@ class AntennaAnimationBehavior(BBIABehavior):
         super().__init__("antenna_animation", "Animation des antennes selon l'émotion")
         self.priority = 5
 
-    def execute(self, context: Dict[str, Any]) -> bool:
+    def execute(self, context: dict[str, Any]) -> bool:
         emotion = context.get("emotion", "neutral")
         logger.info(f"Animation des antennes pour l'émotion : {emotion}")
 
@@ -261,7 +258,7 @@ class HideBehavior(BBIABehavior):
         )
         self.priority = 9
 
-    def execute(self, context: Dict[str, Any]) -> bool:
+    def execute(self, context: dict[str, Any]) -> bool:
         logger.info("Début de la séquence 'se cacher'")
         print("\n🙈 [BBIA] Séquence 'se cacher'...")
         print("🤖 Tête qui s'abaisse lentement...")
@@ -287,9 +284,9 @@ class BBIABehaviorManager:
     """Gestionnaire de comportements pour BBIA"""
 
     def __init__(self):
-        self.behaviors: Dict[str, BBIABehavior] = {}
-        self.active_behaviors: List[str] = []
-        self.behavior_queue = Queue()
+        self.behaviors: dict[str, BBIABehavior] = {}
+        self.active_behaviors: list[str] = []
+        self.behavior_queue: Queue[tuple[str, dict[str, Any]]] = Queue()
         self.is_running = False
         self.worker_thread = None
 
@@ -319,7 +316,7 @@ class BBIABehaviorManager:
         print(f"✅ Comportement enregistré : {behavior.name}")
 
     def execute_behavior(
-        self, behavior_name: str, context: Optional[Dict[str, Any]] = None
+        self, behavior_name: str, context: Optional[dict[str, Any]] = None
     ) -> bool:
         """Exécute un comportement spécifique"""
         if behavior_name not in self.behaviors:
@@ -336,7 +333,7 @@ class BBIABehaviorManager:
             return False
 
     def add_to_queue(
-        self, behavior_name: str, context: Optional[Dict[str, Any]] = None
+        self, behavior_name: str, context: Optional[dict[str, Any]] = None
     ):
         """Ajoute un comportement à la queue d'exécution"""
         self.behavior_queue.put((behavior_name, context or {}))
@@ -370,7 +367,7 @@ class BBIABehaviorManager:
             except Exception as e:
                 print(f"❌ Erreur dans le worker de comportements : {e}")
 
-    def get_available_behaviors(self) -> List[Dict[str, Any]]:
+    def get_available_behaviors(self) -> list[dict[str, Any]]:
         """Retourne la liste des comportements disponibles"""
         return [
             {
@@ -382,7 +379,7 @@ class BBIABehaviorManager:
             for behavior in self.behaviors.values()
         ]
 
-    def get_behavior_stats(self) -> Dict[str, Any]:
+    def get_behavior_stats(self) -> dict[str, Any]:
         """Retourne les statistiques des comportements"""
         return {
             "total_behaviors": len(self.behaviors),

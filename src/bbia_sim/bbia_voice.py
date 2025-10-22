@@ -7,10 +7,11 @@ Voix : sélection automatique de la voix la plus proche de Reachy Mini Wireles
 Aucune voix officielle n’est documentée publiquement : cette configuration vise à s’en rapprocher au maximum.
 """
 
-import pyttsx3
-import speech_recognition as sr
 import logging
 import unicodedata
+
+import pyttsx3
+import speech_recognition as sr
 
 logging.basicConfig(level=logging.INFO)
 
@@ -151,8 +152,8 @@ if __name__ == "__main__":
     engine.say(demo_texte)
     engine.runAndWait()
     print("2. Reconnaissance vocale : Parlez après le bip...")
-    import time
     import sys
+    import time
 
     sys.stdout.flush()
     time.sleep(0.5)
