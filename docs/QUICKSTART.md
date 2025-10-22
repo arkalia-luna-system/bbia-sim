@@ -57,6 +57,12 @@ mjpython -m bbia_sim --sim --verbose
 
 **Résultat attendu** : Fenêtre MuJoCo avec robot Reachy Mini visible et animé
 
+### Dépannage Mode 3D
+- **macOS** : Utilisez `mjpython` au lieu de `python` pour le viewer
+- **Linux** : Vérifiez que `DISPLAY` est défini
+- **Erreur GLFW/EGL** : Installez les drivers graphiques
+- **Mode headless** : Utilisez `--headless` si pas d'affichage disponible
+
 ## Démarrage API (2 min)
 
 ```bash

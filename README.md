@@ -26,6 +26,7 @@
     - [Linux](#linux)
     - [macOS](#macos)
     - [Dépannage Mode 3D](#dépannage-mode-3d)
+    - [Détermination durée headless garantie (tests)](#détermination-durée-headless-garantie-tests)
   - [API REST/WebSocket](#api-restwebsocket)
     - [Démarrage API](#démarrage-api)
     - [Authentification Bearer](#authentification-bearer)
@@ -134,6 +135,13 @@ python -m bbia_sim --sim --headless --duration 5
 - **Linux** : Vérifiez que `DISPLAY` est défini et que les drivers graphiques sont installés
 - **Erreur viewer** : Installez `mujoco-python-viewer` avec `pip install mujoco-python-viewer`
 - **Mode headless** : Utilisez `--headless` si pas d'affichage graphique disponible
+- **Erreur GLFW/EGL** : Installez les drivers graphiques et bibliothèques OpenGL
+
+### Détermination durée headless garantie (tests)
+La durée en mode headless est strictement respectée avec une tolérance de ±0.05s grâce à :
+- Utilisation de `time.monotonic()` pour éviter la dérive temporelle
+- Vérification après chaque step de simulation
+- Tests automatisés validant la précision temporelle
 
 ## API REST/WebSocket
 
