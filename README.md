@@ -22,6 +22,10 @@
     - [Mode graphique](#mode-graphique)
     - [Mode headless (test)](#mode-headless-test)
     - [Exemple simple](#exemple-simple)
+  - [Mode 3D visible (MuJoCo)](#mode-3d-visible-mujoco)
+    - [Linux](#linux)
+    - [macOS](#macos)
+    - [Dépannage Mode 3D](#dépannage-mode-3d)
   - [API REST/WebSocket](#api-restwebsocket)
     - [Démarrage API](#démarrage-api)
     - [Authentification Bearer](#authentification-bearer)
@@ -101,6 +105,35 @@ python -m bbia_sim --sim --headless --duration 2
 ```bash
 python examples/hello_sim.py --duration 2 --verbose
 ```
+
+## Mode 3D visible (MuJoCo)
+
+### Linux
+```bash
+# Installation des dépendances
+pip install mujoco-python-viewer
+
+# Lancement avec fenêtre 3D
+python -m bbia_sim --sim --verbose
+```
+
+### macOS
+```bash
+# Installation des dépendances
+pip install mujoco-python-viewer
+
+# Lancement avec fenêtre 3D (nécessite mjpython)
+mjpython -m bbia_sim --sim --verbose
+
+# Alternative : mode headless
+python -m bbia_sim --sim --headless --duration 5
+```
+
+### Dépannage Mode 3D
+- **macOS** : Si erreur "mjpython required", utilisez `mjpython` au lieu de `python`
+- **Linux** : Vérifiez que `DISPLAY` est défini et que les drivers graphiques sont installés
+- **Erreur viewer** : Installez `mujoco-python-viewer` avec `pip install mujoco-python-viewer`
+- **Mode headless** : Utilisez `--headless` si pas d'affichage graphique disponible
 
 ## API REST/WebSocket
 

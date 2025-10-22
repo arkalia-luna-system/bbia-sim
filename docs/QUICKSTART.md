@@ -35,6 +35,28 @@ python -m bbia_sim --sim --headless --duration 1
 ✅ Simulation terminée
 ```
 
+## Mode 3D visible (optionnel)
+
+### Linux
+```bash
+# Installation viewer
+pip install mujoco-python-viewer
+
+# Lancement avec fenêtre 3D
+python -m bbia_sim --sim --verbose
+```
+
+### macOS
+```bash
+# Installation viewer
+pip install mujoco-python-viewer
+
+# Lancement avec fenêtre 3D (nécessite mjpython)
+mjpython -m bbia_sim --sim --verbose
+```
+
+**Résultat attendu** : Fenêtre MuJoCo avec robot Reachy Mini visible et animé
+
 ## Démarrage API (2 min)
 
 ```bash
