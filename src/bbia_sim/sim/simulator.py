@@ -70,25 +70,30 @@ class MuJoCoSimulator:
     def _run_headless_simulation(self, duration: Optional[int]) -> None:
         """Exécute la simulation en mode headless."""
         logger.info("Simulation headless démarrée")
-        start_time = time.time()
+        start_time = time.monotonic()  # Utiliser monotonic pour éviter la dérive
         step_count = 0
 
         while True:
             mujoco.mj_step(self.model, self.data)
             step_count += 1
 
+            # Vérification de durée plus fréquente (tous les 10 steps)
+            if duration and step_count % 10 == 0:
+                if (time.monotonic() - start_time) >= duration:
+                    break
+
             if step_count % 100 == 0:
                 logger.info(f"Step {step_count}")
-
-            if duration and (time.time() - start_time) > duration:
-                break
 
             # Limite de sécurité pour éviter les boucles infinies
             if duration is None and step_count > 10000:
                 logger.warning("Limite de 10000 steps atteinte en mode headless")
                 break
 
-        logger.info(f"Simulation headless arrêtée après {step_count} steps")
+        actual_duration = time.monotonic() - start_time
+        logger.info(
+            f"Simulation headless arrêtée après {step_count} steps ({actual_duration:.2f}s)"
+        )
 
     def _run_graphical_simulation(self, duration: Optional[int]) -> None:
         """Exécute la simulation avec l'interface graphique."""
@@ -202,6 +207,10 @@ class MuJoCoSimulator:
             Liste des noms d'articulations
         """
         return [self.model.joint(i).name for i in range(self.model.njnt)]
+
+    def _step_simulation(self) -> None:
+        """Effectue un step de simulation (méthode interne)."""
+        mujoco.mj_step(self.model, self.data)
 
     def close(self) -> None:
         """Ferme le viewer si actif."""

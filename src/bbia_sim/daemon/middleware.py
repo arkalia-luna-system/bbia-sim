@@ -15,14 +15,19 @@ logger = logging.getLogger(__name__)
 class SecurityMiddleware(BaseHTTPMiddleware):
     """Middleware pour appliquer les headers de sécurité."""
 
+    def __init__(self, app, max_json_size: int = None):
+        super().__init__(app)
+        self.max_json_size = max_json_size
+
     async def dispatch(self, request: Request, call_next: Callable) -> Response:
         """Applique les headers de sécurité et limite la taille des requêtes."""
         # Vérification de la taille de la requête
         content_length = request.headers.get("content-length")
-        if content_length and int(content_length) > settings.max_request_size:
+        max_size = self.max_json_size or settings.max_request_size
+        if content_length and int(content_length) > max_size:
             logger.warning(
                 f"Requête trop volumineuse rejetée: {content_length} bytes "
-                f"(limite: {settings.max_request_size})"
+                f"(limite: {max_size})"
             )
             return Response(
                 content="Request too large",
@@ -54,14 +59,17 @@ class SecurityMiddleware(BaseHTTPMiddleware):
 class RateLimitMiddleware(BaseHTTPMiddleware):
     """Middleware simple de rate limiting en mémoire."""
 
-    def __init__(self, app, requests_per_minute: int = 100):
+    def __init__(self, app, requests_per_minute: int = 100, window_seconds: int = 60, message: str = "Rate limit exceeded", force_enable: bool = False):
         super().__init__(app)
         self.requests_per_minute = requests_per_minute
+        self.window_seconds = window_seconds
+        self.message = message
+        self.force_enable = force_enable
         self.requests: dict[str, list[float]] = {}
 
     async def dispatch(self, request: Request, call_next: Callable) -> Response:
         """Applique le rate limiting basique."""
-        if settings.is_production():
+        if settings.is_production() or self.force_enable:
             client_ip = request.client.host if request.client else "unknown"
             now = time.time()
 
@@ -70,7 +78,7 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
                 self.requests[client_ip] = [
                     req_time
                     for req_time in self.requests[client_ip]
-                    if now - req_time < 60  # Garder seulement les dernières 60 secondes
+                    if now - req_time < self.window_seconds
                 ]
             else:
                 self.requests[client_ip] = []
@@ -79,9 +87,9 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
             if len(self.requests[client_ip]) >= self.requests_per_minute:
                 logger.warning(f"Rate limit dépassé pour {client_ip}")
                 return Response(
-                    content="Rate limit exceeded",
+                    content=self.message,
                     status_code=429,
-                    headers={"Retry-After": "60"},
+                    headers={"Retry-After": str(self.window_seconds)},
                 )
 
             # Ajout de la requête actuelle

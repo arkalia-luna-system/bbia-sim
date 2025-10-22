@@ -16,7 +16,16 @@
   - [Capture d'écran](#capture-décran)
   - [Structure du projet](#structure-du-projet)
   - [Installation rapide](#installation-rapide)
-  - [Quickstart](#quickstart)
+    - [Développement](#développement)
+    - [Production](#production)
+  - [Simulation 3D (MuJoCo)](#simulation-3d-mujoco)
+    - [Mode graphique](#mode-graphique)
+    - [Mode headless (test)](#mode-headless-test)
+    - [Exemple simple](#exemple-simple)
+  - [API REST/WebSocket](#api-restwebsocket)
+    - [Démarrage API](#démarrage-api)
+    - [Authentification Bearer](#authentification-bearer)
+    - [Endpoints clés](#endpoints-clés)
   - [Exemples d'utilisation](#exemples-dutilisation)
   - [Audio \& Voix sur macOS](#audio--voix-sur-macos)
   - [Lancer les tests](#lancer-les-tests)
@@ -25,7 +34,17 @@
     - [Commandes d'audit sécurité](#commandes-daudit-sécurité)
     - [CORS et limites (prod)](#cors-et-limites-prod)
     - [Démarrage production](#démarrage-production)
-  - [Dépannage](#dépannage)
+  - [Tests \& CI](#tests--ci)
+    - [Tests unitaires](#tests-unitaires)
+    - [Tests avec couverture](#tests-avec-couverture)
+    - [CI complète](#ci-complète)
+    - [Exemples automatisés](#exemples-automatisés)
+  - [Troubleshooting](#troubleshooting)
+    - [MuJoCo](#mujoco)
+    - [uvicorn](#uvicorn)
+    - [API](#api)
+    - [Audio \& Voix](#audio--voix)
+    - [Général](#général)
   - [Documentation](#documentation)
   - [Roadmap](#roadmap)
   - [Contribuer](#contribuer)
@@ -49,6 +68,8 @@ Projet BBIA pour Reachy Mini Wireless : IA émotionnelle, simulation 100% Python
 - `scripts/` : scripts de démarrage et tests
 
 ## Installation rapide
+
+### Développement
 ```bash
 git clone https://github.com/arkalia-luna-system/bbia-sim.git
 cd bbia-sim
@@ -57,28 +78,59 @@ source venv/bin/activate
 pip install -e ".[dev]"
 ```
 
-## Quickstart
+### Production
 ```bash
-# Simulation MuJoCo (mode graphique)
+pip install -e ".[prod]"
+cp .env.example .env
+# Modifier .env avec vos valeurs
+```
+
+## Simulation 3D (MuJoCo)
+
+### Mode graphique
+```bash
 python -m bbia_sim --sim
+```
 
-# Simulation MuJoCo (mode headless)
-python -m bbia_sim --sim --headless --duration 10
+### Mode headless (test)
+```bash
+python -m bbia_sim --sim --headless --duration 2
+```
 
-# Séquence de réveil BBIA
-python -m bbia_sim --awake
+### Exemple simple
+```bash
+python examples/hello_sim.py --duration 2 --verbose
+```
 
-# API REST/WebSocket
-python scripts/start_api.py
+## API REST/WebSocket
 
-# Tests de l'API
-python scripts/test_api.py
+### Démarrage API
+```bash
+# Développement
+uvicorn src.bbia_sim.daemon.app.main:app --port 8000 --reload
 
-# Synthèse vocale (voix Amélie fr_CA)
-python src/bbia_sim/bbia_voice.py
+# Production
+BBIA_ENV=prod BBIA_TOKEN=votre-token uvicorn src.bbia_sim.daemon.app.main:app --port 8000
+```
 
-# Enregistrement et lecture audio
-python src/bbia_sim/bbia_audio.py
+### Authentification Bearer
+```bash
+# Tous les endpoints nécessitent le header
+curl -H "Authorization: Bearer votre-token" http://localhost:8000/api/state/full
+```
+
+### Endpoints clés
+```bash
+# État robot
+curl -H "Authorization: Bearer bbia-secret-key-dev" http://localhost:8000/api/state/joints
+
+# Mouvement
+curl -X POST -H "Authorization: Bearer bbia-secret-key-dev" -H "Content-Type: application/json" \
+  "http://localhost:8000/api/motion/joints" \
+  -d '[{"joint_name": "neck_yaw", "position": 0.6}]'
+
+# WebSocket télémétrie
+python examples/subscribe_telemetry.py --token bbia-secret-key-dev --count 5
 ```
 
 ## Exemples d'utilisation
@@ -118,7 +170,7 @@ print(texte)
 brew install portaudio
 pip install pyaudio
 ```
-- [Guide installation/dépannage audio/voix](#dépannage)
+- [Guide installation/dépannage audio/voix](#troubleshooting)
 
 ## Lancer les tests
 ```bash
@@ -174,7 +226,45 @@ ruff check . && black --check . && mypy src/ && bandit -r src/ && pip-audit
 BBIA_ENV=prod BBIA_TOKEN=votre-token-secure uvicorn src.bbia_sim.daemon.app.main:app --port 8000 --host 0.0.0.0
 ```
 
-## Dépannage
+## Tests & CI
+
+### Tests unitaires
+```bash
+pytest tests/ -v
+```
+
+### Tests avec couverture
+```bash
+pytest tests/ --cov=src/bbia_sim --cov-report=html
+```
+
+### CI complète
+```bash
+ruff check . && black --check . && mypy src/ && bandit -r src/ && pip-audit
+```
+
+### Exemples automatisés
+```bash
+python examples/hello_sim.py --duration 1
+python examples/goto_pose.py --token bbia-secret-key-dev --joint neck_yaw --pos 0.1
+python examples/subscribe_telemetry.py --token bbia-secret-key-dev --count 3
+```
+
+## Troubleshooting
+
+### MuJoCo
+- **Erreur "No module named 'mujoco'"** : `pip install mujoco`
+- **Modèle introuvable** : Vérifier `src/bbia_sim/sim/models/reachy_mini.xml`
+
+### uvicorn
+- **Port 8000 occupé** : `pkill -f "uvicorn.*8000"` ou changer le port
+- **Erreur CORS** : Vérifier `BBIA_ENV` et `BBIA_CORS_ORIGINS`
+
+### API
+- **401 Unauthorized** : Vérifier le token Bearer
+- **WebSocket timeout** : Vérifier que la télémétrie est activée
+
+### Audio & Voix
 - **Erreur "No module named 'pyaudio'"** :
   - Installe portaudio (`brew install portaudio`)
   - Puis `pip install pyaudio`
@@ -182,9 +272,8 @@ BBIA_ENV=prod BBIA_TOKEN=votre-token-secure uvicorn src.bbia_sim.daemon.app.main
   - Va dans Préférences Système > Accessibilité > Parole > Voix du système > Personnaliser…
   - Coche "Amélie (français — Canada)" et télécharge-la
   - Relance le script
-- **Erreur MuJoCo "Modèle introuvable"** :
-  - Vérifie que `src/bbia_sim/sim/models/reachy_mini.xml` existe
-  - Lance avec `python -m bbia_sim --sim --verbose`
+
+### Général
 - **API ne démarre pas** :
   - Vérifie que le port 8000 est libre
   - Lance avec `python scripts/start_api.py`

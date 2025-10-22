@@ -11,7 +11,7 @@ import time
 # Ajouter le répertoire src au path pour importer nos modules
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
-from bbia_sim.reachy_local_sim import get_simulator
+from bbia_sim.sim.simulator import MuJoCoSimulator
 
 
 def test_local_simulation():
@@ -19,46 +19,16 @@ def test_local_simulation():
     print("🤖 Test de la simulation locale Reachy")
     print("=" * 50)
 
-    # Récupérer l'instance du simulateur
-    sim = get_simulator()
+    # Créer l'instance du simulateur MuJoCo
+    model_path = os.path.join(os.path.dirname(__file__), "..", "src", "bbia_sim", "sim", "models", "reachy_mini.xml")
+    sim = MuJoCoSimulator(model_path)
 
-    print("✨ Connectée au simulateur local !")
-    time.sleep(1)
-
-    # Test du bras droit
-    print("\n🦾 Test du bras droit...")
-    sim.right_arm.elbow_pitch.goal_position = -80
-    time.sleep(3)
-
-    # Test de la tête
-    print("\n👁️ Test de la tête...")
-    sim.head.yaw.goal_position = 30
-    time.sleep(3)
-
-    # Test du bras gauche
-    print("\n🦾 Test du bras gauche...")
-    sim.left_arm.shoulder_pitch.goal_position = 45
-    time.sleep(3)
-
-    # Test d'un mouvement complexe
-    print("\n🎭 Test d'un mouvement complexe...")
-    sim.right_arm.shoulder_pitch.goal_position = 60
-    sim.left_arm.elbow_pitch.goal_position = -45
-    sim.head.neck_pitch.goal_position = 15
-    time.sleep(5)
-
-    # Afficher le statut final
-    print("\n📊 Statut final du robot:")
-    status = sim.get_status()
-    for part, joints in status.items():
-        print(f"  {part}:")
-        for joint_name, position in joints.items():
-            print(f"    {joint_name}: {position:.1f}°")
-
-    print("\n🎉 Test de simulation locale terminé avec succès !")
-
-    # Ne pas arrêter le simulateur pour permettre d'autres tests
-    # sim.stop()
+    print("✨ Simulateur MuJoCo initialisé !")
+    
+    # Lancer la simulation en mode headless pour les tests
+    sim.launch_simulation(headless=True, duration=10)
+    
+    print("🎉 Test de simulation locale terminé avec succès !")
 
 
 if __name__ == "__main__":
