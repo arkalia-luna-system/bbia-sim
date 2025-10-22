@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "bbia-sim"
-version = "1.0.0"
+version = "0.3.0"
 description = "BBIA - Moteur cognitif Python pour robot Reachy Mini Wireless"
 readme = "README.md"
 license = {text = "MIT"}

@@ -93,11 +93,13 @@ class MuJoCoSimulator:
             step_count += 1
 
             # Vérification de durée APRÈS chaque step pour un contrôle précis
-            if duration and (time.monotonic() - start_time) >= duration:
-                break
+            if duration:
+                elapsed = time.monotonic() - start_time
+                if elapsed >= duration:
+                    break
 
             # Log moins fréquent pour éviter le spam
-            if step_count % 1000 == 0:
+            if step_count % 10000 == 0:
                 elapsed = time.monotonic() - start_time
                 logger.info(f"Step {step_count} - Temps écoulé: {elapsed:.2f}s")
 

@@ -102,10 +102,10 @@ class TestViewerSmoke:
     )
     def test_assets_loading(self):
         """Test que les assets STL sont chargés correctement."""
-        from pathlib import Path
-
         # Vérifier que les fichiers STL existent
         import os
+        from pathlib import Path
+
         project_root = Path(os.getcwd())
         assets_dir = project_root / "src" / "bbia_sim" / "sim" / "assets" / "meshes"
 
@@ -124,7 +124,9 @@ class TestViewerSmoke:
             print(f"✅ Asset {stl_file} trouvé ({stl_path.stat().st_size} bytes)")
 
         # Vérifier la structure des assets officiels
-        official_dir = project_root / "src" / "bbia_sim" / "sim" / "assets" / "reachy_official"
+        official_dir = (
+            project_root / "src" / "bbia_sim" / "sim" / "assets" / "reachy_official"
+        )
         assert official_dir.exists(), "Répertoire reachy_official manquant"
 
         mapping_file = official_dir / "asset_mapping.py"
