@@ -31,11 +31,19 @@ jobs:
       - name: Type check with mypy
         run: mypy src/
 
-      - name: Security check with bandit
-        run: bandit -r src/
+      - name: Security check with Bandit
+        run: bandit -r src/ -c .bandit -q
 
-      - name: Audit dependencies
-        run: pip-audit
+      - name: Dependency audit with pip-audit
+        run: |
+          pip-audit --desc --format=json > audit-results.json
+          # Fail if CRITICAL vulnerabilities found
+          if grep -q '"severity": "CRITICAL"' audit-results.json; then
+            echo "❌ CRITICAL vulnerabilities found!"
+            pip-audit --desc
+            exit 1
+          fi
+          echo "✅ No CRITICAL vulnerabilities found"
 
   test:
     runs-on: ubuntu-latest

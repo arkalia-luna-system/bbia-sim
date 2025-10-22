@@ -7,6 +7,8 @@ from typing import Any
 from fastapi import APIRouter
 from pydantic import BaseModel
 
+from ...simulation_service import simulation_service
+
 logger = logging.getLogger(__name__)
 
 router = APIRouter()
@@ -40,11 +42,15 @@ async def get_full_state() -> RobotState:
     """
     logger.info("Récupération de l'état complet du robot")
 
+    # Récupération des données depuis la simulation
+    robot_state = simulation_service.get_robot_state()
+    robot_state.get("joint_positions", {})
+
     return RobotState(
-        position={"x": 0.0, "y": 0.0, "z": 0.0},
-        status="ready",
-        battery=85.5,
-        temperature=25.5,
+        position={"x": 0.0, "y": 0.0, "z": 0.0},  # Position globale (à implémenter)
+        status="ready" if simulation_service.is_simulation_ready() else "not_ready",
+        battery=85.5,  # Simulation de batterie
+        temperature=25.5,  # Simulation de température
         timestamp=datetime.now().isoformat(),
     )
 
@@ -134,16 +140,17 @@ async def get_joint_states() -> dict[str, Any]:
     """
     logger.info("Récupération de l'état des articulations")
 
-    joints = {
-        "right_shoulder_pitch": {"position": 0.0, "velocity": 0.0, "effort": 0.0},
-        "right_elbow_pitch": {"position": 0.0, "velocity": 0.0, "effort": 0.0},
-        "right_wrist_pitch": {"position": 0.0, "velocity": 0.0, "effort": 0.0},
-        "left_shoulder_pitch": {"position": 0.0, "velocity": 0.0, "effort": 0.0},
-        "left_elbow_pitch": {"position": 0.0, "velocity": 0.0, "effort": 0.0},
-        "left_wrist_pitch": {"position": 0.0, "velocity": 0.0, "effort": 0.0},
-        "head_yaw": {"position": 0.0, "velocity": 0.0, "effort": 0.0},
-        "head_pitch": {"position": 0.0, "velocity": 0.0, "effort": 0.0},
-    }
+    # Récupération des positions depuis la simulation
+    joint_positions = simulation_service.get_joint_positions()
+
+    # Formatage des données pour l'API
+    joints = {}
+    for joint_name, position in joint_positions.items():
+        joints[joint_name] = {
+            "position": position,
+            "velocity": 0.0,  # À implémenter
+            "effort": 0.0,  # À implémenter
+        }
 
     return {"joints": joints, "timestamp": datetime.now().isoformat()}
 

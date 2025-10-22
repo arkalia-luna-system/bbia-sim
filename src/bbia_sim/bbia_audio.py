@@ -60,7 +60,7 @@ def detecter_son(fichier, seuil=500):
         with wave.open(fichier, "rb") as wf:
             frames = wf.readframes(wf.getnframes())
             audio = np.frombuffer(frames, dtype="int16")
-            max_val = np.max(np.abs(audio))
+            max_val: float = np.max(np.abs(audio))
             logging.info(f"Amplitude max détectée : {max_val}")
             return max_val > seuil
     except Exception as e:

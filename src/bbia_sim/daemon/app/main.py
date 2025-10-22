@@ -1,7 +1,6 @@
 """Application FastAPI principale pour BBIA-SIM."""
 
 import logging
-import os
 from contextlib import asynccontextmanager
 from typing import Any
 
@@ -10,16 +9,21 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
+from ..config import settings
+from ..middleware import RateLimitMiddleware, SecurityMiddleware
+from ..simulation_service import simulation_service
 from ..ws import telemetry
 from .routers import motion, state
 
 # Configuration du logging
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(
+    level=getattr(logging, settings.log_level.upper()),
+    format=settings.log_format,
+)
 logger = logging.getLogger(__name__)
 
 # Configuration de sécurité
 security = HTTPBearer()
-API_TOKEN = os.getenv("BBIA_API_TOKEN", "bbia-secret-key-dev")
 
 # Variables globales pour l'état de l'application
 app_state: dict[str, Any] = {
@@ -46,12 +50,23 @@ def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)) 
     Raises:
         HTTPException: Si le token est invalide
     """
-    if credentials.credentials != API_TOKEN:
+    if credentials.credentials != settings.api_token:
+        # Log sécurisé sans exposer le token
+        logger.warning(
+            f"Tentative d'authentification avec token invalide: {settings.mask_token(credentials.credentials)}"
+        )
         raise HTTPException(
             status_code=401,
             detail="Token d'authentification invalide",
             headers={"WWW-Authenticate": "Bearer"},
         )
+
+    # Log de succès en mode debug uniquement
+    if settings.log_level.upper() == "DEBUG":
+        logger.debug(
+            f"Authentification réussie avec token: {settings.mask_token(credentials.credentials)}"
+        )
+
     return credentials.credentials
 
 
@@ -61,32 +76,36 @@ async def lifespan(app: FastAPI):
     # Démarrage
     logger.info("🚀 Démarrage de l'API BBIA-SIM")
 
-    # Initialisation du simulateur (optionnel)
-    try:
-        from ...sim.simulator import MuJoCoSimulator
+    # Démarrage de la simulation MuJoCo
+    sim_config = settings.get_simulation_config()
+    success = await simulation_service.start_simulation(headless=sim_config["headless"])
 
-        model_path = os.path.join(
-            os.path.dirname(__file__), "..", "..", "sim", "models", "reachy_mini.xml"
-        )
-        if os.path.exists(model_path):
-            app_state["simulator"] = MuJoCoSimulator(model_path)
-            logger.info("✅ Simulateur MuJoCo initialisé")
-    except Exception as e:
-        logger.warning(f"⚠️ Simulateur MuJoCo non disponible : {e}")
+    if success:
+        logger.info("✅ Simulation MuJoCo démarrée avec succès")
+        app_state["simulator"] = simulation_service
+        app_state["is_running"] = True
+    else:
+        logger.warning("⚠️ Échec du démarrage de la simulation MuJoCo")
+        app_state["simulator"] = None
+        app_state["is_running"] = False
 
     yield
 
     # Arrêt
     logger.info("🛑 Arrêt de l'API BBIA-SIM")
+
+    # Arrêt de la simulation
     if app_state["simulator"]:
-        app_state["simulator"].stop()
+        await simulation_service.stop_simulation()
+        app_state["simulator"] = None
+        app_state["is_running"] = False
 
 
 # Création de l'application FastAPI
 app = FastAPI(
-    title="BBIA-SIM API",
-    description="API REST et WebSocket pour le contrôle du robot Reachy Mini",
-    version="1.0.0",
+    title=settings.api_title,
+    description=settings.api_description,
+    version=settings.api_version,
     docs_url="/docs",
     redoc_url="/redoc",
     lifespan=lifespan,
@@ -95,11 +114,20 @@ app = FastAPI(
 # Configuration CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # En production, spécifier les domaines autorisés
+    allow_origins=settings.get_cors_origins(),
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE"],
     allow_headers=["*"],
 )
+
+# Middleware de sécurité
+app.add_middleware(SecurityMiddleware)
+
+# Rate limiting (en production uniquement)
+if settings.is_production():
+    app.add_middleware(
+        RateLimitMiddleware, requests_per_minute=settings.rate_limit_requests
+    )
 
 # Inclusion des routers
 app.include_router(

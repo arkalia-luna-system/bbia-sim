@@ -3,6 +3,13 @@ Modèle MJCF minimal pour le robot Reachy Mini.
 
 Ce fichier définit la structure de base du robot Reachy Mini
 pour la simulation MuJoCo.
+
+Copyright (c) 2025 arkalia-luna
+Licensed under MIT License
+
+Note: Ce modèle est une implémentation originale basée sur les spécifications
+publiques du robot Reachy Mini de Pollen Robotics. Aucun code Apache-2.0
+n'a été copié directement.
 """
 
 <mujoco model="reachy_mini">

@@ -3,10 +3,13 @@
 import asyncio
 import json
 import logging
+import time
 from datetime import datetime
 from typing import Any
 
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
+
+from ..simulation_service import simulation_service
 
 logger = logging.getLogger(__name__)
 
@@ -102,45 +105,44 @@ class ConnectionManager:
                 await asyncio.sleep(1)
 
     def _generate_telemetry_data(self) -> dict[str, Any]:
-        """Génère des données de télémétrie simulées."""
-        import random
+        """Génère des données de télémétrie depuis la simulation (optimisé)."""
+        # Récupération des données depuis la simulation
+        robot_state = simulation_service.get_robot_state()
+        joint_positions = robot_state.get("joint_positions", {})
+
+        # Données simulées optimisées (évite random() superflu)
+        current_time = time.time()
+        # Utilisation d'un pattern déterministe basé sur le temps pour éviter random()
+        sin_val = (current_time % 10) / 10.0  # Cycle de 10 secondes
 
         return {
             "timestamp": datetime.now().isoformat(),
             "robot": {
                 "position": {
-                    "x": round(random.uniform(-0.1, 0.1), 3),
-                    "y": round(random.uniform(-0.1, 0.1), 3),
-                    "z": round(random.uniform(0.0, 0.2), 3),
+                    "x": round(sin_val * 0.1, 3),
+                    "y": round(sin_val * 0.1, 3),
+                    "z": round(0.1 + sin_val * 0.1, 3),
                 },
                 "orientation": {
-                    "roll": round(random.uniform(-0.1, 0.1), 3),
-                    "pitch": round(random.uniform(-0.1, 0.1), 3),
-                    "yaw": round(random.uniform(-0.2, 0.2), 3),
+                    "roll": round(sin_val * 0.1, 3),
+                    "pitch": round(sin_val * 0.1, 3),
+                    "yaw": round(sin_val * 0.2, 3),
                 },
                 "velocity": {
-                    "linear": round(random.uniform(0, 0.05), 3),
-                    "angular": round(random.uniform(0, 0.1), 3),
+                    "linear": round(sin_val * 0.05, 3),
+                    "angular": round(sin_val * 0.1, 3),
                 },
             },
-            "joints": {
-                "right_shoulder_pitch": round(random.uniform(-0.1, 0.1), 3),
-                "right_elbow_pitch": round(random.uniform(-0.1, 0.1), 3),
-                "right_wrist_pitch": round(random.uniform(-0.1, 0.1), 3),
-                "left_shoulder_pitch": round(random.uniform(-0.1, 0.1), 3),
-                "left_elbow_pitch": round(random.uniform(-0.1, 0.1), 3),
-                "left_wrist_pitch": round(random.uniform(-0.1, 0.1), 3),
-                "head_yaw": round(random.uniform(-0.1, 0.1), 3),
-                "head_pitch": round(random.uniform(-0.05, 0.05), 3),
-            },
+            "joints": joint_positions,  # Données réelles de la simulation
             "sensors": {
-                "battery": round(random.uniform(80, 90), 1),
-                "temperature": round(random.uniform(24, 27), 1),
-                "cpu_usage": round(random.uniform(10, 30), 1),
-                "memory_usage": round(random.uniform(40, 60), 1),
+                "battery": round(85.0 + sin_val * 5.0, 1),
+                "temperature": round(25.0 + sin_val * 2.0, 1),
+                "cpu_usage": round(20.0 + sin_val * 10.0, 1),
+                "memory_usage": round(50.0 + sin_val * 10.0, 1),
             },
             "status": {
                 "mode": "autonomous",
+                "simulation_ready": simulation_service.is_simulation_ready(),
                 "errors": [],
                 "warnings": [],
                 "active_tasks": [],

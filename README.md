@@ -20,6 +20,11 @@
   - [Exemples d'utilisation](#exemples-dutilisation)
   - [Audio \& Voix sur macOS](#audio--voix-sur-macos)
   - [Lancer les tests](#lancer-les-tests)
+  - [Sécurité \& perfs](#sécurité--perfs)
+    - [Configuration environnement](#configuration-environnement)
+    - [Commandes d'audit sécurité](#commandes-daudit-sécurité)
+    - [CORS et limites (prod)](#cors-et-limites-prod)
+    - [Démarrage production](#démarrage-production)
   - [Dépannage](#dépannage)
   - [Documentation](#documentation)
   - [Roadmap](#roadmap)
@@ -131,6 +136,42 @@ ruff check src/ tests/
 black src/ tests/
 mypy src/
 bandit -r src/
+```
+
+## Sécurité & perfs
+
+### Configuration environnement
+```bash
+# Copier le fichier d'exemple
+cp .env.example .env
+
+# Modifier les valeurs selon votre environnement
+# BBIA_ENV=dev  # ou prod
+# BBIA_TOKEN=votre-token-secret
+```
+
+### Commandes d'audit sécurité
+```bash
+# Audit des dépendances (CRITICAL/HIGH)
+pip-audit --desc
+
+# Analyse statique de sécurité
+bandit -r src/ -c .bandit
+
+# Tests de sécurité complets
+ruff check . && black --check . && mypy src/ && bandit -r src/ && pip-audit
+```
+
+### CORS et limites (prod)
+- **Dev** : CORS permissif (`*`)
+- **Prod** : CORS restrictif (domaines spécifiques)
+- **Limites** : 1MB max par requête, 100 req/min, timeouts 30s
+- **Headers sécurité** : X-Content-Type-Options, X-Frame-Options, etc.
+
+### Démarrage production
+```bash
+# Mode production avec sécurité renforcée
+BBIA_ENV=prod BBIA_TOKEN=votre-token-secure uvicorn src.bbia_sim.daemon.app.main:app --port 8000 --host 0.0.0.0
 ```
 
 ## Dépannage

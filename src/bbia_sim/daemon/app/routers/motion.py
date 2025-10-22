@@ -5,36 +5,16 @@ from datetime import datetime
 from typing import Any
 
 from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel
+
+from ...models import HeadControl, JointPosition, MotionCommand, Pose
+from ...simulation_service import simulation_service
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
 
-class Pose(BaseModel):
-    """Modèle pour une position."""
-
-    x: float
-    y: float
-    z: float
-    roll: float = 0.0
-    pitch: float = 0.0
-    yaw: float = 0.0
-
-
-class JointPosition(BaseModel):
-    """Modèle pour une position d'articulation."""
-
-    joint_name: str
-    position: float
-
-
-class MotionCommand(BaseModel):
-    """Modèle pour une commande de mouvement."""
-
-    command: str
-    parameters: dict[str, Any] = {}
+# Les modèles sont maintenant importés depuis models.py
 
 
 @router.post("/goto_pose")
@@ -90,27 +70,26 @@ async def set_joint_positions(positions: list[JointPosition]) -> dict[str, Any]:
         f"Définition des positions d'articulations : {len(positions)} articulations"
     )
 
-    # Validation des articulations
-    valid_joints = [
-        "right_shoulder_pitch",
-        "right_elbow_pitch",
-        "right_wrist_pitch",
-        "left_shoulder_pitch",
-        "left_elbow_pitch",
-        "left_wrist_pitch",
-        "head_yaw",
-        "head_pitch",
-    ]
+    # Validation des articulations disponibles
+    available_joints = simulation_service.get_available_joints()
 
     for pos in positions:
-        if pos.joint_name not in valid_joints:
+        if pos.joint_name not in available_joints:
             raise HTTPException(
                 status_code=400, detail=f"Articulation invalide : {pos.joint_name}"
             )
 
+    # Application des positions dans la simulation
+    success_count = 0
+    for pos in positions:
+        if simulation_service.set_joint_position(pos.joint_name, pos.position):
+            success_count += 1
+
     return {
-        "status": "moving",
+        "status": "moving" if success_count > 0 else "failed",
         "joints": [pos.dict() for pos in positions],
+        "success_count": success_count,
+        "total_count": len(positions),
         "estimated_time": 1.5,
         "timestamp": datetime.now().isoformat(),
     }
@@ -150,32 +129,29 @@ async def control_gripper(side: str, action: str) -> dict[str, Any]:
 
 
 @router.post("/head")
-async def control_head(yaw: float = 0.0, pitch: float = 0.0) -> dict[str, Any]:
+async def control_head(head_control: HeadControl) -> dict[str, Any]:
     """Contrôle la tête du robot.
 
     Args:
-        yaw: Rotation horizontale (-π/2 à π/2)
-        pitch: Rotation verticale (-0.5 à 0.5)
+        head_control: Contrôle de la tête avec validation
 
     Returns:
         Statut de la commande
     """
-    # Validation des limites
-    if not -1.57 <= yaw <= 1.57:
-        raise HTTPException(
-            status_code=400, detail="Yaw doit être entre -1.57 et 1.57 radians"
-        )
+    logger.info(
+        f"Contrôle de la tête : yaw={head_control.yaw}, pitch={head_control.pitch}"
+    )
 
-    if not -0.5 <= pitch <= 0.5:
-        raise HTTPException(
-            status_code=400, detail="Pitch doit être entre -0.5 et 0.5 radians"
-        )
-
-    logger.info(f"Contrôle de la tête : yaw={yaw}, pitch={pitch}")
+    # Application des positions dans la simulation
+    success_yaw = simulation_service.set_joint_position("neck_yaw", head_control.yaw)
+    success_pitch = simulation_service.set_joint_position(
+        "head_pitch", head_control.pitch
+    )
 
     return {
-        "status": "moving",
-        "target": {"yaw": yaw, "pitch": pitch},
+        "status": "moving" if (success_yaw or success_pitch) else "failed",
+        "target": {"yaw": head_control.yaw, "pitch": head_control.pitch},
+        "success": {"yaw": success_yaw, "pitch": success_pitch},
         "estimated_time": 1.0,
         "timestamp": datetime.now().isoformat(),
     }
