@@ -46,7 +46,7 @@ class MuJoCoSimulator:
             self.data = mujoco.MjData(self.model)
             self.viewer: Optional[mujoco.viewer.MjViewer] = None
             logger.info(f"Simulateur MuJoCo initialisé avec {self.model_path}")
-        except mujoco.FatalError as e:
+        except Exception as e:
             logger.error(f"Erreur lors du chargement du modèle MJCF : {e}")
             raise
 
