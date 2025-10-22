@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
 """Script de test pour les tests d'API."""
 
+import os
 import subprocess
 import sys
-import os
 
 
 def run_command(cmd, description):
     """Exécuter une commande et afficher le résultat."""
     print(f"\n=== {description} ===")
     print(f"Commande: {' '.join(cmd)}")
-    
+
     try:
         result = subprocess.run(cmd, capture_output=True, text=True, check=True)
         print("✅ Succès")
@@ -32,32 +32,32 @@ def run_command(cmd, description):
 def main():
     """Fonction principale."""
     print("🧪 Exécution des tests d'API")
-    
+
     # Vérifier que nous sommes dans le bon répertoire
     if not os.path.exists("src/bbia_sim"):
         print("❌ Erreur: Répertoire src/bbia_sim non trouvé")
         print("Assurez-vous d'être dans le répertoire racine du projet")
         sys.exit(1)
-    
+
     # Tests d'API
     api_tests = [
         "tests/test_api_integration.py",
         "tests/test_websocket_integration.py",
         "tests/test_routers.py"
     ]
-    
+
     # Exécuter les tests d'API
     print("\n🌐 Tests d'API")
     success = run_command([
-        "python", "-m", "pytest", "-v", "--cov=src/bbia_sim", 
+        "python", "-m", "pytest", "-v", "--cov=src/bbia_sim",
         "--cov-report=term-missing", "--cov-report=xml",
         "--cov-report=html", "-m", "not slow"
     ] + api_tests, "Tests d'API avec couverture")
-    
+
     # Résumé
     print("\n📊 Résumé")
     print(f"Tests d'API: {'✅' if success else '❌'}")
-    
+
     if success:
         print("\n🎉 Les tests d'API passent!")
         print("📁 Rapport de couverture HTML généré dans htmlcov/")

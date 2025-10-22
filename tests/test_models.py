@@ -4,8 +4,12 @@ import pytest
 from pydantic import ValidationError
 
 from src.bbia_sim.daemon.models import (
-    Pose, JointPosition, MotionCommand, 
-    GripperControl, HeadControl, TelemetryMessage
+    GripperControl,
+    HeadControl,
+    JointPosition,
+    MotionCommand,
+    Pose,
+    TelemetryMessage,
 )
 
 
@@ -34,21 +38,21 @@ class TestPose:
         # Test limites X/Y
         with pytest.raises(ValidationError):
             Pose(x=1.1, y=0.5, z=1.0)  # x > 1
-        
+
         with pytest.raises(ValidationError):
             Pose(x=0.5, y=-1.1, z=1.0)  # y < -1
-        
+
         # Test limite Z
         with pytest.raises(ValidationError):
             Pose(x=0.5, y=0.5, z=-0.1)  # z < 0
-        
+
         with pytest.raises(ValidationError):
             Pose(x=0.5, y=0.5, z=2.1)  # z > 2
-        
+
         # Test limites rotation
         with pytest.raises(ValidationError):
             Pose(x=0.5, y=0.5, z=1.0, roll=3.2)  # roll > π
-        
+
         with pytest.raises(ValidationError):
             Pose(x=0.5, y=0.5, z=1.0, pitch=-3.2)  # pitch < -π
 
@@ -67,7 +71,7 @@ class TestJointPosition:
         # Nom trop court
         with pytest.raises(ValidationError):
             JointPosition(joint_name="", position=0.5)
-        
+
         # Nom trop long
         with pytest.raises(ValidationError):
             JointPosition(joint_name="a" * 51, position=0.5)
@@ -77,14 +81,14 @@ class TestJointPosition:
         # Position valide
         joint = JointPosition(joint_name="neck_yaw", position=3.14)
         assert joint.position == 3.14
-        
+
         # Position hors limites
         with pytest.raises(ValidationError):
             JointPosition(joint_name="neck_yaw", position=3.15)  # > π
-        
+
         with pytest.raises(ValidationError):
             JointPosition(joint_name="neck_yaw", position=-3.15)  # < -π
-        
+
         # Articulation non autorisée
         with pytest.raises(ValidationError):
             JointPosition(joint_name="invalid_joint", position=0.5)
@@ -110,11 +114,11 @@ class TestMotionCommand:
         # Commande vide
         with pytest.raises(ValidationError):
             MotionCommand(command="")
-        
+
         # Commande trop longue
         with pytest.raises(ValidationError):
             MotionCommand(command="a" * 101)
-        
+
         # Trop de paramètres
         large_params = {f"key{i}": f"value{i}" for i in range(11)}
         with pytest.raises(ValidationError):
@@ -135,7 +139,7 @@ class TestGripperControl:
         # Côtés valides
         assert GripperControl(side="left", action="open").side == "left"
         assert GripperControl(side="right", action="close").side == "right"
-        
+
         # Côté invalide
         with pytest.raises(ValidationError):
             GripperControl(side="center", action="open")
@@ -146,7 +150,7 @@ class TestGripperControl:
         assert GripperControl(side="left", action="open").action == "open"
         assert GripperControl(side="left", action="close").action == "close"
         assert GripperControl(side="left", action="grip").action == "grip"
-        
+
         # Action invalide
         with pytest.raises(ValidationError):
             GripperControl(side="left", action="invalid")
@@ -166,10 +170,10 @@ class TestHeadControl:
         # Les deux champs sont requis
         with pytest.raises(ValidationError):
             HeadControl()
-        
+
         with pytest.raises(ValidationError):
             HeadControl(yaw=0.5)  # pitch manquant
-        
+
         with pytest.raises(ValidationError):
             HeadControl(pitch=0.2)  # yaw manquant
 
@@ -179,18 +183,18 @@ class TestHeadControl:
         head = HeadControl(yaw=1.57, pitch=0.5)
         assert head.yaw == 1.57
         assert head.pitch == 0.5
-        
+
         # Yaw hors limites
         with pytest.raises(ValidationError):
             HeadControl(yaw=1.58)  # > π/2
-        
+
         with pytest.raises(ValidationError):
             HeadControl(yaw=-1.58)  # < -π/2
-        
+
         # Pitch hors limites
         with pytest.raises(ValidationError):
             HeadControl(pitch=0.51)  # > 0.5
-        
+
         with pytest.raises(ValidationError):
             HeadControl(pitch=-0.51)  # < -0.5
 
@@ -217,7 +221,7 @@ class TestTelemetryMessage:
         for msg_type in valid_types:
             msg = TelemetryMessage(type=msg_type)
             assert msg.type == msg_type
-        
+
         # Type invalide
         with pytest.raises(ValidationError):
             TelemetryMessage(type="invalid")
@@ -227,7 +231,7 @@ class TestTelemetryMessage:
         # Données normales
         msg = TelemetryMessage(type="telemetry", data={"key": "value"})
         assert msg.data == {"key": "value"}
-        
+
         # Données trop volumineuses
         large_data = {f"key{i}": f"value{i}" for i in range(51)}
         with pytest.raises(ValidationError):

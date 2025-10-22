@@ -1,8 +1,9 @@
 """Tests d'intégration pour l'API REST."""
 
+from unittest.mock import patch
+
 import pytest
 from fastapi.testclient import TestClient
-from unittest.mock import patch, Mock
 
 from src.bbia_sim.daemon.app.main import app
 from src.bbia_sim.daemon.config import settings
@@ -32,12 +33,12 @@ class TestAPIIntegration:
         assert response.status_code == 200
         assert response.json()["status"] == "healthy"
 
-    @patch('src.bbia_sim.daemon.app.main.simulation_service')
+    @patch("src.bbia_sim.daemon.app.main.simulation_service")
     def test_api_info(self, mock_service, client):
         """Test endpoint api info."""
         mock_service.is_simulation_ready.return_value = True
         mock_service.get_available_joints.return_value = ["neck_yaw"]
-        
+
         response = client.get("/api/info")
         assert response.status_code == 200
         data = response.json()
@@ -45,7 +46,7 @@ class TestAPIIntegration:
         assert data["version"] == settings.api_version
         assert data["robot"]["status"] == "ready"
 
-    @patch('src.bbia_sim.daemon.app.main.simulation_service')
+    @patch("src.bbia_sim.daemon.app.main.simulation_service")
     def test_state_full_with_auth(self, mock_service, client):
         """Test endpoint state/full avec authentification."""
         # Mock du service de simulation
@@ -55,9 +56,9 @@ class TestAPIIntegration:
             "qpos": [0.0],
             "qvel": [0.0],
             "n_joints": 1,
-            "n_bodies": 2
+            "n_bodies": 2,
         }
-        
+
         # Test avec token valide
         headers = {"Authorization": "Bearer bbia-secret-key-dev"}
         response = client.get("/api/state/full", headers=headers)
@@ -72,7 +73,9 @@ class TestAPIIntegration:
     def test_state_full_without_auth(self, client):
         """Test endpoint state/full sans authentification."""
         response = client.get("/api/state/full")
-        assert response.status_code == 403  # FastAPI retourne 403 quand pas de header Authorization
+        assert (
+            response.status_code == 403
+        )  # FastAPI retourne 403 quand pas de header Authorization
 
     def test_state_full_invalid_token(self, client):
         """Test endpoint state/full avec token invalide."""
@@ -80,13 +83,13 @@ class TestAPIIntegration:
         response = client.get("/api/state/full", headers=headers)
         assert response.status_code == 401
 
-    @patch('src.bbia_sim.daemon.app.main.simulation_service')
+    @patch("src.bbia_sim.daemon.app.main.simulation_service")
     def test_motion_joints_valid(self, mock_service, client):
         """Test endpoint motion/joints avec payload valide."""
         # Mock du service de simulation
         mock_service.get_available_joints.return_value = ["neck_yaw"]
         mock_service.set_joint_position.return_value = True
-        
+
         headers = {"Authorization": "Bearer bbia-secret-key-dev"}
         payload = [{"joint_name": "neck_yaw", "position": 0.5}]
         response = client.post("/api/motion/joints", json=payload, headers=headers)
@@ -94,16 +97,18 @@ class TestAPIIntegration:
         data = response.json()
         assert "status" in data
 
-    @patch('src.bbia_sim.daemon.app.main.simulation_service')
+    @patch("src.bbia_sim.daemon.app.main.simulation_service")
     def test_motion_joints_invalid_joint(self, mock_service, client):
         """Test endpoint motion/joints avec articulation invalide."""
         # Mock du service
         mock_service.get_available_joints.return_value = ["neck_yaw"]
-        
+
         headers = {"Authorization": "Bearer bbia-secret-key-dev"}
         payload = [{"joint_name": "invalid_joint", "position": 0.5}]
         response = client.post("/api/motion/joints", json=payload, headers=headers)
-        assert response.status_code == 422  # Pydantic retourne 422 pour validation échouée
+        assert (
+            response.status_code == 422
+        )  # Pydantic retourne 422 pour validation échouée
 
     def test_motion_joints_invalid_payload(self, client):
         """Test endpoint motion/joints avec payload invalide."""
@@ -112,11 +117,11 @@ class TestAPIIntegration:
         response = client.post("/api/motion/joints", json=payload, headers=headers)
         assert response.status_code == 422
 
-    @patch('src.bbia_sim.daemon.app.main.simulation_service')
+    @patch("src.bbia_sim.daemon.app.main.simulation_service")
     def test_motion_head_valid(self, mock_service, client):
         """Test endpoint motion/head avec payload valide."""
         mock_service.set_joint_position.return_value = True
-        
+
         headers = {"Authorization": "Bearer bbia-secret-key-dev"}
         payload = {"yaw": 0.1, "pitch": 0.1}
         response = client.post("/api/motion/head", json=payload, headers=headers)
@@ -191,7 +196,7 @@ class TestAPIIntegration:
         for _ in range(5):
             response = client.get("/")
             assert response.status_code == 200
-        
+
         # La limite devrait être atteinte
         response = client.get("/")
         # Note: Le test peut passer ou échouer selon la configuration

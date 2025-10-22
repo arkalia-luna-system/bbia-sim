@@ -6,7 +6,6 @@ Utilise le simulateur local au lieu du simulateur web
 
 import os
 import sys
-import time
 
 # Ajouter le répertoire src au path pour importer nos modules
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
@@ -20,14 +19,22 @@ def test_local_simulation():
     print("=" * 50)
 
     # Créer l'instance du simulateur MuJoCo
-    model_path = os.path.join(os.path.dirname(__file__), "..", "src", "bbia_sim", "sim", "models", "reachy_mini.xml")
+    model_path = os.path.join(
+        os.path.dirname(__file__),
+        "..",
+        "src",
+        "bbia_sim",
+        "sim",
+        "models",
+        "reachy_mini.xml",
+    )
     sim = MuJoCoSimulator(model_path)
 
     print("✨ Simulateur MuJoCo initialisé !")
-    
+
     # Lancer la simulation en mode headless pour les tests
     sim.launch_simulation(headless=True, duration=10)
-    
+
     print("🎉 Test de simulation locale terminé avec succès !")
 
 

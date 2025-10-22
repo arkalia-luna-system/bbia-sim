@@ -1,8 +1,9 @@
 """Tests d'intégration pour la simulation."""
 
-import pytest
 import time
-from unittest.mock import patch, Mock
+from unittest.mock import Mock, patch
+
+import pytest
 
 from src.bbia_sim.sim.simulator import MuJoCoSimulator
 
@@ -10,7 +11,7 @@ from src.bbia_sim.sim.simulator import MuJoCoSimulator
 class TestSimulationIntegration:
     """Tests d'intégration pour la simulation."""
 
-    @patch('src.bbia_sim.sim.simulator.mujoco')
+    @patch("src.bbia_sim.sim.simulator.mujoco")
     def test_simulation_headless_performance(self, mock_mujoco):
         """Test performance simulation headless."""
         # Mock setup
@@ -18,49 +19,54 @@ class TestSimulationIntegration:
         mock_data = Mock()
         mock_mujoco.MjModel.from_xml_path.return_value = mock_model
         mock_mujoco.MjData.return_value = mock_data
-        
+
         # Créer un modèle temporaire
-        import tempfile
         import os
-        
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.xml', delete=False) as f:
-            f.write("""<?xml version="1.0"?>
+        import tempfile
+
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".xml", delete=False) as f:
+            f.write(
+                """<?xml version="1.0"?>
 <mujoco model="test">
   <worldbody>
     <light pos="0 0 1" diffuse="0.5 0.5 0.5"/>
     <geom name="floor" type="plane" size="1 1 0.1"/>
   </worldbody>
-</mujoco>""")
+</mujoco>"""
+            )
             temp_model = f.name
 
         try:
             simulator = MuJoCoSimulator(temp_model)
-            
+
             # Mock mj_step pour compter les appels
             step_count = 0
+
             def mock_mj_step(model, data):
                 nonlocal step_count
                 step_count += 1
                 # Pas besoin de lever d'exception, la durée va arrêter la simulation
-            
+
             mock_mujoco.mj_step = mock_mj_step
-            
+
             # Test performance headless avec une durée courte
             start_time = time.time()
-            simulator.launch_simulation(headless=True, duration=0.1)  # 0.1 seconde seulement
+            simulator.launch_simulation(
+                headless=True, duration=0.1
+            )  # 0.1 seconde seulement
             end_time = time.time()
-            
+
             # Vérifier que des steps ont été exécutés
             assert step_count > 0
-            
+
             # Vérifier que la durée est raisonnable
             duration = end_time - start_time
             assert duration < 1.0  # Moins de 1 seconde
-            
+
         finally:
             os.unlink(temp_model)
 
-    @patch('src.bbia_sim.sim.simulator.mujoco')
+    @patch("src.bbia_sim.sim.simulator.mujoco")
     def test_simulation_with_robot_model(self, mock_mujoco):
         """Test simulation avec modèle robot."""
         # Mock setup
@@ -68,7 +74,7 @@ class TestSimulationIntegration:
         mock_data = Mock()
         mock_mujoco.MjModel.from_xml_path.return_value = mock_model
         mock_mujoco.MjData.return_value = mock_data
-        
+
         # Mock des articulations
         mock_model.njnt = 3
         mock_qpos = Mock()
@@ -81,7 +87,7 @@ class TestSimulationIntegration:
         mock_qvel.tolist.return_value = [0.0, 0.0, 0.0]
         mock_data.qvel = mock_qvel
         mock_data.time = 0.0
-        
+
         # Mock joint names
         mock_joint1 = Mock()
         mock_joint1.name = "neck_yaw"
@@ -92,15 +98,15 @@ class TestSimulationIntegration:
         mock_joint3 = Mock()
         mock_joint3.name = "right_shoulder_pitch"
         mock_joint3.id = 2
-        
+
         # Créer un dictionnaire pour l'accès par nom
         joint_dict = {
             "neck_yaw": mock_joint1,
             "head_pitch": mock_joint2,
-            "right_shoulder_pitch": mock_joint3
+            "right_shoulder_pitch": mock_joint3,
         }
         mock_joints = [mock_joint1, mock_joint2, mock_joint3]
-        
+
         def mock_joint_access(key):
             if isinstance(key, int):
                 return mock_joints[key]
@@ -108,46 +114,48 @@ class TestSimulationIntegration:
                 return joint_dict[key]
             else:
                 raise KeyError(f"Invalid key: {key}")
-        
+
         mock_model.joint.side_effect = mock_joint_access
-        
+
         # Créer un modèle robot temporaire
-        import tempfile
         import os
-        
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.xml', delete=False) as f:
-            f.write("""<?xml version="1.0"?>
+        import tempfile
+
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".xml", delete=False) as f:
+            f.write(
+                """<?xml version="1.0"?>
 <mujoco model="reachy_mini">
   <worldbody>
     <light pos="0 0 1" diffuse="0.5 0.5 0.5"/>
-    <geom name="floor" type="plane" size="1 1 0.1"/>
-    
-    <body name="torso">
+     <geom name="floor" type="plane" size="1 1 0.1"/>
+
+     <body name="torso">
       <joint name="neck_yaw" type="hinge" axis="0 0 1" range="-1.57 1.57"/>
       <body name="head">
         <joint name="head_pitch" type="hinge" axis="0 1 0" range="-0.5 0.5"/>
         <geom name="head" type="box" size="0.1 0.1 0.1"/>
       </body>
-      
+
       <body name="right_arm">
         <joint name="right_shoulder_pitch" type="hinge" axis="0 1 0" range="-1.57 1.57"/>
         <geom name="right_arm" type="box" size="0.05 0.05 0.2"/>
       </body>
     </body>
   </worldbody>
-</mujoco>""")
+</mujoco>"""
+            )
             temp_model = f.name
 
         try:
             simulator = MuJoCoSimulator(temp_model)
-            
+
             # Test récupération des articulations
             joints = simulator.get_available_joints()
             assert len(joints) == 3
             assert "neck_yaw" in joints
             assert "head_pitch" in joints
             assert "right_shoulder_pitch" in joints
-            
+
             # Test récupération de l'état
             state = simulator.get_robot_state()
             assert "joint_positions" in state
@@ -156,31 +164,31 @@ class TestSimulationIntegration:
             assert "qvel" in state
             assert "n_joints" in state
             assert "n_bodies" in state
-            
+
             # Test définition de position
             simulator.set_joint_position("neck_yaw", 0.5)
             # Vérifier que l'assignation a été appelée
             mock_qpos.__setitem__.assert_called_with(0, 0.5)
-            
+
             # Test récupération de position
-            with patch.object(simulator, 'get_joint_position', return_value=0.5):
+            with patch.object(simulator, "get_joint_position", return_value=0.5):
                 position = simulator.get_joint_position("neck_yaw")
                 assert position == 0.5
-            
+
         finally:
             os.unlink(temp_model)
 
-    @patch('src.bbia_sim.sim.simulator.mujoco')
+    @patch("src.bbia_sim.sim.simulator.mujoco")
     def test_simulation_error_handling(self, mock_mujoco):
         """Test gestion d'erreurs de simulation."""
         # Mock setup avec erreur
         mock_mujoco.MjModel.from_xml_path.side_effect = Exception("Model loading error")
-        
+
         # Test avec modèle invalide
-        with pytest.raises(Exception):
+        with pytest.raises((FileNotFoundError, RuntimeError)):
             MuJoCoSimulator("invalid_model.xml")
 
-    @patch('src.bbia_sim.sim.simulator.mujoco')
+    @patch("src.bbia_sim.sim.simulator.mujoco")
     def test_simulation_step_control(self, mock_mujoco):
         """Test contrôle step de simulation."""
         # Mock setup
@@ -188,33 +196,35 @@ class TestSimulationIntegration:
         mock_data = Mock()
         mock_mujoco.MjModel.from_xml_path.return_value = mock_model
         mock_mujoco.MjData.return_value = mock_data
-        
+
         # Créer un modèle temporaire
-        import tempfile
         import os
-        
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.xml', delete=False) as f:
-            f.write("""<?xml version="1.0"?>
+        import tempfile
+
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".xml", delete=False) as f:
+            f.write(
+                """<?xml version="1.0"?>
 <mujoco model="test">
   <worldbody>
     <geom name="floor" type="plane" size="1 1 0.1"/>
   </worldbody>
-</mujoco>""")
+</mujoco>"""
+            )
             temp_model = f.name
 
         try:
             simulator = MuJoCoSimulator(temp_model)
-            
+
             # Test step manuel
             simulator._step_simulation()
-            
+
             # Vérifier que mj_step a été appelé
             mock_mujoco.mj_step.assert_called_once_with(mock_model, mock_data)
-            
+
         finally:
             os.unlink(temp_model)
 
-    @patch('src.bbia_sim.sim.simulator.mujoco')
+    @patch("src.bbia_sim.sim.simulator.mujoco")
     def test_simulation_metrics(self, mock_mujoco):
         """Test métriques de simulation."""
         # Mock setup
@@ -222,7 +232,7 @@ class TestSimulationIntegration:
         mock_data = Mock()
         mock_mujoco.MjModel.from_xml_path.return_value = mock_model
         mock_mujoco.MjData.return_value = mock_data
-        
+
         # Mock des métriques
         mock_model.njnt = 5
         mock_model.nbody = 8
@@ -236,7 +246,7 @@ class TestSimulationIntegration:
         mock_qvel.tolist.return_value = [0.01, 0.02, 0.03, 0.04, 0.05]
         mock_data.qvel = mock_qvel
         mock_data.time = 2.5
-        
+
         # Mock joint names
         joint_names = ["joint1", "joint2", "joint3", "joint4", "joint5"]
         mock_joints = []
@@ -245,41 +255,43 @@ class TestSimulationIntegration:
             mock_joint.name = name
             mock_joints.append(mock_joint)
         mock_model.joint.side_effect = lambda i: mock_joints[i]
-        
+
         # Créer un modèle temporaire
-        import tempfile
         import os
-        
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.xml', delete=False) as f:
-            f.write("""<?xml version="1.0"?>
+        import tempfile
+
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".xml", delete=False) as f:
+            f.write(
+                """<?xml version="1.0"?>
 <mujoco model="test">
   <worldbody>
     <geom name="floor" type="plane" size="1 1 0.1"/>
   </worldbody>
-</mujoco>""")
+</mujoco>"""
+            )
             temp_model = f.name
 
         try:
             simulator = MuJoCoSimulator(temp_model)
-            
+
             # Test récupération des métriques
             state = simulator.get_robot_state()
-            
+
             assert state["n_joints"] == 5
             assert state["n_bodies"] == 8
             assert state["time"] == 2.5
             assert len(state["qpos"]) == 5
             assert len(state["qvel"]) == 5
             assert len(state["joint_positions"]) == 5
-            
+
             # Vérifier les positions des articulations
             for i, name in enumerate(joint_names):
                 assert state["joint_positions"][name] == 0.1 + i * 0.1
-            
+
         finally:
             os.unlink(temp_model)
 
-    @patch('src.bbia_sim.sim.simulator.mujoco')
+    @patch("src.bbia_sim.sim.simulator.mujoco")
     def test_simulation_concurrent_access(self, mock_mujoco):
         """Test accès concurrent à la simulation."""
         # Mock setup
@@ -287,7 +299,7 @@ class TestSimulationIntegration:
         mock_data = Mock()
         mock_mujoco.MjModel.from_xml_path.return_value = mock_model
         mock_mujoco.MjData.return_value = mock_data
-        
+
         # Mock des articulations
         mock_model.njnt = 2
         mock_qpos = Mock()
@@ -300,7 +312,7 @@ class TestSimulationIntegration:
         mock_qvel.tolist.return_value = [0.0, 0.0]
         mock_data.qvel = mock_qvel
         mock_data.time = 0.0
-        
+
         # Mock joint names
         mock_joint1 = Mock()
         mock_joint1.name = "joint1"
@@ -308,14 +320,11 @@ class TestSimulationIntegration:
         mock_joint2 = Mock()
         mock_joint2.name = "joint2"
         mock_joint2.id = 1
-        
+
         # Créer un dictionnaire pour l'accès par nom
-        joint_dict = {
-            "joint1": mock_joint1,
-            "joint2": mock_joint2
-        }
+        joint_dict = {"joint1": mock_joint1, "joint2": mock_joint2}
         mock_joints = [mock_joint1, mock_joint2]
-        
+
         def mock_joint_access(key):
             if isinstance(key, int):
                 return mock_joints[key]
@@ -323,51 +332,53 @@ class TestSimulationIntegration:
                 return joint_dict[key]
             else:
                 raise KeyError(f"Invalid key: {key}")
-        
+
         mock_model.joint.side_effect = mock_joint_access
-        
+
         # Créer un modèle temporaire
-        import tempfile
         import os
-        
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.xml', delete=False) as f:
-            f.write("""<?xml version="1.0"?>
+        import tempfile
+
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".xml", delete=False) as f:
+            f.write(
+                """<?xml version="1.0"?>
 <mujoco model="test">
   <worldbody>
     <geom name="floor" type="plane" size="1 1 0.1"/>
   </worldbody>
-</mujoco>""")
+</mujoco>"""
+            )
             temp_model = f.name
 
         try:
             simulator = MuJoCoSimulator(temp_model)
-            
+
             # Test accès concurrent (simulé)
             import threading
-            
+
             results = []
-            
+
             def get_state():
                 state = simulator.get_robot_state()
                 results.append(state)
-            
+
             def set_position():
                 simulator.set_joint_position("joint1", 0.5)
                 results.append("position_set")
-            
+
             # Exécuter les opérations en parallèle
             thread1 = threading.Thread(target=get_state)
             thread2 = threading.Thread(target=set_position)
-            
+
             thread1.start()
             thread2.start()
-            
+
             thread1.join()
             thread2.join()
-            
+
             # Vérifier que les opérations ont été exécutées
             assert len(results) == 2
             assert "position_set" in results
-            
+
         finally:
             os.unlink(temp_model)

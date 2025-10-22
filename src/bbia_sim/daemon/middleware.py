@@ -59,7 +59,14 @@ class SecurityMiddleware(BaseHTTPMiddleware):
 class RateLimitMiddleware(BaseHTTPMiddleware):
     """Middleware simple de rate limiting en mémoire."""
 
-    def __init__(self, app, requests_per_minute: int = 100, window_seconds: int = 60, message: str = "Rate limit exceeded", force_enable: bool = False):
+    def __init__(
+        self,
+        app,
+        requests_per_minute: int = 100,
+        window_seconds: int = 60,
+        message: str = "Rate limit exceeded",
+        force_enable: bool = False,
+    ):
         super().__init__(app)
         self.requests_per_minute = requests_per_minute
         self.window_seconds = window_seconds
