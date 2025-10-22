@@ -1,6 +1,7 @@
 """Interface en ligne de commande pour BBIA-SIM."""
 
 import argparse
+import importlib.util
 import logging
 import sys
 from pathlib import Path
@@ -103,6 +104,20 @@ def run_simulation(args: argparse.Namespace) -> None:
         args: Arguments de la ligne de commande
     """
     logger.info("🚀 Démarrage de la simulation MuJoCo")
+
+    # Vérification macOS pour le viewer
+    if not args.headless and sys.platform == "darwin":
+        # Sur macOS, vérifier si mujoco.viewer est disponible
+        if importlib.util.find_spec("mujoco.viewer") is None:
+            logger.error(
+                "❌ Module mujoco.viewer non disponible.\n"
+                "💡 Solutions :\n"
+                "  • Installez : pip install mujoco-python-viewer\n"
+                "  • Ou utilisez : python -m bbia_sim --sim --headless"
+            )
+            sys.exit(2)
+        else:
+            logger.info("✅ Viewer MuJoCo disponible")
 
     # Détermination du modèle à utiliser
     if args.scene == "reachy_mini.xml":

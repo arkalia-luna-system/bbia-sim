@@ -6,6 +6,7 @@ Ce module implémente la classe MuJoCoSimulator qui gère la simulation
 """
 
 import logging
+import sys
 import time
 from pathlib import Path
 from typing import Any, Optional
@@ -64,8 +65,22 @@ class MuJoCoSimulator:
             self._run_headless_simulation(duration)
         else:
             logger.info("Lancement de la simulation graphique MuJoCo")
-            self.viewer = mujoco.viewer.launch_passive(self.model, self.data)
-            self._run_graphical_simulation(duration)
+            try:
+                self.viewer = mujoco.viewer.launch_passive(self.model, self.data)
+                self._run_graphical_simulation(duration)
+            except Exception as e:
+                if "mjpython" in str(e) and sys.platform == "darwin":
+                    logger.error(
+                        "❌ Sur macOS, le viewer MuJoCo nécessite mjpython au lieu de python.\n"
+                        "💡 Solutions :\n"
+                        "  • Utilisez : mjpython -m bbia_sim --sim --verbose\n"
+                        "  • Ou utilisez : python -m bbia_sim --sim --headless\n"
+                        "  • Ou installez mjpython : pip install mujoco-python-viewer"
+                    )
+                    sys.exit(2)
+                else:
+                    logger.error(f"Erreur lors du lancement du viewer : {e}")
+                    raise
 
     def _run_headless_simulation(self, duration: Optional[int]) -> None:
         """Exécute la simulation en mode headless."""
