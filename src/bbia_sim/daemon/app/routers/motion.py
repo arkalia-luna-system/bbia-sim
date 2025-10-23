@@ -6,8 +6,8 @@ from typing import Any
 
 from fastapi import APIRouter, HTTPException
 
-from ...models import HeadControl, JointPosition, MotionCommand, Pose
 from ....sim.joints import clamp_joint_angle, validate_joint_name
+from ...models import HeadControl, JointPosition, MotionCommand, Pose
 from ...simulation_service import simulation_service
 
 logger = logging.getLogger(__name__)
