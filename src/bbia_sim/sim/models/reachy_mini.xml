@@ -13,7 +13,7 @@ n'a été copié directement.
 """
 
 <mujoco model="reachy_mini">
-  <compiler angle="radian" meshdir="../assets"/>
+  <compiler angle="radian" meshdir="../assets/reachy_official"/>
   
   <default>
     <joint armature="0.01" damping="1" limited="true"/>
@@ -21,14 +21,17 @@ n'a été copié directement.
   </default>
   
   <asset>
-    <!-- Meshes 3D pour un rendu réaliste -->
-    <mesh name="torso_mesh" file="meshes/torso.stl"/>
-    <mesh name="head_mesh" file="meshes/head.stl"/>
-    <mesh name="upper_arm_mesh" file="meshes/upper_arm.stl"/>
-    <mesh name="forearm_mesh" file="meshes/forearm.stl"/>
-    <mesh name="gripper_mesh" file="meshes/gripper.stl"/>
+    <!-- Assets officiels Reachy Mini (Pollen Robotics) -->
+    <mesh name="torso_mesh" file="body_top_3dprint.stl"/>
+    <mesh name="torso_base_mesh" file="body_down_3dprint.stl"/>
+    <mesh name="head_mesh" file="head_front_3dprint.stl"/>
+    <mesh name="head_back_mesh" file="head_back_3dprint.stl"/>
+    <mesh name="stewart_arm_mesh" file="mp01062_stewart_arm_3.stl"/>
+    <mesh name="stewart_link_mesh" file="stewart_link_rod.stl"/>
+    <mesh name="stewart_gripper_mesh" file="stewart_tricap_3dprint.stl"/>
+    <mesh name="stewart_plate_mesh" file="stewart_main_plate_3dprint.stl"/>
     
-    <!-- Matériaux pour un rendu plus réaliste -->
+    <!-- Matériaux pour un rendu réaliste -->
     <material name="torso_mat" rgba="0.2 0.2 0.8 1" shininess="0.3" specular="0.1"/>
     <material name="head_mat" rgba="0.8 0.2 0.2 1" shininess="0.5" specular="0.2"/>
     <material name="arm_mat" rgba="0.2 0.8 0.2 1" shininess="0.4" specular="0.15"/>
@@ -45,42 +48,46 @@ n'a été copié directement.
     <!-- Torse du robot -->
     <body name="torso" pos="0 0 0.5">
       <geom name="torso_geom" type="mesh" mesh="torso_mesh" material="torso_mat"/>
+      <geom name="torso_base_geom" type="mesh" mesh="torso_base_mesh" material="torso_mat"/>
       
       <!-- Tête -->
       <body name="head" pos="0 0 0.2">
         <joint name="neck_yaw" type="hinge" pos="0 0 0" axis="0 0 1" range="-1.57 1.57"/>
         <geom name="head_geom" type="mesh" mesh="head_mesh" material="head_mat"/>
+        <geom name="head_back_geom" type="mesh" mesh="head_back_mesh" material="head_mat"/>
         <camera name="eye_camera" pos="0.05 0 0" euler="0 0 0"/>
       </body>
       
-      <!-- Bras droit -->
+      <!-- Bras droit (Stewart Platform) -->
       <body name="right_arm" pos="0 -0.15 0.1">
         <joint name="right_shoulder_pitch" type="hinge" pos="0 0 0" axis="0 1 0" range="-1.57 1.57"/>
-        <geom name="right_upper_arm_geom" type="mesh" mesh="upper_arm_mesh" material="arm_mat"/>
+        <geom name="right_stewart_plate_geom" type="mesh" mesh="stewart_plate_mesh" material="arm_mat"/>
+        <geom name="right_stewart_arm_geom" type="mesh" mesh="stewart_arm_mesh" material="arm_mat"/>
         
         <body name="right_forearm" pos="0 0 0.15">
           <joint name="right_elbow_pitch" type="hinge" pos="0 0 0" axis="0 1 0" range="-1.57 1.57"/>
-          <geom name="right_forearm_geom" type="mesh" mesh="forearm_mesh" material="arm_mat"/>
+          <geom name="right_stewart_link_geom" type="mesh" mesh="stewart_link_mesh" material="arm_mat"/>
           
           <body name="right_gripper" pos="0 0 0.15">
             <joint name="right_gripper_joint" type="hinge" pos="0 0 0" axis="0 0 1" range="-0.5 0.5"/>
-            <geom name="right_gripper_geom" type="mesh" mesh="gripper_mesh" material="gripper_mat"/>
+            <geom name="right_stewart_gripper_geom" type="mesh" mesh="stewart_gripper_mesh" material="gripper_mat"/>
           </body>
         </body>
       </body>
       
-      <!-- Bras gauche -->
+      <!-- Bras gauche (Stewart Platform) -->
       <body name="left_arm" pos="0 0.15 0.1">
         <joint name="left_shoulder_pitch" type="hinge" pos="0 0 0" axis="0 1 0" range="-1.57 1.57"/>
-        <geom name="left_upper_arm_geom" type="mesh" mesh="upper_arm_mesh" material="arm_mat"/>
+        <geom name="left_stewart_plate_geom" type="mesh" mesh="stewart_plate_mesh" material="arm_mat"/>
+        <geom name="left_stewart_arm_geom" type="mesh" mesh="stewart_arm_mesh" material="arm_mat"/>
         
         <body name="left_forearm" pos="0 0 0.15">
           <joint name="left_elbow_pitch" type="hinge" pos="0 0 0" axis="0 1 0" range="-1.57 1.57"/>
-          <geom name="left_forearm_geom" type="mesh" mesh="forearm_mesh" material="arm_mat"/>
+          <geom name="left_stewart_link_geom" type="mesh" mesh="stewart_link_mesh" material="arm_mat"/>
           
           <body name="left_gripper" pos="0 0 0.15">
             <joint name="left_gripper_joint" type="hinge" pos="0 0 0" axis="0 0 1" range="-0.5 0.5"/>
-            <geom name="left_gripper_geom" type="mesh" mesh="gripper_mesh" material="gripper_mat"/>
+            <geom name="left_stewart_gripper_geom" type="mesh" mesh="stewart_gripper_mesh" material="gripper_mat"/>
           </body>
         </body>
       </body>
