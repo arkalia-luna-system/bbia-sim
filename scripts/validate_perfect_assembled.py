@@ -4,10 +4,9 @@ Script de validation du modèle Reachy Mini parfaitement assemblé.
 Vérifie les dimensions, l'assemblage et les articulations.
 """
 
-import mujoco
-import numpy as np
 import sys
-import os
+
+import mujoco
 
 
 def validate_perfect_assembled_model():
@@ -21,20 +20,19 @@ def validate_perfect_assembled_model():
     try:
         # Chargement du modèle
         model = mujoco.MjModel.from_xml_path(model_path)
-        data = mujoco.MjData(model)
 
-        print(f"✅ Modèle chargé avec succès")
+        print("✅ Modèle chargé avec succès")
         print(f"📁 Fichier : {model_path}")
 
         # Informations générales
-        print(f"\n📊 Informations générales :")
+        print("\n📊 Informations générales :")
         print(f"   • Nombre de corps : {model.nbody}")
         print(f"   • Nombre d'articulations : {model.njnt}")
         print(f"   • Nombre de géométries : {model.ngeom}")
         print(f"   • Nombre de moteurs : {model.nu}")
 
         # Vérification des dimensions
-        print(f"\n📏 Vérification des dimensions :")
+        print("\n📏 Vérification des dimensions :")
 
         # Position de la base
         base_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_BODY, "base")
@@ -63,7 +61,7 @@ def validate_perfect_assembled_model():
         print(f"   • Largeur totale : {width:.3f}m")
 
         # Validation des dimensions
-        print(f"\n✅ Validation des dimensions :")
+        print("\n✅ Validation des dimensions :")
         if 0.4 <= height <= 0.7:
             print(f"   ✅ Hauteur OK ({height:.3f}m) - Dans la plage 0.4-0.7m")
         else:
@@ -75,7 +73,7 @@ def validate_perfect_assembled_model():
             print(f"   ❌ Largeur NOK ({width:.3f}m) - Hors plage 0.2-0.4m")
 
         # Vérification de l'assemblage
-        print(f"\n🔧 Vérification de l'assemblage :")
+        print("\n🔧 Vérification de l'assemblage :")
 
         # Vérifier que tous les corps sont bien connectés
         bodies_to_check = [
@@ -98,12 +96,12 @@ def validate_perfect_assembled_model():
                 print(
                     f"   ✅ {body_name} : ({body_pos[0]:.3f}, {body_pos[1]:.3f}, {body_pos[2]:.3f})"
                 )
-            except:
+            except Exception:
                 print(f"   ❌ {body_name} : Corps non trouvé")
                 assembly_ok = False
 
         # Vérification des articulations
-        print(f"\n🤖 Vérification des articulations :")
+        print("\n🤖 Vérification des articulations :")
         expected_joints = [
             "neck_yaw",
             "neck_pitch",
@@ -133,11 +131,11 @@ def validate_perfect_assembled_model():
                     f"   ✅ {joint_name} : [{joint_range[0]:.2f}, {joint_range[1]:.2f}] rad"
                 )
                 joints_found += 1
-            except:
+            except Exception:
                 print(f"   ❌ {joint_name} : Articulation non trouvée")
 
         # Score de fidélité
-        print(f"\n🎯 Score de fidélité :")
+        print("\n🎯 Score de fidélité :")
         height_score = 1 if 0.4 <= height <= 0.7 else 0
         width_score = 1 if 0.2 <= width <= 0.4 else 0
         joints_score = 1 if joints_found == 15 else 0
@@ -150,7 +148,7 @@ def validate_perfect_assembled_model():
         print(f"   • Score total : {total_score}/4")
 
         if total_score == 4:
-            print(f"\n🎉 MODÈLE PARFAIT ! Toutes les vérifications sont OK")
+            print("\n🎉 MODÈLE PARFAIT ! Toutes les vérifications sont OK")
             return True
         else:
             print(f"\n⚠️  Modèle à améliorer. Score : {total_score}/4")
