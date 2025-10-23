@@ -145,28 +145,20 @@ La durée en mode headless est strictement respectée avec une tolérance de ±0
 - Tests automatisés validant la précision temporelle
 
 ### Utiliser les assets officiels
-Le simulateur utilise actuellement des meshes STL générés automatiquement. Pour utiliser les assets officiels Reachy :
 
-```bash
-# Structure des assets
-src/bbia_sim/sim/assets/
-├── meshes/                    # Meshes actuels (placeholders)
-│   ├── torso.stl
-│   ├── head.stl
-│   ├── upper_arm.stl
-│   ├── forearm.stl
-│   └── gripper.stl
-└── reachy_official/           # Assets officiels (à venir)
-    ├── OFFICIAL_ASSETS.md     # Documentation des mappings
-    └── asset_mapping.py       # Mapping Python
-```
+✅ **Assets officiels intégrés !** Ce projet utilise maintenant les vrais modèles 3D de Reachy Mini.
 
-**Migration vers assets officiels :**
-1. Copiez les fichiers STL officiels dans `reachy_official/`
-2. Mettez à jour `asset_mapping.py` avec les chemins officiels
-3. Le MJCF utilisera automatiquement les assets officiels
+**Source :** Dépôt officiel Pollen Robotics - https://github.com/pollen-robotics/reachy_mini (v1.0.0rc5)
 
-**Note :** Les noms de joints et la cinématique restent inchangés pour maintenir la compatibilité API.
+**Assets intégrés :**
+- **Corps :** `body_top_3dprint.stl`, `body_down_3dprint.stl`, `body_foot_3dprint.stl`
+- **Tête :** `head_front_3dprint.stl`, `head_back_3dprint.stl`, `head_mic_3dprint.stl`
+- **Bras Stewart :** `mp01062_stewart_arm_3.stl`, `stewart_link_rod.stl`
+- **Plateforme :** `stewart_main_plate_3dprint.stl`, `stewart_tricap_3dprint.stl`
+
+**Localisation :** `src/bbia_sim/sim/assets/reachy_official/`
+
+**Documentation complète :** Voir `src/bbia_sim/sim/assets/reachy_official/OFFICIAL_ASSETS.md`
 
 ## API REST/WebSocket
 

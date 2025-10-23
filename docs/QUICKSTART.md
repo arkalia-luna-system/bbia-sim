@@ -21,10 +21,10 @@ pip install -e ".[dev]"
 
 **Résultat attendu** : Installation réussie, pas d'erreurs
 
-## Test simulation MuJoCo (1 min)
+## Test simulation MuJoCo avec assets officiels (1 min)
 
 ```bash
-# Test simulation headless
+# Test simulation headless avec vrais modèles 3D Reachy Mini
 python -m bbia_sim --sim --headless --duration 1
 ```
 
