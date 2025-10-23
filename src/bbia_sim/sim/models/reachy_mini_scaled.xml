@@ -1,0 +1,170 @@
+"""
+Modèle MJCF corrigé pour le robot Reachy Mini à l'échelle correcte.
+Utilisation de positions calculées pour réduire l'échelle des assets STL.
+"""
+
+<mujoco model="reachy_mini_scaled">
+  <compiler angle="radian" meshdir="../assets/reachy_official"/>
+  
+  <default>
+    <joint armature="0.01" damping="1" limited="true"/>
+    <geom contype="1" conaffinity="1" rgba="0.8 0.6 0.4 1"/>
+  </default>
+  
+  <asset>
+    <!-- Assets officiels Reachy Mini (Pollen Robotics) -->
+    <mesh name="torso_mesh" file="body_top_3dprint.stl"/>
+    <mesh name="torso_base_mesh" file="body_down_3dprint.stl"/>
+    <mesh name="head_mesh" file="head_front_3dprint.stl"/>
+    <mesh name="head_back_mesh" file="head_back_3dprint.stl"/>
+    <mesh name="stewart_arm_mesh" file="mp01062_stewart_arm_3.stl"/>
+    <mesh name="stewart_link_mesh" file="stewart_link_rod.stl"/>
+    <mesh name="stewart_gripper_mesh" file="stewart_tricap_3dprint.stl"/>
+    <mesh name="stewart_plate_mesh" file="stewart_main_plate_3dprint.stl"/>
+    
+    <!-- Matériaux réalistes -->
+    <material name="torso_mat" rgba="0.3 0.3 0.8 1" shininess="0.4" specular="0.2"/>
+    <material name="head_mat" rgba="0.8 0.3 0.3 1" shininess="0.6" specular="0.3"/>
+    <material name="arm_mat" rgba="0.3 0.8 0.3 1" shininess="0.5" specular="0.25"/>
+    <material name="gripper_mat" rgba="0.6 0.6 0.6 1" shininess="0.7" specular="0.4"/>
+  </asset>
+  
+  <worldbody>
+    <!-- Éclairage amélioré -->
+    <light pos="0 0 2" diffuse="0.8 0.8 0.8" specular="0.8 0.8 0.8"/>
+    <light pos="1 1 1" diffuse="0.4 0.4 0.4" specular="0.4 0.4 0.4"/>
+    
+    <!-- Sol -->
+    <geom name="floor" type="plane" size="2 2 0.1" rgba="0.9 0.9 0.9 1"/>
+
+    <!-- Base du robot (pied) - POSITIONS CALCULÉES -->
+    <body name="base" pos="0 0 0.02">
+      <!-- Base: 155mm -> 15.5cm -> 0.155m -->
+      <!-- Centre STL: (0, 0, -187.8mm) -> Position relative: (0, 0, 0.019m) -->
+      <geom name="base_geom" type="mesh" mesh="torso_base_mesh" material="torso_mat" 
+            pos="0 0 0.019"/>
+      
+      <!-- Torse principal - POSITIONS CALCULÉES -->
+      <body name="torso" pos="0 0 0.06">
+        <!-- Torse: 155mm -> 15.5cm -> 0.155m -->
+        <!-- Centre STL: (0, 0, -104.8mm) -> Position relative: (0, 0, 0.010m) -->
+        <geom name="torso_geom" type="mesh" mesh="torso_mesh" material="torso_mat" 
+              pos="0 0 0.010"/>
+        
+        <!-- Tête assemblée - POSITIONS CALCULÉES -->
+        <body name="head" pos="0 0 0.08">
+          <joint name="neck_yaw" type="hinge" pos="0 0 0" axis="0 0 1" range="-1.57 1.57"/>
+          <joint name="neck_pitch" type="hinge" pos="0 0 0" axis="0 1 0" range="-0.79 0.79"/>
+          <joint name="neck_roll" type="hinge" pos="0 0 0" axis="1 0 0" range="-0.52 0.52"/>
+          
+          <!-- Avant de la tête - POSITIONS CALCULÉES -->
+          <!-- Tête: 150mm -> 15cm -> 0.15m -->
+          <!-- Centre STL: (0, -33.5mm, -0.3mm) -> Position relative: (0, 0.003m, 0.00003m) -->
+          <geom name="head_front_geom" type="mesh" mesh="head_mesh" material="head_mat" 
+                pos="0 0.003 0.00003"/>
+          
+          <!-- Arrière de la tête - POSITIONS CALCULÉES -->
+          <!-- Centre STL: (0, 11.7mm, 0mm) -> Position relative: (0, -0.001m, 0m) -->
+          <geom name="head_back_geom" type="mesh" mesh="head_back_mesh" material="head_mat" 
+                pos="0 -0.001 0"/>
+          
+          <!-- Caméra -->
+          <camera name="eye_camera" pos="0.05 0 0" euler="0 0 0"/>
+        </body>
+        
+        <!-- Bras droit (Stewart Platform) - POSITIONS CALCULÉES -->
+        <body name="right_arm" pos="0 -0.06 0.04">
+          <joint name="right_shoulder_pitch" type="hinge" pos="0 0 0" axis="0 1 0" range="-1.57 1.57"/>
+          <joint name="right_shoulder_roll" type="hinge" pos="0 0 0" axis="1 0 0" range="-1.57 1.57"/>
+          
+          <!-- Plaque Stewart - POSITIONS CALCULÉES -->
+          <!-- Plaque: 145mm -> 14.5cm -> 0.145m -->
+          <!-- Centre STL: (0, 8.8mm, -185.6mm) -> Position relative: (0, -0.001m, 0.019m) -->
+          <geom name="right_stewart_plate_geom" type="mesh" mesh="stewart_plate_mesh" material="arm_mat" 
+                pos="0 -0.001 0.019"/>
+          
+          <!-- Bras Stewart principal - POSITIONS CALCULÉES -->
+          <!-- Bras: 27.5mm -> 2.75cm -> 0.0275m -->
+          <!-- Centre STL: (-23.1mm, -45.4mm, -153.2mm) -> Position relative: (0.002m, 0.005m, 0.015m) -->
+          <geom name="right_stewart_arm_geom" type="mesh" mesh="stewart_arm_mesh" material="arm_mat" 
+                pos="0.002 0.005 0.015"/>
+          
+          <!-- Avant-bras -->
+          <body name="right_forearm" pos="0 0 0.06">
+            <joint name="right_elbow_pitch" type="hinge" pos="0 0 0" axis="0 1 0" range="-1.57 1.57"/>
+            <joint name="right_wrist_pitch" type="hinge" pos="0 0 0" axis="0 1 0" range="-1.57 1.57"/>
+            <joint name="right_wrist_roll" type="hinge" pos="0 0 0" axis="0 0 1" range="-1.57 1.57"/>
+            
+            <!-- Lien Stewart - POSITIONS CALCULÉES -->
+            <!-- Lien: 97mm -> 9.7cm -> 0.097m -->
+            <!-- Centre STL: (0, 0, 0) -> Position relative: (0, 0, 0) -->
+            <geom name="right_stewart_link_geom" type="mesh" mesh="stewart_link_mesh" material="arm_mat" 
+                  pos="0 0 0"/>
+            
+            <!-- Gripper -->
+            <body name="right_gripper" pos="0 0 0.04">
+              <joint name="right_gripper_joint" type="hinge" pos="0 0 0" axis="0 0 1" range="-0.5 0.5"/>
+              <!-- Gripper: 146mm -> 14.6cm -> 0.146m -->
+              <!-- Centre STL: (0, 8.6mm, -147.9mm) -> Position relative: (0, -0.001m, 0.015m) -->
+              <geom name="right_stewart_gripper_geom" type="mesh" mesh="stewart_gripper_mesh" material="gripper_mat" 
+                    pos="0 -0.001 0.015"/>
+            </body>
+          </body>
+        </body>
+        
+        <!-- Bras gauche (Stewart Platform) - POSITIONS CALCULÉES -->
+        <body name="left_arm" pos="0 0.06 0.04">
+          <joint name="left_shoulder_pitch" type="hinge" pos="0 0 0" axis="0 1 0" range="-1.57 1.57"/>
+          <joint name="left_shoulder_roll" type="hinge" pos="0 0 0" axis="1 0 0" range="-1.57 1.57"/>
+          
+          <!-- Plaque Stewart - POSITIONS CALCULÉES -->
+          <geom name="left_stewart_plate_geom" type="mesh" mesh="stewart_plate_mesh" material="arm_mat" 
+                pos="0 -0.001 0.019"/>
+          
+          <!-- Bras Stewart principal - POSITIONS CALCULÉES -->
+          <geom name="left_stewart_arm_geom" type="mesh" mesh="stewart_arm_mesh" material="arm_mat" 
+                pos="0.002 0.005 0.015"/>
+          
+          <!-- Avant-bras -->
+          <body name="left_forearm" pos="0 0 0.06">
+            <joint name="left_elbow_pitch" type="hinge" pos="0 0 0" axis="0 1 0" range="-1.57 1.57"/>
+            <joint name="left_wrist_pitch" type="hinge" pos="0 0 0" axis="0 1 0" range="-1.57 1.57"/>
+            <joint name="left_wrist_roll" type="hinge" pos="0 0 0" axis="0 0 1" range="-1.57 1.57"/>
+            
+            <!-- Lien Stewart - POSITIONS CALCULÉES -->
+            <geom name="left_stewart_link_geom" type="mesh" mesh="stewart_link_mesh" material="arm_mat" 
+                  pos="0 0 0"/>
+            
+            <!-- Gripper -->
+            <body name="left_gripper" pos="0 0 0.04">
+              <joint name="left_gripper_joint" type="hinge" pos="0 0 0" axis="0 0 1" range="-0.5 0.5"/>
+              <geom name="left_stewart_gripper_geom" type="mesh" mesh="stewart_gripper_mesh" material="gripper_mat" 
+                    pos="0 -0.001 0.015"/>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+  
+  <actuator>
+    <!-- Moteurs pour toutes les articulations -->
+    <motor name="neck_yaw_motor" joint="neck_yaw" gear="100"/>
+    <motor name="neck_pitch_motor" joint="neck_pitch" gear="100"/>
+    <motor name="neck_roll_motor" joint="neck_roll" gear="100"/>
+    
+    <motor name="right_shoulder_pitch_motor" joint="right_shoulder_pitch" gear="100"/>
+    <motor name="right_shoulder_roll_motor" joint="right_shoulder_roll" gear="100"/>
+    <motor name="right_elbow_pitch_motor" joint="right_elbow_pitch" gear="100"/>
+    <motor name="right_wrist_pitch_motor" joint="right_wrist_pitch" gear="100"/>
+    <motor name="right_wrist_roll_motor" joint="right_wrist_roll" gear="100"/>
+    <motor name="right_gripper_motor" joint="right_gripper_joint" gear="50"/>
+    
+    <motor name="left_shoulder_pitch_motor" joint="left_shoulder_pitch" gear="100"/>
+    <motor name="left_shoulder_roll_motor" joint="left_shoulder_roll" gear="100"/>
+    <motor name="left_elbow_pitch_motor" joint="left_elbow_pitch" gear="100"/>
+    <motor name="left_wrist_pitch_motor" joint="left_wrist_pitch" gear="100"/>
+    <motor name="left_wrist_roll_motor" joint="left_wrist_roll" gear="100"/>
+    <motor name="left_gripper_motor" joint="left_gripper_joint" gear="50"/>
+  </actuator>
+</mujoco>

@@ -1,0 +1,153 @@
+<?xml version="1.0" ?>
+<!-- Modèle Reachy Mini corrigé basé sur les positions officielles -->
+<!-- Positions exactes extraites du modèle officiel Pollen Robotics -->
+<mujoco model="reachy_mini_official_fixed">
+  <compiler angle="radian" meshdir="../assets/reachy_official"/>
+  
+  <default>
+    <joint armature="0.01" damping="1" limited="true"/>
+    <geom contype="1" conaffinity="1" rgba="0.8 0.6 0.4 1"/>
+  </default>
+  
+  <asset>
+    <!-- Assets officiels Reachy Mini (Pollen Robotics) -->
+    <mesh name="torso_mesh" file="body_top_3dprint.stl"/>
+    <mesh name="torso_base_mesh" file="body_down_3dprint.stl"/>
+    <mesh name="head_mesh" file="head_front_3dprint.stl"/>
+    <mesh name="head_back_mesh" file="head_back_3dprint.stl"/>
+    <mesh name="stewart_arm_mesh" file="mp01062_stewart_arm_3.stl"/>
+    <mesh name="stewart_link_mesh" file="stewart_link_rod.stl"/>
+    <mesh name="stewart_gripper_mesh" file="stewart_tricap_3dprint.stl"/>
+    <mesh name="stewart_plate_mesh" file="stewart_main_plate_3dprint.stl"/>
+    
+    <!-- Matériaux réalistes -->
+    <material name="torso_mat" rgba="0.3 0.3 0.8 1" shininess="0.4" specular="0.2"/>
+    <material name="head_mat" rgba="0.8 0.3 0.3 1" shininess="0.6" specular="0.3"/>
+    <material name="arm_mat" rgba="0.3 0.8 0.3 1" shininess="0.5" specular="0.25"/>
+    <material name="gripper_mat" rgba="0.6 0.6 0.6 1" shininess="0.7" specular="0.4"/>
+  </asset>
+  
+  <worldbody>
+    <!-- Éclairage réaliste -->
+    <light pos="0 0 1.5" diffuse="0.8 0.8 0.8" specular="0.8 0.8 0.8"/>
+    <light pos="1 1 1" diffuse="0.4 0.4 0.4" specular="0.4 0.4 0.4"/>
+    <light pos="-1 -1 1" diffuse="0.3 0.3 0.3" specular="0.3 0.3 0.3"/>
+    
+    <!-- Sol -->
+    <geom name="floor" type="plane" size="2 2 0.1" rgba="0.9 0.9 0.9 1"/>
+
+    <!-- Base du robot - POSITIONS OFFICIELLES -->
+    <body name="base" pos="0 0 0.0348">
+      <!-- Base: Position officielle (0, 0, 0.0348) -->
+      <geom name="base_geom" type="mesh" mesh="torso_base_mesh" material="torso_mat" 
+            pos="0 0 0.195"/>
+      
+      <!-- Torse principal - POSITIONS OFFICIELLES -->
+      <body name="torso" pos="0 0 0.195">
+        <!-- Torse: Position officielle (0, 0, 0.195) -->
+        <geom name="torso_geom" type="mesh" mesh="torso_mesh" material="torso_mat" 
+              pos="0 0 0"/>
+        
+        <!-- Tête - POSITIONS OFFICIELLES -->
+        <body name="head" pos="0 0 0.195">
+          <!-- Tête: Position officielle (0, 0, 0.195) -->
+          <joint name="neck_yaw" type="hinge" pos="0 0 0" axis="0 0 1" range="-1.57 1.57"/>
+          <joint name="neck_pitch" type="hinge" pos="0 0 0" axis="0 1 0" range="-0.79 0.79"/>
+          <joint name="neck_roll" type="hinge" pos="0 0 0" axis="1 0 0" range="-0.52 0.52"/>
+          
+          <!-- Géométries de la tête avec positions officielles -->
+          <geom name="head_front_geom" type="mesh" mesh="head_mesh" material="head_mat" 
+                pos="0 0.033 0"/>
+          <geom name="head_back_geom" type="mesh" mesh="head_back_mesh" material="head_mat" 
+                pos="0 -0.012 0"/>
+          
+          <!-- Caméra -->
+          <camera name="eye_camera" pos="0.05 0 0" euler="0 0 0"/>
+        </body>
+        
+        <!-- Bras droit - POSITIONS OFFICIELLES -->
+        <body name="right_arm" pos="0 -0.175 0.195">
+          <!-- Bras droit: Position officielle (0, -0.175, 0.195) -->
+          <joint name="right_shoulder_pitch" type="hinge" pos="0 0 0" axis="0 1 0" range="-1.57 1.57"/>
+          <joint name="right_shoulder_roll" type="hinge" pos="0 0 0" axis="1 0 0" range="-1.57 1.57"/>
+          
+          <!-- Géométries du bras droit avec positions officielles -->
+          <geom name="right_stewart_plate_geom" type="mesh" mesh="stewart_plate_mesh" material="arm_mat" 
+                pos="0 -0.009 0.186"/>
+          <geom name="right_stewart_arm_geom" type="mesh" mesh="stewart_arm_mesh" material="arm_mat" 
+                pos="0.023 0.045 0.153"/>
+          
+          <!-- Avant-bras droit -->
+          <body name="right_forearm" pos="0 0 0.12">
+            <joint name="right_elbow_pitch" type="hinge" pos="0 0 0" axis="0 1 0" range="-1.57 1.57"/>
+            <joint name="right_wrist_pitch" type="hinge" pos="0 0 0" axis="0 1 0" range="-1.57 1.57"/>
+            <joint name="right_wrist_roll" type="hinge" pos="0 0 0" axis="0 0 1" range="-1.57 1.57"/>
+            
+            <geom name="right_stewart_link_geom" type="mesh" mesh="stewart_link_mesh" material="arm_mat" 
+                  pos="0 0 0"/>
+            
+            <!-- Pince droite -->
+            <body name="right_gripper" pos="0 0 0.08">
+              <joint name="right_gripper_joint" type="hinge" pos="0 0 0" axis="0 0 1" range="-0.5 0.5"/>
+              <geom name="right_stewart_gripper_geom" type="mesh" mesh="stewart_gripper_mesh" material="gripper_mat" 
+                    pos="0 -0.009 0.148"/>
+            </body>
+          </body>
+        </body>
+        
+        <!-- Bras gauche - POSITIONS OFFICIELLES -->
+        <body name="left_arm" pos="0 0.175 0.195">
+          <!-- Bras gauche: Position officielle (0, 0.175, 0.195) -->
+          <joint name="left_shoulder_pitch" type="hinge" pos="0 0 0" axis="0 1 0" range="-1.57 1.57"/>
+          <joint name="left_shoulder_roll" type="hinge" pos="0 0 0" axis="1 0 0" range="-1.57 1.57"/>
+          
+          <!-- Géométries du bras gauche avec positions officielles -->
+          <geom name="left_stewart_plate_geom" type="mesh" mesh="stewart_plate_mesh" material="arm_mat" 
+                pos="0 -0.009 0.186"/>
+          <geom name="left_stewart_arm_geom" type="mesh" mesh="stewart_arm_mesh" material="arm_mat" 
+                pos="0.023 0.045 0.153"/>
+          
+          <!-- Avant-bras gauche -->
+          <body name="left_forearm" pos="0 0 0.12">
+            <joint name="left_elbow_pitch" type="hinge" pos="0 0 0" axis="0 1 0" range="-1.57 1.57"/>
+            <joint name="left_wrist_pitch" type="hinge" pos="0 0 0" axis="0 1 0" range="-1.57 1.57"/>
+            <joint name="left_wrist_roll" type="hinge" pos="0 0 0" axis="0 0 1" range="-1.57 1.57"/>
+            
+            <geom name="left_stewart_link_geom" type="mesh" mesh="stewart_link_mesh" material="arm_mat" 
+                  pos="0 0 0"/>
+            
+            <!-- Pince gauche -->
+            <body name="left_gripper" pos="0 0 0.08">
+              <joint name="left_gripper_joint" type="hinge" pos="0 0 0" axis="0 0 1" range="-0.5 0.5"/>
+              <geom name="left_stewart_gripper_geom" type="mesh" mesh="stewart_gripper_mesh" material="gripper_mat" 
+                    pos="0 -0.009 0.148"/>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+  
+  <actuator>
+    <!-- Moteurs pour la tête -->
+    <motor name="neck_yaw_motor" joint="neck_yaw" gear="100"/>
+    <motor name="neck_pitch_motor" joint="neck_pitch" gear="100"/>
+    <motor name="neck_roll_motor" joint="neck_roll" gear="100"/>
+    
+    <!-- Moteurs pour le bras droit -->
+    <motor name="right_shoulder_pitch_motor" joint="right_shoulder_pitch" gear="100"/>
+    <motor name="right_shoulder_roll_motor" joint="right_shoulder_roll" gear="100"/>
+    <motor name="right_elbow_pitch_motor" joint="right_elbow_pitch" gear="100"/>
+    <motor name="right_wrist_pitch_motor" joint="right_wrist_pitch" gear="100"/>
+    <motor name="right_wrist_roll_motor" joint="right_wrist_roll" gear="100"/>
+    <motor name="right_gripper_motor" joint="right_gripper_joint" gear="100"/>
+    
+    <!-- Moteurs pour le bras gauche -->
+    <motor name="left_shoulder_pitch_motor" joint="left_shoulder_pitch" gear="100"/>
+    <motor name="left_shoulder_roll_motor" joint="left_shoulder_roll" gear="100"/>
+    <motor name="left_elbow_pitch_motor" joint="left_elbow_pitch" gear="100"/>
+    <motor name="left_wrist_pitch_motor" joint="left_wrist_pitch" gear="100"/>
+    <motor name="left_wrist_roll_motor" joint="left_wrist_roll" gear="100"/>
+    <motor name="left_gripper_motor" joint="left_gripper_joint" gear="100"/>
+  </actuator>
+</mujoco>
