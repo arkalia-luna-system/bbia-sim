@@ -7,6 +7,8 @@
 ### 🎮 **Scripts Principaux**
 - **`quick_start.sh`** - Menu interactif principal
 - **`launch_unity.sh`** - Lancement de la simulation Unity 3D
+- **`launch_robot_3d.sh`** - Lancement du robot Reachy Mini en 3D
+- **`launch_robot.py`** - Script Python pour lancer le robot
 - **`install_all_reachy_repos.sh`** - Installation automatique des dépôts GitHub
 - **`setup_reachy_environment.sh`** - Configuration de l'environnement
 
@@ -28,6 +30,20 @@
 - Option 7 : Tester la configuration Unity
 - Option 8 : Corriger les avertissements Unity
 - Option 10 : Installer dépôts GitHub
+
+### 🤖 **Lancement Robot 3D**
+```bash
+# Script bash (recommandé)
+./scripts/launch_robot_3d.sh
+
+# Script Python
+python scripts/launch_robot.py
+```
+**Fonctionnalités :**
+- Robot Reachy Mini complet en 3D
+- Mode graphique et headless
+- Détection automatique macOS/Linux
+- Test rapide disponible
 
 ### 🎯 **Lancement Unity**
 ```bash
