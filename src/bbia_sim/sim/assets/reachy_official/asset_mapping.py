@@ -18,33 +18,51 @@ class AssetMapping:
 OFFICIAL_ASSETS: dict[str, AssetMapping] = {
     "torso": AssetMapping(
         component_name="torso",
-        official_stl_path=None,  # TODO: ajouter le chemin officiel
+        official_stl_path="body_top_3dprint.stl",
         placeholder_path="meshes/torso.stl",
-        description="Torse principal du robot"
+        description="Torse principal du robot (partie supérieure)"
+    ),
+    "torso_base": AssetMapping(
+        component_name="torso_base",
+        official_stl_path="body_down_3dprint.stl",
+        placeholder_path="meshes/torso_base.stl",
+        description="Base du torse du robot"
     ),
     "head": AssetMapping(
         component_name="head",
-        official_stl_path=None,  # TODO: ajouter le chemin officiel
+        official_stl_path="head_front_3dprint.stl",
         placeholder_path="meshes/head.stl",
-        description="Tête avec caméra"
+        description="Tête avec caméra (avant)"
     ),
-    "upper_arm": AssetMapping(
-        component_name="upper_arm",
-        official_stl_path=None,  # TODO: ajouter le chemin officiel
-        placeholder_path="meshes/upper_arm.stl",
-        description="Bras supérieur (épaule)"
+    "head_back": AssetMapping(
+        component_name="head_back",
+        official_stl_path="head_back_3dprint.stl",
+        placeholder_path="meshes/head_back.stl",
+        description="Arrière de la tête"
     ),
-    "forearm": AssetMapping(
-        component_name="forearm",
-        official_stl_path=None,  # TODO: ajouter le chemin officiel
-        placeholder_path="meshes/forearm.stl",
-        description="Avant-bras (coude)"
+    "stewart_arm": AssetMapping(
+        component_name="stewart_arm",
+        official_stl_path="mp01062_stewart_arm_3.stl",
+        placeholder_path="meshes/stewart_arm.stl",
+        description="Bras Stewart principal"
     ),
-    "gripper": AssetMapping(
-        component_name="gripper",
-        official_stl_path=None,  # TODO: ajouter le chemin officiel
-        placeholder_path="meshes/gripper.stl",
-        description="Pince/gripper"
+    "stewart_link": AssetMapping(
+        component_name="stewart_link",
+        official_stl_path="stewart_link_rod.stl",
+        placeholder_path="meshes/stewart_link.stl",
+        description="Tige de liaison Stewart"
+    ),
+    "stewart_gripper": AssetMapping(
+        component_name="stewart_gripper",
+        official_stl_path="stewart_tricap_3dprint.stl",
+        placeholder_path="meshes/stewart_gripper.stl",
+        description="Capuchon triangulaire Stewart (gripper)"
+    ),
+    "stewart_plate": AssetMapping(
+        component_name="stewart_plate",
+        official_stl_path="stewart_main_plate_3dprint.stl",
+        placeholder_path="meshes/stewart_plate.stl",
+        description="Plaque principale Stewart"
     ),
 }
 

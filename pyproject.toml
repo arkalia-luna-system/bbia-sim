@@ -122,6 +122,7 @@ markers = [
     "slow: marks tests as slow (deselect with '-m \"not slow\"')",
     "integration: marks tests as integration tests",
     "unit: marks tests as unit tests",
+    "e2e: marks tests as end-to-end tests",
     "audio: marks tests requiring audio hardware",
     "vision: marks tests requiring camera/vision",
     "robot: marks tests requiring real robot connection",
