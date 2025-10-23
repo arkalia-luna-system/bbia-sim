@@ -77,7 +77,9 @@ class MuJoCoSimulator:
                         "  • Ou utilisez : python -m bbia_sim --sim --headless\n"
                         "  • Ou installez mjpython : pip install mujoco-python-viewer"
                     )
-                    sys.exit(2)
+                    raise RuntimeError(
+                        "Viewer MuJoCo non disponible sur macOS avec python standard"
+                    ) from e
                 else:
                     logger.error(f"Erreur lors du lancement du viewer : {e}")
                     raise

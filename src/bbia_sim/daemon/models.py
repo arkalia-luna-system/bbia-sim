@@ -2,7 +2,7 @@
 
 from typing import Any
 
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field, field_validator
 
 
 class JointPosition(BaseModel):
@@ -11,7 +11,8 @@ class JointPosition(BaseModel):
     joint_name: str = Field(..., min_length=1, max_length=50)
     position: float = Field(..., ge=-3.14, le=3.14)  # Limite physique réaliste
 
-    @validator("joint_name")
+    @field_validator("joint_name")
+    @classmethod
     def validate_joint_name(cls, v):
         """Valide le nom de l'articulation."""
         allowed_joints = [
@@ -59,7 +60,8 @@ class MotionCommand(BaseModel):
     command: str = Field(..., min_length=1, max_length=100)
     parameters: dict[str, Any] = Field(default_factory=dict, max_length=10)
 
-    @validator("parameters")
+    @field_validator("parameters")
+    @classmethod
     def validate_parameters(cls, v):
         """Valide les paramètres de la commande."""
         if len(v) > 10:
@@ -73,7 +75,8 @@ class TelemetryMessage(BaseModel):
     type: str = Field(..., pattern="^(ping|pong|status|telemetry)$")
     data: dict[str, Any] = Field(default_factory=dict, max_length=50)
 
-    @validator("data")
+    @field_validator("data")
+    @classmethod
     def validate_data(cls, v):
         """Valide les données de télémétrie."""
         if len(v) > 50:

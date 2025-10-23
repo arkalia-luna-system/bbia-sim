@@ -2,11 +2,13 @@
 
 from typing import Any, Union
 
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
     """Configuration de l'application."""
+
+    model_config = SettingsConfigDict(env_file=".env", env_prefix="BBIA_")
 
     # Environnement
     environment: str = "dev"  # dev/prod
@@ -25,7 +27,9 @@ class Settings(BaseSettings):
 
     # Simulation
     simulation_model_path: str = "src/bbia_sim/sim/models/reachy_mini.xml"
-    simulation_headless: bool = False
+    simulation_headless: bool = (
+        True  # Headless par défaut pour éviter les problèmes macOS
+    )
     simulation_step_frequency: float = 0.01  # 100 Hz
     simulation_duration: Union[int, None] = None
 
@@ -42,11 +46,6 @@ class Settings(BaseSettings):
     request_timeout: int = 30  # seconds
     rate_limit_requests: int = 100  # per minute
     rate_limit_window: int = 60  # seconds
-
-    class Config:
-        env_file = ".env"
-        env_file_encoding = "utf-8"
-        env_prefix = "BBIA_"
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

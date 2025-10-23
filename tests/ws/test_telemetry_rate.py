@@ -82,8 +82,8 @@ class TestTelemetryRate:
                 assert "timestamp" in data
                 assert "joints" in data
 
-                # Vérifier le type des données
-                assert isinstance(data["timestamp"], (int, float))
+                # Vérifier le type des données (timestamp est une string ISO)
+                assert isinstance(data["timestamp"], str)
                 assert isinstance(data["joints"], dict)
 
                 # Vérifier que les joints sont présents

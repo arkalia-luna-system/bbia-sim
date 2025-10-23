@@ -27,14 +27,14 @@ async def goto_pose(pose: Pose) -> dict[str, Any]:
     Returns:
         Statut du mouvement
     """
-    logger.info(f"Mouvement vers la position : {pose.dict()}")
+    logger.info(f"Mouvement vers la position : {pose.model_dump()}")
 
     # Simulation du mouvement
     estimated_time = 2.5
 
     return {
         "status": "moving",
-        "target_pose": pose.dict(),
+        "target_pose": pose.model_dump(),
         "estimated_time": estimated_time,
         "timestamp": datetime.now().isoformat(),
     }
@@ -87,7 +87,7 @@ async def set_joint_positions(positions: list[JointPosition]) -> dict[str, Any]:
 
     return {
         "status": "moving" if success_count > 0 else "failed",
-        "joints": [pos.dict() for pos in positions],
+        "joints": [pos.model_dump() for pos in positions],
         "success_count": success_count,
         "total_count": len(positions),
         "estimated_time": 1.5,

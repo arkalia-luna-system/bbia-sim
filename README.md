@@ -15,6 +15,7 @@
   - [Présentation](#présentation)
   - [Capture d'écran](#capture-décran)
   - [Structure du projet](#structure-du-projet)
+  - [🤖 Contrôle Temps Réel du Robot](#-contrôle-temps-réel-du-robot)
   - [Installation rapide](#installation-rapide)
     - [Développement](#développement)
     - [Production](#production)
@@ -72,6 +73,38 @@ Projet BBIA pour Reachy Mini Wireless : IA émotionnelle, simulation 100% Python
 - `tests/` : tests automatisés pour chaque module
 - `docs/` : documentation complète et guides
 - `scripts/` : scripts de démarrage et tests
+
+## 🤖 Contrôle Temps Réel du Robot
+
+**BBIA-SIM** permet de contrôler le robot Reachy Mini en temps réel via API REST :
+
+```python
+# Contrôle des articulations
+import httpx
+
+headers = {"Authorization": "Bearer bbia-secret-key-dev"}
+
+# Déplacer le cou
+response = httpx.post("http://localhost:8000/api/motion/joints", 
+                     json=[{"joint_name": "neck_yaw", "position": 0.5}],
+                     headers=headers)
+print(response.json())  # {"status": "moving", "success_count": 1}
+
+# Contrôler la tête
+response = httpx.post("http://localhost:8000/api/motion/head",
+                     json={"yaw": 0.3, "pitch": 0.1},
+                     headers=headers)
+
+# Retour à la position d'origine
+response = httpx.post("http://localhost:8000/api/motion/home", headers=headers)
+
+# Récupérer l'état du robot
+response = httpx.get("http://localhost:8000/api/state/joints", headers=headers)
+joints = response.json()["joints"]
+print(f"Position cou: {joints['neck_yaw']['position']:.3f} rad")
+```
+
+**🎯 Résultat :** Les commandes API contrôlent vraiment le robot 3D dans MuJoCo !
 
 ## Installation rapide
 

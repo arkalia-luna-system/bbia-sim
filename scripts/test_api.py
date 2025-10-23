@@ -5,6 +5,7 @@ import asyncio
 import json
 import time
 
+import pytest
 import requests
 import websockets
 
@@ -75,6 +76,7 @@ def test_rest_endpoints():
         print(f"❌ POST /api/motion/home : {e}")
 
 
+@pytest.mark.asyncio
 async def test_websocket():
     """Test du WebSocket."""
     print("\n🌐 Test du WebSocket...")

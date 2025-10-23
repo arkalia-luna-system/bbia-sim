@@ -125,11 +125,17 @@ class SimulationService:
             return
 
         logger.info("Simulation graphique démarrée")
-        # Pour le mode graphique, on utilise le viewer MuJoCo
-        # qui doit s'exécuter dans le thread principal
-        await asyncio.get_event_loop().run_in_executor(
-            None, self.simulator.launch_simulation, False, None
-        )
+        try:
+            # Pour le mode graphique, on utilise le viewer MuJoCo
+            # qui doit s'exécuter dans le thread principal
+            await asyncio.get_event_loop().run_in_executor(
+                None, self.simulator.launch_simulation, False, None
+            )
+        except Exception as e:
+            logger.error(f"Erreur simulation graphique : {e}")
+            # Fallback vers headless si le viewer échoue
+            logger.info("Fallback vers simulation headless")
+            await self._run_headless_simulation()
 
     def get_robot_state(self) -> dict[str, Any]:
         """Récupère l'état actuel du robot depuis la simulation.
