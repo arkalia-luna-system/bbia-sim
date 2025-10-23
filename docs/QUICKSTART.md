@@ -21,6 +21,21 @@ pip install -e ".[dev]"
 
 **Résultat attendu** : Installation réussie, pas d'erreurs
 
+## 🚀 Démarrage rapide (30s)
+
+```bash
+# 1. Démarrer l'API (dans un terminal)
+uvicorn src.bbia_sim.daemon.app.main:app --port 8000
+
+# 2. Lancer la démo "BBIA réagit" (dans un autre terminal)
+python examples/behave_follow_face.py --token bbia-secret-key-dev
+
+# 3. Vérifier que tout fonctionne
+python -m bbia_sim --sim --headless --duration 1
+```
+
+**🎯 Résultat attendu :** La tête du robot suit un mouvement oscillant pendant 10 secondes.
+
 ## Test simulation MuJoCo avec assets officiels (1 min)
 
 ```bash
@@ -79,6 +94,24 @@ src/bbia_sim/sim/assets/
 1. Copiez les STL officiels dans `reachy_official/`
 2. Mettez à jour `asset_mapping.py`
 3. Redémarrez la simulation
+
+## 📋 Table des joints et limites
+
+| Joint | Limite Min | Limite Max | Description |
+|-------|------------|------------|-------------|
+| `neck_yaw` | -1.57 rad | +1.57 rad | Rotation tête gauche/droite |
+| `neck_pitch` | -0.79 rad | +0.79 rad | Inclinaison tête haut/bas |
+| `neck_roll` | -0.52 rad | +0.52 rad | Inclinaison tête gauche/droite |
+| `right_shoulder_pitch` | -1.57 rad | +1.57 rad | Épaule droite avant/arrière |
+| `right_shoulder_roll` | -1.57 rad | +1.57 rad | Épaule droite haut/bas |
+| `right_elbow_pitch` | -1.57 rad | +1.57 rad | Coude droit flexion |
+| `left_shoulder_pitch` | -1.57 rad | +1.57 rad | Épaule gauche avant/arrière |
+| `left_shoulder_roll` | -1.57 rad | +1.57 rad | Épaule gauche haut/bas |
+| `left_elbow_pitch` | -1.57 rad | +1.57 rad | Coude gauche flexion |
+| `right_gripper` | 0.0 cm | 4.0 cm | Ouverture pince droite |
+| `left_gripper` | 0.0 cm | 4.0 cm | Ouverture pince gauche |
+
+**💡 Note :** Les angles sont automatiquement clampés dans les limites. Les joints invalides retournent une erreur 422.
 
 ## Démarrage API (2 min)
 

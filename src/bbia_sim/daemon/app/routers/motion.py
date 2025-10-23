@@ -7,6 +7,7 @@ from typing import Any
 from fastapi import APIRouter, HTTPException
 
 from ...models import HeadControl, JointPosition, MotionCommand, Pose
+from ....sim.joints import clamp_joint_angle, validate_joint_name
 from ...simulation_service import simulation_service
 
 logger = logging.getLogger(__name__)
@@ -70,14 +71,21 @@ async def set_joint_positions(positions: list[JointPosition]) -> dict[str, Any]:
         f"Définition des positions d'articulations : {len(positions)} articulations"
     )
 
-    # Validation des articulations disponibles
-    available_joints = simulation_service.get_available_joints()
-
+    # Validation des noms de joints avec notre système centralisé
     for pos in positions:
-        if pos.joint_name not in available_joints:
+        if not validate_joint_name(pos.joint_name):
             raise HTTPException(
-                status_code=400, detail=f"Articulation invalide : {pos.joint_name}"
+                status_code=422, detail=f"Joint '{pos.joint_name}' non valide"
             )
+
+        # Clamp des angles dans les limites
+        clamped_angle = clamp_joint_angle(pos.joint_name, pos.position)
+        if clamped_angle != pos.position:
+            logger.warning(
+                f"Angle {pos.position:.3f} clampé à {clamped_angle:.3f} "
+                f"pour joint {pos.joint_name}"
+            )
+            pos.position = clamped_angle
 
     # Application des positions dans la simulation
     success_count = 0

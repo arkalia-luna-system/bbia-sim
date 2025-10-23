@@ -184,6 +184,9 @@ class TestMuJoCoSimulator:
         mock_joint.id = 0
         mock_model.joint.return_value = mock_joint
         mock_data.qpos = [0.0]
+        
+        # Mock joint_range pour le clamp
+        mock_model.joint_range = [[-1.57, 1.57]]  # Limites pour le joint
 
         with tempfile.NamedTemporaryFile(mode="w", suffix=".xml", delete=False) as f:
             f.write(

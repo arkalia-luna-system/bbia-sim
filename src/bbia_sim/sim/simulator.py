@@ -160,7 +160,7 @@ class MuJoCoSimulator:
 
     def set_joint_position(self, joint_name: str, angle: float) -> None:
         """
-        Définit la position d'une articulation.
+        Définit la position d'une articulation avec validation et clamp.
 
         Args:
             joint_name: Nom de l'articulation
@@ -168,12 +168,31 @@ class MuJoCoSimulator:
 
         Raises:
             KeyError: Si l'articulation n'existe pas
+            ValueError: Si l'angle est hors limites
         """
         try:
             joint_id = self.model.joint(joint_name).id
-            self.data.qpos[joint_id] = angle
+
+            # Récupération des limites du joint
+            joint_range = self.model.joint_range[joint_id]
+            min_limit = joint_range[0]
+            max_limit = joint_range[1]
+
+            # Clamp de l'angle dans les limites
+            clamped_angle = max(min_limit, min(max_limit, angle))
+
+            if clamped_angle != angle:
+                logger.warning(
+                    f"Angle {angle:.3f} clampé à {clamped_angle:.3f} "
+                    f"pour joint {joint_name} (limites: [{min_limit:.3f}, {max_limit:.3f}])"
+                )
+
+            # Application de la position
+            self.data.qpos[joint_id] = clamped_angle
             mujoco.mj_forward(self.model, self.data)
-            logger.debug(f"Articulation '{joint_name}' positionnée à {angle} rad")
+            logger.debug(
+                f"Articulation '{joint_name}' positionnée à {clamped_angle:.3f} rad"
+            )
         except KeyError:
             logger.error(f"Articulation '{joint_name}' non trouvée")
             raise

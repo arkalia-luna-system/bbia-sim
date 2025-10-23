@@ -116,6 +116,13 @@ class TestSimulationIntegration:
                 raise KeyError(f"Invalid key: {key}")
 
         mock_model.joint.side_effect = mock_joint_access
+        
+        # Mock joint_range pour le clamp
+        mock_model.joint_range = [
+            [-1.57, 1.57],  # neck_yaw
+            [-0.5, 0.5],     # head_pitch  
+            [-1.57, 1.57],   # right_shoulder_pitch
+        ]
 
         # Créer un modèle robot temporaire
         import os
@@ -334,6 +341,12 @@ class TestSimulationIntegration:
                 raise KeyError(f"Invalid key: {key}")
 
         mock_model.joint.side_effect = mock_joint_access
+        
+        # Mock joint_range pour le clamp
+        mock_model.joint_range = [
+            [-1.57, 1.57],  # joint1
+            [-1.57, 1.57],  # joint2
+        ]
 
         # Créer un modèle temporaire
         import os

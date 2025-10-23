@@ -1,6 +1,6 @@
 # BBIA Reachy Mini Wireless – Simulation Python
 
-![Bannière Reachy Mini](assets/images/Capture d’écran 2025-07-15 à 04.09.24.png)
+![Bannière Reachy Mini](assets/images/Capture d'écran 2025-07-15 à 04.09.24.png)
 
 [![Licence MIT](https://img.shields.io/badge/Licence-MIT-blue.svg)](./LICENCE)
 [![Python](https://img.shields.io/badge/python-3.9%2B-blue)](https://www.python.org/)
@@ -9,8 +9,28 @@
 
 ---
 
+## 🚀 Démarrage en 30 secondes
+
+**3 commandes pour voir BBIA en action :**
+
+```bash
+# 1. Démarrer l'API (dans un terminal)
+uvicorn src.bbia_sim.daemon.app.main:app --port 8000
+
+# 2. Lancer la démo "BBIA réagit" (dans un autre terminal)
+python examples/behave_follow_face.py --token bbia-secret-key-dev
+
+# 3. Vérifier que tout fonctionne
+python -m bbia_sim --sim --headless --duration 1
+```
+
+**🎯 Résultat attendu :** La tête du robot suit un mouvement oscillant pendant 10 secondes, puis retourne à sa position initiale.
+
+---
+
 ## Table des matières
 - [BBIA Reachy Mini Wireless – Simulation Python](#bbia-reachy-mini-wireless--simulation-python)
+  - [🚀 Démarrage en 30 secondes](#-démarrage-en-30-secondes)
   - [Table des matières](#table-des-matières)
   - [Présentation](#présentation)
   - [Capture d'écran](#capture-décran)
