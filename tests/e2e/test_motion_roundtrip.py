@@ -170,9 +170,7 @@ class TestMotionRoundtrip:
             while time.time() - start_time < test_duration:
                 try:
                     # Attente d'un message avec timeout
-                    message = await asyncio.wait_for(
-                        websocket.recv(), timeout=0.2
-                    )
+                    message = await asyncio.wait_for(websocket.recv(), timeout=0.2)
 
                     data = json.loads(message)
 
@@ -242,10 +240,14 @@ class TestMotionRoundtrip:
             final_position = final_state["joints"]["neck_yaw"]["position"]
 
             # La position devrait être dans les limites raisonnables
-            assert -2.0 <= final_position <= 2.0, f"Position non clampée: {final_position}"
+            assert (
+                -2.0 <= final_position <= 2.0
+            ), f"Position non clampée: {final_position}"
 
-            logger.info(f"✅ Angle clampé de {extreme_angle} à {final_position:.3f} rad")
-            
+            logger.info(
+                f"✅ Angle clampé de {extreme_angle} à {final_position:.3f} rad"
+            )
+
         except httpx.HTTPStatusError as e:
             if e.response.status_code == 422:
                 # Si l'API retourne 422, vérifier que c'est pour une raison valide
