@@ -52,8 +52,8 @@ class TestSimulationIntegration:
             # Test performance headless avec une durée courte
             start_time = time.time()
             simulator.launch_simulation(
-                headless=True, duration=0.1
-            )  # 0.1 seconde seulement
+                headless=True, duration=1
+            )  # 1 seconde seulement
             end_time = time.time()
 
             # Vérifier que des steps ont été exécutés
@@ -116,12 +116,12 @@ class TestSimulationIntegration:
                 raise KeyError(f"Invalid key: {key}")
 
         mock_model.joint.side_effect = mock_joint_access
-        
+
         # Mock joint_range pour le clamp
         mock_model.joint_range = [
             [-1.57, 1.57],  # neck_yaw
-            [-0.5, 0.5],     # head_pitch  
-            [-1.57, 1.57],   # right_shoulder_pitch
+            [-0.5, 0.5],  # head_pitch
+            [-1.57, 1.57],  # right_shoulder_pitch
         ]
 
         # Créer un modèle robot temporaire
@@ -341,7 +341,7 @@ class TestSimulationIntegration:
                 raise KeyError(f"Invalid key: {key}")
 
         mock_model.joint.side_effect = mock_joint_access
-        
+
         # Mock joint_range pour le clamp
         mock_model.joint_range = [
             [-1.57, 1.57],  # joint1
@@ -377,7 +377,7 @@ class TestSimulationIntegration:
 
             def set_position():
                 simulator.set_joint_position("joint1", 0.5)
-                results.append("position_set")
+                results.append({"action": "position_set"})
 
             # Exécuter les opérations en parallèle
             thread1 = threading.Thread(target=get_state)
@@ -391,7 +391,12 @@ class TestSimulationIntegration:
 
             # Vérifier que les opérations ont été exécutées
             assert len(results) == 2
-            assert "position_set" in results
+            # Vérifier qu'au moins un résultat contient l'action position_set
+            position_set_found = any(
+                isinstance(result, dict) and result.get("action") == "position_set"
+                for result in results
+            )
+            assert position_set_found
 
         finally:
             os.unlink(temp_model)
