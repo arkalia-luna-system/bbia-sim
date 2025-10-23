@@ -68,6 +68,54 @@ class TestStateRouter:
         assert "timestamp" in data
         assert len(data["joints"]) == 2
 
+    def test_get_position(self, client):
+        """Test endpoint state/position."""
+        headers = {"Authorization": "Bearer bbia-secret-key-dev"}
+        response = client.get("/api/state/position", headers=headers)
+
+        assert response.status_code == 200
+        data = response.json()
+        assert "position" in data
+        assert "orientation" in data
+        assert "timestamp" in data
+
+    def test_get_temperature(self, client):
+        """Test endpoint state/temperature."""
+        headers = {"Authorization": "Bearer bbia-secret-key-dev"}
+        response = client.get("/api/state/temperature", headers=headers)
+
+        assert response.status_code == 200
+        data = response.json()
+        assert "temperature" in data
+        assert "unit" in data
+        assert "status" in data
+        assert "timestamp" in data
+
+    def test_get_status(self, client):
+        """Test endpoint state/status."""
+        headers = {"Authorization": "Bearer bbia-secret-key-dev"}
+        response = client.get("/api/state/status", headers=headers)
+
+        assert response.status_code == 200
+        data = response.json()
+        assert "status" in data
+        assert "mode" in data
+        assert "errors" in data
+        assert "warnings" in data
+        assert "timestamp" in data
+
+    def test_get_sensor_data(self, client):
+        """Test endpoint state/sensors."""
+        headers = {"Authorization": "Bearer bbia-secret-key-dev"}
+        response = client.get("/api/state/sensors", headers=headers)
+
+        assert response.status_code == 200
+        data = response.json()
+        assert "camera" in data
+        assert "microphone" in data
+        assert "imu" in data
+        assert "timestamp" in data
+
 
 class TestMotionRouter:
     """Tests pour le router motion."""
@@ -193,3 +241,62 @@ class TestMotionRouter:
         assert "parameters" in data
         assert "estimated_time" in data
         assert "timestamp" in data
+
+    @patch("src.bbia_sim.daemon.app.routers.motion.simulation_service")
+    def test_set_joint_positions_invalid_joint(self, mock_service, client):
+        """Test endpoint motion/joints avec joint invalide."""
+        headers = {"Authorization": "Bearer bbia-secret-key-dev"}
+        payload = [{"joint_name": "invalid_joint", "position": 0.5}]
+        response = client.post("/api/motion/joints", json=payload, headers=headers)
+
+        assert response.status_code == 422
+        data = response.json()
+        assert "detail" in data
+        # L'erreur vient du modèle Pydantic, vérifions le message
+        assert any("invalid_joint" in str(error) for error in data["detail"])
+
+    @patch("src.bbia_sim.daemon.app.routers.motion.simulation_service")
+    @patch("src.bbia_sim.daemon.app.routers.motion.clamp_joint_angle")
+    def test_set_joint_positions_angle_clamping(self, mock_clamp, mock_service, client):
+        """Test endpoint motion/joints avec clamp des angles."""
+        # Mock du service
+        mock_service.get_available_joints.return_value = ["neck_yaw"]
+        mock_service.set_joint_position.return_value = True
+
+        # Mock du clamp pour retourner un angle différent
+        mock_clamp.return_value = 0.3  # Angle clampé
+
+        headers = {"Authorization": "Bearer bbia-secret-key-dev"}
+        payload = [{"joint_name": "neck_yaw", "position": 0.5}]
+        response = client.post("/api/motion/joints", json=payload, headers=headers)
+
+        assert response.status_code == 200
+        data = response.json()
+        assert "status" in data
+        assert "joints" in data
+        assert "success_count" in data
+        assert "total_count" in data
+
+    def test_control_gripper_invalid_side(self, client):
+        """Test endpoint motion/gripper/{side} avec côté invalide."""
+        headers = {"Authorization": "Bearer bbia-secret-key-dev"}
+        response = client.post(
+            "/api/motion/gripper/invalid?action=open", headers=headers
+        )
+
+        assert response.status_code == 400
+        data = response.json()
+        assert "error" in data
+        assert "Côté invalide" in data["error"]
+
+    def test_control_gripper_invalid_action(self, client):
+        """Test endpoint motion/gripper/{side} avec action invalide."""
+        headers = {"Authorization": "Bearer bbia-secret-key-dev"}
+        response = client.post(
+            "/api/motion/gripper/left?action=invalid", headers=headers
+        )
+
+        assert response.status_code == 400
+        data = response.json()
+        assert "error" in data
+        assert "Action invalide" in data["error"]
