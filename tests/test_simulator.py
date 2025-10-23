@@ -120,11 +120,16 @@ class TestMuJoCoSimulator:
 
         # Mock des articulations
         mock_model.njnt = 3
-        mock_data.qpos = [0.1, 0.2, 0.3]
-        mock_data.qvel = [0.01, 0.02, 0.03]
+        mock_qpos = Mock()
+        mock_qpos.tolist.return_value = [0.1, 0.2, 0.3]
+        mock_qpos.__getitem__ = lambda self, i: [0.1, 0.2, 0.3][i]
+        mock_data.qpos = mock_qpos
+        
+        mock_qvel = Mock()
+        mock_qvel.tolist.return_value = [0.01, 0.02, 0.03]
+        mock_data.qvel = mock_qvel
+        
         mock_data.time = 1.0
-        mock_data.qpos.tolist.return_value = [0.1, 0.2, 0.3]
-        mock_data.qvel.tolist.return_value = [0.01, 0.02, 0.03]
 
         # Mock joint names
         mock_joint1 = Mock()
