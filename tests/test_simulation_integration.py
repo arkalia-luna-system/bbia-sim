@@ -96,7 +96,7 @@ class TestSimulationIntegration:
         mock_joint1.name = "neck_yaw"
         mock_joint1.id = 0
         mock_joint2 = Mock()
-        mock_joint2.name = "head_pitch"
+        mock_joint2.name = "stewart_1"
         mock_joint2.id = 1
         mock_joint3 = Mock()
         mock_joint3.name = "right_shoulder_pitch"

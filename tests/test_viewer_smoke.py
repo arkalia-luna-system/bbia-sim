@@ -13,7 +13,7 @@ class TestViewerSmoke:
     """Tests smoke pour le viewer MuJoCo (skip en CI)."""
 
     @pytest.mark.skipif(
-        os.getenv("CI") or not os.getenv("DISPLAY"),
+        os.getenv("CI") is not None or os.getenv("DISPLAY") is None,
         reason="Skip viewer tests in CI or headless environment",
     )
     def test_viewer_import_and_init(self):
@@ -57,7 +57,7 @@ class TestViewerSmoke:
             os.unlink(temp_model)
 
     @pytest.mark.skipif(
-        os.getenv("CI") or not os.getenv("DISPLAY"),
+        os.getenv("CI") is not None or os.getenv("DISPLAY") is None,
         reason="Skip viewer tests in CI or headless environment",
     )
     def test_viewer_launch_passive_import(self):
@@ -71,7 +71,7 @@ class TestViewerSmoke:
         assert hasattr(mujoco.viewer, "launch_passive")
 
     @pytest.mark.skipif(
-        os.getenv("CI") or not os.getenv("DISPLAY"),
+        os.getenv("CI") is not None or os.getenv("DISPLAY") is None,
         reason="Skip viewer tests in CI or headless environment",
     )
     def test_viewer_platform_detection(self):
@@ -90,7 +90,7 @@ class TestViewerSmoke:
             pass
 
     @pytest.mark.skipif(
-        os.getenv("CI") or not os.getenv("DISPLAY"),
+        os.getenv("CI") is not None or os.getenv("DISPLAY") is None,
         reason="Skip viewer tests in CI or headless environment",
     )
     def test_assets_loading(self):

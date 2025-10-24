@@ -3,11 +3,24 @@ Gestion de l'audio pour BBIA : enregistrement, lecture, détection de son.
 Compatible macOS, simple, portable, testé.
 """
 
+import atexit
 import logging
 import wave
 
 import numpy as np
 import sounddevice as sd
+
+
+# Gestion propre de PortAudio pour éviter les erreurs de terminaison
+def _cleanup_sounddevice():
+    """Nettoyage propre de sounddevice pour éviter les erreurs PortAudio."""
+    try:
+        sd._terminate()
+    except Exception:
+        pass  # Ignorer les erreurs de terminaison
+
+
+atexit.register(_cleanup_sounddevice)
 
 logging.basicConfig(level=logging.INFO)
 

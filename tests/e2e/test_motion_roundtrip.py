@@ -125,15 +125,15 @@ class TestMotionRoundtrip:
 
         # 1. Récupération de la position initiale
         initial_state = await client.get_joint_positions()
-        initial_neck_yaw = initial_state["joints"]["neck_yaw"]["position"]
+        initial_yaw_body = initial_state["joints"]["yaw_body"]["position"]
 
-        logger.info(f"Position initiale neck_yaw: {initial_neck_yaw:.3f} rad")
+        logger.info(f"Position initiale yaw_body: {initial_yaw_body:.3f} rad")
 
         # 2. Calcul de la position cible (décalage de 0.2 rad)
-        target_position = initial_neck_yaw + 0.2
+        target_position = initial_yaw_body + 0.2
 
         # 3. Envoi de la commande de mouvement
-        joints_command = [{"joint_name": "neck_yaw", "position": target_position}]
+        joints_command = [{"joint_name": "yaw_body", "position": target_position}]
 
         start_time = time.time()
         motion_response = await client.set_joint_positions(joints_command)
@@ -152,12 +152,12 @@ class TestMotionRoundtrip:
 
         # 5. Vérification de la nouvelle position
         final_state = await client.get_joint_positions()
-        final_neck_yaw = final_state["joints"]["neck_yaw"]["position"]
+        final_yaw_body = final_state["joints"]["yaw_body"]["position"]
 
-        logger.info(f"Position finale neck_yaw: {final_neck_yaw:.3f} rad")
+        logger.info(f"Position finale yaw_body: {final_yaw_body:.3f} rad")
 
         # 6. Vérification que le changement est significatif
-        position_change = abs(final_neck_yaw - initial_neck_yaw)
+        position_change = abs(final_yaw_body - initial_yaw_body)
         assert (
             position_change >= 0.1
         ), f"Changement trop faible: {position_change:.3f} rad"
@@ -242,7 +242,7 @@ class TestMotionRoundtrip:
 
         # Angle très élevé (devrait être clampé)
         extreme_angle = 10.0  # Bien au-delà des limites
-        joints_command = [{"joint_name": "neck_yaw", "position": extreme_angle}]
+        joints_command = [{"joint_name": "yaw_body", "position": extreme_angle}]
 
         try:
             # La commande devrait réussir mais avec clamp
@@ -254,7 +254,7 @@ class TestMotionRoundtrip:
             # Vérification que la position finale est dans les limites
             await asyncio.sleep(0.5)
             final_state = await client.get_joint_positions()
-            final_position = final_state["joints"]["neck_yaw"]["position"]
+            final_position = final_state["joints"]["yaw_body"]["position"]
 
             # La position devrait être dans les limites raisonnables
             assert (
@@ -294,7 +294,7 @@ class TestPerformance:
         if not await client.check_health():
             pytest.skip("API non accessible - serveur non démarré")
 
-        joints_command = [{"joint_name": "neck_yaw", "position": 0.1}]
+        joints_command = [{"joint_name": "yaw_body", "position": 0.1}]
 
         start_time = time.time()
         await client.set_joint_positions(joints_command)
@@ -313,9 +313,9 @@ class TestPerformance:
 
         # Préparation de plusieurs commandes
         commands = [
-            [{"joint_name": "neck_yaw", "position": 0.2}],
-            [{"joint_name": "neck_yaw", "position": -0.2}],
-            [{"joint_name": "neck_yaw", "position": 0.0}],
+            [{"joint_name": "yaw_body", "position": 0.2}],
+            [{"joint_name": "yaw_body", "position": -0.2}],
+            [{"joint_name": "yaw_body", "position": 0.0}],
         ]
 
         # Exécution concurrente

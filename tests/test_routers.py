@@ -27,7 +27,7 @@ class TestStateRouter:
         """Test endpoint state/full."""
         # Mock du service
         mock_service.get_robot_state.return_value = {
-            "joint_positions": {"neck_yaw": 0.0},
+            "joint_positions": {"yaw_body": 0.0},
             "time": 1.0,
             "n_joints": 1,
         }
@@ -61,7 +61,7 @@ class TestStateRouter:
         """Test endpoint state/joints."""
         # Mock du service
         mock_service.get_joint_positions.return_value = {
-            "neck_yaw": 0.5,
+            "yaw_body": 0.5,
             "head_pitch": 0.2,
         }
 
@@ -161,7 +161,7 @@ class TestMotionRouter:
     def test_set_joint_positions(self, mock_service, client):
         """Test endpoint motion/joints."""
         # Mock du service
-        mock_service.get_available_joints.return_value = ["neck_yaw"]
+        mock_service.get_available_joints.return_value = ["yaw_body"]
         mock_service.set_joint_position.return_value = True
 
         headers = {"Authorization": "Bearer bbia-secret-key-dev"}
@@ -195,7 +195,7 @@ class TestMotionRouter:
     def test_control_head(self, mock_service, client):
         """Test endpoint motion/head."""
         # Mock du service
-        mock_service.get_available_joints.return_value = ["neck_yaw", "head_pitch"]
+        mock_service.get_available_joints.return_value = ["yaw_body", "head_pitch"]
         mock_service.set_joint_position.return_value = True
 
         headers = {"Authorization": "Bearer bbia-secret-key-dev"}
@@ -266,7 +266,7 @@ class TestMotionRouter:
     def test_set_joint_positions_angle_clamping(self, mock_clamp, mock_service, client):
         """Test endpoint motion/joints avec clamp des angles."""
         # Mock du service
-        mock_service.get_available_joints.return_value = ["neck_yaw"]
+        mock_service.get_available_joints.return_value = ["yaw_body"]
         mock_service.set_joint_position.return_value = True
 
         # Mock du clamp pour retourner un angle différent
