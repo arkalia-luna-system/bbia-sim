@@ -16,7 +16,7 @@ def _cleanup_sounddevice():
     """Nettoyage propre de sounddevice pour éviter les erreurs PortAudio."""
     try:
         sd._terminate()
-    except Exception:
+    except Exception:  # nosec B110
         pass  # Ignorer les erreurs de terminaison
 
 
