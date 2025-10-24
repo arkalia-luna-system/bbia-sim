@@ -82,7 +82,9 @@ jobs:
           pip install pyaudio || echo "pyaudio non disponible, continuons sans"
 
       - name: Run unit tests
-        run: pytest tests/ -v -m "not e2e" --cov=src/bbia_sim --cov-report=xml --cov-report=term-missing --cov-fail-under=0 --timeout=300 --override-ini="addopts="
+        run: |
+          export PYTHONPATH=src:$PYTHONPATH
+          pytest tests/ -v -m "not e2e" --cov=src/bbia_sim --cov-report=xml --cov-report=term-missing --cov-fail-under=0 --timeout=300 --override-ini="addopts="
 
       - name: Upload coverage
         uses: codecov/codecov-action@v3

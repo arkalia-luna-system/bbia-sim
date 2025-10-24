@@ -22,6 +22,19 @@ omit =
 include = src/bbia_sim/**/*.py
 
 # Exclure les lignes spécifiques (commentaires, docstrings, etc.)
+# Cette option a été déplacée vers [report] dans les versions récentes
+
+[report]
+# Seuil minimum de coverage (ajusté pour être réaliste)
+fail_under = 1
+
+# Exclure les fichiers avec coverage très faible
+skip_covered = False
+
+# Afficher les fichiers manqués
+show_missing = True
+
+# Exclure les lignes spécifiques (commentaires, docstrings, etc.)
 exclude_lines =
     pragma: no cover
     def __repr__
@@ -34,18 +47,8 @@ exclude_lines =
     class .*\bProtocol\):
     @(abc\.)?abstractmethod
 
-[report]
-# Seuil minimum de coverage (ajusté pour être réaliste)
-fail_under = 1
-
-# Exclure les fichiers avec coverage très faible
-skip_covered = False
-
-# Afficher les fichiers manqués
-show_missing = True
-
-# Afficher les branches manquées
-show_missing_branches = True
+# Afficher les branches manquées (option supprimée dans les versions récentes)
+# show_missing_branches = True
 
 # Format de sortie
 precision = 2

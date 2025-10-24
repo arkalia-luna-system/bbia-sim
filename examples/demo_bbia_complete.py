@@ -85,14 +85,29 @@ def test_voice_module():
     dire_texte("Bonjour, je suis BBIA. Test de synthèse vocale.")
     time.sleep(2)
 
-    # Test de reconnaissance vocale
-    print("2. Reconnaissance vocale (5 secondes)")
-    print("   Parlez maintenant...")
-    texte = reconnaitre_parole(duree=5)
-    if texte:
-        print(f"   Texte reconnu : {texte}")
-    else:
-        print("   Aucun texte reconnu")
+    # Test de reconnaissance vocale (avec timeout)
+    print("2. Reconnaissance vocale (3 secondes)")
+    print("   Parlez maintenant... (ou attendez 3s)")
+    try:
+        import signal
+
+        def timeout_handler(signum, frame):
+            raise TimeoutError("Timeout reconnaissance vocale")
+
+        signal.signal(signal.SIGALRM, timeout_handler)
+        signal.alarm(3)  # Timeout après 3 secondes
+
+        texte = reconnaitre_parole(duree=3)
+        signal.alarm(0)  # Annuler le timeout
+
+        if texte:
+            print(f"   Texte reconnu : {texte}")
+        else:
+            print("   Aucun texte reconnu")
+    except (TimeoutError, KeyboardInterrupt):
+        print("   Reconnaissance vocale interrompue (timeout)")
+    except Exception as e:
+        print(f"   Erreur reconnaissance vocale : {e}")
 
     return True
 
