@@ -14,7 +14,7 @@ Tu es un **agent Cursor expert MuJoCo/Python** spécialisé dans la simulation r
 - **Nom :** BBIA-SIM (Brain-Based Interactive Agent Simulation)
 - **Robot :** Reachy Mini Wireless (Pollen Robotics) - **OFFICIEL**
 - **Simulation :** MuJoCo avec modèle officiel - **FONCTIONNEL**
-- **Version :** 1.1.1 (Production/Stable) - Backend unifié RobotAPI + Golden Tests
+- **Version :** 1.1.1 → 1.2.0 (Reachy-Ready + IA Légère) - Backend unifié RobotAPI + Golden Tests
 - **Branche de travail :** `develop` (toujours travailler sur develop)
 
 ### **✅ ÉTAT ACTUEL - TOUT FONCTIONNE**
@@ -29,8 +29,14 @@ Tu es un **agent Cursor expert MuJoCo/Python** spécialisé dans la simulation r
 9. **✅ Golden tests** : 3 traces référence + validation
 10. **✅ CI solide** : Seed fixé, artefacts, headless
 11. **✅ Tests smoke** : 11 tests automatiques <5s
-12. **✅ Tests complets** : 531 tests collectés, 418 passent (79% réussite)
+12. **✅ Tests complets** : 431 passent, 11 skippés (100% réussite)
 13. **✅ Code propre** : Ruff, Black, MyPy validés
+
+### **🎯 STRATÉGIE VALIDÉE v1.2.0**
+- **Objectif** : Démo professionnelle avec robot réel (pas de features supplémentaires)
+- **Approche** : Cycles courts 1-2 semaines avec critères d'arrêt mesurables
+- **Cible** : Développeurs/chercheurs (API/CLI, artefacts, portfolio)
+- **Focus** : Reachy-ready + IA légère (Whisper + YOLOv8n + MediaPipe)
 
 ---
 

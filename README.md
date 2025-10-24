@@ -2,7 +2,7 @@
 
 **✅ SIMULATION BBIA ↔ ROBOT 100% FONCTIONNELLE !**
 
-**Version** : 1.1.1 (Production/Stable) - Backend unifié RobotAPI + Golden Tests
+**Version** : 1.1.1 → 1.2.0 (Reachy-Ready + IA Légère) - Backend unifié RobotAPI + Golden Tests
 
 Ce projet fournit une simulation **parfaitement fidèle** du robot Reachy Mini dans MuJoCo, avec une intégration complète des modules BBIA (Bio-Inspired Artificial Intelligence).
 
@@ -15,6 +15,12 @@ Ce projet fournit une simulation **parfaitement fidèle** du robot Reachy Mini d
 - ✅ Synchronisation voix ↔ mouvements subtils
 - ✅ Exécution de comportements complexes
 - ✅ API REST + WebSocket temps réel
+
+### **🚀 NOUVELLE STRATÉGIE v1.2.0**
+- **Objectif** : Démo professionnelle avec robot réel (pas de features supplémentaires)
+- **Approche** : Cycles courts 1-2 semaines avec critères d'arrêt mesurables
+- **Cible** : Développeurs/chercheurs (API/CLI, artefacts, portfolio)
+- **Focus** : Reachy-ready + IA légère (Whisper + YOLOv8n + MediaPipe)
 
 ## 🏗️ Architecture BBIA-SIM
 
