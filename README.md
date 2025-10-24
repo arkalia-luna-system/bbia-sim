@@ -247,14 +247,14 @@ tests/
 ### Résultats des Tests
 
 **📊 Statistiques actuelles :**
-- **402 tests collectés** par pytest
-- **391 tests passent** (97% de réussite)
+- **531 tests collectés** par pytest
+- **418 tests passent** (79% de réussite)
 - **11 tests skippés** (tests conditionnels)
 - **0 tests échouent** (tous corrigés)
 
 ### Coverage de Code
 
-**🎯 Coverage total : 72.07%** (excellent)
+**🎯 Coverage total : 76.70%** (excellent)
 
 **Détail par module :**
 - `bbia_audio.py`: **87.76%** ✅
@@ -318,7 +318,7 @@ show_missing = True
 ```bash
 # Vérifier le nombre de tests collectés
 python -m pytest --collect-only -q | wc -l
-# Doit afficher 402+ tests
+# Doit afficher 531+ tests
 
 # Si moins de tests trouvés, vérifier la configuration testpaths
 ```
