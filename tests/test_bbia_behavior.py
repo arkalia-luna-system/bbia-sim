@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-
 """Test du module BBIA Behavior Manager."""
 
 import contextlib
@@ -9,15 +8,15 @@ import sys
 import unittest
 from unittest.mock import patch
 
-# Ajouter le chemin du module parent
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+# Ajouter le répertoire src au PYTHONPATH
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
-from src.bbia_sim.bbia_behavior import (
+from bbia_sim.bbia_behavior import (
     AntennaAnimationBehavior,
     BBIABehavior,
     BBIABehaviorManager,
     GreetingBehavior,
-    HideBehavior,  # Ajouté
+    HideBehavior,
     WakeUpBehavior,
 )
 
@@ -121,7 +120,7 @@ class TestHideBehavior(unittest.TestCase):
         behavior = HideBehavior()
         output = io.StringIO()
         # Correction : patcher dire_texte dans le namespace du module bbia_behavior
-        with patch("src.bbia_sim.bbia_behavior.dire_texte") as mock_dire_texte:
+        with patch("bbia_sim.bbia_behavior.dire_texte") as mock_dire_texte:
             with contextlib.redirect_stdout(output):
                 result = behavior.execute({})
         # Vérification de la sortie console

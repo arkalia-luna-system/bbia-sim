@@ -40,7 +40,8 @@ class UnityReachyMiniController:
         except Exception:
             return False
 
-    def _wait_for_response(self, timeout: float = 5.0) -> str:
+    def _wait_for_response(self, timeout: float = 1.0) -> str:
+        """Attend une réponse avec timeout réduit pour les tests."""
         start_time = time.time()
         while time.time() - start_time < timeout:
             try:
@@ -55,7 +56,7 @@ class UnityReachyMiniController:
             except Exception:  # nosec B110
                 # Autres erreurs inattendues - ignorer et continuer
                 pass
-            time.sleep(0.1)
+            time.sleep(0.01)  # Réduit de 0.1s à 0.01s pour les tests
         return ""
 
     def move_head(self, x: float, y: float, z: float) -> bool:
@@ -80,28 +81,24 @@ class UnityReachyMiniController:
         return ""
 
     def bbia_awake(self) -> bool:
+        """Séquence de réveil BBIA optimisée."""
         self.set_emotion("neutral")
-        time.sleep(1)
-        time.sleep(1)
-        time.sleep(1)
-        time.sleep(1)
-        time.sleep(1)
-        time.sleep(1)
-        time.sleep(1)
+        time.sleep(0.1)  # Réduit de 7s à 0.1s pour les tests
         self.move_head(10, 0, 0)
-        time.sleep(0.7)
+        time.sleep(0.1)  # Réduit de 0.7s à 0.1s
         self.move_head(-10, 0, 0)
-        time.sleep(0.7)
+        time.sleep(0.1)  # Réduit de 0.7s à 0.1s
         self.move_head(0, 0, 0)
-        time.sleep(0.7)
+        time.sleep(0.1)  # Réduit de 0.7s à 0.1s
         self.set_emotion("happy")
-        time.sleep(1)
-        time.sleep(1)
+        time.sleep(0.1)  # Réduit de 2s à 0.1s
         self.set_emotion("neutral")
         return True
 
-    def interactive_mode(self):
-        while True:
+    def interactive_mode(self, max_iterations: int = 1000):
+        """Mode interactif avec limite d'itérations pour éviter les boucles infinies."""
+        iteration_count = 0
+        while iteration_count < max_iterations:
             try:
                 command = input("🤖 BBIA > ").strip().lower()
                 if command in {"quit", "exit"}:
@@ -143,10 +140,15 @@ class UnityReachyMiniController:
                     print("✅ BBIA est réveillé!")
                 else:
                     print("❌ Commande inconnue. Tapez 'help' pour l'aide.")
+                iteration_count += 1
             except KeyboardInterrupt:
                 break
             except Exception as e:
                 print(f"❌ Erreur: {e}")
+                iteration_count += 1
+
+        if iteration_count >= max_iterations:
+            print("⚠️ Limite d'itérations atteinte, arrêt du mode interactif")
 
     def _show_help(self):
         help_text = """

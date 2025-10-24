@@ -80,14 +80,26 @@ class TestBBIAModules:
         vision.current_focus = "test_object"
         assert vision.current_focus == "test_object"
 
-    @patch("src.bbia_sim.bbia_voice.pyttsx3.init")
-    @patch("src.bbia_sim.bbia_voice.get_bbia_voice")
+    @patch("bbia_sim.bbia_voice.pyttsx3.init")
+    @patch("bbia_sim.bbia_voice.get_bbia_voice")
     def test_bbia_voice_functions(self, mock_get_voice, mock_init):
         """Test : Fonctions BBIA Voice (mockées pour éviter les blocages)."""
         # Mock des fonctions audio pour éviter les blocages
         mock_engine = MagicMock()
         mock_init.return_value = mock_engine
         mock_get_voice.return_value = "test_voice_id"
+        
+        # Mock complet de l'engine pour éviter les erreurs
+        mock_engine.getProperty.return_value = "test_voice"
+        mock_engine.setProperty.return_value = None
+        mock_engine.say.return_value = None
+        mock_engine.runAndWait.return_value = None
+        
+        # Mock des voix pour éviter l'erreur AttributeError
+        mock_voice = MagicMock()
+        mock_voice.name = "test_voice"
+        mock_voice.id = "test_voice_id"
+        mock_engine.getProperty.return_value = [mock_voice]
 
         # Test synthèse vocale
         text = "Bonjour, je suis BBIA"
@@ -96,7 +108,7 @@ class TestBBIAModules:
         assert result is None or result is True
 
         # Test reconnaissance vocale (simulation)
-        with patch("src.bbia_sim.bbia_voice.sr.Recognizer") as mock_recognizer:
+        with patch("bbia_sim.bbia_voice.sr.Recognizer") as mock_recognizer:
             mock_r = MagicMock()
             mock_recognizer.return_value = mock_r
             mock_r.listen.return_value = MagicMock()

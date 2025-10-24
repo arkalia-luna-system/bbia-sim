@@ -239,14 +239,20 @@ class HideBehavior(BBIABehavior):
         self.priority = 9
 
     def execute(self, context: dict[str, Any]) -> bool:
+        print("🙈 [BBIA] Séquence 'se cacher'...")
         logger.info("Début de la séquence 'se cacher'")
+        print("🤖 Tête qui s'abaisse lentement...")
         logger.info("Étape : Tête qui s'abaisse lentement")
         time.sleep(1.5)
+        print("📡 Antennes qui se replient devant le visage...")
         logger.info("Étape : Antennes qui se replient devant le visage")
         time.sleep(1.2)
+        print("👁️ Yeux qui se ferment (ou s'éteignent)...")
         logger.info("Étape : Yeux qui se ferment (ou s'éteignent)")
         time.sleep(1)
+        print("💤 BBIA se cache et devient silencieux.")
         logger.info("Étape : BBIA se cache et devient silencieux")
+        print("(BBIA attend discrètement...)")
         dire_texte("Je me cache... Chut !")
         logger.info("Synthèse vocale : Je me cache... Chut !")
         time.sleep(1)
