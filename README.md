@@ -28,7 +28,36 @@ Ce projet fournit une simulation **parfaitement fidèle** du robot Reachy Mini d
 
 ## 🚀 Démarrage Rapide
 
-### Lancement de la simulation 3D
+### Voir le robot en 3D (FONCTIONNEL)
+```bash
+# Démo principale - Robot qui tourne correctement
+mjpython examples/demo_robot_correct.py
+
+# Test de tous les joints mobiles
+mjpython examples/test_all_joints.py
+
+# Version paramétrable avec yaw_body (rotation du corps)
+mjpython examples/demo_viewer_bbia_simple.py --joint yaw_body --duration 10 --frequency 0.5 --amplitude 0.3
+```
+
+### ⚠️ IMPORTANT - Joints Bloqués
+Les antennes (`left_antenna`, `right_antenna`) sont **BLOQUÉES** dans le modèle officiel Reachy Mini. Utilisez `yaw_body` (rotation du corps) pour les animations visibles.
+
+**Vérification des joints :**
+```bash
+# Script de vérification des joints
+python scripts/check_joints.py
+
+# Vérification d'un joint spécifique
+python scripts/check_joints.py yaw_body
+```
+
+**Pourquoi les antennes sont bloquées ?**
+- **Modèle officiel** : Le fichier `reachy_mini_REAL_OFFICIAL.xml` vient du dépôt Pollen Robotics
+- **Robot physique** : Les antennes ne sont **PAS motorisées** dans le vrai robot
+- **Limites [0.000, 0.000]** : Signifie que les antennes sont **fixes** sur le robot réel
+
+### Lancement de la simulation 3D complète
 ```bash
 cd /Volumes/T7/bbia-reachy-sim
 mjpython scripts/launch_complete_robot.py --model reachy_mini_REAL_OFFICIAL.xml
