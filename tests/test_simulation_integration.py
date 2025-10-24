@@ -93,20 +93,20 @@ class TestSimulationIntegration:
 
         # Mock joint names
         mock_joint1 = Mock()
-        mock_joint1.name = "neck_yaw"
+        mock_joint1.name = "yaw_body"
         mock_joint1.id = 0
         mock_joint2 = Mock()
         mock_joint2.name = "stewart_1"
         mock_joint2.id = 1
         mock_joint3 = Mock()
-        mock_joint3.name = "right_shoulder_pitch"
+        mock_joint3.name = "passive_1"
         mock_joint3.id = 2
 
         # Créer un dictionnaire pour l'accès par nom
         joint_dict = {
-            "neck_yaw": mock_joint1,
-            "head_pitch": mock_joint2,
-            "right_shoulder_pitch": mock_joint3,
+            "yaw_body": mock_joint1,
+            "stewart_1": mock_joint2,
+            "passive_1": mock_joint3,
         }
         mock_joints = [mock_joint1, mock_joint2, mock_joint3]
 
@@ -162,9 +162,9 @@ class TestSimulationIntegration:
             # Test récupération des articulations
             joints = simulator.get_available_joints()
             assert len(joints) == 3
-            assert "neck_yaw" in joints
-            assert "head_pitch" in joints
-            assert "right_shoulder_pitch" in joints
+            assert "yaw_body" in joints
+            assert "stewart_1" in joints
+            assert "passive_1" in joints
 
             # Test récupération de l'état
             state = simulator.get_robot_state()
@@ -176,7 +176,7 @@ class TestSimulationIntegration:
             assert "n_bodies" in state
 
             # Test définition de position
-            simulator.set_joint_position("neck_yaw", 0.5)
+            simulator.set_joint_position("yaw_body", 0.5)
             # Vérifier que l'assignation a été appelée
             mock_qpos.__setitem__.assert_called_with(0, 0.5)
 
