@@ -79,20 +79,27 @@ def reconnaitre_parole(duree=3, frequence=16000):
     """Reconnaît la parole via le micro (STT, français par défaut).
     Retourne le texte reconnu ou None.
     """
-    r = sr.Recognizer()
-    with sr.Microphone(sample_rate=frequence) as source:
-        try:
-            logging.info("Écoute du micro pour la reconnaissance vocale...")
-            audio = r.listen(source, phrase_time_limit=duree)
-            texte = r.recognize_google(audio, language="fr-FR")
-            logging.info(f"Texte reconnu : {texte}")
-            return texte
-        except sr.UnknownValueError:
-            logging.warning("Aucune parole reconnue.")
-            return None
-        except Exception as e:
-            logging.error(f"Erreur de reconnaissance vocale : {e}")
-            return None
+    try:
+        r = sr.Recognizer()
+        with sr.Microphone(sample_rate=frequence) as source:
+            try:
+                logging.info("Écoute du micro pour la reconnaissance vocale...")
+                audio = r.listen(source, phrase_time_limit=duree)
+                texte = r.recognize_google(audio, language="fr-FR")
+                logging.info(f"Texte reconnu : {texte}")
+                return texte
+            except sr.UnknownValueError:
+                logging.warning("Aucune parole reconnue.")
+                return None
+            except Exception as e:
+                logging.error(f"Erreur de reconnaissance vocale : {e}")
+                return None
+    except Exception as e:
+        logging.error(f"Erreur d'accès au microphone : {e}")
+        logging.warning(
+            "La reconnaissance vocale nécessite pyaudio. Installez-le avec : pip install pyaudio"
+        )
+        return None
 
 
 def lister_voix_disponibles():

@@ -27,6 +27,8 @@ jobs:
           python -m pip install --upgrade pip
           pip install -e .[dev]
           pip install pytest-timeout
+          # Installation optionnelle de pyaudio si disponible
+          pip install pyaudio || echo "pyaudio non disponible, continuons sans"
 
       - name: Lint with ruff
         run: ruff check src/ tests/
@@ -76,6 +78,8 @@ jobs:
           python -m pip install --upgrade pip
           pip install -e .[test]
           pip install pytest-asyncio pytest-timeout
+          # Installation optionnelle de pyaudio si disponible
+          pip install pyaudio || echo "pyaudio non disponible, continuons sans"
 
       - name: Run unit tests
         run: pytest tests/ -v -m "not e2e" --cov=src/bbia_sim --cov-report=xml --cov-report=term-missing --cov-fail-under=0 --timeout=300 --override-ini="addopts="
@@ -103,6 +107,8 @@ jobs:
           python -m pip install --upgrade pip
           pip install -e .[test]
           pip install pytest-asyncio pytest-timeout
+          # Installation optionnelle de pyaudio si disponible
+          pip install pyaudio || echo "pyaudio non disponible, continuons sans"
 
       - name: Start API server
         run: |

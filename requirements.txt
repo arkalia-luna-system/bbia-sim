@@ -1,6 +1,5 @@
 pyttsx3
 speechrecognition
-pyaudio
 sounddevice
 numpy
 opencv-python
@@ -12,6 +11,8 @@ websockets
 pydantic
 pydantic-settings
 python-multipart
+# Dépendances audio optionnelles (nécessitent PortAudio)
+# pyaudio
 # Outils de développement
 ruff
 black
