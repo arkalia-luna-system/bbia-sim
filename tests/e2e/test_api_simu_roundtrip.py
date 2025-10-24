@@ -7,8 +7,8 @@ Test déterministe et rapide (< 5s).
 import os
 import sys
 
-import pytest
 import httpx
+import pytest
 
 # Ajouter le répertoire src au PYTHONPATH
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "src"))

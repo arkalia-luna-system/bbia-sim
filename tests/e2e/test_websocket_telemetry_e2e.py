@@ -91,7 +91,7 @@ class TestWebSocketTelemetry:
     @pytest.mark.asyncio
     async def test_websocket_telemetry_joint_updates(self, api_server):
         """Test : Mise à jour des positions via WebSocket."""
-        import requests
+        import httpx
 
         uri = "ws://127.0.0.1:8000/ws/telemetry"
         base_url = "http://127.0.0.1:8000"
@@ -105,7 +105,7 @@ class TestWebSocketTelemetry:
                 # Modifier une position via l'API REST
                 joint_data = [{"joint_name": "yaw_body", "position": 0.7}]
                 try:
-                    response = requests.post(
+                    response = httpx.post(
                         f"{base_url}/api/motion/joints",
                         json=joint_data,
                         headers=headers,
@@ -113,7 +113,7 @@ class TestWebSocketTelemetry:
                     )
                     # Accepter différents codes de statut selon l'état de l'API
                     assert response.status_code in [200, 422, 500]
-                except requests.exceptions.RequestException:
+                except httpx.RequestError:
                     # API non disponible, continuer le test
                     pass
 

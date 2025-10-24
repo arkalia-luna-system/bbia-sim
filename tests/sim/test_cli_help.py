@@ -16,7 +16,7 @@ class TestCLIHelp:
             [sys.executable, "-m", "bbia_sim", "--help"],
             capture_output=True,
             text=True,
-            cwd="/Volumes/T7/bbia-reachy-sim",
+            cwd=os.getcwd(),
         )
 
         assert result.returncode == 0, f"CLI help failed: {result.stderr}"
@@ -42,7 +42,7 @@ class TestCLIHelp:
             [sys.executable, "-m", "bbia_sim", "--sim", "--scene", "minimal.xml"],
             capture_output=True,
             text=True,
-            cwd="/Volumes/T7/bbia-reachy-sim",
+            cwd=os.getcwd(),
         )
 
         # Le message macOS devrait être présent dans stderr ou stdout
@@ -74,7 +74,7 @@ class TestCLIHelp:
             ],
             capture_output=True,
             text=True,
-            cwd="/Volumes/T7/bbia-reachy-sim",
+            cwd=os.getcwd(),
         )
 
         # Le mode headless devrait fonctionner même sans viewer
@@ -90,7 +90,7 @@ class TestCLIHelp:
             [sys.executable, "-m", "bbia_sim", "--version"],
             capture_output=True,
             text=True,
-            cwd="/Volumes/T7/bbia-reachy-sim",
+            cwd=os.getcwd(),
         )
 
         assert result.returncode == 0, f"Version command failed: {result.stderr}"
