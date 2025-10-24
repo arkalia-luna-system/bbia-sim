@@ -12,6 +12,7 @@ jobs:
     env:
       MUJOCO_GL: disable
       DISPLAY: ""
+      BBIA_DISABLE_AUDIO: "1"
     steps:
       - uses: actions/checkout@v4
 
@@ -67,6 +68,7 @@ jobs:
       SEED: 42
       MUJOCO_GL: disable
       DISPLAY: ""
+      BBIA_DISABLE_AUDIO: "1"
     steps:
       - uses: actions/checkout@v4
 
@@ -118,6 +120,7 @@ jobs:
     env:
       MUJOCO_GL: disable
       DISPLAY: ""
+      BBIA_DISABLE_AUDIO: "1"
     steps:
       - uses: actions/checkout@v4
 

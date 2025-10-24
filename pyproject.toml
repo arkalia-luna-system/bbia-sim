@@ -122,6 +122,7 @@ addopts = [
 env = [
     "MUJOCO_GL=disable",
     "DISPLAY=",
+    "BBIA_DISABLE_AUDIO=1",
 ]
 markers = [
     "fast: marks tests as fast (deselect with '-m \"not fast\"')",
