@@ -46,8 +46,8 @@ src/bbia_sim/
 - ✅ **Audio** : synchronisation voix ↔ mouvements subtils
 - ✅ **Comportements** : WakeUp, Greeting, EmotionalResponse, VisionTracking, etc.
 - ✅ **API REST** + WebSocket temps réel
-- ✅ **Tests** : 402 tests collectés, 391 passent (97% réussite)
-- ✅ **Coverage** : 72.07% de couverture de code
+- ✅ **Tests** : 531 tests collectés, 418 passent (79% réussite)
+- ✅ **Coverage** : 76.70% de couverture de code
 
 ---
 

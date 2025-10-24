@@ -147,4 +147,4 @@ python scripts/check_joints.py yaw_body
 
 **🤖 BBIA Reachy Mini - Projet parfaitement aligné et documenté ! ✨**
 
-*Réponse finale - 15 Janvier 2025 - Antennes expliquées et prompt amélioré*
+*Réponse finale - Octobre 2025 - Antennes expliquées et prompt amélioré*

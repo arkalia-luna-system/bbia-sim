@@ -96,5 +96,5 @@ python -m bbia_sim --sim --headless --duration 1
 ---
 
 **Version** : 0.2.0  
-**Date** : 2025-10-22  
+**Date** : Octobre 2025  
 **Statut** : Stable, prêt pour production

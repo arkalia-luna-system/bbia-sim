@@ -11,7 +11,7 @@
 - ✅ **16 joints** détectés dans le modèle officiel
 - ✅ **41 assets STL** officiels présents
 - ✅ **26 modules Python** BBIA fonctionnels
-- ✅ **408 tests** passent (97% réussite)
+- ✅ **531 tests** collectés, 418 passent (79% réussite)
 
 ## 🗂️ **STRUCTURE DÉTECTÉE**
 

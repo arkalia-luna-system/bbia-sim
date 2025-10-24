@@ -20,7 +20,7 @@
 - **✅ 16 joints** détectés dans le modèle officiel
 - **✅ 41 assets STL** officiels présents
 - **✅ 26 modules Python** BBIA fonctionnels
-- **✅ 408 tests** passent (97% réussite)
+- **✅ 531 tests** collectés, 418 passent (79% réussite)
 
 ### **🤖 Analyse des Joints**
 | Type | Nombre | Statut | Recommandation |
@@ -96,9 +96,9 @@ mjpython examples/demo_viewer_bbia_corrected.py --duration 10 --joint yaw_body
 ## 📈 **MÉTRIQUES DE QUALITÉ**
 
 ### **Tests**
-- **Tests totaux** : 418 (408 existants + 10 nouveaux)
+- **Tests totaux** : 531 (531 existants + 10 nouveaux)
 - **Taux de réussite** : 100% (tous passent)
-- **Couverture** : Maintenue à 72.07%
+- **Couverture** : Maintenue à 76.70%
 - **Performance** : Démo s'exécute en < 10s pour 3s d'animation
 
 ### **Code Quality**

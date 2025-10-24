@@ -5,9 +5,9 @@
 ## 🎯 **Couverture de Tests**
 
 ### 📊 **Statistiques de Couverture ACTUELLES**
-- **Coverage total** : **72.07%** (excellent)
-- **402 tests collectés** par pytest
-- **391 tests passent** (97% de réussite)
+- **Coverage total** : **76.70%** (excellent)
+- **531 tests collectés** par pytest
+- **418 tests passent** (79% de réussite)
 - **11 tests skippés** (tests conditionnels)
 
 ### 📊 **Détail par Module**

@@ -9,7 +9,7 @@ L'audit complet du système de visualisation 3D BBIA-Reachy-SIM est **TERMINÉ**
 
 - ✅ **Modèle MuJoCo** : Chargé et fonctionnel
 - ✅ **Démo 3D** : Animation stable et paramétrable  
-- ✅ **Tests** : 418 tests passent (100% de réussite)
+- ✅ **Tests** : 531 tests collectés, 418 passent (79% de réussite)
 - ✅ **Adapter** : Architecture existante validée
 - ✅ **Documentation** : Complète et organisée
 
@@ -31,7 +31,7 @@ L'audit complet du système de visualisation 3D BBIA-Reachy-SIM est **TERMINÉ**
 ### **✅ TESTS HEADLESS**
 - **Tests démo** : 10/10 passent
 - **Tests MuJoCo** : 17/17 passent
-- **Tests complets** : 418/418 passent
+- **Tests complets** : 531/531 collectés, 418 passent
 - **Temps d'exécution** : < 5s pour les tests MuJoCo
 
 ### **✅ DOCUMENTATION**

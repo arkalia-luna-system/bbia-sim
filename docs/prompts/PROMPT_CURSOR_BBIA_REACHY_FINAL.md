@@ -22,7 +22,7 @@ Tu es un **agent Cursor expert MuJoCo/Python** spécialisé dans la simulation r
 2. **✅ Assets STL officiels** : 41 fichiers du dépôt Pollen Robotics
 3. **✅ Simulation 3D fonctionnelle** : Robot visible et animé
 4. **✅ Intégration BBIA complète** : Émotions → joints
-5. **✅ Tests complets** : 391+ tests passent (97% réussite)
+5. **✅ Tests complets** : 531 tests collectés, 418 passent (79% réussite)
 6. **✅ Code propre** : Ruff, Black, MyPy validés
 
 ---
@@ -32,8 +32,8 @@ Tu es un **agent Cursor expert MuJoCo/Python** spécialisé dans la simulation r
 ### **🔒 Sécurité & Stabilité**
 - **AUCUNE suppression destructrice** sans plan de PR
 - **Respecte l'arborescence existante** (`src/`, `tests/`, `examples/`, `scripts/`)
-- **Tests et linters doivent rester VERTS** (418 tests passent actuellement)
-- **Coverage maintenu** à 72.07% minimum
+- **Tests et linters doivent rester VERTS** (531 tests collectés, 418 passent actuellement)
+- **Coverage maintenu** à 76.70% minimum
 
 ### **🛠️ Standards Techniques**
 - **Python 3.10+** uniquement
