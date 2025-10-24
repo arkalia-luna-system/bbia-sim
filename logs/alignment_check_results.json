@@ -1,0 +1,428 @@
+{
+  "mjcf_model": {
+    "status": "success",
+    "comparisons": {
+      "joints_count": {
+        "official": 0,
+        "ours": 0,
+        "match": true
+      },
+      "actuators_count": {
+        "official": 0,
+        "ours": 0,
+        "match": true
+      },
+      "bodies_count": {
+        "official": 17,
+        "ours": 17,
+        "match": true
+      },
+      "geoms_count": {
+        "official": 0,
+        "ours": 0,
+        "match": true
+      },
+      "stl_files": {
+        "official": [
+          "5w_speaker.stl",
+          "antenna.stl",
+          "antenna_body_3dprint.stl",
+          "antenna_holder_l_3dprint.stl",
+          "antenna_holder_r_3dprint.stl",
+          "antenna_interface_3dprint.stl",
+          "arducam.stl",
+          "b3b_eh.stl",
+          "b3b_eh_1.stl",
+          "bearing_85x110x13.stl",
+          "big_lens_d40.stl",
+          "body_down_3dprint.stl",
+          "body_foot_3dprint.stl",
+          "body_top_3dprint.stl",
+          "body_turning_3dprint.stl",
+          "bts2_m2_6x8.stl",
+          "dc15_a01_case_b_dummy.stl",
+          "dc15_a01_case_f_dummy.stl",
+          "dc15_a01_case_m_dummy.stl",
+          "dc15_a01_horn_dummy.stl",
+          "dc15_a01_led_cap2_dummy.stl",
+          "glasses_dolder_3dprint.stl",
+          "head_back_3dprint.stl",
+          "head_front_3dprint.stl",
+          "head_mic_3dprint.stl",
+          "lens_cap_d30_3dprint.stl",
+          "lens_cap_d40_3dprint.stl",
+          "m12_fisheye_lens_1_8mm.stl",
+          "mp01062_stewart_arm_3.stl",
+          "neck_reference_3dprint.stl",
+          "phs_1_7x20_5_dc10.stl",
+          "phs_1_7x20_5_dc10_1.stl",
+          "phs_1_7x20_5_dc10_2.stl",
+          "phs_1_7x20_5_dc10_3.stl",
+          "pp01102_arducam_carter.stl",
+          "small_lens_d30.stl",
+          "stewart_link_ball.stl",
+          "stewart_link_ball__2.stl",
+          "stewart_link_rod.stl",
+          "stewart_main_plate_3dprint.stl",
+          "stewart_tricap_3dprint.stl"
+        ],
+        "ours": [
+          "5w_speaker.stl",
+          "antenna.stl",
+          "antenna_body_3dprint.stl",
+          "antenna_holder_l_3dprint.stl",
+          "antenna_holder_r_3dprint.stl",
+          "antenna_interface_3dprint.stl",
+          "arducam.stl",
+          "b3b_eh.stl",
+          "b3b_eh_1.stl",
+          "bearing_85x110x13.stl",
+          "big_lens_d40.stl",
+          "body_down_3dprint.stl",
+          "body_foot_3dprint.stl",
+          "body_top_3dprint.stl",
+          "body_turning_3dprint.stl",
+          "bts2_m2_6x8.stl",
+          "dc15_a01_case_b_dummy.stl",
+          "dc15_a01_case_f_dummy.stl",
+          "dc15_a01_case_m_dummy.stl",
+          "dc15_a01_horn_dummy.stl",
+          "dc15_a01_led_cap2_dummy.stl",
+          "glasses_dolder_3dprint.stl",
+          "head_back_3dprint.stl",
+          "head_front_3dprint.stl",
+          "head_mic_3dprint.stl",
+          "lens_cap_d30_3dprint.stl",
+          "lens_cap_d40_3dprint.stl",
+          "m12_fisheye_lens_1_8mm.stl",
+          "mp01062_stewart_arm_3.stl",
+          "neck_reference_3dprint.stl",
+          "phs_1_7x20_5_dc10.stl",
+          "phs_1_7x20_5_dc10_1.stl",
+          "phs_1_7x20_5_dc10_2.stl",
+          "phs_1_7x20_5_dc10_3.stl",
+          "pp01102_arducam_carter.stl",
+          "small_lens_d30.stl",
+          "stewart_link_ball.stl",
+          "stewart_link_ball__2.stl",
+          "stewart_link_rod.stl",
+          "stewart_main_plate_3dprint.stl",
+          "stewart_tricap_3dprint.stl"
+        ],
+        "match": true,
+        "missing": [],
+        "extra": []
+      }
+    }
+  },
+  "stl_assets": {
+    "status": "success",
+    "comparisons": {
+      "official_count": 41,
+      "our_count": 41,
+      "official_files": [
+        "5w_speaker.stl",
+        "antenna.stl",
+        "antenna_body_3dprint.stl",
+        "antenna_holder_l_3dprint.stl",
+        "antenna_holder_r_3dprint.stl",
+        "antenna_interface_3dprint.stl",
+        "arducam.stl",
+        "b3b_eh.stl",
+        "b3b_eh_1.stl",
+        "bearing_85x110x13.stl",
+        "big_lens_d40.stl",
+        "body_down_3dprint.stl",
+        "body_foot_3dprint.stl",
+        "body_top_3dprint.stl",
+        "body_turning_3dprint.stl",
+        "bts2_m2_6x8.stl",
+        "dc15_a01_case_b_dummy.stl",
+        "dc15_a01_case_f_dummy.stl",
+        "dc15_a01_case_m_dummy.stl",
+        "dc15_a01_horn_dummy.stl",
+        "dc15_a01_led_cap2_dummy.stl",
+        "glasses_dolder_3dprint.stl",
+        "head_back_3dprint.stl",
+        "head_front_3dprint.stl",
+        "head_mic_3dprint.stl",
+        "lens_cap_d30_3dprint.stl",
+        "lens_cap_d40_3dprint.stl",
+        "m12_fisheye_lens_1_8mm.stl",
+        "mp01062_stewart_arm_3.stl",
+        "neck_reference_3dprint.stl",
+        "phs_1_7x20_5_dc10.stl",
+        "phs_1_7x20_5_dc10_1.stl",
+        "phs_1_7x20_5_dc10_2.stl",
+        "phs_1_7x20_5_dc10_3.stl",
+        "pp01102_arducam_carter.stl",
+        "small_lens_d30.stl",
+        "stewart_link_ball.stl",
+        "stewart_link_ball__2.stl",
+        "stewart_link_rod.stl",
+        "stewart_main_plate_3dprint.stl",
+        "stewart_tricap_3dprint.stl"
+      ],
+      "our_files": [
+        "5w_speaker.stl",
+        "antenna.stl",
+        "antenna_body_3dprint.stl",
+        "antenna_holder_l_3dprint.stl",
+        "antenna_holder_r_3dprint.stl",
+        "antenna_interface_3dprint.stl",
+        "arducam.stl",
+        "b3b_eh.stl",
+        "b3b_eh_1.stl",
+        "bearing_85x110x13.stl",
+        "big_lens_d40.stl",
+        "body_down_3dprint.stl",
+        "body_foot_3dprint.stl",
+        "body_top_3dprint.stl",
+        "body_turning_3dprint.stl",
+        "bts2_m2_6x8.stl",
+        "dc15_a01_case_b_dummy.stl",
+        "dc15_a01_case_f_dummy.stl",
+        "dc15_a01_case_m_dummy.stl",
+        "dc15_a01_horn_dummy.stl",
+        "dc15_a01_led_cap2_dummy.stl",
+        "glasses_dolder_3dprint.stl",
+        "head_back_3dprint.stl",
+        "head_front_3dprint.stl",
+        "head_mic_3dprint.stl",
+        "lens_cap_d30_3dprint.stl",
+        "lens_cap_d40_3dprint.stl",
+        "m12_fisheye_lens_1_8mm.stl",
+        "mp01062_stewart_arm_3.stl",
+        "neck_reference_3dprint.stl",
+        "phs_1_7x20_5_dc10.stl",
+        "phs_1_7x20_5_dc10_1.stl",
+        "phs_1_7x20_5_dc10_2.stl",
+        "phs_1_7x20_5_dc10_3.stl",
+        "pp01102_arducam_carter.stl",
+        "small_lens_d30.stl",
+        "stewart_link_ball.stl",
+        "stewart_link_ball__2.stl",
+        "stewart_link_rod.stl",
+        "stewart_main_plate_3dprint.stl",
+        "stewart_tricap_3dprint.stl"
+      ],
+      "missing_files": [],
+      "extra_files": [],
+      "all_present": true,
+      "file_sizes": {
+        "5w_speaker.stl": 229884,
+        "antenna.stl": 1048584,
+        "antenna_body_3dprint.stl": 241784,
+        "antenna_holder_l_3dprint.stl": 449784,
+        "antenna_holder_r_3dprint.stl": 465984,
+        "antenna_interface_3dprint.stl": 179984,
+        "arducam.stl": 1048584,
+        "b3b_eh.stl": 9884,
+        "b3b_eh_1.stl": 9884,
+        "bearing_85x110x13.stl": 1048584,
+        "big_lens_d40.stl": 151284,
+        "body_down_3dprint.stl": 1048584,
+        "body_foot_3dprint.stl": 639584,
+        "body_top_3dprint.stl": 1048584,
+        "body_turning_3dprint.stl": 393084,
+        "bts2_m2_6x8.stl": 269184,
+        "dc15_a01_case_b_dummy.stl": 248884,
+        "dc15_a01_case_f_dummy.stl": 326984,
+        "dc15_a01_case_m_dummy.stl": 162184,
+        "dc15_a01_horn_dummy.stl": 445084,
+        "dc15_a01_led_cap2_dummy.stl": 1684,
+        "glasses_dolder_3dprint.stl": 607884,
+        "head_back_3dprint.stl": 1048584,
+        "head_front_3dprint.stl": 1048584,
+        "head_mic_3dprint.stl": 662084,
+        "lens_cap_d30_3dprint.stl": 94284,
+        "lens_cap_d40_3dprint.stl": 93684,
+        "m12_fisheye_lens_1_8mm.stl": 259284,
+        "mp01062_stewart_arm_3.stl": 155584,
+        "neck_reference_3dprint.stl": 605084,
+        "phs_1_7x20_5_dc10.stl": 253184,
+        "phs_1_7x20_5_dc10_1.stl": 253184,
+        "phs_1_7x20_5_dc10_2.stl": 253184,
+        "phs_1_7x20_5_dc10_3.stl": 253184,
+        "pp01102_arducam_carter.stl": 109484,
+        "small_lens_d30.stl": 158484,
+        "stewart_link_ball.stl": 194484,
+        "stewart_link_ball__2.stl": 194484,
+        "stewart_link_rod.stl": 1048584,
+        "stewart_main_plate_3dprint.stl": 340584,
+        "stewart_tricap_3dprint.stl": 333184
+      }
+    }
+  },
+  "joints_specs": {
+    "status": "success",
+    "comparisons": {
+      "official_joints": {},
+      "our_joints": {
+        "yaw_body": [
+          -3.14,
+          3.14
+        ],
+        "stewart_1": [
+          -3.14,
+          3.14
+        ],
+        "stewart_2": [
+          -3.14,
+          3.14
+        ],
+        "stewart_3": [
+          -3.14,
+          3.14
+        ],
+        "stewart_4": [
+          -3.14,
+          3.14
+        ],
+        "stewart_5": [
+          -3.14,
+          3.14
+        ],
+        "stewart_6": [
+          -3.14,
+          3.14
+        ],
+        "passive_1": [
+          -3.14,
+          3.14
+        ],
+        "passive_2": [
+          -3.14,
+          3.14
+        ],
+        "passive_3": [
+          -3.14,
+          3.14
+        ],
+        "passive_4": [
+          -3.14,
+          3.14
+        ],
+        "passive_5": [
+          -3.14,
+          3.14
+        ],
+        "passive_6": [
+          -3.14,
+          3.14
+        ],
+        "passive_7": [
+          -3.14,
+          3.14
+        ],
+        "right_antenna": [
+          -3.14,
+          3.14
+        ],
+        "left_antenna": [
+          -3.14,
+          3.14
+        ]
+      },
+      "official_count": 0,
+      "our_count": 16,
+      "missing_joints": [],
+      "extra_joints": [
+        "right_antenna",
+        "passive_6",
+        "stewart_2",
+        "yaw_body",
+        "passive_7",
+        "stewart_3",
+        "passive_4",
+        "left_antenna",
+        "stewart_6",
+        "stewart_5",
+        "passive_2",
+        "passive_3",
+        "passive_5",
+        "stewart_4",
+        "stewart_1",
+        "passive_1"
+      ]
+    }
+  },
+  "api_endpoints": {
+    "status": "success",
+    "comparisons": {
+      "endpoints_count": 17,
+      "endpoints": [
+        [
+          "post",
+          "/goto_pose"
+        ],
+        [
+          "post",
+          "/home"
+        ],
+        [
+          "post",
+          "/joints"
+        ],
+        [
+          "post",
+          "/gripper/{side}"
+        ],
+        [
+          "post",
+          "/head"
+        ],
+        [
+          "post",
+          "/stop"
+        ],
+        [
+          "get",
+          "/status"
+        ],
+        [
+          "post",
+          "/custom"
+        ],
+        [
+          "get",
+          "/full"
+        ],
+        [
+          "get",
+          "/position"
+        ],
+        [
+          "get",
+          "/battery"
+        ],
+        [
+          "get",
+          "/temperature"
+        ],
+        [
+          "get",
+          "/status"
+        ],
+        [
+          "post",
+          "/simulation/start"
+        ],
+        [
+          "post",
+          "/simulation/stop"
+        ],
+        [
+          "get",
+          "/joints"
+        ],
+        [
+          "get",
+          "/sensors"
+        ]
+      ],
+      "motion_endpoints": [],
+      "state_endpoints": []
+    }
+  }
+}

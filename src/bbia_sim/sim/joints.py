@@ -10,35 +10,26 @@ from typing import Any
 
 # Mapping des joints valides avec leurs limites (min, max) en radians
 VALID_JOINTS: dict[str, tuple[float, float]] = {
-    # Cou
-    "neck_yaw": (-1.57, 1.57),  # ±90°
-    "neck_pitch": (-0.79, 0.79),  # ±45°
-    "neck_roll": (-0.52, 0.52),  # ±30°
-    # Épaule droite
-    "right_shoulder_pitch": (-1.57, 1.57),  # ±90°
-    "right_shoulder_roll": (-1.57, 1.57),  # ±90°
-    "right_shoulder_yaw": (-1.57, 1.57),  # ±90°
-    # Coude droit
-    "right_elbow_pitch": (-1.57, 1.57),  # ±90°
-    "right_elbow_roll": (-1.57, 1.57),  # ±90°
-    # Poignet droit
-    "right_wrist_pitch": (-1.57, 1.57),  # ±90°
-    "right_wrist_roll": (-1.57, 1.57),  # ±90°
-    "right_wrist_yaw": (-1.57, 1.57),  # ±90°
-    # Épaule gauche
-    "left_shoulder_pitch": (-1.57, 1.57),  # ±90°
-    "left_shoulder_roll": (-1.57, 1.57),  # ±90°
-    "left_shoulder_yaw": (-1.57, 1.57),  # ±90°
-    # Coude gauche
-    "left_elbow_pitch": (-1.57, 1.57),  # ±90°
-    "left_elbow_roll": (-1.57, 1.57),  # ±90°
-    # Poignet gauche
-    "left_wrist_pitch": (-1.57, 1.57),  # ±90°
-    "left_wrist_roll": (-1.57, 1.57),  # ±90°
-    "left_wrist_yaw": (-1.57, 1.57),  # ±90°
-    # Gripper (pince)
-    "right_gripper": (0.0, 0.04),  # 0-4cm
-    "left_gripper": (0.0, 0.04),  # 0-4cm
+    # Corps principal
+    "yaw_body": (-3.14, 3.14),  # ±180°
+    # Articulations Stewart (plateforme parallèle)
+    "stewart_1": (-3.14, 3.14),  # ±180°
+    "stewart_2": (-3.14, 3.14),  # ±180°
+    "stewart_3": (-3.14, 3.14),  # ±180°
+    "stewart_4": (-3.14, 3.14),  # ±180°
+    "stewart_5": (-3.14, 3.14),  # ±180°
+    "stewart_6": (-3.14, 3.14),  # ±180°
+    # Articulations passives
+    "passive_1": (-3.14, 3.14),  # ±180°
+    "passive_2": (-3.14, 3.14),  # ±180°
+    "passive_3": (-3.14, 3.14),  # ±180°
+    "passive_4": (-3.14, 3.14),  # ±180°
+    "passive_5": (-3.14, 3.14),  # ±180°
+    "passive_6": (-3.14, 3.14),  # ±180°
+    "passive_7": (-3.14, 3.14),  # ±180°
+    # Antennes
+    "right_antenna": (-3.14, 3.14),  # ±180°
+    "left_antenna": (-3.14, 3.14),  # ±180°
 }
 
 # Liste des noms de joints valides (pour validation rapide)
@@ -46,12 +37,12 @@ VALID_JOINT_NAMES: list[str] = list(VALID_JOINTS.keys())
 
 # Joints principaux pour les démos
 MAIN_JOINTS: list[str] = [
-    "neck_yaw",
-    "neck_pitch",
-    "right_shoulder_pitch",
-    "right_elbow_pitch",
-    "left_shoulder_pitch",
-    "left_elbow_pitch",
+    "yaw_body",
+    "stewart_1",
+    "stewart_2",
+    "stewart_3",
+    "right_antenna",
+    "left_antenna",
 ]
 
 

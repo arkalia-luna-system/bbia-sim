@@ -15,16 +15,9 @@ class JointPosition(BaseModel):
     @classmethod
     def validate_joint_name(cls, v):
         """Valide le nom de l'articulation."""
-        allowed_joints = [
-            "neck_yaw",
-            "right_shoulder_pitch",
-            "right_elbow_pitch",
-            "right_gripper_joint",
-            "left_shoulder_pitch",
-            "left_elbow_pitch",
-            "left_gripper_joint",
-        ]
-        if v not in allowed_joints:
+        from ..sim.joints import validate_joint_name
+
+        if not validate_joint_name(v):
             raise ValueError(f"Articulation '{v}' non autorisée")
         return v
 

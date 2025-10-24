@@ -131,13 +131,57 @@ async def get_status() -> dict[str, Any]:
     }
 
 
+@router.post("/simulation/start")
+async def start_simulation() -> dict[str, Any]:
+    """Démarre la simulation MuJoCo."""
+    logger.info("Démarrage de la simulation MuJoCo")
+
+    try:
+        success = await simulation_service.start_simulation(headless=True)
+        if success:
+            return {
+                "status": "started",
+                "message": "Simulation MuJoCo démarrée avec succès",
+                "timestamp": datetime.now().isoformat()
+            }
+        else:
+            return {
+                "status": "error",
+                "message": "Échec du démarrage de la simulation",
+                "timestamp": datetime.now().isoformat()
+            }
+    except Exception as e:
+        logger.error(f"Erreur lors du démarrage de la simulation : {e}")
+        return {
+            "status": "error",
+            "message": f"Erreur : {str(e)}",
+            "timestamp": datetime.now().isoformat()
+        }
+
+
+@router.post("/simulation/stop")
+async def stop_simulation() -> dict[str, Any]:
+    """Arrête la simulation MuJoCo."""
+    logger.info("Arrêt de la simulation MuJoCo")
+
+    try:
+        await simulation_service.stop_simulation()
+        return {
+            "status": "stopped",
+            "message": "Simulation MuJoCo arrêtée avec succès",
+            "timestamp": datetime.now().isoformat()
+        }
+    except Exception as e:
+        logger.error(f"Erreur lors de l'arrêt de la simulation : {e}")
+        return {
+            "status": "error",
+            "message": f"Erreur : {str(e)}",
+            "timestamp": datetime.now().isoformat()
+        }
+
+
 @router.get("/joints")
 async def get_joint_states() -> dict[str, Any]:
-    """Récupère l'état des articulations.
-
-    Returns:
-        État des articulations
-    """
     logger.info("Récupération de l'état des articulations")
 
     # Récupération des positions depuis la simulation

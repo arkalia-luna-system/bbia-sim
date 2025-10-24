@@ -45,6 +45,7 @@ class MuJoCoSimulator:
             self.model = mujoco.MjModel.from_xml_path(str(self.model_path))
             self.data = mujoco.MjData(self.model)
             self.viewer: Optional[mujoco.viewer.MjViewer] = None
+            self.target_positions: dict[str, float] = {}  # Positions cibles à maintenir
             logger.info(f"Simulateur MuJoCo initialisé avec {self.model_path}")
         except Exception as e:
             logger.error(f"Erreur lors du chargement du modèle MJCF : {e}")
@@ -195,8 +196,33 @@ class MuJoCoSimulator:
                     f"pour joint {joint_name} (limites: [{min_limit:.3f}, {max_limit:.3f}])"
                 )
 
-            # Application de la position
+            # Stockage de la position cible
+            self.target_positions[joint_name] = clamped_angle
+
+            # Application de la position avec contrôle PID simple
             self.data.qpos[joint_id] = clamped_angle
+
+            # Contrôle PID simple pour maintenir la position
+            # Recherche de l'actuateur correspondant au joint
+            actuator_id = None
+            for i in range(self.model.nu):
+                actuator_name = mujoco.mj_id2name(self.model, mujoco.mjtObj.mjOBJ_ACTUATOR, i)
+                if actuator_name == joint_name:
+                    actuator_id = i
+                    break
+
+            if actuator_id is not None:
+                # Calcul de l'erreur
+                current_pos = self.data.qpos[joint_id]
+                error = clamped_angle - current_pos
+
+                # Contrôle proportionnel simple
+                kp = 100.0  # Gain proportionnel
+                control_force = kp * error
+
+                # Application du contrôle
+                self.data.ctrl[actuator_id] = control_force
+                logger.debug(f"Contrôle appliqué à {joint_name}: {control_force:.3f}")
             mujoco.mj_forward(self.model, self.data)
             logger.debug(
                 f"Articulation '{joint_name}' positionnée à {clamped_angle:.3f} rad"
@@ -220,6 +246,9 @@ class MuJoCoSimulator:
         """
         try:
             joint_id = self.model.joint(joint_name).id
+            # Retourner la position cible si elle existe, sinon la position actuelle
+            if joint_name in self.target_positions:
+                return float(self.target_positions[joint_name])
             return float(self.data.qpos[joint_id])
         except KeyError:
             logger.error(f"Articulation '{joint_name}' non trouvée")
@@ -235,7 +264,8 @@ class MuJoCoSimulator:
         joint_positions = {}
         for i in range(self.model.njnt):
             joint_name = self.model.joint(i).name
-            joint_positions[joint_name] = float(self.data.qpos[i])
+            # Utiliser get_joint_position pour respecter les positions cibles
+            joint_positions[joint_name] = self.get_joint_position(joint_name)
 
         return {
             "joint_positions": joint_positions,

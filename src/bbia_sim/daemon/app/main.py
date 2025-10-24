@@ -191,7 +191,7 @@ async def api_info() -> dict[str, Any]:
             "Robot control",
             "Authentication",
         ],
-        "robot": {"model": "Reachy Mini", "joints": 8, "status": "ready"},
+        "robot": {"model": "Reachy Mini", "joints": 16, "status": "ready"},
     }
 
 
