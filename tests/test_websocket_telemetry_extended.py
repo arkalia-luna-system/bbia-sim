@@ -455,11 +455,15 @@ class TestWebSocketTelemetryExtended:
             assert mock_broadcast.call_count <= 1
 
     def test_generate_telemetry_data_randomness(self):
-        """Test caractère aléatoire des données de télémétrie."""
+        """Test caractère déterministe des données de télémétrie."""
+        import time
+
+        # Attendre un petit délai pour s'assurer que les timestamps diffèrent
         data1 = self.connection_manager._generate_telemetry_data()
+        time.sleep(0.1)  # Attendre 100ms pour changer le timestamp
         data2 = self.connection_manager._generate_telemetry_data()
 
-        # Les données devraient être différentes (aléatoires)
+        # Les données devraient être différentes (déterministes basées sur le temps)
         assert data1["robot"]["position"]["x"] != data2["robot"]["position"]["x"]
         assert data1["sensors"]["battery"] != data2["sensors"]["battery"]
         assert data1["sensors"]["temperature"] != data2["sensors"]["temperature"]
