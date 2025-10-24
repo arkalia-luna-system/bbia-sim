@@ -1,14 +1,19 @@
 #!/usr/bin/env python3
+"""Tests étendus pour BBIA Voice.
 
-"""Tests étendus pour BBIA Voice
 Tests ciblés pour améliorer la couverture de code.
 """
 
+import os
+import sys
 from unittest.mock import MagicMock, patch
 
 import pytest
 
-from src.bbia_sim.bbia_voice import (
+# Ajouter le répertoire src au PYTHONPATH
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
+
+from bbia_sim.bbia_voice import (
     dire_texte,
     get_bbia_voice,
     lister_voix_disponibles,

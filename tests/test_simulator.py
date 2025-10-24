@@ -413,6 +413,7 @@ class TestMuJoCoSimulator:
 
         # Mock des articulations
         mock_model.njnt = 3
+        mock_model.nbody = 4
         mock_qpos = Mock()
         mock_qpos.tolist.return_value = [0.1, 0.2, 0.3]
         mock_qpos.__getitem__ = lambda self, i: [0.1, 0.2, 0.3][i]
@@ -427,10 +428,13 @@ class TestMuJoCoSimulator:
         # Mock joint names
         mock_joint1 = Mock()
         mock_joint1.name = "joint1"
+        mock_joint1.id = 0
         mock_joint2 = Mock()
         mock_joint2.name = "joint2"
+        mock_joint2.id = 1
         mock_joint3 = Mock()
         mock_joint3.name = "joint3"
+        mock_joint3.id = 2
         mock_model.joint.side_effect = [mock_joint1, mock_joint2, mock_joint3]
 
         with tempfile.NamedTemporaryFile(mode="w", suffix=".xml", delete=False) as f:
@@ -476,7 +480,12 @@ class TestMuJoCoSimulator:
         mock_joint = Mock()
         mock_joint.id = 0
         mock_model.joint.return_value = mock_joint
-        mock_data.qpos = [0.0]
+
+        # Mock qpos comme un array mutable
+        mock_qpos = Mock()
+        mock_qpos.__getitem__ = Mock(return_value=0.0)
+        mock_qpos.__setitem__ = Mock()
+        mock_data.qpos = mock_qpos
 
         # Mock joint_range pour le clamp
         mock_model.joint_range = [[-1.57, 1.57]]  # Limites pour le joint
@@ -499,7 +508,7 @@ class TestMuJoCoSimulator:
 
             # Test avec articulation valide
             simulator.set_joint_position("test_joint", 0.5)
-            assert mock_data.qpos[0] == 0.5
+            mock_qpos.__setitem__.assert_called_with(0, 0.5)
             mock_mujoco.mj_forward.assert_called_once()
 
         finally:
@@ -518,7 +527,12 @@ class TestMuJoCoSimulator:
         mock_joint = Mock()
         mock_joint.id = 0
         mock_model.joint.return_value = mock_joint
-        mock_data.qpos = [0.0]
+
+        # Mock qpos comme un array mutable
+        mock_qpos = Mock()
+        mock_qpos.__getitem__ = Mock(return_value=0.0)
+        mock_qpos.__setitem__ = Mock()
+        mock_data.qpos = mock_qpos
 
         # Mock joint_range avec limites strictes
         mock_model.joint_range = [[-1.0, 1.0]]  # Limites étroites
@@ -541,11 +555,11 @@ class TestMuJoCoSimulator:
 
             # Test avec angle trop grand (devrait être clampé)
             simulator.set_joint_position("test_joint", 2.0)
-            assert mock_data.qpos[0] == 1.0  # Clampé à la limite max
+            mock_qpos.__setitem__.assert_called_with(0, 1.0)  # Clampé à la limite max
 
             # Test avec angle trop petit (devrait être clampé)
             simulator.set_joint_position("test_joint", -2.0)
-            assert mock_data.qpos[0] == -1.0  # Clampé à la limite min
+            mock_qpos.__setitem__.assert_called_with(0, -1.0)  # Clampé à la limite min
 
             # Vérifier que mj_forward a été appelé
             assert mock_mujoco.mj_forward.call_count == 2

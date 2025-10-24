@@ -1,15 +1,21 @@
 #!/usr/bin/env python3
-"""Test E2E minimal : WebSocket télémétrie
+"""Test E2E minimal : WebSocket télémétrie.
+
 Test déterministe et rapide (< 5s).
 """
 
 import asyncio
 import json
+import os
+import sys
 
 import pytest
 import websockets
 
-from src.bbia_sim.daemon.app.main import app, lifespan
+# Ajouter le répertoire src au PYTHONPATH
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "src"))
+
+from bbia_sim.daemon.app.main import app, lifespan
 
 
 class TestWebSocketTelemetry:

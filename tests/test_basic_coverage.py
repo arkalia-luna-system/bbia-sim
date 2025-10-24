@@ -1,12 +1,18 @@
 #!/usr/bin/env python3
-"""Tests simples pour améliorer la coverage
+"""Tests simples pour améliorer la coverage.
+
 Tests basiques sans dépendances complexes.
 """
 
+import os
+import sys
 import unittest
 
-from src.bbia_sim.daemon.config import Settings
-from src.bbia_sim.daemon.models import JointPosition, MotionCommand, Pose
+# Ajouter le répertoire src au PYTHONPATH
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
+
+from bbia_sim.daemon.config import Settings
+from bbia_sim.daemon.models import JointPosition, MotionCommand, Pose
 
 
 class TestBasicCoverage(unittest.TestCase):

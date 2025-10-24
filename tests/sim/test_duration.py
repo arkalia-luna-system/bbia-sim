@@ -1,17 +1,22 @@
+#!/usr/bin/env python3
 """Tests pour vérifier le respect strict de la durée en mode headless."""
 
 import os
+import sys
 import tempfile
 import time
 from unittest.mock import Mock, patch
 
-from src.bbia_sim.sim.simulator import MuJoCoSimulator
+# Ajouter le répertoire src au PYTHONPATH
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "src"))
+
+from bbia_sim.sim.simulator import MuJoCoSimulator
 
 
 class TestHeadlessDuration:
     """Tests pour vérifier le respect de la durée en mode headless."""
 
-    @patch("src.bbia_sim.sim.simulator.mujoco")
+    @patch("bbia_sim.sim.simulator.mujoco")
     def test_headless_duration_strict(self, mock_mujoco):
         """Test que la durée headless est respectée avec une tolérance stricte de ±0.05s."""
         mock_model = Mock()
@@ -53,7 +58,7 @@ class TestHeadlessDuration:
         finally:
             os.unlink(temp_model)
 
-    @patch("src.bbia_sim.sim.simulator.mujoco")
+    @patch("bbia_sim.sim.simulator.mujoco")
     def test_headless_duration_edge_cases(self, mock_mujoco):
         """Test les cas limites de durée."""
         mock_model = Mock()
@@ -91,7 +96,7 @@ class TestHeadlessDuration:
         finally:
             os.unlink(temp_model)
 
-    @patch("src.bbia_sim.sim.simulator.mujoco")
+    @patch("bbia_sim.sim.simulator.mujoco")
     def test_headless_no_duration_limit(self, mock_mujoco):
         """Test que la simulation headless sans durée s'arrête à la limite de steps."""
         mock_model = Mock()

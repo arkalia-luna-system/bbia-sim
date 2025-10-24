@@ -1,12 +1,18 @@
+#!/usr/bin/env python3
 """Tests d'intégration pour l'API REST."""
 
+import os
+import sys
 from unittest.mock import patch
 
 import pytest
 from fastapi.testclient import TestClient
 
-from src.bbia_sim.daemon.app.main import app
-from src.bbia_sim.daemon.config import settings
+# Ajouter le répertoire src au PYTHONPATH
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
+
+from bbia_sim.daemon.app.main import app
+from bbia_sim.daemon.config import settings
 
 
 class TestAPIIntegration:

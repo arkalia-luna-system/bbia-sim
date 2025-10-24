@@ -1,14 +1,22 @@
+#!/usr/bin/env python3
+"""Tests pour BBIA Audio."""
+
+import os
+import sys
 import unittest
 from unittest.mock import MagicMock, patch
 
 import numpy as np
 
-from src.bbia_sim import bbia_audio
+# Ajouter le répertoire src au PYTHONPATH
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
+
+from bbia_sim import bbia_audio
 
 
 class TestBBIAAudio(unittest.TestCase):
-    @patch("src.bbia_sim.bbia_audio.sd")
-    @patch("src.bbia_sim.bbia_audio.wave.open")
+    @patch("bbia_sim.bbia_audio.sd")
+    @patch("bbia_sim.bbia_audio.wave.open")
     def test_enregistrer_audio(self, mock_wave_open, mock_sd):
         mock_wave = MagicMock()
         mock_wave_open.return_value.__enter__.return_value = mock_wave
@@ -17,8 +25,8 @@ class TestBBIAAudio(unittest.TestCase):
         mock_sd.rec.assert_called()
         mock_wave.writeframes.assert_called()
 
-    @patch("src.bbia_sim.bbia_audio.sd")
-    @patch("src.bbia_sim.bbia_audio.wave.open")
+    @patch("bbia_sim.bbia_audio.sd")
+    @patch("bbia_sim.bbia_audio.wave.open")
     def test_lire_audio(self, mock_wave_open, mock_sd):
         mock_wave = MagicMock()
         mock_wave.getframerate.return_value = 16000
@@ -28,7 +36,7 @@ class TestBBIAAudio(unittest.TestCase):
         bbia_audio.lire_audio("test.wav")
         mock_sd.play.assert_called()
 
-    @patch("src.bbia_sim.bbia_audio.wave.open")
+    @patch("bbia_sim.bbia_audio.wave.open")
     def test_detecter_son(self, mock_wave_open):
         mock_wave = MagicMock()
         # Cas : son détecté

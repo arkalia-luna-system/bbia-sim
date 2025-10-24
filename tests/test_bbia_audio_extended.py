@@ -5,13 +5,17 @@ Tests ciblés pour améliorer la couverture de code.
 """
 
 import os
+import sys
 import tempfile
 from unittest.mock import MagicMock, mock_open, patch
 
 import numpy as np
 import pytest
 
-from src.bbia_sim.bbia_audio import (
+# Ajouter le répertoire src au PYTHONPATH
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
+
+from bbia_sim.bbia_audio import (
     detecter_son,
     enregistrer_audio,
     lire_audio,

@@ -1,11 +1,17 @@
+#!/usr/bin/env python3
 """Tests unitaires pour les routers state et motion."""
 
+import os
+import sys
 from unittest.mock import patch
 
 import pytest
 from fastapi.testclient import TestClient
 
-from src.bbia_sim.daemon.app.main import app
+# Ajouter le répertoire src au PYTHONPATH
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
+
+from bbia_sim.daemon.app.main import app
 
 
 class TestStateRouter:

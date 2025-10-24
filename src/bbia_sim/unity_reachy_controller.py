@@ -49,7 +49,11 @@ class UnityReachyMiniController:
                     if content and content != self.last_response:
                         self.last_response = content
                         return content
-            except Exception:
+            except OSError:  # nosec B110
+                # Erreur de lecture de fichier - ignorer et continuer
+                pass
+            except Exception:  # nosec B110
+                # Autres erreurs inattendues - ignorer et continuer
                 pass
             time.sleep(0.1)
         return ""
@@ -105,30 +109,63 @@ class UnityReachyMiniController:
                 elif command == "help":
                     self._show_help()
                 elif command == "status":
-                    pass
+                    print(
+                        "Status: Connected"
+                        if self.is_connected
+                        else "Status: Disconnected"
+                    )
                 elif command.startswith("head "):
                     parts = command.split()[1:]
                     if len(parts) == 3:
-                        x, y, z = map(float, parts)
-                        self.move_head(x, y, z)
+                        try:
+                            x, y, z = map(float, parts)
+                            self.move_head(x, y, z)
+                        except ValueError:
+                            print(
+                                "❌ Valeurs invalides pour head. Utilisez: head x y z"
+                            )
                     else:
-                        pass
+                        print("❌ Commande head invalide. Utilisez: head x y z")
                 elif command.startswith("emotion "):
                     emotion = command.split()[1]
-                    self.set_emotion(emotion)
+                    if self.set_emotion(emotion):
+                        print(f"✅ Émotion '{emotion}' définie")
+                    else:
+                        print(f"❌ Émotion '{emotion}' invalide")
                 elif command == "reset":
-                    self.reset_position()
+                    if self.reset_position():
+                        print("✅ Position réinitialisée")
+                    else:
+                        print("❌ Erreur lors de la réinitialisation")
                 elif command == "awake":
+                    print("🤖 BBIA se réveille...")
                     self.bbia_awake()
+                    print("✅ BBIA est réveillé!")
                 else:
-                    pass
+                    print("❌ Commande inconnue. Tapez 'help' pour l'aide.")
             except KeyboardInterrupt:
                 break
-            except Exception:
-                pass
+            except Exception as e:
+                print(f"❌ Erreur: {e}")
 
     def _show_help(self):
-        pass
+        help_text = """
+🤖 Commandes BBIA disponibles:
+
+• status     - Afficher le statut de connexion
+• awake      - Réveiller BBIA (séquence complète)
+• head x y z - Déplacer la tête (x, y, z en degrés)
+• emotion <nom> - Définir une émotion (neutral, happy, sad, angry)
+• reset      - Réinitialiser la position
+• help       - Afficher cette aide
+• quit/exit - Quitter le mode interactif
+
+Exemples:
+  head 10 0 0    - Tourner la tête à droite
+  emotion happy - Rendre BBIA heureux
+  awake         - Séquence de réveil complète
+"""
+        print(help_text)
 
 
 def main():

@@ -267,7 +267,8 @@ class TestUnityReachyMiniController:
         """Test gestion d'exception dans le mode interactif."""
         with tempfile.TemporaryDirectory() as _:
             controller = UnityReachyMiniController()
-            with patch("builtins.input", side_effect=Exception("Test error")):
+            # Simuler une exception après quelques commandes normales
+            with patch("builtins.input", side_effect=["help", Exception("Test error")]):
                 with patch("builtins.print") as mock_print:
                     controller.interactive_mode()
             # Vérifier qu'un message d'erreur a été affiché

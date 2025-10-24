@@ -1,16 +1,22 @@
 #!/usr/bin/env python3
-"""Test E2E minimal : BBIA Modules individuels
+"""Test E2E minimal : BBIA Modules individuels.
+
 Test déterministe et rapide (< 5s).
 """
 
+import os
+import sys
 from unittest.mock import MagicMock, patch
 
 import pytest
 
-from src.bbia_sim.bbia_audio import detecter_son
-from src.bbia_sim.bbia_emotions import BBIAEmotions
-from src.bbia_sim.bbia_vision import BBIAVision
-from src.bbia_sim.bbia_voice import dire_texte, reconnaitre_parole
+# Ajouter le répertoire src au PYTHONPATH
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "src"))
+
+from bbia_sim.bbia_audio import detecter_son
+from bbia_sim.bbia_emotions import BBIAEmotions
+from bbia_sim.bbia_vision import BBIAVision
+from bbia_sim.bbia_voice import dire_texte, reconnaitre_parole
 
 
 class TestBBIAModules:

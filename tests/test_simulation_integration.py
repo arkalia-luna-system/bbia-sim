@@ -77,6 +77,7 @@ class TestSimulationIntegration:
 
         # Mock des articulations
         mock_model.njnt = 3
+        mock_model.nbody = 5
         mock_qpos = Mock()
         mock_qpos.tolist.return_value = [0.0, 0.0, 0.0]
         # Mock l'accès par index pour qpos
@@ -257,9 +258,10 @@ class TestSimulationIntegration:
         # Mock joint names
         joint_names = ["joint1", "joint2", "joint3", "joint4", "joint5"]
         mock_joints = []
-        for name in joint_names:
+        for i, name in enumerate(joint_names):
             mock_joint = Mock()
             mock_joint.name = name
+            mock_joint.id = i
             mock_joints.append(mock_joint)
         mock_model.joint.side_effect = lambda i: mock_joints[i]
 
@@ -309,6 +311,7 @@ class TestSimulationIntegration:
 
         # Mock des articulations
         mock_model.njnt = 2
+        mock_model.nbody = 3
         mock_qpos = Mock()
         mock_qpos.tolist.return_value = [0.0, 0.0]
         # Mock l'accès par index pour qpos
