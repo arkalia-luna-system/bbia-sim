@@ -30,7 +30,7 @@ Ce projet fournit une simulation **parfaitement fidèle** du robot Reachy Mini d
 
 ### Voir le robot en 3D (FONCTIONNEL)
 ```bash
-# 🎯 NOUVELLE DÉMO CORRIGÉE - Version stable et paramétrable (RECOMMANDÉE)
+# 🎯 DÉMO CORRIGÉE - Version stable et paramétrable (RECOMMANDÉE)
 python examples/demo_viewer_bbia_corrected.py --list-joints  # Lister tous les joints
 python examples/demo_viewer_bbia_corrected.py --headless --duration 5 --joint yaw_body  # Mode headless
 mjpython examples/demo_viewer_bbia_corrected.py --duration 10 --joint yaw_body  # Mode graphique
@@ -45,8 +45,16 @@ mjpython examples/test_safe_joints.py
 mjpython examples/demo_viewer_bbia_simple.py --joint yaw_body --duration 10 --frequency 0.5 --amplitude 0.3
 ```
 
+### ⚠️ RÈGLES DE SÉCURITÉ CRITIQUES
+- **✅ TOUJOURS utiliser `yaw_body`** pour les animations visibles
+- **✅ Amplitude maximum** : 0.3 rad (clamp automatique)
+- **✅ Mode headless** : Stable et rapide pour les tests
+- **❌ JAMAIS animer** : `left_antenna`, `right_antenna`, `passive_*`
+- **❌ JAMAIS dépasser** : 0.3 rad d'amplitude
+
 ### 📋 Documentation Complète
 - **Audit 3D** : `docs/audit/AUDIT_3D_BBIA.md`
+- **Audit Complet** : `docs/audit/AUDIT_3D_BBIA_COMPLET.md`
 - **Résultats** : `docs/audit/RESULTATS_AUDIT_3D_BBIA.md`
 - **Mission** : `docs/mission/MISSION_FINALE_ACCOMPLIE.md`
 - **Opportunités** : `docs/opportunities/OPPORTUNITES_DEVELOPPEMENT.md`
