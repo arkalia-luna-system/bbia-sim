@@ -707,9 +707,11 @@ class TestMuJoCoSimulator:
         mock_joint2.name = "joint2"
         mock_joint3 = Mock()
         mock_joint3.name = "joint3"
-        mock_model.joint.side_effect = lambda name: next(
-            (j for j in [mock_joint1, mock_joint2, mock_joint3] if j.name == name),
-            mock_joint1,
+        mock_joints = [mock_joint1, mock_joint2, mock_joint3]
+        mock_model.joint.side_effect = lambda i: (
+            mock_joints[i]
+            if isinstance(i, int)
+            else next((j for j in mock_joints if j.name == i), mock_joint1)
         )
 
         with tempfile.NamedTemporaryFile(mode="w", suffix=".xml", delete=False) as f:
