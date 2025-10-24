@@ -9,6 +9,9 @@ on:
 jobs:
   lint:
     runs-on: ubuntu-latest
+    env:
+      MUJOCO_GL: disable
+      DISPLAY: ""
     steps:
       - uses: actions/checkout@v4
 
@@ -62,7 +65,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SEED: 42
-      MUJOCO_GL: egl
+      MUJOCO_GL: disable
+      DISPLAY: ""
     steps:
       - uses: actions/checkout@v4
 
@@ -111,6 +115,9 @@ jobs:
   test-e2e:
     runs-on: ubuntu-latest
     needs: [lint]
+    env:
+      MUJOCO_GL: disable
+      DISPLAY: ""
     steps:
       - uses: actions/checkout@v4
 

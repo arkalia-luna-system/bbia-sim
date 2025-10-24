@@ -121,6 +121,7 @@ addopts = [
 ]
 env = [
     "MUJOCO_GL=disable",
+    "DISPLAY=",
 ]
 markers = [
     "fast: marks tests as fast (deselect with '-m \"not fast\"')",
