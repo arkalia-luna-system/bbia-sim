@@ -200,11 +200,11 @@ numpy = "^1.24.0"
 
 #### **❌ ERREUR #0 : Guillemets et Environnement**
 ```bash
-# ❌ NE JAMAIS utiliser de guillemets dans les messages de commit
-git commit -m Message avec guillemets  # ÉCHEC GARANTI
+# ❌ NE JAMAIS utiliser de guillemets doubles dans les messages de commit
+git commit -m "Message avec guillemets doubles"  # ÉCHEC GARANTI
 
-# ✅ CORRECT - Pas de guillemets
-git commit -m Message sans guillemets  # SUCCÈS GARANTI
+# ✅ CORRECT - Utiliser des guillemets simples
+git commit -m 'Message avec guillemets simples'  # SUCCÈS GARANTI
 
 # ❌ NE JAMAIS travailler en dehors du venv
 python script.py  # Peut causer des erreurs de dépendances
@@ -335,7 +335,7 @@ BLOCKED_JOINTS = {
 3. **Vérifier Black** : `black src/ tests/ examples/ scripts/ --check`
 4. **Vérifier MyPy** : `mypy src/ --ignore-missing-imports`
 5. **Tester** : `python -m pytest tests/test_adapter_mujoco.py -v`
-6. **Commit SANS guillemets** : `git commit -m Message simple`
+6. **Commit avec guillemets simples** : `git commit -m 'Message simple'`
 7. **Push** : `git push origin develop`
 
 #### **🔍 Checklist de Qualité OBLIGATOIRE**
@@ -352,12 +352,12 @@ python -m pytest tests/test_adapter_mujoco.py -v
 
 # 4. Commit (SANS guillemets)
 git add .
-git commit -m Message simple sans guillemets
+git commit -m 'Message simple avec guillemets simples'
 git push origin develop
 ```
 
 #### **⚠️ RÈGLES ABSOLUES**
-- **JAMAIS de guillemets** dans les messages de commit
+- **JAMAIS de guillemets doubles** dans les messages de commit
 - **TOUJOURS dans le venv** ou utiliser `mjpython`
 - **JAMAIS d'erreurs** de linting, formatage, ou tests
 - **TOUJOURS vérifier** la qualité avant commit
@@ -402,6 +402,50 @@ git push origin develop
 
 ---
 
-**🤖 BBIA Reachy Mini Simulation - Mission Accomplie ! ✨**
+## 🎯 **OPPORTUNITÉS DE DÉVELOPPEMENT**
 
-*Prompt final - 15 Janvier 2025 - Projet fonctionnel et aligné*
+### **🚀 Fonctionnalités à Développer**
+1. **Nouvelles émotions** : Confusion, détermination, nostalgie, fierté
+2. **Comportements avancés** : Interactions sociales, apprentissage
+3. **Vision améliorée** : Reconnaissance d'expressions, suivi multi-objets
+4. **Audio avancé** : Reconnaissance de commandes, synthèse émotionnelle
+5. **API étendue** : Endpoints pour contrôle fin, monitoring
+6. **Intégration Unity** : Synchronisation temps réel avec Unity
+7. **Tests automatisés** : CI/CD, tests de régression
+8. **Documentation interactive** : Tutoriels, guides vidéo
+
+### **🔧 Améliorations Techniques**
+1. **Performance** : Optimisation MuJoCo, parallélisation
+2. **Sécurité** : Validation des entrées, gestion d'erreurs
+3. **Monitoring** : Métriques temps réel, alertes
+4. **Configuration** : Fichiers de config dynamiques
+5. **Logging** : Système de logs structuré
+6. **Docker** : Containerisation complète
+7. **Tests** : Couverture 90%+, tests d'intégration
+
+### **🎮 Exemples Concrets**
+```python
+# Nouvelle émotion "confusion"
+confusion_emotion = {
+    "yaw_body": 0.1,      # Rotation légère
+    "stewart_1": 0.05,    # Mouvement subtil
+    "duration": 3.0,      # Durée de l'émotion
+    "transition": "slow"  # Transition lente
+}
+
+# Reconnaissance d'expressions humaines
+face_emotions = await vision.detect_human_emotions()
+if face_emotions["happy"] > 0.8:
+    await integration.apply_emotion("happy", intensity=0.9)
+
+# Commandes vocales
+command = await voice.recognize_command()
+if "tourne" in command and "gauche" in command:
+    await integration.turn_head("left", speed=0.5)
+```
+
+---
+
+**🤖 BBIA Reachy Mini Simulation - Mission Accomplie + Opportunités Identifiées ! ✨**
+
+*Prompt final - 15 Janvier 2025 - Projet fonctionnel, aligné et prêt pour le développement avancé*
