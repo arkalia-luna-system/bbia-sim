@@ -96,14 +96,16 @@ class ReachyBackend(RobotAPI):
             logger.error(f"Joint introuvable: {joint_name}")
             return False
 
-        # Clamp la position
-        position = self.clamp_joint_position(joint_name, position)
+        # Validation et clamp via RobotAPI
+        is_valid, clamped_position = self._validate_joint_pos(joint_name, position)
+        if not is_valid:
+            return False
 
         # TODO: Envoyer la commande au robot réel
         # Pour l'instant, simulation
-        self.simulated_joints[joint_name] = position
+        self.simulated_joints[joint_name] = clamped_position
 
-        logger.debug(f"Joint {joint_name} → {position:.3f} rad (mock)")
+        logger.debug(f"Joint {joint_name} → {clamped_position:.3f} rad (mock)")
         return True
 
     def get_joint_pos(self, joint_name: str) -> Optional[float]:

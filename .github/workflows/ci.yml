@@ -60,6 +60,9 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
+    env:
+      SEED: 42
+      MUJOCO_GL: egl
     steps:
       - uses: actions/checkout@v4
 
@@ -86,12 +89,24 @@ jobs:
           export PYTHONPATH=src:$PYTHONPATH
           pytest tests/ -v -m "not e2e" --cov=src/bbia_sim --cov-report=xml --cov-report=term-missing --cov-fail-under=0 --timeout=300 --override-ini="addopts="
 
+      - name: Golden tests (headless)
+        run: pytest -q tests/test_golden_traces.py --maxfail=1 --disable-warnings
+
       - name: Upload coverage
         uses: codecov/codecov-action@v3
         with:
           file: ./coverage.xml
           flags: unittests
           name: codecov-umbrella
+
+      - name: Upload artifacts on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ci-artifacts
+          path: |
+            artifacts/**/*.jsonl
+            artifacts/**/*.csv
 
   test-e2e:
     runs-on: ubuntu-latest

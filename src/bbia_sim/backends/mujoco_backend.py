@@ -94,15 +94,17 @@ class MuJoCoBackend(RobotAPI):
             logger.error(f"Joint introuvable: {joint_name}")
             return False
 
-        # Clamp la position
-        position = self.clamp_joint_position(joint_name, position)
+        # Validation et clamp via RobotAPI
+        is_valid, clamped_position = self._validate_joint_pos(joint_name, position)
+        if not is_valid:
+            return False
 
         # Appliquer la position
         joint_id = self.joint_name_to_id[joint_name]
         if self.data is not None:
-            self.data.qpos[joint_id] = position
+            self.data.qpos[joint_id] = clamped_position
 
-        logger.debug(f"Joint {joint_name} → {position:.3f} rad")
+        logger.debug(f"Joint {joint_name} → {clamped_position:.3f} rad")
         return True
 
     def get_joint_pos(self, joint_name: str) -> Optional[float]:

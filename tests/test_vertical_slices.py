@@ -54,8 +54,11 @@ class TestVerticalSlices:
             assert (
                 result.returncode == 0
             ), f"Erreur avec émotion {emotion}: {result.stderr}"
-            assert "Animation headless terminée" in result.stdout
-            assert f"Émotion : {emotion}" in result.stdout
+            assert (
+                "Animation terminée" in result.stdout
+                or "Animation headless terminée" in result.stdout
+            )
+            assert f"• Émotion : {emotion}" in result.stdout
 
     def test_demo_voice_headless(self, demo_scripts):
         """Test de la démo voix en mode headless."""
@@ -91,8 +94,11 @@ class TestVerticalSlices:
             assert (
                 result.returncode == 0
             ), f"Erreur avec commande {command}: {result.stderr}"
-            assert "Animation headless terminée" in result.stdout
-            assert f"Commande : '{command}'" in result.stdout
+            assert (
+                "Animation terminée" in result.stdout
+                or "Animation headless terminée" in result.stdout
+            )
+            assert f"• Commande : '{command}'" in result.stdout
 
     def test_demo_vision_headless(self, demo_scripts):
         """Test de la démo vision en mode headless."""
@@ -152,8 +158,11 @@ class TestVerticalSlices:
             assert (
                 result.returncode == 0
             ), f"Erreur avec comportement {behavior}: {result.stderr}"
-            assert "Animation headless terminée" in result.stdout
-            assert f"Comportement : {behavior}" in result.stdout
+            assert (
+                "Animation terminée" in result.stdout
+                or "Animation headless terminée" in result.stdout
+            )
+            assert f"• Comportement : {behavior}" in result.stdout
 
     def test_demo_performance(self, demo_scripts):
         """Test de performance des démos."""

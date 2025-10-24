@@ -52,6 +52,27 @@ class RobotAPI(ABC):
         """Définit la position d'un joint."""
         pass
 
+    def _validate_joint_pos(
+        self, joint_name: str, position: float
+    ) -> tuple[bool, float]:
+        """Valide et clamp la position d'un joint."""
+        # Vérifier si le joint est interdit
+        if joint_name in self.forbidden_joints:
+            logger.error(f"Joint interdit: {joint_name}")
+            return False, position
+
+        # Clamp l'amplitude pour la sécurité
+        clamped_position = max(
+            -self.safe_amplitude_limit, min(self.safe_amplitude_limit, position)
+        )
+
+        if clamped_position != position:
+            logger.warning(
+                f"Position clampée: {position:.3f} → {clamped_position:.3f} rad"
+            )
+
+        return True, clamped_position
+
     @abstractmethod
     def get_joint_pos(self, joint_name: str) -> Optional[float]:
         """Récupère la position actuelle d'un joint."""

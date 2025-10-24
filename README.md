@@ -409,6 +409,12 @@ python -m pytest --collect-only -q | wc -l
 - Structure de dossiers respectée
 - Fichiers `__init__.py` dans les sous-dossiers de tests
 
+## 🧪 Tests Golden Traces
+
+**Tests de non-régression** : `pytest -q tests/test_golden_traces.py`
+
+**Régénérer références** : `scripts/record_trace.py ...` (ne pas commiter sans raison)
+
 ## 🎉 Statut Final
 
 **✅ MISSION ACCOMPLIE** : Le robot Reachy Mini est maintenant parfaitement simulé avec une fidélité de 100% aux spécifications officielles et une couverture de tests excellente.
