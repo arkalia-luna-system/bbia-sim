@@ -1,6 +1,4 @@
-"""
-Configuration pytest pour les tests e2e.
-"""
+"""Configuration pytest pour les tests e2e."""
 
 import pytest
 

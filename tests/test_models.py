@@ -62,8 +62,8 @@ class TestJointPosition:
 
     def test_valid_joint_position(self):
         """Test position articulation valide."""
-        joint = JointPosition(joint_name="neck_yaw", position=0.5)
-        assert joint.joint_name == "neck_yaw"
+        joint = JointPosition(joint_name="yaw_body", position=0.5)
+        assert joint.joint_name == "yaw_body"
         assert joint.position == 0.5
 
     def test_joint_name_validation(self):
@@ -79,15 +79,15 @@ class TestJointPosition:
     def test_joint_position_bounds(self):
         """Test validation bornes position."""
         # Position valide
-        joint = JointPosition(joint_name="neck_yaw", position=3.14)
+        joint = JointPosition(joint_name="yaw_body", position=3.14)
         assert joint.position == 3.14
 
         # Position hors limites
         with pytest.raises(ValidationError):
-            JointPosition(joint_name="neck_yaw", position=3.15)  # > π
+            JointPosition(joint_name="yaw_body", position=3.15)  # > π
 
         with pytest.raises(ValidationError):
-            JointPosition(joint_name="neck_yaw", position=-3.15)  # < -π
+            JointPosition(joint_name="yaw_body", position=-3.15)  # < -π
 
         # Articulation non autorisée
         with pytest.raises(ValidationError):

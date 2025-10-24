@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 
-"""
-BBIA Vision - Module de vision avancé pour Reachy Mini Wireless
-Reconnaissance d'objets, détection de visages, suivi d'objets
+"""BBIA Vision - Module de vision avancé pour Reachy Mini Wireless
+Reconnaissance d'objets, détection de visages, suivi d'objets.
 """
 
 from datetime import datetime
@@ -10,7 +9,7 @@ from typing import Any, Optional
 
 
 class BBIAVision:
-    """Module de vision avancé pour BBIA"""
+    """Module de vision avancé pour BBIA."""
 
     def __init__(self):
         self.camera_active = True
@@ -30,15 +29,8 @@ class BBIAVision:
             "night_vision": False,
         }
 
-        print("📷 BBIA Vision initialisé")
-        print(f"   • Caméra : {self.specs['camera']}")
-        print(f"   • Résolution : {self.specs['resolution']}")
-        print(f"   • Champ de vision : {self.specs['fov']}")
-
     def scan_environment(self) -> dict[str, Any]:
-        """Scanne l'environnement et détecte les objets"""
-        print("🔍 Scan de l'environnement...")
-
+        """Scanne l'environnement et détecte les objets."""
         # Simulation de détection d'objets
         objects = [
             {
@@ -94,9 +86,6 @@ class BBIAVision:
         self.objects_detected = objects
         self.faces_detected = faces
 
-        print(f"✅ {len(objects)} objets détectés")
-        print(f"✅ {len(faces)} visages détectés")
-
         return {
             "objects": objects,
             "faces": faces,
@@ -104,62 +93,43 @@ class BBIAVision:
         }
 
     def recognize_object(self, object_name: str) -> Optional[dict]:
-        """Reconnaît un objet spécifique"""
-        print(f"🔍 Reconnaissance de l'objet : {object_name}")
-
+        """Reconnaît un objet spécifique."""
         for obj in self.objects_detected:
             if obj["name"] == object_name:
-                print(f"✅ Objet reconnu : {object_name}")
-                print(f"   • Distance : {obj['distance']}m")
-                print(f"   • Confiance : {obj['confidence']*100:.1f}%")
-                print(f"   • Position : {obj['position']}")
                 return obj
 
-        print(f"❌ Objet non trouvé : {object_name}")
         return None
 
     def detect_faces(self) -> list[dict]:
-        """Détecte les visages dans le champ de vision"""
-        print("👥 Détection de visages...")
-
+        """Détecte les visages dans le champ de vision."""
         if not self.faces_detected:
             self.scan_environment()
 
-        for face in self.faces_detected:
-            print("👤 Visage détecté :")
-            print(f"   • Distance : {face['distance']}m")
-            print(f"   • Émotion : {face['emotion']}")
-            print(f"   • Confiance : {face['confidence']*100:.1f}%")
+        for _face in self.faces_detected:
+            pass
 
         return self.faces_detected
 
     def track_object(self, object_name: str) -> bool:
-        """Active le suivi d'un objet"""
-        print(f"🎯 Activation du suivi : {object_name}")
-
+        """Active le suivi d'un objet."""
         obj = self.recognize_object(object_name)
         if obj:
             self.tracking_active = True
             self.current_focus = obj
-            print(f"✅ Suivi activé pour : {object_name}")
             return True
         else:
-            print(f"❌ Impossible de suivre : {object_name} (non détecté)")
             return False
 
     def stop_tracking(self):
-        """Arrête le suivi d'objet"""
+        """Arrête le suivi d'objet."""
         if self.tracking_active:
-            print(
-                f"⏹️ Arrêt du suivi : {self.current_focus['name'] if self.current_focus else 'Aucun'}"
-            )
             self.tracking_active = False
             self.current_focus = None
         else:
-            print("ℹ️ Aucun suivi actif")
+            pass
 
     def get_focus_status(self) -> dict:
-        """Retourne le statut du focus actuel"""
+        """Retourne le statut du focus actuel."""
         return {
             "tracking_active": self.tracking_active,
             "current_focus": self.current_focus,
@@ -168,21 +138,20 @@ class BBIAVision:
         }
 
     def analyze_emotion(self, face_data: dict) -> str:
-        """Analyse l'émotion d'un visage"""
+        """Analyse l'émotion d'un visage."""
         detected_emotion = face_data.get("emotion", "neutral")
 
-        print(f"🎭 Analyse d'émotion : {detected_emotion}")
         return detected_emotion
 
     def calculate_distance(self, object_position: tuple[float, float]) -> float:
-        """Calcule la distance d'un objet"""
+        """Calcule la distance d'un objet."""
         # Simulation simple basée sur la position
         x, y = object_position
         distance = (x**2 + y**2) ** 0.5
         return distance
 
     def get_vision_stats(self) -> dict:
-        """Retourne les statistiques de vision"""
+        """Retourne les statistiques de vision."""
         return {
             "camera_active": self.camera_active,
             "vision_quality": self.vision_quality,
@@ -195,40 +164,26 @@ class BBIAVision:
 
 
 def main():
-    """Test du module BBIA Vision"""
-    print("🧪 Test du module BBIA Vision")
-    print("=" * 50)
-
+    """Test du module BBIA Vision."""
     # Créer l'instance
     vision = BBIAVision()
 
     # Test scan environnement
-    print("\n1️⃣ Test scan environnement")
 
     # Test reconnaissance objet
-    print("\n2️⃣ Test reconnaissance objet")
     vision.recognize_object("chaise")
 
     # Test détection visages
-    print("\n3️⃣ Test détection visages")
 
     # Test suivi objet
-    print("\n4️⃣ Test suivi objet")
     vision.track_object("livre")
 
     # Test statuts
-    print("\n5️⃣ Test statuts")
-    focus_status = vision.get_focus_status()
-    vision_stats = vision.get_vision_stats()
-
-    print(f"Focus status : {focus_status}")
-    print(f"Vision stats : {vision_stats}")
+    vision.get_focus_status()
+    vision.get_vision_stats()
 
     # Arrêt suivi
-    print("\n6️⃣ Arrêt suivi")
     vision.stop_tracking()
-
-    print("\n✅ Test BBIA Vision terminé")
 
 
 if __name__ == "__main__":

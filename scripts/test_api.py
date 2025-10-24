@@ -2,6 +2,7 @@
 """Script de test pour l'API BBIA-SIM."""
 
 import asyncio
+import contextlib
 import json
 import time
 
@@ -16,43 +17,29 @@ API_TOKEN = "bbia-secret-key-dev"
 
 def test_rest_endpoints():
     """Test des endpoints REST."""
-    print("🧪 Test des endpoints REST...")
-
     headers = {"Authorization": f"Bearer {API_TOKEN}"}
 
     # Test endpoint racine
-    try:
+    with contextlib.suppress(Exception):
         response = requests.get(f"{API_BASE}/")
-        print(f"✅ GET / : {response.status_code}")
-        print(f"   Response: {response.json()['message']}")
-    except Exception as e:
-        print(f"❌ GET / : {e}")
 
     # Test health check
-    try:
+    with contextlib.suppress(Exception):
         response = requests.get(f"{API_BASE}/health")
-        print(f"✅ GET /health : {response.status_code}")
-        print(f"   Status: {response.json()['status']}")
-    except Exception as e:
-        print(f"❌ GET /health : {e}")
 
     # Test état du robot
     try:
         response = requests.get(f"{API_BASE}/api/state/full", headers=headers)
-        print(f"✅ GET /api/state/full : {response.status_code}")
-        state = response.json()
-        print(f"   Robot status: {state['status']}, Battery: {state['battery']}%")
-    except Exception as e:
-        print(f"❌ GET /api/state/full : {e}")
+        response.json()
+    except Exception:
+        pass
 
     # Test batterie
     try:
         response = requests.get(f"{API_BASE}/api/state/battery", headers=headers)
-        print(f"✅ GET /api/state/battery : {response.status_code}")
-        battery = response.json()
-        print(f"   Battery: {battery['level']}% ({battery['status']})")
-    except Exception as e:
-        print(f"❌ GET /api/state/battery : {e}")
+        response.json()
+    except Exception:
+        pass
 
     # Test mouvement
     try:
@@ -60,35 +47,27 @@ def test_rest_endpoints():
         response = requests.post(
             f"{API_BASE}/api/motion/goto_pose", json=pose_data, headers=headers
         )
-        print(f"✅ POST /api/motion/goto_pose : {response.status_code}")
-        motion = response.json()
-        print(f"   Status: {motion['status']}, Time: {motion['estimated_time']}s")
-    except Exception as e:
-        print(f"❌ POST /api/motion/goto_pose : {e}")
+        response.json()
+    except Exception:
+        pass
 
     # Test retour à la position d'origine
     try:
         response = requests.post(f"{API_BASE}/api/motion/home", headers=headers)
-        print(f"✅ POST /api/motion/home : {response.status_code}")
-        home = response.json()
-        print(f"   Status: {home['status']}, Time: {home['estimated_time']}s")
-    except Exception as e:
-        print(f"❌ POST /api/motion/home : {e}")
+        response.json()
+    except Exception:
+        pass
 
 
 @pytest.mark.asyncio
 async def test_websocket():
     """Test du WebSocket."""
-    print("\n🌐 Test du WebSocket...")
-
     try:
         async with websockets.connect(f"{WS_BASE}/ws/telemetry") as websocket:
-            print("✅ Connexion WebSocket établie")
 
             # Test ping/pong
             ping_msg = json.dumps({"type": "ping"})
             await websocket.send(ping_msg)
-            print("📤 Message ping envoyé")
 
             # Réception des messages
             for _i in range(5):
@@ -97,60 +76,41 @@ async def test_websocket():
                     data = json.loads(message)
 
                     if data.get("type") == "pong":
-                        print("✅ Pong reçu")
-                    else:
-                        print(f"📊 Télémétrie reçue: {data.get('timestamp', 'N/A')}")
-                        if "robot" in data:
-                            pos = data["robot"]["position"]
-                            print(
-                                f"   Position: x={pos['x']:.3f}, y={pos['y']:.3f}, z={pos['z']:.3f}"
-                            )
+                        pass
+                    elif "robot" in data:
+                        data["robot"]["position"]
 
                 except asyncio.TimeoutError:
-                    print("⏰ Timeout de réception")
                     break
 
-            print("✅ Test WebSocket terminé")
-
-    except Exception as e:
-        print(f"❌ Erreur WebSocket : {e}")
+    except Exception:
+        pass
 
 
 def test_authentication():
     """Test de l'authentification."""
-    print("\n🔐 Test de l'authentification...")
-
     # Test sans token
-    try:
-        response = requests.get(f"{API_BASE}/api/state/full")
-        print(f"❌ GET sans token : {response.status_code} (attendu: 401)")
-    except Exception as e:
-        print(f"❌ GET sans token : {e}")
+    with contextlib.suppress(Exception):
+        requests.get(f"{API_BASE}/api/state/full")
 
     # Test avec mauvais token
     try:
         headers = {"Authorization": "Bearer wrong-token"}
-        response = requests.get(f"{API_BASE}/api/state/full", headers=headers)
-        print(f"❌ GET avec mauvais token : {response.status_code} (attendu: 401)")
-    except Exception as e:
-        print(f"❌ GET avec mauvais token : {e}")
+        requests.get(f"{API_BASE}/api/state/full", headers=headers)
+    except Exception:
+        pass
 
     # Test avec bon token
     try:
         headers = {"Authorization": f"Bearer {API_TOKEN}"}
-        response = requests.get(f"{API_BASE}/api/state/full", headers=headers)
-        print(f"✅ GET avec bon token : {response.status_code}")
-    except Exception as e:
-        print(f"❌ GET avec bon token : {e}")
+        requests.get(f"{API_BASE}/api/state/full", headers=headers)
+    except Exception:
+        pass
 
 
 def main():
     """Point d'entrée principal."""
-    print("🧪 Tests de l'API BBIA-SIM")
-    print("=" * 50)
-
     # Attente que l'API soit prête
-    print("⏳ Attente que l'API soit prête...")
     time.sleep(2)
 
     # Tests REST
@@ -160,12 +120,8 @@ def main():
     test_authentication()
 
     # Tests WebSocket
-    try:
+    with contextlib.suppress(Exception):
         asyncio.run(test_websocket())
-    except Exception as e:
-        print(f"❌ Erreur lors du test WebSocket : {e}")
-
-    print("\n✅ Tests terminés")
 
 
 if __name__ == "__main__":

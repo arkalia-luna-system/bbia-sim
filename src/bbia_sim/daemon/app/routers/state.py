@@ -39,6 +39,7 @@ async def get_full_state() -> RobotState:
 
     Returns:
         État complet du robot
+
     """
     logger.info("Récupération de l'état complet du robot")
 
@@ -61,6 +62,7 @@ async def get_position() -> dict[str, Any]:
 
     Returns:
         Position du robot
+
     """
     logger.info("Récupération de la position du robot")
 
@@ -77,6 +79,7 @@ async def get_battery_level() -> BatteryInfo:
 
     Returns:
         Informations sur la batterie
+
     """
     logger.info("Récupération du niveau de batterie")
 
@@ -102,6 +105,7 @@ async def get_temperature() -> dict[str, Any]:
 
     Returns:
         Température du robot
+
     """
     logger.info("Récupération de la température")
 
@@ -119,6 +123,7 @@ async def get_status() -> dict[str, Any]:
 
     Returns:
         Statut du robot
+
     """
     logger.info("Récupération du statut du robot")
 
@@ -142,20 +147,20 @@ async def start_simulation() -> dict[str, Any]:
             return {
                 "status": "started",
                 "message": "Simulation MuJoCo démarrée avec succès",
-                "timestamp": datetime.now().isoformat()
+                "timestamp": datetime.now().isoformat(),
             }
         else:
             return {
                 "status": "error",
                 "message": "Échec du démarrage de la simulation",
-                "timestamp": datetime.now().isoformat()
+                "timestamp": datetime.now().isoformat(),
             }
     except Exception as e:
         logger.error(f"Erreur lors du démarrage de la simulation : {e}")
         return {
             "status": "error",
             "message": f"Erreur : {str(e)}",
-            "timestamp": datetime.now().isoformat()
+            "timestamp": datetime.now().isoformat(),
         }
 
 
@@ -169,14 +174,14 @@ async def stop_simulation() -> dict[str, Any]:
         return {
             "status": "stopped",
             "message": "Simulation MuJoCo arrêtée avec succès",
-            "timestamp": datetime.now().isoformat()
+            "timestamp": datetime.now().isoformat(),
         }
     except Exception as e:
         logger.error(f"Erreur lors de l'arrêt de la simulation : {e}")
         return {
             "status": "error",
             "message": f"Erreur : {str(e)}",
-            "timestamp": datetime.now().isoformat()
+            "timestamp": datetime.now().isoformat(),
         }
 
 
@@ -205,6 +210,7 @@ async def get_sensor_data() -> dict[str, Any]:
 
     Returns:
         Données des capteurs
+
     """
     logger.info("Récupération des données des capteurs")
 

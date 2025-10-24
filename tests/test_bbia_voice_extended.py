@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 
-"""
-Tests étendus pour BBIA Voice
-Tests ciblés pour améliorer la couverture de code
+"""Tests étendus pour BBIA Voice
+Tests ciblés pour améliorer la couverture de code.
 """
 
 from unittest.mock import MagicMock, patch
@@ -18,10 +17,10 @@ from src.bbia_sim.bbia_voice import (
 
 
 class TestBBIAVoiceExtended:
-    """Tests étendus pour BBIA Voice"""
+    """Tests étendus pour BBIA Voice."""
 
     def test_get_bbia_voice_france_priority(self):
-        """Test priorité voix France"""
+        """Test priorité voix France."""
         # Créer des objets avec des attributs string réels
         voice1 = MagicMock()
         voice1.name = "Amélie"
@@ -45,7 +44,7 @@ class TestBBIAVoiceExtended:
         assert voice_id == "com.apple.speech.voice.Amelie.fr-FR"
 
     def test_get_bbia_voice_canada_fallback(self):
-        """Test fallback voix Canada"""
+        """Test fallback voix Canada."""
         voice1 = MagicMock()
         voice1.name = "Amélie"
         voice1.id = "com.apple.speech.voice.Amelie.fr-CA"
@@ -64,7 +63,7 @@ class TestBBIAVoiceExtended:
         assert voice_id == "com.apple.speech.voice.Amelie.fr-CA"
 
     def test_get_bbia_voice_any_amelie(self):
-        """Test toute voix Amélie"""
+        """Test toute voix Amélie."""
         voice1 = MagicMock()
         voice1.name = "Amélie"
         voice1.id = "com.apple.speech.voice.Amelie"
@@ -79,7 +78,7 @@ class TestBBIAVoiceExtended:
         assert voice_id == "com.apple.speech.voice.Amelie"
 
     def test_get_bbia_voice_no_amelie(self):
-        """Test aucune voix Amélie disponible"""
+        """Test aucune voix Amélie disponible."""
         voice1 = MagicMock()
         voice1.name = "Autre"
         voice1.id = "com.apple.speech.voice.Other"
@@ -93,7 +92,7 @@ class TestBBIAVoiceExtended:
             get_bbia_voice(mock_engine)
 
     def test_get_bbia_voice_normalize_accent(self):
-        """Test normalisation avec accents"""
+        """Test normalisation avec accents."""
         voice1 = MagicMock()
         voice1.name = "Amélie"
         voice1.id = "com.apple.speech.voice.Amelie.fr-FR"
@@ -108,7 +107,7 @@ class TestBBIAVoiceExtended:
         assert voice_id == "com.apple.speech.voice.Amelie.fr-FR"
 
     def test_get_bbia_voice_case_insensitive(self):
-        """Test insensible à la casse"""
+        """Test insensible à la casse."""
         voice1 = MagicMock()
         voice1.name = "AMÉLIE"
         voice1.id = "com.apple.speech.voice.Amelie.fr-FR"
@@ -125,7 +124,7 @@ class TestBBIAVoiceExtended:
     @patch("src.bbia_sim.bbia_voice.pyttsx3.init")
     @patch("src.bbia_sim.bbia_voice.get_bbia_voice")
     def test_dire_texte_success(self, mock_get_voice, mock_init):
-        """Test synthèse vocale réussie"""
+        """Test synthèse vocale réussie."""
         mock_engine = MagicMock()
         mock_init.return_value = mock_engine
         mock_get_voice.return_value = "voice_id"
@@ -143,7 +142,7 @@ class TestBBIAVoiceExtended:
     @patch("src.bbia_sim.bbia_voice.pyttsx3.init")
     @patch("src.bbia_sim.bbia_voice.get_bbia_voice")
     def test_dire_texte_error(self, mock_get_voice, mock_init):
-        """Test erreur synthèse vocale"""
+        """Test erreur synthèse vocale."""
         mock_init.side_effect = Exception("Engine error")
 
         with pytest.raises(Exception, match="Engine error"):
@@ -152,7 +151,7 @@ class TestBBIAVoiceExtended:
     @patch("src.bbia_sim.bbia_voice.sr.Recognizer")
     @patch("src.bbia_sim.bbia_voice.sr.Microphone")
     def test_reconnaitre_parole_success(self, mock_microphone, mock_recognizer_class):
-        """Test reconnaissance vocale réussie"""
+        """Test reconnaissance vocale réussie."""
         mock_recognizer = MagicMock()
         mock_recognizer_class.return_value = mock_recognizer
 
@@ -166,13 +165,19 @@ class TestBBIAVoiceExtended:
         result = reconnaitre_parole(duree=3, frequence=16000)
 
         assert result == "texte reconnu"
-        mock_recognizer.listen.assert_called_once_with(mock_microphone_instance, phrase_time_limit=3)
-        mock_recognizer.recognize_google.assert_called_once_with(mock_audio, language="fr-FR")
+        mock_recognizer.listen.assert_called_once_with(
+            mock_microphone_instance, phrase_time_limit=3
+        )
+        mock_recognizer.recognize_google.assert_called_once_with(
+            mock_audio, language="fr-FR"
+        )
 
     @patch("src.bbia_sim.bbia_voice.sr.Recognizer")
     @patch("src.bbia_sim.bbia_voice.sr.Microphone")
-    def test_reconnaitre_parole_unknown_value(self, mock_microphone, mock_recognizer_class):
-        """Test reconnaissance vocale sans parole"""
+    def test_reconnaitre_parole_unknown_value(
+        self, mock_microphone, mock_recognizer_class
+    ):
+        """Test reconnaissance vocale sans parole."""
         mock_recognizer = MagicMock()
         mock_recognizer_class.return_value = mock_recognizer
 
@@ -189,8 +194,10 @@ class TestBBIAVoiceExtended:
 
     @patch("src.bbia_sim.bbia_voice.sr.Recognizer")
     @patch("src.bbia_sim.bbia_voice.sr.Microphone")
-    def test_reconnaitre_parole_general_error(self, mock_microphone, mock_recognizer_class):
-        """Test reconnaissance vocale erreur générale"""
+    def test_reconnaitre_parole_general_error(
+        self, mock_microphone, mock_recognizer_class
+    ):
+        """Test reconnaissance vocale erreur générale."""
         mock_recognizer = MagicMock()
         mock_recognizer_class.return_value = mock_recognizer
 
@@ -205,7 +212,7 @@ class TestBBIAVoiceExtended:
 
     @patch("src.bbia_sim.bbia_voice.pyttsx3.init")
     def test_lister_voix_disponibles_success(self, mock_init):
-        """Test liste des voix disponibles"""
+        """Test liste des voix disponibles."""
         mock_engine = MagicMock()
         mock_init.return_value = mock_engine
 
@@ -229,7 +236,7 @@ class TestBBIAVoiceExtended:
 
     @patch("src.bbia_sim.bbia_voice.pyttsx3.init")
     def test_lister_voix_disponibles_decode_error(self, mock_init):
-        """Test liste des voix avec erreur de décodage"""
+        """Test liste des voix avec erreur de décodage."""
         mock_engine = MagicMock()
         mock_init.return_value = mock_engine
 
@@ -251,7 +258,7 @@ class TestBBIAVoiceExtended:
 
     @patch("src.bbia_sim.bbia_voice.pyttsx3.init")
     def test_lister_voix_disponibles_no_languages(self, mock_init):
-        """Test liste des voix sans langues"""
+        """Test liste des voix sans langues."""
         mock_engine = MagicMock()
         mock_init.return_value = mock_engine
 
@@ -268,7 +275,7 @@ class TestBBIAVoiceExtended:
         assert voices[0].name == "Test"
 
     def test_get_bbia_voice_empty_voices_list(self):
-        """Test liste de voix vide"""
+        """Test liste de voix vide."""
         mock_engine = MagicMock()
         mock_engine.getProperty.return_value = []
 
@@ -276,7 +283,7 @@ class TestBBIAVoiceExtended:
             get_bbia_voice(mock_engine)
 
     def test_get_bbia_voice_multiple_france_voices(self):
-        """Test plusieurs voix France"""
+        """Test plusieurs voix France."""
         voice1 = MagicMock()
         voice1.name = "Amélie"
         voice1.id = "com.apple.speech.voice.Amelie.fr-FR.1"
@@ -296,7 +303,7 @@ class TestBBIAVoiceExtended:
         assert voice_id == "com.apple.speech.voice.Amelie.fr-FR.1"
 
     def test_get_bbia_voice_multiple_canada_voices(self):
-        """Test plusieurs voix Canada"""
+        """Test plusieurs voix Canada."""
         voice1 = MagicMock()
         voice1.name = "Amélie"
         voice1.id = "com.apple.speech.voice.Amelie.fr-CA.1"
@@ -316,7 +323,7 @@ class TestBBIAVoiceExtended:
         assert voice_id == "com.apple.speech.voice.Amelie.fr-CA.1"
 
     def test_get_bbia_voice_multiple_any_amelie(self):
-        """Test plusieurs voix Amélie quelconques"""
+        """Test plusieurs voix Amélie quelconques."""
         voice1 = MagicMock()
         voice1.name = "Amélie"
         voice1.id = "com.apple.speech.voice.Amelie.1"
@@ -338,7 +345,7 @@ class TestBBIAVoiceExtended:
     @patch("src.bbia_sim.bbia_voice.pyttsx3.init")
     @patch("src.bbia_sim.bbia_voice.get_bbia_voice")
     def test_dire_texte_engine_properties(self, mock_get_voice, mock_init):
-        """Test propriétés du moteur de synthèse"""
+        """Test propriétés du moteur de synthèse."""
         mock_engine = MagicMock()
         mock_init.return_value = mock_engine
         mock_get_voice.return_value = "voice_id"
@@ -353,8 +360,10 @@ class TestBBIAVoiceExtended:
 
     @patch("src.bbia_sim.bbia_voice.sr.Recognizer")
     @patch("src.bbia_sim.bbia_voice.sr.Microphone")
-    def test_reconnaitre_parole_custom_parameters(self, mock_microphone, mock_recognizer_class):
-        """Test reconnaissance avec paramètres personnalisés"""
+    def test_reconnaitre_parole_custom_parameters(
+        self, mock_microphone, mock_recognizer_class
+    ):
+        """Test reconnaissance avec paramètres personnalisés."""
         mock_recognizer = MagicMock()
         mock_recognizer_class.return_value = mock_recognizer
 
@@ -368,10 +377,12 @@ class TestBBIAVoiceExtended:
         result = reconnaitre_parole(duree=5, frequence=22050)
 
         assert result == "texte reconnu"
-        mock_recognizer.listen.assert_called_once_with(mock_microphone_instance, phrase_time_limit=5)
+        mock_recognizer.listen.assert_called_once_with(
+            mock_microphone_instance, phrase_time_limit=5
+        )
 
     def test_get_bbia_voice_normalize_unicode(self):
-        """Test normalisation Unicode"""
+        """Test normalisation Unicode."""
         voice1 = MagicMock()
         voice1.name = "Amélie"
         voice1.id = "com.apple.speech.voice.Amelie.fr-FR"
@@ -386,7 +397,7 @@ class TestBBIAVoiceExtended:
         assert voice_id == "com.apple.speech.voice.Amelie.fr-FR"
 
     def test_get_bbia_voice_normalize_special_chars(self):
-        """Test normalisation caractères spéciaux"""
+        """Test normalisation caractères spéciaux."""
         voice1 = MagicMock()
         voice1.name = "Amélie"
         voice1.id = "com.apple.speech.voice.Amelie.fr-FR"

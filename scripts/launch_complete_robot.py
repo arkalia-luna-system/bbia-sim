@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
-"""
-Lanceur du robot Reachy Mini complet en 3D
-Utilise le modèle MJCF corrigé avec assemblage correct des pièces
+"""Lanceur du robot Reachy Mini complet en 3D
+Utilise le modèle MJCF corrigé avec assemblage correct des pièces.
 """
 
 import argparse

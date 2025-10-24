@@ -1,5 +1,4 @@
-"""
-Simulateur MuJoCo pour BBIA-SIM.
+"""Simulateur MuJoCo pour BBIA-SIM.
 
 Ce module implémente la classe MuJoCoSimulator qui gère la simulation
 3D du robot Reachy Mini avec support des modes graphique et headless.
@@ -18,16 +17,14 @@ logger = logging.getLogger(__name__)
 
 
 class MuJoCoSimulator:
-    """
-    Simulateur MuJoCo pour le robot Reachy Mini.
+    """Simulateur MuJoCo pour le robot Reachy Mini.
 
     Cette classe gère le chargement des modèles MJCF, l'exécution de la simulation
     en mode graphique ou headless, et l'interaction avec les articulations du robot.
     """
 
     def __init__(self, model_path: str) -> None:
-        """
-        Initialise le simulateur MuJoCo.
+        """Initialise le simulateur MuJoCo.
 
         Args:
             model_path: Chemin vers le fichier MJCF/XML du modèle
@@ -35,6 +32,7 @@ class MuJoCoSimulator:
         Raises:
             FileNotFoundError: Si le fichier modèle n'existe pas
             mujoco.FatalError: Si le modèle MJCF est invalide
+
         """
         self.model_path = Path(model_path)
         if not self.model_path.exists():
@@ -54,12 +52,12 @@ class MuJoCoSimulator:
     def launch_simulation(
         self, headless: bool = False, duration: Optional[int] = None
     ) -> None:
-        """
-        Lance la simulation MuJoCo.
+        """Lance la simulation MuJoCo.
 
         Args:
             headless: Si True, lance en mode headless (sans interface graphique)
             duration: Durée de simulation en secondes (None = infinie)
+
         """
         if headless:
             logger.info("Mode headless activé")
@@ -136,11 +134,11 @@ class MuJoCoSimulator:
         logger.info(f"Simulation graphique arrêtée après {step_count} steps")
 
     def load_scene(self, scene_path: str) -> None:
-        """
-        Charge une scène spécifique.
+        """Charge une scène spécifique.
 
         Args:
             scene_path: Chemin vers le fichier de scène MJCF/XML
+
         """
         new_model_path = Path("src/bbia_sim/sim/scenes") / scene_path
         if not new_model_path.exists():
@@ -160,8 +158,7 @@ class MuJoCoSimulator:
             raise
 
     def set_joint_position(self, joint_name: str, angle: float) -> None:
-        """
-        Définit la position d'une articulation avec validation et clamp.
+        """Définit la position d'une articulation avec validation et clamp.
 
         Args:
             joint_name: Nom de l'articulation
@@ -170,6 +167,7 @@ class MuJoCoSimulator:
         Raises:
             KeyError: Si l'articulation n'existe pas
             ValueError: Si l'angle est hors limites
+
         """
         try:
             joint_id = self.model.joint(joint_name).id
@@ -206,7 +204,9 @@ class MuJoCoSimulator:
             # Recherche de l'actuateur correspondant au joint
             actuator_id = None
             for i in range(self.model.nu):
-                actuator_name = mujoco.mj_id2name(self.model, mujoco.mjtObj.mjOBJ_ACTUATOR, i)
+                actuator_name = mujoco.mj_id2name(
+                    self.model, mujoco.mjtObj.mjOBJ_ACTUATOR, i
+                )
                 if actuator_name == joint_name:
                     actuator_id = i
                     break
@@ -232,8 +232,7 @@ class MuJoCoSimulator:
             raise
 
     def get_joint_position(self, joint_name: str) -> float:
-        """
-        Retourne la position actuelle d'une articulation.
+        """Retourne la position actuelle d'une articulation.
 
         Args:
             joint_name: Nom de l'articulation
@@ -243,6 +242,7 @@ class MuJoCoSimulator:
 
         Raises:
             KeyError: Si l'articulation n'existe pas
+
         """
         try:
             joint_id = self.model.joint(joint_name).id
@@ -255,11 +255,11 @@ class MuJoCoSimulator:
             raise
 
     def get_robot_state(self) -> dict[str, Any]:
-        """
-        Retourne l'état complet du robot.
+        """Retourne l'état complet du robot.
 
         Returns:
             Dictionnaire contenant les positions des articulations et autres données
+
         """
         joint_positions = {}
         for i in range(self.model.njnt):
@@ -277,11 +277,11 @@ class MuJoCoSimulator:
         }
 
     def get_available_joints(self) -> list[str]:
-        """
-        Retourne la liste des articulations disponibles.
+        """Retourne la liste des articulations disponibles.
 
         Returns:
             Liste des noms d'articulations
+
         """
         return [self.model.joint(i).name for i in range(self.model.njnt)]
 

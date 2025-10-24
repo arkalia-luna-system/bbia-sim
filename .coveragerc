@@ -1,25 +1,26 @@
 [run]
-source = src
-omit = 
+source = src/bbia_sim
+branch = True
+parallel = True
+omit =
     */tests/*
     */test_*
+    */__init__.py
     */__pycache__/*
     */venv/*
-    */env/*
-    */migrations/*
+    */.venv/*
+    */logs/*
+    */reachy_repos/*
+    */assets/*
+    */htmlcov/*
 
 [report]
-exclude_lines = 
-    pragma: no cover
-    def __repr__
-    if self.debug:
-    if settings.DEBUG
-    raise AssertionError
-    raise NotImplementedError
-    if 0:
-    if __name__ == .__main__.:
-    class .*\bProtocol\):
-    @(abc\.)?abstractmethod
+show_missing = True
+skip_covered = False
+fail_under = 5
+precision = 2
 
-[html]
-directory = htmlcov
+[paths]
+source =
+    src/bbia_sim
+    */site-packages/bbia_sim

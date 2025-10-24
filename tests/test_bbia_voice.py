@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import MagicMock, patch
 
-import src.bbia_sim.bbia_voice as bbia_voice
+from src.bbia_sim import bbia_voice
 
 
 class TestBBIAVoice(unittest.TestCase):

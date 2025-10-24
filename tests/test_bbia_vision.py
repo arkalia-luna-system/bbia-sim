@@ -1,16 +1,14 @@
 #!/usr/bin/env python3
-"""
-Tests pour le module BBIA Vision
-"""
+"""Tests pour le module BBIA Vision."""
 
 from src.bbia_sim.bbia_vision import BBIAVision
 
 
 class TestBBIAVision:
-    """Tests pour BBIAVision"""
+    """Tests pour BBIAVision."""
 
     def test_vision_creation(self):
-        """Test création d'une instance BBIAVision"""
+        """Test création d'une instance BBIAVision."""
         vision = BBIAVision()
         assert vision.camera_active
         assert vision.vision_quality == "HD"
@@ -18,7 +16,7 @@ class TestBBIAVision:
         assert not vision.tracking_active
 
     def test_vision_specs(self):
-        """Test des spécifications hardware"""
+        """Test des spécifications hardware."""
         vision = BBIAVision()
 
         specs = vision.specs
@@ -28,7 +26,7 @@ class TestBBIAVision:
         assert specs["focus"] == "Auto"
 
     def test_detection_methods(self):
-        """Test des méthodes de détection"""
+        """Test des méthodes de détection."""
         vision = BBIAVision()
 
         # Test que les listes de détection existent
@@ -36,7 +34,7 @@ class TestBBIAVision:
         assert isinstance(vision.faces_detected, list)
 
     def test_tracking_control(self):
-        """Test contrôle du suivi"""
+        """Test contrôle du suivi."""
         vision = BBIAVision()
 
         # Test état initial
@@ -47,7 +45,7 @@ class TestBBIAVision:
         assert vision.tracking_active
 
     def test_focus_control(self):
-        """Test contrôle du focus"""
+        """Test contrôle du focus."""
         vision = BBIAVision()
 
         # Test état initial

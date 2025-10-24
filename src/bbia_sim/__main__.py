@@ -16,6 +16,7 @@ def setup_logging(verbose: bool = False) -> None:
 
     Args:
         verbose: Si True, active le mode verbose
+
     """
     level = logging.DEBUG if verbose else logging.INFO
     logging.basicConfig(
@@ -102,6 +103,7 @@ def run_simulation(args: argparse.Namespace) -> None:
 
     Args:
         args: Arguments de la ligne de commande
+
     """
     logger.info("🚀 Démarrage de la simulation MuJoCo")
 
@@ -120,16 +122,15 @@ def run_simulation(args: argparse.Namespace) -> None:
                 sys.exit(2)
             else:
                 logger.info("✅ Viewer MuJoCo disponible sur macOS")
+        # Linux/Windows : vérifier la disponibilité du viewer
+        elif importlib.util.find_spec("mujoco.viewer") is None:
+            logger.warning(
+                "⚠️ Module mujoco.viewer non disponible.\n"
+                "💡 Installez : pip install mujoco-python-viewer\n"
+                "   Ou utilisez : python -m bbia_sim --sim --headless"
+            )
         else:
-            # Linux/Windows : vérifier la disponibilité du viewer
-            if importlib.util.find_spec("mujoco.viewer") is None:
-                logger.warning(
-                    "⚠️ Module mujoco.viewer non disponible.\n"
-                    "💡 Installez : pip install mujoco-python-viewer\n"
-                    "   Ou utilisez : python -m bbia_sim --sim --headless"
-                )
-            else:
-                logger.info("✅ Viewer MuJoCo disponible")
+            logger.info("✅ Viewer MuJoCo disponible")
 
     # Détermination du modèle à utiliser
     if args.scene == "reachy_mini.xml":
@@ -182,6 +183,7 @@ def run_voice_synthesis(text: str) -> None:
 
     Args:
         text: Texte à synthétiser
+
     """
     logger.info(f"🗣️ Synthèse vocale : {text}")
 

@@ -1,5 +1,4 @@
-"""
-Module bbia_voice.py
+"""Module bbia_voice.py
 Synthèse et reconnaissance vocale pour BBIA.
 Compatible macOS, simple, portable, testé.
 
@@ -25,8 +24,7 @@ VOIX_FEMMES_MAC = [
 
 
 def get_bbia_voice(engine):
-    """
-    Force l’utilisation d’une seule voix féminine douce/enfantine sur macOS.
+    """Force l’utilisation d’une seule voix féminine douce/enfantine sur macOS.
     Prend la première voix dont le nom contient 'Amelie' (toute variante, accent ou non),
     en priorité France (fr_FR), sinon Canada (fr_CA), sinon toute Amelie.
     Si aucune voix n’est trouvée, lève une erreur explicite avec un message d’aide.
@@ -60,9 +58,7 @@ def get_bbia_voice(engine):
 
 
 def dire_texte(texte):
-    """
-    Lit un texte à voix haute (TTS) avec la voix la plus fidèle à Reachy Mini Wireless.
-    """
+    """Lit un texte à voix haute (TTS) avec la voix la plus fidèle à Reachy Mini Wireless."""
     try:
         logging.info(f"Synthèse vocale : {texte}")
         engine = pyttsx3.init()
@@ -80,8 +76,7 @@ def dire_texte(texte):
 
 
 def reconnaitre_parole(duree=3, frequence=16000):
-    """
-    Reconnaît la parole via le micro (STT, français par défaut).
+    """Reconnaît la parole via le micro (STT, français par défaut).
     Retourne le texte reconnu ou None.
     """
     r = sr.Recognizer()
@@ -101,25 +96,18 @@ def reconnaitre_parole(duree=3, frequence=16000):
 
 
 def lister_voix_disponibles():
-    """
-    Affiche la liste des voix TTS disponibles avec leurs propriétés.
-    """
+    """Affiche la liste des voix TTS disponibles avec leurs propriétés."""
     engine = pyttsx3.init()
     voices = engine.getProperty("voices")
-    print("\n[BBIA] Voix TTS disponibles :")
-    for idx, v in enumerate(voices):
+    for _idx, v in enumerate(voices):
         try:
-            langue = (
+            (
                 v.languages[0].decode(errors="ignore")
                 if hasattr(v.languages[0], "decode")
                 else str(v.languages[0])
             )
         except Exception:
-            langue = str(v.languages)
-        print(
-            f"{idx+1}. Nom : {v.name} | Langue : {langue} | Genre : {getattr(v, 'gender', '?')} | ID : {v.id}"
-        )
-    print(f"Total : {len(voices)} voix trouvées.")
+            str(v.languages)
     return voices
 
 
@@ -133,35 +121,27 @@ if __name__ == "__main__":
             engine = pyttsx3.init()
             voices = engine.getProperty("voices")
             for v in voices:
-                print(f"\nTest voix : {v.name} ({v.id})")
                 engine.setProperty("voice", v.id)
                 engine.setProperty("rate", 170)
                 engine.setProperty("volume", 1.0)
                 engine.say(f"Bonjour, je suis la voix {v.name}.")
                 engine.runAndWait()
         sys.exit(0)
-    print("\n[BBIA VOICE DEMO]")
-    print("1. Synthèse vocale : BBIA va parler avec la voix la plus fidèle...")
     engine = pyttsx3.init()
     voice_id = get_bbia_voice(engine)
-    print(f"Voix sélectionnée : {voice_id}")
     engine.setProperty("voice", voice_id)
     engine.setProperty("rate", 170)
     engine.setProperty("volume", 1.0)
     demo_texte = "Bonjour, je suis BBIA. Je fonctionne sur votre Mac. Ceci est la voix la plus proche de Reachy Mini Wireless."
     engine.say(demo_texte)
     engine.runAndWait()
-    print("2. Reconnaissance vocale : Parlez après le bip...")
     import sys
     import time
 
     sys.stdout.flush()
     time.sleep(0.5)
-    print("Bip ! (parlez)")
     texte = reconnaitre_parole(duree=3, frequence=16000)
     if texte:
-        print(f"Vous avez dit : {texte}")
         dire_texte(f"Vous avez dit : {texte}")
     else:
-        print("Aucune parole reconnue.")
         dire_texte("Je n'ai rien compris.")

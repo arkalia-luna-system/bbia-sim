@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 
-"""
-Tests étendus pour BBIA Emotions
-Tests ciblés pour améliorer la couverture de code
+"""Tests étendus pour BBIA Emotions
+Tests ciblés pour améliorer la couverture de code.
 """
 
 from datetime import datetime
@@ -12,21 +11,21 @@ from src.bbia_sim.bbia_emotions import BBIAEmotions
 
 
 class TestBBIAEmotionsExtended:
-    """Tests étendus pour BBIAEmotions"""
+    """Tests étendus pour BBIAEmotions."""
 
     def setup_method(self):
-        """Configuration avant chaque test"""
+        """Configuration avant chaque test."""
         self.emotions = BBIAEmotions()
 
     def test_init_defaults(self):
-        """Test initialisation avec valeurs par défaut"""
+        """Test initialisation avec valeurs par défaut."""
         assert self.emotions.current_emotion == "neutral"
         assert self.emotions.emotion_intensity == 0.5
         assert self.emotions.transition_duration == 1.0
         assert self.emotions.emotion_history == []
 
     def test_init_emotions_structure(self):
-        """Test structure des émotions"""
+        """Test structure des émotions."""
         assert len(self.emotions.emotions) == 8
         assert "neutral" in self.emotions.emotions
         assert "happy" in self.emotions.emotions
@@ -38,7 +37,7 @@ class TestBBIAEmotionsExtended:
         assert "fearful" in self.emotions.emotions
 
     def test_emotion_data_structure(self):
-        """Test structure des données d'émotion"""
+        """Test structure des données d'émotion."""
         emotion_data = self.emotions.emotions["happy"]
         assert "yeux" in emotion_data
         assert "antennes" in emotion_data
@@ -48,7 +47,7 @@ class TestBBIAEmotionsExtended:
 
     @patch("builtins.print")
     def test_set_emotion_valid(self, mock_print):
-        """Test changement d'émotion valide"""
+        """Test changement d'émotion valide."""
         result = self.emotions.set_emotion("happy", 0.8)
 
         assert result is True
@@ -58,7 +57,7 @@ class TestBBIAEmotionsExtended:
 
     @patch("builtins.print")
     def test_set_emotion_invalid(self, mock_print):
-        """Test changement d'émotion invalide"""
+        """Test changement d'émotion invalide."""
         result = self.emotions.set_emotion("invalid_emotion", 0.5)
 
         assert result is False
@@ -67,7 +66,7 @@ class TestBBIAEmotionsExtended:
 
     @patch("builtins.print")
     def test_set_emotion_intensity_clamping(self, mock_print):
-        """Test limitation de l'intensité"""
+        """Test limitation de l'intensité."""
         # Test intensité trop élevée
         self.emotions.set_emotion("happy", 1.5)
         assert self.emotions.emotion_intensity == 1.0
@@ -78,7 +77,7 @@ class TestBBIAEmotionsExtended:
 
     @patch("builtins.print")
     def test_set_emotion_history(self, mock_print):
-        """Test historique des émotions"""
+        """Test historique des émotions."""
         self.emotions.set_emotion("happy", 0.7)
         self.emotions.set_emotion("sad", 0.6)
 
@@ -92,14 +91,14 @@ class TestBBIAEmotionsExtended:
 
     @patch("builtins.print")
     def test_display_emotion_transition(self, mock_print):
-        """Test affichage de transition d'émotion"""
+        """Test affichage de transition d'émotion."""
         self.emotions._display_emotion_transition("neutral", "happy")
 
         # Vérifier que print a été appelé plusieurs fois
         assert mock_print.call_count >= 4
 
     def test_get_current_emotion(self):
-        """Test récupération de l'émotion actuelle"""
+        """Test récupération de l'émotion actuelle."""
         emotion_data = self.emotions.get_current_emotion()
 
         assert emotion_data["name"] == "neutral"
@@ -112,7 +111,7 @@ class TestBBIAEmotionsExtended:
         assert "color" in emotion_data
 
     def test_get_emotion_history_limit(self):
-        """Test historique avec limite"""
+        """Test historique avec limite."""
         # Ajouter plusieurs émotions
         self.emotions.set_emotion("happy", 0.7)
         self.emotions.set_emotion("sad", 0.6)
@@ -125,7 +124,7 @@ class TestBBIAEmotionsExtended:
         assert history[1]["emotion"] == "angry"
 
     def test_get_emotion_history_no_limit(self):
-        """Test historique sans limite"""
+        """Test historique sans limite."""
         self.emotions.set_emotion("happy", 0.7)
         self.emotions.set_emotion("sad", 0.6)
 
@@ -136,7 +135,7 @@ class TestBBIAEmotionsExtended:
     @patch("random.uniform")
     @patch("builtins.print")
     def test_random_emotion_success(self, mock_print, mock_uniform, mock_choice):
-        """Test émotion aléatoire réussie"""
+        """Test émotion aléatoire réussie."""
         mock_choice.return_value = "happy"
         mock_uniform.return_value = 0.7
 
@@ -148,9 +147,9 @@ class TestBBIAEmotionsExtended:
 
     @patch("builtins.print")
     def test_random_emotion_no_available(self, mock_print):
-        """Test émotion aléatoire sans émotions disponibles"""
+        """Test émotion aléatoire sans émotions disponibles."""
         # Simuler une liste vide d'émotions disponibles
-        with patch.object(self.emotions, 'emotions', {'neutral': {}}):
+        with patch.object(self.emotions, "emotions", {"neutral": {}}):
             result = self.emotions.random_emotion()
             assert result == "neutral"  # Retourne l'émotion actuelle
 
@@ -158,7 +157,7 @@ class TestBBIAEmotionsExtended:
     @patch("random.uniform")
     @patch("builtins.print")
     def test_emotional_response_compliment(self, mock_print, mock_uniform, mock_choice):
-        """Test réponse émotionnelle à un compliment"""
+        """Test réponse émotionnelle à un compliment."""
         mock_choice.return_value = "happy"
         mock_uniform.return_value = 0.8
 
@@ -171,7 +170,7 @@ class TestBBIAEmotionsExtended:
     @patch("random.uniform")
     @patch("builtins.print")
     def test_emotional_response_insult(self, mock_print, mock_uniform, mock_choice):
-        """Test réponse émotionnelle à une insulte"""
+        """Test réponse émotionnelle à une insulte."""
         mock_choice.return_value = "angry"
         mock_uniform.return_value = 0.9
 
@@ -184,7 +183,7 @@ class TestBBIAEmotionsExtended:
     @patch("random.uniform")
     @patch("builtins.print")
     def test_emotional_response_unknown(self, mock_print, mock_uniform, mock_choice):
-        """Test réponse émotionnelle à un stimulus inconnu"""
+        """Test réponse émotionnelle à un stimulus inconnu."""
         mock_choice.return_value = "curious"
         mock_uniform.return_value = 0.5
 
@@ -195,14 +194,14 @@ class TestBBIAEmotionsExtended:
 
     @patch("builtins.print")
     def test_emotional_response_case_insensitive(self, mock_print):
-        """Test réponse émotionnelle insensible à la casse"""
+        """Test réponse émotionnelle insensible à la casse."""
         result = self.emotions.emotional_response("COMPLIMENT")
 
         assert result in ["happy", "excited"]
 
     @patch("builtins.print")
     def test_blend_emotions_valid(self, mock_print):
-        """Test mélange d'émotions valides"""
+        """Test mélange d'émotions valides."""
         result = self.emotions.blend_emotions("happy", "excited", 0.3)
 
         assert result == "happy"  # ratio < 0.5
@@ -210,7 +209,7 @@ class TestBBIAEmotionsExtended:
 
     @patch("builtins.print")
     def test_blend_emotions_ratio_high(self, mock_print):
-        """Test mélange d'émotions avec ratio élevé"""
+        """Test mélange d'émotions avec ratio élevé."""
         result = self.emotions.blend_emotions("happy", "excited", 0.7)
 
         assert result == "excited"  # ratio >= 0.5
@@ -218,20 +217,20 @@ class TestBBIAEmotionsExtended:
 
     @patch("builtins.print")
     def test_blend_emotions_invalid_first(self, mock_print):
-        """Test mélange avec première émotion invalide"""
+        """Test mélange avec première émotion invalide."""
         result = self.emotions.blend_emotions("invalid", "happy", 0.5)
 
         assert result == "neutral"  # Retourne l'émotion actuelle
 
     @patch("builtins.print")
     def test_blend_emotions_invalid_second(self, mock_print):
-        """Test mélange avec seconde émotion invalide"""
+        """Test mélange avec seconde émotion invalide."""
         result = self.emotions.blend_emotions("happy", "invalid", 0.5)
 
         assert result == "neutral"  # Retourne l'émotion actuelle
 
     def test_blend_emotions_intensity_calculation(self):
-        """Test calcul d'intensité dans le mélange"""
+        """Test calcul d'intensité dans le mélange."""
         self.emotions.blend_emotions("happy", "excited", 0.8)
 
         # Intensité = 0.5 + (abs(0.8 - 0.5) * 0.5) = 0.5 + 0.15 = 0.65
@@ -239,7 +238,7 @@ class TestBBIAEmotionsExtended:
         assert self.emotions.emotion_intensity == expected_intensity
 
     def test_get_emotion_stats_empty(self):
-        """Test statistiques avec historique vide"""
+        """Test statistiques avec historique vide."""
         stats = self.emotions.get_emotion_stats()
 
         assert stats["current_emotion"] == "neutral"
@@ -249,7 +248,7 @@ class TestBBIAEmotionsExtended:
         assert len(stats["available_emotions"]) == 8
 
     def test_get_emotion_stats_with_history(self):
-        """Test statistiques avec historique"""
+        """Test statistiques avec historique."""
         self.emotions.set_emotion("happy", 0.7)
         self.emotions.set_emotion("sad", 0.6)
         self.emotions.set_emotion("happy", 0.8)
@@ -264,7 +263,7 @@ class TestBBIAEmotionsExtended:
 
     @patch("builtins.print")
     def test_reset_emotions(self, mock_print):
-        """Test remise à zéro des émotions"""
+        """Test remise à zéro des émotions."""
         self.emotions.set_emotion("happy", 0.8)
         self.emotions.set_emotion("sad", 0.6)
 
@@ -275,7 +274,7 @@ class TestBBIAEmotionsExtended:
         assert len(self.emotions.emotion_history) == 0
 
     def test_emotion_history_timestamp(self):
-        """Test timestamp dans l'historique"""
+        """Test timestamp dans l'historique."""
         self.emotions.set_emotion("happy", 0.7)
 
         entry = self.emotions.emotion_history[0]
@@ -284,16 +283,25 @@ class TestBBIAEmotionsExtended:
         datetime.fromisoformat(entry["timestamp"])
 
     def test_emotional_response_all_stimuli(self):
-        """Test toutes les réponses émotionnelles"""
-        stimuli = ["compliment", "insult", "surprise", "danger", "question",
-                  "greeting", "goodbye", "achievement", "failure"]
+        """Test toutes les réponses émotionnelles."""
+        stimuli = [
+            "compliment",
+            "insult",
+            "surprise",
+            "danger",
+            "question",
+            "greeting",
+            "goodbye",
+            "achievement",
+            "failure",
+        ]
 
         for stimulus in stimuli:
             result = self.emotions.emotional_response(stimulus)
-            assert result in self.emotions.emotions.keys()
+            assert result in self.emotions.emotions
 
     def test_emotion_intensity_range(self):
-        """Test plage d'intensité des émotions"""
+        """Test plage d'intensité des émotions."""
         # Test limites
         self.emotions.set_emotion("happy", 0.0)
         assert self.emotions.emotion_intensity == 0.0
@@ -306,7 +314,7 @@ class TestBBIAEmotionsExtended:
         assert self.emotions.emotion_intensity == 0.5
 
     def test_emotion_transition_chain(self):
-        """Test chaîne de transitions d'émotions"""
+        """Test chaîne de transitions d'émotions."""
         emotions_chain = ["neutral", "happy", "sad", "angry", "curious"]
 
         for emotion in emotions_chain[1:]:  # Skip neutral (déjà défini)
@@ -314,7 +322,7 @@ class TestBBIAEmotionsExtended:
             assert self.emotions.current_emotion == emotion
 
     def test_emotion_history_previous_tracking(self):
-        """Test suivi de l'émotion précédente"""
+        """Test suivi de l'émotion précédente."""
         self.emotions.set_emotion("happy", 0.7)
         self.emotions.set_emotion("sad", 0.6)
         self.emotions.set_emotion("angry", 0.8)

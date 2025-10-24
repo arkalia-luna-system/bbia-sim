@@ -1,5 +1,6 @@
 """Tests d'intégration pour WebSocket."""
 
+import contextlib
 import json
 import time
 from unittest.mock import patch
@@ -207,10 +208,8 @@ class TestWebSocketIntegration:
         finally:
             # Fermer toutes les connexions rapidement
             for websocket in connections:
-                try:
+                with contextlib.suppress(Exception):
                     websocket.close()
-                except Exception:
-                    pass
 
     @patch("src.bbia_sim.daemon.ws.telemetry.simulation_service")
     def test_websocket_telemetry_disconnect(self, mock_service, client):

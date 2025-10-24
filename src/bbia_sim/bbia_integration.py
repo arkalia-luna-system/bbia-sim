@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
-"""
-BBIA Integration - Module d'intégration BBIA ↔ Robot Reachy Mini
-Connecte tous les modules BBIA au simulateur MuJoCo pour créer une simulation complète
+"""BBIA Integration - Module d'intégration BBIA ↔ Robot Reachy Mini
+Connecte tous les modules BBIA au simulateur MuJoCo pour créer une simulation complète.
 """
 
 import asyncio
@@ -21,8 +20,7 @@ logger = logging.getLogger(__name__)
 
 
 class BBIAIntegration:
-    """
-    Module d'intégration principal qui connecte tous les modules BBIA au robot Reachy Mini.
+    """Module d'intégration principal qui connecte tous les modules BBIA au robot Reachy Mini.
 
     Fonctionnalités :
     - Mapping émotions → articulations du robot
@@ -33,7 +31,6 @@ class BBIAIntegration:
 
     def __init__(self, simulation_service: Optional[SimulationService] = None):
         """Initialise l'intégration BBIA avec le service de simulation."""
-
         # Service de simulation
         self.simulation_service = simulation_service or SimulationService()
 
@@ -74,7 +71,6 @@ class BBIAIntegration:
 
     def _create_emotion_mappings(self) -> dict[str, dict[str, float]]:
         """Crée le mapping des émotions vers les positions d'articulations."""
-
         return {
             "neutral": {
                 "yaw_body": 0.0,
@@ -168,7 +164,6 @@ class BBIAIntegration:
 
     async def start_integration(self) -> bool:
         """Démarre l'intégration BBIA avec le simulateur."""
-
         try:
             logger.info("🚀 Démarrage de l'intégration BBIA...")
 
@@ -204,7 +199,6 @@ class BBIAIntegration:
 
     async def stop_integration(self):
         """Arrête l'intégration BBIA."""
-
         logger.info("🛑 Arrêt de l'intégration BBIA...")
 
         self.is_active = False
@@ -217,8 +211,7 @@ class BBIAIntegration:
     async def apply_emotion_to_robot(
         self, emotion: str, intensity: float = 0.5
     ) -> bool:
-        """
-        Applique une émotion au robot via les articulations.
+        """Applique une émotion au robot via les articulations.
 
         Args:
             emotion: Nom de l'émotion à appliquer
@@ -226,8 +219,8 @@ class BBIAIntegration:
 
         Returns:
             True si l'émotion a été appliquée avec succès
-        """
 
+        """
         if not self.is_active:
             logger.warning("⚠️ Intégration BBIA non active")
             return False
@@ -265,16 +258,15 @@ class BBIAIntegration:
             return False
 
     async def react_to_vision_detection(self, detection_data: dict) -> bool:
-        """
-        Réagit aux détections visuelles en contrôlant le robot.
+        """Réagit aux détections visuelles en contrôlant le robot.
 
         Args:
             detection_data: Données de détection (objets, visages, etc.)
 
         Returns:
             True si la réaction a été appliquée
-        """
 
+        """
         if not self.is_active:
             return False
 
@@ -307,8 +299,7 @@ class BBIAIntegration:
     async def sync_voice_with_movements(
         self, text: str, emotion: str = "neutral"
     ) -> bool:
-        """
-        Synchronise la voix avec les mouvements du robot.
+        """Synchronise la voix avec les mouvements du robot.
 
         Args:
             text: Texte à prononcer
@@ -316,8 +307,8 @@ class BBIAIntegration:
 
         Returns:
             True si la synchronisation a été appliquée
-        """
 
+        """
         if not self.is_active:
             return False
 
@@ -352,16 +343,15 @@ class BBIAIntegration:
             return False
 
     async def execute_behavior_sequence(self, behavior_name: str) -> bool:
-        """
-        Exécute une séquence de comportement complète.
+        """Exécute une séquence de comportement complète.
 
         Args:
             behavior_name: Nom du comportement à exécuter
 
         Returns:
             True si la séquence a été exécutée
-        """
 
+        """
         if not self.is_active:
             return False
 
@@ -396,7 +386,6 @@ class BBIAIntegration:
 
     def get_integration_status(self) -> dict:
         """Retourne le statut de l'intégration BBIA."""
-
         return {
             "is_active": self.is_active,
             "current_emotion": self.current_emotion,
@@ -409,16 +398,15 @@ class BBIAIntegration:
 
 # Fonction utilitaire pour créer une instance d'intégration
 async def create_bbia_integration(model_path: Optional[str] = None) -> BBIAIntegration:
-    """
-    Crée et initialise une instance d'intégration BBIA.
+    """Crée et initialise une instance d'intégration BBIA.
 
     Args:
         model_path: Chemin vers le modèle MJCF (optionnel)
 
     Returns:
         Instance d'intégration BBIA prête à utiliser
-    """
 
+    """
     # Créer le service de simulation
     simulation_service = SimulationService(model_path)
 

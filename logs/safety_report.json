@@ -1,0 +1,4713 @@
+
+
++===========================================================================================================================================================================================+
+
+
+DEPRECATED: this command (`check`) has been DEPRECATED, and will be unsupported beyond 01 June 2024.
+
+
+We highly encourage switching to the new `scan` command which is easier to use, more powerful, and can be set up to mimic the deprecated command if required.
+
+
++===========================================================================================================================================================================================+
+
+
+{
+    "report_meta": {
+        "scan_target": "environment",
+        "scanned": [
+            "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages/setuptools/_vendor",
+            "/Volumes/T7/bbia-reachy-sim",
+            "/Volumes/T7/bbia-reachy-sim/venv/bin",
+            "/opt/homebrew/opt/pyenv/versions/3.10.14/lib/python3.10/lib-dynload",
+            "/Volumes/T7/devstation/cursor/arkalia-luna-pro/modules",
+            "/Volumes/T7/bbia-reachy-sim/src",
+            "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages",
+            "/opt/homebrew/opt/pyenv/versions/3.10.14/lib/python310.zip",
+            "/opt/homebrew/opt/pyenv/versions/3.10.14/lib/python3.10"
+        ],
+        "scanned_full_path": [
+            "/Volumes/T7/bbia-reachy-sim/venv/bin",
+            "/Volumes/T7/devstation/cursor/arkalia-luna-pro/modules",
+            "/Volumes/T7/bbia-reachy-sim",
+            "/opt/homebrew/opt/pyenv/versions/3.10.14/lib/python310.zip",
+            "/opt/homebrew/opt/pyenv/versions/3.10.14/lib/python3.10",
+            "/opt/homebrew/opt/pyenv/versions/3.10.14/lib/python3.10/lib-dynload",
+            "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages",
+            "/Volumes/T7/bbia-reachy-sim/src",
+            "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages/setuptools/_vendor"
+        ],
+        "target_languages": [
+            "python"
+        ],
+        "policy_file": null,
+        "policy_file_source": "local",
+        "audit_and_monitor": false,
+        "api_key": false,
+        "account": "",
+        "local_database_path": null,
+        "safety_version": "3.6.2",
+        "timestamp": "2025-10-24 16:58:41",
+        "packages_found": 307,
+        "vulnerabilities_found": 0,
+        "vulnerabilities_ignored": 0,
+        "remediations_recommended": 0,
+        "telemetry": {
+            "safety_options": {
+                "json": {
+                    "--json": 1
+                }
+            },
+            "safety_version": "3.6.2",
+            "safety_source": "cli",
+            "os_type": "Darwin",
+            "os_release": "25.0.0",
+            "os_description": "macOS-26.0.1-arm64-arm-64bit",
+            "python_version": "3.10.14",
+            "safety_command": "check"
+        },
+        "git": {
+            "branch": "develop",
+            "tag": "",
+            "commit": "1299235a00613380829b6a34144535b43af68659",
+            "dirty": "True",
+            "origin": "https://github.com/arkalia-luna-system/bbia-sim.git"
+        },
+        "project": null,
+        "json_version": "1.1",
+        "remediations_attempted": 0,
+        "remediations_completed": 0,
+        "remediation_mode": "NON_INTERACTIVE"
+    },
+    "scanned_packages": {
+        "absl-py": {
+            "name": "absl-py",
+            "version": "2.3.1",
+            "requirements": [
+                {
+                    "raw": "absl-py==2.3.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "absl-py",
+                    "specifier": "==2.3.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "aiohappyeyeballs": {
+            "name": "aiohappyeyeballs",
+            "version": "2.6.1",
+            "requirements": [
+                {
+                    "raw": "aiohappyeyeballs==2.6.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "aiohappyeyeballs",
+                    "specifier": "==2.6.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "aiohttp": {
+            "name": "aiohttp",
+            "version": "3.13.1",
+            "requirements": [
+                {
+                    "raw": "aiohttp==3.13.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "aiohttp",
+                    "specifier": "==3.13.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "aiosignal": {
+            "name": "aiosignal",
+            "version": "1.4.0",
+            "requirements": [
+                {
+                    "raw": "aiosignal==1.4.0",
+                    "extras": [],
+                    "marker": null,
+                    "name": "aiosignal",
+                    "specifier": "==1.4.0",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "annotated-types": {
+            "name": "annotated-types",
+            "version": "0.7.0",
+            "requirements": [
+                {
+                    "raw": "annotated-types==0.7.0",
+                    "extras": [],
+                    "marker": null,
+                    "name": "annotated-types",
+                    "specifier": "==0.7.0",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "anyio": {
+            "name": "anyio",
+            "version": "4.11.0",
+            "requirements": [
+                {
+                    "raw": "anyio==4.11.0",
+                    "extras": [],
+                    "marker": null,
+                    "name": "anyio",
+                    "specifier": "==4.11.0",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "asgiref": {
+            "name": "asgiref",
+            "version": "3.10.0",
+            "requirements": [
+                {
+                    "raw": "asgiref==3.10.0",
+                    "extras": [],
+                    "marker": null,
+                    "name": "asgiref",
+                    "specifier": "==3.10.0",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "async-timeout": {
+            "name": "async-timeout",
+            "version": "5.0.1",
+            "requirements": [
+                {
+                    "raw": "async-timeout==5.0.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "async-timeout",
+                    "specifier": "==5.0.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "attrs": {
+            "name": "attrs",
+            "version": "25.4.0",
+            "requirements": [
+                {
+                    "raw": "attrs==25.4.0",
+                    "extras": [],
+                    "marker": null,
+                    "name": "attrs",
+                    "specifier": "==25.4.0",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "authlib": {
+            "name": "authlib",
+            "version": "1.6.5",
+            "requirements": [
+                {
+                    "raw": "authlib==1.6.5",
+                    "extras": [],
+                    "marker": null,
+                    "name": "authlib",
+                    "specifier": "==1.6.5",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "backports-asyncio-runner": {
+            "name": "backports-asyncio-runner",
+            "version": "1.2.0",
+            "requirements": [
+                {
+                    "raw": "backports-asyncio-runner==1.2.0",
+                    "extras": [],
+                    "marker": null,
+                    "name": "backports-asyncio-runner",
+                    "specifier": "==1.2.0",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "backports-datetime-fromisoformat": {
+            "name": "backports-datetime-fromisoformat",
+            "version": "2.0.3",
+            "requirements": [
+                {
+                    "raw": "backports-datetime-fromisoformat==2.0.3",
+                    "extras": [],
+                    "marker": null,
+                    "name": "backports-datetime-fromisoformat",
+                    "specifier": "==2.0.3",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "bandit": {
+            "name": "bandit",
+            "version": "1.8.6",
+            "requirements": [
+                {
+                    "raw": "bandit==1.8.6",
+                    "extras": [],
+                    "marker": null,
+                    "name": "bandit",
+                    "specifier": "==1.8.6",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "bbia-sim": {
+            "name": "bbia-sim",
+            "version": "0.3.0",
+            "requirements": [
+                {
+                    "raw": "bbia-sim==0.3.0",
+                    "extras": [],
+                    "marker": null,
+                    "name": "bbia-sim",
+                    "specifier": "==0.3.0",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "black": {
+            "name": "black",
+            "version": "25.1.0",
+            "requirements": [
+                {
+                    "raw": "black==25.1.0",
+                    "extras": [],
+                    "marker": null,
+                    "name": "black",
+                    "specifier": "==25.1.0",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "boolean-py": {
+            "name": "boolean-py",
+            "version": "5.0",
+            "requirements": [
+                {
+                    "raw": "boolean-py==5.0",
+                    "extras": [],
+                    "marker": null,
+                    "name": "boolean-py",
+                    "specifier": "==5.0",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "build": {
+            "name": "build",
+            "version": "1.3.0",
+            "requirements": [
+                {
+                    "raw": "build==1.3.0",
+                    "extras": [],
+                    "marker": null,
+                    "name": "build",
+                    "specifier": "==1.3.0",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "cachecontrol": {
+            "name": "cachecontrol",
+            "version": "0.14.3",
+            "requirements": [
+                {
+                    "raw": "cachecontrol==0.14.3",
+                    "extras": [],
+                    "marker": null,
+                    "name": "cachecontrol",
+                    "specifier": "==0.14.3",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "certifi": {
+            "name": "certifi",
+            "version": "2025.10.5",
+            "requirements": [
+                {
+                    "raw": "certifi==2025.10.5",
+                    "extras": [],
+                    "marker": null,
+                    "name": "certifi",
+                    "specifier": "==2025.10.5",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "cffi": {
+            "name": "cffi",
+            "version": "2.0.0",
+            "requirements": [
+                {
+                    "raw": "cffi==2.0.0",
+                    "extras": [],
+                    "marker": null,
+                    "name": "cffi",
+                    "specifier": "==2.0.0",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "cfgv": {
+            "name": "cfgv",
+            "version": "3.4.0",
+            "requirements": [
+                {
+                    "raw": "cfgv==3.4.0",
+                    "extras": [],
+                    "marker": null,
+                    "name": "cfgv",
+                    "specifier": "==3.4.0",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "charset-normalizer": {
+            "name": "charset-normalizer",
+            "version": "3.4.4",
+            "requirements": [
+                {
+                    "raw": "charset-normalizer==3.4.4",
+                    "extras": [],
+                    "marker": null,
+                    "name": "charset-normalizer",
+                    "specifier": "==3.4.4",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "click": {
+            "name": "click",
+            "version": "8.2.1",
+            "requirements": [
+                {
+                    "raw": "click==8.2.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "click",
+                    "specifier": "==8.2.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "coverage": {
+            "name": "coverage",
+            "version": "7.11.0",
+            "requirements": [
+                {
+                    "raw": "coverage==7.11.0",
+                    "extras": [],
+                    "marker": null,
+                    "name": "coverage",
+                    "specifier": "==7.11.0",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "cryptography": {
+            "name": "cryptography",
+            "version": "46.0.3",
+            "requirements": [
+                {
+                    "raw": "cryptography==46.0.3",
+                    "extras": [],
+                    "marker": null,
+                    "name": "cryptography",
+                    "specifier": "==46.0.3",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "cv2-enumerate-cameras": {
+            "name": "cv2-enumerate-cameras",
+            "version": "1.3.0",
+            "requirements": [
+                {
+                    "raw": "cv2-enumerate-cameras==1.3.0",
+                    "extras": [],
+                    "marker": null,
+                    "name": "cv2-enumerate-cameras",
+                    "specifier": "==1.3.0",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "cyclonedx-python-lib": {
+            "name": "cyclonedx-python-lib",
+            "version": "9.1.0",
+            "requirements": [
+                {
+                    "raw": "cyclonedx-python-lib==9.1.0",
+                    "extras": [],
+                    "marker": null,
+                    "name": "cyclonedx-python-lib",
+                    "specifier": "==9.1.0",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "defusedxml": {
+            "name": "defusedxml",
+            "version": "0.7.1",
+            "requirements": [
+                {
+                    "raw": "defusedxml==0.7.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "defusedxml",
+                    "specifier": "==0.7.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "distlib": {
+            "name": "distlib",
+            "version": "0.4.0",
+            "requirements": [
+                {
+                    "raw": "distlib==0.4.0",
+                    "extras": [],
+                    "marker": null,
+                    "name": "distlib",
+                    "specifier": "==0.4.0",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "dparse": {
+            "name": "dparse",
+            "version": "0.6.4",
+            "requirements": [
+                {
+                    "raw": "dparse==0.6.4",
+                    "extras": [],
+                    "marker": null,
+                    "name": "dparse",
+                    "specifier": "==0.6.4",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "eclipse-zenoh": {
+            "name": "eclipse-zenoh",
+            "version": "1.6.2",
+            "requirements": [
+                {
+                    "raw": "eclipse-zenoh==1.6.2",
+                    "extras": [],
+                    "marker": null,
+                    "name": "eclipse-zenoh",
+                    "specifier": "==1.6.2",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "etils": {
+            "name": "etils",
+            "version": "1.13.0",
+            "requirements": [
+                {
+                    "raw": "etils==1.13.0",
+                    "extras": [],
+                    "marker": null,
+                    "name": "etils",
+                    "specifier": "==1.13.0",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "exceptiongroup": {
+            "name": "exceptiongroup",
+            "version": "1.3.0",
+            "requirements": [
+                {
+                    "raw": "exceptiongroup==1.3.0",
+                    "extras": [],
+                    "marker": null,
+                    "name": "exceptiongroup",
+                    "specifier": "==1.3.0",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "fastapi": {
+            "name": "fastapi",
+            "version": "0.119.1",
+            "requirements": [
+                {
+                    "raw": "fastapi==0.119.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "fastapi",
+                    "specifier": "==0.119.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "filelock": {
+            "name": "filelock",
+            "version": "3.20.0",
+            "requirements": [
+                {
+                    "raw": "filelock==3.20.0",
+                    "extras": [],
+                    "marker": null,
+                    "name": "filelock",
+                    "specifier": "==3.20.0",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "frozenlist": {
+            "name": "frozenlist",
+            "version": "1.8.0",
+            "requirements": [
+                {
+                    "raw": "frozenlist==1.8.0",
+                    "extras": [],
+                    "marker": null,
+                    "name": "frozenlist",
+                    "specifier": "==1.8.0",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "fsspec": {
+            "name": "fsspec",
+            "version": "2025.9.0",
+            "requirements": [
+                {
+                    "raw": "fsspec==2025.9.0",
+                    "extras": [],
+                    "marker": null,
+                    "name": "fsspec",
+                    "specifier": "==2025.9.0",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "glfw": {
+            "name": "glfw",
+            "version": "2.10.0",
+            "requirements": [
+                {
+                    "raw": "glfw==2.10.0",
+                    "extras": [],
+                    "marker": null,
+                    "name": "glfw",
+                    "specifier": "==2.10.0",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "h11": {
+            "name": "h11",
+            "version": "0.16.0",
+            "requirements": [
+                {
+                    "raw": "h11==0.16.0",
+                    "extras": [],
+                    "marker": null,
+                    "name": "h11",
+                    "specifier": "==0.16.0",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "hf-xet": {
+            "name": "hf-xet",
+            "version": "1.1.10",
+            "requirements": [
+                {
+                    "raw": "hf-xet==1.1.10",
+                    "extras": [],
+                    "marker": null,
+                    "name": "hf-xet",
+                    "specifier": "==1.1.10",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "httpcore": {
+            "name": "httpcore",
+            "version": "1.0.9",
+            "requirements": [
+                {
+                    "raw": "httpcore==1.0.9",
+                    "extras": [],
+                    "marker": null,
+                    "name": "httpcore",
+                    "specifier": "==1.0.9",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "httptools": {
+            "name": "httptools",
+            "version": "0.7.1",
+            "requirements": [
+                {
+                    "raw": "httptools==0.7.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "httptools",
+                    "specifier": "==0.7.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "httpx": {
+            "name": "httpx",
+            "version": "0.28.1",
+            "requirements": [
+                {
+                    "raw": "httpx==0.28.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "httpx",
+                    "specifier": "==0.28.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "huggingface-hub": {
+            "name": "huggingface-hub",
+            "version": "0.34.4",
+            "requirements": [
+                {
+                    "raw": "huggingface-hub==0.34.4",
+                    "extras": [],
+                    "marker": null,
+                    "name": "huggingface-hub",
+                    "specifier": "==0.34.4",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "identify": {
+            "name": "identify",
+            "version": "2.6.15",
+            "requirements": [
+                {
+                    "raw": "identify==2.6.15",
+                    "extras": [],
+                    "marker": null,
+                    "name": "identify",
+                    "specifier": "==2.6.15",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "idna": {
+            "name": "idna",
+            "version": "3.11",
+            "requirements": [
+                {
+                    "raw": "idna==3.11",
+                    "extras": [],
+                    "marker": null,
+                    "name": "idna",
+                    "specifier": "==3.11",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "importlib-resources": {
+            "name": "importlib-resources",
+            "version": "6.5.2",
+            "requirements": [
+                {
+                    "raw": "importlib-resources==6.5.2",
+                    "extras": [],
+                    "marker": null,
+                    "name": "importlib-resources",
+                    "specifier": "==6.5.2",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "iniconfig": {
+            "name": "iniconfig",
+            "version": "2.3.0",
+            "requirements": [
+                {
+                    "raw": "iniconfig==2.3.0",
+                    "extras": [],
+                    "marker": null,
+                    "name": "iniconfig",
+                    "specifier": "==2.3.0",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "isort": {
+            "name": "isort",
+            "version": "6.0.1",
+            "requirements": [
+                {
+                    "raw": "isort==6.0.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "isort",
+                    "specifier": "==6.0.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "jinja2": {
+            "name": "jinja2",
+            "version": "3.1.6",
+            "requirements": [
+                {
+                    "raw": "jinja2==3.1.6",
+                    "extras": [],
+                    "marker": null,
+                    "name": "jinja2",
+                    "specifier": "==3.1.6",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "joblib": {
+            "name": "joblib",
+            "version": "1.5.2",
+            "requirements": [
+                {
+                    "raw": "joblib==1.5.2",
+                    "extras": [],
+                    "marker": null,
+                    "name": "joblib",
+                    "specifier": "==1.5.2",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "license-expression": {
+            "name": "license-expression",
+            "version": "30.4.4",
+            "requirements": [
+                {
+                    "raw": "license-expression==30.4.4",
+                    "extras": [],
+                    "marker": null,
+                    "name": "license-expression",
+                    "specifier": "==30.4.4",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "log-throttling": {
+            "name": "log-throttling",
+            "version": "0.0.3",
+            "requirements": [
+                {
+                    "raw": "log-throttling==0.0.3",
+                    "extras": [],
+                    "marker": null,
+                    "name": "log-throttling",
+                    "specifier": "==0.0.3",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "markdown-it-py": {
+            "name": "markdown-it-py",
+            "version": "4.0.0",
+            "requirements": [
+                {
+                    "raw": "markdown-it-py==4.0.0",
+                    "extras": [],
+                    "marker": null,
+                    "name": "markdown-it-py",
+                    "specifier": "==4.0.0",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "markupsafe": {
+            "name": "markupsafe",
+            "version": "3.0.3",
+            "requirements": [
+                {
+                    "raw": "markupsafe==3.0.3",
+                    "extras": [],
+                    "marker": null,
+                    "name": "markupsafe",
+                    "specifier": "==3.0.3",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "marshmallow": {
+            "name": "marshmallow",
+            "version": "4.0.1",
+            "requirements": [
+                {
+                    "raw": "marshmallow==4.0.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "marshmallow",
+                    "specifier": "==4.0.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "mdurl": {
+            "name": "mdurl",
+            "version": "0.1.2",
+            "requirements": [
+                {
+                    "raw": "mdurl==0.1.2",
+                    "extras": [],
+                    "marker": null,
+                    "name": "mdurl",
+                    "specifier": "==0.1.2",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "msgpack": {
+            "name": "msgpack",
+            "version": "1.1.2",
+            "requirements": [
+                {
+                    "raw": "msgpack==1.1.2",
+                    "extras": [],
+                    "marker": null,
+                    "name": "msgpack",
+                    "specifier": "==1.1.2",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "mujoco": {
+            "name": "mujoco",
+            "version": "3.3.0",
+            "requirements": [
+                {
+                    "raw": "mujoco==3.3.0",
+                    "extras": [],
+                    "marker": null,
+                    "name": "mujoco",
+                    "specifier": "==3.3.0",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "multidict": {
+            "name": "multidict",
+            "version": "6.7.0",
+            "requirements": [
+                {
+                    "raw": "multidict==6.7.0",
+                    "extras": [],
+                    "marker": null,
+                    "name": "multidict",
+                    "specifier": "==6.7.0",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "mypy": {
+            "name": "mypy",
+            "version": "1.18.2",
+            "requirements": [
+                {
+                    "raw": "mypy==1.18.2",
+                    "extras": [],
+                    "marker": null,
+                    "name": "mypy",
+                    "specifier": "==1.18.2",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "mypy-extensions": {
+            "name": "mypy-extensions",
+            "version": "1.1.0",
+            "requirements": [
+                {
+                    "raw": "mypy-extensions==1.1.0",
+                    "extras": [],
+                    "marker": null,
+                    "name": "mypy-extensions",
+                    "specifier": "==1.1.0",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "nltk": {
+            "name": "nltk",
+            "version": "3.9.2",
+            "requirements": [
+                {
+                    "raw": "nltk==3.9.2",
+                    "extras": [],
+                    "marker": null,
+                    "name": "nltk",
+                    "specifier": "==3.9.2",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "nodeenv": {
+            "name": "nodeenv",
+            "version": "1.9.1",
+            "requirements": [
+                {
+                    "raw": "nodeenv==1.9.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "nodeenv",
+                    "specifier": "==1.9.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "numpy": {
+            "name": "numpy",
+            "version": "2.2.6",
+            "requirements": [
+                {
+                    "raw": "numpy==2.2.6",
+                    "extras": [],
+                    "marker": null,
+                    "name": "numpy",
+                    "specifier": "==2.2.6",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "numpy-stl": {
+            "name": "numpy-stl",
+            "version": "3.2.0",
+            "requirements": [
+                {
+                    "raw": "numpy-stl==3.2.0",
+                    "extras": [],
+                    "marker": null,
+                    "name": "numpy-stl",
+                    "specifier": "==3.2.0",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "opencv-python": {
+            "name": "opencv-python",
+            "version": "4.12.0.88",
+            "requirements": [
+                {
+                    "raw": "opencv-python==4.12.0.88",
+                    "extras": [],
+                    "marker": null,
+                    "name": "opencv-python",
+                    "specifier": "==4.12.0.88",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "packageurl-python": {
+            "name": "packageurl-python",
+            "version": "0.17.5",
+            "requirements": [
+                {
+                    "raw": "packageurl-python==0.17.5",
+                    "extras": [],
+                    "marker": null,
+                    "name": "packageurl-python",
+                    "specifier": "==0.17.5",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "packaging": {
+            "name": "packaging",
+            "version": "25.0",
+            "requirements": [
+                {
+                    "raw": "packaging==25.0",
+                    "extras": [],
+                    "marker": null,
+                    "name": "packaging",
+                    "specifier": "==25.0",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pathspec": {
+            "name": "pathspec",
+            "version": "0.12.1",
+            "requirements": [
+                {
+                    "raw": "pathspec==0.12.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pathspec",
+                    "specifier": "==0.12.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pillow": {
+            "name": "pillow",
+            "version": "12.0.0",
+            "requirements": [
+                {
+                    "raw": "pillow==12.0.0",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pillow",
+                    "specifier": "==12.0.0",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pip": {
+            "name": "pip",
+            "version": "25.2",
+            "requirements": [
+                {
+                    "raw": "pip==25.2",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pip",
+                    "specifier": "==25.2",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pip-api": {
+            "name": "pip-api",
+            "version": "0.0.34",
+            "requirements": [
+                {
+                    "raw": "pip-api==0.0.34",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pip-api",
+                    "specifier": "==0.0.34",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pip-audit": {
+            "name": "pip-audit",
+            "version": "2.9.0",
+            "requirements": [
+                {
+                    "raw": "pip-audit==2.9.0",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pip-audit",
+                    "specifier": "==2.9.0",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pip-requirements-parser": {
+            "name": "pip-requirements-parser",
+            "version": "32.0.1",
+            "requirements": [
+                {
+                    "raw": "pip-requirements-parser==32.0.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pip-requirements-parser",
+                    "specifier": "==32.0.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "platformdirs": {
+            "name": "platformdirs",
+            "version": "4.3.8",
+            "requirements": [
+                {
+                    "raw": "platformdirs==4.3.8",
+                    "extras": [],
+                    "marker": null,
+                    "name": "platformdirs",
+                    "specifier": "==4.3.8",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pluggy": {
+            "name": "pluggy",
+            "version": "1.6.0",
+            "requirements": [
+                {
+                    "raw": "pluggy==1.6.0",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pluggy",
+                    "specifier": "==1.6.0",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pre-commit": {
+            "name": "pre-commit",
+            "version": "4.3.0",
+            "requirements": [
+                {
+                    "raw": "pre-commit==4.3.0",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pre-commit",
+                    "specifier": "==4.3.0",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "propcache": {
+            "name": "propcache",
+            "version": "0.4.1",
+            "requirements": [
+                {
+                    "raw": "propcache==0.4.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "propcache",
+                    "specifier": "==0.4.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "psutil": {
+            "name": "psutil",
+            "version": "7.1.1",
+            "requirements": [
+                {
+                    "raw": "psutil==7.1.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "psutil",
+                    "specifier": "==7.1.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "py-serializable": {
+            "name": "py-serializable",
+            "version": "2.1.0",
+            "requirements": [
+                {
+                    "raw": "py-serializable==2.1.0",
+                    "extras": [],
+                    "marker": null,
+                    "name": "py-serializable",
+                    "specifier": "==2.1.0",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyaudio": {
+            "name": "pyaudio",
+            "version": "0.2.14",
+            "requirements": [
+                {
+                    "raw": "pyaudio==0.2.14",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyaudio",
+                    "specifier": "==0.2.14",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pycparser": {
+            "name": "pycparser",
+            "version": "2.22",
+            "requirements": [
+                {
+                    "raw": "pycparser==2.22",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pycparser",
+                    "specifier": "==2.22",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pydantic": {
+            "name": "pydantic",
+            "version": "2.12.3",
+            "requirements": [
+                {
+                    "raw": "pydantic==2.12.3",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pydantic",
+                    "specifier": "==2.12.3",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pydantic-core": {
+            "name": "pydantic-core",
+            "version": "2.41.4",
+            "requirements": [
+                {
+                    "raw": "pydantic-core==2.41.4",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pydantic-core",
+                    "specifier": "==2.41.4",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pydantic-settings": {
+            "name": "pydantic-settings",
+            "version": "2.11.0",
+            "requirements": [
+                {
+                    "raw": "pydantic-settings==2.11.0",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pydantic-settings",
+                    "specifier": "==2.11.0",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pygments": {
+            "name": "pygments",
+            "version": "2.19.2",
+            "requirements": [
+                {
+                    "raw": "pygments==2.19.2",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pygments",
+                    "specifier": "==2.19.2",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc": {
+            "name": "pyobjc",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-core": {
+            "name": "pyobjc-core",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-core==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-core",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-accessibility": {
+            "name": "pyobjc-framework-accessibility",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-accessibility==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-accessibility",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-accounts": {
+            "name": "pyobjc-framework-accounts",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-accounts==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-accounts",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-addressbook": {
+            "name": "pyobjc-framework-addressbook",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-addressbook==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-addressbook",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-adservices": {
+            "name": "pyobjc-framework-adservices",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-adservices==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-adservices",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-adsupport": {
+            "name": "pyobjc-framework-adsupport",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-adsupport==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-adsupport",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-applescriptkit": {
+            "name": "pyobjc-framework-applescriptkit",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-applescriptkit==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-applescriptkit",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-applescriptobjc": {
+            "name": "pyobjc-framework-applescriptobjc",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-applescriptobjc==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-applescriptobjc",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-applicationservices": {
+            "name": "pyobjc-framework-applicationservices",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-applicationservices==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-applicationservices",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-apptrackingtransparency": {
+            "name": "pyobjc-framework-apptrackingtransparency",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-apptrackingtransparency==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-apptrackingtransparency",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-audiovideobridging": {
+            "name": "pyobjc-framework-audiovideobridging",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-audiovideobridging==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-audiovideobridging",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-authenticationservices": {
+            "name": "pyobjc-framework-authenticationservices",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-authenticationservices==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-authenticationservices",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-automaticassessmentconfiguration": {
+            "name": "pyobjc-framework-automaticassessmentconfiguration",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-automaticassessmentconfiguration==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-automaticassessmentconfiguration",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-automator": {
+            "name": "pyobjc-framework-automator",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-automator==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-automator",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-avfoundation": {
+            "name": "pyobjc-framework-avfoundation",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-avfoundation==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-avfoundation",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-avkit": {
+            "name": "pyobjc-framework-avkit",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-avkit==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-avkit",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-avrouting": {
+            "name": "pyobjc-framework-avrouting",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-avrouting==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-avrouting",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-backgroundassets": {
+            "name": "pyobjc-framework-backgroundassets",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-backgroundassets==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-backgroundassets",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-browserenginekit": {
+            "name": "pyobjc-framework-browserenginekit",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-browserenginekit==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-browserenginekit",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-businesschat": {
+            "name": "pyobjc-framework-businesschat",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-businesschat==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-businesschat",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-calendarstore": {
+            "name": "pyobjc-framework-calendarstore",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-calendarstore==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-calendarstore",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-callkit": {
+            "name": "pyobjc-framework-callkit",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-callkit==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-callkit",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-carbon": {
+            "name": "pyobjc-framework-carbon",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-carbon==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-carbon",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-cfnetwork": {
+            "name": "pyobjc-framework-cfnetwork",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-cfnetwork==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-cfnetwork",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-cinematic": {
+            "name": "pyobjc-framework-cinematic",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-cinematic==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-cinematic",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-classkit": {
+            "name": "pyobjc-framework-classkit",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-classkit==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-classkit",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-cloudkit": {
+            "name": "pyobjc-framework-cloudkit",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-cloudkit==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-cloudkit",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-cocoa": {
+            "name": "pyobjc-framework-cocoa",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-cocoa==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-cocoa",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-collaboration": {
+            "name": "pyobjc-framework-collaboration",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-collaboration==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-collaboration",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-colorsync": {
+            "name": "pyobjc-framework-colorsync",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-colorsync==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-colorsync",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-contacts": {
+            "name": "pyobjc-framework-contacts",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-contacts==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-contacts",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-contactsui": {
+            "name": "pyobjc-framework-contactsui",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-contactsui==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-contactsui",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-coreaudio": {
+            "name": "pyobjc-framework-coreaudio",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-coreaudio==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-coreaudio",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-coreaudiokit": {
+            "name": "pyobjc-framework-coreaudiokit",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-coreaudiokit==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-coreaudiokit",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-corebluetooth": {
+            "name": "pyobjc-framework-corebluetooth",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-corebluetooth==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-corebluetooth",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-coredata": {
+            "name": "pyobjc-framework-coredata",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-coredata==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-coredata",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-corehaptics": {
+            "name": "pyobjc-framework-corehaptics",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-corehaptics==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-corehaptics",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-corelocation": {
+            "name": "pyobjc-framework-corelocation",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-corelocation==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-corelocation",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-coremedia": {
+            "name": "pyobjc-framework-coremedia",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-coremedia==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-coremedia",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-coremediaio": {
+            "name": "pyobjc-framework-coremediaio",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-coremediaio==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-coremediaio",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-coremidi": {
+            "name": "pyobjc-framework-coremidi",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-coremidi==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-coremidi",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-coreml": {
+            "name": "pyobjc-framework-coreml",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-coreml==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-coreml",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-coremotion": {
+            "name": "pyobjc-framework-coremotion",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-coremotion==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-coremotion",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-coreservices": {
+            "name": "pyobjc-framework-coreservices",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-coreservices==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-coreservices",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-corespotlight": {
+            "name": "pyobjc-framework-corespotlight",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-corespotlight==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-corespotlight",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-coretext": {
+            "name": "pyobjc-framework-coretext",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-coretext==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-coretext",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-corewlan": {
+            "name": "pyobjc-framework-corewlan",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-corewlan==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-corewlan",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-cryptotokenkit": {
+            "name": "pyobjc-framework-cryptotokenkit",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-cryptotokenkit==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-cryptotokenkit",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-datadetection": {
+            "name": "pyobjc-framework-datadetection",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-datadetection==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-datadetection",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-devicecheck": {
+            "name": "pyobjc-framework-devicecheck",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-devicecheck==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-devicecheck",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-devicediscoveryextension": {
+            "name": "pyobjc-framework-devicediscoveryextension",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-devicediscoveryextension==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-devicediscoveryextension",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-dictionaryservices": {
+            "name": "pyobjc-framework-dictionaryservices",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-dictionaryservices==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-dictionaryservices",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-discrecording": {
+            "name": "pyobjc-framework-discrecording",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-discrecording==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-discrecording",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-discrecordingui": {
+            "name": "pyobjc-framework-discrecordingui",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-discrecordingui==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-discrecordingui",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-diskarbitration": {
+            "name": "pyobjc-framework-diskarbitration",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-diskarbitration==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-diskarbitration",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-dvdplayback": {
+            "name": "pyobjc-framework-dvdplayback",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-dvdplayback==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-dvdplayback",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-eventkit": {
+            "name": "pyobjc-framework-eventkit",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-eventkit==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-eventkit",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-exceptionhandling": {
+            "name": "pyobjc-framework-exceptionhandling",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-exceptionhandling==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-exceptionhandling",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-executionpolicy": {
+            "name": "pyobjc-framework-executionpolicy",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-executionpolicy==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-executionpolicy",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-extensionkit": {
+            "name": "pyobjc-framework-extensionkit",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-extensionkit==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-extensionkit",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-externalaccessory": {
+            "name": "pyobjc-framework-externalaccessory",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-externalaccessory==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-externalaccessory",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-fileprovider": {
+            "name": "pyobjc-framework-fileprovider",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-fileprovider==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-fileprovider",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-fileproviderui": {
+            "name": "pyobjc-framework-fileproviderui",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-fileproviderui==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-fileproviderui",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-findersync": {
+            "name": "pyobjc-framework-findersync",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-findersync==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-findersync",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-fsevents": {
+            "name": "pyobjc-framework-fsevents",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-fsevents==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-fsevents",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-fskit": {
+            "name": "pyobjc-framework-fskit",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-fskit==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-fskit",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-gamecenter": {
+            "name": "pyobjc-framework-gamecenter",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-gamecenter==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-gamecenter",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-gamecontroller": {
+            "name": "pyobjc-framework-gamecontroller",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-gamecontroller==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-gamecontroller",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-gamekit": {
+            "name": "pyobjc-framework-gamekit",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-gamekit==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-gamekit",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-gameplaykit": {
+            "name": "pyobjc-framework-gameplaykit",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-gameplaykit==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-gameplaykit",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-healthkit": {
+            "name": "pyobjc-framework-healthkit",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-healthkit==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-healthkit",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-imagecapturecore": {
+            "name": "pyobjc-framework-imagecapturecore",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-imagecapturecore==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-imagecapturecore",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-inputmethodkit": {
+            "name": "pyobjc-framework-inputmethodkit",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-inputmethodkit==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-inputmethodkit",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-installerplugins": {
+            "name": "pyobjc-framework-installerplugins",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-installerplugins==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-installerplugins",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-instantmessage": {
+            "name": "pyobjc-framework-instantmessage",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-instantmessage==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-instantmessage",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-intents": {
+            "name": "pyobjc-framework-intents",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-intents==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-intents",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-intentsui": {
+            "name": "pyobjc-framework-intentsui",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-intentsui==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-intentsui",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-iobluetooth": {
+            "name": "pyobjc-framework-iobluetooth",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-iobluetooth==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-iobluetooth",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-iobluetoothui": {
+            "name": "pyobjc-framework-iobluetoothui",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-iobluetoothui==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-iobluetoothui",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-iosurface": {
+            "name": "pyobjc-framework-iosurface",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-iosurface==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-iosurface",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-ituneslibrary": {
+            "name": "pyobjc-framework-ituneslibrary",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-ituneslibrary==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-ituneslibrary",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-kernelmanagement": {
+            "name": "pyobjc-framework-kernelmanagement",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-kernelmanagement==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-kernelmanagement",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-latentsemanticmapping": {
+            "name": "pyobjc-framework-latentsemanticmapping",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-latentsemanticmapping==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-latentsemanticmapping",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-launchservices": {
+            "name": "pyobjc-framework-launchservices",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-launchservices==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-launchservices",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-libdispatch": {
+            "name": "pyobjc-framework-libdispatch",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-libdispatch==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-libdispatch",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-libxpc": {
+            "name": "pyobjc-framework-libxpc",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-libxpc==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-libxpc",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-linkpresentation": {
+            "name": "pyobjc-framework-linkpresentation",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-linkpresentation==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-linkpresentation",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-localauthentication": {
+            "name": "pyobjc-framework-localauthentication",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-localauthentication==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-localauthentication",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-localauthenticationembeddedui": {
+            "name": "pyobjc-framework-localauthenticationembeddedui",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-localauthenticationembeddedui==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-localauthenticationembeddedui",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-mailkit": {
+            "name": "pyobjc-framework-mailkit",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-mailkit==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-mailkit",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-mapkit": {
+            "name": "pyobjc-framework-mapkit",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-mapkit==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-mapkit",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-mediaaccessibility": {
+            "name": "pyobjc-framework-mediaaccessibility",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-mediaaccessibility==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-mediaaccessibility",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-mediaextension": {
+            "name": "pyobjc-framework-mediaextension",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-mediaextension==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-mediaextension",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-medialibrary": {
+            "name": "pyobjc-framework-medialibrary",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-medialibrary==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-medialibrary",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-mediaplayer": {
+            "name": "pyobjc-framework-mediaplayer",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-mediaplayer==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-mediaplayer",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-mediatoolbox": {
+            "name": "pyobjc-framework-mediatoolbox",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-mediatoolbox==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-mediatoolbox",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-metal": {
+            "name": "pyobjc-framework-metal",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-metal==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-metal",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-metalfx": {
+            "name": "pyobjc-framework-metalfx",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-metalfx==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-metalfx",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-metalkit": {
+            "name": "pyobjc-framework-metalkit",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-metalkit==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-metalkit",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-metalperformanceshaders": {
+            "name": "pyobjc-framework-metalperformanceshaders",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-metalperformanceshaders==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-metalperformanceshaders",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-metalperformanceshadersgraph": {
+            "name": "pyobjc-framework-metalperformanceshadersgraph",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-metalperformanceshadersgraph==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-metalperformanceshadersgraph",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-metrickit": {
+            "name": "pyobjc-framework-metrickit",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-metrickit==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-metrickit",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-mlcompute": {
+            "name": "pyobjc-framework-mlcompute",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-mlcompute==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-mlcompute",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-modelio": {
+            "name": "pyobjc-framework-modelio",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-modelio==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-modelio",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-multipeerconnectivity": {
+            "name": "pyobjc-framework-multipeerconnectivity",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-multipeerconnectivity==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-multipeerconnectivity",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-naturallanguage": {
+            "name": "pyobjc-framework-naturallanguage",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-naturallanguage==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-naturallanguage",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-netfs": {
+            "name": "pyobjc-framework-netfs",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-netfs==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-netfs",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-network": {
+            "name": "pyobjc-framework-network",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-network==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-network",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-networkextension": {
+            "name": "pyobjc-framework-networkextension",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-networkextension==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-networkextension",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-notificationcenter": {
+            "name": "pyobjc-framework-notificationcenter",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-notificationcenter==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-notificationcenter",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-opendirectory": {
+            "name": "pyobjc-framework-opendirectory",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-opendirectory==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-opendirectory",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-osakit": {
+            "name": "pyobjc-framework-osakit",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-osakit==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-osakit",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-oslog": {
+            "name": "pyobjc-framework-oslog",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-oslog==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-oslog",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-passkit": {
+            "name": "pyobjc-framework-passkit",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-passkit==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-passkit",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-pencilkit": {
+            "name": "pyobjc-framework-pencilkit",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-pencilkit==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-pencilkit",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-phase": {
+            "name": "pyobjc-framework-phase",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-phase==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-phase",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-photos": {
+            "name": "pyobjc-framework-photos",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-photos==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-photos",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-photosui": {
+            "name": "pyobjc-framework-photosui",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-photosui==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-photosui",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-preferencepanes": {
+            "name": "pyobjc-framework-preferencepanes",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-preferencepanes==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-preferencepanes",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-pushkit": {
+            "name": "pyobjc-framework-pushkit",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-pushkit==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-pushkit",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-quartz": {
+            "name": "pyobjc-framework-quartz",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-quartz==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-quartz",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-quicklookthumbnailing": {
+            "name": "pyobjc-framework-quicklookthumbnailing",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-quicklookthumbnailing==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-quicklookthumbnailing",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-replaykit": {
+            "name": "pyobjc-framework-replaykit",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-replaykit==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-replaykit",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-safariservices": {
+            "name": "pyobjc-framework-safariservices",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-safariservices==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-safariservices",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-safetykit": {
+            "name": "pyobjc-framework-safetykit",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-safetykit==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-safetykit",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-scenekit": {
+            "name": "pyobjc-framework-scenekit",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-scenekit==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-scenekit",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-screencapturekit": {
+            "name": "pyobjc-framework-screencapturekit",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-screencapturekit==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-screencapturekit",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-screensaver": {
+            "name": "pyobjc-framework-screensaver",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-screensaver==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-screensaver",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-screentime": {
+            "name": "pyobjc-framework-screentime",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-screentime==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-screentime",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-scriptingbridge": {
+            "name": "pyobjc-framework-scriptingbridge",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-scriptingbridge==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-scriptingbridge",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-searchkit": {
+            "name": "pyobjc-framework-searchkit",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-searchkit==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-searchkit",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-security": {
+            "name": "pyobjc-framework-security",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-security==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-security",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-securityfoundation": {
+            "name": "pyobjc-framework-securityfoundation",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-securityfoundation==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-securityfoundation",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-securityinterface": {
+            "name": "pyobjc-framework-securityinterface",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-securityinterface==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-securityinterface",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-securityui": {
+            "name": "pyobjc-framework-securityui",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-securityui==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-securityui",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-sensitivecontentanalysis": {
+            "name": "pyobjc-framework-sensitivecontentanalysis",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-sensitivecontentanalysis==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-sensitivecontentanalysis",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-servicemanagement": {
+            "name": "pyobjc-framework-servicemanagement",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-servicemanagement==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-servicemanagement",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-sharedwithyou": {
+            "name": "pyobjc-framework-sharedwithyou",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-sharedwithyou==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-sharedwithyou",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-sharedwithyoucore": {
+            "name": "pyobjc-framework-sharedwithyoucore",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-sharedwithyoucore==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-sharedwithyoucore",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-shazamkit": {
+            "name": "pyobjc-framework-shazamkit",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-shazamkit==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-shazamkit",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-social": {
+            "name": "pyobjc-framework-social",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-social==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-social",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-soundanalysis": {
+            "name": "pyobjc-framework-soundanalysis",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-soundanalysis==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-soundanalysis",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-speech": {
+            "name": "pyobjc-framework-speech",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-speech==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-speech",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-spritekit": {
+            "name": "pyobjc-framework-spritekit",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-spritekit==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-spritekit",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-storekit": {
+            "name": "pyobjc-framework-storekit",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-storekit==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-storekit",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-symbols": {
+            "name": "pyobjc-framework-symbols",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-symbols==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-symbols",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-syncservices": {
+            "name": "pyobjc-framework-syncservices",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-syncservices==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-syncservices",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-systemconfiguration": {
+            "name": "pyobjc-framework-systemconfiguration",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-systemconfiguration==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-systemconfiguration",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-systemextensions": {
+            "name": "pyobjc-framework-systemextensions",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-systemextensions==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-systemextensions",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-threadnetwork": {
+            "name": "pyobjc-framework-threadnetwork",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-threadnetwork==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-threadnetwork",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-uniformtypeidentifiers": {
+            "name": "pyobjc-framework-uniformtypeidentifiers",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-uniformtypeidentifiers==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-uniformtypeidentifiers",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-usernotifications": {
+            "name": "pyobjc-framework-usernotifications",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-usernotifications==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-usernotifications",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-usernotificationsui": {
+            "name": "pyobjc-framework-usernotificationsui",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-usernotificationsui==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-usernotificationsui",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-videosubscriberaccount": {
+            "name": "pyobjc-framework-videosubscriberaccount",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-videosubscriberaccount==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-videosubscriberaccount",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-videotoolbox": {
+            "name": "pyobjc-framework-videotoolbox",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-videotoolbox==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-videotoolbox",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-virtualization": {
+            "name": "pyobjc-framework-virtualization",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-virtualization==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-virtualization",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-vision": {
+            "name": "pyobjc-framework-vision",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-vision==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-vision",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyobjc-framework-webkit": {
+            "name": "pyobjc-framework-webkit",
+            "version": "11.1",
+            "requirements": [
+                {
+                    "raw": "pyobjc-framework-webkit==11.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyobjc-framework-webkit",
+                    "specifier": "==11.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyopengl": {
+            "name": "pyopengl",
+            "version": "3.1.10",
+            "requirements": [
+                {
+                    "raw": "pyopengl==3.1.10",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyopengl",
+                    "specifier": "==3.1.10",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyparsing": {
+            "name": "pyparsing",
+            "version": "3.2.5",
+            "requirements": [
+                {
+                    "raw": "pyparsing==3.2.5",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyparsing",
+                    "specifier": "==3.2.5",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyproject-hooks": {
+            "name": "pyproject-hooks",
+            "version": "1.2.0",
+            "requirements": [
+                {
+                    "raw": "pyproject-hooks==1.2.0",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyproject-hooks",
+                    "specifier": "==1.2.0",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyserial": {
+            "name": "pyserial",
+            "version": "3.5",
+            "requirements": [
+                {
+                    "raw": "pyserial==3.5",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyserial",
+                    "specifier": "==3.5",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pytest": {
+            "name": "pytest",
+            "version": "8.4.2",
+            "requirements": [
+                {
+                    "raw": "pytest==8.4.2",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pytest",
+                    "specifier": "==8.4.2",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pytest-asyncio": {
+            "name": "pytest-asyncio",
+            "version": "1.2.0",
+            "requirements": [
+                {
+                    "raw": "pytest-asyncio==1.2.0",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pytest-asyncio",
+                    "specifier": "==1.2.0",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pytest-cov": {
+            "name": "pytest-cov",
+            "version": "7.0.0",
+            "requirements": [
+                {
+                    "raw": "pytest-cov==7.0.0",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pytest-cov",
+                    "specifier": "==7.0.0",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pytest-mock": {
+            "name": "pytest-mock",
+            "version": "3.15.1",
+            "requirements": [
+                {
+                    "raw": "pytest-mock==3.15.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pytest-mock",
+                    "specifier": "==3.15.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "python-dotenv": {
+            "name": "python-dotenv",
+            "version": "1.1.1",
+            "requirements": [
+                {
+                    "raw": "python-dotenv==1.1.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "python-dotenv",
+                    "specifier": "==1.1.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "python-multipart": {
+            "name": "python-multipart",
+            "version": "0.0.20",
+            "requirements": [
+                {
+                    "raw": "python-multipart==0.0.20",
+                    "extras": [],
+                    "marker": null,
+                    "name": "python-multipart",
+                    "specifier": "==0.0.20",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "python-utils": {
+            "name": "python-utils",
+            "version": "3.9.1",
+            "requirements": [
+                {
+                    "raw": "python-utils==3.9.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "python-utils",
+                    "specifier": "==3.9.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyttsx3": {
+            "name": "pyttsx3",
+            "version": "2.99",
+            "requirements": [
+                {
+                    "raw": "pyttsx3==2.99",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyttsx3",
+                    "specifier": "==2.99",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "pyyaml": {
+            "name": "pyyaml",
+            "version": "6.0.3",
+            "requirements": [
+                {
+                    "raw": "pyyaml==6.0.3",
+                    "extras": [],
+                    "marker": null,
+                    "name": "pyyaml",
+                    "specifier": "==6.0.3",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "reachy-mini": {
+            "name": "reachy-mini",
+            "version": "1.0.0rc5",
+            "requirements": [
+                {
+                    "raw": "reachy-mini==1.0.0rc5",
+                    "extras": [],
+                    "marker": null,
+                    "name": "reachy-mini",
+                    "specifier": "==1.0.0rc5",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "reachy-mini-motor-controller": {
+            "name": "reachy-mini-motor-controller",
+            "version": "1.0.0",
+            "requirements": [
+                {
+                    "raw": "reachy-mini-motor-controller==1.0.0",
+                    "extras": [],
+                    "marker": null,
+                    "name": "reachy-mini-motor-controller",
+                    "specifier": "==1.0.0",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "reachy-mini-rust-kinematics": {
+            "name": "reachy-mini-rust-kinematics",
+            "version": "1.0.2",
+            "requirements": [
+                {
+                    "raw": "reachy-mini-rust-kinematics==1.0.2",
+                    "extras": [],
+                    "marker": null,
+                    "name": "reachy-mini-rust-kinematics",
+                    "specifier": "==1.0.2",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "regex": {
+            "name": "regex",
+            "version": "2025.10.23",
+            "requirements": [
+                {
+                    "raw": "regex==2025.10.23",
+                    "extras": [],
+                    "marker": null,
+                    "name": "regex",
+                    "specifier": "==2025.10.23",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "requests": {
+            "name": "requests",
+            "version": "2.32.5",
+            "requirements": [
+                {
+                    "raw": "requests==2.32.5",
+                    "extras": [],
+                    "marker": null,
+                    "name": "requests",
+                    "specifier": "==2.32.5",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "rich": {
+            "name": "rich",
+            "version": "14.2.0",
+            "requirements": [
+                {
+                    "raw": "rich==14.2.0",
+                    "extras": [],
+                    "marker": null,
+                    "name": "rich",
+                    "specifier": "==14.2.0",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "ruamel.yaml": {
+            "name": "ruamel.yaml",
+            "version": "0.18.15",
+            "requirements": [
+                {
+                    "raw": "ruamel.yaml==0.18.15",
+                    "extras": [],
+                    "marker": null,
+                    "name": "ruamel.yaml",
+                    "specifier": "==0.18.15",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "ruamel.yaml.clib": {
+            "name": "ruamel.yaml.clib",
+            "version": "0.2.14",
+            "requirements": [
+                {
+                    "raw": "ruamel.yaml.clib==0.2.14",
+                    "extras": [],
+                    "marker": null,
+                    "name": "ruamel.yaml.clib",
+                    "specifier": "==0.2.14",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "ruff": {
+            "name": "ruff",
+            "version": "0.12.3",
+            "requirements": [
+                {
+                    "raw": "ruff==0.12.3",
+                    "extras": [],
+                    "marker": null,
+                    "name": "ruff",
+                    "specifier": "==0.12.3",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "safety": {
+            "name": "safety",
+            "version": "3.6.2",
+            "requirements": [
+                {
+                    "raw": "safety==3.6.2",
+                    "extras": [],
+                    "marker": null,
+                    "name": "safety",
+                    "specifier": "==3.6.2",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "safety-schemas": {
+            "name": "safety-schemas",
+            "version": "0.0.16",
+            "requirements": [
+                {
+                    "raw": "safety-schemas==0.0.16",
+                    "extras": [],
+                    "marker": null,
+                    "name": "safety-schemas",
+                    "specifier": "==0.0.16",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "scipy": {
+            "name": "scipy",
+            "version": "1.15.3",
+            "requirements": [
+                {
+                    "raw": "scipy==1.15.3",
+                    "extras": [],
+                    "marker": null,
+                    "name": "scipy",
+                    "specifier": "==1.15.3",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "setuptools": {
+            "name": "setuptools",
+            "version": "80.9.0",
+            "requirements": [
+                {
+                    "raw": "setuptools==80.9.0",
+                    "extras": [],
+                    "marker": null,
+                    "name": "setuptools",
+                    "specifier": "==80.9.0",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "shellingham": {
+            "name": "shellingham",
+            "version": "1.5.4",
+            "requirements": [
+                {
+                    "raw": "shellingham==1.5.4",
+                    "extras": [],
+                    "marker": null,
+                    "name": "shellingham",
+                    "specifier": "==1.5.4",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "sniffio": {
+            "name": "sniffio",
+            "version": "1.3.1",
+            "requirements": [
+                {
+                    "raw": "sniffio==1.3.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "sniffio",
+                    "specifier": "==1.3.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "sortedcontainers": {
+            "name": "sortedcontainers",
+            "version": "2.4.0",
+            "requirements": [
+                {
+                    "raw": "sortedcontainers==2.4.0",
+                    "extras": [],
+                    "marker": null,
+                    "name": "sortedcontainers",
+                    "specifier": "==2.4.0",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "sounddevice": {
+            "name": "sounddevice",
+            "version": "0.5.1",
+            "requirements": [
+                {
+                    "raw": "sounddevice==0.5.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "sounddevice",
+                    "specifier": "==0.5.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "soundfile": {
+            "name": "soundfile",
+            "version": "0.13.1",
+            "requirements": [
+                {
+                    "raw": "soundfile==0.13.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "soundfile",
+                    "specifier": "==0.13.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "speechrecognition": {
+            "name": "speechrecognition",
+            "version": "3.14.3",
+            "requirements": [
+                {
+                    "raw": "speechrecognition==3.14.3",
+                    "extras": [],
+                    "marker": null,
+                    "name": "speechrecognition",
+                    "specifier": "==3.14.3",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "starlette": {
+            "name": "starlette",
+            "version": "0.48.0",
+            "requirements": [
+                {
+                    "raw": "starlette==0.48.0",
+                    "extras": [],
+                    "marker": null,
+                    "name": "starlette",
+                    "specifier": "==0.48.0",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "stevedore": {
+            "name": "stevedore",
+            "version": "5.5.0",
+            "requirements": [
+                {
+                    "raw": "stevedore==5.5.0",
+                    "extras": [],
+                    "marker": null,
+                    "name": "stevedore",
+                    "specifier": "==5.5.0",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "tenacity": {
+            "name": "tenacity",
+            "version": "9.1.2",
+            "requirements": [
+                {
+                    "raw": "tenacity==9.1.2",
+                    "extras": [],
+                    "marker": null,
+                    "name": "tenacity",
+                    "specifier": "==9.1.2",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "toml": {
+            "name": "toml",
+            "version": "0.10.2",
+            "requirements": [
+                {
+                    "raw": "toml==0.10.2",
+                    "extras": [],
+                    "marker": null,
+                    "name": "toml",
+                    "specifier": "==0.10.2",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "tomli": {
+            "name": "tomli",
+            "version": "2.2.1",
+            "requirements": [
+                {
+                    "raw": "tomli==2.2.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "tomli",
+                    "specifier": "==2.2.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "tomlkit": {
+            "name": "tomlkit",
+            "version": "0.13.3",
+            "requirements": [
+                {
+                    "raw": "tomlkit==0.13.3",
+                    "extras": [],
+                    "marker": null,
+                    "name": "tomlkit",
+                    "specifier": "==0.13.3",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "tqdm": {
+            "name": "tqdm",
+            "version": "4.67.1",
+            "requirements": [
+                {
+                    "raw": "tqdm==4.67.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "tqdm",
+                    "specifier": "==4.67.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "typer": {
+            "name": "typer",
+            "version": "0.20.0",
+            "requirements": [
+                {
+                    "raw": "typer==0.20.0",
+                    "extras": [],
+                    "marker": null,
+                    "name": "typer",
+                    "specifier": "==0.20.0",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "typing-extensions": {
+            "name": "typing-extensions",
+            "version": "4.14.1",
+            "requirements": [
+                {
+                    "raw": "typing-extensions==4.14.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "typing-extensions",
+                    "specifier": "==4.14.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "typing-inspection": {
+            "name": "typing-inspection",
+            "version": "0.4.2",
+            "requirements": [
+                {
+                    "raw": "typing-inspection==0.4.2",
+                    "extras": [],
+                    "marker": null,
+                    "name": "typing-inspection",
+                    "specifier": "==0.4.2",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "urllib3": {
+            "name": "urllib3",
+            "version": "2.5.0",
+            "requirements": [
+                {
+                    "raw": "urllib3==2.5.0",
+                    "extras": [],
+                    "marker": null,
+                    "name": "urllib3",
+                    "specifier": "==2.5.0",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "uvicorn": {
+            "name": "uvicorn",
+            "version": "0.38.0",
+            "requirements": [
+                {
+                    "raw": "uvicorn==0.38.0",
+                    "extras": [],
+                    "marker": null,
+                    "name": "uvicorn",
+                    "specifier": "==0.38.0",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "uvloop": {
+            "name": "uvloop",
+            "version": "0.22.1",
+            "requirements": [
+                {
+                    "raw": "uvloop==0.22.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "uvloop",
+                    "specifier": "==0.22.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "virtualenv": {
+            "name": "virtualenv",
+            "version": "20.35.3",
+            "requirements": [
+                {
+                    "raw": "virtualenv==20.35.3",
+                    "extras": [],
+                    "marker": null,
+                    "name": "virtualenv",
+                    "specifier": "==20.35.3",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "watchfiles": {
+            "name": "watchfiles",
+            "version": "1.1.1",
+            "requirements": [
+                {
+                    "raw": "watchfiles==1.1.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "watchfiles",
+                    "specifier": "==1.1.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "websockets": {
+            "name": "websockets",
+            "version": "15.0.1",
+            "requirements": [
+                {
+                    "raw": "websockets==15.0.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "websockets",
+                    "specifier": "==15.0.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "wheel": {
+            "name": "wheel",
+            "version": "0.45.1",
+            "requirements": [
+                {
+                    "raw": "wheel==0.45.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "wheel",
+                    "specifier": "==0.45.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "yarl": {
+            "name": "yarl",
+            "version": "1.22.0",
+            "requirements": [
+                {
+                    "raw": "yarl==1.22.0",
+                    "extras": [],
+                    "marker": null,
+                    "name": "yarl",
+                    "specifier": "==1.22.0",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "zipp": {
+            "name": "zipp",
+            "version": "3.23.0",
+            "requirements": [
+                {
+                    "raw": "zipp==3.23.0",
+                    "extras": [],
+                    "marker": null,
+                    "name": "zipp",
+                    "specifier": "==3.23.0",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages"
+                }
+            ]
+        },
+        "autocommand": {
+            "name": "autocommand",
+            "version": "2.2.2",
+            "requirements": [
+                {
+                    "raw": "autocommand==2.2.2",
+                    "extras": [],
+                    "marker": null,
+                    "name": "autocommand",
+                    "specifier": "==2.2.2",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages/setuptools/_vendor"
+                }
+            ]
+        },
+        "backports.tarfile": {
+            "name": "backports.tarfile",
+            "version": "1.2.0",
+            "requirements": [
+                {
+                    "raw": "backports.tarfile==1.2.0",
+                    "extras": [],
+                    "marker": null,
+                    "name": "backports.tarfile",
+                    "specifier": "==1.2.0",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages/setuptools/_vendor"
+                }
+            ]
+        },
+        "importlib-metadata": {
+            "name": "importlib-metadata",
+            "version": "8.0.0",
+            "requirements": [
+                {
+                    "raw": "importlib-metadata==8.0.0",
+                    "extras": [],
+                    "marker": null,
+                    "name": "importlib-metadata",
+                    "specifier": "==8.0.0",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages/setuptools/_vendor"
+                }
+            ]
+        },
+        "inflect": {
+            "name": "inflect",
+            "version": "7.3.1",
+            "requirements": [
+                {
+                    "raw": "inflect==7.3.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "inflect",
+                    "specifier": "==7.3.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages/setuptools/_vendor"
+                }
+            ]
+        },
+        "jaraco.collections": {
+            "name": "jaraco.collections",
+            "version": "5.1.0",
+            "requirements": [
+                {
+                    "raw": "jaraco.collections==5.1.0",
+                    "extras": [],
+                    "marker": null,
+                    "name": "jaraco.collections",
+                    "specifier": "==5.1.0",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages/setuptools/_vendor"
+                }
+            ]
+        },
+        "jaraco.context": {
+            "name": "jaraco.context",
+            "version": "5.3.0",
+            "requirements": [
+                {
+                    "raw": "jaraco.context==5.3.0",
+                    "extras": [],
+                    "marker": null,
+                    "name": "jaraco.context",
+                    "specifier": "==5.3.0",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages/setuptools/_vendor"
+                }
+            ]
+        },
+        "jaraco.functools": {
+            "name": "jaraco.functools",
+            "version": "4.0.1",
+            "requirements": [
+                {
+                    "raw": "jaraco.functools==4.0.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "jaraco.functools",
+                    "specifier": "==4.0.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages/setuptools/_vendor"
+                }
+            ]
+        },
+        "jaraco.text": {
+            "name": "jaraco.text",
+            "version": "3.12.1",
+            "requirements": [
+                {
+                    "raw": "jaraco.text==3.12.1",
+                    "extras": [],
+                    "marker": null,
+                    "name": "jaraco.text",
+                    "specifier": "==3.12.1",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages/setuptools/_vendor"
+                }
+            ]
+        },
+        "more-itertools": {
+            "name": "more-itertools",
+            "version": "10.3.0",
+            "requirements": [
+                {
+                    "raw": "more-itertools==10.3.0",
+                    "extras": [],
+                    "marker": null,
+                    "name": "more-itertools",
+                    "specifier": "==10.3.0",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages/setuptools/_vendor"
+                }
+            ]
+        },
+        "typeguard": {
+            "name": "typeguard",
+            "version": "4.3.0",
+            "requirements": [
+                {
+                    "raw": "typeguard==4.3.0",
+                    "extras": [],
+                    "marker": null,
+                    "name": "typeguard",
+                    "specifier": "==4.3.0",
+                    "url": null,
+                    "found": "/Volumes/T7/bbia-reachy-sim/venv/lib/python3.10/site-packages/setuptools/_vendor"
+                }
+            ]
+        }
+    },
+    "affected_packages": {},
+    "announcements": [],
+    "vulnerabilities": [],
+    "ignored_vulnerabilities": [],
+    "remediations": {},
+    "remediations_results": {
+        "vulnerabilities_fixed": [],
+        "remediations_applied": {},
+        "remediations_skipped": {}
+    }
+}
+
+
++===========================================================================================================================================================================================+
+
+
+DEPRECATED: this command (`check`) has been DEPRECATED, and will be unsupported beyond 01 June 2024.
+
+
+We highly encourage switching to the new `scan` command which is easier to use, more powerful, and can be set up to mimic the deprecated command if required.
+
+
++===========================================================================================================================================================================================+
+
+

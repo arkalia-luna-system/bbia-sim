@@ -37,9 +37,6 @@ class TestTelemetryRate:
             message_count = len(messages)
             rate = message_count / duration
 
-            print(f"Messages reçus: {message_count} en {duration:.2f}s")
-            print(f"Taux: {rate:.1f} Hz")
-
             # Tolérance ±20% autour de 10 Hz
             expected_rate = 10.0
             min_rate = expected_rate * 0.8  # 8 Hz
@@ -55,8 +52,6 @@ class TestTelemetryRate:
                 data = json.loads(message)
                 assert "timestamp" in data
                 assert "joints" in data
-
-            print("✅ Cadence de télémétrie stable")
 
     @pytest.mark.asyncio
     @pytest.mark.skipif(os.getenv("CI"), reason="Test WebSocket flaky en CI")
@@ -101,8 +96,6 @@ class TestTelemetryRate:
                     assert joint in data["joints"], f"Joint {joint} manquant"
                     assert isinstance(data["joints"][joint], (int, float))
 
-            print("✅ Format des messages de télémétrie valide")
-
     def test_websocket_connection_handling(self):
         """Test la gestion des connexions WebSocket."""
         client = TestClient(app)
@@ -114,5 +107,3 @@ class TestTelemetryRate:
 
             # Test déconnexion propre
             websocket.close()
-
-        print("✅ Gestion des connexions WebSocket fonctionne")

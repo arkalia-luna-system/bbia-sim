@@ -1,14 +1,25 @@
 """Module WebSocket pour la télémétrie temps réel."""
 
 import asyncio
+import contextlib
 import json
 import logging
+import secrets
 from datetime import datetime
 from typing import Any
 
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 
 logger = logging.getLogger(__name__)
+
+
+def _secure_uniform(min_val: float, max_val: float) -> float:
+    """Génère un nombre aléatoire sécurisé entre min_val et max_val."""
+    range_val = max_val - min_val
+    random_bytes = secrets.randbits(32)
+    normalized = random_bytes / (2**32)
+    return min_val + normalized * range_val
+
 
 router = APIRouter()
 
@@ -76,10 +87,8 @@ class ConnectionManager:
         self.is_broadcasting = False
         if self.broadcast_task:
             self.broadcast_task.cancel()
-            try:
+            with contextlib.suppress(asyncio.CancelledError):
                 await self.broadcast_task
-            except asyncio.CancelledError:
-                pass
         logger.info("Diffusion de télémétrie arrêtée")
 
     async def _broadcast_loop(self) -> None:
@@ -103,41 +112,39 @@ class ConnectionManager:
 
     def _generate_telemetry_data(self) -> dict[str, Any]:
         """Génère des données de télémétrie simulées."""
-        import random
-
         return {
             "timestamp": datetime.now().isoformat(),
             "robot": {
                 "position": {
-                    "x": round(random.uniform(-0.1, 0.1), 3),
-                    "y": round(random.uniform(-0.1, 0.1), 3),
-                    "z": round(random.uniform(0.0, 0.2), 3),
+                    "x": round(_secure_uniform(-0.1, 0.1), 3),
+                    "y": round(_secure_uniform(-0.1, 0.1), 3),
+                    "z": round(_secure_uniform(0.0, 0.2), 3),
                 },
                 "orientation": {
-                    "roll": round(random.uniform(-0.1, 0.1), 3),
-                    "pitch": round(random.uniform(-0.1, 0.1), 3),
-                    "yaw": round(random.uniform(-0.2, 0.2), 3),
+                    "roll": round(_secure_uniform(-0.1, 0.1), 3),
+                    "pitch": round(_secure_uniform(-0.1, 0.1), 3),
+                    "yaw": round(_secure_uniform(-0.2, 0.2), 3),
                 },
                 "velocity": {
-                    "linear": round(random.uniform(0, 0.05), 3),
-                    "angular": round(random.uniform(0, 0.1), 3),
+                    "linear": round(_secure_uniform(0, 0.05), 3),
+                    "angular": round(_secure_uniform(0, 0.1), 3),
                 },
             },
             "joints": {
-                "right_shoulder_pitch": round(random.uniform(-0.1, 0.1), 3),
-                "right_elbow_pitch": round(random.uniform(-0.1, 0.1), 3),
-                "right_wrist_pitch": round(random.uniform(-0.1, 0.1), 3),
-                "left_shoulder_pitch": round(random.uniform(-0.1, 0.1), 3),
-                "left_elbow_pitch": round(random.uniform(-0.1, 0.1), 3),
-                "left_wrist_pitch": round(random.uniform(-0.1, 0.1), 3),
-                "head_yaw": round(random.uniform(-0.1, 0.1), 3),
-                "head_pitch": round(random.uniform(-0.05, 0.05), 3),
+                "right_shoulder_pitch": round(_secure_uniform(-0.1, 0.1), 3),
+                "right_elbow_pitch": round(_secure_uniform(-0.1, 0.1), 3),
+                "right_wrist_pitch": round(_secure_uniform(-0.1, 0.1), 3),
+                "left_shoulder_pitch": round(_secure_uniform(-0.1, 0.1), 3),
+                "left_elbow_pitch": round(_secure_uniform(-0.1, 0.1), 3),
+                "left_wrist_pitch": round(_secure_uniform(-0.1, 0.1), 3),
+                "head_yaw": round(_secure_uniform(-0.1, 0.1), 3),
+                "head_pitch": round(_secure_uniform(-0.05, 0.05), 3),
             },
             "sensors": {
-                "battery": round(random.uniform(80, 90), 1),
-                "temperature": round(random.uniform(24, 27), 1),
-                "cpu_usage": round(random.uniform(10, 30), 1),
-                "memory_usage": round(random.uniform(40, 60), 1),
+                "battery": round(_secure_uniform(80, 90), 1),
+                "temperature": round(_secure_uniform(24, 27), 1),
+                "cpu_usage": round(_secure_uniform(10, 30), 1),
+                "memory_usage": round(_secure_uniform(40, 60), 1),
             },
             "status": {
                 "mode": "autonomous",

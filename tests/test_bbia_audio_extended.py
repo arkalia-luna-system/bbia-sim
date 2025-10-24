@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 
-"""
-Tests étendus pour BBIA Audio
-Tests ciblés pour améliorer la couverture de code
+"""Tests étendus pour BBIA Audio
+Tests ciblés pour améliorer la couverture de code.
 """
 
 import os
@@ -20,17 +19,19 @@ from src.bbia_sim.bbia_audio import (
 
 
 class TestBBIAAudioExtended:
-    """Tests étendus pour BBIA Audio"""
+    """Tests étendus pour BBIA Audio."""
 
     def test_enregistrer_audio_success(self):
-        """Test enregistrement audio réussi"""
+        """Test enregistrement audio réussi."""
         with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as temp_file:
             temp_path = temp_file.name
 
         try:
-            with patch("src.bbia_sim.bbia_audio.sd.rec") as mock_rec, \
-                 patch("src.bbia_sim.bbia_audio.sd.wait"), \
-                 patch("builtins.open", mock_open()):
+            with (
+                patch("src.bbia_sim.bbia_audio.sd.rec") as mock_rec,
+                patch("src.bbia_sim.bbia_audio.sd.wait"),
+                patch("builtins.open", mock_open()),
+            ):
 
                 # Mock des données audio simulées
                 mock_audio_data = np.array([1000, 2000, 3000], dtype=np.int16)
@@ -48,7 +49,7 @@ class TestBBIAAudioExtended:
                 os.unlink(temp_path)
 
     def test_enregistrer_audio_error(self):
-        """Test erreur d'enregistrement audio"""
+        """Test erreur d'enregistrement audio."""
         with patch("src.bbia_sim.bbia_audio.sd.rec") as mock_rec:
             mock_rec.side_effect = Exception("Audio error")
 
@@ -56,14 +57,16 @@ class TestBBIAAudioExtended:
                 enregistrer_audio("test.wav", duree=3, frequence=16000)
 
     def test_enregistrer_audio_custom_parameters(self):
-        """Test enregistrement avec paramètres personnalisés"""
+        """Test enregistrement avec paramètres personnalisés."""
         with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as temp_file:
             temp_path = temp_file.name
 
         try:
-            with patch("src.bbia_sim.bbia_audio.sd.rec") as mock_rec, \
-                 patch("src.bbia_sim.bbia_audio.sd.wait"), \
-                 patch("builtins.open", mock_open()):
+            with (
+                patch("src.bbia_sim.bbia_audio.sd.rec") as mock_rec,
+                patch("src.bbia_sim.bbia_audio.sd.wait"),
+                patch("builtins.open", mock_open()),
+            ):
 
                 mock_audio_data = np.array([1000, 2000], dtype=np.int16)
                 mock_rec.return_value = mock_audio_data
@@ -79,14 +82,16 @@ class TestBBIAAudioExtended:
                 os.unlink(temp_path)
 
     def test_lire_audio_success(self):
-        """Test lecture audio réussie"""
+        """Test lecture audio réussie."""
         with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as temp_file:
             temp_path = temp_file.name
 
         try:
-            with patch("src.bbia_sim.bbia_audio.wave.open") as mock_wave_open, \
-                 patch("src.bbia_sim.bbia_audio.sd.play"), \
-                 patch("src.bbia_sim.bbia_audio.sd.wait"):
+            with (
+                patch("src.bbia_sim.bbia_audio.wave.open") as mock_wave_open,
+                patch("src.bbia_sim.bbia_audio.sd.play"),
+                patch("src.bbia_sim.bbia_audio.sd.wait"),
+            ):
 
                 # Mock du fichier WAV
                 mock_wf = MagicMock()
@@ -106,7 +111,7 @@ class TestBBIAAudioExtended:
                 os.unlink(temp_path)
 
     def test_lire_audio_error(self):
-        """Test erreur de lecture audio"""
+        """Test erreur de lecture audio."""
         with patch("src.bbia_sim.bbia_audio.wave.open") as mock_wave_open:
             mock_wave_open.side_effect = Exception("File error")
 
@@ -114,14 +119,16 @@ class TestBBIAAudioExtended:
                 lire_audio("nonexistent.wav")
 
     def test_lire_audio_wave_properties(self):
-        """Test propriétés du fichier WAV"""
+        """Test propriétés du fichier WAV."""
         with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as temp_file:
             temp_path = temp_file.name
 
         try:
-            with patch("src.bbia_sim.bbia_audio.wave.open") as mock_wave_open, \
-                 patch("src.bbia_sim.bbia_audio.sd.play"), \
-                 patch("src.bbia_sim.bbia_audio.sd.wait"):
+            with (
+                patch("src.bbia_sim.bbia_audio.wave.open") as mock_wave_open,
+                patch("src.bbia_sim.bbia_audio.sd.play"),
+                patch("src.bbia_sim.bbia_audio.sd.wait"),
+            ):
 
                 mock_wf = MagicMock()
                 mock_wf.getframerate.return_value = 22050
@@ -140,7 +147,7 @@ class TestBBIAAudioExtended:
                 os.unlink(temp_path)
 
     def test_detecter_son_success(self):
-        """Test détection de son réussie"""
+        """Test détection de son réussie."""
         with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as temp_file:
             temp_path = temp_file.name
 
@@ -163,7 +170,7 @@ class TestBBIAAudioExtended:
                 os.unlink(temp_path)
 
     def test_detecter_son_no_sound(self):
-        """Test détection sans son"""
+        """Test détection sans son."""
         with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as temp_file:
             temp_path = temp_file.name
 
@@ -185,7 +192,7 @@ class TestBBIAAudioExtended:
                 os.unlink(temp_path)
 
     def test_detecter_son_error(self):
-        """Test erreur de détection de son"""
+        """Test erreur de détection de son."""
         with patch("src.bbia_sim.bbia_audio.wave.open") as mock_wave_open:
             mock_wave_open.side_effect = Exception("File error")
 
@@ -194,7 +201,7 @@ class TestBBIAAudioExtended:
             assert result is False
 
     def test_detecter_son_custom_threshold(self):
-        """Test détection avec seuil personnalisé"""
+        """Test détection avec seuil personnalisé."""
         with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as temp_file:
             temp_path = temp_file.name
 
@@ -220,7 +227,7 @@ class TestBBIAAudioExtended:
                 os.unlink(temp_path)
 
     def test_detecter_son_max_amplitude_calculation(self):
-        """Test calcul de l'amplitude maximale"""
+        """Test calcul de l'amplitude maximale."""
         with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as temp_file:
             temp_path = temp_file.name
 
@@ -242,14 +249,16 @@ class TestBBIAAudioExtended:
                 os.unlink(temp_path)
 
     def test_enregistrer_audio_wave_file_creation(self):
-        """Test création du fichier WAV"""
+        """Test création du fichier WAV."""
         with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as temp_file:
             temp_path = temp_file.name
 
         try:
-            with patch("src.bbia_sim.bbia_audio.sd.rec") as mock_rec, \
-                 patch("src.bbia_sim.bbia_audio.sd.wait"), \
-                 patch("src.bbia_sim.bbia_audio.wave.open") as mock_wave_open:
+            with (
+                patch("src.bbia_sim.bbia_audio.sd.rec") as mock_rec,
+                patch("src.bbia_sim.bbia_audio.sd.wait"),
+                patch("src.bbia_sim.bbia_audio.wave.open") as mock_wave_open,
+            ):
 
                 mock_audio_data = np.array([1000, 2000], dtype=np.int16)
                 mock_rec.return_value = mock_audio_data
@@ -270,14 +279,16 @@ class TestBBIAAudioExtended:
                 os.unlink(temp_path)
 
     def test_lire_audio_numpy_conversion(self):
-        """Test conversion numpy pour la lecture"""
+        """Test conversion numpy pour la lecture."""
         with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as temp_file:
             temp_path = temp_file.name
 
         try:
-            with patch("src.bbia_sim.bbia_audio.wave.open") as mock_wave_open, \
-                 patch("src.bbia_sim.bbia_audio.sd.play"), \
-                 patch("src.bbia_sim.bbia_audio.sd.wait"):
+            with (
+                patch("src.bbia_sim.bbia_audio.wave.open") as mock_wave_open,
+                patch("src.bbia_sim.bbia_audio.sd.play"),
+                patch("src.bbia_sim.bbia_audio.sd.wait"),
+            ):
 
                 mock_wf = MagicMock()
                 mock_wf.getframerate.return_value = 16000
@@ -298,7 +309,7 @@ class TestBBIAAudioExtended:
                 os.unlink(temp_path)
 
     def test_detecter_son_edge_cases(self):
-        """Test cas limites de détection de son"""
+        """Test cas limites de détection de son."""
         with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as temp_file:
             temp_path = temp_file.name
 
@@ -324,14 +335,16 @@ class TestBBIAAudioExtended:
                 os.unlink(temp_path)
 
     def test_enregistrer_audio_file_handling(self):
-        """Test gestion des fichiers lors de l'enregistrement"""
+        """Test gestion des fichiers lors de l'enregistrement."""
         with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as temp_file:
             temp_path = temp_file.name
 
         try:
-            with patch("src.bbia_sim.bbia_audio.sd.rec") as mock_rec, \
-                 patch("src.bbia_sim.bbia_audio.sd.wait"), \
-                 patch("src.bbia_sim.bbia_audio.wave.open") as mock_wave_open:
+            with (
+                patch("src.bbia_sim.bbia_audio.sd.rec") as mock_rec,
+                patch("src.bbia_sim.bbia_audio.sd.wait"),
+                patch("src.bbia_sim.bbia_audio.wave.open") as mock_wave_open,
+            ):
 
                 mock_audio_data = np.array([1000], dtype=np.int16)
                 mock_rec.return_value = mock_audio_data

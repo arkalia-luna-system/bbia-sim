@@ -1,6 +1,7 @@
 """Router WebSocket pour la télémétrie temps réel."""
 
 import asyncio
+import contextlib
 import json
 import logging
 import time
@@ -79,10 +80,8 @@ class ConnectionManager:
         self.is_broadcasting = False
         if self.broadcast_task:
             self.broadcast_task.cancel()
-            try:
+            with contextlib.suppress(asyncio.CancelledError):
                 await self.broadcast_task
-            except asyncio.CancelledError:
-                pass
         logger.info("Diffusion de télémétrie arrêtée")
 
     async def _broadcast_loop(self) -> None:

@@ -37,7 +37,7 @@ class TestAPIIntegration:
     def test_api_info(self, mock_service, client):
         """Test endpoint api info."""
         mock_service.is_simulation_ready.return_value = True
-        mock_service.get_available_joints.return_value = ["neck_yaw"]
+        mock_service.get_available_joints.return_value = ["yaw_body"]
 
         response = client.get("/api/info")
         assert response.status_code == 200
@@ -87,11 +87,11 @@ class TestAPIIntegration:
     def test_motion_joints_valid(self, mock_service, client):
         """Test endpoint motion/joints avec payload valide."""
         # Mock du service de simulation
-        mock_service.get_available_joints.return_value = ["neck_yaw"]
+        mock_service.get_available_joints.return_value = ["yaw_body"]
         mock_service.set_joint_position.return_value = True
 
         headers = {"Authorization": "Bearer bbia-secret-key-dev"}
-        payload = [{"joint_name": "neck_yaw", "position": 0.5}]
+        payload = [{"joint_name": "yaw_body", "position": 0.5}]
         response = client.post("/api/motion/joints", json=payload, headers=headers)
         assert response.status_code == 200
         data = response.json()
@@ -101,7 +101,7 @@ class TestAPIIntegration:
     def test_motion_joints_invalid_joint(self, mock_service, client):
         """Test endpoint motion/joints avec articulation invalide."""
         # Mock du service
-        mock_service.get_available_joints.return_value = ["neck_yaw"]
+        mock_service.get_available_joints.return_value = ["yaw_body"]
 
         headers = {"Authorization": "Bearer bbia-secret-key-dev"}
         payload = [{"joint_name": "invalid_joint", "position": 0.5}]

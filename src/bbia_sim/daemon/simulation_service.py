@@ -1,6 +1,7 @@
 """Service de simulation MuJoCo pour BBIA-SIM."""
 
 import asyncio
+import contextlib
 import logging
 from typing import Any, Union
 
@@ -17,6 +18,7 @@ class SimulationService:
 
         Args:
             model_path: Chemin vers le modèle MJCF/XML
+
         """
         self.model_path = (
             model_path or "src/bbia_sim/sim/models/reachy_mini_REAL_OFFICIAL.xml"
@@ -33,6 +35,7 @@ class SimulationService:
 
         Returns:
             True si la simulation a démarré avec succès
+
         """
         try:
             if self.is_running:
@@ -66,6 +69,7 @@ class SimulationService:
 
         Returns:
             True si la simulation a été arrêtée avec succès
+
         """
         try:
             if not self.is_running:
@@ -77,10 +81,8 @@ class SimulationService:
 
             if self._simulation_task:
                 self._simulation_task.cancel()
-                try:
+                with contextlib.suppress(asyncio.CancelledError):
                     await self._simulation_task
-                except asyncio.CancelledError:
-                    pass
 
             if self.simulator:
                 self.simulator.close()
@@ -144,6 +146,7 @@ class SimulationService:
 
         Returns:
             État du robot
+
         """
         if not self.simulator or not self.is_running:
             return self._get_default_state()
@@ -159,6 +162,7 @@ class SimulationService:
 
         Returns:
             Positions des articulations
+
         """
         if not self.simulator or not self.is_running:
             return self._get_default_joint_positions()
@@ -179,6 +183,7 @@ class SimulationService:
 
         Returns:
             True si la position a été définie avec succès
+
         """
         if not self.simulator or not self.is_running:
             logger.warning("Simulation non disponible")
@@ -197,6 +202,7 @@ class SimulationService:
 
         Returns:
             Liste des noms d'articulations
+
         """
         if not self.simulator:
             return self._get_default_joint_names()

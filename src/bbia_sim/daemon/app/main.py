@@ -49,6 +49,7 @@ def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)) 
 
     Raises:
         HTTPException: Si le token est invalide
+
     """
     if credentials.credentials != settings.api_token:
         # Log sécurisé sans exposer le token

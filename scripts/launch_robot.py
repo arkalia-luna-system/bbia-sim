@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
-"""
-Script simple pour lancer le robot Reachy Mini complet
-Usage: python scripts/launch_robot.py [graphical|headless|test]
+"""Script simple pour lancer le robot Reachy Mini complet
+Usage: python scripts/launch_robot.py [graphical|headless|test].
 """
 
 import subprocess
@@ -15,7 +14,6 @@ def main():
     launcher = script_dir / "launch_complete_robot.py"
 
     if not launcher.exists():
-        print("❌ Lanceur non trouvé:", launcher)
         sys.exit(1)
 
     # Mode par défaut
@@ -25,27 +23,20 @@ def main():
     cmd = ["python3", str(launcher)]
 
     if mode == "graphical":
-        print("🎮 Lancement mode graphique...")
-        print("💡 Sur macOS, utilisez 'mjpython' pour la fenêtre 3D")
+        pass
     elif mode == "headless":
-        print("🔄 Lancement mode headless...")
         cmd.append("--headless")
     elif mode == "test":
-        print("🧪 Test rapide (2s)...")
         cmd.extend(["--headless", "--duration", "2"])
     else:
-        print("❌ Mode inconnu:", mode)
-        print("💡 Modes disponibles: graphical, headless, test")
         sys.exit(1)
 
     # Exécution
     try:
         subprocess.run(cmd, check=True)
-    except subprocess.CalledProcessError as e:
-        print(f"❌ Erreur: {e}")
+    except subprocess.CalledProcessError:
         sys.exit(1)
     except KeyboardInterrupt:
-        print("\n🛑 Arrêt demandé par l'utilisateur")
         sys.exit(0)
 
 

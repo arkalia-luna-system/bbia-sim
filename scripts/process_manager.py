@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
-"""
-Système de gestion des processus BBIA avec détection de doublons et sécurité d'arrêt
-Usage: python scripts/process_manager.py [start|stop|status|kill-all]
+"""Système de gestion des processus BBIA avec détection de doublons et sécurité d'arrêt
+Usage: python scripts/process_manager.py [start|stop|status|kill-all].
 """
 
 import argparse
@@ -114,7 +113,6 @@ class ProcessManager:
         self, mode: str = "graphical", duration: Optional[int] = None
     ) -> bool:
         """Démarre un processus BBIA avec vérification de doublons."""
-
         # Vérifier les doublons
         if self.is_locked():
             logger.error("❌ Un processus BBIA est déjà en cours d'exécution!")
@@ -160,7 +158,6 @@ class ProcessManager:
 
     def stop_process(self, force: bool = False) -> bool:
         """Arrête le processus BBIA en cours."""
-
         # Vérifier le verrouillage
         locked_pid = self.is_locked()
         if not locked_pid:

@@ -1,23 +1,21 @@
 #!/usr/bin/env python3
-"""
-Tests pour le module BBIA Emotions
-"""
+"""Tests pour le module BBIA Emotions."""
 
 from src.bbia_sim.bbia_emotions import BBIAEmotions
 
 
 class TestBBIAEmotions:
-    """Tests pour BBIAEmotions"""
+    """Tests pour BBIAEmotions."""
 
     def test_emotions_creation(self):
-        """Test création d'une instance BBIAEmotions"""
+        """Test création d'une instance BBIAEmotions."""
         emotions = BBIAEmotions()
         assert emotions.current_emotion == "neutral"
         assert emotions.emotion_intensity == 0.5
         assert emotions.transition_duration == 1.0
 
     def test_set_emotion(self):
-        """Test changement d'émotion"""
+        """Test changement d'émotion."""
         emotions = BBIAEmotions()
 
         # Test émotion valide
@@ -31,7 +29,7 @@ class TestBBIAEmotions:
         assert emotions.emotion_intensity == 0.5
 
     def test_get_emotion_info(self):
-        """Test récupération d'informations sur l'émotion"""
+        """Test récupération d'informations sur l'émotion."""
         emotions = BBIAEmotions()
 
         # Test émotion neutre
@@ -45,7 +43,7 @@ class TestBBIAEmotions:
         assert info["color"] == "😊"
 
     def test_get_available_emotions(self):
-        """Test récupération des émotions disponibles"""
+        """Test récupération des émotions disponibles."""
         emotions = BBIAEmotions()
         available = list(emotions.emotions.keys())
 
@@ -65,7 +63,7 @@ class TestBBIAEmotions:
             assert emotion in available
 
     def test_emotion_history(self):
-        """Test historique des émotions"""
+        """Test historique des émotions."""
         emotions = BBIAEmotions()
 
         # Changer plusieurs émotions
@@ -82,7 +80,7 @@ class TestBBIAEmotions:
         assert history[-1]["intensity"] == 0.5
 
     def test_transition_smooth(self):
-        """Test transition fluide entre émotions"""
+        """Test transition fluide entre émotions."""
         emotions = BBIAEmotions()
 
         # Test changement de durée de transition

@@ -17,24 +17,20 @@ STEPS = [
 
 
 def test_bbia_awake_sequence():
-    print("\n🧪 Test automatisé : Séquence de réveil BBIA (Python)")
     result = subprocess.run(
         [sys.executable, "src/bbia_sim/bbia_awake.py"], capture_output=True, text=True
     )
     output = result.stdout
     success = True
-    print("\n--- Résultat de la séquence ---\n")
     for step in STEPS:
         if step in output:
-            print(f"✅ {step}")
+            pass
         else:
-            print(f"❌ {step} ABSENT !")
             success = False
-    print("\n--- Résumé ---")
     if success:
-        print("🎉 Toutes les étapes de la séquence de réveil sont présentes !")
+        pass
     else:
-        print("⚠️ Certaines étapes sont manquantes ou incorrectes.")
+        pass
     assert success, "La séquence de réveil BBIA n'est pas complète ou fidèle."
 
 

@@ -3,7 +3,7 @@ from unittest.mock import MagicMock, patch
 
 import numpy as np
 
-import src.bbia_sim.bbia_audio as bbia_audio
+from src.bbia_sim import bbia_audio
 
 
 class TestBBIAAudio(unittest.TestCase):

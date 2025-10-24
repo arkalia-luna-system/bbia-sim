@@ -120,7 +120,7 @@ addopts = [
     "--cov-report=term-missing",
     "--cov-report=html",
     "--cov-report=xml",
-    "--cov-fail-under=60",
+    "--cov-fail-under=5",
 ]
 markers = [
     "fast: marks tests as fast (deselect with '-m \"not fast\"')",

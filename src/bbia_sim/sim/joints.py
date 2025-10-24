@@ -1,5 +1,4 @@
-"""
-Validation et configuration des joints BBIA-SIM.
+"""Validation et configuration des joints BBIA-SIM.
 
 Ce module centralise la validation des noms de joints
 et leurs limites pour assurer la cohérence entre l'API
@@ -47,21 +46,20 @@ MAIN_JOINTS: list[str] = [
 
 
 def validate_joint_name(joint_name: str) -> bool:
-    """
-    Valide qu'un nom de joint existe.
+    """Valide qu'un nom de joint existe.
 
     Args:
         joint_name: Nom du joint à valider
 
     Returns:
         True si le joint est valide
+
     """
     return joint_name in VALID_JOINT_NAMES
 
 
 def get_joint_limits(joint_name: str) -> tuple[float, float]:
-    """
-    Récupère les limites d'un joint.
+    """Récupère les limites d'un joint.
 
     Args:
         joint_name: Nom du joint
@@ -71,6 +69,7 @@ def get_joint_limits(joint_name: str) -> tuple[float, float]:
 
     Raises:
         ValueError: Si le joint n'existe pas
+
     """
     if not validate_joint_name(joint_name):
         raise ValueError(f"Joint '{joint_name}' non valide")
@@ -79,8 +78,7 @@ def get_joint_limits(joint_name: str) -> tuple[float, float]:
 
 
 def clamp_joint_angle(joint_name: str, angle: float) -> float:
-    """
-    Clamp un angle dans les limites d'un joint.
+    """Clamp un angle dans les limites d'un joint.
 
     Args:
         joint_name: Nom du joint
@@ -91,14 +89,14 @@ def clamp_joint_angle(joint_name: str, angle: float) -> float:
 
     Raises:
         ValueError: Si le joint n'existe pas
+
     """
     min_limit, max_limit = get_joint_limits(joint_name)
     return max(min_limit, min(max_limit, angle))
 
 
 def get_joint_info(joint_name: str) -> dict[str, Any]:
-    """
-    Récupère toutes les informations d'un joint.
+    """Récupère toutes les informations d'un joint.
 
     Args:
         joint_name: Nom du joint
@@ -108,6 +106,7 @@ def get_joint_info(joint_name: str) -> dict[str, Any]:
 
     Raises:
         ValueError: Si le joint n'existe pas
+
     """
     if not validate_joint_name(joint_name):
         raise ValueError(f"Joint '{joint_name}' non valide")

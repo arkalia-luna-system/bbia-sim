@@ -159,7 +159,7 @@ class TestMotionRouter:
         mock_service.set_joint_position.return_value = True
 
         headers = {"Authorization": "Bearer bbia-secret-key-dev"}
-        payload = [{"joint_name": "neck_yaw", "position": 0.5}]
+        payload = [{"joint_name": "yaw_body", "position": 0.5}]
         response = client.post("/api/motion/joints", json=payload, headers=headers)
 
         assert response.status_code == 200
@@ -267,7 +267,7 @@ class TestMotionRouter:
         mock_clamp.return_value = 0.3  # Angle clampé
 
         headers = {"Authorization": "Bearer bbia-secret-key-dev"}
-        payload = [{"joint_name": "neck_yaw", "position": 0.5}]
+        payload = [{"joint_name": "yaw_body", "position": 0.5}]
         response = client.post("/api/motion/joints", json=payload, headers=headers)
 
         assert response.status_code == 200

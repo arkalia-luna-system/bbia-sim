@@ -1,16 +1,15 @@
 #!/usr/bin/env python3
 
-"""
-BBIA Emotions - Module d'émotions avancé pour Reachy Mini Wireless
-Émotions complexes, expressions faciales, transitions fluides
+"""BBIA Emotions - Module d'émotions avancé pour Reachy Mini Wireless
+Émotions complexes, expressions faciales, transitions fluides.
 """
 
-import random
+import secrets
 from datetime import datetime
 
 
 class BBIAEmotions:
-    """Module d'émotions avancé pour BBIA"""
+    """Module d'émotions avancé pour BBIA."""
 
     def __init__(self):
         self.current_emotion = "neutral"
@@ -78,15 +77,9 @@ class BBIAEmotions:
             },
         }
 
-        print("🎭 BBIA Emotions initialisé")
-        print(f"   • Émotion actuelle : {self.current_emotion}")
-        print(f"   • Intensité : {self.emotion_intensity}")
-        print(f"   • Émotions disponibles : {len(self.emotions)}")
-
     def set_emotion(self, emotion: str, intensity: float = 0.5) -> bool:
-        """Change l'émotion de BBIA"""
+        """Change l'émotion de BBIA."""
         if emotion not in self.emotions:
-            print(f"❌ Émotion inconnue : {emotion}")
             return False
 
         old_emotion = self.current_emotion
@@ -109,23 +102,12 @@ class BBIAEmotions:
         return True
 
     def _display_emotion_transition(self, old_emotion: str, new_emotion: str):
-        """Affiche la transition d'émotion"""
-        old_data = self.emotions[old_emotion]
-        new_data = self.emotions[new_emotion]
-
-        print(f"\n🎭 Transition d'émotion : {old_emotion} → {new_emotion}")
-        print(f"   {old_data['color']} {old_data['description']}")
-        print(f"   ↓ (transition de {self.transition_duration}s)")
-        print(f"   {new_data['color']} {new_data['description']}")
-
-        print(f"\n📋 Détails de l'émotion {new_emotion} :")
-        print(f"   • Yeux : {new_data['yeux']}")
-        print(f"   • Antennes : {new_data['antennes']}")
-        print(f"   • Tête : {new_data['tete']}")
-        print(f"   • Intensité : {self.emotion_intensity*100:.0f}%")
+        """Affiche la transition d'émotion."""
+        self.emotions[old_emotion]
+        self.emotions[new_emotion]
 
     def get_current_emotion(self) -> dict:
-        """Retourne l'émotion actuelle avec ses détails"""
+        """Retourne l'émotion actuelle avec ses détails."""
         emotion_data = self.emotions[self.current_emotion].copy()
         emotion_data.update(
             {
@@ -137,23 +119,23 @@ class BBIAEmotions:
         return emotion_data
 
     def get_emotion_history(self, limit: int = 10) -> list[dict]:
-        """Retourne l'historique des émotions"""
+        """Retourne l'historique des émotions."""
         return self.emotion_history[-limit:] if limit > 0 else self.emotion_history
 
     def random_emotion(self) -> str:
-        """Change vers une émotion aléatoire"""
+        """Change vers une émotion aléatoire."""
         available_emotions = list(self.emotions.keys())
         available_emotions.remove(self.current_emotion)  # Éviter la même émotion
 
         if available_emotions:
-            new_emotion = random.choice(available_emotions)
-            intensity = random.uniform(0.3, 1.0)
+            new_emotion = secrets.choice(available_emotions)
+            intensity = secrets.randbelow(70) / 100.0 + 0.3  # 0.3 à 1.0
             self.set_emotion(new_emotion, intensity)
             return new_emotion
         return self.current_emotion
 
     def emotional_response(self, stimulus: str) -> str:
-        """Réponse émotionnelle à un stimulus"""
+        """Réponse émotionnelle à un stimulus."""
         responses = {
             "compliment": ["happy", "excited"],
             "insult": ["angry", "sad"],
@@ -170,8 +152,8 @@ class BBIAEmotions:
         stimulus_lower = stimulus.lower()
         for key, emotions in responses.items():
             if key in stimulus_lower:
-                emotion = random.choice(emotions)
-                intensity = random.uniform(0.4, 0.9)
+                emotion = secrets.choice(emotions)
+                intensity = secrets.randbelow(50) / 100.0 + 0.4  # 0.4 à 0.9
                 self.set_emotion(emotion, intensity)
                 return emotion
 
@@ -180,25 +162,20 @@ class BBIAEmotions:
         return "curious"
 
     def blend_emotions(self, emotion1: str, emotion2: str, ratio: float = 0.5) -> str:
-        """Mélange deux émotions"""
+        """Mélange deux émotions."""
         if emotion1 not in self.emotions or emotion2 not in self.emotions:
-            print("❌ Une des émotions n'existe pas")
             return self.current_emotion
 
         # Logique simple de mélange
-        if ratio < 0.5:
-            result_emotion = emotion1
-        else:
-            result_emotion = emotion2
+        result_emotion = emotion1 if ratio < 0.5 else emotion2
 
         intensity = 0.5 + (abs(ratio - 0.5) * 0.5)  # Intensité basée sur la différence
         self.set_emotion(result_emotion, intensity)
 
-        print(f"🎨 Mélange d'émotions : {emotion1} + {emotion2} = {result_emotion}")
         return result_emotion
 
     def get_emotion_stats(self) -> dict:
-        """Retourne les statistiques des émotions"""
+        """Retourne les statistiques des émotions."""
         emotion_counts: dict[str, int] = {}
         for entry in self.emotion_history:
             emotion = entry["emotion"]
@@ -213,56 +190,40 @@ class BBIAEmotions:
         }
 
     def reset_emotions(self):
-        """Remet BBIA en état neutre"""
-        print("🔄 Remise à zéro des émotions")
+        """Remet BBIA en état neutre."""
         self.set_emotion("neutral", 0.5)
         self.emotion_history.clear()
 
 
 def main():
-    """Test du module BBIA Emotions"""
-    print("🧪 Test du module BBIA Emotions")
-    print("=" * 50)
-
+    """Test du module BBIA Emotions."""
     # Créer l'instance
     emotions = BBIAEmotions()
 
     # Test émotions de base
-    print("\n1️⃣ Test émotions de base")
     emotions.set_emotion("happy", 0.8)
     emotions.set_emotion("curious", 0.6)
     emotions.set_emotion("sad", 0.7)
 
     # Test émotion aléatoire
-    print("\n2️⃣ Test émotion aléatoire")
-    random_emotion = emotions.random_emotion()
-    print(f"Émotion aléatoire : {random_emotion}")
+    emotions.random_emotion()
 
     # Test réponses émotionnelles
-    print("\n3️⃣ Test réponses émotionnelles")
     emotions.emotional_response("compliment")
     emotions.emotional_response("question")
     emotions.emotional_response("danger")
 
     # Test mélange d'émotions
-    print("\n4️⃣ Test mélange d'émotions")
     emotions.blend_emotions("happy", "excited", 0.3)
 
     # Test statistiques
-    print("\n5️⃣ Test statistiques")
-    stats = emotions.get_emotion_stats()
-    print(f"Statistiques : {stats}")
+    emotions.get_emotion_stats()
 
     # Test historique
-    print("\n6️⃣ Test historique")
-    history = emotions.get_emotion_history(5)
-    print(f"Dernières émotions : {[h['emotion'] for h in history]}")
+    emotions.get_emotion_history(5)
 
     # Remise à zéro
-    print("\n7️⃣ Remise à zéro")
     emotions.reset_emotions()
-
-    print("\n✅ Test BBIA Emotions terminé")
 
 
 if __name__ == "__main__":

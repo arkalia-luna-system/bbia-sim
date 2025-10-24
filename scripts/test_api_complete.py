@@ -21,6 +21,7 @@ class BBIAAPITester:
         Args:
             base_url: URL de base de l'API
             token: Token d'authentification
+
         """
         self.base_url = base_url
         self.token = token
@@ -28,42 +29,32 @@ class BBIAAPITester:
 
     async def test_health_check(self) -> bool:
         """Teste l'endpoint de santé."""
-        print("🔍 Test de santé...")
         try:
             async with httpx.AsyncClient() as client:
                 response = await client.get(f"{self.base_url}/health")
                 if response.status_code == 200:
-                    data = response.json()
-                    print(f"✅ Santé OK: {data}")
+                    response.json()
                     return True
                 else:
-                    print(f"❌ Santé KO: {response.status_code}")
                     return False
-        except Exception as e:
-            print(f"❌ Erreur santé: {e}")
+        except Exception:
             return False
 
     async def test_api_info(self) -> bool:
         """Teste l'endpoint d'informations API."""
-        print("🔍 Test info API...")
         try:
             async with httpx.AsyncClient() as client:
                 response = await client.get(f"{self.base_url}/api/info")
                 if response.status_code == 200:
-                    data = response.json()
-                    print(f"✅ Info API OK: {data['name']} v{data['version']}")
+                    response.json()
                     return True
                 else:
-                    print(f"❌ Info API KO: {response.status_code}")
                     return False
-        except Exception as e:
-            print(f"❌ Erreur info API: {e}")
+        except Exception:
             return False
 
     async def test_state_endpoints(self) -> bool:
         """Teste les endpoints d'état."""
-        print("🔍 Test endpoints d'état...")
-
         endpoints = [
             "/api/state/full",
             "/api/state/battery",
@@ -80,19 +71,16 @@ class BBIAAPITester:
                     )
                     if response.status_code == 200:
                         response.json()
-                        print(f"✅ {endpoint}: OK")
                         success_count += 1
                     else:
-                        print(f"❌ {endpoint}: {response.status_code}")
-                except Exception as e:
-                    print(f"❌ Erreur {endpoint}: {e}")
+                        pass
+                except Exception:
+                    pass
 
         return success_count == len(endpoints)
 
     async def test_motion_endpoints(self) -> bool:
         """Teste les endpoints de mouvement."""
-        print("🔍 Test endpoints de mouvement...")
-
         success_count = 0
         async with httpx.AsyncClient() as client:
             # Test goto_pose
@@ -104,12 +92,11 @@ class BBIAAPITester:
                     json=pose_data,
                 )
                 if response.status_code == 200:
-                    print("✅ goto_pose: OK")
                     success_count += 1
                 else:
-                    print(f"❌ goto_pose: {response.status_code}")
-            except Exception as e:
-                print(f"❌ Erreur goto_pose: {e}")
+                    pass
+            except Exception:
+                pass
 
             # Test home
             try:
@@ -117,12 +104,11 @@ class BBIAAPITester:
                     f"{self.base_url}/api/motion/home", headers=self.headers
                 )
                 if response.status_code == 200:
-                    print("✅ home: OK")
                     success_count += 1
                 else:
-                    print(f"❌ home: {response.status_code}")
-            except Exception as e:
-                print(f"❌ Erreur home: {e}")
+                    pass
+            except Exception:
+                pass
 
             # Test joints
             try:
@@ -136,12 +122,11 @@ class BBIAAPITester:
                     json=joints_data,
                 )
                 if response.status_code == 200:
-                    print("✅ joints: OK")
                     success_count += 1
                 else:
-                    print(f"❌ joints: {response.status_code}")
-            except Exception as e:
-                print(f"❌ Erreur joints: {e}")
+                    pass
+            except Exception:
+                pass
 
             # Test head
             try:
@@ -150,23 +135,19 @@ class BBIAAPITester:
                     headers=self.headers,
                 )
                 if response.status_code == 200:
-                    print("✅ head: OK")
                     success_count += 1
                 else:
-                    print(f"❌ head: {response.status_code}")
-            except Exception as e:
-                print(f"❌ Erreur head: {e}")
+                    pass
+            except Exception:
+                pass
 
         return success_count >= 3  # Au moins 3 sur 4
 
     async def test_websocket_telemetry(self) -> bool:
         """Teste le WebSocket de télémétrie."""
-        print("🔍 Test WebSocket télémétrie...")
-
         try:
             ws_url = self.base_url.replace("http", "ws") + "/ws/telemetry"
             async with websockets.connect(ws_url) as websocket:
-                print("✅ Connexion WebSocket établie")
 
                 # Test ping
                 ping_message = {"type": "ping"}
@@ -177,12 +158,11 @@ class BBIAAPITester:
                 data = json.loads(response)
 
                 if data.get("type") == "pong":
-                    print("✅ Ping/Pong OK")
+                    pass
                 else:
-                    print(f"⚠️ Réponse inattendue: {data}")
+                    pass
 
                 # Test réception de télémétrie
-                print("📡 Attente de données de télémétrie...")
                 telemetry_received = False
 
                 for _ in range(5):  # Attendre 5 messages max
@@ -191,26 +171,18 @@ class BBIAAPITester:
                         data = json.loads(message)
 
                         if "joints" in data and "timestamp" in data:
-                            print(
-                                f"✅ Télémétrie reçue: {len(data['joints'])} articulations"
-                            )
                             telemetry_received = True
                             break
                     except asyncio.TimeoutError:
-                        print("⏰ Timeout attente télémétrie")
                         break
 
                 return telemetry_received
 
-        except Exception as e:
-            print(f"❌ Erreur WebSocket: {e}")
+        except Exception:
             return False
 
     async def run_all_tests(self) -> dict[str, bool]:
         """Exécute tous les tests."""
-        print("🚀 Démarrage des tests BBIA-SIM API")
-        print("=" * 50)
-
         tests = {
             "health": await self.test_health_check(),
             "api_info": await self.test_api_info(),
@@ -219,22 +191,15 @@ class BBIAAPITester:
             "websocket_telemetry": await self.test_websocket_telemetry(),
         }
 
-        print("=" * 50)
-        print("📊 Résultats des tests:")
-
         passed = 0
-        for test_name, result in tests.items():
-            status = "✅ PASS" if result else "❌ FAIL"
-            print(f"  {test_name}: {status}")
+        for _test_name, result in tests.items():
             if result:
                 passed += 1
 
-        print(f"\n🎯 Score: {passed}/{len(tests)} tests passés")
-
         if passed == len(tests):
-            print("🎉 Tous les tests sont passés !")
+            pass
         else:
-            print("⚠️ Certains tests ont échoué")
+            pass
 
         return tests
 

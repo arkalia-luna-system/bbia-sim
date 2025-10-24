@@ -1,5 +1,4 @@
-"""
-Tests d'intégration end-to-end pour BBIA-SIM.
+"""Tests d'intégration end-to-end pour BBIA-SIM.
 
 Ces tests vérifient le cycle complet :
 API → Simulateur → Mouvement → Télémétrie
@@ -36,6 +35,7 @@ class BBIAE2ETestClient:
         Args:
             api_url: URL de l'API
             token: Token d'authentification
+
         """
         self.api_url = api_url.rstrip("/")
         self.token = token
@@ -47,6 +47,7 @@ class BBIAE2ETestClient:
 
         Returns:
             True si l'API est accessible
+
         """
         try:
             response = await self.client.get(f"{self.api_url}/health")
@@ -59,6 +60,7 @@ class BBIAE2ETestClient:
 
         Returns:
             Dict avec les positions des joints
+
         """
         response = await self.client.get(
             f"{self.api_url}/api/state/joints", headers=self.headers
@@ -74,6 +76,7 @@ class BBIAE2ETestClient:
 
         Returns:
             Réponse de l'API
+
         """
         response = await self.client.post(
             f"{self.api_url}/api/motion/joints",
@@ -88,6 +91,7 @@ class BBIAE2ETestClient:
 
         Returns:
             Client WebSocket connecté
+
         """
         ws_url = f"{self.api_url.replace('http', 'ws')}/ws/telemetry"
         return await websockets.connect(ws_url, additional_headers=self.headers)
@@ -115,7 +119,6 @@ class TestMotionRoundtrip:
 
     async def test_joint_position_roundtrip(self, client: BBIAE2ETestClient):
         """Test du cycle complet : GET → SET → GET avec vérification du changement."""
-
         # Vérifier que l'API est accessible
         if not await client.check_health():
             pytest.skip("API non accessible - serveur non démarré")
@@ -163,7 +166,6 @@ class TestMotionRoundtrip:
 
     async def test_websocket_telemetry_rate(self, client: BBIAE2ETestClient):
         """Test que le WebSocket émet des messages à la bonne fréquence."""
-
         # Vérifier que l'API est accessible
         if not await client.check_health():
             pytest.skip("API non accessible - serveur non démarré")
@@ -216,7 +218,6 @@ class TestMotionRoundtrip:
 
     async def test_invalid_joint_rejection(self, client: BBIAE2ETestClient):
         """Test que les joints invalides sont rejetés avec 422."""
-
         # Vérifier que l'API est accessible
         if not await client.check_health():
             pytest.skip("API non accessible - serveur non démarré")
@@ -235,7 +236,6 @@ class TestMotionRoundtrip:
 
     async def test_joint_angle_clamping(self, client: BBIAE2ETestClient):
         """Test que les angles hors limites sont clampés."""
-
         # Vérifier que l'API est accessible
         if not await client.check_health():
             pytest.skip("API non accessible - serveur non démarré")
@@ -290,7 +290,6 @@ class TestPerformance:
 
     async def test_motion_response_time(self, client: BBIAE2ETestClient):
         """Test que les réponses de mouvement sont rapides."""
-
         # Vérifier que l'API est accessible
         if not await client.check_health():
             pytest.skip("API non accessible - serveur non démarré")
@@ -308,7 +307,6 @@ class TestPerformance:
 
     async def test_concurrent_motions(self, client: BBIAE2ETestClient):
         """Test que plusieurs mouvements simultanés fonctionnent."""
-
         # Vérifier que l'API est accessible
         if not await client.check_health():
             pytest.skip("API non accessible - serveur non démarré")

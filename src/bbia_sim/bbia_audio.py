@@ -1,5 +1,4 @@
-"""
-Module bbia_audio.py
+"""Module bbia_audio.py
 Gestion de l'audio pour BBIA : enregistrement, lecture, détection de son.
 Compatible macOS, simple, portable, testé.
 """
@@ -14,9 +13,7 @@ logging.basicConfig(level=logging.INFO)
 
 
 def enregistrer_audio(fichier, duree=3, frequence=16000):
-    """
-    Enregistre un fichier audio (WAV) depuis le micro.
-    """
+    """Enregistre un fichier audio (WAV) depuis le micro."""
     try:
         logging.info(f"Enregistrement audio ({duree}s) dans {fichier}...")
         audio = sd.rec(
@@ -35,9 +32,7 @@ def enregistrer_audio(fichier, duree=3, frequence=16000):
 
 
 def lire_audio(fichier):
-    """
-    Joue un fichier audio WAV.
-    """
+    """Joue un fichier audio WAV."""
     try:
         with wave.open(fichier, "rb") as wf:
             frequence = wf.getframerate()
@@ -52,8 +47,7 @@ def lire_audio(fichier):
 
 
 def detecter_son(fichier, seuil=500):
-    """
-    Détecte la présence d'un son dans un fichier WAV (seuil simple).
+    """Détecte la présence d'un son dans un fichier WAV (seuil simple).
     Retourne True si un son est détecté, False sinon.
     """
     try:
@@ -69,15 +63,10 @@ def detecter_son(fichier, seuil=500):
 
 
 if __name__ == "__main__":
-    print("\n[BBIA AUDIO DEMO]")
-    print("1. Enregistrement audio (3s)... Parlez !")
     fichier = "bbia_demo.wav"
     enregistrer_audio(fichier, duree=3, frequence=16000)
-    print("2. Détection de son...")
     if detecter_son(fichier, seuil=500):
-        print("Son détecté dans l'enregistrement.")
+        pass
     else:
-        print("Aucun son détecté.")
-    print("3. Lecture de l'enregistrement...")
+        pass
     lire_audio(fichier)
-    print("Démo terminée.")

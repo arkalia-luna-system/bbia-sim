@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 
-"""
-Tests étendus pour BBIA Vision
-Tests ciblés pour améliorer la couverture de code
+"""Tests étendus pour BBIA Vision
+Tests ciblés pour améliorer la couverture de code.
 """
 
 from datetime import datetime
@@ -12,14 +11,14 @@ from src.bbia_sim.bbia_vision import BBIAVision
 
 
 class TestBBIAVisionExtended:
-    """Tests étendus pour BBIAVision"""
+    """Tests étendus pour BBIAVision."""
 
     def setup_method(self):
-        """Configuration avant chaque test"""
+        """Configuration avant chaque test."""
         self.vision = BBIAVision()
 
     def test_init_defaults(self):
-        """Test initialisation avec valeurs par défaut"""
+        """Test initialisation avec valeurs par défaut."""
         assert self.vision.camera_active is True
         assert self.vision.vision_quality == "HD"
         assert self.vision.detection_range == 3.0
@@ -29,7 +28,7 @@ class TestBBIAVisionExtended:
         assert self.vision.current_focus is None
 
     def test_init_specs(self):
-        """Test spécifications hardware"""
+        """Test spécifications hardware."""
         specs = self.vision.specs
         assert specs["camera"] == "Grand angle"
         assert specs["resolution"] == "1080p"
@@ -39,7 +38,7 @@ class TestBBIAVisionExtended:
 
     @patch("builtins.print")
     def test_scan_environment_success(self, mock_print):
-        """Test scan environnement réussi"""
+        """Test scan environnement réussi."""
         result = self.vision.scan_environment()
 
         assert "objects" in result
@@ -52,7 +51,7 @@ class TestBBIAVisionExtended:
 
     @patch("builtins.print")
     def test_recognize_object_found(self, mock_print):
-        """Test reconnaissance d'objet trouvé"""
+        """Test reconnaissance d'objet trouvé."""
         self.vision.scan_environment()
         result = self.vision.recognize_object("chaise")
 
@@ -63,7 +62,7 @@ class TestBBIAVisionExtended:
 
     @patch("builtins.print")
     def test_recognize_object_not_found(self, mock_print):
-        """Test reconnaissance d'objet non trouvé"""
+        """Test reconnaissance d'objet non trouvé."""
         self.vision.scan_environment()
         result = self.vision.recognize_object("objet_inexistant")
 
@@ -71,14 +70,14 @@ class TestBBIAVisionExtended:
 
     @patch("builtins.print")
     def test_recognize_object_empty_list(self, mock_print):
-        """Test reconnaissance avec liste vide"""
+        """Test reconnaissance avec liste vide."""
         result = self.vision.recognize_object("chaise")
 
         assert result is None
 
     @patch("builtins.print")
     def test_detect_faces_with_data(self, mock_print):
-        """Test détection de visages avec données existantes"""
+        """Test détection de visages avec données existantes."""
         self.vision.scan_environment()
         faces = self.vision.detect_faces()
 
@@ -88,14 +87,14 @@ class TestBBIAVisionExtended:
 
     @patch("builtins.print")
     def test_detect_faces_empty(self, mock_print):
-        """Test détection de visages sans données"""
+        """Test détection de visages sans données."""
         faces = self.vision.detect_faces()
 
         assert len(faces) == 2  # scan_environment est appelé automatiquement
 
     @patch("builtins.print")
     def test_track_object_success(self, mock_print):
-        """Test suivi d'objet réussi"""
+        """Test suivi d'objet réussi."""
         self.vision.scan_environment()
         result = self.vision.track_object("livre")
 
@@ -106,7 +105,7 @@ class TestBBIAVisionExtended:
 
     @patch("builtins.print")
     def test_track_object_failure(self, mock_print):
-        """Test suivi d'objet échoué"""
+        """Test suivi d'objet échoué."""
         result = self.vision.track_object("objet_inexistant")
 
         assert result is False
@@ -115,7 +114,7 @@ class TestBBIAVisionExtended:
 
     @patch("builtins.print")
     def test_stop_tracking_active(self, mock_print):
-        """Test arrêt de suivi actif"""
+        """Test arrêt de suivi actif."""
         self.vision.scan_environment()
         self.vision.track_object("livre")
         self.vision.stop_tracking()
@@ -125,14 +124,14 @@ class TestBBIAVisionExtended:
 
     @patch("builtins.print")
     def test_stop_tracking_inactive(self, mock_print):
-        """Test arrêt de suivi inactif"""
+        """Test arrêt de suivi inactif."""
         self.vision.stop_tracking()
 
         assert self.vision.tracking_active is False
         assert self.vision.current_focus is None
 
     def test_get_focus_status_tracking_active(self):
-        """Test statut focus avec suivi actif"""
+        """Test statut focus avec suivi actif."""
         self.vision.scan_environment()
         self.vision.track_object("livre")
         status = self.vision.get_focus_status()
@@ -143,7 +142,7 @@ class TestBBIAVisionExtended:
         assert status["faces_count"] == 2
 
     def test_get_focus_status_no_tracking(self):
-        """Test statut focus sans suivi"""
+        """Test statut focus sans suivi."""
         status = self.vision.get_focus_status()
 
         assert status["tracking_active"] is False
@@ -153,7 +152,7 @@ class TestBBIAVisionExtended:
 
     @patch("builtins.print")
     def test_analyze_emotion_valid(self, mock_print):
-        """Test analyse d'émotion valide"""
+        """Test analyse d'émotion valide."""
         face_data = {"emotion": "happy"}
         emotion = self.vision.analyze_emotion(face_data)
 
@@ -161,29 +160,29 @@ class TestBBIAVisionExtended:
 
     @patch("builtins.print")
     def test_analyze_emotion_default(self, mock_print):
-        """Test analyse d'émotion par défaut"""
+        """Test analyse d'émotion par défaut."""
         face_data = {}
         emotion = self.vision.analyze_emotion(face_data)
 
         assert emotion == "neutral"
 
     def test_calculate_distance_origin(self):
-        """Test calcul distance origine"""
+        """Test calcul distance origine."""
         distance = self.vision.calculate_distance((0.0, 0.0))
         assert distance == 0.0
 
     def test_calculate_distance_positive(self):
-        """Test calcul distance positive"""
+        """Test calcul distance positive."""
         distance = self.vision.calculate_distance((3.0, 4.0))
         assert distance == 5.0
 
     def test_calculate_distance_negative(self):
-        """Test calcul distance négative"""
+        """Test calcul distance négative."""
         distance = self.vision.calculate_distance((-3.0, -4.0))
         assert distance == 5.0
 
     def test_get_vision_stats_default(self):
-        """Test statistiques vision par défaut"""
+        """Test statistiques vision par défaut."""
         stats = self.vision.get_vision_stats()
 
         assert stats["camera_active"] is True
@@ -195,7 +194,7 @@ class TestBBIAVisionExtended:
         assert "specs" in stats
 
     def test_get_vision_stats_with_data(self):
-        """Test statistiques vision avec données"""
+        """Test statistiques vision avec données."""
         self.vision.scan_environment()
         self.vision.track_object("livre")
         stats = self.vision.get_vision_stats()
@@ -205,7 +204,7 @@ class TestBBIAVisionExtended:
         assert stats["tracking_active"] is True
 
     def test_scan_environment_objects_structure(self):
-        """Test structure des objets détectés"""
+        """Test structure des objets détectés."""
         result = self.vision.scan_environment()
 
         for obj in result["objects"]:
@@ -217,7 +216,7 @@ class TestBBIAVisionExtended:
             assert len(obj["position"]) == 2
 
     def test_scan_environment_faces_structure(self):
-        """Test structure des visages détectés"""
+        """Test structure des visages détectés."""
         result = self.vision.scan_environment()
 
         for face in result["faces"]:
@@ -230,7 +229,7 @@ class TestBBIAVisionExtended:
             assert len(face["position"]) == 2
 
     def test_scan_environment_timestamp(self):
-        """Test timestamp du scan"""
+        """Test timestamp du scan."""
         result = self.vision.scan_environment()
 
         timestamp = result["timestamp"]
@@ -240,14 +239,14 @@ class TestBBIAVisionExtended:
 
     @patch("builtins.print")
     def test_track_object_case_sensitive(self, mock_print):
-        """Test suivi d'objet sensible à la casse"""
+        """Test suivi d'objet sensible à la casse."""
         self.vision.scan_environment()
         result = self.vision.track_object("CHAISE")  # Majuscules
 
         assert result is False  # "chaise" en minuscules dans les données
 
     def test_current_focus_after_tracking(self):
-        """Test focus actuel après suivi"""
+        """Test focus actuel après suivi."""
         self.vision.scan_environment()
         self.vision.track_object("table")
 
@@ -258,7 +257,7 @@ class TestBBIAVisionExtended:
         assert focus["confidence"] == 0.92
 
     def test_objects_detected_persistence(self):
-        """Test persistance des objets détectés"""
+        """Test persistance des objets détectés."""
         self.vision.scan_environment()
         initial_count = len(self.vision.objects_detected)
 
@@ -269,7 +268,7 @@ class TestBBIAVisionExtended:
         assert new_count == initial_count  # Même nombre d'objets
 
     def test_faces_detected_persistence(self):
-        """Test persistance des visages détectés"""
+        """Test persistance des visages détectés."""
         self.vision.scan_environment()
         initial_count = len(self.vision.faces_detected)
 

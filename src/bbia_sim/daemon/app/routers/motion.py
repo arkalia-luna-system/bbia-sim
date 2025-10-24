@@ -27,6 +27,7 @@ async def goto_pose(pose: Pose) -> dict[str, Any]:
 
     Returns:
         Statut du mouvement
+
     """
     logger.info(f"Mouvement vers la position : {pose.model_dump()}")
 
@@ -47,6 +48,7 @@ async def go_home() -> dict[str, Any]:
 
     Returns:
         Statut du retour à la position d'origine
+
     """
     logger.info("Retour à la position d'origine")
 
@@ -66,6 +68,7 @@ async def set_joint_positions(positions: list[JointPosition]) -> dict[str, Any]:
 
     Returns:
         Statut de la commande
+
     """
     logger.info(
         f"Définition des positions d'articulations : {len(positions)} articulations"
@@ -113,6 +116,7 @@ async def control_gripper(side: str, action: str) -> dict[str, Any]:
 
     Returns:
         Statut de la commande
+
     """
     if side not in ["left", "right"]:
         raise HTTPException(
@@ -145,6 +149,7 @@ async def control_head(head_control: HeadControl) -> dict[str, Any]:
 
     Returns:
         Statut de la commande
+
     """
     logger.info(
         f"Contrôle de la tête : yaw={head_control.yaw}, pitch={head_control.pitch}"
@@ -171,6 +176,7 @@ async def stop_motion() -> dict[str, Any]:
 
     Returns:
         Statut de l'arrêt
+
     """
     logger.info("Arrêt de tous les mouvements")
 
@@ -187,6 +193,7 @@ async def get_motion_status() -> dict[str, Any]:
 
     Returns:
         Statut des mouvements
+
     """
     logger.info("Récupération du statut des mouvements")
 
@@ -207,6 +214,7 @@ async def execute_custom_command(command: MotionCommand) -> dict[str, Any]:
 
     Returns:
         Statut de l'exécution
+
     """
     logger.info(f"Exécution de la commande personnalisée : {command.command}")
 

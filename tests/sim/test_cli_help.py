@@ -29,8 +29,6 @@ class TestCLIHelp:
         for option in required_options:
             assert option in help_text, f"Option {option} manquante dans --help"
 
-        print("✅ Toutes les options CLI requises sont présentes")
-
     @pytest.mark.skipif(
         os.getenv("CI") and sys.platform != "darwin", reason="Test spécifique macOS"
     )
@@ -58,9 +56,9 @@ class TestCLIHelp:
         ]
 
         if found_indicators:
-            print(f"✅ Message macOS détecté: {found_indicators}")
+            pass
         else:
-            print("ℹ️ Message macOS non détecté (normal si viewer disponible)")
+            pass
 
     def test_headless_mode_works(self):
         """Test que le mode headless fonctionne sans viewer."""
@@ -86,8 +84,6 @@ class TestCLIHelp:
         output = result.stdout + result.stderr
         assert "headless" in output.lower(), "Message headless non détecté"
 
-        print("✅ Mode headless fonctionne correctement")
-
     def test_version_command(self):
         """Test que --version affiche la version."""
         result = subprocess.run(
@@ -101,5 +97,3 @@ class TestCLIHelp:
 
         version_output = result.stdout.strip()
         assert "BBIA-SIM" in version_output, f"Version non détectée: {version_output}"
-
-        print(f"✅ Version détectée: {version_output}")
