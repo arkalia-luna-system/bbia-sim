@@ -30,7 +30,8 @@ class TestCLIHelp:
             assert option in help_text, f"Option {option} manquante dans --help"
 
     @pytest.mark.skipif(
-        os.getenv("CI") and sys.platform != "darwin", reason="Test spécifique macOS"
+        os.getenv("CI") is not None and sys.platform != "darwin",
+        reason="Test spécifique macOS",
     )
     def test_macos_viewer_message(self):
         """Test que le message macOS est présent (uniquement sur macOS)."""
