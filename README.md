@@ -30,7 +30,12 @@ Ce projet fournit une simulation **parfaitement fidèle** du robot Reachy Mini d
 
 ### Voir le robot en 3D (FONCTIONNEL)
 ```bash
-# Démo principale - Robot qui tourne correctement (RECOMMANDÉE)
+# 🎯 NOUVELLE DÉMO CORRIGÉE - Version stable et paramétrable (RECOMMANDÉE)
+python examples/demo_viewer_bbia_corrected.py --list-joints  # Lister tous les joints
+python examples/demo_viewer_bbia_corrected.py --headless --duration 5 --joint yaw_body  # Mode headless
+mjpython examples/demo_viewer_bbia_corrected.py --duration 10 --joint yaw_body  # Mode graphique
+
+# Démo principale - Robot qui tourne correctement
 mjpython examples/demo_robot_correct.py
 
 # Test des joints sûrs uniquement
@@ -247,6 +252,12 @@ tests/
 ### Commandes de Tests
 
 ```bash
+# Tests spécifiques à la nouvelle démo 3D corrigée
+python -m pytest tests/test_demo_viewer_bbia_corrected.py -v
+
+# Tests MuJoCo existants
+python -m pytest tests/test_adapter_mujoco.py -v
+
 # Lancer tous les tests avec coverage
 python -m pytest tests/ --cov=src --cov-report=term-missing --cov-report=html
 
@@ -301,4 +312,4 @@ python -m pytest --collect-only -q | wc -l
 **✅ MISSION ACCOMPLIE** : Le robot Reachy Mini est maintenant parfaitement simulé avec une fidélité de 100% aux spécifications officielles et une couverture de tests excellente.
 
 ---
-*Dernière mise à jour : 15 janvier 2025*
+*Dernière mise à jour : Octobre 2025*
