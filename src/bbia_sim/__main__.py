@@ -133,7 +133,9 @@ def run_simulation(args: argparse.Namespace) -> None:
 
     # Détermination du modèle à utiliser
     if args.scene == "reachy_mini.xml":
-        model_path = Path(__file__).parent / "sim" / "models" / "reachy_mini.xml"
+        model_path = (
+            Path(__file__).parent / "sim" / "models" / "reachy_mini_REAL_OFFICIAL.xml"
+        )
     elif args.scene == "minimal.xml":
         model_path = Path(__file__).parent / "sim" / "scenes" / "minimal.xml"
     else:

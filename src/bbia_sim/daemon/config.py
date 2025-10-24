@@ -26,7 +26,7 @@ class Settings(BaseSettings):
     cors_origins: list[str] = ["*"]  # En production, spécifier les domaines autorisés
 
     # Simulation
-    simulation_model_path: str = "src/bbia_sim/sim/models/reachy_mini.xml"
+    simulation_model_path: str = "src/bbia_sim/sim/models/reachy_mini_REAL_OFFICIAL.xml"
     simulation_headless: bool = (
         True  # Headless par défaut pour éviter les problèmes macOS
     )

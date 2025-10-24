@@ -181,8 +181,10 @@ class MuJoCoSimulator:
             except (AttributeError, IndexError):
                 # Fallback si joint_range n'est pas disponible
                 min_limit = -3.14  # -π
-                max_limit = 3.14   # +π
-                logger.debug(f"Limites par défaut pour {joint_name}: [{min_limit}, {max_limit}]")
+                max_limit = 3.14  # +π
+                logger.debug(
+                    f"Limites par défaut pour {joint_name}: [{min_limit}, {max_limit}]"
+                )
 
             # Clamp de l'angle dans les limites
             clamped_angle = max(min_limit, min(max_limit, angle))
