@@ -20,6 +20,11 @@ cd /Volumes/T7/bbia-reachy-sim
 mjpython scripts/launch_complete_robot.py --model reachy_mini_REAL_OFFICIAL.xml
 ```
 
+### Vérification complète du projet
+```bash
+python scripts/verify_project.py
+```
+
 ### Contrôles MuJoCo
 - **Souris** : Rotation de la vue
 - **Molette** : Zoom

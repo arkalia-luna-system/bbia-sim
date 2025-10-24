@@ -3,6 +3,15 @@ speechrecognition
 pyaudio
 sounddevice
 numpy
+opencv-python
+Pillow
+mujoco
+fastapi
+uvicorn[standard]
+websockets
+pydantic
+pydantic-settings
+python-multipart
 # Outils de développement
 ruff
 black
