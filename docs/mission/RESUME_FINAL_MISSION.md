@@ -178,7 +178,7 @@ await integration.apply_emotion_to_robot("happy", 0.8)
 ### **✅ Performance**
 - **Simulation :** ~1000 Hz (headless), 60+ FPS (graphique)
 - **Tests :** 531 tests collectés, 418 passent (79% réussite)
-- **Coverage :** 73.74%+ maintenu
+- **Coverage :** 76.70%+ maintenu
 - **Qualité :** Ruff, Black, MyPy validés
 
 ### **✅ Fonctionnalités**
@@ -195,7 +195,7 @@ await integration.apply_emotion_to_robot("happy", 0.8)
 1. **Ne pas essayer** d'animer `left_antenna` ou `right_antenna` (bloqués)
 2. **Ne pas créer** de nouveaux modèles XML (utiliser l'officiel)
 3. **Ne pas modifier** les limites des joints (spécifications officielles)
-4. **Ne pas casser** les tests existants (391+ tests passent)
+4. **Ne pas casser** les tests existants (531 tests collectés, 418 passent)
 
 ### **✅ À FAIRE**
 1. **Utiliser** `yaw_body` pour les animations principales

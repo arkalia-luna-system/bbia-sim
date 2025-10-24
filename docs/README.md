@@ -1,4 +1,4 @@
-# �� Documentation BBIA - Index
+# 📚 Documentation BBIA - Index
 
 ## 🎯 **Vue d'ensemble**
 
@@ -8,33 +8,17 @@ Ce dossier contient toute la documentation du projet BBIA (Biological Brain Inte
 
 ## 📁 **Structure de la documentation**
 
-### 📋 **Semaines de développement**
-- [📋 Semaine 2 - Vision et Émotions](semaines/📋_SEMAINE_2_VISION_EMOTIONS.md)
-  - Module BBIA Vision avancé
-  - Module BBIA Emotions complexes
-  - Intégration Vision + Émotions
-  - Tests et validation
-
-### 📊 **Rapports et bilans**
-- [📋 Bilan Phase 2 Démarrage](rapports/📋_BILAN_PHASE_2_DEMARRAGE.md)
-- [📋 Arrêt Unity Documentation](rapports/📋_ARRET_UNITY_DOCUMENTATION.md)
-- [📋 Réorganisation Finale](rapports/📋_REORGANISATION_FINALE.md)
-
-### 🎮 **Guides de simulation**
-- [📚 Documentation Complète](guides/📚_DOCUMENTATION_COMPLETE_BBIA.md)
-- [📋 Index de Navigation](guides/📋_INDEX_DOCUMENTATION.md)
-- [📋 État Actuel](guides/📋_ETAT_ACTUEL_FINAL.md)
-- [🚀 Démarrage Rapide](guides/🚀_DEMARRAGE_RAPIDE_MIS_A_JOUR.md)
+### 🎮 **Guides principaux**
+- [Guide Reachy Mini Wireless](guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md)
+- [Guide des dépôts GitHub](depots/DEPOTS_GITHUB_BBIA_COMPLETE.md)
+- [Guide de simulation MuJoCo](simulations/MUJOCO_SIMULATION_GUIDE.md)
 
 ### 🔧 **Guides d'installation**
-- [🎯 Installation Rapide](installation/🎯_DEMARRAGE_RAPIDE_DEPOTS.md)
-- [🎮 Simulations Disponibles](simulations/🎮_SIMULATIONS_DISPONIBLES.md)
-- [🎯 Phase 1 Terminée](guides/🎯_PHASE_1_TERMINEE_PHASE_2_PRET.md)
+- [Installation audio](installation/AUDIO_SETUP.md)
 
-### 🎮 **Guides Unity (Archivés)**
-- [Unity Setup](unity/UNITY_SETUP.md)
-- [Unity Simulator Guide](unity/UNITY_SIMULATOR_GUIDE.md)
-- [Unity Final Summary](unity/UNITY_FINAL_SUMMARY.md)
+### 🎮 **Guides Unity**
+- [Guide Unity BBIA](unity/UNITY_BBIA_GUIDE.md)
+- [Dépannage Unity](unity/UNITY_TROUBLESHOOTING.md)
 
 ### 📦 **Dépôts et ressources**
 - [Dépôts GitHub](depots/)
@@ -43,90 +27,67 @@ Ce dossier contient toute la documentation du projet BBIA (Biological Brain Inte
 
 ## 🚀 **Navigation rapide**
 
-### 📋 **Dernière semaine terminée**
-- **Semaine 2** : [Vision et Émotions](semaines/📋_SEMAINE_2_VISION_EMOTIONS.md)
-  - ✅ Module BBIA Vision : Reconnaissance, détection, suivi
-  - ✅ Module BBIA Emotions : 8 émotions complexes
-  - ✅ Intégration Vision + Émotions
-  - ✅ Tests complets et validation
+### 📋 **Documentation principale**
+- **Architecture** : [Architecture BBIA](ARCHITECTURE.md)
+- **Tests** : [Guide des tests](TESTING_GUIDE.md)
+- **Processus** : [Gestion des processus](PROCESS_MANAGEMENT.md)
 
-### 🎯 **Prochaine étape**
-- **Semaine 3** : Audio et Voix (en préparation)
-  - 🔄 Module BBIA Audio : Reconnaissance vocale
-  - 🔄 Module BBIA Voix : Synthèse vocale émotionnelle
-  - 🔄 Intégration Audio + Émotions
+### 🎯 **Missions accomplies**
+- **Mission finale** : [Mission accomplie](mission/MISSION_FINALE_ACCOMPLIE.md)
+- **Résumé final** : [Résumé final](mission/RESUME_FINAL_MISSION.md)
+- **Audit 3D** : [Audit 3D BBIA](audit/AUDIT_3D_BBIA_COMPLET.md)
 
----
-
-## 📊 **Statut du projet**
-
-### ✅ **Semaines terminées**
-- **Semaine 1** : Base et Réveil ✅
-- **Semaine 2** : Vision et Émotions ✅
-
-### 🚀 **En cours**
-- **Semaine 3** : Audio et Voix ✅
-  - 🎤 Module BBIA Audio : Reconnaissance vocale (PyAudio, speech_recognition)
-  - 🗣️ Module BBIA Voix : Synthèse vocale (pyttsx3, voix Amélie fr_CA)
-  - 🔗 [Guide installation/dépannage audio/voix](../README.md#installation-audiovoix-sur-macos)
-
-### 📋 **Planifié**
-- **Semaine 4** : Comportements
-- **Semaine 5** : Interface et Tests finaux
+### 🔧 **Prompts et guides**
+- **Prompt final** : [Prompt Cursor final](prompts/PROMPT_CURSOR_BBIA_REACHY_FINAL.md)
+- **Prompt complet** : [Prompt Cursor complet](prompts/PROMPT_CURSOR_BBIA_REACHY_COMPLETE.md)
 
 ---
 
-## 🎯 **Architecture actuelle**
+## 📊 **État actuel du projet**
 
-```
-BBIA Core
-├── BBIA Awake (Semaine 1) ✅
-│   └── Séquence de réveil
-├── BBIA Vision (Semaine 2) ✅
-│   ├── Scan environnement
-│   ├── Reconnaissance objets
-│   ├── Détection visages
-│   ├── Suivi objets
-│   ├── Analyse émotions
-│   └── Calcul distance
-└── BBIA Emotions (Semaine 2) ✅
-    ├── Gestion émotions
-    ├── Transitions
-    ├── Réponses contextuelles
-    ├── Mélange émotions
-    ├── Historique
-    └── Statistiques
+### ✅ **Fonctionnalités opérationnelles**
+- **Simulation 3D** : Robot Reachy Mini parfaitement fonctionnel
+- **Modules BBIA** : 8 émotions, vision, audio, comportements intégrés
+- **API REST** : FastAPI + WebSocket opérationnels
+- **Tests** : 531 tests collectés, 418 passent (79% réussite)
+- **Coverage** : 76.70% de couverture de code
+- **Documentation** : Complète et organisée
+
+### 🎮 **Commandes principales**
+```bash
+# Activer l'environnement
+source venv/bin/activate
+
+# Voir le robot en 3D
+mjpython examples/demo_viewer_bbia_corrected.py --duration 10 --joint yaw_body
+
+# Tests automatiques
+python -m pytest tests/ -v
+
+# Qualité du code
+ruff check . --fix
+black src/ tests/ examples/ scripts/
+mypy src/
 ```
 
 ---
 
-## 📈 **Statistiques**
+## 🎯 **Prochaines étapes**
 
-### 🎯 **Semaine 2 - Réalisations**
-- **Modules créés** : 2 (BBIA Vision + BBIA Emotions)
-- **Émotions disponibles** : 8
-- **Fonctionnalités implémentées** : 14
-- **Tests créés** : 1 (test intégré complet)
-- **Intégrations** : 1 (Vision + Émotions)
+### 🚀 **Développement immédiat**
+1. **Nouvelles émotions** : confusion, détermination, nostalgie, fierté
+2. **Commandes vocales** : "tourne à gauche", "souris", "regarde-moi"
+3. **Vision améliorée** : reconnaissance d'expressions humaines
+4. **Tests de stabilité** : validation de tous les joints Stewart
 
-### 📊 **Performance**
-- **Temps de réponse** : < 100ms
-- **Précision de détection** : 85-97%
-- **Fluidité des transitions** : 100%
-- **Stabilité** : 100%
-
----
-
-## 🤝 **Contribution**
-
-Pour contribuer à la documentation :
-1. Suivre la structure existante
-2. Utiliser les emojis pour la navigation
-3. Maintenir les liens entre documents
-4. Mettre à jour cet index
+### 🔧 **Intégrations**
+1. **API avancée** : endpoints pour contrôle fin
+2. **Interface web** : contrôle du robot via navigateur
+3. **Intégration Unity** : synchronisation temps réel
+4. **Scénarios interactifs** : robot qui réagit aux émotions
 
 ---
 
-## 📄 **Licence**
+**🤖 BBIA Reachy Mini Simulation - Documentation complète et à jour ! ✨**
 
-Cette documentation fait partie du projet BBIA pour la recherche en intelligence artificielle émotionnelle. 
+*Dernière mise à jour : Octobre 2025*

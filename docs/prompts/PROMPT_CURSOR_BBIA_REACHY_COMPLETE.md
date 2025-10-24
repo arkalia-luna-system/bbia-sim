@@ -56,8 +56,8 @@ src/bbia_sim/
 ### **🔒 Sécurité & Stabilité**
 - **AUCUNE suppression destructrice** sans plan de PR
 - **Respecte l'arborescence existante** (`src/`, `tests/`, `examples/`, `scripts/`)
-- **Tests et linters doivent rester VERTS** (391/402 tests passent actuellement)
-- **Coverage maintenu** à 72% minimum
+- **Tests et linters doivent rester VERTS** (531 tests collectés, 418 passent actuellement)
+- **Coverage maintenu** à 76.70% minimum
 
 ### **🔧 Qualité du Code**
 - **Python 3.10+** obligatoire
@@ -317,8 +317,8 @@ black src/ tests/ examples/ --check
 ## 📊 **MÉTRIQUES DU PROJET**
 
 ### **✅ Qualité Actuelle**
-- **Tests** : 391/402 passent (97% réussite)
-- **Coverage** : 72.07% de couverture
+- **Tests** : 531 tests collectés, 418 passent (79% réussite)
+- **Coverage** : 76.70% de couverture
 - **Linting** : Ruff, Black, MyPy configurés
 - **Documentation** : README, guides, exemples
 
@@ -375,7 +375,7 @@ python examples/goto_pose.py --token dev --joint yaw_body --pos 0.5
 ✅ **Simulation 3D** : Robot Reachy Mini parfaitement assemblé  
 ✅ **Modules BBIA** : 8 émotions, vision, audio, comportements  
 ✅ **API REST** : FastAPI + WebSocket opérationnels  
-✅ **Tests** : 391/402 tests passent (97% réussite)  
+✅ **Tests** : 531 tests collectés, 418 passent (79% réussite)  
 ✅ **Documentation** : Complète et à jour  
 ✅ **Scripts** : Diagnostic, vérification, lancement  
 

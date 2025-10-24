@@ -4,52 +4,71 @@ Configuration globale pour déterminisme et sécurité
 SEED global, limites sûres, failsafe
 """
 
+import logging
 import os
 import random
-import logging
-from typing import Dict, Set, Tuple
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
 
 class GlobalConfig:
     """Configuration globale pour BBIA."""
-    
+
     # SEED global pour déterminisme
     GLOBAL_SEED = int(os.environ.get("BBIA_SEED", 42))
-    
+
     # Limites sûres centralisées
     SAFE_AMPLITUDE_LIMIT = 0.3  # rad
     MAX_STEP_TIME = 0.1  # s
     MAX_DURATION = 60  # s
-    
+
     # Joints interdits
     FORBIDDEN_JOINTS = {
-        "left_antenna", "right_antenna",
-        "passive_1", "passive_2", "passive_3", "passive_4", "passive_5", "passive_6", "passive_7"
+        "left_antenna",
+        "right_antenna",
+        "passive_1",
+        "passive_2",
+        "passive_3",
+        "passive_4",
+        "passive_5",
+        "passive_6",
+        "passive_7",
     }
-    
+
     # Joints sûrs recommandés
     SAFE_JOINTS = {"yaw_body"}
-    
+
     # Émotions valides
     VALID_EMOTIONS = {
-        "neutral", "happy", "sad", "angry", "surprised", 
-        "confused", "determined", "nostalgic", "proud"
+        "neutral",
+        "happy",
+        "sad",
+        "angry",
+        "surprised",
+        "confused",
+        "determined",
+        "nostalgic",
+        "proud",
     }
-    
+
     # Comportements valides
     VALID_BEHAVIORS = {
-        "wake_up", "greeting", "emotional_response", 
-        "vision_tracking", "conversation", "antenna_animation", "hide"
+        "wake_up",
+        "greeting",
+        "emotional_response",
+        "vision_tracking",
+        "conversation",
+        "antenna_animation",
+        "hide",
     }
-    
+
     @classmethod
     def initialize_seed(cls):
         """Initialise le seed global."""
         random.seed(cls.GLOBAL_SEED)
         logger.info(f"Seed global initialisé: {cls.GLOBAL_SEED}")
-    
+
     @classmethod
     def validate_joint(cls, joint_name: str) -> bool:
         """Valide qu'un joint est autorisé."""
@@ -57,15 +76,17 @@ class GlobalConfig:
             logger.warning(f"Joint interdit: {joint_name}")
             return False
         return True
-    
+
     @classmethod
     def clamp_amplitude(cls, amplitude: float) -> float:
         """Clamp une amplitude dans les limites sûres."""
-        clamped = max(-cls.SAFE_AMPLITUDE_LIMIT, min(cls.SAFE_AMPLITUDE_LIMIT, amplitude))
+        clamped = max(
+            -cls.SAFE_AMPLITUDE_LIMIT, min(cls.SAFE_AMPLITUDE_LIMIT, amplitude)
+        )
         if clamped != amplitude:
             logger.warning(f"Amplitude clampée: {amplitude} → {clamped}")
         return clamped
-    
+
     @classmethod
     def validate_emotion(cls, emotion: str) -> bool:
         """Valide qu'une émotion est supportée."""
@@ -73,7 +94,7 @@ class GlobalConfig:
             logger.error(f"Émotion invalide: {emotion}")
             return False
         return True
-    
+
     @classmethod
     def validate_behavior(cls, behavior: str) -> bool:
         """Valide qu'un comportement est supporté."""
@@ -81,14 +102,14 @@ class GlobalConfig:
             logger.error(f"Comportement invalide: {behavior}")
             return False
         return True
-    
+
     @classmethod
     def get_safe_joint(cls) -> str:
         """Retourne un joint sûr par défaut."""
         return "yaw_body"
-    
+
     @classmethod
-    def get_config_summary(cls) -> Dict[str, any]:
+    def get_config_summary(cls) -> dict[str, Any]:
         """Retourne un résumé de la configuration."""
         return {
             "global_seed": cls.GLOBAL_SEED,

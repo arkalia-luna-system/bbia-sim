@@ -16,27 +16,28 @@ import mujoco
 def analyze_joints(xml_path: str):
     """Analyse les joints du modèle MuJoCo et les classe."""
     print(f"🔍 Analyse du modèle: {xml_path}")
-    
+
     # Charger le modèle
     model = mujoco.MjModel.from_xml_path(xml_path)
-    data = mujoco.MjData(model)
-    
+
     print(f"✅ Modèle chargé: {model.njnt} joints détectés")
-    
+
     # Classification des joints
     safe_joints = []
     risky_joints = []
     forbidden_joints = []
-    
+
     print("\n📋 TABLEAU COMPLET DES JOINTS:")
     print("=" * 80)
-    print(f"{'Nom':<15} {'Type':<8} {'Range (rad)':<20} {'Range (°)':<15} {'Statut':<12}")
+    print(
+        f"{'Nom':<15} {'Type':<8} {'Range (rad)':<20} {'Range (°)':<15} {'Statut':<12}"
+    )
     print("=" * 80)
-    
+
     for i in range(model.njnt):
         name = mujoco.mj_id2name(model, mujoco.mjtObj.mjOBJ_JOINT, i)
         joint_range = model.jnt_range[i]
-        
+
         # Déterminer le type de joint
         if model.jnt_type[i] == mujoco.mjtJoint.mjJNT_HINGE:
             joint_type = "hinge"
@@ -46,11 +47,13 @@ def analyze_joints(xml_path: str):
             joint_type = "slide"
         else:
             joint_type = "other"
-        
+
         # Conversion en degrés
-        range_deg = f"[{joint_range[0]*180/3.14159:.1f}°, {joint_range[1]*180/3.14159:.1f}°]"
+        range_deg = (
+            f"[{joint_range[0]*180/3.14159:.1f}°, {joint_range[1]*180/3.14159:.1f}°]"
+        )
         range_rad = f"[{joint_range[0]:.3f}, {joint_range[1]:.3f}]"
-        
+
         # Classification
         if joint_range[0] == joint_range[1]:  # Joint bloqué
             status = "❌ FORBIDDEN"
@@ -69,30 +72,32 @@ def analyze_joints(xml_path: str):
         else:
             status = "✅ SAFE"
             safe_joints.append((name, joint_range, "SÛR"))
-        
-        print(f"{name:<15} {joint_type:<8} {range_rad:<20} {range_deg:<15} {status:<12}")
-    
+
+        print(
+            f"{name:<15} {joint_type:<8} {range_rad:<20} {range_deg:<15} {status:<12}"
+        )
+
     print("=" * 80)
-    
+
     # Résumé
-    print(f"\n📊 RÉSUMÉ DE LA CLASSIFICATION:")
+    print("\n📊 RÉSUMÉ DE LA CLASSIFICATION:")
     print(f"✅ JOINTS SÛRS: {len(safe_joints)}")
-    for name, joint_range, desc in safe_joints:
+    for name, _joint_range, desc in safe_joints:
         print(f"   • {name:<15}: {desc}")
-    
+
     print(f"\n⚠️ JOINTS RISQUÉS: {len(risky_joints)}")
-    for name, joint_range, desc in risky_joints:
+    for name, _joint_range, desc in risky_joints:
         print(f"   • {name:<15}: {desc}")
-    
+
     print(f"\n❌ JOINTS INTERDITS: {len(forbidden_joints)}")
-    for name, joint_range, desc in forbidden_joints:
+    for name, _joint_range, desc in forbidden_joints:
         print(f"   • {name:<15}: {desc}")
-    
+
     return {
         "safe": safe_joints,
         "risky": risky_joints,
         "forbidden": forbidden_joints,
-        "total": model.njnt
+        "total": model.njnt,
     }
 
 
