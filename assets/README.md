@@ -9,25 +9,49 @@
 
 ---
 
-## 🤖 **Référence Visuelle Reachy Mini**
+## 🏗️ Architecture des Assets BBIA
 
-### 📸 **Description de l'Image**
-- **Robot** : Reachy Mini Wireless
-- **Couleur** : Blanc
-- **Design** : Humanoïde simplifié avec antennes
-- **"Yeux"** : Deux grands cercles noirs expressifs
-- **Taille** : Petit robot de bureau
+```mermaid
+graph TB
+    subgraph "Assets Visuels"
+        IMAGES[Images<br/>Références visuelles]
+        REACHY_REF[REACHY_MINI_REFERENCE.md<br/>Référence robot]
+    end
+    
+    subgraph "Robot Reachy Mini"
+        DESIGN[Design<br/>Humanoïde simplifié]
+        COULEUR[Couleur<br/>Blanc]
+        YEUX[Yeux<br/>Cercles noirs expressifs]
+        ANTENNES[Antennes<br/>Expressivité]
+    end
+    
+    subgraph "Contexte BBIA"
+        LIVRAISON[Livraison<br/>Fin 2025 / Début 2026]
+        PRIX[Prix<br/>449$ (~500€)]
+        FABRICANT[Fabricant<br/>Pollen Robotics]
+    end
+    
+    IMAGES --> REACHY_REF
+    REACHY_REF --> DESIGN
+    
+    DESIGN --> COULEUR
+    COULEUR --> YEUX
+    YEUX --> ANTENNES
+    
+    ANTENNES --> LIVRAISON
+    LIVRAISON --> PRIX
+    PRIX --> FABRICANT
+```
 
-### 🎯 **Contexte**
-- **Source** : Google Images (15 juillet 2024)
-- **Article** : TechCrunch - "Hugging Face ouvre les commandes..."
-- **Date** : Il y a 5 jours
-- **Fabricant** : Pollen Robotics (POLLEN)
+## 📊 Répartition des Ressources
 
-### 🔗 **Liens avec BBIA**
-- **Robot cible** : Reachy Mini Wireless
-- **Livraison** : Fin 2025 / Début 2026
-- **Prix** : 449$ (~500€)
+```mermaid
+pie title Types de Ressources Assets
+    "Images de référence" : 40
+    "Documentation robot" : 30
+    "Spécifications techniques" : 20
+    "Liens externes" : 10
+```
 - **Statut** : Open source
 
 ---

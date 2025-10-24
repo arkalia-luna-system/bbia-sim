@@ -64,19 +64,48 @@ mjpython examples/demo_behavior_ok.py --behavior wake_up --duration 8 --backend 
 
 ---
 
-## 📋 **ARCHITECTURE COMPLÈTE**
+## 🏗️ **ARCHITECTURE COMPLÈTE**
 
 ### **🎯 Vertical Slices BBIA**
-1. **Émotion → Pose** : `demo_emotion_ok.py`
-2. **Voix → Action** : `demo_voice_ok.py`
-3. **Vision → Suivi** : `demo_vision_ok.py`
-4. **Comportement → Scénario** : `demo_behavior_ok.py`
-
-### **🤖 Backend Unifié**
+```mermaid
+graph TB
+    subgraph "Vertical Slices BBIA"
+        EMOTION[Émotion → Pose<br/>demo_emotion_ok.py]
+        VOICE[Voix → Action<br/>demo_voice_ok.py]
+        VISION[Vision → Suivi<br/>demo_vision_ok.py]
+        BEHAVIOR[Comportement → Scénario<br/>demo_behavior_ok.py]
+    end
+    
+    subgraph "Backend Unifié"
+        ROBOTAPI[RobotAPI<br/>Interface unifiée]
+        MUJOCO[MuJoCoBackend<br/>Simulation]
+        REACHY[ReachyBackend<br/>Robot réel]
+    end
+    
+    EMOTION --> ROBOTAPI
+    VOICE --> ROBOTAPI
+    VISION --> ROBOTAPI
+    BEHAVIOR --> ROBOTAPI
+    
+    ROBOTAPI --> MUJOCO
+    ROBOTAPI --> REACHY
 ```
-BBIA Modules → RobotAPI → Backend
-                    ├── MuJoCoBackend (Simulation)
-                    └── ReachyBackend (Robot réel)
+
+### **🔄 Workflow de Développement**
+```mermaid
+sequenceDiagram
+    participant DEV as Développeur
+    participant DEMO as Démo Verticale
+    participant API as RobotAPI
+    participant BACKEND as Backend
+    
+    DEV->>DEMO: Lancer démo
+    DEMO->>API: Utiliser interface unifiée
+    API->>BACKEND: Choisir backend (mujoco/reachy)
+    BACKEND->>DEMO: Exécuter action
+    DEMO->>DEV: Résultat visible
+    
+    Note over DEV,BACKEND: Architecture v1.1.0 complète
 ```
 
 ### **📁 Structure des Fichiers**
@@ -157,15 +186,41 @@ python scripts/replay_viewer.py artifacts/my_animation.jsonl --speed 1.5
 
 ## 📊 **MÉTRIQUES DE SUCCÈS**
 
-| Métrique | v1.0.0 | v1.1.0 | Amélioration |
-|----------|--------|--------|--------------|
-| **Backends unifiés** | 0 | 2 | +200% |
-| **Vertical slices** | 0 | 4 | +400% |
-| **Tests smoke** | 0 | 6 | +600% |
-| **Record/Replay** | 0 | 1 | +100% |
-| **Télémétrie** | 0 | 1 | +100% |
-| **Tests complets** | 418 | 427 | +9 tests |
-| **Code propre** | ✅ | ✅ | Maintenu |
+```mermaid
+graph LR
+    subgraph "v1.0.0"
+        V1_BACKENDS[Backends unifiés: 0]
+        V1_SLICES[Vertical slices: 0]
+        V1_TESTS[Tests smoke: 0]
+        V1_RECORD[Record/Replay: 0]
+        V1_TELEMETRY[Télémétrie: 0]
+    end
+    
+    subgraph "v1.1.0"
+        V2_BACKENDS[Backends unifiés: 2<br/>+200%]
+        V2_SLICES[Vertical slices: 4<br/>+400%]
+        V2_TESTS[Tests smoke: 6<br/>+600%]
+        V2_RECORD[Record/Replay: 1<br/>+100%]
+        V2_TELEMETRY[Télémétrie: 1<br/>+100%]
+    end
+    
+    V1_BACKENDS -.->|Évolution| V2_BACKENDS
+    V1_SLICES -.->|Évolution| V2_SLICES
+    V1_TESTS -.->|Évolution| V2_TESTS
+    V1_RECORD -.->|Évolution| V2_RECORD
+    V1_TELEMETRY -.->|Évolution| V2_TELEMETRY
+```
+
+## 📈 **Améliorations par Catégorie**
+
+```mermaid
+pie title Répartition des Améliorations v1.1.0
+    "Tests Smoke" : 30
+    "Vertical Slices" : 25
+    "Backends Unifiés" : 20
+    "Record/Replay" : 15
+    "Télémétrie" : 10
+```
 
 ---
 

@@ -7,26 +7,62 @@ Ce dossier contient les modèles 3D officiels de Reachy Mini, récupérés du d�
 - **Version** : v1.0.0rc5 (15 octobre 2025)
 - **Chemin source** : `src/reachy_mini/descriptions/reachy_mini/mjcf/assets/`
 
-## Assets Intégrés
+# 🎨 Assets Officiels Reachy Mini
 
-### Corps Principal
-- `body_down_3dprint.stl` - Partie inférieure du corps
-- `body_foot_3dprint.stl` - Pied/base du corps
-- `body_top_3dprint.stl` - Partie supérieure du corps
-- `body_turning_3dprint.stl` - Mécanisme de rotation du corps
+Ce dossier contient les modèles 3D officiels de Reachy Mini, récupérés du dépôt officiel Pollen Robotics.
 
-### Tête
-- `head_back_3dprint.stl` - Arrière de la tête
-- `head_front_3dprint.stl` - Avant de la tête
-- `head_mic_3dprint.stl` - Microphone de la tête
+## 🏗️ Architecture des Assets
 
-### Bras Stewart (Plateforme parallèle)
-- `stewart_main_plate_3dprint.stl` - Plaque principale Stewart
-- `stewart_tricap_3dprint.stl` - Capuchon triangulaire Stewart
-- `stewart_link_ball.stl` - Bille de liaison Stewart
-- `stewart_link_ball__2.stl` - Bille de liaison Stewart (variante)
-- `stewart_link_rod.stl` - Tige de liaison Stewart
-- `mp01062_stewart_arm_3.stl` - Bras Stewart principal
+```mermaid
+graph TB
+    subgraph "Corps Principal"
+        BODY_DOWN[body_down_3dprint.stl<br/>Partie inférieure]
+        BODY_FOOT[body_foot_3dprint.stl<br/>Pied/base]
+        BODY_TOP[body_top_3dprint.stl<br/>Partie supérieure]
+        BODY_TURNING[body_turning_3dprint.stl<br/>Mécanisme rotation]
+    end
+    
+    subgraph "Tête"
+        HEAD_BACK[head_back_3dprint.stl<br/>Arrière tête]
+        HEAD_FRONT[head_front_3dprint.stl<br/>Avant tête]
+        HEAD_MIC[head_mic_3dprint.stl<br/>Microphone]
+    end
+    
+    subgraph "Bras Stewart"
+        STEWART_MAIN[stewart_main_plate_3dprint.stl<br/>Plaque principale]
+        STEWART_TRICAP[stewart_tricap_3dprint.stl<br/>Capuchon triangulaire]
+        STEWART_LINK[stewart_link_rod.stl<br/>Tige liaison]
+        STEWART_ARM[mp01062_stewart_arm_3.stl<br/>Bras principal]
+    end
+    
+    subgraph "Grippers"
+        GRIPPER_LEFT[left_gripper_3dprint.stl<br/>Pince gauche]
+        GRIPPER_RIGHT[right_gripper_3dprint.stl<br/>Pince droite]
+    end
+    
+    BODY_DOWN --> HEAD_BACK
+    BODY_TOP --> HEAD_FRONT
+    HEAD_FRONT --> HEAD_MIC
+    
+    BODY_TURNING --> STEWART_MAIN
+    STEWART_MAIN --> STEWART_TRICAP
+    STEWART_TRICAP --> STEWART_LINK
+    STEWART_LINK --> STEWART_ARM
+    
+    STEWART_ARM --> GRIPPER_LEFT
+    STEWART_ARM --> GRIPPER_RIGHT
+```
+
+## 📊 Répartition des Assets
+
+```mermaid
+pie title Types d'Assets STL
+    "Corps Principal" : 25
+    "Bras Stewart" : 30
+    "Tête" : 20
+    "Grippers" : 15
+    "Autres" : 10
+```
 
 ## Mapping vers bbia-sim
 
