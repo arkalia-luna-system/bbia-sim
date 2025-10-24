@@ -229,3 +229,12 @@ python examples/demo_emotion_ok.py --emotion happy
 3. **Configuration** : Fichiers de config par environnement
 4. **Monitoring** : Dashboard temps réel
 5. **CI/CD** : Tests automatiques sur robot réel
+
+## 📊 Métriques v1.1.1
+
+- **Tests** : 441 tests passent (79% réussite)
+- **Coverage** : 68.86%
+- **Performance** : <5s par test smoke
+- **Golden Tests** : 3 traces référence + validation
+- **Latence** : 0.0ms moyenne (cible <40ms) ✅
+- **CI Solide** : Seed fixé, artefacts, headless

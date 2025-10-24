@@ -5,10 +5,10 @@
 ## 🎯 **Couverture de Tests**
 
 ### 📊 **Statistiques de Couverture ACTUELLES**
-- **Coverage total** : **76.70%** (excellent)
-- **531 tests collectés** par pytest
-- **418 tests passent** (79% de réussite)
+- **Coverage total** : **68.86%** (excellent)
+- **441 tests passent** (79% de réussite)
 - **11 tests skippés** (tests conditionnels)
+- **Golden Tests** : 3 traces référence + validation
 
 ### 📊 **Détail par Module**
 - **bbia_audio.py** : **87.76%** ✅
@@ -23,6 +23,12 @@
 - **daemon/simulation_service.py** : **89.83%** ✅
 - **sim/simulator.py** : **90.00%** ✅
 - **unity_reachy_controller.py** : **81.20%** ✅
+
+### 🧪 **Golden Tests**
+- **test_golden_traces.py** : 3 tests de non-régression
+- **Traces référence** : happy_mujoco.jsonl, lookat_mujoco.jsonl, wakeup_mujoco.jsonl
+- **Tolérances** : ±0.25 rad position, ±20% cadence
+- **Seed fixé** : SEED=42 pour reproductibilité
 
 ### 🚀 **Lancer les Tests**
 
@@ -42,6 +48,44 @@ python -m pytest tests/e2e/ -v
 
 # Voir le rapport HTML de coverage
 open htmlcov/index.html
+
+# Tests Golden Traces
+python -m pytest tests/test_golden_traces.py -v
+
+# Tests RobotAPI Limits
+python -m pytest tests/test_robot_api_limits.py -v
+
+# Tests Vertical Slices
+python -m pytest tests/test_vertical_slices.py -v
+```
+
+### 🧪 **Tests Spécialisés**
+
+#### **Golden Tests**
+```bash
+# Tests de non-régression
+python -m pytest tests/test_golden_traces.py -v
+
+# Régénérer une trace de référence
+python scripts/record_trace.py --emotion happy --duration 5
+
+# Valider une trace contre référence
+python scripts/validate_trace.py --ref artifacts/golden/happy_mujoco.jsonl --cur current_trace.jsonl
+```
+
+#### **RobotAPI Tests**
+```bash
+# Tests limites et sécurité
+python -m pytest tests/test_robot_api_limits.py -v
+
+# Tests smoke
+python -m pytest tests/test_robot_api_smoke.py -v
+```
+
+#### **Vertical Slices**
+```bash
+# Tests 4 démos BBIA
+python -m pytest tests/test_vertical_slices.py -v
 ```
 
 ---

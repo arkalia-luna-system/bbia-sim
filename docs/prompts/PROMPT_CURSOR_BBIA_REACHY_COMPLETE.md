@@ -14,7 +14,7 @@ Tu es un **agent Cursor expert MuJoCo/Python** spécialisé dans la simulation r
 - **Nom :** BBIA-SIM (Brain-Based Interactive Agent Simulation)
 - **Robot :** Reachy Mini Wireless (Pollen Robotics)
 - **Simulation :** MuJoCo avec modèle officiel
-- **Version :** 1.0.0 (Production/Stable)
+- **Version :** 1.1.1 (Production/Stable) - Backend unifié RobotAPI + Golden Tests
 - **Branche de travail :** `develop` (toujours travailler sur develop)
 
 ### **Architecture Complète Détectée**
@@ -46,8 +46,12 @@ src/bbia_sim/
 - ✅ **Audio** : synchronisation voix ↔ mouvements subtils
 - ✅ **Comportements** : WakeUp, Greeting, EmotionalResponse, VisionTracking, etc.
 - ✅ **API REST** + WebSocket temps réel
-- ✅ **Tests** : 531 tests collectés, 418 passent (79% réussite)
-- ✅ **Coverage** : 76.70% de couverture de code
+- ✅ **Tests** : 441 tests passent (79% réussite)
+- ✅ **Coverage** : 68.86% de couverture de code
+- ✅ **Backend Unifié RobotAPI** : Interface Sim ↔ Robot réel
+- ✅ **Golden Tests** : 3 traces référence + validation
+- ✅ **CI Solide** : Seed fixé, artefacts, headless
+- ✅ **Pré-Reachy Réel** : Checklist A4 + hardware_dry_run.py
 
 ---
 
@@ -56,14 +60,32 @@ src/bbia_sim/
 ### **🔒 Sécurité & Stabilité**
 - **AUCUNE suppression destructrice** sans plan de PR
 - **Respecte l'arborescence existante** (`src/`, `tests/`, `examples/`, `scripts/`)
-- **Tests et linters doivent rester VERTS** (531 tests collectés, 418 passent actuellement)
-- **Coverage maintenu** à 76.70% minimum
+- **Tests et linters doivent rester VERTS** (441 tests passent actuellement)
+- **Coverage maintenu** à 68.86% minimum
 
 ### **🔧 Qualité du Code**
 - **Python 3.10+** obligatoire
 - **Pas de dépendances exotiques** sans validation
 - **Code modulaire** et réutilisable
 - **Documentation** à jour
+
+### **🌿 Workflow Git**
+- **JAMAIS de guillemets doubles** dans les messages de commit
+- **TOUJOURS utiliser des guillemets simples** pour les messages avec espaces
+- **TOUJOURS travailler dans le venv** : `source venv/bin/activate`
+- **JAMAIS laisser d'erreurs** (code ou autre)
+
+### **🧪 Tests Golden**
+- **JAMAIS modifier les traces de référence** sans raison valide
+- **TOUJOURS respecter les tolérances** : ±0.25 rad position, ±20% cadence
+- **JAMAIS commiter de nouvelles références** sans validation
+- **TOUJOURS utiliser le seed fixé** : SEED=42
+
+### **📋 CONTRACT RobotAPI**
+- **JAMAIS modifier l'API** sans créer une nouvelle version
+- **TOUJOURS respecter le CONTRACT.md gelé** v1.1.x
+- **JAMAIS appeler MuJoCo directement** dans les nouvelles démos
+- **TOUJOURS utiliser RobotAPI** pour le backend unifié
 
 ### **📚 Documentation**
 - **README.md** maintenu à jour

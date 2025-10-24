@@ -1,10 +1,32 @@
 # 🎉 BBIA-REACHY-SIM v1.1.0 - RÉCAPITULATIF COMPLET
 
 **Date** : Octobre 2025  
-**Version** : 1.1.0 - Backend unifié RobotAPI  
+**Version** : 1.1.1 - Backend unifié RobotAPI + Golden Tests  
 **Statut** : ✅ **PRODUCTION READY**
 
 ---
+
+## 🚀 **NOUVELLES FONCTIONNALITÉS v1.1.1**
+
+### **✅ Backend Unifié RobotAPI**
+- **Interface unifiée** : Même code pour simulation et robot réel
+- **CONTRACT.md gelé** : API stable v1.1.x
+- **Switch facile** : `--backend mujoco` ou `--backend reachy`
+
+### **✅ Golden Tests**
+- **3 traces référence** : happy_mujoco.jsonl, lookat_mujoco.jsonl, wakeup_mujoco.jsonl
+- **Validation automatique** : Tolérances ±0.25 rad position, ±20% cadence
+- **Non-régression** : Prévention des "faux positifs"
+
+### **✅ CI Solide**
+- **Seed fixé** : SEED=42 pour reproductibilité
+- **Artefacts** : Upload automatique en cas d'échec
+- **Headless** : MuJoCo_GL=egl pour stabilité
+
+### **✅ Pré-Reachy Réel**
+- **Checklist A4** : `docs/PRET_REACHY_A4.md`
+- **hardware_dry_run.py** : Validation hardware complète
+- **Latence cible** : <40ms set→read
 
 ## 🎯 **POURQUOI TU NE VOIS PAS LA 3D ?**
 

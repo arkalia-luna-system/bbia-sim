@@ -15,6 +15,9 @@
 ### 🧪 **Scripts de Test**
 - **`test_unity_setup.sh`** - Test de la configuration Unity
 - **`fix_unity_warnings.sh`** - Correction des avertissements Unity
+- **`hardware_dry_run.py`** - Validation hardware Reachy réel
+- **`record_trace.py`** - Enregistrement traces golden
+- **`validate_trace.py`** - Validation traces contre référence
 
 ---
 
@@ -30,6 +33,48 @@
 - Option 7 : Tester la configuration Unity
 - Option 8 : Corriger les avertissements Unity
 - Option 10 : Installer dépôts GitHub
+
+### 🧪 **Scripts de Validation**
+
+#### **Hardware Dry Run**
+```bash
+# Test hardware complet (10s)
+python scripts/hardware_dry_run.py --duration 10
+
+# Test joint spécifique
+python scripts/hardware_dry_run.py --joint yaw_body --duration 5
+```
+
+**Résultat attendu** :
+```
+✅ Robot Reachy connecté avec succès
+✅ Tous les joints de test sont disponibles
+✅ Limite d'amplitude respectée
+✅ Joint interdit correctement rejeté
+⏱️ Latence moyenne: 0.0ms
+✅ Latence cible atteinte (<40ms)
+🎉 Hardware dry run réussi !
+```
+
+#### **Golden Tests**
+```bash
+# Enregistrer une trace de référence
+python scripts/record_trace.py --emotion happy --duration 5 --out artifacts/golden/happy_mujoco.jsonl
+
+# Valider une trace contre référence
+python scripts/validate_trace.py --ref artifacts/golden/happy_mujoco.jsonl --cur current_trace.jsonl
+```
+
+**Résultat attendu** :
+```
+✅ Validation réussie
+📊 Métriques:
+   • Max abs qpos err: 0.1234
+   • Ref hz: 60.0
+   • Cur hz: 59.8
+   • Diff rate percent: 0.3
+   • Frames compared: 300
+```
 
 ### 🤖 **Lancement Robot 3D**
 ```bash

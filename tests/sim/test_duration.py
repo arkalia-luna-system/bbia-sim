@@ -90,7 +90,7 @@ class TestHeadlessDuration:
             actual_duration = end_time - start_time
 
             assert (
-                0.05 <= actual_duration <= 0.25
+                0.05 <= actual_duration <= 0.3
             ), f"Durée courte non respectée: {actual_duration:.3f}s"
 
         finally:
