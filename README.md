@@ -30,7 +30,13 @@ Ce projet fournit une simulation **parfaitement fidèle** du robot Reachy Mini d
 
 ### Voir le robot en 3D (FONCTIONNEL)
 ```bash
-# 🎯 DÉMO CORRIGÉE - Version stable et paramétrable (RECOMMANDÉE)
+# 🎯 DÉMOS VERTICALES BBIA - Intégration complète (RECOMMANDÉES)
+python examples/demo_emotion_ok.py --headless --duration 5 --emotion happy --intensity 0.8  # Émotion → Pose
+python examples/demo_voice_ok.py --headless --duration 5 --command "regarde-moi"  # Voix → Action
+python examples/demo_vision_ok.py --headless --duration 10 --target-speed 0.02  # Vision → Suivi
+python examples/demo_behavior_ok.py --headless --duration 8 --behavior wake_up  # Comportement → Scénario
+
+# 🎯 DÉMO CORRIGÉE - Version stable et paramétrable
 python examples/demo_viewer_bbia_corrected.py --list-joints  # Lister tous les joints
 python examples/demo_viewer_bbia_corrected.py --headless --duration 5 --joint yaw_body  # Mode headless
 mjpython examples/demo_viewer_bbia_corrected.py --duration 10 --joint yaw_body  # Mode graphique
@@ -40,9 +46,6 @@ mjpython examples/demo_robot_correct.py
 
 # Test des joints sûrs uniquement
 mjpython examples/test_safe_joints.py
-
-# Version paramétrable avec yaw_body (rotation du corps)
-mjpython examples/demo_viewer_bbia_simple.py --joint yaw_body --duration 10 --frequency 0.5 --amplitude 0.3
 ```
 
 ### ⚠️ RÈGLES DE SÉCURITÉ CRITIQUES
@@ -52,7 +55,20 @@ mjpython examples/demo_viewer_bbia_simple.py --joint yaw_body --duration 10 --fr
 - **❌ JAMAIS animer** : `left_antenna`, `right_antenna`, `passive_*`
 - **❌ JAMAIS dépasser** : 0.3 rad d'amplitude
 
+### 🎯 Vertical Slices BBIA (NOUVEAU)
+```bash
+# Tests automatiques des vertical slices
+python -m pytest tests/test_vertical_slices.py -v
+
+# Démos avec différentes options
+python examples/demo_emotion_ok.py --emotion sad --intensity 0.6 --duration 3
+python examples/demo_voice_ok.py --command "tourne à gauche" --speak
+python examples/demo_vision_ok.py --tracking-gain 0.8 --target-speed 0.05
+python examples/demo_behavior_ok.py --behavior greeting --intensity 1.2
+```
+
 ### 📋 Documentation Complète
+- **Vertical Slices** : `docs/audit/VERTICAL_SLICES_ACCOMPLIS.md`
 - **Audit 3D** : `docs/audit/AUDIT_3D_BBIA.md`
 - **Audit Complet** : `docs/audit/AUDIT_3D_BBIA_COMPLET.md`
 - **Résultats** : `docs/audit/RESULTATS_AUDIT_3D_BBIA.md`
