@@ -18,6 +18,7 @@ class TestMuJoCoSimulator:
         """Test initialisation avec modèle valide."""
         # Mock des objets MuJoCo
         mock_model = Mock()
+        mock_model.nu = 7  # Nombre d'actuateurs
         mock_data = Mock()
         mock_mujoco.MjModel.from_xml_path.return_value = mock_model
         mock_mujoco.MjData.return_value = mock_data
@@ -70,6 +71,7 @@ class TestMuJoCoSimulator:
         """Test lancement simulation headless."""
         # Mock setup
         mock_model = Mock()
+        mock_model.nu = 7  # Nombre d'actuateurs
         mock_data = Mock()
         mock_mujoco.MjModel.from_xml_path.return_value = mock_model
         mock_mujoco.MjData.return_value = mock_data
@@ -115,6 +117,7 @@ class TestMuJoCoSimulator:
         """Test gestion erreur macOS pour simulation graphique."""
         # Mock setup
         mock_model = Mock()
+        mock_model.nu = 7  # Nombre d'actuateurs
         mock_data = Mock()
         mock_mujoco.MjModel.from_xml_path.return_value = mock_model
         mock_mujoco.MjData.return_value = mock_data
@@ -152,6 +155,7 @@ class TestMuJoCoSimulator:
         """Test gestion autres erreurs pour simulation graphique."""
         # Mock setup
         mock_model = Mock()
+        mock_model.nu = 7  # Nombre d'actuateurs
         mock_data = Mock()
         mock_mujoco.MjModel.from_xml_path.return_value = mock_model
         mock_mujoco.MjData.return_value = mock_data
@@ -185,6 +189,7 @@ class TestMuJoCoSimulator:
         """Test simulation graphique."""
         # Mock setup
         mock_model = Mock()
+        mock_model.nu = 7  # Nombre d'actuateurs
         mock_data = Mock()
         mock_mujoco.MjModel.from_xml_path.return_value = mock_model
         mock_mujoco.MjData.return_value = mock_data
@@ -232,6 +237,7 @@ class TestMuJoCoSimulator:
         """Test simulation graphique sans viewer."""
         # Mock setup
         mock_model = Mock()
+        mock_model.nu = 7  # Nombre d'actuateurs
         mock_data = Mock()
         mock_mujoco.MjModel.from_xml_path.return_value = mock_model
         mock_mujoco.MjData.return_value = mock_data
@@ -265,6 +271,7 @@ class TestMuJoCoSimulator:
         """Test chargement de scène réussi."""
         # Mock setup
         mock_model = Mock()
+        mock_model.nu = 7  # Nombre d'actuateurs
         mock_data = Mock()
         mock_mujoco.MjModel.from_xml_path.return_value = mock_model
         mock_mujoco.MjData.return_value = mock_data
@@ -321,6 +328,7 @@ class TestMuJoCoSimulator:
         """Test chargement de scène inexistante."""
         # Mock setup
         mock_model = Mock()
+        mock_model.nu = 7  # Nombre d'actuateurs
         mock_data = Mock()
         mock_mujoco.MjModel.from_xml_path.return_value = mock_model
         mock_mujoco.MjData.return_value = mock_data
@@ -353,6 +361,7 @@ class TestMuJoCoSimulator:
         """Test chargement de scène avec erreur fatale."""
         # Mock setup
         mock_model = Mock()
+        mock_model.nu = 7  # Nombre d'actuateurs
         mock_data = Mock()
 
         # Créer une exception FatalError réelle
@@ -407,6 +416,7 @@ class TestMuJoCoSimulator:
         """Test récupération état robot."""
         # Mock setup
         mock_model = Mock()
+        mock_model.nu = 7  # Nombre d'actuateurs
         mock_data = Mock()
         mock_mujoco.MjModel.from_xml_path.return_value = mock_model
         mock_mujoco.MjData.return_value = mock_data
@@ -435,7 +445,10 @@ class TestMuJoCoSimulator:
         mock_joint3 = Mock()
         mock_joint3.name = "joint3"
         mock_joint3.id = 2
-        mock_model.joint.side_effect = [mock_joint1, mock_joint2, mock_joint3]
+        mock_model.joint.side_effect = lambda name: next(
+            (j for j in [mock_joint1, mock_joint2, mock_joint3] if j.name == name),
+            mock_joint1,
+        )
 
         with tempfile.NamedTemporaryFile(mode="w", suffix=".xml", delete=False) as f:
             f.write(
@@ -472,6 +485,7 @@ class TestMuJoCoSimulator:
         """Test définition position articulation."""
         # Mock setup
         mock_model = Mock()
+        mock_model.nu = 7  # Nombre d'actuateurs
         mock_data = Mock()
         mock_mujoco.MjModel.from_xml_path.return_value = mock_model
         mock_mujoco.MjData.return_value = mock_data
@@ -519,6 +533,7 @@ class TestMuJoCoSimulator:
         """Test clamp des angles hors limites."""
         # Mock setup
         mock_model = Mock()
+        mock_model.nu = 7  # Nombre d'actuateurs
         mock_data = Mock()
         mock_mujoco.MjModel.from_xml_path.return_value = mock_model
         mock_mujoco.MjData.return_value = mock_data
@@ -572,6 +587,7 @@ class TestMuJoCoSimulator:
         """Test définition position avec joint inexistant."""
         # Mock setup
         mock_model = Mock()
+        mock_model.nu = 7  # Nombre d'actuateurs
         mock_data = Mock()
         mock_mujoco.MjModel.from_xml_path.return_value = mock_model
         mock_mujoco.MjData.return_value = mock_data
@@ -605,6 +621,7 @@ class TestMuJoCoSimulator:
         """Test récupération position articulation."""
         # Mock setup
         mock_model = Mock()
+        mock_model.nu = 7  # Nombre d'actuateurs
         mock_data = Mock()
         mock_mujoco.MjModel.from_xml_path.return_value = mock_model
         mock_mujoco.MjData.return_value = mock_data
@@ -643,6 +660,7 @@ class TestMuJoCoSimulator:
         """Test récupération position avec joint inexistant."""
         # Mock setup
         mock_model = Mock()
+        mock_model.nu = 7  # Nombre d'actuateurs
         mock_data = Mock()
         mock_mujoco.MjModel.from_xml_path.return_value = mock_model
         mock_mujoco.MjData.return_value = mock_data
@@ -676,6 +694,7 @@ class TestMuJoCoSimulator:
         """Test récupération articulations disponibles."""
         # Mock setup
         mock_model = Mock()
+        mock_model.nu = 7  # Nombre d'actuateurs
         mock_data = Mock()
         mock_mujoco.MjModel.from_xml_path.return_value = mock_model
         mock_mujoco.MjData.return_value = mock_data
@@ -688,7 +707,10 @@ class TestMuJoCoSimulator:
         mock_joint2.name = "joint2"
         mock_joint3 = Mock()
         mock_joint3.name = "joint3"
-        mock_model.joint.side_effect = [mock_joint1, mock_joint2, mock_joint3]
+        mock_model.joint.side_effect = lambda name: next(
+            (j for j in [mock_joint1, mock_joint2, mock_joint3] if j.name == name),
+            mock_joint1,
+        )
 
         with tempfile.NamedTemporaryFile(mode="w", suffix=".xml", delete=False) as f:
             f.write(
@@ -722,6 +744,7 @@ class TestMuJoCoSimulator:
     def test_step_simulation(self, mock_mujoco):
         """Test step simulation."""
         mock_model = Mock()
+        mock_model.nu = 7  # Nombre d'actuateurs
         mock_data = Mock()
         mock_mujoco.MjModel.from_xml_path.return_value = mock_model
         mock_mujoco.MjData.return_value = mock_data
@@ -754,6 +777,7 @@ class TestMuJoCoSimulator:
         """Test fermeture avec viewer actif."""
         # Mock setup
         mock_model = Mock()
+        mock_model.nu = 7  # Nombre d'actuateurs
         mock_data = Mock()
         mock_mujoco.MjModel.from_xml_path.return_value = mock_model
         mock_mujoco.MjData.return_value = mock_data
@@ -792,6 +816,7 @@ class TestMuJoCoSimulator:
         """Test fermeture sans viewer."""
         # Mock setup
         mock_model = Mock()
+        mock_model.nu = 7  # Nombre d'actuateurs
         mock_data = Mock()
         mock_mujoco.MjModel.from_xml_path.return_value = mock_model
         mock_mujoco.MjData.return_value = mock_data

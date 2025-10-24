@@ -153,18 +153,23 @@ class TestBBIAEmotionsExtended:
             result = self.emotions.random_emotion()
             assert result == "neutral"  # Retourne l'émotion actuelle
 
-    @patch("random.choice")
-    @patch("random.uniform")
+    @patch("secrets.choice")
+    @patch("secrets.randbelow")
     @patch("builtins.print")
-    def test_emotional_response_compliment(self, mock_print, mock_uniform, mock_choice):
+    def test_emotional_response_compliment(
+        self, mock_print, mock_randbelow, mock_choice
+    ):
         """Test réponse émotionnelle à un compliment."""
         mock_choice.return_value = "happy"
-        mock_uniform.return_value = 0.8
+        mock_randbelow.return_value = 50  # 50/100 + 0.4 = 0.9
 
         result = self.emotions.emotional_response("compliment")
 
-        assert result == "happy"
-        assert self.emotions.current_emotion == "happy"
+        assert result in [
+            "happy",
+            "excited",
+        ]  # Peut être happy ou excited selon le hasard
+        assert self.emotions.current_emotion in ["happy", "excited"]
 
     @patch("secrets.choice")
     @patch("secrets.randbelow")

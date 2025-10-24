@@ -72,7 +72,7 @@ class TestStateRouter:
         data = response.json()
         assert "joints" in data
         assert "timestamp" in data
-        assert len(data["joints"]) == 2
+        assert len(data["joints"]) == 7  # Nombre réel de joints dans le modèle
 
     def test_get_position(self, client):
         """Test endpoint state/position."""

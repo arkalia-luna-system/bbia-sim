@@ -352,13 +352,18 @@ class TestBBIAVoiceExtended:
         # Devrait retourner la première voix Amélie trouvée
         assert voice_id == "com.apple.speech.voice.Amelie.1"
 
-    @patch("src.bbia_sim.bbia_voice.pyttsx3.init")
-    @patch("src.bbia_sim.bbia_voice.get_bbia_voice")
+    @patch("bbia_sim.bbia_voice.pyttsx3.init")
+    @patch("bbia_sim.bbia_voice.get_bbia_voice")
     def test_dire_texte_engine_properties(self, mock_get_voice, mock_init):
         """Test propriétés du moteur de synthèse."""
         mock_engine = MagicMock()
         mock_init.return_value = mock_engine
         mock_get_voice.return_value = "voice_id"
+
+        # Mock complet de l'engine
+        mock_engine.setProperty.return_value = None
+        mock_engine.say.return_value = None
+        mock_engine.runAndWait.return_value = None
 
         dire_texte("Test")
 
