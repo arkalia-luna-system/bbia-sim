@@ -8,7 +8,7 @@ import os
 import sys
 
 import pytest
-import requests
+import httpx
 
 # Ajouter le répertoire src au PYTHONPATH
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "src"))
@@ -40,12 +40,12 @@ class TestAPISimuRoundtrip:
 
         try:
             # Vérifier d'abord que l'API répond
-            health_response = requests.get(f"{base_url}/api/info", timeout=2)
+            health_response = httpx.get(f"{base_url}/api/info", timeout=2)
             if health_response.status_code != 200:
                 pytest.skip("API non disponible")
             for joint_test in test_joints:
                 # 1. POST : Définir la position
-                response = requests.post(
+                response = httpx.post(
                     f"{base_url}/api/motion/joints",
                     json=[joint_test],
                     headers=headers,
@@ -60,7 +60,7 @@ class TestAPISimuRoundtrip:
                     assert data["success_count"] == 1
 
                     # 2. GET : Récupérer la position
-                    response = requests.get(
+                    response = httpx.get(
                         f"{base_url}/api/state/joints", headers=headers, timeout=5
                     )
                     assert response.status_code == 200
@@ -75,7 +75,7 @@ class TestAPISimuRoundtrip:
                         f"Position {joint_name}: attendu {expected_position}, "
                         f"obtenu {actual_position}"
                     )
-        except requests.exceptions.RequestException:
+        except httpx.RequestError:
             # API non disponible, test réussi car c'est attendu en e2e
             pass
 
@@ -94,7 +94,7 @@ class TestAPISimuRoundtrip:
         ]
 
         try:
-            response = requests.post(
+            response = httpx.post(
                 f"{base_url}/api/motion/joints", json=joints, headers=headers, timeout=5
             )
             # Accepter différents codes selon l'état de l'API
@@ -106,7 +106,7 @@ class TestAPISimuRoundtrip:
                 assert data["success_count"] == len(joints)
 
                 # Vérifier toutes les positions
-                response = requests.get(
+                response = httpx.get(
                     f"{base_url}/api/state/joints", headers=headers, timeout=5
                 )
                 assert response.status_code == 200
@@ -121,7 +121,7 @@ class TestAPISimuRoundtrip:
                         f"Position {joint_name}: attendu {expected_position}, "
                         f"obtenu {actual_position}"
                     )
-        except requests.exceptions.RequestException:
+        except httpx.RequestError:
             # API non disponible, test réussi car c'est attendu en e2e
             pass
 
@@ -138,7 +138,7 @@ class TestAPISimuRoundtrip:
         ]
 
         try:
-            response = requests.post(
+            response = httpx.post(
                 f"{base_url}/api/motion/joints", json=joints, headers=headers, timeout=5
             )
             # Accepter différents codes selon l'état de l'API
@@ -147,7 +147,7 @@ class TestAPISimuRoundtrip:
             if response.status_code == 422:
                 data = response.json()
                 assert "detail" in data
-        except requests.exceptions.RequestException:
+        except httpx.RequestError:
             # API non disponible, test réussi car c'est attendu en e2e
             pass
 
@@ -163,7 +163,7 @@ class TestAPISimuRoundtrip:
         ]
 
         try:
-            response = requests.post(
+            response = httpx.post(
                 f"{base_url}/api/motion/joints", json=joints, headers=headers, timeout=5
             )
             # Accepter différents codes selon l'état de l'API
@@ -172,7 +172,7 @@ class TestAPISimuRoundtrip:
             if response.status_code == 422:
                 data = response.json()
                 assert "non autorisée" in str(data)
-        except requests.exceptions.RequestException:
+        except httpx.RequestError:
             # API non disponible, test réussi car c'est attendu en e2e
             pass
 
@@ -184,7 +184,7 @@ class TestAPISimuRoundtrip:
 
         try:
             # Test /api/state/status
-            response = requests.get(
+            response = httpx.get(
                 f"{base_url}/api/state/status", headers=headers, timeout=5
             )
             # Accepter différents codes selon l'état de l'API
@@ -196,13 +196,13 @@ class TestAPISimuRoundtrip:
                 assert "timestamp" in data
 
             # Test /api/info
-            response = requests.get(f"{base_url}/api/info", headers=headers, timeout=5)
+            response = httpx.get(f"{base_url}/api/info", headers=headers, timeout=5)
             assert response.status_code in [200, 404, 500]
 
             if response.status_code == 200:
                 data = response.json()
                 assert data["name"] == "BBIA-SIM API"
                 assert data["robot"]["joints"] == 16  # 16 joints officiels
-        except requests.exceptions.RequestException:
+        except httpx.RequestError:
             # API non disponible, test réussi car c'est attendu en e2e
             pass
