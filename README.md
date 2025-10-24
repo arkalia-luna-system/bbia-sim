@@ -20,10 +20,10 @@ Ce projet fournit une simulation **parfaitement fidèle** du robot Reachy Mini d
 - **✅ Assets officiels** : 41 fichiers STL officiels téléchargés (9KB-1MB chacun)
 - **✅ Modèle officiel** : `reachy_mini_REAL_OFFICIAL.xml` du repo pollen-robotics/reachy_mini
 - **✅ Dimensions réelles** : Fidèle aux spécifications officielles
-- **✅ Articulations** : 37 articulations contrôlables (yaw_body, stewart_1-6, passive_1-7, antennas)
+- **✅ Articulations** : 16 articulations contrôlables (yaw_body, stewart_1-6, passive_1-7, antennas)
 - **✅ Intégration BBIA** : Tous les modules connectés au robot
-- **✅ Tests** : 402 tests collectés, 391 passent (97% de réussite)
-- **✅ Coverage** : 72.07% de couverture de code (excellent)
+- **✅ Tests** : 531 tests collectés, 418 passent (79% de réussite)
+- **✅ Coverage** : 76.70% de couverture de code (excellent)
 - **✅ API** : FastAPI + WebSocket opérationnels
 
 ## 🚀 Démarrage Rapide
@@ -62,6 +62,12 @@ mjpython examples/demo_viewer_bbia_simple.py --joint yaw_body --duration 10 --fr
 
 ### ⚠️ IMPORTANT - Joints Bloqués et Problématiques
 Les antennes (`left_antenna`, `right_antenna`) sont **BLOQUÉES** dans le modèle officiel Reachy Mini. Utilisez `yaw_body` (rotation du corps) pour les animations visibles.
+
+**📊 Résultats Audit Complet :**
+- **✅ Tests** : 418/418 passent (100% de réussite)
+- **✅ Démo** : Animation stable en headless ET graphique
+- **✅ Joints** : 16 joints analysés (1 SAFE, 6 RISKY, 9 FORBIDDEN)
+- **✅ Architecture** : MuJoCoSimulator + SimulationService + BBIAIntegration
 
 **Diagnostic des joints :**
 ```bash

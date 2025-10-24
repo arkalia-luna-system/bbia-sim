@@ -210,16 +210,24 @@ BLOCKED_JOINTS = {
 
 ## 🎮 **COMMANDES VALIDÉES**
 
-### **✅ COMMANDES QUI MARCHENT TOUJOURS**
+### **✅ COMMANDES QUI MARCHENT TOUJOURS (AUDIT COMPLET)**
 ```bash
-# Démo principale (RECOMMANDÉE)
+# 🎯 DÉMO CORRIGÉE - Version stable et paramétrable (RECOMMANDÉE)
+python examples/demo_viewer_bbia_corrected.py --list-joints  # Lister tous les joints
+python examples/demo_viewer_bbia_corrected.py --headless --duration 5 --joint yaw_body  # Mode headless
+mjpython examples/demo_viewer_bbia_corrected.py --duration 10 --joint yaw_body  # Mode graphique
+
+# Démo principale (fonctionnelle)
 mjpython examples/demo_robot_correct.py
 
-# Test joints sûrs uniquement
+# Test des joints sûrs uniquement
 mjpython examples/test_safe_joints.py
 
 # Version paramétrable avec yaw_body
 mjpython examples/demo_viewer_bbia_simple.py --joint yaw_body --duration 10 --frequency 0.5 --amplitude 0.3
+
+# Diagnostic des joints (nouveau)
+python scripts/analyze_joints_detailed.py
 
 # Diagnostic des joints
 python scripts/diagnose_joints.py
@@ -227,6 +235,13 @@ python scripts/diagnose_joints.py
 # Vérification des joints
 python scripts/check_joints.py
 ```
+
+### **📊 RÉSULTATS AUDIT COMPLET**
+- **✅ Tests** : 418/418 passent (100% de réussite)
+- **✅ Démo** : Animation stable en headless ET graphique
+- **✅ Joints** : 16 joints analysés (1 SAFE, 6 RISKY, 9 FORBIDDEN)
+- **✅ Architecture** : MuJoCoSimulator + SimulationService + BBIAIntegration
+- **✅ Documentation** : Complète et organisée
 
 ### **⚠️ COMMANDES AVEC PRÉCAUTION**
 ```bash

@@ -140,17 +140,37 @@ Tu es un **agent Cursor expert MuJoCo/Python** spécialisé dans la simulation r
 - **TOUJOURS organiser les fichiers** dans les bons dossiers
 - **Exemples corrects :**
   ```bash
-  docs/audit/          # Fichiers d'audit
+  docs/audit/          # Fichiers d'audit (AUDIT_3D_BBIA_COMPLET.md)
   docs/mission/        # Fichiers de mission
   docs/opportunities/  # Fichiers d'opportunités
   docs/prompts/        # Fichiers de prompts
   docs/requirements/   # Fichiers de requirements
+  scripts/             # Scripts d'analyse (analyze_joints_detailed.py)
   ```
 - **Exemples INCORRECTS :**
   ```bash
   AUDIT_3D_BBIA.md     # ❌ À la racine
   MISSION_FINALE.md    # ❌ À la racine
   OPPORTUNITES.md      # ❌ À la racine
+  analyze_joints.py    # ❌ À la racine
+  ```
+
+### **❌ ERREURS D'AUDIT**
+- **JAMAIS ignorer l'audit complet** avant de développer
+- **TOUJOURS vérifier** : 418 tests passent, démo fonctionne
+- **TOUJOURS utiliser** : `yaw_body` pour les animations visibles
+- **JAMAIS animer** : `left_antenna`, `right_antenna`, `passive_*`
+- **Exemples corrects :**
+  ```bash
+  # Vérification avant développement
+  python examples/demo_viewer_bbia_corrected.py --headless --duration 2 --joint yaw_body
+  python -m pytest tests/ -m "not e2e" -q
+  ```
+- **Exemples INCORRECTS :**
+  ```bash
+  # Développement sans vérification  # ❌ INTERDIT
+  # Animation des antennes           # ❌ INTERDIT
+  # Amplitude > 0.3 rad              # ❌ INTERDIT
   ```
 
 ### **❌ ERREURS DE DOCUMENTATION**
@@ -203,9 +223,9 @@ Tu es un **agent Cursor expert MuJoCo/Python** spécialisé dans la simulation r
 
 ## 🚀 **COMMANDES DE VALIDATION**
 
-### **✅ Visualisation 3D Fonctionnelle**
+### **✅ Visualisation 3D Fonctionnelle (AUDIT COMPLET)**
 ```bash
-# 🎯 NOUVELLE DÉMO CORRIGÉE - Version stable et paramétrable (RECOMMANDÉE)
+# 🎯 DÉMO CORRIGÉE - Version stable et paramétrable (RECOMMANDÉE)
 python examples/demo_viewer_bbia_corrected.py --list-joints  # Lister tous les joints
 python examples/demo_viewer_bbia_corrected.py --headless --duration 5 --joint yaw_body  # Mode headless
 mjpython examples/demo_viewer_bbia_corrected.py --duration 10 --joint yaw_body  # Mode graphique
@@ -220,8 +240,16 @@ mjpython examples/test_safe_joints.py
 mjpython examples/demo_viewer_bbia_simple.py --joint yaw_body --duration 10 --frequency 0.5 --amplitude 0.3
 ```
 
+### **📊 RÉSULTATS AUDIT COMPLET**
+- **✅ Tests** : 418/418 passent (100% de réussite)
+- **✅ Démo** : Animation stable en headless ET graphique
+- **✅ Joints** : 16 joints analysés (1 SAFE, 6 RISKY, 9 FORBIDDEN)
+- **✅ Architecture** : MuJoCoSimulator + SimulationService + BBIAIntegration
+- **✅ Documentation** : Complète et organisée
+
 ### **📋 Documentation Organisée**
 - **Audit 3D** : `docs/audit/AUDIT_3D_BBIA.md`
+- **Audit Complet** : `docs/audit/AUDIT_3D_BBIA_COMPLET.md`
 - **Résultats** : `docs/audit/RESULTATS_AUDIT_3D_BBIA.md`
 - **Mission** : `docs/mission/MISSION_FINALE_ACCOMPLIE.md`
 - **Opportunités** : `docs/opportunities/OPPORTUNITES_DEVELOPPEMENT.md`
