@@ -103,8 +103,15 @@ class BBIAEmotions:
 
     def _display_emotion_transition(self, old_emotion: str, new_emotion: str):
         """Affiche la transition d'émotion."""
-        self.emotions[old_emotion]
-        self.emotions[new_emotion]
+        old_data = self.emotions[old_emotion]
+        new_data = self.emotions[new_emotion]
+
+        print(
+            f"🔄 Transition d'émotion : {old_data['color']} {old_emotion} → {new_data['color']} {new_emotion}"
+        )
+        print(f"📝 {old_data['description']} → {new_data['description']}")
+        print(f"🎭 Intensité : {self.emotion_intensity:.1f}")
+        print(f"⏰ {datetime.now().strftime('%H:%M:%S')}")
 
     def get_current_emotion(self) -> dict:
         """Retourne l'émotion actuelle avec ses détails."""

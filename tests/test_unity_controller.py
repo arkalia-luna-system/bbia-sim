@@ -269,7 +269,9 @@ class TestUnityReachyMiniController:
         with tempfile.TemporaryDirectory() as _:
             controller = UnityReachyMiniController()
             # Simuler une exception après quelques commandes normales, puis quit pour éviter la boucle infinie
-            with patch("builtins.input", side_effect=["help", Exception("Test error"), "quit"]):
+            with patch(
+                "builtins.input", side_effect=["help", Exception("Test error"), "quit"]
+            ):
                 with patch("builtins.print") as mock_print:
                     controller.interactive_mode()
             # Vérifier qu'un message d'erreur a été affiché

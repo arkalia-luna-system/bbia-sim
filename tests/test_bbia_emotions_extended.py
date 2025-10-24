@@ -131,13 +131,13 @@ class TestBBIAEmotionsExtended:
         history = self.emotions.get_emotion_history(0)
         assert len(history) == 2
 
-    @patch("random.choice")
-    @patch("random.uniform")
+    @patch("secrets.choice")
+    @patch("secrets.randbelow")
     @patch("builtins.print")
-    def test_random_emotion_success(self, mock_print, mock_uniform, mock_choice):
+    def test_random_emotion_success(self, mock_print, mock_randbelow, mock_choice):
         """Test émotion aléatoire réussie."""
         mock_choice.return_value = "happy"
-        mock_uniform.return_value = 0.7
+        mock_randbelow.return_value = 40  # 40/100 + 0.3 = 0.7
 
         result = self.emotions.random_emotion()
 
@@ -166,26 +166,26 @@ class TestBBIAEmotionsExtended:
         assert result == "happy"
         assert self.emotions.current_emotion == "happy"
 
-    @patch("random.choice")
-    @patch("random.uniform")
+    @patch("secrets.choice")
+    @patch("secrets.randbelow")
     @patch("builtins.print")
-    def test_emotional_response_insult(self, mock_print, mock_uniform, mock_choice):
+    def test_emotional_response_insult(self, mock_print, mock_randbelow, mock_choice):
         """Test réponse émotionnelle à une insulte."""
         mock_choice.return_value = "angry"
-        mock_uniform.return_value = 0.9
+        mock_randbelow.return_value = 50  # 50/100 + 0.4 = 0.9
 
         result = self.emotions.emotional_response("insult")
 
         assert result == "angry"
         assert self.emotions.current_emotion == "angry"
 
-    @patch("random.choice")
-    @patch("random.uniform")
+    @patch("secrets.choice")
+    @patch("secrets.randbelow")
     @patch("builtins.print")
-    def test_emotional_response_unknown(self, mock_print, mock_uniform, mock_choice):
+    def test_emotional_response_unknown(self, mock_print, mock_randbelow, mock_choice):
         """Test réponse émotionnelle à un stimulus inconnu."""
         mock_choice.return_value = "curious"
-        mock_uniform.return_value = 0.5
+        mock_randbelow.return_value = 10  # 10/100 + 0.4 = 0.5
 
         result = self.emotions.emotional_response("unknown_stimulus")
 

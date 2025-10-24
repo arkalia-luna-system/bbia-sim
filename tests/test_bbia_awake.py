@@ -26,16 +26,20 @@ STEPS = [
 def test_bbia_awake_sequence():
     """Test de la séquence de réveil BBIA."""
     # Chemin correct vers le script
-    script_path = os.path.join(os.path.dirname(__file__), "..", "src", "bbia_sim", "bbia_awake.py")
-    
+    script_path = os.path.join(
+        os.path.dirname(__file__), "..", "src", "bbia_sim", "bbia_awake.py"
+    )
+
     result = subprocess.run(
         [sys.executable, script_path], capture_output=True, text=True, timeout=30
     )
     output = result.stdout
-    
+
     # Vérifier que le script s'est exécuté sans erreur
-    assert result.returncode == 0, f"Script failed with return code {result.returncode}: {result.stderr}"
-    
+    assert (
+        result.returncode == 0
+    ), f"Script failed with return code {result.returncode}: {result.stderr}"
+
     # Vérifier que tous les steps sont présents
     success = True
     missing_steps = []
@@ -43,7 +47,7 @@ def test_bbia_awake_sequence():
         if step not in output:
             success = False
             missing_steps.append(step)
-    
+
     assert success, f"Steps manquants dans la séquence de réveil BBIA: {missing_steps}"
 
 

@@ -88,13 +88,13 @@ class TestBBIAModules:
         mock_engine = MagicMock()
         mock_init.return_value = mock_engine
         mock_get_voice.return_value = "test_voice_id"
-        
+
         # Mock complet de l'engine pour éviter les erreurs
         mock_engine.getProperty.return_value = "test_voice"
         mock_engine.setProperty.return_value = None
         mock_engine.say.return_value = None
         mock_engine.runAndWait.return_value = None
-        
+
         # Mock des voix pour éviter l'erreur AttributeError
         mock_voice = MagicMock()
         mock_voice.name = "test_voice"
