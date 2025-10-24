@@ -173,10 +173,16 @@ class MuJoCoSimulator:
         try:
             joint_id = self.model.joint(joint_name).id
 
-            # Récupération des limites du joint
-            joint_range = self.model.joint_range[joint_id]
-            min_limit = joint_range[0]
-            max_limit = joint_range[1]
+            # Récupération des limites du joint (API MuJoCo moderne)
+            try:
+                joint_range = self.model.joint_range[joint_id]
+                min_limit = joint_range[0]
+                max_limit = joint_range[1]
+            except (AttributeError, IndexError):
+                # Fallback si joint_range n'est pas disponible
+                min_limit = -3.14  # -π
+                max_limit = 3.14   # +π
+                logger.debug(f"Limites par défaut pour {joint_name}: [{min_limit}, {max_limit}]")
 
             # Clamp de l'angle dans les limites
             clamped_angle = max(min_limit, min(max_limit, angle))
