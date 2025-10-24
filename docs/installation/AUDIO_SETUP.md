@@ -1,33 +1,77 @@
-# Installation des dépendances audio pour BBIA-SIM
+# 🎵 Installation Audio pour BBIA-SIM
 
-## Installation standard (sans audio)
+## 🏗️ Architecture Audio BBIA
 
-```bash
-pip install -e .
+```mermaid
+graph TB
+    subgraph "Hardware Audio"
+        MICROPHONE[Microphone<br/>Entrée audio]
+        SPEAKER[Haut-parleur<br/>Sortie audio]
+        SOUNDCARD[Carte son<br/>Interface système]
+    end
+    
+    subgraph "Système Audio"
+        PORTAUDIO[PortAudio<br/>API audio]
+        ALSA[ALSA<br/>Linux audio]
+        CORE[Core Audio<br/>macOS audio]
+        DIRECTX[DirectX<br/>Windows audio]
+    end
+    
+    subgraph "BBIA Audio Stack"
+        PYTHON[Python Audio<br/>pyaudio, librosa]
+        RECORD[Enregistrement<br/>Audio capture]
+        PLAY[Lecture<br/>Audio playback]
+        PROCESS[Traitement<br/>Signal processing]
+    end
+    
+    MICROPHONE --> SOUNDCARD
+    SPEAKER --> SOUNDCARD
+    SOUNDCARD --> PORTAUDIO
+    
+    PORTAUDIO --> ALSA
+    PORTAUDIO --> CORE
+    PORTAUDIO --> DIRECTX
+    
+    ALSA --> PYTHON
+    CORE --> PYTHON
+    DIRECTX --> PYTHON
+    
+    PYTHON --> RECORD
+    PYTHON --> PLAY
+    PYTHON --> PROCESS
 ```
 
-## Installation avec fonctionnalités audio complètes
+## 🔧 Workflow d'Installation Audio
 
-### Prérequis système
-
-**Ubuntu/Debian :**
-```bash
-sudo apt-get update
-sudo apt-get install portaudio19-dev python3-dev
+```mermaid
+flowchart TD
+    START[Début installation] --> OS{Système d'exploitation ?}
+    
+    OS -->|Linux| LINUX[Ubuntu/Debian<br/>sudo apt-get install portaudio19-dev]
+    OS -->|macOS| MACOS[macOS<br/>brew install portaudio]
+    OS -->|Windows| WINDOWS[Windows<br/>Télécharger PortAudio]
+    
+    LINUX --> PYTHON[Installation Python<br/>pip install pyaudio]
+    MACOS --> PYTHON
+    WINDOWS --> PYTHON
+    
+    PYTHON --> TEST[Test audio<br/>python -c "import pyaudio"]
+    TEST --> WORK{Fonctionne ?}
+    WORK -->|Oui| SUCCESS[✅ Audio configuré]
+    WORK -->|Non| DEBUG[Débogage audio]
+    
+    DEBUG --> FIX[Corriger problèmes]
+    FIX --> TEST
 ```
 
-**macOS :**
-```bash
-brew install portaudio
+## 📊 Comparaison des Options d'Installation
+
+```mermaid
+pie title Options d'Installation Audio
+    "Installation standard" : 30
+    "Installation avec audio" : 50
+    "Installation complète" : 20
 ```
-
-**Windows :**
-Téléchargez PortAudio depuis https://www.portaudio.com/
-
-### Installation Python
-
-```bash
-# Option 1 : Via les dépendances optionnelles
 pip install -e .[audio]
 
 # Option 2 : Via le fichier requirements-audio.txt

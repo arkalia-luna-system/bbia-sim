@@ -30,7 +30,7 @@ class MuJoCoBackend(RobotAPI):
         self.viewer: Optional[mujoco.viewer.MjViewer] = None
         self.joint_name_to_id: dict[str, int] = {}
         self.step_count = 0
-        self.start_time = None
+        self.start_time: float = 0.0
 
     def connect(self) -> bool:
         """Connecte au simulateur MuJoCo."""
@@ -99,7 +99,8 @@ class MuJoCoBackend(RobotAPI):
 
         # Appliquer la position
         joint_id = self.joint_name_to_id[joint_name]
-        self.data.qpos[joint_id] = position
+        if self.data is not None:
+            self.data.qpos[joint_id] = position
 
         logger.debug(f"Joint {joint_name} → {position:.3f} rad")
         return True
@@ -113,7 +114,9 @@ class MuJoCoBackend(RobotAPI):
             return None
 
         joint_id = self.joint_name_to_id[joint_name]
-        return self.data.qpos[joint_id]
+        if self.data is not None:
+            return self.data.qpos[joint_id]
+        return None
 
     def step(self) -> bool:
         """Effectue un pas de simulation."""

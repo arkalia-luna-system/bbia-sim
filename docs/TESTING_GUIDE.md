@@ -11,23 +11,88 @@
 
 ## 🏗️ Structure des Tests
 
+```mermaid
+graph TB
+    subgraph "Tests Structure"
+        E2E[e2e/<br/>Tests end-to-end<br/>20 tests]
+        SIM[sim/<br/>Tests simulation<br/>7 tests]
+        WS[ws/<br/>Tests WebSocket<br/>3 tests]
+        BBIA[test_bbia_*.py<br/>Tests modules BBIA<br/>80+ tests]
+        DAEMON[test_daemon_*.py<br/>Tests daemon<br/>50+ tests]
+        WEBSOCKET[test_websocket_*.py<br/>Tests WebSocket<br/>30+ tests]
+        VERTICAL[test_vertical_slices.py<br/>Tests vertical slices<br/>9 tests]
+    end
+    
+    E2E --> API[test_api_simu_roundtrip.py]
+    E2E --> MODULES[test_bbia_modules_e2e.py]
+    E2E --> MOTION[test_motion_roundtrip.py]
+    E2E --> TELEMETRY[test_websocket_telemetry_e2e.py]
+    
+    SIM --> CLI[test_cli_help.py]
+    SIM --> DURATION[test_duration.py]
+    
+    WS --> RATE[test_telemetry_rate.py]
+    
+    BBIA --> AUDIO[test_bbia_audio.py]
+    BBIA --> BEHAVIOR[test_bbia_behavior.py]
+    BBIA --> EMOTIONS[test_bbia_emotions.py]
+    BBIA --> VISION[test_bbia_vision.py]
+    BBIA --> VOICE[test_bbia_voice.py]
+    
+    DAEMON --> CONFIG[test_daemon_config.py]
+    DAEMON --> MODELS[test_daemon_models.py]
+    DAEMON --> SIMULATION[test_daemon_simulation_service.py]
+    
+    WEBSOCKET --> CONNECTION[test_websocket_connection.py]
+    WEBSOCKET --> TELEMETRY_EXT[test_websocket_telemetry_extended.py]
+    
+    VERTICAL --> DEMO_EMOTION[test_demo_emotion_headless]
+    VERTICAL --> DEMO_VOICE[test_demo_voice_headless]
+    VERTICAL --> DEMO_VISION[test_demo_vision_headless]
+    VERTICAL --> DEMO_BEHAVIOR[test_demo_behavior_headless]
 ```
-tests/
-├── e2e/                           # Tests end-to-end (20 tests)
-│   ├── test_api_simu_roundtrip.py # Tests API ↔ Simulation
-│   ├── test_bbia_modules_e2e.py   # Tests modules BBIA complets
-│   ├── test_motion_roundtrip.py   # Tests mouvements robot
-│   └── test_websocket_telemetry_e2e.py # Tests WebSocket temps réel
-├── sim/                           # Tests simulation (7 tests)
-│   ├── test_cli_help.py          # Tests CLI et aide
-│   └── test_duration.py          # Tests durée simulation
-├── ws/                            # Tests WebSocket (3 tests)
-│   └── test_telemetry_rate.py    # Tests taux télémétrie
-├── test_bbia_*.py                # Tests modules BBIA (80+ tests)
-│   ├── test_bbia_audio.py        # Tests audio
-│   ├── test_bbia_audio_extended.py
-│   ├── test_bbia_awake.py        # Tests réveil
-│   ├── test_bbia_behavior.py     # Tests comportements
+
+## 📊 Coverage par Module
+
+```mermaid
+pie title Coverage par Module
+    "bbia_audio.py" : 87.76
+    "bbia_vision.py" : 88.52
+    "daemon/config.py" : 100
+    "daemon/models.py" : 95.35
+    "daemon/simulation_service.py" : 89.83
+    "daemon/ws/__init__.py" : 96.40
+    "daemon/ws/telemetry.py" : 78.38
+    "sim/joints.py" : 72.22
+    "sim/simulator.py" : 99.29
+    "unity_reachy_controller.py" : 81.68
+    "Autres" : 23.07
+```
+
+## 🧪 Types de Tests
+
+```mermaid
+graph LR
+    subgraph "Tests Unitaires"
+        UNIT[Tests unitaires<br/>Fonctions isolées<br/>Mocking]
+    end
+    
+    subgraph "Tests d'Intégration"
+        INTEGRATION[Tests d'intégration<br/>Modules ensemble<br/>API + Simulation]
+    end
+    
+    subgraph "Tests End-to-End"
+        E2E[Tests E2E<br/>Scénarios complets<br/>CLI → API → Simulation]
+    end
+    
+    subgraph "Tests de Performance"
+        PERF[Tests performance<br/>Temps d'exécution<br/>Mémoire]
+    end
+    
+    UNIT --> INTEGRATION
+    INTEGRATION --> E2E
+    E2E --> PERF
+```
 │   ├── test_bbia_emotions.py     # Tests émotions
 │   ├── test_bbia_emotions_extended.py
 │   ├── test_bbia_vision.py       # Tests vision

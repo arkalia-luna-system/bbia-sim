@@ -24,10 +24,68 @@ Implémentation complète du mode 3D MuJoCo avec viewer graphique, fix critique 
 - **Validation** : Fonctions pour position/vitesse dans les plages
 - **Cohérence** : API alignée avec simulation MuJoCo
 
-### 🛠️ Améliorations techniques
+## 🏗️ Architecture de la Version 0.2.0
 
-#### Qualité et tests
-- **Tests complets** : Durée, CLI, joints, WebSocket
+```mermaid
+graph TB
+    subgraph "Mode 3D MuJoCo"
+        VIEWER[Viewer Graphique<br/>Rendu 3D réaliste]
+        MESHES[Meshes STL<br/>Assets 3D complets]
+        MATERIALS[Matériaux<br/>Couleurs réalistes]
+        MULTIOS[Multi-OS<br/>Linux/macOS]
+    end
+    
+    subgraph "Fix Critique Durée"
+        MONOTONIC[time.monotonic()<br/>Chronométrage précis]
+        VERIFICATION[Vérification après step<br/>Contrôle strict]
+        TOLERANCE[Tolérance ±0.05s<br/>Précision garantie]
+    end
+    
+    subgraph "Spécifications Joints"
+        JOINTSPEC[JointSpec dataclass<br/>Limites centralisées]
+        VALIDATION[Validation position/vitesse<br/>API cohérente]
+        MAPPING[Mapping MuJoCo<br/>Alignement simulation]
+    end
+    
+    VIEWER --> MESHES
+    MESHES --> MATERIALS
+    MATERIALS --> MULTIOS
+    
+    MONOTONIC --> VERIFICATION
+    VERIFICATION --> TOLERANCE
+    
+    JOINTSPEC --> VALIDATION
+    VALIDATION --> MAPPING
+```
+
+## 📊 Améliorations Qualité
+
+```mermaid
+pie title Répartition des Améliorations
+    "Tests complets" : 30
+    "Linting/Formatage" : 25
+    "Documentation" : 20
+    "Performance" : 15
+    "Sécurité" : 10
+```
+
+## 🔄 Workflow de Release
+
+```mermaid
+sequenceDiagram
+    participant DEV as Développeur
+    participant TEST as Tests
+    participant LINT as Linters
+    participant BUILD as Build
+    participant RELEASE as Release
+    
+    DEV->>TEST: Tests complets
+    TEST->>LINT: Validation qualité
+    LINT->>BUILD: Build automatique
+    BUILD->>RELEASE: Publication v0.2.0
+    
+    Note over DEV,RELEASE: Cycle de qualité complet
+```
 - **CI robuste** : Skip viewer tests en environnement headless
 - **Validation** : Joints, télémétrie, format des messages
 

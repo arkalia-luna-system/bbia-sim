@@ -20,14 +20,81 @@
 
 ---
 
-## 🎯 Solution Complète Créée
+## 🏗️ Architecture des Dépôts BBIA
 
-### 📦 Script d'Installation Automatique
-```bash
-./install_all_reachy_repos.sh
+```mermaid
+graph TB
+    subgraph "État Actuel"
+        STRUCTURE[Structure BBIA<br/>Complète]
+        SDK[SDK Principal<br/>reachy-sdk]
+        UNITY[Simulation Unity<br/>Configurée]
+        SCRIPTS[Scripts Installation<br/>Automatisés]
+        MENU[Menu Interactif<br/>Mis à jour]
+        DOCS[Documentation<br/>Complète]
+    end
+    
+    subgraph "Dépôts Manquants"
+        GITHUB[Dépôts GitHub<br/>Pollen Robotics]
+        VISION[Outils Vision<br/>Computer Vision]
+        EMOTIONS[Détection Émotions<br/>IA avancée]
+        AUDIO[Serveur Audio<br/>Reconnaissance vocale]
+        BEHAVIORS[Comportements<br/>Pré-programmés]
+        DASHBOARD[Interface Web<br/>Contrôle]
+    end
+    
+    subgraph "Solution Automatique"
+        INSTALL[Script Installation<br/>install_all_reachy_repos.sh]
+        AUTO[Installation Auto<br/>Tous les dépôts]
+        INTEGRATION[Intégration BBIA<br/>Fonctionnalités complètes]
+    end
+    
+    STRUCTURE --> INSTALL
+    SDK --> INSTALL
+    UNITY --> INSTALL
+    
+    INSTALL --> AUTO
+    AUTO --> INTEGRATION
+    
+    INTEGRATION --> GITHUB
+    INTEGRATION --> VISION
+    INTEGRATION --> EMOTIONS
+    INTEGRATION --> AUDIO
+    INTEGRATION --> BEHAVIORS
+    INTEGRATION --> DASHBOARD
 ```
 
-**Ce script installe automatiquement :**
+## 📊 Comparaison Avant/Après
+
+```mermaid
+graph LR
+    subgraph "Avant Installation"
+        BEFORE[❌ Dépôts manquants<br/>❌ Fonctionnalités limitées<br/>❌ Intégration incomplète]
+    end
+    
+    subgraph "Après Installation"
+        AFTER[✅ Tous les dépôts<br/>✅ Fonctionnalités complètes<br/>✅ Intégration BBIA parfaite]
+    end
+    
+    BEFORE -.->|Script automatique| AFTER
+```
+
+## 🔄 Workflow d'Installation
+
+```mermaid
+sequenceDiagram
+    participant USER as Utilisateur
+    participant SCRIPT as Script Installation
+    participant GITHUB as GitHub
+    participant BBIA as BBIA System
+    
+    USER->>SCRIPT: ./install_all_reachy_repos.sh
+    SCRIPT->>GITHUB: Cloner tous les dépôts
+    GITHUB->>SCRIPT: Télécharger sources
+    SCRIPT->>BBIA: Intégrer fonctionnalités
+    BBIA->>USER: BBIA complet et fonctionnel
+    
+    Note over USER,BBIA: Installation automatique complète
+```
 - 📚 `reachy-docs` : Documentation officielle
 - 👁️ `pollen-vision` : Vision par ordinateur
 - 🎭 `emotion_inference_hub` : Détection d'émotions

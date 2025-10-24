@@ -132,73 +132,74 @@ reachy-bbia-project/
 
 ---
 
-## 🧠 Architecture BBIA pour Reachy Mini Wireless
+## 🏗️ Architecture BBIA pour Reachy Mini
 
-### 1. 🎭 Système d'Émotions
-```python
-# Émotions de base
-EMOTIONS = {
-    'neutral': {'color': 'white', 'movements': 'calm'},
-    'happy': {'color': 'green', 'movements': 'energetic'},
-    'sad': {'color': 'blue', 'movements': 'slow'},
-    'angry': {'color': 'red', 'movements': 'aggressive'},
-    'curious': {'color': 'yellow', 'movements': 'attentive'},
-    'excited': {'color': 'orange', 'movements': 'bouncy'}
-}
+```mermaid
+graph TB
+    subgraph "Reachy Mini Hardware"
+        RASPBERRY[Raspberry Pi 5<br/>Cerveau embarqué]
+        CAMERA[Caméra<br/>Grand angle]
+        MICROPHONES[4 Microphones<br/>Reconnaissance vocale]
+        SPEAKER[Haut-parleur 5W<br/>Synthèse vocale]
+        MOTORS[Moteurs<br/>6 DOF tête + corps]
+        ANTENNAS[2 Antennes<br/>Expressivité]
+    end
+    
+    subgraph "BBIA Software Stack"
+        EMOTIONS[Module Émotions<br/>8 émotions]
+        VISION[Module Vision<br/>Reconnaissance objets]
+        AUDIO[Module Audio<br/>Enregistrement]
+        VOICE[Module Voix<br/>TTS/STT]
+        BEHAVIOR[Module Comportements<br/>Actions complexes]
+    end
+    
+    subgraph "Integration Layer"
+        SDK[Reachy SDK<br/>Contrôle hardware]
+        API[BBIA API<br/>Interface unifiée]
+    end
+    
+    RASPBERRY --> SDK
+    CAMERA --> VISION
+    MICROPHONES --> AUDIO
+    SPEAKER --> VOICE
+    MOTORS --> SDK
+    ANTENNAS --> SDK
+    
+    EMOTIONS --> API
+    VISION --> API
+    AUDIO --> API
+    VOICE --> API
+    BEHAVIOR --> API
+    
+    SDK --> API
 ```
 
-### 2. 🗣️ Reconnaissance Vocale
-```python
-# Utilisation des 4 microphones
-import speech_recognition as sr
+## 🎯 Plan de Développement BBIA
 
-def listen_to_user():
-    r = sr.Recognizer()
-    with sr.Microphone() as source:
-        # Utilisation des 4 microphones pour meilleure qualité
-        audio = r.listen(source, timeout=5)
-    return r.recognize_google(audio)
-```
-
-### 3. 👁️ Vision et Reconnaissance
-```python
-# Utilisation de la caméra grand angle
-import cv2
-from transformers import pipeline
-
-def analyze_environment():
-    # Capture vidéo
-    cap = cv2.VideoCapture(0)
-    ret, frame = cap.read()
+```mermaid
+gantt
+    title Plan de Développement BBIA
+    dateFormat  YYYY-MM-DD
+    section Phase 1: Préparation
+    Documentation complète    :done, doc, 2024-12-01, 2024-12-15
+    Environnement dev        :active, env, 2024-12-15, 2025-01-15
+    Simulation Unity         :sim, 2025-01-01, 2025-01-30
     
-    # Analyse avec IA
-    object_detector = pipeline("object-detection")
-    results = object_detector(frame)
+    section Phase 2: Core
+    Configuration robot      :robot, 2025-02-01, 2025-02-15
+    Tests mouvements         :move, 2025-02-15, 2025-03-01
+    Reconnaissance vocale    :voice, 2025-03-01, 2025-03-15
+    Système émotions         :emotions, 2025-03-15, 2025-04-01
     
-    return results
-```
-
-### 4. 🤖 Contrôle des Mouvements
-```python
-from reachy_sdk import ReachySDK
-
-class ReachyController:
-    def __init__(self):
-        self.reachy = ReachySDK(host='localhost')
+    section Phase 3: Intelligence
+    Hugging Face             :hf, 2025-04-01, 2025-05-01
+    Modèles IA               :ai, 2025-05-01, 2025-06-01
+    Comportements complexes  :behavior, 2025-06-01, 2025-07-01
     
-    def move_head(self, pitch, yaw, roll):
-        """Contrôle des 6 degrés de liberté de la tête"""
-        self.reachy.head.neck_pitch.goal_position = pitch
-        self.reachy.head.neck_yaw.goal_position = yaw
-        self.reachy.head.neck_roll.goal_position = roll
-    
-    def rotate_body(self, angle):
-        """Rotation complète du corps"""
-        # Implémentation selon SDK
-    
-    def animate_antennas(self, pattern):
-        """Animation des 2 antennes"""
-        # Implémentation selon SDK
+    section Phase 4: Optimisation
+    Performance              :perf, 2025-07-01, 2025-08-01
+    Nouvelles fonctionnalités :feat, 2025-08-01, 2025-09-01
+    Déploiement production   :deploy, 2025-09-01, 2025-10-01
 ```
 
 ---
@@ -307,34 +308,42 @@ git clone https://github.com/speechbrain/speechbrain.git
 
 ---
 
-## 🎯 Plan de Développement BBIA
+## 📊 Comparaison des Capacités
 
-### Phase 1 : Préparation (Maintenant - Livraison)
-- [x] Documentation complète
-- [ ] Installation environnement de développement
-- [ ] Configuration simulation Unity
-- [ ] Étude SDK et API
-- [ ] Création architecture BBIA
+```mermaid
+pie title Répartition des Capacités Reachy Mini
+    "Mouvements" : 25
+    "Audio/Voice" : 20
+    "Vision" : 20
+    "IA/ML" : 15
+    "Connectivité" : 10
+    "Autonomie" : 10
+```
 
-### Phase 2 : Développement Core (Livraison + 1 mois)
-- [ ] Configuration robot physique
-- [ ] Tests mouvements de base
-- [ ] Intégration reconnaissance vocale
-- [ ] Système d'émotions basique
-- [ ] Tests caméra et vision
+## 🔄 Workflow de Développement
 
-### Phase 3 : Intelligence Avancée (Livraison + 2-3 mois)
-- [ ] Intégration Hugging Face
-- [ ] Modèles IA personnalisés
-- [ ] Comportements complexes
-- [ ] Interface utilisateur
-- [ ] Tests complets
-
-### Phase 4 : Optimisation (Livraison + 4-6 mois)
-- [ ] Performance et optimisation
-- [ ] Nouvelles fonctionnalités
-- [ ] Documentation utilisateur
-- [ ] Déploiement production
+```mermaid
+sequenceDiagram
+    participant DEV as Développeur
+    participant SIM as Simulation Unity
+    participant ROBOT as Reachy Mini
+    participant API as BBIA API
+    
+    Note over DEV,API: Phase 1: Développement
+    DEV->>SIM: Créer comportement
+    SIM->>DEV: Tester en simulation
+    DEV->>API: Valider logique
+    
+    Note over DEV,API: Phase 2: Tests
+    DEV->>ROBOT: Déployer sur robot
+    ROBOT->>DEV: Retour capteurs
+    DEV->>API: Ajuster paramètres
+    
+    Note over DEV,API: Phase 3: Production
+    DEV->>API: Finaliser comportement
+    API->>ROBOT: Exécuter en production
+    ROBOT->>API: Monitoring temps réel
+```
 
 ---
 

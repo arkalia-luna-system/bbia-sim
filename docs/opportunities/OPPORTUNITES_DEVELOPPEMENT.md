@@ -13,21 +13,79 @@
 
 ---
 
-## 🎯 **OPPORTUNITÉS PRIORITAIRES**
+## 🏗️ Architecture des Opportunités
 
-### **🧠 1. AMÉLIORATION DES MODULES BBIA**
+```mermaid
+graph TB
+    subgraph "Modules BBIA Avancés"
+        EMOTIONS[Émotions Avancées<br/>Nouvelles + Composites]
+        VISION[Vision Intelligente<br/>Expressions + Gestes]
+        AUDIO[Audio Sophistiqué<br/>Multi-langues + Émotions]
+        VOICE[Voix Naturelle<br/>Conversation + Personnalité]
+        BEHAVIOR[Comportements Complexes<br/>Scénarios + Apprentissage]
+    end
+    
+    subgraph "Intégrations Externes"
+        HUGGINGFACE[Hugging Face<br/>Modèles IA pré-entraînés]
+        ROS[ROS Integration<br/>Écosystème robotique]
+        UNITY[Unity Advanced<br/>Simulation immersive]
+        WEB[Interface Web<br/>Contrôle distant]
+    end
+    
+    subgraph "Performance & Scalabilité"
+        OPTIMIZATION[Optimisation<br/>Performance + Mémoire]
+        CLOUD[Cloud Computing<br/>IA distribuée]
+        EDGE[Edge Computing<br/>IA locale]
+        MONITORING[Monitoring<br/>Métriques temps réel]
+    end
+    
+    EMOTIONS --> HUGGINGFACE
+    VISION --> HUGGINGFACE
+    AUDIO --> HUGGINGFACE
+    VOICE --> HUGGINGFACE
+    BEHAVIOR --> HUGGINGFACE
+    
+    HUGGINGFACE --> ROS
+    ROS --> UNITY
+    UNITY --> WEB
+    
+    WEB --> OPTIMIZATION
+    OPTIMIZATION --> CLOUD
+    CLOUD --> EDGE
+    EDGE --> MONITORING
+```
 
-#### **Émotions Avancées**
-- **Nouvelles émotions** : Confusion, détermination, nostalgie, fierté
-- **Émotions composites** : Mélanges d'émotions (joie+tristesse, colère+peur)
-- **Intensité dynamique** : Variation automatique selon le contexte
-- **Transitions fluides** : Changements d'émotion progressifs
+## 📊 Priorités de Développement
 
-#### **Vision Intelligente**
-- **Reconnaissance d'expressions** : Détecter les émotions humaines
-- **Suivi multi-objets** : Suivre plusieurs personnes/objets simultanément
-- **Reconnaissance de gestes** : Interpréter les signes de la main
-- **Analyse de contexte** : Comprendre les situations (repas, travail, jeu)
+```mermaid
+pie title Répartition des Priorités
+    "Modules BBIA Avancés" : 40
+    "Intégrations Externes" : 30
+    "Performance & Scalabilité" : 20
+    "Documentation & Tests" : 10
+```
+
+## 🔄 Roadmap de Développement
+
+```mermaid
+gantt
+    title Roadmap BBIA Development
+    dateFormat  YYYY-MM-DD
+    section Phase 1: BBIA Avancé
+    Nouvelles émotions        :emotions, 2025-01-01, 2025-02-15
+    Vision intelligente       :vision, 2025-02-01, 2025-03-15
+    Audio sophistiqué         :audio, 2025-03-01, 2025-04-15
+    
+    section Phase 2: Intégrations
+    Hugging Face              :hf, 2025-04-01, 2025-05-15
+    ROS Integration           :ros, 2025-05-01, 2025-06-15
+    Unity Advanced            :unity, 2025-06-01, 2025-07-15
+    
+    section Phase 3: Performance
+    Optimisation              :opt, 2025-07-01, 2025-08-15
+    Cloud Computing           :cloud, 2025-08-01, 2025-09-15
+    Monitoring                :monitor, 2025-09-01, 2025-10-15
+```
 
 #### **Audio Avancé**
 - **Reconnaissance de commandes** : "Tourne à gauche", "Souris", "Regarde-moi"

@@ -22,7 +22,7 @@ class ReachyBackend(RobotAPI):
         self.robot_port = robot_port
         self.joint_positions: dict[str, float] = {}
         self.step_count = 0
-        self.start_time = None
+        self.start_time: float = 0.0
 
         # Joints simulés du Reachy réel
         self.simulated_joints = {

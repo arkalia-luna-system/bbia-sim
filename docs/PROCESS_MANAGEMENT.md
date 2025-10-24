@@ -8,26 +8,80 @@ Votre Mac ramait à cause de **multiples processus BBIA** qui tournaient en arri
 - **Processus websocket_integration** multiples
 - **Aucun système de détection de doublons**
 
-## ✅ **Solution Implémentée**
+## 🔧 **Architecture du Système de Gestion**
 
-### 🔧 **Nouveaux Outils**
+```mermaid
+graph TB
+    subgraph "Avant (Problématique)"
+        MULTIPLE[Multiples processus BBIA<br/>73.6% CPU<br/>15+ processus pytest<br/>Processus websocket multiples]
+        NO_DETECTION[Aucune détection<br/>de doublons]
+        NO_CLEANUP[Pas d'arrêt<br/>automatique]
+    end
+    
+    subgraph "Après (Solution)"
+        SINGLE[Un seul processus BBIA<br/>Contrôlé et surveillé]
+        DETECTION[Détection automatique<br/>des doublons]
+        CLEANUP[Arrêt automatique<br/>à la fermeture]
+    end
+    
+    MULTIPLE --> SINGLE
+    NO_DETECTION --> DETECTION
+    NO_CLEANUP --> CLEANUP
+```
 
-1. **`scripts/process_manager.py`** - Gestionnaire de processus intelligent
-2. **`scripts/bbia_safe.sh`** - Script wrapper sécurisé
-3. **Système de verrouillage** - Évite les doublons
-4. **Arrêt automatique** - Quand le terminal se ferme
+## 🛡️ **Système de Sécurité**
 
-### 🚀 **Utilisation**
+```mermaid
+graph LR
+    subgraph "Protection"
+        LOCK[Fichiers de verrouillage<br/>~/.bbia_sim.lock<br/>~/.bbia_sim.pid]
+        MONITOR[Monitoring CPU/RAM<br/>Surveillance temps réel]
+        SIGNALS[Gestion des signaux<br/>SIGTERM, SIGINT, SIGHUP]
+    end
+    
+    subgraph "Actions"
+        START[Démarrage sécurisé<br/>Vérification doublons]
+        STOP[Arrêt avec confirmation<br/>Mode --force disponible]
+        KILL[Arrêt forcé<br/>En dernier recours]
+    end
+    
+    LOCK --> START
+    MONITOR --> START
+    SIGNALS --> STOP
+    START --> STOP
+    STOP --> KILL
+```
 
-```bash
-# Démarrage sécurisé (détection de doublons)
-./scripts/bbia_safe.sh start
+## 🔄 **Workflow de Gestion**
 
-# Mode headless
-./scripts/bbia_safe.sh start headless
-
-# Test rapide (2s)
-./scripts/bbia_safe.sh start test
+```mermaid
+sequenceDiagram
+    participant U as Utilisateur
+    participant S as Script bbia_safe.sh
+    participant P as Process Manager
+    participant L as Système de verrouillage
+    participant R as Robot BBIA
+    
+    U->>S: ./bbia_safe.sh start
+    S->>L: Vérifier verrouillage
+    L-->>S: Statut disponible
+    
+    alt Processus déjà en cours
+        S-->>U: Erreur: Processus déjà actif
+    else Processus disponible
+        S->>P: Créer processus
+        P->>L: Créer verrouillage
+        P->>R: Démarrer robot
+        S-->>U: Robot démarré avec succès
+    end
+    
+    U->>S: ./bbia_safe.sh stop
+    S->>L: Vérifier processus
+    S->>P: Arrêter processus
+    P->>R: Arrêter robot
+    P->>L: Supprimer verrouillage
+    S-->>U: Robot arrêté avec succès
+```
 
 # Vérifier le statut
 ./scripts/bbia_safe.sh status

@@ -6,18 +6,79 @@ Le projet BBIA-Reachy-SIM utilise maintenant une **interface unifiée RobotAPI**
 
 ## 🎯 Architecture
 
+```mermaid
+graph TB
+    subgraph "BBIA Modules"
+        EMOTIONS[bbia_emotions.py]
+        VISION[bbia_vision.py]
+        AUDIO[bbia_audio.py]
+        VOICE[bbia_voice.py]
+        BEHAVIOR[bbia_behavior.py]
+    end
+    
+    subgraph "RobotAPI Interface"
+        API[RobotAPI<br/>Interface unifiée]
+    end
+    
+    subgraph "Backends"
+        MUJOCO[MuJoCoBackend<br/>Simulation]
+        REACHY[ReachyBackend<br/>Robot réel]
+    end
+    
+    EMOTIONS --> API
+    VISION --> API
+    AUDIO --> API
+    VOICE --> API
+    BEHAVIOR --> API
+    
+    API --> MUJOCO
+    API --> REACHY
+    
+    MUJOCO --> SIM[MuJoCo Simulator<br/>3D Physics]
+    REACHY --> ROBOT[Reachy Mini<br/>Hardware]
 ```
-BBIA Modules → RobotAPI → Backend
-                    ├── MuJoCoBackend (Simulation)
-                    └── ReachyBackend (Robot réel)
+
+## 🔄 Workflow de Switch
+
+```mermaid
+sequenceDiagram
+    participant DEV as Développeur
+    participant FACTORY as RobotFactory
+    participant API as RobotAPI
+    participant SIM as MuJoCoBackend
+    participant ROBOT as ReachyBackend
+    
+    Note over DEV,ROBOT: Phase 1: Développement
+    DEV->>FACTORY: create_backend("mujoco")
+    FACTORY->>SIM: Initialiser MuJoCo
+    SIM->>API: Interface unifiée
+    API->>DEV: Robot prêt (simulation)
+    
+    Note over DEV,ROBOT: Phase 2: Tests
+    DEV->>API: set_emotion("happy", 0.8)
+    API->>SIM: Appliquer émotion
+    SIM->>API: Confirmation
+    
+    Note over DEV,ROBOT: Phase 3: Production
+    DEV->>FACTORY: create_backend("reachy")
+    FACTORY->>ROBOT: Initialiser Reachy
+    ROBOT->>API: Interface unifiée
+    API->>DEV: Robot prêt (réel)
+    
+    DEV->>API: set_emotion("happy", 0.8)
+    API->>ROBOT: Appliquer émotion
+    ROBOT->>API: Confirmation
 ```
 
 ## 🚀 Utilisation
 
 ### **Simulation MuJoCo (Développement)**
 ```bash
-# Démo avec backend MuJoCo
-python examples/demo_emotion_ok.py --backend mujoco --emotion happy --duration 5
+# Démo avec backend MuJoCo - MODE GRAPHIQUE (voir la 3D)
+mjpython examples/demo_emotion_ok.py --backend mujoco --emotion happy --duration 5
+
+# Démo avec backend MuJoCo - MODE HEADLESS (tests rapides)
+python examples/demo_emotion_ok.py --headless --backend mujoco --emotion happy --duration 5
 
 # Tests avec MuJoCo
 python -m pytest tests/test_robot_api_smoke.py -v
@@ -63,24 +124,34 @@ backend_type = os.environ.get("BBIA_BACKEND", "mujoco")
 robot = RobotFactory.create_backend(backend_type)
 ```
 
-## 📊 Fonctionnalités
+## 📊 Comparaison des Backends
 
-### **API Unifiée**
-- `set_joint_pos(joint_name, position)` : Contrôle des articulations
-- `set_emotion(emotion, intensity)` : Gestion des émotions
-- `look_at(target_x, target_y, target_z)` : Regarder vers une cible
-- `run_behavior(behavior_name, duration)` : Exécuter un comportement
-- `get_telemetry()` : Données de télémétrie
+```mermaid
+graph LR
+    subgraph "MuJoCoBackend (Simulation)"
+        SIM_FEATURES[✅ Physique 3D<br/>✅ Viewer graphique<br/>✅ Mode headless<br/>✅ Tests automatisés<br/>✅ Débogage facile<br/>❌ Pas de robot physique]
+    end
+    
+    subgraph "ReachyBackend (Robot réel)"
+        ROBOT_FEATURES[✅ Robot physique<br/>✅ Vraie interaction<br/>✅ Capteurs réels<br/>✅ Production<br/>❌ Plus lent<br/>❌ Plus risqué]
+    end
+    
+    SIM_FEATURES -.->|Migration| ROBOT_FEATURES
+```
 
-### **Backends Disponibles**
-- **MuJoCoBackend** : Simulation complète avec viewer
-- **ReachyBackend** : Robot réel (implémentation mock)
+## 🔄 Migration Sim → Robot
 
-### **Sécurité**
-- Limites automatiques (amplitude ≤ 0.3 rad)
-- Joints interdits bloqués
-- Clamp automatique des positions
-- Gestion d'erreurs robuste
+```mermaid
+flowchart TD
+    START[Début du développement] --> SIM[Utiliser MuJoCoBackend]
+    SIM --> TEST[Tester les fonctionnalités]
+    TEST --> WORK{Ça fonctionne ?}
+    WORK -->|Non| DEBUG[Déboguer en simulation]
+    DEBUG --> TEST
+    WORK -->|Oui| SWITCH[Basculer vers ReachyBackend]
+    SWITCH --> PROD[Tests sur robot réel]
+    PROD --> DEPLOY[Déploiement production]
+```
 
 ## 🎬 Record & Replay
 

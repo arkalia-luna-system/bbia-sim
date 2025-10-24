@@ -14,25 +14,101 @@
 
 ---
 
-## 🎮 Modes de Simulation Disponibles
+## 🏗️ Architecture Simulation BBIA
 
-### 1️⃣ **Simulation BBIA de Base**
-```bash
-python3 test_bbia_reachy.py
+```mermaid
+graph TB
+    subgraph "Modes de Simulation"
+        BASIC[Simulation BBIA de Base<br/>Émotions + Mouvements]
+        ADVANCED[Simulation Avancée<br/>Vision + Audio + IA]
+        UNITY[Simulation Unity<br/>3D Interactive]
+        MUJOCO[Simulation MuJoCo<br/>Physique réaliste]
+    end
+    
+    subgraph "Modules BBIA"
+        EMOTIONS[Module Émotions<br/>8 émotions]
+        VISION[Module Vision<br/>Reconnaissance objets]
+        AUDIO[Module Audio<br/>4 microphones]
+        VOICE[Module Voix<br/>TTS/STT]
+        BEHAVIOR[Module Comportements<br/>Actions complexes]
+    end
+    
+    subgraph "Intégration"
+        API[BBIA API<br/>Interface unifiée]
+        SIMULATOR[Simulateur<br/>Environnement virtuel]
+    end
+    
+    BASIC --> EMOTIONS
+    ADVANCED --> VISION
+    ADVANCED --> AUDIO
+    ADVANCED --> VOICE
+    UNITY --> BEHAVIOR
+    MUJOCO --> SIMULATOR
+    
+    EMOTIONS --> API
+    VISION --> API
+    AUDIO --> API
+    VOICE --> API
+    BEHAVIOR --> API
+    
+    API --> SIMULATOR
 ```
-**Ce que vous verrez :**
-- 🤖 Émotions simulées (neutral, happy, sad, angry, curious, excited)
-- 🎤 Test des 4 microphones
-- 📷 Caméra grand angle active
-- 🤖 Mouvements tête 6 DOF
-- 📡 Animation des antennes
-- 🗣️ Reconnaissance vocale simulée
-- 🔋 Test de la batterie
 
-### 2️⃣ **Simulation Unity 3D**
-```bash
-./quick_start.sh
-# Choisir l'option 6 : "Lancer le simulateur Unity"
+## 🎯 Workflow de Simulation
+
+```mermaid
+sequenceDiagram
+    participant USER as Utilisateur
+    participant BBIA as BBIA System
+    participant SIM as Simulateur
+    participant ROBOT as Robot Virtuel
+    
+    USER->>BBIA: Lancer simulation
+    BBIA->>SIM: Initialiser environnement
+    SIM->>ROBOT: Charger modèle 3D
+    
+    Note over USER,ROBOT: Phase d'émotions
+    USER->>BBIA: Émotion "happy"
+    BBIA->>SIM: Appliquer émotion
+    SIM->>ROBOT: Animer robot
+    
+    Note over USER,ROBOT: Phase de vision
+    USER->>BBIA: Reconnaissance objet
+    BBIA->>SIM: Analyser scène
+    SIM->>ROBOT: Réaction visuelle
+    
+    Note over USER,ROBOT: Phase audio
+    USER->>BBIA: Commande vocale
+    BBIA->>SIM: Traiter audio
+    SIM->>ROBOT: Réponse vocale
+```
+
+## 📊 Comparaison des Modes de Simulation
+
+```mermaid
+graph LR
+    subgraph "Simulation BBIA de Base"
+        BASE_FEATURES[✅ Émotions<br/>✅ Mouvements<br/>✅ Audio basique<br/>❌ Vision avancée<br/>❌ IA complexe]
+    end
+    
+    subgraph "Simulation Avancée"
+        ADV_FEATURES[✅ Émotions<br/>✅ Mouvements<br/>✅ Audio complet<br/>✅ Vision IA<br/>✅ IA avancée]
+    end
+    
+    subgraph "Simulation Unity"
+        UNITY_FEATURES[✅ 3D Interactive<br/>✅ Physique<br/>✅ Graphiques<br/>❌ IA limitée<br/>❌ Performance]
+    end
+    
+    subgraph "Simulation MuJoCo"
+        MUJOCO_FEATURES[✅ Physique réaliste<br/>✅ Performance<br/>✅ Précision<br/>❌ Interface<br/>❌ Complexité]
+    end
+    
+    BASE_FEATURES -.->|Évolution| ADV_FEATURES
+    ADV_FEATURES -.->|Choix| UNITY_FEATURES
+    ADV_FEATURES -.->|Choix| MUJOCO_FEATURES
+```
+
+## 🎮 Modes de Simulation Disponibles
 ```
 **Ce que vous verrez :**
 - 🎮 Modèle 3D complet de Reachy

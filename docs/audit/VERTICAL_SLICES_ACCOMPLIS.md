@@ -18,15 +18,70 @@ Les 4 vertical slices BBIA sont **TERMINÉS** avec succès. Chaque démo prouve 
 - ✅ **1 test headless par démo** : 9 tests automatiques
 - ✅ **0 crash > 5 runs** : Toutes les démos stables
 
-## 🎮 **COMMANDES DE VALIDATION**
+## 🏗️ Architecture des Vertical Slices
 
-### **🚀 Démos Verticales**
-```bash
-# Activer le venv
-source venv/bin/activate
+```mermaid
+graph TB
+    subgraph "Vertical Slices BBIA"
+        EMOTION[Émotion → Pose<br/>demo_emotion_ok.py]
+        VOICE[Voix → Action<br/>demo_voice_ok.py]
+        VISION[Vision → Suivi<br/>demo_vision_ok.py]
+        BEHAVIOR[Comportement → Scénario<br/>demo_behavior_ok.py]
+    end
+    
+    subgraph "Tests Automatiques"
+        TEST1[Test Émotion<br/>Headless 5s]
+        TEST2[Test Voix<br/>Headless 5s]
+        TEST3[Test Vision<br/>Headless 5s]
+        TEST4[Test Comportement<br/>Headless 5s]
+    end
+    
+    subgraph "Validation"
+        CRITERIA[Critères d'arrêt<br/>4 démos vertes]
+        STABILITY[Stabilité<br/>0 crash > 5 runs]
+        AUTOMATION[Tests automatiques<br/>9 tests headless]
+    end
+    
+    EMOTION --> TEST1
+    VOICE --> TEST2
+    VISION --> TEST3
+    BEHAVIOR --> TEST4
+    
+    TEST1 --> CRITERIA
+    TEST2 --> CRITERIA
+    TEST3 --> CRITERIA
+    TEST4 --> CRITERIA
+    
+    CRITERIA --> STABILITY
+    STABILITY --> AUTOMATION
+```
 
-# 1. Émotion → Pose
-python examples/demo_emotion_ok.py --headless --duration 5 --emotion happy --intensity 0.8
+## 📊 Résultats des Tests
+
+```mermaid
+pie title Répartition des Tests
+    "Tests Émotion" : 25
+    "Tests Voix" : 25
+    "Tests Vision" : 25
+    "Tests Comportement" : 25
+```
+
+## 🔄 Workflow de Validation
+
+```mermaid
+sequenceDiagram
+    participant DEV as Développeur
+    participant DEMO as Démo Verticale
+    participant TEST as Test Headless
+    participant VALID as Validation
+    
+    DEV->>DEMO: Lancer démo
+    DEMO->>TEST: Mode headless 5s
+    TEST->>VALID: Vérifier critères
+    VALID->>DEV: ✅ Démos vertes
+    
+    Note over DEV,VALID: Cycle de validation complet
+```
 
 # 2. Voix → Action
 python examples/demo_voice_ok.py --headless --duration 5 --command "regarde-moi"

@@ -50,28 +50,68 @@ src/bbia_sim/sim/
     └── textures/           # Textures (futur)
 ```
 
-## 🤖 Modèle du robot
+## 🤖 Architecture MuJoCo
 
-Le modèle `reachy_mini.xml` inclut :
+```mermaid
+graph TB
+    subgraph "MuJoCo Engine"
+        PHYSICS[Physics Engine<br/>Rigid Body Dynamics]
+        RENDERER[Renderer<br/>OpenGL/EGL]
+        SOLVER[Constraint Solver<br/>Newton-Raphson]
+    end
+    
+    subgraph "BBIA Integration"
+        SIMULATOR[MuJoCoSimulator<br/>Python Interface]
+        ROBOT[Robot Model<br/>reachy_mini.xml]
+        SCENE[Scene<br/>Environment]
+    end
+    
+    subgraph "Control Loop"
+        INPUT[User Commands<br/>Joint Positions]
+        STEP[Physics Step<br/>100Hz]
+        OUTPUT[Robot State<br/>Positions/Velocities]
+    end
+    
+    PHYSICS --> SIMULATOR
+    RENDERER --> SIMULATOR
+    SOLVER --> SIMULATOR
+    
+    SIMULATOR --> ROBOT
+    SIMULATOR --> SCENE
+    
+    INPUT --> STEP
+    STEP --> PHYSICS
+    PHYSICS --> OUTPUT
+```
 
-- **Base** : Corps principal du robot
-- **Bras droit** : 3 articulations (épaule, coude, poignet)
-- **Bras gauche** : 3 articulations (épaule, coude, poignet)
-- **Tête** : 2 articulations (yaw, pitch) + caméra
-- **Grippers** : Pinces simples
+## 🎯 Joints du Robot Reachy Mini
 
-### Articulations disponibles
-
-| Articulation | Type | Plage | Description |
-|-------------|------|-------|-------------|
-| right_shoulder_pitch | Motor | -π à π | Rotation épaule droite |
-| right_elbow_pitch | Motor | -π à π | Rotation coude droit |
-| right_wrist_pitch | Motor | -π à π | Rotation poignet droit |
-| left_shoulder_pitch | Motor | -π à π | Rotation épaule gauche |
-| left_elbow_pitch | Motor | -π à π | Rotation coude gauche |
-| left_wrist_pitch | Motor | -π à π | Rotation poignet gauche |
-| head_yaw | Motor | -π/2 à π/2 | Rotation tête horizontale |
-| head_pitch | Motor | -0.5 à 0.5 | Rotation tête verticale |
+```mermaid
+graph LR
+    subgraph "Joints Mobiles"
+        YAW[head_yaw<br/>-π/2 à π/2]
+        PITCH[head_pitch<br/>-0.5 à 0.5]
+        R_SHOULDER[right_shoulder_pitch<br/>-π à π]
+        R_ELBOW[right_elbow_pitch<br/>-π à π]
+        R_WRIST[right_wrist_pitch<br/>-π à π]
+        L_SHOULDER[left_shoulder_pitch<br/>-π à π]
+        L_ELBOW[left_elbow_pitch<br/>-π à π]
+        L_WRIST[left_wrist_pitch<br/>-π à π]
+    end
+    
+    subgraph "Contrôle"
+        CONTROLLER[Joint Controller<br/>Position/Velocity]
+    end
+    
+    CONTROLLER --> YAW
+    CONTROLLER --> PITCH
+    CONTROLLER --> R_SHOULDER
+    CONTROLLER --> R_ELBOW
+    CONTROLLER --> R_WRIST
+    CONTROLLER --> L_SHOULDER
+    CONTROLLER --> L_ELBOW
+    CONTROLLER --> L_WRIST
+```
 
 ## 🎯 Utilisation programmatique
 
@@ -190,19 +230,51 @@ class RobotController:
         return {"status": "moving", "pose": pose}
 ```
 
-## 📈 Performance
+## 📈 Performance et Optimisation
 
-### Optimisations recommandées
+```mermaid
+graph TB
+    subgraph "Modes de Simulation"
+        GRAPHIC[Mode Graphique<br/>60-120 FPS<br/>Interface utilisateur]
+        HEADLESS[Mode Headless<br/>1000+ FPS<br/>Tests automatisés]
+    end
+    
+    subgraph "Optimisations"
+        TIMESTEP[Timestep<br/>0.01s (100Hz)]
+        SOLVER[Solver<br/>Newton-Raphson]
+        CACHE[Cache<br/>Modèles préchargés]
+    end
+    
+    subgraph "Ressources"
+        CPU[CPU<br/>~50% utilisation]
+        GPU[GPU<br/>Rendu graphique]
+        RAM[Mémoire<br/>~50MB modèle]
+    end
+    
+    GRAPHIC --> TIMESTEP
+    HEADLESS --> TIMESTEP
+    TIMESTEP --> SOLVER
+    SOLVER --> CACHE
+    
+    CACHE --> CPU
+    CACHE --> GPU
+    CACHE --> RAM
+```
 
-1. **Mode headless** pour les tests automatisés
-2. **Limitation des steps** pour éviter les boucles infinies
-3. **Logging conditionnel** en production
+## 🔧 Workflow de Développement
 
-### Métriques typiques
-
-- **FPS** : 60-120 Hz (avec interface graphique)
-- **Latence** : < 10ms par step
-- **Mémoire** : ~50MB pour le modèle de base
+```mermaid
+flowchart TD
+    START[Début projet] --> INSTALL[Installation MuJoCo]
+    INSTALL --> MODEL[Chargement modèle]
+    MODEL --> TEST[Tests basiques]
+    TEST --> WORK{Fonctionne ?}
+    WORK -->|Non| DEBUG[Débogage]
+    DEBUG --> TEST
+    WORK -->|Oui| DEV[Développement BBIA]
+    DEV --> INTEGRATION[Intégration API]
+    INTEGRATION --> DEPLOY[Déploiement]
+```
 
 ## 🔮 Roadmap
 

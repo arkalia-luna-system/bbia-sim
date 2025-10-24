@@ -4,53 +4,156 @@
 
 BBIA-SIM est un système de simulation robotique modulaire avec API REST/WebSocket.
 
-## Schéma d'architecture (ASCII)
+## Schéma d'architecture Mermaid
 
+```mermaid
+graph TB
+    subgraph "Clients"
+        CLI[CLI/Examples<br/>python -m bbia<br/>examples/*.py]
+        WEB[Web Client<br/>Frontend<br/>Dashboard]
+        EXT[External API<br/>Integration<br/>ROS Bridge]
+    end
+    
+    subgraph "FastAPI Daemon"
+        REST[REST API<br/>/api/state<br/>/api/motion]
+        WS[WebSocket<br/>/ws/telemetry]
+        MW[Middleware<br/>Security<br/>Rate Limit]
+    end
+    
+    subgraph "Simulation Service"
+        MUJOCO[MuJoCo Sim<br/>Headless<br/>100Hz Loop]
+        STATE[Robot State<br/>Manager]
+        JOINT[Joint Ctrl<br/>Manager]
+    end
+    
+    subgraph "MuJoCo Engine"
+        PHYSICS[Physics<br/>Engine]
+        MODELS[3D Models<br/>reachy_mini.xml]
+        SCENES[Scenes<br/>minimal.xml]
+    end
+    
+    CLI --> REST
+    WEB --> REST
+    EXT --> REST
+    
+    CLI --> WS
+    WEB --> WS
+    EXT --> WS
+    
+    REST --> MW
+    WS --> MW
+    
+    MW --> MUJOCO
+    MW --> STATE
+    MW --> JOINT
+    
+    MUJOCO --> PHYSICS
+    STATE --> MODELS
+    JOINT --> SCENES
+    
+    PHYSICS --> MODELS
+    MODELS --> SCENES
 ```
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   CLI/Examples  │    │   Web Client    │    │   External API  │
-│                 │    │                 │    │                 │
-│ python -m bbia  │    │   Frontend      │    │   Integration   │
-│ examples/*.py   │    │   Dashboard     │    │   ROS Bridge    │
-└─────────┬───────┘    └─────────┬───────┘    └─────────┬───────┘
-          │                      │                      │
-          │ HTTP/WebSocket       │                      │
-          │ Bearer Token         │                      │
-          │                      │                      │
-          ▼                      ▼                      ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                    FastAPI Daemon                               │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐            │
-│  │   REST API  │  │  WebSocket  │  │  Middleware │            │
-│  │  /api/state │  │ /ws/telemetry│  │  Security   │            │
-│  │  /api/motion│  │              │  │  Rate Limit │            │
-│  └─────────────┘  └─────────────┘  └─────────────┘            │
-└─────────────────────┬───────────────────────────────────────────┘
-                      │
-                      ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                Simulation Service                               │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐            │
-│  │ MuJoCo Sim  │  │  Robot State│  │  Joint Ctrl  │            │
-│  │ Headless    │  │  Manager    │  │  Manager     │            │
-│  │ 100Hz Loop  │  │             │  │             │            │
-│  └─────────────┘  └─────────────┘  └─────────────┘            │
-└─────────────────────┬───────────────────────────────────────────┘
-                      │
-                      ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                    MuJoCo Engine                               │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐            │
-│  │   Physics   │  │  3D Models  │  │   Scenes    │            │
-│  │   Engine    │  │ reachy_mini │  │  minimal    │            │
-│  │             │  │    .xml     │  │    .xml     │            │
-│  └─────────────┘  └─────────────┘  └─────────────┘            │
-└─────────────────────────────────────────────────────────────────┘
-```
+
+## Architecture détaillée
+
+### 🎮 **Couche Client**
+- **CLI/Examples** : Scripts Python pour tests et démonstrations
+- **Web Client** : Interface web pour contrôle et monitoring
+- **External API** : Intégrations tierces (ROS, etc.)
+
+### 🌐 **Couche API**
+- **REST API** : Endpoints HTTP pour contrôle du robot
+- **WebSocket** : Communication temps réel pour télémétrie
+- **Middleware** : Sécurité, rate limiting, authentification
+
+### 🤖 **Couche Simulation**
+- **MuJoCo Sim** : Moteur de simulation physique
+- **Robot State** : Gestionnaire d'état du robot
+- **Joint Control** : Contrôleur des articulations
+
+### ⚙️ **Couche Physique**
+- **Physics Engine** : Moteur physique MuJoCo
+- **3D Models** : Modèles 3D du robot Reachy Mini
+- **Scenes** : Environnements de simulation
 
 ## Flux de données
 
-### 1. CLI → Simulation
+```mermaid
+sequenceDiagram
+    participant C as Client
+    participant API as FastAPI
+    participant SIM as Simulation
+    participant MJ as MuJoCo
+    
+    C->>API: POST /api/motion/joints
+    API->>SIM: Update joint positions
+    SIM->>MJ: Set joint targets
+    MJ->>SIM: Physics step
+    SIM->>API: Robot state update
+    API->>C: WebSocket telemetry
+    
+    Note over C,MJ: Cycle de simulation à 100Hz
+```
+
+## Modules BBIA
+
+```mermaid
+graph LR
+    subgraph "Modules BBIA"
+        EMOTIONS[bbia_emotions.py<br/>8 émotions]
+        VISION[bbia_vision.py<br/>Détection objets]
+        AUDIO[bbia_audio.py<br/>Enregistrement]
+        VOICE[bbia_voice.py<br/>TTS/STT]
+        BEHAVIOR[bbia_behavior.py<br/>Comportements]
+    end
+    
+    subgraph "Intégration"
+        INTEGRATION[bbia_integration.py<br/>Orchestrateur]
+    end
+    
+    subgraph "Simulation"
+        SIMULATOR[simulator.py<br/>MuJoCo]
+        JOINTS[joints.py<br/>16 joints]
+    end
+    
+    EMOTIONS --> INTEGRATION
+    VISION --> INTEGRATION
+    AUDIO --> INTEGRATION
+    VOICE --> INTEGRATION
+    BEHAVIOR --> INTEGRATION
+    
+    INTEGRATION --> SIMULATOR
+    SIMULATOR --> JOINTS
+```
+
+## Joints du robot Reachy Mini
+
+```mermaid
+graph TB
+    subgraph "Joints Mobiles (7)"
+        YAW[yaw_body<br/>Rotation corps<br/>-160° à +160°]
+        STEWART1[stewart_1<br/>Plateforme<br/>-48° à +80°]
+        STEWART2[stewart_2<br/>Plateforme<br/>-80° à +70°]
+        STEWART3[stewart_3<br/>Plateforme<br/>-48° à +80°]
+        STEWART4[stewart_4<br/>Plateforme<br/>-80° à +48°]
+        STEWART5[stewart_5<br/>Plateforme<br/>-70° à +80°]
+        STEWART6[stewart_6<br/>Plateforme<br/>-80° à +48°]
+    end
+    
+    subgraph "Joints Bloqués (9)"
+        PASSIVE1[passive_1-7<br/>Articulations<br/>mécaniques]
+        ANTENNA1[left_antenna<br/>Antenne gauche<br/>Décorative]
+        ANTENNA2[right_antenna<br/>Antenne droite<br/>Décorative]
+    end
+    
+    YAW -.->|Recommandé| STEWART1
+    STEWART1 -.-> STEWART2
+    STEWART2 -.-> STEWART3
+    STEWART3 -.-> STEWART4
+    STEWART4 -.-> STEWART5
+    STEWART5 -.-> STEWART6
+```
 ```
 python -m bbia_sim --sim --headless
     ↓

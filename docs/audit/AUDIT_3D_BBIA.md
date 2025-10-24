@@ -13,21 +13,80 @@
 - ✅ **26 modules Python** BBIA fonctionnels
 - ✅ **531 tests** collectés, 418 passent (79% réussite)
 
-## 🗂️ **STRUCTURE DÉTECTÉE**
+## 🏗️ Architecture 3D BBIA
 
-### **📁 Chemins Critiques**
-```
-src/bbia_sim/sim/models/reachy_mini_REAL_OFFICIAL.xml  # Modèle MuJoCo officiel
-src/bbia_sim/sim/assets/reachy_official/               # 41 assets STL officiels
-src/bbia_sim/sim/simulator.py                         # Simulateur MuJoCo existant
-src/bbia_sim/daemon/simulation_service.py             # Service simulation BBIA
-examples/                                              # 17 démos existantes
-tests/                                                  # 40 fichiers de tests
+```mermaid
+graph TB
+    subgraph "MuJoCo Engine"
+        MUJOCO[MuJoCo 3.3.0<br/>Physique réaliste]
+        GLFW[GLFW 2.10.0<br/>Viewer graphique]
+        MODEL[Modèle officiel<br/>reachy_mini_REAL_OFFICIAL.xml]
+    end
+    
+    subgraph "Assets 3D"
+        STL[41 Assets STL<br/>Officiels Pollen]
+        MESHES[Meshes 3D<br/>Torso, Head, Arms]
+        MATERIALS[Matériaux<br/>Couleurs réalistes]
+    end
+    
+    subgraph "Modules BBIA"
+        EMOTIONS[bbia_emotions.py<br/>8 émotions]
+        VISION[bbia_vision.py<br/>Détection visage/objet]
+        AUDIO[bbia_audio.py<br/>Enregistrement audio]
+        VOICE[bbia_voice.py<br/>TTS/STT]
+        BEHAVIOR[bbia_behavior.py<br/>Comportements]
+    end
+    
+    subgraph "Tests & Qualité"
+        TESTS[531 Tests<br/>418 passent (79%)]
+        COVERAGE[Coverage<br/>76.70%]
+        LINTING[Linting<br/>Ruff + Black]
+    end
+    
+    MUJOCO --> MODEL
+    GLFW --> MODEL
+    MODEL --> STL
+    
+    STL --> MESHES
+    MESHES --> MATERIALS
+    
+    EMOTIONS --> TESTS
+    VISION --> TESTS
+    AUDIO --> TESTS
+    VOICE --> TESTS
+    BEHAVIOR --> TESTS
+    
+    TESTS --> COVERAGE
+    COVERAGE --> LINTING
 ```
 
-### **🧠 Modules BBIA Détectés**
-- `bbia_emotions.py` - 8 émotions (neutral, happy, sad, angry, curious, excited, surprised, fearful)
-- `bbia_vision.py` - Détection visage/objet, tracking
+## 📊 Résultats de l'Audit
+
+```mermaid
+pie title Répartition des Composants
+    "Modules BBIA" : 30
+    "Assets 3D" : 25
+    "Tests" : 20
+    "MuJoCo Engine" : 15
+    "Documentation" : 10
+```
+
+## 🔄 Workflow d'Audit
+
+```mermaid
+sequenceDiagram
+    participant AUDITOR as Auditeur
+    participant SYSTEM as Système BBIA
+    participant MUJOCO as MuJoCo
+    participant TESTS as Tests
+    
+    AUDITOR->>SYSTEM: Détecter composants
+    SYSTEM->>MUJOCO: Vérifier installation
+    MUJOCO->>TESTS: Valider fonctionnalités
+    TESTS->>AUDITOR: Rapport complet
+    
+    Note over AUDITOR,TESTS: Audit 3D BBIA terminé
+```
 - `bbia_audio.py` - Enregistrement, lecture, détection son
 - `bbia_voice.py` - TTS, STT
 - `bbia_behavior.py` - 7 comportements (WakeUp, Greeting, EmotionalResponse, etc.)

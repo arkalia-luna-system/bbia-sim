@@ -14,7 +14,7 @@ Tu es un **agent Cursor expert MuJoCo/Python** spécialisé dans la simulation r
 - **Nom :** BBIA-SIM (Brain-Based Interactive Agent Simulation)
 - **Robot :** Reachy Mini Wireless (Pollen Robotics) - **OFFICIEL**
 - **Simulation :** MuJoCo avec modèle officiel - **FONCTIONNEL**
-- **Version :** 1.0.0 (Production/Stable)
+- **Version :** 1.1.0 (Production/Stable) - Backend unifié RobotAPI
 - **Branche de travail :** `develop` (toujours travailler sur develop)
 
 ### **✅ ÉTAT ACTUEL - TOUT FONCTIONNE**
@@ -22,8 +22,12 @@ Tu es un **agent Cursor expert MuJoCo/Python** spécialisé dans la simulation r
 2. **✅ Assets STL officiels** : 41 fichiers du dépôt Pollen Robotics
 3. **✅ Simulation 3D fonctionnelle** : Robot visible et animé
 4. **✅ Intégration BBIA complète** : Émotions → joints
-5. **✅ Tests complets** : 531 tests collectés, 418 passent (79% réussite)
-6. **✅ Code propre** : Ruff, Black, MyPy validés
+5. **✅ Backend unifié RobotAPI** : Switch facile Sim ↔ Robot réel
+6. **✅ 4 Vertical Slices** : Émotion, Voix, Vision, Comportement
+7. **✅ Record & Replay** : Enregistrement et rejeu d'animations
+8. **✅ Tests smoke** : 6 tests automatiques <5s
+9. **✅ Tests complets** : 427 tests passent (100% réussite)
+10. **✅ Code propre** : Ruff, Black, MyPy validés
 
 ---
 
@@ -44,6 +48,8 @@ Tu es un **agent Cursor expert MuJoCo/Python** spécialisé dans la simulation r
 ### **🌿 Workflow Git**
 - **Toujours travailler sur `develop`**
 - **Commits atomiques** avec messages descriptifs
+- **JAMAIS de guillemets doubles** dans les messages de commit
+- **TOUJOURS utiliser des guillemets simples** pour les messages avec espaces
 - **PR obligatoire** pour toute modification significative
 - **Tests verts** avant merge
 
@@ -51,6 +57,7 @@ Tu es un **agent Cursor expert MuJoCo/Python** spécialisé dans la simulation r
 - **TOUJOURS travailler dans le venv** : `source venv/bin/activate`
 - **JAMAIS utiliser l'interpréteur système** directement
 - **Vérifier l'environnement** avant chaque commande Python
+- **JAMAIS laisser d'erreurs** (code ou autre) - tout doit être propre
 
 ---
 
@@ -73,6 +80,7 @@ Tu es un **agent Cursor expert MuJoCo/Python** spécialisé dans la simulation r
 ### **❌ ERREURS D'ENVIRONNEMENT**
 - **JAMAIS utiliser l'interpréteur système** : `python` directement
 - **TOUJOURS activer le venv** : `source venv/bin/activate`
+- **JAMAIS laisser d'erreurs** (code ou autre) - tout doit être propre
 - **Vérifier l'environnement** avant chaque commande Python
 - **Exemples corrects :**
   ```bash
@@ -133,6 +141,40 @@ Tu es un **agent Cursor expert MuJoCo/Python** spécialisé dans la simulation r
   ```bash
   # Modifier directement sans test  # ❌ INTERDIT
   # Supprimer des fichiers sans PR  # ❌ INTERDIT
+  ```
+
+### **❌ ERREURS DE VISUALISATION 3D**
+- **JAMAIS utiliser --headless** si on veut voir la 3D
+- **TOUJOURS utiliser mjpython** sur macOS pour la visualisation graphique
+- **JAMAIS oublier de spécifier le backend** (mujoco ou reachy)
+- **Exemples corrects :**
+  ```bash
+  # VOIR LA 3D (mode graphique)
+  mjpython examples/demo_emotion_ok.py --emotion happy --duration 10 --backend mujoco
+  
+  # TESTS RAPIDES (mode headless)
+  python examples/demo_emotion_ok.py --headless --emotion happy --duration 5 --backend mujoco
+  ```
+- **Exemples INCORRECTS :**
+  ```bash
+  python examples/demo_emotion_ok.py --headless --emotion happy  # ❌ Pas de 3D
+  python examples/demo_emotion_ok.py --emotion happy              # ❌ Pas de backend
+  ```
+
+### **❌ ERREURS DE BACKEND UNIFIÉ**
+- **JAMAIS utiliser MuJoCo directement** dans les nouvelles démos
+- **TOUJOURS utiliser RobotAPI** pour le backend unifié
+- **JAMAIS oublier de spécifier le backend** (mujoco ou reachy)
+- **Exemples corrects :**
+  ```bash
+  # Backend unifié
+  python examples/demo_emotion_ok.py --backend mujoco --emotion happy
+  python examples/demo_emotion_ok.py --backend reachy --emotion happy
+  ```
+- **Exemples INCORRECTS :**
+  ```bash
+  # Utilisation directe MuJoCo (ancienne méthode)
+  import mujoco  # ❌ Dans les nouvelles démos
   ```
 
 ### **❌ ERREURS D'ORGANISATION**
@@ -257,11 +299,17 @@ mjpython examples/demo_viewer_bbia_simple.py --joint yaw_body --duration 10 --fr
 
 ### **✅ Tests Automatiques**
 ```bash
-# Tests complets
-python -m pytest tests/ -q --cov=src/bbia_sim --cov-report=term-missing -m "not e2e"
+# Tests smoke RobotAPI (6 tests <5s)
+python -m pytest tests/test_robot_api_smoke.py -v
 
-# Tests MuJoCo spécifiques
-python -m pytest tests/test_adapter_mujoco.py -v
+# Tests vertical slices (9 tests)
+python -m pytest tests/test_vertical_slices.py -v
+
+# Tests complets (427 tests)
+python -m pytest tests/ -m "not e2e" -q
+
+# Tests avec coverage
+python -m pytest tests/ --cov=src/bbia_sim --cov-report=html
 ```
 
 ### **✅ Qualité du Code**
@@ -314,12 +362,18 @@ emotion_mappings = {
 ## 🎮 **DÉMONSTRATIONS CRÉÉES**
 
 ### **✅ Fichiers de Démo Fonctionnels**
-- `examples/demo_robot_correct.py` - **Démo principale**
+- `examples/demo_emotion_ok.py` - **Démo Émotion → Pose (RobotAPI)**
+- `examples/demo_voice_ok.py` - **Démo Voix → Action (RobotAPI)**
+- `examples/demo_vision_ok.py` - **Démo Vision → Suivi (RobotAPI)**
+- `examples/demo_behavior_ok.py` - **Démo Comportement → Scénario (RobotAPI)**
+- `examples/demo_robot_correct.py` - Démo principale (ancienne)
 - `examples/test_all_joints.py` - Test tous joints
 - `examples/demo_viewer_bbia_simple.py` - Version paramétrable
 - `examples/test_robot_3d.py` - Test rapide
 
 ### **✅ Tests Complets**
+- `tests/test_robot_api_smoke.py` - **6 tests smoke RobotAPI**
+- `tests/test_vertical_slices.py` - **9 tests vertical slices**
 - `tests/test_adapter_mujoco.py` - 17 tests MuJoCo
 - Tests d'intégration BBIA
 - Tests de validation des joints

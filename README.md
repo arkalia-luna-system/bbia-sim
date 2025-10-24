@@ -14,10 +14,54 @@ Ce projet fournit une simulation **parfaitement fidèle** du robot Reachy Mini d
 - ✅ Exécution de comportements complexes
 - ✅ API REST + WebSocket temps réel
 
-## ✅ Statut du Projet - COMPLET
+## 🏗️ Architecture BBIA-SIM
 
-- **✅ Robot assemblé** : Le robot apparaît correctement assemblé dans MuJoCo
-- **✅ Assets officiels** : 41 fichiers STL officiels téléchargés (9KB-1MB chacun)
+```mermaid
+graph TB
+    subgraph "Modules BBIA"
+        EMOTIONS[bbia_emotions.py<br/>8 émotions]
+        VISION[bbia_vision.py<br/>Détection objets]
+        AUDIO[bbia_audio.py<br/>Enregistrement]
+        VOICE[bbia_voice.py<br/>TTS/STT]
+        BEHAVIOR[bbia_behavior.py<br/>Comportements]
+    end
+    
+    subgraph "Simulation MuJoCo"
+        SIMULATOR[MuJoCoSimulator<br/>Physique 3D]
+        MODEL[Modèle officiel<br/>reachy_mini_REAL_OFFICIAL.xml]
+        ASSETS[41 Assets STL<br/>Officiels Pollen]
+    end
+    
+    subgraph "API & Services"
+        REST[REST API<br/>FastAPI]
+        WEBSOCKET[WebSocket<br/>Temps réel]
+        DAEMON[Daemon<br/>Service simulation]
+    end
+    
+    EMOTIONS --> SIMULATOR
+    VISION --> SIMULATOR
+    AUDIO --> SIMULATOR
+    VOICE --> SIMULATOR
+    BEHAVIOR --> SIMULATOR
+    
+    SIMULATOR --> MODEL
+    MODEL --> ASSETS
+    
+    SIMULATOR --> REST
+    SIMULATOR --> WEBSOCKET
+    REST --> DAEMON
+    WEBSOCKET --> DAEMON
+```
+
+## 📊 Métriques du Projet
+
+```mermaid
+pie title Répartition des Composants
+    "Tests" : 35
+    "Modules BBIA" : 25
+    "Simulation MuJoCo" : 20
+    "API & Services" : 20
+```
 - **✅ Modèle officiel** : `reachy_mini_REAL_OFFICIAL.xml` du repo pollen-robotics/reachy_mini
 - **✅ Dimensions réelles** : Fidèle aux spécifications officielles
 - **✅ Articulations** : 16 articulations contrôlables (yaw_body, stewart_1-6, passive_1-7, antennas)
@@ -31,10 +75,17 @@ Ce projet fournit une simulation **parfaitement fidèle** du robot Reachy Mini d
 ### Voir le robot en 3D (FONCTIONNEL)
 ```bash
 # 🎯 DÉMOS VERTICALES BBIA - Intégration complète (RECOMMANDÉES)
-python examples/demo_emotion_ok.py --headless --duration 5 --emotion happy --intensity 0.8  # Émotion → Pose
-python examples/demo_voice_ok.py --headless --duration 5 --command "regarde-moi"  # Voix → Action
-python examples/demo_vision_ok.py --headless --duration 10 --target-speed 0.02  # Vision → Suivi
-python examples/demo_behavior_ok.py --headless --duration 8 --behavior wake_up  # Comportement → Scénario
+# ⚠️ IMPORTANT : Pour voir la 3D, NE PAS utiliser --headless !
+
+# Mode graphique (VOIR LA 3D)
+mjpython examples/demo_emotion_ok.py --emotion happy --duration 10 --intensity 0.8 --backend mujoco
+mjpython examples/demo_voice_ok.py --command "regarde-moi" --duration 5 --backend mujoco
+mjpython examples/demo_vision_ok.py --target-speed 0.02 --duration 10 --backend mujoco
+mjpython examples/demo_behavior_ok.py --behavior wake_up --duration 8 --backend mujoco
+
+# Mode headless (TESTS RAPIDES)
+python examples/demo_emotion_ok.py --headless --emotion happy --duration 5 --backend mujoco
+python examples/demo_voice_ok.py --headless --command "regarde-moi" --duration 3 --backend mujoco
 
 # 🎯 DÉMO CORRIGÉE - Version stable et paramétrable
 python examples/demo_viewer_bbia_corrected.py --list-joints  # Lister tous les joints
@@ -65,6 +116,20 @@ python examples/demo_emotion_ok.py --emotion sad --intensity 0.6 --duration 3
 python examples/demo_voice_ok.py --command "tourne à gauche" --speak
 python examples/demo_vision_ok.py --tracking-gain 0.8 --target-speed 0.05
 python examples/demo_behavior_ok.py --behavior greeting --intensity 1.2
+```
+
+### 🔄 Backend Unifié RobotAPI (v1.1.0)
+```bash
+# Switch facile entre Sim et Robot
+python examples/demo_emotion_ok.py --backend mujoco --emotion happy --duration 5  # Simulation
+python examples/demo_emotion_ok.py --backend reachy --emotion happy --duration 5  # Robot réel
+
+# Tests smoke automatiques
+python -m pytest tests/test_robot_api_smoke.py -v
+
+# Record & Replay
+python examples/demo_emotion_ok.py --record artifacts/my_animation.jsonl --emotion happy --duration 10
+python scripts/replay_viewer.py artifacts/my_animation.jsonl --speed 1.5
 ```
 
 ### 📋 Documentation Complète

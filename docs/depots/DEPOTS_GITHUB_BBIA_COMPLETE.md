@@ -1,11 +1,72 @@
 # 🚀 Guide Complet des Dépôts GitHub pour BBIA
 
-## 🎯 Objectif
-Ce guide vous accompagne étape par étape dans l'installation et l'utilisation des dépôts GitHub officiels de Pollen Robotics pour créer un BBIA parfait sur Reachy Mini Wireless.
+## 🏗️ Architecture des Dépôts GitHub
 
----
+```mermaid
+graph TB
+    subgraph "Dépôts Fondamentaux"
+        SDK[reachy-sdk<br/>SDK Principal]
+        DOCS[reachy-docs<br/>Documentation]
+        UNITY[reachy-unity-package<br/>Simulateur Unity]
+    end
+    
+    subgraph "Extensions IA"
+        VISION[pollen-vision<br/>Computer Vision]
+        EMOTION[emotion_inference_hub<br/>Émotions IA]
+        AUDIO[reachy2-sdk-audio-server-rs<br/>Audio Rust]
+    end
+    
+    subgraph "Développement"
+        BEHAVIORS[reachy2-behaviors-dev<br/>Comportements]
+        TUTORIALS[reachy2-tutorials<br/>Tutoriels]
+        BLENDER[reachy2-blender<br/>Modélisation]
+    end
+    
+    subgraph "Outils"
+        DASHBOARD[reachy-dashboard<br/>Interface web]
+        FACETRACK[reachy-face-tracking<br/>Suivi visage]
+        TICTACTOE[reachy-2019-tictactoe<br/>Exemple jeu]
+    end
+    
+    SDK --> VISION
+    SDK --> EMOTION
+    SDK --> AUDIO
+    
+    DOCS --> BEHAVIORS
+    DOCS --> TUTORIALS
+    DOCS --> BLENDER
+    
+    UNITY --> DASHBOARD
+    UNITY --> FACETRACK
+    UNITY --> TICTACTOE
+```
 
-## 📋 ÉTAPE 1 : Dépôts Fondamentaux (À installer MAINTENANT)
+## 📊 Priorité d'Installation
+
+```mermaid
+gantt
+    title Plan d'Installation des Dépôts
+    dateFormat  YYYY-MM-DD
+    section Fondamentaux
+    reachy-sdk           :done, sdk, 2024-12-01, 2024-12-02
+    reachy-docs          :active, docs, 2024-12-02, 2024-12-05
+    reachy-unity-package :unity, 2024-12-05, 2024-12-08
+    
+    section Extensions IA
+    pollen-vision        :vision, 2024-12-08, 2024-12-12
+    emotion_inference    :emotion, 2024-12-12, 2024-12-15
+    audio-server         :audio, 2024-12-15, 2024-12-18
+    
+    section Développement
+    behaviors-dev        :behaviors, 2024-12-18, 2024-12-22
+    tutorials            :tutorials, 2024-12-22, 2024-12-25
+    blender              :blender, 2024-12-25, 2024-12-28
+    
+    section Outils
+    dashboard            :dashboard, 2024-12-28, 2024-12-30
+    face-tracking        :face, 2024-12-30, 2025-01-02
+    tictactoe            :game, 2025-01-02, 2025-01-05
+```
 
 ### 🔧 1.1 SDK Principal - `reachy-sdk`
 **URL** : https://github.com/pollen-robotics/reachy-sdk  

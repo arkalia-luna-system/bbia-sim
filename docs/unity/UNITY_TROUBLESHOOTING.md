@@ -1,53 +1,50 @@
 # 🔧 Dépannage Unity - BBIA Reachy Mini Wireless
 
-## ❌ Problèmes Courants et Solutions
+## 🔧 Diagnostic des Problèmes Unity
 
-### 1. Avertissement CS0414 - Variable inutilisée
-
-**Problème** :
-```
-Assets/Scripts/PythonCommunicator.cs(15,18): warning CS0414: The field 'PythonCommunicator.isWatching' is assigned but its value is never used
-```
-
-**Solution** :
-```bash
-# Correction automatique
-./fix_unity_warnings.sh
-
-# Ou correction manuelle
-# Supprimer la ligne : private bool isWatching = false;
-```
-
-### 2. GUID Invalide dans la Scène
-
-**Problème** :
-```
-Could not extract GUID in text file Assets/ReachySimulator.unity at line 386.
-```
-
-**Solution** :
-```bash
-# Correction automatique
-./fix_unity_warnings.sh
-
-# Ou correction manuelle
-# Remplacer : guid: 0000000000000000
-# Par : guid: 12345678901234567890123456789012
+```mermaid
+flowchart TD
+    START[Problème Unity] --> TYPE{Type d'erreur ?}
+    
+    TYPE -->|CS0414| WARNING[Avertissement CS0414<br/>Variable inutilisée]
+    TYPE -->|GUID| GUID[GUID invalide<br/>Scène corrompue]
+    TYPE -->|LOAD| LOAD[Projet ne se charge pas]
+    TYPE -->|COMPILE| COMPILE[Erreurs de compilation]
+    
+    WARNING --> FIX1[./fix_unity_warnings.sh]
+    GUID --> FIX2[./fix_unity_warnings.sh]
+    LOAD --> FIX3[./test_unity_setup.sh]
+    COMPILE --> FIX4[Vérifier scripts C#]
+    
+    FIX1 --> TEST[./test_unity_setup.sh]
+    FIX2 --> TEST
+    FIX3 --> TEST
+    FIX4 --> TEST
+    
+    TEST --> WORK{Fonctionne ?}
+    WORK -->|Oui| SUCCESS[✅ Problème résolu]
+    WORK -->|Non| DEBUG[Débogage avancé]
 ```
 
-### 3. Projet Unity ne se charge pas
+## 🚨 Solutions par Priorité
 
-**Symptômes** :
-- Unity Hub ne trouve pas le projet
-- Erreurs de compilation
-- Scènes manquantes
-
-**Solutions** :
-```bash
-# 1. Vérifier la configuration
-./test_unity_setup.sh
-
-# 2. Corriger les avertissements
+```mermaid
+graph LR
+    subgraph "Priorité 1 - Critique"
+        CRITICAL[Projet ne se charge pas<br/>Erreurs de compilation<br/>Scène corrompue]
+    end
+    
+    subgraph "Priorité 2 - Important"
+        IMPORTANT[Avertissements CS0414<br/>GUID invalides<br/>Scripts manquants]
+    end
+    
+    subgraph "Priorité 3 - Mineur"
+        MINOR[Performance lente<br/>Interface lag<br/>Rendu pixelisé]
+    end
+    
+    CRITICAL --> IMPORTANT
+    IMPORTANT --> MINOR
+```
 ./fix_unity_warnings.sh
 
 # 3. Nettoyer le cache Unity
