@@ -119,6 +119,9 @@ addopts = [
     "--maxfail=5",
     "--durations=10",
 ]
+env = [
+    "MUJOCO_GL=disable",
+]
 markers = [
     "fast: marks tests as fast (deselect with '-m \"not fast\"')",
     "slow: marks tests as slow (deselect with '-m \"not slow\"')",

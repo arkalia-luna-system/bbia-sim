@@ -14,7 +14,7 @@ Tu es un **agent Cursor expert MuJoCo/Python** spécialisé dans la simulation r
 - **Nom :** BBIA-SIM (Brain-Based Interactive Agent Simulation)
 - **Robot :** Reachy Mini Wireless (Pollen Robotics) - **OFFICIEL**
 - **Simulation :** MuJoCo avec modèle officiel - **FONCTIONNEL**
-- **Version :** 1.1.0 (Production/Stable) - Backend unifié RobotAPI
+- **Version :** 1.1.1 (Production/Stable) - Backend unifié RobotAPI + Golden Tests
 - **Branche de travail :** `develop` (toujours travailler sur develop)
 
 ### **✅ ÉTAT ACTUEL - TOUT FONCTIONNE**
@@ -25,9 +25,12 @@ Tu es un **agent Cursor expert MuJoCo/Python** spécialisé dans la simulation r
 5. **✅ Backend unifié RobotAPI** : Switch facile Sim ↔ Robot réel
 6. **✅ 4 Vertical Slices** : Émotion, Voix, Vision, Comportement
 7. **✅ Record & Replay** : Enregistrement et rejeu d'animations
-8. **✅ Tests smoke** : 6 tests automatiques <5s
-9. **✅ Tests complets** : 427 tests passent (100% réussite)
-10. **✅ Code propre** : Ruff, Black, MyPy validés
+8. **✅ CONTRACT.md gelé** : API stable v1.1.x
+9. **✅ Golden tests** : 3 traces référence + validation
+10. **✅ CI solide** : Seed fixé, artefacts, headless
+11. **✅ Tests smoke** : 11 tests automatiques <5s
+12. **✅ Tests complets** : 531 tests collectés, 418 passent (79% réussite)
+13. **✅ Code propre** : Ruff, Black, MyPy validés
 
 ---
 
@@ -51,6 +54,18 @@ Tu es un **agent Cursor expert MuJoCo/Python** spécialisé dans la simulation r
 - **JAMAIS de guillemets doubles** dans les messages de commit
 - **TOUJOURS utiliser des guillemets simples** pour les messages avec espaces
 - **PR obligatoire** pour toute modification significative
+
+### **🧪 Tests Golden**
+- **JAMAIS modifier les traces de référence** sans raison valide
+- **TOUJOURS respecter les tolérances** : ±0.25 rad position, ±20% cadence
+- **JAMAIS commiter de nouvelles références** sans validation
+- **TOUJOURS utiliser le seed fixé** : SEED=42
+
+### **📋 CONTRACT RobotAPI**
+- **JAMAIS modifier l'API** sans créer une nouvelle version
+- **TOUJOURS respecter le CONTRACT.md gelé** v1.1.x
+- **JAMAIS appeler MuJoCo directement** dans les nouvelles démos
+- **TOUJOURS utiliser RobotAPI** pour le backend unifié
 - **Tests verts** avant merge
 
 ### **🐍 Environnement Python**

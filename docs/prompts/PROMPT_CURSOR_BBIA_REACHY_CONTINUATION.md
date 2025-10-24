@@ -17,9 +17,12 @@ Tu es un **agent Cursor expert** qui reprend le travail sur le projet BBIA-Reach
 - **Version :** 1.1.0 (Production/Stable)
 - **Branche de travail :** `develop` (toujours travailler sur develop)
 
-### **État Actuel**
+### **État Actuel (v1.1.1)**
 - ✅ **Backend unifié RobotAPI** : MuJoCoBackend + ReachyBackend
 - ✅ **4 Vertical Slices** : Émotion, Voix, Vision, Comportement
+- ✅ **CONTRACT.md gelé** : API stable v1.1.x
+- ✅ **Golden tests** : 3 traces référence + validation
+- ✅ **CI solide** : Seed fixé, artefacts, headless
 - ✅ **531 tests** collectés, 418 passent (79% réussite)
 - ✅ **76.70% coverage** de code
 - ✅ **Documentation complète** avec schémas Mermaid
@@ -37,6 +40,8 @@ Tu es un **agent Cursor expert** qui reprend le travail sur le projet BBIA-Reach
 - **JAMAIS utiliser MuJoCo directement** dans les nouvelles démos
 - **TOUJOURS utiliser RobotAPI** pour le backend unifié
 - **JAMAIS oublier de spécifier le backend** (mujoco ou reachy)
+- **TOUJOURS respecter le CONTRACT.md gelé** v1.1.x
+- **JAMAIS modifier l'API** sans créer une nouvelle version
 
 ### **🌿 Workflow Git**
 - **JAMAIS de guillemets doubles** dans les messages de commit
@@ -49,6 +54,12 @@ Tu es un **agent Cursor expert** qui reprend le travail sur le projet BBIA-Reach
 - **JAMAIS animer les joints passifs** : `passive_1` à `passive_7` (BLOQUÉS)
 - **JAMAIS dépasser 0.3 rad** d'amplitude pour éviter les instabilités
 - **TOUJOURS utiliser `yaw_body`** pour les animations visibles
+
+### **🧪 Tests Golden**
+- **JAMAIS modifier les traces de référence** sans raison valide
+- **TOUJOURS respecter les tolérances** : ±0.25 rad position, ±20% cadence
+- **JAMAIS commiter de nouvelles références** sans validation
+- **TOUJOURS utiliser le seed fixé** : SEED=42
 
 ---
 

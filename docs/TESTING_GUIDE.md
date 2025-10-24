@@ -21,6 +21,7 @@ graph TB
         DAEMON[test_daemon_*.py<br/>Tests daemon<br/>50+ tests]
         WEBSOCKET[test_websocket_*.py<br/>Tests WebSocket<br/>30+ tests]
         VERTICAL[test_vertical_slices.py<br/>Tests vertical slices<br/>9 tests]
+        GOLDEN[test_golden_traces.py<br/>Tests golden traces<br/>3 tests]
     end
     
     E2E --> API[test_api_simu_roundtrip.py]
@@ -140,6 +141,18 @@ python -m pytest tests/ --cov=src --cov-fail-under=0 --tb=no -q
 
 # Tests avec arrêt au premier échec
 python -m pytest tests/ --cov=src --cov-report=term-missing -x
+```
+
+### Tests Golden Traces
+```bash
+# Tests de non-régression golden traces
+python -m pytest tests/test_golden_traces.py -v
+
+# Régénérer une trace de référence
+python scripts/record_trace.py --emotion happy --duration 5 --out artifacts/golden/happy_mujoco.jsonl
+
+# Valider une trace contre référence
+python scripts/validate_trace.py --ref artifacts/golden/happy_mujoco.jsonl --cur current_trace.jsonl
 ```
 
 ### Tests Spécifiques

@@ -1,106 +1,14 @@
-# Architecture BBIA-SIM
+# Architecture BBIA-SIM v1.1.1
 
 ## Vue d'ensemble
 
-BBIA-SIM est un système de simulation robotique modulaire avec API REST/WebSocket.
+BBIA-SIM est un système de simulation robotique modulaire avec **backend unifié RobotAPI** permettant de basculer facilement entre simulation MuJoCo et robot Reachy réel.
 
 ## Schéma d'architecture Mermaid
 
 ```mermaid
 graph TB
-    subgraph "Clients"
-        CLI[CLI/Examples<br/>python -m bbia<br/>examples/*.py]
-        WEB[Web Client<br/>Frontend<br/>Dashboard]
-        EXT[External API<br/>Integration<br/>ROS Bridge]
-    end
-    
-    subgraph "FastAPI Daemon"
-        REST[REST API<br/>/api/state<br/>/api/motion]
-        WS[WebSocket<br/>/ws/telemetry]
-        MW[Middleware<br/>Security<br/>Rate Limit]
-    end
-    
-    subgraph "Simulation Service"
-        MUJOCO[MuJoCo Sim<br/>Headless<br/>100Hz Loop]
-        STATE[Robot State<br/>Manager]
-        JOINT[Joint Ctrl<br/>Manager]
-    end
-    
-    subgraph "MuJoCo Engine"
-        PHYSICS[Physics<br/>Engine]
-        MODELS[3D Models<br/>reachy_mini.xml]
-        SCENES[Scenes<br/>minimal.xml]
-    end
-    
-    CLI --> REST
-    WEB --> REST
-    EXT --> REST
-    
-    CLI --> WS
-    WEB --> WS
-    EXT --> WS
-    
-    REST --> MW
-    WS --> MW
-    
-    MW --> MUJOCO
-    MW --> STATE
-    MW --> JOINT
-    
-    MUJOCO --> PHYSICS
-    STATE --> MODELS
-    JOINT --> SCENES
-    
-    PHYSICS --> MODELS
-    MODELS --> SCENES
-```
-
-## Architecture détaillée
-
-### 🎮 **Couche Client**
-- **CLI/Examples** : Scripts Python pour tests et démonstrations
-- **Web Client** : Interface web pour contrôle et monitoring
-- **External API** : Intégrations tierces (ROS, etc.)
-
-### 🌐 **Couche API**
-- **REST API** : Endpoints HTTP pour contrôle du robot
-- **WebSocket** : Communication temps réel pour télémétrie
-- **Middleware** : Sécurité, rate limiting, authentification
-
-### 🤖 **Couche Simulation**
-- **MuJoCo Sim** : Moteur de simulation physique
-- **Robot State** : Gestionnaire d'état du robot
-- **Joint Control** : Contrôleur des articulations
-
-### ⚙️ **Couche Physique**
-- **Physics Engine** : Moteur physique MuJoCo
-- **3D Models** : Modèles 3D du robot Reachy Mini
-- **Scenes** : Environnements de simulation
-
-## Flux de données
-
-```mermaid
-sequenceDiagram
-    participant C as Client
-    participant API as FastAPI
-    participant SIM as Simulation
-    participant MJ as MuJoCo
-    
-    C->>API: POST /api/motion/joints
-    API->>SIM: Update joint positions
-    SIM->>MJ: Set joint targets
-    MJ->>SIM: Physics step
-    SIM->>API: Robot state update
-    API->>C: WebSocket telemetry
-    
-    Note over C,MJ: Cycle de simulation à 100Hz
-```
-
-## Modules BBIA
-
-```mermaid
-graph LR
-    subgraph "Modules BBIA"
+    subgraph "BBIA Modules"
         EMOTIONS[bbia_emotions.py<br/>8 émotions]
         VISION[bbia_vision.py<br/>Détection objets]
         AUDIO[bbia_audio.py<br/>Enregistrement]
@@ -108,146 +16,122 @@ graph LR
         BEHAVIOR[bbia_behavior.py<br/>Comportements]
     end
     
-    subgraph "Intégration"
-        INTEGRATION[bbia_integration.py<br/>Orchestrateur]
+    subgraph "RobotAPI Interface"
+        API[RobotAPI<br/>Interface unifiée<br/>CONTRACT.md gelé v1.1.x]
     end
     
-    subgraph "Simulation"
-        SIMULATOR[simulator.py<br/>MuJoCo]
-        JOINTS[joints.py<br/>16 joints]
+    subgraph "Backends"
+        MUJOCO[MuJoCoBackend<br/>Simulation physique]
+        REACHY[ReachyBackend<br/>Robot réel mock]
     end
     
-    EMOTIONS --> INTEGRATION
-    VISION --> INTEGRATION
-    AUDIO --> INTEGRATION
-    VOICE --> INTEGRATION
-    BEHAVIOR --> INTEGRATION
+    subgraph "Simulation MuJoCo"
+        PHYSICS[Physics Engine<br/>100Hz Loop]
+        MODEL[Modèle officiel<br/>reachy_mini_REAL_OFFICIAL.xml]
+        ASSETS[41 Assets STL<br/>Officiels Pollen]
+    end
     
-    INTEGRATION --> SIMULATOR
-    SIMULATOR --> JOINTS
+    subgraph "Tests & CI"
+        GOLDEN[Golden Tests<br/>3 traces référence]
+        SMOKE[Smoke Tests<br/>11 tests <5s]
+        CI[GitHub Actions<br/>Seed fixé SEED=42]
+    end
+    
+    EMOTIONS --> API
+    VISION --> API
+    AUDIO --> API
+    VOICE --> API
+    BEHAVIOR --> API
+    
+    API --> MUJOCO
+    API --> REACHY
+    
+    MUJOCO --> PHYSICS
+    PHYSICS --> MODEL
+    MODEL --> ASSETS
+    
+    GOLDEN --> API
+    SMOKE --> API
+    CI --> GOLDEN
+    CI --> SMOKE
 ```
 
-## Joints du robot Reachy Mini
+## Architecture détaillée
+
+### 🧠 **Couche BBIA Modules**
+- **bbia_emotions.py** : 8 émotions (happy, sad, angry, surprised, neutral, confused, determined, nostalgic, proud)
+- **bbia_vision.py** : Détection d'objets et tracking
+- **bbia_audio.py** : Enregistrement et traitement audio
+- **bbia_voice.py** : Synthèse vocale (TTS) et reconnaissance (STT)
+- **bbia_behavior.py** : Comportements prédéfinis (wake_up, greeting, etc.)
+
+### 🔌 **Couche RobotAPI Interface**
+- **Interface unifiée** : Même code pour simulation et robot réel
+- **CONTRACT.md gelé** : API stable v1.1.x
+- **Validation centralisée** : Limites d'amplitude, joints interdits
+- **Télémétrie** : Métriques de performance
+
+### 🎮 **Couche Backends**
+- **MuJoCoBackend** : Simulation physique avec viewer 3D
+- **ReachyBackend** : Mock du robot réel (prêt pour SDK)
+
+### 🤖 **Couche Simulation MuJoCo**
+- **Physics Engine** : Moteur physique MuJoCo
+- **Modèle officiel** : reachy_mini_REAL_OFFICIAL.xml
+- **Assets STL** : 41 fichiers officiels Pollen Robotics
+
+### 🧪 **Couche Tests & CI**
+- **Golden Tests** : 3 traces de référence (happy, look_at, wake_up)
+- **Smoke Tests** : 11 tests rapides <5s
+- **CI/CD** : GitHub Actions avec seed fixé
+
+## Flux de données
 
 ```mermaid
-graph TB
-    subgraph "Joints Mobiles (7)"
-        YAW[yaw_body<br/>Rotation corps<br/>-160° à +160°]
-        STEWART1[stewart_1<br/>Plateforme<br/>-48° à +80°]
-        STEWART2[stewart_2<br/>Plateforme<br/>-80° à +70°]
-        STEWART3[stewart_3<br/>Plateforme<br/>-48° à +80°]
-        STEWART4[stewart_4<br/>Plateforme<br/>-80° à +48°]
-        STEWART5[stewart_5<br/>Plateforme<br/>-70° à +80°]
-        STEWART6[stewart_6<br/>Plateforme<br/>-80° à +48°]
-    end
+sequenceDiagram
+    participant BBIA as BBIA Module
+    participant API as RobotAPI
+    participant BACKEND as Backend
+    participant SIM as MuJoCo Sim
     
-    subgraph "Joints Bloqués (9)"
-        PASSIVE1[passive_1-7<br/>Articulations<br/>mécaniques]
-        ANTENNA1[left_antenna<br/>Antenne gauche<br/>Décorative]
-        ANTENNA2[right_antenna<br/>Antenne droite<br/>Décorative]
-    end
-    
-    YAW -.->|Recommandé| STEWART1
-    STEWART1 -.-> STEWART2
-    STEWART2 -.-> STEWART3
-    STEWART3 -.-> STEWART4
-    STEWART4 -.-> STEWART5
-    STEWART5 -.-> STEWART6
-```
-```
-python -m bbia_sim --sim --headless
-    ↓
-MuJoCoSimulator.launch_simulation()
-    ↓
-MuJoCo Engine (100Hz loop)
+    BBIA->>API: set_emotion("happy", 0.8)
+    API->>API: _validate_joint_pos()
+    API->>BACKEND: set_joint_pos("yaw_body", 0.3)
+    BACKEND->>SIM: data.qpos[joint_id] = 0.3
+    SIM->>SIM: mj_step()
+    SIM->>BACKEND: data.qpos[joint_id]
+    BACKEND->>API: get_joint_pos("yaw_body")
+    API->>BBIA: 0.3 rad
 ```
 
-### 2. API → Simulation
-```
-curl POST /api/motion/joints
-    ↓
-FastAPI Router (motion.py)
-    ↓
-SimulationService.set_joint_position()
-    ↓
-MuJoCo mj_step() + mj_forward()
-```
+## Sécurité et limites
 
-### 3. WebSocket → Client
-```
-Client connects to /ws/telemetry
-    ↓
-ConnectionManager.broadcast()
-    ↓
-SimulationService.get_robot_state()
-    ↓
-JSON telemetry (10Hz)
-```
+### 🚫 **Joints interdits**
+- `left_antenna`, `right_antenna` (bloqués)
+- `passive_1` à `passive_7` (passifs)
 
-## Composants principaux
+### ⚠️ **Limites de sécurité**
+- Amplitude maximale : 0.3 rad
+- Validation centralisée dans RobotAPI
+- Clamp automatique des positions
 
-### `src/bbia_sim/sim/`
-- **`simulator.py`** : Interface MuJoCo, gestion viewer/headless
-- **`models/reachy_mini.xml`** : Modèle 3D robot Reachy Mini
-- **`scenes/minimal.xml`** : Scène de test simple
+### 🔒 **Déterminisme**
+- Seed global fixé : SEED=42
+- Tests reproductibles
+- CI headless stable
 
-### `src/bbia_sim/daemon/`
-- **`app/main.py`** : Application FastAPI principale
-- **`config.py`** : Configuration centralisée (dev/prod)
-- **`middleware.py`** : Sécurité, rate limiting, headers
-- **`models.py`** : Validations Pydantic strictes
-- **`simulation_service.py`** : Service de simulation asynchrone
-- **`ws/telemetry.py`** : WebSocket télémétrie temps réel
+## Évolutivité
 
-### `examples/`
-- **`hello_sim.py`** : Test simulation MuJoCo
-- **`goto_pose.py`** : Contrôle mouvement via API
-- **`subscribe_telemetry.py`** : Télémétrie WebSocket
+### 📈 **Versions futures**
+- RobotAPI v1.2.x : Nouvelles méthodes
+- ReachyBackend : Intégration SDK réelle
+- Nouveaux modules BBIA
 
-## Configuration
+### 🔄 **Migration Sim → Robot**
+- Même code BBIA
+- Changement de backend uniquement
+- Tests identiques
 
-### Variables d'environnement
-```bash
-BBIA_ENV=dev|prod          # Mode environnement
-BBIA_TOKEN=secret          # Token authentification
-BBIA_CORS_ORIGINS=*        # CORS (dev) ou domaines (prod)
-BBIA_SIM_HEADLESS=true     # Mode simulation
-BBIA_TELEMETRY_FREQUENCY=10 # Fréquence télémétrie Hz
-```
+---
 
-### Sécurité
-- **Dev** : CORS permissif, logs verbeux
-- **Prod** : CORS restrictif, headers sécurité, rate limiting
-
-## Performance
-
-### Simulation
-- **Fréquence** : 100Hz (configurable)
-- **Mode** : Headless optimisé pour API
-- **Mémoire** : Buffers réutilisés, pas d'allocations dans boucle
-
-### API
-- **REST** : < 50ms réponse typique
-- **WebSocket** : 10Hz télémétrie stable
-- **Rate limit** : 100 req/min (prod)
-
-## Déploiement
-
-### Développement
-```bash
-uvicorn src.bbia_sim.daemon.app.main:app --reload
-```
-
-### Production
-```bash
-BBIA_ENV=prod BBIA_TOKEN=secure uvicorn src.bbia_sim.daemon.app.main:app
-```
-
-### Docker (futur)
-```dockerfile
-FROM python:3.10-slim
-COPY . /app
-WORKDIR /app
-RUN pip install -e ".[prod]"
-CMD ["uvicorn", "src.bbia_sim.daemon.app.main:app"]
-```
+*Dernière mise à jour : Octobre 2025*

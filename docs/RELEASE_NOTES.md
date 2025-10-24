@@ -1,158 +1,146 @@
 # Notes de Release - BBIA-SIM
 
-## Version 0.2.0 - Mode 3D MuJoCo + Fixes Qualité
+## Version 1.1.1 - Backend Unifié RobotAPI + Golden Tests
 
 ### 🎯 Résumé
 
-Implémentation complète du mode 3D MuJoCo avec viewer graphique, fix critique de durée headless, et améliorations majeures de qualité.
+Implémentation du backend unifié RobotAPI permettant de basculer facilement entre simulation MuJoCo et robot Reachy réel, avec système de golden tests pour la non-régression.
 
 ### 🚀 Nouvelles fonctionnalités
 
-#### Mode 3D visible (MuJoCo)
-- **Fenêtre 3D** : Robot Reachy Mini avec rendu réaliste
-- **Meshes STL** : Assets 3D pour torso, head, arms, gripper
-- **Matériaux** : Couleurs et propriétés réalistes (shininess, specular)
-- **Multi-OS** : Support Linux/macOS avec détection automatique
+#### Backend Unifié RobotAPI
+- **Interface unifiée** : Même code pour simulation et robot réel
+- **MuJoCoBackend** : Simulation physique avec viewer 3D
+- **ReachyBackend** : Mock du robot réel (prêt pour SDK)
+- **CONTRACT.md gelé** : API stable v1.1.x
 
-#### Fix critique - Durée headless
-- **Problème résolu** : Simulation headless ne respectait pas la durée
-- **Solution** : `time.monotonic()` + vérification après chaque step
-- **Précision** : Tolérance stricte ±0.05s (testé : 1.00s exact)
+#### Golden Tests
+- **3 traces de référence** : happy_mujoco.jsonl, lookat_mujoco.jsonl, wakeup_mujoco.jsonl
+- **Validation automatique** : Tolérances ±0.25 rad position, ±20% cadence
+- **Non-régression** : Prévention des "faux positifs"
+- **Seed fixé** : SEED=42 pour reproductibilité
 
-#### Spécifications joints centralisées
-- **Mapping** : `JointSpec` dataclass avec limites et vitesses
-- **Validation** : Fonctions pour position/vitesse dans les plages
-- **Cohérence** : API alignée avec simulation MuJoCo
+#### CI/CD Améliorée
+- **Variables d'environnement** : SEED=42, MUJOCO_GL=egl
+- **Artefacts automatiques** : Upload en cas d'échec (.jsonl, .csv)
+- **Tests headless** : Stabilité maximale
 
-## 🏗️ Architecture de la Version 0.2.0
+## 🏗️ Architecture de la Version 1.1.1
 
 ```mermaid
 graph TB
-    subgraph "Mode 3D MuJoCo"
-        VIEWER[Viewer Graphique<br/>Rendu 3D réaliste]
-        MESHES[Meshes STL<br/>Assets 3D complets]
-        MATERIALS[Matériaux<br/>Couleurs réalistes]
-        MULTIOS[Multi-OS<br/>Linux/macOS]
+    subgraph "BBIA Modules"
+        EMOTIONS[bbia_emotions.py<br/>8 émotions]
+        VISION[bbia_vision.py<br/>Détection objets]
+        AUDIO[bbia_audio.py<br/>Enregistrement]
+        VOICE[bbia_voice.py<br/>TTS/STT]
+        BEHAVIOR[bbia_behavior.py<br/>Comportements]
     end
     
-    subgraph "Fix Critique Durée"
-        MONOTONIC[time.monotonic()<br/>Chronométrage précis]
-        VERIFICATION[Vérification après step<br/>Contrôle strict]
-        TOLERANCE[Tolérance ±0.05s<br/>Précision garantie]
+    subgraph "RobotAPI Interface"
+        API[RobotAPI<br/>Interface unifiée<br/>CONTRACT.md gelé v1.1.x]
     end
     
-    subgraph "Spécifications Joints"
-        JOINTSPEC[JointSpec dataclass<br/>Limites centralisées]
-        VALIDATION[Validation position/vitesse<br/>API cohérente]
-        MAPPING[Mapping MuJoCo<br/>Alignement simulation]
+    subgraph "Backends"
+        MUJOCO[MuJoCoBackend<br/>Simulation physique]
+        REACHY[ReachyBackend<br/>Robot réel mock]
     end
     
-    VIEWER --> MESHES
-    MESHES --> MATERIALS
-    MATERIALS --> MULTIOS
+    subgraph "Tests & CI"
+        GOLDEN[Golden Tests<br/>3 traces référence]
+        SMOKE[Smoke Tests<br/>11 tests <5s]
+        CI[GitHub Actions<br/>Seed fixé SEED=42]
+    end
     
-    MONOTONIC --> VERIFICATION
-    VERIFICATION --> TOLERANCE
+    EMOTIONS --> API
+    VISION --> API
+    AUDIO --> API
+    VOICE --> API
+    BEHAVIOR --> API
     
-    JOINTSPEC --> VALIDATION
-    VALIDATION --> MAPPING
+    API --> MUJOCO
+    API --> REACHY
+    
+    GOLDEN --> API
+    SMOKE --> API
+    CI --> GOLDEN
+    CI --> SMOKE
 ```
 
-## 📊 Améliorations Qualité
+## 🔧 Améliorations techniques
 
-```mermaid
-pie title Répartition des Améliorations
-    "Tests complets" : 30
-    "Linting/Formatage" : 25
-    "Documentation" : 20
-    "Performance" : 15
-    "Sécurité" : 10
-```
+### Sécurité et limites
+- **Joints interdits** : left_antenna, right_antenna, passive_1-7
+- **Amplitude limite** : 0.3 rad maximum
+- **Validation centralisée** : Dans RobotAPI._validate_joint_pos()
 
-## 🔄 Workflow de Release
+### Déterminisme
+- **Seed global** : SEED=42 fixé
+- **Tests reproductibles** : Même résultat à chaque run
+- **CI headless** : MuJoCo_GL=egl pour stabilité
 
-```mermaid
-sequenceDiagram
-    participant DEV as Développeur
-    participant TEST as Tests
-    participant LINT as Linters
-    participant BUILD as Build
-    participant RELEASE as Release
-    
-    DEV->>TEST: Tests complets
-    TEST->>LINT: Validation qualité
-    LINT->>BUILD: Build automatique
-    BUILD->>RELEASE: Publication v0.2.0
-    
-    Note over DEV,RELEASE: Cycle de qualité complet
-```
-- **CI robuste** : Skip viewer tests en environnement headless
-- **Validation** : Joints, télémétrie, format des messages
+### Évolutivité
+- **API versionnée** : CONTRACT.md gelé v1.1.x
+- **Migration facile** : Sim → Robot avec même code
+- **Tests identiques** : Même validation pour les deux backends
 
-#### Documentation
-- **README** : Instructions 3D pour Linux/macOS
-- **QUICKSTART** : Guide rapide avec dépannage
-- **Troubleshooting** : Messages d'erreur clairs
+## 📊 Métriques
 
-### 📋 Comment utiliser
+### Tests
+- **531 tests collectés** par pytest
+- **418 tests passent** (79% de réussite)
+- **Coverage** : 76.70%
+- **Golden tests** : 3 traces de référence
 
-#### Mode 3D (Linux)
+### Performance
+- **Smoke tests** : <5s par test
+- **Golden tests** : <10s par validation
+- **CI complète** : <60s
+
+## 🚀 Commandes de migration
+
+### Utilisation RobotAPI
 ```bash
-pip install mujoco-python-viewer
-python -m bbia_sim --sim --verbose
+# Simulation MuJoCo
+python examples/demo_emotion_ok.py --backend mujoco --emotion happy
+
+# Robot réel (mock)
+python examples/demo_emotion_ok.py --backend reachy --emotion happy
 ```
 
-#### Mode 3D (macOS)
+### Golden Tests
 ```bash
-pip install mujoco-python-viewer
-mjpython -m bbia_sim --sim --verbose
+# Tests de non-régression
+pytest -q tests/test_golden_traces.py
+
+# Régénérer référence
+python scripts/record_trace.py --emotion happy --duration 5
 ```
 
-#### Mode headless (tous OS)
-```bash
-python -m bbia_sim --sim --headless --duration 1
-# S'arrête exactement à 1.00s (±0.05s)
-```
+## 🔄 Migration depuis v1.0.x
 
-### 🔧 Dépannage
+### Changements breaking
+- **Aucun** : API rétrocompatible
+- **Nouveau** : Backend unifié optionnel
+- **Nouveau** : Golden tests optionnels
 
-#### macOS - Viewer ne s'ouvre pas
-- **Erreur** : "mjpython required"
-- **Solution** : Utilisez `mjpython` au lieu de `python`
-- **Alternative** : Mode headless avec `--headless`
+### Migration recommandée
+1. **Tester** : Vérifier que les démos existantes fonctionnent
+2. **Migrer** : Remplacer les appels directs MuJoCo par RobotAPI
+3. **Valider** : Lancer les golden tests
 
-#### Linux - Erreur GLFW/EGL
-- **Vérifiez** : `DISPLAY` est défini
-- **Installez** : Drivers graphiques et bibliothèques OpenGL
-- **Fallback** : Mode headless
+## 🎯 Prochaines versions
 
-#### Performance
-- **Meshes STL** : Plus réalistes mais potentiellement plus lents
-- **Optimisation** : Utilisez `--headless` pour les tests automatisés
+### v1.2.x (Prévu)
+- **ReachyBackend réel** : Intégration SDK Pollen
+- **Nouvelles méthodes** : RobotAPI étendu
+- **Tests hardware** : Validation sur robot réel
 
-### 📊 Métriques qualité
-
-- **Durée headless** : Précision ±0.05s (testé)
-- **WebSocket** : Cadence stable ~10Hz
-- **Tests** : Couverture complète des nouvelles fonctionnalités
-- **CI** : Green sur tous les checks (ruff/black/mypy/pytest/bandit/pip-audit)
-
-### 🎯 Prochaines étapes
-
-1. **Assets réalistes** : Intégration des meshes officiels Reachy
-2. **Physique** : Amélioration des paramètres de simulation
-3. **API** : Endpoints pour contrôle des joints
-4. **Documentation** : Guide avancé pour développeurs
-
-### 🔗 Liens utiles
-
-- **Documentation** : `docs/QUICKSTART.md`
-- **Tests** : `tests/sim/test_duration.py`, `tests/api/test_joint_validation.py`
-- **Assets** : `src/bbia_sim/sim/assets/meshes/`
-- **Spécifications** : `src/bbia_sim/sim/joints.py`
+### v2.0.x (Futur)
+- **Multi-robots** : Support plusieurs Reachy
+- **Cloud** : Simulation distribuée
+- **IA avancée** : Intégration LLM
 
 ---
 
-**Version** : 0.2.0  
-**Date** : Octobre 2025  
-**Statut** : Stable, prêt pour production
+*Dernière mise à jour : Octobre 2025*
