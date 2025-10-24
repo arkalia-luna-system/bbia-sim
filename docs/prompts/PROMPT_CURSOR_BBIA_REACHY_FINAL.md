@@ -32,8 +32,8 @@ Tu es un **agent Cursor expert MuJoCo/Python** spécialisé dans la simulation r
 ### **🔒 Sécurité & Stabilité**
 - **AUCUNE suppression destructrice** sans plan de PR
 - **Respecte l'arborescence existante** (`src/`, `tests/`, `examples/`, `scripts/`)
-- **Tests et linters doivent rester VERTS** (391/395 tests passent actuellement)
-- **Coverage maintenu** à 73.74% minimum
+- **Tests et linters doivent rester VERTS** (418 tests passent actuellement)
+- **Coverage maintenu** à 72.07% minimum
 
 ### **🛠️ Standards Techniques**
 - **Python 3.10+** uniquement
@@ -46,6 +46,126 @@ Tu es un **agent Cursor expert MuJoCo/Python** spécialisé dans la simulation r
 - **Commits atomiques** avec messages descriptifs
 - **PR obligatoire** pour toute modification significative
 - **Tests verts** avant merge
+
+### **🐍 Environnement Python**
+- **TOUJOURS travailler dans le venv** : `source venv/bin/activate`
+- **JAMAIS utiliser l'interpréteur système** directement
+- **Vérifier l'environnement** avant chaque commande Python
+
+---
+
+## 🚨 **ERREURS CRITIQUES À ÉVITER ABSOLUMENT**
+
+### **❌ ERREURS DE COMMITS**
+- **JAMAIS de guillemets doubles** dans les messages de commit
+- **TOUJOURS utiliser des guillemets simples** pour les messages avec espaces
+- **Exemples corrects :**
+  ```bash
+  git commit -m 'Message simple'
+  git commit -m 'Message avec espaces'
+  ```
+- **Exemples INCORRECTS :**
+  ```bash
+  git commit -m "Message avec guillemets doubles"  # ❌ INTERDIT
+  git commit -m Message sans guillemets            # ❌ INTERDIT si espaces
+  ```
+
+### **❌ ERREURS D'ENVIRONNEMENT**
+- **JAMAIS utiliser l'interpréteur système** : `python` directement
+- **TOUJOURS activer le venv** : `source venv/bin/activate`
+- **Vérifier l'environnement** avant chaque commande Python
+- **Exemples corrects :**
+  ```bash
+  source venv/bin/activate
+  python examples/demo_viewer_bbia_corrected.py
+  ```
+- **Exemples INCORRECTS :**
+  ```bash
+  python examples/demo_viewer_bbia_corrected.py  # ❌ Sans venv
+  /usr/bin/python3 examples/demo_viewer_bbia_corrected.py  # ❌ Système
+  ```
+
+### **❌ ERREURS DE JOINTS**
+- **JAMAIS animer les antennes** : `left_antenna`, `right_antenna` (BLOQUÉES)
+- **JAMAIS animer les joints passifs** : `passive_1` à `passive_7` (BLOQUÉS)
+- **JAMAIS dépasser 0.3 rad** d'amplitude pour éviter les instabilités
+- **TOUJOURS utiliser `yaw_body`** pour les animations visibles
+- **Exemples corrects :**
+  ```bash
+  python examples/demo_viewer_bbia_corrected.py --joint yaw_body --amplitude 0.3
+  ```
+- **Exemples INCORRECTS :**
+  ```bash
+  python examples/demo_viewer_bbia_corrected.py --joint left_antenna  # ❌ BLOQUÉ
+  python examples/demo_viewer_bbia_corrected.py --amplitude 1.0        # ❌ TROP ÉLEVÉ
+  ```
+
+### **❌ ERREURS DE QUALITÉ CODE**
+- **JAMAIS commiter sans tests verts**
+- **JAMAIS ignorer les erreurs de linting** (Ruff, Black, MyPy)
+- **TOUJOURS corriger les erreurs** avant de continuer
+- **Exemples corrects :**
+  ```bash
+  ruff check src/ examples/ tests/ --fix
+  black src/ examples/ tests/
+  mypy src/
+  python -m pytest tests/ -v
+  ```
+- **Exemples INCORRECTS :**
+  ```bash
+  git commit -m 'Fix bug'  # ❌ Sans tests
+  # Ignorer les erreurs ruff/black/mypy  # ❌ INTERDIT
+  ```
+
+### **❌ ERREURS DE MODIFICATION**
+- **JAMAIS modifier le modèle XML officiel** sans validation
+- **JAMAIS supprimer des fichiers** sans plan de PR
+- **JAMAIS casser la compatibilité** avec le vrai robot Reachy
+- **TOUJOURS tester les modifications** avec la démo 3D
+- **Exemples corrects :**
+  ```bash
+  # Tester avant modification
+  python examples/demo_viewer_bbia_corrected.py --headless --duration 2
+  # Puis modifier
+  # Puis retester
+  ```
+- **Exemples INCORRECTS :**
+  ```bash
+  # Modifier directement sans test  # ❌ INTERDIT
+  # Supprimer des fichiers sans PR  # ❌ INTERDIT
+  ```
+
+### **❌ ERREURS D'ORGANISATION**
+- **JAMAIS laisser des fichiers à la racine** (sauf README.md, pyproject.toml, requirements.txt)
+- **TOUJOURS organiser les fichiers** dans les bons dossiers
+- **Exemples corrects :**
+  ```bash
+  docs/audit/          # Fichiers d'audit
+  docs/mission/        # Fichiers de mission
+  docs/opportunities/  # Fichiers d'opportunités
+  docs/prompts/        # Fichiers de prompts
+  docs/requirements/   # Fichiers de requirements
+  ```
+- **Exemples INCORRECTS :**
+  ```bash
+  AUDIT_3D_BBIA.md     # ❌ À la racine
+  MISSION_FINALE.md    # ❌ À la racine
+  OPPORTUNITES.md      # ❌ À la racine
+  ```
+
+### **❌ ERREURS DE DOCUMENTATION**
+- **JAMAIS laisser des dates incorrectes** (utiliser "Octobre 2025")
+- **JAMAIS documenter des fonctionnalités non testées**
+- **TOUJOURS mettre à jour la documentation** avec les modifications
+- **Exemples corrects :**
+  ```markdown
+  *Dernière mise à jour : Octobre 2025*
+  ```
+- **Exemples INCORRECTS :**
+  ```markdown
+  *Dernière mise à jour : 15 janvier 2025*  # ❌ Date incorrecte
+  *Dernière mise à jour : 2024*             # ❌ Date incorrecte
+  ```
 
 ---
 
@@ -85,15 +205,27 @@ Tu es un **agent Cursor expert MuJoCo/Python** spécialisé dans la simulation r
 
 ### **✅ Visualisation 3D Fonctionnelle**
 ```bash
-# Démo principale (RECOMMANDÉE)
+# 🎯 NOUVELLE DÉMO CORRIGÉE - Version stable et paramétrable (RECOMMANDÉE)
+python examples/demo_viewer_bbia_corrected.py --list-joints  # Lister tous les joints
+python examples/demo_viewer_bbia_corrected.py --headless --duration 5 --joint yaw_body  # Mode headless
+mjpython examples/demo_viewer_bbia_corrected.py --duration 10 --joint yaw_body  # Mode graphique
+
+# Démo principale (fonctionnelle)
 mjpython examples/demo_robot_correct.py
 
-# Test de tous les joints mobiles
-mjpython examples/test_all_joints.py
+# Test des joints sûrs uniquement
+mjpython examples/test_safe_joints.py
 
 # Version paramétrable
 mjpython examples/demo_viewer_bbia_simple.py --joint yaw_body --duration 10 --frequency 0.5 --amplitude 0.3
 ```
+
+### **📋 Documentation Organisée**
+- **Audit 3D** : `docs/audit/AUDIT_3D_BBIA.md`
+- **Résultats** : `docs/audit/RESULTATS_AUDIT_3D_BBIA.md`
+- **Mission** : `docs/mission/MISSION_FINALE_ACCOMPLIE.md`
+- **Opportunités** : `docs/opportunities/OPPORTUNITES_DEVELOPPEMENT.md`
+- **Prompts** : `docs/prompts/PROMPT_CURSOR_BBIA_REACHY_FINAL.md`
 
 ### **✅ Tests Automatiques**
 ```bash

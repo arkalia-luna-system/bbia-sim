@@ -45,6 +45,13 @@ mjpython examples/test_safe_joints.py
 mjpython examples/demo_viewer_bbia_simple.py --joint yaw_body --duration 10 --frequency 0.5 --amplitude 0.3
 ```
 
+### 📋 Documentation Complète
+- **Audit 3D** : `docs/audit/AUDIT_3D_BBIA.md`
+- **Résultats** : `docs/audit/RESULTATS_AUDIT_3D_BBIA.md`
+- **Mission** : `docs/mission/MISSION_FINALE_ACCOMPLIE.md`
+- **Opportunités** : `docs/opportunities/OPPORTUNITES_DEVELOPPEMENT.md`
+- **Prompts** : `docs/prompts/PROMPT_CURSOR_BBIA_REACHY_FINAL.md`
+
 ### ⚠️ IMPORTANT - Joints Bloqués et Problématiques
 Les antennes (`left_antenna`, `right_antenna`) sont **BLOQUÉES** dans le modèle officiel Reachy Mini. Utilisez `yaw_body` (rotation du corps) pour les animations visibles.
 
