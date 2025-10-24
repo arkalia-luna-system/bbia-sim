@@ -30,27 +30,32 @@ Ce projet fournit une simulation **parfaitement fidèle** du robot Reachy Mini d
 
 ### Voir le robot en 3D (FONCTIONNEL)
 ```bash
-# Démo principale - Robot qui tourne correctement
+# Démo principale - Robot qui tourne correctement (RECOMMANDÉE)
 mjpython examples/demo_robot_correct.py
 
-# Test de tous les joints mobiles
-mjpython examples/test_all_joints.py
+# Test des joints sûrs uniquement
+mjpython examples/test_safe_joints.py
 
 # Version paramétrable avec yaw_body (rotation du corps)
 mjpython examples/demo_viewer_bbia_simple.py --joint yaw_body --duration 10 --frequency 0.5 --amplitude 0.3
 ```
 
-### ⚠️ IMPORTANT - Joints Bloqués
+### ⚠️ IMPORTANT - Joints Bloqués et Problématiques
 Les antennes (`left_antenna`, `right_antenna`) sont **BLOQUÉES** dans le modèle officiel Reachy Mini. Utilisez `yaw_body` (rotation du corps) pour les animations visibles.
 
-**Vérification des joints :**
+**Diagnostic des joints :**
 ```bash
-# Script de vérification des joints
-python scripts/check_joints.py
+# Script de diagnostic complet
+python scripts/diagnose_joints.py
 
-# Vérification d'un joint spécifique
-python scripts/check_joints.py yaw_body
+# Vérification des joints
+python scripts/check_joints.py
 ```
+
+**Résultat du diagnostic :**
+- ✅ **1 joint sûr** : `yaw_body` (rotation du corps) - **LE PLUS SÛR**
+- ⚠️ **6 joints problématiques** : `stewart_1-6` (plages importantes, peuvent causer des problèmes)
+- ❌ **9 joints bloqués** : `passive_1-7`, `left_antenna`, `right_antenna`
 
 **Pourquoi les antennes sont bloquées ?**
 - **Modèle officiel** : Le fichier `reachy_mini_REAL_OFFICIAL.xml` vient du dépôt Pollen Robotics

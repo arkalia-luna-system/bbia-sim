@@ -198,6 +198,28 @@ numpy = "^1.24.0"
 
 ### **🚫 ERREURS FRÉQUENTES À ÉVITER ABSOLUMENT**
 
+#### **❌ ERREUR #0 : Guillemets et Environnement**
+```bash
+# ❌ NE JAMAIS utiliser de guillemets dans les messages de commit
+git commit -m Message avec guillemets  # ÉCHEC GARANTI
+
+# ✅ CORRECT - Pas de guillemets
+git commit -m Message sans guillemets  # SUCCÈS GARANTI
+
+# ❌ NE JAMAIS travailler en dehors du venv
+python script.py  # Peut causer des erreurs de dépendances
+
+# ✅ CORRECT - Toujours dans le venv
+source venv/bin/activate  # OU utiliser mjpython directement
+mjpython script.py  # SUCCÈS GARANTI
+```
+
+**Règles absolues :**
+- **JAMAIS de guillemets** dans les messages de commit
+- **TOUJOURS travailler dans le venv** ou utiliser `mjpython`
+- **JAMAIS laisser d'erreurs** de code, linting, ou autres
+- **TOUJOURS vérifier** Ruff, Black, MyPy avant commit
+
 #### **❌ ERREUR #1 : Antennes Bloquées**
 ```bash
 # ❌ NE PAS FAIRE - Les antennes sont BLOQUÉES
@@ -256,9 +278,12 @@ python examples/demo_viewer_bbia_simple.py --headless --joint yaw_body --duratio
 #### **🔍 3. Utiliser les Bonnes Commandes**
 ```bash
 # ✅ COMMANDES QUI MARCHENT TOUJOURS
-mjpython examples/demo_robot_correct.py                    # Démo principale
-mjpython examples/test_all_joints.py                       # Test tous joints
+mjpython examples/demo_robot_correct.py                    # Démo principale (RECOMMANDÉE)
+mjpython examples/test_safe_joints.py                     # Test joints sûrs uniquement
 mjpython examples/demo_viewer_bbia_simple.py --joint yaw_body --duration 10 --frequency 0.5 --amplitude 0.3
+
+# ⚠️ COMMANDES AVEC PRÉCAUTION
+mjpython examples/test_all_joints.py                       # Test tous joints (sécurisé)
 ```
 
 ### **🎯 JOINTS MOBILES VALIDÉS**
@@ -266,15 +291,26 @@ mjpython examples/demo_viewer_bbia_simple.py --joint yaw_body --duration 10 --fr
 #### **✅ Joints qui PEUVENT bouger (7 joints)**
 ```python
 MOBILE_JOINTS = {
-    "yaw_body": "Rotation du corps - LE PLUS VISIBLE",
-    "stewart_1": "Plateforme Stewart 1",
-    "stewart_2": "Plateforme Stewart 2", 
-    "stewart_3": "Plateforme Stewart 3",
-    "stewart_4": "Plateforme Stewart 4",
-    "stewart_5": "Plateforme Stewart 5",
-    "stewart_6": "Plateforme Stewart 6"
+    "yaw_body": "Rotation du corps - LE PLUS VISIBLE ET SÛR",
+    "stewart_1": "Plateforme Stewart 1 - PROBLÉMATIQUE",
+    "stewart_2": "Plateforme Stewart 2 - PROBLÉMATIQUE", 
+    "stewart_3": "Plateforme Stewart 3 - PROBLÉMATIQUE",
+    "stewart_4": "Plateforme Stewart 4 - PROBLÉMATIQUE",
+    "stewart_5": "Plateforme Stewart 5 - PROBLÉMATIQUE",
+    "stewart_6": "Plateforme Stewart 6 - PROBLÉMATIQUE"
 }
 ```
+
+#### **⚠️ DIAGNOSTIC CRITIQUE DES JOINTS**
+```bash
+# Script de diagnostic obligatoire
+python scripts/diagnose_joints.py
+```
+
+**Résultat du diagnostic :**
+- ✅ **1 joint sûr** : `yaw_body` (rotation du corps) - **LE PLUS SÛR**
+- ⚠️ **6 joints problématiques** : `stewart_1-6` (plages importantes, peuvent causer des problèmes)
+- ❌ **9 joints bloqués** : `passive_1-7`, `left_antenna`, `right_antenna`
 
 #### **❌ Joints BLOQUÉS (9 joints)**
 ```python
@@ -291,22 +327,41 @@ BLOCKED_JOINTS = {
 }
 ```
 
-### **🚀 WORKFLOW RECOMMANDÉ**
+### **🚀 WORKFLOW OBLIGATOIRE**
 
-#### **📋 Étapes Obligatoires**
-1. **Vérifier** les limites des joints avec le script ci-dessus
-2. **Tester** en mode headless d'abord
-3. **Utiliser** `yaw_body` pour les animations principales
-4. **Respecter** les limites officielles
-5. **Valider** avec les tests existants
+#### **📋 Étapes Obligatoires AVANT TOUT COMMIT**
+1. **Activer le venv** : `source venv/bin/activate` OU utiliser `mjpython`
+2. **Vérifier Ruff** : `ruff check . --exclude venv --fix`
+3. **Vérifier Black** : `black src/ tests/ examples/ scripts/ --check`
+4. **Vérifier MyPy** : `mypy src/ --ignore-missing-imports`
+5. **Tester** : `python -m pytest tests/test_adapter_mujoco.py -v`
+6. **Commit SANS guillemets** : `git commit -m Message simple`
+7. **Push** : `git push origin develop`
 
-#### **🧪 Tests de Validation**
+#### **🔍 Checklist de Qualité OBLIGATOIRE**
 ```bash
-# Tests obligatoires avant commit
+# 1. Environnement
+source venv/bin/activate  # OU utiliser mjpython directement
+
+# 2. Linting et Formatage
+ruff check . --exclude venv --fix
+black src/ tests/ examples/ scripts/
+
+# 3. Tests
 python -m pytest tests/test_adapter_mujoco.py -v
-ruff check . --exclude venv
-black src/ tests/ examples/ --check
+
+# 4. Commit (SANS guillemets)
+git add .
+git commit -m Message simple sans guillemets
+git push origin develop
 ```
+
+#### **⚠️ RÈGLES ABSOLUES**
+- **JAMAIS de guillemets** dans les messages de commit
+- **TOUJOURS dans le venv** ou utiliser `mjpython`
+- **JAMAIS d'erreurs** de linting, formatage, ou tests
+- **TOUJOURS vérifier** la qualité avant commit
+- **TOUJOURS utiliser** les scripts de diagnostic
 
 ### **💡 CONSEILS D'EXPERT**
 
