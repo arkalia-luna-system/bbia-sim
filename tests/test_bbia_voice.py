@@ -1,6 +1,7 @@
 import unittest
-import pytest
 from unittest.mock import MagicMock, patch
+
+import pytest
 
 from src.bbia_sim import bbia_voice
 
