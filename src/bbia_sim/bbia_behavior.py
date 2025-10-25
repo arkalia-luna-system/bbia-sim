@@ -263,7 +263,7 @@ class HideBehavior(BBIABehavior):
 class BBIABehaviorManager:
     """Gestionnaire de comportements pour BBIA."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.behaviors: dict[str, BBIABehavior] = {}
         self.active_behaviors: list[str] = []
         self.behavior_queue: Queue[tuple[str, dict[str, Any]]] = Queue()

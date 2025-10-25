@@ -64,8 +64,8 @@ gantt
     
     section Outils
     dashboard            :dashboard, 2024-12-28, 2024-12-30
-    face-tracking        :face, 2024-12-30, 2025-01-02
-    tictactoe            :game, 2025-01-02, 2025-01-05
+    face-tracking        :face, Décembre 2024, Janvier 2025
+    tictactoe            :game, Janvier 2025, Janvier 2025
 ```
 
 ### 🔧 1.1 SDK Principal - `reachy-sdk`

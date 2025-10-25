@@ -182,24 +182,24 @@ gantt
     dateFormat  YYYY-MM-DD
     section Phase 1: Préparation
     Documentation complète    :done, doc, 2024-12-01, 2024-12-15
-    Environnement dev        :active, env, 2024-12-15, 2025-01-15
-    Simulation Unity         :sim, 2025-01-01, 2025-01-30
+    Environnement dev        :active, env, Décembre 2024, Janvier 2025
+    Simulation Unity         :sim, Janvier 2025, Janvier 2025
     
     section Phase 2: Core
-    Configuration robot      :robot, 2025-02-01, 2025-02-15
-    Tests mouvements         :move, 2025-02-15, 2025-03-01
-    Reconnaissance vocale    :voice, 2025-03-01, 2025-03-15
-    Système émotions         :emotions, 2025-03-15, 2025-04-01
+    Configuration robot      :robot, Février 2025, Février 2025
+    Tests mouvements         :move, Février 2025, Mars 2025
+    Reconnaissance vocale    :voice, Mars 2025, Mars 2025
+    Système émotions         :emotions, Mars 2025, Avril 2025
     
     section Phase 3: Intelligence
-    Hugging Face             :hf, 2025-04-01, 2025-05-01
-    Modèles IA               :ai, 2025-05-01, 2025-06-01
-    Comportements complexes  :behavior, 2025-06-01, 2025-07-01
+    Hugging Face             :hf, Avril 2025, Mai 2025
+    Modèles IA               :ai, Mai 2025, Juin 2025
+    Comportements complexes  :behavior, Juin 2025, Juillet 2025
     
     section Phase 4: Optimisation
-    Performance              :perf, 2025-07-01, 2025-08-01
-    Nouvelles fonctionnalités :feat, 2025-08-01, 2025-09-01
-    Déploiement production   :deploy, 2025-09-01, Octobre 2025
+    Performance              :perf, Juillet 2025, Août 2025
+    Nouvelles fonctionnalités :feat, Août 2025, Septembre 2025
+    Déploiement production   :deploy, Septembre 2025, Octobre 2025
 ```
 
 ---

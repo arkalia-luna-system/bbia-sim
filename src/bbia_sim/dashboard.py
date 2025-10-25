@@ -35,10 +35,10 @@ logger = logging.getLogger(__name__)
 class BBIAWebSocketManager:
     """Gestionnaire WebSocket pour le dashboard BBIA."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialise le gestionnaire WebSocket."""
         self.active_connections: list[WebSocket] = []
-        self.robot = None
+        self.robot: Optional[Any] = None
         self.robot_backend = "mujoco"
 
     async def connect(self, websocket: WebSocket):

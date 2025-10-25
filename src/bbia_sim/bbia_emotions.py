@@ -12,7 +12,7 @@ from typing import Any
 class BBIAEmotions:
     """Module d'émotions avancé pour BBIA."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.current_emotion = "neutral"
         self.emotion_intensity = 0.5  # 0.0 à 1.0
         self.transition_duration = 1.0  # secondes
@@ -102,7 +102,7 @@ class BBIAEmotions:
 
         return True
 
-    def _display_emotion_transition(self, old_emotion: str, new_emotion: str):
+    def _display_emotion_transition(self, old_emotion: str, new_emotion: str) -> None:
         """Affiche la transition d'émotion."""
         old_data = self.emotions[old_emotion]
         new_data = self.emotions[new_emotion]
@@ -182,7 +182,7 @@ class BBIAEmotions:
 
         return result_emotion
 
-    def get_emotion_stats(self) -> dict:
+    def get_emotion_stats(self) -> dict[str, Any]:
         """Retourne les statistiques des émotions."""
         emotion_counts: dict[str, int] = {}
         for entry in self.emotion_history:
@@ -197,13 +197,13 @@ class BBIAEmotions:
             "available_emotions": list(self.emotions.keys()),
         }
 
-    def reset_emotions(self):
+    def reset_emotions(self) -> None:
         """Remet BBIA en état neutre."""
         self.set_emotion("neutral", 0.5)
         self.emotion_history.clear()
 
 
-def main():
+def main() -> None:
     """Test du module BBIA Emotions."""
     # Créer l'instance
     emotions = BBIAEmotions()

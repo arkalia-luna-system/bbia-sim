@@ -12,7 +12,7 @@ from typing import Any, Optional
 class BBIAVision:
     """Module de vision avancé pour BBIA."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.camera_active = True
         self.vision_quality = "HD"
         self.detection_range = 3.0  # mètres
@@ -121,7 +121,7 @@ class BBIAVision:
         else:
             return False
 
-    def stop_tracking(self):
+    def stop_tracking(self) -> None:
         """Arrête le suivi d'objet."""
         if self.tracking_active:
             self.tracking_active = False
@@ -129,7 +129,7 @@ class BBIAVision:
         else:
             pass
 
-    def get_focus_status(self) -> dict:
+    def get_focus_status(self) -> dict[str, Any]:
         """Retourne le statut du focus actuel."""
         return {
             "tracking_active": self.tracking_active,
@@ -150,7 +150,7 @@ class BBIAVision:
         distance = math.sqrt(x**2 + y**2)
         return distance
 
-    def get_vision_stats(self) -> dict:
+    def get_vision_stats(self) -> dict[str, Any]:
         """Retourne les statistiques de vision."""
         return {
             "camera_active": self.camera_active,
@@ -163,7 +163,7 @@ class BBIAVision:
         }
 
 
-def main():
+def main() -> None:
     """Test du module BBIA Vision."""
     # Créer l'instance
     vision = BBIAVision()

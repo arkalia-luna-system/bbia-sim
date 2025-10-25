@@ -59,7 +59,7 @@ def lire_audio(fichier):
         raise
 
 
-def detecter_son(fichier, seuil=500):
+def detecter_son(fichier: str, seuil: int = 500) -> bool:
     """Détecte la présence d'un son dans un fichier WAV (seuil simple).
     Retourne True si un son est détecté, False sinon.
     """

@@ -72,19 +72,19 @@ gantt
     title Roadmap BBIA Development
     dateFormat  YYYY-MM-DD
     section Phase 1: BBIA Avancé
-    Nouvelles émotions        :emotions, 2025-01-01, 2025-02-15
-    Vision intelligente       :vision, 2025-02-01, 2025-03-15
-    Audio sophistiqué         :audio, 2025-03-01, 2025-04-15
+    Nouvelles émotions        :emotions, Janvier 2025, Février 2025
+    Vision intelligente       :vision, Février 2025, Mars 2025
+    Audio sophistiqué         :audio, Mars 2025, Avril 2025
     
     section Phase 2: Intégrations
-    Hugging Face              :hf, 2025-04-01, 2025-05-15
-    ROS Integration           :ros, 2025-05-01, 2025-06-15
-    Unity Advanced            :unity, 2025-06-01, 2025-07-15
+    Hugging Face              :hf, Avril 2025, Mai 2025
+    ROS Integration           :ros, Mai 2025, Juin 2025
+    Unity Advanced            :unity, Juin 2025, Juillet 2025
     
     section Phase 3: Performance
-    Optimisation              :opt, 2025-07-01, 2025-08-15
-    Cloud Computing           :cloud, 2025-08-01, 2025-09-15
-    Monitoring                :monitor, 2025-09-01, Octobre 2025
+    Optimisation              :opt, Juillet 2025, Août 2025
+    Cloud Computing           :cloud, Août 2025, Septembre 2025
+    Monitoring                :monitor, Septembre 2025, Octobre 2025
 ```
 
 #### **Audio Avancé**

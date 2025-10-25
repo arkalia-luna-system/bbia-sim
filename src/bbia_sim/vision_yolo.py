@@ -36,7 +36,7 @@ class YOLODetector:
         """
         self.model_size = model_size
         self.confidence_threshold = confidence_threshold
-        self.model = None
+        self.model: Optional[Any] = None
         self.is_loaded = False
 
         # Classes d'intérêt pour BBIA
@@ -67,7 +67,7 @@ class YOLODetector:
             logger.info(f"📥 Chargement modèle YOLOv8{self.model_size}...")
             start_time = time.time()
 
-            self.model = YOLO(f"yolov8{self.model_size}.pt")
+            self.model = YOLO(f"yolov8{self.model_size}.pt")  # type: ignore
 
             load_time = time.time() - start_time
             logger.info(f"✅ Modèle YOLO chargé en {load_time:.1f}s")
