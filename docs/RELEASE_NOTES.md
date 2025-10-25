@@ -96,7 +96,7 @@ graph TB
 ### Tests
 - **531 tests collectés** par pytest
 - **418 tests passent** (79% de réussite)
-- **Coverage** : 76.70%
+- **Coverage** : 63.40%
 - **Golden tests** : 3 traces de référence
 
 ### Performance

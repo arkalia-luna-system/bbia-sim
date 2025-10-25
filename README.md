@@ -236,7 +236,7 @@ src/bbia_sim/sim/
 
 ### **✅ SEMAINE 2 - IA Légère (✅ ACCOMPLI)**
 - **✅ Whisper STT** : Intégré avec latence <800ms
-- **✅ YOLOv8n + MediaPipe** : Détection objets/visages intégrée
+- **✅ YOLOv8n + MediaPipe** : Détection objets/visages intégrée (modèles téléchargés automatiquement)
 - **✅ Dashboard web minimal** : FastAPI + WebSocket créé
 - **✅ Tests d'intégration IA** : 18 tests passent, 2 skippés
 
@@ -492,13 +492,13 @@ python -m pytest --collect-only -q | wc -l
 ## 🤖 Voir le Robot Réel
 
 **Démo sécurisée** : `assets/demos/real_demo_secure.jsonl` (290KB, 2,442 frames)
-- **Latence** : 0.02ms moyenne, 4.77ms max (<40ms cible)
+- **Latence** : <1ms mesuré, max 4.77ms (<40ms cible)
 - **Amplitude** : ≤0.2 rad (sécurisé)
 - **Rapport** : `assets/demos/real_demo_report.txt`
 
 **Hardware dry-run** : `artifacts/test_results.json`
 - **Tests** : 9,801 tests réussis
-- **Performance** : Latence moyenne 0.02ms
+- **Performance** : Latence <1ms mesuré
 - **Sécurité** : Clamp ≤0.3 rad, joints interdits bloqués
 
 ## 🎉 Statut Final

@@ -8,7 +8,7 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [1.2.0] - 2025-10-25
 
 ### 🚀 Ajouté
-- **IA Légère Activée** : Intégration Whisper STT + YOLOv8n + MediaPipe Face Detection
+- **IA Légère Activée** : Intégration Whisper STT + YOLOv8n + MediaPipe Face Detection (OFF par défaut, activation via flags)
 - **Dashboard Web Minimal** : Interface FastAPI + WebSocket pour contrôle temps réel
 - **Scripts One-Click** : `run_demo_sim.sh` et `run_demo_real.sh` pour démos simplifiées
 - **Tests de Sécurité** : Nouveau module `test_safety_parameters.py` avec 6 tests

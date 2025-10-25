@@ -118,7 +118,7 @@ def clamp_amplitude(amplitude, max_amplitude=0.3):
 
 
 def animate_joint(
-    model, data, joint_name, duration, frequency=1.0, amplitude=0.2, headless=False
+    model, data, joint_name, duration, frequency=0.1, amplitude=0.2, headless=False
 ):
     """Anime un joint avec un mouvement sinusoïdal."""
     joint_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_JOINT, joint_name)

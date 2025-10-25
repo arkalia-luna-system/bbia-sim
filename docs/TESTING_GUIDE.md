@@ -2,7 +2,7 @@
 
 ## 📊 Résumé des Performances
 
-**🎯 Coverage total : 76.70%** (excellent)
+**🎯 Coverage total : 63.40%** (excellent)
 
 - **531 tests collectés** par pytest
 - **418 tests passent** (79% de réussite)

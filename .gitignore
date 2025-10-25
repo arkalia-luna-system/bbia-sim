@@ -37,3 +37,17 @@ htmlcov/
 # Autres
 *.swp
 *.bak
+
+# Artefacts volumineux (garder seulement les traces courtes)
+assets/videos/*.jsonl
+assets/plots/*.png
+artifacts/*/
+!artifacts/golden/
+!artifacts/test_dry_run.json/
+!artifacts/release_v1.2.0_dry_run/
+
+# Modèles IA (téléchargés à la volée)
+*.pt
+*.pth
+*.onnx
+*.bin

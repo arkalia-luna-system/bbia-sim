@@ -17,8 +17,8 @@ try:
     YOLO_AVAILABLE = True
 except ImportError:
     YOLO_AVAILABLE = False
-    YOLO = None  # type: ignore
-    cv2 = None  # type: ignore
+    YOLO = None
+    cv2 = None
 
 logger = logging.getLogger(__name__)
 
@@ -111,7 +111,7 @@ class YOLODetector:
                         # Confiance et classe
                         confidence = box.conf[0].cpu().numpy()
                         class_id = int(box.cls[0].cpu().numpy())
-                        class_name = self.model.names[class_id]  # type: ignore
+                        class_name = self.model.names[class_id]
 
                         detection = {
                             "bbox": [int(x1), int(y1), int(x2), int(y2)],
