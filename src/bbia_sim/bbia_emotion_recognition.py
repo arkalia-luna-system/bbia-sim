@@ -166,7 +166,7 @@ class BBIAEmotionRecognition:
                     processed_image = image
 
             if processed_image is None:
-                return {"error": "Impossible de traiter l'image"}
+                return []
 
             faces = []
 
