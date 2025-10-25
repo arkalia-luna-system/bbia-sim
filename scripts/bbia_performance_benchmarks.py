@@ -7,14 +7,15 @@ Benchmarks complets pour latence, charge, mémoire et CPU
 import json
 import logging
 import statistics
-
-# Ajouter le chemin src pour les imports
 import sys
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Optional
+from typing import TYPE_CHECKING, Any, Optional
+
+if TYPE_CHECKING:
+    from bbia_sim.robot_factory import RobotBackend
 
 import numpy as np
 
@@ -35,8 +36,8 @@ class BBIAPerformanceBenchmark:
     def __init__(self, backend: str = "mujoco"):
         """Initialise le benchmark."""
         self.backend = backend
-        self.robot = None
-        self.results = {}
+        self.robot: Optional[RobotBackend] = None
+        self.results: dict[str, Any] = {}
 
         # Modules BBIA
         self.emotions = BBIAEmotions()
@@ -45,7 +46,7 @@ class BBIAPerformanceBenchmark:
         self.behavior_manager = BBIABehaviorManager()
 
         # Configuration des tests
-        self.test_config = {
+        self.test_config: dict[str, Any] = {
             "latency_tests": {"iterations": 1000, "warmup": 100},
             "load_tests": {
                 "concurrent_clients": [1, 5, 10, 20, 50],
@@ -79,23 +80,31 @@ class BBIAPerformanceBenchmark:
             if not self.initialize_robot():
                 return {"error": "Robot non disponible"}
 
-        results = {
+        # Vérification supplémentaire après initialisation
+        if not self.robot:
+            return {"error": "Robot non disponible après initialisation"}
+
+        results: dict[str, Any] = {
             "timestamp": datetime.now().isoformat(),
             "backend": self.backend,
             "operations": {},
         }
 
         # Test 1: Latence get_joint_pos
-        latencies = []
+        latencies: list[float] = []
         joints = self.robot.get_available_joints()
+        if not joints:
+            return {"error": "Aucun joint disponible"}
 
         # Warmup
-        for _ in range(self.test_config["latency_tests"]["warmup"]):
+        warmup_iterations = self.test_config["latency_tests"]["warmup"]
+        for _ in range(warmup_iterations):
             for joint in joints[:3]:  # Test sur 3 joints seulement
                 self.robot.get_joint_pos(joint)
 
         # Test réel
-        for _ in range(self.test_config["latency_tests"]["iterations"]):
+        test_iterations = self.test_config["latency_tests"]["iterations"]
+        for _ in range(test_iterations):
             for joint in joints[:3]:
                 start_time = time.perf_counter()
                 self.robot.get_joint_pos(joint)
@@ -118,11 +127,11 @@ class BBIAPerformanceBenchmark:
         test_joint = joints[0] if joints else "yaw_body"
 
         # Warmup
-        for _ in range(self.test_config["latency_tests"]["warmup"]):
+        for _ in range(warmup_iterations):
             self.robot.set_joint_pos(test_joint, 0.1)
 
         # Test réel
-        for _ in range(self.test_config["latency_tests"]["iterations"]):
+        for _ in range(test_iterations):
             start_time = time.perf_counter()
             self.robot.set_joint_pos(test_joint, 0.1)
             end_time = time.perf_counter()
@@ -144,11 +153,11 @@ class BBIAPerformanceBenchmark:
         test_emotions = ["happy", "sad", "neutral", "excited"]
 
         # Warmup
-        for _ in range(self.test_config["latency_tests"]["warmup"]):
+        for _ in range(warmup_iterations):
             self.robot.set_emotion("neutral", 0.5)
 
         # Test réel
-        for _ in range(self.test_config["latency_tests"]["iterations"]):
+        for _ in range(test_iterations):
             emotion = test_emotions[_ % len(test_emotions)]
             start_time = time.perf_counter()
             self.robot.set_emotion(emotion, 0.5)
@@ -170,11 +179,11 @@ class BBIAPerformanceBenchmark:
         latencies = []
 
         # Warmup
-        for _ in range(self.test_config["latency_tests"]["warmup"]):
+        for _ in range(warmup_iterations):
             self.robot.get_telemetry()
 
         # Test réel
-        for _ in range(self.test_config["latency_tests"]["iterations"]):
+        for _ in range(test_iterations):
             start_time = time.perf_counter()
             self.robot.get_telemetry()
             end_time = time.perf_counter()
@@ -202,15 +211,25 @@ class BBIAPerformanceBenchmark:
             if not self.initialize_robot():
                 return {"error": "Robot non disponible"}
 
-        results = {
+        # Vérification supplémentaire après initialisation
+        if not self.robot:
+            return {"error": "Robot non disponible après initialisation"}
+
+        # Type narrowing après vérification
+        assert self.robot is not None
+        robot = self.robot
+
+        results: dict[str, Any] = {
             "timestamp": datetime.now().isoformat(),
             "backend": self.backend,
             "load_tests": {},
+            "memory_tests": {},
+            "cpu_tests": {},
         }
 
         def simulate_client(client_id: int, requests: int) -> dict[str, Any]:
             """Simule un client avec plusieurs requêtes."""
-            client_results = {
+            client_results: dict[str, Any] = {
                 "client_id": client_id,
                 "requests": requests,
                 "successful_requests": 0,
@@ -229,7 +248,7 @@ class BBIAPerformanceBenchmark:
                     if operation == 0:
                         # get_joint_pos
                         joint_start = time.perf_counter()
-                        self.robot.get_joint_pos("yaw_body")
+                        robot.get_joint_pos("yaw_body")
                         joint_end = time.perf_counter()
                         client_results["latencies"].append(
                             (joint_end - joint_start) * 1000
@@ -238,7 +257,7 @@ class BBIAPerformanceBenchmark:
                     elif operation == 1:
                         # set_joint_pos
                         joint_start = time.perf_counter()
-                        self.robot.set_joint_pos("yaw_body", 0.1)
+                        robot.set_joint_pos("yaw_body", 0.1)
                         joint_end = time.perf_counter()
                         client_results["latencies"].append(
                             (joint_end - joint_start) * 1000
@@ -247,7 +266,7 @@ class BBIAPerformanceBenchmark:
                     elif operation == 2:
                         # set_emotion
                         emotion_start = time.perf_counter()
-                        self.robot.set_emotion("happy", 0.5)
+                        robot.set_emotion("happy", 0.5)
                         emotion_end = time.perf_counter()
                         client_results["latencies"].append(
                             (emotion_end - emotion_start) * 1000
@@ -256,7 +275,7 @@ class BBIAPerformanceBenchmark:
                     elif operation == 3:
                         # get_telemetry
                         telemetry_start = time.perf_counter()
-                        self.robot.get_telemetry()
+                        robot.get_telemetry()
                         telemetry_end = time.perf_counter()
                         client_results["latencies"].append(
                             (telemetry_end - telemetry_start) * 1000
@@ -272,10 +291,12 @@ class BBIAPerformanceBenchmark:
             return client_results
 
         # Tests avec différents nombres de clients concurrents
-        for num_clients in self.test_config["load_tests"]["concurrent_clients"]:
-            logger.info(f"Test charge: {num_clients} clients concurrents")
+        concurrent_clients = self.test_config["load_tests"]["concurrent_clients"]
+        requests_per_client = self.test_config["load_tests"]["requests_per_client"]
+        timeout = self.test_config["load_tests"]["timeout"]
 
-            requests_per_client = self.test_config["load_tests"]["requests_per_client"]
+        for num_clients in concurrent_clients:
+            logger.info(f"Test charge: {num_clients} clients concurrents")
 
             start_time = time.time()
 
@@ -286,9 +307,7 @@ class BBIAPerformanceBenchmark:
                 ]
 
                 client_results = []
-                for future in as_completed(
-                    futures, timeout=self.test_config["load_tests"]["timeout"]
-                ):
+                for future in as_completed(futures, timeout=timeout):
                     try:
                         result = future.result()
                         client_results.append(result)
@@ -304,7 +323,7 @@ class BBIAPerformanceBenchmark:
             successful_requests = sum(r["successful_requests"] for r in client_results)
             failed_requests = sum(r["failed_requests"] for r in client_results)
 
-            all_latencies = []
+            all_latencies: list[float] = []
             for result in client_results:
                 all_latencies.extend(result["latencies"])
 
@@ -353,9 +372,12 @@ class BBIAPerformanceBenchmark:
         initial_memory = psutil.Process().memory_info().rss / 1024 / 1024  # MB
 
         # Créer plusieurs instances des modules
-        modules_memory = []
-        for i in range(self.test_config["memory_tests"]["iterations"]):
-            if i % self.test_config["memory_tests"]["check_interval"] == 0:
+        modules_memory: list[float] = []
+        iterations = self.test_config["memory_tests"]["iterations"]
+        check_interval = self.test_config["memory_tests"]["check_interval"]
+
+        for i in range(iterations):
+            if i % check_interval == 0:
                 current_memory = psutil.Process().memory_info().rss / 1024 / 1024
                 modules_memory.append(current_memory - initial_memory)
 
@@ -372,9 +394,11 @@ class BBIAPerformanceBenchmark:
             temp_behavior.run_behavior("greeting")
 
         final_memory = psutil.Process().memory_info().rss / 1024 / 1024
-        peak_memory = max(modules_memory) if modules_memory else 0
+        peak_memory: float = max(modules_memory) if modules_memory else 0.0
 
-        results["memory_tests"]["bbia_modules"] = {
+        # Type annotation explicite pour éviter les erreurs de linting
+        results_dict: dict[str, Any] = results
+        results_dict["memory_tests"]["bbia_modules"] = {
             "initial_memory_mb": initial_memory,
             "final_memory_mb": final_memory,
             "peak_memory_mb": peak_memory,
@@ -397,7 +421,7 @@ class BBIAPerformanceBenchmark:
 
             robot_final_memory = psutil.Process().memory_info().rss / 1024 / 1024
 
-            results["memory_tests"]["robot_operations"] = {
+            results_dict["memory_tests"]["robot_operations"] = {
                 "initial_memory_mb": robot_initial_memory,
                 "final_memory_mb": robot_final_memory,
                 "memory_growth_mb": robot_final_memory - robot_initial_memory,
@@ -412,7 +436,7 @@ class BBIAPerformanceBenchmark:
 
         import psutil
 
-        results = {
+        results: dict[str, Any] = {
             "timestamp": datetime.now().isoformat(),
             "backend": self.backend,
             "cpu_tests": {},
@@ -420,10 +444,12 @@ class BBIAPerformanceBenchmark:
 
         # Test 1: CPU pendant opérations robot
         if self.robot:
-            cpu_samples = []
+            cpu_samples: list[dict[str, Any]] = []
             start_time = time.time()
+            duration = self.test_config["cpu_tests"]["duration"]
+            sample_interval = self.test_config["cpu_tests"]["sample_interval"]
 
-            while time.time() - start_time < self.test_config["cpu_tests"]["duration"]:
+            while time.time() - start_time < duration:
                 # Mesurer CPU avant opération
                 cpu_before = psutil.cpu_percent(interval=0.1)
 
@@ -447,12 +473,12 @@ class BBIAPerformanceBenchmark:
                     }
                 )
 
-                time.sleep(self.test_config["cpu_tests"]["sample_interval"])
+                time.sleep(sample_interval)
 
-            cpu_values = [sample["cpu_after"] for sample in cpu_samples]
+            cpu_values: list[float] = [sample["cpu_after"] for sample in cpu_samples]
 
             results["cpu_tests"]["robot_operations"] = {
-                "duration": self.test_config["cpu_tests"]["duration"],
+                "duration": duration,
                 "samples": len(cpu_samples),
                 "cpu_stats": {
                     "mean": statistics.mean(cpu_values),
@@ -471,7 +497,7 @@ class BBIAPerformanceBenchmark:
         """Exécute tous les benchmarks."""
         logger.info("🚀 Démarrage suite complète de benchmarks BBIA...")
 
-        all_results = {
+        all_results: dict[str, Any] = {
             "timestamp": datetime.now().isoformat(),
             "backend": self.backend,
             "version": "1.2.0",
