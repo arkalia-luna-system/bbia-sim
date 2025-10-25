@@ -48,19 +48,15 @@ def main():
         sys.exit(1)
 
     print("🚀 Lancement BBIA Advanced Dashboard...")
-    print(f"📊 Métriques temps réel: Activées")
-    print(f"🎮 Contrôles avancés: Disponibles")
-    print(f"📈 Graphiques: Chart.js intégré")
-    print(f"🔧 API REST: Endpoints complets")
-    print(f"🌐 WebSocket: Communication temps réel")
+    print("📊 Métriques temps réel: Activées")
+    print("🎮 Contrôles avancés: Disponibles")
+    print("📈 Graphiques: Chart.js intégré")
+    print("🔧 API REST: Endpoints complets")
+    print("🌐 WebSocket: Communication temps réel")
     print()
 
     try:
-        run_advanced_dashboard(
-            host=args.host,
-            port=args.port,
-            backend=args.backend
-        )
+        run_advanced_dashboard(host=args.host, port=args.port, backend=args.backend)
     except KeyboardInterrupt:
         print("\n👋 Arrêt du dashboard avancé")
     except Exception as e:

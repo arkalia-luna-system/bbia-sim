@@ -9,15 +9,13 @@ import json
 import logging
 import time
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any, Optional
 
 try:
     import uvicorn
-    from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException
-    from fastapi.responses import HTMLResponse, JSONResponse
-    from fastapi.staticfiles import StaticFiles
+    from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
     from fastapi.middleware.cors import CORSMiddleware
-    import numpy as np
+    from fastapi.responses import HTMLResponse
 
     FASTAPI_AVAILABLE = True
 except ImportError:
@@ -31,32 +29,32 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from bbia_sim.robot_factory import RobotFactory
-from bbia_sim.bbia_emotions import BBIAEmotions
-from bbia_sim.bbia_vision import BBIAVision
 # BBIAVoice n'existe pas encore - utiliser les fonctions directement
 from bbia_sim.bbia_behavior import BBIABehaviorManager
+from bbia_sim.bbia_emotions import BBIAEmotions
+from bbia_sim.bbia_vision import BBIAVision
+from bbia_sim.robot_factory import RobotFactory
 
 logger = logging.getLogger(__name__)
 
 
 class BBIAAdvancedWebSocketManager:
     """Gestionnaire WebSocket avancé pour le dashboard BBIA."""
-    
+
     def __init__(self) -> None:
         """Initialise le gestionnaire WebSocket avancé."""
-        self.active_connections: List[WebSocket] = []
+        self.active_connections: list[WebSocket] = []
         self.robot: Optional[Any] = None
         self.robot_backend = "mujoco"
-        self.metrics_history: List[Dict[str, Any]] = []
+        self.metrics_history: list[dict[str, Any]] = []
         self.max_history = 1000  # Limite historique métriques
-        
+
         # Modules BBIA
         self.emotions = BBIAEmotions()
         self.vision = BBIAVision()
         # self.voice = BBIAVoice()  # Pas encore implémenté
         self.behavior_manager = BBIABehaviorManager()
-        
+
         # Métriques temps réel
         self.current_metrics = {
             "timestamp": time.time(),
@@ -68,20 +66,20 @@ class BBIAAdvancedWebSocketManager:
                 "latency_ms": 0.0,
                 "fps": 0.0,
                 "cpu_usage": 0.0,
-                "memory_usage": 0.0
+                "memory_usage": 0.0,
             },
             "vision": {
                 "objects_detected": 0,
                 "faces_detected": 0,
-                "tracking_active": False
+                "tracking_active": False,
             },
             "audio": {
                 "microphone_active": False,
                 "speaker_active": False,
-                "volume_level": 0.0
-            }
+                "volume_level": 0.0,
+            },
         }
-        
+
         # Démarrer la collecte de métriques
         # self._start_metrics_collection()  # Démarré lors de la première connexion WebSocket
 
@@ -89,12 +87,14 @@ class BBIAAdvancedWebSocketManager:
         """Accepte une nouvelle connexion WebSocket."""
         await websocket.accept()
         self.active_connections.append(websocket)
-        logger.info(f"🔌 WebSocket avancé connecté ({len(self.active_connections)} connexions)")
-        
+        logger.info(
+            f"🔌 WebSocket avancé connecté ({len(self.active_connections)} connexions)"
+        )
+
         # Démarrer la collecte de métriques si c'est la première connexion
         if len(self.active_connections) == 1:
             self._start_metrics_collection()
-        
+
         # Envoyer état initial complet
         await self.send_complete_status()
 
@@ -102,20 +102,22 @@ class BBIAAdvancedWebSocketManager:
         """Déconnecte un WebSocket."""
         if websocket in self.active_connections:
             self.active_connections.remove(websocket)
-        logger.info(f"🔌 WebSocket avancé déconnecté ({len(self.active_connections)} connexions)")
+        logger.info(
+            f"🔌 WebSocket avancé déconnecté ({len(self.active_connections)} connexions)"
+        )
 
     async def broadcast(self, message: str):
         """Diffuse un message à toutes les connexions actives."""
         if not self.active_connections:
             return
-            
+
         disconnected = []
         for connection in self.active_connections:
             try:
                 await connection.send_text(message)
             except Exception:
                 disconnected.append(connection)
-        
+
         # Nettoyer les connexions fermées
         for connection in disconnected:
             self.disconnect(connection)
@@ -129,34 +131,34 @@ class BBIAAdvancedWebSocketManager:
                 "connected": self.robot is not None,
                 "backend": self.robot_backend,
                 "joints": self._get_available_joints(),
-                "current_pose": self._get_current_pose()
+                "current_pose": self._get_current_pose(),
             },
             "bbia_modules": {
                 "emotions": {
                     "current": self.emotions.current_emotion,
                     "intensity": self.emotions.emotion_intensity,
-                    "available": list(self.emotions.emotions.keys())
+                    "available": list(self.emotions.emotions.keys()),
                 },
                 "vision": {
                     "active": self.vision.camera_active,
                     "quality": self.vision.vision_quality,
                     "objects": len(self.vision.objects_detected),
-                    "faces": len(self.vision.faces_detected)
+                    "faces": len(self.vision.faces_detected),
                 },
                 "voice": {
                     "tts_active": False,  # Pas encore implémenté
                     "stt_active": False,  # Pas encore implémenté
-                    "volume": 0.0
+                    "volume": 0.0,
                 },
                 "behaviors": {
                     "available": list(self.behavior_manager.behaviors.keys()),
-                    "current": getattr(self.behavior_manager, 'current_behavior', None)
-                }
+                    "current": getattr(self.behavior_manager, "current_behavior", None),
+                },
             },
             "metrics": self.current_metrics,
-            "history": self.metrics_history[-50:]  # 50 dernières métriques
+            "history": self.metrics_history[-50:],  # 50 dernières métriques
         }
-        
+
         await self.broadcast(json.dumps(status_data))
 
     async def send_metrics_update(self):
@@ -164,9 +166,9 @@ class BBIAAdvancedWebSocketManager:
         metrics_data = {
             "type": "metrics_update",
             "timestamp": datetime.now().isoformat(),
-            "metrics": self.current_metrics
+            "metrics": self.current_metrics,
         }
-        
+
         await self.broadcast(json.dumps(metrics_data))
 
     async def send_log_message(self, level: str, message: str):
@@ -175,22 +177,23 @@ class BBIAAdvancedWebSocketManager:
             "type": "log",
             "level": level,
             "message": message,
-            "timestamp": datetime.now().isoformat()
+            "timestamp": datetime.now().isoformat(),
         }
-        
+
         await self.broadcast(json.dumps(log_data))
 
-    def _get_available_joints(self) -> List[str]:
+    def _get_available_joints(self) -> list[str]:
         """Récupère la liste des joints disponibles."""
         if self.robot:
-            return self.robot.get_available_joints()
+            joints = self.robot.get_available_joints()
+            return joints if isinstance(joints, list) else []
         return []
 
-    def _get_current_pose(self) -> Dict[str, float]:
+    def _get_current_pose(self) -> dict[str, float]:
         """Récupère la pose actuelle du robot."""
         if not self.robot:
             return {}
-        
+
         pose = {}
         for joint in self._get_available_joints():
             try:
@@ -201,23 +204,24 @@ class BBIAAdvancedWebSocketManager:
 
     def _start_metrics_collection(self):
         """Démarre la collecte automatique de métriques."""
+
         async def collect_metrics():
             while True:
                 try:
                     # Mettre à jour les métriques
                     self._update_metrics()
-                    
+
                     # Ajouter à l'historique
                     self.metrics_history.append(self.current_metrics.copy())
                     if len(self.metrics_history) > self.max_history:
                         self.metrics_history.pop(0)
-                    
+
                     # Envoyer mise à jour
                     await self.send_metrics_update()
-                    
+
                     # Attendre 100ms avant prochaine collecte
                     await asyncio.sleep(0.1)
-                    
+
                 except Exception as e:
                     logger.error(f"Erreur collecte métriques: {e}")
                     await asyncio.sleep(1.0)
@@ -228,29 +232,37 @@ class BBIAAdvancedWebSocketManager:
     def _update_metrics(self):
         """Met à jour les métriques actuelles."""
         current_time = time.time()
-        
+
         # Métriques robot
         self.current_metrics["timestamp"] = current_time
         self.current_metrics["robot_connected"] = self.robot is not None
-        
+
         if self.robot:
             self.current_metrics["joint_positions"] = self._get_current_pose()
-            
+
             # Métriques de performance (simulation)
             telemetry = self.robot.get_telemetry()
-            self.current_metrics["performance"]["latency_ms"] = telemetry.get("latency_ms", 0.0)
+            self.current_metrics["performance"]["latency_ms"] = telemetry.get(
+                "latency_ms", 0.0
+            )
             self.current_metrics["performance"]["fps"] = telemetry.get("fps", 0.0)
-        
+
         # Métriques BBIA
         self.current_metrics["current_emotion"] = self.emotions.current_emotion
         self.current_metrics["emotion_intensity"] = self.emotions.emotion_intensity
-        
-        self.current_metrics["vision"]["objects_detected"] = len(self.vision.objects_detected)
-        self.current_metrics["vision"]["faces_detected"] = len(self.vision.faces_detected)
+
+        self.current_metrics["vision"]["objects_detected"] = len(
+            self.vision.objects_detected
+        )
+        self.current_metrics["vision"]["faces_detected"] = len(
+            self.vision.faces_detected
+        )
         self.current_metrics["vision"]["tracking_active"] = self.vision.tracking_active
-        
-        self.current_metrics["audio"]["microphone_active"] = False  # Pas encore implémenté
-        self.current_metrics["audio"]["speaker_active"] = False      # Pas encore implémenté
+
+        self.current_metrics["audio"][
+            "microphone_active"
+        ] = False  # Pas encore implémenté
+        self.current_metrics["audio"]["speaker_active"] = False  # Pas encore implémenté
         self.current_metrics["audio"]["volume_level"] = 0.0
 
 
@@ -262,9 +274,9 @@ if FASTAPI_AVAILABLE:
     app = FastAPI(
         title="BBIA Advanced Dashboard",
         version="1.2.0",
-        description="Interface de contrôle sophistiquée pour BBIA-SIM"
+        description="Interface de contrôle sophistiquée pour BBIA-SIM",
     )
-    
+
     # Configuration CORS pour développement
     app.add_middleware(
         CORSMiddleware,
@@ -282,7 +294,7 @@ def create_advanced_dashboard_app() -> Optional[FastAPI]:
     if not FASTAPI_AVAILABLE:
         logger.error("❌ FastAPI non disponible")
         return None
-    
+
     return app
 
 
@@ -301,7 +313,7 @@ ADVANCED_DASHBOARD_HTML = """
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -309,7 +321,7 @@ ADVANCED_DASHBOARD_HTML = """
             min-height: 100vh;
             overflow-x: hidden;
         }
-        
+
         .header {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
@@ -317,18 +329,18 @@ ADVANCED_DASHBOARD_HTML = """
             text-align: center;
             border-bottom: 1px solid rgba(255, 255, 255, 0.2);
         }
-        
+
         .header h1 {
             font-size: 2.5em;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
             margin-bottom: 10px;
         }
-        
+
         .header .subtitle {
             font-size: 1.2em;
             opacity: 0.8;
         }
-        
+
         .main-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -338,7 +350,7 @@ ADVANCED_DASHBOARD_HTML = """
             max-width: 1600px;
             margin: 0 auto;
         }
-        
+
         .panel {
             background: rgba(255, 255, 255, 0.1);
             border-radius: 15px;
@@ -346,39 +358,39 @@ ADVANCED_DASHBOARD_HTML = """
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
-        
+
         .panel h3 {
             margin-bottom: 20px;
             font-size: 1.4em;
             text-align: center;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
         }
-        
+
         .status-panel {
             grid-column: 1 / -1;
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
         }
-        
+
         .status-item {
             background: rgba(255, 255, 255, 0.1);
             padding: 15px;
             border-radius: 10px;
             text-align: center;
         }
-        
+
         .status-value {
             font-size: 2em;
             font-weight: bold;
             margin-bottom: 5px;
         }
-        
+
         .status-label {
             font-size: 0.9em;
             opacity: 0.8;
         }
-        
+
         .connection-indicator {
             display: inline-block;
             width: 12px;
@@ -387,23 +399,23 @@ ADVANCED_DASHBOARD_HTML = """
             margin-right: 10px;
             animation: pulse 2s infinite;
         }
-        
+
         .connected { background: #4CAF50; }
         .disconnected { background: #F44336; }
-        
+
         @keyframes pulse {
             0% { opacity: 1; }
             50% { opacity: 0.5; }
             100% { opacity: 1; }
         }
-        
+
         .controls-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
             gap: 15px;
             margin-bottom: 20px;
         }
-        
+
         .control-button {
             padding: 15px 10px;
             border: none;
@@ -416,64 +428,64 @@ ADVANCED_DASHBOARD_HTML = """
             backdrop-filter: blur(5px);
             text-align: center;
         }
-        
+
         .control-button:hover {
             background: rgba(255, 255, 255, 0.3);
             transform: translateY(-2px);
         }
-        
+
         .control-button:active {
             transform: translateY(0);
         }
-        
+
         .emotion-button {
             background: linear-gradient(45deg, #ff6b6b, #ee5a24);
         }
-        
+
         .action-button {
             background: linear-gradient(45deg, #4ecdc4, #44a08d);
         }
-        
+
         .behavior-button {
             background: linear-gradient(45deg, #a8edea, #fed6e3);
         }
-        
+
         .chart-container {
             position: relative;
             height: 300px;
             margin-top: 20px;
         }
-        
+
         .joint-controls {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 15px;
             margin-top: 20px;
         }
-        
+
         .joint-control {
             background: rgba(255, 255, 255, 0.1);
             padding: 15px;
             border-radius: 10px;
         }
-        
+
         .joint-name {
             font-weight: bold;
             margin-bottom: 10px;
             text-align: center;
         }
-        
+
         .joint-slider {
             width: 100%;
             margin-bottom: 10px;
         }
-        
+
         .joint-value {
             text-align: center;
             font-size: 0.9em;
             opacity: 0.8;
         }
-        
+
         .logs-container {
             height: 400px;
             overflow-y: auto;
@@ -483,68 +495,68 @@ ADVANCED_DASHBOARD_HTML = """
             font-family: 'Courier New', monospace;
             font-size: 13px;
         }
-        
+
         .log-entry {
             margin-bottom: 8px;
             padding: 5px;
             border-radius: 5px;
             background: rgba(255, 255, 255, 0.05);
         }
-        
+
         .log-info { color: #4CAF50; }
         .log-warning { color: #FF9800; }
         .log-error { color: #F44336; }
         .log-debug { color: #2196F3; }
-        
+
         .metrics-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 15px;
             margin-top: 20px;
         }
-        
+
         .metric-item {
             background: rgba(255, 255, 255, 0.1);
             padding: 15px;
             border-radius: 10px;
             text-align: center;
         }
-        
+
         .metric-value {
             font-size: 1.5em;
             font-weight: bold;
             margin-bottom: 5px;
         }
-        
+
         .metric-label {
             font-size: 0.8em;
             opacity: 0.8;
         }
-        
+
         .vision-panel {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 15px;
         }
-        
+
         .vision-item {
             background: rgba(255, 255, 255, 0.1);
             padding: 15px;
             border-radius: 10px;
             text-align: center;
         }
-        
+
         .vision-count {
             font-size: 2em;
             font-weight: bold;
             margin-bottom: 5px;
         }
-        
+
         .vision-label {
             font-size: 0.9em;
             opacity: 0.8;
         }
-        
+
         @media (max-width: 1200px) {
             .main-container {
                 grid-template-columns: 1fr;
@@ -557,8 +569,8 @@ ADVANCED_DASHBOARD_HTML = """
         <h1>🤖 BBIA Advanced Dashboard</h1>
         <div class="subtitle">
             <span id="connection-indicator" class="connection-indicator disconnected"></span>
-            <span id="connection-text">Déconnecté</span> | 
-            Backend: <span id="robot-backend">-</span> | 
+            <span id="connection-text">Déconnecté</span> |
+            Backend: <span id="robot-backend">-</span> |
             Version: 1.2.0
         </div>
     </div>
@@ -595,7 +607,7 @@ ADVANCED_DASHBOARD_HTML = """
         <!-- Panel de contrôle -->
         <div class="panel">
             <h3>🎮 Contrôles</h3>
-            
+
             <div class="controls-grid">
                 <button class="control-button emotion-button" onclick="setEmotion('happy')">😊 Heureux</button>
                 <button class="control-button emotion-button" onclick="setEmotion('sad')">😢 Triste</button>
@@ -604,7 +616,7 @@ ADVANCED_DASHBOARD_HTML = """
                 <button class="control-button emotion-button" onclick="setEmotion('neutral')">😐 Neutre</button>
                 <button class="control-button emotion-button" onclick="setEmotion('curious')">🤔 Curieux</button>
             </div>
-            
+
             <div class="controls-grid">
                 <button class="control-button action-button" onclick="sendAction('look_at')">👀 Regarder</button>
                 <button class="control-button action-button" onclick="sendAction('greet')">👋 Saluer</button>
@@ -613,7 +625,7 @@ ADVANCED_DASHBOARD_HTML = """
                 <button class="control-button action-button" onclick="sendAction('nod')">👍 Hocher</button>
                 <button class="control-button action-button" onclick="sendAction('stop')">⏹️ Arrêter</button>
             </div>
-            
+
             <div class="controls-grid">
                 <button class="control-button behavior-button" onclick="runBehavior('greeting')">👋 Salutation</button>
                 <button class="control-button behavior-button" onclick="runBehavior('exploration')">🔍 Exploration</button>
@@ -754,45 +766,45 @@ ADVANCED_DASHBOARD_HTML = """
         // Mise à jour du statut complet
         function updateCompleteStatus(data) {
             // Statut robot
-            document.getElementById('robot-status').textContent = 
+            document.getElementById('robot-status').textContent =
                 data.robot.connected ? '✅' : '❌';
-            document.getElementById('robot-backend').textContent = 
+            document.getElementById('robot-backend').textContent =
                 data.robot.backend || '-';
 
             // Statut émotion
-            document.getElementById('emotion-status').textContent = 
+            document.getElementById('emotion-status').textContent =
                 getEmotionEmoji(data.bbia_modules.emotions.current);
 
             // Joints disponibles
             updateJointControls(data.robot.joints);
 
             // Vision
-            document.getElementById('objects-count').textContent = 
+            document.getElementById('objects-count').textContent =
                 data.bbia_modules.vision.objects;
-            document.getElementById('faces-count').textContent = 
+            document.getElementById('faces-count').textContent =
                 data.bbia_modules.vision.faces;
         }
 
         // Mise à jour des métriques
         function updateMetrics(metrics) {
             // Statut temps réel
-            document.getElementById('latency-status').textContent = 
+            document.getElementById('latency-status').textContent =
                 Math.round(metrics.performance.latency_ms) + 'ms';
-            document.getElementById('fps-status').textContent = 
+            document.getElementById('fps-status').textContent =
                 Math.round(metrics.performance.fps);
-            document.getElementById('objects-status').textContent = 
+            document.getElementById('objects-status').textContent =
                 metrics.vision.objects_detected;
-            document.getElementById('faces-status').textContent = 
+            document.getElementById('faces-status').textContent =
                 metrics.vision.faces_detected;
 
             // Métriques détaillées
-            document.getElementById('cpu-metric').textContent = 
+            document.getElementById('cpu-metric').textContent =
                 Math.round(metrics.performance.cpu_usage) + '%';
-            document.getElementById('memory-metric').textContent = 
+            document.getElementById('memory-metric').textContent =
                 Math.round(metrics.performance.memory_usage) + '%';
-            document.getElementById('volume-metric').textContent = 
+            document.getElementById('volume-metric').textContent =
                 Math.round(metrics.audio.volume_level * 100) + '%';
-            document.getElementById('intensity-metric').textContent = 
+            document.getElementById('intensity-metric').textContent =
                 Math.round(metrics.emotion_intensity * 100) + '%';
 
             // Mise à jour du graphique
@@ -866,7 +878,7 @@ ADVANCED_DASHBOARD_HTML = """
         // Mise à jour du graphique
         function updateChart(metrics) {
             const now = new Date().toLocaleTimeString();
-            
+
             // Ajouter nouvelles données
             metricsData.labels.push(now);
             metricsData.latency.push(metrics.performance.latency_ms);
@@ -897,7 +909,7 @@ ADVANCED_DASHBOARD_HTML = """
                 control.className = 'joint-control';
                 control.innerHTML = `
                     <div class="joint-name">${joint}</div>
-                    <input type="range" class="joint-slider" id="slider-${joint}" 
+                    <input type="range" class="joint-slider" id="slider-${joint}"
                            min="-3.14" max="3.14" step="0.01" value="0"
                            onchange="setJointPosition('${joint}', this.value)">
                     <div class="joint-value" id="value-${joint}">0.00</div>
@@ -1021,7 +1033,7 @@ if FASTAPI_AVAILABLE:
             "robot_connected": advanced_websocket_manager.robot is not None,
             "backend": advanced_websocket_manager.robot_backend,
             "active_connections": len(advanced_websocket_manager.active_connections),
-            "metrics": advanced_websocket_manager.current_metrics
+            "metrics": advanced_websocket_manager.current_metrics,
         }
 
     @app.get("/api/metrics")
@@ -1029,7 +1041,9 @@ if FASTAPI_AVAILABLE:
         """API endpoint pour récupérer les métriques."""
         return {
             "current": advanced_websocket_manager.current_metrics,
-            "history": advanced_websocket_manager.metrics_history[-100:]  # 100 dernières
+            "history": advanced_websocket_manager.metrics_history[
+                -100:
+            ],  # 100 dernières
         }
 
     @app.get("/api/joints")
@@ -1038,7 +1052,7 @@ if FASTAPI_AVAILABLE:
         if advanced_websocket_manager.robot:
             return {
                 "joints": advanced_websocket_manager.robot.get_available_joints(),
-                "current_positions": advanced_websocket_manager._get_current_pose()
+                "current_positions": advanced_websocket_manager._get_current_pose(),
             }
         return {"joints": [], "current_positions": {}}
 
@@ -1047,16 +1061,20 @@ if FASTAPI_AVAILABLE:
         """API endpoint pour définir une émotion."""
         emotion = emotion_data.get("emotion", "neutral")
         intensity = emotion_data.get("intensity", 0.5)
-        
+
         if advanced_websocket_manager.robot:
             success = advanced_websocket_manager.robot.set_emotion(emotion, intensity)
             if success:
-                await advanced_websocket_manager.send_log_message("info", f"Émotion définie: {emotion} (intensité: {intensity})")
+                await advanced_websocket_manager.send_log_message(
+                    "info", f"Émotion définie: {emotion} (intensité: {intensity})"
+                )
                 return {"success": True, "emotion": emotion, "intensity": intensity}
             else:
-                await advanced_websocket_manager.send_log_message("error", f"Échec définition émotion: {emotion}")
+                await advanced_websocket_manager.send_log_message(
+                    "error", f"Échec définition émotion: {emotion}"
+                )
                 return {"success": False, "error": "Failed to set emotion"}
-        
+
         return {"success": False, "error": "Robot not connected"}
 
     @app.post("/api/joint")
@@ -1064,19 +1082,23 @@ if FASTAPI_AVAILABLE:
         """API endpoint pour définir la position d'un joint."""
         joint = joint_data.get("joint")
         position = joint_data.get("position", 0.0)
-        
+
         if not joint:
             raise HTTPException(status_code=400, detail="Joint name required")
-        
+
         if advanced_websocket_manager.robot:
             success = advanced_websocket_manager.robot.set_joint_pos(joint, position)
             if success:
-                await advanced_websocket_manager.send_log_message("info", f"Joint {joint} = {position}")
+                await advanced_websocket_manager.send_log_message(
+                    "info", f"Joint {joint} = {position}"
+                )
                 return {"success": True, "joint": joint, "position": position}
             else:
-                await advanced_websocket_manager.send_log_message("error", f"Échec contrôle joint {joint}")
+                await advanced_websocket_manager.send_log_message(
+                    "error", f"Échec contrôle joint {joint}"
+                )
                 return {"success": False, "error": "Failed to set joint position"}
-        
+
         return {"success": False, "error": "Robot not connected"}
 
     @app.get("/healthz")
@@ -1087,7 +1109,7 @@ if FASTAPI_AVAILABLE:
             "timestamp": datetime.now().isoformat(),
             "version": "1.2.0",
             "robot_connected": advanced_websocket_manager.robot is not None,
-            "active_connections": len(advanced_websocket_manager.active_connections)
+            "active_connections": len(advanced_websocket_manager.active_connections),
         }
 
     @app.websocket("/ws")
@@ -1117,7 +1139,7 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
     try:
         command_type = command_data.get("command_type")
         value = command_data.get("value")
-        
+
         if not advanced_websocket_manager.robot:
             # Initialiser le robot si nécessaire
             advanced_websocket_manager.robot = RobotFactory.create_backend(
@@ -1126,9 +1148,15 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
             if advanced_websocket_manager.robot:
                 connected = advanced_websocket_manager.robot.connect()
                 if connected:
-                    await advanced_websocket_manager.send_log_message("info", f"Robot {advanced_websocket_manager.robot_backend} connecté")
+                    await advanced_websocket_manager.send_log_message(
+                        "info",
+                        f"Robot {advanced_websocket_manager.robot_backend} connecté",
+                    )
                 else:
-                    await advanced_websocket_manager.send_log_message("warning", f"Robot {advanced_websocket_manager.robot_backend} en mode simulation")
+                    await advanced_websocket_manager.send_log_message(
+                        "warning",
+                        f"Robot {advanced_websocket_manager.robot_backend} en mode simulation",
+                    )
 
         if command_type == "emotion":
             # Définir émotion
@@ -1136,9 +1164,13 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
             intensity = 0.8  # Intensité par défaut
             success = advanced_websocket_manager.robot.set_emotion(emotion, intensity)
             if success:
-                await advanced_websocket_manager.send_log_message("info", f"Émotion définie: {emotion}")
+                await advanced_websocket_manager.send_log_message(
+                    "info", f"Émotion définie: {emotion}"
+                )
             else:
-                await advanced_websocket_manager.send_log_message("error", f"Échec émotion: {emotion}")
+                await advanced_websocket_manager.send_log_message(
+                    "error", f"Échec émotion: {emotion}"
+                )
 
         elif command_type == "action":
             # Exécuter action
@@ -1150,27 +1182,37 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
             elif action == "wake_up":
                 success = advanced_websocket_manager.robot.run_behavior("wake_up", 2.0)
             elif action == "sleep":
-                success = advanced_websocket_manager.robot.run_behavior("goto_sleep", 2.0)
+                success = advanced_websocket_manager.robot.run_behavior(
+                    "goto_sleep", 2.0
+                )
             elif action == "nod":
                 success = advanced_websocket_manager.robot.run_behavior("nod", 1.0)
             elif action == "stop":
                 success = True  # Arrêt immédiat
             else:
                 success = False
-            
+
             if success:
-                await advanced_websocket_manager.send_log_message("info", f"Action exécutée: {action}")
+                await advanced_websocket_manager.send_log_message(
+                    "info", f"Action exécutée: {action}"
+                )
             else:
-                await advanced_websocket_manager.send_log_message("error", f"Échec action: {action}")
+                await advanced_websocket_manager.send_log_message(
+                    "error", f"Échec action: {action}"
+                )
 
         elif command_type == "behavior":
             # Exécuter comportement
             behavior = value
             success = advanced_websocket_manager.robot.run_behavior(behavior, 5.0)
             if success:
-                await advanced_websocket_manager.send_log_message("info", f"Comportement lancé: {behavior}")
+                await advanced_websocket_manager.send_log_message(
+                    "info", f"Comportement lancé: {behavior}"
+                )
             else:
-                await advanced_websocket_manager.send_log_message("error", f"Échec comportement: {behavior}")
+                await advanced_websocket_manager.send_log_message(
+                    "error", f"Échec comportement: {behavior}"
+                )
 
         elif command_type == "joint":
             # Contrôler joint
@@ -1179,22 +1221,38 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
             position = joint_data.get("position", 0.0)
             success = advanced_websocket_manager.robot.set_joint_pos(joint, position)
             if success:
-                await advanced_websocket_manager.send_log_message("info", f"Joint {joint} = {position}")
+                await advanced_websocket_manager.send_log_message(
+                    "info", f"Joint {joint} = {position}"
+                )
             else:
-                await advanced_websocket_manager.send_log_message("error", f"Échec joint {joint}")
+                await advanced_websocket_manager.send_log_message(
+                    "error", f"Échec joint {joint}"
+                )
 
         elif command_type == "vision":
             # Contrôler vision
             vision_action = value
             if vision_action == "toggle":
-                advanced_websocket_manager.vision.camera_active = not advanced_websocket_manager.vision.camera_active
-                await advanced_websocket_manager.send_log_message("info", f"Vision: {'activée' if advanced_websocket_manager.vision.camera_active else 'désactivée'}")
+                advanced_websocket_manager.vision.camera_active = (
+                    not advanced_websocket_manager.vision.camera_active
+                )
+                await advanced_websocket_manager.send_log_message(
+                    "info",
+                    f"Vision: {'activée' if advanced_websocket_manager.vision.camera_active else 'désactivée'}",
+                )
             elif vision_action == "scan":
                 objects = advanced_websocket_manager.vision.scan_environment()
-                await advanced_websocket_manager.send_log_message("info", f"Scan: {len(objects.get('objects', []))} objets détectés")
+                await advanced_websocket_manager.send_log_message(
+                    "info", f"Scan: {len(objects.get('objects', []))} objets détectés"
+                )
             elif vision_action == "track":
-                advanced_websocket_manager.vision.tracking_active = not advanced_websocket_manager.vision.tracking_active
-                await advanced_websocket_manager.send_log_message("info", f"Suivi: {'activé' if advanced_websocket_manager.vision.tracking_active else 'désactivé'}")
+                advanced_websocket_manager.vision.tracking_active = (
+                    not advanced_websocket_manager.vision.tracking_active
+                )
+                await advanced_websocket_manager.send_log_message(
+                    "info",
+                    f"Suivi: {'activé' if advanced_websocket_manager.vision.tracking_active else 'désactivé'}",
+                )
 
         # Envoyer mise à jour du statut
         await advanced_websocket_manager.send_complete_status()
@@ -1204,7 +1262,9 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
         await advanced_websocket_manager.send_log_message("error", f"Erreur: {str(e)}")
 
 
-def run_advanced_dashboard(host: str = "127.0.0.1", port: int = 8000, backend: str = "mujoco"):
+def run_advanced_dashboard(
+    host: str = "127.0.0.1", port: int = 8000, backend: str = "mujoco"
+):
     """
     Lance le dashboard BBIA avancé.
 
@@ -1222,8 +1282,8 @@ def run_advanced_dashboard(host: str = "127.0.0.1", port: int = 8000, backend: s
     logger.info(f"🚀 Lancement dashboard BBIA avancé sur {host}:{port}")
     logger.info(f"🔗 URL: http://{host}:{port}")
     logger.info(f"🤖 Backend robot: {backend}")
-    logger.info(f"📊 Métriques temps réel activées")
-    logger.info(f"🎮 Contrôles avancés disponibles")
+    logger.info("📊 Métriques temps réel activées")
+    logger.info("🎮 Contrôles avancés disponibles")
 
     uvicorn.run(app, host=host, port=port, log_level="info")
 

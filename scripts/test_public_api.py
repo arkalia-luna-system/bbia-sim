@@ -2,10 +2,8 @@
 """Script de test pour l'API publique BBIA-SIM - Phase 3."""
 
 import asyncio
-import json
 import logging
 import sys
-from pathlib import Path
 
 import httpx
 
@@ -22,7 +20,7 @@ class BBIAAPITester:
 
     def __init__(self, base_url: str = "http://localhost:8000"):
         """Initialise le testeur.
-        
+
         Args:
             base_url: URL de base de l'API
         """
@@ -34,7 +32,7 @@ class BBIAAPITester:
         try:
             logger.info("🔍 Test de l'endpoint racine...")
             response = await self.client.get(f"{self.base_url}/")
-            
+
             if response.status_code == 200:
                 data = response.json()
                 logger.info(f"✅ Endpoint racine OK: {data.get('message', 'N/A')}")
@@ -52,7 +50,7 @@ class BBIAAPITester:
         try:
             logger.info("🔍 Test de l'endpoint de santé...")
             response = await self.client.get(f"{self.base_url}/health")
-            
+
             if response.status_code == 200:
                 data = response.json()
                 logger.info(f"✅ Santé OK: {data.get('status', 'N/A')}")
@@ -69,7 +67,7 @@ class BBIAAPITester:
         try:
             logger.info("🔍 Test de l'endpoint d'informations...")
             response = await self.client.get(f"{self.base_url}/api/info")
-            
+
             if response.status_code == 200:
                 data = response.json()
                 logger.info(f"✅ Info API OK: {data.get('name', 'N/A')}")
@@ -86,8 +84,10 @@ class BBIAAPITester:
         """Teste l'endpoint des capacités de l'écosystème."""
         try:
             logger.info("🔍 Test des capacités de l'écosystème...")
-            response = await self.client.get(f"{self.base_url}/api/ecosystem/capabilities")
-            
+            response = await self.client.get(
+                f"{self.base_url}/api/ecosystem/capabilities"
+            )
+
             if response.status_code == 200:
                 data = response.json()
                 logger.info(f"✅ Capacités OK: {data.get('model', 'N/A')}")
@@ -107,7 +107,7 @@ class BBIAAPITester:
         try:
             logger.info("🔍 Test du statut de l'écosystème...")
             response = await self.client.get(f"{self.base_url}/api/ecosystem/status")
-            
+
             if response.status_code == 200:
                 data = response.json()
                 logger.info(f"✅ Statut OK: {data.get('status', 'N/A')}")
@@ -125,13 +125,17 @@ class BBIAAPITester:
         """Teste l'endpoint des émotions disponibles."""
         try:
             logger.info("🔍 Test des émotions disponibles...")
-            response = await self.client.get(f"{self.base_url}/api/ecosystem/emotions/available")
-            
+            response = await self.client.get(
+                f"{self.base_url}/api/ecosystem/emotions/available"
+            )
+
             if response.status_code == 200:
                 data = response.json()
-                emotions = data.get('emotions', [])
+                emotions = data.get("emotions", [])
                 logger.info(f"✅ Émotions OK: {len(emotions)} émotions disponibles")
-                logger.info(f"📊 Émotions: {', '.join(emotions[:5])}{'...' if len(emotions) > 5 else ''}")
+                logger.info(
+                    f"📊 Émotions: {', '.join(emotions[:5])}{'...' if len(emotions) > 5 else ''}"
+                )
                 return True
             else:
                 logger.error(f"❌ Émotions échouées: {response.status_code}")
@@ -144,13 +148,19 @@ class BBIAAPITester:
         """Teste l'endpoint des comportements disponibles."""
         try:
             logger.info("🔍 Test des comportements disponibles...")
-            response = await self.client.get(f"{self.base_url}/api/ecosystem/behaviors/available")
-            
+            response = await self.client.get(
+                f"{self.base_url}/api/ecosystem/behaviors/available"
+            )
+
             if response.status_code == 200:
                 data = response.json()
-                behaviors = data.get('behaviors', [])
-                logger.info(f"✅ Comportements OK: {len(behaviors)} comportements disponibles")
-                logger.info(f"📊 Comportements: {', '.join(behaviors[:5])}{'...' if len(behaviors) > 5 else ''}")
+                behaviors = data.get("behaviors", [])
+                logger.info(
+                    f"✅ Comportements OK: {len(behaviors)} comportements disponibles"
+                )
+                logger.info(
+                    f"📊 Comportements: {', '.join(behaviors[:5])}{'...' if len(behaviors) > 5 else ''}"
+                )
                 return True
             else:
                 logger.error(f"❌ Comportements échoués: {response.status_code}")
@@ -163,11 +173,13 @@ class BBIAAPITester:
         """Teste l'endpoint des modes de démonstration."""
         try:
             logger.info("🔍 Test des modes de démonstration...")
-            response = await self.client.get(f"{self.base_url}/api/ecosystem/demo/modes")
-            
+            response = await self.client.get(
+                f"{self.base_url}/api/ecosystem/demo/modes"
+            )
+
             if response.status_code == 200:
                 data = response.json()
-                modes = data.get('demo_modes', {})
+                modes = data.get("demo_modes", {})
                 logger.info(f"✅ Modes démo OK: {len(modes)} modes disponibles")
                 logger.info(f"📊 Modes: {', '.join(modes.keys())}")
                 return True
@@ -183,10 +195,12 @@ class BBIAAPITester:
         try:
             logger.info("🔍 Test de la spécification OpenAPI...")
             response = await self.client.get(f"{self.base_url}/openapi.json")
-            
+
             if response.status_code == 200:
                 data = response.json()
-                logger.info(f"✅ OpenAPI OK: {data.get('info', {}).get('title', 'N/A')}")
+                logger.info(
+                    f"✅ OpenAPI OK: {data.get('info', {}).get('title', 'N/A')}"
+                )
                 logger.info(f"📊 Version: {data.get('info', {}).get('version', 'N/A')}")
                 logger.info(f"📊 Endpoints: {len(data.get('paths', {}))}")
                 return True
@@ -201,7 +215,7 @@ class BBIAAPITester:
         """Exécute tous les tests."""
         logger.info("🚀 Démarrage des tests de l'API publique BBIA-SIM")
         logger.info(f"📍 URL de base: {self.base_url}")
-        
+
         tests = [
             ("Root Endpoint", self.test_root_endpoint),
             ("Health Check", self.test_health_check),
@@ -213,16 +227,16 @@ class BBIAAPITester:
             ("Demo Modes", self.test_demo_modes),
             ("OpenAPI Spec", self.test_openapi_spec),
         ]
-        
+
         results = {}
         passed = 0
         total = len(tests)
-        
+
         for test_name, test_func in tests:
             logger.info(f"\n{'='*50}")
             logger.info(f"🧪 Test: {test_name}")
             logger.info(f"{'='*50}")
-            
+
             try:
                 result = await test_func()
                 results[test_name] = result
@@ -234,7 +248,7 @@ class BBIAAPITester:
             except Exception as e:
                 logger.error(f"❌ {test_name}: ERREUR - {e}")
                 results[test_name] = False
-        
+
         # Résumé final
         logger.info(f"\n{'='*50}")
         logger.info("📊 RÉSUMÉ DES TESTS")
@@ -242,12 +256,12 @@ class BBIAAPITester:
         logger.info(f"✅ Tests passés: {passed}/{total}")
         logger.info(f"❌ Tests échoués: {total - passed}/{total}")
         logger.info(f"📊 Taux de réussite: {(passed/total)*100:.1f}%")
-        
+
         if passed == total:
             logger.info("🎉 TOUS LES TESTS SONT PASSÉS !")
         else:
             logger.warning("⚠️ Certains tests ont échoué")
-        
+
         return results
 
     async def close(self):
@@ -258,7 +272,7 @@ class BBIAAPITester:
 async def main():
     """Point d'entrée principal."""
     import argparse
-    
+
     parser = argparse.ArgumentParser(
         description="🧪 Testeur pour l'API publique BBIA-SIM",
         formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -275,7 +289,7 @@ Exemples d'utilisation :
   python scripts/test_public_api.py --log-level debug
         """,
     )
-    
+
     parser.add_argument(
         "--url",
         default="http://localhost:8000",
@@ -287,19 +301,19 @@ Exemples d'utilisation :
         default="info",
         help="Niveau de log (défaut: info)",
     )
-    
+
     args = parser.parse_args()
-    
+
     # Configuration du logging
     logging.getLogger().setLevel(getattr(logging, args.log_level.upper()))
-    
+
     # Création du testeur
     tester = BBIAAPITester(args.url)
-    
+
     try:
         # Exécution des tests
         results = await tester.run_all_tests()
-        
+
         # Code de sortie
         if all(results.values()):
             sys.exit(0)  # Succès

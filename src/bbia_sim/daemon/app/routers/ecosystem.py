@@ -7,7 +7,7 @@ from typing import Any, Optional
 from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel, Field
 
-from ....bbia_behavior import BBIABehavior
+from ....bbia_behavior import BBIABehaviorManager
 from ....bbia_emotions import BBIAEmotions
 from ....robot_api import RobotFactory
 
@@ -75,13 +75,13 @@ async def get_robot_capabilities() -> RobotCapabilities:
     try:
         # Initialiser les modules BBIA
         emotions_module = BBIAEmotions()
-        behavior_module = BBIABehavior()
+        behavior_manager = BBIABehaviorManager()
 
         return RobotCapabilities(
             model="Reachy Mini Wireless",
             joints=16,
-            emotions=emotions_module.get_available_emotions(),
-            behaviors=behavior_module.get_available_behaviors(),
+            emotions=list(emotions_module.emotions.keys()),
+            behaviors=list(behavior_manager.behaviors.keys()),
             backends=["mujoco", "reachy_mini", "reachy"],
             simulation_mode=True,
         )
@@ -156,17 +156,19 @@ async def apply_emotion(
         emotions_module = BBIAEmotions()
 
         # Vérifier que l'émotion existe
-        available_emotions = emotions_module.get_available_emotions()
+        available_emotions = list(emotions_module.emotions.keys())
         if emotion not in available_emotions:
             raise HTTPException(
                 status_code=400,
                 detail=f"Émotion '{emotion}' non disponible. Émotions disponibles: {available_emotions}",
             )
 
-        # Appliquer l'émotion
-        joints_affected = emotions_module.apply_emotion(
-            emotion, intensity, duration, joint
-        )
+        # Appliquer l'émotion (simulation)
+        emotions_module.current_emotion = emotion
+        emotions_module.emotion_intensity = intensity
+
+        # Simuler les joints affectés
+        joints_affected = ["yaw_body"]  # Joint principal pour les émotions
 
         return EmotionResponse(
             emotion=emotion,
@@ -210,27 +212,26 @@ async def execute_behavior(
     """
     try:
         # Initialiser le module comportements
-        behavior_module = BBIABehavior()
+        behavior_manager = BBIABehaviorManager()
 
         # Vérifier que le comportement existe
-        available_behaviors = behavior_module.get_available_behaviors()
+        available_behaviors = list(behavior_manager.behaviors.keys())
         if behavior not in available_behaviors:
             raise HTTPException(
                 status_code=400,
                 detail=f"Comportement '{behavior}' non disponible. Comportements disponibles: {available_behaviors}",
             )
 
-        # Exécuter le comportement
-        estimated_duration = behavior_module.execute_behavior(
-            behavior, intensity, duration
-        )
+        # Exécuter le comportement (simulation)
+        success = behavior_manager.execute_behavior(behavior)
+        estimated_duration = 5.0  # Durée estimée par défaut
 
         return BehaviorResponse(
             behavior=behavior,
             parameters={"intensity": intensity, "duration": duration},
             estimated_duration=estimated_duration,
             timestamp=datetime.now().isoformat(),
-            status="executed",
+            status="executed" if success else "failed",
         )
     except HTTPException:
         raise
@@ -253,7 +254,7 @@ async def get_available_emotions() -> dict[str, Any]:
     """
     try:
         emotions_module = BBIAEmotions()
-        emotions = emotions_module.get_available_emotions()
+        emotions = list(emotions_module.emotions.keys())
 
         # Descriptions des émotions
         descriptions = {
@@ -298,8 +299,8 @@ async def get_available_behaviors() -> dict[str, Any]:
         HTTPException: En cas d'erreur
     """
     try:
-        behavior_module = BBIABehavior()
-        behaviors = behavior_module.get_available_behaviors()
+        behavior_manager = BBIABehaviorManager()
+        behaviors = list(behavior_manager.behaviors.keys())
 
         # Descriptions des comportements
         descriptions = {

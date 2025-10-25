@@ -19,6 +19,15 @@ Ce projet fournit une simulation **parfaitement fidèle** du robot Reachy Mini d
 - ✅ **API PUBLIQUE** : FastAPI + Swagger/OpenAPI + Documentation complète
 - ✅ **ÉCOSYSTÈME OUVERT** : Support multi-robots + Communauté technique
 
+### **🚀 ÉCOSYSTÈME OUVERT v1.2.0**
+- **Objectif** : Ouverture de l'écosystème pour la communauté et l'intégration multi-robots
+- **Approche** : API publique documentée avec support communautaire
+- **Cible** : Développeurs, chercheurs, communauté technique
+- **Focus** : API publique + Documentation + Support multi-robots
+- **✅ API Publique** : **FastAPI + Swagger/OpenAPI** avec documentation complète
+- **✅ Écosystème** : **Support multi-robots** + Communauté technique
+- **✅ Documentation** : **Swagger UI + ReDoc** + Guides d'intégration
+
 ### **🚀 IA AVANCÉE v1.2.1**
 - **Objectif** : Capacités IA de pointe pour comportements adaptatifs
 - **Approche** : Modules spécialisés avec intégration Hugging Face
@@ -109,6 +118,23 @@ python examples/demo_reachy_mini_corrigee.py --quick
 - **✅ Mode headless** : Stable et rapide pour les tests
 - **❌ JAMAIS animer** : `left_antenna`, `right_antenna`, `passive_*`
 - **❌ JAMAIS dépasser** : 0.3 rad d'amplitude
+
+### 🌐 API Publique BBIA-SIM (NOUVEAU v1.2.0)
+```bash
+# Démarrage de l'API publique
+python scripts/start_public_api.py --dev
+
+# Test de l'API publique
+python scripts/test_public_api.py
+
+# Démonstration complète
+python scripts/demo_public_api.py
+
+# Documentation interactive
+# Swagger UI: http://localhost:8000/docs
+# ReDoc: http://localhost:8000/redoc
+# OpenAPI: http://localhost:8000/openapi.json
+```
 
 ### 🤖 Backends Disponibles (NOUVEAU v1.2.0)
 ```bash

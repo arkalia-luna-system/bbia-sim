@@ -107,38 +107,38 @@ app = FastAPI(
     title="BBIA-SIM API - Écosystème Reachy Mini",
     description="""
     ## 🚀 API BBIA-SIM v1.2.0 - Écosystème Reachy Mini
-    
+
     **API publique pour le contrôle du robot Reachy Mini avec modules BBIA (Bio-Inspired Artificial Intelligence)**
-    
+
     ### 🎯 Fonctionnalités Principales
-    
+
     - **🤖 Contrôle Robot** : Mouvements, poses, états
     - **😊 Émotions BBIA** : 12 émotions contrôlant les articulations
     - **🎭 Comportements** : Actions complexes prédéfinies
     - **📊 Télémétrie** : WebSocket temps réel
     - **🎮 Modes Démo** : Simulation, robot réel, mixte
-    
+
     ### 🔧 Backends Supportés
-    
+
     - **MuJoCo** : Simulation physique réaliste
     - **Reachy Mini SDK** : Robot physique officiel
     - **Reachy Mock** : Mode développement
-    
+
     ### 📚 Documentation
-    
+
     - **Swagger UI** : Interface interactive `/docs`
     - **ReDoc** : Documentation alternative `/redoc`
     - **OpenAPI** : Spécification complète `/openapi.json`
-    
+
     ### 🔐 Authentification
-    
+
     Utilisez le token Bearer dans l'en-tête Authorization :
     ```
     Authorization: Bearer YOUR_API_TOKEN
     ```
-    
+
     ### 🌐 WebSocket
-    
+
     Connexion temps réel pour la télémétrie :
     ```
     ws://localhost:8000/ws/telemetry
