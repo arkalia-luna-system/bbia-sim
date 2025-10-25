@@ -117,7 +117,7 @@ class MuJoCoBackend(RobotAPI):
 
         joint_id = self.joint_name_to_id[joint_name]
         if self.data is not None:
-            return self.data.qpos[joint_id]
+            return float(self.data.qpos[joint_id])
         return None
 
     def step(self) -> bool:
@@ -169,7 +169,7 @@ class MuJoCoBackend(RobotAPI):
             return False
 
         try:
-            return self.viewer.is_running()
+            return self.viewer.is_running()  # type: ignore
         except Exception:
             return False
 

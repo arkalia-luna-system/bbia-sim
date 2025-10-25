@@ -17,8 +17,8 @@ try:
     YOLO_AVAILABLE = True
 except ImportError:
     YOLO_AVAILABLE = False
-    YOLO = None
-    cv2 = None
+    YOLO = None  # type: ignore
+    cv2 = None  # type: ignore
 
 logger = logging.getLogger(__name__)
 
@@ -67,7 +67,7 @@ class YOLODetector:
             logger.info(f"📥 Chargement modèle YOLOv8{self.model_size}...")
             start_time = time.time()
 
-            self.model = YOLO(f"yolov8{self.model_size}.pt")
+            self.model = YOLO(f"yolov8{self.model_size}.pt")  # type: ignore
 
             load_time = time.time() - start_time
             logger.info(f"✅ Modèle YOLO chargé en {load_time:.1f}s")
@@ -111,7 +111,7 @@ class YOLODetector:
                         # Confiance et classe
                         confidence = box.conf[0].cpu().numpy()
                         class_id = int(box.cls[0].cpu().numpy())
-                        class_name = self.model.names[class_id]
+                        class_name = self.model.names[class_id]  # type: ignore
 
                         detection = {
                             "bbox": [int(x1), int(y1), int(x2), int(y2)],

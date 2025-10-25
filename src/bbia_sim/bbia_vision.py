@@ -4,6 +4,7 @@
 Reconnaissance d'objets, détection de visages, suivi d'objets.
 """
 
+import math
 from datetime import datetime
 from typing import Any, Optional
 
@@ -15,10 +16,10 @@ class BBIAVision:
         self.camera_active = True
         self.vision_quality = "HD"
         self.detection_range = 3.0  # mètres
-        self.objects_detected = []
-        self.faces_detected = []
+        self.objects_detected: list[dict[str, Any]] = []
+        self.faces_detected: list[dict[str, Any]] = []
         self.tracking_active = False
-        self.current_focus = None
+        self.current_focus: Optional[dict[str, Any]] = None
 
         # Spécifications hardware réelles
         self.specs = {
@@ -92,7 +93,7 @@ class BBIAVision:
             "timestamp": datetime.now().isoformat(),
         }
 
-    def recognize_object(self, object_name: str) -> Optional[dict]:
+    def recognize_object(self, object_name: str) -> Optional[dict[str, Any]]:
         """Reconnaît un objet spécifique."""
         for obj in self.objects_detected:
             if obj["name"] == object_name:
@@ -100,7 +101,7 @@ class BBIAVision:
 
         return None
 
-    def detect_faces(self) -> list[dict]:
+    def detect_faces(self) -> list[dict[str, Any]]:
         """Détecte les visages dans le champ de vision."""
         if not self.faces_detected:
             self.scan_environment()
@@ -137,17 +138,16 @@ class BBIAVision:
             "faces_count": len(self.faces_detected),
         }
 
-    def analyze_emotion(self, face_data: dict) -> str:
+    def analyze_emotion(self, face_data: dict[str, Any]) -> str:
         """Analyse l'émotion d'un visage."""
         detected_emotion = face_data.get("emotion", "neutral")
-
-        return detected_emotion
+        return str(detected_emotion)
 
     def calculate_distance(self, object_position: tuple[float, float]) -> float:
         """Calcule la distance d'un objet."""
         # Simulation simple basée sur la position
         x, y = object_position
-        distance = (x**2 + y**2) ** 0.5
+        distance = math.sqrt(x**2 + y**2)
         return distance
 
     def get_vision_stats(self) -> dict:
