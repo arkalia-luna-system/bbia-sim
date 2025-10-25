@@ -186,7 +186,9 @@ class BBIAAdvancedWebSocketManager:
         """Récupère la liste des joints disponibles."""
         if self.robot:
             joints = self.robot.get_available_joints()
-            return joints if isinstance(joints, list) else []
+            if isinstance(joints, list):
+                return [str(joint) for joint in joints if isinstance(joint, (str, int))]
+            return []
         return []
 
     def _get_current_pose(self) -> dict[str, float]:
@@ -1171,6 +1173,8 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
 
             intensity = 0.8  # Intensité par défaut
             if advanced_websocket_manager.robot:
+                # Type narrowing après vérification isinstance
+                assert isinstance(emotion, str)
                 success = advanced_websocket_manager.robot.set_emotion(
                     emotion, intensity
                 )
@@ -1196,18 +1200,20 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                 )
                 return
 
+            # Type narrowing après vérification robot
+            assert advanced_websocket_manager.robot is not None
+            robot = advanced_websocket_manager.robot
+
             if action == "look_at":
-                success = advanced_websocket_manager.robot.look_at(0.5, 0.0, 0.0)
+                success = robot.look_at(0.5, 0.0, 0.0)
             elif action == "greet":
-                success = advanced_websocket_manager.robot.run_behavior("greeting", 3.0)
+                success = robot.run_behavior("greeting", 3.0)
             elif action == "wake_up":
-                success = advanced_websocket_manager.robot.run_behavior("wake_up", 2.0)
+                success = robot.run_behavior("wake_up", 2.0)
             elif action == "sleep":
-                success = advanced_websocket_manager.robot.run_behavior(
-                    "goto_sleep", 2.0
-                )
+                success = robot.run_behavior("goto_sleep", 2.0)
             elif action == "nod":
-                success = advanced_websocket_manager.robot.run_behavior("nod", 1.0)
+                success = robot.run_behavior("nod", 1.0)
             elif action == "stop":
                 success = True  # Arrêt immédiat
             else:
@@ -1237,7 +1243,12 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                 )
                 return
 
-            success = advanced_websocket_manager.robot.run_behavior(behavior, 5.0)
+            # Type narrowing après vérifications
+            assert isinstance(behavior, str)
+            assert advanced_websocket_manager.robot is not None
+            robot = advanced_websocket_manager.robot
+
+            success = robot.run_behavior(behavior, 5.0)
             if success:
                 await advanced_websocket_manager.send_log_message(
                     "info", f"Comportement lancé: {behavior}"
@@ -1262,9 +1273,14 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                 )
                 return
 
+            # Type narrowing après vérifications
+            assert joint_data is not None
+            assert advanced_websocket_manager.robot is not None
+            robot = advanced_websocket_manager.robot
+
             joint = joint_data.get("joint")
             position = joint_data.get("position", 0.0)
-            success = advanced_websocket_manager.robot.set_joint_pos(joint, position)
+            success = robot.set_joint_pos(joint, position)
             if success:
                 await advanced_websocket_manager.send_log_message(
                     "info", f"Joint {joint} = {position}"
