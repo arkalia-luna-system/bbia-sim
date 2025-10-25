@@ -82,7 +82,7 @@ def suggest_animation_params(joint_name, mobile_joints):
             print(f"🎮 Paramètres suggérés pour '{joint_name}':")
             print(f"   • Limites: [{min_range:.3f}, {max_range:.3f}] rad")
             print(f"   • Amplitude sûre: {safe_amplitude:.3f} rad")
-            print("   • Fréquence recommandée: 0.5 Hz")
+            print("   • Fréquence recommandée: 0.1 Hz (SÉCURISÉ)")
             print(
                 f"   • Commande: mjpython examples/demo_viewer_bbia_simple.py --joint {joint_name} --amplitude {safe_amplitude:.3f}"
             )

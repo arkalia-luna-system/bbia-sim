@@ -112,32 +112,36 @@ class ConnectionManager:
         # Données simulées optimisées (évite random() superflu)
         current_time = time.time()
         # Utilisation d'un pattern déterministe basé sur le temps pour éviter random()
-        sin_val = (current_time % 10) / 10.0  # Cycle de 10 secondes
+        # Ajout de microsecondes pour garantir l'unicité
+        import math
+
+        sin_val = math.sin(current_time * 0.1) * 0.5 + 0.5  # Valeur entre 0 et 1
+        cos_val = math.cos(current_time * 0.15) * 0.5 + 0.5  # Valeur entre 0 et 1
 
         return {
             "timestamp": datetime.now().isoformat(),
             "robot": {
                 "position": {
-                    "x": round(sin_val * 0.1, 3),
-                    "y": round(sin_val * 0.1, 3),
+                    "x": round((sin_val - 0.5) * 0.2, 3),
+                    "y": round((cos_val - 0.5) * 0.2, 3),
                     "z": round(0.1 + sin_val * 0.1, 3),
                 },
                 "orientation": {
-                    "roll": round(sin_val * 0.1, 3),
-                    "pitch": round(sin_val * 0.1, 3),
-                    "yaw": round(sin_val * 0.2, 3),
+                    "roll": round((sin_val - 0.5) * 0.2, 3),
+                    "pitch": round((cos_val - 0.5) * 0.2, 3),
+                    "yaw": round(sin_val * 0.4, 3),
                 },
                 "velocity": {
-                    "linear": round(sin_val * 0.05, 3),
-                    "angular": round(sin_val * 0.1, 3),
+                    "linear": round(sin_val * 0.1, 3),
+                    "angular": round(cos_val * 0.2, 3),
                 },
             },
             "joints": joint_positions,  # Données réelles de la simulation
             "sensors": {
-                "battery": round(85.0 + sin_val * 5.0, 1),
-                "temperature": round(25.0 + sin_val * 2.0, 1),
-                "cpu_usage": round(20.0 + sin_val * 10.0, 1),
-                "memory_usage": round(50.0 + sin_val * 10.0, 1),
+                "battery": round(85.0 + sin_val * 10.0, 1),
+                "temperature": round(25.0 + cos_val * 4.0, 1),
+                "cpu_usage": round(20.0 + sin_val * 20.0, 1),
+                "memory_usage": round(50.0 + cos_val * 20.0, 1),
             },
             "status": {
                 "mode": "autonomous",

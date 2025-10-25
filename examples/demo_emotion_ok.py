@@ -25,7 +25,9 @@ def emotion_to_pose(
     """Convertit une émotion BBIA en position d'articulation."""
     # Mapping émotion → mouvement
     emotion_patterns = {
-        "happy": lambda t: 0.3 * math.sin(2 * math.pi * 0.5 * t),  # Mouvement joyeux
+        "happy": (
+            lambda t: 0.2 * math.sin(2 * math.pi * 0.1 * t)
+        ),  # Mouvement joyeux SÉCURISÉ
         "sad": lambda t: -0.2 * math.sin(2 * math.pi * 0.3 * t),  # Mouvement triste
         "angry": lambda t: 0.4 * math.sin(2 * math.pi * 0.8 * t),  # Mouvement agité
         "surprised": lambda t: 0.5 * math.sin(2 * math.pi * 0.2 * t),  # Mouvement lent

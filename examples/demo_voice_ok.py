@@ -52,7 +52,7 @@ def execute_voice_action(
 
     if action_type == "look_at":
         # Mouvement de regard
-        return 0.3 * math.sin(2 * math.pi * 0.3 * t)
+        return 0.2 * math.sin(2 * math.pi * 0.1 * t)  # SÉCURISÉ
 
     elif action_type == "turn_left":
         # Rotation à gauche

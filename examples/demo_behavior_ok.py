@@ -85,7 +85,7 @@ def behavior_to_movement(scenario: BehaviorScenario, step: int, fps: int) -> flo
         "neutral": lambda t: 0.0,  # Position neutre
         "forward": lambda t: 0.2 * math.sin(2 * math.pi * t),  # Avancer
         "wave": lambda t: 0.5 * math.sin(6 * math.pi * t),  # Salutation
-        "happy": lambda t: 0.3 * math.sin(2 * math.pi * 0.5 * t),  # Joyeux
+        "happy": lambda t: 0.2 * math.sin(2 * math.pi * 0.1 * t),  # Joyeux SÉCURISÉ
         "focus": lambda t: 0.1 * math.sin(2 * math.pi * 0.1 * t),  # Concentration
         "emotional": lambda t: 0.4 * math.sin(2 * math.pi * 0.8 * t),  # Émotionnel
         "calm": lambda t: 0.1 * math.sin(2 * math.pi * 0.2 * t),  # Calme

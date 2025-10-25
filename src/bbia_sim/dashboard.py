@@ -18,8 +18,8 @@ try:
     FASTAPI_AVAILABLE = True
 except ImportError:
     FASTAPI_AVAILABLE = False
-    FastAPI = None
-    WebSocket = None
+    FastAPI = None  # type: ignore
+    WebSocket = None  # type: ignore
 
 # Ajouter le chemin src pour les imports
 import sys
@@ -113,7 +113,7 @@ websocket_manager = BBIAWebSocketManager()
 if FASTAPI_AVAILABLE:
     app = FastAPI(title="BBIA Dashboard", version="1.2.0")
 else:
-    app = None
+    app = None  # type: ignore
 
 
 def create_dashboard_app() -> Optional[FastAPI]:
@@ -383,51 +383,53 @@ async def handle_robot_command(command_data: dict[str, Any]):
             websocket_manager.robot = RobotFactory.create_backend(
                 websocket_manager.robot_backend
             )
-            websocket_manager.robot.connect()
-            await websocket_manager.send_log_message(
-                "info", f"Robot {websocket_manager.robot_backend} connecté"
-            )
+            if websocket_manager.robot:
+                websocket_manager.robot.connect()
+                await websocket_manager.send_log_message(
+                    "info", f"Robot {websocket_manager.robot_backend} connecté"
+                )
 
         # Exécuter commande
-        if command_type == "emotion":
-            websocket_manager.robot.set_emotion(value, intensity=0.8)
-            await websocket_manager.send_log_message(
-                "info", f"Émotion définie: {value}"
-            )
+        if websocket_manager.robot:
+            if command_type == "emotion":
+                websocket_manager.robot.set_emotion(str(value), intensity=0.8)
+                await websocket_manager.send_log_message(
+                    "info", f"Émotion définie: {value}"
+                )
 
-        elif command_type == "action":
-            if value == "look_at":
-                websocket_manager.robot.set_joint_pos("yaw_body", 0.2)
-                await asyncio.sleep(1)
-                websocket_manager.robot.set_joint_pos("yaw_body", -0.2)
-                await asyncio.sleep(1)
-                websocket_manager.robot.set_joint_pos("yaw_body", 0.0)
-                await websocket_manager.send_log_message("info", "Action: regarder")
+            elif command_type == "action":
+                if value == "look_at":
+                    websocket_manager.robot.set_joint_pos("yaw_body", 0.2)
+                    await asyncio.sleep(1)
+                    websocket_manager.robot.set_joint_pos("yaw_body", -0.2)
+                    await asyncio.sleep(1)
+                    websocket_manager.robot.set_joint_pos("yaw_body", 0.0)
+                    await websocket_manager.send_log_message("info", "Action: regarder")
 
-            elif value == "greet":
-                websocket_manager.robot.set_emotion("happy", intensity=0.9)
-                await asyncio.sleep(2)
-                websocket_manager.robot.set_emotion("neutral", intensity=0.5)
-                await websocket_manager.send_log_message("info", "Action: saluer")
+                elif value == "greet":
+                    websocket_manager.robot.set_emotion("happy", intensity=0.9)
+                    await asyncio.sleep(2)
+                    websocket_manager.robot.set_emotion("neutral", intensity=0.5)
+                    await websocket_manager.send_log_message("info", "Action: saluer")
 
-            elif value == "wake_up":
-                websocket_manager.robot.set_emotion("excited", intensity=0.7)
-                await asyncio.sleep(1)
-                websocket_manager.robot.set_joint_pos("yaw_body", 0.1)
-                await asyncio.sleep(0.5)
-                websocket_manager.robot.set_joint_pos("yaw_body", -0.1)
-                await asyncio.sleep(0.5)
-                websocket_manager.robot.set_joint_pos("yaw_body", 0.0)
-                websocket_manager.robot.set_emotion("happy", intensity=0.8)
-                await websocket_manager.send_log_message("info", "Action: réveil")
+                elif value == "wake_up":
+                    websocket_manager.robot.set_emotion("excited", intensity=0.7)
+                    await asyncio.sleep(1)
+                    websocket_manager.robot.set_joint_pos("yaw_body", 0.1)
+                    await asyncio.sleep(0.5)
+                    websocket_manager.robot.set_joint_pos("yaw_body", -0.1)
+                    await asyncio.sleep(0.5)
+                    websocket_manager.robot.set_joint_pos("yaw_body", 0.0)
+                    websocket_manager.robot.set_emotion("happy", intensity=0.8)
+                    await websocket_manager.send_log_message("info", "Action: réveil")
 
-            elif value == "stop":
-                websocket_manager.robot.set_emotion("neutral", intensity=0.5)
-                websocket_manager.robot.set_joint_pos("yaw_body", 0.0)
-                await websocket_manager.send_log_message("info", "Action: arrêt")
+                elif value == "stop":
+                    websocket_manager.robot.set_emotion("neutral", intensity=0.5)
+                    websocket_manager.robot.set_joint_pos("yaw_body", 0.0)
+                    await websocket_manager.send_log_message("info", "Action: arrêt")
 
-        # Mise à jour statut
-        await websocket_manager.send_status_update()
+            # Mise à jour statut
+            await websocket_manager.send_status_update()
 
     except Exception as e:
         logger.error(f"❌ Erreur commande robot: {e}")

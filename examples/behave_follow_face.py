@@ -142,8 +142,8 @@ class BBIAFaceFollower:
         self.start_time = time.time()
 
         # Paramètres du mouvement oscillant
-        amplitude = 0.4  # ±0.4 radian
-        frequency = 0.5  # 0.5 Hz (période de 2s)
+        amplitude = 0.2  # ±0.2 radian SÉCURISÉ
+        frequency = 0.1  # 0.1 Hz (période de 10s) SÉCURISÉ
 
         logger.info(
             f"🎯 Mouvement oscillant: amplitude={amplitude}rad, fréquence={frequency}Hz"

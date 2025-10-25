@@ -196,8 +196,12 @@ def main():
     parser.add_argument("--headless", action="store_true", help="Mode headless")
     parser.add_argument("--duration", type=float, default=2.0, help="Durée en secondes")
     parser.add_argument("--joint", default="yaw_body", help="Joint à animer")
-    parser.add_argument("--frequency", type=float, default=1.0, help="Fréquence en Hz")
-    parser.add_argument("--amplitude", type=float, default=0.2, help="Amplitude en rad")
+    parser.add_argument(
+        "--frequency", type=float, default=0.1, help="Fréquence en Hz (SÉCURISÉ)"
+    )
+    parser.add_argument(
+        "--amplitude", type=float, default=0.2, help="Amplitude en rad (SÉCURISÉ)"
+    )
 
     args = parser.parse_args()
 

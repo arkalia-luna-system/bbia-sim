@@ -67,8 +67,8 @@ def main():
                 # Mode lent pour robot réel (0.1 Hz = 10s par cycle)
                 target = 0.2 * math.sin(2 * math.pi * 0.1 * t)
             else:
-                # Mode normal pour simulation (0.5 Hz = 2s par cycle)
-                target = 0.3 * math.sin(2 * math.pi * 0.5 * t)
+                # Mode normal pour simulation (0.1 Hz = 10s par cycle - SÉCURISÉ)
+                target = 0.2 * math.sin(2 * math.pi * 0.1 * t)
 
             robot.set_joint_pos(args.joint, target)
             robot.step()

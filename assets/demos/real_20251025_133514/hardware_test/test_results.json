@@ -1,0 +1,15 @@
+{
+  "timestamp": 1761392120.203596,
+  "duration": 41.6,
+  "joints_tested": [
+    "yaw_body"
+  ],
+  "total_tests": 416,
+  "errors": [],
+  "latency_stats": {
+    "avg": 0.023042353299947884,
+    "max": 0.07224082946777344,
+    "min": 0.0026226043701171875
+  },
+  "success": true
+}

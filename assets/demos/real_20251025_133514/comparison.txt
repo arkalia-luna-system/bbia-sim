@@ -1,0 +1,14 @@
+🔍 Validation trace:
+   • Référence: artifacts/golden/happy_mujoco.jsonl
+   • Courante: assets/demos/real_20251025_133514/trace_real.jsonl
+   • Tolérance position: ±0.25 rad
+   • Tolérance cadence: ±20.0%
+
+📊 Métriques:
+   • Erreur max position: 0.2656 rad
+   • Cadence référence: 45026.5 Hz
+   • Cadence courante: 82.5 Hz
+   • Différence cadence: 99.8%
+   • Frames comparées: 404
+
+❌ Validation échouée

@@ -76,8 +76,15 @@ class WhisperSTT:
         Returns:
             Texte transcrit ou None si erreur
         """
+        # Vérification globale de disponibilité
+        if not WHISPER_AVAILABLE:
+            logger.error("❌ Whisper non disponible")
+            return None
+
+        # Charger le modèle si nécessaire
         if not self.is_loaded:
             if not self.load_model():
+                logger.error("❌ Impossible de charger le modèle Whisper")
                 return None
 
         try:
@@ -85,6 +92,10 @@ class WhisperSTT:
             start_time = time.time()
 
             # Transcription avec Whisper
+            if self.model is None:
+                logger.error("❌ Modèle Whisper non chargé")
+                return None
+            
             result = self.model.transcribe(
                 audio_path,
                 language=self.language if self.language != "auto" else None,
@@ -113,6 +124,11 @@ class WhisperSTT:
         Returns:
             Texte transcrit ou None si erreur
         """
+        # Vérification globale de disponibilité
+        if not WHISPER_AVAILABLE:
+            logger.error("❌ Whisper non disponible")
+            return None
+
         try:
             import numpy as np
             import sounddevice as sd
@@ -132,6 +148,7 @@ class WhisperSTT:
 
             # Sauvegarde temporaire sécurisée
             import tempfile
+
             temp_file = Path(tempfile.gettempdir()) / "bbia_whisper_temp.wav"
             sf.write(temp_file, audio_data, sample_rate)
 
