@@ -121,24 +121,30 @@ class ReachyMiniBackend(RobotAPI):
             return 0.0
 
         try:
-            # Le SDK officiel retourne directement un array de positions
-            positions = self.robot.get_current_joint_positions()
+            # Le SDK officiel retourne tuple[list[float], list[float]] (head_positions, antenna_positions)
+            head_positions, antenna_positions = self.robot.get_current_joint_positions()
 
             # Mapping des noms vers indices (basé sur le modèle MuJoCo officiel)
-            joint_indices = {
-                "yaw_body": 0,
-                "stewart_1": 1,
-                "stewart_2": 3,
-                "stewart_3": 5,
-                "stewart_4": 7,
-                "stewart_5": 9,
-                "stewart_6": 11,
-            }
-
-            if joint_name in joint_indices:
-                idx = joint_indices[joint_name]
-                if idx < len(positions):
-                    return float(positions[idx])
+            if joint_name == "yaw_body":
+                # yaw_body est le premier élément des positions tête
+                return float(head_positions[0]) if len(head_positions) > 0 else 0.0
+            elif joint_name in ["left_antenna", "right_antenna"]:
+                # Antennes dans antenna_positions
+                antenna_idx = 0 if joint_name == "left_antenna" else 1
+                return (
+                    float(antenna_positions[antenna_idx])
+                    if len(antenna_positions) > antenna_idx
+                    else 0.0
+                )
+            elif joint_name.startswith("stewart_"):
+                # Stewart joints dans head_positions (indices 1,3,5,7,9,11)
+                stewart_idx = int(joint_name.split("_")[1])  # 1,2,3,4,5,6
+                head_idx = stewart_idx * 2 - 1  # 1,3,5,7,9,11
+                return (
+                    float(head_positions[head_idx])
+                    if len(head_positions) > head_idx
+                    else 0.0
+                )
 
             logger.warning(f"Joint {joint_name} non trouvé")
             return None
@@ -301,3 +307,141 @@ class ReachyMiniBackend(RobotAPI):
         except Exception as e:
             logger.error(f"Erreur télémétrie: {e}")
             return {}
+
+    # ===== MÉTHODES SDK OFFICIEL SUPPLÉMENTAIRES =====
+
+    def get_current_head_pose(self) -> Optional[Any]:
+        """Récupère la pose actuelle de la tête."""
+        if not self.is_connected or not self.robot:
+            return None
+
+        try:
+            return self.robot.get_current_head_pose()
+        except Exception as e:
+            logger.error(f"Erreur get_current_head_pose: {e}")
+            return None
+
+    def get_present_antenna_joint_positions(self) -> Optional[list[float]]:
+        """Récupère les positions actuelles des antennes."""
+        if not self.is_connected or not self.robot:
+            return [0.0, 0.0]  # Mode simulation
+
+        try:
+            return self.robot.get_present_antenna_joint_positions()
+        except Exception as e:
+            logger.error(f"Erreur get_present_antenna_joint_positions: {e}")
+            return None
+
+    def set_target_body_yaw(self, body_yaw: float) -> bool:
+        """Définit la rotation cible du corps."""
+        if not self.is_connected or not self.robot:
+            logger.info(f"Mode simulation: body_yaw = {body_yaw}")
+            return True
+
+        try:
+            self.robot.set_target_body_yaw(body_yaw)
+            return True
+        except Exception as e:
+            logger.error(f"Erreur set_target_body_yaw: {e}")
+            return False
+
+    def set_target_antenna_joint_positions(self, antennas: list[float]) -> bool:
+        """Définit les positions cibles des antennes."""
+        if not self.is_connected or not self.robot:
+            logger.info(f"Mode simulation: antennas = {antennas}")
+            return True
+
+        try:
+            self.robot.set_target_antenna_joint_positions(antennas)
+            return True
+        except Exception as e:
+            logger.error(f"Erreur set_target_antenna_joint_positions: {e}")
+            return False
+
+    def look_at_image(
+        self, u: int, v: int, duration: float = 1.0, perform_movement: bool = True
+    ) -> bool:
+        """Fait regarder le robot vers un point dans l'image."""
+        if not self.is_connected or not self.robot:
+            logger.info(f"Mode simulation: look_at_image({u}, {v})")
+            return True
+
+        try:
+            self.robot.look_at_image(u, v, duration, perform_movement)
+            return True
+        except Exception as e:
+            logger.error(f"Erreur look_at_image: {e}")
+            return False
+
+    def goto_target(
+        self,
+        head: Optional[Any] = None,
+        antennas: Optional[list[float]] = None,
+        duration: float = 0.5,
+        body_yaw: Optional[float] = None,
+    ) -> bool:
+        """Va vers une cible spécifique."""
+        if not self.is_connected or not self.robot:
+            logger.info("Mode simulation: goto_target")
+            return True
+
+        try:
+            self.robot.goto_target(
+                head=head, antennas=antennas, duration=duration, body_yaw=body_yaw
+            )
+            return True
+        except Exception as e:
+            logger.error(f"Erreur goto_target: {e}")
+            return False
+
+    def enable_motors(self) -> bool:
+        """Active les moteurs."""
+        if not self.is_connected or not self.robot:
+            logger.info("Mode simulation: enable_motors")
+            return True
+
+        try:
+            self.robot.enable_motors()
+            return True
+        except Exception as e:
+            logger.error(f"Erreur enable_motors: {e}")
+            return False
+
+    def disable_motors(self) -> bool:
+        """Désactive les moteurs."""
+        if not self.is_connected or not self.robot:
+            logger.info("Mode simulation: disable_motors")
+            return True
+
+        try:
+            self.robot.disable_motors()
+            return True
+        except Exception as e:
+            logger.error(f"Erreur disable_motors: {e}")
+            return False
+
+    def enable_gravity_compensation(self) -> bool:
+        """Active la compensation de gravité."""
+        if not self.is_connected or not self.robot:
+            logger.info("Mode simulation: enable_gravity_compensation")
+            return True
+
+        try:
+            self.robot.enable_gravity_compensation()
+            return True
+        except Exception as e:
+            logger.error(f"Erreur enable_gravity_compensation: {e}")
+            return False
+
+    def disable_gravity_compensation(self) -> bool:
+        """Désactive la compensation de gravité."""
+        if not self.is_connected or not self.robot:
+            logger.info("Mode simulation: disable_gravity_compensation")
+            return True
+
+        try:
+            self.robot.disable_gravity_compensation()
+            return True
+        except Exception as e:
+            logger.error(f"Erreur disable_gravity_compensation: {e}")
+            return False

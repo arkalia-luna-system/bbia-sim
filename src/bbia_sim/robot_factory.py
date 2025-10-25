@@ -8,6 +8,7 @@ from typing import Optional
 
 from .backends.mujoco_backend import MuJoCoBackend
 from .backends.reachy_backend import ReachyBackend
+from .backends.reachy_mini_backend import ReachyMiniBackend
 from .robot_api import RobotAPI
 
 logger = logging.getLogger(__name__)
@@ -21,7 +22,7 @@ class RobotFactory:
         """Crée un backend RobotAPI.
 
         Args:
-            backend_type: Type de backend ("mujoco" ou "reachy")
+            backend_type: Type de backend ("mujoco", "reachy", ou "reachy_mini")
             **kwargs: Arguments spécifiques au backend
 
         Returns:
@@ -40,6 +41,11 @@ class RobotFactory:
                 robot_port = kwargs.get("robot_port", 8080)
                 return ReachyBackend(robot_ip=robot_ip, robot_port=robot_port)
 
+            elif backend_type.lower() == "reachy_mini":
+                robot_ip = kwargs.get("robot_ip", "localhost")
+                robot_port = kwargs.get("robot_port", 8080)
+                return ReachyMiniBackend(robot_ip=robot_ip, robot_port=robot_port)
+
             else:
                 logger.error(f"Type de backend non supporté: {backend_type}")
                 return None
@@ -51,7 +57,7 @@ class RobotFactory:
     @staticmethod
     def get_available_backends() -> list[str]:
         """Retourne la liste des backends disponibles."""
-        return ["mujoco", "reachy"]
+        return ["mujoco", "reachy", "reachy_mini"]
 
     @staticmethod
     def get_backend_info(backend_type: str) -> dict:
@@ -67,6 +73,13 @@ class RobotFactory:
             "reachy": {
                 "name": "Reachy Real Robot",
                 "description": "Robot Reachy réel (implémentation mock)",
+                "supports_viewer": False,
+                "supports_headless": True,
+                "real_robot": True,
+            },
+            "reachy_mini": {
+                "name": "Reachy-Mini SDK Officiel",
+                "description": "Robot Reachy-Mini avec SDK officiel reachy_mini",
                 "supports_viewer": False,
                 "supports_headless": True,
                 "real_robot": True,
