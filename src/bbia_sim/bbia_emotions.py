@@ -6,6 +6,7 @@
 
 import secrets
 from datetime import datetime
+from typing import Any
 
 
 class BBIAEmotions:
@@ -15,7 +16,7 @@ class BBIAEmotions:
         self.current_emotion = "neutral"
         self.emotion_intensity = 0.5  # 0.0 à 1.0
         self.transition_duration = 1.0  # secondes
-        self.emotion_history = []
+        self.emotion_history: list[dict[str, Any]] = []
 
         # Définition des émotions basées sur la référence visuelle
         self.emotions = {
@@ -113,9 +114,9 @@ class BBIAEmotions:
         print(f"🎭 Intensité : {self.emotion_intensity:.1f}")
         print(f"⏰ {datetime.now().strftime('%H:%M:%S')}")
 
-    def get_current_emotion(self) -> dict:
+    def get_current_emotion(self) -> dict[str, Any]:
         """Retourne l'émotion actuelle avec ses détails."""
-        emotion_data = self.emotions[self.current_emotion].copy()
+        emotion_data = dict(self.emotions[self.current_emotion])
         emotion_data.update(
             {
                 "name": self.current_emotion,
@@ -125,7 +126,7 @@ class BBIAEmotions:
         )
         return emotion_data
 
-    def get_emotion_history(self, limit: int = 10) -> list[dict]:
+    def get_emotion_history(self, limit: int = 10) -> list[dict[str, Any]]:
         """Retourne l'historique des émotions."""
         return self.emotion_history[-limit:] if limit > 0 else self.emotion_history
 
@@ -138,8 +139,8 @@ class BBIAEmotions:
             new_emotion = secrets.choice(available_emotions)
             intensity = secrets.randbelow(70) / 100.0 + 0.3  # 0.3 à 1.0
             self.set_emotion(new_emotion, intensity)
-            return new_emotion
-        return self.current_emotion
+            return str(new_emotion)
+        return str(self.current_emotion)
 
     def emotional_response(self, stimulus: str) -> str:
         """Réponse émotionnelle à un stimulus."""
@@ -171,7 +172,7 @@ class BBIAEmotions:
     def blend_emotions(self, emotion1: str, emotion2: str, ratio: float = 0.5) -> str:
         """Mélange deux émotions."""
         if emotion1 not in self.emotions or emotion2 not in self.emotions:
-            return self.current_emotion
+            return str(self.current_emotion)
 
         # Logique simple de mélange
         result_emotion = emotion1 if ratio < 0.5 else emotion2

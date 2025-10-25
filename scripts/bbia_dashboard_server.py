@@ -18,7 +18,9 @@ from bbia_sim.dashboard import FASTAPI_AVAILABLE, run_dashboard
 def main():
     """Point d'entrée principal."""
     parser = argparse.ArgumentParser(description="Dashboard BBIA")
-    parser.add_argument("--host", default="127.0.0.1", help="Adresse d'écoute")  # nosec B104
+    parser.add_argument(
+        "--host", default="127.0.0.1", help="Adresse d'écoute"
+    )  # nosec B104
     parser.add_argument("--port", type=int, default=8000, help="Port d'écoute")
     parser.add_argument(
         "--backend",

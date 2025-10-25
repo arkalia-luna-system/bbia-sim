@@ -169,7 +169,12 @@ class SimulationService:
 
         try:
             state = self.simulator.get_robot_state()
-            return state.get("joint_positions", self._get_default_joint_positions())
+            joint_positions = state.get(
+                "joint_positions", self._get_default_joint_positions()
+            )
+            if isinstance(joint_positions, dict):
+                return joint_positions
+            return self._get_default_joint_positions()
         except Exception as e:
             logger.error(f"Erreur lors de la récupération des positions : {e}")
             return self._get_default_joint_positions()

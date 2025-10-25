@@ -67,7 +67,7 @@ class YOLODetector:
             logger.info(f"📥 Chargement modèle YOLOv8{self.model_size}...")
             start_time = time.time()
 
-            self.model = YOLO(f"yolov8{self.model_size}.pt")  # type: ignore
+            self.model = YOLO(f"yolov8{self.model_size}.pt")
 
             load_time = time.time() - start_time
             logger.info(f"✅ Modèle YOLO chargé en {load_time:.1f}s")
