@@ -325,6 +325,17 @@ class ReachyMiniBackend(RobotAPI):
             logger.error(f"Erreur get_current_head_pose: {e}")
             return None
 
+    def get_present_antenna_joint_positions(self) -> Optional[list[float]]:
+        """Récupère les positions actuelles des antennes."""
+        if not self.is_connected or not self.robot:
+            return [0.0, 0.0]  # Mode simulation
+
+        try:
+            return self.robot.get_present_antenna_joint_positions()
+        except Exception as e:
+            logger.error(f"Erreur get_present_antenna_joint_positions: {e}")
+            return None
+
     def set_target_body_yaw(self, body_yaw: float) -> bool:
         """Définit la rotation cible du corps."""
         if not self.is_connected or not self.robot:
