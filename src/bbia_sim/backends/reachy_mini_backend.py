@@ -643,3 +643,61 @@ class ReachyMiniBackend(RobotAPI):
         time.sleep(duration)
 
         return self.stop_recording()
+
+    # ===== ALIAS POUR CONFORMITÉ PARFAITE SDK OFFICIEL =====
+
+    def get_current_joint_positions(self) -> tuple[list[float], list[float]]:
+        """Alias SDK officiel pour get_joint_pos."""
+        if not self.is_connected or not self.robot:
+            return ([0.0] * 12, [0.0, 0.0])  # Mode simulation
+        
+        try:
+            return self.robot.get_current_joint_positions()
+        except Exception as e:
+            logger.error(f"Erreur get_current_joint_positions: {e}")
+            return ([0.0] * 12, [0.0, 0.0])
+
+    def set_target_head_pose(self, pose: Any) -> None:
+        """Alias SDK officiel pour set_joint_pos avec pose."""
+        if not self.is_connected or not self.robot:
+            logger.info("Mode simulation: set_target_head_pose")
+            return
+        
+        try:
+            self.robot.set_target_head_pose(pose)
+        except Exception as e:
+            logger.error(f"Erreur set_target_head_pose: {e}")
+
+    def look_at_world(self, x: float, y: float, z: float, duration: float = 1.0, perform_movement: bool = True) -> Any:
+        """Alias SDK officiel pour look_at."""
+        if not self.is_connected or not self.robot:
+            logger.info(f"Mode simulation: look_at_world({x}, {y}, {z})")
+            return None
+        
+        try:
+            return self.robot.look_at_world(x, y, z, duration, perform_movement)
+        except Exception as e:
+            logger.error(f"Erreur look_at_world: {e}")
+            return None
+
+    def wake_up(self) -> None:
+        """Alias SDK officiel pour run_behavior('wake_up')."""
+        if not self.is_connected or not self.robot:
+            logger.info("Mode simulation: wake_up")
+            return
+        
+        try:
+            self.robot.wake_up()
+        except Exception as e:
+            logger.error(f"Erreur wake_up: {e}")
+
+    def goto_sleep(self) -> None:
+        """Alias SDK officiel pour run_behavior('goto_sleep')."""
+        if not self.is_connected or not self.robot:
+            logger.info("Mode simulation: goto_sleep")
+            return
+        
+        try:
+            self.robot.goto_sleep()
+        except Exception as e:
+            logger.error(f"Erreur goto_sleep: {e}")
