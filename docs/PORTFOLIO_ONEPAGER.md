@@ -31,12 +31,12 @@
 
 | Métrique | Valeur | Statut |
 |----------|--------|--------|
-| **Tests** | 431 passent, 11 skippés | ✅ |
-| **Couverture** | 68.86% | ✅ |
-| **Modules BBIA** | 5 modules complets | ✅ |
+| **Tests** | 581 collectés, 453 passent | ✅ |
+| **Couverture** | 63.40% | ✅ |
+| **Modules BBIA** | 7 modules complets | ✅ |
 | **Backends** | MuJoCo + Reachy mock | ✅ |
-| **Golden Traces** | 3 références (~90MB) | ✅ |
-| **Latence Robot** | <0.1ms moyenne | ✅ |
+| **Golden Traces** | 3 références (~87MB) | ✅ |
+| **Latence Robot** | 0.02ms moyenne | ✅ |
 | **Fréquence** | 45,064 Hz | ✅ |
 
 ---

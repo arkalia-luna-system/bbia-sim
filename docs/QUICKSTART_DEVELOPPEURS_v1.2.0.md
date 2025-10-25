@@ -12,7 +12,7 @@ BBIA-SIM est une simulation robotique complète du Reachy Mini Wireless avec int
 - **Simulation 3D** : Robot visible et animé dans MuJoCo
 - **Backend unifié** : Switch facile entre simulation et robot réel
 - **4 Vertical Slices** : Émotion, Voix, Vision, Comportement
-- **Tests robustes** : 431 tests passent, Golden Tests anti-régression
+- **Tests robustes** : 453 tests passent, Golden Tests anti-régression
 - **CI/CD** : Pipeline GitHub Actions avec artefacts
 
 ### **🎯 Objectif v1.2.0**
@@ -228,17 +228,17 @@ python scripts/measure_latency.py --backend reachy
 - [x] Extension hardware_dry_run.py
 - [x] Vidéo démo MuJoCo
 
-### **⏳ Semaine 2 - IA Légère (EN COURS)**
-- [ ] Intégration Whisper STT
-- [ ] Intégration YOLOv8n + MediaPipe
-- [ ] Dashboard web minimal
-- [ ] Tests d'intégration IA
+### **✅ Semaine 2 - IA Légère (✅ ACCOMPLI)**
+- [x] Intégration Whisper STT
+- [x] Intégration YOLOv8n + MediaPipe
+- [x] Dashboard web minimal
+- [x] Tests d'intégration IA
 
-### **⏳ Semaine 3 - Polish Démo (EN ATTENTE)**
-- [ ] Scripts one-click
-- [ ] Documentation utilisateur
-- [ ] Portfolio one-pager
-- [ ] Release v1.2.0
+### **✅ Semaine 3 - Polish Démo (✅ ACCOMPLI)**
+- [x] Scripts one-click
+- [x] Documentation utilisateur
+- [x] Portfolio one-pager
+- [x] Release v1.2.0
 
 ---
 

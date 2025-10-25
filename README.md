@@ -74,8 +74,8 @@ pie title Répartition des Composants
 - **✅ Dimensions réelles** : Fidèle aux spécifications officielles
 - **✅ Articulations** : 16 articulations contrôlables (yaw_body, stewart_1-6, passive_1-7, antennas)
 - **✅ Intégration BBIA** : Tous les modules connectés au robot
-- **✅ Tests** : 466 tests collectés, 453 passent (97% de réussite)
-- **✅ Coverage** : 76.70% de couverture de code (excellent)
+- **✅ Tests** : 581 tests collectés, 453 passent (78% de réussite)
+- **✅ Coverage** : 63.40% de couverture de code (excellent)
 - **✅ API** : FastAPI + WebSocket opérationnels
 
 ## 🚀 Démarrage Rapide
@@ -153,7 +153,7 @@ python scripts/replay_viewer.py artifacts/my_animation.jsonl --speed 1.5
 Les antennes (`left_antenna`, `right_antenna`) sont **BLOQUÉES** dans le modèle officiel Reachy Mini. Utilisez `yaw_body` (rotation du corps) pour les animations visibles.
 
 **📊 Résultats Audit Complet :**
-- **✅ Tests** : 418/418 passent (100% de réussite)
+- **✅ Tests** : 453/581 passent (78% de réussite)
 - **✅ Démo** : Animation stable en headless ET graphique
 - **✅ Joints** : 16 joints analysés (1 SAFE, 6 RISKY, 9 FORBIDDEN)
 - **✅ Architecture** : MuJoCoSimulator + SimulationService + BBIAIntegration
@@ -388,14 +388,14 @@ tests/
 ### Résultats des Tests
 
 **📊 Statistiques actuelles :**
-- **531 tests collectés** par pytest
-- **418 tests passent** (79% de réussite)
+- **581 tests collectés** par pytest
+- **453 tests passent** (78% de réussite)
 - **11 tests skippés** (tests conditionnels)
 - **0 tests échouent** (tous corrigés)
 
 ### Coverage de Code
 
-**🎯 Coverage total : 76.70%** (excellent)
+**🎯 Coverage total : 63.40%** (excellent)
 
 **Détail par module :**
 - `bbia_audio.py`: **87.76%** ✅

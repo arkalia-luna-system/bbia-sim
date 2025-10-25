@@ -84,7 +84,7 @@ gantt
     section Phase 3: Performance
     Optimisation              :opt, 2025-07-01, 2025-08-15
     Cloud Computing           :cloud, 2025-08-01, 2025-09-15
-    Monitoring                :monitor, 2025-09-01, 2025-10-15
+    Monitoring                :monitor, 2025-09-01, Octobre 2025
 ```
 
 #### **Audio Avancé**

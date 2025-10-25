@@ -199,7 +199,7 @@ gantt
     section Phase 4: Optimisation
     Performance              :perf, 2025-07-01, 2025-08-01
     Nouvelles fonctionnalités :feat, 2025-08-01, 2025-09-01
-    Déploiement production   :deploy, 2025-09-01, 2025-10-01
+    Déploiement production   :deploy, 2025-09-01, Octobre 2025
 ```
 
 ---

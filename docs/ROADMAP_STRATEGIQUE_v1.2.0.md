@@ -1,6 +1,6 @@
 # 🚀 BBIA-SIM v1.1.1 → v1.2.0 - ROADMAP STRATÉGIQUE
 
-**Date** : $(date)  
+**Date** : Octobre 2025  
 **Version cible** : v1.2.0 "Reachy-Ready + IA Légère"  
 **Objectif** : Démo professionnelle avec robot réel  
 

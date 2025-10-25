@@ -5,7 +5,7 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.2.0] - 2025-10-25
+## [1.2.0] - Octobre 2025
 
 ### 🚀 Ajouté
 - **IA Légère Activée** : Intégration Whisper STT + YOLOv8n + MediaPipe Face Detection (OFF par défaut, activation via flags)
@@ -32,7 +32,7 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - **Tests** : 466 collectés, 453 passent (97% de réussite)
 - **Coverage** : 63.40% de couverture de code
 - **IA Modules** : 18 tests passent, 2 skippés (MediaPipe matplotlib)
-- **Latence** : Moyenne 0.0ms, max 0.4ms (cible <40ms ✅)
+- **Latence** : Moyenne <1ms, max 4.77ms (cible <40ms ✅)
 
 ### 🔄 Changements Techniques
 - **RobotAPI Unifiée** : Interface abstraite simulation ↔ robot réel
@@ -42,7 +42,7 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 
-## [1.1.1] - 2025-10-20
+## [1.1.1] - Octobre 2025
 
 ### 🔧 Modifié
 - **RobotAPI** : Interface unifiée pour simulation et robot réel
@@ -55,7 +55,7 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 
-## [1.1.0] - 2025-10-15
+## [1.1.0] - Octobre 2025
 
 ### 🚀 Ajouté
 - **Simulation Complète** : Robot Reachy Mini parfaitement assemblé
@@ -69,7 +69,7 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 
-## [1.0.0] - 2025-10-01
+## [1.0.0] - Octobre 2025
 
 ### 🚀 Première Release
 - **Simulation MuJoCo** : Robot Reachy Mini de base

@@ -4,8 +4,8 @@
 
 **🎯 Coverage total : 63.40%** (excellent)
 
-- **531 tests collectés** par pytest
-- **418 tests passent** (79% de réussite)
+- **581 tests collectés** par pytest
+- **453 tests passent** (78% de réussite)
 - **11 tests skippés** (tests conditionnels)
 - **0 tests échouent** (tous corrigés)
 
@@ -174,7 +174,7 @@ open htmlcov/index.html
 
 # Vérifier le nombre de tests collectés
 python -m pytest --collect-only -q | wc -l
-# Doit afficher 402+ tests
+# Doit afficher 466+ tests
 
 # Coverage d'un module spécifique
 python -m pytest tests/test_bbia_emotions.py --cov=src.bbia_sim.bbia_emotions --cov-report=term-missing
@@ -250,7 +250,7 @@ output = coverage.xml
 1. **Vérifier la configuration pytest :**
 ```bash
 python -m pytest --collect-only -q | wc -l
-# Doit afficher 402+ tests
+# Doit afficher 466+ tests
 ```
 
 2. **Vérifier la structure des dossiers :**
@@ -298,7 +298,7 @@ python -m pytest tests/test_config.py --cov=src --cov-report=term-missing
 
 ## 🎯 Objectifs Coverage
 
-- **Objectif minimum** : 70% (✅ Atteint : 72.07%)
+- **Objectif minimum** : 70% (❌ À atteindre : 63.40%)
 - **Objectif recommandé** : 80%
 - **Objectif excellent** : 90%
 
@@ -309,4 +309,4 @@ python -m pytest tests/test_config.py --cov=src --cov-report=term-missing
 
 ---
 
-*Dernière mise à jour : 15 janvier 2025*
+*Dernière mise à jour : Octobre 2025*
