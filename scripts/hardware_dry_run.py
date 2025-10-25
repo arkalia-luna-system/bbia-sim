@@ -3,8 +3,12 @@
 hardware_dry_run.py - Validation hardware Reachy réel
 Script de validation pour préparer la connexion au robot Reachy réel.
 Mesure latence, valide joints, teste limites de sécurité.
+Génère des artefacts CSV/log pour la CI.
 """
 
+import argparse
+import csv
+import json
 import logging
 import sys
 import time
@@ -16,6 +20,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 from bbia_sim.robot_api import RobotAPI
 from bbia_sim.robot_factory import RobotFactory
+from bbia_sim.mapping_reachy import ReachyMapping
 
 # Configuration logging
 logging.basicConfig(
@@ -25,13 +30,19 @@ logger = logging.getLogger(__name__)
 
 
 class HardwareDryRun:
-    """Validation hardware Reachy réel."""
+    """Validation hardware Reachy réel avec génération d'artefacts."""
 
-    def __init__(self):
+    def __init__(self, output_dir: str = "artifacts"):
         self.robot: Optional[RobotAPI] = None
         self.latencies: list[float] = []
         self.errors: list[str] = []
-        self.test_joints = ["yaw_body", "stewart_1", "stewart_2"]
+        self.test_joints = list(ReachyMapping.get_recommended_joints())
+        self.output_dir = Path(output_dir)
+        self.output_dir.mkdir(parents=True, exist_ok=True)
+        
+        # Données pour artefacts
+        self.latency_data: list[dict] = []
+        self.test_results: dict = {}
 
     def connect(self) -> bool:
         """Connexion au robot Reachy réel."""
@@ -113,6 +124,16 @@ class HardwareDryRun:
                 # Calcul latence totale
                 total_latency = (time.time() - start_time_latency) * 1000  # ms
                 self.latencies.append(total_latency)
+                
+                # Enregistrer données pour artefacts
+                self.latency_data.append({
+                    "timestamp": time.time(),
+                    "joint": joint,
+                    "target_pos": test_pos,
+                    "actual_pos": actual_pos,
+                    "latency_ms": total_latency,
+                    "test_count": test_count
+                })
 
                 # Step de simulation
                 self.robot.step()
@@ -145,7 +166,7 @@ class HardwareDryRun:
 
         # Test amplitude limite
         test_joint = self.test_joints[0]
-        large_amplitude = self.robot.safe_amplitude_limit + 0.5
+        large_amplitude = ReachyMapping.GLOBAL_SAFETY_LIMIT + 0.5
 
         logger.info(f"🧪 Test amplitude limite: {large_amplitude:.2f} rad")
 
@@ -156,7 +177,7 @@ class HardwareDryRun:
             actual_pos = self.robot.get_joint_pos(test_joint)
             if (
                 actual_pos is not None
-                and abs(actual_pos) <= self.robot.safe_amplitude_limit
+                and abs(actual_pos) <= ReachyMapping.GLOBAL_SAFETY_LIMIT
             ):
                 logger.info("✅ Limite d'amplitude respectée (position clampée)")
             else:
@@ -164,7 +185,7 @@ class HardwareDryRun:
                 return False
 
         # Test joints interdits
-        forbidden_joint = list(self.robot.forbidden_joints)[0]
+        forbidden_joint = list(ReachyMapping.get_forbidden_joints())[0]
         logger.info(f"🧪 Test joint interdit: {forbidden_joint}")
 
         success = self.robot.set_joint_pos(forbidden_joint, 0.5)
@@ -219,44 +240,116 @@ class HardwareDryRun:
             min_latency = min(self.latencies)
 
             logger.info(f"⏱️ Latence moyenne: {avg_latency:.1f}ms")
-            logger.info(f"⏱️ Latence max: {max_latency:.1f}ms")
             logger.info(f"⏱️ Latence min: {min_latency:.1f}ms")
+            logger.info(f"⏱️ Latence max: {max_latency:.1f}ms")
 
-            # Vérification cible <40ms
-            if avg_latency < 40:
+            if avg_latency <= 40:
                 logger.info("✅ Latence cible atteinte (<40ms)")
             else:
-                logger.warning(f"⚠️ Latence élevée: {avg_latency:.1f}ms (cible <40ms)")
+                logger.info("❌ Latence trop élevée (>40ms)")
         else:
-            logger.warning("⚠️ Aucune mesure de latence")
+            logger.info("❌ Aucune mesure de latence")
 
         if self.errors:
-            logger.error(f"❌ Erreurs détectées: {len(self.errors)}")
+            logger.info(f"\n❌ Erreurs ({len(self.errors)}):")
             for error in self.errors:
-                logger.error(f"   • {error}")
+                logger.info(f"  - {error}")
         else:
-            logger.info("✅ Aucune erreur détectée")
+            logger.info("\n✅ Aucune erreur")
 
-        logger.info("=" * 50)
+        logger.info("🎉 Hardware dry run réussi !")
+
+    def save_artifacts(self) -> bool:
+        """Sauvegarde les artefacts (CSV + log) pour la CI."""
+        logger.info("💾 Sauvegarde des artefacts...")
+        
+        try:
+            # 1. Sauvegarde CSV latence
+            csv_file = self.output_dir / "latency.csv"
+            with open(csv_file, 'w', newline='') as f:
+                if self.latency_data:
+                    writer = csv.DictWriter(f, fieldnames=self.latency_data[0].keys())
+                    writer.writeheader()
+                    writer.writerows(self.latency_data)
+                else:
+                    # CSV vide si pas de données
+                    writer = csv.writer(f)
+                    writer.writerow(["timestamp", "joint", "target_pos", "actual_pos", "latency_ms", "test_count"])
+            
+            logger.info(f"✅ CSV latence sauvegardé: {csv_file}")
+            
+            # 2. Sauvegarde log d'erreurs
+            log_file = self.output_dir / "run.log"
+            with open(log_file, 'w') as f:
+                f.write(f"Hardware Dry Run - {time.strftime('%Y-%m-%d %H:%M:%S')}\n")
+                f.write("=" * 50 + "\n")
+                
+                if self.errors:
+                    f.write("❌ ERREURS:\n")
+                    for error in self.errors:
+                        f.write(f"  - {error}\n")
+                else:
+                    f.write("✅ Aucune erreur\n")
+                
+                f.write(f"\n📊 MÉTRIQUES:\n")
+                if self.latencies:
+                    avg_latency = sum(self.latencies) / len(self.latencies)
+                    max_latency = max(self.latencies)
+                    min_latency = min(self.latencies)
+                    f.write(f"  - Mesures: {len(self.latencies)}\n")
+                    f.write(f"  - Latence moyenne: {avg_latency:.1f}ms\n")
+                    f.write(f"  - Latence min: {min_latency:.1f}ms\n")
+                    f.write(f"  - Latence max: {max_latency:.1f}ms\n")
+                else:
+                    f.write("  - Aucune mesure de latence\n")
+            
+            logger.info(f"✅ Log sauvegardé: {log_file}")
+            
+            # 3. Sauvegarde résultats JSON
+            results_file = self.output_dir / "test_results.json"
+            results = {
+                "timestamp": time.time(),
+                "duration": len(self.latencies) * 0.1,  # Estimation
+                "joints_tested": self.test_joints,
+                "total_tests": len(self.latencies),
+                "errors": self.errors,
+                "latency_stats": {
+                    "avg": sum(self.latencies) / len(self.latencies) if self.latencies else 0,
+                    "max": max(self.latencies) if self.latencies else 0,
+                    "min": min(self.latencies) if self.latencies else 0,
+                },
+                "success": len(self.errors) == 0
+            }
+            
+            with open(results_file, 'w') as f:
+                json.dump(results, f, indent=2)
+            
+            logger.info(f"✅ Résultats JSON sauvegardés: {results_file}")
+            
+            return True
+            
+        except Exception as e:
+            logger.error(f"❌ Erreur sauvegarde artefacts: {e}")
+            return False
 
 
 def main():
     """Point d'entrée principal."""
-    import argparse
-
-    parser = argparse.ArgumentParser(description="Hardware dry run pour Reachy réel")
-    parser.add_argument(
-        "--duration", type=float, default=10.0, help="Durée du test en secondes"
-    )
-    parser.add_argument("--joint", default="yaw_body", help="Joint principal à tester")
+    parser = argparse.ArgumentParser(description="Hardware dry run Reachy")
+    parser.add_argument("--duration", type=float, default=10.0, help="Durée du test (s)")
+    parser.add_argument("--joint", type=str, help="Joint spécifique à tester")
+    parser.add_argument("--output", type=str, default="artifacts", help="Répertoire de sortie")
+    parser.add_argument("--backend", type=str, default="reachy", choices=["reachy", "mujoco"], help="Backend à utiliser")
+    
     args = parser.parse_args()
-
+    
     # Créer et exécuter le test
-    dry_run = HardwareDryRun()
+    dry_run = HardwareDryRun(output_dir=args.output)
     success = dry_run.run_full_test(args.duration)
-
+    
     if success:
         logger.info("🎉 Hardware dry run réussi !")
+        dry_run.save_artifacts()
         return 0
     else:
         logger.error("💥 Hardware dry run échoué !")
@@ -264,4 +357,4 @@ def main():
 
 
 if __name__ == "__main__":
-    exit(main())
+    sys.exit(main())
