@@ -333,7 +333,11 @@ class ReachyMiniBackend(RobotAPI):
 
         try:
             result = self.robot.get_current_head_pose()
-            return np.array(result, dtype=np.float64) if result is not None else np.eye(4, dtype=np.float64)
+            return (
+                np.array(result, dtype=np.float64)
+                if result is not None
+                else np.eye(4, dtype=np.float64)
+            )
         except Exception as e:
             logger.error(f"Erreur get_current_head_pose: {e}")
             return np.eye(4, dtype=np.float64)

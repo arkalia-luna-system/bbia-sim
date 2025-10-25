@@ -27,13 +27,13 @@ class VirtualTarget:
         self.x = 0.0  # Position horizontale (-1 à 1)
         self.y = 0.0  # Position verticale (-1 à 1)
         self.speed = 0.02
-        self.direction = random.uniform(0, 2 * math.pi)
+        self.direction = random.uniform(0, 2 * math.pi)  # nosec B311
 
     def update(self):
         """Met à jour la position de la cible."""
         # Mouvement aléatoire avec changement de direction
-        if random.random() < 0.1:  # 10% de chance de changer de direction
-            self.direction = random.uniform(0, 2 * math.pi)
+        if random.random() < 0.1:  # nosec B311 - 10% de chance de changer de direction
+            self.direction = random.uniform(0, 2 * math.pi)  # nosec B311
 
         # Déplacement
         self.x += self.speed * math.cos(self.direction)
