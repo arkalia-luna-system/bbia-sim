@@ -1,3 +1,8 @@
-[bandit]
-exclude_dirs = venv,htmlcov,dist,.git
-skips = B101
+exclude_dirs:
+  - venv
+  - htmlcov
+  - dist
+  - .git
+
+skips:
+  - B101
