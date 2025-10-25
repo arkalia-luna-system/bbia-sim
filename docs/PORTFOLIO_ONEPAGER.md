@@ -16,7 +16,7 @@
 
 ### **🛡️ Sécurité & Fiabilité**
 - **Limites de Sécurité** : Clamp automatique à 0.3 rad, joints interdits centralisés
-- **Tests Automatisés** : 453 tests passent, couverture 63.40%
+- **Tests Automatisés** : 453 tests passent, couverture 63.37%
 - **CI/CD Robuste** : Pipeline GitHub Actions avec artefacts et validation
 - **Déterminisme** : Seed fixé (SEED=42) pour reproductibilité
 
@@ -32,7 +32,7 @@
 | Métrique | Valeur | Statut |
 |----------|--------|--------|
 | **Tests** | 581 collectés, 453 passent | ✅ |
-| **Couverture** | 63.40% | ✅ |
+| **Couverture** | 63.37% | ✅ |
 | **Modules BBIA** | 7 modules complets | ✅ |
 | **Backends** | MuJoCo + Reachy mock | ✅ |
 | **Golden Traces** | 3 références (~87MB) | ✅ |

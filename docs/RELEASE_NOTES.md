@@ -96,7 +96,7 @@ graph TB
 ### Tests
 - **466 tests collectés** par pytest
 - **453 tests passent** (97% de réussite)
-- **Coverage** : 63.40%
+- **Coverage** : 63.37%
 - **Golden tests** : 3 traces de référence
 
 ### Performance
@@ -140,7 +140,7 @@ python scripts/record_trace.py --emotion happy --duration 5
 
 ### 📊 Métriques Finales v1.2.0 ✅ RELEASED
 - **Tests** : 581 collectés, 453 passent (78% de réussite)
-- **Coverage** : 63.40% de couverture de code
+- **Coverage** : 63.37% de couverture de code
 - **Latence** : Moyenne 0.02ms, max 4.77ms (<40ms ✅)
 - **Artefacts** : JSONL 87MB, CSV 640KB générés automatiquement
 - **Hardware Dry Run** : 9,801 tests latence validés

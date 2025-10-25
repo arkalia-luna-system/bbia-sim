@@ -2,7 +2,7 @@
 
 ## 📊 Résumé des Performances
 
-**🎯 Coverage total : 63.40%** (excellent)
+**🎯 Coverage total : 63.37%** (excellent)
 
 - **581 tests collectés** par pytest
 - **453 tests passent** (78% de réussite)
@@ -298,7 +298,7 @@ python -m pytest tests/test_config.py --cov=src --cov-report=term-missing
 
 ## 🎯 Objectifs Coverage
 
-- **Objectif minimum** : 70% (❌ À atteindre : 63.40%)
+- **Objectif minimum** : 70% (❌ À atteindre : 63.37%)
 - **Objectif recommandé** : 80%
 - **Objectif excellent** : 90%
 

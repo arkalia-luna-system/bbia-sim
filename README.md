@@ -75,7 +75,7 @@ pie title Répartition des Composants
 - **✅ Articulations** : 16 articulations contrôlables (yaw_body, stewart_1-6, passive_1-7, antennas)
 - **✅ Intégration BBIA** : Tous les modules connectés au robot
 - **✅ Tests** : 581 tests collectés, 453 passent (78% de réussite)
-- **✅ Coverage** : 63.40% de couverture de code (excellent)
+- **✅ Coverage** : 63.37% de couverture de code (excellent)
 - **✅ API** : FastAPI + WebSocket opérationnels
 
 ## 🚀 Démarrage Rapide
@@ -395,7 +395,7 @@ tests/
 
 ### Coverage de Code
 
-**🎯 Coverage total : 63.40%** (excellent)
+**🎯 Coverage total : 63.37%** (excellent)
 
 **Détail par module :**
 - `bbia_audio.py`: **87.76%** ✅

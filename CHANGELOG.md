@@ -30,7 +30,7 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### 📊 Métriques
 - **Tests** : 581 collectés, 453 passent (78% de réussite)
-- **Coverage** : 63.40% de couverture de code
+- **Coverage** : 63.37% de couverture de code
 - **IA Modules** : 18 tests passent, 2 skippés (MediaPipe matplotlib)
 - **Latence** : Moyenne 0.02ms, max 4.77ms (cible <40ms ✅)
 

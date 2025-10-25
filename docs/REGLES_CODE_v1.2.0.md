@@ -64,7 +64,7 @@ pytest tests/test_golden_traces.py -v
 # Linters obligatoires
 black . && ruff check . && mypy src/
 
-# Coverage minimum : 63.40%
+# Coverage minimum : 63.37%
 pytest --cov=src/bbia_sim --cov-report=html
 ```
 
