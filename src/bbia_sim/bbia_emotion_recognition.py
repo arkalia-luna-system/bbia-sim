@@ -153,12 +153,20 @@ class BBIAEmotionRecognition:
 
         try:
             # Conversion de l'image
+            processed_image: np.ndarray | None = None
+
             if isinstance(image, str):
-                image = cv2.imread(image)
-                image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+                loaded_image = cv2.imread(image)
+                if loaded_image is not None:
+                    processed_image = cv2.cvtColor(loaded_image, cv2.COLOR_BGR2RGB)
             elif isinstance(image, np.ndarray):
                 if len(image.shape) == 3 and image.shape[2] == 3:
-                    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+                    processed_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+                else:
+                    processed_image = image
+
+            if processed_image is None:
+                return {"error": "Impossible de traiter l'image"}
 
             faces = []
 
@@ -169,12 +177,12 @@ class BBIAEmotionRecognition:
                 ],
             ) as face_detection:
 
-                results = face_detection.process(image)
+                results = face_detection.process(processed_image)
 
                 if results.detections:
                     for detection in results.detections:
                         bbox = detection.location_data.relative_bounding_box
-                        h, w, _ = image.shape
+                        h, w, _ = processed_image.shape
 
                         face_info = {
                             "bbox": {
