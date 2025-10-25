@@ -74,7 +74,7 @@ pie title Répartition des Composants
 - **✅ Dimensions réelles** : Fidèle aux spécifications officielles
 - **✅ Articulations** : 16 articulations contrôlables (yaw_body, stewart_1-6, passive_1-7, antennas)
 - **✅ Intégration BBIA** : Tous les modules connectés au robot
-- **✅ Tests** : 531 tests collectés, 418 passent (79% de réussite)
+- **✅ Tests** : 466 tests collectés, 453 passent (97% de réussite)
 - **✅ Coverage** : 76.70% de couverture de code (excellent)
 - **✅ API** : FastAPI + WebSocket opérationnels
 
@@ -238,7 +238,7 @@ src/bbia_sim/sim/
 - **✅ Whisper STT** : Intégré avec latence <800ms
 - **✅ YOLOv8n + MediaPipe** : Détection objets/visages intégrée
 - **✅ Dashboard web minimal** : FastAPI + WebSocket créé
-- **✅ Tests d'intégration IA** : 16 tests passent, 2 skippés
+- **✅ Tests d'intégration IA** : 18 tests passent, 2 skippés
 
 ### **✅ SEMAINE 3 - Polish Démo (✅ ACCOMPLI)**
 - **✅ Scripts one-click** : run_demo_sim.sh et run_demo_real.sh créés

@@ -112,7 +112,7 @@
 - Vidéo démo MuJoCo ✅
 ```
 
-### **🗓️ SEMAINE 2 - IA Légère Utilisable**
+### **🗓️ SEMAINE 2 - IA Légère Utilisable (✅ ACCOMPLI)**
 ```bash
 # Objectifs :
 ✅ Whisper tiny/base + commandes FR/EN → look_at, greet
@@ -126,7 +126,7 @@
 - Tests d'intégration IA
 ```
 
-### **🗓️ SEMAINE 3 - Polish Démo**
+### **🗓️ SEMAINE 3 - Polish Démo (✅ ACCOMPLI)**
 ```bash
 # Objectifs :
 ✅ Scripts "one-click" (run demo réel, run demo sim)
