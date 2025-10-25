@@ -8,6 +8,7 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [1.2.1] - Octobre 2025
 
 ### 🔧 Corrigé
+
 - **Formatage Code** : Correction de tous les espaces dans lignes vides et espaces en fin de ligne (ruff)
 - **Typage MyPy** : Correction de 6 erreurs de typage dans `reachy_mini_backend.py`
 - **Tests TypeError** : Correction des erreurs "NoneType object is not callable" dans les tests
@@ -15,11 +16,13 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - **SDK Compatibility** : Gestion correcte du mode simulation sans SDK reachy_mini
 
 ### 🛠️ Amélioré
+
 - **Type Safety** : Ajout d'annotations de type explicites pour conformité mypy
 - **Error Handling** : Amélioration de la gestion d'erreurs avec SDK non disponible
 - **Return Types** : Correction des types de retour pour éviter les erreurs Any
 
 ### 📊 Qualité
+
 - **Ruff** : All checks passed ✅
 - **MyPy** : Success, no issues found ✅  
 - **Bandit** : 0 security issues ✅

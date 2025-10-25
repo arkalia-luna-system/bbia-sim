@@ -18,6 +18,7 @@ Ce projet fournit une simulation **parfaitement fidèle** du robot Reachy Mini d
 ## 🚀 Live Demo & Quick Start
 
 ### **🌐 Live Demo**
+
 - **📊 Dashboard Web** : [bbia-sim-dashboard.onrender.com](https://bbia-sim-dashboard.onrender.com)
 - **📚 API Documentation** : [bbia-sim-docs.onrender.com](https://bbia-sim-docs.onrender.com)
 - **🎥 Video Demo** : [YouTube - BBIA-SIM Demo](https://youtube.com/watch?v=bbia-sim-demo)
@@ -37,6 +38,7 @@ open http://localhost:8000
 ## 🎯 Vue d'ensemble
 
 **🎉 MISSION ACCOMPLIE** : Simulation complète avec :
+
 - ✅ Robot Reachy Mini parfaitement assemblé et contrôlable
 - ✅ 12 émotions contrôlant les articulations du robot
 - ✅ Réactions visuelles → mouvements automatiques

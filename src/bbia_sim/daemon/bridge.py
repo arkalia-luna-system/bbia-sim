@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 # Import conditionnel Zenoh
 try:
     import zenoh
-    from zenoh import Session, Config
+    from zenoh import Config, Session
 
     ZENOH_AVAILABLE = True
 except ImportError:
