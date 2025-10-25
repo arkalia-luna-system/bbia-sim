@@ -26,7 +26,7 @@ class TestBBIAEmotionsExtended:
 
     def test_init_emotions_structure(self):
         """Test structure des émotions."""
-        assert len(self.emotions.emotions) == 8
+        assert len(self.emotions.emotions) == 12
         assert "neutral" in self.emotions.emotions
         assert "happy" in self.emotions.emotions
         assert "sad" in self.emotions.emotions
@@ -250,7 +250,7 @@ class TestBBIAEmotionsExtended:
         assert stats["current_intensity"] == 0.5
         assert stats["total_transitions"] == 0
         assert stats["emotion_counts"] == {}
-        assert len(stats["available_emotions"]) == 8
+        assert len(stats["available_emotions"]) == 12
 
     def test_get_emotion_stats_with_history(self):
         """Test statistiques avec historique."""
