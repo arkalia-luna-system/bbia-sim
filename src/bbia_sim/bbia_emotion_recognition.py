@@ -385,9 +385,10 @@ class BBIAEmotionRecognition:
             self._update_emotion_history(final_result)
 
             # Moyennage temporel si suffisamment d'historique
-            if len(self.emotion_history) >= int(
+            temporal_window_size = int(
                 self.detection_config.get("temporal_window_size", 5)
-            ):
+            )
+            if len(self.emotion_history) >= temporal_window_size:
                 final_result = self._apply_temporal_smoothing(final_result)
 
             return final_result
@@ -396,12 +397,13 @@ class BBIAEmotionRecognition:
             logger.error(f"❌ Erreur analyse temps réel: {e}")
             return {"error": str(e)}
 
-    def _update_emotion_history(self, emotion_result: dict[str, Any]):
+    def _update_emotion_history(self, emotion_result: dict[str, Any]) -> None:
         """Met à jour l'historique des émotions."""
         self.emotion_history.append(emotion_result)
 
         # Limitation de la taille de l'historique
-        max_history = int(self.detection_config.get("temporal_window_size", 5)) * 2
+        temporal_window_size = int(self.detection_config.get("temporal_window_size", 5))
+        max_history = temporal_window_size * 2
         if len(self.emotion_history) > max_history:
             self.emotion_history = self.emotion_history[-max_history:]
 
@@ -414,9 +416,10 @@ class BBIAEmotionRecognition:
                 return current_result
 
             # Moyennage des émotions récentes
-            recent_emotions = self.emotion_history[
-                -int(self.detection_config.get("temporal_window_size", 5)) :
-            ]
+            temporal_window_size = int(
+                self.detection_config.get("temporal_window_size", 5)
+            )
+            recent_emotions = self.emotion_history[-temporal_window_size:]
 
             emotion_counts: dict[str, int] = {}
             total_confidence = 0

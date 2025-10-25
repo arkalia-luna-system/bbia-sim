@@ -31,7 +31,7 @@ class TestAPIIntegration:
         """Test endpoint racine."""
         response = client.get("/")
         assert response.status_code == 200
-        assert response.json()["message"] == "BBIA-SIM API"
+        assert response.json()["message"] == "BBIA-SIM API - Écosystème Reachy Mini"
 
     def test_health_check(self, client):
         """Test endpoint health check."""
@@ -48,7 +48,7 @@ class TestAPIIntegration:
         response = client.get("/api/info")
         assert response.status_code == 200
         data = response.json()
-        assert data["name"] == settings.api_title
+        assert data["name"] == "BBIA-SIM API - Écosystème Reachy Mini"
         assert data["version"] == settings.api_version
         assert data["robot"]["status"] == "ready"
 

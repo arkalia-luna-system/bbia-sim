@@ -14,9 +14,9 @@ class Settings(BaseSettings):
     environment: str = "dev"  # dev/prod
 
     # API Configuration
-    api_title: str = "BBIA-SIM API"
+    api_title: str = "BBIA-SIM API - Écosystème Reachy Mini"
     api_description: str = "API REST et WebSocket pour le contrôle du robot Reachy Mini"
-    api_version: str = "1.0.0"
+    api_version: str = "1.2.0"
     api_host: str = "0.0.0.0"  # nosec B104
     api_port: int = 8000
     api_reload: bool = True

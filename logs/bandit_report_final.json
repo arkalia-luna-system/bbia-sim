@@ -1,33 +1,19 @@
 {
-  "errors": [
-    {
-      "filename": "src/bbia_sim/._robot_factory.py",
-      "reason": "syntax error while parsing AST from file"
-    },
-    {
-      "filename": "src/bbia_sim/backends/._reachy_mini_backend.py",
-      "reason": "syntax error while parsing AST from file"
-    }
-  ],
-  "generated_at": "2025-10-25T14:21:38Z",
+  "errors": [],
+  "generated_at": "2025-10-25T15:31:11Z",
   "metrics": {
     "_totals": {
-      "CONFIDENCE.HIGH": 0,
+      "CONFIDENCE.HIGH": 6,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
       "CONFIDENCE.UNDEFINED": 0,
       "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
+      "SEVERITY.LOW": 6,
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
-      "loc": 5553,
+      "loc": 8327,
       "nosec": 0,
-      "skipped_tests": 3
-    },
-    "src/bbia_sim/._robot_factory.py": {
-      "loc": 1,
-      "nosec": 0,
-      "skipped_tests": 0
+      "skipped_tests": 17
     },
     "src/bbia_sim/__init__.py": {
       "CONFIDENCE.HIGH": 0,
@@ -52,11 +38,6 @@
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
       "loc": 159,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    "src/bbia_sim/backends/._reachy_mini_backend.py": {
-      "loc": 1,
       "nosec": 0,
       "skipped_tests": 0
     },
@@ -108,9 +89,22 @@
       "SEVERITY.LOW": 0,
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
-      "loc": 554,
+      "loc": 559,
       "nosec": 0,
       "skipped_tests": 0
+    },
+    "src/bbia_sim/bbia_adaptive_behavior.py": {
+      "CONFIDENCE.HIGH": 0,
+      "CONFIDENCE.LOW": 0,
+      "CONFIDENCE.MEDIUM": 0,
+      "CONFIDENCE.UNDEFINED": 0,
+      "SEVERITY.HIGH": 0,
+      "SEVERITY.LOW": 0,
+      "SEVERITY.MEDIUM": 0,
+      "SEVERITY.UNDEFINED": 0,
+      "loc": 441,
+      "nosec": 0,
+      "skipped_tests": 6
     },
     "src/bbia_sim/bbia_audio.py": {
       "CONFIDENCE.HIGH": 0,
@@ -151,6 +145,19 @@
       "nosec": 0,
       "skipped_tests": 0
     },
+    "src/bbia_sim/bbia_emotion_recognition.py": {
+      "CONFIDENCE.HIGH": 0,
+      "CONFIDENCE.LOW": 0,
+      "CONFIDENCE.MEDIUM": 0,
+      "CONFIDENCE.UNDEFINED": 0,
+      "SEVERITY.HIGH": 0,
+      "SEVERITY.LOW": 0,
+      "SEVERITY.MEDIUM": 0,
+      "SEVERITY.UNDEFINED": 0,
+      "loc": 378,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
     "src/bbia_sim/bbia_emotions.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
@@ -163,6 +170,19 @@
       "loc": 214,
       "nosec": 0,
       "skipped_tests": 0
+    },
+    "src/bbia_sim/bbia_huggingface.py": {
+      "CONFIDENCE.HIGH": 0,
+      "CONFIDENCE.LOW": 0,
+      "CONFIDENCE.MEDIUM": 0,
+      "CONFIDENCE.UNDEFINED": 0,
+      "SEVERITY.HIGH": 0,
+      "SEVERITY.LOW": 0,
+      "SEVERITY.MEDIUM": 0,
+      "SEVERITY.UNDEFINED": 0,
+      "loc": 355,
+      "nosec": 0,
+      "skipped_tests": 8
     },
     "src/bbia_sim/bbia_integration.py": {
       "CONFIDENCE.HIGH": 0,
@@ -238,7 +258,7 @@
       "SEVERITY.LOW": 0,
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
-      "loc": 173,
+      "loc": 295,
       "nosec": 0,
       "skipped_tests": 0
     },
@@ -252,6 +272,19 @@
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
       "loc": 2,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "src/bbia_sim/daemon/app/routers/ecosystem.py": {
+      "CONFIDENCE.HIGH": 0,
+      "CONFIDENCE.LOW": 0,
+      "CONFIDENCE.MEDIUM": 0,
+      "CONFIDENCE.UNDEFINED": 0,
+      "SEVERITY.HIGH": 0,
+      "SEVERITY.LOW": 0,
+      "SEVERITY.MEDIUM": 0,
+      "SEVERITY.UNDEFINED": 0,
+      "loc": 341,
       "nosec": 0,
       "skipped_tests": 0
     },
@@ -369,6 +402,19 @@
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
       "loc": 387,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "src/bbia_sim/dashboard_advanced.py": {
+      "CONFIDENCE.HIGH": 6,
+      "CONFIDENCE.LOW": 0,
+      "CONFIDENCE.MEDIUM": 0,
+      "CONFIDENCE.UNDEFINED": 0,
+      "SEVERITY.HIGH": 0,
+      "SEVERITY.LOW": 6,
+      "SEVERITY.MEDIUM": 0,
+      "SEVERITY.UNDEFINED": 0,
+      "loc": 1134,
       "nosec": 0,
       "skipped_tests": 0
     },
@@ -529,5 +575,126 @@
       "skipped_tests": 0
     }
   },
-  "results": []
+  "results": [
+    {
+      "code": "1176                 # Type narrowing apr\u00e8s v\u00e9rification isinstance\n1177                 assert isinstance(emotion, str)\n1178                 success = advanced_websocket_manager.robot.set_emotion(\n",
+      "col_offset": 16,
+      "end_col_offset": 47,
+      "filename": "src/bbia_sim/dashboard_advanced.py",
+      "issue_confidence": "HIGH",
+      "issue_cwe": {
+        "id": 703,
+        "link": "https://cwe.mitre.org/data/definitions/703.html"
+      },
+      "issue_severity": "LOW",
+      "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
+      "line_number": 1177,
+      "line_range": [
+        1177
+      ],
+      "more_info": "https://bandit.readthedocs.io/en/1.8.6/plugins/b101_assert_used.html",
+      "test_id": "B101",
+      "test_name": "assert_used"
+    },
+    {
+      "code": "1203             # Type narrowing apr\u00e8s v\u00e9rification robot\n1204             assert advanced_websocket_manager.robot is not None\n1205             robot = advanced_websocket_manager.robot\n",
+      "col_offset": 12,
+      "end_col_offset": 63,
+      "filename": "src/bbia_sim/dashboard_advanced.py",
+      "issue_confidence": "HIGH",
+      "issue_cwe": {
+        "id": 703,
+        "link": "https://cwe.mitre.org/data/definitions/703.html"
+      },
+      "issue_severity": "LOW",
+      "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
+      "line_number": 1204,
+      "line_range": [
+        1204
+      ],
+      "more_info": "https://bandit.readthedocs.io/en/1.8.6/plugins/b101_assert_used.html",
+      "test_id": "B101",
+      "test_name": "assert_used"
+    },
+    {
+      "code": "1246             # Type narrowing apr\u00e8s v\u00e9rifications\n1247             assert isinstance(behavior, str)\n1248             assert advanced_websocket_manager.robot is not None\n",
+      "col_offset": 12,
+      "end_col_offset": 44,
+      "filename": "src/bbia_sim/dashboard_advanced.py",
+      "issue_confidence": "HIGH",
+      "issue_cwe": {
+        "id": 703,
+        "link": "https://cwe.mitre.org/data/definitions/703.html"
+      },
+      "issue_severity": "LOW",
+      "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
+      "line_number": 1247,
+      "line_range": [
+        1247
+      ],
+      "more_info": "https://bandit.readthedocs.io/en/1.8.6/plugins/b101_assert_used.html",
+      "test_id": "B101",
+      "test_name": "assert_used"
+    },
+    {
+      "code": "1247             assert isinstance(behavior, str)\n1248             assert advanced_websocket_manager.robot is not None\n1249             robot = advanced_websocket_manager.robot\n",
+      "col_offset": 12,
+      "end_col_offset": 63,
+      "filename": "src/bbia_sim/dashboard_advanced.py",
+      "issue_confidence": "HIGH",
+      "issue_cwe": {
+        "id": 703,
+        "link": "https://cwe.mitre.org/data/definitions/703.html"
+      },
+      "issue_severity": "LOW",
+      "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
+      "line_number": 1248,
+      "line_range": [
+        1248
+      ],
+      "more_info": "https://bandit.readthedocs.io/en/1.8.6/plugins/b101_assert_used.html",
+      "test_id": "B101",
+      "test_name": "assert_used"
+    },
+    {
+      "code": "1276             # Type narrowing apr\u00e8s v\u00e9rifications\n1277             assert joint_data is not None\n1278             assert advanced_websocket_manager.robot is not None\n",
+      "col_offset": 12,
+      "end_col_offset": 41,
+      "filename": "src/bbia_sim/dashboard_advanced.py",
+      "issue_confidence": "HIGH",
+      "issue_cwe": {
+        "id": 703,
+        "link": "https://cwe.mitre.org/data/definitions/703.html"
+      },
+      "issue_severity": "LOW",
+      "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
+      "line_number": 1277,
+      "line_range": [
+        1277
+      ],
+      "more_info": "https://bandit.readthedocs.io/en/1.8.6/plugins/b101_assert_used.html",
+      "test_id": "B101",
+      "test_name": "assert_used"
+    },
+    {
+      "code": "1277             assert joint_data is not None\n1278             assert advanced_websocket_manager.robot is not None\n1279             robot = advanced_websocket_manager.robot\n",
+      "col_offset": 12,
+      "end_col_offset": 63,
+      "filename": "src/bbia_sim/dashboard_advanced.py",
+      "issue_confidence": "HIGH",
+      "issue_cwe": {
+        "id": 703,
+        "link": "https://cwe.mitre.org/data/definitions/703.html"
+      },
+      "issue_severity": "LOW",
+      "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
+      "line_number": 1278,
+      "line_range": [
+        1278
+      ],
+      "more_info": "https://bandit.readthedocs.io/en/1.8.6/plugins/b101_assert_used.html",
+      "test_id": "B101",
+      "test_name": "assert_used"
+    }
+  ]
 }
