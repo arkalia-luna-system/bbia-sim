@@ -1,29 +1,36 @@
 # Notes de Release - BBIA-SIM
 
-## Version 1.1.1 - Backend Unifié RobotAPI + Golden Tests
+## Version 1.2.0 - IA Légère + Scripts One-Click + Vitesse Robot Optimisée
 
 ### 🎯 Résumé
 
-Implémentation du backend unifié RobotAPI permettant de basculer facilement entre simulation MuJoCo et robot Reachy réel, avec système de golden tests pour la non-régression.
+Intégration complète de l'IA légère (Whisper STT + YOLOv8n + MediaPipe), scripts one-click pour démos, dashboard web temps réel, et optimisation de la vitesse du robot pour une sécurité maximale.
 
-### 🚀 Nouvelles fonctionnalités
+### 🚀 Nouvelles fonctionnalités v1.2.0
 
-#### Backend Unifié RobotAPI
-- **Interface unifiée** : Même code pour simulation et robot réel
-- **MuJoCoBackend** : Simulation physique avec viewer 3D
-- **ReachyBackend** : Mock du robot réel (prêt pour SDK)
-- **CONTRACT.md gelé** : API stable v1.1.x
+#### IA Légère Intégrée
+- **Whisper STT** : Speech-to-Text avec latence <800ms, 20+ commandes FR/EN
+- **YOLOv8n** : Détection d'objets en temps réel ≥15fps
+- **MediaPipe Face** : Détection de visages et landmarks
+- **Mapping intelligent** : Commandes vocales → actions robot
 
-#### Golden Tests
-- **3 traces de référence** : happy_mujoco.jsonl, lookat_mujoco.jsonl, wakeup_mujoco.jsonl
-- **Validation automatique** : Tolérances ±0.25 rad position, ±20% cadence
-- **Non-régression** : Prévention des "faux positifs"
-- **Seed fixé** : SEED=42 pour reproductibilité
+#### Scripts One-Click
+- **run_demo_sim.sh** : Démo simulation complète avec viewer 3D
+- **run_demo_real.sh** : Démo robot réel avec mode lent sécurisé
+- **bbia_dashboard_server.py** : Serveur dashboard web temps réel
+- **stt_demo.py** : Tests commandes vocales interactives
 
-#### CI/CD Améliorée
-- **Variables d'environnement** : SEED=42, MUJOCO_GL=egl
-- **Artefacts automatiques** : Upload en cas d'échec (.jsonl, .csv)
-- **Tests headless** : Stabilité maximale
+#### Dashboard Web Temps Réel
+- **FastAPI + WebSocket** : Interface web moderne
+- **Contrôles temps réel** : Émotions, actions, look_at
+- **Logs live** : Monitoring en direct
+- **Health endpoint** : `/healthz` pour CI
+
+#### Optimisation Vitesse Robot
+- **Mode lent sécurisé** : 0.1 Hz (10s par cycle) pour robot réel
+- **Amplitude réduite** : 0.2 rad (au lieu de 0.3 rad)
+- **Sécurité maximale** : Limites respectées automatiquement
+- **Paramètre --slow** : Contrôle vitesse dans scripts
 
 ## 🏗️ Architecture de la Version 1.1.1
 

@@ -434,7 +434,7 @@ async def handle_robot_command(command_data: dict[str, Any]):
         await websocket_manager.send_log_message("error", f"Erreur: {str(e)}")
 
 
-def run_dashboard(host: str = "0.0.0.0", port: int = 8000, backend: str = "mujoco"):
+def run_dashboard(host: str = "127.0.0.1", port: int = 8000, backend: str = "mujoco"):
     """
     Lance le dashboard BBIA.
 

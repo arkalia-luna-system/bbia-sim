@@ -130,8 +130,9 @@ class WhisperSTT:
             )
             sd.wait()
 
-            # Sauvegarde temporaire
-            temp_file = Path("/tmp/bbia_whisper_temp.wav")
+            # Sauvegarde temporaire sécurisée
+            import tempfile
+            temp_file = Path(tempfile.gettempdir()) / "bbia_whisper_temp.wav"
             sf.write(temp_file, audio_data, sample_rate)
 
             # Transcription
