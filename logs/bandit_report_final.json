@@ -1,19 +1,6 @@
 {
-  "errors": [
-    {
-      "filename": "src/bbia_sim/._dashboard.py",
-      "reason": "syntax error while parsing AST from file"
-    },
-    {
-      "filename": "src/bbia_sim/._voice_whisper.py",
-      "reason": "syntax error while parsing AST from file"
-    },
-    {
-      "filename": "src/bbia_sim/daemon/ws/._telemetry.py",
-      "reason": "syntax error while parsing AST from file"
-    }
-  ],
-  "generated_at": "2025-10-25T11:37:52Z",
+  "errors": [],
+  "generated_at": "2025-10-25T12:23:59Z",
   "metrics": {
     "_totals": {
       "CONFIDENCE.HIGH": 0,
@@ -24,19 +11,9 @@
       "SEVERITY.LOW": 0,
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
-      "loc": 4936,
+      "loc": 4944,
       "nosec": 0,
       "skipped_tests": 3
-    },
-    "src/bbia_sim/._dashboard.py": {
-      "loc": 1,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    "src/bbia_sim/._voice_whisper.py": {
-      "loc": 1,
-      "nosec": 0,
-      "skipped_tests": 0
     },
     "src/bbia_sim/__init__.py": {
       "CONFIDENCE.HIGH": 0,
@@ -151,7 +128,7 @@
       "SEVERITY.LOW": 0,
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
-      "loc": 185,
+      "loc": 186,
       "nosec": 0,
       "skipped_tests": 0
     },
@@ -177,7 +154,7 @@
       "SEVERITY.LOW": 0,
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
-      "loc": 146,
+      "loc": 147,
       "nosec": 0,
       "skipped_tests": 0
     },
@@ -294,7 +271,7 @@
       "SEVERITY.LOW": 0,
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
-      "loc": 78,
+      "loc": 79,
       "nosec": 0,
       "skipped_tests": 0
     },
@@ -320,12 +297,7 @@
       "SEVERITY.LOW": 0,
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
-      "loc": 183,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    "src/bbia_sim/daemon/ws/._telemetry.py": {
-      "loc": 1,
+      "loc": 188,
       "nosec": 0,
       "skipped_tests": 0
     },
@@ -507,7 +479,7 @@
       "SEVERITY.LOW": 0,
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
-      "loc": 260,
+      "loc": 263,
       "nosec": 0,
       "skipped_tests": 0
     },
