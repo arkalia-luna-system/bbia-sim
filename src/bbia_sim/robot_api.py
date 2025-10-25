@@ -100,6 +100,9 @@ class RobotAPI(ABC):
             "determined",
             "nostalgic",
             "proud",
+            "excited",  # Ajouté pour compatibilité démos
+            "curious",  # Ajouté pour compatibilité démos
+            "calm",  # Ajouté pour compatibilité démos
         }
         if emotion not in valid_emotions:
             logger.error(f"Émotion invalide: {emotion}")
@@ -143,6 +146,8 @@ class RobotAPI(ABC):
             "conversation",
             "antenna_animation",
             "hide",
+            "nod",  # Ajouté pour compatibilité démos
+            "goto_sleep",  # Ajouté pour compatibilité démos
         }
         if behavior_name not in valid_behaviors:
             logger.error(f"Comportement invalide: {behavior_name}")
@@ -228,7 +233,7 @@ class RobotFactory:
         Crée une instance de backend RobotAPI.
 
         Args:
-            backend_type: Type de backend ("mujoco" ou "reachy")
+            backend_type: Type de backend ("mujoco", "reachy", ou "reachy_mini")
 
         Returns:
             Instance de RobotAPI
@@ -244,10 +249,16 @@ class RobotFactory:
             from bbia_sim.backends.reachy_backend import ReachyBackend
 
             return ReachyBackend()
+        elif backend_type == "reachy_mini":
+            from bbia_sim.backends.reachy_mini_backend import ReachyMiniBackend
+
+            return ReachyMiniBackend()
         else:
-            raise ValueError(f"Backend non supporté: {backend_type}")
+            raise ValueError(
+                f"Backend non supporté: {backend_type}. Options: mujoco, reachy, reachy_mini"
+            )
 
     @staticmethod
     def get_available_backends() -> list[str]:
         """Retourne la liste des backends disponibles."""
-        return ["mujoco", "reachy"]
+        return ["mujoco", "reachy", "reachy_mini"]

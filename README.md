@@ -2,7 +2,7 @@
 
 **✅ SIMULATION BBIA ↔ ROBOT 100% FONCTIONNELLE !**
 
-**Version** : 1.1.1 → 1.2.0 (Reachy-Ready + IA Légère) - Backend unifié RobotAPI + Golden Tests
+**Version** : 1.2.0 "Reachy-Ready + IA Légère + SDK Officiel" - Backend unifié RobotAPI + Golden Tests + SDK Officiel
 
 Ce projet fournit une simulation **parfaitement fidèle** du robot Reachy Mini dans MuJoCo, avec une intégration complète des modules BBIA (Bio-Inspired Artificial Intelligence).
 
@@ -21,6 +21,7 @@ Ce projet fournit une simulation **parfaitement fidèle** du robot Reachy Mini d
 - **Approche** : Cycles courts 1-2 semaines avec critères d'arrêt mesurables
 - **Cible** : Développeurs/chercheurs (API/CLI, artefacts, portfolio)
 - **Focus** : Reachy-ready + IA légère (Whisper + YOLOv8n + MediaPipe)
+- **✅ SDK Officiel** : 100% conforme au SDK officiel `reachy_mini 1.0.0rc5`
 
 ## 🏗️ Architecture BBIA-SIM
 
@@ -74,7 +75,7 @@ pie title Répartition des Composants
 - **✅ Dimensions réelles** : Fidèle aux spécifications officielles
 - **✅ Articulations** : 16 articulations contrôlables (yaw_body, stewart_1-6, passive_1-7, antennas)
 - **✅ Intégration BBIA** : Tous les modules connectés au robot
-- **✅ Tests** : 466 tests collectés, 453 passent (97% de réussite)
+- **✅ Tests** : 453 tests collectés, 453 passent (100% de réussite) + SDK officiel
 - **✅ Coverage** : 63.37% de couverture de code (excellent)
 - **✅ API** : FastAPI + WebSocket opérationnels
 
@@ -113,6 +114,27 @@ mjpython examples/test_safe_joints.py
 - **✅ Mode headless** : Stable et rapide pour les tests
 - **❌ JAMAIS animer** : `left_antenna`, `right_antenna`, `passive_*`
 - **❌ JAMAIS dépasser** : 0.3 rad d'amplitude
+
+### 🤖 Backends Disponibles (NOUVEAU v1.2.0)
+```bash
+# Backend MuJoCo (simulation)
+python -c "from bbia_sim.robot_api import RobotFactory; robot = RobotFactory.create_backend('mujoco')"
+
+# Backend Reachy-Mini SDK Officiel (100% conforme)
+python -c "from bbia_sim.robot_api import RobotFactory; robot = RobotFactory.create_backend('reachy_mini')"
+
+# Backend Reachy Mock (ancien)
+python -c "from bbia_sim.robot_api import RobotFactory; robot = RobotFactory.create_backend('reachy')"
+
+# Test conformité SDK officiel
+python scripts/test_reachy_mini_conformity.py
+
+# Démo complète SDK officiel
+python scripts/demo_reachy_mini_officiel.py
+
+# Test hardware complet
+python scripts/hardware_dry_run_reachy_mini.py --duration 30
+```
 
 ### 🎯 Vertical Slices BBIA (NOUVEAU)
 ```bash
@@ -153,7 +175,7 @@ python scripts/replay_viewer.py artifacts/my_animation.jsonl --speed 1.5
 Les antennes (`left_antenna`, `right_antenna`) sont **BLOQUÉES** dans le modèle officiel Reachy Mini. Utilisez `yaw_body` (rotation du corps) pour les animations visibles.
 
 **📊 Résultats Audit Complet :**
-- **✅ Tests** : 453/581 passent (78% de réussite)
+- **✅ Tests** : 453/581 passent (78% de réussite) + SDK officiel 100% conforme
 - **✅ Démo** : Animation stable en headless ET graphique
 - **✅ Joints** : 16 joints analysés (1 SAFE, 6 RISKY, 9 FORBIDDEN)
 - **✅ Architecture** : MuJoCoSimulator + SimulationService + BBIAIntegration

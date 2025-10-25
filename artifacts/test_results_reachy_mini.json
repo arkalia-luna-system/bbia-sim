@@ -1,0 +1,41 @@
+{
+  "timestamp": 1761398858.52652,
+  "backend": "reachy_mini",
+  "tests": {
+    "Connexion": {
+      "success": true,
+      "timestamp": 1761398858.5271091
+    },
+    "Joints disponibilité": {
+      "success": true,
+      "timestamp": 1761398858.527159
+    },
+    "Limites joints": {
+      "success": true,
+      "timestamp": 1761398858.5272262
+    },
+    "Limites sécurité": {
+      "success": true,
+      "timestamp": 1761398858.5272708
+    },
+    "Latence": {
+      "success": true,
+      "timestamp": 1761398863.5324259
+    },
+    "Émotions": {
+      "success": true,
+      "timestamp": 1761398866.056591
+    },
+    "Comportements": {
+      "success": true,
+      "timestamp": 1761398869.063992
+    }
+  },
+  "summary": {
+    "total_tests": 7,
+    "passed_tests": 7,
+    "success_rate": 1.0,
+    "duration": 5,
+    "latency_measures": 412
+  }
+}

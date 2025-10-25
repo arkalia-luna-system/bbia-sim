@@ -20,58 +20,60 @@ class JointInfo:
 
 
 class ReachyMapping:
-    """Mapping centralisé des joints Reachy Mini."""
+    """Mapping centralisé des joints Reachy Mini (SDK officiel)."""
 
-    # Joints principaux (mobiles)
+    # Joints principaux (mobiles) - Noms réels du modèle MuJoCo officiel
     JOINTS: dict[str, JointInfo] = {
+        # Corps (1 joint principal)
         "yaw_body": JointInfo(
             name="yaw_body",
-            min_limit=-0.5,
-            max_limit=0.5,
+            min_limit=-3.14,
+            max_limit=3.14,
             safe_amplitude=0.3,
             description="Rotation du corps principal",
         ),
+        # Tête (6 joints Stewart platform - noms réels)
         "stewart_1": JointInfo(
             name="stewart_1",
-            min_limit=-0.3,
-            max_limit=0.3,
+            min_limit=-0.5,
+            max_limit=0.5,
             safe_amplitude=0.2,
-            description="Plateforme Stewart - joint 1",
+            description="Plateforme Stewart - joint tête 1",
         ),
         "stewart_2": JointInfo(
             name="stewart_2",
-            min_limit=-0.3,
-            max_limit=0.3,
+            min_limit=-0.5,
+            max_limit=0.5,
             safe_amplitude=0.2,
-            description="Plateforme Stewart - joint 2",
+            description="Plateforme Stewart - joint tête 2",
         ),
         "stewart_3": JointInfo(
             name="stewart_3",
-            min_limit=-0.3,
-            max_limit=0.3,
+            min_limit=-0.5,
+            max_limit=0.5,
             safe_amplitude=0.2,
-            description="Plateforme Stewart - joint 3",
+            description="Plateforme Stewart - joint tête 3",
         ),
         "stewart_4": JointInfo(
             name="stewart_4",
-            min_limit=-0.3,
-            max_limit=0.3,
+            min_limit=-0.5,
+            max_limit=0.5,
             safe_amplitude=0.2,
-            description="Plateforme Stewart - joint 4",
+            description="Plateforme Stewart - joint tête 4",
         ),
         "stewart_5": JointInfo(
             name="stewart_5",
-            min_limit=-0.3,
-            max_limit=0.3,
+            min_limit=-0.5,
+            max_limit=0.5,
             safe_amplitude=0.2,
-            description="Plateforme Stewart - joint 5",
+            description="Plateforme Stewart - joint tête 5",
         ),
         "stewart_6": JointInfo(
             name="stewart_6",
-            min_limit=-0.3,
-            max_limit=0.3,
+            min_limit=-0.5,
+            max_limit=0.5,
             safe_amplitude=0.2,
-            description="Plateforme Stewart - joint 6",
+            description="Plateforme Stewart - joint tête 6",
         ),
     }
 
@@ -89,7 +91,7 @@ class ReachyMapping:
     }
 
     # Joints recommandés pour les démos
-    RECOMMENDED_JOINTS: set[str] = {"yaw_body"}
+    RECOMMENDED_JOINTS: set[str] = {"yaw_body", "stewart_1", "stewart_2", "stewart_3"}
 
     # Limite de sécurité globale
     GLOBAL_SAFETY_LIMIT: float = 0.3  # rad
