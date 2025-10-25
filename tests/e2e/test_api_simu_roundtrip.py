@@ -201,7 +201,7 @@ class TestAPISimuRoundtrip:
 
             if response.status_code == 200:
                 data = response.json()
-                assert data["name"] == "BBIA-SIM API"
+                assert data["name"] == "BBIA-SIM API - Écosystème Reachy Mini"
                 assert data["robot"]["joints"] == 16  # 16 joints officiels
         except httpx.RequestError:
             # API non disponible, test réussi car c'est attendu en e2e
