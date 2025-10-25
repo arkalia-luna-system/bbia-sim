@@ -1,0 +1,64 @@
+{
+  "title": "BBIA-SIM v1.3.0 - Instructions de Déploiement",
+  "version": "1.3.0-pre-release",
+  "date": "2024-10-25",
+  "deployment_options": [
+    {
+      "platform": "Render.com",
+      "description": "Déploiement gratuit avec documentation Swagger",
+      "steps": [
+        "1. Créer un compte sur render.com",
+        "2. Connecter le repository GitHub",
+        "3. Sélectionner 'Web Service'",
+        "4. Configuration automatique via render.yaml",
+        "5. Déploiement automatique depuis develop"
+      ],
+      "url": "https://bbia-sim-docs.onrender.com",
+      "cost": "Gratuit"
+    },
+    {
+      "platform": "Fly.io",
+      "description": "Déploiement avec contrôle avancé",
+      "steps": [
+        "1. Installer flyctl",
+        "2. Créer fly.toml",
+        "3. fly deploy",
+        "4. Configuration DNS"
+      ],
+      "cost": "Payant"
+    },
+    {
+      "platform": "GitHub Pages",
+      "description": "Documentation statique",
+      "steps": [
+        "1. Activer GitHub Pages",
+        "2. Générer documentation statique",
+        "3. Déployer depuis /docs"
+      ],
+      "cost": "Gratuit"
+    }
+  ],
+  "communication_assets": [
+    {
+      "type": "LinkedIn Post",
+      "file": "presentation/LinkedIn_Post.md",
+      "description": "Post optimisé pour LinkedIn"
+    },
+    {
+      "type": "Presentation PDF",
+      "file": "presentation/BBIA-SIM_Presentation.md",
+      "description": "Présentation pour recruteurs"
+    },
+    {
+      "type": "Video Demo Script",
+      "file": "scripts/generate_video_demo.py",
+      "description": "Script pour démonstration vidéo"
+    }
+  ],
+  "next_steps": [
+    "Déployer sur Render.com pour documentation publique",
+    "Générer vidéo démonstration pour YouTube/LinkedIn",
+    "Partager avec communauté Reachy Mini",
+    "Utiliser pour candidatures emploi senior"
+  ]
+}

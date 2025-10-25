@@ -33,7 +33,7 @@
       "reason": "syntax error while parsing AST from file"
     }
   ],
-  "generated_at": "2025-10-25T16:05:11Z",
+  "generated_at": "2025-10-25T16:07:03Z",
   "metrics": {
     "_totals": {
       "CONFIDENCE.HIGH": 6,
