@@ -14,7 +14,7 @@ class TestSettings:
 
         assert settings.environment == "dev"
         assert settings.api_title == "BBIA-SIM API"
-        assert settings.api_host == "0.0.0.0"
+        assert settings.api_host == "0.0.0.0"  # nosec B104
         assert settings.api_port == 8000
         assert settings.api_token == "bbia-secret-key-dev"
         assert settings.simulation_headless is True

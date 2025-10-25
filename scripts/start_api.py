@@ -15,7 +15,7 @@ sys.path.insert(0, str(src_path))
 def main():
     """Point d'entrée principal."""
     # Configuration
-    host = os.getenv("BBIA_HOST", "0.0.0.0")
+    host = os.getenv("BBIA_HOST", "127.0.0.1")  # nosec B104
     port = int(os.getenv("BBIA_PORT", "8000"))
     reload = os.getenv("BBIA_RELOAD", "true").lower() == "true"
 
