@@ -95,7 +95,7 @@ class WhisperSTT:
             if self.model is None:
                 logger.error("❌ Modèle Whisper non chargé")
                 return None
-            
+
             result = self.model.transcribe(
                 audio_path,
                 language=self.language if self.language != "auto" else None,
