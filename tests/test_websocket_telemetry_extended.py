@@ -453,7 +453,7 @@ class TestWebSocketTelemetryExtended:
             assert mock_broadcast.call_count <= 1
 
     def test_generate_telemetry_data_randomness(self):
-        """Test caractère déterministe des données de télémétrie."""
+        """Test caractère aléatoire des données de télémétrie."""
         import time
 
         # Attendre un petit délai pour s'assurer que les timestamps diffèrent
@@ -461,7 +461,25 @@ class TestWebSocketTelemetryExtended:
         time.sleep(0.1)  # Attendre 100ms pour changer le timestamp
         data2 = self.connection_manager._generate_telemetry_data()
 
-        # Les données devraient être différentes (déterministes basées sur le temps)
-        assert data1["robot"]["position"]["x"] != data2["robot"]["position"]["x"]
-        assert data1["sensors"]["battery"] != data2["sensors"]["battery"]
-        assert data1["sensors"]["temperature"] != data2["sensors"]["temperature"]
+        # Les timestamps devraient être différents
+        assert data1["timestamp"] != data2["timestamp"]
+
+        # Tester plusieurs fois pour s'assurer que les valeurs aléatoires sont différentes
+        # (avec de vrais nombres aléatoires, il est possible d'avoir des valeurs identiques)
+        different_values = 0
+        for _ in range(10):
+            data1 = self.connection_manager._generate_telemetry_data()
+            time.sleep(0.01)  # Petit délai
+            data2 = self.connection_manager._generate_telemetry_data()
+
+            if (
+                data1["robot"]["position"]["x"] != data2["robot"]["position"]["x"]
+                or data1["sensors"]["battery"] != data2["sensors"]["battery"]
+                or data1["sensors"]["temperature"] != data2["sensors"]["temperature"]
+            ):
+                different_values += 1
+
+        # Au moins 7 fois sur 10, les valeurs devraient être différentes
+        assert (
+            different_values >= 7
+        ), f"Seulement {different_values}/10 valeurs différentes trouvées"

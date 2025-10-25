@@ -9,7 +9,7 @@ BBIA-SIM est un système de simulation robotique modulaire avec **backend unifi�
 ```mermaid
 graph TB
     subgraph "BBIA Modules"
-        EMOTIONS[bbia_emotions.py<br/>8 émotions]
+        EMOTIONS[bbia_emotions.py<br/>12 émotions]
         VISION[bbia_vision.py<br/>Détection objets]
         AUDIO[bbia_audio.py<br/>Enregistrement]
         VOICE[bbia_voice.py<br/>TTS/STT]
@@ -59,7 +59,7 @@ graph TB
 ## Architecture détaillée
 
 ### 🧠 **Couche BBIA Modules**
-- **bbia_emotions.py** : 8 émotions (happy, sad, angry, surprised, neutral, confused, determined, nostalgic, proud)
+- **bbia_emotions.py** : 12 émotions (neutral, happy, sad, angry, surprised, confused, determined, nostalgic, proud, curious, excited, fearful)
 - **bbia_vision.py** : Détection d'objets et tracking
 - **bbia_audio.py** : Enregistrement et traitement audio
 - **bbia_voice.py** : Synthèse vocale (TTS) et reconnaissance (STT)

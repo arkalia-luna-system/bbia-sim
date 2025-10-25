@@ -76,6 +76,34 @@ class BBIAEmotions:
                 "description": "Peur, anxiété, inquiétude",
                 "color": "😨",
             },
+            "confused": {
+                "yeux": "Cercles désynchronisés",
+                "antennes": "Mouvements erratiques",
+                "tete": "Mouvements de confusion",
+                "description": "Confusion, perplexité, incertitude",
+                "color": "😕",
+            },
+            "determined": {
+                "yeux": "Cercles fixes et intenses",
+                "antennes": "Droites et fermes",
+                "tete": "Position ferme et décidée",
+                "description": "Détermination, résolution, volonté",
+                "color": "😤",
+            },
+            "nostalgic": {
+                "yeux": "Cercles doux et rêveurs",
+                "antennes": "Légèrement tombantes",
+                "tete": "Inclinée, regard mélancolique",
+                "description": "Nostalgie, mélancolie, souvenirs",
+                "color": "😌",
+            },
+            "proud": {
+                "yeux": "Cercles brillants et fiers",
+                "antennes": "Hautes et droites",
+                "tete": "Relevée, regard satisfait",
+                "description": "Fierté, satisfaction, accomplissement",
+                "color": "😎",
+            },
         }
 
     def set_emotion(self, emotion: str, intensity: float = 0.5) -> bool:

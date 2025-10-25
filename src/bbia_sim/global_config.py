@@ -50,6 +50,9 @@ class GlobalConfig:
         "determined",
         "nostalgic",
         "proud",
+        "curious",
+        "excited",
+        "fearful",
     }
 
     # Comportements valides

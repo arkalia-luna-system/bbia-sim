@@ -34,7 +34,7 @@ class TestBBIAModules:
         # Test création
         assert emotions.current_emotion == "neutral"
         assert emotions.emotion_intensity == 0.5
-        assert len(emotions.emotions) == 8
+        assert len(emotions.emotions) == 12
 
         # Test changement d'émotion
         emotions.set_emotion("happy", 0.8)
@@ -52,6 +52,10 @@ class TestBBIAModules:
             "excited",
             "surprised",
             "fearful",
+            "confused",
+            "determined",
+            "nostalgic",
+            "proud",
         ]
         assert len(available) == len(expected_emotions)
         for emotion in expected_emotions:

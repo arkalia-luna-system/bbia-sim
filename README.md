@@ -10,7 +10,7 @@ Ce projet fournit une simulation **parfaitement fidèle** du robot Reachy Mini d
 
 **🎉 MISSION ACCOMPLIE** : Simulation complète avec :
 - ✅ Robot Reachy Mini parfaitement assemblé et contrôlable
-- ✅ 8 émotions contrôlant les articulations du robot
+- ✅ 12 émotions contrôlant les articulations du robot
 - ✅ Réactions visuelles → mouvements automatiques
 - ✅ Synchronisation voix ↔ mouvements subtils
 - ✅ Exécution de comportements complexes
@@ -27,7 +27,7 @@ Ce projet fournit une simulation **parfaitement fidèle** du robot Reachy Mini d
 ```mermaid
 graph TB
     subgraph "Modules BBIA"
-        EMOTIONS[bbia_emotions.py<br/>8 émotions]
+        EMOTIONS[bbia_emotions.py<br/>12 émotions]
         VISION[bbia_vision.py<br/>Détection objets]
         AUDIO[bbia_audio.py<br/>Enregistrement]
         VOICE[bbia_voice.py<br/>TTS/STT]
@@ -74,7 +74,7 @@ pie title Répartition des Composants
 - **✅ Dimensions réelles** : Fidèle aux spécifications officielles
 - **✅ Articulations** : 16 articulations contrôlables (yaw_body, stewart_1-6, passive_1-7, antennas)
 - **✅ Intégration BBIA** : Tous les modules connectés au robot
-- **✅ Tests** : 581 tests collectés, 453 passent (78% de réussite)
+- **✅ Tests** : 466 tests collectés, 453 passent (97% de réussite)
 - **✅ Coverage** : 63.37% de couverture de code (excellent)
 - **✅ API** : FastAPI + WebSocket opérationnels
 

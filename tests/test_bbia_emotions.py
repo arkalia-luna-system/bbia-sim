@@ -56,6 +56,10 @@ class TestBBIAEmotions:
             "excited",
             "surprised",
             "fearful",
+            "confused",
+            "determined",
+            "nostalgic",
+            "proud",
         ]
 
         assert len(available) == len(expected_emotions)
