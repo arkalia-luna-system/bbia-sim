@@ -314,18 +314,22 @@ class ReachyMiniBackend(RobotAPI):
 
     # ===== MÉTHODES SDK OFFICIEL SUPPLÉMENTAIRES =====
 
-    def get_current_head_pose(self) -> Optional[Any]:
+    def get_current_head_pose(self) -> Any:
         """Récupère la pose actuelle de la tête."""
         if not self.is_connected or not self.robot:
-            return None
+            import numpy as np
+
+            return np.eye(4, dtype=np.float64)  # Mode simulation
 
         try:
             return self.robot.get_current_head_pose()
         except Exception as e:
             logger.error(f"Erreur get_current_head_pose: {e}")
-            return None
+            import numpy as np
 
-    def get_present_antenna_joint_positions(self) -> Optional[list[float]]:
+            return np.eye(4, dtype=np.float64)
+
+    def get_present_antenna_joint_positions(self) -> list[float]:
         """Récupère les positions actuelles des antennes."""
         if not self.is_connected or not self.robot:
             return [0.0, 0.0]  # Mode simulation
@@ -334,48 +338,47 @@ class ReachyMiniBackend(RobotAPI):
             return self.robot.get_present_antenna_joint_positions()
         except Exception as e:
             logger.error(f"Erreur get_present_antenna_joint_positions: {e}")
-            return None
+            return [0.0, 0.0]
 
-    def set_target_body_yaw(self, body_yaw: float) -> bool:
+    def set_target_body_yaw(self, body_yaw: float) -> None:
         """Définit la rotation cible du corps."""
         if not self.is_connected or not self.robot:
             logger.info(f"Mode simulation: body_yaw = {body_yaw}")
-            return True
+            return
 
         try:
             self.robot.set_target_body_yaw(body_yaw)
-            return True
         except Exception as e:
             logger.error(f"Erreur set_target_body_yaw: {e}")
-            return False
 
-    def set_target_antenna_joint_positions(self, antennas: list[float]) -> bool:
+    def set_target_antenna_joint_positions(self, antennas: list[float]) -> None:
         """Définit les positions cibles des antennes."""
         if not self.is_connected or not self.robot:
             logger.info(f"Mode simulation: antennas = {antennas}")
-            return True
+            return
 
         try:
             self.robot.set_target_antenna_joint_positions(antennas)
-            return True
         except Exception as e:
             logger.error(f"Erreur set_target_antenna_joint_positions: {e}")
-            return False
 
     def look_at_image(
         self, u: int, v: int, duration: float = 1.0, perform_movement: bool = True
-    ) -> bool:
+    ) -> Any:
         """Fait regarder le robot vers un point dans l'image."""
         if not self.is_connected or not self.robot:
             logger.info(f"Mode simulation: look_at_image({u}, {v})")
-            return True
+            import numpy as np
+
+            return np.eye(4, dtype=np.float64)
 
         try:
-            self.robot.look_at_image(u, v, duration, perform_movement)
-            return True
+            return self.robot.look_at_image(u, v, duration, perform_movement)
         except Exception as e:
             logger.error(f"Erreur look_at_image: {e}")
-            return False
+            import numpy as np
+
+            return np.eye(4, dtype=np.float64)
 
     def goto_target(
         self,
@@ -383,12 +386,12 @@ class ReachyMiniBackend(RobotAPI):
         antennas: Optional[list[float]] = None,
         duration: float = 0.5,
         method: str = "minjerk",
-        body_yaw: Optional[float] = None,
-    ) -> bool:
+        body_yaw: float = 0.0,
+    ) -> None:
         """Va vers une cible spécifique avec technique d'interpolation."""
         if not self.is_connected or not self.robot:
             logger.info("Mode simulation: goto_target")
-            return True
+            return
 
         try:
             # Convertir string vers InterpolationTechnique si nécessaire
@@ -414,108 +417,92 @@ class ReachyMiniBackend(RobotAPI):
                 method=method_enum,
                 body_yaw=body_yaw,
             )
-            return True
         except Exception as e:
             logger.error(f"Erreur goto_target: {e}")
-            return False
 
-    def enable_motors(self) -> bool:
+    def enable_motors(self) -> None:
         """Active les moteurs."""
         if not self.is_connected or not self.robot:
             logger.info("Mode simulation: enable_motors")
-            return True
+            return
 
         try:
             self.robot.enable_motors()
-            return True
         except Exception as e:
             logger.error(f"Erreur enable_motors: {e}")
-            return False
 
-    def disable_motors(self) -> bool:
+    def disable_motors(self) -> None:
         """Désactive les moteurs."""
         if not self.is_connected or not self.robot:
             logger.info("Mode simulation: disable_motors")
-            return True
+            return
 
         try:
             self.robot.disable_motors()
-            return True
         except Exception as e:
             logger.error(f"Erreur disable_motors: {e}")
-            return False
 
-    def enable_gravity_compensation(self) -> bool:
+    def enable_gravity_compensation(self) -> None:
         """Active la compensation de gravité."""
         if not self.is_connected or not self.robot:
             logger.info("Mode simulation: enable_gravity_compensation")
-            return True
+            return
 
         try:
             self.robot.enable_gravity_compensation()
-            return True
         except Exception as e:
             logger.error(f"Erreur enable_gravity_compensation: {e}")
-            return False
 
-    def disable_gravity_compensation(self) -> bool:
+    def disable_gravity_compensation(self) -> None:
         """Désactive la compensation de gravité."""
         if not self.is_connected or not self.robot:
             logger.info("Mode simulation: disable_gravity_compensation")
-            return True
+            return
 
         try:
             self.robot.disable_gravity_compensation()
-            return True
         except Exception as e:
             logger.error(f"Erreur disable_gravity_compensation: {e}")
-            return False
 
     # ===== MÉTHODES SDK OFFICIEL SUPPLÉMENTAIRES AVANCÉES =====
 
-    def set_automatic_body_yaw(self, body_yaw: float) -> bool:
+    def set_automatic_body_yaw(self, body_yaw: float) -> None:
         """Définit la rotation automatique du corps."""
         if not self.is_connected or not self.robot:
             logger.info(f"Mode simulation: set_automatic_body_yaw = {body_yaw}")
-            return True
+            return
 
         try:
             self.robot.set_automatic_body_yaw(body_yaw)
-            return True
         except Exception as e:
             logger.error(f"Erreur set_automatic_body_yaw: {e}")
-            return False
 
     def set_target(
         self,
         head: Optional[Any] = None,
         antennas: Optional[list[float]] = None,
         body_yaw: Optional[float] = None,
-    ) -> bool:
+    ) -> None:
         """Définit une cible complète (tête + antennes + corps)."""
         if not self.is_connected or not self.robot:
             logger.info("Mode simulation: set_target")
-            return True
+            return
 
         try:
             self.robot.set_target(head=head, antennas=antennas, body_yaw=body_yaw)
-            return True
         except Exception as e:
             logger.error(f"Erreur set_target: {e}")
-            return False
 
-    def start_recording(self) -> bool:
+    def start_recording(self) -> None:
         """Commence l'enregistrement des mouvements."""
         if not self.is_connected or not self.robot:
             logger.info("Mode simulation: start_recording")
-            return True
+            return
 
         try:
             self.robot.start_recording()
-            return True
         except Exception as e:
             logger.error(f"Erreur start_recording: {e}")
-            return False
 
     def stop_recording(self) -> Optional[list[dict[str, Any]]]:
         """Arrête l'enregistrement et retourne les données."""
@@ -534,36 +521,32 @@ class ReachyMiniBackend(RobotAPI):
         move: Any,
         play_frequency: float = 100.0,
         initial_goto_duration: float = 0.0,
-    ) -> bool:
+    ) -> None:
         """Joue un mouvement enregistré."""
         if not self.is_connected or not self.robot:
             logger.info("Mode simulation: play_move")
-            return True
+            return
 
         try:
             self.robot.play_move(move, play_frequency, initial_goto_duration)
-            return True
         except Exception as e:
             logger.error(f"Erreur play_move: {e}")
-            return False
 
     def async_play_move(
         self,
         move: Any,
         play_frequency: float = 100.0,
         initial_goto_duration: float = 0.0,
-    ) -> bool:
+    ) -> None:
         """Joue un mouvement enregistré de manière asynchrone."""
         if not self.is_connected or not self.robot:
             logger.info("Mode simulation: async_play_move")
-            return True
+            return
 
         try:
             self.robot.async_play_move(move, play_frequency, initial_goto_duration)
-            return True
         except Exception as e:
             logger.error(f"Erreur async_play_move: {e}")
-            return False
 
     # ===== SUPPORT MODULES IO ET MEDIA =====
 
@@ -650,7 +633,7 @@ class ReachyMiniBackend(RobotAPI):
         """Alias SDK officiel pour get_joint_pos."""
         if not self.is_connected or not self.robot:
             return ([0.0] * 12, [0.0, 0.0])  # Mode simulation
-        
+
         try:
             return self.robot.get_current_joint_positions()
         except Exception as e:
@@ -662,30 +645,41 @@ class ReachyMiniBackend(RobotAPI):
         if not self.is_connected or not self.robot:
             logger.info("Mode simulation: set_target_head_pose")
             return
-        
+
         try:
             self.robot.set_target_head_pose(pose)
         except Exception as e:
             logger.error(f"Erreur set_target_head_pose: {e}")
 
-    def look_at_world(self, x: float, y: float, z: float, duration: float = 1.0, perform_movement: bool = True) -> Any:
+    def look_at_world(
+        self,
+        x: float,
+        y: float,
+        z: float,
+        duration: float = 1.0,
+        perform_movement: bool = True,
+    ) -> Any:
         """Alias SDK officiel pour look_at."""
         if not self.is_connected or not self.robot:
             logger.info(f"Mode simulation: look_at_world({x}, {y}, {z})")
-            return None
-        
+            import numpy as np
+
+            return np.eye(4, dtype=np.float64)
+
         try:
             return self.robot.look_at_world(x, y, z, duration, perform_movement)
         except Exception as e:
             logger.error(f"Erreur look_at_world: {e}")
-            return None
+            import numpy as np
+
+            return np.eye(4, dtype=np.float64)
 
     def wake_up(self) -> None:
         """Alias SDK officiel pour run_behavior('wake_up')."""
         if not self.is_connected or not self.robot:
             logger.info("Mode simulation: wake_up")
             return
-        
+
         try:
             self.robot.wake_up()
         except Exception as e:
@@ -696,7 +690,7 @@ class ReachyMiniBackend(RobotAPI):
         if not self.is_connected or not self.robot:
             logger.info("Mode simulation: goto_sleep")
             return
-        
+
         try:
             self.robot.goto_sleep()
         except Exception as e:

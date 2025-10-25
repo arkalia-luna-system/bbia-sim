@@ -112,51 +112,51 @@ class TestReachyMiniCompleteConformity:
         """Test conformité API look_at."""
         # Test look_at_world
         result = self.backend.look_at(0.1, 0.2, 0.3)
-        assert result is True
+        assert result is True  # Notre méthode look_at retourne bool
         
-        # Test look_at_image
+        # Test look_at_image (SDK officiel retourne numpy array)
         result = self.backend.look_at_image(100, 200)
-        assert result is True
+        assert hasattr(result, 'shape')  # Doit être un numpy array
 
     def test_motor_control_conformity(self):
         """Test conformité contrôle moteurs."""
-        # Test enable/disable motors
+        # Test enable/disable motors (SDK officiel retourne None)
         result = self.backend.enable_motors()
-        assert result is True
+        assert result is None
         
         result = self.backend.disable_motors()
-        assert result is True
+        assert result is None
 
     def test_gravity_compensation_conformity(self):
         """Test conformité compensation gravité."""
-        # Test enable/disable gravity compensation
+        # Test enable/disable gravity compensation (SDK officiel retourne None)
         result = self.backend.enable_gravity_compensation()
-        assert result is True
+        assert result is None
         
         result = self.backend.disable_gravity_compensation()
-        assert result is True
+        assert result is None
 
     def test_target_control_conformity(self):
         """Test conformité contrôle cibles."""
-        # Test set_target_body_yaw
+        # Test set_target_body_yaw (SDK officiel retourne None)
         result = self.backend.set_target_body_yaw(0.1)
-        assert result is True
+        assert result is None
         
-        # Test set_target_antenna_joint_positions
+        # Test set_target_antenna_joint_positions (SDK officiel retourne None)
         result = self.backend.set_target_antenna_joint_positions([0.1, 0.2])
-        assert result is True
+        assert result is None
 
     def test_goto_target_conformity(self):
         """Test conformité goto_target."""
-        # Test goto_target avec différents paramètres
+        # Test goto_target avec différents paramètres (SDK officiel retourne None)
         result = self.backend.goto_target()
-        assert result is True
+        assert result is None
         
         result = self.backend.goto_target(body_yaw=0.1)
-        assert result is True
+        assert result is None
         
         result = self.backend.goto_target(antennas=[0.1, 0.2])
-        assert result is True
+        assert result is None
 
     def test_telemetry_conformity(self):
         """Test conformité télémétrie."""
@@ -185,13 +185,13 @@ class TestReachyMiniCompleteConformity:
 
     def test_simulation_mode_conformity(self):
         """Test conformité mode simulation."""
-        # En mode simulation, toutes les méthodes doivent fonctionner
+        # En mode simulation, toutes les méthodes doivent fonctionner (SDK officiel retourne None)
         assert self.backend.set_joint_pos("stewart_1", 0.1) is True
         assert self.backend.set_emotion("happy", 0.8) is True
         assert self.backend.look_at(0.1, 0.2, 0.3) is True
         assert self.backend.run_behavior("wake_up") is True
-        assert self.backend.enable_motors() is True
-        assert self.backend.enable_gravity_compensation() is True
+        assert self.backend.enable_motors() is None  # SDK officiel retourne None
+        assert self.backend.enable_gravity_compensation() is None  # SDK officiel retourne None
 
     def test_performance_conformity(self):
         """Test conformité performance."""
