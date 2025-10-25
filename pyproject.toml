@@ -133,6 +133,7 @@ markers = [
     "audio: marks tests requiring audio hardware",
     "vision: marks tests requiring camera/vision",
     "robot: marks tests requiring real robot connection",
+    "ci_skip: tests to skip in CI environment",
 ]
 filterwarnings = [
     "ignore::DeprecationWarning",

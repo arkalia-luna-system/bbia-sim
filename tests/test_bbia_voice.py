@@ -1,10 +1,12 @@
 import unittest
+import pytest
 from unittest.mock import MagicMock, patch
 
 from src.bbia_sim import bbia_voice
 
 
 class TestBBIAVoice(unittest.TestCase):
+    @pytest.mark.audio
     @patch("src.bbia_sim.bbia_voice.get_bbia_voice")
     @patch("src.bbia_sim.bbia_voice.pyttsx3.init")
     def test_dire_texte(self, mock_init, mock_get_voice):
