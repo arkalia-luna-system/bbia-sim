@@ -17,6 +17,7 @@ try:
     YOLO_AVAILABLE = True
 except ImportError:
     YOLO_AVAILABLE = False
+    # Variables globales pour éviter les erreurs de type
     YOLO = None  # type: ignore
     cv2 = None  # type: ignore
 
