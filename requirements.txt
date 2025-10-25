@@ -11,12 +11,31 @@ websockets
 pydantic
 pydantic-settings
 python-multipart
+
+# === PHASE 2 DEPENDENCIES ===
+# Hugging Face Integration
+transformers>=4.30.0
+torch>=2.0.0
+huggingface-hub>=0.16.0
+
+# Emotion Recognition
+mediapipe>=0.10.0
+
+# Machine Learning
+scikit-learn>=1.3.0
+matplotlib>=3.7.0
+
+# === OPTIONAL DEPENDENCIES ===
 # Dépendances audio optionnelles (nécessitent PortAudio)
 # pyaudio
-# Outils de développement
+
+# === DEVELOPMENT TOOLS ===
 ruff
 black
 isort
+pytest>=7.0.0
+pytest-cov>=4.0.0
+
 # Si besoin de MySQL avec Python 3, installe mysqlclient ou PyMySQL :
 # mysqlclient
 # PyMySQL

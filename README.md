@@ -2,7 +2,7 @@
 
 **✅ SIMULATION BBIA ↔ ROBOT 100% FONCTIONNELLE ET CONFORME !**
 
-**Version** : 1.2.0 "Conformité Parfaite SDK Officiel" - Backend unifié RobotAPI + Golden Tests + SDK Officiel Reachy-Mini 100% Conforme
+**Version** : 1.2.0 "Phase 3 Écosystème Ouvert" - Backend unifié RobotAPI + Golden Tests + SDK Officiel Reachy-Mini 100% Conforme + API Publique + Écosystème Communautaire
 
 Ce projet fournit une simulation **parfaitement fidèle** du robot Reachy Mini dans MuJoCo, avec une intégration complète des modules BBIA (Bio-Inspired Artificial Intelligence) et **100% conforme au SDK officiel** de Pollen Robotics (décembre 2024).
 
@@ -16,15 +16,17 @@ Ce projet fournit une simulation **parfaitement fidèle** du robot Reachy Mini d
 - ✅ Exécution de comportements complexes
 - ✅ API REST + WebSocket temps réel
 - ✅ **CONFORMITÉ PARFAITE** au SDK officiel `reachy_mini`
+- ✅ **API PUBLIQUE** : FastAPI + Swagger/OpenAPI + Documentation complète
+- ✅ **ÉCOSYSTÈME OUVERT** : Support multi-robots + Communauté technique
 
-### **🚀 CONFORMITÉ PARFAITE v1.2.0**
-- **Objectif** : Démo professionnelle avec robot réel (pas de features supplémentaires)
-- **Approche** : Cycles courts 1-2 semaines avec critères d'arrêt mesurables
-- **Cible** : Développeurs/chercheurs (API/CLI, artefacts, portfolio)
-- **Focus** : Reachy-ready + IA légère (Whisper + YOLOv8n + MediaPipe)
-- **✅ SDK Officiel** : **100% conforme** au SDK officiel `reachy_mini` (décembre 2024)
-- **✅ Tests** : 38 tests passent, 2 skippés (robot physique requis)
-- **✅ Qualité** : Black, Ruff, MyPy, Bandit tous OK
+### **🚀 IA AVANCÉE v1.2.1**
+- **Objectif** : Capacités IA de pointe pour comportements adaptatifs
+- **Approche** : Modules spécialisés avec intégration Hugging Face
+- **Cible** : Recherche et développement IA robotique
+- **✅ Hugging Face** : Modèles pré-entraînés intégrés
+- **✅ Emotion Recognition** : Détection émotions multimodale
+- **✅ Adaptive Behavior** : Comportements contextuels intelligents
+- **✅ Tests** : 24 tests complets, qualité maintenue
 
 ## 🏗️ Architecture BBIA-SIM
 
@@ -129,7 +131,25 @@ python scripts/demo_reachy_mini_officiel.py
 python scripts/hardware_dry_run_reachy_mini.py --duration 30
 ```
 
-### 🎯 Vertical Slices BBIA (NOUVEAU)
+### 🧠 IA Avancée Phase 2 (NOUVEAU v1.2.1)
+```bash
+# Démonstration complète Phase 2
+python examples/demo_bbia_phase2_integration.py
+
+# Tests modules Phase 2
+python -m pytest tests/test_bbia_phase2_modules.py -v
+
+# Module Adaptive Behavior (fonctionne sans dépendances ML)
+python -c "from bbia_sim.bbia_adaptive_behavior import BBIAAdaptiveBehavior; ab = BBIAAdaptiveBehavior(); ab.set_context('greeting'); ab.set_emotion_state('happy', 0.8); print(ab.generate_behavior('test'))"
+
+# Module Hugging Face (nécessite: pip install transformers torch)
+python -c "from bbia_sim.bbia_huggingface import BBIAHuggingFace; hf = BBIAHuggingFace(); print(hf.analyze_sentiment('Je suis heureux!'))"
+
+# Module Emotion Recognition (nécessite: pip install mediapipe transformers)
+python -c "from bbia_sim.bbia_emotion_recognition import BBIAEmotionRecognition; er = BBIAEmotionRecognition(); print(er.analyze_vocal_emotion('Je suis excité!'))"
+```
+
+### 🎯 Vertical Slices BBIA
 ```bash
 # Tests automatiques des vertical slices
 python -m pytest tests/test_vertical_slices.py -v

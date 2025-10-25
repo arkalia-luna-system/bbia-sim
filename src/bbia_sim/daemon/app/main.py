@@ -13,7 +13,7 @@ from ..config import settings
 from ..middleware import RateLimitMiddleware, SecurityMiddleware
 from ..simulation_service import simulation_service
 from ..ws import telemetry
-from .routers import motion, state
+from .routers import ecosystem, motion, state
 
 # Configuration du logging
 logging.basicConfig(
@@ -104,12 +104,98 @@ async def lifespan(app: FastAPI):
 
 # Création de l'application FastAPI
 app = FastAPI(
-    title=settings.api_title,
-    description=settings.api_description,
-    version=settings.api_version,
+    title="BBIA-SIM API - Écosystème Reachy Mini",
+    description="""
+    ## 🚀 API BBIA-SIM v1.2.0 - Écosystème Reachy Mini
+    
+    **API publique pour le contrôle du robot Reachy Mini avec modules BBIA (Bio-Inspired Artificial Intelligence)**
+    
+    ### 🎯 Fonctionnalités Principales
+    
+    - **🤖 Contrôle Robot** : Mouvements, poses, états
+    - **😊 Émotions BBIA** : 12 émotions contrôlant les articulations
+    - **🎭 Comportements** : Actions complexes prédéfinies
+    - **📊 Télémétrie** : WebSocket temps réel
+    - **🎮 Modes Démo** : Simulation, robot réel, mixte
+    
+    ### 🔧 Backends Supportés
+    
+    - **MuJoCo** : Simulation physique réaliste
+    - **Reachy Mini SDK** : Robot physique officiel
+    - **Reachy Mock** : Mode développement
+    
+    ### 📚 Documentation
+    
+    - **Swagger UI** : Interface interactive `/docs`
+    - **ReDoc** : Documentation alternative `/redoc`
+    - **OpenAPI** : Spécification complète `/openapi.json`
+    
+    ### 🔐 Authentification
+    
+    Utilisez le token Bearer dans l'en-tête Authorization :
+    ```
+    Authorization: Bearer YOUR_API_TOKEN
+    ```
+    
+    ### 🌐 WebSocket
+    
+    Connexion temps réel pour la télémétrie :
+    ```
+    ws://localhost:8000/ws/telemetry
+    ```
+    """,
+    version="1.2.0",
     docs_url="/docs",
     redoc_url="/redoc",
+    openapi_url="/openapi.json",
     lifespan=lifespan,
+    contact={
+        "name": "Arkalia Luna System",
+        "email": "arkalia.luna.system@gmail.com",
+        "url": "https://github.com/arkalia-luna-system/bbia-sim",
+    },
+    license_info={
+        "name": "MIT License",
+        "url": "https://opensource.org/licenses/MIT",
+    },
+    servers=[
+        {
+            "url": "http://localhost:8000",
+            "description": "Serveur de développement local",
+        },
+        {
+            "url": "https://api.bbia-sim.com",
+            "description": "Serveur de production (à venir)",
+        },
+    ],
+    tags_metadata=[
+        {
+            "name": "ecosystem",
+            "description": (
+                "**🌐 Écosystème BBIA-SIM** - Endpoints publics pour l'intégration et la démonstration"
+            ),
+            "externalDocs": {
+                "description": "Documentation complète",
+                "url": "https://github.com/arkalia-luna-system/bbia-sim#readme",
+            },
+        },
+        {
+            "name": "motion",
+            "description": (
+                "**🤖 Contrôle des Mouvements** - Gestion des poses et mouvements du robot"
+            ),
+        },
+        {
+            "name": "state",
+            "description": (
+                "**📊 État du Robot** - Informations sur l'état, la batterie, les capteurs"
+            ),
+        },
+        {
+            "name": "telemetry",
+            "description": "**📡 Télémétrie** - WebSocket pour les données temps réel",
+        },
+    ],
 )
 
 # Configuration CORS
@@ -132,6 +218,12 @@ if settings.is_production():
 
 # Inclusion des routers
 app.include_router(
+    ecosystem.router,
+    prefix="/api/ecosystem",
+    tags=["ecosystem"],
+)
+
+app.include_router(
     state.router,
     prefix="/api/state",
     tags=["state"],
@@ -152,14 +244,35 @@ app.include_router(telemetry.router, prefix="/ws", tags=["telemetry"])
 async def root() -> dict[str, Any]:
     """Point d'entrée principal de l'API."""
     return {
-        "message": "BBIA-SIM API",
-        "version": "1.0.0",
+        "message": "BBIA-SIM API - Écosystème Reachy Mini",
+        "version": "1.2.0",
         "status": "running",
+        "description": (
+            "API publique pour le contrôle du robot Reachy Mini avec modules BBIA"
+        ),
         "endpoints": {
+            "ecosystem": "/api/ecosystem",
             "state": "/api/state",
             "motion": "/api/motion",
             "telemetry": "/ws/telemetry",
             "docs": "/docs",
+            "redoc": "/redoc",
+            "openapi": "/openapi.json",
+        },
+        "features": [
+            "REST API",
+            "WebSocket telemetry",
+            "MuJoCo simulation",
+            "Robot control",
+            "BBIA emotions",
+            "BBIA behaviors",
+            "Demo modes",
+            "OpenAPI documentation",
+        ],
+        "contact": {
+            "name": "Arkalia Luna System",
+            "email": "arkalia.luna.system@gmail.com",
+            "github": "https://github.com/arkalia-luna-system/bbia-sim",
         },
     }
 
@@ -182,17 +295,44 @@ async def health_check() -> dict[str, Any]:
 async def api_info() -> dict[str, Any]:
     """Informations détaillées sur l'API."""
     return {
-        "name": "BBIA-SIM API",
-        "version": "1.0.0",
-        "description": "API pour le contrôle du robot Reachy Mini",
+        "name": "BBIA-SIM API - Écosystème Reachy Mini",
+        "version": "1.2.0",
+        "description": (
+            "API publique pour le contrôle du robot Reachy Mini avec modules BBIA"
+        ),
+        "phase": "Phase 3 - Ouverture Écosystème",
         "features": [
             "REST API",
             "WebSocket telemetry",
             "MuJoCo simulation",
             "Robot control",
+            "BBIA emotions (12 émotions)",
+            "BBIA behaviors (8 comportements)",
+            "Demo modes (simulation, robot réel, mixte)",
+            "OpenAPI documentation",
             "Authentication",
+            "Rate limiting",
+            "CORS support",
         ],
-        "robot": {"model": "Reachy Mini", "joints": 16, "status": "ready"},
+        "robot": {
+            "model": "Reachy Mini Wireless",
+            "joints": 16,
+            "status": "ready",
+            "backends": ["mujoco", "reachy_mini", "reachy"],
+        },
+        "bbia_modules": {
+            "emotions": 12,
+            "behaviors": 8,
+            "vision": "YOLOv8n + MediaPipe",
+            "audio": "Whisper STT + pyttsx3 TTS",
+            "integration": "Complete",
+        },
+        "documentation": {
+            "swagger": "/docs",
+            "redoc": "/redoc",
+            "openapi": "/openapi.json",
+            "github": "https://github.com/arkalia-luna-system/bbia-sim",
+        },
     }
 
 
