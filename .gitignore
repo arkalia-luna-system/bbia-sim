@@ -46,6 +46,7 @@ artifacts/*/
 !artifacts/golden/
 !artifacts/test_dry_run.json/
 !artifacts/release_v1.2.0_dry_run/
+artifacts/golden/*_long.jsonl
 
 # Modèles IA (téléchargés à la volée)
 *.pt
