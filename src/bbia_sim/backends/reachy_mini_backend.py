@@ -8,6 +8,8 @@ import logging
 import time
 from typing import Any, Optional
 
+import numpy as np
+
 try:
     from reachy_mini import ReachyMini
     from reachy_mini.utils import create_head_pose
@@ -115,7 +117,7 @@ class ReachyMiniBackend(RobotAPI):
         """Retourne la liste des joints disponibles."""
         return list(self.joint_mapping.keys())
 
-    def get_joint_pos(self, joint_name: str) -> Optional[float]:
+    def get_joint_pos(self, joint_name: str) -> float:
         """Récupère la position actuelle d'un joint."""
         if not self.is_connected or not self.robot:
             return 0.0
@@ -147,11 +149,11 @@ class ReachyMiniBackend(RobotAPI):
                 )
 
             logger.warning(f"Joint {joint_name} non trouvé")
-            return None
+            return 0.0
 
         except Exception as e:
             logger.error(f"Erreur lecture joint {joint_name}: {e}")
-            return None
+            return 0.0
 
     def set_joint_pos(self, joint_name: str, position: float) -> bool:
         """Définit la position d'un joint."""
@@ -203,6 +205,16 @@ class ReachyMiniBackend(RobotAPI):
 
     def set_emotion(self, emotion: str, intensity: float = 0.5) -> bool:
         """Définit une émotion sur le robot."""
+        # Vérifier si le SDK est disponible
+        if not REACHY_MINI_AVAILABLE or create_head_pose is None:
+            # Mode simulation sans SDK
+            self.current_emotion = emotion
+            self.emotion_intensity = intensity
+            logger.info(
+                f"Émotion simulée (sans SDK): {emotion} (intensité: {intensity})"
+            )
+            return True
+
         # Mapping émotions vers poses tête
         emotion_poses = {
             "happy": create_head_pose(pitch=0.1, yaw=0.0, degrees=False),
@@ -314,19 +326,16 @@ class ReachyMiniBackend(RobotAPI):
 
     # ===== MÉTHODES SDK OFFICIEL SUPPLÉMENTAIRES =====
 
-    def get_current_head_pose(self) -> Any:
+    def get_current_head_pose(self) -> np.ndarray:
         """Récupère la pose actuelle de la tête."""
         if not self.is_connected or not self.robot:
-            import numpy as np
-
             return np.eye(4, dtype=np.float64)  # Mode simulation
 
         try:
-            return self.robot.get_current_head_pose()
+            result = self.robot.get_current_head_pose()
+            return np.array(result, dtype=np.float64) if result is not None else np.eye(4, dtype=np.float64)
         except Exception as e:
             logger.error(f"Erreur get_current_head_pose: {e}")
-            import numpy as np
-
             return np.eye(4, dtype=np.float64)
 
     def get_present_antenna_joint_positions(self) -> list[float]:
@@ -335,7 +344,8 @@ class ReachyMiniBackend(RobotAPI):
             return [0.0, 0.0]  # Mode simulation
 
         try:
-            return self.robot.get_present_antenna_joint_positions()
+            result = self.robot.get_present_antenna_joint_positions()
+            return list(result) if result is not None else [0.0, 0.0]
         except Exception as e:
             logger.error(f"Erreur get_present_antenna_joint_positions: {e}")
             return [0.0, 0.0]
@@ -493,16 +503,18 @@ class ReachyMiniBackend(RobotAPI):
         except Exception as e:
             logger.error(f"Erreur set_target: {e}")
 
-    def start_recording(self) -> None:
+    def start_recording(self) -> bool:
         """Commence l'enregistrement des mouvements."""
         if not self.is_connected or not self.robot:
             logger.info("Mode simulation: start_recording")
-            return
+            return True  # Mode simulation réussi
 
         try:
             self.robot.start_recording()
+            return True
         except Exception as e:
             logger.error(f"Erreur start_recording: {e}")
+            return False
 
     def stop_recording(self) -> Optional[list[dict[str, Any]]]:
         """Arrête l'enregistrement et retourne les données."""
@@ -511,7 +523,8 @@ class ReachyMiniBackend(RobotAPI):
             return []  # Mode simulation
 
         try:
-            return self.robot.stop_recording()
+            result = self.robot.stop_recording()
+            return list(result) if result is not None else []
         except Exception as e:
             logger.error(f"Erreur stop_recording: {e}")
             return None
@@ -582,9 +595,9 @@ class ReachyMiniBackend(RobotAPI):
                     self._duration = duration
 
                 def duration(self) -> float:
-                    return self._duration
+                    return float(self._duration)
 
-                def evaluate(self, t: float) -> dict:
+                def evaluate(self, t: float) -> dict[str, Any]:
                     # Interpolation simple entre les positions
                     if not self._positions or t <= 0:
                         return self._positions[0] if self._positions else {}
@@ -594,13 +607,13 @@ class ReachyMiniBackend(RobotAPI):
                     # Interpolation linéaire
                     idx = int(t * (len(self._positions) - 1))
                     if idx >= len(self._positions) - 1:
-                        return self._positions[-1]
+                        return dict(self._positions[-1]) if self._positions else {}
 
-                    pos1 = self._positions[idx]
-                    pos2 = self._positions[idx + 1]
+                    pos1: dict[str, Any] = self._positions[idx]
+                    pos2: dict[str, Any] = self._positions[idx + 1]
 
                     # Interpolation simple
-                    result = {}
+                    result: dict[str, Any] = {}
                     for key in pos1:
                         if key in pos2:
                             result[key] = pos1[key] + (pos2[key] - pos1[key]) * (
@@ -618,8 +631,7 @@ class ReachyMiniBackend(RobotAPI):
 
     def record_movement(self, duration: float = 5.0) -> Optional[list[dict]]:
         """Enregistre un mouvement pendant une durée donnée."""
-        if not self.start_recording():
-            return None
+        self.start_recording()
 
         import time
 
@@ -635,7 +647,11 @@ class ReachyMiniBackend(RobotAPI):
             return ([0.0] * 12, [0.0, 0.0])  # Mode simulation
 
         try:
-            return self.robot.get_current_joint_positions()
+            result = self.robot.get_current_joint_positions()
+            if result is not None and len(result) == 2:
+                return (list(result[0]), list(result[1]))
+            else:
+                return ([0.0] * 12, [0.0, 0.0])
         except Exception as e:
             logger.error(f"Erreur get_current_joint_positions: {e}")
             return ([0.0] * 12, [0.0, 0.0])

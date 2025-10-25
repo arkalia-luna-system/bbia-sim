@@ -1,5 +1,36 @@
 # Notes de Release - BBIA-SIM
 
+## Version 1.2.1 - Corrections Qualité Code + Tests ✅ RELEASED
+
+### 🎯 Résumé
+
+Corrections complètes des erreurs de formatage, tests et qualité de code. Tous les outils de qualité (black, ruff, mypy, bandit) passent maintenant sans erreur.
+
+### 🔧 Corrections v1.2.1
+
+#### Formatage et Qualité Code
+- **Ruff** : Correction de tous les espaces dans lignes vides et espaces en fin de ligne
+- **Black** : Reformattage automatique du code selon les standards Python
+- **MyPy** : Correction de tous les problèmes de typage (6 erreurs corrigées)
+- **Bandit** : Aucun problème de sécurité détecté
+
+#### Corrections Tests
+- **TypeError fixes** : Correction des erreurs "NoneType object is not callable"
+- **Import cleanup** : Suppression des imports inutilisés
+- **SDK compatibility** : Gestion correcte du mode simulation sans SDK
+
+#### Améliorations Backend
+- **Type safety** : Ajout d'annotations de type explicites
+- **Error handling** : Amélioration de la gestion d'erreurs avec SDK non disponible
+- **Return types** : Correction des types de retour pour conformité mypy
+
+### 📊 Métriques Qualité
+- **Tests** : 38 passed, 2 skipped ✅
+- **Ruff** : All checks passed ✅
+- **MyPy** : Success, no issues found ✅
+- **Bandit** : 0 security issues ✅
+- **Black** : All files formatted ✅
+
 ## Version 1.2.0 - IA Légère + Scripts One-Click + Vitesse Robot Optimisée ✅ RELEASED
 
 ### 🎯 Résumé

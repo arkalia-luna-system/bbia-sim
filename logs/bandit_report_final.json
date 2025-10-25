@@ -1,6 +1,15 @@
 {
-  "errors": [],
-  "generated_at": "2025-10-25T12:23:59Z",
+  "errors": [
+    {
+      "filename": "src/bbia_sim/._robot_factory.py",
+      "reason": "syntax error while parsing AST from file"
+    },
+    {
+      "filename": "src/bbia_sim/backends/._reachy_mini_backend.py",
+      "reason": "syntax error while parsing AST from file"
+    }
+  ],
+  "generated_at": "2025-10-25T14:19:31Z",
   "metrics": {
     "_totals": {
       "CONFIDENCE.HIGH": 0,
@@ -11,9 +20,14 @@
       "SEVERITY.LOW": 0,
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
-      "loc": 4944,
+      "loc": 5546,
       "nosec": 0,
       "skipped_tests": 3
+    },
+    "src/bbia_sim/._robot_factory.py": {
+      "loc": 1,
+      "nosec": 0,
+      "skipped_tests": 0
     },
     "src/bbia_sim/__init__.py": {
       "CONFIDENCE.HIGH": 0,
@@ -38,6 +52,11 @@
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
       "loc": 159,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "src/bbia_sim/backends/._reachy_mini_backend.py": {
+      "loc": 1,
       "nosec": 0,
       "skipped_tests": 0
     },
@@ -77,6 +96,19 @@
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
       "loc": 133,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "src/bbia_sim/backends/reachy_mini_backend.py": {
+      "CONFIDENCE.HIGH": 0,
+      "CONFIDENCE.LOW": 0,
+      "CONFIDENCE.MEDIUM": 0,
+      "CONFIDENCE.UNDEFINED": 0,
+      "SEVERITY.HIGH": 0,
+      "SEVERITY.LOW": 0,
+      "SEVERITY.MEDIUM": 0,
+      "SEVERITY.UNDEFINED": 0,
+      "loc": 547,
       "nosec": 0,
       "skipped_tests": 0
     },
@@ -128,7 +160,7 @@
       "SEVERITY.LOW": 0,
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
-      "loc": 186,
+      "loc": 214,
       "nosec": 0,
       "skipped_tests": 0
     },
@@ -349,7 +381,7 @@
       "SEVERITY.LOW": 0,
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
-      "loc": 100,
+      "loc": 103,
       "nosec": 0,
       "skipped_tests": 0
     },
@@ -375,7 +407,7 @@
       "SEVERITY.LOW": 0,
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
-      "loc": 196,
+      "loc": 206,
       "nosec": 0,
       "skipped_tests": 0
     },
@@ -388,7 +420,7 @@
       "SEVERITY.LOW": 0,
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
-      "loc": 61,
+      "loc": 73,
       "nosec": 0,
       "skipped_tests": 0
     },
