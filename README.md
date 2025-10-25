@@ -227,6 +227,41 @@ src/bbia_sim/sim/
 
 ## 🛠️ Scripts Utiles
 
+### **🎯 SEMAINE 1 - Reachy-Ready (✅ ACCOMPLI)**
+- **✅ reachy-sdk** : Installé et fonctionnel
+- **✅ mapping unique** : `mapping_reachy.py` créé et testé
+- **✅ hardware_dry_run** : Étendu avec artefacts CSV/log
+- **✅ sécurité** : Clamp ≤0.3 rad, joints interdits, kill-switch
+- **✅ vidéo + graphe** : Scripts fonctionnels, rapports générés
+
+### **⏳ SEMAINE 2 - IA Légère (EN COURS)**
+- **❌ Whisper STT** : Pas encore intégré
+- **❌ YOLOv8n + MediaPipe** : Pas encore intégré
+- **❌ Dashboard web minimal** : Pas encore créé
+
+### **⏳ SEMAINE 3 - Polish Démo (EN ATTENTE)**
+- **❌ Scripts one-click** : Pas encore créés
+- **❌ One-pager PDF** : Pas encore créé
+- **❌ Release v1.2.0** : Pas encore taggée
+
+### Scripts de Démo
+```bash
+# Enregistrer une démo complète
+bash scripts/record_demo.sh happy 15
+
+# Générer un rapport d'analyse
+python scripts/plot_trace.py --input assets/videos/demo_happy_*.jsonl --output assets/plots/rapport.txt
+```
+
+### Hardware Dry Run
+```bash
+# Test hardware complet avec artefacts
+python scripts/hardware_dry_run.py --duration 10 --backend reachy
+
+# Test avec backend simulation
+python scripts/hardware_dry_run.py --duration 5 --backend mujoco
+```
+
 ### Téléchargement des STL officiels
 ```bash
 python scripts/download_ALL_stl.py

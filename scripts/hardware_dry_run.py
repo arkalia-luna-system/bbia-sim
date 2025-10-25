@@ -18,9 +18,9 @@ from typing import Optional
 # Ajout du chemin src pour les imports
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
+from bbia_sim.mapping_reachy import ReachyMapping
 from bbia_sim.robot_api import RobotAPI
 from bbia_sim.robot_factory import RobotFactory
-from bbia_sim.mapping_reachy import ReachyMapping
 
 # Configuration logging
 logging.basicConfig(
@@ -39,7 +39,7 @@ class HardwareDryRun:
         self.test_joints = list(ReachyMapping.get_recommended_joints())
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(parents=True, exist_ok=True)
-        
+
         # Données pour artefacts
         self.latency_data: list[dict] = []
         self.test_results: dict = {}
@@ -124,16 +124,18 @@ class HardwareDryRun:
                 # Calcul latence totale
                 total_latency = (time.time() - start_time_latency) * 1000  # ms
                 self.latencies.append(total_latency)
-                
+
                 # Enregistrer données pour artefacts
-                self.latency_data.append({
-                    "timestamp": time.time(),
-                    "joint": joint,
-                    "target_pos": test_pos,
-                    "actual_pos": actual_pos,
-                    "latency_ms": total_latency,
-                    "test_count": test_count
-                })
+                self.latency_data.append(
+                    {
+                        "timestamp": time.time(),
+                        "joint": joint,
+                        "target_pos": test_pos,
+                        "actual_pos": actual_pos,
+                        "latency_ms": total_latency,
+                        "test_count": test_count,
+                    }
+                )
 
                 # Step de simulation
                 self.robot.step()
@@ -262,36 +264,45 @@ class HardwareDryRun:
     def save_artifacts(self) -> bool:
         """Sauvegarde les artefacts (CSV + log) pour la CI."""
         logger.info("💾 Sauvegarde des artefacts...")
-        
+
         try:
             # 1. Sauvegarde CSV latence
             csv_file = self.output_dir / "latency.csv"
-            with open(csv_file, 'w', newline='') as f:
+            with open(csv_file, "w", newline="") as f:
                 if self.latency_data:
                     writer = csv.DictWriter(f, fieldnames=self.latency_data[0].keys())
                     writer.writeheader()
                     writer.writerows(self.latency_data)
                 else:
                     # CSV vide si pas de données
-                    writer = csv.writer(f)
-                    writer.writerow(["timestamp", "joint", "target_pos", "actual_pos", "latency_ms", "test_count"])
-            
+                    simple_writer = csv.writer(f)
+                    simple_writer.writerow(
+                        [
+                            "timestamp",
+                            "joint",
+                            "target_pos",
+                            "actual_pos",
+                            "latency_ms",
+                            "test_count",
+                        ]
+                    )
+
             logger.info(f"✅ CSV latence sauvegardé: {csv_file}")
-            
+
             # 2. Sauvegarde log d'erreurs
             log_file = self.output_dir / "run.log"
-            with open(log_file, 'w') as f:
+            with open(log_file, "w") as f:
                 f.write(f"Hardware Dry Run - {time.strftime('%Y-%m-%d %H:%M:%S')}\n")
                 f.write("=" * 50 + "\n")
-                
+
                 if self.errors:
                     f.write("❌ ERREURS:\n")
                     for error in self.errors:
                         f.write(f"  - {error}\n")
                 else:
                     f.write("✅ Aucune erreur\n")
-                
-                f.write(f"\n📊 MÉTRIQUES:\n")
+
+                f.write("\n📊 MÉTRIQUES:\n")
                 if self.latencies:
                     avg_latency = sum(self.latencies) / len(self.latencies)
                     max_latency = max(self.latencies)
@@ -302,9 +313,9 @@ class HardwareDryRun:
                     f.write(f"  - Latence max: {max_latency:.1f}ms\n")
                 else:
                     f.write("  - Aucune mesure de latence\n")
-            
+
             logger.info(f"✅ Log sauvegardé: {log_file}")
-            
+
             # 3. Sauvegarde résultats JSON
             results_file = self.output_dir / "test_results.json"
             results = {
@@ -314,20 +325,24 @@ class HardwareDryRun:
                 "total_tests": len(self.latencies),
                 "errors": self.errors,
                 "latency_stats": {
-                    "avg": sum(self.latencies) / len(self.latencies) if self.latencies else 0,
+                    "avg": (
+                        sum(self.latencies) / len(self.latencies)
+                        if self.latencies
+                        else 0
+                    ),
                     "max": max(self.latencies) if self.latencies else 0,
                     "min": min(self.latencies) if self.latencies else 0,
                 },
-                "success": len(self.errors) == 0
+                "success": len(self.errors) == 0,
             }
-            
-            with open(results_file, 'w') as f:
+
+            with open(results_file, "w") as f:
                 json.dump(results, f, indent=2)
-            
+
             logger.info(f"✅ Résultats JSON sauvegardés: {results_file}")
-            
+
             return True
-            
+
         except Exception as e:
             logger.error(f"❌ Erreur sauvegarde artefacts: {e}")
             return False
@@ -336,17 +351,27 @@ class HardwareDryRun:
 def main():
     """Point d'entrée principal."""
     parser = argparse.ArgumentParser(description="Hardware dry run Reachy")
-    parser.add_argument("--duration", type=float, default=10.0, help="Durée du test (s)")
+    parser.add_argument(
+        "--duration", type=float, default=10.0, help="Durée du test (s)"
+    )
     parser.add_argument("--joint", type=str, help="Joint spécifique à tester")
-    parser.add_argument("--output", type=str, default="artifacts", help="Répertoire de sortie")
-    parser.add_argument("--backend", type=str, default="reachy", choices=["reachy", "mujoco"], help="Backend à utiliser")
-    
+    parser.add_argument(
+        "--output", type=str, default="artifacts", help="Répertoire de sortie"
+    )
+    parser.add_argument(
+        "--backend",
+        type=str,
+        default="reachy",
+        choices=["reachy", "mujoco"],
+        help="Backend à utiliser",
+    )
+
     args = parser.parse_args()
-    
+
     # Créer et exécuter le test
     dry_run = HardwareDryRun(output_dir=args.output)
     success = dry_run.run_full_test(args.duration)
-    
+
     if success:
         logger.info("🎉 Hardware dry run réussi !")
         dry_run.save_artifacts()

@@ -222,19 +222,19 @@ python scripts/measure_latency.py --backend reachy
 
 ## 🎯 **ROADMAP v1.2.0**
 
-### **🗓️ Semaine 1 - Reachy-Ready**
-- [ ] Installation Reachy SDK
-- [ ] Mapping joints physique
-- [ ] Extension hardware_dry_run.py
-- [ ] Vidéo démo MuJoCo
+### **🎯 Semaine 1 - Reachy-Ready (✅ ACCOMPLI)**
+- [x] Installation Reachy SDK
+- [x] Mapping joints physique
+- [x] Extension hardware_dry_run.py
+- [x] Vidéo démo MuJoCo
 
-### **🗓️ Semaine 2 - IA Légère**
+### **⏳ Semaine 2 - IA Légère (EN COURS)**
 - [ ] Intégration Whisper STT
 - [ ] Intégration YOLOv8n + MediaPipe
 - [ ] Dashboard web minimal
 - [ ] Tests d'intégration IA
 
-### **🗓️ Semaine 3 - Polish Démo**
+### **⏳ Semaine 3 - Polish Démo (EN ATTENTE)**
 - [ ] Scripts one-click
 - [ ] Documentation utilisateur
 - [ ] Portfolio one-pager

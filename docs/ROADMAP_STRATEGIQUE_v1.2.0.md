@@ -98,7 +98,7 @@
 
 ## 📅 **ROADMAP 3 SEMAINES**
 
-### **🗓️ SEMAINE 1 - Reachy-Ready**
+### **🗓️ SEMAINE 1 - Reachy-Ready (✅ ACCOMPLI)**
 ```bash
 # Objectifs :
 ✅ reachy-sdk + mapping joints (fichier unique)
@@ -106,10 +106,10 @@
 ✅ vidéo 15s "happy" (MuJoCo) + graphe qpos (déjà prêt)
 
 # Livrables :
-- Script installation Reachy SDK
-- Fichier mapping joints physique
-- hardware_dry_run.py étendu
-- Vidéo démo MuJoCo
+- Script installation Reachy SDK ✅
+- Fichier mapping joints physique ✅
+- hardware_dry_run.py étendu ✅
+- Vidéo démo MuJoCo ✅
 ```
 
 ### **🗓️ SEMAINE 2 - IA Légère Utilisable**

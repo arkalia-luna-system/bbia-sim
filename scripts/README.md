@@ -15,9 +15,13 @@
 ### 🧪 **Scripts de Test**
 - **`test_unity_setup.sh`** - Test de la configuration Unity
 - **`fix_unity_warnings.sh`** - Correction des avertissements Unity
-- **`hardware_dry_run.py`** - Validation hardware Reachy réel
+- **`hardware_dry_run.py`** - Validation hardware Reachy réel ✅
 - **`record_trace.py`** - Enregistrement traces golden
 - **`validate_trace.py`** - Validation traces contre référence
+
+### 🎬 **Scripts de Démo (NOUVEAUX)**
+- **`record_demo.sh`** - Enregistrement démo complète ✅
+- **`plot_trace.py`** - Génération rapports d'analyse ✅
 
 ---
 
@@ -54,6 +58,15 @@ python scripts/hardware_dry_run.py --joint yaw_body --duration 5
 ⏱️ Latence moyenne: 0.0ms
 ✅ Latence cible atteinte (<40ms)
 🎉 Hardware dry run réussi !
+```
+
+#### **Scripts de Démo**
+```bash
+# Enregistrer une démo complète
+bash scripts/record_demo.sh happy 15
+
+# Générer un rapport d'analyse
+python scripts/plot_trace.py --input assets/videos/demo_happy_*.jsonl --output assets/plots/rapport.txt
 ```
 
 #### **Golden Tests**
