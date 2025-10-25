@@ -96,7 +96,8 @@ class WhisperSTT:
                 logger.error("❌ Modèle Whisper non chargé")
                 return None
 
-            result = self.model.transcribe(
+            # mypy ignore: unreachable code après return None
+            result = self.model.transcribe(  # type: ignore
                 audio_path,
                 language=self.language if self.language != "auto" else None,
                 fp16=False,  # Éviter les problèmes de compatibilité
