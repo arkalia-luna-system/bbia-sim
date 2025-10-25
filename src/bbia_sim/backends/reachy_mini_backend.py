@@ -121,34 +121,31 @@ class ReachyMiniBackend(RobotAPI):
             return 0.0
 
         try:
-            if joint_name == "yaw_body":
-                # Récupérer la rotation du corps via l'API officielle
-                head_positions, antenna_positions = (
-                    self.robot.get_current_joint_positions()
-                )
-                # Le yaw_body est le premier élément des positions tête
-                return float(head_positions[0]) if len(head_positions) > 0 else 0.0
-            elif joint_name in ["left_antenna", "right_antenna"]:
-                # Récupérer positions antennes via l'API officielle
-                antenna_positions = self.robot.get_present_antenna_joint_positions()
-                antenna_idx = self.joint_mapping[joint_name]
-                return (
-                    float(antenna_positions[antenna_idx])
-                    if len(antenna_positions) > antenna_idx
-                    else 0.0
-                )
-            else:
-                # Récupérer positions tête (stewart joints) via l'API officielle
-                head_positions, _ = self.robot.get_current_joint_positions()
-                head_idx = self.joint_mapping[joint_name]
-                return (
-                    float(head_positions[head_idx])
-                    if len(head_positions) > head_idx
-                    else 0.0
-                )
+            # Le SDK officiel retourne directement un array de positions
+            positions = self.robot.get_current_joint_positions()
+
+            # Mapping des noms vers indices (basé sur le modèle MuJoCo officiel)
+            joint_indices = {
+                "yaw_body": 0,
+                "stewart_1": 1,
+                "stewart_2": 3,
+                "stewart_3": 5,
+                "stewart_4": 7,
+                "stewart_5": 9,
+                "stewart_6": 11,
+            }
+
+            if joint_name in joint_indices:
+                idx = joint_indices[joint_name]
+                if idx < len(positions):
+                    return float(positions[idx])
+
+            logger.warning(f"Joint {joint_name} non trouvé")
+            return None
+
         except Exception as e:
             logger.error(f"Erreur lecture joint {joint_name}: {e}")
-            return 0.0
+            return None
 
     def set_joint_pos(self, joint_name: str, position: float) -> bool:
         """Définit la position d'un joint."""
