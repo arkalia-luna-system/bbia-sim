@@ -1063,7 +1063,9 @@ if FASTAPI_AVAILABLE:
         intensity = emotion_data.get("intensity", 0.5)
 
         if advanced_websocket_manager.robot:
-            success = advanced_websocket_manager.robot.set_emotion(emotion, intensity)
+            success = await advanced_websocket_manager.robot.set_emotion(
+                emotion, intensity
+            )
             if success:
                 await advanced_websocket_manager.send_log_message(
                     "info", f"Émotion définie: {emotion} (intensité: {intensity})"
@@ -1161,20 +1163,39 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
         if command_type == "emotion":
             # Définir émotion
             emotion = value
-            intensity = 0.8  # Intensité par défaut
-            success = advanced_websocket_manager.robot.set_emotion(emotion, intensity)
-            if success:
+            if not emotion or not isinstance(emotion, str):
                 await advanced_websocket_manager.send_log_message(
-                    "info", f"Émotion définie: {emotion}"
+                    "error", "Émotion invalide"
                 )
+                return
+
+            intensity = 0.8  # Intensité par défaut
+            if advanced_websocket_manager.robot:
+                success = advanced_websocket_manager.robot.set_emotion(
+                    emotion, intensity
+                )
+                if success:
+                    await advanced_websocket_manager.send_log_message(
+                        "info", f"Émotion définie: {emotion}"
+                    )
+                else:
+                    await advanced_websocket_manager.send_log_message(
+                        "error", f"Échec émotion: {emotion}"
+                    )
             else:
                 await advanced_websocket_manager.send_log_message(
-                    "error", f"Échec émotion: {emotion}"
+                    "error", "Robot non connecté"
                 )
 
         elif command_type == "action":
             # Exécuter action
             action = value
+            if not advanced_websocket_manager.robot:
+                await advanced_websocket_manager.send_log_message(
+                    "error", "Robot non connecté"
+                )
+                return
+
             if action == "look_at":
                 success = advanced_websocket_manager.robot.look_at(0.5, 0.0, 0.0)
             elif action == "greet":
@@ -1204,6 +1225,18 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
         elif command_type == "behavior":
             # Exécuter comportement
             behavior = value
+            if not behavior or not isinstance(behavior, str):
+                await advanced_websocket_manager.send_log_message(
+                    "error", "Comportement invalide"
+                )
+                return
+
+            if not advanced_websocket_manager.robot:
+                await advanced_websocket_manager.send_log_message(
+                    "error", "Robot non connecté"
+                )
+                return
+
             success = advanced_websocket_manager.robot.run_behavior(behavior, 5.0)
             if success:
                 await advanced_websocket_manager.send_log_message(
@@ -1217,6 +1250,18 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
         elif command_type == "joint":
             # Contrôler joint
             joint_data = value
+            if not joint_data:
+                await advanced_websocket_manager.send_log_message(
+                    "error", "Données joint manquantes"
+                )
+                return
+
+            if not advanced_websocket_manager.robot:
+                await advanced_websocket_manager.send_log_message(
+                    "error", "Robot non connecté"
+                )
+                return
+
             joint = joint_data.get("joint")
             position = joint_data.get("position", 0.0)
             success = advanced_websocket_manager.robot.set_joint_pos(joint, position)
