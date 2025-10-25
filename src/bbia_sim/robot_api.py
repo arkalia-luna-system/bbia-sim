@@ -217,3 +217,37 @@ class RobotAPI(ABC):
             "forbidden_joints": len(self.forbidden_joints),
             "safe_amplitude_limit": self.safe_amplitude_limit,
         }
+
+
+class RobotFactory:
+    """Factory pour créer des instances de RobotAPI."""
+
+    @staticmethod
+    def create_backend(backend_type: str) -> RobotAPI:
+        """
+        Crée une instance de backend RobotAPI.
+
+        Args:
+            backend_type: Type de backend ("mujoco" ou "reachy")
+
+        Returns:
+            Instance de RobotAPI
+
+        Raises:
+            ValueError: Si le type de backend n'est pas supporté
+        """
+        if backend_type == "mujoco":
+            from bbia_sim.backends.mujoco_backend import MuJoCoBackend
+
+            return MuJoCoBackend()
+        elif backend_type == "reachy":
+            from bbia_sim.backends.reachy_backend import ReachyBackend
+
+            return ReachyBackend()
+        else:
+            raise ValueError(f"Backend non supporté: {backend_type}")
+
+    @staticmethod
+    def get_available_backends() -> list[str]:
+        """Retourne la liste des backends disponibles."""
+        return ["mujoco", "reachy"]

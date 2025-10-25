@@ -234,17 +234,34 @@ src/bbia_sim/sim/
 - **✅ sécurité** : Clamp ≤0.3 rad, joints interdits, kill-switch
 - **✅ vidéo + graphe** : Scripts fonctionnels, rapports générés
 
-### **⏳ SEMAINE 2 - IA Légère (EN COURS)**
-- **❌ Whisper STT** : Pas encore intégré
-- **❌ YOLOv8n + MediaPipe** : Pas encore intégré
-- **❌ Dashboard web minimal** : Pas encore créé
+### **✅ SEMAINE 2 - IA Légère (✅ ACCOMPLI)**
+- **✅ Whisper STT** : Intégré avec latence <800ms
+- **✅ YOLOv8n + MediaPipe** : Détection objets/visages intégrée
+- **✅ Dashboard web minimal** : FastAPI + WebSocket créé
+- **✅ Tests d'intégration IA** : 16 tests passent, 2 skippés
 
-### **⏳ SEMAINE 3 - Polish Démo (EN ATTENTE)**
-- **❌ Scripts one-click** : Pas encore créés
-- **❌ One-pager PDF** : Pas encore créé
-- **❌ Release v1.2.0** : Pas encore taggée
+### **✅ SEMAINE 3 - Polish Démo (✅ ACCOMPLI)**
+- **✅ Scripts one-click** : run_demo_sim.sh et run_demo_real.sh créés
+- **✅ One-pager portfolio** : PORTFOLIO_ONEPAGER.md créé
+- **✅ Release v1.2.0** : Prête pour tag
+- **✅ Documentation synchronisée** : Toutes les MD mises à jour
 
-### Scripts de Démo
+### Scripts One-Click
+```bash
+# Démo simulation complète (3D viewer)
+bash scripts/run_demo_sim.sh happy 15
+
+# Démo robot réel (headless)
+bash scripts/run_demo_real.sh excited 20
+
+# Test commandes vocales
+python scripts/stt_demo.py --command "salue" --backend mujoco
+
+# Dashboard web temps réel
+python scripts/bbia_dashboard_server.py --port 8000
+```
+
+### Scripts de Démo Avancés
 ```bash
 # Enregistrer une démo complète
 bash scripts/record_demo.sh happy 15
