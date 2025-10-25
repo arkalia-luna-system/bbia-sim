@@ -384,16 +384,24 @@ class ReachyMiniBackend(RobotAPI):
             if isinstance(method, str):
                 try:
                     from reachy_mini.utils.interpolation import InterpolationTechnique
+
                     method_enum = InterpolationTechnique(method)
                 except ValueError:
-                    logger.warning(f"Technique d'interpolation {method} non reconnue, utilisation de MIN_JERK")
+                    logger.warning(
+                        f"Technique d'interpolation {method} non reconnue, utilisation de MIN_JERK"
+                    )
                     from reachy_mini.utils.interpolation import InterpolationTechnique
+
                     method_enum = InterpolationTechnique.MIN_JERK
             else:
                 method_enum = method
 
             self.robot.goto_target(
-                head=head, antennas=antennas, duration=duration, method=method_enum, body_yaw=body_yaw
+                head=head,
+                antennas=antennas,
+                duration=duration,
+                method=method_enum,
+                body_yaw=body_yaw,
             )
             return True
         except Exception as e:
@@ -498,7 +506,7 @@ class ReachyMiniBackend(RobotAPI):
             logger.error(f"Erreur start_recording: {e}")
             return False
 
-    def stop_recording(self) -> Optional[list[dict]]:
+    def stop_recording(self) -> Optional[list[dict[str, Any]]]:
         """Arrête l'enregistrement et retourne les données."""
         if not self.is_connected or not self.robot:
             logger.info("Mode simulation: stop_recording")
@@ -510,7 +518,12 @@ class ReachyMiniBackend(RobotAPI):
             logger.error(f"Erreur stop_recording: {e}")
             return None
 
-    def play_move(self, move: Any, play_frequency: float = 100.0, initial_goto_duration: float = 0.0) -> bool:
+    def play_move(
+        self,
+        move: Any,
+        play_frequency: float = 100.0,
+        initial_goto_duration: float = 0.0,
+    ) -> bool:
         """Joue un mouvement enregistré."""
         if not self.is_connected or not self.robot:
             logger.info("Mode simulation: play_move")
@@ -523,7 +536,12 @@ class ReachyMiniBackend(RobotAPI):
             logger.error(f"Erreur play_move: {e}")
             return False
 
-    def async_play_move(self, move: Any, play_frequency: float = 100.0, initial_goto_duration: float = 0.0) -> bool:
+    def async_play_move(
+        self,
+        move: Any,
+        play_frequency: float = 100.0,
+        initial_goto_duration: float = 0.0,
+    ) -> bool:
         """Joue un mouvement enregistré de manière asynchrone."""
         if not self.is_connected or not self.robot:
             logger.info("Mode simulation: async_play_move")
@@ -535,3 +553,82 @@ class ReachyMiniBackend(RobotAPI):
         except Exception as e:
             logger.error(f"Erreur async_play_move: {e}")
             return False
+
+    # ===== SUPPORT MODULES IO ET MEDIA =====
+
+    @property
+    def io(self):
+        """Accès au module IO du robot."""
+        if not self.is_connected or not self.robot:
+            logger.warning("Mode simulation: io non disponible")
+            return None
+        return getattr(self.robot, "io", None)
+
+    @property
+    def media(self):
+        """Accès au module Media du robot."""
+        if not self.is_connected or not self.robot:
+            logger.warning("Mode simulation: media non disponible")
+            return None
+        return getattr(self.robot, "media", None)
+
+    # ===== MÉTHODES UTILITAIRES POUR MOVE =====
+
+    def create_move_from_positions(
+        self, positions: list[dict], duration: float = 1.0
+    ) -> Optional[Any]:
+        """Crée un objet Move à partir de positions."""
+        try:
+            from reachy_mini.motion.move import Move
+
+            # Créer une classe Move simple pour notre usage
+            class SimpleMove(Move):
+                def __init__(self, positions, duration):
+                    self._positions = positions
+                    self._duration = duration
+
+                def duration(self) -> float:
+                    return self._duration
+
+                def evaluate(self, t: float) -> dict:
+                    # Interpolation simple entre les positions
+                    if not self._positions or t <= 0:
+                        return self._positions[0] if self._positions else {}
+                    if t >= 1:
+                        return self._positions[-1] if self._positions else {}
+
+                    # Interpolation linéaire
+                    idx = int(t * (len(self._positions) - 1))
+                    if idx >= len(self._positions) - 1:
+                        return self._positions[-1]
+
+                    pos1 = self._positions[idx]
+                    pos2 = self._positions[idx + 1]
+
+                    # Interpolation simple
+                    result = {}
+                    for key in pos1:
+                        if key in pos2:
+                            result[key] = pos1[key] + (pos2[key] - pos1[key]) * (
+                                t * (len(self._positions) - 1) - idx
+                            )
+                        else:
+                            result[key] = pos1[key]
+                    return result
+
+            return SimpleMove(positions, duration)
+
+        except Exception as e:
+            logger.error(f"Erreur création Move: {e}")
+            return None
+
+    def record_movement(self, duration: float = 5.0) -> Optional[list[dict]]:
+        """Enregistre un mouvement pendant une durée donnée."""
+        if not self.start_recording():
+            return None
+
+        import time
+
+        time.sleep(duration)
+
+        return self.stop_recording()
