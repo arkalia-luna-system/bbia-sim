@@ -113,7 +113,7 @@ class ZenohBridge:
 
         try:
             # Configuration Zenoh
-            zenoh_config = config.Config()
+            zenoh_config = Config()
             zenoh_config.insert_json5("mode", f'"{self.config.mode}"')
             zenoh_config.insert_json5("connect", json.dumps(self.config.connect))
 
