@@ -1,0 +1,20 @@
+# Configuration Render.com pour BBIA-SIM Public API
+
+# Build Command
+pip install -e .
+
+# Start Command  
+python deploy/public_api.py
+
+# Environment Variables
+PYTHON_VERSION=3.10
+BBIA_DISABLE_AUDIO=1
+MUJOCO_GL=disable
+DISPLAY=
+
+# Health Check
+HEALTH_CHECK_PATH=/health
+
+# Auto Deploy
+AUTO_DEPLOY=true
+BRANCH=develop

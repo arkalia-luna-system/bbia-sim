@@ -19,13 +19,14 @@ logger = logging.getLogger(__name__)
 # Import conditionnel Zenoh
 try:
     import zenoh
-    from zenoh import Session, config
+    from zenoh import Session, Config
 
     ZENOH_AVAILABLE = True
 except ImportError:
     ZENOH_AVAILABLE = False
     zenoh = None  # type: ignore
     Session = None  # type: ignore
+    Config = None  # type: ignore
 
 # Import conditionnel SDK officiel
 try:
@@ -53,7 +54,7 @@ class RobotCommand(BaseModel):
 
     command: str
     parameters: dict[str, Any]
-    timestamp: float = None
+    timestamp: float = 0.0
 
     def __init__(self, **data):
         if data.get("timestamp") is None:
@@ -67,7 +68,7 @@ class RobotState(BaseModel):
     joints: dict[str, float]
     emotions: dict[str, Any]
     sensors: dict[str, Any]
-    timestamp: float = None
+    timestamp: float = 0.0
 
     def __init__(self, **data):
         if data.get("timestamp") is None:

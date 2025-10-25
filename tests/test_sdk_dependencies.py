@@ -148,6 +148,7 @@ class TestSDKDependencies:
             import bbia_sim.bbia_emotions  # noqa: F401
             import bbia_sim.bbia_vision  # noqa: F401
             import bbia_sim.robot_factory  # noqa: F401
+
             assert True
         except ImportError as e:
             pytest.fail(f"Imports BBIA-SIM échouent: {e}")
