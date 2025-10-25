@@ -34,25 +34,25 @@ class TestReachyMiniBackend:
 
     def test_joint_mapping(self):
         """Test du mapping des joints."""
-        # Vérifier que tous les joints officiels sont mappés
+        # Vérifier que tous les joints officiels sont mappés (SDK officiel)
         expected_joints = {
-            "head_1",
-            "head_2",
-            "head_3",
-            "head_4",
-            "head_5",
-            "head_6",
+            "stewart_1",
+            "stewart_2",
+            "stewart_3",
+            "stewart_4",
+            "stewart_5",
+            "stewart_6",
             "left_antenna",
             "right_antenna",
-            "body_yaw",
+            "yaw_body",
         }
         actual_joints = set(self.robot.get_available_joints())
         assert actual_joints == expected_joints
 
     def test_joint_limits(self):
         """Test des limites des joints."""
-        # Vérifier que les limites sont définies
-        for joint in ["head_1", "head_2", "body_yaw"]:
+        # Vérifier que les limites sont définies (SDK officiel)
+        for joint in ["stewart_1", "stewart_2", "yaw_body"]:
             assert joint in self.robot.joint_limits
             min_limit, max_limit = self.robot.joint_limits[joint]
             assert min_limit < max_limit
@@ -69,13 +69,13 @@ class TestReachyMiniBackend:
     def test_get_joint_pos_simulation(self):
         """Test lecture position joint en mode simulation."""
         # En mode simulation, doit retourner 0.0
-        pos = self.robot.get_joint_pos("head_1")
+        pos = self.robot.get_joint_pos("stewart_1")
         assert pos == 0.0
 
     def test_set_joint_pos_simulation(self):
         """Test définition position joint en mode simulation."""
         # En mode simulation, doit toujours réussir
-        success = self.robot.set_joint_pos("head_1", 0.1)
+        success = self.robot.set_joint_pos("stewart_1", 0.1)
         assert success is True
 
     def test_set_joint_pos_forbidden(self):
@@ -87,7 +87,7 @@ class TestReachyMiniBackend:
     def test_set_joint_pos_amplitude_clamp(self):
         """Test clamp de l'amplitude."""
         # Position au-delà de la limite doit être clampée
-        success = self.robot.set_joint_pos("head_1", 0.5)  # > 0.3
+        success = self.robot.set_joint_pos("stewart_1", 0.5)  # > 0.3
         assert success is True  # Doit réussir mais être clampée
 
     def test_set_emotion_simulation(self):
@@ -161,13 +161,17 @@ class TestReachyMiniBackend:
         recommended = self.mapping.get_recommended_joints()
         assert isinstance(recommended, set)
 
-        # Test validation position
-        is_valid = self.mapping.validate_position("head_1", 0.1)
+        # Test validation position (SDK officiel)
+        is_valid, clamped_pos = self.mapping.validate_position("stewart_1", 0.1)
         assert is_valid is True
+        assert clamped_pos == 0.1
 
-        # Test position invalide
-        is_valid = self.mapping.validate_position("head_1", 1.0)  # > 0.5
-        assert is_valid is False
+        # Test position invalide (au-delà de safe_amplitude)
+        is_valid, clamped_pos = self.mapping.validate_position(
+            "stewart_1", 1.0
+        )  # > 0.2 safe_amplitude
+        assert is_valid is True  # Valide mais clampée
+        assert clamped_pos == 0.2  # Clampée à safe_amplitude
 
 
 class TestReachyMiniBackendIntegration:
@@ -185,7 +189,7 @@ class TestReachyMiniBackendIntegration:
         assert success is True
 
         # Test mouvement
-        success = robot.set_joint_pos("head_1", 0.1)
+        success = robot.set_joint_pos("stewart_1", 0.1)
         assert success is True
 
         # Test look_at
@@ -211,7 +215,7 @@ class TestReachyMiniBackendIntegration:
             assert success is False
 
         # Test amplitude limite
-        success = robot.set_joint_pos("head_1", 0.4)  # > 0.3
+        success = robot.set_joint_pos("stewart_1", 0.4)  # > 0.3
         assert success is True  # Doit être clampée automatiquement
 
     def test_performance_simulation(self):
@@ -224,8 +228,8 @@ class TestReachyMiniBackendIntegration:
         # Test latence
         start_time = time.time()
         for _ in range(100):
-            robot.set_joint_pos("head_1", 0.1)
-            robot.get_joint_pos("head_1")
+            robot.set_joint_pos("stewart_1", 0.1)
+            robot.get_joint_pos("stewart_1")
         end_time = time.time()
 
         avg_latency = (end_time - start_time) / 100 * 1000  # ms
@@ -251,7 +255,7 @@ class TestReachyMiniBackendReal:
 
         # Ce test nécessite un robot physique connecté
         if robot.connect():
-            success = robot.set_joint_pos("head_1", 0.1)
+            success = robot.set_joint_pos("stewart_1", 0.1)
             assert isinstance(success, bool)
             robot.disconnect()
 

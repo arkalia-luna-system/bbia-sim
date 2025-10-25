@@ -149,18 +149,15 @@ class ReachyMiniBackend(RobotAPI):
 
     def set_joint_pos(self, joint_name: str, position: float) -> bool:
         """Définit la position d'un joint."""
-        if not self.is_connected:
-            return False
-
-        # Mode simulation si pas de robot physique
-        if not self.robot:
-            logger.info(f"Mode simulation: joint {joint_name} = {position}")
-            return True
-
-        # Validation sécurité
+        # Validation sécurité (toujours vérifier les joints interdits)
         if joint_name in self.forbidden_joints:
             logger.warning(f"Joint {joint_name} interdit pour sécurité")
             return False
+
+        # Mode simulation si pas de robot physique OU pas connecté
+        if not self.robot or not self.is_connected:
+            logger.info(f"Mode simulation: joint {joint_name} = {position}")
+            return True
 
         # Clamp amplitude
         position = max(
@@ -196,35 +193,36 @@ class ReachyMiniBackend(RobotAPI):
 
     def set_emotion(self, emotion: str, intensity: float = 0.5) -> bool:
         """Définit une émotion sur le robot."""
+        # Mapping émotions vers poses tête
+        emotion_poses = {
+            "happy": create_head_pose(pitch=0.1, yaw=0.0, degrees=False),
+            "sad": create_head_pose(pitch=-0.1, yaw=0.0, degrees=False),
+            "neutral": create_head_pose(pitch=0.0, yaw=0.0, degrees=False),
+            "excited": create_head_pose(pitch=0.2, yaw=0.1, degrees=False),
+            "curious": create_head_pose(pitch=0.05, yaw=0.2, degrees=False),
+            "calm": create_head_pose(pitch=-0.05, yaw=0.0, degrees=False),
+        }
+
+        # Vérifier si l'émotion est valide
+        if emotion not in emotion_poses:
+            logger.warning(f"Émotion {emotion} non reconnue")
+            return False
+
         if not self.is_connected or not self.robot:
-            # Mode simulation : toujours OK
+            # Mode simulation : toujours OK pour émotions valides
             self.current_emotion = emotion
             self.emotion_intensity = intensity
             logger.info(f"Émotion simulée: {emotion} (intensité: {intensity})")
             return True
 
         try:
-            # Mapping émotions vers poses tête
-            emotion_poses = {
-                "happy": create_head_pose(pitch=0.1, yaw=0.0, degrees=False),
-                "sad": create_head_pose(pitch=-0.1, yaw=0.0, degrees=False),
-                "neutral": create_head_pose(pitch=0.0, yaw=0.0, degrees=False),
-                "excited": create_head_pose(pitch=0.2, yaw=0.1, degrees=False),
-                "curious": create_head_pose(pitch=0.05, yaw=0.2, degrees=False),
-                "calm": create_head_pose(pitch=-0.05, yaw=0.0, degrees=False),
-            }
-
-            if emotion in emotion_poses:
-                pose = emotion_poses[emotion]
-                # Appliquer l'intensité
-                pose[:3, 3] *= intensity
-                self.robot.set_target_head_pose(pose)
-                self.current_emotion = emotion
-                self.emotion_intensity = intensity
-                return True
-            else:
-                logger.warning(f"Émotion {emotion} non reconnue")
-                return False
+            pose = emotion_poses[emotion]
+            # Appliquer l'intensité
+            pose[:3, 3] *= intensity
+            self.robot.set_target_head_pose(pose)
+            self.current_emotion = emotion
+            self.emotion_intensity = intensity
+            return True
 
         except Exception as e:
             logger.error(f"Erreur émotion {emotion}: {e}")
@@ -247,8 +245,14 @@ class ReachyMiniBackend(RobotAPI):
 
     def run_behavior(self, behavior_name: str, duration: float = 5.0, **kwargs) -> bool:
         """Exécute un comportement."""
+        # Vérifier si le comportement est valide
+        valid_behaviors = ["wake_up", "goto_sleep", "nod"]
+        if behavior_name not in valid_behaviors:
+            logger.warning(f"Comportement {behavior_name} non implémenté")
+            return False
+
         if not self.is_connected or not self.robot:
-            # Mode simulation : toujours OK
+            # Mode simulation : toujours OK pour comportements valides
             logger.info(f"Comportement simulé: {behavior_name} ({duration}s)")
             return True
 
@@ -267,9 +271,6 @@ class ReachyMiniBackend(RobotAPI):
                 self.robot.set_target_head_pose(pose2)
                 time.sleep(0.5)
                 self.robot.set_target_head_pose(create_head_pose(degrees=False))
-            else:
-                logger.warning(f"Comportement {behavior_name} non implémenté")
-                return False
 
             return True
         except Exception as e:
@@ -283,9 +284,6 @@ class ReachyMiniBackend(RobotAPI):
 
     def get_telemetry(self) -> dict[str, Any]:
         """Récupère les données de télémétrie."""
-        if not self.is_connected:
-            return {}
-
         try:
             current_time = time.time()
             elapsed_time = current_time - self.start_time if self.start_time > 0 else 0
