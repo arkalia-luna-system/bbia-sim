@@ -24,54 +24,54 @@ class ReachyMapping:
 
     # Joints principaux (mobiles) - Noms réels du modèle MuJoCo officiel
     JOINTS: dict[str, JointInfo] = {
-        # Corps (1 joint principal)
+        # Corps (1 joint principal) - Limites réelles du modèle MuJoCo officiel
         "yaw_body": JointInfo(
             name="yaw_body",
-            min_limit=-3.14,
-            max_limit=3.14,
+            min_limit=-2.79,
+            max_limit=2.79,
             safe_amplitude=0.3,
             description="Rotation du corps principal",
         ),
-        # Tête (6 joints Stewart platform - noms réels)
+        # Tête (6 joints Stewart platform) - Limites réelles du modèle MuJoCo officiel
         "stewart_1": JointInfo(
             name="stewart_1",
-            min_limit=-0.5,
-            max_limit=0.5,
+            min_limit=-0.84,
+            max_limit=1.40,
             safe_amplitude=0.2,
             description="Plateforme Stewart - joint tête 1",
         ),
         "stewart_2": JointInfo(
             name="stewart_2",
-            min_limit=-0.5,
-            max_limit=0.5,
+            min_limit=-1.40,
+            max_limit=1.22,
             safe_amplitude=0.2,
             description="Plateforme Stewart - joint tête 2",
         ),
         "stewart_3": JointInfo(
             name="stewart_3",
-            min_limit=-0.5,
-            max_limit=0.5,
+            min_limit=-0.84,
+            max_limit=1.40,
             safe_amplitude=0.2,
             description="Plateforme Stewart - joint tête 3",
         ),
         "stewart_4": JointInfo(
             name="stewart_4",
-            min_limit=-0.5,
-            max_limit=0.5,
+            min_limit=-1.40,
+            max_limit=0.84,
             safe_amplitude=0.2,
             description="Plateforme Stewart - joint tête 4",
         ),
         "stewart_5": JointInfo(
             name="stewart_5",
-            min_limit=-0.5,
-            max_limit=0.5,
+            min_limit=-1.22,
+            max_limit=1.40,
             safe_amplitude=0.2,
             description="Plateforme Stewart - joint tête 5",
         ),
         "stewart_6": JointInfo(
             name="stewart_6",
-            min_limit=-0.5,
-            max_limit=0.5,
+            min_limit=-1.40,
+            max_limit=0.84,
             safe_amplitude=0.2,
             description="Plateforme Stewart - joint tête 6",
         ),

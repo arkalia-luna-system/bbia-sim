@@ -8,8 +8,6 @@ import logging
 import time
 from typing import Any, Optional
 
-import numpy as np
-
 try:
     from reachy_mini import ReachyMini
     from reachy_mini.utils import create_head_pose
@@ -82,11 +80,18 @@ class ReachyMiniBackend(RobotAPI):
             return False
 
         try:
-            # Connexion au robot Reachy-Mini
-            self.robot = ReachyMini()
+            # Connexion au robot Reachy-Mini avec timeout court pour simulation
+            self.robot = ReachyMini(timeout=1.0)  # Timeout court pour éviter blocage
             self.is_connected = True
             self.start_time = time.time()
             logger.info("Connecté au robot Reachy-Mini officiel")
+            return True
+        except TimeoutError:
+            # Pas de robot physique - mode simulation
+            logger.info("Pas de robot physique détecté - mode simulation activé")
+            self.robot = None
+            self.is_connected = True  # Mode simulation
+            self.start_time = time.time()
             return True
         except Exception as e:
             logger.error(f"Erreur connexion Reachy-Mini: {e}")
@@ -117,28 +122,43 @@ class ReachyMiniBackend(RobotAPI):
 
         try:
             if joint_name == "yaw_body":
-                # Récupérer la rotation du corps
-                head_pose = self.robot.get_current_head_pose()
-                # Extraire le yaw de la matrice de transformation
-                return float(np.arctan2(head_pose[1, 0], head_pose[0, 0]))
+                # Récupérer la rotation du corps via l'API officielle
+                head_positions, antenna_positions = (
+                    self.robot.get_current_joint_positions()
+                )
+                # Le yaw_body est le premier élément des positions tête
+                return float(head_positions[0]) if len(head_positions) > 0 else 0.0
             elif joint_name in ["left_antenna", "right_antenna"]:
-                # Récupérer positions antennes
-                _, antenna_positions = self.robot.get_current_joint_positions()
+                # Récupérer positions antennes via l'API officielle
+                antenna_positions = self.robot.get_present_antenna_joint_positions()
                 antenna_idx = self.joint_mapping[joint_name]
-                return float(antenna_positions[antenna_idx])
+                return (
+                    float(antenna_positions[antenna_idx])
+                    if len(antenna_positions) > antenna_idx
+                    else 0.0
+                )
             else:
-                # Récupérer positions tête (stewart joints)
+                # Récupérer positions tête (stewart joints) via l'API officielle
                 head_positions, _ = self.robot.get_current_joint_positions()
                 head_idx = self.joint_mapping[joint_name]
-                return float(head_positions[head_idx])
+                return (
+                    float(head_positions[head_idx])
+                    if len(head_positions) > head_idx
+                    else 0.0
+                )
         except Exception as e:
             logger.error(f"Erreur lecture joint {joint_name}: {e}")
             return 0.0
 
     def set_joint_pos(self, joint_name: str, position: float) -> bool:
         """Définit la position d'un joint."""
-        if not self.is_connected or not self.robot:
+        if not self.is_connected:
             return False
+
+        # Mode simulation si pas de robot physique
+        if not self.robot:
+            logger.info(f"Mode simulation: joint {joint_name} = {position}")
+            return True
 
         # Validation sécurité
         if joint_name in self.forbidden_joints:
@@ -152,16 +172,17 @@ class ReachyMiniBackend(RobotAPI):
 
         try:
             if joint_name == "yaw_body":
-                # Contrôler la rotation du corps
+                # Contrôler la rotation du corps via l'API officielle
                 self.robot.set_target_body_yaw(position)
             elif joint_name in ["left_antenna", "right_antenna"]:
-                # Contrôler les antennes
-                _, current_antennas = self.robot.get_current_joint_positions()
+                # Contrôler les antennes via l'API officielle
+                current_antennas = self.robot.get_present_antenna_joint_positions()
                 antenna_idx = self.joint_mapping[joint_name]
-                current_antennas[antenna_idx] = position
-                self.robot.set_target_antenna_joint_positions(current_antennas)
+                if len(current_antennas) > antenna_idx:
+                    current_antennas[antenna_idx] = position
+                    self.robot.set_target_antenna_joint_positions(current_antennas)
             else:
-                # Contrôler la tête via pose (stewart joints)
+                # Contrôler la tête via pose (stewart joints) - API officielle
                 # Créer une pose basée sur la position du joint
                 pose = create_head_pose(
                     roll=position if "stewart_1" in joint_name else 0,

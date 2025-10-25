@@ -81,6 +81,12 @@ def main():
         f"✅ Backend {args.backend} connecté : {len(robot.get_available_joints())} joints détectés"
     )
 
+    # 2.1. Lancer le viewer MuJoCo si nécessaire
+    if args.backend == "mujoco" and not args.headless:
+        print("🖥️ Lancement du viewer MuJoCo...")
+        if not robot.launch_viewer(passive=True):
+            print("⚠️ Viewer MuJoCo non lancé, mais démo continue")
+
     # 3. Vérifier le joint
     available_joints = robot.get_available_joints()
     if args.joint not in available_joints:
@@ -128,6 +134,10 @@ def main():
             # Appliquer la pose via RobotAPI
             robot.set_joint_pos(args.joint, angle)
             robot.step()
+
+            # Synchroniser avec le viewer si MuJoCo
+            if args.backend == "mujoco":
+                robot.sync_viewer()
 
             # Enregistrer la frame si demandé
             if recorder:

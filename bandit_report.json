@@ -65,7 +65,7 @@
       "reason": "syntax error while parsing AST from file"
     }
   ],
-  "generated_at": "2025-10-25T13:44:42Z",
+  "generated_at": "2025-10-25T13:59:58Z",
   "metrics": {
     "_totals": {
       "CONFIDENCE.HIGH": 0,
@@ -76,7 +76,7 @@
       "SEVERITY.LOW": 0,
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
-      "loc": 5221,
+      "loc": 5240,
       "nosec": 0,
       "skipped_tests": 3
     },
@@ -214,7 +214,7 @@
       "SEVERITY.LOW": 0,
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
-      "loc": 220,
+      "loc": 239,
       "nosec": 0,
       "skipped_tests": 0
     },

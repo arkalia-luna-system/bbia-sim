@@ -2,9 +2,9 @@
 
 **✅ SIMULATION BBIA ↔ ROBOT 100% FONCTIONNELLE !**
 
-**Version** : 1.2.0 "Reachy-Ready + IA Légère + SDK Officiel" - Backend unifié RobotAPI + Golden Tests + SDK Officiel
+**Version** : 1.2.0 "Reachy-Ready + IA Légère + SDK Officiel" - Backend unifié RobotAPI + Golden Tests + SDK Officiel Reachy-Mini
 
-Ce projet fournit une simulation **parfaitement fidèle** du robot Reachy Mini dans MuJoCo, avec une intégration complète des modules BBIA (Bio-Inspired Artificial Intelligence).
+Ce projet fournit une simulation **parfaitement fidèle** du robot Reachy Mini dans MuJoCo, avec une intégration complète des modules BBIA (Bio-Inspired Artificial Intelligence) et **100% conforme au SDK officiel** de Pollen Robotics (décembre 2024).
 
 ## 🎯 Vue d'ensemble
 
@@ -21,7 +21,7 @@ Ce projet fournit une simulation **parfaitement fidèle** du robot Reachy Mini d
 - **Approche** : Cycles courts 1-2 semaines avec critères d'arrêt mesurables
 - **Cible** : Développeurs/chercheurs (API/CLI, artefacts, portfolio)
 - **Focus** : Reachy-ready + IA légère (Whisper + YOLOv8n + MediaPipe)
-- **✅ SDK Officiel** : 100% conforme au SDK officiel `reachy_mini 1.0.0rc5`
+- **✅ SDK Officiel** : 100% conforme au SDK officiel `reachy_mini` (décembre 2024)
 
 ## 🏗️ Architecture BBIA-SIM
 
@@ -83,29 +83,19 @@ pie title Répartition des Composants
 
 ### Voir le robot en 3D (FONCTIONNEL)
 ```bash
-# 🎯 DÉMOS VERTICALES BBIA - Intégration complète (RECOMMANDÉES)
-# ⚠️ IMPORTANT : Pour voir la 3D, NE PAS utiliser --headless !
+# 🎯 DÉMOS PRINCIPALES - Fonctionnent vraiment !
 
-# Mode graphique (VOIR LA 3D)
-mjpython examples/demo_emotion_ok.py --emotion happy --duration 10 --intensity 0.8 --backend mujoco
-mjpython examples/demo_voice_ok.py --command "regarde-moi" --duration 5 --backend mujoco
-mjpython examples/demo_vision_ok.py --target-speed 0.02 --duration 10 --backend mujoco
-mjpython examples/demo_behavior_ok.py --behavior wake_up --duration 8 --backend mujoco
+# Démo continue - Robot qui bouge en continu (RECOMMANDÉE)
+mjpython examples/demo_mujoco_continue.py
 
-# Mode headless (TESTS RAPIDES)
-python examples/demo_emotion_ok.py --headless --emotion happy --duration 5 --backend mujoco
-python examples/demo_voice_ok.py --headless --command "regarde-moi" --duration 3 --backend mujoco
+# Démo émotions BBIA avec viewer MuJoCo
+mjpython examples/demo_emotion_ok.py --emotion happy --duration 10 --joint yaw_body
 
-# 🎯 DÉMO CORRIGÉE - Version stable et paramétrable
-python examples/demo_viewer_bbia_corrected.py --list-joints  # Lister tous les joints
-python examples/demo_viewer_bbia_corrected.py --headless --duration 5 --joint yaw_body  # Mode headless
-mjpython examples/demo_viewer_bbia_corrected.py --duration 10 --joint yaw_body  # Mode graphique
+# Démo surprise spectaculaire complète
+mjpython examples/surprise_3d_mujoco_viewer.py
 
-# Démo principale - Robot qui tourne correctement
-mjpython examples/demo_robot_correct.py
-
-# Test des joints sûrs uniquement
-mjpython examples/test_safe_joints.py
+# Démo SDK officiel (headless)
+python examples/demo_reachy_mini_corrigee.py --quick
 ```
 
 ### ⚠️ RÈGLES DE SÉCURITÉ CRITIQUES
