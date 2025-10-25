@@ -1,6 +1,6 @@
 # Notes de Release - BBIA-SIM
 
-## Version 1.2.0 - IA Légère + Scripts One-Click + Vitesse Robot Optimisée
+## Version 1.2.0 - IA Légère + Scripts One-Click + Vitesse Robot Optimisée ✅ RELEASED
 
 ### 🎯 Résumé
 
@@ -137,6 +137,14 @@ python scripts/record_trace.py --emotion happy --duration 5
 3. **Valider** : Lancer les golden tests
 
 ## 🎯 Prochaines versions
+
+### 📊 Métriques Finales v1.2.0 ✅ RELEASED
+- **Tests** : 466 collectés, 453 passent (97% de réussite)
+- **Coverage** : 63.40% de couverture de code
+- **Latence** : Moyenne 0.0ms, max 1.7ms (<40ms ✅)
+- **Artefacts** : JSONL 50MB, CSV 151KB générés automatiquement
+- **Hardware Dry Run** : 2,470 tests latence validés
+- **Tag Git** : v1.2.0 créé avec commit 0875d2a
 
 ### v1.2.x (Prévu)
 - **ReachyBackend réel** : Intégration SDK Pollen

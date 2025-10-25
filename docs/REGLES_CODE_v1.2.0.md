@@ -1,4 +1,4 @@
-# 📋 RÈGLES DE CODE BBIA-SIM v1.2.0
+# 📋 RÈGLES DE CODE BBIA-SIM v1.2.0 ✅ RELEASED
 
 **Version** : 1.2.0 "Reachy-Ready + IA Légère"  
 **Objectif** : Démo professionnelle avec robot réel  

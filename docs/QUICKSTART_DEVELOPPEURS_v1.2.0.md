@@ -1,4 +1,4 @@
-# 🚀 BBIA-SIM v1.2.0 - GUIDE QUICKSTART DÉVELOPPEURS
+# 🚀 BBIA-SIM v1.2.0 - GUIDE QUICKSTART DÉVELOPPEURS ✅ RELEASED
 
 **Version** : 1.2.0 "Reachy-Ready + IA Légère"  
 **Objectif** : Démo professionnelle avec robot réel  
