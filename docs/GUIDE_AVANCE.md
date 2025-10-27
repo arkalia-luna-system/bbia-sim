@@ -102,7 +102,7 @@ robot.start_recording()
 robot.stop_recording()
 ```
 
-Voir : [CONFORMITE_SDK_OFFICIEL_REACHY_MINI.md](CONFORMITE_SDK_OFFICIEL_REACHY_MINI.md)
+Voir : [RAPPORT_CONFORMITE_SDK_2024.md](./RAPPORT_CONFORMITE_SDK_2024.md)
 
 ---
 

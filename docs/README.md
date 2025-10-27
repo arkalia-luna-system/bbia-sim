@@ -10,7 +10,6 @@ Ce dossier contient toute la documentation du projet BBIA (Biological Brain Inte
 
 ### 🎮 **Guides principaux**
 - [Guide Reachy Mini Wireless](guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md)
-- [Guide des dépôts GitHub](depots/DEPOTS_GITHUB_BBIA_COMPLETE.md)
 - [Guide de simulation MuJoCo](simulations/MUJOCO_SIMULATION_GUIDE.md)
 
 ### 🔧 **Guides d'installation**
@@ -21,7 +20,7 @@ Ce dossier contient toute la documentation du projet BBIA (Biological Brain Inte
 - [Dépannage Unity](unity/UNITY_TROUBLESHOOTING.md)
 
 ### 📦 **Dépôts et ressources**
-- [Dépôts GitHub](depots/)
+- Voir [PROJECT_HISTORY.md](./PROJECT_HISTORY.md) pour l'historique complet
 
 ---
 
@@ -33,13 +32,8 @@ Ce dossier contient toute la documentation du projet BBIA (Biological Brain Inte
 - **Processus** : [Gestion des processus](PROCESS_MANAGEMENT.md)
 
 ### 🎯 **Missions accomplies**
-- **Mission finale** : [Mission accomplie](mission/MISSION_FINALE_ACCOMPLIE.md)
-- **Résumé final** : [Résumé final](mission/RESUME_FINAL_MISSION.md)
 - **Audit 3D** : [Audit 3D BBIA](audit/AUDIT_3D_BBIA_COMPLET.md)
-
-### 🔧 **Prompts et guides**
-- **Prompt final** : [Prompt Cursor final](prompts/PROMPT_CURSOR_BBIA_REACHY_FINAL.md)
-- **Prompt complet** : [Prompt Cursor complet](prompts/PROMPT_CURSOR_BBIA_REACHY_COMPLETE.md)
+- **Historique** : [PROJECT_HISTORY.md](./PROJECT_HISTORY.md)
 
 ---
 
