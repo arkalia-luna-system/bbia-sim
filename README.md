@@ -4,7 +4,7 @@
 [![Python](https://img.shields.io/badge/python-3.9%2B-blue.svg)](https://python.org)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://github.com/arkalia-luna-system/bbia-sim/actions)
-[![Tests](https://img.shields.io/badge/tests-28%20skipped%20justified-brightgreen.svg)](https://github.com/arkalia-luna-system/bbia-sim/actions)
+[![Tests](https://img.shields.io/badge/tests-27%20passing-brightgreen.svg)](https://github.com/arkalia-luna-system/bbia-sim/actions)
 [![Code Quality](https://img.shields.io/badge/code%20quality-A%2B-brightgreen.svg)](https://github.com/arkalia-luna-system/bbia-sim)
 [![SDK Conformity](https://img.shields.io/badge/SDK%20conformity-100%25-brightgreen.svg)](https://github.com/pollen-robotics/reachy_mini)
 [![Documentation](https://img.shields.io/badge/docs-sphinx%20%7C%20readthedocs-blue.svg)](docs/)
@@ -21,7 +21,7 @@
 
 ✅ **100% conforme** au SDK officiel Pollen Robotics  
 ✅ **Backend unifié** : Même code simulation → robot réel  
-✅ **Production-ready** : Tests (27), coverage (63%), docs complètes  
+✅ **Production-ready** : 27 tests, 63% coverage, docs complètes  
 ✅ **Open-source** : MIT License
 
 **[🚀 Quick Start](#-démarrage-rapide)** | **[📚 Docs Débutant](docs/GUIDE_DEBUTANT.md)** | **[🔬 Docs Avancé](docs/GUIDE_AVANCE.md)**
