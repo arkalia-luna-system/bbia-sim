@@ -21,37 +21,36 @@ def create_robot_gif():
     # Rechercher les images avec glob
     matches = glob.glob("assets/images/*Capture*.png")
     print(f"🔍 Images trouvées: {len(matches)}")
-
-    if len(matches) < 2:
-        print("❌ Pas assez d'images!")
+    
+    # Filtrer les captures du 27 octobre (récentes)
+    recent_captures = [m for m in matches if "2025-10-27" in m]
+    
+    if len(recent_captures) < 2:
+        print("❌ Pas assez d'images récentes!")
         return
-
-    # Prendre les 2 plus récentes
-    matches.sort(key=os.path.getmtime)
-    img1 = matches[0]  # Ancienne: Neutre
-    img2 = matches[1]  # Nouvelle: Tête inclinée
-
-    print(f"📸 Image 1 (neutre): {os.path.basename(img1)}")
-    print(f"📸 Image 2 (inclinée): {os.path.basename(img2)}")
+    
+    # Trier par date pour avoir l'ordre chronologique
+    recent_captures.sort(key=os.path.getmtime)
+    
+    print(f"📸 Capture récentes: {len(recent_captures)}")
+    for i, img_path in enumerate(recent_captures, 1):
+        print(f"   {i}. {os.path.basename(img_path)}")
     print()
 
-    print("📸 Image 1: Position neutre")
-    print("📸 Image 2: Tête inclinée haut-gauche")
-    print()
-
-    # Charger images
+    # Charger toutes les images
     print("🔄 Chargement images...")
-    im1 = Image.open(img1)
-    im2 = Image.open(img2)
+    images_loaded = [Image.open(img_path) for img_path in recent_captures]
 
     # Ajuster tailles (prendre la plus petite)
-    min_width = min(im1.width, im2.width)
-    min_height = min(im1.height, im2.height)
+    min_width = min(img.width for img in images_loaded)
+    min_height = min(img.height for img in images_loaded)
 
-    im1 = im1.resize((min_width, min_height), Image.Resampling.LANCZOS)
-    im2 = im2.resize((min_width, min_height), Image.Resampling.LANCZOS)
+    images_resized = [
+        img.resize((min_width, min_height), Image.Resampling.LANCZOS)
+        for img in images_loaded
+    ]
 
-    print(f"✅ Images chargées: {min_width}x{min_height}")
+    print(f"✅ {len(images_resized)} images chargées: {min_width}x{min_height}")
     print()
 
     # Créer GIF
@@ -59,13 +58,16 @@ def create_robot_gif():
     print(f"🎬 Création GIF: {output_path}")
 
     # Doubler chaque image pour animer plus lentement
-    images = [im1, im1, im2, im2]
+    images_animated = []
+    for img in images_resized:
+        images_animated.append(img)
+        images_animated.append(img)  # Duplicate for slower animation
 
-    images[0].save(
+    images_animated[0].save(
         output_path,
         save_all=True,
-        append_images=images[1:],
-        duration=1500,  # 1.5 secondes par image
+        append_images=images_animated[1:],
+        duration=1200,  # 1.2 secondes par image
         loop=0,
     )
 
