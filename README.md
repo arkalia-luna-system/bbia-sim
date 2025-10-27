@@ -207,39 +207,8 @@ python scripts/replay_viewer.py artifacts/my_animation.jsonl --speed 1.5
 - **[Guide Avancé](docs/GUIDE_AVANCE.md)** : Guide avancé
 - **[Vertical Slices](docs/audit/VERTICAL_SLICES_ACCOMPLIS.md)** : Documentation des vertical slices
 
-### ⚠️ IMPORTANT - Joints Bloqués et Problématiques
-Les antennes (`left_antenna`, `right_antenna`) sont **BLOQUÉES** dans le modèle officiel Reachy Mini. Utilisez `yaw_body` (rotation du corps) pour les animations visibles.
-
-**📊 Résultats Audit Complet :**
-- **✅ Tests** : Suite complète de tests + SDK officiel 100% conforme
-- **✅ Démo** : Animation stable en headless ET graphique
-- **✅ Joints** : 16 joints analysés (1 SAFE, 6 RISKY, 9 FORBIDDEN)
-- **✅ Architecture** : MuJoCoSimulator + SimulationService + BBIAIntegration
-
-**Diagnostic des joints :**
-```bash
-# Script de diagnostic complet
-python scripts/diagnose_joints.py
-
-# Vérification des joints
-python scripts/check_joints.py
-```
-
-**Résultat du diagnostic :**
-- ✅ **1 joint sûr** : `yaw_body` (rotation du corps) - **LE PLUS SÛR**
-- ⚠️ **6 joints problématiques** : `stewart_1-6` (plages importantes, peuvent causer des problèmes)
-- ❌ **9 joints bloqués** : `passive_1-7`, `left_antenna`, `right_antenna`
-
-**Pourquoi les antennes sont bloquées ?**
-- **Modèle officiel** : Le fichier `reachy_mini_REAL_OFFICIAL.xml` vient du dépôt Pollen Robotics
-- **Robot physique** : Les antennes ne sont **PAS motorisées** dans le vrai robot
-- **Limites [0.000, 0.000]** : Signifie que les antennes sont **fixes** sur le robot réel
-
-### Contrôles MuJoCo
-- **Souris** : Rotation de la vue
-- **Molette** : Zoom
-- **Clic droit** : Déplacer la vue
-- **Échap** : Fermer la fenêtre
+### ⚠️ Note Importante
+Les antennes sont bloquées dans le modèle officiel. Utilisez `yaw_body` pour les animations.
 
 ## 📁 Structure du Projet
 
@@ -332,16 +301,6 @@ python scripts/download_ALL_stl.py
 - **Assets** : 41 fichiers STL officiels
 - **Articulations** : 16 (yaw_body + 6 stewart + 7 passive + 2 antennas)
 - **Dimensions** : Fidèles aux spécifications officielles
-
-## 🎯 Articulations Disponibles
-
-| Articulation | Type | Description |
-|--------------|------|-------------|
-| `yaw_body` | Active | Rotation du corps |
-| `stewart_1` à `stewart_6` | Active | Bras Stewart (6 articulations) |
-| `passive_1` à `passive_7` | Passive | Articulations passives |
-| `right_antenna` | Active | Antenne droite |
-| `left_antenna` | Active | Antenne gauche |
 
 ## 🔗 Ressources Officielles
 
