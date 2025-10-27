@@ -361,37 +361,7 @@ python scripts/download_ALL_stl.py
 
 ## 🧪 Tests et Coverage
 
-### Configuration des Tests
-
-Le projet utilise **pytest** avec une configuration optimisée pour trouver tous les tests dans la structure de dossiers :
-
-```toml
-# pyproject.toml
-[tool.pytest.ini_options]
-testpaths = ["tests"]
-python_files = ["test_*.py"]
-python_classes = ["Test*"]
-python_functions = ["test_*"]
-```
-
-### Structure des Tests
-
-```
-tests/
-├── e2e/                    # Tests end-to-end
-│   ├── test_api_simu_roundtrip.py
-│   ├── test_bbia_modules_e2e.py
-│   └── test_motion_roundtrip.py
-├── sim/                    # Tests simulation
-│   ├── test_cli_help.py
-│   └── test_duration.py
-├── ws/                     # Tests WebSocket
-│   └── test_telemetry_rate.py
-├── test_bbia_*.py         # Tests modules BBIA
-├── test_api_*.py          # Tests API
-├── test_simulator.py      # Tests simulateur MuJoCo
-└── test_*.py              # Tests unitaires
-```
+### Tests & Commandes
 
 ### Résultats des Tests
 
@@ -425,41 +395,6 @@ python -m pytest tests/test_bbia_emotions.py -v
 open htmlcov/index.html
 ```
 
-### Configuration Coverage
-
-Le fichier `.coveragerc` est configuré pour :
-- Inclure tous les fichiers source dans `src/bbia_sim/`
-- Exclure les fichiers de test et temporaires
-- Afficher les fichiers manqués
-- Générer des rapports HTML et XML
-
-```ini
-[run]
-source = src
-omit = */tests/*, */test_*, */__pycache__/*, */venv/*
-
-[report]
-fail_under = 1
-show_missing = True
-```
-
-### Résolution des Problèmes de Coverage
-
-**⚠️ Problème courant :** Coverage trop faible malgré beaucoup de tests
-
-**✅ Solution :** Vérifier que pytest trouve tous les tests :
-```bash
-# Vérifier le nombre de tests collectés
-python -m pytest --collect-only -q | wc -l
-# Doit afficher de nombreux tests
-
-# Si moins de tests trouvés, vérifier la configuration testpaths
-```
-
-**🔧 Configuration critique :**
-- `testpaths = ["tests"]` dans `pyproject.toml`
-- Structure de dossiers respectée
-- Fichiers `__init__.py` dans les sous-dossiers de tests
 
 
 
