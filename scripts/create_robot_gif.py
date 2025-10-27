@@ -41,16 +41,16 @@ def create_robot_gif():
     print("🔄 Chargement images...")
     images_loaded = [Image.open(img_path) for img_path in recent_captures]
 
-    # Ajuster tailles (prendre la plus petite)
-    min_width = min(img.width for img in images_loaded)
-    min_height = min(img.height for img in images_loaded)
-
+    # Ajuster tailles - garder résolution plus élevée pour meilleure qualité
+    target_width = 700  # Résolution cible pour bonne qualité
+    target_height = 600
+    
     images_resized = [
-        img.resize((min_width, min_height), Image.Resampling.LANCZOS)
+        img.resize((target_width, target_height), Image.Resampling.LANCZOS)
         for img in images_loaded
     ]
 
-    print(f"✅ {len(images_resized)} images chargées: {min_width}x{min_height}")
+    print(f"✅ {len(images_resized)} images chargées: {target_width}x{target_height}")
     print()
 
     # Créer GIF
@@ -69,6 +69,8 @@ def create_robot_gif():
         append_images=images_animated[1:],
         duration=1200,  # 1.2 secondes par image
         loop=0,
+        optimize=False,  # Désactiver optimisation pour meilleure qualité
+        quality=95,  # Haute qualité
     )
 
     print("✅ GIF créée!")
