@@ -183,12 +183,6 @@ python -c "from bbia_sim.robot_api import RobotFactory; robot = RobotFactory.cre
 # Backend Reachy Mock (ancien)
 python -c "from bbia_sim.robot_api import RobotFactory; robot = RobotFactory.create_backend('reachy')"
 
-# Test conformité SDK officiel
-python scripts/test_reachy_mini_conformity.py
-
-# Démo complète SDK officiel
-python scripts/demo_reachy_mini_officiel.py
-
 # Test hardware complet
 python scripts/hardware_dry_run_reachy_mini.py --duration 30
 ```
@@ -237,14 +231,10 @@ python examples/demo_emotion_ok.py --record artifacts/my_animation.jsonl --emoti
 python scripts/replay_viewer.py artifacts/my_animation.jsonl --speed 1.5
 ```
 
-### 📋 Documentation Complète
-- **Vertical Slices** : `docs/audit/VERTICAL_SLICES_ACCOMPLIS.md`
-- **Audit 3D** : `docs/audit/AUDIT_3D_BBIA.md`
-- **Audit Complet** : `docs/audit/AUDIT_3D_BBIA_COMPLET.md`
-- **Résultats** : `docs/audit/RESULTATS_AUDIT_3D_BBIA.md`
-- **Mission** : `docs/mission/MISSION_FINALE_ACCOMPLIE.md`
-- **Opportunités** : `docs/opportunities/OPPORTUNITES_DEVELOPPEMENT.md`
-- **Prompts** : `docs/prompts/PROMPT_CURSOR_BBIA_REACHY_FINAL.md`
+### 📋 Documentation
+- **[Guide Débutant](docs/GUIDE_DEBUTANT.md)** : Guide pour débuter
+- **[Guide Avancé](docs/GUIDE_AVANCE.md)** : Guide avancé
+- **[Vertical Slices](docs/audit/VERTICAL_SLICES_ACCOMPLIS.md)** : Documentation des vertical slices
 
 ### ⚠️ IMPORTANT - Joints Bloqués et Problématiques
 Les antennes (`left_antenna`, `right_antenna`) sont **BLOQUÉES** dans le modèle officiel Reachy Mini. Utilisez `yaw_body` (rotation du corps) pour les animations visibles.
@@ -285,17 +275,6 @@ mjpython scripts/launch_complete_robot.py --model reachy_mini_REAL_OFFICIAL.xml
 python scripts/verify_project.py
 ```
 
-### Démonstration BBIA ↔ Robot
-```bash
-# Démonstration simple
-python examples/demo_bbia_integration.py
-
-# Démonstration interactive
-python examples/demo_bbia_integration.py interactive
-
-# Tests complets d'intégration
-python scripts/test_bbia_integration.py
-```
 
 ### Contrôles MuJoCo
 - **Souris** : Rotation de la vue
@@ -338,8 +317,7 @@ src/bbia_sim/sim/
 - **✅ Tests d'intégration IA** : Tests passent
 
 ### **✅ SEMAINE 3 - Polish Démo (✅ ACCOMPLI)**
-- **✅ Scripts one-click** : run_demo_sim.sh et run_demo_real.sh créés
-- **✅ One-pager portfolio** : PORTFOLIO_ONEPAGER.md créé
+- **✅ Scripts utilitaires** : Scripts fonctionnels créés
 - **✅ Release v1.2.0** : Prête pour tag
 - **✅ Documentation synchronisée** : Toutes les MD mises à jour
 
