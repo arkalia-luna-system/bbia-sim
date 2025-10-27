@@ -71,7 +71,7 @@ python examples/demo_emotion_ok.py
 - **✅ Hugging Face** : Modèles pré-entraînés intégrés
 - **✅ Emotion Recognition** : Détection émotions multimodale
 - **✅ Adaptive Behavior** : Comportements contextuels intelligents
-- **✅ Tests** : 24 tests complets, qualité maintenue
+- **✅ Tests** : Tests complets, qualité maintenue
 
 ## 🏗️ Architecture BBIA-SIM
 
@@ -335,7 +335,7 @@ src/bbia_sim/sim/
 - **✅ Whisper STT** : Intégré avec latence <800ms
 - **✅ YOLOv8n + MediaPipe** : Détection objets/visages intégrée (modèles téléchargés automatiquement)
 - **✅ Dashboard web minimal** : FastAPI + WebSocket créé
-- **✅ Tests d'intégration IA** : 18 tests passent, 2 skippés
+- **✅ Tests d'intégration IA** : Tests passent
 
 ### **✅ SEMAINE 3 - Polish Démo (✅ ACCOMPLI)**
 - **✅ Scripts one-click** : run_demo_sim.sh et run_demo_real.sh créés
@@ -569,7 +569,7 @@ show_missing = True
 ```bash
 # Vérifier le nombre de tests collectés
 python -m pytest --collect-only -q | wc -l
-# Doit afficher 531+ tests
+# Doit afficher de nombreux tests
 
 # Si moins de tests trouvés, vérifier la configuration testpaths
 ```
@@ -607,7 +607,7 @@ python -m pytest --collect-only -q | wc -l
 - **Rapport** : `assets/demos/real_demo_report.txt`
 
 **Hardware dry-run** : `artifacts/test_results.json`
-- **Tests** : 9,801 tests réussis
+- **Tests** : Tests réussis
 - **Performance** : Latence <1ms mesuré
 - **Sécurité** : Clamp ≤0.3 rad, joints interdits bloqués
 
