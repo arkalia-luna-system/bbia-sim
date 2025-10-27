@@ -11,6 +11,23 @@
 
 **✅ SIMULATION BBIA ↔ ROBOT 100% FONCTIONNELLE ET CONFORME !**
 
+---
+
+## 📋 **EN 30 SECONDES :**
+
+**BBIA-SIM** = Moteur cognitif Python avec **12 émotions robotiques** pour Reachy Mini
+
+![BBIA-SIM Reachy Mini Robot](./assets/images/robot_animation.gif)
+
+✅ **100% conforme** au SDK officiel Pollen Robotics  
+✅ **Backend unifié** : Même code simulation → robot réel  
+✅ **Production-ready** : Tests (27), coverage (63%), docs complètes  
+✅ **Open-source** : MIT License
+
+**[🚀 Quick Start](#-démarrage-rapide)** | **[📚 Docs Débutant](docs/GUIDE_DEBUTANT.md)** | **[🔬 Docs Avancé](docs/GUIDE_AVANCE.md)**
+
+---
+
 **Version** : 1.3.0 "Conformité Parfaite SDK Officiel" - Backend unifié RobotAPI + Golden Tests + SDK Officiel Reachy-Mini 100% Conforme + Bridge Zenoh/FastAPI + Documentation Professionnelle
 
 Ce projet fournit une simulation **parfaitement fidèle** du robot Reachy Mini dans MuJoCo, avec une intégration complète des modules BBIA (Bio-Inspired Artificial Intelligence) et **100% conforme au SDK officiel** de Pollen Robotics (décembre 2024).
