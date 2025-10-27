@@ -395,42 +395,13 @@ tests/
 
 ### Résultats des Tests
 
-**📊 Statistiques de Conformité Parfaite :**
+**📊 Qualité & Conformité :**
+- ✅ **Conformité SDK officiel** : 100% parfaite
+- ✅ **Coverage** : 63.37% (excellent)
+- ✅ **Qualité code** : Black, Ruff, MyPy, Bandit ✅
+- ✅ **Tests** : Suite complète + SDK officiel
 
-### **✅ Tests Reachy-Mini SDK Officiel**
-- **Tests SDK complets** ✅
-- **Robot physique requis pour tests hardware** ✅
-- **Conformité : 100% PARFAITE** ✅
-
-### **✅ Qualité du Code**
-- **Black** : Formatage parfait ✅
-- **Ruff** : Linting parfait ✅
-- **MyPy** : Types parfaits ✅
-- **Bandit** : Sécurité parfaite ✅
-
-### **✅ Conformité SDK Officiel**
-- **21/21 méthodes SDK officiel** implémentées ✅
-- **Signatures identiques** au SDK officiel ✅
-- **Types de retour conformes** : `None`, `numpy.ndarray`, `tuple[list[float], list[float]]` ✅
-- **Comportement identique** en simulation et réel ✅
-
-### Coverage de Code
-
-**🎯 Coverage total : 63.37%** (excellent)
-
-**Détail par module :**
-- `bbia_audio.py`: **87.76%** ✅
-- `bbia_behavior.py`: **72.50%** ✅
-- `bbia_emotions.py`: **81.71%** ✅
-- `bbia_vision.py`: **88.52%** ✅
-- `bbia_voice.py`: **61.96%** ✅
-- `daemon/config.py`: **100%** ✅
-- `daemon/models.py`: **95.35%** ✅
-- `daemon/middleware.py`: **91.30%** ✅
-- `daemon/app/routers/motion.py`: **93.22%** ✅
-- `daemon/simulation_service.py`: **89.83%** ✅
-- `sim/simulator.py`: **90.00%** ✅
-- `unity_reachy_controller.py`: **81.20%** ✅
+> Pour plus de détails : `python -m pytest --cov=src --cov-report=html`
 
 ### Commandes de Tests
 
