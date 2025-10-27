@@ -17,7 +17,7 @@
 
 **BBIA-SIM** = Moteur cognitif Python avec **12 émotions robotiques** pour Reachy Mini
 
-![BBIA-SIM Reachy Mini Robot](./assets/images/robot_animation.gif)
+![BBIA-SIM Reachy Mini Robot](./assets/images/robot_animation.gif?v=2)
 
 ✅ **100% conforme** au SDK officiel Pollen Robotics  
 ✅ **Backend unifié** : Même code simulation → robot réel  
