@@ -7,7 +7,7 @@
 [![Tests](https://img.shields.io/badge/tests-28%20skipped%20justified-brightgreen.svg)](https://github.com/arkalia-luna-system/bbia-sim/actions)
 [![Code Quality](https://img.shields.io/badge/code%20quality-A%2B-brightgreen.svg)](https://github.com/arkalia-luna-system/bbia-sim)
 [![SDK Conformity](https://img.shields.io/badge/SDK%20conformity-100%25-brightgreen.svg)](https://github.com/pollen-robotics/reachy_mini)
-[![Documentation](https://img.shields.io/badge/docs-swagger%20%7C%20redoc-blue.svg)](https://bbia-sim-docs.onrender.com)
+[![Documentation](https://img.shields.io/badge/docs-sphinx%20%7C%20readthedocs-blue.svg)](docs/)
 
 **✅ SIMULATION BBIA ↔ ROBOT 100% FONCTIONNELLE ET CONFORME !**
 
@@ -32,24 +32,13 @@
 
 Ce projet fournit une simulation **parfaitement fidèle** du robot Reachy Mini dans MuJoCo, avec une intégration complète des modules BBIA (Bio-Inspired Artificial Intelligence) et **100% conforme au SDK officiel** de Pollen Robotics (décembre 2024).
 
-## 🚀 Live Demo & Quick Start
-
-### **🌐 Live Demo**
-
-- **📊 Dashboard Web** : [bbia-sim-dashboard.onrender.com](https://bbia-sim-dashboard.onrender.com)
-- **📚 API Documentation** : [bbia-sim-docs.onrender.com](https://bbia-sim-docs.onrender.com)
-- **🎥 Video Demo** : [YouTube - BBIA-SIM Demo](https://youtube.com/watch?v=bbia-sim-demo)
-
-### **⚡ Quick Start**
+## 🚀 Quick Start
 ```bash
 # Installation
 pip install bbia-sim
 
 # Démarrage simulation
-python -m bbia_sim.dashboard_advanced
-
-# Ouverture dashboard
-open http://localhost:8000
+python examples/demo_emotion_ok.py
 ```
 
 ## 🎯 Vue d'ensemble
