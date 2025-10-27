@@ -135,7 +135,7 @@ python examples/demo_reachy_mini_corrigee.py --quick
 - **❌ JAMAIS animer** : `left_antenna`, `right_antenna`, `passive_*`
 - **❌ JAMAIS dépasser** : 0.3 rad d'amplitude
 
-### 🌐 API Publique BBIA-SIM (NOUVEAU v1.2.0)
+### 🌐 API Publique
 ```bash
 # Démarrage de l'API publique
 python scripts/start_public_api.py --dev
@@ -152,7 +152,7 @@ python scripts/demo_public_api.py
 # OpenAPI: http://localhost:8000/openapi.json
 ```
 
-### 🤖 Backends Disponibles (NOUVEAU v1.2.0)
+### 🤖 Backends Disponibles
 ```bash
 # Backend MuJoCo (simulation)
 python -c "from bbia_sim.robot_api import RobotFactory; robot = RobotFactory.create_backend('mujoco')"
@@ -167,7 +167,7 @@ python -c "from bbia_sim.robot_api import RobotFactory; robot = RobotFactory.cre
 python scripts/hardware_dry_run_reachy_mini.py --duration 30
 ```
 
-### 🧠 IA Avancée Phase 2 (NOUVEAU v1.2.1)
+### 🧠 IA Avancée
 ```bash
 # Démonstration complète Phase 2
 python examples/demo_bbia_phase2_integration.py
@@ -197,7 +197,7 @@ python examples/demo_vision_ok.py --tracking-gain 0.8 --target-speed 0.05
 python examples/demo_behavior_ok.py --behavior greeting --intensity 1.2
 ```
 
-### 🔄 Backend Unifié RobotAPI (v1.1.0)
+### 🔄 Backend Unifié
 ```bash
 # Switch facile entre Sim et Robot
 python examples/demo_emotion_ok.py --backend mujoco --emotion happy --duration 5  # Simulation
