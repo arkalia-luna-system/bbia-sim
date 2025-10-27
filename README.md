@@ -303,24 +303,6 @@ src/bbia_sim/sim/
 
 ## 🛠️ Scripts Utiles
 
-### **🎯 SEMAINE 1 - Reachy-Ready (✅ ACCOMPLI)**
-- **✅ reachy-sdk** : Installé et fonctionnel
-- **✅ mapping unique** : `mapping_reachy.py` créé et testé
-- **✅ hardware_dry_run** : Étendu avec artefacts CSV/log
-- **✅ sécurité** : Clamp ≤0.3 rad, joints interdits, kill-switch
-- **✅ vidéo + graphe** : Scripts fonctionnels, rapports générés
-
-### **✅ SEMAINE 2 - IA Légère (✅ ACCOMPLI)**
-- **✅ Whisper STT** : Intégré avec latence <800ms
-- **✅ YOLOv8n + MediaPipe** : Détection objets/visages intégrée (modèles téléchargés automatiquement)
-- **✅ Dashboard web minimal** : FastAPI + WebSocket créé
-- **✅ Tests d'intégration IA** : Tests passent
-
-### **✅ SEMAINE 3 - Polish Démo (✅ ACCOMPLI)**
-- **✅ Scripts utilitaires** : Scripts fonctionnels créés
-- **✅ Release v1.2.0** : Prête pour tag
-- **✅ Documentation synchronisée** : Toutes les MD mises à jour
-
 ### Scripts One-Click
 ```bash
 # Démo simulation complète (3D viewer)
