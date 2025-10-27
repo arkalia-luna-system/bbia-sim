@@ -94,19 +94,10 @@ graph TB
 
 ## 📊 Métriques du Projet
 
-```mermaid
-pie title Répartition des Composants
-    "Tests" : 35
-    "Modules BBIA" : 25
-    "Simulation MuJoCo" : 20
-    "API & Services" : 20
-```
-- **✅ Modèle officiel** : `reachy_mini_REAL_OFFICIAL.xml` du repo pollen-robotics/reachy_mini
-- **✅ Dimensions réelles** : Fidèle aux spécifications officielles
-- **✅ Articulations** : 16 articulations contrôlables (yaw_body, stewart_1-6, passive_1-7, antennas)
-- **✅ Intégration BBIA** : Tous les modules connectés au robot
-- **✅ Tests** : Couverture complète + SDK officiel 100% conforme
-- **✅ Coverage** : 63.37% de couverture de code (excellent)
+- **✅ Modèle officiel** : `reachy_mini_REAL_OFFICIAL.xml`
+- **✅ Articulations** : 16 articulations contrôlables  
+- **✅ Intégration BBIA** : 12 émotions + IA avancée
+- **✅ Coverage** : 63.37% (excellent)
 - **✅ API** : FastAPI + WebSocket opérationnels
 
 ## 🚀 Démarrage Rapide
