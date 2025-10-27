@@ -264,18 +264,6 @@ python scripts/check_joints.py
 - **Robot physique** : Les antennes ne sont **PAS motorisées** dans le vrai robot
 - **Limites [0.000, 0.000]** : Signifie que les antennes sont **fixes** sur le robot réel
 
-### Lancement de la simulation 3D complète
-```bash
-cd /Volumes/T7/bbia-reachy-sim
-mjpython scripts/launch_complete_robot.py --model reachy_mini_REAL_OFFICIAL.xml
-```
-
-### Vérification complète du projet
-```bash
-python scripts/verify_project.py
-```
-
-
 ### Contrôles MuJoCo
 - **Souris** : Rotation de la vue
 - **Molette** : Zoom
@@ -390,23 +378,6 @@ python scripts/download_ALL_stl.py
 - **Documentation** : [docs.pollen-robotics.com](https://docs.pollen-robotics.com)
 - **Modèle 3D** : OnShape CAD officiel
 - **Assets STL** : Téléchargés depuis le repo officiel
-
-## 📝 Historique des Corrections
-
-### Problème Initial
-Le robot apparaissait "en pièces détachées" dans MuJoCo.
-
-### Cause Identifiée
-Les fichiers STL étaient des pointeurs Git LFS (684 bytes) au lieu des vrais fichiers binaires.
-
-### Solution Appliquée
-1. Téléchargement des 41 fichiers STL officiels depuis pollen-robotics/reachy_mini
-2. Utilisation du modèle officiel `reachy_mini.xml`
-3. Correction du chemin des assets dans le MJCF
-4. Validation de la complétude des assets
-
-### Résultat
-Robot parfaitement assemblé avec les vraies dimensions officielles.
 
 ## 🧪 Tests et Coverage
 
@@ -539,37 +510,7 @@ python -m pytest --collect-only -q | wc -l
 - Structure de dossiers respectée
 - Fichiers `__init__.py` dans les sous-dossiers de tests
 
-## 🧪 Tests Golden Traces
 
-**Tests de non-régression** : `pytest -q tests/test_golden_traces.py`
-
-**Régénérer références** : `scripts/record_trace.py ...` (ne pas commiter sans raison)
-
-## 📋 CONTRACT RobotAPI
-
-**API gelée v1.1.x** : `docs/CONTRACT.md`
-
-**Interface unifiée** : MuJoCo ↔ Reachy réel avec même code
-
-## 🚀 CI/CD Pipeline
-
-**Tests automatiques** : GitHub Actions avec seed fixé (SEED=42)
-
-**Artefacts** : Upload automatique en cas d'échec (.jsonl, .csv)
-
-**Headless** : MuJoCo_GL=egl pour stabilité
-
-## 🤖 Voir le Robot Réel
-
-**Démo sécurisée** : `assets/demos/real_demo_secure.jsonl` (290KB, 2,442 frames)
-- **Latence** : <1ms mesuré, max 4.77ms (<40ms cible)
-- **Amplitude** : ≤0.2 rad (sécurisé)
-- **Rapport** : `assets/demos/real_demo_report.txt`
-
-**Hardware dry-run** : `artifacts/test_results.json`
-- **Tests** : Tests réussis
-- **Performance** : Latence <1ms mesuré
-- **Sécurité** : Clamp ≤0.3 rad, joints interdits bloqués
 
 ## 🎉 Statut Final
 
