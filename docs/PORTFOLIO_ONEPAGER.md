@@ -16,7 +16,7 @@
 
 ### **🛡️ Sécurité & Fiabilité**
 - **Limites de Sécurité** : Clamp automatique à 0.3 rad, joints interdits centralisés
-- **Tests Automatisés** : 453 tests passent, couverture 63.37%
+- **Tests Automatisés** : 706 tests collectés, couverture 63.37%
 - **CI/CD Robuste** : Pipeline GitHub Actions avec artefacts et validation
 - **Déterminisme** : Seed fixé (SEED=42) pour reproductibilité
 
