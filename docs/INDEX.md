@@ -159,8 +159,8 @@ bbia-sim/
 - 🧪 55 nouveaux tests créés
 
 📈 **Métriques actuelles :**
-- 590+ tests (objectif 690+)
-- ~51-52% coverage (objectif 60-65%)
+- 706 tests collectés
+- 63.37% coverage (excellent)
 - 0 issues de sécurité
 - 12 émotions robotiques
 - Dashboard web opérationnel

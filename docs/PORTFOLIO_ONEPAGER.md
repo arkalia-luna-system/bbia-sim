@@ -31,7 +31,7 @@
 
 | Métrique | Valeur | Statut |
 |----------|--------|--------|
-| **Tests** | 581 collectés, 453 passent | ✅ |
+| **Tests** | 706 collectés | ✅ |
 | **Couverture** | 63.37% | ✅ |
 | **Modules BBIA** | 7 modules complets | ✅ |
 | **Backends** | MuJoCo + Reachy mock | ✅ |
@@ -94,7 +94,7 @@ python scripts/stt_demo.py --test-microphone --lang fr
 ### **🌐 Dashboard Web**
 ```bash
 # Interface web temps réel
-python scripts/bbia_dashboard_server.py --port 8000
+python src/bbia_sim/dashboard_advanced.py --port 8000
 
 # URL : http://localhost:8000
 ```

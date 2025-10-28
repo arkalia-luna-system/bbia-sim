@@ -63,8 +63,8 @@ Ce dossier contient toute la documentation du projet BBIA (Biological Brain Inte
 - **Modules BBIA** : 12 émotions, vision, audio, comportements intégrés
 - **API REST** : FastAPI + WebSocket opérationnels
 - **Dashboard Web** : Interface complète (http://localhost:8000)
-- **Tests** : 590+ tests, 55 nouveaux créés récemment
-- **Coverage** : ~51-52% (objectif 60-65%)
+- **Tests** : 706 tests collectés
+- **Coverage** : 63.37% (excellent)
 - **Documentation** : Complète et organisée
 
 ### 🎮 **Commandes principales**
@@ -73,7 +73,7 @@ Ce dossier contient toute la documentation du projet BBIA (Biological Brain Inte
 source venv/bin/activate
 
 # Voir le robot en 3D
-mjpython examples/demo_viewer_bbia_corrected.py --duration 10 --joint yaw_body
+mjpython examples/demo_emotion_ok.py --emotion happy --duration 10 --joint yaw_body
 
 # Tests automatiques
 python -m pytest tests/ -v

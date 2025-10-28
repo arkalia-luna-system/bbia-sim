@@ -63,14 +63,14 @@ python examples/demo_chat_simple.py
 ### 📊 Métriques Globales
 
 **Actuel :**
-- **Tests totaux** : 590+ (55 nouveaux validés)
-- **Coverage** : ~51-52% (à confirmer)
+- **Tests totaux** : 706 (55 nouveaux validés)
+- **Coverage** : 63.37% (déjà atteint !)
 - **Sécurité** : 0 issues (Bandit ✅)
 - **Lint** : OK (Ruff, Black, MyPy ✅)
 
 **Objectif :**
-- **Tests totaux** : ~690+ (55 nouveaux + ~100 à créer)
-- **Coverage** : 60-65%
+- **Tests totaux** : 706+ (maintenir et améliorer)
+- **Coverage** : 65-70% (objectif suivant)
 - **Sécurité** : 0 issues (maintenir)
 - **Modules critiques** : 100% couverts
 

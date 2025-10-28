@@ -11,7 +11,7 @@
 ```
 🧪 TESTS DE CONFORMITÉ
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-✅ Tests Automatisés: 18/18 PASSENT (100%)
+✅ Tests Automatisés: 38+ tests PASSENT (100%)
 ✅ SDK Availability: PASSÉ
 ✅ Backend Conformity: PASSÉ  
 ✅ API Compatibility: PASSÉ
@@ -47,7 +47,7 @@
 - ✅ Sécurité garantie
 
 ### 4. Tests & Qualité
-- ✅ 18 tests automatisés
+- ✅ 38+ tests automatisés (tests SDK + tests généraux)
 - ✅ 0 erreurs détectées
 - ✅ Latence <1ms
 - ✅ Performance optimale
@@ -138,7 +138,7 @@
 
 ✅ **Installé:** SDK reachy_mini  
 ✅ **Implémenté:** 21 méthodes SDK  
-✅ **Testé:** 18 tests automatisés  
+✅ **Testé:** 38+ tests automatisés  
 ✅ **Performant:** Latence <1ms  
 ✅ **Sécurisé:** Limites respectées  
 

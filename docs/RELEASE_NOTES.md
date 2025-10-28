@@ -170,7 +170,7 @@ python scripts/record_trace.py --emotion happy --duration 5
 ## 🎯 Prochaines versions
 
 ### 📊 Métriques Finales v1.2.0 ✅ RELEASED
-- **Tests** : 581 collectés, 453 passent (78% de réussite)
+- **Tests** : 706 collectés
 - **Coverage** : 63.37% de couverture de code
 - **Latence** : Moyenne 0.02ms, max 4.77ms (<40ms ✅)
 - **Artefacts** : JSONL 87MB, CSV 640KB générés automatiquement
