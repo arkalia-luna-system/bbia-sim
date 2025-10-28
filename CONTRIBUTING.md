@@ -15,7 +15,7 @@ Merci de vouloir contribuer à BBIA Reachy Mini Wireless !
 6. **Ajoutez des tests** si possible.
 7. **Vérifiez que les tests passent** avant de soumettre la PR :
    ```bash
-   python -m unittest discover tests
+   pytest tests/ -v
    ```
 
 ## Bonnes pratiques
