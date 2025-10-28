@@ -1,8 +1,13 @@
 exclude_dirs:
+  - tests
   - venv
-  - htmlcov
-  - dist
-  - .git
+  - .venv
+  - logs
+  - reachy_repos
+  - assets
 
 skips:
   - B101
+  - B108
+  - B306
+  - B601

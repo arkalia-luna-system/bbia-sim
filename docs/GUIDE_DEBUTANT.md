@@ -5,35 +5,65 @@
 ### **1️⃣ Installation**
 
 ```bash
-# Installer BBIA-SIM
-pip install bbia-sim
+# Cloner le projet
+git clone https://github.com/arkalia-luna-system/bbia-sim.git
+cd bbia-sim
+
+# Installer les dépendances
+pip install -r requirements.txt
 
 # C'est tout ! ✅
 ```
 
-### **2️⃣ Premier Programme**
+### **2️⃣ Accéder au Dashboard Web** (NOUVEAU ✨)
+
+```bash
+# Lancer le dashboard
+python src/bbia_sim/dashboard_advanced.py
+
+# Ouvrir dans le navigateur
+# http://localhost:8000
+```
+
+**💡 Le Dashboard vous permet de :**
+- 💬 Chat interactif avec BBIA
+- 🤖 Contrôler le robot visuellement
+- 📊 Voir les métriques en temps réel
+- 🎛️ Ajuster les émotions et comportements
+
+### **3️⃣ Premier Programme Python**
 
 ```python
 from bbia_sim.robot_api import RobotFactory
 
-# Créer le robot
-robot = RobotFactory.create_backend('reachy_mini')
+# Créer le robot (simulation)
+robot = RobotFactory.create_backend('mujoco')
 robot.connect()
 
 # Faire quelque chose !
 robot.set_emotion('happy', 0.8)
+
+# Exécuter un comportement
 robot.run_behavior('wake_up', duration=3.0)
 
 # Déconnecter
 robot.disconnect()
 ```
 
-### **3️⃣ Tester en Simulation 3D**
+### **4️⃣ Tester en Simulation 3D**
 
 ```bash
 # Voir le robot bouger dans MuJoCo
 mjpython examples/demo_mujoco_continue.py
+
+# Avec des émotions
+mjpython examples/demo_emotion_ok.py --emotion happy --duration 10
+
+# Chat BBIA en 3D (NOUVEAU ✨)
+mjpython examples/demo_chat_bbia_3d.py
 ```
+
+**💡 Astuce :** Si vous êtes sur macOS, utilisez `mjpython` au lieu de `python` pour les démos 3D.
 
 **🎉 VOUS AVEZ CONTRÔLÉ VOTRE PREMIER ROBOT !**
 
@@ -55,10 +85,38 @@ Windows : À tester ⚠️
 
 ## 📚 **Prochaines Étapes**
 
-1. **Lire** : [README](../README.md)
-2. **Comprendre** : [Architecture](../docs/ARCHITECTURE.md)
-3. **Explorer** : Dossier `examples/`
-4. **Créer** : Vos propres comportements !
+1. ✅ **Découvrir** : [Architecture](docs/ARCHITECTURE.md) - Voir l'architecture
+2. ✅ **Créer** : Vos propres comportements avec `examples/demo_*`
+3. ✅ **Comprendre** : [Architecture](ARCHITECTURE.md) - Architecture technique
+4. ✅ **Avancer** : [Guide Avancé](GUIDE_AVANCE.md) - Développement expert
+
+## 💬 **Chat Intelligent**
+
+**Nouvelle fonctionnalité !** Discutez avec BBIA via le Dashboard ou directement :
+
+```bash
+# Chat simple via terminal
+python examples/demo_chat_simple.py
+
+# Chat complet avec Hugging Face
+python examples/demo_chat_bbia.py
+```
+
+## 🤖 **Émotions Disponibles**
+
+BBIA supporte 12 émotions robotiques :
+- 😊 `happy` - Joie
+- 😍 `excited` - Excitation
+- 🤔 `curious` - Curiosité
+- 😌 `calm` - Calme
+- 😢 `sad` - Tristesse
+- 😴 `tired` - Fatigue
+- 😰 `scared` - Peur
+- 😠 `angry` - Colère
+- 😮 `surprised` - Surprise
+- 😐 `neutral` - Neutre
+- 😊 `playful` - Espiègle
+- 🧐 `focused` - Concentré
 
 ---
 

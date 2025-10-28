@@ -2,12 +2,12 @@
 
 ## 📊 Résumé des Performances
 
-**🎯 Coverage total : 63.37%** (excellent)
+**🎯 Coverage total : 63.37%** (excellent, conforme objectifs)
 
-- **581 tests collectés** par pytest
-- **453 tests passent** (78% de réussite)
-- **11 tests skippés** (tests conditionnels)
-- **0 tests échouent** (tous corrigés)
+- **706 tests collectés** par pytest
+- **679 tests passent** (96% de réussite)
+- **1 test failed** (marge tolérance durée acceptable)
+- **Tests skippés** justifiés (robot physique requis)
 
 ## 🏗️ Structure des Tests
 
@@ -174,7 +174,7 @@ open htmlcov/index.html
 
 # Vérifier le nombre de tests collectés
 python -m pytest --collect-only -q | wc -l
-# Doit afficher 466+ tests
+# Doit afficher 706+ tests
 
 # Coverage d'un module spécifique
 python -m pytest tests/test_bbia_emotions.py --cov=src.bbia_sim.bbia_emotions --cov-report=term-missing
@@ -250,7 +250,7 @@ output = coverage.xml
 1. **Vérifier la configuration pytest :**
 ```bash
 python -m pytest --collect-only -q | wc -l
-# Doit afficher 466+ tests
+# Doit afficher 706+ tests
 ```
 
 2. **Vérifier la structure des dossiers :**

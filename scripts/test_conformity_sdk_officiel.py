@@ -20,28 +20,46 @@ def test_sdk_availability():
     print("🔍 Test disponibilité SDK officiel...")
 
     try:
-        import reachy_mini
+        from reachy_mini import ReachyMini
 
         print("✅ Module reachy_mini importé avec succès")
+        print("✅ Classe ReachyMini disponible")
 
-        # Vérifier les méthodes principales
-        methods = [
-            "ReachyMini",
+        # Vérifier que la classe existe et ses méthodes principales
+        # (Ce sont des méthodes d'instance, pas du module)
+        instance_methods = [
             "wake_up",
             "goto_sleep",
             "get_current_joint_positions",
             "set_target_head_pose",
             "set_target_body_yaw",
             "look_at_world",
+            "get_current_head_pose",
+            "look_at_image",
+            "goto_target",
+            "enable_motors",
+            "disable_motors",
         ]
 
-        for method in methods:
-            if hasattr(reachy_mini, method):
-                print(f"✅ Méthode {method} disponible")
+        print("\n📋 Méthodes d'instance ReachyMini:")
+        all_available = True
+        for method in instance_methods:
+            if hasattr(ReachyMini, method):
+                print(f"   ✅ {method}")
             else:
-                print(f"❌ Méthode {method} manquante")
+                print(f"   ❌ {method} (manquante)")
+                all_available = False
 
-        return True
+        # Vérifier les utilitaires du module
+        try:
+            from reachy_mini import utils
+
+            _ = utils  # Rendre l'import utilisé
+            print("\n✅ Utilitaires SDK disponibles: reachy_mini.utils")
+        except ImportError:
+            print("\n⚠️  Utilitaires SDK partiellement disponibles")
+
+        return all_available
 
     except ImportError as e:
         print(f"❌ SDK officiel non disponible: {e}")

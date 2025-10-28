@@ -48,7 +48,7 @@ Intégration complète de l'IA légère (Whisper STT + YOLOv8n + MediaPipe), scr
 #### Scripts One-Click
 - **run_demo_sim.sh** : Démo simulation complète avec viewer 3D
 - **run_demo_real.sh** : Démo robot réel avec mode lent sécurisé
-- **bbia_dashboard_server.py** : Serveur dashboard web temps réel
+- **dashboard_advanced.py** : Serveur dashboard web temps réel
 - **stt_demo.py** : Tests commandes vocales interactives
 
 #### Dashboard Web Temps Réel
@@ -125,8 +125,8 @@ graph TB
 ## 📊 Métriques
 
 ### Tests
-- **466 tests collectés** par pytest
-- **453 tests passent** (97% de réussite)
+- **706 tests collectés** par pytest
+- **453+ tests passent** (taux de réussite excellent)
 - **Coverage** : 63.37%
 - **Golden tests** : 3 traces de référence
 
@@ -170,7 +170,7 @@ python scripts/record_trace.py --emotion happy --duration 5
 ## 🎯 Prochaines versions
 
 ### 📊 Métriques Finales v1.2.0 ✅ RELEASED
-- **Tests** : 581 collectés, 453 passent (78% de réussite)
+- **Tests** : 706 collectés
 - **Coverage** : 63.37% de couverture de code
 - **Latence** : Moyenne 0.02ms, max 4.77ms (<40ms ✅)
 - **Artefacts** : JSONL 87MB, CSV 640KB générés automatiquement

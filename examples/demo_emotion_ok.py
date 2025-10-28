@@ -23,18 +23,35 @@ def emotion_to_pose(
     emotion: str, intensity: float, step: int, total_steps: int
 ) -> float:
     """Convertit une émotion BBIA en position d'articulation."""
-    # Mapping émotion → mouvement
-    emotion_patterns = {
-        "happy": (
-            lambda t: 0.2 * math.sin(2 * math.pi * 0.1 * t)
-        ),  # Mouvement joyeux SÉCURISÉ
-        "sad": lambda t: -0.2 * math.sin(2 * math.pi * 0.3 * t),  # Mouvement triste
-        "angry": lambda t: 0.4 * math.sin(2 * math.pi * 0.8 * t),  # Mouvement agité
-        "surprised": lambda t: 0.5 * math.sin(2 * math.pi * 0.2 * t),  # Mouvement lent
-        "neutral": lambda t: 0.1 * math.sin(2 * math.pi * 0.1 * t),  # Mouvement subtil
-    }
+    # PERSONNALITÉ BBIA: Mix bébé + humain + chien + IA
+    # Mouvements expressifs, variés et beaucoup plus longs qu'avant
+    # Animations 2x plus longues avec patterns variés
 
     t = step / total_steps
+
+    emotion_patterns = {
+        "happy": (
+            lambda t: 0.15
+            * math.sin(2 * math.pi * 0.1 * t)
+            * (1 + 0.5 * math.sin(4 * math.pi * t))
+        ),  # Joyeux + oscillations
+        "sad": (
+            lambda t: -0.15 * math.sin(2 * math.pi * 0.3 * t)
+            - 0.05 * math.sin(6 * math.pi * t)
+        ),  # Triste + tremblements
+        "angry": (
+            lambda t: 0.2 * math.sin(2 * math.pi * 0.8 * t)
+            + 0.05 * math.sin(8 * math.pi * t)
+        ),  # Agité + rapide
+        "surprised": (
+            lambda t: 0.15 * math.sin(2 * math.pi * 0.2 * t) * math.cos(3 * math.pi * t)
+        ),  # Surprise complexe
+        "neutral": (
+            lambda t: 0.08 * math.sin(2 * math.pi * 0.1 * t)
+            + 0.03 * math.sin(6 * math.pi * t)
+        ),  # Subtile + micro-mouvements
+    }
+
     base_movement = emotion_patterns.get(emotion, emotion_patterns["neutral"])(t)
 
     # Appliquer l'intensité
@@ -51,7 +68,7 @@ def main():
     parser.add_argument(
         "--intensity", type=float, default=0.8, help="Intensité de l'émotion (0.0-1.0)"
     )
-    parser.add_argument("--duration", type=int, default=10, help="Durée en secondes")
+    parser.add_argument("--duration", type=int, default=20, help="Durée en secondes")
     parser.add_argument("--headless", action="store_true", help="Mode headless")
     parser.add_argument("--joint", default="yaw_body", help="Joint à animer")
     parser.add_argument("--backend", default="mujoco", help="Backend (mujoco, reachy)")

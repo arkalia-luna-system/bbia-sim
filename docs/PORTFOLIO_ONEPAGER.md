@@ -16,7 +16,7 @@
 
 ### **🛡️ Sécurité & Fiabilité**
 - **Limites de Sécurité** : Clamp automatique à 0.3 rad, joints interdits centralisés
-- **Tests Automatisés** : 453 tests passent, couverture 63.37%
+- **Tests Automatisés** : 706 tests collectés, couverture 63.37%
 - **CI/CD Robuste** : Pipeline GitHub Actions avec artefacts et validation
 - **Déterminisme** : Seed fixé (SEED=42) pour reproductibilité
 
@@ -31,7 +31,7 @@
 
 | Métrique | Valeur | Statut |
 |----------|--------|--------|
-| **Tests** | 581 collectés, 453 passent | ✅ |
+| **Tests** | 706 collectés | ✅ |
 | **Couverture** | 63.37% | ✅ |
 | **Modules BBIA** | 7 modules complets | ✅ |
 | **Backends** | MuJoCo + Reachy mock | ✅ |
@@ -94,7 +94,7 @@ python scripts/stt_demo.py --test-microphone --lang fr
 ### **🌐 Dashboard Web**
 ```bash
 # Interface web temps réel
-python scripts/bbia_dashboard_server.py --port 8000
+python src/bbia_sim/dashboard_advanced.py --port 8000
 
 # URL : http://localhost:8000
 ```
@@ -213,7 +213,7 @@ pytest tests/ -m "not e2e" -v
 
 ---
 
-**Version** : 1.2.0  
+**Version** : 1.3.0  
 **Date** : Octobre 2025  
 **Statut** : Production Ready  
 **Licence** : MIT

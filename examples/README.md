@@ -57,15 +57,15 @@ mjpython examples/demo_emotion_ok.py --emotion happy --duration 10 --backend muj
 
 **Résultat attendu** : Animation émotion → joint, backend unifié
 
-### `demo_emotion_fixed.py` - Démo 3D Stable
-Démo 3D stable utilisant MuJoCo directement.
+### `demo_chat_bbia_3d.py` - Démo 3D Chat BBIA
+Démo 3D avec chat intelligent BBIA.
 
 ```bash
-# Voir la 3D (stable)
-mjpython examples/demo_emotion_fixed.py --emotion happy --duration 10 --intensity 0.8
+# Voir la 3D avec chat
+mjpython examples/demo_chat_bbia_3d.py --duration 10
 ```
 
-**Résultat attendu** : Fenêtre 3D stable, animation fluide
+**Résultat attendu** : Chat intelligent avec robot 3D
 
 ### `demo_voice_ok.py` - Démo Voix → Action
 Démo BBIA Voix utilisant RobotAPI.

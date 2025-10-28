@@ -604,5 +604,5 @@ Cette architecture permet à BBIA-SIM d'être une **référence technique** pour
 
 ---
 
-*Dernière mise à jour : Décembre 2024*
+*Dernière mise à jour : Octobre 2025*
 *Version : 1.2.0 "Conformité Parfaite SDK Officiel"*

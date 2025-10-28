@@ -1,0 +1,82 @@
+{
+  "total_tests": 18,
+  "passed": 18,
+  "failed": 0,
+  "skipped": 0,
+  "xpassed": 0,
+  "test_details": [
+    {
+      "name": "test_01_sdk_availability PASSED [  5%]",
+      "status": "PASSED"
+    },
+    {
+      "name": "test_02_methods_existence PASSED [ 11%]",
+      "status": "PASSED"
+    },
+    {
+      "name": "test_03_methods_signatures PASSED [ 16%]",
+      "status": "PASSED"
+    },
+    {
+      "name": "test_04_joints_official_mapping PASSED [ 22%]",
+      "status": "PASSED"
+    },
+    {
+      "name": "test_05_emotions_official PASSED [ 27%]",
+      "status": "PASSED"
+    },
+    {
+      "name": "test_06_behaviors_official PASSED [ 33%]",
+      "status": "PASSED"
+    },
+    {
+      "name": "test_07_joint_limits_official PASSED [ 38%]",
+      "status": "PASSED"
+    },
+    {
+      "name": "test_08_safety_forbidden_joints PASSED [ 44%]",
+      "status": "PASSED"
+    },
+    {
+      "name": "test_09_safe_amplitude_limit PASSED [ 50%]",
+      "status": "PASSED"
+    },
+    {
+      "name": "test_10_telemetry_official PASSED [ 55%]",
+      "status": "PASSED"
+    },
+    {
+      "name": "test_11_performance_official PASSED [ 61%]",
+      "status": "PASSED"
+    },
+    {
+      "name": "test_12_simulation_mode PASSED [ 66%]",
+      "status": "PASSED"
+    },
+    {
+      "name": "test_13_api_consistency PASSED [ 72%]",
+      "status": "PASSED"
+    },
+    {
+      "name": "test_14_sdk_official_comparison PASSED [ 77%]",
+      "status": "PASSED"
+    },
+    {
+      "name": "test_15_return_types PASSED [ 83%]",
+      "status": "PASSED"
+    },
+    {
+      "name": "test_16_joint_names_official PASSED [ 88%]",
+      "status": "PASSED"
+    },
+    {
+      "name": "test_17_full_integration PASSED [ 94%]",
+      "status": "PASSED"
+    },
+    {
+      "name": "test_18_documentation_compliance PASSED [100%]",
+      "status": "PASSED"
+    }
+  ],
+  "pass_rate": 100.0
+}

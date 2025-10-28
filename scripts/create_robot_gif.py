@@ -21,17 +21,17 @@ def create_robot_gif():
     # Rechercher les images avec glob
     matches = glob.glob("assets/images/*Capture*.png")
     print(f"🔍 Images trouvées: {len(matches)}")
-    
+
     # Filtrer les captures du 27 octobre (récentes)
     recent_captures = [m for m in matches if "2025-10-27" in m]
-    
+
     if len(recent_captures) < 2:
         print("❌ Pas assez d'images récentes!")
         return
-    
+
     # Trier par date pour avoir l'ordre chronologique
     recent_captures.sort(key=os.path.getmtime)
-    
+
     print(f"📸 Capture récentes: {len(recent_captures)}")
     for i, img_path in enumerate(recent_captures, 1):
         print(f"   {i}. {os.path.basename(img_path)}")
@@ -44,7 +44,7 @@ def create_robot_gif():
     # Ajuster tailles - garder résolution plus élevée pour meilleure qualité
     target_width = 700  # Résolution cible pour bonne qualité
     target_height = 600
-    
+
     images_resized = [
         img.resize((target_width, target_height), Image.Resampling.LANCZOS)
         for img in images_loaded

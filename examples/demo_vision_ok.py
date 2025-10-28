@@ -49,20 +49,33 @@ def vision_to_tracking(
 ) -> float:
     """Convertit la position de la cible en angle de tracking."""
     # Mapping position cible → angle de rotation
-    # target_x : -1 (gauche) à 1 (droite) → angle : -0.5 à 0.5 rad
+    # target_x : -1 (gauche) à 1 (droite) → angle : -0.2 à 0.2 rad (SÉCURISÉ)
 
-    # Tracking horizontal (yaw_body)
-    tracking_angle = target_x * 0.5  # Amplitude max 0.5 rad
+    # Tracking horizontal (yaw_body) - SÉCURISÉ selon SDK officiel
+    tracking_angle = target_x * 0.2  # Amplitude max 0.2 rad (limite SDK)
+
+    # AJOUT: Inclinaison de tête comme un chien qui écoute
+    # Mvt prononcé avec 3 patterns d'écoute
+    listen_pattern = step % 60  # Cycle toutes les secondes (60 steps)
+    if listen_pattern < 20:
+        # Phase écoute: inclinaison forte
+        head_tilt = 0.08 * math.sin(2 * math.pi * 0.3 * step / total_steps)
+    elif listen_pattern < 40:
+        # Phase d'attention: mouvement latéral
+        head_tilt = 0.06 * math.sin(4 * math.pi * 0.3 * step / total_steps)
+    else:
+        # Phase curiosité: léger penchement
+        head_tilt = 0.05 * math.sin(2 * math.pi * 0.5 * step / total_steps)
 
     # Ajouter un peu de mouvement naturel
     natural_movement = 0.1 * math.sin(2 * math.pi * 0.2 * step / total_steps)
 
-    return tracking_angle + natural_movement
+    return tracking_angle + natural_movement + head_tilt
 
 
 def main():
     parser = argparse.ArgumentParser(description="Démo Vision → Suivi BBIA")
-    parser.add_argument("--duration", type=int, default=15, help="Durée en secondes")
+    parser.add_argument("--duration", type=int, default=35, help="Durée en secondes")
     parser.add_argument("--headless", action="store_true", help="Mode headless")
     parser.add_argument("--joint", default="yaw_body", help="Joint à animer")
     parser.add_argument(
@@ -163,8 +176,14 @@ def main():
 
                     # Appliquer la pose
                     data.qpos[joint_id] = angle
+                    mujoco.mj_forward(
+                        model, data
+                    )  # CRITIQUE: Mettre à jour la physique
                     mujoco.mj_step(model, data)
                     viewer.sync()
+
+                    # CRITIQUE: Petit délai pour fluidité
+                    time.sleep(1 / 60)
 
                     step += 1
 
