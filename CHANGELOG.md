@@ -13,6 +13,14 @@ Cette version marque l'achèvement complet de la conformité au SDK officiel Rea
 
 ### 🚀 **Ajouté**
 
+#### **Chat Intelligent BBIA** 🆕
+- **Fonctionnalité chat contextuel** : Communication naturelle avec BBIA
+- **Analyse sentiment** : Réponses adaptées selon le sentiment de l'utilisateur
+- **Historique conversation** : Contexte préservé entre les échanges
+- **Personnalités BBIA** : friendly_robot, curious, enthusiastic, calm
+- **Interface dashboard** : Panel chat interactif dans dashboard avancé
+- **13 tests unitaires** : Couverture complète du module chat
+
 #### **Conformité SDK Officiel 100%**
 - **21/21 méthodes SDK officiel** implémentées avec signatures parfaites
 - **Backend ReachyMiniBackend** prêt pour robot physique

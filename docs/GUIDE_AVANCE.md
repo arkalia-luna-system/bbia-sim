@@ -2,22 +2,41 @@
 
 ## 📋 **Pour Développeurs Avancés**
 
-### **Architecture Détaillée**
+**Version :** 1.3.0  
+**Pour :** Développeurs expérimentés qui veulent exploiter toutes les capacités de BBIA
+
+---
+
+## 🏗️ **Architecture Détaillée**
+
+### **Backend Unifié**
 
 ```python
 # Backend unifié : Simulation ↔ Robot réel
 from bbia_sim.robot_api import RobotFactory
 
-# Simulation
+# Simulation (Développement & Tests)
 robot_sim = RobotFactory.create_backend('mujoco')
+robot_sim.connect()
 
-# Robot réel (avec Reachy Mini)
+# Robot réel (Production)
 robot_real = RobotFactory.create_backend('reachy_mini')
+robot_real.connect()
 
-# MÊME CODE ! ✅
+# MÊME CODE fonctionne sur les deux ! ✅
 robot_sim.set_emotion('happy', 0.8)
 robot_real.set_emotion('happy', 0.8)
+
+# Basculer facilement
+backend = 'mujoco' if os.getenv('DEV') else 'reachy_mini'
+robot = RobotFactory.create_backend(backend)
 ```
+
+**Avantages :**
+- ✅ Développement sans hardware
+- ✅ Tests automatisés complets
+- ✅ Debugging facilité
+- ✅ Migration transparente vers robot réel
 
 ### **Modules BBIA Avancés**
 

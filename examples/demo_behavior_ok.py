@@ -31,9 +31,21 @@ class BehaviorScenario:
         # Définir les phases du scénario
         self.scenarios = {
             "wake_up": [
-                {"phase": "stretch", "duration": 3, "movement": "slow_rise"},
-                {"phase": "look_around", "duration": 2, "movement": "scan"},
-                {"phase": "ready", "duration": 1, "movement": "neutral"},
+                {
+                    "phase": "stretch",
+                    "duration": 6,
+                    "movement": "slow_rise",
+                },  # 2x plus long
+                {
+                    "phase": "look_around",
+                    "duration": 4,
+                    "movement": "scan",
+                },  # 2x plus long
+                {
+                    "phase": "ready",
+                    "duration": 2,
+                    "movement": "neutral",
+                },  # 2x plus long
             ],
             "greeting": [
                 {"phase": "approach", "duration": 2, "movement": "forward"},
@@ -74,35 +86,72 @@ class BehaviorScenario:
 
 def behavior_to_movement(scenario: BehaviorScenario, step: int, fps: int) -> float:
     """Convertit un comportement BBIA en mouvement robotique."""
+    # PERSONNALITÉ BBIA: Comportements expressifs comme un chien/humain/IA
+    # Mouvements beaucoup plus variés et expressifs
     current_phase = scenario.get_current_phase()
     movement_type = current_phase["movement"]
     phase_progress = scenario.current_step / (current_phase["duration"] * fps)
 
-    # Mapping mouvement → angle
+    # Mapping mouvement → angle EXPRESSIF (SÉCURISÉ SDK - max 0.2 rad)
     movements = {
-        "slow_rise": lambda t: 0.3 * (1 - math.cos(math.pi * t)),  # Lever lent
-        "scan": lambda t: 0.4 * math.sin(4 * math.pi * t),  # Balayage
-        "neutral": lambda t: 0.0,  # Position neutre
-        "forward": lambda t: 0.2 * math.sin(2 * math.pi * t),  # Avancer
-        "wave": lambda t: 0.5 * math.sin(6 * math.pi * t),  # Salutation
-        "happy": lambda t: 0.2 * math.sin(2 * math.pi * 0.1 * t),  # Joyeux SÉCURISÉ
-        "focus": lambda t: 0.1 * math.sin(2 * math.pi * 0.1 * t),  # Concentration
-        "emotional": lambda t: 0.4 * math.sin(2 * math.pi * 0.8 * t),  # Émotionnel
-        "calm": lambda t: 0.1 * math.sin(2 * math.pi * 0.2 * t),  # Calme
+        "slow_rise": (
+            lambda t: 0.15 * (1 - math.cos(math.pi * t))
+            + 0.05 * math.sin(4 * math.pi * t)
+        ),  # Lever avec ondulations
+        "scan": (
+            lambda t: 0.2
+            * math.sin(4 * math.pi * t)
+            * (1 + 0.3 * math.sin(8 * math.pi * t))
+        ),  # Balayage animé
+        "neutral": (
+            lambda t: 0.02 * math.sin(6 * math.pi * t)
+        ),  # Position neutre avec micro-mouvements
+        "forward": (
+            lambda t: 0.15 * math.sin(2 * math.pi * t)
+            + 0.05 * math.cos(4 * math.pi * t)
+        ),  # Avancer expressif
+        "wave": (
+            lambda t: 0.2
+            * math.sin(6 * math.pi * t)
+            * (1 + 0.4 * math.sin(12 * math.pi * t))
+        ),  # Salutation enthousiaste
+        "happy": (
+            lambda t: 0.12
+            * math.sin(2 * math.pi * 0.1 * t)
+            * (1 + 0.6 * math.sin(6 * math.pi * t))
+        ),  # Joyeux ondulant
+        "focus": (
+            lambda t: 0.08 * math.sin(2 * math.pi * 0.1 * t)
+            + 0.03 * math.sin(10 * math.pi * t)
+        ),  # Concentration rapide
+        "emotional": (
+            lambda t: 0.15
+            * math.sin(2 * math.pi * 0.8 * t)
+            * (1 + 0.5 * math.cos(8 * math.pi * t))
+        ),  # Émotionnel animé
+        "calm": (
+            lambda t: 0.08 * math.sin(2 * math.pi * 0.2 * t) * math.cos(3 * math.pi * t)
+        ),  # Calme complexe
     }
 
-    base_movement = movements.get(movement_type, movements["neutral"])(phase_progress)
+    movement_func = movements.get(movement_type)
+    if movement_func is None:
+        movement_func = movements["neutral"]
+    base_movement = movement_func(phase_progress)
 
     # Ajouter une transition douce entre les phases
     if scenario.phase < scenario.total_phases - 1:
         next_phase = scenario.current_scenario[scenario.phase + 1]
-        next_movement = movements.get(next_phase["movement"], movements["neutral"])
+        next_movement_name = str(next_phase["movement"])
+        next_movement_func = movements.get(next_movement_name)
+        if next_movement_func is None:
+            next_movement_func = movements["neutral"]
         transition_factor = min(
             1.0, phase_progress * 2
         )  # Transition sur la dernière moitié
         base_movement = (
             base_movement * (1 - transition_factor)
-            + next_movement(0) * transition_factor
+            + next_movement_func(0) * transition_factor
         )
 
     return base_movement
@@ -116,7 +165,7 @@ def main():
         help="Comportement BBIA (wake_up, greeting, emotional_response)",
     )
     parser.add_argument(
-        "--duration", type=int, default=10, help="Durée totale en secondes"
+        "--duration", type=int, default=40, help="Durée totale en secondes"
     )
     parser.add_argument("--headless", action="store_true", help="Mode headless")
     parser.add_argument("--joint", default="yaw_body", help="Joint à animer")
@@ -136,6 +185,11 @@ def main():
     try:
         model = mujoco.MjModel.from_xml_path(model_path)
         data = mujoco.MjData(model)
+
+        # CRITIQUE: Remettre le robot en position initiale centrée
+        mujoco.mj_resetData(model, data)
+        mujoco.mj_forward(model, data)
+
         print(f"✅ Modèle chargé : {model.njnt} joints détectés")
     except Exception as e:
         print(f"❌ Erreur chargement modèle : {e}")
@@ -218,10 +272,29 @@ def main():
                     angle = behavior_to_movement(scenario, step, fps)
                     angle *= args.intensity  # Appliquer l'intensité
 
-                    # Appliquer la pose
+                    # Appliquer la pose au joint
                     data.qpos[joint_id] = angle
-                    mujoco.mj_step(model, data)
-                    viewer.sync()
+
+                    # CRITIQUE: Forcer mouvement visible
+                    # Ajouter léger mouvement tête si yaw_body
+                    if args.joint == "yaw_body":
+                        # Petit mouvement tête synchronisé (comme un chien attentif)
+                        stewart_1_id = None
+                        for i in range(model.njnt):
+                            if (
+                                mujoco.mj_id2name(model, mujoco.mjtObj.mjOBJ_JOINT, i)
+                                == "stewart_1"
+                            ):
+                                stewart_1_id = i
+                                break
+                        if stewart_1_id is not None:
+                            # Mouvement tête synchronisé (écoute attentive)
+                            head_pos = 0.06 * math.sin(step * 0.1)
+                            data.qpos[stewart_1_id] = head_pos
+
+                    mujoco.mj_forward(model, data)  # Mettre à jour la physique
+                    mujoco.mj_step(model, data)  # Avancer la simulation
+                    viewer.sync()  # CRITIQUE: Synchroniser le viewer
 
                     step += 1
 
@@ -232,6 +305,9 @@ def main():
                         print(
                             f"  Step {step:3d} | t={elapsed:3.1f}s | phase={current_phase['phase']} | {args.joint}={angle:6.3f} rad"
                         )
+
+                    # CRITIQUE: Petit délai pour fluidité (60 FPS = 1/60s)
+                    time.sleep(1 / 60)
 
             print(f"✅ Animation graphique terminée ({step} steps)")
 

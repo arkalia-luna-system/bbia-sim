@@ -172,6 +172,9 @@ python -c "from bbia_sim.bbia_adaptive_behavior import BBIAAdaptiveBehavior; ab 
 # Module Hugging Face (nécessite: pip install transformers torch)
 python -c "from bbia_sim.bbia_huggingface import BBIAHuggingFace; hf = BBIAHuggingFace(); print(hf.analyze_sentiment('Je suis heureux!'))"
 
+# Chat intelligent BBIA
+python -c "from bbia_sim.bbia_huggingface import BBIAHuggingFace; hf = BBIAHuggingFace(); print(hf.chat('Bonjour'))"
+
 # Module Emotion Recognition (nécessite: pip install mediapipe transformers)
 python -c "from bbia_sim.bbia_emotion_recognition import BBIAEmotionRecognition; er = BBIAEmotionRecognition(); print(er.analyze_vocal_emotion('Je suis excité!'))"
 ```

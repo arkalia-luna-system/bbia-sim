@@ -6,21 +6,40 @@ Ce dossier contient toute la documentation du projet BBIA (Biological Brain Inte
 
 ---
 
+## 🚀 **Démarrage Rapide**
+
+### **📊 État Actuel du Projet**
+👉 **[Statut du Projet](STATUT_PROJET.md)** - État actuel, tests, dashboard, prochaines étapes
+
+### **🎯 Guides par Niveau**
+
+| Niveau | Guide | Description |
+|--------|-------|-------------|
+| 🟢 Débutant | [Guide Débutant](GUIDE_DEBUTANT.md) | Premiers pas avec BBIA |
+| 🟡 Intermédiaire | [Guide Avancé](GUIDE_AVANCE.md) | Développement avancé |
+| 🔴 Expert | [Architecture](ARCHITECTURE.md) | Architecture complète |
+
+---
+
 ## 📁 **Structure de la documentation**
 
-### 🎮 **Guides principaux**
-- [Guide Reachy Mini Wireless](guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md)
-- [Guide de simulation MuJoCo](simulations/MUJOCO_SIMULATION_GUIDE.md)
+### 🎮 **Guides Principaux**
+- **[Statut Projet](STATUT_PROJET.md)** - État actuel et métriques (NOUVEAU ✅)
+- **[Guide Reachy Mini Wireless](guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md)**
+- **[Guide de simulation MuJoCo](simulations/MUJOCO_SIMULATION_GUIDE.md)**
 
-### 🔧 **Guides d'installation**
+### 🔧 **Installation et Configuration**
 - [Installation audio](installation/AUDIO_SETUP.md)
+- [Guide d'intégration](INTEGRATION_GUIDE.md)
+- [Guide de migration](MIGRATION_GUIDE.md)
 
 ### 🎮 **Guides Unity**
 - [Guide Unity BBIA](unity/UNITY_BBIA_GUIDE.md)
 - [Dépannage Unity](unity/UNITY_TROUBLESHOOTING.md)
 
-### 📦 **Dépôts et ressources**
-- Voir [PROJECT_HISTORY.md](./PROJECT_HISTORY.md) pour l'historique complet
+### 📦 **Historique et Archives**
+- [Historique du projet](PROJECT_HISTORY.md)
+- [Archives](archives/) - Documentation archivée
 
 ---
 
@@ -41,10 +60,11 @@ Ce dossier contient toute la documentation du projet BBIA (Biological Brain Inte
 
 ### ✅ **Fonctionnalités opérationnelles**
 - **Simulation 3D** : Robot Reachy Mini parfaitement fonctionnel
-- **Modules BBIA** : 8 émotions, vision, audio, comportements intégrés
+- **Modules BBIA** : 12 émotions, vision, audio, comportements intégrés
 - **API REST** : FastAPI + WebSocket opérationnels
-- **Tests** : 531 tests collectés, 418 passent (79% réussite)
-- **Coverage** : 76.70% de couverture de code
+- **Dashboard Web** : Interface complète (http://localhost:8000)
+- **Tests** : 590+ tests, 55 nouveaux créés récemment
+- **Coverage** : ~51-52% (objectif 60-65%)
 - **Documentation** : Complète et organisée
 
 ### 🎮 **Commandes principales**

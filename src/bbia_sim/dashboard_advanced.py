@@ -54,6 +54,7 @@ class BBIAAdvancedWebSocketManager:
         self.vision = BBIAVision()
         # self.voice = BBIAVoice()  # Pas encore implémenté
         self.behavior_manager = BBIABehaviorManager()
+        self.bbia_hf: Optional[Any] = None  # Hugging Face chat module
 
         # Métriques temps réel
         self.current_metrics = {
@@ -564,6 +565,71 @@ ADVANCED_DASHBOARD_HTML = """
                 grid-template-columns: 1fr;
             }
         }
+
+        /* Styles Chat BBIA */
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 400px;
+        }
+
+        .chat-messages {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            overflow-y: auto;
+            flex: 1;
+            margin-bottom: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+        }
+
+        .chat-message {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .chat-message.chat-user {
+            background: rgba(78, 205, 196, 0.3);
+            text-align: right;
+        }
+
+        .chat-message.chat-bbia {
+            background: rgba(255, 107, 107, 0.3);
+            text-align: left;
+        }
+
+        .chat-author {
+            font-weight: bold;
+            font-size: 11px;
+            opacity: 0.7;
+            margin-bottom: 5px;
+        }
+
+        .chat-text {
+            font-size: 13px;
+        }
+
+        .chat-input-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input-group input {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 14px;
+        }
+
+        .chat-input-group input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
     </style>
 </head>
 <body>
@@ -690,6 +756,19 @@ ADVANCED_DASHBOARD_HTML = """
             </div>
         </div>
 
+        <!-- Panel Chat BBIA -->
+        <div class="panel">
+            <h3>💬 Chat avec BBIA</h3>
+            <div class="chat-container">
+                <div class="chat-messages" id="chat-messages"></div>
+                <div class="chat-input-group">
+                    <input type="text" id="chat-input" placeholder="Tapez votre message..."
+                           onkeypress="if(event.key==='Enter') sendChatMessage()">
+                    <button class="control-button" onclick="sendChatMessage()">Envoyer</button>
+                </div>
+            </div>
+        </div>
+
         <!-- Panel de logs -->
         <div class="panel" style="grid-column: 1 / -1;">
             <h3>📝 Logs Temps Réel</h3>
@@ -761,6 +840,10 @@ ADVANCED_DASHBOARD_HTML = """
                     break;
                 case 'log':
                     addLog(data.level, data.message);
+                    break;
+                case 'chat_response':
+                    // Réponse chat de BBIA ou confirmation message user
+                    addChatMessage(data.sender, data.message);
                     break;
             }
         }
@@ -1011,6 +1094,44 @@ ADVANCED_DASHBOARD_HTML = """
                 addLog('error', 'WebSocket non connecté');
             }
         }
+
+        // Fonctions Chat BBIA
+        function sendChatMessage() {
+            const input = document.getElementById('chat-input');
+            if (!input) return;
+            const message = input.value.trim();
+            if (message && ws && ws.readyState === WebSocket.OPEN) {
+                const command = {
+                    type: 'chat',
+                    message: message,
+                    timestamp: new Date().toISOString()
+                };
+                ws.send(JSON.stringify(command));
+                addChatMessage('user', message);
+                input.value = '';
+            } else {
+                addLog('warning', 'Impossible d\'envoyer le message');
+            }
+        }
+
+        function addChatMessage(sender, message) {
+            const container = document.getElementById('chat-messages');
+            if (!container) return;
+
+            const entry = document.createElement('div');
+            entry.className = `chat-message chat-${sender}`;
+            entry.innerHTML = `
+                <div class="chat-author">${sender === 'user' ? 'Vous' : 'BBIA'}</div>
+                <div class="chat-text">${message}</div>
+            `;
+            container.appendChild(entry);
+            container.scrollTop = container.scrollHeight;
+
+            // Limiter à 50 messages
+            while (container.children.length > 50) {
+                container.removeChild(container.firstChild);
+            }
+        }
     </script>
 </body>
 </html>
@@ -1127,9 +1248,11 @@ if FASTAPI_AVAILABLE:
                 data = await websocket.receive_text()
                 message = json.loads(data)
 
-                # Traiter commande
+                # Traiter commande ou chat
                 if message.get("type") == "command":
                     await handle_advanced_robot_command(message)
+                elif message.get("type") == "chat":
+                    await handle_chat_message(message, websocket)
 
         except WebSocketDisconnect:
             advanced_websocket_manager.disconnect(websocket)
@@ -1321,6 +1444,80 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
     except Exception as e:
         logger.error(f"❌ Erreur commande avancée: {e}")
         await advanced_websocket_manager.send_log_message("error", f"Erreur: {str(e)}")
+
+
+async def handle_chat_message(message_data: dict[str, Any], websocket: WebSocket):
+    """Traite un message chat reçu via WebSocket.
+
+    Args:
+        message_data: Données du message chat
+        websocket: Connexion WebSocket pour réponse
+    """
+    try:
+        user_message = message_data.get("message", "")
+        timestamp = message_data.get("timestamp", "")
+
+        if not user_message:
+            await advanced_websocket_manager.send_log_message(
+                "error", "Message chat vide"
+            )
+            return
+
+        # Importer BBIAHuggingFace et initialiser une seule fois
+        if not hasattr(advanced_websocket_manager, "bbia_hf"):
+            try:
+                from bbia_sim.bbia_huggingface import BBIAHuggingFace
+
+                advanced_websocket_manager.bbia_hf = BBIAHuggingFace()
+                logger.info("🤗 Module BBIAHuggingFace initialisé pour chat")
+            except ImportError:
+                logger.warning("⚠️ Hugging Face non disponible, chat limité")
+                advanced_websocket_manager.bbia_hf = None
+
+        # Envoyer message utilisateur
+        chat_response = {
+            "type": "chat_response",
+            "sender": "user",
+            "message": user_message,
+            "timestamp": timestamp,
+        }
+        await websocket.send_text(json.dumps(chat_response))
+
+        # Générer réponse BBIA
+        if (
+            hasattr(advanced_websocket_manager, "bbia_hf")
+            and advanced_websocket_manager.bbia_hf
+        ):
+            bbia_response = advanced_websocket_manager.bbia_hf.chat(user_message)
+
+            # Envoyer réponse BBIA
+            chat_response_bbia = {
+                "type": "chat_response",
+                "sender": "bbia",
+                "message": bbia_response,
+                "timestamp": datetime.now().isoformat(),
+            }
+            await websocket.send_text(json.dumps(chat_response_bbia))
+
+            await advanced_websocket_manager.send_log_message(
+                "info", f"Chat: {len(user_message)} caractères → réponse BBIA"
+            )
+        else:
+            # Réponse fallback si HF indisponible
+            fallback_response = f"Je comprends: {user_message}. Hugging Face non disponible pour réponse intelligente."
+            chat_response_bbia = {
+                "type": "chat_response",
+                "sender": "bbia",
+                "message": fallback_response,
+                "timestamp": datetime.now().isoformat(),
+            }
+            await websocket.send_text(json.dumps(chat_response_bbia))
+
+    except Exception as e:
+        logger.error(f"❌ Erreur chat: {e}")
+        await advanced_websocket_manager.send_log_message(
+            "error", f"Erreur chat: {str(e)}"
+        )
 
 
 def run_advanced_dashboard(

@@ -51,43 +51,81 @@ def execute_voice_action(
     t = step / total_steps
 
     if action_type == "look_at":
-        # Mouvement de regard
-        return 0.2 * math.sin(2 * math.pi * 0.1 * t)  # SÉCURISÉ
+        # Mouvement de regard VARIÉ (3 variations)
+        variant = int(t * 3) % 3
+        if variant == 0:
+            return 0.15 * math.sin(2 * math.pi * 0.15 * t)  # Lent
+        elif variant == 1:
+            return 0.12 * math.sin(4 * math.pi * 0.3 * t)  # Rapide
+        else:
+            return (
+                0.1 * math.sin(2 * math.pi * 0.2 * t) * math.cos(3 * math.pi * t)
+            )  # Complexe
 
     elif action_type == "turn_left":
-        # Rotation à gauche
-        return -0.4 * (1 - math.cos(math.pi * t))
+        # Rotation gauche VARIÉE (2 variations)
+        variant = int(t * 2) % 2
+        if variant == 0:
+            return -0.15 * (1 - math.cos(math.pi * t))  # Douce
+        else:
+            return -0.1 * math.sin(3 * math.pi * t)  # Oscillante
 
     elif action_type == "turn_right":
-        # Rotation à droite
-        return 0.4 * (1 - math.cos(math.pi * t))
+        # Rotation droite VARIÉE (2 variations)
+        variant = int(t * 2) % 2
+        if variant == 0:
+            return 0.15 * (1 - math.cos(math.pi * t))  # Douce
+        else:
+            return 0.1 * math.sin(3 * math.pi * t)  # Oscillante
 
     elif action_type == "greet":
-        # Salutation (mouvement de va-et-vient)
-        return 0.2 * math.sin(4 * math.pi * t)
+        # Salutation VARIÉE (2 patterns)
+        variant = int(t * 2) % 2
+        if variant == 0:
+            return 0.15 * math.sin(4 * math.pi * t)  # Rapide
+        else:
+            return (
+                0.1 * math.sin(3 * math.pi * t) * math.sin(2 * math.pi * t)
+            )  # Complexe
 
     elif action_type == "smile":
-        # Sourire (mouvement joyeux)
-        return 0.25 * math.sin(2 * math.pi * 0.5 * t)
+        # Sourire VARIÉ (3 patterns)
+        variant = int(t * 3) % 3
+        if variant == 0:
+            return 0.12 * math.sin(2 * math.pi * 0.5 * t)  # Oscillations
+        elif variant == 1:
+            return 0.1 * math.sin(5 * math.pi * t)  # Rapide
+        else:
+            return (
+                0.08
+                * math.sin(2 * math.pi * 0.4 * t)
+                * (1 + 0.5 * math.sin(8 * math.pi * t))
+            )  # Modulé
 
     elif action_type == "stop":
-        # Arrêt (retour à la position neutre)
+        # Arrêt progressif VARIÉ
+        if t < 0.3:
+            return (
+                0.05 * (1 - t / 0.3) * math.sin(2 * math.pi * 0.5 * t)
+            )  # Arrêt progressif
         return 0.0
 
     else:
-        # Action inconnue (mouvement subtil)
-        return 0.1 * math.sin(2 * math.pi * 0.1 * t)
+        # Action inconnue VARIÉE
+        variant = int(t * 4) % 4
+        return 0.08 * math.sin(2 * math.pi * (0.1 + 0.05 * variant) * t)
 
 
 def main():
     parser = argparse.ArgumentParser(description="Démo Voix → Action BBIA")
     parser.add_argument("--command", default="regarde-moi", help="Commande vocale")
-    parser.add_argument("--duration", type=int, default=5, help="Durée en secondes")
+    parser.add_argument("--duration", type=int, default=30, help="Durée en secondes")
     parser.add_argument("--headless", action="store_true", help="Mode headless")
     parser.add_argument("--joint", default="yaw_body", help="Joint à animer")
     parser.add_argument(
         "--speak", action="store_true", help="Activer la synthèse vocale"
     )
+    parser.add_argument("--no-sound", action="store_true", help="Désactiver les sons")
 
     args = parser.parse_args()
 
@@ -124,10 +162,13 @@ def main():
     print(f"   • Mode : {'headless' if args.headless else 'graphique'}")
     print(f"   • Synthèse vocale : {'activée' if args.speak else 'désactivée'}")
 
-    # 4. Synthèse vocale (optionnelle)
-    if args.speak:
+    # 4. Synthèse vocale (activée par défaut pour démos)
+    if not args.no_sound:
         try:
-            response = f"J'ai entendu : {args.command}"
+            if args.speak:
+                response = f"J'ai entendu : {args.command}"
+            else:
+                response = f"Exécution de la commande : {args.command}"
             dire_texte(response)
             print(f"🗣️ BBIA dit : '{response}'")
         except Exception as e:
@@ -176,8 +217,14 @@ def main():
 
                     # Appliquer la pose
                     data.qpos[joint_id] = angle
+                    mujoco.mj_forward(
+                        model, data
+                    )  # CRITIQUE: Mettre à jour la physique
                     mujoco.mj_step(model, data)
                     viewer.sync()
+
+                    # CRITIQUE: Petit délai pour fluidité
+                    time.sleep(1 / 60)
 
                     step += 1
 

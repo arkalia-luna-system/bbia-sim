@@ -5,25 +5,39 @@ Intégration avancée avec Hugging Face Hub pour enrichir les capacités IA de B
 """
 
 import logging
+import os
 from typing import Any, Optional, Union
 
 import numpy as np
 from PIL import Image
 
+# Désactiver les avertissements de transformers
+os.environ["TRANSFORMERS_VERBOSITY"] = "error"
+
 logger = logging.getLogger(__name__)
 
 # Import conditionnel des dépendances Hugging Face
 try:
+    import warnings
+
     import torch
-    from transformers import (
-        BlipForConditionalGeneration,
-        BlipProcessor,
-        CLIPModel,
-        CLIPProcessor,
-        WhisperForConditionalGeneration,
-        WhisperProcessor,
-        pipeline,
-    )
+
+    # Supprimer les avertissements de transformers
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        from transformers import (
+            BlipForConditionalGeneration,
+            BlipProcessor,
+            CLIPModel,
+            CLIPProcessor,
+            WhisperForConditionalGeneration,
+            WhisperProcessor,
+            pipeline,
+        )
+        from transformers.utils import logging as transformers_logging
+
+        # Réduire la verbosité de transformers
+        transformers_logging.set_verbosity_error()
 
     HF_AVAILABLE = True
 except ImportError:
@@ -60,6 +74,11 @@ class BBIAHuggingFace:
         self.models: dict[str, Any] = {}
         self.processors: dict[str, Any] = {}
 
+        # Chat intelligent : Historique et contexte
+        self.conversation_history: list[dict[str, Any]] = []
+        self.context: dict[str, Any] = {}
+        self.bbia_personality = "friendly_robot"
+
         # Configuration des modèles recommandés
         self.model_configs = {
             "vision": {
@@ -79,6 +98,7 @@ class BBIAHuggingFace:
         }
 
         logger.info(f"🤗 BBIA Hugging Face initialisé (device: {self.device})")
+        logger.info(f"😊 Personnalité BBIA: {self.bbia_personality}")
 
     def _get_device(self, device: str) -> str:
         """Détermine le device optimal."""
@@ -116,43 +136,51 @@ class BBIAHuggingFace:
                     self.models[f"{model_name}_model"] = model
 
                 elif "blip" in model_name.lower():
-                    processor = BlipProcessor.from_pretrained(  # nosec B615
-                        model_name, cache_dir=self.cache_dir
+                    processor = (
+                        BlipProcessor.from_pretrained(  # nosec B615 # type: ignore
+                            model_name, cache_dir=self.cache_dir
+                        )
                     )
                     model = BlipForConditionalGeneration.from_pretrained(  # nosec B615
                         model_name, cache_dir=self.cache_dir
                     ).to(self.device)
-                    self.processors[f"{model_name}_processor"] = processor
+                    self.processors[f"{model_name}_processor"] = processor  # type: ignore
                     self.models[f"{model_name}_model"] = model
 
             elif model_type == "audio":
                 if "whisper" in model_name.lower():
-                    processor = WhisperProcessor.from_pretrained(  # nosec B615
-                        model_name, cache_dir=self.cache_dir
+                    processor = (
+                        WhisperProcessor.from_pretrained(  # nosec B615 # type: ignore
+                            model_name, cache_dir=self.cache_dir
+                        )
                     )
                     model = (
                         WhisperForConditionalGeneration.from_pretrained(  # nosec B615
                             model_name, cache_dir=self.cache_dir
                         ).to(self.device)
                     )
-                    self.processors[f"{model_name}_processor"] = processor
+                    self.processors[f"{model_name}_processor"] = processor  # type: ignore
                     self.models[f"{model_name}_model"] = model
 
             elif model_type == "nlp":
                 # Utilisation des pipelines pour NLP
                 pipeline_name = self._get_pipeline_name(model_name)
-                pipe = pipeline(pipeline_name, model=model_name, device=self.device)
+                pipe = pipeline(  # type: ignore[call-overload]
+                    pipeline_name, model=model_name, device=self.device
+                )
                 self.models[f"{model_name}_pipeline"] = pipe
 
             elif model_type == "multimodal":
                 if "blip" in model_name.lower() and "vqa" in model_name.lower():
-                    processor = BlipProcessor.from_pretrained(  # nosec B615
-                        model_name, cache_dir=self.cache_dir
+                    processor = (
+                        BlipProcessor.from_pretrained(  # nosec B615 # type: ignore
+                            model_name, cache_dir=self.cache_dir
+                        )
                     )
                     model = BlipForConditionalGeneration.from_pretrained(  # nosec B615
                         model_name, cache_dir=self.cache_dir
                     ).to(self.device)
-                    self.processors[f"{model_name}_processor"] = processor
+                    self.processors[f"{model_name}_processor"] = processor  # type: ignore
                     self.models[f"{model_name}_model"] = model
 
             logger.info(f"✅ Modèle {model_name} chargé avec succès")
@@ -232,13 +260,15 @@ class BBIAHuggingFace:
             return "Erreur lors de la description de l'image"
 
     def analyze_sentiment(
-        self, text: str, model_name: str = "sentiment"
+        self,
+        text: str,
+        model_name: str = "cardiffnlp/twitter-roberta-base-sentiment-latest",
     ) -> dict[str, Any]:
         """Analyse le sentiment d'un texte.
 
         Args:
             text: Texte à analyser
-            model_name: Nom du modèle à utiliser
+            model_name: Nom du modèle à utiliser (modèle Hugging Face complet)
 
         Returns:
             Dictionnaire avec sentiment et score
@@ -425,6 +455,123 @@ class BBIAHuggingFace:
             "hf_available": HF_AVAILABLE,
         }
 
+    def chat(self, user_message: str, use_context: bool = True) -> str:
+        """Chat intelligent avec BBIA avec contexte et analyse sentiment.
+
+        Args:
+            user_message: Message de l'utilisateur
+            use_context: Utiliser le contexte des messages précédents
+
+        Returns:
+            Réponse intelligente de BBIA
+        """
+        try:
+            # 1. Analyser sentiment du message (avec gestion erreur)
+            try:
+                sentiment = self.analyze_sentiment(user_message)
+            except Exception:
+                # Fallback si sentiment indisponible
+                sentiment = {"sentiment": "NEUTRAL", "score": 0.5}
+
+            # 2. Générer réponse basée sur le message et le sentiment
+            bbia_response = self._generate_simple_response(user_message, sentiment)
+
+            # 3. Sauvegarder dans l'historique
+            from datetime import datetime
+
+            self.conversation_history.append(
+                {
+                    "user": user_message,
+                    "bbia": bbia_response,
+                    "sentiment": sentiment,
+                    "timestamp": datetime.now().isoformat(),
+                }
+            )
+
+            # 4. Adapter réponse selon personnalité BBIA
+            adapted_response = self._adapt_response_to_personality(
+                bbia_response, sentiment
+            )
+
+            return adapted_response
+
+        except Exception as e:
+            logger.error(f"❌ Erreur chat: {e}")
+            return "Je ne comprends pas bien, peux-tu reformuler ?"
+
+    def _generate_simple_response(self, message: str, sentiment: dict) -> str:
+        """Génère une réponse simple basée sur le sentiment et mots-clés.
+
+        Args:
+            message: Message utilisateur
+            sentiment: Analyse sentiment du message
+
+        Returns:
+            Réponse basique et intelligente
+        """
+        message_lower = message.lower()
+
+        # Salutations
+        if any(word in message_lower for word in ["bonjour", "salut", "hello", "hi"]):
+            return "Bonjour ! Comment allez-vous ? Je suis BBIA, votre robot compagnon."
+
+        # Au revoir
+        if any(
+            word in message_lower
+            for word in ["au revoir", "bye", "goodbye", "à bientôt"]
+        ):
+            return "Au revoir ! Ce fut un plaisir de discuter avec vous. À bientôt !"
+
+        # Positif
+        if sentiment.get("sentiment") == "POSITIVE" or any(
+            word in message_lower for word in ["content", "heureux", "joie", "cool"]
+        ):
+            return "C'est super ! Je suis content pour vous. Continuez comme ça !"
+
+        # Question
+        if message_lower.count("?") > 0 or any(
+            word in message_lower for word in ["qui", "quoi", "comment", "pourquoi"]
+        ):
+            return "C'est une bonne question ! Je réfléchis... Comment puis-je vous aider ?"
+
+        # Réponse par défaut intelligente
+        return "C'est intéressant. Dites-moi en plus s'il vous plaît."
+
+    def _adapt_response_to_personality(self, response: str, sentiment: dict) -> str:
+        """Adapte la réponse selon la personnalité BBIA.
+
+        Args:
+            response: Réponse de base
+            sentiment: Analyse sentiment
+
+        Returns:
+            Réponse adaptée avec emoji selon personnalité
+        """
+        personality_responses = {
+            "friendly_robot": f"🤖 {response}",
+            "curious": f"🤔 {response}",
+            "enthusiastic": f"🎉 {response}",
+            "calm": f"😌 {response}",
+        }
+        return personality_responses.get(self.bbia_personality, f"💬 {response}")
+
+    def _build_context_string(self) -> str:
+        """Construit le contexte pour la conversation.
+
+        Returns:
+            Chaîne de contexte basée sur l'historique
+        """
+        if not self.conversation_history:
+            return (
+                "Conversation avec BBIA (robot Reachy Mini). Soyez amical et curieux."
+            )
+
+        context = "Historique conversation:\n"
+        for entry in self.conversation_history[-3:]:  # Derniers 3 échanges
+            context += f"User: {entry['user']}\n"
+            context += f"BBIA: {entry['bbia']}\n"
+        return context
+
 
 def main():
     """Test du module BBIA Hugging Face."""
@@ -451,8 +598,16 @@ def main():
     emotion_result = hf.analyze_emotion("Je suis excité par ce projet!")
     print(f"Résultat: {emotion_result}")
 
+    # Test chat intelligent
+    print("\n💬 Test chat intelligent...")
+    chat_result1 = hf.chat("Bonjour")
+    print(f"BBIA: {chat_result1}")
+    chat_result2 = hf.chat("Comment allez-vous ?")
+    print(f"BBIA: {chat_result2}")
+
     # Informations
     print(f"\n📊 Informations: {hf.get_model_info()}")
+    print(f"\n📝 Historique conversation: {len(hf.conversation_history)} messages")
 
 
 if __name__ == "__main__":

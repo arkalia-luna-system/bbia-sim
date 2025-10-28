@@ -86,9 +86,9 @@ def demo_reachy_mini_corrigee():
 
     for joint, description in head_movements:
         print(f"   {description} ({joint})")
-        # Mouvement sinusoïdal
+        # Mouvement sinusoïdal limité à 0.3 rad (selon SDK officiel)
         for i in range(20):
-            angle = 0.2 * (i / 10.0 - 1.0)  # -0.2 à +0.2
+            angle = 0.25 * (i / 10.0 - 1.0)  # -0.25 à +0.25 rad sécurisé
             robot_mujoco.set_joint_pos(joint, angle)
             robot_officiel.set_joint_pos(joint, angle)
             time.sleep(0.1)
