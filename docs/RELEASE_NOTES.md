@@ -48,7 +48,7 @@ Intégration complète de l'IA légère (Whisper STT + YOLOv8n + MediaPipe), scr
 #### Scripts One-Click
 - **run_demo_sim.sh** : Démo simulation complète avec viewer 3D
 - **run_demo_real.sh** : Démo robot réel avec mode lent sécurisé
-- **bbia_dashboard_server.py** : Serveur dashboard web temps réel
+- **dashboard_advanced.py** : Serveur dashboard web temps réel
 - **stt_demo.py** : Tests commandes vocales interactives
 
 #### Dashboard Web Temps Réel
