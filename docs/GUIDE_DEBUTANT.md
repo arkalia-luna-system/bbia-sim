@@ -19,7 +19,7 @@ pip install -r requirements.txt
 
 ```bash
 # Lancer le dashboard
-python scripts/bbia_dashboard_server.py
+python src/bbia_sim/dashboard_advanced.py
 
 # Ouvrir dans le navigateur
 # http://localhost:8000
@@ -85,7 +85,7 @@ Windows : À tester ⚠️
 
 ## 📚 **Prochaines Étapes**
 
-1. ✅ **Découvrir** : [Statut du Projet](STATUT_PROJET.md) - Voir l'état actuel
+1. ✅ **Découvrir** : [Architecture](docs/ARCHITECTURE.md) - Voir l'architecture
 2. ✅ **Créer** : Vos propres comportements avec `examples/demo_*`
 3. ✅ **Comprendre** : [Architecture](ARCHITECTURE.md) - Architecture technique
 4. ✅ **Avancer** : [Guide Avancé](GUIDE_AVANCE.md) - Développement expert

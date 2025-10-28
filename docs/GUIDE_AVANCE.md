@@ -80,7 +80,7 @@ faces = vision.detect_faces()
 
 ```bash
 # Lancer tous les tests
-pytest tests/ -v
+pytest tests/ -v --tb=short
 
 # Tests avec coverage
 pytest tests/ --cov=src --cov-report=html
