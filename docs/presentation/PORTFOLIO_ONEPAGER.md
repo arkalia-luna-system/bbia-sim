@@ -16,7 +16,7 @@
 
 ### **🛡️ Sécurité & Fiabilité**
 - **Limites de Sécurité** : Clamp automatique à 0.3 rad, joints interdits centralisés
-- **Tests Automatisés** : 706 tests collectés, couverture 63.37%
+- **Tests Automatisés** : Suite complète validée en CI (800+ tests)
 - **CI/CD Robuste** : Pipeline GitHub Actions avec artefacts et validation
 - **Déterminisme** : Seed fixé (SEED=42) pour reproductibilité
 
@@ -31,13 +31,11 @@
 
 | Métrique | Valeur | Statut |
 |----------|--------|--------|
-| **Tests** | 706 collectés | ✅ |
-| **Couverture** | 63.37% | ✅ |
-| **Modules BBIA** | 7 modules complets | ✅ |
+| **Tests** | 800+ (CI) | ✅ |
+| **Couverture** | Validée en CI | ✅ |
+| **Modules BBIA** | 7 modules | ✅ |
 | **Backends** | MuJoCo + Reachy mock | ✅ |
-| **Golden Traces** | 3 références (~87MB) | ✅ |
-| **Latence Robot** | 0.02ms moyenne | ✅ |
-| **Fréquence** | 45,064 Hz | ✅ |
+| **Golden Traces** | 3 références | ✅ |
 
 ---
 
@@ -91,35 +89,14 @@ python scripts/stt_demo.py --command "salue" --backend mujoco
 python scripts/stt_demo.py --test-microphone --lang fr
 ```
 
-### **🌐 Dashboard Web**
+### **🌐 Dashboard Web & API Publique**
 ```bash
-# Interface web temps réel
+# Interface web temps réel (dashboard)
 python src/bbia_sim/dashboard_advanced.py --port 8000
 
-# URL : http://localhost:8000
+# Démarrer l’API publique (mode dev)
+python deploy/public_api.py --dev
 ```
-
----
-
-## 📈 **ROADMAP v1.2.0**
-
-### **✅ Semaine 1 - Reachy-Ready (ACCOMPLI)**
-- [x] Installation Reachy SDK
-- [x] Mapping joints physique centralisé
-- [x] Extension hardware_dry_run.py avec artefacts
-- [x] Scripts vidéo + graphe fonctionnels
-
-### **✅ Semaine 2 - IA Légère (ACCOMPLI)**
-- [x] Intégration Whisper STT (latence <800ms)
-- [x] Intégration YOLOv8n + MediaPipe face
-- [x] Dashboard web minimal (FastAPI + WebSocket)
-- [x] Tests d'intégration IA mockés
-
-### **✅ Semaine 3 - Polish Démo (ACCOMPLI)**
-- [x] Scripts one-click (sim & réel)
-- [x] One-pager portfolio
-- [x] Release v1.2.0 préparée
-- [x] Documentation synchronisée
 
 ---
 
@@ -213,7 +190,7 @@ pytest tests/ -m "not e2e" -v
 
 ---
 
-**Version** : 1.3.0  
+**Version** : 1.3.1  
 **Date** : Octobre 2025  
 **Statut** : Production Ready  
 **Licence** : MIT
