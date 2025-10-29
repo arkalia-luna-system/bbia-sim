@@ -15,7 +15,7 @@ import threading
 import time
 from pathlib import Path
 from queue import Queue
-from typing import TYPE_CHECKING, Any, Optional
+from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     from .robot_api import RobotAPI
@@ -946,7 +946,7 @@ class BBIABehaviorManager:
         self.active_behaviors: list[str] = []
         self.behavior_queue: Queue[tuple[str, dict[str, Any]]] = Queue()
         self.is_running = False
-        self.worker_thread: Optional[threading.Thread] = None
+        self.worker_thread: threading.Thread | None = None
 
         # RobotAPI pour contrôler le robot physique
         self.robot_api = robot_api
@@ -1100,7 +1100,8 @@ class BBIABehaviorManager:
             if not hasattr(self.robot_api, "stop_recording"):
                 logger.warning("stop_recording non disponible")
                 return None
-            move = getattr(self.robot_api, "stop_recording")()  # type: ignore[attr-defined]
+            # Type narrowing: hasattr garantit que stop_recording existe
+            move: object | None = self.robot_api.stop_recording()  # type: ignore[attr-defined]
             if move:
                 self.saved_moves[behavior_name] = move
                 logger.info(

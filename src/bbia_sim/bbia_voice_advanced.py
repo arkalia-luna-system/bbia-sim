@@ -172,7 +172,7 @@ class BBIAVoiceAdvanced:
         # Déterminer la valeur de pitch (float garanti après cette section)
         pitch_value: float
         if pitch is None:
-            pitch_raw: Any = emotion_config.get("pitch", 0.0)
+            pitch_raw = emotion_config.get("pitch", 0.0)
             if isinstance(pitch_raw, (int, float)):
                 pitch_value = float(pitch_raw)
             else:
@@ -203,8 +203,7 @@ class BBIAVoiceAdvanced:
             if self.tts is None:
                 raise ValueError("Coqui TTS non initialisé")
             # Type narrowing: mypy comprend maintenant que self.tts n'est pas None
-            tts_instance: Any = self.tts
-            tts_instance.tts_to_file(
+            self.tts.tts_to_file(  # type: ignore[union-attr]
                 text=text,
                 file_path=str(audio_file),
                 # Certains modèles supportent ces paramètres :
@@ -326,7 +325,7 @@ class BBIAVoiceAdvanced:
         emotion_config = self.emotion_map.get(bbia_emotion, self.emotion_map["neutral"])
 
         # Ajuster pitch selon intensité
-        pitch_raw: Any = emotion_config.get("pitch", 0.0)
+        pitch_raw = emotion_config.get("pitch", 0.0)
         if isinstance(pitch_raw, (int, float)):
             base_pitch = float(pitch_raw)
         else:
@@ -366,8 +365,8 @@ def dire_texte_advanced(
         globals()["_global_voice_advanced"] = BBIAVoiceAdvanced()
 
     voice_advanced: BBIAVoiceAdvanced = globals()["_global_voice_advanced"]  # type: ignore[assignment]
-    result: bool = voice_advanced.say(texte, emotion=emotion, pitch=pitch)
-    return result
+    result = voice_advanced.say(texte, emotion=emotion, pitch=pitch)
+    return bool(result)  # type: ignore[return-value]
 
 
 # Compatibilité avec ancien code (fallback automatique)

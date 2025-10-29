@@ -148,7 +148,7 @@ class BBIAHuggingFace:
     def _load_audio_model(self, model_name: str) -> bool:
         """Charge un modèle audio (Whisper)."""
         if "whisper" in model_name.lower():
-            whisper_processor: Any = WhisperProcessor.from_pretrained(  # nosec B615
+            whisper_processor = WhisperProcessor.from_pretrained(  # type: ignore[assignment] # nosec B615
                 model_name, cache_dir=self.cache_dir
             )
             model = WhisperForConditionalGeneration.from_pretrained(  # nosec B615
@@ -175,7 +175,7 @@ class BBIAHuggingFace:
             ):
                 self.chat_tokenizer.pad_token = self.chat_tokenizer.eos_token
 
-            self.chat_model = AutoModelForCausalLM.from_pretrained(  # type: ignore # nosec B615
+            self.chat_model = AutoModelForCausalLM.from_pretrained(  # type: ignore[assignment] # nosec B615
                 model_name,
                 cache_dir=self.cache_dir,
                 device_map="auto",
@@ -219,7 +219,7 @@ class BBIAHuggingFace:
 
             if model_type == "vision":
                 if "clip" in model_name.lower():
-                    clip_processor: Any = CLIPProcessor.from_pretrained(  # nosec B615
+                    clip_processor = CLIPProcessor.from_pretrained(  # type: ignore[assignment] # nosec B615
                         model_name, cache_dir=self.cache_dir
                     )
                     model = CLIPModel.from_pretrained(  # nosec B615
