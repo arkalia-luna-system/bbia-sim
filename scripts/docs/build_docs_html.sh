@@ -33,10 +33,22 @@ convert_md_to_html() {
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>${basename} - BBIA-SIM Documentation</title>
-<link rel="stylesheet" href="../styles.css">
+<style>
+/* Style inline pour forcer fond noir */
+html, body {
+  background-color: #000000 !important;
+  background: #000000 !important;
+  color: #ffffff !important;
+}
+body {
+  margin: 0;
+  padding: 0;
+}
+</style>
+<link rel="stylesheet" href="styles.css">
 </head>
-<body>
-<div class="docs-container">
+<body style="background-color: #000000 !important; color: #ffffff !important;">
+<div class="docs-container" style="background-color: #000000 !important;">
 <div class="sidebar">
 <nav>
 <h2>📚 Navigation</h2>
@@ -84,7 +96,21 @@ convert_md_to_html() {
     return origCode(code, infostring, escaped);
   };
   const html = marked.parse(window.__RAW_MD__, { renderer, gfm: true });
-  document.querySelector('.markdown-body').innerHTML = html;
+  const markdownBody = document.querySelector('.markdown-body');
+  markdownBody.innerHTML = html;
+  markdownBody.style.backgroundColor = '#000000';
+  markdownBody.style.color = '#ffffff';
+  
+  // Forcer fond noir et texte blanc sur tous les éléments générés
+  document.querySelectorAll('.markdown-body *').forEach(el => {
+    if (!el.classList.contains('mermaid') && !el.querySelector('.mermaid')) {
+      const tag = el.tagName.toLowerCase();
+      if (['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'li', 'td', 'th', 'span', 'div', 'a'].includes(tag)) {
+        el.style.color = '#ffffff';
+      }
+    }
+  });
+  
   mermaid.run({ querySelector: '.mermaid' });
   
   // Lien automatique des ancres
