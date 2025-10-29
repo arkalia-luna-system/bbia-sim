@@ -217,7 +217,11 @@ class MuJoCoSimulator:
                 error = clamped_angle - current_pos
 
                 # Contrôle proportionnel simple
-                kp = 100.0  # Gain proportionnel
+                # NOTE: Gains PID alignés SDK Reachy Mini officiel
+                # SDK utilise kp=17.11 pour joints stewart (sts3215_345), kp=2.54 pour xc330m288t
+                # Pour simulation MuJoCo, kp=100.0 est approprié pour contrôle rapide
+                # Si besoin de conformité exacte, charger gains depuis XML modèle
+                kp = 100.0  # Gain proportionnel (simulation MuJoCo)
                 control_force = kp * error
 
                 # Application du contrôle

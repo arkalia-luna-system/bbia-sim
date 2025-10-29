@@ -27,7 +27,8 @@ class TestBBIAHuggingFaceExpertConformity:
 
             # Créer instance avec mock pour éviter chargement réel modèles lourds
             with patch("bbia_sim.bbia_huggingface.HF_AVAILABLE", True):
-                with patch("bbia_sim.bbia_huggingface.torch"):
+                # Patch torch au niveau du module où il est importé, pas comme attribut du module
+                with patch("torch"):
                     self.hf_class = BBIAHuggingFace
                     self.hf_available = True
         except ImportError:

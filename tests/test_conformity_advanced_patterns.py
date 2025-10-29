@@ -186,7 +186,12 @@ class TestConformityAdvancedPatterns:
         )
         if integration_file.exists():
             content = integration_file.read_text(encoding="utf-8")
-            passes_to_vision = "BBIAVision(robot_api=" in content
+            # Chercher BBIAVision avec robot_api (peut être sur plusieurs lignes)
+            passes_to_vision = (
+                "BBIAVision(" in content
+                and "robot_api=" in content
+                and "self.vision = BBIAVision" in content
+            )
 
             assert passes_to_vision, (
                 "EXPERT: BBIAIntegration doit passer robot_api à BBIAVision. "

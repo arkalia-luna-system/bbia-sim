@@ -115,6 +115,11 @@ def dire_texte(texte: str, robot_api: Optional[Any] = None) -> None:
         robot_api: Interface RobotAPI (optionnel) pour accès robot.media.speaker
 
     """
+    # Vérifier flag d'environnement pour désactiver audio (CI/headless)
+    if os.environ.get("BBIA_DISABLE_AUDIO", "0") == "1":
+        logging.debug(f"Audio désactivé (BBIA_DISABLE_AUDIO=1): '{texte}' ignoré")
+        return
+
     # OPTIMISATION SDK: Utiliser robot.media.speaker si disponible
     # CORRECTION EXPERTE: Logique alignée avec bbia_voice_advanced.py pour robustesse
     if robot_api and hasattr(robot_api, "media") and robot_api.media:
@@ -196,7 +201,7 @@ def dire_texte(texte: str, robot_api: Optional[Any] = None) -> None:
                 if tmp_path and os.path.exists(tmp_path):
                     try:
                         os.unlink(tmp_path)
-                    except Exception:  # noqa: B110
+                    except Exception:  # noqa: B110  # try/except pass pour nettoyage fichiers temporaires
                         pass  # Ignorer erreurs de nettoyage
 
         except Exception as e:

@@ -7,6 +7,7 @@ Compatible macOS, simple, portable, testé.
 
 import atexit
 import logging
+import os
 import wave
 from typing import TYPE_CHECKING, Optional
 
@@ -153,6 +154,11 @@ def lire_audio(fichier: str, robot_api: Optional["RobotAPI"] = None) -> None:
         fichier: Chemin du fichier audio
         robot_api: Interface RobotAPI (optionnel) pour accès robot.media.speaker
     """
+    # Vérifier flag d'environnement pour désactiver audio (CI/headless)
+    if os.environ.get("BBIA_DISABLE_AUDIO", "0") == "1":
+        logging.debug(f"Audio désactivé (BBIA_DISABLE_AUDIO=1): '{fichier}' ignoré")
+        return
+
     # Validation format et sample rate SDK
     try:
         import soundfile as sf

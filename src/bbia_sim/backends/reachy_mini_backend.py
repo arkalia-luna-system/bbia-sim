@@ -421,13 +421,20 @@ class ReachyMiniBackend(RobotAPI):
 
     def set_emotion(self, emotion: str, intensity: float = 0.5) -> bool:
         """Définit une émotion sur le robot."""
-        # Liste des émotions valides
+        # Liste des émotions valides (SDK officiel)
         valid_emotions = {"happy", "sad", "neutral", "excited", "curious", "calm"}
 
         # Vérifier si l'émotion est valide
         if emotion not in valid_emotions:
-            logger.warning(f"Émotion {emotion} non reconnue")
+            logger.warning(f"Émotion {emotion} non reconnue (SDK: {valid_emotions})")
             return False
+
+        # Validation et clamp de l'intensité [0.0, 1.0] - conforme SDK
+        if not 0.0 <= intensity <= 1.0:
+            logger.warning(
+                f"Intensité {intensity} hors limites [0.0, 1.0], clamp appliqué"
+            )
+            intensity = max(0.0, min(1.0, intensity))
 
         # Vérifier si le SDK est disponible
         if not REACHY_MINI_AVAILABLE or create_head_pose is None:

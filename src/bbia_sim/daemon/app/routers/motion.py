@@ -172,13 +172,46 @@ async def control_head(head_control: HeadControl) -> dict[str, Any]:
 
 @router.post("/stop")
 async def stop_motion() -> dict[str, Any]:
-    """Arrête tous les mouvements.
+    """Arrête tous les mouvements (arrêt d'urgence si disponible).
+
+    Utilise emergency_stop() si le robot le supporte, sinon arrêt standard.
 
     Returns:
         Statut de l'arrêt
 
     """
     logger.info("Arrêt de tous les mouvements")
+
+    # Essayer d'utiliser emergency_stop() si disponible
+    try:
+        from ....robot_factory import RobotFactory
+
+        # Essayer d'obtenir le robot actif
+        robot = RobotFactory.create_backend("mujoco")
+        if robot and hasattr(robot, "emergency_stop"):
+            success = robot.emergency_stop()
+            if success:
+                logger.critical("🛑 Arrêt d'urgence activé via emergency_stop()")
+                return {
+                    "status": "emergency_stopped",
+                    "message": "Arrêt d'urgence activé - Tous les mouvements arrêtés",
+                    "timestamp": datetime.now().isoformat(),
+                }
+    except Exception as e:
+        logger.debug(f"Emergency stop non disponible, fallback standard: {e}")
+
+    # Fallback: arrêt standard (asynchrone, ignorer si déjà arrêté)
+    try:
+        import asyncio
+
+        if hasattr(asyncio, "create_task"):
+            asyncio.create_task(simulation_service.stop_simulation())  # type: ignore[func-returns-value]
+        else:
+            # Fallback pour anciennes versions Python
+            loop = asyncio.get_event_loop()
+            loop.run_until_complete(simulation_service.stop_simulation())  # type: ignore[func-returns-value]
+    except Exception:
+        pass  # Ignorer si simulation déjà arrêtée
 
     return {
         "status": "stopped",
