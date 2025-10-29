@@ -977,10 +977,9 @@ class ReachyMiniBackend(RobotAPI):
             return
 
         try:
-            return self.robot.look_at_world(x, y, z, duration, perform_movement)
+            self.robot.look_at_world(x, y, z, duration, perform_movement)
         except Exception as e:
             logger.error(f"Erreur look_at_world: {e}")
-            return np.eye(4, dtype=np.float64)
 
     def wake_up(self) -> None:
         """Alias SDK officiel pour run_behavior('wake_up')."""
