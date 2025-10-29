@@ -111,12 +111,12 @@ HTML
 # Générer le CSS principal
 cat > "$OUT_DIR/styles.css" <<CSS
 :root {
-  --bg-dark: #0d1117;
-  --bg-card: #161b22;
-  --text-primary: #f0f6fc;
-  --text-secondary: #8b949e;
+  --bg-dark: #000000;
+  --bg-card: #1a1a1a;
+  --text-primary: #ffffff;
+  --text-secondary: #cccccc;
   --accent: #4a9eff;
-  --border: #30363d;
+  --border: #333333;
   color-scheme: dark;
 }
 
@@ -188,6 +188,7 @@ html, body {
   border-bottom: 2px solid var(--border);
   padding-bottom: 12px;
   margin-top: 0;
+  color: var(--text-primary);
 }
 
 .markdown-body h2 {
@@ -195,11 +196,13 @@ html, body {
   margin-top: 48px;
   border-bottom: 1px solid var(--border);
   padding-bottom: 8px;
+  color: var(--text-primary);
 }
 
 .markdown-body h3 {
   font-size: 1.5em;
   margin-top: 32px;
+  color: var(--text-primary);
 }
 
 .markdown-body code {

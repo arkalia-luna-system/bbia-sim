@@ -1,13 +1,13 @@
-# 🤖 MOUVEMENTS REACHY MINI - ANALYSE ET AMÉLIORATIONS
+# Mouvements Reachy Mini - analyse et améliorations
 
 **Date:** 28 Octobre 2025  
-**Statut:** ✅ Améliorations appliquées
+**Statut:** améliorations appliquées
 
-## 📊 ÉTAT ACTUEL DES JOINTS
+## État actuel des joints
 
-D'après l'analyse du modèle officiel `reachy_mini_REAL_OFFICIAL.xml`:
+D'après l'analyse du modèle officiel `reachy_mini_REAL_OFFICIAL.xml` :
 
-### ✅ Joints MOBILES (7 joints)
+### Joints mobiles (7 joints)
 - **yaw_body**: [-2.793, 2.793] rad - Rotation corps principale
 - **stewart_1**: [-0.838, 1.396] rad - Plateforme Stewart joint 1
 - **stewart_2**: [-1.396, 1.222] rad - Plateforme Stewart joint 2
@@ -16,16 +16,16 @@ D'après l'analyse du modèle officiel `reachy_mini_REAL_OFFICIAL.xml`:
 - **stewart_5**: [-1.222, 1.396] rad - Plateforme Stewart joint 5
 - **stewart_6**: [-1.396, 0.838] rad - Plateforme Stewart joint 6
 
-### ❌ Joints BLOQUÉS (9 joints)
-- **left_antenna**: [0.000, 0.000] rad ❌ BLOQUÉ
-- **right_antenna**: [0.000, 0.000] rad ❌ BLOQUÉ
-- **passive_1 à passive_7**: [0.000, 0.000] rad ❌ BLOQUÉS
+### Joints bloqués (9 joints)
+- **left_antenna**: [0.000, 0.000] rad (bloqué)
+- **right_antenna**: [0.000, 0.000] rad (bloqué)
+- **passive_1 à passive_7**: [0.000, 0.000] rad (bloqués)
 
 ---
 
-## 🔍 PROBLÈMES IDENTIFIÉS
+## Problèmes identifiés
 
-### ❌ Problèmes dans les démos originales:
+### Problèmes dans les démos originales
 1. **Tentatives d'animation des antennes** - Les antennes sont bloquées dans le modèle officiel
 2. **Mouvements trop basiques** - Sinusoïdes simples sans contexte émotionnel
 3. **Amplitudes inappropriées** - Ne respectent pas les limites réelles des joints
@@ -33,22 +33,22 @@ D'après l'analyse du modèle officiel `reachy_mini_REAL_OFFICIAL.xml`:
 
 ---
 
-## ✅ AMÉLIORATIONS APPLIQUÉES
+## Améliorations appliquées
 
-### 📝 Fichiers modifiés:
+### Fichiers modifiés
 
 #### 1. `examples/demo_chat_bbia_3d.py`
-**Améliorations:**
-- ✅ Suppression des tentatives d'animation des antennes (bloquées)
-- ✅ Mouvements expressifs selon le contexte émotionnel:
-  - **Salutations**: Hochement tête expressif (stewart_1 + stewart_2 + yaw_body)
-  - **Positif/Joyeux**: Rotation corps + mouvement tête euphorique
-  - **Question/Curieux**: Inclinaison tête + rotation corps
-  - **Triste/Emphatique**: Tête baissée empathique
-- ✅ Amplitudes ajustées selon les limites réelles des joints
-- ✅ Ajout de `animate_with_viewer()` avec transitions fluides
+**Améliorations :**
+- suppression des tentatives d'animation des antennes (bloquées)
+- mouvements expressifs selon le contexte émotionnel
+  - **Salutations** : hochement tête expressif (stewart_1 + stewart_2 + yaw_body)
+  - **Positif/Joyeux** : rotation corps + mouvement tête expressif
+  - **Question/Curieux** : inclinaison tête + rotation corps
+  - **Triste/Empathique** : tête baissée empathique
+- amplitudes ajustées selon les limites réelles des joints
+- ajout de `animate_with_viewer()` avec transitions fluides
 
-#### 2. Alignement avec SDK officiel Reachy-Mini
+#### 2. Alignement avec SDK officiel Reachy Mini
 **Documentation de référence:**
 - GitHub: https://github.com/pollen-robotics/reachy_mini
 - SDK disponible depuis octobre 2024
@@ -57,38 +57,38 @@ D'après l'analyse du modèle officiel `reachy_mini_REAL_OFFICIAL.xml`:
 
 ---
 
-## 🎯 RECOMMANDATIONS POUR FUTURES DÉMOS
+## Recommandations pour futures démos
 
-### ✅ À FAIRE:
+### À faire
 
-1. **Toujours vérifier les joints mobiles AVANT d'animer:**
+1. **Toujours vérifier les joints mobiles avant d'animer :**
 ```bash
 python scripts/check_joints.py
 ```
 
-2. **Utiliser SEULEMENT les 7 joints mobiles:**
+2. **Utiliser uniquement les 7 joints mobiles :**
    - `yaw_body` pour les rotations corps
    - `stewart_1-6` pour les mouvements tête
 
-3. **Respecter les limites des joints:**
+3. **Respecter les limites des joints :**
    - `yaw_body`: [-2.793, 2.793] rad
    - `stewart_1-6`: voir limites spécifiques ci-dessus
 
-4. **Implémenter des mouvements expressifs:**
+4. **Implémenter des mouvements expressifs :**
    - Considérer le contexte émotionnel
    - Utiliser des transitions fluides (sinusoïdes)
    - Éviter les mouvements saccadés
 
-### ❌ À ÉVITER:
+### À éviter
 
-1. **NE PAS animer les antennes** (left_antenna, right_antenna) - bloquées
-2. **NE PAS animer les joints passifs** (passive_1-7) - bloqués
-3. **NE PAS dépasser les limites officielles**
-4. **NE PAS utiliser des amplitudes excessives** (> 0.5 rad)
+1. ne pas animer les antennes (left_antenna, right_antenna) — bloquées
+2. ne pas animer les joints passifs (passive_1-7) — bloqués
+3. ne pas dépasser les limites officielles
+4. ne pas utiliser des amplitudes excessives (> 0.5 rad)
 
 ---
 
-## 🚀 PATTERNS DE MOUVEMENTS RECOMMANDÉS
+## Patterns de mouvements recommandés
 
 ### 1. Salutations
 ```python
@@ -122,7 +122,7 @@ yaw_body: -0.15 rad (rotation lente)
 
 ---
 
-## 📚 RESSOURCES
+## Ressources
 
 - SDK officiel: https://github.com/pollen-robotics/reachy_mini
 - Démo corrigée: `examples/demo_chat_bbia_3d.py`
@@ -131,15 +131,15 @@ yaw_body: -0.15 rad (rotation lente)
 
 ---
 
-## ✅ VALIDATION
+## Validation
 
-**Tests effectués:**
-- ✅ Black (formatage): OK
-- ✅ Ruff (linting): OK  
-- ✅ Joints mobiles identifiés: 7/16
-- ✅ Antennes bloquées confirmées: left_antenna, right_antenna
-- ✅ Mouvements expressifs implémentés
-- ✅ Amplitudes sécurisées selon limites officielles
+**Tests effectués :**
+- Black (formatage) : OK
+- Ruff (linting) : OK  
+- Joints mobiles identifiés : 7/16
+- Antennes bloquées confirmées : left_antenna, right_antenna
+- Mouvements expressifs implémentés
+- Amplitudes sécurisées selon limites officielles
 
-**Prêt pour production avec robot physique !** 🎉
+Prêt pour production avec robot physique.
 

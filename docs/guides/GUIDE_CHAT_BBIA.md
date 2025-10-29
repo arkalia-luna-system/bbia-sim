@@ -1,17 +1,17 @@
-# 💬 Guide d'Utilisation - Chat Intelligent BBIA
+# Guide du chat intelligent BBIA
 
 **Version :** 1.3.0  
 **Date :** Octobre 2025
 
 ---
 
-## 🎯 Vue d'Ensemble
+## Vue d'ensemble
 
-Le **Chat Intelligent BBIA** permet d'avoir une conversation naturelle avec votre robot Reachy Mini. BBIA analyse le sentiment de vos messages et répond intelligemment selon sa personnalité.
+Le chat intelligent BBIA permet d'avoir une conversation avec votre robot Reachy Mini. BBIA analyse le sentiment de vos messages et répond selon sa personnalité configurée.
 
 ---
 
-## 🚀 Démarrage Rapide
+## Démarrage rapide
 
 ### Installation
 
@@ -19,11 +19,11 @@ Le **Chat Intelligent BBIA** permet d'avoir une conversation naturelle avec votr
 # Activer venv
 source venv/bin/activate
 
-# Installer dépendances (si pas déjà fait)
+# Installer dépendances (si nécessaire)
 pip install transformers torch
 ```
 
-### Utilisation Basique
+### Utilisation basique
 
 ```python
 from bbia_sim.bbia_huggingface import BBIAHuggingFace
@@ -38,44 +38,44 @@ print(response)  # 🤖 Bonjour ! Comment allez-vous ? Je suis BBIA, votre robot
 
 ---
 
-## 🎭 Personnalités BBIA
+## Personnalités BBIA
 
 BBIA peut adopter différentes personnalités qui influencent ses réponses :
 
-### 🤖 **friendly_robot** (défaut)
-- **Style** : Robot amical et professionnel
+### friendly_robot (défaut)
+- **Style** : robot amical et professionnel
 - **Emoji** : 🤖
-- **Usage** : Par défaut, conversations standards
+- **Usage** : par défaut, conversations standards
 
 ```python
 bbia.bbia_personality = "friendly_robot"
 print(bbia.chat("Salut"))  # 🤖 Salut ! Comment allez-vous ?
 ```
 
-### 🤔 **curious**
-- **Style** : Curieux et interrogatif
+### curious
+- **Style** : curieux et interrogatif
 - **Emoji** : 🤔
-- **Usage** : Explorer des questions, poser des questions
+- **Usage** : explorer des questions, poser des questions
 
 ```python
 bbia.bbia_personality = "curious"
 print(bbia.chat("Comment ça va ?"))  # 🤔 Comment ça va ?
 ```
 
-### 🎉 **enthusiastic**
-- **Style** : Enthousiaste et énergique
+### enthusiastic
+- **Style** : enthousiaste et énergique
 - **Emoji** : 🎉
-- **Usage** : Motiver, encourager
+- **Usage** : motiver, encourager
 
 ```python
 bbia.bbia_personality = "enthusiastic"
 print(bbia.chat("Super projet !"))  # 🎉 Super projet !
 ```
 
-### 😌 **calm**
-- **Style** : Calme et serein
+### calm
+- **Style** : calme et serein
 - **Emoji** : 😌
-- **Usage** : Apaiser, rassurer
+- **Usage** : apaiser, rassurer
 
 ```python
 bbia.bbia_personality = "calm"
@@ -84,7 +84,7 @@ print(bbia.chat("Je suis stressé"))  # 😌 Respirez, tout va bien...
 
 ---
 
-## 📝 API Référence
+## Référence API
 
 ### `chat(user_message: str, use_context: bool = True) -> str`
 
@@ -142,7 +142,7 @@ for entry in bbia.conversation_history:
 
 ---
 
-## 🎯 Cas d'Usage
+## Cas d'usage
 
 ### Cas 1 : Conversation Simple
 
@@ -193,9 +193,9 @@ bbia.chat("Comment je m'appelle ?")
 
 ---
 
-## 🖥️ Dashboard Interactif
+## Dashboard interactif
 
-### Accéder au Dashboard
+### Accéder au dashboard
 
 ```bash
 # Lancer le dashboard
@@ -205,7 +205,7 @@ python src/bbia_sim/dashboard_advanced.py --port 8000
 # http://localhost:8000
 ```
 
-### Utiliser le Panel Chat
+### Utiliser le panel chat
 
 1. **Ouvrir** le dashboard dans votre navigateur
 2. **Localiser** le panel "💬 Chat avec BBIA"
@@ -213,17 +213,17 @@ python src/bbia_sim/dashboard_advanced.py --port 8000
 4. **Cliquer** sur "Envoyer" ou appuyer sur Entrée
 5. **Voir** la réponse de BBIA s'afficher
 
-**Fonctionnalités :**
-- ✅ Messages en temps réel
-- ✅ Historique conservé (50 derniers)
-- ✅ Interface visuelle claire
-- ✅ Distinction user/BBIA
+Fonctionnalités :
+- messages en temps réel
+- historique conservé (50 derniers)
+- interface claire
+- distinction user/BBIA
 
 ---
 
-## 🧪 Tests
+## Tests
 
-### Lancer les Tests
+### Lancer les tests
 
 ```bash
 # Tous les tests chat
@@ -233,7 +233,7 @@ python -m pytest tests/test_bbia_huggingface_chat.py -v
 python -m pytest tests/test_bbia_huggingface_chat.py::TestBBIAHuggingFaceChat::test_chat_simple_greeting -v
 ```
 
-### Exemple de Test
+### Exemple de test
 
 ```python
 def test_chat():
@@ -249,9 +249,9 @@ def test_chat():
 
 ---
 
-## 🔧 Configuration Avancée
+## Configuration avancée
 
-### Modifier Comportement Réponses
+### Modifier le comportement des réponses
 
 ```python
 # Tous les mots-clés sont dans _generate_simple_response()
@@ -267,7 +267,7 @@ def _generate_simple_response(self, message: str, sentiment: dict) -> str:
     # ... reste du code
 ```
 
-### Ajouter Nouvelle Personnalité
+### Ajouter une nouvelle personnalité
 
 ```python
 # Dans _adapt_response_to_personality() (ligne ~502)
@@ -283,7 +283,7 @@ bbia.bbia_personality = "your_personality"
 
 ---
 
-## 🐛 Dépannage
+## Dépannage
 
 ### Problème : "Hugging Face transformers requis"
 
@@ -306,7 +306,7 @@ pip install transformers torch
 
 ---
 
-## 📚 Exemples Complets
+## Exemples complets
 
 Voir `examples/demo_chat_bbia.py` pour un exemple complet :
 
@@ -316,7 +316,7 @@ python examples/demo_chat_bbia.py
 
 ---
 
-## 🎓 Fonctionnement Technique
+## Fonctionnement technique
 
 ### Flux Chat
 
@@ -343,7 +343,7 @@ BBIA utilise le modèle `cardiffnlp/twitter-roberta-base-sentiment-latest` :
 
 ---
 
-## 🚀 Intégration avec Robot
+## Intégration avec le robot
 
 Le chat fonctionne avec simulation ET robot physique :
 
@@ -368,24 +368,20 @@ if "heureux" in response.lower():
 
 ---
 
-## 📝 Notes Importantes
+## Notes importantes
 
-- ✅ Chat fonctionne sans robot (simulation)
-- ✅ Historique persiste pendant la session
-- ✅ Support français uniquement actuellement
-- ✅ Pas de LLM lourd (réponses basiques rapides)
-- ✅ Thread-safe (une instance par thread recommandée)
-
----
-
-## 🔗 Voir Aussi
-
-- **API Documentation** : `bbia_huggingface.py` docstrings
-- **Exemples** : `examples/demo_chat_bbia.py`
-- **Tests** : `tests/test_bbia_huggingface_chat.py`
-- **Dashboard** : `src/bbia_sim/dashboard_advanced.py`
+- Chat fonctionne sans robot (simulation)
+- Historique persiste pendant la session
+- Support français uniquement actuellement
+- Pas de LLM lourd (réponses basiques rapides)
+- Thread-safe (une instance par thread recommandée)
 
 ---
 
-**Bon chat avec BBIA !** 💬🤖
+## Voir aussi
+
+- Documentation API : docstrings dans `bbia_huggingface.py`
+- Exemples : `examples/demo_chat_bbia.py`
+- Tests : `tests/test_bbia_huggingface_chat.py`
+- Dashboard : `src/bbia_sim/dashboard_advanced.py`
 

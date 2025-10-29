@@ -1,6 +1,6 @@
-# 🎯 Guide Débutant - BBIA-SIM
+# Guide débutant - BBIA-SIM
 
-## 📋 **Mon Premier Robot BBIA en 5 Minutes**
+## Votre premier robot BBIA en 5 minutes
 
 ### Architecture simple
 
@@ -16,7 +16,7 @@ graph LR
     style ROBOT fill:#87CEEB
 ```
 
-### **1️⃣ Installation**
+### 1. Installation
 
 ```bash
 # Cloner le projet
@@ -25,11 +25,9 @@ cd bbia-sim
 
 # Installer les dépendances
 pip install -r requirements.txt
-
-# C'est tout ! ✅
 ```
 
-### **2️⃣ Accéder au Dashboard Web** (NOUVEAU ✨)
+### 2. Accéder au dashboard web
 
 ```bash
 # Lancer le dashboard (FastAPI + WebSocket)
@@ -39,13 +37,13 @@ python src/bbia_sim/dashboard_advanced.py
 # http://localhost:8000
 ```
 
-**💡 Le Dashboard vous permet de :**
-- 💬 Chat interactif avec BBIA
-- 🤖 Contrôler le robot visuellement
-- 📊 Voir les métriques en temps réel
-- 🎛️ Ajuster les émotions et comportements
+Le dashboard permet de :
+- chat interactif avec BBIA
+- contrôler le robot visuellement
+- voir les métriques en temps réel
+- ajuster les émotions et comportements
 
-### **3️⃣ Premier Programme Python**
+### 3. Premier programme Python
 
 ```python
 from bbia_sim.robot_api import RobotFactory
@@ -64,7 +62,7 @@ robot.run_behavior('wake_up', duration=3.0)
 robot.disconnect()
 ```
 
-### **4️⃣ Tester en Simulation 3D**
+### 4. Tester en simulation 3D
 
 ```bash
 # Voir le robot bouger dans MuJoCo
@@ -73,15 +71,15 @@ mjpython examples/demo_mujoco_continue.py
 # Avec des émotions
 mjpython examples/demo_emotion_ok.py --emotion happy --duration 10
 
-# Chat BBIA en 3D (NOUVEAU ✨)
+# Chat BBIA en 3D
 mjpython examples/demo_chat_bbia_3d.py
 ```
 
-**💡 Astuce :** Si vous êtes sur macOS, utilisez `mjpython` au lieu de `python` pour les démos 3D.
+Astuce : Sur macOS, utilisez `mjpython` au lieu de `python` pour les démos 3D.
 
 ---
 
-## 🚀 Quick Start API Publique
+## Quick start - API publique
 
 ```bash
 # Démarrer l’API publique (mode dev)
@@ -94,7 +92,7 @@ curl http://localhost:8000/health
 python deploy/public_api.py --check
 ```
 
-### ⚙️ Variables d’environnement utiles
+### Variables d'environnement utiles
 
 ```bash
 # Exécutions headless/CI (désactive audio matériel)
@@ -108,17 +106,17 @@ export BBIA_LLM_BACKEND=llama.cpp    # ou qwen
 
 ---
 
-## 🤔 **Questions Fréquentes**
+## Questions fréquentes
 
-### **Q : J'ai pas de robot Reachy Mini, ça marche ?**
-**R : OUI !** Mode simulation inclus. Vous développez maintenant, testez sur robot plus tard.
+### Q : Je n'ai pas de robot Reachy Mini, ça marche ?
+R : Oui, le mode simulation est inclus. Vous pouvez développer maintenant et tester sur robot plus tard.
 
-### **Q : C'est compatible Mac/Linux/Windows ?**
-**R :** Mac/Linux : OUI ✅  
-Windows : À tester ⚠️
+### Q : C'est compatible Mac/Linux/Windows ?
+R : Mac/Linux : oui  
+Windows : à tester
 
-### **Q : Puis-je créer mes propres émotions ?**
-**R : OUI !** Le système est extensible. Voir `examples/demo_emotion_ok.py`
+### Q : Puis-je créer mes propres émotions ?
+R : Oui, le système est extensible. Voir `examples/demo_emotion_ok.py`
 
 ---
 
