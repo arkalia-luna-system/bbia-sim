@@ -135,9 +135,9 @@ bash scripts/run_demo_real.sh excited 15
 
 ### **📚 Documentation**
 - **README** : Guide principal et quickstart
-- **ARCHITECTURE.md** : Architecture technique détaillée
-- **CONTRACT.md** : Spécification RobotAPI
-- **TESTING_GUIDE.md** : Guide tests et validation
+- **Architecture** : `docs/architecture/ARCHITECTURE.md`
+- **Contrat RobotAPI** : `docs/references/CONTRACT.md`
+- **Guide de Test** : `docs/guides_techniques/TESTING_GUIDE.md`
 
 ### **🎯 Scripts Utiles**
 - **`hardware_dry_run.py`** : Test matériel complet
@@ -148,13 +148,13 @@ bash scripts/run_demo_real.sh excited 15
 ### **🧪 Tests**
 ```bash
 # Tests complets
-pytest tests/ -v
+python -m pytest tests/ -v
 
 # Golden tests uniquement
-pytest tests/test_golden_traces.py -v
+python -m pytest tests/test_golden_traces.py -v
 
 # Tests headless
-pytest tests/ -m "not e2e" -v
+python -m pytest tests/ -m "not e2e" -v
 ```
 
 ---
