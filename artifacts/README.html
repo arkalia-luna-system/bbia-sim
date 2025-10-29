@@ -1,3 +1,23 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>BBIA DOC</title>
+<style>
+  :root { color-scheme: dark; }
+  html, body { height: 100%; margin: 0; }
+  body { background-color: #0b0b0b; color: #f5f5f5; font: 16px/1.5 -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Helvetica Neue, Arial, "Noto Sans"; }
+  a { color: #9cdcfe; }
+  code, pre { background: #111; color: #eee; }
+  pre { white-space: pre-wrap; padding: 16px; border-radius: 8px; overflow-x: auto; }
+  .container { max-width: 960px; margin: 24px auto; padding: 0 16px; }
+  h1, h2, h3 { color: #ffffff; }
+  hr { border: none; height: 1px; background: #222; }
+</style>
+</head>
+<body>
+<div class="container">
+<pre>
 # BBIA Reachy Mini Simulation
 
 [![Version](https://img.shields.io/badge/version-1.3.1-blue.svg)](https://github.com/arkalia-luna-system/bbia-sim)
@@ -58,38 +78,38 @@ BBIA-SIM v1.3.1 simule le robot Reachy Mini avec un haut niveau de fidélité :
 ```mermaid
 graph TB
     subgraph "Modules BBIA"
-        EMOTIONS[bbia_emotions.py<br/>12 émotions]
-        VISION[bbia_vision.py<br/>Détection objets]
-        AUDIO[bbia_audio.py<br/>Enregistrement]
-        VOICE[bbia_voice.py<br/>TTS/STT]
-        BEHAVIOR[bbia_behavior.py<br/>Comportements]
+        EMOTIONS[bbia_emotions.py&lt;br/&gt;12 émotions]
+        VISION[bbia_vision.py&lt;br/&gt;Détection objets]
+        AUDIO[bbia_audio.py&lt;br/&gt;Enregistrement]
+        VOICE[bbia_voice.py&lt;br/&gt;TTS/STT]
+        BEHAVIOR[bbia_behavior.py&lt;br/&gt;Comportements]
     end
     
     subgraph "Simulation MuJoCo"
-        SIMULATOR[MuJoCoSimulator<br/>Physique 3D]
-        MODEL[Modèle officiel<br/>reachy_mini_REAL_OFFICIAL.xml]
-        ASSETS[41 Assets STL<br/>Officiels Pollen]
+        SIMULATOR[MuJoCoSimulator&lt;br/&gt;Physique 3D]
+        MODEL[Modèle officiel&lt;br/&gt;reachy_mini_REAL_OFFICIAL.xml]
+        ASSETS[41 Assets STL&lt;br/&gt;Officiels Pollen]
     end
     
     subgraph "API & Services"
-        REST[REST API<br/>FastAPI]
-        WEBSOCKET[WebSocket<br/>Temps réel]
-        DAEMON[Daemon<br/>Service simulation]
+        REST[REST API&lt;br/&gt;FastAPI]
+        WEBSOCKET[WebSocket&lt;br/&gt;Temps réel]
+        DAEMON[Daemon&lt;br/&gt;Service simulation]
     end
     
-    EMOTIONS --> SIMULATOR
-    VISION --> SIMULATOR
-    AUDIO --> SIMULATOR
-    VOICE --> SIMULATOR
-    BEHAVIOR --> SIMULATOR
+    EMOTIONS --&gt; SIMULATOR
+    VISION --&gt; SIMULATOR
+    AUDIO --&gt; SIMULATOR
+    VOICE --&gt; SIMULATOR
+    BEHAVIOR --&gt; SIMULATOR
     
-    SIMULATOR --> MODEL
-    MODEL --> ASSETS
+    SIMULATOR --&gt; MODEL
+    MODEL --&gt; ASSETS
     
-    SIMULATOR --> REST
-    SIMULATOR --> WEBSOCKET
-    REST --> DAEMON
-    WEBSOCKET --> DAEMON
+    SIMULATOR --&gt; REST
+    SIMULATOR --&gt; WEBSOCKET
+    REST --&gt; DAEMON
+    WEBSOCKET --&gt; DAEMON
 ```
 
 ## 📊 Métriques du projet
@@ -336,7 +356,7 @@ python scripts/download_ALL_stl.py
 - ✅ **Qualité code** : Black, Ruff, MyPy, Bandit ✅
 - ✅ **Tests** : Suite complète + SDK officiel
 
-> Pour plus de détails : `python -m pytest --cov=src --cov-report=html`
+&gt; Pour plus de détails : `python -m pytest --cov=src --cov-report=html`
 
 ### Commandes de Tests
 
@@ -369,3 +389,7 @@ Le robot Reachy Mini est simulé avec une fidélité élevée aux spécification
 
 ---
 *Dernière mise à jour : Octobre 2025*
+</pre>
+</div>
+</body>
+</html>
