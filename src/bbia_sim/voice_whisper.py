@@ -100,9 +100,9 @@ class WhisperSTT:
             result = cast(
                 dict[str, Any],
                 self.model.transcribe(
-                audio_path,
-                language=self.language if self.language != "auto" else None,
-                fp16=False,  # Éviter les problèmes de compatibilité
+                    audio_path,
+                    language=self.language if self.language != "auto" else None,
+                    fp16=False,  # Éviter les problèmes de compatibilité
                 ),
             )
 

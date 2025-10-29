@@ -69,7 +69,7 @@ def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)) 
             f"Authentification réussie avec token: {settings.mask_token(credentials.credentials)}"
         )
 
-    return credentials.credentials
+    return str(credentials.credentials)
 
 
 @asynccontextmanager

@@ -383,7 +383,7 @@ def trim_csv_rows(path: str, max_entries: int) -> None:
     if max_entries <= 0 or not os.path.exists(path):
         return
     try:
-        with open(path, "r", encoding="utf-8") as f:
+        with open(path, encoding="utf-8") as f:
             lines = f.readlines()
         if not lines:
             return
