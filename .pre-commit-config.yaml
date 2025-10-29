@@ -24,7 +24,9 @@ repos:
     rev: 1.7.5
     hooks:
       - id: bandit
-        args: [-r, src/]
+        # Exécuter uniquement sur les fichiers Python modifiés (pas un -r global)
+        pass_filenames: true
+        types: [python]
         exclude: ^tests/
 
   - repo: https://github.com/pycqa/isort

@@ -23,6 +23,7 @@ import datetime as dt
 import json
 import os
 import re
+import subprocess
 import sys
 from dataclasses import dataclass
 from typing import Any
@@ -496,6 +497,19 @@ def write_diff_json(
         json.dump(payload, f, ensure_ascii=False, indent=2)
 
 
+def notify_macos(title: str, message: str) -> None:
+    if os.environ.get("VEILLE_NOTIFY_MACOS", "true").lower() not in {"1", "true", "yes"}:
+        return
+    try:
+        subprocess.run([
+            "osascript",
+            "-e",
+            f'display notification "{message}" with title "{title}"',
+        ], check=False)
+    except Exception:
+        pass
+
+
 def main(argv: list[str]) -> int:
     gh_token = os.environ.get("GH_TOKEN")
     # Permettre d’écraser la liste via un fichier si souhaité
@@ -508,8 +522,9 @@ def main(argv: list[str]) -> int:
     off_diff = os.path.join("log", "reachy_official_diff.json")
 
     # Options via variables d'environnement
-    min_score = int(os.environ.get("VEILLE_MIN_SCORE", "0") or 0)
-    exclude_official = os.environ.get("VEILLE_EXCLUDE_OFFICIAL", "false").lower() in {
+    # Par défaut: filtrer le bruit (score <2) et exclure l'officiel
+    min_score = int(os.environ.get("VEILLE_MIN_SCORE", "2") or 2)
+    exclude_official = os.environ.get("VEILLE_EXCLUDE_OFFICIAL", "true").lower() in {
         "1",
         "true",
         "yes",
@@ -606,6 +621,22 @@ def main(argv: list[str]) -> int:
             )
             for c in all_candidates[:5]:
                 print(f"  - [{c.score}] {c.title} -> {c.identifier}")
+
+    # Notifications ciblées: nouveaux candidats non-officiels et score >= seuil, avec API/WS/Dashboard
+    try:
+        threshold = int(os.environ.get("VEILLE_NOTIFY_THRESHOLD", "3") or 3)
+        with open(out_diff, encoding="utf-8") as f:
+            diff_now = json.load(f)
+        def _is_official_identifier(ident: str) -> bool:
+            return ident.startswith("https://github.com/pollen-robotics/") or ident.startswith("https://huggingface.co/spaces/pollen-robotics/")
+        def _has_signal(d: dict) -> bool:
+            det = d.get("details") or {}
+            return bool(det.get("api") or det.get("ws") or det.get("dashboard"))
+        promising_new = [n for n in diff_now.get("new", []) if not _is_official_identifier(str(n.get("identifier", ""))) and int(n.get("score", 0)) >= threshold and _has_signal(n)]
+        if promising_new:
+            notify_macos("Veille Reachy Mini", f"{len(promising_new)} nouveau(x) score≥{threshold} (API/WS/UI)")
+    except Exception:
+        pass
 
     # Suivi officiel pollen-robotics/reachy_mini et fichier de news
     if watch_official:
