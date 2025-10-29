@@ -12,6 +12,7 @@ from typing import TYPE_CHECKING, Any, Optional
 
 import numpy as np
 
+
 class _SoundDeviceShim:
     """Shim minimal pour permettre le patch dans les tests (sd.rec/play/wait).
 
