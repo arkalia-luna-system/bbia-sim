@@ -4,7 +4,6 @@ Tests unitaires pour watchdog monitoring temps réel
 Créé suite audit BBIA → Reachy Integration
 """
 
-import threading
 import time
 
 import pytest
@@ -129,6 +128,7 @@ class TestWatchdogMonitoring:
         backend.connect()
 
         # Essayer de démarrer plusieurs fois
+        first_thread = backend._watchdog_thread
         backend._start_watchdog()
         backend._start_watchdog()
         backend._start_watchdog()
@@ -136,11 +136,11 @@ class TestWatchdogMonitoring:
         # Attendre un peu pour que les threads se stabilisent (évite race condition)
         time.sleep(0.15)
 
-        # Devrait toujours y avoir un seul thread
-        thread_count = sum(
-            1 for thread in threading.enumerate() if thread.name == "ReachyWatchdog"
+        # Devrait toujours être le même thread (idempotence démarrage)
+        assert backend._watchdog_thread is first_thread
+        assert (
+            backend._watchdog_thread is not None and backend._watchdog_thread.is_alive()
         )
-        assert thread_count == 1, "Un seul thread watchdog doit exister"
 
         # Nettoyage
         backend.disconnect()

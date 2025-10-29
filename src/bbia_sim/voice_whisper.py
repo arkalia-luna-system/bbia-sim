@@ -128,6 +128,13 @@ class WhisperSTT:
         Returns:
             Texte transcrit ou None si erreur
         """
+        # Désactivation explicite audio (CI/headless)
+        if os.environ.get("BBIA_DISABLE_AUDIO", "0") == "1":
+            logger.info(
+                "🎤 Micro désactivé (BBIA_DISABLE_AUDIO=1) - skip enregistrement"
+            )
+            return None
+
         # Vérification globale de disponibilité
         if not WHISPER_AVAILABLE:
             logger.error("❌ Whisper non disponible")

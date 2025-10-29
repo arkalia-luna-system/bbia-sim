@@ -78,6 +78,8 @@ class ReachyMiniBackend(RobotAPI):
         self._should_stop_watchdog = threading.Event()
         self._watchdog_interval = 0.1  # 100ms entre vérifications
         self._last_heartbeat: float = 0.0
+        # Verrou pour garantir l'idempotence stricte de _start_watchdog
+        self._watchdog_lock = threading.Lock()
 
         # Constantes joints Stewart (évite magic numbers)
         self.STEWART_JOINTS_COUNT = 6  # 6 joints tête plateforme Stewart
@@ -228,26 +230,28 @@ class ReachyMiniBackend(RobotAPI):
 
     def _start_watchdog(self) -> None:
         """Démarre le thread watchdog pour monitoring temps réel."""
-        # Ne jamais réutiliser un thread externe: watchdog strictement par instance
-        if self._watchdog_thread is not None and self._watchdog_thread.is_alive():
-            logger.debug("Watchdog déjà actif pour cette instance")
-            return
-        # IMPORTANT: Ne jamais réutiliser un thread global nommé
-        # "ReachyWatchdog" appartenant à une autre instance.
-        # Chaque instance possède son propre Event `_should_stop_watchdog`.
-        # Réutiliser un thread externe empêcherait l'arrêt propre dans les tests
-        # et introduirait des conditions de course.
-        # Nettoyer si un ancien thread est terminé
-        self._watchdog_thread = None
+        with self._watchdog_lock:
+            # Ne jamais réutiliser un thread externe: watchdog strictement par instance
+            if self._watchdog_thread is not None and self._watchdog_thread.is_alive():
+                logger.debug("Watchdog déjà actif pour cette instance")
+                return
+            # IMPORTANT: Ne jamais réutiliser un thread global nommé
+            # "ReachyWatchdog" appartenant à une autre instance.
+            # Chaque instance possède son propre Event `_should_stop_watchdog`.
+            # Réutiliser un thread externe empêcherait l'arrêt propre dans les tests
+            # et introduirait des conditions de course.
+            # Nettoyer si un ancien thread est terminé
+            self._watchdog_thread = None
 
-        self._should_stop_watchdog.clear()
-        self._watchdog_thread = threading.Thread(
-            target=self._watchdog_monitor,
-            daemon=True,
-            name="ReachyWatchdog",
-        )
-        self._watchdog_thread.start()
-        logger.debug("Watchdog démarré")
+            self._should_stop_watchdog.clear()
+            # Utiliser un nom unique par instance pour éviter les collisions inter-tests
+            self._watchdog_thread = threading.Thread(
+                target=self._watchdog_monitor,
+                daemon=True,
+                name=f"ReachyWatchdog-{id(self)}",
+            )
+            self._watchdog_thread.start()
+            logger.debug("Watchdog démarré")
 
     def _stop_watchdog(self) -> None:
         """Arrête le thread watchdog."""
