@@ -153,11 +153,11 @@
 ### ✅ **Points Positifs**
 - **Design épuré** : Facile à reproduire
 - **Expressivité** : "Yeux" et antennes expressifs
-- **Taille compacte** : Parfait pour bureau/maison
+- **Taille compacte** : Adapté à un bureau/maison
 - **Open source** : Développement communautaire
 
 ### 🎯 **Pour BBIA**
-- **Robot parfait** : Pour l'IA émotionnelle
+- **Usage recommandé** : Prototypage d'IA émotionnelle
 - **Expressivité** : Idéal pour les émotions
 - **Interactions** : Design adapté aux interactions
 - **Futur** : Technologie prometteuse

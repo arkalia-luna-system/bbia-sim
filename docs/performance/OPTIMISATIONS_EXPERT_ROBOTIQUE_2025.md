@@ -145,7 +145,7 @@ robot_api.goto_target(head=pose, body_yaw=yaw, duration=transition_duration, met
 **Avant:** `set_target_head_pose()` + `set_joint_pos()` séparés  
 **Après:** `goto_target(head=pose, body_yaw=yaw)` combiné
 
-**Bénéfice:** Synchronisation parfaite tête+corps, réduction 50% des appels SDK
+**Bénéfice:** Synchronisation tête+corps améliorée, réduction d’environ 50% des appels SDK
 
 #### ✅ Synchronisation Voix Optimisée
 **Avant:** `set_joint_position()` répétés → mouvements saccadés  
@@ -209,7 +209,7 @@ backend.async_play_move(move, play_frequency=100.0)
 ### Robustesse
 - **Avant:** Crashes sur coordonnées invalides
 - **Après:** Validation complète + fallbacks multiples
-- **Gain:** 100% de continuité de service
+- **Gain:** continuité de service améliorée
 
 ---
 
@@ -278,7 +278,7 @@ backend.goto_target(head=pose, duration=0.8, method="minjerk")
 **Statut:** ✅ **OPTIMISATIONS EXPERTES COMPLÈTES**
 
 Tous les modules analysés sont maintenant:
-- ✅ **100% conformes** au SDK officiel Reachy-mini
+- ✅ Conformes au SDK officiel Reachy-mini
 - ✅ **Optimisés** pour performances maximales
 - ✅ **Robustes** avec validation complète
 - ✅ **Expressifs** avec transitions fluides
