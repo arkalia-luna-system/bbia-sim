@@ -101,10 +101,13 @@ class TestBBIAAudioExtended:
 
         try:
             with (
-                patch("src.bbia_sim.bbia_audio.soundfile") as mock_soundfile,
-                patch("src.bbia_sim.bbia_audio.wave.open") as mock_wave_open,
-                patch("src.bbia_sim.bbia_audio.sd.play"),
-                patch("src.bbia_sim.bbia_audio.sd.wait"),
+                patch(
+                    "os.environ.get", return_value="0"
+                ),  # Désactiver BBIA_DISABLE_AUDIO
+                patch("bbia_sim.bbia_audio.soundfile") as mock_soundfile,
+                patch("bbia_sim.bbia_audio.wave.open") as mock_wave_open,
+                patch("bbia_sim.bbia_audio.sd.play"),
+                patch("bbia_sim.bbia_audio.sd.wait"),
             ):
                 # Mock soundfile qui échoue pour forcer fallback vers wave
                 mock_soundfile.info.side_effect = Exception("soundfile not available")
@@ -127,8 +130,9 @@ class TestBBIAAudioExtended:
     def test_lire_audio_error(self):
         """Test erreur de lecture audio."""
         with (
-            patch("src.bbia_sim.bbia_audio.soundfile") as mock_soundfile,
-            patch("src.bbia_sim.bbia_audio.wave.open") as mock_wave_open,
+            patch("os.environ.get", return_value="0"),  # Désactiver BBIA_DISABLE_AUDIO
+            patch("bbia_sim.bbia_audio.soundfile") as mock_soundfile,
+            patch("bbia_sim.bbia_audio.wave.open") as mock_wave_open,
         ):
             # Mock soundfile qui échoue
             mock_soundfile.info.side_effect = Exception("soundfile error")
@@ -226,7 +230,10 @@ class TestBBIAAudioExtended:
 
     def test_detecter_son_error(self):
         """Test erreur de détection de son."""
-        with patch("src.bbia_sim.bbia_audio.wave.open") as mock_wave_open:
+        with (
+            patch("os.environ.get", return_value="0"),  # Désactiver BBIA_DISABLE_AUDIO
+            patch("bbia_sim.bbia_audio.wave.open") as mock_wave_open,
+        ):
             mock_wave_open.side_effect = Exception("File error")
 
             result = detecter_son("nonexistent.wav", seuil=500)
@@ -335,8 +342,8 @@ class TestBBIAAudioExtended:
                     "os.environ.get", return_value="0"
                 ),  # Désactiver BBIA_DISABLE_AUDIO
                 patch("bbia_sim.bbia_audio.wave.open") as mock_wave_open,
-                patch("src.bbia_sim.bbia_audio.sd.play"),
-                patch("src.bbia_sim.bbia_audio.sd.wait"),
+                patch("bbia_sim.bbia_audio.sd.play"),
+                patch("bbia_sim.bbia_audio.sd.wait"),
             ):
 
                 mock_wf = MagicMock()

@@ -163,6 +163,8 @@ class ReachyMiniBackend(RobotAPI):
             self.robot = None
             self.is_connected = True  # Mode simulation
             self.start_time = time.time()
+            self._last_heartbeat = time.time()
+            self._start_watchdog()
             return True
         except Exception as e:
             # Autres erreurs - activer mode simulation pour éviter crash
@@ -175,6 +177,8 @@ class ReachyMiniBackend(RobotAPI):
                 self.robot = None
                 self.is_connected = True  # Mode simulation
                 self.start_time = time.time()
+                self._last_heartbeat = time.time()
+                self._start_watchdog()
                 return True
             else:
                 logger.warning(
