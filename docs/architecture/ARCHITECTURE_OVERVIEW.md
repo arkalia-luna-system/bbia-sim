@@ -1,34 +1,34 @@
-# 🏗️ BBIA-SIM v1.3.0 - Architecture Overview
+# BBIA-SIM v1.3.0 - Architecture overview
 
-## 📋 Vue d'Ensemble
+## Vue d'ensemble
 
-**BBIA-SIM v1.3.0** est un moteur cognitif Python avancé pour robot Reachy Mini Wireless, intégrant simulation MuJoCo, intelligence artificielle légère, et contrôle unifié via RobotAPI. Le projet atteint une **conformité parfaite** avec le SDK officiel Reachy Mini tout en apportant des innovations techniques majeures.
-
----
-
-## 🎯 Objectifs Architecturaux
-
-### **✅ Conformité SDK Officiel**
-- **21/21 méthodes** du SDK officiel implémentées
-- **Types de retour** conformes (None, numpy.ndarray, tuple)
-- **Backend ReachyMiniBackend** prêt pour robot physique
-- **Tests de conformité** automatisés
-
-### **✅ Innovation Technique**
-- **RobotAPI Unifié** : Interface abstraite simulation ↔ robot réel
-- **Modules BBIA** : IA cognitive avancée (émotions, vision, comportements)
-- **Bridge Zenoh/FastAPI** : Intégration architecture distribuée
-- **Dashboard Web** : Interface temps réel professionnelle
-
-### **✅ Qualité Professionnelle**
-- **Tests automatisés** : 27 passent, 13 skippés
-- **Outils qualité** : Black, Ruff, MyPy, Bandit ✅
-- **CI/CD** : GitHub Actions avec artefacts
-- **Documentation** : Complète et à jour
+**BBIA-SIM v1.3.0** est un moteur cognitif Python pour robot Reachy Mini Wireless, intégrant la simulation MuJoCo, une IA légère et un contrôle unifié via `RobotAPI`. Le projet vise la conformité avec le SDK officiel Reachy Mini et apporte plusieurs améliorations techniques.
 
 ---
 
-## 🏛️ Architecture Générale
+## Objectifs architecturaux
+
+### Conformité SDK
+- 21/21 méthodes du SDK officiel implémentées
+- Types de retour conformes (None, numpy.ndarray, tuple)
+- Backend ReachyMiniBackend prêt pour robot physique
+- Tests de conformité automatisés
+
+### Innovation technique
+- RobotAPI unifié : interface abstraite simulation ↔ robot réel
+- Modules BBIA : IA cognitive (émotions, vision, comportements)
+- Bridge Zenoh/FastAPI : intégration distribution
+- Dashboard web : interface temps réel
+
+### Qualité
+- Tests automatisés : 27 passent, 13 skippés
+- Outils qualité : Black, Ruff, MyPy, Bandit
+- CI/CD : GitHub Actions avec artefacts
+- Documentation : complète et à jour
+
+---
+
+## Architecture générale
 
 ```mermaid
 graph TB
@@ -46,7 +46,7 @@ graph TB
     
     subgraph "Couche Intégration"
         BRIDGE[Bridge Zenoh/FastAPI<br/>Communication Distribuée]
-        SDK[SDK Officiel Reachy Mini<br/>Conformité 100%]
+        SDK[SDK Officiel Reachy Mini<br/>Conformité]
     end
     
     subgraph "Couche Données"
@@ -79,9 +79,9 @@ graph TB
 
 ---
 
-## 🔧 Composants Principaux
+## Composants principaux
 
-### **1. RobotAPI Unifié**
+### 1. RobotAPI unifié
 
 **Fichier principal :** `src/bbia_sim/robot_api.py`
 
@@ -98,15 +98,15 @@ class RobotAPI:
     def set_emotion(self, emotion: str, intensity: float) -> None
 ```
 
-**Avantages :**
-- ✅ **Même code** pour simulation et robot réel
-- ✅ **Conformité SDK** garantie
-- ✅ **Tests automatisés** de conformité
-- ✅ **Migration transparente** simulation → robot
+Avantages :
+- même code pour simulation et robot réel
+- conformité SDK
+- tests automatisés de conformité
+- migration simulation → robot
 
-### **2. Modules BBIA (Bio-Inspired Artificial Intelligence)**
+### 2. Modules BBIA (Bio-Inspired Artificial Intelligence)
 
-#### **🧠 BBIAEmotions** (`bbia_emotions.py`)
+#### BBIAEmotions (`bbia_emotions.py`)
 ```python
 class BBIAEmotions:
     """Gestion des émotions robotiques."""
@@ -118,7 +118,7 @@ class BBIAEmotions:
 
 **Émotions supportées :** 12 émotions (neutral, happy, sad, angry, surprised, confused, determined, nostalgic, proud, curious, excited, fearful)
 
-#### **👁️ BBIAVision** (`bbia_vision.py`)
+#### BBIAVision (`bbia_vision.py`)
 ```python
 class BBIAVision:
     """Vision par ordinateur et reconnaissance d'objets."""
@@ -130,7 +130,7 @@ class BBIAVision:
 
 **Technologies :** YOLOv8n, MediaPipe, OpenCV
 
-#### **🎵 BBIAVoice** (`bbia_voice.py`)
+#### BBIAVoice (`bbia_voice.py`)
 ```python
 class BBIAVoice:
     """Synthèse vocale et reconnaissance vocale."""
@@ -142,7 +142,7 @@ class BBIAVoice:
 
 **Technologies :** Whisper STT, pyttsx3 TTS
 
-#### **🎭 BBIABehavior** (`bbia_behavior.py`)
+#### BBIABehavior (`bbia_behavior.py`)
 ```python
 class BBIABehaviorManager:
     """Gestionnaire de comportements complexes."""
@@ -155,7 +155,7 @@ class BBIABehaviorManager:
 
 **Comportements :** wake_up, greeting, goto_sleep, nod, wave, dance, etc.
 
-#### **🧠 BBIAAdaptiveBehavior** (`bbia_adaptive_behavior.py`)
+#### BBIAAdaptiveBehavior (`bbia_adaptive_behavior.py`)
 ```python
 class BBIAAdaptiveBehavior:
     """Comportements adaptatifs basés sur le contexte."""
@@ -167,9 +167,9 @@ class BBIAAdaptiveBehavior:
 
 **Innovation :** Apprentissage des préférences utilisateur, adaptation contextuelle
 
-### **3. Backends Robot**
+### 3. Backends robot
 
-#### **🎮 MuJoCoBackend** (`backends/mujoco_backend.py`)
+#### MuJoCoBackend (`backends/mujoco_backend.py`)
 ```python
 class MuJoCoBackend(RobotAPI):
     """Backend simulation MuJoCo."""
@@ -179,13 +179,13 @@ class MuJoCoBackend(RobotAPI):
         self.physics_engine = PhysicsEngine()
 ```
 
-**Caractéristiques :**
-- ✅ **Physique réaliste** : Gravité, collisions, dynamiques
-- ✅ **Modèle officiel** : `reachy_mini_REAL_OFFICIAL.xml`
-- ✅ **41 assets STL** : Modèles 3D officiels Pollen Robotics
-- ✅ **Performance** : 100Hz, latence <1ms
+Caractéristiques :
+- physique : gravité, collisions, dynamiques
+- modèle officiel : `reachy_mini_REAL_OFFICIAL.xml`
+- 41 assets STL : modèles 3D officiels Pollen Robotics
+- performance : 100 Hz, latence <1 ms
 
-#### **🤖 ReachyMiniBackend** (`backends/reachy_mini_backend.py`)
+#### ReachyMiniBackend (`backends/reachy_mini_backend.py`)
 ```python
 class ReachyMiniBackend(RobotAPI):
     """Backend robot Reachy Mini officiel."""
@@ -195,12 +195,12 @@ class ReachyMiniBackend(RobotAPI):
         self.zenoh_client = ZenohClient()
 ```
 
-**Caractéristiques :**
-- ✅ **SDK officiel** : Conformité 100% avec `reachy_mini`
-- ✅ **Communication Zenoh** : Architecture distribuée
-- ✅ **Prêt robot physique** : Intégration hardware complète
+Caractéristiques :
+- SDK officiel : conformité avec `reachy_mini`
+- Communication Zenoh
+- Prêt robot physique : intégration matérielle
 
-### **4. Bridge Zenoh/FastAPI**
+### 4. Bridge Zenoh/FastAPI
 
 **Fichier principal :** `src/bbia_sim/daemon/bridge.py`
 
@@ -213,17 +213,17 @@ class ZenohBridge:
     def get_current_state(self) -> RobotState
 ```
 
-**Fonctionnalités :**
-- ✅ **Communication distribuée** : Zenoh protocol
-- ✅ **WebSocket temps réel** : Interface web
-- ✅ **Commandes robot** : goto_target, set_target, set_emotion
-- ✅ **État temps réel** : Joints, émotions, capteurs
+Fonctionnalités :
+- communication distribuée (Zenoh)
+- WebSocket temps réel
+- commandes robot : goto_target, set_target, set_emotion
+- état temps réel : joints, émotions, capteurs
 
 ---
 
-## 🧪 Tests et Validation
+## Tests et validation
 
-### **Tests de Conformité SDK**
+### Tests de conformité SDK
 ```python
 # tests/test_reachy_mini_complete_conformity.py
 class TestReachyMiniCompleteConformity:
@@ -234,9 +234,9 @@ class TestReachyMiniCompleteConformity:
     def test_behavior_api_conformity(self)
 ```
 
-**Résultats :** 16/16 tests passent ✅
+Résultats : 16/16 tests passent
 
-### **Tests Modules BBIA**
+### Tests modules BBIA
 ```python
 # tests/test_bbia_phase2_modules.py
 class TestBBIAAdaptiveBehavior:
@@ -245,9 +245,9 @@ class TestBBIAAdaptiveBehavior:
     def test_user_preferences(self)
 ```
 
-**Résultats :** 11/11 tests passent ✅
+Résultats : 11/11 tests passent
 
-### **Tests Dépendances SDK**
+### Tests dépendances SDK
 ```python
 # tests/test_sdk_dependencies.py
 class TestSDKDependencies:
@@ -256,35 +256,35 @@ class TestSDKDependencies:
     def test_motor_controller_import(self)
 ```
 
-**Résultats :** 15/16 tests passent ✅
+Résultats : 15/16 tests passent
 
 ---
 
-## 📊 Métriques de Performance
+## Métriques de performance
 
-### **Simulation MuJoCo**
-- **Latence** : <1ms (commande → mouvement)
-- **Fréquence** : 100Hz (boucle physique)
-- **CPU** : <5% (optimisé)
-- **RAM** : <200MB (modèle chargé)
+### Simulation MuJoCo
+- latence : <1 ms (commande → mouvement)
+- fréquence : 100 Hz (boucle physique)
+- CPU : <5%
+- RAM : <200 MB (modèle chargé)
 
-### **Robot Réel (Prévu)**
-- **Latence** : 5-20ms (Wi-Fi) / 1-5ms (USB)
-- **Fréquence** : 50Hz (limitation hardware)
-- **CPU** : Raspberry Pi 5 optimisé
-- **RAM** : <512MB (limitation Pi)
+### Robot réel (prévu)
+- latence : 5-20 ms (Wi‑Fi) / 1-5 ms (USB)
+- fréquence : 50 Hz (limitation matérielle)
+- CPU : Raspberry Pi 5
+- RAM : <512 MB
 
-### **Dashboard Web**
-- **WebSocket** : Temps réel <10ms
-- **API REST** : <50ms (endpoints)
-- **Concurrent** : 10+ clients simultanés
-- **Uptime** : 99.9% (monitoring)
+### Dashboard web
+- WebSocket : <10 ms
+- API REST : <50 ms
+- Concurrence : 10+ clients
+- Uptime : 99.9%
 
 ---
 
-## 🔄 Flux de Données
+## Flux de données
 
-### **Simulation → Robot Réel**
+### Simulation → robot réel
 ```mermaid
 sequenceDiagram
     participant User as Utilisateur
@@ -312,7 +312,7 @@ sequenceDiagram
     Dashboard->>User: Confirmation
 ```
 
-### **Bridge Zenoh/FastAPI**
+### Bridge Zenoh/FastAPI
 ```mermaid
 sequenceDiagram
     participant Client as Client Web
@@ -333,9 +333,9 @@ sequenceDiagram
 
 ---
 
-## 🚀 Déploiement et Intégration
+## Déploiement et intégration
 
-### **Environnement de Développement**
+### Environnement de développement
 ```bash
 # Installation
 pip install -e .
@@ -353,7 +353,7 @@ mypy src/
 bandit -r src/
 ```
 
-### **Environnement de Production**
+### Environnement de production
 ```bash
 # Simulation
 python -m bbia_sim.dashboard_advanced
@@ -365,7 +365,7 @@ python -m bbia_sim.daemon.bridge
 uvicorn src.bbia_sim.daemon.app.main:app --host 0.0.0.0 --port 8000
 ```
 
-### **Docker (Optionnel)**
+### Docker (optionnel)
 ```dockerfile
 FROM python:3.10-slim
 
@@ -379,20 +379,20 @@ CMD ["uvicorn", "src.bbia_sim.daemon.app.main:app", "--host", "0.0.0.0", "--port
 
 ---
 
-## 📚 Documentation et Guides
+## Documentation et guides
 
-### **Guides Disponibles**
+### Guides disponibles
 - 📘 **ARCHITECTURE_DETAILED.md** : Guide architecture complet
 - 🚀 **MIGRATION_GUIDE.md** : Migration simulation → robot réel
 - 🧪 **TESTING_GUIDE.md** : Guide tests et validation
 - 📖 **README.md** : Documentation principale
 
-### **API Documentation**
+### Documentation de l’API
 - 🌐 **Swagger UI** : `http://localhost:8000/docs`
 - 📋 **ReDoc** : `http://localhost:8000/redoc`
 - 📄 **OpenAPI** : `http://localhost:8000/openapi.json`
 
-### **Exemples d'Utilisation**
+### Exemples d’utilisation
 ```python
 # Exemple basique
 from bbia_sim.robot_factory import RobotFactory
@@ -415,24 +415,24 @@ objects = vision.detect_objects(camera_image)
 
 ---
 
-## 🎯 Roadmap et Évolutions
+## Roadmap et évolutions
 
-### **✅ Phase 1 - Améliorations Courtes (TERMINÉE)**
+### Phase 1 - améliorations courtes (terminée)
 - ✅ Dashboard Web Avancé
 - ✅ Tests de Performance
 - ✅ Documentation Technique
 
-### **✅ Phase 2 - Innovations Moyennes (TERMINÉE)**
+### Phase 2 - innovations moyennes (terminée)
 - ✅ IA Avancée (Hugging Face, émotions, comportements)
 - 🔄 Simulation Physique Avancée (REPORTÉ)
 - 🔄 Intégration ROS2 (REPORTÉ)
 
-### **✅ Phase 3 - Ouverture Écosystème (TERMINÉE)**
+### Phase 3 - ouverture écosystème (terminée)
 - ✅ API Publique Documentée
 - ✅ Mode Démo Complet
 - ✅ Support Open-Source Professionnel
 
-### **🚀 Phase 4 - Consolidation SDK (EN COURS)**
+### Phase 4 - consolidation SDK (en cours)
 - ✅ Dépendances SDK intégrées
 - 🔄 Méthodes SDK critiques alignées
 - 🔄 Benchmarks + bridge robot réel
@@ -440,20 +440,19 @@ objects = vision.detect_objects(camera_image)
 
 ---
 
-## 🏆 Conclusion
+## Conclusion
 
-**BBIA-SIM v1.3.0** représente une **innovation technique majeure** dans l'écosystème Reachy Mini :
+**BBIA-SIM v1.3.0** apporte des améliorations techniques à l'écosystème Reachy Mini :
 
-### **✅ Points Forts Uniques**
-- **RobotAPI Unifié** : Innovation architecturale majeure
-- **Modules BBIA** : IA cognitive avancée unique
-- **Conformité SDK** : 100% conforme au SDK officiel
-- **Qualité Professionnelle** : Tests, CI/CD, documentation
+### Points forts
+- RobotAPI unifié
+- Modules BBIA d’IA cognitive
+- Conformité SDK
+- Qualité : tests, CI/CD, documentation
 
-### **🎯 Impact Professionnel**
-- **Note technique** : 95/100 (excellence)
-- **Emplois visés** : Senior Robotics Engineer, AI Engineer
-- **Communauté** : Référence open-source Reachy Mini
-- **Innovation** : Base pour futurs projets robotiques
+### Impact
+- Note technique : 95/100 (indicatif)
+- Communauté : base open-source Reachy Mini
+- Innovation : base pour projets robotiques
 
-**BBIA-SIM est prêt à devenir la référence technique pour la communauté Reachy Mini ! 🚀**
+BBIA‑SIM peut servir de base technique pour la communauté Reachy Mini.

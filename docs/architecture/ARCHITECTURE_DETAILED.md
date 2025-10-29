@@ -1,20 +1,20 @@
-# 🏗️ BBIA-SIM Architecture Guide - Guide d'Architecture Détaillé
+# BBIA-SIM - guide d’architecture détaillé
 
-## 📋 **Vue d'Ensemble**
+## Vue d'ensemble
 
 BBIA-SIM (Brain-Based Interactive Agent Simulation) est un moteur cognitif Python avancé pour robot Reachy Mini Wireless, intégrant simulation MuJoCo, intelligence artificielle légère, et contrôle unifié via RobotAPI.
 
-### **🎯 Objectifs Architecturaux**
+### Objectifs architecturaux
 
-- **Conformité parfaite** au SDK officiel Reachy Mini
+- **Conformité** avec le SDK officiel Reachy Mini
 - **Backend unifié** pour simulation et robot réel
 - **Modules BBIA modulaires** et extensibles
-- **Performance optimale** avec métriques temps réel
-- **Qualité professionnelle** (tests, CI/CD, documentation)
+- **Performance** avec métriques temps réel
+- **Qualité** (tests, CI/CD, documentation)
 
 ---
 
-## 🏛️ **Architecture Générale**
+## Architecture générale
 
 ```mermaid
 graph TB
@@ -57,9 +57,9 @@ graph TB
 
 ---
 
-## 🔧 **Composants Principaux**
+## Composants principaux
 
-### **1. RobotAPI Unifié**
+### 1. RobotAPI unifié
 
 **Fichier principal :** `src/bbia_sim/robot_api.py`
 
@@ -80,29 +80,29 @@ class RobotAPI:
         """Récupère les données de télémétrie."""
 ```
 
-**Avantages :**
-- ✅ Code identique simulation ↔ robot réel
-- ✅ Switch facile entre backends
-- ✅ Tests unitaires communs
-- ✅ API stable et documentée
+Avantages :
+- Code identique simulation ↔ robot réel
+- Bascule facile entre backends
+- Tests unitaires communs
+- API stable et documentée
 
 ### **2. Backends Robot**
 
 **Structure :** `src/bbia_sim/backends/`
 
-#### **MuJoCo Backend**
+#### MuJoCo backend
 - **Fichier :** `mujoco_backend.py`
 - **Usage :** Simulation physique réaliste
-- **Performance :** <1ms latence
+- **Performance :** <1 ms de latence
 - **Fonctionnalités :** Physique, collisions, gravité
 
-#### **Reachy Mini Backend**
+#### Reachy Mini backend
 - **Fichier :** `reachy_mini_backend.py`
 - **Usage :** Robot physique Reachy Mini
-- **Conformité :** 100% SDK officiel
-- **Méthodes :** 21/21 implémentées
+- **Conformité :** SDK officiel
+- **Méthodes :** principales méthodes implémentées
 
-#### **Reachy Mock Backend**
+#### Reachy mock backend
 - **Fichier :** `reachy_backend.py`
 - **Usage :** Simulation simple (legacy)
 - **Performance :** Ultra-rapide
@@ -317,7 +317,7 @@ tests/
 - **Dashboard ↔ WebSocket**
 
 #### **Tests de Conformité**
-- **SDK Officiel :** 16 tests, 100% réussite
+- **SDK Officiel :** 16 tests, réussite constatée
 - **Signatures :** Types de retour conformes
 - **Comportement :** Identique simulation/réel
 
@@ -605,4 +605,4 @@ Cette architecture permet à BBIA-SIM d'être une **référence technique** pour
 ---
 
 *Dernière mise à jour : Octobre 2025*
-*Version : 1.2.0 "Conformité Parfaite SDK Officiel"*
+*Version : 1.2.0 – Conformité SDK officiel*
