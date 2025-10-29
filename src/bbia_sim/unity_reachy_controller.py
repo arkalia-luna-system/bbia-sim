@@ -14,14 +14,14 @@ class UnityReachyMiniController:
         self,
         command_file: str = "reachy_commands.txt",
         response_file: str = "reachy_response.txt",
-    ):
+    ) -> None:
         self.command_file = Path(command_file)
         self.response_file = Path(response_file)
         self.last_response = ""
         self.is_connected = False
         self._init_communication_files()
 
-    def _init_communication_files(self):
+    def _init_communication_files(self) -> None:
         try:
             if not self.command_file.exists():
                 self.command_file.write_text("")
@@ -95,7 +95,7 @@ class UnityReachyMiniController:
         self.set_emotion("neutral")
         return True
 
-    def interactive_mode(self, max_iterations: int = 1000):
+    def interactive_mode(self, max_iterations: int = 1000) -> None:
         """Mode interactif avec limite d'itérations pour éviter les boucles infinies."""
         iteration_count = 0
         while iteration_count < max_iterations:
@@ -150,7 +150,7 @@ class UnityReachyMiniController:
         if iteration_count >= max_iterations:
             print("⚠️ Limite d'itérations atteinte, arrêt du mode interactif")
 
-    def _show_help(self):
+    def _show_help(self) -> None:
         help_text = """
 🤖 Commandes BBIA disponibles:
 
@@ -170,7 +170,7 @@ Exemples:
         print(help_text)
 
 
-def main():
+def main() -> None:
     controller = UnityReachyMiniController()
     if not controller.is_connected:
         return

@@ -24,7 +24,7 @@ def _get_sd() -> Optional[Any]:
     if sd is not None:
         return sd
     try:  # pragma: no cover - dépend du runtime
-        import sounddevice as _sd  # type: ignore
+        import sounddevice as _sd
 
         sd = _sd
         return sd

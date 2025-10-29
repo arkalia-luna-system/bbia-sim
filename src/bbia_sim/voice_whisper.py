@@ -8,7 +8,7 @@ import logging
 import os
 import time
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any, Optional, cast
 
 try:
     import whisper
@@ -97,11 +97,13 @@ class WhisperSTT:
                 logger.error("❌ Modèle Whisper non chargé")
                 return None
 
-            # mypy ignore: unreachable code après return None
-            result = self.model.transcribe(  # type: ignore
+            result = cast(
+                dict[str, Any],
+                self.model.transcribe(
                 audio_path,
                 language=self.language if self.language != "auto" else None,
                 fp16=False,  # Éviter les problèmes de compatibilité
+                ),
             )
 
             transcription_time = time.time() - start_time
@@ -185,7 +187,7 @@ class WhisperSTT:
 class VoiceCommandMapper:
     """Mappe les commandes vocales vers des actions RobotAPI."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialise le mappeur de commandes."""
         self.commands = {
             # Français

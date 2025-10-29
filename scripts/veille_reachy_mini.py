@@ -379,6 +379,26 @@ def write_csv_rows(path: str, candidates: list[Candidate]) -> None:
             )
 
 
+def trim_csv_rows(path: str, max_entries: int) -> None:
+    if max_entries <= 0 or not os.path.exists(path):
+        return
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            lines = f.readlines()
+        if not lines:
+            return
+        header = lines[0]
+        data = lines[1:]
+        if len(data) <= max_entries:
+            return
+        trimmed = data[-max_entries:]
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(header)
+            f.writelines(trimmed)
+    except Exception:
+        pass
+
+
 def write_json(path: str, candidates: list[Candidate]) -> None:
     os.makedirs(os.path.dirname(path), exist_ok=True)
     now = dt.datetime.utcnow().isoformat()
@@ -546,6 +566,12 @@ def main(argv: list[str]) -> int:
     prev_map = load_previous_json(out_json)
 
     write_csv_rows(out_csv, all_candidates)
+    # Limiter la taille du CSV aux N dernières exécutions (par défaut 10)
+    try:
+        max_entries = int(os.environ.get("VEILLE_MAX_ENTRIES", "5") or 5)
+    except Exception:
+        max_entries = 5
+    trim_csv_rows(out_csv, max_entries=max_entries)
     write_json(out_json, all_candidates)
     write_diff_json(out_diff, prev_map, all_candidates)
 

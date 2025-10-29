@@ -67,7 +67,7 @@ class GlobalConfig:
     }
 
     @classmethod
-    def initialize_seed(cls):
+    def initialize_seed(cls) -> None:
         """Initialise le seed global."""
         random.seed(cls.GLOBAL_SEED)
         logger.info(f"Seed global initialisé: {cls.GLOBAL_SEED}")

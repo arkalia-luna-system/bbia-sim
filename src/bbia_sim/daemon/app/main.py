@@ -1,10 +1,11 @@
 """Application FastAPI principale pour BBIA-SIM."""
 
 import logging
+from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from typing import Any
 
-from fastapi import Depends, FastAPI, HTTPException
+from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
@@ -72,7 +73,7 @@ def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)) 
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI):
+async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     """Gestionnaire de cycle de vie de l'application."""
     # Démarrage
     logger.info("🚀 Démarrage de l'API BBIA-SIM")
@@ -338,7 +339,7 @@ async def api_info() -> dict[str, Any]:
 
 # Gestionnaire d'erreurs global
 @app.exception_handler(HTTPException)
-async def http_exception_handler(request, exc: HTTPException):
+async def http_exception_handler(request: Request, exc: HTTPException) -> JSONResponse:
     """Gestionnaire d'erreurs HTTP personnalisé."""
     return JSONResponse(
         status_code=exc.status_code,
@@ -351,7 +352,7 @@ async def http_exception_handler(request, exc: HTTPException):
 
 
 @app.exception_handler(Exception)
-async def general_exception_handler(request, exc: Exception):
+async def general_exception_handler(request: Request, exc: Exception) -> JSONResponse:
     """Gestionnaire d'erreurs générales."""
     logger.error(f"Erreur non gérée : {exc}")
     return JSONResponse(
