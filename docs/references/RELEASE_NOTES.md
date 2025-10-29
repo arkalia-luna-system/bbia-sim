@@ -1,5 +1,36 @@
 # Notes de Release - BBIA-SIM
 
+## Version 1.3.1 - Conformité, Sécurité et Docs clarifiées ✅ RELEASED
+
+### 🎯 Résumé
+Mise à niveau centrée sur la robustesse (watchdog, emergency stop), l’hygiène sécurité (Bandit), et une documentation unifiée, claire et honnête. Les chemins API publique sont harmonisés (`deploy/public_api.py`), les logs sont exclus du dépôt, et la doc reflète désormais l’état réel (tests/couverture validés en CI).
+
+### 🚀 Points forts v1.3.1
+- **Watchdog**: un seul thread global `ReachyWatchdog`, démarrage/arrêt sûrs, compatibilité tests.
+- **Emergency stop**: parcours consolidé et testé (simulation), métriques cohérentes.
+- **Bandit**: réduction des findings, durcissement des `subprocess` (résolution exécutable, `# nosec` justifiés au cas par cas).
+- **Logs**: `.gitignore` mis à jour (json/csv/jsonl/out/err; `logs/**`), retrait des logs versionnés.
+- **Docs**: Quick Start API publique, variables d’environnement `BBIA_*`, simplification des guides; ménages des archives non essentielles.
+
+### 🔧 Corrections et harmonisations
+- `scripts/*`: sécurisation des appels `subprocess` (usage `sys.executable`, arguments constants, commentaires `# nosec` ciblés).
+- `reachy_mini_backend.py`: watchdog unique et réutilisable; évite la création multiple; compatibilité tests `test_watchdog_*`.
+- `bbia_audio.py`: shim `sounddevice` patchable en CI; fallback robuste (tests audio étendus OK).
+- `docs/*`: remplacement de `scripts/start_public_api.py` et `scripts/test_public_api.py` par `deploy/public_api.py --dev/--check`.
+- `docs/archives/*`: suppression de dossiers obsolètes, harmonisation v1.3.1.
+
+### 📚 Documentation
+- README: badges tests réalistes (800+ en CI), couverture “validée en CI”, Quick Start API publique, env vars utiles.
+- Guides: Débutant et Tests simplifiés; Portfolio One-Pager mis à jour (métriques non figées, v1.3.1).
+- Index et status: versions/chemins cohérents.
+
+### 🧪 Qualité & CI
+- **Tests**: 800+ en CI (nombre variable selon pipeline).
+- **Couverture**: validée en CI (`coverage.xml`, `htmlcov/`).
+- **Outils**: Black, Ruff, MyPy, Bandit — OK.
+
+---
+
 ## Version 1.2.1 - Corrections Qualité Code + Tests ✅ RELEASED
 
 ### 🎯 Résumé
