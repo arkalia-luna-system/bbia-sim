@@ -29,6 +29,9 @@ matplotlib>=3.7.0
 # Dépendances audio optionnelles (nécessitent PortAudio)
 # pyaudio
 
+# Export docs (PDF via pypandoc; fallback HTML)
+pypandoc-binary>=1.11
+
 # === DEVELOPMENT TOOLS ===
 ruff
 black

@@ -40,10 +40,19 @@ python deploy/public_api.py --dev
 mjpython examples/demo_emotion_ok.py --emotion happy --duration 5
 ```
 
-• Besoin de détails ? Voir le [Guide Débutant](guides/GUIDE_DEBUTANT.md)  
-• Variables utiles : `BBIA_DISABLE_AUDIO`, `BBIA_TTS_BACKEND`, `BBIA_STT_BACKEND`, `BBIA_LLM_BACKEND`
+- Besoin de détails ? Voir le [Guide Débutant](guides/GUIDE_DEBUTANT.md)
+- Variables d’environnement utiles : `BBIA_DISABLE_AUDIO`, `BBIA_TTS_BACKEND`, `BBIA_STT_BACKEND`, `BBIA_LLM_BACKEND`
 
-Raccourcis:
-- [README principal](../README.md)
-- [Guide Débutant](guides/GUIDE_DEBUTANT.md)
-- [Index complet](INDEX_FINAL.md)
+### Export One‑Pager (PDF/HTML)
+```bash
+# Installer la dépendance d’export (si non installée)
+pip install pypandoc-binary
+
+# Exporter le One‑Pager (PDF si possible, HTML sinon)
+scripts/docs/export_onepager.sh
+# Sortie dans artifacts/
+```
+
+1. Lire le [README principal](../README.md)
+2. Suivre le [Guide Débutant](guides/GUIDE_DEBUTANT.md)
+3. Consulter l'[Index](INDEX_FINAL.md) pour trouver ce dont vous avez besoin
