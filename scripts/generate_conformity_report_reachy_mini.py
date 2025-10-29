@@ -20,7 +20,7 @@ def run_conformity_tests():
 
     result = subprocess.run(
         [
-            "python",
+            sys.executable,
             "-m",
             "pytest",
             "tests/test_reachy_mini_full_conformity_official.py",

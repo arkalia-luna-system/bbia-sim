@@ -6,11 +6,13 @@ Génère JSONL par module + synthèse MD globale selon procédure stricte
 
 import json
 import logging
-import subprocess
+import subprocess  # nosec B404 - utilisation contrôlée via run_command
 import sys
 from datetime import datetime
 from pathlib import Path
 from typing import Any
+import tempfile
+import shutil
 
 # Configuration logging
 logging.basicConfig(
@@ -23,8 +25,8 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# Référentiel officiel
-REACHY_REF_PATH = Path("/tmp/reachy_ref")
+# Référentiel officiel (répertoire temporaire sûr)
+REACHY_REF_PATH = Path(tempfile.gettempdir()) / "reachy_ref"
 REACHY_COMMIT = "84c40c3"  # Commit utilisé
 PROJECT_ROOT = Path(__file__).parent.parent
 
@@ -38,8 +40,8 @@ CRITICAL_MODULES = [
             "src/bbia_sim/mapping_reachy.py",
         ],
         "ref_files": [
-            "/tmp/reachy_ref/src/reachy_mini/daemon/app/routers/motors.py",
-            "/tmp/reachy_ref/src/reachy_mini/daemon/backend/abstract.py",
+            str(REACHY_REF_PATH / "src/reachy_mini/daemon/app/routers/motors.py"),
+            str(REACHY_REF_PATH / "src/reachy_mini/daemon/backend/abstract.py"),
         ],
     },
     {
@@ -49,8 +51,8 @@ CRITICAL_MODULES = [
             "src/bbia_sim/sim/models/reachy_mini.xml",
         ],
         "ref_files": [
-            "/tmp/reachy_ref/src/reachy_mini/descriptions/reachy_mini/mjcf/reachy_mini.xml",
-            "/tmp/reachy_ref/src/reachy_mini/descriptions/reachy_mini/urdf/robot.urdf",
+            str(REACHY_REF_PATH / "src/reachy_mini/descriptions/reachy_mini/mjcf/reachy_mini.xml"),
+            str(REACHY_REF_PATH / "src/reachy_mini/descriptions/reachy_mini/urdf/robot.urdf"),
         ],
     },
     {
@@ -61,7 +63,7 @@ CRITICAL_MODULES = [
             "src/bbia_sim/bbia_voice_advanced.py",
         ],
         "ref_files": [
-            "/tmp/reachy_ref/src/reachy_mini/media/",
+            str(REACHY_REF_PATH / "src/reachy_mini/media/"),
         ],
     },
     {
@@ -105,6 +107,12 @@ MEDIUM_MODULES = [
 def run_command(cmd: list[str], cwd: Path | None = None) -> tuple[int, str, str]:
     """Exécute une commande et retourne (exit_code, stdout, stderr)."""
     try:
+        # Renforcer la sécurité d'exécution des sous-processus: resolver chemin absolu
+        if not isinstance(cmd, list) or not cmd or not isinstance(cmd[0], str):
+            raise ValueError("Commande invalide")
+        resolved = shutil.which(cmd[0])
+        if resolved:
+            cmd[0] = resolved
         result = subprocess.run(
             cmd, cwd=cwd, capture_output=True, text=True, timeout=60
         )

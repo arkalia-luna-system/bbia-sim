@@ -215,8 +215,9 @@ class BBIAPerformanceBenchmark:
         if not self.robot:
             return {"error": "Robot non disponible après initialisation"}
 
-        # Type narrowing après vérification
-        assert self.robot is not None
+        # Type narrowing après vérification sans assert (exécution runtime)
+        if self.robot is None:
+            return {"error": "Robot non initialisé"}
         robot = self.robot
 
         results: dict[str, Any] = {
