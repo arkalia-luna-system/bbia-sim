@@ -1,4 +1,4 @@
-# 🚀 BBIA Reachy Mini Simulation - CONFORMITÉ PARFAITE ✅
+# BBIA Reachy Mini Simulation
 
 [![Version](https://img.shields.io/badge/version-1.3.1-blue.svg)](https://github.com/arkalia-luna-system/bbia-sim)
 [![Python](https://img.shields.io/badge/python-3.9%2B-blue.svg)](https://python.org)
@@ -9,28 +9,28 @@
 [![SDK Conformity](https://img.shields.io/badge/SDK%20conformity-100%25-brightgreen.svg)](https://github.com/pollen-robotics/reachy_mini)
 [![Documentation](https://img.shields.io/badge/docs-sphinx%20%7C%20readthedocs-blue.svg)](docs/)
 
-**✅ SIMULATION BBIA ↔ ROBOT 100% FONCTIONNELLE ET CONFORME !**
+Simulation BBIA ↔ robot conforme et opérationnelle.
 
 ---
 
 ## 📋 **EN 30 SECONDES :**
 
-**BBIA-SIM** = Moteur cognitif Python avec **12 émotions robotiques** pour Reachy Mini
+BBIA-SIM est un moteur cognitif Python avec 12 émotions robotiques pour Reachy Mini.
 
 ![BBIA-SIM Reachy Mini Robot](./assets/images/robot_animation.gif)
 
-✅ **100% conforme** au SDK officiel Pollen Robotics  
-✅ **Backend unifié** : Même code simulation → robot réel  
-✅ **Production-ready** : 800+ tests, couverture validée en CI, docs complètes  
-✅ **Open-source** : MIT License
+• Conforme au SDK officiel Pollen Robotics  
+• Backend unifié : même code en simulation et sur robot réel  
+• Validé par une large suite de tests et une couverture suivie en CI  
+• Open-source (MIT)
 
 **[🚀 Quick Start](#-démarrage-rapide)** | **[📚 Docs Débutant](docs/guides/GUIDE_DEBUTANT.md)** | **[🔬 Docs Avancé](docs/guides/GUIDE_AVANCE.md)**
 
 ---
 
-**Version** : 1.3.1 "Prêt pour Release" - Backend unifié RobotAPI + Audit Complet Conformité Reachy-Mini + Tests Renforcés + Documentation À Jour
+Version 1.3.1 – Backend unifié RobotAPI, conformité Reachy-Mini auditée, tests renforcés, documentation à jour.
 
-Ce projet fournit une simulation **parfaitement fidèle** du robot Reachy Mini dans MuJoCo, avec une intégration complète des modules BBIA (Bio-Inspired Artificial Intelligence) et **100% conforme au SDK officiel** de Pollen Robotics (décembre 2024).
+Ce projet fournit une simulation fidèle du robot Reachy Mini dans MuJoCo, avec une intégration des modules BBIA (Bio-Inspired Artificial Intelligence) et une conformité validée avec le SDK officiel de Pollen Robotics (décembre 2024).
 
 ## 🚀 Quick Start
 ```bash
@@ -43,15 +43,15 @@ python examples/demo_emotion_ok.py
 
 ## 🎯 Vue d'ensemble
 
-**BBIA-SIM v1.3.1** est un moteur cognitif Python qui simule le robot Reachy Mini avec fidélité complète :
+BBIA-SIM v1.3.1 simule le robot Reachy Mini avec un haut niveau de fidélité :
 
-- ✅ **12 émotions robotiques** contrôlant les articulations
-- ✅ **Conformité 100%** au SDK officiel Pollen Robotics
-- ✅ **Backend unifié** : Même code pour simulation et robot réel
-- ✅ **IA avancée** : Hugging Face, reconnaissance émotions, comportements adaptatifs
-- ✅ **Simulation 3D** : MuJoCo avec modèle officiel
-- ✅ **API REST + WebSocket** : Interface publique complète
-- ✅ **Production-ready** : Suite de tests complète, couverture validée en CI
+- 12 émotions robotiques contrôlant les articulations
+- Conformité au SDK officiel Pollen Robotics
+- Backend unifié : même code pour simulation et robot réel
+- IA optionnelle : Hugging Face, reconnaissance d’émotions, comportements
+- Simulation 3D : MuJoCo avec modèle officiel
+- API REST + WebSocket
+- Tests automatisés avec suivi de la couverture en CI
 
 ## 🏗️ Architecture BBIA-SIM
 
@@ -92,7 +92,7 @@ graph TB
     WEBSOCKET --> DAEMON
 ```
 
-## 📊 Métriques du Projet
+## 📊 Métriques du projet
 
 - **✅ Modèle officiel** : `reachy_mini_REAL_OFFICIAL.xml`
 - **✅ Articulations** : 16 articulations contrôlables  
@@ -102,9 +102,9 @@ graph TB
 
 ## 🚀 Démarrage Rapide
 
-### Voir le robot en 3D (FONCTIONNEL)
+### Voir le robot en 3D
 ```bash
-# 🎯 DÉMOS PRINCIPALES - Fonctionnent vraiment !
+# 🎯 Démos principales
 
 # Démo continue - Robot qui bouge en continu (RECOMMANDÉE)
 mjpython examples/demo_mujoco_continue.py
@@ -112,14 +112,14 @@ mjpython examples/demo_mujoco_continue.py
 # Démo émotions BBIA avec viewer MuJoCo
 mjpython examples/demo_emotion_ok.py --emotion happy --duration 10 --joint yaw_body
 
-# Démo surprise spectaculaire complète
+# Démo surprise complète
 mjpython examples/surprise_3d_mujoco_viewer.py
 
 # Démo SDK officiel (headless)
 python examples/demo_reachy_mini_corrigee.py --quick
 ```
 
-### ⚠️ RÈGLES DE SÉCURITÉ CRITIQUES
+### ⚠️ Règles de sécurité
 - **✅ TOUJOURS utiliser `yaw_body`** pour les animations visibles
 - **✅ Amplitude maximum** : 0.3 rad (clamp automatique)
 - **✅ Mode headless** : Stable et rapide pour les tests
@@ -222,7 +222,7 @@ python scripts/replay_viewer.py artifacts/my_animation.jsonl --speed 1.5
 - **[Guide Avancé](docs/guides/GUIDE_AVANCE.md)** : Guide avancé
 - **[Vertical Slices](docs/audit/VERTICAL_SLICES_ACCOMPLIS.md)** : Documentation des vertical slices
 
-### ⚠️ Note Importante
+### Note
 Les antennes sont bloquées dans le modèle officiel. Utilisez `yaw_body` pour les animations.
 
 ## 📁 Structure du Projet
@@ -291,7 +291,7 @@ Télécharge automatiquement les 41 fichiers STL depuis le repo officiel.
 ```
 Nettoie les processus gourmands tout en préservant les applications importantes.
 
-## 🔧 Résolution de Problèmes
+## 🔧 Résolution de problèmes
 
 ### Problème : Robot en pièces détachées
 **Cause** : Fichiers STL corrompus (pointeurs Git LFS)
@@ -304,7 +304,7 @@ python scripts/download_ALL_stl.py
 **Cause** : Chemin des assets incorrect
 **Solution** : Le modèle `reachy_mini_REAL_OFFICIAL.xml` a le bon chemin `meshdir="../assets/reachy_official"`
 
-### Problème : Fenêtre 3D ne s'ouvre pas
+### Problème : la fenêtre 3D ne s'ouvre pas
 **Cause** : Mauvaise commande Python
 **Solution** : Utiliser `mjpython` au lieu de `python` sur macOS
 
@@ -331,8 +331,8 @@ python scripts/download_ALL_stl.py
 ### Résultats des Tests
 
 **📊 Qualité & Conformité :**
-- ✅ **Conformité SDK officiel** : 100% parfaite
-- ✅ **Coverage** : 63.37% (excellent)
+- ✅ **Conformité SDK officiel** : validée
+- ✅ **Coverage** : 63.37%
 - ✅ **Qualité code** : Black, Ruff, MyPy, Bandit ✅
 - ✅ **Tests** : Suite complète + SDK officiel
 
@@ -363,11 +363,9 @@ open htmlcov/index.html
 
 
 
-## 🎉 Statut Final
+## Statut du projet
 
-**✅ MISSION ACCOMPLIE** : Le robot Reachy Mini est maintenant parfaitement simulé avec une fidélité de 100% aux spécifications officielles et une couverture de tests excellente.
-
-**✅ PREUVES RÉELLES** : Dry-run hardware et démo robot réel avec métriques de performance documentées.
+Le robot Reachy Mini est simulé avec une fidélité élevée aux spécifications officielles. La suite de tests fournit une couverture suivie et des mesures de performance documentées (dry-run matériel et démonstrations sur robot réel).
 
 ---
 *Dernière mise à jour : Octobre 2025*
