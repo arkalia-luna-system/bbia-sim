@@ -132,8 +132,40 @@ Voir le dossier `archives/` pour les rapports détaillés historiques.
 
 ---
 
-## 📁 STRUCTURE DES DOCUMENTS
+## 📁 Structure des documents
 
+```mermaid
+graph TB
+    subgraph "Guides utilisateurs"
+        G1[guides/GUIDE_DEBUTANT.md]
+        G2[guides/GUIDE_AVANCE.md]
+        G3[guides/REACHY_MINI_*.md]
+    end
+    
+    subgraph "Architecture & Technique"
+        A1[architecture/ARCHITECTURE_*.md]
+        GT1[guides_techniques/INTEGRATION_GUIDE.md]
+        GT2[guides_techniques/TESTING_GUIDE.md]
+    end
+    
+    subgraph "Conformité & Qualité"
+        C1[conformite/CONFORMITE_*.md]
+        Q1[qualite/*.md]
+        AUD1[audit/*.md]
+    end
+    
+    subgraph "Configuration & Déploiement"
+        INST1[installation/*.md]
+        REF1[references/COMMUNITY_CONFIG.md]
+        DEPLOY[deploy/*.md]
+    end
+    
+    style G1 fill:#90EE90
+    style A1 fill:#87CEEB
+    style C1 fill:#FFB6C1
+```
+
+**Organisation détaillée :**
 ```
 docs/
 ├── guides/              # Guides utilisateurs

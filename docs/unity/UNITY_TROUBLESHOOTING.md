@@ -26,7 +26,7 @@ flowchart TD
     WORK -->|Non| DEBUG[Débogage avancé]
 ```
 
-## 🚨 Solutions par Priorité
+## Solutions par priorité
 
 ```mermaid
 graph LR
@@ -85,46 +85,46 @@ chmod 666 log/reachy_commands.txt log/reachy_response.txt
 python3 src/bbia_sim/test_unity_connection.py
 ```
 
-## 🛠️ Scripts de Correction
+## 🛠️ Scripts de correction
 
 ### Script Principal de Correction
 ```bash
 ./fix_unity_warnings.sh
 ```
 
-**Ce script corrige automatiquement** :
-- ✅ Variable isWatching supprimée
-- ✅ GUID invalide corrigé
-- ✅ Fichiers .meta nettoyés
-- ✅ Scripts C# vérifiés
-- ✅ Configuration Unity créée
-- ✅ Structure du projet vérifiée
+Ce script automatise les corrections suivantes :
+- suppression de la variable isWatching
+- correction des GUID invalides
+- nettoyage des fichiers .meta
+- vérification des scripts C#
+- création de la configuration Unity
+- vérification de la structure du projet
 
 ### Script de Test de Configuration
 ```bash
 ./test_unity_setup.sh
 ```
 
-**Ce script vérifie** :
-- ✅ Unity Hub installé
-- ✅ Unity Editor installé
-- ✅ Projet Unity présent
-- ✅ Scripts Python prêts
-- ✅ Environnement configuré
+Ce script vérifie :
+- la présence d’Unity Hub
+- la présence d’Unity Editor
+- l’existence du projet Unity
+- la disponibilité des scripts Python
+- la configuration de l’environnement
 
-## 🎮 Instructions de Récupération
+## Instructions de récupération
 
-### Étape 1: Diagnostic
+### Étape 1 : diagnostic
 ```bash
 ./test_unity_setup.sh
 ```
 
-### Étape 2: Correction
+### Étape 2 : correction
 ```bash
 ./fix_unity_warnings.sh
 ```
 
-### Étape 3: Test
+### Étape 3 : test
 ```bash
 # Ouvrir Unity Hub
 open "/Applications/Unity Hub.app"
@@ -136,7 +136,7 @@ open "/Applications/Unity Hub.app"
 python3 test_bbia_reachy.py
 ```
 
-## 🔍 Vérifications Manuelles
+## 🔍 Vérifications manuelles
 
 ### 1. Vérifier Unity Hub
 ```bash
@@ -148,21 +148,21 @@ ls -la "/Applications/Unity Hub.app"
 ls -la "/Applications/Unity/Hub/Editor/"
 ```
 
-### 3. Vérifier le Projet
+### 3. Vérifier le projet
 ```bash
 ls -la reachy-bbia-unity/
 ls -la reachy-bbia-unity/Assets/Scripts/
 ```
 
-### 4. Vérifier les Scripts Python
+### 4. Vérifier les scripts Python
 ```bash
 ls -la src/bbia_sim/
 python3 test_bbia_reachy.py
 ```
 
-## 🚨 Problèmes Graves
+## Problèmes majeurs
 
-### Projet Unity Corrompu
+### Projet Unity corrompu
 ```bash
 # Sauvegarder les scripts importants
 cp -r reachy-bbia-unity/Assets/Scripts/ scripts_backup/
@@ -177,7 +177,7 @@ rm -rf reachy-bbia-unity/
 cp -r scripts_backup/* reachy-bbia-unity/Assets/Scripts/
 ```
 
-### Unity Hub Ne Fonctionne Plus
+### Unity Hub ne fonctionne plus
 ```bash
 # Réinstaller Unity Hub
 # 1. Supprimer Unity Hub
@@ -203,16 +203,16 @@ cat ~/Library/Logs/UnityHub.log
 cat ~/Library/Logs/Unity/Editor.log
 ```
 
-## 🎯 Prévention
+## Prévention
 
-### Bonnes Pratiques
+### Bonnes pratiques
 1. **Sauvegarder régulièrement** votre projet
 2. **Tester en simulation** avant de déployer
 3. **Utiliser Git** pour le versioning
 4. **Documenter** vos modifications
 5. **Fermer Unity** proprement
 
-### Maintenance Régulière
+### Maintenance régulière
 ```bash
 # Nettoyer les fichiers temporaires
 find . -name "*.tmp" -delete
@@ -228,6 +228,4 @@ find . -name "._*" -delete
 ---
 
 **BBIA** - Brain-Based Interactive Agent  
-*Pour Reachy Mini Wireless* 🤖✨
-
-**Unity + BBIA = Puissance Créative !** 🚀 
+Pour Reachy Mini Wireless

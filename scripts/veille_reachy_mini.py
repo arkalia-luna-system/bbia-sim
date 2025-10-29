@@ -498,14 +498,21 @@ def write_diff_json(
 
 
 def notify_macos(title: str, message: str) -> None:
-    if os.environ.get("VEILLE_NOTIFY_MACOS", "true").lower() not in {"1", "true", "yes"}:
+    if os.environ.get("VEILLE_NOTIFY_MACOS", "true").lower() not in {
+        "1",
+        "true",
+        "yes",
+    }:
         return
     try:
-        subprocess.run([
-            "osascript",
-            "-e",
-            f'display notification "{message}" with title "{title}"',
-        ], check=False)
+        subprocess.run(
+            [
+                "osascript",
+                "-e",
+                f'display notification "{message}" with title "{title}"',
+            ],
+            check=False,
+        )
     except Exception:
         pass
 
@@ -627,14 +634,28 @@ def main(argv: list[str]) -> int:
         threshold = int(os.environ.get("VEILLE_NOTIFY_THRESHOLD", "3") or 3)
         with open(out_diff, encoding="utf-8") as f:
             diff_now = json.load(f)
+
         def _is_official_identifier(ident: str) -> bool:
-            return ident.startswith("https://github.com/pollen-robotics/") or ident.startswith("https://huggingface.co/spaces/pollen-robotics/")
+            return ident.startswith(
+                "https://github.com/pollen-robotics/"
+            ) or ident.startswith("https://huggingface.co/spaces/pollen-robotics/")
+
         def _has_signal(d: dict) -> bool:
             det = d.get("details") or {}
             return bool(det.get("api") or det.get("ws") or det.get("dashboard"))
-        promising_new = [n for n in diff_now.get("new", []) if not _is_official_identifier(str(n.get("identifier", ""))) and int(n.get("score", 0)) >= threshold and _has_signal(n)]
+
+        promising_new = [
+            n
+            for n in diff_now.get("new", [])
+            if not _is_official_identifier(str(n.get("identifier", "")))
+            and int(n.get("score", 0)) >= threshold
+            and _has_signal(n)
+        ]
         if promising_new:
-            notify_macos("Veille Reachy Mini", f"{len(promising_new)} nouveau(x) score≥{threshold} (API/WS/UI)")
+            notify_macos(
+                "Veille Reachy Mini",
+                f"{len(promising_new)} nouveau(x) score≥{threshold} (API/WS/UI)",
+            )
     except Exception:
         pass
 

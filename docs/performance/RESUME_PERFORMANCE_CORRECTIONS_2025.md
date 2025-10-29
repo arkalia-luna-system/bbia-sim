@@ -1,13 +1,13 @@
-# ⚡ RÉSUMÉ CORRECTIONS PERFORMANCE - Octobre 2025
+# Résumé des corrections de performance - Octobre 2025
 
 **Problème :** Code "rame" (lent)  
 **Responsable identifié et corrigé :** `pyttsx3.init()` appelé 2 fois par synthèse vocale
 
 ---
 
-## 🔴 **PROBLÈME PRINCIPAL**
+## Problème principal
 
-### **`pyttsx3.init()` appelé RÉPÉTÉMENT** ⚠️ CRITIQUE
+### `pyttsx3.init()` appelé de manière répétée
 
 **Fichier responsable :** `src/bbia_sim/bbia_voice.py`
 
@@ -24,9 +24,9 @@
 
 ---
 
-## ✅ **CORRECTIONS APPLIQUÉES**
+## Corrections appliquées
 
-### **1. Cache Global Thread-Safe** ✅
+### 1. Cache global thread-safe
 
 **Code ajouté :**
 ```python
@@ -45,13 +45,13 @@ def _get_pyttsx3_engine():
     return _pyttsx3_engine_cache  # ✅ Réutilisé ensuite
 ```
 
-**Résultat test :**
+Résultat de test :
 - Premier appel : 0.52s (initialisation normale)
 - Deuxième appel : **0.000001s** (cache) ✅
 
 ---
 
-### **2. Cache Voice ID** ✅
+### 2. Cache du voice ID
 
 **Code ajouté :**
 ```python
@@ -68,21 +68,21 @@ def _get_cached_voice_id():
 
 ---
 
-## 📊 **RÉSULTATS**
+## Résultats
 
-### **Avant :**
+### Avant
 - `dire_texte()` : **~1.6-1.7s latence système**
 - Utilisateur : "BBIA met du temps"
 
-### **Après :**
+### Après
 - `dire_texte()` : **~0ms latence système** (seulement génération audio)
 - Utilisateur : "BBIA répond instantanément"
 
-**Amélioration :** **-1.7s par synthèse vocale** ✅
+Amélioration : environ −1.7 s par synthèse vocale
 
 ---
 
-## 🔍 **AUTRES PROBLÈMES IDENTIFIÉS (Non critiques)**
+## Autres points identifiés (non critiques)
 
 ### **Instances Multiples**
 
@@ -99,7 +99,7 @@ def _get_cached_voice_id():
 
 ---
 
-## ✅ **VALIDATION**
+## Validation
 
 - ✅ Ruff : All checks passed
 - ✅ Imports : Tous fonctionnent
@@ -108,7 +108,7 @@ def _get_cached_voice_id():
 
 ---
 
-## 🎯 **CONCLUSION**
+## Conclusion
 
 **Responsable principal :** `pyttsx3.init()` appelé 2 fois par synthèse vocale
 
@@ -116,7 +116,7 @@ def _get_cached_voice_id():
 
 **Gain :** **-1.7s de latence par synthèse vocale**
 
-**Impact :** BBIA répondra beaucoup plus rapidement ! ✅
+Impact : réponse vocale significativement plus rapide.
 
 **Documentation :**
 - `docs/ANALYSE_PERFORMANCE_PROBLEMES_2025.md` - Analyse détaillée

@@ -1,4 +1,4 @@
-# 🔍 ANALYSE MODULES NON-PRIORITAIRES - Octobre 2025
+# Analyse des modules non prioritaires - Octobre 2025
 
 **Date :** Octobre 2025  
 **Référence SDK :** https://github.com/pollen-robotics/reachy_mini  
@@ -6,43 +6,43 @@
 
 ---
 
-## 📊 **RÉSUMÉ EXÉCUTIF**
+## Résumé exécutif
 
-### ✅ **Modules Analysés et Validés**
+### Modules analysés et validés
 
 1. **`bbia_awake.py`** ✅
-   - **Status :** Module simple, non utilisé dans l'intégration principale
+   - **Statut :** module simple, non utilisé dans l'intégration principale
    - **Note :** `WakeUpBehavior` dans `bbia_behavior.py` fait le vrai travail avec SDK
-   - **Action :** Aucune action requise (module optionnel/de démo)
+   - **Action :** aucune action requise (module optionnel/démo)
 
 2. **`bbia_vision.py`** ✅
-   - **Status :** Structure préparée pour `robot.media.camera` du SDK
+   - **Statut :** structure préparée pour `robot.media.camera` du SDK
    - **Améliorations :**
      - ✅ Ajout logging pour debug
      - ✅ Vérification disponibilité `robot.media.camera` (avec fallback simulation)
      - ⚠️ TODO: Implémenter capture réelle depuis `robot.media.camera` (nécessite traitement image YOLO/MediaPipe)
-   - **Conformité :** ✅ Compatible SDK, utilise `look_at_world` / `look_at_image` via `VisionTrackingBehavior`
+   - **Conformité :** compatible SDK, utilise `look_at_world` / `look_at_image` via `VisionTrackingBehavior`
 
 3. **`bbia_audio.py`** ✅
-   - **Status :** Déjà préparé pour `robot.media.microphone` (4 microphones SDK)
+   - **Statut :** préparé pour `robot.media.microphone` (4 microphones SDK)
    - **Améliorations :**
      - ✅ Fonction `_get_robot_media_microphone()` pour accès SDK
      - ✅ Paramètre `robot_api` optionnel dans `enregistrer_audio()`
      - ⚠️ TODO: Implémenter enregistrement via `robot.media.record_audio()` (bénéfice: 4 microphones directionnels + annulation de bruit)
-   - **Conformité :** ✅ Fallback sounddevice fonctionnel en attendant implémentation complète
+   - **Conformité :** fallback sounddevice fonctionnel en attendant implémentation complète
 
-4. **`bbia_voice.py`** ⏳ À ANALYSER
+4. **`bbia_voice.py`** à analyser
    - **Status :** Utilise `pyttsx3` (software) au lieu de `robot.media.speaker` (hardware optimisé 5W)
    - **Opportunité :** Intégrer `robot.media.speaker` pour qualité hardware optimale
 
 ---
 
-## 🎯 **FEATURES SDK DISPONIBLES MAIS NON UTILISÉES**
+## Fonctions SDK disponibles mais non utilisées
 
 ### **1. Module Media SDK (`robot.media`)**
 
-**Status Backend :** ✅ Disponible dans `ReachyMiniBackend.media`  
-**Status Utilisation :** ⚠️ Partiel (structure préparée, TODO pour implémentation complète)
+**Statut backend :** disponible dans `ReachyMiniBackend.media`  
+**Statut d’utilisation :** partiel (structure préparée, TODO pour implémentation complète)
 
 **Capacités :**
 ```python
@@ -60,7 +60,7 @@ robot.media.record_audio()  # Enregistrement optimisé
 
 ---
 
-## 📝 **TESTS EXISTANTS**
+## Tests existants
 
 ### **Vision**
 - ✅ `tests/test_bbia_vision.py` - Tests basiques
@@ -83,24 +83,24 @@ robot.media.record_audio()  # Enregistrement optimisé
 
 ---
 
-## ✅ **RECOMMANDATIONS**
+## Recommandations
 
-### **Priorité Haute (À Implémenter)**
+### Priorité haute (à implémenter)
 1. **`bbia_voice.py`** - Intégrer `robot.media.speaker` pour synthèse vocale hardware optimisée
 2. **`bbia_vision.py`** - Implémenter capture réelle depuis `robot.media.camera` avec traitement image
 3. **`bbia_audio.py`** - Implémenter enregistrement via `robot.media.record_audio()` (4 microphones)
 
-### **Priorité Moyenne (Améliorations Intelligence)**
+### Priorité moyenne (améliorations)
 1. Améliorer variété et naturalité des commentaires dans `bbia_vision.py`
 2. Améliorer gestion erreurs et logging dans tous les modules média
 
-### **Priorité Basse (Tests)**
+### Priorité basse (tests)
 1. Créer tests spécifiques pour intégration `robot.media.*` SDK
 2. Améliorer couverture `bbia_voice.py` (actuellement 61.96%)
 
 ---
 
-## 🔄 **PROCHAINES ÉTAPES**
+## Prochaines étapes
 
 1. ✅ Analyser `bbia_voice.py` en profondeur
 2. ✅ Analyser `bbia_emotion_recognition.py`

@@ -1,26 +1,26 @@
-# 🤖 Reachy Mini - Référence Visuelle
+# Reachy Mini - référence visuelle
 
 > **Image de référence pour BBIA - Brain-Based Interactive Agent**
 
-## 🎯 **Description de l'Image de Référence**
+## Description de l'image de référence
 
-### 📸 **Source de l'Image**
+### Source de l'image
 - **Date** : 15 juillet 2024
 - **Source** : Résultats Google Images pour "Reachy Mini"
 - **Contexte** : Recherche d'images récentes du robot
 
 ---
 
-## 🤖 **Description Détaillée du Robot**
+## Description détaillée du robot
 
-### 🎯 **Apparence Physique**
+### Apparence physique
 - **Couleur** : Blanc
 - **Forme** : Humanoïde simplifié
 - **Corps** : Cylindrique
 - **Tête** : Distinctive avec des "yeux"
 - **Antennes** : Deux antennes fines et spiralées sur la tête
 
-### 👁️ **Caractéristiques Visuelles**
+### Caractéristiques visuelles
 - **"Yeux"** : Deux grands cercles noirs
 - **Expression** : Visage simple mais expressif
 - **Taille** : Petit robot de bureau
@@ -28,55 +28,55 @@
 
 ---
 
-## 🎯 **Contexte de l'Image**
+## Contexte de l'image
 
-### 📰 **Article Principal (TechCrunch)**
+### Article principal (TechCrunch)
 - **Titre** : "Hugging Face ouvre les commandes de ses robots de bureau Reachy..."
 - **Date** : Il y a 5 jours
 - **Source** : TechCrunch
 - **Signification** : Confirmation de l'implication de Hugging Face
 
-### 🏢 **Fabricant**
+### Fabricant
 - **Marque** : POLLEN (Pollen Robotics)
 - **Logo** : Visible sur certaines images
 - **Statut** : Open source
 
 ---
 
-## 🎮 **Cas d'Usage Observés**
+## Cas d'usage observés
 
-### 🏠 **Environnements de Bureau**
+### Environnements de bureau
 - **Bureau** : À côté d'un ordinateur portable
 - **Travail** : Utilisation en environnement professionnel
 - **Interaction** : Avec des utilisateurs au travail
 
-### 🏠 **Environnements Domestiques**
+### Environnements domestiques
 - **Cuisine** : À côté d'une personne préparant de la nourriture
 - **Vie quotidienne** : Intégration dans la maison
 - **Companion** : Robot compagnon
 
-### 🎭 **Rendu 3D**
+### Rendu 3D
 - **Présentation** : "Meet Reachy Mini"
 - **Marketing** : Images promotionnelles
 - **Design** : Rendu professionnel
 
 ---
 
-## 🔗 **Liens avec BBIA**
+## Liens avec BBIA
 
-### 🤖 **Robot Cible**
+### Robot cible
 - **Modèle** : Reachy Mini Wireless
 - **Livraison** : Fin 2025 / Début 2026
 - **Prix** : 449$ (~500€)
 - **Statut** : Open source
 
-### 🧠 **Développement BBIA**
+### Développement BBIA
 - **IA Émotionnelle** : Pour ce robot spécifique
 - **Expressions** : Basées sur les "yeux" et antennes
 - **Interactions** : Reconnaissance vocale et vision
 - **Mouvements** : 6 DOF tête + antennes animées
 
-### 🎯 **Fonctionnalités BBIA**
+### Fonctionnalités BBIA
 - **6 émotions** : neutral, happy, sad, angry, curious, excited
 - **4 microphones** : Reconnaissance vocale
 - **Caméra grand angle** : Vision par ordinateur
@@ -85,9 +85,9 @@
 
 ---
 
-## 📊 **Informations Techniques**
+## Informations techniques
 
-### 🔧 **Spécifications Hardware**
+### Spécifications matérielles
 - **Processeur** : Raspberry Pi 5 intégré
 - **Connectivité** : Wi-Fi intégré
 - **Audio** : 4 microphones + haut-parleur 5W
@@ -97,7 +97,7 @@
 - **Poids** : 1,5 kg
 - **Dimensions** : 28cm (actif) / 23cm (veille) x 16cm
 
-### 🎮 **Simulation Unity**
+### Simulation Unity
 - **Modèle 3D** : Représentation fidèle
 - **Expressions** : Animations faciales
 - **Mouvements** : Fluides et naturels
@@ -105,42 +105,42 @@
 
 ---
 
-## 🌟 **Actualité Récente**
+## Actualité récente
 
-### 📰 **Couverture Média**
+### Couverture média
 - **TechCrunch** : Article principal
 - **YouTube** : Vidéos de présentation
 - **Medium** : Articles techniques
 - **Blogs personnels** : Retours d'expérience
 
-### 🗓️ **Dates Importantes**
+### Dates importantes
 - **Il y a 5 jours** : Article TechCrunch
 - **Il y a 2 jours** : Autres publications
 - **Fin 2025** : Livraison prévue
 - **Début 2026** : Livraison alternative
 
-### 🔗 **Partners**
+### Partenaires
 - **Hugging Face** : Implication majeure
 - **Pollen Robotics** : Fabricant
 - **Open Source** : Communauté active
 
 ---
 
-## 🎯 **Utilisation pour BBIA**
+## Utilisation pour BBIA
 
-### 🧠 **Développement**
+### Développement
 - **Référence visuelle** : Pour les simulations
 - **Design UI** : Interface utilisateur
 - **Animations** : Expressions et mouvements
 - **Testing** : Validation des fonctionnalités
 
-### 🎮 **Simulation**
+### Simulation
 - **Unity 3D** : Modèle basé sur cette référence
 - **Émotions** : Expressions adaptées au design
 - **Mouvements** : Antennes et tête selon l'émotion
 - **Interaction** : Interface utilisateur cohérente
 
-### 📚 **Documentation**
+### Documentation
 - **Guides** : Référence visuelle
 - **Tutoriels** : Exemples concrets
 - **Présentation** : Support visuel
@@ -148,15 +148,15 @@
 
 ---
 
-## 💡 **Observations Clés**
+## Observations clés
 
-### ✅ **Points Positifs**
+### Points positifs
 - **Design épuré** : Facile à reproduire
 - **Expressivité** : "Yeux" et antennes expressifs
 - **Taille compacte** : Adapté à un bureau/maison
 - **Open source** : Développement communautaire
 
-### 🎯 **Pour BBIA**
+### Pour BBIA
 - **Usage recommandé** : Prototypage d'IA émotionnelle
 - **Expressivité** : Idéal pour les émotions
 - **Interactions** : Design adapté aux interactions
@@ -165,7 +165,7 @@
 ---
 
 **BBIA** - Brain-Based Interactive Agent  
-*Référence visuelle Reachy Mini* 🤖✨
+Référence visuelle Reachy Mini
 
 **Robot** : Reachy Mini Wireless  
 **Fabricant** : Pollen Robotics  

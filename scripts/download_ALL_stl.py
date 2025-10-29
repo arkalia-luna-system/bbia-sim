@@ -3,8 +3,8 @@
 Résout définitivement le problème des assets manquants.
 """
 
-import os
 import logging
+import os
 from pathlib import Path
 
 import requests
@@ -68,7 +68,11 @@ def download_all_stl():
                     os.remove(file_path)  # Supprimer le fichier corrompu
 
             else:
-                logging.warning("Téléchargement échoué pour %s: HTTP %s", stl_file, response.status_code)
+                logging.warning(
+                    "Téléchargement échoué pour %s: HTTP %s",
+                    stl_file,
+                    response.status_code,
+                )
 
         except Exception as exc:
             logging.warning("Erreur lors du téléchargement de %s: %s", stl_file, exc)

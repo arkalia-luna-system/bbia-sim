@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Exporte docs/presentation/PORTFOLIO_ONEPAGER.md en PDF si pypandoc/pandoc est dispo, sinon en HTML.
+# Exporte docs/presentation/PORTFOLIO_ONEPAGER.md en PDF si pypandoc/pandoc est dispo, sinon en HTML sombre rendu (marked+mermaid).
 
 ROOT_DIR="$(cd "$(dirname "$0")/../.." && pwd)"
 INPUT_MD="$ROOT_DIR/docs/presentation/PORTFOLIO_ONEPAGER.md"
@@ -36,40 +36,67 @@ fi
 if command -v pandoc >/dev/null 2>&1; then
   echo "[export] Génération PDF via pandoc…"
   pandoc "$INPUT_MD" -o "$PDF_OUT" --from markdown --pdf-engine=xelatex || {
-    echo "[export] Échec PDF CLI, génération HTML fallback…"
-    pandoc "$INPUT_MD" -o "$HTML_OUT" --from markdown --standalone
+    echo "[export] Échec PDF CLI, génération HTML rendu (marked+mermaid)…"
   }
-else
-  echo "[export] pandoc introuvable. Génération HTML…"
-  cat > "$HTML_OUT" <<'HTML'
+  if [ -f "$PDF_OUT" ]; then
+    echo "[export] Terminé. Voir $PDF_OUT"
+    exit 0
+  fi
+fi
+
+# 3) Fallback HTML sombre rendu (marked + mermaid)
+TMP_JSON=$(mktemp)
+INPUT_MD_PATH="$INPUT_MD" python - <<'PY' > "$TMP_JSON"
+import os, json
+p = os.environ['INPUT_MD_PATH']
+print(json.dumps(open(p,'r',encoding='utf-8').read()))
+PY
+MD_CONTENT_ESCAPED=$(cat "$TMP_JSON")
+rm -f "$TMP_JSON"
+
+cat > "$HTML_OUT" <<HTML
 <!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>PORTFOLIO_ONEPAGER</title>
 <style>
   :root { color-scheme: dark; }
   html, body { height: 100%; margin: 0; }
-  body { background-color: #0b0b0b; color: #f5f5f5; font: 16px/1.45 -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Helvetica Neue, Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji"; }
+  body { background-color: #0b0b0b; color: #f5f5f5; font: 16px/1.55 -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Helvetica Neue, Arial, "Noto Sans"; }
   a { color: #9cdcfe; }
   code, pre { background: #111; color: #eee; }
-  pre { white-space: pre-wrap; padding: 16px; border-radius: 8px; overflow-x: auto; }
-  .container { max-width: 960px; margin: 24px auto; padding: 0 16px; }
+  pre { white-space: pre-wrap; padding: 14px; border-radius: 8px; overflow-x: auto; }
+  .container { max-width: 980px; margin: 28px auto; padding: 0 16px; }
   h1, h2, h3 { color: #ffffff; }
   hr { border: none; height: 1px; background: #222; }
 </style>
 </head>
 <body>
-<div class="container">
-<pre>
-HTML
-  sed 's/&/\&/g; s/</\&lt;/g; s/>/\&gt;/g' "$INPUT_MD" >> "$HTML_OUT"
-  cat >> "$HTML_OUT" <<'HTML'
-</pre>
-</div>
+<div class="container" id="app">Chargement…</div>
+<script>
+  window.__RAW_MD__ = ${MD_CONTENT_ESCAPED};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({ startOnLoad: false, theme: 'dark' });
+  const renderer = new marked.Renderer();
+  const origCode = renderer.code.bind(renderer);
+  renderer.code = (code, infostring, escaped) => {
+    const lang = (infostring || '').trim().toLowerCase();
+    if (lang === 'mermaid') {
+      return `<div class=\"mermaid\">${code}</div>`;
+    }
+    return origCode(code, infostring, escaped);
+  };
+  const html = marked.parse(window.__RAW_MD__, { renderer });
+  document.getElementById('app').innerHTML = html;
+  mermaid.run({ querySelector: '.mermaid' });
+</script>
 </body>
 </html>
 HTML
-fi
 
-echo "[export] Terminé. Voir $OUT_DIR"
+echo "[export] Terminé. Voir $HTML_OUT"

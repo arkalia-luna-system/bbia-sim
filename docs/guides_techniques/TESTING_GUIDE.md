@@ -1,6 +1,6 @@
-# 🧪 Guide des Tests et Coverage - BBIA Reachy Mini
+# 🧪 Guide des tests et de la couverture - BBIA Reachy Mini
 
-## 📊 Résumé des Performances
+## 📊 Résumé des performances
 
 **🎯 Coverage totale : validée en CI** (voir `coverage.xml` et `htmlcov/`)
 
@@ -8,7 +8,7 @@
 - **Résultats** : voir le récapitulatif CI (pass/failed/skipped)
 - **Tests skippés** justifiés (robot physique requis)
 
-## 🏗️ Structure des Tests
+## 🏗️ Structure des tests
 
 ```mermaid
 graph TB
@@ -52,7 +52,7 @@ graph TB
     VERTICAL --> DEMO_BEHAVIOR[test_demo_behavior_headless]
 ```
 
-## 📊 Coverage par Module
+## 📊 Couverture par module
 
 ```mermaid
 pie title Coverage par Module (exemple)
@@ -68,7 +68,7 @@ pie title Coverage par Module (exemple)
     "Autres" : 23.07
 ```
 
-## 🧪 Types de Tests
+## 🧪 Types de tests
 
 ```mermaid
 graph LR
@@ -104,9 +104,9 @@ graph LR
 └── test_*.py                     # Tests unitaires
 ```
 
-## 🚀 Commandes de Tests
+## Commandes de tests
 
-### Tests Complets
+### Tests complets
 ```bash
 # Lancer tous les tests avec coverage complet
 python -m pytest tests/ --cov=src --cov-report=term-missing --cov-report=html
@@ -118,7 +118,7 @@ python -m pytest tests/ --cov=src --cov-fail-under=0 --tb=no -q
 python -m pytest tests/ --cov=src --cov-report=term-missing -x
 ```
 
-### Tests Golden Traces
+### Tests golden traces
 ```bash
 # Tests de non-régression golden traces
 python -m pytest tests/test_golden_traces.py -v
@@ -130,7 +130,7 @@ python scripts/record_trace.py --emotion happy --duration 5 --out artifacts/gold
 python scripts/validate_trace.py --ref artifacts/golden/happy_mujoco.jsonl --cur current_trace.jsonl
 ```
 
-### Tests Spécifiques
+### Tests spécifiques
 ```bash
 # Tests d'un module spécifique
 python -m pytest tests/test_bbia_emotions.py -v
@@ -142,14 +142,13 @@ python -m pytest tests/e2e/ -v
 python -m pytest tests/test_bbia_emotions.py::TestBBIAEmotions::test_set_emotion -v
 ```
 
-### Vérification Coverage
+### Vérification de la couverture
 ```bash
-# Voir le rapport HTML
+# Ouvrir le rapport HTML (macOS)
 open htmlcov/index.html
 
-# Vérifier le nombre de tests collectés
+# Compter le nombre de tests collectés (variable selon CI)
 python -m pytest --collect-only -q | wc -l
-# Doit afficher 800+ tests (selon CI)
 
 # Coverage d'un module spécifique
 python -m pytest tests/test_bbia_emotions.py --cov=src.bbia_sim.bbia_emotions --cov-report=term-missing
@@ -206,9 +205,9 @@ title = BBIA Reachy Mini Simulation Coverage Report
 output = coverage.xml
 ```
 
-## 🔧 Résolution des Problèmes
+## 🔧 Résolution des problèmes
 
-### Problème : Coverage trop faible malgré beaucoup de tests
+### Problème : couverture trop faible malgré un grand nombre de tests
 
 **Symptômes :**
 - Coverage affiché bas malgré de nombreux tests
@@ -225,7 +224,7 @@ output = coverage.xml
 1. **Vérifier la configuration pytest :**
 ```bash
 python -m pytest --collect-only -q | wc -l
-# Doit afficher 800+ tests (selon CI)
+# Nombre indicatif selon la configuration CI
 ```
 
 2. **Vérifier la structure des dossiers :**
@@ -243,7 +242,7 @@ find tests/ -name "__init__.py"
 python -m pytest tests/test_config.py --cov=src --cov-report=term-missing
 ```
 
-### Problème : Tests qui échouent
+### Problème : tests qui échouent
 
 **Tests courants qui peuvent échouer :**
 - `test_get_available_joints` : Mock MuJoCo incorrect
@@ -255,7 +254,7 @@ python -m pytest tests/test_config.py --cov=src --cov-report=term-missing
 - Utiliser `--cov-fail-under=0` pour ignorer les erreurs de coverage
 - Corriger les assertions trop strictes
 
-## 📈 Amélioration du Coverage
+## 📈 Amélioration de la couverture
 
 ### Modules à améliorer
 1. **bbia_voice.py** : Ajouter tests pour reconnaissance vocale
@@ -269,11 +268,11 @@ python -m pytest tests/test_config.py --cov=src --cov-report=term-missing
 3. **Tests de performance** : Tester les performances
 4. **Tests de régression** : Prévenir les régressions
 
-## 🎯 Objectifs Coverage
+## 🎯 Objectifs de couverture
 
 - **Objectif minimum** : 70%
 - **Objectif recommandé** : 80%
-- **Objectif excellent** : 90%
+- **Objectif ambitieux** : 90%
 
 ---
 

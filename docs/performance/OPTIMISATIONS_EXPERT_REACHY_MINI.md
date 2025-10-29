@@ -1,29 +1,28 @@
-# 🚀 OPTIMISATIONS EXPERT - SDK REACHY MINI
+# Optimisations expert - SDK Reachy Mini
 
 **Date :** Octobre 2025  
 **Référence :** SDK officiel GitHub https://github.com/pollen-robotics/reachy_mini
 
 ---
 
-## 🎯 **OBJECTIF**
+## Objectif
 
-Optimisations professionnelles appliquées à BBIA-SIM basées sur les meilleures pratiques du SDK officiel Reachy Mini.
+Optimisations appliquées à BBIA‑SIM basées sur les pratiques du SDK officiel Reachy Mini.
 
 ---
 
-## ⚡ **OPTIMISATIONS APPLIQUÉES**
+## Optimisations appliquées
 
 ### **1. Utilisation de `goto_target()` au lieu de `set_joint_pos()` répétés**
 
 **Problème détecté :**  
 Les mouvements utilisant plusieurs `set_joint_pos()` successifs créent des mouvements saccadés et moins fluides.
 
-**Solution :**  
-Utiliser `goto_target()` avec interpolation automatique (`method="minjerk"`) pour des mouvements fluides synchronisés.
+**Solution :** utiliser `goto_target()` avec interpolation automatique (`method="minjerk"`) pour des mouvements plus fluides et synchronisés.
 
-**Fichiers corrigés :**
-- ✅ `bbia_behavior.py` - WakeUpBehavior, GreetingBehavior, AntennaAnimationBehavior, HideBehavior
-- ✅ `bbia_integration.py` - apply_emotion_to_robot(), sync_voice_with_movements()
+**Fichiers concernés :**
+- `bbia_behavior.py` - WakeUpBehavior, GreetingBehavior, AntennaAnimationBehavior, HideBehavior
+- `bbia_integration.py` - apply_emotion_to_robot(), sync_voice_with_movements()
 
 **Exemple avant ❌:**
 ```python
@@ -57,12 +56,11 @@ self.robot_api.goto_target(
 **Problème détecté :**  
 Les mouvements de tête et corps appliqués séparément créent une désynchronisation visuelle.
 
-**Solution :**  
-Combiner tête et corps dans un seul appel `goto_target()` pour synchronisation parfaite.
+**Solution :** combiner tête et corps dans un seul appel `goto_target()` pour une meilleure synchronisation.
 
-**Fichiers corrigés :**
-- ✅ `bbia_integration.py` - apply_emotion_to_robot()
-- ✅ `bbia_behavior.py` - HideBehavior
+**Fichiers concernés :**
+- `bbia_integration.py` - apply_emotion_to_robot()
+- `bbia_behavior.py` - HideBehavior
 
 **Exemple avant ❌:**
 ```python
@@ -88,12 +86,11 @@ self.robot_api.goto_target(
 **Problème détecté :**  
 Le suivi visuel utilisait directement `set_joint_position()` sans utiliser les capacités SDK avancées.
 
-**Solution :**  
-Utiliser `look_at_world()` pour positions 3D et `look_at_image()` pour coordonnées pixel avec validation des limites.
+**Solution :** utiliser `look_at_world()` pour les positions 3D et `look_at_image()` pour les coordonnées pixel avec validation des limites.
 
-**Fichiers corrigés :**
-- ✅ `bbia_behavior.py` - VisionTrackingBehavior
-- ✅ `bbia_integration.py` - react_to_vision_detection()
+**Fichiers concernés :**
+- `bbia_behavior.py` - VisionTrackingBehavior
+- `bbia_integration.py` - react_to_vision_detection()
 
 **Exemple avant ❌:**
 ```python
@@ -133,7 +130,7 @@ Passer `robot_api` au `BBIABehaviorManager` pour contrôle direct du robot via S
 
 ---
 
-### **5. Gestion d'erreurs robuste avec fallbacks**
+### **5. Gestion d'erreurs avec fallbacks**
 
 **Problème détecté :**  
 Erreurs non gérées si SDK non disponible ou méthodes manquantes.
@@ -160,27 +157,27 @@ except Exception as e:
 
 ---
 
-## 📊 **BÉNÉFICES PERFORMANCE**
+## Bénéfices performance
 
 ### **Fluidité des mouvements**
-- ✅ **Avant :** Mouvements saccadés (3-5 appels SDK séparés)
-- ✅ **Après :** Mouvements fluides (1 appel SDK avec interpolation)
+- Avant : mouvements saccadés (3-5 appels SDK séparés)
+- Après : mouvements plus fluides (1 appel SDK avec interpolation)
 
 ### **Synchronisation**
-- ✅ **Avant :** Tête et corps désynchronisés (2 appels séparés)
-- ✅ **Après :** Parfaite synchronisation (1 appel combiné)
+- Avant : tête et corps désynchronisés (2 appels séparés)
+- Après : synchronisation améliorée (1 appel combiné)
 
 ### **Précision suivi visuel**
-- ✅ **Avant :** Rotation approximative (set_joint_pos direct)
-- ✅ **Après :** Calcul IK précis (look_at_world SDK)
+- Avant : rotation approximative (set_joint_pos direct)
+- Après : utilisation IK via SDK (`look_at_world`)
 
 ### **Résilience**
-- ✅ **Avant :** Erreurs si SDK non disponible
-- ✅ **Après :** Fallbacks gracieux (fonctionne toujours)
+- Avant : erreurs si SDK non disponible
+- Après : fallbacks pour maintenir le fonctionnement
 
 ---
 
-## 🔧 **FICHIERS MODIFIÉS**
+## Fichiers modifiés
 
 1. ✅ `src/bbia_sim/bbia_behavior.py`
    - WakeUpBehavior : goto_target pour réveil fluide
@@ -197,22 +194,20 @@ except Exception as e:
 
 ---
 
-## ✅ **VALIDATION**
+## Validation
 
-- ✅ **Tests :** Tous les tests de conformité passent
-- ✅ **SDK :** 100% conforme SDK officiel Reachy Mini
-- ✅ **Performance :** Mouvements fluides (interpolation minjerk)
-- ✅ **Compatibilité :** Fallbacks gracieux si SDK non disponible
+- Tests : tests de conformité au vert
+- SDK : conformité avec le SDK Reachy Mini
+- Performance : mouvements fluides (interpolation minjerk)
+- Compatibilité : fallbacks si SDK non disponible
 
 ---
 
-## 🚀 **PRÊT POUR ROBOT PHYSIQUE**
+## Prêt pour robot physique
 
-Ces optimisations garantissent :
-- ✅ Mouvements naturels et fluides
-- ✅ Synchronisation parfaite tête+corps
-- ✅ Suivi visuel précis (IK automatique)
-- ✅ Résilience (fonctionne avec ou sans SDK)
-
-**Prêt pour déploiement sur robot Reachy Mini physique ! 🎉**
+Ces optimisations apportent :
+- des mouvements plus naturels et fluides
+- une meilleure synchronisation tête+corps
+- un suivi visuel via IK
+- une résilience accrue (avec ou sans SDK)
 

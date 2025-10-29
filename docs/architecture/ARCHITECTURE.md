@@ -13,7 +13,7 @@ Cette section documente l'architecture complète de BBIA-SIM v1.3.0, un moteur c
 
 ## 📚 Documentation Architecture
 
-### **📖 ARCHITECTURE_OVERVIEW.md**
+### **ARCHITECTURE_OVERVIEW.md**
 Vue d'ensemble complète de l'architecture BBIA-SIM v1.3.0:
 - Objectifs architecturaux
 - Architecture générale avec diagrammes Mermaid
@@ -26,7 +26,7 @@ Vue d'ensemble complète de l'architecture BBIA-SIM v1.3.0:
 
 ---
 
-### **📖 ARCHITECTURE_DETAILED.md**
+### **ARCHITECTURE_DETAILED.md**
 Documentation détaillée technique:
 - Détails techniques par couche
 - Modules BBIA (émotions, vision, voix, comportements)
@@ -39,26 +39,26 @@ Documentation détaillée technique:
 
 ---
 
-## 🎯 Points Clés
+## Points clés
 
-### **Conformité SDK**
-- ✅ **21/21 méthodes SDK** officiel implémentées
-- ✅ **100% conforme** au SDK Reachy-Mini
-- ✅ Backend ReachyMini prêt pour robot physique
+### Conformité SDK
+- 21/21 méthodes SDK implémentées
+- Conformité validée avec le SDK Reachy-Mini
+- Backend ReachyMini prêt pour robot physique
 
-### **Innovation Technique**
-- ✅ **RobotAPI Unifié** : Interface simulation ↔ robot réel
-- ✅ **Modules BBIA** : 12 émotions, vision, voix, comportements
-- ✅ **Bridge Zenoh/FastAPI** : Architecture distribuée
+### Innovation technique
+- RobotAPI unifié : interface simulation ↔ robot réel
+- Modules BBIA : 12 émotions, vision, voix, comportements
+- Bridge Zenoh/FastAPI : architecture distribuée
 
-### **Qualité**
-- ✅ **Tests** : 27 passent, 13 skippés
-- ✅ **Coverage** : 63.37%
-- ✅ **Outils** : Black, Ruff, MyPy, Bandit ✅
+### Qualité
+- Tests : 27 passent, 13 skippés
+- Couverture : 63.37%
+- Outils : Black, Ruff, MyPy, Bandit
 
 ---
 
-## 🚀 Quick Start
+## Démarrage rapide
 
 ```bash
 # Backend MuJoCo (simulation)

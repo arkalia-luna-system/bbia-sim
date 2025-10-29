@@ -9,7 +9,7 @@
 
 ### Modules terminés
 
-**7/7 modules audités et corrigés** (5 critiques + 2 moyens)
+7/7 modules audités et corrigés (5 critiques + 2 moyens)
 
 1. ✅ **motor_controllers** (CRITIQUE) - Emergency stop, watchdog, limites
 2. ✅ **audio_tts** (CRITIQUE) - Sample rate 16kHz, BBIA_DISABLE_AUDIO
@@ -65,17 +65,17 @@ pytest tests/test_emergency_stop.py tests/test_watchdog_monitoring.py tests/test
 
 ## Bilan
 
-### Modules Critiques (5/5) ✅
+### Modules critiques (5/5)
 - ✅ Toutes corrections sécurité appliquées
 - ✅ Tous tests unitaires validés
 - ✅ Conformité SDK vérifiée
 
-### Modules Moyens (2/2) ✅
+### Modules moyens (2/2)
 - ✅ Tests corrigés et validés
 - ✅ Markers pytest ajoutés
 - ✅ Tous tests passent
 
-### Tests Créés/Corrigés
+### Tests créés/corrigés
 - ✅ 18 nouveaux tests créés (emergency_stop, watchdog, sécurité, JSON)
 - ✅ 22 tests corrigés (behaviors, sdk_wrappers)
 - ✅ **Total**: 40+ tests validés
@@ -93,7 +93,7 @@ Audit complet
 - ✅ **Performance** optimisée (boucles temps réel, audio)
 - ✅ **Documentation** complète générée
 
-Le projet BBIA est conforme au SDK Reachy Mini officiel avec des améliorations de sécurité, robustesse et performance appliquées.
+Le projet BBIA est conforme au SDK Reachy Mini officiel, avec des améliorations de sécurité, robustesse et performance appliquées.
 
 ---
 

@@ -45,6 +45,25 @@ graph TB
 
 ## 🔧 Étapes de Migration
 
+### Flux de migration
+
+```mermaid
+flowchart TD
+    START[Projet en simulation<br/>MuJoCoBackend] --> CHECK{SDK installé ?}
+    CHECK -->|Non| INSTALL[Installer reachy-mini<br/>pip install reachy-mini]
+    CHECK -->|Oui| CONFIG[Configurer connexion<br/>robot IP + daemon]
+    INSTALL --> CONFIG
+    CONFIG --> SWITCH[Changer backend<br/>mujoco → reachy_mini]
+    SWITCH --> TEST[Tester connexion<br/>connect + health check]
+    TEST --> VALID{Connexion OK ?}
+    VALID -->|Oui| READY[✅ Robot réel opérationnel]
+    VALID -->|Non| DEBUG[Debug connexion<br/>logs + vérifications]
+    DEBUG --> TEST
+    
+    style START fill:#90EE90
+    style READY fill:#87CEEB
+```
+
 ### **1. Installation du SDK Officiel**
 
 ```bash

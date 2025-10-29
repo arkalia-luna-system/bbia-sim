@@ -3,10 +3,10 @@
 Usage: python scripts/launch_robot.py [graphical|headless|test].
 """
 
+import shutil
 import subprocess  # nosec B404 - usage contrôlé
 import sys
 from pathlib import Path
-import shutil
 
 
 def main():

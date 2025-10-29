@@ -1,17 +1,17 @@
-# ✅ IMPLÉMENTATION WATCHDOG MONITORING TEMPS RÉEL
+# Implémentation du watchdog de monitoring temps réel
 
 **Date**: 2025-10-29  
-**Statut**: ✅ **COMPLÉTÉ ET VALIDÉ**
+**Statut**: complété et validé
 
 ---
 
-## 🎯 OBJECTIF
+## Objectif
 
 Implémenter un système de monitoring watchdog temps réel conforme au SDK Reachy Mini officiel qui utilise des threads avec `Event` pour surveiller l'état du robot et activer automatiquement `emergency_stop()` en cas d'anomalie.
 
 ---
 
-## ✅ IMPLÉMENTATION
+## Implémentation
 
 ### Fichier Modifié
 
@@ -45,7 +45,7 @@ self._last_heartbeat: float = 0.0
 
 ---
 
-## 🔧 FONCTIONNEMENT
+## Fonctionnement
 
 ### Cycle de Vie
 
@@ -68,11 +68,11 @@ self._last_heartbeat: float = 0.0
 
 ---
 
-## 📊 TESTS CRÉÉS
+## Tests créés
 
 **Fichier**: `tests/test_watchdog_monitoring.py`
 
-**7 tests, tous passent** ✅:
+7 tests passent :
 
 1. `test_watchdog_start_on_connect` - Vérifie démarrage automatique
 2. `test_watchdog_stop_on_disconnect` - Vérifie arrêt propre
@@ -84,7 +84,7 @@ self._last_heartbeat: float = 0.0
 
 ---
 
-## ✅ VALIDATION
+## Validation
 
 ```bash
 # Tests watchdog
@@ -106,9 +106,9 @@ ruff check src/bbia_sim/backends/reachy_mini_backend.py
 
 ---
 
-## 🎯 CONFORMITÉ SDK
+## Conformité SDK
 
-✅ **Conforme au SDK Reachy Mini officiel**:
+Conforme au SDK Reachy Mini officiel :
 - Utilise threads avec `Event` comme SDK
 - Monitoring temps réel à 100ms
 - Détection automatique déconnexion
@@ -117,9 +117,9 @@ ruff check src/bbia_sim/backends/reachy_mini_backend.py
 
 ---
 
-## 🔒 SÉCURITÉ
+## Sécurité
 
-✅ **Mécanismes de sécurité**:
+Mécanismes de sécurité :
 - Timeout heartbeat: 2 secondes max sans activité
 - Détection déconnexion robot via exceptions SDK
 - Activation automatique emergency stop en cas d'anomalie
@@ -128,7 +128,7 @@ ruff check src/bbia_sim/backends/reachy_mini_backend.py
 
 ---
 
-## 📝 NOTES TECHNIQUES
+## Notes techniques
 
 ### Intervalle Monitoring
 - **100ms** (10 Hz) - Optimale pour équilibrer réactivité et charge CPU
@@ -144,9 +144,9 @@ ruff check src/bbia_sim/backends/reachy_mini_backend.py
 
 ---
 
-## 🎉 RÉSULTAT FINAL
+## Résultat
 
-✅ **Watchdog monitoring temps réel implémenté et validé**
+Watchdog de monitoring temps réel implémenté et validé
 
 - ✅ Toutes les fonctionnalités demandées implémentées
 - ✅ Tests unitaires complets (7 tests, tous passent)
@@ -154,9 +154,9 @@ ruff check src/bbia_sim/backends/reachy_mini_backend.py
 - ✅ Sécurité et robustesse validées
 - ✅ Documentation complète
 
-**Le système BBIA dispose maintenant d'un monitoring watchdog temps réel complet conforme au SDK officiel.** 🚀
+Le système BBIA dispose maintenant d'un monitoring watchdog temps réel conforme au SDK officiel.
 
 ---
 
-**Statut**: ✅ **TERMINÉ ET VALIDÉ**
+**Statut**: terminé et validé
 

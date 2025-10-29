@@ -1,11 +1,11 @@
-# 📋 PROCHAINES ÉTAPES - AUDIT BBIA → REACHY
+# Prochaines étapes - audit BBIA → Reachy
 
 **Date**: 2025-10-29  
-**Statut**: ✅ Phase critique terminée | 🟡 Modules moyens restants
+**Statut**: phase critique terminée | modules moyens restants
 
 ---
 
-## ✅ CE QUI EST FAIT (CRITIQUES)
+## Ce qui est fait (critiques)
 
 Tous les **modules critiques** (priorité haute) sont **terminés** :
 
@@ -19,9 +19,9 @@ Tous les **modules critiques** (priorité haute) sont **terminés** :
 
 ---
 
-## 🟡 CE QUI RESTE (MOYENS - OPTIONNEL)
+## Ce qui reste (moyens - optionnel)
 
-### 6. 🟡 **behaviors** (Priorité Moyenne)
+### 6. behaviors (priorité moyenne)
 
 **Score**: Conformité 8/10 | Sécurité 7/10 | Performance 8/10 | Docs 6/10  
 **Issues**: 🔴 **1 high** - Tests échouent  
@@ -40,7 +40,7 @@ Tous les **modules critiques** (priorité haute) sont **terminés** :
 
 ---
 
-### 7. 🟡 **sdk_wrappers** (Priorité Moyenne)
+### 7. sdk_wrappers (priorité moyenne)
 
 **Score**: Conformité 8/10 | Sécurité 7/10 | Performance 8/10 | Docs 6/10  
 **Issues**: 🔴 **1 high** - Tests échouent  
@@ -59,23 +59,23 @@ Tous les **modules critiques** (priorité haute) sont **terminés** :
 
 ---
 
-## 📊 RÉSUMÉ
+## Résumé
 
-### Phase Critique
+### Phase critique
 - ✅ **5/5 modules critiques** terminés
 - ✅ **18 tests** créés et validés
 - ✅ **Toutes corrections sécurité** appliquées
 
-### Phase Moyenne (Optionnel)
+### Phase moyenne (optionnel)
 - 🟡 **2/2 modules moyens** à corriger
 - 🔴 **2 issues high** (tests à corriger)
 - ⏱️ **~4 heures** estimation totale
 
 ---
 
-## 🎯 ORDRE D'INTERVENTION RECOMMANDÉ
+## Ordre d’intervention recommandé
 
-### Option 1 : Finir Audit Complet (Recommandé)
+### Option 1 : finir l’audit complet (recommandé)
 
 **Pourquoi** : Compléter l'audit à 100% pour qualité maximale
 
@@ -89,11 +89,11 @@ Tous les **modules critiques** (priorité haute) sont **terminés** :
    - Vérifier factory pattern
    - Documenter usage
 
-**Bénéfice** : Audit 100% complet, tous modules validés
+Résultat : audit complet, tous modules validés
 
 ---
 
-### Option 2 : Laisser Tel Quel (Acceptable)
+### Option 2 : laisser tel quel (acceptable)
 
 **Pourquoi** : Modules moyens ne sont pas bloquants pour production
 
@@ -101,23 +101,23 @@ Tous les **modules critiques** (priorité haute) sont **terminés** :
 - Modules moyens sont bien notés (8/10 conformité)
 - Issues sont uniquement des **tests à corriger**, pas de bugs code
 
-**Bénéfice** : Phase critique terminée, production ready
+Résultat : phase critique terminée, prêt pour la production
 
 ---
 
-## ✅ RECOMMANDATION FINALE
+## Recommandation finale
 
-**Je recommande l'Option 1** pour compléter l'audit à 100% :
+Recommandation : option 1 pour compléter l’audit :
 
 1. ✅ Phase critique terminée (tous points critiques OK)
 2. 🟡 Phase moyenne rapide (4h seulement, tests uniquement)
 3. ✅ Résultat : Audit 100% complet
 
-**Mais** l'Option 2 est aussi valable si tu veux passer à autre chose.
+L’option 2 reste valable si vous souhaitez prioriser d’autres sujets.
 
 ---
 
-## 📝 COMMANDES POUR VERIFICATION
+## Commandes pour vérification
 
 ```bash
 # Vérifier état tests behaviors
@@ -132,5 +132,5 @@ pytest tests/test_bbia_behavior.py -m "unit and fast" -v
 
 ---
 
-**Qu'est-ce que tu préfères ?** 🚀
+Quel est votre choix ?
 

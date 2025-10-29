@@ -6,13 +6,13 @@ Génère JSONL par module + synthèse MD globale selon procédure stricte
 
 import json
 import logging
+import shutil
 import subprocess  # nosec B404 - utilisation contrôlée via run_command
 import sys
+import tempfile
 from datetime import datetime
 from pathlib import Path
 from typing import Any
-import tempfile
-import shutil
 
 # Configuration logging
 logging.basicConfig(
@@ -51,8 +51,14 @@ CRITICAL_MODULES = [
             "src/bbia_sim/sim/models/reachy_mini.xml",
         ],
         "ref_files": [
-            str(REACHY_REF_PATH / "src/reachy_mini/descriptions/reachy_mini/mjcf/reachy_mini.xml"),
-            str(REACHY_REF_PATH / "src/reachy_mini/descriptions/reachy_mini/urdf/robot.urdf"),
+            str(
+                REACHY_REF_PATH
+                / "src/reachy_mini/descriptions/reachy_mini/mjcf/reachy_mini.xml"
+            ),
+            str(
+                REACHY_REF_PATH
+                / "src/reachy_mini/descriptions/reachy_mini/urdf/robot.urdf"
+            ),
         ],
     },
     {
