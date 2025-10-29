@@ -4,7 +4,7 @@ Script de validation des tests skippés BBIA-SIM
 Valide que tous les skips sont justifiés et documente les raisons
 """
 
-import subprocess
+import subprocess  # nosec B404 - usage contrôlé
 import sys
 
 
@@ -87,7 +87,7 @@ def generate_test_coverage_report():
 
     try:
         # Exécuter les tests avec couverture
-        result = subprocess.run(
+        result = subprocess.run(  # nosec B603 - arguments constants
             [
                 sys.executable,
                 "-m",
