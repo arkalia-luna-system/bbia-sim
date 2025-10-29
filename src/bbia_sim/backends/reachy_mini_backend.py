@@ -332,6 +332,8 @@ class ReachyMiniBackend(RobotAPI):
             self._should_stop_watchdog.wait(self._watchdog_interval)
 
         logger.debug("Watchdog monitoring terminé")
+        # Assurer la visibilité immédiate de l'arrêt côté tests
+        self._watchdog_thread = None
 
     def get_available_joints(self) -> list[str]:
         """Retourne la liste des joints disponibles."""

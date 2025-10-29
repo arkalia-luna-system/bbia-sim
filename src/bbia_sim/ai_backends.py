@@ -36,12 +36,14 @@ class Pyttsx3TTS:
 
     def synthesize_to_wav(self, text: str, outfile: str) -> bool:
         try:
-            if self._engine is None:
+            engine = self._engine
+            if engine is None:
                 import pyttsx3  # lazy import
 
-                self._engine = pyttsx3.init()
-            self._engine.save_to_file(text, outfile)
-            self._engine.runAndWait()
+                engine = pyttsx3.init()
+                self._engine = engine
+            engine.save_to_file(text, outfile)
+            engine.runAndWait()
             return True
         except Exception:
             return False

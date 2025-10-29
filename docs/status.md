@@ -41,7 +41,7 @@ Le SDK officiel Reachy Mini expose une intégration Hugging Face Spaces via `hf_
 
 **Bandit B615 :** Unsafe Hugging Face download  
 - **Justification :** Utilisation explicite `revision="main"` dans tous les appels `from_pretrained()`  
-- **Risque accepté :** Mise à jour automatique des modèles (comportement souhaité)
+- **Risque accepté :** Mise à jour automatique des modèles (comportement souhaité)  
 - **Status :** 2 findings Medium (tolérés, justifiés)
 
 ### 🔒 Sécurité & Tests
@@ -859,13 +859,28 @@ pytest -q tests/test_huggingface_latency.py
 ### 📈 Benchmarks mesurés (simulation)
 
 - Emergency stop (sim) : p50 < 10 ms, p95 < 20 ms (N=30)
-- Watchdog timeout → stop (sim, mock) : p50 < 200 ms, p95 < 300 ms (N=10)
+- Watchdog timeout → stop (sim, mock robot) : p50 < 200 ms, p95 < 300 ms (N=10)
 - Jitter boucle 50 Hz (sim) : p50 ~ 20 ms, p95 ≤ 40 ms (N=200)
 - goto_target(head, 0.1 s, minjerk) (sim) : p50 < 20 ms, p95 < 40 ms (N=50)
-- Budget CPU/RAM 10 s (sim) : CPU < 1.5 s, Peak RAM < 64 MB (OK)
-- Audio E2E lecture simple : latence < 600 ms (selon env.)
-- Audio loopback (latence in→out, cond.) : p50 < 800 ms, p95 < 1200 ms (N=20)
-- Audio buffer stability 30 s : underruns/overruns = 0 sur env. stable
+- Vision (pipeline simulé): p50 < 10 ms, p95 < 20 ms (N=50)
+- Vision FPS 10 s (sim): ≥ 10 FPS — PASS
+- Vision budget 10 s (sim): CPU < 3.0 s, Peak RAM < 200 MB — PASS
+- Audio E2E lecture simple (macOS): latence < 600 ms (cond.)
+- Audio buffer stabilité 10 s: underruns=0, overruns=0
+- Runtime budget 10 s (sim): CPU < 1.5 s, Peak RAM < 64 MB
+
+#### Tableau récapitulatif (PASS simulé)
+
+| Domaine | Test | Seuil p50/p95 | Résultat |
+|---|---|---|---|
+| Backend | emergency_stop | <10 ms / <20 ms | PASS |
+| Backend | watchdog timeout (sim) | <200 ms / <300 ms | PASS |
+| Backend | jitter 50 Hz | ~20 ms / ≤40 ms | PASS |
+| Backend | goto_target 0.1 s minjerk | <20 ms / <40 ms | PASS |
+| Vision | pipeline simulé | <10 ms / <20 ms | PASS |
+| Audio | E2E lecture (macOS) | <600 ms | PASS |
+| Audio | buffer stabilité 10 s | underruns=0 / overruns=0 | PASS |
+| Système | budget 10 s | CPU<1.5 s, Peak RAM<64 MB | PASS |
 
 ### 📝 Format benchmarks attendu (JSONL)
 

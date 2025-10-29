@@ -38,7 +38,7 @@ class TestConformityAdvancedPatterns:
             if "backends" in str(py_file) or "__pycache__" in str(py_file):
                 continue
 
-            content = py_file.read_text(encoding="utf-8")
+            content = py_file.read_text(encoding="utf-8", errors="ignore")
             lines = content.split("\n")
 
             # Chercher séquences de set_joint_pos multiples (potentiellement inefficace)
@@ -89,7 +89,7 @@ class TestConformityAdvancedPatterns:
         if not integration_file.exists():
             pytest.skip("Fichier bbia_integration.py introuvable")
 
-        content = integration_file.read_text(encoding="utf-8")
+        content = integration_file.read_text(encoding="utf-8", errors="ignore")
 
         # Vérifier présence mapping émotion → interpolation
         has_emotion_interpolation_map = "emotion_interpolation_map" in content
@@ -135,7 +135,7 @@ class TestConformityAdvancedPatterns:
         if not integration_file.exists():
             pytest.skip("Fichier bbia_integration.py introuvable")
 
-        content = integration_file.read_text(encoding="utf-8")
+        content = integration_file.read_text(encoding="utf-8", errors="ignore")
 
         # Vérifier présence duration adaptative
         has_adaptive_duration = (
@@ -163,7 +163,7 @@ class TestConformityAdvancedPatterns:
             Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_vision.py"
         )
         if vision_file.exists():
-            content = vision_file.read_text(encoding="utf-8")
+            content = vision_file.read_text(encoding="utf-8", errors="ignore")
             has_robot_api_param = (
                 "robot_api"
                 in re.search(r"def __init__.*?:", content, re.DOTALL).group(0)
@@ -185,7 +185,7 @@ class TestConformityAdvancedPatterns:
             Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_integration.py"
         )
         if integration_file.exists():
-            content = integration_file.read_text(encoding="utf-8")
+            content = integration_file.read_text(encoding="utf-8", errors="ignore")
             # Chercher BBIAVision avec robot_api (peut être sur plusieurs lignes)
             passes_to_vision = (
                 "BBIAVision(" in content
@@ -218,7 +218,7 @@ class TestConformityAdvancedPatterns:
             if any(pattern in str(py_file) for pattern in exclude_patterns):
                 continue
 
-            content = py_file.read_text(encoding="utf-8")
+            content = py_file.read_text(encoding="utf-8", errors="ignore")
             lines = content.split("\n")
 
             for i, line in enumerate(lines, 1):
@@ -270,7 +270,7 @@ class TestConformityAdvancedPatterns:
             if "__pycache__" in str(py_file):
                 continue
 
-            content = py_file.read_text(encoding="utf-8")
+            content = py_file.read_text(encoding="utf-8", errors="ignore")
 
             for feature, indicators in advanced_features.items():
                 # Chercher usage du feature
