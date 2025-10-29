@@ -28,6 +28,21 @@ Voir [INDEX_FINAL.md](INDEX_FINAL.md) pour la liste complète.
 
 ## 🚀 Démarrage Rapide
 
+### 3 actions pour démarrer
+```bash
+# 1) Lancer le dashboard local (FastAPI + WebSocket)
+python src/bbia_sim/dashboard_advanced.py
+
+# 2) Démarrer l’API publique (mode dev)
+python deploy/public_api.py --dev
+
+# 3) Essayer une démo MuJoCo (3D)
+mjpython examples/demo_emotion_ok.py --emotion happy --duration 5
+```
+
+- Besoin de détails ? Voir le [Guide Débutant](guides/GUIDE_DEBUTANT.md)
+- Variables d’environnement utiles : `BBIA_DISABLE_AUDIO`, `BBIA_TTS_BACKEND`, `BBIA_STT_BACKEND`, `BBIA_LLM_BACKEND`
+
 1. Lire le [README principal](../README.md)
 2. Suivre le [Guide Débutant](guides/GUIDE_DEBUTANT.md)
 3. Consulter l'[Index](INDEX_FINAL.md) pour trouver ce dont vous avez besoin
