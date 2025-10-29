@@ -29,7 +29,7 @@ convert_md_to_html() {
         return 1
     fi
     
-    # Calculer le chemin relatif vers styles.css et index.html
+    # Calculer le chemin relatif vers styles.css, index.html et js/
     local html_dir=$(dirname "$html_file")
     local html_dir_rel="${html_dir#$OUT_DIR/}"
     local depth=""
@@ -38,6 +38,16 @@ convert_md_to_html() {
         local levels=$(echo "$html_dir_rel" | tr '/' '\n' | wc -l | tr -d ' ')
         depth=$(printf '../%.0s' $(seq 1 "$levels"))
     fi
+    # Calculer chemin relatif vers js/
+    TMP_REL_JS=$(mktemp)
+    JS_DIR_VAR="$JS_DIR" OUT_DIR_VAR="$html_dir" python3 - <<'PY' > "$TMP_REL_JS"
+import os
+jdir = os.environ['JS_DIR_VAR']
+odir = os.environ['OUT_DIR_VAR']
+print(os.path.relpath(jdir, odir))
+PY
+    local js_rel_path=$(cat "$TMP_REL_JS")
+    rm -f "$TMP_REL_JS"
     
     local md_content
     md_content=$(python3 -c "import json, sys; print(json.dumps(open(sys.argv[1], 'r', encoding='utf-8').read()))" "$md_file")
