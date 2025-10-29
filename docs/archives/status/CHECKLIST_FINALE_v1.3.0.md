@@ -1,4 +1,4 @@
-# ✅ CHECKLIST FINALE BBIA-SIM v1.3.0 - 7 DERNIÈRES ÉTAPES
+# ✅ CHECKLIST FINALE BBIA-SIM v1.3.1 - 7 DERNIÈRES ÉTAPES
 
 **Objectif** : Atteindre le 100/100 et le statut de référence incontestable  
 **Statut actuel** : 98/100 - Prêt pour les 7 dernières étapes  
@@ -11,7 +11,7 @@
 | # | Domaine | Action | Statut | Temps |
 |---|---------|--------|--------|-------|
 | 1 | **Technique** | Tests réels Reachy Mini | ⏳ En attente robot | Décembre 2024 |
-| 2 | **Technique** | Tag stable v1.3.0 | ✅ **FAIT** | - |
+| 2 | **Technique** | Tag stable v1.3.1 | ✅ **FAIT** | - |
 | 3 | **Technique** | CHANGELOG.md | ✅ **FAIT** | - |
 | 4 | **Déploiement** | Render.com Swagger | 🔄 Prêt à déployer | 5 min |
 | 5 | **Communication** | Post LinkedIn | 🔄 Contenu prêt | 1 jour |
