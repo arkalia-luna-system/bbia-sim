@@ -106,8 +106,8 @@ body {
 <script>
   window.__RAW_MD__ = ${md_content};
 </script>
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script src="${js_rel_path}/marked.min.js"></script>
+<script src="${js_rel_path}/mermaid.min.js"></script>
 <script>
   mermaid.initialize({ 
     startOnLoad: false, 
