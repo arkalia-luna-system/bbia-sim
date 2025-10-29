@@ -6,7 +6,17 @@ LOG_DIR="$ROOT_DIR/log"
 mkdir -p "$LOG_DIR"
 LOG_FILE="$LOG_DIR/onboarding_demo.log"
 
-echo "[onboarding] $(date -Iseconds) démarrage" | tee -a "$LOG_FILE"
+CLI_AUDIO=false
+for arg in "$@"; do
+  case "$arg" in
+    --cli-audio)
+      CLI_AUDIO=true
+      shift || true
+      ;;
+  esac
+done
+
+echo "[onboarding] $(date -Iseconds) démarrage (cli_audio=$CLI_AUDIO)" | tee -a "$LOG_FILE"
 
 # Charger l'env si présent
 ENV_FILE="$ROOT_DIR/scripts/onboarding/env_bbia_example.txt"
@@ -46,6 +56,14 @@ set -e
 
 if [[ $RC -eq 0 ]]; then
   echo "[onboarding] ✅ Démo terminée avec succès" | tee -a "$LOG_FILE"
+  if $CLI_AUDIO && [[ -f "/tmp/tts.wav" ]]; then
+    echo "[onboarding] Lecture CLI de /tmp/tts.wav via afplay" | tee -a "$LOG_FILE"
+    if command -v afplay >/dev/null 2>&1; then
+      afplay /tmp/tts.wav || true
+    else
+      echo "[onboarding] ⚠️  afplay indisponible, lecture ignorée" | tee -a "$LOG_FILE"
+    fi
+  fi
 else
   echo "[onboarding] ❌ Démo a retourné code $RC (voir $LOG_FILE)" | tee -a "$LOG_FILE"
   exit $RC
