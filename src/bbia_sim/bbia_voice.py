@@ -330,7 +330,7 @@ def lister_voix_disponibles() -> None:
                 else str(v.languages[0])
             )
         except Exception:
-            _ = str(v.languages)
+            _ = str(v.languages)  # type: ignore[no-any-return]
 
 
 if __name__ == "__main__":
