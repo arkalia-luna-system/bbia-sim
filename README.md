@@ -231,6 +231,8 @@ La documentation HTML offre :
 - Rendu Mermaid automatique des diagrammes
 - Thème sombre adapté au développement
 - Liens ancres pour navigation rapide
+
+**Guides principaux :**
 - **[Guide Débutant](docs/guides/GUIDE_DEBUTANT.md)** : Guide pour débuter
 - **[Guide Avancé](docs/guides/GUIDE_AVANCE.md)** : Guide avancé
 - **[Vertical Slices](docs/audit/VERTICAL_SLICES_ACCOMPLIS.md)** : Documentation des vertical slices
