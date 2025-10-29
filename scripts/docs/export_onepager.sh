@@ -10,6 +10,12 @@ PDF_OUT="$OUT_DIR/PORTFOLIO_ONEPAGER.pdf"
 HTML_OUT="$OUT_DIR/PORTFOLIO_ONEPAGER.html"
 
 mkdir -p "$OUT_DIR"
+JS_DIR="$OUT_DIR/js"
+
+# Télécharger les JS si manquants (100% offline)
+mkdir -p "$JS_DIR"
+[ ! -f "$JS_DIR/marked.min.js" ] && curl -sL https://cdn.jsdelivr.net/npm/marked/marked.min.js -o "$JS_DIR/marked.min.js" || true
+[ ! -f "$JS_DIR/mermaid.min.js" ] && curl -sL https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js -o "$JS_DIR/mermaid.min.js" || true
 
 # 1) Essayer via pypandoc (dans venv)
 if "$ROOT_DIR/venv/bin/python" -c "import sys; import importlib; sys.exit(0 if importlib.util.find_spec('pypandoc') else 1)" 2>/dev/null; then
@@ -54,6 +60,17 @@ PY
 MD_CONTENT_ESCAPED=$(cat "$TMP_JSON")
 rm -f "$TMP_JSON"
 
+# Chemins relatifs depuis HTML_OUT vers JS_DIR
+TMP_REL=$(mktemp)
+JS_DIR_VAR="$JS_DIR" OUT_DIR_VAR="$(dirname "$HTML_OUT")" python - <<'PY' > "$TMP_REL"
+import os
+jdir = os.environ['JS_DIR_VAR']
+odir = os.environ['OUT_DIR_VAR']
+print(os.path.relpath(jdir, odir))
+PY
+REL_JS_DIR=$(cat "$TMP_REL")
+rm -f "$TMP_REL"
+
 cat > "$HTML_OUT" <<HTML
 <!DOCTYPE html>
 <html lang="fr">
@@ -78,8 +95,8 @@ cat > "$HTML_OUT" <<HTML
 <script>
   window.__RAW_MD__ = ${MD_CONTENT_ESCAPED};
 </script>
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script src="${REL_JS_DIR}/marked.min.js"></script>
+<script src="${REL_JS_DIR}/mermaid.min.js"></script>
 <script>
   mermaid.initialize({ startOnLoad: false, theme: 'dark' });
   const renderer = new marked.Renderer();
@@ -99,4 +116,4 @@ cat > "$HTML_OUT" <<HTML
 </html>
 HTML
 
-echo "[export] Terminé. Voir $HTML_OUT"
+echo "[export] Terminé (100% offline). Voir $HTML_OUT"

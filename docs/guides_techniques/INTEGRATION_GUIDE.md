@@ -1,21 +1,21 @@
-# 🌐 Guide d'Intégration BBIA-SIM - Phase 3
+# Guide d'intégration BBIA-SIM - Phase 3
 
-**Version** : 1.2.0 "Écosystème Ouvert"  
+**Version** : 1.2.0  
 **Date** : Octobre 2025  
-**Public** : Développeurs, Chercheurs, Communauté Technique  
+**Public** : développeurs, chercheurs, communauté technique  
 
-## 🎯 **Introduction**
+## Introduction
 
 Ce guide vous accompagne dans l'intégration de BBIA-SIM dans vos projets. BBIA-SIM est un écosystème ouvert pour le contrôle du robot Reachy Mini avec des modules BBIA (Bio-Inspired Artificial Intelligence).
 
-### **🚀 Fonctionnalités Principales**
+### Fonctionnalités principales
 
-- **🤖 Contrôle Robot** : API REST + WebSocket pour le contrôle du robot Reachy Mini
-- **😊 Émotions BBIA** : 12 émotions contrôlant les articulations du robot
-- **🎭 Comportements** : 8 comportements prédéfinis (wake_up, greeting, etc.)
-- **🎮 Modes Démo** : Simulation MuJoCo, robot réel, mode mixte
-- **📚 Documentation** : Swagger UI, ReDoc, OpenAPI complète
-- **🌐 Écosystème Ouvert** : Support multi-robots, communauté technique
+- Contrôle robot : API REST + WebSocket pour le contrôle du robot Reachy Mini
+- Émotions BBIA : 12 émotions contrôlant les articulations du robot
+- Comportements : 8 comportements prédéfinis (wake_up, greeting, etc.)
+- Modes démo : simulation MuJoCo, robot réel, mode mixte
+- Documentation : Swagger UI, ReDoc, OpenAPI complète
+- Écosystème ouvert : support multi-robots, communauté technique
 
 ---
 
@@ -36,9 +36,9 @@ flowchart TD
 
 ---
 
-## 🚀 **Démarrage Rapide**
+## Démarrage rapide
 
-### **1. Installation**
+### 1. Installation
 
 ```bash
 # Cloner le repository
@@ -52,7 +52,7 @@ pip install -r requirements.txt
 pip install -e .
 ```
 
-### **2. Démarrage de l'API**
+### 2. Démarrage de l'API
 
 ```bash
 # Démarrage en mode développement
@@ -65,7 +65,7 @@ python deploy/public_api.py --prod --port 8000
 python deploy/public_api.py --host 0.0.0.0 --port 8000
 ```
 
-### **3. Test de l'API**
+### 3. Test de l'API
 
 ```bash
 # Test automatisé
@@ -78,7 +78,7 @@ python scripts/demo_public_api.py
 python scripts/demo_mode_complete.py --mode simulation
 ```
 
-### **4. Documentation Interactive**
+### 4. Documentation interactive
 
 - **Swagger UI** : http://localhost:8000/docs
 - **ReDoc** : http://localhost:8000/redoc
@@ -86,9 +86,9 @@ python scripts/demo_mode_complete.py --mode simulation
 
 ---
 
-## 🔧 **Intégration API**
+## Intégration API
 
-### **Authentification**
+### Authentification
 
 L'API utilise l'authentification Bearer Token :
 
@@ -108,9 +108,9 @@ async with httpx.AsyncClient() as client:
     data = response.json()
 ```
 
-### **Endpoints Principaux**
+### Endpoints principaux
 
-#### **🌐 Écosystème**
+#### Écosystème
 
 ```python
 # Capacités du robot
@@ -129,7 +129,7 @@ GET /api/ecosystem/behaviors/available
 GET /api/ecosystem/demo/modes
 ```
 
-#### **😊 Émotions BBIA**
+#### Émotions BBIA
 
 ```python
 # Appliquer une émotion
@@ -142,7 +142,7 @@ POST /api/ecosystem/emotions/apply
 }
 ```
 
-#### **🎭 Comportements BBIA**
+#### Comportements BBIA
 
 ```python
 # Exécuter un comportement
@@ -154,7 +154,7 @@ POST /api/ecosystem/behaviors/execute
 }
 ```
 
-#### **🎮 Modes de Démonstration**
+#### Modes de démonstration
 
 ```python
 # Démarrer une démonstration
@@ -166,7 +166,7 @@ POST /api/ecosystem/demo/start
 }
 ```
 
-### **WebSocket Télémétrie**
+### WebSocket télémétrie
 
 ```python
 import asyncio
@@ -188,9 +188,9 @@ asyncio.run(telemetry_client())
 
 ---
 
-## 🤖 **Intégration Robot**
+## Intégration robot
 
-### **Backends Disponibles**
+### Backends disponibles
 
 BBIA-SIM supporte plusieurs backends :
 
@@ -207,7 +207,7 @@ robot = RobotFactory.create_backend("reachy_mini")
 robot = RobotFactory.create_backend("reachy")
 ```
 
-### **Contrôle Direct**
+### Contrôle direct
 
 ```python
 from bbia_sim.robot_api import RobotFactory
@@ -224,7 +224,7 @@ emotions.apply_emotion("happy", intensity=0.8, duration=5.0)
 robot.set_joint_position("yaw_body", 0.2)
 ```
 
-### **Modules BBIA**
+### Modules BBIA
 
 ```python
 from bbia_sim.bbia_emotions import BBIAEmotions
@@ -247,9 +247,9 @@ voice.speak("Bonjour !")
 
 ---
 
-## 🎮 **Modes de Démonstration**
+## Modes de démonstration
 
-### **Mode Simulation**
+### Mode simulation
 
 ```bash
 # Démonstration simulation complète
@@ -263,7 +263,7 @@ python scripts/demo_mode_complete.py --mode simulation
 # - Fonctionnalités complètes
 ```
 
-### **Mode Robot Réel**
+### Mode robot réel
 
 ```bash
 # Démonstration robot réel (nécessite robot physique)
@@ -277,7 +277,7 @@ python scripts/demo_mode_complete.py --mode robot_real
 # - Surveillance continue
 ```
 
-### **Mode Mixte**
+### Mode mixte
 
 ```bash
 # Démonstration mode mixte
@@ -292,9 +292,9 @@ python scripts/demo_mode_complete.py --mode mixed
 
 ---
 
-## 📚 **Exemples d'Intégration**
+## Exemples d'intégration
 
-### **Exemple 1 : Application Web Simple**
+### Exemple 1 : Application web simple
 
 ```python
 import asyncio
@@ -352,7 +352,7 @@ if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=3000)
 ```
 
-### **Exemple 2 : Client Python**
+### Exemple 2 : Client Python
 
 ```python
 import asyncio
@@ -423,7 +423,7 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-### **Exemple 3 : Intégration ROS2**
+### Exemple 3 : Intégration ROS2
 
 ```python
 import rclpy
@@ -498,9 +498,9 @@ if __name__ == '__main__':
 
 ---
 
-## 🔧 **Configuration Avancée**
+## Configuration avancée
 
-### **Variables d'Environnement**
+### Variables d'environnement
 
 ```bash
 # Configuration API
@@ -517,7 +517,7 @@ export REACHY_SDK_PATH=/path/to/reachy-sdk
 export REACHY_ROBOT_IP=192.168.1.100
 ```
 
-### **Configuration Docker**
+### Configuration Docker
 
 ```dockerfile
 FROM python:3.11-slim
@@ -538,7 +538,7 @@ EXPOSE 8000
 CMD ["python", "scripts/start_public_api.py", "--prod"]
 ```
 
-### **Configuration Production**
+### Configuration production
 
 ```python
 # Configuration uvicorn pour production
@@ -554,9 +554,9 @@ uvicorn.run(
 
 ---
 
-## 🧪 **Tests et Validation**
+## Tests et validation
 
-### **Tests Automatisés**
+### Tests automatisés
 
 ```bash
 # Tests complets
@@ -572,7 +572,7 @@ python scripts/test_conformity_sdk_officiel.py
 python scripts/hardware_dry_run.py --duration 30
 ```
 
-### **Validation de l'Intégration**
+### Validation de l'intégration
 
 ```python
 # Script de validation
@@ -600,10 +600,10 @@ async def validate_integration():
         response = await client.get("http://localhost:8000/api/ecosystem/behaviors/available")
         assert response.status_code == 200
         
-        print("✅ Intégration validée avec succès")
+        print("Intégration validée avec succès")
         
     except Exception as e:
-        print(f"❌ Erreur de validation: {e}")
+        print(f"Erreur de validation: {e}")
     finally:
         await client.aclose()
 
@@ -612,22 +612,22 @@ asyncio.run(validate_integration())
 
 ---
 
-## 🆘 **Support et Communauté**
+## Support et communauté
 
-### **Documentation**
+### Documentation
 
 - **README Principal** : https://github.com/arkalia-luna-system/bbia-sim#readme
 - **Documentation API** : http://localhost:8000/docs
 - **Guides Techniques** : `docs/` directory
 - **Exemples** : `examples/` directory
 
-### **Support Communautaire**
+### Support communautaire
 
 - **GitHub Issues** : https://github.com/arkalia-luna-system/bbia-sim/issues
 - **Discussions** : https://github.com/arkalia-luna-system/bbia-sim/discussions
 - **Email** : arkalia.luna.system@gmail.com
 
-### **Contribution**
+### Contribution
 
 - **Fork** le repository
 - **Créer** une branche feature
@@ -637,37 +637,37 @@ asyncio.run(validate_integration())
 
 ---
 
-## 📋 **Checklist d'Intégration**
+## Checklist d'intégration
 
-### **✅ Prérequis**
+### Prérequis
 
 - [ ] Python 3.9+ installé
 - [ ] Dépendances installées (`pip install -r requirements.txt`)
 - [ ] API BBIA-SIM démarrée (`python deploy/public_api.py --dev`)
 - [ ] Tests de base passent (`python deploy/public_api.py --check`)
 
-### **✅ Intégration API**
+### Intégration API
 
 - [ ] Authentification configurée (Bearer Token)
 - [ ] Endpoints testés et fonctionnels
 - [ ] Gestion d'erreurs implémentée
 - [ ] WebSocket télémétrie configuré (optionnel)
 
-### **✅ Intégration Robot**
+### Intégration robot
 
 - [ ] Backend approprié sélectionné (mujoco/reachy_mini/reachy)
 - [ ] Modules BBIA intégrés
 - [ ] Contrôle des émotions fonctionnel
 - [ ] Exécution des comportements fonctionnelle
 
-### **✅ Tests et Validation**
+### Tests et validation
 
 - [ ] Tests automatisés passent
 - [ ] Validation de l'intégration réussie
 - [ ] Performance acceptable
 - [ ] Sécurité respectée
 
-### **✅ Production**
+### Production
 
 - [ ] Configuration production déployée
 - [ ] Monitoring configuré
@@ -676,6 +676,4 @@ asyncio.run(validate_integration())
 
 ---
 
-**🎉 Félicitations ! Vous avez intégré BBIA-SIM avec succès dans votre projet.**
-
-**🌐 Bienvenue dans l'écosystème BBIA-SIM !**
+Vous avez intégré BBIA-SIM dans votre projet. Bienvenue dans l'écosystème BBIA-SIM.

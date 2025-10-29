@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Usage: scripts/docs/export_md_dark.sh INPUT_MD [OUTPUT_HTML]
-# Exporte un Markdown vers HTML sombre et rend les blocs mermaid (client-side via CDN).
+# Exporte un Markdown vers HTML sombre et rend les blocs mermaid (client-side via fichiers locaux, 100% offline).
 
 if [ $# -lt 1 ]; then
   echo "Usage: $0 INPUT_MD [OUTPUT_HTML]" >&2
@@ -21,6 +21,12 @@ BASENAME="$(basename "$INPUT_MD" .md)"
 OUT_HTML="${2:-$OUT_DIR/${BASENAME}.html}"
 
 mkdir -p "$OUT_DIR"
+JS_DIR="$OUT_DIR/js"
+
+# Télécharger les JS si manquants (100% offline)
+mkdir -p "$JS_DIR"
+[ ! -f "$JS_DIR/marked.min.js" ] && curl -sL https://cdn.jsdelivr.net/npm/marked/marked.min.js -o "$JS_DIR/marked.min.js" || true
+[ ! -f "$JS_DIR/mermaid.min.js" ] && curl -sL https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js -o "$JS_DIR/mermaid.min.js" || true
 
 # Essayer pypandoc (venv), puis pandoc CLI, sinon fallback HTML sombre dynamique
 if "$ROOT_DIR/venv/bin/python" -c "import sys,importlib; sys.exit(0 if importlib.util.find_spec('pypandoc') else 1)" 2>/dev/null; then
@@ -64,6 +70,17 @@ PY
 MD_CONTENT_ESCAPED=$(cat "$TMP_JSON")
 rm -f "$TMP_JSON"
 
+# Chemins relatifs depuis OUT_HTML vers JS_DIR
+TMP_REL=$(mktemp)
+JS_DIR_VAR="$JS_DIR" OUT_DIR_VAR="$(dirname "$OUT_HTML")" python - <<'PY' > "$TMP_REL"
+import os
+jdir = os.environ['JS_DIR_VAR']
+odir = os.environ['OUT_DIR_VAR']
+print(os.path.relpath(jdir, odir))
+PY
+REL_JS_DIR=$(cat "$TMP_REL")
+rm -f "$TMP_REL"
+
 cat > "$OUT_HTML" <<HTML
 <!DOCTYPE html>
 <html lang="fr">
@@ -88,8 +105,8 @@ cat > "$OUT_HTML" <<HTML
 <script>
   window.__RAW_MD__ = ${MD_CONTENT_ESCAPED};
 </script>
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script src="${REL_JS_DIR}/marked.min.js"></script>
+<script src="${REL_JS_DIR}/mermaid.min.js"></script>
 <script>
   mermaid.initialize({ startOnLoad: false, theme: 'dark' });
   // Personnaliser le rendu pour les blocs mermaid
@@ -111,4 +128,4 @@ cat > "$OUT_HTML" <<HTML
 </html>
 HTML
 
-echo "[export] Terminé (fallback sombre + mermaid): $OUT_HTML"
+echo "[export] Terminé (fallback sombre + mermaid, 100% offline): $OUT_HTML"

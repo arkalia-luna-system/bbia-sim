@@ -11,6 +11,12 @@ INDEX_MD="$DOCS_DIR/INDEX_FINAL.md"
 MAIN_MD="$DOCS_DIR/README.md"
 
 mkdir -p "$OUT_DIR"
+JS_DIR="$OUT_DIR/js"
+
+# Télécharger les JS si manquants (100% offline)
+mkdir -p "$JS_DIR"
+[ ! -f "$JS_DIR/marked.min.js" ] && curl -sL https://cdn.jsdelivr.net/npm/marked/marked.min.js -o "$JS_DIR/marked.min.js" || true
+[ ! -f "$JS_DIR/mermaid.min.js" ] && curl -sL https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js -o "$JS_DIR/mermaid.min.js" || true
 
 # Fonction pour convertir un MD en HTML avec Mermaid
 convert_md_to_html() {
@@ -23,6 +29,16 @@ convert_md_to_html() {
         return 1
     fi
     
+    # Calculer le chemin relatif vers styles.css et index.html
+    local html_dir=$(dirname "$html_file")
+    local html_dir_rel="${html_dir#$OUT_DIR/}"
+    local depth=""
+    if [ "$html_dir_rel" != "" ] && [ "$html_dir_rel" != "." ]; then
+        # Compter le nombre de niveaux de profondeur
+        local levels=$(echo "$html_dir_rel" | tr '/' '\n' | wc -l | tr -d ' ')
+        depth=$(printf '../%.0s' $(seq 1 "$levels"))
+    fi
+    
     local md_content
     md_content=$(python3 -c "import json, sys; print(json.dumps(open(sys.argv[1], 'r', encoding='utf-8').read()))" "$md_file")
     
@@ -32,6 +48,8 @@ convert_md_to_html() {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="Documentation BBIA-SIM - Robot Reachy Mini avec intelligence artificielle" />
+<meta name="theme-color" content="#000000" />
 <title>${basename} - BBIA-SIM Documentation</title>
 <style>
 /* Style inline pour forcer fond noir */
@@ -45,7 +63,7 @@ body {
   padding: 0;
 }
 </style>
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="${depth}styles.css">
 </head>
 <body style="background-color: #000000 !important; color: #ffffff !important;">
 <div class="docs-container" style="background-color: #000000 !important;">
@@ -53,12 +71,12 @@ body {
 <nav>
 <h2>📚 Navigation</h2>
 <ul>
-<li><a href="../index.html">🏠 Accueil</a></li>
-<li><a href="../README.html">📖 README</a></li>
-<li><a href="../guides/guide_debutant.html">🚀 Guide Débutant</a></li>
-<li><a href="../architecture/architecture_overview.html">🏗️ Architecture</a></li>
-<li><a href="../guides_techniques/integration_guide.html">🌐 Intégration</a></li>
-<li><a href="../guides_techniques/testing_guide.html">🧪 Tests</a></li>
+<li><a href="${depth}index.html">🏠 Accueil</a></li>
+<li><a href="${depth}README.html">📖 README</a></li>
+<li><a href="${depth}guides/guide_debutant.html">🚀 Guide Débutant</a></li>
+<li><a href="${depth}architecture/architecture_overview.html">🏗️ Architecture</a></li>
+<li><a href="${depth}guides_techniques/integration_guide.html">🌐 Intégration</a></li>
+<li><a href="${depth}guides_techniques/testing_guide.html">🧪 Tests</a></li>
 </ul>
 <h3>Ressources</h3>
 <ul>
@@ -68,7 +86,11 @@ body {
 </nav>
 </div>
 <div class="content" id="app">
-<div class="markdown-body">Chargement…</div>
+<div class="markdown-body" style="color: #ffffff; background-color: #000000;">
+  <div style="text-align: center; padding: 40px; color: #ffffff;">
+    <p>Chargement de la documentation…</p>
+  </div>
+</div>
 </div>
 </div>
 <script>
@@ -124,9 +146,17 @@ body {
     a.textContent = '#';
     a.style.opacity = '0';
     a.style.marginLeft = '8px';
+    a.style.color = '#ffffff';
     h.appendChild(a);
     h.addEventListener('mouseenter', () => { a.style.opacity = '1'; });
     h.addEventListener('mouseleave', () => { a.style.opacity = '0'; });
+  });
+  
+  // Améliorer les liens dans le contenu pour qu'ils soient visibles
+  document.querySelectorAll('.markdown-body a').forEach(a => {
+    if (!a.style.color) {
+      a.style.color = '#4a9eff';
+    }
   });
 </script>
 </body>

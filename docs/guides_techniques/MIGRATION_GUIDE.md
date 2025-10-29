@@ -148,7 +148,7 @@ emotions.set_emotion("excited", 0.9)
 - **Simulation** : 100Hz (10ms)
 - **Robot réel** : 50Hz (20ms) - limitation matérielle
 
-#### **Sécurité**
+#### Sécurité
 ```python
 # Ajouter des limites de sécurité
 SAFETY_LIMITS = {
@@ -159,7 +159,7 @@ SAFETY_LIMITS = {
 }
 ```
 
-#### **Test "Dry Run"**
+#### Test "Dry Run"
 ```python
 # Mode test sans mouvement réel
 robot.set_dry_run_mode(True)
@@ -167,14 +167,14 @@ robot.goto_target(head=pose)  # Simulation seulement
 robot.set_dry_run_mode(False)  # Retour au mode normal
 ```
 
-### **🌐 Communication Réseau**
+### Communication réseau
 
-#### **Latence**
+#### Latence
 - **Simulation locale** : <1ms
 - **Robot Wi-Fi** : 5-20ms
 - **Robot USB** : 1-5ms
 
-#### **Stabilité**
+#### Stabilité
 ```python
 # Gestion des déconnexions
 def handle_disconnection():
@@ -185,9 +185,9 @@ def handle_disconnection():
 
 ---
 
-## 🧪 Tests de Validation
+## Tests de validation
 
-### **1. Tests de Conformité SDK**
+### 1. Tests de conformité SDK
 
 ```python
 # tests/test_robot_migration.py
@@ -209,7 +209,7 @@ def test_sdk_conformity():
     assert result is None  # Conformité SDK
 ```
 
-### **2. Tests de Performance**
+### 2. Tests de performance
 
 ```python
 def test_performance_migration():
@@ -230,7 +230,7 @@ def test_performance_migration():
     assert real_latency < sim_latency * 10  # Max 10x plus lent
 ```
 
-### **3. Tests d'Intégration BBIA**
+### 3. Tests d'intégration BBIA
 
 ```python
 def test_bbia_modules_migration():
@@ -255,9 +255,9 @@ def test_bbia_modules_migration():
 
 ---
 
-## 🚀 Optimisations Spécifiques Robot Réel
+## Optimisations spécifiques robot réel
 
-### **1. Gestion des Ressources**
+### 1. Gestion des ressources
 
 ```python
 # Optimisation CPU pour Raspberry Pi
@@ -269,7 +269,7 @@ OPTIMIZATION_CONFIG = {
 }
 ```
 
-### **2. Gestion Audio**
+### 2. Gestion audio
 
 ```python
 # Configuration audio optimisée
@@ -281,7 +281,7 @@ AUDIO_CONFIG = {
 }
 ```
 
-### **3. Gestion Vidéo**
+### 3. Gestion vidéo
 
 ```python
 # Configuration vidéo optimisée
@@ -295,9 +295,9 @@ VIDEO_CONFIG = {
 
 ---
 
-## 📊 Monitoring et Debugging
+## Monitoring et debugging
 
-### **1. Métriques de Performance**
+### 1. Métriques de performance
 
 ```python
 # Monitoring en temps réel
@@ -312,7 +312,7 @@ def monitor_robot_performance():
     return metrics
 ```
 
-### **2. Logs de Debug**
+### 2. Logs de debug
 
 ```python
 # Configuration des logs
@@ -327,21 +327,21 @@ LOGGING_CONFIG = {
 
 ---
 
-## 🎯 Checklist de Migration
+## Checklist de migration
 
-### **✅ Pré-migration**
+### Pré-migration
 - [ ] SDK officiel installé
 - [ ] Daemon Zenoh configuré
 - [ ] Tests de connexion réussis
 - [ ] Configuration BBIA mise à jour
 
-### **✅ Migration**
+### Migration
 - [ ] Backend changé vers `reachy_mini`
 - [ ] Tests de conformité SDK passés
 - [ ] Tests de performance validés
 - [ ] Modules BBIA testés
 
-### **✅ Post-migration**
+### Post-migration
 - [ ] Monitoring configuré
 - [ ] Logs de debug activés
 - [ ] Optimisations appliquées
@@ -349,11 +349,11 @@ LOGGING_CONFIG = {
 
 ---
 
-## 🆘 Dépannage
+## Dépannage
 
-### **Problèmes Courants**
+### Problèmes courants
 
-#### **1. Connexion Daemon**
+#### 1. Connexion daemon
 ```bash
 # Vérifier le statut du daemon
 curl http://localhost:8000/api/state/full
@@ -362,7 +362,7 @@ curl http://localhost:8000/api/state/full
 sudo systemctl restart reachy-mini-daemon
 ```
 
-#### **2. Latence Élevée**
+#### 2. Latence élevée
 ```python
 # Optimiser la configuration réseau
 ZENOH_CONFIG = {
@@ -372,7 +372,7 @@ ZENOH_CONFIG = {
 }
 ```
 
-#### **3. Erreurs de Joint**
+#### 3. Erreurs de joint
 ```python
 # Vérifier les limites des joints
 joint_limits = robot.get_joint_limits()
@@ -382,14 +382,14 @@ for joint, limits in joint_limits.items():
 
 ---
 
-## 🎉 Conclusion
+## Conclusion
 
-La migration de BBIA-SIM vers le robot Reachy Mini réel est **simplifiée** grâce à l'architecture RobotAPI unifiée. 
+La migration de BBIA-SIM vers le robot Reachy Mini réel est facilitée par l'architecture RobotAPI unifiée.
 
-**Points clés :**
-- ✅ **Aucune modification** des modules BBIA nécessaire
-- ✅ **Conformité SDK** garantie
-- ✅ **Tests automatisés** pour validation
-- ✅ **Monitoring** intégré pour debugging
+Points clés :
+- aucune modification des modules BBIA nécessaire
+- conformité SDK garantie
+- tests automatisés pour validation
+- monitoring intégré pour debugging
 
-**Votre projet BBIA-SIM est prêt pour le robot réel ! 🚀**
+Le projet BBIA-SIM est prêt pour le robot réel.
