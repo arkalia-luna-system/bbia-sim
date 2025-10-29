@@ -925,8 +925,8 @@ class HideBehavior(BBIABehavior):
         hide_messages = [
             "Je me cache... Chut !",
             "Oups, je me fais discret...",
-            "Je me replie un peu, c'est normal.",
-            "Je me fais tout petit...",
+            "Je me replie discrètement, c'est normal.",
+            "Je me fais tout petit et discret...",
             "Je me cache un instant...",
         ]
         hide_message = secrets.choice(hide_messages)

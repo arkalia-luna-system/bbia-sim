@@ -133,6 +133,9 @@ class TestWatchdogMonitoring:
         backend._start_watchdog()
         backend._start_watchdog()
 
+        # Attendre un peu pour que les threads se stabilisent (évite race condition)
+        time.sleep(0.15)
+
         # Devrait toujours y avoir un seul thread
         thread_count = sum(
             1 for thread in threading.enumerate() if thread.name == "ReachyWatchdog"

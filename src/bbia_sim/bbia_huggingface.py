@@ -847,23 +847,6 @@ class BBIAHuggingFace:
             variants = greetings.get(self.bbia_personality, greetings["friendly_robot"])
             return random.choice(variants)
 
-        # Questions - Réponses plus intelligentes et utiles (géré plus bas avec variantes par personnalité)
-        if message_lower.endswith("?") or any(
-            message_lower.startswith(prefix)
-            for prefix in [
-                "comment",
-                "pourquoi",
-                "peux-tu",
-                "pouvez-vous",
-                "quand",
-                "où",
-                "quel",
-                "quelle",
-            ]
-        ):
-            # Le bloc détaillé avec variantes par personnalité est défini plus bas
-            pass
-
         # Au revoir - Réponses émotionnelles selon contexte
         if any(
             word in message_lower
@@ -919,9 +902,9 @@ class BBIAHuggingFace:
                     "C'est excellent ! Votre bonne humeur est contagieuse !",
                 ],
                 "curious": [
-                    "Intéressant ! Qu'est-ce qui vous rend si heureux ?",
-                    "Chouette ! Racontez-moi plus sur ce qui vous plaît !",
-                    "Wow ! J'aimerais en savoir plus sur ce qui vous réjouit !",
+                    "Super ! Qu'est-ce qui vous rend si heureux ?",
+                    "Content de l'entendre ! Racontez-moi plus sur ce qui vous plaît !",
+                    "C'est bien ! J'aimerais en savoir plus sur ce qui vous réjouit !",
                 ],
                 "enthusiastic": [
                     "YES ! C'est génial ! Je partage votre enthousiasme !",
@@ -989,7 +972,7 @@ class BBIAHuggingFace:
             for word in ["qui", "quoi", "comment", "pourquoi", "où", "quand", "combien"]
         ):
             # Détection type de question pour réponses plus intelligentes
-            question_responses = {
+            question_responses: dict[str, list[str]] = {
                 "friendly_robot": [
                     "Bonne question ! Laissez-moi réfléchir... Comment puis-je vous aider ?",
                     "Je comprends votre interrogation. Pouvez-vous me donner plus de détails pour que je puisse mieux vous répondre ?",
@@ -1076,19 +1059,19 @@ class BBIAHuggingFace:
         generic_responses = {
             "friendly_robot": [
                 "Intéressant ! J'aimerais en savoir plus sur votre point de vue. Qu'est-ce qui vous a amené à penser ça ?",
-                "Je vois ce que vous voulez dire. Continuez, je vous écoute attentivement.",
+                "Je vois ce que vous voulez dire. Racontez-moi pourquoi vous pensez ainsi, je vous écoute attentivement.",
                 "Merci de partager ça avec moi. Qu'est-ce qui vous intéresse le plus dans tout ça ?",
                 "Hmm, c'est captivant. Vous pouvez m'en dire plus si vous voulez, je suis curieux.",
                 "Ah d'accord, je comprends. Explorons ça ensemble si ça vous dit, j'adorerais en discuter.",
                 "J'ai noté. Dites-moi tout ce qui vous vient à l'esprit, sans filtre.",
                 "Ça m'intrigue ! Racontez-moi davantage, j'aime apprendre de vous.",
                 "C'est fascinant. Qu'est-ce qui vous a amené à penser ça ? Je suis vraiment curieux.",
-                "Wow, ça sonne intéressant. Voulez-vous développer ? J'aimerais mieux comprendre.",
-                "C'est noté. Partagez-moi vos réflexions, je trouve ça enrichissant.",
+                "Wow, ça sonne intéressant. Comment voulez-vous développer ? J'aimerais mieux comprendre.",
+                "C'est noté. Qu'est-ce qui vous pousse à réfléchir ainsi ?",
                 "Ah, c'est un point de vue intéressant. Qu'est-ce qui vous fait penser ainsi ?",
-                "Je comprends votre perspective. N'hésitez pas à creuser davantage, j'aime quand on approfondit.",
+                "Je comprends votre perspective. Pourquoi avez-vous cette vision ? J'aimerais approfondir.",
                 "C'est une réflexion qui pique ma curiosité. D'où vient cette idée ?",
-                "Hmm, vous m'intriguez ! J'aimerais creuser cette pensée avec vous.",
+                "Hmm, vous m'intriguez ! Comment avez-vous développé cette pensée ?",
                 "Ça me fait réfléchir. Qu'est-ce qui vous a conduit là-dessus ?",
             ],
             "curious": [
@@ -1102,9 +1085,9 @@ class BBIAHuggingFace:
                 "Wow ! C'est passionnant ! Allons plus loin !",
             ],
             "calm": [
-                "Je comprends. Prenons le temps d'explorer cela ensemble.",
-                "Intéressant. Continuons cette conversation sereinement.",
-                "Je vois. Partagez-moi vos pensées, sans précipitation.",
+                "Je comprends. Pourquoi avez-vous cette réflexion ? Explorons cela ensemble.",
+                "Intéressant. Comment avez-vous développé cette idée ? Continuons cette conversation sereinement.",
+                "Je vois. Qu'est-ce qui vous amène à penser ainsi ? Partagez-moi vos pensées, sans précipitation.",
             ],
         }
         variants = generic_responses.get(

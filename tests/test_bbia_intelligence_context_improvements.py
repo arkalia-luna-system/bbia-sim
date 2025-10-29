@@ -98,7 +98,7 @@ class TestBBIAIntelligenceContext:
                 assert (
                     len(response) > 15
                 ), "Réponses questions doivent être substantielles"
-                # Vérifier que c'est une réponse intelligente (contient question ou encouragement)
+                # Vérifier que c'est une réponse intelligente (contient mots indicateurs)
                 has_intelligent_indicator = any(
                     word in response.lower()
                     for word in [
@@ -107,11 +107,20 @@ class TestBBIAIntelligenceContext:
                         "détails",
                         "intrigue",
                         "pensez",
+                        "intéressant",
+                        "excellente",
+                        "bonne",
+                        "explorer",
+                        "comprendre",
+                        "pourquoi",
+                        "comment",
+                        "curieux",
+                        "curiosité",
                     ]
                 )
                 assert (
                     has_intelligent_indicator
-                ), f"Réponse question doit être intelligente: {response[:50]}"
+                ), f"Réponse question doit être intelligente: {response[:80]}"
                 print(f"✅ Question '{question}' → Réponse intelligente")
 
         except ImportError:

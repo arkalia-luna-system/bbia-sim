@@ -93,9 +93,9 @@ class TestExamplesStewartWarnings:
         # Exclure les fichiers backends (peuvent avoir du code SDK)
         exclude_patterns = ["backends", "__pycache__", "__init__", "robot_factory"]
 
-        forbidden_pattern = re.compile(
-            r'["\']stewart_\d["\']|set_joint_pos\(["\']stewart_'
-        )
+        # Pattern pour détecter les appels réels problématiques à set_joint_pos avec stewart
+        # Exclure les définitions de dictionnaires (clés simples comme "stewart_1": valeur)
+        forbidden_pattern = re.compile(r'set_joint_pos\s*\(\s*["\']stewart_\d["\']')
 
         files_with_direct_stewart = []
 
@@ -104,7 +104,11 @@ class TestExamplesStewartWarnings:
             if any(pattern in str(py_file) for pattern in exclude_patterns):
                 continue
 
-            content = py_file.read_text(encoding="utf-8")
+            try:
+                content = py_file.read_text(encoding="utf-8")
+            except UnicodeDecodeError:
+                # Ignorer les fichiers binaires ou avec encodage différent
+                continue
 
             # Chercher usage direct stewart (hors commentaires)
             lines = content.split("\n")

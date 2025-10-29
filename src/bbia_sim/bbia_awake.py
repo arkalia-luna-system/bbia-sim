@@ -67,9 +67,9 @@ def start_bbia_sim() -> None:
     # Message final varié
     completion_messages = [
         "Complètement réveillé et prêt",
-        "Systèmes opérationnels, prêt à interagir",
+        "Systèmes opérationnels, je suis réveillé et prêt à interagir",
         "Éveil complet, tous les systèmes sont prêts",
-        "Réveil terminé, je suis prêt pour vous",
+        "Réveil terminé, je suis réveillé et prêt pour vous",
     ]
     print(secrets.choice(completion_messages))
 

@@ -104,7 +104,9 @@ class TestBBIAAudioExtended:
                 patch(
                     "os.environ.get", return_value="0"
                 ),  # Désactiver BBIA_DISABLE_AUDIO
-                patch("bbia_sim.bbia_audio.soundfile", None),  # Forcer fallback vers wave
+                patch(
+                    "bbia_sim.bbia_audio.soundfile", None
+                ),  # Forcer fallback vers wave
                 patch("bbia_sim.bbia_audio.wave.open") as mock_wave_open,
                 patch("bbia_sim.bbia_audio.sd.play"),
                 patch("bbia_sim.bbia_audio.sd.wait"),
@@ -129,15 +131,17 @@ class TestBBIAAudioExtended:
         """Test erreur de lecture audio."""
         with (
             patch("os.environ.get", return_value="0"),  # Désactiver BBIA_DISABLE_AUDIO
-            patch("bbia_sim.bbia_audio.soundfile") as mock_soundfile,
+            patch("bbia_sim.bbia_audio.soundfile", None),  # Forcer fallback vers wave
             patch("bbia_sim.bbia_audio.wave.open") as mock_wave_open,
         ):
-            # Mock soundfile qui échoue
-            mock_soundfile.info.side_effect = Exception("soundfile error")
-            # Mock wave qui échoue aussi
-            mock_wave_open.side_effect = Exception("File error")
+            # Mock wave qui échoue
+            import errno
 
-            with pytest.raises(Exception, match="File error"):
+            mock_wave_open.side_effect = OSError(
+                errno.ENOENT, "No such file or directory", "nonexistent.wav"
+            )
+
+            with pytest.raises(OSError, match="No such file or directory"):
                 lire_audio("nonexistent.wav")
 
     def test_lire_audio_wave_properties(self):

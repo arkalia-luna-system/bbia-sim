@@ -214,9 +214,29 @@ class ReachyMiniBackend(RobotAPI):
 
     def _start_watchdog(self) -> None:
         """Démarre le thread watchdog pour monitoring temps réel."""
-        if self._watchdog_thread is not None and self._watchdog_thread.is_alive():
-            logger.debug("Watchdog déjà actif")
-            return
+        # Vérifier si un thread watchdog existe déjà (actif ou non)
+        if self._watchdog_thread is not None:
+            if self._watchdog_thread.is_alive():
+                logger.debug("Watchdog déjà actif")
+                return
+            else:
+                # Thread existe mais n'est plus actif, nettoyer
+                self._watchdog_thread = None
+
+        # Vérifier aussi qu'aucun autre thread watchdog du même nom n'existe
+        existing_watchdog_threads = [
+            t
+            for t in threading.enumerate()
+            if t.name == "ReachyWatchdog" and t.is_alive()
+        ]
+        if existing_watchdog_threads:
+            logger.debug(
+                f"Watchdog déjà actif (trouvé {len(existing_watchdog_threads)} thread(s))"
+            )
+            # Utiliser le thread existant s'il est valide
+            if len(existing_watchdog_threads) == 1:
+                self._watchdog_thread = existing_watchdog_threads[0]
+                return
 
         self._should_stop_watchdog.clear()
         self._watchdog_thread = threading.Thread(

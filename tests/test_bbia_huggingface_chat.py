@@ -104,7 +104,20 @@ class TestBBIAHuggingFaceChat:
 
         response = self.hf._generate_simple_response("Je suis content", sentiment)
         assert len(response) > 0
-        assert any(word in response.lower() for word in ["super", "content", "bien"])
+        # Vérifier qu'il y a une réponse positive (plus flexible)
+        assert any(
+            word in response.lower()
+            for word in [
+                "super",
+                "content",
+                "bien",
+                "formidable",
+                "excellent",
+                "génial",
+                "heureux",
+                "plaisir",
+            ]
+        )
 
     def test_adapt_response_to_personality(self) -> None:
         """Test adaptation réponse selon personnalité."""

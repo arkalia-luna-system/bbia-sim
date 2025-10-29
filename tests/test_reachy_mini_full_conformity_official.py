@@ -347,10 +347,10 @@ class TestReachyMiniFullConformity:
         # Toutes les opérations doivent fonctionner en simulation
         print("🧪 Test des opérations en mode simulation...")
 
-        # Test mouvements
-        result = self.backend.set_joint_pos("stewart_1", 0.1)
+        # Test mouvements (utiliser yaw_body car stewart nécessite IK)
+        result = self.backend.set_joint_pos("yaw_body", 0.1)
         assert result, "set_joint_pos devrait fonctionner en simulation"
-        print("✅ set_joint_pos fonctionne en simulation")
+        print("✅ set_joint_pos fonctionne en simulation (yaw_body)")
 
         # Test émotions
         result = self.backend.set_emotion("happy", 0.8)

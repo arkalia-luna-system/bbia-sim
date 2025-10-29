@@ -14,7 +14,7 @@ STEP_PATTERNS = [
     "Lumière",  # "Lumière blanche faible" ou "Lumière douce qui illumine"
     "Mouvements",  # "Mouvements de tête" ou "Mouvements initiaux"
     "Première pensée",  # "Première pensée : '...'"
-    "réveillé",  # "Complètement réveillé et prêt" ou variante
+    "réveillé",  # "Complètement réveillé", "Réveil terminé", "Systèmes opérationnels" ou variante
 ]
 # Patterns optionnels qui peuvent être dans certaines séquences mais pas toutes :
 OPTIONAL_PATTERNS = [
