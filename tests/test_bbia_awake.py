@@ -49,12 +49,8 @@ def test_bbia_awake_sequence():
             success = False
             missing_patterns.append(pattern)
 
-    # Vérifier qu'au moins un pattern optionnel est présent (séquences aléatoires)
     # Note: Les patterns optionnels peuvent ne pas tous être présents selon la séquence choisie
-    optional_found = any(
-        pattern.lower() in output.lower() for pattern in OPTIONAL_PATTERNS
-    )
-    # Ne pas échouer si aucun pattern optionnel n'est trouvé - les séquences sont aléatoires
+    # On ne vérifie pas les patterns optionnels car les séquences sont aléatoires
 
     assert (
         success

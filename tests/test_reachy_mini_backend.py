@@ -53,6 +53,8 @@ class TestReachyMiniBackend:
         actual_joints = set(self.robot.get_available_joints())
         assert actual_joints == expected_joints
 
+    @pytest.mark.unit
+    @pytest.mark.fast
     def test_joint_limits(self):
         """Test des limites des joints."""
         # Vérifier que les limites sont définies (SDK officiel)
@@ -61,15 +63,21 @@ class TestReachyMiniBackend:
             min_limit, max_limit = self.robot.joint_limits[joint]
             assert min_limit < max_limit
 
+    @pytest.mark.unit
+    @pytest.mark.fast
     def test_forbidden_joints(self):
         """Test des joints interdits."""
         expected_forbidden = {"left_antenna", "right_antenna"}
         assert self.robot.forbidden_joints == expected_forbidden
 
+    @pytest.mark.unit
+    @pytest.mark.fast
     def test_safe_amplitude_limit(self):
         """Test de la limite d'amplitude sécurisée."""
         assert self.robot.safe_amplitude_limit == 0.3
 
+    @pytest.mark.unit
+    @pytest.mark.fast
     def test_get_joint_pos_simulation(self):
         """Test lecture position joint en mode simulation."""
         # En mode simulation, doit retourner 0.0
