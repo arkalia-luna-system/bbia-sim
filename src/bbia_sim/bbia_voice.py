@@ -323,14 +323,14 @@ def lister_voix_disponibles() -> None:
     engine = _get_pyttsx3_engine()
     voices = engine.getProperty("voices")
     for _idx, v in enumerate(voices):
-            try:
-                _ = (
-                    v.languages[0].decode(errors="ignore")
-                    if hasattr(v.languages[0], "decode")
-                    else str(v.languages[0])
-                )
-            except Exception:
-                _ = str(v.languages)
+        try:
+            _ = (
+                v.languages[0].decode(errors="ignore")
+                if hasattr(v.languages[0], "decode")
+                else str(v.languages[0])
+            )
+        except Exception:
+            _ = str(v.languages)
 
 
 if __name__ == "__main__":
