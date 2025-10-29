@@ -3,8 +3,8 @@
 Synthèse et reconnaissance vocale pour BBIA.
 Compatible macOS, simple, portable, testé.
 
-Voix : sélection automatique de la voix la plus proche de Reachy Mini Wireless (féminine, française si possible).
-Aucune voix officielle n’est documentée publiquement : cette configuration vise à s’en rapprocher au maximum.
+Voix : sélection automatique de la voix la plus proche de
+Reachy Mini Wireless (féminine, française si possible).
 """
 
 import logging
@@ -20,7 +20,8 @@ import speech_recognition as sr
 
 logging.basicConfig(level=logging.INFO)
 
-# Liste des voix féminines douces/enfantines à privilégier sur macOS (ordre de préférence)
+# Liste des voix féminines douces/enfantines à privilégier sur macOS
+# (ordre de préférence)
 VOIX_FEMMES_MAC = [
     "Amelie",  # enfantine, douce
     "Audrey",  # douce
@@ -71,10 +72,13 @@ def _get_cached_voice_id() -> str:
 
 
 def get_bbia_voice(engine: Any) -> str:
-    """Force l’utilisation d’une seule voix féminine douce/enfantine sur macOS.
-    Prend la première voix dont le nom contient 'Amelie' (toute variante, accent ou non),
-    en priorité France (fr_FR), sinon Canada (fr_CA), sinon toute Amelie.
-    Si aucune voix n’est trouvée, lève une erreur explicite avec un message d’aide.
+    """Force l'utilisation d'une seule voix féminine douce/enfantine sur macOS.
+
+    Prend la première voix dont le nom contient 'Amelie'
+    (toute variante, accent ou non), en priorité France (fr_FR),
+    sinon Canada (fr_CA), sinon toute Amelie.
+    Si aucune voix n'est trouvée, lève une erreur explicite avec un message
+    d'aide.
     """
     voices = engine.getProperty("voices")
 
@@ -98,14 +102,18 @@ def get_bbia_voice(engine: Any) -> str:
     for v in voices:
         if "amelie" in normalize(v.name):
             return str(v.id)  # type: ignore[no-any-return]
-    # 4. Sinon, message d’aide
+    # 4. Sinon, message d'aide
     raise RuntimeError(
-        "Aucune voix 'Amélie' n’est installée sur ce Mac. Va dans Préférences Système > Accessibilité > Parole > Voix du système et installe une voix française féminine (ex: Amélie).",
+        "Aucune voix 'Amélie' n'est installée sur ce Mac. "
+        "Va dans Préférences Système > Accessibilité > Parole > "
+        "Voix du système et installe une voix française féminine "
+        "(ex: Amélie).",
     )
 
 
 def dire_texte(texte: str, robot_api: Optional[Any] = None) -> None:
-    """Lit un texte à voix haute (TTS) avec la voix la plus fidèle à Reachy Mini Wireless.
+    """Lit un texte à voix haute (TTS) avec la voix la plus fidèle à Reachy
+    Mini Wireless.
 
     Utilise robot.media.speaker si disponible (haut-parleur 5W optimisé SDK),
     sinon utilise pyttsx3 pour compatibilité.
@@ -143,7 +151,8 @@ def dire_texte(texte: str, robot_api: Optional[Any] = None) -> None:
                     engine.save_to_file(texte, tmp_path)
                     engine.runAndWait()
 
-                # OPTIMISATION SDK: Priorité 1 - robot.media.play_audio(bytes, volume)
+                # OPTIMISATION SDK: Priorité 1 -
+                # robot.media.play_audio(bytes, volume)
                 # Méthode la plus directe du SDK officiel
                 with open(tmp_path, "rb") as f:
                     audio_bytes = f.read()
@@ -152,22 +161,27 @@ def dire_texte(texte: str, robot_api: Optional[Any] = None) -> None:
                     if hasattr(media, "play_audio"):
                         # Essayer avec volume d'abord (optimal pour haut-parleur 5W)
                         try:
-                            media.play_audio(audio_bytes, volume=1.0)  # type: ignore[attr-defined]
+                            # type: ignore[attr-defined]
+                            media.play_audio(audio_bytes, volume=1.0)
                             logging.info(
-                                f"✅ Synthèse vocale SDK (haut-parleur 5W via play_audio) : {texte}",
+                                f"✅ Synthèse vocale SDK (haut-parleur 5W via "
+                                f"play_audio) : {texte}",
                             )
                             return
                         except TypeError:
                             # Fallback si signature sans volume
                             media.play_audio(audio_bytes)  # type: ignore[attr-defined]
                             logging.info(
-                                f"✅ Synthèse vocale SDK (haut-parleur 5W via play_audio) : {texte}",
+                                f"✅ Synthèse vocale SDK (haut-parleur 5W via "
+                                f"play_audio) : {texte}",
                             )
                             return
                 except Exception as e:
                     logging.debug(f"media.play_audio indisponible: {e}")
 
-                # OPTIMISATION SDK: Priorité 2 - robot.media.speaker.play_file(path) ou .play(bytes)
+                # OPTIMISATION SDK: Priorité 2 -
+                # robot.media.speaker
+                # play_file(path) ou .play(bytes)
                 # Méthode alternative du SDK si play_audio non disponible
                 try:
                     speaker = getattr(media, "speaker", None)
@@ -176,21 +190,24 @@ def dire_texte(texte: str, robot_api: Optional[Any] = None) -> None:
                         if hasattr(speaker, "play_file"):
                             speaker.play_file(tmp_path)  # type: ignore[attr-defined]
                             logging.info(
-                                f"✅ Synthèse vocale SDK (haut-parleur 5W via speaker.play_file) : {texte}",
+                                f"✅ Synthèse vocale SDK (haut-parleur 5W via "
+                                f"speaker.play_file) : {texte}",
                             )
                             return
                         # Fallback: play(bytes)
                         if hasattr(speaker, "play"):
                             speaker.play(audio_bytes)  # type: ignore[attr-defined]
                             logging.info(
-                                f"✅ Synthèse vocale SDK (haut-parleur 5W via speaker.play) : {texte}",
+                                f"✅ Synthèse vocale SDK "
+                                f"(haut-parleur 5W via speaker.play) : {texte}",
                             )
                             return
                         # Alternative: speaker.say() si TTS intégré dans SDK
                         if hasattr(speaker, "say"):
                             speaker.say(texte)  # type: ignore[attr-defined]
                             logging.info(
-                                f"✅ Synthèse vocale SDK (haut-parleur 5W via speaker.say) : {texte}",
+                                f"✅ Synthèse vocale SDK "
+                                f"(haut-parleur 5W via speaker.say) : {texte}",
                             )
                             return
                 except Exception as e:
@@ -201,9 +218,8 @@ def dire_texte(texte: str, robot_api: Optional[Any] = None) -> None:
                 if tmp_path and os.path.exists(tmp_path):
                     try:
                         os.unlink(tmp_path)
-                    except (
-                        Exception
-                    ):  # noqa: B110  # try/except pass pour nettoyage fichiers temporaires
+                    except Exception:  # noqa: B110
+                        # try/except pass pour nettoyage fichiers temporaires
                         pass  # Ignorer erreurs de nettoyage
 
         except Exception as e:
@@ -251,7 +267,8 @@ def reconnaitre_parole(
             # Bénéfice: 4 microphones directionnels avec annulation de bruit automatique
             if hasattr(robot_api.media, "record_audio"):
                 logging.info(
-                    f"🎤 Enregistrement via SDK (4 microphones) ({duree}s) pour reconnaissance...",
+                    f"🎤 Enregistrement via SDK (4 microphones) ({duree}s) "
+                    f"pour reconnaissance...",
                 )
                 audio_data = robot_api.media.record_audio(
                     duration=duree,
@@ -319,7 +336,8 @@ def reconnaitre_parole(
     except Exception as e:
         logging.error(f"Erreur d'accès au microphone : {e}")
         logging.warning(
-            "La reconnaissance vocale nécessite pyaudio. Installez-le avec : pip install pyaudio",
+            "La reconnaissance vocale nécessite pyaudio. "
+            "Installez-le avec : pip install pyaudio",
         )
         return None
 
@@ -338,7 +356,11 @@ def lister_voix_disponibles() -> list[Any]:
                 else str(v.languages[0])
             )
         except Exception:
-            _ = str(v.languages) if hasattr(v, "languages") and v.languages else ""  # type: ignore[no-any-return]
+            # type: ignore[no-any-return]
+            _ = (
+                str(v.languages) if hasattr(v, "languages") and v.languages
+                else ""
+            )
         result.append(v)
     return result
 
@@ -365,7 +387,10 @@ if __name__ == "__main__":
     engine.setProperty("voice", voice_id)
     engine.setProperty("rate", 170)
     engine.setProperty("volume", 1.0)
-    demo_texte = "Bonjour, je suis BBIA. Je fonctionne sur votre Mac. Ceci est la voix la plus proche de Reachy Mini Wireless."
+    demo_texte = (
+        "Bonjour, je suis BBIA. Je fonctionne sur votre Mac. "
+        "Ceci est la voix la plus proche de Reachy Mini Wireless."
+    )
     engine.say(demo_texte)
     engine.runAndWait()
 

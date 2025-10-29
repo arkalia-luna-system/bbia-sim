@@ -99,7 +99,8 @@ class ReachyMiniBackend(RobotAPI):
             "stewart_4": (-1.3962634015953894, 0.8377580409573525),  # Exact du XML
             "stewart_5": (-1.2217304763962082, 1.396263401595286),  # Exact du XML
             "stewart_6": (-1.3962634015954123, 0.8377580409573296),  # Exact du XML
-            # Antennes: pas de range dans XML - limites conservatrices sécurité hardware
+            # Antennes: pas de range dans XML - limites conservatrices
+            # sécurité hardware
             # Note: Antennes fragiles, limites réduites même si SDK permet plus
             "left_antenna": (-1.0, 1.0),  # Limite de sécurité (hardware fragile)
             "right_antenna": (-1.0, 1.0),  # Limite de sécurité (hardware fragile)
@@ -231,7 +232,8 @@ class ReachyMiniBackend(RobotAPI):
         ]
         if existing_watchdog_threads:
             logger.debug(
-                f"Watchdog déjà actif (trouvé {len(existing_watchdog_threads)} thread(s))"
+                f"Watchdog déjà actif "
+                f"(trouvé {len(existing_watchdog_threads)} thread(s))"
             )
             # Utiliser le thread existant s'il est valide
             if len(existing_watchdog_threads) == 1:
@@ -274,7 +276,8 @@ class ReachyMiniBackend(RobotAPI):
                     if self.robot:
                         # Robot physique: vérifier état via SDK si possible
                         try:
-                            # Vérification légère: essayer get_current_joint_positions
+                            # Vérification légère: essayer
+                            # get_current_joint_positions
                             # Si exception, robot peut être déconnecté
                             self.robot.get_current_joint_positions()
                             self._last_heartbeat = current_time
@@ -322,7 +325,9 @@ class ReachyMiniBackend(RobotAPI):
 
         try:
             # SDK retourne tuple[list[float], list[float]] (head_pos, antenna_pos)
-            head_positions, antenna_positions = self.robot.get_current_joint_positions()
+            head_positions, antenna_positions = (
+                self.robot.get_current_joint_positions()
+            )
 
             # Mapping des noms vers indices (basé sur le modèle MuJoCo officiel)
             if joint_name == "yaw_body":
@@ -331,7 +336,8 @@ class ReachyMiniBackend(RobotAPI):
                 # (head_positions, antenna_positions)
                 # Le yaw_body n'est pas inclus, utiliser une méthode séparée
                 try:
-                    # Méthode 1: Essayer get_current_body_yaw si disponible dans le SDK
+                    # Méthode 1: Essayer get_current_body_yaw
+                    # si disponible dans le SDK
                     if hasattr(self.robot, "get_current_body_yaw"):
                         body_yaw = self.robot.get_current_body_yaw()
                         if body_yaw is not None:
@@ -339,7 +345,8 @@ class ReachyMiniBackend(RobotAPI):
                 except (AttributeError, Exception) as e:
                     logger.debug(f"get_current_body_yaw non disponible: {e}")
 
-                # Méthode 2: Essayer de lire via l'état interne du robot si disponible
+                # Méthode 2: Essayer de lire via l'état interne
+                # du robot si disponible
                 try:
                     if hasattr(self.robot, "state") and hasattr(
                         self.robot.state, "body_yaw"
@@ -397,7 +404,8 @@ class ReachyMiniBackend(RobotAPI):
                         # Vérification sécurité: NaN ou inf
                         if not (float("-inf") < value < float("inf")):
                             logger.warning(
-                                f"Valeur invalide (NaN/inf) pour {joint_name}: {value}"
+                                f"Valeur invalide (NaN/inf) pour "
+                                f"{joint_name}: {value}"
                             )
                             return 0.0
                         return value
@@ -430,17 +438,20 @@ class ReachyMiniBackend(RobotAPI):
             logger.warning(f"Joint {joint_name} interdit pour sécurité")
             return False
 
-        # IMPORTANT EXPERT: Les joints stewart NE PEUVENT PAS être contrôlés individuellement
-        # car la plateforme Stewart utilise la cinématique inverse (IK).
-        # Tous les joints stewart (stewart_1 à stewart_6) doivent retourner False
-        # pour forcer l'utilisation de goto_target() ou look_at_world()
+        # IMPORTANT EXPERT: Les joints stewart NE PEUVENT PAS être contrôlés
+        # individuellement car la plateforme Stewart utilise la cinématique
+        # inverse (IK). Tous les joints stewart (stewart_1 à stewart_6) doivent
+        # retourner False pour forcer l'utilisation de goto_target() ou
+        # look_at_world()
         if joint_name.startswith("stewart_"):
             logger.warning(
                 f"⚠️  Tentative de contrôle individuel du joint {joint_name} - "
-                f"Ce joint ne peut PAS être contrôlé individuellement (plateforme Stewart utilise IK).\n"
+                f"Ce joint ne peut PAS être contrôlé individuellement "
+                f"(plateforme Stewart utilise IK).\n"
                 f"   → Utilisez goto_target() ou set_target_head_pose() "
                 f"avec create_head_pose() pour contrôler la tête via la "
-                f"cinématique inverse, ou utilisez look_at_world() pour regarder vers un point."
+                f"cinématique inverse, ou utilisez look_at_world() pour "
+                f"regarder vers un point."
             )
             return False  # Toujours False, même en simulation (conformité SDK)
 
@@ -474,8 +485,9 @@ class ReachyMiniBackend(RobotAPI):
                 position = max(safe_min, min(safe_max, position))
                 if position != old_position:
                     logger.debug(
-                        f"Position {old_position:.4f} rad clampée à {position:.4f} rad "
-                        f"par limite de sécurité pour joint {joint_name}"
+                        f"Position {old_position:.4f} rad clampée à "
+                        f"{position:.4f} rad par limite de sécurité "
+                        f"pour joint {joint_name}"
                     )
         else:
             # Si pas de limite spécifique, utiliser seulement la limite de sécurité
@@ -490,14 +502,20 @@ class ReachyMiniBackend(RobotAPI):
             elif joint_name in ["left_antenna", "right_antenna"]:
                 # Contrôler les antennes via l'API officielle
                 if self.robot:
-                    current_antennas = self.robot.get_present_antenna_joint_positions()
+                    current_antennas = (
+                        self.robot.get_present_antenna_joint_positions()
+                    )
                     antenna_idx = self.joint_mapping[joint_name]
                     if len(current_antennas) > antenna_idx:
                         current_antennas[antenna_idx] = position
-                        self.robot.set_target_antenna_joint_positions(current_antennas)
+                        self.robot.set_target_antenna_joint_positions(
+                            current_antennas
+                        )
                 else:
                     # Mode simulation
-                    logger.info(f"Mode simulation: antenne {joint_name} = {position}")
+                    logger.info(
+                        f"Mode simulation: antenne {joint_name} = {position}"
+                    )
             else:
                 # Contrôler la tête via pose (stewart joints) - API officielle
                 # NOTE: Les joints Stewart sont contrôlés via la pose de la tête
@@ -515,7 +533,8 @@ class ReachyMiniBackend(RobotAPI):
                     return False
                 else:
                     # ATTENTION CRITIQUE (Expert Robotique):
-                    # Les joints stewart NE PEUVENT PAS être contrôlés individuellement
+                    # Les joints stewart NE PEUVENT PAS être contrôlés
+                    # individuellement
                     # car la plateforme Stewart utilise la cinématique inverse (IK).
                     # Chaque joint stewart influence plusieurs degrés de liberté
                     # simultanément (roll, pitch, yaw, position X/Y/Z).
@@ -622,7 +641,8 @@ class ReachyMiniBackend(RobotAPI):
             return True
 
         try:
-            # Utiliser la méthode officielle look_at_world avec tous les paramètres SDK
+            # Utiliser la méthode officielle look_at_world
+            # avec tous les paramètres SDK
             self.robot.look_at_world(
                 target_x, target_y, target_z, duration, perform_movement
             )
@@ -657,7 +677,8 @@ class ReachyMiniBackend(RobotAPI):
                 self.robot.goto_sleep()
             elif behavior_name == "nod":
                 # Mouvement de hochement simple
-                # PERFORMANCE: Utiliser goto_target avec interpolation au lieu de sleep
+                # PERFORMANCE: Utiliser goto_target avec interpolation
+                # au lieu de sleep
                 # pour éviter blocage et réduire latence
                 pose1 = create_head_pose(pitch=0.1, degrees=False)
                 pose2 = create_head_pose(pitch=-0.1, degrees=False)
@@ -665,8 +686,12 @@ class ReachyMiniBackend(RobotAPI):
                 # Option optimale: goto_target avec interpolation
                 if hasattr(self.robot, "goto_target"):
                     # Utiliser interpolation minjerk pour fluidité
-                    self.robot.goto_target(head=pose1, duration=0.5, method="minjerk")
-                    self.robot.goto_target(head=pose2, duration=0.5, method="minjerk")
+                    self.robot.goto_target(
+                        head=pose1, duration=0.5, method="minjerk"
+                    )
+                    self.robot.goto_target(
+                        head=pose2, duration=0.5, method="minjerk"
+                    )
                     self.robot.goto_target(
                         head=create_head_pose(degrees=False),
                         duration=0.5,
@@ -694,7 +719,9 @@ class ReachyMiniBackend(RobotAPI):
         """Récupère les données de télémétrie."""
         try:
             current_time = time.time()
-            elapsed_time = current_time - self.start_time if self.start_time > 0 else 0
+            elapsed_time = (
+                current_time - self.start_time if self.start_time > 0 else 0
+            )
 
             # PERFORMANCE: Calculer latence moyenne si disponible
             # (pour monitoring performance temps réel)
@@ -818,7 +845,8 @@ class ReachyMiniBackend(RobotAPI):
             # Si result n'est pas un ndarray, essayer de le convertir
             if result is not None:
                 try:
-                    result_arr = np.array(result, dtype=np.float64)  # type: ignore[arg-type]
+                    # type: ignore[arg-type]
+                    result_arr = np.array(result, dtype=np.float64)
                     if result_arr.shape == (4, 4):
                         return result_arr
                 except (ValueError, TypeError):
@@ -844,8 +872,10 @@ class ReachyMiniBackend(RobotAPI):
 
         try:
             # Convertir string vers InterpolationTechnique si nécessaire
-            # PERFORMANCE EXPERT: Support complet des 4 techniques d'interpolation
-            # MIN_JERK (défaut): Mouvements fluides et naturels (physiquement réalistes)
+            # PERFORMANCE EXPERT: Support complet des 4 techniques
+            # d'interpolation
+            # MIN_JERK (défaut): Mouvements fluides et naturels
+            # (physiquement réalistes)
             # LINEAR: Mouvements linéaires (plus rapides, moins fluides)
             # EASE_IN_OUT: Accélération/décélération progressive
             # (expressifs pour émotions)
@@ -853,7 +883,9 @@ class ReachyMiniBackend(RobotAPI):
             # (parfait pour animations expressives)
             if isinstance(method, str):
                 try:
-                    from reachy_mini.utils.interpolation import InterpolationTechnique
+                    from reachy_mini.utils.interpolation import (
+                        InterpolationTechnique,
+                    )
 
                     # Conversion sécurisée avec validation et mapping flexible
                     method_normalized = method.strip().upper().replace("_", "_")
@@ -873,17 +905,21 @@ class ReachyMiniBackend(RobotAPI):
                     if method_normalized in method_mapping:
                         method_enum = method_mapping[method_normalized]
                     elif hasattr(InterpolationTechnique, method_normalized):
-                        method_enum = getattr(InterpolationTechnique, method_normalized)
+                        method_enum = getattr(
+                            InterpolationTechnique, method_normalized
+                        )
                     else:
                         # Essayer de convertir directement
                         method_enum = InterpolationTechnique(method)
                 except (ValueError, AttributeError) as conversion_error:
                     logger.warning(
                         f"Technique d'interpolation '{method}' non reconnue "
-                        f"({conversion_error}), utilisation de MIN_JERK par défaut "
-                        f"(fluide et naturel)"
+                        f"({conversion_error}), utilisation de MIN_JERK "
+                        f"par défaut (fluide et naturel)"
                     )
-                    from reachy_mini.utils.interpolation import InterpolationTechnique
+                    from reachy_mini.utils.interpolation import (
+                        InterpolationTechnique,
+                    )
 
                     method_enum = InterpolationTechnique.MIN_JERK
             else:
@@ -1230,7 +1266,8 @@ class ReachyMiniBackend(RobotAPI):
 
         try:
             result = self.robot.look_at_world(x, y, z, duration, perform_movement)
-            # Si le SDK retourne une pose, la retourner, sinon calculer une approximation
+            # Si le SDK retourne une pose, la retourner,
+            # sinon calculer une approximation
             if (
                 result is not None
                 and isinstance(result, np.ndarray)

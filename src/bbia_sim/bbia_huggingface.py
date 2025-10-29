@@ -897,9 +897,9 @@ class BBIAHuggingFace:
         ):
             positive_responses = {
                 "friendly_robot": [
-                    "C'est vraiment formidable ! Je suis content que vous vous sentiez bien.",
-                    "Super nouvelle ! Continuez comme ça, vous allez très bien !",
-                    "C'est excellent ! Votre bonne humeur est contagieuse !",
+                    "C'est vraiment formidable ! Je suis content que vous vous sentiez bien. Pourquoi cela vous rend-il heureux aujourd'hui ?",
+                    "Super nouvelle ! Continuez comme ça, vous allez très bien ! Racontez-moi ce qui vous motive, j'aimerais comprendre.",
+                    "C'est excellent ! Votre bonne humeur est contagieuse ! Comment aimeriez-vous explorer cette dynamique positive ?",
                 ],
                 "curious": [
                     "Super ! Qu'est-ce qui vous rend si heureux ?",
