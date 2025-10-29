@@ -53,6 +53,14 @@ scripts/docs/export_onepager.sh
 # Sortie dans artifacts/
 ```
 
+- **PDF nécessite LaTeX** (moteur `xelatex`). Sur macOS, vous pouvez installer un LaTeX minimal:
+```bash
+# macOS (Homebrew)
+brew install pandoc basictex
+sudo tlmgr update --self && sudo tlmgr install xetex
+```
+- Sans LaTeX, le script génère automatiquement un **HTML fallback**.
+
 1. Lire le [README principal](../README.md)
 2. Suivre le [Guide Débutant](guides/GUIDE_DEBUTANT.md)
 3. Consulter l'[Index](INDEX_FINAL.md) pour trouver ce dont vous avez besoin
