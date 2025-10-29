@@ -497,18 +497,44 @@ body {
   background-color: transparent !important;
   color: var(--text-primary) !important;
   font-size: 16px;
+  position: relative;
+}
+
+.markdown-body::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -80px;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--accent) 0%, transparent 100%);
+  opacity: 0.1;
 }
 
 .markdown-body h1,
 .markdown-body h1 * {
-  font-size: 2.8em;
-  font-weight: 700;
-  border-bottom: 1px solid var(--border-light);
-  padding-bottom: 20px;
+  font-size: 3em;
+  font-weight: 800;
+  border-bottom: none;
+  padding-bottom: 0;
   margin-top: 0;
-  margin-bottom: 32px;
+  margin-bottom: 16px;
   color: var(--text-primary) !important;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
+  position: relative;
+  padding-left: 20px;
+}
+
+.markdown-body h1::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.15em;
+  width: 4px;
+  height: 0.8em;
+  background: linear-gradient(180deg, var(--accent), var(--accent-hover));
+  border-radius: 2px;
+  box-shadow: 0 0 12px var(--accent-glow);
 }
 
 .markdown-body h2,
@@ -543,21 +569,39 @@ body {
 }
 
 .markdown-body code {
-  background: rgba(255, 255, 255, 0.08);
-  padding: 3px 8px;
-  border-radius: 4px;
-  font-size: 0.9em;
-  color: var(--accent);
-  font-family: 'SF Mono', 'Monaco', 'Menlo', 'Consolas', monospace;
+  background: rgba(100, 181, 246, 0.12);
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.88em;
+  color: var(--accent-hover);
+  font-family: 'SF Mono', 'Monaco', 'Menlo', 'Consolas', 'Courier New', monospace;
+  border: 1px solid rgba(100, 181, 246, 0.2);
+  font-weight: 500;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 .markdown-body pre {
   background: var(--bg-card);
-  padding: 20px;
-  border-radius: 12px;
+  padding: 24px;
+  border-radius: 14px;
   overflow-x: auto;
-  border: 1px solid var(--border-light);
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--border);
+  box-shadow: 
+    inset 0 1px 3px rgba(0, 0, 0, 0.4),
+    0 4px 20px rgba(0, 0, 0, 0.3);
+  position: relative;
+  margin: 24px 0;
+}
+
+.markdown-body pre::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  opacity: 0.3;
 }
 
 .markdown-body pre code {
