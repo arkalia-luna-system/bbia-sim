@@ -18,7 +18,7 @@ pip install -r requirements.txt
 ### **2️⃣ Accéder au Dashboard Web** (NOUVEAU ✨)
 
 ```bash
-# Lancer le dashboard
+# Lancer le dashboard (FastAPI + WebSocket)
 python src/bbia_sim/dashboard_advanced.py
 
 # Ouvrir dans le navigateur
@@ -65,7 +65,32 @@ mjpython examples/demo_chat_bbia_3d.py
 
 **💡 Astuce :** Si vous êtes sur macOS, utilisez `mjpython` au lieu de `python` pour les démos 3D.
 
-**🎉 VOUS AVEZ CONTRÔLÉ VOTRE PREMIER ROBOT !**
+---
+
+## 🚀 Quick Start API Publique
+
+```bash
+# Démarrer l’API publique (mode dev)
+python deploy/public_api.py --dev
+
+# Vérifier la santé
+curl http://localhost:8000/health
+
+# (Optionnel) Vérifier config rapide
+python deploy/public_api.py --check
+```
+
+### ⚙️ Variables d’environnement utiles
+
+```bash
+# Exécutions headless/CI (désactive audio matériel)
+export BBIA_DISABLE_AUDIO=1
+
+# Sélecteurs IA (optionnels, imports paresseux)
+export BBIA_TTS_BACKEND=pyttsx3      # ou kitten/kokoro/neutts si installés
+export BBIA_STT_BACKEND=whisper      # ou parakeet
+export BBIA_LLM_BACKEND=llama.cpp    # ou qwen
+```
 
 ---
 
@@ -85,10 +110,10 @@ Windows : À tester ⚠️
 
 ## 📚 **Prochaines Étapes**
 
-1. ✅ **Découvrir** : [Architecture](docs/ARCHITECTURE.md) - Voir l'architecture
+1. ✅ **Découvrir** : [Architecture (vue d’ensemble)](../architecture/ARCHITECTURE_OVERVIEW.md)
 2. ✅ **Créer** : Vos propres comportements avec `examples/demo_*`
-3. ✅ **Comprendre** : [Architecture](ARCHITECTURE.md) - Architecture technique
-4. ✅ **Avancer** : [Guide Avancé](GUIDE_AVANCE.md) - Développement expert
+3. ✅ **Comprendre** : [Architecture détaillée](../architecture/ARCHITECTURE_DETAILED.md)
+4. ✅ **Avancer** : [Guide Avancé](GUIDE_AVANCE.md)
 
 ## 💬 **Chat Intelligent**
 
