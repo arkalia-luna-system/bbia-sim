@@ -201,7 +201,9 @@ def dire_texte(texte: str, robot_api: Optional[Any] = None) -> None:
                 if tmp_path and os.path.exists(tmp_path):
                     try:
                         os.unlink(tmp_path)
-                    except Exception:  # noqa: B110  # try/except pass pour nettoyage fichiers temporaires
+                    except (
+                        Exception
+                    ):  # noqa: B110  # try/except pass pour nettoyage fichiers temporaires
                         pass  # Ignorer erreurs de nettoyage
 
         except Exception as e:
