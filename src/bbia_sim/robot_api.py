@@ -83,6 +83,15 @@ class RobotAPI(ABC):
         """Effectue un pas de simulation."""
         pass
 
+    @abstractmethod
+    def emergency_stop(self) -> bool:
+        """Arrêt d'urgence hardware.
+
+        Arrête immédiatement tous les moteurs et désactive le contrôle.
+        Conforme aux specs sécurité robotique.
+        """
+        pass
+
     def set_emotion(self, emotion: str, intensity: float = 0.5) -> bool:
         """Définit l'émotion du robot."""
         if not self.is_connected:

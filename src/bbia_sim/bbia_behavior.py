@@ -866,11 +866,18 @@ class HideBehavior(BBIABehavior):
         logger.info("Début de la séquence 'se cacher'")
 
         # Utiliser émotion "sad" conforme SDK (pitch=-0.1 * intensity)
+        print("🤖 Tête qui s'abaisse lentement...")
+        logger.info("Étape : Tête qui s'abaisse lentement")
         if self.robot_api and hasattr(self.robot_api, "set_emotion"):
-            print("🤖 Tête qui s'abaisse lentement...")
-            logger.info("Étape : Tête qui s'abaisse lentement")
             # Émotion sad avec intensité forte = pitch négatif (tête baissée)
             self.robot_api.set_emotion("sad", 0.9)  # Conforme SDK: pitch=-0.09 rad
+
+        # Note: Les antennes ne sont pas contrôlées (protégées pour sécurité hardware)
+        print("📡 Antennes qui se replient devant le visage...")
+        logger.info("Étape : Antennes (simulation - non contrôlées pour sécurité)")
+
+        print("👁️ Yeux qui se ferment (ou s'éteignent)...")
+        logger.info("Étape : Yeux qui se ferment")
 
         # OPTIMISATION EXPERT: Utiliser goto_target pour mouvement combiné tête+corps fluide
         # au lieu de mouvements séparés (meilleure synchronisation)

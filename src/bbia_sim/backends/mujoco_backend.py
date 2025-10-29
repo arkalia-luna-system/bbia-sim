@@ -133,6 +133,24 @@ class MuJoCoBackend(RobotAPI):
             logger.error(f"Erreur step MuJoCo: {e}")
             return False
 
+    def emergency_stop(self) -> bool:
+        """Arrêt d'urgence pour simulation MuJoCo."""
+        if not self.is_connected:
+            logger.warning("Simulation non connectée - emergency_stop ignoré")
+            return False
+
+        try:
+            # Mettre toutes les positions à 0
+            if self.data:
+                self.data.ctrl[:] = 0.0
+                self.data.qvel[:] = 0.0
+            self.is_connected = False
+            logger.critical("🔴 ARRÊT D'URGENCE SIMULATION ACTIVÉ")
+            return True
+        except Exception as e:
+            logger.error(f"Erreur emergency_stop: {e}")
+            return False
+
     def launch_viewer(self, passive: bool = True) -> bool:
         """Lance le viewer MuJoCo."""
         if not self.is_connected:

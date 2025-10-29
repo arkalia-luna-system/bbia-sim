@@ -133,6 +133,22 @@ class ReachyBackend(RobotAPI):
             logger.error(f"Erreur step Reachy: {e}")
             return False
 
+    def emergency_stop(self) -> bool:
+        """Arrêt d'urgence pour robot Reachy réel."""
+        if not self.is_connected:
+            logger.warning("Robot non connecté - emergency_stop ignoré")
+            return False
+
+        try:
+            # TODO: Implémenter arrêt réel via API robot
+            # Pour l'instant, simulation
+            self.is_connected = False
+            logger.critical("🔴 ARRÊT D'URGENCE REACHY ACTIVÉ")
+            return True
+        except Exception as e:
+            logger.error(f"Erreur emergency_stop: {e}")
+            return False
+
     def get_telemetry(self) -> dict[str, Any]:
         """Retourne les données de télémétrie."""
         if not self.is_connected:

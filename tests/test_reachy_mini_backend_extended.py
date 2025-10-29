@@ -24,10 +24,12 @@ class TestReachyMiniBackendExtended:
 
             backend = ReachyMiniBackend()
 
-            assert backend.robot_ip == "localhost"
-            assert backend.robot_port == 8080
+            # Vérifier les attributs réels de ReachyMiniBackend (pas robot_ip/port qui sont dans ReachyBackend)
+            assert backend.localhost_only is True  # Valeur par défaut
             assert backend.robot is None
             assert backend.step_count == 0
+            assert hasattr(backend, "joint_mapping")
+            assert hasattr(backend, "joint_limits")
         except ImportError:
             pytest.skip("Module reachy_mini_backend non disponible")
 

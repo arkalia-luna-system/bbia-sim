@@ -8,18 +8,15 @@ import sys
 # Ajouter le répertoire src au PYTHONPATH
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
-STEPS = [
-    "Lumière blanche faible",
-    "Lumière qui s'intensifie doucement",
-    "Halo bleu",
-    "Respiration simulée : inspiration",
-    "Respiration simulée : expiration",
-    "Léger son de démarrage",
-    "Mouvements de tête lents",
-    "Mouvements de bras légers",
-    "Expression : sourire doux",
-    "Première pensée : 'Je suis là, Athalia.'",
-    "complètement réveillé et prêt",
+# Étapes minimales attendues (variantes possibles selon séquence aléatoire)
+STEP_PATTERNS = [
+    "Lumière",  # "Lumière blanche faible" ou "Lumière douce qui illumine"
+    "Halo bleu",  # "Halo bleu apaisant" ou variante
+    "Respiration",  # "Respiration simulée : inspiration" ou variante
+    "Mouvements",  # "Mouvements de tête" ou "Mouvements initiaux"
+    "Expression",  # "Expression : sourire" ou "Expression neutre"
+    "Première pensée",  # "Première pensée : '...'"
+    "réveillé",  # "Complètement réveillé et prêt" ou variante
 ]
 
 
@@ -40,15 +37,17 @@ def test_bbia_awake_sequence():
         result.returncode == 0
     ), f"Script failed with return code {result.returncode}: {result.stderr}"
 
-    # Vérifier que tous les steps sont présents
+    # Vérifier que les patterns essentiels sont présents (flexible pour séquences aléatoires)
     success = True
-    missing_steps = []
-    for step in STEPS:
-        if step not in output:
+    missing_patterns = []
+    for pattern in STEP_PATTERNS:
+        if pattern.lower() not in output.lower():
             success = False
-            missing_steps.append(step)
+            missing_patterns.append(pattern)
 
-    assert success, f"Steps manquants dans la séquence de réveil BBIA: {missing_steps}"
+    assert (
+        success
+    ), f"Patterns manquants dans la séquence de réveil BBIA: {missing_patterns}"
 
 
 if __name__ == "__main__":

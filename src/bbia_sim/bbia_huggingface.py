@@ -125,20 +125,20 @@ class BBIAHuggingFace:
         """Charge un modèle de vision (CLIP ou BLIP)."""
         if "clip" in model_name.lower():
             processor: Any = CLIPProcessor.from_pretrained(  # nosec B615
-                model_name, cache_dir=self.cache_dir
+                model_name, cache_dir=self.cache_dir, revision="main"
             )
             model = CLIPModel.from_pretrained(  # nosec B615
-                model_name, cache_dir=self.cache_dir
+                model_name, cache_dir=self.cache_dir, revision="main"
             ).to(self.device)
             self.processors[f"{model_name}_processor"] = processor  # type: ignore[assignment]
             self.models[f"{model_name}_model"] = model  # type: ignore[assignment]
             return True
         elif "blip" in model_name.lower():
             blip_processor: Any = BlipProcessor.from_pretrained(  # nosec B615
-                model_name, cache_dir=self.cache_dir
+                model_name, cache_dir=self.cache_dir, revision="main"
             )
             model = BlipForConditionalGeneration.from_pretrained(  # nosec B615
-                model_name, cache_dir=self.cache_dir
+                model_name, cache_dir=self.cache_dir, revision="main"
             ).to(self.device)
             self.processors[f"{model_name}_processor"] = blip_processor  # type: ignore[assignment]
             self.models[f"{model_name}_model"] = model  # type: ignore[assignment]
@@ -149,10 +149,10 @@ class BBIAHuggingFace:
         """Charge un modèle audio (Whisper)."""
         if "whisper" in model_name.lower():
             whisper_processor = WhisperProcessor.from_pretrained(  # type: ignore[assignment] # nosec B615
-                model_name, cache_dir=self.cache_dir
+                model_name, cache_dir=self.cache_dir, revision="main"
             )
             model = WhisperForConditionalGeneration.from_pretrained(  # nosec B615
-                model_name, cache_dir=self.cache_dir
+                model_name, cache_dir=self.cache_dir, revision="main"
             ).to(self.device)
             self.processors[f"{model_name}_processor"] = whisper_processor  # type: ignore[assignment]
             self.models[f"{model_name}_model"] = model  # type: ignore[assignment]
@@ -166,7 +166,7 @@ class BBIAHuggingFace:
 
             logger.info(f"📥 Chargement LLM {model_name} (peut prendre 1-2 minutes)...")
             self.chat_tokenizer = AutoTokenizer.from_pretrained(  # type: ignore[assignment]
-                model_name, cache_dir=self.cache_dir
+                model_name, cache_dir=self.cache_dir, revision="main"
             )
 
             if (
@@ -178,6 +178,7 @@ class BBIAHuggingFace:
             self.chat_model = AutoModelForCausalLM.from_pretrained(  # type: ignore[assignment] # nosec B615
                 model_name,
                 cache_dir=self.cache_dir,
+                revision="main",
                 device_map="auto",
                 torch_dtype=(torch.float16 if self.device != "cpu" else torch.float32),
             )
@@ -194,10 +195,10 @@ class BBIAHuggingFace:
         """Charge un modèle multimodal (BLIP VQA)."""
         if "blip" in model_name.lower() and "vqa" in model_name.lower():
             vqa_processor: Any = BlipProcessor.from_pretrained(  # type: ignore # nosec B615
-                model_name, cache_dir=self.cache_dir
+                model_name, cache_dir=self.cache_dir, revision="main"
             )
             model = BlipForConditionalGeneration.from_pretrained(  # nosec B615
-                model_name, cache_dir=self.cache_dir
+                model_name, cache_dir=self.cache_dir, revision="main"
             ).to(self.device)
             self.processors[f"{model_name}_processor"] = vqa_processor  # type: ignore[assignment]
             self.models[f"{model_name}_model"] = model  # type: ignore[assignment]
@@ -220,20 +221,20 @@ class BBIAHuggingFace:
             if model_type == "vision":
                 if "clip" in model_name.lower():
                     clip_processor = CLIPProcessor.from_pretrained(  # type: ignore[assignment] # nosec B615
-                        model_name, cache_dir=self.cache_dir
+                        model_name, cache_dir=self.cache_dir, revision="main"
                     )
                     model = CLIPModel.from_pretrained(  # nosec B615
-                        model_name, cache_dir=self.cache_dir
+                        model_name, cache_dir=self.cache_dir, revision="main"
                     ).to(self.device)
                     self.processors[f"{model_name}_processor"] = clip_processor  # type: ignore[assignment]
                     self.models[f"{model_name}_model"] = model  # type: ignore[assignment]
 
                 elif "blip" in model_name.lower():
                     blip_processor: Any = BlipProcessor.from_pretrained(  # nosec B615
-                        model_name, cache_dir=self.cache_dir
+                        model_name, cache_dir=self.cache_dir, revision="main"
                     )
                     model = BlipForConditionalGeneration.from_pretrained(  # nosec B615
-                        model_name, cache_dir=self.cache_dir
+                        model_name, cache_dir=self.cache_dir, revision="main"
                     ).to(self.device)
                     self.processors[f"{model_name}_processor"] = blip_processor  # type: ignore[assignment]
                     self.models[f"{model_name}_model"] = model  # type: ignore[assignment]
@@ -242,12 +243,12 @@ class BBIAHuggingFace:
                 if "whisper" in model_name.lower():
                     whisper_processor: Any = (
                         WhisperProcessor.from_pretrained(  # nosec B615
-                            model_name, cache_dir=self.cache_dir
+                            model_name, cache_dir=self.cache_dir, revision="main"
                         )
                     )
                     model = (
                         WhisperForConditionalGeneration.from_pretrained(  # nosec B615
-                            model_name, cache_dir=self.cache_dir
+                            model_name, cache_dir=self.cache_dir, revision="main"
                         ).to(self.device)
                     )
                     self.processors[f"{model_name}_processor"] = whisper_processor  # type: ignore[assignment]
@@ -270,7 +271,7 @@ class BBIAHuggingFace:
                         f"📥 Chargement LLM {model_name} (peut prendre 1-2 minutes)..."
                     )
                     self.chat_tokenizer = AutoTokenizer.from_pretrained(  # type: ignore[assignment]
-                        model_name, cache_dir=self.cache_dir
+                        model_name, cache_dir=self.cache_dir, revision="main"
                     )
 
                     # Support instruction format
@@ -284,6 +285,7 @@ class BBIAHuggingFace:
                         AutoModelForCausalLM.from_pretrained(  # nosec B615
                             model_name,
                             cache_dir=self.cache_dir,
+                            revision="main",
                             device_map="auto",  # Auto-détecte MPS/CPU/CUDA
                             torch_dtype=(
                                 torch.float16 if self.device != "cpu" else torch.float32
@@ -306,10 +308,10 @@ class BBIAHuggingFace:
             elif model_type == "multimodal":
                 if "blip" in model_name.lower() and "vqa" in model_name.lower():
                     vqa_processor: Any = BlipProcessor.from_pretrained(  # nosec B615
-                        model_name, cache_dir=self.cache_dir
+                        model_name, cache_dir=self.cache_dir, revision="main"
                     )
                     model = BlipForConditionalGeneration.from_pretrained(  # nosec B615
-                        model_name, cache_dir=self.cache_dir
+                        model_name, cache_dir=self.cache_dir, revision="main"
                     ).to(self.device)
                     self.processors[f"{model_name}_processor"] = vqa_processor  # type: ignore[assignment]
                     self.models[f"{model_name}_model"] = model  # type: ignore[assignment]

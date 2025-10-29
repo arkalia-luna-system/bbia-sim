@@ -95,7 +95,7 @@ class TestSDKMediaIntegration:
         print("=" * 60)
 
         from bbia_sim.bbia_integration import BBIAIntegration
-        from bbia_sim.simulation_service import SimulationService
+        from bbia_sim.daemon.simulation_service import SimulationService
 
         # Créer simulation service avec robot_api mock
         mock_robot_api = MagicMock()

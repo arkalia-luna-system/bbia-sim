@@ -317,11 +317,12 @@ def reconnaitre_parole(
         return None
 
 
-def lister_voix_disponibles() -> None:
-    """Affiche la liste des voix TTS disponibles avec leurs propriétés."""
+def lister_voix_disponibles() -> list[Any]:
+    """Retourne la liste des voix TTS disponibles avec leurs propriétés."""
     # ⚡ OPTIMISATION PERFORMANCE: Utiliser cache au lieu de pyttsx3.init()
     engine = _get_pyttsx3_engine()
     voices = engine.getProperty("voices")
+    result = []
     for _idx, v in enumerate(voices):
         try:
             _ = (
@@ -330,7 +331,9 @@ def lister_voix_disponibles() -> None:
                 else str(v.languages[0])
             )
         except Exception:
-            _ = str(v.languages)  # type: ignore[no-any-return]
+            _ = str(v.languages) if hasattr(v, "languages") and v.languages else ""  # type: ignore[no-any-return]
+        result.append(v)
+    return result
 
 
 if __name__ == "__main__":

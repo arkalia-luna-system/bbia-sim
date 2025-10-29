@@ -30,6 +30,11 @@ atexit.register(_cleanup_sounddevice)
 
 logging.basicConfig(level=logging.INFO)
 
+# Constantes alignées SDK Reachy Mini officiel
+DEFAULT_SAMPLE_RATE = 16000  # SDK Reachy Mini standard (16kHz)
+DEFAULT_BUFFER_SIZE = 512  # SDK optimisé pour latence minimale
+DEFAULT_CHANNELS = 1  # Mono par défaut
+
 
 def _get_robot_media_microphone(
     robot_api: Optional["RobotAPI"] = None,  # noqa: ANN401
@@ -53,7 +58,7 @@ def _get_robot_media_microphone(
 def enregistrer_audio(
     fichier: str,
     duree: int = 3,
-    frequence: int = 16000,
+    frequence: int = DEFAULT_SAMPLE_RATE,
     robot_api: Optional["RobotAPI"] = None,  # noqa: ANN401
 ) -> bool:
     """Enregistre un fichier audio (WAV) depuis le micro.
@@ -148,6 +153,19 @@ def lire_audio(fichier: str, robot_api: Optional["RobotAPI"] = None) -> None:
         fichier: Chemin du fichier audio
         robot_api: Interface RobotAPI (optionnel) pour accès robot.media.speaker
     """
+    # Validation format et sample rate SDK
+    try:
+        import soundfile as sf
+
+        info = sf.info(fichier)
+        if info.samplerate != DEFAULT_SAMPLE_RATE:
+            logging.warning(
+                f"⚠️  Sample rate {info.samplerate} Hz != SDK standard {DEFAULT_SAMPLE_RATE} Hz. "
+                f"Performance audio peut être dégradée."
+            )
+    except Exception:
+        pass  # Ignorer si soundfile non disponible
+
     # OPTIMISATION SDK: Utiliser robot.media.speaker si disponible
     if robot_api and hasattr(robot_api, "media") and robot_api.media:
         try:
@@ -186,6 +204,7 @@ def lire_audio(fichier: str, robot_api: Optional["RobotAPI"] = None) -> None:
         logging.info(f"Lecture de {fichier} terminée.")
     except Exception as e:
         logging.error(f"Erreur de lecture audio : {e}")
+        raise
 
 
 def detecter_son(fichier: str, seuil: int = 500) -> bool:

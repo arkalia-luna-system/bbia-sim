@@ -766,6 +766,32 @@ class ReachyMiniBackend(RobotAPI):
         except Exception as e:
             logger.error(f"Erreur disable_motors: {e}")
 
+    def emergency_stop(self) -> bool:
+        """Arrêt d'urgence via SDK officiel.
+
+        Désactive immédiatement tous les moteurs et met le robot en mode sécurité.
+        Conforme au SDK Reachy Mini officiel.
+        """
+        if not self.is_connected:
+            logger.warning("Robot non connecté - emergency_stop ignoré")
+            return False
+
+        try:
+            # En simulation sans robot physique, on déconnecte mais retourne False
+            if not self.robot:
+                self.is_connected = False
+                logger.info("Emergency stop (simulation): robot déconnecté")
+                return False
+
+            # Robot physique: arrêt réel
+            self.robot.disable_motors()
+            self.is_connected = False
+            logger.critical("🔴 ARRÊT D'URGENCE ACTIVÉ")
+            return True
+        except Exception as e:
+            logger.error(f"Erreur emergency_stop: {e}")
+            return False
+
     def enable_gravity_compensation(self) -> None:
         """Active la compensation de gravité."""
         if not self.is_connected or not self.robot:
