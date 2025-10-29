@@ -125,12 +125,19 @@ cat > "$OUT_DIR/styles.css" <<CSS
 }
 
 html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', Arial, sans-serif;
-  background-color: var(--bg-dark);
-  color: var(--text-primary);
+  background-color: #000000 !important;
+  background: #000000 !important;
+  color: #ffffff !important;
+}
+
+body {
+  background-color: #000000 !important;
+  background: #000000 !important;
+  color: #ffffff !important;
 }
 
 .docs-container {
@@ -177,32 +184,55 @@ html, body {
   flex: 1;
   padding: 48px;
   max-width: 980px;
+  background-color: #000000 !important;
+  background: #000000 !important;
+  color: #ffffff !important;
+}
+
+.docs-container {
+  background-color: #000000 !important;
+  background: #000000 !important;
 }
 
 .markdown-body {
   line-height: 1.6;
+  background-color: #000000 !important;
+  background: #000000 !important;
+  color: #ffffff !important;
 }
 
-.markdown-body h1 {
+.markdown-body h1,
+.markdown-body h1 * {
   font-size: 2.5em;
   border-bottom: 2px solid var(--border);
   padding-bottom: 12px;
   margin-top: 0;
-  color: var(--text-primary);
+  color: #ffffff !important;
 }
 
-.markdown-body h2 {
+.markdown-body h2,
+.markdown-body h2 * {
   font-size: 2em;
   margin-top: 48px;
   border-bottom: 1px solid var(--border);
   padding-bottom: 8px;
-  color: var(--text-primary);
+  color: #ffffff !important;
+}
+
+.markdown-body h3,
+.markdown-body h3 *,
+.markdown-body h4,
+.markdown-body h4 *,
+.markdown-body h5,
+.markdown-body h5 *,
+.markdown-body h6,
+.markdown-body h6 * {
+  color: #ffffff !important;
 }
 
 .markdown-body h3 {
   font-size: 1.5em;
   margin-top: 32px;
-  color: var(--text-primary);
 }
 
 .markdown-body code {
@@ -261,6 +291,33 @@ html, body {
 .markdown-body .anchor {
   text-decoration: none;
   transition: opacity 0.2s;
+}
+
+/* Forcer tous les éléments texte en blanc sur fond noir */
+.markdown-body p,
+.markdown-body p *,
+.markdown-body li,
+.markdown-body li *,
+.markdown-body td,
+.markdown-body td *,
+.markdown-body th,
+.markdown-body th *,
+.markdown-body span,
+.markdown-body span *,
+.markdown-body div:not(.mermaid),
+.markdown-body div:not(.mermaid) *,
+.markdown-body ul,
+.markdown-body ul *,
+.markdown-body ol,
+.markdown-body ol *,
+.markdown-body blockquote,
+.markdown-body blockquote * {
+  color: #ffffff !important;
+}
+
+.markdown-body table th,
+.markdown-body table td {
+  color: #ffffff !important;
 }
 
 @media (max-width: 768px) {

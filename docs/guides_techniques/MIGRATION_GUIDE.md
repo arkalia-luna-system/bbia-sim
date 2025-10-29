@@ -1,14 +1,14 @@
-# 🚀 Guide de Migration BBIA-SIM : Simulation → Robot Reachy Mini Réel
+# Guide de migration BBIA-SIM : simulation → robot Reachy Mini réel
 
-## 📋 Vue d'ensemble
+## Vue d'ensemble
 
-Ce guide vous accompagne dans la migration de votre projet BBIA-SIM depuis la simulation MuJoCo vers le robot Reachy Mini physique. BBIA-SIM a été conçu avec une architecture unifiée (RobotAPI) pour faciliter cette transition.
+Ce guide vous accompagne dans la migration de votre projet BBIA-SIM depuis la simulation MuJoCo vers le robot Reachy Mini physique. BBIA-SIM utilise une architecture unifiée (RobotAPI) pour faciliter cette transition.
 
 ---
 
-## 🎯 Architecture de Migration
+## Architecture de migration
 
-### **RobotAPI Unifié - Avantage Clé**
+### RobotAPI unifié — avantage clé
 
 ```mermaid
 graph TB
@@ -39,11 +39,11 @@ graph TB
     API --> REACHY
 ```
 
-**✅ Avantage :** Aucune modification des modules BBIA nécessaire !
+Avantage : aucune modification des modules BBIA nécessaire.
 
 ---
 
-## 🔧 Étapes de Migration
+## Étapes de migration
 
 ### Flux de migration
 
@@ -64,7 +64,7 @@ flowchart TD
     style READY fill:#87CEEB
 ```
 
-### **1. Installation du SDK Officiel**
+### 1. Installation du SDK officiel
 
 ```bash
 # Installer le SDK officiel Reachy Mini
@@ -76,9 +76,9 @@ pip install reachy-mini-motor-controller
 pip install reachy-mini-rust-kinematics
 ```
 
-### **2. Configuration du Daemon**
+### 2. Configuration du daemon
 
-#### **Option A : Daemon Zenoh (Recommandé)**
+#### Option A : Daemon Zenoh (recommandé)
 ```bash
 # Démarrer le daemon Zenoh
 reachy-mini-daemon --backend zenoh
@@ -87,7 +87,7 @@ reachy-mini-daemon --backend zenoh
 curl http://localhost:8000/api/state/full
 ```
 
-#### **Option B : Bridge FastAPI → Zenoh**
+#### Option B : Bridge FastAPI → Zenoh
 ```python
 # Utiliser le bridge intégré BBIA-SIM
 from bbia_sim.daemon.bridge import ZenohBridge
@@ -96,9 +96,9 @@ bridge = ZenohBridge()
 bridge.start()
 ```
 
-### **3. Modification de Configuration**
+### 3. Modification de configuration
 
-#### **Fichier de configuration**
+#### Fichier de configuration
 ```python
 # config/robot_config.py
 ROBOT_CONFIG = {
@@ -111,14 +111,14 @@ ROBOT_CONFIG = {
 }
 ```
 
-#### **Variables d'environnement**
+#### Variables d'environnement
 ```bash
 export BBIA_ROBOT_BACKEND=reachy_mini
 export BBIA_DAEMON_URL=http://localhost:8000
 export BBIA_ZENOH_MODE=client
 ```
 
-### **4. Test de Migration**
+### 4. Test de migration
 
 ```python
 # test_migration.py
@@ -140,11 +140,11 @@ emotions.set_emotion("excited", 0.9)
 
 ---
 
-## ⚠️ Limitations et Considérations
+## Limitations et considérations
 
-### **🔒 Limitations Matérielles**
+### Limitations matérielles
 
-#### **Fréquence de Contrôle**
+#### Fréquence de contrôle
 - **Simulation** : 100Hz (10ms)
 - **Robot réel** : 50Hz (20ms) - limitation matérielle
 

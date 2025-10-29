@@ -120,16 +120,16 @@ R : Oui, le système est extensible. Voir `examples/demo_emotion_ok.py`
 
 ---
 
-## 📚 **Prochaines Étapes**
+## Prochaines étapes
 
-1. ✅ **Découvrir** : [Architecture (vue d’ensemble)](../architecture/ARCHITECTURE_OVERVIEW.md)
-2. ✅ **Créer** : Vos propres comportements avec `examples/demo_*`
-3. ✅ **Comprendre** : [Architecture détaillée](../architecture/ARCHITECTURE_DETAILED.md)
-4. ✅ **Avancer** : [Guide Avancé](GUIDE_AVANCE.md)
+1. Découvrir : [Architecture (vue d'ensemble)](../architecture/ARCHITECTURE_OVERVIEW.md)
+2. Créer : vos propres comportements avec `examples/demo_*`
+3. Comprendre : [Architecture détaillée](../architecture/ARCHITECTURE_DETAILED.md)
+4. Avancer : [Guide Avancé](GUIDE_AVANCE.md)
 
-## 💬 **Chat Intelligent**
+## Chat intelligent
 
-**Nouvelle fonctionnalité !** Discutez avec BBIA via le Dashboard ou directement :
+Discutez avec BBIA via le Dashboard ou directement :
 
 ```bash
 # Chat simple via terminal
@@ -139,7 +139,7 @@ python examples/demo_chat_simple.py
 python examples/demo_chat_bbia.py
 ```
 
-## 🤖 **Émotions Disponibles**
+## Émotions disponibles
 
 BBIA supporte 12 émotions robotiques :
 - 😊 `happy` - Joie
@@ -157,5 +157,5 @@ BBIA supporte 12 émotions robotiques :
 
 ---
 
-**Besoin d'aide ?** Ouvrez une issue sur GitHub ou rejoignez le Discord Reachy ! 🤖
+Besoin d'aide ? Ouvrez une issue sur GitHub ou rejoignez le Discord Reachy.
 
