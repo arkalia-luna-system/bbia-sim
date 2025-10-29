@@ -7,7 +7,7 @@ Backend utilisant le SDK officiel reachy_mini
 import logging
 import threading
 import time
-from typing import TYPE_CHECKING, Any, Optional, Union
+from typing import TYPE_CHECKING, Any, Optional, Union, cast
 
 import numpy as np
 
@@ -1216,7 +1216,7 @@ class ReachyMiniBackend(RobotAPI):
                 and isinstance(result, np.ndarray)
                 and result.shape == (4, 4)
             ):
-                return result
+                return cast("np.ndarray", result)
             else:
                 # Calculer une approximation si le SDK ne retourne pas de pose
                 import numpy as np

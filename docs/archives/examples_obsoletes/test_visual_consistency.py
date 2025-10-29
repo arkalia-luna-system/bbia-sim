@@ -267,7 +267,7 @@ def main():
     print("🎯 TEST DE COHÉRENCE VISUELLE TERMINÉ")
     print("=" * 60)
     print("📋 Consultez le rapport ci-dessus pour les corrections nécessaires")
-    print("🎯 Référence : assets/images/REACHY_MINI_REFERENCE.md")
+    print("🎯 Référence : docs/reachy/REACHY_MINI_REFERENCE.md")
     print("📚 Guide : docs/guides/🎯_PHASE_CORRECTION_SIMULATIONS.md")
 
 

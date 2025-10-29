@@ -15,9 +15,10 @@ from bbia_sim import bbia_audio
 
 
 class TestBBIAAudio(unittest.TestCase):
+    @patch("os.environ.get", return_value="0")  # Désactiver BBIA_DISABLE_AUDIO
     @patch("bbia_sim.bbia_audio.sd")
     @patch("bbia_sim.bbia_audio.wave.open")
-    def test_enregistrer_audio(self, mock_wave_open, mock_sd):
+    def test_enregistrer_audio(self, mock_wave_open, mock_sd, mock_env_get):
         mock_wave = MagicMock()
         mock_wave_open.return_value.__enter__.return_value = mock_wave
         mock_sd.rec.return_value = np.zeros((16000 * 1, 1), dtype="int16")
@@ -26,20 +27,10 @@ class TestBBIAAudio(unittest.TestCase):
         mock_wave.writeframes.assert_called()
 
     @patch("os.environ.get", return_value="0")  # Désactiver BBIA_DISABLE_AUDIO
+    @patch("bbia_sim.bbia_audio.soundfile", None)  # Forcer fallback vers wave
     @patch("bbia_sim.bbia_audio.sd")
     @patch("bbia_sim.bbia_audio.wave.open")
-    @patch("builtins.__import__")
-    def test_lire_audio(self, mock_import, mock_wave_open, mock_sd, mock_env_get):
-        # Mock soundfile pour qu'il lève une exception lors de l'import
-        def import_side_effect(name, *args, **kwargs):
-            if name == "soundfile":
-                raise ImportError("soundfile not available")
-            # Import normal pour autres modules
-            import builtins
-
-            return builtins.__import__(name, *args, **kwargs)
-
-        mock_import.side_effect = import_side_effect
+    def test_lire_audio(self, mock_wave_open, mock_sd, mock_env_get):
         # Fallback vers wave
         mock_wave = MagicMock()
         mock_wave.getframerate.return_value = 16000
@@ -49,8 +40,9 @@ class TestBBIAAudio(unittest.TestCase):
         bbia_audio.lire_audio("test.wav")
         mock_sd.play.assert_called()
 
+    @patch("os.environ.get", return_value="0")  # Désactiver BBIA_DISABLE_AUDIO
     @patch("bbia_sim.bbia_audio.wave.open")
-    def test_detecter_son(self, mock_wave_open):
+    def test_detecter_son(self, mock_wave_open, mock_env_get):
         mock_wave = MagicMock()
         # Cas : son détecté
         audio = (np.ones(16000, dtype="int16") * 1000).tobytes()

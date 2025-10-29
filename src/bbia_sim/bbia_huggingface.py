@@ -847,6 +847,23 @@ class BBIAHuggingFace:
             variants = greetings.get(self.bbia_personality, greetings["friendly_robot"])
             return random.choice(variants)
 
+        # Questions - Réponses plus intelligentes et utiles (géré plus bas avec variantes par personnalité)
+        if message_lower.endswith("?") or any(
+            message_lower.startswith(prefix)
+            for prefix in [
+                "comment",
+                "pourquoi",
+                "peux-tu",
+                "pouvez-vous",
+                "quand",
+                "où",
+                "quel",
+                "quelle",
+            ]
+        ):
+            # Le bloc détaillé avec variantes par personnalité est défini plus bas
+            pass
+
         # Au revoir - Réponses émotionnelles selon contexte
         if any(
             word in message_lower

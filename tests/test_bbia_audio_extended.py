@@ -104,21 +104,11 @@ class TestBBIAAudioExtended:
                 patch(
                     "os.environ.get", return_value="0"
                 ),  # Désactiver BBIA_DISABLE_AUDIO
-                patch("builtins.__import__") as mock_import,
+                patch("bbia_sim.bbia_audio.soundfile", None),  # Forcer fallback vers wave
                 patch("bbia_sim.bbia_audio.wave.open") as mock_wave_open,
                 patch("bbia_sim.bbia_audio.sd.play"),
                 patch("bbia_sim.bbia_audio.sd.wait"),
             ):
-                # Mock soundfile pour qu'il lève une exception lors de l'import
-                def import_side_effect(name, *args, **kwargs):
-                    if name == "soundfile":
-                        raise ImportError("soundfile not available")
-                    # Import normal pour autres modules
-                    import builtins
-
-                    return builtins.__import__(name, *args, **kwargs)
-
-                mock_import.side_effect = import_side_effect
 
                 # Mock du fichier WAV
                 mock_wf = MagicMock()
@@ -139,19 +129,11 @@ class TestBBIAAudioExtended:
         """Test erreur de lecture audio."""
         with (
             patch("os.environ.get", return_value="0"),  # Désactiver BBIA_DISABLE_AUDIO
-            patch("builtins.__import__") as mock_import,
+            patch("bbia_sim.bbia_audio.soundfile") as mock_soundfile,
             patch("bbia_sim.bbia_audio.wave.open") as mock_wave_open,
         ):
-            # Mock soundfile pour qu'il lève une exception lors de l'import
-            def import_side_effect(name, *args, **kwargs):
-                if name == "soundfile":
-                    raise ImportError("soundfile error")
-                # Import normal pour autres modules
-                import builtins
-
-                return builtins.__import__(name, *args, **kwargs)
-
-            mock_import.side_effect = import_side_effect
+            # Mock soundfile qui échoue
+            mock_soundfile.info.side_effect = Exception("soundfile error")
             # Mock wave qui échoue aussi
             mock_wave_open.side_effect = Exception("File error")
 

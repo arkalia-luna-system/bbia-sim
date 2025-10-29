@@ -36,6 +36,12 @@ DEFAULT_SAMPLE_RATE = 16000  # SDK Reachy Mini standard (16kHz)
 DEFAULT_BUFFER_SIZE = 512  # SDK optimisé pour latence minimale
 DEFAULT_CHANNELS = 1  # Mono par défaut
 
+# Alias module-level pour permettre le patch dans les tests
+try:  # pragma: no cover - import optionnel
+    import soundfile as soundfile  # type: ignore[no-redef]
+except Exception:  # pragma: no cover - environnement sans soundfile
+    soundfile = None  # type: ignore[assignment]
+
 
 def _get_robot_media_microphone(
     robot_api: Optional["RobotAPI"] = None,  # noqa: ANN401
@@ -166,18 +172,18 @@ def lire_audio(fichier: str, robot_api: Optional["RobotAPI"] = None) -> None:
         logging.debug(f"Audio désactivé (BBIA_DISABLE_AUDIO=1): '{fichier}' ignoré")
         return
 
-    # Validation format et sample rate SDK
-    try:
-        import soundfile as sf
-
-        info = sf.info(fichier)
-        if info.samplerate != DEFAULT_SAMPLE_RATE:
-            logging.warning(
-                f"⚠️  Sample rate {info.samplerate} Hz != SDK standard {DEFAULT_SAMPLE_RATE} Hz. "
-                f"Performance audio peut être dégradée."
-            )
-    except Exception:
-        pass  # Ignorer si soundfile non disponible
+    # Validation format et sample rate SDK (si soundfile dispo)
+    if soundfile is not None:
+        try:
+            info = soundfile.info(fichier)
+            if info.samplerate != DEFAULT_SAMPLE_RATE:
+                logging.warning(
+                    f"⚠️  Sample rate {info.samplerate} Hz != SDK standard {DEFAULT_SAMPLE_RATE} Hz. "
+                    f"Performance audio peut être dégradée."
+                )
+        except Exception:
+            # Ignorer toute erreur côté soundfile, fallback plus bas
+            pass
 
     # OPTIMISATION SDK: Utiliser robot.media.speaker si disponible
     if robot_api and hasattr(robot_api, "media") and robot_api.media:
