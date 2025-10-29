@@ -25,12 +25,21 @@ class TestBBIAAudio(unittest.TestCase):
         mock_sd.rec.assert_called()
         mock_wave.writeframes.assert_called()
 
+    @patch("os.environ.get", return_value="0")  # Désactiver BBIA_DISABLE_AUDIO
     @patch("bbia_sim.bbia_audio.sd")
     @patch("bbia_sim.bbia_audio.wave.open")
-    @patch("bbia_sim.bbia_audio.soundfile")
-    def test_lire_audio(self, mock_soundfile, mock_wave_open, mock_sd):
-        # Mock soundfile d'abord (priorité 2)
-        mock_soundfile.info.side_effect = Exception("soundfile not available")
+    @patch("builtins.__import__")
+    def test_lire_audio(self, mock_import, mock_wave_open, mock_sd, mock_env_get):
+        # Mock soundfile pour qu'il lève une exception lors de l'import
+        def import_side_effect(name, *args, **kwargs):
+            if name == "soundfile":
+                raise ImportError("soundfile not available")
+            # Import normal pour autres modules
+            import builtins
+
+            return builtins.__import__(name, *args, **kwargs)
+
+        mock_import.side_effect = import_side_effect
         # Fallback vers wave
         mock_wave = MagicMock()
         mock_wave.getframerate.return_value = 16000

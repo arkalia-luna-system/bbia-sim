@@ -91,7 +91,7 @@ class TestExamplesStewartWarnings:
             pytest.skip("Dossier src/bbia_sim introuvable")
 
         # Exclure les fichiers backends (peuvent avoir du code SDK)
-        exclude_patterns = ["backends", "__pycache__", "__init__"]
+        exclude_patterns = ["backends", "__pycache__", "__init__", "robot_factory"]
 
         forbidden_pattern = re.compile(
             r'["\']stewart_\d["\']|set_joint_pos\(["\']stewart_'

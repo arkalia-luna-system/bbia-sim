@@ -126,11 +126,12 @@ class TestBBIAVoiceExtended:
 
         assert voice_id == "com.apple.speech.voice.Amelie.fr-FR"
 
+    @patch("os.environ.get", return_value="0")  # Désactiver BBIA_DISABLE_AUDIO
     @patch("bbia_sim.bbia_voice._pyttsx3_engine_cache", None)
     @patch("bbia_sim.bbia_voice._bbia_voice_id_cache", None)
     @patch("bbia_sim.bbia_voice._get_pyttsx3_engine")
     @patch("bbia_sim.bbia_voice.get_bbia_voice")
-    def test_dire_texte_success(self, mock_get_voice, mock_get_engine):
+    def test_dire_texte_success(self, mock_get_voice, mock_get_engine, mock_env_get):
         """Test synthèse vocale réussie."""
         mock_engine = MagicMock()
         mock_get_engine.return_value = mock_engine
@@ -151,18 +152,19 @@ class TestBBIAVoiceExtended:
         mock_engine.say.assert_called_once_with("Test message")
         mock_engine.runAndWait.assert_called_once()
 
+    @patch("os.environ.get", return_value="0")  # Désactiver BBIA_DISABLE_AUDIO
     @patch("bbia_sim.bbia_voice._pyttsx3_engine_cache", None)
     @patch("bbia_sim.bbia_voice._bbia_voice_id_cache", None)
     @patch("bbia_sim.bbia_voice._get_pyttsx3_engine")
-    def test_dire_texte_error(self, mock_get_engine):
+    def test_dire_texte_error(self, mock_get_engine, mock_env_get):
         """Test erreur synthèse vocale."""
         mock_get_engine.side_effect = Exception("Engine error")
 
         with pytest.raises(Exception, match="Engine error"):
             dire_texte("Test message")
 
-    @patch("src.bbia_sim.bbia_voice.sr.Recognizer")
-    @patch("src.bbia_sim.bbia_voice.sr.Microphone")
+    @patch("bbia_sim.bbia_voice.sr.Recognizer")
+    @patch("bbia_sim.bbia_voice.sr.Microphone")
     def test_reconnaitre_parole_success(self, mock_microphone, mock_recognizer_class):
         """Test reconnaissance vocale réussie."""
         mock_recognizer = MagicMock()
@@ -185,8 +187,8 @@ class TestBBIAVoiceExtended:
             mock_audio, language="fr-FR"
         )
 
-    @patch("src.bbia_sim.bbia_voice.sr.Recognizer")
-    @patch("src.bbia_sim.bbia_voice.sr.Microphone")
+    @patch("bbia_sim.bbia_voice.sr.Recognizer")
+    @patch("bbia_sim.bbia_voice.sr.Microphone")
     def test_reconnaitre_parole_unknown_value(
         self, mock_microphone, mock_recognizer_class
     ):
@@ -205,8 +207,8 @@ class TestBBIAVoiceExtended:
 
         assert result is None
 
-    @patch("src.bbia_sim.bbia_voice.sr.Recognizer")
-    @patch("src.bbia_sim.bbia_voice.sr.Microphone")
+    @patch("bbia_sim.bbia_voice.sr.Recognizer")
+    @patch("bbia_sim.bbia_voice.sr.Microphone")
     def test_reconnaitre_parole_general_error(
         self, mock_microphone, mock_recognizer_class
     ):
@@ -358,11 +360,12 @@ class TestBBIAVoiceExtended:
         # Devrait retourner la première voix Amélie trouvée
         assert voice_id == "com.apple.speech.voice.Amelie.1"
 
+    @patch("os.environ.get", return_value="0")  # Désactiver BBIA_DISABLE_AUDIO
     @patch("bbia_sim.bbia_voice._pyttsx3_engine_cache", None)
     @patch("bbia_sim.bbia_voice._bbia_voice_id_cache", None)
     @patch("bbia_sim.bbia_voice._get_pyttsx3_engine")
     @patch("bbia_sim.bbia_voice.get_bbia_voice")
-    def test_dire_texte_engine_properties(self, mock_get_voice, mock_get_engine):
+    def test_dire_texte_engine_properties(self, mock_get_voice, mock_get_engine, mock_env_get):
         """Test propriétés du moteur de synthèse."""
         mock_engine = MagicMock()
         mock_get_engine.return_value = mock_engine
@@ -386,8 +389,8 @@ class TestBBIAVoiceExtended:
         assert len(rate_calls) >= 1
         assert len(volume_calls) >= 1
 
-    @patch("src.bbia_sim.bbia_voice.sr.Recognizer")
-    @patch("src.bbia_sim.bbia_voice.sr.Microphone")
+    @patch("bbia_sim.bbia_voice.sr.Recognizer")
+    @patch("bbia_sim.bbia_voice.sr.Microphone")
     def test_reconnaitre_parole_custom_parameters(
         self, mock_microphone, mock_recognizer_class
     ):

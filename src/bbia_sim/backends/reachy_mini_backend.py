@@ -123,6 +123,8 @@ class ReachyMiniBackend(RobotAPI):
             self.robot = None
             self.is_connected = True  # Mode simulation
             self.start_time = time.time()
+            self._last_heartbeat = time.time()
+            self._start_watchdog()
             return True
 
         # Si use_sim=True, utiliser directement le mode simulation
@@ -131,6 +133,8 @@ class ReachyMiniBackend(RobotAPI):
             self.robot = None
             self.is_connected = True
             self.start_time = time.time()
+            self._last_heartbeat = time.time()
+            self._start_watchdog()
             return True
 
         try:
@@ -406,15 +410,17 @@ class ReachyMiniBackend(RobotAPI):
             logger.warning(f"Joint {joint_name} interdit pour sécurité")
             return False
 
-        # Mode simulation : retourner True SAUF pour les joints interdits
-        # (stewart_4/5/6) qui doivent toujours retourner False pour conformité SDK
-        if joint_name in ["stewart_4", "stewart_5", "stewart_6"]:
+        # IMPORTANT EXPERT: Les joints stewart NE PEUVENT PAS être contrôlés individuellement
+        # car la plateforme Stewart utilise la cinématique inverse (IK).
+        # Tous les joints stewart (stewart_1 à stewart_6) doivent retourner False
+        # pour forcer l'utilisation de goto_target() ou look_at_world()
+        if joint_name.startswith("stewart_"):
             logger.warning(
                 f"⚠️  Tentative de contrôle individuel du joint {joint_name} - "
-                f"Ce joint ne peut PAS être contrôlé individuellement.\n"
+                f"Ce joint ne peut PAS être contrôlé individuellement (plateforme Stewart utilise IK).\n"
                 f"   → Utilisez goto_target() ou set_target_head_pose() "
                 f"avec create_head_pose() pour contrôler la tête via la "
-                f"cinématique inverse."
+                f"cinématique inverse, ou utilisez look_at_world() pour regarder vers un point."
             )
             return False  # Toujours False, même en simulation (conformité SDK)
 
@@ -1156,16 +1162,84 @@ class ReachyMiniBackend(RobotAPI):
         z: float,
         duration: float = 1.0,
         perform_movement: bool = True,
-    ) -> None:
-        """Alias SDK officiel pour look_at."""
+    ) -> "np.ndarray | None":
+        """Alias SDK officiel pour look_at.
+
+        Returns:
+            Matrice 4x4 représentant la pose de la tête si disponible, None sinon.
+        """
         if not self.is_connected or not self.robot:
             logger.info(f"Mode simulation: look_at_world({x}, {y}, {z})")
-            return
+            # Calculer une pose 4x4 approximative depuis les coordonnées
+            import numpy as np
+
+            # Calculer les angles pitch et yaw depuis les coordonnées x, y, z
+            distance = np.sqrt(x**2 + y**2 + z**2)
+            if distance > 0:
+                pitch = -np.arcsin(z / distance)  # Angle vers le haut/bas
+                yaw = np.arctan2(y, x)  # Angle horizontal
+            else:
+                pitch = 0.0
+                yaw = 0.0
+
+            # Créer matrice de rotation 4x4 (pose de la tête)
+            pose = np.eye(4, dtype=np.float64)
+            # Rotation autour de Y (pitch) puis Z (yaw)
+            cos_pitch = np.cos(pitch)
+            sin_pitch = np.sin(pitch)
+            cos_yaw = np.cos(yaw)
+            sin_yaw = np.sin(yaw)
+
+            # Rotation combinée pitch (Y) puis yaw (Z)
+            pose[0, 0] = cos_yaw * cos_pitch
+            pose[0, 1] = -sin_yaw
+            pose[0, 2] = cos_yaw * sin_pitch
+            pose[1, 0] = sin_yaw * cos_pitch
+            pose[1, 1] = cos_yaw
+            pose[1, 2] = sin_yaw * sin_pitch
+            pose[2, 0] = -sin_pitch
+            pose[2, 2] = cos_pitch
+
+            # Position (optionnel, pour look_at la position reste au centre)
+            pose[0, 3] = 0.0
+            pose[1, 3] = 0.0
+            pose[2, 3] = 0.0
+            pose[3, 3] = 1.0
+
+            return pose
 
         try:
-            self.robot.look_at_world(x, y, z, duration, perform_movement)
+            result = self.robot.look_at_world(x, y, z, duration, perform_movement)
+            # Si le SDK retourne une pose, la retourner, sinon calculer une approximation
+            if result is not None and isinstance(result, np.ndarray) and result.shape == (4, 4):
+                return result
+            else:
+                # Calculer une approximation si le SDK ne retourne pas de pose
+                import numpy as np
+                distance = np.sqrt(x**2 + y**2 + z**2)
+                if distance > 0:
+                    pitch = -np.arcsin(z / distance)
+                    yaw = np.arctan2(y, x)
+                else:
+                    pitch = 0.0
+                    yaw = 0.0
+                pose = np.eye(4, dtype=np.float64)
+                cos_pitch = np.cos(pitch)
+                sin_pitch = np.sin(pitch)
+                cos_yaw = np.cos(yaw)
+                sin_yaw = np.sin(yaw)
+                pose[0, 0] = cos_yaw * cos_pitch
+                pose[0, 1] = -sin_yaw
+                pose[0, 2] = cos_yaw * sin_pitch
+                pose[1, 0] = sin_yaw * cos_pitch
+                pose[1, 1] = cos_yaw
+                pose[1, 2] = sin_yaw * sin_pitch
+                pose[2, 0] = -sin_pitch
+                pose[2, 2] = cos_pitch
+                return pose
         except Exception as e:
             logger.error(f"Erreur look_at_world: {e}")
+            return None
 
     def wake_up(self) -> None:
         """Alias SDK officiel pour run_behavior('wake_up')."""
