@@ -85,7 +85,11 @@ def test_voice_advanced_prefers_media_when_available(
     assert (
         robot_api.media.calls == 1 if expect_play_audio else robot_api.media.calls == 0
     )
-    if expect_speaker_play_file and with_speaker and robot_api.media.speaker is not None:
+    if (
+        expect_speaker_play_file
+        and with_speaker
+        and robot_api.media.speaker is not None
+    ):
         assert robot_api.media.speaker.play_file_calls == 1
     elif robot_api.media.speaker is not None:
         assert robot_api.media.speaker.play_file_calls == 0

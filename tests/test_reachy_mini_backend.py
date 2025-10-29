@@ -25,6 +25,8 @@ class TestReachyMiniBackend:
         self.robot = RobotFactory.create_backend("reachy_mini")
         self.mapping = ReachyMapping()
 
+    @pytest.mark.unit
+    @pytest.mark.fast
     def test_backend_creation(self):
         """Test création du backend."""
         assert isinstance(self.robot, ReachyMiniBackend)
@@ -32,6 +34,8 @@ class TestReachyMiniBackend:
         assert hasattr(self.robot, "joint_limits")
         assert hasattr(self.robot, "forbidden_joints")
 
+    @pytest.mark.unit
+    @pytest.mark.fast
     def test_joint_mapping(self):
         """Test du mapping des joints."""
         # Vérifier que tous les joints officiels sont mappés (SDK officiel)

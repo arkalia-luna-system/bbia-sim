@@ -365,7 +365,9 @@ class TestBBIAVoiceExtended:
     @patch("bbia_sim.bbia_voice._bbia_voice_id_cache", None)
     @patch("bbia_sim.bbia_voice._get_pyttsx3_engine")
     @patch("bbia_sim.bbia_voice.get_bbia_voice")
-    def test_dire_texte_engine_properties(self, mock_get_voice, mock_get_engine, mock_env_get):
+    def test_dire_texte_engine_properties(
+        self, mock_get_voice, mock_get_engine, mock_env_get
+    ):
         """Test propriétés du moteur de synthèse."""
         mock_engine = MagicMock()
         mock_get_engine.return_value = mock_engine

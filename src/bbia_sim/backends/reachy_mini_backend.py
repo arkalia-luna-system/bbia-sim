@@ -1211,11 +1211,16 @@ class ReachyMiniBackend(RobotAPI):
         try:
             result = self.robot.look_at_world(x, y, z, duration, perform_movement)
             # Si le SDK retourne une pose, la retourner, sinon calculer une approximation
-            if result is not None and isinstance(result, np.ndarray) and result.shape == (4, 4):
+            if (
+                result is not None
+                and isinstance(result, np.ndarray)
+                and result.shape == (4, 4)
+            ):
                 return result
             else:
                 # Calculer une approximation si le SDK ne retourne pas de pose
                 import numpy as np
+
                 distance = np.sqrt(x**2 + y**2 + z**2)
                 if distance > 0:
                     pitch = -np.arcsin(z / distance)
