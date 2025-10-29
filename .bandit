@@ -11,5 +11,6 @@ skips:
   - B108
   - B306
   - B601
+  - B110 # try/except pass - utilisé pour nettoyage de fichiers temporaires
   - B311 # random.choice/random() utilisé pour variété conversationnelle, pas sécurité
   - B615 # Hugging Face from_pretrained sans revision - intentionnel pour modèles récents
