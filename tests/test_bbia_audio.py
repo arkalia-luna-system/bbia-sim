@@ -27,7 +27,11 @@ class TestBBIAAudio(unittest.TestCase):
 
     @patch("bbia_sim.bbia_audio.sd")
     @patch("bbia_sim.bbia_audio.wave.open")
-    def test_lire_audio(self, mock_wave_open, mock_sd):
+    @patch("bbia_sim.bbia_audio.soundfile")
+    def test_lire_audio(self, mock_soundfile, mock_wave_open, mock_sd):
+        # Mock soundfile d'abord (priorité 2)
+        mock_soundfile.info.side_effect = Exception("soundfile not available")
+        # Fallback vers wave
         mock_wave = MagicMock()
         mock_wave.getframerate.return_value = 16000
         mock_wave.readframes.return_value = np.zeros(16000, dtype="int16").tobytes()

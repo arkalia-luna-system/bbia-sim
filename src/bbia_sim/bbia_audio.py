@@ -64,6 +64,8 @@ def enregistrer_audio(
 ) -> bool:
     """Enregistre un fichier audio (WAV) depuis le micro.
 
+    Vérifie flag BBIA_DISABLE_AUDIO et valide paramètres avant enregistrement.
+
     Utilise robot.media.microphone (4 microphones SDK) si disponible,
     sinon utilise sounddevice pour compatibilité.
 
@@ -73,6 +75,11 @@ def enregistrer_audio(
         frequence: Fréquence d'échantillonnage
         robot_api: Interface RobotAPI (optionnel) pour accès robot.media.microphone
     """
+    # Vérifier flag d'environnement pour désactiver audio (CI/headless)
+    if os.environ.get("BBIA_DISABLE_AUDIO", "0") == "1":
+        logging.debug(f"Audio désactivé (BBIA_DISABLE_AUDIO=1): enregistrement ignoré")
+        return False
+
     # OPTIMISATION SDK: Utiliser robot.media.microphone si disponible
     microphone_sdk = _get_robot_media_microphone(robot_api)
     if microphone_sdk is not None:
@@ -214,9 +221,20 @@ def lire_audio(fichier: str, robot_api: Optional["RobotAPI"] = None) -> None:
 
 
 def detecter_son(fichier: str, seuil: int = 500) -> bool:
-    """Détecte la présence d'un son dans un fichier WAV (seuil simple).
-    Retourne True si un son est détecté, False sinon.
+    """Détecte si un fichier audio contient du son.
+
+    Args:
+        fichier: Chemin du fichier audio
+        seuil: Seuil d'amplitude pour détecter du son
+
+    Returns:
+        True si son détecté, False sinon
+
     """
+    # Vérifier flag d'environnement pour désactiver audio (CI/headless)
+    if os.environ.get("BBIA_DISABLE_AUDIO", "0") == "1":
+        logging.debug("Audio désactivé (BBIA_DISABLE_AUDIO=1): détection ignorée")
+        return False  # Retourner False car pas de son possible si audio désactivé
     try:
         with wave.open(fichier, "rb") as wf:
             frames = wf.readframes(wf.getnframes())

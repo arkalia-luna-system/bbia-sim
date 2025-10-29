@@ -138,6 +138,13 @@ class BBIAVoiceAdvanced:
         Returns:
             True si succès, False sinon
         """
+        # Vérifier flag d'environnement pour désactiver audio (CI/headless)
+        if os.environ.get("BBIA_DISABLE_AUDIO", "0") == "1":
+            logger.debug(f"Audio désactivé (BBIA_DISABLE_AUDIO=1): '{text}' ignoré")
+            return (
+                True  # Retourner True car c'est un succès (ignoré intentionnellement)
+            )
+
         if not text or not text.strip():
             logger.warning("Texte vide, rien à dire")
             return False

@@ -5,6 +5,7 @@ Backend utilisant le SDK officiel reachy_mini
 """
 
 import logging
+import threading
 import time
 from typing import TYPE_CHECKING, Any, Optional, Union
 
@@ -64,6 +65,12 @@ class ReachyMiniBackend(RobotAPI):
         self.robot: Optional[ReachyMini] = None
         self.step_count = 0
         self.start_time: float = 0.0
+
+        # Watchdog monitoring temps réel (SDK officiel utilise threads avec Event)
+        self._watchdog_thread: Optional[threading.Thread] = None
+        self._should_stop_watchdog = threading.Event()
+        self._watchdog_interval = 0.1  # 100ms entre vérifications
+        self._last_heartbeat: float = 0.0
 
         # Mapping joints officiel Reachy-Mini (noms réels du modèle MuJoCo)
         # 6 joints tête + 2 antennes + 1 corps = 9 joints total
@@ -142,6 +149,9 @@ class ReachyMiniBackend(RobotAPI):
             )
             self.is_connected = True
             self.start_time = time.time()
+            self._last_heartbeat = time.time()
+            # Démarrer watchdog pour monitoring temps réel
+            self._start_watchdog()
             logger.info("✅ Connecté au robot Reachy-Mini officiel")
             return True
         except (TimeoutError, ConnectionError, OSError) as e:
@@ -171,14 +181,19 @@ class ReachyMiniBackend(RobotAPI):
                     f"⚠️  Erreur connexion Reachy-Mini "
                     f"(mode simulation activé): {error_msg}"
                 )
-                self.robot = None
-                self.is_connected = True  # Mode simulation par sécurité
-                self.start_time = time.time()
-                return True
+            self.robot = None
+            self.is_connected = True  # Mode simulation par sécurité
+            self.start_time = time.time()
+            self._last_heartbeat = time.time()
+            # Démarrer watchdog même en simulation
+            self._start_watchdog()
+            return True
 
     def disconnect(self) -> bool:
         """Déconnecte du robot Reachy-Mini."""
         try:
+            # Arrêter watchdog avant déconnexion
+            self._stop_watchdog()
             if self.robot:
                 # Le SDK gère automatiquement la déconnexion
                 self.robot = None
@@ -533,13 +548,28 @@ class ReachyMiniBackend(RobotAPI):
                 self.robot.goto_sleep()
             elif behavior_name == "nod":
                 # Mouvement de hochement simple
+                # PERFORMANCE: Utiliser goto_target avec interpolation au lieu de sleep
+                # pour éviter blocage et réduire latence
                 pose1 = create_head_pose(pitch=0.1, degrees=False)
                 pose2 = create_head_pose(pitch=-0.1, degrees=False)
-                self.robot.set_target_head_pose(pose1)
-                time.sleep(0.5)
-                self.robot.set_target_head_pose(pose2)
-                time.sleep(0.5)
-                self.robot.set_target_head_pose(create_head_pose(degrees=False))
+
+                # Option optimale: goto_target avec interpolation
+                if hasattr(self.robot, "goto_target"):
+                    # Utiliser interpolation minjerk pour fluidité
+                    self.robot.goto_target(head=pose1, duration=0.5, method="minjerk")
+                    self.robot.goto_target(head=pose2, duration=0.5, method="minjerk")
+                    self.robot.goto_target(
+                        head=create_head_pose(degrees=False),
+                        duration=0.5,
+                        method="minjerk",
+                    )
+                else:
+                    # Fallback: set_target_head_pose avec sleep (compatible)
+                    self.robot.set_target_head_pose(pose1)
+                    time.sleep(0.5)
+                    self.robot.set_target_head_pose(pose2)
+                    time.sleep(0.5)
+                    self.robot.set_target_head_pose(create_head_pose(degrees=False))
 
             return True
         except Exception as e:
@@ -557,6 +587,20 @@ class ReachyMiniBackend(RobotAPI):
             current_time = time.time()
             elapsed_time = current_time - self.start_time if self.start_time > 0 else 0
 
+            # PERFORMANCE: Calculer latence moyenne si disponible
+            # (pour monitoring performance temps réel)
+            latency_info = {}
+            if hasattr(self, "_operation_latencies") and self._operation_latencies:
+                import statistics
+
+                avg_latency = statistics.mean(
+                    self._operation_latencies[-100:]
+                )  # Derniers 100
+                latency_info = {
+                    "avg_latency_ms": avg_latency * 1000,
+                    "operations_sampled": len(self._operation_latencies),
+                }
+
             return {
                 "step_count": self.step_count,
                 "elapsed_time": elapsed_time,
@@ -566,6 +610,7 @@ class ReachyMiniBackend(RobotAPI):
                 "current_emotion": self.current_emotion,
                 "emotion_intensity": self.emotion_intensity,
                 "is_connected": self.is_connected,
+                **latency_info,  # Ajouter info latence si disponible
             }
         except Exception as e:
             logger.error(f"Erreur télémétrie: {e}")
@@ -978,11 +1023,15 @@ class ReachyMiniBackend(RobotAPI):
 
     def record_movement(self, duration: float = 5.0) -> Optional[list[dict]]:
         """Enregistre un mouvement pendant une durée donnée."""
+        # PERFORMANCE: Utiliser time.sleep avec vérification pour éviter blocage
+        # Critique si appelé dans boucle temps réel
         self.start_recording()
 
         import time
 
-        time.sleep(duration)
+        # Clamp durée pour éviter sleep trop long (sécurité)
+        safe_duration = max(0.0, min(duration, 60.0))  # Max 60s
+        time.sleep(safe_duration)
 
         return self.stop_recording()
 

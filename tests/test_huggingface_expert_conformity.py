@@ -26,11 +26,16 @@ class TestBBIAHuggingFaceExpertConformity:
             from bbia_sim.bbia_huggingface import BBIAHuggingFace
 
             # Créer instance avec mock pour éviter chargement réel modèles lourds
-            with patch("bbia_sim.bbia_huggingface.HF_AVAILABLE", True):
-                # Patch torch au niveau du module où il est importé, pas comme attribut du module
-                with patch("torch"):
-                    self.hf_class = BBIAHuggingFace
-                    self.hf_available = True
+            # Note: torch n'est pas un attribut du module, c'est importé localement
+            # On skip simplement ces tests si transformers n'est pas disponible
+            try:
+                import torch  # noqa: F401
+
+                self.hf_class = BBIAHuggingFace
+                self.hf_available = True
+            except ImportError:
+                self.hf_class = None
+                self.hf_available = False
         except ImportError:
             self.hf_class = None
             self.hf_available = False

@@ -32,8 +32,9 @@ class TestBBIAAudioExtended:
 
         try:
             with (
-                patch("src.bbia_sim.bbia_audio.sd.rec") as mock_rec,
-                patch("src.bbia_sim.bbia_audio.sd.wait"),
+                patch("os.environ.get", return_value="0"),  # Désactiver BBIA_DISABLE_AUDIO
+                patch("bbia_sim.bbia_audio.sd.rec") as mock_rec,
+                patch("bbia_sim.bbia_audio.sd.wait"),
                 patch("builtins.open", mock_open()),
             ):
 
@@ -54,7 +55,10 @@ class TestBBIAAudioExtended:
 
     def test_enregistrer_audio_error(self):
         """Test erreur d'enregistrement audio."""
-        with patch("src.bbia_sim.bbia_audio.sd.rec") as mock_rec:
+        with (
+            patch("os.environ.get", return_value="0"),  # Désactiver BBIA_DISABLE_AUDIO
+            patch("bbia_sim.bbia_audio.sd.rec") as mock_rec,
+        ):
             mock_rec.side_effect = Exception("Audio error")
 
             with pytest.raises(Exception, match="Audio error"):
@@ -67,8 +71,9 @@ class TestBBIAAudioExtended:
 
         try:
             with (
-                patch("src.bbia_sim.bbia_audio.sd.rec") as mock_rec,
-                patch("src.bbia_sim.bbia_audio.sd.wait"),
+                patch("os.environ.get", return_value="0"),  # Désactiver BBIA_DISABLE_AUDIO
+                patch("bbia_sim.bbia_audio.sd.rec") as mock_rec,
+                patch("bbia_sim.bbia_audio.sd.wait"),
                 patch("builtins.open", mock_open()),
             ):
 
@@ -92,10 +97,13 @@ class TestBBIAAudioExtended:
 
         try:
             with (
+                patch("src.bbia_sim.bbia_audio.soundfile") as mock_soundfile,
                 patch("src.bbia_sim.bbia_audio.wave.open") as mock_wave_open,
                 patch("src.bbia_sim.bbia_audio.sd.play"),
                 patch("src.bbia_sim.bbia_audio.sd.wait"),
             ):
+                # Mock soundfile qui échoue pour forcer fallback vers wave
+                mock_soundfile.info.side_effect = Exception("soundfile not available")
 
                 # Mock du fichier WAV
                 mock_wf = MagicMock()
@@ -107,8 +115,6 @@ class TestBBIAAudioExtended:
                 lire_audio(temp_path)
 
                 mock_wave_open.assert_called_once_with(temp_path, "rb")
-                # mock_play.assert_called_once()
-                # mock_wait.assert_called_once()
 
         finally:
             if os.path.exists(temp_path):
@@ -116,7 +122,13 @@ class TestBBIAAudioExtended:
 
     def test_lire_audio_error(self):
         """Test erreur de lecture audio."""
-        with patch("src.bbia_sim.bbia_audio.wave.open") as mock_wave_open:
+        with (
+            patch("src.bbia_sim.bbia_audio.soundfile") as mock_soundfile,
+            patch("src.bbia_sim.bbia_audio.wave.open") as mock_wave_open,
+        ):
+            # Mock soundfile qui échoue
+            mock_soundfile.info.side_effect = Exception("soundfile error")
+            # Mock wave qui échoue aussi
             mock_wave_open.side_effect = Exception("File error")
 
             with pytest.raises(Exception, match="File error"):
@@ -129,9 +141,10 @@ class TestBBIAAudioExtended:
 
         try:
             with (
-                patch("src.bbia_sim.bbia_audio.wave.open") as mock_wave_open,
-                patch("src.bbia_sim.bbia_audio.sd.play"),
-                patch("src.bbia_sim.bbia_audio.sd.wait"),
+                patch("os.environ.get", return_value="0"),  # Désactiver BBIA_DISABLE_AUDIO
+                patch("bbia_sim.bbia_audio.wave.open") as mock_wave_open,
+                patch("bbia_sim.bbia_audio.sd.play"),
+                patch("bbia_sim.bbia_audio.sd.wait"),
             ):
 
                 mock_wf = MagicMock()
@@ -289,7 +302,8 @@ class TestBBIAAudioExtended:
 
         try:
             with (
-                patch("src.bbia_sim.bbia_audio.wave.open") as mock_wave_open,
+                patch("os.environ.get", return_value="0"),  # Désactiver BBIA_DISABLE_AUDIO
+                patch("bbia_sim.bbia_audio.wave.open") as mock_wave_open,
                 patch("src.bbia_sim.bbia_audio.sd.play"),
                 patch("src.bbia_sim.bbia_audio.sd.wait"),
             ):

@@ -208,12 +208,38 @@ class ZenohBridge:
     async def _on_command_received(self, sample: Any) -> None:
         """Traite les commandes reçues via Zenoh."""
         try:
-            command_data = json.loads(sample.payload.decode())
+            # Validation JSON sécurité: max size pour éviter DoS
+            payload = sample.payload.decode()
+            if len(payload) > 1048576:  # 1MB max
+                self.logger.warning(f"Payload trop volumineux: {len(payload)} bytes")
+                await self._publish_error("Commande rejetée: payload trop volumineux")
+                return
+
+            command_data = json.loads(payload)
+            # Validation: vérifier qu'il n'y a pas de secrets en clair
+            if isinstance(command_data, dict):
+                forbidden_keys = {
+                    "password",
+                    "secret",
+                    "api_key",
+                    "token",
+                    "credential",
+                }
+                if any(k.lower() in forbidden_keys for k in command_data.keys()):
+                    self.logger.warning(
+                        "Tentative d'envoi de secret détectée dans commande"
+                    )
+                    await self._publish_error("Commande rejetée: secrets non autorisés")
+                    return
+
             command = RobotCommand(**command_data)
 
             # Ajouter à la queue de traitement
             await self.command_queue.put(command)
 
+        except json.JSONDecodeError as e:
+            self.logger.error(f"Erreur décodage JSON: {e}")
+            await self._publish_error(f"Erreur format JSON: {e}")
         except Exception as e:
             self.logger.error(f"Erreur traitement commande Zenoh: {e}")
             await self._publish_error(f"Erreur commande: {e}")

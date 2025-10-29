@@ -202,14 +202,8 @@ async def stop_motion() -> dict[str, Any]:
 
     # Fallback: arrêt standard (asynchrone, ignorer si déjà arrêté)
     try:
-        import asyncio
-
-        if hasattr(asyncio, "create_task"):
-            asyncio.create_task(simulation_service.stop_simulation())  # type: ignore[func-returns-value]
-        else:
-            # Fallback pour anciennes versions Python
-            loop = asyncio.get_event_loop()
-            loop.run_until_complete(simulation_service.stop_simulation())  # type: ignore[func-returns-value]
+        # Appel direct asynchrone (stop_simulation est déjà async)
+        await simulation_service.stop_simulation()
     except Exception:
         pass  # Ignorer si simulation déjà arrêtée
 

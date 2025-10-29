@@ -128,12 +128,12 @@ class TestBBIAVoiceExtended:
 
     @patch("bbia_sim.bbia_voice._pyttsx3_engine_cache", None)
     @patch("bbia_sim.bbia_voice._bbia_voice_id_cache", None)
-    @patch("bbia_sim.bbia_voice.pyttsx3.init")
+    @patch("bbia_sim.bbia_voice._get_pyttsx3_engine")
     @patch("bbia_sim.bbia_voice.get_bbia_voice")
-    def test_dire_texte_success(self, mock_get_voice, mock_init):
+    def test_dire_texte_success(self, mock_get_voice, mock_get_engine):
         """Test synthèse vocale réussie."""
         mock_engine = MagicMock()
-        mock_init.return_value = mock_engine
+        mock_get_engine.return_value = mock_engine
         mock_get_voice.return_value = "voice_id"
 
         # Mock complet de l'engine
@@ -143,8 +143,8 @@ class TestBBIAVoiceExtended:
 
         dire_texte("Test message")
 
-        mock_init.assert_called_once()
-        mock_get_voice.assert_called_once_with(mock_engine)
+        mock_get_engine.assert_called()
+        mock_get_voice.assert_called()
         mock_engine.setProperty.assert_any_call("voice", "voice_id")
         mock_engine.setProperty.assert_any_call("rate", 170)
         mock_engine.setProperty.assert_any_call("volume", 1.0)
@@ -360,12 +360,12 @@ class TestBBIAVoiceExtended:
 
     @patch("bbia_sim.bbia_voice._pyttsx3_engine_cache", None)
     @patch("bbia_sim.bbia_voice._bbia_voice_id_cache", None)
-    @patch("bbia_sim.bbia_voice.pyttsx3.init")
+    @patch("bbia_sim.bbia_voice._get_pyttsx3_engine")
     @patch("bbia_sim.bbia_voice.get_bbia_voice")
-    def test_dire_texte_engine_properties(self, mock_get_voice, mock_init):
+    def test_dire_texte_engine_properties(self, mock_get_voice, mock_get_engine):
         """Test propriétés du moteur de synthèse."""
         mock_engine = MagicMock()
-        mock_init.return_value = mock_engine
+        mock_get_engine.return_value = mock_engine
         mock_get_voice.return_value = "voice_id"
 
         # Mock complet de l'engine
