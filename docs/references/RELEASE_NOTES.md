@@ -1,100 +1,100 @@
 # Notes de Release - BBIA-SIM
 
-## Version 1.3.1 - Conformité, Sécurité et Docs clarifiées ✅ RELEASED
+## Version 1.3.1 - Conformité, sécurité et documentation
 
 ### 🎯 Résumé
 Mise à niveau centrée sur la robustesse (watchdog, emergency stop), l’hygiène sécurité (Bandit), et une documentation unifiée, claire et honnête. Les chemins API publique sont harmonisés (`deploy/public_api.py`), les logs sont exclus du dépôt, et la doc reflète désormais l’état réel (tests/couverture validés en CI).
 
-### 🚀 Points forts v1.3.1
-- **Watchdog**: un seul thread global `ReachyWatchdog`, démarrage/arrêt sûrs, compatibilité tests.
-- **Emergency stop**: parcours consolidé et testé (simulation), métriques cohérentes.
-- **Bandit**: réduction des findings, durcissement des `subprocess` (résolution exécutable, `# nosec` justifiés au cas par cas).
-- **Logs**: `.gitignore` mis à jour (json/csv/jsonl/out/err; `logs/**`), retrait des logs versionnés.
-- **Docs**: Quick Start API publique, variables d’environnement `BBIA_*`, simplification des guides; ménages des archives non essentielles.
+### Points principaux
+- Watchdog: gestion claire du thread de surveillance, démarrage/arrêt sûrs, compatible avec les tests.
+- Emergency stop: parcours consolidé et testé (simulation), métriques cohérentes.
+- Bandit: réduction des findings, durcissement des `subprocess` (résolution via l’exécutable Python, `# nosec` justifiés lorsque nécessaire).
+- Logs: `.gitignore` mis à jour (json/csv/jsonl/out/err; `logs/**`), retrait des logs versionnés.
+- Documentation: Quick Start API publique, variables d’environnement `BBIA_*`, guides simplifiés; archives non essentielles rangées.
 
-### 🔧 Corrections et harmonisations
+### Corrections et harmonisations
 - `scripts/*`: sécurisation des appels `subprocess` (usage `sys.executable`, arguments constants, commentaires `# nosec` ciblés).
-- `reachy_mini_backend.py`: watchdog unique et réutilisable; évite la création multiple; compatibilité tests `test_watchdog_*`.
+- `reachy_mini_backend.py`: watchdog par instance; évite la réutilisation globale; compatibilité tests `test_watchdog_*`.
 - `bbia_audio.py`: shim `sounddevice` patchable en CI; fallback robuste (tests audio étendus OK).
 - `docs/*`: remplacement de `scripts/start_public_api.py` et `scripts/test_public_api.py` par `deploy/public_api.py --dev/--check`.
 - `docs/archives/*`: suppression de dossiers obsolètes, harmonisation v1.3.1.
 
-### 📚 Documentation
-- README: badges tests réalistes (800+ en CI), couverture “validée en CI”, Quick Start API publique, env vars utiles.
+### Documentation
+- README: badges tests réalistes (800+ en CI), couverture validée en CI, Quick Start API publique, variables d’environnement utiles.
 - Guides: Débutant et Tests simplifiés; Portfolio One-Pager mis à jour (métriques non figées, v1.3.1).
 - Index et status: versions/chemins cohérents.
 
-### 🧪 Qualité & CI
-- **Tests**: 800+ en CI (nombre variable selon pipeline).
-- **Couverture**: validée en CI (`coverage.xml`, `htmlcov/`).
-- **Outils**: Black, Ruff, MyPy, Bandit — OK.
+### Qualité et CI
+- Tests: 800+ en CI (nombre variable selon pipeline).
+- Couverture: validée en CI (`coverage.xml`, `htmlcov/`).
+- Outils: Black, Ruff, MyPy, Bandit.
 
 ---
 
-## Version 1.2.1 - Corrections Qualité Code + Tests ✅ RELEASED
+## Version 1.2.1 - Corrections qualité code et tests
 
-### 🎯 Résumé
+### Résumé
 
-Corrections complètes des erreurs de formatage, tests et qualité de code. Tous les outils de qualité (black, ruff, mypy, bandit) passent maintenant sans erreur.
+Corrections des erreurs de formatage, des tests et de la qualité de code. Les outils de qualité (Black, Ruff, MyPy, Bandit) passent sans erreur.
 
-### 🔧 Corrections v1.2.1
+### Corrections v1.2.1
 
-#### Formatage et Qualité Code
-- **Ruff** : Correction de tous les espaces dans lignes vides et espaces en fin de ligne
-- **Black** : Reformattage automatique du code selon les standards Python
-- **MyPy** : Correction de tous les problèmes de typage (6 erreurs corrigées)
-- **Bandit** : Aucun problème de sécurité détecté
+#### Formatage et qualité code
+- Ruff : correction des espaces et fins de ligne
+- Black : reformatage automatique du code
+- MyPy : correction des problèmes de typage
+- Bandit : aucun problème de sécurité détecté
 
-#### Corrections Tests
-- **TypeError fixes** : Correction des erreurs "NoneType object is not callable"
-- **Import cleanup** : Suppression des imports inutilisés
-- **SDK compatibility** : Gestion correcte du mode simulation sans SDK
+#### Corrections tests
+- TypeError: correction des erreurs "NoneType object is not callable"
+- Imports: suppression des imports inutilisés
+- Compatibilité SDK: gestion du mode simulation sans SDK
 
-#### Améliorations Backend
-- **Type safety** : Ajout d'annotations de type explicites
-- **Error handling** : Amélioration de la gestion d'erreurs avec SDK non disponible
-- **Return types** : Correction des types de retour pour conformité mypy
+#### Améliorations backend
+- Sécurité de type: annotations explicites
+- Gestion d’erreurs: amélioration lorsque le SDK n’est pas disponible
+- Types de retour: correction pour conformité MyPy
 
-### 📊 Métriques Qualité
+### Métriques qualité
 - **Tests** : 38 passed, 2 skipped ✅
 - **Ruff** : All checks passed ✅
 - **MyPy** : Success, no issues found ✅
 - **Bandit** : 0 security issues ✅
 - **Black** : All files formatted ✅
 
-## Version 1.2.0 - IA Légère + Scripts One-Click + Vitesse Robot Optimisée ✅ RELEASED
+## Version 1.2.0 - IA légère, scripts one-click et vitesse robot
 
-### 🎯 Résumé
+### Résumé
 
-Intégration complète de l'IA légère (Whisper STT + YOLOv8n + MediaPipe), scripts one-click pour démos, dashboard web temps réel, et optimisation de la vitesse du robot pour une sécurité maximale.
+Intégration de l'IA légère (Whisper STT, YOLOv8n, MediaPipe), scripts one-click pour démos, dashboard web temps réel, et optimisation de la vitesse du robot pour sécurité accrue.
 
-### 🚀 Nouvelles fonctionnalités v1.2.0
+### Nouvelles fonctionnalités v1.2.0
 
-#### IA Légère Intégrée
-- **Whisper STT** : Speech-to-Text avec latence <800ms, 20+ commandes FR/EN
-- **YOLOv8n** : Détection d'objets en temps réel ≥15fps
-- **MediaPipe Face** : Détection de visages et landmarks
-- **Mapping intelligent** : Commandes vocales → actions robot
+#### IA légère intégrée
+- Whisper STT : speech-to-text avec latence <800ms, 20+ commandes FR/EN
+- YOLOv8n : détection d'objets en temps réel ≥15fps
+- MediaPipe Face : détection de visages et landmarks
+- Mapping: commandes vocales vers actions robot
 
-#### Scripts One-Click
-- **run_demo_sim.sh** : Démo simulation complète avec viewer 3D
-- **run_demo_real.sh** : Démo robot réel avec mode lent sécurisé
-- **dashboard_advanced.py** : Serveur dashboard web temps réel
-- **stt_demo.py** : Tests commandes vocales interactives
+#### Scripts one-click
+- run_demo_sim.sh : démo simulation avec viewer 3D
+- run_demo_real.sh : démo robot réel avec mode lent
+- dashboard_advanced.py : serveur dashboard web temps réel
+- stt_demo.py : tests commandes vocales interactives
 
-#### Dashboard Web Temps Réel
-- **FastAPI + WebSocket** : Interface web moderne
-- **Contrôles temps réel** : Émotions, actions, look_at
-- **Logs live** : Monitoring en direct
-- **Health endpoint** : `/healthz` pour CI
+#### Dashboard web temps réel
+- FastAPI + WebSocket : interface web
+- Contrôles temps réel : émotions, actions, look_at
+- Logs live : monitoring en direct
+- Health endpoint : `/healthz` pour CI
 
-#### Optimisation Vitesse Robot
-- **Mode lent sécurisé** : 0.1 Hz (10s par cycle) pour robot réel
-- **Amplitude réduite** : 0.2 rad (au lieu de 0.3 rad)
-- **Sécurité maximale** : Limites respectées automatiquement
-- **Paramètre --slow** : Contrôle vitesse dans scripts
+#### Vitesse robot
+- Mode lent : 0.1 Hz (10s par cycle) pour robot réel
+- Amplitude réduite : 0.2 rad (au lieu de 0.3 rad)
+- Limites respectées automatiquement
+- Paramètre `--slow` : contrôle de la vitesse dans les scripts
 
-## 🏗️ Architecture de la Version 1.1.1
+## Architecture de la version 1.1.1
 
 ```mermaid
 graph TB
@@ -136,7 +136,7 @@ graph TB
     CI --> SMOKE
 ```
 
-## 🔧 Améliorations techniques
+## Améliorations techniques
 
 ### Sécurité et limites
 - **Joints interdits** : left_antenna, right_antenna, passive_1-7
@@ -153,7 +153,7 @@ graph TB
 - **Migration facile** : Sim → Robot avec même code
 - **Tests identiques** : Même validation pour les deux backends
 
-## 📊 Métriques
+## Métriques
 
 ### Tests
 - **706 tests collectés** par pytest
@@ -166,7 +166,7 @@ graph TB
 - **Golden tests** : <10s par validation
 - **CI complète** : <60s
 
-## 🚀 Commandes de migration
+## Commandes de migration
 
 ### Utilisation RobotAPI
 ```bash
@@ -177,7 +177,7 @@ python examples/demo_emotion_ok.py --backend mujoco --emotion happy
 python examples/demo_emotion_ok.py --backend reachy --emotion happy
 ```
 
-### Golden Tests
+### Golden tests
 ```bash
 # Tests de non-régression
 pytest -q tests/test_golden_traces.py
@@ -186,7 +186,7 @@ pytest -q tests/test_golden_traces.py
 python scripts/record_trace.py --emotion happy --duration 5
 ```
 
-## 🔄 Migration depuis v1.0.x
+## Migration depuis v1.0.x
 
 ### Changements breaking
 - **Aucun** : API rétrocompatible
@@ -198,9 +198,9 @@ python scripts/record_trace.py --emotion happy --duration 5
 2. **Migrer** : Remplacer les appels directs MuJoCo par RobotAPI
 3. **Valider** : Lancer les golden tests
 
-## 🎯 Prochaines versions
+## Prochaines versions
 
-### 📊 Métriques Finales v1.2.0 ✅ RELEASED
+### Métriques finales v1.2.0
 - **Tests** : 706 collectés
 - **Coverage** : 63.37% de couverture de code
 - **Latence** : Moyenne 0.02ms, max 4.77ms (<40ms ✅)
