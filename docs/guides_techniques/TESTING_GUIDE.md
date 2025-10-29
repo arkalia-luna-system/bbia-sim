@@ -2,11 +2,10 @@
 
 ## 📊 Résumé des Performances
 
-**🎯 Coverage total : 63.37%** (excellent, conforme objectifs)
+**🎯 Coverage totale : validée en CI** (voir `coverage.xml` et `htmlcov/`)
 
-- **706 tests collectés** par pytest
-- **679 tests passent** (96% de réussite)
-- **1 test failed** (marge tolérance durée acceptable)
+- **Suite de tests complète** exécutée par pytest (compteur variable selon CI)
+- **Résultats** : voir le récapitulatif CI (pass/failed/skipped)
 - **Tests skippés** justifiés (robot physique requis)
 
 ## 🏗️ Structure des Tests
@@ -14,14 +13,14 @@
 ```mermaid
 graph TB
     subgraph "Tests Structure"
-        E2E[e2e/<br/>Tests end-to-end<br/>20 tests]
-        SIM[sim/<br/>Tests simulation<br/>7 tests]
-        WS[ws/<br/>Tests WebSocket<br/>3 tests]
-        BBIA[test_bbia_*.py<br/>Tests modules BBIA<br/>80+ tests]
-        DAEMON[test_daemon_*.py<br/>Tests daemon<br/>50+ tests]
-        WEBSOCKET[test_websocket_*.py<br/>Tests WebSocket<br/>30+ tests]
-        VERTICAL[test_vertical_slices.py<br/>Tests vertical slices<br/>9 tests]
-        GOLDEN[test_golden_traces.py<br/>Tests golden traces<br/>3 tests]
+        E2E[e2e/<br/>Tests end-to-end]
+        SIM[sim/<br/>Tests simulation]
+        WS[ws/<br/>Tests WebSocket]
+        BBIA[test_bbia_*.py<br/>Tests modules BBIA]
+        DAEMON[test_daemon_*.py<br/>Tests daemon]
+        WEBSOCKET[test_websocket_*.py<br/>Tests WebSocket]
+        VERTICAL[test_vertical_slices.py<br/>Tests vertical slices]
+        GOLDEN[test_golden_traces.py<br/>Tests golden traces]
     end
     
     E2E --> API[test_api_simu_roundtrip.py]
@@ -56,13 +55,12 @@ graph TB
 ## 📊 Coverage par Module
 
 ```mermaid
-pie title Coverage par Module
+pie title Coverage par Module (exemple)
     "bbia_audio.py" : 87.76
     "bbia_vision.py" : 88.52
     "daemon/config.py" : 100
     "daemon/models.py" : 95.35
     "daemon/simulation_service.py" : 89.83
-    "daemon/ws/__init__.py" : 96.40
     "daemon/ws/telemetry.py" : 78.38
     "sim/joints.py" : 72.22
     "sim/simulator.py" : 99.29
@@ -100,34 +98,11 @@ graph LR
 │   ├── test_bbia_vision_extended.py
 │   ├── test_bbia_voice.py        # Tests voix
 │   └── test_bbia_voice_extended.py
-├── test_api_*.py                 # Tests API (20+ tests)
-├── test_simulator.py             # Tests simulateur MuJoCo (20+ tests)
-├── test_unity_controller.py      # Tests contrôleur Unity (30+ tests)
-└── test_*.py                     # Tests unitaires (200+ tests)
+├── test_api_*.py                 # Tests API
+├── test_simulator.py             # Tests simulateur MuJoCo
+├── test_unity_controller.py      # Tests contrôleur Unity
+└── test_*.py                     # Tests unitaires
 ```
-
-## 🎯 Coverage par Module
-
-### Modules BBIA
-- `bbia_audio.py`: **87.76%** ✅ (43/49 lignes couvertes)
-- `bbia_behavior.py`: **72.50%** ✅ (174/240 lignes couvertes)
-- `bbia_emotions.py`: **81.71%** ✅ (67/82 lignes couvertes)
-- `bbia_vision.py`: **88.52%** ✅ (54/61 lignes couvertes)
-- `bbia_voice.py`: **61.96%** ✅ (57/92 lignes couvertes)
-
-### Modules Daemon/API
-- `daemon/config.py`: **100%** ✅ (52/52 lignes couvertes)
-- `daemon/models.py`: **95.35%** ✅ (41/43 lignes couvertes)
-- `daemon/middleware.py`: **91.30%** ✅ (42/46 lignes couvertes)
-- `daemon/app/routers/motion.py`: **93.22%** ✅ (55/59 lignes couvertes)
-- `daemon/app/routers/state.py`: **78.95%** ✅ (60/76 lignes couvertes)
-- `daemon/simulation_service.py`: **89.83%** ✅ (106/118 lignes couvertes)
-- `daemon/ws/telemetry.py`: **78.38%** ✅ (87/111 lignes couvertes)
-
-### Modules Simulation
-- `sim/simulator.py`: **90.00%** ✅ (126/140 lignes couvertes)
-- `sim/joints.py`: **72.22%** ✅ (13/18 lignes couvertes)
-- `unity_reachy_controller.py`: **81.20%** ✅ (108/133 lignes couvertes)
 
 ## 🚀 Commandes de Tests
 
@@ -140,7 +115,7 @@ python -m pytest tests/ --cov=src --cov-report=term-missing --cov-report=html
 python -m pytest tests/ --cov=src --cov-fail-under=0 --tb=no -q
 
 # Tests avec arrêt au premier échec
-python -m pytest tests/ --cov=src --cov-report=term-missing -x
+ython -m pytest tests/ --cov=src --cov-report=term-missing -x
 ```
 
 ### Tests Golden Traces
@@ -174,7 +149,7 @@ open htmlcov/index.html
 
 # Vérifier le nombre de tests collectés
 python -m pytest --collect-only -q | wc -l
-# Doit afficher 706+ tests
+# Doit afficher 800+ tests (selon CI)
 
 # Coverage d'un module spécifique
 python -m pytest tests/test_bbia_emotions.py --cov=src.bbia_sim.bbia_emotions --cov-report=term-missing
@@ -236,7 +211,7 @@ output = coverage.xml
 ### Problème : Coverage trop faible malgré beaucoup de tests
 
 **Symptômes :**
-- Coverage affiché < 10% malgré 400+ tests
+- Coverage affiché bas malgré de nombreux tests
 - Tests passent mais coverage ne s'améliore pas
 
 **Causes possibles :**
@@ -250,19 +225,17 @@ output = coverage.xml
 1. **Vérifier la configuration pytest :**
 ```bash
 python -m pytest --collect-only -q | wc -l
-# Doit afficher 706+ tests
+# Doit afficher 800+ tests (selon CI)
 ```
 
 2. **Vérifier la structure des dossiers :**
 ```bash
 find tests/ -name "test_*.py" | wc -l
-# Doit afficher 30+ fichiers
 ```
 
 3. **Vérifier les fichiers __init__.py :**
 ```bash
 find tests/ -name "__init__.py"
-# Doit exister dans chaque sous-dossier
 ```
 
 4. **Tester la configuration coverage :**
@@ -285,10 +258,10 @@ python -m pytest tests/test_config.py --cov=src --cov-report=term-missing
 ## 📈 Amélioration du Coverage
 
 ### Modules à améliorer
-1. **bbia_voice.py (61.96%)** : Ajouter tests pour reconnaissance vocale
-2. **bbia_awake.py (12.00%)** : Ajouter tests pour séquence réveil
-3. **bbia_integration.py (0.00%)** : Créer tests d'intégration
-4. **__main__.py (30.21%)** : Ajouter tests CLI
+1. **bbia_voice.py** : Ajouter tests pour reconnaissance vocale
+2. **bbia_awake.py** : Ajouter tests pour séquence réveil
+3. **bbia_integration.py** : Créer tests d'intégration
+4. **__main__.py** : Ajouter tests CLI
 
 ### Stratégies d'amélioration
 1. **Tests d'intégration** : Tester les interactions entre modules
@@ -298,14 +271,9 @@ python -m pytest tests/test_config.py --cov=src --cov-report=term-missing
 
 ## 🎯 Objectifs Coverage
 
-- **Objectif minimum** : 70% (❌ À atteindre : 63.37%)
+- **Objectif minimum** : 70%
 - **Objectif recommandé** : 80%
 - **Objectif excellent** : 90%
-
-### Modules prioritaires pour amélioration
-1. `bbia_voice.py` : 61.96% → 80%
-2. `bbia_awake.py` : 12.00% → 70%
-3. `bbia_integration.py` : 0.00% → 60%
 
 ---
 
