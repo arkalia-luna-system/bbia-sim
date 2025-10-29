@@ -12,8 +12,8 @@ class UnityReachyMiniController:
 
     def __init__(
         self,
-        command_file: str = "reachy_commands.txt",
-        response_file: str = "reachy_response.txt",
+        command_file: str = "log/reachy_commands.txt",
+        response_file: str = "log/reachy_response.txt",
     ) -> None:
         self.command_file = Path(command_file)
         self.response_file = Path(response_file)
@@ -23,6 +23,11 @@ class UnityReachyMiniController:
 
     def _init_communication_files(self) -> None:
         try:
+            # S'assurer que les répertoires existent (ex: 'log/')
+            if self.command_file.parent and not self.command_file.parent.exists():
+                self.command_file.parent.mkdir(parents=True, exist_ok=True)
+            if self.response_file.parent and not self.response_file.parent.exists():
+                self.response_file.parent.mkdir(parents=True, exist_ok=True)
             if not self.command_file.exists():
                 self.command_file.write_text("")
             if not self.response_file.exists():
