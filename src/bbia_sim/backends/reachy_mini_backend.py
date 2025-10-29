@@ -232,12 +232,11 @@ class ReachyMiniBackend(RobotAPI):
         if self._watchdog_thread is not None and self._watchdog_thread.is_alive():
             logger.debug("Watchdog déjà actif pour cette instance")
             return
-        # Garantie globale: un seul thread 'ReachyWatchdog' dans le processus
-        for t in threading.enumerate():
-            if t.name == "ReachyWatchdog" and t.is_alive():
-                logger.debug("Watchdog global déjà actif - réutilisation")
-                self._watchdog_thread = t
-                return
+        # IMPORTANT: Ne jamais réutiliser un thread global nommé
+        # "ReachyWatchdog" appartenant à une autre instance.
+        # Chaque instance possède son propre Event `_should_stop_watchdog`.
+        # Réutiliser un thread externe empêcherait l'arrêt propre dans les tests
+        # et introduirait des conditions de course.
         # Nettoyer si un ancien thread est terminé
         self._watchdog_thread = None
 
