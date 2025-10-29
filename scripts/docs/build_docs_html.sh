@@ -76,56 +76,77 @@ body {
 <link rel="stylesheet" href="${depth}styles.css">
 </head>
 <body style="background-color: #000000 !important; color: #ffffff !important;">
-<div class="docs-container" style="background-color: #000000 !important;">
-  <header class="docs-header">
-    <div class="header-content">
-      <div class="logo-section">
-        <div class="logo-circle"></div>
+<div class="docs-container">
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="logo">
+        <div class="logo-icon">🤖</div>
         <div class="logo-text">
-          <span class="logo-title">BBIA-SIM</span>
-          <span class="logo-subtitle">Documentation</span>
+          <div class="logo-title">BBIA-SIM</div>
+          <div class="logo-subtitle">Documentation</div>
         </div>
       </div>
-      <nav class="header-nav">
-        <a href="${depth}index.html" class="nav-link">Accueil</a>
-        <a href="${depth}guides/guide_debutant.html" class="nav-link">Guides</a>
-        <a href="${depth}architecture/architecture_overview.html" class="nav-link">Architecture</a>
-        <a href="https://github.com/arkalia-luna-system/bbia-sim" class="nav-link external" target="_blank">GitHub ↗</a>
-      </nav>
     </div>
-  </header>
-<div class="sidebar">
-<nav class="sidebar-nav">
-<div class="nav-section">
-  <div class="nav-title">Navigation</div>
-  <ul class="nav-list">
-    <li><a href="${depth}index.html" class="nav-item"><span class="nav-icon">🏠</span><span>Accueil</span></a></li>
-    <li><a href="${depth}README.html" class="nav-item"><span class="nav-icon">📖</span><span>README</span></a></li>
-    <li><a href="${depth}guides/guide_debutant.html" class="nav-item"><span class="nav-icon">🚀</span><span>Guide Débutant</span></a></li>
-    <li><a href="${depth}architecture/architecture_overview.html" class="nav-item"><span class="nav-icon">🏗️</span><span>Architecture</span></a></li>
-    <li><a href="${depth}guides_techniques/integration_guide.html" class="nav-item"><span class="nav-icon">🔗</span><span>Intégration</span></a></li>
-    <li><a href="${depth}guides_techniques/testing_guide.html" class="nav-item"><span class="nav-icon">🧪</span><span>Tests</span></a></li>
-  </ul>
-</div>
-<div class="nav-section">
-  <div class="nav-title">Ressources</div>
-  <ul class="nav-list">
-    <li><a href="https://github.com/arkalia-luna-system/bbia-sim" class="nav-item external" target="_blank"><span class="nav-icon">💻</span><span>GitHub</span><span class="external-badge">↗</span></a></li>
-    <li><a href="http://localhost:8000/docs" class="nav-item external" target="_blank"><span class="nav-icon">📡</span><span>API Swagger</span><span class="external-badge">↗</span></a></li>
-  </ul>
-</div>
-</nav>
-</div>
-<div class="content-wrapper">
-<div class="content" id="app">
-<div class="markdown-body" style="color: #ffffff; background-color: #000000;">
-  <div class="loading-state">
-    <div class="loading-spinner"></div>
-    <p>Chargement de la documentation…</p>
-  </div>
-</div>
-</div>
-</div>
+    
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <div class="nav-group-title">Commencer</div>
+        <a href="${depth}index.html" class="nav-item">
+          <span class="nav-icon">🏠</span>
+          <span class="nav-label">Accueil</span>
+        </a>
+        <a href="${depth}README.html" class="nav-item">
+          <span class="nav-icon">📖</span>
+          <span class="nav-label">README</span>
+        </a>
+        <a href="${depth}guides/guide_debutant.html" class="nav-item">
+          <span class="nav-icon">🚀</span>
+          <span class="nav-label">Guide Débutant</span>
+        </a>
+      </div>
+      
+      <div class="nav-section">
+        <div class="nav-group-title">Documentation</div>
+        <a href="${depth}architecture/architecture_overview.html" class="nav-item">
+          <span class="nav-icon">🏗️</span>
+          <span class="nav-label">Architecture</span>
+        </a>
+        <a href="${depth}guides_techniques/integration_guide.html" class="nav-item">
+          <span class="nav-icon">🔗</span>
+          <span class="nav-label">Intégration</span>
+        </a>
+        <a href="${depth}guides_techniques/testing_guide.html" class="nav-item">
+          <span class="nav-icon">🧪</span>
+          <span class="nav-label">Tests</span>
+        </a>
+      </div>
+      
+      <div class="nav-section">
+        <div class="nav-group-title">Ressources</div>
+        <a href="https://github.com/arkalia-luna-system/bbia-sim" class="nav-item external" target="_blank">
+          <span class="nav-icon">💻</span>
+          <span class="nav-label">GitHub</span>
+          <span class="nav-arrow">↗</span>
+        </a>
+        <a href="http://localhost:8000/docs" class="nav-item external" target="_blank">
+          <span class="nav-icon">📡</span>
+          <span class="nav-label">API Swagger</span>
+          <span class="nav-arrow">↗</span>
+        </a>
+      </div>
+    </nav>
+  </aside>
+  
+  <main class="content-area">
+    <div class="content" id="app">
+      <div class="markdown-body">
+        <div class="loading-state">
+          <div class="loading-spinner"></div>
+          <p>Chargement de la documentation…</p>
+        </div>
+      </div>
+    </div>
+  </main>
 </div>
 <script>
   window.__RAW_MD__ = ${md_content};
@@ -201,21 +222,32 @@ HTML
 # Générer le CSS principal
 cat > "$OUT_DIR/styles.css" <<CSS
 :root {
-  --bg-dark: #0a0a0a;
-  --bg-card: #161616;
-  --bg-sidebar: #131313;
-  --bg-header: rgba(19, 19, 19, 0.95);
-  --text-primary: #fafafa;
-  --text-secondary: #c4c4c4;
-  --text-tertiary: #9a9a9a;
-  --accent: #64b5f6;
-  --accent-hover: #90caf9;
-  --accent-glow: rgba(100, 181, 246, 0.15);
-  --border: #2d2d2d;
-  --border-light: #222222;
-  --shadow: rgba(0, 0, 0, 0.4);
-  --shadow-lg: rgba(0, 0, 0, 0.6);
-  --gradient-1: linear-gradient(135deg, rgba(100, 181, 246, 0.1) 0%, rgba(156, 39, 176, 0.1) 100%);
+  /* Palette premium BBIA/Reachy - Sombre élégant */
+  --bg-dark: #0f0f14;
+  --bg-card: #1a1b26;
+  --bg-sidebar: #161822;
+  --bg-header: rgba(22, 24, 34, 0.85);
+  --text-primary: #e4e4e7;
+  --text-secondary: #a1a1aa;
+  --text-tertiary: #71717a;
+  /* Accent tech élégant (bleu/cyan robotique) */
+  --accent: #00d9ff;
+  --accent-hover: #33e3ff;
+  --accent-secondary: #8b5cf6;
+  --accent-glow: rgba(0, 217, 255, 0.2);
+  --accent-glow-strong: rgba(0, 217, 255, 0.35);
+  /* Bordures subtiles */
+  --border: #27272a;
+  --border-light: #1f1f23;
+  --border-glow: rgba(0, 217, 255, 0.1);
+  /* Ombres profondes */
+  --shadow: rgba(0, 0, 0, 0.5);
+  --shadow-lg: rgba(0, 0, 0, 0.7);
+  --shadow-xl: rgba(0, 0, 0, 0.9);
+  /* Gradients premium */
+  --gradient-tech: linear-gradient(135deg, rgba(0, 217, 255, 0.08) 0%, rgba(139, 92, 246, 0.08) 100%);
+  --gradient-accent: linear-gradient(135deg, var(--accent) 0%, var(--accent-secondary) 100%);
+  --gradient-glow: radial-gradient(circle at 50% 50%, rgba(0, 217, 255, 0.1) 0%, transparent 70%);
   color-scheme: dark;
 }
 
@@ -246,57 +278,66 @@ body {
 
 .docs-container {
   display: flex;
-  flex-direction: column;
   min-height: 100vh;
+  background: var(--bg-dark);
 }
 
-/* Header élégant */
-.docs-header {
+/* Sidebar élégante à gauche */
+.sidebar {
+  width: 300px;
+  background: var(--bg-sidebar);
+  border-right: 1px solid var(--border-light);
   position: fixed;
-  top: 0;
   left: 0;
-  right: 0;
-  height: 70px;
-  background: var(--bg-header);
-  backdrop-filter: blur(20px) saturate(180%);
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  backdrop-filter: blur(20px);
+  box-shadow: 4px 0 30px rgba(0, 0, 0, 0.5);
+  z-index: 100;
+}
+
+.sidebar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 2px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: var(--border-light);
+}
+
+/* Header de la sidebar */
+.sidebar-header {
+  padding: 32px 24px;
   border-bottom: 1px solid var(--border-light);
-  z-index: 1000;
-  box-shadow: 0 2px 20px var(--shadow);
 }
 
-.header-content {
-  max-width: 1440px;
-  margin: 0 auto;
-  height: 100%;
+.logo {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 0 40px;
+  gap: 14px;
 }
 
-.logo-section {
+.logo-icon {
+  font-size: 32px;
+  width: 48px;
+  height: 48px;
   display: flex;
   align-items: center;
-  gap: 16px;
-}
-
-.logo-circle {
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
+  justify-content: center;
   background: var(--gradient-1);
+  border-radius: 12px;
   border: 1px solid var(--border);
-  box-shadow: 0 4px 12px rgba(100, 181, 246, 0.2);
-  position: relative;
-}
-
-.logo-circle::before {
-  content: '';
-  position: absolute;
-  inset: 2px;
-  border-radius: 8px;
-  background: var(--accent);
-  opacity: 0.2;
 }
 
 .logo-text {
@@ -309,95 +350,36 @@ body {
   font-weight: 700;
   color: var(--text-primary);
   letter-spacing: -0.02em;
+  line-height: 1.2;
 }
 
 .logo-subtitle {
   font-size: 11px;
   color: var(--text-tertiary);
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   font-weight: 500;
+  margin-top: 2px;
 }
 
-.header-nav {
-  display: flex;
-  gap: 8px;
-}
-
-.nav-link {
-  padding: 8px 16px;
-  border-radius: 8px;
-  color: var(--text-secondary);
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: 500;
-  transition: all 0.2s ease;
-}
-
-.nav-link:hover {
-  background: rgba(255, 255, 255, 0.05);
-  color: var(--text-primary);
-}
-
-.nav-link.external::after {
-  content: ' ↗';
-  opacity: 0.6;
-  font-size: 12px;
-}
-
-.sidebar {
-  width: 280px;
-  background: var(--bg-sidebar);
-  border-right: 1px solid var(--border-light);
-  padding: 0;
-  position: fixed;
-  top: 70px;
-  height: calc(100vh - 70px);
-  overflow-y: auto;
-  backdrop-filter: blur(10px);
-  box-shadow: 2px 0 20px var(--shadow);
-}
-
-.sidebar::-webkit-scrollbar {
-  width: 6px;
-}
-
-.sidebar::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.sidebar::-webkit-scrollbar-thumb {
-  background: var(--border);
-  border-radius: 3px;
-}
-
-.sidebar::-webkit-scrollbar-thumb:hover {
-  background: var(--border-light);
-}
-
+/* Navigation */
 .sidebar-nav {
   padding: 24px 0;
+  flex: 1;
 }
 
 .nav-section {
   margin-bottom: 32px;
 }
 
-.nav-title {
+.nav-group-title {
   color: var(--text-tertiary);
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
-  margin: 0 24px 12px 24px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid var(--border-light);
-}
-
-.nav-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+  letter-spacing: 0.15em;
+  padding: 0 24px 10px 24px;
+  margin-bottom: 8px;
 }
 
 .nav-item {
@@ -406,60 +388,68 @@ body {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 12px 24px;
-  margin: 2px 16px;
-  border-radius: 10px;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 10px 24px;
+  margin: 0 12px 4px 12px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
   font-size: 14px;
   font-weight: 500;
   position: relative;
-  border-left: 3px solid transparent;
 }
 
 .nav-item:hover {
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.03);
   color: var(--text-primary);
-  transform: translateX(4px);
-  border-left-color: var(--accent);
-  box-shadow: -4px 0 12px var(--accent-glow);
+}
+
+.nav-item.active {
+  background: rgba(100, 181, 246, 0.1);
+  color: var(--accent);
+  border-left: 3px solid var(--accent);
+  padding-left: 21px;
 }
 
 .nav-icon {
   font-size: 18px;
-  width: 24px;
-  text-align: center;
-  opacity: 0.8;
-  transition: transform 0.2s ease;
+  width: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.7;
+  transition: opacity 0.2s;
 }
 
-.nav-item:hover .nav-icon {
-  transform: scale(1.1);
+.nav-item:hover .nav-icon,
+.nav-item.active .nav-icon {
+  opacity: 1;
 }
 
-.nav-item span:not(.nav-icon):not(.external-badge) {
+.nav-label {
   flex: 1;
 }
 
-.external-badge {
+.nav-arrow {
   font-size: 12px;
-  opacity: 0.5;
+  opacity: 0.4;
   margin-left: auto;
 }
 
-.content-wrapper {
-  margin-left: 280px;
-  margin-top: 70px;
-  min-height: calc(100vh - 70px);
+.nav-item.external:hover .nav-arrow {
+  opacity: 0.7;
+}
+
+.content-area {
+  margin-left: 300px;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
-  padding: 0;
+  background: var(--bg-dark);
 }
 
 .content {
-  flex: 1;
-  padding: 80px 80px;
-  max-width: 1100px;
   width: 100%;
+  max-width: 1000px;
+  padding: 60px 80px;
   background-color: transparent !important;
   color: var(--text-primary) !important;
 }
@@ -500,16 +490,6 @@ body {
   position: relative;
 }
 
-.markdown-body::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -80px;
-  width: 2px;
-  height: 100%;
-  background: linear-gradient(180deg, var(--accent) 0%, transparent 100%);
-  opacity: 0.1;
-}
 
 .markdown-body h1,
 .markdown-body h1 * {
