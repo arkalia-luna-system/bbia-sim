@@ -1,0 +1,197 @@
+{
+  "timestamp": "2025-10-29T19:52:02.385090",
+  "candidates": [
+    {
+      "source": "github",
+      "identifier": "https://github.com/pollen-robotics/reachy_mini",
+      "title": "pollen-robotics/reachy_mini",
+      "score": 1,
+      "details": {
+        "ci": true,
+        "dashboard": false,
+        "api": false,
+        "ws": false,
+        "mujoco": false,
+        "emotion": false,
+        "tests": false,
+        "docker": false,
+        "topic_reachy_mini": false
+      },
+      "description": "Reachy Mini's SDK"
+    },
+    {
+      "source": "huggingface",
+      "identifier": "https://huggingface.co/spaces/pollen-robotics/reachy_mini_app_example",
+      "title": "pollen-robotics/reachy_mini_app_example",
+      "score": 1,
+      "details": {
+        "ci": false,
+        "dashboard": true,
+        "api": false,
+        "ws": false,
+        "mujoco": false,
+        "emotion": false
+      },
+      "description": ""
+    },
+    {
+      "source": "huggingface",
+      "identifier": "https://huggingface.co/spaces/8bitkick/reachy_mini_3d_web_viz",
+      "title": "8bitkick/reachy_mini_3d_web_viz",
+      "score": 1,
+      "details": {
+        "ci": false,
+        "dashboard": true,
+        "api": false,
+        "ws": false,
+        "mujoco": false,
+        "emotion": false
+      },
+      "description": ""
+    },
+    {
+      "source": "huggingface",
+      "identifier": "https://huggingface.co/spaces/pollen-robotics/Reachy_Mini_Apps",
+      "title": "pollen-robotics/Reachy_Mini_Apps",
+      "score": 1,
+      "details": {
+        "ci": false,
+        "dashboard": true,
+        "api": false,
+        "ws": false,
+        "mujoco": false,
+        "emotion": false
+      },
+      "description": ""
+    },
+    {
+      "source": "huggingface",
+      "identifier": "https://huggingface.co/spaces/fffiloni/reachy-mini-doll",
+      "title": "fffiloni/reachy-mini-doll",
+      "score": 1,
+      "details": {
+        "ci": false,
+        "dashboard": true,
+        "api": false,
+        "ws": false,
+        "mujoco": false,
+        "emotion": false
+      },
+      "description": ""
+    },
+    {
+      "source": "huggingface",
+      "identifier": "https://huggingface.co/spaces/darlenegarcia/reachy_mini_app_example",
+      "title": "darlenegarcia/reachy_mini_app_example",
+      "score": 1,
+      "details": {
+        "ci": false,
+        "dashboard": true,
+        "api": false,
+        "ws": false,
+        "mujoco": false,
+        "emotion": false
+      },
+      "description": ""
+    },
+    {
+      "source": "huggingface",
+      "identifier": "https://huggingface.co/spaces/starlit-cat/reachy_mini_app_demo",
+      "title": "starlit-cat/reachy_mini_app_demo",
+      "score": 1,
+      "details": {
+        "ci": false,
+        "dashboard": true,
+        "api": false,
+        "ws": false,
+        "mujoco": false,
+        "emotion": false
+      },
+      "description": ""
+    },
+    {
+      "source": "huggingface",
+      "identifier": "https://huggingface.co/spaces/pollen-robotics/reachy_mini_tools",
+      "title": "pollen-robotics/reachy_mini_tools",
+      "score": 1,
+      "details": {
+        "ci": false,
+        "dashboard": true,
+        "api": false,
+        "ws": false,
+        "mujoco": false,
+        "emotion": false
+      },
+      "description": ""
+    },
+    {
+      "source": "huggingface",
+      "identifier": "https://huggingface.co/spaces/pollen-robotics/reachy_mini_greetings",
+      "title": "pollen-robotics/reachy_mini_greetings",
+      "score": 1,
+      "details": {
+        "ci": false,
+        "dashboard": true,
+        "api": false,
+        "ws": false,
+        "mujoco": false,
+        "emotion": false
+      },
+      "description": ""
+    },
+    {
+      "source": "github",
+      "identifier": "https://github.com/pollen-robotics/reachy_mini_conversation_app",
+      "title": "pollen-robotics/reachy_mini_conversation_app",
+      "score": 0,
+      "details": {
+        "ci": false,
+        "dashboard": false,
+        "api": false,
+        "ws": false,
+        "mujoco": false,
+        "emotion": false,
+        "tests": false,
+        "docker": false,
+        "topic_reachy_mini": false
+      },
+      "description": "Talk with Reachy Mini!"
+    },
+    {
+      "source": "github",
+      "identifier": "https://github.com/arkalia-luna-system/bbia-sim",
+      "title": "arkalia-luna-system/bbia-sim",
+      "score": 0,
+      "details": {
+        "ci": false,
+        "dashboard": false,
+        "api": false,
+        "ws": false,
+        "mujoco": false,
+        "emotion": false,
+        "tests": false,
+        "docker": false,
+        "topic_reachy_mini": false
+      },
+      "description": "🤖 Moteur cognitif robot émotionnel Reachy Mini — IA, audio, voix Amélie, vision 📱 Python 100%, simulation stable, tests complets 🧠 Modules: réveil, émotions, capteurs 🎤 MIT license, docs pro"
+    },
+    {
+      "source": "github",
+      "identifier": "https://github.com/lidejieZQ/ReachyMini",
+      "title": "lidejieZQ/ReachyMini",
+      "score": 0,
+      "details": {
+        "ci": false,
+        "dashboard": false,
+        "api": false,
+        "ws": false,
+        "mujoco": false,
+        "emotion": false,
+        "tests": false,
+        "docker": false,
+        "topic_reachy_mini": false
+      },
+      "description": "Reachy Mini Robot Control System - A modern robot control platform with Python backend, Rust core, and React frontend"
+    }
+  ]
+}

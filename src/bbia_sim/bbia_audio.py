@@ -84,9 +84,9 @@ def _is_safe_path(path: str) -> bool:
             import tempfile
 
             temp_roots = [
-                "/tmp",
-                "/dev/shm",
-                os.path.abspath(os.getenv("PYTEST_TMPDIR", "/tmp")),
+                "/tmp",  # nosec B108: répertoire temporaire autorisé explicitement
+                "/dev/shm",  # nosec B108: mémoire partagée temporaire
+                os.path.abspath(os.getenv("PYTEST_TMPDIR", "/tmp")),  # nosec B108
                 os.path.abspath(tempfile.gettempdir()),
             ]
             if any(

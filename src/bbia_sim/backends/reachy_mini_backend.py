@@ -212,18 +212,19 @@ class ReachyMiniBackend(RobotAPI):
 
     def disconnect(self) -> bool:
         """Déconnecte du robot Reachy-Mini."""
+        # Best-effort: toujours laisser l'instance dans un état sûr
         try:
-            # Arrêter watchdog avant déconnexion
             self._stop_watchdog()
-            if self.robot:
-                # Le SDK gère automatiquement la déconnexion
-                self.robot = None
-            self.is_connected = False
-            logger.info("Déconnecté du robot Reachy-Mini")
-            return True
         except Exception as e:
-            logger.error(f"Erreur déconnexion: {e}")
-            return False
+            logger.debug(f"Stop watchdog lors déconnexion: {e}")
+        try:
+            if self.robot:
+                self.robot = None
+        except Exception as e:
+            logger.debug(f"Nettoyage robot lors déconnexion: {e}")
+        self.is_connected = False
+        logger.info("Déconnecté du robot Reachy-Mini")
+        return True
 
     def _start_watchdog(self) -> None:
         """Démarre le thread watchdog pour monitoring temps réel."""
@@ -236,7 +237,9 @@ class ReachyMiniBackend(RobotAPI):
 
         self._should_stop_watchdog.clear()
         self._watchdog_thread = threading.Thread(
-            target=self._watchdog_monitor, daemon=True, name="ReachyWatchdog"
+            target=self._watchdog_monitor,
+            daemon=True,
+            name="ReachyWatchdog",
         )
         self._watchdog_thread.start()
         logger.debug("Watchdog démarré")
@@ -247,14 +250,14 @@ class ReachyMiniBackend(RobotAPI):
             return
 
         self._should_stop_watchdog.set()
-        if self._watchdog_thread.is_alive():
-            # Éviter de joindre le thread courant (erreur join current thread)
+        # Capturer la ref locale pour éviter les races si le monitor la remet à None
+        thread = self._watchdog_thread
+        if thread is not None and thread.is_alive():
             current = threading.current_thread()
-            if current is not self._watchdog_thread:
-                # Attendre par petits intervalles jusqu'à 1.5s max
+            if current is not thread:
                 deadline = time.time() + 1.5
-                while self._watchdog_thread.is_alive() and time.time() < deadline:
-                    self._watchdog_thread.join(timeout=0.1)
+                while thread.is_alive() and time.time() < deadline:
+                    thread.join(timeout=0.1)
         # Dans tous les cas, ne pas conserver de référence (facilite l'assert test)
         self._watchdog_thread = None
         logger.debug("Watchdog arrêté")
@@ -319,6 +322,12 @@ class ReachyMiniBackend(RobotAPI):
         logger.debug("Watchdog monitoring terminé")
         # Assurer la visibilité immédiate de l'arrêt côté tests
         self._watchdog_thread = None
+
+    def __del__(self) -> None:  # pragma: no cover - best-effort cleanup
+        try:
+            self._stop_watchdog()
+        except Exception:
+            pass
 
     def get_available_joints(self) -> list[str]:
         """Retourne la liste des joints disponibles."""
@@ -989,6 +998,8 @@ class ReachyMiniBackend(RobotAPI):
             return True
         except Exception as e:
             logger.error(f"Erreur emergency_stop: {e}")
+            # S'assurer d'un état sûr même en cas d'erreur
+            self.is_connected = False
             return False
 
     def enable_gravity_compensation(self) -> None:

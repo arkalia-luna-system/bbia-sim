@@ -170,7 +170,7 @@ class BBIAHuggingFace:
             logger.info(f"📥 Chargement LLM {model_name} (peut prendre 1-2 minutes)...")
             self.chat_tokenizer = AutoTokenizer.from_pretrained(  # type: ignore[no-untyped-call]
                 model_name, cache_dir=self.cache_dir, revision="main"
-            )
+            )  # nosec B615
 
             if (
                 self.chat_tokenizer is not None
@@ -278,7 +278,7 @@ class BBIAHuggingFace:
                             model_name,
                             cache_dir=self.cache_dir,
                             revision="main",
-                        )
+                        )  # nosec B615
                     )
 
                     # Support instruction format

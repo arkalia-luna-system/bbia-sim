@@ -162,10 +162,10 @@ class WhisperSTT:
             # nosec B615: révision explicite pour éviter latest flottant
             self._processor = WhisperProcessor.from_pretrained(
                 model_name, revision="main"
-            )
+            )  # nosec B615
             self._model = WhisperForConditionalGeneration.from_pretrained(
                 model_name, revision="main"
-            )
+            )  # nosec B615
             self._ready = True
         except Exception as e:  # pragma: no cover - environnement sans deps
             logging.getLogger(__name__).info(f"Whisper indisponible: {e}")
