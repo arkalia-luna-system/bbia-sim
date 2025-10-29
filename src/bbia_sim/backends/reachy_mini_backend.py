@@ -232,11 +232,6 @@ class ReachyMiniBackend(RobotAPI):
         if self._watchdog_thread is not None and self._watchdog_thread.is_alive():
             logger.debug("Watchdog déjà actif pour cette instance")
             return
-        # Vérifier qu'aucun autre watchdog global n'est déjà actif
-        for t in threading.enumerate():
-            if t.name == "ReachyWatchdog" and t.is_alive():
-                logger.debug("Watchdog global déjà actif - pas de second thread")
-                return
         # Nettoyer si un ancien thread est terminé
         self._watchdog_thread = None
 
@@ -244,7 +239,7 @@ class ReachyMiniBackend(RobotAPI):
         self._watchdog_thread = threading.Thread(
             target=self._watchdog_monitor,
             daemon=True,
-            name="ReachyWatchdog",
+            name=f"ReachyWatchdog-{id(self)}",
         )
         self._watchdog_thread.start()
         logger.debug("Watchdog démarré")

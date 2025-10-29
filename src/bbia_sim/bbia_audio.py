@@ -12,7 +12,23 @@ from typing import TYPE_CHECKING, Any, Optional
 
 import numpy as np
 
-sd: Optional[Any] = None  # lazy-import
+class _SoundDeviceShim:
+    """Shim minimal pour permettre le patch dans les tests (sd.rec/play/wait).
+
+    Les méthodes lèvent RuntimeError si utilisées sans patch effectif.
+    """
+
+    def rec(self, *args: Any, **kwargs: Any) -> Any:  # pragma: no cover - garde-fou
+        raise RuntimeError("sounddevice indisponible: sd.rec non opérationnel")
+
+    def wait(self, *args: Any, **kwargs: Any) -> None:  # pragma: no cover
+        raise RuntimeError("sounddevice indisponible: sd.wait non opérationnel")
+
+    def play(self, *args: Any, **kwargs: Any) -> None:  # pragma: no cover
+        raise RuntimeError("sounddevice indisponible: sd.play non opérationnel")
+
+
+sd: Any = _SoundDeviceShim()  # toujours patchable dans les tests
 
 if TYPE_CHECKING:
     from .robot_api import RobotAPI
@@ -26,10 +42,12 @@ def _get_sd() -> Optional[Any]:
     try:  # pragma: no cover - dépend du runtime
         import sounddevice as _sd
 
-        sd = _sd
-        return sd
+        # Remplacer le shim par le vrai module sounddevice
+        globals()["sd"] = _sd
+        return _sd
     except Exception:
-        return None
+        # Retourner le shim pour rester patchable dans les tests
+        return sd
 
 
 logging.basicConfig(level=logging.INFO)
