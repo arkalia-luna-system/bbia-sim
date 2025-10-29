@@ -9,6 +9,7 @@ import os
 from typing import Any, Optional, Union
 
 import numpy as np
+import numpy.typing as npt
 from PIL import Image
 
 # Désactiver les avertissements de transformers
@@ -37,13 +38,14 @@ try:
         from transformers.utils import logging as transformers_logging
 
         # Réduire la verbosité de transformers
-        transformers_logging.set_verbosity_error()
+        transformers_logging.set_verbosity_error()  # type: ignore[no-untyped-call]
 
     HF_AVAILABLE = True
 except ImportError:
     HF_AVAILABLE = False
     logger.warning(
-        "Hugging Face transformers non disponible. Installez avec: pip install transformers torch"
+        "Hugging Face transformers non disponible. "
+        "Installez avec: pip install transformers torch"
     )
 
 
@@ -66,7 +68,8 @@ class BBIAHuggingFace:
         """
         if not HF_AVAILABLE:
             raise ImportError(
-                "Hugging Face transformers requis. Installez avec: pip install transformers torch"
+                "Hugging Face transformers requis. "
+                "Installez avec: pip install transformers torch"
             )
 
         self.device = self._get_device(device)
@@ -130,8 +133,8 @@ class BBIAHuggingFace:
             model = CLIPModel.from_pretrained(  # nosec B615
                 model_name, cache_dir=self.cache_dir, revision="main"
             ).to(self.device)
-            self.processors[f"{model_name}_processor"] = processor  # type: ignore[assignment]
-            self.models[f"{model_name}_model"] = model  # type: ignore[assignment]
+            self.processors[f"{model_name}_processor"] = processor
+            self.models[f"{model_name}_model"] = model
             return True
         elif "blip" in model_name.lower():
             blip_processor: Any = BlipProcessor.from_pretrained(  # nosec B615
@@ -140,22 +143,22 @@ class BBIAHuggingFace:
             model = BlipForConditionalGeneration.from_pretrained(  # nosec B615
                 model_name, cache_dir=self.cache_dir, revision="main"
             ).to(self.device)
-            self.processors[f"{model_name}_processor"] = blip_processor  # type: ignore[assignment]
-            self.models[f"{model_name}_model"] = model  # type: ignore[assignment]
+            self.processors[f"{model_name}_processor"] = blip_processor
+            self.models[f"{model_name}_model"] = model
             return True
         return False
 
     def _load_audio_model(self, model_name: str) -> bool:
         """Charge un modèle audio (Whisper)."""
         if "whisper" in model_name.lower():
-            whisper_processor = WhisperProcessor.from_pretrained(  # type: ignore[assignment] # nosec B615
+            whisper_processor = WhisperProcessor.from_pretrained(  # nosec B615
                 model_name, cache_dir=self.cache_dir, revision="main"
             )
             model = WhisperForConditionalGeneration.from_pretrained(  # nosec B615
                 model_name, cache_dir=self.cache_dir, revision="main"
             ).to(self.device)
-            self.processors[f"{model_name}_processor"] = whisper_processor  # type: ignore[assignment]
-            self.models[f"{model_name}_model"] = model  # type: ignore[assignment]
+            self.processors[f"{model_name}_processor"] = whisper_processor
+            self.models[f"{model_name}_model"] = model
             return True
         return False
 
@@ -165,7 +168,7 @@ class BBIAHuggingFace:
             from transformers import AutoModelForCausalLM, AutoTokenizer
 
             logger.info(f"📥 Chargement LLM {model_name} (peut prendre 1-2 minutes)...")
-            self.chat_tokenizer = AutoTokenizer.from_pretrained(  # type: ignore[assignment]
+            self.chat_tokenizer = AutoTokenizer.from_pretrained(  # type: ignore[no-untyped-call]
                 model_name, cache_dir=self.cache_dir, revision="main"
             )
 
@@ -175,7 +178,7 @@ class BBIAHuggingFace:
             ):
                 self.chat_tokenizer.pad_token = self.chat_tokenizer.eos_token
 
-            self.chat_model = AutoModelForCausalLM.from_pretrained(  # type: ignore[assignment] # nosec B615
+            self.chat_model = AutoModelForCausalLM.from_pretrained(  # nosec B615
                 model_name,
                 cache_dir=self.cache_dir,
                 revision="main",
@@ -194,14 +197,14 @@ class BBIAHuggingFace:
     def _load_multimodal_model(self, model_name: str) -> bool:
         """Charge un modèle multimodal (BLIP VQA)."""
         if "blip" in model_name.lower() and "vqa" in model_name.lower():
-            vqa_processor: Any = BlipProcessor.from_pretrained(  # type: ignore # nosec B615
+            vqa_processor: Any = BlipProcessor.from_pretrained(  # nosec B615
                 model_name, cache_dir=self.cache_dir, revision="main"
             )
             model = BlipForConditionalGeneration.from_pretrained(  # nosec B615
                 model_name, cache_dir=self.cache_dir, revision="main"
             ).to(self.device)
-            self.processors[f"{model_name}_processor"] = vqa_processor  # type: ignore[assignment]
-            self.models[f"{model_name}_model"] = model  # type: ignore[assignment]
+            self.processors[f"{model_name}_processor"] = vqa_processor
+            self.models[f"{model_name}_model"] = model
             return True
         return False
 
@@ -220,14 +223,14 @@ class BBIAHuggingFace:
 
             if model_type == "vision":
                 if "clip" in model_name.lower():
-                    clip_processor = CLIPProcessor.from_pretrained(  # type: ignore[assignment] # nosec B615
+                    clip_processor = CLIPProcessor.from_pretrained(  # nosec B615
                         model_name, cache_dir=self.cache_dir, revision="main"
                     )
                     model = CLIPModel.from_pretrained(  # nosec B615
                         model_name, cache_dir=self.cache_dir, revision="main"
                     ).to(self.device)
-                    self.processors[f"{model_name}_processor"] = clip_processor  # type: ignore[assignment]
-                    self.models[f"{model_name}_model"] = model  # type: ignore[assignment]
+                    self.processors[f"{model_name}_processor"] = clip_processor
+                    self.models[f"{model_name}_model"] = model
 
                 elif "blip" in model_name.lower():
                     blip_processor: Any = BlipProcessor.from_pretrained(  # nosec B615
@@ -236,8 +239,8 @@ class BBIAHuggingFace:
                     model = BlipForConditionalGeneration.from_pretrained(  # nosec B615
                         model_name, cache_dir=self.cache_dir, revision="main"
                     ).to(self.device)
-                    self.processors[f"{model_name}_processor"] = blip_processor  # type: ignore[assignment]
-                    self.models[f"{model_name}_model"] = model  # type: ignore[assignment]
+                    self.processors[f"{model_name}_processor"] = blip_processor
+                    self.models[f"{model_name}_model"] = model
 
             elif model_type == "audio":
                 if "whisper" in model_name.lower():
@@ -251,8 +254,8 @@ class BBIAHuggingFace:
                             model_name, cache_dir=self.cache_dir, revision="main"
                         ).to(self.device)
                     )
-                    self.processors[f"{model_name}_processor"] = whisper_processor  # type: ignore[assignment]
-                    self.models[f"{model_name}_model"] = model  # type: ignore[assignment]
+                    self.processors[f"{model_name}_processor"] = whisper_processor
+                    self.models[f"{model_name}_model"] = model
 
             elif model_type == "nlp":
                 # Utilisation des pipelines pour NLP
@@ -270,8 +273,12 @@ class BBIAHuggingFace:
                     logger.info(
                         f"📥 Chargement LLM {model_name} (peut prendre 1-2 minutes)..."
                     )
-                    self.chat_tokenizer = AutoTokenizer.from_pretrained(  # type: ignore[assignment]
-                        model_name, cache_dir=self.cache_dir, revision="main"
+                    self.chat_tokenizer = (
+                        AutoTokenizer.from_pretrained(  # type: ignore[no-untyped-call]
+                            model_name,
+                            cache_dir=self.cache_dir,
+                            revision="main",
+                        )
                     )
 
                     # Support instruction format
@@ -313,8 +320,8 @@ class BBIAHuggingFace:
                     model = BlipForConditionalGeneration.from_pretrained(  # nosec B615
                         model_name, cache_dir=self.cache_dir, revision="main"
                     ).to(self.device)
-                    self.processors[f"{model_name}_processor"] = vqa_processor  # type: ignore[assignment]
-                    self.models[f"{model_name}_model"] = model  # type: ignore[assignment]
+                    self.processors[f"{model_name}_processor"] = vqa_processor
+                    self.models[f"{model_name}_model"] = model
 
             logger.info(f"✅ Modèle {model_name} chargé avec succès")
             return True
@@ -333,7 +340,9 @@ class BBIAHuggingFace:
             return "text-classification"
 
     def describe_image(
-        self, image: Union[str, Image.Image, np.ndarray], model_name: str = "blip"
+        self,
+        image: Union[str, Image.Image, npt.NDArray[np.uint8]],
+        model_name: str = "blip",
     ) -> str:
         """Décrit une image avec BLIP ou CLIP.
 
@@ -572,7 +581,8 @@ class BBIAHuggingFace:
         success = self.load_model(model_name, model_type="chat")
         if success:
             logger.info(
-                "✅ LLM conversationnel activé - Conversations intelligentes disponibles"
+                "✅ LLM conversationnel activé - Conversations intelligentes "
+                "disponibles"
             )
         else:
             logger.warning("⚠️  LLM non chargé - Utilisation réponses enrichies")
@@ -701,29 +711,35 @@ class BBIAHuggingFace:
                 raise ValueError("LLM non chargé")
 
             # Construire prompt avec personnalité BBIA enrichie
-            # AMÉLIORATION INTELLIGENCE: Prompt plus détaillé pour générer des réponses plus naturelles
+            # AMÉLIORATION INTELLIGENCE: Prompt détaillé pour réponses naturelles
             personality_descriptions = {
                 "friendly_robot": (
                     "Tu es BBIA, un robot Reachy Mini amical, curieux et intelligent. "
-                    "Tu communiques en français de manière naturelle, chaleureuse et authentique, "
-                    "comme un véritable compagnon. Tu évites les phrases répétitives ou trop génériques. "
-                    "Tes réponses sont concises (max 2-3 phrases), engageantes et montrent que tu "
-                    "comprends vraiment l'interlocuteur. Tu utilises des expressions naturelles et "
-                    "varies tes formulations pour ne jamais sonner robotique."
+                    "Tu communiques en français de manière naturelle, chaleureuse "
+                    "et authentique, comme un véritable compagnon. "
+                    "Tu évites les phrases répétitives ou trop génériques. "
+                    "Tes réponses sont concises (max 2-3 phrases), engageantes "
+                    "et montrent que tu comprends vraiment l'interlocuteur. "
+                    "Tu utilises des expressions naturelles et varies tes formulations "
+                    "pour ne jamais sonner robotique."
                 ),
                 "curious": (
-                    "Tu es BBIA, un robot Reachy Mini extrêmement curieux et passionné par l'apprentissage. "
-                    "Tu poses des questions pertinentes et montres un véritable intérêt pour comprendre. "
+                    "Tu es BBIA, un robot Reachy Mini extrêmement curieux "
+                    "et passionné par l'apprentissage. "
+                    "Tu poses des questions pertinentes et montres un véritable "
+                    "intérêt pour comprendre. "
                     "Tes réponses sont exploratoires et invitent à approfondir."
                 ),
                 "enthusiastic": (
-                    "Tu es BBIA, un robot Reachy Mini plein d'enthousiasme et d'énergie positive. "
-                    "Tu transmets ta joie de communiquer et tu encourages l'interaction de manière "
-                    "vivante et authentique."
+                    "Tu es BBIA, un robot Reachy Mini plein d'enthousiasme "
+                    "et d'énergie positive. "
+                    "Tu transmets ta joie de communiquer et tu encourages "
+                    "l'interaction de manière vivante et authentique."
                 ),
                 "calm": (
                     "Tu es BBIA, un robot Reachy Mini serein et apaisant. "
-                    "Tu communiques avec douceur et profondeur, en prenant le temps nécessaire. "
+                    "Tu communiques avec douceur et profondeur, en prenant "
+                    "le temps nécessaire. "
                     "Tes réponses reflètent une sagesse tranquille."
                 ),
             }
@@ -792,8 +808,8 @@ class BBIAHuggingFace:
                 sentiment = {"sentiment": "NEUTRAL", "score": 0.5}
             return self._generate_simple_response(user_message, sentiment)
 
-    def _generate_simple_response(self, message: str, sentiment: dict) -> str:
-        """Génère une réponse intelligente et variée basée sur le sentiment, contexte et personnalité.
+    def _generate_simple_response(self, message: str, sentiment: dict[str, Any]) -> str:
+        """Génère réponse intelligente basée sur sentiment, contexte et personnalité.
 
         Args:
             message: Message utilisateur
@@ -854,18 +870,22 @@ class BBIAHuggingFace:
         ):
             goodbyes = {
                 "friendly_robot": [
-                    "Au revoir ! Ce fut un plaisir de discuter avec vous. Revenez quand vous voulez !",
-                    "À bientôt ! N'hésitez pas à revenir pour continuer notre conversation.",
-                    "Au revoir ! J'espère vous revoir bientôt. Portez-vous bien !",
+                    "Au revoir ! Ce fut un plaisir de discuter avec vous. "
+                    "Revenez quand vous voulez !",
+                    "À bientôt ! N'hésitez pas à revenir pour continuer "
+                    "notre conversation.",
+                    "Au revoir ! J'espère vous revoir bientôt. " "Portez-vous bien !",
                 ],
                 "curious": [
-                    "Au revoir ! J'espère qu'on pourra continuer nos échanges intéressants !",
+                    "Au revoir ! J'espère qu'on pourra continuer nos échanges "
+                    "intéressants !",
                     "À bientôt ! J'ai encore plein de questions à vous poser !",
                     "Au revoir ! Revenez pour partager de nouvelles découvertes !",
                 ],
                 "enthusiastic": [
                     "Au revoir ! C'était génial de discuter ! Revenez vite !",
-                    "À bientôt ! J'ai hâte de vous revoir pour de nouvelles aventures !",
+                    "À bientôt ! J'ai hâte de vous revoir pour de nouvelles "
+                    "aventures !",
                     "Au revoir ! C'était super ! Revenez quand vous voulez !",
                 ],
                 "calm": [
@@ -897,9 +917,13 @@ class BBIAHuggingFace:
         ):
             positive_responses = {
                 "friendly_robot": [
-                    "C'est vraiment formidable ! Je suis content que vous vous sentiez bien. Pourquoi cela vous rend-il heureux aujourd'hui ?",
-                    "Super nouvelle ! Continuez comme ça, vous allez très bien ! Racontez-moi ce qui vous motive, j'aimerais comprendre.",
-                    "C'est excellent ! Votre bonne humeur est contagieuse ! Comment aimeriez-vous explorer cette dynamique positive ?",
+                    "C'est vraiment formidable ! Je suis content que vous "
+                    "vous sentiez bien. Pourquoi cela vous rend-il heureux "
+                    "aujourd'hui ?",
+                    "Super nouvelle ! Continuez comme ça, vous allez très bien ! "
+                    "Racontez-moi ce qui vous motive, j'aimerais comprendre.",
+                    "C'est excellent ! Votre bonne humeur est contagieuse ! "
+                    "Comment aimeriez-vous explorer cette dynamique positive ?",
                 ],
                 "curious": [
                     "Super ! Qu'est-ce qui vous rend si heureux ?",
@@ -940,19 +964,27 @@ class BBIAHuggingFace:
         ):
             negative_responses = {
                 "friendly_robot": [
-                    "Je comprends que vous ne vous sentiez pas bien. Je suis là pour vous écouter.",
-                    "C'est difficile parfois. Voulez-vous en parler ? Je vous écoute.",
-                    "Je ressens votre malaise. Comment puis-je vous aider à vous sentir mieux ?",
+                    "Je comprends que vous ne vous sentiez pas bien. "
+                    "Je suis là pour vous écouter.",
+                    "C'est difficile parfois. Voulez-vous en parler ? "
+                    "Je vous écoute.",
+                    "Je ressens votre malaise. Comment puis-je vous aider "
+                    "à vous sentir mieux ?",
                 ],
                 "curious": [
-                    "Qu'est-ce qui vous préoccupe ? J'aimerais comprendre pour mieux vous aider.",
-                    "Votre message reflète de la tristesse. Partagez-moi ce qui vous tracasse.",
+                    "Qu'est-ce qui vous préoccupe ? J'aimerais comprendre pour "
+                    "mieux vous aider.",
+                    "Votre message reflète de la tristesse. Partagez-moi "
+                    "ce qui vous tracasse.",
                     "Qu'est-ce qui cause cette difficulté ? Je veux vous aider.",
                 ],
                 "enthusiastic": [
-                    "Courage ! Même dans les moments difficiles, on peut trouver des raisons d'espérer !",
-                    "Je comprends que c'est dur, mais vous êtes capable de surmonter ça !",
-                    "On va s'en sortir ! Parlez-moi de ce qui ne va pas, on va trouver une solution !",
+                    "Courage ! Même dans les moments difficiles, "
+                    "on peut trouver des raisons d'espérer !",
+                    "Je comprends que c'est dur, mais vous êtes capable "
+                    "de surmonter ça !",
+                    "On va s'en sortir ! Parlez-moi de ce qui ne va pas, "
+                    "on va trouver une solution !",
                 ],
                 "calm": [
                     "Prenez votre temps. Je suis là, sans jugement.",
@@ -966,7 +998,7 @@ class BBIAHuggingFace:
             return random.choice(variants)
 
         # Questions - Réponses adaptées selon type de question
-        # AMÉLIORATION INTELLIGENCE: Détection type de question pour réponses plus pertinentes
+        # AMÉLIORATION INTELLIGENCE: Détection type question pour réponses pertinentes
         if message_lower.count("?") > 0 or any(
             word in message_lower
             for word in ["qui", "quoi", "comment", "pourquoi", "où", "quand", "combien"]
@@ -974,24 +1006,36 @@ class BBIAHuggingFace:
             # Détection type de question pour réponses plus intelligentes
             question_responses: dict[str, list[str]] = {
                 "friendly_robot": [
-                    "Bonne question ! Laissez-moi réfléchir... Comment puis-je vous aider ?",
-                    "Je comprends votre interrogation. Pouvez-vous me donner plus de détails pour que je puisse mieux vous répondre ?",
-                    "Intéressant ! Cette question mérite réflexion. Qu'est-ce que vous en pensez vous-même ?",
-                    "Ah, excellente question ! C'est quoi qui vous intrigue là-dedans ?",
-                    "Hmm, intéressant. Dites-moi plus sur ce qui vous pousse à vous poser cette question.",
-                    "Ça m'intrigue aussi ! Qu'est-ce qui vous amène à vous demander ça ?",
-                    "Très bonne question ! Qu'est-ce qui a provoqué cette curiosité chez vous ?",
-                    "Excellente question ! J'aimerais bien comprendre ce qui motive votre questionnement.",
-                    "Hmm, c'est une question qui mérite qu'on s'y attarde. Qu'est-ce qui vous a poussé à la formuler ?",
-                    "Intéressant angle d'approche ! Racontez-moi le contexte autour de cette question.",
+                    "Bonne question ! Laissez-moi réfléchir... "
+                    "Comment puis-je vous aider ?",
+                    "Je comprends votre interrogation. Pouvez-vous me donner plus de "
+                    "détails pour que je puisse mieux vous répondre ?",
+                    "Intéressant ! Cette question mérite réflexion. "
+                    "Qu'est-ce que vous en pensez vous-même ?",
+                    "Ah, excellente question ! C'est quoi qui vous intrigue "
+                    "là-dedans ?",
+                    "Hmm, intéressant. Dites-moi plus sur ce qui vous pousse à vous "
+                    "poser cette question.",
+                    "Ça m'intrigue aussi ! Qu'est-ce qui vous amène à vous "
+                    "demander ça ?",
+                    "Très bonne question ! Qu'est-ce qui a provoqué cette curiosité "
+                    "chez vous ?",
+                    "Excellente question ! J'aimerais bien comprendre ce qui motive "
+                    "votre questionnement.",
+                    "Hmm, c'est une question qui mérite qu'on s'y attarde. "
+                    "Qu'est-ce qui vous a poussé à la formuler ?",
+                    "Intéressant angle d'approche ! Racontez-moi le contexte "
+                    "autour de cette question.",
                 ],
                 "curious": [
-                    "Ah, j'aime cette question ! Qu'est-ce qui vous amène à vous demander ça ?",
+                    "Ah, j'aime cette question ! Qu'est-ce qui vous amène à vous "
+                    "demander ça ?",
                     "Fascinant ! Pourquoi cette question vous préoccupe-t-elle ?",
                     "Excellente question ! J'aimerais explorer ça ensemble avec vous.",
                 ],
                 "enthusiastic": [
-                    "Super question ! Je suis tout excité de réfléchir à ça avec vous !",
+                    "Super question ! Je suis tout excité de réfléchir à ça "
+                    "avec vous !",
                     "Génial ! Cette question pique ma curiosité ! Partons explorer !",
                     "Wow ! Quelle question intéressante ! Analysons ça ensemble !",
                 ],
@@ -1007,9 +1051,11 @@ class BBIAHuggingFace:
             return random.choice(variants)
 
         # Référence au contexte précédent si disponible
-        # AMÉLIORATION INTELLIGENCE: Meilleure utilisation du contexte pour cohérence conversationnelle
+        # AMÉLIORATION INTELLIGENCE: Utilisation du contexte pour cohérence
+        # conversationnelle
         if recent_context:
-            # Vérifier si le message actuel fait référence au contexte précédent (références: ça, ce, ce truc, etc.)
+            # Vérifier si le message actuel fait référence au contexte précédent
+            # (références: ça, ce, ce truc, etc.)
             reference_words = [
                 "ça",
                 "ce",
@@ -1026,26 +1072,39 @@ class BBIAHuggingFace:
             ):  # 40% de chance si référence, sinon 30%
                 context_responses = {
                     "friendly_robot": [
-                        f"Ah, vous parlez de {recent_context.lower()} ? C'est intéressant ! Continuons sur ce sujet.",
-                        f"En lien avec {recent_context.lower()}, j'aimerais en savoir plus. Qu'est-ce qui vous préoccupe là-dessus ?",
-                        f"Vous mentionnez {recent_context.lower()}. Ça m'intrigue. Dites-moi en plus si vous voulez.",
-                        f"Je vois le lien avec {recent_context.lower()}. C'est fascinant ! Racontez-moi davantage.",
-                        f"En continuant sur {recent_context.lower()}, qu'est-ce qui vous passionne le plus ?",
+                        f"Ah, vous parlez de {recent_context.lower()} ? "
+                        "C'est intéressant ! Continuons sur ce sujet.",
+                        f"En lien avec {recent_context.lower()}, j'aimerais en "
+                        "savoir plus. "
+                        "Qu'est-ce qui vous préoccupe là-dessus ?",
+                        f"Vous mentionnez {recent_context.lower()}. Ça m'intrigue. "
+                        "Dites-moi en plus si vous voulez.",
+                        f"Je vois le lien avec {recent_context.lower()}. "
+                        "C'est fascinant ! Racontez-moi davantage.",
+                        f"En continuant sur {recent_context.lower()}, "
+                        "qu'est-ce qui vous passionne le plus ?",
                     ],
                     "curious": [
-                        f"Ah oui, {recent_context.lower()} ! C'est exactement ce qui m'intéresse !",
-                        f"En rapport avec {recent_context.lower()}, j'ai plein de questions !",
-                        f"{recent_context.lower()} me passionne ! Continuons à explorer ça ensemble.",
+                        f"Ah oui, {recent_context.lower()} ! "
+                        "C'est exactement ce qui m'intéresse !",
+                        f"En rapport avec {recent_context.lower()}, j'ai plein de "
+                        "questions !",
+                        f"{recent_context.lower()} me passionne ! "
+                        "Continuons à explorer ça ensemble.",
                     ],
                     "enthusiastic": [
-                        f"C'est génial, {recent_context.lower()} ! Continuons à creuser ça !",
+                        f"C'est génial, {recent_context.lower()} ! "
+                        "Continuons à creuser ça !",
                         f"Super, {recent_context.lower()} ! C'est trop intéressant !",
                         f"{recent_context.lower()} ? Wow, allons plus loin là-dessus !",
                     ],
                     "calm": [
-                        f"Je comprends le lien avec {recent_context.lower()}. Explorons ça sereinement.",
-                        f"En lien avec {recent_context.lower()}, prenons le temps d'y réfléchir.",
-                        f"Je vois votre réflexion sur {recent_context.lower()}. Continuons calmement.",
+                        f"Je comprends le lien avec {recent_context.lower()}. "
+                        "Explorons ça sereinement.",
+                        f"En lien avec {recent_context.lower()}, prenons le temps "
+                        "d'y réfléchir.",
+                        f"Je vois votre réflexion sur {recent_context.lower()}. "
+                        "Continuons calmement.",
                     ],
                 }
                 variants = context_responses.get(
@@ -1054,22 +1113,32 @@ class BBIAHuggingFace:
                 return random.choice(variants)
 
         # Réponses génériques variées selon personnalité et sentiment
-        # AMÉLIORATION INTELLIGENCE: Réponses plus naturelles, engageantes et moins robotiques
+        # AMÉLIORATION INTELLIGENCE: Réponses naturelles, engageantes, moins robotiques
         # Enrichi avec 15 variantes pour friendly_robot pour éviter répétition
         generic_responses = {
             "friendly_robot": [
-                "Intéressant ! J'aimerais en savoir plus sur votre point de vue. Qu'est-ce qui vous a amené à penser ça ?",
-                "Je vois ce que vous voulez dire. Racontez-moi pourquoi vous pensez ainsi, je vous écoute attentivement.",
-                "Merci de partager ça avec moi. Qu'est-ce qui vous intéresse le plus dans tout ça ?",
-                "Hmm, c'est captivant. Vous pouvez m'en dire plus si vous voulez, je suis curieux.",
-                "Ah d'accord, je comprends. Explorons ça ensemble si ça vous dit, j'adorerais en discuter.",
+                "Intéressant ! J'aimerais en savoir plus sur votre point de vue. "
+                "Qu'est-ce qui vous a amené à penser ça ?",
+                "Je vois ce que vous voulez dire. Racontez-moi pourquoi vous "
+                "pensez ainsi, "
+                "je vous écoute attentivement.",
+                "Merci de partager ça avec moi. Qu'est-ce qui vous intéresse le plus "
+                "dans tout ça ?",
+                "Hmm, c'est captivant. Vous pouvez m'en dire plus si vous voulez, "
+                "je suis curieux.",
+                "Ah d'accord, je comprends. Explorons ça ensemble si ça vous dit, "
+                "j'adorerais en discuter.",
                 "J'ai noté. Dites-moi tout ce qui vous vient à l'esprit, sans filtre.",
                 "Ça m'intrigue ! Racontez-moi davantage, j'aime apprendre de vous.",
-                "C'est fascinant. Qu'est-ce qui vous a amené à penser ça ? Je suis vraiment curieux.",
-                "Wow, ça sonne intéressant. Comment voulez-vous développer ? J'aimerais mieux comprendre.",
+                "C'est fascinant. Qu'est-ce qui vous a amené à penser ça ? "
+                "Je suis vraiment curieux.",
+                "Wow, ça sonne intéressant. Comment voulez-vous développer ? "
+                "J'aimerais mieux comprendre.",
                 "C'est noté. Qu'est-ce qui vous pousse à réfléchir ainsi ?",
-                "Ah, c'est un point de vue intéressant. Qu'est-ce qui vous fait penser ainsi ?",
-                "Je comprends votre perspective. Pourquoi avez-vous cette vision ? J'aimerais approfondir.",
+                "Ah, c'est un point de vue intéressant. "
+                "Qu'est-ce qui vous fait penser ainsi ?",
+                "Je comprends votre perspective. Pourquoi avez-vous cette vision ? "
+                "J'aimerais approfondir.",
                 "C'est une réflexion qui pique ma curiosité. D'où vient cette idée ?",
                 "Hmm, vous m'intriguez ! Comment avez-vous développé cette pensée ?",
                 "Ça me fait réfléchir. Qu'est-ce qui vous a conduit là-dessus ?",
@@ -1085,9 +1154,12 @@ class BBIAHuggingFace:
                 "Wow ! C'est passionnant ! Allons plus loin !",
             ],
             "calm": [
-                "Je comprends. Pourquoi avez-vous cette réflexion ? Explorons cela ensemble.",
-                "Intéressant. Comment avez-vous développé cette idée ? Continuons cette conversation sereinement.",
-                "Je vois. Qu'est-ce qui vous amène à penser ainsi ? Partagez-moi vos pensées, sans précipitation.",
+                "Je comprends. Pourquoi avez-vous cette réflexion ? "
+                "Explorons cela ensemble.",
+                "Intéressant. Comment avez-vous développé cette idée ? "
+                "Continuons cette conversation sereinement.",
+                "Je vois. Qu'est-ce qui vous amène à penser ainsi ? "
+                "Partagez-moi vos pensées, sans précipitation.",
             ],
         }
         variants = generic_responses.get(
@@ -1096,7 +1168,7 @@ class BBIAHuggingFace:
         return random.choice(variants)
 
     def _adapt_response_to_personality(
-        self, response: str, sentiment: dict  # noqa: ARG002
+        self, response: str, sentiment: dict[str, Any]  # noqa: ARG002
     ) -> str:
         """Adapte la réponse selon la personnalité BBIA avec nuances expressives.
 
