@@ -239,7 +239,7 @@ class ReachyMiniBackend(RobotAPI):
         self._watchdog_thread = threading.Thread(
             target=self._watchdog_monitor,
             daemon=True,
-            name=f"ReachyWatchdog-{id(self)}",
+            name="ReachyWatchdog",
         )
         self._watchdog_thread.start()
         logger.debug("Watchdog démarré")
