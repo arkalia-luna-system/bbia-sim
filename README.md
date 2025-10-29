@@ -24,7 +24,7 @@
 ✅ **Production-ready** : 800+ tests, couverture validée en CI, docs complètes  
 ✅ **Open-source** : MIT License
 
-**[🚀 Quick Start](#-démarrage-rapide)** | **[📚 Docs Débutant](docs/GUIDE_DEBUTANT.md)** | **[🔬 Docs Avancé](docs/GUIDE_AVANCE.md)**
+**[🚀 Quick Start](#-démarrage-rapide)** | **[📚 Docs Débutant](docs/guides/GUIDE_DEBUTANT.md)** | **[🔬 Docs Avancé](docs/guides/GUIDE_AVANCE.md)**
 
 ---
 
@@ -217,9 +217,9 @@ python examples/demo_emotion_ok.py --record artifacts/my_animation.jsonl --emoti
 python scripts/replay_viewer.py artifacts/my_animation.jsonl --speed 1.5
 ```
 
-### 📋 Documentation
-- **[Guide Débutant](docs/GUIDE_DEBUTANT.md)** : Guide pour débuter
-- **[Guide Avancé](docs/GUIDE_AVANCE.md)** : Guide avancé
+-### 📋 Documentation
+- **[Guide Débutant](docs/guides/GUIDE_DEBUTANT.md)** : Guide pour débuter
+- **[Guide Avancé](docs/guides/GUIDE_AVANCE.md)** : Guide avancé
 - **[Vertical Slices](docs/audit/VERTICAL_SLICES_ACCOMPLIS.md)** : Documentation des vertical slices
 
 ### ⚠️ Note Importante

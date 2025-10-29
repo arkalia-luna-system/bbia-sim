@@ -234,10 +234,9 @@ export BBIA_RATE_LIMIT=1000
 
 ### **Guides Techniques**
 
-- **Guide d'Intégration** : `docs/INTEGRATION_GUIDE.md`
-- **Documentation Phase 3** : `docs/PHASE_3_ECOSYSTEM.md`
-- **Architecture** : `docs/ARCHITECTURE.md`
-- **Tests** : `docs/TESTING_GUIDE.md`
+- **Guide d'Intégration** : `docs/guides_techniques/INTEGRATION_GUIDE.md`
+- **Architecture** : `docs/architecture/ARCHITECTURE.md`
+- **Tests** : `docs/guides_techniques/TESTING_GUIDE.md`
 
 ### **Support Communautaire**
 
