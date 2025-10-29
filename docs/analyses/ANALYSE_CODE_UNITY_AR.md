@@ -195,7 +195,7 @@ class MobileARController:
 #### 3. AR pour remplacer MuJoCo
 
 **Pourquoi c'est inutile :**
-- MuJoCo fonctionne parfaitement ✅
+- MuJoCo fonctionne correctement ✅
 - AR serait moins précis ⚠️
 - AR serait moins performant ⚠️
 - Pas de problème à résoudre ❌
