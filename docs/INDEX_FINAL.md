@@ -1,6 +1,6 @@
 # 📚 INDEX DE LA DOCUMENTATION BBIA-SIM
 
-**Version:** v1.3.0  
+**Version:** v1.3.1  
 **Dernière mise à jour:** Octobre 2025
 
 ---

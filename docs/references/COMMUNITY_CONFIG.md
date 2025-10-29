@@ -45,23 +45,23 @@ export MUJOCO_GL=egl
 
 ```bash
 # Démarrage API avec rechargement automatique
-python scripts/start_public_api.py --dev
+python deploy/public_api.py --dev
 
 # Démarrage avec logs détaillés
-python scripts/start_public_api.py --dev --log-level debug
+python deploy/public_api.py --dev --log-level debug
 
 # Démarrage sur port personnalisé
-python scripts/start_public_api.py --dev --port 3000
+python deploy/public_api.py --dev --port 3000
 ```
 
 ### **Production**
 
 ```bash
 # Démarrage production avec workers multiples
-python scripts/start_public_api.py --prod --workers 4
+python deploy/public_api.py --prod --workers 4
 
 # Démarrage avec configuration personnalisée
-python scripts/start_public_api.py --prod --host 0.0.0.0 --port 8000 --workers 2
+python deploy/public_api.py --prod --host 0.0.0.0 --port 8000 --workers 2
 ```
 
 ### **Docker**
@@ -85,7 +85,7 @@ docker run -p 8000:8000 -e BBIA_API_TOKEN=secret bbia-sim
 
 ```bash
 # Tests complets de l'API
-python scripts/test_public_api.py
+python deploy/public_api.py --check
 
 # Tests avec logs détaillés
 python scripts/test_public_api.py --log-level debug
@@ -259,7 +259,7 @@ pip install -r requirements.txt
 pip install -e .
 
 # Démarrage
-python scripts/start_public_api.py --prod
+python deploy/public_api.py --prod
 ```
 
 ### **Déploiement Docker**
@@ -299,7 +299,7 @@ git pull origin main
 pip install -r requirements.txt --upgrade
 
 # Redémarrage
-python scripts/start_public_api.py --prod
+python deploy/public_api.py --prod
 ```
 
 ### **Sauvegarde**

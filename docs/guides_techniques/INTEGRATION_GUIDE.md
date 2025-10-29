@@ -39,20 +39,20 @@ pip install -e .
 
 ```bash
 # Démarrage en mode développement
-python scripts/start_public_api.py --dev
+python deploy/public_api.py --dev
 
 # Démarrage en mode production
-python scripts/start_public_api.py --prod --port 8000
+python deploy/public_api.py --prod --port 8000
 
 # Démarrage sur toutes les interfaces
-python scripts/start_public_api.py --host 0.0.0.0 --port 8000
+python deploy/public_api.py --host 0.0.0.0 --port 8000
 ```
 
 ### **3. Test de l'API**
 
 ```bash
 # Test automatisé
-python scripts/test_public_api.py
+python deploy/public_api.py --check
 
 # Démonstration complète
 python scripts/demo_public_api.py
@@ -626,8 +626,8 @@ asyncio.run(validate_integration())
 
 - [ ] Python 3.9+ installé
 - [ ] Dépendances installées (`pip install -r requirements.txt`)
-- [ ] API BBIA-SIM démarrée (`python scripts/start_public_api.py --dev`)
-- [ ] Tests de base passent (`python scripts/test_public_api.py`)
+- [ ] API BBIA-SIM démarrée (`python deploy/public_api.py --dev`)
+- [ ] Tests de base passent (`python deploy/public_api.py --check`)
 
 ### **✅ Intégration API**
 

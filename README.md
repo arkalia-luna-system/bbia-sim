@@ -4,7 +4,7 @@
 [![Python](https://img.shields.io/badge/python-3.9%2B-blue.svg)](https://python.org)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://github.com/arkalia-luna-system/bbia-sim/actions)
-[![Tests](https://img.shields.io/badge/tests-706%20collected-brightgreen.svg)](https://github.com/arkalia-luna-system/bbia-sim/actions)
+[![Tests](https://img.shields.io/badge/tests-800%2B-brightgreen.svg)](https://github.com/arkalia-luna-system/bbia-sim/actions)
 [![Code Quality](https://img.shields.io/badge/code%20quality-A%2B-brightgreen.svg)](https://github.com/arkalia-luna-system/bbia-sim)
 [![SDK Conformity](https://img.shields.io/badge/SDK%20conformity-100%25-brightgreen.svg)](https://github.com/pollen-robotics/reachy_mini)
 [![Documentation](https://img.shields.io/badge/docs-sphinx%20%7C%20readthedocs-blue.svg)](docs/)
@@ -21,7 +21,7 @@
 
 ✅ **100% conforme** au SDK officiel Pollen Robotics  
 ✅ **Backend unifié** : Même code simulation → robot réel  
-✅ **Production-ready** : 706 tests, 63% coverage, docs complètes  
+✅ **Production-ready** : 800+ tests, couverture validée en CI, docs complètes  
 ✅ **Open-source** : MIT License
 
 **[🚀 Quick Start](#-démarrage-rapide)** | **[📚 Docs Débutant](docs/GUIDE_DEBUTANT.md)** | **[🔬 Docs Avancé](docs/GUIDE_AVANCE.md)**
@@ -51,7 +51,7 @@ python examples/demo_emotion_ok.py
 - ✅ **IA avancée** : Hugging Face, reconnaissance émotions, comportements adaptatifs
 - ✅ **Simulation 3D** : MuJoCo avec modèle officiel
 - ✅ **API REST + WebSocket** : Interface publique complète
-- ✅ **Production-ready** : Tests complets, 63% coverage
+- ✅ **Production-ready** : Suite de tests complète, couverture validée en CI
 
 ## 🏗️ Architecture BBIA-SIM
 
@@ -97,7 +97,7 @@ graph TB
 - **✅ Modèle officiel** : `reachy_mini_REAL_OFFICIAL.xml`
 - **✅ Articulations** : 16 articulations contrôlables  
 - **✅ Intégration BBIA** : 12 émotions + IA avancée
-- **✅ Coverage** : 63.37% (excellent)
+- **✅ Coverage** : Validée en CI (voir `coverage.xml` et `htmlcov/`)
 - **✅ API** : FastAPI + WebSocket opérationnels
 
 ## 🚀 Démarrage Rapide
@@ -129,10 +129,10 @@ python examples/demo_reachy_mini_corrigee.py --quick
 ### 🌐 API Publique
 ```bash
 # Démarrage de l'API publique
-python scripts/start_public_api.py --dev
+python deploy/public_api.py --dev
 
 # Test de l'API publique
-python scripts/test_public_api.py
+python deploy/public_api.py --check
 
 # Démonstration complète
 python scripts/demo_public_api.py
@@ -177,6 +177,18 @@ python -c "from bbia_sim.bbia_huggingface import BBIAHuggingFace; hf = BBIAHuggi
 
 # Module Emotion Recognition (nécessite: pip install mediapipe transformers)
 python -c "from bbia_sim.bbia_emotion_recognition import BBIAEmotionRecognition; er = BBIAEmotionRecognition(); print(er.analyze_vocal_emotion('Je suis excité!'))"
+```
+
+### ⚙️ Variables d’environnement utiles
+
+```bash
+# Exécutions headless/CI (désactive audio matériel)
+export BBIA_DISABLE_AUDIO=1
+
+# Sélecteurs IA (optionnels, imports paresseux)
+export BBIA_TTS_BACKEND=pyttsx3      # ou kitten/kokoro/neutts si installés
+export BBIA_STT_BACKEND=whisper      # ou parakeet
+export BBIA_LLM_BACKEND=llama.cpp    # ou qwen
 ```
 
 ### 🎯 Vertical Slices BBIA
