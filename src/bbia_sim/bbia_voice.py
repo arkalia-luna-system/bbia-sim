@@ -89,15 +89,15 @@ def get_bbia_voice(engine: Any) -> str:
     # 1. Prio France
     for v in voices:
         if "amelie" in normalize(v.name) and ("fr_FR" in v.id or "fr-FR" in v.id):
-            return str(v.id)
+            return str(v.id)  # type: ignore[no-any-return]
     # 2. Prio Canada
     for v in voices:
         if "amelie" in normalize(v.name) and ("fr_CA" in v.id or "fr-CA" in v.id):
-            return str(v.id)
+            return str(v.id)  # type: ignore[no-any-return]
     # 3. Toute Amelie
     for v in voices:
         if "amelie" in normalize(v.name):
-            return str(v.id)
+            return str(v.id)  # type: ignore[no-any-return]
     # 4. Sinon, message d’aide
     raise RuntimeError(
         "Aucune voix 'Amélie' n’est installée sur ce Mac. Va dans Préférences Système > Accessibilité > Parole > Voix du système et installe une voix française féminine (ex: Amélie).",
@@ -286,7 +286,7 @@ def reconnaitre_parole(
                     audio = r.record(source)
                     texte = r.recognize_google(audio, language="fr-FR")
                     logging.info(f"✅ Texte reconnu (SDK 4 microphones) : {texte}")
-                    return str(texte)
+                    return str(texte)  # type: ignore[no-any-return]
         except Exception as e:
             logging.debug(
                 f"Erreur reconnaissance SDK (fallback speech_recognition): {e}",
@@ -302,7 +302,7 @@ def reconnaitre_parole(
                 audio = r.listen(source, phrase_time_limit=duree)
                 texte = r.recognize_google(audio, language="fr-FR")
                 logging.info(f"Texte reconnu : {texte}")
-                return str(texte)
+                return str(texte)  # type: ignore[no-any-return]
             except sr.UnknownValueError:
                 logging.warning("Aucune parole reconnue.")
                 return None

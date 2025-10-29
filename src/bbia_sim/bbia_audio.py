@@ -186,7 +186,6 @@ def lire_audio(fichier: str, robot_api: Optional["RobotAPI"] = None) -> None:
         logging.info(f"Lecture de {fichier} terminée.")
     except Exception as e:
         logging.error(f"Erreur de lecture audio : {e}")
-        # Ne rien retourner, la fonction déclare retourner None
 
 
 def detecter_son(fichier: str, seuil: int = 500) -> bool:

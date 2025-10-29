@@ -651,9 +651,18 @@ class ReachyMiniBackend(RobotAPI):
 
         try:
             result = self.robot.look_at_image(u, v, duration, perform_movement)
-            # Cast pour mypy
+            # Cast pour mypy - result peut être Any depuis le SDK
             if isinstance(result, np.ndarray):
                 return result
+            # Si result n'est pas un ndarray, essayer de le convertir
+            if result is not None:
+                try:
+                    result_arr = np.array(result, dtype=np.float64)  # type: ignore[arg-type]
+                    if result_arr.shape == (4, 4):
+                        return result_arr
+                except (ValueError, TypeError):
+                    pass
+            # Valeur par défaut si conversion impossible
             return np.eye(4, dtype=np.float64)
         except Exception as e:
             logger.error(f"Erreur look_at_image: {e}")
