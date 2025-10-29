@@ -1,12 +1,12 @@
-# 🎉 MISSION ACCOMPLIE - BBIA REACHY MINI SIMULATION FINALE
+# Mission accomplie - BBIA Reachy Mini Simulation
 
 ## ✅ **RÉSUMÉ EXÉCUTIF**
 
 **Date :** Octobre 2025  
-**Statut :** ✅ **MISSION 100% ACCOMPLIE**  
+**Statut :** mission accomplie  
 **Objectif :** Auditer, corriger et optimiser la simulation BBIA Reachy Mini
 
-**Résultat :** Projet **parfaitement fonctionnel** et aligné avec les spécifications officielles Reachy Mini de Pollen Robotics.
+**Résultat :** Projet fonctionnel et aligné avec les spécifications officielles Reachy Mini de Pollen Robotics.
 
 ---
 
@@ -79,13 +79,13 @@ mjpython examples/demo_viewer_bbia_simple.py --joint yaw_body --duration 10 --fr
 
 ## 🧪 **TESTS ET QUALITÉ**
 
-### **✅ Tests Complets**
+### **Tests**
 - **Fichier :** `tests/test_adapter_mujoco.py`
 - **Tests :** 17 tests MuJoCo complets
-- **Résultat :** ✅ **Tous les tests passent**
+- **Résultat :** tests passants
 - **Couverture :** Validation des joints, limites, intégration BBIA
 
-### **✅ Qualité du Code**
+### **Qualité du code**
 ```bash
 # Ruff (linter)
 ✅ 63 erreurs corrigées automatiquement
@@ -206,9 +206,9 @@ await integration.apply_emotion_to_robot("happy", 0.8)
 
 ---
 
-## 🎉 **CONCLUSION**
+## Conclusion
 
-**✅ MISSION 100% ACCOMPLIE !**
+Mission accomplie
 
 Le projet BBIA-Reachy-SIM est maintenant **parfaitement fonctionnel** et aligné avec les spécifications officielles Reachy Mini :
 
@@ -229,6 +229,6 @@ Le projet BBIA-Reachy-SIM est maintenant **parfaitement fonctionnel** et aligné
 
 ---
 
-**🤖 BBIA Reachy Mini Simulation - Mission Accomplie ! ✨**
+BBIA Reachy Mini Simulation - mission accomplie
 
 *Audit final réalisé en Octobre 2025 - Projet fonctionnel et aligné*
