@@ -7,12 +7,10 @@ Backend utilisant le SDK officiel reachy_mini
 import logging
 import threading
 import time
-from typing import TYPE_CHECKING, Any, Optional, Union, cast
+from typing import TYPE_CHECKING, Any, Optional, Union
 
 import numpy as np
-
-if TYPE_CHECKING:
-    from reachy_mini.utils import HeadPose
+import numpy.typing as npt
 
 try:
     from reachy_mini import ReachyMini
@@ -24,7 +22,16 @@ except ImportError:
     ReachyMini = None
     create_head_pose = None
 
+if TYPE_CHECKING:
+    from reachy_mini.utils import HeadPose
+
 from ..robot_api import RobotAPI
+
+# Constantes Stewart platform (alignées SDK officiel)
+STEWART_JOINTS_COUNT = 6  # 6 joints stewart (stewart_1 à stewart_6)
+STEWART_MAX_INDEX = 5  # Index max (0-5 pour stewart_1-6)
+STEWART_LEGACY_COUNT = 12  # Structure legacy (anciennes versions SDK)
+JOINT_POSITIONS_TUPLE_SIZE = 2  # Tuple (head_positions, antenna_positions)
 
 logger = logging.getLogger(__name__)
 
@@ -71,6 +78,11 @@ class ReachyMiniBackend(RobotAPI):
         self._should_stop_watchdog = threading.Event()
         self._watchdog_interval = 0.1  # 100ms entre vérifications
         self._last_heartbeat: float = 0.0
+
+        # Constantes joints Stewart (évite magic numbers)
+        self.STEWART_JOINTS_COUNT = 6  # 6 joints tête plateforme Stewart
+        self.STEWART_MAX_INDEX = 5  # Indices 0-5 pour stewart_1-6
+        self.HEAD_POSITIONS_LEGACY_COUNT = 12  # Structure legacy (indices impairs)
 
         # Mapping joints officiel Reachy-Mini (noms réels du modèle MuJoCo)
         # 6 joints tête + 2 antennes + 1 corps = 9 joints total
@@ -254,7 +266,11 @@ class ReachyMiniBackend(RobotAPI):
 
         self._should_stop_watchdog.set()
         if self._watchdog_thread.is_alive():
-            self._watchdog_thread.join(timeout=1.0)  # Max 1s pour arrêt propre
+            # Éviter de joindre le thread courant (erreur join current thread)
+            import threading
+
+            if threading.current_thread() is not self._watchdog_thread:
+                self._watchdog_thread.join(timeout=1.0)  # Max 1s pour arrêt propre
         self._watchdog_thread = None
         logger.debug("Watchdog arrêté")
 
@@ -325,9 +341,7 @@ class ReachyMiniBackend(RobotAPI):
 
         try:
             # SDK retourne tuple[list[float], list[float]] (head_pos, antenna_pos)
-            head_positions, antenna_positions = (
-                self.robot.get_current_joint_positions()
-            )
+            head_positions, antenna_positions = self.robot.get_current_joint_positions()
 
             # Mapping des noms vers indices (basé sur le modèle MuJoCo officiel)
             if joint_name == "yaw_body":
@@ -379,13 +393,13 @@ class ReachyMiniBackend(RobotAPI):
                 )  # Convertir 1-6 vers 0-5
 
                 # Vérifier que l'index est valide et que le tableau a >= 6 éléments
-                if stewart_idx < 0 or stewart_idx > 5:
+                if stewart_idx < 0 or stewart_idx > self.STEWART_MAX_INDEX:
                     logger.warning(
                         f"Index stewart invalide: {stewart_idx} pour {joint_name}"
                     )
                     return 0.0
 
-                if len(head_positions) == 6:
+                if len(head_positions) == self.STEWART_JOINTS_COUNT:
                     # Structure standard: indices 0-5 correspondent à stewart_1-6
                     value = float(head_positions[stewart_idx])
                     # Vérification sécurité: NaN ou inf
@@ -395,7 +409,7 @@ class ReachyMiniBackend(RobotAPI):
                         )
                         return 0.0
                     return value
-                elif len(head_positions) == 12:
+                elif len(head_positions) == self.HEAD_POSITIONS_LEGACY_COUNT:
                     # Structure legacy: stewart joints aux indices impairs
                     # (1,3,5,7,9,11) - Existe dans certaines versions anciennes
                     head_idx = stewart_idx * 2 + 1  # 1,3,5,7,9,11 pour stewart_1-6
@@ -419,8 +433,9 @@ class ReachyMiniBackend(RobotAPI):
                     # Structure inattendue - retourner 0.0 en sécurité
                     logger.warning(
                         f"Structure head_positions inattendue "
-                        f"(len={len(head_positions)}, attendu 6 ou 12) "
-                        f"pour {joint_name}"
+                        f"(len={len(head_positions)}, attendu "
+                        f"{self.STEWART_JOINTS_COUNT} ou "
+                        f"{self.HEAD_POSITIONS_LEGACY_COUNT}) pour {joint_name}"
                     )
                     return 0.0
 
@@ -502,20 +517,14 @@ class ReachyMiniBackend(RobotAPI):
             elif joint_name in ["left_antenna", "right_antenna"]:
                 # Contrôler les antennes via l'API officielle
                 if self.robot:
-                    current_antennas = (
-                        self.robot.get_present_antenna_joint_positions()
-                    )
+                    current_antennas = self.robot.get_present_antenna_joint_positions()
                     antenna_idx = self.joint_mapping[joint_name]
                     if len(current_antennas) > antenna_idx:
                         current_antennas[antenna_idx] = position
-                        self.robot.set_target_antenna_joint_positions(
-                            current_antennas
-                        )
+                        self.robot.set_target_antenna_joint_positions(current_antennas)
                 else:
                     # Mode simulation
-                    logger.info(
-                        f"Mode simulation: antenne {joint_name} = {position}"
-                    )
+                    logger.info(f"Mode simulation: antenne {joint_name} = {position}")
             else:
                 # Contrôler la tête via pose (stewart joints) - API officielle
                 # NOTE: Les joints Stewart sont contrôlés via la pose de la tête
@@ -686,12 +695,8 @@ class ReachyMiniBackend(RobotAPI):
                 # Option optimale: goto_target avec interpolation
                 if hasattr(self.robot, "goto_target"):
                     # Utiliser interpolation minjerk pour fluidité
-                    self.robot.goto_target(
-                        head=pose1, duration=0.5, method="minjerk"
-                    )
-                    self.robot.goto_target(
-                        head=pose2, duration=0.5, method="minjerk"
-                    )
+                    self.robot.goto_target(head=pose1, duration=0.5, method="minjerk")
+                    self.robot.goto_target(head=pose2, duration=0.5, method="minjerk")
                     self.robot.goto_target(
                         head=create_head_pose(degrees=False),
                         duration=0.5,
@@ -719,9 +724,7 @@ class ReachyMiniBackend(RobotAPI):
         """Récupère les données de télémétrie."""
         try:
             current_time = time.time()
-            elapsed_time = (
-                current_time - self.start_time if self.start_time > 0 else 0
-            )
+            elapsed_time = current_time - self.start_time if self.start_time > 0 else 0
 
             # PERFORMANCE: Calculer latence moyenne si disponible
             # (pour monitoring performance temps réel)
@@ -754,7 +757,7 @@ class ReachyMiniBackend(RobotAPI):
 
     # ===== MÉTHODES SDK OFFICIEL SUPPLÉMENTAIRES =====
 
-    def get_current_head_pose(self) -> np.ndarray:
+    def get_current_head_pose(self) -> npt.NDArray[np.float64]:
         """Récupère la pose actuelle de la tête."""
         if not self.is_connected or not self.robot:
             return np.eye(4, dtype=np.float64)  # Mode simulation
@@ -831,7 +834,7 @@ class ReachyMiniBackend(RobotAPI):
 
     def look_at_image(
         self, u: int, v: int, duration: float = 1.0, perform_movement: bool = True
-    ) -> np.ndarray:
+    ) -> npt.NDArray[np.float64]:
         """Fait regarder le robot vers un point dans l'image."""
         if not self.is_connected or not self.robot:
             logger.info(f"Mode simulation: look_at_image({u}, {v})")
@@ -845,7 +848,7 @@ class ReachyMiniBackend(RobotAPI):
             # Si result n'est pas un ndarray, essayer de le convertir
             if result is not None:
                 try:
-                    # type: ignore[arg-type]
+                    # Conversion sûre vers ndarray
                     result_arr = np.array(result, dtype=np.float64)
                     if result_arr.shape == (4, 4):
                         return result_arr
@@ -860,12 +863,17 @@ class ReachyMiniBackend(RobotAPI):
     def goto_target(
         self,
         head: Optional["HeadPose"] = None,
-        antennas: Optional[Union[np.ndarray, list[float]]] = None,
+        antennas: Optional[Union[npt.NDArray[np.float64], list[float]]] = None,
         duration: float = 0.5,
         method: str = "minjerk",
         body_yaw: float = 0.0,
     ) -> None:
         """Va vers une cible spécifique avec technique d'interpolation."""
+        # Validation stricte: duration doit être positive
+        duration_float = float(duration)
+        if duration_float < 0.0:
+            raise ValueError(f"Duration must be >= 0, got {duration_float}")
+
         if not self.is_connected or not self.robot:
             logger.info("Mode simulation: goto_target")
             return
@@ -905,9 +913,7 @@ class ReachyMiniBackend(RobotAPI):
                     if method_normalized in method_mapping:
                         method_enum = method_mapping[method_normalized]
                     elif hasattr(InterpolationTechnique, method_normalized):
-                        method_enum = getattr(
-                            InterpolationTechnique, method_normalized
-                        )
+                        method_enum = getattr(InterpolationTechnique, method_normalized)
                     else:
                         # Essayer de convertir directement
                         method_enum = InterpolationTechnique(method)
@@ -934,10 +940,13 @@ class ReachyMiniBackend(RobotAPI):
             self.robot.goto_target(
                 head=head,
                 antennas=antennas,
-                duration=max(0.0, float(duration)),  # Duration doit être positive
+                duration=duration_float,
                 method=method_enum,
                 body_yaw=float(body_yaw) if body_yaw is not None else 0.0,
             )
+        except ValueError:
+            # Propager les ValueError de validation
+            raise
         except Exception as e:
             logger.error(f"Erreur goto_target: {e}", exc_info=True)
 
@@ -1030,7 +1039,7 @@ class ReachyMiniBackend(RobotAPI):
     def set_target(
         self,
         head: Optional["HeadPose"] = None,
-        antennas: Optional[Union[np.ndarray, list[float]]] = None,
+        antennas: Optional[Union[npt.NDArray[np.float64], list[float]]] = None,
         body_yaw: Optional[float] = None,
     ) -> None:
         """Définit une cible complète (tête + antennes + corps)."""
@@ -1120,14 +1129,14 @@ class ReachyMiniBackend(RobotAPI):
     # ===== MÉTHODES UTILITAIRES POUR MOVE =====
 
     def create_move_from_positions(
-        self, positions: list[dict], duration: float = 1.0
+        self, positions: list[dict[str, Any]], duration: float = 1.0
     ) -> Optional[object]:
         """Crée un objet Move à partir de positions."""
         try:
             from reachy_mini.motion.move import Move
 
             # Créer une classe Move simple pour notre usage
-            class SimpleMove(Move):
+            class SimpleMove(Move):  # type: ignore[misc]
                 def __init__(
                     self, positions: list[dict[str, Any]], duration: float
                 ) -> None:
@@ -1169,7 +1178,7 @@ class ReachyMiniBackend(RobotAPI):
             logger.error(f"Erreur création Move: {e}")
             return None
 
-    def record_movement(self, duration: float = 5.0) -> Optional[list[dict]]:
+    def record_movement(self, duration: float = 5.0) -> Optional[list[dict[str, Any]]]:
         """Enregistre un mouvement pendant une durée donnée."""
         # PERFORMANCE: Utiliser time.sleep avec vérification pour éviter blocage
         # Critique si appelé dans boucle temps réel
@@ -1188,11 +1197,14 @@ class ReachyMiniBackend(RobotAPI):
     def get_current_joint_positions(self) -> tuple[list[float], list[float]]:
         """Alias SDK officiel pour get_joint_pos."""
         if not self.is_connected or not self.robot:
-            return ([0.0] * 12, [0.0, 0.0])  # Mode simulation
+            return (
+                [0.0] * STEWART_LEGACY_COUNT,
+                [0.0, 0.0],
+            )  # Mode simulation
 
         try:
             result = self.robot.get_current_joint_positions()
-            if result is not None and len(result) == 2:
+            if result is not None and len(result) == JOINT_POSITIONS_TUPLE_SIZE:
                 return (list(result[0]), list(result[1]))
             else:
                 return ([0.0] * 12, [0.0, 0.0])
@@ -1218,7 +1230,7 @@ class ReachyMiniBackend(RobotAPI):
         z: float,
         duration: float = 1.0,
         perform_movement: bool = True,
-    ) -> "np.ndarray | None":
+    ) -> Optional[npt.NDArray[np.float64]]:
         """Alias SDK officiel pour look_at.
 
         Returns:
@@ -1268,12 +1280,18 @@ class ReachyMiniBackend(RobotAPI):
             result = self.robot.look_at_world(x, y, z, duration, perform_movement)
             # Si le SDK retourne une pose, la retourner,
             # sinon calculer une approximation
-            if (
-                result is not None
-                and isinstance(result, np.ndarray)
-                and result.shape == (4, 4)
-            ):
-                return cast("np.ndarray", result)
+            if result is not None:
+                if isinstance(result, np.ndarray) and result.shape == (4, 4):
+                    return result
+                try:
+                    result_arr = np.array(result, dtype=np.float64)
+                    if isinstance(result_arr, np.ndarray) and result_arr.shape == (
+                        4,
+                        4,
+                    ):
+                        return result_arr
+                except (ValueError, TypeError):
+                    pass
             else:
                 # Calculer une approximation si le SDK ne retourne pas de pose
                 import numpy as np
@@ -1302,6 +1320,8 @@ class ReachyMiniBackend(RobotAPI):
         except Exception as e:
             logger.error(f"Erreur look_at_world: {e}")
             return None
+        # Si aucune condition précédente n'a retourné, retourner None par sécurité
+        return None
 
     def wake_up(self) -> None:
         """Alias SDK officiel pour run_behavior('wake_up')."""

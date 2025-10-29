@@ -9,7 +9,7 @@ import atexit
 import logging
 import os
 import wave
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Any, Optional
 
 import numpy as np
 import sounddevice as sd
@@ -37,10 +37,13 @@ DEFAULT_BUFFER_SIZE = 512  # SDK optimisé pour latence minimale
 DEFAULT_CHANNELS = 1  # Mono par défaut
 
 # Alias module-level pour permettre le patch dans les tests
+soundfile: Optional[Any]
 try:  # pragma: no cover - import optionnel
-    import soundfile as soundfile  # type: ignore[no-redef]
+    import soundfile as _soundfile
+
+    soundfile = _soundfile
 except Exception:  # pragma: no cover - environnement sans soundfile
-    soundfile = None  # type: ignore[assignment]
+    soundfile = None
 
 
 def _get_robot_media_microphone(
@@ -60,6 +63,26 @@ def _get_robot_media_microphone(
         except Exception:
             return None
     return None
+
+
+def _is_safe_path(path: str) -> bool:
+    """Validation simple de chemin pour éviter le path traversal.
+
+    Autorise:
+    - chemins relatifs sans ".."
+    - chemins absolus sous le répertoire courant (projet)
+    """
+    try:
+        norm = os.path.normpath(path)
+        if ".." in norm.split(os.sep):
+            return False
+        if os.path.isabs(norm):
+            cwd = os.path.abspath(os.getcwd())
+            abs_path = os.path.abspath(norm)
+            return abs_path.startswith(cwd + os.sep) or abs_path == cwd
+        return True
+    except Exception:
+        return False
 
 
 def enregistrer_audio(
@@ -85,6 +108,10 @@ def enregistrer_audio(
     if os.environ.get("BBIA_DISABLE_AUDIO", "0") == "1":
         logging.debug("Audio désactivé (BBIA_DISABLE_AUDIO=1): enregistrement ignoré")
         return False
+
+    # Sécurité: valider chemin de sortie
+    if not _is_safe_path(fichier):
+        raise ValueError("Chemin de sortie non autorisé (path traversal)")
 
     # OPTIMISATION SDK: Utiliser robot.media.microphone si disponible
     microphone_sdk = _get_robot_media_microphone(robot_api)
@@ -172,13 +199,18 @@ def lire_audio(fichier: str, robot_api: Optional["RobotAPI"] = None) -> None:
         logging.debug(f"Audio désactivé (BBIA_DISABLE_AUDIO=1): '{fichier}' ignoré")
         return
 
+    # Sécurité: valider chemin d'entrée
+    if not _is_safe_path(fichier):
+        raise ValueError("Chemin d'entrée non autorisé (path traversal)")
+
     # Validation format et sample rate SDK (si soundfile dispo)
     if soundfile is not None:
         try:
             info = soundfile.info(fichier)
             if info.samplerate != DEFAULT_SAMPLE_RATE:
                 logging.warning(
-                    f"⚠️  Sample rate {info.samplerate} Hz != SDK standard {DEFAULT_SAMPLE_RATE} Hz. "
+                    f"⚠️  Sample rate {info.samplerate} Hz != "
+                    f"SDK standard {DEFAULT_SAMPLE_RATE} Hz. "
                     f"Performance audio peut être dégradée."
                 )
         except Exception:

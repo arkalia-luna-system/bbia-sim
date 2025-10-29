@@ -284,11 +284,9 @@ def main():
                         # Note: stewart_1 ne peut pas être contrôlé individuellement (plateforme Stewart)
                         # Si SDK disponible, utiliser create_head_pose pour mouvement tête expressif
                         try:
-                            from reachy_mini.utils import create_head_pose
-
                             # Mouvement tête subtil synchronisé avec corps (écoute attentive)
                             head_pitch = 0.05 * math.sin(step * 0.1)  # Pitch subtil
-                            head_yaw = 0.0  # Pas de yaw latéral pour ce mouvement
+                            # Pas de yaw latéral pour ce mouvement
                             # Note: Dans MuJoCo direct, on simule en contrôlant stewart_1,
                             # mais avec le SDK officiel, utiliser create_head_pose + set_target_head_pose
                             # Ici en mode MuJoCo direct, on utilise l'approximation stewart_1

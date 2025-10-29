@@ -232,16 +232,16 @@ def audit_module(module_config: dict[str, Any]) -> dict[str, Any]:
                     "line": 0,
                 }
             )
-            result["patches"].append(
-                {"file": file_path_str, "diff": black_diff[:500]}
-            )
+            result["patches"].append({"file": file_path_str, "diff": black_diff[:500]})
 
         # 5. Ruff
         ruff_issues, _ = check_ruff(file_path)
         for issue in ruff_issues[:10]:  # Limiter pour taille
             result["issues"].append(
                 {
-                    "severity": "medium" if issue.get("code", "").startswith("E") else "low",
+                    "severity": (
+                        "medium" if issue.get("code", "").startswith("E") else "low"
+                    ),
                     "type": "lint",
                     "desc": issue.get("message", ""),
                     "file": file_path_str,
@@ -285,15 +285,17 @@ def audit_module(module_config: dict[str, Any]) -> dict[str, Any]:
                 )
 
     # Scoring (simplifié pour l'exemple)
-    total_issues_high = sum(
-        1 for i in result["issues"] if i.get("severity") == "high"
-    )
+    total_issues_high = sum(1 for i in result["issues"] if i.get("severity") == "high")
     total_issues_medium = sum(
         1 for i in result["issues"] if i.get("severity") == "medium"
     )
 
-    result["score"]["conformity"] = max(0, 10 - total_issues_high * 2 - total_issues_medium)
-    result["score"]["safety_tests"] = 7 if not total_issues_high else max(0, 10 - total_issues_high * 3)
+    result["score"]["conformity"] = max(
+        0, 10 - total_issues_high * 2 - total_issues_medium
+    )
+    result["score"]["safety_tests"] = (
+        7 if not total_issues_high else max(0, 10 - total_issues_high * 3)
+    )
     result["score"]["performance"] = 8  # À calculer selon analyse
     result["score"]["docs"] = 6  # À calculer selon analyse docs
 
@@ -325,8 +327,8 @@ def generate_synthesis_md(results: list[dict]) -> None:
 
     content = f"""# 🔍 AUDIT COMPLET BBIA → REACHY INTEGRATION
 
-**Date**: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}  
-**Référentiel Reachy**: pollen-robotics/reachy_mini@{REACHY_COMMIT}  
+ **Date**: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+ **Référentiel Reachy**: pollen-robotics/reachy_mini@{REACHY_COMMIT}
 **Commit utilisé**: {REACHY_COMMIT}
 
 ---
@@ -456,4 +458,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

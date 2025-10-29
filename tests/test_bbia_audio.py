@@ -55,6 +55,18 @@ class TestBBIAAudio(unittest.TestCase):
         mock_wave.readframes.return_value = audio
         self.assertFalse(bbia_audio.detecter_son("test.wav", seuil=500))
 
+    @patch("os.environ.get", return_value="0")
+    def test_path_traversal_guard_enregistrer_audio(self, _mock_env_get):
+        # Chemin avec path traversal interdit
+        with self.assertRaises(ValueError):
+            bbia_audio.enregistrer_audio("../etc/passwd", duree=1, frequence=16000)
+
+    @patch("os.environ.get", return_value="0")
+    def test_path_traversal_guard_lire_audio(self, _mock_env_get):
+        # Chemin avec path traversal interdit
+        with self.assertRaises(ValueError):
+            bbia_audio.lire_audio("../../secret.txt")
+
 
 if __name__ == "__main__":
     unittest.main()

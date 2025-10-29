@@ -14,11 +14,11 @@ logger = logging.getLogger(__name__)
 class RobotAPI(ABC):
     """Interface unifiée pour contrôler le robot (Sim ou Réel)."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.is_connected = False
         self.current_emotion = "neutral"
         self.emotion_intensity = 0.5
-        self.joint_limits = {}
+        self.joint_limits: dict[str, tuple[float, float]] = {}
         self.forbidden_joints = {
             "left_antenna",
             "right_antenna",
@@ -182,7 +182,9 @@ class RobotAPI(ABC):
 
         return self.set_joint_pos("yaw_body", angle)
 
-    def run_behavior(self, behavior_name: str, duration: float = 5.0, **kwargs) -> bool:
+    def run_behavior(
+        self, behavior_name: str, duration: float = 5.0, **kwargs: Any
+    ) -> bool:
         """Exécute un comportement."""
         if not self.is_connected:
             logger.error("Robot non connecté")
@@ -280,7 +282,7 @@ class RobotAPI(ABC):
 
 
 # Import tardif pour compatibilité avec code existant (évite circular import)
-def __getattr__(name: str):
+def __getattr__(name: str) -> Any:
     """Import tardif pour RobotFactory depuis robot_factory."""
     if name == "RobotFactory":
         from .robot_factory import RobotFactory  # noqa: F401

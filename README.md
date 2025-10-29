@@ -1,6 +1,6 @@
 # 🚀 BBIA Reachy Mini Simulation - CONFORMITÉ PARFAITE ✅
 
-[![Version](https://img.shields.io/badge/version-1.3.0-blue.svg)](https://github.com/arkalia-luna-system/bbia-sim)
+[![Version](https://img.shields.io/badge/version-1.3.1-blue.svg)](https://github.com/arkalia-luna-system/bbia-sim)
 [![Python](https://img.shields.io/badge/python-3.9%2B-blue.svg)](https://python.org)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://github.com/arkalia-luna-system/bbia-sim/actions)
@@ -28,7 +28,7 @@
 
 ---
 
-**Version** : 1.3.0 "Conformité Parfaite SDK Officiel" - Backend unifié RobotAPI + Golden Tests + SDK Officiel Reachy-Mini 100% Conforme + Bridge Zenoh/FastAPI + Documentation Professionnelle
+**Version** : 1.3.1 "Prêt pour Release" - Backend unifié RobotAPI + Audit Complet Conformité Reachy-Mini + Tests Renforcés + Documentation À Jour
 
 Ce projet fournit une simulation **parfaitement fidèle** du robot Reachy Mini dans MuJoCo, avec une intégration complète des modules BBIA (Bio-Inspired Artificial Intelligence) et **100% conforme au SDK officiel** de Pollen Robotics (décembre 2024).
 
@@ -43,7 +43,7 @@ python examples/demo_emotion_ok.py
 
 ## 🎯 Vue d'ensemble
 
-**BBIA-SIM v1.3.0** est un moteur cognitif Python qui simule le robot Reachy Mini avec fidélité complète :
+**BBIA-SIM v1.3.1** est un moteur cognitif Python qui simule le robot Reachy Mini avec fidélité complète :
 
 - ✅ **12 émotions robotiques** contrôlant les articulations
 - ✅ **Conformité 100%** au SDK officiel Pollen Robotics

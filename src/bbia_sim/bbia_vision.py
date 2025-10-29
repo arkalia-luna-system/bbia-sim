@@ -7,22 +7,20 @@ Reconnaissance d'objets, détection de visages, suivi d'objets.
 import logging
 import math
 from datetime import datetime
-from typing import Any, Optional
+from typing import Any, Optional, cast
 
 import numpy as np
+import numpy.typing as npt
 
 logger = logging.getLogger(__name__)
 
 # Import conditionnel pour YOLO et MediaPipe
 try:
-    from .vision_yolo import YOLODetector, create_yolo_detector
+    from .vision_yolo import create_yolo_detector
 
     YOLO_AVAILABLE = True
 except ImportError:
     YOLO_AVAILABLE = False
-    # Variables pour éviter erreurs de type quand YOLO non disponible
-    YOLODetector = None  # type: ignore[assignment,misc]
-    create_yolo_detector = None  # type: ignore[assignment,misc]
 
 try:
     import mediapipe as mp
@@ -30,7 +28,6 @@ try:
     MEDIAPIPE_AVAILABLE = True
 except ImportError:
     MEDIAPIPE_AVAILABLE = False
-    mp = None
 
 # Import conditionnel cv2 pour conversions couleur
 try:
@@ -39,7 +36,6 @@ try:
     CV2_AVAILABLE = True
 except ImportError:
     CV2_AVAILABLE = False
-    cv2 = None  # type: ignore[assignment,misc]
 
 
 class BBIAVision:
@@ -107,7 +103,7 @@ class BBIAVision:
             except Exception as e:
                 logger.warning(f"⚠️ MediaPipe non disponible: {e}")
 
-    def _capture_image_from_camera(self) -> Optional[np.ndarray]:
+    def _capture_image_from_camera(self) -> Optional[npt.NDArray[np.uint8]]:
         """Capture une image depuis robot.media.camera si disponible.
 
         CORRECTION EXPERTE: Validation robuste du format d'image SDK avec gestion
@@ -183,21 +179,21 @@ class BBIAVision:
                 # Convertir grayscale → BGR si nécessaire
                 if image.ndim == 2:
                     # Grayscale: ajouter channel
-                    image = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)  # type: ignore[attr-defined]
+                    image = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
                 elif image.ndim == 3:
                     # Image couleur: vérifier nombre de canaux
                     channels = image.shape[2]
                     if channels == 1:
-                        image = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)  # type: ignore[attr-defined]
+                        image = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
                     elif channels == 4:
                         # RGBA → BGR
-                        image = cv2.cvtColor(image, cv2.COLOR_RGBA2BGR)  # type: ignore[attr-defined]
+                        image = cv2.cvtColor(image, cv2.COLOR_RGBA2BGR)
                     elif channels == 3:
                         # CORRECTION EXPERTE: SDK retourne généralement RGB
                         # Mais OpenCV/YOLO attendent BGR, donc convertir RGB → BGR
                         # Si SDK retourne déjà BGR, cette conversion sera effectuée
                         # mais généralement les SDKs retournent RGB
-                        image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)  # type: ignore[attr-defined]
+                        image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
                 else:
                     logger.warning(
                         f"Nombre de canaux invalide ({image.shape[2] if image.ndim == 3 else 'N/A'}), attendu 1, 3 ou 4"
@@ -226,7 +222,7 @@ class BBIAVision:
 
             logger.debug("✅ Image capturée depuis robot.media.camera (format validé)")
             # Type narrowing: image est maintenant np.ndarray après toutes les validations
-            return image  # type: ignore[return-value]
+            return cast(npt.NDArray[np.uint8], image)
 
         except Exception as e:
             logger.debug(f"Erreur capture caméra SDK (fallback simulation): {e}")

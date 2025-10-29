@@ -19,6 +19,11 @@ import pyttsx3
 import speech_recognition as sr
 
 logging.basicConfig(level=logging.INFO)
+try:
+    # Sélecteurs IA optionnels (TTS local type KittenTTS)
+    from .ai_backends import get_tts_backend
+except Exception:  # pragma: no cover - non critique si absent
+    get_tts_backend = None  # type: ignore[assignment]
 
 # Liste des voix féminines douces/enfantines à privilégier sur macOS
 # (ordre de préférence)
@@ -93,15 +98,15 @@ def get_bbia_voice(engine: Any) -> str:
     # 1. Prio France
     for v in voices:
         if "amelie" in normalize(v.name) and ("fr_FR" in v.id or "fr-FR" in v.id):
-            return str(v.id)  # type: ignore[no-any-return]
+            return str(v.id)
     # 2. Prio Canada
     for v in voices:
         if "amelie" in normalize(v.name) and ("fr_CA" in v.id or "fr-CA" in v.id):
-            return str(v.id)  # type: ignore[no-any-return]
+            return str(v.id)
     # 3. Toute Amelie
     for v in voices:
         if "amelie" in normalize(v.name):
-            return str(v.id)  # type: ignore[no-any-return]
+            return str(v.id)
     # 4. Sinon, message d'aide
     raise RuntimeError(
         "Aucune voix 'Amélie' n'est installée sur ce Mac. "
@@ -127,6 +132,59 @@ def dire_texte(texte: str, robot_api: Optional[Any] = None) -> None:
     if os.environ.get("BBIA_DISABLE_AUDIO", "0") == "1":
         logging.debug(f"Audio désactivé (BBIA_DISABLE_AUDIO=1): '{texte}' ignoré")
         return
+
+    # Si un backend TTS est explicitement demandé (BBIA_TTS_BACKEND),
+    # synthétiser vers un WAV temporaire via le backend sélectionné, puis jouer via SDK ou fallback
+    tts_backend_name = os.environ.get("BBIA_TTS_BACKEND")
+    if tts_backend_name and get_tts_backend is not None:
+        try:
+            import tempfile
+
+            backend = get_tts_backend()
+            with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as tmp:
+                wav_path = tmp.name
+            if backend.synthesize_to_wav(texte, wav_path):
+                # Essayer de jouer via SDK sinon fallback local
+                try:
+                    if robot_api and hasattr(robot_api, "media") and robot_api.media:
+                        media = robot_api.media
+                        with open(wav_path, "rb") as f:
+                            audio_bytes = f.read()
+                        if hasattr(media, "play_audio"):
+                            try:
+                                media.play_audio(audio_bytes, volume=1.0)
+                            except TypeError:
+                                media.play_audio(audio_bytes)
+                            return
+                        speaker = getattr(media, "speaker", None)
+                        if speaker is not None:
+                            if hasattr(speaker, "play_file"):
+                                speaker.play_file(wav_path)
+                                return
+                            if hasattr(speaker, "play"):
+                                speaker.play(audio_bytes)
+                                return
+                except Exception:
+                    pass
+                try:
+                    # Fallback simple: lecture locale sans dépendance forte
+                    import wave as _wave
+
+                    import numpy as _np
+                    import sounddevice as _sd
+
+                    with _wave.open(wav_path, "rb") as wf:
+                        sr = wf.getframerate()
+                        frames = wf.readframes(wf.getnframes())
+                        data = _np.frombuffer(frames, dtype=_np.int16)
+                        _sd.play(data, sr)
+                        _sd.wait()
+                    return
+                except Exception:
+                    pass
+        except Exception:
+            # Fallback vers logique pyttsx3 plus bas
+            pass
 
     # OPTIMISATION SDK: Utiliser robot.media.speaker si disponible
     # CORRECTION EXPERTE: Logique alignée avec bbia_voice_advanced.py pour robustesse
@@ -161,7 +219,6 @@ def dire_texte(texte: str, robot_api: Optional[Any] = None) -> None:
                     if hasattr(media, "play_audio"):
                         # Essayer avec volume d'abord (optimal pour haut-parleur 5W)
                         try:
-                            # type: ignore[attr-defined]
                             media.play_audio(audio_bytes, volume=1.0)
                             logging.info(
                                 f"✅ Synthèse vocale SDK (haut-parleur 5W via "
@@ -170,7 +227,7 @@ def dire_texte(texte: str, robot_api: Optional[Any] = None) -> None:
                             return
                         except TypeError:
                             # Fallback si signature sans volume
-                            media.play_audio(audio_bytes)  # type: ignore[attr-defined]
+                            media.play_audio(audio_bytes)
                             logging.info(
                                 f"✅ Synthèse vocale SDK (haut-parleur 5W via "
                                 f"play_audio) : {texte}",
@@ -188,7 +245,7 @@ def dire_texte(texte: str, robot_api: Optional[Any] = None) -> None:
                     if speaker is not None:
                         # Essayer play_file si disponible (plus simple)
                         if hasattr(speaker, "play_file"):
-                            speaker.play_file(tmp_path)  # type: ignore[attr-defined]
+                            speaker.play_file(tmp_path)
                             logging.info(
                                 f"✅ Synthèse vocale SDK (haut-parleur 5W via "
                                 f"speaker.play_file) : {texte}",
@@ -196,7 +253,7 @@ def dire_texte(texte: str, robot_api: Optional[Any] = None) -> None:
                             return
                         # Fallback: play(bytes)
                         if hasattr(speaker, "play"):
-                            speaker.play(audio_bytes)  # type: ignore[attr-defined]
+                            speaker.play(audio_bytes)
                             logging.info(
                                 f"✅ Synthèse vocale SDK "
                                 f"(haut-parleur 5W via speaker.play) : {texte}",
@@ -204,7 +261,7 @@ def dire_texte(texte: str, robot_api: Optional[Any] = None) -> None:
                             return
                         # Alternative: speaker.say() si TTS intégré dans SDK
                         if hasattr(speaker, "say"):
-                            speaker.say(texte)  # type: ignore[attr-defined]
+                            speaker.say(texte)
                             logging.info(
                                 f"✅ Synthèse vocale SDK "
                                 f"(haut-parleur 5W via speaker.say) : {texte}",
@@ -218,7 +275,7 @@ def dire_texte(texte: str, robot_api: Optional[Any] = None) -> None:
                 if tmp_path and os.path.exists(tmp_path):
                     try:
                         os.unlink(tmp_path)
-                    except Exception:  # noqa: B110
+                    except Exception:  # nosec B110 - nettoyage fichier temporaire
                         # try/except pass pour nettoyage fichiers temporaires
                         pass  # Ignorer erreurs de nettoyage
 
@@ -310,7 +367,7 @@ def reconnaitre_parole(
                     audio = r.record(source)
                     texte = r.recognize_google(audio, language="fr-FR")
                     logging.info(f"✅ Texte reconnu (SDK 4 microphones) : {texte}")
-                    return str(texte)  # type: ignore[no-any-return]
+                    return str(texte)
         except Exception as e:
             logging.debug(
                 f"Erreur reconnaissance SDK (fallback speech_recognition): {e}",
@@ -326,7 +383,7 @@ def reconnaitre_parole(
                 audio = r.listen(source, phrase_time_limit=duree)
                 texte = r.recognize_google(audio, language="fr-FR")
                 logging.info(f"Texte reconnu : {texte}")
-                return str(texte)  # type: ignore[no-any-return]
+                return str(texte)
             except sr.UnknownValueError:
                 logging.warning("Aucune parole reconnue.")
                 return None
@@ -356,11 +413,7 @@ def lister_voix_disponibles() -> list[Any]:
                 else str(v.languages[0])
             )
         except Exception:
-            # type: ignore[no-any-return]
-            _ = (
-                str(v.languages) if hasattr(v, "languages") and v.languages
-                else ""
-            )
+            _ = str(v.languages) if hasattr(v, "languages") and v.languages else ""
         result.append(v)
     return result
 
