@@ -4,7 +4,7 @@ Usage: python scripts/launch_robot.py [graphical|headless|test].
 """
 
 import shutil
-import subprocess  # nosec B404 - usage contrôlé
+import subprocess  # nosec B404
 import sys
 from pathlib import Path
 
@@ -36,7 +36,7 @@ def main():
 
     # Exécution
     try:
-        subprocess.run(cmd, check=True)  # nosec B603 - arguments constants
+        subprocess.run(cmd, check=True)  # nosec B603
     except subprocess.CalledProcessError:
         sys.exit(1)
     except KeyboardInterrupt:

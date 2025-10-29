@@ -5,7 +5,7 @@ Génère un rapport détaillé de conformité avec le SDK officiel Reachy Mini
 """
 
 import json
-import subprocess  # nosec B404 - usage contrôlé avec sys.executable
+import subprocess  # nosec B404
 import sys
 from datetime import datetime
 from pathlib import Path
@@ -18,7 +18,7 @@ def run_conformity_tests():
     """Exécute les tests de conformité."""
     print("🧪 Exécution des tests de conformité...")
 
-    result = subprocess.run(  # nosec B603 - arguments constants
+    result = subprocess.run(  # nosec B603
         [
             sys.executable,
             "-m",

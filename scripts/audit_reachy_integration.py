@@ -7,7 +7,7 @@ Génère JSONL par module + synthèse MD globale selon procédure stricte
 import json
 import logging
 import shutil
-import subprocess  # nosec B404 - utilisation contrôlée via run_command
+import subprocess  # nosec B404
 import sys
 import tempfile
 from datetime import datetime

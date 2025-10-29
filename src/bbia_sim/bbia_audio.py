@@ -105,9 +105,10 @@ def _is_safe_path(path: str) -> bool:
             # Autoriser répertoires temporaires
             import tempfile
 
+            # Répertoires temporaires explicitement autorisés (sécurité contrôlée)
             temp_roots = [
-                "/tmp",  # nosec B108: répertoire temporaire autorisé explicitement
-                "/dev/shm",  # nosec B108: mémoire partagée temporaire
+                "/tmp",  # nosec B108
+                "/dev/shm",  # nosec B108
                 os.path.abspath(os.getenv("PYTEST_TMPDIR", "/tmp")),  # nosec B108
                 os.path.abspath(tempfile.gettempdir()),
             ]
