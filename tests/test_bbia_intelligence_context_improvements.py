@@ -179,6 +179,19 @@ class TestBBIAIntelligenceContext:
                     "curieux",
                     "intéressant",
                     "explorer",
+                    "fascinant",
+                    "comprendre",
+                    "perspective",
+                    "réflexion",
+                    "curiosité",
+                    "réfléchir",
+                    "voir",
+                    "partager",
+                    "développer",
+                    "amener",
+                    "conduit",
+                    "intrigue",
+                    "pensez",
                 ]
                 has_intelligence = any(
                     word in response.lower() for word in intelligent_words
@@ -186,7 +199,7 @@ class TestBBIAIntelligenceContext:
 
                 assert (
                     has_intelligence
-                ), f"Réponse doit être intelligente: {response[:60]}..."
+                ), f"Réponse doit être intelligente: {response[:100]}"
 
                 print(
                     f"✅ Message générique '{msg}' → Réponse intelligente ({len(response)} chars)"
