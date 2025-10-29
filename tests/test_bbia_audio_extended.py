@@ -169,7 +169,10 @@ class TestBBIAAudioExtended:
             temp_path = temp_file.name
 
         try:
-            with patch("src.bbia_sim.bbia_audio.wave.open") as mock_wave_open:
+            with (
+                patch("os.environ.get", return_value="0"),  # Désactiver BBIA_DISABLE_AUDIO
+                patch("bbia_sim.bbia_audio.wave.open") as mock_wave_open,
+            ):
                 mock_wf = MagicMock()
                 mock_wf.getnframes.return_value = 1000
                 # Simuler des données audio avec amplitude élevée
@@ -192,7 +195,10 @@ class TestBBIAAudioExtended:
             temp_path = temp_file.name
 
         try:
-            with patch("src.bbia_sim.bbia_audio.wave.open") as mock_wave_open:
+            with (
+                patch("os.environ.get", return_value="0"),  # Désactiver BBIA_DISABLE_AUDIO
+                patch("bbia_sim.bbia_audio.wave.open") as mock_wave_open,
+            ):
                 mock_wf = MagicMock()
                 mock_wf.getnframes.return_value = 1000
                 # Simuler des données audio avec amplitude faible
@@ -223,7 +229,10 @@ class TestBBIAAudioExtended:
             temp_path = temp_file.name
 
         try:
-            with patch("src.bbia_sim.bbia_audio.wave.open") as mock_wave_open:
+            with (
+                patch("os.environ.get", return_value="0"),  # Désactiver BBIA_DISABLE_AUDIO
+                patch("bbia_sim.bbia_audio.wave.open") as mock_wave_open,
+            ):
                 mock_wf = MagicMock()
                 mock_wf.getnframes.return_value = 1000
                 # Simuler des données audio avec amplitude moyenne
@@ -249,7 +258,10 @@ class TestBBIAAudioExtended:
             temp_path = temp_file.name
 
         try:
-            with patch("src.bbia_sim.bbia_audio.wave.open") as mock_wave_open:
+            with (
+                patch("os.environ.get", return_value="0"),  # Désactiver BBIA_DISABLE_AUDIO
+                patch("bbia_sim.bbia_audio.wave.open") as mock_wave_open,
+            ):
                 mock_wf = MagicMock()
                 mock_wf.getnframes.return_value = 1000
                 # Simuler des données audio avec valeurs négatives et positives
@@ -272,9 +284,10 @@ class TestBBIAAudioExtended:
 
         try:
             with (
-                patch("src.bbia_sim.bbia_audio.sd.rec") as mock_rec,
-                patch("src.bbia_sim.bbia_audio.sd.wait"),
-                patch("src.bbia_sim.bbia_audio.wave.open") as mock_wave_open,
+                patch("os.environ.get", return_value="0"),  # Désactiver BBIA_DISABLE_AUDIO
+                patch("bbia_sim.bbia_audio.sd.rec") as mock_rec,
+                patch("bbia_sim.bbia_audio.sd.wait"),
+                patch("bbia_sim.bbia_audio.wave.open") as mock_wave_open,
             ):
 
                 mock_audio_data = np.array([1000, 2000], dtype=np.int16)
@@ -332,7 +345,10 @@ class TestBBIAAudioExtended:
             temp_path = temp_file.name
 
         try:
-            with patch("src.bbia_sim.bbia_audio.wave.open") as mock_wave_open:
+            with (
+                patch("os.environ.get", return_value="0"),  # Désactiver BBIA_DISABLE_AUDIO
+                patch("bbia_sim.bbia_audio.wave.open") as mock_wave_open,
+            ):
                 mock_wf = MagicMock()
                 mock_wf.getnframes.return_value = 1000
                 mock_wave_open.return_value.__enter__.return_value = mock_wf
@@ -359,9 +375,10 @@ class TestBBIAAudioExtended:
 
         try:
             with (
-                patch("src.bbia_sim.bbia_audio.sd.rec") as mock_rec,
-                patch("src.bbia_sim.bbia_audio.sd.wait"),
-                patch("src.bbia_sim.bbia_audio.wave.open") as mock_wave_open,
+                patch("os.environ.get", return_value="0"),  # Désactiver BBIA_DISABLE_AUDIO
+                patch("bbia_sim.bbia_audio.sd.rec") as mock_rec,
+                patch("bbia_sim.bbia_audio.sd.wait"),
+                patch("bbia_sim.bbia_audio.wave.open") as mock_wave_open,
             ):
 
                 mock_audio_data = np.array([1000], dtype=np.int16)

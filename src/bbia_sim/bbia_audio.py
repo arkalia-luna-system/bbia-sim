@@ -77,7 +77,7 @@ def enregistrer_audio(
     """
     # Vérifier flag d'environnement pour désactiver audio (CI/headless)
     if os.environ.get("BBIA_DISABLE_AUDIO", "0") == "1":
-        logging.debug(f"Audio désactivé (BBIA_DISABLE_AUDIO=1): enregistrement ignoré")
+        logging.debug("Audio désactivé (BBIA_DISABLE_AUDIO=1): enregistrement ignoré")
         return False
 
     # OPTIMISATION SDK: Utiliser robot.media.microphone si disponible

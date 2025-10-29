@@ -8,7 +8,6 @@ et détecte les problèmes subtils que seuls les experts en robotique IA
 
 import sys
 from pathlib import Path
-from unittest.mock import patch
 
 import pytest
 

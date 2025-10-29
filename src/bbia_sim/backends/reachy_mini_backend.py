@@ -204,6 +204,85 @@ class ReachyMiniBackend(RobotAPI):
             logger.error(f"Erreur déconnexion: {e}")
             return False
 
+    def _start_watchdog(self) -> None:
+        """Démarre le thread watchdog pour monitoring temps réel."""
+        if self._watchdog_thread is not None and self._watchdog_thread.is_alive():
+            logger.debug("Watchdog déjà actif")
+            return
+
+        self._should_stop_watchdog.clear()
+        self._watchdog_thread = threading.Thread(
+            target=self._watchdog_monitor, daemon=True, name="ReachyWatchdog"
+        )
+        self._watchdog_thread.start()
+        logger.debug("Watchdog démarré")
+
+    def _stop_watchdog(self) -> None:
+        """Arrête le thread watchdog."""
+        if self._watchdog_thread is None:
+            return
+
+        self._should_stop_watchdog.set()
+        if self._watchdog_thread.is_alive():
+            self._watchdog_thread.join(timeout=1.0)  # Max 1s pour arrêt propre
+        self._watchdog_thread = None
+        logger.debug("Watchdog arrêté")
+
+    def _watchdog_monitor(self) -> None:
+        """Thread watchdog pour monitoring temps réel.
+
+        Surveille l'état du robot et appelle emergency_stop() en cas d'anomalie.
+        Conforme au SDK officiel qui utilise threads avec Event.
+        """
+        logger.debug("Watchdog monitoring démarré")
+        max_heartbeat_timeout = 2.0  # 2 secondes max sans heartbeat
+
+        while not self._should_stop_watchdog.is_set():
+            try:
+                current_time = time.time()
+
+                # Mettre à jour heartbeat si robot connecté et actif
+                if self.is_connected:
+                    if self.robot:
+                        # Robot physique: vérifier état via SDK si possible
+                        try:
+                            # Vérification légère: essayer get_current_joint_positions
+                            # Si exception, robot peut être déconnecté
+                            self.robot.get_current_joint_positions()
+                            self._last_heartbeat = current_time
+                        except (AttributeError, RuntimeError, OSError) as e:
+                            logger.warning(
+                                f"Watchdog: robot semble déconnecté: {e}. "
+                                f"Activation emergency_stop..."
+                            )
+                            self.emergency_stop()
+                            break
+                    else:
+                        # Mode simulation: heartbeat automatique
+                        self._last_heartbeat = current_time
+                else:
+                    # Robot déconnecté: pas besoin de monitoring
+                    break
+
+                # Vérifier timeout heartbeat (sécurité)
+                if current_time - self._last_heartbeat > max_heartbeat_timeout:
+                    logger.warning(
+                        f"Watchdog: heartbeat timeout ({max_heartbeat_timeout}s). "
+                        f"Activation emergency_stop..."
+                    )
+                    self.emergency_stop()
+                    break
+
+            except Exception as e:
+                logger.error(f"Erreur watchdog: {e}")
+                # En cas d'erreur, attendre un peu avant retry
+                time.sleep(self._watchdog_interval)
+
+            # Attente entre vérifications
+            self._should_stop_watchdog.wait(self._watchdog_interval)
+
+        logger.debug("Watchdog monitoring terminé")
+
     def get_available_joints(self) -> list[str]:
         """Retourne la liste des joints disponibles."""
         return list(self.joint_mapping.keys())
@@ -829,6 +908,9 @@ class ReachyMiniBackend(RobotAPI):
             return False
 
         try:
+            # Arrêter watchdog immédiatement
+            self._stop_watchdog()
+
             # En simulation sans robot physique, on déconnecte mais retourne False
             if not self.robot:
                 self.is_connected = False
