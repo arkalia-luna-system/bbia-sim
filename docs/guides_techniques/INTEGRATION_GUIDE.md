@@ -19,6 +19,23 @@ Ce guide vous accompagne dans l'intégration de BBIA-SIM dans vos projets. BBIA-
 
 ---
 
+## Flux d'intégration
+
+```mermaid
+flowchart TD
+    START[Démarrer avec BBIA-SIM] --> INSTALL[Installation<br/>pip install -e .]
+    INSTALL --> CONFIG[Configuration<br/>Variables d'environnement]
+    CONFIG --> API[Démarrer API<br/>deploy/public_api.py --dev]
+    API --> TEST[Tester API<br/>--check ou Swagger UI]
+    TEST --> INTEG[Intégrer dans votre code<br/>RobotAPI ou HTTP client]
+    INTEG --> DEPLOY[Déployer<br/>Production ou Docker]
+    
+    style START fill:#90EE90
+    style DEPLOY fill:#87CEEB
+```
+
+---
+
 ## 🚀 **Démarrage Rapide**
 
 ### **1. Installation**

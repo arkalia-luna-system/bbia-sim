@@ -2,6 +2,20 @@
 
 ## 📋 **Mon Premier Robot BBIA en 5 Minutes**
 
+### Architecture simple
+
+```mermaid
+graph LR
+    USER[Vous] --> DASH[Dashboard Web<br/>localhost:8000]
+    USER --> PYTHON[Script Python<br/>RobotAPI]
+    DASH --> BBIA[Modules BBIA<br/>Émotions, Vision, Voix]
+    PYTHON --> BBIA
+    BBIA --> ROBOT[Robot Reachy Mini<br/>Simulation ou Réel]
+    
+    style USER fill:#90EE90
+    style ROBOT fill:#87CEEB
+```
+
 ### **1️⃣ Installation**
 
 ```bash

@@ -1,12 +1,12 @@
-# 🌐 Configuration Communautaire BBIA-SIM
+# 🌐 Configuration communautaire BBIA-SIM
 
 **Version** : 1.2.0 "Écosystème Ouvert"  
 **Date** : Octobre 2025  
 **Public** : Communauté Technique  
 
-## 🎯 **Configuration Recommandée**
+## 🎯 **Configuration recommandée**
 
-### **Environnement de Développement**
+### **Environnement de développement**
 
 ```bash
 # Python 3.9+ requis
@@ -25,7 +25,7 @@ export BBIA_LOG_LEVEL=info
 export MUJOCO_GL=egl
 ```
 
-### **Environnement de Production**
+### **Environnement de production**
 
 ```bash
 # Configuration production
@@ -39,7 +39,7 @@ export MUJOCO_GL=egl
 
 ---
 
-## 🔧 **Scripts de Démarrage**
+## 🔧 **Scripts de démarrage**
 
 ### **Développement**
 
@@ -79,9 +79,9 @@ docker run -p 8000:8000 -e BBIA_API_TOKEN=secret bbia-sim
 
 ---
 
-## 🧪 **Tests et Validation**
+## 🧪 **Tests et validation**
 
-### **Tests Automatisés**
+### **Tests automatisés**
 
 ```bash
 # Tests complets de l'API
@@ -106,7 +106,7 @@ python scripts/demo_mode_complete.py --mode robot_real
 python scripts/demo_mode_complete.py --mode mixed
 ```
 
-### **Tests de Conformité**
+### **Tests de conformité**
 
 ```bash
 # Test conformité SDK officiel
@@ -121,9 +121,9 @@ python -m pytest tests/test_performance.py -v
 
 ---
 
-## 📊 **Monitoring et Logs**
+## 📊 **Monitoring et logs**
 
-### **Configuration des Logs**
+### **Configuration des logs**
 
 ```python
 # Configuration logging personnalisée
@@ -139,7 +139,7 @@ logging.basicConfig(
 )
 ```
 
-### **Métriques de Performance**
+### **Métriques de performance**
 
 ```bash
 # Monitoring des performances
@@ -177,7 +177,7 @@ CORS_ORIGINS = [
 ]
 ```
 
-### **Rate Limiting**
+### **Rate limiting**
 
 ```python
 # Configuration rate limiting
@@ -187,9 +187,28 @@ RATE_LIMIT_WINDOW = 60     # fenêtre en secondes
 
 ---
 
-## 🌐 **Intégration Multi-Environnements**
+## 🌐 **Intégration multi-environnements**
 
-### **Développement Local**
+### Vue d'ensemble des environnements
+
+```mermaid
+graph TB
+    DEV[Développement Local<br/>BBIA_DEBUG=true<br/>BBIA_API_HOST=127.0.0.1]
+    STAGING[Staging<br/>BBIA_DEBUG=false<br/>BBIA_API_TOKEN=staging]
+    PROD[Production<br/>BBIA_DEBUG=false<br/>BBIA_RATE_LIMIT=1000]
+    DOCKER[Docker<br/>Conteneur isolé<br/>Port 8000]
+    
+    DEV --> TEST[Tests & Debug]
+    STAGING --> VALID[Validation]
+    VALID --> PROD
+    DOCKER --> PROD
+    
+    style DEV fill:#90EE90
+    style PROD fill:#FFB6C1
+    style DOCKER fill:#87CEEB
+```
+
+### **Développement local**
 
 ```bash
 # Configuration développement
@@ -226,19 +245,19 @@ export BBIA_RATE_LIMIT=1000
 
 ## 📚 **Documentation et Support**
 
-### **Documentation Interactive**
+### **Documentation interactive**
 
 - **Swagger UI** : http://localhost:8000/docs
 - **ReDoc** : http://localhost:8000/redoc
 - **OpenAPI** : http://localhost:8000/openapi.json
 
-### **Guides Techniques**
+### **Guides techniques**
 
 - **Guide d'Intégration** : `docs/guides_techniques/INTEGRATION_GUIDE.md`
 - **Architecture** : `docs/architecture/ARCHITECTURE.md`
 - **Tests** : `docs/guides_techniques/TESTING_GUIDE.md`
 
-### **Support Communautaire**
+### **Support communautaire**
 
 - **GitHub Issues** : https://github.com/arkalia-luna-system/bbia-sim/issues
 - **Discussions** : https://github.com/arkalia-luna-system/bbia-sim/discussions
@@ -248,7 +267,7 @@ export BBIA_RATE_LIMIT=1000
 
 ## 🚀 **Déploiement**
 
-### **Déploiement Local**
+### **Déploiement local**
 
 ```bash
 # Installation complète
@@ -272,7 +291,7 @@ docker run -d -p 8000:8000 --name bbia-sim-api bbia-sim
 curl http://localhost:8000/health
 ```
 
-### **Déploiement Cloud**
+### **Déploiement cloud**
 
 ```bash
 # Configuration cloud (exemple AWS)
@@ -288,7 +307,7 @@ gunicorn bbia_sim.daemon.app.main:app -w 4 -k uvicorn.workers.UvicornWorker
 
 ## 🔄 **Maintenance**
 
-### **Mise à Jour**
+### **Mise à jour**
 
 ```bash
 # Mise à jour du code
@@ -324,16 +343,16 @@ rm -rf __pycache__/
 
 ---
 
-## 📋 **Checklist de Configuration**
+## 📋 **Checklist de configuration**
 
-### **✅ Environnement de Base**
+### **✅ Environnement de base**
 
 - [ ] Python 3.9+ installé
 - [ ] Dépendances installées
 - [ ] Variables d'environnement configurées
 - [ ] Permissions de fichiers correctes
 
-### **✅ API et Services**
+### **✅ API et services**
 
 - [ ] API démarrée et accessible
 - [ ] Documentation interactive disponible
@@ -363,6 +382,6 @@ rm -rf __pycache__/
 
 ---
 
-**🎉 Configuration terminée ! BBIA-SIM est prêt pour la communauté.**
+Configuration terminée. BBIA‑SIM est prêt pour la communauté.
 
-**🌐 Bienvenue dans l'écosystème BBIA-SIM !**
+Bienvenue dans l’écosystème BBIA‑SIM.
