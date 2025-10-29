@@ -13,7 +13,6 @@ import time
 import numpy as np
 import pytest
 
-
 sd = None  # type: ignore[assignment]
 try:
     import sounddevice as _sd  # type: ignore
@@ -65,5 +64,3 @@ def test_audio_buffer_stability_10s() -> None:
     # CI peut être bruyant; tolérance faible
     assert underruns == 0, f"Underruns détectés: {underruns}"
     assert overruns == 0, f"Overruns détectés: {overruns}"
-
-

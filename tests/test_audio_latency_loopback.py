@@ -12,11 +12,10 @@ import os
 import platform
 import statistics
 import time
-from typing import List, Optional
+from typing import Optional
 
 import numpy as np
 import pytest
-
 
 sd = None  # type: ignore[assignment]
 try:
@@ -61,12 +60,11 @@ def test_audio_latency_loopback_e2e() -> None:
     t = np.arange(int(sample_rate * duration_s)) / sample_rate
     tone = (0.25 * np.sin(2 * np.pi * tone_hz * t)).astype(np.float32)
 
-    latencies_ms: List[float] = []
+    latencies_ms: list[float] = []
     iterations = 20
 
     # Utiliser un stream full-duplex avec loopback activé côté entrée
     for _ in range(iterations):
-        recorded = np.zeros_like(tone)
 
         def callback(outdata, frames, time_info, status):  # type: ignore[no-redef]
             # Ignorer les flags (s'ils existent) pour la mesure latence simple
@@ -96,5 +94,3 @@ def test_audio_latency_loopback_e2e() -> None:
     # Budgets tolérants (dépend du driver) mais devraient rester < 150 ms
     assert p50 < 150.0, f"p50 trop élevée: {p50:.1f} ms"
     assert p95 < 250.0, f"p95 trop élevée: {p95:.1f} ms"
-
-

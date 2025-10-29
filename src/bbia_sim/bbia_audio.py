@@ -71,6 +71,7 @@ def _is_safe_path(path: str) -> bool:
     Autorise:
     - chemins relatifs sans ".."
     - chemins absolus sous le répertoire courant (projet)
+    - chemins sous répertoires temporaires usuels (/tmp, /dev/shm, pytest tmp)
     """
     try:
         norm = os.path.normpath(path)
@@ -79,6 +80,19 @@ def _is_safe_path(path: str) -> bool:
         if os.path.isabs(norm):
             cwd = os.path.abspath(os.getcwd())
             abs_path = os.path.abspath(norm)
+            # Autoriser répertoires temporaires
+            import tempfile
+
+            temp_roots = [
+                "/tmp",
+                "/dev/shm",
+                os.path.abspath(os.getenv("PYTEST_TMPDIR", "/tmp")),
+                os.path.abspath(tempfile.gettempdir()),
+            ]
+            if any(
+                abs_path.startswith(tr + os.sep) or abs_path == tr for tr in temp_roots
+            ):
+                return True
             return abs_path.startswith(cwd + os.sep) or abs_path == cwd
         return True
     except Exception:

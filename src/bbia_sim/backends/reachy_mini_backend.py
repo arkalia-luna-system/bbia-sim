@@ -302,6 +302,8 @@ class ReachyMiniBackend(RobotAPI):
                                 f"Watchdog: robot semble déconnecté: {e}. "
                                 f"Activation emergency_stop..."
                             )
+                            # Demander l'arrêt du watchdog avant emergency_stop
+                            self._should_stop_watchdog.set()
                             self.emergency_stop()
                             break
                     else:
@@ -317,6 +319,7 @@ class ReachyMiniBackend(RobotAPI):
                         f"Watchdog: heartbeat timeout ({max_heartbeat_timeout}s). "
                         f"Activation emergency_stop..."
                     )
+                    self._should_stop_watchdog.set()
                     self.emergency_stop()
                     break
 

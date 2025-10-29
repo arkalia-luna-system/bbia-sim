@@ -31,12 +31,15 @@ class Pyttsx3TTS:
     """Fallback TTS léger (pyttsx3), fonctionne bien sur macOS."""
 
     def __init__(self) -> None:
-        import pyttsx3  # lazy import
-
-        self._engine = pyttsx3.init()
+        # Lazy-initialization pour éviter erreurs eSpeak en environnements CI
+        self._engine = None
 
     def synthesize_to_wav(self, text: str, outfile: str) -> bool:
         try:
+            if self._engine is None:
+                import pyttsx3  # lazy import
+
+                self._engine = pyttsx3.init()
             self._engine.save_to_file(text, outfile)
             self._engine.runAndWait()
             return True
@@ -155,8 +158,12 @@ class WhisperSTT:
 
             model_name = os.environ.get("BBIA_WHISPER_MODEL", "openai/whisper-base")
             # nosec B615: révision explicite pour éviter latest flottant
-            self._processor = WhisperProcessor.from_pretrained(model_name, revision="main")
-            self._model = WhisperForConditionalGeneration.from_pretrained(model_name, revision="main")
+            self._processor = WhisperProcessor.from_pretrained(
+                model_name, revision="main"
+            )
+            self._model = WhisperForConditionalGeneration.from_pretrained(
+                model_name, revision="main"
+            )
             self._ready = True
         except Exception as e:  # pragma: no cover - environnement sans deps
             logging.getLogger(__name__).info(f"Whisper indisponible: {e}")
@@ -218,7 +225,9 @@ class LlamaCppLLM:
         if not self._ready or self._model is None:
             return (prompt or "")[:max_tokens]
         try:
-            out: dict[str, Any] = self._model(prompt=prompt, max_tokens=max_tokens, echo=False)
+            out: dict[str, Any] = self._model(
+                prompt=prompt, max_tokens=max_tokens, echo=False
+            )
             # Format standard llama.cpp: {"choices":[{"text":"..."}]}
             text = str(out.get("choices", [{}])[0].get("text", ""))
             return text
