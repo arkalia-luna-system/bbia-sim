@@ -1,6 +1,43 @@
 {
-  "timestamp": "2025-10-29T19:57:04.138801",
+  "timestamp": "2025-10-29T20:11:51.860641",
   "new": [],
-  "removed": [],
+  "removed": [
+    {
+      "source": "github",
+      "identifier": "https://github.com/arkalia-luna-system/bbia-sim",
+      "title": "arkalia-luna-system/bbia-sim",
+      "score": 0,
+      "details": {
+        "ci": false,
+        "dashboard": false,
+        "api": false,
+        "ws": false,
+        "mujoco": false,
+        "emotion": false,
+        "tests": false,
+        "docker": false,
+        "topic_reachy_mini": false
+      },
+      "description": "🤖 Moteur cognitif robot émotionnel Reachy Mini — IA, audio, voix Amélie, vision 📱 Python 100%, simulation stable, tests complets 🧠 Modules: réveil, émotions, capteurs 🎤 MIT license, docs pro"
+    },
+    {
+      "source": "github",
+      "identifier": "https://github.com/lidejieZQ/ReachyMini",
+      "title": "lidejieZQ/ReachyMini",
+      "score": 0,
+      "details": {
+        "ci": false,
+        "dashboard": false,
+        "api": false,
+        "ws": false,
+        "mujoco": false,
+        "emotion": false,
+        "tests": false,
+        "docker": false,
+        "topic_reachy_mini": false
+      },
+      "description": "Reachy Mini Robot Control System - A modern robot control platform with Python backend, Rust core, and React frontend"
+    }
+  ],
   "changed_scores": []
 }

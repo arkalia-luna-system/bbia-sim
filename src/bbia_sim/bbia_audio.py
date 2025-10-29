@@ -5,29 +5,32 @@ sinon utilise sounddevice pour compatibilité.
 Compatible macOS, simple, portable, testé.
 """
 
-import atexit
 import logging
 import os
 import wave
 from typing import TYPE_CHECKING, Any, Optional
 
 import numpy as np
-import sounddevice as sd
+
+sd: Optional[Any] = None  # lazy-import
 
 if TYPE_CHECKING:
     from .robot_api import RobotAPI
 
 
-# Gestion propre de PortAudio pour éviter les erreurs de terminaison
-def _cleanup_sounddevice() -> None:
-    """Nettoyage propre de sounddevice pour éviter les erreurs PortAudio."""
-    try:
-        sd._terminate()
-    except Exception:  # nosec B110
-        pass  # Ignorer les erreurs de terminaison
+def _get_sd() -> Optional[Any]:
+    """Import paresseux de sounddevice pour éviter l'init PortAudio au import."""
+    global sd
+    if sd is not None:
+        return sd
+    try:  # pragma: no cover - dépend du runtime
+        import sounddevice as _sd  # type: ignore
 
+        sd = _sd
+        return sd
+    except Exception:
+        return None
 
-atexit.register(_cleanup_sounddevice)
 
 logging.basicConfig(level=logging.INFO)
 
@@ -182,10 +185,15 @@ def enregistrer_audio(
     # Fallback: sounddevice (compatibilité)
     try:
         logging.info(f"Enregistrement audio ({duree}s) dans {fichier}...")
-        audio = sd.rec(
+        _sd = _get_sd()
+        if _sd is None:
+            raise RuntimeError(
+                "sounddevice indisponible (BBIA_DISABLE_AUDIO conseillé en CI)"
+            )
+        audio = _sd.rec(
             int(duree * frequence), samplerate=frequence, channels=1, dtype="int16"
         )
-        sd.wait()
+        _sd.wait()
         with wave.open(fichier, "wb") as wf:
             wf.setnchannels(1)
             wf.setsampwidth(2)
@@ -264,8 +272,11 @@ def lire_audio(fichier: str, robot_api: Optional["RobotAPI"] = None) -> None:
             frequence = wf.getframerate()
             frames = wf.readframes(wf.getnframes())
             audio = np.frombuffer(frames, dtype="int16")
-            sd.play(audio, frequence)
-            sd.wait()
+            _sd = _get_sd()
+            if _sd is None:
+                raise RuntimeError("sounddevice indisponible (lecture audio)")
+            _sd.play(audio, frequence)
+            _sd.wait()
         logging.info(f"Lecture de {fichier} terminée.")
     except Exception as e:
         logging.error(f"Erreur de lecture audio : {e}")

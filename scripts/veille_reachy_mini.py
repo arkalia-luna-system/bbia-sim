@@ -39,7 +39,7 @@ except Exception:  # pragma: no cover
 try:
     from huggingface_hub import list_spaces  # type: ignore
 except Exception:
-    list_spaces = None  # facultatif
+    list_spaces = None  # type: ignore[assignment]
 
 
 DEFAULT_KEYWORDS: list[str] = [
@@ -101,7 +101,9 @@ def ensure_log_csv(path: str) -> None:
             )
 
 
-def github_search_repos(keywords: list[str], gh_token: str | None, since_date: str | None = None) -> list[dict]:
+def github_search_repos(
+    keywords: list[str], gh_token: str | None, since_date: str | None = None
+) -> list[dict]:
     headers = {"Accept": "application/vnd.github+json"}
     if gh_token:
         headers["Authorization"] = f"Bearer {gh_token}"
@@ -112,7 +114,11 @@ def github_search_repos(keywords: list[str], gh_token: str | None, since_date: s
 
     # Construire une requête OR limitée pour éviter URL trop longues
     # On itère par mot-clé pour rester simple et fiable
-    stop_on_limit = os.environ.get("VEILLE_STOP_ON_RATE_LIMIT", "false").lower() in {"1", "true", "yes"}
+    stop_on_limit = os.environ.get("VEILLE_STOP_ON_RATE_LIMIT", "true").lower() in {
+        "1",
+        "true",
+        "yes",
+    }
     for kw in keywords:
         q = f"{kw} in:name,description,readme"
         if since_date:
@@ -127,10 +133,15 @@ def github_search_repos(keywords: list[str], gh_token: str | None, since_date: s
                 for it in items:
                     results.append(it)
             elif resp.status_code == 403 and "rate limit" in resp.text.lower():
-                print(
-                    "[veille][github] Rate limited — réduisez la fréquence ou définissez GH_TOKEN",
-                    file=sys.stderr,
-                )
+                if os.environ.get("VEILLE_ONLY_CHANGES", "false").lower() not in {
+                    "1",
+                    "true",
+                    "yes",
+                }:
+                    print(
+                        "[veille][github] Rate limited — réduisez la fréquence ou définissez GH_TOKEN",
+                        file=sys.stderr,
+                    )
                 if stop_on_limit:
                     break
             else:
@@ -276,9 +287,9 @@ def _is_reachy_mini_text(text: str) -> bool:
 
 
 def search_github_candidates(
-    keywords: list[str], gh_token: str | None
+    keywords: list[str], gh_token: str | None, since_date: str | None = None
 ) -> list[Candidate]:
-    repos = github_search_repos(keywords, gh_token)
+    repos = github_search_repos(keywords, gh_token, since_date=since_date)
     cands: list[Candidate] = []
     for r in repos:
         full_name = r.get("full_name", "")
@@ -483,21 +494,27 @@ def main(argv: list[str]) -> int:
         "true",
         "yes",
     }
-    watch_official = os.environ.get("VEILLE_WATCH_OFFICIAL", "true").lower() in {"1", "true", "yes"}
+    watch_official = os.environ.get("VEILLE_WATCH_OFFICIAL", "true").lower() in {
+        "1",
+        "true",
+        "yes",
+    }
     official_news_file = os.environ.get("OFFICIAL_NEWS_FILE")
     # Anti rate-limit/performances
     try:
         sleep_between = float(os.environ.get("VEILLE_SLEEP_BETWEEN", "0.0") or 0.0)
     except Exception:
         sleep_between = 0.0
-    stop_on_rate_limit = os.environ.get("VEILLE_STOP_ON_RATE_LIMIT", "false").lower() in {"1", "true", "yes"}
 
     # Optionnel: petite pause entre sources pour ménager les quotas
     prev_overall_ts = get_previous_timestamp_iso(out_json)
-    gh_candidates = search_github_candidates(keywords, gh_token, since_date=prev_overall_ts)
+    gh_candidates = search_github_candidates(
+        keywords, gh_token, since_date=prev_overall_ts
+    )
     if sleep_between > 0:
         try:
             import time as _t
+
             _t.sleep(sleep_between)
         except Exception:
             pass
@@ -533,24 +550,34 @@ def main(argv: list[str]) -> int:
     write_diff_json(out_diff, prev_map, all_candidates)
 
     # Résumé console avec option seulement en cas de changements
-    only_changes = os.environ.get("VEILLE_ONLY_CHANGES", "false").lower() in {"1", "true", "yes"}
+    only_changes = os.environ.get("VEILLE_ONLY_CHANGES", "false").lower() in {
+        "1",
+        "true",
+        "yes",
+    }
     changes_new = changes_removed = changes_scores = 0
     try:
         with open(out_diff, encoding="utf-8") as f:
             diff = json.load(f)
-        changes_new = len(diff.get('new', []))
-        changes_removed = len(diff.get('removed', []))
-        changes_scores = len(diff.get('changed_scores', []))
+        changes_new = len(diff.get("new", []))
+        changes_removed = len(diff.get("removed", []))
+        changes_scores = len(diff.get("changed_scores", []))
     except Exception:
         pass
     if not only_changes:
-        print(f"[veille] {len(all_candidates)} candidats consignés dans {out_csv} et {out_json}")
-        print(f"[veille] Nouveaux: {changes_new}, Retirés: {changes_removed}, Scores modifiés: {changes_scores}")
+        print(
+            f"[veille] {len(all_candidates)} candidats consignés dans {out_csv} et {out_json}"
+        )
+        print(
+            f"[veille] Nouveaux: {changes_new}, Retirés: {changes_removed}, Scores modifiés: {changes_scores}"
+        )
         for c in all_candidates[:10]:
             print(f"  - [{c.score}] {c.title} -> {c.identifier}")
     else:
         if changes_new or changes_removed or changes_scores:
-            print(f"[veille] Changements détectés — Nouveaux:{changes_new} Retirés:{changes_removed} Scores:{changes_scores}")
+            print(
+                f"[veille] Changements détectés — Nouveaux:{changes_new} Retirés:{changes_removed} Scores:{changes_scores}"
+            )
             for c in all_candidates[:5]:
                 print(f"  - [{c.score}] {c.title} -> {c.identifier}")
 
@@ -564,31 +591,50 @@ def main(argv: list[str]) -> int:
             sess = requests.Session()
             sess.headers.update(headers)
 
-            repo = sess.get("https://api.github.com/repos/pollen-robotics/reachy_mini", timeout=20)
+            repo = sess.get(
+                "https://api.github.com/repos/pollen-robotics/reachy_mini", timeout=20
+            )
             if repo.status_code == 200:
                 rj = repo.json()
                 default_branch = rj.get("default_branch", "main")
-                status.update({
-                    "repo": "pollen-robotics/reachy_mini",
-                    "stargazers": rj.get("stargazers_count"),
-                    "open_issues": rj.get("open_issues_count"),
-                    "pushed_at": rj.get("pushed_at"),
-                    "default_branch": default_branch,
-                })
-                rel = sess.get("https://api.github.com/repos/pollen-robotics/reachy_mini/releases/latest", timeout=20)
+                status.update(
+                    {
+                        "repo": "pollen-robotics/reachy_mini",
+                        "stargazers": rj.get("stargazers_count"),
+                        "open_issues": rj.get("open_issues_count"),
+                        "pushed_at": rj.get("pushed_at"),
+                        "default_branch": default_branch,
+                    }
+                )
+                rel = sess.get(
+                    "https://api.github.com/repos/pollen-robotics/reachy_mini/releases/latest",
+                    timeout=20,
+                )
                 if rel.status_code == 200:
                     r = rel.json()
                     status["latest_release_tag"] = r.get("tag_name")
                     status["latest_release_published_at"] = r.get("published_at")
-                commits = sess.get(f"https://api.github.com/repos/pollen-robotics/reachy_mini/commits?sha={default_branch}&per_page=1", timeout=20)
-                if commits.status_code == 200 and isinstance(commits.json(), list) and commits.json():
+                commits = sess.get(
+                    f"https://api.github.com/repos/pollen-robotics/reachy_mini/commits?sha={default_branch}&per_page=1",
+                    timeout=20,
+                )
+                if (
+                    commits.status_code == 200
+                    and isinstance(commits.json(), list)
+                    and commits.json()
+                ):
                     c0 = commits.json()[0]
                     status["last_commit_sha"] = c0.get("sha")
-                    status["last_commit_date"] = ((c0.get("commit") or {}).get("author") or {}).get("date")
+                    status["last_commit_date"] = (
+                        (c0.get("commit") or {}).get("author") or {}
+                    ).get("date")
 
             if official_news_file and os.path.exists(official_news_file):
                 try:
-                    import hashlib, time, re
+                    import hashlib
+                    import re
+                    import time
+
                     mtime = os.path.getmtime(official_news_file)
                     with open(official_news_file, "rb") as nf:
                         blob = nf.read()
@@ -600,17 +646,23 @@ def main(argv: list[str]) -> int:
                         text = ""
                     status["news_file_path"] = official_news_file
                     status["news_file_mtime"] = mtime
-                    status["news_file_mtime_iso"] = time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime(mtime))
+                    status["news_file_mtime_iso"] = time.strftime(
+                        "%Y-%m-%dT%H:%M:%SZ", time.gmtime(mtime)
+                    )
                     status["news_file_sha256"] = hashlib.sha256(blob).hexdigest()
                     # Heuristiques de parsing
                     lower = text.lower()
                     # beta_units: chercher "beta shipments" et un nombre proche
-                    m_beta = re.search(r"beta\s+shipments[^\d]*(\d{1,4})\s+units", lower)
+                    m_beta = re.search(
+                        r"beta\s+shipments[^\d]*(\d{1,4})\s+units", lower
+                    )
                     if m_beta:
                         status.setdefault("shipping", {})
                         status["shipping"]["beta_units"] = int(m_beta.group(1))
                     # plan_units_q4: "around 3,000 Reachy-mini units" (tolérer virgule)
-                    m_plan = re.search(r"around\s+([\d,]+)\s+reachy[-\s]?mini\s+units", lower)
+                    m_plan = re.search(
+                        r"around\s+([\d,]+)\s+reachy[-\s]?mini\s+units", lower
+                    )
                     if m_plan:
                         try:
                             units = int(m_plan.group(1).replace(",", ""))
@@ -633,13 +685,19 @@ def main(argv: list[str]) -> int:
                         now = dt.datetime.utcnow()
                         year = now.year + (1 if now.month > 2 else 0)
                         status.setdefault("shipping", {})
-                        status["shipping"]["batches_after"] = [f"{year}-01", f"{year}-02"]
+                        status["shipping"]["batches_after"] = [
+                            f"{year}-01",
+                            f"{year}-02",
+                        ]
                 except Exception:
                     pass
 
             prev_off = load_previous_json(off_json)
             os.makedirs(os.path.dirname(off_json), exist_ok=True)
-            curr_off = {"timestamp": dt.datetime.utcnow().isoformat(), "candidates": [{"identifier": "official:reachy_mini", **status}]}
+            curr_off = {
+                "timestamp": dt.datetime.utcnow().isoformat(),
+                "candidates": [{"identifier": "official:reachy_mini", **status}],
+            }
             with open(off_json, "w", encoding="utf-8") as f:
                 json.dump(curr_off, f, ensure_ascii=False, indent=2)
 
@@ -650,9 +708,19 @@ def main(argv: list[str]) -> int:
                 if old.get(k) != v:
                     changed_fields.append({"field": k, "prev": old.get(k), "curr": v})
             with open(off_diff, "w", encoding="utf-8") as f:
-                json.dump({"timestamp": dt.datetime.utcnow().isoformat(), "changed_fields": changed_fields}, f, ensure_ascii=False, indent=2)
+                json.dump(
+                    {
+                        "timestamp": dt.datetime.utcnow().isoformat(),
+                        "changed_fields": changed_fields,
+                    },
+                    f,
+                    ensure_ascii=False,
+                    indent=2,
+                )
             if changed_fields:
-                print(f"[veille] Officiel: {len(changed_fields)} changement(s) détecté(s).")
+                print(
+                    f"[veille] Officiel: {len(changed_fields)} changement(s) détecté(s)."
+                )
         except Exception as exc:  # pragma: no cover
             print(f"[veille][official] Erreur suivi officiel: {exc}", file=sys.stderr)
 

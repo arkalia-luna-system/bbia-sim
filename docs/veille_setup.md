@@ -15,7 +15,7 @@ pip install -r requirements/requirements-veille.txt
 Variables optionnelles:
 - `GH_TOKEN`: jeton GitHub pour élargir les quotas API (Settings → Developer settings → tokens)
 - `VEILLE_SLEEP_BETWEEN`: pause (secondes) entre sources pour limiter les rate-limits (ex: `0.5`)
-- `VEILLE_STOP_ON_RATE_LIMIT`: si `true`, arrêter la collecte GitHub à la première alerte
+- `VEILLE_STOP_ON_RATE_LIMIT`: si `true`, arrêter la collecte GitHub à la première alerte (par défaut `true`)
 - `VEILLE_WATCH_OFFICIAL`: active le suivi officiel Reachy Mini (par défaut `true`)
 - `OFFICIAL_NEWS_FILE`: chemin vers un fichier texte/email à parser (expéditions, jalons)
 
@@ -28,7 +28,8 @@ export VEILLE_WATCH_OFFICIAL=true
 export OFFICIAL_NEWS_FILE=/absolute/path/to/reachy_mini_news.txt
 # (optionnel) anti rate-limit
 export VEILLE_SLEEP_BETWEEN=0.5
-export VEILLE_STOP_ON_RATE_LIMIT=false
+# par défaut true; laisser vide ou définir à true
+export VEILLE_STOP_ON_RATE_LIMIT=true
 python scripts/veille_reachy_mini.py
 ```
 
