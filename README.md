@@ -218,6 +218,19 @@ python scripts/replay_viewer.py artifacts/my_animation.jsonl --speed 1.5
 ```
 
 ### 📋 Documentation
+
+**Documentation interactive HTML** (recommandé)
+```bash
+# Générer la documentation HTML complète avec navigation
+scripts/docs/build_docs_html.sh
+# Ouvrir artifacts/docs_html/index.html dans votre navigateur
+```
+
+La documentation HTML offre :
+- Navigation latérale avec table des matières
+- Rendu Mermaid automatique des diagrammes
+- Thème sombre adapté au développement
+- Liens ancres pour navigation rapide
 - **[Guide Débutant](docs/guides/GUIDE_DEBUTANT.md)** : Guide pour débuter
 - **[Guide Avancé](docs/guides/GUIDE_AVANCE.md)** : Guide avancé
 - **[Vertical Slices](docs/audit/VERTICAL_SLICES_ACCOMPLIS.md)** : Documentation des vertical slices
