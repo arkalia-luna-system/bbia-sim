@@ -22,7 +22,7 @@ echo "[onboarding] $(date -Iseconds) démarrage (cli_audio=$CLI_AUDIO)" | tee -a
 ENV_FILE="$ROOT_DIR/scripts/onboarding/env_bbia_example.txt"
 if [[ -f "$ENV_FILE" ]]; then
   # shellcheck disable=SC2046
-  export $(tr -d '\r' < "$ENV_FILE" | xargs) || true
+  export $(grep -Ev '^\s*#|^\s*$' "$ENV_FILE" | tr -d '\r' | xargs) || true
   echo "[onboarding] env chargé depuis $ENV_FILE" | tee -a "$LOG_FILE"
 else
   echo "[onboarding] ⚠️  $ENV_FILE introuvable, poursuite sans export auto" | tee -a "$LOG_FILE"
