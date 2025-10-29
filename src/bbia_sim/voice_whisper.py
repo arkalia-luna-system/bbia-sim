@@ -5,6 +5,7 @@ Intégration Speech-to-Text avec OpenAI Whisper (optionnel)
 """
 
 import logging
+import os
 import time
 from pathlib import Path
 from typing import Any, Optional
@@ -147,19 +148,29 @@ class WhisperSTT:
             )
             sd.wait()
 
-            # Sauvegarde temporaire sécurisée
+            # OPTIMISATION PERFORMANCE: Sauvegarde temporaire sécurisée avec cleanup garanti
             import tempfile
+            import time
 
-            temp_file = Path(tempfile.gettempdir()) / "bbia_whisper_temp.wav"
-            sf.write(temp_file, audio_data, sample_rate)
+            # Nom unique pour éviter collisions multi-processus
+            temp_file = (
+                Path(tempfile.gettempdir())
+                / f"bbia_whisper_{os.getpid()}_{int(time.time() * 1000)}.wav"
+            )
 
-            # Transcription
-            result = self.transcribe_audio(str(temp_file))
+            try:
+                sf.write(temp_file, audio_data, sample_rate)
 
-            # Nettoyage
-            temp_file.unlink(missing_ok=True)
-
-            return result
+                # Transcription
+                result = self.transcribe_audio(str(temp_file))
+                return result
+            finally:
+                # OPTIMISATION: Nettoyage garanti même en cas d'erreur
+                if temp_file.exists():
+                    try:
+                        temp_file.unlink()
+                    except Exception as cleanup_error:
+                        logger.debug(f"Nettoyage fichier Whisper ({cleanup_error})")
 
         except ImportError:
             logger.error(

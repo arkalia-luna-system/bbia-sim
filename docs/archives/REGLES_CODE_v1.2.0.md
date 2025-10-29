@@ -253,7 +253,7 @@ python scripts/emergency_stop.py
 pytest tests/test_robot_api_smoke.py -v
 
 # Logs détaillés
-tail -f logs/bbia.log
+tail -f log/bbia.log
 
 # Hardware dry run
 python scripts/hardware_dry_run.py --backend reachy

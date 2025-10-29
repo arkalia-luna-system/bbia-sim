@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 class ReachyBackend(RobotAPI):
     """Backend Reachy réel pour RobotAPI (Mock pour l'instant)."""
 
-    def __init__(self, robot_ip: str = "localhost", robot_port: int = 8080):
+    def __init__(self, robot_ip: str = "localhost", robot_port: int = 8080) -> None:
         super().__init__()
         self.robot_ip = robot_ip
         self.robot_port = robot_port
@@ -156,7 +156,9 @@ class ReachyBackend(RobotAPI):
             "backend_type": "reachy_real",
         }
 
-    def send_command(self, command: str, **kwargs) -> bool:
+    def send_command(
+        self, command: str, **kwargs: dict[str, Any]  # noqa: ANN401
+    ) -> bool:
         """Envoie une commande au robot Reachy."""
         if not self.is_connected:
             logger.error("Reachy non connecté")

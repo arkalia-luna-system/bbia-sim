@@ -96,21 +96,48 @@ def surprise_3d_mujoco_viewer():
             time.sleep(1.5)
 
         # Séquence 3: Mouvements de tête complexes
-        print("\n👀 Séquence 3: Mouvements de Tête Complexes")
-        head_movements = [
-            ("yaw_body", "Rotation corps"),
-            ("stewart_1", "Mouvement tête 1"),
-            ("stewart_2", "Mouvement tête 2"),
-            ("stewart_3", "Mouvement tête 3"),
-        ]
+        # IMPORTANT EXPERT: Les joints stewart ne peuvent PAS être contrôlés individuellement
+        # car la plateforme Stewart utilise la cinématique inverse (IK).
+        # Utiliser goto_target() ou set_target_head_pose() avec create_head_pose() pour la tête.
+        print("\n👀 Séquence 3: Mouvements de Tête Complexes (SDK Correct)")
+        try:
+            from reachy_mini.utils import create_head_pose
 
-        for joint_name, description in head_movements:
-            print(f"   {description} ({joint_name})")
-            animate_joint(model, data, joint_name, 2.0, viewer)
-            robot_officiel.set_joint_pos(joint_name, 0.1)
+            head_poses = [
+                (0.1, 0.0, "Regard droit"),
+                (0.05, 0.15, "Regard à droite"),
+                (0.05, -0.15, "Regard à gauche"),
+                (0.0, 0.0, "Position neutre"),
+            ]
+
+            for pitch, yaw, description in head_poses:
+                print(f"   {description} (pitch={pitch:.2f}, yaw={yaw:.2f})")
+                pose = create_head_pose(pitch=pitch, yaw=yaw, degrees=False)
+
+                # Utiliser goto_target pour MuJoCo (simulation bas niveau OK pour viewer)
+                animate_head_pose_mujoco(model, data, pitch, yaw, 2.0, viewer)
+
+                # Utiliser méthode SDK correcte pour robot officiel
+                if hasattr(robot_officiel, "goto_target"):
+                    robot_officiel.goto_target(
+                        head=pose, duration=0.8, method="minjerk"
+                    )
+                elif hasattr(robot_officiel, "set_target_head_pose"):
+                    robot_officiel.set_target_head_pose(pose)
+                time.sleep(0.5)
+
+            # Mouvement corps (seul joint directement contrôlable)
+            print("   Rotation corps (yaw_body)")
+            if hasattr(robot_officiel, "goto_target"):
+                robot_officiel.goto_target(body_yaw=0.1, duration=0.6, method="minjerk")
+            else:
+                robot_officiel.set_joint_pos("yaw_body", 0.1)
+            animate_joint(model, data, "yaw_body", 2.0, viewer)
             time.sleep(0.5)
-            robot_officiel.set_joint_pos(joint_name, 0.0)
-            time.sleep(0.5)
+        except ImportError:
+            print("   ⚠️  SDK reachy_mini non disponible, skip mouvements tête SDK")
+            # Fallback: animation MuJoCo seulement (simulation bas niveau)
+            animate_joint(model, data, "yaw_body", 2.0, viewer)
 
         # Séquence 4: Rotation complète du corps
         print("\n🌪️ Séquence 4: Rotation Complète du Corps")
@@ -158,9 +185,58 @@ def surprise_3d_mujoco_viewer():
         print("=" * 50)
 
 
+def animate_head_pose_mujoco(model, data, pitch, yaw, duration, viewer):
+    """Anime une pose de tête via MuJoCo direct (simulation bas niveau uniquement).
+
+    ⚠️ IMPORTANT EXPERT: Cette fonction utilise data.qpos[stewart_*] directement
+    uniquement pour la simulation MuJoCo de bas niveau (visualisation).
+    Pour le robot physique ou avec le SDK, utiliser goto_target() ou
+    set_target_head_pose() avec create_head_pose() (cinématique inverse requise).
+
+    Args:
+        model: Modèle MuJoCo
+        data: Données MuJoCo
+        pitch: Pitch en radians
+        yaw: Yaw en radians
+        duration: Durée animation
+        viewer: Viewer MuJoCo
+    """
+    # Approximation pour MuJoCo direct: stewart_1 ≈ pitch, stewart_2 ≈ yaw
+    # NOTE: Cette approximation est uniquement pour simulation MuJoCo bas niveau.
+    # Le robot réel nécessite IK via goto_target() ou create_head_pose().
+    steps = int(duration * 100)  # 100 Hz
+
+    for _step in range(steps):
+        # Animation douce vers la cible
+        stewart_1_id = get_joint_id(model, "stewart_1")
+        stewart_2_id = get_joint_id(model, "stewart_2")
+
+        if stewart_1_id is not None:
+            current_pitch = data.qpos[stewart_1_id]
+            data.qpos[stewart_1_id] = current_pitch + (pitch - current_pitch) * 0.1
+        if stewart_2_id is not None:
+            current_yaw = data.qpos[stewart_2_id]
+            data.qpos[stewart_2_id] = current_yaw + (yaw - current_yaw) * 0.1
+
+        mujoco.mj_step(model, data)
+        mujoco.mj_forward(model, data)
+        viewer.sync()
+        time.sleep(0.01)
+
+
 def animate_emotion(model, data, emotion, duration, viewer):
-    """Anime une émotion sur le robot MuJoCo."""
+    """Anime une émotion sur le robot MuJoCo (simulation bas niveau uniquement).
+
+    ⚠️ IMPORTANT EXPERT: Cette fonction utilise data.qpos[stewart_*] directement
+    uniquement pour la simulation MuJoCo de bas niveau (visualisation viewer).
+    Pour le robot physique ou avec le SDK, utiliser set_emotion() ou goto_target()
+    avec create_head_pose() (cinématique inverse requise).
+
+    NOTE: L'utilisation de stewart_1/stewart_2 ici est une approximation simplifiée
+    pour MuJoCo direct. Le robot réel nécessite IK.
+    """
     # Mapping émotions vers mouvements (AMPLITUDES RÉDUITES)
+    # NOTE: Utilisation stewart_1/stewart_2 uniquement pour MuJoCo direct (viewer)
     emotion_movements = {
         "happy": {"yaw_body": 0.1, "stewart_1": 0.05, "stewart_2": 0.05},
         "sad": {"yaw_body": -0.1, "stewart_1": -0.05, "stewart_2": -0.05},
@@ -236,9 +312,15 @@ def animate_body_rotation(model, data, duration, viewer):
 
 
 def animate_behavior(model, data, behavior, duration, viewer):
-    """Anime un comportement spécifique."""
+    """Anime un comportement spécifique (simulation MuJoCo direct uniquement).
+
+    ⚠️ IMPORTANT EXPERT: Cette fonction utilise data.qpos[stewart_*] directement
+    uniquement pour la simulation MuJoCo de bas niveau. Pour le robot réel,
+    utiliser les comportements SDK (wake_up, nod, goto_sleep) qui gèrent IK automatiquement.
+    """
     if behavior == "nod":
-        # Hochement de tête
+        # Hochement de tête (approximation MuJoCo direct)
+        # NOTE: Pour robot réel, utiliser robot.run_behavior("nod") qui utilise IK
         joint_id = get_joint_id(model, "stewart_1")
         if joint_id is not None:
             for _ in range(3):  # 3 hochements (AMPLITUDE RÉDUITE)

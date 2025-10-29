@@ -7,9 +7,12 @@ Génération de comportements dynamiques basés sur le contexte et l'état émot
 import logging
 import random
 import time
-from typing import Any, Optional
+from typing import TYPE_CHECKING, Any, Optional
 
 import numpy as np
+
+if TYPE_CHECKING:
+    from .robot_api import RobotAPI
 
 logger = logging.getLogger(__name__)
 
@@ -22,13 +25,25 @@ class BBIAAdaptiveBehavior:
     - Adaptation émotionnelle des mouvements
     - Apprentissage des préférences utilisateur
     - Comportements proactifs et réactifs
+
+    ⚠️ IMPORTANT EXPERT ROBOTIQUE:
+    Les comportements générés utilisent "head_pose" au lieu de joints stewart individuels,
+    car la plateforme Stewart nécessite la cinématique inverse (IK). Les comportements doivent
+    être exécutés via goto_target(head=pose) ou look_at_world() du SDK Reachy Mini officiel.
     """
 
-    def __init__(self):
-        """Initialise le module de comportements adaptatifs."""
+    def __init__(self, robot_api: Optional["RobotAPI"] = None) -> None:
+        """Initialise le module de comportements adaptatifs.
+
+        Args:
+            robot_api: Instance RobotAPI pour exécuter les comportements générés (optionnel)
+        """
         self.is_active = False
         self.current_context = "neutral"
         self.behavior_history: list[dict[str, Any]] = []
+        self.robot_api = (
+            robot_api  # OPTIMISATION SDK: Passer robot_api pour exécution conforme
+        )
 
         # Contexte et états
         self.contexts = {
@@ -70,34 +85,48 @@ class BBIAAdaptiveBehavior:
         }
 
         # Comportements disponibles
+        # ⚠️ IMPORTANT EXPERT ROBOTIQUE: Les joints stewart (stewart_1-6) NE PEUVENT PAS être contrôlés individuellement
+        # car la plateforme Stewart utilise la cinématique inverse (IK). Utiliser goto_target() avec create_head_pose()
+        # pour contrôler la tête. Les joints stewart listés ici sont indicatifs uniquement pour documentation.
         self.behaviors = {
             "nod": {
                 "description": "Hochement de tête",
                 "emotions": ["happy", "excited", "curious"],
                 "duration": 2.0,
                 "intensity_range": (0.3, 0.8),
-                "joints": ["yaw_body", "stewart_1", "stewart_2"],
+                "joints": [
+                    "yaw_body",
+                    "head_pose",
+                ],  # head_pose = goto_target(head=pose) avec IK
             },
             "shake": {
                 "description": "Secouement de tête",
                 "emotions": ["sad", "confused", "disgusted"],
                 "duration": 2.5,
                 "intensity_range": (0.4, 0.9),
-                "joints": ["yaw_body", "stewart_1", "stewart_2"],
+                "joints": [
+                    "yaw_body",
+                    "head_pose",
+                ],  # head_pose = goto_target(head=pose) avec IK
             },
             "look_around": {
                 "description": "Regarder autour",
                 "emotions": ["curious", "excited", "neutral"],
                 "duration": 4.0,
                 "intensity_range": (0.2, 0.6),
-                "joints": ["yaw_body", "stewart_3", "stewart_4"],
+                "joints": [
+                    "yaw_body",
+                    "head_pose",
+                ],  # head_pose = look_at_world() ou goto_target(head=pose)
             },
             "focus": {
                 "description": "Se concentrer sur un point",
                 "emotions": ["determined", "curious", "neutral"],
                 "duration": 3.0,
                 "intensity_range": (0.1, 0.4),
-                "joints": ["stewart_1", "stewart_2", "stewart_3"],
+                "joints": [
+                    "head_pose"
+                ],  # head_pose = goto_target(head=pose) ou look_at_world()
             },
             "stretch": {
                 "description": "Étirement",
@@ -105,13 +134,8 @@ class BBIAAdaptiveBehavior:
                 "duration": 5.0,
                 "intensity_range": (0.3, 0.7),
                 "joints": [
-                    "stewart_1",
-                    "stewart_2",
-                    "stewart_3",
-                    "stewart_4",
-                    "stewart_5",
-                    "stewart_6",
-                ],
+                    "head_pose"
+                ],  # head_pose = goto_target(head=pose) avec séquence de poses
             },
             "dance": {
                 "description": "Mouvement de danse",
@@ -120,18 +144,18 @@ class BBIAAdaptiveBehavior:
                 "intensity_range": (0.5, 1.0),
                 "joints": [
                     "yaw_body",
-                    "stewart_1",
-                    "stewart_2",
-                    "stewart_3",
-                    "stewart_4",
-                ],
+                    "head_pose",
+                ],  # head_pose = séquence goto_target(head=pose)
             },
             "hide": {
                 "description": "Se cacher",
                 "emotions": ["fearful", "shy", "sad"],
                 "duration": 3.0,
                 "intensity_range": (0.2, 0.5),
-                "joints": ["stewart_1", "stewart_2", "stewart_3"],
+                "joints": [
+                    "head_pose",
+                    "yaw_body",
+                ],  # head_pose = goto_target(head=pose_down, body_yaw=-0.2)
             },
             "celebrate": {
                 "description": "Célébration",
@@ -140,18 +164,13 @@ class BBIAAdaptiveBehavior:
                 "intensity_range": (0.6, 1.0),
                 "joints": [
                     "yaw_body",
-                    "stewart_1",
-                    "stewart_2",
-                    "stewart_3",
-                    "stewart_4",
-                    "stewart_5",
-                    "stewart_6",
-                ],
+                    "head_pose",
+                ],  # head_pose = séquence goto_target(head=pose) animée
             },
         }
 
         # Apprentissage des préférences
-        self.user_preferences = {
+        self.user_preferences: dict[str, dict[str, float]] = {
             "preferred_emotions": {},
             "preferred_behaviors": {},
             "interaction_patterns": {},
@@ -275,23 +294,27 @@ class BBIAAdaptiveBehavior:
 
         for behavior_name, behavior_config in self.behaviors.items():
             # Vérification compatibilité émotion
-            if self.current_emotion in behavior_config["emotions"]:
+            emotions_list = behavior_config.get("emotions", [])
+            if (
+                isinstance(emotions_list, list)
+                and self.current_emotion in emotions_list
+            ):
                 suitable.append(behavior_name)
             # Vérification contexte
-            elif self.current_context in ["playful", "greeting"] and behavior_name in [
+            elif self.current_context in ("playful", "greeting") and behavior_name in (
                 "dance",
                 "celebrate",
-            ]:
+            ):
                 suitable.append(behavior_name)
-            elif self.current_context in ["serious", "attention"] and behavior_name in [
+            elif self.current_context in ("serious", "attention") and behavior_name in (
                 "focus",
                 "nod",
-            ]:
+            ):
                 suitable.append(behavior_name)
-            elif self.current_context in ["rest", "sleepy"] and behavior_name in [
+            elif self.current_context in ("rest", "sleepy") and behavior_name in (
                 "stretch",
                 "hide",
-            ]:
+            ):
                 suitable.append(behavior_name)
 
         return suitable if suitable else ["look_around"]
@@ -371,7 +394,7 @@ class BBIAAdaptiveBehavior:
 
         return params
 
-    def _add_to_history(self, behavior: dict[str, Any]):
+    def _add_to_history(self, behavior: dict[str, Any]) -> None:
         """Ajoute un comportement à l'historique."""
         self.behavior_history.append(behavior)
 
@@ -380,7 +403,7 @@ class BBIAAdaptiveBehavior:
         if len(self.behavior_history) > max_history:
             self.behavior_history = self.behavior_history[-max_history:]
 
-    def _update_preferences(self, behavior: dict[str, Any]):
+    def _update_preferences(self, behavior: dict[str, Any]) -> None:
         """Met à jour les préférences utilisateur basées sur le comportement."""
         behavior_name = behavior["name"]
         emotion = behavior["emotion"]
@@ -402,7 +425,7 @@ class BBIAAdaptiveBehavior:
         if len(self.behavior_history) % 20 == 0:
             self._normalize_preferences()
 
-    def _normalize_preferences(self):
+    def _normalize_preferences(self) -> None:
         """Normalise les préférences pour éviter l'explosion des valeurs."""
         for category in ["preferred_behaviors", "preferred_emotions"]:
             if self.user_preferences[category]:
@@ -436,7 +459,7 @@ class BBIAAdaptiveBehavior:
             logger.error(f"❌ Erreur comportement proactif: {e}")
             return None
 
-    def adapt_to_feedback(self, behavior_id: str, feedback: str, score: float):
+    def adapt_to_feedback(self, behavior_id: str, feedback: str, score: float) -> None:
         """Adapte les comportements basés sur les retours utilisateur.
 
         Args:
@@ -517,7 +540,7 @@ class BBIAAdaptiveBehavior:
             },
         }
 
-    def reset_learning(self):
+    def reset_learning(self) -> None:
         """Remet à zéro l'apprentissage des préférences."""
         self.user_preferences = {
             "preferred_emotions": {},
@@ -528,8 +551,185 @@ class BBIAAdaptiveBehavior:
         self.behavior_history = []
         logger.info("🔄 Apprentissage réinitialisé")
 
+    def execute_behavior(
+        self, behavior: dict[str, Any], robot_api: Optional["RobotAPI"] = None
+    ) -> bool:
+        """Exécute un comportement généré de manière conforme au SDK Reachy Mini.
 
-def main():
+        Utilise goto_target avec IK pour les mouvements tête (conforme SDK),
+        au lieu de contrôler joints stewart individuellement.
+
+        Args:
+            behavior: Comportement généré (retourné par generate_behavior)
+            robot_api: Instance RobotAPI (utilise self.robot_api si None)
+
+        Returns:
+            True si exécuté avec succès
+        """
+        robot_api = robot_api or self.robot_api
+        if not robot_api:
+            logger.warning("⚠️ robot_api non disponible - comportement non exécuté")
+            return False
+
+        try:
+            behavior_name = behavior.get("name")
+            params = behavior.get("parameters", {})
+            duration = params.get("duration", 2.0)
+            intensity = params.get("intensity", 0.5)
+            joints = params.get("joints", [])
+
+            logger.info(
+                f"🎭 Exécution comportement '{behavior_name}' (durée={duration:.1f}s, intensité={intensity:.2f})"
+            )
+
+            # OPTIMISATION EXPERT SDK: Exécuter selon type de comportement
+            # avec goto_target + IK pour mouvements tête (conforme SDK)
+
+            try:
+                from reachy_mini.utils import create_head_pose
+
+                REACHY_UTILS_AVAILABLE = True
+            except ImportError:
+                REACHY_UTILS_AVAILABLE = False
+                create_head_pose = None
+
+            # Mapping comportements → exécution SDK conforme
+            if behavior_name == "nod":
+                # Hochement tête (happy/excited/curious)
+                if (
+                    REACHY_UTILS_AVAILABLE
+                    and create_head_pose
+                    and hasattr(robot_api, "goto_target")
+                ):
+                    # Mouvement tête: pitch vers haut puis retour
+                    pose_up = create_head_pose(
+                        pitch=0.1 * intensity, yaw=0.0, degrees=False
+                    )
+                    robot_api.goto_target(
+                        head=pose_up, duration=duration / 2, method="minjerk"
+                    )
+                    time.sleep(duration / 2 + 0.1)
+                    pose_neutral = create_head_pose(pitch=0.0, yaw=0.0, degrees=False)
+                    robot_api.goto_target(
+                        head=pose_neutral, duration=duration / 2, method="minjerk"
+                    )
+                    logger.info("✅ Hochement exécuté via goto_target (conforme SDK)")
+                    return True
+
+            elif behavior_name == "shake":
+                # Secouement tête (sad/confused)
+                if (
+                    REACHY_UTILS_AVAILABLE
+                    and create_head_pose
+                    and hasattr(robot_api, "goto_target")
+                ):
+                    # Mouvement tête: yaw gauche/droite
+                    for _ in range(2):
+                        pose_left = create_head_pose(
+                            pitch=0.0, yaw=-0.15 * intensity, degrees=False
+                        )
+                        robot_api.goto_target(
+                            head=pose_left, duration=duration / 4, method="cartoon"
+                        )
+                        time.sleep(duration / 4 + 0.1)
+                        pose_right = create_head_pose(
+                            pitch=0.0, yaw=0.15 * intensity, degrees=False
+                        )
+                        robot_api.goto_target(
+                            head=pose_right, duration=duration / 4, method="cartoon"
+                        )
+                        time.sleep(duration / 4 + 0.1)
+                    pose_neutral = create_head_pose(pitch=0.0, yaw=0.0, degrees=False)
+                    robot_api.goto_target(
+                        head=pose_neutral, duration=0.3, method="minjerk"
+                    )
+                    logger.info("✅ Secouement exécuté via goto_target (conforme SDK)")
+                    return True
+
+            elif behavior_name == "look_around":
+                # Regarder autour (curious/excited)
+                if REACHY_UTILS_AVAILABLE and hasattr(robot_api, "look_at_world"):
+                    # Utiliser look_at_world pour mouvement naturel
+                    positions = [
+                        (0.3, 0.0, 0.2),
+                        (0.0, 0.3, 0.2),
+                        (-0.3, 0.0, 0.2),
+                        (0.0, -0.3, 0.2),
+                        (0.0, 0.0, 0.2),
+                    ]
+                    for x, y, z in positions:
+                        robot_api.look_at_world(
+                            x,
+                            y,
+                            z,
+                            duration=duration / len(positions),
+                            perform_movement=True,
+                        )
+                    logger.info(
+                        "✅ Look around exécuté via look_at_world (conforme SDK)"
+                    )
+                    return True
+
+            elif behavior_name == "focus":
+                # Se concentrer (determined/curious)
+                if (
+                    REACHY_UTILS_AVAILABLE
+                    and create_head_pose
+                    and hasattr(robot_api, "goto_target")
+                ):
+                    pose_focus = create_head_pose(
+                        pitch=0.05 * intensity, yaw=0.0, degrees=False
+                    )
+                    robot_api.goto_target(
+                        head=pose_focus, duration=duration, method="minjerk"
+                    )
+                    logger.info("✅ Focus exécuté via goto_target (conforme SDK)")
+                    return True
+
+            elif "head_pose" in joints and "yaw_body" in joints:
+                # Comportement générique avec tête + corps
+                if (
+                    REACHY_UTILS_AVAILABLE
+                    and create_head_pose
+                    and hasattr(robot_api, "goto_target")
+                ):
+                    # Mouvement combiné tête+corps (optimal SDK)
+                    head_pitch = 0.1 * intensity * random.uniform(-1, 1)  # nosec B311
+                    head_yaw = 0.1 * intensity * random.uniform(-1, 1)  # nosec B311
+                    body_yaw = 0.15 * intensity * random.uniform(-1, 1)  # nosec B311
+
+                    pose = create_head_pose(
+                        pitch=head_pitch, yaw=head_yaw, degrees=False
+                    )
+                    robot_api.goto_target(
+                        head=pose,
+                        body_yaw=body_yaw,
+                        duration=duration,
+                        method="minjerk",
+                    )
+                    logger.info(
+                        f"✅ Comportement '{behavior_name}' exécuté via goto_target combiné (conforme SDK)"
+                    )
+                    return True
+
+            # Fallback: utiliser set_emotion si comportement correspond à une émotion
+            emotion = behavior.get("emotion")
+            if emotion and hasattr(robot_api, "set_emotion"):
+                robot_api.set_emotion(emotion, intensity)
+                logger.info("✅ Comportement exécuté via set_emotion (fallback)")
+                return True
+
+            logger.warning(
+                f"⚠️ Comportement '{behavior_name}' non exécuté (robot_api ou méthodes SDK manquantes)"
+            )
+            return False
+
+        except Exception as e:
+            logger.error(f"❌ Erreur exécution comportement '{behavior_name}': {e}")
+            return False
+
+
+def main() -> None:
     """Test du module BBIA Adaptive Behavior."""
     # Initialisation
     adaptive_behavior = BBIAAdaptiveBehavior()

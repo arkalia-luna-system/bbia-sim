@@ -61,8 +61,8 @@ J'ai créé un test complet qui vérifie **18 aspects différents** de la confor
 
 #### Documentation
 - ✅ `docs/CONFORMITE_REACHY_MINI_COMPLETE.md` - Document de conformité complet
-- ✅ `logs/conformity_report_reachy_mini.md` - Rapport généré automatiquement
-- ✅ `logs/conformity_report_reachy_mini.json` - Données JSON du rapport
+- ✅ `log/conformity_report_reachy_mini.md` - Rapport généré automatiquement
+- ✅ `log/conformity_report_reachy_mini.json` - Données JSON du rapport
 - ✅ `ANALYSE_CONFORMITE_REACHY_MINI.md` - Ce document
 
 ---
@@ -346,7 +346,7 @@ Aucune erreur ou non-conformité n'a été détectée. Votre implémentation est
 ### Fichiers de Votre Projet
 - 📁 Code: `src/bbia_sim/backends/reachy_mini_backend.py`
 - 🧪 Tests: `tests/test_reachy_mini_full_conformity_official.py`
-- 📊 Rapport: `logs/conformity_report_reachy_mini.md`
+- 📊 Rapport: `log/conformity_report_reachy_mini.md`
 - 📝 Document: `docs/CONFORMITE_REACHY_MINI_COMPLETE.md`
 
 ---

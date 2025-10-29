@@ -299,7 +299,7 @@ def monitor_robot_performance():
 # Configuration des logs
 LOGGING_CONFIG = {
     "level": "INFO",
-    "file": "logs/robot_migration.log",
+    "file": "log/robot_migration.log",
     "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     "rotation": "1 day",
     "retention": "7 days",

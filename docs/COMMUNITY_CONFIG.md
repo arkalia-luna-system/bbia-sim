@@ -133,7 +133,7 @@ logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     handlers=[
-        logging.FileHandler("logs/bbia.log"),
+        logging.FileHandler("log/bbia.log"),
         logging.StreamHandler()
     ]
 )
@@ -146,7 +146,7 @@ logging.basicConfig(
 python scripts/monitor_performance.py
 
 # Analyse des logs
-python scripts/analyze_logs.py --input logs/bbia.log
+python scripts/analyze_logs.py --input log/bbia.log
 
 # Rapport de santé
 python scripts/health_report.py
@@ -309,14 +309,14 @@ python scripts/start_public_api.py --prod
 cp -r config/ backup/config_$(date +%Y%m%d)/
 
 # Sauvegarde des logs
-cp -r logs/ backup/logs_$(date +%Y%m%d)/
+cp -r log/ backup/log_$(date +%Y%m%d)/
 ```
 
 ### **Nettoyage**
 
 ```bash
 # Nettoyage des logs anciens
-find logs/ -name "*.log" -mtime +30 -delete
+find log/ -name "*.log" -mtime +30 -delete
 
 # Nettoyage des fichiers temporaires
 rm -rf tmp/

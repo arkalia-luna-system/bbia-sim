@@ -119,12 +119,53 @@ class RobotAPI(ABC):
         return True
 
     def look_at(self, target_x: float, target_y: float, target_z: float = 0.0) -> bool:
-        """Fait regarder le robot vers une cible."""
+        """Fait regarder le robot vers une cible (méthode générique).
+
+        NOTE EXPERT: Cette méthode est un wrapper générique. Les backends avancés
+        (comme ReachyMiniBackend) implémentent look_at_world() qui est plus précise
+        avec calcul IK complet pour la tête.
+
+        Args:
+            target_x: Position X de la cible (mètres)
+            target_y: Position Y de la cible (mètres)
+            target_z: Position Z de la cible (mètres, défaut: 0.0)
+
+        Returns:
+            True si commande envoyée, False sinon
+        """
         if not self.is_connected:
             logger.error("Robot non connecté")
             return False
 
-        # Mapping cible → angle de rotation (yaw_body)
+        # Vérifier si le backend a look_at_world (plus précis)
+        if hasattr(self, "look_at_world"):
+            try:
+                # Utiliser la méthode SDK avancée si disponible
+                self.look_at_world(
+                    target_x, target_y, target_z, duration=1.0, perform_movement=True
+                )
+                return True
+            except Exception as e:
+                logger.warning(f"Erreur look_at_world, fallback générique: {e}")
+
+        # Fallback: Mapping cible → angle de rotation (yaw_body) simplifié
+        # CORRECTION EXPERTE: Validation coordonnées avant utilisation
+        # Limites recommandées SDK: -2.0 ≤ x,y ≤ 2.0 mètres, 0.0 ≤ z ≤ 1.5 mètres
+        if (
+            abs(target_x) > 2.0
+            or abs(target_y) > 2.0
+            or target_z < 0.0
+            or target_z > 1.5
+        ):
+            logger.warning(
+                f"Coordonnées ({target_x}, {target_y}, {target_z}) hors limites recommandées "
+                "SDK (-2.0 ≤ x,y ≤ 2.0, 0.0 ≤ z ≤ 1.5). Clampage appliqué."
+            )
+            target_x = max(-2.0, min(2.0, target_x))
+            target_y = max(-2.0, min(2.0, target_y))
+            target_z = max(0.0, min(1.5, target_z))
+
+        # Mapping simplifié: rotation corps vers cible
         angle = target_x * 0.5  # Amplitude max 0.5 rad
 
         # Clamp dans les limites sûres
@@ -223,42 +264,7 @@ class RobotAPI(ABC):
             "safe_amplitude_limit": self.safe_amplitude_limit,
         }
 
-
-class RobotFactory:
-    """Factory pour créer des instances de RobotAPI."""
-
-    @staticmethod
-    def create_backend(backend_type: str) -> RobotAPI:
-        """
-        Crée une instance de backend RobotAPI.
-
-        Args:
-            backend_type: Type de backend ("mujoco", "reachy", ou "reachy_mini")
-
-        Returns:
-            Instance de RobotAPI
-
-        Raises:
-            ValueError: Si le type de backend n'est pas supporté
-        """
-        if backend_type == "mujoco":
-            from bbia_sim.backends.mujoco_backend import MuJoCoBackend
-
-            return MuJoCoBackend()
-        elif backend_type == "reachy":
-            from bbia_sim.backends.reachy_backend import ReachyBackend
-
-            return ReachyBackend()
-        elif backend_type == "reachy_mini":
-            from bbia_sim.backends.reachy_mini_backend import ReachyMiniBackend
-
-            return ReachyMiniBackend()
-        else:
-            raise ValueError(
-                f"Backend non supporté: {backend_type}. Options: mujoco, reachy, reachy_mini"
-            )
-
-    @staticmethod
-    def get_available_backends() -> list[str]:
-        """Retourne la liste des backends disponibles."""
-        return ["mujoco", "reachy", "reachy_mini"]
+    # NOTE EXPERT: RobotFactory a été déplacé dans robot_factory.py pour éviter duplication
+    # Import de compatibilité pour éviter de casser le code existant
+    # TODO FUTUR: Migrer tous les imports vers robot_factory.py
+    from .robot_factory import RobotFactory  # noqa: F401

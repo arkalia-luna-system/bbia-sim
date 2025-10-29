@@ -85,13 +85,16 @@ def demo_mujoco_continue():
                 data.qpos[body_id] = body_angle
 
             # Animation de la tête (stewart joints) - AMPLITUDE RÉDUITE
+            # ⚠️ IMPORTANT EXPERT: Utilisation stewart_* directement uniquement pour MuJoCo direct (viewer)
+            # Pour robot physique/SDK, utiliser goto_target() ou set_target_head_pose() avec create_head_pose() (IK requise)
+            # NOTE: Approximation stewart_1≈pitch, stewart_2≈yaw valide uniquement en sim MuJoCo bas niveau
             stewart_joints = ["stewart_1", "stewart_2", "stewart_3"]
             for i, joint_name in enumerate(stewart_joints):
                 joint_id = get_joint_id(joint_name)
                 if joint_id is not None:
                     # Mouvement sinusoïdal avec décalage (plus doux)
                     head_angle = 0.05 * math.sin(current_time * (0.8 + i * 0.2))
-                    data.qpos[joint_id] = head_angle
+                    data.qpos[joint_id] = head_angle  # MuJoCo direct uniquement
 
             # Mettre à jour la simulation
             mujoco.mj_step(model, data)

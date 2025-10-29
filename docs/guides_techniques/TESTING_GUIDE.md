@@ -189,7 +189,7 @@ testpaths = ["tests"]
 python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
-norecursedirs = [".git", "logs", ".venv", "venv", "__pycache__", "reachy_repos"]
+norecursedirs = [".git", "log", ".venv", "venv", "__pycache__", "reachy_repos"]
 minversion = "6.0"
 
 [tool.coverage.run]
@@ -200,7 +200,7 @@ omit = [
     "*/__pycache__/*",
     "*/venv/*",
     "*/.venv/*",
-    "*/logs/*",
+    "*/log/*",
     "*/reachy_repos/*",
 ]
 

@@ -9,7 +9,7 @@ from pydantic import BaseModel, Field
 
 from ....bbia_behavior import BBIABehaviorManager
 from ....bbia_emotions import BBIAEmotions
-from ....robot_api import RobotFactory
+from ....robot_factory import RobotFactory
 
 logger = logging.getLogger(__name__)
 

@@ -42,9 +42,18 @@ class RobotFactory:
                 return ReachyBackend(robot_ip=robot_ip, robot_port=robot_port)
 
             elif backend_type.lower() == "reachy_mini":
-                robot_ip = kwargs.get("robot_ip", "localhost")
-                robot_port = kwargs.get("robot_port", 8080)
-                return ReachyMiniBackend(robot_ip=robot_ip, robot_port=robot_port)
+                # Paramètres SDK officiel ReachyMini
+                # use_sim=True par défaut pour éviter timeout si pas de robot physique
+                # L'utilisateur peut forcer use_sim=False pour chercher un robot réel
+                return ReachyMiniBackend(
+                    localhost_only=kwargs.get("localhost_only", True),
+                    spawn_daemon=kwargs.get("spawn_daemon", False),
+                    use_sim=kwargs.get("use_sim", True),  # Par défaut mode simulation
+                    timeout=kwargs.get("timeout", 3.0),  # Timeout réduit à 3s
+                    automatic_body_yaw=kwargs.get("automatic_body_yaw", False),
+                    log_level=kwargs.get("log_level", "INFO"),
+                    media_backend=kwargs.get("media_backend", "default"),
+                )
 
             else:
                 logger.error(f"Type de backend non supporté: {backend_type}")

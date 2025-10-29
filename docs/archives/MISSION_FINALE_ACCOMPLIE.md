@@ -28,7 +28,7 @@
 │   └── PROMPT_CURSOR_BBIA_REACHY_FINAL.md
 └── PROCESS_MANAGEMENT.md
 
-📁 logs/                      # Fichiers de logs
+📁 log/                      # Fichiers de logs
 ├── reachy_commands.txt
 ├── reachy_response.txt
 └── test_bbia.wav
@@ -154,7 +154,7 @@ python scripts/check_joints.py
 3. **✅ Tests complets** : 17 tests MuJoCo passent (100% réussite)
 4. **✅ Code propre** : Ruff, Black, MyPy validés
 5. **✅ Documentation complète** : Audit, prompts, guides mis à jour
-6. **✅ Structure organisée** : Fichiers rangés dans docs/, logs/, requirements/
+6. **✅ Structure organisée** : Fichiers rangés dans docs/, log/, requirements/
 7. **✅ Push réussi** : Changements envoyés sur origin/develop
 
 ### **🚀 Prêt pour :**

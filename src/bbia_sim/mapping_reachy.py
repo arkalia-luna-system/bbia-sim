@@ -15,7 +15,7 @@ class JointInfo:
     min_limit: float  # rad
     max_limit: float  # rad
     safe_amplitude: float  # rad (≤ 0.3)
-    description: str
+    description: str = ""
     is_active: bool = True
 
 
@@ -27,53 +27,53 @@ class ReachyMapping:
         # Corps (1 joint principal) - Limites réelles du modèle MuJoCo officiel
         "yaw_body": JointInfo(
             name="yaw_body",
-            min_limit=-2.79,
-            max_limit=2.79,
+            min_limit=-2.792526803190975,  # Exact du XML officiel
+            max_limit=2.792526803190879,  # Exact du XML officiel
             safe_amplitude=0.3,
             description="Rotation du corps principal",
         ),
         # Tête (6 joints Stewart platform) - Limites réelles du modèle MuJoCo officiel
         "stewart_1": JointInfo(
             name="stewart_1",
-            min_limit=-0.84,
-            max_limit=1.40,
+            min_limit=-0.8377580409572196,  # Exact du XML officiel
+            max_limit=1.3962634015955222,  # Exact du XML officiel
             safe_amplitude=0.2,
-            description="Plateforme Stewart - joint tête 1",
+            description="Plateforme Stewart - joint tête 1 (⚠️ Nécessite IK via goto_target/set_target_head_pose)",
         ),
         "stewart_2": JointInfo(
             name="stewart_2",
-            min_limit=-1.40,
-            max_limit=1.22,
+            min_limit=-1.396263401595614,  # Exact du XML officiel
+            max_limit=1.2217304763958803,  # Exact du XML officiel
             safe_amplitude=0.2,
-            description="Plateforme Stewart - joint tête 2",
+            description="Plateforme Stewart - joint tête 2 (⚠️ Nécessite IK via goto_target/set_target_head_pose)",
         ),
         "stewart_3": JointInfo(
             name="stewart_3",
-            min_limit=-0.84,
-            max_limit=1.40,
+            min_limit=-0.8377580409572173,  # Exact du XML officiel
+            max_limit=1.3962634015955244,  # Exact du XML officiel
             safe_amplitude=0.2,
-            description="Plateforme Stewart - joint tête 3",
+            description="Plateforme Stewart - joint tête 3 (⚠️ Nécessite IK via goto_target/set_target_head_pose)",
         ),
         "stewart_4": JointInfo(
             name="stewart_4",
-            min_limit=-1.40,
-            max_limit=0.84,
+            min_limit=-1.3962634015953894,  # Exact du XML officiel
+            max_limit=0.8377580409573525,  # Exact du XML officiel
             safe_amplitude=0.2,
-            description="Plateforme Stewart - joint tête 4",
+            description="Plateforme Stewart - joint tête 4 (⚠️ Nécessite IK via goto_target/set_target_head_pose)",
         ),
         "stewart_5": JointInfo(
             name="stewart_5",
-            min_limit=-1.22,
-            max_limit=1.40,
+            min_limit=-1.2217304763962082,  # Exact du XML officiel
+            max_limit=1.396263401595286,  # Exact du XML officiel
             safe_amplitude=0.2,
-            description="Plateforme Stewart - joint tête 5",
+            description="Plateforme Stewart - joint tête 5 (⚠️ Nécessite IK via goto_target/set_target_head_pose)",
         ),
         "stewart_6": JointInfo(
             name="stewart_6",
-            min_limit=-1.40,
-            max_limit=0.84,
+            min_limit=-1.3962634015954123,  # Exact du XML officiel
+            max_limit=0.8377580409573296,  # Exact du XML officiel
             safe_amplitude=0.2,
-            description="Plateforme Stewart - joint tête 6",
+            description="Plateforme Stewart - joint tête 6 (⚠️ Nécessite IK via goto_target/set_target_head_pose)",
         ),
     }
 
@@ -90,8 +90,21 @@ class ReachyMapping:
         "passive_7",
     }
 
-    # Joints recommandés pour les démos
-    RECOMMENDED_JOINTS: set[str] = {"yaw_body", "stewart_1", "stewart_2", "stewart_3"}
+    # Joints recommandés pour les démos (contrôle direct sécurisé)
+    # ⚠️ IMPORTANT EXPERT ROBOTIQUE: Les joints stewart (stewart_1-6) NE PEUVENT PAS être contrôlés individuellement
+    # car la plateforme Stewart utilise la cinématique inverse (IK). Chaque joint stewart influence
+    # plusieurs degrés de liberté simultanément (roll, pitch, yaw, position X/Y/Z).
+    #
+    # Méthodes correctes pour contrôler la tête (SDK officiel):
+    # 1. goto_target(head=pose_4x4, ...) - ⭐ Recommandé avec interpolation "minjerk"
+    # 2. set_target_head_pose(pose_4x4) - Contrôle direct via IK
+    # 3. look_at_world(x, y, z) - Calcul IK automatique vers point 3D
+    # 4. create_head_pose(pitch, yaw, roll) puis set_target_head_pose() - Interface simple
+    #
+    # RECOMMENDED_JOINTS ne liste que yaw_body car c'est le seul joint mobile pouvant être contrôlé directement.
+    RECOMMENDED_JOINTS: set[str] = {
+        "yaw_body"
+    }  # stewart_1-6 nécessitent goto_target() / IK
 
     # Limite de sécurité globale
     GLOBAL_SAFETY_LIMIT: float = 0.3  # rad
@@ -112,6 +125,11 @@ class ReachyMapping:
         """
         Valide et clamp une position de joint.
 
+        ⚠️ IMPORTANT (Sécurité Expert):
+        - Applique d'abord les limites hardware (min_limit, max_limit)
+        - Puis applique la limite de sécurité (safe_amplitude) si plus restrictive
+        - Pour les joints stewart: utiliser goto_target() avec IK plutôt que contrôle direct
+
         Returns:
             (is_valid, clamped_position)
         """
@@ -123,13 +141,18 @@ class ReachyMapping:
 
         joint_info = cls.JOINTS[joint_name]
 
-        # Clamp dans les limites du joint
+        # Étape 1: Clamp dans les limites hardware du joint (SDK officiel)
         clamped_pos = max(joint_info.min_limit, min(joint_info.max_limit, position))
 
-        # Clamp dans la limite de sécurité
-        clamped_pos = max(
-            -joint_info.safe_amplitude, min(joint_info.safe_amplitude, clamped_pos)
-        )
+        # Étape 2: Limite de sécurité logicielle (plus restrictive)
+        # CORRECTION EXPERTE: Appliquer la limite de sécurité seulement si elle est
+        # plus restrictive que les limites hardware (aligné avec reachy_mini_backend.py)
+        safe_min = max(-joint_info.safe_amplitude, joint_info.min_limit)
+        safe_max = min(joint_info.safe_amplitude, joint_info.max_limit)
+
+        # Ne clamp que si la limite de sécurité est réellement plus restrictive
+        if safe_min > joint_info.min_limit or safe_max < joint_info.max_limit:
+            clamped_pos = max(safe_min, min(safe_max, clamped_pos))
 
         return True, clamped_pos
 

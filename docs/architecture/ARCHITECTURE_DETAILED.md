@@ -394,7 +394,7 @@ logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     handlers=[
-        logging.FileHandler("logs/bbia.log"),
+        logging.FileHandler("log/bbia.log"),
         logging.StreamHandler()
     ]
 )
@@ -497,7 +497,7 @@ class ProductionConfig:
     
     # Logging
     LOG_LEVEL = "INFO"
-    LOG_FILE = "logs/bbia_production.log"
+    LOG_FILE = "log/bbia_production.log"
 ```
 
 ---

@@ -2,9 +2,9 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [main, develop, feature/bbia-reacts]
+    branches: [main, develop, future]
   pull_request:
-    branches: [main, develop, feature/bbia-reacts]
+    branches: [main, develop, future]
 
 jobs:
   lint:

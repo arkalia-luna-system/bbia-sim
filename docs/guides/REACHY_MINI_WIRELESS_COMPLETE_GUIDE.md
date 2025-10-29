@@ -122,7 +122,7 @@ reachy-bbia-project/
 │   └── tests/
 ├── 📊 Data/
 │   ├── training/
-│   ├── logs/
+│   ├── log/
 │   └── models/
 └── 🚀 Deployment/
     ├── scripts/

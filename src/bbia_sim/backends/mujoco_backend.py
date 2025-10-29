@@ -22,7 +22,7 @@ class MuJoCoBackend(RobotAPI):
 
     def __init__(
         self, model_path: str = "src/bbia_sim/sim/models/reachy_mini_REAL_OFFICIAL.xml"
-    ):
+    ) -> None:
         super().__init__()
         self.model_path = Path(model_path)
         self.model: Optional[mujoco.MjModel] = None
