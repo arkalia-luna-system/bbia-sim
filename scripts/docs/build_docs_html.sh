@@ -177,12 +177,17 @@ HTML
 # Générer le CSS principal
 cat > "$OUT_DIR/styles.css" <<CSS
 :root {
-  --bg-dark: #000000;
-  --bg-card: #1a1a1a;
-  --text-primary: #ffffff;
-  --text-secondary: #cccccc;
-  --accent: #4a9eff;
-  --border: #333333;
+  --bg-dark: #0a0a0a;
+  --bg-card: #151515;
+  --bg-sidebar: #121212;
+  --text-primary: #f5f5f5;
+  --text-secondary: #b3b3b3;
+  --text-tertiary: #888888;
+  --accent: #5cb3ff;
+  --accent-hover: #6fc0ff;
+  --border: #2a2a2a;
+  --border-light: #1f1f1f;
+  --shadow: rgba(0, 0, 0, 0.3);
   color-scheme: dark;
 }
 
@@ -194,16 +199,18 @@ html, body {
   height: 100% !important;
   margin: 0 !important;
   padding: 0 !important;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', Arial, sans-serif;
-  background-color: #000000 !important;
-  background: #000000 !important;
-  color: #ffffff !important;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', Arial, sans-serif;
+  background-color: var(--bg-dark) !important;
+  background: linear-gradient(180deg, var(--bg-dark) 0%, #0d0d0d 100%) !important;
+  color: var(--text-primary) !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
-  background-color: #000000 !important;
-  background: #000000 !important;
-  color: #ffffff !important;
+  background-color: var(--bg-dark) !important;
+  background: linear-gradient(180deg, var(--bg-dark) 0%, #0d0d0d 100%) !important;
+  color: var(--text-primary) !important;
 }
 
 .docs-container {
@@ -212,77 +219,120 @@ body {
 }
 
 .sidebar {
-  width: 260px;
-  background: var(--bg-card);
-  border-right: 1px solid var(--border);
-  padding: 24px;
+  width: 280px;
+  background: var(--bg-sidebar);
+  border-right: 1px solid var(--border-light);
+  padding: 32px 24px;
   position: fixed;
   height: 100vh;
   overflow-y: auto;
+  backdrop-filter: blur(10px);
+  box-shadow: 2px 0 20px var(--shadow);
+}
+
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: var(--border-light);
+}
+
+.sidebar nav h2, .sidebar nav h3 {
+  color: var(--text-primary);
+  font-size: 0.85em;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 24px 0 12px 0;
+  padding: 0 12px;
+  opacity: 0.7;
+}
+
+.sidebar nav h2:first-child {
+  margin-top: 0;
 }
 
 .sidebar nav ul {
   list-style: none;
   padding: 0;
-  margin: 12px 0;
+  margin: 0 0 24px 0;
 }
 
 .sidebar nav ul li {
-  margin: 6px 0;
+  margin: 2px 0;
 }
 
 .sidebar nav a {
   color: var(--text-secondary);
   text-decoration: none;
   display: block;
-  padding: 6px 12px;
-  border-radius: 6px;
-  transition: all 0.2s;
+  padding: 10px 12px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  font-size: 0.95em;
+  border-left: 2px solid transparent;
 }
 
 .sidebar nav a:hover {
-  background: var(--bg-dark);
+  background: rgba(255, 255, 255, 0.03);
   color: var(--text-primary);
+  border-left-color: var(--accent);
+  padding-left: 14px;
+  transform: translateX(2px);
 }
 
 .content {
-  margin-left: 260px;
+  margin-left: 280px;
   flex: 1;
-  padding: 48px;
-  max-width: 980px;
-  background-color: #000000 !important;
-  background: #000000 !important;
-  color: #ffffff !important;
+  padding: 60px 64px;
+  max-width: 1024px;
+  background-color: transparent !important;
+  color: var(--text-primary) !important;
 }
 
 .docs-container {
-  background-color: #000000 !important;
-  background: #000000 !important;
+  background-color: transparent !important;
 }
 
 .markdown-body {
-  line-height: 1.6;
-  background-color: #000000 !important;
-  background: #000000 !important;
-  color: #ffffff !important;
+  line-height: 1.75;
+  background-color: transparent !important;
+  color: var(--text-primary) !important;
+  font-size: 16px;
 }
 
 .markdown-body h1,
 .markdown-body h1 * {
-  font-size: 2.5em;
-  border-bottom: 2px solid var(--border);
-  padding-bottom: 12px;
+  font-size: 2.8em;
+  font-weight: 700;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 20px;
   margin-top: 0;
-  color: #ffffff !important;
+  margin-bottom: 32px;
+  color: var(--text-primary) !important;
+  letter-spacing: -0.02em;
 }
 
 .markdown-body h2,
 .markdown-body h2 * {
   font-size: 2em;
-  margin-top: 48px;
-  border-bottom: 1px solid var(--border);
-  padding-bottom: 8px;
-  color: #ffffff !important;
+  font-weight: 600;
+  margin-top: 56px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--border-light);
+  padding-bottom: 12px;
+  color: var(--text-primary) !important;
+  letter-spacing: -0.01em;
 }
 
 .markdown-body h3,
@@ -293,27 +343,33 @@ body {
 .markdown-body h5 *,
 .markdown-body h6,
 .markdown-body h6 * {
-  color: #ffffff !important;
+  color: var(--text-primary) !important;
+  font-weight: 600;
 }
 
 .markdown-body h3 {
   font-size: 1.5em;
-  margin-top: 32px;
+  margin-top: 40px;
+  margin-bottom: 16px;
+  color: var(--text-primary) !important;
 }
 
 .markdown-body code {
-  background: rgba(110, 118, 129, 0.4);
-  padding: 2px 6px;
-  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 3px 8px;
+  border-radius: 4px;
   font-size: 0.9em;
+  color: var(--accent);
+  font-family: 'SF Mono', 'Monaco', 'Menlo', 'Consolas', monospace;
 }
 
 .markdown-body pre {
   background: var(--bg-card);
-  padding: 16px;
-  border-radius: 8px;
+  padding: 20px;
+  border-radius: 12px;
   overflow-x: auto;
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-light);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .markdown-body pre code {
@@ -324,76 +380,177 @@ body {
 .markdown-body a {
   color: var(--accent);
   text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: all 0.2s ease;
 }
 
 .markdown-body a:hover {
-  text-decoration: underline;
+  color: var(--accent-hover);
+  border-bottom-color: var(--accent);
 }
 
 .markdown-body table {
   border-collapse: collapse;
   width: 100%;
-  margin: 16px 0;
+  margin: 24px 0;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border-light);
 }
 
 .markdown-body table th,
 .markdown-body table td {
-  border: 1px solid var(--border);
-  padding: 8px 12px;
+  border: 1px solid var(--border-light);
+  padding: 12px 16px;
   text-align: left;
+  color: var(--text-primary) !important;
 }
 
 .markdown-body table th {
   background: var(--bg-card);
   font-weight: 600;
+  color: var(--text-primary) !important;
+  text-transform: uppercase;
+  font-size: 0.85em;
+  letter-spacing: 0.05em;
+}
+
+.markdown-body table tr:hover {
+  background: rgba(255, 255, 255, 0.02);
 }
 
 .markdown-body .mermaid {
-  margin: 24px 0;
+  margin: 32px 0;
   display: flex;
   justify-content: center;
+  padding: 24px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 12px;
+  border: 1px solid var(--border-light);
 }
 
 .markdown-body .anchor {
   text-decoration: none;
-  transition: opacity 0.2s;
+  transition: opacity 0.2s ease;
+  color: var(--text-tertiary) !important;
+  font-weight: normal;
 }
 
-/* Forcer tous les éléments texte en blanc sur fond noir */
-.markdown-body p,
-.markdown-body p *,
-.markdown-body li,
-.markdown-body li *,
-.markdown-body td,
-.markdown-body td *,
-.markdown-body th,
-.markdown-body th *,
-.markdown-body span,
-.markdown-body span *,
-.markdown-body div:not(.mermaid),
-.markdown-body div:not(.mermaid) *,
-.markdown-body ul,
-.markdown-body ul *,
-.markdown-body ol,
-.markdown-body ol *,
-.markdown-body blockquote,
-.markdown-body blockquote * {
-  color: #ffffff !important;
+.markdown-body .anchor:hover {
+  color: var(--accent) !important;
 }
 
-.markdown-body table th,
-.markdown-body table td {
-  color: #ffffff !important;
+/* Styles délicats pour les éléments texte */
+.markdown-body p {
+  color: var(--text-primary) !important;
+  margin: 20px 0;
+  line-height: 1.8;
 }
 
+.markdown-body li {
+  color: var(--text-primary) !important;
+  margin: 8px 0;
+  line-height: 1.75;
+}
+
+.markdown-body ul, .markdown-body ol {
+  margin: 20px 0;
+  padding-left: 28px;
+}
+
+.markdown-body ul {
+  list-style-type: disc;
+}
+
+.markdown-body ol {
+  list-style-type: decimal;
+}
+
+.markdown-body li::marker {
+  color: var(--text-tertiary);
+}
+
+.markdown-body blockquote {
+  border-left: 3px solid var(--accent);
+  padding-left: 20px;
+  margin: 24px 0;
+  background: rgba(255, 255, 255, 0.02);
+  padding: 16px 20px;
+  border-radius: 4px;
+  color: var(--text-secondary) !important;
+  font-style: italic;
+}
+
+.markdown-body blockquote p {
+  margin: 0;
+  color: var(--text-secondary) !important;
+}
+
+.markdown-body hr {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+  margin: 40px 0;
+}
+
+/* Améliorations délicates pour mobile */
 @media (max-width: 768px) {
   .sidebar {
     transform: translateX(-100%);
-    transition: transform 0.3s;
+    transition: transform 0.3s ease;
+    width: 100%;
+    max-width: 320px;
+    z-index: 1000;
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.5);
   }
+  
   .content {
     margin-left: 0;
+    padding: 32px 24px;
   }
+  
+  .markdown-body {
+    font-size: 15px;
+  }
+  
+  .markdown-body h1 {
+    font-size: 2.2em;
+  }
+  
+  .markdown-body h2 {
+    font-size: 1.8em;
+  }
+  
+  .markdown-body h3 {
+    font-size: 1.4em;
+  }
+}
+
+/* Animations subtiles au scroll */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.markdown-body > * {
+  animation: fadeIn 0.4s ease-out;
+}
+
+/* Sélection de texte élégante */
+::selection {
+  background: rgba(92, 179, 255, 0.2);
+  color: var(--text-primary);
+}
+
+::-moz-selection {
+  background: rgba(92, 179, 255, 0.2);
+  color: var(--text-primary);
 }
 CSS
 
