@@ -8,10 +8,13 @@ Compatible macOS, simple, portable, testé.
 import atexit
 import logging
 import wave
-from typing import Any, Optional
+from typing import TYPE_CHECKING, Optional
 
 import numpy as np
 import sounddevice as sd
+
+if TYPE_CHECKING:
+    from .robot_api import RobotAPI
 
 
 # Gestion propre de PortAudio pour éviter les erreurs de terminaison
@@ -28,7 +31,9 @@ atexit.register(_cleanup_sounddevice)
 logging.basicConfig(level=logging.INFO)
 
 
-def _get_robot_media_microphone(robot_api: Optional[Any] = None) -> Optional[Any]:
+def _get_robot_media_microphone(
+    robot_api: Optional["RobotAPI"] = None,  # noqa: ANN401
+) -> Optional[object]:
     """Récupère robot.media.microphone si disponible.
 
     Args:
@@ -46,7 +51,10 @@ def _get_robot_media_microphone(robot_api: Optional[Any] = None) -> Optional[Any
 
 
 def enregistrer_audio(
-    fichier: str, duree: int = 3, frequence: int = 16000, robot_api: Optional[Any] = None
+    fichier: str,
+    duree: int = 3,
+    frequence: int = 16000,
+    robot_api: Optional["RobotAPI"] = None,  # noqa: ANN401
 ) -> bool:
     """Enregistre un fichier audio (WAV) depuis le micro.
 
@@ -90,7 +98,7 @@ def enregistrer_audio(
                         # Convertir si nécessaire
                         wf.writeframes(bytes(audio_data))
                 logging.info("Enregistrement SDK terminé.")
-                return
+                return True
             elif hasattr(microphone_sdk, "record"):
                 # Alternative: microphone.record() si disponible
                 audio_data = microphone_sdk.record(
@@ -106,7 +114,7 @@ def enregistrer_audio(
                         else audio_data.tobytes()
                     )
                 logging.info("Enregistrement SDK terminé.")
-                return
+                return True
         except Exception as e:
             logging.debug(f"Erreur enregistrement SDK (fallback sounddevice): {e}")
             # Fallback vers sounddevice
@@ -124,14 +132,13 @@ def enregistrer_audio(
             wf.setframerate(frequence)
             wf.writeframes(audio.tobytes())
         logging.info("Enregistrement terminé.")
+        return True
     except Exception as e:
         logging.error(f"Erreur d'enregistrement audio : {e}")
         raise
 
 
-def lire_audio(
-    fichier: str, robot_api: Optional["RobotAPI"] = None
-) -> None:
+def lire_audio(fichier: str, robot_api: Optional["RobotAPI"] = None) -> None:
     """Joue un fichier audio WAV.
 
     Utilise robot.media.speaker si disponible (haut-parleur 5W optimisé),
@@ -163,7 +170,7 @@ def lire_audio(
                     audio_bytes = f.read()
                 speaker.play(audio_bytes)
                 logging.info("Lecture SDK terminée.")
-                return True
+                return
         except Exception as e:
             logging.debug(f"Erreur lecture SDK (fallback sounddevice): {e}")
             # Fallback vers sounddevice
@@ -177,7 +184,6 @@ def lire_audio(
             sd.play(audio, frequence)
             sd.wait()
         logging.info(f"Lecture de {fichier} terminée.")
-        return True
     except Exception as e:
         logging.error(f"Erreur de lecture audio : {e}")
         return False

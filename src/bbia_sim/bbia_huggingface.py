@@ -164,9 +164,7 @@ class BBIAHuggingFace:
         try:
             from transformers import AutoModelForCausalLM, AutoTokenizer
 
-            logger.info(
-                f"📥 Chargement LLM {model_name} (peut prendre 1-2 minutes)..."
-            )
+            logger.info(f"📥 Chargement LLM {model_name} (peut prendre 1-2 minutes)...")
             self.chat_tokenizer = AutoTokenizer.from_pretrained(  # type: ignore[assignment]
                 model_name, cache_dir=self.cache_dir
             )
@@ -181,9 +179,7 @@ class BBIAHuggingFace:
                 model_name,
                 cache_dir=self.cache_dir,
                 device_map="auto",
-                torch_dtype=(
-                    torch.float16 if self.device != "cpu" else torch.float32
-                ),
+                torch_dtype=(torch.float16 if self.device != "cpu" else torch.float32),
             )
             logger.info(f"✅ LLM {model_name} chargé avec succès")
             self.use_llm_chat = True
@@ -244,12 +240,16 @@ class BBIAHuggingFace:
 
             elif model_type == "audio":
                 if "whisper" in model_name.lower():
-                    whisper_processor: Any = WhisperProcessor.from_pretrained(  # nosec B615
-                        model_name, cache_dir=self.cache_dir
+                    whisper_processor: Any = (
+                        WhisperProcessor.from_pretrained(  # nosec B615
+                            model_name, cache_dir=self.cache_dir
+                        )
                     )
-                    model = WhisperForConditionalGeneration.from_pretrained(  # nosec B615
-                        model_name, cache_dir=self.cache_dir
-                    ).to(self.device)
+                    model = (
+                        WhisperForConditionalGeneration.from_pretrained(  # nosec B615
+                            model_name, cache_dir=self.cache_dir
+                        ).to(self.device)
+                    )
                     self.processors[f"{model_name}_processor"] = whisper_processor  # type: ignore[assignment]
                     self.models[f"{model_name}_model"] = model  # type: ignore[assignment]
 
@@ -280,13 +280,15 @@ class BBIAHuggingFace:
                     ):
                         self.chat_tokenizer.pad_token = self.chat_tokenizer.eos_token
 
-                    chat_model_load: Any = AutoModelForCausalLM.from_pretrained(  # nosec B615
-                        model_name,
-                        cache_dir=self.cache_dir,
-                        device_map="auto",  # Auto-détecte MPS/CPU/CUDA
-                        torch_dtype=(
-                            torch.float16 if self.device != "cpu" else torch.float32
-                        ),
+                    chat_model_load: Any = (
+                        AutoModelForCausalLM.from_pretrained(  # nosec B615
+                            model_name,
+                            cache_dir=self.cache_dir,
+                            device_map="auto",  # Auto-détecte MPS/CPU/CUDA
+                            torch_dtype=(
+                                torch.float16 if self.device != "cpu" else torch.float32
+                            ),
+                        )
                     )
                     self.chat_model = chat_model_load
 

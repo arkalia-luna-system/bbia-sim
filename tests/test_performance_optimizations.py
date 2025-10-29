@@ -140,14 +140,14 @@ class TestPerformanceOptimizations:
 
             # Test appel avec perform_movement
             try:
-                result = backend.look_at_world(
+                backend.look_at_world(
                     0.2, 0.0, 0.3, duration=0.1, perform_movement=False
                 )
                 print("✅ look_at_world accepte perform_movement=False (simulation)")
             except TypeError:
                 # Peut-être que perform_movement n'est pas le bon nom
                 try:
-                    result = backend.look_at_world(0.2, 0.0, 0.3, duration=0.1)
+                    backend.look_at_world(0.2, 0.0, 0.3, duration=0.1)
                     print("✅ look_at_world accepte duration (simulation)")
                 except Exception as e:
                     print(f"⚠️  Erreur test look_at_world: {e}")

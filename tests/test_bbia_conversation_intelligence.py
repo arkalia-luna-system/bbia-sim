@@ -150,7 +150,6 @@ class TestBBIAConversationIntelligence:
         assert behavior.name == "conversation"
 
         # Vérifier que execute accepte un contexte (même si on ne l'exécute pas complètement)
-        context = {}
         # Note: On ne peut pas tester execute complètement car il nécessite
         # dire_texte et reconnaitre_parole qui nécessitent hardware/audio
         assert callable(behavior.execute)

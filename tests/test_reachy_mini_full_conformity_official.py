@@ -928,7 +928,7 @@ class TestReachyMiniFullConformity:
             print("✅ Test look_at_world avec coordonnées valides:")
             for x, y, z in valid_coords:
                 try:
-                    result = self.backend.look_at_world(x, y, z, duration=0.5)
+                    self.backend.look_at_world(x, y, z, duration=0.5)
                     print(f"   ✅ ({x}, {y}, {z}): OK")
                 except Exception as e:
                     print(f"   ⚠️  ({x}, {y}, {z}): {e}")
@@ -936,7 +936,7 @@ class TestReachyMiniFullConformity:
             print("✅ Test look_at_world avec coordonnées invalides:")
             for x, y, z in invalid_coords:
                 try:
-                    result = self.backend.look_at_world(x, y, z, duration=0.5)
+                    self.backend.look_at_world(x, y, z, duration=0.5)
                     print(
                         f"   ⚠️  ({x}, {y}, {z}): Accepté (devrait être validé/rejeté)"
                     )
@@ -952,7 +952,7 @@ class TestReachyMiniFullConformity:
 
             for u, v in valid_pixels:
                 try:
-                    result = self.backend.look_at_image(u, v, duration=0.5)
+                    self.backend.look_at_image(u, v, duration=0.5)
                     print(f"   ✅ ({u}, {v}): OK")
                 except Exception as e:
                     print(f"   ⚠️  ({u}, {v}): {e}")
@@ -960,7 +960,7 @@ class TestReachyMiniFullConformity:
             print("✅ Test look_at_image avec coordonnées invalides:")
             for u, v in invalid_pixels:
                 try:
-                    result = self.backend.look_at_image(u, v, duration=0.5)
+                    self.backend.look_at_image(u, v, duration=0.5)
                     print(f"   ⚠️  ({u}, {v}): Accepté (devrait être validé/rejeté)")
                 except (ValueError, Exception) as e:
                     print(f"   ✅ ({u}, {v}): Rejeté correctement: {type(e).__name__}")

@@ -226,7 +226,9 @@ class TestReachyMiniStrictConformity:
 
         if errors:
             print("\n".join(errors))
-            assert False, "Erreurs structure head_positions:\n" + "\n".join(errors)
+            raise AssertionError(
+                "Erreurs structure head_positions:\n" + "\n".join(errors)
+            )
 
         print(
             f"✅ head_positions: {len(head_pos)} éléments, "

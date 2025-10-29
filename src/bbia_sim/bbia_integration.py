@@ -10,7 +10,7 @@ from typing import TYPE_CHECKING, Optional
 from .bbia_audio import detecter_son, enregistrer_audio, lire_audio
 
 if TYPE_CHECKING:
-    from .robot_api import RobotAPI
+    pass
 from .bbia_behavior import BBIABehaviorManager
 from .bbia_emotions import BBIAEmotions
 from .bbia_vision import BBIAVision

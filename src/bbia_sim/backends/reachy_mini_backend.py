@@ -501,7 +501,10 @@ class ReachyMiniBackend(RobotAPI):
             return False
 
     def run_behavior(
-        self, behavior_name: str, duration: float = 5.0, **kwargs: dict[str, Any]  # noqa: ARG002
+        self,
+        behavior_name: str,
+        duration: float = 5.0,
+        **kwargs: dict[str, Any],  # noqa: ARG002
     ) -> bool:
         """Exécute un comportement."""
         # Vérifier si le comportement est valide
@@ -886,7 +889,9 @@ class ReachyMiniBackend(RobotAPI):
 
             # Créer une classe Move simple pour notre usage
             class SimpleMove(Move):
-                def __init__(self, positions: list[dict[str, Any]], duration: float) -> None:
+                def __init__(
+                    self, positions: list[dict[str, Any]], duration: float
+                ) -> None:
                     self._positions = positions
                     self._duration = duration
 

@@ -220,7 +220,9 @@ def dire_texte(texte: str, robot_api: Optional[Any] = None) -> None:
         raise
 
 
-def reconnaitre_parole(duree: int = 3, frequence: int = 16000, robot_api: Optional[Any] = None) -> str:
+def reconnaitre_parole(
+    duree: int = 3, frequence: int = 16000, robot_api: Optional[Any] = None
+) -> str:
     """Reconnaît la parole via le micro (STT, français par défaut).
 
     Utilise robot.media.microphone (4 microphones SDK) si disponible,

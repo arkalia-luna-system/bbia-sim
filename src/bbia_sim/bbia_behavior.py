@@ -15,7 +15,7 @@ import threading
 import time
 from pathlib import Path
 from queue import Queue
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, Optional
 
 if TYPE_CHECKING:
     from .robot_api import RobotAPI
@@ -60,7 +60,7 @@ class BBIABehavior:
         self,
         name: str,
         description: str,
-        robot_api: "RobotAPI | None" = None,
+        robot_api: RobotAPI | None = None,
     ) -> None:
         """Initialise un comportement.
 
@@ -95,7 +95,7 @@ class BBIABehavior:
 class WakeUpBehavior(BBIABehavior):
     """Comportement de réveil de BBIA conforme au SDK Reachy Mini officiel."""
 
-    def __init__(self, robot_api: "RobotAPI | None" = None) -> None:
+    def __init__(self, robot_api: RobotAPI | None = None) -> None:
         super().__init__(
             "wake_up",
             "Séquence de réveil complète de BBIA",
@@ -103,7 +103,7 @@ class WakeUpBehavior(BBIABehavior):
         )
         self.priority = 10
 
-    def execute(self, context: dict[str, Any]) -> bool:
+    def execute(self, context: dict[str, Any]) -> bool:  # noqa: ARG002
         logger.info("Début de la séquence de réveil BBIA")
 
         # Si robot_api disponible, utiliser run_behavior du SDK officiel
@@ -209,7 +209,7 @@ class WakeUpBehavior(BBIABehavior):
 class GreetingBehavior(BBIABehavior):
     """Comportement de salutation conforme au SDK Reachy Mini officiel."""
 
-    def __init__(self, robot_api: "RobotAPI | None" = None) -> None:
+    def __init__(self, robot_api: RobotAPI | None = None) -> None:
         super().__init__("greeting", "Salutation personnalisée", robot_api=robot_api)
         # AMÉLIORATION INTELLIGENCE: Salutations plus variées et naturelles
         # Mélange de formel et décontracté selon le contexte
@@ -226,7 +226,7 @@ class GreetingBehavior(BBIABehavior):
             "Salut ! Prêt pour discuter ?",
         ]
 
-    def execute(self, context: dict[str, Any]) -> bool:
+    def execute(self, context: dict[str, Any]) -> bool:  # noqa: ARG002
         greeting = secrets.choice(self.greetings)
         logger.info(f"Salutation choisie : {greeting}")
 
@@ -288,7 +288,9 @@ class GreetingBehavior(BBIABehavior):
 class EmotionalResponseBehavior(BBIABehavior):
     """Comportement de réponse émotionnelle conforme au SDK Reachy Mini officiel."""
 
-    def __init__(self, emotions: BBIAEmotions, robot_api: "RobotAPI | None" = None) -> None:
+    def __init__(
+        self, emotions: BBIAEmotions, robot_api: RobotAPI | None = None
+    ) -> None:
         super().__init__(
             "emotional_response",
             "Réponse émotionnelle automatique",
@@ -297,7 +299,7 @@ class EmotionalResponseBehavior(BBIABehavior):
         self.emotions = emotions
         self.priority = 8
 
-    def execute(self, context: dict[str, Any]) -> bool:
+    def execute(self, context: dict[str, Any]) -> bool:  # noqa: ARG002
         stimulus = context.get("stimulus", "")
         logger.info(f"Stimulus reçu pour réponse émotionnelle : {stimulus}")
         if stimulus:
@@ -382,7 +384,7 @@ class EmotionalResponseBehavior(BBIABehavior):
 class VisionTrackingBehavior(BBIABehavior):
     """Comportement de suivi visuel conforme au SDK Reachy Mini officiel."""
 
-    def __init__(self, vision: BBIAVision, robot_api: "RobotAPI | None" = None) -> None:
+    def __init__(self, vision: BBIAVision, robot_api: RobotAPI | None = None) -> None:
         super().__init__(
             "vision_tracking",
             "Suivi visuel d'objets",
@@ -391,7 +393,7 @@ class VisionTrackingBehavior(BBIABehavior):
         self.vision = vision
         self.priority = 6
 
-    def execute(self, context: dict[str, Any]) -> bool:
+    def execute(self, context: dict[str, Any]) -> bool:  # noqa: ARG002
         logger.info("Activation du suivi visuel")
 
         result = self.vision.scan_environment()
@@ -509,7 +511,7 @@ class ConversationBehavior(BBIABehavior):
     et de personnalité.
     """
 
-    def __init__(self, robot_api: "RobotAPI | None" = None) -> None:
+    def __init__(self, robot_api: RobotAPI | None = None) -> None:
         super().__init__(
             "conversation",
             "Conversation interactive intelligente",
@@ -602,7 +604,7 @@ class ConversationBehavior(BBIABehavior):
         )
         return secrets.choice(responses)  # nosec B311
 
-    def execute(self, context: dict[str, Any]) -> bool:
+    def execute(self, context: dict[str, Any]) -> bool:  # noqa: ARG002
         """Exécute une conversation intelligente avec reconnaissance vocale."""
         logger.info("Activation du mode conversation intelligente")
 
@@ -771,7 +773,7 @@ class AntennaAnimationBehavior(BBIABehavior):
     Ce comportement utilise des émotions et mouvements tête/corps à la place.
     """
 
-    def __init__(self, robot_api: "RobotAPI | None" = None) -> None:
+    def __init__(self, robot_api: RobotAPI | None = None) -> None:
         super().__init__(
             "antenna_animation",
             "Animation expressive selon l'émotion (antennes protégées)",
@@ -779,7 +781,7 @@ class AntennaAnimationBehavior(BBIABehavior):
         )
         self.priority = 5
 
-    def execute(self, context: dict[str, Any]) -> bool:
+    def execute(self, context: dict[str, Any]) -> bool:  # noqa: ARG002
         emotion = context.get("emotion", "neutral")
         logger.info(f"Animation expressive pour l'émotion : {emotion}")
 
@@ -851,7 +853,7 @@ class HideBehavior(BBIABehavior):
     Les antennes ne sont PAS contrôlées (protégées pour sécurité hardware).
     """
 
-    def __init__(self, robot_api: "RobotAPI | None" = None) -> None:
+    def __init__(self, robot_api: RobotAPI | None = None) -> None:
         super().__init__(
             "hide",
             "Se cacher : tête baissée, corps replié (antennes non contrôlées)",
@@ -859,7 +861,7 @@ class HideBehavior(BBIABehavior):
         )
         self.priority = 9
 
-    def execute(self, context: dict[str, Any]) -> bool:
+    def execute(self, context: dict[str, Any]) -> bool:  # noqa: ARG002
         print("🙈 [BBIA] Séquence 'se cacher'...")
         logger.info("Début de la séquence 'se cacher'")
 
@@ -932,7 +934,7 @@ class HideBehavior(BBIABehavior):
 class BBIABehaviorManager:
     """Gestionnaire de comportements pour BBIA."""
 
-    def __init__(self, robot_api: "RobotAPI | None" = None) -> None:
+    def __init__(self, robot_api: RobotAPI | None = None) -> None:
         """Initialise le gestionnaire de comportements.
 
         Args:
@@ -944,7 +946,7 @@ class BBIABehaviorManager:
         self.active_behaviors: list[str] = []
         self.behavior_queue: Queue[tuple[str, dict[str, Any]]] = Queue()
         self.is_running = False
-        self.worker_thread = None
+        self.worker_thread: Optional[threading.Thread] = None
 
         # RobotAPI pour contrôler le robot physique
         self.robot_api = robot_api
@@ -1010,8 +1012,9 @@ class BBIABehaviorManager:
             return
 
         self.is_running = True
-        self.worker_thread = threading.Thread(target=self._behavior_worker, daemon=True)
-        self.worker_thread.start()
+        thread = threading.Thread(target=self._behavior_worker, daemon=True)
+        self.worker_thread = thread
+        thread.start()
 
     def stop_behavior_worker(self) -> None:
         """Arrête le worker de comportements."""
@@ -1094,7 +1097,10 @@ class BBIABehaviorManager:
             self.execute_behavior(behavior_name, context)
 
             # Arrêter et récupérer le mouvement
-            move = self.robot_api.stop_recording()
+            if not hasattr(self.robot_api, "stop_recording"):
+                logger.warning("stop_recording non disponible")
+                return None
+            move = getattr(self.robot_api, "stop_recording")()  # type: ignore[attr-defined]
             if move:
                 self.saved_moves[behavior_name] = move
                 logger.info(
