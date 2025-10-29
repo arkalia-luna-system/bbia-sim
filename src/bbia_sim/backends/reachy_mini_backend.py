@@ -227,30 +227,12 @@ class ReachyMiniBackend(RobotAPI):
 
     def _start_watchdog(self) -> None:
         """Démarre le thread watchdog pour monitoring temps réel."""
-        # Vérifier si un thread watchdog existe déjà (actif ou non)
-        if self._watchdog_thread is not None:
-            if self._watchdog_thread.is_alive():
-                logger.debug("Watchdog déjà actif")
-                return
-            else:
-                # Thread existe mais n'est plus actif, nettoyer
-                self._watchdog_thread = None
-
-        # Vérifier aussi qu'aucun autre thread watchdog du même nom n'existe
-        existing_watchdog_threads = [
-            t
-            for t in threading.enumerate()
-            if t.name == "ReachyWatchdog" and t.is_alive()
-        ]
-        if existing_watchdog_threads:
-            logger.debug(
-                f"Watchdog déjà actif "
-                f"(trouvé {len(existing_watchdog_threads)} thread(s))"
-            )
-            # Utiliser le thread existant s'il est valide
-            if len(existing_watchdog_threads) == 1:
-                self._watchdog_thread = existing_watchdog_threads[0]
-                return
+        # Ne jamais réutiliser un thread externe: watchdog strictement par instance
+        if self._watchdog_thread is not None and self._watchdog_thread.is_alive():
+            logger.debug("Watchdog déjà actif pour cette instance")
+            return
+        # Nettoyer si un ancien thread est terminé
+        self._watchdog_thread = None
 
         self._should_stop_watchdog.clear()
         self._watchdog_thread = threading.Thread(
@@ -267,10 +249,13 @@ class ReachyMiniBackend(RobotAPI):
         self._should_stop_watchdog.set()
         if self._watchdog_thread.is_alive():
             # Éviter de joindre le thread courant (erreur join current thread)
-            import threading
-
-            if threading.current_thread() is not self._watchdog_thread:
-                self._watchdog_thread.join(timeout=1.0)  # Max 1s pour arrêt propre
+            current = threading.current_thread()
+            if current is not self._watchdog_thread:
+                # Attendre par petits intervalles jusqu'à 1.5s max
+                deadline = time.time() + 1.5
+                while self._watchdog_thread.is_alive() and time.time() < deadline:
+                    self._watchdog_thread.join(timeout=0.1)
+        # Dans tous les cas, ne pas conserver de référence (facilite l'assert test)
         self._watchdog_thread = None
         logger.debug("Watchdog arrêté")
 
