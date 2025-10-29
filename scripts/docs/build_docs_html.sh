@@ -77,29 +77,53 @@ body {
 </head>
 <body style="background-color: #000000 !important; color: #ffffff !important;">
 <div class="docs-container" style="background-color: #000000 !important;">
+  <header class="docs-header">
+    <div class="header-content">
+      <div class="logo-section">
+        <div class="logo-circle"></div>
+        <div class="logo-text">
+          <span class="logo-title">BBIA-SIM</span>
+          <span class="logo-subtitle">Documentation</span>
+        </div>
+      </div>
+      <nav class="header-nav">
+        <a href="${depth}index.html" class="nav-link">Accueil</a>
+        <a href="${depth}guides/guide_debutant.html" class="nav-link">Guides</a>
+        <a href="${depth}architecture/architecture_overview.html" class="nav-link">Architecture</a>
+        <a href="https://github.com/arkalia-luna-system/bbia-sim" class="nav-link external" target="_blank">GitHub ↗</a>
+      </nav>
+    </div>
+  </header>
 <div class="sidebar">
-<nav>
-<h2>📚 Navigation</h2>
-<ul>
-<li><a href="${depth}index.html">🏠 Accueil</a></li>
-<li><a href="${depth}README.html">📖 README</a></li>
-<li><a href="${depth}guides/guide_debutant.html">🚀 Guide Débutant</a></li>
-<li><a href="${depth}architecture/architecture_overview.html">🏗️ Architecture</a></li>
-<li><a href="${depth}guides_techniques/integration_guide.html">🌐 Intégration</a></li>
-<li><a href="${depth}guides_techniques/testing_guide.html">🧪 Tests</a></li>
-</ul>
-<h3>Ressources</h3>
-<ul>
-<li><a href="https://github.com/arkalia-luna-system/bbia-sim">GitHub</a></li>
-<li><a href="http://localhost:8000/docs">API Swagger</a></li>
-</ul>
+<nav class="sidebar-nav">
+<div class="nav-section">
+  <div class="nav-title">Navigation</div>
+  <ul class="nav-list">
+    <li><a href="${depth}index.html" class="nav-item"><span class="nav-icon">🏠</span><span>Accueil</span></a></li>
+    <li><a href="${depth}README.html" class="nav-item"><span class="nav-icon">📖</span><span>README</span></a></li>
+    <li><a href="${depth}guides/guide_debutant.html" class="nav-item"><span class="nav-icon">🚀</span><span>Guide Débutant</span></a></li>
+    <li><a href="${depth}architecture/architecture_overview.html" class="nav-item"><span class="nav-icon">🏗️</span><span>Architecture</span></a></li>
+    <li><a href="${depth}guides_techniques/integration_guide.html" class="nav-item"><span class="nav-icon">🔗</span><span>Intégration</span></a></li>
+    <li><a href="${depth}guides_techniques/testing_guide.html" class="nav-item"><span class="nav-icon">🧪</span><span>Tests</span></a></li>
+  </ul>
+</div>
+<div class="nav-section">
+  <div class="nav-title">Ressources</div>
+  <ul class="nav-list">
+    <li><a href="https://github.com/arkalia-luna-system/bbia-sim" class="nav-item external" target="_blank"><span class="nav-icon">💻</span><span>GitHub</span><span class="external-badge">↗</span></a></li>
+    <li><a href="http://localhost:8000/docs" class="nav-item external" target="_blank"><span class="nav-icon">📡</span><span>API Swagger</span><span class="external-badge">↗</span></a></li>
+  </ul>
+</div>
 </nav>
 </div>
+<div class="content-wrapper">
 <div class="content" id="app">
 <div class="markdown-body" style="color: #ffffff; background-color: #000000;">
-  <div style="text-align: center; padding: 40px; color: #ffffff;">
+  <div class="loading-state">
+    <div class="loading-spinner"></div>
     <p>Chargement de la documentation…</p>
   </div>
+</div>
 </div>
 </div>
 </div>
@@ -178,16 +202,20 @@ HTML
 cat > "$OUT_DIR/styles.css" <<CSS
 :root {
   --bg-dark: #0a0a0a;
-  --bg-card: #151515;
-  --bg-sidebar: #121212;
-  --text-primary: #f5f5f5;
-  --text-secondary: #b3b3b3;
-  --text-tertiary: #888888;
-  --accent: #5cb3ff;
-  --accent-hover: #6fc0ff;
-  --border: #2a2a2a;
-  --border-light: #1f1f1f;
-  --shadow: rgba(0, 0, 0, 0.3);
+  --bg-card: #161616;
+  --bg-sidebar: #131313;
+  --bg-header: rgba(19, 19, 19, 0.95);
+  --text-primary: #fafafa;
+  --text-secondary: #c4c4c4;
+  --text-tertiary: #9a9a9a;
+  --accent: #64b5f6;
+  --accent-hover: #90caf9;
+  --accent-glow: rgba(100, 181, 246, 0.15);
+  --border: #2d2d2d;
+  --border-light: #222222;
+  --shadow: rgba(0, 0, 0, 0.4);
+  --shadow-lg: rgba(0, 0, 0, 0.6);
+  --gradient-1: linear-gradient(135deg, rgba(100, 181, 246, 0.1) 0%, rgba(156, 39, 176, 0.1) 100%);
   color-scheme: dark;
 }
 
@@ -199,9 +227,12 @@ html, body {
   height: 100% !important;
   margin: 0 !important;
   padding: 0 !important;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', Arial, sans-serif;
   background-color: var(--bg-dark) !important;
-  background: linear-gradient(180deg, var(--bg-dark) 0%, #0d0d0d 100%) !important;
+  background: 
+    radial-gradient(circle at 20% 30%, rgba(100, 181, 246, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(156, 39, 176, 0.03) 0%, transparent 50%),
+    var(--bg-dark) !important;
   color: var(--text-primary) !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -215,16 +246,113 @@ body {
 
 .docs-container {
   display: flex;
+  flex-direction: column;
   min-height: 100vh;
+}
+
+/* Header élégant */
+.docs-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 70px;
+  background: var(--bg-header);
+  backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid var(--border-light);
+  z-index: 1000;
+  box-shadow: 0 2px 20px var(--shadow);
+}
+
+.header-content {
+  max-width: 1440px;
+  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.logo-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--gradient-1);
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 12px rgba(100, 181, 246, 0.2);
+  position: relative;
+}
+
+.logo-circle::before {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  border-radius: 8px;
+  background: var(--accent);
+  opacity: 0.2;
+}
+
+.logo-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.logo-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.logo-subtitle {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 500;
+}
+
+.header-nav {
+  display: flex;
+  gap: 8px;
+}
+
+.nav-link {
+  padding: 8px 16px;
+  border-radius: 8px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.nav-link:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+}
+
+.nav-link.external::after {
+  content: ' ↗';
+  opacity: 0.6;
+  font-size: 12px;
 }
 
 .sidebar {
   width: 280px;
   background: var(--bg-sidebar);
   border-right: 1px solid var(--border-light);
-  padding: 32px 24px;
+  padding: 0;
   position: fixed;
-  height: 100vh;
+  top: 70px;
+  height: calc(100vh - 70px);
   overflow-y: auto;
   backdrop-filter: blur(10px);
   box-shadow: 2px 0 20px var(--shadow);
@@ -247,57 +375,117 @@ body {
   background: var(--border-light);
 }
 
-.sidebar nav h2, .sidebar nav h3 {
-  color: var(--text-primary);
-  font-size: 0.85em;
-  font-weight: 600;
+.sidebar-nav {
+  padding: 24px 0;
+}
+
+.nav-section {
+  margin-bottom: 32px;
+}
+
+.nav-title {
+  color: var(--text-tertiary);
+  font-size: 11px;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin: 24px 0 12px 0;
-  padding: 0 12px;
-  opacity: 0.7;
+  letter-spacing: 0.12em;
+  margin: 0 24px 12px 24px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-light);
 }
 
-.sidebar nav h2:first-child {
-  margin-top: 0;
-}
-
-.sidebar nav ul {
+.nav-list {
   list-style: none;
   padding: 0;
-  margin: 0 0 24px 0;
+  margin: 0;
 }
 
-.sidebar nav ul li {
-  margin: 2px 0;
-}
-
-.sidebar nav a {
+.nav-item {
   color: var(--text-secondary);
   text-decoration: none;
-  display: block;
-  padding: 10px 12px;
-  border-radius: 8px;
-  transition: all 0.2s ease;
-  font-size: 0.95em;
-  border-left: 2px solid transparent;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 24px;
+  margin: 2px 16px;
+  border-radius: 10px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 14px;
+  font-weight: 500;
+  position: relative;
+  border-left: 3px solid transparent;
 }
 
-.sidebar nav a:hover {
-  background: rgba(255, 255, 255, 0.03);
+.nav-item:hover {
+  background: rgba(255, 255, 255, 0.04);
   color: var(--text-primary);
+  transform: translateX(4px);
   border-left-color: var(--accent);
-  padding-left: 14px;
-  transform: translateX(2px);
+  box-shadow: -4px 0 12px var(--accent-glow);
+}
+
+.nav-icon {
+  font-size: 18px;
+  width: 24px;
+  text-align: center;
+  opacity: 0.8;
+  transition: transform 0.2s ease;
+}
+
+.nav-item:hover .nav-icon {
+  transform: scale(1.1);
+}
+
+.nav-item span:not(.nav-icon):not(.external-badge) {
+  flex: 1;
+}
+
+.external-badge {
+  font-size: 12px;
+  opacity: 0.5;
+  margin-left: auto;
+}
+
+.content-wrapper {
+  margin-left: 280px;
+  margin-top: 70px;
+  min-height: calc(100vh - 70px);
+  display: flex;
+  justify-content: center;
+  padding: 0;
 }
 
 .content {
-  margin-left: 280px;
   flex: 1;
-  padding: 60px 64px;
-  max-width: 1024px;
+  padding: 80px 80px;
+  max-width: 1100px;
+  width: 100%;
   background-color: transparent !important;
   color: var(--text-primary) !important;
+}
+
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 40px;
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 24px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
 .docs-container {
@@ -315,7 +503,7 @@ body {
 .markdown-body h1 * {
   font-size: 2.8em;
   font-weight: 700;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--border-light);
   padding-bottom: 20px;
   margin-top: 0;
   margin-bottom: 32px;
@@ -471,8 +659,7 @@ body {
 }
 
 .markdown-body blockquote {
-  border-left: 3px solid var(--accent);
-  padding-left: 20px;
+  border-left: 4px solid var(--accent);
   margin: 24px 0;
   background: rgba(255, 255, 255, 0.02);
   padding: 16px 20px;

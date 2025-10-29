@@ -89,15 +89,146 @@ cat > "$OUT_HTML" <<HTML
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>${BASENAME}</title>
 <style>
-  :root { color-scheme: dark; }
-  html, body { height: 100%; margin: 0; }
-  body { background-color: #0b0b0b; color: #f5f5f5; font: 16px/1.55 -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Helvetica Neue, Arial, "Noto Sans"; }
-  a { color: #9cdcfe; }
-  code, pre { background: #111; color: #eee; }
-  pre { white-space: pre-wrap; padding: 14px; border-radius: 8px; overflow-x: auto; }
-  .container { max-width: 980px; margin: 28px auto; padding: 0 16px; }
-  h1, h2, h3 { color: #ffffff; }
-  hr { border: none; height: 1px; background: #222; }
+  :root {
+    color-scheme: dark;
+    --bg-dark: #0a0a0a;
+    --bg-card: #151515;
+    --text-primary: #f5f5f5;
+    --text-secondary: #b3b3b3;
+    --accent: #5cb3ff;
+    --accent-hover: #6fc0ff;
+    --border: #2a2a2a;
+    --border-light: #1f1f1f;
+    --shadow: rgba(0, 0, 0, 0.3);
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', Arial, sans-serif;
+    background: linear-gradient(180deg, var(--bg-dark) 0%, #0d0d0d 100%);
+    color: var(--text-primary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  .container {
+    max-width: 1024px;
+    margin: 60px auto;
+    padding: 0 32px;
+    line-height: 1.75;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--text-primary);
+    margin-top: 32px;
+    margin-bottom: 16px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  h1 {
+    font-size: 2.8em;
+    font-weight: 700;
+    border-bottom: 1px solid var(--border-light);
+    padding-bottom: 20px;
+    margin-top: 0;
+    margin-bottom: 32px;
+    letter-spacing: -0.02em;
+  }
+  h2 {
+    font-size: 2em;
+    border-bottom: 1px solid var(--border-light);
+    padding-bottom: 12px;
+    margin-top: 56px;
+    margin-bottom: 20px;
+  }
+  h3 { font-size: 1.5em; margin-top: 40px; margin-bottom: 16px; }
+  p {
+    color: var(--text-primary);
+    margin: 20px 0;
+    line-height: 1.8;
+  }
+  a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: all 0.2s ease;
+  }
+  a:hover {
+    color: var(--accent-hover);
+    border-bottom-color: var(--accent);
+  }
+  code {
+    background: rgba(255, 255, 255, 0.08);
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    color: var(--accent);
+    font-family: 'SF Mono', 'Monaco', 'Menlo', 'Consolas', monospace;
+  }
+  pre {
+    background: var(--bg-card);
+    padding: 20px;
+    border-radius: 12px;
+    overflow-x: auto;
+    border: 1px solid var(--border-light);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+    white-space: pre-wrap;
+  }
+  pre code {
+    background: none;
+    padding: 0;
+    color: var(--text-primary);
+  }
+  hr {
+    border: none;
+    height: 1px;
+    background: var(--border-light);
+    margin: 32px 0;
+  }
+  li, td, th, span, div:not(.mermaid) {
+    color: var(--text-primary);
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 24px 0;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--border-light);
+  }
+  table th, table td {
+    border: 1px solid var(--border-light);
+    padding: 12px 16px;
+    color: var(--text-primary);
+  }
+  table th {
+    background: var(--bg-card);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85em;
+    letter-spacing: 0.05em;
+  }
+  table tr:hover {
+    background: rgba(255, 255, 255, 0.02);
+  }
+  .mermaid {
+    margin: 32px 0;
+    display: flex;
+    justify-content: center;
+    padding: 24px;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 12px;
+    border: 1px solid var(--border-light);
+  }
+  blockquote {
+    border-left: 4px solid var(--accent);
+    padding-left: 20px;
+    margin: 24px 0;
+    color: var(--text-secondary);
+    background: rgba(255, 255, 255, 0.02);
+    padding: 16px 20px;
+    border-radius: 4px;
+  }
 </style>
 </head>
 <body>
@@ -115,7 +246,7 @@ cat > "$OUT_HTML" <<HTML
   renderer.code = (code, infostring, escaped) => {
     const lang = (infostring || '').trim().toLowerCase();
     if (lang === 'mermaid') {
-      return `<div class=\"mermaid\">${code}</div>`;
+      return \`<div class=\"mermaid\">\${code}</div>\`;
     }
     return origCode(code, infostring, escaped);
   };
