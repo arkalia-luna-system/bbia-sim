@@ -76,9 +76,10 @@ ls -la reachy-bbia-unity/Assets/Scripts/
 **Solutions** :
 ```bash
 # 1. Créer les fichiers de communication
-touch reachy_commands.txt
-touch reachy_response.txt
-chmod 666 reachy_commands.txt reachy_response.txt
+mkdir -p log
+touch log/reachy_commands.txt
+touch log/reachy_response.txt
+chmod 666 log/reachy_commands.txt log/reachy_response.txt
 
 # 2. Tester la communication
 python3 src/bbia_sim/test_unity_connection.py

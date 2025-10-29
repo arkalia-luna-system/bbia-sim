@@ -115,7 +115,7 @@ python -m pytest tests/ --cov=src --cov-report=term-missing --cov-report=html
 python -m pytest tests/ --cov=src --cov-fail-under=0 --tb=no -q
 
 # Tests avec arrêt au premier échec
-ython -m pytest tests/ --cov=src --cov-report=term-missing -x
+python -m pytest tests/ --cov=src --cov-report=term-missing -x
 ```
 
 ### Tests Golden Traces
