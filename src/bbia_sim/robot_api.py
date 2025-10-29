@@ -267,4 +267,14 @@ class RobotAPI(ABC):
     # NOTE EXPERT: RobotFactory a été déplacé dans robot_factory.py pour éviter duplication
     # Import de compatibilité pour éviter de casser le code existant
     # TODO FUTUR: Migrer tous les imports vers robot_factory.py
-    from .robot_factory import RobotFactory  # noqa: F401
+    # Import déplacé en bas du fichier pour éviter circular import
+
+
+# Import tardif pour compatibilité avec code existant (évite circular import)
+def __getattr__(name: str):
+    """Import tardif pour RobotFactory depuis robot_factory."""
+    if name == "RobotFactory":
+        from .robot_factory import RobotFactory  # noqa: F401
+
+        return RobotFactory
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")

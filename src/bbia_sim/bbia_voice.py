@@ -89,15 +89,15 @@ def get_bbia_voice(engine: Any) -> str:
     # 1. Prio France
     for v in voices:
         if "amelie" in normalize(v.name) and ("fr_FR" in v.id or "fr-FR" in v.id):
-            return v.id
+            return str(v.id)
     # 2. Prio Canada
     for v in voices:
         if "amelie" in normalize(v.name) and ("fr_CA" in v.id or "fr-CA" in v.id):
-            return v.id
+            return str(v.id)
     # 3. Toute Amelie
     for v in voices:
         if "amelie" in normalize(v.name):
-            return v.id
+            return str(v.id)
     # 4. Sinon, message d’aide
     raise RuntimeError(
         "Aucune voix 'Amélie' n’est installée sur ce Mac. Va dans Préférences Système > Accessibilité > Parole > Voix du système et installe une voix française féminine (ex: Amélie).",
@@ -222,7 +222,7 @@ def dire_texte(texte: str, robot_api: Optional[Any] = None) -> None:
 
 def reconnaitre_parole(
     duree: int = 3, frequence: int = 16000, robot_api: Optional[Any] = None
-) -> str:
+) -> str | None:
     """Reconnaît la parole via le micro (STT, français par défaut).
 
     Utilise robot.media.microphone (4 microphones SDK) si disponible,
@@ -286,7 +286,7 @@ def reconnaitre_parole(
                     audio = r.record(source)
                     texte = r.recognize_google(audio, language="fr-FR")
                     logging.info(f"✅ Texte reconnu (SDK 4 microphones) : {texte}")
-                    return texte
+                    return str(texte)
         except Exception as e:
             logging.debug(
                 f"Erreur reconnaissance SDK (fallback speech_recognition): {e}",
@@ -302,7 +302,7 @@ def reconnaitre_parole(
                 audio = r.listen(source, phrase_time_limit=duree)
                 texte = r.recognize_google(audio, language="fr-FR")
                 logging.info(f"Texte reconnu : {texte}")
-                return texte
+                return str(texte)
             except sr.UnknownValueError:
                 logging.warning("Aucune parole reconnue.")
                 return None
@@ -323,15 +323,14 @@ def lister_voix_disponibles() -> None:
     engine = _get_pyttsx3_engine()
     voices = engine.getProperty("voices")
     for _idx, v in enumerate(voices):
-        try:
-            (
-                v.languages[0].decode(errors="ignore")
-                if hasattr(v.languages[0], "decode")
-                else str(v.languages[0])
-            )
-        except Exception:
-            str(v.languages)
-    return voices
+            try:
+                _ = (
+                    v.languages[0].decode(errors="ignore")
+                    if hasattr(v.languages[0], "decode")
+                    else str(v.languages[0])
+                )
+            except Exception:
+                _ = str(v.languages)
 
 
 if __name__ == "__main__":
