@@ -13,6 +13,7 @@ venv/
 .env/
 .venv/
 ENV/
+.venv-veille/
 
 # macOS
 .DS_Store
@@ -26,6 +27,8 @@ ENV/
 
 # Logs
 *.log
+log/*.csv
+log/*.json
 
 # Tests
 .coverage
