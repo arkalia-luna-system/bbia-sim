@@ -373,6 +373,24 @@ python scripts/download_ALL_stl.py
 
 ### Tests & Commandes
 
+Recommandation (locale, mesure complète non bloquante) :
+```bash
+python -m pytest \
+  --cov=src/bbia_sim \
+  --cov-report=term-missing \
+  --cov-report=xml:coverage.xml \
+  --cov-report=html:htmlcov \
+  --cov-fail-under=0
+```
+
+CI (seuil progressif initial 30%) :
+```bash
+pytest -q --disable-warnings \
+  --cov=src/bbia_sim \
+  --cov-report=xml:coverage.xml \
+  --cov-fail-under=30
+```
+
 ### Résultats des Tests
 
 **📊 Qualité & Conformité :**
@@ -392,11 +410,11 @@ python -m pytest tests/test_demo_viewer_bbia_corrected.py -v
 # Tests MuJoCo existants
 python -m pytest tests/test_adapter_mujoco.py -v
 
-# Lancer tous les tests avec coverage
-python -m pytest tests/ --cov=src --cov-report=term-missing --cov-report=html
+# Lancer tous les tests avec coverage (chemin projet standardisé)
+python -m pytest tests/ --cov=src/bbia_sim --cov-report=term-missing --cov-report=html
 
 # Lancer les tests sans s'arrêter aux échecs
-python -m pytest tests/ --cov=src --cov-fail-under=0 --tb=no -q
+python -m pytest tests/ --cov=src/bbia_sim --cov-fail-under=0 --tb=no -q
 
 # Lancer un test spécifique
 python -m pytest tests/test_bbia_emotions.py -v

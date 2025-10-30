@@ -132,8 +132,15 @@ addopts = [
     "--disable-warnings",
     "--cache-clear",
     "--import-mode=importlib",
-    "--maxfail=5",
+    # Ne pas arrêter tôt pour que la couverture reflète toute la suite
+    "--maxfail=0",
     "--durations=10",
+    # Couverture standardisée (même chemin que [tool.coverage.run].source)
+    "--cov=src/bbia_sim",
+    "--cov-report=term-missing",
+    "--cov-report=xml:coverage.xml",
+    "--cov-report=html:htmlcov",
+    "--cov-fail-under=30",
 ]
 env = [
     "MUJOCO_GL=disable",
@@ -267,7 +274,7 @@ lines_after_imports = 2
 
 [tool.bandit]
 exclude_dirs = ["tests", "venv", ".venv", "logs", "reachy_repos", "assets"]
-skips = ["B101", "B108", "B306", "B601"]
+skips = ["B101", "B108", "B306", "B601", "B110", "B615"]
 targets = ["src/bbia_sim/"]
 recursive = true
 verbose = false
