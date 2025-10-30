@@ -749,7 +749,7 @@ class BBIAHuggingFace:
             else:
                 adapted_response = bbia_response  # LLM gère déjà la personnalité
 
-            # Normaliser la longueur pour rester entre ~30 et ~150 caractères
+            # Normaliser et finaliser (anti-doublons/sentinelles)
             return self._normalize_response_length(adapted_response)
 
         except Exception as e:
@@ -1411,16 +1411,36 @@ class BBIAHuggingFace:
                 if len(t) < min_len:
                     t = (t + " " + SUFFIX_POOL[_r.randrange(len(SUFFIX_POOL))]).strip()
             if len(t) <= max_len:
+                # Anti-duplication récente
+                try:
+                    t = self._avoid_recent_duplicates(t)
+                except Exception:
+                    pass
                 return t
 
             cut = t[: max_len + 1]
             last_stop = max(cut.rfind("."), cut.rfind("!"), cut.rfind("?"))
             if last_stop >= min_len // 2:
-                return cut[: last_stop + 1].strip()
+                t2 = cut[: last_stop + 1].strip()
+                try:
+                    t2 = self._avoid_recent_duplicates(t2)
+                except Exception:
+                    pass
+                return t2
             last_space = cut.rfind(" ")
             if last_space >= min_len:
-                return (cut[:last_space] + "...").strip()
-            return (t[:max_len] + "...").strip()
+                t3 = (cut[:last_space] + "...").strip()
+                try:
+                    t3 = self._avoid_recent_duplicates(t3)
+                except Exception:
+                    pass
+                return t3
+            t4 = (t[:max_len] + "...").strip()
+            try:
+                t4 = self._avoid_recent_duplicates(t4)
+            except Exception:
+                pass
+            return t4
         except Exception:
             return text
 
