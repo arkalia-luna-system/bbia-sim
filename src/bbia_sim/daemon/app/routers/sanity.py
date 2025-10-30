@@ -1,7 +1,7 @@
 """Routeurs Sanity Checks (statut rapide + e-stop)."""
 
-from datetime import datetime
 import logging
+from datetime import datetime
 from typing import Any
 
 from fastapi import APIRouter

@@ -1,6 +1,6 @@
 # 📊 Status BBIA-SIM - Analyse Conformité Reachy Mini
 
-**Dernière mise à jour :** 2025-10-30 - Version 1.3.1 (Prêt pour arrivée robot)
+**Dernière mise à jour :** 2025-10-30 - Version 1.3.1 (Prêt pour arrivée robot)  
 **Référence SDK :** `pollen-robotics/reachy_mini` v1.0.0 @ `11ae6ad49eae22381946135fca29bdb4bfb1fdc1` (branch `develop`)
 
 ---
@@ -12,7 +12,7 @@
 **Référence précise @84c40c31 :**
 - `/tmp/reachy_ref/src/reachy_mini/apps/sources/hf_space.py`
 
-**Type :** Extension BBIA (non core SDK)
+**Type :** Extension BBIA (non core SDK)  
 **Statut :** Module BBIA original - intégration Hugging Face pour IA conversationnelle
 
 Le SDK officiel Reachy Mini expose une intégration Hugging Face Spaces via `hf_space.py` pour lister les apps disponibles. Le module `bbia_huggingface.py` est une **extension BBIA** enrichissant les capacités IA avec :
@@ -39,9 +39,9 @@ Le SDK officiel Reachy Mini expose une intégration Hugging Face Spaces via `hf_
 5. ✅ **Indentation commentaire** → Corrigée (ligne 1001)
 6. ✅ **Formatage automatique** → Black appliqué (246 lignes modifiées)
 
-**Bandit B615 :** Unsafe Hugging Face download
-- **Justification :** Utilisation explicite `revision="main"` dans tous les appels `from_pretrained()`
-- **Risque accepté :** Mise à jour automatique des modèles (comportement souhaité)
+**Bandit B615 :** Unsafe Hugging Face download  
+- **Justification :** Utilisation explicite `revision="main"` dans tous les appels `from_pretrained()`  
+- **Risque accepté :** Mise à jour automatique des modèles (comportement souhaité)  
 - **Status :** 2 findings Medium (tolérés, justifiés)
 
 ### 🔒 Sécurité & Tests
@@ -80,7 +80,7 @@ Le SDK officiel Reachy Mini expose une intégration Hugging Face Spaces via `hf_
 
 ### 📚 Documentation
 
-**Docstrings :** ✅ Présentes et claires
+**Docstrings :** ✅ Présentes et claires  
 **Type hints :** ✅ Complets (`Union`, `Optional`, `npt.NDArray`)
 
 **Commandes de repro :**
@@ -129,7 +129,7 @@ bandit -r src/bbia_sim/bbia_huggingface.py -ll
 - `/tmp/reachy_ref/src/reachy_mini/media/media_manager.py`
 - `/tmp/reachy_ref/src/reachy_mini/media/audio_base.py`
 
-**Type :** Intégration SDK Media API
+**Type :** Intégration SDK Media API  
 **Statut :** ✅ Conforme SDK - Utilise `robot.media.microphone` et `robot.media.speaker`
 
 Le SDK Reachy Mini expose une API médias via `MediaManager`:
@@ -157,8 +157,8 @@ Le SDK Reachy Mini expose une API médias via `MediaManager`:
 **Issues corrigées :**
 1. ✅ 1 ligne > 100 chars (ligne 181) → Corrigée
 
-**Bandit B110 :** Exception catch générique
-- **Justification :** Nettoyage PortAudio (`_cleanup_sounddevice`) - comportement souhaité ignorer erreurs de terminaison
+**Bandit B110 :** Exception catch générique  
+- **Justification :** Nettoyage PortAudio (`_cleanup_sounddevice`) - comportement souhaité ignorer erreurs de terminaison  
 - **Risque accepté :** Fonction de cleanup, erreurs non critiques
 
 ### 🔒 Sécurité & Tests
@@ -199,7 +199,7 @@ Le SDK Reachy Mini expose une API médias via `MediaManager`:
 
 ### 📚 Documentation
 
-**Docstrings :** ✅ Présentes et claires
+**Docstrings :** ✅ Présentes et claires  
 **Type hints :** ✅ Complets (`Optional`, `RobotAPI`)
 
 **Commandes de repro :**
@@ -235,13 +235,13 @@ bandit -r src/bbia_sim/bbia_audio.py -ll
 
 ### 📋 Référence Reachy Mini
 
-**Références précises @84c40c31**
-- Backend: `/tmp/reachy_ref/src/reachy_mini/daemon/backend/robot/backend.py`
-- URDF: `/tmp/reachy_ref/src/reachy_mini/descriptions/reachy_mini/urdf/robot.urdf`
-- Fréquence boucle: `control_loop_frequency = 50.0` Hz (backend.py)
+**Références précises @84c40c31**  
+- Backend: `/tmp/reachy_ref/src/reachy_mini/daemon/backend/robot/backend.py`  
+- URDF: `/tmp/reachy_ref/src/reachy_mini/descriptions/reachy_mini/urdf/robot.urdf`  
+- Fréquence boucle: `control_loop_frequency = 50.0` Hz (backend.py)  
 - Watchdog/arrêt: `multiprocessing.Event` via `should_stop` + `last_alive` (backend.py)
 
-**Type :** Backend critique - Contrôleurs moteurs, watchdog, safety
+**Type :** Backend critique - Contrôleurs moteurs, watchdog, safety  
 **Statut :** ✅ Conformité améliorée - Validation duration corrigée, magic numbers extraits
 
 Le SDK officiel `RobotBackend` expose:
@@ -342,7 +342,7 @@ Le SDK officiel `RobotBackend` expose:
 
 ### 📚 Documentation
 
-**Docstrings :** ✅ Présentes (méthodes SDK documentées)
+**Docstrings :** ✅ Présentes (méthodes SDK documentées)  
 **Type hints :** ⚠️ Partiels (mypy strict révèle 11 erreurs)
 
 **Commandes de repro :**
@@ -409,7 +409,7 @@ bandit -r src/bbia_sim/backends/reachy_mini_backend.py -ll
 - `/tmp/reachy_ref/src/reachy_mini/media/media_manager.py`
 - `/tmp/reachy_ref/src/reachy_mini/media/audio_base.py`
 
-**Type :** Intégration SDK Media API (TTS/STT)
+**Type :** Intégration SDK Media API (TTS/STT)  
 **Statut :** ✅ Conforme SDK - Cache pyttsx3 optimisé, intégration `robot.media.speaker`/`microphone`
 
 Le SDK Reachy Mini expose une API médias via `MediaManager`:
@@ -438,8 +438,8 @@ Le SDK Reachy Mini expose une API médias via `MediaManager`:
 1. ✅ 11 `type: ignore` inutilisés → Supprimés (mypy strict passe)
 2. ✅ `# noqa: B110` invalide → Corrigé en `# nosec B110` (ruff + bandit)
 
-**Bandit B110 :** Exception catch générique (nettoyage fichiers temporaires)
-- **Justification :** Nettoyage fichier temp après synthèse vocale - erreurs non critiques
+**Bandit B110 :** Exception catch générique (nettoyage fichiers temporaires)  
+- **Justification :** Nettoyage fichier temp après synthèse vocale - erreurs non critiques  
 - **Risque accepté :** Fonction de cleanup, comportement souhaité
 
 ### 🔒 Sécurité & Tests
@@ -480,7 +480,7 @@ Le SDK Reachy Mini expose une API médias via `MediaManager`:
 
 ### 📚 Documentation
 
-**Docstrings :** ✅ Présentes (résumé, args, returns)
+**Docstrings :** ✅ Présentes (résumé, args, returns)  
 **Type hints :** ✅ Complets (`Optional`, `Any`, `str | None`)
 
 **Commandes de repro :**
@@ -613,10 +613,10 @@ Points clés:
 
 ## 📊 Résumé Audit Actuel
 
-**Modules audités :** 10/45+
-**Référence Reachy Mini :** `84c40c31ff898da4004584c09c6a1844b27425a3` (branch `develop`)
-**Patches appliqués :** 8 corrections (3 `reachy_mini_backend.py`, 1 `bbia_voice.py`, 1 `robot_api.py`, 2 `bbia_vision.py`, 1 `ai_backends.py`)
-**Tests corrigés :** 1 (`test_strict_parameter_validation` passe)
+**Modules audités :** 10/45+  
+**Référence Reachy Mini :** `84c40c31ff898da4004584c09c6a1844b27425a3` (branch `develop`)  
+**Patches appliqués :** 8 corrections (3 `reachy_mini_backend.py`, 1 `bbia_voice.py`, 1 `robot_api.py`, 2 `bbia_vision.py`, 1 `ai_backends.py`)  
+**Tests corrigés :** 1 (`test_strict_parameter_validation` passe)  
 **JSONL généré :** `artifacts/audit_reachy_modules.jsonl`
 **Type-check** : mypy = 0 error (bbia_voice no-redef corrigé; accès SDK typés dans state)
 
@@ -676,8 +676,8 @@ pytest -q -m "not e2e" -k "<module_name> or unit or fast"
 
 ## 🛠️ Backlog vérif & perfs
 
-**Conventions** : [x] vérifié, [ ] à faire
-**Référence Reachy** : `pollen-robotics/reachy_mini` @ `84c40c31ff898da4004584c09c6a1844b27425a3` (branch `develop`)
+**Conventions** : [x] vérifié, [ ] à faire  
+**Référence Reachy** : `pollen-robotics/reachy_mini` @ `84c40c31ff898da4004584c09c6a1844b27425a3` (branch `develop`)  
 **Dernière mise à jour** : 2025-10-29
 
 ### 📊 État synthétique des vérifications
@@ -698,7 +698,7 @@ pytest -q -m "not e2e" -k "<module_name> or unit or fast"
 
 ### 📋 Référence Reachy Mini
 
-**Type :** Sélection des backends IA (politiques de fallback)
+**Type :** Sélection des backends IA (politiques de fallback)  
 **Statut :** ✅ Logique consolidée et sûre (priorités explicites, environnement CI respecté)
 
 ### ✅ Conformité Code Qualité
@@ -713,7 +713,7 @@ pytest -q -m "not e2e" -k "<module_name> or unit or fast"
 
 ### 🔒 Sécurité & Tests
 
-**Tests existants :** `tests/test_ai_backends_selection.py`
+**Tests existants :** `tests/test_ai_backends_selection.py`  
 **Couverture :**
 - Respect des variables d’environnement (désactivation en CI)
 - Fallback prévisible si dépendances IA absentes
@@ -954,12 +954,12 @@ Chaque benchmark génère une entrée JSONL avec métriques p50/p95 :
 
 ### 📋 Référence Reachy Mini
 
-**Références précises @84c40c31**
-- Abstraction Backend: `/tmp/reachy_ref/src/reachy_mini/daemon/backend/abstract.py`
-- Backend réel: `/tmp/reachy_ref/src/reachy_mini/daemon/backend/robot/backend.py`
+**Références précises @84c40c31**  
+- Abstraction Backend: `/tmp/reachy_ref/src/reachy_mini/daemon/backend/abstract.py`  
+- Backend réel: `/tmp/reachy_ref/src/reachy_mini/daemon/backend/robot/backend.py`  
 - URDF: `/tmp/reachy_ref/src/reachy_mini/descriptions/reachy_mini/urdf/robot.urdf`
 
-**Type :** Interface unifiée abstraite BBIA
+**Type :** Interface unifiée abstraite BBIA  
 **Statut :** ✅ Conforme (API, unités en radians, clamp sécurité). Pas de ROS2/QoS attendu ici (géré côté SDK/daemon).
 
 Le fichier `robot_api.py` définit une API abstraite (connect/disconnect, set/get joint, step, emergency_stop, behaviors) avec des garde-fous de sécurité (`safe_amplitude_limit = 0.3` rad, joints interdits antennes/passive). Côté SDK, les équivalents se trouvent dans `Backend`/`RobotBackend` (async goto_target, publishers zenoh, statuts, modes moteurs). L’API BBIA est unifiée et synchrone; la conformité porte sur les unités, les bornes et la sémantique des appels.
@@ -1003,7 +1003,7 @@ Le fichier `robot_api.py` définit une API abstraite (connect/disconnect, set/ge
 
 ### 📚 Documentation
 
-- Docstrings présentes et minimalistes
+- Docstrings présentes et minimalistes  
 - Méthodes clairement séparées entre API abstraite et comportements d’exemple
 
 ### 🎯 Score & Recommandation
@@ -1044,7 +1044,7 @@ Notes:
 ### 🧠 Architecture IA déportée (Wireless)
 
 - Flux recommandé (aligné Discord): Robot (RPi/carte dédiée) ⇄ WiFi ⇄ PC IA (STT/TTS/LLM) ⇄ Robot.
-- Déjà supporté ici: séparation backend robot, modules IA (voix, HF, émotions) et tests de latence audio.
+- Déjà supporté ici: séparation backend robot, modules IA (voix, HF, émotions) et tests de latence audio. 
 - Backends IA locaux possibles (non installés par défaut):
   - TTS: KittenTTS (léger), alternatives plus lourdes Kokoro/NeuTTS
   - STT: Whisper/Parakeet
