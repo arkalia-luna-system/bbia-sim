@@ -8,7 +8,7 @@ import logging
 import os
 import time
 from pathlib import Path
-from typing import Any, Optional, cast
+from typing import Any, cast
 
 try:
     import whisper
@@ -67,7 +67,7 @@ class WhisperSTT:
             logger.error(f"❌ Erreur chargement Whisper: {e}")
             return False
 
-    def transcribe_audio(self, audio_path: str) -> Optional[str]:
+    def transcribe_audio(self, audio_path: str) -> str | None:
         """
         Transcrit un fichier audio en texte.
 
@@ -118,7 +118,7 @@ class WhisperSTT:
             logger.error(f"❌ Erreur transcription: {e}")
             return None
 
-    def transcribe_microphone(self, duration: float = 3.0) -> Optional[str]:
+    def transcribe_microphone(self, duration: float = 3.0) -> str | None:
         """
         Enregistre et transcrit depuis le microphone.
 
@@ -221,7 +221,7 @@ class VoiceCommandMapper:
             f"🗣️ Mappeur de commandes initialisé ({len(self.commands)} commandes)"
         )
 
-    def map_command(self, text: str) -> Optional[dict[str, Any]]:
+    def map_command(self, text: str) -> dict[str, Any] | None:
         """
         Mappe un texte vers une action RobotAPI.
 
@@ -255,7 +255,7 @@ class VoiceCommandMapper:
 
 def create_whisper_stt(
     model_size: str = "tiny", language: str = "fr"
-) -> Optional[WhisperSTT]:
+) -> WhisperSTT | None:
     """
     Factory function pour créer une instance WhisperSTT.
 

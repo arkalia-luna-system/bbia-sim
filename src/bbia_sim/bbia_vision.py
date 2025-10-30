@@ -7,7 +7,7 @@ Reconnaissance d'objets, détection de visages, suivi d'objets.
 import logging
 import math
 from datetime import datetime
-from typing import Any, Optional, cast
+from typing import Any, cast
 
 import numpy as np
 import numpy.typing as npt
@@ -55,7 +55,7 @@ class BBIAVision:
     sinon utilise simulation pour compatibilité.
     """
 
-    def __init__(self, robot_api: Optional[Any] = None) -> None:
+    def __init__(self, robot_api: Any | None = None) -> None:
         """
         Initialise le module de vision.
 
@@ -69,7 +69,7 @@ class BBIAVision:
         self.objects_detected: list[dict[str, Any]] = []
         self.faces_detected: list[dict[str, Any]] = []
         self.tracking_active = False
-        self.current_focus: Optional[dict[str, Any]] = None
+        self.current_focus: dict[str, Any] | None = None
 
         # Spécifications hardware réelles
         self.specs = {
@@ -113,7 +113,7 @@ class BBIAVision:
             except Exception as e:
                 logger.warning(f"⚠️ MediaPipe non disponible: {e}")
 
-    def _capture_image_from_camera(self) -> Optional[npt.NDArray[np.uint8]]:
+    def _capture_image_from_camera(self) -> npt.NDArray[np.uint8] | None:
         """Capture une image depuis robot.media.camera si disponible.
 
         CORRECTION EXPERTE: Validation robuste du format d'image SDK avec gestion
@@ -387,7 +387,7 @@ class BBIAVision:
             "source": "simulation",  # Fallback simulation
         }
 
-    def recognize_object(self, object_name: str) -> Optional[dict[str, Any]]:
+    def recognize_object(self, object_name: str) -> dict[str, Any] | None:
         """Reconnaît un objet spécifique."""
         for obj in self.objects_detected:
             if obj["name"] == object_name:

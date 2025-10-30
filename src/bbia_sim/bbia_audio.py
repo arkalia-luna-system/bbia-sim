@@ -35,7 +35,7 @@ if TYPE_CHECKING:
     from .robot_api import RobotAPI
 
 
-def _get_sd() -> Optional[Any]:
+def _get_sd() -> Any | None:
     """Import paresseux de sounddevice pour éviter l'init PortAudio au import."""
     global sd
     if sd is not None:
@@ -59,7 +59,7 @@ DEFAULT_BUFFER_SIZE = 512  # SDK optimisé pour latence minimale
 DEFAULT_CHANNELS = 1  # Mono par défaut
 
 # Alias module-level pour permettre le patch dans les tests
-soundfile: Optional[Any]
+soundfile: Any | None
 try:  # pragma: no cover - import optionnel
     import soundfile as _soundfile
 
@@ -70,7 +70,7 @@ except Exception:  # pragma: no cover - environnement sans soundfile
 
 def _get_robot_media_microphone(
     robot_api: Optional["RobotAPI"] = None,  # noqa: ANN401
-) -> Optional[object]:
+) -> object | None:
     """Récupère robot.media.microphone si disponible.
 
     Args:
@@ -193,7 +193,7 @@ def enregistrer_audio(
                     wf.setframerate(frequence)
                     wf.writeframes(
                         bytes(audio_data)
-                        if isinstance(audio_data, (bytes, bytearray))
+                        if isinstance(audio_data, bytes | bytearray)
                         else audio_data.tobytes()
                     )
                 logging.info("Enregistrement SDK terminé.")

@@ -6,7 +6,7 @@ import json
 import logging
 import time
 from datetime import datetime
-from typing import Any, Optional
+from typing import Any
 
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 
@@ -23,7 +23,7 @@ class ConnectionManager:
     def __init__(self) -> None:
         self.active_connections: list[WebSocket] = []
         self.is_broadcasting = False
-        self.broadcast_task: Optional[asyncio.Task[None]] = None
+        self.broadcast_task: asyncio.Task[None] | None = None
 
     async def connect(self, websocket: WebSocket) -> None:
         """Accepte une nouvelle connexion WebSocket."""

@@ -6,7 +6,7 @@ Backend unique pour MuJoCo et Reachy réel
 
 import logging
 from abc import ABC, abstractmethod
-from typing import Any, Optional
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -74,7 +74,7 @@ class RobotAPI(ABC):
         return True, clamped_position
 
     @abstractmethod
-    def get_joint_pos(self, joint_name: str) -> Optional[float]:
+    def get_joint_pos(self, joint_name: str) -> float | None:
         """Récupère la position actuelle d'un joint."""
         pass
 

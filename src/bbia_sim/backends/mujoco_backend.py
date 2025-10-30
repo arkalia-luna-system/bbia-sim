@@ -7,7 +7,7 @@ Backend pour simulation MuJoCo
 import logging
 import time
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 
 import mujoco
 import mujoco.viewer
@@ -25,9 +25,9 @@ class MuJoCoBackend(RobotAPI):
     ) -> None:
         super().__init__()
         self.model_path = Path(model_path)
-        self.model: Optional[mujoco.MjModel] = None
-        self.data: Optional[mujoco.MjData] = None
-        self.viewer: Optional[mujoco.viewer.MjViewer] = None
+        self.model: mujoco.MjModel | None = None
+        self.data: mujoco.MjData | None = None
+        self.viewer: mujoco.viewer.MjViewer | None = None
         self.joint_name_to_id: dict[str, int] = {}
         self.step_count = 0
         self.start_time: float = 0.0
@@ -107,7 +107,7 @@ class MuJoCoBackend(RobotAPI):
         logger.debug(f"Joint {joint_name} → {clamped_position:.3f} rad")
         return True
 
-    def get_joint_pos(self, joint_name: str) -> Optional[float]:
+    def get_joint_pos(self, joint_name: str) -> float | None:
         """Récupère la position actuelle d'un joint."""
         if not self.is_connected:
             return None

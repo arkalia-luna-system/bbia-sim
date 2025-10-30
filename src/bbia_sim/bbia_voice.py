@@ -13,7 +13,7 @@ import sys
 import threading
 import time
 import unicodedata
-from typing import Any, Optional
+from typing import Any
 
 import pyttsx3
 import speech_recognition as sr
@@ -35,8 +35,8 @@ VOIX_FEMMES_MAC = [
 ]
 
 # ⚡ OPTIMISATION PERFORMANCE: Cache global pour éviter réinitialisation répétée
-_pyttsx3_engine_cache: Optional[Any] = None
-_bbia_voice_id_cache: Optional[str] = None
+_pyttsx3_engine_cache: Any | None = None
+_bbia_voice_id_cache: str | None = None
 _pyttsx3_lock = threading.Lock()
 
 
@@ -116,7 +116,7 @@ def get_bbia_voice(engine: Any) -> str:
     )
 
 
-def dire_texte(texte: str, robot_api: Optional[Any] = None) -> None:
+def dire_texte(texte: str, robot_api: Any | None = None) -> None:
     """Lit un texte à voix haute (TTS) avec la voix la plus fidèle à Reachy
     Mini Wireless.
 
@@ -273,7 +273,7 @@ def dire_texte(texte: str, robot_api: Optional[Any] = None) -> None:
 
 
 def reconnaitre_parole(
-    duree: int = 3, frequence: int = 16000, robot_api: Optional[Any] = None
+    duree: int = 3, frequence: int = 16000, robot_api: Any | None = None
 ) -> str | None:
     """Reconnaît la parole via le micro (STT, français par défaut).
 

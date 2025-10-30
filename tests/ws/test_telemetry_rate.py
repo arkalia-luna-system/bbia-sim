@@ -98,7 +98,7 @@ class TestTelemetryRate:
 
                 for joint in expected_joints:
                     assert joint in data["joints"], f"Joint {joint} manquant"
-                    assert isinstance(data["joints"][joint], (int, float))
+                    assert isinstance(data["joints"][joint], int | float)
 
     def test_websocket_connection_handling(self):
         """Test la gestion des connexions WebSocket."""

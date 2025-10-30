@@ -7,7 +7,7 @@ Intégration avancée avec Hugging Face Hub pour enrichir les capacités IA de B
 import logging
 import os
 import re
-from typing import Any, Optional, Union
+from typing import Any
 
 import numpy as np
 import numpy.typing as npt
@@ -105,7 +105,7 @@ class BBIAHuggingFace:
     - Multimodal : Modèles combinant vision + texte
     """
 
-    def __init__(self, device: str = "auto", cache_dir: Optional[str] = None) -> None:
+    def __init__(self, device: str = "auto", cache_dir: str | None = None) -> None:
         """Initialise le module Hugging Face.
 
         Args:
@@ -152,8 +152,8 @@ class BBIAHuggingFace:
         }
 
         # État du modèle de conversation
-        self.chat_model: Optional[Any] = None
-        self.chat_tokenizer: Optional[Any] = None
+        self.chat_model: Any | None = None
+        self.chat_tokenizer: Any | None = None
         self.use_llm_chat = False  # Activation optionnelle (lourd)
 
         logger.info(f"🤗 BBIA Hugging Face initialisé (device: {self.device})")
@@ -424,7 +424,7 @@ class BBIAHuggingFace:
 
     def describe_image(
         self,
-        image: Union[str, Image.Image, npt.NDArray[np.uint8]],
+        image: str | Image.Image | npt.NDArray[np.uint8],
         model_name: str = "blip",
     ) -> str:
         """Décrit une image avec BLIP ou CLIP.
@@ -592,7 +592,7 @@ class BBIAHuggingFace:
 
     def answer_question(
         self,
-        image: Union[str, Image.Image],
+        image: str | Image.Image,
         question: str,
         model_name: str = "blip_vqa",
     ) -> str:
@@ -1485,7 +1485,7 @@ class BBIAHuggingFace:
         except Exception:
             return text
 
-    def _get_recent_context(self) -> Optional[str]:
+    def _get_recent_context(self) -> str | None:
         """Extrait un mot-clé du contexte récent pour cohérence conversationnelle.
 
         Returns:

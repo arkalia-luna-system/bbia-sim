@@ -6,7 +6,7 @@ Détection d'objets légère avec YOLOv8n (optionnel)
 
 import logging
 import time
-from typing import Any, Optional
+from typing import Any
 
 import numpy as np
 
@@ -47,7 +47,7 @@ class YOLODetector:
         """
         self.model_size = model_size
         self.confidence_threshold = confidence_threshold
-        self.model: Optional[Any] = None
+        self.model: Any | None = None
         self.is_loaded = False
 
         # Classes d'intérêt pour BBIA
@@ -143,7 +143,7 @@ class YOLODetector:
 
     def get_best_detection(
         self, detections: list[dict[str, Any]]
-    ) -> Optional[dict[str, Any]]:
+    ) -> dict[str, Any] | None:
         """
         Retourne la meilleure détection selon les critères BBIA.
 
@@ -175,7 +175,7 @@ class YOLODetector:
 
     def map_detection_to_action(
         self, detection: dict[str, Any]
-    ) -> Optional[dict[str, Any]]:
+    ) -> dict[str, Any] | None:
         """
         Mappe une détection vers une action RobotAPI.
 
@@ -285,9 +285,7 @@ class FaceDetector:
             logger.error(f"❌ Erreur détection visages: {e}")
             return []
 
-    def get_best_face(
-        self, detections: list[dict[str, Any]]
-    ) -> Optional[dict[str, Any]]:
+    def get_best_face(self, detections: list[dict[str, Any]]) -> dict[str, Any] | None:
         """
         Retourne le meilleur visage détecté.
 
@@ -308,7 +306,7 @@ class FaceDetector:
         return best_face
 
 
-def create_yolo_detector(model_size: str = "n") -> Optional[YOLODetector]:
+def create_yolo_detector(model_size: str = "n") -> YOLODetector | None:
     """
     Factory function pour créer une instance YOLODetector.
 
@@ -325,7 +323,7 @@ def create_yolo_detector(model_size: str = "n") -> Optional[YOLODetector]:
     return YOLODetector(model_size=model_size)
 
 
-def create_face_detector() -> Optional[FaceDetector]:
+def create_face_detector() -> FaceDetector | None:
     """
     Factory function pour créer une instance FaceDetector.
 

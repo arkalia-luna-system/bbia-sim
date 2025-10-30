@@ -9,7 +9,7 @@ import json
 import logging
 import time
 from datetime import datetime
-from typing import Any, Optional
+from typing import Any
 
 try:
     import uvicorn
@@ -44,7 +44,7 @@ class BBIAAdvancedWebSocketManager:
     def __init__(self) -> None:
         """Initialise le gestionnaire WebSocket avancé."""
         self.active_connections: list[WebSocket] = []
-        self.robot: Optional[Any] = None
+        self.robot: Any | None = None
         self.robot_backend = "mujoco"
         self.metrics_history: list[dict[str, Any]] = []
         self.max_history = 1000  # Limite historique métriques
@@ -54,7 +54,7 @@ class BBIAAdvancedWebSocketManager:
         self.vision = BBIAVision()
         # self.voice = BBIAVoice()  # Pas encore implémenté
         self.behavior_manager = BBIABehaviorManager()
-        self.bbia_hf: Optional[Any] = None  # Hugging Face chat module
+        self.bbia_hf: Any | None = None  # Hugging Face chat module
 
         # Métriques temps réel
         self.current_metrics = {
@@ -188,7 +188,7 @@ class BBIAAdvancedWebSocketManager:
         if self.robot:
             joints = self.robot.get_available_joints()
             if isinstance(joints, list):
-                return [str(joint) for joint in joints if isinstance(joint, (str, int))]
+                return [str(joint) for joint in joints if isinstance(joint, str | int)]
             return []
         return []
 
@@ -292,7 +292,7 @@ else:
     app = None  # type: ignore
 
 
-def create_advanced_dashboard_app() -> Optional[FastAPI]:
+def create_advanced_dashboard_app() -> FastAPI | None:
     """Crée l'application dashboard avancée FastAPI."""
     if not FASTAPI_AVAILABLE:
         logger.error("❌ FastAPI non disponible")

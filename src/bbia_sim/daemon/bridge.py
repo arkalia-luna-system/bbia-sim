@@ -8,7 +8,7 @@ import asyncio
 import json
 import logging
 import time
-from typing import Any, Optional
+from typing import Any
 
 import numpy as np
 from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
@@ -79,11 +79,11 @@ class RobotState(BaseModel):
 class ZenohBridge:
     """Bridge entre FastAPI et Zenoh pour Reachy Mini."""
 
-    def __init__(self, config: Optional[ZenohConfig] = None):
+    def __init__(self, config: ZenohConfig | None = None):
         """Initialise le bridge Zenoh."""
         self.config = config or ZenohConfig()
-        self.session: Optional[Session] = None
-        self.reachy_mini: Optional[ReachyMini] = None
+        self.session: Session | None = None
+        self.reachy_mini: ReachyMini | None = None
         self.connected = False
         self.logger = logging.getLogger(self.__class__.__name__)
 
@@ -254,7 +254,7 @@ class ZenohBridge:
                 # Exécuter la commande
                 await self._execute_command(command)
 
-            except asyncio.TimeoutError:
+            except TimeoutError:
                 continue
             except Exception as e:
                 self.logger.error(f"Erreur traitement commande: {e}")
@@ -497,11 +497,11 @@ class ZenohBridge:
                         self.reachy_mini.get_current_joint_positions()
                     )
                     # Stewart joints (indices 0-5)
-                    if isinstance(head_positions, (list, tuple)):
+                    if isinstance(head_positions, list | tuple):
                         for i, val in enumerate(head_positions[:6]):
                             joints_state[f"stewart_{i+1}"] = float(val)
                     # Antennes (indices 0-1)
-                    if isinstance(antenna_positions, (list, tuple)):
+                    if isinstance(antenna_positions, list | tuple):
                         if len(antenna_positions) > 0:
                             joints_state["left_antenna"] = float(antenna_positions[0])
                         if len(antenna_positions) > 1:
@@ -593,7 +593,7 @@ class ZenohBridge:
 app = FastAPI(title="BBIA-SIM Zenoh Bridge", version="1.3.0")
 
 # Instance globale du bridge
-bridge: Optional[ZenohBridge] = None
+bridge: ZenohBridge | None = None
 
 
 @app.on_event("startup")

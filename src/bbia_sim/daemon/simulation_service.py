@@ -3,7 +3,7 @@
 import asyncio
 import contextlib
 import logging
-from typing import Any, Union
+from typing import Any
 
 from ..sim.simulator import MuJoCoSimulator
 
@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 class SimulationService:
     """Service de gestion de la simulation MuJoCo."""
 
-    def __init__(self, model_path: Union[str, None] = None):
+    def __init__(self, model_path: str | None = None):
         """Initialise le service de simulation.
 
         Args:
@@ -23,9 +23,9 @@ class SimulationService:
         self.model_path = (
             model_path or "src/bbia_sim/sim/models/reachy_mini_REAL_OFFICIAL.xml"
         )
-        self.simulator: Union[MuJoCoSimulator, None] = None
+        self.simulator: MuJoCoSimulator | None = None
         self.is_running = False
-        self._simulation_task: Union[asyncio.Task, None] = None
+        self._simulation_task: asyncio.Task | None = None
 
     async def start_simulation(self, headless: bool = True) -> bool:
         """Démarre la simulation MuJoCo.

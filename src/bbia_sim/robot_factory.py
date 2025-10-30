@@ -4,7 +4,6 @@ RobotFactory - Factory pour créer les backends RobotAPI
 """
 
 import logging
-from typing import Optional
 
 from .backends.mujoco_backend import MuJoCoBackend
 from .backends.reachy_backend import ReachyBackend
@@ -18,7 +17,7 @@ class RobotFactory:
     """Factory pour créer les backends RobotAPI."""
 
     @staticmethod
-    def create_backend(backend_type: str = "mujoco", **kwargs) -> Optional[RobotAPI]:
+    def create_backend(backend_type: str = "mujoco", **kwargs) -> RobotAPI | None:
         """Crée un backend RobotAPI.
 
         Args:

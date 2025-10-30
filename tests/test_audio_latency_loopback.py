@@ -12,7 +12,6 @@ import os
 import platform
 import statistics
 import time
-from typing import Optional
 
 import numpy as np
 import pytest
@@ -26,7 +25,7 @@ except Exception:  # pragma: no cover
     sd = None  # type: ignore[assignment]
 
 
-def _get_wasapi_loopback_settings() -> Optional[object]:
+def _get_wasapi_loopback_settings() -> object | None:
     if sd is None:
         return None
     try:

@@ -8,7 +8,7 @@ Export .csv dans artifacts/
 import csv
 import time
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 
 
 class TelemetryCollector:
@@ -20,8 +20,8 @@ class TelemetryCollector:
 
         self.step_times: list[float] = []
         self.joint_positions: list[dict[str, float]] = []
-        self.start_time: Optional[float] = None
-        self.last_step_time: Optional[float] = None
+        self.start_time: float | None = None
+        self.last_step_time: float | None = None
 
     def start_collection(self) -> None:
         """Démarre la collecte de télémétrie."""

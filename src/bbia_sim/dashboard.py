@@ -8,7 +8,7 @@ import asyncio
 import json
 import logging
 from datetime import datetime
-from typing import Any, Optional
+from typing import Any
 
 try:
     import uvicorn
@@ -38,7 +38,7 @@ class BBIAWebSocketManager:
     def __init__(self) -> None:
         """Initialise le gestionnaire WebSocket."""
         self.active_connections: list[WebSocket] = []
-        self.robot: Optional[Any] = None
+        self.robot: Any | None = None
         self.robot_backend = "mujoco"
 
     async def connect(self, websocket: WebSocket):
@@ -116,7 +116,7 @@ else:
     app = None  # type: ignore
 
 
-def create_dashboard_app() -> Optional[FastAPI]:
+def create_dashboard_app() -> FastAPI | None:
     """Crée l'application dashboard FastAPI."""
     if not FASTAPI_AVAILABLE:
         logger.error("❌ FastAPI non disponible")

@@ -88,7 +88,7 @@ class TestReachyMiniCompleteConformity:
         # Test get_joint_pos avec tous les joints
         for joint in ["stewart_1", "stewart_2", "yaw_body"]:
             pos = self.backend.get_joint_pos(joint)
-            assert isinstance(pos, (float, type(None)))
+            assert isinstance(pos, float | type(None))
             if pos is not None:
                 assert isinstance(pos, float)
 

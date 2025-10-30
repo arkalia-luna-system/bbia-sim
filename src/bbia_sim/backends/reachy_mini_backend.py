@@ -7,7 +7,7 @@ Backend utilisant le SDK officiel reachy_mini
 import logging
 import threading
 import time
-from typing import TYPE_CHECKING, Any, Optional, Union
+from typing import TYPE_CHECKING, Any, Optional
 
 import numpy as np
 import numpy.typing as npt
@@ -69,12 +69,12 @@ class ReachyMiniBackend(RobotAPI):
         self.automatic_body_yaw = automatic_body_yaw
         self.log_level = log_level
         self.media_backend = media_backend
-        self.robot: Optional[ReachyMini] = None
+        self.robot: ReachyMini | None = None
         self.step_count = 0
         self.start_time: float = 0.0
 
         # Watchdog monitoring temps réel (SDK officiel utilise threads avec Event)
-        self._watchdog_thread: Optional[threading.Thread] = None
+        self._watchdog_thread: threading.Thread | None = None
         self._should_stop_watchdog = threading.Event()
         self._watchdog_interval = 0.1  # 100ms entre vérifications
         self._last_heartbeat: float = 0.0
@@ -871,7 +871,7 @@ class ReachyMiniBackend(RobotAPI):
     def goto_target(
         self,
         head: Optional["HeadPose"] = None,
-        antennas: Optional[Union[npt.NDArray[np.float64], list[float]]] = None,
+        antennas: npt.NDArray[np.float64] | list[float] | None = None,
         duration: float = 0.5,
         method: str = "minjerk",
         body_yaw: float = 0.0,
@@ -1049,8 +1049,8 @@ class ReachyMiniBackend(RobotAPI):
     def set_target(
         self,
         head: Optional["HeadPose"] = None,
-        antennas: Optional[Union[npt.NDArray[np.float64], list[float]]] = None,
-        body_yaw: Optional[float] = None,
+        antennas: npt.NDArray[np.float64] | list[float] | None = None,
+        body_yaw: float | None = None,
     ) -> None:
         """Définit une cible complète (tête + antennes + corps)."""
         if not self.is_connected or not self.robot:
@@ -1073,7 +1073,7 @@ class ReachyMiniBackend(RobotAPI):
         except Exception as e:
             logger.error(f"Erreur start_recording: {e}")
 
-    def stop_recording(self) -> Optional[list[dict[str, Any]]]:
+    def stop_recording(self) -> list[dict[str, Any]] | None:
         """Arrête l'enregistrement et retourne les données."""
         if not self.is_connected or not self.robot:
             logger.info("Mode simulation: stop_recording")
@@ -1121,7 +1121,7 @@ class ReachyMiniBackend(RobotAPI):
     # ===== SUPPORT MODULES IO ET MEDIA =====
 
     @property
-    def io(self) -> Optional[object]:
+    def io(self) -> object | None:
         """Accès au module IO du robot."""
         if not self.is_connected or not self.robot:
             logger.warning("Mode simulation: io non disponible")
@@ -1129,7 +1129,7 @@ class ReachyMiniBackend(RobotAPI):
         return getattr(self.robot, "io", None)
 
     @property
-    def media(self) -> Optional[object]:
+    def media(self) -> object | None:
         """Accès au module Media du robot."""
         if not self.is_connected or not self.robot:
             logger.warning("Mode simulation: media non disponible")
@@ -1140,7 +1140,7 @@ class ReachyMiniBackend(RobotAPI):
 
     def create_move_from_positions(
         self, positions: list[dict[str, Any]], duration: float = 1.0
-    ) -> Optional[object]:
+    ) -> object | None:
         """Crée un objet Move à partir de positions."""
         try:
             from reachy_mini.motion.move import Move
@@ -1188,7 +1188,7 @@ class ReachyMiniBackend(RobotAPI):
             logger.error(f"Erreur création Move: {e}")
             return None
 
-    def record_movement(self, duration: float = 5.0) -> Optional[list[dict[str, Any]]]:
+    def record_movement(self, duration: float = 5.0) -> list[dict[str, Any]] | None:
         """Enregistre un mouvement pendant une durée donnée."""
         # PERFORMANCE: Utiliser time.sleep avec vérification pour éviter blocage
         # Critique si appelé dans boucle temps réel
@@ -1240,7 +1240,7 @@ class ReachyMiniBackend(RobotAPI):
         z: float,
         duration: float = 1.0,
         perform_movement: bool = True,
-    ) -> Optional[npt.NDArray[np.float64]]:
+    ) -> npt.NDArray[np.float64] | None:
         """Alias SDK officiel pour look_at.
 
         Returns:

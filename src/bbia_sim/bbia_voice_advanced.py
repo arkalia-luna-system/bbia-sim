@@ -15,7 +15,7 @@ import logging
 import os
 import tempfile
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 
 # Import conditionnel Coqui TTS
 try:
@@ -55,8 +55,8 @@ class BBIAVoiceAdvanced:
         self,
         model_name: str = "tts_models/fr/css10/vits",
         use_coqui: bool = True,
-        temp_dir: Optional[str] = None,
-        robot_api: Optional[object] = None,
+        temp_dir: str | None = None,
+        robot_api: object | None = None,
     ) -> None:
         """Initialise le module de synthèse vocale avancée.
 
@@ -71,7 +71,7 @@ class BBIAVoiceAdvanced:
         self.temp_dir.mkdir(parents=True, exist_ok=True)
 
         self.model_name = model_name
-        self.tts: Optional[Any] = None
+        self.tts: Any | None = None
         self.current_emotion = "neutral"
         self.robot_api = robot_api
 
@@ -121,8 +121,8 @@ class BBIAVoiceAdvanced:
     def say(
         self,
         text: str,
-        emotion: Optional[str] = None,
-        pitch: Optional[float] = None,
+        emotion: str | None = None,
+        pitch: float | None = None,
         speed: float = 1.0,
         volume: float = 1.0,
     ) -> bool:
@@ -164,8 +164,8 @@ class BBIAVoiceAdvanced:
     def _say_coqui(
         self,
         text: str,
-        emotion: Optional[str],
-        pitch: Optional[float],
+        emotion: str | None,
+        pitch: float | None,
         speed: float,
         volume: float,
     ) -> bool:
@@ -180,7 +180,7 @@ class BBIAVoiceAdvanced:
         pitch_value: float
         if pitch is None:
             pitch_raw = emotion_config.get("pitch", 0.0)
-            if isinstance(pitch_raw, (int, float)):
+            if isinstance(pitch_raw, int | float):
                 pitch_value = float(pitch_raw)
             else:
                 pitch_value = 0.0
@@ -333,7 +333,7 @@ class BBIAVoiceAdvanced:
 
         # Ajuster pitch selon intensité
         pitch_raw = emotion_config.get("pitch", 0.0)
-        if isinstance(pitch_raw, (int, float)):
+        if isinstance(pitch_raw, int | float):
             base_pitch = float(pitch_raw)
         else:
             base_pitch = 0.0
@@ -354,8 +354,8 @@ class BBIAVoiceAdvanced:
 # Fonctions de compatibilité pour migration progressive
 def dire_texte_advanced(
     texte: str,
-    emotion: Optional[str] = None,
-    pitch: Optional[float] = None,
+    emotion: str | None = None,
+    pitch: float | None = None,
 ) -> bool:
     """Fonction wrapper pour compatibilité avec dire_texte() existant.
 

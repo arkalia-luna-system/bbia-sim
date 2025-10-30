@@ -55,7 +55,7 @@ class TestReachyMiniBackendExtended:
 
             # La limite devrait être définie dans le backend
             assert hasattr(backend, "safe_amplitude_limit")
-            assert isinstance(backend.safe_amplitude_limit, (int, float))
+            assert isinstance(backend.safe_amplitude_limit, int | float)
             assert backend.safe_amplitude_limit > 0
         except ImportError:
             pytest.skip("Module reachy_mini_backend non disponible")

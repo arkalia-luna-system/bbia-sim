@@ -416,7 +416,7 @@ class TestReachyMiniFullConformity:
         # Test get_joint_pos retourne float
         result = self.backend.get_joint_pos("stewart_1")
         assert isinstance(
-            result, (float, type(None))
+            result, float | type(None)
         ), "get_joint_pos doit retourner float ou None"
         print("✅ get_joint_pos retourne float")
 
@@ -692,7 +692,7 @@ class TestReachyMiniFullConformity:
         move_data = self.backend.stop_recording()
         assert move_data is not None, "stop_recording doit retourner des données"
         assert isinstance(
-            move_data, (list, type(None))
+            move_data, list | type(None)
         ), "stop_recording doit retourner une liste"
         print(f"✅ stop_recording() retourne données: {type(move_data)}")
 
@@ -829,7 +829,7 @@ class TestReachyMiniFullConformity:
             # Alternative: lire via get_joint_pos
             body_yaw = self.backend.get_joint_pos("yaw_body")
             assert isinstance(
-                body_yaw, (float, type(None))
+                body_yaw, float | type(None)
             ), "get_joint_pos('yaw_body') doit retourner float"
             if body_yaw is not None:
                 print(f"✅ yaw_body lisible via get_joint_pos: {body_yaw:.4f} rad")

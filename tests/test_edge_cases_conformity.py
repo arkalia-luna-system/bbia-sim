@@ -163,10 +163,10 @@ class TestEdgeCasesConformity:
         # get_current_joint_positions doit toujours retourner quelque chose
         head_pos, antenna_pos = self.backend.get_current_joint_positions()
         assert isinstance(
-            head_pos, (list, tuple, np.ndarray)
+            head_pos, list | tuple | np.ndarray
         ), "head_pos doit être séquence"
         assert isinstance(
-            antenna_pos, (list, tuple, np.ndarray)
+            antenna_pos, list | tuple | np.ndarray
         ), "antenna_pos doit être séquence"
         assert len(head_pos) > 0, "head_pos ne doit pas être vide"
         assert len(antenna_pos) > 0, "antenna_pos ne doit pas être vide"

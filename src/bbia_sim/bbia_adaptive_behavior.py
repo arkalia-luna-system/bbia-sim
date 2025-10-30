@@ -218,7 +218,7 @@ class BBIAAdaptiveBehavior:
         logger.info(f"😊 Émotion: {emotion} (intensité: {self.emotion_intensity:.2f})")
         return True
 
-    def generate_behavior(self, trigger: Optional[str] = None) -> dict[str, Any]:
+    def generate_behavior(self, trigger: str | None = None) -> dict[str, Any]:
         """Génère un comportement adaptatif basé sur le contexte et l'émotion.
 
         Args:
@@ -434,7 +434,7 @@ class BBIAAdaptiveBehavior:
                     for key in self.user_preferences[category]:
                         self.user_preferences[category][key] /= max_val
 
-    def get_proactive_behavior(self) -> Optional[dict[str, Any]]:
+    def get_proactive_behavior(self) -> dict[str, Any] | None:
         """Génère un comportement proactif basé sur l'état interne."""
         try:
             current_time = time.time()

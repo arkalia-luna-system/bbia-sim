@@ -5,7 +5,7 @@ Connecte tous les modules BBIA au simulateur MuJoCo pour créer une simulation c
 
 import asyncio
 import logging
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 from .bbia_audio import detecter_son, enregistrer_audio, lire_audio
 
@@ -41,7 +41,7 @@ class BBIAIntegration:
     - Gestion des comportements complexes
     """
 
-    def __init__(self, simulation_service: Optional[SimulationService] = None) -> None:
+    def __init__(self, simulation_service: SimulationService | None = None) -> None:
         """Initialise l'intégration BBIA avec le service de simulation."""
         # Service de simulation
         self.simulation_service = simulation_service or SimulationService()
@@ -686,7 +686,7 @@ class BBIAIntegration:
 
 
 # Fonction utilitaire pour créer une instance d'intégration
-async def create_bbia_integration(model_path: Optional[str] = None) -> BBIAIntegration:
+async def create_bbia_integration(model_path: str | None = None) -> BBIAIntegration:
     """Crée et initialise une instance d'intégration BBIA.
 
     Args:

@@ -6,7 +6,7 @@ Backend mock pour robot Reachy réel (à implémenter plus tard)
 
 import logging
 import time
-from typing import Any, Optional
+from typing import Any
 
 from ..robot_api import RobotAPI
 
@@ -108,7 +108,7 @@ class ReachyBackend(RobotAPI):
         logger.debug(f"Joint {joint_name} → {clamped_position:.3f} rad (mock)")
         return True
 
-    def get_joint_pos(self, joint_name: str) -> Optional[float]:
+    def get_joint_pos(self, joint_name: str) -> float | None:
         """Récupère la position actuelle d'un joint."""
         if not self.is_connected:
             return None

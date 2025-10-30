@@ -287,7 +287,7 @@ class TestReachyMiniStrictConformity:
             errors.append("❌ get_joint_pos('yaw_body') retourne NaN")
         elif math.isinf(yaw_value):
             errors.append("❌ get_joint_pos('yaw_body') retourne inf")
-        elif not isinstance(yaw_value, (int, float)):
+        elif not isinstance(yaw_value, int | float):
             errors.append(
                 f"❌ get_joint_pos('yaw_body') retourne {type(yaw_value)} au lieu de float"
             )
@@ -295,7 +295,7 @@ class TestReachyMiniStrictConformity:
             print(f"✅ yaw_body lu correctement: {yaw_value:.6f} rad")
 
         # Vérifier que la valeur est dans des limites raisonnables
-        if isinstance(yaw_value, (int, float)):
+        if isinstance(yaw_value, int | float):
             if abs(yaw_value) > 3.2:  # Légèrement > limite max (2.79)
                 errors.append(
                     f"⚠️  yaw_body hors limites raisonnables: {yaw_value:.6f} rad"
@@ -320,7 +320,7 @@ class TestReachyMiniStrictConformity:
                 errors.append(f"❌ {joint_name}: get_joint_pos retourne NaN")
             elif math.isinf(value):
                 errors.append(f"❌ {joint_name}: get_joint_pos retourne inf")
-            elif not isinstance(value, (int, float)):
+            elif not isinstance(value, int | float):
                 errors.append(
                     f"❌ {joint_name}: type incorrect {type(value)} au lieu de float"
                 )

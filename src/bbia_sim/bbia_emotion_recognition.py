@@ -6,7 +6,7 @@ Détection et analyse des émotions faciales et vocales en temps réel
 
 import logging
 import time
-from typing import Any, Optional, Union
+from typing import Any
 
 import cv2
 import numpy as np
@@ -149,7 +149,7 @@ class BBIAEmotionRecognition:
         except Exception as e:
             logger.error(f"❌ Erreur chargement modèles émotion: {e}")
 
-    def detect_faces(self, image: Union[np.ndarray, str]) -> list[dict[str, Any]]:
+    def detect_faces(self, image: np.ndarray | str) -> list[dict[str, Any]]:
         """Détecte les visages dans une image.
 
         Args:
@@ -214,8 +214,8 @@ class BBIAEmotionRecognition:
 
     def analyze_facial_emotion(
         self,
-        image: Union[np.ndarray, str],  # noqa: ARG002
-        face_bbox: Optional[dict] = None,  # noqa: ARG002
+        image: np.ndarray | str,  # noqa: ARG002
+        face_bbox: dict | None = None,  # noqa: ARG002
     ) -> dict[str, Any]:
         """Analyse les émotions faciales dans une image.
 
@@ -374,7 +374,7 @@ class BBIAEmotionRecognition:
             return {"error": str(e)}
 
     def analyze_emotion_realtime(
-        self, image: Union[np.ndarray, str], text: Optional[str] = None
+        self, image: np.ndarray | str, text: str | None = None
     ) -> dict[str, Any]:
         """Analyse complète des émotions en temps réel.
 
