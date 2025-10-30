@@ -1,3 +1,8 @@
+# ARCHIVES/HISTORIQUE (non maintenu)
+
+> Ce document peut contenir des informations obsolètes (ex: anciennes versions Python).
+> Référez-vous au `README.md` et à `.github/workflows/ci.yml` pour la version active (Python 3.11+) et les procédures à jour.
+
 # 🚀 PROCHAINES ÉTAPES - BBIA Chat Intelligent
 
 **Date :** 28 Octobre 2025
