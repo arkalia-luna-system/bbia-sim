@@ -205,7 +205,7 @@ python scripts/diagnose_joints.py
 MOBILE_JOINTS = {
     "yaw_body": "Rotation du corps - LE PLUS VISIBLE ET SÛR",
     "stewart_1": "Plateforme Stewart 1 - PROBLÉMATIQUE",
-    "stewart_2": "Plateforme Stewart 2 - PROBLÉMATIQUE", 
+    "stewart_2": "Plateforme Stewart 2 - PROBLÉMATIQUE",
     "stewart_3": "Plateforme Stewart 3 - PROBLÉMATIQUE",
     "stewart_4": "Plateforme Stewart 4 - PROBLÉMATIQUE",
     "stewart_5": "Plateforme Stewart 5 - PROBLÉMATIQUE",
@@ -394,12 +394,12 @@ python examples/goto_pose.py --token dev --joint yaw_body --pos 0.5
 
 **Tu as entre tes mains un projet BBIA-Reachy-SIM COMPLET et FONCTIONNEL :**
 
-✅ **Simulation 3D** : Robot Reachy Mini parfaitement assemblé  
-✅ **Modules BBIA** : 8 émotions, vision, audio, comportements  
-✅ **API REST** : FastAPI + WebSocket opérationnels  
-✅ **Tests** : 531 tests collectés, 418 passent (79% réussite)  
-✅ **Documentation** : Complète et à jour  
-✅ **Scripts** : Diagnostic, vérification, lancement  
+✅ **Simulation 3D** : Robot Reachy Mini parfaitement assemblé
+✅ **Modules BBIA** : 8 émotions, vision, audio, comportements
+✅ **API REST** : FastAPI + WebSocket opérationnels
+✅ **Tests** : 531 tests collectés, 418 passent (79% réussite)
+✅ **Documentation** : Complète et à jour
+✅ **Scripts** : Diagnostic, vérification, lancement
 
 **Ton rôle :** Développer, améliorer, étendre - **SANS RIEN CASSER**
 

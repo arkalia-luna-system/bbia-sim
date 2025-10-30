@@ -1,7 +1,7 @@
 # 📊 RÉSUMÉ DE RÉFÉrence - OCTOBRE 2025
 
-**Date:** Octobre 2025  
-**Version:** BBIA-SIM  
+**Date:** Octobre 2025
+**Version:** BBIA-SIM
 **Statut:** ✅ Production Ready
 
 ---

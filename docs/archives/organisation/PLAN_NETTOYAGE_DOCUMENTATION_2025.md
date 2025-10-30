@@ -190,8 +190,8 @@ docs/
 
 ## Statistiques
 
-**Avant nettoyage**: 213 fichiers MD  
-**Après nettoyage estimé**: ~150 fichiers MD (suppression doublons et temporaires)  
+**Avant nettoyage**: 213 fichiers MD
+**Après nettoyage estimé**: ~150 fichiers MD (suppression doublons et temporaires)
 **Réduction**: ~30%
 
 **Structure finale**: 8 catégories principales au lieu de fichiers dispersés

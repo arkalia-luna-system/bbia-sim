@@ -1,7 +1,7 @@
 # Analyse des modules non prioritaires - Octobre 2025
 
-**Date :** Octobre 2025  
-**Référence SDK :** https://github.com/pollen-robotics/reachy_mini  
+**Date :** Octobre 2025
+**Référence SDK :** https://github.com/pollen-robotics/reachy_mini
 **Objectif :** Analyse experte pointilleuse de tous les modules restants, vérification conformité SDK, améliorations intelligence
 
 ---
@@ -20,7 +20,7 @@
    - **Améliorations :**
      - ✅ Ajout logging pour debug
      - ✅ Vérification disponibilité `robot.media.camera` (avec fallback simulation)
-     - ⚠️ TODO: Implémenter capture réelle depuis `robot.media.camera` (nécessite traitement image YOLO/MediaPipe)
+     - ✅ Capture réelle depuis `robot.media.camera` (get_image/capture/read) avec validations robustes + tests
    - **Conformité :** compatible SDK, utilise `look_at_world` / `look_at_image` via `VisionTrackingBehavior`
 
 3. **`bbia_audio.py`** ✅
@@ -28,7 +28,7 @@
    - **Améliorations :**
      - ✅ Fonction `_get_robot_media_microphone()` pour accès SDK
      - ✅ Paramètre `robot_api` optionnel dans `enregistrer_audio()`
-     - ⚠️ TODO: Implémenter enregistrement via `robot.media.record_audio()` (bénéfice: 4 microphones directionnels + annulation de bruit)
+     - ✅ Enregistrement via `robot.media.record_audio()` (4 micros directionnels) + test d’intégration
    - **Conformité :** fallback sounddevice fonctionnel en attendant implémentation complète
 
 4. **`bbia_voice.py`** à analyser
@@ -41,8 +41,8 @@
 
 ### **1. Module Media SDK (`robot.media`)**
 
-**Statut backend :** disponible dans `ReachyMiniBackend.media`  
-**Statut d’utilisation :** partiel (structure préparée, TODO pour implémentation complète)
+**Statut backend :** disponible dans `ReachyMiniBackend.media`
+**Statut d’utilisation :** ✅ complet (SDK-first + fallbacks, tests présents)
 
 **Capacités :**
 ```python
@@ -54,9 +54,9 @@ robot.media.record_audio()  # Enregistrement optimisé
 ```
 
 **Modules à améliorer :**
-- `bbia_vision.py` → ✅ Structure OK, ⚠️ TODO implémenter capture réelle
-- `bbia_audio.py` → ✅ Structure OK, ⚠️ TODO implémenter enregistrement SDK
-- `bbia_voice.py` → ⚠️ À AMÉLIORER (utiliser `robot.media.speaker`)
+- `bbia_vision.py` → ✅ Capture réelle SDK implémentée + tests
+- `bbia_audio.py` → ✅ Enregistrement SDK implémenté + tests
+- `bbia_voice.py` → ✅ Lecture via `robot.media.speaker`/`play_audio` implémentée + tests
 
 ---
 
@@ -85,10 +85,10 @@ robot.media.record_audio()  # Enregistrement optimisé
 
 ## Recommandations
 
-### Priorité haute (à implémenter)
-1. **`bbia_voice.py`** - Intégrer `robot.media.speaker` pour synthèse vocale hardware optimisée
-2. **`bbia_vision.py`** - Implémenter capture réelle depuis `robot.media.camera` avec traitement image
-3. **`bbia_audio.py`** - Implémenter enregistrement via `robot.media.record_audio()` (4 microphones)
+### Priorité haute (terminé)
+1. **`bbia_voice.py`** - Intégration `robot.media.speaker` (play_audio/speaker.play_file) ✅
+2. **`bbia_vision.py`** - Capture réelle `robot.media.camera` + validations + test ✅
+3. **`bbia_audio.py`** - Enregistrement via `robot.media.record_audio()` + test ✅
 
 ### Priorité moyenne (améliorations)
 1. Améliorer variété et naturalité des commentaires dans `bbia_vision.py`

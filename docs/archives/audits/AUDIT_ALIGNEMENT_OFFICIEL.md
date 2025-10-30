@@ -2,8 +2,8 @@
 
 ## 📋 **RÉSUMÉ EXÉCUTIF**
 
-**Date :** Octobre 2025  
-**Version :** BBIA-SIM 1.0.0  
+**Date :** Octobre 2025
+**Version :** BBIA-SIM 1.0.0
 **Statut :** ✅ **AUDIT COMPLET - ALIGNEMENT OFFICIEL VALIDÉ**
 
 L'audit confirme que le projet BBIA-Reachy-SIM est **parfaitement aligné** avec les spécifications officielles Reachy Mini de Pollen Robotics et prêt pour la transition vers le robot physique.
@@ -27,8 +27,8 @@ L'audit confirme que le projet BBIA-Reachy-SIM est **parfaitement aligné** avec
 ### **✅ Spécifications des Joints**
 ```xml
 <!-- Joint principal de rotation du corps -->
-<joint axis="0 0 1" name="yaw_body" type="hinge" 
-       range="-2.792526803190975 2.792526803190879" 
+<joint axis="0 0 1" name="yaw_body" type="hinge"
+       range="-2.792526803190975 2.792526803190879"
        class="chosen_actuator"/>
 
 <!-- Plateforme Stewart (6 joints) -->

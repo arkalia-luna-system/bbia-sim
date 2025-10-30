@@ -1,7 +1,7 @@
 # 📊 RAPPORT AMÉLIORATIONS QUALITÉ - BBIA-SIM
 
-**Date :** 28 Octobre 2025  
-**Contexte :** Staff Engineer sur BBIA-SIM  
+**Date :** 28 Octobre 2025
+**Contexte :** Staff Engineer sur BBIA-SIM
 **Objectif :** Améliorations PRO sans doublons ni régression CI
 
 ---
@@ -124,11 +124,11 @@ pytest tests/ --cov=src/bbia_sim --cov-fail-under=60
 1. `reachy_mini_backend.py` : **30.17%** ⚠️
    - Manque: 287 lignes non couvertes
    - Action: Créer tests méthodes SDK avancées
-   
+
 2. `bbia_emotion_recognition.py` : **33.01%** ⚠️
    - Manque: 138 lignes non couvertes
    - Action: Ajouter tests reconnaissance émotions
-   
+
 3. `bbia_huggingface.py` : **23.88%** ⚠️
    - Manque: 153 lignes non couvertes
    - Action: Ajouter tests intégration Hugging Face
@@ -260,6 +260,6 @@ python -m pytest tests/ --cov=src/bbia_sim --cov-report=term-missing
 
 ---
 
-**Rapport généré le 28 Octobre 2025**  
+**Rapport généré le 28 Octobre 2025**
 **Staff Engineer - BBIA-SIM**
 

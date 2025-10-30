@@ -1,7 +1,7 @@
 # 🔍 ANALYSE EXHAUSTIVE COMPLÈTE - TOUS LES MODULES BBIA-SIM
 
-**Date :** Octobre 2025  
-**Référence SDK :** https://github.com/pollen-robotics/reachy_mini  
+**Date :** Octobre 2025
+**Référence SDK :** https://github.com/pollen-robotics/reachy_mini
 **Objectif :** Vérification exhaustive de TOUS les modules, tests et exemples
 
 ---

@@ -2,13 +2,13 @@
 
 ## 🎯 **Dashboard Lancé**
 
-**URL :** http://localhost:8000  
+**URL :** http://localhost:8000
 **Statut :** ✅ RUNNING
 
 ### Fonctionnalités Disponibles :
 1. ✅ Métriques temps réel
 2. ✅ Contrôles émotions
-3. ✅ Contrôles joints  
+3. ✅ Contrôles joints
 4. ✅ Vision
 5. ✅ Logs temps réel
 6. ✅ **CHAT BBIA** (nouveau!)

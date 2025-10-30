@@ -1,8 +1,8 @@
 # 🔬 ANALYSE EXPERTE COMPLÈTE - BBIA-SIM vs REACHY-MINI OFFICIEL
 
-**Date:** Octobre 2025  
-**Auteur:** Analyse experte robotique & IA émotionnelle  
-**Référence:** SDK reachy_mini (Pollen Robotics × Hugging Face)  
+**Date:** Octobre 2025
+**Auteur:** Analyse experte robotique & IA émotionnelle
+**Référence:** SDK reachy_mini (Pollen Robotics × Hugging Face)
 **GitHub Officiel:** https://github.com/pollen-robotics/reachy_mini
 
 ---
@@ -261,7 +261,7 @@
 
 ---
 
-**Date:** Octobre 2025  
-**Version Analyse:** 1.0  
+**Date:** Octobre 2025
+**Version Analyse:** 1.0
 **Statut:** ✅ VALIDÉ
 

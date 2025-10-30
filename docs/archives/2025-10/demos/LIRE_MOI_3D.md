@@ -37,7 +37,7 @@ python examples/demo_chat_bbia_3d.py
 - Mouvements selon chat
 - Mais viewer ne s'affiche pas sur macOS avec python
 
-### **3. Solution** 
+### **3. Solution**
 Utiliser `mjpython` pour voir le viewer 3D sur macOS !
 
 ---

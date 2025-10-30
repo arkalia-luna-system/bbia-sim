@@ -2,8 +2,8 @@
 
 ## 📋 **CONTRAT D'INTERFACE UNIFIÉE SIM/ROBOT**
 
-**Version** : 1.1.x (gelée)  
-**Date** : Octobre 2025  
+**Version** : 1.1.x (gelée)
+**Date** : Octobre 2025
 **Statut** : STABLE - Aucune modification breaking autorisée
 
 ---
@@ -24,7 +24,7 @@ from typing import Any, Optional
 
 class RobotAPI(ABC):
     """Interface unifiée pour contrôler le robot (Sim ou Réel)."""
-    
+
     def __init__(self):
         self.is_connected: bool = False
         self.current_emotion: str = "neutral"
@@ -32,7 +32,7 @@ class RobotAPI(ABC):
         self.joint_limits: dict[str, tuple[float, float]] = {}
         self.forbidden_joints: set[str] = {
             "left_antenna", "right_antenna",
-            "passive_1", "passive_2", "passive_3", 
+            "passive_1", "passive_2", "passive_3",
             "passive_4", "passive_5", "passive_6", "passive_7"
         }
         self.safe_amplitude_limit: float = 0.3  # rad
@@ -44,7 +44,7 @@ class RobotAPI(ABC):
 @abstractmethod
 def connect(self) -> bool:
     """Connecte au robot/simulateur.
-    
+
     Returns:
         bool: True si connexion réussie, False sinon
     """
@@ -52,7 +52,7 @@ def connect(self) -> bool:
 @abstractmethod
 def disconnect(self) -> bool:
     """Déconnecte du robot/simulateur.
-    
+
     Returns:
         bool: True si déconnexion réussie, False sinon
     """
@@ -60,7 +60,7 @@ def disconnect(self) -> bool:
 @abstractmethod
 def get_available_joints(self) -> list[str]:
     """Retourne la liste des joints disponibles.
-    
+
     Returns:
         list[str]: Liste des noms de joints disponibles
     """
@@ -68,11 +68,11 @@ def get_available_joints(self) -> list[str]:
 @abstractmethod
 def set_joint_pos(self, joint_name: str, position: float) -> bool:
     """Définit la position d'un joint.
-    
+
     Args:
         joint_name: Nom du joint (ex: "yaw_body")
         position: Position en radians
-        
+
     Returns:
         bool: True si position définie, False sinon
     """
@@ -80,10 +80,10 @@ def set_joint_pos(self, joint_name: str, position: float) -> bool:
 @abstractmethod
 def get_joint_pos(self, joint_name: str) -> Optional[float]:
     """Récupère la position actuelle d'un joint.
-    
+
     Args:
         joint_name: Nom du joint
-        
+
     Returns:
         Optional[float]: Position en radians, None si erreur
     """
@@ -91,7 +91,7 @@ def get_joint_pos(self, joint_name: str) -> Optional[float]:
 @abstractmethod
 def step(self) -> bool:
     """Effectue un pas de simulation.
-    
+
     Returns:
         bool: True si step réussi, False sinon
     """
@@ -102,62 +102,62 @@ def step(self) -> bool:
 ```python
 def set_emotion(self, emotion: str, intensity: float = 0.5) -> bool:
     """Définit l'émotion du robot.
-    
+
     Args:
         emotion: Émotion valide (voir VALID_EMOTIONS)
         intensity: Intensité 0.0-1.0 (clampée automatiquement)
-        
+
     Returns:
         bool: True si émotion définie, False sinon
     """
 
 def look_at(self, target_x: float, target_y: float, target_z: float = 0.0) -> bool:
     """Fait regarder le robot vers une cible.
-    
+
     Args:
         target_x: Position X de la cible (mètres)
-        target_y: Position Y de la cible (mètres)  
+        target_y: Position Y de la cible (mètres)
         target_z: Position Z de la cible (mètres, défaut: 0.0)
-        
+
     Returns:
         bool: True si commande envoyée, False sinon
     """
 
 def run_behavior(self, behavior: str, intensity: float = 0.8) -> bool:
     """Exécute un comportement prédéfini.
-    
+
     Args:
         behavior: Comportement valide (voir VALID_BEHAVIORS)
         intensity: Intensité 0.0-1.0 (clampée automatiquement)
-        
+
     Returns:
         bool: True si comportement lancé, False sinon
     """
 
 def get_telemetry(self) -> dict[str, Any]:
     """Récupère les métriques de performance.
-    
+
     Returns:
         dict: Métriques (steps/s, avg_step_time, max_drift, etc.)
     """
 
 def is_connected(self) -> bool:
     """Vérifie si le robot est connecté.
-    
+
     Returns:
         bool: True si connecté, False sinon
     """
 
 def is_viewer_running(self) -> bool:
     """Vérifie si le viewer graphique est actif.
-    
+
     Returns:
         bool: True si viewer actif, False sinon
     """
 
 def get_status(self) -> dict[str, Any]:
     """Récupère le statut complet du robot.
-    
+
     Returns:
         dict: Statut (connected, emotion, joints, etc.)
     """
@@ -205,7 +205,7 @@ VALID_EMOTIONS = {
 ### **Comportements valides**
 ```python
 VALID_BEHAVIORS = {
-    "wake_up", "greeting", "emotional_response", 
+    "wake_up", "greeting", "emotional_response",
     "vision_tracking", "conversation", "antenna_animation", "hide"
 }
 ```
@@ -225,11 +225,11 @@ class RobotFactory:
     @staticmethod
     def create_backend(backend_type: str = "mujoco", **kwargs) -> Optional[RobotAPI]:
         """Crée une instance de backend RobotAPI.
-        
+
         Args:
             backend_type: "mujoco" ou "reachy"
             **kwargs: Arguments spécifiques au backend
-            
+
         Returns:
             Optional[RobotAPI]: Instance du backend, None si erreur
         """
@@ -321,11 +321,11 @@ robot = RobotFactory.create_backend("mujoco")
 if robot.connect():
     # Définir une émotion
     robot.set_emotion("happy", 0.8)
-    
+
     # Animer un joint
     robot.set_joint_pos("yaw_body", 0.2)
     robot.step()
-    
+
     # Déconnecter
     robot.disconnect()
 ```
@@ -357,6 +357,6 @@ Pour les modifications futures :
 
 ---
 
-**Signé** : BBIA-REACHY-SIM Team  
-**Date** : Octobre 2025  
+**Signé** : BBIA-REACHY-SIM Team
+**Date** : Octobre 2025
 **Statut** : ✅ VALIDÉ ET GELÉ

@@ -1,6 +1,6 @@
 # 📊 Historique du Projet BBIA-SIM
 
-**Version Actuelle:** 1.3.0  
+**Version Actuelle:** 1.3.0
 **Date:** Octobre 2025
 
 ---

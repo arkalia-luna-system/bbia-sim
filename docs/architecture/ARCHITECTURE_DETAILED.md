@@ -23,33 +23,33 @@ graph TB
         CLI[Interface CLI]
         API[REST API]
     end
-    
+
     subgraph "Couche Logique Métier"
         BBIA[Modules BBIA]
         ROBOT[RobotAPI Unifié]
         SIM[Simulation MuJoCo]
     end
-    
+
     subgraph "Couche Données"
         BACKENDS[Backends Robot]
         ASSETS[Assets 3D]
         CONFIG[Configuration]
     end
-    
+
     subgraph "Couche Infrastructure"
         WS[WebSocket]
         CI[CI/CD]
         TESTS[Tests Automatisés]
     end
-    
+
     WEB --> BBIA
     CLI --> ROBOT
     API --> ROBOT
-    
+
     BBIA --> ROBOT
     ROBOT --> BACKENDS
     SIM --> ASSETS
-    
+
     WS --> BBIA
     CI --> TESTS
     TESTS --> ROBOT
@@ -66,16 +66,16 @@ graph TB
 ```python
 class RobotAPI:
     """Interface abstraite unifiée pour simulation et robot réel."""
-    
+
     def get_joint_pos(self, joint_name: str) -> float:
         """Récupère la position d'un joint."""
-        
+
     def set_joint_pos(self, joint_name: str, position: float) -> bool:
         """Définit la position d'un joint."""
-        
+
     def set_emotion(self, emotion: str, intensity: float = 0.5) -> bool:
         """Définit une émotion sur le robot."""
-        
+
     def get_telemetry(self) -> dict[str, Any]:
         """Récupère les données de télémétrie."""
 ```
@@ -116,10 +116,10 @@ Avantages :
 ```python
 class BBIAEmotions:
     """Gestion des émotions avancées."""
-    
+
     def set_emotion(self, emotion: str, intensity: float) -> bool:
         """Définit une émotion avec intensité."""
-        
+
     def get_available_emotions(self) -> list[str]:
         """Retourne les émotions disponibles."""
 ```
@@ -133,10 +133,10 @@ class BBIAEmotions:
 ```python
 class BBIAVision:
     """Module de vision par ordinateur."""
-    
+
     def scan_environment(self) -> dict[str, Any]:
         """Scane l'environnement et détecte les objets."""
-        
+
     def detect_faces(self) -> list[dict[str, Any]]:
         """Détecte les visages dans l'image."""
 ```
@@ -151,10 +151,10 @@ class BBIAVision:
 ```python
 class BBIAVoice:
     """Module de synthèse et reconnaissance vocale."""
-    
+
     def speak(self, text: str) -> bool:
         """Synthèse vocale."""
-        
+
     def listen(self) -> Optional[str]:
         """Reconnaissance vocale."""
 ```
@@ -169,7 +169,7 @@ class BBIAVoice:
 ```python
 class BBIABehaviorManager:
     """Gestionnaire de comportements complexes."""
-    
+
     def run_behavior(self, behavior_name: str, duration: float) -> bool:
         """Exécute un comportement."""
 ```
@@ -187,13 +187,13 @@ class BBIABehaviorManager:
 ```python
 class MuJoCoSimulator:
     """Simulateur MuJoCo pour le robot Reachy Mini."""
-    
+
     def __init__(self, model_path: str):
         """Initialise le simulateur."""
-        
+
     def set_joint_position(self, joint_name: str, position: float):
         """Définit la position d'un joint."""
-        
+
     def get_joint_position(self, joint_name: str) -> float:
         """Récupère la position d'un joint."""
 ```
@@ -241,7 +241,7 @@ sequenceDiagram
     participant B as BBIA
     participant R as RobotAPI
     participant S as Simulateur
-    
+
     U->>D: Clic bouton émotion
     D->>B: set_emotion("happy", 0.8)
     B->>R: set_emotion("happy", 0.8)
@@ -260,7 +260,7 @@ sequenceDiagram
     participant R as RobotAPI
     participant W as WebSocket
     participant D as Dashboard
-    
+
     loop Chaque 100ms
         M->>R: Collecter métriques
         R->>M: Données performance
@@ -277,7 +277,7 @@ sequenceDiagram
     participant R as RobotAPI
     participant B as Backends
     participant A as Artefacts
-    
+
     T->>R: Test conformité SDK
     R->>B: Exécuter opérations
     B->>R: Résultats
@@ -360,7 +360,7 @@ jobs:
 ```python
 class MetricsCollector:
     """Collecteur de métriques BBIA."""
-    
+
     def collect_robot_metrics(self) -> dict:
         """Métriques robot."""
         return {
@@ -369,7 +369,7 @@ class MetricsCollector:
             "joint_positions": self.get_joint_positions(),
             "current_emotion": self.get_current_emotion()
         }
-    
+
     def collect_system_metrics(self) -> dict:
         """Métriques système."""
         return {
@@ -409,12 +409,12 @@ logging.basicConfig(
 ```python
 class SafetyManager:
     """Gestionnaire de sécurité BBIA."""
-    
+
     def __init__(self):
         self.safe_amplitude_limit = 0.3  # rad
         self.forbidden_joints = {"left_antenna", "right_antenna"}
         self.max_latency_ms = 40.0
-    
+
     def validate_joint_command(self, joint: str, position: float) -> bool:
         """Valide une commande de joint."""
         if joint in self.forbidden_joints:
@@ -482,19 +482,19 @@ python scripts/monitor_performance.py --daemon
 # config/production.py
 class ProductionConfig:
     """Configuration production."""
-    
+
     # Robot
     ROBOT_BACKEND = "reachy_mini"
     ROBOT_TIMEOUT = 5.0
-    
+
     # Performance
     METRICS_INTERVAL = 0.1  # 100ms
     MAX_CONNECTIONS = 100
-    
+
     # Sécurité
     SAFE_AMPLITUDE_LIMIT = 0.3
     FORBIDDEN_JOINTS = {"left_antenna", "right_antenna"}
-    
+
     # Logging
     LOG_LEVEL = "INFO"
     LOG_FILE = "log/bbia_production.log"
@@ -510,7 +510,7 @@ class ProductionConfig:
 ```python
 class CustomBackend(RobotAPI):
     """Backend personnalisé."""
-    
+
     def get_joint_pos(self, joint_name: str) -> float:
         # Implémentation personnalisée
         pass
@@ -520,10 +520,10 @@ class CustomBackend(RobotAPI):
 ```python
 class CustomBBIAModule:
     """Module BBIA personnalisé."""
-    
+
     def __init__(self):
         self.robot_api = None
-    
+
     def set_robot_api(self, robot_api: RobotAPI):
         """Injection de dépendance."""
         self.robot_api = robot_api
@@ -533,7 +533,7 @@ class CustomBBIAModule:
 ```python
 class CustomMetricsCollector:
     """Collecteur de métriques personnalisé."""
-    
+
     def collect_custom_metrics(self) -> dict:
         """Métriques personnalisées."""
         return {

@@ -1,6 +1,6 @@
 # 📋 RÉORGANISATION DES FICHIERS .MD
 
-**Date**: 2025-10-29  
+**Date**: 2025-10-29
 **Objectif**: Organiser tous les fichiers .md à leur bonne place
 
 ---
@@ -8,13 +8,13 @@
 ## 🔍 FICHIERS À DÉPLACER
 
 ### 1. ⚠️ **`logs/conformity_report_reachy_mini.md`**
-**Actuel**: `logs/conformity_report_reachy_mini.md`  
-**Recommandé**: `docs/conformite/conformity_report_reachy_mini.md`  
+**Actuel**: `logs/conformity_report_reachy_mini.md`
+**Recommandé**: `docs/conformite/conformity_report_reachy_mini.md`
 **Raison**: Rapport de conformité, doit être avec les autres docs de conformité
 
 ### 2. ⚠️ **`assets/images/REACHY_MINI_REFERENCE.md`**
-**Actuel**: `assets/images/REACHY_MINI_REFERENCE.md`  
-**Recommandé**: `docs/reachy/REACHY_MINI_REFERENCE.md`  
+**Actuel**: `assets/images/REACHY_MINI_REFERENCE.md`
+**Recommandé**: `docs/reachy/REACHY_MINI_REFERENCE.md`
 **Raison**: Référence visuelle du robot, doit être avec la documentation Reachy
 
 ### 3. ⚠️ **Fichiers d'audit dans `artifacts/`**

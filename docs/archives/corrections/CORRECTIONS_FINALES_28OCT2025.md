@@ -1,13 +1,13 @@
 # 🎯 CORRECTIONS FINALES - 28 OCTOBRE 2025
 
-**Date:** 28 Octobre 2025  
+**Date:** 28 Octobre 2025
 **Statut:** ✅ TOUTES LES CORRECTIONS TERMINÉES
 
 ## 📊 PROBLÈMES CRITIQUES IDENTIFIÉS ET CORRIGÉS
 
 ### ❌ PROBLÈME #1: Viewer MuJoCo figé
-**Symptôme:** Le viewer s'ouvre mais reste immobile  
-**Cause:** Manque de `mujoco.mj_forward()` et `time.sleep()`  
+**Symptôme:** Le viewer s'ouvre mais reste immobile
+**Cause:** Manque de `mujoco.mj_forward()` et `time.sleep()`
 **Solution:** ✅ Ajouté dans toutes les boucles d'animation
 
 ```python
@@ -23,8 +23,8 @@ time.sleep(1 / 60)             # 60 FPS fluides
 ```
 
 ### ❌ PROBLÈME #2: Amplitudes excessives
-**Symptôme:** Mouvements trop brusques  
-**Cause:** Amplitudes > 0.3 rad (limite SDK)  
+**Symptôme:** Mouvements trop brusques
+**Cause:** Amplitudes > 0.3 rad (limite SDK)
 **Solution:** ✅ Réduites à ≤ 0.2 rad selon SDK officiel
 
 **Fichiers corrigés:**
@@ -33,8 +33,8 @@ time.sleep(1 / 60)             # 60 FPS fluides
 - `demo_chat_bbia_3d.py`: Amplitudes finales 0.15 rad max
 
 ### ❌ PROBLÈME #3: Antennes bloquées non reconnues
-**Symptôme:** Tentatives d'animation des antennes qui ne marchent pas  
-**Cause:** `left_antenna` et `right_antenna` ont range [0.000, 0.000]  
+**Symptôme:** Tentatives d'animation des antennes qui ne marchent pas
+**Cause:** `left_antenna` et `right_antenna` ont range [0.000, 0.000]
 **Solution:** ✅ Supprimé toutes les tentatives d'animation des antennes
 
 **Joints MOBILES confirmés (7 joints):**

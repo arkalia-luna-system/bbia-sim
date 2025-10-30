@@ -1,6 +1,6 @@
 # 💬🤖 GUIDE DÉMO CHAT BBIA EN 3D
 
-**Date :** 28 Octobre 2025  
+**Date :** 28 Octobre 2025
 **Fonctionnalité :** Chat BBIA + Visualisation 3D MuJoCo
 
 ---
@@ -74,9 +74,9 @@ python examples/demo_chat_bbia_3d.py
 
 ### Selon le Message Chat
 
-**"Bonjour"** → Robot hoche la tête 🤖  
-**Messages positifs** → Mouvements joyeux 😊  
-**Questions** → Rotation légère 🤔  
+**"Bonjour"** → Robot hoche la tête 🤖
+**Messages positifs** → Mouvements joyeux 😊
+**Questions** → Rotation légère 🤔
 **Au revoir** → Mouvement final élégant 👋
 
 ---
@@ -99,7 +99,7 @@ python examples/demo_chat_bbia_3d.py
 
 1. **Essaie d'abord** : `python examples/demo_chat_simple.py`
    - Rapide, pas de fenêtre
-   
+
 2. **Puis lance** : `python examples/demo_chat_bbia_3d.py`
    - **Robot 3D animé ! 🤖**
    - Vraiment impressionnant

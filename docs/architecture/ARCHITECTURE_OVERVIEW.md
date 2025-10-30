@@ -37,41 +37,41 @@ graph TB
         CLI[Interface CLI<br/>Scripts Python]
         API[REST API<br/>Swagger/OpenAPI]
     end
-    
+
     subgraph "Couche Logique Métier"
         BBIA[Modules BBIA<br/>IA Cognitive]
         ROBOT[RobotAPI Unifié<br/>Interface Abstraite]
         SIM[Simulation MuJoCo<br/>Physique Réaliste]
     end
-    
+
     subgraph "Couche Intégration"
         BRIDGE[Bridge Zenoh/FastAPI<br/>Communication Distribuée]
         SDK[SDK Officiel Reachy Mini<br/>Conformité]
     end
-    
+
     subgraph "Couche Données"
         BACKENDS[Backends Robot<br/>MuJoCo + Reachy Mini]
         ASSETS[Assets 3D<br/>Modèles Officiels]
         CONFIG[Configuration<br/>Environnement]
     end
-    
+
     subgraph "Couche Infrastructure"
         WS[WebSocket<br/>Temps Réel]
         CI[CI/CD<br/>GitHub Actions]
         TESTS[Tests Automatisés<br/>Conformité + Performance]
     end
-    
+
     WEB --> BBIA
     CLI --> ROBOT
     API --> ROBOT
-    
+
     BBIA --> ROBOT
     ROBOT --> BACKENDS
     SIM --> ASSETS
-    
+
     BRIDGE --> SDK
     SDK --> BACKENDS
-    
+
     WS --> BBIA
     CI --> TESTS
     TESTS --> ROBOT
@@ -88,7 +88,7 @@ graph TB
 ```python
 class RobotAPI:
     """Interface abstraite unifiée pour simulation et robot réel."""
-    
+
     # Méthodes SDK officiel conformes
     def goto_target(self, head=None, antennas=None, duration=1.0) -> None
     def set_target(self, head=None, antennas=None) -> None
@@ -110,7 +110,7 @@ Avantages :
 ```python
 class BBIAEmotions:
     """Gestion des émotions robotiques."""
-    
+
     def set_emotion(self, emotion: str, intensity: float) -> None
     def get_current_emotion(self) -> dict[str, Any]
     def animate_emotion(self, emotion: str, duration: float) -> None
@@ -122,7 +122,7 @@ class BBIAEmotions:
 ```python
 class BBIAVision:
     """Vision par ordinateur et reconnaissance d'objets."""
-    
+
     def detect_objects(self, image: np.ndarray) -> list[dict]
     def track_objects(self, image: np.ndarray) -> list[dict]
     def recognize_faces(self, image: np.ndarray) -> list[dict]
@@ -134,7 +134,7 @@ class BBIAVision:
 ```python
 class BBIAVoice:
     """Synthèse vocale et reconnaissance vocale."""
-    
+
     def text_to_speech(self, text: str, voice: str = "default") -> bytes
     def speech_to_text(self, audio_data: bytes) -> str
     def process_voice_command(self, command: str) -> dict
@@ -146,7 +146,7 @@ class BBIAVoice:
 ```python
 class BBIABehaviorManager:
     """Gestionnaire de comportements complexes."""
-    
+
     def run_behavior(self, behavior_name: str, duration: float) -> bool
     def wake_up(self) -> None
     def goto_sleep(self) -> None
@@ -159,7 +159,7 @@ class BBIABehaviorManager:
 ```python
 class BBIAAdaptiveBehavior:
     """Comportements adaptatifs basés sur le contexte."""
-    
+
     def generate_behavior(self, context: str, emotion: str) -> dict
     def adapt_to_feedback(self, feedback: dict) -> None
     def learn_user_preferences(self, interaction: dict) -> None
@@ -173,7 +173,7 @@ class BBIAAdaptiveBehavior:
 ```python
 class MuJoCoBackend(RobotAPI):
     """Backend simulation MuJoCo."""
-    
+
     def __init__(self):
         self.simulator = MuJoCoSimulator()
         self.physics_engine = PhysicsEngine()
@@ -189,7 +189,7 @@ Caractéristiques :
 ```python
 class ReachyMiniBackend(RobotAPI):
     """Backend robot Reachy Mini officiel."""
-    
+
     def __init__(self):
         self.reachy_mini = ReachyMini()
         self.zenoh_client = ZenohClient()
@@ -207,7 +207,7 @@ Caractéristiques :
 ```python
 class ZenohBridge:
     """Bridge entre FastAPI et Zenoh pour Reachy Mini."""
-    
+
     async def start(self) -> bool
     async def send_command(self, command: RobotCommand) -> bool
     def get_current_state(self) -> RobotState
@@ -293,19 +293,19 @@ sequenceDiagram
     participant RobotAPI as RobotAPI Unifié
     participant Backend as Backend (MuJoCo/Reachy)
     participant Robot as Robot Physique
-    
+
     User->>Dashboard: Commande émotion
     Dashboard->>BBIA: set_emotion("happy", 0.8)
     BBIA->>RobotAPI: goto_target(head=pose)
     RobotAPI->>Backend: goto_target(head=pose)
-    
+
     alt Simulation
         Backend->>Backend: MuJoCo Physics
     else Robot Réel
         Backend->>Robot: Zenoh Command
         Robot->>Robot: Hardware Control
     end
-    
+
     Backend->>RobotAPI: Success
     RobotAPI->>BBIA: Success
     BBIA->>Dashboard: État mis à jour
@@ -320,7 +320,7 @@ sequenceDiagram
     participant Bridge as Zenoh Bridge
     participant Zenoh as Zenoh Daemon
     participant Robot as Reachy Mini
-    
+
     Client->>FastAPI: POST /api/zenoh/command
     FastAPI->>Bridge: send_command()
     Bridge->>Zenoh: Publish Command

@@ -1,7 +1,7 @@
 # Statut du projet BBIA-SIM - Octobre 2025
 
-**Version :** 1.3.0  
-**Date :** 28 Octobre 2025  
+**Version :** 1.3.0
+**Date :** 28 Octobre 2025
 **Statut global :** opérationnel et en développement actif
 
 ---
@@ -10,8 +10,8 @@
 
 ### Dashboard web (opérationnel)
 
-**URL :** http://localhost:8000  
-**Statut :** healthy  
+**URL :** http://localhost:8000
+**Statut :** healthy
 **Processus :** PID 25046 (actif)
 
 #### Fonctionnalités disponibles

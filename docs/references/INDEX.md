@@ -1,6 +1,6 @@
 # 📚 INDEX COMPLET - Documentation BBIA-SIM
 
-**Version :** 1.3.0  
+**Version :** 1.3.0
 **Dernière mise à jour :** 28 Octobre 2025
 
 ---

@@ -1,7 +1,7 @@
 # ✅ RÉSUMÉ ACTIONS - VERSION 1.3.1
 
-**Date**: 2025-10-29  
-**Version**: 1.3.1  
+**Date**: 2025-10-29
+**Version**: 1.3.1
 **Statut**: ✅ **PRÊT POUR RELEASE**
 
 ---

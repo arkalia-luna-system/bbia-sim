@@ -1,6 +1,6 @@
 # 🎤 Migration vers Coqui TTS - Guide Complet
 
-**Date :** Octobre 2025  
+**Date :** Octobre 2025
 **Objectif :** Remplacer pyttsx3 par Coqui TTS pour résoudre blocages macOS
 
 ---
@@ -260,14 +260,14 @@ def main():
     voice = BBIAVoiceAdvanced(
         model_name="tts_models/fr/css10/vits"
     )
-    
+
     # Vérifier disponibilité
     if not voice.is_coqui_available():
         print("⚠️  Coqui TTS non disponible, utilisation fallback")
         return
-    
+
     print("✅ Coqui TTS disponible")
-    
+
     # Test émotions
     emotions = ["happy", "sad", "excited", "calm"]
     for emotion in emotions:
@@ -277,7 +277,7 @@ def main():
             emotion=emotion,
             intensity=0.7
         )
-    
+
     # Test contrôle pitch
     print("\n🎵 Test contrôle pitch:")
     for pitch in [-0.3, 0.0, 0.3]:
@@ -286,7 +286,7 @@ def main():
             f"Voix avec pitch {pitch}",
             pitch=pitch
         )
-    
+
     print("\n✅ Tests terminés !")
 
 if __name__ == "__main__":

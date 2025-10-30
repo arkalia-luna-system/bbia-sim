@@ -1,6 +1,6 @@
 # 🚀 AMÉLIORATIONS SUITE - AUDIT BBIA → REACHY
 
-**Date**: 2025-10-29  
+**Date**: 2025-10-29
 **Phase**: Optimisations sécurité et performance post-audit
 
 ---
@@ -23,7 +23,7 @@
 
 ### 2. ⚡ **PERFORMANCE (Boucles Temps Réel)**
 
-**Fichiers**: 
+**Fichiers**:
 - `src/bbia_sim/backends/reachy_mini_backend.py`
 
 **Améliorations**:

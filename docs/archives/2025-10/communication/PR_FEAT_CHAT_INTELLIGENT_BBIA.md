@@ -155,7 +155,7 @@ python src/bbia_sim/dashboard_advanced.py --port 8000
 
 ---
 
-**Type :** `feat`  
-**Conventional Commit :** `feat: add intelligent chat to BBIA + dashboard UI`  
+**Type :** `feat`
+**Conventional Commit :** `feat: add intelligent chat to BBIA + dashboard UI`
 **Breaking Change :** Non
 

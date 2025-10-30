@@ -1,6 +1,6 @@
 # Guide du chat intelligent BBIA
 
-**Version :** 1.3.0  
+**Version :** 1.3.0
 **Date :** Octobre 2025
 
 ---
@@ -238,11 +238,11 @@ python -m pytest tests/test_bbia_huggingface_chat.py::TestBBIAHuggingFaceChat::t
 ```python
 def test_chat():
     hf = BBIAHuggingFace()
-    
+
     # Test salutation
     response = hf.chat("Bonjour")
     assert "bonjour" in response.lower() or "hello" in response.lower()
-    
+
     # Test historique
     assert len(hf.conversation_history) == 1
 ```
@@ -259,11 +259,11 @@ def test_chat():
 
 def _generate_simple_response(self, message: str, sentiment: dict) -> str:
     message_lower = message.lower()
-    
+
     # Ajouter vos mots-clés personnalisés
     if "votre_mot_cle" in message_lower:
         return "Votre réponse personnalisée"
-    
+
     # ... reste du code
 ```
 
@@ -294,7 +294,7 @@ pip install transformers torch
 
 ### Problème : "Je ne comprends pas bien"
 
-**Cause :** Analyse sentiment échoue  
+**Cause :** Analyse sentiment échoue
 **Solution :** BBIA retourne message de secours automatiquement
 
 ### Problème : Dashboard chat ne fonctionne pas

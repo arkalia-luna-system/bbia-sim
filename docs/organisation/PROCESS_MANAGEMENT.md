@@ -17,13 +17,13 @@ graph TB
         NO_DETECTION[Aucune détection<br/>de doublons]
         NO_CLEANUP[Pas d'arrêt<br/>automatique]
     end
-    
+
     subgraph "Après (Solution)"
         SINGLE[Un seul processus BBIA<br/>Contrôlé et surveillé]
         DETECTION[Détection automatique<br/>des doublons]
         CLEANUP[Arrêt automatique<br/>à la fermeture]
     end
-    
+
     MULTIPLE --> SINGLE
     NO_DETECTION --> DETECTION
     NO_CLEANUP --> CLEANUP
@@ -38,13 +38,13 @@ graph LR
         MONITOR[Monitoring CPU/RAM<br/>Surveillance temps réel]
         SIGNALS[Gestion des signaux<br/>SIGTERM, SIGINT, SIGHUP]
     end
-    
+
     subgraph "Actions"
         START[Démarrage sécurisé<br/>Vérification doublons]
         STOP[Arrêt avec confirmation<br/>Mode --force disponible]
         KILL[Arrêt forcé<br/>En dernier recours]
     end
-    
+
     LOCK --> START
     MONITOR --> START
     SIGNALS --> STOP
@@ -61,11 +61,11 @@ sequenceDiagram
     participant P as Process Manager
     participant L as Système de verrouillage
     participant R as Robot BBIA
-    
+
     U->>S: ./bbia_safe.sh start
     S->>L: Vérifier verrouillage
     L-->>S: Statut disponible
-    
+
     alt Processus déjà en cours
         S-->>U: Erreur: Processus déjà actif
     else Processus disponible
@@ -74,7 +74,7 @@ sequenceDiagram
         P->>R: Démarrer robot
         S-->>U: Robot démarré avec succès
     end
-    
+
     U->>S: ./bbia_safe.sh stop
     S->>L: Vérifier processus
     S->>P: Arrêter processus

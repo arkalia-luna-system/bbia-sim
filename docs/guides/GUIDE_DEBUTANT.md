@@ -11,7 +11,7 @@ graph LR
     DASH --> BBIA[Modules BBIA<br/>Émotions, Vision, Voix]
     PYTHON --> BBIA
     BBIA --> ROBOT[Robot Reachy Mini<br/>Simulation ou Réel]
-    
+
     style USER fill:#90EE90
     style ROBOT fill:#87CEEB
 ```
@@ -112,7 +112,7 @@ export BBIA_LLM_BACKEND=llama.cpp    # ou qwen
 R : Oui, le mode simulation est inclus. Vous pouvez développer maintenant et tester sur robot plus tard.
 
 ### Q : C'est compatible Mac/Linux/Windows ?
-R : Mac/Linux : oui  
+R : Mac/Linux : oui
 Windows : à tester
 
 ### Q : Puis-je créer mes propres émotions ?

@@ -1,6 +1,6 @@
 # 🏗️ Architecture BBIA-SIM
 
-**Version:** 1.3.0  
+**Version:** 1.3.0
 **Date:** Octobre 2025
 
 ---

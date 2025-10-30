@@ -1,6 +1,6 @@
 # 📋 Plan de Nettoyage Documentation - BBIA-SIM
 
-**Date :** 28 Octobre 2025  
+**Date :** 28 Octobre 2025
 **Objectif :** Harmoniser, dédoublonner et organiser toute la documentation
 
 ---

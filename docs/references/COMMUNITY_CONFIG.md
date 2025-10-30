@@ -1,8 +1,8 @@
 # 🌐 Configuration communautaire BBIA-SIM
 
-**Version** : 1.2.0 "Écosystème Ouvert"  
-**Date** : Octobre 2025  
-**Public** : Communauté Technique  
+**Version** : 1.2.0 "Écosystème Ouvert"
+**Date** : Octobre 2025
+**Public** : Communauté Technique
 
 ## 🎯 **Configuration recommandée**
 
@@ -197,12 +197,12 @@ graph TB
     STAGING[Staging<br/>BBIA_DEBUG=false<br/>BBIA_API_TOKEN=staging]
     PROD[Production<br/>BBIA_DEBUG=false<br/>BBIA_RATE_LIMIT=1000]
     DOCKER[Docker<br/>Conteneur isolé<br/>Port 8000]
-    
+
     DEV --> TEST[Tests & Debug]
     STAGING --> VALID[Validation]
     VALID --> PROD
     DOCKER --> PROD
-    
+
     style DEV fill:#90EE90
     style PROD fill:#FFB6C1
     style DOCKER fill:#87CEEB

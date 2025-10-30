@@ -1,7 +1,7 @@
 # 📋 CHECKLIST PRÉ-REACHY RÉEL (A4)
 
-**Date** : Octobre 2025  
-**Version** : 1.1.1  
+**Date** : Octobre 2025
+**Version** : 1.1.1
 **Robot** : Reachy Mini Wireless (Pollen Robotics)
 
 ---

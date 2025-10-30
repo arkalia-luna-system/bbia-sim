@@ -1,6 +1,6 @@
 # 📋 TESTS MANQUANTS - OCTOBRE 2025
 
-**Date :** 28 Octobre 2025  
+**Date :** 28 Octobre 2025
 **Analyse :** Tests existants vs modules à couvrir
 
 ---
@@ -28,7 +28,7 @@
 - Gestion WebSocket
 - Statistiques en temps réel
 
-**Estimation :** 15-20 tests nécessaires  
+**Estimation :** 15-20 tests nécessaires
 **Temps :** 2-3 heures
 
 ---
@@ -46,14 +46,14 @@
 - `fuse_emotions()` - fusion multimodale
 - `get_emotion_statistics()` - statistiques
 
-**Estimation :** 12-15 tests  
+**Estimation :** 12-15 tests
 **Temps :** 2 heures
 
 ---
 
 ### ⏳ 3. `bbia_huggingface.py` (38% - 149 lignes)
 
-**Fichier existe :** `tests/test_bbia_huggingface_chat.py` ✅  
+**Fichier existe :** `tests/test_bbia_huggingface_chat.py` ✅
 **Fichier à créer :** `tests/test_bbia_huggingface_extended.py`
 
 **Modules à tester (pas dans chat) :**
@@ -63,7 +63,7 @@
 - Méthodes d'analyse d'images
 - Méthodes d'analyse audio
 
-**Estimation :** 10-12 tests  
+**Estimation :** 10-12 tests
 **Temps :** 2 heures
 
 ---
@@ -79,7 +79,7 @@
 - Gestion contexte
 - Liaisons entre modules
 
-**Estimation :** 10-12 tests  
+**Estimation :** 10-12 tests
 **Temps :** 2 heures
 
 ---
@@ -94,7 +94,7 @@
 - Gestion erreurs audio
 - Stream audio
 
-**Estimation :** 8-10 tests  
+**Estimation :** 8-10 tests
 **Temps :** 1-2 heures
 
 ---
@@ -109,14 +109,14 @@
 - Gestion images
 - Performance détection
 
-**Estimation :** 10-12 tests  
+**Estimation :** 10-12 tests
 **Temps :** 2 heures
 
 ---
 
 ### ⏳ 7. `bbia_awake.py` (8.70% - 21 lignes)
 
-**Fichier existe :** `tests/test_bbia_awake.py` ✅  
+**Fichier existe :** `tests/test_bbia_awake.py` ✅
 **Fichier à améliorer :** Étendre test_bbia_awake.py
 
 **Modules à tester :**
@@ -125,14 +125,14 @@
 - Gestion erreurs
 - Initialisation
 
-**Estimation :** 8-10 tests  
+**Estimation :** 8-10 tests
 **Temps :** 1 heure
 
 ---
 
 ### ⏳ 8. `reachy_mini_backend.py` (30% - 287 lignes)
 
-**Fichier existe :** `tests/test_reachy_mini_backend.py` ✅  
+**Fichier existe :** `tests/test_reachy_mini_backend.py` ✅
 **Fichier à créer :** `tests/test_reachy_mini_backend_extended.py`
 
 **Modules à tester (pas encore couverts) :**
@@ -145,7 +145,7 @@
 - `start_recording()` / `stop_recording()`
 - `play_move()` / `async_play_move()`
 
-**Estimation :** 15-20 tests  
+**Estimation :** 15-20 tests
 **Temps :** 3-4 heures
 
 ---
@@ -165,7 +165,7 @@
 | 🟢 Basse | bbia_awake.py | 8.70% | 21 | 8-10 | 1h |
 | 🟢 Basse | reachy_mini_backend.py | 30% | 287 | 15-20 | 3-4h |
 
-**Total :** ~100 tests à créer  
+**Total :** ~100 tests à créer
 **Estimation totale :** 13-18 heures
 
 ---

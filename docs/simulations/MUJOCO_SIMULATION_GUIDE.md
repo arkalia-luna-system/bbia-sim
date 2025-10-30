@@ -59,26 +59,26 @@ graph TB
         RENDERER[Renderer<br/>OpenGL/EGL]
         SOLVER[Constraint Solver<br/>Newton-Raphson]
     end
-    
+
     subgraph "BBIA Integration"
         SIMULATOR[MuJoCoSimulator<br/>Python Interface]
         ROBOT[Robot Model<br/>reachy_mini.xml]
         SCENE[Scene<br/>Environment]
     end
-    
+
     subgraph "Control Loop"
         INPUT[User Commands<br/>Joint Positions]
         STEP[Physics Step<br/>100Hz]
         OUTPUT[Robot State<br/>Positions/Velocities]
     end
-    
+
     PHYSICS --> SIMULATOR
     RENDERER --> SIMULATOR
     SOLVER --> SIMULATOR
-    
+
     SIMULATOR --> ROBOT
     SIMULATOR --> SCENE
-    
+
     INPUT --> STEP
     STEP --> PHYSICS
     PHYSICS --> OUTPUT
@@ -98,11 +98,11 @@ graph LR
         L_ELBOW[left_elbow_pitch<br/>-π à π]
         L_WRIST[left_wrist_pitch<br/>-π à π]
     end
-    
+
     subgraph "Contrôle"
         CONTROLLER[Joint Controller<br/>Position/Velocity]
     end
-    
+
     CONTROLLER --> YAW
     CONTROLLER --> PITCH
     CONTROLLER --> R_SHOULDER
@@ -166,11 +166,11 @@ Les scènes utilisent le format MJCF (MuJoCo XML). Exemple minimal :
 ```xml
 <mujoco model="ma_scene">
   <compiler angle="radian"/>
-  
+
   <worldbody>
     <light pos="0 0 3" dir="0 0 -1"/>
     <geom name="floor" type="plane" size="0 0 0.1"/>
-    
+
     <body name="objet" pos="0 0 0.1">
       <geom name="box" type="box" size="0.1 0.1 0.1" rgba="1 0 0 1"/>
     </body>
@@ -222,7 +222,7 @@ from bbia_sim.sim.simulator import MuJoCoSimulator
 class RobotController:
     def __init__(self):
         self.simulator = MuJoCoSimulator("models/reachy_mini.xml")
-    
+
     def goto_pose(self, pose):
         # Convertir pose en positions articulations
         positions = self.calculate_joint_positions(pose)
@@ -238,24 +238,24 @@ graph TB
         GRAPHIC[Mode Graphique<br/>60-120 FPS<br/>Interface utilisateur]
         HEADLESS[Mode Headless<br/>1000+ FPS<br/>Tests automatisés]
     end
-    
+
     subgraph "Optimisations"
         TIMESTEP[Timestep<br/>0.01s (100Hz)]
         SOLVER[Solver<br/>Newton-Raphson]
         CACHE[Cache<br/>Modèles préchargés]
     end
-    
+
     subgraph "Ressources"
         CPU[CPU<br/>~50% utilisation]
         GPU[GPU<br/>Rendu graphique]
         RAM[Mémoire<br/>~50MB modèle]
     end
-    
+
     GRAPHIC --> TIMESTEP
     HEADLESS --> TIMESTEP
     TIMESTEP --> SOLVER
     SOLVER --> CACHE
-    
+
     CACHE --> CPU
     CACHE --> GPU
     CACHE --> RAM

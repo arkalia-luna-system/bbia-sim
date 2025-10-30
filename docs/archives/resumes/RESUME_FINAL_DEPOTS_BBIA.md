@@ -32,7 +32,7 @@ graph TB
         MENU[Menu Interactif<br/>Mis à jour]
         DOCS[Documentation<br/>Complète]
     end
-    
+
     subgraph "Dépôts Manquants"
         GITHUB[Dépôts GitHub<br/>Pollen Robotics]
         VISION[Outils Vision<br/>Computer Vision]
@@ -41,20 +41,20 @@ graph TB
         BEHAVIORS[Comportements<br/>Pré-programmés]
         DASHBOARD[Interface Web<br/>Contrôle]
     end
-    
+
     subgraph "Solution Automatique"
         INSTALL[Script Installation<br/>install_all_reachy_repos.sh]
         AUTO[Installation Auto<br/>Tous les dépôts]
         INTEGRATION[Intégration BBIA<br/>Fonctionnalités complètes]
     end
-    
+
     STRUCTURE --> INSTALL
     SDK --> INSTALL
     UNITY --> INSTALL
-    
+
     INSTALL --> AUTO
     AUTO --> INTEGRATION
-    
+
     INTEGRATION --> GITHUB
     INTEGRATION --> VISION
     INTEGRATION --> EMOTIONS
@@ -70,11 +70,11 @@ graph LR
     subgraph "Avant Installation"
         BEFORE[❌ Dépôts manquants<br/>❌ Fonctionnalités limitées<br/>❌ Intégration incomplète]
     end
-    
+
     subgraph "Après Installation"
         AFTER[✅ Tous les dépôts<br/>✅ Fonctionnalités complètes<br/>✅ Intégration BBIA parfaite]
     end
-    
+
     BEFORE -.->|Script automatique| AFTER
 ```
 
@@ -86,13 +86,13 @@ sequenceDiagram
     participant SCRIPT as Script Installation
     participant GITHUB as GitHub
     participant BBIA as BBIA System
-    
+
     USER->>SCRIPT: ./install_all_reachy_repos.sh
     SCRIPT->>GITHUB: Cloner tous les dépôts
     GITHUB->>SCRIPT: Télécharger sources
     SCRIPT->>BBIA: Intégrer fonctionnalités
     BBIA->>USER: BBIA complet et fonctionnel
-    
+
     Note over USER,BBIA: Installation automatique complète
 ```
 - 📚 `reachy-docs` : Documentation officielle
@@ -282,9 +282,9 @@ Et vous aurez **tous les dépôts GitHub officiels** de Pollen Robotics install�
 
 ---
 
-**BBIA** - Brain-Based Interactive Agent  
+**BBIA** - Brain-Based Interactive Agent
 *Résumé final des dépôts GitHub* 🚀✨
 
-**Version** : 1.0  
-**Date** : Décembre 2024  
-**Statut** : Prêt pour installation et développement 
+**Version** : 1.0
+**Date** : Décembre 2024
+**Statut** : Prêt pour installation et développement

@@ -1,6 +1,6 @@
 # 🚀 PROCHAINES ÉTAPES - BBIA Chat Intelligent
 
-**Date :** 28 Octobre 2025  
+**Date :** 28 Octobre 2025
 **Statut :** Enrichissement terminé ✅
 
 ---
@@ -67,11 +67,11 @@ try:
     def main():
         print("💬 Démonstration Chat BBIA")
         print("=" * 50)
-        
+
         # Initialiser BBIA
         bbia = BBIAHuggingFace()
         print(f"🤖 BBIA initialisé avec personnalité: {bbia.bbia_personality}")
-        
+
         # Chat interactif
         messages = [
             "Bonjour",
@@ -79,25 +79,25 @@ try:
             "Je suis très content aujourd'hui",
             "Au revoir"
         ]
-        
+
         print("\n📝 Conversation:")
         print("-" * 50)
-        
+
         for msg in messages:
             response = bbia.chat(msg)
             print(f"Vous: {msg}")
             print(f"BBIA: {response}")
             print()
-        
+
         # Statistiques
         print("📊 Statistiques:")
         print(f"- Messages échangés: {len(bbia.conversation_history)}")
         print(f"- Historique: {len(bbia.conversation_history)} entrées")
-        
+
         # Tester personnalités
         print("\n🎭 Test Personnalités:")
         print("-" * 50)
-        
+
         personalities = ["friendly_robot", "curious", "enthusiastic", "calm"]
         for personality in personalities:
             bbia.bbia_personality = personality

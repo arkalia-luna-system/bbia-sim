@@ -15,25 +15,25 @@ graph TB
         VOICE[bbia_voice.py]
         BEHAVIOR[bbia_behavior.py]
     end
-    
+
     subgraph "RobotAPI Interface"
         API[RobotAPI<br/>Interface unifiée]
     end
-    
+
     subgraph "Backends"
         MUJOCO[MuJoCoBackend<br/>Simulation]
         REACHY[ReachyBackend<br/>Robot réel]
     end
-    
+
     EMOTIONS --> API
     VISION --> API
     AUDIO --> API
     VOICE --> API
     BEHAVIOR --> API
-    
+
     API --> MUJOCO
     API --> REACHY
-    
+
     MUJOCO --> SIM[MuJoCo Simulator<br/>3D Physics]
     REACHY --> ROBOT[Reachy Mini<br/>Hardware]
 ```
@@ -47,24 +47,24 @@ sequenceDiagram
     participant API as RobotAPI
     participant SIM as MuJoCoBackend
     participant ROBOT as ReachyBackend
-    
+
     Note over DEV,ROBOT: Phase 1: Développement
     DEV->>FACTORY: create_backend("mujoco")
     FACTORY->>SIM: Initialiser MuJoCo
     SIM->>API: Interface unifiée
     API->>DEV: Robot prêt (simulation)
-    
+
     Note over DEV,ROBOT: Phase 2: Tests
     DEV->>API: set_emotion("happy", 0.8)
     API->>SIM: Appliquer émotion
     SIM->>API: Confirmation
-    
+
     Note over DEV,ROBOT: Phase 3: Production
     DEV->>FACTORY: create_backend("reachy")
     FACTORY->>ROBOT: Initialiser Reachy
     ROBOT->>API: Interface unifiée
     API->>DEV: Robot prêt (réel)
-    
+
     DEV->>API: set_emotion("happy", 0.8)
     API->>ROBOT: Appliquer émotion
     ROBOT->>API: Confirmation
@@ -131,11 +131,11 @@ graph LR
     subgraph "MuJoCoBackend (Simulation)"
         SIM_FEATURES[✅ Physique 3D<br/>✅ Viewer graphique<br/>✅ Mode headless<br/>✅ Tests automatisés<br/>✅ Débogage facile<br/>❌ Pas de robot physique]
     end
-    
+
     subgraph "ReachyBackend (Robot réel)"
         ROBOT_FEATURES[✅ Robot physique<br/>✅ Vraie interaction<br/>✅ Capteurs réels<br/>✅ Production<br/>❌ Plus lent<br/>❌ Plus risqué]
     end
-    
+
     SIM_FEATURES -.->|Migration| ROBOT_FEATURES
 ```
 

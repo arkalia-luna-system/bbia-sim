@@ -1,6 +1,6 @@
 # 🔍 ANALYSE EXPERTE FINALE - TOUS LES MODULES BBIA
 
-**Référence SDK :** https://github.com/pollen-robotics/reachy_mini  
+**Référence SDK :** https://github.com/pollen-robotics/reachy_mini
 **Objectif :** Vérification exhaustive module par module avec comparaison SDK officiel
 
 ---

@@ -1,6 +1,6 @@
 # Prochaines étapes - audit BBIA → Reachy
 
-**Date**: 2025-10-29  
+**Date**: 2025-10-29
 **Statut**: phase critique terminée | modules moyens restants
 
 ---
@@ -23,9 +23,9 @@ Tous les **modules critiques** (priorité haute) sont **terminés** :
 
 ### 6. behaviors (priorité moyenne)
 
-**Score**: Conformité 8/10 | Sécurité 7/10 | Performance 8/10 | Docs 6/10  
-**Issues**: 🔴 **1 high** - Tests échouent  
-**Estimation**: ~2 heures  
+**Score**: Conformité 8/10 | Sécurité 7/10 | Performance 8/10 | Docs 6/10
+**Issues**: 🔴 **1 high** - Tests échouent
+**Estimation**: ~2 heures
 
 **Fichiers**:
 - `src/bbia_sim/bbia_behavior.py`
@@ -42,9 +42,9 @@ Tous les **modules critiques** (priorité haute) sont **terminés** :
 
 ### 7. sdk_wrappers (priorité moyenne)
 
-**Score**: Conformité 8/10 | Sécurité 7/10 | Performance 8/10 | Docs 6/10  
-**Issues**: 🔴 **1 high** - Tests échouent  
-**Estimation**: ~2 heures  
+**Score**: Conformité 8/10 | Sécurité 7/10 | Performance 8/10 | Docs 6/10
+**Issues**: 🔴 **1 high** - Tests échouent
+**Estimation**: ~2 heures
 
 **Fichiers**:
 - `src/bbia_sim/backends/reachy_mini_backend.py` (déjà audité, OK)
@@ -123,7 +123,7 @@ L’option 2 reste valable si vous souhaitez prioriser d’autres sujets.
 # Vérifier état tests behaviors
 pytest tests/test_bbia_behavior.py -v --tb=short
 
-# Vérifier état tests sdk_wrappers  
+# Vérifier état tests sdk_wrappers
 pytest tests/test_reachy_mini_backend.py -v --tb=short
 
 # Vérifier markers pytest

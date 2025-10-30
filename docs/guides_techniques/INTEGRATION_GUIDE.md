@@ -1,8 +1,8 @@
 # Guide d'intégration BBIA-SIM - Phase 3
 
-**Version** : 1.2.0  
-**Date** : Octobre 2025  
-**Public** : développeurs, chercheurs, communauté technique  
+**Version** : 1.2.0
+**Date** : Octobre 2025
+**Public** : développeurs, chercheurs, communauté technique
 
 ## Introduction
 
@@ -29,7 +29,7 @@ flowchart TD
     API --> TEST[Tester API<br/>--check ou Swagger UI]
     TEST --> INTEG[Intégrer dans votre code<br/>RobotAPI ou HTTP client]
     INTEG --> DEPLOY[Déployer<br/>Production ou Docker]
-    
+
     style START fill:#90EE90
     style DEPLOY fill:#87CEEB
 ```
@@ -175,7 +175,7 @@ import json
 
 async def telemetry_client():
     uri = "ws://localhost:8000/ws/telemetry"
-    
+
     async with websockets.connect(uri) as websocket:
         while True:
             data = await websocket.recv()
@@ -314,7 +314,7 @@ async def home():
             <button onclick="applyEmotion('happy')">Happy</button>
             <button onclick="applyEmotion('sad')">Sad</button>
             <button onclick="executeBehavior('greeting')">Greeting</button>
-            
+
             <script>
                 async function applyEmotion(emotion) {
                     const response = await fetch('/api/ecosystem/emotions/apply', {
@@ -329,7 +329,7 @@ async def home():
                     const result = await response.json();
                     console.log(result);
                 }
-                
+
                 async function executeBehavior(behavior) {
                     const response = await fetch('/api/ecosystem/behaviors/execute', {
                         method: 'POST',
@@ -362,7 +362,7 @@ class BBIAClient:
     def __init__(self, base_url: str = "http://localhost:8000"):
         self.base_url = base_url
         self.client = httpx.AsyncClient()
-    
+
     async def apply_emotion(self, emotion: str, intensity: float = 0.7, duration: float = 5.0):
         """Applique une émotion BBIA."""
         response = await self.client.post(
@@ -374,7 +374,7 @@ class BBIAClient:
             }
         )
         return response.json()
-    
+
     async def execute_behavior(self, behavior: str, intensity: float = 1.0):
         """Exécute un comportement BBIA."""
         response = await self.client.post(
@@ -385,12 +385,12 @@ class BBIAClient:
             }
         )
         return response.json()
-    
+
     async def get_capabilities(self):
         """Récupère les capacités du robot."""
         response = await self.client.get(f"{self.base_url}/api/ecosystem/capabilities")
         return response.json()
-    
+
     async def close(self):
         """Ferme le client."""
         await self.client.aclose()
@@ -398,24 +398,24 @@ class BBIAClient:
 # Utilisation
 async def main():
     client = BBIAClient()
-    
+
     try:
         # Récupération des capacités
         capabilities = await client.get_capabilities()
         print(f"Robot: {capabilities['model']}")
         print(f"Joints: {capabilities['joints']}")
         print(f"Émotions: {len(capabilities['emotions'])}")
-        
+
         # Application d'émotions
         await client.apply_emotion("happy", 0.8, 5.0)
         await asyncio.sleep(1.0)
         await client.apply_emotion("curious", 0.6, 3.0)
-        
+
         # Exécution de comportements
         await client.execute_behavior("greeting", 1.0)
         await asyncio.sleep(2.0)
         await client.execute_behavior("nod", 0.8)
-        
+
     finally:
         await client.close()
 
@@ -435,7 +435,7 @@ import asyncio
 class BBIAROS2Node(Node):
     def __init__(self):
         super().__init__('bbia_ros2_node')
-        
+
         # Subscription aux commandes
         self.subscription = self.create_subscription(
             String,
@@ -443,21 +443,21 @@ class BBIAROS2Node(Node):
             self.command_callback,
             10
         )
-        
+
         # Client HTTP pour BBIA-SIM
         self.client = httpx.AsyncClient()
         self.base_url = "http://localhost:8000"
-        
+
         self.get_logger().info('BBIA ROS2 Node démarré')
-    
+
     def command_callback(self, msg):
         """Traite les commandes ROS2."""
         command = msg.data
         self.get_logger().info(f'Commande reçue: {command}')
-        
+
         # Exécution asynchrone
         asyncio.create_task(self.execute_command(command))
-    
+
     async def execute_command(self, command: str):
         """Exécute une commande BBIA."""
         try:
@@ -468,7 +468,7 @@ class BBIAROS2Node(Node):
                     params={"emotion": emotion, "intensity": 0.7, "duration": 3.0}
                 )
                 self.get_logger().info(f'Émotion {emotion} appliquée')
-            
+
             elif command.startswith("behavior:"):
                 behavior = command.split(":")[1]
                 response = await self.client.post(
@@ -476,14 +476,14 @@ class BBIAROS2Node(Node):
                     params={"behavior": behavior, "intensity": 1.0}
                 )
                 self.get_logger().info(f'Comportement {behavior} exécuté')
-            
+
         except Exception as e:
             self.get_logger().error(f'Erreur: {e}')
 
 def main(args=None):
     rclpy.init(args=args)
     node = BBIAROS2Node()
-    
+
     try:
         rclpy.spin(node)
     except KeyboardInterrupt:
@@ -582,26 +582,26 @@ import httpx
 async def validate_integration():
     """Valide l'intégration BBIA-SIM."""
     client = httpx.AsyncClient()
-    
+
     try:
         # Test de connectivité
         response = await client.get("http://localhost:8000/health")
         assert response.status_code == 200
-        
+
         # Test des capacités
         response = await client.get("http://localhost:8000/api/ecosystem/capabilities")
         assert response.status_code == 200
-        
+
         # Test des émotions
         response = await client.get("http://localhost:8000/api/ecosystem/emotions/available")
         assert response.status_code == 200
-        
+
         # Test des comportements
         response = await client.get("http://localhost:8000/api/ecosystem/behaviors/available")
         assert response.status_code == 200
-        
+
         print("Intégration validée avec succès")
-        
+
     except Exception as e:
         print(f"Erreur de validation: {e}")
     finally:

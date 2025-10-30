@@ -105,31 +105,31 @@ graph TB
         VOICE[bbia_voice.py<br/>TTS/STT]
         BEHAVIOR[bbia_behavior.py<br/>Comportements]
     end
-    
+
     subgraph "RobotAPI Interface"
         API[RobotAPI<br/>Interface unifiée<br/>CONTRACT.md gelé v1.1.x]
     end
-    
+
     subgraph "Backends"
         MUJOCO[MuJoCoBackend<br/>Simulation physique]
         REACHY[ReachyBackend<br/>Robot réel mock]
     end
-    
+
     subgraph "Tests & CI"
         GOLDEN[Golden Tests<br/>3 traces référence]
         SMOKE[Smoke Tests<br/>11 tests <5s]
         CI[GitHub Actions<br/>Seed fixé SEED=42]
     end
-    
+
     EMOTIONS --> API
     VISION --> API
     AUDIO --> API
     VOICE --> API
     BEHAVIOR --> API
-    
+
     API --> MUJOCO
     API --> REACHY
-    
+
     GOLDEN --> API
     SMOKE --> API
     CI --> GOLDEN

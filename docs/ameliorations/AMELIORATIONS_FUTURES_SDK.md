@@ -1,6 +1,6 @@
 # 🚀 AMÉLIORATIONS FUTURES - SDK REACHY MINI
 
-**Date :** Octobre 2025  
+**Date :** Octobre 2025
 **Référence SDK :** https://github.com/pollen-robotics/reachy_mini
 
 ---
@@ -179,12 +179,12 @@ robot_api.goto_target(head=pose, body_yaw=yaw, method=method)
 class BBIABehaviorManager:
     def __init__(self):
         self.saved_behaviors = {}  # Bibliothèque de mouvements
-    
+
     def record_behavior(self, name: str):
         robot.start_recording()
         self.execute_behavior(name)
         self.saved_behaviors[name] = robot.stop_recording()
-    
+
     def play_saved_behavior(self, name: str):
         if name in self.saved_behaviors:
             robot.async_play_move(self.saved_behaviors[name])

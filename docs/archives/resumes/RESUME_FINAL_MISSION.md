@@ -2,8 +2,8 @@
 
 ## Résumé exécutif
 
-**Date :** Octobre 2025  
-**Statut :** mission terminée  
+**Date :** Octobre 2025
+**Statut :** mission terminée
 **Objectif :** Auditer, corriger et optimiser la simulation BBIA Reachy Mini
 
 **Résultat :** Projet fonctionnel et aligné avec les spécifications officielles Reachy Mini de Pollen Robotics.

@@ -1,6 +1,6 @@
 # 📚 INDEX DE LA DOCUMENTATION BBIA-SIM
 
-**Version:** v1.3.1  
+**Version:** v1.3.1
 **Dernière mise à jour:** Octobre 2025
 
 ---
@@ -141,25 +141,25 @@ graph TB
         G2[guides/GUIDE_AVANCE.md]
         G3[guides/REACHY_MINI_*.md]
     end
-    
+
     subgraph "Architecture & Technique"
         A1[architecture/ARCHITECTURE_*.md]
         GT1[guides_techniques/INTEGRATION_GUIDE.md]
         GT2[guides_techniques/TESTING_GUIDE.md]
     end
-    
+
     subgraph "Conformité & Qualité"
         C1[conformite/CONFORMITE_*.md]
         Q1[qualite/*.md]
         AUD1[audit/*.md]
     end
-    
+
     subgraph "Configuration & Déploiement"
         INST1[installation/*.md]
         REF1[references/COMMUNITY_CONFIG.md]
         DEPLOY[deploy/*.md]
     end
-    
+
     style G1 fill:#90EE90
     style A1 fill:#87CEEB
     style C1 fill:#FFB6C1

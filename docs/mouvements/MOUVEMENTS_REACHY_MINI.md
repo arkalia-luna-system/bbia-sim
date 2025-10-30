@@ -1,6 +1,6 @@
 # Mouvements Reachy Mini - analyse et améliorations
 
-**Date:** 28 Octobre 2025  
+**Date:** 28 Octobre 2025
 **Statut:** améliorations appliquées
 
 ## État actuel des joints
@@ -135,7 +135,7 @@ yaw_body: -0.15 rad (rotation lente)
 
 **Tests effectués :**
 - Black (formatage) : OK
-- Ruff (linting) : OK  
+- Ruff (linting) : OK
 - Joints mobiles identifiés : 7/16
 - Antennes bloquées confirmées : left_antenna, right_antenna
 - Mouvements expressifs implémentés

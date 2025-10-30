@@ -1,6 +1,6 @@
 # ✅ AMÉLIORATIONS FINALES - Audit BBIA → Reachy Integration
 
-**Date**: 2025-10-29  
+**Date**: 2025-10-29
 **Phase**: Améliorations continues post-audit
 
 ---

@@ -22,30 +22,30 @@ graph TB
         VERTICAL[test_vertical_slices.py<br/>Tests vertical slices]
         GOLDEN[test_golden_traces.py<br/>Tests golden traces]
     end
-    
+
     E2E --> API[test_api_simu_roundtrip.py]
     E2E --> MODULES[test_bbia_modules_e2e.py]
     E2E --> MOTION[test_motion_roundtrip.py]
     E2E --> TELEMETRY[test_websocket_telemetry_e2e.py]
-    
+
     SIM --> CLI[test_cli_help.py]
     SIM --> DURATION[test_duration.py]
-    
+
     WS --> RATE[test_telemetry_rate.py]
-    
+
     BBIA --> AUDIO[test_bbia_audio.py]
     BBIA --> BEHAVIOR[test_bbia_behavior.py]
     BBIA --> EMOTIONS[test_bbia_emotions.py]
     BBIA --> VISION[test_bbia_vision.py]
     BBIA --> VOICE[test_bbia_voice.py]
-    
+
     DAEMON --> CONFIG[test_daemon_config.py]
     DAEMON --> MODELS[test_daemon_models.py]
     DAEMON --> SIMULATION[test_daemon_simulation_service.py]
-    
+
     WEBSOCKET --> CONNECTION[test_websocket_connection.py]
     WEBSOCKET --> TELEMETRY_EXT[test_websocket_telemetry_extended.py]
-    
+
     VERTICAL --> DEMO_EMOTION[test_demo_emotion_headless]
     VERTICAL --> DEMO_VOICE[test_demo_voice_headless]
     VERTICAL --> DEMO_VISION[test_demo_vision_headless]
@@ -75,19 +75,19 @@ graph LR
     subgraph "Tests Unitaires"
         UNIT[Tests unitaires<br/>Fonctions isolées<br/>Mocking]
     end
-    
+
     subgraph "Tests d'Intégration"
         INTEGRATION[Tests d'intégration<br/>Modules ensemble<br/>API + Simulation]
     end
-    
+
     subgraph "Tests End-to-End"
         E2E[Tests E2E<br/>Scénarios complets<br/>CLI → API → Simulation]
     end
-    
+
     subgraph "Tests de Performance"
         PERF[Tests performance<br/>Temps d'exécution<br/>Mémoire]
     end
-    
+
     UNIT --> INTEGRATION
     INTEGRATION --> E2E
     E2E --> PERF

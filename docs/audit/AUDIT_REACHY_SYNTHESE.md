@@ -1,7 +1,7 @@
 # 🔍 AUDIT COMPLET BBIA → REACHY INTEGRATION
 
-**Date**: 2025-10-29 17:01:49  
-**Référentiel Reachy**: pollen-robotics/reachy_mini@84c40c3  
+**Date**: 2025-10-29 17:01:49
+**Référentiel Reachy**: pollen-robotics/reachy_mini@84c40c3
 **Commit utilisé**: 84c40c3
 
 ---

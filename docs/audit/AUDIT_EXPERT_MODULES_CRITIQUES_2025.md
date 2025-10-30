@@ -1,6 +1,6 @@
 # Audit des modules critiques BBIA‑SIM
 
-**Date**: Octobre 2025  
+**Date**: Octobre 2025
 **Objectif**: Analyse experte pointilleuse de tous les modules critiques avec comparaison SDK Reachy-mini officiel
 
 ## Résumé exécutif
@@ -151,7 +151,7 @@ description="Plateforme Stewart - joint tête 1 (⚠️ Nécessite IK via goto_t
 
 ### Modules utilisant `robot.io`
 
-**Note**: `robot.io` n'est pas encore utilisé activement dans les modules BBIA.  
+**Note**: `robot.io` n'est pas encore utilisé activement dans les modules BBIA.
 **Opportunité**: Intégrer `robot.io` pour contrôle GPIO, LEDs, capteurs si disponibles dans SDK.
 
 ---

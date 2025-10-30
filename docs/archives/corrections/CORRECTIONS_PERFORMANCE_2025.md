@@ -1,7 +1,7 @@
 # ⚡ CORRECTIONS PERFORMANCE APPLIQUÉES - Octobre 2025
 
-**Date :** Octobre 2025  
-**Problème :** Code "rame" (lent)  
+**Date :** Octobre 2025
+**Problème :** Code "rame" (lent)
 **Responsables identifiés et corrigés**
 
 ---

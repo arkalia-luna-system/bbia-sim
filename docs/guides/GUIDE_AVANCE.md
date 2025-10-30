@@ -2,7 +2,7 @@
 
 ## Pour développeurs avancés
 
-**Version :** 1.3.0  
+**Version :** 1.3.0
 **Public cible :** développeurs expérimentés souhaitant exploiter les fonctionnalités de BBIA
 
 ---

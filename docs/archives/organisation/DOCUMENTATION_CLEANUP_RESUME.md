@@ -1,6 +1,6 @@
 # ✅ Résumé Nettoyage Documentation BBIA-SIM
 
-**Date :** 28 Octobre 2025  
+**Date :** 28 Octobre 2025
 **Statut :** ✅ Terminé
 
 ---
@@ -77,18 +77,18 @@
 ## 📊 RÉSULTATS
 
 ### Avant
-❌ 5 fichiers temporaires à la racine  
-❌ Information dispersée sur l'état du projet  
-❌ Pas d'index complet  
-❌ Guides pas à jour avec nouvelles fonctionnalités  
+❌ 5 fichiers temporaires à la racine
+❌ Information dispersée sur l'état du projet
+❌ Pas d'index complet
+❌ Guides pas à jour avec nouvelles fonctionnalités
 
 ### Après
-✅ Racine propre (seulement fichiers essentiels)  
-✅ Information consolidée dans `STATUT_PROJET.md`  
-✅ Index complet dans `docs/INDEX.md`  
-✅ Guides mis à jour (Dashboard, Chat, 12 émotions)  
-✅ Documentation organisée et accessible  
-✅ Navigation facilitée par profil et objectif  
+✅ Racine propre (seulement fichiers essentiels)
+✅ Information consolidée dans `STATUT_PROJET.md`
+✅ Index complet dans `docs/INDEX.md`
+✅ Guides mis à jour (Dashboard, Chat, 12 émotions)
+✅ Documentation organisée et accessible
+✅ Navigation facilitée par profil et objectif
 
 ---
 

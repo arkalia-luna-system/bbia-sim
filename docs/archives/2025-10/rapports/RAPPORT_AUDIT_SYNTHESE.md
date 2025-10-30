@@ -1,7 +1,7 @@
 # Audit BBIA-SIM - rapport de synthèse
 
-**Date** : Octobre 2025  
-**Version** : 1.3.0  
+**Date** : Octobre 2025
+**Version** : 1.3.0
 **Statut** : projet stabilisé
 
 ---
@@ -175,8 +175,8 @@ Documentation fournie :
 - Développer interface mobile
 - Intégrer avec BBIA
 
-**Valeur ajoutée :** ❌ Nulle  
-**Complexité :** ⚠️ Majeure  
+**Valeur ajoutée :** ❌ Nulle
+**Complexité :** ⚠️ Majeure
 **Temps requis :** ⚠️ Semaines
 
 **Conclusion :** Ne pas le faire !
@@ -330,6 +330,6 @@ python scripts/hardware_dry_run_reachy_mini.py --duration 60
 
 **Je reste disponible pour toute question ou précision !** 🚀
 
-*Audit effectué le Octobre 2025*  
+*Audit effectué le Octobre 2025*
 *Expert Robotique & IA*
 

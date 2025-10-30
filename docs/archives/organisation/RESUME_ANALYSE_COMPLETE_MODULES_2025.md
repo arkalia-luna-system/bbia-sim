@@ -1,7 +1,7 @@
 # 📊 RÉSUMÉ ANALYSE COMPLÈTE MODULES BBIA-SIM - Octobre 2025
 
-**Date :** Octobre 2025  
-**Référence SDK :** https://github.com/pollen-robotics/reachy_mini  
+**Date :** Octobre 2025
+**Référence SDK :** https://github.com/pollen-robotics/reachy_mini
 **Objectif :** Analyse experte pointilleuse de tous les modules, vérification conformité SDK, améliorations intelligence
 
 ---

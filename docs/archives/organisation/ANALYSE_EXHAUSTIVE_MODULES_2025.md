@@ -1,7 +1,7 @@
 # 🔍 ANALYSE EXHAUSTIVE DES MODULES BBIA-SIM vs SDK REACHY MINI
 
-**Date :** Octobre 2025  
-**Objectif :** Vérification experte de TOUS les modules contre SDK officiel  
+**Date :** Octobre 2025
+**Objectif :** Vérification experte de TOUS les modules contre SDK officiel
 **SDK Référence :** https://github.com/pollen-robotics/reachy_mini
 
 ---
@@ -224,7 +224,7 @@ def execute(self, context):
     self.robot_api.start_recording()
     # ... séquence de mouvements complexes ...
     move = self.robot_api.stop_recording()
-    
+
     # Rejouer avec performance optimale
     self.robot_api.async_play_move(move, play_frequency=100.0)
 ```
@@ -290,7 +290,7 @@ backend.media  # Module Media du robot
 
 ---
 
-**Date d'Analyse :** Octobre 2025  
-**Analyseur :** Expert Robotique IA Émotionnelle  
+**Date d'Analyse :** Octobre 2025
+**Analyseur :** Expert Robotique IA Émotionnelle
 **SDK Référence :** https://github.com/pollen-robotics/reachy_mini
 

@@ -99,7 +99,7 @@ Merci à Pollen Robotics et Hugging Face pour cet écosystème incroyable ! 🤗
 
 Salut la communauté ! 👋
 
-Je viens de finaliser **BBIA-SIM v1.3.0** - un moteur cognitif Python pour Reachy Mini avec une **conformité parfaite** au SDK officiel ! 
+Je viens de finaliser **BBIA-SIM v1.3.0** - un moteur cognitif Python pour Reachy Mini avec une **conformité parfaite** au SDK officiel !
 
 🏆 **Highlights :**
 • **RobotAPI Unifié** : Contrôle identique sim ↔ robot réel (première du genre !)
@@ -124,7 +124,7 @@ Je viens de finaliser **BBIA-SIM v1.3.0** - un moteur cognitif Python pour Reach
 • Docs : https://bbia-sim-docs.onrender.com
 • Test conformité : `python scripts/test_conformity_sdk_officiel.py`
 
-🎯 **Prêt pour robot physique** dès réception ! 
+🎯 **Prêt pour robot physique** dès réception !
 
 Des questions ? Des retours ? Je suis là ! 😊
 

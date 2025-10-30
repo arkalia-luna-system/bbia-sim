@@ -1,6 +1,6 @@
 # Intelligence conversationnelle LLM - guide complet
 
-**Date :** Octobre 2025  
+**Date :** Octobre 2025
 **Objectif :** ajouter LLM pré-entraîné (Mistral 7B) pour conversations intelligentes
 
 ---
@@ -9,7 +9,7 @@
 
 Remplacer les réponses basées sur règles par un LLM conversationnel qui comprend le contexte et génère des réponses naturelles.
 
-**Avant :** Règles + sentiment analysis (limité)  
+**Avant :** Règles + sentiment analysis (limité)
 **Après :** Mistral 7B Instruct (conversations naturelles avec contexte)
 
 ---

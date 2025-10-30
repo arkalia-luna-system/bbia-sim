@@ -1,7 +1,7 @@
 # Optimisations robotique - analyse 2025
 
-**Date:** Octobre 2025  
-**Version:** BBIA-SIM  
+**Date:** Octobre 2025
+**Version:** BBIA-SIM
 **SDK Référence:** https://github.com/pollen-robotics/reachy_mini
 
 ---
@@ -26,7 +26,7 @@ Analyse module par module avec validation par rapport au SDK officiel Reachy Min
 ### 1. `reachy_mini_backend.py` - Backend Principal
 
 #### Limites de joints depuis le modèle XML
-Avant : limites arrondies approximatives  
+Avant : limites arrondies approximatives
 Après : limites issues de `reachy_mini_REAL_OFFICIAL.xml`
 
 ```python
@@ -47,7 +47,7 @@ Effet : précision accrue, moins d’erreurs de dépassement
 **Solution:** 3 méthodes en cascade avec fallbacks
 ```python
 # Méthode 1: get_current_body_yaw() si disponible
-# Méthode 2: robot.state.body_yaw si disponible  
+# Méthode 2: robot.state.body_yaw si disponible
 # Méthode 3: Fallback sécurisé 0.0
 ```
 
@@ -67,7 +67,7 @@ elif len(head_positions) == 12:
 Effet : compatibilité avec plusieurs versions du SDK, validation NaN/inf
 
 #### Clamping multi‑niveaux
-**Avant:** Clamp simple  
+**Avant:** Clamp simple
 **Après:** 2 niveaux intelligents
 
 ```python
@@ -95,7 +95,7 @@ Effet : réduction d’erreurs runtime, meilleure gestion d’erreurs
 ### 2. `bbia_behavior.py` - Comportements
 
 #### Utilisation systématique de `goto_target()`
-**Avant:** `set_joint_pos()` répétés → mouvements saccadés  
+**Avant:** `set_joint_pos()` répétés → mouvements saccadés
 **Après:** `goto_target()` avec interpolation `minjerk` → mouvements fluides
 
 **Exemples corrigés:**
@@ -107,7 +107,7 @@ Effet : réduction d’erreurs runtime, meilleure gestion d’erreurs
 Effet : performance améliorée et mouvements plus fluides
 
 #### Validation des coordonnées vision
-**Avant:** Aucune validation  
+**Avant:** Aucune validation
 **Après:** Validation complète avec fallbacks
 
 ```python
@@ -119,7 +119,7 @@ Effet : performance améliorée et mouvements plus fluides
 Effet : robustesse, évite les erreurs sur coordonnées invalides
 
 #### Gestion des erreurs
-**Ajout:** Try/except avec fallbacks multiples partout  
+**Ajout:** Try/except avec fallbacks multiples partout
 **Ajout:** Logs détaillés avec `exc_info=True` pour debugging
 
 Effet : debugging facilité, continuité de service en cas d’erreur
@@ -129,7 +129,7 @@ Effet : debugging facilité, continuité de service en cas d’erreur
 ### 3. `bbia_integration.py` - Intégration Globale
 
 #### Transitions émotionnelles
-**Avant:** `set_emotion()` directe → transition saccadée  
+**Avant:** `set_emotion()` directe → transition saccadée
 **Après:** `goto_target()` avec durée adaptative selon intensité
 
 ```python
@@ -142,19 +142,19 @@ robot_api.goto_target(head=pose, body_yaw=yaw, duration=transition_duration, met
 Effet : transitions plus naturelles
 
 #### Mouvements combinés synchronisés
-**Avant:** `set_target_head_pose()` + `set_joint_pos()` séparés  
+**Avant:** `set_target_head_pose()` + `set_joint_pos()` séparés
 **Après:** `goto_target(head=pose, body_yaw=yaw)` combiné
 
 Effet : meilleure synchronisation tête+corps, moins d’appels SDK
 
 #### Synchronisation voix
-**Avant:** `set_joint_position()` répétés → mouvements saccadés  
+**Avant:** `set_joint_position()` répétés → mouvements saccadés
 **Après:** `goto_target()` avec durée courte (0.15s) pour subtilité
 
 Effet : mouvements subtils synchronisés avec la parole
 
 #### Suivi visage via `look_at_world`
-**Avant:** `set_joint_position("yaw_body")` simple  
+**Avant:** `set_joint_position("yaw_body")` simple
 **Après:** `look_at_world()` avec conversion position 2D → 3D
 
 Effet : suivi plus précis via IK du SDK
@@ -288,6 +288,6 @@ Prochaine étape : analyser `robot_api.py` et les modules BBIA restants
 
 ---
 
-*Analyse effectuée selon SDK officiel: https://github.com/pollen-robotics/reachy_mini*  
+*Analyse effectuée selon SDK officiel: https://github.com/pollen-robotics/reachy_mini*
 *SDK disponible depuis Octobre 2024 (mentionné dans shipping update Octobre 2024)*
 

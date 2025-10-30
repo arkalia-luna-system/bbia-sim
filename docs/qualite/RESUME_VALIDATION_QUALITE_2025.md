@@ -1,7 +1,7 @@
 # Résumé validation qualité code - Octobre 2025
 
-**Date :** Octobre 2025  
-**Outils exécutés :** black, ruff, mypy, bandit  
+**Date :** Octobre 2025
+**Outils exécutés :** black, ruff, mypy, bandit
 **Status :** tous les outils passent
 
 ---

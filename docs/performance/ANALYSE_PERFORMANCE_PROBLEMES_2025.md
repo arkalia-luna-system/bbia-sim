@@ -1,6 +1,6 @@
 # Analyse performance - problèmes identifiés
 
-**Date :** Octobre 2025  
+**Date :** Octobre 2025
 **Objectif :** Identifier les goulots d'étranglement et responsables des lenteurs
 
 ---
@@ -107,7 +107,7 @@ Gain : environ −1.7 s par synthèse vocale
 ## Corrections appliquées
 
 1. ✅ Cache global `_pyttsx3_engine_cache` (thread-safe)
-2. ✅ Cache `_bbia_voice_id_cache` 
+2. ✅ Cache `_bbia_voice_id_cache`
 3. ✅ Réutilisation moteur dans SDK path et fallback path
 4. ✅ Thread-safe avec `threading.Lock()`
 

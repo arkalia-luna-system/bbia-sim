@@ -19,22 +19,22 @@ graph TB
         VOICE[bbia_voice.py]
         BEHAVIOR[bbia_behavior.py]
     end
-    
+
     subgraph "RobotAPI Interface"
         API[RobotAPI<br/>Interface unifiée]
     end
-    
+
     subgraph "Backends"
         MUJOCO[MuJoCoBackend<br/>Simulation]
         REACHY[ReachyMiniBackend<br/>Robot réel]
     end
-    
+
     EMOTIONS --> API
     VISION --> API
     AUDIO --> API
     VOICE --> API
     BEHAVIOR --> API
-    
+
     API --> MUJOCO
     API --> REACHY
 ```
@@ -59,7 +59,7 @@ flowchart TD
     VALID -->|Oui| READY[✅ Robot réel opérationnel]
     VALID -->|Non| DEBUG[Debug connexion<br/>logs + vérifications]
     DEBUG --> TEST
-    
+
     style START fill:#90EE90
     style READY fill:#87CEEB
 ```
@@ -194,17 +194,17 @@ def handle_disconnection():
 def test_sdk_conformity():
     """Test conformité avec le SDK officiel."""
     robot = RobotFactory.create_robot(backend="reachy_mini")
-    
+
     # Test des méthodes critiques
     assert hasattr(robot, 'goto_target')
     assert hasattr(robot, 'set_target')
     assert hasattr(robot, 'create_head_pose')
     assert hasattr(robot, 'play_audio')
-    
+
     # Test des types de retour
     pose = robot.create_head_pose()
     assert isinstance(pose, np.ndarray)
-    
+
     result = robot.goto_target(head=pose, duration=1.0)
     assert result is None  # Conformité SDK
 ```
@@ -219,13 +219,13 @@ def test_performance_migration():
     start_time = time.time()
     robot_sim.goto_target(head=pose)
     sim_latency = time.time() - start_time
-    
+
     # Robot réel
     robot_real = RobotFactory.create_robot(backend="reachy_mini")
     start_time = time.time()
     robot_real.goto_target(head=pose)
     real_latency = time.time() - start_time
-    
+
     # Vérifier que la latence reste acceptable
     assert real_latency < sim_latency * 10  # Max 10x plus lent
 ```
@@ -236,17 +236,17 @@ def test_performance_migration():
 def test_bbia_modules_migration():
     """Test que tous les modules BBIA fonctionnent avec le robot réel."""
     robot = RobotFactory.create_robot(backend="reachy_mini")
-    
+
     # Test émotions
     from bbia_sim.bbia_emotions import BBIAEmotions
     emotions = BBIAEmotions()
     emotions.set_emotion("happy", 0.8)
-    
+
     # Test vision
     from bbia_sim.bbia_vision import BBIAVision
     vision = BBIAVision()
     objects = vision.detect_objects()
-    
+
     # Test comportements
     from bbia_sim.bbia_behavior import BBIABehaviorManager
     behavior = BBIABehaviorManager()

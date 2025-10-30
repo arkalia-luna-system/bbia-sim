@@ -1,6 +1,6 @@
 # ✅ CORRECTIONS FINALES - SDK REACHY MINI OFFICIEL
 
-**Date :** 28 Octobre 2025  
+**Date :** 28 Octobre 2025
 **Référence :** SDK officiel GitHub https://github.com/pollen-robotics/reachy_mini
 
 ---
@@ -113,10 +113,10 @@ yaw = 0.12 * math.sin(...)     # excited SDK
 
 ## 📊 **RÉSULTATS**
 
-✅ **Tous les tests passent** (8/8)  
-✅ **Ruff OK** (code propre)  
-✅ **Mouvements réalistes** (conforme SDK)  
-✅ **Plus de casse de tête** ✅  
+✅ **Tous les tests passent** (8/8)
+✅ **Ruff OK** (code propre)
+✅ **Mouvements réalistes** (conforme SDK)
+✅ **Plus de casse de tête** ✅
 
 ---
 

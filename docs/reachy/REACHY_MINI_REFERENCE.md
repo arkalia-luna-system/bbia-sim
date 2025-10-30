@@ -164,11 +164,11 @@
 
 ---
 
-**BBIA** - Brain-Based Interactive Agent  
+**BBIA** - Brain-Based Interactive Agent
 Référence visuelle Reachy Mini
 
-**Robot** : Reachy Mini Wireless  
-**Fabricant** : Pollen Robotics  
-**Partenaire** : Hugging Face  
-**Statut** : Open Source  
-**Livraison** : Fin 2025 / Début 2026 
+**Robot** : Reachy Mini Wireless
+**Fabricant** : Pollen Robotics
+**Partenaire** : Hugging Face
+**Statut** : Open Source
+**Livraison** : Fin 2025 / Début 2026

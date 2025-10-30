@@ -95,6 +95,6 @@
 
 ---
 
-**Date** : 25 Octobre 2025  
-**Statut** : Audit terminé, aucune action requise  
+**Date** : 25 Octobre 2025
+**Statut** : Audit terminé, aucune action requise
 **Prochaine révision** : Lors de mise à jour majeure du SDK Reachy

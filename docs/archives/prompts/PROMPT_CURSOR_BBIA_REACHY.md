@@ -109,26 +109,26 @@ def main():
     parser.add_argument("--xml", default="src/bbia_sim/sim/models/reachy_mini_REAL_OFFICIAL.xml")
     parser.add_argument("--joint", default="left_antenna")
     parser.add_argument("--duration", type=int, default=10)
-    
+
     args = parser.parse_args()
-    
+
     # Initialisation du simulateur BBIA
     simulator = MuJoCoSimulator(args.xml)
-    
+
     print(f"🎮 Lancement viewer 3D pour {args.duration}s...")
     print(f"📋 Joint animé: {args.joint}")
-    
+
     # Animation sinusoïdale
     start_time = time.time()
     while time.time() - start_time < args.duration:
         t = time.time() - start_time
         angle = 0.5 * math.sin(2 * math.pi * t)
-        
+
         simulator.set_joint_position(args.joint, angle)
         simulator.step()
-        
+
         time.sleep(0.01)  # 100 Hz
-    
+
     print("✅ Animation terminée")
 
 if __name__ == "__main__":
@@ -146,17 +146,17 @@ if __name__ == "__main__":
 def test_mujoco_adapter_headless():
     """Test headless du simulateur MuJoCo"""
     simulator = MuJoCoSimulator("src/bbia_sim/sim/models/reachy_mini_REAL_OFFICIAL.xml")
-    
+
     # Vérification des joints
     joints = simulator.get_available_joints()
     assert "yaw_body" in joints
     assert "left_antenna" in joints
     assert len(joints) == 16
-    
+
     # Test animation headless
     simulator.set_joint_position("left_antenna", 0.5)
     simulator.step()
-    
+
     position = simulator.get_joint_position("left_antenna")
     assert abs(position - 0.5) < 0.1
 ```

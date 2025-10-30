@@ -1,6 +1,6 @@
 # ✅ CORRECTIONS APPLIQUÉES - Audit BBIA → Reachy Integration
 
-**Date**: 2025-10-29  
+**Date**: 2025-10-29
 **Référentiel**: pollen-robotics/reachy_mini@84c40c3
 
 ---

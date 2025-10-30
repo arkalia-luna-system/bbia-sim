@@ -1,7 +1,7 @@
 # 🎯 PLAN D'ENRICHISSEMENT BBIA - SANS DOUBLONS
 
-**Date :** 28 Octobre 2025  
-**Objectif :** Enrichir modules existants au lieu de créer des doublons  
+**Date :** 28 Octobre 2025
+**Objectif :** Enrichir modules existants au lieu de créer des doublons
 **Règle d'or :** Prolonger > Créer
 
 ---
@@ -55,37 +55,37 @@
 
 class BBIAHuggingFace:
     # ... code existant ...
-    
+
     # ✅ NOUVEAU : Historique conversation
     def __init__(self, ...):
         # ... code existant ...
         self.conversation_history: list[dict[str, Any]] = []
         self.context: dict[str, Any] = {}
         self.bbia_personality = "friendly_robot"
-    
+
     # ✅ NOUVEAU : Chat intelligent
     def chat(self, user_message: str, use_context: bool = True) -> str:
         """Chat intelligent avec BBIA avec contexte."""
         try:
             # 1. Analyser sentiment du message
             sentiment = self.analyze_sentiment(user_message)
-            
+
             # 2. Récupérer contexte si demandé
             if use_context:
                 context_text = self._build_context_string()
                 full_message = f"{context_text}\nUser: {user_message}"
             else:
                 full_message = user_message
-            
+
             # 3. Charger LLM léger (GPT-2 ou phi-2)
             if "chat_model_pipeline" not in self.models:
                 self.load_model("gpt2", "nlp")  # LLM léger
-            
+
             # 4. Générer réponse
             pipeline = self.models["gpt2_pipeline"]
             response = pipeline(full_message, max_length=100, num_return_sequences=1)
             bbia_response = response[0]["generated_text"].split("User:")[-1].strip()
-            
+
             # 5. Sauvegarder dans historique
             self.conversation_history.append({
                 "user": user_message,
@@ -93,16 +93,16 @@ class BBIAHuggingFace:
                 "sentiment": sentiment,
                 "timestamp": datetime.now().isoformat()
             })
-            
+
             # 6. Adapter réponse selon personnalité BBIA
             adapted_response = self._adapt_response_to_personality(bbia_response, sentiment)
-            
+
             return adapted_response
-            
+
         except Exception as e:
             logger.error(f"Erreur chat: {e}")
             return "Je ne comprends pas bien, peux-tu reformuler ?"
-    
+
     # ✅ NOUVEAU : Adapter réponse selon personnalité
     def _adapt_response_to_personality(self, response: str, sentiment: dict) -> str:
         """Adapte la réponse selon la personnalité BBIA."""
@@ -113,13 +113,13 @@ class BBIAHuggingFace:
             "calm": f"😌 {response}",
         }
         return personality_responses.get(self.bbia_personality, f"💬 {response}")
-    
+
     # ✅ NOUVEAU : Construire contexte
     def _build_context_string(self) -> str:
         """Construit le contexte pour la conversation."""
         if not self.conversation_history:
             return "Conversation avec BBIA (robot Reachy Mini). Soyez amical et curieux."
-        
+
         context = "Historique conversation:\n"
         for entry in self.conversation_history[-3:]:  # Derniers 3 échanges
             context += f"User: {entry['user']}\n"
@@ -264,7 +264,7 @@ python -m pytest tests/test_bbia_huggingface.py --cov=src.bbia_sim.bbia_huggingf
 
 ## 🎯 ESTIMATION TOTALE
 
-**Temps requis :** ~4-5 heures  
+**Temps requis :** ~4-5 heures
 **Impact :** Forte valeur ajoutée sans duplicata
 
 **Résultat :**

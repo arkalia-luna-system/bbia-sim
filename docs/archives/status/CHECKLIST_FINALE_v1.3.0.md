@@ -1,7 +1,7 @@
 # Checklist finale BBIA-SIM v1.3.1 - 7 dernières étapes
 
-**Objectif** : finaliser les 7 étapes restantes  
-**Statut actuel** : 98/100  
+**Objectif** : finaliser les 7 étapes restantes
+**Statut actuel** : 98/100
 **Temps estimé** : 2 à 3 semaines
 
 ---

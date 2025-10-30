@@ -1,6 +1,6 @@
 # Optimisations expert - SDK Reachy Mini
 
-**Date :** Octobre 2025  
+**Date :** Octobre 2025
 **Référence :** SDK officiel GitHub https://github.com/pollen-robotics/reachy_mini
 
 ---
@@ -15,7 +15,7 @@ Optimisations appliquées à BBIA‑SIM basées sur les pratiques du SDK officie
 
 ### **1. Utilisation de `goto_target()` au lieu de `set_joint_pos()` répétés**
 
-**Problème détecté :**  
+**Problème détecté :**
 Les mouvements utilisant plusieurs `set_joint_pos()` successifs créent des mouvements saccadés et moins fluides.
 
 **Solution :** utiliser `goto_target()` avec interpolation automatique (`method="minjerk"`) pour des mouvements plus fluides et synchronisés.
@@ -53,7 +53,7 @@ self.robot_api.goto_target(
 
 ### **2. Mouvements combinés tête + corps avec `goto_target()`**
 
-**Problème détecté :**  
+**Problème détecté :**
 Les mouvements de tête et corps appliqués séparément créent une désynchronisation visuelle.
 
 **Solution :** combiner tête et corps dans un seul appel `goto_target()` pour une meilleure synchronisation.
@@ -83,7 +83,7 @@ self.robot_api.goto_target(
 
 ### **3. Utilisation de `look_at_world()` et `look_at_image()` pour suivi visuel**
 
-**Problème détecté :**  
+**Problème détecté :**
 Le suivi visuel utilisait directement `set_joint_position()` sans utiliser les capacités SDK avancées.
 
 **Solution :** utiliser `look_at_world()` pour les positions 3D et `look_at_image()` pour les coordonnées pixel avec validation des limites.
@@ -113,10 +113,10 @@ if hasattr(robot_api, 'look_at_world'):
 
 ### **4. Intégration RobotAPI dans BBIABehaviorManager**
 
-**Problème détecté :**  
+**Problème détecté :**
 Les comportements BBIA ne pouvaient pas contrôler directement le robot physique.
 
-**Solution :**  
+**Solution :**
 Passer `robot_api` au `BBIABehaviorManager` pour contrôle direct du robot via SDK.
 
 **Fichiers corrigés :**
@@ -132,10 +132,10 @@ Passer `robot_api` au `BBIABehaviorManager` pour contrôle direct du robot via S
 
 ### **5. Gestion d'erreurs avec fallbacks**
 
-**Problème détecté :**  
+**Problème détecté :**
 Erreurs non gérées si SDK non disponible ou méthodes manquantes.
 
-**Solution :**  
+**Solution :**
 Système de fallbacks à 3 niveaux : SDK optimisé → SDK basique → Simulation.
 
 **Exemple de pattern :**

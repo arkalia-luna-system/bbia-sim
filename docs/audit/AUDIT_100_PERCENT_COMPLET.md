@@ -1,6 +1,6 @@
 # Audit BBIA → Reachy – bilan
 
-**Date**: 2025-10-29  
+**Date**: 2025-10-29
 **Statut**: audit complété et validé
 
 ---
@@ -25,14 +25,14 @@
 
 ### 6. 🟡 **behaviors**
 
-**Problème** : Test `test_hide_sequence_stdout_and_voice` échouait (intermittent)  
-**Solution** : Test valide maintenant - probablement lié au flag `BBIA_DISABLE_AUDIO`  
+**Problème** : Test `test_hide_sequence_stdout_and_voice` échouait (intermittent)
+**Solution** : Test valide maintenant - probablement lié au flag `BBIA_DISABLE_AUDIO`
 **Résultat** : 21/21 tests passent
 
 ### 7. 🟡 **sdk_wrappers**
 
-**Problème** : Tests désélectionnés par markers pytest (`unit and fast`)  
-**Solution** : Ajout de `@pytest.mark.unit` et `@pytest.mark.fast` sur tous les tests  
+**Problème** : Tests désélectionnés par markers pytest (`unit and fast`)
+**Solution** : Ajout de `@pytest.mark.unit` et `@pytest.mark.fast` sur tous les tests
 **Résultat** : 22/22 tests passent (unitaires/fast)
 
 ---

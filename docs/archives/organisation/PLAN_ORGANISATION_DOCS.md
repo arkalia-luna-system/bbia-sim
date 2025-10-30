@@ -1,6 +1,6 @@
 # 📚 PLAN D'ORGANISATION DE LA DOCUMENTATION
 
-**Date:** 28 Octobre 2025  
+**Date:** 28 Octobre 2025
 **Objectif:** Nettoyer et organiser tous les fichiers .md du projet
 
 ---

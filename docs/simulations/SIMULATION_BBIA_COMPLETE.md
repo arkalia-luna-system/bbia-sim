@@ -24,7 +24,7 @@ graph TB
         UNITY[Simulation Unity<br/>3D Interactive]
         MUJOCO[Simulation MuJoCo<br/>Physique réaliste]
     end
-    
+
     subgraph "Modules BBIA"
         EMOTIONS[Module Émotions<br/>8 émotions]
         VISION[Module Vision<br/>Reconnaissance objets]
@@ -32,25 +32,25 @@ graph TB
         VOICE[Module Voix<br/>TTS/STT]
         BEHAVIOR[Module Comportements<br/>Actions complexes]
     end
-    
+
     subgraph "Intégration"
         API[BBIA API<br/>Interface unifiée]
         SIMULATOR[Simulateur<br/>Environnement virtuel]
     end
-    
+
     BASIC --> EMOTIONS
     ADVANCED --> VISION
     ADVANCED --> AUDIO
     ADVANCED --> VOICE
     UNITY --> BEHAVIOR
     MUJOCO --> SIMULATOR
-    
+
     EMOTIONS --> API
     VISION --> API
     AUDIO --> API
     VOICE --> API
     BEHAVIOR --> API
-    
+
     API --> SIMULATOR
 ```
 
@@ -62,21 +62,21 @@ sequenceDiagram
     participant BBIA as BBIA System
     participant SIM as Simulateur
     participant ROBOT as Robot Virtuel
-    
+
     USER->>BBIA: Lancer simulation
     BBIA->>SIM: Initialiser environnement
     SIM->>ROBOT: Charger modèle 3D
-    
+
     Note over USER,ROBOT: Phase d'émotions
     USER->>BBIA: Émotion "happy"
     BBIA->>SIM: Appliquer émotion
     SIM->>ROBOT: Animer robot
-    
+
     Note over USER,ROBOT: Phase de vision
     USER->>BBIA: Reconnaissance objet
     BBIA->>SIM: Analyser scène
     SIM->>ROBOT: Réaction visuelle
-    
+
     Note over USER,ROBOT: Phase audio
     USER->>BBIA: Commande vocale
     BBIA->>SIM: Traiter audio
@@ -90,19 +90,19 @@ graph LR
     subgraph "Simulation BBIA de Base"
         BASE_FEATURES[✅ Émotions<br/>✅ Mouvements<br/>✅ Audio basique<br/>❌ Vision avancée<br/>❌ IA complexe]
     end
-    
+
     subgraph "Simulation Avancée"
         ADV_FEATURES[✅ Émotions<br/>✅ Mouvements<br/>✅ Audio complet<br/>✅ Vision IA<br/>✅ IA avancée]
     end
-    
+
     subgraph "Simulation Unity"
         UNITY_FEATURES[✅ 3D Interactive<br/>✅ Physique<br/>✅ Graphiques<br/>❌ IA limitée<br/>❌ Performance]
     end
-    
+
     subgraph "Simulation MuJoCo"
         MUJOCO_FEATURES[✅ Physique réaliste<br/>✅ Performance<br/>✅ Précision<br/>❌ Interface<br/>❌ Complexité]
     end
-    
+
     BASE_FEATURES -.->|Évolution| ADV_FEATURES
     ADV_FEATURES -.->|Choix| UNITY_FEATURES
     ADV_FEATURES -.->|Choix| MUJOCO_FEATURES
@@ -385,11 +385,11 @@ Vous pouvez maintenant commencer l'intégration des composants dans BBIA !
 
 ---
 
-**BBIA** - Brain-Based Interactive Agent  
+**BBIA** - Brain-Based Interactive Agent
 *Guide de simulation complet* 🎮✨
 
-**Phase 1** : ✅ TERMINÉE  
-**Phase 2** : �� PRÊT À COMMENCER 
+**Phase 1** : ✅ TERMINÉE
+**Phase 2** : �� PRÊT À COMMENCER
 
 ## 🤖 Séquence de Réveil Réaliste BBIA
 
@@ -416,4 +416,4 @@ La simulation BBIA intègre désormais une séquence de réveil immersive, fidè
 😊 Expression : sourire doux.
 🗣️ Première pensée : 'Je suis là, Athalia.'
 ✨ BBIA est complètement réveillé et prêt !
-``` 
+```

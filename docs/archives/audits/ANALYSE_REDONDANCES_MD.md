@@ -1,6 +1,6 @@
 # 📊 ANALYSE REDONDANCES DOCUMENTATION .MD
 
-**Date:** 20 Décembre 2024  
+**Date:** 20 Décembre 2024
 **Total fichiers .md:** 71
 
 ---
@@ -187,8 +187,8 @@ docs/
 
 ## 📊 IMPACT
 
-**Avant:** 71 fichiers .md  
-**Après nettoyage:** ~60 fichiers .md  
+**Avant:** 71 fichiers .md
+**Après nettoyage:** ~60 fichiers .md
 **Gain:** 11 fichiers obsolètes supprimés
 
 **Avantages:**

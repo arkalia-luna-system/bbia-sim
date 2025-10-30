@@ -1,6 +1,6 @@
 # 🔧 PLAN D'AMÉLIORATIONS PRIORITAIRES - BBIA-SIM
 
-**Date :** 28 Octobre 2025  
+**Date :** 28 Octobre 2025
 **Objectif :** Améliorer la qualité, la couverture de tests et corriger les points critiques
 
 ---
@@ -301,9 +301,9 @@ pytest tests/ --cov=src/bbia_sim --cov-report=term-missing --cov-fail-under=60
 
 ## 🎯 OBJECTIF FINAL
 
-**Couverture cible :** ≥ 70%  
-**Modules critiques :** 100% couverts  
-**TODOs implémentés :** Tous résolus  
+**Couverture cible :** ≥ 70%
+**Modules critiques :** 100% couverts
+**TODOs implémentés :** Tous résolus
 **Tests passent :** 100%
 
 ---

@@ -5,22 +5,22 @@
 ```mermaid
 flowchart TD
     START[Problème Unity] --> TYPE{Type d'erreur ?}
-    
+
     TYPE -->|CS0414| WARNING[Avertissement CS0414<br/>Variable inutilisée]
     TYPE -->|GUID| GUID[GUID invalide<br/>Scène corrompue]
     TYPE -->|LOAD| LOAD[Projet ne se charge pas]
     TYPE -->|COMPILE| COMPILE[Erreurs de compilation]
-    
+
     WARNING --> FIX1[./fix_unity_warnings.sh]
     GUID --> FIX2[./fix_unity_warnings.sh]
     LOAD --> FIX3[./test_unity_setup.sh]
     COMPILE --> FIX4[Vérifier scripts C#]
-    
+
     FIX1 --> TEST[./test_unity_setup.sh]
     FIX2 --> TEST
     FIX3 --> TEST
     FIX4 --> TEST
-    
+
     TEST --> WORK{Fonctionne ?}
     WORK -->|Oui| SUCCESS[✅ Problème résolu]
     WORK -->|Non| DEBUG[Débogage avancé]
@@ -33,15 +33,15 @@ graph LR
     subgraph "Priorité 1 - Critique"
         CRITICAL[Projet ne se charge pas<br/>Erreurs de compilation<br/>Scène corrompue]
     end
-    
+
     subgraph "Priorité 2 - Important"
         IMPORTANT[Avertissements CS0414<br/>GUID invalides<br/>Scripts manquants]
     end
-    
+
     subgraph "Priorité 3 - Mineur"
         MINOR[Performance lente<br/>Interface lag<br/>Rendu pixelisé]
     end
-    
+
     CRITICAL --> IMPORTANT
     IMPORTANT --> MINOR
 ```
@@ -227,5 +227,5 @@ find . -name "._*" -delete
 
 ---
 
-**BBIA** - Brain-Based Interactive Agent  
+**BBIA** - Brain-Based Interactive Agent
 Pour Reachy Mini Wireless

@@ -1,7 +1,7 @@
 # 🎤 Analyse Complète : Voix & Intelligence BBIA
 
-**Date :** Octobre 2025  
-**Auteur :** Analyse Expert  
+**Date :** Octobre 2025
+**Auteur :** Analyse Expert
 **Objectif :** Identifier blocages macOS, solutions voix alternatives, et état intelligence BBIA
 
 ---
@@ -14,19 +14,19 @@
 
 **Blocages macOS identifiés (confirmés par test) :**
 
-❌ **Pitch non contrôlable**  
+❌ **Pitch non contrôlable**
 - Message d'erreur : `"Pitch adjustment not supported when using NSSS"`
 - Impact : Impossible de modifier la tonalité/hauteur de voix
 
-❌ **Contrôle émotionnel inexistant**  
+❌ **Contrôle émotionnel inexistant**
 - `pyttsx3` ne permet pas d'ajuster l'émotion (joyeux, triste, excité, etc.)
 - Seule la vitesse et le volume sont contrôlables
 
-❌ **Voix forcée à "Amélie"**  
+❌ **Voix forcée à "Amélie"**
 - Actuellement, le code force l'utilisation d'Amélie
 - 197 voix disponibles sur macOS mais non exploitables avec pyttsx3
 
-❌ **Vitesse limitée**  
+❌ **Vitesse limitée**
 - Rate = 170 (fixe)
 - Pas de variation dynamique selon le contexte
 
@@ -169,7 +169,7 @@ tts.tts_to_file(
 def chat(self, user_message: str) -> str:
     # 1. Analyse sentiment (✅)
     sentiment = self.analyze_sentiment(user_message)
-    
+
     # 2. Génération réponse (❌ Règles basiques)
     response = self._generate_response_from_sentiment(sentiment)
     # → Pas de vrai modèle de langage !
@@ -199,7 +199,7 @@ def chat(self, user_message: str) -> str:
 def apply_emotion_to_robot(self, emotion: str, intensity: float):
     # 1. Mapping 12 BBIA → 6 SDK
     sdk_emotion = self._map_bbia_to_sdk_emotion(emotion)
-    
+
     # 2. Application avec goto_target (optimisé)
     self.robot_api.goto_target(
         head=pose, body_yaw=yaw,
@@ -270,7 +270,7 @@ class BBIAVoiceAdvanced:
     def __init__(self):
         self.tts = TTS("tts_models/fr/css10/vits")
         self.current_emotion = "neutral"
-    
+
     def say(self, text: str, emotion: str = None, pitch: float = 0.0):
         emotion = emotion or self.current_emotion
         self.tts.tts_to_file(
@@ -309,7 +309,7 @@ class BBIAHuggingFace:
     def __init__(self):
         # ... code existant ...
         self.chat_model = None
-    
+
     def load_chat_model(self):
         model_name = "mistralai/Mistral-7B-Instruct-v0.2"
         self.chat_tokenizer = AutoTokenizer.from_pretrained(model_name)
@@ -317,33 +317,33 @@ class BBIAHuggingFace:
             model_name,
             device_map="auto"  # Auto-détecte MPS/CPU
         )
-    
+
     def chat(self, user_message: str) -> str:
         if not self.chat_model:
             self.load_chat_model()
-        
+
         # Conversation avec contexte
         messages = [
             {"role": "system", "content": "Tu es BBIA, un robot Reachy Mini amical et curieux."},
             {"role": "user", "content": user_message}
         ]
-        
+
         inputs = self.chat_tokenizer.apply_chat_template(
             messages, return_tensors="pt"
         ).to(self.device)
-        
+
         outputs = self.chat_model.generate(
             inputs, max_new_tokens=100, temperature=0.7
         )
-        
+
         response = self.chat_tokenizer.decode(
             outputs[0][inputs.shape[1]:], skip_special_tokens=True
         )
-        
+
         # Analyser sentiment pour émotion robot
         sentiment = self.analyze_sentiment(user_message)
         self._apply_sentiment_to_robot(sentiment)
-        
+
         return response
 ```
 
@@ -375,18 +375,18 @@ class BBIAVoiceAdvanced:
             "excited": {"emotion": "excited", "pitch": 0.4},
             "neutral": {"emotion": "neutral", "pitch": 0.0}
         }
-    
+
     def say_with_emotion(self, text: str, bbia_emotion: str):
         """Synthétise voix avec émotion correspondante."""
         voice_config = self.emotion_map.get(bbia_emotion, self.emotion_map["neutral"])
-        
+
         self.tts.tts_to_file(
             text=text,
             file_path="temp_audio.wav",
             emotion=voice_config["emotion"],
             pitch=voice_config["pitch"]
         )
-        
+
         # Jouer + synchroniser avec mouvements robot
         playsound("temp_audio.wav")
 ```

@@ -1,6 +1,6 @@
 # ✅ VALIDATION CODE QUALITÉ - Octobre 2025
 
-**Date :** Octobre 2025  
+**Date :** Octobre 2025
 **Outils :** black, ruff, mypy, bandit
 
 ---
@@ -154,7 +154,7 @@ from __future__ import annotations
 
 ## 🎯 **CONCLUSION**
 
-**Tous les outils de qualité de code passent avec succès.**  
-**0 régression introduite.**  
+**Tous les outils de qualité de code passent avec succès.**
+**0 régression introduite.**
 **Code conforme aux meilleures pratiques Python.** ✅
 

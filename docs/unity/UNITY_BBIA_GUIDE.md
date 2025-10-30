@@ -55,28 +55,28 @@ graph TB
         SCRIPTS[C# Scripts<br/>PythonCommunicator]
         ROBOT[Reachy Model<br/>3D Robot]
     end
-    
+
     subgraph "BBIA Integration"
         PYTHON[Python Controller<br/>BBIA Logic]
         EMOTIONS[Emotion System<br/>8 émotions]
         BEHAVIORS[Behavior System<br/>Actions complexes]
         API[BBIA API<br/>Interface unifiée]
     end
-    
+
     subgraph "Communication"
         SOCKET[WebSocket<br/>Real-time]
         FILES[File System<br/>Data exchange]
     end
-    
+
     UNITY --> SCENE
     SCENE --> SCRIPTS
     SCRIPTS --> ROBOT
-    
+
     PYTHON --> EMOTIONS
     PYTHON --> BEHAVIORS
     EMOTIONS --> API
     BEHAVIORS --> API
-    
+
     API --> SOCKET
     API --> FILES
     SOCKET --> SCRIPTS
@@ -91,18 +91,18 @@ sequenceDiagram
     participant UNITY as Unity Editor
     participant PYTHON as Python BBIA
     participant ROBOT as Reachy 3D
-    
+
     DEV->>UNITY: Ouvrir projet Unity
     UNITY->>ROBOT: Charger modèle 3D
     DEV->>PYTHON: Lancer contrôleur BBIA
     PYTHON->>UNITY: Connexion WebSocket
-    
+
     Note over DEV,ROBOT: Développement
     DEV->>PYTHON: Créer émotion "happy"
     PYTHON->>UNITY: Envoyer commande
     UNITY->>ROBOT: Animer robot
     ROBOT->>DEV: Visualiser résultat
-    
+
     Note over DEV,ROBOT: Test
     DEV->>PYTHON: Tester comportement
     PYTHON->>UNITY: Exécuter séquence
@@ -200,7 +200,7 @@ python3 src/bbia_sim/test_unity_connection.py
 
 ---
 
-**BBIA** - Brain-Based Interactive Agent  
+**BBIA** - Brain-Based Interactive Agent
 *Pour Reachy Mini Wireless* 🤖✨
 
-**Unity + BBIA = Puissance Créative !** 🚀 
+**Unity + BBIA = Puissance Créative !** 🚀
