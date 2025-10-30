@@ -21,14 +21,12 @@ classifiers = [
     "Intended Audience :: Science/Research",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
-requires-python = ">=3.9"
+requires-python = ">=3.11"
 dependencies = [
     # BBIA Core Dependencies
     "pyttsx3>=2.90",
@@ -174,7 +172,7 @@ filterwarnings = [
 
 [tool.black]
 line-length = 88
-target-version = ['py39']
+target-version = ['py311']
 include = '\.pyi?$'
 extend-exclude = '''
 /(
@@ -196,7 +194,7 @@ extend-exclude = '''
 preview = true
 
 [tool.ruff]
-target-version = "py39"
+target-version = "py311"
 line-length = 88
 exclude = [
     ".venv",
@@ -231,7 +229,7 @@ ignore = [
 known-first-party = ["bbia_sim"]
 
 [tool.mypy]
-python_version = "3.9"
+python_version = "3.11"
 warn_return_any = false
 warn_unused_configs = false
 disallow_untyped_defs = false
