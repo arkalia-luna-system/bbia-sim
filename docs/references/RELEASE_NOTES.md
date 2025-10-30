@@ -11,6 +11,32 @@
 >   pip install -e .
 >   ```
 
+## Version 1.3.2 - Alignement complet et release stable
+
+### Résumé
+Alignement intégral des branches (future → develop → main), création du tag v1.3.2 et branche de sauvegarde `backup-v1.3.2-stable`. Extension importante des tests (performance, watchdog, conformité avancée), documentation réorganisée et CI Python 3.11+ homogénéisée.
+
+### Points principaux
+- Branches: fusion contrôlée future → develop, puis develop → main (CI verte), tag v1.3.2
+- Tests: suites élargies (audio/vision/perf/watchdog), conformité avancée
+- CI/Qualité: Python 3.11+, Black/Ruff/MyPy/Bandit propres, seuils documentés
+- Docs: guides et références enrichis, notes de release consolidées, historique à jour
+
+### Corrections et harmonisations
+- Dépendances synchronisées (eclipse-zenoh>=1.4.0), nettoyage imports/format
+- Post-traitements HF renforcés (anti-vides, anti-doublons récents)
+- Durcissement validations JSON et télémétrie
+
+### Documentation
+- README/PROJECT_HISTORY/CHANGELOG mis à jour pour v1.3.2
+- Ajout/compléments: guides techniques, performance, intelligence, conformité
+
+### Qualité et CI
+- Tests CI élargis et stables
+- Outils qualité: Black, Ruff, MyPy, Bandit
+
+---
+
 ## Version 1.3.1 - Conformité, sécurité et documentation
 
 ### Résumé

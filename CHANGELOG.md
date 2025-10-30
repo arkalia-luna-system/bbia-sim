@@ -16,6 +16,23 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - `docs/status.md` mis à jour (note CI audio + mypy=0 sur corrections effectuées).
  - Standardisation environnement: Python 3.11+ requis, CI GitHub Actions mise à jour (`setup-python@v5`).
 
+## [1.3.2] - Octobre 2025
+
+### 🎯 Alignement et release stable
+- Fusion contrôlée `future` → `develop` → `main` (CI verte), création du tag `v1.3.2`
+- Branche de sauvegarde `backup-v1.3.2-stable`
+
+### 🚀 Ajouté
+- Suites de tests étendues (watchdog, performance, conformité avancée)
+- Documentation enrichie et réorganisée (guides techniques, références, release notes)
+
+### 🔧 Modifié
+- CI/Qualité homogénéisées (Python 3.11+, Black/Ruff/MyPy/Bandit)
+- Post-traitements HF renforcés (anti-vides, anti-doublons récents), validations JSON durcies
+
+### 🐛 Corrigé
+- Nettoyage imports et formatage, ajustements mypy/ruff ciblés
+
 ## [1.3.1] - Octobre 2025
 
 ### 🎯 **RELEASE - AUDIT COMPLET BBIA → REACHY INTEGRATION**

@@ -1,5 +1,11 @@
 # ✅ RÉSUMÉ ACTIONS - VERSION 1.3.1
 
+> Mise à jour: v1.3.2 publiée
+>
+> - Alignement complet future → develop → main (CI verte)
+> - Tag créé: v1.3.2, branche backup: `backup-v1.3.2-stable`
+> - Release notes, README, PROJECT_HISTORY et CHANGELOG mis à jour
+
 **Date**: 2025-10-29
 **Version**: 1.3.1
 **Statut**: ✅ **PRÊT POUR RELEASE**

@@ -11,21 +11,21 @@
 >   pip install -e .
 >   ```
 
-**Version:** 1.3.1
+**Version:** 1.3.2
 **Date:** Octobre 2025
 
 ---
 
 ## 📋 Vue d'ensemble
 
-Cette section documente l'architecture complète de BBIA-SIM v1.3.0, un moteur cognitif Python avancé pour robot Reachy Mini.
+Cette section documente l'architecture complète de BBIA-SIM v1.3.2, un moteur cognitif Python avancé pour robot Reachy Mini.
 
 ---
 
 ## 📚 Documentation Architecture
 
 ### **ARCHITECTURE_OVERVIEW.md**
-Vue d'ensemble complète de l'architecture BBIA-SIM v1.3.0:
+Vue d'ensemble complète de l'architecture BBIA-SIM v1.3.2:
 - Objectifs architecturaux
 - Architecture générale avec diagrammes Mermaid
 - Couches du système (BBIA, RobotAPI, Backends)
@@ -89,5 +89,5 @@ Pour toute question sur l'architecture:
 
 ---
 
-*Documentation BBIA-SIM v1.3.0 - Arkalia Luna System*
+*Documentation BBIA-SIM v1.3.2 - Arkalia Luna System*
 

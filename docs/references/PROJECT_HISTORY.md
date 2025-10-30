@@ -1,6 +1,6 @@
 # 📊 Historique du Projet BBIA-SIM
 
-**Version Actuelle:** 1.3.0
+**Version Actuelle:** 1.3.2
 **Date:** Octobre 2025
 
 ---
@@ -26,6 +26,13 @@ Les rapports détaillés des phases précédentes sont archivés dans `docs/arch
 ---
 
 ## 📊 Versions Principales
+
+### **v1.3.2 - Octobre 2025**
+**Alignement branches + release stable**
+- Fusion contrôlée future → develop → main (CI verte)
+- Tag `v1.3.2` et branche `backup-v1.3.2-stable`
+- Tests élargis (watchdog, performance, conformité avancée)
+- Documentation réorganisée et enrichie
 
 ### **v1.3.0 - Octobre 2025**
 **Conformité SDK validée**
