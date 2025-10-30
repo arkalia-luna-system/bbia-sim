@@ -1,5 +1,9 @@
 # 🧪 Guide des tests et de la couverture - BBIA Reachy Mini
 
+> Référence état global
+>
+> Voir `docs/status.md` → "État par axe" (Qualité/Performance/CI) pour l’état actuel et les axes futurs.
+
 ## 📊 Résumé des performances
 
 **Coverage totale : validée en CI** (voir `coverage.xml` et `htmlcov/`)

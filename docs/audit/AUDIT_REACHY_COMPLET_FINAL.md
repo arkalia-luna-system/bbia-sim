@@ -1,5 +1,9 @@
 # 🔍 AUDIT COMPLET BBIA → REACHY INTEGRATION
 
+> Référence état global
+>
+> Voir `docs/status.md` → "État par axe" pour l’état actuel et les améliorations planifiées.
+
 **Date**: 2025-10-29
 **Référentiel Reachy**: pollen-robotics/reachy_mini
 **Commit utilisé**: 84c40c3 (Merge pull request #349)

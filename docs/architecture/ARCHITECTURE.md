@@ -24,6 +24,10 @@ Cette section documente l'architecture complète de BBIA-SIM v1.3.2, un moteur c
 
 ## 📚 Documentation Architecture
 
+> Référence état global
+>
+> Voir `docs/status.md` → "État par axe" pour l’état actuel (Observabilité, Performance, Sécurité, CI/CD, etc.) et les axes d’amélioration.
+
 ### **ARCHITECTURE_OVERVIEW.md**
 Vue d'ensemble complète de l'architecture BBIA-SIM v1.3.2:
 - Objectifs architecturaux

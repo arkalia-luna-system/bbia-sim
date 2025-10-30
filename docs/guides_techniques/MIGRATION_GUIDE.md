@@ -4,6 +4,10 @@
 
 Ce guide vous accompagne dans la migration de votre projet BBIA-SIM depuis la simulation MuJoCo vers le robot Reachy Mini physique. BBIA-SIM utilise une architecture unifiée (RobotAPI) pour faciliter cette transition.
 
+> Référence état global
+>
+> Voir `docs/status.md` → "État par axe" pour connaître l’état actuel (Robot, API/SDK, Résilience) et les axes futurs.
+
 ---
 
 ## Architecture de migration

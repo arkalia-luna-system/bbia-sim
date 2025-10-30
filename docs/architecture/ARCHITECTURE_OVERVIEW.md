@@ -1,5 +1,7 @@
 # BBIA-SIM v1.3.2 - Architecture overview
 
+> Liens utiles: `docs/references/INDEX_THEMATIQUE.md` · `docs/status.md`
+
 ## Vue d'ensemble
 
 **BBIA-SIM v1.3.2** est un moteur cognitif Python pour robot Reachy Mini Wireless, intégrant la simulation MuJoCo, une IA légère et un contrôle unifié via `RobotAPI`. Le projet vise la conformité avec le SDK officiel Reachy Mini et apporte plusieurs améliorations techniques.
@@ -91,6 +93,10 @@ graph TB
 ---
 
 ## Composants principaux
+
+> Référence état global
+>
+> Voir `docs/status.md` → section "État par axe" pour l’état actuel (Observabilité, Performance, Sécurité, CI/CD, etc.) et les axes d’amélioration.
 
 ### 1. RobotAPI unifié
 

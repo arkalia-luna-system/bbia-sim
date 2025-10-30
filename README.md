@@ -270,6 +270,15 @@ La documentation HTML offre :
 - **[Guide Débutant](docs/guides/GUIDE_DEBUTANT.md)** : Guide pour débuter
 - **[Guide Avancé](docs/guides/GUIDE_AVANCE.md)** : Guide avancé
 - **[Vertical Slices](docs/audit/VERTICAL_SLICES_ACCOMPLIS.md)** : Documentation des vertical slices
+ - **[Index thématique (par profils)](docs/references/INDEX_THEMATIQUE.md)**
+ - **[FAQ Troubleshooting](docs/guides_techniques/FAQ_TROUBLESHOOTING.md)**
+ - **[Observabilité (logs/metrics/santé)](docs/observabilite/OBSERVABILITE.md)**
+ - **[Pipeline CI/CD](docs/ci/PIPELINE_CI.md)**
+ - **[Contrats REST/WS](docs/api/CONTRATS_REST_WS.md)**
+ - **[Sécurité robot DO/DON’T](docs/robot/SECURITE_ROBOT.md)**
+ - **[Datasets & Golden Images](docs/ai/DATASETS_GOLDEN_IMAGES.md)**
+ - **[Roadmap Dashboard/UX](docs/dashboard/ROADMAP_DASHBOARD.md)**
+ - **[Guide Contribution](docs/community/CONTRIBUTION_GUIDE.md)**
 
 ### Note
 Les antennes sont bloquées dans le modèle officiel. Utilisez `yaw_body` pour les animations.
@@ -292,6 +301,71 @@ src/bbia_sim/sim/
     ├── launch_complete_robot.py         # Lanceur principal
     └── download_ALL_stl.py              # Script de téléchargement STL
 ```
+
+### 🚀 Guide rapide – Commandes essentielles
+
+#### 1) Activer les bons environnements
+- venv principal (simulation/hardware, dashboard, chat):
+```bash
+source venv/bin/activate
+```
+- venv vision (MediaPipe/YOLO/OpenCV):
+```bash
+source venv-vision-py310/bin/activate
+```
+
+#### 2) Démo 3D immédiate (macOS)
+```bash
+# venv principal
+source venv/bin/activate
+./LANCE_DEMO_3D.sh
+```
+
+#### 3) Dashboard + chat en temps réel
+```bash
+# venv principal
+source venv/bin/activate
+python src/bbia_sim/dashboard_advanced.py --port 8000
+# Ouvrir http://127.0.0.1:8000 dans le navigateur
+```
+
+#### 4) Activer l’intelligence (LLM) une fois (internet requis)
+```bash
+# venv principal
+source venv/bin/activate
+python - <<'PY'
+from bbia_sim.bbia_huggingface import BBIAHuggingFace
+bbia = BBIAHuggingFace()
+ok = bbia.enable_llm_chat()
+print('LLM activé' if ok else 'LLM non chargé (fallback réponses enrichies)')
+PY
+```
+
+#### 5) Test vision rapide (MediaPipe/OpenCV)
+```bash
+# venv vision
+source venv-vision-py310/bin/activate
+python - <<'PY'
+import mediapipe, cv2
+print('VISION OK')
+PY
+```
+
+#### 6) Télémétrie WebSocket (5 messages)
+```bash
+# venv principal
+source venv/bin/activate
+python examples/subscribe_telemetry.py --count 5
+```
+
+#### 7) Démo émotions (simulation)
+```bash
+# venv principal pour logique + viewer (macOS: mjpython conseillé)
+source venv/bin/activate
+mjpython examples/demo_emotion_ok.py --emotion happy --duration 10 --backend mujoco
+```
+
+Pour les détails et recommandations matériel (webcam USB UVC) et les profils d’environnements, voir `docs/guides_techniques/ENV_PROFILS.md`.
 
 ## 🛠️ Scripts Utiles
 

@@ -1,5 +1,9 @@
 # 🚀 AMÉLIORATIONS FUTURES - SDK REACHY MINI
 
+> Référence état global
+>
+> Voir `docs/status.md` → "État par axe" pour prioriser les améliorations (API/SDK, perf, sécurité, CI/CD).
+
 **Date :** Octobre 2025
 **Référence SDK :** https://github.com/pollen-robotics/reachy_mini
 

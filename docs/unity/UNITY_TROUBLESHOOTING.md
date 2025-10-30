@@ -1,5 +1,9 @@
 # 🔧 Dépannage Unity - BBIA Reachy Mini Wireless
 
+> Référence état global
+>
+> Voir `docs/status.md` → "État par axe" pour les contraintes actuelles (perf/sécurité/CI) et pistes futures avant intégration Unity avancée.
+
 ## 🔧 Diagnostic des Problèmes Unity
 
 ```mermaid

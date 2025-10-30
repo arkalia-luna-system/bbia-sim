@@ -1,5 +1,9 @@
 # 🌐 Configuration communautaire BBIA-SIM
 
+> Référence état global
+>
+> Voir `docs/status.md` → "Communauté" pour les templates d’issues/discussions, roadmap publique et "good first issues".
+
 **Version** : 1.2.0 "Écosystème Ouvert"
 **Date** : Octobre 2025
 **Public** : Communauté Technique

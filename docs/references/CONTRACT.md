@@ -1,5 +1,9 @@
 # 🤖 RobotAPI Contract v1.1.x
 
+> Référence état global
+>
+> Voir `docs/status.md` → "État par axe" (API/SDK, pagination/filtre REST, WS versionné) pour l’état et les axes futurs.
+
 ## 📋 **CONTRAT D'INTERFACE UNIFIÉE SIM/ROBOT**
 
 **Version** : 1.1.x (gelée)

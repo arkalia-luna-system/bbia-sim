@@ -1,5 +1,9 @@
 # SYNTHÈSE FINALE - Audit BBIA → Reachy Integration Complet
 
+> Référence état global
+>
+> Voir `docs/status.md` → "État par axe" pour l’état actuel et les axes d’amélioration post‑audit.
+
 **Date**: 2025-10-29
 **Référentiel**: pollen-robotics/reachy_mini@84c40c3
 **Statut**: complet - toutes corrections appliquées

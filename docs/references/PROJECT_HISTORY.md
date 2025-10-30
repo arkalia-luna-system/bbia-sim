@@ -1,5 +1,9 @@
 # 📊 Historique du Projet BBIA-SIM
 
+> Référence état global
+>
+> Voir `docs/status.md` → "État par axe" pour l’état actuel et les axes futurs (observabilité, perf, sécurité, CI/CD, etc.).
+
 **Version Actuelle:** 1.3.2
 **Date:** Octobre 2025
 

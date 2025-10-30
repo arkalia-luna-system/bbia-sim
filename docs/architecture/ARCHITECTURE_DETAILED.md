@@ -1,8 +1,14 @@
 # BBIA-SIM - guide d’architecture détaillé
 
+> Liens utiles: `docs/references/INDEX_THEMATIQUE.md` · `docs/status.md`
+
 ## Vue d'ensemble
 
 BBIA-SIM (Brain-Based Interactive Agent Simulation) est un moteur cognitif Python avancé pour robot Reachy Mini Wireless, intégrant simulation MuJoCo, intelligence artificielle légère, et contrôle unifié via RobotAPI.
+
+> Référence état global
+>
+> Voir `docs/status.md` → section "État par axe" pour l’état actuel (Observabilité, Performance, Sécurité, CI/CD, etc.) et les axes d’amélioration.
 
 ### Objectifs architecturaux
 

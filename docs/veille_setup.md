@@ -1,5 +1,9 @@
 ## Mise en place de la veille Reachy Mini (automatisation)
 
+> Référence état global
+>
+> Voir `docs/status.md` → "État par axe" (versions Python, CI, packaging) pour l’état actuel et les axes futurs.
+
 Ce guide permet d'exécuter régulièrement la veille sans garder Cursor ouvert.
 
 ### 1) Installation des dépendances

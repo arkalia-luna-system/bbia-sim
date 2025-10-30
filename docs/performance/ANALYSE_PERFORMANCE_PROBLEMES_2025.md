@@ -1,5 +1,9 @@
 # Analyse performance - problèmes identifiés
 
+> Référence performance
+>
+> Voir `docs/status.md` → "Performance" pour l’état actuel (tests latence/jitter) et les baselines/axes futurs.
+
 **Date :** Octobre 2025
 **Objectif :** Identifier les goulots d'étranglement et responsables des lenteurs
 

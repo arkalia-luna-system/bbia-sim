@@ -1,0 +1,16 @@
+# Venv dédié “voice” (génération WAV hors BBIA, sans casser les autres deps)
+# Création:  python -m venv venv-voice && source venv-voice/bin/activate
+
+# Coqui TTS (génération)
+TTS==0.22.0
+
+# Audio I/O
+sounddevice==0.5.3
+soundfile==0.13.1
+
+# Versions NumPy/Scipy compatibles avec ce stack sur macOS (évite conflits)
+numpy==1.22.0
+scipy==1.11.4
+
+# Remarque: TTS installera torch/torchaudio adaptés à l’environnement
+

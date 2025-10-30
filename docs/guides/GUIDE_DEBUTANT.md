@@ -1,5 +1,7 @@
 # Guide débutant - BBIA-SIM
 
+> Liens utiles: `docs/references/INDEX_THEMATIQUE.md` · `docs/status.md`
+
 > Compatibilité Python et CI
 >
 > - Python: 3.11+
@@ -137,6 +139,7 @@ R : Oui, le système est extensible. Voir `examples/demo_emotion_ok.py`
 2. Créer : vos propres comportements avec `examples/demo_*`
 3. Comprendre : [Architecture détaillée](../architecture/ARCHITECTURE_DETAILED.md)
 4. Avancer : [Guide Avancé](GUIDE_AVANCE.md)
+5. Index thématique : `docs/references/INDEX_THEMATIQUE.md`
 
 ## Chat intelligent
 

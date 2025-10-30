@@ -135,6 +135,66 @@ class NeuTTSTTS:
         return self._fallback.synthesize_to_wav(text, outfile)
 
 
+class CoquiTTSTTS:
+    """Backend Coqui TTS optionnel.
+
+    Si la lib TTS n'est pas disponible, fallback pyttsx3.
+    """
+
+    def __init__(self) -> None:
+        self._fallback = Pyttsx3TTS()
+        self._ready = False
+        try:  # pragma: no cover
+            from TTS.api import TTS as _COQUI_TTS  # type: ignore
+
+            self._coqui_cls = _COQUI_TTS  # store class
+            self._ready = True
+        except Exception:
+            self._coqui_cls = None  # type: ignore
+            self._ready = False
+
+    def synthesize_to_wav(self, text: str, outfile: str) -> bool:
+        if not self._ready or self._coqui_cls is None:
+            return self._fallback.synthesize_to_wav(text, outfile)
+        try:
+            # Modèle FR par défaut; peut être surchargé via env BBIA_COQUI_MODEL
+            model_name = os.environ.get("BBIA_COQUI_MODEL", "tts_models/fr/css10/vits")
+            tts = self._coqui_cls(model_name)
+            tts.tts_to_file(text=text, file_path=outfile)
+            return True
+        except Exception:
+            return self._fallback.synthesize_to_wav(text, outfile)
+
+
+class OpenVoiceTTSTTS:
+    """Backend OpenVoice optionnel (appel externe via commande).
+
+    Utilise la variable d'environnement OPENVOICE_CMD pour exécuter un
+    générateur TTS qui écrit un fichier WAV. Fallback pyttsx3 si indisponible.
+    Exemple:
+      export OPENVOICE_CMD="python scripts/voice_clone/generate_voice.py --text '{text}' --mode douce --out '{out}'"
+    """
+
+    def __init__(self) -> None:
+        self._fallback = Pyttsx3TTS()
+
+    def synthesize_to_wav(self, text: str, outfile: str) -> bool:
+        cmd_template = os.environ.get("OPENVOICE_CMD", "").strip()
+        if not cmd_template:
+            return self._fallback.synthesize_to_wav(text, outfile)
+        try:
+            import subprocess  # lazy
+
+            # Remplacer {text} et {out} dans le template
+            cmd = cmd_template.replace("{text}", text.replace("'", "'"))
+            cmd = cmd.replace("{out}", outfile)
+            # Exécuter en shell pour garder la simplicité des scripts utilisateur
+            subprocess.check_call(cmd, shell=True)
+            return True
+        except Exception:
+            return self._fallback.synthesize_to_wav(text, outfile)
+
+
 class DummySTT:
     """STT neutre de secours: retourne chaîne vide si non dispo."""
 
@@ -246,6 +306,10 @@ def get_tts_backend() -> TextToSpeech:
         return KokoroTTS()
     if name in {"neutts", "neu"}:
         return NeuTTSTTS()
+    if name in {"coqui", "coqui-tts"}:
+        return CoquiTTSTTS()
+    if name in {"openvoice", "open-voice"}:
+        return OpenVoiceTTSTTS()
     if name in {"pyttsx3", "fallback"}:
         return Pyttsx3TTS()
     # Défaut sûr

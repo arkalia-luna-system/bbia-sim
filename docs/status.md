@@ -1,5 +1,7 @@
 # 📊 Status BBIA-SIM - Analyse Conformité Reachy Mini
 
+> Navigation rapide: `docs/references/INDEX_THEMATIQUE.md` · README → liens principaux
+
 **Dernière mise à jour :** 2025-10-30 - Version 1.3.1 (Prêt pour arrivée robot)  
 **Référence SDK :** `pollen-robotics/reachy_mini` v1.0.0 @ `11ae6ad49eae22381946135fca29bdb4bfb1fdc1` (branch `develop`)
 

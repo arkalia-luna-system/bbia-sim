@@ -1,5 +1,9 @@
 # Optimisations expert - SDK Reachy Mini
 
+> Référence performance
+>
+> Voir `docs/status.md` → "Performance" pour l’état actuel, les tests présents (latence/jitter), et les baselines/axes futurs.
+
 **Date :** Octobre 2025
 **Référence :** SDK officiel GitHub https://github.com/pollen-robotics/reachy_mini
 

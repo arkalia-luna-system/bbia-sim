@@ -1,5 +1,7 @@
 # Guide avancé - BBIA-SIM
 
+> Liens utiles: `docs/references/INDEX_THEMATIQUE.md` · `docs/status.md`
+
 > Compatibilité Python et CI
 >
 > - Python: 3.11+

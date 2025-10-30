@@ -31,17 +31,20 @@
 - [Guide Avancé](guides/GUIDE_AVANCE.md) - Fonctionnalités avancées
 - [Guide Chat BBIA](guides/GUIDE_CHAT_BBIA.md) - Système de chat intelligent
 - [Guide Reachy Mini Wireless](guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md) - Guide complet du robot
+- [FAQ Troubleshooting](guides_techniques/FAQ_TROUBLESHOOTING.md)
 
 ### 🏗️ Architecture et Design
 - [Architecture Vue d'Ensemble](architecture/ARCHITECTURE_OVERVIEW.md)
 - [Architecture Détaillée](architecture/ARCHITECTURE_DETAILED.md)
 - [Architecture Complète](architecture/ARCHITECTURE.md)
+- [Index thématique (par profils)](references/INDEX_THEMATIQUE.md)
 
 ### ✅ Conformité et Qualité
 - [Conformité Reachy-Mini Complète](conformite/CONFORMITE_REACHY_MINI_COMPLETE.md)
 - [Rapports de Conformité](archives/conformite/) - Archives conformité
 - [Validation Qualité](qualite/) - Rapports de validation
 - [Résumés Validation](qualite/RESUME_VALIDATION_QUALITE_2025.md)
+- [Pipeline CI/CD](ci/PIPELINE_CI.md)
 
 ### 🔧 Corrections et Améliorations
 - [Corrections des démos Reachy](corrections/CORRECTIONS_DEMOS_REACHY.md)
@@ -54,6 +57,7 @@
 - [Mouvements Reachy Mini](mouvements/MOUVEMENTS_REACHY_MINI.md)
 - [Guide Unity BBIA](unity/UNITY_BBIA_GUIDE.md)
 - [Dépannage Unity](unity/UNITY_TROUBLESHOOTING.md)
+- [Sécurité robot (DO/DON’T)](robot/SECURITE_ROBOT.md)
 
 ### ⚙️ Installation et Configuration
 - [Installation Audio](installation/AUDIO_SETUP.md)
@@ -64,6 +68,7 @@
 ### 🎯 Simulation
 - [Simulation BBIA complète](simulations/SIMULATION_BBIA_COMPLETE.md)
 - [Guide simulation MuJoCo](simulations/MUJOCO_SIMULATION_GUIDE.md)
+- [Observabilité (logs/metrics/santé)](observabilite/OBSERVABILITE.md)
 
 ### 🧪 Tests et Qualité
 - [Guide de test](guides_techniques/TESTING_GUIDE.md)
@@ -74,11 +79,14 @@
 - [Améliorations intelligence BBIA](intelligence/AMELIORATIONS_INTELLIGENCE_BBIA_2025.md)
 - [Intelligence conversationnelle LLM](intelligence/INTELLIGENCE_CONVERSATIONNELLE_LLM.md)
 - [Analyse voix et intelligence](intelligence/ANALYSE_VOIX_ET_INTELLIGENCE_BBIA.md)
+- [Datasets & Golden Images](ai/DATASETS_GOLDEN_IMAGES.md)
 
 ### 📊 Analyses et Rapports
 - [Analyses de modules](analyses/ANALYSE_MODULES_NON_PRIORITAIRES_2025.md)
 - [Résumés d'analyses](analyses/RESUME_ANALYSE_EXPERT_FINALE_2025.md)
 - [Analyse code Unity AR](analyses/ANALYSE_CODE_UNITY_AR.md)
+- [Contrats REST/WS](api/CONTRATS_REST_WS.md)
+- [Roadmap Dashboard/UX](dashboard/ROADMAP_DASHBOARD.md)
 
 ### ⚡ Performance
 - [Optimisations expert Reachy Mini](performance/OPTIMISATIONS_EXPERT_REACHY_MINI.md)

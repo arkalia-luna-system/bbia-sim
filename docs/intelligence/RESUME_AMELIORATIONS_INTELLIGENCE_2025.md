@@ -1,5 +1,9 @@
 # Résumé améliorations intelligence BBIA - Octobre 2025
 
+> Référence IA/Perf
+>
+> Voir `docs/status.md` → "Vision / Audio / IA" pour l’état actuel (tests, datasets/golden images) et axes futurs.
+
 **Date :** Octobre 2025
 **Statut :** toutes les améliorations terminées et validées
 
