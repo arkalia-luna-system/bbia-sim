@@ -259,15 +259,17 @@ html, body {
   height: 100% !important;
   margin: 0 !important;
   padding: 0 !important;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'SF Pro Display', 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', Arial, sans-serif;
   background-color: var(--bg-dark) !important;
   background: 
-    radial-gradient(circle at 20% 30%, rgba(100, 181, 246, 0.03) 0%, transparent 50%),
-    radial-gradient(circle at 80% 70%, rgba(156, 39, 176, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 15% 25%, rgba(0, 217, 255, 0.05) 0%, transparent 45%),
+    radial-gradient(circle at 85% 75%, rgba(139, 92, 246, 0.04) 0%, transparent 45%),
+    radial-gradient(circle at 50% 50%, rgba(0, 217, 255, 0.02) 0%, transparent 60%),
     var(--bg-dark) !important;
   color: var(--text-primary) !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "liga", "kern";
 }
 
 body {
@@ -282,11 +284,11 @@ body {
   background: var(--bg-dark);
 }
 
-/* Sidebar élégante à gauche */
+/* Sidebar premium avec glassmorphism */
 .sidebar {
   width: 300px;
-  background: var(--bg-sidebar);
-  border-right: 1px solid var(--border-light);
+  background: linear-gradient(180deg, var(--bg-sidebar) 0%, rgba(22, 24, 34, 0.98) 100%);
+  border-right: 1px solid var(--border);
   position: fixed;
   left: 0;
   top: 0;
@@ -294,9 +296,25 @@ body {
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  backdrop-filter: blur(20px);
-  box-shadow: 4px 0 30px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(30px) saturate(180%);
+  -webkit-backdrop-filter: blur(30px) saturate(180%);
+  box-shadow: 
+    4px 0 40px var(--shadow-xl),
+    inset -1px 0 0 var(--border-glow);
   z-index: 100;
+  position: relative;
+}
+
+.sidebar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 1px;
+  height: 100%;
+  background: linear-gradient(180deg, transparent, var(--accent), transparent);
+  opacity: 0.15;
+  pointer-events: none;
 }
 
 .sidebar::-webkit-scrollbar {
@@ -493,40 +511,66 @@ body {
 
 .markdown-body h1,
 .markdown-body h1 * {
-  font-size: 3em;
+  font-size: 3.2em;
   font-weight: 800;
   border-bottom: none;
   padding-bottom: 0;
   margin-top: 0;
-  margin-bottom: 16px;
+  margin-bottom: 24px;
   color: var(--text-primary) !important;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.04em;
   position: relative;
-  padding-left: 20px;
+  padding-left: 28px;
+  background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .markdown-body h1::before {
   content: '';
   position: absolute;
   left: 0;
-  top: 0.15em;
-  width: 4px;
-  height: 0.8em;
-  background: linear-gradient(180deg, var(--accent), var(--accent-hover));
-  border-radius: 2px;
-  box-shadow: 0 0 12px var(--accent-glow);
+  top: 0.1em;
+  width: 5px;
+  height: 1em;
+  background: var(--gradient-accent);
+  border-radius: 3px;
+  box-shadow: 
+    0 0 20px var(--accent-glow-strong),
+    0 0 40px var(--accent-glow);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scaleY(1); }
+  50% { opacity: 0.7; transform: scaleY(1.1); }
 }
 
 .markdown-body h2,
 .markdown-body h2 * {
-  font-size: 2em;
-  font-weight: 600;
-  margin-top: 56px;
-  margin-bottom: 20px;
-  border-bottom: 1px solid var(--border-light);
-  padding-bottom: 12px;
+  font-size: 2.2em;
+  font-weight: 700;
+  margin-top: 64px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+  border-image: linear-gradient(90deg, var(--accent), transparent) 1;
+  padding-bottom: 16px;
   color: var(--text-primary) !important;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
+  position: relative;
+}
+
+.markdown-body h2::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 60px;
+  height: 2px;
+  background: var(--gradient-accent);
+  border-radius: 1px;
+  box-shadow: 0 0 10px var(--accent-glow);
 }
 
 .markdown-body h3,
@@ -549,28 +593,34 @@ body {
 }
 
 .markdown-body code {
-  background: rgba(100, 181, 246, 0.12);
-  padding: 4px 10px;
+  background: linear-gradient(135deg, rgba(0, 217, 255, 0.15) 0%, rgba(139, 92, 246, 0.1) 100%);
+  padding: 4px 12px;
   border-radius: 6px;
-  font-size: 0.88em;
-  color: var(--accent-hover);
+  font-size: 0.9em;
+  color: var(--accent);
   font-family: 'SF Mono', 'Monaco', 'Menlo', 'Consolas', 'Courier New', monospace;
-  border: 1px solid rgba(100, 181, 246, 0.2);
+  border: 1px solid rgba(0, 217, 255, 0.25);
   font-weight: 500;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(0, 217, 255, 0.1);
+  position: relative;
+  text-shadow: 0 0 8px rgba(0, 217, 255, 0.3);
 }
 
 .markdown-body pre {
-  background: var(--bg-card);
-  padding: 24px;
-  border-radius: 14px;
+  background: linear-gradient(135deg, var(--bg-card) 0%, rgba(26, 27, 38, 0.95) 100%);
+  padding: 28px;
+  border-radius: 16px;
   overflow-x: auto;
   border: 1px solid var(--border);
   box-shadow: 
-    inset 0 1px 3px rgba(0, 0, 0, 0.4),
-    0 4px 20px rgba(0, 0, 0, 0.3);
+    inset 0 2px 8px rgba(0, 0, 0, 0.5),
+    0 8px 32px var(--shadow-lg),
+    inset 0 0 0 1px rgba(0, 217, 255, 0.1);
   position: relative;
-  margin: 24px 0;
+  margin: 32px 0;
+  backdrop-filter: blur(10px);
 }
 
 .markdown-body pre::before {
@@ -579,9 +629,23 @@ body {
   top: 0;
   left: 0;
   right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--accent), transparent);
-  opacity: 0.3;
+  height: 2px;
+  background: var(--gradient-accent);
+  opacity: 0.4;
+  border-radius: 16px 16px 0 0;
+}
+
+.markdown-body pre::after {
+  content: '';
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 12px var(--accent-glow);
+  opacity: 0.6;
 }
 
 .markdown-body pre code {
@@ -604,41 +668,70 @@ body {
 .markdown-body table {
   border-collapse: collapse;
   width: 100%;
-  margin: 24px 0;
-  border-radius: 8px;
+  margin: 32px 0;
+  border-radius: 12px;
   overflow: hidden;
-  border: 1px solid var(--border-light);
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  box-shadow: 
+    0 4px 16px var(--shadow),
+    inset 0 0 0 1px rgba(0, 217, 255, 0.05);
 }
 
 .markdown-body table th,
 .markdown-body table td {
   border: 1px solid var(--border-light);
-  padding: 12px 16px;
+  padding: 14px 18px;
   text-align: left;
   color: var(--text-primary) !important;
 }
 
 .markdown-body table th {
-  background: var(--bg-card);
-  font-weight: 600;
+  background: linear-gradient(135deg, rgba(0, 217, 255, 0.1) 0%, rgba(139, 92, 246, 0.05) 100%);
+  font-weight: 700;
   color: var(--text-primary) !important;
   text-transform: uppercase;
-  font-size: 0.85em;
-  letter-spacing: 0.05em;
+  font-size: 0.8em;
+  letter-spacing: 0.08em;
+  border-bottom: 2px solid var(--accent);
+  text-shadow: 0 0 10px rgba(0, 217, 255, 0.2);
+}
+
+.markdown-body table tr {
+  transition: all 0.2s ease;
 }
 
 .markdown-body table tr:hover {
-  background: rgba(255, 255, 255, 0.02);
+  background: linear-gradient(90deg, rgba(0, 217, 255, 0.06) 0%, transparent 100%);
+  transform: translateX(2px);
+  box-shadow: inset 4px 0 0 var(--accent);
 }
 
 .markdown-body .mermaid {
-  margin: 32px 0;
+  margin: 40px 0;
   display: flex;
   justify-content: center;
-  padding: 24px;
-  background: rgba(255, 255, 255, 0.02);
-  border-radius: 12px;
-  border: 1px solid var(--border-light);
+  padding: 32px;
+  background: linear-gradient(135deg, rgba(0, 217, 255, 0.05) 0%, rgba(139, 92, 246, 0.03) 100%);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  box-shadow: 
+    0 8px 32px var(--shadow),
+    inset 0 0 0 1px rgba(0, 217, 255, 0.1),
+    inset 0 2px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.markdown-body .mermaid::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--gradient-accent);
+  opacity: 0.3;
 }
 
 .markdown-body .anchor {

@@ -1,20 +1,20 @@
-# 🎮 Simulation BBIA Complète - Tous les Modes
+# Simulation BBIA complète - tous les modes
 
-## 🚀 État Actuel - Phase 1 Terminée
+## État actuel - phase 1 terminée
 
-### ✅ **Dépôts Installés avec Succès**
-- 📚 `reachy-docs` : Documentation officielle complète
-- 🎮 `reachy-unity-package` : Simulation Unity
-- 👁️ `pollen-vision` : Vision par ordinateur (testé ✅)
-- 🗣️ `reachy2-sdk-audio-server-rs` : Serveur audio
-- 🎪 `reachy2-behaviors-dev` : Comportements
-- 📊 `reachy-dashboard` : Interface web
-- 🎯 `reachy-face-tracking` : Suivi de visage
-- 🎓 `reachy2-tutorials` : Tutoriels et exemples
+### Dépôts installés avec succès
+- `reachy-docs` : documentation officielle complète
+- `reachy-unity-package` : simulation Unity
+- `pollen-vision` : vision par ordinateur (testé)
+- `reachy2-sdk-audio-server-rs` : serveur audio
+- `reachy2-behaviors-dev` : comportements
+- `reachy-dashboard` : interface web
+- `reachy-face-tracking` : suivi de visage
+- `reachy2-tutorials` : tutoriels et exemples
 
 ---
 
-## 🏗️ Architecture Simulation BBIA
+## Architecture simulation BBIA
 
 ```mermaid
 graph TB
@@ -54,7 +54,7 @@ graph TB
     API --> SIMULATOR
 ```
 
-## 🎯 Workflow de Simulation
+## Workflow de simulation
 
 ```mermaid
 sequenceDiagram
@@ -83,7 +83,7 @@ sequenceDiagram
     SIM->>ROBOT: Réponse vocale
 ```
 
-## 📊 Comparaison des Modes de Simulation
+## Comparaison des modes de simulation
 
 ```mermaid
 graph LR
@@ -108,7 +108,7 @@ graph LR
     ADV_FEATURES -.->|Choix| MUJOCO_FEATURES
 ```
 
-## 🎮 Modes de Simulation Disponibles
+## Modes de simulation disponibles
 ```
 **Ce que vous verrez :**
 - 🎮 Modèle 3D complet de Reachy
@@ -117,7 +117,7 @@ graph LR
 - 🎪 Environnement 3D interactif
 - 🎯 Contrôle via interface Unity
 
-### 3️⃣ **Interface Web Dashboard**
+### 3. Interface web dashboard
 ```bash
 cd reachy_repos/reachy-dashboard
 # Suivre les instructions du README
@@ -128,12 +128,12 @@ cd reachy_repos/reachy-dashboard
 - 🎛️ Contrôles avancés
 - 📱 Interface responsive
 
-### 4️⃣ **Vision par Ordinateur**
+### 4. Vision par ordinateur
 ```bash
 python3 -c "
 import pollen_vision
-print('✅ pollen-vision disponible')
-print('📷 Fonctionnalités :')
+print('pollen-vision disponible')
+print('Fonctionnalités :')
 print('  • Reconnaissance d\'objets')
 print('  • Détection de visages')
 print('  • Analyse d\'expressions')
@@ -146,7 +146,7 @@ print('  • Suivi de mouvements')
 - 🎯 Suivi de visages
 - 📊 Analyse de mouvements
 
-### 5️⃣ **Suivi de Visage**
+### 5. Suivi de visage
 ```bash
 cd reachy_repos/reachy-face-tracking
 # Suivre les instructions du README
@@ -157,7 +157,7 @@ cd reachy_repos/reachy-face-tracking
 - 🎭 Détection d'expressions
 - 🤖 Mouvements de tête automatiques
 
-### 6️⃣ **Comportements Avancés**
+### 6. Comportements avancés
 ```bash
 cd reachy_repos/reachy2-behaviors-dev
 # Explorer les exemples de comportements
@@ -170,9 +170,9 @@ cd reachy_repos/reachy2-behaviors-dev
 
 ---
 
-## 🎯 Guide de Démarrage Rapide
+## Guide de démarrage rapide
 
-### 🚀 **Option 1 : Simulation Complète (Recommandée)**
+### Option 1 : Simulation complète (recommandée)
 ```bash
 # 1. Lancer BBIA de base
 python3 test_bbia_reachy.py
@@ -186,7 +186,7 @@ cd reachy_repos/reachy-dashboard
 # Suivre les instructions
 ```
 
-### 🚀 **Option 2 : Menu Interactif**
+### Option 2 : Menu interactif
 ```bash
 ./quick_start.sh
 ```
@@ -196,7 +196,7 @@ cd reachy_repos/reachy-dashboard
 - Option 7 : Tester Unity
 - Option 10 : Installer dépôts (déjà fait)
 
-### 🚀 **Option 3 : Simulation Avancée**
+### Option 3 : Simulation avancée
 ```bash
 # 1. Tester pollen-vision
 python3 -c "import pollen_vision; print('Vision OK')"
@@ -212,9 +212,9 @@ ls -la
 
 ---
 
-## 🎮 Détails des Simulations
+## Détails des simulations
 
-### 🤖 **Simulation BBIA de Base**
+### Simulation BBIA de base
 ```
 🤖============================================================🤖
 🌟 BBIA - Brain-Based Interactive Agent
@@ -283,7 +283,7 @@ ls -la
 🎉 Simulation terminée !
 ```
 
-### 🎮 **Simulation Unity 3D**
+### Simulation Unity 3D
 - **Modèle 3D** : Reachy Mini Wireless complet
 - **Environnement** : Salle d'interaction
 - **Contrôles** : Souris + clavier
@@ -295,7 +295,7 @@ ls -la
   - 🗣️ Reconnaissance vocale
   - 📷 Vision par ordinateur
 
-### 📊 **Dashboard Web**
+### Dashboard web
 - **Interface** : Web responsive
 - **Fonctionnalités** :
   - 📈 Visualisation temps réel
@@ -306,15 +306,15 @@ ls -la
 
 ---
 
-## 🎯 Prochaines Étapes - Phase 2
+## Prochaines étapes - phase 2
 
-### 📅 **Semaine Prochaine : Intégration**
+### Semaine prochaine : intégration
 1. **Intégrer** `pollen-vision` dans BBIA
 2. **Intégrer** les comportements avancés
 3. **Configurer** le serveur audio
 4. **Tester** en simulation Unity
 
-### 📅 **Dans 2 Semaines : Comportements**
+### Dans 2 semaines : comportements
 1. **Étudier** `reachy2-behaviors-dev`
 2. **Créer** des comportements personnalisés
 3. **Intégrer** le suivi de visage
@@ -322,9 +322,9 @@ ls -la
 
 ---
 
-## 🚀 Commandes Rapides
+## Commandes rapides
 
-### 🎮 **Lancer toutes les simulations**
+### Lancer toutes les simulations
 ```bash
 # Terminal 1 : BBIA de base
 python3 test_bbia_reachy.py
@@ -338,7 +338,7 @@ cd reachy_repos/reachy-dashboard
 # Suivre README
 ```
 
-### 🔍 **Vérifier les installations**
+### Vérifier les installations
 ```bash
 # Vérifier les dépôts
 ls -la reachy_repos/
@@ -351,7 +351,7 @@ pip list | grep -i pollen
 python3 -c "import pollen_vision; print('✅ Vision OK')"
 ```
 
-### 📚 **Explorer la documentation**
+### Explorer la documentation
 ```bash
 # Documentation officielle
 cd reachy_repos/reachy-docs
@@ -364,15 +364,15 @@ ls -la
 
 ---
 
-## 🌟 Résumé
+## Résumé
 
-### ✅ **Phase 1 Terminée**
+### Phase 1 terminée
 - Tous les dépôts GitHub installés
 - `pollen-vision` testé et fonctionnel
 - Documentation officielle disponible
 - Tutoriels et exemples accessibles
 
-### 🎮 **Simulations Disponibles**
+### Simulations disponibles
 - 🤖 BBIA de base (émotions, mouvements, voix)
 - 🎮 Unity 3D (modèle complet interactif)
 - 📊 Dashboard web (interface avancée)

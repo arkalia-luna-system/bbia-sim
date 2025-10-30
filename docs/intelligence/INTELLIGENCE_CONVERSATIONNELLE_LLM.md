@@ -1,20 +1,20 @@
-# 🧠 Intelligence Conversationnelle LLM - Guide Complet
+# Intelligence conversationnelle LLM - guide complet
 
 **Date :** Octobre 2025  
-**Objectif :** Ajouter LLM pré-entraîné (Mistral 7B) pour conversations intelligentes
+**Objectif :** ajouter LLM pré-entraîné (Mistral 7B) pour conversations intelligentes
 
 ---
 
-## 🎯 Objectif
+## Objectif
 
-Remplacer les réponses basées sur règles par un **vrai LLM conversationnel** qui comprend le contexte et génère des réponses naturelles.
+Remplacer les réponses basées sur règles par un LLM conversationnel qui comprend le contexte et génère des réponses naturelles.
 
 **Avant :** Règles + sentiment analysis (limité)  
 **Après :** Mistral 7B Instruct (conversations naturelles avec contexte)
 
 ---
 
-## 📦 Installation
+## Installation
 
 ### Prérequis
 
@@ -31,9 +31,9 @@ pip install transformers accelerate torch
 
 ---
 
-## 🚀 Utilisation
+## Utilisation
 
-### Activation du LLM (Optionnel)
+### Activation du LLM (optionnel)
 
 Le LLM est **désactivé par défaut** (pour éviter consommation mémoire inutile). Activer uniquement si nécessaire :
 
@@ -46,12 +46,12 @@ bbia = BBIAHuggingFace()
 # Activer LLM conversationnel (peut prendre 1-2 minutes)
 success = bbia.enable_llm_chat()
 if success:
-    print("✅ LLM activé - Conversations intelligentes disponibles")
+    print("LLM activé - conversations intelligentes disponibles")
 else:
-    print("⚠️  LLM non chargé - Utilisation réponses enrichies (règles)")
+    print("LLM non chargé - utilisation réponses enrichies (règles)")
 ```
 
-### Utilisation Automatique
+### Utilisation automatique
 
 Le LLM s'active automatiquement dans `ConversationBehavior` si disponible :
 
@@ -91,7 +91,7 @@ bbia.disable_llm_chat()
 
 ---
 
-## 🎭 Personnalités BBIA
+## Personnalités BBIA
 
 Le LLM adapte ses réponses selon la personnalité BBIA :
 
@@ -119,9 +119,9 @@ response = bbia.chat("Salut !")
 
 ---
 
-## 📊 Comparaison Avant/Après
+## Comparaison avant/après
 
-### Avant (Règles + Sentiment)
+### Avant (règles + sentiment)
 
 ```python
 # Réponses basées sur règles
@@ -139,34 +139,34 @@ BBIA: "Bonjour ! Content de te revoir. Comment s'est passée ta journée ?"
 # → Réponses naturelles, variées, contextuelles
 ```
 
-**Avantages LLM :**
-- ✅ Réponses naturelles et variées
-- ✅ Compréhension du contexte
-- ✅ Référence à l'historique conversationnel
-- ✅ Génération créative selon personnalité
-- ✅ Adaptabilité à n'importe quelle question
+Avantages LLM :
+- réponses naturelles et variées
+- compréhension du contexte
+- référence à l'historique conversationnel
+- génération créative selon personnalité
+- adaptabilité à n'importe quelle question
 
 ---
 
-## ⚙️ Configuration
+## Configuration
 
-### Modèles Disponibles
+### Modèles disponibles
 
-1. **Mistral 7B Instruct** ⭐ (Recommandé)
-   - Qualité : Excellente
-   - Français : Très bon
+1. **Mistral 7B Instruct** (recommandé)
+   - Qualité : excellente
+   - Français : très bon
    - Taille : ~14GB RAM
-   - Support MPS : ✅ (Apple Silicon)
+   - Support MPS : oui (Apple Silicon)
    - Vitesse : ~1-3 secondes/réponse
 
-2. **Llama 3 8B Instruct** (Alternative)
-   - Qualité : Excellente
-   - Français : Bon
+2. **Llama 3 8B Instruct** (alternative)
+   - Qualité : excellente
+   - Français : bon
    - Taille : ~16GB RAM
-   - Support MPS : ✅
+   - Support MPS : oui
    - Vitesse : ~1-3 secondes/réponse
 
-### Configuration Personnalisée
+### Configuration personnalisée
 
 ```python
 # Charger modèle personnalisé
@@ -178,9 +178,9 @@ bbia.enable_llm_chat("./models/mistral-7b-instruct")
 
 ---
 
-## 🔧 Paramètres Génération
+## Paramètres génération
 
-### Personnalisation Réponses
+### Personnalisation réponses
 
 Le LLM utilise ces paramètres par défaut :
 - `max_new_tokens=150` : Limite longueur réponse
@@ -202,9 +202,9 @@ outputs = self.chat_model.generate(
 
 ---
 
-## 📈 Performance
+## Performance
 
-### Ressources Nécessaires
+### Ressources nécessaires
 
 **Mistral 7B Instruct :**
 - RAM : ~14GB
@@ -217,7 +217,7 @@ outputs = self.chat_model.generate(
 - CUDA : Accélération GPU si disponible
 - Quantization : Réduire RAM à ~8GB (qualité légèrement réduite)
 
-### Gestion Mémoire
+### Gestion mémoire
 
 ```python
 # Si mémoire limitée, charger seulement quand nécessaire
@@ -251,7 +251,7 @@ else:
 
 ---
 
-## ⚠️ Limitations
+## Limitations
 
 1. **Mémoire :**
    - Requiert ~14GB RAM (Mistral 7B)
@@ -270,7 +270,7 @@ else:
 
 ---
 
-## 🔄 Migration Automatique
+## Migration automatique
 
 Le code existant **fonctionne sans modification** :
 
@@ -290,7 +290,7 @@ response = bbia.chat("Bonjour")
 
 ---
 
-## 📚 Références
+## Références
 
 - **Mistral 7B :** https://huggingface.co/mistralai/Mistral-7B-Instruct-v0.2
 - **Llama 3 :** https://huggingface.co/meta-llama/Llama-3-8B-Instruct
@@ -298,15 +298,15 @@ response = bbia.chat("Bonjour")
 
 ---
 
-## 🎯 Prochaines Étapes
+## Prochaines étapes
 
-1. ✅ LLM intégré dans `BBIAHuggingFace.chat()`
-2. ✅ Activation optionnelle via `enable_llm_chat()`
+1. OK LLM intégré dans `BBIAHuggingFace.chat()`
+2. OK Activation optionnelle via `enable_llm_chat()`
 3. ⏳ Tests unitaires
 4. ⏳ Optimisation mémoire (quantization optionnelle)
 5. ⏳ Support streaming (réponses au fil de l'eau)
 
 ---
 
-**Status :** ✅ Phase 2 complétée - LLM conversationnel disponible !
+Status : phase 2 complétée - LLM conversationnel disponible
 

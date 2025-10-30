@@ -1,6 +1,6 @@
-# 🔒 Système de Gestion Sécurisée des Processus BBIA
+# Système de gestion sécurisée des processus BBIA
 
-## 🎯 **Problème Résolu**
+## Problème résolu
 
 Votre Mac ramait à cause de **multiples processus BBIA** qui tournaient en arrière-plan :
 - `launch_complete_robot.py` consommait **73.6% CPU**
@@ -8,7 +8,7 @@ Votre Mac ramait à cause de **multiples processus BBIA** qui tournaient en arri
 - **Processus websocket_integration** multiples
 - **Aucun système de détection de doublons**
 
-## 🔧 **Architecture du Système de Gestion**
+## Architecture du système de gestion
 
 ```mermaid
 graph TB
@@ -29,7 +29,7 @@ graph TB
     NO_CLEANUP --> CLEANUP
 ```
 
-## 🛡️ **Système de Sécurité**
+## Système de sécurité
 
 ```mermaid
 graph LR
@@ -52,7 +52,7 @@ graph LR
     STOP --> KILL
 ```
 
-## 🔄 **Workflow de Gestion**
+## Workflow de gestion
 
 ```mermaid
 sequenceDiagram
@@ -96,29 +96,29 @@ sequenceDiagram
 ./scripts/bbia_safe.sh kill-all
 ```
 
-### 🔒 **Fonctionnalités de Sécurité**
+### Fonctionnalités de sécurité
 
-#### **1. Détection de Doublons**
-- ✅ Vérifie si un processus BBIA est déjà en cours
-- ✅ Empêche le démarrage de multiples instances
-- ✅ Fichiers de verrouillage : `~/.bbia_sim.lock` et `~/.bbia_sim.pid`
+#### 1. Détection de doublons
+- vérifie si un processus BBIA est déjà en cours
+- empêche le démarrage de multiples instances
+- fichiers de verrouillage : `~/.bbia_sim.lock` et `~/.bbia_sim.pid`
 
-#### **2. Arrêt Automatique**
-- ✅ Arrêt automatique quand le terminal se ferme
-- ✅ Gestion des signaux SIGTERM, SIGINT, SIGHUP
-- ✅ Nettoyage automatique des fichiers de verrouillage
+#### 2. Arrêt automatique
+- arrêt automatique quand le terminal se ferme
+- gestion des signaux SIGTERM, SIGINT, SIGHUP
+- nettoyage automatique des fichiers de verrouillage
 
-#### **3. Confirmation de Sécurité**
-- ✅ Demande confirmation avant d'arrêter les processus
-- ✅ Mode `--force` pour les scripts automatisés
-- ✅ Affichage détaillé des processus avant arrêt
+#### 3. Confirmation de sécurité
+- demande confirmation avant d'arrêter les processus
+- mode `--force` pour les scripts automatisés
+- affichage détaillé des processus avant arrêt
 
-#### **4. Monitoring Intelligent**
-- ✅ Surveillance CPU et mémoire en temps réel
-- ✅ Détection automatique des processus BBIA
-- ✅ Statut détaillé avec PID et ressources
+#### 4. Monitoring intelligent
+- surveillance CPU et mémoire en temps réel
+- détection automatique des processus BBIA
+- statut détaillé avec PID et ressources
 
-### 📊 **Exemple de Sortie**
+### Exemple de sortie
 
 ```bash
 $ ./scripts/bbia_safe.sh status
@@ -130,9 +130,9 @@ $ ./scripts/bbia_safe.sh status
       python3 scripts/launch_complete_robot.py --headless
 ```
 
-### 🛡️ **Protection Contre les Problèmes**
+### Protection contre les problèmes
 
-#### **Avant (Problématique)**
+#### Avant (problématique)
 ```bash
 # Risqué - peut créer des doublons
 python3 scripts/launch_complete_robot.py --headless
@@ -142,7 +142,7 @@ python3 scripts/launch_complete_robot.py --headless
 # Pas d'arrêt automatique
 ```
 
-#### **Après (Sécurisé)**
+#### Après (sécurisé)
 ```bash
 # Sécurisé - détection de doublons
 ./scripts/bbia_safe.sh start headless
@@ -153,7 +153,7 @@ python3 scripts/launch_complete_robot.py --headless
 # ✅ Monitoring des ressources
 ```
 
-### 🔧 **Installation des Dépendances**
+### Installation des dépendances
 
 Le script installe automatiquement `psutil` si nécessaire :
 
@@ -162,13 +162,13 @@ Le script installe automatiquement `psutil` si nécessaire :
 pip install psutil
 ```
 
-### 📝 **Fichiers de Configuration**
+### Fichiers de configuration
 
 - **`~/.bbia_sim.lock`** - Fichier de verrouillage principal
 - **`~/.bbia_sim.pid`** - PID du processus verrouillé
 - **Nettoyage automatique** à l'arrêt
 
-### 🚨 **En Cas de Problème**
+### En cas de problème
 
 Si des processus traînent encore :
 
@@ -183,20 +183,20 @@ Si des processus traînent encore :
 ./scripts/bbia_safe.sh kill-all
 ```
 
-### 💡 **Recommandations**
+### Recommandations
 
 1. **Utilisez toujours** `./scripts/bbia_safe.sh` au lieu des scripts directs
 2. **Vérifiez le statut** avant de démarrer : `./scripts/bbia_safe.sh status`
 3. **Arrêtez proprement** : `./scripts/bbia_safe.sh stop`
 4. **Évitez** `kill-all` sauf en cas d'urgence
 
-## 🎯 **Résultat**
+## Résultat
 
-✅ **Plus de processus qui traînent**  
-✅ **Détection automatique des doublons**  
-✅ **Arrêt automatique à la fermeture du terminal**  
-✅ **Confirmation avant arrêt**  
-✅ **Monitoring des ressources**  
-✅ **Mac plus réactif**  
+- Plus de processus qui traînent
+- Détection automatique des doublons
+- Arrêt automatique à la fermeture du terminal
+- Confirmation avant arrêt
+- Monitoring des ressources
+- Mac plus réactif
 
-Votre Mac ne devrait plus ramer à cause des processus BBIA ! 🚀
+Votre Mac ne devrait plus ramer à cause des processus BBIA.
