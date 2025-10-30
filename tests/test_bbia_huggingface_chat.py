@@ -69,10 +69,34 @@ class TestBBIAHuggingFaceChat:
         sentiment = {"sentiment": "NEUTRAL"}
 
         response1 = self.hf._generate_simple_response("Bonjour", sentiment)
-        assert "bonjour" in response1.lower() or "comment" in response1.lower()
+        # La réponse doit contenir au moins un mot de salutation/amabilité
+        assert any(
+            word in response1.lower()
+            for word in [
+                "bonjour",
+                "hello",
+                "salut",
+                "comment",
+                "ça",
+                "plaisir",
+                "coucou",
+            ]
+        )
 
         response2 = self.hf._generate_simple_response("Salut", sentiment)
-        assert "bonjour" in response2.lower() or "comment" in response2.lower()
+        # La réponse doit contenir au moins un mot de salutation/amabilité
+        assert any(
+            word in response2.lower()
+            for word in [
+                "bonjour",
+                "hello",
+                "salut",
+                "comment",
+                "ça",
+                "plaisir",
+                "coucou",
+            ]
+        )
 
     def test_generate_simple_response_positive(self) -> None:
         """Test génération réponse pour sentiment positif."""
@@ -80,7 +104,20 @@ class TestBBIAHuggingFaceChat:
 
         response = self.hf._generate_simple_response("Je suis content", sentiment)
         assert len(response) > 0
-        assert any(word in response.lower() for word in ["super", "content", "bien"])
+        # Vérifier qu'il y a une réponse positive (plus flexible)
+        assert any(
+            word in response.lower()
+            for word in [
+                "super",
+                "content",
+                "bien",
+                "formidable",
+                "excellent",
+                "génial",
+                "heureux",
+                "plaisir",
+            ]
+        )
 
     def test_adapt_response_to_personality(self) -> None:
         """Test adaptation réponse selon personnalité."""

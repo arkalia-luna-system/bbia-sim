@@ -66,7 +66,7 @@ async def main():
                         ping_msg = {"type": "ping"}
                         await websocket.send(json.dumps(ping_msg))
 
-                except asyncio.TimeoutError:
+                except TimeoutError:
                     print("⏰ Timeout - pas de message reçu")
                     break
                 except json.JSONDecodeError:

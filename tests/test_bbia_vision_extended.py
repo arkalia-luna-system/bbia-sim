@@ -277,3 +277,57 @@ class TestBBIAVisionExtended:
         new_count = len(self.vision.faces_detected)
 
         assert new_count == initial_count  # Même nombre de visages
+
+    def test_vision_with_robot_api_camera_integration(self):
+        """Test 11: Vérifier intégration robot.media.camera si robot_api fourni."""
+        print("\n🧪 TEST 11: Intégration robot.media.camera SDK")
+        print("=" * 60)
+
+        # Créer un mock robot_api avec media.camera
+        import numpy as np
+
+        class MockCamera:
+            def get_image(self):
+                # Simuler retour d'image
+                return np.zeros((480, 640, 3), dtype=np.uint8)
+
+            def capture(self):
+                return self.get_image()
+
+        class MockMedia:
+            def __init__(self):
+                self.camera = MockCamera()
+
+        class MockRobotAPI:
+            def __init__(self):
+                self.media = MockMedia()
+
+        # Tester avec robot_api
+        robot_api = MockRobotAPI()
+        vision = BBIAVision(robot_api=robot_api)
+
+        # Vérifier que la caméra SDK est détectée
+        assert vision._camera_sdk_available is True
+        assert vision._camera is not None
+        print("✅ robot.media.camera détecté correctement")
+
+        # Tester scan_environment (utilisera caméra SDK si disponible)
+        result = vision.scan_environment()
+        assert "source" in result
+        assert result["source"] in ["camera_sdk", "simulation"]
+        print(f"✅ scan_environment retourne résultat avec source: {result['source']}")
+
+    def test_vision_fallback_simulation(self):
+        """Test 12: Vérifier fallback gracieux vers simulation si SDK non disponible."""
+        print("\n🧪 TEST 12: Fallback simulation")
+        print("=" * 60)
+
+        # Tester sans robot_api (fallback simulation)
+        vision = BBIAVision(robot_api=None)
+        assert vision._camera_sdk_available is False
+
+        result = vision.scan_environment()
+        assert "objects" in result
+        assert "faces" in result
+        assert result.get("source", "simulation") == "simulation"
+        print("✅ Fallback simulation fonctionne correctement")

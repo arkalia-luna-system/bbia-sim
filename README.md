@@ -1,57 +1,87 @@
-# 🚀 BBIA Reachy Mini Simulation - CONFORMITÉ PARFAITE ✅
+# BBIA Reachy Mini Simulation
 
-[![Version](https://img.shields.io/badge/version-1.3.0-blue.svg)](https://github.com/arkalia-luna-system/bbia-sim)
+[![Version](https://img.shields.io/badge/version-1.3.1-blue.svg)](https://github.com/arkalia-luna-system/bbia-sim)
 [![Python](https://img.shields.io/badge/python-3.9%2B-blue.svg)](https://python.org)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://github.com/arkalia-luna-system/bbia-sim/actions)
-[![Tests](https://img.shields.io/badge/tests-706%20collected-brightgreen.svg)](https://github.com/arkalia-luna-system/bbia-sim/actions)
+[![Tests](https://img.shields.io/badge/tests-800%2B-brightgreen.svg)](https://github.com/arkalia-luna-system/bbia-sim/actions)
 [![Code Quality](https://img.shields.io/badge/code%20quality-A%2B-brightgreen.svg)](https://github.com/arkalia-luna-system/bbia-sim)
 [![SDK Conformity](https://img.shields.io/badge/SDK%20conformity-100%25-brightgreen.svg)](https://github.com/pollen-robotics/reachy_mini)
 [![Documentation](https://img.shields.io/badge/docs-sphinx%20%7C%20readthedocs-blue.svg)](docs/)
 
-**✅ SIMULATION BBIA ↔ ROBOT 100% FONCTIONNELLE ET CONFORME !**
+Simulation BBIA ↔ robot conforme et opérationnelle.
 
 ---
 
 ## 📋 **EN 30 SECONDES :**
 
-**BBIA-SIM** = Moteur cognitif Python avec **12 émotions robotiques** pour Reachy Mini
+BBIA-SIM est un moteur cognitif Python avec 12 émotions robotiques pour Reachy Mini.
 
 ![BBIA-SIM Reachy Mini Robot](./assets/images/robot_animation.gif)
 
-✅ **100% conforme** au SDK officiel Pollen Robotics  
-✅ **Backend unifié** : Même code simulation → robot réel  
-✅ **Production-ready** : 706 tests, 63% coverage, docs complètes  
-✅ **Open-source** : MIT License
+• Conforme au SDK officiel Pollen Robotics  
+• Backend unifié : même code en simulation et sur robot réel  
+• Validé par une large suite de tests et une couverture suivie en CI  
+• Open-source (MIT)
 
-**[🚀 Quick Start](#-démarrage-rapide)** | **[📚 Docs Débutant](docs/GUIDE_DEBUTANT.md)** | **[🔬 Docs Avancé](docs/GUIDE_AVANCE.md)**
+**[🚀 Quick Start](#-démarrage-rapide)** | **[📚 Docs Débutant](docs/guides/GUIDE_DEBUTANT.md)** | **[🔬 Docs Avancé](docs/guides/GUIDE_AVANCE.md)**
 
 ---
 
-**Version** : 1.3.0 "Conformité Parfaite SDK Officiel" - Backend unifié RobotAPI + Golden Tests + SDK Officiel Reachy-Mini 100% Conforme + Bridge Zenoh/FastAPI + Documentation Professionnelle
+Version 1.3.1 – Backend unifié RobotAPI, conformité Reachy-Mini auditée, tests renforcés, documentation à jour.
 
-Ce projet fournit une simulation **parfaitement fidèle** du robot Reachy Mini dans MuJoCo, avec une intégration complète des modules BBIA (Bio-Inspired Artificial Intelligence) et **100% conforme au SDK officiel** de Pollen Robotics (décembre 2024).
+Ce projet fournit une simulation fidèle du robot Reachy Mini dans MuJoCo, avec une intégration des modules BBIA (Bio-Inspired Artificial Intelligence) et une conformité validée avec le SDK officiel de Pollen Robotics (décembre 2024).
 
 ## 🚀 Quick Start
 ```bash
-# Installation
-pip install bbia-sim
+# Installation (mode dev recommandé)
+pip install -e .[dev]
 
 # Démarrage simulation
 python examples/demo_emotion_ok.py
 ```
 
+## 🤖 Première utilisation – Reachy Mini (robot réel)
+
+- Prérequis:
+  - SDK Reachy Mini installé côté PC
+  - Robot allumé, alimenté, sur le même réseau Wi‑Fi que le PC
+  - Ports réseau nécessaires ouverts
+
+### ✅ Check‑list
+- Alimentation/LED OK
+- Wi‑Fi opérationnel (SSID/mot de passe)
+- Version SDK compatible (voir docs/conformité)
+- Dry‑run: connexion → wake_up → look_at_world → emergency_stop
+
+### 📦 Dry‑run rapide
+```bash
+pip install -e .[dev,test]
+python scripts/hardware_dry_run_reachy_mini.py --output-dir artifacts
+```
+
+### 🔗 Guide complet Reachy Mini
+- `docs/guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md`
+
+<!-- Badges CI/Qualité (exemple) -->
+[![CI](https://github.com/arkalia-luna-system/bbia-sim/actions/workflows/ci.yml/badge.svg)](https://github.com/arkalia-luna-system/bbia-sim/actions/workflows/ci.yml)
+[![Coverage](https://img.shields.io/badge/coverage-codecov-green)](https://app.codecov.io/gh/arkalia-luna-system/bbia-sim)
+[![Typing: mypy](https://img.shields.io/badge/typing-mypy-4B8BBE)](#)
+[![Lint: ruff](https://img.shields.io/badge/lint-ruff-46A2F1)](#)
+[![Security: bandit](https://img.shields.io/badge/security-bandit-2E5E82)](#)
+[![Release](https://img.shields.io/github/v/release/arkalia-luna-system/bbia-sim)](https://github.com/arkalia-luna-system/bbia-sim/releases)
+
 ## 🎯 Vue d'ensemble
 
-**BBIA-SIM v1.3.0** est un moteur cognitif Python qui simule le robot Reachy Mini avec fidélité complète :
+BBIA-SIM v1.3.1 simule le robot Reachy Mini avec un haut niveau de fidélité :
 
-- ✅ **12 émotions robotiques** contrôlant les articulations
-- ✅ **Conformité 100%** au SDK officiel Pollen Robotics
-- ✅ **Backend unifié** : Même code pour simulation et robot réel
-- ✅ **IA avancée** : Hugging Face, reconnaissance émotions, comportements adaptatifs
-- ✅ **Simulation 3D** : MuJoCo avec modèle officiel
-- ✅ **API REST + WebSocket** : Interface publique complète
-- ✅ **Production-ready** : Tests complets, 63% coverage
+- 12 émotions robotiques contrôlant les articulations
+- Conformité au SDK officiel Pollen Robotics
+- Backend unifié : même code pour simulation et robot réel
+- IA optionnelle : Hugging Face, reconnaissance d’émotions, comportements
+- Simulation 3D : MuJoCo avec modèle officiel
+- API REST + WebSocket
+- Tests automatisés avec suivi de la couverture en CI
 
 ## 🏗️ Architecture BBIA-SIM
 
@@ -92,19 +122,19 @@ graph TB
     WEBSOCKET --> DAEMON
 ```
 
-## 📊 Métriques du Projet
+## 📊 Métriques du projet
 
 - **✅ Modèle officiel** : `reachy_mini_REAL_OFFICIAL.xml`
 - **✅ Articulations** : 16 articulations contrôlables  
 - **✅ Intégration BBIA** : 12 émotions + IA avancée
-- **✅ Coverage** : 63.37% (excellent)
+- **✅ Coverage** : Validée en CI (voir `coverage.xml` et `htmlcov/`)
 - **✅ API** : FastAPI + WebSocket opérationnels
 
 ## 🚀 Démarrage Rapide
 
-### Voir le robot en 3D (FONCTIONNEL)
+### Voir le robot en 3D
 ```bash
-# 🎯 DÉMOS PRINCIPALES - Fonctionnent vraiment !
+# 🎯 Démos principales
 
 # Démo continue - Robot qui bouge en continu (RECOMMANDÉE)
 mjpython examples/demo_mujoco_continue.py
@@ -112,14 +142,14 @@ mjpython examples/demo_mujoco_continue.py
 # Démo émotions BBIA avec viewer MuJoCo
 mjpython examples/demo_emotion_ok.py --emotion happy --duration 10 --joint yaw_body
 
-# Démo surprise spectaculaire complète
+# Démo surprise complète
 mjpython examples/surprise_3d_mujoco_viewer.py
 
 # Démo SDK officiel (headless)
 python examples/demo_reachy_mini_corrigee.py --quick
 ```
 
-### ⚠️ RÈGLES DE SÉCURITÉ CRITIQUES
+### ⚠️ Règles de sécurité
 - **✅ TOUJOURS utiliser `yaw_body`** pour les animations visibles
 - **✅ Amplitude maximum** : 0.3 rad (clamp automatique)
 - **✅ Mode headless** : Stable et rapide pour les tests
@@ -129,10 +159,10 @@ python examples/demo_reachy_mini_corrigee.py --quick
 ### 🌐 API Publique
 ```bash
 # Démarrage de l'API publique
-python scripts/start_public_api.py --dev
+python deploy/public_api.py --dev
 
 # Test de l'API publique
-python scripts/test_public_api.py
+python deploy/public_api.py --check
 
 # Démonstration complète
 python scripts/demo_public_api.py
@@ -179,10 +209,22 @@ python -c "from bbia_sim.bbia_huggingface import BBIAHuggingFace; hf = BBIAHuggi
 python -c "from bbia_sim.bbia_emotion_recognition import BBIAEmotionRecognition; er = BBIAEmotionRecognition(); print(er.analyze_vocal_emotion('Je suis excité!'))"
 ```
 
+### ⚙️ Variables d’environnement utiles
+
+```bash
+# Exécutions headless/CI (désactive audio matériel)
+export BBIA_DISABLE_AUDIO=1
+
+# Sélecteurs IA (optionnels, imports paresseux)
+export BBIA_TTS_BACKEND=pyttsx3      # ou kitten/kokoro/neutts si installés
+export BBIA_STT_BACKEND=whisper      # ou parakeet
+export BBIA_LLM_BACKEND=llama.cpp    # ou qwen
+```
+
 ### 🎯 Vertical Slices BBIA
 ```bash
-# Tests automatiques des vertical slices
-python -m pytest tests/test_vertical_slices.py -v
+# Exemple de test e2e (motion roundtrip)
+python -m pytest tests/e2e/test_motion_roundtrip.py -v
 
 # Démos avec différentes options
 python examples/demo_emotion_ok.py --emotion sad --intensity 0.6 --duration 3
@@ -206,11 +248,26 @@ python scripts/replay_viewer.py artifacts/my_animation.jsonl --speed 1.5
 ```
 
 ### 📋 Documentation
-- **[Guide Débutant](docs/GUIDE_DEBUTANT.md)** : Guide pour débuter
-- **[Guide Avancé](docs/GUIDE_AVANCE.md)** : Guide avancé
+
+**Documentation interactive HTML** (recommandé)
+```bash
+# Générer la documentation HTML complète avec navigation
+scripts/docs/build_docs_html.sh
+# Ouvrir artifacts/docs_html/index.html dans votre navigateur
+```
+
+La documentation HTML offre :
+- Navigation latérale avec table des matières
+- Rendu Mermaid automatique des diagrammes
+- Thème sombre adapté au développement
+- Liens ancres pour navigation rapide
+
+**Guides principaux :**
+- **[Guide Débutant](docs/guides/GUIDE_DEBUTANT.md)** : Guide pour débuter
+- **[Guide Avancé](docs/guides/GUIDE_AVANCE.md)** : Guide avancé
 - **[Vertical Slices](docs/audit/VERTICAL_SLICES_ACCOMPLIS.md)** : Documentation des vertical slices
 
-### ⚠️ Note Importante
+### Note
 Les antennes sont bloquées dans le modèle officiel. Utilisez `yaw_body` pour les animations.
 
 ## 📁 Structure du Projet
@@ -273,13 +330,13 @@ python scripts/download_ALL_stl.py
 ```
 Télécharge automatiquement les 41 fichiers STL depuis le repo officiel.
 
-### Gestion des processus
+### Gestion des processus 
 ```bash
-./scripts/smart_process_cleanup.sh
+python scripts/process_manager.py --cleanup
 ```
 Nettoie les processus gourmands tout en préservant les applications importantes.
 
-## 🔧 Résolution de Problèmes
+## 🔧 Résolution de problèmes
 
 ### Problème : Robot en pièces détachées
 **Cause** : Fichiers STL corrompus (pointeurs Git LFS)
@@ -292,7 +349,7 @@ python scripts/download_ALL_stl.py
 **Cause** : Chemin des assets incorrect
 **Solution** : Le modèle `reachy_mini_REAL_OFFICIAL.xml` a le bon chemin `meshdir="../assets/reachy_official"`
 
-### Problème : Fenêtre 3D ne s'ouvre pas
+### Problème : la fenêtre 3D ne s'ouvre pas
 **Cause** : Mauvaise commande Python
 **Solution** : Utiliser `mjpython` au lieu de `python` sur macOS
 
@@ -316,11 +373,29 @@ python scripts/download_ALL_stl.py
 
 ### Tests & Commandes
 
+Recommandation (locale, mesure complète non bloquante) :
+```bash
+python -m pytest \
+  --cov=src/bbia_sim \
+  --cov-report=term-missing \
+  --cov-report=xml:coverage.xml \
+  --cov-report=html:htmlcov \
+  --cov-fail-under=0
+```
+
+CI (seuil progressif initial 30%) :
+```bash
+pytest -q --disable-warnings \
+  --cov=src/bbia_sim \
+  --cov-report=xml:coverage.xml \
+  --cov-fail-under=30
+```
+
 ### Résultats des Tests
 
 **📊 Qualité & Conformité :**
-- ✅ **Conformité SDK officiel** : 100% parfaite
-- ✅ **Coverage** : 63.37% (excellent)
+- ✅ **Conformité SDK officiel** : validée
+- ✅ **Coverage** : validée en CI
 - ✅ **Qualité code** : Black, Ruff, MyPy, Bandit ✅
 - ✅ **Tests** : Suite complète + SDK officiel
 
@@ -335,11 +410,11 @@ python -m pytest tests/test_demo_viewer_bbia_corrected.py -v
 # Tests MuJoCo existants
 python -m pytest tests/test_adapter_mujoco.py -v
 
-# Lancer tous les tests avec coverage
-python -m pytest tests/ --cov=src --cov-report=term-missing --cov-report=html
+# Lancer tous les tests avec coverage (chemin projet standardisé)
+python -m pytest tests/ --cov=src/bbia_sim --cov-report=term-missing --cov-report=html
 
 # Lancer les tests sans s'arrêter aux échecs
-python -m pytest tests/ --cov=src --cov-fail-under=0 --tb=no -q
+python -m pytest tests/ --cov=src/bbia_sim --cov-fail-under=0 --tb=no -q
 
 # Lancer un test spécifique
 python -m pytest tests/test_bbia_emotions.py -v
@@ -351,11 +426,9 @@ open htmlcov/index.html
 
 
 
-## 🎉 Statut Final
+## Statut du projet
 
-**✅ MISSION ACCOMPLIE** : Le robot Reachy Mini est maintenant parfaitement simulé avec une fidélité de 100% aux spécifications officielles et une couverture de tests excellente.
-
-**✅ PREUVES RÉELLES** : Dry-run hardware et démo robot réel avec métriques de performance documentées.
+Le robot Reachy Mini est simulé avec une fidélité élevée aux spécifications officielles. La suite de tests fournit une couverture suivie et des mesures de performance documentées (dry-run matériel et démonstrations sur robot réel).
 
 ---
 *Dernière mise à jour : Octobre 2025*

@@ -69,7 +69,9 @@ def plot_joint_movements(
 
         for joint in unique_joints:
             # Filtrer les données pour ce joint
-            joint_positions = [p for j, p in zip(joints, positions) if j == joint]
+            joint_positions = [
+                p for j, p in zip(joints, positions, strict=False) if j == joint
+            ]
 
             if joint_positions:
                 min_pos = min(joint_positions)

@@ -36,7 +36,7 @@ class TestReachyMiniBackendRapid:
 
                 backend = ReachyMiniBackend()
                 pos = backend.get_joint_pos("yaw_body")
-                assert isinstance(pos, (int, float))
+                assert isinstance(pos, int | float)
         except ImportError:
             pytest.skip("Module non disponible")
 

@@ -2,14 +2,14 @@
 
 import logging
 from datetime import datetime
-from typing import Any, Optional
+from typing import Any
 
 from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel, Field
 
 from ....bbia_behavior import BBIABehaviorManager
 from ....bbia_emotions import BBIAEmotions
-from ....robot_api import RobotFactory
+from ....robot_factory import RobotFactory
 
 logger = logging.getLogger(__name__)
 
@@ -135,7 +135,7 @@ async def apply_emotion(
     emotion: str = Query(..., description="Nom de l'émotion à appliquer"),
     intensity: float = Query(0.5, ge=0.0, le=1.0, description="Intensité de l'émotion"),
     duration: float = Query(5.0, gt=0, description="Durée en secondes"),
-    joint: Optional[str] = Query(None, description="Joint spécifique à animer"),
+    joint: str | None = Query(None, description="Joint spécifique à animer"),
 ) -> EmotionResponse:
     """Applique une émotion BBIA au robot.
 
@@ -193,7 +193,7 @@ async def execute_behavior(
     intensity: float = Query(
         1.0, ge=0.0, le=2.0, description="Intensité du comportement"
     ),
-    duration: Optional[float] = Query(
+    duration: float | None = Query(
         None, gt=0, description="Durée personnalisée en secondes"
     ),
 ) -> BehaviorResponse:
@@ -381,7 +381,7 @@ async def get_demo_modes() -> dict[str, Any]:
 async def start_demo_mode(
     mode: str = Query(..., description="Mode de démonstration"),
     duration: float = Query(30.0, gt=0, description="Durée en secondes"),
-    emotion: Optional[str] = Query(None, description="Émotion à démontrer"),
+    emotion: str | None = Query(None, description="Émotion à démontrer"),
 ) -> dict[str, Any]:
     """Démarre un mode de démonstration.
 

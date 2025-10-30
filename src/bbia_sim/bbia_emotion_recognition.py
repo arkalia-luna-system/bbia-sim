@@ -6,12 +6,22 @@ Détection et analyse des émotions faciales et vocales en temps réel
 
 import logging
 import time
-from typing import Any, Optional, Union
+from typing import Any
 
 import cv2
 import numpy as np
 
 logger = logging.getLogger(__name__)
+
+# Réduction du bruit de logs TensorFlow/MediaPipe (avant tout import MediaPipe)
+try:
+    import os as _os  # noqa: F401
+
+    _os.environ.setdefault("GLOG_minloglevel", "2")
+    _os.environ.setdefault("TF_CPP_MIN_LOG_LEVEL", "2")
+    _os.environ.setdefault("MEDIAPIPE_DISABLE_GPU", "1")
+except Exception:
+    pass
 
 # Import conditionnel des dépendances ML
 try:
@@ -37,7 +47,7 @@ class BBIAEmotionRecognition:
     - Détection en temps réel
     """
 
-    def __init__(self, device: str = "auto"):
+    def __init__(self, device: str = "auto") -> None:
         """Initialise le module de reconnaissance d'émotions.
 
         Args:
@@ -117,7 +127,7 @@ class BBIAEmotionRecognition:
             logger.error(f"❌ Erreur initialisation: {e}")
             return False
 
-    def _load_emotion_models(self):
+    def _load_emotion_models(self) -> None:
         """Charge les modèles de reconnaissance d'émotion."""
         try:
             # Modèle de sentiment pour analyse vocale
@@ -139,7 +149,7 @@ class BBIAEmotionRecognition:
         except Exception as e:
             logger.error(f"❌ Erreur chargement modèles émotion: {e}")
 
-    def detect_faces(self, image: Union[np.ndarray, str]) -> list[dict[str, Any]]:
+    def detect_faces(self, image: np.ndarray | str) -> list[dict[str, Any]]:
         """Détecte les visages dans une image.
 
         Args:
@@ -203,7 +213,9 @@ class BBIAEmotionRecognition:
             return []
 
     def analyze_facial_emotion(
-        self, image: Union[np.ndarray, str], face_bbox: Optional[dict] = None
+        self,
+        image: np.ndarray | str,  # noqa: ARG002
+        face_bbox: dict | None = None,  # noqa: ARG002
     ) -> dict[str, Any]:
         """Analyse les émotions faciales dans une image.
 
@@ -362,7 +374,7 @@ class BBIAEmotionRecognition:
             return {"error": str(e)}
 
     def analyze_emotion_realtime(
-        self, image: Union[np.ndarray, str], text: Optional[str] = None
+        self, image: np.ndarray | str, text: str | None = None
     ) -> dict[str, Any]:
         """Analyse complète des émotions en temps réel.
 
@@ -480,13 +492,13 @@ class BBIAEmotionRecognition:
             "detection_config": self.detection_config,
         }
 
-    def reset_history(self):
+    def reset_history(self) -> None:
         """Remet à zéro l'historique des émotions."""
         self.emotion_history = []
         logger.info("🔄 Historique des émotions réinitialisé")
 
 
-def main():
+def main() -> None:
     """Test du module BBIA Emotion Recognition."""
     if not ML_AVAILABLE:
         print("❌ Dépendances ML non disponibles")

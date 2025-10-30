@@ -3,7 +3,7 @@
 import asyncio
 import contextlib
 import logging
-from typing import Any, Union
+from typing import Any
 
 from ..sim.simulator import MuJoCoSimulator
 
@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 class SimulationService:
     """Service de gestion de la simulation MuJoCo."""
 
-    def __init__(self, model_path: Union[str, None] = None):
+    def __init__(self, model_path: str | None = None):
         """Initialise le service de simulation.
 
         Args:
@@ -23,9 +23,9 @@ class SimulationService:
         self.model_path = (
             model_path or "src/bbia_sim/sim/models/reachy_mini_REAL_OFFICIAL.xml"
         )
-        self.simulator: Union[MuJoCoSimulator, None] = None
+        self.simulator: MuJoCoSimulator | None = None
         self.is_running = False
-        self._simulation_task: Union[asyncio.Task, None] = None
+        self._simulation_task: asyncio.Task | None = None
 
     async def start_simulation(self, headless: bool = True) -> bool:
         """Démarre la simulation MuJoCo.
@@ -228,20 +228,32 @@ class SimulationService:
         }
 
     def _get_default_joint_positions(self) -> dict[str, float]:
-        """Retourne des positions d'articulations par défaut."""
+        """Retourne des positions d'articulations par défaut (Reachy Mini officiel).
+
+        ⚠️ NOTE EXPERT: Ces noms correspondent au modèle Reachy Mini officiel.
+        Pour les joints stewart, utiliser goto_target() avec IK plutôt que contrôle direct.
+        """
         return {
-            "neck_yaw": 0.0,
-            "right_shoulder_pitch": 0.0,
-            "right_elbow_pitch": 0.0,
-            "right_gripper_joint": 0.0,
-            "left_shoulder_pitch": 0.0,
-            "left_elbow_pitch": 0.0,
-            "left_gripper_joint": 0.0,
+            # Corps (joint principal Reachy Mini)
+            "yaw_body": 0.0,
+            # Tête (6 joints Stewart platform - NE PAS contrôler individuellement)
+            # Utiliser goto_target() ou set_target_head_pose() avec create_head_pose()
+            "stewart_1": 0.0,  # ⚠️ Pour info seulement - utiliser IK
+            "stewart_2": 0.0,  # ⚠️ Pour info seulement - utiliser IK
+            "stewart_3": 0.0,  # ⚠️ Pour info seulement - utiliser IK
+            "stewart_4": 0.0,  # ⚠️ Pour info seulement - utiliser IK
+            "stewart_5": 0.0,  # ⚠️ Pour info seulement - utiliser IK
+            "stewart_6": 0.0,  # ⚠️ Pour info seulement - utiliser IK
+            # Antennes (interdites pour sécurité)
+            "left_antenna": 0.0,  # ⚠️ Interdit
+            "right_antenna": 0.0,  # ⚠️ Interdit
         }
 
     def _get_default_joint_names(self) -> list[str]:
-        """Retourne les noms d'articulations par défaut."""
-        return list(self._get_default_joint_positions().keys())
+        """Retourne les noms d'articulations par défaut (Reachy Mini officiel)."""
+        # Retourner seulement les joints contrôlables directement
+        # (yaw_body uniquement, stewart nécessitent IK)
+        return ["yaw_body"]
 
     def is_simulation_ready(self) -> bool:
         """Vérifie si la simulation est prête."""

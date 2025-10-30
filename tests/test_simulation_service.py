@@ -17,28 +17,26 @@ class TestSimulationService:
         mock_sim = Mock()
         mock_sim.get_robot_state.return_value = {
             "joint_positions": {
-                "neck_yaw": 0.0,
-                "right_shoulder_pitch": 0.0,
-                "left_shoulder_pitch": 0.0,
-                "right_elbow_pitch": 0.0,
-                "left_elbow_pitch": 0.0,
-                "right_gripper_joint": 0.0,
-                "left_gripper_joint": 0.0,
+                "yaw_body": 0.0,
+                "stewart_1": 0.0,
+                "stewart_2": 0.0,
+                "stewart_3": 0.0,
+                "left_antenna": 0.0,
+                "right_antenna": 0.0,
             },
             "time": 0.0,
-            "qpos": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
-            "qvel": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
-            "n_joints": 8,
+            "qpos": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+            "qvel": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+            "n_joints": 6,
             "n_bodies": 9,
         }
         mock_sim.get_available_joints.return_value = [
-            "neck_yaw",
-            "right_shoulder_pitch",
-            "left_shoulder_pitch",
-            "right_elbow_pitch",
-            "left_elbow_pitch",
-            "right_gripper_joint",
-            "left_gripper_joint",
+            "yaw_body",
+            "stewart_1",
+            "stewart_2",
+            "stewart_3",
+            "left_antenna",
+            "right_antenna",
         ]
         mock_sim.set_joint_position.return_value = True
         return mock_sim
@@ -218,8 +216,8 @@ class TestSimulationService:
 
         # Devrait retourner les positions par défaut
         assert isinstance(positions, dict)
-        assert "neck_yaw" in positions
-        assert positions["neck_yaw"] == 0.0
+        assert "yaw_body" in positions
+        assert positions["yaw_body"] == 0.0
 
     @patch("src.bbia_sim.daemon.simulation_service.MuJoCoSimulator")
     def test_get_joint_positions_simulator_error(
@@ -237,7 +235,7 @@ class TestSimulationService:
 
         # Devrait retourner les positions par défaut en cas d'erreur
         assert isinstance(positions, dict)
-        assert "neck_yaw" in positions
+        assert "yaw_body" in positions
 
     @patch("src.bbia_sim.daemon.simulation_service.MuJoCoSimulator")
     def test_set_joint_position_simulation_not_running(
@@ -247,7 +245,7 @@ class TestSimulationService:
         mock_simulator_class.return_value = mock_simulator
 
         service = SimulationService(model_path="test_model.xml")
-        result = service.set_joint_position("neck_yaw", 0.5)
+        result = service.set_joint_position("yaw_body", 0.5)
 
         assert result is False
 
@@ -263,7 +261,7 @@ class TestSimulationService:
         service.simulator = mock_simulator
         service.is_running = True
 
-        result = service.set_joint_position("neck_yaw", 0.5)
+        result = service.set_joint_position("yaw_body", 0.5)
 
         assert result is False
 
@@ -276,10 +274,10 @@ class TestSimulationService:
         service.simulator = mock_simulator
         service.is_running = True
 
-        result = service.set_joint_position("neck_yaw", 0.5)
+        result = service.set_joint_position("yaw_body", 0.5)
 
         assert result is True
-        mock_simulator.set_joint_position.assert_called_once_with("neck_yaw", 0.5)
+        mock_simulator.set_joint_position.assert_called_once_with("yaw_body", 0.5)
 
     @patch("src.bbia_sim.daemon.simulation_service.MuJoCoSimulator")
     def test_get_available_joints_simulator_error(
@@ -296,7 +294,7 @@ class TestSimulationService:
 
         # Devrait retourner les joints par défaut en cas d'erreur
         assert isinstance(joints, list)
-        assert "neck_yaw" in joints
+        assert "yaw_body" in joints
 
     def test_get_default_state(self):
         """Test état par défaut."""
@@ -317,9 +315,8 @@ class TestSimulationService:
         positions = service._get_default_joint_positions()
 
         assert isinstance(positions, dict)
-        assert "neck_yaw" in positions
-        assert "right_shoulder_pitch" in positions
-        assert "left_shoulder_pitch" in positions
+        assert "yaw_body" in positions
+        # Vérifier que les joints principaux sont présents
         assert all(pos == 0.0 for pos in positions.values())
 
     def test_get_default_joint_names(self):
@@ -328,9 +325,7 @@ class TestSimulationService:
         names = service._get_default_joint_names()
 
         assert isinstance(names, list)
-        assert "neck_yaw" in names
-        assert "right_shoulder_pitch" in names
-        assert "left_shoulder_pitch" in names
+        assert "yaw_body" in names
 
     def test_is_simulation_ready_with_simulator(self):
         """Test vérification simulation prête avec simulateur."""
@@ -379,7 +374,7 @@ class TestSimulationService:
 
         assert isinstance(joints, list)
         assert len(joints) > 0
-        assert "neck_yaw" in joints
+        assert "yaw_body" in joints
 
     @patch("src.bbia_sim.daemon.simulation_service.MuJoCoSimulator")
     @pytest.mark.asyncio

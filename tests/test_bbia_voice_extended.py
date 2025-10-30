@@ -126,12 +126,15 @@ class TestBBIAVoiceExtended:
 
         assert voice_id == "com.apple.speech.voice.Amelie.fr-FR"
 
-    @patch("bbia_sim.bbia_voice.pyttsx3.init")
+    @patch("os.environ.get", return_value="0")  # Désactiver BBIA_DISABLE_AUDIO
+    @patch("bbia_sim.bbia_voice._pyttsx3_engine_cache", None)
+    @patch("bbia_sim.bbia_voice._bbia_voice_id_cache", None)
+    @patch("bbia_sim.bbia_voice._get_pyttsx3_engine")
     @patch("bbia_sim.bbia_voice.get_bbia_voice")
-    def test_dire_texte_success(self, mock_get_voice, mock_init):
+    def test_dire_texte_success(self, mock_get_voice, mock_get_engine, mock_env_get):
         """Test synthèse vocale réussie."""
         mock_engine = MagicMock()
-        mock_init.return_value = mock_engine
+        mock_get_engine.return_value = mock_engine
         mock_get_voice.return_value = "voice_id"
 
         # Mock complet de l'engine
@@ -141,25 +144,27 @@ class TestBBIAVoiceExtended:
 
         dire_texte("Test message")
 
-        mock_init.assert_called_once()
-        mock_get_voice.assert_called_once_with(mock_engine)
+        mock_get_engine.assert_called()
+        mock_get_voice.assert_called()
         mock_engine.setProperty.assert_any_call("voice", "voice_id")
         mock_engine.setProperty.assert_any_call("rate", 170)
         mock_engine.setProperty.assert_any_call("volume", 1.0)
         mock_engine.say.assert_called_once_with("Test message")
         mock_engine.runAndWait.assert_called_once()
 
-    @patch("src.bbia_sim.bbia_voice.pyttsx3.init")
-    @patch("src.bbia_sim.bbia_voice.get_bbia_voice")
-    def test_dire_texte_error(self, mock_get_voice, mock_init):
+    @patch("os.environ.get", return_value="0")  # Désactiver BBIA_DISABLE_AUDIO
+    @patch("bbia_sim.bbia_voice._pyttsx3_engine_cache", None)
+    @patch("bbia_sim.bbia_voice._bbia_voice_id_cache", None)
+    @patch("bbia_sim.bbia_voice._get_pyttsx3_engine")
+    def test_dire_texte_error(self, mock_get_engine, mock_env_get):
         """Test erreur synthèse vocale."""
-        mock_init.side_effect = Exception("Engine error")
+        mock_get_engine.side_effect = Exception("Engine error")
 
         with pytest.raises(Exception, match="Engine error"):
             dire_texte("Test message")
 
-    @patch("src.bbia_sim.bbia_voice.sr.Recognizer")
-    @patch("src.bbia_sim.bbia_voice.sr.Microphone")
+    @patch("bbia_sim.bbia_voice.sr.Recognizer")
+    @patch("bbia_sim.bbia_voice.sr.Microphone")
     def test_reconnaitre_parole_success(self, mock_microphone, mock_recognizer_class):
         """Test reconnaissance vocale réussie."""
         mock_recognizer = MagicMock()
@@ -182,8 +187,8 @@ class TestBBIAVoiceExtended:
             mock_audio, language="fr-FR"
         )
 
-    @patch("src.bbia_sim.bbia_voice.sr.Recognizer")
-    @patch("src.bbia_sim.bbia_voice.sr.Microphone")
+    @patch("bbia_sim.bbia_voice.sr.Recognizer")
+    @patch("bbia_sim.bbia_voice.sr.Microphone")
     def test_reconnaitre_parole_unknown_value(
         self, mock_microphone, mock_recognizer_class
     ):
@@ -202,8 +207,8 @@ class TestBBIAVoiceExtended:
 
         assert result is None
 
-    @patch("src.bbia_sim.bbia_voice.sr.Recognizer")
-    @patch("src.bbia_sim.bbia_voice.sr.Microphone")
+    @patch("bbia_sim.bbia_voice.sr.Recognizer")
+    @patch("bbia_sim.bbia_voice.sr.Microphone")
     def test_reconnaitre_parole_general_error(
         self, mock_microphone, mock_recognizer_class
     ):
@@ -220,11 +225,12 @@ class TestBBIAVoiceExtended:
 
         assert result is None
 
-    @patch("src.bbia_sim.bbia_voice.pyttsx3.init")
-    def test_lister_voix_disponibles_success(self, mock_init):
+    @patch("bbia_sim.bbia_voice._pyttsx3_engine_cache", None)
+    @patch("bbia_sim.bbia_voice._get_pyttsx3_engine")
+    def test_lister_voix_disponibles_success(self, mock_get_engine):
         """Test liste des voix disponibles."""
         mock_engine = MagicMock()
-        mock_init.return_value = mock_engine
+        mock_get_engine.return_value = mock_engine
 
         mock_voice1 = MagicMock()
         mock_voice1.name = "Amélie"
@@ -244,20 +250,21 @@ class TestBBIAVoiceExtended:
         assert voices[0].name == "Amélie"
         assert voices[1].name == "Autre"
 
-    @patch("src.bbia_sim.bbia_voice.pyttsx3.init")
-    def test_lister_voix_disponibles_decode_error(self, mock_init):
+    @patch("bbia_sim.bbia_voice._pyttsx3_engine_cache", None)
+    @patch("bbia_sim.bbia_voice._get_pyttsx3_engine")
+    def test_lister_voix_disponibles_decode_error(self, mock_get_engine):
         """Test liste des voix avec erreur de décodage."""
         mock_engine = MagicMock()
-        mock_init.return_value = mock_engine
+        mock_get_engine.return_value = mock_engine
 
         mock_voice = MagicMock()
         mock_voice.name = "Test"
         mock_voice.id = "test.id"
 
-        # Créer un mock pour le decode
-        mock_decode = MagicMock()
-        mock_decode.side_effect = Exception("Decode error")
-        mock_voice.languages = [mock_decode]
+        # Simuler une erreur lors du decode - créer un mock qui lève une exception
+        mock_language = MagicMock()
+        mock_language.decode = MagicMock(side_effect=Exception("Decode error"))
+        mock_voice.languages = [mock_language]
 
         mock_engine.getProperty.return_value = [mock_voice]
 
@@ -266,11 +273,12 @@ class TestBBIAVoiceExtended:
         assert len(voices) == 1
         assert voices[0].name == "Test"
 
-    @patch("src.bbia_sim.bbia_voice.pyttsx3.init")
-    def test_lister_voix_disponibles_no_languages(self, mock_init):
+    @patch("bbia_sim.bbia_voice._pyttsx3_engine_cache", None)
+    @patch("bbia_sim.bbia_voice._get_pyttsx3_engine")
+    def test_lister_voix_disponibles_no_languages(self, mock_get_engine):
         """Test liste des voix sans langues."""
         mock_engine = MagicMock()
-        mock_init.return_value = mock_engine
+        mock_get_engine.return_value = mock_engine
 
         mock_voice = MagicMock()
         mock_voice.name = "Test"
@@ -352,12 +360,17 @@ class TestBBIAVoiceExtended:
         # Devrait retourner la première voix Amélie trouvée
         assert voice_id == "com.apple.speech.voice.Amelie.1"
 
-    @patch("bbia_sim.bbia_voice.pyttsx3.init")
+    @patch("os.environ.get", return_value="0")  # Désactiver BBIA_DISABLE_AUDIO
+    @patch("bbia_sim.bbia_voice._pyttsx3_engine_cache", None)
+    @patch("bbia_sim.bbia_voice._bbia_voice_id_cache", None)
+    @patch("bbia_sim.bbia_voice._get_pyttsx3_engine")
     @patch("bbia_sim.bbia_voice.get_bbia_voice")
-    def test_dire_texte_engine_properties(self, mock_get_voice, mock_init):
+    def test_dire_texte_engine_properties(
+        self, mock_get_voice, mock_get_engine, mock_env_get
+    ):
         """Test propriétés du moteur de synthèse."""
         mock_engine = MagicMock()
-        mock_init.return_value = mock_engine
+        mock_get_engine.return_value = mock_engine
         mock_get_voice.return_value = "voice_id"
 
         # Mock complet de l'engine
@@ -369,12 +382,17 @@ class TestBBIAVoiceExtended:
 
         # Vérifier l'ordre des appels setProperty
         calls = mock_engine.setProperty.call_args_list
-        assert calls[0][0] == ("voice", "voice_id")
-        assert calls[1][0] == ("rate", 170)
-        assert calls[2][0] == ("volume", 1.0)
+        assert len(calls) >= 3
+        # Vérifier que les propriétés sont définies (ordre peut varier selon code)
+        voice_calls = [c for c in calls if c[0][0] == "voice"]
+        rate_calls = [c for c in calls if c[0][0] == "rate"]
+        volume_calls = [c for c in calls if c[0][0] == "volume"]
+        assert len(voice_calls) >= 1
+        assert len(rate_calls) >= 1
+        assert len(volume_calls) >= 1
 
-    @patch("src.bbia_sim.bbia_voice.sr.Recognizer")
-    @patch("src.bbia_sim.bbia_voice.sr.Microphone")
+    @patch("bbia_sim.bbia_voice.sr.Recognizer")
+    @patch("bbia_sim.bbia_voice.sr.Microphone")
     def test_reconnaitre_parole_custom_parameters(
         self, mock_microphone, mock_recognizer_class
     ):

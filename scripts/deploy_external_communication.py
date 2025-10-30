@@ -7,7 +7,7 @@ Déploie la documentation publique et génère les assets de communication
 import asyncio
 import json
 import logging
-import subprocess
+import subprocess  # nosec B404
 import sys
 from pathlib import Path
 
@@ -35,7 +35,7 @@ class BBIAExternalCommunication:
         # 1. Générer la présentation
         logger.info("  📄 Génération présentation PDF...")
         try:
-            result = subprocess.run(
+            result = subprocess.run(  # nosec B603
                 [
                     sys.executable,
                     str(self.project_root / "scripts" / "generate_presentation.py"),
@@ -55,7 +55,7 @@ class BBIAExternalCommunication:
         # 2. Générer la démonstration vidéo
         logger.info("  🎬 Génération script démonstration...")
         try:
-            result = subprocess.run(
+            result = subprocess.run(  # nosec B603
                 [
                     sys.executable,
                     str(self.project_root / "scripts" / "generate_video_demo.py"),

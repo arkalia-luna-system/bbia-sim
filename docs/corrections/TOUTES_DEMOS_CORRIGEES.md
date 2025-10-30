@@ -1,6 +1,6 @@
 # ✅ TOUTES LES DÉMOS CORRIGÉES
 
-**Date :** 28 Octobre 2025  
+**Date :** 28 Octobre 2025
 **Objectif :** Mouvements réalistes basés sur SDK Reachy Mini officiel
 
 ---
@@ -81,9 +81,9 @@
 
 ## ✅ **RÉSULTAT**
 
-**Plus AUCUNE casse de tête !** ✅  
-**Mouvements réalistes** ✅  
-**Conformes au SDK officiel** ✅  
+**Plus AUCUNE casse de tête !** ✅
+**Mouvements réalistes** ✅
+**Conformes au SDK officiel** ✅
 
 ---
 

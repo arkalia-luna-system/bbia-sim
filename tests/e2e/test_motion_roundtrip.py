@@ -195,7 +195,7 @@ class TestMotionRoundtrip:
                         f"Message télémétrie #{messages_received}: {data['timestamp']}"
                     )
 
-                except asyncio.TimeoutError:
+                except TimeoutError:
                     # Timeout normal, continue
                     continue
                 except Exception as e:

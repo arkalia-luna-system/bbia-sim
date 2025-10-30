@@ -1,7 +1,46 @@
 #!/usr/bin/env python3
-"""Tests pour le module BBIA Vision."""
+"""Tests unitaires Vision (pipeline simulé + skips propres)."""
 
-from src.bbia_sim.bbia_vision import BBIAVision
+import os
+
+import pytest
+
+from bbia_sim.bbia_vision import BBIAVision
+
+
+@pytest.mark.unit
+@pytest.mark.fast
+def test_scan_environment_simulation() -> None:
+    if os.environ.get("BBIA_DISABLE_VISION", "0") == "1":
+        pytest.skip("Vision désactivée par BBIA_DISABLE_VISION=1")
+
+    vision = BBIAVision(robot_api=None)
+    result = vision.scan_environment()
+
+    assert "objects" in result and isinstance(result["objects"], list)
+    assert "faces" in result and isinstance(result["faces"], list)
+    assert result.get("source") in {"simulation", "camera_sdk"}
+
+
+@pytest.mark.unit
+@pytest.mark.fast
+def test_track_untrack_object() -> None:
+    vision = BBIAVision(robot_api=None)
+    vision.scan_environment()
+
+    assert vision.track_object("livre") is True
+    status = vision.get_focus_status()
+    assert status["tracking_active"] is True
+    assert status["current_focus"] is not None
+
+    vision.stop_tracking()
+    status2 = vision.get_focus_status()
+    assert status2["tracking_active"] is False
+    assert status2["current_focus"] is None
+
+
+#!/usr/bin/env python3
+"""Tests pour le module BBIA Vision."""
 
 
 class TestBBIAVision:

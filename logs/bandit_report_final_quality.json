@@ -1,30 +1,292 @@
 {
   "errors": [
     {
+      "filename": "src/bbia_sim/.___main__.py",
+      "reason": "syntax error while parsing AST from file"
+    },
+    {
+      "filename": "src/bbia_sim/._ai_backends.py",
+      "reason": "syntax error while parsing AST from file"
+    },
+    {
+      "filename": "src/bbia_sim/._bbia_adaptive_behavior.py",
+      "reason": "syntax error while parsing AST from file"
+    },
+    {
+      "filename": "src/bbia_sim/._bbia_audio.py",
+      "reason": "syntax error while parsing AST from file"
+    },
+    {
+      "filename": "src/bbia_sim/._bbia_awake.py",
+      "reason": "syntax error while parsing AST from file"
+    },
+    {
+      "filename": "src/bbia_sim/._bbia_behavior.py",
+      "reason": "syntax error while parsing AST from file"
+    },
+    {
+      "filename": "src/bbia_sim/._bbia_emotion_recognition.py",
+      "reason": "syntax error while parsing AST from file"
+    },
+    {
+      "filename": "src/bbia_sim/._bbia_emotions.py",
+      "reason": "syntax error while parsing AST from file"
+    },
+    {
+      "filename": "src/bbia_sim/._bbia_huggingface.py",
+      "reason": "syntax error while parsing AST from file"
+    },
+    {
+      "filename": "src/bbia_sim/._bbia_integration.py",
+      "reason": "syntax error while parsing AST from file"
+    },
+    {
+      "filename": "src/bbia_sim/._bbia_vision.py",
+      "reason": "syntax error while parsing AST from file"
+    },
+    {
+      "filename": "src/bbia_sim/._bbia_voice.py",
+      "reason": "syntax error while parsing AST from file"
+    },
+    {
+      "filename": "src/bbia_sim/._bbia_voice_advanced.py",
+      "reason": "syntax error while parsing AST from file"
+    },
+    {
+      "filename": "src/bbia_sim/._dashboard.py",
+      "reason": "syntax error while parsing AST from file"
+    },
+    {
+      "filename": "src/bbia_sim/._dashboard_advanced.py",
+      "reason": "syntax error while parsing AST from file"
+    },
+    {
+      "filename": "src/bbia_sim/._global_config.py",
+      "reason": "syntax error while parsing AST from file"
+    },
+    {
+      "filename": "src/bbia_sim/._mapping_reachy.py",
+      "reason": "syntax error while parsing AST from file"
+    },
+    {
+      "filename": "src/bbia_sim/._robot_api.py",
+      "reason": "syntax error while parsing AST from file"
+    },
+    {
       "filename": "src/bbia_sim/._robot_factory.py",
+      "reason": "syntax error while parsing AST from file"
+    },
+    {
+      "filename": "src/bbia_sim/._telemetry.py",
+      "reason": "syntax error while parsing AST from file"
+    },
+    {
+      "filename": "src/bbia_sim/._unity_reachy_controller.py",
+      "reason": "syntax error while parsing AST from file"
+    },
+    {
+      "filename": "src/bbia_sim/._vision_yolo.py",
+      "reason": "syntax error while parsing AST from file"
+    },
+    {
+      "filename": "src/bbia_sim/._voice_whisper.py",
+      "reason": "syntax error while parsing AST from file"
+    },
+    {
+      "filename": "src/bbia_sim/backends/.___init__.py",
+      "reason": "syntax error while parsing AST from file"
+    },
+    {
+      "filename": "src/bbia_sim/backends/._mujoco_backend.py",
+      "reason": "syntax error while parsing AST from file"
+    },
+    {
+      "filename": "src/bbia_sim/backends/._reachy_backend.py",
       "reason": "syntax error while parsing AST from file"
     },
     {
       "filename": "src/bbia_sim/backends/._reachy_mini_backend.py",
       "reason": "syntax error while parsing AST from file"
+    },
+    {
+      "filename": "src/bbia_sim/daemon/._bridge.py",
+      "reason": "syntax error while parsing AST from file"
+    },
+    {
+      "filename": "src/bbia_sim/daemon/._middleware.py",
+      "reason": "syntax error while parsing AST from file"
+    },
+    {
+      "filename": "src/bbia_sim/daemon/._simulation_service.py",
+      "reason": "syntax error while parsing AST from file"
+    },
+    {
+      "filename": "src/bbia_sim/daemon/app/._main.py",
+      "reason": "syntax error while parsing AST from file"
+    },
+    {
+      "filename": "src/bbia_sim/daemon/app/routers/._ecosystem.py",
+      "reason": "syntax error while parsing AST from file"
+    },
+    {
+      "filename": "src/bbia_sim/daemon/app/routers/._motion.py",
+      "reason": "syntax error while parsing AST from file"
+    },
+    {
+      "filename": "src/bbia_sim/daemon/app/routers/._sanity.py",
+      "reason": "syntax error while parsing AST from file"
+    },
+    {
+      "filename": "src/bbia_sim/daemon/app/routers/._state.py",
+      "reason": "syntax error while parsing AST from file"
+    },
+    {
+      "filename": "src/bbia_sim/daemon/ws/.___init__.py",
+      "reason": "syntax error while parsing AST from file"
+    },
+    {
+      "filename": "src/bbia_sim/daemon/ws/._telemetry.py",
+      "reason": "syntax error while parsing AST from file"
+    },
+    {
+      "filename": "src/bbia_sim/sim/.___init__.py",
+      "reason": "syntax error while parsing AST from file"
+    },
+    {
+      "filename": "src/bbia_sim/sim/._joints.py",
+      "reason": "syntax error while parsing AST from file"
+    },
+    {
+      "filename": "src/bbia_sim/sim/._simulator.py",
+      "reason": "syntax error while parsing AST from file"
     }
   ],
-  "generated_at": "2025-10-25T14:50:02Z",
+  "generated_at": "2025-10-30T15:27:33Z",
   "metrics": {
     "_totals": {
-      "CONFIDENCE.HIGH": 0,
+      "CONFIDENCE.HIGH": 46,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
       "CONFIDENCE.UNDEFINED": 0,
       "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
+      "SEVERITY.LOW": 46,
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
-      "loc": 5558,
+      "loc": 13132,
       "nosec": 0,
-      "skipped_tests": 3
+      "skipped_tests": 36
+    },
+    "src/bbia_sim/.___main__.py": {
+      "loc": 1,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "src/bbia_sim/._ai_backends.py": {
+      "loc": 1,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "src/bbia_sim/._bbia_adaptive_behavior.py": {
+      "loc": 1,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "src/bbia_sim/._bbia_audio.py": {
+      "loc": 1,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "src/bbia_sim/._bbia_awake.py": {
+      "loc": 1,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "src/bbia_sim/._bbia_behavior.py": {
+      "loc": 1,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "src/bbia_sim/._bbia_emotion_recognition.py": {
+      "loc": 1,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "src/bbia_sim/._bbia_emotions.py": {
+      "loc": 1,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "src/bbia_sim/._bbia_huggingface.py": {
+      "loc": 1,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "src/bbia_sim/._bbia_integration.py": {
+      "loc": 1,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "src/bbia_sim/._bbia_vision.py": {
+      "loc": 1,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "src/bbia_sim/._bbia_voice.py": {
+      "loc": 1,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "src/bbia_sim/._bbia_voice_advanced.py": {
+      "loc": 1,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "src/bbia_sim/._dashboard.py": {
+      "loc": 1,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "src/bbia_sim/._dashboard_advanced.py": {
+      "loc": 1,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "src/bbia_sim/._global_config.py": {
+      "loc": 1,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "src/bbia_sim/._mapping_reachy.py": {
+      "loc": 1,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "src/bbia_sim/._robot_api.py": {
+      "loc": 1,
+      "nosec": 0,
+      "skipped_tests": 0
     },
     "src/bbia_sim/._robot_factory.py": {
+      "loc": 1,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "src/bbia_sim/._telemetry.py": {
+      "loc": 1,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "src/bbia_sim/._unity_reachy_controller.py": {
+      "loc": 1,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "src/bbia_sim/._vision_yolo.py": {
+      "loc": 1,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "src/bbia_sim/._voice_whisper.py": {
       "loc": 1,
       "nosec": 0,
       "skipped_tests": 0
@@ -55,6 +317,34 @@
       "nosec": 0,
       "skipped_tests": 0
     },
+    "src/bbia_sim/ai_backends.py": {
+      "CONFIDENCE.HIGH": 3,
+      "CONFIDENCE.LOW": 0,
+      "CONFIDENCE.MEDIUM": 0,
+      "CONFIDENCE.UNDEFINED": 0,
+      "SEVERITY.HIGH": 0,
+      "SEVERITY.LOW": 3,
+      "SEVERITY.MEDIUM": 0,
+      "SEVERITY.UNDEFINED": 0,
+      "loc": 211,
+      "nosec": 0,
+      "skipped_tests": 2
+    },
+    "src/bbia_sim/backends/.___init__.py": {
+      "loc": 1,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "src/bbia_sim/backends/._mujoco_backend.py": {
+      "loc": 1,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "src/bbia_sim/backends/._reachy_backend.py": {
+      "loc": 1,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
     "src/bbia_sim/backends/._reachy_mini_backend.py": {
       "loc": 1,
       "nosec": 0,
@@ -82,7 +372,7 @@
       "SEVERITY.LOW": 0,
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
-      "loc": 153,
+      "loc": 168,
       "nosec": 0,
       "skipped_tests": 0
     },
@@ -95,24 +385,24 @@
       "SEVERITY.LOW": 0,
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
-      "loc": 133,
+      "loc": 147,
       "nosec": 0,
       "skipped_tests": 0
     },
     "src/bbia_sim/backends/reachy_mini_backend.py": {
-      "CONFIDENCE.HIGH": 0,
+      "CONFIDENCE.HIGH": 1,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
       "CONFIDENCE.UNDEFINED": 0,
       "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
+      "SEVERITY.LOW": 1,
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
-      "loc": 559,
+      "loc": 1012,
       "nosec": 0,
       "skipped_tests": 0
     },
-    "src/bbia_sim/bbia_audio.py": {
+    "src/bbia_sim/bbia_adaptive_behavior.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
@@ -121,9 +411,22 @@
       "SEVERITY.LOW": 0,
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
-      "loc": 69,
+      "loc": 604,
       "nosec": 0,
-      "skipped_tests": 1
+      "skipped_tests": 9
+    },
+    "src/bbia_sim/bbia_audio.py": {
+      "CONFIDENCE.HIGH": 1,
+      "CONFIDENCE.LOW": 0,
+      "CONFIDENCE.MEDIUM": 0,
+      "CONFIDENCE.UNDEFINED": 0,
+      "SEVERITY.HIGH": 0,
+      "SEVERITY.LOW": 1,
+      "SEVERITY.MEDIUM": 0,
+      "SEVERITY.UNDEFINED": 0,
+      "loc": 261,
+      "nosec": 0,
+      "skipped_tests": 3
     },
     "src/bbia_sim/bbia_awake.py": {
       "CONFIDENCE.HIGH": 0,
@@ -134,7 +437,7 @@
       "SEVERITY.LOW": 0,
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
-      "loc": 25,
+      "loc": 64,
       "nosec": 0,
       "skipped_tests": 0
     },
@@ -147,7 +450,20 @@
       "SEVERITY.LOW": 0,
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
-      "loc": 298,
+      "loc": 941,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "src/bbia_sim/bbia_emotion_recognition.py": {
+      "CONFIDENCE.HIGH": 1,
+      "CONFIDENCE.LOW": 0,
+      "CONFIDENCE.MEDIUM": 0,
+      "CONFIDENCE.UNDEFINED": 0,
+      "SEVERITY.HIGH": 0,
+      "SEVERITY.LOW": 1,
+      "SEVERITY.MEDIUM": 0,
+      "SEVERITY.UNDEFINED": 0,
+      "loc": 393,
       "nosec": 0,
       "skipped_tests": 0
     },
@@ -164,6 +480,19 @@
       "nosec": 0,
       "skipped_tests": 0
     },
+    "src/bbia_sim/bbia_huggingface.py": {
+      "CONFIDENCE.HIGH": 22,
+      "CONFIDENCE.LOW": 0,
+      "CONFIDENCE.MEDIUM": 0,
+      "CONFIDENCE.UNDEFINED": 0,
+      "SEVERITY.HIGH": 0,
+      "SEVERITY.LOW": 22,
+      "SEVERITY.MEDIUM": 0,
+      "SEVERITY.UNDEFINED": 0,
+      "loc": 1447,
+      "nosec": 0,
+      "skipped_tests": 20
+    },
     "src/bbia_sim/bbia_integration.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
@@ -173,24 +502,37 @@
       "SEVERITY.LOW": 0,
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
-      "loc": 307,
+      "loc": 527,
       "nosec": 0,
       "skipped_tests": 0
     },
     "src/bbia_sim/bbia_vision.py": {
-      "CONFIDENCE.HIGH": 0,
+      "CONFIDENCE.HIGH": 1,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
       "CONFIDENCE.UNDEFINED": 0,
       "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
+      "SEVERITY.LOW": 1,
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
-      "loc": 147,
+      "loc": 369,
       "nosec": 0,
       "skipped_tests": 0
     },
     "src/bbia_sim/bbia_voice.py": {
+      "CONFIDENCE.HIGH": 4,
+      "CONFIDENCE.LOW": 0,
+      "CONFIDENCE.MEDIUM": 0,
+      "CONFIDENCE.UNDEFINED": 0,
+      "SEVERITY.HIGH": 0,
+      "SEVERITY.LOW": 4,
+      "SEVERITY.MEDIUM": 0,
+      "SEVERITY.UNDEFINED": 0,
+      "loc": 331,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "src/bbia_sim/bbia_voice_advanced.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
@@ -199,7 +541,22 @@
       "SEVERITY.LOW": 0,
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
-      "loc": 127,
+      "loc": 343,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "src/bbia_sim/daemon/._bridge.py": {
+      "loc": 1,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "src/bbia_sim/daemon/._middleware.py": {
+      "loc": 1,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "src/bbia_sim/daemon/._simulation_service.py": {
+      "loc": 1,
       "nosec": 0,
       "skipped_tests": 0
     },
@@ -213,6 +570,11 @@
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
       "loc": 2,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "src/bbia_sim/daemon/app/._main.py": {
+      "loc": 1,
       "nosec": 0,
       "skipped_tests": 0
     },
@@ -238,7 +600,27 @@
       "SEVERITY.LOW": 0,
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
-      "loc": 173,
+      "loc": 296,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "src/bbia_sim/daemon/app/routers/._ecosystem.py": {
+      "loc": 1,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "src/bbia_sim/daemon/app/routers/._motion.py": {
+      "loc": 1,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "src/bbia_sim/daemon/app/routers/._sanity.py": {
+      "loc": 1,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "src/bbia_sim/daemon/app/routers/._state.py": {
+      "loc": 1,
       "nosec": 0,
       "skipped_tests": 0
     },
@@ -255,7 +637,7 @@
       "nosec": 0,
       "skipped_tests": 0
     },
-    "src/bbia_sim/daemon/app/routers/motion.py": {
+    "src/bbia_sim/daemon/app/routers/ecosystem.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
@@ -264,20 +646,59 @@
       "SEVERITY.LOW": 0,
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
-      "loc": 162,
+      "loc": 341,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "src/bbia_sim/daemon/app/routers/motion.py": {
+      "CONFIDENCE.HIGH": 1,
+      "CONFIDENCE.LOW": 0,
+      "CONFIDENCE.MEDIUM": 0,
+      "CONFIDENCE.UNDEFINED": 0,
+      "SEVERITY.HIGH": 0,
+      "SEVERITY.LOW": 1,
+      "SEVERITY.MEDIUM": 0,
+      "SEVERITY.UNDEFINED": 0,
+      "loc": 181,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "src/bbia_sim/daemon/app/routers/sanity.py": {
+      "CONFIDENCE.HIGH": 0,
+      "CONFIDENCE.LOW": 0,
+      "CONFIDENCE.MEDIUM": 0,
+      "CONFIDENCE.UNDEFINED": 0,
+      "SEVERITY.HIGH": 0,
+      "SEVERITY.LOW": 0,
+      "SEVERITY.MEDIUM": 0,
+      "SEVERITY.UNDEFINED": 0,
+      "loc": 52,
       "nosec": 0,
       "skipped_tests": 0
     },
     "src/bbia_sim/daemon/app/routers/state.py": {
-      "CONFIDENCE.HIGH": 0,
+      "CONFIDENCE.HIGH": 4,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
       "CONFIDENCE.UNDEFINED": 0,
       "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
+      "SEVERITY.LOW": 4,
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
-      "loc": 169,
+      "loc": 275,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "src/bbia_sim/daemon/bridge.py": {
+      "CONFIDENCE.HIGH": 1,
+      "CONFIDENCE.LOW": 0,
+      "CONFIDENCE.MEDIUM": 0,
+      "CONFIDENCE.UNDEFINED": 0,
+      "SEVERITY.HIGH": 0,
+      "SEVERITY.LOW": 1,
+      "SEVERITY.MEDIUM": 0,
+      "SEVERITY.UNDEFINED": 0,
+      "loc": 505,
       "nosec": 0,
       "skipped_tests": 0
     },
@@ -329,7 +750,17 @@
       "SEVERITY.LOW": 0,
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
-      "loc": 188,
+      "loc": 193,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "src/bbia_sim/daemon/ws/.___init__.py": {
+      "loc": 1,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "src/bbia_sim/daemon/ws/._telemetry.py": {
+      "loc": 1,
       "nosec": 0,
       "skipped_tests": 0
     },
@@ -355,7 +786,7 @@
       "SEVERITY.LOW": 0,
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
-      "loc": 193,
+      "loc": 216,
       "nosec": 0,
       "skipped_tests": 0
     },
@@ -369,6 +800,19 @@
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
       "loc": 387,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "src/bbia_sim/dashboard_advanced.py": {
+      "CONFIDENCE.HIGH": 6,
+      "CONFIDENCE.LOW": 0,
+      "CONFIDENCE.MEDIUM": 0,
+      "CONFIDENCE.UNDEFINED": 0,
+      "SEVERITY.HIGH": 0,
+      "SEVERITY.LOW": 6,
+      "SEVERITY.MEDIUM": 0,
+      "SEVERITY.UNDEFINED": 0,
+      "loc": 1300,
       "nosec": 0,
       "skipped_tests": 0
     },
@@ -394,7 +838,7 @@
       "SEVERITY.LOW": 0,
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
-      "loc": 160,
+      "loc": 167,
       "nosec": 0,
       "skipped_tests": 0
     },
@@ -407,7 +851,7 @@
       "SEVERITY.LOW": 0,
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
-      "loc": 206,
+      "loc": 222,
       "nosec": 0,
       "skipped_tests": 0
     },
@@ -420,7 +864,22 @@
       "SEVERITY.LOW": 0,
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
-      "loc": 73,
+      "loc": 79,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "src/bbia_sim/sim/.___init__.py": {
+      "loc": 1,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "src/bbia_sim/sim/._joints.py": {
+      "loc": 1,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "src/bbia_sim/sim/._simulator.py": {
+      "loc": 1,
       "nosec": 0,
       "skipped_tests": 0
     },
@@ -459,7 +918,7 @@
       "SEVERITY.LOW": 0,
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
-      "loc": 84,
+      "loc": 87,
       "nosec": 0,
       "skipped_tests": 0
     },
@@ -498,20 +957,20 @@
       "SEVERITY.LOW": 0,
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
-      "loc": 169,
+      "loc": 173,
       "nosec": 0,
       "skipped_tests": 1
     },
     "src/bbia_sim/vision_yolo.py": {
-      "CONFIDENCE.HIGH": 0,
+      "CONFIDENCE.HIGH": 1,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
       "CONFIDENCE.UNDEFINED": 0,
       "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
+      "SEVERITY.LOW": 1,
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
-      "loc": 263,
+      "loc": 270,
       "nosec": 0,
       "skipped_tests": 0
     },
@@ -524,7 +983,7 @@
       "SEVERITY.LOW": 0,
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
-      "loc": 208,
+      "loc": 227,
       "nosec": 0,
       "skipped_tests": 0
     }

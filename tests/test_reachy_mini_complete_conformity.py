@@ -88,7 +88,7 @@ class TestReachyMiniCompleteConformity:
         # Test get_joint_pos avec tous les joints
         for joint in ["stewart_1", "stewart_2", "yaw_body"]:
             pos = self.backend.get_joint_pos(joint)
-            assert isinstance(pos, (float, type(None)))
+            assert isinstance(pos, float | type(None))
             if pos is not None:
                 assert isinstance(pos, float)
 
@@ -200,7 +200,12 @@ class TestReachyMiniCompleteConformity:
     def test_simulation_mode_conformity(self):
         """Test conformité mode simulation."""
         # En mode simulation, toutes les méthodes doivent fonctionner (SDK officiel retourne None)
-        assert self.backend.set_joint_pos("stewart_1", 0.1) is True
+        # IMPORTANT: Les joints stewart ne peuvent pas être contrôlés individuellement
+        # Utiliser goto_target() ou look_at_world() à la place
+        result = self.backend.set_joint_pos(
+            "yaw_body", 0.1
+        )  # Utiliser yaw_body au lieu de stewart_1
+        assert result is True
         assert self.backend.set_emotion("happy", 0.8) is True
         assert self.backend.look_at(0.1, 0.2, 0.3) is True
         assert self.backend.run_behavior("wake_up") is True
@@ -214,10 +219,11 @@ class TestReachyMiniCompleteConformity:
         import time
 
         # Test latence des méthodes critiques
+        # Utiliser yaw_body au lieu de stewart_1 (stewart joints nécessitent IK)
         start_time = time.time()
         for _ in range(100):
-            self.backend.set_joint_pos("stewart_1", 0.1)
-            self.backend.get_joint_pos("stewart_1")
+            self.backend.set_joint_pos("yaw_body", 0.1)
+            self.backend.get_joint_pos("yaw_body")
         end_time = time.time()
 
         avg_latency = (end_time - start_time) / 100 * 1000  # ms

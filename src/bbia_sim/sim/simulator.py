@@ -8,7 +8,7 @@ import logging
 import sys
 import time
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 
 import mujoco
 import mujoco.viewer
@@ -42,7 +42,7 @@ class MuJoCoSimulator:
         try:
             self.model = mujoco.MjModel.from_xml_path(str(self.model_path))
             self.data = mujoco.MjData(self.model)
-            self.viewer: Optional[mujoco.viewer.MjViewer] = None
+            self.viewer: mujoco.viewer.MjViewer | None = None
             self.target_positions: dict[str, float] = {}  # Positions cibles à maintenir
             logger.info(f"Simulateur MuJoCo initialisé avec {self.model_path}")
         except Exception as e:
@@ -50,7 +50,7 @@ class MuJoCoSimulator:
             raise
 
     def launch_simulation(
-        self, headless: bool = False, duration: Optional[int] = None
+        self, headless: bool = False, duration: int | None = None
     ) -> None:
         """Lance la simulation MuJoCo.
 
@@ -83,7 +83,7 @@ class MuJoCoSimulator:
                     logger.error(f"Erreur lors du lancement du viewer : {e}")
                     raise
 
-    def _run_headless_simulation(self, duration: Optional[int]) -> None:
+    def _run_headless_simulation(self, duration: int | None) -> None:
         """Exécute la simulation en mode headless."""
         logger.info("Simulation headless démarrée")
         start_time = time.monotonic()  # Utiliser monotonic pour éviter la dérive
@@ -114,7 +114,7 @@ class MuJoCoSimulator:
             f"Simulation headless arrêtée après {step_count} steps ({actual_duration:.2f}s)"
         )
 
-    def _run_graphical_simulation(self, duration: Optional[int]) -> None:
+    def _run_graphical_simulation(self, duration: int | None) -> None:
         """Exécute la simulation avec l'interface graphique."""
         if self.viewer is None:
             logger.error("Le viewer n'est pas initialisé pour la simulation graphique.")
@@ -217,7 +217,11 @@ class MuJoCoSimulator:
                 error = clamped_angle - current_pos
 
                 # Contrôle proportionnel simple
-                kp = 100.0  # Gain proportionnel
+                # NOTE: Gains PID alignés SDK Reachy Mini officiel
+                # SDK utilise kp=17.11 pour joints stewart (sts3215_345), kp=2.54 pour xc330m288t
+                # Pour simulation MuJoCo, kp=100.0 est approprié pour contrôle rapide
+                # Si besoin de conformité exacte, charger gains depuis XML modèle
+                kp = 100.0  # Gain proportionnel (simulation MuJoCo)
                 control_force = kp * error
 
                 # Application du contrôle

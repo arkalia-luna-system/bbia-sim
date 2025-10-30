@@ -1,0 +1,69 @@
+name: "First Run / Onboarding Report"
+description: "Signaler votre première exécution (post-clone) pour améliorer l'onboarding"
+title: "First run: [OS] / [CPU/GPU] / [Success|Issue]"
+labels: ["onboarding", "feedback"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Merci ! Ce formulaire nous aide à fiabiliser l'onboarding post-clone.
+
+  - type: input
+    id: env-os
+    attributes:
+      label: OS / Version
+      description: "Ex: macOS 15.1, Ubuntu 22.04"
+      placeholder: "ex: macOS 15.1"
+
+  - type: input
+    id: env-python
+    attributes:
+      label: Version Python
+      placeholder: "ex: 3.10.14"
+
+  - type: checkboxes
+    id: steps
+    attributes:
+      label: Étapes effectuées
+      options:
+        - label: "pip install -e .[dev,test]"
+        - label: "python deploy/public_api.py --dev"
+        - label: "mjpython examples/demo_emotion_ok.py"
+        - label: "scripts/hardware_dry_run_reachy_mini.py (si robot réel)"
+        - label: "pytest -q -m 'not e2e'"
+
+  - type: dropdown
+    id: result
+    attributes:
+      label: Résultat global
+      options:
+        - "SUCCESS (tout OK)"
+        - "MINOR ISSUES (contournement possible)"
+        - "BLOCKER (impossible d'aller au bout)"
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs / erreurs majeures
+      description: "Collez les logs clés (ou joignez des fichiers)."
+      render: shell
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Captures d’écran
+      description: "Dashboard, erreurs, etc. (si possible, joignez des images)."
+
+  - type: textarea
+    id: hardware
+    attributes:
+      label: Matériel
+      description: "CPU/GPU, RAM, robot réel (oui/non), drivers, audio, etc."
+
+  - type: textarea
+    id: suggestions
+    attributes:
+      label: Suggestions d’amélioration
+      description: "Idées pour améliorer l’onboarding, la doc, ou les scripts."

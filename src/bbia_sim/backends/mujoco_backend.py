@@ -7,7 +7,7 @@ Backend pour simulation MuJoCo
 import logging
 import time
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 
 import mujoco
 import mujoco.viewer
@@ -22,12 +22,12 @@ class MuJoCoBackend(RobotAPI):
 
     def __init__(
         self, model_path: str = "src/bbia_sim/sim/models/reachy_mini_REAL_OFFICIAL.xml"
-    ):
+    ) -> None:
         super().__init__()
         self.model_path = Path(model_path)
-        self.model: Optional[mujoco.MjModel] = None
-        self.data: Optional[mujoco.MjData] = None
-        self.viewer: Optional[mujoco.viewer.MjViewer] = None
+        self.model: mujoco.MjModel | None = None
+        self.data: mujoco.MjData | None = None
+        self.viewer: mujoco.viewer.MjViewer | None = None
         self.joint_name_to_id: dict[str, int] = {}
         self.step_count = 0
         self.start_time: float = 0.0
@@ -107,7 +107,7 @@ class MuJoCoBackend(RobotAPI):
         logger.debug(f"Joint {joint_name} → {clamped_position:.3f} rad")
         return True
 
-    def get_joint_pos(self, joint_name: str) -> Optional[float]:
+    def get_joint_pos(self, joint_name: str) -> float | None:
         """Récupère la position actuelle d'un joint."""
         if not self.is_connected:
             return None
@@ -131,6 +131,24 @@ class MuJoCoBackend(RobotAPI):
             return True
         except Exception as e:
             logger.error(f"Erreur step MuJoCo: {e}")
+            return False
+
+    def emergency_stop(self) -> bool:
+        """Arrêt d'urgence pour simulation MuJoCo."""
+        if not self.is_connected:
+            logger.warning("Simulation non connectée - emergency_stop ignoré")
+            return False
+
+        try:
+            # Mettre toutes les positions à 0
+            if self.data:
+                self.data.ctrl[:] = 0.0
+                self.data.qvel[:] = 0.0
+            self.is_connected = False
+            logger.critical("🔴 ARRÊT D'URGENCE SIMULATION ACTIVÉ")
+            return True
+        except Exception as e:
+            logger.error(f"Erreur emergency_stop: {e}")
             return False
 
     def launch_viewer(self, passive: bool = True) -> bool:

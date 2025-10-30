@@ -8,17 +8,24 @@ from src.bbia_sim import bbia_voice
 
 class TestBBIAVoice(unittest.TestCase):
     @pytest.mark.audio
-    @patch("src.bbia_sim.bbia_voice.get_bbia_voice")
+    @patch("os.environ.get", return_value="0")  # Désactiver BBIA_DISABLE_AUDIO
+    @patch("src.bbia_sim.bbia_voice._pyttsx3_engine_cache", None)
+    @patch("src.bbia_sim.bbia_voice._bbia_voice_id_cache", None)
     @patch("src.bbia_sim.bbia_voice.pyttsx3.init")
-    def test_dire_texte(self, mock_init, mock_get_voice):
+    @patch("src.bbia_sim.bbia_voice.get_bbia_voice")
+    @patch("src.bbia_sim.bbia_voice._get_pyttsx3_engine")
+    def test_dire_texte(
+        self, mock_get_engine, mock_get_voice, mock_pyttsx3_init, mock_env_get
+    ):
         mock_engine = MagicMock()
-        mock_init.return_value = mock_engine
+        mock_pyttsx3_init.return_value = mock_engine
+        mock_get_engine.return_value = mock_engine
         mock_get_voice.return_value = "test_voice_id"
 
-        bbia_voice.dire_texte("Bonjour")
+        bbia_voice.dire_texte("Bonjour", robot_api=None)
 
-        mock_init.assert_called_once()
-        mock_get_voice.assert_called_once_with(mock_engine)
+        mock_get_engine.assert_called()
+        mock_get_voice.assert_called()
         mock_engine.setProperty.assert_called()
         mock_engine.say.assert_called_with("Bonjour")
         mock_engine.runAndWait.assert_called()

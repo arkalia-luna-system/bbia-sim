@@ -1,11 +1,22 @@
 # 🤖 Guide Complet Reachy Mini Wireless - Préparation BBIA
 
+> Compatibilité Python et CI
+>
+> - Version requise: Python 3.11+
+> - CI: `.github/workflows/ci.yml`
+> - Setup rapide:
+>   ```bash
+>   pyenv install 3.11.9 && pyenv local 3.11.9
+>   python -m pip install --upgrade pip
+>   pip install -e .
+>   ```
+
 ## 🎯 Vue d'ensemble
 
-**Reachy Mini Wireless** - Votre robot compagnon IA pour BBIA  
-**Prix** : 449$ (~500€)  
-**Livraison** : Fin 2025 - Début 2026  
-**Statut** : Commandé ✅
+**Reachy Mini Wireless** - Votre robot compagnon IA pour BBIA
+**Prix** : 449$ (~500€)
+**Livraison** : Fin 2025 - Début 2026
+**Statut** : Commandé
 
 ---
 
@@ -103,28 +114,28 @@ sudo apt-get install ros-noetic-rviz
 ### 3. 📁 Structure de Projet Recommandée
 ```
 reachy-bbia-project/
-├── 📚 Documentation/
+├── Documentation/
 │   ├── specs.md
 │   ├── setup-guide.md
 │   └── api-reference.md
-├── 🧠 BBIA Core/
+├── BBIA Core/
 │   ├── emotions/
 │   ├── behaviors/
 │   ├── voice/
 │   └── vision/
-├── 🤖 Robot Control/
+├── Robot Control/
 │   ├── movements/
 │   ├── sensors/
 │   └── communication/
-├── 🎮 Simulation/
+├── Simulation/
 │   ├── unity/
 │   ├── gazebo/
 │   └── tests/
-├── 📊 Data/
+├── Data/
 │   ├── training/
-│   ├── logs/
+│   ├── log/
 │   └── models/
-└── 🚀 Deployment/
+└── Deployment/
     ├── scripts/
     ├── configs/
     └── monitoring/
@@ -144,7 +155,7 @@ graph TB
         MOTORS[Moteurs<br/>6 DOF tête + corps]
         ANTENNAS[2 Antennes<br/>Expressivité]
     end
-    
+
     subgraph "BBIA Software Stack"
         EMOTIONS[Module Émotions<br/>8 émotions]
         VISION[Module Vision<br/>Reconnaissance objets]
@@ -152,25 +163,25 @@ graph TB
         VOICE[Module Voix<br/>TTS/STT]
         BEHAVIOR[Module Comportements<br/>Actions complexes]
     end
-    
+
     subgraph "Integration Layer"
         SDK[Reachy SDK<br/>Contrôle hardware]
         API[BBIA API<br/>Interface unifiée]
     end
-    
+
     RASPBERRY --> SDK
     CAMERA --> VISION
     MICROPHONES --> AUDIO
     SPEAKER --> VOICE
     MOTORS --> SDK
     ANTENNAS --> SDK
-    
+
     EMOTIONS --> API
     VISION --> API
     AUDIO --> API
     VOICE --> API
     BEHAVIOR --> API
-    
+
     SDK --> API
 ```
 
@@ -184,18 +195,18 @@ gantt
     Documentation complète    :done, doc, 2024-12-01, 2024-12-15
     Environnement dev        :active, env, Décembre 2024, Janvier 2025
     Simulation Unity         :sim, Janvier 2025, Janvier 2025
-    
+
     section Phase 2: Core
     Configuration robot      :robot, Février 2025, Février 2025
     Tests mouvements         :move, Février 2025, Mars 2025
     Reconnaissance vocale    :voice, Mars 2025, Mars 2025
     Système émotions         :emotions, Mars 2025, Avril 2025
-    
+
     section Phase 3: Intelligence
     Hugging Face             :hf, Avril 2025, Mai 2025
     Modèles IA               :ai, Mai 2025, Juin 2025
     Comportements complexes  :behavior, Juin 2025, Juillet 2025
-    
+
     section Phase 4: Optimisation
     Performance              :perf, Juillet 2025, Août 2025
     Nouvelles fonctionnalités :feat, Août 2025, Septembre 2025
@@ -328,17 +339,17 @@ sequenceDiagram
     participant SIM as Simulation Unity
     participant ROBOT as Reachy Mini
     participant API as BBIA API
-    
+
     Note over DEV,API: Phase 1: Développement
     DEV->>SIM: Créer comportement
     SIM->>DEV: Tester en simulation
     DEV->>API: Valider logique
-    
+
     Note over DEV,API: Phase 2: Tests
     DEV->>ROBOT: Déployer sur robot
     ROBOT->>DEV: Retour capteurs
     DEV->>API: Ajuster paramètres
-    
+
     Note over DEV,API: Phase 3: Production
     DEV->>API: Finaliser comportement
     API->>ROBOT: Exécuter en production
@@ -349,19 +360,19 @@ sequenceDiagram
 
 ## 🔍 Ce qui vous manque actuellement
 
-### 1. 🖥️ Matériel
+### 1. Matériel
 - [ ] **Reachy Mini Wireless** (en commande)
 - [ ] **Carte SD haute performance** (64GB+)
 - [ ] **Chargeur USB-C** (si pas inclus)
 - [ ] **Support/stand** (optionnel)
 
-### 2. 🛠️ Logiciel
+### 2. Logiciel
 - [ ] **SDK Reachy** (à installer)
 - [ ] **ROS Noetic** (optionnel)
 - [ ] **Gazebo** (pour simulation physique)
 - [ ] **Hugging Face** (modèles IA)
 
-### 3. 📚 Ressources
+### 3. Ressources
 - [ ] **Documentation officielle** (à étudier)
 - [ ] **Tutoriels vidéo** (YouTube)
 - [ ] **Communauté Discord** (à rejoindre)
@@ -430,27 +441,27 @@ python3 test_unity_simulator.py
 
 ---
 
-## 🎉 Conclusion
+## Conclusion
 
-Vous avez fait un excellent choix avec le **Reachy Mini Wireless** ! Ce robot offre exactement ce qu'il faut pour créer BBIA :
+Le **Reachy Mini Wireless** fournit une base solide pour BBIA :
 
-✅ **Autonomie complète** (batterie + Wi-Fi)  
-✅ **Puissance de calcul** (Raspberry Pi 5)  
-✅ **Expressivité riche** (6 DOF tête + antennes)  
-✅ **Capacités audio** (4 microphones + haut-parleur)  
-✅ **Vision avancée** (caméra grand angle)  
-✅ **Écosystème open-source** complet  
+- Autonomie complète (batterie + Wi‑Fi)
+- Puissance de calcul (Raspberry Pi 5)
+- Expressivité (6 DOF tête + antennes)
+- Capacités audio (4 microphones + haut‑parleur)
+- Vision (caméra grand angle)
+- Écosystème open‑source complet
 
 **Prochaines étapes** :
 1. Étudier la documentation officielle
 2. Configurer l'environnement de développement
 3. Tester en simulation
 4. Préparer l'architecture BBIA
-5. Attendre la livraison avec impatience ! 🚀
+5. Attendre la livraison.
 
 ---
 
-**Version** : 1.0  
-**Date** : Décembre 2024  
-**Statut** : Guide complet pour Reachy Mini Wireless  
-**Auteur** : Assistant IA pour BBIA 
+**Version** : 1.0
+**Date** : Décembre 2024
+**Statut** : Guide Reachy Mini Wireless
+**Auteur** : Assistant IA pour BBIA

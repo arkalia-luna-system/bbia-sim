@@ -12,7 +12,7 @@ import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Optional
+from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     from bbia_sim.robot_factory import RobotBackend
@@ -36,7 +36,7 @@ class BBIAPerformanceBenchmark:
     def __init__(self, backend: str = "mujoco"):
         """Initialise le benchmark."""
         self.backend = backend
-        self.robot: Optional[RobotBackend] = None
+        self.robot: RobotBackend | None = None
         self.results: dict[str, Any] = {}
 
         # Modules BBIA
@@ -215,8 +215,9 @@ class BBIAPerformanceBenchmark:
         if not self.robot:
             return {"error": "Robot non disponible après initialisation"}
 
-        # Type narrowing après vérification
-        assert self.robot is not None
+        # Type narrowing après vérification sans assert (exécution runtime)
+        if self.robot is None:
+            return {"error": "Robot non initialisé"}
         robot = self.robot
 
         results: dict[str, Any] = {
@@ -525,7 +526,7 @@ class BBIAPerformanceBenchmark:
 
         return all_results
 
-    def save_results(self, results: dict[str, Any], filename: Optional[str] = None):
+    def save_results(self, results: dict[str, Any], filename: str | None = None):
         """Sauvegarde les résultats des benchmarks."""
         if filename is None:
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")

@@ -1,6 +1,6 @@
 # 🎯 CORRECTIONS DÉMOS REACHY MINI - PLAN D'ACTION
 
-**Date:** 28 Octobre 2025  
+**Date:** 28 Octobre 2025
 **Objectif:** Aligner toutes les démos avec le SDK officiel Reachy-Mini
 
 ## 📊 PROBLÈMES IDENTIFIÉS DANS LES DÉMOS
@@ -60,7 +60,7 @@ from reachy_mini.utils import create_head_pose
 pose = create_head_pose(pitch=0.15, yaw=0.1, roll=0.05, degrees=False)
 robot.goto_target(head=pose, duration=1.0)
 
-# Pour mouvements corps + tête combinés  
+# Pour mouvements corps + tête combinés
 robot.goto_target(
     head=create_head_pose(pitch=0.1),
     body_yaw=0.15,

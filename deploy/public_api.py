@@ -18,6 +18,7 @@ from fastapi.responses import RedirectResponse
 
 # Import des modules BBIA-SIM
 from bbia_sim.daemon.app.main import app as main_app
+from bbia_sim.daemon.app.routers.sanity import router as sanity_router
 from bbia_sim.daemon.bridge import app as bridge_app
 
 # Configuration pour déploiement public
@@ -133,6 +134,9 @@ async def api_status():
 # Intégration des apps BBIA-SIM
 app.mount("/api", main_app)
 app.mount("/bridge", bridge_app)
+
+# Ajouter routeur sanity dans l'API publique principale
+app.include_router(sanity_router)
 
 # Configuration pour déploiement
 if __name__ == "__main__":

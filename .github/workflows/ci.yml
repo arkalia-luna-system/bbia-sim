@@ -2,9 +2,9 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [main, develop, feature/bbia-reacts]
+    branches: [main, develop, future]
   pull_request:
-    branches: [main, develop, feature/bbia-reacts]
+    branches: [main, develop, future]
 
 jobs:
   lint:
@@ -17,9 +17,9 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: "3.10"
+          python-version: "3.11"
 
       - name: Install system dependencies
         run: |
@@ -44,7 +44,13 @@ jobs:
         run: mypy src/
 
       - name: Security check with Bandit
-        run: bandit -r src/ -c .bandit -q
+        run: |
+          if [ -f .bandit ]; then
+            bandit -r src/ -c .bandit -q
+          else
+            echo "No .bandit config found, running Bandit with defaults"
+            bandit -r src/ -q
+          fi
 
       - name: Dependency audit with pip-audit
         run: |
@@ -73,9 +79,9 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: "3.10"
+          python-version: "3.11"
 
       - name: Install system dependencies
         run: |
@@ -125,9 +131,9 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: "3.10"
+          python-version: "3.11"
 
       - name: Install dependencies
         run: |
@@ -184,9 +190,9 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: "3.10"
+          python-version: "3.11"
 
       - name: Install dependencies
         run: |
@@ -216,9 +222,9 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: "3.10"
+          python-version: "3.11"
 
       - name: Install build dependencies
         run: |

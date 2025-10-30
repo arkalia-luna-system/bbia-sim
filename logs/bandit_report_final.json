@@ -1,19 +1,72 @@
 {
-  "errors": [],
-  "generated_at": "2025-10-25T15:31:11Z",
+  "errors": [
+    {
+      "filename": "src/bbia_sim/._bbia_adaptive_behavior.py",
+      "reason": "syntax error while parsing AST from file"
+    },
+    {
+      "filename": "src/bbia_sim/._bbia_emotion_recognition.py",
+      "reason": "syntax error while parsing AST from file"
+    },
+    {
+      "filename": "src/bbia_sim/._bbia_huggingface.py",
+      "reason": "syntax error while parsing AST from file"
+    },
+    {
+      "filename": "src/bbia_sim/._dashboard_advanced.py",
+      "reason": "syntax error while parsing AST from file"
+    },
+    {
+      "filename": "src/bbia_sim/daemon/._bridge.py",
+      "reason": "syntax error while parsing AST from file"
+    },
+    {
+      "filename": "src/bbia_sim/daemon/._config.py",
+      "reason": "syntax error while parsing AST from file"
+    },
+    {
+      "filename": "src/bbia_sim/daemon/app/._main.py",
+      "reason": "syntax error while parsing AST from file"
+    },
+    {
+      "filename": "src/bbia_sim/daemon/app/routers/._ecosystem.py",
+      "reason": "syntax error while parsing AST from file"
+    }
+  ],
+  "generated_at": "2025-10-25T16:07:03Z",
   "metrics": {
     "_totals": {
       "CONFIDENCE.HIGH": 6,
       "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
+      "CONFIDENCE.MEDIUM": 1,
       "CONFIDENCE.UNDEFINED": 0,
       "SEVERITY.HIGH": 0,
       "SEVERITY.LOW": 6,
-      "SEVERITY.MEDIUM": 0,
+      "SEVERITY.MEDIUM": 1,
       "SEVERITY.UNDEFINED": 0,
-      "loc": 8327,
+      "loc": 8692,
       "nosec": 0,
       "skipped_tests": 17
+    },
+    "src/bbia_sim/._bbia_adaptive_behavior.py": {
+      "loc": 1,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "src/bbia_sim/._bbia_emotion_recognition.py": {
+      "loc": 1,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "src/bbia_sim/._bbia_huggingface.py": {
+      "loc": 1,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "src/bbia_sim/._dashboard_advanced.py": {
+      "loc": 1,
+      "nosec": 0,
+      "skipped_tests": 0
     },
     "src/bbia_sim/__init__.py": {
       "CONFIDENCE.HIGH": 0,
@@ -154,7 +207,7 @@
       "SEVERITY.LOW": 0,
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
-      "loc": 378,
+      "loc": 384,
       "nosec": 0,
       "skipped_tests": 0
     },
@@ -223,6 +276,16 @@
       "nosec": 0,
       "skipped_tests": 0
     },
+    "src/bbia_sim/daemon/._bridge.py": {
+      "loc": 1,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "src/bbia_sim/daemon/._config.py": {
+      "loc": 1,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
     "src/bbia_sim/daemon/__init__.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
@@ -233,6 +296,11 @@
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
       "loc": 2,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "src/bbia_sim/daemon/app/._main.py": {
+      "loc": 1,
       "nosec": 0,
       "skipped_tests": 0
     },
@@ -259,6 +327,11 @@
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
       "loc": 295,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "src/bbia_sim/daemon/app/routers/._ecosystem.py": {
+      "loc": 1,
       "nosec": 0,
       "skipped_tests": 0
     },
@@ -311,6 +384,19 @@
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
       "loc": 169,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "src/bbia_sim/daemon/bridge.py": {
+      "CONFIDENCE.HIGH": 0,
+      "CONFIDENCE.LOW": 0,
+      "CONFIDENCE.MEDIUM": 1,
+      "CONFIDENCE.UNDEFINED": 0,
+      "SEVERITY.HIGH": 0,
+      "SEVERITY.LOW": 0,
+      "SEVERITY.MEDIUM": 1,
+      "SEVERITY.UNDEFINED": 0,
+      "loc": 351,
       "nosec": 0,
       "skipped_tests": 0
     },
@@ -576,6 +662,26 @@
     }
   },
   "results": [
+    {
+      "code": "501 \n502     uvicorn.run(app, host=\"0.0.0.0\", port=8001)\n",
+      "col_offset": 26,
+      "end_col_offset": 35,
+      "filename": "src/bbia_sim/daemon/bridge.py",
+      "issue_confidence": "MEDIUM",
+      "issue_cwe": {
+        "id": 605,
+        "link": "https://cwe.mitre.org/data/definitions/605.html"
+      },
+      "issue_severity": "MEDIUM",
+      "issue_text": "Possible binding to all interfaces.",
+      "line_number": 502,
+      "line_range": [
+        502
+      ],
+      "more_info": "https://bandit.readthedocs.io/en/1.8.6/plugins/b104_hardcoded_bind_all_interfaces.html",
+      "test_id": "B104",
+      "test_name": "hardcoded_bind_all_interfaces"
+    },
     {
       "code": "1176                 # Type narrowing apr\u00e8s v\u00e9rification isinstance\n1177                 assert isinstance(emotion, str)\n1178                 success = advanced_websocket_manager.robot.set_emotion(\n",
       "col_offset": 16,
