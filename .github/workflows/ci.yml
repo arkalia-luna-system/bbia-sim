@@ -44,7 +44,13 @@ jobs:
         run: mypy src/
 
       - name: Security check with Bandit
-        run: bandit -r src/ -c .bandit -q
+        run: |
+          if [ -f .bandit ]; then
+            bandit -r src/ -c .bandit -q
+          else
+            echo "No .bandit config found, running Bandit with defaults"
+            bandit -r src/ -q
+          fi
 
       - name: Dependency audit with pip-audit
         run: |
