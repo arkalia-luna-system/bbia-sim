@@ -7,6 +7,17 @@
 
 ## 🔍 Module : `bbia_huggingface.py`
 
+> Compatibilité Python et CI
+>
+> - Version requise: Python 3.11+
+> - CI: GitHub Actions (`.github/workflows/ci.yml`)
+> - Setup rapide (local macOS):
+>   ```bash
+>   pyenv install 3.11.9 && pyenv local 3.11.9
+>   python -m pip install --upgrade pip
+>   pip install -e .
+>   ```
+
 ### 📋 Référence Reachy Mini
 
 **Référence précise @84c40c31 :**

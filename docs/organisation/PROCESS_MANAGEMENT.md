@@ -1,5 +1,16 @@
 # Système de gestion sécurisée des processus BBIA
 
+> Compatibilité Python et CI
+>
+> - Python requis: 3.11+
+> - CI: `.github/workflows/ci.yml`
+> - Setup local:
+>   ```bash
+>   pyenv install 3.11.9 && pyenv local 3.11.9
+>   python -m pip install --upgrade pip
+>   pip install -e .
+>   ```
+
 ## Problème résolu
 
 Votre Mac ramait à cause de **multiples processus BBIA** qui tournaient en arrière-plan :

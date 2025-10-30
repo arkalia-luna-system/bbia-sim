@@ -1,5 +1,16 @@
 ## Veille Reachy Mini — Profils/Projets similaires
 
+> Compatibilité Python et CI
+>
+> - Python: 3.11+
+> - CI: `.github/workflows/ci.yml`
+> - Setup rapide:
+>   ```bash
+>   pyenv install 3.11.9 && pyenv local 3.11.9
+>   python -m pip install --upgrade pip
+>   pip install -e .
+>   ```
+
 Objectif: détecter des développeurs et dépôts explicitement liés à Reachy Mini (pas Reachy 1/2) présentant des éléments d'architecture avancée (API réseau, dashboard, CI/coverage, simu, moteur cognitif/émotions, etc.).
 
 ### Mots-clés principaux (FR/EN + variantes)

@@ -1,5 +1,16 @@
 # 🏗️ Architecture BBIA-SIM
 
+> Compatibilité Python et CI
+>
+> - Python requis: 3.11+
+> - CI: `.github/workflows/ci.yml`
+> - Setup rapide:
+>   ```bash
+>   pyenv install 3.11.9 && pyenv local 3.11.9
+>   python -m pip install --upgrade pip
+>   pip install -e .
+>   ```
+
 **Version:** 1.3.1
 **Date:** Octobre 2025
 

@@ -1,5 +1,16 @@
 # Notes de version - BBIA-SIM
 
+> Compatibilité Python et CI
+>
+> - Version Python supportée: 3.11+
+> - CI: GitHub Actions (`.github/workflows/ci.yml`)
+> - Setup rapide:
+>   ```bash
+>   pyenv install 3.11.9 && pyenv local 3.11.9
+>   python -m pip install --upgrade pip
+>   pip install -e .
+>   ```
+
 ## Version 1.3.1 - Conformité, sécurité et documentation
 
 ### Résumé

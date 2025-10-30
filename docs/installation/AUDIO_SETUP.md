@@ -43,6 +43,17 @@ graph TB
 
 ## 🔧 Workflow d'Installation Audio
 
+> Compatibilité Python et CI
+>
+> - Version requise: Python 3.11+
+> - CI: GitHub Actions (`.github/workflows/ci.yml`)
+> - Setup rapide:
+>   ```bash
+>   pyenv install 3.11.9 && pyenv local 3.11.9
+>   python -m pip install --upgrade pip
+>   pip install -e .[audio]
+>   ```
+
 ```mermaid
 flowchart TD
     START[Début installation] --> OS{Système d'exploitation ?}

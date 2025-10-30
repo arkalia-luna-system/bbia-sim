@@ -1,5 +1,16 @@
 # Guide d'intégration BBIA-SIM - Phase 3
 
+> Compatibilité Python et CI
+>
+> - Python requis: 3.11+
+> - CI: `.github/workflows/ci.yml`
+> - Setup rapide:
+>   ```bash
+>   pyenv install 3.11.9 && pyenv local 3.11.9
+>   python -m pip install --upgrade pip
+>   pip install -e .
+>   ```
+
 **Version** : 1.2.0
 **Date** : Octobre 2025
 **Public** : développeurs, chercheurs, communauté technique
@@ -641,7 +652,7 @@ asyncio.run(validate_integration())
 
 ### Prérequis
 
-- [ ] Python 3.9+ installé
+- [ ] Python 3.11+ installé
 - [ ] Dépendances installées (`pip install -r requirements.txt`)
 - [ ] API BBIA-SIM démarrée (`python deploy/public_api.py --dev`)
 - [ ] Tests de base passent (`python deploy/public_api.py --check`)

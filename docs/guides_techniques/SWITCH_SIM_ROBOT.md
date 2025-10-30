@@ -1,5 +1,16 @@
 # 🔄 Switch Sim → Robot
 
+> Compatibilité Python et CI
+>
+> - Version requise: Python 3.11+
+> - CI: `.github/workflows/ci.yml`
+> - Setup rapide:
+>   ```bash
+>   pyenv install 3.11.9 && pyenv local 3.11.9
+>   python -m pip install --upgrade pip
+>   pip install -e .
+>   ```
+
 ## Backend Unifié RobotAPI
 
 Le projet BBIA-Reachy-SIM utilise maintenant une **interface unifiée RobotAPI** qui permet de basculer facilement entre la simulation MuJoCo et le robot Reachy réel.

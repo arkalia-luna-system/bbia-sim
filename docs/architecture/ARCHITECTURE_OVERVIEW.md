@@ -24,6 +24,17 @@
 - Tests automatisés : 27 passent, 13 skippés
 - Outils qualité : Black, Ruff, MyPy, Bandit
 - CI/CD : GitHub Actions avec artefacts
+
+> Compatibilité Python et CI
+>
+> - Python requis: 3.11+
+> - Workflow: `.github/workflows/ci.yml`
+> - Installation locale:
+>   ```bash
+>   pyenv install 3.11.9 && pyenv local 3.11.9
+>   python -m pip install --upgrade pip
+>   pip install -e .
+>   ```
 - Documentation : complète et à jour
 
 ---

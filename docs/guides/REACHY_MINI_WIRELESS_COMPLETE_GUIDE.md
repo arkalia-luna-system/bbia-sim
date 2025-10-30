@@ -1,5 +1,16 @@
 # 🤖 Guide Complet Reachy Mini Wireless - Préparation BBIA
 
+> Compatibilité Python et CI
+>
+> - Version requise: Python 3.11+
+> - CI: `.github/workflows/ci.yml`
+> - Setup rapide:
+>   ```bash
+>   pyenv install 3.11.9 && pyenv local 3.11.9
+>   python -m pip install --upgrade pip
+>   pip install -e .
+>   ```
+
 ## 🎯 Vue d'ensemble
 
 **Reachy Mini Wireless** - Votre robot compagnon IA pour BBIA

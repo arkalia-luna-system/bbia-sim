@@ -1,5 +1,16 @@
 # 🎮 Simulation MuJoCo - Guide d'utilisation
 
+> Compatibilité Python et CI
+>
+> - Python requis: 3.11+
+> - CI: `.github/workflows/ci.yml`
+> - Setup rapide:
+>   ```bash
+>   pyenv install 3.11.9 && pyenv local 3.11.9
+>   python -m pip install --upgrade pip
+>   pip install -e .
+>   ```
+
 ## Vue d'ensemble
 
 BBIA-SIM intègre une simulation 3D complète basée sur MuJoCo pour le robot Reachy Mini. Cette simulation permet de tester les comportements et mouvements du robot dans un environnement virtuel avant de les appliquer au robot physique.

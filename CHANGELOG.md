@@ -14,6 +14,7 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### 🧪 Tests & 📚 Docs
 - Nouveau test headless `tests/test_voice_speaker_fallback_headless.py` pour vérifier le fallback speaker sans drivers audio.
 - `docs/status.md` mis à jour (note CI audio + mypy=0 sur corrections effectuées).
+ - Standardisation environnement: Python 3.11+ requis, CI GitHub Actions mise à jour (`setup-python@v5`).
 
 ## [1.3.1] - Octobre 2025
 
