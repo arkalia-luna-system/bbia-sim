@@ -16,7 +16,7 @@ python-multipart
 # Hugging Face Integration
 transformers>=4.30.0
 torch>=2.0.0
-huggingface-hub>=0.16.0
+huggingface-hub>=0.34.4
 
 # Emotion Recognition
 mediapipe>=0.10.0
@@ -31,6 +31,12 @@ matplotlib>=3.7.0
 
 # Export docs (PDF via pypandoc; fallback HTML)
 pypandoc-binary>=1.11
+
+# === VISION / DÉTECTION ===
+ultralytics>=8.0.0
+
+# === WHISPER (ASR) ===
+openai-whisper>=20231117
 
 # === DEVELOPMENT TOOLS ===
 ruff
