@@ -72,10 +72,13 @@ pie title Options d'Installation Audio
     "Installation avec audio" : 50
     "Installation complète" : 20
 ```
+
+```bash
+# Option 1 : Extras audio
 pip install -e .[audio]
 
 # Option 2 : Via le fichier requirements-audio.txt
-pip install -r requirements-audio.txt
+pip install -r requirements/requirements-audio.txt
 
 # Option 3 : Installation manuelle
 pip install pyaudio

@@ -89,7 +89,7 @@
 
 ### **Ressources**
 
-- **Modèle officiel** : `./venv/lib/python3.10/site-packages/reachy_mini/descriptions/reachy_mini/mjcf/reachy_mini.xml`
+- **Modèle officiel** : `./venv/lib/python3.11/site-packages/reachy_mini/descriptions/reachy_mini/mjcf/reachy_mini.xml`
 - **Notre mapping** : `src/bbia_sim/mapping_reachy.py`
 - **Documentation** : [docs.pollen-robotics.com](https://docs.pollen-robotics.com/)
 

@@ -66,7 +66,7 @@
 
 ### 📊 Analyses et Rapports
 - [Analyses de modules](analyses/ANALYSE_MODULES_NON_PRIORITAIRES_2025.md)
-- [Résumés d'analyses](analyses/RESUME_ANALYSE_EXPER_FINALE_2025.md)
+- [Résumés d'analyses](analyses/RESUME_ANALYSE_EXPERT_FINALE_2025.md)
 - [Analyse code Unity AR](analyses/ANALYSE_CODE_UNITY_AR.md)
 
 ### ⚡ Performance

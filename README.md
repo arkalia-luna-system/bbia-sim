@@ -1,7 +1,7 @@
 # BBIA Reachy Mini Simulation
 
 [![Version](https://img.shields.io/badge/version-1.3.1-blue.svg)](https://github.com/arkalia-luna-system/bbia-sim)
-[![Python](https://img.shields.io/badge/python-3.11%2B-blue.svg)](https://python.org)
+[![Python](https://img.shields.io/badge/python-3.9%2B-blue.svg)](https://python.org)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://github.com/arkalia-luna-system/bbia-sim/actions)
 [![Tests](https://img.shields.io/badge/tests-800%2B-brightgreen.svg)](https://github.com/arkalia-luna-system/bbia-sim/actions)
@@ -34,8 +34,8 @@ Ce projet fournit une simulation fidèle du robot Reachy Mini dans MuJoCo, avec 
 
 ## 🚀 Quick Start
 ```bash
-# Installation
-pip install bbia-sim
+# Installation (mode dev recommandé)
+pip install -e .[dev]
 
 # Démarrage simulation
 python examples/demo_emotion_ok.py
@@ -223,8 +223,8 @@ export BBIA_LLM_BACKEND=llama.cpp    # ou qwen
 
 ### 🎯 Vertical Slices BBIA
 ```bash
-# Tests automatiques des vertical slices
-python -m pytest tests/test_vertical_slices.py -v
+# Exemple de test e2e (motion roundtrip)
+python -m pytest tests/e2e/test_motion_roundtrip.py -v
 
 # Démos avec différentes options
 python examples/demo_emotion_ok.py --emotion sad --intensity 0.6 --duration 3
@@ -330,9 +330,9 @@ python scripts/download_ALL_stl.py
 ```
 Télécharge automatiquement les 41 fichiers STL depuis le repo officiel.
 
-### Gestion des processus
+### Gestion des processus 
 ```bash
-./scripts/smart_process_cleanup.sh
+python scripts/process_manager.py --cleanup
 ```
 Nettoie les processus gourmands tout en préservant les applications importantes.
 
