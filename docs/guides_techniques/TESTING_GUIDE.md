@@ -2,7 +2,7 @@
 
 ## 📊 Résumé des performances
 
-**🎯 Coverage totale : validée en CI** (voir `coverage.xml` et `htmlcov/`)
+**Coverage totale : validée en CI** (voir `coverage.xml` et `htmlcov/`)
 
 - **Suite de tests complète** exécutée par pytest (compteur variable selon CI)
 - **Résultats** : voir le récapitulatif CI (pass/failed/skipped)

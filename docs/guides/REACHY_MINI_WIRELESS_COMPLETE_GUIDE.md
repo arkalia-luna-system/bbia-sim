@@ -5,7 +5,7 @@
 **Reachy Mini Wireless** - Votre robot compagnon IA pour BBIA
 **Prix** : 449$ (~500€)
 **Livraison** : Fin 2025 - Début 2026
-**Statut** : Commandé ✅
+**Statut** : Commandé
 
 ---
 
@@ -103,28 +103,28 @@ sudo apt-get install ros-noetic-rviz
 ### 3. 📁 Structure de Projet Recommandée
 ```
 reachy-bbia-project/
-├── 📚 Documentation/
+├── Documentation/
 │   ├── specs.md
 │   ├── setup-guide.md
 │   └── api-reference.md
-├── 🧠 BBIA Core/
+├── BBIA Core/
 │   ├── emotions/
 │   ├── behaviors/
 │   ├── voice/
 │   └── vision/
-├── 🤖 Robot Control/
+├── Robot Control/
 │   ├── movements/
 │   ├── sensors/
 │   └── communication/
-├── 🎮 Simulation/
+├── Simulation/
 │   ├── unity/
 │   ├── gazebo/
 │   └── tests/
-├── 📊 Data/
+├── Data/
 │   ├── training/
 │   ├── log/
 │   └── models/
-└── 🚀 Deployment/
+└── Deployment/
     ├── scripts/
     ├── configs/
     └── monitoring/
@@ -349,19 +349,19 @@ sequenceDiagram
 
 ## 🔍 Ce qui vous manque actuellement
 
-### 1. 🖥️ Matériel
+### 1. Matériel
 - [ ] **Reachy Mini Wireless** (en commande)
 - [ ] **Carte SD haute performance** (64GB+)
 - [ ] **Chargeur USB-C** (si pas inclus)
 - [ ] **Support/stand** (optionnel)
 
-### 2. 🛠️ Logiciel
+### 2. Logiciel
 - [ ] **SDK Reachy** (à installer)
 - [ ] **ROS Noetic** (optionnel)
 - [ ] **Gazebo** (pour simulation physique)
 - [ ] **Hugging Face** (modèles IA)
 
-### 3. 📚 Ressources
+### 3. Ressources
 - [ ] **Documentation officielle** (à étudier)
 - [ ] **Tutoriels vidéo** (YouTube)
 - [ ] **Communauté Discord** (à rejoindre)
@@ -430,27 +430,27 @@ python3 test_unity_simulator.py
 
 ---
 
-## 🎉 Conclusion
+## Conclusion
 
-Vous avez fait un excellent choix avec le **Reachy Mini Wireless** ! Ce robot offre exactement ce qu'il faut pour créer BBIA :
+Le **Reachy Mini Wireless** fournit une base solide pour BBIA :
 
-✅ **Autonomie complète** (batterie + Wi-Fi)
-✅ **Puissance de calcul** (Raspberry Pi 5)
-✅ **Expressivité riche** (6 DOF tête + antennes)
-✅ **Capacités audio** (4 microphones + haut-parleur)
-✅ **Vision avancée** (caméra grand angle)
-✅ **Écosystème open-source** complet
+- Autonomie complète (batterie + Wi‑Fi)
+- Puissance de calcul (Raspberry Pi 5)
+- Expressivité (6 DOF tête + antennes)
+- Capacités audio (4 microphones + haut‑parleur)
+- Vision (caméra grand angle)
+- Écosystème open‑source complet
 
 **Prochaines étapes** :
 1. Étudier la documentation officielle
 2. Configurer l'environnement de développement
 3. Tester en simulation
 4. Préparer l'architecture BBIA
-5. Attendre la livraison avec impatience ! 🚀
+5. Attendre la livraison.
 
 ---
 
 **Version** : 1.0
 **Date** : Décembre 2024
-**Statut** : Guide complet pour Reachy Mini Wireless
+**Statut** : Guide Reachy Mini Wireless
 **Auteur** : Assistant IA pour BBIA

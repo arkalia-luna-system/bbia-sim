@@ -881,7 +881,7 @@ class BBIAHuggingFace:
                 ],
             }
             variants = greetings.get(self.bbia_personality, greetings["friendly_robot"])
-            return random.choice(variants)
+            return self._normalize_response_length(random.choice(variants))
 
         # Au revoir - Réponses émotionnelles selon contexte
         if any(
@@ -915,7 +915,7 @@ class BBIAHuggingFace:
                 ],
             }
             variants = goodbyes.get(self.bbia_personality, goodbyes["friendly_robot"])
-            return random.choice(variants)
+            return self._normalize_response_length(random.choice(variants))
 
         # Positif - Réponses adaptées selon intensité
         if (
@@ -964,7 +964,7 @@ class BBIAHuggingFace:
             variants = positive_responses.get(
                 self.bbia_personality, positive_responses["friendly_robot"]
             )
-            return random.choice(variants)
+            return self._normalize_response_length(random.choice(variants))
 
         # Négatif - Réponses empathiques
         if (
@@ -1015,7 +1015,7 @@ class BBIAHuggingFace:
             variants = negative_responses.get(
                 self.bbia_personality, negative_responses["friendly_robot"]
             )
-            return random.choice(variants)
+            return self._normalize_response_length(random.choice(variants))
 
         # Questions - Réponses adaptées selon type de question
         # AMÉLIORATION INTELLIGENCE: Détection type question pour réponses pertinentes
@@ -1130,7 +1130,7 @@ class BBIAHuggingFace:
                 variants = context_responses.get(
                     self.bbia_personality, context_responses["friendly_robot"]
                 )
-                return random.choice(variants)
+                return self._normalize_response_length(random.choice(variants))
 
         # Réponses génériques variées selon personnalité et sentiment
         # AMÉLIORATION INTELLIGENCE: Réponses naturelles, engageantes, moins robotiques
@@ -1185,7 +1185,7 @@ class BBIAHuggingFace:
         variants = generic_responses.get(
             self.bbia_personality, generic_responses["friendly_robot"]
         )
-        return random.choice(variants)
+        return self._normalize_response_length(random.choice(variants))
 
     def _adapt_response_to_personality(
         self, response: str, sentiment: dict[str, Any]  # noqa: ARG002

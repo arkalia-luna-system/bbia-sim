@@ -75,17 +75,17 @@ bbia.enable_llm_chat("mistralai/Mistral-7B-Instruct-v0.2")
 
 # Conversation intelligente
 response = bbia.chat("Bonjour, comment ça va ?")
-print(response)  # 🤖 Réponse naturelle générée par Mistral 7B
+print(response)  # Réponse naturelle générée par Mistral 7B
 
 # Avec contexte (utilise historique)
 response2 = bbia.chat("Tu te rappelles ce que je viens de dire ?", use_context=True)
-print(response2)  # 🤖 Réponse qui référence la conversation précédente
+print(response2)  # Réponse qui référence la conversation précédente
 ```
 
 ### Désactiver LLM (Libérer Mémoire)
 
 ```python
-# Désactiver pour libérer ~14GB RAM
+# Désactiver pour libérer ~14 GB RAM
 bbia.disable_llm_chat()
 ```
 
@@ -207,7 +207,7 @@ outputs = self.chat_model.generate(
 ### Ressources nécessaires
 
 **Mistral 7B Instruct :**
-- RAM : ~14GB
+- RAM : ~14 GB
 - Premier chargement : 1-2 minutes
 - Génération : ~1-3 secondes/réponse
 - Disk : ~14GB (cache modèle)
@@ -239,13 +239,13 @@ python -c "
 from bbia_sim.bbia_huggingface import BBIAHuggingFace
 
 bbia = BBIAHuggingFace()
-print('📥 Chargement LLM...')
+    print('Chargement LLM...')
 if bbia.enable_llm_chat():
-    print('✅ LLM chargé')
+    print('LLM chargé')
     response = bbia.chat('Bonjour, qui es-tu ?')
-    print(f'🤖 Réponse: {response}')
+    print(f'Réponse: {response}')
 else:
-    print('❌ LLM non chargé')
+    print('LLM non chargé')
 "
 ```
 

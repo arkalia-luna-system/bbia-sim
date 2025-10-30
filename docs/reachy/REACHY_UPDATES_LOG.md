@@ -36,9 +36,9 @@
 <joint name="passive_7" type="ball"/>
 ```
 
-### **⚠️ DIFFÉRENCES DÉTECTÉES**
+### **Différences détectées**
 
-#### **1. Limites de Joints**
+#### **1. Limites de joints**
 - **Notre mapping** : Limites simplifiées (-0.3, 0.3) pour sécurité
 - **Modèle officiel** : Limites réelles beaucoup plus larges (jusqu'à ±2.79 rad)
 - **Impact** : Notre clamp de sécurité est correct mais très conservateur
@@ -48,14 +48,14 @@
 - **Notre mapping** : Marqués comme interdits
 - **Impact** : Les antennes peuvent bouger selon le modèle officiel
 
-#### **3. Joints Passifs**
+#### **3. Joints passifs**
 - **Modèle officiel** : 7 joints `passive_1` à `passive_7` (type ball)
 - **Notre mapping** : Correctement identifiés comme interdits
 - **Impact** : Aucun, notre mapping est correct
 
-### **📋 PLAN DE MIGRATION PROPOSÉ**
+### **Plan de migration proposé**
 
-#### **Option A : Garder le mapping actuel (RECOMMANDÉ)**
+#### **Option A : Garder le mapping actuel (recommandé)**
 - **Avantages** : Sécurité maximale, pas de régression
 - **Inconvénients** : Limites très conservatrices
 - **Action** : Aucune modification nécessaire
@@ -72,7 +72,7 @@
 - **Étape 3** : Tests avec mouvements d'antennes
 - **Action** : Modification du mapping + tests
 
-### **🎯 RECOMMANDATION**
+### **Recommandation**
 
 **GARDER LE MAPPING ACTUEL** pour les raisons suivantes :
 
@@ -81,13 +81,13 @@
 3. **Régressions** : Aucun risque de casser l'existant
 4. **Évolutivité** : Possibilité d'ajouter des limites avancées plus tard
 
-### **📝 ACTIONS FUTURES**
+### **Actions futures**
 
 - [ ] **Optionnel** : Ajouter vraies limites comme référence dans les commentaires
 - [ ] **Optionnel** : Créer mode "expert" avec limites étendues
 - [ ] **Optionnel** : Tests avec antennes mobiles (si matériel disponible)
 
-### **🔗 RESSOURCES**
+### **Ressources**
 
 - **Modèle officiel** : `./venv/lib/python3.10/site-packages/reachy_mini/descriptions/reachy_mini/mjcf/reachy_mini.xml`
 - **Notre mapping** : `src/bbia_sim/mapping_reachy.py`

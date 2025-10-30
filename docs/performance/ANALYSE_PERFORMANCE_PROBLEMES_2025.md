@@ -22,10 +22,10 @@ Impact :
 - Utilisation CPU/mémoire inutile
 
 Corrections appliquées :
-- ✅ Cache global `_pyttsx3_engine_cache` créé
-- ✅ Fonction `_get_pyttsx3_engine()` réutilise moteur en cache
-- ✅ Cache `_bbia_voice_id_cache` pour éviter recherche voix répétée
-- ✅ Thread-safe avec lock
+- Cache global `_pyttsx3_engine_cache` créé
+- Fonction `_get_pyttsx3_engine()` réutilise moteur en cache
+- Cache `_bbia_voice_id_cache` pour éviter recherche voix répétée
+- Thread-safe avec lock
 
 Gain attendu : environ −1.6 s par appel → 0 s après premier appel
 
@@ -44,8 +44,8 @@ Impact :
 - Multiplication des appels = latence cumulée
 
 Corrections appliquées :
-- ✅ Cache `_bbia_voice_id_cache` créé
-- ✅ Recherche voix effectuée **1 seule fois** au premier appel
+- Cache `_bbia_voice_id_cache` créé
+- Recherche voix effectuée **1 seule fois** au premier appel
 
 Gain attendu : environ −50 à −100 ms par appel après le premier
 
@@ -106,10 +106,10 @@ Gain : environ −1.7 s par synthèse vocale
 
 ## Corrections appliquées
 
-1. ✅ Cache global `_pyttsx3_engine_cache` (thread-safe)
-2. ✅ Cache `_bbia_voice_id_cache`
-3. ✅ Réutilisation moteur dans SDK path et fallback path
-4. ✅ Thread-safe avec `threading.Lock()`
+1. Cache global `_pyttsx3_engine_cache` (thread-safe)
+2. Cache `_bbia_voice_id_cache`
+3. Réutilisation moteur dans SDK path et fallback path
+4. Thread-safe avec `threading.Lock()`
 
 ---
 

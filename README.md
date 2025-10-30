@@ -41,6 +41,36 @@ pip install bbia-sim
 python examples/demo_emotion_ok.py
 ```
 
+## 🤖 Première utilisation – Reachy Mini (robot réel)
+
+- Prérequis:
+  - SDK Reachy Mini installé côté PC
+  - Robot allumé, alimenté, sur le même réseau Wi‑Fi que le PC
+  - Ports réseau nécessaires ouverts
+
+### ✅ Check‑list
+- Alimentation/LED OK
+- Wi‑Fi opérationnel (SSID/mot de passe)
+- Version SDK compatible (voir docs/conformité)
+- Dry‑run: connexion → wake_up → look_at_world → emergency_stop
+
+### 📦 Dry‑run rapide
+```bash
+pip install -e .[dev,test]
+python scripts/hardware_dry_run_reachy_mini.py --output-dir artifacts
+```
+
+### 🔗 Guide complet Reachy Mini
+- `docs/guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md`
+
+<!-- Badges CI/Qualité (exemple) -->
+[![CI](https://github.com/arkalia-luna-system/bbia-sim/actions/workflows/ci.yml/badge.svg)](https://github.com/arkalia-luna-system/bbia-sim/actions/workflows/ci.yml)
+[![Coverage](https://img.shields.io/badge/coverage-codecov-green)](https://app.codecov.io/gh/arkalia-luna-system/bbia-sim)
+[![Typing: mypy](https://img.shields.io/badge/typing-mypy-4B8BBE)](#)
+[![Lint: ruff](https://img.shields.io/badge/lint-ruff-46A2F1)](#)
+[![Security: bandit](https://img.shields.io/badge/security-bandit-2E5E82)](#)
+[![Release](https://img.shields.io/github/v/release/arkalia-luna-system/bbia-sim)](https://github.com/arkalia-luna-system/bbia-sim/releases)
+
 ## 🎯 Vue d'ensemble
 
 BBIA-SIM v1.3.1 simule le robot Reachy Mini avec un haut niveau de fidélité :

@@ -1,12 +1,12 @@
 # 🎮 Guide Unity + BBIA - Reachy Mini Wireless
 
-## ✅ Configuration Vérifiée
+## Configuration vérifiée
 
 Votre environnement Unity est maintenant correctement configuré :
-- ✅ Unity Hub installé
-- ✅ Unity Editor installé
-- ✅ Projet Unity présent
-- ✅ Scripts Python prêts
+- Unity Hub installé
+- Unity Editor installé
+- Projet Unity présent
+- Scripts Python prêts
 
 ## 🚀 Démarrage Rapide Unity
 
@@ -36,7 +36,7 @@ Puis choisissez l'option 6 pour lancer le simulateur Unity.
 
 ### 2. Lancer le Simulateur
 1. Dans Unity, ouvrez la scène : `Assets/ReachySimulator.unity`
-2. Cliquez sur le bouton Play (▶️)
+2. Cliquez sur le bouton Play
 3. Vous devriez voir Reachy dans la fenêtre Unity
 
 ### 3. Contrôler BBIA
@@ -109,12 +109,12 @@ sequenceDiagram
     UNITY->>ROBOT: Mouvements complexes
     ROBOT->>DEV: Validation visuelle
 ```
-- 😐 **Neutral** : Position de repos
-- 😊 **Happy** : Mouvements joyeux
-- 😢 **Sad** : Mouvements lents
-- 😠 **Angry** : Mouvements agressifs
-- 🤔 **Curious** : Regards attentifs
-- 🤩 **Excited** : Mouvements énergiques
+- Neutral : Position de repos
+- Happy : Mouvements joyeux
+- Sad : Mouvements lents
+- Angry : Mouvements agressifs
+- Curious : Regards attentifs
+- Excited : Mouvements énergiques
 
 ### Contrôles Python
 ```python
@@ -159,26 +159,26 @@ source venv/bin/activate
 python3 src/bbia_sim/test_unity_connection.py
 ```
 
-## 📚 Ressources
+## Ressources
 
 ### Documentation
 - [Guide complet Reachy](REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md)
 - [Résumé projet](PROJET_COMPLET.md)
 - [Démarrage rapide](🎯_DEMARRAGE_RAPIDE.md)
 
-### Liens Officiels
+### Liens officiels
 - **Unity** : https://unity.com/
 - **Pollen Robotics** : https://www.pollen-robotics.com/
 - **Discord** : https://discord.gg/pollen-robotics
 
-## 🎯 Prochaines Étapes
+## Prochaines étapes
 
 1. **Maintenant** : Tester le simulateur Unity
 2. **Prochainement** : Développer de nouveaux comportements BBIA
 3. **En attendant** : Étudier le SDK Reachy
 4. **Livraison** : Tester sur le vrai robot
 
-## 🌟 Conseils
+## Conseils
 
 ### Développement
 - Sauvegardez régulièrement votre travail
@@ -201,6 +201,6 @@ python3 src/bbia_sim/test_unity_connection.py
 ---
 
 **BBIA** - Brain-Based Interactive Agent
-*Pour Reachy Mini Wireless* 🤖✨
+*Pour Reachy Mini Wireless*
 
-**Unity + BBIA = Puissance Créative !** 🚀
+Unity + BBIA = Puissance créative.

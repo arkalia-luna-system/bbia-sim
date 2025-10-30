@@ -57,7 +57,7 @@ flowchart TD
 
     PYTHON --> TEST[Test audio<br/>python -c "import pyaudio"]
     TEST --> WORK{Fonctionne ?}
-    WORK -->|Oui| SUCCESS[✅ Audio configuré]
+    WORK -->|Oui| SUCCESS[Audio configuré]
     WORK -->|Non| DEBUG[Débogage audio]
 
     DEBUG --> FIX[Corriger problèmes]
@@ -83,12 +83,12 @@ pip install pyaudio
 
 ## Fonctionnalités affectées
 
-- **Avec pyaudio** : Reconnaissance vocale complète via microphone
-- **Sans pyaudio** :
-  - ✅ Synthèse vocale (TTS) fonctionne
-  - ✅ Enregistrement/lecture audio via sounddevice fonctionne
-  - ❌ Reconnaissance vocale via microphone non disponible
-  - ⚠️ Messages d'avertissement dans les logs
+- Avec pyaudio : reconnaissance vocale complète via microphone
+- Sans pyaudio :
+  - Synthèse vocale (TTS) fonctionne
+  - Enregistrement/lecture audio via sounddevice fonctionne
+  - Reconnaissance vocale via microphone non disponible
+  - Messages d'avertissement dans les logs
 
 ## Tests
 

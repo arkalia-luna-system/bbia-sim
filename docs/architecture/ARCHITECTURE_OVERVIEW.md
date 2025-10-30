@@ -382,10 +382,10 @@ CMD ["uvicorn", "src.bbia_sim.daemon.app.main:app", "--host", "0.0.0.0", "--port
 ## Documentation et guides
 
 ### Guides disponibles
-- 📘 **ARCHITECTURE_DETAILED.md** : Guide architecture complet
-- 🚀 **MIGRATION_GUIDE.md** : Migration simulation → robot réel
-- 🧪 **TESTING_GUIDE.md** : Guide tests et validation
-- 📖 **README.md** : Documentation principale
+- **ARCHITECTURE_DETAILED.md** : Guide architecture complet
+- **MIGRATION_GUIDE.md** : Migration simulation → robot réel
+- **TESTING_GUIDE.md** : Guide tests et validation
+- **README.md** : Documentation principale
 
 ### Documentation de l’API
 - 🌐 **Swagger UI** : `http://localhost:8000/docs`
@@ -418,25 +418,25 @@ objects = vision.detect_objects(camera_image)
 ## Roadmap et évolutions
 
 ### Phase 1 - améliorations courtes (terminée)
-- ✅ Dashboard Web Avancé
-- ✅ Tests de Performance
-- ✅ Documentation Technique
+- Dashboard web avancé
+- Tests de performance
+- Documentation technique
 
 ### Phase 2 - innovations moyennes (terminée)
-- ✅ IA Avancée (Hugging Face, émotions, comportements)
-- 🔄 Simulation Physique Avancée (REPORTÉ)
-- 🔄 Intégration ROS2 (REPORTÉ)
+- IA avancée (Hugging Face, émotions, comportements)
+- Simulation physique avancée (reporté)
+- Intégration ROS2 (reporté)
 
 ### Phase 3 - ouverture écosystème (terminée)
-- ✅ API Publique Documentée
-- ✅ Mode Démo Complet
-- ✅ Support Open-Source Professionnel
+- API publique documentée
+- Mode démo complet
+- Support open-source professionnel
 
 ### Phase 4 - consolidation SDK (en cours)
-- ✅ Dépendances SDK intégrées
-- 🔄 Méthodes SDK critiques alignées
-- 🔄 Benchmarks + bridge robot réel
-- 🔄 Docs finales + publication v1.3.0
+- Dépendances SDK intégrées
+- Méthodes SDK critiques alignées
+- Benchmarks + bridge robot réel
+- Docs finales + publication v1.3.0
 
 ---
 

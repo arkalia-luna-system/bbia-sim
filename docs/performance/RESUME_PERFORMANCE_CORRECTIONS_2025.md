@@ -41,13 +41,13 @@ def _get_pyttsx3_engine():
     if _pyttsx3_engine_cache is None:
         with _pyttsx3_lock:  # Thread-safe
             if _pyttsx3_engine_cache is None:
-                _pyttsx3_engine_cache = pyttsx3.init()  # ✅ 1 seule fois
-    return _pyttsx3_engine_cache  # ✅ Réutilisé ensuite
+                _pyttsx3_engine_cache = pyttsx3.init()  # Une seule fois
+    return _pyttsx3_engine_cache  # Réutilisé ensuite
 ```
 
 Résultat de test :
 - Premier appel : 0.52s (initialisation normale)
-- Deuxième appel : **0.000001s** (cache) ✅
+- Deuxième appel : **0.000001s** (cache)
 
 ---
 
@@ -64,7 +64,7 @@ def _get_cached_voice_id():
     return _bbia_voice_id_cache
 ```
 
-**Gain :** -50-100ms par appel après le premier
+**Gain :** -50-100 ms par appel après le premier
 
 ---
 
@@ -75,7 +75,7 @@ def _get_cached_voice_id():
 - Utilisateur : "BBIA met du temps"
 
 ### Après
-- `dire_texte()` : **~0ms latence système** (seulement génération audio)
+- `dire_texte()` : **~0 ms latence système** (seulement génération audio)
 - Utilisateur : "BBIA répond instantanément"
 
 Amélioration : environ −1.7 s par synthèse vocale
@@ -101,10 +101,10 @@ Amélioration : environ −1.7 s par synthèse vocale
 
 ## Validation
 
-- ✅ Ruff : All checks passed
-- ✅ Imports : Tous fonctionnent
-- ✅ Thread-safe : Lock ajouté
-- ✅ Tests : Cache fonctionne (0.000001s après premier appel)
+- Ruff : All checks passed
+- Imports : Tous fonctionnent
+- Thread-safe : Lock ajouté
+- Tests : Cache fonctionne (0.000001 s après premier appel)
 
 ---
 

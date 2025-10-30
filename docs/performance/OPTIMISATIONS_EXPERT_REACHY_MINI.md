@@ -24,7 +24,7 @@ Les mouvements utilisant plusieurs `set_joint_pos()` successifs créent des mouv
 - `bbia_behavior.py` - WakeUpBehavior, GreetingBehavior, AntennaAnimationBehavior, HideBehavior
 - `bbia_integration.py` - apply_emotion_to_robot(), sync_voice_with_movements()
 
-**Exemple avant ❌:**
+**Exemple avant :**
 ```python
 self.robot_api.set_joint_pos("yaw_body", 0.15)
 time.sleep(0.5)
@@ -33,7 +33,7 @@ time.sleep(0.5)
 self.robot_api.set_joint_pos("yaw_body", 0.0)
 ```
 
-**Exemple après ✅:**
+**Exemple après :**
 ```python
 # Mouvement fluide avec interpolation automatique
 self.robot_api.goto_target(
@@ -62,13 +62,13 @@ Les mouvements de tête et corps appliqués séparément créent une désynchron
 - `bbia_integration.py` - apply_emotion_to_robot()
 - `bbia_behavior.py` - HideBehavior
 
-**Exemple avant ❌:**
+**Exemple avant :**
 ```python
 self.robot_api.set_emotion("happy", 0.6)
 self.robot_api.set_joint_pos("yaw_body", 0.1)
 ```
 
-**Exemple après ✅:**
+**Exemple après :**
 ```python
 pose = create_head_pose(pitch=0.08, yaw=0.0, degrees=False)
 self.robot_api.goto_target(
@@ -179,14 +179,14 @@ except Exception as e:
 
 ## Fichiers modifiés
 
-1. ✅ `src/bbia_sim/bbia_behavior.py`
+1. `src/bbia_sim/bbia_behavior.py`
    - WakeUpBehavior : goto_target pour réveil fluide
    - GreetingBehavior : goto_target pour hochement fluide
    - VisionTrackingBehavior : look_at_world/look_at_image
    - AntennaAnimationBehavior : goto_target pour expressivité
    - HideBehavior : goto_target combiné tête+corps
 
-2. ✅ `src/bbia_sim/bbia_integration.py`
+2. `src/bbia_sim/bbia_integration.py`
    - __init__() : passe robot_api au BBIABehaviorManager
    - apply_emotion_to_robot() : goto_target combiné
    - react_to_vision_detection() : look_at_world/look_at_image

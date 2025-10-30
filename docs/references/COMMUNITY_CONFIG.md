@@ -79,7 +79,7 @@ docker run -p 8000:8000 -e BBIA_API_TOKEN=secret bbia-sim
 
 ---
 
-## 🧪 **Tests et validation**
+## Tests et validation
 
 ### **Tests automatisés**
 
@@ -187,7 +187,7 @@ RATE_LIMIT_WINDOW = 60     # fenêtre en secondes
 
 ---
 
-## 🌐 **Intégration multi-environnements**
+## Intégration multi-environnements
 
 ### Vue d'ensemble des environnements
 
@@ -208,7 +208,7 @@ graph TB
     style DOCKER fill:#87CEEB
 ```
 
-### **Développement local**
+### Développement local
 
 ```bash
 # Configuration développement
@@ -218,7 +218,7 @@ export BBIA_API_HOST=127.0.0.1
 export BBIA_API_PORT=8000
 ```
 
-### **Staging**
+### Staging
 
 ```bash
 # Configuration staging
@@ -229,7 +229,7 @@ export BBIA_API_PORT=8000
 export BBIA_API_TOKEN=staging_token
 ```
 
-### **Production**
+### Production
 
 ```bash
 # Configuration production
@@ -243,21 +243,21 @@ export BBIA_RATE_LIMIT=1000
 
 ---
 
-## 📚 **Documentation et Support**
+## Documentation et support
 
-### **Documentation interactive**
+### Documentation interactive
 
 - **Swagger UI** : http://localhost:8000/docs
 - **ReDoc** : http://localhost:8000/redoc
 - **OpenAPI** : http://localhost:8000/openapi.json
 
-### **Guides techniques**
+### Guides techniques
 
 - **Guide d'Intégration** : `docs/guides_techniques/INTEGRATION_GUIDE.md`
 - **Architecture** : `docs/architecture/ARCHITECTURE.md`
 - **Tests** : `docs/guides_techniques/TESTING_GUIDE.md`
 
-### **Support communautaire**
+### Support communautaire
 
 - **GitHub Issues** : https://github.com/arkalia-luna-system/bbia-sim/issues
 - **Discussions** : https://github.com/arkalia-luna-system/bbia-sim/discussions
@@ -265,9 +265,9 @@ export BBIA_RATE_LIMIT=1000
 
 ---
 
-## 🚀 **Déploiement**
+## Déploiement
 
-### **Déploiement local**
+### Déploiement local
 
 ```bash
 # Installation complète
@@ -280,7 +280,7 @@ pip install -e .
 python deploy/public_api.py --prod
 ```
 
-### **Déploiement Docker**
+### Déploiement Docker
 
 ```bash
 # Build et déploiement
@@ -291,7 +291,7 @@ docker run -d -p 8000:8000 --name bbia-sim-api bbia-sim
 curl http://localhost:8000/health
 ```
 
-### **Déploiement cloud**
+### Déploiement cloud
 
 ```bash
 # Configuration cloud (exemple AWS)
@@ -305,9 +305,9 @@ gunicorn bbia_sim.daemon.app.main:app -w 4 -k uvicorn.workers.UvicornWorker
 
 ---
 
-## 🔄 **Maintenance**
+## Maintenance
 
-### **Mise à jour**
+### Mise à jour
 
 ```bash
 # Mise à jour du code
@@ -320,7 +320,7 @@ pip install -r requirements.txt --upgrade
 python deploy/public_api.py --prod
 ```
 
-### **Sauvegarde**
+### Sauvegarde
 
 ```bash
 # Sauvegarde de la configuration
@@ -330,7 +330,7 @@ cp -r config/ backup/config_$(date +%Y%m%d)/
 cp -r log/ backup/log_$(date +%Y%m%d)/
 ```
 
-### **Nettoyage**
+### Nettoyage
 
 ```bash
 # Nettoyage des logs anciens
@@ -343,37 +343,37 @@ rm -rf __pycache__/
 
 ---
 
-## 📋 **Checklist de configuration**
+## Checklist de configuration
 
-### **✅ Environnement de base**
+### Environnement de base
 
 - [ ] Python 3.9+ installé
 - [ ] Dépendances installées
 - [ ] Variables d'environnement configurées
 - [ ] Permissions de fichiers correctes
 
-### **✅ API et services**
+### API et services
 
 - [ ] API démarrée et accessible
 - [ ] Documentation interactive disponible
 - [ ] Tests automatisés passent
 - [ ] WebSocket télémétrie fonctionnel
 
-### **✅ Sécurité**
+### Sécurité
 
 - [ ] Token d'authentification configuré
 - [ ] CORS configuré correctement
 - [ ] Rate limiting activé
 - [ ] Logs de sécurité activés
 
-### **✅ Monitoring**
+### Monitoring
 
 - [ ] Logs configurés et fonctionnels
 - [ ] Métriques de performance disponibles
 - [ ] Monitoring de santé actif
 - [ ] Alertes configurées
 
-### **✅ Production**
+### Production
 
 - [ ] Configuration production déployée
 - [ ] Sauvegardes configurées
