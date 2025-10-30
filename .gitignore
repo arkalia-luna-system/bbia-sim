@@ -29,6 +29,10 @@ ENV/
 *.log
 log/*.csv
 log/*.json
+log/*.jsonl
+log/*.out
+log/*.err
+logs/**
 
 # Tests
 .coverage

@@ -64,7 +64,7 @@ class TestWebSocketTelemetry:
                     try:
                         message = await asyncio.wait_for(websocket.recv(), timeout=2.0)
                         messages.append(message)
-                    except asyncio.TimeoutError:
+                    except TimeoutError:
                         break
 
                 end_time = asyncio.get_event_loop().time()
@@ -129,7 +129,7 @@ class TestWebSocketTelemetry:
                             assert (
                                 abs(yaw_position - 0.7) < 0.1
                             ), f"Position yaw_body non mise à jour: {yaw_position}"
-                    except asyncio.TimeoutError:
+                    except TimeoutError:
                         break
 
         except Exception:

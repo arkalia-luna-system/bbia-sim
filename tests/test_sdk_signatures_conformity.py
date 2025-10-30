@@ -290,7 +290,7 @@ class TestSDKSignaturesConformity:
 
         # Test get_joint_pos
         result = self.backend.get_joint_pos("stewart_1")
-        assert isinstance(result, (float, int, type(None)))
+        assert isinstance(result, float | int | type(None))
 
         # Test set_joint_pos
         result = self.backend.set_joint_pos("stewart_1", 0.1)

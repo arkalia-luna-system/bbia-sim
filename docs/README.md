@@ -1,107 +1,77 @@
-# 📚 Documentation BBIA - Index
+# 📚 Documentation BBIA-SIM
 
-## 🎯 **Vue d'ensemble**
+> Compatibilité Python et CI
+>
+> - Python: 3.11+
+> - CI: `.github/workflows/ci.yml`
+> - Setup rapide:
+>   ```bash
+>   pyenv install 3.11.9 && pyenv local 3.11.9
+>   python -m pip install --upgrade pip
+>   pip install -e .
+>   ```
 
-Ce dossier contient toute la documentation du projet BBIA (Biological Brain Intelligence Agent) pour le robot Reachy Mini Wireless.
+Bienvenue dans la documentation du projet BBIA-SIM.
 
----
+## 📖 Navigation
 
-## 🚀 **Démarrage Rapide**
+- **[Index Principal](INDEX_FINAL.md)** - Vue d'ensemble de toute la documentation
+- **[Guide Débutant](guides/GUIDE_DEBUTANT.md)** - Commencer avec BBIA-SIM
+- **[Guide Reachy Mini](guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md)** - Utiliser le robot physique
 
-### **📊 État Actuel du Projet**
-👉 **[Statut du Projet](STATUT_PROJET.md)** - État actuel, tests, dashboard, prochaines étapes
+## 📁 Structure
 
-### **🎯 Guides par Niveau**
+La documentation est organisée en catégories :
 
-| Niveau | Guide | Description |
-|--------|-------|-------------|
-| 🟢 Débutant | [Guide Débutant](GUIDE_DEBUTANT.md) | Premiers pas avec BBIA |
-| 🟡 Intermédiaire | [Guide Avancé](GUIDE_AVANCE.md) | Développement avancé |
-| 🔴 Expert | [Architecture](ARCHITECTURE.md) | Architecture complète |
+- **guides/** - Guides pour utilisateurs et développeurs
+- **architecture/** - Architecture du système
+- **conformite/** - Conformité avec le SDK officiel
+- **corrections/** - Corrections appliquées
+- **qualite/** - Validation et qualité
+- **analyses/** - Analyses du projet
+- **audit/** - Audits et rapports
+- **simulations/** - Documentation simulation
+- **intelligence/** - Intelligence artificielle
+- **performance/** - Optimisations performance
+- **archives/** - Documentation historique
 
----
+Voir [INDEX_FINAL.md](INDEX_FINAL.md) pour la liste complète.
 
-## 📁 **Structure de la documentation**
+## 🚀 Démarrage Rapide
 
-### 🎮 **Guides Principaux**
-- **[Statut Projet](STATUT_PROJET.md)** - État actuel et métriques (NOUVEAU ✅)
-- **[Guide Reachy Mini Wireless](guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md)**
-- **[Guide de simulation MuJoCo](simulations/MUJOCO_SIMULATION_GUIDE.md)**
-
-### 🔧 **Installation et Configuration**
-- [Installation audio](installation/AUDIO_SETUP.md)
-- [Guide d'intégration](INTEGRATION_GUIDE.md)
-- [Guide de migration](MIGRATION_GUIDE.md)
-
-### 🎮 **Guides Unity**
-- [Guide Unity BBIA](unity/UNITY_BBIA_GUIDE.md)
-- [Dépannage Unity](unity/UNITY_TROUBLESHOOTING.md)
-
-### 📦 **Historique et Archives**
-- [Historique du projet](PROJECT_HISTORY.md)
-- [Archives](archives/) - Documentation archivée
-
----
-
-## 🚀 **Navigation rapide**
-
-### 📋 **Documentation principale**
-- **Architecture** : [Architecture BBIA](ARCHITECTURE.md)
-- **Tests** : [Guide des tests](TESTING_GUIDE.md)
-- **Processus** : [Gestion des processus](PROCESS_MANAGEMENT.md)
-
-### 🎯 **Missions accomplies**
-- **Audit 3D** : [Audit 3D BBIA](audit/AUDIT_3D_BBIA_COMPLET.md)
-- **Historique** : [PROJECT_HISTORY.md](./PROJECT_HISTORY.md)
-
----
-
-## 📊 **État actuel du projet**
-
-### ✅ **Fonctionnalités opérationnelles**
-- **Simulation 3D** : Robot Reachy Mini parfaitement fonctionnel
-- **Modules BBIA** : 12 émotions, vision, audio, comportements intégrés
-- **API REST** : FastAPI + WebSocket opérationnels
-- **Dashboard Web** : Interface complète (http://localhost:8000)
-- **Tests** : 706 tests collectés
-- **Coverage** : 63.37% (excellent)
-- **Documentation** : Complète et organisée
-
-### 🎮 **Commandes principales**
+### 3 actions pour démarrer
 ```bash
-# Activer l'environnement
-source venv/bin/activate
+# 1) Lancer le dashboard local (FastAPI + WebSocket)
+python src/bbia_sim/dashboard_advanced.py
 
-# Voir le robot en 3D
-mjpython examples/demo_emotion_ok.py --emotion happy --duration 10 --joint yaw_body
+# 2) Démarrer l’API publique (mode dev)
+python deploy/public_api.py --dev
 
-# Tests automatiques
-python -m pytest tests/ -v
-
-# Qualité du code
-ruff check . --fix
-black src/ tests/ examples/ scripts/
-mypy src/
+# 3) Essayer une démo MuJoCo (3D)
+mjpython examples/demo_emotion_ok.py --emotion happy --duration 5
 ```
 
----
+- Besoin de détails ? Voir le [Guide Débutant](guides/GUIDE_DEBUTANT.md)
+- Variables d’environnement utiles : `BBIA_DISABLE_AUDIO`, `BBIA_TTS_BACKEND`, `BBIA_STT_BACKEND`, `BBIA_LLM_BACKEND`
 
-## 🎯 **Prochaines étapes**
+### Export One‑Pager (PDF/HTML)
+```bash
+# Installer la dépendance d’export (si non installée)
+pip install pypandoc-binary
 
-### 🚀 **Développement immédiat**
-1. **Nouvelles émotions** : confusion, détermination, nostalgie, fierté
-2. **Commandes vocales** : "tourne à gauche", "souris", "regarde-moi"
-3. **Vision améliorée** : reconnaissance d'expressions humaines
-4. **Tests de stabilité** : validation de tous les joints Stewart
+# Exporter le One‑Pager (PDF si possible, HTML sinon)
+scripts/docs/export_onepager.sh
+# Sortie dans artifacts/
+```
 
-### 🔧 **Intégrations**
-1. **API avancée** : endpoints pour contrôle fin
-2. **Interface web** : contrôle du robot via navigateur
-3. **Intégration Unity** : synchronisation temps réel
-4. **Scénarios interactifs** : robot qui réagit aux émotions
+- **PDF nécessite LaTeX** (moteur `xelatex`). Sur macOS, vous pouvez installer un LaTeX minimal:
+```bash
+# macOS (Homebrew)
+brew install pandoc basictex
+sudo tlmgr update --self && sudo tlmgr install xetex
+```
+- Sans LaTeX, le script génère automatiquement un **HTML fallback**.
 
----
-
-**🤖 BBIA Reachy Mini Simulation - Documentation complète et à jour ! ✨**
-
-*Dernière mise à jour : Octobre 2025*
+1. Lire le [README principal](../README.md)
+2. Suivre le [Guide Débutant](guides/GUIDE_DEBUTANT.md)
+3. Consulter l'[Index](INDEX_FINAL.md) pour trouver ce dont vous avez besoin

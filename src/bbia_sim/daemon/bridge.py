@@ -8,7 +8,7 @@ import asyncio
 import json
 import logging
 import time
-from typing import Any, Optional
+from typing import Any
 
 import numpy as np
 from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
@@ -79,11 +79,11 @@ class RobotState(BaseModel):
 class ZenohBridge:
     """Bridge entre FastAPI et Zenoh pour Reachy Mini."""
 
-    def __init__(self, config: Optional[ZenohConfig] = None):
+    def __init__(self, config: ZenohConfig | None = None):
         """Initialise le bridge Zenoh."""
         self.config = config or ZenohConfig()
-        self.session: Optional[Session] = None
-        self.reachy_mini: Optional[ReachyMini] = None
+        self.session: Session | None = None
+        self.reachy_mini: ReachyMini | None = None
         self.connected = False
         self.logger = logging.getLogger(self.__class__.__name__)
 
@@ -208,12 +208,38 @@ class ZenohBridge:
     async def _on_command_received(self, sample: Any) -> None:
         """Traite les commandes reçues via Zenoh."""
         try:
-            command_data = json.loads(sample.payload.decode())
+            # Validation JSON sécurité: max size pour éviter DoS
+            payload = sample.payload.decode()
+            if len(payload) > 1048576:  # 1MB max
+                self.logger.warning(f"Payload trop volumineux: {len(payload)} bytes")
+                await self._publish_error("Commande rejetée: payload trop volumineux")
+                return
+
+            command_data = json.loads(payload)
+            # Validation: vérifier qu'il n'y a pas de secrets en clair
+            if isinstance(command_data, dict):
+                forbidden_keys = {
+                    "password",
+                    "secret",
+                    "api_key",
+                    "token",
+                    "credential",
+                }
+                if any(k.lower() in forbidden_keys for k in command_data.keys()):
+                    self.logger.warning(
+                        "Tentative d'envoi de secret détectée dans commande"
+                    )
+                    await self._publish_error("Commande rejetée: secrets non autorisés")
+                    return
+
             command = RobotCommand(**command_data)
 
             # Ajouter à la queue de traitement
             await self.command_queue.put(command)
 
+        except json.JSONDecodeError as e:
+            self.logger.error(f"Erreur décodage JSON: {e}")
+            await self._publish_error(f"Erreur format JSON: {e}")
         except Exception as e:
             self.logger.error(f"Erreur traitement commande Zenoh: {e}")
             await self._publish_error(f"Erreur commande: {e}")
@@ -228,7 +254,7 @@ class ZenohBridge:
                 # Exécuter la commande
                 await self._execute_command(command)
 
-            except asyncio.TimeoutError:
+            except TimeoutError:
                 continue
             except Exception as e:
                 self.logger.error(f"Erreur traitement commande: {e}")
@@ -259,22 +285,35 @@ class ZenohBridge:
             await self._publish_error(f"Erreur exécution: {e}")
 
     async def _cmd_goto_target(self, params: dict[str, Any]) -> None:
-        """Commande goto_target."""
+        """Commande goto_target conforme SDK Reachy Mini avec interpolation optimisée."""
         if not self.reachy_mini:
             return
 
         head_pose = params.get("head")
         antennas = params.get("antennas")
         duration = params.get("duration", 1.0)
+        method = params.get("method", "minjerk")  # Minjerk recommandé SDK pour fluidité
+        body_yaw = params.get("body_yaw")  # Mouvement corps synchronisé si spécifié
 
         if head_pose:
             # Convertir en numpy array si nécessaire
             if isinstance(head_pose, list):
                 head_pose = np.array(head_pose)
 
-            self.reachy_mini.goto_target(
-                head=head_pose, antennas=antennas, duration=duration
-            )
+            # OPTIMISATION EXPERTE: Mouvement combiné tête+corps si body_yaw spécifié
+            # (plus expressif et fluide qu'appels séparés)
+            if body_yaw is not None:
+                self.reachy_mini.goto_target(
+                    head=head_pose,
+                    antennas=antennas,
+                    body_yaw=body_yaw,
+                    duration=duration,
+                    method=method,
+                )
+            else:
+                self.reachy_mini.goto_target(
+                    head=head_pose, antennas=antennas, duration=duration, method=method
+                )
 
     async def _cmd_set_target(self, params: dict[str, Any]) -> None:
         """Commande set_target."""
@@ -291,35 +330,141 @@ class ZenohBridge:
             self.reachy_mini.set_target(head=head_pose, antennas=antennas)
 
     async def _cmd_set_emotion(self, params: dict[str, Any]) -> None:
-        """Commande set_emotion."""
+        """Commande set_emotion conforme SDK Reachy Mini."""
         emotion = params.get("emotion", "neutral")
         intensity = params.get("intensity", 0.5)
 
         # Mettre à jour l'état des émotions
         self.current_state.emotions[emotion] = intensity
 
-        # Exécuter l'émotion sur le robot
+        # Exécuter l'émotion sur le robot via SDK officiel
         if self.reachy_mini:
-            # Implémentation spécifique selon le SDK
-            pass
+            try:
+                # Valider les 6 émotions SDK officiel
+                sdk_emotions = {"happy", "sad", "neutral", "excited", "curious", "calm"}
+
+                if emotion in sdk_emotions:
+                    # Utiliser set_emotion SDK si disponible
+                    if hasattr(self.reachy_mini, "set_emotion"):
+                        self.reachy_mini.set_emotion(emotion, intensity)
+                    elif create_head_pose:
+                        # Fallback: créer pose tête selon émotion
+                        emotion_poses = {
+                            "happy": create_head_pose(
+                                pitch=0.1, yaw=0.0, degrees=False
+                            ),
+                            "sad": create_head_pose(pitch=-0.1, yaw=0.0, degrees=False),
+                            "excited": create_head_pose(
+                                pitch=0.2, yaw=0.1, degrees=False
+                            ),
+                            "curious": create_head_pose(
+                                pitch=0.05, yaw=0.2, degrees=False
+                            ),
+                            "calm": create_head_pose(
+                                pitch=-0.05, yaw=0.0, degrees=False
+                            ),
+                            "neutral": create_head_pose(
+                                pitch=0.0, yaw=0.0, degrees=False
+                            ),
+                        }
+                        pose = emotion_poses.get(emotion, emotion_poses["neutral"])
+                        # Appliquer intensité
+                        pose[0, 0] *= intensity
+                        if hasattr(self.reachy_mini, "set_target_head_pose"):
+                            self.reachy_mini.set_target_head_pose(pose)
+                else:
+                    # Mapper émotion non-SDK vers émotion SDK la plus proche
+                    emotion_map = {
+                        "angry": "excited",
+                        "surprised": "curious",
+                        "fearful": "sad",
+                        "confused": "curious",
+                    }
+                    sdk_emotion = emotion_map.get(emotion, "neutral")
+                    if hasattr(self.reachy_mini, "set_emotion"):
+                        self.reachy_mini.set_emotion(sdk_emotion, intensity)
+                    self.logger.info(f"Émotion {emotion} mappée vers {sdk_emotion}")
+            except Exception as e:
+                self.logger.error(f"Erreur set_emotion: {e}")
 
     async def _cmd_play_audio(self, params: dict[str, Any]) -> None:
-        """Commande play_audio."""
+        """Commande play_audio conforme SDK Reachy Mini (media.play_audio)."""
         audio_data = params.get("audio_data")
+        volume = params.get("volume", 0.7)
 
         if self.reachy_mini and audio_data:
-            # Implémentation spécifique selon le SDK
-            pass
+            try:
+                # Utiliser robot.media.play_audio si disponible
+                if hasattr(self.reachy_mini, "media") and hasattr(
+                    self.reachy_mini.media, "play_audio"
+                ):
+                    # Convertir audio_data en bytes si nécessaire
+                    if isinstance(audio_data, str):
+                        # Chemin fichier
+                        with open(audio_data, "rb") as f:
+                            audio_bytes = f.read()
+                    elif isinstance(audio_data, list):
+                        # Liste → bytes
+                        audio_bytes = bytes(audio_data)
+                    else:
+                        audio_bytes = audio_data
+
+                    self.reachy_mini.media.play_audio(audio_bytes, volume=volume)
+                    self.logger.info("Audio joué via robot.media.play_audio")
+                else:
+                    self.logger.warning("robot.media.play_audio non disponible")
+            except Exception as e:
+                self.logger.error(f"Erreur play_audio: {e}")
 
     async def _cmd_look_at(self, params: dict[str, Any]) -> None:
-        """Commande look_at."""
+        """Commande look_at conforme SDK Reachy Mini (look_at_world/look_at_image)."""
         x = params.get("x", 0.0)
         y = params.get("y", 0.0)
         z = params.get("z", 0.0)
+        duration = params.get("duration", 1.0)
 
-        if self.reachy_mini and create_head_pose:
-            pose = create_head_pose(x=x, y=y, z=z)
-            self.reachy_mini.goto_target(head=pose, duration=1.0)
+        if not self.reachy_mini:
+            return
+
+        try:
+            # CORRECTION EXPERTE: create_head_pose prend pitch/yaw/roll, pas x/y/z
+            # Utiliser look_at_world() pour coordonnées 3D (méthode SDK recommandée)
+            if hasattr(self.reachy_mini, "look_at_world"):
+                # Validation coordonnées recommandées SDK (-2.0 ≤ x,y ≤ 2.0, 0.0 ≤ z ≤ 1.5)
+                if abs(x) > 2.0 or abs(y) > 2.0 or z < 0.0 or z > 1.5:
+                    self.logger.warning(
+                        f"Coordonnées ({x}, {y}, {z}) hors limites SDK - clampage appliqué"
+                    )
+                    x = max(-2.0, min(2.0, x))
+                    y = max(-2.0, min(2.0, y))
+                    z = max(0.0, min(1.5, z))
+
+                # Utiliser look_at_world SDK officiel
+                self.reachy_mini.look_at_world(
+                    x, y, z, duration=duration, perform_movement=True
+                )
+                self.logger.info(f"Look_at_world SDK: ({x}, {y}, {z})")
+            elif hasattr(self.reachy_mini, "look_at_image"):
+                # Fallback: look_at_image si coordonnées image (u, v)
+                self.reachy_mini.look_at_image(int(x), int(y))
+                self.logger.info(f"Look_at_image SDK: ({int(x)}, {int(y)})")
+            elif create_head_pose:
+                # Fallback final: calculer pitch/yaw depuis x/y/z (approximation)
+                # Note: Cette approximation est moins précise que look_at_world()
+                pitch = z * 0.2  # Approximation verticale
+                yaw = x * 0.3  # Approximation horizontale
+                pose = create_head_pose(pitch=pitch, yaw=yaw, degrees=False)
+                if hasattr(self.reachy_mini, "goto_target"):
+                    self.reachy_mini.goto_target(
+                        head=pose, duration=duration, method="minjerk"
+                    )
+                elif hasattr(self.reachy_mini, "set_target_head_pose"):
+                    self.reachy_mini.set_target_head_pose(pose)
+                self.logger.info(
+                    f"Look_at fallback (pose calculée): pitch={pitch:.3f}, yaw={yaw:.3f}"
+                )
+        except Exception as e:
+            self.logger.error(f"Erreur look_at: {e}")
 
     async def _state_publisher(self) -> None:
         """Publie l'état du robot périodiquement."""
@@ -344,13 +489,52 @@ class ZenohBridge:
             return
 
         try:
-            # Récupérer l'état des joints
-            joints = self.reachy_mini.get_joint_positions()
-            self.current_state.joints = joints
+            # Récupérer l'état des joints (API SDK officielle)
+            joints_state: dict[str, float] = {}
+            if hasattr(self.reachy_mini, "get_current_joint_positions"):
+                try:
+                    head_positions, antenna_positions = (
+                        self.reachy_mini.get_current_joint_positions()
+                    )
+                    # Stewart joints (indices 0-5)
+                    if isinstance(head_positions, list | tuple):
+                        for i, val in enumerate(head_positions[:6]):
+                            joints_state[f"stewart_{i+1}"] = float(val)
+                    # Antennes (indices 0-1)
+                    if isinstance(antenna_positions, list | tuple):
+                        if len(antenna_positions) > 0:
+                            joints_state["left_antenna"] = float(antenna_positions[0])
+                        if len(antenna_positions) > 1:
+                            joints_state["right_antenna"] = float(antenna_positions[1])
+                except Exception as err:
+                    self.logger.warning(
+                        f"Lecture joints via get_current_joint_positions a échoué: {err}"
+                    )
 
-            # Récupérer l'état des capteurs
-            sensors = self.reachy_mini.get_sensor_data()
-            self.current_state.sensors = sensors
+            # Optionnel: body_yaw si exposé par SDK
+            try:
+                if hasattr(self.reachy_mini, "get_current_body_yaw"):
+                    yaw = self.reachy_mini.get_current_body_yaw()
+                    if yaw is not None:
+                        joints_state["yaw_body"] = float(yaw)
+            except Exception:
+                pass
+
+            self.current_state.joints = joints_state
+
+            # Récupérer l'état des capteurs (garder défensif: API non standardisée)
+            sensors_state: dict[str, Any] = {}
+            try:
+                if hasattr(self.reachy_mini, "get_sensor_data"):
+                    sensors_state = dict(self.reachy_mini.get_sensor_data())  # type: ignore[arg-type]
+                elif hasattr(self.reachy_mini, "io") and hasattr(
+                    self.reachy_mini.io, "get_imu"
+                ):
+                    sensors_state["imu"] = self.reachy_mini.io.get_imu()  # type: ignore[assignment]
+            except Exception as err:
+                self.logger.warning(f"Lecture capteurs indisponible: {err}")
+
+            self.current_state.sensors = sensors_state
 
             # Mettre à jour le timestamp
             self.current_state.timestamp = time.time()
@@ -409,7 +593,7 @@ class ZenohBridge:
 app = FastAPI(title="BBIA-SIM Zenoh Bridge", version="1.3.0")
 
 # Instance globale du bridge
-bridge: Optional[ZenohBridge] = None
+bridge: ZenohBridge | None = None
 
 
 @app.on_event("startup")

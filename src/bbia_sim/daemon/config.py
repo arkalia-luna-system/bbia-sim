@@ -1,6 +1,6 @@
 """Configuration pour le daemon BBIA-SIM."""
 
-from typing import Any, Union
+from typing import Any
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -31,7 +31,7 @@ class Settings(BaseSettings):
         True  # Headless par défaut pour éviter les problèmes macOS
     )
     simulation_step_frequency: float = 0.01  # 100 Hz
-    simulation_duration: Union[int, None] = None
+    simulation_duration: int | None = None
 
     # WebSocket
     telemetry_frequency: float = 10.0  # Hz

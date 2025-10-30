@@ -5,7 +5,7 @@
 ## 🎯 **Contenu du Dossier Assets**
 
 ### 🖼️ **Images**
-- **`images/REACHY_MINI_REFERENCE.md`** - Référence visuelle du robot Reachy Mini
+- **Référence visuelle déplacée** : Voir `docs/reachy/REACHY_MINI_REFERENCE.md` - Référence visuelle du robot Reachy Mini
 
 ---
 
@@ -136,11 +136,10 @@ pie title Types de Ressources Assets
 assets/
 ├── 📖 README.md                      # Ce fichier
 └── 🖼️ images/
-    └── REACHY_MINI_REFERENCE.md      # Référence visuelle
-```
+    └── (images uniquement, documentation déplacée dans docs/)
 
 ### 🔍 **Accès Rapide**
-- **Référence visuelle** : `images/REACHY_MINI_REFERENCE.md`
+- **Référence visuelle** : `docs/reachy/REACHY_MINI_REFERENCE.md`
 - **Description complète** : Voir le fichier de référence
 
 ---

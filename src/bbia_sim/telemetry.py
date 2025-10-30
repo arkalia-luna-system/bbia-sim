@@ -8,22 +8,22 @@ Export .csv dans artifacts/
 import csv
 import time
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 
 
 class TelemetryCollector:
     """Collecteur de télémétrie BBIA."""
 
-    def __init__(self, output_dir: str = "artifacts"):
+    def __init__(self, output_dir: str = "artifacts") -> None:
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(parents=True, exist_ok=True)
 
         self.step_times: list[float] = []
         self.joint_positions: list[dict[str, float]] = []
-        self.start_time: Optional[float] = None
-        self.last_step_time: Optional[float] = None
+        self.start_time: float | None = None
+        self.last_step_time: float | None = None
 
-    def start_collection(self):
+    def start_collection(self) -> None:
         """Démarre la collecte de télémétrie."""
         self.step_times = []
         self.joint_positions = []
@@ -31,7 +31,7 @@ class TelemetryCollector:
         self.last_step_time = self.start_time
         print("📊 Télémétrie démarrée")
 
-    def record_step(self, joint_positions: dict[str, float]):
+    def record_step(self, joint_positions: dict[str, float]) -> None:
         """Enregistre un pas de simulation."""
         current_time = time.time()
 

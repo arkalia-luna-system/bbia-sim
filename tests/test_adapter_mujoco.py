@@ -142,14 +142,14 @@ class TestSimulationService:
         """Test les noms de joints par défaut."""
         joint_names = simulation_service._get_default_joint_names()
         assert len(joint_names) > 0
-        assert "neck_yaw" in joint_names
+        assert "yaw_body" in joint_names
 
     def test_default_joint_positions(self, simulation_service):
         """Test les positions de joints par défaut."""
         positions = simulation_service._get_default_joint_positions()
         assert len(positions) > 0
-        assert "neck_yaw" in positions
-        assert positions["neck_yaw"] == 0.0
+        assert "yaw_body" in positions
+        assert positions["yaw_body"] == 0.0
 
     def test_default_state(self, simulation_service):
         """Test l'état par défaut."""
@@ -197,8 +197,13 @@ class TestBBIAIntegration:
         integration = BBIAIntegration()
 
         # Vérifier que tous les joints dans les mappings existent
+        # Note: head_pitch, head_yaw sont des paramètres pour create_head_pose(), pas des joints physiques
+        pose_parameters = {"head_pitch", "head_yaw"}
         for emotion, mapping in integration.emotion_mappings.items():
             for joint_name in mapping.keys():
+                # Ignorer les paramètres de pose (utilisés avec create_head_pose, pas des joints physiques)
+                if joint_name in pose_parameters:
+                    continue
                 # Les joints doivent être dans la liste des joints officiels
                 expected_joints = [
                     "yaw_body",

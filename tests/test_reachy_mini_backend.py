@@ -23,8 +23,12 @@ class TestReachyMiniBackend:
     def setup_method(self):
         """Configuration avant chaque test."""
         self.robot = RobotFactory.create_backend("reachy_mini")
+        # Connecter le robot pour que les tests fonctionnent
+        self.robot.connect()
         self.mapping = ReachyMapping()
 
+    @pytest.mark.unit
+    @pytest.mark.fast
     def test_backend_creation(self):
         """Test création du backend."""
         assert isinstance(self.robot, ReachyMiniBackend)
@@ -32,6 +36,8 @@ class TestReachyMiniBackend:
         assert hasattr(self.robot, "joint_limits")
         assert hasattr(self.robot, "forbidden_joints")
 
+    @pytest.mark.unit
+    @pytest.mark.fast
     def test_joint_mapping(self):
         """Test du mapping des joints."""
         # Vérifier que tous les joints officiels sont mappés (SDK officiel)
@@ -49,6 +55,8 @@ class TestReachyMiniBackend:
         actual_joints = set(self.robot.get_available_joints())
         assert actual_joints == expected_joints
 
+    @pytest.mark.unit
+    @pytest.mark.fast
     def test_joint_limits(self):
         """Test des limites des joints."""
         # Vérifier que les limites sont définies (SDK officiel)
@@ -57,39 +65,55 @@ class TestReachyMiniBackend:
             min_limit, max_limit = self.robot.joint_limits[joint]
             assert min_limit < max_limit
 
+    @pytest.mark.unit
+    @pytest.mark.fast
     def test_forbidden_joints(self):
         """Test des joints interdits."""
         expected_forbidden = {"left_antenna", "right_antenna"}
         assert self.robot.forbidden_joints == expected_forbidden
 
+    @pytest.mark.unit
+    @pytest.mark.fast
     def test_safe_amplitude_limit(self):
         """Test de la limite d'amplitude sécurisée."""
         assert self.robot.safe_amplitude_limit == 0.3
 
+    @pytest.mark.unit
+    @pytest.mark.fast
     def test_get_joint_pos_simulation(self):
         """Test lecture position joint en mode simulation."""
         # En mode simulation, doit retourner 0.0
         pos = self.robot.get_joint_pos("stewart_1")
         assert pos == 0.0
 
+    @pytest.mark.unit
+    @pytest.mark.fast
     def test_set_joint_pos_simulation(self):
         """Test définition position joint en mode simulation."""
-        # En mode simulation, doit toujours réussir
-        success = self.robot.set_joint_pos("stewart_1", 0.1)
+        # Les joints stewart ne peuvent pas être contrôlés individuellement (IK requis)
+        # Tester avec yaw_body qui peut être contrôlé directement
+        success = self.robot.set_joint_pos("yaw_body", 0.1)
         assert success is True
 
+    @pytest.mark.unit
+    @pytest.mark.fast
     def test_set_joint_pos_forbidden(self):
         """Test définition position joint interdit."""
         # Les joints interdits doivent être rejetés
         success = self.robot.set_joint_pos("left_antenna", 0.1)
         assert success is False
 
+    @pytest.mark.unit
+    @pytest.mark.fast
     def test_set_joint_pos_amplitude_clamp(self):
         """Test clamp de l'amplitude."""
+        # Tester avec yaw_body qui peut être contrôlé directement
         # Position au-delà de la limite doit être clampée
-        success = self.robot.set_joint_pos("stewart_1", 0.5)  # > 0.3
+        success = self.robot.set_joint_pos("yaw_body", 0.5)  # > 0.3
         assert success is True  # Doit réussir mais être clampée
 
+    @pytest.mark.unit
+    @pytest.mark.fast
     def test_set_emotion_simulation(self):
         """Test définition émotion en mode simulation."""
         emotions = ["happy", "sad", "neutral", "excited", "curious", "calm"]
@@ -100,16 +124,22 @@ class TestReachyMiniBackend:
             assert self.robot.current_emotion == emotion
             assert self.robot.emotion_intensity == 0.7
 
+    @pytest.mark.unit
+    @pytest.mark.fast
     def test_set_emotion_invalid(self):
         """Test émotion invalide."""
         success = self.robot.set_emotion("invalid_emotion", 0.5)
         assert success is False
 
+    @pytest.mark.unit
+    @pytest.mark.fast
     def test_look_at_simulation(self):
         """Test look_at en mode simulation."""
         success = self.robot.look_at(0.1, 0.2, 0.3)
         assert success is True
 
+    @pytest.mark.unit
+    @pytest.mark.fast
     def test_run_behavior_simulation(self):
         """Test comportements en mode simulation."""
         behaviors = ["wake_up", "goto_sleep", "nod"]
@@ -118,11 +148,15 @@ class TestReachyMiniBackend:
             success = self.robot.run_behavior(behavior, 2.0)
             assert success is True
 
+    @pytest.mark.unit
+    @pytest.mark.fast
     def test_run_behavior_invalid(self):
         """Test comportement invalide."""
         success = self.robot.run_behavior("invalid_behavior", 2.0)
         assert success is False
 
+    @pytest.mark.unit
+    @pytest.mark.fast
     def test_step(self):
         """Test pas de simulation."""
         initial_count = self.robot.step_count
@@ -130,6 +164,8 @@ class TestReachyMiniBackend:
         assert success is True
         assert self.robot.step_count == initial_count + 1
 
+    @pytest.mark.unit
+    @pytest.mark.fast
     def test_get_telemetry(self):
         """Test récupération télémétrie."""
         telemetry = self.robot.get_telemetry()
@@ -138,6 +174,8 @@ class TestReachyMiniBackend:
         assert "current_emotion" in telemetry
         assert "emotion_intensity" in telemetry
 
+    @pytest.mark.unit
+    @pytest.mark.fast
     def test_connect_disconnect(self):
         """Test connexion/déconnexion."""
         # Test déconnexion
@@ -145,6 +183,8 @@ class TestReachyMiniBackend:
         assert success is True
         assert self.robot.is_connected is False
 
+    @pytest.mark.unit
+    @pytest.mark.fast
     def test_robot_factory_integration(self):
         """Test intégration avec RobotFactory."""
         # Test création via factory
@@ -155,6 +195,8 @@ class TestReachyMiniBackend:
         backends = RobotFactory.get_available_backends()
         assert "reachy_mini" in backends
 
+    @pytest.mark.unit
+    @pytest.mark.fast
     def test_mapping_integration(self):
         """Test intégration avec ReachyMapping."""
         # Test joints recommandés
@@ -177,19 +219,21 @@ class TestReachyMiniBackend:
 class TestReachyMiniBackendIntegration:
     """Tests d'intégration pour le backend Reachy-Mini."""
 
+    @pytest.mark.unit
+    @pytest.mark.fast
     def test_full_workflow_simulation(self):
         """Test workflow complet en mode simulation."""
         robot = RobotFactory.create_backend("reachy_mini")
 
-        # Connexion simulée
-        robot.is_connected = True
+        # Connecter le robot
+        robot.connect()
 
         # Test émotion
         success = robot.set_emotion("happy", 0.8)
         assert success is True
 
-        # Test mouvement
-        success = robot.set_joint_pos("stewart_1", 0.1)
+        # Test mouvement (yaw_body peut être contrôlé directement)
+        success = robot.set_joint_pos("yaw_body", 0.1)
         assert success is True
 
         # Test look_at
@@ -205,19 +249,24 @@ class TestReachyMiniBackendIntegration:
         assert telemetry["current_emotion"] == "happy"
         assert telemetry["emotion_intensity"] == 0.8
 
+    @pytest.mark.unit
+    @pytest.mark.fast
     def test_safety_validation(self):
         """Test validation de sécurité."""
         robot = RobotFactory.create_backend("reachy_mini")
+        robot.connect()
 
         # Test joints interdits
         for joint in robot.forbidden_joints:
             success = robot.set_joint_pos(joint, 0.1)
             assert success is False
 
-        # Test amplitude limite
-        success = robot.set_joint_pos("stewart_1", 0.4)  # > 0.3
+        # Test amplitude limite (yaw_body peut être contrôlé directement)
+        success = robot.set_joint_pos("yaw_body", 0.4)  # > 0.3
         assert success is True  # Doit être clampée automatiquement
 
+    @pytest.mark.unit
+    @pytest.mark.fast
     def test_performance_simulation(self):
         """Test performance en mode simulation."""
         robot = RobotFactory.create_backend("reachy_mini")

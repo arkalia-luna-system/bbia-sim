@@ -69,34 +69,95 @@ def demo_reachy_mini_corrigee():
         ("calm", "😌 Calme"),
     ]
 
+    # OPTIMISATION: Utiliser goto_target avec interpolation adaptée selon émotion
+    emotion_interpolation_map = {
+        "happy": "cartoon",  # Expressif et animé
+        "excited": "cartoon",  # Très expressif
+        "curious": "minjerk",  # Naturel
+        "sad": "ease_in_out",  # Doux et mélancolique
+        "neutral": "minjerk",  # Naturel
+        "calm": "ease_in_out",  # Doux et fluide
+    }
+
     for emotion, emoji_desc in emotions:
         print(f"   {emoji_desc}")
         robot_mujoco.set_emotion(emotion, 0.8)
-        robot_officiel.set_emotion(emotion, 0.8)
+
+        # OPTIMISATION SDK: Utiliser goto_target avec interpolation adaptée si disponible
+        interpolation_method = emotion_interpolation_map.get(emotion, "minjerk")
+        if hasattr(robot_officiel, "goto_target") and hasattr(
+            robot_officiel, "set_emotion"
+        ):
+            try:
+                from reachy_mini.utils import create_head_pose
+
+                # Créer pose selon émotion avec angles SDK conformes
+                emotion_poses = {
+                    "happy": create_head_pose(pitch=0.1, yaw=0.0),
+                    "excited": create_head_pose(pitch=0.2, yaw=0.1),
+                    "curious": create_head_pose(pitch=0.05, yaw=0.2),
+                    "sad": create_head_pose(pitch=-0.1, yaw=0.0),
+                    "neutral": create_head_pose(pitch=0.0, yaw=0.0),
+                    "calm": create_head_pose(pitch=-0.05, yaw=0.0),
+                }
+                pose = emotion_poses.get(emotion, create_head_pose(pitch=0.0, yaw=0.0))
+                robot_officiel.goto_target(
+                    head=pose, duration=0.8, method=interpolation_method
+                )
+            except (ImportError, Exception):
+                robot_officiel.set_emotion(emotion, 0.8)
+        else:
+            robot_officiel.set_emotion(emotion, 0.8)
         time.sleep(1.5)
 
     # Séquence 3: Mouvements avec les BONS noms de joints
-    print("\n👀 Séquence 3: Mouvements avec Noms Corrects")
-    head_movements = [
-        ("stewart_1", "Hochement vertical"),
-        ("stewart_2", "Rotation latérale"),
-        ("stewart_3", "Inclinaison"),
-        ("yaw_body", "Rotation corps"),
+    # IMPORTANT EXPERT: Les joints stewart ne peuvent PAS être contrôlés individuellement
+    # car la plateforme Stewart utilise la cinématique inverse (IK).
+    # Utiliser goto_target() ou set_target_head_pose() avec create_head_pose() pour la tête.
+    print("\n👀 Séquence 3: Mouvements avec Méthodes SDK Correctes")
+
+    # Mouvements tête via goto_target (conforme SDK officiel)
+    try:
+        from reachy_mini.utils import create_head_pose
+
+        print("   🎯 Mouvements tête via goto_target (cinématique inverse)")
+        head_poses = [
+            (0.1, 0.0, "Regard droit"),
+            (0.05, 0.15, "Regard à droite"),
+            (0.05, -0.15, "Regard à gauche"),
+            (0.0, 0.0, "Position neutre"),
+        ]
+
+        for pitch, yaw, description in head_poses:
+            print(f"   {description} (pitch={pitch:.2f}, yaw={yaw:.2f})")
+            pose = create_head_pose(pitch=pitch, yaw=yaw, degrees=False)
+
+            if hasattr(robot_officiel, "goto_target"):
+                # OPTIMISATION: Utiliser interpolation adaptée (minjerk pour mouvements naturels)
+                robot_officiel.goto_target(head=pose, duration=0.8, method="minjerk")
+            elif hasattr(robot_officiel, "set_target_head_pose"):
+                robot_officiel.set_target_head_pose(pose)
+            time.sleep(1.0)
+    except ImportError:
+        print("   ⚠️  SDK reachy_mini non disponible, skip mouvements tête")
+
+    # Mouvements corps via yaw_body (direct ou goto_target)
+    print("\n   🎯 Mouvements corps (yaw_body)")
+    body_movements = [
+        (0.1, "Droit"),
+        (0.15, "Droite"),
+        (-0.15, "Gauche"),
+        (0.0, "Centre"),
     ]
 
-    for joint, description in head_movements:
-        print(f"   {description} ({joint})")
-        # Mouvement sinusoïdal limité à 0.3 rad (selon SDK officiel)
-        for i in range(20):
-            angle = 0.25 * (i / 10.0 - 1.0)  # -0.25 à +0.25 rad sécurisé
-            robot_mujoco.set_joint_pos(joint, angle)
-            robot_officiel.set_joint_pos(joint, angle)
-            time.sleep(0.1)
-
-        # Retour au centre
-        robot_mujoco.set_joint_pos(joint, 0.0)
-        robot_officiel.set_joint_pos(joint, 0.0)
-        time.sleep(0.5)
+    for yaw, description in body_movements:
+        print(f"   Rotation {description} (yaw={yaw:.2f})")
+        # Utiliser goto_target si disponible (plus fluide)
+        if hasattr(robot_officiel, "goto_target"):
+            robot_officiel.goto_target(body_yaw=yaw, duration=0.6, method="minjerk")
+        else:
+            robot_officiel.set_joint_pos("yaw_body", yaw)
+        time.sleep(0.7)
 
     # Séquence 4: Look_at dynamique
     print("\n👁️ Séquence 4: Look_at Dynamique")
@@ -111,8 +172,19 @@ def demo_reachy_mini_corrigee():
 
     for x, y, z, description in look_positions:
         print(f"   {description} ({x}, {y}, {z})")
+        # OPTIMISATION EXPERT: Utiliser look_at_world avec tous les paramètres SDK
+        # pour performance optimale (duration et perform_movement)
+        if hasattr(robot_officiel, "look_at_world"):
+            # Validation coordonnées avant appel (évite erreurs réseau)
+            if -2.0 <= x <= 2.0 and -2.0 <= y <= 2.0 and -1.0 <= z <= 1.0:
+                robot_officiel.look_at_world(
+                    x, y, z, duration=1.0, perform_movement=True
+                )
+            else:
+                print(f"   ⚠️  Coordonnées hors limites: ({x}, {y}, {z})")
+        else:
+            robot_officiel.look_at(x, y, z)
         robot_mujoco.look_at(x, y, z)
-        robot_officiel.look_at(x, y, z)
         time.sleep(1.0)
 
     # Séquence 5: Comportements sociaux (maintenant valides)

@@ -29,27 +29,28 @@ def emotion_to_pose(
 
     t = step / total_steps
 
+    # OPTIMISATION EXPERTE: Amplitudes conformes SDK (max 0.3 rad), conservatrices pour éviter dépassement
     emotion_patterns = {
         "happy": (
-            lambda t: 0.15
+            lambda t: 0.12
             * math.sin(2 * math.pi * 0.1 * t)
             * (1 + 0.5 * math.sin(4 * math.pi * t))
-        ),  # Joyeux + oscillations
+        ),  # Joyeux + oscillations (max 0.18 rad)
         "sad": (
-            lambda t: -0.15 * math.sin(2 * math.pi * 0.3 * t)
-            - 0.05 * math.sin(6 * math.pi * t)
-        ),  # Triste + tremblements
+            lambda t: -0.12 * math.sin(2 * math.pi * 0.3 * t)
+            - 0.04 * math.sin(6 * math.pi * t)
+        ),  # Triste + tremblements (max 0.16 rad)
         "angry": (
-            lambda t: 0.2 * math.sin(2 * math.pi * 0.8 * t)
-            + 0.05 * math.sin(8 * math.pi * t)
-        ),  # Agité + rapide
+            lambda t: 0.18 * math.sin(2 * math.pi * 0.8 * t)
+            + 0.04 * math.sin(8 * math.pi * t)
+        ),  # Agité + rapide (max 0.22 rad < 0.3)
         "surprised": (
             lambda t: 0.15 * math.sin(2 * math.pi * 0.2 * t) * math.cos(3 * math.pi * t)
-        ),  # Surprise complexe
+        ),  # Surprise complexe (max 0.15 rad)
         "neutral": (
             lambda t: 0.08 * math.sin(2 * math.pi * 0.1 * t)
             + 0.03 * math.sin(6 * math.pi * t)
-        ),  # Subtile + micro-mouvements
+        ),  # Subtile + micro-mouvements (max 0.11 rad)
     }
 
     base_movement = emotion_patterns.get(emotion, emotion_patterns["neutral"])(t)

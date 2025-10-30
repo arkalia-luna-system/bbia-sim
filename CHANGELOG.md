@@ -5,6 +5,73 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### 🔧 Corrigé
+- mypy no-redef dans `src/bbia_sim/bbia_voice.py` (`audio_bytes` renommé en `sdk_audio_bytes`) pour éviter la redéfinition dans `dire_texte`.
+- Accès télémétrie SDK durci dans `src/bbia_sim/daemon/app/routers/state.py` (plus d'accès direct `.robot`, usage de `getattr` et typage défensif).
+
+### 🧪 Tests & 📚 Docs
+- Nouveau test headless `tests/test_voice_speaker_fallback_headless.py` pour vérifier le fallback speaker sans drivers audio.
+- `docs/status.md` mis à jour (note CI audio + mypy=0 sur corrections effectuées).
+ - Standardisation environnement: Python 3.11+ requis, CI GitHub Actions mise à jour (`setup-python@v5`).
+
+## [1.3.1] - Octobre 2025
+
+### 🎯 **RELEASE - AUDIT COMPLET BBIA → REACHY INTEGRATION**
+
+Cette version inclut toutes les corrections et améliorations identifiées lors de l'audit complet de conformité avec le SDK Reachy Mini officiel.
+
+### 🚀 **Ajouté**
+
+#### **Sécurité Hardware**
+- **Emergency Stop** : Implémentation complète dans tous les backends (RobotAPI, ReachyMiniBackend, MuJoCoBackend, ReachyBackend)
+- **Watchdog Monitoring** : Système de monitoring temps réel conforme SDK officiel (threads avec Event, détection automatique déconnexion)
+- **Sécurité JSON** : Validation taille payload (1MB max), détection secrets en clair dans bridge Zenoh
+
+#### **Conformité SDK Reachy Mini**
+- **Audio SDK Alignment** : Sample rate 16kHz aligné SDK, validation format audio
+- **Validation Émotions** : Intensité clampée [0.0, 1.0], 6 émotions SDK validées
+- **Performance** : Optimisations boucles temps réel (goto_target avec minjerk, latence monitoring)
+
+#### **Tests & Qualité**
+- **40+ nouveaux tests** : Emergency stop (4 tests), watchdog (7 tests), sécurité limites (5 tests), validation JSON (3 tests)
+- **Markers pytest** : Ajout `@pytest.mark.unit` et `@pytest.mark.fast` sur tous les tests critiques
+- **Tests behaviors & sdk_wrappers** : Correction et validation complète des modules moyens
+
+#### **Robustesse**
+- **Support BBIA_DISABLE_AUDIO** : Flag d'environnement respecté partout (bbia_voice, bbia_voice_advanced, bbia_audio)
+- **Endpoint /stop amélioré** : Utilise `emergency_stop()` si disponible
+- **Télémétrie enrichie** : Latence moyenne disponible si monitoring activé
+
+### 🔧 **Modifié**
+
+#### **Backends**
+- **ReachyMiniBackend** : Watchdog thread daemon pour monitoring temps réel (100ms interval)
+- **Méthodes comportements** : Utilisation `goto_target()` avec interpolation minjerk au lieu de `time.sleep()`
+
+#### **Audio & Voice**
+- **bbia_audio.py** : Constantes SDK (`DEFAULT_SAMPLE_RATE=16000`, `DEFAULT_BUFFER_SIZE=512`)
+- **bbia_voice.py** : Support `BBIA_DISABLE_AUDIO` pour CI/headless
+
+#### **Bridge Zenoh**
+- **Validation JSON** : Protection DoS (taille payload), détection secrets, gestion erreurs dédiée
+
+### 🐛 **Corrigé**
+
+- **Tests intermittent** : Correction race condition dans `test_watchdog_multiple_start_safe`
+- **Tests markers** : Ajout markers pytest manquants dans `test_reachy_mini_backend.py`
+- **Tests behaviors** : Validation complète (21/21 tests passent)
+- **Tests stewart joints** : Adaptation pour utiliser `yaw_body` (IK requis pour stewart)
+
+### 📝 **Documentation**
+
+- **Audit complet** : Documentation exhaustive dans `docs/audit/` (11 fichiers)
+- **Réorganisation** : Déplacement fichiers MD selon structure cohérente
+- **Watchdog** : Documentation complète dans `docs/performance/WATCHDOG_IMPLEMENTATION.md`
+
+---
+
 ## [1.3.0] - Décembre 2024
 
 ### 🎯 **RELEASE MAJEURE - CONFORMITÉ SDK PARFAITE**

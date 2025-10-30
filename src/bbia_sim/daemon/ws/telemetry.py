@@ -6,7 +6,7 @@ import json
 import logging
 import time
 from datetime import datetime
-from typing import Any, Optional
+from typing import Any
 
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 
@@ -23,7 +23,7 @@ class ConnectionManager:
     def __init__(self) -> None:
         self.active_connections: list[WebSocket] = []
         self.is_broadcasting = False
-        self.broadcast_task: Optional[asyncio.Task[None]] = None
+        self.broadcast_task: asyncio.Task[None] | None = None
 
     async def connect(self, websocket: WebSocket) -> None:
         """Accepte une nouvelle connexion WebSocket."""
@@ -108,6 +108,33 @@ class ConnectionManager:
         # Récupération des données depuis la simulation
         robot_state = simulation_service.get_robot_state()
         joint_positions = robot_state.get("joint_positions", {})
+        # Compatibilité: exposer alias 'neck_yaw' pour 'yaw_body' si absent
+        if (
+            isinstance(joint_positions, dict)
+            and "neck_yaw" not in joint_positions
+            and "yaw_body" in joint_positions
+        ):
+            # éviter de muter l'objet d'origine
+            joint_positions = {
+                **joint_positions,
+                "neck_yaw": joint_positions["yaw_body"],
+            }
+
+        # Compat: ajouter joints bras/grippers génériques si absents
+        if isinstance(joint_positions, dict):
+            required_joints = [
+                "right_shoulder_pitch",
+                "right_elbow_pitch",
+                "right_gripper_joint",
+                "left_shoulder_pitch",
+                "left_elbow_pitch",
+                "left_gripper_joint",
+            ]
+            if not all(j in joint_positions for j in required_joints):
+                jp_copy = dict(joint_positions)
+                for jname in required_joints:
+                    jp_copy.setdefault(jname, 0.0)
+                joint_positions = jp_copy
 
         # Données simulées optimisées (évite random() superflu)
         current_time = time.time()

@@ -1,12 +1,14 @@
 """Router pour les endpoints d'état du robot."""
 
 import logging
+import os
 from datetime import datetime
 from typing import Any
 
 from fastapi import APIRouter
 from pydantic import BaseModel
 
+from ....robot_factory import RobotFactory
 from ...simulation_service import simulation_service
 
 logger = logging.getLogger(__name__)
@@ -22,6 +24,105 @@ class RobotState(BaseModel):
     battery: float
     temperature: float
     timestamp: str
+
+
+def _read_sdk_telemetry() -> dict[str, Any] | None:
+    """Lit la télémétrie réelle via le SDK Reachy Mini si disponible.
+
+    Comportement:
+    - Activé uniquement si l'env BBIA_TELEMETRY_SDK est défini à true/1/yes
+    - Timeout configurable via BBIA_TELEMETRY_TIMEOUT (secondes, défaut 1.0)
+    - Aucun échec bloquant: en cas d'erreur ou indisponibilité, retourne None
+    """
+    try:
+        use_sdk = os.environ.get("BBIA_TELEMETRY_SDK", "false").lower() in {
+            "1",
+            "true",
+            "yes",
+        }
+        if not use_sdk:
+            return None
+
+        try:
+            timeout = float(os.environ.get("BBIA_TELEMETRY_TIMEOUT", "1.0") or 1.0)
+        except Exception:
+            timeout = 1.0
+
+        # Créer un backend SDK avec tentative connexion rapide
+        backend = RobotFactory.create_backend(
+            "reachy_mini",
+            use_sim=False,
+            timeout=timeout,
+            spawn_daemon=False,
+        )
+        if backend is None:
+            return None
+
+        try:
+            backend.connect()
+        except Exception:
+            # Ne pas bloquer si la connexion échoue
+            return None
+
+        try:
+            # Lecture batterie/IMU si exposés via robot.media
+            data: dict[str, Any] = {}
+            # Certains backends exposent un objet robot; typage dynamique pour mypy
+            robot_obj: Any = getattr(backend, "robot", None)
+            if robot_obj is None:
+                return None
+
+            # Le SDK expose généralement robot.media
+            media_mgr = getattr(robot_obj, "media", None)
+            if media_mgr is None:
+                return None
+
+            # Batterie (si disponible)
+            battery_level = None
+            if hasattr(media_mgr, "get_battery_level"):
+                try:
+                    battery_level = float(media_mgr.get_battery_level())
+                except Exception:
+                    battery_level = None
+            elif hasattr(media_mgr, "battery"):
+                try:
+                    battery_level = float(media_mgr.battery)
+                except Exception:
+                    battery_level = None
+
+            if battery_level is not None:
+                data["battery"] = battery_level
+
+            # Température (optionnelle)
+            temperature = None
+            if hasattr(media_mgr, "get_temperature"):
+                try:
+                    temperature = float(media_mgr.get_temperature())
+                except Exception:
+                    temperature = None
+            if temperature is not None:
+                data["temperature"] = temperature
+
+            # IMU (si exposé via robot.io ou robot.media)
+            imu = None
+            if hasattr(robot_obj, "io") and robot_obj.io:
+                io_mgr = robot_obj.io
+                try:
+                    if hasattr(io_mgr, "get_imu"):
+                        imu = io_mgr.get_imu()  # doit renvoyer dict-like
+                except Exception:
+                    imu = None
+            if imu and isinstance(imu, dict):
+                data["imu"] = imu
+
+            return data if data else None
+        finally:
+            try:
+                backend.disconnect()
+            except Exception:
+                pass
+    except Exception:
+        return None
 
 
 class BatteryInfo(BaseModel):
@@ -47,11 +148,21 @@ async def get_full_state() -> RobotState:
     robot_state = simulation_service.get_robot_state()
     robot_state.get("joint_positions", {})
 
+    # Valeurs par défaut (simulation)
+    battery_level: float = 85.5
+    temperature_c: float = 25.5
+
+    # Tentative lecture SDK (non bloquant)
+    sdk = _read_sdk_telemetry()
+    if sdk:
+        battery_level = float(sdk.get("battery", battery_level))
+        temperature_c = float(sdk.get("temperature", temperature_c))
+
     return RobotState(
-        position={"x": 0.0, "y": 0.0, "z": 0.0},  # Position globale (à implémenter)
+        position={"x": 0.0, "y": 0.0, "z": 0.0},
         status="ready" if simulation_service.is_simulation_ready() else "not_ready",
-        battery=85.5,  # Simulation de batterie
-        temperature=25.5,  # Simulation de température
+        battery=battery_level,
+        temperature=temperature_c,
         timestamp=datetime.now().isoformat(),
     )
 
@@ -83,7 +194,16 @@ async def get_battery_level() -> BatteryInfo:
     """
     logger.info("Récupération du niveau de batterie")
 
+    # Par défaut simulation
     battery_level = 85.5
+
+    # Tentative lecture SDK
+    sdk = _read_sdk_telemetry()
+    if sdk and "battery" in sdk:
+        try:
+            battery_level = float(sdk["battery"])  # type: ignore[index]
+        except Exception:
+            pass
     status = (
         "good" if battery_level > 20 else "low" if battery_level > 10 else "critical"
     )
@@ -109,8 +229,19 @@ async def get_temperature() -> dict[str, Any]:
     """
     logger.info("Récupération de la température")
 
+    # Par défaut simulation
+    temperature_c = 25.5
+
+    # Tentative lecture SDK
+    sdk = _read_sdk_telemetry()
+    if sdk and "temperature" in sdk:
+        try:
+            temperature_c = float(sdk["temperature"])  # type: ignore[index]
+        except Exception:
+            pass
+
     return {
-        "temperature": 25.5,
+        "temperature": temperature_c,
         "unit": "celsius",
         "status": "normal",
         "timestamp": datetime.now().isoformat(),
@@ -214,13 +345,22 @@ async def get_sensor_data() -> dict[str, Any]:
     """
     logger.info("Récupération des données des capteurs")
 
+    imu_data = {
+        "acceleration": {"x": 0.0, "y": 0.0, "z": 9.81},
+        "gyroscope": {"x": 0.0, "y": 0.0, "z": 0.0},
+        "magnetometer": {"x": 0.0, "y": 0.0, "z": 0.0},
+    }
+
+    sdk = _read_sdk_telemetry()
+    if sdk and "imu" in sdk and isinstance(sdk["imu"], dict):  # type: ignore[index]
+        try:
+            imu_data = sdk["imu"]  # type: ignore[assignment,index]
+        except Exception:
+            pass
+
     return {
         "camera": {"status": "active", "resolution": "640x480", "fps": 30},
         "microphone": {"status": "active", "level": 0.3},
-        "imu": {
-            "acceleration": {"x": 0.0, "y": 0.0, "z": 9.81},
-            "gyroscope": {"x": 0.0, "y": 0.0, "z": 0.0},
-            "magnetometer": {"x": 0.0, "y": 0.0, "z": 0.0},
-        },
+        "imu": imu_data,
         "timestamp": datetime.now().isoformat(),
     }

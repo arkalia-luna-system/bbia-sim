@@ -3,6 +3,7 @@
 
 import argparse
 import logging
+import os
 import sys
 from pathlib import Path
 
@@ -85,6 +86,22 @@ Endpoints disponibles :
         default=1,
         help="Nombre de workers (défaut: 1)",
     )
+    parser.add_argument(
+        "--sdk-telemetry",
+        action="store_true",
+        help="Active la télémétrie SDK-first (BBIA_TELEMETRY_SDK=true)",
+    )
+    parser.add_argument(
+        "--sdk-telemetry-timeout",
+        type=float,
+        default=1.0,
+        help="Timeout (s) pour la lecture SDK télémétrie (défaut: 1.0)",
+    )
+    parser.add_argument(
+        "--no-audio",
+        action="store_true",
+        help="Désactive l'audio matériel (BBIA_DISABLE_AUDIO=1)",
+    )
 
     args = parser.parse_args()
 
@@ -105,6 +122,34 @@ Endpoints disponibles :
         logger.info("⚙️ Mode par défaut (développement)")
         reload = True
         workers = 1
+
+    # Préparer répertoire de logs (préférence: dossier log/)
+    log_dir = Path("log")
+    try:
+        log_dir.mkdir(parents=True, exist_ok=True)
+    except Exception:
+        pass
+
+    # Activer flags d'environnement si demandés
+    if args.sdk_telemetry:
+        os.environ["BBIA_TELEMETRY_SDK"] = "true"
+        os.environ["BBIA_TELEMETRY_TIMEOUT"] = str(args.sdk_telemetry_timeout)
+        logger.info(
+            f"🧩 Télémétrie SDK-first activée (timeout={args.sdk_telemetry_timeout}s)"
+        )
+
+    if args.no_audio:
+        os.environ["BBIA_DISABLE_AUDIO"] = "1"
+        logger.info("🔇 Audio matériel désactivé (BBIA_DISABLE_AUDIO=1)")
+
+    # Ajout d'un handler fichier simple pour le démarrage
+    try:
+        fh = logging.FileHandler(log_dir / "public_api_start.log")
+        fh.setLevel(getattr(logging, args.log_level.upper(), logging.INFO))
+        fh.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(message)s"))
+        logging.getLogger().addHandler(fh)
+    except Exception:
+        pass
 
     # Configuration uvicorn
     config = {

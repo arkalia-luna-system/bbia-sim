@@ -1,3 +1,8 @@
+# ARCHIVES/HISTORIQUE (non maintenu)
+
+> Ce document peut contenir des informations obsolètes (ex: anciennes versions Python).
+> Référez-vous au `README.md` et à `.github/workflows/ci.yml` pour la version active (Python 3.11+) et les procédures à jour.
+
 # 🤖 PROMPT CURSOR - BBIA REACHY MINI SIMULATION (VERSION FINALE)
 
 ## 🎯 **ROLE & MISSION**
@@ -172,7 +177,7 @@ Tu es un **agent Cursor expert MuJoCo/Python** spécialisé dans la simulation r
   ```bash
   # VOIR LA 3D (mode graphique)
   mjpython examples/demo_emotion_ok.py --emotion happy --duration 10 --backend mujoco
-  
+
   # TESTS RAPIDES (mode headless)
   python examples/demo_emotion_ok.py --headless --emotion happy --duration 5 --backend mujoco
   ```
@@ -528,7 +533,7 @@ mjpython examples/test_all_joints.py                       # Test tous joints (s
 MOBILE_JOINTS = {
     "yaw_body": "Rotation du corps - LE PLUS VISIBLE ET SÛR",
     "stewart_1": "Plateforme Stewart 1 - PROBLÉMATIQUE",
-    "stewart_2": "Plateforme Stewart 2 - PROBLÉMATIQUE", 
+    "stewart_2": "Plateforme Stewart 2 - PROBLÉMATIQUE",
     "stewart_3": "Plateforme Stewart 3 - PROBLÉMATIQUE",
     "stewart_4": "Plateforme Stewart 4 - PROBLÉMATIQUE",
     "stewart_5": "Plateforme Stewart 5 - PROBLÉMATIQUE",

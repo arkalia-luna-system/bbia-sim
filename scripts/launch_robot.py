@@ -3,7 +3,8 @@
 Usage: python scripts/launch_robot.py [graphical|headless|test].
 """
 
-import subprocess
+import shutil
+import subprocess  # nosec B404
 import sys
 from pathlib import Path
 
@@ -20,7 +21,9 @@ def main():
     mode = sys.argv[1] if len(sys.argv) > 1 else "graphical"
 
     # Construction de la commande
-    cmd = ["python3", str(launcher)]
+    # Résoudre l'interpréteur Python pour éviter chemin partiel
+    py = sys.executable or shutil.which("python3") or "python3"
+    cmd = [py, str(launcher)]
 
     if mode == "graphical":
         pass
@@ -33,7 +36,7 @@ def main():
 
     # Exécution
     try:
-        subprocess.run(cmd, check=True)
+        subprocess.run(cmd, check=True)  # nosec B603
     except subprocess.CalledProcessError:
         sys.exit(1)
     except KeyboardInterrupt:

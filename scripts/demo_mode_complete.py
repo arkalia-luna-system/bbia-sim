@@ -6,7 +6,6 @@ import asyncio
 import logging
 import sys
 import time
-from typing import Optional
 
 import httpx
 
@@ -76,7 +75,7 @@ class BBIADemoMode:
             logger.error(f"❌ Erreur de connexion: {e}")
             return False
 
-    async def get_ecosystem_info(self) -> Optional[dict]:
+    async def get_ecosystem_info(self) -> dict | None:
         """Récupère les informations de l'écosystème."""
         try:
             response = await self.client.get(

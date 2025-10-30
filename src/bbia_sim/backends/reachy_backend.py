@@ -6,7 +6,7 @@ Backend mock pour robot Reachy réel (à implémenter plus tard)
 
 import logging
 import time
-from typing import Any, Optional
+from typing import Any
 
 from ..robot_api import RobotAPI
 
@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 class ReachyBackend(RobotAPI):
     """Backend Reachy réel pour RobotAPI (Mock pour l'instant)."""
 
-    def __init__(self, robot_ip: str = "localhost", robot_port: int = 8080):
+    def __init__(self, robot_ip: str = "localhost", robot_port: int = 8080) -> None:
         super().__init__()
         self.robot_ip = robot_ip
         self.robot_port = robot_port
@@ -108,7 +108,7 @@ class ReachyBackend(RobotAPI):
         logger.debug(f"Joint {joint_name} → {clamped_position:.3f} rad (mock)")
         return True
 
-    def get_joint_pos(self, joint_name: str) -> Optional[float]:
+    def get_joint_pos(self, joint_name: str) -> float | None:
         """Récupère la position actuelle d'un joint."""
         if not self.is_connected:
             return None
@@ -131,6 +131,22 @@ class ReachyBackend(RobotAPI):
             return True
         except Exception as e:
             logger.error(f"Erreur step Reachy: {e}")
+            return False
+
+    def emergency_stop(self) -> bool:
+        """Arrêt d'urgence pour robot Reachy réel."""
+        if not self.is_connected:
+            logger.warning("Robot non connecté - emergency_stop ignoré")
+            return False
+
+        try:
+            # TODO: Implémenter arrêt réel via API robot
+            # Pour l'instant, simulation
+            self.is_connected = False
+            logger.critical("🔴 ARRÊT D'URGENCE REACHY ACTIVÉ")
+            return True
+        except Exception as e:
+            logger.error(f"Erreur emergency_stop: {e}")
             return False
 
     def get_telemetry(self) -> dict[str, Any]:
@@ -156,7 +172,9 @@ class ReachyBackend(RobotAPI):
             "backend_type": "reachy_real",
         }
 
-    def send_command(self, command: str, **kwargs) -> bool:
+    def send_command(
+        self, command: str, **kwargs: dict[str, Any]  # noqa: ANN401
+    ) -> bool:
         """Envoie une commande au robot Reachy."""
         if not self.is_connected:
             logger.error("Reachy non connecté")

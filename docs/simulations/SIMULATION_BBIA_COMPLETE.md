@@ -1,20 +1,31 @@
-# 🎮 Simulation BBIA Complète - Tous les Modes
+# Simulation BBIA complète - tous les modes
 
-## 🚀 État Actuel - Phase 1 Terminée
+> Compatibilité Python et CI
+>
+> - Python requis: 3.11+
+> - CI: `.github/workflows/ci.yml`
+> - Setup rapide:
+>   ```bash
+>   pyenv install 3.11.9 && pyenv local 3.11.9
+>   python -m pip install --upgrade pip
+>   pip install -e .
+>   ```
 
-### ✅ **Dépôts Installés avec Succès**
-- 📚 `reachy-docs` : Documentation officielle complète
-- 🎮 `reachy-unity-package` : Simulation Unity
-- 👁️ `pollen-vision` : Vision par ordinateur (testé ✅)
-- 🗣️ `reachy2-sdk-audio-server-rs` : Serveur audio
-- 🎪 `reachy2-behaviors-dev` : Comportements
-- 📊 `reachy-dashboard` : Interface web
-- 🎯 `reachy-face-tracking` : Suivi de visage
-- 🎓 `reachy2-tutorials` : Tutoriels et exemples
+## État actuel - phase 1 terminée
+
+### Dépôts installés avec succès
+- `reachy-docs` : documentation officielle complète
+- `reachy-unity-package` : simulation Unity
+- `pollen-vision` : vision par ordinateur (testé)
+- `reachy2-sdk-audio-server-rs` : serveur audio
+- `reachy2-behaviors-dev` : comportements
+- `reachy-dashboard` : interface web
+- `reachy-face-tracking` : suivi de visage
+- `reachy2-tutorials` : tutoriels et exemples
 
 ---
 
-## 🏗️ Architecture Simulation BBIA
+## Architecture simulation BBIA
 
 ```mermaid
 graph TB
@@ -24,7 +35,7 @@ graph TB
         UNITY[Simulation Unity<br/>3D Interactive]
         MUJOCO[Simulation MuJoCo<br/>Physique réaliste]
     end
-    
+
     subgraph "Modules BBIA"
         EMOTIONS[Module Émotions<br/>8 émotions]
         VISION[Module Vision<br/>Reconnaissance objets]
@@ -32,29 +43,29 @@ graph TB
         VOICE[Module Voix<br/>TTS/STT]
         BEHAVIOR[Module Comportements<br/>Actions complexes]
     end
-    
+
     subgraph "Intégration"
         API[BBIA API<br/>Interface unifiée]
         SIMULATOR[Simulateur<br/>Environnement virtuel]
     end
-    
+
     BASIC --> EMOTIONS
     ADVANCED --> VISION
     ADVANCED --> AUDIO
     ADVANCED --> VOICE
     UNITY --> BEHAVIOR
     MUJOCO --> SIMULATOR
-    
+
     EMOTIONS --> API
     VISION --> API
     AUDIO --> API
     VOICE --> API
     BEHAVIOR --> API
-    
+
     API --> SIMULATOR
 ```
 
-## 🎯 Workflow de Simulation
+## Workflow de simulation
 
 ```mermaid
 sequenceDiagram
@@ -62,53 +73,53 @@ sequenceDiagram
     participant BBIA as BBIA System
     participant SIM as Simulateur
     participant ROBOT as Robot Virtuel
-    
+
     USER->>BBIA: Lancer simulation
     BBIA->>SIM: Initialiser environnement
     SIM->>ROBOT: Charger modèle 3D
-    
+
     Note over USER,ROBOT: Phase d'émotions
     USER->>BBIA: Émotion "happy"
     BBIA->>SIM: Appliquer émotion
     SIM->>ROBOT: Animer robot
-    
+
     Note over USER,ROBOT: Phase de vision
     USER->>BBIA: Reconnaissance objet
     BBIA->>SIM: Analyser scène
     SIM->>ROBOT: Réaction visuelle
-    
+
     Note over USER,ROBOT: Phase audio
     USER->>BBIA: Commande vocale
     BBIA->>SIM: Traiter audio
     SIM->>ROBOT: Réponse vocale
 ```
 
-## 📊 Comparaison des Modes de Simulation
+## Comparaison des modes de simulation
 
 ```mermaid
 graph LR
     subgraph "Simulation BBIA de Base"
         BASE_FEATURES[✅ Émotions<br/>✅ Mouvements<br/>✅ Audio basique<br/>❌ Vision avancée<br/>❌ IA complexe]
     end
-    
+
     subgraph "Simulation Avancée"
         ADV_FEATURES[✅ Émotions<br/>✅ Mouvements<br/>✅ Audio complet<br/>✅ Vision IA<br/>✅ IA avancée]
     end
-    
+
     subgraph "Simulation Unity"
         UNITY_FEATURES[✅ 3D Interactive<br/>✅ Physique<br/>✅ Graphiques<br/>❌ IA limitée<br/>❌ Performance]
     end
-    
+
     subgraph "Simulation MuJoCo"
         MUJOCO_FEATURES[✅ Physique réaliste<br/>✅ Performance<br/>✅ Précision<br/>❌ Interface<br/>❌ Complexité]
     end
-    
+
     BASE_FEATURES -.->|Évolution| ADV_FEATURES
     ADV_FEATURES -.->|Choix| UNITY_FEATURES
     ADV_FEATURES -.->|Choix| MUJOCO_FEATURES
 ```
 
-## 🎮 Modes de Simulation Disponibles
+## Modes de simulation disponibles
 ```
 **Ce que vous verrez :**
 - 🎮 Modèle 3D complet de Reachy
@@ -117,7 +128,7 @@ graph LR
 - 🎪 Environnement 3D interactif
 - 🎯 Contrôle via interface Unity
 
-### 3️⃣ **Interface Web Dashboard**
+### 3. Interface web dashboard
 ```bash
 cd reachy_repos/reachy-dashboard
 # Suivre les instructions du README
@@ -128,12 +139,12 @@ cd reachy_repos/reachy-dashboard
 - 🎛️ Contrôles avancés
 - 📱 Interface responsive
 
-### 4️⃣ **Vision par Ordinateur**
+### 4. Vision par ordinateur
 ```bash
 python3 -c "
 import pollen_vision
-print('✅ pollen-vision disponible')
-print('📷 Fonctionnalités :')
+print('pollen-vision disponible')
+print('Fonctionnalités :')
 print('  • Reconnaissance d\'objets')
 print('  • Détection de visages')
 print('  • Analyse d\'expressions')
@@ -146,7 +157,7 @@ print('  • Suivi de mouvements')
 - 🎯 Suivi de visages
 - 📊 Analyse de mouvements
 
-### 5️⃣ **Suivi de Visage**
+### 5. Suivi de visage
 ```bash
 cd reachy_repos/reachy-face-tracking
 # Suivre les instructions du README
@@ -157,7 +168,7 @@ cd reachy_repos/reachy-face-tracking
 - 🎭 Détection d'expressions
 - 🤖 Mouvements de tête automatiques
 
-### 6️⃣ **Comportements Avancés**
+### 6. Comportements avancés
 ```bash
 cd reachy_repos/reachy2-behaviors-dev
 # Explorer les exemples de comportements
@@ -170,9 +181,9 @@ cd reachy_repos/reachy2-behaviors-dev
 
 ---
 
-## 🎯 Guide de Démarrage Rapide
+## Guide de démarrage rapide
 
-### 🚀 **Option 1 : Simulation Complète (Recommandée)**
+### Option 1 : Simulation complète (recommandée)
 ```bash
 # 1. Lancer BBIA de base
 python3 test_bbia_reachy.py
@@ -186,7 +197,7 @@ cd reachy_repos/reachy-dashboard
 # Suivre les instructions
 ```
 
-### 🚀 **Option 2 : Menu Interactif**
+### Option 2 : Menu interactif
 ```bash
 ./quick_start.sh
 ```
@@ -196,7 +207,7 @@ cd reachy_repos/reachy-dashboard
 - Option 7 : Tester Unity
 - Option 10 : Installer dépôts (déjà fait)
 
-### 🚀 **Option 3 : Simulation Avancée**
+### Option 3 : Simulation avancée
 ```bash
 # 1. Tester pollen-vision
 python3 -c "import pollen_vision; print('Vision OK')"
@@ -212,9 +223,9 @@ ls -la
 
 ---
 
-## 🎮 Détails des Simulations
+## Détails des simulations
 
-### 🤖 **Simulation BBIA de Base**
+### Simulation BBIA de base
 ```
 🤖============================================================🤖
 🌟 BBIA - Brain-Based Interactive Agent
@@ -283,7 +294,7 @@ ls -la
 🎉 Simulation terminée !
 ```
 
-### 🎮 **Simulation Unity 3D**
+### Simulation Unity 3D
 - **Modèle 3D** : Reachy Mini Wireless complet
 - **Environnement** : Salle d'interaction
 - **Contrôles** : Souris + clavier
@@ -295,7 +306,7 @@ ls -la
   - 🗣️ Reconnaissance vocale
   - 📷 Vision par ordinateur
 
-### 📊 **Dashboard Web**
+### Dashboard web
 - **Interface** : Web responsive
 - **Fonctionnalités** :
   - 📈 Visualisation temps réel
@@ -306,15 +317,15 @@ ls -la
 
 ---
 
-## 🎯 Prochaines Étapes - Phase 2
+## Prochaines étapes - phase 2
 
-### 📅 **Semaine Prochaine : Intégration**
+### Semaine prochaine : intégration
 1. **Intégrer** `pollen-vision` dans BBIA
 2. **Intégrer** les comportements avancés
 3. **Configurer** le serveur audio
 4. **Tester** en simulation Unity
 
-### 📅 **Dans 2 Semaines : Comportements**
+### Dans 2 semaines : comportements
 1. **Étudier** `reachy2-behaviors-dev`
 2. **Créer** des comportements personnalisés
 3. **Intégrer** le suivi de visage
@@ -322,9 +333,9 @@ ls -la
 
 ---
 
-## 🚀 Commandes Rapides
+## Commandes rapides
 
-### 🎮 **Lancer toutes les simulations**
+### Lancer toutes les simulations
 ```bash
 # Terminal 1 : BBIA de base
 python3 test_bbia_reachy.py
@@ -338,7 +349,7 @@ cd reachy_repos/reachy-dashboard
 # Suivre README
 ```
 
-### 🔍 **Vérifier les installations**
+### Vérifier les installations
 ```bash
 # Vérifier les dépôts
 ls -la reachy_repos/
@@ -351,7 +362,7 @@ pip list | grep -i pollen
 python3 -c "import pollen_vision; print('✅ Vision OK')"
 ```
 
-### 📚 **Explorer la documentation**
+### Explorer la documentation
 ```bash
 # Documentation officielle
 cd reachy_repos/reachy-docs
@@ -364,15 +375,15 @@ ls -la
 
 ---
 
-## 🌟 Résumé
+## Résumé
 
-### ✅ **Phase 1 Terminée**
+### Phase 1 terminée
 - Tous les dépôts GitHub installés
 - `pollen-vision` testé et fonctionnel
 - Documentation officielle disponible
 - Tutoriels et exemples accessibles
 
-### 🎮 **Simulations Disponibles**
+### Simulations disponibles
 - 🤖 BBIA de base (émotions, mouvements, voix)
 - 🎮 Unity 3D (modèle complet interactif)
 - 📊 Dashboard web (interface avancée)
@@ -385,11 +396,11 @@ Vous pouvez maintenant commencer l'intégration des composants dans BBIA !
 
 ---
 
-**BBIA** - Brain-Based Interactive Agent  
+**BBIA** - Brain-Based Interactive Agent
 *Guide de simulation complet* 🎮✨
 
-**Phase 1** : ✅ TERMINÉE  
-**Phase 2** : �� PRÊT À COMMENCER 
+**Phase 1** : ✅ TERMINÉE
+**Phase 2** : �� PRÊT À COMMENCER
 
 ## 🤖 Séquence de Réveil Réaliste BBIA
 
@@ -416,4 +427,4 @@ La simulation BBIA intègre désormais une séquence de réveil immersive, fidè
 😊 Expression : sourire doux.
 🗣️ Première pensée : 'Je suis là, Athalia.'
 ✨ BBIA est complètement réveillé et prêt !
-``` 
+```

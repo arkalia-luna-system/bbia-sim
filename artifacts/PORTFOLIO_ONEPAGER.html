@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>PORTFOLIO_ONEPAGER</title>
+<style>
+  :root {
+    color-scheme: dark;
+    --bg-dark: #0a0a0a;
+    --bg-card: #151515;
+    --text-primary: #f5f5f5;
+    --text-secondary: #b3b3b3;
+    --accent: #5cb3ff;
+    --accent-hover: #6fc0ff;
+    --border: #2a2a2a;
+    --border-light: #1f1f1f;
+    --shadow: rgba(0, 0, 0, 0.3);
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', Arial, sans-serif;
+    background: linear-gradient(180deg, var(--bg-dark) 0%, #0d0d0d 100%);
+    color: var(--text-primary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  .container {
+    max-width: 1024px;
+    margin: 60px auto;
+    padding: 0 32px;
+    line-height: 1.75;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--text-primary);
+    margin-top: 32px;
+    margin-bottom: 16px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  h1 {
+    font-size: 2.8em;
+    font-weight: 700;
+    border-bottom: 1px solid var(--border-light);
+    padding-bottom: 20px;
+    margin-top: 0;
+    margin-bottom: 32px;
+    letter-spacing: -0.02em;
+  }
+  h2 {
+    font-size: 2em;
+    border-bottom: 1px solid var(--border-light);
+    padding-bottom: 12px;
+    margin-top: 56px;
+    margin-bottom: 20px;
+  }
+  h3 { font-size: 1.5em; margin-top: 40px; margin-bottom: 16px; }
+  p {
+    color: var(--text-primary);
+    margin: 20px 0;
+    line-height: 1.8;
+  }
+  a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: all 0.2s ease;
+  }
+  a:hover {
+    color: var(--accent-hover);
+    border-bottom-color: var(--accent);
+  }
+  code {
+    background: rgba(255, 255, 255, 0.08);
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    color: var(--accent);
+    font-family: 'SF Mono', 'Monaco', 'Menlo', 'Consolas', monospace;
+  }
+  pre {
+    background: var(--bg-card);
+    padding: 20px;
+    border-radius: 12px;
+    overflow-x: auto;
+    border: 1px solid var(--border-light);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+    white-space: pre-wrap;
+  }
+  pre code {
+    background: none;
+    padding: 0;
+    color: var(--text-primary);
+  }
+  hr {
+    border: none;
+    height: 1px;
+    background: var(--border-light);
+    margin: 32px 0;
+  }
+  li, td, th, span, div:not(.mermaid) {
+    color: var(--text-primary);
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 24px 0;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--border-light);
+  }
+  table th, table td {
+    border: 1px solid var(--border-light);
+    padding: 12px 16px;
+    color: var(--text-primary);
+  }
+  table th {
+    background: var(--bg-card);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85em;
+    letter-spacing: 0.05em;
+  }
+  table tr:hover {
+    background: rgba(255, 255, 255, 0.02);
+  }
+  .mermaid {
+    margin: 32px 0;
+    display: flex;
+    justify-content: center;
+    padding: 24px;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 12px;
+    border: 1px solid var(--border-light);
+  }
+  blockquote {
+    border-left: 4px solid var(--accent);
+    padding-left: 20px;
+    margin: 24px 0;
+    color: var(--text-secondary);
+    background: rgba(255, 255, 255, 0.02);
+    padding: 16px 20px;
+    border-radius: 4px;
+  }
+</style>
+</head>
+<body>
+<div class="container" id="app">Chargement…</div>
+<script>
+  window.__RAW_MD__ = "# \ud83e\udd16 BBIA - Moteur Cognitif pour Robot Reachy Mini\n\n## \ud83d\udccb **R\u00e9sum\u00e9 ex\u00e9cutif**\n\n**BBIA** est un moteur cognitif Python pour robot Reachy Mini Wireless, int\u00e9grant la simulation MuJoCo, une intelligence artificielle l\u00e9g\u00e8re et un contr\u00f4le unifi\u00e9 via `RobotAPI`. Le projet fournit une plateforme pour d\u00e9velopper, tester et d\u00e9ployer des comportements robotiques.\n\n---\n\n## \ud83c\udfaf **Valeur propos\u00e9e**\n\n### **\ud83d\udd2c Innovation technique**\n- **RobotAPI unifi\u00e9** : interface abstraite pour simulation (MuJoCo) et robot r\u00e9el\n- **IA l\u00e9g\u00e8re** : Whisper STT + YOLOv8n + MediaPipe pour interactions naturelles\n- **Golden tests** : validation de non-r\u00e9gression avec traces de r\u00e9f\u00e9rence\n- **Dashboard web** : interface de contr\u00f4le temps r\u00e9el via WebSocket\n\n### **\ud83d\udee1\ufe0f S\u00e9curit\u00e9 et fiabilit\u00e9**\n- **Limites de s\u00e9curit\u00e9** : clamp automatique \u00e0 0.3 rad, joints interdits centralis\u00e9s\n- **Tests automatis\u00e9s** : suite valid\u00e9e en CI (800+ tests)\n- **CI/CD** : pipeline GitHub Actions avec artefacts et validation\n- **D\u00e9terminisme** : graine fix\u00e9e (SEED=42) pour reproductibilit\u00e9\n\n### **\ud83d\ude80 Facilit\u00e9 d\u2019usage**\n- **Scripts one\u2011click** : d\u00e9mo simulation et robot r\u00e9el en une commande\n- **Documentation** : guides d\u00e9veloppeur, architecture, contrats\n- **Backend flexible** : bascule simulation \u2194 robot r\u00e9el sans modification du code\n\n---\n\n## \ud83d\udcca **M\u00e9triques cl\u00e9s**\n\n| M\u00e9trique | Valeur | Statut |\n|----------|--------|--------|\n| **Tests** | 800+ (CI) | OK |\n| **Couverture** | Valid\u00e9e en CI | OK |\n| **Modules BBIA** | 7 modules | OK |\n| **Backends** | MuJoCo + Reachy mock | OK |\n| **Golden traces** | 3 r\u00e9f\u00e9rences | OK |\n\n---\n\n## \ud83c\udfd7\ufe0f **Architecture technique**\n\n### **\ud83c\udfad Vertical slices (4 fonctionnalit\u00e9s)**\n1. **\u00c9motion \u2192 Pose** : Mapping \u00e9motions vers mouvements joints\n2. **Voix \u2192 Action** : Commandes vocales via Whisper STT\n3. **Vision \u2192 Suivi** : D\u00e9tection objets/visages avec YOLOv8n + MediaPipe\n4. **Comportement \u2192 Sc\u00e9nario** : Scripts comportementaux complexes\n\n### **\ud83d\udd27 Composants principaux**\n- **`RobotAPI`** : Interface abstraite unifi\u00e9e\n- **`MuJoCoBackend`** : Impl\u00e9mentation simulation MuJoCo\n- **`ReachyBackend`** : Impl\u00e9mentation robot r\u00e9el (mock)\n- **`mapping_reachy.py`** : Source de v\u00e9rit\u00e9 joints/limites\n- **`hardware_dry_run.py`** : Validation mat\u00e9riel avec artefacts\n\n### **\ud83e\uddea Syst\u00e8me de tests**\n- **Tests Unitaires** : Validation composants individuels\n- **Tests d'Int\u00e9gration** : Validation vertical slices\n- **Golden Tests** : Validation non-r\u00e9gression avec traces\n- **Tests Hardware** : Validation latence et limites s\u00e9curit\u00e9\n\n---\n\n## \ud83c\udfac **D\u00e9mos disponibles**\n\n### **\ud83c\udfa5 D\u00e9mo simulation (3D)**\n```bash\n# D\u00e9mo compl\u00e8te avec viewer MuJoCo\nbash scripts/run_demo_sim.sh happy 15\n\n# R\u00e9sultat : Trace + rapport + vid\u00e9o 3D\n```\n\n### **\ud83e\udd16 D\u00e9mo robot r\u00e9el**\n```bash\n# D\u00e9mo robot r\u00e9el (headless)\nbash scripts/run_demo_real.sh excited 20\n\n# R\u00e9sultat : Trace + rapport + comparaison r\u00e9f\u00e9rence\n```\n\n### **\ud83c\udfa4 D\u00e9mo IA l\u00e9g\u00e8re**\n```bash\n# Test commandes vocales\npython scripts/stt_demo.py --command \"salue\" --backend mujoco\n\n# Test microphone\npython scripts/stt_demo.py --test-microphone --lang fr\n```\n\n### **\ud83c\udf10 Dashboard web et API publique**\n```bash\n# Interface web temps r\u00e9el (dashboard)\npython src/bbia_sim/dashboard_advanced.py --port 8000\n\n# D\u00e9marrer l\u2019API publique (mode dev)\npython deploy/public_api.py --dev\n```\n\n---\n\n## \ud83d\udee0\ufe0f **Installation rapide**\n\n### **Pr\u00e9requis**\n- Python 3.10+\n- macOS/Linux\n- 4GB RAM minimum\n\n### **Installation**\n```bash\n# Clone et setup\ngit clone https://github.com/arkalia-luna-system/bbia-sim.git\ncd bbia-sim\npython -m venv venv\nsource venv/bin/activate\npip install -e .[dev]\n\n# Test installation\npython scripts/hardware_dry_run.py --duration 5 --backend mujoco\n```\n\n### **Premi\u00e8re d\u00e9mo**\n```bash\n# D\u00e9mo simulation 3D\nbash scripts/run_demo_sim.sh happy 10\n\n# D\u00e9mo robot r\u00e9el\nbash scripts/run_demo_real.sh excited 15\n```\n\n---\n\n## \ud83d\udd17 **Ressources**\n\n### **\ud83d\udcda Documentation**\n- **README** : Guide principal et quickstart\n- **Architecture** : `docs/architecture/ARCHITECTURE.md`\n- **Contrat RobotAPI** : `docs/references/CONTRACT.md`\n- **Guide de Test** : `docs/guides_techniques/TESTING_GUIDE.md`\n\n### **\ud83c\udfaf Scripts utiles**\n- **`hardware_dry_run.py`** : Test mat\u00e9riel complet\n- **`record_demo.sh`** : Enregistrement d\u00e9mo + traces\n- **`plot_trace.py`** : Analyse et rapports\n- **`stt_demo.py`** : Test commandes vocales\n\n### **\ud83e\uddea Tests**\n```bash\n# Tests complets\npython -m pytest tests/ -v\n\n# Golden tests uniquement\npython -m pytest tests/test_golden_traces.py -v\n\n# Tests headless\npython -m pytest tests/ -m \"not e2e\" -v\n```\n\n---\n\n## \ud83c\udfaf **Prochaines \u00e9tapes**\n\n### **\ud83d\ude80 D\u00e9ploiement robot r\u00e9el**\n1. Configuration connexion Reachy SDK\n2. Tests hardware dry run sur mat\u00e9riel\n3. Validation latence et limites s\u00e9curit\u00e9\n4. D\u00e9ploiement production\n\n### **\ud83e\udde0 Am\u00e9liorations IA**\n1. Entra\u00eenement mod\u00e8les personnalis\u00e9s\n2. Int\u00e9gration reconnaissance gestes\n3. Syst\u00e8me de dialogue avanc\u00e9\n4. Apprentissage comportemental\n\n### **\ud83c\udf10 Extensions web**\n1. Interface mobile responsive\n2. Streaming vid\u00e9o temps r\u00e9el\n3. API REST compl\u00e8te\n4. Int\u00e9gration cloud\n\n---\n\n## \ud83d\udcde **CONTACT & SUPPORT**\n\n- **Repository** : [github.com/arkalia-luna-system/bbia-sim](https://github.com/arkalia-luna-system/bbia-sim)\n- **Documentation** : Voir dossier `docs/`\n- **Issues** : GitHub Issues pour bugs/features\n- **CI/CD** : GitHub Actions pour validation continue\n\n---\n\n**Version** : 1.3.1  \n**Date** : Octobre 2025  \n**Statut** : Production Ready  \n**Licence** : MIT\n";
+</script>
+<script src="js/marked.min.js"></script>
+<script src="js/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({ startOnLoad: false, theme: 'dark' });
+  const renderer = new marked.Renderer();
+  const origCode = renderer.code.bind(renderer);
+  renderer.code = (code, infostring, escaped) => {
+    const lang = (infostring || '').trim().toLowerCase();
+    if (lang === 'mermaid') {
+      return `<div class=\"mermaid\">${code}</div>`;
+    }
+    return origCode(code, infostring, escaped);
+  };
+  const html = marked.parse(window.__RAW_MD__, { renderer });
+  document.getElementById('app').innerHTML = html;
+  mermaid.run({ querySelector: '.mermaid' });
+</script>
+</body>
+</html>

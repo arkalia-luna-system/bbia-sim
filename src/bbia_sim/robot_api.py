@@ -6,7 +6,7 @@ Backend unique pour MuJoCo et Reachy réel
 
 import logging
 from abc import ABC, abstractmethod
-from typing import Any, Optional
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -14,11 +14,11 @@ logger = logging.getLogger(__name__)
 class RobotAPI(ABC):
     """Interface unifiée pour contrôler le robot (Sim ou Réel)."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.is_connected = False
         self.current_emotion = "neutral"
         self.emotion_intensity = 0.5
-        self.joint_limits = {}
+        self.joint_limits: dict[str, tuple[float, float]] = {}
         self.forbidden_joints = {
             "left_antenna",
             "right_antenna",
@@ -74,13 +74,22 @@ class RobotAPI(ABC):
         return True, clamped_position
 
     @abstractmethod
-    def get_joint_pos(self, joint_name: str) -> Optional[float]:
+    def get_joint_pos(self, joint_name: str) -> float | None:
         """Récupère la position actuelle d'un joint."""
         pass
 
     @abstractmethod
     def step(self) -> bool:
         """Effectue un pas de simulation."""
+        pass
+
+    @abstractmethod
+    def emergency_stop(self) -> bool:
+        """Arrêt d'urgence hardware.
+
+        Arrête immédiatement tous les moteurs et désactive le contrôle.
+        Conforme aux specs sécurité robotique.
+        """
         pass
 
     def set_emotion(self, emotion: str, intensity: float = 0.5) -> bool:
@@ -119,12 +128,53 @@ class RobotAPI(ABC):
         return True
 
     def look_at(self, target_x: float, target_y: float, target_z: float = 0.0) -> bool:
-        """Fait regarder le robot vers une cible."""
+        """Fait regarder le robot vers une cible (méthode générique).
+
+        NOTE EXPERT: Cette méthode est un wrapper générique. Les backends avancés
+        (comme ReachyMiniBackend) implémentent look_at_world() qui est plus précise
+        avec calcul IK complet pour la tête.
+
+        Args:
+            target_x: Position X de la cible (mètres)
+            target_y: Position Y de la cible (mètres)
+            target_z: Position Z de la cible (mètres, défaut: 0.0)
+
+        Returns:
+            True si commande envoyée, False sinon
+        """
         if not self.is_connected:
             logger.error("Robot non connecté")
             return False
 
-        # Mapping cible → angle de rotation (yaw_body)
+        # Vérifier si le backend a look_at_world (plus précis)
+        if hasattr(self, "look_at_world"):
+            try:
+                # Utiliser la méthode SDK avancée si disponible
+                self.look_at_world(
+                    target_x, target_y, target_z, duration=1.0, perform_movement=True
+                )
+                return True
+            except Exception as e:
+                logger.warning(f"Erreur look_at_world, fallback générique: {e}")
+
+        # Fallback: Mapping cible → angle de rotation (yaw_body) simplifié
+        # CORRECTION EXPERTE: Validation coordonnées avant utilisation
+        # Limites recommandées SDK: -2.0 ≤ x,y ≤ 2.0 mètres, 0.0 ≤ z ≤ 1.5 mètres
+        if (
+            abs(target_x) > 2.0
+            or abs(target_y) > 2.0
+            or target_z < 0.0
+            or target_z > 1.5
+        ):
+            logger.warning(
+                f"Coordonnées ({target_x}, {target_y}, {target_z}) hors limites recommandées "
+                "SDK (-2.0 ≤ x,y ≤ 2.0, 0.0 ≤ z ≤ 1.5). Clampage appliqué."
+            )
+            target_x = max(-2.0, min(2.0, target_x))
+            target_y = max(-2.0, min(2.0, target_y))
+            target_z = max(0.0, min(1.5, target_z))
+
+        # Mapping simplifié: rotation corps vers cible
         angle = target_x * 0.5  # Amplitude max 0.5 rad
 
         # Clamp dans les limites sûres
@@ -132,7 +182,9 @@ class RobotAPI(ABC):
 
         return self.set_joint_pos("yaw_body", angle)
 
-    def run_behavior(self, behavior_name: str, duration: float = 5.0, **kwargs) -> bool:
+    def run_behavior(
+        self, behavior_name: str, duration: float = 5.0, **kwargs: Any
+    ) -> bool:
         """Exécute un comportement."""
         if not self.is_connected:
             logger.error("Robot non connecté")
@@ -223,42 +275,17 @@ class RobotAPI(ABC):
             "safe_amplitude_limit": self.safe_amplitude_limit,
         }
 
+    # NOTE EXPERT: RobotFactory a été déplacé dans robot_factory.py pour éviter duplication
+    # Import de compatibilité pour éviter de casser le code existant
+    # TODO FUTUR: Migrer tous les imports vers robot_factory.py
+    # Import déplacé en bas du fichier pour éviter circular import
 
-class RobotFactory:
-    """Factory pour créer des instances de RobotAPI."""
 
-    @staticmethod
-    def create_backend(backend_type: str) -> RobotAPI:
-        """
-        Crée une instance de backend RobotAPI.
+# Import tardif pour compatibilité avec code existant (évite circular import)
+def __getattr__(name: str) -> Any:
+    """Import tardif pour RobotFactory depuis robot_factory."""
+    if name == "RobotFactory":
+        from .robot_factory import RobotFactory  # noqa: F401
 
-        Args:
-            backend_type: Type de backend ("mujoco", "reachy", ou "reachy_mini")
-
-        Returns:
-            Instance de RobotAPI
-
-        Raises:
-            ValueError: Si le type de backend n'est pas supporté
-        """
-        if backend_type == "mujoco":
-            from bbia_sim.backends.mujoco_backend import MuJoCoBackend
-
-            return MuJoCoBackend()
-        elif backend_type == "reachy":
-            from bbia_sim.backends.reachy_backend import ReachyBackend
-
-            return ReachyBackend()
-        elif backend_type == "reachy_mini":
-            from bbia_sim.backends.reachy_mini_backend import ReachyMiniBackend
-
-            return ReachyMiniBackend()
-        else:
-            raise ValueError(
-                f"Backend non supporté: {backend_type}. Options: mujoco, reachy, reachy_mini"
-            )
-
-    @staticmethod
-    def get_available_backends() -> list[str]:
-        """Retourne la liste des backends disponibles."""
-        return ["mujoco", "reachy", "reachy_mini"]
+        return RobotFactory
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")

@@ -9,7 +9,6 @@ import signal
 import sys
 import time
 from pathlib import Path
-from typing import Optional
 
 import psutil
 
@@ -89,7 +88,7 @@ class ProcessManager:
             logger.error(f"❌ Erreur suppression verrou: {e}")
             return False
 
-    def is_locked(self) -> Optional[int]:
+    def is_locked(self) -> int | None:
         """Vérifie si un processus BBIA est verrouillé."""
         if not LOCK_FILE.exists():
             return None
@@ -110,7 +109,7 @@ class ProcessManager:
             return None
 
     def start_process(
-        self, mode: str = "graphical", duration: Optional[int] = None
+        self, mode: str = "graphical", duration: int | None = None
     ) -> bool:
         """Démarre un processus BBIA avec vérification de doublons."""
         # Vérifier les doublons

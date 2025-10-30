@@ -5,9 +5,10 @@ Intégration Speech-to-Text avec OpenAI Whisper (optionnel)
 """
 
 import logging
+import os
 import time
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any, cast
 
 try:
     import whisper
@@ -66,7 +67,7 @@ class WhisperSTT:
             logger.error(f"❌ Erreur chargement Whisper: {e}")
             return False
 
-    def transcribe_audio(self, audio_path: str) -> Optional[str]:
+    def transcribe_audio(self, audio_path: str) -> str | None:
         """
         Transcrit un fichier audio en texte.
 
@@ -96,11 +97,13 @@ class WhisperSTT:
                 logger.error("❌ Modèle Whisper non chargé")
                 return None
 
-            # mypy ignore: unreachable code après return None
-            result = self.model.transcribe(  # type: ignore
-                audio_path,
-                language=self.language if self.language != "auto" else None,
-                fp16=False,  # Éviter les problèmes de compatibilité
+            result = cast(
+                dict[str, Any],
+                self.model.transcribe(
+                    audio_path,
+                    language=self.language if self.language != "auto" else None,
+                    fp16=False,  # Éviter les problèmes de compatibilité
+                ),
             )
 
             transcription_time = time.time() - start_time
@@ -115,7 +118,7 @@ class WhisperSTT:
             logger.error(f"❌ Erreur transcription: {e}")
             return None
 
-    def transcribe_microphone(self, duration: float = 3.0) -> Optional[str]:
+    def transcribe_microphone(self, duration: float = 3.0) -> str | None:
         """
         Enregistre et transcrit depuis le microphone.
 
@@ -125,6 +128,13 @@ class WhisperSTT:
         Returns:
             Texte transcrit ou None si erreur
         """
+        # Désactivation explicite audio (CI/headless)
+        if os.environ.get("BBIA_DISABLE_AUDIO", "0") == "1":
+            logger.info(
+                "🎤 Micro désactivé (BBIA_DISABLE_AUDIO=1) - skip enregistrement"
+            )
+            return None
+
         # Vérification globale de disponibilité
         if not WHISPER_AVAILABLE:
             logger.error("❌ Whisper non disponible")
@@ -147,19 +157,29 @@ class WhisperSTT:
             )
             sd.wait()
 
-            # Sauvegarde temporaire sécurisée
+            # OPTIMISATION PERFORMANCE: Sauvegarde temporaire sécurisée avec cleanup garanti
             import tempfile
+            import time
 
-            temp_file = Path(tempfile.gettempdir()) / "bbia_whisper_temp.wav"
-            sf.write(temp_file, audio_data, sample_rate)
+            # Nom unique pour éviter collisions multi-processus
+            temp_file = (
+                Path(tempfile.gettempdir())
+                / f"bbia_whisper_{os.getpid()}_{int(time.time() * 1000)}.wav"
+            )
 
-            # Transcription
-            result = self.transcribe_audio(str(temp_file))
+            try:
+                sf.write(temp_file, audio_data, sample_rate)
 
-            # Nettoyage
-            temp_file.unlink(missing_ok=True)
-
-            return result
+                # Transcription
+                result = self.transcribe_audio(str(temp_file))
+                return result
+            finally:
+                # OPTIMISATION: Nettoyage garanti même en cas d'erreur
+                if temp_file.exists():
+                    try:
+                        temp_file.unlink()
+                    except Exception as cleanup_error:
+                        logger.debug(f"Nettoyage fichier Whisper ({cleanup_error})")
 
         except ImportError:
             logger.error(
@@ -174,7 +194,7 @@ class WhisperSTT:
 class VoiceCommandMapper:
     """Mappe les commandes vocales vers des actions RobotAPI."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialise le mappeur de commandes."""
         self.commands = {
             # Français
@@ -201,7 +221,7 @@ class VoiceCommandMapper:
             f"🗣️ Mappeur de commandes initialisé ({len(self.commands)} commandes)"
         )
 
-    def map_command(self, text: str) -> Optional[dict[str, Any]]:
+    def map_command(self, text: str) -> dict[str, Any] | None:
         """
         Mappe un texte vers une action RobotAPI.
 
@@ -235,7 +255,7 @@ class VoiceCommandMapper:
 
 def create_whisper_stt(
     model_size: str = "tiny", language: str = "fr"
-) -> Optional[WhisperSTT]:
+) -> WhisperSTT | None:
     """
     Factory function pour créer une instance WhisperSTT.
 

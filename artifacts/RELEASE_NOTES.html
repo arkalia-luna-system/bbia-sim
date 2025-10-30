@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>BBIA DOC</title>
+<style>
+  :root { color-scheme: dark; }
+  html, body { height: 100%; margin: 0; }
+  body { background-color: #0b0b0b; color: #f5f5f5; font: 16px/1.5 -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Helvetica Neue, Arial, "Noto Sans"; }
+  a { color: #9cdcfe; }
+  code, pre { background: #111; color: #eee; }
+  pre { white-space: pre-wrap; padding: 16px; border-radius: 8px; overflow-x: auto; }
+  .container { max-width: 960px; margin: 24px auto; padding: 0 16px; }
+  h1, h2, h3 { color: #ffffff; }
+  hr { border: none; height: 1px; background: #222; }
+</style>
+</head>
+<body>
+<div class="container">
+<pre>
+# Notes de version - BBIA-SIM
+
+## Version 1.3.1 - Conformité, sécurité et documentation
+
+### Résumé
+Mise à niveau centrée sur la robustesse (watchdog, arrêt d’urgence), le renforcement sécurité (Bandit) et une documentation unifiée. Les chemins d’API publique sont harmonisés (`deploy/public_api.py`), les journaux sont exclus du dépôt, et la documentation reflète l’état mesuré (tests/couverture validés en CI).
+
+### Points principaux
+- Watchdog: gestion claire du thread de surveillance, démarrage/arrêt sûrs, compatible avec les tests.
+- Emergency stop: parcours consolidé et testé (simulation), métriques cohérentes.
+- Bandit: réduction des findings, durcissement des `subprocess` (résolution via l’exécutable Python, `# nosec` justifiés si nécessaire).
+- Logs: `.gitignore` mis à jour (json/csv/jsonl/out/err; `logs/**`), retrait des logs versionnés.
+- Documentation: Quick Start API publique, variables d’environnement `BBIA_*`, guides simplifiés; archives non essentielles rangées.
+
+### Corrections et harmonisations
+- `scripts/*`: sécurisation des appels `subprocess` (usage `sys.executable`, arguments constants, commentaires `# nosec` ciblés).
+- `reachy_mini_backend.py`: watchdog par instance; évite la réutilisation globale; compatibilité tests `test_watchdog_*`.
+- `bbia_audio.py`: shim `sounddevice` patchable en CI; fallback robuste (tests audio étendus OK).
+- `docs/*`: remplacement de `scripts/start_public_api.py` et `scripts/test_public_api.py` par `deploy/public_api.py --dev/--check`.
+- `docs/archives/*`: suppression de dossiers obsolètes, harmonisation v1.3.1.
+
+### Documentation
+- README: badges de tests (800+ en CI), couverture validée en CI, Quick Start API publique, variables d’environnement utiles.
+- Guides: Débutant et Tests simplifiés; Portfolio One-Pager mis à jour (métriques non figées, v1.3.1).
+- Index et statuts: versions/chemins cohérents.
+
+### Qualité et CI
+- Tests: 800+ en CI (nombre variable selon pipeline).
+- Couverture: validée en CI (`coverage.xml`, `htmlcov/`).
+- Outils: Black, Ruff, MyPy, Bandit.
+
+---
+
+## Version 1.2.1 - Corrections qualité code et tests
+
+### Résumé
+
+Corrections des erreurs de formatage, des tests et de la qualité de code. Les outils de qualité (Black, Ruff, MyPy, Bandit) passent sans erreur.
+
+### Corrections v1.2.1
+
+#### Formatage et qualité code
+- Ruff : correction des espaces et fins de ligne
+- Black : reformatage automatique du code
+- MyPy : correction des problèmes de typage
+- Bandit : aucun problème de sécurité détecté
+
+#### Corrections tests
+- TypeError: correction des erreurs "NoneType object is not callable"
+- Imports: suppression des imports inutilisés
+- Compatibilité SDK: gestion du mode simulation sans SDK
+
+#### Améliorations backend
+- Sécurité de type: annotations explicites
+- Gestion d’erreurs: amélioration lorsque le SDK n’est pas disponible
+- Types de retour: correction pour conformité MyPy
+
+### Métriques qualité
+- **Tests** : 38 passed, 2 skipped ✅
+- **Ruff** : All checks passed ✅
+- **MyPy** : Success, no issues found ✅
+- **Bandit** : 0 security issues ✅
+- **Black** : All files formatted ✅
+
+## Version 1.2.0 - IA légère, scripts one-click et vitesse robot
+
+### Résumé
+
+Intégration de l'IA légère (Whisper STT, YOLOv8n, MediaPipe), scripts one-click pour démos, dashboard web temps réel, et optimisation de la vitesse du robot pour sécurité accrue.
+
+### Nouvelles fonctionnalités v1.2.0
+
+#### IA légère intégrée
+- Whisper STT : speech-to-text avec latence &lt;800ms, 20+ commandes FR/EN
+- YOLOv8n : détection d'objets en temps réel ≥15fps
+- MediaPipe Face : détection de visages et landmarks
+- Mapping: commandes vocales vers actions robot
+
+#### Scripts one-click
+- run_demo_sim.sh : démo simulation avec viewer 3D
+- run_demo_real.sh : démo robot réel avec mode lent
+- dashboard_advanced.py : serveur dashboard web temps réel
+- stt_demo.py : tests commandes vocales interactives
+
+#### Dashboard web temps réel
+- FastAPI + WebSocket : interface web
+- Contrôles temps réel : émotions, actions, look_at
+- Logs live : monitoring en direct
+- Health endpoint : `/healthz` pour CI
+
+#### Vitesse robot
+- Mode lent : 0.1 Hz (10s par cycle) pour robot réel
+- Amplitude réduite : 0.2 rad (au lieu de 0.3 rad)
+- Limites respectées automatiquement
+- Paramètre `--slow` : contrôle de la vitesse dans les scripts
+
+## Architecture de la version 1.1.1
+
+```mermaid
+graph TB
+    subgraph "BBIA Modules"
+        EMOTIONS[bbia_emotions.py&lt;br/&gt;8 émotions]
+        VISION[bbia_vision.py&lt;br/&gt;Détection objets]
+        AUDIO[bbia_audio.py&lt;br/&gt;Enregistrement]
+        VOICE[bbia_voice.py&lt;br/&gt;TTS/STT]
+        BEHAVIOR[bbia_behavior.py&lt;br/&gt;Comportements]
+    end
+    
+    subgraph "RobotAPI Interface"
+        API[RobotAPI&lt;br/&gt;Interface unifiée&lt;br/&gt;CONTRACT.md gelé v1.1.x]
+    end
+    
+    subgraph "Backends"
+        MUJOCO[MuJoCoBackend&lt;br/&gt;Simulation physique]
+        REACHY[ReachyBackend&lt;br/&gt;Robot réel mock]
+    end
+    
+    subgraph "Tests & CI"
+        GOLDEN[Golden Tests&lt;br/&gt;3 traces référence]
+        SMOKE[Smoke Tests&lt;br/&gt;11 tests &lt;5s]
+        CI[GitHub Actions&lt;br/&gt;Seed fixé SEED=42]
+    end
+    
+    EMOTIONS --&gt; API
+    VISION --&gt; API
+    AUDIO --&gt; API
+    VOICE --&gt; API
+    BEHAVIOR --&gt; API
+    
+    API --&gt; MUJOCO
+    API --&gt; REACHY
+    
+    GOLDEN --&gt; API
+    SMOKE --&gt; API
+    CI --&gt; GOLDEN
+    CI --&gt; SMOKE
+```
+
+## Améliorations techniques
+
+### Sécurité et limites
+- **Joints interdits** : left_antenna, right_antenna, passive_1-7
+- **Amplitude limite** : 0.3 rad maximum
+- **Validation centralisée** : Dans RobotAPI._validate_joint_pos()
+
+### Déterminisme
+- **Seed global** : SEED=42 fixé
+- **Tests reproductibles** : Même résultat à chaque run
+- **CI headless** : MuJoCo_GL=egl pour stabilité
+
+### Évolutivité
+- **API versionnée** : CONTRACT.md gelé v1.1.x
+- **Migration facile** : Sim → Robot avec même code
+- **Tests identiques** : Même validation pour les deux backends
+
+## Métriques
+
+### Tests
+- 706 tests collectés (pytest)
+- 453+ tests passent
+- Couverture : 63.37%
+- Golden tests : 3 traces de référence
+
+### Performance
+- **Smoke tests** : &lt;5s par test
+- **Golden tests** : &lt;10s par validation
+- **CI complète** : &lt;60s
+
+## Commandes de migration
+
+### Utilisation RobotAPI
+```bash
+# Simulation MuJoCo
+python examples/demo_emotion_ok.py --backend mujoco --emotion happy
+
+# Robot réel (mock)
+python examples/demo_emotion_ok.py --backend reachy --emotion happy
+```
+
+### Golden tests
+```bash
+# Tests de non-régression
+pytest -q tests/test_golden_traces.py
+
+# Régénérer référence
+python scripts/record_trace.py --emotion happy --duration 5
+```
+
+## Migration depuis v1.0.x
+
+### Changements breaking
+- **Aucun** : API rétrocompatible
+- **Nouveau** : Backend unifié optionnel
+- **Nouveau** : Golden tests optionnels
+
+### Migration recommandée
+1. **Tester** : Vérifier que les démos existantes fonctionnent
+2. **Migrer** : Remplacer les appels directs MuJoCo par RobotAPI
+3. **Valider** : Lancer les golden tests
+
+## Prochaines versions
+
+### Métriques finales v1.2.0
+- **Tests** : 706 collectés
+- **Coverage** : 63.37% de couverture de code
+- **Latence** : Moyenne 0.02ms, max 4.77ms (&lt;40ms ✅)
+- **Artefacts** : JSONL 87MB, CSV 640KB générés automatiquement
+- **Hardware Dry Run** : 9,801 tests latence validés
+- **Tag Git** : v1.2.0 créé avec commit 0875d2a
+
+### v1.2.x (Prévu)
+- **ReachyBackend réel** : Intégration SDK Pollen
+- **Nouvelles méthodes** : RobotAPI étendu
+- **Tests hardware** : Validation sur robot réel
+
+### v2.0.x (Futur)
+- **Multi-robots** : Support plusieurs Reachy
+- **Cloud** : Simulation distribuée
+- **IA avancée** : Intégration LLM
+
+---
+
+*Dernière mise à jour : Octobre 2025*</pre>
+</div>
+</body>
+</html>

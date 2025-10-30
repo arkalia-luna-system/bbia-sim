@@ -13,7 +13,6 @@ import logging
 import sys
 import time
 from pathlib import Path
-from typing import Optional
 
 # Ajout du chemin src pour les imports
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
@@ -33,7 +32,7 @@ class HardwareDryRun:
     """Validation hardware Reachy réel avec génération d'artefacts."""
 
     def __init__(self, output_dir: str = "artifacts"):
-        self.robot: Optional[RobotAPI] = None
+        self.robot: RobotAPI | None = None
         self.latencies: list[float] = []
         self.errors: list[str] = []
         self.test_joints = list(ReachyMapping.get_recommended_joints())

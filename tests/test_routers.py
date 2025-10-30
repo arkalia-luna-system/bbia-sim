@@ -59,10 +59,17 @@ class TestStateRouter:
     @patch("src.bbia_sim.daemon.app.routers.state.simulation_service")
     def test_get_joints_state(self, mock_service, client):
         """Test endpoint state/joints."""
-        # Mock du service
+        # Mock du service - retourner les joints officiels Reachy Mini
         mock_service.get_joint_positions.return_value = {
             "yaw_body": 0.5,
-            "head_pitch": 0.2,
+            "stewart_1": 0.2,
+            "stewart_2": 0.0,
+            "stewart_3": 0.0,
+            "stewart_4": 0.0,
+            "stewart_5": 0.0,
+            "stewart_6": 0.0,
+            "left_antenna": 0.0,
+            "right_antenna": 0.0,
         }
 
         headers = {"Authorization": "Bearer bbia-secret-key-dev"}
@@ -72,7 +79,9 @@ class TestStateRouter:
         data = response.json()
         assert "joints" in data
         assert "timestamp" in data
-        assert len(data["joints"]) == 7  # Nombre réel de joints dans le modèle
+        assert (
+            len(data["joints"]) == 9
+        )  # Nombre réel de joints dans le modèle Reachy Mini : yaw_body + 6 stewart + 2 antennes
 
     def test_get_position(self, client):
         """Test endpoint state/position."""

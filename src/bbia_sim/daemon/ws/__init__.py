@@ -6,7 +6,7 @@ import json
 import logging
 import secrets
 from datetime import datetime
-from typing import Any, Optional
+from typing import Any
 
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 
@@ -30,7 +30,7 @@ class ConnectionManager:
     def __init__(self) -> None:
         self.active_connections: list[WebSocket] = []
         self.is_broadcasting = False
-        self.broadcast_task: Optional[asyncio.Task[None]] = None
+        self.broadcast_task: asyncio.Task | None = None
 
     async def connect(self, websocket: WebSocket) -> None:
         """Accepte une nouvelle connexion WebSocket."""
@@ -79,7 +79,7 @@ class ConnectionManager:
             return
 
         self.is_broadcasting = True
-        self.broadcast_task = asyncio.create_task(self._broadcast_loop())  # type: ignore  # type: ignore
+        self.broadcast_task = asyncio.create_task(self._broadcast_loop())
         logger.info("Diffusion de télémétrie démarrée")
 
     async def stop_broadcast(self) -> None:

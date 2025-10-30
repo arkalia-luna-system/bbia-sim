@@ -1,0 +1,6 @@
+timestamp,source,identifier,title,score,details_json,description
+2025-10-29T20:52:15.959062,huggingface,https://huggingface.co/spaces/fffiloni/reachy-mini-doll,fffiloni/reachy-mini-doll,1,"{""ci"": false, ""dashboard"": true, ""api"": false, ""ws"": false, ""mujoco"": false, ""emotion"": false}",
+2025-10-29T20:52:15.959062,huggingface,https://huggingface.co/spaces/darlenegarcia/reachy_mini_app_example,darlenegarcia/reachy_mini_app_example,1,"{""ci"": false, ""dashboard"": true, ""api"": false, ""ws"": false, ""mujoco"": false, ""emotion"": false}",
+2025-10-29T20:52:15.959062,huggingface,https://huggingface.co/spaces/starlit-cat/reachy_mini_app_demo,starlit-cat/reachy_mini_app_demo,1,"{""ci"": false, ""dashboard"": true, ""api"": false, ""ws"": false, ""mujoco"": false, ""emotion"": false}",
+2025-10-29T20:52:15.959062,huggingface,https://huggingface.co/spaces/pollen-robotics/reachy_mini_tools,pollen-robotics/reachy_mini_tools,1,"{""ci"": false, ""dashboard"": true, ""api"": false, ""ws"": false, ""mujoco"": false, ""emotion"": false}",
+2025-10-29T20:52:15.959062,huggingface,https://huggingface.co/spaces/pollen-robotics/reachy_mini_greetings,pollen-robotics/reachy_mini_greetings,1,"{""ci"": false, ""dashboard"": true, ""api"": false, ""ws"": false, ""mujoco"": false, ""emotion"": false}",

@@ -88,7 +88,16 @@ def get_joint_id(model, joint_name):
 def animate_with_viewer(
     model, data, viewer, message: str, response: str, duration: float = 2.0
 ):
-    """Animer le robot avec viewer pendant duration secondes - NOUVEAU."""
+    """Animer le robot avec viewer pendant duration secondes - NOUVEAU.
+
+    ⚠️ IMPORTANT EXPERT: Cette fonction utilise data.qpos[stewart_*] directement
+    uniquement pour la simulation MuJoCo de bas niveau (visualisation viewer).
+    Pour le robot physique ou avec le SDK, utiliser goto_target() ou
+    set_target_head_pose() avec create_head_pose() (cinématique inverse requise).
+
+    NOTE: L'utilisation de stewart_1/stewart_2 ici est une approximation simplifiée
+    pour MuJoCo direct (stewart_1 ≈ pitch, stewart_2 ≈ yaw). Le robot réel nécessite IK.
+    """
     import math
 
     message_lower = message.lower()
@@ -112,6 +121,7 @@ def animate_with_viewer(
 
         if is_greeting:
             # SALUTATION : Basé sur SDK happy (pitch=0.1 rad max)
+            # NOTE: Utilisation stewart_1 uniquement pour MuJoCo direct (viewer)
             stewart_1_id = get_joint_id(model, "stewart_1")
             if stewart_1_id is not None:
                 # Hochement safe conforme SDK (pitch 0.1 max)
@@ -127,6 +137,7 @@ def animate_with_viewer(
                 data.qpos[body_id] = rotation
 
             # Tête excited (pitch 0.12 max - sous limite 0.2 SDK)
+            # NOTE: Utilisation stewart_1 uniquement pour MuJoCo direct (viewer)
             stewart_1_id = get_joint_id(model, "stewart_1")
             if stewart_1_id is not None:
                 pos = 0.12 * math.sin(progress * math.pi * 2)
@@ -134,6 +145,7 @@ def animate_with_viewer(
 
         elif is_question:
             # CURIEUX : Basé sur SDK curious (pitch=0.05, yaw=0.2)
+            # NOTE: Utilisation stewart_2 uniquement pour MuJoCo direct (viewer)
             stewart_2_id = get_joint_id(model, "stewart_2")
             if stewart_2_id is not None:
                 pos = 0.06 * math.sin(progress * math.pi)
@@ -147,19 +159,29 @@ def animate_with_viewer(
 
 
 def animate_robot_from_chat(model, data, message: str, response: str):
-    """Animer le robot selon le message et réponse de BBIA avec mouvements réalistes."""
+    """Animer le robot selon le message et réponse de BBIA avec mouvements réalistes.
+
+    ⚠️ IMPORTANT EXPERT: Cette fonction utilise data.qpos[stewart_*] directement
+    uniquement pour la simulation MuJoCo de bas niveau (visualisation viewer).
+    Pour le robot physique ou avec le SDK, utiliser goto_target() ou
+    set_target_head_pose() avec create_head_pose() (cinématique inverse requise).
+
+    NOTE: L'utilisation de stewart_1/stewart_2 ici est une approximation simplifiée
+    pour MuJoCo direct (stewart_1 ≈ pitch, stewart_2 ≈ yaw). Le robot réel nécessite IK.
+    """
 
     message_lower = message.lower()
     response_lower = response.lower()
 
     # Utiliser SEULEMENT les joints mobiles : stewart_1-6 et yaw_body
     # Les antennes sont bloquées (range = 0.000) dans le modèle officiel
+    # NOTE: Utilisation stewart_* uniquement pour MuJoCo direct (viewer)
 
     # Salutations -> Hochement conforme SDK happy (pitch=0.1 max)
     if any(word in message_lower for word in ["bonjour", "salut", "hello"]):
         stewart_1_id = get_joint_id(model, "stewart_1")
         if stewart_1_id is not None:
-            data.qpos[stewart_1_id] = 0.08  # Pitch conforme SDK happy
+            data.qpos[stewart_1_id] = 0.08  # Pitch conforme SDK happy (MuJoCo direct)
 
     # Positif/Joyeux -> excited (pitch=0.2, yaw=0.1 max)
     if any(word in response_lower for word in ["super", "content", "excité"]):
@@ -169,13 +191,13 @@ def animate_robot_from_chat(model, data, message: str, response: str):
 
         stewart_1_id = get_joint_id(model, "stewart_1")
         if stewart_1_id is not None:
-            data.qpos[stewart_1_id] = 0.12  # Pitch conforme SDK excited
+            data.qpos[stewart_1_id] = 0.12  # Pitch conforme SDK excited (MuJoCo direct)
 
     # Question/Curieux -> curious (pitch=0.05, yaw=0.2 max)
     if any(word in message_lower for word in ["quoi", "comment", "pourquoi", "?"]):
         stewart_2_id = get_joint_id(model, "stewart_2")
         if stewart_2_id is not None:
-            data.qpos[stewart_2_id] = 0.08  # Yaw conforme SDK curious
+            data.qpos[stewart_2_id] = 0.08  # Yaw conforme SDK curious (MuJoCo direct)
 
         body_id = get_joint_id(model, "yaw_body")
         if body_id is not None:
@@ -187,7 +209,7 @@ def animate_robot_from_chat(model, data, message: str, response: str):
     ):
         stewart_1_id = get_joint_id(model, "stewart_1")
         if stewart_1_id is not None:
-            data.qpos[stewart_1_id] = -0.08  # Pitch conforme SDK sad
+            data.qpos[stewart_1_id] = -0.08  # Pitch conforme SDK sad (MuJoCo direct)
 
         body_id = get_joint_id(model, "yaw_body")
         if body_id is not None:
@@ -276,9 +298,11 @@ def demo_chat_bbia_3d():
                 data.qpos[body_id] = pos
 
             # Mouvement tête expressif conforme SDK (happy pitch=0.1)
+            # NOTE: Utilisation stewart_1 uniquement pour MuJoCo direct (viewer)
             stewart_1_id = get_joint_id(model, "stewart_1")
             if stewart_1_id is not None:
                 # Hochements conformes SDK create_head_pose(happy pitch=0.1)
+                # Approximation MuJoCo direct (robot réel nécessite IK)
                 pos = 0.08 * math.sin(progress * math.pi * 4)
                 data.qpos[stewart_1_id] = pos
 
