@@ -23,6 +23,16 @@ except ImportError:
 
 logger = logging.getLogger(__name__)
 
+# Réduction du bruit de logs TensorFlow/MediaPipe (avant import potentiel de MediaPipe)
+try:
+    import os as _os  # noqa: F401
+
+    _os.environ.setdefault("GLOG_minloglevel", "2")
+    _os.environ.setdefault("TF_CPP_MIN_LOG_LEVEL", "2")
+    _os.environ.setdefault("MEDIAPIPE_DISABLE_GPU", "1")
+except Exception:
+    pass
+
 
 class YOLODetector:
     """Module de détection d'objets utilisant YOLOv8n."""

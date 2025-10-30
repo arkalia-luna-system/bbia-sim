@@ -13,6 +13,16 @@ import numpy as np
 
 logger = logging.getLogger(__name__)
 
+# Réduction du bruit de logs TensorFlow/MediaPipe (avant tout import MediaPipe)
+try:
+    import os as _os  # noqa: F401
+
+    _os.environ.setdefault("GLOG_minloglevel", "2")
+    _os.environ.setdefault("TF_CPP_MIN_LOG_LEVEL", "2")
+    _os.environ.setdefault("MEDIAPIPE_DISABLE_GPU", "1")
+except Exception:
+    pass
+
 # Import conditionnel des dépendances ML
 try:
     import mediapipe as mp

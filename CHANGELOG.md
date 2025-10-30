@@ -5,6 +5,16 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### 🔧 Corrigé
+- mypy no-redef dans `src/bbia_sim/bbia_voice.py` (`audio_bytes` renommé en `sdk_audio_bytes`) pour éviter la redéfinition dans `dire_texte`.
+- Accès télémétrie SDK durci dans `src/bbia_sim/daemon/app/routers/state.py` (plus d'accès direct `.robot`, usage de `getattr` et typage défensif).
+
+### 🧪 Tests & 📚 Docs
+- Nouveau test headless `tests/test_voice_speaker_fallback_headless.py` pour vérifier le fallback speaker sans drivers audio.
+- `docs/status.md` mis à jour (note CI audio + mypy=0 sur corrections effectuées).
+
 ## [1.3.1] - Octobre 2025
 
 ### 🎯 **RELEASE - AUDIT COMPLET BBIA → REACHY INTEGRATION**

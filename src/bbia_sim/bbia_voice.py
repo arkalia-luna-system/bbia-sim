@@ -201,22 +201,22 @@ def dire_texte(texte: str, robot_api: Optional[Any] = None) -> None:
             num_samples = int(0.1 * sr)
             silence = b"".join(_struct.pack("<h", 0) for _ in range(num_samples))
 
-            audio_bytes: bytes
+            sdk_audio_bytes: bytes
             wav_buf = _io.BytesIO()
             with _wave.open(wav_buf, "wb") as wf:
                 wf.setnchannels(1)
                 wf.setsampwidth(2)
                 wf.setframerate(sr)
                 wf.writeframes(silence)
-            audio_bytes = wav_buf.getvalue()
+            sdk_audio_bytes = wav_buf.getvalue()
 
             # Priorité 1: media.play_audio(bytes[, volume])
             if hasattr(media, "play_audio"):
                 try:
                     try:
-                        media.play_audio(audio_bytes, volume=1.0)
+                        media.play_audio(sdk_audio_bytes, volume=1.0)
                     except TypeError:
-                        media.play_audio(audio_bytes)
+                        media.play_audio(sdk_audio_bytes)
                     return
                 except Exception as e:
                     logging.debug(f"media.play_audio a échoué: {e}")
@@ -226,7 +226,7 @@ def dire_texte(texte: str, robot_api: Optional[Any] = None) -> None:
             if speaker is not None:
                 try:
                     if hasattr(speaker, "play"):
-                        speaker.play(audio_bytes)
+                        speaker.play(sdk_audio_bytes)
                         return
                 except Exception as e:
                     logging.debug(f"speaker.play a échoué: {e}")
@@ -240,7 +240,7 @@ def dire_texte(texte: str, robot_api: Optional[Any] = None) -> None:
                     ) as tmp:
                         tmp_path = tmp.name
                         with open(tmp_path, "wb") as f:
-                            f.write(audio_bytes)
+                            f.write(sdk_audio_bytes)
                     if hasattr(speaker, "play_file"):
                         speaker.play_file(tmp_path)
                         return

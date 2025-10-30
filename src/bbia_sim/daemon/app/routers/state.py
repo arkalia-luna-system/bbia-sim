@@ -67,12 +67,13 @@ def _read_sdk_telemetry() -> dict[str, Any] | None:
         try:
             # Lecture batterie/IMU si exposés via robot.media
             data: dict[str, Any] = {}
-            media = getattr(backend, "robot", None)
-            if media is None or not hasattr(backend, "robot"):
+            # Certains backends exposent un objet robot; typage dynamique pour mypy
+            robot_obj: Any = getattr(backend, "robot", None)
+            if robot_obj is None:
                 return None
 
-            # Le SDK expose généralement backend.robot.media
-            media_mgr = getattr(backend.robot, "media", None)
+            # Le SDK expose généralement robot.media
+            media_mgr = getattr(robot_obj, "media", None)
             if media_mgr is None:
                 return None
 
@@ -104,8 +105,8 @@ def _read_sdk_telemetry() -> dict[str, Any] | None:
 
             # IMU (si exposé via robot.io ou robot.media)
             imu = None
-            if hasattr(backend.robot, "io") and backend.robot.io:
-                io_mgr = backend.robot.io
+            if hasattr(robot_obj, "io") and robot_obj.io:
+                io_mgr = robot_obj.io
                 try:
                     if hasattr(io_mgr, "get_imu"):
                         imu = io_mgr.get_imu()  # doit renvoyer dict-like

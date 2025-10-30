@@ -14,6 +14,16 @@ import numpy.typing as npt
 
 logger = logging.getLogger(__name__)
 
+# Réduction du bruit de logs TensorFlow/MediaPipe (avant tout import MediaPipe)
+try:
+    import os as _os  # noqa: F401
+
+    _os.environ.setdefault("GLOG_minloglevel", "2")  # 0=INFO,1=WARNING,2=ERROR
+    _os.environ.setdefault("TF_CPP_MIN_LOG_LEVEL", "2")  # 1=WARNING,2=ERROR
+    _os.environ.setdefault("MEDIAPIPE_DISABLE_GPU", "1")  # éviter logs GPU inutiles
+except Exception:
+    pass
+
 # Import conditionnel pour YOLO et MediaPipe
 try:
     from .vision_yolo import create_yolo_detector

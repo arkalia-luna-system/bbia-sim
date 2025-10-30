@@ -618,6 +618,7 @@ Points clés:
 **Patches appliqués :** 8 corrections (3 `reachy_mini_backend.py`, 1 `bbia_voice.py`, 1 `robot_api.py`, 2 `bbia_vision.py`, 1 `ai_backends.py`)
 **Tests corrigés :** 1 (`test_strict_parameter_validation` passe)
 **JSONL généré :** `artifacts/audit_reachy_modules.jsonl`
+**Type-check** : mypy = 0 error (bbia_voice no-redef corrigé; accès SDK typés dans state)
 
 ### 🔐 Synthèse conformité SDK Reachy Mini (2025-10-30)
 
