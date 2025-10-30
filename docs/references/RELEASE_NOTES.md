@@ -56,11 +56,11 @@ Corrections des erreurs de formatage, des tests et de la qualité de code. Les o
 - Types de retour: correction pour conformité MyPy
 
 ### Métriques qualité
-- **Tests** : 38 passed, 2 skipped ✅
-- **Ruff** : All checks passed ✅
-- **MyPy** : Success, no issues found ✅
-- **Bandit** : 0 security issues ✅
-- **Black** : All files formatted ✅
+- **Tests** : 38 passed, 2 skipped
+- **Ruff** : All checks passed
+- **MyPy** : Success, no issues found
+- **Bandit** : 0 security issues
+- **Black** : All files formatted
 
 ## Version 1.2.0 - IA légère, scripts one-click et vitesse robot
 
@@ -203,7 +203,7 @@ python scripts/record_trace.py --emotion happy --duration 5
 ### Métriques finales v1.2.0
 - **Tests** : 706 collectés
 - **Coverage** : 63.37% de couverture de code
-- **Latence** : Moyenne 0.02ms, max 4.77ms (<40ms ✅)
+- **Latence** : Moyenne 0.02 ms, max 4.77 ms (<40 ms)
 - **Artefacts** : JSONL 87MB, CSV 640KB générés automatiquement
 - **Hardware Dry Run** : 9,801 tests latence validés
 - **Tag Git** : v1.2.0 créé avec commit 0875d2a

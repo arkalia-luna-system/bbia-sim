@@ -27,44 +27,44 @@ Les rapports détaillés des phases précédentes sont archivés dans `docs/arch
 
 ## 📊 Versions Principales
 
-### **v1.3.0 - Octobre 2025** ✅
-**Conformité SDK Parfaite**
-- ✅ Conformité 100% SDK officiel Reachy-Mini
-- ✅ Backend ReachyMini prêt pour robot physique
-- ✅ 21/21 méthodes SDK implémentées
-- ✅ Tests: 18/18 passent
-- ✅ Performance: Latence <1ms
+### **v1.3.0 - Octobre 2025**
+**Conformité SDK validée**
+- Conformité SDK officiel Reachy-Mini
+- Backend ReachyMini prêt pour robot physique
+- 21/21 méthodes SDK implémentées
+- Tests: 18/18 passent
+- Performance: latence < 1 ms
 
 ### **v1.2.1 - Octobre 2024**
-**Corrections & Qualité**
-- 🔧 Corrections typage MyPy
-- 🔧 Formatage code (Black, Ruff)
-- ✅ 38 tests passent
+**Corrections et qualité**
+- Corrections typage MyPy
+- Formatage code (Black, Ruff)
+- 38 tests passent
 
 ### **v1.2.0 - Octobre 2024**
-**IA Légère Activée**
-- ✅ Whisper STT + YOLOv8n
-- ✅ Dashboard Web
-- ✅ Scripts One-Click
-- ✅ Golden Tests
+**IA légère activée**
+- Whisper STT + YOLOv8n
+- Dashboard web
+- Scripts one-click
+- Golden tests
 
 ### **v1.1.1 - Octobre 2024**
-**RobotAPI Unifié**
-- ✅ Interface abstraite Sim/Robot
-- ✅ Golden Tests
-- ✅ CI/CD
+**RobotAPI unifié**
+- Interface abstraite Sim/Robot
+- Golden tests
+- CI/CD
 
 ### **v1.1.0 - Octobre 2024**
-**Simulation Complète**
-- ✅ Robot Reachy Mini assemblé
-- ✅ Modules BBIA intégrés
-- ✅ API REST + WebSocket
+**Simulation complète**
+- Robot Reachy Mini assemblé
+- Modules BBIA intégrés
+- API REST + WebSocket
 
 ### **v1.0.0 - Octobre 2024**
-**Première Release**
-- ✅ Simulation MuJoCo base
-- ✅ Modules BBIA
-- ✅ Tests unitaires
+**Première release**
+- Simulation MuJoCo base
+- Modules BBIA
+- Tests unitaires
 
 ---
 

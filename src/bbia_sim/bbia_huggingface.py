@@ -703,7 +703,8 @@ class BBIAHuggingFace:
             else:
                 adapted_response = bbia_response  # LLM gère déjà la personnalité
 
-            return adapted_response
+            # Normaliser la longueur pour rester entre ~30 et ~150 caractères
+            return self._normalize_response_length(adapted_response)
 
         except Exception as e:
             logger.error(f"❌ Erreur chat: {e}")
@@ -812,7 +813,11 @@ class BBIAHuggingFace:
                 generated_text = generated_text.split("Assistant:")[-1].strip()
 
             logger.info(f"🤖 LLM réponse générée: {generated_text[:100]}...")
-            return generated_text if generated_text else "Je comprends, continuez."
+            return (
+                self._normalize_response_length(generated_text)
+                if generated_text
+                else "Je comprends, continuez."
+            )
 
         except Exception as e:
             logger.warning(f"⚠️  Erreur génération LLM, fallback enrichi: {e}")
@@ -1209,6 +1214,39 @@ class BBIAHuggingFace:
             return response
 
         return f"{emoji} {response}"
+
+    def _normalize_response_length(self, text: str) -> str:
+        """Normalise la longueur de la réponse vers ~[30, 150] caractères.
+
+        - Si < 30: ajoute une brève précision.
+        - Si > 150: tronque sur ponctuation/espace proche de 150.
+        """
+        try:
+            t = (text or "").strip()
+            min_len, max_len = 30, 150
+            if len(t) < min_len:
+                suffix_pool = [
+                    " Peux-tu préciser un peu ta demande ?",
+                    " Dis-m'en un peu plus, s'il te plaît.",
+                    " Donne-moi quelques détails supplémentaires.",
+                    " Qu'attends-tu exactement comme aide ?",
+                ]
+                import random as _r
+
+                t = (t + suffix_pool[_r.randrange(len(suffix_pool))]).strip()
+            if len(t) <= max_len:
+                return t
+
+            cut = t[: max_len + 1]
+            last_stop = max(cut.rfind("."), cut.rfind("!"), cut.rfind("?"))
+            if last_stop >= min_len // 2:
+                return cut[: last_stop + 1].strip()
+            last_space = cut.rfind(" ")
+            if last_space >= min_len:
+                return (cut[:last_space] + "...").strip()
+            return (t[:max_len] + "...").strip()
+        except Exception:
+            return text
 
     def _get_recent_context(self) -> Optional[str]:
         """Extrait un mot-clé du contexte récent pour cohérence conversationnelle.

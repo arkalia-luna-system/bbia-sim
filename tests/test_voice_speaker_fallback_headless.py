@@ -71,5 +71,3 @@ def test_fallback_speaker_play_bytes_when_no_play_audio(monkeypatch):
     assert len(robot.media.speaker.play_bytes_calls) == 1
     # Et qu'aucun play_file n'a été nécessaire (chemin secondaire)
     assert len(robot.media.speaker.play_file_calls) == 0
-
-
