@@ -438,14 +438,14 @@ class SafetyManager:
 # pyproject.toml
 [tool.black]
 line-length = 88
-target-version = ['py39']
+target-version = ['py311']
 
 [tool.ruff]
-target-version = "py39"
+target-version = "py311"
 line-length = 88
 
 [tool.mypy]
-python_version = "3.9"
+python_version = "3.11"
 warn_return_any = false
 ```
 
