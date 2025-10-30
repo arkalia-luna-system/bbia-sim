@@ -18,6 +18,98 @@
 >   pip install -e .
 >   ```
 
+---
+
+## ✅ État par axe (vérifié dans le code et la CI)
+
+### Fiabilité / Observabilité
+- État actuel:
+  - Endpoints FastAPI en place; watchdog/emergency-stop opérationnels.
+  - Pas d’exécution `/metrics` Prometheus; pas de endpoints `/healthz`/`/readyz` dédiés; logs non uniformisés en JSON.
+- Axes futurs:
+  - Exposer métriques (latence, CPU/RAM, FPS, watchdog) via `prometheus_client` et `/metrics`.
+  - Ajouter `GET /healthz` (liveness) et `GET /readyz` (readiness).
+  - Standardiser logs structurés JSON.
+
+### Performance
+- État actuel:
+  - Tests de latence/jitter/bench présents (ex: `tests/test_control_loop_jitter.py`, `tests/test_emergency_stop_latency.py`).
+  - Rapports p50/p95 non agrégés automatiquement en CI.
+- Axes futurs:
+  - Profiler hot-path (MuJoCo step, WS, émotions) et exporter p50/p95/p99 en JSONL.
+  - Seuils/perf-baselines simples dans la CI.
+
+### Sécurité
+- État actuel:
+  - Bandit + pip-audit en CI; clamp sécurité et validation JSON en place; pas de secrets versionnés détectés.
+  - CORS/ratelimiting/scopes OAuth non configurés; SBOM/semgrep/gitleaks absents.
+- Axes futurs:
+  - Activer CORS strict + ratelimiting; définir scopes basiques.
+  - Générer SBOM (CycloneDX) + ajouter semgrep/gitleaks en CI.
+
+### CI/CD
+- État actuel:
+  - Pipeline GitHub Actions unifié Python 3.11, codecov OK.
+  - Pas de matrice 3.12, pas de pré-commit, pas de sharding tests.
+- Axes futurs:
+  - Étendre matrice (3.11/3.12); pré-commit (ruff/black/mypy); shards tests si durée ↑.
+
+### Compatibilité / Packaging
+- État actuel:
+  - `pyproject` PEP 621 OK; extras `dev/test/audio`; Dockerfile présent.
+  - Pas de script de diagnostic environnement.
+- Axes futurs:
+  - Extras `lite/full/robot`; images Docker CPU/MPS; script "bbia doctor".
+
+### API & SDK
+- État actuel:
+  - OpenAPI via FastAPI; WS télémétrie stable.
+  - Pas de versionnement de schémas WS; pagination/filtre REST absents.
+- Axes futurs:
+  - Client SDK auto-généré (Python/TS); versionner schémas WS; pagination/filtre.
+
+### Fonctionnalités robot
+- État actuel:
+  - Record/replay, watchdog OK; scripts d’intégration présents.
+  - Résilience réseau ROS2/Zenoh peu documentée.
+- Axes futurs:
+  - Timelines scriptables; reconnexion WS/Zenoh; guide résilience.
+
+### Dashboard / UX
+- État actuel:
+  - `dashboard_advanced.py` disponible.
+  - Pas d’UI chartée avec presets/sliders.
+- Axes futurs:
+  - Mini UI télémétrie (graph + sliders émotions), presets exportables, mode read-only.
+
+### Vision / Audio / IA
+- État actuel:
+  - Modules et tests présents; flags headless.
+  - Datasets/golden images limités; latence E2E audio non centralisée.
+- Axes futurs:
+  - Datasets/golden images internes; tests loopback audio (si HW); backend TTS modulable.
+
+### Docs / Onboarding
+- État actuel:
+  - Docs riches, 3.11+ harmonisé; bandeaux archives OK.
+  - Pas de vidéos/GIF; FAQ à compléter.
+- Axes futurs:
+  - “Zero-to-sim/robot” en GIF/vidéo; table compat OS/HW; FAQ (MuJoCo/PortAudio).
+
+### Qualité
+- État actuel:
+  - ruff/black/mypy/bandit OK; golden traces; couverture bonne sur critiques.
+  - Semgrep absent; couverture par module non publiée.
+- Axes futurs:
+  - Semgrep léger; badges couverture par sous-modules; tests surface API additionnels.
+
+### Communauté
+- État actuel:
+  - PR template présent.
+  - Pas de templates issues/discussions ni roadmap publique.
+- Axes futurs:
+  - Templates (bug/feature/question), roadmap minimale, “good first issues”, starter kits.
+
 ### 📋 Référence Reachy Mini
 
 **Référence précise @84c40c31 :**

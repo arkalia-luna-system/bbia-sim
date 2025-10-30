@@ -3,6 +3,10 @@
 **Problème :** Code "rame" (lent)
 **Responsable identifié et corrigé :** `pyttsx3.init()` appelé 2 fois par synthèse vocale
 
+> Référence globale performance
+>
+> Pour un suivi transversal (latences p50/p95, budgets et axes futurs), voir `docs/status.md` → "Performance" dans "État par axe".
+
 ---
 
 ## Problème principal

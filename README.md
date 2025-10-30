@@ -130,6 +130,10 @@ graph TB
 - **✅ Coverage** : Validée en CI (voir `coverage.xml` et `htmlcov/`)
 - **✅ API** : FastAPI + WebSocket opérationnels
 
+> Suivi global (État par axe)
+>
+> Consultez `docs/status.md` (section "État par axe") pour l’état actuel et les axes d’amélioration vérifiés: Observabilité, Performance, Sécurité, CI/CD, Packaging, API/SDK, Robot, Dashboard/UX, Vision/Audio/IA, Docs, Qualité, Communauté.
+
 ## 🚀 Démarrage Rapide
 
 ### Voir le robot en 3D

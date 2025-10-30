@@ -19,6 +19,10 @@
 
 Ce guide vous accompagne dans l'intégration de BBIA-SIM dans vos projets. BBIA-SIM est un écosystème ouvert pour le contrôle du robot Reachy Mini avec des modules BBIA (Bio-Inspired Artificial Intelligence).
 
+> État du projet (référence)
+>
+> Voir `docs/status.md` → section "État par axe" pour connaître le niveau actuel (Observabilité, Perf, Sécurité, CI/CD, etc.) et les axes futurs proposés.
+
 ### Fonctionnalités principales
 
 - Contrôle robot : API REST + WebSocket pour le contrôle du robot Reachy Mini
