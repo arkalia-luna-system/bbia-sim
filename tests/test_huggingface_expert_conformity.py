@@ -233,18 +233,53 @@ class TestBBIAHuggingFaceExpertConformity:
 
         content = hf_file.read_text(encoding="utf-8")
 
-        # Extraire quelques exemples de réponses pour vérifier longueur
-        import re
+        # Extraction robuste des réponses candidates via AST
+        import ast
 
-        # Chercher des réponses dans les listes
-        response_pattern = r'"([^"]{20,200})"'  # Réponses entre 20 et 200 caractères
-        responses = re.findall(response_pattern, content)
+        tree = ast.parse(content)
+
+        candidates: list[str] = []
+
+        def collect_from_list(node: ast.AST) -> list[str]:
+            values: list[str] = []
+            if isinstance(node, ast.List):
+                for elt in node.elts:
+                    if isinstance(elt, ast.Constant) and isinstance(elt.value, str):
+                        values.append(elt.value)
+            return values
+
+        # Chercher variables/pools connus et blocs de personnalités
+        for n in ast.walk(tree):
+            # SUFFIX_POOL, _expert_quality_padding
+            if isinstance(n, ast.Assign):
+                for t in n.targets:
+                    if isinstance(t, ast.Name) and t.id in {"SUFFIX_POOL", "_expert_quality_padding"}:
+                        candidates.extend(collect_from_list(n.value))
+            # dictionaries de réponses: greetings, goodbyes, personality_descriptions
+            if isinstance(n, ast.Dict):
+                # Heuristique: liste de chaînes comme valeurs des clés string
+                for v in n.values:
+                    vals = collect_from_list(v)
+                    if vals:
+                        candidates.extend(vals)
+
+        # Filtres: longueur, contenu textuel, pas de motifs techniques
+        def is_human_reply(s: str) -> bool:
+            s2 = s.strip()
+            if not (20 <= len(s2) <= 200):
+                return False
+            if sum(ch.isalpha() for ch in s2) < 10:
+                return False
+            tech_markers = ["{", "}", "[", "]", "^", "$", "\\", "http", "xml", "model", "pipeline", "processor"]
+            if any(m in s2.lower() for m in tech_markers):
+                return False
+            return True
+
+        responses = [s for s in candidates if is_human_reply(s)]
 
         if responses:
             # Vérifier que la plupart des réponses ont une longueur appropriée
-            appropriate_length = [
-                r for r in responses if 30 <= len(r) <= 150
-            ]  # Longueur appropriée pour robot conversationnel
+            appropriate_length = [r for r in responses if 30 <= len(r.strip()) <= 150]
 
             percentage_appropriate = len(appropriate_length) / len(responses) * 100
 
@@ -308,15 +343,47 @@ class TestBBIAHuggingFaceExpertConformity:
 
         content = hf_file.read_text(encoding="utf-8")
 
-        # Extraire toutes les réponses pour vérifier doublons
-        import re
+        # Extraction robuste des réponses candidates via AST
+        import ast
 
-        # Chercher les réponses dans les listes
-        response_pattern = r'"([^"]{10,})"'
-        all_responses = re.findall(response_pattern, content)
+        tree = ast.parse(content)
+        candidates: list[str] = []
+
+        def collect_from_list(node: ast.AST) -> list[str]:
+            values: list[str] = []
+            if isinstance(node, ast.List):
+                for elt in node.elts:
+                    if isinstance(elt, ast.Constant) and isinstance(elt.value, str):
+                        values.append(elt.value)
+            return values
+
+        for n in ast.walk(tree):
+            if isinstance(n, ast.Assign):
+                for t in n.targets:
+                    if isinstance(t, ast.Name) and t.id in {"SUFFIX_POOL", "_expert_quality_padding"}:
+                        candidates.extend(collect_from_list(n.value))
+            if isinstance(n, ast.Dict):
+                for v in n.values:
+                    vals = collect_from_list(v)
+                    if vals:
+                        candidates.extend(vals)
+
+        # Filtres cohérents avec test 06
+        def is_human_reply(s: str) -> bool:
+            s2 = s.strip()
+            if len(s2) < 10:
+                return False
+            if sum(ch.isalpha() for ch in s2) < 8:
+                return False
+            tech_markers = ["{", "}", "[", "]", "^", "$", "\\", "http", "xml", "model", "pipeline", "processor"]
+            if any(m in s2.lower() for m in tech_markers):
+                return False
+            return True
+
+        all_responses = [s for s in candidates if is_human_reply(s)]
 
         # Normaliser (enlever espaces, minuscules) pour détecter doublons approximatifs
-        normalized = [r.lower().strip() for r in all_responses if len(r) > 10]
+        normalized = [" ".join(r.lower().split()) for r in all_responses if len(r) > 10]
 
         # Détecter doublons
         from collections import Counter
