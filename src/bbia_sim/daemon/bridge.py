@@ -489,13 +489,52 @@ class ZenohBridge:
             return
 
         try:
-            # Récupérer l'état des joints
-            joints = self.reachy_mini.get_joint_positions()
-            self.current_state.joints = joints
+            # Récupérer l'état des joints (API SDK officielle)
+            joints_state: dict[str, float] = {}
+            if hasattr(self.reachy_mini, "get_current_joint_positions"):
+                try:
+                    head_positions, antenna_positions = (
+                        self.reachy_mini.get_current_joint_positions()
+                    )
+                    # Stewart joints (indices 0-5)
+                    if isinstance(head_positions, (list, tuple)):
+                        for i, val in enumerate(head_positions[:6]):
+                            joints_state[f"stewart_{i+1}"] = float(val)
+                    # Antennes (indices 0-1)
+                    if isinstance(antenna_positions, (list, tuple)):
+                        if len(antenna_positions) > 0:
+                            joints_state["left_antenna"] = float(antenna_positions[0])
+                        if len(antenna_positions) > 1:
+                            joints_state["right_antenna"] = float(antenna_positions[1])
+                except Exception as err:
+                    self.logger.warning(
+                        f"Lecture joints via get_current_joint_positions a échoué: {err}"
+                    )
 
-            # Récupérer l'état des capteurs
-            sensors = self.reachy_mini.get_sensor_data()
-            self.current_state.sensors = sensors
+            # Optionnel: body_yaw si exposé par SDK
+            try:
+                if hasattr(self.reachy_mini, "get_current_body_yaw"):
+                    yaw = self.reachy_mini.get_current_body_yaw()
+                    if yaw is not None:
+                        joints_state["yaw_body"] = float(yaw)
+            except Exception:
+                pass
+
+            self.current_state.joints = joints_state
+
+            # Récupérer l'état des capteurs (garder défensif: API non standardisée)
+            sensors_state: dict[str, Any] = {}
+            try:
+                if hasattr(self.reachy_mini, "get_sensor_data"):
+                    sensors_state = dict(self.reachy_mini.get_sensor_data())  # type: ignore[arg-type]
+                elif hasattr(self.reachy_mini, "io") and hasattr(
+                    self.reachy_mini.io, "get_imu"
+                ):
+                    sensors_state["imu"] = self.reachy_mini.io.get_imu()  # type: ignore[assignment]
+            except Exception as err:
+                self.logger.warning(f"Lecture capteurs indisponible: {err}")
+
+            self.current_state.sensors = sensors_state
 
             # Mettre à jour le timestamp
             self.current_state.timestamp = time.time()

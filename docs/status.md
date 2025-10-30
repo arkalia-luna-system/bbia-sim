@@ -49,11 +49,11 @@ Le SDK officiel Reachy Mini expose une intégration Hugging Face Spaces via `hf_
 **Tests existants :** `tests/test_bbia_huggingface_chat.py` (195 lignes, 15 tests)
 
 **Coverage :**
-- ✅ Chat simple (salutations)
-- ✅ Historique conversation
-- ✅ Réponses enrichies (sentiment)
-- ✅ Personnalités BBIA
-- ✅ Contexte conversationnel
+- Chat simple (salutations)
+- Historique conversation
+- Réponses enrichies (sentiment)
+- Personnalités BBIA
+- Contexte conversationnel
 
 **Tests recommandés supplémentaires :**
 - [ ] Test sécurité : Validation entrée utilisateur (injection)
@@ -63,10 +63,10 @@ Le SDK officiel Reachy Mini expose une intégration Hugging Face Spaces via `hf_
 ### ⚡ Performance
 
 **Optimisations présentes :**
-- ✅ Cache modèles (évite rechargement)
-- ✅ Device auto-détection (CUDA/MPS/CPU)
-- ✅ Lazy loading (chargement à la demande)
-- ✅ `torch.float16` pour GPU (économie mémoire)
+- Cache modèles (évite rechargement)
+- Device auto-détection (CUDA/MPS/CPU)
+- Lazy loading (chargement à la demande)
+- `torch.float16` pour GPU (économie mémoire)
 
 **Métriques observées :**
 - Chargement LLM Mistral 7B : ~1-2 min (première fois)
@@ -164,15 +164,15 @@ Le SDK Reachy Mini expose une API médias via `MediaManager`:
 ### 🔒 Sécurité & Tests
 
 **Tests existants :** `tests/test_bbia_audio.py` + `test_bbia_audio_extended.py` (18 tests)
- - ✅ `tests/test_audio_latency_e2e.py` (lecture) → PASS
- - ✅ `tests/test_runtime_budget.py` (10s simulation) → PASS
+ - `tests/test_audio_latency_e2e.py` (lecture) → PASS
+ - `tests/test_runtime_budget.py` (10s simulation) → PASS
 
 **Coverage :**
-- ✅ Enregistrement audio (SDK + fallback)
-- ✅ Lecture audio (SDK + fallback)
-- ✅ Détection de son (seuil, amplitude)
-- ✅ Gestion erreurs (fallbacks multi-niveaux)
-- ✅ Flag `BBIA_DISABLE_AUDIO` (CI/headless)
+- Enregistrement audio (SDK + fallback)
+- Lecture audio (SDK + fallback)
+- Détection de son (seuil, amplitude)
+- Gestion erreurs (fallbacks multi-niveaux)
+- Flag `BBIA_DISABLE_AUDIO` (CI/headless)
 
 **Tests recommandés supplémentaires :**
 - [x] Test sécurité : Validation chemins fichiers (path traversal) — ajouté (`tests/test_bbia_audio.py`)
@@ -182,10 +182,10 @@ Le SDK Reachy Mini expose une API médias via `MediaManager`:
 ### ⚡ Performance
 
 **Optimisations présentes :**
-- ✅ Sample rate aligné SDK (16kHz)
-- ✅ Buffer size optimisé (512 samples)
-- ✅ Fallback non-bloquant (sounddevice)
-- ✅ Flag désactivation audio (CI)
+- Sample rate aligné SDK (16kHz)
+- Buffer size optimisé (512 samples)
+- Fallback non-bloquant (sounddevice)
+- Flag désactivation audio (CI)
 
 **Métriques observées :**
 - Enregistrement 3s : <100ms overhead SDK vs fallback
@@ -227,7 +227,7 @@ bandit -r src/bbia_sim/bbia_audio.py -ll
 | Docs/UX | 9/10 | 10% |
 | **TOTAL** | **9.4/10** | 100% |
 
-**Recommandation :** Module excellent, prêt production. Intégration SDK parfaite avec fallbacks robustes. Ajouter tests sécurité (path traversal) et streaming temps réel si disponible.
+**Recommandation :** Module prêt pour la production. Intégration SDK conforme avec fallbacks robustes. Ajouter les tests de sécurité (path traversal) et le streaming temps réel si disponible.
 
 ---
 
@@ -374,6 +374,33 @@ bandit -r src/bbia_sim/backends/reachy_mini_backend.py -ll
 
 ---
 
+## 🔍 API Télémétrie (SDK-first, fallback simulation)
+
+### 📋 Référence Reachy Mini
+
+- `robot.media` (batterie, température, audio)
+- `robot.io.get_imu()` (accéléro/gyro/magnéto) si disponible
+
+### ✅ Implémentation BBIA-SIM
+
+- Endpoints mis à jour: `/api/state/full`, `/api/state/battery`, `/api/state/temperature`, `/api/state/sensors`
+- Stratégie: lecture SDK si activée, sinon simulation (non bloquant)
+- Flags:
+  - `BBIA_TELEMETRY_SDK=true` → active lecture SDK
+  - `BBIA_TELEMETRY_TIMEOUT=1.0` → timeout connexion (s)
+
+### 🔒 Sécurité & Robustesse
+
+- Connexion courte, try/except systématiques, déconnexion dans `finally`
+- Aucune régression des endpoints en absence de robot
+
+### 🧪 Tests
+
+- Tests existants restent PASS (sim par défaut)
+- Nouveaux tests audio/caméra SDK-first ajoutés (voir section Audio/Vision)
+
+---
+
 ## 🔍 Module : `bbia_voice.py`
 
 ### 📋 Référence Reachy Mini
@@ -391,11 +418,11 @@ Le SDK Reachy Mini expose une API médias via `MediaManager`:
 - `robot.media.record_audio()` : Enregistrement optimisé SDK
 
 **Alignement BBIA :**
-- ✅ Sample rate aligné SDK (`16000` Hz)
-- ✅ Cache pyttsx3 global (`_pyttsx3_engine_cache`) - évite 0.8s d'init répétée
-- ✅ Intégration SDK avec fallbacks gracieux (`play_audio()` → `speaker.play_file()` → `speaker.play()` → pyttsx3)
-- ✅ Flag `BBIA_DISABLE_AUDIO` pour CI/headless
-- ✅ Nettoyage fichiers temporaires (try/except avec `nosec B110` justifié)
+- Sample rate aligné SDK (`16000` Hz)
+- Cache pyttsx3 global (`_pyttsx3_engine_cache`) - évite 0.8s d'init répétée
+- Intégration SDK avec fallbacks gracieux (`play_audio()` → `speaker.play_file()` → `speaker.play()` → pyttsx3)
+- Flag `BBIA_DISABLE_AUDIO` pour CI/headless
+- Nettoyage fichiers temporaires (try/except avec `nosec B110` justifié)
 
 ### ✅ Conformité Code Qualité
 
@@ -420,11 +447,11 @@ Le SDK Reachy Mini expose une API médias via `MediaManager`:
 **Tests existants :** `tests/test_bbia_voice*.py` + tests e2e comportement
 
 **Coverage :**
-- ✅ Synthèse vocale TTS (SDK + fallback pyttsx3)
-- ✅ Reconnaissance vocale STT (SDK 4 microphones + fallback speech_recognition)
-- ✅ Cache pyttsx3 (évite réinitialisation)
-- ✅ Sélection voix "Amélie" (priorité fr_FR → fr_CA → toute Amélie)
-- ✅ Flag `BBIA_DISABLE_AUDIO` (CI/headless)
+- Synthèse vocale TTS (SDK + fallback pyttsx3)
+- Reconnaissance vocale STT (SDK 4 microphones + fallback speech_recognition)
+- Cache pyttsx3 (évite réinitialisation)
+- Sélection voix "Amélie" (priorité fr_FR → fr_CA → toute Amélie)
+- Flag `BBIA_DISABLE_AUDIO` (CI/headless)
 
 **Tests recommandés supplémentaires :**
 - [ ] Test performance : Latence TTS (cache vs sans cache, <50ms overhead)
@@ -434,11 +461,11 @@ Le SDK Reachy Mini expose une API médias via `MediaManager`:
 ### ⚡ Performance
 
 **Optimisations présentes :**
-- ✅ Cache pyttsx3 global (`_pyttsx3_engine_cache`) - évite 0.8s d'init répétée
-- ✅ Cache voice ID (`_bbia_voice_id_cache`) - évite recherche répétée
-- ✅ Thread-safe avec `threading.Lock()` (`_pyttsx3_lock`)
-- ✅ Sample rate aligné SDK (16kHz)
-- ✅ Fichiers temporaires nettoyés (finally block)
+- Cache pyttsx3 global (`_pyttsx3_engine_cache`) - évite 0.8s d'init répétée
+- Cache voice ID (`_bbia_voice_id_cache`) - évite recherche répétée
+- Thread-safe avec `threading.Lock()` (`_pyttsx3_lock`)
+- Sample rate aligné SDK (16kHz)
+- Fichiers temporaires nettoyés (finally block)
 
 **Métriques observées :**
 - Init pyttsx3 (première fois) : ~0.8s
@@ -479,7 +506,7 @@ pytest -q -m "not e2e" -k "voice or stt or tts" -v
 | Docs/UX | 9/10 | 10% |
 | **TOTAL** | **9.6/10** | 100% |
 
-**Recommandation :** Module excellent, prêt production. Cache pyttsx3 optimisé, intégration SDK robuste avec fallbacks. Mypy strict passe. Ajouter tests performance (latence cache vs sans cache) et sécurité (path traversal fichiers temp).
+**Recommandation :** Module prêt pour la production. Cache pyttsx3 optimisé, intégration SDK robuste avec fallbacks. Mypy strict passe. Ajouter des tests de performance (latence cache vs sans cache) et de sécurité (path traversal fichiers temporaires).
 
 ---
 
@@ -591,6 +618,28 @@ Points clés:
 **Patches appliqués :** 8 corrections (3 `reachy_mini_backend.py`, 1 `bbia_voice.py`, 1 `robot_api.py`, 2 `bbia_vision.py`, 1 `ai_backends.py`)  
 **Tests corrigés :** 1 (`test_strict_parameter_validation` passe)  
 **JSONL généré :** `artifacts/audit_reachy_modules.jsonl`
+
+### 🔐 Synthèse conformité SDK Reachy Mini (2025-10-30)
+
+- **Conformité globale**: OK (signatures, mapping joints, comportements, interpolation, fallbacks)
+- **Sécurité**: Clamp double-niveau (hardware → safe 0.3 rad), joints interdits (antennes), emergency stop, watchdog 2s, validation JSON (taille/secrets)
+- **Robustesse**: NaN/Inf filtrés, conversions prudentes SDK↔ndarray, thread watchdog isolé par instance, télémétrie avec métriques
+- **Docs/tests/CI**: Guides complets, golden traces, seeds, ruff/black/mypy/Bandit/pip‑audit, e2e headless
+
+Actions recommandées (priorité haute):
+- Harmoniser `daemon/bridge.py` avec les API réelles du SDK (remplacer `get_joint_positions`/`get_sensor_data` par interfaces documentées: `get_current_joint_positions`/capteurs)
+- Décider politique antennes: lecture seule stricte vs écriture via `set_target_antenna_joint_positions()`; aligner backend/tests/docs
+- Ajouter tests de « surface API » contre la version SDK référencée (échec explicite si rupture)
+- Ajouter profils perf légers CI (CPU/RAM/jitter 10–30 s) et secrets‑scan (trufflehog/gitleaks)
+
+Références de preuve (code):
+- Backend SDK/IK/clamp/WD/e-stop: `src/bbia_sim/backends/reachy_mini_backend.py`
+- Mapping et clamp centralisés: `src/bbia_sim/mapping_reachy.py`
+- Bridge Zenoh sécurité JSON & API SDK joints: `src/bbia_sim/daemon/bridge.py` (utilise `get_current_joint_positions`)
+- CI: `.github/workflows/ci.yml`
+
+Tests ajoutés:
+- `tests/test_sdk_surface_compat.py` — vérifie la surface API Reachy Mini (signatures clés)
 
 ### Corrections Appliquées
 

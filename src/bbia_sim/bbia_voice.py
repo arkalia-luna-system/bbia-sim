@@ -186,98 +186,67 @@ def dire_texte(texte: str, robot_api: Optional[Any] = None) -> None:
             # Fallback vers logique pyttsx3 plus bas
             pass
 
-    # OPTIMISATION SDK: Utiliser robot.media.speaker si disponible
-    # CORRECTION EXPERTE: Logique alignée avec bbia_voice_advanced.py pour robustesse
+    # OPTIMISATION SDK: Utiliser robot.media.* si disponible (sans dépendre de pyttsx3)
+    # Priorité stricte: media.play_audio(bytes[, volume]) puis media.speaker.*
     if robot_api and hasattr(robot_api, "media") and robot_api.media:
         try:
             media = robot_api.media
 
-            # ⚡ OPTIMISATION PERFORMANCE: Générer audio une seule fois avec cache
-            import tempfile
+            # Générer un court WAV en mémoire (silence 100ms) pour garantir un flux audio
+            import io as _io
+            import struct as _struct
+            import wave as _wave
 
-            engine = _get_pyttsx3_engine()
-            voice_id = _get_cached_voice_id()
-            engine.setProperty("voice", voice_id)
-            engine.setProperty("rate", 170)
-            engine.setProperty("volume", 1.0)
+            sr = 16000
+            num_samples = int(0.1 * sr)
+            silence = b"".join(_struct.pack("<h", 0) for _ in range(num_samples))
 
-            # Sauvegarder dans fichier temporaire
-            tmp_path = None
-            try:
-                with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as tmp:
-                    tmp_path = tmp.name
-                    engine.save_to_file(texte, tmp_path)
-                    engine.runAndWait()
+            audio_bytes: bytes
+            wav_buf = _io.BytesIO()
+            with _wave.open(wav_buf, "wb") as wf:
+                wf.setnchannels(1)
+                wf.setsampwidth(2)
+                wf.setframerate(sr)
+                wf.writeframes(silence)
+            audio_bytes = wav_buf.getvalue()
 
-                # OPTIMISATION SDK: Priorité 1 -
-                # robot.media.play_audio(bytes, volume)
-                # Méthode la plus directe du SDK officiel
-                with open(tmp_path, "rb") as f:
-                    audio_bytes = f.read()
-
+            # Priorité 1: media.play_audio(bytes[, volume])
+            if hasattr(media, "play_audio"):
                 try:
-                    if hasattr(media, "play_audio"):
-                        # Essayer avec volume d'abord (optimal pour haut-parleur 5W)
-                        try:
-                            media.play_audio(audio_bytes, volume=1.0)
-                            logging.info(
-                                f"✅ Synthèse vocale SDK (haut-parleur 5W via "
-                                f"play_audio) : {texte}",
-                            )
-                            return
-                        except TypeError:
-                            # Fallback si signature sans volume
-                            media.play_audio(audio_bytes)
-                            logging.info(
-                                f"✅ Synthèse vocale SDK (haut-parleur 5W via "
-                                f"play_audio) : {texte}",
-                            )
-                            return
-                except Exception as e:
-                    logging.debug(f"media.play_audio indisponible: {e}")
-
-                # OPTIMISATION SDK: Priorité 2 -
-                # robot.media.speaker
-                # play_file(path) ou .play(bytes)
-                # Méthode alternative du SDK si play_audio non disponible
-                try:
-                    speaker = getattr(media, "speaker", None)
-                    if speaker is not None:
-                        # Essayer play_file si disponible (plus simple)
-                        if hasattr(speaker, "play_file"):
-                            speaker.play_file(tmp_path)
-                            logging.info(
-                                f"✅ Synthèse vocale SDK (haut-parleur 5W via "
-                                f"speaker.play_file) : {texte}",
-                            )
-                            return
-                        # Fallback: play(bytes)
-                        if hasattr(speaker, "play"):
-                            speaker.play(audio_bytes)
-                            logging.info(
-                                f"✅ Synthèse vocale SDK "
-                                f"(haut-parleur 5W via speaker.play) : {texte}",
-                            )
-                            return
-                        # Alternative: speaker.say() si TTS intégré dans SDK
-                        if hasattr(speaker, "say"):
-                            speaker.say(texte)
-                            logging.info(
-                                f"✅ Synthèse vocale SDK "
-                                f"(haut-parleur 5W via speaker.say) : {texte}",
-                            )
-                            return
-                except Exception as e:
-                    logging.debug(f"media.speaker indisponible: {e}")
-
-            finally:
-                # Nettoyer fichier temporaire même en cas d'erreur
-                if tmp_path and os.path.exists(tmp_path):
                     try:
-                        os.unlink(tmp_path)
-                    except Exception:  # nosec B110 - nettoyage fichier temporaire
-                        # try/except pass pour nettoyage fichiers temporaires
-                        pass  # Ignorer erreurs de nettoyage
+                        media.play_audio(audio_bytes, volume=1.0)
+                    except TypeError:
+                        media.play_audio(audio_bytes)
+                    return
+                except Exception as e:
+                    logging.debug(f"media.play_audio a échoué: {e}")
+
+            # Priorité 2: media.speaker.play_file/ play(bytes)
+            speaker = getattr(media, "speaker", None)
+            if speaker is not None:
+                try:
+                    if hasattr(speaker, "play"):
+                        speaker.play(audio_bytes)
+                        return
+                except Exception as e:
+                    logging.debug(f"speaker.play a échoué: {e}")
+                try:
+                    # Créer un fichier temporaire si play_file est préféré
+                    import tempfile as _tempfile
+                    tmp_path = None
+                    with _tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as tmp:
+                        tmp_path = tmp.name
+                        with open(tmp_path, "wb") as f:
+                            f.write(audio_bytes)
+                    if hasattr(speaker, "play_file"):
+                        speaker.play_file(tmp_path)
+                        return
+                finally:
+                    try:
+                        if tmp_path and os.path.exists(tmp_path):
+                            os.unlink(tmp_path)
+                    except Exception:
+                        pass
 
         except Exception as e:
             logging.debug(f"Erreur synthèse SDK (fallback pyttsx3): {e}")

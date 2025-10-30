@@ -12,6 +12,24 @@
 
 Le projet BBIA‑SIM est conforme au SDK officiel Reachy Mini (Pollen Robotics). Des optimisations et corrections ont été appliquées.
 
+### 📌 Matrice de compatibilité (SDK officiel)
+
+- **Dépôt/commit SDK validé**: `pollen-robotics/reachy_mini` @ `84c40c31ff898da4` (branch `develop`)
+- **Surface API vérifiée** (extraits clés):
+  - `look_at_world(x: float, y: float, z: float, duration: float, perform_movement: bool) -> Optional[np.ndarray|(4x4)]`
+  - `look_at_image(u: int, v: int, duration: float, perform_movement: bool) -> Optional[np.ndarray|(4x4)]`
+  - `goto_target(head: HeadPose|None, antennas: list[float]|ndarray|None, duration: float, method: InterpolationTechnique|str, body_yaw: float) -> None`
+  - `get_current_joint_positions() -> tuple[list[float], list[float]]` (head, antennas)
+  - `set_target_head_pose(pose: np.ndarray(4x4)) -> None`
+  - `set_target_body_yaw(yaw: float) -> None`
+  - `get_current_head_pose() -> np.ndarray(4x4)`
+  - `get_present_antenna_joint_positions() -> list[float]`
+  - `enable_motors()/disable_motors()/enable_gravity_compensation()/disable_gravity_compensation() -> None`
+
+Notes:
+- Les méthodes asynchrones (`async_play_move`) et d’enregistrement/replay sont présentes et supportées côté BBIA‑SIM.
+- Les joints Stewart ne sont pas contrôlés individuellement (IK via `set_target_head_pose`/`goto_target`).
+
 ### Conformité validée
 
 - ✅ **SDK Officiel:** Module `reachy_mini` installé et fonctionnel

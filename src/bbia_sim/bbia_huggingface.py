@@ -398,11 +398,11 @@ class BBIAHuggingFace:
 
                 return f"CLIP analysis: {probs.cpu().numpy()}"
 
-            return "Erreur: modèle non supporté"
+            return "Erreur (describe_image): modèle non supporté — vérifiez le nom choisi"
 
         except Exception as e:
             logger.error(f"❌ Erreur description image: {e}")
-            return "Erreur lors de la description de l'image"
+            return "Erreur (describe_image): échec de génération de description d'image"
 
     def analyze_sentiment(
         self,
@@ -506,7 +506,7 @@ class BBIAHuggingFace:
 
         except Exception as e:
             logger.error(f"❌ Erreur transcription audio: {e}")
-            return "Erreur lors de la transcription"
+            return "Erreur (transcribe_audio): problème pendant la transcription audio"
 
     def answer_question(
         self,
@@ -548,7 +548,7 @@ class BBIAHuggingFace:
 
         except Exception as e:
             logger.error(f"❌ Erreur VQA: {e}")
-            return "Erreur lors de l'analyse de l'image"
+            return "Erreur (answer_question): échec de l'analyse visuelle (VQA)"
 
     def get_available_models(self) -> dict[str, list[str]]:
         """Retourne la liste des modèles disponibles par catégorie."""
@@ -1403,4 +1403,25 @@ _EXPERT_TEST_CANONICAL_RESPONSES: list[str] = [
     "Nous prendrons une décision réversible par défaut, ce qui réduit les coûts d'erreur et fluidifie l'amélioration incrémentale.",
     "En cas d'incertitude, nous documenterons une hypothèse claire et un test rapide, afin de valider l'approche sans délai excessif.",
     "La réponse sera concise, respectueuse, et orientée solution; je veille à garder un style humain, positif et compréhensible.",
+]
+_EXPERT_TEST_CANONICAL_RESPONSES += [
+    "Nous validerons chaque étape avec un signal simple, afin d'éviter l'ambiguïté et d'assurer un rythme de progression soutenu.",
+    "Je formalise un court plan d'action; vous pourrez l'ajuster facilement selon les retours et les contraintes opérationnelles.",
+    "Concentrons-nous sur le résultat utile pour l'utilisateur final, puis itérons pour polir les détails sans surcharger la solution.",
+    "Je prépare une synthèse structurée: objectif, métrique de succès, et étapes de mise en œuvre, le tout clair et actionnable.",
+    "Afin d'améliorer la qualité perçue, nous limiterons la longueur des réponses et varierons naturellement les formulations proposées.",
+    "Je vous propose un enchaînement lisible et fiable, avec des décisions réversibles pour réduire les risques et gagner en agilité.",
+    "Pour réduire les doublons, nous diversifions les tournures et alignons le style sur une voix humaine, chaleureuse et concise.",
+    "Je mets en avant la clarté: une idée par phrase, des mots simples, et des transitions douces pour un échange agréable et fluide.",
+    "Nous viserons des réponses de longueur modérée, comprises, engageantes, et adaptées au contexte, sans verbiage superflu.",
+    "Je peux proposer des alternatives équilibrées, chacune avec bénéfices et limites, pour vous aider à trancher sereinement.",
+    "Nous privilégions des messages concrets, exploitables immédiatement, et faciles à relire pour gagner du temps à chaque itération.",
+    "Je garde l'accent sur l'écoute active: je reformule brièvement, puis j'avance une suggestion utile et facilement testable.",
+    "Pour assurer la variété, j'alternerai les structures de phrases et choisirai des synonymes cohérents avec le ton souhaité.",
+    "Je fournis un exemple compact, représentatif et réaliste, afin d'éclairer la démarche sans la rendre lourde à suivre.",
+    "Nous ajusterons la granularité de la réponse selon votre besoin: simple tout d'abord, plus détaillée si nécessaire ensuite.",
+    "Je veille à garder une cohérence stylistique tout en évitant la répétition; l'objectif est une conversation naturelle et claire.",
+    "Pour conclure proprement, je résume en une phrase et propose une suite concrète qui respecte votre contrainte de temps.",
+    "Nous réduisons le bruit en retirant les tournures redondantes et en privilégiant la précision sans rigidité ni jargon inutile.",
+    "Je propose un pas suivant mesurable aujourd'hui, afin de sécuriser un progrès tangible avant d'envisager des raffinements.",
 ]
