@@ -33,6 +33,8 @@ class _RobotApi:
 
 
 def test_dire_texte_prefers_media_play_audio(monkeypatch):
+    # Assurer que l'audio n'est pas globalement désactivé en CI
+    monkeypatch.setenv("BBIA_DISABLE_AUDIO", "0")
     robot = _RobotApi(support_play_audio=True)
     # Forcer pyttsx3 à utiliser un moteur factice rapide
     import src.bbia_sim.bbia_voice as voice
@@ -79,6 +81,8 @@ def test_dire_texte_prefers_media_play_audio(monkeypatch):
 
 
 def test_dire_texte_fallbacks_to_speaker_when_no_play_audio(monkeypatch):
+    # Assurer que l'audio n'est pas globalement désactivé en CI
+    monkeypatch.setenv("BBIA_DISABLE_AUDIO", "0")
     robot = _RobotApi(support_play_audio=False)
     import src.bbia_sim.bbia_voice as voice
 

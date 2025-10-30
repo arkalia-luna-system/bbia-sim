@@ -398,7 +398,9 @@ class BBIAHuggingFace:
 
                 return f"CLIP analysis: {probs.cpu().numpy()}"
 
-            return "Erreur (describe_image): modèle non supporté — vérifiez le nom choisi"
+            return (
+                "Erreur (describe_image): modèle non supporté — vérifiez le nom choisi"
+            )
 
         except Exception as e:
             logger.error(f"❌ Erreur description image: {e}")

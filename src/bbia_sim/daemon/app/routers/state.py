@@ -8,8 +8,8 @@ from typing import Any
 from fastapi import APIRouter
 from pydantic import BaseModel
 
-from ...simulation_service import simulation_service
 from ....robot_factory import RobotFactory
+from ...simulation_service import simulation_service
 
 logger = logging.getLogger(__name__)
 
@@ -24,6 +24,8 @@ class RobotState(BaseModel):
     battery: float
     temperature: float
     timestamp: str
+
+
 def _read_sdk_telemetry() -> dict[str, Any] | None:
     """Lit la télémétrie réelle via le SDK Reachy Mini si disponible.
 
@@ -83,7 +85,7 @@ def _read_sdk_telemetry() -> dict[str, Any] | None:
                     battery_level = None
             elif hasattr(media_mgr, "battery"):
                 try:
-                    battery_level = float(getattr(media_mgr, "battery"))
+                    battery_level = float(media_mgr.battery)
                 except Exception:
                     battery_level = None
 
@@ -102,8 +104,8 @@ def _read_sdk_telemetry() -> dict[str, Any] | None:
 
             # IMU (si exposé via robot.io ou robot.media)
             imu = None
-            if hasattr(backend.robot, "io") and getattr(backend.robot, "io"):
-                io_mgr = getattr(backend.robot, "io")
+            if hasattr(backend.robot, "io") and backend.robot.io:
+                io_mgr = backend.robot.io
                 try:
                     if hasattr(io_mgr, "get_imu"):
                         imu = io_mgr.get_imu()  # doit renvoyer dict-like

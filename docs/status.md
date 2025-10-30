@@ -639,7 +639,9 @@ Références de preuve (code):
 - CI: `.github/workflows/ci.yml`
 
 Tests ajoutés:
+- `tests/test_sdk_surface_compat.py` — surface API Reachy Mini (signatures clés)
 - (SDK-first) Audio/Voix/Caméra: `tests/test_voice_speaker_sdk_first.py`, `tests/test_voice_microphone_sdk_first.py`, `tests/test_vision_camera_sdk_first.py`
+  - Note CI/headless: `test_voice_speaker_sdk_first.py` force `BBIA_DISABLE_AUDIO=0` pour valider la chaîne `bytes → media.play_audio` sans drivers audio
 
 ### Corrections Appliquées
 
@@ -712,8 +714,8 @@ pytest -q -m "not e2e" -k "<module_name> or unit or fast"
 
 **Tests existants :** `tests/test_ai_backends_selection.py`
 **Couverture :**
-- ✅ Respect des variables d’environnement (désactivation en CI)
-- ✅ Fallback prévisible si dépendances IA absentes
+- Respect des variables d’environnement (désactivation en CI)
+- Fallback prévisible si dépendances IA absentes
 
 ### 🎯 Score & Recommandation
 

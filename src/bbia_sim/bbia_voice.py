@@ -233,8 +233,11 @@ def dire_texte(texte: str, robot_api: Optional[Any] = None) -> None:
                 try:
                     # Créer un fichier temporaire si play_file est préféré
                     import tempfile as _tempfile
+
                     tmp_path = None
-                    with _tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as tmp:
+                    with _tempfile.NamedTemporaryFile(
+                        suffix=".wav", delete=False
+                    ) as tmp:
                         tmp_path = tmp.name
                         with open(tmp_path, "wb") as f:
                             f.write(audio_bytes)

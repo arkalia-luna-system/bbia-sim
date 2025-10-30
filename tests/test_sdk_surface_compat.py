@@ -7,8 +7,8 @@ Le test est tolérant si le SDK n'est pas installé (skip), mais strict sinon.
 
 import importlib
 import inspect
-import pytest
 
+import pytest
 
 REQUIRED_METHODS = {
     "look_at_world": ("x", "y", "z", "duration", "perform_movement"),
@@ -37,12 +37,15 @@ def test_sdk_surface_api_signatures():
         func = getattr(obj, method_name)
         sig = inspect.signature(func)
         # Vérifier que tous les paramètres attendus existent dans l'ordre relatif
-        params = [p.name for p in sig.parameters.values() if p.kind in (p.POSITIONAL_OR_KEYWORD, p.POSITIONAL_ONLY)]
+        params = [
+            p.name
+            for p in sig.parameters.values()
+            if p.kind in (p.POSITIONAL_OR_KEYWORD, p.POSITIONAL_ONLY)
+        ]
         # Autoriser self implicite
         if params and params[0] == "self":
             params = params[1:]
         for rp in required_params:
-            assert rp in params, f"Paramètre requis {rp} manquant dans {method_name}({params})"
-
-
-
+            assert (
+                rp in params
+            ), f"Paramètre requis {rp} manquant dans {method_name}({params})"
