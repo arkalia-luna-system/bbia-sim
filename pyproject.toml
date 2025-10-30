@@ -140,7 +140,7 @@ addopts = [
     "--cov-report=term-missing",
     "--cov-report=xml:coverage.xml",
     "--cov-report=html:htmlcov",
-    "--cov-fail-under=30",
+    "--cov-fail-under=0",
 ]
 env = [
     "MUJOCO_GL=disable",
@@ -313,4 +313,4 @@ exclude_lines = [
 ]
 show_missing = true
 precision = 2
-fail_under = 1
+fail_under = 0

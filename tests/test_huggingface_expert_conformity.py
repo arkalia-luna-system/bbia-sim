@@ -253,7 +253,10 @@ class TestBBIAHuggingFaceExpertConformity:
             # SUFFIX_POOL, _expert_quality_padding
             if isinstance(n, ast.Assign):
                 for t in n.targets:
-                    if isinstance(t, ast.Name) and t.id in {"SUFFIX_POOL", "_expert_quality_padding"}:
+                    if isinstance(t, ast.Name) and t.id in {
+                        "SUFFIX_POOL",
+                        "_expert_quality_padding",
+                    }:
                         candidates.extend(collect_from_list(n.value))
             # dictionaries de réponses: greetings, goodbyes, personality_descriptions
             if isinstance(n, ast.Dict):
@@ -270,7 +273,20 @@ class TestBBIAHuggingFaceExpertConformity:
                 return False
             if sum(ch.isalpha() for ch in s2) < 10:
                 return False
-            tech_markers = ["{", "}", "[", "]", "^", "$", "\\", "http", "xml", "model", "pipeline", "processor"]
+            tech_markers = [
+                "{",
+                "}",
+                "[",
+                "]",
+                "^",
+                "$",
+                "\\",
+                "http",
+                "xml",
+                "model",
+                "pipeline",
+                "processor",
+            ]
             if any(m in s2.lower() for m in tech_markers):
                 return False
             return True
@@ -360,7 +376,10 @@ class TestBBIAHuggingFaceExpertConformity:
         for n in ast.walk(tree):
             if isinstance(n, ast.Assign):
                 for t in n.targets:
-                    if isinstance(t, ast.Name) and t.id in {"SUFFIX_POOL", "_expert_quality_padding"}:
+                    if isinstance(t, ast.Name) and t.id in {
+                        "SUFFIX_POOL",
+                        "_expert_quality_padding",
+                    }:
                         candidates.extend(collect_from_list(n.value))
             if isinstance(n, ast.Dict):
                 for v in n.values:
@@ -375,7 +394,20 @@ class TestBBIAHuggingFaceExpertConformity:
                 return False
             if sum(ch.isalpha() for ch in s2) < 8:
                 return False
-            tech_markers = ["{", "}", "[", "]", "^", "$", "\\", "http", "xml", "model", "pipeline", "processor"]
+            tech_markers = [
+                "{",
+                "}",
+                "[",
+                "]",
+                "^",
+                "$",
+                "\\",
+                "http",
+                "xml",
+                "model",
+                "pipeline",
+                "processor",
+            ]
             if any(m in s2.lower() for m in tech_markers):
                 return False
             return True
