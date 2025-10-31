@@ -102,8 +102,6 @@ def main():
         print("❌ Impossible d'accéder au modèle MuJoCo")
         return 1
 
-    model = robot.model
-    data = robot.data
 
     # Lancer viewer via le backend du robot
     print("✅ Lancement viewer MuJoCo...")
