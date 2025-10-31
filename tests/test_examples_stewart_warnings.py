@@ -47,7 +47,11 @@ class TestExamplesStewartWarnings:
         files_missing_warnings = []
 
         for py_file in examples_dir.glob("*.py"):
-            content = py_file.read_text(encoding="utf-8")
+            try:
+                content = py_file.read_text(encoding="utf-8", errors="replace")
+            except (UnicodeDecodeError, ValueError):
+                # Fallback pour fichiers non-UTF8
+                content = py_file.read_text(encoding="latin-1", errors="replace")
 
             # Vérifier si fichier utilise stewart
             if stewart_pattern.search(content):

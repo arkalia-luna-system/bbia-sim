@@ -99,7 +99,8 @@
   - Docs riches, 3.11+ harmonisé; bandeaux archives OK.
   - Pas de vidéos/GIF; FAQ à compléter.
 - Axes futurs:
-  - “Zero-to-sim/robot” en GIF/vidéo; table compat OS/HW; FAQ (MuJoCo/PortAudio).
+  - "Zero-to-sim/robot" en GIF/vidéo; table compat OS/HW; FAQ (MuJoCo/PortAudio).
+  - ✅ **En cours** : Structure préparée dans `docs/guides/DEMO_VIDEO_ROADMAP.md`
 
 ### Qualité
 - État actuel:

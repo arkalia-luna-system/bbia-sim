@@ -150,12 +150,15 @@ class TestExamplesConformity:
         stats = {}
 
         for py_file in self._get_python_files():
-            with open(py_file, encoding="utf-8") as f:
-                content = f.read()
-                file_stats = {
-                    method: method in content for method in recommended_methods
-                }
-                stats[py_file.name] = file_stats
+            try:
+                with open(py_file, encoding="utf-8", errors="replace") as f:
+                    content = f.read()
+            except (UnicodeDecodeError, ValueError):
+                # Fallback pour fichiers non-UTF8
+                with open(py_file, encoding="latin-1", errors="replace") as f:
+                    content = f.read()
+            file_stats = {method: method in content for method in recommended_methods}
+            stats[py_file.name] = file_stats
 
         # Afficher statistiques
         for filename, file_stats in stats.items():
@@ -177,8 +180,13 @@ class TestExamplesConformity:
         warnings = []
 
         for py_file in self._get_python_files():
-            with open(py_file, encoding="utf-8") as f:
-                content = f.read()
+            try:
+                with open(py_file, encoding="utf-8", errors="replace") as f:
+                    content = f.read()
+            except (UnicodeDecodeError, ValueError):
+                # Fallback pour fichiers non-UTF8
+                with open(py_file, encoding="latin-1", errors="replace") as f:
+                    content = f.read()
 
             # Chercher look_at_world sans validation
             if "look_at_world" in content:
@@ -218,8 +226,13 @@ class TestExamplesConformity:
         stats = {}
 
         for py_file in self._get_python_files():
-            with open(py_file, encoding="utf-8") as f:
-                content = f.read()
+            try:
+                with open(py_file, encoding="utf-8", errors="replace") as f:
+                    content = f.read()
+            except (UnicodeDecodeError, ValueError):
+                # Fallback pour fichiers non-UTF8
+                with open(py_file, encoding="latin-1", errors="replace") as f:
+                    content = f.read()
 
             used_methods = [m for m in interpolation_methods if m in content.lower()]
             stats[py_file.name] = used_methods

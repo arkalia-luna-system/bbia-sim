@@ -24,7 +24,7 @@ BBIA-SIM est un moteur cognitif Python avec 12 émotions robotiques pour Reachy 
 • Validé par une large suite de tests et une couverture suivie en CI  
 • Open-source (MIT)
 
-**[🚀 Quick Start](#-démarrage-rapide)** | **[📚 Docs Débutant](docs/guides/GUIDE_DEBUTANT.md)** | **[🔬 Docs Avancé](docs/guides/GUIDE_AVANCE.md)**
+**[🚀 Quick Start](#-démarrage-rapide)** | **[📚 Docs Débutant](docs/guides/GUIDE_DEBUTANT.md)** | **[🔬 Docs Avancé](docs/guides/GUIDE_AVANCE.md)** | **[📹 Démo Vidéo](#-démo-vidéo)** (bientôt disponible)
 
 ---
 
@@ -40,6 +40,8 @@ pip install -e .[dev]
 # Démarrage simulation
 python examples/demo_emotion_ok.py
 ```
+
+> 📹 **Démo vidéo "Zero-to-Sim"** : Une démonstration complète de l'installation à la première exécution sera bientôt disponible. En attendant, suivez le [Guide Débutant](docs/guides/GUIDE_DEBUTANT.md).
 
 ## 🤖 Première utilisation – Reachy Mini (robot réel)
 
@@ -62,6 +64,20 @@ python scripts/hardware_dry_run_reachy_mini.py --output-dir artifacts
 
 ### 🔗 Guide complet Reachy Mini
 - `docs/guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md`
+
+## 📹 Démo Vidéo
+
+> **En préparation** : Des démonstrations vidéo seront bientôt disponibles pour faciliter l'onboarding.
+
+**Contenu prévu** :
+- 🎬 **Zero-to-Sim** : Installation complète en 5 minutes
+- 🎮 **Première démo** : Faire bouger le robot avec émotions
+- 🎯 **Dashboard Web** : Utilisation de l'interface graphique
+- 🤖 **Robot Réel** : Passage simulation → Reachy Mini physique
+
+En attendant, consultez :
+- [Guide Débutant](docs/guides/GUIDE_DEBUTANT.md) - Instructions étape par étape
+- [Exemples](examples/) - Scripts de démonstration prêts à l'emploi
 
 <!-- Badges CI/Qualité (exemple) -->
 [![CI](https://github.com/arkalia-luna-system/bbia-sim/actions/workflows/ci.yml/badge.svg)](https://github.com/arkalia-luna-system/bbia-sim/actions/workflows/ci.yml)
