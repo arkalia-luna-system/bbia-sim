@@ -68,7 +68,7 @@ def test_huggingface_llm_generation_latency() -> None:
             # Petit délai entre appels
             time.sleep(0.5)
 
-        p50 = statistics.median(latencies_ms)
+        statistics.median(latencies_ms)
         p95 = float(
             statistics.quantiles(latencies_ms, n=20)[18]
             if len(latencies_ms) > 1

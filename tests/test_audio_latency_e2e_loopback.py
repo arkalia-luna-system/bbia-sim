@@ -45,7 +45,6 @@ def test_audio_latency_e2e_loopback() -> None:
     latencies_ms: list[float] = []
 
     # Buffer pour stocker audio capturé
-    captured_audio = []
     playback_start_time = None
 
     def input_callback(indata, frames, time_info, status):  # type: ignore[no-redef]

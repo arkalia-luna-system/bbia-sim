@@ -181,78 +181,75 @@ python scripts/dashboard_gradio.py --port 7860
 
 ---
 
-## 🎯 CE QUI RESTE VRAIMENT À FAIRE (par priorité)
+## ✅ CE QUI A ÉTÉ FAIT (vérifié 2025-10-30)
 
-### Priorité MOYENNE (améliorations)
+### Priorité MOYENNE ✅ **TOUTES FAITES**
 
-#### 1. LLM Léger (Phi-2) - ~30 min de travail
+#### 1. LLM Léger (Phi-2/TinyLlama) ✅ **FAIT**
 
-**Fichier à modifier** : `src/bbia_sim/bbia_huggingface.py`
+**Vérification code** :
+- ✅ `bbia_huggingface.py` (lignes 164-166) : Configs Phi-2 et TinyLlama ajoutées
+- ✅ `enable_llm_chat("phi2")` et `enable_llm_chat("tinyllama")` fonctionnels
 
-**Code à ajouter** :
+**Code actuel** :
 ```python
-# Dans model_configs (ligne ~144)
 "chat": {
     "mistral": "mistralai/Mistral-7B-Instruct-v0.2",
     "llama": "meta-llama/Llama-3-8B-Instruct",
-    "phi2": "microsoft/phi-2",  # ← Ajouter
-    "tinyllama": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",  # ← Ajouter
+    "phi2": "microsoft/phi-2",  # ✅ Déjà ajouté
+    "tinyllama": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",  # ✅ Déjà ajouté
 },
 ```
 
-**Usage** :
-```python
-hf.enable_llm_chat(model="phi2")  # Au lieu de "mistral"
-```
+---
+
+#### 2. Tests Sécurité LLM ✅ **FAIT**
+
+**Fichier créé** : `tests/test_huggingface_security.py` (154 lignes, 10 tests)
+
+**Tests implémentés** :
+- ✅ Test injection prompt (blocage prompts malveillants)
+- ✅ Test validation longueur (limite 2048 tokens)
+- ✅ Test déchargement modèles (timeout 5 min)
+- ✅ Test validation caractères spéciaux
+- ✅ Test nettoyage mémoire
 
 ---
 
-#### 2. Tests Sécurité LLM - ~1h de travail
+#### 3. Benchmarks Automatiques CI ✅ **FAIT**
 
-**Fichier à créer** : `tests/test_huggingface_security.py`
+**Fichier modifié** : `.github/workflows/ci.yml` (job `benchmark` lignes 236-270)
 
-**Tests à ajouter** :
-- Test injection prompt (blocage prompts malveillants)
-- Test validation longueur (limite 2048 tokens)
-- Test déchargement modèles (timeout 5 min)
-
----
-
-#### 3. Benchmarks Automatiques CI - ~15 min de travail
-
-**Fichier à modifier** : `.github/workflows/ci.yml`
-
-**Ajout** :
-```yaml
-- name: Run Benchmarks
-  run: |
-    python scripts/bbia_performance_benchmarks.py --jsonl artifacts/bench.jsonl
-  continue-on-error: true
-```
+**Implémenté** :
+- ✅ Job CI `benchmark` créé
+- ✅ Exécution automatique `bbia_performance_benchmarks.py`
+- ✅ Upload artefacts automatique
 
 ---
 
-### Priorité BASSE (nice-to-have)
+### Priorité BASSE ✅ **TOUTES FAITES**
 
-#### 4. Dashboard Gradio - ~2h de travail
+#### 4. Dashboard Gradio ✅ **FAIT**
 
-**Fichier à créer** : `scripts/dashboard_gradio.py`
+**Fichier créé** : `scripts/dashboard_gradio.py` (264 lignes)
 
-**Fonctionnalités** :
-- Upload image → détection objets/visages
-- Chat simple
-- Test DeepFace (enregistrer personne)
+**Fonctionnalités implémentées** :
+- ✅ Upload image → détection objets/visages
+- ✅ Chat simple avec BBIA
+- ✅ Test DeepFace (enregistrer personne)
+- ✅ 3 onglets : Vision, Chat, DeepFace
 
 ---
 
-#### 5. Mémoire Persistante - ~1h de travail
+#### 5. Mémoire Persistante ✅ **FAIT**
 
-**Fichier à créer** : `src/bbia_sim/bbia_memory.py`
+**Fichier créé** : `src/bbia_sim/bbia_memory.py` (289 lignes)
 
-**Fonctionnalités** :
-- Sauvegarde `conversation_history` dans JSON
-- Chargement au démarrage
-- Préférences utilisateur
+**Fonctionnalités implémentées** :
+- ✅ Sauvegarde `conversation_history` dans JSON
+- ✅ Chargement automatique au démarrage (lignes 131-143 dans `bbia_huggingface.py`)
+- ✅ Sauvegarde automatique tous les 10 messages (lignes 811-820)
+- ✅ Préférences utilisateur et apprentissages
 
 ---
 
