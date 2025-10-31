@@ -195,6 +195,7 @@ class BBIAVision:
                 confidence_threshold = float(
                     os.environ.get("BBIA_YOLO_CONFIDENCE", "0.25")
                 )
+                # Créer détecteur avec seuil personnalisé
                 self.yolo_detector = create_yolo_detector(
                     model_size="n", confidence_threshold=confidence_threshold
                 )
