@@ -73,14 +73,14 @@ def emergency_stop(self) -> bool:
     """Arrêt d'urgence via SDK officiel."""
     if not self.is_connected:
         return False
-    try:
+        try:
         self._stop_watchdog()
-        self.robot.disable_motors()
+            self.robot.disable_motors()
         self.is_connected = False
-        return True
-    except Exception as e:
-        logger.error(f"Erreur emergency_stop: {e}")
-        return False
+            return True
+        except Exception as e:
+            logger.error(f"Erreur emergency_stop: {e}")
+    return False
 ```
 
 **Tests créés**:

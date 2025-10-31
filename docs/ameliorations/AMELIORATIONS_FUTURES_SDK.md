@@ -128,7 +128,7 @@ class BBIABehaviorManager:
         # ... exécution comportement ...
         move = robot.stop_recording()
         self.saved_behaviors[name] = move
-    
+
     def play_saved_behavior(self, name: str, use_async: bool = True):  # ✅ Implémenté
         if name in self.saved_behaviors:
             move = self.saved_behaviors[name]

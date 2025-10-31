@@ -169,6 +169,41 @@ class MuJoCoBackend(RobotAPI):
             logger.error(f"Erreur lancement viewer: {e}")
             return False
 
+    def configure_viewer_camera(
+        self,
+        azimuth: float = 90.0,
+        elevation: float = -20.0,
+        distance: float = 1.2,
+        lookat: list[float] | None = None,
+    ) -> bool:
+        """Configure la caméra du viewer pour orienter face au robot.
+
+        Args:
+            azimuth: Angle horizontal (90 = face au robot, 0 = côté)
+            elevation: Angle vertical (-20 = légèrement au-dessus)
+            distance: Distance du robot
+            lookat: Point de visée [x, y, z] (défaut: [0, 0, 0.3])
+        """
+        if not self.viewer:
+            logger.warning("Viewer non lancé, impossible de configurer la caméra")
+            return False
+
+        try:
+            self.viewer.cam.azimuth = azimuth
+            self.viewer.cam.elevation = elevation
+            self.viewer.cam.distance = distance
+            if lookat:
+                self.viewer.cam.lookat[:] = lookat
+            else:
+                self.viewer.cam.lookat[:] = [0, 0, 0.3]
+            logger.debug(
+                f"Caméra configurée: azimuth={azimuth}, elevation={elevation}, distance={distance}"
+            )
+            return True
+        except Exception as e:
+            logger.error(f"Erreur configuration caméra: {e}")
+            return False
+
     def sync_viewer(self) -> bool:
         """Synchronise le viewer."""
         if not self.viewer:
