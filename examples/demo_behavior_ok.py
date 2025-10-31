@@ -2,6 +2,9 @@
 """
 Démo Comportement → Scénario : BBIA Comportements exécutent des scénarios
 Vertical slice : Comportement → Séquence d'actions → Animation complète
+
+BBIA exprime la curiosité, la douceur, l'ouverture et la bienveillance.
+Personnalité : futuriste doux, poétique, accessible, "friendly" mais inspiré tech.
 """
 
 import argparse
@@ -217,6 +220,7 @@ def main():
     scenario = BehaviorScenario(args.behavior)
 
     print("\n🎭 Configuration BBIA Comportement → Scénario :")
+    print("   🌙 BBIA : Robot compagnon doux, IA bienveillante, expressif et naturel")
     print(f"   • Comportement : {args.behavior}")
     print(f"   • Phases : {scenario.total_phases}")
     for i, phase in enumerate(scenario.current_scenario):
@@ -231,6 +235,7 @@ def main():
     total_steps = args.duration * fps
 
     print("\n🚀 Démarrage animation comportement → scénario...")
+    print("   🌙 BBIA : Robot compagnon doux, IA bienveillante, expressif et naturel")
     print(f"   • Phase initiale : {scenario.get_current_phase()['phase']}")
 
     if args.headless:
@@ -272,6 +277,7 @@ def main():
                 start_time = time.time()
                 step = 0
 
+                # Phase d'animation
                 while viewer.is_running() and step < total_steps:
                     # Mettre à jour le scénario
                     scenario.update_phase(step, fps)
@@ -343,7 +349,16 @@ def main():
                     # CRITIQUE: Petit délai pour fluidité (60 FPS = 1/60s)
                     time.sleep(1 / 60)
 
-            print(f"✅ Animation graphique terminée ({step} steps)")
+                print(f"✅ Animation graphique terminée ({step} steps)")
+
+                # Phase d'attente - garder le viewer ouvert jusqu'à fermeture par l'utilisateur
+                print("\n⏸️  Viewer ouvert - fermez la fenêtre (Échap) pour quitter...")
+                while viewer.is_running():
+                    # Maintenir la simulation active
+                    mujoco.mj_forward(model, data)
+                    mujoco.mj_step(model, data)
+                    viewer.sync()
+                    time.sleep(0.05)  # Petit délai pour éviter de surcharger le CPU
 
         except Exception as e:
             print(f"❌ Erreur viewer graphique : {e}")
@@ -354,11 +369,6 @@ def main():
     print(f"   • Comportement '{args.behavior}' → Scénario complet")
     print(f"   • Phases exécutées : {scenario.phase}/{scenario.total_phases}")
     print(f"   • Joint '{args.joint}' → Animation fluide")
-
-    # Garder le viewer ouvert quelques secondes si mode graphique
-    if not args.headless:
-        print("\n⏸️  Viewer ouvert encore 3 secondes...")
-        time.sleep(3)
 
     return 0
 

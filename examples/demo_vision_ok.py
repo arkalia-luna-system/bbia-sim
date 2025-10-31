@@ -2,6 +2,9 @@
 """
 Démo Vision → Suivi : BBIA Vision suit une cible
 Vertical slice : Détection → Tracking → Mouvement robotique
+
+BBIA exprime la curiosité, la douceur, l'ouverture et la bienveillance.
+Personnalité : futuriste doux, poétique, accessible, "friendly" mais inspiré tech.
 """
 
 import argparse
@@ -121,6 +124,7 @@ def main():
     target.speed = args.target_speed
 
     print("\n👁️ Configuration BBIA Vision → Suivi :")
+    print("   🌙 BBIA : Robot compagnon doux, IA bienveillante, curiosité et attention")
     print("   • Cible virtuelle : position aléatoire")
     print(f"   • Vitesse cible : {args.target_speed}")
     print(f"   • Gain tracking : {args.tracking_gain}")
@@ -173,6 +177,7 @@ def main():
                 start_time = time.time()  # noqa: F823
                 step = 0
 
+                # Phase d'animation
                 while viewer.is_running() and step < total_steps:
                     # Mettre à jour la cible
                     target.update()
@@ -201,7 +206,16 @@ def main():
                             f"  Step {step:3d} | t={elapsed:3.1f}s | target=({target.x:5.2f},{target.y:5.2f}) | {args.joint}={angle:6.3f} rad"
                         )
 
-            print(f"✅ Animation graphique terminée ({step} steps)")
+                print(f"✅ Animation graphique terminée ({step} steps)")
+
+                # Phase d'attente - garder le viewer ouvert jusqu'à fermeture par l'utilisateur
+                print("\n⏸️  Viewer ouvert - fermez la fenêtre (Échap) pour quitter...")
+                while viewer.is_running():
+                    # Maintenir la simulation active
+                    mujoco.mj_forward(model, data)
+                    mujoco.mj_step(model, data)
+                    viewer.sync()
+                    time.sleep(0.05)  # Petit délai pour éviter de surcharger le CPU
 
         except Exception as e:
             print(f"❌ Erreur viewer graphique : {e}")
@@ -212,13 +226,6 @@ def main():
     print(f"   • Cible virtuelle → Tracking '{args.joint}'")
     print(f"   • Position finale : x={target.x:.2f}, y={target.y:.2f}")
     print(f"   • Angle final : {data.qpos[joint_id]:.3f} rad")
-
-    # Garder le viewer ouvert quelques secondes si mode graphique
-    if not args.headless:
-        print("\n⏸️  Viewer ouvert encore 3 secondes...")
-        import time
-
-        time.sleep(3)
 
     return 0
 

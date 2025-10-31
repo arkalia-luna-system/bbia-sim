@@ -1,3 +1,11 @@
+# 🚀 Post LinkedIn - BBIA-SIM v1.3.0
+
+> **Statut** : ✅ **Prêt à publier** | **Version** : 1.0 | **Date** : 2025-01-31  
+> **Plateforme** : LinkedIn  
+> **Type** : Post de présentation projet
+
+---
+
 🚀 **BBIA-SIM v1.3.0** - Innovation Technique en Robotique Cognitive
 
 J'ai développé **BBIA-SIM**, un moteur cognitif Python avancé pour robot Reachy Mini qui atteint une **conformité parfaite** au SDK officiel tout en apportant des innovations techniques majeures.
@@ -24,7 +32,23 @@ Cette innovation positionne BBIA-SIM comme la référence technique pour la comm
 • Documentation : bbia-sim-docs.onrender.com
 • Demo : bbia-sim-dashboard.onrender.com
 
-#Robotique #IA #Innovation #Python #ReachyMini #OpenSource #TechLeadership
+\#Robotique \#IA \#Innovation \#Python \#ReachyMini \#OpenSource \#TechLeadership
 
 ---
+
+## 📋 Métadonnées
+
+| Propriété | Valeur |
+|-----------|--------|
+| **Statut** | ✅ Prêt à publier |
+| **Version** | 1.0 |
+| **Date de création** | 2025-01-31 |
+| **Dernière mise à jour** | 2025-01-31 |
+| **Plateforme** | LinkedIn |
+| **Type** | Post de présentation projet |
+| **Longueur** | ~280 mots (format optimisé) |
+| **Hashtags** | 7 hashtags pertinents |
+
+---
+
 *Prêt pour des opportunités en tant que Senior Robotics Engineer ou AI Engineer* 🎯

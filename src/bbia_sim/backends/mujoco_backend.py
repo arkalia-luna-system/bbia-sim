@@ -163,14 +163,24 @@ class MuJoCoBackend(RobotAPI):
             else:
                 self.viewer = mujoco.viewer.launch(self.model, self.data)
 
-            # Activer le fond pastel depuis le modèle XML
-            # Le modèle contient <visual><rgba><sky> configuré
-            # Les couleurs sont appliquées via model.vis.rgba.sky
-            if hasattr(self.model, "vis") and hasattr(self.model.vis, "rgba"):
-                sky_color = self.model.vis.rgba.sky
-                logger.debug(f"Fond sky configuré: {sky_color}")
+            # Fond BBIA configuré selon brief graphiste
+            # Palette BBIA : Bleu céleste #87bcfa, Violet #A680FF, Turquoise #60e9e1, Gris lunaire #eaeaed, Rose #FFDAEC
+            # Skybox avec dégradé gris lunaire → bleu céleste dans le modèle XML
+            try:
+                # Chercher la texture skybox_bbia
+                for i in range(self.model.ntexture):
+                    name = mujoco.mj_id2name(self.model, mujoco.mjtObj.mjOBJ_TEXTURE, i)
+                    if name == "skybox_bbia":
+                        logger.debug(f"Texture skybox_bbia trouvée à l'index {i}")
+                        break
 
-            logger.info("Viewer MuJoCo lancé (fond pastel depuis modèle XML)")
+                logger.info(
+                    "Viewer MuJoCo lancé (fond BBIA gris lunaire → bleu céleste)"
+                )
+            except Exception as e:
+                logger.warning(f"Impossible de vérifier le skybox BBIA: {e}")
+                logger.info("Viewer MuJoCo lancé (fond BBIA configuré)")
+
             return True
         except Exception as e:
             logger.error(f"Erreur lancement viewer: {e}")

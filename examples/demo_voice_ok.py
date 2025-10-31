@@ -2,6 +2,9 @@
 """
 Démo Voix → Action : BBIA Voix contrôle le robot
 Vertical slice : Commande vocale → Action robotique
+
+BBIA exprime la curiosité, la douceur, l'ouverture et la bienveillance.
+Personnalité : futuriste doux, poétique, accessible, "friendly" mais inspiré tech.
 """
 
 import argparse
@@ -155,6 +158,9 @@ def main():
     action = parse_voice_command(args.command)
 
     print("\n🎤 Configuration BBIA Voix → Action :")
+    print(
+        "   🌙 BBIA : Robot compagnon doux, IA bienveillante, à l'écoute et empathique"
+    )
     print(f"   • Commande : '{args.command}'")
     print(f"   • Action : {action['action']}")
     print(f"   • Joint : {args.joint}")
@@ -216,6 +222,7 @@ def main():
                 start_time = time.time()  # noqa: F823
                 step = 0
 
+                # Phase d'animation
                 while viewer.is_running() and step < total_steps:
                     # Exécuter l'action basée sur la commande vocale
                     angle = execute_voice_action(
@@ -242,7 +249,16 @@ def main():
                             f"  Step {step:3d} | t={elapsed:3.1f}s | {args.joint}={angle:6.3f} rad"
                         )
 
-            print(f"✅ Animation graphique terminée ({step} steps)")
+                print(f"✅ Animation graphique terminée ({step} steps)")
+
+                # Phase d'attente - garder le viewer ouvert jusqu'à fermeture par l'utilisateur
+                print("\n⏸️  Viewer ouvert - fermez la fenêtre (Échap) pour quitter...")
+                while viewer.is_running():
+                    # Maintenir la simulation active
+                    mujoco.mj_forward(model, data)
+                    mujoco.mj_step(model, data)
+                    viewer.sync()
+                    time.sleep(0.05)  # Petit délai pour éviter de surcharger le CPU
 
         except Exception as e:
             print(f"❌ Erreur viewer graphique : {e}")
@@ -252,13 +268,6 @@ def main():
     print("\n🎉 Démo voix → action terminée avec succès !")
     print(f"   • Commande '{args.command}' → Action '{action['action']}'")
     print(f"   • Joint '{args.joint}' → Animation fluide")
-
-    # Garder le viewer ouvert quelques secondes si mode graphique
-    if not args.headless:
-        print("\n⏸️  Viewer ouvert encore 3 secondes...")
-        import time
-
-        time.sleep(3)
 
     return 0
 

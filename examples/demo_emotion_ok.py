@@ -2,6 +2,9 @@
 """
 Démo Émotion → Pose : BBIA Émotions anime le robot
 Vertical slice : Émotion → Articulation → Animation visible
+
+BBIA exprime la curiosité, la douceur, l'ouverture et la bienveillance.
+Personnalité : futuriste doux, poétique, accessible, "friendly" mais inspiré tech.
 Utilise RobotAPI pour backend unifié
 """
 
@@ -134,6 +137,7 @@ def main():
     total_steps = args.duration * fps
 
     print("\n🎭 Configuration BBIA Émotion → Pose :")
+    print("   🌙 BBIA : Robot compagnon doux, IA bienveillante, curiosité et tendresse")
     print(f"   • Backend : {args.backend}")
     print(f"   • Émotion : {args.emotion}")
     print(f"   • Intensité : {args.intensity}")
@@ -181,7 +185,10 @@ def main():
 
     except Exception as e:
         print(f"❌ Erreur animation : {e}")
-        robot.disconnect()
+        # Arrêter l'enregistrement en cas d'erreur
+        if recorder:
+            recorder.stop_recording()
+        # Ne pas déconnecter ici pour garder le viewer ouvert
         return 1
 
     finally:
@@ -190,22 +197,28 @@ def main():
             frames_recorded = recorder.stop_recording()
             print(f"💾 {frames_recorded} frames enregistrées")
 
-        # 9. Déconnexion
-        robot.disconnect()
-
     print("\n🎉 Démo émotion → pose terminée avec succès !")
     print(
         f"   • Backend {args.backend} → Émotion '{args.emotion}' → Joint '{args.joint}'"
     )
     print(f"   • Intensité {args.intensity} → Animation fluide")
 
-    # Garder le viewer ouvert quelques secondes pour voir le résultat final
+    # Garder le viewer ouvert jusqu'à ce que l'utilisateur le ferme
     if args.backend == "mujoco" and not args.headless:
         if hasattr(robot, "viewer") and robot.viewer is not None:
-            print("\n⏸️  Viewer ouvert encore 3 secondes...")
-            import time
-
-            time.sleep(3)
+            print("\n⏸️  Viewer ouvert - fermez la fenêtre pour quitter...")
+            try:
+                while robot.is_viewer_running():
+                    robot.sync_viewer()
+                    time.sleep(0.05)  # Petit délai pour éviter de surcharger le CPU
+            except KeyboardInterrupt:
+                print("\n⚠️  Interruption utilisateur")
+            finally:
+                # Déconnexion seulement après fermeture du viewer
+                robot.disconnect()
+    else:
+        # Déconnexion immédiate si pas de viewer
+        robot.disconnect()
 
     return 0
 

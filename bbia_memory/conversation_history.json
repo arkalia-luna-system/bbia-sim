@@ -1,0 +1,116 @@
+{
+  "last_updated": "2025-10-31T23:29:53.410852",
+  "conversation_count": 10,
+  "history": [
+    {
+      "user": "Bonjour ! Peux-tu me raconter une courte histoire amusante ?",
+      "bbia": "Bonjour ! Que puis-je pour vous ?",
+      "sentiment": {
+        "text": "Bonjour ! Peux-tu me raconter une courte histoire amusante ?",
+        "sentiment": "neutral",
+        "score": 0.7885493040084839,
+        "model": "cardiffnlp/twitter-roberta-base-sentiment-latest"
+      },
+      "timestamp": "2025-10-31T23:29:48.698510"
+    },
+    {
+      "user": "Bonjour ! Peux-tu me raconter une courte histoire amusante ?",
+      "bbia": "Salut ! Prêt pour une nouvelle interaction ?",
+      "sentiment": {
+        "text": "Bonjour ! Peux-tu me raconter une courte histoire amusante ?",
+        "sentiment": "neutral",
+        "score": 0.7885493040084839,
+        "model": "cardiffnlp/twitter-roberta-base-sentiment-latest"
+      },
+      "timestamp": "2025-10-31T23:29:49.214828"
+    },
+    {
+      "user": "Bonjour ! Peux-tu me raconter une courte histoire amusante ?",
+      "bbia": "Bonjour ! En quoi puis-je vous aider aujourd'hui ?",
+      "sentiment": {
+        "text": "Bonjour ! Peux-tu me raconter une courte histoire amusante ?",
+        "sentiment": "neutral",
+        "score": 0.7885493040084839,
+        "model": "cardiffnlp/twitter-roberta-base-sentiment-latest"
+      },
+      "timestamp": "2025-10-31T23:29:49.739309"
+    },
+    {
+      "user": "Bonjour ! Peux-tu me raconter une courte histoire amusante ?",
+      "bbia": "Bonne journée ! Je suis là si vous avez besoin de moi.",
+      "sentiment": {
+        "text": "Bonjour ! Peux-tu me raconter une courte histoire amusante ?",
+        "sentiment": "neutral",
+        "score": 0.7885493040084839,
+        "model": "cardiffnlp/twitter-roberta-base-sentiment-latest"
+      },
+      "timestamp": "2025-10-31T23:29:50.259803"
+    },
+    {
+      "user": "Bonjour ! Peux-tu me raconter une courte histoire amusante ?",
+      "bbia": "Bonne journée ! Je suis là si vous avez besoin de moi.  Qu'attends-tu exactement comme aide ?",
+      "sentiment": {
+        "text": "Bonjour ! Peux-tu me raconter une courte histoire amusante ?",
+        "sentiment": "neutral",
+        "score": 0.7885493040084839,
+        "model": "cardiffnlp/twitter-roberta-base-sentiment-latest"
+      },
+      "timestamp": "2025-10-31T23:29:50.782757"
+    },
+    {
+      "user": "Bonjour ! Peux-tu me raconter une courte histoire amusante ?",
+      "bbia": "Salut ! Qu'est-ce qui vous amène aujourd'hui ?",
+      "sentiment": {
+        "text": "Bonjour ! Peux-tu me raconter une courte histoire amusante ?",
+        "sentiment": "neutral",
+        "score": 0.7885493040084839,
+        "model": "cardiffnlp/twitter-roberta-base-sentiment-latest"
+      },
+      "timestamp": "2025-10-31T23:29:51.307241"
+    },
+    {
+      "user": "Bonjour ! Peux-tu me raconter une courte histoire amusante ?",
+      "bbia": "Salut ! Prêt pour une nouvelle interaction ?  Dis-m'en un peu plus, s'il te plaît.",
+      "sentiment": {
+        "text": "Bonjour ! Peux-tu me raconter une courte histoire amusante ?",
+        "sentiment": "neutral",
+        "score": 0.7885493040084839,
+        "model": "cardiffnlp/twitter-roberta-base-sentiment-latest"
+      },
+      "timestamp": "2025-10-31T23:29:51.833215"
+    },
+    {
+      "user": "Bonjour ! Peux-tu me raconter une courte histoire amusante ?",
+      "bbia": "Salut ! Prêt pour une nouvelle interaction ?",
+      "sentiment": {
+        "text": "Bonjour ! Peux-tu me raconter une courte histoire amusante ?",
+        "sentiment": "neutral",
+        "score": 0.7885493040084839,
+        "model": "cardiffnlp/twitter-roberta-base-sentiment-latest"
+      },
+      "timestamp": "2025-10-31T23:29:52.358866"
+    },
+    {
+      "user": "Bonjour ! Peux-tu me raconter une courte histoire amusante ?",
+      "bbia": "Bonjour ! Ravi de vous revoir ! Comment allez-vous aujourd'hui ?",
+      "sentiment": {
+        "text": "Bonjour ! Peux-tu me raconter une courte histoire amusante ?",
+        "sentiment": "neutral",
+        "score": 0.7885493040084839,
+        "model": "cardiffnlp/twitter-roberta-base-sentiment-latest"
+      },
+      "timestamp": "2025-10-31T23:29:52.886925"
+    },
+    {
+      "user": "Bonjour ! Peux-tu me raconter une courte histoire amusante ?",
+      "bbia": "Salut ! Qu'est-ce qui vous amène aujourd'hui ?  Qu'attends-tu exactement comme aide ?",
+      "sentiment": {
+        "text": "Bonjour ! Peux-tu me raconter une courte histoire amusante ?",
+        "sentiment": "neutral",
+        "score": 0.7885493040084839,
+        "model": "cardiffnlp/twitter-roberta-base-sentiment-latest"
+      },
+      "timestamp": "2025-10-31T23:29:53.410323"
+    }
+  ]
+}
