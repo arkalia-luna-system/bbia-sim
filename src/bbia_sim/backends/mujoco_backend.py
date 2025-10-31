@@ -163,7 +163,14 @@ class MuJoCoBackend(RobotAPI):
             else:
                 self.viewer = mujoco.viewer.launch(self.model, self.data)
 
-            logger.info("Viewer MuJoCo lancé")
+            # Activer le fond pastel depuis le modèle XML
+            # Le modèle contient <visual><rgba><sky> configuré
+            # Les couleurs sont appliquées via model.vis.rgba.sky
+            if hasattr(self.model, "vis") and hasattr(self.model.vis, "rgba"):
+                sky_color = self.model.vis.rgba.sky
+                logger.debug(f"Fond sky configuré: {sky_color}")
+
+            logger.info("Viewer MuJoCo lancé (fond pastel depuis modèle XML)")
             return True
         except Exception as e:
             logger.error(f"Erreur lancement viewer: {e}")
@@ -171,16 +178,16 @@ class MuJoCoBackend(RobotAPI):
 
     def configure_viewer_camera(
         self,
-        azimuth: float = 90.0,
-        elevation: float = -20.0,
+        azimuth: float = 180.0,
+        elevation: float = -15.0,
         distance: float = 1.2,
         lookat: list[float] | None = None,
     ) -> bool:
         """Configure la caméra du viewer pour orienter face au robot.
 
         Args:
-            azimuth: Angle horizontal (90 = face au robot, 0 = côté)
-            elevation: Angle vertical (-20 = légèrement au-dessus)
+            azimuth: Angle horizontal (180 = face optimal au robot, 0 = côté droit, 90 = face alternative)
+            elevation: Angle vertical (-15 = légèrement au-dessus)
             distance: Distance du robot
             lookat: Point de visée [x, y, z] (défaut: [0, 0, 0.3])
         """

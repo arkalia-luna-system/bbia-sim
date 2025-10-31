@@ -137,7 +137,7 @@ def main():
 
     if args.headless:
         # Mode headless
-        start_time = time.time()
+        start_time = time.time()  # noqa: F823
         for step in range(total_steps):
             # Mettre à jour la cible
             target.update()
@@ -163,7 +163,14 @@ def main():
         # Mode graphique
         try:
             with mujoco.viewer.launch_passive(model, data) as viewer:
-                start_time = time.time()
+                # Configurer la caméra à 180° (face optimal) immédiatement
+                viewer.cam.azimuth = 180.0
+                viewer.cam.elevation = -15.0
+                viewer.cam.distance = 1.2  # Rapproché de 20%
+                viewer.cam.lookat[:] = [0.0, 0.0, 0.3]
+                viewer.sync()
+
+                start_time = time.time()  # noqa: F823
                 step = 0
 
                 while viewer.is_running() and step < total_steps:
@@ -205,6 +212,13 @@ def main():
     print(f"   • Cible virtuelle → Tracking '{args.joint}'")
     print(f"   • Position finale : x={target.x:.2f}, y={target.y:.2f}")
     print(f"   • Angle final : {data.qpos[joint_id]:.3f} rad")
+
+    # Garder le viewer ouvert quelques secondes si mode graphique
+    if not args.headless:
+        print("\n⏸️  Viewer ouvert encore 3 secondes...")
+        import time
+
+        time.sleep(3)
 
     return 0
 

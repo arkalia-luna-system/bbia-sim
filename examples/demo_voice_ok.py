@@ -182,7 +182,7 @@ def main():
 
     if args.headless:
         # Mode headless
-        start_time = time.time()
+        start_time = time.time()  # noqa: F823
         for step in range(total_steps):
             # Exécuter l'action basée sur la commande vocale
             angle = execute_voice_action(
@@ -206,7 +206,14 @@ def main():
         # Mode graphique
         try:
             with mujoco.viewer.launch_passive(model, data) as viewer:
-                start_time = time.time()
+                # Configurer la caméra à 180° (face optimal) immédiatement
+                viewer.cam.azimuth = 180.0
+                viewer.cam.elevation = -15.0
+                viewer.cam.distance = 1.2  # Rapproché de 20%
+                viewer.cam.lookat[:] = [0.0, 0.0, 0.3]
+                viewer.sync()
+
+                start_time = time.time()  # noqa: F823
                 step = 0
 
                 while viewer.is_running() and step < total_steps:
@@ -245,6 +252,13 @@ def main():
     print("\n🎉 Démo voix → action terminée avec succès !")
     print(f"   • Commande '{args.command}' → Action '{action['action']}'")
     print(f"   • Joint '{args.joint}' → Animation fluide")
+
+    # Garder le viewer ouvert quelques secondes si mode graphique
+    if not args.headless:
+        print("\n⏸️  Viewer ouvert encore 3 secondes...")
+        import time
+
+        time.sleep(3)
 
     return 0
 

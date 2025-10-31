@@ -159,6 +159,13 @@ def _run_graphical_simulation(model, data):
         logger.info("   • Échap : Fermer la fenêtre")
 
         with mujoco.viewer.launch_passive(model, data) as viewer:
+            # Configurer la caméra à 180° (face optimal) immédiatement
+            viewer.cam.azimuth = 180.0
+            viewer.cam.elevation = -15.0
+            viewer.cam.distance = 1.2  # Rapproché de 20%
+            viewer.cam.lookat[:] = [0.0, 0.0, 0.3]
+            viewer.sync()
+
             logger.info("✅ Fenêtre 3D ouverte")
             logger.info("🎯 Vous devriez voir le robot Reachy Mini complet !")
 

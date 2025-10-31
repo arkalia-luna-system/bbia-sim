@@ -509,6 +509,9 @@
     </body>
   </worldbody>
   <asset>
+    <!-- Skybox avec dégradé pastel (lavande clair vers blanc) pour remplacer le fond noir -->
+    <texture type="skybox" builtin="gradient" rgb1="0.95 0.92 0.98" rgb2="0.98 0.96 0.99" width="512" height="512"/>
+    
     <mesh file="body_down_3dprint.stl"/>
     <mesh file="antenna_holder_r_3dprint.stl"/>
     <mesh file="dc15_a01_led_cap2_dummy.stl"/>

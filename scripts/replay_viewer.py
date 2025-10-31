@@ -123,6 +123,13 @@ class AnimationReplayer:
         # Rejeu avec viewer
         try:
             with mujoco.viewer.launch_passive(model, data) as viewer:
+                # Configurer la caméra à 180° (face optimal) immédiatement
+                viewer.cam.azimuth = 180.0
+                viewer.cam.elevation = -15.0
+                viewer.cam.distance = 1.2
+                viewer.cam.lookat[:] = [0.0, 0.0, 0.3]
+                viewer.sync()
+
                 self.start_time = time.time()
                 self.current_frame = 0
 

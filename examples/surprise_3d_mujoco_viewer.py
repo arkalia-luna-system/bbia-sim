@@ -64,6 +64,13 @@ def surprise_3d_mujoco_viewer():
     print("❌ Fermez le viewer pour arrêter")
 
     with mujoco.viewer.launch_passive(model, data) as viewer:
+        # Configurer la caméra à 180° (face optimal) immédiatement
+        viewer.cam.azimuth = 180.0
+        viewer.cam.elevation = -15.0
+        viewer.cam.distance = 1.2  # Rapproché de 20%
+        viewer.cam.lookat[:] = [0.0, 0.0, 0.3]
+        viewer.sync()
+
         print("✅ Viewer MuJoCo ouvert !")
         print("🎬 Démarrage de l'animation spectaculaire...")
 

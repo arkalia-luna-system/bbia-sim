@@ -102,7 +102,15 @@ def main():
     # 2.1. Lancer le viewer MuJoCo si nécessaire
     if args.backend == "mujoco" and not args.headless:
         print("🖥️ Lancement du viewer MuJoCo...")
-        if not robot.launch_viewer(passive=True):
+        if robot.launch_viewer(passive=True):
+            # Configurer la caméra à 180° (face optimal) immédiatement
+            if hasattr(robot, "viewer") and robot.viewer is not None:
+                robot.viewer.cam.azimuth = 180.0
+                robot.viewer.cam.elevation = -15.0
+                robot.viewer.cam.distance = 1.2  # Rapproché de 20%
+                robot.viewer.cam.lookat[:] = [0.0, 0.0, 0.3]
+                robot.viewer.sync()
+        else:
             print("⚠️ Viewer MuJoCo non lancé, mais démo continue")
 
     # 3. Vérifier le joint
@@ -144,7 +152,7 @@ def main():
     print("\n🚀 Démarrage animation émotion → pose...")
 
     try:
-        start_time = time.time()
+        start_time = time.time()  # noqa: F823
         for step in range(total_steps):
             # Calculer la pose basée sur l'émotion
             angle = emotion_to_pose(args.emotion, args.intensity, step, total_steps)
@@ -190,6 +198,14 @@ def main():
         f"   • Backend {args.backend} → Émotion '{args.emotion}' → Joint '{args.joint}'"
     )
     print(f"   • Intensité {args.intensity} → Animation fluide")
+
+    # Garder le viewer ouvert quelques secondes pour voir le résultat final
+    if args.backend == "mujoco" and not args.headless:
+        if hasattr(robot, "viewer") and robot.viewer is not None:
+            print("\n⏸️  Viewer ouvert encore 3 secondes...")
+            import time
+
+            time.sleep(3)
 
     return 0
 

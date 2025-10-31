@@ -4,6 +4,7 @@ Viewer MuJoCo simple - Pour capture d'écran
 """
 
 import sys
+import time
 from pathlib import Path
 
 import mujoco
@@ -56,8 +57,21 @@ def viewer_simple():
                 step += 1
                 yield
 
-        # Lancer viewer
-        mujoco.viewer.launch(model, data)
+        # Lancer viewer et configurer la caméra
+        # Note: mujoco.viewer.launch() ouvre une fenêtre interactive
+        # Pour configurer la caméra, il faut utiliser launch_passive
+        with mujoco.viewer.launch_passive(model, data) as viewer:
+            # Configurer la caméra à 180° (face optimal) immédiatement
+            viewer.cam.azimuth = 180.0
+            viewer.cam.elevation = -15.0
+            viewer.cam.distance = 1.2  # Rapproché de 20%
+            viewer.cam.lookat[:] = [0.0, 0.0, 0.3]
+            viewer.sync()
+
+            # Garder le viewer ouvert
+            while viewer.is_running():
+                viewer.sync()
+                time.sleep(0.01)
 
     except Exception as e:
         print(f"❌ Erreur: {e}")

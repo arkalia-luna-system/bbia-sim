@@ -262,6 +262,13 @@ def main():
         # Mode graphique
         try:
             with mujoco.viewer.launch_passive(model, data) as viewer:
+                # Configurer la caméra à 180° (face optimal) immédiatement
+                viewer.cam.azimuth = 180.0
+                viewer.cam.elevation = -15.0
+                viewer.cam.distance = 1.2  # Rapproché de 20%
+                viewer.cam.lookat[:] = [0.0, 0.0, 0.3]
+                viewer.sync()
+
                 start_time = time.time()
                 step = 0
 
@@ -347,6 +354,11 @@ def main():
     print(f"   • Comportement '{args.behavior}' → Scénario complet")
     print(f"   • Phases exécutées : {scenario.phase}/{scenario.total_phases}")
     print(f"   • Joint '{args.joint}' → Animation fluide")
+
+    # Garder le viewer ouvert quelques secondes si mode graphique
+    if not args.headless:
+        print("\n⏸️  Viewer ouvert encore 3 secondes...")
+        time.sleep(3)
 
     return 0
 

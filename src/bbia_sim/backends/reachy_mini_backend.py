@@ -765,7 +765,9 @@ class ReachyMiniBackend(RobotAPI):
                                 imu_data = imu_raw
                             elif imu_raw is not None:
                                 # Si format différent, essayer de le normaliser
-                                logger.debug(f"Format IMU non standard: {type(imu_raw)}")
+                                logger.debug(
+                                    f"Format IMU non standard: {type(imu_raw)}"
+                                )
                 except Exception as imu_err:
                     logger.debug(f"IMU non disponible: {imu_err}")
 

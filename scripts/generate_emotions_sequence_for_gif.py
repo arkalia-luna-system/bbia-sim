@@ -26,37 +26,58 @@ def emotion_to_pose(
     t = step / total_steps
 
     emotion_patterns = {
+        # Happy : mouvement énergique et joyeux avec variation d'amplitude
         "happy": (
-            lambda t: 0.12
-            * math.sin(2 * math.pi * 0.1 * t)
-            * (1 + 0.5 * math.sin(4 * math.pi * t))
-        ),
-        "sad": (
-            lambda t: -0.12 * math.sin(2 * math.pi * 0.3 * t)
-            - 0.04 * math.sin(6 * math.pi * t)
-        ),
-        "angry": (
-            lambda t: 0.18 * math.sin(2 * math.pi * 0.8 * t)
-            + 0.04 * math.sin(8 * math.pi * t)
-        ),
-        "surprised": (
-            lambda t: 0.15 * math.sin(2 * math.pi * 0.2 * t) * math.cos(3 * math.pi * t)
-        ),
-        "neutral": (
-            lambda t: 0.08 * math.sin(2 * math.pi * 0.1 * t)
-            + 0.03 * math.sin(6 * math.pi * t)
-        ),
-        "curious": (
-            lambda t: 0.10
-            * math.sin(2 * math.pi * 0.15 * t)
-            * (1 + 0.3 * math.sin(3 * math.pi * t))
-        ),
-        "excited": (
-            lambda t: 0.16
+            lambda t: 0.15
             * math.sin(2 * math.pi * 0.12 * t)
-            * (1 + 0.8 * math.sin(5 * math.pi * t))
+            * (1 + 0.6 * math.sin(4 * math.pi * t))
+            + 0.03 * math.cos(8 * math.pi * t)
         ),
-        "calm": lambda t: 0.06 * math.sin(2 * math.pi * 0.08 * t),
+        # Sad : mouvement lent vers le bas avec oscillation douce
+        "sad": (
+            lambda t: -0.10 * math.sin(2 * math.pi * 0.25 * t)
+            - 0.05 * math.sin(6 * math.pi * t)
+            - 0.02 * (1 - math.cos(2 * math.pi * 0.5 * t))
+        ),
+        # Angry : mouvement rapide et saccadé
+        "angry": (
+            lambda t: 0.20 * math.sin(2 * math.pi * 0.9 * t)
+            + 0.06 * math.sin(10 * math.pi * t)
+            + 0.04 * math.cos(15 * math.pi * t)
+        ),
+        # Surprised : mouvement brusque avec rebond
+        "surprised": (
+            lambda t: 0.18
+            * math.sin(2 * math.pi * 0.18 * t)
+            * math.cos(3 * math.pi * t)
+            + 0.05 * math.exp(-5 * (t - 0.5) ** 2)  # Pics de surprise
+        ),
+        # Neutral : mouvement minimal et régulier
+        "neutral": (
+            lambda t: 0.06 * math.sin(2 * math.pi * 0.08 * t)
+            + 0.02 * math.sin(6 * math.pi * t)
+            + 0.01 * math.cos(12 * math.pi * t)
+        ),
+        # Curious : mouvement exploratoire avec variations
+        "curious": (
+            lambda t: 0.12
+            * math.sin(2 * math.pi * 0.14 * t)
+            * (1 + 0.4 * math.sin(3 * math.pi * t))
+            + 0.04 * math.sin(7 * math.pi * t) * math.cos(5 * math.pi * t)
+        ),
+        # Excited : mouvement rapide et dynamique
+        "excited": (
+            lambda t: 0.18
+            * math.sin(2 * math.pi * 0.15 * t)
+            * (1 + 0.9 * math.sin(5 * math.pi * t))
+            + 0.05 * math.sin(10 * math.pi * t)
+            + 0.03 * math.cos(12 * math.pi * t)
+        ),
+        # Calm : mouvement très doux et lent
+        "calm": (
+            lambda t: 0.05 * math.sin(2 * math.pi * 0.06 * t)
+            + 0.02 * math.sin(4 * math.pi * t) * math.exp(-0.5 * t)
+        ),
     }
 
     base_movement = emotion_patterns.get(emotion, emotion_patterns["neutral"])(t)
@@ -70,8 +91,8 @@ def main():
     parser.add_argument(
         "--azimuth",
         type=float,
-        default=90.0,
-        help="Angle azimuth caméra (0=droite, 90=face, 180=gauche, 270=dos). Testez différentes valeurs!",
+        default=180.0,
+        help="Angle azimuth caméra (0=droite, 90=face, 180=face optimal, 270=dos). Défaut: 180",
     )
     args = parser.parse_args()
 
@@ -102,39 +123,33 @@ def main():
         print("❌ Impossible d'accéder au modèle MuJoCo")
         return 1
 
-
     # Lancer viewer via le backend du robot
     print("✅ Lancement viewer MuJoCo...")
     if not robot.launch_viewer(passive=True):
         print("❌ Impossible de lancer le viewer")
         return 1
 
-    # Attendre que le viewer soit prêt
-    time.sleep(0.5)
-
-    # Accéder au viewer du backend
+    # Accéder au viewer IMMÉDIATEMENT et configurer la caméra AVANT le premier affichage
     if not hasattr(robot, "viewer") or robot.viewer is None:
         print("❌ Viewer non disponible")
         return 1
 
     viewer = robot.viewer
 
-    # Configurer caméra avec l'azimuth fourni en argument
-    # 0° = côté droit, 90° = face, 180° = côté gauche, 270° = dos
+    # Configurer caméra IMMÉDIATEMENT (avant le premier sync) pour éviter la mauvaise première vue
+    # 0° = côté droit, 90° = face, 180° = face optimal, 270° = dos
     viewer.cam.azimuth = args.azimuth
     viewer.cam.elevation = -15.0  # Légèrement au-dessus
-    viewer.cam.distance = 1.5
+    viewer.cam.distance = 1.2  # Rapproché de 20% (était 1.5, maintenant 1.2)
     viewer.cam.lookat[:] = [0.0, 0.0, 0.3]
 
-    # Synchroniser pour appliquer la configuration de la caméra
+    # Première synchronisation avec la bonne caméra déjà configurée
     viewer.sync()
-    time.sleep(0.2)  # Laisser le viewer se stabiliser
+    time.sleep(0.3)  # Laisser le viewer se stabiliser avec la bonne caméra
 
-    print(f"✅ Caméra configurée (azimuth={args.azimuth}°)")
+    print(f"✅ Caméra configurée (azimuth={args.azimuth}°, distance=1.2)")
+    print("✅ Fond pastel configuré dans le modèle XML (skybox gradient)")
     print("💡 Si le robot est encore de côté, testez: --azimuth 90, 180, 270, ou -90")
-    print(
-        "⚠️  Fond noir : limitation de MuJoCo viewer (utiliser post-production vidéo pour fond pastel)"
-    )
 
     print("\n🎬 DÉBUT SÉQUENCE (8 secondes)")
     print("📹 Préparez votre enregistrement d'écran maintenant !\n")
@@ -158,7 +173,7 @@ def main():
             # Maintenir la configuration de la caméra à chaque frame
             viewer.cam.azimuth = args.azimuth
             viewer.cam.elevation = -15.0
-            viewer.cam.distance = 1.5
+            viewer.cam.distance = 1.2  # Rapproché de 20%
             viewer.cam.lookat[:] = [0.0, 0.0, 0.3]
 
             # Mettre à jour la simulation
