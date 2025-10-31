@@ -313,7 +313,8 @@ def create_yolo_detector(
     Factory function pour créer une instance YOLODetector.
 
     Args:
-        model_size: Taille du modèle YOLO
+        model_size: Taille du modèle YOLO ("n", "s", "m", "l", "x")
+        confidence_threshold: Seuil de confiance (0.0-1.0), défaut: 0.25
 
     Returns:
         Instance YOLODetector ou None si non disponible
@@ -322,7 +323,9 @@ def create_yolo_detector(
         logger.warning("⚠️ YOLO non disponible")
         return None
 
-    return YOLODetector(model_size=model_size)
+    return YOLODetector(
+        model_size=model_size, confidence_threshold=confidence_threshold
+    )
 
 
 def create_face_detector() -> FaceDetector | None:
