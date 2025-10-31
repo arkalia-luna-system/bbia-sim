@@ -36,9 +36,11 @@ graph LR
 git clone https://github.com/arkalia-luna-system/bbia-sim.git
 cd bbia-sim
 
-# Installer les dépendances
-pip install -r requirements.txt
+# Installer les dépendances (mode développement recommandé)
+pip install -e .[dev]
 ```
+
+> 💡 **Note** : Le mode développement (`pip install -e .[dev]`) installe automatiquement toutes les dépendances nécessaires. Pour une installation minimale, utilisez `pip install -e .`.
 
 ### 2. Accéder au dashboard web
 
@@ -88,7 +90,9 @@ mjpython examples/demo_emotion_ok.py --emotion happy --duration 10
 mjpython examples/demo_chat_bbia_3d.py
 ```
 
-Astuce : Sur macOS, utilisez `mjpython` au lieu de `python` pour les démos 3D.
+> 💡 **Astuce macOS** : Utilisez `mjpython` au lieu de `python` pour les démos 3D.  
+> `mjpython` est installé automatiquement avec MuJoCo et permet d'afficher la fenêtre 3D.  
+> Si `mjpython` n'est pas disponible, utilisez `python` (le viewer peut ne pas s'ouvrir en mode headless).
 
 ---
 
@@ -141,9 +145,9 @@ R : Oui, le système est extensible. Voir `examples/demo_emotion_ok.py`
 4. Avancer : [Guide Avancé](GUIDE_AVANCE.md)
 5. Index thématique : `docs/references/INDEX_THEMATIQUE.md`
 
-## Chat intelligent
+## 💬 Chat intelligent avec BBIA
 
-Discutez avec BBIA via le Dashboard ou directement :
+Une fois le dashboard lancé ou les modules installés, vous pouvez discuter avec BBIA de plusieurs façons :
 
 ```bash
 # Chat simple via terminal

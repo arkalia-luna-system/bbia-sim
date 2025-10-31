@@ -729,7 +729,11 @@ class ReachyMiniBackend(RobotAPI):
         return True
 
     def get_telemetry(self) -> dict[str, Any]:
-        """Récupère les données de télémétrie."""
+        """Récupère la télémétrie complète du robot (positions, état, capteurs, IMU).
+
+        Inclut les données IMU (accéléromètre, gyroscope, magnétomètre) si disponibles
+        via le SDK officiel Reachy Mini.
+        """
         try:
             current_time = time.time()
             elapsed_time = current_time - self.start_time if self.start_time > 0 else 0
@@ -748,7 +752,24 @@ class ReachyMiniBackend(RobotAPI):
                     "operations_sampled": len(self._operation_latencies),
                 }
 
-            return {
+            # Intégration IMU si disponible via SDK
+            imu_data = None
+            if self.is_connected and self.robot:
+                try:
+                    # Essayer d'accéder à robot.io.get_imu() si disponible
+                    if hasattr(self.robot, "io") and self.robot.io:
+                        if hasattr(self.robot.io, "get_imu"):
+                            imu_raw = self.robot.io.get_imu()  # type: ignore[attr-defined]
+                            # Normaliser format IMU (dict avec acceleration, gyroscope, magnetometer)
+                            if isinstance(imu_raw, dict):
+                                imu_data = imu_raw
+                            elif imu_raw is not None:
+                                # Si format différent, essayer de le normaliser
+                                logger.debug(f"Format IMU non standard: {type(imu_raw)}")
+                except Exception as imu_err:
+                    logger.debug(f"IMU non disponible: {imu_err}")
+
+            telemetry = {
                 "step_count": self.step_count,
                 "elapsed_time": elapsed_time,
                 "steps_per_second": (
@@ -759,6 +780,12 @@ class ReachyMiniBackend(RobotAPI):
                 "is_connected": self.is_connected,
                 **latency_info,  # Ajouter info latence si disponible
             }
+
+            # Ajouter IMU si disponible
+            if imu_data:
+                telemetry["imu"] = imu_data
+
+            return telemetry
         except Exception as e:
             logger.error(f"Erreur télémétrie: {e}")
             return {}

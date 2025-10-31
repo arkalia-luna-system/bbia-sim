@@ -87,6 +87,82 @@ bbia.enable_llm_chat()  # Télécharge/charge le LLM (internet requis au premier
 
 ---
 
+### Dépendances Optionnelles - Centralisées
+
+**Vision et Détection :**
+- **DeepFace** (reconnaissance visage + émotions) :
+  - Fichier : `requirements/requirements-deepface.txt`
+  - Installation : `pip install -r requirements/requirements-deepface.txt`
+  - Usage : Reconnaissance visage personnalisée, détection émotions (7 émotions)
+  - Profil : `venv-vision-py310` (recommandé)
+  - Documentation : `docs/guides_techniques/DEEPFACE_SETUP.md`
+
+- **MediaPipe** (détection postures/gestes) :
+  - Installation : `pip install mediapipe` (déjà inclus dans venv-vision-py310)
+  - Usage : Détection 33 points clés corps, gestes (bras levés, debout/assis)
+  - Profil : `venv-vision-py310`
+  - Scripts : `scripts/test_pose_detection.py`
+
+- **YOLOv8n** (détection objets) :
+  - Installation : `pip install ultralytics` (inclus dans `requirements.txt`)
+  - Usage : Détection objets temps réel (COCO dataset)
+  - Profil : `venv-vision-py310` (recommandé) ou `venv` principal
+  - Intégration : Automatique via `bbia_vision.py`
+
+**IA et LLM :**
+- **Hugging Face Transformers** (LLM conversationnel) :
+  - Installation : `pip install transformers torch` (déjà présents dans `requirements.txt`)
+  - Modèles disponibles :
+    - Mistral 7B : `~14GB RAM` (recommandé si RAM suffisante)
+    - Llama 3 8B : `~16GB RAM`
+    - Phi-2 : `~5GB RAM` (recommandé RPi 5)
+    - TinyLlama : `~2GB RAM` (ultra-léger)
+  - Activation : `python -c "from bbia_sim.bbia_huggingface import BBIAHuggingFace; hf = BBIAHuggingFace(); hf.enable_llm_chat('phi2')"`
+  - Profil : `venv` principal
+  - Documentation : Voir README section "IA Avancée"
+
+- **Whisper** (reconnaissance vocale) :
+  - Installation : `pip install openai-whisper` (inclus dans `requirements.txt`)
+  - Usage : Transcription audio → texte (STT)
+  - Profil : `venv` principal
+  - Backend : Auto-détection, fallback dummy si non disponible
+
+**TTS Avancé (optionnel) :**
+- **KittenTTS / Kokoro / NeuTTS** :
+  - Installation : Selon backend choisi
+  - Configuration : `export BBIA_TTS_BACKEND=kitten` (ou `kokoro`, `neutts`)
+  - Profil : `venv-voice` séparé (recommandé) ou `venv` principal
+  - Fallback : `pyttsx3` (toujours disponible)
+
+- **Coqui TTS** :
+  - Installation : `pip install TTS` (venv séparé recommandé)
+  - Usage : Génération WAV avec pitch/émotions
+  - Profil : `venv-voice` séparé (évite conflits numpy)
+
+**Dashboard :**
+- **Gradio** (interface no-code) :
+  - Fichier : `requirements/requirements-gradio.txt`
+  - Installation : `pip install gradio`
+  - Usage : `python scripts/dashboard_gradio.py --port 7860`
+  - Profil : `venv` principal
+  - Fonctionnalités : Upload images, chat, DeepFace registration
+
+**Résumé Tableau :**
+
+| Dépendance | Fichier Requirements | Profil Recommandé | Usage |
+|------------|---------------------|-------------------|-------|
+| DeepFace | `requirements-deepface.txt` | `venv-vision-py310` | Reconnaissance visage |
+| MediaPipe | `requirements.txt` | `venv-vision-py310` | Détection postures |
+| YOLOv8n | `requirements.txt` | `venv-vision-py310` | Détection objets |
+| Transformers/Torch | `requirements.txt` | `venv` principal | LLM conversationnel |
+| Whisper | `requirements.txt` | `venv` principal | Reconnaissance vocale |
+| Gradio | `requirements-gradio.txt` | `venv` principal | Dashboard no-code |
+| KittenTTS/Kokoro | Variables env | `venv-voice` ou principal | TTS avancé |
+
+> 💡 **Note** : La plupart des dépendances principales sont déjà incluses dans `requirements.txt`. Les dépendances optionnelles sont documentées ici pour faciliter l'installation ciblée selon les besoins.
+
+---
+
 ### FAQ
 - Pourquoi séparer les venv ?
   - Certains paquets demandent des versions de numpy/scipy incompatibles entre eux (mediapipe vs reachy/others). Les séparer évite de tout casser.
