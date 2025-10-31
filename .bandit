@@ -1,7 +1,0 @@
-[bandit]
-exclude_dirs = tests,venv,.venv,venv-vision-py310,logs,reachy_repos,assets,site-packages
-skips = B101,B108,B306,B601,B110,B615
-targets = src/bbia_sim/
-recursive = true
-verbose = false
-

@@ -93,7 +93,7 @@ class TestBBIAVoiceExtended:
         mock_engine = MagicMock()
         mock_engine.getProperty.return_value = mock_voices
 
-        with pytest.raises(RuntimeError, match="Aucune voix 'Amélie'"):
+        with pytest.raises(RuntimeError, match="Aucune voix française féminine"):
             get_bbia_voice(mock_engine)
 
     def test_get_bbia_voice_normalize_accent(self):
@@ -297,7 +297,7 @@ class TestBBIAVoiceExtended:
         mock_engine = MagicMock()
         mock_engine.getProperty.return_value = []
 
-        with pytest.raises(RuntimeError, match="Aucune voix 'Amélie'"):
+        with pytest.raises(RuntimeError, match="Aucune voix française féminine"):
             get_bbia_voice(mock_engine)
 
     def test_get_bbia_voice_multiple_france_voices(self):
