@@ -27,13 +27,14 @@ from bbia_sim.bbia_vision import BBIAVision
 logger = logging.getLogger(__name__)
 
 # Initialiser modules BBIA
+vision: BBIAVision | None = None
+hf: BBIAHuggingFace | None = None
+
 try:
     vision = BBIAVision()
     hf = BBIAHuggingFace()
 except Exception as e:
     logger.error(f"Erreur initialisation BBIA: {e}")
-    vision = None
-    hf = None
 
 
 def scan_image(image):

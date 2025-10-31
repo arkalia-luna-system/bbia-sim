@@ -164,7 +164,7 @@ Le SDK officiel Reachy Mini expose une intégration Hugging Face Spaces via `hf_
 - Contexte conversationnel
 
 **Tests recommandés supplémentaires :**
-- [ ] Test sécurité : Validation entrée utilisateur (injection)
+- [x] Test sécurité : Validation entrée utilisateur (injection) ✅ **FAIT** (`tests/test_huggingface_security.py`)
 - [ ] Test performance : Latence génération LLM (<5s pour 150 tokens)
 - [ ] Test mémoire : Déchargement modèles après inactivité
 

@@ -19,13 +19,19 @@ class _SoundDeviceShim:
     Les méthodes lèvent RuntimeError si utilisées sans patch effectif.
     """
 
-    def rec(self, *args: Any, **kwargs: Any) -> Any:  # pragma: no cover - garde-fou
+    def rec(
+        self, *args: Any, **kwargs: Any
+    ) -> Any:  # noqa: ANN401 - garde-fou pour module optionnel
         raise RuntimeError("sounddevice indisponible: sd.rec non opérationnel")
 
-    def wait(self, *args: Any, **kwargs: Any) -> None:  # pragma: no cover
+    def wait(
+        self, *args: Any, **kwargs: Any
+    ) -> None:  # noqa: ANN401 - garde-fou pour module optionnel
         raise RuntimeError("sounddevice indisponible: sd.wait non opérationnel")
 
-    def play(self, *args: Any, **kwargs: Any) -> None:  # pragma: no cover
+    def play(
+        self, *args: Any, **kwargs: Any
+    ) -> None:  # noqa: ANN401 - garde-fou pour module optionnel
         raise RuntimeError("sounddevice indisponible: sd.play non opérationnel")
 
 
@@ -35,7 +41,9 @@ if TYPE_CHECKING:
     from .robot_api import RobotAPI
 
 
-def _get_sd() -> Any | None:
+def _get_sd() -> (
+    Any | None
+):  # noqa: ANN401 - retour dynamique selon disponibilité module
     """Import paresseux de sounddevice pour éviter l'init PortAudio au import."""
     global sd
     if sd is not None:

@@ -8,7 +8,7 @@ import json
 import logging
 from datetime import datetime
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 logger = logging.getLogger(__name__)
 
@@ -81,7 +81,9 @@ class BBIAMemory:
 
             history = data.get("history", [])
             logger.debug(f"💾 Conversation chargée ({len(history)} messages)")
-            return history
+            return (
+                cast(list[dict[str, Any]], history) if isinstance(history, list) else []
+            )
         except Exception as e:
             logger.warning(f"⚠️ Erreur chargement conversation: {e}")
             return []
@@ -129,7 +131,11 @@ class BBIAMemory:
             with open(self.preferences_file, encoding="utf-8") as f:
                 preferences = json.load(f)
 
-            return preferences
+            return (
+                cast(dict[str, Any], preferences)
+                if isinstance(preferences, dict)
+                else {}
+            )
         except Exception as e:
             logger.warning(f"⚠️ Erreur chargement préférences: {e}")
             return {}
@@ -195,7 +201,9 @@ class BBIAMemory:
             with open(self.learnings_file, encoding="utf-8") as f:
                 learnings = json.load(f)
 
-            return learnings
+            return (
+                cast(dict[str, Any], learnings) if isinstance(learnings, dict) else {}
+            )
         except Exception as e:
             logger.warning(f"⚠️ Erreur chargement apprentissages: {e}")
             return {}
@@ -211,7 +219,8 @@ class BBIAMemory:
         """
         learnings = self.load_learnings()
         if pattern in learnings:
-            return learnings[pattern].get("response")
+            response = learnings[pattern].get("response")
+            return str(response) if response is not None else None
         return None
 
     def clear_memory(self) -> bool:

@@ -214,6 +214,9 @@ exclude = [
     "build",
     "dist",
     "site-packages",
+    "tests",
+    "tests/**",
+    "tests/*",
 ]
 
 [tool.ruff.lint]
