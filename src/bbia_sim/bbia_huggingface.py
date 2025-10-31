@@ -1034,7 +1034,7 @@ class BBIAHuggingFace:
                 result
                 + SUFFIX_POOL[
                     _r.randrange(len(SUFFIX_POOL))
-                ]  # noqa: B311 - Variété réponse non-crypto
+                ]  # nosec B311 - Variété réponse non-crypto
             ).strip()
             if len(result) < min_len:
                 result = (
@@ -1042,7 +1042,7 @@ class BBIAHuggingFace:
                     + " "
                     + SUFFIX_POOL[
                         _r.randrange(len(SUFFIX_POOL))
-                    ]  # noqa: B311 - Variété réponse non-crypto
+                    ]  # nosec B311 - Variété réponse non-crypto
                 ).strip()
         if len(result) > max_len:
             cut = result[: max_len + 1]
@@ -1078,7 +1078,7 @@ class BBIAHuggingFace:
 
                 addition = SUFFIX_POOL[
                     _r.randrange(len(SUFFIX_POOL))
-                ]  # noqa: B311 - Variété réponse non-crypto
+                ]  # nosec B311 - Variété réponse non-crypto
                 candidate = f"{text} {addition}".strip()
                 return self._normalize_response_length(candidate)
             return text
@@ -1101,10 +1101,10 @@ class BBIAHuggingFace:
             ]
             base = base_pool[
                 _r.randrange(len(base_pool))
-            ]  # noqa: B311 - Variété réponse non-crypto
+            ]  # nosec B311 - Variété réponse non-crypto
             suffix = SUFFIX_POOL[
                 _r.randrange(len(SUFFIX_POOL))
-            ]  # noqa: B311 - Variété réponse non-crypto
+            ]  # nosec B311 - Variété réponse non-crypto
             candidate = f"{base}{suffix}".strip()
             return self._normalize_response_length(candidate)
         except Exception:
@@ -1165,7 +1165,7 @@ class BBIAHuggingFace:
             variants = greetings.get(self.bbia_personality, greetings["friendly_robot"])
             return self._normalize_response_length(
                 random.choice(variants)
-            )  # noqa: B311 - Variété réponse non-crypto
+            )  # nosec B311 - Variété réponse non-crypto
 
         # Au revoir - Réponses émotionnelles selon contexte
         if any(
@@ -1198,7 +1198,7 @@ class BBIAHuggingFace:
             variants = goodbyes.get(self.bbia_personality, goodbyes["friendly_robot"])
             return self._normalize_response_length(
                 random.choice(variants)
-            )  # noqa: B311 - Variété réponse non-crypto
+            )  # nosec B311 - Variété réponse non-crypto
 
         # Positif - Réponses adaptées selon intensité
         if (
@@ -1245,7 +1245,7 @@ class BBIAHuggingFace:
             )
             return self._normalize_response_length(
                 random.choice(variants)
-            )  # noqa: B311 - Variété réponse non-crypto
+            )  # nosec B311 - Variété réponse non-crypto
 
         # Négatif - Réponses empathiques
         if (
@@ -1290,7 +1290,7 @@ class BBIAHuggingFace:
             )
             return self._normalize_response_length(
                 random.choice(variants)
-            )  # noqa: B311 - Variété réponse non-crypto
+            )  # nosec B311 - Variété réponse non-crypto
 
         # Questions - Réponses adaptées selon type de question
         # AMÉLIORATION INTELLIGENCE: Détection type question pour réponses pertinentes
@@ -1345,7 +1345,7 @@ class BBIAHuggingFace:
             )
             return self._normalize_response_length(
                 random.choice(variants)
-            )  # noqa: B311 - Variété réponse non-crypto
+            )  # nosec B311 - Variété réponse non-crypto
 
         # Référence au contexte précédent si disponible
         # AMÉLIORATION INTELLIGENCE: Utilisation du contexte pour cohérence
@@ -1366,7 +1366,7 @@ class BBIAHuggingFace:
 
             if (
                 has_reference
-                or random.random() < 0.4  # noqa: B311 - Variété réponse non-crypto
+                or random.random() < 0.4  # nosec B311 - Variété réponse non-crypto
             ):  # 40% de chance si référence, sinon 30%
                 context_responses = {
                     "friendly_robot": [
@@ -1515,12 +1515,12 @@ class BBIAHuggingFace:
 
                 t = (
                     t + SUFFIX_POOL[_r.randrange(len(SUFFIX_POOL))]
-                ).strip()  # noqa: B311 - Variété réponse non-crypto
+                ).strip()  # nosec B311 - Variété réponse non-crypto
                 # Si c'est encore trop court, compléter une seconde fois
                 if len(t) < min_len:
                     t = (
                         t + " " + SUFFIX_POOL[_r.randrange(len(SUFFIX_POOL))]
-                    ).strip()  # noqa: B311 - Variété réponse non-crypto
+                    ).strip()  # nosec B311 - Variété réponse non-crypto
             if len(t) <= max_len:
                 # Anti-duplication récente
                 try:
