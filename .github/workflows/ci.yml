@@ -45,12 +45,8 @@ jobs:
 
       - name: Security check with Bandit
         run: |
-          if [ -f .bandit ]; then
-            bandit -r src/ -c .bandit -q
-          else
-            echo "No .bandit config found, running Bandit with defaults"
-            bandit -r src/ -q
-          fi
+          echo "Running Bandit with pyproject.toml configuration"
+          bandit -r src/ -q
 
       - name: Dependency audit with pip-audit
         run: |
