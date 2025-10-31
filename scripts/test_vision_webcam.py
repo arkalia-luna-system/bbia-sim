@@ -35,20 +35,42 @@ def draw_detections(frame, objects, faces):
             w = bbox.get("width", 0)
             h = bbox.get("height", 0)
         elif isinstance(bbox, list) and len(bbox) == 4:
-            x, y, w, h = bbox
+            # Format YOLO [x1, y1, x2, y2]
+            x1, y1, x2, y2 = bbox
+            x, y, w, h = x1, y1, x2 - x1, y2 - y1
         else:
             continue
 
         name = obj.get("name", "objet")
         conf = obj.get("confidence", 0.0)
 
-        # Rectangle
+        # Filtrer détections avec faible confiance
+        if conf < 0.3:
+            continue
+
+        # Rectangle (vert pour objets)
         cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
-        # Label
+        # Label avec fond pour meilleure lisibilité
         label = f"{name} {conf:.2f}"
+        (text_width, text_height), _ = cv2.getTextSize(
+            label, cv2.FONT_HERSHEY_SIMPLEX, 0.6, 2
+        )
+        cv2.rectangle(
+            frame,
+            (x, y - text_height - 10),
+            (x + text_width, y),
+            (0, 255, 0),
+            -1,
+        )
         cv2.putText(
-            frame, label, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2
+            frame,
+            label,
+            (x, y - 5),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            0.6,
+            (0, 0, 0),
+            2,
         )
 
     # Détection visages (MediaPipe)
@@ -115,8 +137,8 @@ def main():
 
             frame_count += 1
 
-            # Détection (toutes les 5 frames pour performance)
-            if frame_count % 5 == 0:
+            # Détection (toutes les 3 frames pour meilleure réactivité)
+            if frame_count % 3 == 0:
                 scan_result = vision.scan_environment()
                 objects = scan_result.get("objects", [])
                 faces = scan_result.get("faces", [])

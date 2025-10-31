@@ -442,16 +442,35 @@ class BBIAVision:
         if self.yolo_detector and self.yolo_detector.is_loaded:
             try:
                 detections = self.yolo_detector.detect_objects(image)
+                height, width = image.shape[:2]
+
                 for det in detections:
+                    # YOLO retourne bbox comme liste [x1, y1, x2, y2]
+                    bbox_yolo = det.get("bbox", [])
+                    if isinstance(bbox_yolo, list) and len(bbox_yolo) == 4:
+                        x1, y1, x2, y2 = bbox_yolo
+                        # Calculer centre et dimensions
+                        center_x = (x1 + x2) / 2
+                        center_y = (y1 + y2) / 2
+                        w = x2 - x1
+                        h = y2 - y1
+                    else:
+                        # Fallback si format inattendu
+                        continue
+
                     obj = {
-                        "name": det.get("class", "objet"),
-                        "distance": det.get("distance", 1.5),
+                        "name": det.get("class_name", det.get("class", "objet")),
+                        "distance": 1.5,
                         "confidence": det.get("confidence", 0.5),
-                        "position": (
-                            det.get("bbox", {}).get("center_x", 320) / 640.0,
-                            det.get("bbox", {}).get("center_y", 240) / 480.0,
-                        ),
-                        "bbox": det.get("bbox", {}),
+                        "position": (center_x / width, center_y / height),
+                        "bbox": {
+                            "x": int(x1),
+                            "y": int(y1),
+                            "width": int(w),
+                            "height": int(h),
+                            "center_x": int(center_x),
+                            "center_y": int(center_y),
+                        },
                     }
                     objects.append(obj)
             except Exception as e:
@@ -581,19 +600,38 @@ class BBIAVision:
             if self.yolo_detector and self.yolo_detector.is_loaded:
                 try:
                     detections = self.yolo_detector.detect_objects(image)
+                    height, width = image.shape[:2]
+
                     for det in detections:
+                        # YOLO retourne bbox comme liste [x1, y1, x2, y2]
+                        bbox_yolo = det.get("bbox", [])
+                        if isinstance(bbox_yolo, list) and len(bbox_yolo) == 4:
+                            x1, y1, x2, y2 = bbox_yolo
+                            # Calculer centre et dimensions
+                            center_x = (x1 + x2) / 2
+                            center_y = (y1 + y2) / 2
+                            w = x2 - x1
+                            h = y2 - y1
+                        else:
+                            # Fallback si format inattendu
+                            continue
+
                         # Convertir détection YOLO au format BBIA
                         obj = {
-                            "name": det.get("class", "objet"),
-                            "distance": det.get(
-                                "distance", 1.5
-                            ),  # Estimation basée sur bbox
+                            "name": det.get("class_name", det.get("class", "objet")),
+                            "distance": (
+                                1.5
+                            ),  # Estimation basée sur bbox size (peut améliorer)
                             "confidence": det.get("confidence", 0.5),
-                            "position": (
-                                det.get("bbox", {}).get("center_x", 320) / 640.0,
-                                det.get("bbox", {}).get("center_y", 240) / 480.0,
-                            ),
-                            "bbox": det.get("bbox", {}),
+                            "position": (center_x / width, center_y / height),
+                            "bbox": {
+                                "x": int(x1),
+                                "y": int(y1),
+                                "width": int(w),
+                                "height": int(h),
+                                "center_x": int(center_x),
+                                "center_y": int(center_y),
+                            },
                         }
                         objects.append(obj)
                 except Exception as e:

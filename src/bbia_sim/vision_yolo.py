@@ -37,7 +37,7 @@ except Exception:
 class YOLODetector:
     """Module de détection d'objets utilisant YOLOv8n."""
 
-    def __init__(self, model_size: str = "n", confidence_threshold: float = 0.5):
+    def __init__(self, model_size: str = "n", confidence_threshold: float = 0.25):
         """
         Initialise le détecteur YOLO.
 

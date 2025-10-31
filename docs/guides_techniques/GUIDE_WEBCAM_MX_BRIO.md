@@ -74,6 +74,11 @@ python scripts/test_vision_webcam.py
 pip install ultralytics
 ```
 
+**💡 Pour améliorer la détection** :
+- Assure-toi d'être bien éclairé
+- Réduis la distance (pas besoin d'être très loin)
+- Le seuil de confiance est maintenant à 0.25 (au lieu de 0.5) pour détecter plus d'objets
+
 ---
 
 ## 👤 ÉTAPE 5 : Test DeepFace (reconnaissance visage personnalisée)
@@ -119,7 +124,7 @@ python scripts/test_pose_detection.py --webcam
 
 ```bash
 # Dans venv-vision-py310 (ou venv principal si gradio installé)
-# Installer Gradio si pas encore fait
+# Installer Gradio (séparer la commande du commentaire !)
 pip install gradio
 
 # Lancer le dashboard
@@ -165,6 +170,24 @@ print(f"Postures détectées: {result.get('poses')}")
 
 ## 🔧 Configuration avancée
 
+### Améliorer la détection
+
+**Problème** : Pas assez de détections ?
+
+1. **Réduire le seuil de confiance** :
+   ```python
+   # Dans ton code, créer détecteur avec seuil plus bas
+   from bbia_sim.vision_yolo import YOLODetector
+   detector = YOLODetector(confidence_threshold=0.15)  # Plus sensible
+   ```
+
+2. **Meilleure éclairage** :
+   - S'assurer d'être bien éclairé
+   - Éviter contre-jour
+
+3. **Distance optimale** :
+   - 1-2 mètres de la caméra
+
 ### Changer l'index de la caméra
 
 ```bash
@@ -187,6 +210,12 @@ cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
 ---
 
 ## ⚠️ Dépannage
+
+### "Erreur détection YOLO: 'list' object has no attribute 'get'"
+
+**✅ CORRIGÉ !** Cette erreur est maintenant résolue. Si tu la vois encore :
+1. Relance le script après mise à jour
+2. Vérifie que tu utilises la dernière version du code
 
 ### "Impossible d'ouvrir la webcam"
 
@@ -217,6 +246,15 @@ source venv-vision-py310/bin/activate
 pip install ultralytics mediapipe
 ```
 
+### "Gradio : Invalid requirement: '#'"
+
+**Ne pas copier-coller le commentaire !** Faire :
+
+```bash
+pip install gradio
+python scripts/dashboard_gradio.py --port 7860
+```
+
 ---
 
 ## ✅ Checklist rapide
@@ -225,7 +263,7 @@ pip install ultralytics mediapipe
 - [ ] Permissions caméra accordées (Réglages Système)
 - [ ] `venv-vision-py310` activé
 - [ ] `test_webcam_simple.py` fonctionne (preview)
-- [ ] `test_vision_webcam.py` fonctionne (détection)
+- [ ] `test_vision_webcam.py` fonctionne (détection) ✅ **CORRIGÉ**
 - [ ] DeepFace installé (optionnel)
 - [ ] Dashboard Gradio testé (optionnel)
 
@@ -242,5 +280,18 @@ Une fois que la webcam fonctionne :
 
 ---
 
-**Tout est prêt ! Tu peux maintenant brancher ta webcam et la tester ! 🎉**
+## 📝 Notes de performance
 
+**Détection améliorée** :
+- ✅ Seuil de confiance réduit à 0.25 (au lieu de 0.5) pour plus de détections
+- ✅ Format YOLO corrigé (bbox est maintenant correctement converti)
+- ✅ Détection toutes les 3 frames (au lieu de 5) pour meilleure réactivité
+
+**Si détection toujours faible** :
+- Vérifie l'éclairage
+- Réduis la distance
+- Augmente la confiance : `YOLODetector(confidence_threshold=0.15)`
+
+---
+
+**Tout est prêt ! Tu peux maintenant brancher ta webcam et la tester ! 🎉**
