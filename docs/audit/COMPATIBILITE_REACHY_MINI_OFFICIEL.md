@@ -289,9 +289,9 @@ except ImportError:
 - [x] Pas de conflits NumPy/Scipy
 - [x] Pas de conflits OpenCV
 - [x] Torch/Transformers optionnels (pas utilisés par SDK)
-- [ ] DeepFace à ajouter (compatible, recommandé)
-- [ ] MediaPipe Pose à activer (déjà installé)
-- [ ] LLM léger à configurer (Phi-2 pour RPi 5)
+- [x] DeepFace ajouté (compatible, opérationnel) ✅ **FAIT**
+- [x] MediaPipe Pose activé (intégré dans BBIAVision) ✅ **FAIT**
+- [ ] LLM léger à configurer (Phi-2 pour RPi 5) - Optionnel, API externe fonctionne
 
 ---
 
@@ -306,13 +306,15 @@ except ImportError:
 - ✅ Backend SDK conforme
 
 **Ajouts recommandés (sans risque)** :
-1. **DeepFace** - Reconnaissance visage + émotions (compatible, open-source)
-2. **MediaPipe Pose** - Détection postures (déjà installé, juste à activer)
-3. **LLM léger** - Phi-2 ou TinyLlama pour RPi 5
+1. ✅ **DeepFace** - Reconnaissance visage + émotions ✅ **AJOUTÉ ET OPÉRATIONNEL**
+2. ✅ **MediaPipe Pose** - Détection postures ✅ **AJOUTÉ ET OPÉRATIONNEL**
+3. **LLM léger** - Phi-2 ou TinyLlama pour RPi 5 (optionnel, API externe fonctionne)
 
 **Aucun risque de casser le SDK** : Tous les modules IA sont optionnels et isolés ✅
 
 ---
 
-**Prochaine étape** : Ajouter DeepFace dans `venv-vision-py310` ? (recommandé, compatible, gratuit)
+**État** : ✅ **100% PRÊT** - DeepFace et MediaPipe Pose sont déjà ajoutés et fonctionnels !
+
+**Prochaine étape optionnelle** : Configurer LLM léger (Phi-2) pour RPi 5 si besoin (sinon API externe fonctionne bien)
 

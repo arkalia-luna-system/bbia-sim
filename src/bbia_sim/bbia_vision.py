@@ -62,9 +62,8 @@ except ImportError:
 create_face_recognition = _create_face_recognition_func
 
 # Import conditionnel MediaPipe Pose pour détection postures/gestes
-_create_pose_detector_func: (
-    Callable[[int], "BBIAPoseDetection | None"] | None
-) = None
+_create_pose_detector_func: Callable[..., "BBIAPoseDetection | None"] | None = None
+MEDIAPIPE_POSE_AVAILABLE = False
 try:
     from .pose_detection import create_pose_detector as _create_pose_detector_func
 
@@ -73,15 +72,13 @@ except ImportError:
     MEDIAPIPE_POSE_AVAILABLE = False
     _create_pose_detector_func = None
 
-create_pose_detector = _create_pose_detector_func
-
 # Alias pour compatibilité (si disponible)
-if DEEPFACE_AVAILABLE and _create_face_recognition_func is not None:
-    create_face_recognition: Callable[[str, str], "BBIAPersonRecognition | None"] | None = (
-        _create_face_recognition_func
+if MEDIAPIPE_POSE_AVAILABLE and _create_pose_detector_func is not None:
+    create_pose_detector: Callable[..., "BBIAPoseDetection | None"] | None = (
+        _create_pose_detector_func
     )
 else:
-    create_face_recognition = None
+    create_pose_detector = None
 
 # Import conditionnel cv2 pour conversions couleur
 try:
@@ -217,9 +214,7 @@ class BBIAVision:
             try:
                 db_path = os.environ.get("BBIA_FACES_DB", "faces_db")
                 model_name = os.environ.get("BBIA_DEEPFACE_MODEL", "VGG-Face")
-                self.face_recognition = create_face_recognition(
-                    db_path=db_path, model_name=model_name
-                )
+                self.face_recognition = create_face_recognition(db_path, model_name)
                 if self.face_recognition and self.face_recognition.is_initialized:
                     logger.info(
                         f"✅ DeepFace initialisé (db: {db_path}, modèle: {model_name})"
@@ -234,7 +229,9 @@ class BBIAVision:
                 model_complexity = int(
                     os.environ.get("BBIA_POSE_COMPLEXITY", "1")
                 )  # 0=rapide, 1=équilibré, 2=précis
-                self.pose_detector = create_pose_detector(model_complexity=model_complexity)
+                self.pose_detector = create_pose_detector(
+                    model_complexity=model_complexity
+                )
                 if self.pose_detector and self.pose_detector.is_initialized:
                     logger.info(
                         f"✅ MediaPipe Pose initialisé (complexité: {model_complexity})"

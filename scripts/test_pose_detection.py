@@ -153,7 +153,7 @@ def test_image(pose_detector, image_path: str):
         print("\n✅ Posture détectée:")
         print(f"   • Posture: {pose_result['posture']}")
         print(f"   • Landmarks: {pose_result['num_landmarks']}/33")
-        print(f"\n   Gestes détectés:")
+        print("\n   Gestes détectés:")
         for gesture, detected in pose_result["gestures"].items():
             status = "✅" if detected else "❌"
             print(f"      {status} {gesture}")

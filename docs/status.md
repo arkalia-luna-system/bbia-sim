@@ -86,10 +86,13 @@
 
 ### Vision / Audio / IA
 - État actuel:
-  - Modules et tests présents; flags headless.
-  - Datasets/golden images limités; latence E2E audio non centralisée.
+  - ✅ Modules et tests présents; flags headless.
+  - ✅ DeepFace ajouté (reconnaissance visage + émotions) - Opérationnel
+  - ✅ MediaPipe Pose ajouté (détection postures/gestes) - Opérationnel
+  - ⚠️ Datasets/golden images limités; latence E2E audio non centralisée.
 - Axes futurs:
   - Datasets/golden images internes; tests loopback audio (si HW); backend TTS modulable.
+  - LLM léger (Phi-2) pour RPi 5 (optionnel, API externe fonctionne).
 
 ### Docs / Onboarding
 - État actuel:
