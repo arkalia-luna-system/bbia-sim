@@ -46,7 +46,7 @@ def _read_sdk_telemetry() -> dict[str, Any] | None:
         try:
             timeout = float(os.environ.get("BBIA_TELEMETRY_TIMEOUT", "1.0") or 1.0)
         except Exception:
-            timeout = 1.0
+            timeout = 1.0  # noqa: B110 - Valeur par défaut si parsing timeout échoue
 
         # Créer un backend SDK avec tentative connexion rapide
         backend = RobotFactory.create_backend(
@@ -62,7 +62,7 @@ def _read_sdk_telemetry() -> dict[str, Any] | None:
             backend.connect()
         except Exception:
             # Ne pas bloquer si la connexion échoue
-            return None
+            return None  # noqa: B110 - Retourner None si connexion SDK échoue (comportement attendu)
 
         try:
             # Lecture batterie/IMU si exposés via robot.media
@@ -83,12 +83,12 @@ def _read_sdk_telemetry() -> dict[str, Any] | None:
                 try:
                     battery_level = float(media_mgr.get_battery_level())
                 except Exception:
-                    battery_level = None
+                    battery_level = None  # noqa: B110 - Valeur par défaut si lecture batterie échoue
             elif hasattr(media_mgr, "battery"):
                 try:
                     battery_level = float(media_mgr.battery)
                 except Exception:
-                    battery_level = None
+                    battery_level = None  # noqa: B110 - Valeur par défaut si lecture batterie échoue
 
             if battery_level is not None:
                 data["battery"] = battery_level
@@ -99,7 +99,7 @@ def _read_sdk_telemetry() -> dict[str, Any] | None:
                 try:
                     temperature = float(media_mgr.get_temperature())
                 except Exception:
-                    temperature = None
+                    temperature = None  # noqa: B110 - Valeur par défaut si lecture température échoue
             if temperature is not None:
                 data["temperature"] = temperature
 
@@ -111,7 +111,7 @@ def _read_sdk_telemetry() -> dict[str, Any] | None:
                     if hasattr(io_mgr, "get_imu"):
                         imu = io_mgr.get_imu()  # doit renvoyer dict-like
                 except Exception:
-                    imu = None
+                    imu = None  # noqa: B110 - Valeur par défaut si lecture IMU échoue
             if imu and isinstance(imu, dict):
                 data["imu"] = imu
 
@@ -122,7 +122,7 @@ def _read_sdk_telemetry() -> dict[str, Any] | None:
             except Exception:
                 pass  # noqa: B110 - Ignorer erreur déconnexion (déjà déconnecté ou non critique)
     except Exception:
-        return None
+        return None  # noqa: B110 - Retourner None si lecture télémétrie SDK échoue (fallback simulation)
 
 
 class BatteryInfo(BaseModel):

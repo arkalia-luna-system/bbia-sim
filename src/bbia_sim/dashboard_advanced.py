@@ -117,7 +117,9 @@ class BBIAAdvancedWebSocketManager:
             try:
                 await connection.send_text(message)
             except Exception:
-                disconnected.append(connection)
+                disconnected.append(
+                    connection
+                )  # noqa: B110 - Ajouter connexion fermée à liste nettoyage
 
         # Nettoyer les connexions fermées
         for connection in disconnected:
@@ -202,7 +204,9 @@ class BBIAAdvancedWebSocketManager:
             try:
                 pose[joint] = self.robot.get_joint_pos(joint)
             except Exception:
-                pose[joint] = 0.0
+                pose[joint] = (
+                    0.0  # noqa: B110 - Valeur par défaut si lecture joint échoue
+                )
         return pose
 
     def _start_metrics_collection(self):

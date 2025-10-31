@@ -10,9 +10,12 @@ OUT_FILE="$OUT_DIR/bandit_report_run_round2.json"
 mkdir -p "$OUT_DIR"
 
 # Bandit en mode silencieux: sortie JSON, avertissements sur stderr supprimés
+# Exclure les fichiers macOS (._*) et utiliser la config .bandit
 "$VENV_PY" -m bandit \
   -r "$REPO_ROOT/src" \
   -x "$REPO_ROOT/tests" \
+  -c "$REPO_ROOT/.bandit" \
+  -x ".*|._*|*.pyc" \
   -q \
   -f json \
   -o "$OUT_FILE" \

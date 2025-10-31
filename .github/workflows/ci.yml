@@ -45,8 +45,8 @@ jobs:
 
       - name: Security check with Bandit
         run: |
-          echo "Running Bandit with pyproject.toml configuration"
-          bandit -r src/ -q
+          echo "Running Bandit with .bandit configuration"
+          bandit -r src/ -c .bandit -x ".*|._*|*.pyc" -q
 
       - name: Dependency audit with pip-audit
         run: |

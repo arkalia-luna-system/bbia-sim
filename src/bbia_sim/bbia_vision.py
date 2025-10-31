@@ -28,7 +28,7 @@ try:
     _os.environ.setdefault("TF_CPP_MIN_LOG_LEVEL", "2")  # 1=WARNING,2=ERROR
     _os.environ.setdefault("MEDIAPIPE_DISABLE_GPU", "1")  # éviter logs GPU inutiles
 except Exception:
-    pass
+    pass  # noqa: B110 - Ignorer erreur configuration variables d'environnement
 
 # Import conditionnel pour YOLO et MediaPipe
 try:
@@ -183,7 +183,7 @@ class BBIAVision:
                     try:
                         self._opencv_camera.release()
                     except Exception:
-                        pass
+                        pass  # noqa: B110 - Ignorer erreur libération caméra OpenCV (déjà libérée ou non critique)
                 self._opencv_camera = None
                 logger.debug(f"Erreur initialisation webcam OpenCV: {e}")
 

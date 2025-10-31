@@ -303,7 +303,7 @@ class BBIAHuggingFace:
             if isinstance(cfg, dict) and model_name in cfg:
                 return cfg[model_name]
         except Exception:
-            pass
+            pass  # noqa: B110 - Ignorer erreur résolution alias modèle (retourner nom original)
         return model_name
 
     def load_model(self, model_name: str, model_type: str = "vision") -> bool:
@@ -705,12 +705,12 @@ class BBIAHuggingFace:
             if hasattr(self, "chat_model") and self.chat_model is not None:
                 del self.chat_model
         except Exception:
-            pass
+            pass  # noqa: B110 - Ignorer erreur désallocation modèle LLM (non critique)
         try:
             if hasattr(self, "chat_tokenizer") and self.chat_tokenizer is not None:
                 del self.chat_tokenizer
         except Exception:
-            pass
+            pass  # noqa: B110 - Ignorer erreur désallocation tokenizer LLM (non critique)
 
         self.chat_model = None
         self.chat_tokenizer = None
@@ -1492,7 +1492,7 @@ class BBIAHuggingFace:
                 try:
                     t = self._avoid_recent_duplicates(t)
                 except Exception:
-                    pass
+                    pass  # noqa: B110 - Ignorer erreur évitement doublons (utiliser texte original)
                 return t
 
             cut = t[: max_len + 1]
@@ -1502,7 +1502,7 @@ class BBIAHuggingFace:
                 try:
                     t2 = self._avoid_recent_duplicates(t2)
                 except Exception:
-                    pass
+                    pass  # noqa: B110 - Ignorer erreur évitement doublons (utiliser texte coupé)
                 return t2
             last_space = cut.rfind(" ")
             if last_space >= min_len:
@@ -1510,16 +1510,16 @@ class BBIAHuggingFace:
                 try:
                     t3 = self._avoid_recent_duplicates(t3)
                 except Exception:
-                    pass
+                    pass  # noqa: B110 - Ignorer erreur évitement doublons (utiliser texte avec ...)
                 return t3
             t4 = (t[:max_len] + "...").strip()
             try:
                 t4 = self._avoid_recent_duplicates(t4)
             except Exception:
-                pass
+                pass  # noqa: B110 - Ignorer erreur évitement doublons (utiliser texte final)
             return t4
         except Exception:
-            return text
+            return text  # noqa: B110 - Fallback sûr en cas d'erreur normalisation
 
     def _get_recent_context(self) -> str | None:
         """Extrait un mot-clé du contexte récent pour cohérence conversationnelle.

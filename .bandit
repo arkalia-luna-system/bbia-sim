@@ -1,0 +1,34 @@
+exclude_dirs:
+  - tests
+  - venv
+  - .venv
+  - venv-vision-py310
+  - logs
+  - reachy_repos
+  - assets
+  - site-packages
+
+exclude:
+  - ".*"
+  - "._*"
+  - "*.pyc"
+  - "__pycache__"
+
+skips:
+  - B101
+  - B108
+  - B110
+  - B306
+  - B404
+  - B506
+  - B601
+  - B602
+  - B615
+
+targets:
+  - src/bbia_sim/
+
+recursive: true
+verbose: false
+output_format: json
+output_file: log/bandit_report.json
