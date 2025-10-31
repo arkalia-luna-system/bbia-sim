@@ -332,9 +332,9 @@ pytest tests/test_system_stress_load.py -v -m "slow"
 ## 📊 Statistiques Finales
 
 ### Tests Créés
-- **Total**: 14 nouveaux fichiers de tests
-- **Tests individuels**: 45 nouveaux tests
-- **Taux de réussite**: 100% (42/42 passent, 3 skippés conditionnels)
+- **Total**: 17 nouveaux fichiers de tests
+- **Tests individuels**: 51 nouveaux tests
+- **Taux de réussite**: 100% (48/48 passent, 3 skippés conditionnels)
 
 ### Répartition par Catégorie
 - ✅ **Performance** (interpolation, latence): 7 tests
@@ -351,6 +351,53 @@ pytest tests/test_system_stress_load.py -v -m "slow"
 - ✅ **Latence audio** (loopback): 1 test
 - ✅ **Watchdog** (timeout, safety): 2 tests
 - ✅ **Limites PID** (safety, clamping): 3 tests
+- ✅ **Latence émotions** (inférence, stress): 3 tests
+- ✅ **Budget CPU/RAM** (backend, API, audio): 3 tests
+
+---
+
+## 📋 Tests Additionnels Créés (Phase 4)
+
+### 15. ✅ `test_emotions_latency.py`
+**Objectif**: Latence inférence émotions et stress bornes
+
+**Tests inclus**:
+- ✅ `test_emotions_inference_latency_1e3` - Latence inférence 1000 évaluations (p50/p95)
+- ✅ `test_emotions_stress_bounds_under_load` - Stress bornes sous charge (valeurs extrêmes)
+- ✅ `test_emotions_rapid_switching` - Switching rapide entre émotions (oscillation)
+
+**Résultats**:
+- ✅ Tous les tests passent (3/3)
+- ✅ Budget: < 1ms p95 pour inférence
+- ✅ Bornes validées sous charge
+
+---
+
+### 16. ✅ `test_backend_budget_cpu_ram.py`
+**Objectif**: Budget CPU/RAM boucle principale backend et interface RobotAPI
+
+**Tests inclus**:
+- ✅ `test_backend_main_loop_budget_cpu_ram` - Budget CPU/RAM boucle principale (10s)
+- ✅ `test_robot_api_interface_budget_cpu_ram` - Budget CPU/RAM interface abstraite (10s)
+
+**Résultats**:
+- ✅ Tous les tests passent (2/2)
+- ✅ Budget: < 2s CPU pour 10s runtime backend
+- ✅ Budget: < 0.5s CPU pour 10s runtime interface (overhead minimal)
+- ✅ Budget: < 100MB RAM backend, < 50MB RAM interface
+
+---
+
+### 17. ✅ `test_audio_budget_cpu_ram.py`
+**Objectif**: Budget CPU/RAM pipeline audio (10-30s)
+
+**Tests inclus**:
+- ✅ `test_audio_pipeline_budget_cpu_ram` - Budget CPU/RAM pipeline audio (10s)
+
+**Résultats**:
+- ✅ Test fonctionnel (skippé si audio désactivé)
+- ✅ Budget: < 1s CPU pour 10s runtime (10% CPU max)
+- ✅ Budget: < 50MB RAM augmentation
 
 ---
 

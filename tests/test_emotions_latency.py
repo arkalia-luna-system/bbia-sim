@@ -34,7 +34,7 @@ def test_emotions_inference_latency_1e3() -> None:
         t0 = time.perf_counter()
         emotions.set_emotion(emotion, intensity)
         # Récupérer état
-        state = emotions.get_current_state()
+        state = emotions.get_current_emotion()
         t1 = time.perf_counter()
 
         assert state is not None
@@ -65,27 +65,20 @@ def test_emotions_stress_bounds_under_load() -> None:
         intensity = extreme_values[i % len(extreme_values)]
 
         emotions.set_emotion(emotion, intensity)
-        state = emotions.get_current_state()
-
-        assert state is not None
+        # Vérifier intensité directement depuis attribut
+        current_intensity = emotions.emotion_intensity
 
         # Vérifier que intensité est toujours dans [0.0, 1.0]
-        current_intensity = state.get("happy", 0.0)
         assert 0.0 <= current_intensity <= 1.0, (
-            f"Intensité hors bornes: {current_intensity} "
-            f"(input: {intensity})"
+            f"Intensité hors bornes: {current_intensity} " f"(input: {intensity})"
         )
 
     # Vérifier pas de dérive (état final stable)
-    final_state = emotions.get_current_state()
-    assert final_state is not None
-
-    # Tous les états doivent être dans [0.0, 1.0]
-    for emotion_name, intensity in final_state.items():
-        assert isinstance(intensity, float | int)
-        assert 0.0 <= float(intensity) <= 1.0, (
-            f"État final hors bornes: {emotion_name}={intensity}"
-        )
+    final_intensity = emotions.emotion_intensity
+    assert isinstance(final_intensity, float | int)
+    assert (
+        0.0 <= float(final_intensity) <= 1.0
+    ), f"Intensité finale hors bornes: {final_intensity}"
 
 
 @pytest.mark.unit
@@ -102,12 +95,9 @@ def test_emotions_rapid_switching() -> None:
         intensity = 0.5 + 0.3 * np.sin(i * 0.1)  # Oscillation
 
         emotions.set_emotion(emotion, intensity)
-        state = emotions.get_current_state()
-
-        assert state is not None
-        assert emotion in state
+        # Vérifier état directement
+        assert emotions.current_emotion == emotion
 
         # Vérifier pas d'oscillation excessive (normalisé)
-        current = state[emotion]
+        current = emotions.emotion_intensity
         assert 0.0 <= current <= 1.0, f"Oscillation hors bornes: {current}"
-

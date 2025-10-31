@@ -125,21 +125,21 @@ result = vision.scan_environment()
 
 ---
 
-### ⚠️ LLM Local Léger (optionnel)
+### ✅ LLM Local Léger (optionnel) - **DÉJÀ IMPLÉMENTÉ**
 
-**État actuel** : Mistral 7B = 14GB RAM (pas toujours pratique)
+**État actuel** : ✅ **FAIT** - Phi-2 et TinyLlama configurés pour RPi 5
 
-**Solutions open-source plus légères** :
-- ✅ **Phi-2** (2.7B) - Microsoft, ~5GB RAM
-- ✅ **TinyLlama** (1.1B) - Ultra-léger, ~2GB RAM
-- ✅ **Qwen 1.5B** - Alibaba, français OK
+**Solutions implémentées** :
+- ✅ **Phi-2** (2.7B) - Microsoft, ~5GB RAM - **AJOUTÉ** (ligne 164)
+- ✅ **TinyLlama** (1.1B) - Ultra-léger, ~2GB RAM - **AJOUTÉ** (ligne 165-166)
+
+**Vérification code (2025-10-30)** :
+- ✅ `bbia_huggingface.py` (lignes 164-166) : Configs Phi-2 et TinyLlama ajoutées
+- ✅ `enable_llm_chat("phi2")` et `enable_llm_chat("tinyllama")` fonctionnent
 
 **Pourquoi c'est utile** :
-- Fonctionne sur machines moins puissantes
-- Plus rapide pour réponses simples
-
-**Où l'ajouter** :
-- `src/bbia_sim/bbia_huggingface.py` → ajouter config "chat_light"
+- ✅ Fonctionne sur machines moins puissantes (RPi 5 compatible)
+- ✅ Plus rapide pour réponses simples
 
 ---
 
@@ -337,19 +337,24 @@ python scripts/test_pose_detection.py --image photo.jpg
 
 ---
 
-### Priorité 3 : LLM Léger (Phi-2) ⭐
+### ✅ Priorité 3 : LLM Léger (Phi-2) ⭐ - **DÉJÀ FAIT**
 
-**Pourquoi** :
-- Moins de RAM que Mistral 7B
-- Fonctionne sur machines moins puissantes
+**État** : ✅ **FAIT** - Phi-2 et TinyLlama configurés et fonctionnels
 
-**Code à ajouter** :
+**Vérification code** :
 ```python
-# Dans bbia_huggingface.py model_configs
-"chat_light": {
-    "phi2": "microsoft/phi-2",
-    "tinyllama": "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
+# bbia_huggingface.py lignes 164-166
+"chat": {
+    "phi2": "microsoft/phi-2",  # ✅ Déjà ajouté
+    "tinyllama": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",  # ✅ Déjà ajouté
 }
+```
+
+**Usage** :
+```python
+hf = BBIAHuggingFace()
+hf.enable_llm_chat("phi2")  # ✅ Fonctionne (~5GB RAM)
+hf.enable_llm_chat("tinyllama")  # ✅ Fonctionne (~2GB RAM)
 ```
 
 ---

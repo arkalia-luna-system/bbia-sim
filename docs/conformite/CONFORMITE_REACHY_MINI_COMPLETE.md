@@ -161,14 +161,18 @@ Votre implémentation `ReachyMiniBackend` est conforme au SDK officiel, avec des
 - `robot.io.get_camera_stream()` - Stream vidéo temps réel
 - `robot.io.get_audio_stream()` - Stream audio temps réel
 
-⚠️ **Interpolation Avancée:**
+✅ **Interpolation Avancée:**
 - `MIN_JERK` utilisé ✅
-- `LINEAR`, `EASE_IN_OUT`, `CARTOON` disponibles mais sous-utilisés
-- Recommandation: Utiliser `CARTOON` pour émotions expressives (happy, excited, surprised)
+- `LINEAR`, `EASE_IN_OUT`, `CARTOON` disponibles et utilisés ✅
+- **Mapping émotion → interpolation implémenté** dans `bbia_integration.py` (lignes 289-305)
+  - CARTOON pour happy, excited, surprised, angry, proud
+  - EASE_IN_OUT pour calm, sad, nostalgic, fearful
+  - MIN_JERK pour neutral, curious, determined
 
-⚠️ **Enregistrement/Replay:**
+✅ **Enregistrement/Replay:**
 - Méthodes implémentées ✅
-- Non utilisé dans comportements BBIA pour réutilisation de mouvements
+- **Utilisé dans comportements BBIA** : `BBIABehaviorManager.record_behavior()` et `play_saved_behavior()` (lignes 1087-1166 dans `bbia_behavior.py`)
+- Support async avec `async_play_move()` pour performance
 
 📖 **Voir détails complets:** `docs/ANALYSE_COMPLETE_EXPERT_MODULES.md`
 ✅ **Cinématique Inverse Correcte:** Les joints stewart ne sont **jamais** contrôlés individuellement (utilise `create_head_pose` + `set_target_head_pose`)

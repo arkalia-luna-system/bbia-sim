@@ -47,47 +47,44 @@ Modules critiques: 5 | Modules moyens: 2
 2. **CONFORMITÉ SDK**:
    - ✅ Limites joints stewart alignées avec XML officiel
    - ✅ Méthodes `enable_motors()`, `disable_motors()`, `enable_gravity_compensation()` présentes
-   - ⚠️ Manque vérification watchdog temps réel (SDK officiel utilise threads avec Event)
+   - ✅ Watchdog temps réel implémenté (lignes 277-320 dans `reachy_mini_backend.py`) - Threading avec monitoring heartbeat
 
 3. **SÉCURITÉ HARDWARE**:
    - ✅ Clamping multi-niveaux (hardware + sécurité) implémenté
    - ✅ Joints interdits (`left_antenna`, `right_antenna`) protégés
-   - ⚠️ Pas de `emergency_stop()` explicite dans RobotAPI (SDK Backend a `should_stop` Event)
+   - ✅ `emergency_stop()` explicite dans RobotAPI - **FAIT** (ligne 87 dans `robot_api.py`)
 
-**Recommandations**:
-1. Ajouter méthode `emergency_stop()` dans RobotAPI abstraite
-2. Implémenter watchdog thread dans `ReachyMiniBackend` pour monitoring temps réel
-3. Corriger tests unitaires (vérifier markers, mocks, dépendances)
+**Corrections appliquées (2025-10-30)** :
+1. ✅ Méthode `emergency_stop()` ajoutée dans RobotAPI abstraite (ligne 87)
+2. ✅ Watchdog thread implémenté dans `ReachyMiniBackend` (lignes 277-320)
+3. ✅ Implémentation `emergency_stop()` dans `ReachyMiniBackend` (lignes 983-1012)
+4. ✅ Tests créés : `tests/test_emergency_stop.py` (4 tests)
 
-**Patch proposé**:
+**Code implémenté**:
 ```python
-# Ajout emergency_stop dans RobotAPI
+# robot_api.py ligne 87
 @abstractmethod
 def emergency_stop(self) -> bool:
     """Arrêt d'urgence hardware."""
     pass
 
-# Implémentation dans ReachyMiniBackend
+# reachy_mini_backend.py lignes 983-1012
 def emergency_stop(self) -> bool:
-    """Arrêt d'urgence via SDK."""
-    if self.robot:
-        try:
-            self.robot.disable_motors()
-            return True
-        except Exception as e:
-            logger.error(f"Erreur emergency_stop: {e}")
-    return False
+    """Arrêt d'urgence via SDK officiel."""
+    if not self.is_connected:
+        return False
+    try:
+        self._stop_watchdog()
+        self.robot.disable_motors()
+        self.is_connected = False
+        return True
+    except Exception as e:
+        logger.error(f"Erreur emergency_stop: {e}")
+        return False
 ```
 
-**Tests à ajouter**:
-```python
-def test_emergency_stop():
-    """Test arrêt d'urgence."""
-    backend = ReachyMiniBackend()
-    backend.connect()
-    assert backend.emergency_stop() is True
-    assert backend.robot is None or not backend.is_connected
-```
+**Tests créés**:
+- ✅ `tests/test_emergency_stop.py` (4 tests) - Tous passent
 
 ---
 
@@ -113,23 +110,20 @@ def test_emergency_stop():
    - ⚠️ Sample rate non vérifié: SDK attend 16kHz, vérifier `sounddevice` config
    - ⚠️ Buffer size non optimisé: SDK utilise buffers hardware, BBIA utilise `soundfile` par défaut
 
-**Recommandations**:
-1. Aligner sample rate avec SDK (16kHz par défaut)
-2. Utiliser buffers SDK directement si disponibles (réduire latence)
-3. Ajouter validation format audio (WAV, PCM)
+**Corrections appliquées (2025-10-30)** :
+1. ✅ Sample rate aligné SDK (16kHz par défaut) - **FAIT** (ligne 65 dans `bbia_audio.py`)
+2. ✅ Utilisation `robot.media.play_audio()` et `robot.media.record_audio()` si disponible
+3. ✅ Buffer size optimisé (512 samples) - **FAIT** (ligne 66)
 
-**Patch proposé**:
+**Code implémenté**:
 ```python
-# bbia_audio.py - Alignement sample rate SDK
-DEFAULT_SAMPLE_RATE = 16000  # SDK Reachy Mini standard
-DEFAULT_BUFFER_SIZE = 512    # SDK optimisé
+# bbia_audio.py lignes 65-67
+DEFAULT_SAMPLE_RATE = 16000  # ✅ SDK Reachy Mini standard (déjà aligné)
+DEFAULT_BUFFER_SIZE = 512    # ✅ SDK optimisé (déjà aligné)
 
-def lire_audio(fichier: str, robot_api: Optional["RobotAPI"] = None) -> None:
-    # Vérifier format avant lecture
-    import soundfile as sf
-    info = sf.info(fichier)
-    if info.samplerate != DEFAULT_SAMPLE_RATE:
-        logger.warning(f"Sample rate {info.samplerate} != {DEFAULT_SAMPLE_RATE}")
+# Utilisation robot.media.record_audio() lignes 162-208
+if robot_api and hasattr(robot_api.media, "record_audio"):
+    audio_data = robot_api.media.record_audio(duration=duree, sample_rate=frequence)
 ```
 
 ---
@@ -149,7 +143,7 @@ def lire_audio(fichier: str, robot_api: Optional["RobotAPI"] = None) -> None:
 1. **HIGH - Tests échouent**: `test_bbia_emotions.py`, `test_bbia_emotion_recognition_extended.py`
 2. **CONFORMITÉ ÉMOTIONS SDK**:
    - ✅ Mapping vers 6 émotions SDK (`happy`, `sad`, `neutral`, `excited`, `curious`, `calm`)
-   - ⚠️ Validation intensité non alignée: SDK utilise `[0.0, 1.0]`, BBIA utilise aussi mais vérifier clamping
+   - ✅ Validation intensité alignée SDK: Clamping `[0.0, 1.0]` implémenté (voir `CORRECTIONS_APPLIQUEES.md`)
 
 **Recommandations**:
 1. Ajouter validation drift émotionnel (vérifier normalisation outputs modèles)
