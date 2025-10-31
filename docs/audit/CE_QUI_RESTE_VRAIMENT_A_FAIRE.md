@@ -52,28 +52,35 @@ Tout est fait ! ✅
 
 ### Priorité MOYENNE (améliorations, pas bloquant)
 
-#### 1. LLM Léger pour Raspberry Pi 5 (optionnel)
+#### 1. LLM Léger pour Raspberry Pi 5 (optionnel) ❌ **PAS FAIT**
+
+**État réel vérifié** :
+- ❌ Phi-2 **non configuré** dans `model_configs["chat"]`
+- ❌ Configs disponibles : `['mistral', 'llama']` seulement
+- ✅ API Hugging Face gratuite fonctionne (alternative recommandée)
 
 **Pourquoi** :
 - Mistral 7B = 14GB RAM → RPi 5 max 8GB
 - Llama 3 8B = 16GB RAM → Trop lourd
 
 **Solution recommandée** :
-- ✅ **Option 1** : API Hugging Face gratuite (fonctionne déjà)
+- ✅ **Option 1** : API Hugging Face gratuite (fonctionne déjà) ✅ **RECOMMANDÉ**
 - ⚠️ **Option 2** : Phi-2 (2.7B, ~5GB RAM) - À configurer
-- ⚠️ **Option 3** : TinyLlama (1.1B, ~2GB RAM) - À configurer
 
 **Fichier à modifier** :
-- `src/bbia_sim/bbia_huggingface.py` → Ajouter config "chat_light"
+- `src/bbia_sim/bbia_huggingface.py` ligne ~144
 
 **Code à ajouter** :
 ```python
-# Dans bbia_huggingface.py model_configs
-"chat_light": {
-    "phi2": "microsoft/phi-2",
-    "tinyllama": "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
-}
+"chat": {
+    "mistral": "mistralai/Mistral-7B-Instruct-v0.2",
+    "llama": "meta-llama/Llama-3-8B-Instruct",
+    "phi2": "microsoft/phi-2",  # ← Ajouter
+    "tinyllama": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",  # ← Ajouter
+},
 ```
+
+**Temps estimé** : ~30 minutes
 
 **Priorité** : **MOYENNE** (API externe fonctionne, optionnel)
 
@@ -215,23 +222,23 @@ class BBIAMemory:
 
 ---
 
-## 📊 RÉSUMÉ PAR PRIORITÉ
+## 📊 RÉSUMÉ PAR PRIORITÉ (État Réel Vérifié)
 
 ### ✅ FAIT (95%)
-- ✅ DeepFace (reconnaissance visage + émotions)
-- ✅ MediaPipe Pose (postures/gestes)
-- ✅ Tous modules IA de base
-- ✅ Backend SDK conforme
-- ✅ Architecture modulaire
+- ✅ DeepFace (reconnaissance visage + émotions) - Module créé, intégré, testé
+- ✅ MediaPipe Pose (postures/gestes) - Module créé, intégré, testé
+- ✅ Tous modules IA de base - Fonctionnels
+- ✅ Backend SDK conforme - 100% conforme SDK officiel
+- ✅ Architecture modulaire - Excellente
 
 ### ⚠️ OPTIONNEL - Priorité MOYENNE
-1. LLM léger (Phi-2) - Si besoin RPi 5 (sinon API externe fonctionne)
-2. Tests sécurité additionnels - Amélioration robustesse
-3. Benchmarks automatiques - Amélioration qualité
+1. **LLM léger (Phi-2)** ❌ **PAS FAIT** - Configs: mistral/llama seulement (~30 min)
+2. **Tests sécurité LLM** ⚠️ **PARTIEL** - Tests JSON existent, injection manquante (~1h)
+3. **Benchmarks auto CI** ⚠️ **PARTIEL** - Scripts existent, pas en CI (~15 min)
 
 ### ⚠️ OPTIONNEL - Priorité BASSE
-4. Dashboard no-code avancé - Amélioration UX
-5. Mémoire persistante - Amélioration UX
+4. **Dashboard Gradio** ⚠️ **PARTIEL** - FastAPI existe, Gradio manquant (~2h)
+5. **Mémoire persistante** ❌ **PAS FAIT** - History en mémoire seulement (~1h)
 
 ---
 
