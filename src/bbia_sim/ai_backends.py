@@ -30,11 +30,16 @@ class LocalLLM(Protocol):
 
 
 class Pyttsx3TTS:
-    """Fallback TTS léger (pyttsx3), fonctionne bien sur macOS."""
+    """Fallback TTS léger (pyttsx3), fonctionne bien sur macOS.
+
+    Utilise get_bbia_voice() pour sélectionner automatiquement
+    la meilleure voix féminine française (Aurelie Enhanced > Amelie).
+    """
 
     def __init__(self) -> None:
         # Lazy-initialization pour éviter erreurs eSpeak en environnements CI
-        self._engine = None
+        self._engine: Any = None
+        self._voice_id: str | None = None  # Cache de la voix sélectionnée
 
     def synthesize_to_wav(self, text: str, outfile: str) -> bool:
         try:
@@ -44,6 +49,23 @@ class Pyttsx3TTS:
 
                 engine = pyttsx3.init()
                 self._engine = engine
+
+                # Sélectionner la meilleure voix féminine française
+                try:
+                    # Import circulaire évité: import seulement quand nécessaire
+                    from .bbia_voice import get_bbia_voice
+
+                    self._voice_id = get_bbia_voice(engine)
+                    engine.setProperty("voice", self._voice_id)
+                except Exception:
+                    # Si get_bbia_voice échoue, utiliser voix par défaut
+                    # (peut être une voix d'homme, mais mieux que crash)
+                    pass
+
+            # Utiliser la voix sélectionnée si disponible
+            if self._voice_id:
+                engine.setProperty("voice", self._voice_id)
+
             engine.save_to_file(text, outfile)
             engine.runAndWait()
             return True

@@ -6,8 +6,13 @@ Reconnaissance d'objets, détection de visages, suivi d'objets.
 
 import logging
 import math
+import os
+from collections.abc import Callable
 from datetime import datetime
-from typing import Any, cast
+from typing import TYPE_CHECKING, Any, cast
+
+if TYPE_CHECKING:
+    from .face_recognition import BBIAPersonRecognition
 
 import numpy as np
 import numpy.typing as npt
@@ -38,6 +43,17 @@ try:
     MEDIAPIPE_AVAILABLE = True
 except ImportError:
     MEDIAPIPE_AVAILABLE = False
+
+# Import conditionnel DeepFace pour reconnaissance visage personnalisée
+try:
+    from .face_recognition import create_face_recognition
+
+    DEEPFACE_AVAILABLE = True
+except ImportError:
+    DEEPFACE_AVAILABLE = False
+    create_face_recognition: (
+        Callable[[str, str], "BBIAPersonRecognition | None"] | None
+    ) = None
 
 # Import conditionnel cv2 pour conversions couleur
 try:
@@ -92,6 +108,58 @@ class BBIAVision:
             except Exception as e:
                 logger.debug(f"Caméra SDK non disponible (fallback simulation): {e}")
 
+        # Support webcam USB via OpenCV (fallback si pas de SDK)
+        self._opencv_camera = None
+        self._opencv_camera_available = False
+        if not self._camera_sdk_available and CV2_AVAILABLE and cv2:
+            try:
+                # Lire device index depuis variable d'environnement
+                camera_index_str = os.environ.get("BBIA_CAMERA_INDEX", "0")
+                camera_device = os.environ.get("BBIA_CAMERA_DEVICE")
+
+                # Essayer device path si fourni, sinon index
+                if camera_device:
+                    self._opencv_camera = cv2.VideoCapture(camera_device)
+                    logger.info(f"🔌 Tentative ouverture webcam: {camera_device}")
+                else:
+                    try:
+                        camera_index = int(camera_index_str)
+                        self._opencv_camera = cv2.VideoCapture(camera_index)
+                        logger.info(
+                            f"🔌 Tentative ouverture webcam (index {camera_index})"
+                        )
+                    except ValueError:
+                        logger.warning(
+                            f"⚠️ BBIA_CAMERA_INDEX invalide: {camera_index_str}, utilisation index 0"
+                        )
+                        self._opencv_camera = cv2.VideoCapture(0)
+
+                # Tester si la caméra fonctionne
+                if self._opencv_camera is not None and self._opencv_camera.isOpened():
+                    ret, test_frame = self._opencv_camera.read()
+                    if ret and test_frame is not None:
+                        self._opencv_camera_available = True
+                        logger.info("✅ Webcam USB OpenCV disponible")
+                    else:
+                        self._opencv_camera.release()
+                        self._opencv_camera = None
+                        logger.debug(
+                            "Webcam OpenCV ouverte mais ne capture pas d'images"
+                        )
+                else:
+                    if self._opencv_camera:
+                        self._opencv_camera.release()
+                    self._opencv_camera = None
+                    logger.debug("Webcam OpenCV non disponible (fallback simulation)")
+            except Exception as e:
+                if self._opencv_camera:
+                    try:
+                        self._opencv_camera.release()
+                    except Exception:
+                        pass
+                self._opencv_camera = None
+                logger.debug(f"Erreur initialisation webcam OpenCV: {e}")
+
         # Initialiser détecteurs (YOLO pour objets, MediaPipe pour visages)
         self.yolo_detector = None
         if YOLO_AVAILABLE and create_yolo_detector is not None:
@@ -113,8 +181,24 @@ class BBIAVision:
             except Exception as e:
                 logger.warning(f"⚠️ MediaPipe non disponible: {e}")
 
+        # Module DeepFace pour reconnaissance visage personnalisée + émotions
+        self.face_recognition = None
+        if DEEPFACE_AVAILABLE and create_face_recognition is not None:
+            try:
+                db_path = os.environ.get("BBIA_FACES_DB", "faces_db")
+                model_name = os.environ.get("BBIA_DEEPFACE_MODEL", "VGG-Face")
+                self.face_recognition = create_face_recognition(
+                    db_path=db_path, model_name=model_name
+                )
+                if self.face_recognition and self.face_recognition.is_initialized:
+                    logger.info(
+                        f"✅ DeepFace initialisé (db: {db_path}, modèle: {model_name})"
+                    )
+            except Exception as e:
+                logger.warning(f"⚠️ DeepFace non disponible: {e}")
+
     def _capture_image_from_camera(self) -> npt.NDArray[np.uint8] | None:
-        """Capture une image depuis robot.media.camera si disponible.
+        """Capture une image depuis robot.media.camera si disponible, sinon webcam USB OpenCV.
 
         CORRECTION EXPERTE: Validation robuste du format d'image SDK avec gestion
         des différents formats possibles (RGB, BGR, grayscale, etc.)
@@ -122,6 +206,19 @@ class BBIAVision:
         Returns:
             Image numpy array (BGR pour compatibilité OpenCV) ou None si non disponible
         """
+        # Priorité 1: SDK Reachy Mini camera
+        if self._camera_sdk_available and self._camera:
+            return self._capture_from_sdk_camera()
+
+        # Priorité 2: Webcam USB via OpenCV
+        if self._opencv_camera_available and self._opencv_camera:
+            return self._capture_from_opencv_camera()
+
+        # Pas de caméra disponible
+        return None
+
+    def _capture_from_sdk_camera(self) -> npt.NDArray[np.uint8] | None:
+        """Capture depuis robot.media.camera (SDK Reachy Mini)."""
         if not self._camera_sdk_available or not self._camera:
             return None
 
@@ -239,6 +336,51 @@ class BBIAVision:
 
         return None
 
+    def _capture_from_opencv_camera(self) -> npt.NDArray[np.uint8] | None:
+        """Capture depuis webcam USB via OpenCV VideoCapture."""
+        if not self._opencv_camera_available or not self._opencv_camera:
+            return None
+
+        try:
+            if not CV2_AVAILABLE or cv2 is None:
+                return None
+
+            # Lire une frame depuis la webcam
+            ret, image = self._opencv_camera.read()
+            if not ret or image is None:
+                logger.debug("Échec lecture frame webcam OpenCV")
+                return None
+
+            # Image déjà en BGR (format OpenCV standard)
+            if not isinstance(image, np.ndarray):
+                return None
+
+            # Validation shape et dtype
+            if image.ndim < 2 or image.ndim > 3:
+                logger.warning(f"Format image invalide (ndim={image.ndim})")
+                return None
+
+            # Assurer dtype uint8
+            if image.dtype != np.uint8:
+                try:
+                    if image.dtype in (np.float32, np.float64):
+                        if image.max() <= 1.0:
+                            image = (image * 255).astype(np.uint8)
+                        else:
+                            image = image.astype(np.uint8)
+                    else:
+                        image = image.astype(np.uint8)
+                except Exception as e:
+                    logger.debug(f"Erreur conversion dtype: {e}")
+                    return None
+
+            logger.debug("✅ Image capturée depuis webcam USB OpenCV")
+            return cast(npt.NDArray[np.uint8], image)
+
+        except Exception as e:
+            logger.debug(f"Erreur capture webcam OpenCV: {e}")
+            return None
+
     def scan_environment(self) -> dict[str, Any]:
         """Scanne l'environnement et détecte les objets.
 
@@ -288,15 +430,63 @@ class BBIAVision:
                         height, width = image.shape[:2]
                         for detection in results.detections:
                             bbox = detection.location_data.relative_bounding_box
+
+                            # Extraire le visage détecté pour DeepFace (optionnel)
+                            face_roi = None
+                            if self.face_recognition and self.face_recognition.is_initialized:
+                                # Extraire ROI du visage pour DeepFace
+                                x = int(bbox.xmin * width)
+                                y = int(bbox.ymin * height)
+                                w = int(bbox.width * width)
+                                h = int(bbox.height * height)
+                                # Ajouter marge de sécurité
+                                margin = 20
+                                x = max(0, x - margin)
+                                y = max(0, y - margin)
+                                w = min(width - x, w + 2 * margin)
+                                h = min(height - y, h + 2 * margin)
+                                face_roi = image[y:y+h, x:x+w]
+
+                            # Détection DeepFace (reconnaissance + émotion) si disponible
+                            recognized_name = "humain"
+                            detected_emotion = "neutral"
+                            emotion_confidence = 0.0
+
+                            if face_roi is not None and face_roi.size > 0:
+                                try:
+                                    # Reconnaître la personne
+                                    person_result = self.face_recognition.recognize_person(
+                                        face_roi, enforce_detection=False
+                                    )
+                                    if person_result:
+                                        recognized_name = person_result["name"]
+                                        logger.debug(
+                                            f"👤 Personne reconnue: {recognized_name} "
+                                            f"(confiance: {person_result['confidence']:.2f})"
+                                        )
+
+                                    # Détecter l'émotion
+                                    emotion_result = self.face_recognition.detect_emotion(
+                                        face_roi, enforce_detection=False
+                                    )
+                                    if emotion_result:
+                                        detected_emotion = emotion_result["emotion"]
+                                        emotion_confidence = emotion_result["confidence"]
+                                        logger.debug(
+                                            f"😊 Émotion détectée: {detected_emotion} "
+                                            f"(confiance: {emotion_confidence:.2f})"
+                                        )
+                                except Exception as deepface_error:
+                                    logger.debug(f"DeepFace erreur (fallback): {deepface_error}")
+
                             face = {
-                                "name": "humain",
+                                "name": recognized_name,
                                 "distance": 1.5,  # Estimation basée sur bbox size
                                 "confidence": (
                                     detection.score[0] if detection.score else 0.8
                                 ),
-                                "emotion": (
-                                    "neutral"
-                                ),  # MediaPipe ne détecte pas l'émotion directement
+                                "emotion": detected_emotion,
+                                "emotion_confidence": emotion_confidence,
                                 "position": (
                                     bbox.xmin + bbox.width / 2,
                                     bbox.ymin + bbox.height / 2,

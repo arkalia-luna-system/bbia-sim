@@ -170,7 +170,9 @@ def synthesize_with_coqui(
                     _log_event("Clonage demandé en force et échoué : arrêt")
                     raise
                 # Fallback macOS say (voix féminine) si disponible
-                if _try_macos_say(text, out_path, os.environ.get("BBIA_SAY_VOICE", "Aurelie")):
+                if _try_macos_say(
+                    text, out_path, os.environ.get("BBIA_SAY_VOICE", "Aurelie")
+                ):
                     print("[INFO] Fallback macOS say (voix): Aurelie")
                     _log_event("Fallback macOS say utilisé (Aurelie)")
                     return True
@@ -245,7 +247,9 @@ def _try_macos_say(text: str, out_path: str, voice: str = "Aurelie") -> bool:
             )
             converted = r2.returncode == 0
         if not converted and shutil.which("ffmpeg") is not None:
-            r3 = subprocess.run(["ffmpeg", "-y", "-i", tmp_path, out_path], capture_output=True)
+            r3 = subprocess.run(
+                ["ffmpeg", "-y", "-i", tmp_path, out_path], capture_output=True
+            )
             converted = r3.returncode == 0
         try:
             os.remove(tmp_path)

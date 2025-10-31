@@ -77,13 +77,16 @@ def _get_cached_voice_id() -> str:
 
 
 def get_bbia_voice(engine: Any) -> str:
-    """Force l'utilisation d'une seule voix féminine douce/enfantine sur macOS.
+    """Force l'utilisation d'une voix féminine française de qualité sur macOS.
 
-    Prend la première voix dont le nom contient 'Amelie'
-    (toute variante, accent ou non), en priorité France (fr_FR),
-    sinon Canada (fr_CA), sinon toute Amelie.
-    Si aucune voix n'est trouvée, lève une erreur explicite avec un message
-    d'aide.
+    Priorité de sélection :
+    1. Aurelie Enhanced (fr-FR) - Meilleure qualité
+    2. Amelie Enhanced (si disponible)
+    3. Aurelie standard (fr-FR, fr-CA)
+    4. Amelie (fr_FR, fr_CA, puis toute variante)
+    5. Autres voix féminines françaises (Audrey, Virginie, Julie)
+
+    Si aucune voix féminine française n'est trouvée, lève une erreur explicite.
     """
     voices = engine.getProperty("voices")
 
@@ -95,24 +98,91 @@ def get_bbia_voice(engine: Any) -> str:
             .lower()
         )
 
-    # 1. Prio France
+    # Voix à éviter (masculines)
+    male_indicators = [
+        "thomas",
+        "jacques",
+        "reed",
+        "rocko",
+        "eddy",
+        "grandpa",
+        "daniel",
+    ]
+
+    # 1. PRIORITÉ ABSOLUE: Aurelie Enhanced (fr-FR) - Meilleure qualité
+    for v in voices:
+        v_id_lower = str(v.id).lower()
+        v_name_lower = normalize(v.name)
+        if (
+            ("aurelie" in v_name_lower or "aurélie" in v_name_lower)
+            and "enhanced" in v_id_lower
+            and "fr" in v_id_lower
+        ):
+            return str(v.id)
+
+    # 2. PRIORITÉ: Amelie Enhanced (si disponible)
+    for v in voices:
+        v_id_lower = str(v.id).lower()
+        v_name_lower = normalize(v.name)
+        if "amelie" in v_name_lower and "enhanced" in v_id_lower and "fr" in v_id_lower:
+            return str(v.id)
+
+    # 3. Aurelie standard (fr_FR priorité)
+    for v in voices:
+        v_id_lower = str(v.id).lower()
+        v_name_lower = normalize(v.name)
+        if ("aurelie" in v_name_lower or "aurélie" in v_name_lower) and (
+            "fr_FR" in v.id or "fr-FR" in v.id
+        ):
+            return str(v.id)
+
+    # 4. Aurelie standard (fr_CA)
+    for v in voices:
+        v_id_lower = str(v.id).lower()
+        v_name_lower = normalize(v.name)
+        if ("aurelie" in v_name_lower or "aurélie" in v_name_lower) and (
+            "fr_CA" in v.id or "fr-CA" in v.id
+        ):
+            return str(v.id)
+
+    # 5. Amelie (fr_FR priorité)
     for v in voices:
         if "amelie" in normalize(v.name) and ("fr_FR" in v.id or "fr-FR" in v.id):
             return str(v.id)
-    # 2. Prio Canada
+
+    # 6. Amelie (fr_CA)
     for v in voices:
         if "amelie" in normalize(v.name) and ("fr_CA" in v.id or "fr-CA" in v.id):
             return str(v.id)
-    # 3. Toute Amelie
+
+    # 7. Toute Aurelie
+    for v in voices:
+        v_name_lower = normalize(v.name)
+        if "aurelie" in v_name_lower or "aurélie" in v_name_lower:
+            return str(v.id)
+
+    # 8. Toute Amelie
     for v in voices:
         if "amelie" in normalize(v.name):
             return str(v.id)
-    # 4. Sinon, message d'aide
+
+    # 9. Autres voix féminines françaises (Audrey, Virginie, Julie)
+    femmes_fr = ["audrey", "virginie", "julie", "flo", "sandy", "shelley"]
+    for nom_femme in femmes_fr:
+        for v in voices:
+            v_id_lower = str(v.id).lower()
+            v_name_lower = normalize(v.name)
+            if nom_femme in v_name_lower and "fr" in v_id_lower:
+                # Vérifier que ce n'est pas une voix d'homme
+                if not any(indicator in v_name_lower for indicator in male_indicators):
+                    return str(v.id)
+
+    # 10. Sinon, message d'aide
     raise RuntimeError(
-        "Aucune voix 'Amélie' n'est installée sur ce Mac. "
+        "Aucune voix française féminine n'est installée sur ce Mac. "
         "Va dans Préférences Système > Accessibilité > Parole > "
         "Voix du système et installe une voix française féminine "
-        "(ex: Amélie).",
+        "(ex: Aurélie Enhanced, Amélie).",
     )
 
 

@@ -351,6 +351,43 @@ print('VISION OK')
 PY
 ```
 
+#### 5bis) Test webcam USB (Logitech MX Brio)
+```bash
+# venv vision
+source venv-vision-py310/bin/activate
+
+# Test simple (preview)
+export BBIA_CAMERA_INDEX=0  # défaut: 0
+python scripts/test_webcam_simple.py
+# Appuie sur 'q' pour quitter, 's' pour sauvegarder
+
+# Test vision complète (YOLO + MediaPipe)
+python scripts/test_vision_webcam.py
+# Détection objets et visages en temps réel
+```
+
+**Note** : Au premier lancement, macOS demande l'autorisation caméra. Autoriser dans Réglages Système > Confidentialité > Caméra.
+
+#### 5ter) DeepFace - Reconnaissance visage personnalisée (optionnel)
+```bash
+# venv vision
+source venv-vision-py310/bin/activate
+
+# Installer DeepFace (une fois)
+pip install -r requirements/requirements-deepface.txt
+
+# Enregistrer une personne (famille, ami)
+python scripts/test_deepface.py --register photo_alice.jpg --name Alice
+
+# Reconnaître une personne dans une image
+python scripts/test_deepface.py --recognize frame.jpg
+
+# Détecter émotion
+python scripts/test_deepface.py --emotion photo.jpg
+```
+
+**Note** : DeepFace permet à BBIA de reconnaître des personnes spécifiques et leurs émotions. Compatible SDK Reachy Mini ✅
+
 #### 6) Télémétrie WebSocket (5 messages)
 ```bash
 # venv principal

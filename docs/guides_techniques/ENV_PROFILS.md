@@ -32,8 +32,12 @@ Notes:
   - `python -c "import mediapipe, cv2; print('VISION OK')"`
 
 Caméra:
-- Recommandée: webcam USB UVC (ex. Logitech C920) → plug-and-play, compatible OpenCV.
-- iPad (Appareil photo de continuité): pratique pour apps macOS, moins fiable via OpenCV.
+- **Webcam USB UVC (recommandé)** : Plug-and-play, compatible OpenCV (ex. Logitech C920, Logitech MX Brio).
+  - Configuration : `export BBIA_CAMERA_INDEX=0` (défaut: 0 = première caméra USB)
+  - Test rapide : `python scripts/test_webcam_simple.py` (dans venv-vision-py310)
+  - Test vision complète : `python scripts/test_vision_webcam.py` (YOLO + MediaPipe)
+- **iPad (Appareil photo de continuité)** : Pratique pour apps macOS, moins fiable via OpenCV.
+- **Permissions macOS** : Au premier lancement, macOS demande l'autorisation caméra pour Terminal/Python. Autoriser dans Réglages Système > Confidentialité > Caméra.
 
 ---
 
@@ -43,6 +47,22 @@ Caméra:
   - Créer un venv séparé (ex. `venv-voice`) et y installer `TTS`/`playsound`
   - Générer des fichiers `.wav` puis les jouer via `robot.media.play_audio`
   - Évite les conflits numpy/scipy dans le venv principal
+
+---
+
+### Profil D – DeepFace (optionnel, dans venv-vision-py310)
+- Usage: Reconnaissance visage personnalisée + détection émotions
+- Installation:
+  ```bash
+  source venv-vision-py310/bin/activate
+  pip install -r requirements/requirements-deepface.txt
+  # Ou: pip install deepface onnxruntime
+  ```
+- Utilisation:
+  - Enregistrer personnes: `python scripts/test_deepface.py --register photo.jpg --name Alice`
+  - Reconnaître: `python scripts/test_deepface.py --recognize frame.jpg`
+  - Détecter émotion: `python scripts/test_deepface.py --emotion photo.jpg`
+- Documentation complète: `docs/guides_techniques/DEEPFACE_SETUP.md`
 
 ---
 
