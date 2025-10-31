@@ -8,6 +8,7 @@ Usage:
     python scripts/test_webcam_simple.py
 """
 
+import os
 import sys
 from pathlib import Path
 
@@ -20,8 +21,6 @@ except ImportError as e:
     print(f"❌ Import error: {e}")
     print("💡 Active le venv-vision-py310: source venv-vision-py310/bin/activate")
     sys.exit(1)
-
-import os
 
 
 def main():

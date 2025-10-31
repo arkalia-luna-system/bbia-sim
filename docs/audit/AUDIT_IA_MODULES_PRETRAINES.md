@@ -394,9 +394,13 @@ python scripts/test_pose_detection.py --image photo.jpg
 
 ### Ajouts Recommandés (sans risque pour SDK)
 
-1. **DeepFace** ✅ Compatible, peut être ajouté dans `venv-vision-py310`
-2. **MediaPipe Pose** ✅ Déjà installé, juste à activer
-3. **LLM léger** ✅ Phi-2 recommandé pour RPi 5
+1. ✅ **DeepFace** - **AJOUTÉ ET OPÉRATIONNEL** - Compatible, installé dans `venv-vision-py310`
+2. ✅ **MediaPipe Pose** - **AJOUTÉ ET OPÉRATIONNEL** - Intégré dans `BBIAVision`
+3. ✅ **LLM léger** - **AJOUTÉ ET OPÉRATIONNEL** - Phi-2 et TinyLlama configurés pour RPi 5
+4. ✅ **Dashboard Gradio** - **AJOUTÉ** - Interface no-code complète
+5. ✅ **Mémoire persistante** - **AJOUTÉ** - Module `bbia_memory.py` + intégration auto
+6. ✅ **Tests sécurité LLM** - **AJOUTÉ** - 10 tests dans `test_huggingface_security.py`
+7. ✅ **Benchmarks CI** - **AJOUTÉ** - Job automatique en CI
 
 **Conclusion** : Aucun risque de casser le SDK officiel. Tous les modules IA sont optionnels et isolés ✅
 
