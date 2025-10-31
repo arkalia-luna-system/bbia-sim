@@ -188,14 +188,14 @@ class OpenVoiceTTSTTS:
             # Échapper les valeurs pour éviter l'injection de commandes
             text_escaped = shlex.quote(text)
             outfile_escaped = shlex.quote(outfile)
-            
+
             # Remplacer {text} et {out} dans le template avec valeurs échappées
             cmd_str = cmd_template.replace("{text}", text_escaped)
             cmd_str = cmd_str.replace("{out}", outfile_escaped)
-            
+
             # Parser la commande en liste d'arguments (sécurisé, pas de shell=True)
             cmd_args = shlex.split(cmd_str)
-            
+
             # Exécuter sans shell pour éviter l'injection de commandes
             subprocess.check_call(cmd_args, shell=False)  # nosec B603 - cmd_args parsé via shlex
             return True
