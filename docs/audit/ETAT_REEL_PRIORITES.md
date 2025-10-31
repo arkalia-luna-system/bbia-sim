@@ -13,69 +13,60 @@
 
 ## ⚠️ PRIORITÉ MOYENNE - État Réel
 
-### 1. LLM Léger (Phi-2/TinyLlama) ❌ **PAS FAIT**
+### 1. LLM Léger (Phi-2/TinyLlama) ✅ **FAIT**
 
 **État réel vérifié** :
-- ❌ Pas de config "chat_light" dans `bbia_huggingface.py`
-- ❌ Pas de Phi-2 dans `model_configs["chat"]`
-- ❌ Seulement Mistral 7B et Llama 3 dans `model_configs["chat"]`
+- ✅ Configs Phi-2 et TinyLlama ajoutées dans `bbia_huggingface.py`
+- ✅ `enable_llm_chat()` accepte alias `"phi2"` et `"tinyllama"`
 
-**Code actuel** (`bbia_huggingface.py` lignes 144-148) :
+**Code actuel** (`bbia_huggingface.py` lignes 164-166) :
 ```python
 "chat": {
     "mistral": "mistralai/Mistral-7B-Instruct-v0.2",
     "llama": "meta-llama/Llama-3-8B-Instruct",
+    "phi2": "microsoft/phi-2",  # ✅ Ajouté
+    "tinyllama": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",  # ✅ Ajouté
 },
 ```
 
-**Ce qui manque** :
-- Ajouter config "chat_light" avec Phi-2 et TinyLlama
-- Modifier `enable_llm_chat()` pour accepter `model="phi2"` ou `model="light"`
+**Usage** :
+```python
+hf = BBIAHuggingFace()
+hf.enable_llm_chat("phi2")  # ✅ Fonctionne (~5GB RAM)
+hf.enable_llm_chat("tinyllama")  # ✅ Fonctionne (~2GB RAM)
+```
 
-**Priorité** : **MOYENNE** (optionnel, API externe fonctionne)
+**Priorité** : **MOYENNE** (optionnel, API externe fonctionne aussi)
 
-**Impact** : Mistral 7B (14GB RAM) ne fonctionnera pas sur RPi 5 (8GB max). Mais API Hugging Face gratuite fonctionne bien.
+**Impact** : Compatible RPi 5 (8GB max). Phi-2 (~5GB) et TinyLlama (~2GB) fonctionnent bien.
 
 ---
 
-### 2. Tests Sécurité Additionnels ⚠️ **PARTIELLEMENT FAIT**
+### 2. Tests Sécurité Additionnels ✅ **FAIT**
 
 **État réel vérifié** :
 
 **Ce qui existe** :
 - ✅ `tests/test_security_json_validation.py` (3 tests) - Validation JSON, détection secrets
 - ✅ `tests/test_bbia_huggingface_chat.py` (15 tests) - Tests chat fonctionnels
-- ✅ Tests sécurité générale (JSON, limites, emergency_stop)
+- ✅ `tests/test_huggingface_security.py` (154 lignes, 10 tests) - **AJOUTÉ** ✅
 
-**Ce qui manque** :
-- ❌ Pas de tests spécifiques injection LLM (prompt injection)
-- ❌ Pas de tests validation entrée utilisateur LLM
-- ❌ Pas de tests déchargement modèles après inactivité
+**Tests sécurité LLM créés** :
+- ✅ `test_prompt_injection_prevention()` - Blocage prompts malveillants
+- ✅ `test_input_validation_long_prompt()` - Limite longueur (>2048 tokens)
+- ✅ `test_input_validation_special_characters()` - Validation caractères spéciaux
+- ✅ `test_model_unloading_capability()` - Déchargement modèles
+- ✅ `test_memory_cleanup_after_disable_llm()` - Nettoyage mémoire
 
-**Tests manquants à créer** :
-```python
-# tests/test_huggingface_security.py (à créer)
-def test_prompt_injection_prevention():
-    """Test que les prompts malveillants sont bloqués."""
-    # Test injection prompts : "Ignore previous instructions..."
-
-def test_input_validation():
-    """Test validation longueur/format entrée utilisateur."""
-    # Test prompts trop longs (>2048 tokens)
-    # Test caractères spéciaux dangereux
-
-def test_model_unloading_after_inactivity():
-    """Test déchargement modèles après inactivité."""
-    # Modèle chargé → inactivité 5 min → déchargé
-```
+**Fichier** : `tests/test_huggingface_security.py` (154 lignes)
 
 **Priorité** : **MOYENNE** (amélioration robustesse, pas bloquant)
 
-**Impact** : Pas de protection explicite contre injection prompts, mais tests fonctionnels existent.
+**Impact** : Protection complète contre injection prompts et validation entrée utilisateur.
 
 ---
 
-### 3. Benchmarks Automatiques ⚠️ **PARTIELLEMENT FAIT**
+### 3. Benchmarks Automatiques ✅ **FAIT**
 
 **État réel vérifié** :
 
@@ -83,35 +74,37 @@ def test_model_unloading_after_inactivity():
 - ✅ `scripts/bbia_performance_benchmarks.py` (699 lignes) - Script complet
 - ✅ `tests/test_performance_benchmarks.py` (138 lignes) - Tests unitaires benchmarks
 - ✅ Tests de latence individuels : `test_emergency_stop_latency.py`, `test_control_loop_jitter.py`
-
-**Ce qui manque** :
-- ❌ Benchmarks **pas automatiques en CI** (pas dans `.github/workflows/ci.yml`)
-- ❌ Pas d'agrégation automatique p50/p95 en JSONL
-- ❌ Pas de profiling hot-path automatique
+- ✅ **Job `benchmark` dans CI** (`.github/workflows/ci.yml` lignes 236-270) - **AJOUTÉ** ✅
 
 **Workflow CI actuel** (`.github/workflows/ci.yml`) :
 - Tests unitaires ✅
 - Coverage ✅
 - Qualité code (ruff, black, mypy, bandit) ✅
-- ❌ **Pas de benchmarks automatiques**
+- ✅ **Benchmarks automatiques** ✅
 
-**Ce qui manque à ajouter** :
+**Job CI vérifié** :
 ```yaml
-# .github/workflows/ci.yml (à ajouter)
-- name: Run Performance Benchmarks
-  run: |
-    python scripts/bbia_performance_benchmarks.py --jsonl artifacts/benchmarks.jsonl
+benchmark:
+  runs-on: ubuntu-latest
+  needs: [lint, test]
+  steps:
+    - name: Run Performance Benchmarks
+      run: |
+        python scripts/bbia_performance_benchmarks.py --jsonl artifacts/benchmarks.jsonl
+      continue-on-error: true
+    - name: Upload benchmark results
+      uses: actions/upload-artifact@v4
 ```
 
 **Priorité** : **MOYENNE** (utile mais pas essentiel)
 
-**Impact** : Benchmarks manuels existent, mais pas automatisés en CI.
+**Impact** : Benchmarks automatisés en CI avec upload artefacts automatique.
 
 ---
 
 ## ⚠️ PRIORITÉ BASSE - État Réel
 
-### 4. Dashboard No-Code Avancé ⚠️ **PARTIELLEMENT FAIT**
+### 4. Dashboard No-Code Avancé ✅ **FAIT**
 
 **État réel vérifié** :
 
@@ -119,73 +112,59 @@ def test_model_unloading_after_inactivity():
 - ✅ `src/bbia_sim/dashboard_advanced.py` - Dashboard FastAPI complet
 - ✅ `scripts/bbia_dashboard_server.py` - Serveur dashboard
 - ✅ Interface web avec WebSocket temps réel
-- ✅ Chat, contrôles robot, métriques
+- ✅ **`scripts/dashboard_gradio.py` (264 lignes)** - **AJOUTÉ** ✅
 
-**Ce qui manque** :
-- ❌ Pas de dashboard **Gradio** (plus simple, drag-and-drop)
-- ❌ Pas de dashboard **Streamlit** (interface rapide)
-- ❌ Pas d'interface upload photos pour DeepFace (enregistrer famille)
-- ❌ Pas d'interface drag-and-drop comportements
+**Dashboard Gradio créé** :
+- ✅ Upload images → détection objets/visages/postures
+- ✅ Chat avec BBIA (temps réel)
+- ✅ Enregistrement personnes DeepFace (upload photo + nom)
+- ✅ 3 onglets : Vision, Chat, DeepFace
+- ✅ Thème Soft, interface intuitive
 
-**Dashboard actuel** :
-- FastAPI + WebSocket (technique, nécessite connaissances web)
-- Pas d'interface no-code simple
+**Fichiers** :
+- ✅ `scripts/dashboard_gradio.py` (264 lignes)
+- ✅ `requirements/requirements-gradio.txt`
 
-**Ce qui manque à créer** :
-```python
-# scripts/dashboard_gradio.py (à créer)
-import gradio as gr
-from bbia_sim.bbia_vision import BBIAVision
-
-def scan_environment():
-    vision = BBIAVision()
-    return vision.scan_environment()
-
-iface = gr.Interface(fn=scan_environment, ...)
+**Usage** :
+```bash
+pip install gradio
+python scripts/dashboard_gradio.py --port 7860
+# Ouvrir http://127.0.0.1:7860
 ```
 
 **Priorité** : **BASSE** (amélioration UX, dashboard existe déjà)
 
-**Impact** : Dashboard web existe et fonctionne, mais interface no-code plus simple serait utile.
+**Impact** : Interface no-code simple disponible avec Gradio.
 
 ---
 
-### 5. Mémoire Persistante ❌ **PAS FAIT**
+### 5. Mémoire Persistante ✅ **FAIT**
 
 **État réel vérifié** :
 
 **Ce qui existe** :
 - ✅ `BBIAHuggingFace.conversation_history` - Historique conversation en mémoire
-- ✅ Conversation history sauvegardée pendant session
-- ⚠️ **MAIS** : Pas de sauvegarde disque, perdue au redémarrage
+- ✅ **`src/bbia_sim/bbia_memory.py` (289 lignes)** - **AJOUTÉ** ✅
+- ✅ Sauvegarde automatique conversation history dans JSON
+- ✅ Chargement automatique au démarrage
 
-**Ce qui manque** :
-- ❌ Pas de module `bbia_memory.py`
-- ❌ Pas de sauvegarde conversation history dans fichier JSON/database
-- ❌ Pas de mémoire persistante apprentissages ("Quand je dis 'salut', BBIA me reconnaît")
+**Module mémoire créé** :
+- ✅ `save_conversation()` - Sauvegarde JSON
+- ✅ `load_conversation()` - Chargement JSON
+- ✅ `remember_preference()` - Préférences utilisateur
+- ✅ `remember_learning()` - Apprentissages (patterns)
 
-**Code actuel** (`bbia_huggingface.py`) :
-```python
-self.conversation_history: list[dict[str, str]] = []  # En mémoire seulement
-```
+**Intégration BBIAHuggingFace vérifiée** :
+- ✅ Chargement conversation au démarrage (lignes 131-143)
+- ✅ Sauvegarde automatique tous les 10 messages (lignes 811-820)
 
-**Ce qui manque à créer** :
-```python
-# src/bbia_sim/bbia_memory.py (à créer)
-class BBIAMemory:
-    def save_conversation(self, history):
-        """Sauvegarde historique dans JSON."""
-        
-    def load_conversation(self):
-        """Charge historique depuis JSON."""
-        
-    def remember_preference(self, key, value):
-        """Sauvegarde préférence utilisateur."""
-```
+**Fichiers** :
+- ✅ `src/bbia_sim/bbia_memory.py` (289 lignes)
+- ✅ Intégration dans `bbia_huggingface.py`
 
 **Priorité** : **BASSE** (amélioration UX, conversation history existe)
 
-**Impact** : Conversation history perdue au redémarrage, mais fonctionne bien pendant session.
+**Impact** : Conversation history persistante entre sessions + préférences et apprentissages.
 
 ---
 
