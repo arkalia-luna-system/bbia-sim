@@ -15,8 +15,6 @@
 
 ## Votre premier robot BBIA en 5 minutes
 
-> 📹 **Démo vidéo** : Une démonstration "zero-to-sim" sera bientôt disponible. En attendant, suivez ce guide étape par étape.
-
 ### Architecture simple
 
 ```mermaid
@@ -91,8 +89,6 @@ mjpython examples/demo_chat_bbia_3d.py
 ```
 
 Astuce : Sur macOS, utilisez `mjpython` au lieu de `python` pour les démos 3D.
-
-> 📹 **Vidéo "Zero-to-Sim"** : Une démonstration vidéo complète de l'installation à la première exécution sera bientôt disponible sur YouTube. En attendant, consultez ce guide pour toutes les étapes.
 
 ---
 

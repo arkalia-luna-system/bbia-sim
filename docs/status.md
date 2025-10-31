@@ -100,7 +100,7 @@
   - Pas de vidéos/GIF; FAQ à compléter.
 - Axes futurs:
   - "Zero-to-sim/robot" en GIF/vidéo; table compat OS/HW; FAQ (MuJoCo/PortAudio).
-  - ✅ **En cours** : Structure préparée dans `docs/guides/DEMO_VIDEO_ROADMAP.md`
+  - 📝 **Note** : Vidéos prévues pour plus tard, pas prioritaire maintenant.
 
 ### Qualité
 - État actuel:

@@ -1,13 +1,15 @@
 # 📹 Roadmap Démo Vidéo - BBIA-SIM
 
 **Date de création** : 2025-10-30  
-**Statut** : En préparation
+**Statut** : ⏸️ **Prévu pour plus tard** - Pas prioritaire maintenant
+
+> **Note** : Ce document sert de référence pour la production future de vidéos. Aucune production n'est prévue dans l'immédiat.
 
 ---
 
-## 🎯 Objectifs
+## 🎯 Objectifs (Futur)
 
-Créer des démonstrations vidéo pour faciliter l'onboarding et la compréhension de BBIA-SIM.
+Créer des démonstrations vidéo pour faciliter l'onboarding et la compréhension de BBIA-SIM (à faire plus tard).
 
 ---
 
@@ -26,7 +28,7 @@ Créer des démonstrations vidéo pour faciliter l'onboarding et la compréhensi
 
 **Format** : Tutoriel pas-à-pas avec narration
 
-**Lien prévu** : YouTube (lien à ajouter ici)
+**Lien prévu** : (À créer plus tard)
 
 ---
 
@@ -42,7 +44,7 @@ Créer des démonstrations vidéo pour faciliter l'onboarding et la compréhensi
 
 **Format** : Démonstration visuelle avec commentaires
 
-**Lien prévu** : YouTube (lien à ajouter ici)
+**Lien prévu** : (À créer plus tard)
 
 ---
 
@@ -58,7 +60,7 @@ Créer des démonstrations vidéo pour faciliter l'onboarding et la compréhensi
 
 **Format** : Screencast avec annotations
 
-**Lien prévu** : YouTube (lien à ajouter ici)
+**Lien prévu** : (À créer plus tard)
 
 ---
 
@@ -75,7 +77,7 @@ Créer des démonstrations vidéo pour faciliter l'onboarding et la compréhensi
 
 **Format** : Tutoriel avec robot visible
 
-**Lien prévu** : YouTube (lien à ajouter ici)
+**Lien prévu** : (À créer plus tard)
 
 ---
 
@@ -91,7 +93,7 @@ Créer des démonstrations vidéo pour faciliter l'onboarding et la compréhensi
 
 **Format** : Explication technique avec diagrammes
 
-**Lien prévu** : YouTube (lien à ajouter ici)
+**Lien prévu** : (À créer plus tard)
 
 ---
 
