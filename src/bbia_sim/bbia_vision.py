@@ -13,6 +13,7 @@ from typing import TYPE_CHECKING, Any, cast
 
 if TYPE_CHECKING:
     from .face_recognition import BBIAPersonRecognition
+    from .pose_detection import BBIAPoseDetection
 
 import numpy as np
 import numpy.typing as npt
@@ -45,15 +46,42 @@ except ImportError:
     MEDIAPIPE_AVAILABLE = False
 
 # Import conditionnel DeepFace pour reconnaissance visage personnalisée
+_create_face_recognition_func: (
+    Callable[[str, str], "BBIAPersonRecognition | None"] | None
+) = None
 try:
-    from .face_recognition import create_face_recognition
+    from .face_recognition import (
+        create_face_recognition as _create_face_recognition_func,
+    )
 
     DEEPFACE_AVAILABLE = True
 except ImportError:
     DEEPFACE_AVAILABLE = False
-    create_face_recognition: (
-        Callable[[str, str], "BBIAPersonRecognition | None"] | None
-    ) = None
+    _create_face_recognition_func = None
+
+create_face_recognition = _create_face_recognition_func
+
+# Import conditionnel MediaPipe Pose pour détection postures/gestes
+_create_pose_detector_func: (
+    Callable[[int], "BBIAPoseDetection | None"] | None
+) = None
+try:
+    from .pose_detection import create_pose_detector as _create_pose_detector_func
+
+    MEDIAPIPE_POSE_AVAILABLE = True
+except ImportError:
+    MEDIAPIPE_POSE_AVAILABLE = False
+    _create_pose_detector_func = None
+
+create_pose_detector = _create_pose_detector_func
+
+# Alias pour compatibilité (si disponible)
+if DEEPFACE_AVAILABLE and _create_face_recognition_func is not None:
+    create_face_recognition: Callable[[str, str], "BBIAPersonRecognition | None"] | None = (
+        _create_face_recognition_func
+    )
+else:
+    create_face_recognition = None
 
 # Import conditionnel cv2 pour conversions couleur
 try:
@@ -70,6 +98,8 @@ class BBIAVision:
     Utilise robot.media.camera si disponible (SDK Reachy Mini officiel),
     sinon utilise simulation pour compatibilité.
     """
+
+    face_recognition: "BBIAPersonRecognition | None"
 
     def __init__(self, robot_api: Any | None = None) -> None:
         """
@@ -196,6 +226,21 @@ class BBIAVision:
                     )
             except Exception as e:
                 logger.warning(f"⚠️ DeepFace non disponible: {e}")
+
+        # Module MediaPipe Pose pour détection postures/gestes
+        self.pose_detector = None
+        if MEDIAPIPE_POSE_AVAILABLE and create_pose_detector is not None:
+            try:
+                model_complexity = int(
+                    os.environ.get("BBIA_POSE_COMPLEXITY", "1")
+                )  # 0=rapide, 1=équilibré, 2=précis
+                self.pose_detector = create_pose_detector(model_complexity=model_complexity)
+                if self.pose_detector and self.pose_detector.is_initialized:
+                    logger.info(
+                        f"✅ MediaPipe Pose initialisé (complexité: {model_complexity})"
+                    )
+            except Exception as e:
+                logger.warning(f"⚠️ MediaPipe Pose non disponible: {e}")
 
     def _capture_image_from_camera(self) -> npt.NDArray[np.uint8] | None:
         """Capture une image depuis robot.media.camera si disponible, sinon webcam USB OpenCV.
@@ -433,7 +478,10 @@ class BBIAVision:
 
                             # Extraire le visage détecté pour DeepFace (optionnel)
                             face_roi = None
-                            if self.face_recognition and self.face_recognition.is_initialized:
+                            if (
+                                self.face_recognition
+                                and self.face_recognition.is_initialized
+                            ):
                                 # Extraire ROI du visage pour DeepFace
                                 x = int(bbox.xmin * width)
                                 y = int(bbox.ymin * height)
@@ -445,18 +493,25 @@ class BBIAVision:
                                 y = max(0, y - margin)
                                 w = min(width - x, w + 2 * margin)
                                 h = min(height - y, h + 2 * margin)
-                                face_roi = image[y:y+h, x:x+w]
+                                face_roi = image[y : y + h, x : x + w]
 
                             # Détection DeepFace (reconnaissance + émotion) si disponible
                             recognized_name = "humain"
                             detected_emotion = "neutral"
                             emotion_confidence = 0.0
 
-                            if face_roi is not None and face_roi.size > 0:
+                            if (
+                                face_roi is not None
+                                and face_roi.size > 0
+                                and self.face_recognition is not None
+                                and self.face_recognition.is_initialized
+                            ):
                                 try:
                                     # Reconnaître la personne
-                                    person_result = self.face_recognition.recognize_person(
-                                        face_roi, enforce_detection=False
+                                    person_result = (
+                                        self.face_recognition.recognize_person(
+                                            face_roi, enforce_detection=False
+                                        )
                                     )
                                     if person_result:
                                         recognized_name = person_result["name"]
@@ -466,18 +521,24 @@ class BBIAVision:
                                         )
 
                                     # Détecter l'émotion
-                                    emotion_result = self.face_recognition.detect_emotion(
-                                        face_roi, enforce_detection=False
+                                    emotion_result = (
+                                        self.face_recognition.detect_emotion(
+                                            face_roi, enforce_detection=False
+                                        )
                                     )
                                     if emotion_result:
                                         detected_emotion = emotion_result["emotion"]
-                                        emotion_confidence = emotion_result["confidence"]
+                                        emotion_confidence = emotion_result[
+                                            "confidence"
+                                        ]
                                         logger.debug(
                                             f"😊 Émotion détectée: {detected_emotion} "
                                             f"(confiance: {emotion_confidence:.2f})"
                                         )
                                 except Exception as deepface_error:
-                                    logger.debug(f"DeepFace erreur (fallback): {deepface_error}")
+                                    logger.debug(
+                                        f"DeepFace erreur (fallback): {deepface_error}"
+                                    )
 
                             face = {
                                 "name": recognized_name,
@@ -502,15 +563,37 @@ class BBIAVision:
                 except Exception as e:
                     logger.warning(f"Erreur détection MediaPipe: {e}")
 
-            if objects or faces:
+            # Détection de postures avec MediaPipe Pose (optionnel)
+            poses = []
+            if self.pose_detector and self.pose_detector.is_initialized:
+                try:
+                    pose_result = self.pose_detector.detect_pose(image)
+                    if pose_result:
+                        poses.append(
+                            {
+                                "landmarks_count": pose_result["num_landmarks"],
+                                "gestures": pose_result["gestures"],
+                                "posture": pose_result["posture"],
+                            }
+                        )
+                        logger.debug(
+                            f"🧍 Posture détectée: {pose_result['posture']}, "
+                            f"gestes: {pose_result['gestures']}"
+                        )
+                except Exception as e:
+                    logger.debug(f"Erreur détection pose: {e}")
+
+            if objects or faces or poses:
                 logger.info(
-                    f"✅ Détection réelle: {len(objects)} objets, {len(faces)} visages"
+                    f"✅ Détection réelle: {len(objects)} objets, {len(faces)} visages, "
+                    f"{len(poses)} postures"
                 )
                 self.objects_detected = objects
                 self.faces_detected = faces
                 return {
                     "objects": objects,
                     "faces": faces,
+                    "poses": poses,
                     "timestamp": datetime.now().isoformat(),
                     "source": "camera_sdk",
                 }
@@ -573,6 +656,7 @@ class BBIAVision:
         return {
             "objects": objects,
             "faces": faces,
+            "poses": [],  # Pas de pose en simulation
             "timestamp": datetime.now().isoformat(),
             "source": "simulation",  # Fallback simulation
         }

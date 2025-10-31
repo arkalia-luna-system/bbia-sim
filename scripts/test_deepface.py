@@ -113,7 +113,7 @@ def main():
         result = face_rec.recognize_person(args.recognize, enforce_detection=False)
 
         if result:
-            print(f"✅ Personne reconnue:")
+            print("✅ Personne reconnue:")
             print(f"   • Nom: {result['name']}")
             print(f"   • Confiance: {result['confidence']:.2%}")
             print(f"   • Distance: {result['distance']:.3f}")
@@ -133,10 +133,10 @@ def main():
         result = face_rec.detect_emotion(args.emotion, enforce_detection=False)
 
         if result:
-            print(f"✅ Émotion détectée:")
+            print("✅ Émotion détectée:")
             print(f"   • Émotion dominante: {result['emotion']}")
             print(f"   • Confiance: {result['confidence']:.2%}")
-            print(f"\n   Scores détaillés:")
+            print("\n   Scores détaillés:")
             for emotion, score in sorted(
                 result["scores"].items(), key=lambda x: x[1], reverse=True
             ):

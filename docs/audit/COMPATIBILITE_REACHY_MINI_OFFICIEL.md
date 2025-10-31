@@ -250,8 +250,12 @@ except ImportError:
    - ✅ Installation : `pip install deepface onnxruntime` (dans venv-vision-py310)
    - ✅ Backend ONNX recommandé pour RPi 5
 
-2. **MediaPipe Pose** ⭐
-   - ✅ Déjà installé, juste à activer
+2. ✅ **MediaPipe Pose** ⭐ - **ACTIVÉ !**
+   - ✅ Module créé : `src/bbia_sim/pose_detection.py`
+   - ✅ Intégré dans `BBIAVision` (détection automatique)
+   - ✅ Script test : `scripts/test_pose_detection.py`
+   - ✅ Déjà installé via MediaPipe (pas besoin d'installer autre chose)
+   - ✅ Détection : 33 points clés, gestes (bras levés, debout/assis)
    - ✅ Aucun impact SDK
 
 3. **LLM Léger (Phi-2, TinyLlama)**

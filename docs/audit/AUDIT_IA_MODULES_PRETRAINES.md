@@ -373,7 +373,7 @@ def detect_poses(self, image):
 
 **Ce qui manque (mais facile à ajouter)** :
 1. ✅ **DeepFace** pour reconnaissance visage + émotions - **AJOUTÉ !** (voir `src/bbia_sim/face_recognition.py`)
-2. **MediaPipe Pose** pour détection postures (quelques heures) - À activer
+2. ✅ **MediaPipe Pose** pour détection postures - **ACTIVÉ !** (voir `src/bbia_sim/pose_detection.py`)
 3. **LLM léger** optionnel (facultatif) - Phi-2 pour RPi 5
 
 **Tout est open-source et gratuit** comme tu veux ! 🎉

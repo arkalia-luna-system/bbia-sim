@@ -388,6 +388,20 @@ python scripts/test_deepface.py --emotion photo.jpg
 
 **Note** : DeepFace permet à BBIA de reconnaître des personnes spécifiques et leurs émotions. Compatible SDK Reachy Mini ✅
 
+#### 5quater) MediaPipe Pose - Détection postures/gestes (optionnel)
+```bash
+# venv vision (MediaPipe déjà installé)
+source venv-vision-py310/bin/activate
+
+# Test avec webcam (temps réel)
+python scripts/test_pose_detection.py --webcam
+
+# Test avec image
+python scripts/test_pose_detection.py --image photo.jpg
+```
+
+**Note** : MediaPipe Pose détecte la posture complète (33 points clés) et les gestes (bras levés, debout/assis). Déjà installé via MediaPipe ✅
+
 #### 6) Télémétrie WebSocket (5 messages)
 ```bash
 # venv principal
