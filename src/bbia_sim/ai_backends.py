@@ -197,7 +197,9 @@ class OpenVoiceTTSTTS:
             cmd_args = shlex.split(cmd_str)
 
             # Exécuter sans shell pour éviter l'injection de commandes
-            subprocess.check_call(cmd_args, shell=False)  # nosec B603 - cmd_args parsé via shlex
+            subprocess.check_call(
+                cmd_args, shell=False
+            )  # nosec B603 - cmd_args parsé via shlex
             return True
         except Exception:
             return self._fallback.synthesize_to_wav(text, outfile)
