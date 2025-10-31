@@ -1524,8 +1524,10 @@ class BBIAHuggingFace:
                 t = (
                     t
                     + SUFFIX_POOL[
-                        _r.randrange(len(SUFFIX_POOL))
-                    ]  # nosec B311 - Variété réponse non-crypto
+                        _r.randrange(
+                            len(SUFFIX_POOL)
+                        )  # nosec B311 - Variété réponse non-crypto
+                    ]
                 ).strip()
                 # Si c'est encore trop court, compléter une seconde fois
                 if len(t) < min_len:
@@ -1533,8 +1535,10 @@ class BBIAHuggingFace:
                         t
                         + " "
                         + SUFFIX_POOL[
-                            _r.randrange(len(SUFFIX_POOL))
-                        ]  # nosec B311 - Variété réponse non-crypto
+                            _r.randrange(
+                                len(SUFFIX_POOL)
+                            )  # nosec B311 - Variété réponse non-crypto
+                        ]
                     ).strip()
             if len(t) <= max_len:
                 # Anti-duplication récente

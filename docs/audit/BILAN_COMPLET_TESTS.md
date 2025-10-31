@@ -290,8 +290,16 @@
 6. Créer `test_robot_api_sdk_mapping.py`
 
 ### Corrections à Faire
-1. Corriger **8 tests qui échouent** actuellement
-2. Améliorer coverage **RobotAPI** (~70% → ~85%)
+1. Corriger **8 tests qui échouent** actuellement:
+   - `test_examples_conformity.py` (3 tests)
+   - `test_examples_stewart_warnings.py` (1 test)
+   - `test_runtime_budget.py` (1 test)
+   - `test_vision_fps_budget.py` (2 tests)
+   - `test_vision_latency.py` (1 test)
+2. Améliorer coverage **Global** (47.76% → 60%):
+   - Focus sur modules peu testés
+   - Ajouter tests unitaires manquants
+   - Améliorer coverage RobotAPI (~50% → ~70%)
 3. Ajouter tests **mapping SDK** pour RobotAPI
 
 ---
