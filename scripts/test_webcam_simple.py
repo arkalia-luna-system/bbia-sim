@@ -96,9 +96,19 @@ def main():
                 print("\n👋 Arrêt demandé")
                 break
             elif key == ord("s"):
-                filename = f"webcam_capture_{frame_count}.jpg"
-                cv2.imwrite(filename, frame)
-                print(f"📸 Capture sauvegardée: {filename}")
+                from datetime import datetime
+
+                timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+                filename = f"webcam_capture_{timestamp}_frame{frame_count}.jpg"
+                success = cv2.imwrite(filename, frame)
+                if success:
+                    import os
+
+                    abs_path = os.path.abspath(filename)
+                    print(f"\n📸 ✅ Capture sauvegardée: {filename}")
+                    print(f"   📁 Chemin complet: {abs_path}")
+                else:
+                    print(f"\n❌ Erreur: Impossible de sauvegarder {filename}")
 
     except KeyboardInterrupt:
         print("\n👋 Interruption utilisateur")
