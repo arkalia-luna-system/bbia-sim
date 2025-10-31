@@ -92,7 +92,7 @@
   - ⚠️ Datasets/golden images limités; latence E2E audio non centralisée.
 - Axes futurs:
   - Datasets/golden images internes; tests loopback audio (si HW); backend TTS modulable.
-  - LLM léger (Phi-2) pour RPi 5 (optionnel, API externe fonctionne).
+  - ✅ LLM léger (Phi-2/TinyLlama) pour RPi 5 - **FAIT** (configuré dans `bbia_huggingface.py`)
 
 ### Docs / Onboarding
 - État actuel:

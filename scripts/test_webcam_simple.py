@@ -101,8 +101,6 @@ def main():
                 filename = f"webcam_capture_{timestamp}_frame{frame_count}.jpg"
                 success = cv2.imwrite(filename, frame)
                 if success:
-                    import os
-
                     abs_path = os.path.abspath(filename)
                     print(f"\n📸 ✅ Capture sauvegardée: {filename}")
                     print(f"   📁 Chemin complet: {abs_path}")
