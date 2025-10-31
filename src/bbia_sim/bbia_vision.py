@@ -191,7 +191,13 @@ class BBIAVision:
         self.yolo_detector = None
         if YOLO_AVAILABLE and create_yolo_detector is not None:
             try:
-                self.yolo_detector = create_yolo_detector(model_size="n")
+                # Seuil confiance 0.25 pour meilleure détection (au lieu de 0.5 par défaut)
+                confidence_threshold = float(
+                    os.environ.get("BBIA_YOLO_CONFIDENCE", "0.25")
+                )
+                self.yolo_detector = create_yolo_detector(
+                    model_size="n", confidence_threshold=confidence_threshold
+                )
                 if self.yolo_detector:
                     self.yolo_detector.load_model()
                     logger.info("✅ Détecteur YOLO initialisé")

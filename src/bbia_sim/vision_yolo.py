@@ -306,7 +306,9 @@ class FaceDetector:
         return best_face
 
 
-def create_yolo_detector(model_size: str = "n") -> YOLODetector | None:
+def create_yolo_detector(
+    model_size: str = "n", confidence_threshold: float = 0.25
+) -> YOLODetector | None:
     """
     Factory function pour créer une instance YOLODetector.
 
