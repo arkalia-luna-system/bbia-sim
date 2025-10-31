@@ -128,6 +128,20 @@ class BBIAHuggingFace:
         self.context: dict[str, Any] = {}
         self.bbia_personality = "friendly_robot"
 
+        # Charger conversation depuis mémoire persistante si disponible
+        try:
+            from .bbia_memory import load_conversation_from_memory
+
+            saved_history = load_conversation_from_memory()
+            if saved_history:
+                self.conversation_history = saved_history
+                logger.info(
+                    f"💾 Conversation chargée depuis mémoire ({len(saved_history)} messages)"
+                )
+        except ImportError:
+            # Mémoire persistante optionnelle
+            pass
+
         # Configuration des modèles recommandés
         self.model_configs = {
             "vision": {
@@ -143,8 +157,14 @@ class BBIAHuggingFace:
             },
             "chat": {
                 # LLM conversationnel (optionnel, activé si disponible)
-                "mistral": "mistralai/Mistral-7B-Instruct-v0.2",  # ⭐ Recommandé
-                "llama": "meta-llama/Llama-3-8B-Instruct",  # Alternative
+                "mistral": (
+                    "mistralai/Mistral-7B-Instruct-v0.2"
+                ),  # ⭐ Recommandé (14GB RAM)
+                "llama": "meta-llama/Llama-3-8B-Instruct",  # Alternative (16GB RAM)
+                "phi2": "microsoft/phi-2",  # ⭐ Léger pour RPi 5 (2.7B, ~5GB RAM)
+                "tinyllama": (
+                    "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
+                ),  # Ultra-léger (~2GB RAM)
             },
             "multimodal": {
                 "blip_vqa": "Salesforce/blip-vqa-base",
@@ -646,24 +666,29 @@ class BBIAHuggingFace:
         """Retourne la liste des modèles actuellement chargés."""
         return list(self.models.keys())
 
-    def enable_llm_chat(
-        self, model_name: str = "mistralai/Mistral-7B-Instruct-v0.2"
-    ) -> bool:
+    def enable_llm_chat(self, model_name: str = "mistral") -> bool:
         """Active le LLM conversationnel (optionnel, lourd).
 
         Args:
-            model_name: Modèle LLM à charger (Mistral ou Llama)
+            model_name: Modèle LLM à charger (alias: "mistral", "llama", "phi2", "tinyllama"
+                       ou ID complet Hugging Face)
 
         Returns:
             True si chargé avec succès
 
         Note:
-            - Requiert ~14GB RAM pour Mistral 7B
+            - Mistral 7B / Llama 3 8B : ~14-16GB RAM (pas pour RPi 5)
+            - Phi-2 : ~5GB RAM (recommandé pour RPi 5)
+            - TinyLlama : ~2GB RAM (ultra-léger)
             - Premier chargement : 1-2 minutes
             - Support Apple Silicon (MPS) automatique
         """
-        logger.info(f"📥 Activation LLM conversationnel: {model_name}")
-        success = self.load_model(model_name, model_type="chat")
+        # Résoudre alias vers ID complet si nécessaire
+        resolved_name = self._resolve_model_name(model_name, "chat")
+        logger.info(
+            f"📥 Activation LLM conversationnel: {model_name} → {resolved_name}"
+        )
+        success = self.load_model(resolved_name, model_type="chat")
         if success:
             logger.info(
                 "✅ LLM conversationnel activé - Conversations intelligentes "
@@ -782,6 +807,17 @@ class BBIAHuggingFace:
                 )
             else:
                 adapted_response = bbia_response  # LLM gère déjà la personnalité
+
+            # 5. Sauvegarder automatiquement dans mémoire persistante (si disponible)
+            try:
+                from .bbia_memory import save_conversation_to_memory
+
+                # Sauvegarder toutes les 10 messages pour éviter I/O excessif
+                if len(self.conversation_history) % 10 == 0:
+                    save_conversation_to_memory(self.conversation_history)
+            except ImportError:
+                # Mémoire persistante optionnelle
+                pass
 
             # Normaliser et finaliser (anti-doublons/sentinelles)
             return self._normalize_response_length(adapted_response)

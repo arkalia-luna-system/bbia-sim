@@ -423,6 +423,146 @@ class BBIAVision:
             logger.debug(f"Erreur capture webcam OpenCV: {e}")
             return None
 
+    def scan_environment_from_image(
+        self, image: npt.NDArray[np.uint8]
+    ) -> dict[str, Any]:
+        """Scanne l'environnement depuis une image fournie (au lieu de la caméra).
+
+        Args:
+            image: Image numpy array (BGR)
+
+        Returns:
+            Dict avec objets, visages, postures détectés
+        """
+        objects = []
+        faces = []
+        poses = []
+
+        # Détection objets avec YOLO
+        if self.yolo_detector and self.yolo_detector.is_loaded:
+            try:
+                detections = self.yolo_detector.detect_objects(image)
+                for det in detections:
+                    obj = {
+                        "name": det.get("class", "objet"),
+                        "distance": det.get("distance", 1.5),
+                        "confidence": det.get("confidence", 0.5),
+                        "position": (
+                            det.get("bbox", {}).get("center_x", 320) / 640.0,
+                            det.get("bbox", {}).get("center_y", 240) / 480.0,
+                        ),
+                        "bbox": det.get("bbox", {}),
+                    }
+                    objects.append(obj)
+            except Exception as e:
+                logger.warning(f"Erreur détection YOLO: {e}")
+
+        # Détection visages avec MediaPipe + DeepFace
+        if self.face_detector:
+            try:
+                import cv2
+
+                image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+                results = self.face_detector.process(image_rgb)
+
+                if results.detections:
+                    height, width = image.shape[:2]
+                    for detection in results.detections:
+                        bbox = detection.location_data.relative_bounding_box
+
+                        # Extraire ROI pour DeepFace
+                        face_roi = None
+                        if (
+                            self.face_recognition
+                            and self.face_recognition.is_initialized
+                        ):
+                            x = int(bbox.xmin * width)
+                            y = int(bbox.ymin * height)
+                            w = int(bbox.width * width)
+                            h = int(bbox.height * height)
+                            margin = 20
+                            x = max(0, x - margin)
+                            y = max(0, y - margin)
+                            w = min(width - x, w + 2 * margin)
+                            h = min(height - y, h + 2 * margin)
+                            face_roi = image[y : y + h, x : x + w]
+
+                        # Détection DeepFace
+                        recognized_name = "humain"
+                        detected_emotion = "neutral"
+                        emotion_confidence = 0.0
+
+                        if (
+                            face_roi is not None
+                            and face_roi.size > 0
+                            and self.face_recognition is not None
+                            and self.face_recognition.is_initialized
+                        ):
+                            try:
+                                person_result = self.face_recognition.recognize_person(
+                                    face_roi, enforce_detection=False
+                                )
+                                if person_result:
+                                    recognized_name = person_result["name"]
+
+                                emotion_result = self.face_recognition.detect_emotion(
+                                    face_roi, enforce_detection=False
+                                )
+                                if emotion_result:
+                                    detected_emotion = emotion_result["emotion"]
+                                    emotion_confidence = emotion_result["confidence"]
+                            except Exception as deepface_error:
+                                logger.debug(f"DeepFace erreur: {deepface_error}")
+
+                        face = {
+                            "name": recognized_name,
+                            "distance": 1.5,
+                            "confidence": (
+                                detection.score[0] if detection.score else 0.8
+                            ),
+                            "emotion": detected_emotion,
+                            "emotion_confidence": emotion_confidence,
+                            "position": (
+                                bbox.xmin + bbox.width / 2,
+                                bbox.ymin + bbox.height / 2,
+                            ),
+                            "bbox": {
+                                "x": int(bbox.xmin * width),
+                                "y": int(bbox.ymin * height),
+                                "width": int(bbox.width * width),
+                                "height": int(bbox.height * height),
+                            },
+                        }
+                        faces.append(face)
+            except Exception as e:
+                logger.warning(f"Erreur détection MediaPipe: {e}")
+
+        # Détection postures avec MediaPipe Pose
+        if self.pose_detector and self.pose_detector.is_initialized:
+            try:
+                pose_result = self.pose_detector.detect_pose(image)
+                if pose_result:
+                    poses.append(
+                        {
+                            "landmarks_count": pose_result["num_landmarks"],
+                            "gestures": pose_result["gestures"],
+                            "posture": pose_result["posture"],
+                        }
+                    )
+            except Exception as e:
+                logger.debug(f"Erreur détection pose: {e}")
+
+        self.objects_detected = objects
+        self.faces_detected = faces
+
+        return {
+            "objects": objects,
+            "faces": faces,
+            "poses": poses,
+            "timestamp": datetime.now().isoformat(),
+            "source": "image_upload",
+        }
+
     def scan_environment(self) -> dict[str, Any]:
         """Scanne l'environnement et détecte les objets.
 
