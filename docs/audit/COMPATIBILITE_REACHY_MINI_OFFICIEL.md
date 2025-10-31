@@ -291,7 +291,7 @@ except ImportError:
 - [x] Torch/Transformers optionnels (pas utilisés par SDK)
 - [x] DeepFace ajouté (compatible, opérationnel) ✅ **FAIT**
 - [x] MediaPipe Pose activé (intégré dans BBIAVision) ✅ **FAIT**
-- [ ] LLM léger à configurer (Phi-2 pour RPi 5) - Optionnel, API externe fonctionne
+- [x] LLM léger configuré (Phi-2/TinyLlama pour RPi 5) ✅ **FAIT**
 
 ---
 

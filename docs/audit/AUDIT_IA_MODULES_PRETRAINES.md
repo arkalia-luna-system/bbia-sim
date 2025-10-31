@@ -274,15 +274,15 @@ if st.button("Scan Environment"):
 | Catégorie | État | Où c'est | Recommandation |
 |-----------|------|----------|----------------|
 | **Vision (objets/visages)** | ✅ FAIT | `vision_yolo.py`, `bbia_vision.py` | - |
-| **LLM Conversationnel** | ✅ FAIT | `bbia_huggingface.py` | Ajouter Phi-2 (léger) |
+| **LLM Conversationnel** | ✅ FAIT | `bbia_huggingface.py` | ✅ Phi-2 ajouté (léger) |
 | **TTS/STT** | ✅ FAIT | `voice_whisper.py`, `ai_backends.py` | - |
 | **Reconnaissance visage personnalisée** | ✅ FAIT | `face_recognition.py` | ✅ **Déjà ajouté (DeepFace)** ⭐ |
 | **Détection émotions visuelles** | ✅ FAIT | `face_recognition.py` | ✅ **Déjà ajouté (DeepFace)** ⭐ |
 | **Détection postures** | ✅ FAIT | `pose_detection.py` | ✅ **Déjà ajouté (MediaPipe Pose)** |
 | **Architecture modulaire** | ✅ EXCELLENT | Tout le projet | - |
 | **Finetuning personnalisé** | ✅ FAIT | Voix OK (Coqui), visage OK (DeepFace) | ✅ **Déjà ajouté** |
-| **Dashboard No-Code** | ⚠️ PARTIEL | Dashboard web existe | Ajouter Gradio/Streamlit |
-| **Entraînement progressif** | ✅ FAIT | `bbia_huggingface.py` | Améliorer mémoire persistante |
+| **Dashboard No-Code** | ✅ **FAIT** | Dashboard Gradio complet | ✅ Gradio implémenté |
+| **Entraînement progressif** | ✅ FAIT | `bbia_huggingface.py` | ✅ Mémoire persistante ajoutée |
 
 ---
 
