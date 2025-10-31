@@ -581,7 +581,7 @@ python scripts/test_public_api.py
 python -m pytest tests/test_api_ecosystem.py -v
 
 # Tests de conformité
-python scripts/test_conformity_sdk_officiel.py
+python scripts/conformity/test_conformity_sdk_officiel.py
 
 # Tests de performance
 python scripts/hardware_dry_run.py --duration 30

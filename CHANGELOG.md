@@ -197,7 +197,7 @@ Cette version marque l'achèvement complet de la conformité au SDK officiel Rea
 pip install --upgrade bbia-sim==1.3.0
 
 # Vérification conformité SDK
-python scripts/test_conformity_sdk_officiel.py
+python scripts/conformity/test_conformity_sdk_officiel.py
 
 # Tests de performance
 python scripts/bbia_performance_benchmarks.py --benchmark all

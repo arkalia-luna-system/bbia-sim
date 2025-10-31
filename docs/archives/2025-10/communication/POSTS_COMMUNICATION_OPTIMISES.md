@@ -76,7 +76,7 @@ Je suis fier de partager **BBIA-SIM v1.3.0**, un moteur cognitif Python qui atte
 🔗 **Ressources :**
 • GitHub : https://github.com/arkalia-luna-system/bbia-sim
 • Documentation : https://bbia-sim-docs.onrender.com
-• Tests conformité : `python scripts/test_conformity_sdk_officiel.py`
+• Tests conformité : `python scripts/conformity/test_conformity_sdk_officiel.py`
 
 🎯 **Impact Communauté :**
 Cette contribution positionne BBIA-SIM comme la **référence technique** pour l'intégration Reachy Mini, avec des applications directes en robotique cognitive et interaction homme-robot.
@@ -122,7 +122,7 @@ Je viens de finaliser **BBIA-SIM v1.3.0** - un moteur cognitif Python pour Reach
 🔗 **Liens :**
 • GitHub : https://github.com/arkalia-luna-system/bbia-sim
 • Docs : https://bbia-sim-docs.onrender.com
-• Test conformité : `python scripts/test_conformity_sdk_officiel.py`
+• Test conformité : `python scripts/conformity/test_conformity_sdk_officiel.py`
 
 🎯 **Prêt pour robot physique** dès réception !
 

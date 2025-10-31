@@ -127,7 +127,7 @@
 
 - **Rapport détaillé:** `docs/RAPPORT_CONFORMITE_SDK_2024.md`
 - **Tests:** `tests/test_reachy_mini_complete_conformity.py`
-- **Script:** `scripts/test_conformity_sdk_officiel.py`
+- **Script:** `scripts/conformity/test_conformity_sdk_officiel.py`
 - **Backend:** `src/bbia_sim/backends/reachy_mini_backend.py`
 
 ---

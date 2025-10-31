@@ -66,7 +66,7 @@
 
 **Actions à faire :**
 - [ ] Recevoir le robot Reachy Mini physique
-- [ ] Exécuter `python scripts/test_conformity_sdk_officiel.py`
+- [ ] Exécuter `python scripts/conformity/test_conformity_sdk_officiel.py`
 - [ ] Tester `goto_target()`, `look_at()`, `set_emotion()`
 - [ ] Valider audio/vidéo/senseurs
 - [ ] Journaliser erreurs, temps de réponse, comportements

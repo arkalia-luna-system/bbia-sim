@@ -114,7 +114,7 @@ python scripts/demo_mode_complete.py --mode mixed
 
 ```bash
 # Test conformité SDK officiel
-python scripts/test_conformity_sdk_officiel.py
+python scripts/conformity/test_conformity_sdk_officiel.py
 
 # Test hardware dry-run
 python scripts/hardware_dry_run_reachy_mini.py --duration 30
