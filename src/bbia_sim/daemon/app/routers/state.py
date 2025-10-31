@@ -120,7 +120,7 @@ def _read_sdk_telemetry() -> dict[str, Any] | None:
             try:
                 backend.disconnect()
             except Exception:
-                pass
+                pass  # noqa: B110 - Ignorer erreur déconnexion (déjà déconnecté ou non critique)
     except Exception:
         return None
 
@@ -203,7 +203,7 @@ async def get_battery_level() -> BatteryInfo:
         try:
             battery_level = float(sdk["battery"])  # type: ignore[index]
         except Exception:
-            pass
+            pass  # noqa: B110 - Ignorer erreur parsing batterie (utiliser valeur par défaut)
     status = (
         "good" if battery_level > 20 else "low" if battery_level > 10 else "critical"
     )
@@ -238,7 +238,7 @@ async def get_temperature() -> dict[str, Any]:
         try:
             temperature_c = float(sdk["temperature"])  # type: ignore[index]
         except Exception:
-            pass
+            pass  # noqa: B110 - Ignorer erreur parsing température (utiliser valeur par défaut)
 
     return {
         "temperature": temperature_c,
@@ -356,7 +356,7 @@ async def get_sensor_data() -> dict[str, Any]:
         try:
             imu_data = sdk["imu"]  # type: ignore[assignment,index]
         except Exception:
-            pass
+            pass  # noqa: B110 - Ignorer erreur parsing IMU (utiliser valeur par défaut)
 
     return {
         "camera": {"status": "active", "resolution": "640x480", "fps": 30},

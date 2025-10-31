@@ -518,7 +518,7 @@ class ZenohBridge:
                     if yaw is not None:
                         joints_state["yaw_body"] = float(yaw)
             except Exception:
-                pass
+                pass  # noqa: B110 - Ignorer erreur lecture yaw_body (non critique)
 
             self.current_state.joints = joints_state
 

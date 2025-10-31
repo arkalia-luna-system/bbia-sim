@@ -31,7 +31,7 @@ try:
     _os.environ.setdefault("TF_CPP_MIN_LOG_LEVEL", "2")
     _os.environ.setdefault("MEDIAPIPE_DISABLE_GPU", "1")
 except Exception:
-    pass
+    pass  # noqa: B110 - Ignorer erreur configuration variables d'environnement MediaPipe
 
 
 class YOLODetector:

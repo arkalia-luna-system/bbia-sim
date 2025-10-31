@@ -1297,7 +1297,9 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
             intensity = 0.8  # Intensité par défaut
             if advanced_websocket_manager.robot:
                 # Type narrowing après vérification isinstance
-                assert isinstance(emotion, str)
+                assert isinstance(
+                    emotion, str
+                )  # noqa: B101 - Type narrowing après vérification isinstance
                 success = advanced_websocket_manager.robot.set_emotion(
                     emotion, intensity
                 )
@@ -1324,7 +1326,9 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                 return
 
             # Type narrowing après vérification robot
-            assert advanced_websocket_manager.robot is not None
+            assert (
+                advanced_websocket_manager.robot is not None
+            )  # noqa: B101 - Type narrowing après vérification
             robot = advanced_websocket_manager.robot
 
             if action == "look_at":
@@ -1367,8 +1371,12 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                 return
 
             # Type narrowing après vérifications
-            assert isinstance(behavior, str)
-            assert advanced_websocket_manager.robot is not None
+            assert isinstance(
+                behavior, str
+            )  # noqa: B101 - Type narrowing après vérification isinstance
+            assert (
+                advanced_websocket_manager.robot is not None
+            )  # noqa: B101 - Type narrowing après vérification
             robot = advanced_websocket_manager.robot
 
             success = robot.run_behavior(behavior, 5.0)
@@ -1397,8 +1405,12 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                 return
 
             # Type narrowing après vérifications
-            assert joint_data is not None
-            assert advanced_websocket_manager.robot is not None
+            assert (
+                joint_data is not None
+            )  # noqa: B101 - Type narrowing après vérification
+            assert (
+                advanced_websocket_manager.robot is not None
+            )  # noqa: B101 - Type narrowing après vérification
             robot = advanced_websocket_manager.robot
 
             joint = joint_data.get("joint")

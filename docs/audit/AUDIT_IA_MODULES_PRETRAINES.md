@@ -362,10 +362,10 @@ python scripts/test_pose_detection.py --image photo.jpg
 - ✅ Architecture modulaire excellente
 - ✅ Support TTS/STT/LLM/Vision complet
 
-**Ce qui manque (mais facile à ajouter)** :
+**Ce qui était manquant (maintenant tous ajoutés)** :
 1. ✅ **DeepFace** pour reconnaissance visage + émotions - **AJOUTÉ !** (voir `src/bbia_sim/face_recognition.py`)
 2. ✅ **MediaPipe Pose** pour détection postures - **ACTIVÉ !** (voir `src/bbia_sim/pose_detection.py`)
-3. **LLM léger** optionnel (facultatif) - Phi-2 pour RPi 5
+3. ✅ **LLM léger** - **AJOUTÉ !** Phi-2 et TinyLlama configurés (voir `bbia_huggingface.py` lignes 164-166)
 
 **Tout est open-source et gratuit** comme tu veux ! 🎉
 

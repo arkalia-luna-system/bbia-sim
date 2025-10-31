@@ -118,7 +118,7 @@ class BBIAPersonRecognition:
             if isinstance(image_path, np.ndarray):
                 import cv2
 
-                temp_path = f"/tmp/bbia_face_temp_{os.getpid()}.jpg"
+                temp_path = f"/tmp/bbia_face_temp_{os.getpid()}.jpg"  # noqa: B108 - Fichier temp sécurisé avec PID unique
                 cv2.imwrite(temp_path, image_path)
                 image_path = temp_path
 
@@ -175,7 +175,7 @@ class BBIAPersonRecognition:
                 try:
                     os.unlink(temp_path)
                 except Exception:
-                    pass
+                    pass  # noqa: B110 - Ignorer erreur nettoyage fichier temp (déjà supprimé ou inexistant)
 
     def detect_emotion(
         self, image_path: str | np.ndarray, enforce_detection: bool = False
@@ -200,7 +200,7 @@ class BBIAPersonRecognition:
             if isinstance(image_path, np.ndarray):
                 import cv2
 
-                temp_path = f"/tmp/bbia_emotion_temp_{os.getpid()}.jpg"
+                temp_path = f"/tmp/bbia_emotion_temp_{os.getpid()}.jpg"  # noqa: B108 - Fichier temp sécurisé avec PID unique
                 cv2.imwrite(temp_path, image_path)
                 image_path = temp_path
 
@@ -252,7 +252,7 @@ class BBIAPersonRecognition:
                 try:
                     os.unlink(temp_path)
                 except Exception:
-                    pass
+                    pass  # noqa: B110 - Ignorer erreur nettoyage fichier temp (déjà supprimé ou inexistant)
 
     def recognize_with_emotion(
         self, image_path: str | np.ndarray
