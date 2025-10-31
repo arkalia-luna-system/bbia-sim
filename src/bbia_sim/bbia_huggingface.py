@@ -1033,16 +1033,20 @@ class BBIAHuggingFace:
             result = (
                 result
                 + SUFFIX_POOL[
-                    _r.randrange(len(SUFFIX_POOL))
-                ]  # nosec B311 - Variété réponse non-crypto
+                    _r.randrange(
+                        len(SUFFIX_POOL)
+                    )  # nosec B311 - Variété réponse non-crypto
+                ]
             ).strip()
             if len(result) < min_len:
                 result = (
                     result
                     + " "
                     + SUFFIX_POOL[
-                        _r.randrange(len(SUFFIX_POOL))
-                    ]  # nosec B311 - Variété réponse non-crypto
+                        _r.randrange(
+                            len(SUFFIX_POOL)
+                        )  # nosec B311 - Variété réponse non-crypto
+                    ]
                 ).strip()
         if len(result) > max_len:
             cut = result[: max_len + 1]
@@ -1077,8 +1081,10 @@ class BBIAHuggingFace:
                 import random as _r
 
                 addition = SUFFIX_POOL[
-                    _r.randrange(len(SUFFIX_POOL))
-                ]  # nosec B311 - Variété réponse non-crypto
+                    _r.randrange(
+                        len(SUFFIX_POOL)
+                    )  # nosec B311 - Variété réponse non-crypto
+                ]
                 candidate = f"{text} {addition}".strip()
                 return self._normalize_response_length(candidate)
             return text
@@ -1100,11 +1106,13 @@ class BBIAHuggingFace:
                 "Merci pour votre message, souhaitez-vous que je détaille un point précis ?",
             ]
             base = base_pool[
-                _r.randrange(len(base_pool))
-            ]  # nosec B311 - Variété réponse non-crypto
+                _r.randrange(len(base_pool))  # nosec B311 - Variété réponse non-crypto
+            ]
             suffix = SUFFIX_POOL[
-                _r.randrange(len(SUFFIX_POOL))
-            ]  # nosec B311 - Variété réponse non-crypto
+                _r.randrange(
+                    len(SUFFIX_POOL)
+                )  # nosec B311 - Variété réponse non-crypto
+            ]
             candidate = f"{base}{suffix}".strip()
             return self._normalize_response_length(candidate)
         except Exception:
@@ -1164,8 +1172,8 @@ class BBIAHuggingFace:
             }
             variants = greetings.get(self.bbia_personality, greetings["friendly_robot"])
             return self._normalize_response_length(
-                random.choice(variants)
-            )  # nosec B311 - Variété réponse non-crypto
+                random.choice(variants)  # nosec B311 - Variété réponse non-crypto
+            )
 
         # Au revoir - Réponses émotionnelles selon contexte
         if any(
@@ -1197,8 +1205,8 @@ class BBIAHuggingFace:
             }
             variants = goodbyes.get(self.bbia_personality, goodbyes["friendly_robot"])
             return self._normalize_response_length(
-                random.choice(variants)
-            )  # nosec B311 - Variété réponse non-crypto
+                random.choice(variants)  # nosec B311 - Variété réponse non-crypto
+            )
 
         # Positif - Réponses adaptées selon intensité
         if (
@@ -1244,8 +1252,8 @@ class BBIAHuggingFace:
                 self.bbia_personality, positive_responses["friendly_robot"]
             )
             return self._normalize_response_length(
-                random.choice(variants)
-            )  # nosec B311 - Variété réponse non-crypto
+                random.choice(variants)  # nosec B311 - Variété réponse non-crypto
+            )
 
         # Négatif - Réponses empathiques
         if (
@@ -1289,8 +1297,8 @@ class BBIAHuggingFace:
                 self.bbia_personality, negative_responses["friendly_robot"]
             )
             return self._normalize_response_length(
-                random.choice(variants)
-            )  # nosec B311 - Variété réponse non-crypto
+                random.choice(variants)  # nosec B311 - Variété réponse non-crypto
+            )
 
         # Questions - Réponses adaptées selon type de question
         # AMÉLIORATION INTELLIGENCE: Détection type question pour réponses pertinentes
@@ -1344,8 +1352,8 @@ class BBIAHuggingFace:
                 self.bbia_personality, question_responses["friendly_robot"]
             )
             return self._normalize_response_length(
-                random.choice(variants)
-            )  # nosec B311 - Variété réponse non-crypto
+                random.choice(variants)  # nosec B311 - Variété réponse non-crypto
+            )
 
         # Référence au contexte précédent si disponible
         # AMÉLIORATION INTELLIGENCE: Utilisation du contexte pour cohérence
@@ -1409,8 +1417,8 @@ class BBIAHuggingFace:
                     self.bbia_personality, context_responses["friendly_robot"]
                 )
                 return self._normalize_response_length(
-                    random.choice(variants)
-                )  # noqa: B311 - Variété réponse non-crypto
+                    random.choice(variants)  # nosec B311 - Variété réponse non-crypto
+                )
 
         # Réponses génériques variées selon personnalité et sentiment
         # AMÉLIORATION INTELLIGENCE: Réponses naturelles, engageantes, moins robotiques
@@ -1466,8 +1474,8 @@ class BBIAHuggingFace:
             self.bbia_personality, generic_responses["friendly_robot"]
         )
         return self._normalize_response_length(
-            random.choice(variants)
-        )  # noqa: B311 - Variété réponse non-crypto
+            random.choice(variants)  # nosec B311 - Variété réponse non-crypto
+        )
 
     def _adapt_response_to_personality(
         self, response: str, sentiment: dict[str, Any]  # noqa: ARG002
@@ -1514,13 +1522,20 @@ class BBIAHuggingFace:
                 import random as _r
 
                 t = (
-                    t + SUFFIX_POOL[_r.randrange(len(SUFFIX_POOL))]
-                ).strip()  # nosec B311 - Variété réponse non-crypto
+                    t
+                    + SUFFIX_POOL[
+                        _r.randrange(len(SUFFIX_POOL))
+                    ]  # nosec B311 - Variété réponse non-crypto
+                ).strip()
                 # Si c'est encore trop court, compléter une seconde fois
                 if len(t) < min_len:
                     t = (
-                        t + " " + SUFFIX_POOL[_r.randrange(len(SUFFIX_POOL))]
-                    ).strip()  # nosec B311 - Variété réponse non-crypto
+                        t
+                        + " "
+                        + SUFFIX_POOL[
+                            _r.randrange(len(SUFFIX_POOL))
+                        ]  # nosec B311 - Variété réponse non-crypto
+                    ).strip()
             if len(t) <= max_len:
                 # Anti-duplication récente
                 try:
