@@ -1518,8 +1518,8 @@ class BBIAHuggingFace:
             except Exception:
                 pass  # noqa: B110 - Ignorer erreur évitement doublons (utiliser texte final)
             return t4
-        except Exception:
-            return text  # noqa: B110 - Fallback sûr en cas d'erreur normalisation
+        except Exception:  # noqa: B110 - Fallback sûr en cas d'erreur normalisation
+            return text
 
     def _get_recent_context(self) -> str | None:
         """Extrait un mot-clé du contexte récent pour cohérence conversationnelle.
