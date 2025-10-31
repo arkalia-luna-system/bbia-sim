@@ -168,11 +168,14 @@ class MuJoCoBackend(RobotAPI):
             # Skybox avec dégradé gris lunaire → bleu céleste dans le modèle XML
             try:
                 # Chercher la texture skybox_bbia
-                for i in range(self.model.ntexture):
-                    name = mujoco.mj_id2name(self.model, mujoco.mjtObj.mjOBJ_TEXTURE, i)
-                    if name == "skybox_bbia":
-                        logger.debug(f"Texture skybox_bbia trouvée à l'index {i}")
-                        break
+                if self.model is not None:
+                    for i in range(self.model.ntexture):
+                        name = mujoco.mj_id2name(
+                            self.model, mujoco.mjtObj.mjOBJ_TEXTURE, i
+                        )
+                        if name == "skybox_bbia":
+                            logger.debug(f"Texture skybox_bbia trouvée à l'index {i}")
+                            break
 
                 logger.info(
                     "Viewer MuJoCo lancé (fond BBIA gris lunaire → bleu céleste)"
