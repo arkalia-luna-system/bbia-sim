@@ -4,6 +4,7 @@ Tests pour le backend Reachy-Mini SDK officiel
 Validation complète de la conformité avec le SDK officiel
 """
 
+import os
 import sys
 from pathlib import Path
 
@@ -14,7 +15,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 from bbia_sim.backends.reachy_mini_backend import ReachyMiniBackend
 from bbia_sim.mapping_reachy import ReachyMapping
-from bbia_sim.robot_api import RobotFactory
+from bbia_sim.robot_factory import RobotFactory
 
 
 class TestReachyMiniBackend:
@@ -69,7 +70,8 @@ class TestReachyMiniBackend:
     @pytest.mark.fast
     def test_forbidden_joints(self):
         """Test des joints interdits."""
-        expected_forbidden = {"left_antenna", "right_antenna"}
+        # Note: Antennes maintenant optionnelles (commentées dans forbidden_joints)
+        expected_forbidden = set()  # Ou joints passifs uniquement
         assert self.robot.forbidden_joints == expected_forbidden
 
     @pytest.mark.unit
@@ -285,28 +287,49 @@ class TestReachyMiniBackendIntegration:
         assert avg_latency < 1.0  # < 1ms en simulation
 
 
-@pytest.mark.skip(reason="Test nécessite SDK reachy_mini installé")
+@pytest.mark.skipif(
+    os.environ.get("SKIP_HARDWARE_TESTS", "1") == "1",
+    reason="Tests hardware désactivés par défaut. Définir SKIP_HARDWARE_TESTS=0 pour activer",
+)
 class TestReachyMiniBackendReal:
-    """Tests pour le backend avec SDK réel (nécessite robot physique)."""
+    """Tests pour le backend avec SDK réel (nécessite robot physique).
+
+    Ces tests nécessitent un robot Reachy Mini physique connecté.
+    Par défaut, ils sont désactivés pour éviter les timeouts.
+    Activer avec: SKIP_HARDWARE_TESTS=0 pytest ...
+    """
 
     def test_real_connection(self):
         """Test connexion réelle (nécessite robot)."""
-        robot = RobotFactory.create_backend("reachy_mini")
+        # Forcer use_sim=False pour chercher un robot réel
+        robot = RobotFactory.create_backend("reachy_mini", use_sim=False)
+
+        if robot is None:
+            pytest.skip("Backend reachy_mini non disponible")
 
         # Ce test nécessite un robot physique connecté
         success = robot.connect()
         # Ne peut pas être testé sans robot physique
         assert isinstance(success, bool)
 
+        if success:
+            robot.disconnect()
+
     def test_real_joint_control(self):
         """Test contrôle réel des joints (nécessite robot)."""
-        robot = RobotFactory.create_backend("reachy_mini")
+        # Forcer use_sim=False pour chercher un robot réel
+        robot = RobotFactory.create_backend("reachy_mini", use_sim=False)
+
+        if robot is None:
+            pytest.skip("Backend reachy_mini non disponible")
 
         # Ce test nécessite un robot physique connecté
         if robot.connect():
             success = robot.set_joint_pos("stewart_1", 0.1)
             assert isinstance(success, bool)
             robot.disconnect()
+        else:
+            pytest.skip("Connexion robot échouée")
 
 
 if __name__ == "__main__":
