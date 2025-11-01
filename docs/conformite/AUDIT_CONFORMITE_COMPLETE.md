@@ -1,12 +1,12 @@
 # Rapport d'Audit de Conformité BBIA-SIM vs SDK Officiel Reachy Mini
 
-**Date:** Sat Nov  1 19:08:11 CET 2025
-**Total incohérences:** 7
+**Date:** Sat Nov  1 19:10:08 CET 2025
+**Total incohérences:** 6
 
 ## Résumé
 
 - **STRICT (identique):** 0
-- **COMPATIBLE (différent mais accepté):** 2
+- **COMPATIBLE (différent mais accepté):** 1
 - **INCOMPATIBLE (erreur probable):** 5
 
 ## Incohérences Détectées
@@ -38,17 +38,12 @@
 - **Description:** Endpoint critique manquant: POST /api/motors/set_mode/{mode}
 - **Correction:** Ajouter l'endpoint POST /api/motors/set_mode/{mode} dans le router approprié
 
-### QUALITY (2 issues)
+### QUALITY (1 issues)
 
 #### COMPATIBLE: Code non formaté avec black
 - **Fichier:** `src/bbia_sim/`
 - **Description:** Code non formaté avec black
 - **Correction:** Exécuter: black src/bbia_sim/
-
-#### COMPATIBLE: Erreurs ruff détectées: 10
-- **Fichier:** `src/bbia_sim/`
-- **Description:** Erreurs ruff détectées: 10
-- **Correction:** Exécuter: ruff check src/bbia_sim/ --fix
 
 ## Checklist Actionable
 

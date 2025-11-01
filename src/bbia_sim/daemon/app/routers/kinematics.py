@@ -42,12 +42,16 @@ async def get_kinematics_info() -> dict[str, Any]:
 
             if hasattr(robot, "kinematics_engine"):
                 kinematics_engine = str(robot.kinematics_engine)
-            elif hasattr(robot, "_backend") and hasattr(robot._backend, "kinematics_engine"):
+            elif hasattr(robot, "_backend") and hasattr(
+                robot._backend, "kinematics_engine"
+            ):
                 kinematics_engine = str(robot._backend.kinematics_engine)
 
             if hasattr(robot, "check_collision"):
                 check_collision = bool(robot.check_collision)
-            elif hasattr(robot, "_backend") and hasattr(robot._backend, "check_collision"):
+            elif hasattr(robot, "_backend") and hasattr(
+                robot._backend, "check_collision"
+            ):
                 check_collision = bool(robot._backend.check_collision)
 
             robot.disconnect()
@@ -92,7 +96,9 @@ async def get_urdf() -> dict[str, str]:
                 hasattr(robot, "_backend") and hasattr(robot._backend, "urdf")
             ):
                 urdf_attr = getattr(robot, "urdf", None) or (
-                    getattr(robot._backend, "urdf", None) if hasattr(robot, "_backend") else None
+                    getattr(robot._backend, "urdf", None)
+                    if hasattr(robot, "_backend")
+                    else None
                 )
                 if urdf_attr:
                     urdf_content = str(urdf_attr)
@@ -125,7 +131,9 @@ async def get_stl_file(filename: str) -> Response:
     """
     # Sécurisation : ne permettre que les fichiers .stl
     if not filename.endswith(".stl"):
-        raise HTTPException(status_code=400, detail="Seuls les fichiers .stl sont autorisés")
+        raise HTTPException(
+            status_code=400, detail="Seuls les fichiers .stl sont autorisés"
+        )
 
     # Nettoyer le chemin pour éviter les directory traversal
     safe_filename = Path(filename).name

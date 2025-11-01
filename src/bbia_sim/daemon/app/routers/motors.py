@@ -115,7 +115,9 @@ async def set_motor_mode(
                 if hasattr(backend.robot, "enable_gravity_compensation"):
                     backend.robot.enable_gravity_compensation()
                 else:
-                    logger.warning("enable_gravity_compensation non disponible, utilisant fallback")
+                    logger.warning(
+                        "enable_gravity_compensation non disponible, utilisant fallback"
+                    )
         else:
             # En simulation, on log juste
             logger.info(f"Mode simulation: moteurs en mode {mode.value}")

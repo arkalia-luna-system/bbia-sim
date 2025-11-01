@@ -62,9 +62,7 @@ def _read_sdk_telemetry() -> dict[str, Any] | None:
             backend.connect()
         except Exception:
             # Ne pas bloquer si la connexion échoue
-            return (
-                None  # noqa: B110 - Retourner None si connexion SDK échoue (comportement attendu)
-            )
+            return None  # noqa: B110 - Retourner None si connexion SDK échoue (comportement attendu)
 
         try:
             # Lecture batterie/IMU si exposés via robot.media
@@ -85,16 +83,12 @@ def _read_sdk_telemetry() -> dict[str, Any] | None:
                 try:
                     battery_level = float(media_mgr.get_battery_level())
                 except Exception:
-                    battery_level = (
-                        None  # noqa: B110 - Valeur par défaut si lecture batterie échoue
-                    )
+                    battery_level = None  # noqa: B110 - Valeur par défaut si lecture batterie échoue
             elif hasattr(media_mgr, "battery"):
                 try:
                     battery_level = float(media_mgr.battery)
                 except Exception:
-                    battery_level = (
-                        None  # noqa: B110 - Valeur par défaut si lecture batterie échoue
-                    )
+                    battery_level = None  # noqa: B110 - Valeur par défaut si lecture batterie échoue
 
             if battery_level is not None:
                 data["battery"] = battery_level
@@ -105,9 +99,7 @@ def _read_sdk_telemetry() -> dict[str, Any] | None:
                 try:
                     temperature = float(media_mgr.get_temperature())
                 except Exception:
-                    temperature = (
-                        None  # noqa: B110 - Valeur par défaut si lecture température échoue
-                    )
+                    temperature = None  # noqa: B110 - Valeur par défaut si lecture température échoue
             if temperature is not None:
                 data["temperature"] = temperature
 
@@ -191,16 +183,22 @@ async def get_full_state(
             if with_control_mode:
                 if hasattr(robot, "get_motor_control_mode"):
                     mode = robot.get_motor_control_mode()
-                    result["control_mode"] = mode.value if hasattr(mode, "value") else str(mode)
+                    result["control_mode"] = (
+                        mode.value if hasattr(mode, "value") else str(mode)
+                    )
 
             # Head pose
             if with_head_pose:
                 if hasattr(robot, "get_current_head_pose"):
                     pose = robot.get_current_head_pose()
                     if use_pose_matrix:
-                        result["head_pose"] = Matrix4x4Pose.from_pose_array(pose).model_dump()
+                        result["head_pose"] = Matrix4x4Pose.from_pose_array(
+                            pose
+                        ).model_dump()
                     else:
-                        result["head_pose"] = XYZRPYPose.from_pose_array(pose).model_dump()
+                        result["head_pose"] = XYZRPYPose.from_pose_array(
+                            pose
+                        ).model_dump()
 
             # Body yaw
             if with_body_yaw:
@@ -211,7 +209,10 @@ async def get_full_state(
             if with_antenna_positions:
                 if hasattr(robot, "get_present_antenna_joint_positions"):
                     positions = robot.get_present_antenna_joint_positions()
-                    result["antennas_position"] = [float(positions[0]), float(positions[1])]
+                    result["antennas_position"] = [
+                        float(positions[0]),
+                        float(positions[1]),
+                    ]
 
             robot.disconnect()
     except Exception as e:
@@ -290,8 +291,12 @@ async def get_battery_level() -> BatteryInfo:
             battery_level = float(sdk["battery"])  # type: ignore[index]
         except Exception:
             pass  # noqa: B110 - Ignorer erreur parsing batterie (utiliser valeur par défaut)
-    status = "good" if battery_level > 20 else "low" if battery_level > 10 else "critical"
-    estimated_time = f"{battery_level * 0.8:.1f}h" if battery_level > 20 else "Recharge nécessaire"
+    status = (
+        "good" if battery_level > 20 else "low" if battery_level > 10 else "critical"
+    )
+    estimated_time = (
+        f"{battery_level * 0.8:.1f}h" if battery_level > 20 else "Recharge nécessaire"
+    )
 
     return BatteryInfo(
         level=battery_level,
@@ -430,7 +435,9 @@ async def get_present_head_pose(
         Pose de la tête (format choisi)
     """
 
-    logger.info(f"Récupération de la pose actuelle de la tête (matrix={use_pose_matrix})")
+    logger.info(
+        f"Récupération de la pose actuelle de la tête (matrix={use_pose_matrix})"
+    )
     try:
         import numpy as np
 

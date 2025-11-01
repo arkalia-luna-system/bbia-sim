@@ -126,7 +126,10 @@ class TestReachyMiniBackendRapid:
             # Test joints interdits
             # Note: Antennes maintenant optionnelles (commentées dans forbidden_joints)
             # Vérifier que les joints passifs sont toujours bloqués
-            assert "passive_1" in backend.forbidden_joints or len(backend.forbidden_joints) >= 0
+            assert (
+                "passive_1" in backend.forbidden_joints
+                or len(backend.forbidden_joints) >= 0
+            )
         except ImportError:
             pytest.skip("Module non disponible")
 

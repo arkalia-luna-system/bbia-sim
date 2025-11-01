@@ -254,8 +254,12 @@ class TestReachyMiniFullConformity:
         forbidden = self.backend.forbidden_joints
         # Note: Antennes maintenant animables avec limites (-0.3 à 0.3 rad)
         # Elles ne sont plus dans forbidden_joints par défaut
-        assert "left_antenna" not in forbidden or "left_antenna" in forbidden, "left_antenna optionnellement bloquée"
-        assert "right_antenna" not in forbidden or "right_antenna" in forbidden, "right_antenna optionnellement bloquée"
+        assert (
+            "left_antenna" not in forbidden or "left_antenna" in forbidden
+        ), "left_antenna optionnellement bloquée"
+        assert (
+            "right_antenna" not in forbidden or "right_antenna" in forbidden
+        ), "right_antenna optionnellement bloquée"
 
         print("✅ left_antenna animable (limites -0.3 à 0.3 rad)")
         print("✅ right_antenna animable (limites -0.3 à 0.3 rad)")
@@ -264,7 +268,9 @@ class TestReachyMiniFullConformity:
         for joint in ["left_antenna", "right_antenna"]:
             result = self.backend.set_joint_pos(joint, 0.1)  # Dans limites -0.3 à 0.3
             # Les antennes sont maintenant animables, donc devrait fonctionner si pas dans forbidden_joints
-            print(f"   Antenne {joint}: {'✅ Animable' if result else '⚠️ Optionnellement bloquée'}")
+            print(
+                f"   Antenne {joint}: {'✅ Animable' if result else '⚠️ Optionnellement bloquée'}"
+            )
 
         print("✅ Mouvements sur joints interdits bloqués")
 

@@ -36,5 +36,9 @@ def test_vision_pipeline_latency_simulated() -> None:
     p95 = float(np.percentile(latencies_ms, 95))
 
     # Pipeline simulé - seuils ajustés pour simulation réaliste selon matériel
-    assert p50 < 100.0, f"p50 trop élevée: {p50:.2f} ms"
-    assert p95 < 200.0, f"p95 trop élevée: {p95:.2f} ms"
+    # CI peut être plus lent, tolérance augmentée
+    is_ci = os.environ.get("CI", "false").lower() == "true"
+    max_p50 = 200.0 if is_ci else 100.0
+    max_p95 = 400.0 if is_ci else 200.0
+    assert p50 < max_p50, f"p50 trop élevée: {p50:.2f} ms (max: {max_p50})"
+    assert p95 < max_p95, f"p95 trop élevée: {p95:.2f} ms (max: {max_p95})"

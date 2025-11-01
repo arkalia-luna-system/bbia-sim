@@ -61,7 +61,9 @@ async def start_daemon(
 
         success = await simulation_service.start_simulation(headless=True)
         if not success:
-            raise HTTPException(status_code=500, detail="Échec du démarrage de la simulation")
+            raise HTTPException(
+                status_code=500, detail="Échec du démarrage de la simulation"
+            )
 
         # Si wake_up demandé, utiliser comportement wake_up
         if wake_up:
@@ -157,7 +159,9 @@ async def restart_daemon() -> dict[str, Any]:
         # Redémarrer
         success = await simulation_service.start_simulation(headless=True)
         if not success:
-            raise HTTPException(status_code=500, detail="Échec du redémarrage de la simulation")
+            raise HTTPException(
+                status_code=500, detail="Échec du redémarrage de la simulation"
+            )
 
         return {
             "status": "restarted",

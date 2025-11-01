@@ -55,7 +55,9 @@ def check_joints():
         print()
         print("🎯 RECOMMANDATIONS:")
         print("   • Utilisez 'yaw_body' pour les animations principales")
-        print("   • Les antennes (left_antenna, right_antenna) sont ANIMABLES avec limites (-0.3 à 0.3 rad)")
+        print(
+            "   • Les antennes (left_antenna, right_antenna) sont ANIMABLES avec limites (-0.3 à 0.3 rad)"
+        )
         print("   • Les joints passifs (passive_1-7) sont BLOQUÉES")
         print("   • La plateforme Stewart (stewart_1-6) est mobile mais complexe")
 

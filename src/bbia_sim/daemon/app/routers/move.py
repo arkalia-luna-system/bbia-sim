@@ -172,7 +172,9 @@ async def goto(goto_req: GotoModelRequest) -> MoveUUID:
                         # Matrix4x4Pose
                         from ...models import Matrix4x4Pose
 
-                        head_pose = Matrix4x4Pose(m=tuple(pose_data["m"])).to_pose_array()
+                        head_pose = Matrix4x4Pose(
+                            m=tuple(pose_data["m"])
+                        ).to_pose_array()
                     else:
                         # XYZRPYPose
                         head_pose = XYZRPYPose(
@@ -265,8 +267,8 @@ async def stop_move(uuid: MoveUUID) -> dict[str, str]:
     try:
         move_uuid = UUID(uuid.uuid)
         return await stop_move_task(move_uuid)
-    except ValueError:
-        raise HTTPException(status_code=400, detail=f"Invalid UUID format: {uuid.uuid}")
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=f"Invalid UUID format: {uuid.uuid}") from e
     except KeyError as e:
         raise HTTPException(status_code=404, detail=str(e)) from e
 

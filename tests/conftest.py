@@ -65,12 +65,12 @@ def acquire_lock(recursion_level: int = 0) -> bool:
 
             # Enregistrer la libération du lock à la fin (plusieurs handlers pour sécurité)
             atexit.register(release_lock, lock_fd)
-            
+
             # Handler pour SIGINT (Ctrl+C) et SIGTERM
             def signal_handler(signum, frame):
                 release_lock(lock_fd)
                 sys.exit(1)
-            
+
             signal.signal(signal.SIGINT, signal_handler)
             signal.signal(signal.SIGTERM, signal_handler)
 
@@ -191,7 +191,7 @@ def pytest_unconfigure(config: pytest.Config) -> None:
         except Exception:
             pass
         _lock_fd = None
-    
+
     # Nettoyer aussi le fichier lock au cas où
     try:
         if LOCK_FILE.exists():

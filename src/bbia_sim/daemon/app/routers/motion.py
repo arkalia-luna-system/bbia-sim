@@ -134,12 +134,16 @@ async def set_joint_positions(positions: list[JointPosition]) -> dict[str, Any]:
         Statut de la commande
 
     """
-    logger.info(f"Définition des positions d'articulations : {len(positions)} articulations")
+    logger.info(
+        f"Définition des positions d'articulations : {len(positions)} articulations"
+    )
 
     # Validation des noms de joints avec notre système centralisé
     for pos in positions:
         if not validate_joint_name(pos.joint_name):
-            raise HTTPException(status_code=422, detail=f"Joint '{pos.joint_name}' non valide")
+            raise HTTPException(
+                status_code=422, detail=f"Joint '{pos.joint_name}' non valide"
+            )
 
         # Clamp des angles dans les limites
         clamped_angle = clamp_joint_angle(pos.joint_name, pos.position)
@@ -179,7 +183,9 @@ async def control_gripper(side: str, action: str) -> dict[str, Any]:
 
     """
     if side not in ["left", "right"]:
-        raise HTTPException(status_code=400, detail="Côté invalide. Utilisez 'left' ou 'right'")
+        raise HTTPException(
+            status_code=400, detail="Côté invalide. Utilisez 'left' ou 'right'"
+        )
 
     if action not in ["open", "close", "grip"]:
         raise HTTPException(
@@ -209,11 +215,15 @@ async def control_head(head_control: HeadControl) -> dict[str, Any]:
         Statut de la commande
 
     """
-    logger.info(f"Contrôle de la tête : yaw={head_control.yaw}, pitch={head_control.pitch}")
+    logger.info(
+        f"Contrôle de la tête : yaw={head_control.yaw}, pitch={head_control.pitch}"
+    )
 
     # Application des positions dans la simulation
     success_yaw = simulation_service.set_joint_position("neck_yaw", head_control.yaw)
-    success_pitch = simulation_service.set_joint_position("head_pitch", head_control.pitch)
+    success_pitch = simulation_service.set_joint_position(
+        "head_pitch", head_control.pitch
+    )
 
     return {
         "status": "moving" if (success_yaw or success_pitch) else "failed",
