@@ -690,6 +690,32 @@ Comparaison exhaustive avec le repo officiel `pollen-robotics/reachy_mini` (bran
 
 ---
 
+## 📋 CHECKLIST FINALE DÉTAILLÉE
+
+Une analyse exhaustive complémentaire a été effectuée (31 Janvier 2025) comparant TOUS les endpoints REST, classes, scripts, assets, modèles MuJoCo, guides, helpers et tests d'intégration.
+
+**Document créé** : `docs/conformite/CHECKLIST_FINALE_CONFORMITE.md`
+
+### Résumé des incohérences identifiées
+
+**🔴 CRITIQUES** (2 incohérences à corriger immédiatement) :
+1. **Structure API `/move/goto`** : BBIA utilise `Pose` + query params, SDK utilise `GotoModelRequest`
+2. **Retour `goto`** : BBIA retourne `dict`, SDK retourne `MoveUUID` (UUID pour tracking)
+
+**🟡 MODÉRÉES** (7 améliorations recommandées) :
+- Endpoints `/move` manquants : `running`, `stop`, `ws/updates`, `set_target`, `ws/set_target`
+- Paramètres optionnels manquants : `/state/full` (8 paramètres), `/state/ws/full` (7 paramètres), `/present_head_pose` (use_pose_matrix)
+
+**🟢 OPTIONNELLES** (2 fonctionnalités avancées) :
+- Support RecordedMoves HuggingFace (datasets)
+- Tests de conformité supplémentaires
+
+**Temps estimé pour 100% conformité** : ~12-15h de travail
+
+**Voir checklist actionnable complète** : `docs/conformite/CHECKLIST_FINALE_CONFORMITE.md`
+
+---
+
 ## Conclusion
 
 Votre projet BBIA-SIM est conforme au SDK Reachy Mini officiel au niveau backend, mais présente des lacunes au niveau endpoints REST API.
