@@ -261,6 +261,51 @@ app.include_router(
 )
 app.include_router(telemetry.router, prefix="/ws", tags=["telemetry"])
 
+
+# Endpoint JSON racine pour les tests et API clients
+@app.get("/api", response_class=JSONResponse)
+@app.get("/api/", response_class=JSONResponse)
+async def root_api() -> dict[str, Any]:
+    """Point d'entrée principal de l'API en JSON."""
+    return {
+        "message": "BBIA-SIM API - Écosystème Reachy Mini",
+        "version": "1.2.0",
+        "status": "running",
+        "description": (
+            "API publique pour le contrôle du robot Reachy Mini avec modules BBIA"
+        ),
+        "endpoints": {
+            "ecosystem": "/api/ecosystem",
+            "state": "/api/state",
+            "motion": "/api/motion",
+            "move": "/api/move",
+            "motors": "/api/motors",
+            "daemon": "/api/daemon",
+            "kinematics": "/api/kinematics",
+            "apps": "/api/apps",
+            "telemetry": "/ws/telemetry",
+            "docs": "/docs",
+            "redoc": "/redoc",
+            "openapi": "/openapi.json",
+        },
+        "features": [
+            "REST API",
+            "WebSocket telemetry",
+            "MuJoCo simulation",
+            "Robot control",
+            "BBIA emotions",
+            "BBIA behaviors",
+            "Demo modes",
+            "OpenAPI documentation",
+        ],
+        "contact": {
+            "name": "Arkalia Luna System",
+            "email": "arkalia.luna.system@gmail.com",
+            "github": "https://github.com/arkalia-luna-system/bbia-sim",
+        },
+    }
+
+
 # Dashboard (conforme SDK officiel)
 STATIC_DIR = Path(__file__).parent / "dashboard" / "static"
 TEMPLATES_DIR = Path(__file__).parent / "dashboard" / "templates"

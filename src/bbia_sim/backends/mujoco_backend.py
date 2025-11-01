@@ -159,7 +159,7 @@ class MuJoCoBackend(RobotAPI):
             if hasattr(move, "joint_states"):
                 # Format: dict[joint_name, positions]
                 for joint_name, positions in move.joint_states.items():
-                    if isinstance(positions, (list, tuple)) and len(positions) > 0:
+                    if isinstance(positions, list | tuple) and len(positions) > 0:
                         # Appliquer la dernière position (simulation simplifiée)
                         self.set_joint_pos(joint_name, float(positions[-1]))
             elif hasattr(move, "trajectory"):
@@ -169,7 +169,7 @@ class MuJoCoBackend(RobotAPI):
                     # Appliquer les positions du dernier état
                     last_state = trajectory[-1]
                     for joint_name, position in last_state.items():
-                        if isinstance(position, (int, float)):
+                        if isinstance(position, int | float):
                             self.set_joint_pos(joint_name, float(position))
             elif hasattr(move, "positions"):
                 # Format alternatif

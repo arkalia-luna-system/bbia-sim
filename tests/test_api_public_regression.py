@@ -21,8 +21,13 @@ def api_client() -> TestClient:
 @pytest.mark.fast
 def test_api_root_endpoint(api_client: TestClient) -> None:
     """Test endpoint racine."""
+    # Le endpoint / peut retourner HTML (dashboard) ou JSON (fallback)
     response = api_client.get("/")
     assert response.status_code == 200
+    # Si c'est HTML, tester l'endpoint JSON alternatif
+    if "text/html" in response.headers.get("content-type", ""):
+        response = api_client.get("/api")
+        assert response.status_code == 200
     data = response.json()
     assert "message" in data or "version" in data
 
