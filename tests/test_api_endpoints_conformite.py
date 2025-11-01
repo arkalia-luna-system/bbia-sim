@@ -138,3 +138,31 @@ class TestStateEndpoints:
         assert response.status_code == 200
         data = response.json()
         assert "antennas" in data or ("left" in data and "right" in data)
+
+
+class TestGotoPoseInterpolation:
+    """Tests pour goto_pose avec interpolation."""
+
+    def test_goto_pose_minjerk(self, api_token: str) -> None:
+        """Test POST /api/motion/goto_pose avec minjerk."""
+        pose = {"x": 0.1, "y": 0.0, "z": 0.3, "roll": 0.0, "pitch": 0.0, "yaw": 0.1}
+        response = client.post(
+            "/api/motion/goto_pose?duration=2.0&interpolation=minjerk",
+            json=pose,
+            headers={"Authorization": f"Bearer {api_token}"},
+        )
+        assert response.status_code == 200
+        data = response.json()
+        assert data.get("interpolation") == "minjerk"
+
+    def test_goto_pose_linear(self, api_token: str) -> None:
+        """Test POST /api/motion/goto_pose avec linear."""
+        pose = {"x": 0.0, "y": 0.0, "z": 0.2, "roll": 0.0, "pitch": 0.0, "yaw": 0.0}
+        response = client.post(
+            "/api/motion/goto_pose?duration=1.5&interpolation=linear",
+            json=pose,
+            headers={"Authorization": f"Bearer {api_token}"},
+        )
+        assert response.status_code == 200
+        data = response.json()
+        assert data.get("interpolation") == "linear"

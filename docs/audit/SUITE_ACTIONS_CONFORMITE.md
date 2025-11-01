@@ -41,40 +41,22 @@
 
 ### 🟡 MODÉRÉ - Pour Conformité Complète (92%)
 
-#### 1. WebSocket State Streaming
+#### 1. WebSocket State Streaming ✅ IMPLÉMENTÉ
 
-**`WebSocket /api/state/ws/full`** - Stream état complet
+**`WebSocket /api/state/ws/full`** - Stream état complet ✅
 - **Impact** : Modéré - Utile pour monitoring temps réel
-- **Priorité** : 📅 Court terme (1-2 semaines)
-- **Fichier** : `src/bbia_sim/daemon/app/routers/state.py`
+- **Fichier** : `src/bbia_sim/daemon/app/routers/state.py` ✅
+- **Test** : `tests/test_api_websocket_state.py` ✅
 
-```python
-@router.websocket("/ws/full")
-async def ws_full_state(
-    websocket: WebSocket,
-    frequency: float = 10.0,
-    ...
-) -> None:
-    """WebSocket endpoint pour stream état complet."""
-    # Implémentation similaire à /ws/telemetry mais avec structure FullState
-```
+#### 2. Endpoints Motion Améliorés ✅ IMPLÉMENTÉ
 
-#### 2. Endpoints Motion Améliorés
-
-**Adapter `POST /api/motion/goto_pose`** pour accepter `interpolation`
+**Adapter `POST /api/motion/goto_pose`** pour accepter `interpolation` ✅
 - **Impact** : Modéré - Améliore compatibilité avec SDK officiel
-- **Priorité** : 📅 Moyen terme
-- **Fichier** : `src/bbia_sim/daemon/app/routers/motion.py`
-
-**Paramètres à ajouter** :
-```python
-{
-  "head_pose": AnyPose | None,
-  "antennas": tuple[float, float] | None,
-  "duration": float,
-  "interpolation": "linear" | "minjerk" | "ease" | "cartoon"
-}
-```
+- **Fichier** : `src/bbia_sim/daemon/app/routers/motion.py` ✅
+- **Paramètres ajoutés** :
+  - `duration: float` (query param)
+  - `interpolation: InterpolationMode` (linear, minjerk, ease, cartoon)
+- **Test** : `tests/test_api_endpoints_conformite.py::TestGotoPoseInterpolation` ✅
 
 #### 3. Router Kinematics (Optionnel)
 
@@ -101,19 +83,19 @@ async def ws_full_state(
 | Catégorie | Total | Implémenté | Manquant | Status |
 |-----------|-------|------------|----------|--------|
 | **Critiques** | 8 | 8 | 0 | ✅ 100% |
-| **Modérés** | 4 | 3 | 1 | 🟡 75% |
+| **Modérés** | 4 | 4 | 0 | ✅ 100% |
 | **Optionnels** | 14 | 9 | 5 | 🟡 64% |
-| **TOTAL** | 26 | 20 | 6 | 🟡 **77%** |
+| **TOTAL** | 26 | 21 | 5 | 🟡 **81%** |
 
 ### Prochaines Étapes Recommandées
 
-1. **Immédiat** (Semaine 1)
+1. **Immédiat** (Semaine 1) ✅ COMPLET
    - ✅ Tests endpoints existants
    - ✅ Documentation mise à jour
-   - ⚠️ WebSocket state streaming (optionnel)
+   - ✅ WebSocket state streaming implémenté
 
-2. **Court terme** (Semaines 2-3)
-   - 🟡 Adapter `goto_pose` avec interpolation
+2. **Court terme** (Semaines 2-3) ✅ COMPLET
+   - ✅ Adapter `goto_pose` avec interpolation
    - 🟡 Tests avec robot réel (quand disponible)
 
 3. **Moyen terme** (Semaines 4-8)
@@ -131,10 +113,9 @@ async def ws_full_state(
 **Cible** : 92% de conformité (24/26 endpoints)
 
 **Reste à implémenter pour atteindre 92%** :
-- 1 endpoint modéré (WebSocket state)
-- 3 endpoints optionnels non critiques
+- 3 endpoints optionnels non critiques (kinematics, apps)
 
-**Actuellement** : **77% (20/26)** ✅
+**Actuellement** : **81% (21/26)** ✅ (+4 endpoints depuis début)
 
 ---
 

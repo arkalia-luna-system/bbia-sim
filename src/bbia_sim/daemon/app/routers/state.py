@@ -5,7 +5,7 @@ import os
 from datetime import datetime
 from typing import Any
 
-from fastapi import APIRouter
+from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 from pydantic import BaseModel
 
 from ....robot_factory import RobotFactory
@@ -473,6 +473,118 @@ async def get_present_antenna_joint_positions() -> dict[str, Any]:
             "unit": "radians",
             "timestamp": datetime.now().isoformat(),
         }
+
+
+@router.websocket("/ws/full")
+async def ws_full_state(
+    websocket: WebSocket,
+    frequency: float = 10.0,
+    with_head_pose: bool = True,
+    with_body_yaw: bool = True,
+    with_antenna_positions: bool = True,
+) -> None:
+    """WebSocket endpoint pour stream l'état complet du robot.
+
+    Args:
+        websocket: Connexion WebSocket
+        frequency: Fréquence d'envoi en Hz (défaut: 10.0)
+        with_head_pose: Inclure pose de la tête
+        with_body_yaw: Inclure yaw du corps
+        with_antenna_positions: Inclure positions des antennes
+    """
+    import asyncio
+
+    await websocket.accept()
+    period = 1.0 / frequency
+
+    try:
+        while True:
+            # Récupérer l'état complet
+            state_data: dict[str, Any] = {
+                "timestamp": datetime.now().isoformat(),
+            }
+
+            try:
+                from ....robot_factory import RobotFactory
+
+                robot = RobotFactory.create_backend("mujoco")
+                if robot:
+                    robot.connect()
+
+                    if with_head_pose:
+                        if hasattr(robot, "get_current_head_pose"):
+                            pose = robot.get_current_head_pose()
+                            state_data["head_pose"] = (
+                                pose.tolist()
+                                if hasattr(pose, "tolist")
+                                else [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]]
+                            )
+
+                    if with_body_yaw:
+                        if hasattr(robot, "get_current_body_yaw"):
+                            state_data["body_yaw"] = float(robot.get_current_body_yaw())
+                        elif hasattr(robot, "get_joint_positions"):
+                            positions = robot.get_joint_positions()
+                            state_data["body_yaw"] = float(positions.get("yaw_body", 0.0))
+                        else:
+                            state_data["body_yaw"] = 0.0
+
+                    if with_antenna_positions:
+                        if hasattr(robot, "get_present_antenna_joint_positions"):
+                            positions = robot.get_present_antenna_joint_positions()
+                            state_data["antennas_position"] = [
+                                float(positions[0]),
+                                float(positions[1]),
+                            ]
+                        elif hasattr(robot, "get_joint_positions"):
+                            all_pos = robot.get_joint_positions()
+                            state_data["antennas_position"] = [
+                                float(all_pos.get("left_antenna", 0.0)),
+                                float(all_pos.get("right_antenna", 0.0)),
+                            ]
+                        else:
+                            state_data["antennas_position"] = [0.0, 0.0]
+
+                    robot.disconnect()
+                else:
+                    # Fallback simulation
+                    if with_head_pose:
+                        state_data["head_pose"] = [
+                            [1, 0, 0, 0],
+                            [0, 1, 0, 0],
+                            [0, 0, 1, 0],
+                            [0, 0, 0, 1],
+                        ]
+                    if with_body_yaw:
+                        state_data["body_yaw"] = 0.0
+                    if with_antenna_positions:
+                        state_data["antennas_position"] = [0.0, 0.0]
+
+            except Exception as e:
+                logger.error(f"Erreur lors de la récupération de l'état: {e}")
+                # Continuer avec valeurs par défaut
+                if with_head_pose and "head_pose" not in state_data:
+                    state_data["head_pose"] = [
+                        [1, 0, 0, 0],
+                        [0, 1, 0, 0],
+                        [0, 0, 1, 0],
+                        [0, 0, 0, 1],
+                    ]
+                if with_body_yaw and "body_yaw" not in state_data:
+                    state_data["body_yaw"] = 0.0
+                if with_antenna_positions and "antennas_position" not in state_data:
+                    state_data["antennas_position"] = [0.0, 0.0]
+
+            # Envoyer l'état
+            await websocket.send_json(state_data)
+
+            # Attendre avant prochaine itération
+            await asyncio.sleep(period)
+
+    except WebSocketDisconnect:
+        logger.info("Client WebSocket déconnecté")
+    except Exception as e:
+        logger.error(f"Erreur WebSocket: {e}")
 
 
 @router.get("/sensors")

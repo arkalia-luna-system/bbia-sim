@@ -158,8 +158,9 @@ python examples/demo_reachy_mini_corrigee.py --quick
 - **✅ TOUJOURS utiliser `yaw_body`** pour les animations visibles
 - **✅ Amplitude maximum** : 0.3 rad (clamp automatique)
 - **✅ Mode headless** : Stable et rapide pour les tests
-- **❌ JAMAIS animer** : `left_antenna`, `right_antenna`, `passive_*`
-- **❌ JAMAIS dépasser** : 0.3 rad d'amplitude
+- **⚠️ Antennes animables** : `left_antenna`, `right_antenna` avec limites de sécurité (-0.3 à 0.3 rad)
+- **❌ JAMAIS animer** : `passive_*` (joints passifs bloqués)
+- **❌ JAMAIS dépasser** : 0.3 rad d'amplitude pour antennes
 
 ### 🌐 API Publique
 ```bash
@@ -177,6 +178,14 @@ python scripts/demo_public_api.py
 # ReDoc: http://localhost:8000/redoc
 # OpenAPI: http://localhost:8000/openapi.json
 ```
+
+### 📡 Endpoints REST Conformes SDK Officiel
+- `/api/motors/*` - Contrôle moteurs (status, set_mode)
+- `/api/daemon/*` - Contrôle daemon (start, stop, restart, status)
+- `/api/motion/wake_up`, `/goto_sleep` - Séquences robot
+- `/api/motion/goto_pose` - Avec interpolation (linear, minjerk, ease, cartoon)
+- `/api/state/present_head_pose`, `/present_body_yaw`, `/present_antenna_joint_positions`
+- `/api/state/ws/full` - WebSocket streaming état complet
 
 ### 🤖 Backends Disponibles
 ```bash
@@ -252,6 +261,19 @@ python examples/demo_emotion_ok.py --record artifacts/my_animation.jsonl --emoti
 python scripts/replay_viewer.py artifacts/my_animation.jsonl --speed 1.5
 ```
 
+### 📹 Vidéos de Démonstration
+
+**Nouvelles vidéos disponibles** (2025-11-01) : 3 captures vidéo de la simulation MuJoCo
+
+- `assets/videos/Enregistrement de l'écran 2025-11-01 à 17.00.52.mov` (2.7 MB)
+- `assets/videos/Enregistrement de l'écran 2025-11-01 à 17.01.27.mov` (3.4 MB)
+- `assets/videos/Enregistrement de l'écran 2025-11-01 à 17.01.56.mov` (3.1 MB)
+
+**Source** : Toutes ces vidéos ont été enregistrées depuis `examples/demo_mujoco_continue.py` qui montre le robot en mouvement continu (tête + corps).
+
+**Inventaire complet** : Voir [`assets/MEDIAS_INVENTAIRE.md`](assets/MEDIAS_INVENTAIRE.md)  
+**Roadmap vidéos** : Voir [`docs/guides/DEMO_VIDEO_ROADMAP.md`](docs/guides/DEMO_VIDEO_ROADMAP.md)
+
 ### 📋 Documentation
 
 **Documentation interactive HTML** (recommandé)
@@ -282,7 +304,7 @@ La documentation HTML offre :
  - **[Guide Contribution](docs/community/CONTRIBUTION_GUIDE.md)**
 
 ### Note
-Les antennes sont bloquées dans le modèle officiel. Utilisez `yaw_body` pour les animations.
+Les antennes sont maintenant animables avec limites de sécurité (-0.3 à 0.3 rad). Utilisez `yaw_body` pour animations principales, antennes pour expressivité fine.
 
 ## 📁 Structure du Projet
 

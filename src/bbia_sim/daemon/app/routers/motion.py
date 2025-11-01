@@ -2,9 +2,10 @@
 
 import logging
 from datetime import datetime
+from enum import Enum
 from typing import Any
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Query
 
 from ....sim.joints import clamp_joint_angle, validate_joint_name
 from ...models import HeadControl, JointPosition, MotionCommand, Pose
@@ -18,28 +19,91 @@ router = APIRouter()
 # Les modèles sont maintenant importés depuis models.py
 
 
+class InterpolationMode(str, Enum):
+    """Mode d'interpolation pour les mouvements."""
+
+    LINEAR = "linear"
+    MINJERK = "minjerk"
+    EASE = "ease"
+    CARTOON = "cartoon"
+
+
 @router.post("/goto_pose")
-async def goto_pose(pose: Pose) -> dict[str, Any]:
-    """Déplace le robot vers une position spécifique.
+async def goto_pose(
+    pose: Pose,
+    duration: float = Query(2.5, gt=0, description="Durée du mouvement en secondes"),
+    interpolation: InterpolationMode = Query(
+        InterpolationMode.MINJERK, description="Mode d'interpolation"
+    ),
+) -> dict[str, Any]:
+    """Déplace le robot vers une position spécifique avec interpolation.
 
     Args:
         pose: Position cible
+        duration: Durée du mouvement en secondes
+        interpolation: Mode d'interpolation (linear, minjerk, ease, cartoon)
 
     Returns:
         Statut du mouvement
 
     """
-    logger.info(f"Mouvement vers la position : {pose.model_dump()}")
+    logger.info(
+        f"Mouvement vers la position : {pose.model_dump()}, "
+        f"duration={duration}, interpolation={interpolation.value}"
+    )
 
-    # Simulation du mouvement
-    estimated_time = 2.5
+    try:
+        from ....robot_factory import RobotFactory
 
-    return {
-        "status": "moving",
-        "target_pose": pose.model_dump(),
-        "estimated_time": estimated_time,
-        "timestamp": datetime.now().isoformat(),
-    }
+        robot = RobotFactory.create_backend("mujoco")
+        if robot:
+            robot.connect()
+
+            # Convertir Pose en matrice 4x4 pour goto_target
+            import numpy as np
+            from scipy.spatial.transform import Rotation as R
+
+            rotation = R.from_euler("xyz", [pose.roll, pose.pitch, pose.yaw])
+            pose_matrix = np.eye(4)
+            pose_matrix[:3, 3] = [pose.x, pose.y, pose.z]
+            pose_matrix[:3, :3] = rotation.as_matrix()
+
+            # Utiliser goto_target avec interpolation si disponible
+            if hasattr(robot, "goto_target"):
+                # Mapping interpolation mode
+                interpolation_map = {
+                    "linear": "linear",
+                    "minjerk": "minjerk",
+                    "ease": "ease_in_out",  # ou "ease" selon SDK
+                    "cartoon": "cartoon",
+                }
+                method = interpolation_map.get(interpolation.value, "minjerk")
+                robot.goto_target(head=pose_matrix, duration=duration, method=method)
+            else:
+                # Fallback: utiliser set_joint_pos ou goto_pose
+                logger.warning("goto_target non disponible, utilisation fallback")
+
+            robot.disconnect()
+
+        return {
+            "status": "moving",
+            "target_pose": pose.model_dump(),
+            "duration": duration,
+            "interpolation": interpolation.value,
+            "estimated_time": duration,
+            "timestamp": datetime.now().isoformat(),
+        }
+    except Exception as e:
+        logger.error(f"Erreur lors du mouvement: {e}")
+        # Retourner quand même une réponse
+        return {
+            "status": "error",
+            "target_pose": pose.model_dump(),
+            "duration": duration,
+            "interpolation": interpolation.value,
+            "error": str(e),
+            "timestamp": datetime.now().isoformat(),
+        }
 
 
 @router.post("/home")

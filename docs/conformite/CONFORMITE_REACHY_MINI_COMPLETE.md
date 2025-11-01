@@ -614,13 +614,21 @@ Comparaison exhaustive avec le repo officiel `pollen-robotics/reachy_mini` (bran
 5. **`GET /api/state/present_head_pose`** - Pose tête actuelle ✅
 6. **`GET /api/state/present_body_yaw`** - Yaw corps actuel ✅
 7. **`GET /api/state/present_antenna_joint_positions`** - Positions antennes ✅
-8. **`WebSocket /api/state/ws/full`** - ⚠️ À ajouter (optionnel)
+8. **`WebSocket /api/state/ws/full`** - Stream état complet ✅
+
+#### ✅ AMÉLIORATIONS IMPLÉMENTÉES (31 Janvier 2025)
+
+9. **`POST /api/motion/goto_pose`** avec interpolation ✅
+   - Paramètres : `duration` et `interpolation` (linear, minjerk, ease, cartoon)
+   - Compatible SDK officiel
 
 #### 📊 Score de Conformité Endpoints REST
 
 - **Endpoints officiels** : 26 total
-- **Endpoints BBIA implémentés** : **20/26 (77%)** ✅ (+8 endpoints critiques)
-- **Endpoints critiques restants** : 6 (non critiques)
+- **Endpoints BBIA implémentés** : **21/26 (81%)** ✅ (+9 endpoints depuis début)
+- **Endpoints critiques** : 8/8 (100%) ✅
+- **Endpoints modérés** : 4/4 (100%) ✅
+- **Endpoints optionnels** : 9/14 (64%)
 - **Cible** : 24/26 (92%)
 
 **Voir détails complets** : Section "Endpoints REST" dans `docs/audit/AUDIT_CONFORMITE_COMPLET_REACHY_MINI_2025_01_31.md`

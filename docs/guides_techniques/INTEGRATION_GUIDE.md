@@ -144,6 +144,59 @@ GET /api/ecosystem/behaviors/available
 GET /api/ecosystem/demo/modes
 ```
 
+#### Moteurs et Daemon
+
+```python
+# Statut moteurs
+GET /api/motors/status
+
+# Changer mode moteurs
+POST /api/motors/set_mode/{mode}  # enabled, disabled, gravity_compensation
+
+# Statut daemon
+GET /api/daemon/status
+
+# Contrôle daemon
+POST /api/daemon/start
+POST /api/daemon/stop
+POST /api/daemon/restart
+```
+
+#### Mouvement avec Interpolation
+
+```python
+# Déplacer robot avec interpolation
+POST /api/motion/goto_pose?duration=2.0&interpolation=minjerk
+{
+    "x": 0.1, "y": 0.0, "z": 0.3,
+    "roll": 0.0, "pitch": 0.0, "yaw": 0.1
+}
+
+# Modes interpolation disponibles: linear, minjerk, ease, cartoon
+
+# Réveiller robot
+POST /api/motion/wake_up
+
+# Mettre en veille
+POST /api/motion/goto_sleep
+```
+
+#### État du Robot
+
+```python
+# Pose tête actuelle
+GET /api/state/present_head_pose
+
+# Yaw corps actuel
+GET /api/state/present_body_yaw
+
+# Positions antennes
+GET /api/state/present_antenna_joint_positions
+
+# WebSocket streaming état complet
+WS /api/state/ws/full?frequency=10.0
+```
+
 #### Émotions BBIA
 
 ```python
