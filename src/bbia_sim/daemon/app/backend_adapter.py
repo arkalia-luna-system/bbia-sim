@@ -8,7 +8,7 @@ from typing import Any
 
 import numpy as np
 import numpy.typing as npt
-from fastapi import HTTPException
+from fastapi import HTTPException, WebSocket
 
 from ...robot_api import RobotAPI
 from ...robot_factory import RobotFactory
@@ -586,6 +586,15 @@ def get_backend_adapter() -> BackendAdapter:
     return BackendAdapter()
 
 
-def ws_get_backend_adapter(websocket: Any) -> BackendAdapter:
-    """Dependency FastAPI WebSocket pour obtenir un BackendAdapter."""
+def ws_get_backend_adapter(websocket: WebSocket | None = None) -> BackendAdapter:
+    """Dependency FastAPI WebSocket pour obtenir un BackendAdapter.
+
+    Args:
+        websocket: Connexion WebSocket (optionnel, non utilisé mais requis par FastAPI)
+
+    Returns:
+        Instance de BackendAdapter
+    """
+    # Note: websocket paramètre requis pour FastAPI dependency system
+    # mais non utilisé car BackendAdapter ne dépend pas du WebSocket
     return BackendAdapter()

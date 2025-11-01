@@ -271,14 +271,13 @@ async def set_target(
 
 
 @router.websocket("/ws/set_target")
-async def ws_set_target(
-    websocket: WebSocket,
-    backend: BackendAdapter = Depends(ws_get_backend_adapter),
-) -> None:
+async def ws_set_target(websocket: WebSocket) -> None:
     """WebSocket pour streamer les appels set_target - conforme SDK."""
     import json
 
     await websocket.accept()
+    # Créer backend adapter directement (pas de Depends pour WebSockets)
+    backend = ws_get_backend_adapter(websocket)
     try:
         while True:
             data = await websocket.receive_text()

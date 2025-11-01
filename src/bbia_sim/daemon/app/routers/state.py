@@ -3,7 +3,7 @@
 import asyncio
 import logging
 import os
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
 from fastapi import APIRouter, Depends, WebSocket, WebSocketDisconnect
@@ -217,7 +217,9 @@ async def get_full_state(
         else:
             result["passive_joints"] = None
 
-    result["timestamp"] = datetime.now(timezone.utc)  # noqa: UP017 - Python 3.10 compatibility
+    result["timestamp"] = datetime.now(
+        UTC
+    )  # noqa: UP017 - Python 3.10 compatibility
 
     # Ajouter champs de compatibilité pour certains tests
     # (FullState SDK officiel n'a pas ces champs, mais certains tests les attendent)
@@ -477,7 +479,6 @@ async def ws_full_state(
     with_target_antenna_positions: bool = False,
     with_passive_joints: bool = False,
     use_pose_matrix: bool = False,
-    backend: BackendAdapter = Depends(ws_get_backend_adapter),
 ) -> None:
     """WebSocket endpoint pour stream l'état complet du robot (conforme SDK).
 
@@ -497,6 +498,8 @@ async def ws_full_state(
         backend: Backend adaptateur
     """
     await websocket.accept()
+    # Créer backend adapter directement (pas de Depends pour WebSockets)
+    backend = ws_get_backend_adapter(websocket)
     period = 1.0 / frequency
 
     try:

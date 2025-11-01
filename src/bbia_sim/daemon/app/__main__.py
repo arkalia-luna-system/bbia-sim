@@ -15,12 +15,10 @@ src_path = project_root / "src"
 if str(src_path) not in sys.path:
     sys.path.insert(0, str(src_path))
 
-"""Point d'entrée principal pour le daemon BBIA."""
-import uvicorn
+# Imports après configuration du path (requis pour uvicorn)
+import uvicorn  # noqa: E402
 
-from bbia_sim.daemon.app.main import (
-    app,
-)  # noqa: E402 - Import après configuration uvicorn
+from bbia_sim.daemon.app.main import app  # noqa: E402
 
 if __name__ == "__main__":
     print("🚀 Démarrage du daemon BBIA-SIM (mode simulation)")
