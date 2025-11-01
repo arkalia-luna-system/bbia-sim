@@ -89,8 +89,10 @@ async def list_available_apps(source_kind: str) -> list[dict[str, Any]]:
     Returns:
         Liste des applications disponibles
     """
-    apps = _bbia_apps_manager["available_apps"]
-    filtered = [app for app in apps if app.get("source_kind") == source_kind]
+    apps: list[dict[str, Any]] = _bbia_apps_manager["available_apps"]
+    filtered: list[dict[str, Any]] = [
+        app for app in apps if app.get("source_kind") == source_kind
+    ]
     return filtered
 
 
