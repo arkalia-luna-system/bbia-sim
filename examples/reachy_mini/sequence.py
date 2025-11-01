@@ -56,8 +56,12 @@ def main() -> None:
                     s = time.time()
                     while time.time() - s < 2.0:
                         t = time.time() - t0
-                        euler_rot = np.array([0, 0.0, 0.7 * np.sin(2 * np.pi * 0.5 * t)])
-                        rot_mat = R.from_euler("xyz", euler_rot, degrees=False).as_matrix()
+                        euler_rot = np.array(
+                            [0, 0.0, 0.7 * np.sin(2 * np.pi * 0.5 * t)]
+                        )
+                        rot_mat = R.from_euler(
+                            "xyz", euler_rot, degrees=False
+                        ).as_matrix()
                         pose[:3, :3] = rot_mat
                         reachy_mini.set_target(head=pose, antennas=[0, 0])
                         time.sleep(0.01)
@@ -68,7 +72,9 @@ def main() -> None:
                     while time.time() - s < 2.0:
                         t = time.time() - t0
                         euler_rot = np.array([0, 0.3 * np.sin(2 * np.pi * 0.5 * t), 0])
-                        rot_mat = R.from_euler("xyz", euler_rot, degrees=False).as_matrix()
+                        rot_mat = R.from_euler(
+                            "xyz", euler_rot, degrees=False
+                        ).as_matrix()
                         pose[:3, :3] = rot_mat
                         reachy_mini.set_target(head=pose, antennas=[0, 0])
                         time.sleep(0.01)
@@ -79,7 +85,9 @@ def main() -> None:
                     while time.time() - s < 2.0:
                         t = time.time() - t0
                         euler_rot = np.array([0.3 * np.sin(2 * np.pi * 0.5 * t), 0, 0])
-                        rot_mat = R.from_euler("xyz", euler_rot, degrees=False).as_matrix()
+                        rot_mat = R.from_euler(
+                            "xyz", euler_rot, degrees=False
+                        ).as_matrix()
                         pose[:3, :3] = rot_mat
                         reachy_mini.set_target(head=pose, antennas=[0, 0])
                         time.sleep(0.01)
@@ -131,7 +139,9 @@ def main() -> None:
                         if offset[0] == 0 and offset[1] != 0:
                             yaw = 0.5 if offset[1] > 0 else -0.5
                             euler_rot = np.array([0, 0, yaw])
-                            rot_mat = R.from_euler("xyz", euler_rot, degrees=False).as_matrix()
+                            rot_mat = R.from_euler(
+                                "xyz", euler_rot, degrees=False
+                            ).as_matrix()
                             pose[:3, :3] = rot_mat
                         reachy_mini.set_target(head=pose, antennas=[0, 0])
                         time.sleep(0.5)
@@ -163,4 +173,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

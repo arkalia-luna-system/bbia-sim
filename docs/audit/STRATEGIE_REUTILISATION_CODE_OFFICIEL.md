@@ -29,7 +29,7 @@ async def play_recorded_move_dataset(...):
 
 ---
 
-### **2. Outils LLM (Tools)** 🟡 **PARTIEL**
+### **2. Outils LLM (Tools)** ✅ **TERMINÉ**
 
 **App Officielle** : Outils exposés à l'assistant
 - `move_head` : Changement position tête
@@ -258,23 +258,23 @@ tests/
 
 ## ✅ Checklist Réutilisation
 
-### **Phase 1 : Outils LLM**
-- [ ] Créer `bbia_tools.py` avec structure officielle
-- [ ] Implémenter `get_tools()` (liste outils)
-- [ ] Implémenter `execute_tool(tool_name, params)`
+### **Phase 1 : Outils LLM** ✅ **TERMINÉ**
+- [x] Créer `bbia_tools.py` avec structure officielle
+- [x] Implémenter `get_tools()` (liste outils)
+- [x] Implémenter `execute_tool(tool_name, params)`
 - [ ] Intégrer avec `BBIAHuggingFace.chat()` (passer outils)
 - [ ] Tests `test_bbia_tools.py`
 
-### **Phase 2 : Animations Idle**
-- [ ] Créer `bbia_idle_animations.py`
-- [ ] Implémenter respiration automatique
-- [ ] Implémenter poses de passage
-- [ ] Implémenter tremblement vocal (optionnel)
-- [ ] Intégrer avec `RobotAPI`
+### **Phase 2 : Animations Idle** ✅ **TERMINÉ**
+- [x] Créer `bbia_idle_animations.py`
+- [x] Implémenter respiration automatique
+- [x] Implémenter poses de passage
+- [x] Implémenter tremblement vocal (optionnel)
+- [ ] Intégrer avec `RobotAPI` (démarrage automatique)
 - [ ] Tests `test_bbia_idle_animations.py`
 
-### **Phase 3 : Intégration Complète**
-- [ ] Ajouter outils `dance` / `stop_dance` dans `bbia_tools.py`
+### **Phase 3 : Intégration Complète** ✅ **PARTIEL**
+- [x] Ajouter outils `dance` / `stop_dance` dans `bbia_tools.py`
 - [ ] Tester intégration LLM → outils → robot
 - [ ] Documenter usage
 

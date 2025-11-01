@@ -15,7 +15,6 @@ import numpy as np
 # Essayer d'utiliser le SDK officiel si disponible
 try:
     from reachy_mini import ReachyMini
-    from reachy_mini.utils import create_head_pose
 
     USE_SDK = True
 except ImportError:
@@ -34,6 +33,8 @@ def main() -> None:
     if USE_SDK:
         # Utilisation directe du SDK officiel
         print("✅ Utilisation SDK officiel")
+        from reachy_mini.utils import create_head_pose
+
         with ReachyMini(media_backend="no_media", use_sim=True) as mini:
             mini.goto_target(create_head_pose(), antennas=[0.0, 0.0], duration=1.0)
             print("🎯 Mouvement initial vers position neutre")
@@ -76,9 +77,7 @@ def main() -> None:
             # Position initiale
             from reachy_mini.utils import create_head_pose
 
-            backend.goto_target(
-                create_head_pose(), antennas=[0.0, 0.0], duration=1.0
-            )
+            backend.goto_target(create_head_pose(), antennas=[0.0, 0.0], duration=1.0)
             print("🎯 Mouvement initial vers position neutre")
 
             print("📡 Démarrage animation antennes et tête...")
@@ -111,4 +110,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

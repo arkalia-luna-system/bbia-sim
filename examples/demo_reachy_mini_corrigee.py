@@ -218,9 +218,13 @@ def demo_reachy_mini_corrigee():
     time.sleep(1.0)
 
     # Test antenne animable (avec limites de sécurité)
-    success_mujoco = robot_mujoco.set_joint_pos("left_antenna", 0.1)  # Dans limites -0.3 à 0.3
+    success_mujoco = robot_mujoco.set_joint_pos(
+        "left_antenna", 0.1
+    )  # Dans limites -0.3 à 0.3
     success_officiel = robot_officiel.set_joint_pos("left_antenna", 0.1)
-    print(f"   ✅ Antenne animable (limites -0.3 à 0.3 rad): MuJoCo={success_mujoco}, SDK={success_officiel}")
+    print(
+        f"   ✅ Antenne animable (limites -0.3 à 0.3 rad): MuJoCo={success_mujoco}, SDK={success_officiel}"
+    )
 
     # Séquence 7: Finale spectaculaire
     print("\n🎆 SÉQUENCE FINALE: SPECTACLE COMPLET !")

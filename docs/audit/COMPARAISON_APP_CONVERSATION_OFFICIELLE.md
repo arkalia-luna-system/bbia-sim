@@ -178,30 +178,30 @@
 ### **Fonctionnalités Manquantes dans BBIA** 🔴
 
 1. 🔴 **OpenAI Realtime API** : Streaming conversation temps réel
-2. 🔴 **Danses** : Bibliothèque danses officielle
-3. 🔴 **Animations idle** : Respiration, poses de passage
-4. 🔴 **Tremblement vocal** : Réaction à la voix
+2. ✅ **Danses** : Bibliothèque danses officielle (✅ API `/play/recorded-move-dataset` présente)
+3. ✅ **Animations idle** : Respiration, poses de passage (✅ `bbia_idle_animations.py` créé)
+4. ✅ **Tremblement vocal** : Réaction à la voix (✅ `BBIAVocalTremor` implémenté)
 5. 🔴 **Interface Gradio** : UI conversation (optionnel)
 
 ### **Fonctionnalités Partielles** 🟡
 
 1. 🟡 **Suivi visage réactif** : Présent mais moins intégré
-2. 🟡 **Outils LLM** : Présents mais format différent
+2. ✅ **Outils LLM** : ✅ Implémentés et intégrés avec `BBIAHuggingFace.chat()`
 3. 🟡 **File d'attente mouvements** : Basique vs multicouche
 
 ---
 
 ## 🎯 Où en est BBIA ?
 
-### **Score Global** : **60%** 🟡
+### **Score Global** : **75%** 🟡 (mis à jour avec outils LLM intégrés + idle animations)
 
 | Catégorie | Score | Détails |
 |-----------|-------|---------|
 | **Vision** | 80% | ✅ YOLO + MediaPipe (équivalent) |
 | **Contrôle Robot** | 90% | ✅ API complète |
 | **Émotions** | 70% | ✅ 12 émotions (format différent) |
-| **Conversation** | 30% | ❌ Pas de Realtime API |
-| **Animations** | 40% | ❌ Pas de danses/respiration |
+| **Conversation** | 50% | ✅ Outils LLM intégrés, ❌ Pas de Realtime API |
+| **Animations** | 85% | ✅ Danses API présente, ✅ Idle animations implémentées, ✅ Tremblement vocal |
 | **UI** | 60% | ✅ Dashboard (différent de Gradio) |
 
 ---
@@ -260,9 +260,9 @@
 
 ### **Points à Améliorer** :
 
-1. 🔴 **Danses** : Fonctionnalité majeure manquante
-2. 🔴 **Animations idle** : Respiration, poses de passage
-3. 🟡 **Conversation temps réel** : Latence améliorable
+1. ✅ **Danses** : API présente, intégrée dans outils LLM
+2. ✅ **Animations idle** : Respiration, poses de passage, tremblement vocal implémentés
+3. 🟡 **Conversation temps réel** : Latence améliorable (OpenAI Realtime API optionnel)
 4. 🟡 **Intégration visage → mouvement** : Plus automatique
 
 ---
@@ -273,24 +273,24 @@
 - ✅ **Architecture solide** : Comparable ou meilleure
 - ✅ **Vision complète** : YOLO + MediaPipe
 - ✅ **API complète** : REST + WebSocket
-- 🔴 **Animations** : Danses et idle manquantes
-- 🔴 **Conversation temps réel** : OpenAI Realtime absent
+- ✅ **Animations** : Danses, idle animations, tremblement vocal implémentés
+- ✅ **Outils LLM** : Intégrés avec `BBIAHuggingFace.chat()` pour function calling
+- 🔴 **Conversation temps réel** : OpenAI Realtime absent (optionnel)
 
 ### **Recommandation Globale** :
 
-**BBIA est à 60% de parité fonctionnelle** avec l'app officielle.
+**BBIA est à 75% de parité fonctionnelle** avec l'app officielle (mis à jour 2025-02-01).
 
 **Priorités** :
-1. 🔴 **Danses** (haute priorité)
-2. 🔴 **Animations idle** (haute priorité)
-3. 🟡 **Conversation temps réel** (moyenne priorité - optionnel)
+1. ✅ **Danses** (✅ API `/play/recorded-move-dataset` disponible, ✅ intégrée dans outils LLM)
+2. ✅ **Animations idle** (✅ `bbia_idle_animations.py` créé, ✅ `BBIIdleAnimationManager` implémenté)
+3. ✅ **Outils LLM** (✅ `bbia_tools.py` créé, ✅ intégré avec `BBIAHuggingFace.chat()`)
+4. 🟡 **Conversation temps réel** (moyenne priorité - optionnel, nécessite OpenAI Realtime API)
 
 **BBIA a une base solide** et manque principalement :
-- Les animations chorégraphiées (danses)
-- Les animations idle (respiration)
-- Le streaming temps réel conversation (optionnel)
+- Le streaming temps réel conversation (optionnel, nécessite clé API OpenAI)
 
 ---
 
-**Dernière mise à jour** : 2025-01-31
+**Dernière mise à jour** : 2025-02-01 (outils LLM intégrés avec BBIAHuggingFace.chat())
 

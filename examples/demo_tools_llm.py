@@ -44,11 +44,15 @@ def main() -> None:
         available_tools = tools.get_tools()
         for tool in available_tools:
             tool_func = tool.get("function", {})
-            print(f"  - {tool_func.get('name', 'unknown')}: {tool_func.get('description', '')}")
+            print(
+                f"  - {tool_func.get('name', 'unknown')}: {tool_func.get('description', '')}"
+            )
 
         # Exemple 1: Mouvement tête
         print("\n🎯 Exemple 1: Mouvement tête (gauche)")
-        result = tools.execute_tool("move_head", {"direction": "left", "intensity": 0.5})
+        result = tools.execute_tool(
+            "move_head", {"direction": "left", "intensity": 0.5}
+        )
         print(f"  Résultat: {result}")
 
         # Exemple 2: Capture caméra
@@ -60,7 +64,9 @@ def main() -> None:
 
         # Exemple 3: Jouer émotion
         print("\n😊 Exemple 3: Jouer émotion")
-        result = tools.execute_tool("play_emotion", {"emotion": "happy", "intensity": 0.7})
+        result = tools.execute_tool(
+            "play_emotion", {"emotion": "happy", "intensity": 0.7}
+        )
         print(f"  Résultat: {result}")
 
         # Exemple 4: Activer/désactiver suivi visage
@@ -78,6 +84,7 @@ def main() -> None:
     except Exception as e:
         print(f"\n❌ Erreur: {e}")
         import traceback
+
         traceback.print_exc()
     finally:
         if robot_api:
@@ -87,4 +94,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

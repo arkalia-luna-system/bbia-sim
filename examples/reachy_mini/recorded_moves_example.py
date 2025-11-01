@@ -82,4 +82,3 @@ if __name__ == "__main__":
     print("🤖 Demo recorded moves - Reachy Mini")
     print("=" * 50)
     main(dataset_path)
-

@@ -1,9 +1,14 @@
 """Tests pour bbia_idle_animations.py - Animations idle."""
 
-import pytest
+import os
+import sys
 import time
-import threading
 from unittest.mock import MagicMock, patch
+
+import pytest
+
+# Ajouter le répertoire src au PYTHONPATH
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
 from bbia_sim.bbia_idle_animations import (
     BBIABreathingAnimation,
@@ -158,7 +163,7 @@ class TestBBIIdleAnimationManager:
 
     def test_start_stop(self, idle_manager):
         """Test démarrage/arrêt animations."""
-        success = idle_manager.start()
+        idle_manager.start()
         # Peut être False si robot non connecté dans mock
         # Mais structure doit être correcte
 

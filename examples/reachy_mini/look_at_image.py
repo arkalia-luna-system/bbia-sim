@@ -59,11 +59,11 @@ def get_frame_from_backend(backend, vision_source="cv2"):
         elif vision_source == "bbia":
             # Utiliser vision BBIA (YOLO)
             try:
-                from bbia_sim.bbia_vision import BBIAVision
-
-                vision = BBIAVision(robot_api=backend)
+                # from bbia_sim.bbia_vision import BBIAVision
+                # vision = BBIAVision(robot_api=backend)
                 # Obtenir frame depuis vision BBIA
                 # Note: adaptation nécessaire selon API vision BBIA
+                # TODO: Implémenter capture frame depuis BBIAVision
                 return None  # À adapter
             except ImportError:
                 pass
@@ -83,11 +83,16 @@ def main(vision_source: str = "cv2") -> None:
     print("⌨️  Appuyez sur 'q' pour quitter")
 
     if USE_SDK:
-        with ReachyMini(media_backend="default" if vision_source != "cv2" else "no_media", use_sim=True) as reachy_mini:
+        with ReachyMini(
+            media_backend="default" if vision_source != "cv2" else "no_media",
+            use_sim=True,
+        ) as reachy_mini:
             try:
                 while True:
                     if vision_source != "cv2":
-                        frame = reachy_mini.media.get_frame() if reachy_mini.media else None
+                        frame = (
+                            reachy_mini.media.get_frame() if reachy_mini.media else None
+                        )
                     else:
                         cap = cv2.VideoCapture(0)
                         ret, frame = cap.read()
@@ -169,4 +174,3 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     main(vision_source=args.vision)
-

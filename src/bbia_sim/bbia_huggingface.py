@@ -772,14 +772,21 @@ class BBIAHuggingFace:
             "hf_available": HF_AVAILABLE,
         }
 
-    def chat(self, user_message: str, use_context: bool = True) -> str:
+    def chat(
+        self,
+        user_message: str,
+        use_context: bool = True,
+        enable_tools: bool = True,
+    ) -> str:
         """Chat intelligent avec BBIA avec contexte et analyse sentiment.
 
         Utilise LLM pré-entraîné (Mistral 7B) si disponible, sinon réponses enrichies.
+        Supporte function calling avec outils LLM si disponibles.
 
         Args:
             user_message: Message de l'utilisateur
             use_context: Utiliser le contexte des messages précédents
+            enable_tools: Activer function calling avec outils (si disponibles)
 
         Returns:
             Réponse intelligente de BBIA
@@ -792,10 +799,19 @@ class BBIAHuggingFace:
                 # Fallback si sentiment indisponible
                 sentiment = {"sentiment": "NEUTRAL", "score": 0.5}
 
-            # 2. Générer réponse avec LLM si disponible, sinon réponses enrichies
+            # 2. Détecter et exécuter outils si demandés (function calling)
+            if enable_tools and self.tools:
+                tool_result = self._detect_and_execute_tools(user_message)
+                if tool_result:
+                    # Outil exécuté - retourner résultat
+                    return tool_result
+
+            # 3. Générer réponse avec LLM si disponible, sinon réponses enrichies
             if self.use_llm_chat and self.chat_model and self.chat_tokenizer:
                 # Utiliser LLM pré-entraîné (Mistral/Llama)
-                bbia_response = self._generate_llm_response(user_message, use_context)
+                bbia_response = self._generate_llm_response(
+                    user_message, use_context, enable_tools=enable_tools
+                )
             else:
                 # Fallback vers réponses enrichies (règles + variété)
                 bbia_response = self._generate_simple_response(user_message, sentiment)
@@ -959,6 +975,148 @@ class BBIAHuggingFace:
             except Exception:
                 sentiment = {"sentiment": "NEUTRAL", "score": 0.5}
             return self._generate_simple_response(user_message, sentiment)
+
+    def _detect_and_execute_tools(self, user_message: str) -> str | None:
+        """Détecte et exécute des outils depuis le message utilisateur.
+
+        Analyse le message pour détecter des commandes d'outils (ex: "fais danser le robot",
+        "tourne la tête à gauche", "capture une image") et exécute les outils correspondants.
+
+        Args:
+            user_message: Message utilisateur
+
+        Returns:
+            Résultat texte de l'exécution d'outil, ou None si aucun outil détecté
+        """
+        if not self.tools:
+            return None
+
+        message_lower = user_message.lower()
+
+        # Détection simple basée sur mots-clés (peut être amélioré avec NLP)
+        # Pattern: détecter intentions → appeler outils
+        tool_patterns = {
+            "move_head": {
+                "keywords": [
+                    "tourne la tête",
+                    "bouge la tête",
+                    "regarde à gauche",
+                    "regarde à droite",
+                    "regarde en haut",
+                    "regarde en bas",
+                ],
+                "mappings": {
+                    "gauche": "left",
+                    "droite": "right",
+                    "haut": "up",
+                    "bas": "down",
+                },
+            },
+            "camera": {
+                "keywords": [
+                    "capture une image",
+                    "prends une photo",
+                    "regarde autour",
+                    "analyse l'environnement",
+                    "que vois-tu",
+                ],
+            },
+            "dance": {
+                "keywords": [
+                    "danse",
+                    "fais danser",
+                    "joue une danse",
+                ],
+            },
+            "play_emotion": {
+                "keywords": [
+                    "sois heureux",
+                    "sois triste",
+                    "montre de la joie",
+                    "montre de la curiosité",
+                ],
+                "mappings": {
+                    "heureux": "happy",
+                    "triste": "sad",
+                    "curieux": "curious",
+                    "excité": "excited",
+                    "calme": "calm",
+                    "neutre": "neutral",
+                },
+            },
+        }
+
+        # Chercher correspondance avec patterns
+        for tool_name, pattern in tool_patterns.items():
+            for keyword in pattern["keywords"]:  # type: ignore[index]
+                if keyword in message_lower:
+                    try:
+                        # Exécuter outil
+                        params: dict[str, Any] = {}
+
+                        # Extraire paramètres selon outil
+                        if tool_name == "move_head":
+                            # Extraire direction
+                            for fr_dir, en_dir in pattern["mappings"].items():  # type: ignore[index]
+                                if fr_dir in message_lower:
+                                    params["direction"] = en_dir
+                                    break
+                            if "direction" not in params:
+                                # Par défaut
+                                params["direction"] = "left"
+                            params["intensity"] = 0.5
+
+                        elif tool_name == "play_emotion":
+                            # Extraire émotion
+                            for fr_emo, en_emo in pattern["mappings"].items():  # type: ignore[index]
+                                if fr_emo in message_lower:
+                                    params["emotion"] = en_emo
+                                    break
+                            if "emotion" not in params:
+                                # Détecter émotion depuis sentiment
+                                try:
+                                    sentiment = self.analyze_sentiment(user_message)
+                                    emotion_map = {
+                                        "POSITIVE": "happy",
+                                        "NEGATIVE": "sad",
+                                        "NEUTRAL": "neutral",
+                                    }
+                                    params["emotion"] = emotion_map.get(
+                                        sentiment.get("sentiment", "NEUTRAL"),
+                                        "neutral",
+                                    )
+                                except Exception:
+                                    params["emotion"] = "neutral"
+                            params["intensity"] = 0.7
+
+                        elif tool_name == "dance":
+                            # Utiliser danse par défaut ou extraire nom
+                            params["move_name"] = "happy_dance"  # Par défaut
+                            params["dataset"] = (
+                                "pollen-robotics/reachy-mini-dances-library"
+                            )
+
+                        # Exécuter outil
+                        result = self.tools.execute_tool(tool_name, params)
+
+                        # Retourner résultat textuel
+                        if result.get("status") == "success":
+                            detail = result.get("detail", "Action exécutée")
+                            logger.info(f"✅ Outil '{tool_name}' exécuté: {detail}")
+                            return f"✅ {detail}"
+                        else:
+                            error_detail = result.get("detail", "Erreur inconnue")
+                            logger.warning(
+                                f"⚠️ Erreur outil '{tool_name}': {error_detail}"
+                            )
+                            return f"⚠️ {error_detail}"
+
+                    except Exception as e:
+                        logger.error(f"❌ Erreur exécution outil '{tool_name}': {e}")
+                        return f"❌ Erreur lors de l'exécution: {e}"
+
+        # Aucun outil détecté
+        return None
 
     def _postprocess_llm_output(self, text: str, user_message: str) -> str:
         """Nettoie et compacte la sortie LLM pour éviter la verbosité.

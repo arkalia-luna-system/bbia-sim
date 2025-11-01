@@ -29,6 +29,7 @@ except ImportError:
 
 if not USE_SDK:
     from bbia_sim.backends.reachy_mini_backend import ReachyMiniBackend
+
     # Pour BBIA, utiliser les constantes d'interpolation si disponibles
     try:
         from reachy_mini.utils.interpolation import InterpolationTechnique
@@ -88,9 +89,7 @@ def main() -> None:
 
                     # Retour position neutre
                     pose = create_head_pose(x=0, y=0, z=0, yaw=0)
-                    mini.goto_target(
-                        pose, duration=1.0, antennas=[0, 0], method=method
-                    )
+                    mini.goto_target(pose, duration=1.0, antennas=[0, 0], method=method)
                     print("  ✅ Retour position neutre\n")
 
             except KeyboardInterrupt:
@@ -112,7 +111,7 @@ def main() -> None:
                 print("  ✅ Position neutre atteinte")
 
                 # Répéter mouvements similaires
-                for i in range(3):
+                for _i in range(3):
                     pose = create_head_pose(
                         x=0.0, y=0.03, z=0, roll=5, yaw=-10, degrees=True
                     )
@@ -147,4 +146,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

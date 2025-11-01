@@ -72,7 +72,9 @@ class BBIABreathingAnimation:
         if self.breathing_thread:
             self.breathing_thread.join(timeout=2.0)
             if self.breathing_thread.is_alive():
-                logger.warning("Thread respiration n'a pas pu être arrêté dans les 2 secondes")
+                logger.warning(
+                    "Thread respiration n'a pas pu être arrêté dans les 2 secondes"
+                )
 
         logger.info("⏹️ Animation respiration arrêtée")
 
@@ -101,7 +103,9 @@ class BBIABreathingAnimation:
                     from reachy_mini.utils import create_head_pose
 
                     # Position respiration: pitch légèrement relevé avec oscillation
-                    pose = create_head_pose(pitch=base_pitch + breathing_offset, yaw=0.0)
+                    pose = create_head_pose(
+                        pitch=base_pitch + breathing_offset, yaw=0.0
+                    )
 
                     # Appliquer mouvement fluide (duration courte pour continuité)
                     if hasattr(self.robot_api, "goto_target"):
@@ -206,9 +210,9 @@ class BBIAPoseTransitionManager:
                 elapsed = time.time() - last_pose_time
                 if elapsed >= self.pose_transition_interval:
                     # Sélectionner pose suivante
-                    self.current_pose_index = (
-                        self.current_pose_index + 1
-                    ) % len(self.idle_poses)
+                    self.current_pose_index = (self.current_pose_index + 1) % len(
+                        self.idle_poses
+                    )
                     pose = self.idle_poses[self.current_pose_index]
 
                     # Appliquer pose avec transition fluide
