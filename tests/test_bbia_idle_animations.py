@@ -123,16 +123,14 @@ class TestBBIAVocalTremor:
         """Test mise à jour niveau audio."""
         vocal_tremor.start()
 
-        with patch("bbia_sim.bbia_idle_animations.create_head_pose") as mock_pose:
+        with patch("reachy_mini.utils.create_head_pose") as mock_pose:
             mock_pose.return_value = MagicMock()
 
             vocal_tremor.update_audio_level(0.8)
             assert vocal_tremor.last_audio_level == 0.8
 
-            # Vérifier que set_target_head_pose est appelé si seuil dépassé
-            if 0.8 > 0.3:  # Seuil minimum
-                # Le mock devrait être appelé si SDK disponible
-                pass
+            # Le mock peut ne pas être appelé si SDK non disponible
+            # Mais la structure est correcte
 
 
 class TestBBIIdleAnimationManager:
@@ -181,4 +179,3 @@ class TestBBIIdleAnimationManager:
         idle_manager.start()
         # État dépend de succès démarrage
         assert isinstance(idle_manager.is_running(), bool)
-

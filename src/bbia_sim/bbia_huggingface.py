@@ -7,11 +7,14 @@ Intégration avancée avec Hugging Face Hub pour enrichir les capacités IA de B
 import logging
 import os
 import re
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import numpy as np
 import numpy.typing as npt
 from PIL import Image
+
+if TYPE_CHECKING:
+    from .bbia_tools import BBIATools
 
 # Désactiver les avertissements de transformers
 os.environ["TRANSFORMERS_VERBOSITY"] = "error"
@@ -109,7 +112,7 @@ class BBIAHuggingFace:
         self,
         device: str = "auto",
         cache_dir: str | None = None,
-        tools: "BBIATools | None" = None,
+        tools: "BBIATools | None" = None,  # type: ignore[name-defined]
     ) -> None:
         """Initialise le module Hugging Face.
 

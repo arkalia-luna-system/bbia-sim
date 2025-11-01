@@ -61,11 +61,16 @@ class TestBBIATools:
         with patch("bbia_sim.bbia_tools.create_head_pose") as mock_pose:
             mock_pose.return_value = MagicMock()
 
-            result = tools.execute_tool("move_head", {"direction": "left", "intensity": 0.5})
+            result = tools.execute_tool(
+                "move_head", {"direction": "left", "intensity": 0.5}
+            )
 
             assert result["status"] in ["success", "error"]
             if result["status"] == "success":
-                assert mock_robot_api.goto_target.called or mock_robot_api.set_target_head_pose.called
+                assert (
+                    mock_robot_api.goto_target.called
+                    or mock_robot_api.set_target_head_pose.called
+                )
 
     def test_execute_camera(self, tools, mock_vision):
         """Test exécution camera."""
@@ -89,7 +94,9 @@ class TestBBIATools:
 
     def test_execute_play_emotion(self, tools, mock_robot_api):
         """Test exécution play_emotion."""
-        result = tools.execute_tool("play_emotion", {"emotion": "happy", "intensity": 0.7})
+        result = tools.execute_tool(
+            "play_emotion", {"emotion": "happy", "intensity": 0.7}
+        )
 
         assert result["status"] in ["success", "error"]
         if result["status"] == "success":
@@ -146,4 +153,3 @@ class TestBBIATools:
             assert result["status"] in ["success", "error"]
             if result["status"] == "success":
                 assert tools.current_dance == "test_dance"
-
