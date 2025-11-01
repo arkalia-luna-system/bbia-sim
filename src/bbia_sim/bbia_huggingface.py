@@ -105,12 +105,18 @@ class BBIAHuggingFace:
     - Multimodal : Modèles combinant vision + texte
     """
 
-    def __init__(self, device: str = "auto", cache_dir: str | None = None) -> None:
+    def __init__(
+        self,
+        device: str = "auto",
+        cache_dir: str | None = None,
+        tools: "BBIATools | None" = None,
+    ) -> None:
         """Initialise le module Hugging Face.
 
         Args:
             device: Device pour les modèles ("cpu", "cuda", "auto")
             cache_dir: Répertoire de cache pour les modèles
+            tools: Instance BBIATools pour function calling (optionnel)
         """
         if not HF_AVAILABLE:
             raise ImportError(
@@ -127,6 +133,9 @@ class BBIAHuggingFace:
         self.conversation_history: list[dict[str, Any]] = []
         self.context: dict[str, Any] = {}
         self.bbia_personality = "friendly_robot"
+
+        # Outils LLM pour function calling (optionnel)
+        self.tools = tools
 
         # Charger conversation depuis mémoire persistante si disponible
         try:
@@ -827,7 +836,10 @@ class BBIAHuggingFace:
             return "Je ne comprends pas bien, peux-tu reformuler ?"
 
     def _generate_llm_response(
-        self, user_message: str, use_context: bool = True
+        self,
+        user_message: str,
+        use_context: bool = True,
+        enable_tools: bool = True,
     ) -> str:
         """Génère une réponse avec LLM pré-entraîné (Mistral/Llama).
 
