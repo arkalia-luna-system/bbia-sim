@@ -70,13 +70,10 @@ class TestE2EFaceDetectionGreeting:
             # Fallback: vérifier comportement enregistré
             assert "greeting" in self.behavior.behaviors
 
-        # 4. Vérifier mouvement (lookat simulé via joint control)
-        # Le comportement peut appeler set_joint_pos pour mouvement
-        # Vérifier que robot API a été utilisé (au moins step appelé)
-        # Note: comportement peut ne pas appeler immédiatement si asynchrone
-        assert (
-            self.mock_robot.step.called or self.mock_robot.set_joint_pos.called or True
-        )  # Tolérance si asynchrone
+        # 4. Vérifier comportement activé
+        # Le comportement greeting a été exécuté avec succès
+        # Note: Le comportement peut être asynchrone, donc vérifier seulement
+        # que execute_behavior a été appelé avec succès (déjà vérifié ci-dessus)
 
     def test_bbia_detects_face_tracks_and_greets(self):
         """Scénario complet: détection → tracking → greeting."""
