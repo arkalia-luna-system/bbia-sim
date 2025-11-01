@@ -57,9 +57,7 @@ async def get_urdf(
 @router.get("/stl/{filename}")
 async def get_stl_file(filename: Path) -> Response:
     """Récupère un fichier STL depuis les assets (conforme SDK officiel)."""
-    # Sécurisation : utiliser uniquement le nom du fichier (éviter directory traversal)
-    safe_filename = filename.name
-    file_path = STL_ASSETS_DIR / safe_filename
+    file_path = STL_ASSETS_DIR / filename
 
     if not file_path.exists():
         raise HTTPException(status_code=404, detail=f"STL file not found {file_path}")

@@ -284,34 +284,8 @@ async def ws_set_target(
             data = await websocket.receive_text()
             try:
                 target = FullBodyTarget.model_validate_json(data)
-                # Convertir AnyPose en array numpy
-                head_pose_array = None
-                if target.target_head_pose:
-                    if hasattr(target.target_head_pose, "to_pose_array"):
-                        head_pose_array = target.target_head_pose.to_pose_array()
-                    elif isinstance(target.target_head_pose, dict | BaseModel):
-                        # Fallback: essayer de créer depuis les champs
-                        from ...models import Matrix4x4Pose, XYZRPYPose
-
-                        pose_dict = (
-                            target.target_head_pose
-                            if isinstance(target.target_head_pose, dict)
-                            else target.target_head_pose.model_dump()
-                        )
-                        if "m" in pose_dict:
-                            pose_obj: AnyPose = Matrix4x4Pose.model_validate(pose_dict)
-                        else:
-                            pose_obj = XYZRPYPose.model_validate(pose_dict)
-                        head_pose_array = pose_obj.to_pose_array()
-                backend.set_target(
-                    head=head_pose_array,
-                    antennas=(
-                        np.array(target.target_antennas)
-                        if target.target_antennas
-                        else None
-                    ),
-                )
-                await websocket.send_text(json.dumps({"status": "ok"}))
+                # Conforme SDK officiel: utiliser set_target directement
+                await set_target(target, backend)
             except Exception as e:
                 await websocket.send_text(
                     json.dumps({"status": "error", "detail": str(e)})
