@@ -28,7 +28,9 @@ class BackendAdapter:
         self.target_head_pose: npt.NDArray[np.float64] | None = None
         self.target_body_yaw: float | None = None
         self.target_head_joint_positions: npt.NDArray[np.float64] | None = None
-        self.target_antenna_joint_positions: npt.NDArray[np.float64] | None = None
+        self.target_antenna_joint_positions: (
+            npt.NDArray[np.float64] | list[float] | None
+        ) = None
         self.ik_required: bool = False  # Flag pour IK computation (conforme SDK)
 
     def _create_backend(self) -> RobotAPI:
