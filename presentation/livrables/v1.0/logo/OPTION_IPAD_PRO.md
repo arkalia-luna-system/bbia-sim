@@ -246,5 +246,5 @@
 
 ---
 
-*Guide iPad Pro - Logo BBIA - 2025-01-31*
+*Guide iPad Pro - Logo BBIA - 2025-10-31*
 

@@ -119,7 +119,7 @@ class BBIAAdvancedWebSocketManager:
             except Exception:
                 disconnected.append(
                     connection
-                )  # noqa: B110 - Ajouter connexion fermée à liste nettoyage
+                )  # noqa: S101 - Ajouter connexion fermée à liste nettoyage
 
         # Nettoyer les connexions fermées
         for connection in disconnected:
@@ -205,7 +205,7 @@ class BBIAAdvancedWebSocketManager:
                 pose[joint] = self.robot.get_joint_pos(joint)
             except Exception:
                 pose[joint] = (
-                    0.0  # noqa: B110 - Valeur par défaut si lecture joint échoue
+                    0.0  # noqa: S101 - Valeur par défaut si lecture joint échoue
                 )
         return pose
 
@@ -1303,7 +1303,7 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                 # Type narrowing après vérification isinstance
                 assert isinstance(
                     emotion, str
-                )  # noqa: B101 - Type narrowing après vérification isinstance
+                )  # noqa: S101 - Type narrowing après vérification isinstance
                 success = advanced_websocket_manager.robot.set_emotion(
                     emotion, intensity
                 )
@@ -1332,7 +1332,7 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
             # Type narrowing après vérification robot
             assert (
                 advanced_websocket_manager.robot is not None
-            )  # noqa: B101 - Type narrowing après vérification
+            )  # noqa: S101 - Type narrowing après vérification
             robot = advanced_websocket_manager.robot
 
             if action == "look_at":
@@ -1377,10 +1377,10 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
             # Type narrowing après vérifications
             assert isinstance(
                 behavior, str
-            )  # noqa: B101 - Type narrowing après vérification isinstance
+            )  # noqa: S101 - Type narrowing après vérification isinstance
             assert (
                 advanced_websocket_manager.robot is not None
-            )  # noqa: B101 - Type narrowing après vérification
+            )  # noqa: S101 - Type narrowing après vérification
             robot = advanced_websocket_manager.robot
 
             success = robot.run_behavior(behavior, 5.0)
@@ -1411,10 +1411,10 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
             # Type narrowing après vérifications
             assert (
                 joint_data is not None
-            )  # noqa: B101 - Type narrowing après vérification
+            )  # noqa: S101 - Type narrowing après vérification
             assert (
                 advanced_websocket_manager.robot is not None
-            )  # noqa: B101 - Type narrowing après vérification
+            )  # noqa: S101 - Type narrowing après vérification
             robot = advanced_websocket_manager.robot
 
             joint = joint_data.get("joint")

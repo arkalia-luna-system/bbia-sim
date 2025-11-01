@@ -372,7 +372,7 @@ class ReachyMiniBackend(RobotAPI):
         try:
             self._stop_watchdog()
         except Exception:
-            pass  # noqa: B110 - Ignorer erreur arrêt watchdog dans destructeur (best-effort cleanup)
+            pass  # noqa: S101 - Ignorer erreur arrêt watchdog dans destructeur (best-effort cleanup)
 
     def get_available_joints(self) -> list[str]:
         """Retourne la liste des joints disponibles."""

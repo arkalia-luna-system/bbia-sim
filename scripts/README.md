@@ -8,7 +8,7 @@
 - ❌ **`kill_greedy_processes.sh`** → Utiliser `smart_process_cleanup.sh` (archivé dans `_archived/`)
 - ⚠️ **`kill_mujoco_viewers.sh`** → Utiliser `process_manager.py stop` (déprécié mais gardé)
 
-### 🔄 **Scripts d'Audit Consolidés** (Novembre 2024)
+### 🔄 **Scripts d'Audit Consolidés** (Octobre 2025)
 
 Les scripts de comparaison/audit avec le SDK officiel Reachy Mini ont été consolidés :
 
@@ -291,6 +291,6 @@ scripts/
 *Scripts d'automatisation* 🚀✨
 
 **Version** : 2.0  
-**Date** : 15 juillet 2024  
+**Date** : 15 octobre 2025  
 **Scripts** : ✅ 6 scripts fonctionnels  
 **Automatisation** : ✅ Complète 

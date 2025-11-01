@@ -1,6 +1,6 @@
 # 📋 Résumé de la Réorganisation des Tests
 
-> **Date**: Janvier 2025  
+> **Date**: Octobre 2025  
 > **Action**: Réorganisation des tests selon audit
 
 ## ✅ Actions Réalisées
@@ -123,5 +123,5 @@ pytest tests/ --cov=src --cov-report=html --cov-report=term-missing
 ---
 
 **Version**: 1.0  
-**Date**: Janvier 2025
+**Date**: Octobre 2025
 

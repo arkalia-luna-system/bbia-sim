@@ -79,7 +79,7 @@
 ### 🥉 PRIORITÉ 3 : Script Test Robot Réel (1h)
 
 **Pourquoi :**
-- Prépare décembre 2025 (robot reçu)
+- Prépare Octobre 2025 (robot reçu)
 - Teste chat sur robot physique
 - Validation complète
 

@@ -4,7 +4,7 @@
 
 ---
 
-## Version 2.0 - 2025-01-31 - Workflow Procreate
+## Version 2.0 - 2025-10-31 - Workflow Procreate
 
 ### **Nouvelle Direction**
 
@@ -38,7 +38,7 @@
 
 ---
 
-## Version 1.1 - 2025-01-31 - Logos Reachy Fidèles
+## Version 1.1 - 2025-10-31 - Logos Reachy Fidèles
 
 **Création** : Logos basés sur mesures exactes XML + visuels réels
 
@@ -52,7 +52,7 @@
 
 ---
 
-## Version 1.0 - 2025-01-31 - Version Initiale
+## Version 1.0 - 2025-10-31 - Version Initiale
 
 **Création** : Mascotte stylisée (chibi/kawaï)
 

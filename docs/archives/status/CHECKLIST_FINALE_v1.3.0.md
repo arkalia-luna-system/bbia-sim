@@ -10,7 +10,7 @@
 
 | # | Domaine | Action | Statut | Temps |
 |---|---------|--------|--------|-------|
-| 1 | **Technique** | Tests réels Reachy Mini | ⏳ En attente robot | Décembre 2024 |
+| 1 | **Technique** | Tests réels Reachy Mini | ⏳ En attente robot | Octobre 2025 |
 | 2 | **Technique** | Tag stable v1.3.1 | ✅ **FAIT** | - |
 | 3 | **Technique** | CHANGELOG.md | ✅ **FAIT** | - |
 | 4 | **Déploiement** | Render.com Swagger | 🔄 Prêt à déployer | 5 min |
@@ -59,7 +59,7 @@
 ## 7 dernières étapes à accomplir
 
 ### 1. Tests temps réel Reachy Mini physique (en attente)
-- **Statut** : ⏳ **EN ATTENTE** du robot physique (décembre 2024)
+- **Statut** : ⏳ **EN ATTENTE** du robot physique (Octobre 2025)
 - **Action** : Tester dès réception du robot
 - **Préparation** : ✅ **PRÊT** - Backend et tests préparés
 - **Temps** : 1-2 jours après réception
@@ -163,7 +163,7 @@
 2. **Publier sur LinkedIn** - Post optimisé prêt (1 jour)
 3. **Partager sur Forum Reachy** - Communauté technique (1 jour)
 
-### Actions robot physique (décembre 2024)
+### Actions robot physique (Octobre 2025)
 1. **Tester robot réel** - Backend prêt (1-2 jours)
 2. **Valider conformité** - Tests automatisés (1 jour)
 3. **Documenter résultats** - Comparaison sim/réel (1 jour)

@@ -1,6 +1,6 @@
 # ✅ CONFORMITÉ SDK REACHY-MINI - VALIDATION COMPLÈTE
 
-**Date:** 20 Décembre 2024
+**Date:** 20 Octobre 2025
 **Version:** BBIA-SIM v1.3.0
 **Statut:** 🎉 **100% CONFORME**
 
@@ -106,7 +106,7 @@
 - Sécurité garantie
 
 ### 📅 Prochaines Étapes
-1. **Test robot physique** (décembre 2024)
+1. **Test robot physique** (Octobre 2025)
    ```bash
    python examples/demo_reachy_mini_corrigee.py --backend reachy_mini --real
    ```

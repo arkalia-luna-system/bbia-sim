@@ -251,10 +251,10 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
                         _sd.wait()
                     return
                 except Exception:
-                    pass  # noqa: B110 - Fallback silencieux vers pyttsx3 si TTS backend échoue
+                    pass  # noqa: S101 - Fallback silencieux vers pyttsx3 si TTS backend échoue
         except Exception:
             # Fallback vers logique pyttsx3 plus bas
-            pass  # noqa: B110 - Fallback silencieux vers pyttsx3 si tous les backends TTS échouent
+            pass  # noqa: S101 - Fallback silencieux vers pyttsx3 si tous les backends TTS échouent
 
     # OPTIMISATION SDK: Utiliser robot.media.* si disponible (sans dépendre de pyttsx3)
     # Priorité stricte: media.play_audio(bytes[, volume]) puis media.speaker.*
@@ -319,7 +319,7 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
                         if tmp_path and os.path.exists(tmp_path):
                             os.unlink(tmp_path)
                     except Exception:
-                        pass  # noqa: B110 - Ignorer erreur nettoyage fichier temp (déjà supprimé ou inexistant)
+                        pass  # noqa: S101 - Ignorer erreur nettoyage fichier temp (déjà supprimé ou inexistant)
 
         except Exception as e:
             logging.debug(f"Erreur synthèse SDK (fallback pyttsx3): {e}")

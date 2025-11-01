@@ -1,6 +1,6 @@
 # 📋 Résumé Consolidation Scripts d'Audit/Comparaison
 
-**Date** : Novembre 2024  
+**Date** : Octobre 2025  
 **Objectif** : Fusionner et archiver les scripts redondants de comparaison avec Reachy Mini
 
 ---
@@ -143,5 +143,5 @@ python scripts/generate_conformity_report_reachy_mini.py
 
 ---
 
-**Dernière mise à jour** : Novembre 2024
+**Dernière mise à jour** : Octobre 2025
 

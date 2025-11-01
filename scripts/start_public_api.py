@@ -152,15 +152,25 @@ Endpoints disponibles :
         pass
 
     # Configuration uvicorn
-    config = {
-        "app": app,
-        "host": args.host,
-        "port": args.port,
-        "log_level": args.log_level,
-        "reload": reload,
-        "workers": workers,
-        "access_log": True,
-    }
+    # Utiliser string d'import si reload=True pour éviter le warning
+    if reload:
+        config = {
+            "app": "bbia_sim.daemon.app.main:app",
+            "host": args.host,
+            "port": args.port,
+            "log_level": args.log_level,
+            "reload": True,
+            "access_log": True,
+        }
+    else:
+        config = {
+            "app": app,
+            "host": args.host,
+            "port": args.port,
+            "log_level": args.log_level,
+            "workers": workers,
+            "access_log": True,
+        }
 
     # Messages de démarrage
     logger.info("🚀 Démarrage de l'API Publique BBIA-SIM v1.2.0")

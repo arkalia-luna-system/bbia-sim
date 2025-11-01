@@ -7,7 +7,7 @@
 
 ## 📊 **STATUT PHASE 2 : EN COURS**
 
-**Date de début** : Décembre 2024
+**Date de début** : Octobre 2025
 **Durée estimée** : 1-2 mois
 **Progression** : 40% complété
 

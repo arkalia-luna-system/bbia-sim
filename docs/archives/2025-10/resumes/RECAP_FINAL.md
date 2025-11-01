@@ -73,5 +73,5 @@ python examples/demo_chat_simple.py
 2. Lancer la démo 3D (./LANCE_DEMO_3D.sh)
 3. Tester le chat (demo_chat_simple.py)
 
-**BBIA est prêt pour décembre 2025 (robot physique) !** 🚀
+**BBIA est prêt pour Octobre 2025 (robot physique) !** 🚀
 

@@ -320,7 +320,7 @@ pytest tests/ --cov=src/bbia_sim --cov-report=term-missing --cov-report=html
 - **Sécurité** : 0 issues
 
 ### Prochain Sprint
-- **Coverage cible** : 60%+ d'ici fin Novembre 2025
+- **Coverage cible** : 60%+ d'ici fin Octobre 2025
 - **Modules restants** : 6 modules <50% à améliorer
 - **Estimation** : 18-24 heures de travail
 

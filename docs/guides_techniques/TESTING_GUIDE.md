@@ -102,7 +102,7 @@ graph LR
     REACHY --> INTEGRATION
 ```
 
-### 🤖 Tests Backend Reachy Mini (Novembre 2024)
+### 🤖 Tests Backend Reachy Mini (Octobre 2025)
 
 **📊 Statistiques**:
 - ✅ **118 tests** répartis dans **8 fichiers complémentaires**

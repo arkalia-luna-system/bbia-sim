@@ -269,7 +269,7 @@ Selon l'update Reachy-mini (Octobre 2024) :
 | **SDK disponible sur GitHub** | ✅ Référencé partout | ✅ **CONFORME** |
 | **Documentation officielle** | ✅ Utilisée comme référence | ✅ **CONFORME** |
 | **Beta shipments (Octobre)** | ✅ Guide hardware présent | ✅ **CONFORME** |
-| **Production (Décembre 2024)** | ✅ Prêt pour robot réel | ✅ **CONFORME** |
+| **Production (Octobre 2025)** | ✅ Prêt pour robot réel | ✅ **CONFORME** |
 
 ### 4.3 Conclusion Release
 
@@ -336,7 +336,7 @@ Tous les fichiers dans `docs/archives/` sont utiles pour la traçabilité histor
 - SDK référencé correctement
 - Documentation alignée
 - Prêt pour beta shipments
-- Prêt pour production (Décembre 2024)
+- Prêt pour production (Octobre 2025)
 
 ### 📊 Score Global
 

@@ -1,19 +1,19 @@
 # 📝 NOTE SUR LES ARCHIVES - ANTENNES
 
-**Date** : 2025-01-31  
+**Date** : 2025-10-31  
 **Objet** : Clarification sur les fichiers d'archives
 
 ---
 
 ## ℹ️ INFORMATIONS IMPORTANTES
 
-Les fichiers dans `docs/archives/` contiennent des **références historiques** datant d'avant la correction des antennes (janvier 2025).
+Les fichiers dans `docs/archives/` contiennent des **références historiques** datant d'avant la correction des antennes (Octobre 2025).
 
 Ces fichiers mentionnent encore que les antennes sont bloquées, ce qui était **correct à l'époque** mais **plus maintenant**.
 
 ---
 
-## ✅ STATUT ACTUEL (Janvier 2025)
+## ✅ STATUT ACTUEL (Octobre 2025)
 
 **Les antennes sont maintenant ANIMABLES** avec limites de sécurité (-0.3 à 0.3 rad).
 

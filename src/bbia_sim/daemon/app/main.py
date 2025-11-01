@@ -3,12 +3,15 @@
 import logging
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
+from pathlib import Path
 from typing import Any
 
 from fastapi import APIRouter, Depends, FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 
 from ..config import settings
 from ..middleware import RateLimitMiddleware, SecurityMiddleware
@@ -241,47 +244,65 @@ app.include_router(
 )
 app.include_router(telemetry.router, prefix="/ws", tags=["telemetry"])
 
+# Dashboard (conforme SDK officiel)
+STATIC_DIR = Path(__file__).parent / "dashboard" / "static"
+TEMPLATES_DIR = Path(__file__).parent / "dashboard" / "templates"
 
-@app.get("/", response_class=JSONResponse)
-async def root() -> dict[str, Any]:
-    """Point d'entrée principal de l'API."""
-    return {
-        "message": "BBIA-SIM API - Écosystème Reachy Mini",
-        "version": "1.2.0",
-        "status": "running",
-        "description": (
-            "API publique pour le contrôle du robot Reachy Mini avec modules BBIA"
-        ),
-        "endpoints": {
-            "ecosystem": "/api/ecosystem",
-            "state": "/api/state",
-            "motion": "/api/motion",
-            "move": "/api/move",
-            "motors": "/api/motors",
-            "daemon": "/api/daemon",
-            "kinematics": "/api/kinematics",
-            "apps": "/api/apps",
-            "telemetry": "/ws/telemetry",
-            "docs": "/docs",
-            "redoc": "/redoc",
-            "openapi": "/openapi.json",
-        },
-        "features": [
-            "REST API",
-            "WebSocket telemetry",
-            "MuJoCo simulation",
-            "Robot control",
-            "BBIA emotions",
-            "BBIA behaviors",
-            "Demo modes",
-            "OpenAPI documentation",
-        ],
-        "contact": {
-            "name": "Arkalia Luna System",
-            "email": "arkalia.luna.system@gmail.com",
-            "github": "https://github.com/arkalia-luna-system/bbia-sim",
-        },
-    }
+if STATIC_DIR.exists() and TEMPLATES_DIR.exists():
+    app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
+    templates = Jinja2Templates(directory=str(TEMPLATES_DIR))
+
+    @app.get("/", response_class=HTMLResponse)
+    async def dashboard(request: Request) -> HTMLResponse:
+        """Render the dashboard (conforme SDK officiel)."""
+        return templates.TemplateResponse("index.html", {"request": request})
+
+else:
+    logger.warning(
+        "Dashboard templates non trouvés. Dashboard non disponible. "
+        f"STATIC_DIR: {STATIC_DIR}, TEMPLATES_DIR: {TEMPLATES_DIR}"
+    )
+
+    @app.get("/", response_class=JSONResponse)
+    async def root() -> dict[str, Any]:
+        """Point d'entrée principal de l'API (fallback si dashboard non disponible)."""
+        return {
+            "message": "BBIA-SIM API - Écosystème Reachy Mini",
+            "version": "1.2.0",
+            "status": "running",
+            "description": (
+                "API publique pour le contrôle du robot Reachy Mini avec modules BBIA"
+            ),
+            "endpoints": {
+                "ecosystem": "/api/ecosystem",
+                "state": "/api/state",
+                "motion": "/api/motion",
+                "move": "/api/move",
+                "motors": "/api/motors",
+                "daemon": "/api/daemon",
+                "kinematics": "/api/kinematics",
+                "apps": "/api/apps",
+                "telemetry": "/ws/telemetry",
+                "docs": "/docs",
+                "redoc": "/redoc",
+                "openapi": "/openapi.json",
+            },
+            "features": [
+                "REST API",
+                "WebSocket telemetry",
+                "MuJoCo simulation",
+                "Robot control",
+                "BBIA emotions",
+                "BBIA behaviors",
+                "Demo modes",
+                "OpenAPI documentation",
+            ],
+            "contact": {
+                "name": "Arkalia Luna System",
+                "email": "arkalia.luna.system@gmail.com",
+                "github": "https://github.com/arkalia-luna-system/bbia-sim",
+            },
+        }
 
 
 @app.get("/health", response_class=JSONResponse)
@@ -375,4 +396,11 @@ if __name__ == "__main__":
     import uvicorn
 
     # Configuration pour le développement
-    uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True, log_level="info")
+    # Utiliser string d'import complète pour éviter problèmes
+    uvicorn.run(
+        "bbia_sim.daemon.app.main:app",
+        host="127.0.0.1",
+        port=8000,
+        reload=False,  # Désactiver reload pour stabilité
+        log_level="info",
+    )

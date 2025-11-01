@@ -1,6 +1,6 @@
 # 🤖 Mock Robot + Tests Hardware Conditionnels
 
-**Date**: 2025-01-31  
+**Date**: 2025-10-31  
 **Branche**: `future`
 
 ---

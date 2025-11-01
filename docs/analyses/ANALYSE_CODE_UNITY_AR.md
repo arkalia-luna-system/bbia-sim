@@ -257,7 +257,7 @@ class MobileARController:
 ### 🌟 Ce qui EST pertinent pour BBIA
 
 **Focus sur :**
-1. ✅ Tests robot physique (décembre 2025)
+1. ✅ Tests robot physique (Octobre 2025)
 2. ✅ Démos professionnelles
 3. ✅ Documentation utilisateur
 4. ✅ Cas d'usage concrets

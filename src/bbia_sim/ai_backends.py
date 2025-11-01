@@ -60,7 +60,7 @@ class Pyttsx3TTS:
                 except Exception:
                     # Si get_bbia_voice échoue, utiliser voix par défaut
                     # (peut être une voix d'homme, mais mieux que crash)
-                    pass  # noqa: B110 - Fallback silencieux vers voix par défaut si sélection échoue
+                    pass  # noqa: S101 - Fallback silencieux vers voix par défaut si sélection échoue
 
             # Utiliser la voix sélectionnée si disponible
             if self._voice_id:
@@ -99,7 +99,7 @@ class KittenTTSTTS:
             try:
                 return self._impl.synthesize_to_wav(text, outfile)
             except Exception:
-                pass  # noqa: B110 - Fallback silencieux vers pyttsx3 si backend TTS échoue
+                pass  # noqa: S101 - Fallback silencieux vers pyttsx3 si backend TTS échoue
         return self._fallback.synthesize_to_wav(text, outfile)
 
 
@@ -127,7 +127,7 @@ class KokoroTTS:
             try:
                 return self._impl.synthesize_to_wav(text, outfile)
             except Exception:
-                pass  # noqa: B110 - Fallback silencieux vers pyttsx3 si backend TTS échoue
+                pass  # noqa: S101 - Fallback silencieux vers pyttsx3 si backend TTS échoue
         return self._fallback.synthesize_to_wav(text, outfile)
 
 
@@ -155,7 +155,7 @@ class NeuTTSTTS:
             try:
                 return self._impl.synthesize_to_wav(text, outfile)
             except Exception:
-                pass  # noqa: B110 - Fallback silencieux vers pyttsx3 si backend TTS échoue
+                pass  # noqa: S101 - Fallback silencieux vers pyttsx3 si backend TTS échoue
         return self._fallback.synthesize_to_wav(text, outfile)
 
 

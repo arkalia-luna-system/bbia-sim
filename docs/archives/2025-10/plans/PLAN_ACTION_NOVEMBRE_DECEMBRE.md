@@ -1,7 +1,7 @@
-# 🚀 PLAN D'ACTION NOVEMBRE-DÉCEMBRE 2025
+# 🚀 PLAN D'ACTION NOVEMBRE-Octobre 2025
 
 **Situation actuelle :** 28 Octobre 2025
-**Robot reçu :** Décembre 2025 (environ 60 jours)
+**Robot reçu :** Octobre 2025 (environ 60 jours)
 **Objectif :** Préparer BBIA pour robot réel
 
 ---

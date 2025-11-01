@@ -1,6 +1,6 @@
 # ✅ CORRECTION : ANTENNES MAINTENANT ANIMABLES
 
-**Date** : 2025-01-31  
+**Date** : 2025-10-31  
 **Correction** : Les antennes SONT animables (robot réel) - Débloquées dans simulation  
 **Limites** : -0.3 à 0.3 rad (sécurité hardware)
 
@@ -100,7 +100,7 @@ VALID_BEHAVIORS = {
 
 1. **Hardware Fragile** : Les antennes sont des pièces délicates
 2. **Protection** : Limites -0.3 à 0.3 rad (≈ ±17°) pour éviter casse
-3. **Robot Réel** : À tester avec prudence en décembre 2025
+3. **Robot Réel** : À tester avec prudence en Octobre 2025
 
 ### Option : Bloquer par Défaut
 
@@ -177,6 +177,6 @@ python scripts/check_joints.py | grep antenna
 ---
 
 **Statut** : ✅ **CORRIGÉ ET DÉBLOQUÉ**  
-**Date** : 2025-01-31  
+**Date** : 2025-10-31  
 **Limites** : -0.3 à 0.3 rad (sécurité hardware)
 

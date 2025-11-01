@@ -5,16 +5,16 @@
 ## 🎯 **Contenu du Dossier Assets**
 
 ### 📹 **Vidéos de Démonstration**
-- **3 nouvelles vidéos MuJoCo** (2025-11-01) : Captures d'écran de la simulation 3D
-  - `Enregistrement de l'écran 2025-11-01 à 17.00.52.mov` (2.7 MB)
-  - `Enregistrement de l'écran 2025-11-01 à 17.01.27.mov` (3.4 MB)
-  - `Enregistrement de l'écran 2025-11-01 à 17.01.56.mov` (3.1 MB)
+- **3 nouvelles vidéos MuJoCo** (2025-10-01) : Captures d'écran de la simulation 3D
+  - `Enregistrement de l'écran 2025-10-01 à 17.00.52.mov` (2.7 MB)
+  - `Enregistrement de l'écran 2025-10-01 à 17.01.27.mov` (3.4 MB)
+  - `Enregistrement de l'écran 2025-10-01 à 17.01.56.mov` (3.1 MB)
 - **Source** : Toutes enregistrées depuis `examples/demo_mujoco_continue.py` (robot en mouvement continu)
 - **Inventaire complet** : Voir [`MEDIAS_INVENTAIRE.md`](./MEDIAS_INVENTAIRE.md)
 
 ### 🖼️ **Images**
 - **Référence visuelle déplacée** : Voir `docs/reachy/REACHY_MINI_REFERENCE.md` - Référence visuelle du robot Reachy Mini
-- **10 nouvelles captures d'écran** (2025-11-01) : Séquence de captures montrant le robot en mouvement
+- **10 nouvelles captures d'écran** (2025-10-01) : Séquence de captures montrant le robot en mouvement
 - **5 captures d'écran** (2025-10-27) : Captures de référence antérieures
 - **Images finales** : `robot_3d_final.png`, `robot_animation.gif`
 - **Inventaire complet** : Voir [`MEDIAS_INVENTAIRE.md`](./MEDIAS_INVENTAIRE.md)
@@ -149,13 +149,13 @@ assets/
 ├── 📖 README.md                      # Ce fichier
 ├── 📹 MEDIAS_INVENTAIRE.md           # Inventaire complet vidéos/images
 ├── 🎬 videos/                        # Vidéos de démonstration
-│   ├── Enregistrement de l'écran 2025-11-01 à 17.00.52.mov
-│   ├── Enregistrement de l'écran 2025-11-01 à 17.01.27.mov
-│   ├── Enregistrement de l'écran 2025-11-01 à 17.01.56.mov
+│   ├── Enregistrement de l'écran 2025-10-01 à 17.00.52.mov
+│   ├── Enregistrement de l'écran 2025-10-01 à 17.01.27.mov
+│   ├── Enregistrement de l'écran 2025-10-01 à 17.01.56.mov
 │   └── (traces JSONL de démos)
 ├── 🖼️ images/                        # Captures d'écran et images
-│   ├── Capture d'écran 2025-11-01 à 16.48.XX.png (série)
-│   ├── Capture d'écran 2025-11-01 à 16.49.XX.png (série)
+│   ├── Capture d'écran 2025-10-01 à 16.48.XX.png (série)
+│   ├── Capture d'écran 2025-10-01 à 16.49.XX.png (série)
 │   ├── robot_3d_final.png
 │   └── robot_animation.gif
 └── 🎨 textures/                      # Textures Procreate pour MuJoCo

@@ -1,6 +1,6 @@
 # 📋 Issues GitHub à Créer - Prêt à Copier/Coller
 
-**Date** : 2025-01-31  
+**Date** : 2025-10-31  
 **Source** : `docs/GOOD_FIRST_ISSUES.md`
 
 ---

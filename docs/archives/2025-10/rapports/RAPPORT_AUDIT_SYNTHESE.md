@@ -191,7 +191,7 @@ Documentation fournie :
 
 **Statut :** ⚠️ Pas encore testé
 
-**Action requise (décembre 2025) :**
+**Action requise (Octobre 2025) :**
 ```bash
 # Quand robot reçu
 python examples/demo_reachy_mini_corrigee.py --backend reachy_mini --real
@@ -275,7 +275,7 @@ python scripts/hardware_dry_run_reachy_mini.py --duration 60
 ### ✅ À FAIRE
 
 **Actions prioritaires :**
-1. Attendre robot physique (décembre 2025)
+1. Attendre robot physique (Octobre 2025)
 2. Tester sur robot réel
 3. Valider performances hardware
 4. Produire démo professionnelle

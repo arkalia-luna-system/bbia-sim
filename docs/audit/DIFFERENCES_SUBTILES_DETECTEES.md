@@ -1,6 +1,6 @@
 # 🔍 DIFFÉRENCES SUBTILES DÉTECTÉES - BBIA vs SDK OFFICIEL
 
-**Date** : Novembre 2024  
+**Date** : Octobre 2025  
 **Référence** : Comparaison exhaustive `bbia-reachy-sim` vs `pollen-robotics/reachy_mini` (branch develop)
 
 ---
@@ -307,5 +307,5 @@ if duration_float <= 0.0:
 
 ---
 
-**Dernière mise à jour** : Novembre 2024
+**Dernière mise à jour** : Octobre 2025
 

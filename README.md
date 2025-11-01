@@ -30,7 +30,7 @@ BBIA-SIM est un moteur cognitif Python avec 12 émotions robotiques pour Reachy 
 
 Version 1.3.2 – Alignement complet branches, tests élargis (perf/watchdog), doc enrichie, release stable.
 
-Ce projet fournit une simulation fidèle du robot Reachy Mini dans MuJoCo, avec une intégration des modules BBIA (Bio-Inspired Artificial Intelligence) et une conformité validée avec le SDK officiel de Pollen Robotics (décembre 2024).
+Ce projet fournit une simulation fidèle du robot Reachy Mini dans MuJoCo, avec une intégration des modules BBIA (Bio-Inspired Artificial Intelligence) et une conformité validée avec le SDK officiel de Pollen Robotics (octobre 2025).
 
 ## 🚀 Quick Start
 ```bash
@@ -264,11 +264,11 @@ python scripts/replay_viewer.py artifacts/my_animation.jsonl --speed 1.5
 
 ### 📹 Vidéos de Démonstration
 
-**Nouvelles vidéos disponibles** (2025-11-01) : 3 captures vidéo de la simulation MuJoCo
+**Nouvelles vidéos disponibles** (2025-10-01) : 3 captures vidéo de la simulation MuJoCo
 
-- `assets/videos/Enregistrement de l'écran 2025-11-01 à 17.00.52.mov` (2.7 MB)
-- `assets/videos/Enregistrement de l'écran 2025-11-01 à 17.01.27.mov` (3.4 MB)
-- `assets/videos/Enregistrement de l'écran 2025-11-01 à 17.01.56.mov` (3.1 MB)
+- `assets/videos/Enregistrement de l'écran 2025-10-01 à 17.00.52.mov` (2.7 MB)
+- `assets/videos/Enregistrement de l'écran 2025-10-01 à 17.01.27.mov` (3.4 MB)
+- `assets/videos/Enregistrement de l'écran 2025-10-01 à 17.01.56.mov` (3.1 MB)
 
 **Source** : Toutes ces vidéos ont été enregistrées depuis `examples/demo_mujoco_continue.py` qui montre le robot en mouvement continu (tête + corps).
 

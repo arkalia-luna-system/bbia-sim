@@ -303,7 +303,7 @@ Votre projet BBIA-SIM est **entièrement conforme** au SDK officiel Reachy Mini 
 
 ### **Prêt pour Déploiement**
 - ✅ **Robot physique** : Prêt pour Beta Octobre 2025
-- ✅ **Production** : Prêt pour Décembre 2025 - Février 2026
+- ✅ **Production** : Prêt pour Octobre 2025 - Février 2026
 - ✅ **Documentation** : Complète et à jour
 
 ---

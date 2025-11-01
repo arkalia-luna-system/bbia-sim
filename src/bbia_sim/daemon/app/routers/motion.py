@@ -347,7 +347,7 @@ async def stop_motion() -> dict[str, Any]:
         # Appel direct asynchrone (stop_simulation est déjà async)
         await simulation_service.stop_simulation()
     except Exception:
-        pass  # noqa: B110 - Ignorer si simulation déjà arrêtée (comportement attendu)
+        pass  # noqa: S101 - Ignorer si simulation déjà arrêtée (comportement attendu)
 
     return {
         "status": "stopped",

@@ -289,7 +289,7 @@ class ARDemoBBIA:
 
 **Action requise :**
 ```bash
-# Quand robot reçu (décembre 2025)
+# Quand robot reçu (Octobre 2025)
 python examples/demo_reachy_mini_corrigee.py --backend reachy_mini --real
 python scripts/hardware_dry_run_reachy_mini.py --duration 60
 ```
@@ -368,7 +368,7 @@ Le projet présente :
 
 ### 📅 PRÊT POUR ROBOT PHYSIQUE
 
-**Quand robot reçu (décembre 2025) :**
+**Quand robot reçu (Octobre 2025) :**
 1. Tester sur robot réel ✅
 2. Valider performances hardware ✅
 3. Ajuster si nécessaire ⚠️
@@ -439,7 +439,7 @@ python examples/demo_reachy_mini_corrigee.py --backend reachy_mini
 
 ### 🚀 PROCHAINE ÉTAPE
 
-**Attendre robot physique (décembre 2025) et tester !**
+**Attendre robot physique (Octobre 2025) et tester !**
 
 **Confiance :** 95% que tout fonctionnera correctement
 

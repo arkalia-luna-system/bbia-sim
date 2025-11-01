@@ -49,5 +49,5 @@ Voir le guide complet : [`OPTION_IPAD_PRO.md`](OPTION_IPAD_PRO.md)
 
 ---
 
-*Résumé rapide - Option iPad Pro - 2025-01-31*
+*Résumé rapide - Option iPad Pro - 2025-10-31*
 

@@ -1,6 +1,6 @@
 # 🔍 Audit Documentation Complète - BBIA-SIM
 
-**Date** : 2025-11-01  
+**Date** : 2025-10-01  
 **Objectif** : Vérifier emplacement, cohérence, liens, doublons et exactitude de toute la documentation
 
 ---
@@ -184,7 +184,7 @@
 3. ⚠️ **À FAIRE** : Consolider doublons dans audit/ (détection faite, consolidation optionnelle)
 4. ⚠️ **À FAIRE** : Optimiser structure si nécessaire (évaluation faite)
 
-## ✅ CORRECTIONS APPLIQUÉES (2025-11-01)
+## ✅ CORRECTIONS APPLIQUÉES (2025-10-01)
 
 **Références antennes corrigées** :
 - ✅ Toutes les mentions d'antennes bloquées ont été remplacées par "Antennes animables avec limites de sécurité (-0.3 à 0.3 rad)"

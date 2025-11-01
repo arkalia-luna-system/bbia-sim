@@ -1,6 +1,6 @@
 # 📚 RAPPORT D'ANALYSE DES EXEMPLES - BBIA vs SDK OFFICIEL
 
-**Date**: 1er Novembre 2025  
+**Date**: 1er Octobre 2025  
 **Branche**: future
 
 ---
@@ -171,6 +171,6 @@ else:
 
 ---
 
-**Date de génération**: 1er Novembre 2025  
+**Date de génération**: 1er Octobre 2025  
 **Fichiers analysés**: `examples/reachy_mini/*.py`
 

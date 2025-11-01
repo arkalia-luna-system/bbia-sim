@@ -193,24 +193,24 @@ gantt
     dateFormat  YYYY-MM-DD
     section Phase 1: Préparation
     Documentation complète    :done, doc, 2024-12-01, 2024-12-15
-    Environnement dev        :active, env, Décembre 2024, Janvier 2025
-    Simulation Unity         :sim, Janvier 2025, Janvier 2025
+    Environnement dev        :active, env, Octobre 2025, Octobre 2025
+    Simulation Unity         :sim, Octobre 2025, Octobre 2025
 
     section Phase 2: Core
-    Configuration robot      :robot, Février 2025, Février 2025
-    Tests mouvements         :move, Février 2025, Mars 2025
-    Reconnaissance vocale    :voice, Mars 2025, Mars 2025
-    Système émotions         :emotions, Mars 2025, Avril 2025
+    Configuration robot      :robot, Octobre 2025, Octobre 2025
+    Tests mouvements         :move, Octobre 2025, Octobre 2025
+    Reconnaissance vocale    :voice, Octobre 2025, Octobre 2025
+    Système émotions         :emotions, Octobre 2025, Octobre 2025
 
     section Phase 3: Intelligence
-    Hugging Face             :hf, Avril 2025, Mai 2025
-    Modèles IA               :ai, Mai 2025, Juin 2025
-    Comportements complexes  :behavior, Juin 2025, Juillet 2025
+    Hugging Face             :hf, Octobre 2025, Octobre 2025
+    Modèles IA               :ai, Octobre 2025, Octobre 2025
+    Comportements complexes  :behavior, Octobre 2025, Octobre 2025
 
     section Phase 4: Optimisation
-    Performance              :perf, Juillet 2025, Août 2025
-    Nouvelles fonctionnalités :feat, Août 2025, Septembre 2025
-    Déploiement production   :deploy, Septembre 2025, Octobre 2025
+    Performance              :perf, Octobre 2025, Octobre 2025
+    Nouvelles fonctionnalités :feat, Octobre 2025, Octobre 2025
+    Déploiement production   :deploy, Octobre 2025, Octobre 2025
 ```
 
 ---
@@ -462,6 +462,6 @@ Le **Reachy Mini Wireless** fournit une base solide pour BBIA :
 ---
 
 **Version** : 1.0
-**Date** : Décembre 2024
+**Date** : Octobre 2025
 **Statut** : Guide Reachy Mini Wireless
 **Auteur** : Assistant IA pour BBIA

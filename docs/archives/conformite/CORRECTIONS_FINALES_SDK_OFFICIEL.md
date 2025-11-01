@@ -135,7 +135,7 @@ python examples/demo_behavior_ok.py --behavior wake_up
 
 ---
 
-## 📅 **PRÊT POUR LE ROBOT RÉEL (Décembre 2025)**
+## 📅 **PRÊT POUR LE ROBOT RÉEL (Octobre 2025)**
 
 Toutes les démos utilisent maintenant les valeurs exactes du SDK Reachy Mini officiel.
 

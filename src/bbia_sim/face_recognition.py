@@ -180,7 +180,7 @@ class BBIAPersonRecognition:
                 try:
                     os.unlink(temp_path)
                 except Exception:
-                    pass  # noqa: B110 - Ignorer erreur nettoyage fichier temp (déjà supprimé ou inexistant)
+                    pass  # noqa: S101 - Ignorer erreur nettoyage fichier temp (déjà supprimé ou inexistant)
 
     def detect_emotion(
         self, image_path: str | np.ndarray, enforce_detection: bool = False
@@ -261,7 +261,7 @@ class BBIAPersonRecognition:
                 try:
                     os.unlink(temp_path)
                 except Exception:
-                    pass  # noqa: B110 - Ignorer erreur nettoyage fichier temp (déjà supprimé ou inexistant)
+                    pass  # noqa: S101 - Ignorer erreur nettoyage fichier temp (déjà supprimé ou inexistant)
 
     def recognize_with_emotion(
         self, image_path: str | np.ndarray

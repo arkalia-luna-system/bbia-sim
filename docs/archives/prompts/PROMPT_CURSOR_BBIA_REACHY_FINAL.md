@@ -251,7 +251,7 @@ Tu es un **agent Cursor expert MuJoCo/Python** spécialisé dans la simulation r
   ```
 - **Exemples INCORRECTS :**
   ```markdown
-  *Dernière mise à jour : 15 janvier 2025*  # ❌ Date incorrecte
+  *Dernière mise à jour : 15 Octobre 2025*  # ❌ Date incorrecte
   *Dernière mise à jour : 2024*             # ❌ Date incorrecte
   ```
 

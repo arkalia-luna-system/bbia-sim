@@ -1,6 +1,6 @@
 # Audit Compatibilité - Reachy Mini Officiel vs Modules IA
 
-**Date** : 2025-01-30  
+**Date** : 2025-10-31  
 **SDK Officiel** : `pollen-robotics/reachy_mini` (GitHub, Octobre 2024)  
 **Version BBIA** : 1.3.2  
 **Objectif** : Vérifier que tous les modules IA sont compatibles avec le SDK officiel Reachy Mini

@@ -1,6 +1,6 @@
 # 📁 Scripts d'Audit/Comparaison Archivés
 
-**Date archivage** : Novembre 2024  
+**Date archivage** : Octobre 2025  
 **Raison** : Consolidation des scripts redondants
 
 ---
@@ -95,5 +95,5 @@ Les fonctionnalités des scripts archivés ont été intégrées dans `compare_w
 
 ---
 
-**Dernière mise à jour** : Novembre 2024
+**Dernière mise à jour** : Octobre 2025
 

@@ -317,7 +317,7 @@ Au-delà du SDK officiel, BBIA-SIM offre:
 
 ### 1. Test Robot Physique (Priorité 1)
 ```bash
-# Quand le Reachy-Mini arrive (décembre 2024)
+# Quand le Reachy-Mini arrive (Octobre 2025)
 python examples/demo_reachy_mini_corrigee.py --backend reachy_mini --real
 ```
 

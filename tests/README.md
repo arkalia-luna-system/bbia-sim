@@ -114,7 +114,7 @@ tests/
 
 ### 🤖 **Tests Backend Reachy Mini**
 
-**📊 Statistiques (Novembre 2024)**:
+**📊 Statistiques (Octobre 2025)**:
 - ✅ **118 tests** répartis dans **8 fichiers complémentaires**
 - ✅ **116 tests uniques** (98.3% - très peu de redondance)
 - ✅ **1 doublon mineur** (`test_robot_factory_integration`)
@@ -359,7 +359,7 @@ pytest --cov=src/bbia_sim --cov-report=term-missing
 **BBIA-SIM** - Tests et Qualité 🧪✨
 
 **Version** : 2.0  
-**Date** : Janvier 2025  
+**Date** : Octobre 2025  
 **Tests** : ✅ 402 tests collectés, 391 passent (97% réussite)  
 **Couverture** : ✅ 72.07% (excellent)  
 **Qualité** : ✅ Black/Ruff/MyPy compliant

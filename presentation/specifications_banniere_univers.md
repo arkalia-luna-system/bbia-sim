@@ -1,6 +1,6 @@
 # 🎨 Spécifications Techniques - Bannière "Univers" BBIA
 
-> **Statut** : ✅ **Prêt pour graphiste** | **Version** : 1.0 | **Date** : 2025-01-31  
+> **Statut** : ✅ **Prêt pour graphiste** | **Version** : 1.0 | **Date** : 2025-10-31  
 > **Priorité** : 🔥 Haute - MVP Graphique  
 > **Type** : Spécifications techniques détaillées
 
@@ -179,8 +179,8 @@ Tu peux proposer :
 |-----------|--------|
 | **Statut** | ✅ Prêt pour graphiste |
 | **Version** | 1.0 |
-| **Date de création** | 2025-01-31 |
-| **Dernière mise à jour** | 2025-01-31 |
+| **Date de création** | 2025-10-31 |
+| **Dernière mise à jour** | 2025-10-31 |
 | **Type** | Spécifications techniques |
 | **Priorité** | 🔥 Haute - MVP Graphique |
 | **Document lié** | `BRIEF_GRAPHISTE_DA_BBIA.md` |

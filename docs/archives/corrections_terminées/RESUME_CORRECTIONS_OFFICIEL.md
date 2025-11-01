@@ -1,6 +1,6 @@
 # 📋 Résumé des Corrections - Comparaison avec Repo Officiel
 
-> **Date**: Novembre 2024  
+> **Date**: Octobre 2025  
 > **Repo Officiel**: `/Volumes/T7/reachy_mini` (branch `develop`, commit `2ba17f1`)  
 > **Status**: ✅ **En cours**
 
@@ -157,13 +157,13 @@
 - ✅ **Fichiers Core** : Analysés (modules internes daemon, non nécessaires)
 - ✅ **Tests/Exemples** : Analysés (BBIA déjà bien couvert, quelques exemples utiles)
 
-### Corrections Subtiles (Novembre 2024)
+### Corrections Subtiles (Octobre 2025)
 - ✅ **Support `body_yaw=None`** dans `goto_target()` - Permet de garder position actuelle (conforme SDK)
 - ✅ **Validation `duration` stricte** - Alignée sur SDK (`<= 0.0` au lieu de `< 0.0`)
 
 **Voir** : `docs/audit/DIFFERENCES_SUBTILES_DETECTEES.md` pour toutes les différences détectées et corrigées.
 
-### Corrections Endpoints `/api/move` (Novembre 2024)
+### Corrections Endpoints `/api/move` (Octobre 2025)
 - ✅ **Endpoint `POST /goto`** - Retiré paramètre `method` (SDK utilise MIN_JERK par défaut)
 - ✅ **Endpoint `POST /play/recorded-move-dataset`** - Appel direct `backend.play_move(move)` (conforme SDK)
 - ✅ **WebSocket `/ws/set_target`** - Réutilisation de `set_target()` au lieu de code dupliqué
@@ -181,5 +181,5 @@
 
 ---
 
-**Dernière mise à jour**: Novembre 2024
+**Dernière mise à jour**: Octobre 2025
 

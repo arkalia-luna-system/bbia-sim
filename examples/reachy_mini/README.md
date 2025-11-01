@@ -132,6 +132,6 @@ Si le SDK officiel n'est pas disponible, les exemples utilisent automatiquement 
 ---
 
 **Source** : Adaptés du repo officiel `pollen-robotics/reachy_mini` (branch `develop`)  
-**Date** : Novembre 2024  
+**Date** : Octobre 2025  
 **Conformité** : ✅ 100% conforme SDK officiel
 

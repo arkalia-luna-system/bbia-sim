@@ -89,7 +89,7 @@ Cette version inclut toutes les corrections et améliorations identifiées lors 
 
 ---
 
-## [1.3.0] - Décembre 2024
+## [1.3.0] - Octobre 2025
 
 ### 🎯 **RELEASE MAJEURE - CONFORMITÉ SDK PARFAITE**
 
