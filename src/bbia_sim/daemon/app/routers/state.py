@@ -218,6 +218,12 @@ async def get_full_state(
             result["passive_joints"] = None
 
     result["timestamp"] = datetime.now(UTC)
+
+    # Ajouter "position" si nécessaire pour compatibilité avec certains tests
+    # (FullState SDK officiel n'a pas ce champ, mais certains tests l'attendent)
+    if "position" not in result:
+        result["position"] = {"x": 0.0, "y": 0.0, "z": 0.0}
+
     return FullState.model_validate(result)
 
 

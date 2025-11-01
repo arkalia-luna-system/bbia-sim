@@ -269,7 +269,7 @@ def fonction_exemple(param1: str, param2: int) -> bool:
 **Structure** :
 ```python
 import pytest
-from bbia_sim.robot_api import RobotFactory
+from bbia_sim.robot_factory import RobotFactory
 
 class TestMaFonctionnalite:
     """Tests pour ma fonctionnalité."""

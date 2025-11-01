@@ -191,13 +191,13 @@ python scripts/demo_public_api.py
 ### 🤖 Backends Disponibles
 ```bash
 # Backend MuJoCo (simulation)
-python -c "from bbia_sim.robot_api import RobotFactory; robot = RobotFactory.create_backend('mujoco')"
+python -c "from bbia_sim.robot_factory import RobotFactory; robot = RobotFactory.create_backend('mujoco')"
 
 # Backend Reachy-Mini SDK Officiel (100% conforme)
-python -c "from bbia_sim.robot_api import RobotFactory; robot = RobotFactory.create_backend('reachy_mini')"
+python -c "from bbia_sim.robot_factory import RobotFactory; robot = RobotFactory.create_backend('reachy_mini')"
 
 # Backend Reachy Mock (ancien)
-python -c "from bbia_sim.robot_api import RobotFactory; robot = RobotFactory.create_backend('reachy')"
+python -c "from bbia_sim.robot_factory import RobotFactory; robot = RobotFactory.create_backend('reachy')"
 
 # Test hardware complet
 python scripts/hardware_dry_run_reachy_mini.py --duration 30
@@ -582,7 +582,7 @@ pytest -q --disable-warnings \
 **📊 Qualité & Conformité :**
 - ✅ **Conformité SDK officiel** : 100% validée (18/18 tests)
 - ✅ **Coverage modules core** : ~50% (mesure pertinente)
-- ✅ **Tests totaux** : 1005 tests (958+ passent, ~40 skippés conditionnels)
+- ✅ **Tests totaux** : 1131 tests collectés (pytest --collect-only)
 - ✅ **Qualité code** : Black, Ruff, MyPy, Bandit ✅
 - ✅ **Tests** : Suite complète + SDK officiel
 

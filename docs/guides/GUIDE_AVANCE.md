@@ -26,7 +26,7 @@
 
 ```python
 # Backend unifié : Simulation ↔ Robot réel
-from bbia_sim.robot_api import RobotFactory
+from bbia_sim.robot_factory import RobotFactory
 
 # Simulation (développement et tests)
 robot_sim = RobotFactory.create_backend('mujoco')

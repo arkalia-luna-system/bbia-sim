@@ -8,7 +8,18 @@
 - ❌ **`kill_greedy_processes.sh`** → Utiliser `smart_process_cleanup.sh` (archivé dans `_archived/`)
 - ⚠️ **`kill_mujoco_viewers.sh`** → Utiliser `process_manager.py stop` (déprécié mais gardé)
 
-Voir `scripts/_archived/README.md` pour plus de détails.
+### 🔄 **Scripts d'Audit Consolidés** (Novembre 2024)
+
+Les scripts de comparaison/audit avec le SDK officiel Reachy Mini ont été consolidés :
+
+- ✅ **`compare_with_official_exhaustive.py`** → Script principal (amélioré avec fusions)
+- ✅ **`check_official_alignment.py`** → Alignement MJCF/STL (conservé)
+- ✅ **`generate_conformity_report_reachy_mini.py`** → Génération rapports (conservé)
+
+**Scripts archivés** dans `scripts/_archived/comparison_audit/` :
+- 8 scripts redondants ou obsolètes (voir `scripts/_archived/comparison_audit/README.md`)
+
+Voir `scripts/_archived/README.md` et `scripts/PLAN_CONSOLIDATION_AUDIT_SCRIPTS.md` pour plus de détails.
 
 ## 🎯 **Scripts Disponibles**
 
@@ -171,13 +182,19 @@ python scripts/launch_robot.py
 
 ```
 scripts/
-├── 🎮 quick_start.sh                 # Menu interactif principal
-├── 🎯 launch_unity.sh                # Lancement Unity 3D
-├── 📚 install_all_reachy_repos.sh    # Installation dépôts GitHub
-├── 🔧 setup_reachy_environment.sh    # Configuration environnement
-├── 🧪 test_unity_setup.sh            # Test configuration Unity
-├── 🔧 fix_unity_warnings.sh          # Correction avertissements Unity
-└── 📖 README.md                      # Ce fichier
+├── 🎮 quick_start.sh                              # Menu interactif principal
+├── 🎯 launch_unity.sh                             # Lancement Unity 3D
+├── 📚 install_all_reachy_repos.sh                # Installation dépôts GitHub
+├── 🔧 setup_reachy_environment.sh                # Configuration environnement
+├── 🧪 test_unity_setup.sh                        # Test configuration Unity
+├── 🔧 fix_unity_warnings.sh                      # Correction avertissements Unity
+├── 🔍 compare_with_official_exhaustive.py        # Comparaison exhaustive BBIA vs SDK officiel ✅
+├── 🔍 check_official_alignment.py                # Vérification alignement MJCF/STL ✅
+├── 📊 generate_conformity_report_reachy_mini.py   # Génération rapports conformité ✅
+├── _archived/
+│   ├── comparison_audit/                        # Scripts d'audit archivés (8 scripts)
+│   └── start_api.py                              # Script API obsolète
+└── 📖 README.md                                  # Ce fichier
 ```
 
 ---

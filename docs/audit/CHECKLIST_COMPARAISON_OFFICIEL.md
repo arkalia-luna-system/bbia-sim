@@ -251,7 +251,9 @@ Pour chaque correction :
 - **Commit**: `2ba17f1`
 - **Rapport JSON**: `logs/comparison_official_results.json`
 - **Rapport Markdown**: `logs/comparison_official_report.md`
-- **Script Comparaison**: `scripts/compare_with_official_exhaustive.py`
+- **Script Comparaison**: `scripts/compare_with_official_exhaustive.py` ✅ (amélioré avec fusions)
+  - **Note** : Scripts redondants archivés dans `scripts/_archived/comparison_audit/`
+  - **Améliorations** : Intègre fonctionnalités de `compare_sdk_methods.py`, `audit_methodes_backend.py`, `audit_exhaustif_details.py`
 
 ---
 

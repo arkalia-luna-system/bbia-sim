@@ -61,7 +61,7 @@ Le dashboard permet de :
 ### 3. Premier programme Python
 
 ```python
-from bbia_sim.robot_api import RobotFactory
+from bbia_sim.robot_factory import RobotFactory
 
 # Créer le robot (simulation)
 robot = RobotFactory.create_backend('mujoco')

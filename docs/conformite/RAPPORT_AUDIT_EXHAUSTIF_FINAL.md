@@ -179,7 +179,8 @@ Ces extensions sont des fonctionnalités supplémentaires légitimes et ne sont 
 - **Checklist Modèles**: `docs/conformite/CHECKLIST_AUDIT_EXHAUSTIF.md`
 - **Rapport JSON**: `logs/comparison_official_results.json`
 - **Rapport Markdown**: `logs/comparison_official_report.md`
-- **Script audit**: `scripts/audit_systematique_exhaustif.py`
+- **Script audit**: `scripts/compare_with_official_exhaustive.py` ✅ (consolidé - remplace `audit_systematique_exhaustif.py`)
+  - **Note** : `audit_systematique_exhaustif.py` archivé dans `scripts/_archived/comparison_audit/`
 - **Prompt audit**: `docs/guides/PROMPT_AUDIT_EXHAUSTIF_REACHY_MINI.md`
 
 ---

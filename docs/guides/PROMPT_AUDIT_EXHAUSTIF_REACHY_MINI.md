@@ -13,12 +13,16 @@
 - **Repo Officiel**: `/Volumes/T7/reachy_mini` (branche `develop`)
 
 **Outils existants**:
-- **Script comparaison**: `scripts/compare_with_official_exhaustive.py`
+- **Script comparaison principal**: `scripts/compare_with_official_exhaustive.py` ✅ (consolidé)
   - Usage: `python scripts/compare_with_official_exhaustive.py --official-root /Volumes/T7/reachy_mini`
   - Génère: `logs/comparison_official_results.json` et `logs/comparison_official_report.md`
-- **Script audit systématique**: `scripts/audit_systematique_exhaustif.py`
-  - Usage: `python scripts/audit_systematique_exhaustif.py`
-  - Génère: `docs/conformite/CHECKLIST_AUDIT_EXHAUSTIF.md` (audit automatique joints/tests/assets)
+  - **Améliorations** : Intègre fonctionnalités de scripts archivés (méthodes, backend, assets, docstrings)
+- **Script alignement MJCF**: `scripts/check_official_alignment.py` ✅
+  - Usage: `python scripts/check_official_alignment.py`
+- **Script génération rapports**: `scripts/generate_conformity_report_reachy_mini.py` ✅
+  - Usage: `python scripts/generate_conformity_report_reachy_mini.py`
+  
+**Note** : `audit_systematique_exhaustif.py` archivé dans `scripts/_archived/comparison_audit/` (fonctionnalités intégrées dans script principal)
 - **Checklists finales**:
   - `docs/conformite/CHECKLIST_FINALE_COMPARAISON_OFFICIELLE.md` (177 différences détectées)
   - `docs/conformite/CHECKLIST_AUDIT_EXHAUSTIF.md` (audit systématique joints MuJoCo, tests, assets STL)
@@ -156,8 +160,11 @@
      --official-root /Volumes/T7/reachy_mini \
      --output-dir logs
    
-   # Audit systématique joints/tests/assets
-   python scripts/audit_systematique_exhaustif.py
+   # Vérifier alignement MJCF/STL
+   python scripts/check_official_alignment.py
+   
+   # Générer rapport conformité depuis tests
+   python scripts/generate_conformity_report_reachy_mini.py
    ```
 2. **Lire les résultats**:
    - `logs/comparison_official_results.json` (endpoints/classes)
@@ -386,5 +393,5 @@ Avant de considérer l'audit complet:
 
 **Version**: 2.0  
 **Date**: 1er Novembre 2025  
-**Basé sur**: Script `compare_with_official_exhaustive.py` et checklist existante
+**Basé sur**: Script `compare_with_official_exhaustive.py` (consolidé) et checklist existante
 

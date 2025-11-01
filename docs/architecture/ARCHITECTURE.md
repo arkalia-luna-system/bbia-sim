@@ -77,10 +77,10 @@ Documentation détaillée technique:
 
 ```bash
 # Backend MuJoCo (simulation)
-python -c "from bbia_sim.robot_api import RobotFactory; robot = RobotFactory.create_backend('mujoco')"
+python -c "from bbia_sim.robot_factory import RobotFactory; robot = RobotFactory.create_backend('mujoco')"
 
 # Backend Reachy-Mini SDK (robot physique)
-python -c "from bbia_sim.robot_api import RobotFactory; robot = RobotFactory.create_backend('reachy_mini')"
+python -c "from bbia_sim.robot_factory import RobotFactory; robot = RobotFactory.create_backend('reachy_mini')"
 ```
 
 ---

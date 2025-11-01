@@ -129,7 +129,7 @@ export BBIA_ZENOH_MODE=client
 from bbia_sim.robot_factory import RobotFactory
 
 # Créer le robot avec le backend réel
-robot = RobotFactory.create_robot(backend="reachy_mini")
+robot = RobotFactory.create_backend(backend_type="reachy_mini")
 
 # Test des fonctionnalités de base
 robot.wake_up()
@@ -197,7 +197,7 @@ def handle_disconnection():
 # tests/test_robot_migration.py
 def test_sdk_conformity():
     """Test conformité avec le SDK officiel."""
-    robot = RobotFactory.create_robot(backend="reachy_mini")
+    robot = RobotFactory.create_backend(backend_type="reachy_mini")
 
     # Test des méthodes critiques
     assert hasattr(robot, 'goto_target')
@@ -239,7 +239,7 @@ def test_performance_migration():
 ```python
 def test_bbia_modules_migration():
     """Test que tous les modules BBIA fonctionnent avec le robot réel."""
-    robot = RobotFactory.create_robot(backend="reachy_mini")
+    robot = RobotFactory.create_backend(backend_type="reachy_mini")
 
     # Test émotions
     from bbia_sim.bbia_emotions import BBIAEmotions

@@ -363,7 +363,7 @@ asyncio.run(telemetry_client())
 BBIA-SIM supporte plusieurs backends :
 
 ```python
-from bbia_sim.robot_api import RobotFactory
+from bbia_sim.robot_factory import RobotFactory
 
 # Backend MuJoCo (simulation)
 robot = RobotFactory.create_backend("mujoco")
@@ -378,7 +378,7 @@ robot = RobotFactory.create_backend("reachy")
 ### Contrôle direct
 
 ```python
-from bbia_sim.robot_api import RobotFactory
+from bbia_sim.robot_factory import RobotFactory
 from bbia_sim.bbia_emotions import BBIAEmotions
 
 # Initialisation

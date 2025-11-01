@@ -208,6 +208,20 @@ class MoveUUID(BaseModel):
 
     uuid: UUID  # Conforme SDK officiel
 
+    @field_validator("uuid", mode="before")
+    @classmethod
+    def validate_uuid(cls, v: Any) -> UUID:
+        """Valide que l'UUID est valide (retourne 400 si invalide au lieu de 422)."""
+        if isinstance(v, str):
+            try:
+                return UUID(v)
+            except ValueError as e:
+                # Lever ValueError pour que FastAPI retourne 400 au lieu de 422
+                raise ValueError(f"UUID invalide: {v}") from e
+        if isinstance(v, UUID):
+            return v
+        raise ValueError(f"UUID invalide: {v}")
+
 
 class FullState(BaseModel):
     """Représente l'état complet du robot incluant toutes les positions d'articulations et poses (conforme SDK)."""

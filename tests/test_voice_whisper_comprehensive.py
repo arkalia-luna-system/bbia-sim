@@ -177,11 +177,16 @@ class TestWhisperSTT:
     @patch("sounddevice.rec")
     @patch("soundfile.write")
     @patch("bbia_sim.voice_whisper.whisper")
+    @patch("os.environ.get")
+    @patch("pathlib.Path.unlink")
     def test_transcribe_microphone_success(
-        self, mock_whisper, mock_sf_write, mock_sd_rec, mock_sd_wait
+        self, mock_unlink, mock_env_get, mock_whisper, mock_sf_write, mock_sd_rec, mock_sd_wait
     ):
         """Test transcription microphone réussie."""
         with patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True):
+            # Mock BBIA_DISABLE_AUDIO pour désactiver le skip
+            mock_env_get.side_effect = lambda key, default: "0" if key == "BBIA_DISABLE_AUDIO" else default
+            
             # Mock sounddevice
             mock_sd_rec.return_value = np.array([0.1, 0.2, 0.3], dtype=np.float32)
             mock_sd_wait.return_value = None
@@ -198,7 +203,11 @@ class TestWhisperSTT:
             stt.model = mock_model
             stt.is_loaded = True
 
-            result = stt.transcribe_microphone(duration=1.0)
+            # Mock tempfile pour éviter problème de chemin
+            with patch("tempfile.gettempdir", return_value="/tmp"):
+                with patch("os.getpid", return_value=12345):
+                    with patch("time.time", return_value=1234567890.0):
+                        result = stt.transcribe_microphone(duration=1.0)
 
             assert result == "Message depuis microphone"
             mock_sd_rec.assert_called_once()

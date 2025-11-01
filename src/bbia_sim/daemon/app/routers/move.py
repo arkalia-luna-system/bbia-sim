@@ -202,7 +202,9 @@ async def list_recorded_move_dataset(dataset_name: str) -> list[str]:
     except RepositoryNotFoundError as e:
         raise HTTPException(status_code=404, detail=str(e)) from e
 
-    return moves.list_moves()
+    result = moves.list_moves()
+    # S'assurer que le résultat est une liste de strings
+    return [str(move) for move in result] if result else []
 
 
 @router.post("/play/recorded-move-dataset/{dataset_name:path}/{move_name}")

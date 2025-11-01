@@ -27,9 +27,9 @@ EXACT_JOINT_LIMITS = {
     "stewart_5": (-1.2217304763962082, 1.396263401595286),
     "stewart_6": (-1.3962634015954123, 0.8377580409573296),
     "yaw_body": (-2.792526803190975, 2.792526803190879),
-    # Antennes: limites conservatrices pour sécurité
-    "left_antenna": (-1.0, 1.0),
-    "right_antenna": (-1.0, 1.0),
+    # Antennes: limites exactes du XML officiel (confirmées: -0.3 à 0.3 rad)
+    "left_antenna": (-0.3, 0.3),
+    "right_antenna": (-0.3, 0.3),
 }
 
 # Tolérance pour comparaison des limites (erreurs de précision float)

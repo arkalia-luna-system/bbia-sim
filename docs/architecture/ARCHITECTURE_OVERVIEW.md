@@ -414,7 +414,7 @@ CMD ["uvicorn", "src.bbia_sim.daemon.app.main:app", "--host", "0.0.0.0", "--port
 # Exemple basique
 from bbia_sim.robot_factory import RobotFactory
 
-robot = RobotFactory.create_robot(backend="mujoco")
+robot = RobotFactory.create_backend(backend_type="mujoco")
 robot.wake_up()
 robot.set_emotion("happy", 0.8)
 robot.look_at(0.5, 0.0, 0.0)
