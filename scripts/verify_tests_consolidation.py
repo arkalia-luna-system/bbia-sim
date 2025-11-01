@@ -10,8 +10,8 @@ Usage:
 import re
 import subprocess
 import sys
-from pathlib import Path
 from collections import defaultdict
+from pathlib import Path
 
 # Fichiers de tests Reachy Mini à analyser
 REACHY_MINI_TEST_FILES = [
@@ -135,13 +135,13 @@ def generate_consolidation_report(
     total_unique_tests = sum(len(tests) for tests in unique_by_file.values())
     total_duplicates = len(duplicates)
 
-    print(f"\n📈 Statistiques:")
+    print("\n📈 Statistiques:")
     print(f"   Total de tests: {total_tests}")
     print(f"   Tests uniques: {total_unique_tests}")
     print(f"   Tests dupliqués: {total_duplicates}")
 
     # Tests par fichier
-    print(f"\n📁 Tests par fichier:")
+    print("\n📁 Tests par fichier:")
     for filepath, tests in sorted(all_tests.items()):
         unique_count = len(unique_by_file.get(filepath, []))
         duplicate_count = len(tests) - unique_count
@@ -152,7 +152,7 @@ def generate_consolidation_report(
 
     # Tests dupliqués
     if duplicates:
-        print(f"\n🔄 Tests dupliqués (présents dans plusieurs fichiers):")
+        print("\n🔄 Tests dupliqués (présents dans plusieurs fichiers):")
         for test_name, files in sorted(duplicates.items())[:20]:  # Limiter à 20
             print(f"   {test_name}:")
             for filepath in files:
@@ -161,7 +161,7 @@ def generate_consolidation_report(
             print(f"   ... et {len(duplicates) - 20} autres")
 
     # Tests uniques par fichier
-    print(f"\n⭐ Tests uniques par fichier (à préserver lors consolidation):")
+    print("\n⭐ Tests uniques par fichier (à préserver lors consolidation):")
     for filepath, tests in sorted(unique_by_file.items()):
         if tests:
             print(f"   {filepath}: {len(tests)} tests uniques")
@@ -171,7 +171,7 @@ def generate_consolidation_report(
                 print(f"      ... et {len(tests) - 10} autres")
 
     # Recommandations
-    print(f"\n💡 Recommandations:")
+    print("\n💡 Recommandations:")
 
     # Identifier fichiers avec beaucoup de tests uniques
     files_with_unique = {f: len(t) for f, t in unique_by_file.items() if len(t) > 0}
@@ -225,7 +225,7 @@ def main():
     total_before = sum(len(tests) for tests in all_tests.values())
     total_unique = sum(len(tests) for tests in unique_by_file.values())
 
-    print(f"\n✅ Vérification terminée!")
+    print("\n✅ Vérification terminée!")
     print(f"   Total tests: {total_before}")
     print(f"   Tests uniques: {total_unique}")
     print(f"   Doublons: {len(duplicates)}")

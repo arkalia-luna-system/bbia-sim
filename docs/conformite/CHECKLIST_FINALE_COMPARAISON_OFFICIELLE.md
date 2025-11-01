@@ -97,10 +97,11 @@
 - **Fichier**: `src/bbia_sim/daemon/app/routers/daemon.py`
 - **Note**: Ce router est une **extension BBIA légitime** adaptée pour la simulation MuJoCo
 - **Différences justifiées**:
-  - BBIA utilise `simulation_service` au lieu de `Daemon` officiel (adapté pour simulation)
-  - Endpoints similaires mais implémentation adaptée au contexte simulation
+  - **SDK officiel**: Utilise `bg_job_register` pour exécuter `start/stop/restart` en arrière-plan, retourne `{"job_id": job_id}`, nécessite `Request` pour accéder à `app.state.args`
+  - **BBIA**: Utilise `simulation_service` directement (synchronisé), retourne `{"status": "...", "message": "...", "timestamp": "..."}`, utilise `Query()` pour paramètres
+  - **Justification**: BBIA est orienté simulation rapide, pas besoin de jobs background. Les endpoints sont fonctionnellement équivalents.
   - Compatible avec les besoins de BBIA-SIM
-- **Statut**: ℹ️ **EXTENSION LÉGITIME** - Pas de correction nécessaire
+- **Statut**: ℹ️ **EXTENSION LÉGITIME** - Architecture différente justifiée pour simulation
 
 ---
 
@@ -110,10 +111,11 @@
 - **Fichier**: `src/bbia_sim/daemon/app/routers/apps.py`
 - **Note**: Ce router est une **extension BBIA légitime** simplifiée pour la simulation
 - **Différences justifiées**:
-  - BBIA utilise un gestionnaire d'apps simplifié en mémoire au lieu de `AppManager` officiel
+  - **SDK officiel**: Utilise `AppManager` + `bg_job_register` pour `install/remove` (opérations async longues), retourne `{"job_id": job_id}`, support WebSocket pour job status
+  - **BBIA**: Utilise gestionnaire d'apps simplifié en mémoire (`_bbia_apps_manager` dict), opérations synchrones, retourne statut direct
+  - **Justification**: BBIA gère des apps locales/simulation, pas besoin de jobs background. Les endpoints principaux (list, install, start, stop) sont présents et fonctionnels.
   - Compatible avec les besoins de simulation BBIA
-  - Tous les endpoints principaux sont présents (list, install, start, stop, etc.)
-- **Statut**: ℹ️ **EXTENSION LÉGITIME** - Pas de correction nécessaire
+- **Statut**: ℹ️ **EXTENSION LÉGITIME** - Architecture simplifiée justifiée pour simulation
 
 ---
 
@@ -404,6 +406,7 @@ bandit -r src/bbia_sim/daemon/app/routers/move.py
 - ✅ Comparer tests critiques (daemon, collision) - **TERMINÉ**: BBIA a couverture équivalente ou supérieure
 - ⚠️ Tester endpoints recorded-move avec dataset réel (optionnel - nécessite SDK + HuggingFace Hub)
 - ✅ Documenter extensions BBIA - **TERMINÉ**: 24 endpoints INFO documentés comme extensions légitimes
+- ✅ Documenter différences daemon/apps - **TERMINÉ**: Différences `bg_job_register` vs `simulation_service` justifiées et documentées
 
 **Vérification Qualité Code (2025-11-01)**:
 - ✅ Black: Formatage OK

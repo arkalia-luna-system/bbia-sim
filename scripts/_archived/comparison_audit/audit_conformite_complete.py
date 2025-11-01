@@ -4,11 +4,7 @@ Script d'audit de conformité complet entre BBIA-SIM et le SDK officiel Reachy M
 Compare tous les endpoints, classes, méthodes, modèles, tests, etc.
 """
 
-import ast
-import importlib.util
-import json
 import logging
-import os
 import re
 import subprocess
 import sys
@@ -107,7 +103,7 @@ class ConformityAuditor:
         endpoints = []
 
         try:
-            with open(router_file, "r", encoding="utf-8") as f:
+            with open(router_file, encoding="utf-8") as f:
                 content = f.read()
 
             # Chercher les décorateurs @router.get, @router.post, etc.

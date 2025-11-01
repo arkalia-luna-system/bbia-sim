@@ -5,7 +5,6 @@ Compare signatures, types, paramètres, valeurs de retour, exceptions
 """
 
 import ast
-import inspect
 import logging
 from pathlib import Path
 from typing import Any
@@ -30,7 +29,9 @@ class BackendMethodComparator:
             "summary": {},
         }
 
-    def extract_method_signatures(self, file_path: Path, class_name: str) -> dict[str, dict]:
+    def extract_method_signatures(
+        self, file_path: Path, class_name: str
+    ) -> dict[str, dict]:
         """Extrait les signatures des méthodes d'une classe."""
         if not file_path.exists():
             return {}
@@ -85,7 +86,9 @@ class BackendMethodComparator:
         logger.info("🔍 Comparaison profonde des méthodes backend...")
 
         # Extraire méthodes officielles
-        official_backend = self.official_path / "src/reachy_mini/daemon/backend/abstract.py"
+        official_backend = (
+            self.official_path / "src/reachy_mini/daemon/backend/abstract.py"
+        )
         official_methods = self.extract_method_signatures(official_backend, "Backend")
 
         # Extraire méthodes BackendAdapter BBIA
@@ -94,7 +97,9 @@ class BackendMethodComparator:
 
         # Extraire méthodes ReachyMiniBackend BBIA
         bbia_backend = self.bbia_path / "src/bbia_sim/backends/reachy_mini_backend.py"
-        backend_methods = self.extract_method_signatures(bbia_backend, "ReachyMiniBackend")
+        backend_methods = self.extract_method_signatures(
+            bbia_backend, "ReachyMiniBackend"
+        )
 
         # Combiner méthodes BBIA (adapter + backend)
         all_bbia_methods = {**adapter_methods, **backend_methods}
@@ -139,19 +144,23 @@ class BackendMethodComparator:
             bbia_params = {p["name"]: p.get("type") for p in bbia["params"]}
 
             if official_params != bbia_params:
-                signature_diffs.append({
-                    "method": method_name,
-                    "official": official_params,
-                    "bbia": bbia_params,
-                })
+                signature_diffs.append(
+                    {
+                        "method": method_name,
+                        "official": official_params,
+                        "bbia": bbia_params,
+                    }
+                )
 
             # Comparer types de retour
             if official.get("return_type") != bbia.get("return_type"):
-                return_type_diffs.append({
-                    "method": method_name,
-                    "official": official.get("return_type"),
-                    "bbia": bbia.get("return_type"),
-                })
+                return_type_diffs.append(
+                    {
+                        "method": method_name,
+                        "official": official.get("return_type"),
+                        "bbia": bbia.get("return_type"),
+                    }
+                )
 
         # Méthodes extra dans BBIA
         for method_name in all_bbia_methods:
@@ -176,8 +185,12 @@ class BackendMethodComparator:
         logger.info("🔍 Comparaison des valeurs par défaut...")
 
         # Lire fichiers directement pour comparer valeurs par défaut
-        official_file = self.official_path / "src/reachy_mini/daemon/backend/abstract.py"
-        bbia_adapter_file = self.bbia_path / "src/bbia_sim/daemon/app/backend_adapter.py"
+        official_file = (
+            self.official_path / "src/reachy_mini/daemon/backend/abstract.py"
+        )
+        bbia_adapter_file = (
+            self.bbia_path / "src/bbia_sim/daemon/app/backend_adapter.py"
+        )
 
         if not official_file.exists() or not bbia_adapter_file.exists():
             return
@@ -198,11 +211,13 @@ class BackendMethodComparator:
 
             if official_sig and bbia_sig:
                 if official_sig != bbia_sig:
-                    defaults_diffs.append({
-                        "method": method_name,
-                        "official": official_sig,
-                        "bbia": bbia_sig,
-                    })
+                    defaults_diffs.append(
+                        {
+                            "method": method_name,
+                            "official": official_sig,
+                            "bbia": bbia_sig,
+                        }
+                    )
 
         self.results["default_values_diffs"] = defaults_diffs
 
@@ -220,7 +235,9 @@ class BackendMethodComparator:
                     break
                 continue
             if in_method:
-                if line.strip().startswith("def ") or line.strip().startswith("async def"):
+                if line.strip().startswith("def ") or line.strip().startswith(
+                    "async def"
+                ):
                     break
                 signature_lines.append(line.strip())
                 if ":" in line:
@@ -252,7 +269,10 @@ class BackendMethodComparator:
                 else max(
                     0,
                     100
-                    - (len(self.results["missing"]) * 10 + len(self.results["signature_diffs"]) * 5),
+                    - (
+                        len(self.results["missing"]) * 10
+                        + len(self.results["signature_diffs"]) * 5
+                    ),
                 )
             ),
         }
@@ -273,7 +293,9 @@ def main():
     """Point d'entrée principal."""
     import argparse
 
-    parser = argparse.ArgumentParser(description="Comparaison profonde méthodes backend")
+    parser = argparse.ArgumentParser(
+        description="Comparaison profonde méthodes backend"
+    )
     parser.add_argument(
         "--official-root",
         type=Path,
@@ -318,4 +340,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

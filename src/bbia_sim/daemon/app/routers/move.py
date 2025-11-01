@@ -20,6 +20,11 @@ from fastapi import APIRouter, Depends, HTTPException, WebSocket, WebSocketDisco
 from huggingface_hub.errors import RepositoryNotFoundError
 from pydantic import BaseModel
 
+try:
+    from reachy_mini.motion.recorded_move import RecordedMoves
+except ImportError:
+    RecordedMoves = None  # type: ignore
+
 from ...models import AnyPose, FullBodyTarget, MoveUUID
 from ..backend_adapter import (
     BackendAdapter,
@@ -215,24 +220,16 @@ async def play_recorded_move_dataset(
         from reachy_mini.motion.recorded_move import RecordedMoves
 
         recorded_moves = RecordedMoves(dataset_name)
-        move = recorded_moves.get(move_name)
-
-        # Conforme SDK officiel : play_move est async, créer coroutine
-        async def play_recorded_move_coro() -> None:
-            """Coroutine pour jouer un mouvement enregistré (conforme SDK)."""
-            await backend.play_move(move)
-
-        return create_move_task(play_recorded_move_coro())
-    except ImportError:
-        logger.warning("reachy_mini.motion.recorded_move non disponible")
-        raise HTTPException(
-            status_code=501,
-            detail="RecordedMoves non disponible - SDK officiel requis",
-        ) from None
     except RepositoryNotFoundError as e:
         raise HTTPException(status_code=404, detail=str(e)) from e
+    try:
+        move = recorded_moves.get(move_name)
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e)) from e
+
+    # Conforme SDK officiel : appeler directement backend.play_move(move)
+    # play_move est async dans le Backend, create_move_task gère la coroutine
+    return create_move_task(backend.play_move(move))
 
 
 @router.post("/stop")

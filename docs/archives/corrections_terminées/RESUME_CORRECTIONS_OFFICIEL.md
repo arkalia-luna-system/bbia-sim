@@ -163,6 +163,14 @@
 
 **Voir** : `docs/audit/DIFFERENCES_SUBTILES_DETECTEES.md` pour toutes les différences détectées et corrigées.
 
+### Corrections Endpoints `/api/move` (Novembre 2024)
+- ✅ **Endpoint `POST /goto`** - Retiré paramètre `method` (SDK utilise MIN_JERK par défaut)
+- ✅ **Endpoint `POST /play/recorded-move-dataset`** - Appel direct `backend.play_move(move)` (conforme SDK)
+- ✅ **WebSocket `/ws/set_target`** - Réutilisation de `set_target()` au lieu de code dupliqué
+- ✅ **Endpoint `POST /set_target`** - Simplifié conversion avec `to_pose_array()` direct
+
+**Voir** : `docs/audit/NOUVELLES_DIFFERENCES_DETECTEES.md` pour détails complets des différences et corrections.
+
 ### Statut Global
 - 🟢 **Conformité SDK** : **EXCELLENTE** (tous les aspects critiques validés)
 - 🟢 **Tests** : **COMPLETS** (118 tests, bien structurés)

@@ -208,3 +208,22 @@ Tous les endpoints critiques et modérés sont implémentés et testés. Le seul
 **Version BBIA-SIM** : Compatible SDK Reachy Mini Janvier 2025  
 **Statut** : ✅ **CONFORME**
 
+---
+
+## ℹ️ DIFFÉRENCES D'ARCHITECTURE JUSTIFIÉES
+
+### Router Daemon
+- **SDK**: `bg_job_register` (jobs background), retourne `{"job_id": job_id}`
+- **BBIA**: `simulation_service` (synchrone), retourne statut direct
+- **Justification**: Simulation rapide, pas besoin de jobs background
+
+### Router Apps
+- **SDK**: `AppManager` + `bg_job_register` (opérations async longues)
+- **BBIA**: Gestionnaire simplifié en mémoire (opérations synchrones)
+- **Justification**: Apps locales/simulation, pas besoin de jobs background
+
+### Endpoints Supplémentaires
+- **24 endpoints BBIA supplémentaires** documentés comme extensions légitimes
+- **Exemples**: `/api/motion/*`, `/api/ecosystem/*`, `/api/sanity/*`
+- **Statut**: ✅ Extensions légitimes, n'interfèrent pas avec conformité SDK
+

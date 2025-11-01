@@ -36,7 +36,9 @@ class ExhaustiveConformityAnalyzer:
 
         # Démos officielles
         official_demos = list(self.official_root.glob("examples/*.py"))
-        official_demo_names = {f.name for f in official_demos if not f.name.startswith("._")}
+        official_demo_names = {
+            f.name for f in official_demos if not f.name.startswith("._")
+        }
 
         # Démos BBIA
         bbia_demos = list(self.bbia_root.glob("examples/*.py"))
@@ -44,7 +46,9 @@ class ExhaustiveConformityAnalyzer:
 
         # Démos debug officielles
         official_debug_demos = list(self.official_root.glob("examples/debug/*.py"))
-        official_debug_names = {f.name for f in official_debug_demos if not f.name.startswith("._")}
+        official_debug_names = {
+            f.name for f in official_debug_demos if not f.name.startswith("._")
+        }
 
         self.results["demos"] = {
             "official_count": len(official_demo_names),
@@ -58,8 +62,12 @@ class ExhaustiveConformityAnalyzer:
 
         logger.info(f"  Démos officielles: {len(official_demo_names)}")
         logger.info(f"  Démos BBIA: {len(bbia_demo_names)}")
-        logger.info(f"  Manquantes dans BBIA: {len(self.results['demos']['missing_in_bbia'])}")
-        logger.info(f"  Extensions BBIA: {len(self.results['demos']['bbia_extensions'])}")
+        logger.info(
+            f"  Manquantes dans BBIA: {len(self.results['demos']['missing_in_bbia'])}"
+        )
+        logger.info(
+            f"  Extensions BBIA: {len(self.results['demos']['bbia_extensions'])}"
+        )
 
     def analyze_examples_compatibility(self) -> None:
         """Analyse la compatibilité des exemples."""
@@ -87,8 +95,12 @@ class ExhaustiveConformityAnalyzer:
             content = official_compliant.read_text()
             compatibility["reachy_compliant_demo"] = {
                 "official_uses": {
-                    "enable_gravity_compensation": "enable_gravity_compensation" in content,
-                    "disable_gravity_compensation": "disable_gravity_compensation" in content,
+                    "enable_gravity_compensation": (
+                        "enable_gravity_compensation" in content
+                    ),
+                    "disable_gravity_compensation": (
+                        "disable_gravity_compensation" in content
+                    ),
                 },
                 "can_replicate_in_bbia": True,  # BBIA supporte via backend_adapter
             }
@@ -115,7 +127,11 @@ class ExhaustiveConformityAnalyzer:
 
         # Rechercher dans docs BBIA
         docs_files = list(self.bbia_root.glob("docs/**/*.md"))
-        official_docs = list(self.official_root.glob("docs/**/*.md")) if (self.official_root / "docs").exists() else []
+        official_docs = (
+            list(self.official_root.glob("docs/**/*.md"))
+            if (self.official_root / "docs").exists()
+            else []
+        )
 
         # Extraire mesures BBIA
         bbia_measures = {
@@ -128,8 +144,12 @@ class ExhaustiveConformityAnalyzer:
         for doc_file in docs_files:
             content = doc_file.read_text(encoding="utf-8", errors="ignore")
             # Rechercher dimensions
-            height_match = re.search(r"(\d+)\s*cm.*(?:actif|veille|sleep|actif)", content, re.IGNORECASE)
-            width_match = re.search(r"(\d+)\s*cm.*(?:largeur|width)", content, re.IGNORECASE)
+            height_match = re.search(
+                r"(\d+)\s*cm.*(?:actif|veille|sleep|actif)", content, re.IGNORECASE
+            )
+            width_match = re.search(
+                r"(\d+)\s*cm.*(?:largeur|width)", content, re.IGNORECASE
+            )
             weight_match = re.search(r"(\d+[.,]\d+)\s*kg", content, re.IGNORECASE)
 
             if height_match:
@@ -163,7 +183,9 @@ class ExhaustiveConformityAnalyzer:
         self.results["measures"] = measures
 
         logger.info(f"  Mesures BBIA: {measures['bbia']}")
-        logger.info(f"  Conformité: {sum(measures['conformity'].values())}/{len(measures['conformity'])}")
+        logger.info(
+            f"  Conformité: {sum(measures['conformity'].values())}/{len(measures['conformity'])}"
+        )
 
     def analyze_documentation(self) -> None:
         """Analyse la documentation."""
@@ -174,7 +196,9 @@ class ExhaustiveConformityAnalyzer:
         # Comter fichiers MD
         bbia_md_files = list(self.bbia_root.glob("docs/**/*.md"))
         official_md_files = (
-            list(self.official_root.glob("docs/**/*.md")) if (self.official_root / "docs").exists() else []
+            list(self.official_root.glob("docs/**/*.md"))
+            if (self.official_root / "docs").exists()
+            else []
         )
 
         docs["bbia_count"] = len(bbia_md_files)
@@ -188,13 +212,17 @@ class ExhaustiveConformityAnalyzer:
             "bbia_exists": bbia_readme.exists(),
             "official_exists": official_readme.exists(),
             "bbia_size": bbia_readme.stat().st_size if bbia_readme.exists() else 0,
-            "official_size": official_readme.stat().st_size if official_readme.exists() else 0,
+            "official_size": (
+                official_readme.stat().st_size if official_readme.exists() else 0
+            ),
         }
 
         # Sections importantes dans README
         if bbia_readme.exists() and official_readme.exists():
             bbia_content = bbia_readme.read_text(encoding="utf-8", errors="ignore")
-            official_content = official_readme.read_text(encoding="utf-8", errors="ignore")
+            official_content = official_readme.read_text(
+                encoding="utf-8", errors="ignore"
+            )
 
             important_sections = ["Installation", "Usage", "Examples", "API", "SDK"]
 
@@ -226,7 +254,9 @@ class ExhaustiveConformityAnalyzer:
                         "critical_issues": 0,
                         "high_issues": 0,
                     }
-                    logger.info(f"  Rapport précédent chargé: {previous_data.get('summary', {}).get('total', 0)} différences")
+                    logger.info(
+                        f"  Rapport précédent chargé: {previous_data.get('summary', {}).get('total', 0)} différences"
+                    )
             except Exception as e:
                 logger.warning(f"  Erreur lecture rapport: {e}")
         else:
@@ -279,7 +309,11 @@ class ExhaustiveConformityAnalyzer:
         if api_summary:
             critical = api_summary.get("critical", 0)
             high = api_summary.get("high", 0)
-            api_score = 100.0 if critical == 0 and high == 0 else max(0, 100 - (critical * 50 + high * 20))
+            api_score = (
+                100.0
+                if critical == 0 and high == 0
+                else max(0, 100 - (critical * 50 + high * 20))
+            )
             summary["categories"]["api"] = {
                 "score": api_score,
                 "critical": critical,
@@ -292,13 +326,16 @@ class ExhaustiveConformityAnalyzer:
         # Score global
         if summary["total_checks"] > 0:
             summary["conformity_score"] = (
-                sum(cat.get("score", 0) for cat in summary["categories"].values()) / summary["total_checks"]
+                sum(cat.get("score", 0) for cat in summary["categories"].values())
+                / summary["total_checks"]
             )
 
         self.results["summary"] = summary
 
         logger.info(f"  Score de conformité: {summary['conformity_score']:.1f}%")
-        logger.info(f"  Checks passés: {summary['passed_checks']}/{summary['total_checks']}")
+        logger.info(
+            f"  Checks passés: {summary['passed_checks']}/{summary['total_checks']}"
+        )
 
     def run_full_analysis(self) -> dict[str, Any]:
         """Lance l'analyse complète."""
@@ -328,7 +365,9 @@ def main():
     """Point d'entrée principal."""
     import argparse
 
-    parser = argparse.ArgumentParser(description="Analyse exhaustive de conformité BBIA vs SDK officiel")
+    parser = argparse.ArgumentParser(
+        description="Analyse exhaustive de conformité BBIA vs SDK officiel"
+    )
     parser.add_argument(
         "--bbia-root",
         type=Path,
@@ -378,4 +417,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
