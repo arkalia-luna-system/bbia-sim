@@ -19,22 +19,16 @@ VALID_JOINTS: dict[str, tuple[float, float]] = {
         -2.79,
         2.79,
     ),  # Approximation pour sim (limite exacte dans mapping_reachy.py)
-    # Articulations Stewart (plateforme parallèle) - Limites exactes du XML officiel
+    # Articulations Stewart (plateforme parallèle) - Limites EXACTES du XML officiel
     # ⚠️ IMPORTANT: Les joints stewart ne doivent PAS être contrôlés individuellement
     # Utiliser goto_target() ou set_target_head_pose() avec IK au lieu de set_joint_pos()
-    # Limites exactes du XML:
-    # stewart_1: (-0.8377580409572196, 1.3962634015955222)
-    # stewart_2: (-1.396263401595614, 1.2217304763958803)
-    # stewart_3: (-0.8377580409572173, 1.3962634015955244)
-    # stewart_4: (-1.3962634015953894, 0.8377580409573525)
-    # stewart_5: (-1.2217304763962082, 1.396263401595286)
-    # stewart_6: (-1.3962634015954123, 0.8377580409573296)
-    "stewart_1": (-0.84, 1.40),  # Approximation (limite exacte: -0.838, 1.396)
-    "stewart_2": (-1.40, 1.22),  # Approximation (limite exacte: -1.396, 1.222)
-    "stewart_3": (-0.84, 1.40),  # Approximation (limite exacte: -0.838, 1.396)
-    "stewart_4": (-1.40, 0.84),  # Approximation (limite exacte: -1.396, 0.838)
-    "stewart_5": (-1.22, 1.40),  # Approximation (limite exacte: -1.222, 1.396)
-    "stewart_6": (-1.40, 0.84),  # Approximation (limite exacte: -1.396, 0.838)
+    # Source: reachy_mini.xml (lignes 238, 260, 282, 304, 326, 348)
+    "stewart_1": (-0.8377580409572196, 1.3962634015955222),  # Exact XML officiel
+    "stewart_2": (-1.396263401595614, 1.2217304763958803),  # Exact XML officiel
+    "stewart_3": (-0.8377580409572173, 1.3962634015955244),  # Exact XML officiel
+    "stewart_4": (-1.3962634015953894, 0.8377580409573525),  # Exact XML officiel
+    "stewart_5": (-1.2217304763962082, 1.396263401595286),  # Exact XML officiel
+    "stewart_6": (-1.3962634015954123, 0.8377580409573296),  # Exact XML officiel
     # Articulations passives
     "passive_1": (-3.14, 3.14),  # ±180°
     "passive_2": (-3.14, 3.14),  # ±180°

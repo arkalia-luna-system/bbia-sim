@@ -59,7 +59,64 @@
 
 ---
 
-### 2. Endpoints REST HIGH - ✅ CORRIGÉ
+### 3. Router Motors (`motors.py`) - ✅ CONFORMITÉ AMÉLIORÉE
+
+#### ✅ Endpoints du router motors
+- **Fichier**: `src/bbia_sim/daemon/app/routers/motors.py`
+- **Corrections appliquées**:
+  1. **Utilisation BackendAdapter**: Remplacé logique complexe par utilisation directe de `BackendAdapter` via `get_backend_adapter` (conforme SDK)
+  2. **MotorStatus simplifié**: Supprimé champ `status` supplémentaire, utilise uniquement `mode: MotorControlMode` (conforme SDK - ligne 23)
+  3. **get_motor_status**: Utilise directement `backend.get_motor_control_mode()` (ligne 34 - conforme SDK)
+  4. **set_motor_mode**: Utilise directement `backend.set_motor_control_mode(mode)` (ligne 43 - conforme SDK)
+  5. **MotorControlMode**: Défini avec valeurs `Enabled`, `Disabled`, `GravityCompensation` (conforme SDK - ligne 16-20)
+  6. **BackendAdapter.set_motor_control_mode**: Ajouté méthode dans `backend_adapter.py` (ligne 117-136)
+- **Test**: À tester avec robot réel pour vérifier modes moteurs
+- **Statut**: ✅ **CORRIGÉ** - Conformité améliorée avec SDK officiel
+
+---
+
+### 4. Router Kinematics (`kinematics.py`) - ✅ CONFORMITÉ AMÉLIORÉE
+
+#### ✅ Endpoints du router kinematics
+- **Fichier**: `src/bbia_sim/daemon/app/routers/kinematics.py`
+- **Corrections appliquées**:
+  1. **Utilisation BackendAdapter**: Remplacé logique complexe avec RobotFactory par utilisation directe de `BackendAdapter` (conforme SDK)
+  2. **get_kinematics_info**: Utilise directement les propriétés du backend (ligne 28-38 - conforme SDK)
+  3. **get_urdf**: Utilise directement `backend.get_urdf()` ou `backend._robot.get_urdf()` (ligne 42-50 - conforme SDK)
+  4. **get_stl_file**: Utilise `{filename:path}` pour compatibilité (déjà conforme - ligne 57)
+  5. **Exception handling**: Utilise `raise ... from e` pour FileNotFoundError (conforme best practices - ligne 71-74)
+- **Test**: À tester avec backend réel pour vérifier URDF et STL
+- **Statut**: ✅ **CORRIGÉ** - Conformité améliorée avec SDK officiel
+
+---
+
+### 5. Router Daemon (`daemon.py`) - ℹ️ EXTENSION BBIA
+
+#### ℹ️ Endpoints du router daemon
+- **Fichier**: `src/bbia_sim/daemon/app/routers/daemon.py`
+- **Note**: Ce router est une **extension BBIA légitime** adaptée pour la simulation MuJoCo
+- **Différences justifiées**:
+  - BBIA utilise `simulation_service` au lieu de `Daemon` officiel (adapté pour simulation)
+  - Endpoints similaires mais implémentation adaptée au contexte simulation
+  - Compatible avec les besoins de BBIA-SIM
+- **Statut**: ℹ️ **EXTENSION LÉGITIME** - Pas de correction nécessaire
+
+---
+
+### 6. Router Apps (`apps.py`) - ℹ️ EXTENSION BBIA
+
+#### ℹ️ Endpoints du router apps
+- **Fichier**: `src/bbia_sim/daemon/app/routers/apps.py`
+- **Note**: Ce router est une **extension BBIA légitime** simplifiée pour la simulation
+- **Différences justifiées**:
+  - BBIA utilise un gestionnaire d'apps simplifié en mémoire au lieu de `AppManager` officiel
+  - Compatible avec les besoins de simulation BBIA
+  - Tous les endpoints principaux sont présents (list, install, start, stop, etc.)
+- **Statut**: ℹ️ **EXTENSION LÉGITIME** - Pas de correction nécessaire
+
+---
+
+### 7. Endpoints REST HIGH - ✅ CORRIGÉ
 
 #### ✅ Endpoint `GET /api/move/recorded-move-datasets/list/{dataset_name:path}`
 

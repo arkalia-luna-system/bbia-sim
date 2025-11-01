@@ -2,6 +2,7 @@
 
 from datetime import datetime
 from typing import Any
+from uuid import UUID
 
 from pydantic import BaseModel, Field, field_validator
 
@@ -221,7 +222,7 @@ class FullBodyTarget(BaseModel):
 class MoveUUID(BaseModel):
     """Identifiant unique pour une tâche de mouvement (conforme SDK)."""
 
-    uuid: str  # UUID en string pour compatibilité JSON (SDK utilise UUID, mais JSON nécessite str)
+    uuid: UUID  # Conforme SDK officiel
 
 
 class FullState(BaseModel):

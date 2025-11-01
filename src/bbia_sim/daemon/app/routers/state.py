@@ -188,38 +188,21 @@ async def get_full_state(
 
     if with_target_head_pose:
         target_pose = backend.target_head_pose
-        if target_pose is not None:
-            result["target_head_pose"] = as_any_pose(target_pose, use_pose_matrix)
-
+        assert target_pose is not None
+        result["target_head_pose"] = as_any_pose(target_pose, use_pose_matrix)
     if with_head_joints:
-        joints = backend.get_present_head_joint_positions()
-        if joints is not None:
-            result["head_joints"] = list(joints)
-
+        result["head_joints"] = backend.get_present_head_joint_positions()
     if with_target_head_joints:
-        target_joints = backend.target_head_joint_positions
-        if target_joints is not None:
-            result["target_head_joints"] = list(target_joints)
-
+        result["target_head_joints"] = backend.target_head_joint_positions
     if with_body_yaw:
         result["body_yaw"] = backend.get_present_body_yaw()
-
     if with_target_body_yaw:
-        target_yaw = backend.target_body_yaw
-        if target_yaw is not None:
-            result["target_body_yaw"] = float(target_yaw)
+        result["target_body_yaw"] = backend.target_body_yaw
 
     if with_antenna_positions:
-        positions = backend.get_present_antenna_joint_positions()
-        result["antennas_position"] = [float(positions[0]), float(positions[1])]
-
+        result["antennas_position"] = backend.get_present_antenna_joint_positions()
     if with_target_antenna_positions:
-        target_antennas = backend.target_antenna_joint_positions
-        if target_antennas is not None:
-            result["target_antennas_position"] = [
-                float(target_antennas[0]),
-                float(target_antennas[1]),
-            ]
+        result["target_antennas_position"] = backend.target_antenna_joint_positions
 
     if with_passive_joints:
         joints = backend.get_present_passive_joint_positions()
@@ -489,15 +472,12 @@ async def ws_full_state(
         use_pose_matrix: Utiliser format matrice 4x4
         backend: Backend adaptateur
     """
-    import asyncio
-
     await websocket.accept()
     period = 1.0 / frequency
 
     try:
         while True:
             full_state = await get_full_state(
-                with_control_mode=True,
                 with_head_pose=with_head_pose,
                 with_target_head_pose=with_target_head_pose,
                 with_head_joints=with_head_joints,

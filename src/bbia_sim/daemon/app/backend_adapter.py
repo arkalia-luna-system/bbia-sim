@@ -114,6 +114,28 @@ class BackendAdapter:
 
         return SimpleMotorControlMode()
 
+    def set_motor_control_mode(self, mode: Any) -> None:
+        """Définit le mode de contrôle moteur (conforme SDK)."""
+        self.connect_if_needed()
+
+        if hasattr(self._robot, "set_motor_control_mode"):
+            self._robot.set_motor_control_mode(mode)
+        elif hasattr(self._robot, "robot") and self._robot.robot is not None:
+            # Utiliser les méthodes SDK si disponibles
+            mode_str = mode.value if hasattr(mode, "value") else str(mode)
+            if mode_str == "enabled" and hasattr(self._robot.robot, "enable_motors"):
+                self._robot.robot.enable_motors()
+            elif mode_str == "disabled" and hasattr(
+                self._robot.robot, "disable_motors"
+            ):
+                self._robot.robot.disable_motors()
+            elif mode_str == "gravity_compensation" and hasattr(
+                self._robot.robot, "enable_gravity_compensation"
+            ):
+                self._robot.robot.enable_gravity_compensation()
+        else:
+            logger.debug(f"Mode simulation: moteurs en mode {mode}")
+
     @property
     def target_head_pose(self) -> npt.NDArray[np.float64] | None:
         """Récupère la pose cible de la tête (conforme SDK)."""
@@ -200,8 +222,8 @@ class BackendAdapter:
                 head=head, antennas=antennas, body_yaw=body_yaw or 0.0
             )
 
-    def play_move(self, move: object) -> None:
-        """Joue un mouvement enregistré (conforme SDK officiel).
+    async def play_move(self, move: object) -> None:
+        """Joue un mouvement enregistré (conforme SDK officiel - async).
 
         Args:
             move: Objet Move du SDK reachy_mini.motion.move
@@ -209,22 +231,29 @@ class BackendAdapter:
         self.connect_if_needed()
 
         if hasattr(self._robot, "play_move"):
-            # Appel direct si disponible
-            self._robot.play_move(move, play_frequency=100.0, initial_goto_duration=0.0)
+            # Si play_move est async dans le SDK
+            if hasattr(self._robot.play_move, "__await__"):
+                await self._robot.play_move(move, play_frequency=100.0, initial_goto_duration=0.0)  # type: ignore[attr-defined]
+            else:
+                # Si sync, exécuter dans thread
+                import asyncio
+
+                await asyncio.to_thread(
+                    self._robot.play_move,  # type: ignore[attr-defined]
+                    move,
+                    100.0,
+                    0.0,
+                )
         elif hasattr(self._robot, "async_play_move"):
             # Fallback sur async_play_move si play_move n'existe pas
             import asyncio
 
-            async def play_async() -> None:
-                await asyncio.to_thread(
-                    self._robot.async_play_move,  # type: ignore[attr-defined]
-                    move,
-                    play_frequency=100.0,
-                    initial_goto_duration=0.0,
-                )
-
-            # Exécuter de manière synchrone dans un thread
-            asyncio.run(play_async())
+            await asyncio.to_thread(
+                self._robot.async_play_move,  # type: ignore[attr-defined]
+                move,
+                100.0,
+                0.0,
+            )
         else:
             logger.warning("play_move non disponible sur ce backend")
 

@@ -55,13 +55,20 @@ Aucun élément critical détecté.
 **Note**: La plupart des fichiers avec préfixe `._` sont des fichiers macOS cachés et peuvent être ignorés.  
 Les fichiers pertinents à analyser sont listés ci-dessous.
 
-#### Fichiers Core Manquants (à analyser)
-- [ ] `src/reachy_mini.py` - Classe principale ReachyMini (✅ Déjà utilisée via SDK)
-- [ ] `src/backend.py` - Backend abstrait
-- [ ] `src/manager.py` - Gestionnaire
-- [ ] `src/abstract.py` - Classes abstraites
-- [ ] `src/constants.py` - Constantes
-- [ ] `src/utils.py` - Utilitaires
+#### Fichiers Core Manquants (✅ ANALYSÉS - NON NÉCESSAIRES)
+
+**Conclusion**: Ces fichiers sont des **modules internes du daemon**, pas des modules SDK publics. BBIA utilise le SDK via `ReachyMini` et a son propre `BackendAdapter`.
+
+- ✅ `reachy_mini/reachy_mini.py` - Classe principale SDK (✅ Utilisée via SDK dans BBIA)
+- ✅ `daemon/backend/abstract.py` - Backend abstrait daemon (interne, non nécessaire pour BBIA)
+- ✅ `apps/manager.py` - Manager apps daemon (interne, non nécessaire)
+- ✅ `utils/constants.py` - Constantes utils (✅ Utilisées via SDK si nécessaire)
+- ✅ `utils/__init__.py` - Utils publics (✅ `create_head_pose` déjà utilisé dans BBIA)
+
+**Architecture BBIA**:
+- ✅ `BackendAdapter` fait le pont entre `RobotAPI` et SDK officiel
+- ✅ Utilise `ReachyMini` du SDK directement
+- ✅ Architecture différente mais fonctionnelle et conforme
 - [ ] `src/protocol.py` - Protocole de communication
 - [ ] `src/dependencies.py` - Dépendances
 
@@ -100,42 +107,50 @@ Les fichiers pertinents à analyser sont listés ci-dessous.
 - [ ] `src/local_common_venv.py` - Environnement venv local
 - [ ] `src/rerun.py` - Rerun viewer
 
-### Tests Manquants (18)
+### Tests Manquants (18) ✅ ANALYSÉS
 
-- [ ] `tests/test_app.py` - Tests application
-- [ ] `tests/test_daemon.py` - Tests daemon
-- [ ] `tests/test_wireless.py` - Tests wireless
-- [ ] `tests/test_placo.py` - Tests PlaCo kinematics
-- [ ] `tests/test_audio.py` - Tests audio
-- [ ] `tests/test_video.py` - Tests vidéo
-- [ ] `tests/test_analytical_kinematics.py` - Tests cinématique analytique
-- [ ] `tests/test_import.py` - Tests imports
-- [ ] `tests/test_collision.py` - Tests collision
+#### Tests Non Pertinents (10) - ✅ IGNORER
+- ❌ `test_daemon.py` - Tests daemon interne (architecture différente BBIA)
+- ❌ `test_wireless.py` - Tests hardware wireless (spécifique hardware)
+- ❌ `test_app.py` - Tests apps daemon (spécifique apps daemon)
+- ⚠️ `test_placo.py` - Tests PlaCo (optionnel, dépendance lourde)
+- ⚠️ `test_video.py` - Tests vidéo GStreamer (optionnel, BBIA utilise YOLO/OpenCV)
+- ⚠️ `test_collision.py` - Tests collision (optionnel, nécessite PlaCo)
 
-**Note**: Beaucoup de fichiers `._test_*.py` sont des fichiers macOS cachés à ignorer.
+#### Tests Pertinents (8) - ⚠️ À ÉVALUER
+- ✅ `test_import.py` - **Déjà couvert** dans `test_reachy_mini_full_conformity_official.py`
+- ⚠️ `test_analytical_kinematics.py` - Tests cinématique analytique (optionnel)
+- ⚠️ `test_audio.py` - Tests audio (peut être adapté pour TTS/STT BBIA)
 
-### Exemples Manquants (34)
+**Conclusion** : BBIA a **118 tests** complets. Les tests manquants sont principalement spécifiques daemon/hardware ou optionnels.
 
-Les exemples officiels incluent :
-- [ ] `examples/minimal_demo.py`
-- [ ] `examples/look_at_image.py`
-- [ ] `examples/sequence.py`
-- [ ] `examples/recorded_moves_example.py`
-- [ ] `examples/goto_interpolation_playground.py`
-- [ ] `examples/gravity_compensation_direct_control.py`
-- [ ] `examples/body_yaw_test.py`
-- [ ] `examples/sound_play.py`
-- [ ] `examples/sound_record.py`
-- [ ] `examples/sound_doa.py` (Direction of Arrival)
-- [ ] `examples/compare_placo_nn_kin.py`
-- [ ] `examples/measure_tracking.py`
-- [ ] `examples/rerun_viewer.py`
-- [ ] `examples/gstreamer_client.py`
-- [ ] `examples/joy_controller.py`
-- [ ] `examples/mini_head_position_gui.py`
-- [ ] `examples/mini_body_yaw_gui.py`
-- [ ] `examples/reachy_compliant_demo.py`
-- [ ] `examples/compare_recordings.py`
+**Action** : Voir `docs/audit/ANALYSE_TESTS_EXEMPLES_MANQUANTS.md` pour détails.
+
+### Exemples Manquants (34) ✅ ANALYSÉS
+
+#### Exemples Pertinents (5) - ⚠️ À ADAPTER
+- ✅ **`minimal_demo.py`** - Demo minimale (priorité HAUTE)
+- ✅ **`look_at_image.py`** - Demo vision (priorité HAUTE)
+- ✅ **`sequence.py`** - Séquences mouvements (priorité MOYENNE)
+- ✅ **`recorded_moves_example.py`** - Enregistrement/replay (priorité MOYENNE)
+- ✅ **`goto_interpolation_playground.py`** - Playground interpolation (priorité MOYENNE)
+
+#### Exemples Non Pertinents (24) - ✅ IGNORER
+- ❌ `gravity_compensation_direct_control.py` - Nécessite PlaCo
+- ❌ `body_yaw_test.py` - Déjà couvert dans tests
+- ❌ `sound_play.py`, `sound_record.py`, `sound_doa.py` - Audio avancé (optionnel)
+- ❌ `compare_placo_nn_kin.py` - Avancé
+- ❌ `measure_tracking.py` - Hardware
+- ❌ `gstreamer_client.py` - Spécifique media
+- ❌ `joy_controller.py` - Hardware
+- ❌ `mini_head_position_gui.py`, `mini_body_yaw_gui.py` - Déjà couvert
+- ❌ `reachy_compliant_demo.py` - Déjà couvert dans tests
+- ❌ `compare_recordings.py` - Avancé
+- ❌ `rerun_viewer.py` - Dépendance lourde (optionnel)
+
+**Conclusion** : 5 exemples prioritaires à adapter pour améliorer l'onboarding.
+
+**Action** : Voir `docs/audit/ANALYSE_TESTS_EXEMPLES_MANQUANTS.md` pour détails et recommandations.
 
 ---
 

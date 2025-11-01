@@ -125,7 +125,7 @@ def create_move_task(coro: Coroutine[Any, Any, None]) -> MoveUUID:
     task = asyncio.create_task(wrap_coro())
     move_tasks[uuid] = task
 
-    return MoveUUID(uuid=str(uuid))
+    return MoveUUID(uuid=uuid)
 
 
 async def stop_move_task(uuid: UUID) -> dict[str, str]:
@@ -149,7 +149,7 @@ async def stop_move_task(uuid: UUID) -> dict[str, str]:
 @router.get("/running")
 async def get_running_moves() -> list[MoveUUID]:
     """Récupère la liste des mouvements en cours."""
-    return [MoveUUID(uuid=str(uuid)) for uuid in move_tasks.keys()]
+    return [MoveUUID(uuid=uuid) for uuid in move_tasks.keys()]
 
 
 @router.post("/goto")
@@ -163,8 +163,6 @@ async def goto(
             head=goto_req.head_pose.to_pose_array() if goto_req.head_pose else None,
             antennas=np.array(goto_req.antennas) if goto_req.antennas else None,
             duration=goto_req.duration,
-            method=goto_req.interpolation.value,  # "minjerk", "linear", "ease", "cartoon"
-            body_yaw=0.0,
         )
     )
 
@@ -217,10 +215,10 @@ async def play_recorded_move_dataset(
         recorded_moves = RecordedMoves(dataset_name)
         move = recorded_moves.get(move_name)
 
-        # Conforme SDK officiel : utiliser play_move directement
+        # Conforme SDK officiel : play_move est async, créer coroutine
         async def play_recorded_move_coro() -> None:
             """Coroutine pour jouer un mouvement enregistré (conforme SDK)."""
-            await asyncio.to_thread(backend.play_move, move)
+            await backend.play_move(move)
 
         return create_move_task(play_recorded_move_coro())
     except ImportError:
@@ -238,15 +236,7 @@ async def play_recorded_move_dataset(
 @router.post("/stop")
 async def stop_move(uuid: MoveUUID) -> dict[str, str]:
     """Arrête une tâche de mouvement en cours."""
-    try:
-        move_uuid = UUID(uuid.uuid)
-        return await stop_move_task(move_uuid)
-    except ValueError as e:
-        raise HTTPException(
-            status_code=400, detail=f"Invalid UUID format: {uuid.uuid}"
-        ) from e
-    except KeyError as e:
-        raise HTTPException(status_code=404, detail=str(e)) from e
+    return await stop_move_task(uuid.uuid)
 
 
 @router.websocket("/ws/updates")
@@ -291,7 +281,6 @@ async def set_target(
     backend.set_target(
         head=head_pose_array,
         antennas=np.array(target.target_antennas) if target.target_antennas else None,
-        body_yaw=None,
     )
     return {"status": "ok"}
 
@@ -336,7 +325,6 @@ async def ws_set_target(
                         if target.target_antennas
                         else None
                     ),
-                    body_yaw=None,
                 )
                 await websocket.send_text(json.dumps({"status": "ok"}))
             except Exception as e:
