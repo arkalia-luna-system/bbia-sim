@@ -528,6 +528,30 @@ class BBIAHuggingFace:
 
                 return f"CLIP analysis: {probs.cpu().numpy()}"
 
+            elif "smolvlm" in model_name.lower() or "moondream" in model_name.lower():
+                # SmolVLM2 / Moondream2 (alternative gratuite à gpt-realtime)
+                processor_key = f"{model_name}_processor"
+                model_key = f"{model_name}_model"
+
+                if processor_key not in self.processors or model_key not in self.models:
+                    self.load_model(model_name, "multimodal")
+
+                processor = self.processors[processor_key]
+                model = self.models[model_key]
+
+                # Prompt pour description
+                prompt = "Décris cette image en détail."
+
+                inputs = processor(images=image, text=prompt, return_tensors="pt").to(
+                    self.device
+                )
+
+                with torch.no_grad():
+                    outputs = model.generate(**inputs, max_new_tokens=100)
+
+                description = processor.decode(outputs[0], skip_special_tokens=True)
+                return description.strip()
+
             return (
                 "Erreur (describe_image): modèle non supporté — vérifiez le nom choisi"
             )
