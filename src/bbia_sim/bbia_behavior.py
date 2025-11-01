@@ -519,14 +519,21 @@ class ConversationBehavior(BBIABehavior):
         )
         self.priority = 7
 
-        # Tentative d'importation de BBIAHuggingFace (optionnel)
+        # Tentative d'importation de BBIAHuggingFace avec outils LLM (optionnel)
         self.hf_chat = None
         try:
             from .bbia_huggingface import BBIAHuggingFace
+            from .bbia_tools import BBIATools
+            from .bbia_vision import BBIAVision
 
-            self.hf_chat = BBIAHuggingFace()
+            # Initialiser outils LLM pour function calling
+            vision = BBIAVision(robot_api=robot_api) if robot_api else None
+            tools = BBIATools(robot_api=robot_api, vision=vision)
+
+            # Créer BBIAHuggingFace avec outils intégrés
+            self.hf_chat = BBIAHuggingFace(tools=tools)
             logger.info(
-                "✅ BBIAHuggingFace disponible - Conversation intelligente activée",
+                "✅ BBIAHuggingFace avec outils LLM disponible - Conversation intelligente + function calling activé",
             )
         except (ImportError, Exception) as e:
             logger.info(f"ℹ️  BBIAHuggingFace non disponible - Mode enrichi activé: {e}")
@@ -629,13 +636,14 @@ class ConversationBehavior(BBIABehavior):
         if texte:
             texte_lower = texte.lower()
 
-            # Utiliser BBIAHuggingFace si disponible (intelligence avancée)
+            # Utiliser BBIAHuggingFace si disponible (intelligence avancée + function calling)
             if self.hf_chat:
                 try:
-                    response = self.hf_chat.chat(texte)
+                    # Chat avec outils LLM activés pour détection automatique
+                    response = self.hf_chat.chat(texte, enable_tools=True)
                     # OPTIMISATION SDK: Passer robot_api pour utiliser haut-parleur 5W
                     dire_texte(response, robot_api=self.robot_api)
-                    logger.info(f"Synthèse vocale (HF) : {response}")
+                    logger.info(f"Synthèse vocale (HF + outils LLM) : {response}")
 
                     # Appliquer émotion correspondante au robot si disponible
                     sentiment = self.hf_chat.analyze_sentiment(texte)
