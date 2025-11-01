@@ -181,6 +181,55 @@ POST /api/ecosystem/demo/start
 }
 ```
 
+#### Contrôle moteurs (SDK officiel)
+
+```python
+# Statut des moteurs
+GET /api/motors/status
+
+# Changer mode moteurs
+POST /api/motors/set_mode/{mode}  # enabled, disabled, gravity_compensation
+```
+
+#### Contrôle daemon (SDK officiel)
+
+```python
+# Statut du daemon
+GET /api/daemon/status
+
+# Démarrer le daemon
+POST /api/daemon/start?wake_up=false
+
+# Arrêter le daemon
+POST /api/daemon/stop?goto_sleep=false
+
+# Redémarrer le daemon
+POST /api/daemon/restart
+```
+
+#### Mouvements robot (SDK officiel)
+
+```python
+# Réveiller le robot
+POST /api/motion/wake_up
+
+# Mettre en veille
+POST /api/motion/goto_sleep
+```
+
+#### État robot (SDK officiel)
+
+```python
+# Pose actuelle de la tête
+GET /api/state/present_head_pose
+
+# Yaw du corps actuel
+GET /api/state/present_body_yaw
+
+# Positions des antennes
+GET /api/state/present_antenna_joint_positions
+```
+
 ### WebSocket télémétrie
 
 ```python
