@@ -279,10 +279,11 @@ tests/
 - [ ] Intégrer avec `RobotAPI` (démarrage automatique)
 - [ ] Tests `test_bbia_idle_animations.py`
 
-### **Phase 3 : Intégration Complète** ✅ **PARTIEL**
+### **Phase 3 : Intégration Complète** ✅ **TERMINÉ**
 - [x] Ajouter outils `dance` / `stop_dance` dans `bbia_tools.py`
-- [ ] Tester intégration LLM → outils → robot
-- [ ] Documenter usage
+- [x] Tester intégration LLM → outils → robot
+- [x] Documenter usage (demos créés)
+- [x] `demo_chat_with_tools.py` pour exemple complet
 
 ### **Phase 4 : Realtime API (Optionnel)**
 - [ ] Créer `bbia_realtime_api.py`

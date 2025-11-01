@@ -105,26 +105,26 @@
 
 ---
 
-### **5. Outils LLM Exposés** 🟡
+### **5. Outils LLM Exposés** ✅
 
 | Outil | App Officielle | BBIA | Statut |
 |-------|----------------|------|--------|
-| **move_head** | ✅ Gauche/droite/haut/bas/avant | ✅ `set_joint_pos` | ✅ **Présent** |
-| **camera** | ✅ Capture + analyse gpt-realtime | ✅ `scan_environment` | ✅ **Présent** |
-| **head_tracking** | ✅ Activer/désactiver | ⚠️ Toujours actif | 🟡 **Partiel** |
-| **dance** | ✅ Bibliothèque danses | ❌ Absent | 🔴 **Manquant** |
-| **stop_dance** | ✅ Arrêter danses | ❌ Absent | 🔴 **Manquant** |
-| **play_emotion** | ✅ Hugging Face datasets | ⚠️ `set_emotion` | 🟡 **Partiel** |
-| **stop_emotion** | ✅ Arrêter émotions | ⚠️ Basique | 🟡 **Partiel** |
-| **do_nothing** | ✅ Rester inactif | ⚠️ Implicite | 🟡 **Partiel** |
+| **move_head** | ✅ Gauche/droite/haut/bas/avant | ✅ `set_target_head_pose()` ou `goto_target()` | ✅ **Implémenté** |
+| **camera** | ✅ Capture + analyse gpt-realtime | ✅ `scan_environment()` avec YOLO+MediaPipe | ✅ **Implémenté** |
+| **head_tracking** | ✅ Activer/désactiver | ✅ Activation/désactivation via `BBIATools` | ✅ **Implémenté** |
+| **dance** | ✅ Bibliothèque danses | ✅ `RecordedMoves` intégré | ✅ **Implémenté** |
+| **stop_dance** | ✅ Arrêter danses | ✅ Arrêt danses via `stop_dance` | ✅ **Implémenté** |
+| **play_emotion** | ✅ Hugging Face datasets | ✅ `robot_api.set_emotion()` (12 émotions) | ✅ **Implémenté** |
+| **stop_emotion** | ✅ Arrêter émotions | ✅ Arrêt émotions via `stop_emotion` | ✅ **Implémenté** |
+| **do_nothing** | ✅ Rester inactif | ✅ Action vide implémentée | ✅ **Implémenté** |
 
-**Écart BBIA** :
-- ✅ **Contrôle tête** : Présent via API
-- ✅ **Caméra** : Présent
-- ⚠️ **Danses** : Absentes
-- ⚠️ **Émotions** : Présentes mais format différent
+**État BBIA** :
+- ✅ **Module `bbia_tools.py`** : 8 outils implémentés
+- ✅ **Intégration `BBIAHuggingFace.chat()`** : Function calling opérationnel
+- ✅ **Détection automatique** : Patterns français (tourne la tête, danse, etc.)
+- ✅ **Tests** : `test_bbia_tools.py` créé
 
-**Recommandation** : Exposer outils similaires via HuggingFace integration
+**Recommandation** : ✅ **TERMINÉ** - Outils LLM intégrés et fonctionnels
 
 ---
 
