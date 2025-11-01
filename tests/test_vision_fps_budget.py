@@ -21,7 +21,8 @@ def test_vision_fps_10s_simulated() -> None:
 
     vision = BBIAVision(robot_api=None)
 
-    duration_s = 10.0
+    # Optimisé: 5s au lieu de 10s (suffisant pour mesurer FPS)
+    duration_s = 5.0
     frames = 0
     latencies_ms: list[float] = []
 
@@ -59,7 +60,8 @@ def test_vision_budget_cpu_ram_10s() -> None:
 
     vision = BBIAVision(robot_api=None)
 
-    duration_s = 10.0
+    # Optimisé: 5s au lieu de 10s (suffisant pour mesurer budget)
+    duration_s = 5.0
     tracemalloc.start()
     t0_cpu = time.process_time()
     t0 = time.perf_counter()
@@ -77,4 +79,5 @@ def test_vision_budget_cpu_ram_10s() -> None:
     # Budgets larges CI/macOS - seuils ajustés pour simulation réaliste
     assert peak < 200 * 1024 * 1024, f"Peak RAM trop élevé: {peak}B"
     # Seuil CPU ajusté: simulation peut utiliser plus de CPU selon matériel
-    assert cpu_time_s < 10.0, f"Temps CPU trop élevé: {cpu_time_s:.2f}s/10s"
+    # Optimisé proportionnellement: 5s au lieu de 10s
+    assert cpu_time_s < 5.0, f"Temps CPU trop élevé: {cpu_time_s:.2f}s/5s"

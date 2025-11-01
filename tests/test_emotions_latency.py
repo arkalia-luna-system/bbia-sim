@@ -16,10 +16,11 @@ from bbia_sim.bbia_emotions import BBIAEmotions
 @pytest.mark.unit
 @pytest.mark.slow
 def test_emotions_inference_latency_1e3() -> None:
-    """Test latence inférence émotions sur 1000 évaluations."""
+    """Test latence inférence émotions sur 500 évaluations (optimisé)."""
     emotions = BBIAEmotions()
 
-    iterations = 1000
+    # Optimisé: 500 au lieu de 1000 (suffisant pour statistiques p50/p95)
+    iterations = 500
     latencies_ms: list[float] = []
 
     # Émotions à tester

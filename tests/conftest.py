@@ -16,15 +16,27 @@ import pytest
 # Chemin vers le fichier de lock
 LOCK_FILE = Path(__file__).parent.parent / ".pytest.lock"
 LOCK_TIMEOUT = 300  # 5 minutes max pour un run de tests
+_MAX_RECURSION = 3  # Protection contre récursion infinie
 
 
-def acquire_lock() -> bool:
+def acquire_lock(recursion_level: int = 0) -> bool:
     """
     Acquiert un verrou exclusif pour empêcher l'exécution simultanée.
+
+    Args:
+        recursion_level: Niveau de récursion (protection contre boucles infinies)
 
     Returns:
         True si le lock est acquis, False sinon.
     """
+    # Protection contre récursion infinie
+    if recursion_level >= _MAX_RECURSION:
+        print(
+            f"⚠️  Trop de tentatives de récupération lock ({recursion_level}). "
+            f"Abandon."
+        )
+        return False
+
     if not LOCK_FILE.parent.exists():
         LOCK_FILE.parent.mkdir(parents=True, exist_ok=True)
 
@@ -54,12 +66,27 @@ def acquire_lock() -> bool:
             try:
                 with open(LOCK_FILE) as f:
                     lock_info = f.read().strip()
-                    pid, timestamp_str = lock_info.split(":")
-                    lock_timestamp = float(timestamp_str)
+                    if ":" not in lock_info:
+                        # Format invalide, nettoyer
+                        print("⚠️  Lock au format invalide. Suppression...")
+                        os.remove(LOCK_FILE)
+                        return acquire_lock(recursion_level + 1)
+                    pid, timestamp_str = lock_info.split(":", 1)
+                    try:
+                        pid_int = int(pid)
+                        lock_timestamp = float(timestamp_str)
+                    except (ValueError, TypeError):
+                        # Format invalide, nettoyer
+                        print(
+                            f"⚠️  Lock contient données invalides: {lock_info}. "
+                            f"Suppression..."
+                        )
+                        os.remove(LOCK_FILE)
+                        return acquire_lock(recursion_level + 1)
 
                     # Vérifier si le processus existe encore
                     try:
-                        os.kill(int(pid), 0)  # Vérifier si processus existe
+                        os.kill(pid_int, 0)  # Vérifier si processus existe
                         elapsed = time.time() - lock_timestamp
 
                         if elapsed > LOCK_TIMEOUT:
@@ -70,8 +97,8 @@ def acquire_lock() -> bool:
                                 f"Suppression du lock..."
                             )
                             os.remove(LOCK_FILE)
-                            # Réessayer une fois
-                            return acquire_lock()
+                            # Réessayer une fois (avec incrément récursion)
+                            return acquire_lock(recursion_level + 1)
                         else:
                             print(
                                 f"❌ Tests déjà en cours d'exécution !\n"
@@ -92,8 +119,8 @@ def acquire_lock() -> bool:
                             f"Suppression..."
                         )
                         os.remove(LOCK_FILE)
-                        # Réessayer une fois
-                        return acquire_lock()
+                        # Réessayer une fois (avec incrément récursion)
+                        return acquire_lock(recursion_level + 1)
             except Exception as e:
                 print(f"⚠️  Erreur lecture lock: {e}. Suppression du lock...")
                 try:
