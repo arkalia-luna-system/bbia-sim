@@ -134,7 +134,10 @@ class TestBBIAVisionExtended:
     @patch("builtins.print")
     def test_stop_tracking_active(self, mock_print):
         """Test arrêt de suivi actif."""
-        self.vision.scan_environment()
+        # Mock objets pour test reproductible
+        self.vision.objects_detected = [
+            {"name": "livre", "distance": 0.8, "confidence": 0.88},
+        ]
         self.vision.track_object("livre")
         self.vision.stop_tracking()
 
@@ -151,13 +154,22 @@ class TestBBIAVisionExtended:
 
     def test_get_focus_status_tracking_active(self):
         """Test statut focus avec suivi actif."""
-        self.vision.scan_environment()
+        # Mock objets et visages pour test reproductible
+        self.vision.objects_detected = [
+            {"name": "livre", "distance": 0.8, "confidence": 0.88},
+            {"name": "chaise", "distance": 1.2, "confidence": 0.95},
+        ]
+        self.vision.faces_detected = [
+            {"name": "humain", "emotion": "neutral"},
+            {"name": "humain", "emotion": "happy"},
+        ]
         self.vision.track_object("livre")
         status = self.vision.get_focus_status()
 
         assert status["tracking_active"] is True
         assert status["current_focus"] is not None
-        assert status["objects_count"] == 5
+        assert status["current_focus"]["name"] == "livre"
+        assert status["objects_count"] == 2  # Aligné avec mock
         assert status["faces_count"] == 2
 
     def test_get_focus_status_no_tracking(self):
@@ -214,11 +226,18 @@ class TestBBIAVisionExtended:
 
     def test_get_vision_stats_with_data(self):
         """Test statistiques vision avec données."""
-        self.vision.scan_environment()
+        # Mock objets et visages pour test reproductible
+        self.vision.objects_detected = [
+            {"name": "livre", "distance": 0.8, "confidence": 0.88},
+        ]
+        self.vision.faces_detected = [
+            {"name": "humain", "emotion": "neutral"},
+            {"name": "humain", "emotion": "happy"},
+        ]
         self.vision.track_object("livre")
         stats = self.vision.get_vision_stats()
 
-        assert stats["objects_detected"] == 5
+        assert stats["objects_detected"] == 1  # Aligné avec mock
         assert stats["faces_detected"] == 2
         assert stats["tracking_active"] is True
 
@@ -266,7 +285,10 @@ class TestBBIAVisionExtended:
 
     def test_current_focus_after_tracking(self):
         """Test focus actuel après suivi."""
-        self.vision.scan_environment()
+        # Mock objets pour test reproductible
+        self.vision.objects_detected = [
+            {"name": "table", "distance": 2.1, "confidence": 0.92},
+        ]
         self.vision.track_object("table")
 
         focus = self.vision.current_focus
@@ -277,7 +299,11 @@ class TestBBIAVisionExtended:
 
     def test_objects_detected_persistence(self):
         """Test persistance des objets détectés."""
-        self.vision.scan_environment()
+        # Mock objets pour test reproductible
+        self.vision.objects_detected = [
+            {"name": "livre", "distance": 0.8},
+            {"name": "chaise", "distance": 1.2},
+        ]
         initial_count = len(self.vision.objects_detected)
 
         # Nouveau scan

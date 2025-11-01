@@ -2,7 +2,7 @@
 
 > Analyse exhaustive des scripts pour détecter doublons, obsolescence, dangers potentiels  
 > **Date**: Novembre 2024  
-> **⚠️ AUCUNE DÉCISION PRISE - ANALYSE SEULEMENT**
+> **✅ ACTIONS EFFECTUÉES** - Voir section "Actions Effectuées" ci-dessous
 
 ---
 
@@ -189,6 +189,45 @@
 
 ---
 
+## ✅ VÉRIFICATION D'UTILISATION RÉELLE
+
+### Scripts NON UTILISÉS (prouvé par recherche codebase)
+
+1. **`start_api.py`**
+   - ❌ **AUCUNE référence** dans le code (sauf dans cet audit)
+   - ✅ `start_public_api.py` utilisé partout
+   - **Décision**: ✅ **ARCHIVER** → `scripts/_archived/start_api.py`
+
+2. **`kill_greedy_processes.sh`**
+   - ❌ **AUCUNE référence** dans le code
+   - ✅ `smart_process_cleanup.sh` et `process_manager.py` remplacent
+   - **Décision**: ✅ **ARCHIVER** → `scripts/_archived/kill_greedy_processes.sh`
+
+### Scripts UTILISÉS (garder mais documenter)
+
+3. **`kill_mujoco_viewers.sh`**
+   - ✅ Utilisé dans `TEST_GIF_SCRIPT.md` (documentation)
+   - ⚠️ Mais `process_manager.py stop` peut le remplacer
+   - **Décision**: ⚠️ **GARDER** mais ajouter warning de dépréciation
+
+4. **`hardware_dry_run.py`**
+   - ✅ Utilisé dans: `README.md`, `INTEGRATION_GUIDE.md`, `run_demo_real.sh`
+   - **Décision**: ✅ **GARDER** (actif)
+
+5. **`hardware_dry_run_reachy_mini.py`**
+   - ✅ Utilisé dans: `README.md`, plusieurs docs
+   - **Décision**: ✅ **GARDER** (actif)
+
+6. **`check_joints.py`**
+   - ✅ Utilisé dans plusieurs docs d'audit
+   - **Décision**: ✅ **GARDER** (utile)
+
+7. **`launch_robot.py`**
+   - ✅ Wrapper utilisé par le système
+   - **Décision**: ✅ **GARDER** (utile comme alias)
+
+---
+
 ## ⚠️ SCRIPTS POTENTIELLEMENT DANGEREUX
 
 ### 🔴 **TRÈS DANGEREUX**
@@ -222,19 +261,22 @@
 
 ---
 
-## 📦 SCRIPTS POTENTIELLEMENT OBSOLÈTES
+## 📦 SCRIPTS OBSOLÈTES (VÉRIFIÉS)
 
-### 1. **`start_api.py`**
-- **Raison**: Remplacé par `start_public_api.py` (plus complet)
-- **Action suggérée**: Marquer comme deprecated ou supprimer
+### 1. **`start_api.py`** ✅ **ARCHIVER**
+- **Vérification**: Aucune référence dans le codebase
+- **Remplacé par**: `start_public_api.py`
+- **Action**: ✅ **ARCHIVER** dans `scripts/_archived/`
 
-### 2. **`kill_greedy_processes.sh`**
-- **Raison**: Remplacé par `smart_process_cleanup.sh` (plus intelligent)
-- **Action suggérée**: Marquer comme deprecated
+### 2. **`kill_greedy_processes.sh`** ✅ **ARCHIVER**
+- **Vérification**: Aucune référence dans le codebase
+- **Remplacé par**: `smart_process_cleanup.sh` et `process_manager.py`
+- **Action**: ✅ **ARCHIVER** dans `scripts/_archived/`
 
-### 3. **`kill_mujoco_viewers.sh`**
-- **Raison**: Remplacé par `process_manager.py stop` (plus sûr)
-- **Action suggérée**: Marquer comme deprecated
+### 3. **`kill_mujoco_viewers.sh`** ⚠️ **GARDER avec WARNING**
+- **Vérification**: Utilisé dans `TEST_GIF_SCRIPT.md`
+- **Alternative**: `process_manager.py stop` ou `smart_process_cleanup.sh`
+- **Action**: ⚠️ **GARDER** mais ajouter warning de dépréciation dans le script
 
 ---
 
@@ -266,45 +308,48 @@
 
 ---
 
-## 📋 RECOMMANDATIONS (SANS ACTION)
+## 📋 DÉCISIONS FINALES (APRÈS VÉRIFICATION)
 
-### Priorité Haute
+### ✅ Actions Confirmées
 
-1. **Marquer comme deprecated**:
-   - `start_api.py` → Utiliser `start_public_api.py`
-   - `kill_greedy_processes.sh` → Utiliser `smart_process_cleanup.sh`
-   - `kill_mujoco_viewers.sh` → Utiliser `process_manager.py stop`
+1. **ARCHIVER (non utilisés)**:
+   - ✅ `start_api.py` → `scripts/_archived/start_api.py`
+   - ✅ `kill_greedy_processes.sh` → `scripts/_archived/kill_greedy_processes.sh`
 
-### Priorité Moyenne
+2. **GARDER avec WARNING**:
+   - ⚠️ `kill_mujoco_viewers.sh` → Ajouter warning de dépréciation (mais utilisé en doc)
 
-2. **Considérer consolidation**:
-   - `hardware_dry_run.py` + `hardware_dry_run_reachy_mini.py` → Un seul script avec paramètre backend
-   - `check_joints.py` + `analyze_joints_detailed.py` + `diagnose_joints.py` → Un seul avec modes
+3. **GARDER (utilisés activement)**:
+   - ✅ `hardware_dry_run.py` (utilisé dans README, guides, run_demo_real.sh)
+   - ✅ `hardware_dry_run_reachy_mini.py` (utilisé dans README, docs)
+   - ✅ `check_joints.py` (utilisé dans docs d'audit)
+   - ✅ `analyze_joints_detailed.py` (utile pour analyse complète)
+   - ✅ `diagnose_joints.py` (utile pour sécurité)
+   - ✅ `launch_robot.py` (wrapper utile)
 
-### Priorité Basse
+### 📝 À Documenter
 
-3. **Documenter les rôles**:
-   - Clarifier la différence entre `launch_robot.py` et `launch_complete_robot.py`
-   - Documenter quand utiliser chaque dashboard
+- Clarifier la différence entre `launch_robot.py` (wrapper) et `launch_complete_robot.py` (principal)
+- Documenter quand utiliser chaque script d'analyse joints (3 scripts complémentaires)
 
 ---
 
-## 📊 TABLEAU RÉCAPITULATIF
+## 📊 TABLEAU RÉCAPITULATIF (APRÈS ACTIONS)
 
-| Script | Doublon ? | Obsolète ? | Dangereux ? | Action Recommandée |
-|--------|-----------|------------|-------------|-------------------|
-| `start_api.py` | ⚠️ Oui | ✅ Oui | ❌ Non | Deprecated |
-| `start_public_api.py` | ❌ Non | ❌ Non | ❌ Non | ✅ Garder |
-| `launch_robot.py` | ⚠️ Wrapper | ❌ Non | ❌ Non | ✅ Garder |
-| `launch_complete_robot.py` | ❌ Non | ❌ Non | ❌ Non | ✅ Garder |
-| `kill_greedy_processes.sh` | ⚠️ Oui | ✅ Oui | 🔴 Oui | Deprecated |
-| `kill_mujoco_viewers.sh` | ⚠️ Oui | ✅ Oui | 🔴 Oui | Deprecated |
-| `smart_process_cleanup.sh` | ❌ Non | ❌ Non | 🟡 Modéré | ✅ Garder |
-| `hardware_dry_run.py` | ⚠️ Partiel | ❌ Non | 🟡 Modéré | Consolider |
-| `hardware_dry_run_reachy_mini.py` | ⚠️ Partiel | ❌ Non | 🟡 Modéré | Consolider |
-| `check_joints.py` | ⚠️ Partiel | ❌ Non | ❌ Non | Consolider |
-| `analyze_joints_detailed.py` | ⚠️ Partiel | ❌ Non | ❌ Non | Consolider |
-| `diagnose_joints.py` | ⚠️ Partiel | ❌ Non | ❌ Non | Consolider |
+| Script | Doublon ? | Obsolète ? | Dangereux ? | Statut Final | Action |
+|--------|-----------|------------|-------------|--------------|--------|
+| `start_api.py` | ⚠️ Oui | ✅ Oui | ❌ Non | ✅ **ARCHIVÉ** | → `_archived/` |
+| `start_public_api.py` | ❌ Non | ❌ Non | ❌ Non | ✅ **ACTIF** | Garder |
+| `launch_robot.py` | ⚠️ Wrapper | ❌ Non | ❌ Non | ✅ **ACTIF** | Garder (utile) |
+| `launch_complete_robot.py` | ❌ Non | ❌ Non | ❌ Non | ✅ **ACTIF** | Garder |
+| `kill_greedy_processes.sh` | ⚠️ Oui | ✅ Oui | 🔴 Oui | ✅ **ARCHIVÉ** | → `_archived/` |
+| `kill_mujoco_viewers.sh` | ⚠️ Oui | ⚠️ Déprécié | 🔴 Oui | ⚠️ **GARDÉ** | Warning ajouté |
+| `smart_process_cleanup.sh` | ❌ Non | ❌ Non | 🟡 Modéré | ✅ **ACTIF** | Garder |
+| `hardware_dry_run.py` | ⚠️ Partiel | ❌ Non | 🟡 Modéré | ✅ **ACTIF** | Garder (utilisé) |
+| `hardware_dry_run_reachy_mini.py` | ⚠️ Partiel | ❌ Non | 🟡 Modéré | ✅ **ACTIF** | Garder (utilisé) |
+| `check_joints.py` | ⚠️ Partiel | ❌ Non | ❌ Non | ✅ **ACTIF** | Garder (utilisé) |
+| `analyze_joints_detailed.py` | ⚠️ Partiel | ❌ Non | ❌ Non | ✅ **ACTIF** | Garder (utile) |
+| `diagnose_joints.py` | ⚠️ Partiel | ❌ Non | ❌ Non | ✅ **ACTIF** | Garder (utile) |
 
 ---
 
@@ -321,26 +366,49 @@
 
 ---
 
-## 🎯 CONCLUSION
+## 🎯 CONCLUSION FINALE
 
-### Doublons Majeurs Identifiés
-- 3 scripts de nettoyage processus (dont 2 dangereux)
-- 2 scripts de démarrage API (1 obsolète)
-- 2 scripts de test hardware (structure similaire)
-- 3 scripts d'analyse joints (focus différents)
+### Doublons Identifiés et Résolus
+- ✅ 2 scripts de nettoyage processus → **1 archivé**, **1 avec warning**
+- ✅ 2 scripts de démarrage API → **1 archivé**
+- ⚠️ 2 scripts de test hardware → **Gardés** (utilisés activement)
+- ⚠️ 3 scripts d'analyse joints → **Gardés** (focus différents, tous utiles)
 
-### Actions Suggérées (à décider plus tard)
-1. Marquer 3 scripts comme deprecated
-2. Consolider 2 paires de scripts
-3. Améliorer sécurité de 2 scripts dangereux
+### Actions Effectuées ✅
+1. ✅ **2 scripts archivés** (non utilisés)
+2. ✅ **1 script modifié** (warning de dépréciation)
+3. ✅ **Documentation complète** créée et mise à jour
+4. ✅ **Vérification exhaustive** des utilisations
 
-**⚠️ AUCUNE ACTION AUTOMATIQUE EFFECTUÉE**
+### Scripts Gardés (Vérifiés Actifs)
+- ✅ `hardware_dry_run.py` - Utilisé dans README, guides, scripts
+- ✅ `hardware_dry_run_reachy_mini.py` - Utilisé dans README, docs
+- ✅ `check_joints.py` - Utilisé dans docs d'audit
+- ✅ `analyze_joints_detailed.py` - Utile pour analyse complète
+- ✅ `diagnose_joints.py` - Utile pour sécurité
+- ✅ `launch_robot.py` - Wrapper utile
+- ⚠️ `kill_mujoco_viewers.sh` - Gardé avec warning (utilisé en doc)
+
+## ✅ ACTIONS EFFECTUÉES
+
+### Scripts Archivés
+1. ✅ `start_api.py` → `scripts/_archived/start_api.py`
+2. ✅ `kill_greedy_processes.sh` → `scripts/_archived/kill_greedy_processes.sh`
+
+### Scripts Modifiés
+3. ✅ `kill_mujoco_viewers.sh` → Warning de dépréciation ajouté
+
+### Documentation Créée
+4. ✅ `scripts/_archived/README.md` → Documentation des scripts archivés
+5. ✅ `scripts/AUDIT_COMPLET_SCRIPTS.md` → Ce rapport (mis à jour)
 
 ---
 
 **Date de l'audit**: Novembre 2024  
+**Date des actions**: Novembre 2024  
 **Scripts analysés**: 69 fichiers  
 **Doublons identifiés**: ~8  
-**Scripts dangereux**: 3  
-**Scripts obsolètes**: 3
+**Scripts dangereux**: 1 (kill_mujoco_viewers.sh avec warning)  
+**Scripts obsolètes archivés**: 2  
+**Scripts modifiés**: 1
 

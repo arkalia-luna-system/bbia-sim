@@ -1,6 +1,14 @@
 #!/bin/bash
 # Script pour forcer la fermeture de tous les viewers MuJoCo bloqués
+#
+# ⚠️  DÉPRÉCIÉ: Ce script est déprécié mais conservé pour compatibilité.
+# 💡 Alternative recommandée: python scripts/process_manager.py stop
+#    ou: scripts/smart_process_cleanup.sh
+#
+# Date de dépréciation: Novembre 2024
 
+echo "⚠️  NOTE: Ce script est déprécié. Utilisez 'python scripts/process_manager.py stop' à la place."
+echo ""
 echo "🔍 Recherche des processus MuJoCo..."
 
 # Trouver tous les processus MuJoCo

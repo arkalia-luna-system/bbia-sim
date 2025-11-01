@@ -2,6 +2,14 @@
 
 > **Scripts d'automatisation pour BBIA - Brain-Based Interactive Agent**
 
+## ⚠️ **Scripts Dépréciés**
+
+- ❌ **`start_api.py`** → Utiliser `start_public_api.py` (archivé dans `_archived/`)
+- ❌ **`kill_greedy_processes.sh`** → Utiliser `smart_process_cleanup.sh` (archivé dans `_archived/`)
+- ⚠️ **`kill_mujoco_viewers.sh`** → Utiliser `process_manager.py stop` (déprécié mais gardé)
+
+Voir `scripts/_archived/README.md` pour plus de détails.
+
 ## 🎯 **Scripts Disponibles**
 
 ### 🎮 **Scripts Principaux**
