@@ -82,8 +82,13 @@ def test_audio_latency_e2e_loopback() -> None:
                 channels=1,
                 callback=output_callback,
             ):
-                # Attendre que toutes les itérations soient mesurées
+                # Attendre que toutes les itérations soient mesurées avec timeout
+                max_wait_time = 30.0  # 30s max pour éviter boucle infinie
+                start_wait = time.perf_counter()
                 while len(latencies_ms) < iterations:
+                    if time.perf_counter() - start_wait > max_wait_time:
+                        # Timeout: pas assez de mesures capturées
+                        break
                     time.sleep(0.1)
 
         # Calculer statistiques
