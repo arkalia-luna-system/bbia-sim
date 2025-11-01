@@ -233,7 +233,7 @@ async def get_full_state(
         else:
             result["passive_joints"] = None
 
-    result["timestamp"] = datetime.now(UTC)
+    result["timestamp"] = datetime.now(timezone.utc)
     return FullState.model_validate(result)
 
 
