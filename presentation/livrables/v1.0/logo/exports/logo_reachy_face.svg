@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <!-- 
+    LOGO BBIA - Reachy Mini VUE FACE (Mesures EXACTES XML)
+    Source: reachy_mini_REAL_OFFICIAL.xml + visuels réels
+    
+    Caractéristiques réelles observées:
+    - Tête: rectangulaire arrondie, plus large que haute
+    - Yeux: 2 grands cercles noirs reliés par barre horizontale
+    - Corps: ovoïde/barrel-shaped, volumineux
+    - Antennes: 2 fines sur la tête (positions exactes XML)
+    - Couleur: gris clair/lunaire
+  -->
+  
+  <defs>
+    <style>
+      .head { fill: #ffffff; stroke: #bfc9d9; stroke-width: 2; }
+      .body { fill: #ffffff; stroke: #bfc9d9; stroke-width: 2; }
+      .eyes { fill: #1a1a1a; }
+      .eyes-bar { fill: #1a1a1a; }
+      .antenna { fill: none; stroke: #1a1a1a; stroke-width: 2; stroke-linecap: round; }
+      .light-halo { fill: #60e9e1; opacity: 0.3; }
+    </style>
+    
+    <filter id="soft-shadow">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+      <feOffset dx="0" dy="2"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.2"/></feComponentTransfer>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <g transform="translate(256, 350)">
+    
+    <!-- CORPS (ovoïde/barrel-shaped, volumineux) -->
+    <ellipse class="body" cx="0" cy="50" rx="90" ry="140" filter="url(#soft-shadow)"/>
+    
+    <!-- COU (jonction presque invisible, forme monobloc) -->
+    <ellipse fill="#ffffff" cx="0" cy="-30" rx="60" ry="20" opacity="0.95"/>
+    
+    <!-- TÊTE (rectangulaire arrondie, plus large que haute) -->
+    <rect class="head" x="-70" y="-90" width="140" height="80" rx="12" ry="12" filter="url(#soft-shadow)"/>
+    
+    <!-- YEUX (2 grands cercles noirs) -->
+    <circle class="eyes" cx="-30" cy="-65" r="24"/>
+    <circle class="eyes" cx="30" cy="-65" r="24"/>
+    
+    <!-- BARRE HORIZONTALE reliant les yeux (bien horizontale, jamais oblique) -->
+    <rect class="eyes-bar" x="-32" y="-68" width="64" height="4" rx="2"/>
+    
+    <!-- Réflexion yeux (blanc subtil) -->
+    <circle fill="#ffffff" cx="-28" cy="-67" r="8" opacity="0.5"/>
+    <circle fill="#ffffff" cx="28" cy="-67" r="8" opacity="0.5"/>
+    
+    <!-- ANTENNES (2 fines, bien visibles depuis le haut de la tête) -->
+    <!-- Antenne droite -->
+    <path class="antenna" d="M 85 -50 Q 87 -70, 85 -90 Q 83 -110, 81 -130" opacity="0.9"/>
+    <circle fill="#1a1a1a" cx="81" cy="-130" r="2"/>
+    
+    <!-- Antenne gauche -->
+    <path class="antenna" d="M -85 -50 Q -87 -70, -85 -90 Q -83 -110, -81 -130" opacity="0.9"/>
+    <circle fill="#1a1a1a" cx="-81" cy="-130" r="2"/>
+    
+    <!-- HALO lumière (cœur du corps, subtil) -->
+    <ellipse class="light-halo" cx="0" cy="50" rx="40" ry="50" filter="url(#soft-shadow)"/>
+    
+  </g>
+  
+</svg>
+

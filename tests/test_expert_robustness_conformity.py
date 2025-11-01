@@ -437,7 +437,10 @@ class TestExpertRobustnessConformity:
                 f"initial: {initial_history_len}, final: {final_history_len})"
             )
 
-            print(f"✅ Historique conversation: {history_len} messages (géré)")
+            print(
+                f"✅ Historique conversation: {final_history_len} messages "
+                f"(augmentation: {history_increase}, initial: {initial_history_len})"
+            )
         except ImportError:
             print("⚠️  Test ignoré (BBIAHuggingFace non disponible)")
 
