@@ -158,19 +158,13 @@ async def goto(
     backend: BackendAdapter = Depends(get_backend_adapter),
 ) -> MoveUUID:
     """Demande un mouvement vers une cible spécifique (conforme SDK)."""
-    # Convertir InterpolationMode (str) vers InterpolationTechnique si nécessaire
-    method_str = (
-        goto_req.interpolation.value
-        if hasattr(goto_req.interpolation, "value")
-        else str(goto_req.interpolation)
-    )
-
+    # Conforme SDK officiel: ne pas passer interpolation/method à goto_target
+    # Le backend utilisera InterpolationTechnique.MIN_JERK par défaut
     return create_move_task(
         backend.goto_target(
             head=goto_req.head_pose.to_pose_array() if goto_req.head_pose else None,
             antennas=np.array(goto_req.antennas) if goto_req.antennas else None,
             duration=goto_req.duration,
-            method=method_str,  # Passer le method à goto_target
         )
     )
 
@@ -266,28 +260,11 @@ async def set_target(
     backend: BackendAdapter = Depends(get_backend_adapter),
 ) -> dict[str, str]:
     """Définit un target directement (sans mouvement) - conforme SDK."""
-    # Convertir AnyPose en array numpy
-    head_pose_array = None
-    if target.target_head_pose:
-        if hasattr(target.target_head_pose, "to_pose_array"):
-            head_pose_array = target.target_head_pose.to_pose_array()
-        else:
-            # Fallback pour cas où target_head_pose est un dict
-            from ...models import Matrix4x4Pose, XYZRPYPose
-
-            pose_dict = (
-                target.target_head_pose
-                if isinstance(target.target_head_pose, dict)
-                else target.target_head_pose.model_dump()
-            )
-            if "m" in pose_dict:
-                pose_obj: AnyPose = Matrix4x4Pose.model_validate(pose_dict)
-            else:
-                pose_obj = XYZRPYPose.model_validate(pose_dict)
-            head_pose_array = pose_obj.to_pose_array()
-
+    # Conforme SDK officiel: utiliser to_pose_array() directement
     backend.set_target(
-        head=head_pose_array,
+        head=(
+            target.target_head_pose.to_pose_array() if target.target_head_pose else None
+        ),
         antennas=np.array(target.target_antennas) if target.target_antennas else None,
     )
     return {"status": "ok"}

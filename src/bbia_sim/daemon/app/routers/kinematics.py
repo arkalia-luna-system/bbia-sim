@@ -54,7 +54,7 @@ async def get_urdf(
         return {"urdf": ""}
 
 
-@router.get("/stl/{filename:path}")
+@router.get("/stl/{filename}")
 async def get_stl_file(filename: Path) -> Response:
     """Récupère un fichier STL depuis les assets (conforme SDK officiel)."""
     # Sécurisation : utiliser uniquement le nom du fichier (éviter directory traversal)

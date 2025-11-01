@@ -182,7 +182,25 @@ class FullBodyTarget(BaseModel):
 
     target_head_pose: AnyPose | None = None
     target_antennas: tuple[float, float] | None = None
-    timestamp: datetime | None = None  # Conforme SDK
+    timestamp: datetime | None = None
+
+    model_config = {
+        "json_schema_extra": {
+            "examples": [
+                {
+                    "target_head_pose": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0,
+                        "roll": 0.0,
+                        "pitch": 0.0,
+                        "yaw": 0.0,
+                    },
+                    "target_antennas": [0.0, 0.0],
+                }
+            ]
+        }
+    }
 
 
 class MoveUUID(BaseModel):

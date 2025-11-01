@@ -162,5 +162,43 @@ Toutes les constantes, validations et assertions du SDK officiel sont maintenant
 
 ---
 
+## ⚠️ POINTS RESTANTS (NON-CRITIQUES)
+
+### 1. Validation `look_at_image()` - Caméra
+
+**SDK Officiel**: Lève `RuntimeError("Camera is not initialized.")` si caméra non disponible.
+
+**BBIA**: Retourne pose par défaut en mode simulation (pas d'erreur).
+
+**Impact**: Mineur - BBIA plus permissif en simulation (comportement acceptable).
+
+**Recommandation**: ✅ **ACCEPTABLE** - Mode simulation n'a pas besoin de caméra réelle.
+
+---
+
+### 2. Validation coordonnées `look_at_image()`
+
+**SDK Officiel**: Valide `0 < u < resolution[0]` et `0 < v < resolution[1]` avec `assert`.
+
+**BBIA**: Laisse le SDK valider (pas de pré-validation explicite).
+
+**Impact**: Mineur - SDK valide déjà via délégation.
+
+**Recommandation**: ✅ **ACCEPTABLE** - Validation déléguée au SDK.
+
+---
+
+### 3. `get_status()` - Type de retour
+
+**SDK Officiel**: Retourne `RobotBackendStatus | MujocoBackendStatus` (dataclass typé).
+
+**BBIA**: Retourne `dict[str, Any]` (plus flexible).
+
+**Impact**: Mineur - BBIA plus flexible, compatible runtime.
+
+**Recommandation**: ✅ **ACCEPTABLE** - Plus flexible sans casser compatibilité.
+
+---
+
 **Date de génération**: 1er Novembre 2025
 
