@@ -211,10 +211,11 @@ def as_any_pose(pose: Any, use_matrix: bool) -> AnyPose:
 
 
 class FullBodyTarget(BaseModel):
-    """Représente le corps complet incluant pose tête et joints antennes."""
+    """Représente le corps complet incluant pose tête et joints antennes (conforme SDK)."""
 
     target_head_pose: AnyPose | None = None
     target_antennas: tuple[float, float] | None = None
+    timestamp: datetime | None = None  # Conforme SDK
 
 
 class MoveUUID(BaseModel):
@@ -226,7 +227,9 @@ class MoveUUID(BaseModel):
 class FullState(BaseModel):
     """Représente l'état complet du robot incluant toutes les positions d'articulations et poses (conforme SDK)."""
 
-    control_mode: str | None = None  # MotorControlMode.value ou str
+    control_mode: str | None = (
+        None  # MotorControlMode.value (SDK utilise MotorControlMode mais on accepte str aussi)
+    )
     head_pose: AnyPose | None = None
     head_joints: list[float] | None = None
     body_yaw: float | None = None

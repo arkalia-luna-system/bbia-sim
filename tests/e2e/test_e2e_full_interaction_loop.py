@@ -12,7 +12,8 @@ import pytest
 from bbia_sim.bbia_behavior import BBIABehaviorManager
 from bbia_sim.bbia_emotions import BBIAEmotions
 from bbia_sim.bbia_vision import BBIAVision
-from bbia_sim.bbia_voice import BBIAVoice
+
+# bbia_voice n'a pas de classe BBIAVoice, utiliser fonctions directement
 
 
 @pytest.mark.e2e
@@ -31,7 +32,7 @@ class TestE2EFullInteractionLoop:
 
         # Modules BBIA
         self.vision = BBIAVision(robot_api=self.mock_robot)
-        self.voice = BBIAVoice()
+        # Voice: utiliser fonctions directement (bbia_voice n'a pas de classe)
         self.emotions = BBIAEmotions()
         self.behavior = BBIABehaviorManager(robot_api=self.mock_robot)
 
@@ -59,8 +60,10 @@ class TestE2EFullInteractionLoop:
         assert track_success is True
 
         # 3. Écoute vocale (mock)
-        with patch.object(self.voice, "listen", return_value="bonjour"):
-            audio_text = self.voice.listen()
+        from bbia_sim.bbia_voice import reconnaitre_parole
+
+        with patch("bbia_sim.bbia_voice.reconnaitre_parole", return_value="bonjour"):
+            audio_text = reconnaitre_parole()
             assert audio_text == "bonjour"
 
             # 4. Génération réponse LLM (mock)
@@ -110,8 +113,12 @@ class TestE2EFullInteractionLoop:
         assert len(scan1["faces"]) > 0
 
         # Tour 2: Écoute
-        with patch.object(self.voice, "listen", return_value="comment vas-tu?"):
-            text1 = self.voice.listen()
+        from bbia_sim.bbia_voice import reconnaitre_parole
+
+        with patch(
+            "bbia_sim.bbia_voice.reconnaitre_parole", return_value="comment vas-tu?"
+        ):
+            text1 = reconnaitre_parole()
             assert "vas-tu" in text1
 
         # Tour 3: Réponse + émotion

@@ -192,7 +192,8 @@ async def list_recorded_move_dataset(dataset_name: str) -> list[str]:
         from reachy_mini.motion.recorded_move import RecordedMoves
 
         moves = RecordedMoves(dataset_name)
-        return moves.list_moves()
+        moves_list = moves.list_moves()
+        return moves_list if isinstance(moves_list, list) else list(moves_list)
     except ImportError:
         logger.warning("reachy_mini.motion.recorded_move non disponible")
         raise HTTPException(
@@ -282,11 +283,10 @@ async def set_target(
                 else target.target_head_pose.model_dump()
             )
             if "m" in pose_dict:
-                pose_obj = Matrix4x4Pose.model_validate(pose_dict)
-                head_pose_array = pose_obj.to_pose_array()
+                pose_obj: AnyPose = Matrix4x4Pose.model_validate(pose_dict)
             else:
                 pose_obj = XYZRPYPose.model_validate(pose_dict)
-                head_pose_array = pose_obj.to_pose_array()
+            head_pose_array = pose_obj.to_pose_array()
 
     backend.set_target(
         head=head_pose_array,

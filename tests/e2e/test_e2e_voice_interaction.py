@@ -9,7 +9,8 @@ from unittest.mock import MagicMock, patch
 import pytest
 
 from bbia_sim.bbia_behavior import BBIABehaviorManager
-from bbia_sim.bbia_voice import BBIAVoice
+
+# bbia_voice n'a pas de classe BBIAVoice, utiliser fonctions directement
 
 
 @pytest.mark.e2e
@@ -24,8 +25,7 @@ class TestE2EVoiceInteraction:
         self.mock_robot.set_joint_pos.return_value = True
         self.mock_robot.step.return_value = True
 
-        # Voice avec mock
-        self.voice = BBIAVoice()
+        # Voice: utiliser fonctions directement (bbia_voice n'a pas de classe)
 
         # Behavior manager
         self.behavior = BBIABehaviorManager(robot_api=self.mock_robot)
@@ -43,9 +43,11 @@ class TestE2EVoiceInteraction:
         )
         mock_hf_class.return_value = mock_hf
 
-        # 3. Simuler transcription (mock Whisper/speech_recognition)
-        with patch.object(self.voice, "listen", return_value=audio_text):
-            transcribed = self.voice.listen()
+        # 3. Simuler transcription (mock reconnaitre_parole)
+        from bbia_sim.bbia_voice import reconnaitre_parole
+
+        with patch("bbia_sim.bbia_voice.reconnaitre_parole", return_value=audio_text):
+            transcribed = reconnaitre_parole()
 
             assert transcribed == audio_text
 
@@ -96,9 +98,11 @@ class TestE2EVoiceInteraction:
     def test_bbia_full_voice_interaction_flow(self):
         """Flux complet interaction vocale: écoute → transcrit → comprend → répond → agit."""
         # Test simplifié avec mocks (évite dépendances audio)
-        with patch.object(self.voice, "listen", return_value="bonjour"):
+        from bbia_sim.bbia_voice import reconnaitre_parole
+
+        with patch("bbia_sim.bbia_voice.reconnaitre_parole", return_value="bonjour"):
             # 1. Écoute
-            text = self.voice.listen()
+            text = reconnaitre_parole()
             assert text == "bonjour"
 
             # 2. Mapping commande

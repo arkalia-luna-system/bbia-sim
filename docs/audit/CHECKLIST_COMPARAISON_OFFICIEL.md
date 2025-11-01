@@ -22,30 +22,29 @@ Aucun élément critical détecté.
 
 ---
 
-## 🟠 PRIORITÉ HIGH (À Corriger en Priorité)
+## 🟠 PRIORITÉ HIGH (✅ CORRIGÉE)
 
-### API Endpoints Manquants (3)
+### API Endpoints (3) ✅
 
-#### 1. POST /play/recorded-move-dataset/{dataset_name:path}/{move_name}
+#### 1. ✅ POST /play/recorded-move-dataset/{dataset_name:path}/{move_name}
 - **Fichier**: `src/bbia_sim/daemon/app/routers/move.py`
-- **Description**: Jouer un mouvement enregistré depuis un dataset
-- **Status**: ✅ **CORRIGÉ** (utilise maintenant `backend.play_move` conforme SDK)
+- **Status**: ✅ **CORRIGÉ** (utilise `backend.play_move` conforme SDK)
 - **Action**: ✅ Terminé
-- **Test**: À créer `tests/test_api_recorded_moves.py`
 
-#### 2. GET /recorded-move-datasets/list/{dataset_name:path}
+#### 2. ✅ GET /recorded-move-datasets/list/{dataset_name:path}
 - **Fichier**: `src/bbia_sim/daemon/app/routers/move.py`
-- **Description**: Lister les mouvements enregistrés dans un dataset
 - **Status**: ✅ **DÉJÀ PRÉSENT** (ligne 184)
-- **Action**: ✅ Déjà implémenté
-- **Test**: À créer `tests/test_api_recorded_moves.py`
 
-#### 3. GET /stl/{filename}
+#### 3. ✅ GET /stl/{filename}
 - **Fichier**: `src/bbia_sim/daemon/app/routers/kinematics.py`
-- **Description**: Servir les fichiers STL (assets 3D)
-- **Status**: ✅ **CORRIGÉ** (format conforme SDK: `{filename}` sans `:path`)
-- **Action**: ✅ Terminé
-- **Test**: À créer `tests/test_api_stl.py`
+- **Status**: ✅ **CONFORME SDK** (`{filename}` sans `:path`)
+
+### Backend - Context Manager ✅
+
+#### 4. ✅ `__enter__` / `__exit__`
+- **Fichier**: `src/bbia_sim/backends/reachy_mini_backend.py`
+- **Status**: ✅ **AJOUTÉ** (conforme SDK)
+- **Action**: ✅ Support context manager ajouté
 
 ---
 
@@ -184,11 +183,13 @@ Les endpoints suivants sont des **extensions BBIA** et ne sont pas dans le repo 
 
 ## 📝 Plan d'Action par Priorité
 
-### Phase 1 : HIGH Priority (Urgent)
+### Phase 1 : HIGH Priority (Urgent) ✅ TERMINÉE
 1. ✅ Analyser endpoints `/play/recorded-move-dataset` et `/recorded-move-datasets/list`
-2. ✅ Implémenter endpoint `/stl/{filename}`
-3. ✅ Créer tests pour chaque endpoint
-4. ✅ Valider code quality
+2. ✅ Vérifier endpoint `/stl/{filename}` (déjà conforme)
+3. ✅ Ajouter context manager `__enter__` / `__exit__`
+4. ✅ Ajouter méthode `play_move()` dans BackendAdapter
+5. ⚠️ Créer tests pour chaque endpoint (TODO)
+6. ⚠️ Valider code quality (TODO)
 
 ### Phase 2 : MEDIUM Priority - Core (Important)
 1. ✅ Analyser fichiers core manquants (manager, abstract, constants, utils)

@@ -223,7 +223,11 @@ async def get_full_state(
     if with_passive_joints:
         joints = backend.get_present_passive_joint_positions()
         if joints is not None:
-            result["passive_joints"] = list(joints.values())
+            # joints peut être dict[str, float] ou NDArray
+            if isinstance(joints, dict):
+                result["passive_joints"] = list(joints.values())
+            else:
+                result["passive_joints"] = list(joints) if hasattr(joints, "__iter__") else None
         else:
             result["passive_joints"] = None
 

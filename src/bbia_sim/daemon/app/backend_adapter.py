@@ -154,13 +154,14 @@ class BackendAdapter:
             import asyncio
 
             def sync_goto() -> None:
-                self._robot.goto_target(
-                    head=head,
-                    antennas=antennas,
-                    duration=duration,
-                    method=method,
-                    body_yaw=body_yaw or 0.0,
-                )
+                if hasattr(self._robot, "goto_target"):
+                    self._robot.goto_target(  # type: ignore[attr-defined]
+                        head=head,
+                        antennas=antennas,
+                        duration=duration,
+                        method=method,
+                        body_yaw=body_yaw or 0.0,
+                    )
 
             # Exécuter dans un thread pool pour ne pas bloquer
             await asyncio.to_thread(sync_goto)

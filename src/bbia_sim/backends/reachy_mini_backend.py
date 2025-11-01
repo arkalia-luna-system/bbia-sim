@@ -133,6 +133,15 @@ class ReachyMiniBackend(RobotAPI):
         self.forbidden_joints: set[str] = set(GlobalConfig.FORBIDDEN_JOINTS)  # type: ignore[assignment]
         # Optionnel: ajouter "left_antenna" ou "right_antenna" pour bloquer
 
+    def __enter__(self) -> "ReachyMiniBackend":
+        """Context manager entry point (conforme SDK officiel)."""
+        self.connect()
+        return self
+
+    def __exit__(self, exc_type: Any, exc_value: Any, traceback: Any) -> None:
+        """Context manager exit point (conforme SDK officiel)."""
+        self.disconnect()
+
     def connect(self) -> bool:
         """Connecte au robot Reachy-Mini officiel."""
         if not REACHY_MINI_AVAILABLE:
@@ -1123,12 +1132,23 @@ class ReachyMiniBackend(RobotAPI):
         play_frequency: float = 100.0,
         initial_goto_duration: float = 0.0,
     ) -> None:
-        """Joue un mouvement enregistré."""
+        """Joue un mouvement enregistré (conforme SDK officiel).
+
+        Note: Dans le SDK officiel, play_move est un alias synchrone de async_play_move.
+        Utiliser async_play_move pour de meilleures performances en mode async.
+
+        Args:
+            move: Objet Move du SDK reachy_mini.motion.move
+            play_frequency: Fréquence de lecture (Hz, défaut 100.0)
+            initial_goto_duration: Durée goto initial vers position de départ (s, défaut 0.0)
+        """
         if not self.is_connected or not self.robot:
             logger.info("Mode simulation: play_move")
             return
 
         try:
+            # SDK officiel : play_move = async_to_sync(async_play_move)
+            # On utilise directement play_move du SDK
             self.robot.play_move(move, play_frequency, initial_goto_duration)
         except Exception as e:
             logger.error(f"Erreur play_move: {e}")
