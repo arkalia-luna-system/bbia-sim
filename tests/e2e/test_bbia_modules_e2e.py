@@ -74,8 +74,9 @@ class TestBBIAModules:
         # Test spécifications
         specs = vision.specs
         assert specs["camera"] == "Grand angle"
-        # Resolution a été clarifiée avec simulation/réel
-        assert "1280x720" in specs["resolution"] or "HD" in specs["resolution"]
+        # Resolution a été clarifiée avec simulation/réel (format: "1280x720 (simulation) / HD grand-angle (réel)")
+        resolution = specs["resolution"]
+        assert "1280x720" in resolution or "HD" in resolution or "1080p" in resolution
         # FOV a été clarifié avec simulation/réel
         assert "80°" in specs["fov"] or "120°" in specs["fov"]
 

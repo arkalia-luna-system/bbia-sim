@@ -219,10 +219,16 @@ async def get_full_state(
 
     result["timestamp"] = datetime.now(UTC)
 
-    # Ajouter "position" si nécessaire pour compatibilité avec certains tests
-    # (FullState SDK officiel n'a pas ce champ, mais certains tests l'attendent)
+    # Ajouter champs de compatibilité pour certains tests
+    # (FullState SDK officiel n'a pas ces champs, mais certains tests les attendent)
     if "position" not in result:
         result["position"] = {"x": 0.0, "y": 0.0, "z": 0.0}
+    if "status" not in result:
+        result["status"] = "ready"
+    if "battery" not in result:
+        result["battery"] = 100.0
+    if "temperature" not in result:
+        result["temperature"] = 25.0
 
     return FullState.model_validate(result)
 

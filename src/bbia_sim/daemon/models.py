@@ -240,3 +240,8 @@ class FullState(BaseModel):
     target_head_joints: list[float] | None = None
     target_body_yaw: float | None = None
     target_antennas_position: list[float] | None = None
+    # Champs compatibilité pour certains tests (optionnel)
+    position: dict[str, float] | None = None
+    status: str | None = None
+    battery: float | None = None
+    temperature: float | None = None

@@ -63,8 +63,11 @@ class TestStatePresentHeadPose:
         )
         assert response.status_code == 200
         data = response.json()
-        # Format xyzrpy par défaut
-        assert "x" in data or "m" in data
+        # Format xyzrpy par défaut - data contient {"head_pose": {...}}
+        assert "head_pose" in data
+        head_pose = data["head_pose"]
+        # head_pose peut être dict avec "x"/"y"/"z" (xyzrpy) ou "m" (matrice)
+        assert "x" in head_pose or "m" in head_pose
 
     def test_present_head_pose_matrix(self, api_token: str) -> None:
         """Test present_head_pose avec use_pose_matrix=true."""
@@ -74,6 +77,8 @@ class TestStatePresentHeadPose:
         )
         assert response.status_code == 200
         data = response.json()
-        # Format matrice 4x4
-        assert "m" in data
-        assert len(data["m"]) == 16
+        # Format matrice 4x4 - data contient {"head_pose": {...}}
+        assert "head_pose" in data
+        head_pose = data["head_pose"]
+        assert "m" in head_pose
+        assert len(head_pose["m"]) == 16

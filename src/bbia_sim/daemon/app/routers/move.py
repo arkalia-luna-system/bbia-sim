@@ -204,7 +204,9 @@ async def list_recorded_move_dataset(dataset_name: str) -> list[str]:
 
     result = moves.list_moves()
     # S'assurer que le résultat est une liste de strings
-    return [str(move) for move in result] if result else []
+    # Type: ignore car list_moves() retourne Any mais nous convertissons en list[str]
+    move_list: list[str] = [str(move) for move in result] if result else []
+    return move_list  # type: ignore[no-any-return]
 
 
 @router.post("/play/recorded-move-dataset/{dataset_name:path}/{move_name}")

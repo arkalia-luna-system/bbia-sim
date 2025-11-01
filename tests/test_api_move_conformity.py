@@ -103,7 +103,8 @@ class TestMoveStop:
             json={"uuid": "invalid-uuid"},
             headers={"Authorization": f"Bearer {api_token}"},
         )
-        assert response.status_code == 400
+        # FastAPI/Pydantic retourne 422 pour validation échouée (UUID invalide)
+        assert response.status_code == 422
 
     def test_stop_move_not_found(self, api_token: str) -> None:
         """Test stop avec UUID non trouvé."""
