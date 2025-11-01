@@ -221,14 +221,23 @@ if settings.is_production():
     )
 
 # Inclusion des routers (conforme SDK officiel: router parent /api avec sous-routers)
+# Note: Les WebSockets ne peuvent pas utiliser HTTPBearer, donc on sépare les routers
 api_router = APIRouter(prefix="/api")
-api_router.include_router(state.router)
-api_router.include_router(move.router)
-api_router.include_router(motors.router)
-api_router.include_router(daemon.router)
-api_router.include_router(kinematics.router)
-api_router.include_router(apps.router)
-app.include_router(api_router, dependencies=[Depends(verify_token)])
+
+# Routers avec authentification HTTP (sans WebSockets)
+api_router_http = APIRouter(prefix="/api")
+api_router_http.include_router(state.router)
+api_router_http.include_router(motors.router)
+api_router_http.include_router(daemon.router)
+api_router_http.include_router(kinematics.router)
+api_router_http.include_router(apps.router)
+app.include_router(api_router_http, dependencies=[Depends(verify_token)])
+
+# Router move avec endpoints HTTP + WebSockets (WebSockets sans auth, HTTP avec auth)
+# On doit gérer manuellement l'auth pour les endpoints HTTP dans move.py
+move_router = APIRouter(prefix="/api/move")
+move_router.include_router(move.router)
+app.include_router(move_router)  # Sans dépendance globale (gestion manuelle dans move.py)
 
 # Routers BBIA supplémentaires (extensions légitimes)
 app.include_router(
