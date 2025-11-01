@@ -140,6 +140,10 @@ class BBIAHuggingFace:
         # Outils LLM pour function calling (optionnel)
         self.tools = tools
 
+        # NLP pour détection améliorée (optionnel, chargé à la demande)
+        self._sentence_model: Any | None = None
+        self._use_nlp_detection = False  # Activé automatiquement si modèle disponible
+
         # Charger conversation depuis mémoire persistante si disponible
         try:
             from .bbia_memory import load_conversation_from_memory
@@ -282,7 +286,7 @@ class BBIAHuggingFace:
             return False
 
     def _load_multimodal_model(self, model_name: str) -> bool:
-        """Charge un modèle multimodal (BLIP VQA)."""
+        """Charge un modèle multimodal (BLIP VQA, SmolVLM, Moondream2)."""
         if "blip" in model_name.lower() and "vqa" in model_name.lower():
             vqa_processor: Any = BlipProcessor.from_pretrained(  # nosec B615
                 model_name, cache_dir=self.cache_dir, revision="main"
@@ -293,6 +297,26 @@ class BBIAHuggingFace:
             self.processors[f"{model_name}_processor"] = vqa_processor
             self.models[f"{model_name}_model"] = model
             return True
+        elif "smolvlm" in model_name.lower() or "moondream" in model_name.lower():
+            # SmolVLM2 / Moondream2 (alternative gratuite à gpt-realtime)
+            try:
+                from transformers import AutoModelForVision2Seq  # type: ignore[import-not-found]
+                from transformers import AutoProcessor  # type: ignore[import-not-found]
+
+                logger.info(f"📥 Chargement SmolVLM2/Moondream2: {model_name}")
+                processor: Any = AutoProcessor.from_pretrained(  # nosec B615
+                    model_name, cache_dir=self.cache_dir, revision="main"
+                )
+                model = AutoModelForVision2Seq.from_pretrained(  # nosec B615
+                    model_name, cache_dir=self.cache_dir, revision="main"
+                ).to(self.device)
+                self.processors[f"{model_name}_processor"] = processor
+                self.models[f"{model_name}_model"] = model
+                logger.info(f"✅ SmolVLM2/Moondream2 chargé: {model_name}")
+                return True
+            except Exception as e:
+                logger.warning(f"⚠️ Échec chargement SmolVLM2/Moondream2: {e}")
+                return False
         return False
 
     def _resolve_model_name(self, model_name: str, model_type: str) -> str:
@@ -428,15 +452,7 @@ class BBIAHuggingFace:
                     return False
 
             elif model_type == "multimodal":
-                if "blip" in model_name.lower() and "vqa" in model_name.lower():
-                    vqa_processor: Any = BlipProcessor.from_pretrained(  # nosec B615
-                        model_name, cache_dir=self.cache_dir, revision="main"
-                    )
-                    model = BlipForConditionalGeneration.from_pretrained(  # nosec B615
-                        model_name, cache_dir=self.cache_dir, revision="main"
-                    ).to(self.device)
-                    self.processors[f"{model_name}_processor"] = vqa_processor
-                    self.models[f"{model_name}_model"] = model
+                return self._load_multimodal_model(resolved_name)
 
             logger.info(f"✅ Modèle {resolved_name} chargé avec succès")
             return True
@@ -982,6 +998,8 @@ class BBIAHuggingFace:
         Analyse le message pour détecter des commandes d'outils (ex: "fais danser le robot",
         "tourne la tête à gauche", "capture une image") et exécute les outils correspondants.
 
+        Utilise d'abord NLP (sentence-transformers) si disponible, sinon mots-clés étendus.
+
         Args:
             user_message: Message utilisateur
 
@@ -993,17 +1011,56 @@ class BBIAHuggingFace:
 
         message_lower = user_message.lower()
 
-        # Détection simple basée sur mots-clés (peut être amélioré avec NLP)
+        # Tentative détection NLP (plus robuste)
+        nlp_result = self._detect_tool_with_nlp(user_message)
+        if nlp_result:
+            tool_name, confidence = nlp_result
+            logger.info(f"🔍 NLP détecté outil '{tool_name}' (confiance: {confidence:.2f})")
+            # Exécuter outil détecté par NLP
+            return self._execute_detected_tool(tool_name, user_message, message_lower)
+
+        # Détection améliorée : mots-clés étendus + NLP optionnel
         # Pattern: détecter intentions → appeler outils
         tool_patterns = {
             "move_head": {
                 "keywords": [
+                    # Variantes existantes
                     "tourne la tête",
                     "bouge la tête",
                     "regarde à gauche",
                     "regarde à droite",
                     "regarde en haut",
                     "regarde en bas",
+                    # NOUVEAUX: Formes verbales
+                    "tourne ta tête",
+                    "bouge ta tête",
+                    "orienter la tête",
+                    "orienter ta tête",
+                    "déplacer la tête",
+                    "diriger la tête",
+                    "pivoter la tête",
+                    "pivote la tête",
+                    "bouger la tête",
+                    "tourner la tête",
+                    # NOUVEAUX: Directions directes
+                    "regarde vers la gauche",
+                    "regarde vers la droite",
+                    "regarde vers le haut",
+                    "regarde vers le bas",
+                    "gauche",
+                    "droite",
+                    "haut",
+                    "bas",
+                    "à gauche",
+                    "à droite",
+                    "en haut",
+                    "en bas",
+                    # NOUVEAUX: Formes courtes
+                    "tourne tête",
+                    "bouge tête",
+                    "orienter tête",
+                    "regarde gauche",
+                    "regarde droite",
                 ],
                 "mappings": {
                     "gauche": "left",
@@ -1014,34 +1071,104 @@ class BBIAHuggingFace:
             },
             "camera": {
                 "keywords": [
+                    # Variantes existantes
                     "capture une image",
                     "prends une photo",
                     "regarde autour",
                     "analyse l'environnement",
                     "que vois-tu",
+                    # NOUVEAUX: Variantes naturelles
+                    "prends une image",
+                    "capture une photo",
+                    "prends une photo",
+                    "fais une photo",
+                    "fais une image",
+                    "photographie",
+                    "photo",
+                    "image",
+                    "regarde",
+                    "qu'est-ce que tu vois",
+                    "qu'est-ce que tu observes",
+                    "décris ce que tu vois",
+                    "analyse l'image",
+                    "analyse l'environnement",
+                    "que vois-tu autour",
+                    "qu'y a-t-il autour",
+                    "regarde ce qui t'entoure",
                 ],
             },
             "dance": {
                 "keywords": [
+                    # Variantes existantes
                     "danse",
                     "fais danser",
                     "joue une danse",
+                    # NOUVEAUX: Variantes naturelles
+                    "danse un peu",
+                    "danse pour moi",
+                    "fais une danse",
+                    "lance une danse",
+                    "joue une danse",
+                    "montre une danse",
+                    "exécute une danse",
+                    "danser",
+                    "dance",
+                    "bouge au rythme",
+                    "bouge en rythme",
                 ],
             },
             "play_emotion": {
                 "keywords": [
+                    # Variantes existantes
                     "sois heureux",
                     "sois triste",
                     "montre de la joie",
                     "montre de la curiosité",
+                    # NOUVEAUX: Formes impératives
+                    "sois joyeux",
+                    "sois content",
+                    "sois excité",
+                    "sois calme",
+                    "sois neutre",
+                    "sois curieux",
+                    "montre de la joie",
+                    "montre de la tristesse",
+                    "montre de l'excitation",
+                    "montre de la curiosité",
+                    "montre du calme",
+                    # NOUVEAUX: Formes avec "être"
+                    "être heureux",
+                    "être triste",
+                    "être joyeux",
+                    "être calme",
+                    "être excité",
+                    # NOUVEAUX: Émotions directes
+                    "joie",
+                    "tristesse",
+                    "curiosité",
+                    "excitation",
+                    "calme",
+                    "neutre",
+                    "colère",
+                    "surprise",
                 ],
                 "mappings": {
                     "heureux": "happy",
+                    "joyeux": "happy",
+                    "content": "happy",
+                    "joie": "happy",
                     "triste": "sad",
+                    "tristesse": "sad",
                     "curieux": "curious",
+                    "curiosité": "curious",
                     "excité": "excited",
+                    "excitation": "excited",
                     "calme": "calm",
                     "neutre": "neutral",
+                    "colère": "angry",
+                    "angry": "angry",
+                    "surprise": "surprised",
+                    "surpris": "surprised",
                 },
             },
         }
