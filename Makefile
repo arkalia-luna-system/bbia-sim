@@ -37,15 +37,15 @@ install-dev: ## Installer les dépendances de développement
 
 test: ## Lancer les tests unitaires
 	@echo "$(GREEN)🧪 Tests BBIA...$(NC)"
-	$(PYTHON) -m pytest tests/ -v -m "not slow"
+	$(PYTHON) -m pytest -v -m "not slow"
 
 test-all: ## Lancer tous les tests (y compris lents)
 	@echo "$(GREEN)🧪 Tests complets BBIA...$(NC)"
-	$(PYTHON) -m pytest tests/ -v
+	$(PYTHON) -m pytest -v
 
 test-cov: ## Tests avec couverture
 	@echo "$(GREEN)📊 Tests avec couverture...$(NC)"
-	$(PYTHON) -m pytest tests/ --cov=bbia_sim --cov-report=html --cov-report=term-missing --cov-report=xml
+	$(PYTHON) -m pytest --cov=bbia_sim --cov-report=html --cov-report=term-missing --cov-report=xml
 
 test-audio: ## Tests spécifiques audio (nécessite micro/speakers)
 	@echo "$(GREEN)🎵 Tests audio BBIA...$(NC)"

@@ -125,7 +125,7 @@ bbia_sim = ["*.py", "*.txt", "*.wav"]
 # Configuration pytest moderne et complète
 [tool.pytest.ini_options]
 pythonpath = ["src"]
-testpaths = ["tests"]
+testpaths = ["tests", "scripts"]
 python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
@@ -162,6 +162,7 @@ markers = [
     "audio: marks tests requiring audio hardware",
     "vision: marks tests requiring camera/vision",
     "robot: marks tests requiring real robot connection",
+    "hardware: marks tests requiring hardware (webcam, microphone, etc.)",
     "ci_skip: tests to skip in CI environment",
 ]
 filterwarnings = [

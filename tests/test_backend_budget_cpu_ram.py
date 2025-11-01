@@ -80,11 +80,17 @@ def test_backend_main_loop_budget_cpu_ram() -> None:
         ), f"Temps CPU trop élevé: {cpu_time:.2f}s pour {duration_s}s runtime"
 
         # Budget: RAM < 100MB augmentation (sur 10s)
-        # Tolérance CI: peut fluctuer plus qu'en local
+        # NOTE: Seuil flexibilisé à 120MB pour CI car:
+        # - Environnements CI varient (GitHub Actions, etc.)
+        # - Modèles peuvent être préchargés en cache
+        # - Mesures mémoire peuvent fluctuer selon machine CI
+        # En local, consommation réelle est généralement < 50MB
+        # Si ce test échoue régulièrement, vérifier fuites mémoire avec tracemalloc
         if mem_increase is not None:
-            assert (
-                mem_increase < 120.0  # Augmenté pour tolérer variations CI
-            ), f"Augmentation RAM trop élevée: {mem_increase:.1f}MB (seuil: 120MB)"
+            assert mem_increase < 120.0, (  # Tolérance CI: 120MB (idéal local: <50MB)
+                f"Augmentation RAM trop élevée: {mem_increase:.1f}MB (seuil: 120MB). "
+                f"En local, devrait être <50MB. Vérifier fuites mémoire si échec régulier."
+            )
     finally:
         backend.disconnect()
 
@@ -134,10 +140,15 @@ def test_robot_api_interface_budget_cpu_ram() -> None:
         assert cpu_time < 0.5, f"Overhead interface trop élevé: {cpu_time:.2f}s"
 
         # Budget: RAM < 90MB augmentation (interface légère, tolérance CI)
-        # En CI, la mémoire peut fluctuer plus qu'en local (modèles en cache, etc.)
+        # NOTE: Seuil flexibilisé pour CI. En local, consommation réelle < 30MB.
+        # Raisons seuil CI élevé:
+        # - Variabilité machines CI
+        # - Cache modèles partagés
+        # - Mesures mémoire fluctuantes
         if mem_increase is not None:
-            assert (
-                mem_increase < 90.0  # Augmenté pour tolérer variations CI
-            ), f"Augmentation RAM trop élevée: {mem_increase:.1f}MB (seuil: 90MB)"
+            assert mem_increase < 90.0, (  # Tolérance CI: 90MB (idéal local: <30MB)
+                f"Augmentation RAM trop élevée: {mem_increase:.1f}MB (seuil: 90MB). "
+                f"En local, devrait être <30MB. Investiguer si échec répété."
+            )
     finally:
         robot.disconnect()

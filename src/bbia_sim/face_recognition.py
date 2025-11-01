@@ -11,6 +11,7 @@ Fonctionnalités :
 
 import logging
 import os
+import tempfile
 from pathlib import Path
 from typing import Any
 
@@ -118,7 +119,11 @@ class BBIAPersonRecognition:
             if isinstance(image_path, np.ndarray):
                 import cv2
 
-                temp_path = f"/tmp/bbia_face_temp_{os.getpid()}.jpg"  # noqa: B108 - Fichier temp sécurisé avec PID unique
+                # Utiliser tempfile pour créer un fichier temporaire sécurisé
+                fd, temp_path = tempfile.mkstemp(
+                    suffix=".jpg", prefix="bbia_face_temp_"
+                )
+                os.close(fd)  # Fermer le descripteur de fichier
                 cv2.imwrite(temp_path, image_path)
                 image_path = temp_path
 
@@ -200,7 +205,11 @@ class BBIAPersonRecognition:
             if isinstance(image_path, np.ndarray):
                 import cv2
 
-                temp_path = f"/tmp/bbia_emotion_temp_{os.getpid()}.jpg"  # noqa: B108 - Fichier temp sécurisé avec PID unique
+                # Utiliser tempfile pour créer un fichier temporaire sécurisé
+                fd, temp_path = tempfile.mkstemp(
+                    suffix=".jpg", prefix="bbia_emotion_temp_"
+                )
+                os.close(fd)  # Fermer le descripteur de fichier
                 cv2.imwrite(temp_path, image_path)
                 image_path = temp_path
 

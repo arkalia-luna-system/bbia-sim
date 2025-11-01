@@ -76,8 +76,17 @@ def test_huggingface_llm_generation_latency() -> None:
         )
 
         # Budget: Génération 150 tokens en < 5s (CPU), < 2s (GPU)
-        # Budget large pour CI (peut être lent)
-        assert p95 < 30000.0, f"Latence p95 trop élevée: {p95:.2f} ms (> 30s)"
+        # NOTE: Seuil très large (30s) pour CI car:
+        # - Modèles lourds (Mistral 7B, Llama) peuvent prendre 10-20s sur CPU
+        # - CI machines peuvent être lentes (pas de GPU)
+        # - Premier chargement modèle peut être lent
+        # En local avec GPU, latence devrait être < 5s
+        # Si test échoue, vérifier: modèle utilisé, hardware, cache modèle
+        assert p95 < 30000.0, (
+            f"Latence p95 trop élevée: {p95:.2f} ms (> 30s). "
+            f"Vérifier modèle (Phi-2/TinyLlama recommandés pour RPi 5), "
+            f"hardware (GPU disponible?), et cache modèle."
+        )
     finally:
         gc.collect()
 
