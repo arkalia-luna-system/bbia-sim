@@ -16,13 +16,21 @@
 - **Script comparaison**: `scripts/compare_with_official_exhaustive.py`
   - Usage: `python scripts/compare_with_official_exhaustive.py --official-root /Volumes/T7/reachy_mini`
   - Génère: `logs/comparison_official_results.json` et `logs/comparison_official_report.md`
-- **Checklist finale**: `docs/conformite/CHECKLIST_FINALE_COMPARAISON_OFFICIELLE.md`
+- **Script audit systématique**: `scripts/audit_systematique_exhaustif.py`
+  - Usage: `python scripts/audit_systematique_exhaustif.py`
+  - Génère: `docs/conformite/CHECKLIST_AUDIT_EXHAUSTIF.md` (audit automatique joints/tests/assets)
+- **Checklists finales**:
+  - `docs/conformite/CHECKLIST_FINALE_COMPARAISON_OFFICIELLE.md` (177 différences détectées)
+  - `docs/conformite/CHECKLIST_AUDIT_EXHAUSTIF.md` (audit systématique joints MuJoCo, tests, assets STL)
 - **Rapports précédents**: `logs/comparison_official_results.json` (177 différences détectées)
 
 **Endpoints déjà corrigés** (à vérifier conformité):
-- ✅ `GET /api/move/recorded-move-datasets/list/{dataset_name:path}` → `src/bbia_sim/daemon/app/routers/move.py:184`
-- ✅ `POST /api/move/play/recorded-move-dataset/{dataset_name:path}/{move_name}` → `src/bbia_sim/daemon/app/routers/move.py:202`
+- ✅ `GET /api/move/recorded-move-datasets/list/{dataset_name:path}` → `src/bbia_sim/daemon/app/routers/move.py:189`
+- ✅ `POST /api/move/play/recorded-move-dataset/{dataset_name:path}/{move_name}` → `src/bbia_sim/daemon/app/routers/move.py:207`
 - ✅ `GET /api/kinematics/stl/{filename}` → `src/bbia_sim/daemon/app/routers/kinematics.py:119` (utilise `{filename:path}` - compatible)
+- ✅ **Router `/api/move/*` complet** : `POST /goto`, `GET /running`, `POST /stop`, `POST /play/wake_up`, `POST /play/goto_sleep`, `POST /set_target`, `WebSocket /ws/updates`, `WebSocket /ws/set_target` → `src/bbia_sim/daemon/app/routers/move.py`
+- ✅ **Router `/api/state/*` amélioré** : `GET /full` (11 paramètres), `GET /present_head_pose`, `GET /present_body_yaw`, `GET /present_antenna_joint_positions`, `WebSocket /ws/full` → `src/bbia_sim/daemon/app/routers/state.py`
+- ✅ **BackendAdapter créé** : Adapte `RobotAPI` (BBIA) vers `Backend` (SDK) → `src/bbia_sim/daemon/app/backend_adapter.py`
 
 **Structure routers officiels**:
 - `/Volumes/T7/reachy_mini/src/reachy_mini/daemon/app/routers/`:
@@ -140,15 +148,23 @@
 ## 🔂 PROCÉDURE DÉTAILLÉE (Pour chaque écart détecté)
 
 ### Étape 1: Détection
-1. **Utiliser le script existant**:
+1. **Utiliser les scripts existants**:
    ```bash
+   # Comparaison exhaustive endpoints/classes
    python scripts/compare_with_official_exhaustive.py \
      --bbia-root /Volumes/T7/bbia-reachy-sim \
      --official-root /Volumes/T7/reachy_mini \
      --output-dir logs
+   
+   # Audit systématique joints/tests/assets
+   python scripts/audit_systematique_exhaustif.py
    ```
-2. **Lire les résultats**: `logs/comparison_official_results.json`
-3. **Consulter la checklist**: `docs/conformite/CHECKLIST_FINALE_COMPARAISON_OFFICIELLE.md`
+2. **Lire les résultats**:
+   - `logs/comparison_official_results.json` (endpoints/classes)
+   - `docs/conformite/CHECKLIST_AUDIT_EXHAUSTIF.md` (joints/tests/assets)
+3. **Consulter les checklists**:
+   - `docs/conformite/CHECKLIST_FINALE_COMPARAISON_OFFICIELLE.md` (endpoints REST)
+   - `docs/conformite/CHECKLIST_AUDIT_EXHAUSTIF.md` (modèles MuJoCo, tests, assets)
 
 ### Étape 2: Documentation
 - **Fichier**: Chemin relatif depuis racine BBIA
@@ -188,7 +204,9 @@ pytest tests/test_[nom_test].py::test_[fonction_specifique] -v
 ```
 
 ### Étape 6: Mise à jour checklist
-- **Ouvrir**: `docs/conformite/CHECKLIST_FINALE_COMPARAISON_OFFICIELLE.md`
+- **Ouvrir checklist appropriée**:
+  - **API/Classes**: `docs/conformite/CHECKLIST_FINALE_COMPARAISON_OFFICIELLE.md`
+  - **Modèles/Tests/Assets**: `docs/conformite/CHECKLIST_AUDIT_EXHAUSTIF.md`
 - **Ajouter entrée**:
   ```markdown
   - [x] **API** - Endpoint `GET /api/move/recorded-move-datasets/list/{dataset_name:path}`
@@ -226,7 +244,9 @@ pytest tests/test_[nom_test].py::test_[fonction_specifique] -v
 
 ## 🟢 CHECKLIST EXPORT FINALE
 
-Pour **CHAQUE** erreur/correction/évolution détectée, documenter dans `docs/conformite/CHECKLIST_FINALE_COMPARAISON_OFFICIELLE.md`:
+Pour **CHAQUE** erreur/correction/évolution détectée, documenter dans la checklist appropriée:
+- **API/Classes/Endpoints**: `docs/conformite/CHECKLIST_FINALE_COMPARAISON_OFFICIELLE.md`
+- **Modèles MuJoCo/Tests/Assets**: `docs/conformite/CHECKLIST_AUDIT_EXHAUSTIF.md`
 
 ```markdown
 ### [Priorité] - [Nature]
@@ -343,8 +363,9 @@ curl -X GET http://localhost:8000/api/move/recorded-move-datasets/list/dataset_n
 # Lire rapport
 cat logs/comparison_official_report.md
 
-# Checklist
-cat docs/conformite/CHECKLIST_FINALE_COMPARAISON_OFFICIELLE.md
+# Checklists
+cat docs/conformite/CHECKLIST_FINALE_COMPARAISON_OFFICIELLE.md  # Endpoints/API
+cat docs/conformite/CHECKLIST_AUDIT_EXHAUSTIF.md  # Joints/Tests/Assets
 ```
 
 ---
