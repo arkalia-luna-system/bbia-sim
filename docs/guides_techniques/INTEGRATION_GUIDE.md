@@ -210,6 +210,44 @@ GET /api/kinematics/urdf
 GET /api/kinematics/stl/{filename}
 ```
 
+#### Applications HuggingFace
+
+```python
+# Lister toutes les applications disponibles
+GET /api/apps/list-available
+
+# Lister par source (huggingface, local)
+GET /api/apps/list-available/huggingface
+
+# Installer une application
+POST /api/apps/install
+{
+    "name": "bbia_chat",
+    "source_kind": "huggingface"
+}
+
+# Supprimer une application
+POST /api/apps/remove/{app_name}
+
+# Statut d'un job d'installation/suppression
+GET /api/apps/job-status/{job_id}
+
+# WebSocket pour suivre un job en temps réel
+WS /api/apps/ws/apps-manager/{job_id}
+
+# Démarrer une application
+POST /api/apps/start-app/{app_name}
+
+# Redémarrer l'application courante
+POST /api/apps/restart-current-app
+
+# Arrêter l'application courante
+POST /api/apps/stop-current-app
+
+# Statut de l'application courante
+GET /api/apps/current-app-status
+```
+
 #### Émotions BBIA
 
 ```python

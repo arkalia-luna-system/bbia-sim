@@ -559,12 +559,46 @@ robot.disconnect()
 ### Exécuter les Tests de Conformité
 
 ```bash
-# Exécuter les tests
-python -m pytest tests/test_reachy_mini_full_conformity_official.py -v
+# Exécuter tous les tests Reachy Mini (118 tests)
+pytest tests/test_reachy_mini*.py -v
+
+# Test de conformité complet (recommandé - 37 tests)
+pytest tests/test_reachy_mini_full_conformity_official.py -v
+
+# Tests stricts (valeurs exactes XML - 10 tests)
+pytest tests/test_reachy_mini_strict_conformity.py -v
+
+# Tests de base (24 tests)
+pytest tests/test_reachy_mini_backend.py -v
+
+# Vérifier les doublons/redondances
+python scripts/verify_tests_consolidation.py
 
 # Générer le rapport
 python scripts/generate_conformity_report_reachy_mini.py
 ```
+
+### 📊 Structure des Tests (Novembre 2024)
+
+**Total: 118 tests** répartis dans **8 fichiers complémentaires**
+
+- ✅ **116 tests uniques** (98.3% - très peu de redondance)
+- ⚠️ **1 doublon mineur** (`test_robot_factory_integration`)
+
+**Fichiers de tests** (tous complémentaires):
+
+| Fichier | Tests | Rôle |
+|---------|-------|------|
+| `test_reachy_mini_full_conformity_official.py` | 37 | Conformité complète SDK officiel |
+| `test_reachy_mini_backend.py` | 24 | Tests de base du backend |
+| `test_reachy_mini_complete_conformity.py` | 16 | Conformité API complète |
+| `test_reachy_mini_advanced_conformity.py` | 12 | Patterns/optimisations expertes |
+| `test_reachy_mini_strict_conformity.py` | 10 | Tests stricts (valeurs exactes XML) |
+| `test_reachy_mini_backend_extended.py` | 9 | Tests structure/compatibilité |
+| `test_reachy_mini_backend_rapid.py` | 8 | Tests coverage rapide |
+| `test_reachy_mini_conformity.py` | 2 | Script de vérification |
+
+**📖 Documentation complète**: Voir [`tests/REACHY_MINI_TESTS_STRUCTURE.md`](../../tests/REACHY_MINI_TESTS_STRUCTURE.md)
 
 ---
 
@@ -630,14 +664,27 @@ Comparaison exhaustive avec le repo officiel `pollen-robotics/reachy_mini` (bran
     - `GET /api/kinematics/stl/{filename}` - Fichiers STL ✅
     - **Fichier** : `src/bbia_sim/daemon/app/routers/kinematics.py` ✅
 
+11. **`/api/apps/*`** - Router applications HuggingFace ✅
+    - `GET /api/apps/list-available` - Liste toutes les apps ✅
+    - `GET /api/apps/list-available/{source_kind}` - Liste apps par source ✅
+    - `POST /api/apps/install` - Installer une app ✅
+    - `POST /api/apps/remove/{app_name}` - Supprimer une app ✅
+    - `GET /api/apps/job-status/{job_id}` - Statut d'un job ✅
+    - `WebSocket /api/apps/ws/apps-manager/{job_id}` - Stream job ✅
+    - `POST /api/apps/start-app/{app_name}` - Démarrer une app ✅
+    - `POST /api/apps/restart-current-app` - Redémarrer app courante ✅
+    - `POST /api/apps/stop-current-app` - Arrêter app courante ✅
+    - `GET /api/apps/current-app-status` - Statut app courante ✅
+    - **Fichier** : `src/bbia_sim/daemon/app/routers/apps.py` ✅
+
 #### 📊 Score de Conformité Endpoints REST
 
 - **Endpoints officiels** : 26 total
-- **Endpoints BBIA implémentés** : **22/26 (85%)** ✅ (+10 endpoints depuis début)
+- **Endpoints BBIA implémentés** : **24/26 (92%)** ✅ **OBJECTIF ATTEINT !** (+12 endpoints depuis début)
 - **Endpoints critiques** : 8/8 (100%) ✅
 - **Endpoints modérés** : 4/4 (100%) ✅
-- **Endpoints optionnels** : 10/14 (71%)
-- **Cible** : 24/26 (92%)
+- **Endpoints optionnels** : 12/14 (86%) ✅
+- **Cible** : 24/26 (92%) ✅ **ATTEINT !**
 
 **Voir détails complets** : Section "Endpoints REST" dans `docs/audit/AUDIT_CONFORMITE_COMPLET_REACHY_MINI_2025_01_31.md`
 
