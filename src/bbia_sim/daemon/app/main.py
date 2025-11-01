@@ -14,7 +14,7 @@ from ..config import settings
 from ..middleware import RateLimitMiddleware, SecurityMiddleware
 from ..simulation_service import simulation_service
 from ..ws import telemetry
-from .routers import ecosystem, motion, state
+from .routers import daemon, ecosystem, motors, motion, state
 
 # Configuration du logging
 logging.basicConfig(
@@ -238,6 +238,18 @@ app.include_router(
     dependencies=[Depends(verify_token)],
 )
 
+app.include_router(
+    motors.router,
+    tags=["motors"],
+    dependencies=[Depends(verify_token)],
+)
+
+app.include_router(
+    daemon.router,
+    tags=["daemon"],
+    dependencies=[Depends(verify_token)],
+)
+
 app.include_router(telemetry.router, prefix="/ws", tags=["telemetry"])
 
 
@@ -255,6 +267,8 @@ async def root() -> dict[str, Any]:
             "ecosystem": "/api/ecosystem",
             "state": "/api/state",
             "motion": "/api/motion",
+            "motors": "/api/motors",
+            "daemon": "/api/daemon",
             "telemetry": "/ws/telemetry",
             "docs": "/docs",
             "redoc": "/redoc",

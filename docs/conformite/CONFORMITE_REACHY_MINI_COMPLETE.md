@@ -583,9 +583,53 @@ python scripts/generate_conformity_report_reachy_mini.py
 
 ---
 
+## 🔴 AUDIT REST API ENDPOINTS (31 Janvier 2025)
+
+### Endpoints REST Manquants - Action Requise
+
+Comparaison exhaustive avec le repo officiel `pollen-robotics/reachy_mini` (branche `develop`) révèle des endpoints REST manquants :
+
+#### 🔴 CRITIQUE - À Implémenter Immédiatement
+
+1. **`/api/motors/*`** - Contrôle moteurs
+   - `GET /api/motors/status` - Statut (enabled/disabled/gravity_compensation)
+   - `POST /api/motors/set_mode/{mode}` - Changer mode
+   - **Fichier** : `src/bbia_sim/daemon/app/routers/motors.py` (CRÉER)
+
+2. **`/api/daemon/*`** - Contrôle daemon
+   - `POST /api/daemon/start` - Démarrer
+   - `POST /api/daemon/stop` - Arrêter
+   - `POST /api/daemon/restart` - Redémarrer
+   - `GET /api/daemon/status` - Statut
+   - **Fichier** : `src/bbia_sim/daemon/app/routers/daemon.py` (CRÉER)
+
+3. **`POST /api/motion/wake_up`** - Séquence réveil
+   - **Fichier** : `src/bbia_sim/daemon/app/routers/motion.py`
+
+4. **`POST /api/motion/goto_sleep`** - Séquence veille
+   - **Fichier** : `src/bbia_sim/daemon/app/routers/motion.py`
+
+#### 🟡 MODÉRÉ - À Ajouter pour Conformité Complète
+
+5. **`GET /api/state/present_head_pose`** - Pose tête actuelle
+6. **`GET /api/state/present_body_yaw`** - Yaw corps actuel
+7. **`GET /api/state/present_antenna_joint_positions`** - Positions antennes
+8. **`WebSocket /api/state/ws/full`** - Stream état complet
+
+#### 📊 Score de Conformité Endpoints REST
+
+- **Endpoints officiels** : 26 total
+- **Endpoints BBIA implémentés** : 12/26 (46%)
+- **Endpoints critiques manquants** : 8
+- **Cible** : 24/26 (92%)
+
+**Voir détails complets** : Section "Endpoints REST" dans `docs/audit/AUDIT_CONFORMITE_COMPLET_REACHY_MINI_2025_01_31.md`
+
+---
+
 ## Conclusion
 
-Votre projet BBIA-SIM est conforme au SDK Reachy Mini officiel.
+Votre projet BBIA-SIM est conforme au SDK Reachy Mini officiel au niveau backend, mais présente des lacunes au niveau endpoints REST API.
 
 ### Points forts
 - Conformité totale avec le SDK officiel

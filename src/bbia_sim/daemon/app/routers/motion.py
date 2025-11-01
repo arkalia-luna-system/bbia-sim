@@ -70,16 +70,12 @@ async def set_joint_positions(positions: list[JointPosition]) -> dict[str, Any]:
         Statut de la commande
 
     """
-    logger.info(
-        f"Définition des positions d'articulations : {len(positions)} articulations"
-    )
+    logger.info(f"Définition des positions d'articulations : {len(positions)} articulations")
 
     # Validation des noms de joints avec notre système centralisé
     for pos in positions:
         if not validate_joint_name(pos.joint_name):
-            raise HTTPException(
-                status_code=422, detail=f"Joint '{pos.joint_name}' non valide"
-            )
+            raise HTTPException(status_code=422, detail=f"Joint '{pos.joint_name}' non valide")
 
         # Clamp des angles dans les limites
         clamped_angle = clamp_joint_angle(pos.joint_name, pos.position)
@@ -119,9 +115,7 @@ async def control_gripper(side: str, action: str) -> dict[str, Any]:
 
     """
     if side not in ["left", "right"]:
-        raise HTTPException(
-            status_code=400, detail="Côté invalide. Utilisez 'left' ou 'right'"
-        )
+        raise HTTPException(status_code=400, detail="Côté invalide. Utilisez 'left' ou 'right'")
 
     if action not in ["open", "close", "grip"]:
         raise HTTPException(
@@ -151,15 +145,11 @@ async def control_head(head_control: HeadControl) -> dict[str, Any]:
         Statut de la commande
 
     """
-    logger.info(
-        f"Contrôle de la tête : yaw={head_control.yaw}, pitch={head_control.pitch}"
-    )
+    logger.info(f"Contrôle de la tête : yaw={head_control.yaw}, pitch={head_control.pitch}")
 
     # Application des positions dans la simulation
     success_yaw = simulation_service.set_joint_position("neck_yaw", head_control.yaw)
-    success_pitch = simulation_service.set_joint_position(
-        "head_pitch", head_control.pitch
-    )
+    success_pitch = simulation_service.set_joint_position("head_pitch", head_control.pitch)
 
     return {
         "status": "moving" if (success_yaw or success_pitch) else "failed",
@@ -168,6 +158,84 @@ async def control_head(head_control: HeadControl) -> dict[str, Any]:
         "estimated_time": 1.0,
         "timestamp": datetime.now().isoformat(),
     }
+
+
+@router.post("/wake_up")
+async def wake_up() -> dict[str, Any]:
+    """Réveille le robot - séquence de réveil complète.
+
+    Returns:
+        Statut du réveil
+    """
+    logger.info("Réveil du robot")
+    try:
+        from ....robot_factory import RobotFactory
+
+        robot = RobotFactory.create_backend("mujoco")
+        if robot:
+            robot.connect()
+            if hasattr(robot, "wake_up"):
+                robot.wake_up()
+            else:
+                # Fallback: utiliser comportement wake_up
+                from ....bbia_behavior import BBIABehaviorManager
+
+                behavior_manager = BBIABehaviorManager(robot_api=robot)
+                behavior_manager.execute_behavior("wake_up")
+            robot.disconnect()
+
+        return {
+            "status": "waking_up",
+            "message": "Robot en cours de réveil",
+            "timestamp": datetime.now().isoformat(),
+        }
+    except Exception as e:
+        logger.error(f"Erreur lors du réveil: {e}")
+        return {
+            "status": "error",
+            "message": f"Erreur: {str(e)}",
+            "timestamp": datetime.now().isoformat(),
+        }
+
+
+@router.post("/goto_sleep")
+async def goto_sleep() -> dict[str, Any]:
+    """Met le robot en veille - séquence de mise en veille.
+
+    Returns:
+        Statut de la mise en veille
+    """
+    logger.info("Mise en veille du robot")
+    try:
+        from ....robot_factory import RobotFactory
+
+        robot = RobotFactory.create_backend("mujoco")
+        if robot:
+            robot.connect()
+            if hasattr(robot, "goto_sleep"):
+                robot.goto_sleep()
+            else:
+                # Fallback: utiliser comportement goto_sleep si disponible
+                from ....bbia_behavior import BBIABehaviorManager
+
+                behavior_manager = BBIABehaviorManager(robot_api=robot)
+                # Si comportement goto_sleep existe
+                if "goto_sleep" in behavior_manager.behaviors:
+                    behavior_manager.execute_behavior("goto_sleep")
+            robot.disconnect()
+
+        return {
+            "status": "going_to_sleep",
+            "message": "Robot en cours de mise en veille",
+            "timestamp": datetime.now().isoformat(),
+        }
+    except Exception as e:
+        logger.error(f"Erreur lors de la mise en veille: {e}")
+        return {
+            "status": "error",
+            "message": f"Erreur: {str(e)}",
+            "timestamp": datetime.now().isoformat(),
+        }
 
 
 @router.post("/stop")

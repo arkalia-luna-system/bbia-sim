@@ -62,7 +62,9 @@ def _read_sdk_telemetry() -> dict[str, Any] | None:
             backend.connect()
         except Exception:
             # Ne pas bloquer si la connexion échoue
-            return None  # noqa: B110 - Retourner None si connexion SDK échoue (comportement attendu)
+            return (
+                None  # noqa: B110 - Retourner None si connexion SDK échoue (comportement attendu)
+            )
 
         try:
             # Lecture batterie/IMU si exposés via robot.media
@@ -83,12 +85,16 @@ def _read_sdk_telemetry() -> dict[str, Any] | None:
                 try:
                     battery_level = float(media_mgr.get_battery_level())
                 except Exception:
-                    battery_level = None  # noqa: B110 - Valeur par défaut si lecture batterie échoue
+                    battery_level = (
+                        None  # noqa: B110 - Valeur par défaut si lecture batterie échoue
+                    )
             elif hasattr(media_mgr, "battery"):
                 try:
                     battery_level = float(media_mgr.battery)
                 except Exception:
-                    battery_level = None  # noqa: B110 - Valeur par défaut si lecture batterie échoue
+                    battery_level = (
+                        None  # noqa: B110 - Valeur par défaut si lecture batterie échoue
+                    )
 
             if battery_level is not None:
                 data["battery"] = battery_level
@@ -99,7 +105,9 @@ def _read_sdk_telemetry() -> dict[str, Any] | None:
                 try:
                     temperature = float(media_mgr.get_temperature())
                 except Exception:
-                    temperature = None  # noqa: B110 - Valeur par défaut si lecture température échoue
+                    temperature = (
+                        None  # noqa: B110 - Valeur par défaut si lecture température échoue
+                    )
             if temperature is not None:
                 data["temperature"] = temperature
 
@@ -204,12 +212,8 @@ async def get_battery_level() -> BatteryInfo:
             battery_level = float(sdk["battery"])  # type: ignore[index]
         except Exception:
             pass  # noqa: B110 - Ignorer erreur parsing batterie (utiliser valeur par défaut)
-    status = (
-        "good" if battery_level > 20 else "low" if battery_level > 10 else "critical"
-    )
-    estimated_time = (
-        f"{battery_level * 0.8:.1f}h" if battery_level > 20 else "Recharge nécessaire"
-    )
+    status = "good" if battery_level > 20 else "low" if battery_level > 10 else "critical"
+    estimated_time = f"{battery_level * 0.8:.1f}h" if battery_level > 20 else "Recharge nécessaire"
 
     return BatteryInfo(
         level=battery_level,
@@ -333,6 +337,142 @@ async def get_joint_states() -> dict[str, Any]:
         }
 
     return {"joints": joints, "timestamp": datetime.now().isoformat()}
+
+
+@router.get("/present_head_pose")
+async def get_present_head_pose() -> dict[str, Any]:
+    """Récupère la pose actuelle de la tête.
+
+    Returns:
+        Pose de la tête (4x4 matrix ou xyz + roll/pitch/yaw)
+    """
+    logger.info("Récupération de la pose actuelle de la tête")
+    try:
+        from ....robot_factory import RobotFactory
+
+        robot = RobotFactory.create_backend("mujoco")
+        if robot:
+            robot.connect()
+            if hasattr(robot, "get_current_head_pose"):
+                pose = robot.get_current_head_pose()
+                robot.disconnect()
+                return {
+                    "head_pose": pose.tolist() if hasattr(pose, "tolist") else pose,
+                    "timestamp": datetime.now().isoformat(),
+                }
+
+        # Fallback: simulation
+        return {
+            "head_pose": [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]],
+            "timestamp": datetime.now().isoformat(),
+        }
+    except Exception as e:
+        logger.error(f"Erreur lors de la récupération de la pose tête: {e}")
+        return {
+            "head_pose": [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]],
+            "timestamp": datetime.now().isoformat(),
+        }
+
+
+@router.get("/present_body_yaw")
+async def get_present_body_yaw() -> dict[str, Any]:
+    """Récupère le yaw actuel du corps (en radians).
+
+    Returns:
+        Yaw du corps en radians
+    """
+    logger.info("Récupération du yaw corps")
+    try:
+        from ....robot_factory import RobotFactory
+
+        robot = RobotFactory.create_backend("mujoco")
+        if robot:
+            robot.connect()
+            # Essayer get_current_body_yaw ou via get_joint_positions
+            if hasattr(robot, "get_current_body_yaw"):
+                yaw = robot.get_current_body_yaw()
+            elif hasattr(robot, "get_joint_positions"):
+                positions = robot.get_joint_positions()
+                yaw = positions.get("yaw_body", 0.0)
+            else:
+                yaw = 0.0
+            robot.disconnect()
+            return {
+                "body_yaw": float(yaw),
+                "unit": "radians",
+                "timestamp": datetime.now().isoformat(),
+            }
+
+        # Fallback: simulation
+        return {
+            "body_yaw": 0.0,
+            "unit": "radians",
+            "timestamp": datetime.now().isoformat(),
+        }
+    except Exception as e:
+        logger.error(f"Erreur lors de la récupération du yaw corps: {e}")
+        return {
+            "body_yaw": 0.0,
+            "unit": "radians",
+            "timestamp": datetime.now().isoformat(),
+        }
+
+
+@router.get("/present_antenna_joint_positions")
+async def get_present_antenna_joint_positions() -> dict[str, Any]:
+    """Récupère les positions actuelles des antennes (en radians).
+
+    Returns:
+        Positions des antennes (left, right) en radians
+    """
+    logger.info("Récupération des positions antennes")
+    try:
+        from ....robot_factory import RobotFactory
+
+        robot = RobotFactory.create_backend("mujoco")
+        if robot:
+            robot.connect()
+            if hasattr(robot, "get_present_antenna_joint_positions"):
+                positions = robot.get_present_antenna_joint_positions()
+            elif hasattr(robot, "get_joint_positions"):
+                all_pos = robot.get_joint_positions()
+                positions = [
+                    all_pos.get("left_antenna", 0.0),
+                    all_pos.get("right_antenna", 0.0),
+                ]
+            else:
+                positions = [0.0, 0.0]
+            robot.disconnect()
+
+            # Format tuple comme officiel (left, right)
+            left = float(positions[0] if isinstance(positions, list) else positions[0])
+            right = float(positions[1] if isinstance(positions, list) else positions[1])
+
+            return {
+                "antennas": (left, right),
+                "left": left,
+                "right": right,
+                "unit": "radians",
+                "timestamp": datetime.now().isoformat(),
+            }
+
+        # Fallback: simulation
+        return {
+            "antennas": (0.0, 0.0),
+            "left": 0.0,
+            "right": 0.0,
+            "unit": "radians",
+            "timestamp": datetime.now().isoformat(),
+        }
+    except Exception as e:
+        logger.error(f"Erreur lors de la récupération des positions antennes: {e}")
+        return {
+            "antennas": (0.0, 0.0),
+            "left": 0.0,
+            "right": 0.0,
+            "unit": "radians",
+            "timestamp": datetime.now().isoformat(),
+        }
 
 
 @router.get("/sensors")
