@@ -217,9 +217,13 @@ async def get_full_state(
         else:
             result["passive_joints"] = None
 
-    result["timestamp"] = datetime.now(
-        timezone.utc
-    )  # noqa: UP017 - Python 3.10 compatibility
+    # Utiliser datetime.UTC pour Python 3.11+, fallback timezone.utc pour 3.10
+    try:
+        from datetime import UTC  # type: ignore[attr-defined]
+
+        result["timestamp"] = datetime.now(UTC)
+    except ImportError:
+        result["timestamp"] = datetime.now(timezone.utc)  # noqa: UP017
 
     # Ajouter champs de compatibilité pour certains tests
     # (FullState SDK officiel n'a pas ces champs, mais certains tests les attendent)
