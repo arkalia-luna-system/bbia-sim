@@ -23,7 +23,7 @@
 #### Tests Coverage < 70%
 
 9. ✅ **Tests `bbia_memory.py`** créés
-   - **Coverage** : 0% → ~70%+ (estimation)
+   - **Coverage** : 0% → **80.95%** ✅
    - **12 tests** créés : conversation, préférences, apprentissages
    - Tests avec `tempfile` pour isolation
 
@@ -49,7 +49,7 @@
 ### Coverage
 - **voice_whisper.py** : 85.09% ✅
 - **vision_yolo.py** : ~82% ✅
-- **bbia_memory.py** : ~70%+ ✅ (estimé, nouveau)
+- **bbia_memory.py** : **80.95%** ✅ (mesuré, nouveau)
 - **bbia_emotion_recognition.py** : ~50%+ ✅ (estimé, amélioré)
 - **Global projet** : 47%+ (modules core : 60%+)
 - **Seuil strict** : 50% configuré
