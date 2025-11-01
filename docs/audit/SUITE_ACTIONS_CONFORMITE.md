@@ -58,15 +58,16 @@
   - `interpolation: InterpolationMode` (linear, minjerk, ease, cartoon)
 - **Test** : `tests/test_api_endpoints_conformite.py::TestGotoPoseInterpolation` ✅
 
-#### 3. Router Kinematics (Optionnel)
+#### 3. Router Kinematics ✅ IMPLÉMENTÉ
 
-**`/api/kinematics/*`** - Info cinématique
+**`/api/kinematics/*`** - Info cinématique ✅
 - **Impact** : Faible - Info technique avancée
-- **Priorité** : 📅 Long terme (Phase 4)
+- **Fichier** : `src/bbia_sim/daemon/app/routers/kinematics.py` ✅
 - **Endpoints** :
-  - `GET /api/kinematics/info`
-  - `GET /api/kinematics/urdf`
-  - `GET /api/kinematics/stl/{filename}`
+  - `GET /api/kinematics/info` ✅
+  - `GET /api/kinematics/urdf` ✅
+  - `GET /api/kinematics/stl/{filename}` ✅
+- **Test** : `tests/test_api_kinematics.py` ✅
 
 #### 4. Router Apps (Optionnel - Phase 4)
 
@@ -84,8 +85,8 @@
 |-----------|-------|------------|----------|--------|
 | **Critiques** | 8 | 8 | 0 | ✅ 100% |
 | **Modérés** | 4 | 4 | 0 | ✅ 100% |
-| **Optionnels** | 14 | 9 | 5 | 🟡 64% |
-| **TOTAL** | 26 | 21 | 5 | 🟡 **81%** |
+| **Optionnels** | 14 | 10 | 4 | 🟡 71% |
+| **TOTAL** | 26 | 22 | 4 | 🟡 **85%** |
 
 ### Prochaines Étapes Recommandées
 
@@ -113,9 +114,9 @@
 **Cible** : 92% de conformité (24/26 endpoints)
 
 **Reste à implémenter pour atteindre 92%** :
-- 3 endpoints optionnels non critiques (kinematics, apps)
+- 2 endpoints optionnels non critiques (apps)
 
-**Actuellement** : **81% (21/26)** ✅ (+4 endpoints depuis début)
+**Actuellement** : **85% (22/26)** ✅ (+5 endpoints depuis début)
 
 ---
 

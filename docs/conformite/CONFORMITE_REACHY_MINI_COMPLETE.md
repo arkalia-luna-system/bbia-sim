@@ -622,13 +622,21 @@ Comparaison exhaustive avec le repo officiel `pollen-robotics/reachy_mini` (bran
    - Paramètres : `duration` et `interpolation` (linear, minjerk, ease, cartoon)
    - Compatible SDK officiel
 
+#### ✅ OPTIONNEL - IMPLÉMENTÉ (31 Janvier 2025)
+
+10. **`/api/kinematics/*`** - Router cinématique ✅
+    - `GET /api/kinematics/info` - Informations cinématique ✅
+    - `GET /api/kinematics/urdf` - Représentation URDF ✅
+    - `GET /api/kinematics/stl/{filename}` - Fichiers STL ✅
+    - **Fichier** : `src/bbia_sim/daemon/app/routers/kinematics.py` ✅
+
 #### 📊 Score de Conformité Endpoints REST
 
 - **Endpoints officiels** : 26 total
-- **Endpoints BBIA implémentés** : **21/26 (81%)** ✅ (+9 endpoints depuis début)
+- **Endpoints BBIA implémentés** : **22/26 (85%)** ✅ (+10 endpoints depuis début)
 - **Endpoints critiques** : 8/8 (100%) ✅
 - **Endpoints modérés** : 4/4 (100%) ✅
-- **Endpoints optionnels** : 9/14 (64%)
+- **Endpoints optionnels** : 10/14 (71%)
 - **Cible** : 24/26 (92%)
 
 **Voir détails complets** : Section "Endpoints REST" dans `docs/audit/AUDIT_CONFORMITE_COMPLET_REACHY_MINI_2025_01_31.md`

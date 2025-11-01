@@ -197,6 +197,19 @@ GET /api/state/present_antenna_joint_positions
 WS /api/state/ws/full?frequency=10.0
 ```
 
+#### Cinématique
+
+```python
+# Informations cinématique
+GET /api/kinematics/info
+
+# Représentation URDF
+GET /api/kinematics/urdf
+
+# Fichiers STL (assets)
+GET /api/kinematics/stl/{filename}
+```
+
 #### Émotions BBIA
 
 ```python

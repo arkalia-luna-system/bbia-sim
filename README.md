@@ -186,6 +186,7 @@ python scripts/demo_public_api.py
 - `/api/motion/goto_pose` - Avec interpolation (linear, minjerk, ease, cartoon)
 - `/api/state/present_head_pose`, `/present_body_yaw`, `/present_antenna_joint_positions`
 - `/api/state/ws/full` - WebSocket streaming état complet
+- `/api/kinematics/*` - Cinématique (info, urdf, stl)
 
 ### 🤖 Backends Disponibles
 ```bash
