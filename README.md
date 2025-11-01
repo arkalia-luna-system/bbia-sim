@@ -179,13 +179,12 @@ python scripts/demo_public_api.py
 # OpenAPI: http://localhost:8000/openapi.json
 ```
 
-### 📡 Endpoints REST Conformes SDK Officiel
+### 📡 Endpoints REST Conformes SDK Officiel (96%)
+- `/api/move/*` - Mouvements conformes SDK (goto, running, stop, play, set_target, ws/updates)
 - `/api/motors/*` - Contrôle moteurs (status, set_mode)
 - `/api/daemon/*` - Contrôle daemon (start, stop, restart, status)
-- `/api/motion/wake_up`, `/goto_sleep` - Séquences robot
-- `/api/motion/goto_pose` - Avec interpolation (linear, minjerk, ease, cartoon)
-- `/api/state/present_head_pose`, `/present_body_yaw`, `/present_antenna_joint_positions`
-- `/api/state/ws/full` - WebSocket streaming état complet
+- `/api/motion/*` - Mouvements BBIA (goto_pose, wake_up, goto_sleep, joints, etc.)
+- `/api/state/*` - État robot (full avec 11 params, present_head_pose avec use_pose_matrix, ws/full)
 - `/api/kinematics/*` - Cinématique (info, urdf, stl)
 - `/api/apps/*` - Gestion applications HuggingFace (install, start, stop, status)
 

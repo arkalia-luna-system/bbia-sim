@@ -660,7 +660,6 @@ async def ws_full_state(
     """
     import asyncio
 
-
     await websocket.accept()
     period = 1.0 / frequency
 

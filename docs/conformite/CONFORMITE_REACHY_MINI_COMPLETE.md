@@ -698,19 +698,26 @@ Une analyse exhaustive complémentaire a été effectuée (31 Janvier 2025) comp
 
 ### Résumé des incohérences identifiées
 
-**🔴 CRITIQUES** (2 incohérences à corriger immédiatement) :
-1. **Structure API `/move/goto`** : BBIA utilise `Pose` + query params, SDK utilise `GotoModelRequest`
-2. **Retour `goto`** : BBIA retourne `dict`, SDK retourne `MoveUUID` (UUID pour tracking)
+**🔴 CRITIQUES** (2) : ✅ **TOUT CORRIGÉ**
+1. ✅ **Structure API `/api/move/goto`** : Implémenté avec `GotoModelRequest` conforme SDK
+2. ✅ **Retour `goto`** : Retourne maintenant `MoveUUID` conforme SDK
 
-**🟡 MODÉRÉES** (7 améliorations recommandées) :
-- Endpoints `/move` manquants : `running`, `stop`, `ws/updates`, `set_target`, `ws/set_target`
-- Paramètres optionnels manquants : `/state/full` (8 paramètres), `/state/ws/full` (7 paramètres), `/present_head_pose` (use_pose_matrix)
+**🟡 MODÉRÉES** (7) : ✅ **TOUT CORRIGÉ**
+- ✅ Endpoints `/move` : `running`, `stop`, `ws/updates`, `set_target`, `ws/set_target` implémentés
+- ✅ Paramètres complétés : `/state/full` (11 paramètres), `/state/ws/full` (11 paramètres), `/present_head_pose` (use_pose_matrix)
+
+**Nouveau router** : `src/bbia_sim/daemon/app/routers/move.py` ✅  
+**Nouveaux modèles** : `XYZRPYPose`, `Matrix4x4Pose`, `AnyPose`, `FullBodyTarget`, `MoveUUID`, `GotoModelRequest` ✅  
+**Nouveaux tests** : `tests/test_api_move_conformity.py`, `tests/test_api_state_improved.py` ✅
 
 **🟢 OPTIONNELLES** (2 fonctionnalités avancées) :
 - Support RecordedMoves HuggingFace (datasets)
 - Tests de conformité supplémentaires
 
-**Temps estimé pour 100% conformité** : ~12-15h de travail
+**Temps estimé pour 100% conformité** : ~12-15h de travail  
+**Status** : ✅ **TOUT IMPLÉMENTÉ** (31 Janvier 2025)
+
+**Conformité finale** : **~96% (25/26 endpoints)** ✅
 
 **Voir checklist actionnable complète** : `docs/conformite/CHECKLIST_FINALE_CONFORMITE.md`
 

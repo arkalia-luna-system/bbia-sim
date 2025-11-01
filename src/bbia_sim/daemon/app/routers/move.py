@@ -16,9 +16,10 @@ from uuid import UUID, uuid4
 
 import numpy as np
 from fastapi import APIRouter, HTTPException, WebSocket, WebSocketDisconnect
+from pydantic import BaseModel
 
 from ....robot_factory import RobotFactory
-from ...models import FullBodyTarget, MoveUUID, XYZRPYPose
+from ...models import AnyPose, FullBodyTarget, MoveUUID, XYZRPYPose
 
 logger = logging.getLogger(__name__)
 

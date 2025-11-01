@@ -149,13 +149,13 @@ Une analyse exhaustive a été effectuée comparant TOUS les endpoints REST, cla
 
 ### Incohérences identifiées
 
-**CRITIQUES** (2) :
-1. Structure `POST /move/goto` différente (GotoModelRequest vs Pose + query params)
-2. Retour `goto` : UUID vs dict (incompatible avec clients SDK)
+**CRITIQUES** (2) : ✅ **TOUT CORRIGÉ**
+1. ✅ Structure `POST /api/move/goto` avec `GotoModelRequest` implémentée
+2. ✅ Retour `goto` avec `MoveUUID` implémenté
 
-**MODÉRÉES** (7) :
-- Endpoints `/move` manquants : running, stop, ws/updates, set_target, ws/set_target
-- Paramètres incomplets : `/state/full`, `/state/ws/full`, `/present_head_pose`
+**MODÉRÉES** (7) : ✅ **TOUT CORRIGÉ**
+- ✅ Endpoints `/move` : running, stop, ws/updates, set_target, ws/set_target
+- ✅ Paramètres complétés : `/state/full` (11 params), `/state/ws/full` (11 params), `/present_head_pose` (use_pose_matrix)
 
 **OPTIONNELLES** (2) :
 - Support RecordedMoves HuggingFace
