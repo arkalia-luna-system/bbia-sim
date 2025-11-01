@@ -103,7 +103,8 @@ async def list_all_available_apps() -> list[dict[str, Any]]:
     Returns:
         Liste de toutes les applications disponibles
     """
-    return _bbia_apps_manager["available_apps"]
+    apps: list[dict[str, Any]] = _bbia_apps_manager["available_apps"]
+    return apps
 
 
 @router.post("/install")
