@@ -149,12 +149,13 @@ class TestWhisperSTT:
             result = stt.transcribe_audio("/fake/path.wav")
             assert result is None
 
-    def test_transcribe_audio_with_language_auto(self):
+    @patch("bbia_sim.voice_whisper.whisper")
+    def test_transcribe_audio_with_language_auto(self, mock_whisper_module):
         """Test transcription avec langue 'auto'."""
         with patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True):
             mock_model = MagicMock()
             mock_model.transcribe.return_value = {"text": "Auto detected"}
-            mock_whisper.load_model.return_value = mock_model
+            mock_whisper_module.load_model.return_value = mock_model
 
             stt = WhisperSTT(model_size="tiny", language="auto")
             stt.model = mock_model
@@ -172,18 +173,21 @@ class TestWhisperSTT:
             finally:
                 Path(audio_path).unlink(missing_ok=True)
 
-    @patch("bbia_sim.voice_whisper.sd")
-    @patch("bbia_sim.voice_whisper.sf")
+    @patch("sounddevice.wait")
+    @patch("sounddevice.rec")
+    @patch("soundfile.write")
     @patch("bbia_sim.voice_whisper.whisper")
-    def test_transcribe_microphone_success(self, mock_whisper, mock_sf, mock_sd):
+    def test_transcribe_microphone_success(
+        self, mock_whisper, mock_sf_write, mock_sd_rec, mock_sd_wait
+    ):
         """Test transcription microphone réussie."""
         with patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True):
             # Mock sounddevice
-            mock_sd.rec.return_value = np.array([0.1, 0.2, 0.3], dtype=np.float32)
-            mock_sd.wait.return_value = None
+            mock_sd_rec.return_value = np.array([0.1, 0.2, 0.3], dtype=np.float32)
+            mock_sd_wait.return_value = None
 
             # Mock soundfile
-            mock_sf.write = MagicMock()
+            mock_sf_write.return_value = None
 
             # Mock Whisper
             mock_model = MagicMock()
@@ -197,8 +201,8 @@ class TestWhisperSTT:
             result = stt.transcribe_microphone(duration=1.0)
 
             assert result == "Message depuis microphone"
-            mock_sd.rec.assert_called_once()
-            mock_sf.write.assert_called_once()
+            mock_sd_rec.assert_called_once()
+            mock_sf_write.assert_called_once()
 
     def test_transcribe_microphone_audio_disabled(self):
         """Test transcription microphone avec audio désactivé."""
