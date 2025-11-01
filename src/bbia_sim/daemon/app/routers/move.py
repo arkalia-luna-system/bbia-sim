@@ -200,9 +200,7 @@ async def list_recorded_move_dataset(dataset_name: str) -> list[str]:
     try:
         moves = RecordedMoves(dataset_name)
     except RepositoryNotFoundError as e:
-        raise HTTPException(
-            status_code=404, detail=str(e)
-        )  # noqa: B904 (conforme SDK - pas de from)
+        raise HTTPException(status_code=404, detail=str(e)) from e
 
     return moves.list_moves()
 
@@ -222,15 +220,11 @@ async def play_recorded_move_dataset(
     try:
         recorded_moves = RecordedMoves(dataset_name)
     except RepositoryNotFoundError as e:
-        raise HTTPException(
-            status_code=404, detail=str(e)
-        )  # noqa: B904 (conforme SDK - pas de from)
+        raise HTTPException(status_code=404, detail=str(e)) from e
     try:
         move = recorded_moves.get(move_name)
     except ValueError as e:
-        raise HTTPException(
-            status_code=404, detail=str(e)
-        )  # noqa: B904 (conforme SDK - pas de from)
+        raise HTTPException(status_code=404, detail=str(e)) from e
     return create_move_task(backend.play_move(move))
 
 
