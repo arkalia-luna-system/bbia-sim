@@ -304,17 +304,15 @@ class TestBBIAVisionExtended:
             {"name": "livre", "distance": 0.8},
             {"name": "chaise", "distance": 1.2},
         ]
-        initial_count = len(self.vision.objects_detected)
 
         # Nouveau scan - peut modifier objects_detected (YOLO/réel détection)
         # Le test vérifie juste que la liste existe et est cohérente
         self.vision.scan_environment()
-        new_count = len(self.vision.objects_detected)
 
         # scan_environment peut modifier les objets selon environnement
         # Vérifier que la liste existe et est cohérente
         assert isinstance(self.vision.objects_detected, list)
-        assert new_count >= 0  # Peut être 0 ou différent selon détection
+        assert len(self.vision.objects_detected) >= 0  # Peut être 0 ou différent selon détection
 
     def test_faces_detected_persistence(self):
         """Test persistance des visages détectés."""
