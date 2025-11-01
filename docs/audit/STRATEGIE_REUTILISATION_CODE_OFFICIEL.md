@@ -41,28 +41,34 @@ async def play_recorded_move_dataset(...):
 - `stop_emotion` : Arrêter émotions
 - `do_nothing` : Rester inactif
 
-**BBIA Actuel** :
-- ✅ `move_head` → `robot_api.goto_target(head=...)` (présent)
-- ✅ `camera` → `vision.scan_environment()` (présent)
-- ⚠️ `head_tracking` → Partiel (pas d'activation/désactivation explicite)
-- ⚠️ `dance` → API existe mais pas d'intégration LLM
-- ⚠️ `play_emotion` → `robot_api.set_emotion()` existe
-- ❌ `do_nothing` → Absent
+**BBIA Actuel** (✅ **IMPLÉMENTÉ**) :
+- ✅ `move_head` → `robot_api.goto_target(head=...)` ou `set_target_head_pose()`
+- ✅ `camera` → `vision.scan_environment()` avec analyse objets/visages
+- ✅ `head_tracking` → Activation/désactivation suivi visage
+- ✅ `dance` → Intégration `RecordedMoves` avec API `/play/recorded-move-dataset`
+- ✅ `stop_dance` → Arrêt danses en cours
+- ✅ `play_emotion` → `robot_api.set_emotion()` avec support 12 émotions
+- ✅ `stop_emotion` → Arrêt émotions en cours
+- ✅ `do_nothing` → Action vide pour inactivité
 
-**Stratégie** : Créer module `bbia_tools.py` qui expose ces outils pour LLM
+**État** : ✅ **TERMINÉ** - Module `bbia_tools.py` créé et intégré avec `BBIAHuggingFace.chat()`
 
 ---
 
-### **3. Système Animation Idle (Respiration)** 🔴 **MANQUANT**
+### **3. Système Animation Idle (Respiration)** ✅ **TERMINÉ**
 
 **App Officielle** : Système multicouche
 - Respiration automatique (idle)
 - Poses de passage subtiles
 - Tremblement vocal (réaction à la voix)
 
-**BBIA Actuel** : ❌ Absent
+**BBIA Actuel** : ✅ **IMPLÉMENTÉ**
 
-**Stratégie** : Créer module `bbia_idle_animations.py` inspiré de l'app officielle
+**État** : ✅ **TERMINÉ** - Module `bbia_idle_animations.py` créé avec :
+- ✅ `BBIABreathingAnimation` : Respiration automatique subtile
+- ✅ `BBIAPoseTransitionManager` : Poses de passage toutes les 15s
+- ✅ `BBIAVocalTremor` : Tremblement réactif au niveau audio
+- ✅ `BBIIdleAnimationManager` : Gestionnaire centralisé
 
 **Code à réutiliser** (structure) :
 ```python
