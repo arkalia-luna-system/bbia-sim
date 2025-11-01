@@ -217,7 +217,7 @@ async def get_full_state(
         else:
             result["passive_joints"] = None
 
-    result["timestamp"] = datetime.now(UTC)
+    result["timestamp"] = datetime.now(timezone.utc)
 
     # Ajouter champs de compatibilité pour certains tests
     # (FullState SDK officiel n'a pas ces champs, mais certains tests les attendent)
