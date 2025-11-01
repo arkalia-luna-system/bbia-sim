@@ -1149,7 +1149,7 @@ class BBIAHuggingFace:
                     "Coucou ! Ça fait plaisir de vous voir !",
                     "Hey ! Content de vous retrouver !",
                     "Salut ! Quoi de neuf depuis la dernière fois ?",
-                    "Bonne journée ! Je suis là si vous avez besoin de moi.",
+                    "Bonjour ! Je suis là si vous avez besoin de moi.",
                     "Hello ! Comment se passe votre journée ?",
                     "Salut ! Prêt pour une nouvelle interaction ?",
                     "Bonjour ! En quoi puis-je vous aider aujourd'hui ?",

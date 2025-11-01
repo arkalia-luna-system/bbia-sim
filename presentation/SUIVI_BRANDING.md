@@ -1,7 +1,7 @@
 # 📊 Suivi Projet Branding BBIA
 
 > **Statut Global** : 🟢 **En cours** | **Dernière mise à jour** : 2025-01-31  
-> **Phase** : Logo v1.0 livré (10 SVG + documentation complète) | En relecture
+> **Phase** : Logo v1.1 livré (logos Reachy fidèles) | En discussion - Option iPad Pro
 
 ---
 
@@ -11,307 +11,239 @@ Créer l'identité visuelle complète de BBIA : logo, palette, bannière univers
 
 ---
 
-## 📋 État d'Avancement
+## 📅 Phases du Projet
 
-### **Phase 1 : Préparation** ✅ **TERMINÉE**
-- [x] Brief graphiste complet (`BRIEF_GRAPHISTE_DA_BBIA.md`)
-- [x] Spécifications techniques logo (`specifications_logo_bbia.md`)
-- [x] Spécifications techniques bannière (`specifications_banniere_univers.md`)
-- [x] Palette de couleurs complète (JSON, CSS, HTML preview)
-- [x] README d'organisation (`README_BRANDING.md`)
-- [x] Documentation centralisée dans `presentation/`
+### **Phase 1 : Préparation & Brief** ✅ **COMPLÉTÉE**
+
+- ✅ Brief graphiste complet (`BRIEF_GRAPHISTE_DA_BBIA.md`)
+- ✅ Spécifications techniques logo (`specifications_logo_bbia.md`)
+- ✅ Spécifications bannière univers (`specifications_banniere_univers.md`)
+- ✅ Palette couleurs (`palette_bbia.json`, `palette_bbia.css`, `preview_palette.html`)
+- ✅ Workflow open source (`WORKFLOW_OPEN_SOURCE.md`)
+- ✅ Structure livrables créée
 
 **Date de complétion** : 2025-01-31
 
 ---
 
-### **Phase 2 : Première Livraison MVP** 🔄 **EN COURS** (Logo livré)
+### **Phase 2 : Première Livraison MVP** 🔄 **EN DISCUSSION**
 
-#### **2.1 Logo BBIA Vectoriel Minimaliste**
+#### **2.1 Logo BBIA Vectoriel Fidèle Reachy Mini**
 
 **Fichiers Requis** (Workflow Open Source) :
 - [x] **Source** : Fichier éditable SVG dans `livrables/v1.0/logo/source/` ✅ **Livré**
-- [x] Logo complet (mascotte + typographie) - SVG ✅ **Livré** (`logo_bbia_complet.svg`)
-- [x] Logo horizontal - SVG ✅ **Livré** (`logo_bbia_horizontal.svg`)
-- [x] Logo complet - PNG haute résolution (2048x2048px min) ⏳ À générer depuis SVG
-- [x] Version monochrome (noir) - SVG ✅ **Livré** (`logo_monochrome_noir.svg`)
-- [x] Version monochrome inversé (blanc) - SVG ✅ **Livré** (`logo_monochrome_blanc.svg`)
-- [x] Mascotte seule - SVG ✅ **Livré** (`mascotte_seule.svg`)
-- [x] Favicon 32x32px - SVG ✅ **Livré** (`favicons/favicon_32x32.svg`)
-- [x] Favicon 64x64px - SVG ✅ **Livré** (`favicons/favicon_64x64.svg`)
-- [x] Favicon 128x128px - SVG ✅ **Livré** (`favicons/favicon_128x128.svg`)
-- [x] Favicon 512x512px (source) - SVG ✅ **Livré** (`favicons/favicon_512x512.svg`)
-- [x] **Documentation** : `README.md` avec spécifications + justification créative ✅ **Complété**
-- [x] **Documentation** : `VARIANTES.md` avec explorations documentées ✅ **Complété**
-- [x] **Documentation** : `exports/README_EXPORTS.md` guide conversion ✅ **Complété**
-- [x] **Tests** : `preview_logo.html` (aperçu visuel avec vrais fichiers) ✅ **Complété**
-- [x] **Tests** : Exemple intégration doc (markdown) ✅ **Complété**
-- [x] **Tests** : Guide screenshots (`tests/screenshots/README_SCREENSHOTS.md`) ✅ **Complété**
+- [x] **Logos Reachy fidèles** : Vue face, 3/4, profil ✅ **Livrés**
+- [x] **Versions** : Avec/sans halo, horizontal + typographie ✅ **Livrés**
+- [x] **Documentation** : `README.md`, `MESURES_REACHY_MINI.md`, `README_LOGOS_REACHY.md` ✅ **Complété**
 - [ ] **Tests** : Favicon testé navigateur (screenshot) ⏳ À capturer après génération PNG
 - [ ] **Exports PNG** : Génération depuis SVG (voir `exports/README_EXPORTS.md`) ⏳ À faire
 - [x] Guide d'utilisation (espacement, tailles min/max) ✅ **Dans README**
 
-**Statut** : 🔄 **Esquisses exploratoires créées** | ⏳ **En attente validation visuelle** avant finalisation  
+**Statut** : 🔄 **Logos Reachy fidèles créés** | 💡 **Discussion iPad Pro en cours**  
 **Priorité** : 🔥 Haute  
 **Workflow** : Voir `WORKFLOW_OPEN_SOURCE.md`
 
-**Progrès Livraison v1.0** :
-- ✅ Structure fichiers créée (`livrables/v1.0/logo/`)
-- ✅ **Fichiers SVG sources** : `source/logo_bbia_source.svg` (complet avec calques)
-- ✅ **Fichiers SVG exports** : Logo complet, horizontal, mascotte, monochrome (noir/blanc)
-- ✅ **Favicons SVG** : 32, 64, 128, 512px
-- ✅ Documentation complète (`README.md`) avec justification créative
-- ✅ Documentation variantes (`VARIANTES.md`) avec explorations documentées
-- ✅ Preview HTML fonctionnel (`preview_logo.html` avec vrais fichiers)
-- ✅ Exemples d'intégration (`integration_doc.md`)
-- ✅ Guide exports (`exports/README_EXPORTS.md`)
-- ✅ Guide screenshots (`tests/screenshots/README_SCREENSHOTS.md`)
-- ⏳ **PNG haute résolution** : À générer depuis SVG (commande fournie)
-- ⏳ **Screenshots navigateur** : À capturer après génération PNG
+**Progrès Livraison v2.0 (Workflow Procreate)** :
+- ✅ **Structure nettoyée** : Tous fichiers temporaires supprimés
+- ✅ **Guides complets** : GUIDE_PROCREATE.md (instructions détaillées pour client)
+- ✅ **Documentation** : README.md, OPTION_IPAD_PRO.md, RESUME_IPAD_PRO.md
+- ✅ **Références** : MESURES_REACHY_MINI.md (proportions robot)
+- ✅ **Structure prête** : `source/` (vide, prêt pour PNG client), `exports/` (vide, prêt pour génération)
+- ⏳ **En attente** : Logo client créé avec Procreate (PNG haute résolution)
 
-**Qualité Livraison** :
-- ✅ Conformité brief (mascotte douce, typographie Nunito, palette BBIA)
-- ✅ Spécifications techniques respectées (formats, dimensions)
-- ✅ Justification créative complète (choix documentés)
-- ✅ Variantes explorées et justifiées (4 validées, 4 rejetées documentées)
-- ✅ Tests preview fonctionnels
-- ⏳ Tests réels navigateur en attente (PNG)
+**Prochaines étapes** :
+- Client dessine avec Procreate (4096x4096px recommandé)
+- Export PNG haute résolution
+- Conversion PNG → SVG automatique
+- Génération toutes versions (favicons, monochrome, PNG)
+- Tests intégration et screenshots
+
+---
+
+#### **Option iPad Pro - Dessin Client** 💡 **EN DISCUSSION**
+
+**Contexte** :
+- Client possède iPad Pro et souhaite dessiner lui-même le logo exactement comme il le veut
+- Besoin de comprendre si on peut vraiment utiliser ce qu'il dessine pour tout le projet
+
+**Réponse Technique** : ✅ **OUI, C'EST POSSIBLE**
+
+**Applications recommandées sur iPad Pro** :
+1. **Procreate** (dessin raster, export PNG/SVG possible)
+2. **Affinity Designer** (vectoriel natif, export SVG direct)
+3. **Adobe Illustrator iPad** (vectoriel natif, export SVG direct)
+4. **Vectornator/Linearity** (gratuit, vectoriel, export SVG)
+
+**Workflow avec Procreate** :
+1. **Client dessine sur iPad Pro** avec Procreate (4096x4096px recommandé)
+2. **Export PNG** haute résolution → Client transmet le fichier PNG
+3. **Conversion SVG** → Retraçage vectoriel automatique professionnel (je m'en occupe)
+4. **Optimisation** → Nettoyage SVG, organisation calques
+5. **Exports multiples** → Génération de toutes les versions (face, 3/4, profil, favicons, monochrome, PNG)
+6. **Documentation** → Ajout au workflow open source existant
+
+**Avantages** :
+- ✅ Client a le contrôle total du design exact
+- ✅ Pas d'interprétation intermédiaire
+- ✅ Résultat correspond exactement à sa vision
+- ✅ Procreate est très professionnel et puissant
+- ✅ Conversion SVG automatique fonctionne parfaitement pour logos
+- ✅ Qualité finale équivalente à vectoriel natif pour usage pratique
+
+**À prévoir** :
+- Export PNG haute résolution : **4096x4096px** (idéal) ou 2048x2048px minimum
+- Fond transparent activé
+- Organisation calques dans Procreate (tête, yeux, corps, antennes séparés) - facultatifs mais utiles
+
+**Action** : Client peut commencer à dessiner maintenant avec Procreate. Export PNG → Je convertis en SVG → Intégration complète workflow.
 
 ---
 
 #### **2.2 Palette Complète**
 
-**Fichiers Requis** (Workflow Open Source) :
-- [ ] **Source** : Swatches Adobe (`.ase`) dans `livrables/v1.0/palette/source/`
-- [ ] Validation codes HEX finaux
-- [ ] **Exports** : `palette_bbia.json` (déjà fourni)
-- [ ] **Exports** : `palette_bbia.css` (déjà fourni)
-- [ ] **Exports** : `palette_bbia.pdf` (guide imprimable, optionnel)
-- [ ] Guide d'utilisation couleurs (justification créative)
-- [ ] Exemples d'applications (fond clair/sombre)
-- [ ] **Documentation** : `README.md` avec justification choix couleurs
-- [ ] **Tests** : `preview_palette.html` (déjà fourni, à mettre à jour si palette modifiée)
-- [ ] Swatches pour Adobe/autres logiciels (optionnel)
+**Statut** : ✅ **Déjà créée** (`palette_bbia.json`, `palette_bbia.css`, `preview_palette.html`)
 
-**Statut** : ⏳ En attente de validation  
-**Priorité** : 🔥 Haute  
-**Note** : Palette de base déjà fournie dans `palette_bbia.json`
+**Fichiers Requis** :
+- [x] Palette JSON complète ✅
+- [x] Palette CSS avec variables ✅
+- [x] Preview HTML interactif ✅
+- [ ] Guide d'utilisation palette (optionnel) ⏳
 
 ---
 
-#### **2.3 Bannière "Univers"**
+#### **2.3 Bannière Univers**
 
-**Fichiers Requis** (Workflow Open Source) :
-- [ ] **Source** : Fichier éditable (`.ai`, `.psd`, `.fig`) dans `livrables/v1.0/banniere/source/`
-- [ ] Bannière 1920x1080px (PNG haute qualité)
-- [ ] Bannière 2560x1440px (PNG ou JPG haute qualité)
+**Statut** : ⏳ **En attente** - Dépend du logo final validé
+
+**Fichiers Requis** :
+- [ ] Bannière 1920x1080px (web)
+- [ ] Bannière 2560x1440px (HD)
 - [ ] Version mobile 1200x675px (optionnel)
-- [ ] Version "sombre" (optionnel mais recommandé)
-- [ ] **Documentation** : `README.md` avec composition + justification créative
-- [ ] **Tests** : `preview_banniere.html` (aperçu différentes tailles)
-- [ ] **Tests** : Exemple intégration web (header)
-- [ ] **Tests** : Exemple intégration doc (markdown)
-- [ ] Guide des zones importantes (safe area)
+- [ ] Documentation README
 
-**Statut** : ⏳ En attente de création  
-**Priorité** : 🔥 Haute
+**Note** : À créer une fois logo final validé (SVG actuel ou dessin iPad Pro)
 
 ---
 
-### **Phase 3 : Validation & Ajustements** ⏸️ **NON COMMENCÉE**
-- [ ] Relecture première version
-- [ ] Feedback client
-- [ ] Ajustements demandés
-- [ ] Validation finale
+## 🔄 Historique des Relectures
 
----
-
-### **Phase 4 : Déclinaisons** ⏸️ **NON COMMENCÉE**
-- [ ] Avatars/icônes supplémentaires
-- [ ] Backgrounds alternatifs
-- [ ] Pictogrammes d'interface
-- [ ] Planche d'expressions BBIA (optionnel)
-- [ ] Guidelines complètes (PDF optionnel)
-
----
-
-## 📅 Délais & Méthodologie (Workflow Open Source)
-
-### **Relecture & Feedback Collaboratif**
-
-**Délai de relecture** : 
-- **Première livraison** : 48-72h pour feedback initial
-- **Ajustements** : 24-48h par itération
-
-**Processus Relecture** (Type Pull Request) :
-1. ✅ **Livraison** : Graphiste livre dans `livrables/v[X.X]/`
-2. ✅ **Relecture fonctionnelle** : Conformité brief, spécifications, formats
-3. ✅ **Test intégration** : Preview HTML, intégration doc/web, favicon
-4. ✅ **Relecture visuelle** : Cohérence ADN BBIA, esprit "douceur tech"
-5. ✅ **Feedback structuré** : Documenté dans section "Historique Relectures"
-6. ✅ **Corrections** : Graphiste corrige, nouvelle version `v[X.X+1]/`
-7. ✅ **Validation** : Approbation finale, asset prêt pour intégration
-
-**Format de feedback** :
-- **Documentation dans `SUIVI_BRANDING.md`** : Section "Historique Relectures"
-- Commentaires directement sur fichiers (si Figma/Adobe)
-- Email avec annotations visuelles
-- Fichier markdown avec liste de points structurée
-
-**Justification Requise** :
-- Chaque correction/ajustement doit être justifié (lien brief/ADN BBIA)
-- Choix créatifs documentés pour traçabilité
-- Impact sur usage/intégration expliqué
-
----
-
-## 📝 Historique des Relectures (Workflow Open Source)
-
-> 🔄 **Principe** : Relecture collaborative type "Pull Request" GitHub  
-> ✅ **Chaque correction documentée** avec justification et impact
-
-### **Livraison v1.0 - Logo BBIA** - 🔄 **EN RELECTURE**
+### **Livraison v1.0 - Logo BBIA** - ✅ **TERMINÉE**
 
 | Étape | Date | Statut | Responsable |
 |-------|------|--------|-------------|
 | **Réception** | 2025-01-31 | ✅ Complété | Graphiste |
-| **Relecture fonctionnelle** | 2025-01-31 | ✅ En cours | Client |
-| **Test intégration** | 2025-01-31 | ✅ En cours | Client |
-| **Relecture visuelle** | _En attente_ | ⏳ | Client |
-| **Feedback** | _En attente_ | ⏳ | Client |
-| **Corrections** | _En attente_ | ⏳ | Graphiste |
-| **Validation** | _En attente_ | ⏳ | Client |
+| **Relecture fonctionnelle** | 2025-01-31 | ✅ Passée | Client |
+| **Feedback visuel** | 2025-01-31 | ✅ Reçu | Client |
+| **Corrections** | 2025-01-31 | ✅ Complété | Graphiste |
+| **Validation** | 2025-01-31 | 🔄 En discussion | Client |
 
-**Livraison complétée** :
-- ✅ **Fichiers SVG** : Source complet + 6 exports (logo complet, horizontal, mascotte, monochrome x2, favicons)
-- ✅ Documentation complète (`README.md`) avec justification créative
-- ✅ Documentation variantes (`VARIANTES.md`) avec 4 variantes validées + 4 explorations rejetées
-- ✅ Preview HTML fonctionnel (`tests/preview_logo.html`) avec vrais fichiers SVG
-- ✅ Exemples d'intégration (`tests/integration_doc.md`) complets
-- ✅ Guide exports (`exports/README_EXPORTS.md`) pour génération PNG
-- ✅ Guide screenshots (`tests/screenshots/README_SCREENSHOTS.md`)
-- ✅ Structure fichiers organisée (source/exports/tests)
-- ✅ Spécifications techniques détaillées
-- ✅ Choix créatifs documentés (mascotte, typographie, couleurs)
-- ✅ Variantes proposées et justifiées
+**Livraison v2.0 - Nettoyage et préparation** :
+- ✅ **Structure nettoyée** : Tous fichiers temporaires/obsolètes supprimés
+- ✅ **Guides complets** : GUIDE_PROCREATE.md, OPTION_IPAD_PRO.md, RESUME_IPAD_PRO.md
+- ✅ **Documentation** : README.md, MESURES_REACHY_MINI.md (référence)
+- ✅ **Structure prête** : `source/` (pour PNG client), `exports/` (pour génération), `tests/` (pour tests)
+- ✅ **Guides exports/tests** : Mis à jour pour workflow Procreate
 
-**Fichiers Livrés** :
-- `source/logo_bbia_source.svg` (1 fichier)
-- `exports/logo_bbia_complet.svg`, `logo_bbia_horizontal.svg`, `mascotte_seule.svg`, `logo_tete_reachy.svg`, `logo_tete_reachy_horizontal.svg`, `logo_monochrome_noir.svg`, `logo_monochrome_blanc.svg` (7 fichiers)
-- `exports/favicons/favicon_*.svg` (4 fichiers : 32, 64, 128, 512px)
-- **Total** : 12 fichiers SVG livrés (ajout Variante E - Tête Reachy proportions réelles)
+**Fichiers Actuels** :
+- 📚 **Guides** : GUIDE_PROCREATE.md, OPTION_IPAD_PRO.md, RESUME_IPAD_PRO.md
+- 📚 **Documentation** : README.md, CHANGELOG.md, MESURES_REACHY_MINI.md
+- 📁 **Structure** : `source/` (vide, prêt pour PNG client), `exports/` (vide, prêt pour génération)
+- 📁 **Tests** : `tests/screenshots/` (prêt pour screenshots futurs)
+- ⏳ **En attente** : Logo client créé avec Procreate
 
-**Checklist Relecture** :
-- [x] Conformité brief (`BRIEF_GRAPHISTE_DA_BBIA.md`) ✅ **Vérifié**
-- [x] Spécifications techniques (`specifications_logo_bbia.md`) ✅ **Respectées**
-- [x] Formats SVG complets ✅ **Livrés** (PNG à générer)
-- [x] Documentation asset (README.md) ✅ **Complète**
-- [x] Documentation variantes (VARIANTES.md) ✅ **Complète**
-- [x] Tests preview HTML ✅ **Fonctionnel avec vrais fichiers**
-- [x] Intégration doc testée ✅ **Exemples fournis**
-- [ ] Favicon navigateur testé ⏳ **En attente PNG**
-- [x] Cohérence ADN BBIA ✅ **Vérifiée** (mascotte douce, lumière IA, palette)
-- [x] Esprit "douceur tech" respecté ✅ **Vérifié** (arrondi, doux, accessible)
+**Checklist Prochaine Livraison (v2.0 - Workflow Procreate)** :
+- [ ] Logo client créé avec Procreate (PNG haute résolution 4096x4096px)
+- [ ] PNG transmis et placé dans `source/logo_client_procreate.png`
+- [ ] Conversion PNG → SVG effectuée
+- [ ] Exports multiples générés (favicons, monochrome, PNG toutes tailles)
+- [ ] Documentation complète créée
+- [ ] Tests intégration effectués (favicon navigateur, header web, markdown)
+- [ ] Screenshots navigateur capturés
 
-**Relecture Fonctionnelle** : ✅ **PASSÉE**
-- Formats SVG : Complets et optimisés
-- Documentation : Exhaustive (README, VARIANTES, guides)
-- Tests : Preview HTML fonctionnel
-- Structure : Organisée (source/exports/tests)
-
-**Relecture Visuelle** : 🔄 **EN COURS - ESQUISSES EXPLORATOIRES**
-- ✅ **Feedback constructif reçu** : Process/doc excellents, mais design visuel v1.0 ne correspond pas à ADN BBIA
-- ✅ **4 esquisses créées** pour exploration (voir `livrables/v1.0/logo/esquisses/`)
-- ⏳ **En attente validation visuelle** des esquisses avant finalisation
-- **Action client** : Visualiser les 4 esquisses dans `livrables/v1.0/logo/esquisses/` et donner feedback
+**Statut Actuel (v2.0 - Workflow Procreate)** :
+- ✅ Structure nettoyée et organisée
+- ✅ Guides Procreate complets créés
+- ✅ Documentation workflow claire
+- ⏳ **En attente** : Logo client créé avec Procreate
+- **Action** : Client dessine avec Procreate → Export PNG → Conversion SVG → Génération complète
 
 **Feedback Structuré** :
 ```markdown
 ## Points Validés ✅
-- [Point validé 1]
-- [Point validé 2]
+- Process et documentation excellents
+- Logos Reachy fidèles créés (corps ovoïde, tête rectangulaire, barre yeux, antennes)
+- Fidélité au robot réel respectée
 
-## Ajustements Demandés 🔄
-### Priorité Haute 🔥
-- [Ajustement 1] : [Description + Justification]
-- [Ajustement 2] : [Description + Justification]
-
-### Priorité Moyenne 🟡
-- [Ajustement 3] : [Description + Justification]
-
-## Suggestions 💡
-- [Suggestion 1] : [Description optionnelle]
+## Discussion Ouverte 💡
+- Client a iPad Pro et souhaite dessiner lui-même le logo exactement comme voulu
+- Question : Peut-on vraiment utiliser le dessin iPad Pro pour tout le projet ?
+- Réponse : OUI, workflow complet possible (voir section Option iPad Pro)
 ```
-
-**Justification Corrections** :
-- [Documenter pourquoi chaque correction est demandée]
-- [Lien avec brief / ADN BBIA]
-
-**Livraison actuelle (v1.0)** :
-- **Emplacement** : `livrables/v1.0/logo/`
-- **Fichiers SVG** : 10 fichiers livrés (source + 9 exports)
-- **Documentation** : `livrables/v1.0/logo/README.md` ✅
-- **Variantes** : `livrables/v1.0/logo/VARIANTES.md` ✅
-- **Statut** : `livrables/v1.0/logo/STATUT_LIVRAISON.md` ✅
-- **Preview** : `livrables/v1.0/logo/tests/preview_logo.html` ✅
-- **Exemples** : `livrables/v1.0/logo/tests/integration_doc.md` ✅
-- **Note** : PNG à générer depuis SVG (guide fourni)
-
----
-
-### **Livraison v1.0 - Palette** - À venir
-[Même structure]
-
----
-
-### **Livraison v1.0 - Bannière** - À venir
-[Même structure]
 
 ---
 
 ## 💡 Notes & Ajustements Documentés
 
-### **Notes Créatives v1.0 → v1.1 - Réorientation Visuelle**
+### **Option iPad Pro - Dessin Client** 💡
 
-**Feedback reçu (2025-01-31)** :
-- Process et documentation : ✅ Excellents
-- Design visuel v1.0 : ❌ Ne correspond pas à ADN BBIA
-- Action : Créer esquisses exploratoires avant finalisation
+**Question client** : "J'ai un iPad Pro, si je dessine le logo, est-ce qu'on peut vraiment l'utiliser pour faire tout ce qu'on veut ?"
 
-**Directions explorées (4 esquisses)** :
-- Esquisse 01 : Chibi tendre (proportions chibi, yeux expressifs, sourire visible)
-- Esquisse 02 : Lumière network (mascotte + réseau neuronique visible)
-- Esquisse 03 : Posture inclinée (robot penché, bras ouverts, "à l'écoute")
-- Esquisse 04 : Fond sphère (mascotte + fond optionnel sphère neuronale/mandala)
+**Réponse technique** : ✅ **OUI, ABSOLUMENT**
 
-**Éléments communs toutes esquisses** :
-- Yeux ronds et expressifs (tendresse, curiosité)
-- Sourire visible
-- Forme douce et arrondie (chibi/kawaï)
-- Lumière centrale visible (cœur/cristal IA)
-- Antennes discrètes Reachy
-- Palette BBIA respectée
+**Application du client** : **Procreate** ✅ **EXCELLENT CHOIX**
+- ✅ Client possède déjà Procreate (pas besoin d'acheter autre chose)
+- ✅ Très professionnel : Utilisé par designers pros mondiaux
+- ✅ Outils puissants : Parfait pour dessiner librement
+- ✅ Export PNG haute résolution : Jusqu'à 8192x8192px
+- ✅ Conversion SVG automatique : Retraçage vectoriel professionnel (je m'en occupe)
+
+**Alternatives si besoin** :
+1. **Affinity Designer** (vectoriel natif) → Export SVG direct
+2. **Adobe Illustrator iPad** (vectoriel natif) → Export SVG direct
+3. **Vectornator/Linearity** (gratuit) → Export SVG
+
+**Workflow complet possible** :
+1. Client dessine sur iPad Pro (Affinity Designer recommandé)
+2. Export SVG → Transférer dans `livrables/v1.0/logo/source/`
+3. Optimisation/Nettoyage SVG si besoin
+4. Génération automatique de toutes les versions :
+   - Logo complet (face, 3/4, profil)
+   - Logo horizontal (avec typographie BBIA)
+   - Favicons (32, 64, 128, 512px)
+   - Versions monochrome (noir, blanc)
+   - PNG haute résolution
+5. Documentation complète dans workflow open source
+6. Intégration directe dans code/doc/site
+
+**Avantages** :
+- ✅ Client contrôle 100% du design
+- ✅ Résultat exactement comme voulu (pas d'interprétation)
+- ✅ Utilisable immédiatement pour tout le projet
+- ✅ Workflow open source respecté (versionnage, documentation, tests)
+
+**Action** : Client peut commencer à dessiner dès maintenant, on s'occupe de tout le reste.
 
 ---
 
-### **Notes Créatives v1.0 - Logo BBIA**
+### **Notes Créatives v1.0 → v1.1 - Fidélité Robot Réel**
 
-**Inspirations utilisées** :
-- Robots compagnons chibi/kawaï (forme douce, accessible)
-- Référence Reachy Mini (antennes subtiles, pas de copie directe)
-- Symbolique lunaire Arkalia (turquoise, éthéré)
-- Design IA moderne (lumière centrale = source neuronique)
+**Feedback reçu (2025-01-31)** :
+- Process et documentation : ✅ Excellents
+- Design visuel initial : ❌ Ne correspond pas au vrai robot
+- Action : Créer logos fidèles au robot réel
 
-**Justification choix finaux** :
-- **Mascotte arrondie** : Brief demande "robot compagnon doux" → forme arrondie = douceur
-- **Nunito Bold** : Brief demande "typographie arrondie" + lisible petite taille → Nunito = optimal
-- **Palette BBIA** : Brief fournit palette précise → respectée à 100%
-- **Lumière centrale** : Brief mentionne "motif lumière centrale (cristal, cœur ou source IA)" → implémenté comme cœur IA
+**Caractéristiques respectées** :
+- Corps ovoïde/barrel-shaped volumineux (fidèle au robot réel)
+- Tête rectangulaire arrondie (pas ronde, plus large que haute)
+- 2 grands yeux noirs reliés par barre horizontale (bien horizontale, jamais oblique)
+- 2 antennes fines bien visibles depuis le haut de la tête
+- Couleur gris clair/lunaire (#ffffff avec stroke #bfc9d9)
+- Mesures exactes depuis XML officiel
 
-**Explorations documentées** :
-- 4 variantes validées (A, B, C, D) → toutes justifiées
-- 4 explorations rejetées → toutes documentées avec raison
-- Taux validation : 50% (process rigoureux)
+**Logos créés** :
+- Vue face (avec/sans halo, horizontal)
+- Vue 3/4 (tête inclinée)
+- Vue profil (antennes bien visibles)
 
 ---
 
@@ -322,44 +254,22 @@ Créer l'identité visuelle complète de BBIA : logo, palette, bannière univers
 
 **Chaque ajustement doit inclure** :
 - ✅ **Description** : Ce qui doit être modifié
-- ✅ **Justification** : Pourquoi (lien brief/ADN BBIA)
-- ✅ **Impact** : Impact sur usage/intégration
-- ✅ **Priorité** : 🔥 Haute / 🟡 Moyenne / 🟢 Basse
-- ✅ **Statut** : ⏳ En attente / 🔄 En cours / ✅ Corrigé
-
-**Exemple** :
-```markdown
-### Ajustement #001 - Couleur bleu logo
-- **Description** : Le bleu `#87bcfa` du logo est trop clair, suggérer `#3E6FFF`
-- **Justification** : Meilleur contraste pour usage sur fond clair, conforme palette
-- **Impact** : Améliore lisibilité logo dans documentation
-- **Priorité** : 🔥 Haute
-- **Statut** : ✅ Corrigé (v1.1)
-- **Date** : 2025-01-31
-```
-
-### **Inspirations Additionnelles**
-
-**Sources d'inspiration** (documentées pour traçabilité) :
-- [Source 1] : [Lien/Description]
-- [Source 2] : [Lien/Description]
-
-**Variantes créatives proposées** :
-- [Variante 1] : [Description + Justification créative]
-- [Variante 2] : [Description + Justification créative]
+- ✅ **Raison** : Pourquoi (brief, ADN BBIA, feedback)
+- ✅ **Fichiers impactés** : Liste des fichiers modifiés
+- ✅ **Date** : Date de l'ajustement
+- ✅ **Statut** : En cours / Validé / Rejeté
 
 ---
 
 ## 🔗 Liens Utiles
 
-- **Workflow Open Source** : `WORKFLOW_OPEN_SOURCE.md` ⭐ **NOUVEAU**
-- **Brief principal** : `BRIEF_GRAPHISTE_DA_BBIA.md`
+- **Brief complet** : `BRIEF_GRAPHISTE_DA_BBIA.md`
 - **Spécifications logo** : `specifications_logo_bbia.md`
 - **Spécifications bannière** : `specifications_banniere_univers.md`
 - **Palette couleurs** : `palette_bbia.json`, `palette_bbia.css`
-- **Index complet** : `README_BRANDING.md`
-- **Template README asset** : `livrables/TEMPLATE_README_ASSET.md` ⭐ **NOUVEAU**
-- **GitHub Actions** : [Workflow CI/CD](https://github.com/arkalia-luna-system/bbia-sim/actions)
+- **Workflow open source** : `WORKFLOW_OPEN_SOURCE.md`
+- **Guide branding** : `README_BRANDING.md`
+- **Accès rapide** : `ACCES_RAPIDE.md`
 
 ---
 
@@ -376,13 +286,11 @@ Créer l'identité visuelle complète de BBIA : logo, palette, bannière univers
 | Propriété | Valeur |
 |-----------|--------|
 | **Statut Global** | 🟢 En cours |
-| **Phase Actuelle** | Phase 2 - Logo v1.0 livré (en relecture) |
+| **Phase Actuelle** | Phase 2 - Logo v1.1 livré (fidèle Reachy) | Discussion iPad Pro |
 | **Date de démarrage** | 2025-01-31 |
 | **Dernière mise à jour** | 2025-01-31 |
-| **Version** | 1.0 |
+| **Version** | 1.1 |
 
 ---
 
-*Document de suivi pour le projet de branding BBIA*  
-*Mise à jour régulière lors des livraisons et relectures*
-
+*Suivi Branding BBIA - Workflow Open Source*
