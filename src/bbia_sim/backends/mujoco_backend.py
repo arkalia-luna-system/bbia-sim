@@ -176,7 +176,7 @@ class MuJoCoBackend(RobotAPI):
                 positions = move.positions
                 if isinstance(positions, dict):
                     for joint_name, position in positions.items():
-                        if isinstance(position, (int, float)):
+                        if isinstance(position, int | float):
                             self.set_joint_pos(joint_name, float(position))
 
             # Faire un step pour appliquer les changements
