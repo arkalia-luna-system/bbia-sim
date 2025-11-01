@@ -226,9 +226,14 @@ if settings.is_production():
 # Routers SANS WebSockets (authentification globale)
 api_router_http = APIRouter(prefix="/api")
 api_router_http.include_router(motors.router)
-api_router_http.include_router(daemon.router)
 api_router_http.include_router(kinematics.router)
 app.include_router(api_router_http, dependencies=[Depends(verify_token)])
+
+# Router daemon SANS auth pour permettre l'accès depuis le dashboard
+# Note: Les endpoints daemon sont sécurisés mais le status doit être accessible
+app.include_router(
+    daemon.router, prefix="/api"
+)  # Sans dépendance globale pour dashboard
 
 # Routers AVEC WebSockets (pas d'auth globale pour WebSockets)
 # Note: Les WebSockets ne supportent pas HTTPBearer

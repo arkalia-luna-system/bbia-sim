@@ -133,6 +133,68 @@ class MuJoCoBackend(RobotAPI):
             logger.error(f"Erreur step MuJoCo: {e}")
             return False
 
+    def play_move(
+        self,
+        move: object,
+        play_frequency: float = 100.0,
+        initial_goto_duration: float = 0.0,
+    ) -> None:
+        """Joue un mouvement enregistré depuis un dataset HuggingFace.
+
+        Note: MuJoCoBackend simule le mouvement en appliquant les positions des joints
+        depuis le Move object du SDK officiel.
+
+        Args:
+            move: Objet Move du SDK reachy_mini.motion.move
+            play_frequency: Fréquence de lecture (Hz, défaut 100.0) - non utilisé en simulation
+            initial_goto_duration: Durée goto initial (s, défaut 0.0) - non utilisé en simulation
+        """
+        if not self.is_connected:
+            logger.warning("MuJoCo non connecté, impossible de jouer le mouvement")
+            return
+
+        try:
+            # Extraire les positions des joints depuis l'objet Move
+            # Le Move object a une structure: move.joint_states ou move.trajectory
+            if hasattr(move, "joint_states"):
+                # Format: dict[joint_name, positions]
+                for joint_name, positions in move.joint_states.items():
+                    if isinstance(positions, (list, tuple)) and len(positions) > 0:
+                        # Appliquer la dernière position (simulation simplifiée)
+                        self.set_joint_pos(joint_name, float(positions[-1]))
+            elif hasattr(move, "trajectory"):
+                # Format: list de dict avec positions
+                trajectory = move.trajectory
+                if trajectory and len(trajectory) > 0:
+                    # Appliquer les positions du dernier état
+                    last_state = trajectory[-1]
+                    for joint_name, position in last_state.items():
+                        if isinstance(position, (int, float)):
+                            self.set_joint_pos(joint_name, float(position))
+            elif hasattr(move, "positions"):
+                # Format alternatif
+                positions = move.positions
+                if isinstance(positions, dict):
+                    for joint_name, position in positions.items():
+                        if isinstance(position, (int, float)):
+                            self.set_joint_pos(joint_name, float(position))
+
+            # Faire un step pour appliquer les changements
+            self.step()
+            logger.info("Mouvement simulé joué dans MuJoCo")
+
+        except Exception as e:
+            logger.error(f"Erreur play_move MuJoCo: {e}")
+
+    def async_play_move(
+        self,
+        move: object,
+        play_frequency: float = 100.0,
+        initial_goto_duration: float = 0.0,
+    ) -> None:
+        """Version async de play_move (identique pour MuJoCo)."""
+        self.play_move(move, play_frequency, initial_goto_duration)
+
     def emergency_stop(self) -> bool:
         """Arrêt d'urgence pour simulation MuJoCo."""
         if not self.is_connected:
