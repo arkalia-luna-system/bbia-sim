@@ -113,11 +113,10 @@ class ReachyMiniBackend(RobotAPI):
             "stewart_4": (-1.3962634015953894, 0.8377580409573525),  # Exact du XML
             "stewart_5": (-1.2217304763962082, 1.396263401595286),  # Exact du XML
             "stewart_6": (-1.3962634015954123, 0.8377580409573296),  # Exact du XML
-            # Antennes: pas de range dans XML - limites conservatrices
-            # sécurité hardware
-            # Note: Antennes fragiles, limites réduites même si SDK permet plus
-            "left_antenna": (-1.0, 1.0),  # Limite de sécurité (hardware fragile)
-            "right_antenna": (-1.0, 1.0),  # Limite de sécurité (hardware fragile)
+            # Antennes: maintenant avec limites définies dans XML (-0.3 à 0.3 rad)
+            # Limites conservatrices pour protection hardware (antennes fragiles)
+            "left_antenna": (-0.3, 0.3),  # Limite de sécurité alignée avec XML
+            "right_antenna": (-0.3, 0.3),  # Limite de sécurité alignée avec XML
             # Corps (limite exacte du modèle officiel XML)
             "yaw_body": (
                 -2.792526803190975,
@@ -126,10 +125,10 @@ class ReachyMiniBackend(RobotAPI):
         }
 
         # Joints interdits (sécurité)
-        self.forbidden_joints = {
-            "left_antenna",  # Antennes trop fragiles
-            "right_antenna",
-        }
+        # Note: Antennes maintenant animables avec limites sûres (-0.3 à 0.3 rad)
+        # Garder dans forbidden_joints si on veut les bloquer par défaut (optionnel)
+        self.forbidden_joints: set[str] = set()  # type: ignore[assignment]
+        # Optionnel: ajouter "left_antenna" ou "right_antenna" pour bloquer
 
     def connect(self) -> bool:
         """Connecte au robot Reachy-Mini officiel."""
@@ -1155,7 +1154,8 @@ class ReachyMiniBackend(RobotAPI):
         if not self.is_connected or not self.robot:
             logger.warning("Mode simulation: io non disponible")
             return None
-        return getattr(self.robot, "io", None)
+        result = getattr(self.robot, "io", None)
+        return result  # type: ignore[no-any-return]
 
     @property
     def media(self) -> object | None:
@@ -1163,7 +1163,8 @@ class ReachyMiniBackend(RobotAPI):
         if not self.is_connected or not self.robot:
             logger.warning("Mode simulation: media non disponible")
             return None
-        return getattr(self.robot, "media", None)
+        result = getattr(self.robot, "media", None)
+        return result  # type: ignore[no-any-return]
 
     # ===== MÉTHODES UTILITAIRES POUR MOVE =====
 

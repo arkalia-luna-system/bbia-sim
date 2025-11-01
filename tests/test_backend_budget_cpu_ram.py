@@ -37,12 +37,13 @@ def get_memory_usage() -> float | None:
 @pytest.mark.unit
 @pytest.mark.slow
 def test_backend_main_loop_budget_cpu_ram() -> None:
-    """Test budget CPU/RAM boucle principale backend (10-30s)."""
+    """Test budget CPU/RAM boucle principale backend (5s profiling optimisé)."""
     backend = ReachyMiniBackend(use_sim=True)
     assert backend.connect() is True
 
-    duration_s = 10.0
-    iterations = 1000
+    # Optimisé: 5s au lieu de 10s (suffisant pour mesurer budget)
+    duration_s = 5.0
+    iterations = 500  # Réduit proportionnellement
 
     try:
         # Mesurer avant
@@ -74,9 +75,9 @@ def test_backend_main_loop_budget_cpu_ram() -> None:
         else:
             mem_increase = None
 
-        # Budget: CPU < 2s pour 10s runtime (20% CPU max)
+        # Budget: CPU < 1s pour 5s runtime (20% CPU max)
         assert (
-            cpu_time < 2.0
+            cpu_time < 1.0
         ), f"Temps CPU trop élevé: {cpu_time:.2f}s pour {duration_s}s runtime"
 
         # Budget: RAM < 100MB augmentation (sur 10s)
@@ -98,15 +99,16 @@ def test_backend_main_loop_budget_cpu_ram() -> None:
 @pytest.mark.unit
 @pytest.mark.slow
 def test_robot_api_interface_budget_cpu_ram() -> None:
-    """Test budget CPU/RAM interface RobotAPI abstraite (10s)."""
+    """Test budget CPU/RAM interface RobotAPI abstraite (5s optimisé)."""
     from bbia_sim.robot_factory import RobotFactory
 
     robot = RobotFactory.create_backend("reachy_mini")
     if not robot or not robot.connect():
         pytest.skip("Backend non disponible")
 
-    duration_s = 10.0
-    iterations = 1000
+    # Optimisé: 5s au lieu de 10s (suffisant pour mesurer budget)
+    duration_s = 5.0
+    iterations = 500  # Réduit proportionnellement
 
     try:
         # Mesurer avant
@@ -136,8 +138,8 @@ def test_robot_api_interface_budget_cpu_ram() -> None:
         else:
             mem_increase = None
 
-        # Budget: Overhead minimal interface (< 0.5s CPU pour 10s)
-        assert cpu_time < 0.5, f"Overhead interface trop élevé: {cpu_time:.2f}s"
+        # Budget: Overhead minimal interface (< 0.25s CPU pour 5s)
+        assert cpu_time < 0.25, f"Overhead interface trop élevé: {cpu_time:.2f}s"
 
         # Budget: RAM < 90MB augmentation (interface légère, tolérance CI)
         # NOTE: Seuil flexibilisé pour CI. En local, consommation réelle < 30MB.

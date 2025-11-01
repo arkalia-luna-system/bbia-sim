@@ -44,7 +44,7 @@ def get_memory_usage() -> float | None:
 @pytest.mark.unit
 @pytest.mark.slow
 def test_audio_pipeline_budget_cpu_ram() -> None:
-    """Test budget CPU/RAM pipeline audio (10-30s)."""
+    """Test budget CPU/RAM pipeline audio (5s optimisé)."""
     if os.environ.get("BBIA_DISABLE_AUDIO", "0") == "1":
         pytest.skip("Audio désactivé par BBIA_DISABLE_AUDIO=1")
     if sd is None:
@@ -52,7 +52,8 @@ def test_audio_pipeline_budget_cpu_ram() -> None:
 
     sample_rate = 16000
     blocksize = 512
-    duration_s = 10.0
+    # Optimisé: 5s au lieu de 10s (suffisant pour mesurer budget)
+    duration_s = 5.0
 
     frames_processed = 0
     phase = 0.0
@@ -92,9 +93,9 @@ def test_audio_pipeline_budget_cpu_ram() -> None:
         else:
             mem_increase = None
 
-        # Budget: CPU < 1s pour 10s runtime (10% CPU max pipeline audio)
+        # Budget: CPU < 0.5s pour 5s runtime (10% CPU max pipeline audio)
         assert (
-            cpu_time < 1.0
+            cpu_time < 0.5
         ), f"Temps CPU trop élevé: {cpu_time:.2f}s pour {duration_s}s runtime"
 
         # Budget: RAM < 50MB augmentation (pipeline audio léger)

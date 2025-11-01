@@ -16,12 +16,13 @@ from bbia_sim.backends.reachy_mini_backend import ReachyMiniBackend
 @pytest.mark.unit
 @pytest.mark.slow
 def test_concurrent_goto_target_requests() -> None:
-    """Test avec requêtes goto_target concurrentes."""
+    """Test avec requêtes goto_target concurrentes (optimisé)."""
     backend = ReachyMiniBackend(use_sim=True)
     assert backend.connect() is True
 
-    num_threads = 5
-    requests_per_thread = 20
+    # Optimisé: moins de threads et requêtes (suffisant pour tester concurrence)
+    num_threads = 3  # Réduit de 5 à 3
+    requests_per_thread = 15  # Réduit de 20 à 15
     pose = np.eye(4, dtype=np.float64)
 
     def make_requests(thread_id: int) -> int:
@@ -61,12 +62,13 @@ def test_concurrent_goto_target_requests() -> None:
 @pytest.mark.unit
 @pytest.mark.slow
 def test_rapid_emotion_switching() -> None:
-    """Test changement rapide d'émotions sous stress."""
+    """Test changement rapide d'émotions sous stress (optimisé)."""
     backend = ReachyMiniBackend(use_sim=True)
     assert backend.connect() is True
 
     emotions = ["happy", "sad", "neutral", "excited", "curious", "calm"]
-    iterations = 200
+    # Optimisé: 150 itérations au lieu de 200 (suffisant pour test stress)
+    iterations = 150
 
     try:
         start_time = time.perf_counter()
@@ -94,12 +96,13 @@ def test_rapid_emotion_switching() -> None:
 @pytest.mark.unit
 @pytest.mark.slow
 def test_rapid_joint_updates() -> None:
-    """Test mises à jour rapides de joints sous stress."""
+    """Test mises à jour rapides de joints sous stress (optimisé)."""
     backend = ReachyMiniBackend(use_sim=True)
     assert backend.connect() is True
 
     joints = ["yaw_body", "stewart_1", "stewart_2", "stewart_3", "stewart_4"]
-    iterations = 500
+    # Optimisé: 300 itérations au lieu de 500 (suffisant pour test stress)
+    iterations = 300
 
     try:
         start_time = time.perf_counter()

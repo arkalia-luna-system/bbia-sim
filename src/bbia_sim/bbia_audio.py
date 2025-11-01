@@ -89,7 +89,8 @@ def _get_robot_media_microphone(
     """
     if robot_api and hasattr(robot_api, "media") and robot_api.media:
         try:
-            return getattr(robot_api.media, "microphone", None)
+            result = getattr(robot_api.media, "microphone", None)
+            return result  # type: ignore[no-any-return]
         except Exception:
             return None
     return None

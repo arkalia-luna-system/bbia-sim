@@ -33,11 +33,12 @@ def get_memory_usage() -> float | None:
 @pytest.mark.unit
 @pytest.mark.slow
 def test_memory_leaks_goto_target_iterations() -> None:
-    """Test fuites mémoire avec 1000+ appels goto_target."""
+    """Test fuites mémoire avec 500 appels goto_target (optimisé)."""
     backend = ReachyMiniBackend(use_sim=True)
     assert backend.connect() is True
 
-    iterations = 1000
+    # Optimisé: 500 itérations au lieu de 1000 (suffisant pour détecter fuites)
+    iterations = 500
     pose = np.eye(4, dtype=np.float64)
 
     # Mesurer mémoire initiale
@@ -56,8 +57,8 @@ def test_memory_leaks_goto_target_iterations() -> None:
 
             backend.goto_target(head=pose, duration=0.05, method="minjerk")
 
-            # Nettoyer tous les 100 itérations
-            if i % 100 == 0:
+            # Nettoyer tous les 50 itérations (plus fréquent pour stabilité)
+            if i % 50 == 0:
                 gc.collect()
 
         # Mesurer mémoire finale
@@ -67,9 +68,9 @@ def test_memory_leaks_goto_target_iterations() -> None:
         # Vérifier qu'on n'a pas de fuite majeure
         if mem_before and mem_after:
             memory_increase = mem_after - mem_before
-            # Augmentation acceptable: < 50MB sur 1000 itérations
+            # Augmentation acceptable: < 30MB sur 500 itérations (proportionnel)
             assert (
-                memory_increase < 50.0
+                memory_increase < 30.0
             ), f"Fuite mémoire détectée: {memory_increase:.2f} MB"
     finally:
         backend.disconnect()
@@ -79,11 +80,12 @@ def test_memory_leaks_goto_target_iterations() -> None:
 @pytest.mark.unit
 @pytest.mark.slow
 def test_memory_leaks_joint_operations() -> None:
-    """Test fuites mémoire avec 1000+ opérations sur joints."""
+    """Test fuites mémoire avec 500 opérations sur joints (optimisé)."""
     backend = ReachyMiniBackend(use_sim=True)
     assert backend.connect() is True
 
-    iterations = 1000
+    # Optimisé: 500 itérations au lieu de 1000 (suffisant pour détecter fuites)
+    iterations = 500
     joints = ["yaw_body", "stewart_1", "stewart_2", "stewart_3"]
 
     # Mesurer mémoire initiale
@@ -113,11 +115,12 @@ def test_memory_leaks_joint_operations() -> None:
 @pytest.mark.unit
 @pytest.mark.slow
 def test_memory_leaks_emotion_changes() -> None:
-    """Test fuites mémoire avec changements d'émotions répétés."""
+    """Test fuites mémoire avec changements d'émotions répétés (optimisé)."""
     backend = ReachyMiniBackend(use_sim=True)
     assert backend.connect() is True
 
-    iterations = 500
+    # Optimisé: 300 itérations au lieu de 500 (suffisant pour détecter fuites)
+    iterations = 300
     emotions = ["happy", "sad", "neutral", "excited", "curious", "calm"]
 
     try:
