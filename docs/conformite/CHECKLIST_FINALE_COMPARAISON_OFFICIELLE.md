@@ -83,8 +83,9 @@
   1. **Utilisation BackendAdapter**: Remplacé logique complexe avec RobotFactory par utilisation directe de `BackendAdapter` (conforme SDK)
   2. **get_kinematics_info**: Utilise directement les propriétés du backend (ligne 28-38 - conforme SDK)
   3. **get_urdf**: Utilise directement `backend.get_urdf()` ou `backend._robot.get_urdf()` (ligne 42-50 - conforme SDK)
-  4. **get_stl_file**: Utilise `{filename:path}` pour compatibilité (déjà conforme - ligne 57)
+  4. **get_stl_file**: ✅ **DÉJÀ PRÉSENT** - Endpoint `GET /api/kinematics/stl/{filename:path}` existe (ligne 57-74). Note: Le script de comparaison le détecte comme HIGH car il cherche `/stl/{filename}` mais l'endpoint existe sous `/api/kinematics/stl/{filename:path}` (plus flexible avec `:path`)
   5. **Exception handling**: Utilise `raise ... from e` pour FileNotFoundError (conforme best practices - ligne 71-74)
+- **Note**: L'endpoint STL est présent et conforme (HIGH détecté par erreur par le script - chemin différent mais équivalent)
 - **Test**: À tester avec backend réel pour vérifier URDF et STL
 - **Statut**: ✅ **CORRIGÉ** - Conformité améliorée avec SDK officiel
 
@@ -116,7 +117,29 @@
 
 ---
 
-### 7. Endpoints REST HIGH - ✅ CORRIGÉ
+### 8. BackendAdapter (`backend_adapter.py`) - ✅ CONFORMITÉ COMPLÈTE
+
+#### ✅ Corrections majeures appliquées
+- **Fichier**: `src/bbia_sim/daemon/app/backend_adapter.py`
+- **Corrections appliquées**:
+  1. **Attributs target**: Changé de propriétés `@property` vers attributs directs `self.target_*` (conforme SDK - ligne 28-32)
+  2. **ik_required**: Ajouté flag `ik_required` pour gérer les besoins IK (conforme SDK - ligne 32)
+  3. **set_target_head_pose**: Met à jour `ik_required = True` (conforme SDK - ligne 206)
+  4. **set_target_body_yaw**: Met à jour `ik_required = True` (conforme SDK - ligne 217)
+  5. **set_target_head_joint_positions**: Met à jour `ik_required = False` (conforme SDK - ligne 231)
+  6. **goto_joint_positions**: Utilise `time_trajectory` avec `InterpolationTechnique` au lieu d'interpolation linéaire simple (conforme SDK - ligne 303-395)
+  7. **update_target_head_joints_from_ik**: Gère correctement les valeurs None et lève ValueError si IK échoue (conforme SDK - ligne 472-503)
+  8. **get_urdf**: Ajouté méthode pour récupérer URDF (conforme SDK - ligne 415-434)
+  9. **play_sound**: Ajouté méthode pour jouer sons (conforme SDK - ligne 436-445)
+  10. **set_automatic_body_yaw**: Ajouté méthode pour yaw automatique (conforme SDK - ligne 447-454)
+  11. **update_head_kinematics_model**: Ajouté méthode pour mise à jour cinématique (conforme SDK - ligne 505-523)
+  12. **set_target_head_joint_current**: Ajouté méthode pour courant joints (conforme SDK - ligne 463-470)
+- **Test**: À tester avec robot réel pour vérifier toutes les méthodes
+- **Statut**: ✅ **CORRIGÉ** - BackendAdapter maintenant conforme au Backend SDK officiel
+
+---
+
+### 9. Endpoints REST HIGH - ✅ CORRIGÉ
 
 #### ✅ Endpoint `GET /api/move/recorded-move-datasets/list/{dataset_name:path}`
 

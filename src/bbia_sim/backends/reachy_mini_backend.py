@@ -33,6 +33,31 @@ STEWART_MAX_INDEX = 5  # Index max (0-5 pour stewart_1-6)
 STEWART_LEGACY_COUNT = 12  # Structure legacy (anciennes versions SDK)
 JOINT_POSITIONS_TUPLE_SIZE = 2  # Tuple (head_positions, antenna_positions)
 
+# Constantes poses SDK officiel (conformes reachy_mini.reachy_mini)
+INIT_HEAD_POSE = np.eye(4, dtype=np.float64)
+
+SLEEP_HEAD_JOINT_POSITIONS = [
+    0,
+    -0.9848156658225817,
+    1.2624661884298831,
+    -0.24390294527381684,
+    0.20555342557667577,
+    -1.2363885150358267,
+    1.0032234352772091,
+]
+
+SLEEP_ANTENNAS_JOINT_POSITIONS = np.array([-3.05, 3.05], dtype=np.float64)
+
+SLEEP_HEAD_POSE = np.array(
+    [
+        [0.911, 0.004, 0.413, -0.021],
+        [-0.004, 1.0, -0.001, 0.001],
+        [-0.413, -0.001, 0.911, -0.044],
+        [0.0, 0.0, 0.0, 1.0],
+    ],
+    dtype=np.float64,
+)
+
 logger = logging.getLogger(__name__)
 
 
@@ -994,13 +1019,14 @@ class ReachyMiniBackend(RobotAPI):
             if antennas is not None and isinstance(antennas, np.ndarray):
                 antennas = antennas.tolist()
 
-            # Appel SDK avec validation
+            # Appel SDK avec validation (conforme SDK officiel)
+            # body_yaw=None signifie "garder position actuelle" dans le SDK
             self.robot.goto_target(
                 head=head,
                 antennas=antennas,
                 duration=duration_float,
                 method=method_enum,
-                body_yaw=float(body_yaw) if body_yaw is not None else 0.0,
+                body_yaw=body_yaw,  # Passer None directement si None (SDK gère)
             )
         except ValueError:
             # Propager les ValueError de validation

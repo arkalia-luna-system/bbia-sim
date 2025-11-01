@@ -10,7 +10,7 @@ from ...simulation_service import simulation_service
 
 logger = logging.getLogger(__name__)
 
-router = APIRouter(prefix="/api/daemon")
+router = APIRouter(prefix="/daemon")
 
 
 class DaemonStatus:

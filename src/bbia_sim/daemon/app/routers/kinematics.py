@@ -7,7 +7,7 @@ from fastapi import APIRouter, Depends, HTTPException, Response
 
 from ..backend_adapter import BackendAdapter, get_backend_adapter
 
-router = APIRouter(prefix="/api/kinematics")
+router = APIRouter(prefix="/kinematics")
 
 # Chemin vers les assets STL (conforme SDK officiel)
 STL_ASSETS_DIR = (

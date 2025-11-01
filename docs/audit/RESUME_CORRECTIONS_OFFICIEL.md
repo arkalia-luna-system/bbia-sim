@@ -157,12 +157,19 @@
 - ✅ **Fichiers Core** : Analysés (modules internes daemon, non nécessaires)
 - ✅ **Tests/Exemples** : Analysés (BBIA déjà bien couvert, quelques exemples utiles)
 
+### Corrections Subtiles (Novembre 2024)
+- ✅ **Support `body_yaw=None`** dans `goto_target()` - Permet de garder position actuelle (conforme SDK)
+- ✅ **Validation `duration` stricte** - Alignée sur SDK (`<= 0.0` au lieu de `< 0.0`)
+
+**Voir** : `docs/audit/DIFFERENCES_SUBTILES_DETECTEES.md` pour toutes les différences détectées et corrigées.
+
 ### Statut Global
 - 🟢 **Conformité SDK** : **EXCELLENTE** (tous les aspects critiques validés)
 - 🟢 **Tests** : **COMPLETS** (118 tests, bien structurés)
 - 🟢 **Exemples** : **AMÉLIORÉS** (5 exemples prioritaires créés dans `examples/reachy_mini/`)
+- 🟢 **Différences Subtiles** : **CORRIGÉES** (support `body_yaw=None`, validation `duration` stricte)
 
-**Conclusion** : BBIA est **conforme au SDK officiel** sur tous les aspects critiques. Les exemples pour l'onboarding ont été créés et sont prêts à être utilisés.
+**Conclusion** : BBIA est **conforme au SDK officiel** sur tous les aspects critiques et subtils. Les exemples pour l'onboarding ont été créés et sont prêts à être utilisés.
 
 ---
 

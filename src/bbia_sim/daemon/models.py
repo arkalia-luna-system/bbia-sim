@@ -194,8 +194,8 @@ class MoveUUID(BaseModel):
 class FullState(BaseModel):
     """Représente l'état complet du robot incluant toutes les positions d'articulations et poses (conforme SDK)."""
 
-    control_mode: str | None = (
-        None  # MotorControlMode.value (SDK utilise MotorControlMode)
+    control_mode: Any | None = (
+        None  # MotorControlMode | None (SDK utilise MotorControlMode, on accepte aussi str pour compatibilité)
     )
     head_pose: AnyPose | None = None
     head_joints: list[float] | None = None

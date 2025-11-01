@@ -5,7 +5,7 @@ from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from typing import Any
 
-from fastapi import Depends, FastAPI, HTTPException, Request
+from fastapi import APIRouter, Depends, FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
@@ -217,58 +217,29 @@ if settings.is_production():
         RateLimitMiddleware, requests_per_minute=settings.rate_limit_requests
     )
 
-# Inclusion des routers
+# Inclusion des routers (conforme SDK officiel: router parent /api avec sous-routers)
+api_router = APIRouter(prefix="/api")
+api_router.include_router(state.router)
+api_router.include_router(move.router)
+api_router.include_router(motors.router)
+api_router.include_router(daemon.router)
+api_router.include_router(kinematics.router)
+api_router.include_router(apps.router)
+app.include_router(api_router, dependencies=[Depends(verify_token)])
+
+# Routers BBIA supplémentaires (extensions légitimes)
 app.include_router(
     ecosystem.router,
     prefix="/api/ecosystem",
     tags=["ecosystem"],
 )
-
-app.include_router(
-    state.router,
-    prefix="/api/state",
-    tags=["state"],
-    dependencies=[Depends(verify_token)],
-)
-
 app.include_router(
     motion.router,
     prefix="/api/motion",
     tags=["motion"],
     dependencies=[Depends(verify_token)],
 )
-
-app.include_router(
-    move.router,
-    tags=["move"],
-    dependencies=[Depends(verify_token)],
-)
-
-app.include_router(
-    motors.router,
-    tags=["motors"],
-    dependencies=[Depends(verify_token)],
-)
-
-app.include_router(
-    daemon.router,
-    tags=["daemon"],
-    dependencies=[Depends(verify_token)],
-)
-
 app.include_router(telemetry.router, prefix="/ws", tags=["telemetry"])
-
-app.include_router(
-    kinematics.router,
-    tags=["kinematics"],
-    dependencies=[Depends(verify_token)],
-)
-
-app.include_router(
-    apps.router,
-    tags=["apps"],
-    dependencies=[Depends(verify_token)],
-)
 
 
 @app.get("/", response_class=JSONResponse)

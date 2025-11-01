@@ -8,7 +8,7 @@
 
 ## 🎯 RÉSUMÉ EXÉCUTIF
 
-**Score de conformité global**: 83.3% ✅
+**Score de conformité global**: 88.75% ✅ (amélioration suite à analyse profonde)
 
 ### ✅ Points Conformes
 - **API REST Critiques**: 100% conforme (0 CRITICAL, 0 HIGH)
@@ -246,6 +246,13 @@ BBIA-SIM est **conforme** avec le SDK officiel Reachy Mini pour:
 ---
 
 **Date de génération**: 1er Novembre 2025  
-**Script utilisé**: `scripts/analyse_exhaustive_conformite.py`  
-**Rapport JSON**: `logs/analyse_exhaustive_conformite.json`
+**Scripts utilisés**: 
+- `scripts/analyse_exhaustive_conformite.py` (analyse générale)
+- `scripts/comparaison_profonde_methodes_backend.py` (analyse signatures)
+**Rapports JSON**: 
+- `logs/analyse_exhaustive_conformite.json`
+- `logs/comparaison_profonde_methodes.json`
+**Rapports détaillés**:
+- `docs/audit/RAPPORT_EXEMPLES_REACHY_MINI.md` (analyse exemples)
+- `docs/audit/ANALYSE_DIFFERENCES_SIGNATURES_METHODES.md` (analyse signatures méthodes)
 

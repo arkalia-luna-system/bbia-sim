@@ -29,7 +29,7 @@ from ..backend_adapter import (
 
 logger = logging.getLogger(__name__)
 
-router = APIRouter(prefix="/api/move")
+router = APIRouter(prefix="/move")
 
 # État global pour les tâches de mouvement
 move_tasks: dict[UUID, asyncio.Task[None]] = {}
@@ -158,11 +158,19 @@ async def goto(
     backend: BackendAdapter = Depends(get_backend_adapter),
 ) -> MoveUUID:
     """Demande un mouvement vers une cible spécifique (conforme SDK)."""
+    # Convertir InterpolationMode (str) vers InterpolationTechnique si nécessaire
+    method_str = (
+        goto_req.interpolation.value
+        if hasattr(goto_req.interpolation, "value")
+        else str(goto_req.interpolation)
+    )
+
     return create_move_task(
         backend.goto_target(
             head=goto_req.head_pose.to_pose_array() if goto_req.head_pose else None,
             antennas=np.array(goto_req.antennas) if goto_req.antennas else None,
             duration=goto_req.duration,
+            method=method_str,  # Passer le method à goto_target
         )
     )
 

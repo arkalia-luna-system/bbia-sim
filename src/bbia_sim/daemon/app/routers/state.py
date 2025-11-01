@@ -20,7 +20,7 @@ from ..backend_adapter import (
 
 logger = logging.getLogger(__name__)
 
-router = APIRouter()
+router = APIRouter(prefix="/state")
 
 
 class RobotState(BaseModel):

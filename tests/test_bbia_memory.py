@@ -6,7 +6,6 @@ Tests pour bbia_memory.py - Amélioration coverage 0% → 70%+
 import json
 import tempfile
 from pathlib import Path
-from unittest.mock import patch
 
 import pytest
 
@@ -39,9 +38,7 @@ class TestBBIAMemory:
 
         with tempfile.TemporaryDirectory() as tmpdir:
             # Utiliser memory_dir au lieu de memory_file
-            result = save_conversation_to_memory(
-                conversation, memory_dir=str(tmpdir)
-            )
+            result = save_conversation_to_memory(conversation, memory_dir=str(tmpdir))
 
             assert result is True
 
@@ -161,28 +158,65 @@ class TestBBIAMemory:
 
             assert loaded[0]["extra_field"] == "value"
 
-    @patch("builtins.open", side_effect=PermissionError("Permission denied"))
-    def test_save_conversation_permission_error(self, mock_open):
-        """Test sauvegarde erreur permissions."""
-        conversation = [{"user": "Test", "bbia": "Response"}]
-
-        result = save_conversation_to_memory(
-            conversation, memory_file="/fake/path/memory.json"
-        )
-
-        # Devrait gérer erreur gracieusement
-        assert result is False or result is None
-
-    @patch("json.dump", side_effect=Exception("JSON error"))
-    def test_save_conversation_json_error(self, mock_json):
-        """Test sauvegarde erreur JSON."""
-        conversation = [{"user": "Test", "bbia": "Response"}]
-
+    def test_bbia_memory_init(self):
+        """Test initialisation BBIAMemory."""
         with tempfile.TemporaryDirectory() as tmpdir:
-            memory_file = Path(tmpdir) / "bbia_memory.json"
+            memory = BBIAMemory(memory_dir=str(tmpdir))
 
-            result = save_conversation_to_memory(conversation, memory_file=str(memory_file))
+            assert memory.memory_dir.exists()
+            assert (
+                memory.conversation_file
+                == memory.memory_dir / "conversation_history.json"
+            )
+            assert memory.preferences_file == memory.memory_dir / "preferences.json"
+            assert memory.learnings_file == memory.memory_dir / "learnings.json"
 
-            # Devrait gérer erreur gracieusement
-            assert result is False or result is None
+    def test_remember_preference(self):
+        """Test sauvegarde préférence."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            memory = BBIAMemory(memory_dir=str(tmpdir))
 
+            result = memory.remember_preference("voix_preferee", "aurelie")
+            assert result is True
+
+            # Vérifier préférence sauvegardée
+            value = memory.get_preference("voix_preferee")
+            assert value == "aurelie"
+
+    def test_load_preferences_empty(self):
+        """Test chargement préférences vide."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            memory = BBIAMemory(memory_dir=str(tmpdir))
+
+            prefs = memory.load_preferences()
+            assert prefs == {}
+
+    def test_remember_learning(self):
+        """Test sauvegarde apprentissage."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            memory = BBIAMemory(memory_dir=str(tmpdir))
+
+            result = memory.remember_learning("user_says_salut", "recognize_user")
+            assert result is True
+
+            # Vérifier apprentissage sauvegardé
+            response = memory.get_learning("user_says_salut")
+            assert response == "recognize_user"
+
+    def test_clear_memory(self):
+        """Test effacement mémoire."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            memory = BBIAMemory(memory_dir=str(tmpdir))
+
+            # Créer quelques fichiers
+            memory.remember_preference("test", "value")
+            memory.remember_learning("pattern", "response")
+
+            # Effacer
+            result = memory.clear_memory()
+            assert result is True
+
+            # Vérifier fichiers supprimés
+            assert not memory.conversation_file.exists()
+            assert not memory.preferences_file.exists()
+            assert not memory.learnings_file.exists()

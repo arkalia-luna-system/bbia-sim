@@ -7,7 +7,7 @@ from fastapi import APIRouter, HTTPException, WebSocket
 
 logger = logging.getLogger(__name__)
 
-router = APIRouter(prefix="/api/apps", tags=["apps"])
+router = APIRouter(prefix="/apps")
 
 
 class AppInfo:

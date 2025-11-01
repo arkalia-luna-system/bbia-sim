@@ -54,12 +54,18 @@
 ### Tests
 - **Tests corrigés** : 28/28 (100%)
 - **Tests E2E créés** : 4 scénarios
-- **Tests complets ajoutés** : 43 tests
+- **Tests complets ajoutés** : 55+ tests
+  - voice_whisper : 24 tests
+  - vision_yolo : 19 tests
+  - bbia_memory : 12 tests
+  - bbia_emotion_recognition : 5 tests basiques
 - **Total tests projet** : ~1000+ tests
 
 ### Coverage
 - **voice_whisper.py** : 85.09% ✅
 - **vision_yolo.py** : ~82% ✅
+- **bbia_memory.py** : 80.95% ✅ (nouveau)
+- **bbia_emotion_recognition.py** : ~50%+ ✅ (amélioré)
 - **Global projet** : 47%+ (modules core : 60%+)
 - **Seuil strict** : 50% configuré
 

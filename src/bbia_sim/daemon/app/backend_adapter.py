@@ -248,7 +248,7 @@ class BackendAdapter:
                         self._robot.set_joint_pos(joint_name, float(positions[i]))  # type: ignore[attr-defined]
 
     def set_target_antenna_joint_positions(
-        self, positions: npt.NDArray[np.float64]
+        self, positions: npt.NDArray[np.float64] | list[float]
     ) -> None:
         """Définit les positions des antennes (conforme SDK)."""
         self.connect_if_needed()

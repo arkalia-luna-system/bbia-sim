@@ -312,7 +312,9 @@ class TestBBIAVisionExtended:
         # scan_environment peut modifier les objets selon environnement
         # Vérifier que la liste existe et est cohérente
         assert isinstance(self.vision.objects_detected, list)
-        assert len(self.vision.objects_detected) >= 0  # Peut être 0 ou différent selon détection
+        assert (
+            len(self.vision.objects_detected) >= 0
+        )  # Peut être 0 ou différent selon détection
 
     def test_faces_detected_persistence(self):
         """Test persistance des visages détectés."""

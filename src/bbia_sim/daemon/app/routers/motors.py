@@ -7,7 +7,7 @@ from pydantic import BaseModel
 
 from ..backend_adapter import BackendAdapter, get_backend_adapter
 
-router = APIRouter(prefix="/api/motors")
+router = APIRouter(prefix="/motors")
 
 # Utiliser MotorControlMode conforme SDK officiel
 # Compatible avec reachy_mini.daemon.backend.abstract.MotorControlMode
