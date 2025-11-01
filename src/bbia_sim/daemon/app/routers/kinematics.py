@@ -1,11 +1,14 @@
 """Router pour les endpoints de cinématique du robot (conforme SDK officiel)."""
 
+import logging
 from pathlib import Path
 from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException, Response
 
 from ..backend_adapter import BackendAdapter, get_backend_adapter
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/kinematics")
 
