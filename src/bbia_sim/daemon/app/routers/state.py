@@ -3,7 +3,7 @@
 import asyncio
 import logging
 import os
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 from typing import Any
 
 from fastapi import APIRouter, Depends, WebSocket, WebSocketDisconnect
@@ -218,7 +218,7 @@ async def get_full_state(
             result["passive_joints"] = None
 
     result["timestamp"] = datetime.now(
-        UTC
+        timezone.utc
     )  # noqa: UP017 - Python 3.10 compatibility
 
     # Ajouter champs de compatibilité pour certains tests
