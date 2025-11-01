@@ -1,8 +1,9 @@
 """Router pour les endpoints d'état du robot."""
 
+import asyncio
 import logging
 import os
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 from typing import Any
 
 from fastapi import APIRouter, Depends, WebSocket, WebSocketDisconnect
