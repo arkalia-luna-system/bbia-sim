@@ -268,16 +268,18 @@ tests/
 - [x] Créer `bbia_tools.py` avec structure officielle
 - [x] Implémenter `get_tools()` (liste outils)
 - [x] Implémenter `execute_tool(tool_name, params)`
-- [ ] Intégrer avec `BBIAHuggingFace.chat()` (passer outils)
-- [ ] Tests `test_bbia_tools.py`
+- [x] Intégrer avec `BBIAHuggingFace.chat()` (function calling)
+- [x] Méthode `_detect_and_execute_tools()` pour détection automatique
+- [x] Tests `test_bbia_tools.py`
 
 ### **Phase 2 : Animations Idle** ✅ **TERMINÉ**
 - [x] Créer `bbia_idle_animations.py`
-- [x] Implémenter respiration automatique
-- [x] Implémenter poses de passage
-- [x] Implémenter tremblement vocal (optionnel)
-- [ ] Intégrer avec `RobotAPI` (démarrage automatique)
-- [ ] Tests `test_bbia_idle_animations.py`
+- [x] Implémenter respiration automatique (`BBIABreathingAnimation`)
+- [x] Implémenter poses de passage (`BBIAPoseTransitionManager`)
+- [x] Implémenter tremblement vocal (`BBIAVocalTremor`)
+- [x] Gestionnaire centralisé (`BBIIdleAnimationManager`)
+- [x] Tests `test_bbia_idle_animations.py`
+- [x] Démos `demo_idle_animations.py`
 
 ### **Phase 3 : Intégration Complète** ✅ **TERMINÉ**
 - [x] Ajouter outils `dance` / `stop_dance` dans `bbia_tools.py`
