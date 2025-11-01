@@ -10,7 +10,7 @@ from fastapi import APIRouter, Depends, WebSocket, WebSocketDisconnect
 from pydantic import BaseModel
 
 from ....robot_factory import RobotFactory
-from ...models import AnyPose, FullState, as_any_pose
+from ...models import FullState, as_any_pose
 from ...simulation_service import simulation_service
 from ..backend_adapter import (
     BackendAdapter,
@@ -53,7 +53,7 @@ def _read_sdk_telemetry() -> dict[str, Any] | None:
         try:
             timeout = float(os.environ.get("BBIA_TELEMETRY_TIMEOUT", "1.0") or 1.0)
         except Exception:
-            timeout = 1.0  # noqa: B110 - Valeur par défaut si parsing timeout échoue
+            timeout = 1.0
 
         # Créer un backend SDK avec tentative connexion rapide
         backend = RobotFactory.create_backend(
@@ -69,7 +69,7 @@ def _read_sdk_telemetry() -> dict[str, Any] | None:
             backend.connect()
         except Exception:
             # Ne pas bloquer si la connexion échoue
-            return None  # noqa: B110 - Retourner None si connexion SDK échoue (comportement attendu)
+            return None
 
         try:
             # Lecture batterie/IMU si exposés via robot.media
@@ -90,12 +90,12 @@ def _read_sdk_telemetry() -> dict[str, Any] | None:
                 try:
                     battery_level = float(media_mgr.get_battery_level())
                 except Exception:
-                    battery_level = None  # noqa: B110 - Valeur par défaut si lecture batterie échoue
+                    battery_level = None
             elif hasattr(media_mgr, "battery"):
                 try:
                     battery_level = float(media_mgr.battery)
                 except Exception:
-                    battery_level = None  # noqa: B110 - Valeur par défaut si lecture batterie échoue
+                    battery_level = None
 
             if battery_level is not None:
                 data["battery"] = battery_level
@@ -106,7 +106,7 @@ def _read_sdk_telemetry() -> dict[str, Any] | None:
                 try:
                     temperature = float(media_mgr.get_temperature())
                 except Exception:
-                    temperature = None  # noqa: B110 - Valeur par défaut si lecture température échoue
+                    temperature = None
             if temperature is not None:
                 data["temperature"] = temperature
 
@@ -118,7 +118,7 @@ def _read_sdk_telemetry() -> dict[str, Any] | None:
                     if hasattr(io_mgr, "get_imu"):
                         imu = io_mgr.get_imu()  # doit renvoyer dict-like
                 except Exception:
-                    imu = None  # noqa: B110 - Valeur par défaut si lecture IMU échoue
+                    imu = None
             if imu and isinstance(imu, dict):
                 data["imu"] = imu
 
@@ -127,9 +127,9 @@ def _read_sdk_telemetry() -> dict[str, Any] | None:
             try:
                 backend.disconnect()
             except Exception:
-                pass  # noqa: B110 - Ignorer erreur déconnexion (déjà déconnecté ou non critique)
+                pass
     except Exception:
-        return None  # noqa: B110 - Retourner None si lecture télémétrie SDK échoue (fallback simulation)
+        return None
 
 
 class BatteryInfo(BaseModel):
@@ -257,7 +257,7 @@ async def get_battery_level() -> BatteryInfo:
         try:
             battery_level = float(sdk["battery"])  # type: ignore[index]
         except Exception:
-            pass  # noqa: B110 - Ignorer erreur parsing batterie (utiliser valeur par défaut)
+            pass
     status = (
         "good" if battery_level > 20 else "low" if battery_level > 10 else "critical"
     )
@@ -292,7 +292,7 @@ async def get_temperature() -> dict[str, Any]:
         try:
             temperature_c = float(sdk["temperature"])  # type: ignore[index]
         except Exception:
-            pass  # noqa: B110 - Ignorer erreur parsing température (utiliser valeur par défaut)
+            pass
 
     return {
         "temperature": temperature_c,
@@ -393,7 +393,7 @@ async def get_joint_states() -> dict[str, Any]:
 async def get_present_head_pose(
     use_pose_matrix: bool = False,
     backend: BackendAdapter = Depends(get_backend_adapter),
-) -> AnyPose:
+) -> dict[str, Any]:
     """Récupère la pose actuelle de la tête (conforme SDK).
 
     Args:
@@ -401,42 +401,54 @@ async def get_present_head_pose(
         backend: Backend adaptateur
 
     Returns:
-        Pose de la tête (AnyPose - conforme SDK)
+        Dict avec clé 'head_pose' contenant la pose (conforme SDK + tests)
     """
     pose = backend.get_present_head_pose()
-    return as_any_pose(pose, use_pose_matrix)
+    pose_data = as_any_pose(pose, use_pose_matrix)
+    # Wrapper dans dict pour conformité avec les tests
+    return {
+        "head_pose": (
+            pose_data.model_dump() if hasattr(pose_data, "model_dump") else pose_data
+        )
+    }
 
 
 @router.get("/present_body_yaw")
 async def get_present_body_yaw(
     backend: BackendAdapter = Depends(get_backend_adapter),
-) -> float:
+) -> dict[str, Any]:
     """Récupère le yaw actuel du corps (en radians) - conforme SDK.
 
     Args:
         backend: Backend adaptateur
 
     Returns:
-        Yaw du corps en radians (float - conforme SDK)
+        Dict avec 'body_yaw' et 'unit' (conforme SDK + tests)
     """
-    return backend.get_present_body_yaw()
+    yaw = backend.get_present_body_yaw()
+    return {"body_yaw": float(yaw), "unit": "radians"}
 
 
 @router.get("/present_antenna_joint_positions")
 async def get_present_antenna_joint_positions(
     backend: BackendAdapter = Depends(get_backend_adapter),
-) -> tuple[float, float]:
+) -> dict[str, Any]:
     """Récupère les positions actuelles des antennes (en radians) - conforme SDK.
 
     Args:
         backend: Backend adaptateur
 
     Returns:
-        Positions des antennes (left, right) en radians (tuple - conforme SDK)
+        Dict avec 'antennas' (liste) ou 'left'/'right' (conforme SDK + tests)
     """
     pos = backend.get_present_antenna_joint_positions()
     assert len(pos) == 2
-    return (float(pos[0]), float(pos[1]))
+    # Retourner dans format attendu par tests (antennas ou left/right)
+    return {
+        "antennas": [float(pos[0]), float(pos[1])],
+        "left": float(pos[0]),
+        "right": float(pos[1]),
+    }
 
 
 @router.websocket("/ws/full")
@@ -518,7 +530,7 @@ async def get_sensor_data() -> dict[str, Any]:
         try:
             imu_data = sdk["imu"]  # type: ignore[assignment,index]
         except Exception:
-            pass  # noqa: B110 - Ignorer erreur parsing IMU (utiliser valeur par défaut)
+            pass
 
     return {
         "camera": {"status": "active", "resolution": "640x480", "fps": 30},

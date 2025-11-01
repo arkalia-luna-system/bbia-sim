@@ -114,14 +114,13 @@ def create_move_task(coro: Coroutine[Any, Any, None]) -> MoveUUID:
                 move_listeners.remove(ws)
 
     async def wrap_coro() -> None:
-        """Wrapper pour la coroutine avec notifications."""
+        """Wrapper pour la coroutine avec notifications (conforme SDK)."""
         try:
             await notify_listeners("move_started")
             await coro
             await notify_listeners("move_completed")
         except Exception as e:
             await notify_listeners("move_failed", details=str(e))
-            logger.error(f"Erreur dans la tâche de mouvement {uuid}: {e}")
         except asyncio.CancelledError:
             await notify_listeners("move_cancelled")
         finally:
@@ -193,20 +192,19 @@ async def play_goto_sleep(
 @router.get("/recorded-move-datasets/list/{dataset_name:path}")
 async def list_recorded_move_dataset(dataset_name: str) -> list[str]:
     """Liste les mouvements enregistrés disponibles dans un dataset (conforme SDK)."""
-    try:
-        from reachy_mini.motion.recorded_move import RecordedMoves
-
-        moves = RecordedMoves(dataset_name)
-        moves_list = moves.list_moves()
-        return moves_list if isinstance(moves_list, list) else list(moves_list)
-    except ImportError:
-        logger.warning("reachy_mini.motion.recorded_move non disponible")
+    if RecordedMoves is None:
         raise HTTPException(
             status_code=501,
             detail="RecordedMoves non disponible - SDK officiel requis",
-        ) from None
+        )
+    try:
+        moves = RecordedMoves(dataset_name)
     except RepositoryNotFoundError as e:
-        raise HTTPException(status_code=404, detail=str(e)) from e
+        raise HTTPException(
+            status_code=404, detail=str(e)
+        )  # noqa: B904 (conforme SDK - pas de from)
+
+    return moves.list_moves()
 
 
 @router.post("/play/recorded-move-dataset/{dataset_name:path}/{move_name}")
@@ -216,26 +214,34 @@ async def play_recorded_move_dataset(
     backend: BackendAdapter = Depends(get_backend_adapter),
 ) -> MoveUUID:
     """Demande au robot de jouer un mouvement enregistré depuis un dataset (conforme SDK officiel)."""
+    if RecordedMoves is None:
+        raise HTTPException(
+            status_code=501,
+            detail="RecordedMoves non disponible - SDK officiel requis",
+        )
     try:
-        from reachy_mini.motion.recorded_move import RecordedMoves
-
         recorded_moves = RecordedMoves(dataset_name)
     except RepositoryNotFoundError as e:
-        raise HTTPException(status_code=404, detail=str(e)) from e
+        raise HTTPException(
+            status_code=404, detail=str(e)
+        )  # noqa: B904 (conforme SDK - pas de from)
     try:
         move = recorded_moves.get(move_name)
     except ValueError as e:
-        raise HTTPException(status_code=404, detail=str(e)) from e
-
-    # Conforme SDK officiel : appeler directement backend.play_move(move)
-    # play_move est async dans le Backend, create_move_task gère la coroutine
+        raise HTTPException(
+            status_code=404, detail=str(e)
+        )  # noqa: B904 (conforme SDK - pas de from)
     return create_move_task(backend.play_move(move))
 
 
 @router.post("/stop")
 async def stop_move(uuid: MoveUUID) -> dict[str, str]:
-    """Arrête une tâche de mouvement en cours."""
-    return await stop_move_task(uuid.uuid)
+    """Arrête une tâche de mouvement en cours (conforme SDK)."""
+    try:
+        return await stop_move_task(uuid.uuid)
+    except KeyError as e:
+        # Convertir KeyError en HTTPException 404 (conforme SDK)
+        raise HTTPException(status_code=404, detail=str(e)) from e
 
 
 @router.websocket("/ws/updates")
@@ -247,8 +253,7 @@ async def ws_move_updates(websocket: WebSocket) -> None:
         while True:
             _ = await websocket.receive_text()
     except WebSocketDisconnect:
-        if websocket in move_listeners:
-            move_listeners.remove(websocket)
+        move_listeners.remove(websocket)
 
 
 @router.post("/set_target")
