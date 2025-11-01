@@ -1,6 +1,6 @@
 # 📋 CHECKLIST FINALE - CONFORMITÉ REACHY MINI
 
-**Date** : 31 Octobre 2025  
+**Date** : octobre 2025  
 **Version BBIA** : future branch  
 **Version SDK Officiel** : develop branch (pollen-robotics/reachy_mini)
 

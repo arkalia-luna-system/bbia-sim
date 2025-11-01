@@ -1,6 +1,6 @@
 # Corrections BackendAdapter - Conformité SDK Officiel
 
-**Date**: 1er Octobre 2025  
+**Date**: octobre 2025  
 **Fichier**: `src/bbia_sim/daemon/app/backend_adapter.py`
 
 ---

@@ -191,5 +191,5 @@ Avant d'exporter, vérifiez :
 
 ---
 
-*Guide Procreate - Logo BBIA - 2025-10-31*
+*Guide Procreate - Logo BBIA - octobre 2025*
 

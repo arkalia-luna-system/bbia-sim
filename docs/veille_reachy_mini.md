@@ -76,7 +76,7 @@ Notes:
 - Recommandé: hebdomadaire. Ajuster si activité accrue.
 
 ### Historique des mises à jour
-- 2025-10-29: création du document et des requêtes.
-- 2025-10-29: ajout scoring étendu (+tests, topics) et export JSON.
+- octobre 2025: création du document et des requêtes.
+- octobre 2025: ajout scoring étendu (+tests, topics) et export JSON.
 
 

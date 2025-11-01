@@ -1,6 +1,6 @@
 # Corrections Routers et Prefixes - Conformité SDK Officiel
 
-**Date**: 1er Octobre 2025  
+**Date**: octobre 2025  
 **Fichiers modifiés**: 
 - `src/bbia_sim/daemon/app/main.py`
 - `src/bbia_sim/daemon/app/routers/*.py`

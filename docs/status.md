@@ -2,7 +2,7 @@
 
 > Navigation rapide: `docs/references/INDEX_THEMATIQUE.md` · README → liens principaux
 
-**Dernière mise à jour :** 2025-10-30 - Version 1.3.1 (Prêt pour arrivée robot)  
+**Dernière mise à jour :** octobre 2025 - Version 1.3.1 (Prêt pour arrivée robot)  
 **Référence SDK :** `pollen-robotics/reachy_mini` v1.0.0 @ `11ae6ad49eae22381946135fca29bdb4bfb1fdc1` (branch `develop`)
 
 ---
@@ -134,13 +134,13 @@ Le SDK officiel Reachy Mini expose une intégration Hugging Face Spaces via `hf_
 
 | Critère | Statut | Détails |
 |---------|--------|---------|
-| Lignes ≤ 100 chars | ✅ | **0 ligne > 100 chars** (44 lignes corrigées, 2025-10-29) |
+| Lignes ≤ 100 chars | ✅ | **0 ligne > 100 chars** (44 lignes corrigées, octobre 2025) |
 | Ruff check | ✅ | **Aucune erreur** |
 | Black format | ✅ | **88 colonnes** (formaté automatiquement) |
 | Mypy strict | ✅ | **Types corrects** (`npt.NDArray` importé, `dict[str, Any]` ajouté) |
 | Bandit security | ⚠️ | 2 findings B615 (justifié `revision="main"`) |
 
-**Issues corrigées (2025-10-29) :**
+**Issues corrigées (octobre 2025) :**
 1. ✅ **44 lignes > 100 chars** → Toutes corrigées (chaînes multilignes, assignments)
 2. ✅ **Import `numpy.typing`** manquant → Ajouté `import numpy.typing as npt`
 3. ✅ **Type hints incomplets** → Ajouté `dict[str, Any]` pour signatures
@@ -217,7 +217,7 @@ bandit -r src/bbia_sim/bbia_huggingface.py -ll
 | Docs/UX | **9/10** | 10% |
 | **TOTAL** | **8.9/10** | 100% |
 
-**Recommandation :** Module prêt production (2025-10-29). Tous les critères qualité respectés :
+**Recommandation :** Module prêt production (octobre 2025). Tous les critères qualité respectés :
 - ✅ Lignes ≤ 100 chars
 - ✅ Ruff + Black + Mypy OK
 - ✅ Types stricts
@@ -361,7 +361,7 @@ Le SDK officiel `RobotBackend` expose:
 - Emergency stop: Si `last_alive + 1 < time.time()`, lève RuntimeError (lignes 216-224)
 - `goto_target()` valide `duration <= 0.0` (ligne 241 reachy_mini.py)
 
-**Alignement BBIA (audit 2025-10-29) :**
+**Alignement BBIA (audit octobre 2025) :**
 - ✅ Limites joints stewart alignées URDF officiel (exactes du XML)
 - ✅ Watchdog implémenté fonctionnellement (timeout 2.0s vs 1.0s SDK - plus conservateur, acceptable)
 - ✅ Emergency stop présent (`disable_motors()` + déconnexion - conforme)
@@ -381,7 +381,7 @@ Le SDK officiel `RobotBackend` expose:
 | Mypy strict | ✅ | **Types corrects** (npt.NDArray[np.float64], retours explicites) |
 | Bandit security | ✅ | **0 issues** (scan clean) |
 
-**Issues corrigées (2025-10-29) :**
+**Issues corrigées (octobre 2025) :**
 1. ✅ **Import cast non utilisé** → Supprimé
 2. ✅ **Type hints npt.NDArray** → Ajouté `npt.NDArray[np.float64]` pour `antennas` paramètres
 3. ✅ **Retour manquant set_target_head_pose** → Ajouté `return None`
@@ -408,7 +408,7 @@ Le SDK officiel `RobotBackend` expose:
 - ✅ Emergency stop (arrêt moteurs)
 - ✅ Mapping joints (stewart, antennas, yaw_body)
 
-**Tests existants (audit 2025-10-29) :**
+**Tests existants (audit octobre 2025) :**
 - ✅ 91 tests passent, 3 skipped (tests rapides exclus e2e)
 - ✅ `test_reachy_mini_backend.py` (22 tests) - Connexion, joints, limites, sécurité
 - ✅ `test_watchdog_monitoring.py` (8 tests) - Watchdog start/stop, heartbeat, emergency_stop, **logique timeout 2s vérifiée**
@@ -479,7 +479,7 @@ bandit -r src/bbia_sim/backends/reachy_mini_backend.py -ll
 | Docs/UX | 8/10 | 10% |
 | **TOTAL** | **8.9/10** | 100% |
 
-**Recommandation :** Module très conforme SDK (audit 2025-10-29). Watchdog fonctionnel (timeout 2s vs 1s SDK acceptable, plus conservateur). Tests robustes (91 passed). Qualité code excellente (ruff OK, black OK, bandit OK, lignes ≤100). Prêt production. Reste à mesurer benchmarks latence emergency_stop (p50/p95) et jitter boucle 50Hz selon backlog pour compléter métriques performance.
+**Recommandation :** Module très conforme SDK (audit octobre 2025). Watchdog fonctionnel (timeout 2s vs 1s SDK acceptable, plus conservateur). Tests robustes (91 passed). Qualité code excellente (ruff OK, black OK, bandit OK, lignes ≤100). Prêt production. Reste à mesurer benchmarks latence emergency_stop (p50/p95) et jitter boucle 50Hz selon backlog pour compléter métriques performance.
 
 ---
 
@@ -729,7 +729,7 @@ Points clés:
 **JSONL généré :** `artifacts/audit_reachy_modules.jsonl`
 **Type-check** : mypy = 0 error (bbia_voice no-redef corrigé; accès SDK typés dans state)
 
-### 🔐 Synthèse conformité SDK Reachy Mini (2025-10-30)
+### 🔐 Synthèse conformité SDK Reachy Mini (octobre 2025)
 
 - **Conformité globale**: OK (signatures, mapping joints, comportements, interpolation, fallbacks)
 - **Sécurité**: Clamp double-niveau (hardware → safe 0.3 rad), joints interdits (antennes), emergency stop, watchdog 2s, validation JSON (taille/secrets)
@@ -787,7 +787,7 @@ pytest -q -m "not e2e" -k "<module_name> or unit or fast"
 
 **Conventions** : [x] vérifié, [ ] à faire  
 **Référence Reachy** : `pollen-robotics/reachy_mini` @ `84c40c31ff898da4004584c09c6a1844b27425a3` (branch `develop`)  
-**Dernière mise à jour** : 2025-10-29
+**Dernière mise à jour** : octobre 2025
 
 ### 📊 État synthétique des vérifications
 

@@ -374,6 +374,6 @@ Avec ton profil:
 
 ---
 
-*Analyse effectuée le 2025-10-31*  
+*Analyse effectuée le octobre 2025*  
 *Mentor: Assistant IA technique*  
 *Vérification: Code réel vs affirmations externes*

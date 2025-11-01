@@ -106,5 +106,5 @@
 
 ---
 
-*Index Guides Procreate - BBIA-SIM - 2025-10-31*
+*Index Guides Procreate - BBIA-SIM - octobre 2025*
 

@@ -1,6 +1,6 @@
 # 🔍 Audit Exhaustif Pointilleux - Tous les Détails
 
-**Date**: 1er Octobre 2025  
+**Date**: octobre 2025  
 **Objectif**: Vérification exhaustive de TOUS les détails (doc, tests, assets, démos, constantes, messages d'erreur, config)
 
 ---

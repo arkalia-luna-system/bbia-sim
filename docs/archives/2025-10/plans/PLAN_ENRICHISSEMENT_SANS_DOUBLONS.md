@@ -1,6 +1,6 @@
 # 🎯 PLAN D'ENRICHISSEMENT BBIA - SANS DOUBLONS
 
-**Date :** 28 Octobre 2025
+**Date :** octobre 2025
 **Objectif :** Enrichir modules existants au lieu de créer des doublons
 **Règle d'or :** Prolonger > Créer
 
@@ -277,5 +277,5 @@ python -m pytest tests/test_bbia_huggingface.py --cov=src.bbia_sim.bbia_huggingf
 
 **Veux-tu que je commence maintenant ?** 🚀
 
-*Plan créé le 28 Octobre 2025*
+*Plan créé le octobre 2025*
 

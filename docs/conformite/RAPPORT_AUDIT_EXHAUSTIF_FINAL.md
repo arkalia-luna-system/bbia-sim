@@ -1,6 +1,6 @@
 # 📊 Rapport Final - Audit Exhaustif BBIA-SIM vs SDK Officiel
 
-**Date**: 1er Octobre 2025  
+**Date**: octobre 2025  
 **Version**: 2.0  
 **Branche**: future  
 **SDK Officiel**: pollen-robotics/reachy_mini (develop)

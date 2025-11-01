@@ -392,6 +392,6 @@ Avant de considérer l'audit complet:
 ---
 
 **Version**: 2.0  
-**Date**: 1er Octobre 2025  
+**Date**: octobre 2025  
 **Basé sur**: Script `compare_with_official_exhaustive.py` (consolidé) et checklist existante
 

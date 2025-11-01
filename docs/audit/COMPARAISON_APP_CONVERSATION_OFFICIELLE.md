@@ -1,6 +1,6 @@
 # 🔍 Comparaison : Application Conversation Officielle vs BBIA
 
-**Date** : 2025-01-31  
+**Date** : octobre 2025  
 **Source** : Documentation officielle Reachy Mini Conversation App  
 **Version BBIA** : 1.3.2
 
@@ -279,7 +279,7 @@
 
 ### **Recommandation Globale** :
 
-**BBIA est à 75% de parité fonctionnelle** avec l'app officielle (mis à jour 2025-02-01).
+**BBIA est à 75% de parité fonctionnelle** avec l'app officielle (mis à jour octobre 2025).
 
 **Priorités** :
 1. ✅ **Danses** (✅ API `/play/recorded-move-dataset` disponible, ✅ intégrée dans outils LLM)
@@ -292,5 +292,5 @@
 
 ---
 
-**Dernière mise à jour** : 2025-02-01 (outils LLM intégrés avec BBIAHuggingFace.chat())
+**Dernière mise à jour** : octobre 2025 (outils LLM intégrés avec BBIAHuggingFace.chat())
 

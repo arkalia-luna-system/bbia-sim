@@ -1,6 +1,6 @@
 # ✅ NETTOYAGE RACINE COMPLET
 
-**Date:** 28 Octobre 2025
+**Date:** octobre 2025
 **Mission:** Ranger les derniers fichiers .md de la racine
 
 ---
@@ -64,6 +64,6 @@
 
 ---
 
-**Date:** 28 Octobre 2025
+**Date:** octobre 2025
 **Statut:** ✅ TERMINÉ
 

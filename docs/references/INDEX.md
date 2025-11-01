@@ -1,7 +1,7 @@
 # 📚 INDEX COMPLET - Documentation BBIA-SIM
 
 **Version :** 1.3.0
-**Dernière mise à jour :** 28 Octobre 2025
+**Dernière mise à jour :** octobre 2025
 
 ---
 
@@ -169,5 +169,5 @@ Métriques actuelles :
 
 Documentation organisée et à jour.
 
-*Dernière mise à jour : 28 Octobre 2025*
+*Dernière mise à jour : octobre 2025*
 

@@ -1,6 +1,6 @@
 # ✅ CORRECTIONS FINALES - SDK REACHY MINI OFFICIEL
 
-**Date :** 28 Octobre 2025
+**Date :** octobre 2025
 **Référence :** SDK officiel GitHub https://github.com/pollen-robotics/reachy_mini
 
 ---

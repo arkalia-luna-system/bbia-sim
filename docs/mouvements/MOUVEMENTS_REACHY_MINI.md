@@ -1,6 +1,6 @@
 # Mouvements Reachy Mini - analyse et améliorations
 
-**Date:** 28 Octobre 2025
+**Date:** octobre 2025
 **Statut:** améliorations appliquées
 
 ## État actuel des joints

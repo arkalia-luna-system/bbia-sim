@@ -1,7 +1,7 @@
 # 🎯 RAPPORT FINAL - AMÉLIORATIONS QUALITÉ BBIA-SIM
 ## Octobre 2025
 
-**Date :** 28 Octobre 2025
+**Date :** octobre 2025
 **Contexte :** Staff Engineer - Améliorations PRO sans doublons
 **Venv :** Activé et opérationnel
 
@@ -326,7 +326,7 @@ pytest tests/ --cov=src/bbia_sim --cov-report=term-missing --cov-report=html
 
 ---
 
-**Rapport généré le 28 Octobre 2025**
+**Rapport généré le octobre 2025**
 **Staff Engineer - BBIA-SIM**
 **Venv : Activé et prêt**
 

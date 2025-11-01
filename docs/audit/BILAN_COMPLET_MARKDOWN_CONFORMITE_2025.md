@@ -1,6 +1,6 @@
 # 📊 BILAN COMPLET - Évaluation Markdown & Conformité Reachy Mini
 
-**Date** : 2025-10-30  
+**Date** : octobre 2025  
 **Référence SDK Officiel** : `pollen-robotics/reachy_mini` (Release Octobre 2024)  
 **Version BBIA** : 1.3.2  
 **Licence** : MIT (Open Source)
@@ -360,7 +360,7 @@ Tous les fichiers dans `docs/archives/` sont utiles pour la traçabilité histor
 
 ---
 
-**Date de vérification** : 2025-10-30  
+**Date de vérification** : octobre 2025  
 **Référence SDK** : `pollen-robotics/reachy_mini` (Release Octobre 2024)  
 **Version BBIA** : 1.3.2  
 **Vérifié par** : Audit exhaustif code + documentation

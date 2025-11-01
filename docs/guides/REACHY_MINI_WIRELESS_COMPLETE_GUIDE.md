@@ -192,7 +192,7 @@ gantt
     title Plan de Développement BBIA
     dateFormat  YYYY-MM-DD
     section Phase 1: Préparation
-    Documentation complète    :done, doc, 2024-12-01, 2024-12-15
+    Documentation complète    :done, doc, octobre 2025, octobre 2025
     Environnement dev        :active, env, Octobre 2025, Octobre 2025
     Simulation Unity         :sim, Octobre 2025, Octobre 2025
 

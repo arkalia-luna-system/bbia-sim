@@ -1,7 +1,7 @@
 # 🧪 Guide Complet du Système de Tests BBIA-SIM
 
 **Version**: 1.0  
-**Date**: 2025-10-31
+**Date**: octobre 2025
 
 ---
 
@@ -517,5 +517,5 @@ pip install -e .[dev,test]
 
 ---
 
-**Dernière mise à jour** : 2025-10-31
+**Dernière mise à jour** : octobre 2025
 

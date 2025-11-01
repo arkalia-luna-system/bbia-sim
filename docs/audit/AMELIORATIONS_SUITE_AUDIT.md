@@ -1,6 +1,6 @@
 # AMÉLIORATIONS SUITE - AUDIT BBIA → REACHY
 
-**Date**: 2025-10-29
+**Date**: octobre 2025
 **Phase**: Optimisations sécurité et performance post-audit
 
 ---

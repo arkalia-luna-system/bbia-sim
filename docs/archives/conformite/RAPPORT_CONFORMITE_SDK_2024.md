@@ -372,6 +372,6 @@ python examples/demo_bbia_phase2_integration.py --real
 
 ---
 
-*Rapport généré automatiquement le 2024-12-20*
+*Rapport généré automatiquement le octobre 2025*
 *BBIA-SIM v1.3.0 - Conformité SDK Reachy-Mini*
 

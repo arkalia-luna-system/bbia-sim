@@ -52,5 +52,5 @@
 
 ---
 
-*Fichier d'accès rapide - Mise à jour : 2025-10-31*
+*Fichier d'accès rapide - Mise à jour : octobre 2025*
 

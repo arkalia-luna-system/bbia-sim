@@ -617,13 +617,13 @@ python scripts/generate_conformity_report_reachy_mini.py
 
 ---
 
-## 🔴 AUDIT REST API ENDPOINTS (31 Octobre 2025)
+## 🔴 AUDIT REST API ENDPOINTS (octobre 2025)
 
 ### Endpoints REST - Conformité Complète
 
 Comparaison exhaustive avec le repo officiel `pollen-robotics/reachy_mini` (branche `develop`) :
 
-#### ✅ CRITIQUE - IMPLÉMENTÉ (31 Octobre 2025)
+#### ✅ CRITIQUE - IMPLÉMENTÉ (octobre 2025)
 
 1. **`/api/motors/*`** - Contrôle moteurs ✅
    - `GET /api/motors/status` - Statut (enabled/disabled/gravity_compensation) ✅
@@ -643,20 +643,20 @@ Comparaison exhaustive avec le repo officiel `pollen-robotics/reachy_mini` (bran
 4. **`POST /api/motion/goto_sleep`** - Séquence veille ✅
    - **Fichier** : `src/bbia_sim/daemon/app/routers/motion.py` ✅
 
-#### ✅ MODÉRÉ - IMPLÉMENTÉ (31 Octobre 2025)
+#### ✅ MODÉRÉ - IMPLÉMENTÉ (octobre 2025)
 
 5. **`GET /api/state/present_head_pose`** - Pose tête actuelle ✅
 6. **`GET /api/state/present_body_yaw`** - Yaw corps actuel ✅
 7. **`GET /api/state/present_antenna_joint_positions`** - Positions antennes ✅
 8. **`WebSocket /api/state/ws/full`** - Stream état complet ✅
 
-#### ✅ AMÉLIORATIONS IMPLÉMENTÉES (31 Octobre 2025)
+#### ✅ AMÉLIORATIONS IMPLÉMENTÉES (octobre 2025)
 
 9. **`POST /api/motion/goto_pose`** avec interpolation ✅
    - Paramètres : `duration` et `interpolation` (linear, minjerk, ease, cartoon)
    - Compatible SDK officiel
 
-#### ✅ OPTIONNEL - IMPLÉMENTÉ (31 Octobre 2025)
+#### ✅ OPTIONNEL - IMPLÉMENTÉ (octobre 2025)
 
 10. **`/api/kinematics/*`** - Router cinématique ✅
     - `GET /api/kinematics/info` - Informations cinématique ✅
@@ -692,7 +692,7 @@ Comparaison exhaustive avec le repo officiel `pollen-robotics/reachy_mini` (bran
 
 ## 📋 CHECKLIST FINALE DÉTAILLÉE
 
-Une analyse exhaustive complémentaire a été effectuée (31 Octobre 2025) comparant TOUS les endpoints REST, classes, scripts, assets, modèles MuJoCo, guides, helpers et tests d'intégration.
+Une analyse exhaustive complémentaire a été effectuée (octobre 2025) comparant TOUS les endpoints REST, classes, scripts, assets, modèles MuJoCo, guides, helpers et tests d'intégration.
 
 **Document créé** : `docs/conformite/CHECKLIST_FINALE_CONFORMITE.md`
 
@@ -715,7 +715,7 @@ Une analyse exhaustive complémentaire a été effectuée (31 Octobre 2025) comp
 - Tests de conformité supplémentaires
 
 **Temps estimé pour 100% conformité** : ~12-15h de travail  
-**Status** : ✅ **TOUT IMPLÉMENTÉ** (31 Octobre 2025)
+**Status** : ✅ **TOUT IMPLÉMENTÉ** (octobre 2025)
 
 **Conformité finale** : **~96% (25/26 endpoints)** ✅
 

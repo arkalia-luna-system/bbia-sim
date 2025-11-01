@@ -1,6 +1,6 @@
 # ✅ Résumé Nettoyage Documentation BBIA-SIM
 
-**Date :** 28 Octobre 2025
+**Date :** octobre 2025
 **Statut :** ✅ Terminé
 
 ---
@@ -170,5 +170,5 @@ bbia-sim/
 
 ---
 
-*Dernière mise à jour : 28 Octobre 2025*
+*Dernière mise à jour : octobre 2025*
 

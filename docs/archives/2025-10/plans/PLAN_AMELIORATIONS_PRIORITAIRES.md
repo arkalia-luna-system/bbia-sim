@@ -1,6 +1,6 @@
 # 🔧 PLAN D'AMÉLIORATIONS PRIORITAIRES - BBIA-SIM
 
-**Date :** 28 Octobre 2025
+**Date :** octobre 2025
 **Objectif :** Améliorer la qualité, la couverture de tests et corriger les points critiques
 
 ---

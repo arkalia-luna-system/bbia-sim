@@ -358,5 +358,5 @@ sim.launch_simulation()
 
 ---
 
-*Guide Import Images MuJoCo - BBIA-SIM - 2025-10-31*
+*Guide Import Images MuJoCo - BBIA-SIM - octobre 2025*
 

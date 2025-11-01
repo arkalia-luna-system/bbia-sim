@@ -1,6 +1,6 @@
 # 🎯 CORRECTIONS DÉMOS REACHY MINI - PLAN D'ACTION
 
-**Date:** 28 Octobre 2025
+**Date:** octobre 2025
 **Objectif:** Aligner toutes les démos avec le SDK officiel Reachy-Mini
 
 ## 📊 PROBLÈMES IDENTIFIÉS DANS LES DÉMOS

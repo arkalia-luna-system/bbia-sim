@@ -1,6 +1,6 @@
 # 🎨 Brief Complet pour Graphiste – Branding BBIA
 
-> **Statut** : ✅ **Prêt pour graphiste** | **Version** : 1.1 | **Date** : 2025-10-31  
+> **Statut** : ✅ **Prêt pour graphiste** | **Version** : 1.1 | **Date** : octobre 2025  
 > **Projet** : Direction artistique et image de marque complète pour BBIA  
 > **BBIA** = assistant IA robotique nouvelle génération, projet open source Arkalia Luna System, compatible Reachy Mini
 
@@ -175,13 +175,13 @@ Le but est de créer une identité forte et mémorable, tout en gardant la flexi
 |-----------|--------|
 | **Statut** | ✅ Prêt pour graphiste |
 | **Version** | 1.1 |
-| **Date de création** | 2025-10-31 |
-| **Dernière mise à jour** | 2025-10-31 |
+| **Date de création** | octobre 2025 |
+| **Dernière mise à jour** | octobre 2025 |
 | **Auteur** | Arkalia Luna System |
 | **Contact** | arkalia.luna.system@gmail.com |
 | **Priorité** | 🔥 Haute - Première livraison MVP graphique |
 
 **Changelog** :
-- v1.1 (2025-10-31) : Ajout section MVP graphique + Liberté créative
-- v1.0 (2025-10-31) : Création du brief initial
+- v1.1 (octobre 2025) : Ajout section MVP graphique + Liberté créative
+- v1.0 (octobre 2025) : Création du brief initial
 

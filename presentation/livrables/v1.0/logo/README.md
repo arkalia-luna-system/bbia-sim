@@ -1,7 +1,7 @@
 # Logo BBIA - Documentation
 
 > **Asset** : Logo vectoriel BBIA (dessin client avec Procreate)  
-> **Version** : 2.0 | **Date** : 2025-10-31 | **Statut** : ⏳ **En attente création client**
+> **Version** : 2.0 | **Date** : octobre 2025 | **Statut** : ⏳ **En attente création client**
 
 ---
 
@@ -112,9 +112,9 @@ Avant d'exporter votre dessin Procreate, vérifiez :
 
 | Version | Date | Modifications | Statut |
 |---------|------|--------------|--------|
-| 1.0 | 2025-10-31 | Version initiale stylisée | ❌ **Rejetée - Pas fidèle** |
-| 1.1 | 2025-10-31 | Logos Reachy fidèles créés | ❌ **Temporaires - À remplacer** |
-| 2.0 | 2025-10-31 | Client dessine avec Procreate | ⏳ **En attente création client** |
+| 1.0 | octobre 2025 | Version initiale stylisée | ❌ **Rejetée - Pas fidèle** |
+| 1.1 | octobre 2025 | Logos Reachy fidèles créés | ❌ **Temporaires - À remplacer** |
+| 2.0 | octobre 2025 | Client dessine avec Procreate | ⏳ **En attente création client** |
 
 ---
 
@@ -124,4 +124,4 @@ Avant d'exporter votre dessin Procreate, vérifiez :
 
 ---
 
-*Documentation Logo BBIA - Version 2.0 - Workflow Procreate - 2025-10-31*
+*Documentation Logo BBIA - Version 2.0 - Workflow Procreate - octobre 2025*

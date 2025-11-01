@@ -1,6 +1,6 @@
 # 🔍 AUDIT COMPARATIF COMPLET - Repo Officiel Reachy-Mini vs BBIA
 
-**Date** : 2025-10-31  
+**Date** : octobre 2025  
 **Repo Officiel** : [pollen-robotics/reachy_mini](https://github.com/pollen-robotics/reachy_mini)  
 **Version BBIA** : 1.3.2  
 **Objectif** : Audit exhaustif comparant chaque aspect du repo officiel avec BBIA pour identifier micro-fautes et incohérences avant réception du robot (Octobre 2025)
@@ -18,7 +18,7 @@
 - ✅ Antennes correctement bloquées (`forbidden_joints`) - conforme XML officiel
 - ✅ Documentation mise à jour (octobre 2024)
 
-### ✅ Corrections Appliquées (2025-10-31)
+### ✅ Corrections Appliquées (octobre 2025)
 - ✅ **Antennes** : Documentation corrigée - toutes mentions "antennes animées" → "antennes bloquées (sécurité hardware)"
 - ✅ **Scripts** : `quick_start.sh` corrigé pour mentionner antennes bloquées
 - ✅ **Global Config** : `antenna_animation` retiré des comportements valides (obsolète)
@@ -575,7 +575,7 @@ self.joint_limits = {
 
 ---
 
-## 12. ✅ ACTIONS CORRECTIVES APPLIQUÉES (2025-10-31)
+## 12. ✅ ACTIONS CORRECTIVES APPLIQUÉES (octobre 2025)
 
 ### Corrections Documentation
 
@@ -595,8 +595,8 @@ self.joint_limits = {
 
 ---
 
-**Document créé le 2025-10-31**  
-**Dernière mise à jour** : 2025-10-31 (Corrections appliquées)  
+**Document créé le octobre 2025**  
+**Dernière mise à jour** : octobre 2025 (Corrections appliquées)  
 **Basé sur** : Email Pollen Robotics Octobre 2024, Repo officiel GitHub, Code BBIA v1.3.2  
 **Prochaine mise à jour** : Après réception robot physique (Octobre 2025)
 

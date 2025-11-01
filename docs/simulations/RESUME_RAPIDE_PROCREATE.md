@@ -70,5 +70,5 @@
 
 ---
 
-*Résumé Rapide - BBIA-SIM - 2025-10-31*
+*Résumé Rapide - BBIA-SIM - octobre 2025*
 

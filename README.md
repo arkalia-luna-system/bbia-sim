@@ -264,11 +264,11 @@ python scripts/replay_viewer.py artifacts/my_animation.jsonl --speed 1.5
 
 ### 📹 Vidéos de Démonstration
 
-**Nouvelles vidéos disponibles** (2025-10-01) : 3 captures vidéo de la simulation MuJoCo
+**Nouvelles vidéos disponibles** (octobre 2025) : 3 captures vidéo de la simulation MuJoCo
 
-- `assets/videos/Enregistrement de l'écran 2025-10-01 à 17.00.52.mov` (2.7 MB)
-- `assets/videos/Enregistrement de l'écran 2025-10-01 à 17.01.27.mov` (3.4 MB)
-- `assets/videos/Enregistrement de l'écran 2025-10-01 à 17.01.56.mov` (3.1 MB)
+- `assets/videos/Enregistrement de l'écran octobre 2025 à 17.00.52.mov` (2.7 MB)
+- `assets/videos/Enregistrement de l'écran octobre 2025 à 17.01.27.mov` (3.4 MB)
+- `assets/videos/Enregistrement de l'écran octobre 2025 à 17.01.56.mov` (3.1 MB)
 
 **Source** : Toutes ces vidéos ont été enregistrées depuis `examples/demo_mujoco_continue.py` qui montre le robot en mouvement continu (tête + corps).
 

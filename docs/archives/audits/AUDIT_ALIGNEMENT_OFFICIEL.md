@@ -21,7 +21,7 @@ L'audit confirme que le projet BBIA-Reachy-SIM est **parfaitement aligné** avec
 ### **✅ Assets STL Officiels**
 - **Source :** `src/reachy_mini/descriptions/reachy_mini/mjcf/assets/`
 - **Nombre :** 41 fichiers STL officiels
-- **Version :** v1.0.0rc5 (15 octobre 2025)
+- **Version :** v1.0.0rc5 (octobre 2025)
 - **Statut :** ✅ **Tous les assets officiels présents**
 
 ### **✅ Spécifications des Joints**
