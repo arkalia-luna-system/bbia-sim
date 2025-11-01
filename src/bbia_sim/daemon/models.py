@@ -4,6 +4,8 @@ from datetime import datetime
 from typing import Any
 from uuid import UUID
 
+import numpy as np
+import numpy.typing as npt
 from pydantic import BaseModel, Field, field_validator
 
 
@@ -91,25 +93,21 @@ class XYZRPYPose(BaseModel):
     yaw: float = 0.0
 
     @classmethod
-    def from_pose_array(cls, arr: Any) -> "XYZRPYPose":
-        """Crée une pose XYZRPYPose depuis un array numpy 4x4."""
-        import numpy as np
+    def from_pose_array(cls, arr: npt.NDArray[np.float64]) -> "XYZRPYPose":
+        """Crée une pose XYZRPYPose depuis un array numpy 4x4 (conforme SDK)."""
         from scipy.spatial.transform import Rotation as R
 
-        if isinstance(arr, np.ndarray):
-            assert arr.shape == (4, 4), "Array must be of shape (4, 4)"
-            x, y, z = arr[0, 3], arr[1, 3], arr[2, 3]
-            roll, pitch, yaw = R.from_matrix(arr[:3, :3]).as_euler("xyz")
-            return cls(x=x, y=y, z=z, roll=roll, pitch=pitch, yaw=yaw)
-        return cls()
+        assert arr.shape == (4, 4), "Array must be of shape (4, 4)"
+        x, y, z = arr[0, 3], arr[1, 3], arr[2, 3]
+        roll, pitch, yaw = R.from_matrix(arr[:3, :3]).as_euler("xyz")
+        return cls(x=x, y=y, z=z, roll=roll, pitch=pitch, yaw=yaw)
 
-    def to_pose_array(self) -> Any:
-        """Convertit en matrice 4x4 numpy."""
-        import numpy as np
+    def to_pose_array(self) -> npt.NDArray[np.float64]:
+        """Convertit en matrice 4x4 numpy (conforme SDK)."""
         from scipy.spatial.transform import Rotation as R
 
         rotation = R.from_euler("xyz", [self.roll, self.pitch, self.yaw])
-        pose_matrix = np.eye(4)
+        pose_matrix = np.eye(4, dtype=np.float64)
         pose_matrix[:3, 3] = [self.x, self.y, self.z]
         pose_matrix[:3, :3] = rotation.as_matrix()
         return pose_matrix
@@ -138,77 +136,45 @@ class Matrix4x4Pose(BaseModel):
     ]
 
     @classmethod
-    def from_pose_array(cls, arr: Any) -> "Matrix4x4Pose":
-        """Crée une pose Matrix4x4Pose depuis un array numpy 4x4."""
-        import numpy as np
+    def from_pose_array(cls, arr: npt.NDArray[np.float64]) -> "Matrix4x4Pose":
+        """Crée une pose Matrix4x4Pose depuis un array numpy 4x4 (conforme SDK)."""
+        assert arr.shape == (4, 4), "Array must be of shape (4, 4)"
+        m: tuple[
+            float,
+            float,
+            float,
+            float,
+            float,
+            float,
+            float,
+            float,
+            float,
+            float,
+            float,
+            float,
+            float,
+            float,
+            float,
+            float,
+        ] = tuple(
+            arr.flatten().tolist()
+        )  # type: ignore[assignment]
+        return cls(m=m)
 
-        if isinstance(arr, np.ndarray):
-            assert arr.shape == (4, 4), "Array must be of shape (4, 4)"
-            m = tuple(arr.flatten().tolist())
-            return cls(m=m)
-        return cls(
-            m=(
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-            )
-        )
-
-    def to_pose_array(self) -> Any:
-        """Convertit en matrice 4x4 numpy."""
-        import numpy as np
-
-        return np.array(self.m).reshape((4, 4))
+    def to_pose_array(self) -> npt.NDArray[np.float64]:
+        """Convertit en matrice 4x4 numpy (conforme SDK)."""
+        return np.array(self.m, dtype=np.float64).reshape((4, 4))
 
 
 AnyPose = XYZRPYPose | Matrix4x4Pose
 
 
-def as_any_pose(pose: Any, use_matrix: bool) -> AnyPose:
+def as_any_pose(pose: npt.NDArray[np.float64], use_matrix: bool) -> AnyPose:
     """Convertit un array numpy en AnyPose (conforme SDK)."""
-    import numpy as np
-
-    if isinstance(pose, np.ndarray):
-        if use_matrix:
-            return Matrix4x4Pose.from_pose_array(pose)
-        else:
-            return XYZRPYPose.from_pose_array(pose)
-    # Fallback
     if use_matrix:
-        return Matrix4x4Pose(
-            m=(
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-            )
-        )
-    return XYZRPYPose()
+        return Matrix4x4Pose.from_pose_array(pose)
+    else:
+        return XYZRPYPose.from_pose_array(pose)
 
 
 class FullBodyTarget(BaseModel):
@@ -229,7 +195,7 @@ class FullState(BaseModel):
     """Représente l'état complet du robot incluant toutes les positions d'articulations et poses (conforme SDK)."""
 
     control_mode: str | None = (
-        None  # MotorControlMode.value (SDK utilise MotorControlMode mais on accepte str aussi)
+        None  # MotorControlMode.value (SDK utilise MotorControlMode)
     )
     head_pose: AnyPose | None = None
     head_joints: list[float] | None = None

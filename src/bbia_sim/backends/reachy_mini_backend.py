@@ -914,13 +914,23 @@ class ReachyMiniBackend(RobotAPI):
         antennas: npt.NDArray[np.float64] | list[float] | None = None,
         duration: float = 0.5,
         method: str = "minjerk",
-        body_yaw: float = 0.0,
+        body_yaw: float | None = 0.0,
     ) -> None:
-        """Va vers une cible spécifique avec technique d'interpolation."""
-        # Validation stricte: duration doit être positive
+        """Va vers une cible spécifique avec technique d'interpolation (conforme SDK officiel).
+
+        Args:
+            head: Matrice 4x4 représentant la pose de la tête (ou None)
+            antennas: Angles des antennes en radians [right, left] (ou None)
+            duration: Durée du mouvement en secondes (doit être > 0)
+            method: Technique d'interpolation ("minjerk", "linear", "ease_in_out", "cartoon")
+            body_yaw: Angle yaw du corps en radians (None = garder position actuelle, conforme SDK)
+        """
+        # Validation stricte: duration doit être positive et non-nulle (conforme SDK)
         duration_float = float(duration)
-        if duration_float < 0.0:
-            raise ValueError(f"Duration must be >= 0, got {duration_float}")
+        if duration_float <= 0.0:
+            raise ValueError(
+                "Duration must be positive and non-zero. Use set_target() for immediate position setting."
+            )
 
         if not self.is_connected or not self.robot:
             logger.info("Mode simulation: goto_target")

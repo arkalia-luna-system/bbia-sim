@@ -99,6 +99,19 @@
 
 **Voir** : `docs/audit/ANALYSE_TESTS_EXEMPLES_MANQUANTS.md` pour détails complets
 
+## ✅ EXEMPLES CRÉÉS
+
+### 📚 5 Exemples Prioritaires Adaptés ✅
+1. ✅ **`minimal_demo.py`** - Demo minimale (créé)
+2. ✅ **`look_at_image.py`** - Demo vision (créé)
+3. ✅ **`sequence.py`** - Séquences mouvements (créé)
+4. ✅ **`recorded_moves_example.py`** - Enregistrement/replay (créé)
+5. ✅ **`goto_interpolation_playground.py`** - Playground interpolation (créé)
+
+**Localisation** : `examples/reachy_mini/`
+
+**Documentation** : `examples/reachy_mini/README.md` créé avec instructions complètes
+
 ## 🔄 EN COURS (OPTIONNEL)
 
 ### 🟡 PRIORITÉ MEDIUM (Items restants - Optionnels)
@@ -147,9 +160,9 @@
 ### Statut Global
 - 🟢 **Conformité SDK** : **EXCELLENTE** (tous les aspects critiques validés)
 - 🟢 **Tests** : **COMPLETS** (118 tests, bien structurés)
-- 🟡 **Exemples** : **À AMÉLIORER** (5 exemples prioritaires identifiés)
+- 🟢 **Exemples** : **AMÉLIORÉS** (5 exemples prioritaires créés dans `examples/reachy_mini/`)
 
-**Conclusion** : BBIA est **conforme au SDK officiel** sur tous les aspects critiques. Les améliorations restantes sont optionnelles et concernent principalement l'onboarding (exemples).
+**Conclusion** : BBIA est **conforme au SDK officiel** sur tous les aspects critiques. Les exemples pour l'onboarding ont été créés et sont prêts à être utilisés.
 
 ---
 

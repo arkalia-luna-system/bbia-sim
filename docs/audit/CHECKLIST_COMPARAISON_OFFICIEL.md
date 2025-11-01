@@ -128,12 +128,14 @@ Les fichiers pertinents à analyser sont listés ci-dessous.
 
 ### Exemples Manquants (34) ✅ ANALYSÉS
 
-#### Exemples Pertinents (5) - ⚠️ À ADAPTER
-- ✅ **`minimal_demo.py`** - Demo minimale (priorité HAUTE)
-- ✅ **`look_at_image.py`** - Demo vision (priorité HAUTE)
-- ✅ **`sequence.py`** - Séquences mouvements (priorité MOYENNE)
-- ✅ **`recorded_moves_example.py`** - Enregistrement/replay (priorité MOYENNE)
-- ✅ **`goto_interpolation_playground.py`** - Playground interpolation (priorité MOYENNE)
+#### Exemples Pertinents (5) - ✅ ADAPTÉS
+- ✅ **`minimal_demo.py`** - Demo minimale (✅ CRÉÉ dans `examples/reachy_mini/`)
+- ✅ **`look_at_image.py`** - Demo vision (✅ CRÉÉ dans `examples/reachy_mini/`)
+- ✅ **`sequence.py`** - Séquences mouvements (✅ CRÉÉ dans `examples/reachy_mini/`)
+- ✅ **`recorded_moves_example.py`** - Enregistrement/replay (✅ CRÉÉ dans `examples/reachy_mini/`)
+- ✅ **`goto_interpolation_playground.py`** - Playground interpolation (✅ CRÉÉ dans `examples/reachy_mini/`)
+
+**Documentation** : `examples/reachy_mini/README.md` avec instructions complètes
 
 #### Exemples Non Pertinents (24) - ✅ IGNORER
 - ❌ `gravity_compensation_direct_control.py` - Nécessite PlaCo

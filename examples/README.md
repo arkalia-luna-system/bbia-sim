@@ -2,6 +2,19 @@
 
 Ce dossier contient des exemples pratiques pour utiliser BBIA-SIM.
 
+## 📚 Exemples Reachy Mini (SDK Officiel)
+
+Les exemples dans `reachy_mini/` sont adaptés du repo officiel `pollen-robotics/reachy_mini` :
+- `minimal_demo.py` - Demo minimale (mouvements tête + antennes)
+- `look_at_image.py` - Vision interactive (cliquer pour regarder)
+- `sequence.py` - Séquences de mouvements animés
+- `recorded_moves_example.py` - Jouer mouvements enregistrés
+- `goto_interpolation_playground.py` - Découvrir méthodes d'interpolation
+
+📖 **Voir** : [`reachy_mini/README.md`](reachy_mini/README.md) pour détails complets
+
+---
+
 ## Scripts disponibles
 
 ### `hello_sim.py` - Test Conformité Parfaite SDK Officiel

@@ -17,12 +17,19 @@ logger = logging.getLogger(__name__)
 
 
 class BackendAdapter:
-    """Adaptateur qui convertit RobotAPI en interface Backend SDK."""
+    """Adaptateur qui convertit RobotAPI en interface Backend SDK (conforme Backend officiel)."""
 
     def __init__(self, robot: RobotAPI | None = None) -> None:
         """Initialise l'adaptateur."""
         self._robot = robot or self._create_backend()
         self._connected = False
+
+        # Initialiser attributs target (conforme SDK - attributs directs, pas propriétés)
+        self.target_head_pose: npt.NDArray[np.float64] | None = None
+        self.target_body_yaw: float | None = None
+        self.target_head_joint_positions: npt.NDArray[np.float64] | None = None
+        self.target_antenna_joint_positions: npt.NDArray[np.float64] | None = None
+        self.ik_required: bool = False  # Flag pour IK computation (conforme SDK)
 
     def _create_backend(self) -> RobotAPI:
         """Crée un backend RobotAPI."""
@@ -46,13 +53,17 @@ class BackendAdapter:
         self.connect_if_needed()
 
         if hasattr(self._robot, "get_current_head_pose"):
-            pose = self._robot.get_current_head_pose()
+            pose = self._robot.get_current_head_pose()  # type: ignore[attr-defined]
             if isinstance(pose, np.ndarray):
                 return pose.astype(np.float64)
             return np.eye(4, dtype=np.float64)
 
         # Fallback
         return np.eye(4, dtype=np.float64)
+
+    def get_current_head_pose(self) -> npt.NDArray[np.float64]:
+        """Alias de get_present_head_pose (conforme SDK)."""
+        return self.get_present_head_pose()
 
     def get_present_body_yaw(self) -> float:
         """Récupère le yaw actuel du corps (conforme SDK)."""
@@ -136,29 +147,6 @@ class BackendAdapter:
         else:
             logger.debug(f"Mode simulation: moteurs en mode {mode}")
 
-    @property
-    def target_head_pose(self) -> npt.NDArray[np.float64] | None:
-        """Récupère la pose cible de la tête (conforme SDK)."""
-        # RobotAPI n'a pas cette propriété directement
-        # Retourner None car non disponible
-        return None
-
-    @property
-    def target_body_yaw(self) -> float | None:
-        """Récupère le yaw cible du corps (conforme SDK)."""
-        # RobotAPI n'a pas cette propriété directement
-        return None
-
-    @property
-    def target_head_joint_positions(self) -> npt.NDArray[np.float64] | None:
-        """Récupère les joints cibles de la tête (conforme SDK)."""
-        return None
-
-    @property
-    def target_antenna_joint_positions(self) -> npt.NDArray[np.float64] | None:
-        """Récupère les positions cibles des antennes (conforme SDK)."""
-        return None
-
     async def goto_target(
         self,
         head: npt.NDArray[np.float64] | None = None,
@@ -208,19 +196,186 @@ class BackendAdapter:
             else:
                 self._robot.goto_sleep()
 
+    def set_target_head_pose(self, pose: npt.NDArray[np.float64]) -> None:
+        """Définit la pose cible de la tête (conforme SDK)."""
+        self.connect_if_needed()
+        self.target_head_pose = pose.copy() if isinstance(pose, np.ndarray) else pose
+        self.ik_required = True  # Conforme SDK
+
+        if hasattr(self._robot, "set_target_head_pose"):
+            self._robot.set_target_head_pose(pose)  # type: ignore[attr-defined]
+        elif hasattr(self._robot, "set_target"):
+            self._robot.set_target(head=pose)  # type: ignore[attr-defined]
+
+    def set_target_body_yaw(self, body_yaw: float) -> None:
+        """Définit le yaw cible du corps (conforme SDK)."""
+        self.connect_if_needed()
+        self.target_body_yaw = body_yaw
+        self.ik_required = True  # Conforme SDK
+
+        if hasattr(self._robot, "set_target_body_yaw"):
+            self._robot.set_target_body_yaw(body_yaw)  # type: ignore[attr-defined]
+        elif hasattr(self._robot, "set_target"):
+            self._robot.set_target(body_yaw=body_yaw)  # type: ignore[attr-defined]
+
+    def set_target_head_joint_positions(
+        self, positions: npt.NDArray[np.float64] | None
+    ) -> None:
+        """Définit les positions des joints de la tête (conforme SDK)."""
+        self.connect_if_needed()
+        if positions is not None:
+            self.target_head_joint_positions = (
+                positions.copy() if isinstance(positions, np.ndarray) else positions
+            )
+        self.ik_required = False  # Conforme SDK (joint space = pas d'IK)
+
+        if hasattr(self._robot, "set_target_head_joint_positions"):
+            self._robot.set_target_head_joint_positions(positions)  # type: ignore[attr-defined]
+        elif hasattr(self._robot, "set_joint_pos"):
+            # Fallback: définir chaque joint individuellement
+            if positions is not None and len(positions) >= 7:
+                joint_names = [
+                    "yaw_body",
+                    "stewart_1",
+                    "stewart_2",
+                    "stewart_3",
+                    "stewart_4",
+                    "stewart_5",
+                    "stewart_6",
+                ]
+                for i, joint_name in enumerate(joint_names):
+                    if i < len(positions):
+                        self._robot.set_joint_pos(joint_name, float(positions[i]))  # type: ignore[attr-defined]
+
+    def set_target_antenna_joint_positions(
+        self, positions: npt.NDArray[np.float64]
+    ) -> None:
+        """Définit les positions des antennes (conforme SDK)."""
+        self.connect_if_needed()
+        self.target_antenna_joint_positions = (
+            positions.copy() if isinstance(positions, np.ndarray) else positions
+        )
+
+        if hasattr(self._robot, "set_target_antenna_joint_positions"):
+            self._robot.set_target_antenna_joint_positions(positions)  # type: ignore[attr-defined]
+        elif hasattr(self._robot, "set_target"):
+            self._robot.set_target(antennas=positions)  # type: ignore[attr-defined]
+
     def set_target(
         self,
         head: npt.NDArray[np.float64] | None = None,
         antennas: npt.NDArray[np.float64] | None = None,
         body_yaw: float | None = None,
     ) -> None:
-        """Définit une cible (conforme SDK)."""
+        """Définit une cible (conforme SDK - utilise les méthodes individuelles)."""
         self.connect_if_needed()
 
-        if hasattr(self._robot, "set_target"):
-            self._robot.set_target(
+        # Utiliser les méthodes individuelles (conforme SDK)
+        if head is not None:
+            self.set_target_head_pose(head)
+        if body_yaw is not None:
+            self.set_target_body_yaw(body_yaw)
+        if antennas is not None:
+            self.set_target_antenna_joint_positions(antennas)
+
+        # Fallback sur set_target si méthodes individuelles non disponibles
+        if hasattr(self._robot, "set_target") and not (
+            hasattr(self._robot, "set_target_head_pose")
+            or hasattr(self._robot, "set_target_body_yaw")
+            or hasattr(self._robot, "set_target_antenna_joint_positions")
+        ):
+            self._robot.set_target(  # type: ignore[attr-defined]
                 head=head, antennas=antennas, body_yaw=body_yaw or 0.0
             )
+
+    async def goto_joint_positions(
+        self,
+        head_joint_positions: list[float] | None = None,
+        antennas_joint_positions: list[float] | None = None,
+        duration: float = 0.5,
+        method: str = "minjerk",
+    ) -> None:
+        """Va vers des positions de joints avec interpolation (conforme SDK - async).
+
+        Args:
+            head_joint_positions: Positions joints tête [yaw, stewart_1-6] (7 éléments)
+            antennas_joint_positions: Positions antennes [right, left] (2 éléments)
+            duration: Durée du mouvement en secondes
+            method: Méthode d'interpolation ("linear", "minjerk", "ease", "cartoon")
+        """
+        if duration <= 0.0:
+            raise ValueError(
+                "Duration must be positive and non-zero. Use set_target() for immediate position setting."
+            )
+
+        self.connect_if_needed()
+
+        # Obtenir positions actuelles
+        start_head = self.get_present_head_joint_positions()
+        start_antennas = self.get_present_antenna_joint_positions()
+
+        if start_head is None:
+            start_head = np.array([0.0] * 7, dtype=np.float64)
+        if start_antennas is None:
+            start_antennas = np.array([0.0, 0.0], dtype=np.float64)
+
+        # Positions cibles
+        target_head = (
+            np.array(head_joint_positions, dtype=np.float64)
+            if head_joint_positions is not None
+            else start_head.copy()
+        )
+        target_antennas = (
+            np.array(antennas_joint_positions, dtype=np.float64)
+            if antennas_joint_positions is not None
+            else start_antennas.copy()
+        )
+
+        # Interpolation (conforme SDK - utiliser time_trajectory si disponible)
+        if hasattr(self._robot, "goto_joint_positions"):
+            import asyncio
+
+            if hasattr(self._robot.goto_joint_positions, "__await__"):
+                await self._robot.goto_joint_positions(  # type: ignore[attr-defined]
+                    head_joint_positions=head_joint_positions,
+                    antennas_joint_positions=antennas_joint_positions,
+                    duration=duration,
+                    method=method,
+                )
+            else:
+                await asyncio.to_thread(
+                    self._robot.goto_joint_positions,  # type: ignore[attr-defined]
+                    head_joint_positions,
+                    antennas_joint_positions,
+                    duration,
+                    method,
+                )
+        else:
+            # Fallback: interpolation conforme SDK (utiliser time_trajectory)
+            import asyncio
+            import time
+
+            try:
+                from reachy_mini.utils.interpolation import time_trajectory
+            except ImportError:
+                # Si time_trajectory non disponible, interpolation linéaire simple
+                def time_trajectory(t: float, method: str = "linear") -> float:
+                    return t
+
+            t0 = time.time()
+            while time.time() - t0 < duration:
+                t = time.time() - t0
+                interp_time = time_trajectory(t / duration, method=method)
+
+                head_interp = start_head + (target_head - start_head) * interp_time
+                antennas_interp = (
+                    start_antennas + (target_antennas - start_antennas) * interp_time
+                )
+
+                self.set_target_head_joint_positions(head_interp)
+                self.set_target_antenna_joint_positions(antennas_interp)
+
+                await asyncio.sleep(0.01)
 
     async def play_move(self, move: object) -> None:
         """Joue un mouvement enregistré (conforme SDK officiel - async).
@@ -256,6 +411,172 @@ class BackendAdapter:
             )
         else:
             logger.warning("play_move non disponible sur ce backend")
+
+    def get_urdf(self) -> str:
+        """Récupère la représentation URDF du robot (conforme SDK)."""
+        from pathlib import Path
+
+        # Chercher URDF dans les emplacements standards
+        urdf_paths = [
+            Path(__file__).parent.parent.parent.parent
+            / "sim"
+            / "models"
+            / "robot.urdf",
+            Path(__file__).parent.parent.parent.parent.parent
+            / "reachy_mini"
+            / "src"
+            / "reachy_mini"
+            / "descriptions"
+            / "reachy_mini"
+            / "urdf"
+            / "robot.urdf",
+        ]
+
+        for urdf_path in urdf_paths:
+            if urdf_path.exists():
+                with open(urdf_path) as f:
+                    return f.read()
+
+        logger.warning("URDF non trouvé, retourne URDF vide")
+        return '<?xml version="1.0"?><robot name="reachy_mini"></robot>'
+
+    def play_sound(self, sound_file: str) -> None:
+        """Joue un fichier son (conforme SDK)."""
+        self.connect_if_needed()
+
+        if hasattr(self._robot, "play_sound"):
+            self._robot.play_sound(sound_file)  # type: ignore[attr-defined]
+        elif hasattr(self._robot, "robot") and hasattr(self._robot.robot, "play_sound"):
+            self._robot.robot.play_sound(sound_file)  # type: ignore[attr-defined]
+        else:
+            logger.debug(f"play_sound non disponible, fichier: {sound_file}")
+
+    def set_automatic_body_yaw(self, body_yaw: float) -> None:
+        """Définit le yaw automatique du corps (conforme SDK)."""
+        self.connect_if_needed()
+
+        if hasattr(self._robot, "set_automatic_body_yaw"):
+            self._robot.set_automatic_body_yaw(body_yaw)  # type: ignore[attr-defined]
+        else:
+            logger.debug(f"set_automatic_body_yaw non disponible, yaw: {body_yaw}")
+
+    def set_target_head_joint_current(self, current: npt.NDArray[np.float64]) -> None:
+        """Définit le courant des joints de la tête (conforme SDK)."""
+        self.connect_if_needed()
+
+        if hasattr(self._robot, "set_target_head_joint_current"):
+            self._robot.set_target_head_joint_current(current)  # type: ignore[attr-defined]
+        else:
+            logger.debug("set_target_head_joint_current non disponible (simulation)")
+
+    def update_target_head_joints_from_ik(
+        self,
+        pose: npt.NDArray[np.float64] | None = None,
+        body_yaw: float | None = None,
+    ) -> None:
+        """Met à jour les joints tête depuis IK (conforme SDK)."""
+        self.connect_if_needed()
+
+        if pose is None:
+            pose = (
+                self.target_head_pose
+                if self.target_head_pose is not None
+                else np.eye(4, dtype=np.float64)
+            )
+        if body_yaw is None:
+            body_yaw = self.target_body_yaw if self.target_body_yaw is not None else 0.0
+
+        if hasattr(self._robot, "update_target_head_joints_from_ik"):
+            self._robot.update_target_head_joints_from_ik(pose, body_yaw)  # type: ignore[attr-defined]
+        else:
+            # Fallback: utiliser IK si disponible via robot (conforme SDK)
+            if hasattr(self._robot, "robot") and hasattr(
+                self._robot.robot, "head_kinematics"
+            ):
+                joints = self._robot.robot.head_kinematics.ik(pose, body_yaw=body_yaw)  # type: ignore[attr-defined]
+                if joints is None or np.any(np.isnan(joints)):
+                    raise ValueError(
+                        "WARNING: Collision detected or head pose not achievable!"
+                    )
+                # Conforme SDK: mettre à jour directement target_head_joint_positions
+                self.target_head_joint_positions = joints
+                self.ik_required = False  # Plus besoin d'IK après mise à jour directe
+
+    def update_head_kinematics_model(
+        self,
+        head_joint_positions: npt.NDArray[np.float64] | None = None,
+        antennas_joint_positions: npt.NDArray[np.float64] | None = None,
+    ) -> None:
+        """Met à jour le modèle cinématique de la tête (conforme SDK)."""
+        self.connect_if_needed()
+
+        if hasattr(self._robot, "update_head_kinematics_model"):
+            self._robot.update_head_kinematics_model(  # type: ignore[attr-defined]
+                head_joint_positions=head_joint_positions,
+                antennas_joint_positions=antennas_joint_positions,
+            )
+        else:
+            # Fallback: mettre à jour via set_target si disponible
+            if head_joint_positions is not None:
+                self.set_target_head_joint_positions(head_joint_positions)
+            if antennas_joint_positions is not None:
+                self.set_target_antenna_joint_positions(antennas_joint_positions)
+
+    def close(self) -> None:
+        """Ferme le backend (conforme SDK - lifecycle)."""
+        try:
+            if self._robot and hasattr(self._robot, "disconnect"):
+                self._robot.disconnect()  # type: ignore[attr-defined]
+            self._connected = False
+        except Exception as e:
+            logger.warning(f"Erreur lors de la fermeture: {e}")
+
+    def get_status(self) -> dict[str, Any]:
+        """Récupère le statut du backend (conforme SDK)."""
+        self.connect_if_needed()
+
+        if hasattr(self._robot, "get_status"):
+            return self._robot.get_status()  # type: ignore[attr-defined]
+
+        # Retourner statut simple
+        return {
+            "connected": self._connected,
+            "backend_type": type(self._robot).__name__,
+        }
+
+    # Méthodes Zenoh/Recording (non-critiques pour simulation, stubs pour conformité)
+    def set_joint_positions_publisher(self, publisher: Any) -> None:
+        """Définit le publisher Zenoh pour positions joints (conforme SDK - stub)."""
+        logger.debug("set_joint_positions_publisher: non implémenté (simulation)")
+
+    def set_pose_publisher(self, publisher: Any) -> None:
+        """Définit le publisher Zenoh pour poses (conforme SDK - stub)."""
+        logger.debug("set_pose_publisher: non implémenté (simulation)")
+
+    def set_recording_publisher(self, publisher: Any) -> None:
+        """Définit le publisher Zenoh pour enregistrement (conforme SDK - stub)."""
+        logger.debug("set_recording_publisher: non implémenté (simulation)")
+
+    def append_record(self, record: dict[str, Any]) -> None:
+        """Ajoute un enregistrement (conforme SDK - stub)."""
+        logger.debug("append_record: non implémenté (simulation)")
+
+    def start_recording(self) -> None:
+        """Démarre l'enregistrement (conforme SDK - stub)."""
+        logger.debug("start_recording: non implémenté (simulation)")
+
+    def stop_recording(self) -> None:
+        """Arrête l'enregistrement (conforme SDK - stub)."""
+        logger.debug("stop_recording: non implémenté (simulation)")
+
+    # Lifecycle methods (non nécessaires pour adaptateur, stubs pour conformité)
+    def run(self) -> None:
+        """Exécute le backend (conforme SDK - stub pour adaptateur)."""
+        logger.debug("run: non nécessaire pour adaptateur")
+
+    def wrapped_run(self) -> None:
+        """Exécute le backend avec gestion d'erreur (conforme SDK - stub)."""
+        logger.debug("wrapped_run: non nécessaire pour adaptateur")
 
 
 def get_backend_adapter() -> BackendAdapter:
