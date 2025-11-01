@@ -35,7 +35,7 @@ async def get_kinematics_info(
     return {
         "info": {
             "engine": str(kinematics_engine),
-            "collision check": bool(check_collision),
+            "collision_check": bool(check_collision),
         }
     }
 
@@ -55,18 +55,42 @@ async def get_urdf(
 
 
 @router.get("/stl/{filename}")
-async def get_stl_file(filename: Path) -> Response:
-    """Récupère un fichier STL depuis les assets (conforme SDK officiel)."""
-    file_path = STL_ASSETS_DIR / filename
+async def get_stl_file(filename: str) -> Response:
+    """Récupère un fichier STL depuis les assets (conforme SDK officiel).
+
+    Args:
+        filename: Nom du fichier STL (ex: body_down_3dprint.stl)
+
+    Returns:
+        Fichier STL en binaire avec type MIME approprié
+
+    Raises:
+        HTTPException: Si le fichier n'est pas trouvé ou extension invalide
+    """
+    # Sécurisation : ne permettre que les fichiers .stl
+    if not filename.endswith(".stl"):
+        raise HTTPException(
+            status_code=400, detail="Seuls les fichiers .stl sont autorisés"
+        )
+
+    # Nettoyer le chemin pour éviter les directory traversal (conforme SDK)
+    from pathlib import Path
+
+    safe_filename = Path(filename).name
+    file_path = STL_ASSETS_DIR / safe_filename
 
     if not file_path.exists():
-        raise HTTPException(status_code=404, detail=f"STL file not found {file_path}")
+        raise HTTPException(
+            status_code=404,
+            detail=f"Fichier STL non trouvé: {safe_filename}",
+        )
 
     try:
         with open(file_path, "rb") as file:
             content = file.read()
             return Response(content, media_type="model/stl")
-    except FileNotFoundError as e:
+    except Exception as e:
+        logger.error(f"Erreur lors de la lecture du fichier STL {filename}: {e}")
         raise HTTPException(
-            status_code=404, detail=f"STL file not found {file_path}"
+            status_code=500, detail=f"Erreur lors de la lecture du fichier: {str(e)}"
         ) from e

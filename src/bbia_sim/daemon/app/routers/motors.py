@@ -32,7 +32,15 @@ async def get_motor_status(
     backend: BackendAdapter = Depends(get_backend_adapter),
 ) -> MotorStatus:
     """Récupère le statut actuel des moteurs (conforme SDK)."""
-    return MotorStatus(mode=backend.get_motor_control_mode())
+    mode_obj = backend.get_motor_control_mode()
+    # Convertir en string (support objet avec .value ou string directe)
+    mode_str = mode_obj.value if hasattr(mode_obj, "value") else str(mode_obj)
+
+    # S'assurer que le mode est dans l'enum MotorControlMode
+    if mode_str not in ["enabled", "disabled", "gravity_compensation"]:
+        mode_str = "enabled"  # Valeur par défaut
+
+    return MotorStatus(mode=MotorControlMode(mode_str))
 
 
 @router.post("/set_mode/{mode}")
