@@ -11,8 +11,8 @@
 >   pip install -e .
 >   ```
 
-**Version:** v1.3.1
-**Dernière mise à jour:** Octobre 2025
+**Version:** v1.3.2
+**Dernière mise à jour:** Novembre 2025
 
 ---
 

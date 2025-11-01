@@ -85,9 +85,11 @@ class TestReachyMappingComplete:
     def test_05_forbidden_joints_complete(self):
         """Test 5: Joints interdits complets."""
         assert isinstance(FORBIDDEN_JOINTS, set)
+        # Note: left_antenna et right_antenna sont maintenant optionnelles (commentées)
+        # Elles sont animables avec limites sûres (-0.3 à 0.3 rad)
         expected_forbidden = {
-            "left_antenna",
-            "right_antenna",
+            # "left_antenna",   # Optionnel: décommenter pour bloquer
+            # "right_antenna",  # Optionnel: décommenter pour bloquer
             "passive_1",
             "passive_2",
             "passive_3",
@@ -96,7 +98,9 @@ class TestReachyMappingComplete:
             "passive_6",
             "passive_7",
         }
-        assert FORBIDDEN_JOINTS == expected_forbidden
+        assert (
+            FORBIDDEN_JOINTS == expected_forbidden
+        ), f"FORBIDDEN_JOINTS ne correspond pas: {FORBIDDEN_JOINTS} vs {expected_forbidden}"
 
     def test_06_recommended_joints_correct(self):
         """Test 6: Joints recommandés (seulement yaw_body car stewart nécessitent IK)."""
@@ -132,8 +136,10 @@ class TestReachyMappingComplete:
 
     def test_11_get_joint_info_forbidden(self):
         """Test 11: get_joint_info() avec joint interdit."""
+        # Utiliser passive_1 qui est réellement interdit
+        # (left_antenna n'est plus interdit par défaut - optionnel)
         with pytest.raises(ValueError, match="Joint interdit"):
-            self.mapping.get_joint_info("left_antenna")
+            ReachyMapping.get_joint_info("passive_1")
 
     def test_12_get_joint_info_unknown(self):
         """Test 12: get_joint_info() avec joint inconnu."""
@@ -147,7 +153,9 @@ class TestReachyMappingComplete:
 
     def test_14_is_joint_safe_forbidden(self):
         """Test 14: is_joint_safe() avec joint interdit."""
-        assert self.mapping.is_joint_safe("left_antenna") is False
+        # Note: Antennes maintenant optionnelles (commentées dans FORBIDDEN_JOINTS)
+        # Si commentées, is_joint_safe peut retourner True (selon mapping)
+        # Vérifier que les joints passifs sont toujours False
         assert self.mapping.is_joint_safe("passive_1") is False
 
     def test_15_is_joint_safe_unknown(self):

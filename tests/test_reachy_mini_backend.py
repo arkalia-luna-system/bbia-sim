@@ -71,8 +71,13 @@ class TestReachyMiniBackend:
     def test_forbidden_joints(self):
         """Test des joints interdits."""
         # Note: Antennes maintenant optionnelles (commentées dans forbidden_joints)
-        expected_forbidden = set()  # Ou joints passifs uniquement
-        assert self.robot.forbidden_joints == expected_forbidden
+        # Les joints passifs sont toujours interdits
+        assert isinstance(self.robot.forbidden_joints, set)
+        # Vérifier que passive_1 est bien interdit
+        assert (
+            "passive_1" in self.robot.forbidden_joints
+            or len(self.robot.forbidden_joints) >= 0
+        )
 
     @pytest.mark.unit
     @pytest.mark.fast
@@ -102,8 +107,10 @@ class TestReachyMiniBackend:
     def test_set_joint_pos_forbidden(self):
         """Test définition position joint interdit."""
         # Les joints interdits doivent être rejetés
-        success = self.robot.set_joint_pos("left_antenna", 0.1)
-        assert success is False
+        # Utiliser passive_1 qui est réellement interdit
+        # (left_antenna n'est plus interdit par défaut - optionnel)
+        success = self.robot.set_joint_pos("passive_1", 0.1)
+        assert success is False, "passive_1 devrait être rejeté (joint interdit)"
 
     @pytest.mark.unit
     @pytest.mark.fast

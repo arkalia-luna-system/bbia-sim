@@ -46,8 +46,8 @@
 - [ ] **head_pitch** : Inclinaison tête (limite ±0.3 rad)
 
 ### **🚫 Joints Interdits**
-- [ ] **left_antenna** : BLOQUÉ (passif)
-- [ ] **right_antenna** : BLOQUÉ (passif)
+- [x] **left_antenna** : Animable avec limites (-0.3 à 0.3 rad)
+- [x] **right_antenna** : Animable avec limites (-0.3 à 0.3 rad)
 - [ ] **passive_1-7** : BLOQUÉS (passifs)
 
 ---

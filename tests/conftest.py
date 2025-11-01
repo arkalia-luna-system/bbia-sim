@@ -7,6 +7,7 @@ l'exécution simultanée de plusieurs instances de tests.
 import atexit
 import fcntl
 import os
+import signal
 import sys
 import time
 from pathlib import Path
@@ -17,6 +18,10 @@ import pytest
 LOCK_FILE = Path(__file__).parent.parent / ".pytest.lock"
 LOCK_TIMEOUT = 300  # 5 minutes max pour un run de tests
 _MAX_RECURSION = 3  # Protection contre récursion infinie
+
+# Stocker le file descriptor du lock globalement pour pouvoir le libérer
+# même en cas d'interruption ou de blocage
+_lock_fd: int | None = None
 
 
 def acquire_lock(recursion_level: int = 0) -> bool:
@@ -54,8 +59,20 @@ def acquire_lock(recursion_level: int = 0) -> bool:
             os.write(lock_fd, f"{pid}:{timestamp}\n".encode())
             os.fsync(lock_fd)
 
-            # Enregistrer la libération du lock à la fin
+            # Stocker le file descriptor globalement
+            global _lock_fd
+            _lock_fd = lock_fd
+
+            # Enregistrer la libération du lock à la fin (plusieurs handlers pour sécurité)
             atexit.register(release_lock, lock_fd)
+            
+            # Handler pour SIGINT (Ctrl+C) et SIGTERM
+            def signal_handler(signum, frame):
+                release_lock(lock_fd)
+                sys.exit(1)
+            
+            signal.signal(signal.SIGINT, signal_handler)
+            signal.signal(signal.SIGTERM, signal_handler)
 
             return True
         except BlockingIOError:
@@ -166,7 +183,16 @@ def pytest_configure(config: pytest.Config) -> None:
 @pytest.hookimpl(trylast=True)
 def pytest_unconfigure(config: pytest.Config) -> None:
     """Hook pytest qui s'exécute à la fin des tests."""
-    # Le lock sera libéré par atexit, mais on peut aussi le faire ici
+    # Libérer le lock de manière explicite
+    global _lock_fd
+    if _lock_fd is not None:
+        try:
+            release_lock(_lock_fd)
+        except Exception:
+            pass
+        _lock_fd = None
+    
+    # Nettoyer aussi le fichier lock au cas où
     try:
         if LOCK_FILE.exists():
             os.remove(LOCK_FILE)

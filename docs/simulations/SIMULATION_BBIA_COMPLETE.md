@@ -261,27 +261,27 @@ ls -la
 🎭 Test des émotions:
 😐 Émotion changée: neutral
 🤖 Mouvement tête (6 DOF): Tête droite, regard neutre
-📡 Animation antennes: Antennes droites, mouvement calme
+📡 Note: Les antennes sont animables avec limites de sécurité (-0.3 à 0.3 rad) - utilisez yaw_body pour animations principales
 
 😊 Émotion changée: happy
 🤖 Mouvement tête (6 DOF): Tête légèrement relevée, regard joyeux
-📡 Animation antennes: Antennes qui bougent joyeusement
+📡 Animation corps: Rotation yaw_body joyeuse (+ antennes animables)
 
 🤔 Émotion changée: curious
 🤖 Mouvement tête (6 DOF): Tête inclinée, regard attentif
-📡 Animation antennes: Antennes qui frémissent
+📡 Animation corps: Rotation yaw_body légère (antennes bloquées)
 
 🤩 Émotion changée: excited
 🤖 Mouvement tête (6 DOF): Tête relevée, regard enthousiaste
-📡 Animation antennes: Antennes qui vibrent rapidement
+📡 Animation corps: Rotation yaw_body rapide (antennes bloquées)
 
 😢 Émotion changée: sad
 🤖 Mouvement tête (6 DOF): Tête baissée, regard triste
-📡 Animation antennes: Antennes tombantes
+📡 Animation corps: Rotation yaw_body lente (antennes bloquées)
 
 😠 Émotion changée: angry
 🤖 Mouvement tête (6 DOF): Tête penchée, regard dur
-📡 Animation antennes: Antennes rigides
+📡 Animation corps: Rotation yaw_body rigide (antennes bloquées)
 
 🗣️ Test d'interaction vocale:
 🗣️ Reconnaissance vocale active...
@@ -301,7 +301,7 @@ ls -la
 - **Fonctionnalités** :
   - 🎭 Expressions faciales animées
   - 🤖 Mouvements de tête fluides
-  - 📡 Animation des antennes
+  - 📡 Note: Antennes animables (-0.3 à 0.3 rad) - utiliser yaw_body pour animations principales
   - 🎯 Suivi de visage
   - 🗣️ Reconnaissance vocale
   - 📷 Vision par ordinateur

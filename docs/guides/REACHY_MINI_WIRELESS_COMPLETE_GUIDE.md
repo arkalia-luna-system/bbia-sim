@@ -53,7 +53,7 @@
 ### 🤖 Mouvements & Expressivité
 - **Tête** : 6 degrés de liberté (rotations précises)
 - **Corps** : Rotation complète
-- **Antennes** : 2 antennes animées pour expressivité
+- **Antennes** : 2 antennes animables avec limites de sécurité (-0.3 à 0.3 rad), utiliser yaw_body pour animations principales
 - **Fluidité** : Mouvements naturels et expressifs
 
 ### 🛠️ Logiciel & Écosystème

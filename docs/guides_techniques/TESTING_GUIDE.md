@@ -92,9 +92,44 @@ graph LR
         PERF[Tests performance<br/>Temps d'exécution<br/>Mémoire]
     end
 
+    subgraph "Tests Reachy Mini"
+        REACHY[118 tests<br/>8 fichiers<br/>Complémentaires]
+    end
+
     UNIT --> INTEGRATION
     INTEGRATION --> E2E
     E2E --> PERF
+    REACHY --> INTEGRATION
+```
+
+### 🤖 Tests Backend Reachy Mini (Novembre 2024)
+
+**📊 Statistiques**:
+- ✅ **118 tests** répartis dans **8 fichiers complémentaires**
+- ✅ **116 tests uniques** (98.3% - très peu de redondance)
+- ⚠️ **1 doublon mineur** (`test_robot_factory_integration`)
+
+**📁 Structure** (voir [`tests/REACHY_MINI_TESTS_STRUCTURE.md`](../../tests/REACHY_MINI_TESTS_STRUCTURE.md) pour détails):
+
+| Fichier | Tests | Rôle |
+|---------|-------|------|
+| `test_reachy_mini_full_conformity_official.py` | 37 | Conformité complète SDK officiel |
+| `test_reachy_mini_backend.py` | 24 | Tests de base du backend |
+| `test_reachy_mini_complete_conformity.py` | 16 | Conformité API complète |
+| `test_reachy_mini_advanced_conformity.py` | 12 | Patterns/optimisations expertes |
+| `test_reachy_mini_strict_conformity.py` | 10 | Tests stricts (valeurs exactes XML) |
+| `test_reachy_mini_backend_extended.py` | 9 | Tests structure/compatibilité |
+| `test_reachy_mini_backend_rapid.py` | 8 | Tests coverage rapide |
+| `test_reachy_mini_conformity.py` | 2 | Script de vérification |
+
+**💡 Conclusion analyse**: Tous les fichiers sont complémentaires et doivent être conservés. Aucune consolidation nécessaire.
+
+```bash
+# Lancer tous les tests Reachy Mini
+pytest tests/test_reachy_mini*.py -v
+
+# Vérifier les doublons/redondances
+python scripts/verify_tests_consolidation.py
 ```
 │   ├── test_bbia_emotions.py     # Tests émotions
 │   ├── test_bbia_emotions_extended.py
@@ -138,6 +173,15 @@ python scripts/validate_trace.py --ref artifacts/golden/happy_mujoco.jsonl --cur
 ```bash
 # Tests d'un module spécifique
 python -m pytest tests/test_bbia_emotions.py -v
+
+# Tests Reachy Mini (tous les fichiers)
+pytest tests/test_reachy_mini*.py -v
+
+# Test de conformité complet (recommandé)
+pytest tests/test_reachy_mini_full_conformity_official.py -v
+
+# Tests stricts (valeurs exactes XML)
+pytest tests/test_reachy_mini_strict_conformity.py -v
 
 # Tests d'un sous-dossier
 python -m pytest tests/e2e/ -v

@@ -217,10 +217,10 @@ def demo_reachy_mini_corrigee():
     print("   ✅ Amplitude excessive: Clampée automatiquement")
     time.sleep(1.0)
 
-    # Test joint interdit
-    success_mujoco = robot_mujoco.set_joint_pos("left_antenna", 0.1)
+    # Test antenne animable (avec limites de sécurité)
+    success_mujoco = robot_mujoco.set_joint_pos("left_antenna", 0.1)  # Dans limites -0.3 à 0.3
     success_officiel = robot_officiel.set_joint_pos("left_antenna", 0.1)
-    print(f"   ✅ Joint interdit: MuJoCo={success_mujoco}, SDK={success_officiel}")
+    print(f"   ✅ Antenne animable (limites -0.3 à 0.3 rad): MuJoCo={success_mujoco}, SDK={success_officiel}")
 
     # Séquence 7: Finale spectaculaire
     print("\n🎆 SÉQUENCE FINALE: SPECTACLE COMPLET !")

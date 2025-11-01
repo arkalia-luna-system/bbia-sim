@@ -16,17 +16,19 @@ D'après l'analyse du modèle officiel `reachy_mini_REAL_OFFICIAL.xml` :
 - **stewart_5**: [-1.222, 1.396] rad - Plateforme Stewart joint 5
 - **stewart_6**: [-1.396, 0.838] rad - Plateforme Stewart joint 6
 
-### Joints bloqués (9 joints)
-- **left_antenna**: [0.000, 0.000] rad (bloqué)
-- **right_antenna**: [0.000, 0.000] rad (bloqué)
-- **passive_1 à passive_7**: [0.000, 0.000] rad (bloqués)
+### Joints bloqués (7 joints)
+- **passive_1 à passive_7**: [0.000, 0.000] rad (bloqués - joints passifs)
+
+### Antennes animables (2 joints)
+- **left_antenna**: [-0.300, 0.300] rad (animable avec limites de sécurité)
+- **right_antenna**: [-0.300, 0.300] rad (animable avec limites de sécurité)
 
 ---
 
 ## Problèmes identifiés
 
 ### Problèmes dans les démos originales
-1. **Tentatives d'animation des antennes** - Les antennes sont bloquées dans le modèle officiel
+1. **Tentatives d'animation des antennes** - Les antennes sont maintenant animables avec limites (-0.3 à 0.3 rad)
 2. **Mouvements trop basiques** - Sinusoïdes simples sans contexte émotionnel
 3. **Amplitudes inappropriées** - Ne respectent pas les limites réelles des joints
 4. **Pas de transitions fluides** - Mouvements saccadés
@@ -39,7 +41,7 @@ D'après l'analyse du modèle officiel `reachy_mini_REAL_OFFICIAL.xml` :
 
 #### 1. `examples/demo_chat_bbia_3d.py`
 **Améliorations :**
-- suppression des tentatives d'animation des antennes (bloquées)
+- antennes maintenant utilisables avec limites de sécurité (-0.3 à 0.3 rad)
 - mouvements expressifs selon le contexte émotionnel
   - **Salutations** : hochement tête expressif (stewart_1 + stewart_2 + yaw_body)
   - **Positif/Joyeux** : rotation corps + mouvement tête expressif
@@ -66,9 +68,10 @@ D'après l'analyse du modèle officiel `reachy_mini_REAL_OFFICIAL.xml` :
 python scripts/check_joints.py
 ```
 
-2. **Utiliser uniquement les 7 joints mobiles :**
+2. **Utiliser les 9 joints mobiles :**
    - `yaw_body` pour les rotations corps
    - `stewart_1-6` pour les mouvements tête
+   - `left_antenna`, `right_antenna` pour expressivité fine (limites -0.3 à 0.3 rad)
 
 3. **Respecter les limites des joints :**
    - `yaw_body`: [-2.793, 2.793] rad
@@ -81,10 +84,10 @@ python scripts/check_joints.py
 
 ### À éviter
 
-1. ne pas animer les antennes (left_antenna, right_antenna) — bloquées
+1. ne pas dépasser les limites des antennes (-0.3 à 0.3 rad) — protection hardware
 2. ne pas animer les joints passifs (passive_1-7) — bloqués
 3. ne pas dépasser les limites officielles
-4. ne pas utiliser des amplitudes excessives (> 0.5 rad)
+4. ne pas utiliser des amplitudes excessives (> 0.3 rad pour antennes, > 0.5 rad pour autres)
 
 ---
 
@@ -136,8 +139,8 @@ yaw_body: -0.15 rad (rotation lente)
 **Tests effectués :**
 - Black (formatage) : OK
 - Ruff (linting) : OK
-- Joints mobiles identifiés : 7/16
-- Antennes bloquées confirmées : left_antenna, right_antenna
+- Joints mobiles identifiés : 9/16 (yaw_body + stewart_1-6 + 2 antennes)
+- Antennes animables confirmées : left_antenna, right_antenna (limites -0.3 à 0.3 rad)
 - Mouvements expressifs implémentés
 - Amplitudes sécurisées selon limites officielles
 

@@ -56,8 +56,9 @@ class TestSafetyParameters:
         forbidden = ReachyMapping.get_forbidden_joints()
 
         # Vérifier que les antennes sont interdites
-        assert "left_antenna" in forbidden, "left_antenna devrait être interdit"
-        assert "right_antenna" in forbidden, "right_antenna devrait être interdit"
+        # Note: Antennes maintenant optionnelles (commentées dans forbidden_joints)
+        # Vérifier que les joints passifs sont toujours bloqués
+        assert "passive_1" in forbidden, "passive_1 devrait être interdit"
 
         # Vérifier que les joints passifs sont interdits
         for i in range(1, 8):

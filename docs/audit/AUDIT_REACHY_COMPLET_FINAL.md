@@ -51,7 +51,8 @@ Modules critiques: 5 | Modules moyens: 2
 
 3. **SÉCURITÉ HARDWARE**:
    - ✅ Clamping multi-niveaux (hardware + sécurité) implémenté
-   - ✅ Joints interdits (`left_antenna`, `right_antenna`) protégés
+   - ✅ Antennes animables (`left_antenna`, `right_antenna`) avec limites (-0.3 à 0.3 rad)
+   - ✅ Joints passifs (`passive_1-7`) protégés
    - ✅ `emergency_stop()` explicite dans RobotAPI - **FAIT** (ligne 87 dans `robot_api.py`)
 
 **Corrections appliquées (2025-10-30)** :

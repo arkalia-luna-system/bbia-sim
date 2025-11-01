@@ -60,8 +60,8 @@
 ```python
 ✅ stewart_1 à stewart_6  # Tête (plateforme Stewart)
 ✅ yaw_body               # Corps
-✅ left_antenna           # Antennes (bloquées pour sécurité)
-✅ right_antenna          # Antennes (bloquées pour sécurité)
+✅ left_antenna           # Antennes (animables avec limites -0.3 à 0.3 rad)
+✅ right_antenna          # Antennes (animables avec limites -0.3 à 0.3 rad)
 ```
 
 ### Méthodes SDK Officiel (21)

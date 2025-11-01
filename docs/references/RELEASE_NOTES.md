@@ -176,7 +176,8 @@ graph TB
 ## Améliorations techniques
 
 ### Sécurité et limites
-- **Joints interdits** : left_antenna, right_antenna, passive_1-7
+- **Joints interdits** : passive_1-7 uniquement
+- **Antennes** : Animables avec limites de sécurité (-0.3 à 0.3 rad)
 - **Amplitude limite** : 0.3 rad maximum
 - **Validation centralisée** : Dans RobotAPI._validate_joint_pos()
 

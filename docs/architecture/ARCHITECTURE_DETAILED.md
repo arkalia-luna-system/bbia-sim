@@ -418,7 +418,8 @@ class SafetyManager:
 
     def __init__(self):
         self.safe_amplitude_limit = 0.3  # rad
-        self.forbidden_joints = {"left_antenna", "right_antenna"}
+        # Note: Antennes maintenant optionnelles (commentées dans forbidden_joints)
+        self.forbidden_joints = {}  # Antennes optionnelles, passive_* toujours bloqués
         self.max_latency_ms = 40.0
 
     def validate_joint_command(self, joint: str, position: float) -> bool:
@@ -499,7 +500,8 @@ class ProductionConfig:
 
     # Sécurité
     SAFE_AMPLITUDE_LIMIT = 0.3
-    FORBIDDEN_JOINTS = {"left_antenna", "right_antenna"}
+    # Note: Antennes maintenant optionnelles (commentées dans FORBIDDEN_JOINTS)
+    FORBIDDEN_JOINTS = {}  # Antennes optionnelles, passive_* toujours bloqués
 
     # Logging
     LOG_LEVEL = "INFO"

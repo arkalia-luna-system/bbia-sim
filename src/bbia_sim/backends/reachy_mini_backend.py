@@ -127,7 +127,10 @@ class ReachyMiniBackend(RobotAPI):
         # Joints interdits (sécurité)
         # Note: Antennes maintenant animables avec limites sûres (-0.3 à 0.3 rad)
         # Garder dans forbidden_joints si on veut les bloquer par défaut (optionnel)
-        self.forbidden_joints: set[str] = set()  # type: ignore[assignment]
+        # Initialiser depuis GlobalConfig pour cohérence
+        from ..global_config import GlobalConfig
+
+        self.forbidden_joints: set[str] = set(GlobalConfig.FORBIDDEN_JOINTS)  # type: ignore[assignment]
         # Optionnel: ajouter "left_antenna" ou "right_antenna" pour bloquer
 
     def connect(self) -> bool:

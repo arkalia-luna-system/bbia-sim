@@ -767,10 +767,11 @@ class ConversationBehavior(BBIABehavior):
 
 
 class AntennaAnimationBehavior(BBIABehavior):
-    """Comportement d'animation des antennes.
+    """Comportement d'animation expressivité (alternative aux antennes).
 
-    NOTE: Les antennes sont protégées (forbidden_joints) pour sécurité hardware.
-    Ce comportement utilise des émotions et mouvements tête/corps à la place.
+    ✅ IMPORTANT: Les antennes sont maintenant ANIMABLES dans le modèle officiel (range=[-0.300, 0.300]).
+    Ce comportement utilise les antennes avec limites de sécurité (-0.3 à 0.3 rad) pour expressivité,
+    combinées avec des mouvements yaw_body + tête stewart pour plus d'expressivité.
     """
 
     def __init__(self, robot_api: RobotAPI | None = None) -> None:

@@ -115,10 +115,12 @@ class BBIAVision:
         self.current_focus: dict[str, Any] | None = None
 
         # Spécifications hardware réelles
+        # Note: Résolution simulation = 1280x720 (XML officiel)
+        # Résolution réelle peut être différente - vérifier avec robot physique
         self.specs = {
             "camera": "Grand angle",
-            "resolution": "1080p",
-            "fov": "120°",
+            "resolution": "1280x720 (simulation) / HD grand-angle (réel)",  # Clarifié
+            "fov": "80° (simulation) / ~120° (réel estimé)",  # Clarifié
             "focus": "Auto",
             "night_vision": False,
         }

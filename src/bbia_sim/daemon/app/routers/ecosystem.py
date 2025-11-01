@@ -21,9 +21,7 @@ class EmotionResponse(BaseModel):
     """Réponse pour les émotions BBIA."""
 
     emotion: str = Field(..., description="Nom de l'émotion appliquée")
-    intensity: float = Field(
-        ..., ge=0.0, le=1.0, description="Intensité de l'émotion (0.0-1.0)"
-    )
+    intensity: float = Field(..., ge=0.0, le=1.0, description="Intensité de l'émotion (0.0-1.0)")
     duration: float = Field(..., gt=0, description="Durée en secondes")
     joints_affected: list[str] = Field(..., description="Joints affectés par l'émotion")
     timestamp: str = Field(..., description="Timestamp de l'application")
@@ -190,12 +188,8 @@ async def apply_emotion(
 @router.post("/behaviors/execute", response_model=BehaviorResponse)
 async def execute_behavior(
     behavior: str = Query(..., description="Nom du comportement à exécuter"),
-    intensity: float = Query(
-        1.0, ge=0.0, le=2.0, description="Intensité du comportement"
-    ),
-    duration: float | None = Query(
-        None, gt=0, description="Durée personnalisée en secondes"
-    ),
+    intensity: float = Query(1.0, ge=0.0, le=2.0, description="Intensité du comportement"),
+    duration: float | None = Query(None, gt=0, description="Durée personnalisée en secondes"),
 ) -> BehaviorResponse:
     """Exécute un comportement BBIA.
 
@@ -420,6 +414,4 @@ async def start_demo_mode(
         raise
     except Exception as e:
         logger.error(f"Erreur lors du démarrage de la démo: {e}")
-        raise HTTPException(
-            status_code=500, detail="Erreur lors du démarrage de la démo"
-        ) from e
+        raise HTTPException(status_code=500, detail="Erreur lors du démarrage de la démo") from e

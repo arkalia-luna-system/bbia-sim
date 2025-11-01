@@ -42,8 +42,9 @@ class TestSafetyLimitsPID:
     def test_forbidden_joints_protection(self):
         """Test que les joints interdits sont bien protégés."""
         forbidden = ReachyMapping.get_forbidden_joints()
-        assert "left_antenna" in forbidden
-        assert "right_antenna" in forbidden
+        # Note: Antennes maintenant optionnelles dans forbidden_joints
+        # Vérifier que les joints passifs sont toujours bloqués
+        assert "passive_1" in forbidden
 
         # Tous les joints interdits doivent être rejetés
         for joint in forbidden:

@@ -1,7 +1,6 @@
 """Mapping des assets officiels Reachy Mini."""
 
 from dataclasses import dataclass
-from typing import Optional
 
 
 @dataclass
@@ -9,7 +8,7 @@ class AssetMapping:
     """Mapping d'un asset officiel."""
 
     component_name: str
-    official_stl_path: Optional[str]  # None si pas encore disponible
+    official_stl_path: str | None  # None si pas encore disponible
     placeholder_path: str
     description: str
 

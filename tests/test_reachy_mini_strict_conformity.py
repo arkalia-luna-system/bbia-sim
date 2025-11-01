@@ -92,7 +92,9 @@ class TestReachyMiniStrictConformity:
         print("\n🧪 TEST STRICT 2: Protection stricte joints interdits")
         print("=" * 70)
 
-        forbidden_joints = ["left_antenna", "right_antenna"]
+        # Note: Antennes maintenant optionnelles (commentées dans forbidden_joints)
+        # Tester avec joints passifs qui sont toujours interdits
+        forbidden_joints = ["passive_1", "passive_2"]  # Joints vraiment interdits
         errors = []
 
         for joint in forbidden_joints:

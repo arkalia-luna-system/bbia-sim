@@ -1098,7 +1098,7 @@ Le fichier `robot_api.py` définit une API abstraite (connect/disconnect, set/ge
 
 **Tests recommandés (spécifiques RobotAPI) :**
 - [x] Validation `clamp_joint_position` avec bornes spécifiques par joint (couvert par tests existants)
-- [x] Refus joints interdits (`left_antenna`, `right_antenna`, `passive_*`) (couvert par tests existants)
+- [x] Refus joints interdits (`passive_*` uniquement), antennes animables avec limites (-0.3 à 0.3 rad) (couvert par tests existants)
 - [x] Budget temps `step()` non bloquant (test ajouté `test_robot_api_step_non_blocking.py`)
 
 ### ⚡ Performance

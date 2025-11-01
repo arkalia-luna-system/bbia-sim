@@ -210,7 +210,7 @@ VALID_EMOTIONS = {
 ```python
 VALID_BEHAVIORS = {
     "wake_up", "greeting", "emotional_response",
-    "vision_tracking", "conversation", "antenna_animation", "hide"
+    "vision_tracking", "conversation", "antenna_animation", "body_yaw_animation", "hide"  # Note: antenna_animation disponible (antennes animables -0.3 à 0.3 rad)
 }
 ```
 

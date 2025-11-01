@@ -147,6 +147,9 @@ addopts = [
     "--cov-report=xml:coverage.xml",
     "--cov-report=html:htmlcov",
     "--cov-fail-under=0",
+    # Timeout global pour éviter les tests qui bouclent (300s = 5 minutes)
+    "--timeout=300",
+    "--timeout-method=thread",
 ]
 env = [
     "MUJOCO_GL=disable",

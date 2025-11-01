@@ -187,7 +187,7 @@ except Exception as e:
    - WakeUpBehavior : goto_target pour réveil fluide
    - GreetingBehavior : goto_target pour hochement fluide
    - VisionTrackingBehavior : look_at_world/look_at_image
-   - AntennaAnimationBehavior : goto_target pour expressivité
+   - AntennaAnimationBehavior : goto_target pour expressivité (✅ Antennes animables avec limites -0.3 à 0.3 rad)
    - HideBehavior : goto_target combiné tête+corps
 
 2. `src/bbia_sim/bbia_integration.py`

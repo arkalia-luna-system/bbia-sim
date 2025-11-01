@@ -13,18 +13,19 @@ python examples/hello_sim.py
 
 **Résultat attendu** : Test de toutes les méthodes SDK officiel, conformité 100% parfaite
 
-### `demo_mujoco_continue.py` - Simulation MuJoCo Continue
-Simulation MuJoCo continue avec contrôle temps réel.
+### `demo_mujoco_continue.py` - Simulation MuJoCo Continue ⭐ **Source des vidéos**
+Simulation MuJoCo continue avec contrôle temps réel. Le robot bouge en continu (tête + corps).
 
 ```bash
+# Mode graphique (voir 3D) - RECOMMANDÉ
+mjpython examples/demo_mujoco_continue.py
+
 # Mode headless (test)
 python examples/demo_mujoco_continue.py --duration 10 --headless
-
-# Mode graphique (voir 3D)
-mjpython examples/demo_mujoco_continue.py --duration 10
 ```
 
-**Résultat attendu** : Simulation continue, contrôle temps réel
+**Résultat attendu** : Simulation continue, robot animé (yaw_body + stewart joints), viewer MuJoCo ouvert  
+**📹 Note** : Les vidéos disponibles dans `assets/videos/` ont été enregistrées depuis ce script.
 
 ### `goto_pose.py` - Contrôle mouvement robot
 Contrôle une articulation du robot via l'API REST.

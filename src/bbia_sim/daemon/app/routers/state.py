@@ -142,37 +142,115 @@ class BatteryInfo(BaseModel):
     estimated_time: str
 
 
-@router.get("/full", response_model=RobotState)
-async def get_full_state() -> RobotState:
-    """Récupère l'état complet du robot.
+@router.get("/full")
+async def get_full_state(
+    with_control_mode: bool = True,
+    with_head_pose: bool = True,
+    with_target_head_pose: bool = False,
+    with_head_joints: bool = False,
+    with_target_head_joints: bool = False,
+    with_body_yaw: bool = True,
+    with_target_body_yaw: bool = False,
+    with_antenna_positions: bool = True,
+    with_target_antenna_positions: bool = False,
+    with_passive_joints: bool = False,
+    use_pose_matrix: bool = False,
+) -> dict[str, Any]:
+    """Récupère l'état complet du robot avec paramètres optionnels (conforme SDK).
+
+    Args:
+        with_control_mode: Inclure le mode de contrôle moteur
+        with_head_pose: Inclure la pose de la tête
+        with_target_head_pose: Inclure la pose cible de la tête
+        with_head_joints: Inclure les joints de la tête
+        with_target_head_joints: Inclure les joints cibles de la tête
+        with_body_yaw: Inclure le yaw du corps
+        with_target_body_yaw: Inclure le yaw cible du corps
+        with_antenna_positions: Inclure les positions des antennes
+        with_target_antenna_positions: Inclure les positions cibles des antennes
+        with_passive_joints: Inclure les joints passifs
+        use_pose_matrix: Utiliser format matrice 4x4 pour les poses
 
     Returns:
-        État complet du robot
-
+        État complet du robot (champs optionnels selon paramètres)
     """
+
+    from ...models import Matrix4x4Pose, XYZRPYPose
+
     logger.info("Récupération de l'état complet du robot")
+    result: dict[str, Any] = {}
 
-    # Récupération des données depuis la simulation
-    robot_state = simulation_service.get_robot_state()
-    robot_state.get("joint_positions", {})
+    try:
+        from ....robot_factory import RobotFactory
 
-    # Valeurs par défaut (simulation)
-    battery_level: float = 85.5
-    temperature_c: float = 25.5
+        robot = RobotFactory.create_backend("mujoco")
+        if robot:
+            robot.connect()
 
-    # Tentative lecture SDK (non bloquant)
-    sdk = _read_sdk_telemetry()
-    if sdk:
-        battery_level = float(sdk.get("battery", battery_level))
-        temperature_c = float(sdk.get("temperature", temperature_c))
+            # Control mode
+            if with_control_mode:
+                if hasattr(robot, "get_motor_control_mode"):
+                    mode = robot.get_motor_control_mode()
+                    result["control_mode"] = mode.value if hasattr(mode, "value") else str(mode)
 
-    return RobotState(
-        position={"x": 0.0, "y": 0.0, "z": 0.0},
-        status="ready" if simulation_service.is_simulation_ready() else "not_ready",
-        battery=battery_level,
-        temperature=temperature_c,
-        timestamp=datetime.now().isoformat(),
-    )
+            # Head pose
+            if with_head_pose:
+                if hasattr(robot, "get_current_head_pose"):
+                    pose = robot.get_current_head_pose()
+                    if use_pose_matrix:
+                        result["head_pose"] = Matrix4x4Pose.from_pose_array(pose).model_dump()
+                    else:
+                        result["head_pose"] = XYZRPYPose.from_pose_array(pose).model_dump()
+
+            # Body yaw
+            if with_body_yaw:
+                if hasattr(robot, "get_current_body_yaw"):
+                    result["body_yaw"] = float(robot.get_current_body_yaw())
+
+            # Antenna positions
+            if with_antenna_positions:
+                if hasattr(robot, "get_present_antenna_joint_positions"):
+                    positions = robot.get_present_antenna_joint_positions()
+                    result["antennas_position"] = [float(positions[0]), float(positions[1])]
+
+            robot.disconnect()
+    except Exception as e:
+        logger.error(f"Erreur lors de la récupération de l'état: {e}")
+
+    # Valeurs par défaut si manquantes
+    if with_control_mode and "control_mode" not in result:
+        result["control_mode"] = "enabled"
+    if with_head_pose and "head_pose" not in result:
+        if use_pose_matrix:
+            result["head_pose"] = Matrix4x4Pose(
+                m=(
+                    1.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0,
+                )
+            ).model_dump()
+        else:
+            result["head_pose"] = XYZRPYPose().model_dump()
+    if with_body_yaw and "body_yaw" not in result:
+        result["body_yaw"] = 0.0
+    if with_antenna_positions and "antennas_position" not in result:
+        result["antennas_position"] = [0.0, 0.0]
+
+    result["timestamp"] = datetime.now().isoformat()
+    return result
 
 
 @router.get("/position")
@@ -340,15 +418,24 @@ async def get_joint_states() -> dict[str, Any]:
 
 
 @router.get("/present_head_pose")
-async def get_present_head_pose() -> dict[str, Any]:
-    """Récupère la pose actuelle de la tête.
+async def get_present_head_pose(
+    use_pose_matrix: bool = False,
+) -> dict[str, Any]:
+    """Récupère la pose actuelle de la tête (conforme SDK).
+
+    Args:
+        use_pose_matrix: Si True, retourne matrice 4x4, sinon xyz+rpy
 
     Returns:
-        Pose de la tête (4x4 matrix ou xyz + roll/pitch/yaw)
+        Pose de la tête (format choisi)
     """
-    logger.info("Récupération de la pose actuelle de la tête")
+
+    logger.info(f"Récupération de la pose actuelle de la tête (matrix={use_pose_matrix})")
     try:
+        import numpy as np
+
         from ....robot_factory import RobotFactory
+        from ...models import Matrix4x4Pose, XYZRPYPose
 
         robot = RobotFactory.create_backend("mujoco")
         if robot:
@@ -356,22 +443,87 @@ async def get_present_head_pose() -> dict[str, Any]:
             if hasattr(robot, "get_current_head_pose"):
                 pose = robot.get_current_head_pose()
                 robot.disconnect()
-                return {
-                    "head_pose": pose.tolist() if hasattr(pose, "tolist") else pose,
-                    "timestamp": datetime.now().isoformat(),
-                }
+
+                # Convertir en format demandé
+                if use_pose_matrix:
+                    if isinstance(pose, np.ndarray):
+                        pose_matrix = Matrix4x4Pose.from_pose_array(pose)
+                    else:
+                        pose_matrix = Matrix4x4Pose(
+                            m=(
+                                1.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0,
+                            )
+                        )
+                    return pose_matrix.model_dump()
+                else:
+                    if isinstance(pose, np.ndarray):
+                        pose_xyz = XYZRPYPose.from_pose_array(pose)
+                    else:
+                        pose_xyz = XYZRPYPose(x=0.0, y=0.0, z=0.0)
+                    return pose_xyz.model_dump()
 
         # Fallback: simulation
-        return {
-            "head_pose": [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]],
-            "timestamp": datetime.now().isoformat(),
-        }
+        if use_pose_matrix:
+            return {
+                "m": (
+                    1.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0,
+                )
+            }
+        return {"x": 0.0, "y": 0.0, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 0.0}
     except Exception as e:
         logger.error(f"Erreur lors de la récupération de la pose tête: {e}")
-        return {
-            "head_pose": [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]],
-            "timestamp": datetime.now().isoformat(),
-        }
+        if use_pose_matrix:
+            return {
+                "m": (
+                    1.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0,
+                )
+            }
+        return {"x": 0.0, "y": 0.0, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 0.0}
 
 
 @router.get("/present_body_yaw")
@@ -480,105 +632,55 @@ async def ws_full_state(
     websocket: WebSocket,
     frequency: float = 10.0,
     with_head_pose: bool = True,
+    with_target_head_pose: bool = False,
+    with_head_joints: bool = False,
+    with_target_head_joints: bool = False,
     with_body_yaw: bool = True,
+    with_target_body_yaw: bool = False,
     with_antenna_positions: bool = True,
+    with_target_antenna_positions: bool = False,
+    with_passive_joints: bool = False,
+    use_pose_matrix: bool = False,
 ) -> None:
-    """WebSocket endpoint pour stream l'état complet du robot.
+    """WebSocket endpoint pour stream l'état complet du robot (conforme SDK).
 
     Args:
         websocket: Connexion WebSocket
         frequency: Fréquence d'envoi en Hz (défaut: 10.0)
         with_head_pose: Inclure pose de la tête
+        with_target_head_pose: Inclure pose cible de la tête
+        with_head_joints: Inclure joints de la tête
+        with_target_head_joints: Inclure joints cibles de la tête
         with_body_yaw: Inclure yaw du corps
+        with_target_body_yaw: Inclure yaw cible du corps
         with_antenna_positions: Inclure positions des antennes
+        with_target_antenna_positions: Inclure positions cibles des antennes
+        with_passive_joints: Inclure joints passifs
+        use_pose_matrix: Utiliser format matrice 4x4
     """
     import asyncio
+
 
     await websocket.accept()
     period = 1.0 / frequency
 
     try:
         while True:
-            # Récupérer l'état complet
-            state_data: dict[str, Any] = {
-                "timestamp": datetime.now().isoformat(),
-            }
-
-            try:
-                from ....robot_factory import RobotFactory
-
-                robot = RobotFactory.create_backend("mujoco")
-                if robot:
-                    robot.connect()
-
-                    if with_head_pose:
-                        if hasattr(robot, "get_current_head_pose"):
-                            pose = robot.get_current_head_pose()
-                            state_data["head_pose"] = (
-                                pose.tolist()
-                                if hasattr(pose, "tolist")
-                                else [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]]
-                            )
-
-                    if with_body_yaw:
-                        if hasattr(robot, "get_current_body_yaw"):
-                            state_data["body_yaw"] = float(robot.get_current_body_yaw())
-                        elif hasattr(robot, "get_joint_positions"):
-                            positions = robot.get_joint_positions()
-                            state_data["body_yaw"] = float(positions.get("yaw_body", 0.0))
-                        else:
-                            state_data["body_yaw"] = 0.0
-
-                    if with_antenna_positions:
-                        if hasattr(robot, "get_present_antenna_joint_positions"):
-                            positions = robot.get_present_antenna_joint_positions()
-                            state_data["antennas_position"] = [
-                                float(positions[0]),
-                                float(positions[1]),
-                            ]
-                        elif hasattr(robot, "get_joint_positions"):
-                            all_pos = robot.get_joint_positions()
-                            state_data["antennas_position"] = [
-                                float(all_pos.get("left_antenna", 0.0)),
-                                float(all_pos.get("right_antenna", 0.0)),
-                            ]
-                        else:
-                            state_data["antennas_position"] = [0.0, 0.0]
-
-                    robot.disconnect()
-                else:
-                    # Fallback simulation
-                    if with_head_pose:
-                        state_data["head_pose"] = [
-                            [1, 0, 0, 0],
-                            [0, 1, 0, 0],
-                            [0, 0, 1, 0],
-                            [0, 0, 0, 1],
-                        ]
-                    if with_body_yaw:
-                        state_data["body_yaw"] = 0.0
-                    if with_antenna_positions:
-                        state_data["antennas_position"] = [0.0, 0.0]
-
-            except Exception as e:
-                logger.error(f"Erreur lors de la récupération de l'état: {e}")
-                # Continuer avec valeurs par défaut
-                if with_head_pose and "head_pose" not in state_data:
-                    state_data["head_pose"] = [
-                        [1, 0, 0, 0],
-                        [0, 1, 0, 0],
-                        [0, 0, 1, 0],
-                        [0, 0, 0, 1],
-                    ]
-                if with_body_yaw and "body_yaw" not in state_data:
-                    state_data["body_yaw"] = 0.0
-                if with_antenna_positions and "antennas_position" not in state_data:
-                    state_data["antennas_position"] = [0.0, 0.0]
-
-            # Envoyer l'état
-            await websocket.send_json(state_data)
-
-            # Attendre avant prochaine itération
+            # Utiliser get_full_state pour cohérence
+            full_state = await get_full_state(
+                with_control_mode=True,
+                with_head_pose=with_head_pose,
+                with_target_head_pose=with_target_head_pose,
+                with_head_joints=with_head_joints,
+                with_target_head_joints=with_target_head_joints,
+                with_body_yaw=with_body_yaw,
+                with_target_body_yaw=with_target_body_yaw,
+                with_antenna_positions=with_antenna_positions,
+                with_target_antenna_positions=with_target_antenna_positions,
+                with_passive_joints=with_passive_joints,
+                use_pose_matrix=use_pose_matrix,
+            )
+            await websocket.send_json(full_state)
             await asyncio.sleep(period)
 
     except WebSocketDisconnect:

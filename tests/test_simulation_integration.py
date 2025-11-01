@@ -390,15 +390,16 @@ class TestSimulationIntegration:
                 simulator.set_joint_position("joint1", 0.5)
                 results.append({"action": "position_set"})
 
-            # Exécuter les opérations en parallèle
-            thread1 = threading.Thread(target=get_state)
-            thread2 = threading.Thread(target=set_position)
+            # Exécuter les opérations en parallèle (daemon pour éviter blocage)
+            thread1 = threading.Thread(target=get_state, daemon=True)
+            thread2 = threading.Thread(target=set_position, daemon=True)
 
             thread1.start()
             thread2.start()
 
-            thread1.join()
-            thread2.join()
+            # Attendre avec timeout pour éviter blocage
+            thread1.join(timeout=2.0)
+            thread2.join(timeout=2.0)
 
             # Vérifier que les opérations ont été exécutées
             assert len(results) >= 1  # Au moins une opération réussie

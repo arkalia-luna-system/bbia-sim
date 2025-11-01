@@ -1,9 +1,10 @@
 # 📹 Roadmap Démo Vidéo - BBIA-SIM
 
 **Date de création** : 2025-10-30  
-**Statut** : ⏸️ **Prévu pour plus tard** - Pas prioritaire maintenant
+**Date de mise à jour** : 2025-11-01  
+**Statut** : ✅ **Vidéos disponibles** - 3 vidéos de démonstration créées
 
-> **Note** : Ce document sert de référence pour la production future de vidéos. Aucune production n'est prévue dans l'immédiat.
+> **Note** : Des vidéos de démonstration sont maintenant disponibles dans `assets/videos/`. Voir [`assets/MEDIAS_INVENTAIRE.md`](../../assets/MEDIAS_INVENTAIRE.md) pour la liste complète.
 
 ---
 
@@ -13,7 +14,34 @@ Créer des démonstrations vidéo pour faciliter l'onboarding et la compréhensi
 
 ---
 
-## 📹 Vidéos Prévues
+## 📹 Vidéos Disponibles (Nouveau - 2025-11-01)
+
+### ✅ Vidéos de Démonstration MuJoCo
+**Localisation** : `assets/videos/`
+
+1. **Démo MuJoCo #1** (2.7 MB)
+   - Fichier : `Enregistrement de l'écran 2025-11-01 à 17.00.52.mov`
+   - Source : `examples/demo_mujoco_continue.py` - Robot en mouvement continu (tête + corps)
+   - Contenu : Simulation 3D avec robot Reachy Mini animé (yaw_body + stewart joints)
+   - Usage : Documentation, présentation, README
+
+2. **Démo MuJoCo #2** (3.4 MB)
+   - Fichier : `Enregistrement de l'écran 2025-11-01 à 17.01.27.mov`
+   - Source : `examples/demo_mujoco_continue.py` - Robot en mouvement continu (tête + corps)
+   - Contenu : Simulation 3D avec robot Reachy Mini animé (yaw_body + stewart joints)
+   - Usage : Documentation, présentation, README
+
+3. **Démo MuJoCo #3** (3.1 MB)
+   - Fichier : `Enregistrement de l'écran 2025-11-01 à 17.01.56.mov`
+   - Source : `examples/demo_mujoco_continue.py` - Robot en mouvement continu (tête + corps)
+   - Contenu : Simulation 3D avec robot Reachy Mini animé (yaw_body + stewart joints)
+   - Usage : Documentation, présentation, README
+
+**Inventaire complet** : Voir [`assets/MEDIAS_INVENTAIRE.md`](../../assets/MEDIAS_INVENTAIRE.md)
+
+---
+
+## 📹 Vidéos Prévues (Futur)
 
 ### 1. 🎬 Zero-to-Sim (5-7 minutes)
 

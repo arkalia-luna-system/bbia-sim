@@ -8,8 +8,9 @@
 - Tester en simulation avant robot réel
 - Prévoir `emergency_stop()` accessible (logiciel + matériel)
 
-## DON’T
-- Ne jamais animer `left_antenna`, `right_antenna`, joints `passive_*`
+## DON'T
+- Ne pas dépasser les limites des antennes (-0.3 à 0.3 rad) — protection hardware
+- Ne jamais animer joints `passive_*` (bloqués)
 - Ne pas dépasser les limites matérielles
 - Ne pas désactiver watchdog en prod
 

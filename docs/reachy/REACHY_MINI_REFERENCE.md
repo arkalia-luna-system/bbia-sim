@@ -72,16 +72,18 @@
 
 ### Développement BBIA
 - **IA Émotionnelle** : Pour ce robot spécifique
-- **Expressions** : Basées sur les "yeux" et antennes
+- **Expressions** : Basées sur les "yeux" et posture (corps + tête)
 - **Interactions** : Reconnaissance vocale et vision
-- **Mouvements** : 6 DOF tête + antennes animées
+- **Mouvements** : 6 DOF tête + rotation corps (yaw_body)
+- **Note** : Les antennes sont bloquées dans le modèle officiel (sécurité hardware)
 
 ### Fonctionnalités BBIA
 - **6 émotions** : neutral, happy, sad, angry, curious, excited
 - **4 microphones** : Reconnaissance vocale
 - **Caméra grand angle** : Vision par ordinateur
-- **Mouvements tête** : 6 degrés de liberté
-- **Animation antennes** : Selon l'émotion
+- **Mouvements tête** : 6 degrés de liberté (stewart_1 à stewart_6)
+- **Mouvements corps** : Rotation yaw_body pour expressivité
+- **Note** : Antennes bloquées - utiliser yaw_body et stewart joints pour animations
 
 ---
 
@@ -92,7 +94,7 @@
 - **Connectivité** : Wi-Fi intégré
 - **Audio** : 4 microphones + haut-parleur 5W
 - **Vision** : Caméra grand angle
-- **Mouvements** : 6 DOF tête + rotation corps + 2 antennes
+- **Mouvements** : 6 DOF tête + rotation corps (yaw_body) - Note: Antennes bloquées
 - **Batterie** : Intégrée + USB-C
 - **Poids** : 1,5 kg
 - **Dimensions** : 28cm (actif) / 23cm (veille) x 16cm
@@ -137,7 +139,7 @@
 ### Simulation
 - **Unity 3D** : Modèle basé sur cette référence
 - **Émotions** : Expressions adaptées au design
-- **Mouvements** : Antennes et tête selon l'émotion
+- **Mouvements** : Tête (stewart joints) et corps (yaw_body) selon l'émotion - Note: Antennes bloquées
 - **Interaction** : Interface utilisateur cohérente
 
 ### Documentation
@@ -152,7 +154,7 @@
 
 ### Points positifs
 - **Design épuré** : Facile à reproduire
-- **Expressivité** : "Yeux" et antennes expressifs
+- **Expressivité** : "Yeux" expressifs + mouvements tête/corps (yaw_body + stewart joints)
 - **Taille compacte** : Adapté à un bureau/maison
 - **Open source** : Développement communautaire
 

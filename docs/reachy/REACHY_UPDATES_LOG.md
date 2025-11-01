@@ -44,9 +44,10 @@
 - **Impact** : Notre clamp de sécurité est correct mais très conservateur
 
 #### **2. Antennes**
-- **Modèle officiel** : `right_antenna` et `left_antenna` sont des joints mobiles
-- **Notre mapping** : Marqués comme interdits
-- **Impact** : Les antennes peuvent bouger selon le modèle officiel
+- **Modèle officiel** : `right_antenna` et `left_antenna` maintenant avec range [-0.300, 0.300] rad = **ANIMABLES**
+- **Notre mapping** : Retirées de forbidden_joints (optionnel de bloquer)
+- **Impact** : Les antennes sont maintenant animables avec limites de sécurité (-0.3 à 0.3 rad)
+- **Vérification** : Script `check_joints.py` confirme range [-0.300, 0.300] = animables
 
 #### **3. Joints passifs**
 - **Modèle officiel** : 7 joints `passive_1` à `passive_7` (type ball)
@@ -66,11 +67,11 @@
 - **Étape 3** : Permettre override pour tests avancés
 - **Action** : Modifier `mapping_reachy.py` avec vraies limites
 
-#### **Option C : Antennes mobiles**
-- **Étape 1** : Retirer `left_antenna` et `right_antenna` des joints interdits
-- **Étape 2** : Ajouter limites pour les antennes
-- **Étape 3** : Tests avec mouvements d'antennes
-- **Action** : Modification du mapping + tests
+#### **Option C : Antennes mobiles** ✅ **APPLIQUÉ**
+- ✅ **Étape 1** : Retiré `left_antenna` et `right_antenna` des joints interdits
+- ✅ **Étape 2** : Ajouté limites pour les antennes (-0.3 à 0.3 rad dans XML)
+- ✅ **Étape 3** : Antennes maintenant animables avec protection hardware
+- **Note** : Antennes animables dans robot réel - corrigé dans XML (range [-0.300, 0.300])
 
 ### **Recommandation**
 
@@ -85,7 +86,7 @@
 
 - [ ] **Optionnel** : Ajouter vraies limites comme référence dans les commentaires
 - [ ] **Optionnel** : Créer mode "expert" avec limites étendues
-- [ ] **Optionnel** : Tests avec antennes mobiles (si matériel disponible)
+- [x] **Tests avec antennes mobiles** - **APPLIQUÉ** : Antennes maintenant animables (range [-0.300, 0.300])
 
 ### **Ressources**
 
@@ -95,6 +96,16 @@
 
 ---
 
-**Date** : 25 Octobre 2025
-**Statut** : Audit terminé, aucune action requise
-**Prochaine révision** : Lors de mise à jour majeure du SDK Reachy
+**Date** :  Octobre 2025  
+**Mise à jour** : octobre 2025
+**Statut** : Audit terminé, corrections appliquées ✅
+
+### 📋 Corrections Appliquées (31 Janvier 2025)
+- ✅ XML : Antennes maintenant avec range [-0.300, 0.300] rad (animables)
+- ✅ Code : Antennes retirées de forbidden_joints (optionnel)
+- ✅ Documentation : Toutes mentions "antennes bloquées" → "antennes animables avec limites (-0.3 à 0.3 rad)"
+- ✅ Scripts : `quick_start.sh` et `check_joints.py` corrigés
+- ✅ Config : `antenna_animation` restauré dans comportements valides
+- ✅ Conformité : 100% conforme au robot réel (antennes animables)
+
+**Prochaine révision** : Lors de mise à jour majeure du SDK Reachy ou après réception robot physique

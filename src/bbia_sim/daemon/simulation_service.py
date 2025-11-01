@@ -244,9 +244,9 @@ class SimulationService:
             "stewart_4": 0.0,  # ⚠️ Pour info seulement - utiliser IK
             "stewart_5": 0.0,  # ⚠️ Pour info seulement - utiliser IK
             "stewart_6": 0.0,  # ⚠️ Pour info seulement - utiliser IK
-            # Antennes (interdites pour sécurité)
-            "left_antenna": 0.0,  # ⚠️ Interdit
-            "right_antenna": 0.0,  # ⚠️ Interdit
+            # Antennes (animables avec limites de sécurité)
+            "left_antenna": 0.0,  # ✅ Animable avec limites (-0.3 à 0.3 rad)
+            "right_antenna": 0.0,  # ✅ Animable avec limites (-0.3 à 0.3 rad)
         }
 
     def _get_default_joint_names(self) -> list[str]:

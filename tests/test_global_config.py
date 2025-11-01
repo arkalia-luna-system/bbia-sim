@@ -54,8 +54,8 @@ class TestGlobalConfig:
     def test_forbidden_joints(self):
         """Test joints interdits."""
         assert isinstance(GlobalConfig.FORBIDDEN_JOINTS, set)
-        assert "left_antenna" in GlobalConfig.FORBIDDEN_JOINTS
-        assert "right_antenna" in GlobalConfig.FORBIDDEN_JOINTS
+        # Note: Antennes maintenant optionnelles (commentées dans forbidden_joints)
+        # Elles peuvent être dans forbidden_joints si décommentées, sinon animables
         assert "passive_1" in GlobalConfig.FORBIDDEN_JOINTS
 
     def test_safe_joints(self):
@@ -93,8 +93,12 @@ class TestGlobalConfig:
 
     def test_validate_joint_forbidden(self):
         """Test validation joint interdit."""
-        result = GlobalConfig.validate_joint("left_antenna")
-        assert result is False
+        # Utiliser passive_1 qui est réellement dans FORBIDDEN_JOINTS
+        # (left_antenna n'est plus interdit par défaut)
+        result = GlobalConfig.validate_joint("passive_1")
+        assert (
+            result is False
+        ), f"passive_1 devrait être interdit (FORBIDDEN_JOINTS: {GlobalConfig.FORBIDDEN_JOINTS})"
 
     def test_clamp_amplitude_within_limits(self):
         """Test clamp amplitude dans les limites."""

@@ -105,10 +105,47 @@ tests/
 ├── 🧪 test_api_integration.py        # Tests API d'intégration
 ├── 🧪 test_joints.py                 # Tests validation joints
 ├── 🧪 test_duration.py               # Tests durée simulation
+├── 🤖 test_reachy_mini_*.py          # Tests Backend Reachy Mini (118 tests, voir section dédiée)
 ├── 🌐 e2e/                           # Tests end-to-end
 │   ├── test_motion_roundtrip.py      # Tests E2E motion
 │   └── __init__.py
 └── 📖 README.md                      # Ce fichier
+```
+
+### 🤖 **Tests Backend Reachy Mini**
+
+**📊 Statistiques (Novembre 2024)**:
+- ✅ **118 tests** répartis dans **8 fichiers complémentaires**
+- ✅ **116 tests uniques** (98.3% - très peu de redondance)
+- ✅ **1 doublon mineur** (`test_robot_factory_integration`)
+
+**📁 Fichiers de tests** (tous complémentaires, à conserver):
+
+| Fichier | Tests | Rôle Principal |
+|---------|-------|---------------|
+| `test_reachy_mini_full_conformity_official.py` | 37 | Conformité complète SDK officiel |
+| `test_reachy_mini_backend.py` | 24 | Tests de base du backend |
+| `test_reachy_mini_complete_conformity.py` | 16 | Conformité API complète |
+| `test_reachy_mini_advanced_conformity.py` | 12 | Patterns/optimisations expertes |
+| `test_reachy_mini_strict_conformity.py` | 10 | Tests stricts (valeurs exactes XML) |
+| `test_reachy_mini_backend_extended.py` | 9 | Tests structure/compatibilité |
+| `test_reachy_mini_backend_rapid.py` | 8 | Tests coverage rapide |
+| `test_reachy_mini_conformity.py` | 2 | Script de vérification |
+
+**💡 Documentation complète**: Voir [`REACHY_MINI_TESTS_STRUCTURE.md`](REACHY_MINI_TESTS_STRUCTURE.md)
+
+```bash
+# Lancer tous les tests Reachy Mini
+pytest tests/test_reachy_mini*.py -v
+
+# Test de conformité complet (recommandé)
+pytest tests/test_reachy_mini_full_conformity_official.py -v
+
+# Tests stricts (valeurs exactes)
+pytest tests/test_reachy_mini_strict_conformity.py -v
+
+# Vérifier les doublons/redondances
+python scripts/verify_tests_consolidation.py
 ```
 
 ---

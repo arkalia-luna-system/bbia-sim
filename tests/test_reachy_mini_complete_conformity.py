@@ -186,8 +186,9 @@ class TestReachyMiniCompleteConformity:
         """Test conformité sécurité."""
         # Test joints interdits
         forbidden_joints = self.backend.forbidden_joints
-        assert "left_antenna" in forbidden_joints
-        assert "right_antenna" in forbidden_joints
+        # Note: Antennes maintenant optionnelles (commentées dans forbidden_joints)
+        # Vérifier que les joints passifs sont toujours bloqués
+        assert "passive_1" in forbidden_joints
 
         # Test amplitude limite
         assert self.backend.safe_amplitude_limit == 0.3

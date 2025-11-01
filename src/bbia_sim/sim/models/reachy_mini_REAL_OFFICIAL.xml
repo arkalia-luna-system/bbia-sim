@@ -497,7 +497,8 @@
               <!-- Link dc15_a01_horn_dummy_7 -->
               <body name="dc15_a01_horn_dummy_7" pos="-0.0948524 0.0197779 -0.00445785" quat="0.652996 0.376401 0.603671 -0.259807">
                 <!-- Joint from xl_330 to dc15_a01_horn_dummy_7 -->
-                <joint axis="0 0 1" name="right_antenna" type="hinge" class="chosen_actuator"/>
+                <!-- Note: Antennes animables avec limites de sécurité (-0.3 à 0.3 rad) pour protection hardware -->
+                <joint axis="0 0 1" name="right_antenna" type="hinge" range="-0.3 0.3" class="chosen_actuator"/>
                 <inertial pos="2.09613e-05 -0.0378463 -0.00866471" mass="0.0105926" fullinertia="2.69314e-05 2.98203e-07 2.68876e-05 2.22219e-09 3.62599e-10 -6.63107e-07"/>
                 <!-- Part antenna -->
                 <geom type="mesh" class="visual" pos="8.00228e-15 -0.0588 -0.0103" quat="1 1.97595e-15 5.55112e-17 6.44483e-14" mesh="antenna" material="antenna_material"/>
@@ -511,7 +512,8 @@
               <!-- Link dc15_a01_horn_dummy_8 -->
               <body name="dc15_a01_horn_dummy_8" pos="-0.0764135 -0.0324475 0.0840224" quat="0.266359 0.455758 0.848455 -0.0382396">
                 <!-- Joint from xl_330 to dc15_a01_horn_dummy_8 -->
-                <joint axis="0 0 1" name="left_antenna" type="hinge" class="chosen_actuator"/>
+                <!-- Note: Antennes animables avec limites de sécurité (-0.3 à 0.3 rad) pour protection hardware -->
+                <joint axis="0 0 1" name="left_antenna" type="hinge" range="-0.3 0.3" class="chosen_actuator"/>
                 <inertial pos="2.09613e-05 -0.0378463 -0.00866471" mass="0.0105926" fullinertia="2.69314e-05 2.98203e-07 2.68876e-05 2.22219e-09 3.62599e-10 -6.63107e-07"/>
                 <!-- Part dc15_a01_horn_dummy_9 -->
                 <geom type="mesh" class="visual" pos="3.46945e-18 -2.77556e-17 0.0065" quat="0.707107 -0.707107 -4.59632e-14 3.59094e-14" mesh="dc15_a01_horn_dummy" material="dc15_a01_horn_dummy_material"/>

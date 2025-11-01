@@ -78,9 +78,11 @@ class ReachyMapping:
     }
 
     # Joints interdits (passifs/bloqués)
+    # Note: Antennes maintenant animables avec limites sûres (-0.3 à 0.3 rad)
+    # Elles peuvent être retirées de FORBIDDEN_JOINTS si on veut les animer
     FORBIDDEN_JOINTS: set[str] = {
-        "left_antenna",
-        "right_antenna",
+        # "left_antenna",   # Optionnel: décommenter pour bloquer par défaut
+        # "right_antenna",  # Optionnel: décommenter pour bloquer par défaut
         "passive_1",
         "passive_2",
         "passive_3",
@@ -219,7 +221,7 @@ if __name__ == "__main__":
         ("yaw_body", 0.2),  # OK
         ("yaw_body", 0.5),  # Clampé à 0.3
         ("yaw_body", -0.8),  # Clampé à -0.3
-        ("left_antenna", 0.1),  # Interdit
+        ("left_antenna", 0.1),  # Animable avec limites (-0.3 à 0.3 rad)
         ("unknown_joint", 0.1),  # Inconnu
     ]
 

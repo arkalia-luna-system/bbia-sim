@@ -88,16 +88,18 @@ class TestExpertRobustnessConformity:
             except Exception as e:
                 errors.append((thread_id, e))
 
-        # Lancer 3 threads concurrents
+        # Lancer 3 threads concurrents (daemon pour éviter blocage pytest)
         threads = []
         for tid in range(3):
-            t = threading.Thread(target=worker, args=(tid,))
+            t = threading.Thread(target=worker, args=(tid,), daemon=True)
             threads.append(t)
             t.start()
 
-        # Attendre fin
+        # Attendre fin avec timeout
         for t in threads:
             t.join(timeout=5.0)
+            # Si le thread n'est pas terminé après timeout, on continue quand même
+            # (daemon=True garantit qu'il ne bloquera pas pytest)
 
         # Vérifier résultats
         assert len(errors) == 0, f"Erreurs thread-safety détectées: {errors}"

@@ -105,13 +105,14 @@ src/bbia_sim/bbia_integration.py       ✅ BBIAIntegration
 | stewart_5 | hinge | [-1.222, 1.396] | [-70°, 80°] | ⚠️ RISKY | Prudent |
 | stewart_6 | hinge | [-1.396, 0.838] | [-80°, 48°] | ⚠️ RISKY | Prudent |
 | passive_1-7 | ball | [0.000, 0.000] | [0°, 0°] | ❌ FORBIDDEN | Interdit |
-| left_antenna | hinge | [0.000, 0.000] | [0°, 0°] | ❌ FORBIDDEN | Interdit |
-| right_antenna | hinge | [0.000, 0.000] | [0°, 0°] | ❌ FORBIDDEN | Interdit |
+| left_antenna | hinge | [-0.300, 0.300] | [-17°, +17°] | ✅ ANIMABLE | Animable avec limites |
+| right_antenna | hinge | [-0.300, 0.300] | [-17°, +17°] | ✅ ANIMABLE | Animable avec limites |
 
 ### **Classification**
 - **✅ JOINTS SÛRS** : 1 (yaw_body)
 - **⚠️ JOINTS RISQUÉS** : 6 (stewart_1 à stewart_6)
-- **❌ JOINTS INTERDITS** : 9 (passive_1-7, left/right_antenna)
+- **❌ JOINTS INTERDITS** : 7 (passive_1-7 uniquement)
+- **✅ ANTENNES ANIMABLES** : 2 (left_antenna, right_antenna avec limites -0.3 à 0.3 rad)
 
 ## 🛠️ PRÉREQUIS TECHNIQUES
 

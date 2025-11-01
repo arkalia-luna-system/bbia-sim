@@ -24,9 +24,11 @@ class GlobalConfig:
     MAX_DURATION = 60  # s
 
     # Joints interdits
+    # Note: Antennes maintenant animables avec limites sûres (-0.3 à 0.3 rad)
+    # Elles peuvent être retirées pour permettre animation (prudence recommandée)
     FORBIDDEN_JOINTS = {
-        "left_antenna",
-        "right_antenna",
+        # "left_antenna",   # Optionnel: décommenter pour bloquer par défaut
+        # "right_antenna",  # Optionnel: décommenter pour bloquer par défaut
         "passive_1",
         "passive_2",
         "passive_3",
@@ -62,7 +64,10 @@ class GlobalConfig:
         "emotional_response",
         "vision_tracking",
         "conversation",
+        # Note: "antenna_animation" maintenant disponible (antennes animables avec limites sûres)
+        # Antennes avec limites de sécurité (-0.3 à 0.3 rad) pour protection hardware
         "antenna_animation",
+        "body_yaw_animation",
         "hide",
     }
 

@@ -18,7 +18,7 @@
   1. **Happy** (2s) - Rotation joyeuse, mouvement positif
   2. **Neutral** (1s) - Position de repos
   3. **Curious** (2s) - Inclinaison tête, rotation légère
-  4. **Excited** (2s) - Mouvements rapides, antennes animées
+  4. **Excited** (2s) - Mouvements rapides (yaw_body + tête), antennes bloquées
   5. **Calm** (1s) - Retour au repos
 
 **Comment créer** :
@@ -94,7 +94,7 @@ mjpython examples/demo_chat_bbia_3d.py --duration 10
 **Séquence suggérée** :
 - Rotation corps douce (yaw_body)
 - Mouvements tête fluides
-- Antennes animées subtilement
+- Rotation yaw_body subtile (antennes bloquées)
 - Boucle infinie pour effet hypnotique
 
 **Comment créer** :

@@ -75,3 +75,148 @@ class TelemetryMessage(BaseModel):
         if len(v) > 50:
             raise ValueError("Trop de données (max 50 champs)")
         return v
+
+
+# Modèles conformes SDK officiel
+class XYZRPYPose(BaseModel):
+    """Représente une pose 3D avec position (x, y, z) et orientation (roll, pitch, yaw)."""
+
+    x: float = 0.0
+    y: float = 0.0
+    z: float = 0.0
+    roll: float = 0.0
+    pitch: float = 0.0
+    yaw: float = 0.0
+
+    @classmethod
+    def from_pose_array(cls, arr: Any) -> "XYZRPYPose":
+        """Crée une pose XYZRPYPose depuis un array numpy 4x4."""
+        import numpy as np
+        from scipy.spatial.transform import Rotation as R
+
+        if isinstance(arr, np.ndarray):
+            assert arr.shape == (4, 4), "Array must be of shape (4, 4)"
+            x, y, z = arr[0, 3], arr[1, 3], arr[2, 3]
+            roll, pitch, yaw = R.from_matrix(arr[:3, :3]).as_euler("xyz")
+            return cls(x=x, y=y, z=z, roll=roll, pitch=pitch, yaw=yaw)
+        return cls()
+
+    def to_pose_array(self) -> Any:
+        """Convertit en matrice 4x4 numpy."""
+        import numpy as np
+        from scipy.spatial.transform import Rotation as R
+
+        rotation = R.from_euler("xyz", [self.roll, self.pitch, self.yaw])
+        pose_matrix = np.eye(4)
+        pose_matrix[:3, 3] = [self.x, self.y, self.z]
+        pose_matrix[:3, :3] = rotation.as_matrix()
+        return pose_matrix
+
+
+class Matrix4x4Pose(BaseModel):
+    """Représente une pose 3D par sa matrice de transformation 4x4."""
+
+    m: tuple[
+        float,
+        float,
+        float,
+        float,
+        float,
+        float,
+        float,
+        float,
+        float,
+        float,
+        float,
+        float,
+        float,
+        float,
+        float,
+        float,
+    ]
+
+    @classmethod
+    def from_pose_array(cls, arr: Any) -> "Matrix4x4Pose":
+        """Crée une pose Matrix4x4Pose depuis un array numpy 4x4."""
+        import numpy as np
+
+        if isinstance(arr, np.ndarray):
+            assert arr.shape == (4, 4), "Array must be of shape (4, 4)"
+            m = tuple(arr.flatten().tolist())
+            return cls(m=m)
+        return cls(
+            m=(
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+            )
+        )
+
+    def to_pose_array(self) -> Any:
+        """Convertit en matrice 4x4 numpy."""
+        import numpy as np
+
+        return np.array(self.m).reshape((4, 4))
+
+
+AnyPose = XYZRPYPose | Matrix4x4Pose
+
+
+def as_any_pose(pose: Any, use_matrix: bool) -> AnyPose:
+    """Convertit un array numpy en AnyPose (conforme SDK)."""
+    import numpy as np
+
+    if isinstance(pose, np.ndarray):
+        if use_matrix:
+            return Matrix4x4Pose.from_pose_array(pose)
+        else:
+            return XYZRPYPose.from_pose_array(pose)
+    # Fallback
+    if use_matrix:
+        return Matrix4x4Pose(
+            m=(
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+            )
+        )
+    return XYZRPYPose()
+
+
+class FullBodyTarget(BaseModel):
+    """Représente le corps complet incluant pose tête et joints antennes."""
+
+    target_head_pose: AnyPose | None = None
+    target_antennas: tuple[float, float] | None = None
+
+
+class MoveUUID(BaseModel):
+    """Identifiant unique pour une tâche de mouvement."""
+
+    uuid: str  # UUID en string pour compatibilité JSON
