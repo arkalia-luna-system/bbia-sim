@@ -2,14 +2,20 @@
 
 import logging
 import os
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any
 
-from fastapi import APIRouter, WebSocket, WebSocketDisconnect
+from fastapi import APIRouter, Depends, WebSocket, WebSocketDisconnect
 from pydantic import BaseModel
 
 from ....robot_factory import RobotFactory
+from ...models import AnyPose, FullState, as_any_pose
 from ...simulation_service import simulation_service
+from ..backend_adapter import (
+    BackendAdapter,
+    get_backend_adapter,
+    ws_get_backend_adapter,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -147,7 +153,8 @@ async def get_full_state(
     with_target_antenna_positions: bool = False,
     with_passive_joints: bool = False,
     use_pose_matrix: bool = False,
-) -> dict[str, Any]:
+    backend: BackendAdapter = Depends(get_backend_adapter),
+) -> FullState:
     """Récupère l'état complet du robot avec paramètres optionnels (conforme SDK).
 
     Args:
@@ -162,96 +169,66 @@ async def get_full_state(
         with_target_antenna_positions: Inclure les positions cibles des antennes
         with_passive_joints: Inclure les joints passifs
         use_pose_matrix: Utiliser format matrice 4x4 pour les poses
+        backend: Backend adaptateur
 
     Returns:
-        État complet du robot (champs optionnels selon paramètres)
+        État complet du robot (FullState - conforme SDK)
     """
 
-    from ...models import Matrix4x4Pose, XYZRPYPose
-
-    logger.info("Récupération de l'état complet du robot")
     result: dict[str, Any] = {}
 
-    try:
-        from ....robot_factory import RobotFactory
+    if with_control_mode:
+        mode = backend.get_motor_control_mode()
+        result["control_mode"] = mode.value if hasattr(mode, "value") else str(mode)
 
-        robot = RobotFactory.create_backend("mujoco")
-        if robot:
-            robot.connect()
+    if with_head_pose:
+        pose = backend.get_present_head_pose()
+        result["head_pose"] = as_any_pose(pose, use_pose_matrix)
 
-            # Control mode
-            if with_control_mode:
-                if hasattr(robot, "get_motor_control_mode"):
-                    mode = robot.get_motor_control_mode()
-                    result["control_mode"] = (
-                        mode.value if hasattr(mode, "value") else str(mode)
-                    )
+    if with_target_head_pose:
+        target_pose = backend.target_head_pose
+        if target_pose is not None:
+            result["target_head_pose"] = as_any_pose(target_pose, use_pose_matrix)
 
-            # Head pose
-            if with_head_pose:
-                if hasattr(robot, "get_current_head_pose"):
-                    pose = robot.get_current_head_pose()
-                    if use_pose_matrix:
-                        result["head_pose"] = Matrix4x4Pose.from_pose_array(
-                            pose
-                        ).model_dump()
-                    else:
-                        result["head_pose"] = XYZRPYPose.from_pose_array(
-                            pose
-                        ).model_dump()
+    if with_head_joints:
+        joints = backend.get_present_head_joint_positions()
+        if joints is not None:
+            result["head_joints"] = list(joints)
 
-            # Body yaw
-            if with_body_yaw:
-                if hasattr(robot, "get_current_body_yaw"):
-                    result["body_yaw"] = float(robot.get_current_body_yaw())
+    if with_target_head_joints:
+        target_joints = backend.target_head_joint_positions
+        if target_joints is not None:
+            result["target_head_joints"] = list(target_joints)
 
-            # Antenna positions
-            if with_antenna_positions:
-                if hasattr(robot, "get_present_antenna_joint_positions"):
-                    positions = robot.get_present_antenna_joint_positions()
-                    result["antennas_position"] = [
-                        float(positions[0]),
-                        float(positions[1]),
-                    ]
+    if with_body_yaw:
+        result["body_yaw"] = backend.get_present_body_yaw()
 
-            robot.disconnect()
-    except Exception as e:
-        logger.error(f"Erreur lors de la récupération de l'état: {e}")
+    if with_target_body_yaw:
+        target_yaw = backend.target_body_yaw
+        if target_yaw is not None:
+            result["target_body_yaw"] = float(target_yaw)
 
-    # Valeurs par défaut si manquantes
-    if with_control_mode and "control_mode" not in result:
-        result["control_mode"] = "enabled"
-    if with_head_pose and "head_pose" not in result:
-        if use_pose_matrix:
-            result["head_pose"] = Matrix4x4Pose(
-                m=(
-                    1.0,
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0,
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0,
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0,
-                )
-            ).model_dump()
+    if with_antenna_positions:
+        positions = backend.get_present_antenna_joint_positions()
+        result["antennas_position"] = [float(positions[0]), float(positions[1])]
+
+    if with_target_antenna_positions:
+        target_antennas = backend.target_antenna_joint_positions
+        if target_antennas is not None:
+            result["target_antennas_position"] = [
+                float(target_antennas[0]),
+                float(target_antennas[1]),
+            ]
+
+    if with_passive_joints:
+        joints = backend.get_present_passive_joint_positions()
+        if joints is not None:
+            result["passive_joints"] = list(joints.values())
         else:
-            result["head_pose"] = XYZRPYPose().model_dump()
-    if with_body_yaw and "body_yaw" not in result:
-        result["body_yaw"] = 0.0
-    if with_antenna_positions and "antennas_position" not in result:
-        result["antennas_position"] = [0.0, 0.0]
+            result["passive_joints"] = None
 
-    result["timestamp"] = datetime.now().isoformat()
-    return result
+    result["timestamp"] = datetime.now(timezone.utc)
+    return FullState.model_validate(result)
 
 
 @router.get("/position")
@@ -425,213 +402,51 @@ async def get_joint_states() -> dict[str, Any]:
 @router.get("/present_head_pose")
 async def get_present_head_pose(
     use_pose_matrix: bool = False,
-) -> dict[str, Any]:
+    backend: BackendAdapter = Depends(get_backend_adapter),
+) -> AnyPose:
     """Récupère la pose actuelle de la tête (conforme SDK).
 
     Args:
         use_pose_matrix: Si True, retourne matrice 4x4, sinon xyz+rpy
+        backend: Backend adaptateur
 
     Returns:
-        Pose de la tête (format choisi)
+        Pose de la tête (AnyPose - conforme SDK)
     """
-
-    logger.info(
-        f"Récupération de la pose actuelle de la tête (matrix={use_pose_matrix})"
-    )
-    try:
-        import numpy as np
-
-        from ....robot_factory import RobotFactory
-        from ...models import Matrix4x4Pose, XYZRPYPose
-
-        robot = RobotFactory.create_backend("mujoco")
-        if robot:
-            robot.connect()
-            if hasattr(robot, "get_current_head_pose"):
-                pose = robot.get_current_head_pose()
-                robot.disconnect()
-
-                # Convertir en format demandé
-                if use_pose_matrix:
-                    if isinstance(pose, np.ndarray):
-                        pose_matrix = Matrix4x4Pose.from_pose_array(pose)
-                    else:
-                        pose_matrix = Matrix4x4Pose(
-                            m=(
-                                1.0,
-                                0.0,
-                                0.0,
-                                0.0,
-                                0.0,
-                                1.0,
-                                0.0,
-                                0.0,
-                                0.0,
-                                0.0,
-                                1.0,
-                                0.0,
-                                0.0,
-                                0.0,
-                                0.0,
-                                1.0,
-                            )
-                        )
-                    return pose_matrix.model_dump()
-                else:
-                    if isinstance(pose, np.ndarray):
-                        pose_xyz = XYZRPYPose.from_pose_array(pose)
-                    else:
-                        pose_xyz = XYZRPYPose(x=0.0, y=0.0, z=0.0)
-                    return pose_xyz.model_dump()
-
-        # Fallback: simulation
-        if use_pose_matrix:
-            return {
-                "m": (
-                    1.0,
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0,
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0,
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0,
-                )
-            }
-        return {"x": 0.0, "y": 0.0, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 0.0}
-    except Exception as e:
-        logger.error(f"Erreur lors de la récupération de la pose tête: {e}")
-        if use_pose_matrix:
-            return {
-                "m": (
-                    1.0,
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0,
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0,
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0,
-                )
-            }
-        return {"x": 0.0, "y": 0.0, "z": 0.0, "roll": 0.0, "pitch": 0.0, "yaw": 0.0}
+    pose = backend.get_present_head_pose()
+    return as_any_pose(pose, use_pose_matrix)
 
 
 @router.get("/present_body_yaw")
-async def get_present_body_yaw() -> dict[str, Any]:
-    """Récupère le yaw actuel du corps (en radians).
+async def get_present_body_yaw(
+    backend: BackendAdapter = Depends(get_backend_adapter),
+) -> float:
+    """Récupère le yaw actuel du corps (en radians) - conforme SDK.
+
+    Args:
+        backend: Backend adaptateur
 
     Returns:
-        Yaw du corps en radians
+        Yaw du corps en radians (float - conforme SDK)
     """
-    logger.info("Récupération du yaw corps")
-    try:
-        from ....robot_factory import RobotFactory
-
-        robot = RobotFactory.create_backend("mujoco")
-        if robot:
-            robot.connect()
-            # Essayer get_current_body_yaw ou via get_joint_positions
-            if hasattr(robot, "get_current_body_yaw"):
-                yaw = robot.get_current_body_yaw()
-            elif hasattr(robot, "get_joint_positions"):
-                positions = robot.get_joint_positions()
-                yaw = positions.get("yaw_body", 0.0)
-            else:
-                yaw = 0.0
-            robot.disconnect()
-            return {
-                "body_yaw": float(yaw),
-                "unit": "radians",
-                "timestamp": datetime.now().isoformat(),
-            }
-
-        # Fallback: simulation
-        return {
-            "body_yaw": 0.0,
-            "unit": "radians",
-            "timestamp": datetime.now().isoformat(),
-        }
-    except Exception as e:
-        logger.error(f"Erreur lors de la récupération du yaw corps: {e}")
-        return {
-            "body_yaw": 0.0,
-            "unit": "radians",
-            "timestamp": datetime.now().isoformat(),
-        }
+    return backend.get_present_body_yaw()
 
 
 @router.get("/present_antenna_joint_positions")
-async def get_present_antenna_joint_positions() -> dict[str, Any]:
-    """Récupère les positions actuelles des antennes (en radians).
+async def get_present_antenna_joint_positions(
+    backend: BackendAdapter = Depends(get_backend_adapter),
+) -> tuple[float, float]:
+    """Récupère les positions actuelles des antennes (en radians) - conforme SDK.
+
+    Args:
+        backend: Backend adaptateur
 
     Returns:
-        Positions des antennes (left, right) en radians
+        Positions des antennes (left, right) en radians (tuple - conforme SDK)
     """
-    logger.info("Récupération des positions antennes")
-    try:
-        from ....robot_factory import RobotFactory
-
-        robot = RobotFactory.create_backend("mujoco")
-        if robot:
-            robot.connect()
-            if hasattr(robot, "get_present_antenna_joint_positions"):
-                positions = robot.get_present_antenna_joint_positions()
-            elif hasattr(robot, "get_joint_positions"):
-                all_pos = robot.get_joint_positions()
-                positions = [
-                    all_pos.get("left_antenna", 0.0),
-                    all_pos.get("right_antenna", 0.0),
-                ]
-            else:
-                positions = [0.0, 0.0]
-            robot.disconnect()
-
-            # Format tuple comme officiel (left, right)
-            left = float(positions[0] if isinstance(positions, list) else positions[0])
-            right = float(positions[1] if isinstance(positions, list) else positions[1])
-
-            return {
-                "antennas": (left, right),
-                "left": left,
-                "right": right,
-                "unit": "radians",
-                "timestamp": datetime.now().isoformat(),
-            }
-
-        # Fallback: simulation
-        return {
-            "antennas": (0.0, 0.0),
-            "left": 0.0,
-            "right": 0.0,
-            "unit": "radians",
-            "timestamp": datetime.now().isoformat(),
-        }
-    except Exception as e:
-        logger.error(f"Erreur lors de la récupération des positions antennes: {e}")
-        return {
-            "antennas": (0.0, 0.0),
-            "left": 0.0,
-            "right": 0.0,
-            "unit": "radians",
-            "timestamp": datetime.now().isoformat(),
-        }
+    pos = backend.get_present_antenna_joint_positions()
+    assert len(pos) == 2
+    return (float(pos[0]), float(pos[1]))
 
 
 @router.websocket("/ws/full")
@@ -648,6 +463,7 @@ async def ws_full_state(
     with_target_antenna_positions: bool = False,
     with_passive_joints: bool = False,
     use_pose_matrix: bool = False,
+    backend: BackendAdapter = Depends(ws_get_backend_adapter),
 ) -> None:
     """WebSocket endpoint pour stream l'état complet du robot (conforme SDK).
 
@@ -664,6 +480,7 @@ async def ws_full_state(
         with_target_antenna_positions: Inclure positions cibles des antennes
         with_passive_joints: Inclure joints passifs
         use_pose_matrix: Utiliser format matrice 4x4
+        backend: Backend adaptateur
     """
     import asyncio
 
@@ -672,7 +489,6 @@ async def ws_full_state(
 
     try:
         while True:
-            # Utiliser get_full_state pour cohérence
             full_state = await get_full_state(
                 with_control_mode=True,
                 with_head_pose=with_head_pose,
@@ -685,14 +501,13 @@ async def ws_full_state(
                 with_target_antenna_positions=with_target_antenna_positions,
                 with_passive_joints=with_passive_joints,
                 use_pose_matrix=use_pose_matrix,
+                backend=backend,
             )
-            await websocket.send_json(full_state)
+            await websocket.send_text(full_state.model_dump_json())
             await asyncio.sleep(period)
 
     except WebSocketDisconnect:
-        logger.info("Client WebSocket déconnecté")
-    except Exception as e:
-        logger.error(f"Erreur WebSocket: {e}")
+        pass
 
 
 @router.get("/sensors")

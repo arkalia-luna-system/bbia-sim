@@ -1,5 +1,6 @@
 """Modèles Pydantic pour la validation des données API."""
 
+from datetime import datetime
 from typing import Any
 
 from pydantic import BaseModel, Field, field_validator
@@ -217,6 +218,23 @@ class FullBodyTarget(BaseModel):
 
 
 class MoveUUID(BaseModel):
-    """Identifiant unique pour une tâche de mouvement."""
+    """Identifiant unique pour une tâche de mouvement (conforme SDK)."""
 
-    uuid: str  # UUID en string pour compatibilité JSON
+    uuid: str  # UUID en string pour compatibilité JSON (SDK utilise UUID, mais JSON nécessite str)
+
+
+class FullState(BaseModel):
+    """Représente l'état complet du robot incluant toutes les positions d'articulations et poses (conforme SDK)."""
+
+    control_mode: str | None = None  # MotorControlMode.value ou str
+    head_pose: AnyPose | None = None
+    head_joints: list[float] | None = None
+    body_yaw: float | None = None
+    antennas_position: list[float] | None = None
+    timestamp: datetime | None = None
+    passive_joints: list[float] | None = None
+    # Champs target optionnels (ajoutés pour conformité complète)
+    target_head_pose: AnyPose | None = None
+    target_head_joints: list[float] | None = None
+    target_body_yaw: float | None = None
+    target_antennas_position: list[float] | None = None

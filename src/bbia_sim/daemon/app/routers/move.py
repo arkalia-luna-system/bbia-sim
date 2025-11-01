@@ -5,6 +5,7 @@ This exposes:
 - play (wake_up, goto_sleep)
 - stop running moves
 - set_target and streaming set_target
+- recorded moves datasets (conforme SDK)
 """
 
 import asyncio
@@ -15,11 +16,16 @@ from typing import Any
 from uuid import UUID, uuid4
 
 import numpy as np
-from fastapi import APIRouter, HTTPException, WebSocket, WebSocketDisconnect
+from fastapi import APIRouter, Depends, HTTPException, WebSocket, WebSocketDisconnect
+from huggingface_hub.errors import RepositoryNotFoundError
 from pydantic import BaseModel
 
-from ....robot_factory import RobotFactory
-from ...models import AnyPose, FullBodyTarget, MoveUUID, XYZRPYPose
+from ...models import AnyPose, FullBodyTarget, MoveUUID
+from ..backend_adapter import (
+    BackendAdapter,
+    get_backend_adapter,
+    ws_get_backend_adapter,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -73,14 +79,9 @@ class GotoModelRequest(BaseModel):
     }
 
 
-def get_backend_dependency():
-    """Dependency pour obtenir le backend robot."""
-    backend = RobotFactory.create_backend("mujoco")
-    if backend is None:
-        backend = RobotFactory.create_backend("reachy_mini")
-    if backend is None:
-        raise HTTPException(status_code=503, detail="Aucun backend robot disponible")
-    return backend
+def get_backend_dependency() -> BackendAdapter:
+    """Dependency pour obtenir le backend robot (via adaptateur conforme SDK)."""
+    return get_backend_adapter()
 
 
 def create_move_task(coro: Coroutine[Any, Any, None]) -> MoveUUID:
@@ -152,113 +153,85 @@ async def get_running_moves() -> list[MoveUUID]:
 
 
 @router.post("/goto")
-async def goto(goto_req: GotoModelRequest) -> MoveUUID:
+async def goto(
+    goto_req: GotoModelRequest,
+    backend: BackendAdapter = Depends(get_backend_adapter),
+) -> MoveUUID:
     """Demande un mouvement vers une cible spécifique (conforme SDK)."""
-
-    async def goto_coro() -> None:
-        """Coroutine pour exécuter le mouvement."""
-        robot = get_backend_dependency()
-        try:
-            robot.connect()
-
-            # Convertir AnyPose en matrice 4x4 si présent
-            head_pose = None
-            if goto_req.head_pose:
-                if hasattr(goto_req.head_pose, "to_pose_array"):
-                    head_pose = goto_req.head_pose.to_pose_array()
-                elif isinstance(goto_req.head_pose, dict):
-                    pose_data = goto_req.head_pose
-                    if "m" in pose_data:
-                        # Matrix4x4Pose
-                        from ...models import Matrix4x4Pose
-
-                        head_pose = Matrix4x4Pose(
-                            m=tuple(pose_data["m"])
-                        ).to_pose_array()
-                    else:
-                        # XYZRPYPose
-                        head_pose = XYZRPYPose(
-                            x=pose_data.get("x", 0.0),
-                            y=pose_data.get("y", 0.0),
-                            z=pose_data.get("z", 0.0),
-                            roll=pose_data.get("roll", 0.0),
-                            pitch=pose_data.get("pitch", 0.0),
-                            yaw=pose_data.get("yaw", 0.0),
-                        ).to_pose_array()
-
-            # Convertir antennas en numpy array
-            antennas = None
-            if goto_req.antennas:
-                antennas = np.array(goto_req.antennas)
-
-            # Utiliser goto_target avec interpolation
-            if hasattr(robot, "goto_target"):
-                interpolation_map = {
-                    "linear": "linear",
-                    "minjerk": "minjerk",
-                    "ease": "ease_in_out",
-                    "cartoon": "cartoon",
-                }
-                method = interpolation_map.get(goto_req.interpolation.value, "minjerk")
-                # goto_target peut être sync ou async
-                if hasattr(robot.goto_target, "__await__"):
-                    await robot.goto_target(
-                        head=head_pose,
-                        antennas=antennas,
-                        duration=goto_req.duration,
-                        method=method,
-                    )
-                else:
-                    robot.goto_target(
-                        head=head_pose,
-                        antennas=antennas,
-                        duration=goto_req.duration,
-                        method=method,
-                    )
-            else:
-                logger.warning("goto_target non disponible")
-        finally:
-            robot.disconnect()
-
-    return create_move_task(goto_coro())
+    return create_move_task(
+        backend.goto_target(
+            head=goto_req.head_pose.to_pose_array() if goto_req.head_pose else None,
+            antennas=np.array(goto_req.antennas) if goto_req.antennas else None,
+            duration=goto_req.duration,
+            method=goto_req.interpolation.value,  # "minjerk", "linear", "ease", "cartoon"
+            body_yaw=0.0,
+        )
+    )
 
 
 @router.post("/play/wake_up")
-async def play_wake_up() -> MoveUUID:
+async def play_wake_up(
+    backend: BackendAdapter = Depends(get_backend_adapter),
+) -> MoveUUID:
     """Demande au robot de se réveiller (conforme SDK)."""
-
-    async def wake_up_coro() -> None:
-        robot = get_backend_dependency()
-        try:
-            robot.connect()
-            if hasattr(robot, "wake_up"):
-                if hasattr(robot.wake_up, "__await__"):
-                    await robot.wake_up()
-                else:
-                    robot.wake_up()
-        finally:
-            robot.disconnect()
-
-    return create_move_task(wake_up_coro())
+    return create_move_task(backend.wake_up())
 
 
 @router.post("/play/goto_sleep")
-async def play_goto_sleep() -> MoveUUID:
+async def play_goto_sleep(
+    backend: BackendAdapter = Depends(get_backend_adapter),
+) -> MoveUUID:
     """Demande au robot de se mettre en veille (conforme SDK)."""
+    return create_move_task(backend.goto_sleep())
 
-    async def goto_sleep_coro() -> None:
-        robot = get_backend_dependency()
-        try:
-            robot.connect()
-            if hasattr(robot, "goto_sleep"):
-                if hasattr(robot.goto_sleep, "__await__"):
-                    await robot.goto_sleep()
-                else:
-                    robot.goto_sleep()
-        finally:
-            robot.disconnect()
 
-    return create_move_task(goto_sleep_coro())
+@router.get("/recorded-move-datasets/list/{dataset_name:path}")
+async def list_recorded_move_dataset(dataset_name: str) -> list[str]:
+    """Liste les mouvements enregistrés disponibles dans un dataset (conforme SDK)."""
+    try:
+        from reachy_mini.motion.recorded_move import RecordedMoves
+
+        moves = RecordedMoves(dataset_name)
+        return moves.list_moves()
+    except ImportError:
+        logger.warning("reachy_mini.motion.recorded_move non disponible")
+        raise HTTPException(
+            status_code=501,
+            detail="RecordedMoves non disponible - SDK officiel requis",
+        ) from None
+    except RepositoryNotFoundError as e:
+        raise HTTPException(status_code=404, detail=str(e)) from e
+
+
+@router.post("/play/recorded-move-dataset/{dataset_name:path}/{move_name}")
+async def play_recorded_move_dataset(
+    dataset_name: str,
+    move_name: str,
+    backend: BackendAdapter = Depends(get_backend_adapter),
+) -> MoveUUID:
+    """Demande au robot de jouer un mouvement enregistré depuis un dataset (conforme SDK officiel)."""
+    try:
+        from reachy_mini.motion.recorded_move import RecordedMoves
+
+        recorded_moves = RecordedMoves(dataset_name)
+        move = recorded_moves.get(move_name)
+
+        # Conforme SDK officiel : utiliser play_move directement
+        async def play_recorded_move_coro() -> None:
+            """Coroutine pour jouer un mouvement enregistré (conforme SDK)."""
+            await asyncio.to_thread(backend.play_move, move)
+
+        return create_move_task(play_recorded_move_coro())
+    except ImportError:
+        logger.warning("reachy_mini.motion.recorded_move non disponible")
+        raise HTTPException(
+            status_code=501,
+            detail="RecordedMoves non disponible - SDK officiel requis",
+        ) from None
+    except RepositoryNotFoundError as e:
+        raise HTTPException(status_code=404, detail=str(e)) from e
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e)) from e
 
 
 @router.post("/stop")
@@ -268,7 +241,9 @@ async def stop_move(uuid: MoveUUID) -> dict[str, str]:
         move_uuid = UUID(uuid.uuid)
         return await stop_move_task(move_uuid)
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=f"Invalid UUID format: {uuid.uuid}") from e
+        raise HTTPException(
+            status_code=400, detail=f"Invalid UUID format: {uuid.uuid}"
+        ) from e
     except KeyError as e:
         raise HTTPException(status_code=404, detail=str(e)) from e
 
@@ -287,50 +262,46 @@ async def ws_move_updates(websocket: WebSocket) -> None:
 
 
 @router.post("/set_target")
-async def set_target(target: FullBodyTarget) -> dict[str, str]:
-    """Définit un target directement (sans mouvement)."""
-    robot = get_backend_dependency()
-    try:
-        robot.connect()
+async def set_target(
+    target: FullBodyTarget,
+    backend: BackendAdapter = Depends(get_backend_adapter),
+) -> dict[str, str]:
+    """Définit un target directement (sans mouvement) - conforme SDK."""
+    # Convertir AnyPose en array numpy
+    head_pose_array = None
+    if target.target_head_pose:
+        if hasattr(target.target_head_pose, "to_pose_array"):
+            head_pose_array = target.target_head_pose.to_pose_array()
+        else:
+            # Fallback pour cas où target_head_pose est un dict
+            from ...models import Matrix4x4Pose, XYZRPYPose
 
-        # Convertir AnyPose si présent
-        head_pose = None
-        if target.target_head_pose:
-            if hasattr(target.target_head_pose, "to_pose_array"):
-                head_pose = target.target_head_pose.to_pose_array()
-            elif isinstance(target.target_head_pose, dict):
-                pose_data = target.target_head_pose
-                if "m" in pose_data:
-                    from ...models import Matrix4x4Pose
+            pose_dict = (
+                target.target_head_pose
+                if isinstance(target.target_head_pose, dict)
+                else target.target_head_pose.model_dump()
+            )
+            if "m" in pose_dict:
+                pose_obj = Matrix4x4Pose.model_validate(pose_dict)
+                head_pose_array = pose_obj.to_pose_array()
+            else:
+                pose_obj = XYZRPYPose.model_validate(pose_dict)
+                head_pose_array = pose_obj.to_pose_array()
 
-                    head_pose = Matrix4x4Pose(m=tuple(pose_data["m"])).to_pose_array()
-                else:
-                    head_pose = XYZRPYPose(
-                        x=pose_data.get("x", 0.0),
-                        y=pose_data.get("y", 0.0),
-                        z=pose_data.get("z", 0.0),
-                        roll=pose_data.get("roll", 0.0),
-                        pitch=pose_data.get("pitch", 0.0),
-                        yaw=pose_data.get("yaw", 0.0),
-                    ).to_pose_array()
-
-        # Convertir antennas
-        antennas = None
-        if target.target_antennas:
-            antennas = np.array(target.target_antennas)
-
-        if hasattr(robot, "set_target"):
-            robot.set_target(head=head_pose, antennas=antennas)
-
-    finally:
-        robot.disconnect()
-
+    backend.set_target(
+        head=head_pose_array,
+        antennas=np.array(target.target_antennas) if target.target_antennas else None,
+        body_yaw=None,
+    )
     return {"status": "ok"}
 
 
 @router.websocket("/ws/set_target")
-async def ws_set_target(websocket: WebSocket) -> None:
-    """WebSocket pour streamer les appels set_target."""
+async def ws_set_target(
+    websocket: WebSocket,
+    backend: BackendAdapter = Depends(ws_get_backend_adapter),
+) -> None:
+    """WebSocket pour streamer les appels set_target - conforme SDK."""
     import json
 
     await websocket.accept()
@@ -338,11 +309,43 @@ async def ws_set_target(websocket: WebSocket) -> None:
         while True:
             data = await websocket.receive_text()
             try:
-                target_data = json.loads(data)
-                target = FullBodyTarget.model_validate(target_data)
-                await set_target(target)
-                await websocket.send_json({"status": "ok"})
+                target = FullBodyTarget.model_validate_json(data)
+                # Convertir AnyPose en array numpy
+                head_pose_array = None
+                if target.target_head_pose:
+                    if hasattr(target.target_head_pose, "to_pose_array"):
+                        head_pose_array = target.target_head_pose.to_pose_array()
+                    elif isinstance(target.target_head_pose, dict | BaseModel):
+                        # Fallback: essayer de créer depuis les champs
+                        from ...models import Matrix4x4Pose, XYZRPYPose
+
+                        if "m" in (
+                            target.target_head_pose
+                            if isinstance(target.target_head_pose, dict)
+                            else target.target_head_pose.model_dump()
+                        ):
+                            pose_obj = Matrix4x4Pose.model_validate(
+                                target.target_head_pose
+                            )
+                            head_pose_array = pose_obj.to_pose_array()
+                        else:
+                            pose_obj = XYZRPYPose.model_validate(
+                                target.target_head_pose
+                            )
+                            head_pose_array = pose_obj.to_pose_array()
+                backend.set_target(
+                    head=head_pose_array,
+                    antennas=(
+                        np.array(target.target_antennas)
+                        if target.target_antennas
+                        else None
+                    ),
+                    body_yaw=None,
+                )
+                await websocket.send_text(json.dumps({"status": "ok"}))
             except Exception as e:
-                await websocket.send_json({"status": "error", "detail": str(e)})
+                await websocket.send_text(
+                    json.dumps({"status": "error", "detail": str(e)})
+                )
     except WebSocketDisconnect:
         pass

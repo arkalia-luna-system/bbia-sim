@@ -116,12 +116,12 @@ async def get_urdf() -> dict[str, str]:
     return {"urdf": ""}
 
 
-@router.get("/stl/{filename:path}")
+@router.get("/stl/{filename}")
 async def get_stl_file(filename: str) -> Response:
-    """Récupère un fichier STL depuis les assets.
+    """Récupère un fichier STL depuis les assets (conforme SDK officiel).
 
     Args:
-        filename: Nom du fichier STL (chemin relatif depuis assets/reachy_official)
+        filename: Nom du fichier STL (ex: body_down_3dprint.stl)
 
     Returns:
         Fichier STL en binaire avec type MIME approprié
@@ -135,7 +135,7 @@ async def get_stl_file(filename: str) -> Response:
             status_code=400, detail="Seuls les fichiers .stl sont autorisés"
         )
 
-    # Nettoyer le chemin pour éviter les directory traversal
+    # Nettoyer le chemin pour éviter les directory traversal (conforme SDK)
     safe_filename = Path(filename).name
     file_path = STL_ASSETS_DIR / safe_filename
 
