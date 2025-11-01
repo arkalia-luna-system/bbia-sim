@@ -30,6 +30,12 @@ THIRD-PARTY ATTRIBUTIONS:
    - License: MIT License
    - Attribution: Used for API data models
 
+5. Reachy Mini SDK
+   - Source: Pollen Robotics (https://github.com/pollen-robotics/reachy_mini)
+   - Usage: SDK backend pour robot physique (import conditionnel, dépendance optionnelle)
+   - License: Apache License 2.0
+   - Attribution: Used for physical robot control backend (optional dependency)
+
 DISCLAIMER:
 This project does not include any code directly copied from Apache-2.0 licensed
 projects. All implementations are original work based on public specifications
