@@ -125,11 +125,11 @@ bbia_sim = ["*.py", "*.txt", "*.wav"]
 # Configuration pytest moderne et complète
 [tool.pytest.ini_options]
 pythonpath = ["src"]
-testpaths = ["tests", "scripts"]
+testpaths = ["tests"]
 python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
-norecursedirs = [".git", "logs", ".venv", "venv", "__pycache__", "reachy_repos"]
+norecursedirs = [".git", "logs", ".venv", "venv", "__pycache__", "reachy_repos", "scripts"]
 minversion = "6.0"
 addopts = [
     "--verbose",
