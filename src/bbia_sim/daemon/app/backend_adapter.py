@@ -217,7 +217,7 @@ class BackendAdapter:
 
             async def play_async() -> None:
                 await asyncio.to_thread(
-                    self._robot.async_play_move,
+                    self._robot.async_play_move,  # type: ignore[attr-defined]
                     move,
                     play_frequency=100.0,
                     initial_goto_duration=0.0,

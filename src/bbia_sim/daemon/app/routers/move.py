@@ -319,20 +319,16 @@ async def ws_set_target(
                         # Fallback: essayer de créer depuis les champs
                         from ...models import Matrix4x4Pose, XYZRPYPose
 
-                        if "m" in (
+                        pose_dict = (
                             target.target_head_pose
                             if isinstance(target.target_head_pose, dict)
                             else target.target_head_pose.model_dump()
-                        ):
-                            pose_obj = Matrix4x4Pose.model_validate(
-                                target.target_head_pose
-                            )
-                            head_pose_array = pose_obj.to_pose_array()
+                        )
+                        if "m" in pose_dict:
+                            pose_obj: AnyPose = Matrix4x4Pose.model_validate(pose_dict)
                         else:
-                            pose_obj = XYZRPYPose.model_validate(
-                                target.target_head_pose
-                            )
-                            head_pose_array = pose_obj.to_pose_array()
+                            pose_obj = XYZRPYPose.model_validate(pose_dict)
+                        head_pose_array = pose_obj.to_pose_array()
                 backend.set_target(
                     head=head_pose_array,
                     antennas=(

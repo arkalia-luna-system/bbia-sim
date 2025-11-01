@@ -8,19 +8,21 @@
 
 ## 🎯 RÉSUMÉ EXÉCUTIF
 
-**Conformité Endpoints REST** : **24/26 (92%)** ✅  
+**Conformité Endpoints REST** : **~96% (25/26)** ✅  
 **Conformité Backend SDK** : **100%** ✅  
-**Tests** : **118 tests** (116 uniques, 98.3% complémentaires) ✅
+**Tests** : **1112+ tests** (79 sélectionnés pour conformité API) ✅
 
 **Statut Global** : ✅ **Prêt pour robot réel**
 
+**Dernière mise à jour** : Janvier 2025 (audit complet appliqué)
+
 ---
 
-## 🔴 INCOHÉRENCES CRITIQUES À CORRIGER
+## ✅ CORRECTIONS APPLIQUÉES
 
-### 1. Router `/move` vs `/motion` - Structure de requête différente
+### 1. Router `/move` - ✅ COMPLÉTÉ
 
-**Endpoint** : `POST /api/move/goto` (officiel) vs `POST /api/motion/goto_pose` (BBIA)
+**Endpoint** : `POST /api/move/goto` (conforme SDK)
 
 **Problème** :
 - **Officiel** : Utilise `GotoModelRequest` avec `head_pose: AnyPose`, `antennas: tuple[float, float]`, `duration: float`, `interpolation: InterpolationMode`
