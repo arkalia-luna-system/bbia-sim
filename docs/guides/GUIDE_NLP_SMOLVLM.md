@@ -133,6 +133,40 @@ BBIA extrait automatiquement des paramètres numériques depuis les phrases natu
 - **Angles** : "30 degrés", "pi/4 radians", "50%"
 - **Intensités** : "légèrement", "beaucoup", "à 75%"
 
+### Flux d'Extraction
+
+```mermaid
+flowchart LR
+    MSG[Message Utilisateur] --> EXTRACT{Extraction}
+    
+    EXTRACT --> ANGLE{Angle?}
+    EXTRACT --> INTENSITY{Intensité?}
+    
+    ANGLE -->|Oui| REG_ANGLE[Regex Angle]
+    REG_ANGLE --> DEG[30 degrés<br/>→ 30.0]
+    REG_ANGLE --> RAD[pi/4 radians<br/>→ 45.0°]
+    REG_ANGLE --> PCT[50%<br/>→ 45.0°]
+    
+    INTENSITY -->|Oui| KEYWORD[Keywords]
+    KEYWORD --> LIGHT[légèrement<br/>→ 0.2]
+    KEYWORD --> MEDIUM[modérément<br/>→ 0.5]
+    KEYWORD --> STRONG[beaucoup<br/>→ 0.8]
+    KEYWORD --> MAX[complètement<br/>→ 1.0]
+    
+    DEG --> PARAMS[Paramètres Finalisés]
+    RAD --> PARAMS
+    PCT --> PARAMS
+    LIGHT --> PARAMS
+    MEDIUM --> PARAMS
+    STRONG --> PARAMS
+    MAX --> PARAMS
+    
+    PARAMS --> EXEC[Exécuter Action]
+    
+    style EXTRACT fill:#FFD700
+    style PARAMS fill:#90EE90
+```
+
 ### Exemples
 
 #### Extraction angles
