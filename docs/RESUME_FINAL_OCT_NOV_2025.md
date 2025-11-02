@@ -14,7 +14,7 @@
 | `dashboard_advanced.py` | 38.82% | **76.71%** | +37.89% | 70%+ | ✅ **TERMINÉ** |
 | `vision_yolo.py` | 27.74% | **89.62%** | +61.88% | 50%+ | ✅ **TERMINÉ** |
 | `daemon/bridge.py` | 0% | **31.23%** | +31.23% | 30%+ | ✅ **TERMINÉ** |
-| `voice_whisper.py` | 23.27% | **59.83%** | +36.56% | 50%+ | ✅ **TERMINÉ** |
+| `voice_whisper.py` | 23.27% | **38.33%** | +15.06% | 50%+ | ⬆️ **EN PROGRÈS** |
 
 ---
 
@@ -33,10 +33,10 @@
 - **Coverage** : **31.23%** (objectif 30%+ atteint ✅)
 - **Tests** : 10+ tests ajoutés (start, stop, send_command, get_current_state, is_connected)
 
-### ✅ `voice_whisper.py` - TERMINÉ
-- **Coverage** : **59.83%** (+36.56% depuis 23.27%)
+### ⬆️ `voice_whisper.py` - EN PROGRÈS
+- **Coverage** : **38.33%** (+15.06% depuis 23.27%)
 - **Tests** : **30+ tests ajoutés** (load_model, transcribe_audio, VAD, streaming, edge cases)
-- **Statut** : ✅ **TERMINÉ** - Objectif 50%+ atteint ✅
+- **Statut** : ⬆️ **EN PROGRÈS** - Objectif 50%+ à atteindre (~1h restante)
 
 ---
 
@@ -51,7 +51,7 @@
 - `dashboard_advanced.py` : +37.89%
 - `vision_yolo.py` : +61.88%
 - `daemon/bridge.py` : +31.23%
-- `voice_whisper.py` : +36.56%
+- `voice_whisper.py` : +15.06%
 
 ---
 
