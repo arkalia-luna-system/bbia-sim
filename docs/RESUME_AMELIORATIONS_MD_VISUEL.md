@@ -10,28 +10,30 @@
 ### Statistiques
 
 ```mermaid
-pie title MD Améliorés
-    "MD Principaux avec Mermaid" : 10
+pie title MD Améliorés (17+ documents)
+    "Points d'Entrée" : 3
     "Guides Utilisateurs" : 4
-    "Architecture & Technique" : 3
-    "Audit & Analyses" : 8
+    "Guides Techniques" : 2
+    "Audit & Analyses" : 6
+    "Scripts & Utils" : 1
+    "Guides Spécialisés" : 1
 ```
 
 ### Types de Diagrammes Ajoutés
 
 | Type | Nombre | Utilisation |
 |------|--------|-------------|
-| **Flowchart** | 12+ | Flux processus, architecture, dépannage |
-| **Sequence** | 2 | Interactions entre composants |
+| **Flowchart** | 16+ | Flux processus, architecture, dépannage, préparation |
+| **Sequence** | 4+ | Interactions entre composants, intégration, validation |
 | **Gantt** | 1 | Timeline implémentation |
 | **Pie** | 3 | Scores parité, distribution |
-| **Mindmap** | 2 | Organisation tâches, documentation |
+| **Mindmap** | 3 | Organisation tâches, documentation, scripts |
 | **State** | 1 | Statut global |
-| **Graph** | 5+ | Structures, dépendances |
+| **Graph** | 8+ | Structures, dépendances, architecture |
 
 ---
 
-## 🎨 Documents Améliorés (10+)
+## 🎨 Documents Améliorés (17+)
 
 ### Niveau 1 : Points d'Entrée Principaux
 
@@ -97,6 +99,26 @@ pie title MD Améliorés
 
 #### 13. **docs/audit/ANALYSE_AMELIORATIONS_GRATUITES.md** ⭐⭐
 - ✅ Graph comparaison payant vs gratuit
+
+### Niveau 4 : Guides Techniques & Scripts
+
+#### 14. **scripts/README.md** ⭐⭐
+- ✅ Mindmap scripts disponibles
+- ✅ Workflow principal menu interactif
+- ✅ Séquence validation hardware
+
+#### 15. **docs/guides_techniques/INTEGRATION_GUIDE.md** ⭐⭐⭐
+- ✅ Architecture intégration complète
+- ✅ Flux d'intégration (flowchart)
+- ✅ Séquence d'intégration détaillée
+
+#### 16. **docs/guides_techniques/TESTING_GUIDE.md** ⭐⭐
+- ✅ Hiérarchie tests pyramidale (graph TB)
+- ✅ Détails par type de test
+
+#### 17. **docs/guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md** ⭐⭐
+- ✅ Parcours préparation complet (flowchart)
+- ✅ Architecture hardware + software stack (déjà présent)
 
 ---
 
@@ -215,5 +237,5 @@ pie title Qualité Documentation
 ---
 
 **Dernière mise à jour :** Oct 25 / Nov 25  
-**Statut :** ✅ Documentation visuelle optimisée - 25+ diagrammes Mermaid ajoutés
+**Statut :** ✅ Documentation visuelle optimisée - **35+ diagrammes Mermaid ajoutés dans 17+ documents**
 
