@@ -124,7 +124,7 @@
 | Priorité | Tâche | Estimation | Statut |
 |----------|-------|------------|--------|
 | ✅ | Coverage tests (tous modules) | ✅ | ✅ **TERMINÉ** (voice_whisper : **59.83%** ✅) |
-| ✅ | dashboard_advanced.py coverage | - | ✅ **TERMINÉ** (76.71%) |
+| ⚠️ | dashboard_advanced.py coverage | - | ⚠️ **À CORRIGER** (0.00% - tests ne couvrent pas) |
 | ✅ | TODOs bbia_tools.py (2 TODOs) | - | ✅ **TERMINÉ** |
 | 🟡 Moyenne | Documentation supplémentaire | 1-2h | ⏳ Optionnel |
 | 🔵 Hardware | TODOs robot réel | 3-4h | ⏳ En attente |
@@ -142,11 +142,11 @@
 ### Phase 1 : Coverage Tests (Priorité 1)
 
 1. ✅ **dashboard_advanced.py** - **TERMINÉ** ✅
-   - ✅ Coverage **76.71%** (objectif 70%+ dépassé)
+   - ⚠️ Coverage **0.00%** ⚠️ (objectif 70%+ non atteint - tests ne couvrent pas)
    - ✅ **47 tests créés** (**1156 lignes**)
 
 2. ✅ ~~**vision_yolo.py**~~ - **TERMINÉ** ✅
-   - ✅ Coverage **89.62%** (objectif 50%+ largement dépassé)
+   - ⚠️ Coverage **17.49%** ⚠️ (objectif 50%+ non atteint, 32.51% manquants)
 
 3. ⚠️ **voice_whisper.py** (~1-2h restantes)
    - **38.33%** coverage actuel, objectif 50%+
@@ -154,7 +154,7 @@
    - Cibler `transcribe_streaming` (lignes 476-669) et VAD (lignes 289-315, 322-328)
 
 4. ✅ ~~**daemon/bridge.py**~~ - **TERMINÉ** ✅
-   - ✅ Coverage **31.23%** (objectif 30%+ atteint)
+   - ⚠️ Coverage **0.00%** ⚠️ (objectif 30%+ non atteint - tests ne couvrent pas)
 
 ### Phase 2 : TODOs Code (Priorité 2)
 

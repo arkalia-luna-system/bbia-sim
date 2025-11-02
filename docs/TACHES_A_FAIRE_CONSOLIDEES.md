@@ -264,7 +264,7 @@ robot.io.set_leds()            # Contrôle LEDs (si disponibles)
 ### 📊 Résumé Exécutif
 
 **✅ Accomplissements majeurs** :
-- Coverage tests : **3/4 modules objectifs atteints** (dashboard 76.71%, vision_yolo 89.62%, bridge 31.23%)
+- Coverage tests : **1/4 modules objectifs atteints** (voice_whisper 75.83% ✅, dashboard 0%, vision_yolo 17.49%, bridge 0%)
 - TODOs code : **100% terminés** (VisionTrackingBehavior, emergency_stop)
 - Documentation : **112 liens MD corrigés** (-45%), **2 MD archivés**
 
@@ -274,7 +274,7 @@ robot.io.set_leds()            # Contrôle LEDs (si disponibles)
 
 **📈 Progrès session** :
 - **+78+ tests créés/améliorés**
-- **Coverage amélioré** : dashboard +38%, vision_yolo +61.88%, bridge +31.23%, voice +13.57%
+- **Coverage amélioré** : voice_whisper +52.56% ✅, dashboard -38.82% ⚠️, vision_yolo -10.25% ⚠️, bridge 0% ⚠️
 - **Documentation** : -45% liens cassés dans fichiers actifs
 
 ---
