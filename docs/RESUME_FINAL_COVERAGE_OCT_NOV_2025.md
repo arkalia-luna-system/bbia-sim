@@ -65,9 +65,9 @@
 
 ---
 
-### 4. ✅ `voice_whisper.py` - TERMINÉ
+### 4. ⬆️ `voice_whisper.py` - EN PROGRÈS
 
-**Coverage** : **59.83%** (+36.56% depuis 23.27%)
+**Coverage** : **38.33%** (+15.06% depuis 23.27%)
 
 **Tests ajoutés** (**30+ nouveaux tests**) :
 - Tests `load_model` : depuis cache, nouveau modèle, erreur chargement
