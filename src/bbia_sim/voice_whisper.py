@@ -626,11 +626,16 @@ class WhisperSTT:
                                     logger.debug(f"Erreur callback: {callback_error}")
 
                     finally:
-                        # Nettoyage
-                        if temp_file.exists():
-                            try:
-                                temp_file.unlink()
-                            except Exception:
+                        # OPTIMISATION RAM: Remettre fichier dans pool au lieu de supprimer
+                        if temp_file and temp_file.exists():
+                            # Remettre dans pool si espace disponible
+                            if len(self._temp_file_pool) < self._max_temp_files:
+                                self._temp_file_pool.append(temp_file)
+                            else:
+                                # Pool plein - supprimer fichier
+                                try:
+                                    temp_file.unlink()
+                                except Exception:
                                 pass
 
                 total_duration += chunk_duration
