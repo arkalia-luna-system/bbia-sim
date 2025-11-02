@@ -80,6 +80,11 @@ Voir `scripts/_archived/README.md`, `scripts/PLAN_CONSOLIDATION_AUDIT_SCRIPTS.md
 - **`record_trace.py`** - Enregistrement traces golden
 - **`validate_trace.py`** - Validation traces contre référence
 
+### ✅ **Scripts de Vérification Documentation** (Nouveaux)
+- **`verify_docs_complete.py`** ⭐ - Vérification complète documentation (liens, Mermaid, orthographe, formatage)
+- **`verify_documentation.py`** - Vérification précision et cohérence (fusionné)
+- **`audit_and_correct_dates_md.py`** - Audit et correction dates MD
+
 ### 🎬 **Scripts de Démo (NOUVEAUX)**
 - **`record_demo.sh`** - Enregistrement démo complète ✅
 - **`plot_trace.py`** - Génération rapports d'analyse ✅

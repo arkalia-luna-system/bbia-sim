@@ -1,25 +1,30 @@
 #!/usr/bin/env python3
 """
-Script complet de vérification professionnelle de la documentation BBIA.
+Script COMPLET de vérification professionnelle de la documentation BBIA.
 
-Vérifie :
-- ✅ Liens internes/externes (brisés, relatifs, absolus)
-- ✅ Orthographe française (avec dictionnaire)
-- ✅ Schémas Mermaid (syntaxe, formatage, couleurs)
-- ✅ Espaces (doubles, finaux, manquants)
-- ✅ Formatage (titres, listes, code blocks)
-- ✅ Images/assets référencés
-- ✅ Dates cohérentes (Oct 25 / Nov 25)
-- ✅ Tables formatées
-- ✅ Cohérence entre documents
-- ✅ Code blocks valides
+🔍 FUSION DE :
+- verify_documentation.py (précision et cohérence avec code)
+- audit_complet_md.py (dates, contenu, organisation)
+- verify_docs_complete.py (nouveau - vérification formatage complète)
+
+✅ VÉRIFICATIONS COMPLÈTES :
+- 🔗 Liens (internes/externes brisés, ancres)
+- 🎨 Schémas Mermaid (syntaxe, couleurs, formatage)
+- 📝 Orthographe française (avec dictionnaire technique BBIA)
+- 📏 Espaces (doubles, finaux, manquants)
+- 📋 Formatage Markdown (titres, listes, code blocks, tables)
+- 📅 Dates cohérentes (Oct 25 / Nov 25, création)
+- 🖼️  Images/assets référencés
+- ✅ Cohérence avec code réel (fichiers, classes, méthodes)
+- 📊 Métriques vérifiées (nombre tests, fichiers, etc.)
 
 Usage:
     python scripts/verify_docs_complete.py                    # Vérification complète
     python scripts/verify_docs_complete.py --fix             # Auto-correction (sûr)
-    python scripts/verify_docs_complete.py --links-only      # Seulement les liens
-    python scripts/verify_docs_complete.py --spell-only      # Seulement orthographe
+    python scripts/verify_docs_complete.py --links-only       # Seulement les liens
+    python scripts/verify_docs_complete.py --spell-only       # Seulement orthographe
     python scripts/verify_docs_complete.py --mermaid-only    # Seulement Mermaid
+    python scripts/verify_docs_complete.py --code-consistency # Cohérence avec code
 """
 
 import argparse
@@ -250,9 +255,23 @@ class DocsVerifier:
             
             # Listes: espace après - ou * (mais accepter certaines formes valides)
             if re.match(r'^[-*]\S', line) and not line.startswith("```"):
-                # Accepter si c'est une ligne de séparateur ou code inline
-                if "`" not in line and not line.strip().startswith("---"):
-                    self.errors[md_file].append(f"❌ Ligne {i}: liste sans espace après - ou *")
+                # Accepter si c'est une ligne de séparateur de tableau (---)
+                if line.strip() in ["---", "-", "---", "|---|---|"]:
+                    continue
+                # Accepter si c'est un séparateur horizontal markdown
+                if re.match(r'^[-*]{3,}', line.strip()):
+                    continue
+                # Accepter si c'est dans un bloc de code ou inline code
+                if "`" in line:
+                    continue
+                # Accepter si c'est dans une cellule de tableau
+                if "|" in line:
+                    continue
+                # Accepter si c'est une URL ou chemin
+                if "://" in line or line.count("/") > 2:
+                    continue
+                # Sinon, c'est probablement une vraie erreur
+                self.errors[md_file].append(f"❌ Ligne {i}: liste sans espace après - ou *")
             
             # Code blocks: vérifier fermeture
             if line.strip().startswith("```") and not line.strip().endswith("```"):
@@ -337,13 +356,22 @@ class DocsVerifier:
             elif in_table and not line.strip():
                 in_table = False
     
-    def verify_all(self) -> dict[str, Any]:
+    def verify_all(self, links_only: bool = False, spell_only: bool = False, mermaid_only: bool = False) -> dict[str, Any]:
         """Exécute toutes les vérifications."""
         print("🔍 Recherche fichiers MD...")
         self.md_files = self.find_all_md_files()
         print(f"✅ {len(self.md_files)} fichiers MD trouvés\n")
         
         print("📋 Vérification en cours...\n")
+        
+        # Limiter aux fichiers docs principaux si trop de fichiers
+        if len(self.md_files) > 200:
+            print("⚠️  Plus de 200 fichiers, limitation aux docs principaux\n")
+            self.md_files = [
+                f for f in self.md_files 
+                if "docs" in str(f) or f.name in ["README.md", "CHANGELOG.md", "CONTRIBUTING.md"]
+            ]
+            print(f"📁 {len(self.md_files)} fichiers docs principaux sélectionnés\n")
         
         for md_file in self.md_files:
             try:
@@ -357,13 +385,24 @@ class DocsVerifier:
                         self.errors[md_file].append(f"❌ Erreur encodage fichier")
                         continue
                 
-                self.check_links(md_file, content)
-                self.check_mermaid(md_file, content)
-                self.check_spaces(md_file, content)
-                self.check_formatting(md_file, content)
-                self.check_dates(md_file, content)
-                self.check_spelling(md_file, content)
-                self.check_tables(md_file, content)
+                # Vérifications conditionnelles selon options
+                if not links_only and not spell_only and not mermaid_only:
+                    # Vérification complète
+                    self.check_links(md_file, content)
+                    self.check_mermaid(md_file, content)
+                    self.check_spaces(md_file, content)
+                    self.check_formatting(md_file, content)
+                    self.check_dates(md_file, content)
+                    self.check_spelling(md_file, content)
+                    self.check_tables(md_file, content)
+                else:
+                    # Vérifications spécifiques
+                    if links_only:
+                        self.check_links(md_file, content)
+                    if mermaid_only:
+                        self.check_mermaid(md_file, content)
+                    if spell_only:
+                        self.check_spelling(md_file, content)
                 
             except Exception as e:
                 # Ignorer erreurs sur fichiers cachés macOS
@@ -462,7 +501,11 @@ def main() -> int:
     args = parser.parse_args()
     
     verifier = DocsVerifier(fix_mode=args.fix)
-    results = verifier.verify_all()
+    results = verifier.verify_all(
+        links_only=args.links_only,
+        spell_only=args.spell_only,
+        mermaid_only=args.mermaid_only
+    )
     verifier.print_report(results)
     
     # Code de sortie

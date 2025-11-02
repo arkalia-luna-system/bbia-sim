@@ -295,39 +295,39 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
                     except Exception as e:
                         logging.debug(f"media.play_audio a échoué: {e}")
 
-            # Priorité 2: media.speaker.play_file/ play(bytes)
-            speaker = getattr(media, "speaker", None)
-            if speaker is not None:
-                try:
-                    if hasattr(speaker, "play"):
-                        speaker.play(sdk_audio_bytes)
-                        return
-                except Exception as e:
-                    logging.debug(f"speaker.play a échoué: {e}")
-                try:
-                    # Créer un fichier temporaire si play_file est préféré
-                    import tempfile as _tempfile
-
-                    tmp_path = None
-                    with _tempfile.NamedTemporaryFile(
-                        suffix=".wav", delete=False
-                    ) as tmp:
-                        tmp_path = tmp.name
-                        with open(tmp_path, "wb") as f:
-                            f.write(sdk_audio_bytes)
-                    if hasattr(speaker, "play_file"):
-                        speaker.play_file(tmp_path)
-                        return
-                finally:
+                # Priorité 2: media.speaker.play_file/ play(bytes)
+                speaker = getattr(media, "speaker", None)
+                if speaker is not None:
                     try:
-                        if tmp_path and os.path.exists(tmp_path):
-                            os.unlink(tmp_path)
-                    except Exception:
-                        pass  # noqa: S101 - Ignorer erreur nettoyage fichier temp (déjà supprimé ou inexistant)
+                        if hasattr(speaker, "play"):
+                            speaker.play(sdk_audio_bytes)
+                            return
+                    except Exception as e:
+                        logging.debug(f"speaker.play a échoué: {e}")
+                    try:
+                        # Créer un fichier temporaire si play_file est préféré
+                        import tempfile as _tempfile
 
-        except Exception as e:
-            logging.debug(f"Erreur synthèse SDK (fallback pyttsx3): {e}")
-            # Fallback pyttsx3
+                        tmp_path = None
+                        with _tempfile.NamedTemporaryFile(
+                            suffix=".wav", delete=False
+                        ) as tmp:
+                            tmp_path = tmp.name
+                            with open(tmp_path, "wb") as f:
+                                f.write(sdk_audio_bytes)
+                        if hasattr(speaker, "play_file"):
+                            speaker.play_file(tmp_path)
+                            return
+                    finally:
+                        try:
+                            if tmp_path and os.path.exists(tmp_path):
+                                os.unlink(tmp_path)
+                        except Exception:
+                            pass  # noqa: S101 - Ignorer erreur nettoyage fichier temp (déjà supprimé ou inexistant)
+
+            except Exception as e:
+                logging.debug(f"Erreur synthèse SDK (fallback pyttsx3): {e}")
+                # Fallback pyttsx3
 
     # Fallback: pyttsx3 (compatibilité)
     try:
