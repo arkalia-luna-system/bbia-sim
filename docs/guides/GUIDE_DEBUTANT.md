@@ -7,7 +7,7 @@
 > - Python: 3.11+
 > - CI: `.github/workflows/ci.yml`
 > - Setup rapide:
->   ```bash
+> ```bash
 >   pyenv install 3.11.9 && pyenv local 3.11.9
 >   python -m pip install --upgrade pip
 >   pip install -e .
@@ -117,8 +117,8 @@ mjpython examples/demo_emotion_ok.py --emotion happy --duration 10
 mjpython examples/demo_chat_bbia_3d.py
 ```
 
-> 💡 **Astuce macOS** : Utilisez `mjpython` au lieu de `python` pour les démos 3D.  
-> `mjpython` est installé automatiquement avec MuJoCo et permet d'afficher la fenêtre 3D.  
+> 💡 **Astuce macOS** : Utilisez `mjpython` au lieu de `python` pour les démos 3D.
+> `mjpython` est installé automatiquement avec MuJoCo et permet d'afficher la fenêtre 3D.
 > Si `mjpython` n'est pas disponible, utilisez `python` (le viewer peut ne pas s'ouvrir en mode headless).
 
 ---

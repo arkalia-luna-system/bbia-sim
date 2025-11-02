@@ -16,4 +16,4 @@ Nous nous engageons à faire de la participation à notre projet une expérience
 Pour signaler un comportement inapproprié, contactez : arkalia.luna.system@gmail.com
 
 ---
-Inspiré du [Contributor Covenant](https://www.contributor-covenant.org/fr/version/2/0/code_of_conduct/) 
+Inspiré du [Contributor Covenant](https://www.contributor-covenant.org/fr/version/2/0/code_of_conduct/)

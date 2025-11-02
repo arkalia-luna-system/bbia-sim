@@ -166,16 +166,16 @@ pytest tests/test_reachy_mini*.py -v
 # Vérifier les doublons/redondances
 python scripts/verify_tests_consolidation.py
 ```
-│   ├── test_bbia_emotions.py     # Tests émotions
-│   ├── test_bbia_emotions_extended.py
-│   ├── test_bbia_vision.py       # Tests vision
-│   ├── test_bbia_vision_extended.py
-│   ├── test_bbia_voice.py        # Tests voix
-│   └── test_bbia_voice_extended.py
-├── test_api_*.py                 # Tests API
-├── test_simulator.py             # Tests simulateur MuJoCo
-├── test_unity_controller.py      # Tests contrôleur Unity
-└── test_*.py                     # Tests unitaires
+│ ├── test_bbia_emotions.py # Tests émotions
+│ ├── test_bbia_emotions_extended.py
+│ ├── test_bbia_vision.py # Tests vision
+│ ├── test_bbia_vision_extended.py
+│ ├── test_bbia_voice.py # Tests voix
+│ └── test_bbia_voice_extended.py
+├── test_api_*.py # Tests API
+├── test_simulator.py # Tests simulateur MuJoCo
+├── test_unity_controller.py # Tests contrôleur Unity
+└── test_*.py # Tests unitaires
 ```
 
 ## Commandes de tests
@@ -252,13 +252,13 @@ minversion = "6.0"
 [tool.coverage.run]
 source = ["src/bbia_sim"]
 omit = [
-    "*/tests/*",
-    "*/test_*",
-    "*/__pycache__/*",
-    "*/venv/*",
-    "*/.venv/*",
-    "*/logs/*",
-    "*/reachy_repos/*",
+ "*/tests/*",
+ "*/test_*",
+ "*/__pycache__/*",
+ "*/venv/*",
+ "*/.venv/*",
+ "*/logs/*",
+ "*/reachy_repos/*",
 ]
 
 [tool.coverage.report]

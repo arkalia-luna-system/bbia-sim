@@ -1,6 +1,6 @@
 # 🎬 Suggestions de GIF pour README - BBIA-SIM
 
-**Date** : octobre 2025  
+**Date** : octobre 2025
 **Objectif** : Proposer des GIF animés pour améliorer la présentation du projet
 
 ---
@@ -15,11 +15,11 @@
 - **Contenu** : Robot Reachy Mini montrant plusieurs émotions en séquence
 - **Durée** : 8-12 secondes (boucle fluide)
 - **Émotions à montrer** :
-  1. **Happy** (2s) - Rotation joyeuse, mouvement positif
-  2. **Neutral** (1s) - Position de repos
-  3. **Curious** (2s) - Inclinaison tête, rotation légère
-  4. **Excited** (2s) - Mouvements rapides (yaw_body + tête), antennes bloquées
-  5. **Calm** (1s) - Retour au repos
+ 1. **Happy** (2s) - Rotation joyeuse, mouvement positif
+ 2. **Neutral** (1s) - Position de repos
+ 3. **Curious** (2s) - Inclinaison tête, rotation légère
+ 4. **Excited** (2s) - Mouvements rapides (yaw_body + tête), antennes bloquées
+ 5. **Calm** (1s) - Retour au repos
 
 **Comment créer** :
 ```bash

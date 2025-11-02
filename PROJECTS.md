@@ -18,9 +18,9 @@ Développeuse Python autodidacte spécialisée en **IA**, **robotique** et **mob
 
 ### 1. **BBIA-SIM** - Robotique IA Cognitive
 
-**📁 Repository :** [arkalia-luna-system/bbia-sim](https://github.com/arkalia-luna-system/bbia-sim)  
-**🏷️ Statut :** ✅ Actif - Version 1.3.2  
-**📅 Création :** Octobre 2024  
+**📁 Repository :** [arkalia-luna-system/bbia-sim](https://github.com/arkalia-luna-system/bbia-sim)
+**🏷️ Statut :** ✅ Actif - Version 1.3.2
+**📅 Création :** Octobre 2024
 **🔄 Dernière mise à jour :** Octobre 2025
 
 **Description :**
@@ -58,8 +58,8 @@ Moteur cognitif Python avec 12 émotions robotiques pour Reachy Mini. Simulation
 
 ### 2. **Arkalia Aria** - Suivi Santé Intelligent
 
-**📁 Repository :** Local (non publié encore)  
-**🏷️ Statut :** ✅ Actif - En développement  
+**📁 Repository :** Local (non publié encore)
+**🏷️ Statut :** ✅ Actif - En développement
 **📅 Création :** 2025
 
 **Description :**
@@ -88,8 +88,8 @@ Application complète de suivi santé avec IA : tracking douleur, analyse patter
 
 ### 3. **Athalia DevOps** - Framework DevOps Automatisé
 
-**📁 Repository :** Local (non publié encore)  
-**🏷️ Statut :** ✅ Actif - En développement  
+**📁 Repository :** Local (non publié encore)
+**🏷️ Statut :** ✅ Actif - En développement
 **📅 Création :** 2025
 
 **Description :**
@@ -119,8 +119,8 @@ Framework DevOps complet avec automations CI/CD, sécurité, qualité code, moni
 
 ### 4. **Arkalia Quest** - Jeu Éducatif
 
-**📁 Repository :** Non localisé dans `/Volumes/T7/`  
-**🏷️ Statut :** ✅ Actif (mentionné dans analyse)  
+**📁 Repository :** Non localisé dans `/Volumes/T7/`
+**🏷️ Statut :** ✅ Actif (mentionné dans analyse)
 **📅 Création :** 2025
 
 **Description :**
@@ -134,8 +134,8 @@ Jeu éducatif avec Flutter/Dart. Détails à compléter.
 
 ### 5. **Luna Logo** - Générateur SVG
 
-**📁 Repository :** Non localisé dans `/Volumes/T7/`  
-**🏷️ Statut :** ✅ Actif (mentionné dans analyse)  
+**📁 Repository :** Non localisé dans `/Volumes/T7/`
+**🏷️ Statut :** ✅ Actif (mentionné dans analyse)
 **📅 Création :** 2025
 
 **Description :**
@@ -148,8 +148,8 @@ Générateur de logos en SVG. Détails à compléter.
 
 ### 6. **Mobile App** - Application Mobile
 
-**📁 Repository :** Local (`/Volumes/T7/mobile_app/`)  
-**🏷️ Statut :** ✅ Actif - En développement  
+**📁 Repository :** Local (`/Volumes/T7/mobile_app/`)
+**🏷️ Statut :** ✅ Actif - En développement
 **📅 Création :** 2025
 
 **Description :**
@@ -169,8 +169,8 @@ Application mobile Flutter pour connectivité santé (modèles health_data, pain
 
 ### 7. **Nours Interface** - Interface Utilisateur
 
-**📁 Repository :** Local (`/Volumes/T7/nours_interface/`)  
-**🏷️ Statut :** ✅ Actif - En développement  
+**📁 Repository :** Local (`/Volumes/T7/nours_interface/`)
+**🏷️ Statut :** ✅ Actif - En développement
 **📅 Création :** 2025
 
 **Description :**
@@ -180,8 +180,8 @@ Interface utilisateur (détails à compléter).
 
 ### 8. **Arkalia Metrics Collector** - Collecte Métriques
 
-**📁 Repository :** Local (`/Volumes/T7/arkalia-metrics-collector/`)  
-**🏷️ Statut :** ✅ Actif - En développement  
+**📁 Repository :** Local (`/Volumes/T7/arkalia-metrics-collector/`)
+**🏷️ Statut :** ✅ Actif - En développement
 **📅 Création :** 2025
 
 **Description :**
@@ -191,8 +191,8 @@ Collecteur de métriques système et application (intégré dans Arkalia Aria).
 
 ### 9. **Reachy Mini** - Intégration Robot
 
-**📁 Repository :** Local (`/Volumes/T7/reachy_mini/`)  
-**🏷️ Statut :** ✅ Actif - Documentation SDK  
+**📁 Repository :** Local (`/Volumes/T7/reachy_mini/`)
+**🏷️ Statut :** ✅ Actif - Documentation SDK
 **📅 Création :** 2025
 
 **Description :**
@@ -202,8 +202,8 @@ Documentation et intégration SDK Reachy Mini officiel.
 
 ### 10. **Workspace Tools** - Outils Développement
 
-**📁 Repository :** Local (`/Volumes/T7/workspace-tools/`)  
-**🏷️ Statut :** ✅ Actif - Outils internes  
+**📁 Repository :** Local (`/Volumes/T7/workspace-tools/`)
+**🏷️ Statut :** ✅ Actif - Outils internes
 **📅 Création :** 2025
 
 **Description :**
@@ -263,6 +263,6 @@ Outils et scripts pour environnement de développement.
 
 ---
 
-**Dernière mise à jour :** Oct 25 / Nov 25  
+**Dernière mise à jour :** Oct 25 / Nov 25
 **Prochaine action :** Publier projets locaux sur GitHub avec README optimisés
 

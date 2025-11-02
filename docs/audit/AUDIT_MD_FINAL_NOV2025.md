@@ -1,6 +1,6 @@
 # 🔍 Audit Complet Documentation Markdown - Novembre 2025
 
-**Date audit :** Oct 25 / Nov 25 (1er novembre 2025)  
+**Date audit :** Oct 25 / Nov 25 (1er novembre 2025)
 **Date création projet :** Octobre 2024 (NE JAMAIS MODIFIER)
 
 ---
@@ -170,6 +170,6 @@ Ces dates restent en **Octobre 2024** (correct, ne pas modifier) :
 
 ---
 
-**Date création audit :** Oct 25 / Nov 25  
+**Date création audit :** Oct 25 / Nov 25
 **Prochaine révision :** Décembre 2025
 

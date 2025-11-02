@@ -551,23 +551,73 @@ class DocsVerifier:
                 )
 
     def check_spaces(self, md_file: Path, content: str) -> None:
-        """Vérifie espaces (doubles, finaux, manquants)."""
+        """Vérifie espaces (doubles, finaux, manquants) - mode intelligent."""
         lines = content.split("\n")
 
         for i, line in enumerate(lines, 1):
             # Espaces doubles
             if "  " in line and not line.strip().startswith("```"):
+                # Accepter si c'est indentation intentionnelle (début de ligne)
+                if line.startswith("  ") and not line.strip().startswith("#"):
+                    # Peut être indentation valide (listes, code)
+                    if line.strip().startswith("-") or line.strip().startswith("*"):
+                        # Liste avec indentation = valide
+                        continue
+                # Accepter si dans bloc code (vérification plus précise)
+                line_start_idx = sum(len(l) + 1 for l in lines[:i-1])
+                content_before = content[:line_start_idx]
+                # Compter ``` avant pour savoir si on est dans un bloc
+                code_blocks_before = content_before.count("```")
+                if code_blocks_before % 2 != 0:
+                    # Dans un bloc code = ignorer
+                    continue
+                # Accepter si c'est formatage Markdown spécial (tableaux, etc.)
+                if "|" in line and line.count("|") >= 2:
+                    # Tableau peut avoir espaces pour alignement
+                    continue
+                # Accepter si c'est un séparateur de tableau (--- avec espaces pour alignement)
+                if re.match(r"^\s*\|?\s*:?-+:?\s*\|", line):
+                    continue
+                # Accepter si ligne précédente/suivante est dans un tableau
+                if i > 1 and "|" in lines[i-2] and lines[i-2].count("|") >= 2:
+                    continue
+                if i < len(lines) and "|" in lines[i] and lines[i].count("|") >= 2:
+                    continue
+                # Corriger automatiquement si mode fix
                 if self.fix_mode:
-                    re.sub(r" +", " ", line)
-                    self.fixes[md_file].append(f"Ligne {i}: espaces doubles corrigés")
+                    fixed_line = re.sub(r" +", " ", line)
+                    if fixed_line != line:
+                        self.fixes[md_file].append(f"✅ Ligne {i}: espaces doubles corrigés")
+                        lines[i-1] = fixed_line
+                        # Écrire correction
+                        try:
+                            md_file.write_text("\n".join(lines), encoding="utf-8")
+                        except Exception:
+                            pass
                 else:
+                    # Seulement avertir si vraiment suspect (pas dans contexte spécial)
                     self.warnings[md_file].append(f"⚠️  Ligne {i}: espaces doubles")
 
-            # Espaces finaux (sauf lignes vides)
+            # Espaces finaux (sauf lignes vides) - moins strict
             if line.rstrip() != line and line.strip():
+                # Accepter si c'est formatage intentionnel (tableaux)
+                if "|" in line:
+                    continue
+                # Accepter si ligne suivante est dans tableau (alignement)
+                if i < len(lines) and "|" in lines[i] and lines[i].count("|") >= 2:
+                    continue
+                # Corriger automatiquement si mode fix
                 if self.fix_mode:
-                    self.fixes[md_file].append(f"Ligne {i}: espaces finaux supprimés")
+                    fixed_line = line.rstrip()
+                    if fixed_line != line:
+                        self.fixes[md_file].append(f"✅ Ligne {i}: espaces finaux supprimés")
+                        lines[i-1] = fixed_line
+                        try:
+                            md_file.write_text("\n".join(lines), encoding="utf-8")
+                        except Exception:
+                            pass
                 else:
+                    # Seulement avertir si vraiment suspect
                     self.warnings[md_file].append(f"⚠️  Ligne {i}: espaces finaux")
 
     def check_formatting(self, md_file: Path, content: str) -> None:
@@ -588,6 +638,10 @@ class DocsVerifier:
                     continue
                 # Accepter si c'est dans un bloc de code ou inline code
                 if "`" in line:
+                    continue
+                # Accepter si c'est formatage Markdown (gras, italique) - ex: **Date** ou *texte*
+                if re.match(r"^[-*]\s*\*\*|^[-*]\s*\*[^*]", line) or line.strip().startswith("**") or line.strip().startswith("*") and "**" in line:
+                    # Formatage gras/italique avec astérisque, pas une liste
                     continue
                 # Accepter si c'est dans une cellule de tableau (détection intelligente)
                 if "|" in line and line.count("|") >= 2:
@@ -626,6 +680,10 @@ class DocsVerifier:
                     continue
                 # Accepter formats spéciaux valides (ex: -Option1, -Option2 dans config)
                 if re.match(r"^[-*][A-Z][a-z]+[A-Z]", line) and len(line.strip()) < 40:
+                    continue
+                # Accepter si ligne contient formatage Markdown valide (gras, liens, etc.)
+                if re.search(r"\*\*.*\*\*|\[.*\]\(.*\)|`.*`", line):
+                    # Contient formatage Markdown = probablement pas une vraie liste
                     continue
                 # Sinon, c'est probablement une vraie erreur - MAIS seulement si vraiment suspect
                 # Vérifier si la ligne suivante est aussi une liste (probablement format valide)

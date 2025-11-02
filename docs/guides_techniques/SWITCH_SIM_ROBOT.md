@@ -5,7 +5,7 @@
 > - Version requise: Python 3.11+
 > - CI: `.github/workflows/ci.yml`
 > - Setup rapide:
->   ```bash
+> ```bash
 >   pyenv install 3.11.9 && pyenv local 3.11.9
 >   python -m pip install --upgrade pip
 >   pip install -e .
@@ -127,7 +127,7 @@ python examples/demo_emotion_ok.py --backend reachy --robot-ip 192.168.1.100 --r
 from bbia_sim.robot_factory import RobotFactory
 
 # Créer le backend
-robot = RobotFactory.create_backend("mujoco")  # ou "reachy"
+robot = RobotFactory.create_backend("mujoco") # ou "reachy"
 
 # Connecter
 robot.connect()
@@ -155,24 +155,24 @@ robot = RobotFactory.create_backend(backend_type)
 
 ```mermaid
 graph LR
-    subgraph "MuJoCoBackend (Simulation)"
-        SIM_FEATURES[✅ Physique 3D<br/>✅ Viewer graphique<br/>✅ Mode headless<br/>✅ Tests automatisés<br/>✅ Débogage facile<br/>❌ Pas de robot physique]
-    end
+ subgraph "MuJoCoBackend (Simulation)"
+ SIM_FEATURES[✅ Physique 3D<br/>✅ Viewer graphique<br/>✅ Mode headless<br/>✅ Tests automatisés<br/>✅ Débogage facile<br/>❌ Pas de robot physique]
+ end
 
-    subgraph "ReachyBackend (Robot réel)"
-        ROBOT_FEATURES[✅ Robot physique<br/>✅ Vraie interaction<br/>✅ Capteurs réels<br/>✅ Production<br/>❌ Plus lent<br/>❌ Plus risqué]
-    end
+ subgraph "ReachyBackend (Robot réel)"
+ ROBOT_FEATURES[✅ Robot physique<br/>✅ Vraie interaction<br/>✅ Capteurs réels<br/>✅ Production<br/>❌ Plus lent<br/>❌ Plus risqué]
+ end
 
     SIM_FEATURES -.->|Migration| ROBOT_FEATURES
     
-    style SIM_FEATURES fill:#4ECDC4
-    style ROBOT_FEATURES fill:#FF6B6B
+ style SIM_FEATURES fill:#4ECDC4
+ style ROBOT_FEATURES fill:#FF6B6B
 
 ## 🔄 Migration Sim → Robot
 
 ```mermaid
 flowchart TD
-    START[Début du développement] --> SIM[Utiliser MuJoCoBackend]
+ START[Début du développement] --> SIM[Utiliser MuJoCoBackend]
     SIM --> TEST[Tester les fonctionnalités]
     TEST --> WORK{Ça fonctionne ?}
     WORK -->|Non| DEBUG[Déboguer en simulation]

@@ -21,7 +21,7 @@
 
 ## 📋 DÉTAIL DES TESTS
 
-- ✅ `test_01_sdk_availability PASSED [  5%]`: **PASSED**
+- ✅ `test_01_sdk_availability PASSED [ 5%]`: **PASSED**
 - ✅ `test_02_methods_existence PASSED [ 11%]`: **PASSED**
 - ✅ `test_03_methods_signatures PASSED [ 16%]`: **PASSED**
 - ✅ `test_04_joints_official_mapping PASSED [ 22%]`: **PASSED**

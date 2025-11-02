@@ -1,7 +1,7 @@
 # 📊 COMPARAISON DOCUMENTATION OFFICIELLE vs BBIA-SIM
 
-**Date:** Octobre 2025  
-**Source:** Documentation officielle `pollen-robotics/reachy_mini`  
+**Date:** Octobre 2025
+**Source:** Documentation officielle `pollen-robotics/reachy_mini`
 **Objectif:** Identifier ce qui existe dans BBIA vs ce qui est mentionné officiellement
 
 ---
@@ -82,10 +82,10 @@ with ReachyMini() as reachy_mini:
   - Sections : daemon, apps, appstore, move_player
   - JavaScript identique à l'officiel
 - ✅ **3 Dashboards disponibles** :
-  1. **Dashboard officiel-like** (route `/`) - **PRINCIPAL** ✅
-  2. `dashboard.py` - Dashboard minimal (HTML inline)
-  3. `dashboard_advanced.py` - Dashboard avancé avec métriques temps réel
-  4. `dashboard_gradio.py` - Interface Gradio no-code (vision + chat)
+ 1. **Dashboard officiel-like** (route `/`) - **PRINCIPAL** ✅
+ 2. `dashboard.py` - Dashboard minimal (HTML inline)
+ 3. `dashboard_advanced.py` - Dashboard avancé avec métriques temps réel
+ 4. `dashboard_gradio.py` - Interface Gradio no-code (vision + chat)
 - ✅ **Fonctionnalités** :
   - Contrôles émotions
   - Contrôles mouvements
@@ -124,11 +124,11 @@ with ReachyMini() as reachy_mini:
 
 **BBIA:**
 - ✅ **5 Exemples Reachy Mini** dans `examples/reachy_mini/` :
-  1. `minimal_demo.py` - Demo minimale ✅
-  2. `look_at_image.py` - Vision interactive ✅
-  3. `sequence.py` - Séquences mouvements ✅
-  4. `recorded_moves_example.py` - Mouvements enregistrés ✅
-  5. `goto_interpolation_playground.py` - Playground interpolation ✅
+ 1. `minimal_demo.py` - Demo minimale ✅
+ 2. `look_at_image.py` - Vision interactive ✅
+ 3. `sequence.py` - Séquences mouvements ✅
+ 4. `recorded_moves_example.py` - Mouvements enregistrés ✅
+ 5. `goto_interpolation_playground.py` - Playground interpolation ✅
 - ✅ **Démo conversationnelle** : `demo_chat_bbia.py`, `demo_chat_bbia_3d.py`
 - ✅ **Intégration HuggingFace** : `BBIAHuggingFace` avec chat conversationnel
 - ⚠️ **Différence** : Pas exactement `reachy_mini_conversation_demo`, mais équivalent
@@ -175,13 +175,13 @@ with ReachyMini() as reachy_mini:
 
 ### 🎉 Dashboard Officiel-Like Créé (Octobre 2025)
 
-✅ **Structure identique** : Templates Jinja2 modulaires  
-✅ **Design conforme** : Tailwind CSS, polices Archivo/Asap  
-✅ **Fonctionnalités** : Daemon, Apps, App Store, Move Player  
-✅ **Intégration** : Route `/` principale, statics montés  
-✅ **JavaScript** : Logique identique à l'officiel  
+✅ **Structure identique** : Templates Jinja2 modulaires
+✅ **Design conforme** : Tailwind CSS, polices Archivo/Asap
+✅ **Fonctionnalités** : Daemon, Apps, App Store, Move Player
+✅ **Intégration** : Route `/` principale, statics montés
+✅ **JavaScript** : Logique identique à l'officiel
 
-**Localisation** : `src/bbia_sim/daemon/app/dashboard/`  
+**Localisation** : `src/bbia_sim/daemon/app/dashboard/`
 **Documentation** : `docs/dashboard/DASHBOARD_OFFICIEL_LIKE.md`
 
 ---

@@ -1,6 +1,6 @@
 # Rapport d'Audit Exhaustif - Détails Subtils Octobre 2025
 
-**Date**: Oct 25 / Nov 25  
+**Date**: Oct 25 / Nov 25
 **Objectif**: Vérifier et corriger tous les détails subtils entre BBIA-SIM et SDK Reachy Mini officiel
 
 ---
@@ -300,9 +300,9 @@ self.ik_required = False
 
 ## 🎯 Impact
 
-✅ **Aucun changement d'URL** pour les clients (tous les endpoints restent `/api/...`)  
-✅ **Structure interne conforme SDK**  
-✅ **Comportement identique** aux endpoints officiels  
+✅ **Aucun changement d'URL** pour les clients (tous les endpoints restent `/api/...`)
+✅ **Structure interne conforme SDK**
+✅ **Comportement identique** aux endpoints officiels
 ✅ **Compatible robot physique** Reachy Mini
 
 ---
@@ -333,6 +333,6 @@ self.ik_required = False
 
 ---
 
-**Date de finalisation**: octobre 2025  
+**Date de finalisation**: octobre 2025
 **Statut**: ✅ **CONFORME**
 

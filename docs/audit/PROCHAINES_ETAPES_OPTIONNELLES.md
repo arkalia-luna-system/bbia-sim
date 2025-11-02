@@ -1,8 +1,8 @@
 # 🎯 Prochaines Étapes Optionnelles
 
-**Date** : Oct 25 / Nov 25  
-**État** : Toutes les fonctionnalités critiques terminées ✅  
-**Parité** : ~85-90% avec app officielle Reachy Mini  
+**Date** : Oct 25 / Nov 25
+**État** : Toutes les fonctionnalités critiques terminées ✅
+**Parité** : ~85-90% avec app officielle Reachy Mini
 **📚 [État actuel](./RESUME_ETAT_ACTUEL_BBIA.md)** | **🔍 [Comparaison détaillée](./COMPARAISON_APP_CONVERSATION_OFFICIELLE.md)**
 
 ---

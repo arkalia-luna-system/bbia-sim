@@ -1,6 +1,6 @@
 # 🧠 Guide NLP et SmolVLM2 - BBIA
 
-**Date** : Oct 25 / Nov 25  
+**Date** : Oct 25 / Nov 25
 **Version** : 1.3.2  
 **📚 [FAQ](../FAQ.md)** | **📊 [État actuel](../audit/RESUME_ETAT_ACTUEL_BBIA.md)** | **🔍 [Comparaison](../audit/COMPARAISON_APP_CONVERSATION_OFFICIELLE.md)**
 

@@ -1,8 +1,8 @@
 # 🔍 AUDIT COMPARATIF COMPLET - Repo Officiel Reachy-Mini vs BBIA
 
-**Date** : octobre 2025  
-**Repo Officiel** : [pollen-robotics/reachy_mini](https://github.com/pollen-robotics/reachy_mini)  
-**Version BBIA** : 1.3.2  
+**Date** : octobre 2025
+**Repo Officiel** : [pollen-robotics/reachy_mini](https://github.com/pollen-robotics/reachy_mini)
+**Version BBIA** : 1.3.2
 **Objectif** : Audit exhaustif comparant chaque aspect du repo officiel avec BBIA pour identifier micro-fautes et incohérences avant réception du robot (Octobre 2025)
 
 ---
@@ -153,7 +153,7 @@ except ImportError:
 
 #### ✅ BBIA (pyproject.toml lignes 47-59)
 ```toml
-"reachy_mini_motor_controller>=1.0.0",  ✅
+"reachy_mini_motor_controller>=1.0.0", ✅
 "eclipse-zenoh>=1.4.0",                 ✅
 "reachy-mini-rust-kinematics>=1.0.1",   ✅
 "cv2_enumerate_cameras>=1.2.1",         ✅
@@ -297,7 +297,7 @@ self.joint_limits = {
 
 #### ✅ BBIA (Extrait XML)
 ```xml
-<site group="3" name="camera_optical" 
+<site group="3" name="camera_optical"
   pos="-0.0321159 -0.05047 0.00257878" 
   quat="0.44884 0.458499 0.740682 -0.199279"/>
 ```
@@ -417,7 +417,7 @@ self.joint_limits = {
 
 **Impact** : Possibles incompatibilités futures
 
-**Action** : 
+**Action** :
 1. Vérifier version exacte dans repo officiel
 2. Pinner version si nécessaire
 
@@ -584,7 +584,7 @@ self.joint_limits = {
   - `docs/reachy/REACHY_MINI_REFERENCE.md` : Ligne 157 - "Expressivité" clarifiée
   - `scripts/quick_start.sh` : Ligne 145 - Antennes → "bloquées (sécurité hardware)"
   - `src/bbia_sim/global_config.py` : `antenna_animation` retiré (obsolète)
-  
+ 
 - **Message standardisé** : "Antennes bloquées (sécurité hardware), utiliser yaw_body pour expressivité"
 - **Statut** : ✅ **TOUTES LES MENTIONS CORRIGÉES**
 
@@ -595,8 +595,8 @@ self.joint_limits = {
 
 ---
 
-**Document créé le octobre 2025**  
-**Dernière mise à jour** : octobre 2025 (Corrections appliquées)  
-**Basé sur** : Email Pollen Robotics Octobre 2025, Repo officiel GitHub, Code BBIA v1.3.2  
+**Document créé le octobre 2025**
+**Dernière mise à jour** : octobre 2025 (Corrections appliquées)
+**Basé sur** : Email Pollen Robotics Octobre 2025, Repo officiel GitHub, Code BBIA v1.3.2
 **Prochaine mise à jour** : Après réception robot physique (Octobre 2025)
 

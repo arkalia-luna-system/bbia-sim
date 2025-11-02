@@ -18,8 +18,8 @@
 **Problème :**
 - `pyttsx3.init()` prend **0.8 secondes** par appel
 - `dire_texte()` l'appelait **2 fois** :
-  1. Ligne 87 (path SDK avec `play_audio`)
-  2. Ligne 131 (fallback pyttsx3 direct)
+ 1. Ligne 87 (path SDK avec `play_audio`)
+ 2. Ligne 131 (fallback pyttsx3 direct)
 - **Total : 1.6s de latence** à chaque synthèse vocale
 
 **Impact utilisateur :**

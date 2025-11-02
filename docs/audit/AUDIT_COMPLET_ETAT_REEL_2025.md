@@ -1,7 +1,7 @@
 # 🔍 Audit Complet - État Réel du Projet BBIA
 
-**Date** : octobre 2025  
-**Type** : Audit exhaustif avec preuves code  
+**Date** : octobre 2025
+**Type** : Audit exhaustif avec preuves code
 **Objectif** : Vérifier où en est le projet et ce qui reste à faire
 
 ---
@@ -395,7 +395,7 @@ Tous les documents d'audit principaux ont été corrigés :
 
 ---
 
-**Date de vérification** : octobre 2025  
-**Méthode** : Audit exhaustif code + tests + docs + CI  
+**Date de vérification** : octobre 2025
+**Méthode** : Audit exhaustif code + tests + docs + CI
 **Vérifié par** : Analyse automatique avec preuves code
 

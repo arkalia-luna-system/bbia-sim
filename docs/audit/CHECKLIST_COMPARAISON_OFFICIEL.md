@@ -1,7 +1,7 @@
 # 📋 Checklist Exhaustive - Comparaison BBIA vs Repo Officiel
 
-> **Date**: Octobre 2025  
-> **Repo Officiel**: `/Volumes/T7/reachy_mini` (branch `develop`, commit `2ba17f1`)  
+> **Date**: Octobre 2025
+> **Repo Officiel**: `/Volumes/T7/reachy_mini` (branch `develop`, commit `2ba17f1`)
 > **Total Différences**: 177
 
 ## 📊 Résumé Exécutif
@@ -52,7 +52,7 @@ Aucun élément critical détecté.
 
 ### Structure - Fichiers Manquants
 
-**Note**: La plupart des fichiers avec préfixe `._` sont des fichiers macOS cachés et peuvent être ignorés.  
+**Note**: La plupart des fichiers avec préfixe `._` sont des fichiers macOS cachés et peuvent être ignorés.
 Les fichiers pertinents à analyser sont listés ci-dessous.
 
 #### Fichiers Core Manquants (✅ ANALYSÉS - NON NÉCESSAIRES)

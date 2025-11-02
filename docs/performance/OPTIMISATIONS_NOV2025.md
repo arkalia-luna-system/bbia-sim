@@ -1,6 +1,6 @@
 # ⚡ Optimisations Performance - Novembre 2025
 
-**Date :** Oct 25 / Nov 25  
+**Date :** Oct 25 / Nov 25
 **Objectif :** Corrections problèmes performance non encore optimisés
 
 ---
@@ -124,6 +124,6 @@ w for w in (words_lower := user_msg.lower().split()) if len(w) > 3 and w not in 
 
 ---
 
-**Date :** Oct 25 / Nov 25  
+**Date :** Oct 25 / Nov 25
 **Statut :** ✅ Problème corrigé
 

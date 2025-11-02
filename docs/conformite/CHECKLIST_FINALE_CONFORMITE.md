@@ -1,15 +1,15 @@
 # 📋 CHECKLIST FINALE - CONFORMITÉ REACHY MINI
 
-**Date** : octobre 2025  
-**Version BBIA** : future branch  
+**Date** : octobre 2025
+**Version BBIA** : future branch
 **Version SDK Officiel** : develop branch (pollen-robotics/reachy_mini)
 
 ---
 
 ## 🎯 RÉSUMÉ EXÉCUTIF
 
-**Conformité Endpoints REST** : **~96% (25/26)** ✅  
-**Conformité Backend SDK** : **100%** ✅  
+**Conformité Endpoints REST** : **~96% (25/26)** ✅
+**Conformité Backend SDK** : **100%** ✅
 **Tests** : **1112+ tests** (79 sélectionnés pour conformité API) ✅
 
 **Statut Global** : ✅ **Prêt pour robot réel**
@@ -114,7 +114,7 @@ async def stop_move(uuid: MoveUUID) -> dict[str, str]:
 
 **Implémentation requise** :
 ```python
-move_listeners: list[WebSocket] = []  # Ajouter en haut
+move_listeners: list[WebSocket] = [] # Ajouter en haut
 
 @router.websocket("/ws/updates")
 async def ws_move_updates(websocket: WebSocket) -> None:
@@ -183,7 +183,7 @@ async def set_target(target: FullBodyTarget) -> dict[str, str]:
 
 **Implémentation requise** :
 ```python
-from reachy_mini.motion.recorded_move import RecordedMoves  # Ou équivalent BBIA
+from reachy_mini.motion.recorded_move import RecordedMoves # Ou équivalent BBIA
 
 @router.get("/recorded-move-datasets/list/{dataset_name:path}")
 async def list_recorded_move_dataset(dataset_name: str) -> list[str]:
@@ -289,7 +289,7 @@ async def get_present_head_pose(
 
 ### 6. Modèle de retour `goto` - UUID vs dict
 
-**Problème** : 
+**Problème** :
 - **Officiel** : Retourne `MoveUUID` (UUID pour tracking)
 - **BBIA** : Retourne `dict[str, Any]` avec status, target_pose, etc.
 
@@ -404,13 +404,13 @@ async def get_present_head_pose(
 
 ## 📈 ESTIMATION
 
-**Endpoints critiques manquants** : 2 (goto structure, UUID retour)  
-**Endpoints modérés manquants** : 5 (running, stop, ws/updates, set_target, ws/set_target)  
+**Endpoints critiques manquants** : 2 (goto structure, UUID retour)
+**Endpoints modérés manquants** : 5 (running, stop, ws/updates, set_target, ws/set_target)
 **Améliorations paramètres** : 2 (state/full, state/ws/full)
 
 **Total pour 100% conformité** : ✅ **TOUT COMPLÉTÉ !**
 
-**Temps estimé** : ~12-15h  
+**Temps estimé** : ~12-15h
 **Temps réel** : ✅ **TOUT IMPLÉMENTÉ**
 
 ### ✅ RÉSULTAT FINAL

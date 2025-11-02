@@ -30,12 +30,12 @@ BBIA-SIM est un moteur cognitif Python avec **12 émotions robotiques** pour Rea
 
 ### ✨ Points Clés
 
-• ✅ **Conforme au SDK officiel Pollen Robotics** (100% validé)  
-• 🔄 **Backend unifié** : même code en simulation et sur robot réel  
-• 🧪 **1200+ tests automatisés** (unitaires, intégration, E2E)  
-• 📚 **280+ fichiers documentation** Markdown (guides, API, architecture)  
-• ⚡ **Optimisations performance** : caches globaux (modèles IA réutilisés)  
-• 🔒 **CI/CD professionnel** : Black, Ruff, MyPy, Bandit, pip-audit  
+• ✅ **Conforme au SDK officiel Pollen Robotics** (100% validé)
+• 🔄 **Backend unifié** : même code en simulation et sur robot réel
+• 🧪 **1200+ tests automatisés** (unitaires, intégration, E2E)
+• 📚 **280+ fichiers documentation** Markdown (guides, API, architecture)
+• ⚡ **Optimisations performance** : caches globaux (modèles IA réutilisés)
+• 🔒 **CI/CD professionnel** : Black, Ruff, MyPy, Bandit, pip-audit
 • 🌟 **Open-source** (MIT)
 
 **[🚀 Quick Start](#-démarrage-rapide)** | **[📚 Docs Débutant](docs/guides/GUIDE_DEBUTANT.md)** | **[🔬 Docs Avancé](docs/guides/GUIDE_AVANCE.md)** | **[📋 Projets](PROJECTS.md)**
@@ -202,7 +202,7 @@ sequenceDiagram
 ## 📊 Métriques du projet
 
 - **✅ Modèle officiel** : `reachy_mini_REAL_OFFICIAL.xml`
-- **✅ Articulations** : 16 articulations contrôlables  
+- **✅ Articulations** : 16 articulations contrôlables
 - **✅ Intégration BBIA** : 12 émotions + IA avancée
 - **✅ Coverage modules core** : ~50% (mesure pertinente, voir section Tests)
 - **✅ API** : FastAPI + WebSocket opérationnels
@@ -356,7 +356,7 @@ python scripts/replay_viewer.py artifacts/my_animation.jsonl --speed 1.5
 
 **Source** : Toutes ces vidéos ont été enregistrées depuis `examples/demo_mujoco_continue.py` qui montre le robot en mouvement continu (tête + corps).
 
-**Inventaire complet** : Voir [`assets/MEDIAS_INVENTAIRE.md`](assets/MEDIAS_INVENTAIRE.md)  
+**Inventaire complet** : Voir [`assets/MEDIAS_INVENTAIRE.md`](assets/MEDIAS_INVENTAIRE.md)
 **Roadmap vidéos** : Voir [`docs/guides/DEMO_VIDEO_ROADMAP.md`](docs/guides/DEMO_VIDEO_ROADMAP.md)
 
 ### 📋 Documentation
@@ -582,7 +582,7 @@ python scripts/download_ALL_stl.py
 ```
 Télécharge automatiquement les 41 fichiers STL depuis le repo officiel.
 
-### Gestion des processus 
+### Gestion des processus
 
 ```bash
 python scripts/process_manager.py --cleanup
@@ -594,7 +594,7 @@ Nettoie les processus gourmands tout en préservant les applications importantes
 ### Problème : Robot en pièces détachées
 
 **Cause** : Fichiers STL corrompus (pointeurs Git LFS)
-**Solution** : 
+**Solution** :
 ```bash
 python scripts/download_ALL_stl.py
 ```

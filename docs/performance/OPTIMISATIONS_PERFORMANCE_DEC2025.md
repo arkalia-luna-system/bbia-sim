@@ -1,6 +1,6 @@
 # ⚡ Optimisations Performance - Décembre 2025
 
-**Date** : Nov/Déc 2025  
+**Date** : Nov/Déc 2025
 **Objectif** : Optimisations performance supplémentaires pour Mac
 
 ---
@@ -42,7 +42,7 @@ await asyncio.sleep(0.016)  # ~60 Hz (suffisant pour simulation fluide, moins de
 - **Une seule passe** avec dictionnaire de candidats
 - Recherche prioritaire optimisée
 
-**Avant** : 10 boucles `for v in voices` successives  
+**Avant** : 10 boucles `for v in voices` successives
 **Après** : 1 seule boucle avec dictionnaire de priorité
 
 **Gain** : **-90% temps d'exécution**
@@ -118,6 +118,6 @@ Tous les tests passent :
 
 ---
 
-**Date** : Nov/Déc 2025  
+**Date** : Nov/Déc 2025
 **Statut** : ✅ Toutes optimisations appliquées et testées
 

@@ -7,7 +7,7 @@
 > - Python: 3.11+
 > - CI: `.github/workflows/ci.yml`
 > - Setup rapide:
->   ```bash
+> ```bash
 >   pyenv install 3.11.9 && pyenv local 3.11.9
 >   python -m pip install --upgrade pip
 >   pip install -e .

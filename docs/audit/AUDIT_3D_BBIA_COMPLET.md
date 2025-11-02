@@ -88,9 +88,9 @@ sequenceDiagram
 
 ### **Modules BBIA**
 ```
-src/bbia_sim/sim/simulator.py          ✅ MuJoCoSimulator
+src/bbia_sim/sim/simulator.py ✅ MuJoCoSimulator
 src/bbia_sim/daemon/simulation_service.py ✅ SimulationService
-src/bbia_sim/bbia_integration.py       ✅ BBIAIntegration
+src/bbia_sim/bbia_integration.py ✅ BBIAIntegration
 ```
 
 ## 📊 TABLEAU DES JOINTS
@@ -162,19 +162,19 @@ python -m pytest tests/ -m "not e2e" -v
 
 ```mermaid
 graph TD
-    A[BBIAIntegration] --> B[SimulationService]
-    B --> C[MuJoCoSimulator]
-    C --> D[MuJoCo Model]
-    C --> E[MuJoCo Data]
-    C --> F[MuJoCo Viewer]
+ A[BBIAIntegration] --> B[SimulationService]
+ B --> C[MuJoCoSimulator]
+ C --> D[MuJoCo Model]
+ C --> E[MuJoCo Data]
+ C --> F[MuJoCo Viewer]
 
-    G[demo_viewer_bbia_corrected.py] --> C
-    H[Tests] --> C
+ G[demo_viewer_bbia_corrected.py] --> C
+ H[Tests] --> C
 
-    I[Émotions] --> A
-    J[Vision] --> A
-    K[Audio] --> A
-    L[Comportements] --> A
+ I[Émotions] --> A
+ J[Vision] --> A
+ K[Audio] --> A
+ L[Comportements] --> A
 ```
 
 ## ⚠️ RÈGLES DE SÉCURITÉ

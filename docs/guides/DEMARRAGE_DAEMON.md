@@ -1,6 +1,6 @@
 # 🚀 Guide de Démarrage du Daemon BBIA-SIM
 
-**Date:** Octobre 2025  
+**Date:** Octobre 2025
 **Note importante:** ✅ Fonctionne en mode simulation (MuJoCo) **sans robot physique**
 
 ---
@@ -48,7 +48,7 @@ python scripts/start_public_api.py --log-level debug
 1. **Simulation MuJoCo** : Démarre automatiquement en mode headless
    - Utilise le modèle `reachy_mini_REAL_OFFICIAL.xml`
    - Mode simulation pure (pas de hardware requis)
-   
+ 
 2. **API FastAPI** : Accessible sur http://127.0.0.1:8000
    - Dashboard officiel-like sur `/`
    - API REST complète sur `/api/*`

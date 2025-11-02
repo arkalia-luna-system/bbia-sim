@@ -1,6 +1,6 @@
 # ⚡ Optimisation Tests RAM V2 - Novembre 2025
 
-**Date** : Oct 25 / Nov 25  
+**Date** : Oct 25 / Nov 25
 **Objectif** : Réduire encore plus la consommation RAM en optimisant tests énergivores
 
 ---

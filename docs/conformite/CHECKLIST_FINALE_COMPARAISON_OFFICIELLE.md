@@ -1,8 +1,8 @@
 # 📋 CHECKLIST FINALE - COMPARAISON EXHAUSTIVE vs REPO OFFICIEL
 
-**Date**: octobre 2025 (Mise à jour audit exhaustif)  
-**Branche**: future  
-**Repo Officiel**: pollen-robotics/reachy_mini (develop)  
+**Date**: octobre 2025 (Mise à jour audit exhaustif)
+**Branche**: future
+**Repo Officiel**: pollen-robotics/reachy_mini (develop)
 **Version BBIA**: 1.3.1+
 
 ---
@@ -29,12 +29,12 @@
 #### ✅ Endpoint `GET /api/state/full`
 - **Fichier**: `src/bbia_sim/daemon/app/routers/state.py:143-221`
 - **Corrections appliquées**:
-  1. **Assertion `with_target_head_pose`**: Utilisation de `assert target_pose is not None` (conforme SDK) au lieu de vérification conditionnelle
-  2. **Accès direct aux valeurs**: Suppression des vérifications conditionnelles pour `with_head_joints`, `with_target_head_joints`, `with_target_body_yaw`, `with_target_antenna_positions` (conforme SDK)
-  3. **Format antennes**: Utilisation directe de `backend.get_present_antenna_joint_positions()` sans conversion explicite en list
-  4. **Imports asyncio**: Déplacement de l'import `asyncio` en top-level (conforme SDK)
-  5. **Timestamp**: Utilisation de `datetime.now(UTC)` avec import `from datetime import UTC, datetime` (conforme Python 3.11+ et ruff UP017)
-  6. **WebSocket `/ws/full`**: Suppression du paramètre `with_control_mode=True` explicite dans l'appel à `get_full_state` (conforme SDK - utilise valeur par défaut)
+ 1. **Assertion `with_target_head_pose`**: Utilisation de `assert target_pose is not None` (conforme SDK) au lieu de vérification conditionnelle
+ 2. **Accès direct aux valeurs**: Suppression des vérifications conditionnelles pour `with_head_joints`, `with_target_head_joints`, `with_target_body_yaw`, `with_target_antenna_positions` (conforme SDK)
+ 3. **Format antennes**: Utilisation directe de `backend.get_present_antenna_joint_positions()` sans conversion explicite en list
+ 4. **Imports asyncio**: Déplacement de l'import `asyncio` en top-level (conforme SDK)
+ 5. **Timestamp**: Utilisation de `datetime.now(UTC)` avec import `from datetime import UTC, datetime` (conforme Python 3.11+ et ruff UP017)
+ 6. **WebSocket `/ws/full`**: Suppression du paramètre `with_control_mode=True` explicite dans l'appel à `get_full_state` (conforme SDK - utilise valeur par défaut)
 - **Test**: À tester avec robot réel pour vérifier assertions
 - **Statut**: ✅ **CORRIGÉ** - Conformité améliorée avec SDK officiel
 
@@ -45,15 +45,15 @@
 #### ✅ Endpoints du router move
 - **Fichier**: `src/bbia_sim/daemon/app/routers/move.py`
 - **Corrections appliquées**:
-  1. **Endpoint `POST /goto`**: Supprimé paramètres `method` et `body_yaw` de l'appel à `goto_target()` (non utilisés dans l'appel SDK officiel, bien que le backend les accepte)
-  2. **Modèle `MoveUUID`**: Changé `uuid: str` → `uuid: UUID` (conforme SDK officiel - ligne 224 dans models.py)
-  3. **`create_move_task`**: Utilise directement `UUID` au lieu de convertir en `str` (ligne 128)
-  4. **`get_running_moves`**: Utilise directement `UUID` au lieu de convertir en `str` (ligne 152)
-  5. **`play_recorded_move_dataset`**: Utilise une coroutine async wrapper `play_recorded_move_coro()` qui appelle `await backend.play_move(move)` (conforme SDK officiel - backend_adapter.play_move est maintenant async - ligne 219-223)
-  6. **`backend_adapter.play_move`**: Convertie en méthode async pour conformité SDK (le SDK officiel utilise `async def play_move` - ligne 203-236)
-  7. **`stop_move`**: Utilise directement `uuid.uuid` sans conversion UUID (ligne 235 - conforme SDK)
-  8. **`set_target`**: Supprimé paramètre `body_yaw=None` de l'appel (conforme SDK officiel - utilise valeur par défaut 0.0)
-  9. **`ws_set_target`**: Supprimé paramètre `body_yaw=None` de l'appel (conforme SDK officiel)
+ 1. **Endpoint `POST /goto`**: Supprimé paramètres `method` et `body_yaw` de l'appel à `goto_target()` (non utilisés dans l'appel SDK officiel, bien que le backend les accepte)
+ 2. **Modèle `MoveUUID`**: Changé `uuid: str` → `uuid: UUID` (conforme SDK officiel - ligne 224 dans models.py)
+ 3. **`create_move_task`**: Utilise directement `UUID` au lieu de convertir en `str` (ligne 128)
+ 4. **`get_running_moves`**: Utilise directement `UUID` au lieu de convertir en `str` (ligne 152)
+ 5. **`play_recorded_move_dataset`**: Utilise une coroutine async wrapper `play_recorded_move_coro()` qui appelle `await backend.play_move(move)` (conforme SDK officiel - backend_adapter.play_move est maintenant async - ligne 219-223)
+ 6. **`backend_adapter.play_move`**: Convertie en méthode async pour conformité SDK (le SDK officiel utilise `async def play_move` - ligne 203-236)
+ 7. **`stop_move`**: Utilise directement `uuid.uuid` sans conversion UUID (ligne 235 - conforme SDK)
+ 8. **`set_target`**: Supprimé paramètre `body_yaw=None` de l'appel (conforme SDK officiel - utilise valeur par défaut 0.0)
+ 9. **`ws_set_target`**: Supprimé paramètre `body_yaw=None` de l'appel (conforme SDK officiel)
 - **Test**: À tester avec robot réel pour vérifier comportement async de `play_move`
 - **Statut**: ✅ **CORRIGÉ** - Conformité améliorée avec SDK officiel
 
@@ -64,12 +64,12 @@
 #### ✅ Endpoints du router motors
 - **Fichier**: `src/bbia_sim/daemon/app/routers/motors.py`
 - **Corrections appliquées**:
-  1. **Utilisation BackendAdapter**: Remplacé logique complexe par utilisation directe de `BackendAdapter` via `get_backend_adapter` (conforme SDK)
-  2. **MotorStatus simplifié**: Supprimé champ `status` supplémentaire, utilise uniquement `mode: MotorControlMode` (conforme SDK - ligne 23)
-  3. **get_motor_status**: Utilise directement `backend.get_motor_control_mode()` (ligne 34 - conforme SDK)
-  4. **set_motor_mode**: Utilise directement `backend.set_motor_control_mode(mode)` (ligne 43 - conforme SDK)
-  5. **MotorControlMode**: Défini avec valeurs `Enabled`, `Disabled`, `GravityCompensation` (conforme SDK - ligne 16-20)
-  6. **BackendAdapter.set_motor_control_mode**: Ajouté méthode dans `backend_adapter.py` (ligne 117-136)
+ 1. **Utilisation BackendAdapter**: Remplacé logique complexe par utilisation directe de `BackendAdapter` via `get_backend_adapter` (conforme SDK)
+ 2. **MotorStatus simplifié**: Supprimé champ `status` supplémentaire, utilise uniquement `mode: MotorControlMode` (conforme SDK - ligne 23)
+ 3. **get_motor_status**: Utilise directement `backend.get_motor_control_mode()` (ligne 34 - conforme SDK)
+ 4. **set_motor_mode**: Utilise directement `backend.set_motor_control_mode(mode)` (ligne 43 - conforme SDK)
+ 5. **MotorControlMode**: Défini avec valeurs `Enabled`, `Disabled`, `GravityCompensation` (conforme SDK - ligne 16-20)
+ 6. **BackendAdapter.set_motor_control_mode**: Ajouté méthode dans `backend_adapter.py` (ligne 117-136)
 - **Test**: À tester avec robot réel pour vérifier modes moteurs
 - **Statut**: ✅ **CORRIGÉ** - Conformité améliorée avec SDK officiel
 
@@ -80,11 +80,11 @@
 #### ✅ Endpoints du router kinematics
 - **Fichier**: `src/bbia_sim/daemon/app/routers/kinematics.py`
 - **Corrections appliquées**:
-  1. **Utilisation BackendAdapter**: Remplacé logique complexe avec RobotFactory par utilisation directe de `BackendAdapter` (conforme SDK)
-  2. **get_kinematics_info**: Utilise directement les propriétés du backend (ligne 28-38 - conforme SDK)
-  3. **get_urdf**: Utilise directement `backend.get_urdf()` ou `backend._robot.get_urdf()` (ligne 42-50 - conforme SDK)
-  4. **get_stl_file**: ✅ **DÉJÀ PRÉSENT** - Endpoint `GET /api/kinematics/stl/{filename:path}` existe (ligne 57-74). Note: Le script de comparaison le détecte comme HIGH car il cherche `/stl/{filename}` mais l'endpoint existe sous `/api/kinematics/stl/{filename:path}` (plus flexible avec `:path`)
-  5. **Exception handling**: Utilise `raise ... from e` pour FileNotFoundError (conforme best practices - ligne 71-74)
+ 1. **Utilisation BackendAdapter**: Remplacé logique complexe avec RobotFactory par utilisation directe de `BackendAdapter` (conforme SDK)
+ 2. **get_kinematics_info**: Utilise directement les propriétés du backend (ligne 28-38 - conforme SDK)
+ 3. **get_urdf**: Utilise directement `backend.get_urdf()` ou `backend._robot.get_urdf()` (ligne 42-50 - conforme SDK)
+ 4. **get_stl_file**: ✅ **DÉJÀ PRÉSENT** - Endpoint `GET /api/kinematics/stl/{filename:path}` existe (ligne 57-74). Note: Le script de comparaison le détecte comme HIGH car il cherche `/stl/{filename}` mais l'endpoint existe sous `/api/kinematics/stl/{filename:path}` (plus flexible avec `:path`)
+ 5. **Exception handling**: Utilise `raise ... from e` pour FileNotFoundError (conforme best practices - ligne 71-74)
 - **Note**: L'endpoint STL est présent et conforme (HIGH détecté par erreur par le script - chemin différent mais équivalent)
 - **Test**: À tester avec backend réel pour vérifier URDF et STL
 - **Statut**: ✅ **CORRIGÉ** - Conformité améliorée avec SDK officiel
@@ -124,18 +124,18 @@
 #### ✅ Corrections majeures appliquées
 - **Fichier**: `src/bbia_sim/daemon/app/backend_adapter.py`
 - **Corrections appliquées**:
-  1. **Attributs target**: Changé de propriétés `@property` vers attributs directs `self.target_*` (conforme SDK - ligne 28-32)
-  2. **ik_required**: Ajouté flag `ik_required` pour gérer les besoins IK (conforme SDK - ligne 32)
-  3. **set_target_head_pose**: Met à jour `ik_required = True` (conforme SDK - ligne 206)
-  4. **set_target_body_yaw**: Met à jour `ik_required = True` (conforme SDK - ligne 217)
-  5. **set_target_head_joint_positions**: Met à jour `ik_required = False` (conforme SDK - ligne 231)
-  6. **goto_joint_positions**: Utilise `time_trajectory` avec `InterpolationTechnique` au lieu d'interpolation linéaire simple (conforme SDK - ligne 303-395)
-  7. **update_target_head_joints_from_ik**: Gère correctement les valeurs None et lève ValueError si IK échoue (conforme SDK - ligne 472-503)
-  8. **get_urdf**: Ajouté méthode pour récupérer URDF (conforme SDK - ligne 415-434)
-  9. **play_sound**: Ajouté méthode pour jouer sons (conforme SDK - ligne 436-445)
-  10. **set_automatic_body_yaw**: Ajouté méthode pour yaw automatique (conforme SDK - ligne 447-454)
-  11. **update_head_kinematics_model**: Ajouté méthode pour mise à jour cinématique (conforme SDK - ligne 505-523)
-  12. **set_target_head_joint_current**: Ajouté méthode pour courant joints (conforme SDK - ligne 463-470)
+ 1. **Attributs target**: Changé de propriétés `@property` vers attributs directs `self.target_*` (conforme SDK - ligne 28-32)
+ 2. **ik_required**: Ajouté flag `ik_required` pour gérer les besoins IK (conforme SDK - ligne 32)
+ 3. **set_target_head_pose**: Met à jour `ik_required = True` (conforme SDK - ligne 206)
+ 4. **set_target_body_yaw**: Met à jour `ik_required = True` (conforme SDK - ligne 217)
+ 5. **set_target_head_joint_positions**: Met à jour `ik_required = False` (conforme SDK - ligne 231)
+ 6. **goto_joint_positions**: Utilise `time_trajectory` avec `InterpolationTechnique` au lieu d'interpolation linéaire simple (conforme SDK - ligne 303-395)
+ 7. **update_target_head_joints_from_ik**: Gère correctement les valeurs None et lève ValueError si IK échoue (conforme SDK - ligne 472-503)
+ 8. **get_urdf**: Ajouté méthode pour récupérer URDF (conforme SDK - ligne 415-434)
+ 9. **play_sound**: Ajouté méthode pour jouer sons (conforme SDK - ligne 436-445)
+ 10. **set_automatic_body_yaw**: Ajouté méthode pour yaw automatique (conforme SDK - ligne 447-454)
+ 11. **update_head_kinematics_model**: Ajouté méthode pour mise à jour cinématique (conforme SDK - ligne 505-523)
+ 12. **set_target_head_joint_current**: Ajouté méthode pour courant joints (conforme SDK - ligne 463-470)
 - **Test**: À tester avec robot réel pour vérifier toutes les méthodes
 - **Statut**: ✅ **CORRIGÉ** - BackendAdapter maintenant conforme au Backend SDK officiel
 
@@ -418,8 +418,8 @@ bandit -r src/bbia_sim/daemon/app/routers/move.py
 
 ---
 
-**Date de génération**: octobre 2025  
-**Script utilisé**: `scripts/compare_with_official_exhaustive.py`  
-**Rapports**: `logs/comparison_official_results.json`, `logs/comparison_official_report.md`  
+**Date de génération**: octobre 2025
+**Script utilisé**: `scripts/compare_with_official_exhaustive.py`
+**Rapports**: `logs/comparison_official_results.json`, `logs/comparison_official_report.md`
 **Prompt d'audit exhaustif**: `docs/guides/PROMPT_AUDIT_EXHAUSTIF_REACHY_MINI.md` (pour audits futurs automatisés)
 

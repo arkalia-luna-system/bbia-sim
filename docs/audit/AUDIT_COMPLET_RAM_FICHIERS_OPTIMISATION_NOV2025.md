@@ -1,6 +1,6 @@
 # 🔍 AUDIT COMPLET RAM - FICHIERS À OPTIMISER (Novembre 2025)
 
-**Date** : Oct 25 / Nov 25  
+**Date** : Oct 25 / Nov 25
 **Objectif** : Liste complète de tous les fichiers/tests consommant beaucoup de RAM, priorisés par urgence
 
 ---

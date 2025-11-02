@@ -1,6 +1,6 @@
 # ⚡ Optimisation Tests RAM - Novembre 2025
 
-**Date** : Oct 25 / Nov 25  
+**Date** : Oct 25 / Nov 25
 **Objectif** : Réduire consommation RAM des tests (éviter surchauffe)
 
 ---

@@ -29,4 +29,4 @@ Merci de vouloir contribuer à BBIA Reachy Mini Wireless !
 - Merci de rester courtois et constructif
 
 ---
-Contact : arkalia.luna.system@gmail.com 
+Contact : arkalia.luna.system@gmail.com

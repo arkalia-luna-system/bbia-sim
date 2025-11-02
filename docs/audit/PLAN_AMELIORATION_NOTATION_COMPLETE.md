@@ -1,19 +1,19 @@
 # 🚀 PLAN D'AMÉLIORATION COMPLET - AUGMENTER LA NOTATION
 ## Axes de correction et amélioration pour passer de 7.1/10 à 9.0+/10
 
-**Date** : octobre 2025  
-**Objectif** : Identifier tous les axes d'amélioration pour augmenter la notation  
-**Score actuel** : 7.1/10  
-**Score cible** : 9.0+/10  
+**Date** : octobre 2025
+**Objectif** : Identifier tous les axes d'amélioration pour augmenter la notation
+**Score actuel** : 7.1/10
+**Score cible** : 9.0+/10
 **Priorité** : Critique → Haute → Moyenne → Basse
 
 ---
 
 ## 📊 RÉSUMÉ EXÉCUTIF
 
-**Axes identifiés** : 12 axes majeurs  
-**Actions prioritaires** : 8 actions critiques  
-**Impact estimé** : +0.5 à +2.0 points selon axe  
+**Axes identifiés** : 12 axes majeurs
+**Actions prioritaires** : 8 actions critiques
+**Impact estimé** : +0.5 à +2.0 points selon axe
 **Temps estimé** : 2-6 mois selon priorités
 
 ---
@@ -177,7 +177,7 @@ file presentation/livrables/v1.0/logo/exports/*.svg
 **Fichiers à créer** :
 ```
 assets/
-  logo/
+ logo/
     logo_bbia_monochrome_noir.svg
     logo_bbia_couleur.svg
   images/
@@ -279,7 +279,7 @@ precision = 2
 
 # Exclure vraiment exemples/scripts non testables
 [run]
-omit = 
+omit =
     */examples/*
     */scripts/*
     */venv/*
@@ -390,7 +390,7 @@ omit =
 **Scénarios à créer** :
 1. **Scénario 1** : Démarrage complet robot
    ```python
-   # tests/e2e/test_user_scenario_startup.py
+ # tests/e2e/test_user_scenario_startup.py
    def test_user_startup_complete():
        """Utilisateur démarre robot, connecte, wake_up, scan environnement."""
        robot = RobotFactory.create_backend("reachy_mini")
@@ -403,14 +403,14 @@ omit =
 
 2. **Scénario 2** : Interaction conversationnelle
    ```python
-   # tests/e2e/test_user_scenario_conversation.py
+ # tests/e2e/test_user_scenario_conversation.py
    def test_user_conversation_complete():
        """Utilisateur discute avec BBIA, émotions, comportements."""
    ```
 
 3. **Scénario 3** : Détection et réaction
    ```python
-   # tests/e2e/test_user_scenario_detection.py
+ # tests/e2e/test_user_scenario_detection.py
    def test_user_detection_reaction():
        """Utilisateur entre, BBIA détecte, réagit avec émotion."""
    ```
@@ -507,7 +507,7 @@ jobs:
 **Tests à créer** :
 ```
 tests/security/
-  test_input_injection.py
+ test_input_injection.py
   test_api_security.py
   test_model_security.py
   test_validation_advanced.py
@@ -642,7 +642,7 @@ app = FastAPI(
 
 1. **Créer tests mock** (2h)
    ```bash
-   mkdir -p tests/mocks
+ mkdir -p tests/mocks
    touch tests/mocks/reachy_mini_mock.py
    # Implémenter mock basique
    ```

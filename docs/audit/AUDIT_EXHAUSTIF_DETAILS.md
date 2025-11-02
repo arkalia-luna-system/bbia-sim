@@ -1,6 +1,6 @@
 # 🔍 Audit Exhaustif Pointilleux - Tous les Détails
 
-**Date**: octobre 2025  
+**Date**: octobre 2025
 **Objectif**: Vérification exhaustive de TOUS les détails (doc, tests, assets, démos, constantes, messages d'erreur, config)
 
 ---
@@ -62,13 +62,13 @@ bbia: tests/test_*.py
 **Différence**: ⚠️ **AUDIO MANQUANTS** - Les fichiers audio officiels ne sont pas dans BBIA
 
 #### Fichiers JSON
-**Officiel**: `kinematics_data.json` dans `src/reachy_mini/assets/`  
+**Officiel**: `kinematics_data.json` dans `src/reachy_mini/assets/`
 **BBIA**: ❌ **MANQUANT**
 
 **Contenu**: Données cinématiques (motor_arm_length, rod_length, head_z_offset, motors avec transformations)
 
 #### Fichiers STL
-**Officiel**: Dans `src/reachy_mini/descriptions/reachy_mini/urdf/assets/`  
+**Officiel**: Dans `src/reachy_mini/descriptions/reachy_mini/urdf/assets/`
 **BBIA**: Dans `src/bbia_sim/sim/assets/reachy_official/` (41 fichiers)
 
 **Statut**: ✅ Présents (probablement identiques)

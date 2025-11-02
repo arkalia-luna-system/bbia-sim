@@ -21,7 +21,7 @@
   - Usage: `python scripts/check_official_alignment.py`
 - **Script génération rapports**: `scripts/generate_conformity_report_reachy_mini.py` ✅
   - Usage: `python scripts/generate_conformity_report_reachy_mini.py`
-  
+ 
 **Note** : `audit_systematique_exhaustif.py` archivé dans `scripts/_archived/comparison_audit/` (fonctionnalités intégrées dans script principal)
 - **Checklists finales**:
   - `docs/conformite/CHECKLIST_FINALE_COMPARAISON_OFFICIELLE.md` (177 différences détectées)
@@ -110,7 +110,7 @@
 - **Assets**: Comparer fichiers STL (41 fichiers attendus)
 - **Structure**: Comparer hiérarchie des corps, géométries, actuateurs
 - **Orientation**: Comparer quaternions, matrices de transformation
-- **Files**: 
+- **Files**:
   - BBIA: `src/bbia_sim/sim/models/reachy_mini_REAL_OFFICIAL.xml`
   - Officiel: `/Volumes/T7/reachy_mini/src/reachy_mini/descriptions/reachy_mini/mjcf/reachy_mini.xml`
 
@@ -391,7 +391,7 @@ Avant de considérer l'audit complet:
 
 ---
 
-**Version**: 2.0  
-**Date**: octobre 2025  
+**Version**: 2.0
+**Date**: octobre 2025
 **Basé sur**: Script `compare_with_official_exhaustive.py` (consolidé) et checklist existante
 

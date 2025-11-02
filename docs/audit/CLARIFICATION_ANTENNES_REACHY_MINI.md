@@ -1,7 +1,7 @@
 # 🔍 CLARIFICATION ANTENNES REACHY MINI
 
-**Date** : octobre 2025  
-**Question** : Les antennes sont-elles animées ou bloquées ?  
+**Date** : octobre 2025
+**Question** : Les antennes sont-elles animées ou bloquées ?
 **Réponse** : ⚠️ **C'EST COMPLIQUÉ** - Différence entre robot réel et simulation
 
 ---
@@ -187,7 +187,7 @@ Si les antennes SONT animables dans le robot réel :
 
 ---
 
-**Statut** : ⚠️ **À VÉRIFIER AVEC ROBOT PHYSIQUE**  
-**Date** : octobre 2025  
+**Statut** : ⚠️ **À VÉRIFIER AVEC ROBOT PHYSIQUE**
+**Date** : octobre 2025
 **Prochaine vérification** : Octobre 2025 (robot physique)
 

@@ -1,6 +1,6 @@
 # 🎨 Dashboard Officiel-Like - Documentation
 
-**Date:** Octobre 2025  
+**Date:** Octobre 2025
 **Conformité:** Identique au dashboard officiel `pollen-robotics/reachy_mini`
 
 ---
@@ -180,9 +180,9 @@ python -c "from bbia_sim.daemon.app.main import app; print('✅ OK')"
 
 ## 🎉 Statut
 
-✅ **Dashboard créé et fonctionnel**  
-✅ **Structure identique à l'officiel**  
-✅ **Design conforme**  
-✅ **Intégration complète dans main.py**  
+✅ **Dashboard créé et fonctionnel**
+✅ **Structure identique à l'officiel**
+✅ **Design conforme**
+✅ **Intégration complète dans main.py**
 ⚠️ **Assets SVG optionnels (peuvent être ajoutés plus tard)**
 

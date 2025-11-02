@@ -32,7 +32,7 @@
 > - Python requis: 3.11+
 > - Workflow: `.github/workflows/ci.yml`
 > - Installation locale:
->   ```bash
+> ```bash
 >   pyenv install 3.11.9 && pyenv local 3.11.9
 >   python -m pip install --upgrade pip
 >   pip install -e .
@@ -118,15 +118,15 @@ graph TB
 
 ```python
 class RobotAPI:
-    """Interface abstraite unifiée pour simulation et robot réel."""
+ """Interface abstraite unifiée pour simulation et robot réel."""
 
-    # Méthodes SDK officiel conformes
-    def goto_target(self, head=None, antennas=None, duration=1.0) -> None
-    def set_target(self, head=None, antennas=None) -> None
-    def create_head_pose(self, x=0, y=0, z=0, roll=0, pitch=0, yaw=0) -> np.ndarray
-    def play_audio(self, audio_data: bytes, volume: float = 0.5) -> None
-    def look_at(self, x: float, y: float, z: float) -> None
-    def set_emotion(self, emotion: str, intensity: float) -> None
+ # Méthodes SDK officiel conformes
+ def goto_target(self, head=None, antennas=None, duration=1.0) -> None
+ def set_target(self, head=None, antennas=None) -> None
+ def create_head_pose(self, x=0, y=0, z=0, roll=0, pitch=0, yaw=0) -> np.ndarray
+ def play_audio(self, audio_data: bytes, volume: float = 0.5) -> None
+ def look_at(self, x: float, y: float, z: float) -> None
+ def set_emotion(self, emotion: str, intensity: float) -> None
 ```
 
 Avantages :
@@ -140,11 +140,11 @@ Avantages :
 #### BBIAEmotions (`bbia_emotions.py`)
 ```python
 class BBIAEmotions:
-    """Gestion des émotions robotiques."""
+ """Gestion des émotions robotiques."""
 
-    def set_emotion(self, emotion: str, intensity: float) -> None
-    def get_current_emotion(self) -> dict[str, Any]
-    def animate_emotion(self, emotion: str, duration: float) -> None
+ def set_emotion(self, emotion: str, intensity: float) -> None
+ def get_current_emotion(self) -> dict[str, Any]
+ def animate_emotion(self, emotion: str, duration: float) -> None
 ```
 
 **Émotions supportées :** 12 émotions (neutral, happy, sad, angry, surprised, confused, determined, nostalgic, proud, curious, excited, fearful)
@@ -154,9 +154,9 @@ class BBIAEmotions:
 class BBIAVision:
     """Vision par ordinateur et reconnaissance d'objets."""
 
-    def detect_objects(self, image: np.ndarray) -> list[dict]
-    def track_objects(self, image: np.ndarray) -> list[dict]
-    def recognize_faces(self, image: np.ndarray) -> list[dict]
+ def detect_objects(self, image: np.ndarray) -> list[dict]
+ def track_objects(self, image: np.ndarray) -> list[dict]
+ def recognize_faces(self, image: np.ndarray) -> list[dict]
 ```
 
 **Technologies :** YOLOv8n, MediaPipe, OpenCV
@@ -166,9 +166,9 @@ class BBIAVision:
 class BBIAVoice:
     """Synthèse vocale et reconnaissance vocale."""
 
-    def text_to_speech(self, text: str, voice: str = "default") -> bytes
-    def speech_to_text(self, audio_data: bytes) -> str
-    def process_voice_command(self, command: str) -> dict
+ def text_to_speech(self, text: str, voice: str = "default") -> bytes
+ def speech_to_text(self, audio_data: bytes) -> str
+ def process_voice_command(self, command: str) -> dict
 ```
 
 **Technologies :** Whisper STT, pyttsx3 TTS
@@ -178,10 +178,10 @@ class BBIAVoice:
 class BBIABehaviorManager:
     """Gestionnaire de comportements complexes."""
 
-    def run_behavior(self, behavior_name: str, duration: float) -> bool
-    def wake_up(self) -> None
-    def goto_sleep(self) -> None
-    def greeting(self) -> None
+ def run_behavior(self, behavior_name: str, duration: float) -> bool
+ def wake_up(self) -> None
+ def goto_sleep(self) -> None
+ def greeting(self) -> None
 ```
 
 **Comportements :** wake_up, greeting, goto_sleep, nod, wave, dance, etc.
@@ -191,9 +191,9 @@ class BBIABehaviorManager:
 class BBIAAdaptiveBehavior:
     """Comportements adaptatifs basés sur le contexte."""
 
-    def generate_behavior(self, context: str, emotion: str) -> dict
-    def adapt_to_feedback(self, feedback: dict) -> None
-    def learn_user_preferences(self, interaction: dict) -> None
+ def generate_behavior(self, context: str, emotion: str) -> dict
+ def adapt_to_feedback(self, feedback: dict) -> None
+ def learn_user_preferences(self, interaction: dict) -> None
 ```
 
 **Innovation :** Apprentissage des préférences utilisateur, adaptation contextuelle
@@ -206,8 +206,8 @@ class MuJoCoBackend(RobotAPI):
     """Backend simulation MuJoCo."""
 
     def __init__(self):
-        self.simulator = MuJoCoSimulator()
-        self.physics_engine = PhysicsEngine()
+ self.simulator = MuJoCoSimulator()
+ self.physics_engine = PhysicsEngine()
 ```
 
 Caractéristiques :
@@ -222,8 +222,8 @@ class ReachyMiniBackend(RobotAPI):
     """Backend robot Reachy Mini officiel."""
 
     def __init__(self):
-        self.reachy_mini = ReachyMini()
-        self.zenoh_client = ZenohClient()
+ self.reachy_mini = ReachyMini()
+ self.zenoh_client = ZenohClient()
 ```
 
 Caractéristiques :
@@ -240,8 +240,8 @@ class ZenohBridge:
     """Bridge entre FastAPI et Zenoh pour Reachy Mini."""
 
     async def start(self) -> bool
-    async def send_command(self, command: RobotCommand) -> bool
-    def get_current_state(self) -> RobotState
+ async def send_command(self, command: RobotCommand) -> bool
+ def get_current_state(self) -> RobotState
 ```
 
 Fonctionnalités :
@@ -259,10 +259,10 @@ Fonctionnalités :
 # tests/test_reachy_mini_complete_conformity.py
 class TestReachyMiniCompleteConformity:
     def test_core_methods_conformity(self)
-    def test_sdk_official_methods_conformity(self)
-    def test_joint_mapping_conformity(self)
-    def test_emotion_api_conformity(self)
-    def test_behavior_api_conformity(self)
+ def test_sdk_official_methods_conformity(self)
+ def test_joint_mapping_conformity(self)
+ def test_emotion_api_conformity(self)
+ def test_behavior_api_conformity(self)
 ```
 
 Résultats : 16/16 tests passent
@@ -273,7 +273,7 @@ Résultats : 16/16 tests passent
 class TestBBIAAdaptiveBehavior:
     def test_generate_behavior(self)
     def test_adapt_to_feedback(self)
-    def test_user_preferences(self)
+ def test_user_preferences(self)
 ```
 
 Résultats : 11/11 tests passent
@@ -284,7 +284,7 @@ Résultats : 11/11 tests passent
 class TestSDKDependencies:
     def test_reachy_mini_import(self)
     def test_zenoh_import(self)
-    def test_motor_controller_import(self)
+ def test_motor_controller_import(self)
 ```
 
 Résultats : 15/16 tests passent
@@ -321,45 +321,45 @@ sequenceDiagram
     participant User as Utilisateur
     participant Dashboard as Dashboard Web
     participant BBIA as Modules BBIA
-    participant RobotAPI as RobotAPI Unifié
-    participant Backend as Backend (MuJoCo/Reachy)
-    participant Robot as Robot Physique
+ participant RobotAPI as RobotAPI Unifié
+ participant Backend as Backend (MuJoCo/Reachy)
+ participant Robot as Robot Physique
 
-    User->>Dashboard: Commande émotion
-    Dashboard->>BBIA: set_emotion("happy", 0.8)
-    BBIA->>RobotAPI: goto_target(head=pose)
-    RobotAPI->>Backend: goto_target(head=pose)
+ User->>Dashboard: Commande émotion
+ Dashboard->>BBIA: set_emotion("happy", 0.8)
+ BBIA->>RobotAPI: goto_target(head=pose)
+ RobotAPI->>Backend: goto_target(head=pose)
 
-    alt Simulation
-        Backend->>Backend: MuJoCo Physics
-    else Robot Réel
-        Backend->>Robot: Zenoh Command
-        Robot->>Robot: Hardware Control
-    end
+ alt Simulation
+ Backend->>Backend: MuJoCo Physics
+ else Robot Réel
+ Backend->>Robot: Zenoh Command
+ Robot->>Robot: Hardware Control
+ end
 
-    Backend->>RobotAPI: Success
-    RobotAPI->>BBIA: Success
-    BBIA->>Dashboard: État mis à jour
-    Dashboard->>User: Confirmation
+ Backend->>RobotAPI: Success
+ RobotAPI->>BBIA: Success
+ BBIA->>Dashboard: État mis à jour
+ Dashboard->>User: Confirmation
 ```
 
 ### Bridge Zenoh/FastAPI
 ```mermaid
 sequenceDiagram
-    participant Client as Client Web
-    participant FastAPI as FastAPI Server
-    participant Bridge as Zenoh Bridge
-    participant Zenoh as Zenoh Daemon
+ participant Client as Client Web
+ participant FastAPI as FastAPI Server
+ participant Bridge as Zenoh Bridge
+ participant Zenoh as Zenoh Daemon
     participant Robot as Reachy Mini
 
-    Client->>FastAPI: POST /api/zenoh/command
-    FastAPI->>Bridge: send_command()
-    Bridge->>Zenoh: Publish Command
-    Zenoh->>Robot: Execute Command
-    Robot->>Zenoh: State Update
-    Zenoh->>Bridge: Publish State
-    Bridge->>FastAPI: Current State
-    FastAPI->>Client: JSON Response
+ Client->>FastAPI: POST /api/zenoh/command
+ FastAPI->>Bridge: send_command()
+ Bridge->>Zenoh: Publish Command
+ Zenoh->>Robot: Execute Command
+ Robot->>Zenoh: State Update
+ Zenoh->>Bridge: Publish State
+ Bridge->>FastAPI: Current State
+ FastAPI->>Client: JSON Response
 ```
 
 ---

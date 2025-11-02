@@ -5,14 +5,14 @@
 > - Python requis: 3.11+
 > - CI: `.github/workflows/ci.yml`
 > - Setup rapide:
->   ```bash
+> ```bash
 >   pyenv install 3.11.9 && pyenv local 3.11.9
 >   python -m pip install --upgrade pip
 >   pip install -e .
 >   ```
 
-**Version** : 1.2.0  
-**Date** : Oct 25 / Nov 25  
+**Version** : 1.2.0
+**Date** : Oct 25 / Nov 25
 **Public** : développeurs, chercheurs, communauté technique  
 **📚 [Guide débutant](../guides/GUIDE_DEBUTANT.md)** | **🔧 [Guide avancé](../guides/GUIDE_AVANCE.md)** | **🧪 [Guide tests](TESTING_GUIDE.md)**
 

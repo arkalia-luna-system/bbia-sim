@@ -1,7 +1,7 @@
 # 🔍 Comparaison : Application Conversation Officielle vs BBIA
 
-**Date** : Oct 25 / Nov 25  
-**Source** : Documentation officielle Reachy Mini Conversation App  
+**Date** : Oct 25 / Nov 25
+**Source** : Documentation officielle Reachy Mini Conversation App
 **Version BBIA** : 1.3.2  
 **📚 [État actuel](./RESUME_ETAT_ACTUEL_BBIA.md)** | **🎯 [Prochaines étapes](./PROCHAINES_ETAPES_OPTIONNELLES.md)** | **❓ [FAQ](../FAQ.md)**
 
@@ -253,7 +253,7 @@ pie title Score par Catégorie
 
 ### **Priorité HAUTE** 🔴
 
-1. **Support danses officielles** 
+1. **Support danses officielles**
    - Intégrer `reachy_mini_dances_library`
    - Outils `dance` / `stop_dance`
    - Impact : Grand (fonctionnalité majeure manquante)

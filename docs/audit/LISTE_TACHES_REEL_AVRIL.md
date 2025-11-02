@@ -1,6 +1,6 @@
 # 📋 Liste RÉELLE des Tâches Pas Encore Faites
 
-**Date** : Oct 25 / Nov 25  
+**Date** : Oct 25 / Nov 25
 **Source** : Audit exhaustif MD vs Code
 
 ---
@@ -39,7 +39,7 @@ Les fichiers suivants ont été corrigés pour refléter la réalité :
 ### 🟡 Priorité Moyenne
 
 #### 3. Améliorer Coverage Tests
-- **Modules** : 
+- **Modules** :
   - `vision_yolo.py` : 27.74% coverage (99 lignes non couvertes)
   - `voice_whisper.py` : 33.33% coverage (76 lignes non couvertes)
   - `dashboard_advanced.py` : 0% coverage (288 lignes)
@@ -103,6 +103,6 @@ Les fichiers suivants ont été corrigés pour refléter la réalité :
 
 ---
 
-**Dernière mise à jour** : Oct 25 / Nov 25  
+**Dernière mise à jour** : Oct 25 / Nov 25
 **Prochaine révision** : Décembre 2025
 

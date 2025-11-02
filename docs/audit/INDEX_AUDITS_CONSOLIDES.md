@@ -1,6 +1,6 @@
 # 📚 Index des Audits et Corrections - Novembre 2025
 
-**Date** : Oct 25 / Nov 25  
+**Date** : Oct 25 / Nov 25
 **Objectif** : Référence centralisée pour tous les audits et corrections effectués
 
 ---

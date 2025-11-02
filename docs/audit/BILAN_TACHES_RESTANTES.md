@@ -1,7 +1,7 @@
 # 📋 Bilan Tâches Restantes
 
-**Date** : Oct 25 / Nov 25  
-**État actuel** : ~85-90% parité avec app officielle Reachy Mini  
+**Date** : Oct 25 / Nov 25
+**État actuel** : ~85-90% parité avec app officielle Reachy Mini
 **Dernière mise à jour** : Après implémentation NLP + SmolVLM2 + tests améliorés  
 **📚 [État actuel](./RESUME_ETAT_ACTUEL_BBIA.md)** | **🎯 [Prochaines étapes](./PROCHAINES_ETAPES_OPTIONNELLES.md)** | **🔍 [Comparaison](./COMPARAISON_APP_CONVERSATION_OFFICIELLE.md)**
 

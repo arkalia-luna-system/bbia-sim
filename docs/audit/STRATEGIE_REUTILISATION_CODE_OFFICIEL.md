@@ -1,6 +1,6 @@
 # 🔄 Stratégie de Réutilisation du Code Officiel
 
-**Date** : octobre 2025  
+**Date** : octobre 2025
 **Objectif** : Identifier ce qui peut être copié/réutilisé de l'app officielle sans tout recréer
 
 ---

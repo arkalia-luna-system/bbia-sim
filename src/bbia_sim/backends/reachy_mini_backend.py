@@ -60,6 +60,41 @@ SLEEP_HEAD_POSE = np.array(
 
 logger = logging.getLogger(__name__)
 
+# OPTIMISATION RAM: Constantes module-level partagées (évite recréation à chaque instance)
+JOINT_MAPPING_STATIC = {
+    # Tête (6 joints Stewart platform - noms réels)
+    "stewart_1": 0,  # Premier joint tête
+    "stewart_2": 1,  # Deuxième joint tête
+    "stewart_3": 2,  # Troisième joint tête
+    "stewart_4": 3,  # Quatrième joint tête
+    "stewart_5": 4,  # Cinquième joint tête
+    "stewart_6": 5,  # Sixième joint tête
+    # Antennes (2 joints)
+    "left_antenna": 0,  # Antenne gauche
+    "right_antenna": 1,  # Antenne droite
+    # Corps (1 joint - nom réel)
+    "yaw_body": 0,  # Rotation corps
+}
+
+JOINT_LIMITS_STATIC = {
+    # Tête (plateforme Stewart - limites exactes du modèle officiel XML)
+    "stewart_1": (-0.8377580409572196, 1.3962634015955222),  # Exact du XML
+    "stewart_2": (-1.396263401595614, 1.2217304763958803),  # Exact du XML
+    "stewart_3": (-0.8377580409572173, 1.3962634015955244),  # Exact du XML
+    "stewart_4": (-1.3962634015953894, 0.8377580409573525),  # Exact du XML
+    "stewart_5": (-1.2217304763962082, 1.396263401595286),  # Exact du XML
+    "stewart_6": (-1.3962634015954123, 0.8377580409573296),  # Exact du XML
+    # Antennes: maintenant avec limites définies dans XML (-0.3 à 0.3 rad)
+    # Limites conservatrices pour protection hardware (antennes fragiles)
+    "left_antenna": (-0.3, 0.3),  # Limite de sécurité alignée avec XML
+    "right_antenna": (-0.3, 0.3),  # Limite de sécurité alignée avec XML
+    # Corps (limite exacte du modèle officiel XML)
+    "yaw_body": (
+        -2.792526803190975,
+        2.792526803190879,
+    ),  # Exact du XML - rotation complète
+}
+
 
 class ReachyMiniBackend(RobotAPI):
     """Backend Reachy-Mini officiel pour RobotAPI."""
@@ -111,43 +146,14 @@ class ReachyMiniBackend(RobotAPI):
         self.STEWART_MAX_INDEX = 5  # Indices 0-5 pour stewart_1-6
         self.HEAD_POSITIONS_LEGACY_COUNT = 12  # Structure legacy (indices impairs)
 
+        # OPTIMISATION RAM: Référencer constantes module-level partagées (évite recréation)
         # Mapping joints officiel Reachy-Mini (noms réels du modèle MuJoCo)
         # 6 joints tête + 2 antennes + 1 corps = 9 joints total
-        self.joint_mapping = {
-            # Tête (6 joints Stewart platform - noms réels)
-            "stewart_1": 0,  # Premier joint tête
-            "stewart_2": 1,  # Deuxième joint tête
-            "stewart_3": 2,  # Troisième joint tête
-            "stewart_4": 3,  # Quatrième joint tête
-            "stewart_5": 4,  # Cinquième joint tête
-            "stewart_6": 5,  # Sixième joint tête
-            # Antennes (2 joints)
-            "left_antenna": 0,  # Antenne gauche
-            "right_antenna": 1,  # Antenne droite
-            # Corps (1 joint - nom réel)
-            "yaw_body": 0,  # Rotation corps
-        }
+        self.joint_mapping = JOINT_MAPPING_STATIC
 
         # Limites officielles Reachy-Mini (en radians) - LIMITES EXACTES
         # Source: reachy_mini_REAL_OFFICIAL.xml - valeurs exactes du modèle physique
-        self.joint_limits = {
-            # Tête (plateforme Stewart - limites exactes du modèle officiel XML)
-            "stewart_1": (-0.8377580409572196, 1.3962634015955222),  # Exact du XML
-            "stewart_2": (-1.396263401595614, 1.2217304763958803),  # Exact du XML
-            "stewart_3": (-0.8377580409572173, 1.3962634015955244),  # Exact du XML
-            "stewart_4": (-1.3962634015953894, 0.8377580409573525),  # Exact du XML
-            "stewart_5": (-1.2217304763962082, 1.396263401595286),  # Exact du XML
-            "stewart_6": (-1.3962634015954123, 0.8377580409573296),  # Exact du XML
-            # Antennes: maintenant avec limites définies dans XML (-0.3 à 0.3 rad)
-            # Limites conservatrices pour protection hardware (antennes fragiles)
-            "left_antenna": (-0.3, 0.3),  # Limite de sécurité alignée avec XML
-            "right_antenna": (-0.3, 0.3),  # Limite de sécurité alignée avec XML
-            # Corps (limite exacte du modèle officiel XML)
-            "yaw_body": (
-                -2.792526803190975,
-                2.792526803190879,
-            ),  # Exact du XML - rotation complète
-        }
+        self.joint_limits = JOINT_LIMITS_STATIC
 
         # Joints interdits (sécurité)
         # Note: Antennes maintenant animables avec limites sûres (-0.3 à 0.3 rad)
@@ -175,7 +181,9 @@ class ReachyMiniBackend(RobotAPI):
             self.is_connected = True  # Mode simulation
             self.start_time = time.time()
             self._last_heartbeat = time.time()
-            self._start_watchdog()
+            # OPTIMISATION RAM: Désactiver watchdog en simulation (consomme RAM pour rien)
+            if not self.use_sim:
+                self._start_watchdog()
             return True
 
         # Si use_sim=True, utiliser directement le mode simulation
@@ -219,7 +227,9 @@ class ReachyMiniBackend(RobotAPI):
             self.is_connected = True  # Mode simulation
             self.start_time = time.time()
             self._last_heartbeat = time.time()
-            self._start_watchdog()
+            # OPTIMISATION RAM: Désactiver watchdog en simulation (consomme RAM pour rien)
+            if not self.use_sim:
+                self._start_watchdog()
             return True
         except Exception as e:
             # Autres erreurs - activer mode simulation pour éviter crash

@@ -1,6 +1,6 @@
 # Guide du chat intelligent BBIA
 
-**Version :** 1.3.2  
+**Version :** 1.3.2
 **Date :** Oct 25 / Nov 25  
 **📚 [FAQ](../FAQ.md)** | **🧠 [Guide NLP](../guides/GUIDE_NLP_SMOLVLM.md)** | **📊 [État actuel](../audit/RESUME_ETAT_ACTUEL_BBIA.md)**
 

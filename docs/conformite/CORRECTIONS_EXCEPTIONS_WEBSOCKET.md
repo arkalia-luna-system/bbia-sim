@@ -1,6 +1,6 @@
 # Corrections Gestion Exceptions et WebSocket - Conformité SDK
 
-**Date**: octobre 2025  
+**Date**: octobre 2025
 **Fichiers modifiés**:
 - `src/bbia_sim/daemon/app/routers/move.py`
 - `src/bbia_sim/daemon/app/routers/kinematics.py`
@@ -160,9 +160,9 @@ except Exception as e:
 
 ## 📊 Résultat
 
-✅ **Toutes les différences de gestion d'exceptions corrigées**  
-✅ **WebSocket handlers conformes SDK**  
-✅ **Code quality: black ✅, ruff ✅**  
+✅ **Toutes les différences de gestion d'exceptions corrigées**
+✅ **WebSocket handlers conformes SDK**
+✅ **Code quality: black ✅, ruff ✅**
 ✅ **Exception chaining: conforme SDK (avec noqa pour ruff)**
 
 ---

@@ -1,8 +1,8 @@
 # 📊 Rapport Final - Audit Exhaustif BBIA-SIM vs SDK Officiel
 
-**Date**: octobre 2025  
-**Version**: 2.0  
-**Branche**: future  
+**Date**: octobre 2025
+**Version**: 2.0
+**Branche**: future
 **SDK Officiel**: pollen-robotics/reachy_mini (develop)
 
 ---
@@ -27,7 +27,7 @@
 
 #### Router `/api/move` (move.py)
 
-**Endpoints officiels**: 11 endpoints  
+**Endpoints officiels**: 11 endpoints
 **Endpoints BBIA**: 11 endpoints ✅
 
 | Endpoint Officiel | Endpoint BBIA | Status | Notes |
@@ -47,7 +47,7 @@
 
 #### Router `/api/state` (state.py)
 
-**Endpoints officiels**: 5 endpoints  
+**Endpoints officiels**: 5 endpoints
 **Endpoints BBIA**: 13 endpoints (5 officiels + 8 extensions légitimes)
 
 | Endpoint Officiel | Endpoint BBIA | Status | Notes |
@@ -77,7 +77,7 @@ Ces extensions sont des fonctionnalités supplémentaires légitimes et ne sont 
 
 ### 3. ⚠️ Tests - Partiellement Conformes (Non-Critique)
 
-**Tests officiels**: 22 tests  
+**Tests officiels**: 22 tests
 **Tests BBIA**: 180 tests (159 de plus que l'officiel)
 
 **Tests manquants**: 9 tests officiels non présents dans BBIA:
@@ -120,7 +120,7 @@ Ces extensions sont des fonctionnalités supplémentaires légitimes et ne sont 
 - **QA**: `black` ✅, `ruff` ✅
 
 ### 2. Imports Backend Adapter ✅
-- **Fichiers**: 
+- **Fichiers**:
   - `src/bbia_sim/daemon/app/backend_adapter.py`
   - `src/bbia_sim/daemon/app/routers/state.py`
 - **Correction**: Imports relatifs corrigés, dépendances ajoutées

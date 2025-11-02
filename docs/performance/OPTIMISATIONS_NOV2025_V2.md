@@ -1,6 +1,6 @@
 # ⚡ Optimisations Performance V2 - Novembre 2025
 
-**Date :** Oct 25 / Nov 25  
+**Date :** Oct 25 / Nov 25
 **Objectif :** Corrections supplémentaires problèmes performance identifiés
 
 **📊 [Observabilité](../observabilite/OBSERVABILITE.md)** | **🔧 [Guide avancé](../guides/GUIDE_AVANCE.md)**
@@ -141,6 +141,6 @@ def _is_safe_path(path: str) -> bool:
 
 ---
 
-**Date :** Oct 25 / Nov 25  
+**Date :** Oct 25 / Nov 25
 **Statut :** ✅ Problèmes corrigés
 

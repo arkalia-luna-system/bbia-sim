@@ -1,7 +1,7 @@
 # Checklist Finale - Audit Systématique BBIA-SIM vs SDK Officiel Reachy Mini
 
-**Date:** octobre 2025  
-**Branche:** future  
+**Date:** octobre 2025
+**Branche:** future
 **SDK Officiel:** `pollen-robotics/reachy_mini` @ `develop` (commit 2ba17f1)
 
 ---
@@ -10,11 +10,11 @@
 
 ### 1. Imports Backend Adapter ✅ CORRIGÉ
 
-**Nature:** API/Import  
-**Fichier:** `src/bbia_sim/daemon/app/backend_adapter.py`  
-**Ligne:** 13-14  
-**Problème:** Imports incorrects (`....robot_factory` au lieu de `...robot_factory`)  
-**Correction:** 
+**Nature:** API/Import
+**Fichier:** `src/bbia_sim/daemon/app/backend_adapter.py`
+**Ligne:** 13-14
+**Problème:** Imports incorrects (`....robot_factory` au lieu de `...robot_factory`)
+**Correction:**
 ```python
 # Avant:
 from ....robot_factory import RobotFactory
@@ -31,11 +31,11 @@ from ...robot_api import RobotAPI
 
 ### 2. Imports State Router ✅ CORRIGÉ
 
-**Nature:** API/Import  
-**Fichier:** `src/bbia_sim/daemon/app/routers/state.py`  
-**Ligne:** 11-12  
-**Problème:** Imports manquants (`Depends`, `BackendAdapter`, `get_backend_adapter`, `ws_get_backend_adapter`, `AnyPose`, `FullState`, `as_any_pose`)  
-**Correction:** 
+**Nature:** API/Import
+**Fichier:** `src/bbia_sim/daemon/app/routers/state.py`
+**Ligne:** 11-12
+**Problème:** Imports manquants (`Depends`, `BackendAdapter`, `get_backend_adapter`, `ws_get_backend_adapter`, `AnyPose`, `FullState`, `as_any_pose`)
+**Correction:**
 ```python
 # Ajouté:
 from fastapi import APIRouter, Depends, WebSocket, WebSocketDisconnect
@@ -145,18 +145,18 @@ Toutes les 21 méthodes du SDK sont implémentées dans `ReachyMiniBackend`:
 
 ### 1. Apps Management - Différence d'Implémentation
 
-**Fichier:** `src/bbia_sim/daemon/app/routers/apps.py`  
+**Fichier:** `src/bbia_sim/daemon/app/routers/apps.py`
 **Différence:** BBIA utilise une implémentation simplifiée en mémoire, le SDK officiel utilise `AppManager` avec entry points Python réels.
 
-**Statut:** ✅ **ACCEPTABLE** pour simulation  
+**Statut:** ✅ **ACCEPTABLE** pour simulation
 **Action:** Pour production physique, intégrer le vrai `AppManager` du SDK.
 
 ### 2. WebSocket Apps Manager
 
-**Fichier:** `src/bbia_sim/daemon/app/routers/apps.py`  
+**Fichier:** `src/bbia_sim/daemon/app/routers/apps.py`
 **Manquant:** Endpoint WebSocket `/ws/apps-manager/{job_id}` présent dans SDK officiel.
 
-**Statut:** ⚠️ **OPTIONNEL** (non critique pour simulation)  
+**Statut:** ⚠️ **OPTIONNEL** (non critique pour simulation)
 **Action:** TODO - Ajouter si besoin de streaming logs temps réel.
 
 ---

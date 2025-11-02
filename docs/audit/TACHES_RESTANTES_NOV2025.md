@@ -1,6 +1,6 @@
 # 📋 Tâches Restantes Identifiées - Novembre 2025
 
-**Date** : Oct 25 / Nov 25  
+**Date** : Oct 25 / Nov 25
 **Audit** : Recherche exhaustive de ce qui n'a pas encore été fait
 
 ---
@@ -82,13 +82,13 @@
 
 **Fichiers traités** :
 
-1. ✅ **`logs/comparison_official_report.md`** 
+1. ✅ **`logs/comparison_official_report.md`**
    - **Avant** : `logs/`
    - **Après** : `docs/conformite/comparison_official_report.md`
    - **Raison** : Rapport de conformité, maintenant avec autres docs conformité
    - **Statut** : ✅ Déplacé
 
-2. ⚠️ **Fichiers MD dans `artifacts/`** 
+2. ⚠️ **Fichiers MD dans `artifacts/`**
    - **Fichier trouvé** : `artifacts/golden/schema.md` (peut rester, fait partie de golden)
    - **Statut** : Vérifié, pas d'action nécessaire
 
@@ -180,7 +180,7 @@
 
 ---
 
-**Date création** : Oct 25 / Nov 25  
+**Date création** : Oct 25 / Nov 25
 **Prochaine révision** : Décembre 2025
 
 ---

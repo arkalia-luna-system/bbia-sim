@@ -1,7 +1,7 @@
 # 📊 Résumé État Actuel BBIA
 
-**Date** : Oct 25 / Nov 25  
-**Parité avec App Officielle** : **~85-90%** (vs Reachy Mini Conversation App)  
+**Date** : Oct 25 / Nov 25
+**Parité avec App Officielle** : **~85-90%** (vs Reachy Mini Conversation App)
 **📚 [Comparaison détaillée](./COMPARAISON_APP_CONVERSATION_OFFICIELLE.md)** | **🎯 [Prochaines étapes](./PROCHAINES_ETAPES_OPTIONNELLES.md)**
 
 ---
