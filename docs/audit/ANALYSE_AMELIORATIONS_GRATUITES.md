@@ -2,11 +2,37 @@
 
 **Date** : Oct 25 / Nov 25  
 **Objectif** : Identifier ce qui peut être amélioré avec des solutions 100% gratuites  
-**Contrainte** : Aucun service payant (pas d'OpenAI Realtime API, pas de gpt-realtime payant)
+**Contrainte** : Aucun service payant (pas d'OpenAI Realtime API, pas de gpt-realtime payant)  
+**📊 [État actuel](./RESUME_ETAT_ACTUEL_BBIA.md)** | **📋 [Bilan tâches](./BILAN_TACHES_RESTANTES.md)**
 
 ---
 
 ## 📊 État Actuel BBIA vs App Officielle Reachy Mini
+
+### Comparaison Visuelle
+
+```mermaid
+graph LR
+    subgraph "App Officielle 💰"
+        OFF1[OpenAI Realtime API<br/>Payant]
+        OFF2[gpt-realtime Vision<br/>Payant]
+    end
+    
+    subgraph "BBIA 🆓"
+        BBIA1[Whisper + VAD<br/>Gratuit ✅]
+        BBIA2[YOLO + MediaPipe<br/>+ SmolVLM2<br/>Gratuit ✅]
+        BBIA3[sentence-transformers<br/>+ NER<br/>Gratuit ✅]
+    end
+    
+    OFF1 -.->|Remplacé| BBIA1
+    OFF2 -.->|Remplacé| BBIA2
+    
+    style BBIA1 fill:#90EE90
+    style BBIA2 fill:#90EE90
+    style BBIA3 fill:#90EE90
+    style OFF1 fill:#FFB6C1
+    style OFF2 fill:#FFB6C1
+```
 
 ### ✅ Ce qui est DÉJÀ fait (gratuit)
 

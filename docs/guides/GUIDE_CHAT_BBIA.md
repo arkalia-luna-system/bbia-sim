@@ -1,13 +1,42 @@
 # Guide du chat intelligent BBIA
 
-**Version :** 1.3.0
-**Date :** Octobre 2025
+**Version :** 1.3.2  
+**Date :** Oct 25 / Nov 25  
+**📚 [FAQ](../FAQ.md)** | **🧠 [Guide NLP](../guides/GUIDE_NLP_SMOLVLM.md)** | **📊 [État actuel](../audit/RESUME_ETAT_ACTUEL_BBIA.md)**
 
 ---
 
 ## Vue d'ensemble
 
 Le chat intelligent BBIA permet d'avoir une conversation avec votre robot Reachy Mini. BBIA analyse le sentiment de vos messages et répond selon sa personnalité configurée.
+
+### Architecture Chat BBIA
+
+```mermaid
+flowchart TB
+    USER[Utilisateur] --> INPUT[Message Entrant]
+    
+    INPUT --> SENTIMENT[Analyse Sentiment<br/>RoBERTa]
+    INPUT --> NLP{NLP Détection?}
+    
+    NLP -->|Oui| TOOL[Détection Outil<br/>sentence-transformers]
+    NLP -->|Non| CHAT[Chat LLM]
+    
+    TOOL --> EXEC[Exécution Action]
+    SENTIMENT --> EMOTION[Émotion Associée]
+    CHAT --> RESPONSE[Réponse Textuelle]
+    
+    EMOTION --> ROBOT[RobotAPI]
+    EXEC --> ROBOT
+    RESPONSE --> TTS[Synthèse Vocale<br/>pyttsx3]
+    
+    ROBOT --> ACTION[Action Robot]
+    TTS --> SPEAKER[Audio Sortie]
+    
+    style TOOL fill:#90EE90
+    style SENTIMENT fill:#87CEEB
+    style CHAT fill:#FFD700
+```
 
 ---
 
