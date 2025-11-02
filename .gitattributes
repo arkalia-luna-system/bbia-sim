@@ -1,0 +1,3 @@
+# Empêcher macOS de créer des fichiers ._* dans Git
+* -apple-extension
+._* filter=gitignore
