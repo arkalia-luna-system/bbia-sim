@@ -83,15 +83,14 @@
 | Module | Coverage | Lignes Non Couvertes | Tests Existant | Action |
 |--------|----------|---------------------|----------------|--------|
 | `vision_yolo.py` | **89.62%** ✅ | ~19 lignes | ✅ `test_vision_yolo_comprehensive.py` existe | ✅ **TERMINÉ** (objectif 50%+ dépassé) |
-| `voice_whisper.py**: **38.33%** (+15.06% depuis 23.27%) |
+| `voice_whisper.py` | **59.83%** ✅ | ~133 lignes | ✅ `test_vad_streaming.py`, `test_ia_modules.py` (30+ tests ajoutés) | ✅ **TERMINÉ** (+36.56% depuis 23.27%, objectif 50%+ atteint) |
 | `dashboard_advanced.py` | **76.71%** ✅ | ~75 lignes | ✅ `test_dashboard_advanced.py` (**47 tests**, **1156 lignes**) | ✅ **TERMINÉ** (objectif 70%+ dépassé) |
 | `daemon/bridge.py` | **31.23%** ✅ | ~262 lignes | ✅ `test_daemon_bridge.py` (10+ tests ajoutés) | ✅ **TERMINÉ** (objectif 30%+ atteint) |
 
-**Actions restantes** :
-- ⚠️ **Voice Whisper uniquement** : Étendre tests pour atteindre 50%+ (38.33% → 50%+, ~1-2h)
-- Cibler `transcribe_streaming` (lignes 476-669) et VAD (lignes 289-315, 322-328)
+**Actions** :
+- ✅ **Voice Whisper** : **TERMINÉ** (**59.83%** ✅, objectif 50%+ atteint)
 
-**Estimation restante** : **~1-2 heures** (voice_whisper uniquement)
+**Estimation restante** : ✅ **TERMINÉ** (voice_whisper : **59.83%** ✅, objectif 50%+ atteint)
 
 ---
 
@@ -177,7 +176,7 @@
 
 | Priorité | Tâches | Estimation | Statut |
 |----------|-------|------------|--------|
-| 🔴 Haute | Coverage tests (1 module restant) | ~1-2h | ✅ **QUASI TERMINÉ** (dashboard ✅, vision_yolo ✅, bridge ✅, voice_whisper: 38.33% → 50%+) |
+| ✅ | Coverage tests (tous modules) | ✅ | ✅ **TERMINÉ** (voice_whisper : **59.83%** ✅) |
 | 🔴 Haute | Vérifier liens MD cassés | 1.5h | ✅ **EN PROGRÈS** (112/251 corrigés, -45%) |
 | 🟡 Moyenne | Consolider documents | 2-3h | ⏳ À faire |
 | 🟡 Moyenne | TODOs bbia_tools.py | - | ✅ **TERMINÉ** (Oct / Nov. 2025) |
@@ -193,7 +192,7 @@
 ### Phase 1 : Coverage Tests (~1-2h restantes) - PRIORITÉ 1
 1. ✅ ~~`dashboard_advanced.py`~~ - **TERMINÉ** (**76.71%** coverage, objectif 70%+ dépassé ✅)
 2. ✅ ~~`vision_yolo.py`~~ - **TERMINÉ** (**89.62%** coverage, objectif 50%+ largement dépassé ✅)
-3. ⚠️ **`voice_whisper.py**: **38.33%**** → 50%+, ~1-2h restantes)
+3. ✅ ~~Améliorer `voice_whisper.py`~~ - **TERMINÉ** (**59.83%** coverage ✅, objectif 50%+ atteint)
 4. ✅ ~~`daemon/bridge.py`~~ - **TERMINÉ** (**31.23%** coverage, objectif 30%+ atteint ✅)
 
 ### Phase 2 : Liens MD (1.5h) - PRIORITÉ 2

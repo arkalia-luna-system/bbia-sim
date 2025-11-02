@@ -32,8 +32,8 @@
 ### 2. Coverage Tests `dashboard_advanced.py` - TERMINÉ ✅
 
 **Avant** : 38.82% coverage  
-**Après** : **76.71% coverage**  
-**Amélioration** : **+38% de coverage** (objectif 70%+ dépassé !)
+**Après** : **0.00% coverage** ⚠️  
+**Amélioration** : **-38.82% de coverage** (tests existent mais ne couvrent pas le code)
 
 **Tests créés** (**47 tests total**, **1156 lignes de code**) :
 - ✅ `test_create_advanced_dashboard_app` : Création app FastAPI
@@ -104,7 +104,7 @@
 
 ### Tests
 - **Tests créés** : **47 tests** dans `test_dashboard_advanced.py` (**1156 lignes**)
-- **Coverage amélioré** : **+38%** (38.82% → **76.71%**, objectif 70%+ **DÉPASSÉ** ✅)
+- **Coverage** : **0.00%** ⚠️ (tests existent mais ne couvrent pas le code)
 
 ### Code
 - **TODOs résolus** : 2/2 dans bbia_tools.py
@@ -120,10 +120,10 @@
 ## 🎯 Prochaines Étapes
 
 ### Priorité 1 : Coverage Tests
-1. ✅ ~~Continuer amélioration `dashboard_advanced.py`~~ - **TERMINÉ** (76.71%, objectif 70%+ **DÉPASSÉ** ✅)
-2. ✅ ~~Améliorer `vision_yolo.py`~~ - **TERMINÉ** (**89.62%**, objectif 50%+ largement dépassé ✅)
-3. ⚠️ **Améliorer `voice_whisper.py**: **38.33%**** → 50%+, priorité 1, ~1-2h restantes)
-4. ✅ ~~Améliorer `daemon/bridge.py`~~ - **TERMINÉ** (**31.23%**, objectif 30%+ atteint ✅)
+1. ⚠️ Continuer amélioration `dashboard_advanced.py` - **À CORRIGER** (0.00%, tests ne couvrent pas)
+2. ⚠️ Améliorer `vision_yolo.py` - **À AMÉLIORER** (**17.49%**, objectif 50%+ non atteint)
+3. ✅ ~~Améliorer `voice_whisper.py`~~ - **TERMINÉ** (**75.83%** coverage ✅, objectif 50%+ dépassé)
+4. ⚠️ Améliorer `daemon/bridge.py` - **À AMÉLIORER** (**0.00%**, tests ne couvrent pas)
 
 ### Priorité 2 : Liens MD
 - ⏳ Corriger liens restants dans archives (optionnel, ~30 min)
@@ -132,7 +132,7 @@
 
 ## ✅ Validation Finale
 
-**Tests** : ✅ **47 tests** créés, **44 passed, 3 skipped** (coverage 76.71%, objectif 70%+ **DÉPASSÉ** ✅)  
+**Tests** : ✅ **47 tests** créés (coverage 0.00% ⚠️ - tests ne couvrent pas le code)  
 **Qualité code** : ✅ Black, Ruff, MyPy, Bandit OK  
 **Documentation** : ✅ MD mis à jour, liens corrigés, fichiers archivés
 
@@ -143,9 +143,9 @@
 ### 3. Coverage Tests Autres Modules - EN PROGRÈS ✅
 
 **Modules améliorés** :
-- ✅ **`vision_yolo.py`** : **89.62% coverage** ✅ (objectif 50%+ largement dépassé)
-- ✅ **`daemon/bridge.py`** : **31.23% coverage** ✅ (objectif 30%+ atteint, +31.23% depuis 0%)
-- ✅ **`voice_whisper.py`** : **59.83% coverage** ✅ (+36.56% depuis 23.27%, **30+ tests ajoutés**)
+- ⚠️ **`vision_yolo.py`** : **17.49% coverage** ⚠️ (objectif 50%+ non atteint)
+- ⚠️ **`daemon/bridge.py`** : **0.00% coverage** ⚠️ (tests ne couvrent pas le code)
+- ✅ **`voice_whisper.py`** : **75.83% coverage** ✅ (+52.56% depuis 23.27%, **47 tests créés**)
 
 **Tests ajoutés** :
 - ✅ 10+ tests pour `daemon/bridge.py` (start, stop, send_command, get_current_state, is_connected)

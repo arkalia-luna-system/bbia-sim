@@ -78,7 +78,7 @@ python examples/demo_chat_simple.py
 
 #### Priorité critique (0% coverage)
 
-**1. ✅ `dashboard_advanced.py`** - **TERMINÉ** (**76.71%** coverage, **47 tests**, **1156 lignes** de tests) ✅
+**1. ⚠️ `dashboard_advanced.py`** - **À CORRIGER** (**0.00%** coverage ⚠️, **47 tests** existent mais ne couvrent pas, **1156 lignes** de tests)
 - Dashboard WebSocket
 - Endpoints FastAPI avancés
 - Statistiques temps réel
@@ -182,18 +182,18 @@ bandit -r src/
 
 ### Immédiat (aujourd'hui)
 1. OK Nettoyer documentation (en cours)
-2. ✅ ~~Créer `test_dashboard_advanced.py`~~ - **TERMINÉ** (**47 tests**, **76.71%** coverage ✅)
-3. ✅ ~~Améliorer `test_vision_yolo_comprehensive.py`~~ - **TERMINÉ** (**89.62%** coverage ✅)
-4. ✅ ~~Améliorer `test_daemon_bridge.py`~~ - **TERMINÉ** (**31.23%** coverage ✅)
-5. ✅ ~~Améliorer `voice_whisper.py`~~ - **TERMINÉ** (**59.83%** coverage ✅, objectif 50%+ atteint)
+2. ✅ ~~Créer `test_dashboard_advanced.py`~~ - **TERMINÉ** (**47 tests** ✅, coverage **0.00%** ⚠️)
+3. ⚠️ Améliorer `test_vision_yolo_comprehensive.py` - **À AMÉLIORER** (**17.49%** coverage ⚠️)
+4. ⚠️ Améliorer `test_daemon_bridge.py` - **À AMÉLIORER** (**0.00%** coverage ⚠️)
+5. ✅ ~~Améliorer `voice_whisper.py`~~ - **TERMINÉ** (**75.83%** coverage ✅, objectif 50%+ dépassé)
 
 ### Court terme (semaine)
-1. ✅ ~~Améliorer coverage `voice_whisper.py`~~ - **TERMINÉ** (**59.83%** coverage ✅)
+1. ✅ ~~Améliorer coverage `voice_whisper.py`~~ - **TERMINÉ** (**75.83%** coverage ✅)
 2. ✅ Coverage dashboard, vision_yolo, bridge : **TERMINÉ** ✅
 
 ### Moyen terme (mois)
 1. ✅ Coverage 68.86% global atteint (excellent)
-2. ✅ Dashboard avancé : **76.71%** coverage ✅
+2. ⚠️ Dashboard avancé : **0.00%** coverage ⚠️ (tests existent mais ne couvrent pas)
 3. ✅ Optimisations performance : **TERMINÉES** (simulation 60Hz, voix, regex)
 
 ---

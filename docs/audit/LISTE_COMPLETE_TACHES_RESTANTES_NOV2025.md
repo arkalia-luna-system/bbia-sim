@@ -32,16 +32,16 @@ Les éléments suivants sont **déjà implémentés** et ne nécessitent **aucun
 
 | Module | Coverage Actuel | Lignes Non Couvertes | Fichiers Tests Existant | Action Nécessaire |
 |--------|----------------|---------------------|----------------------|-------------------|
-| `vision_yolo.py` | **89.62%** ✅ | ~19 lignes | ✅ `test_vision_yolo_comprehensive.py` (existe) | ✅ **TERMINÉ** (objectif 50%+ dépassé) |
-| `voice_whisper.py**: **38.33%** (+15.06%) |
-| `dashboard_advanced.py` | **76.71%** ✅ | ~75 lignes | ✅ **EXISTE** : `tests/test_dashboard_advanced.py` (**47 tests**, **1156 lignes**) | ✅ **TERMINÉ** (+38% depuis 38.82%) |
-| `daemon/bridge.py` | **31.23%** ✅ | ~262 lignes | ✅ `test_daemon_bridge.py` (10+ tests ajoutés) | ✅ **TERMINÉ** (objectif 30%+ atteint) |
+| `vision_yolo.py` | **17.49%** ⚠️ | ~151 lignes | ✅ `test_vision_yolo_comprehensive.py` (existe) | ⚠️ **À AMÉLIORER** (objectif 50%+ non atteint) |
+| `voice_whisper.py` | **75.83%** ✅ | ~87 lignes | ✅ `test_voice_whisper_comprehensive.py` (47 tests) | ✅ **TERMINÉ** (+52.56% depuis 23.27%, objectif 50%+ dépassé) |
+| `dashboard_advanced.py` | **0.00%** ⚠️ | ~322 lignes | ✅ **EXISTE** : `tests/test_dashboard_advanced.py` (**47 tests**, **1156 lignes**) | ⚠️ **À CORRIGER** (tests ne couvrent pas le code) |
+| `daemon/bridge.py` | **0.00%** ⚠️ | ~381 lignes | ✅ `test_daemon_bridge.py` (34 tests) | ⚠️ **À AMÉLIORER** (tests ne couvrent pas le code) |
 
 **Actions** :
-- ✅ **Dashboard Advanced** : **TERMINÉ** - `tests/test_dashboard_advanced.py` créé et amélioré (**47 tests**, **1156 lignes**, 76.71% coverage) ✅
-- ✅ **Vision YOLO** : **TERMINÉ** - Coverage **89.62%**, objectif 50%+ largement dépassé ✅
-- ⚠️ **Voice Whisper** : **EN PROGRÈS** - **38.33%** (18+ tests ajoutés, +13.57% depuis 23.27%), objectif 50%+ (~1-2h restantes)
-- ✅ **Bridge Daemon** : **TERMINÉ** - Coverage **31.23%**, objectif 30%+ atteint ✅
+- ⚠️ **Dashboard Advanced** : **À CORRIGER** - `tests/test_dashboard_advanced.py` existe (**47 tests**, **1156 lignes**) mais coverage 0.00% ⚠️
+- ⚠️ **Vision YOLO** : **À AMÉLIORER** - Coverage **17.49%**, objectif 50%+ non atteint ⚠️
+- ✅ **Voice Whisper** : **TERMINÉ** - **75.83%** (47 tests créés, +52.56% depuis 23.27%), objectif 50%+ dépassé ✅
+- ⚠️ **Bridge Daemon** : **À AMÉLIORER** - Coverage **0.00%** (34 tests existent mais ne couvrent pas) ⚠️
 
 **Estimation** : **~1 heure restante** (voice_whisper uniquement : 38.33% → 50%+)
 

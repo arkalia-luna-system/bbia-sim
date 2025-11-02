@@ -11,46 +11,46 @@
 
 | Module | Coverage Avant | Coverage Après | Amélioration | Objectif | Statut |
 |--------|---------------|----------------|--------------|----------|--------|
-| `dashboard_advanced.py` | 38.82% | **76.71%** | +38% | 70%+ | ✅ **TERMINÉ** |
-| `vision_yolo.py` | 27.74% | **89.62%** | +61.88% | 50%+ | ✅ **TERMINÉ** |
-| `daemon/bridge.py` | 0% | **31.23%** | +31.23% | 30%+ | ✅ **TERMINÉ** |
-| `voice_whisper.py` | 23.27% | **38.33%** | +15.06% | 50%+ | ⬆️ **EN PROGRÈS** |
+| `dashboard_advanced.py` | 38.82% | **0.00%** | -38.82% | 70%+ | ⚠️ **À CORRIGER** |
+| `vision_yolo.py` | 27.74% | **17.49%** | -10.25% | 50%+ | ⚠️ **À AMÉLIORER** |
+| `daemon/bridge.py` | 0% | **0.00%** | 0% | 30%+ | ⚠️ **À AMÉLIORER** |
+| `voice_whisper.py` | 23.27% | **75.83%** | +52.56% | 50%+ | ✅ **TERMINÉ** |
 
 ---
 
 ## 📈 DÉTAILS PAR MODULE
 
-### 1. ✅ `dashboard_advanced.py` - TERMINÉ
+### 1. ⚠️ `dashboard_advanced.py` - À CORRIGER
 
-**Coverage** : **76.71%** (objectif 70%+ dépassé ✅)
+**Coverage** : **0.00%** (objectif 70%+ non atteint ⚠️ - tests existent mais ne couvrent pas le code)
 
 **Tests créés/améliorés** :
-- **47 tests créés** (**1156 lignes** de code)
-- Tests routes FastAPI : GET /api/status, /api/metrics, /api/joints, /healthz, POST /api/emotion, /api/joint
+- **47 tests créés** (**1156 lignes** de code) ✅
+- Routes FastAPI définies : GET /api/status, /api/metrics, /api/joints, /healthz, POST /api/emotion, /api/joint ✅
 - Tests commandes robot : `handle_advanced_robot_command` (action, behavior, joint, vision, emotion)
 - Tests WebSocket manager : connect, disconnect, broadcast, send_complete_status, send_metrics_update
 
-**Lignes non couvertes restantes** : ~75 lignes (gestion erreurs edge cases)
+**Problème** : Tests existent mais coverage 0% - probablement tests ne s'exécutent pas correctement ou n'importent pas le module
 
 ---
 
-### 2. ✅ `vision_yolo.py` - TERMINÉ
+### 2. ⚠️ `vision_yolo.py` - À AMÉLIORER
 
-**Coverage** : **89.62%** (objectif 50%+ largement dépassé ✅)
+**Coverage** : **17.49%** (objectif 50%+ non atteint ⚠️ - 32.51% manquants)
 
 **Tests existants** :
 - `tests/test_vision_yolo_comprehensive.py` existait déjà
-- Coverage excellent sans modifications supplémentaires
+- Coverage insuffisant - besoin d'améliorer les tests
 
-**Lignes non couvertes restantes** : ~19 lignes (branches edge cases)
+**Lignes non couvertes restantes** : ~151 lignes (83% du code non couvert)
 
 ---
 
-### 3. ✅ `daemon/bridge.py` - TERMINÉ
+### 3. ⚠️ `daemon/bridge.py` - À AMÉLIORER
 
-**Coverage** : **31.23%** (objectif 30%+ atteint ✅)
+**Coverage** : **0.00%** (objectif 30%+ non atteint ⚠️ - tests existent mais ne couvrent pas le code)
 
-**Tests ajoutés** (10+ nouveaux tests) :
+**Tests ajoutés** (34 tests existants) :
 - `test_zenoh_bridge_start_success` : Démarrage bridge Zenoh
 - `test_zenoh_bridge_start_no_zenoh` : Démarrage sans Zenoh
 - `test_zenoh_bridge_stop` : Arrêt bridge
@@ -65,11 +65,11 @@
 
 ---
 
-### 4. ⬆️ `voice_whisper.py` - EN PROGRÈS
+### 4. ✅ `voice_whisper.py` - TERMINÉ
 
-**Coverage** : **38.33%** (+15.06% depuis 23.27%)
+**Coverage** : **75.83%** (objectif 50%+ largement dépassé ✅)
 
-**Tests ajoutés** (**30+ nouveaux tests**) :
+**Tests ajoutés** (**47 tests créés**) :
 - Tests `load_model` : depuis cache, nouveau modèle, erreur chargement
 - Tests `transcribe_audio` : succès, erreur, modèle non chargé, langue auto
 - Tests `transcribe_microphone` : audio désactivé, sans Whisper
@@ -89,7 +89,7 @@
 - ✅ `daemon/bridge.py` : 30%+ → **31.23%** ✅
 
 ### Objectif En Cours ⬆️
-- ⬆️ `voice_whisper.py` : **38.33%** ⬆️ (+15.06% depuis 23.27%, 30+ tests ajoutés, ~1h restante pour atteindre 50%+)
+- ⬆️ `voice_whisper.py` : **38.33%** ⬆️ (+15.06% depuis 23.27%, 30+ tests ajoutés, ~1-2h restantes pour atteindre 50%+)
 
 ---
 
