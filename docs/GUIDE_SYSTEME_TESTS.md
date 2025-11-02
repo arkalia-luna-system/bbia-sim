@@ -35,10 +35,10 @@ Le système de tests BBIA-SIM utilise **pytest** comme framework principal avec 
 - **Total tests** : **1245 tests collectés** (pytest --collect-only)
 - **Coverage global** : **68.86%** (excellent)
 - **Coverage modules critiques** :
-  - `dashboard_advanced.py` : **76.71%** ✅
-  - `vision_yolo.py` : **89.62%** ✅
-  - `voice_whisper.py**: **38.33%**** ⬆️ (en cours d'amélioration)
-  - `daemon/bridge.py` : **31.23%** ✅
+  - `dashboard_advanced.py` : **0.00%** ⚠️ (tests existent mais ne couvrent pas)
+  - `vision_yolo.py` : **17.49%** ⚠️ (objectif 50%+ non atteint)
+  - `voice_whisper.py` : **75.83%** ✅ (objectif 50%+ dépassé)
+  - `daemon/bridge.py` : **0.00%** ⚠️ (tests existent mais ne couvrent pas)
 - **Tests E2E** : 4 scénarios utilisateur
 
 ---
@@ -226,10 +226,10 @@ pytest --cov=src/bbia_sim --cov-report=xml
 
 Modules prioritaires :
 
-- `dashboard_advanced.py` : **76.71%** ✅ (objectif 70%+ dépassé)
-- `vision_yolo.py` : **89.62%** ✅ (objectif 50%+ largement dépassé)
-- `voice_whisper.py**: **38.33%**** ⬆️ (en cours d'amélioration vers 50%+)
-- `daemon/bridge.py` : **31.23%** ✅ (objectif 30%+ atteint)
+- `dashboard_advanced.py` : **0.00%** ⚠️ (47 tests, objectif 70%+ non atteint)
+- `vision_yolo.py` : **17.49%** ⚠️ (objectif 50%+ non atteint, 32.51% manquants)
+- `voice_whisper.py` : **75.83%** ✅ (47 tests créés, objectif 50%+ dépassé)
+- `daemon/bridge.py` : **0.00%** ⚠️ (34 tests, objectif 30%+ non atteint)
 - `bbia_audio.py` : **87.76%** ✅
 - `bbia_emotions.py` : **81.71%** ✅
 

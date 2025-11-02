@@ -148,8 +148,8 @@
 - ✅ **`voice_whisper.py`** : **75.83% coverage** ✅ (+52.56% depuis 23.27%, **47 tests créés**)
 
 **Tests ajoutés** :
-- ✅ 10+ tests pour `daemon/bridge.py` (start, stop, send_command, get_current_state, is_connected)
-- ✅ **30+ tests** pour `voice_whisper.py` (load_model, transcribe_audio, VAD, streaming edge cases)
+- ✅ **34 tests** pour `daemon/bridge.py` (start, stop, send_command, get_current_state, is_connected)
+- ✅ **47 tests créés** pour `voice_whisper.py` (load_model, transcribe_audio, VAD, streaming edge cases)
 
 **Vérifications qualité** :
 - ✅ Black : Formatage appliqué

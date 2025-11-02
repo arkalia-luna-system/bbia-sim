@@ -14,10 +14,10 @@
    - Mise à jour régulière
    - **Utiliser ce fichier comme référence principale**
 
-2. **`VERIFICATION_DOC_COMPLETE_NOV2025.md`**
-   - Vérification complète de la documentation (Oct / Nov. 2025)
-   - Comparaison code vs docs
-   - Claims vérifiés et validés
+2. **`ETAT_ACTUEL_TACHES_DEC2025.md`** ⭐ **RECOMMANDÉ**
+   - État actuel des tâches (Décembre 2025)
+   - Liste complète de ce qui est fait vs à faire
+   - Mise à jour récente
 
 3. **`CONFORMITE_REACHY_MINI_COMPLETE.md`** (dans `docs/conformite/`)
    - 46 tests de conformité SDK officiel
@@ -33,16 +33,20 @@
 
 ### Audits Historiques (Archivés)
 
-Les fichiers suivants sont conservés pour référence historique mais sont considérés comme terminés :
+Les fichiers suivants sont archivés dans `docs/archives/audits_termines/` pour référence historique :
 
-- `AUDIT_100_PERCENT_COMPLET.md` - Audit exhaustif initial
-- `AUDIT_COMPLET_ETAT_REEL_2025.md` - État réel du projet (2025)
-- `AUDIT_MD_FINAL_NOV2025.md` - Audit Markdown final
-- `SYNTHESE_FINALE_AUDIT.md` - Synthèse finale
-- `SYNTHESE_FINALE_TOUTES_CORRECTIONS.md` - Toutes corrections appliquées
-- `RAPPORT_EXHAUSTIF_CONFORMITE_FINAL.md` - Rapport conformité complet
+- ✅ `AUDIT_100_PERCENT_COMPLET.md` - Audit exhaustif initial (archivé)
+- ✅ `AUDIT_COMPLET_ETAT_REEL_2025.md` - État réel du projet (2025) (archivé)
+- ✅ `AUDIT_MD_FINAL_NOV2025.md` - Audit Markdown final (archivé)
+- ✅ `SYNTHESE_FINALE_AUDIT.md` - Synthèse finale (archivé)
+- ✅ `SYNTHESE_FINALE_TOUTES_CORRECTIONS.md` - Toutes corrections appliquées (archivé)
+- ✅ `RAPPORT_EXHAUSTIF_CONFORMITE_FINAL.md` - Rapport conformité complet (archivé)
+- ✅ `RESUME_FINAL_TACHES_COMPLETEES_NOV2025.md` - Résumé tâches complétées (archivé)
+- ✅ `VERIFICATION_MD_COMPLETE_NOV2025.md` - Vérification MD complète (archivé)
+- ✅ `VERIFICATION_DOC_COMPLETE_NOV2025.md` - Vérification doc complète (archivé)
+- ✅ `BILAN_TACHES_RESTANTES.md` - Bilan tâches restantes (archivé)
 
-**Action recommandée** : Ces fichiers peuvent être déplacés vers `docs/archives/audits_termines/` si nécessaire.
+**Date archivage** : Décembre 2025
 
 ---
 
@@ -64,7 +68,6 @@ Les fichiers suivants sont conservés pour référence historique mais sont cons
 ### Documentation
 
 - `BILAN_COMPLET_MARKDOWN_CONFORMITE_2025.md` - Conformité Markdown
-- `VERIFICATION_MD_COMPLETE_NOV2025.md` - Vérification MD complète
 - `CLARIFICATION_ANTENNES_REACHY_MINI.md` - Clarification antennes
 
 ---

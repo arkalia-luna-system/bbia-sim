@@ -8,11 +8,10 @@
 ## ✅ CE QUI EST TERMINÉ
 
 ### Coverage Tests
-- ✅ **`dashboard_advanced.py`** : **76.71% coverage** ✅
-  - **47 tests collectés** (1156 lignes de code)
-  - Objectif 70%+ **DÉPASSÉ** ✅
-  - Routes FastAPI testées : GET /api/status, /api/metrics, /api/joints, /healthz, POST /api/emotion, /api/joint
-  - Gestion commandes robot (`handle_advanced_robot_command`) testée
+- ⚠️ **`dashboard_advanced.py`** : **0.00% coverage** ⚠️
+  - **47 tests collectés** (1156 lignes de code) ✅
+  - Objectif 70%+ **NON ATTEINT** ⚠️ (tests existent mais ne couvrent pas le code)
+  - Routes FastAPI définies : GET /api/status, /api/metrics, /api/joints, /healthz, POST /api/emotion, /api/joint ✅
 
 ### TODOs Code
 - ✅ **`bbia_tools.py` ligne 378-389** : Intégration VisionTrackingBehavior dans `_execute_head_tracking()` - **TERMINÉ**
@@ -31,24 +30,21 @@
 
 ### 🔴 Priorité Haute - Coverage Tests (3-6h)
 
-#### 1. ✅ `vision_yolo.py` - **89.62% coverage** ✅ (objectif 50%+ dépassé)
+#### 1. ⚠️ `vision_yolo.py` - **17.49% coverage** ⚠️ (objectif 50%+ non atteint)
 - **Fichier test** : `tests/test_vision_yolo_comprehensive.py` (existe déjà)
-- **Statut** : ✅ **TERMINÉ** - Coverage excellent, objectif largement dépassé
+- **Statut** : ⚠️ **À AMÉLIORER** - Coverage insuffisant, 32.51% manquants pour objectif 50%+
 
-#### 2. `voice_whisper.py**: **38.33%**** → objectif 50%+ (en cours)
-- **Fichiers tests** : `tests/test_vad_streaming.py`, `tests/test_ia_modules.py`
-- **Progrès** : 18+ nouveaux tests ajoutés (+13.57% depuis 23.27%)
-- **Actions restantes** :
-  - Ajouter tests pour `transcribe_streaming` (lignes 476-669)
-  - Améliorer tests VAD (lignes 289-315, 322-328)
-- **Estimation** : ~1-2h restantes
+#### 2. ✅ `voice_whisper.py` - **75.83% coverage** ✅ (objectif 50%+ dépassé)
+- **Fichier test** : `tests/test_voice_whisper_comprehensive.py`
+- **Progrès** : **47 tests créés** (+52.56% depuis 23.27%)
+- **Statut** : ✅ **TERMINÉ** - Objectif 50%+ largement dépassé !
 
-#### 3. ✅ `daemon/bridge.py` - **31.23%** ✅ (objectif 30%+ atteint)
+#### 3. ⚠️ `daemon/bridge.py` - **0.00%** ⚠️ (objectif 30%+ non atteint)
 - **Fichier test** : `tests/test_daemon_bridge.py`
-- **Progrès** : 10 nouveaux tests ajoutés (+31.23% depuis 0%)
-- **Statut** : ✅ **TERMINÉ** - Objectif 30%+ atteint !
+- **Progrès** : **34 tests** existent mais ne couvrent pas le code
+- **Statut** : ⚠️ **À AMÉLIORER** - Tests existent mais coverage 0%
 
-**Estimation totale restante** : ~1-2 heures (voice_whisper: améliorer streaming si souhaité)
+**Estimation totale restante** : ⚠️ **3 modules à améliorer** (dashboard: 0%, vision_yolo: 17.49% → 50%+, bridge: 0% → 30%+)
 
 ---
 
@@ -72,7 +68,7 @@
 
 ---
 
-**Total estimé restant** : **~1-2 heures** (voice_whisper: 38.33% → 50%+)
+**Total estimé restant** : ⚠️ **3 modules à améliorer** (dashboard 0%, vision_yolo 17.49% → 50%+, bridge 0% → 30%+)
 
 **Voir** : `docs/TACHES_A_FAIRE_CONSOLIDEES.md` pour détails complets
 
