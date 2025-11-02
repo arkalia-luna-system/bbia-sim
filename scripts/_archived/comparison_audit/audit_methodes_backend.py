@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""Audit exhaustif des méthodes Backend - Compare BackendAdapter avec Backend officiel.
-"""
+"""Audit exhaustif des méthodes Backend - Compare BackendAdapter avec Backend officiel."""
 
 import ast
 import re

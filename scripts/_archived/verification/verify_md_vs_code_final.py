@@ -46,7 +46,9 @@ FUNCTIONALITIES_TO_CHECK = {
 
 
 def check_functionality_implemented(
-    name: str, info: dict[str, Any], root_dir: Path,
+    name: str,
+    info: dict[str, Any],
+    root_dir: Path,
 ) -> bool:
     """Vérifie si une fonctionnalité est implémentée dans le code."""
     code_path = root_dir / info["code_path"]

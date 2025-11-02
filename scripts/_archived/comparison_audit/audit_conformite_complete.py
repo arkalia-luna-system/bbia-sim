@@ -116,7 +116,8 @@ class ConformityAuditor:
                 # Extraire la fonction suivante
                 func_start = content.find("\n", match.end())
                 func_match = re.search(
-                    r"def\s+(\w+)\s*\(", content[func_start : func_start + 500],
+                    r"def\s+(\w+)\s*\(",
+                    content[func_start : func_start + 500],
                 )
                 func_name = func_match.group(1) if func_match else "unknown"
 
@@ -208,7 +209,8 @@ class ConformityAuditor:
         try:
             result = subprocess.run(
                 ["black", "--check", "--diff", str(BBIA_SRC)],
-                check=False, capture_output=True,
+                check=False,
+                capture_output=True,
                 text=True,
                 timeout=30,
             )
@@ -229,7 +231,8 @@ class ConformityAuditor:
         try:
             result = subprocess.run(
                 ["ruff", "check", str(BBIA_SRC)],
-                check=False, capture_output=True,
+                check=False,
+                capture_output=True,
                 text=True,
                 timeout=30,
             )

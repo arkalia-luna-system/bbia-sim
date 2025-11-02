@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""Compare les méthodes du SDK officiel avec celles de BBIA.
-"""
+"""Compare les méthodes du SDK officiel avec celles de BBIA."""
 
 import re
 from pathlib import Path

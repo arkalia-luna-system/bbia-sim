@@ -55,7 +55,10 @@ def correct_dates_in_content(content: str, file_path: Path) -> tuple[str, list[s
         if "avril 2024" in line.lower() or "april 2024" in line.lower():
             if is_creation_date_context(line):
                 line = re.sub(
-                    r"(avril|april)\s+2024", "octobre 2024", line, flags=re.IGNORECASE,
+                    r"(avril|april)\s+2024",
+                    "octobre 2024",
+                    line,
+                    flags=re.IGNORECASE,
                 )
                 if line != original_line:
                     changes.append(f"L{i+1}: {line[:60]}...")
@@ -76,7 +79,10 @@ def correct_dates_in_content(content: str, file_path: Path) -> tuple[str, list[s
             # "octobre 2024" → "octobre 2025" (sauf si contexte création)
             if "octobre 2024" in line.lower() and not is_creation_date_context(line):
                 line = re.sub(
-                    r"octobre\s+2024", "octobre 2025", line, flags=re.IGNORECASE,
+                    r"octobre\s+2024",
+                    "octobre 2025",
+                    line,
+                    flags=re.IGNORECASE,
                 )
                 if line != original_line:
                     changes.append(f"L{i+1}: {line[:60]}...")
@@ -88,7 +94,9 @@ def correct_dates_in_content(content: str, file_path: Path) -> tuple[str, list[s
                 "octobre 2025" in line.lower() or "novembre 2025" in line.lower()
             ):
                 if re.search(
-                    r"date.*:.*(octobre|novembre)\s+2025", line, re.IGNORECASE,
+                    r"date.*:.*(octobre|novembre)\s+2025",
+                    line,
+                    re.IGNORECASE,
                 ):
                     line = re.sub(
                         r"(octobre|novembre)\s+2025",

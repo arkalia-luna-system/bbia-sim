@@ -164,11 +164,9 @@ class TestConformityAdvancedPatterns:
         )
         if vision_file.exists():
             content = vision_file.read_text(encoding="utf-8", errors="ignore")
+            init_match = re.search(r"def __init__.*?:", content, re.DOTALL)
             has_robot_api_param = (
-                "robot_api"
-                in re.search(r"def __init__.*?:", content, re.DOTALL).group(0)
-                if re.search(r"def __init__.*?:", content, re.DOTALL)
-                else False
+                "robot_api" in init_match.group(0) if init_match else False
             )
             has_media_check = (
                 "robot.media" in content or "_camera_sdk_available" in content

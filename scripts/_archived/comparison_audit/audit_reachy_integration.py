@@ -119,7 +119,12 @@ def run_command(cmd: list[str], cwd: Path | None = None) -> tuple[int, str, str]
         if resolved:
             cmd[0] = resolved
         result = subprocess.run(
-            cmd, check=False, cwd=cwd, capture_output=True, text=True, timeout=60,
+            cmd,
+            check=False,
+            cwd=cwd,
+            capture_output=True,
+            text=True,
+            timeout=60,
         )
         return result.returncode, result.stdout, result.stderr
     except subprocess.TimeoutExpired:
@@ -308,7 +313,8 @@ def audit_module(module_config: dict[str, Any]) -> dict[str, Any]:
     )
 
     result["score"]["conformity"] = max(
-        0, 10 - total_issues_high * 2 - total_issues_medium,
+        0,
+        10 - total_issues_high * 2 - total_issues_medium,
     )
     result["score"]["safety_tests"] = (
         7 if not total_issues_high else max(0, 10 - total_issues_high * 3)
@@ -331,7 +337,9 @@ def generate_jsonl_report(results: list[dict]) -> None:
     output_file.parent.mkdir(parents=True, exist_ok=True)
 
     with open(output_file, "w", encoding="utf-8") as f:
-        f.writelines(json.dumps(result, ensure_ascii=False) + "\n" for result in results)
+        f.writelines(
+            json.dumps(result, ensure_ascii=False) + "\n" for result in results
+        )
 
     logger.info(f"✅ Rapport JSONL généré: {output_file}")
 

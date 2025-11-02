@@ -80,7 +80,11 @@ def compare_examples() -> None:
     missing = official_names - bbia_names
     if missing:
         report["examples"].append(
-            {"type": "examples_missing", "files": sorted(missing), "severity": "MEDIUM"},
+            {
+                "type": "examples_missing",
+                "files": sorted(missing),
+                "severity": "MEDIUM",
+            },
         )
 
 
