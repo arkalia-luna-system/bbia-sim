@@ -5,7 +5,7 @@
 
 # 🚀 PROCHAINES ÉTAPES - BBIA Chat Intelligent
 
-**Date :** octobre 2025
+**Date :** Oct / No2025025025025025
 **Statut :** Enrichissement terminé ✅
 
 ---
@@ -195,5 +195,5 @@ git push origin develop
 2. Créer la démo
 3. Autre chose
 
-*Plan créé le octobre 2025*
+*Plan créé le Oct / No2025025025025025*
 

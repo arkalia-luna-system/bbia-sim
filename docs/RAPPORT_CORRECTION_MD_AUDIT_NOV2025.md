@@ -1,6 +1,6 @@
-# 📊 Rapport Correction MD Audit et Améliorations - Nov 2025
+# 📊 Rapport Correction MD Audit et Améliorations - Oct / Nov. 2025
 
-**Date** : Oct 2025 / Nov 2025  
+**Date** : Oct / Nov. 2025  
 **Objectif** : Vérifier et corriger tous les MD d'audit et d'améliorations pour cohérence avec le code
 
 ---
@@ -49,7 +49,7 @@
 
 1. **BILAN_TACHES_RESTANTES.md** ✅
    - Toutes les tâches marquées comme terminées le sont réellement
-   - Date mise à jour : Oct 2025 / Nov 2025
+   - Date mise à jour : Oct / Nov. 2025
 
 2. **PROCHAINES_ETAPES_OPTIONNELLES.md** ✅
    - Toutes les améliorations mentionnées comme terminées sont confirmées
@@ -120,5 +120,5 @@ Les MD d'audit et d'améliorations sont globalement cohérents avec le code rée
 
 ---
 
-*Rapport généré : Oct 2025 / Nov 2025*
+*Rapport généré : Oct / Nov. 2025*
 

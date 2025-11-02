@@ -624,5 +624,5 @@ Cette architecture permet à BBIA-SIM d'être une **référence technique** pour
 
 ---
 
-*Dernière mise à jour : Octobre 2025*
+*Dernière mise à jour : Oct / No2025025025025025*
 *Version : 1.3.2 – Alignement et release stable*

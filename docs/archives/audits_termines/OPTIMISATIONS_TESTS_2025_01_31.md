@@ -4,13 +4,13 @@
 Ce document a été archivé car il est devenu obsolète ou a été remplacé par une version plus récente.
 Il est conservé à des fins de référence historique uniquement.
 
-**Date d'archivage** : octobre 2025
+**Date d'archivage** : Oct / No2025025025025025
 **Raison** : Document terminé/obsolète/remplacé
 ---
 
 # 🚀 Optimisations Tests + Système de Verrouillage
 
-**Date**: octobre 2025  
+**Date**: Oct / No2025025025025025  
 **Branche**: `future`
 
 ---
@@ -207,5 +207,5 @@ Plusieurs agents pouvaient lancer les tests simultanément, causant une surcharg
 
 **Commit**: `9dd9fec`  
 **Auteur**: Optimisations automatiques  
-**Date**: octobre 2025
+**Date**: Oct / No2025025025025025
 

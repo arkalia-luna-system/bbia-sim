@@ -1,6 +1,6 @@
 # ✨ Résumé Améliorations Documentation MD - Version Visuelle
 
-**Date :** Oct 25 / Nov 25  
+**Date :** Oct / Nov. 2025  
 **Objectif :** Documentation moderne, visuelle, professionnelle avec diagrammes Mermaid
 
 ---
@@ -271,6 +271,6 @@ pie title Qualité Documentation
 
 ---
 
-**Dernière mise à jour :** Oct 25 / Nov 25  
+**Dernière mise à jour :** Oct / Nov. 2025  
 **Statut :** ✅ Documentation visuelle optimisée - **49+ diagrammes Mermaid ajoutés dans 24+ documents**
 

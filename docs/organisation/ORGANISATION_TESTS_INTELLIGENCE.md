@@ -1,6 +1,6 @@
 # 📋 ORGANISATION DES TESTS INTELLIGENCE BBIA
 
-**Date :** Octobre 2025
+**Date :** Oct / No2025025025025025
 **Objectif :** Documenter l'organisation des tests d'intelligence pour éviter doublons
 
 ---

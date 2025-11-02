@@ -1,6 +1,6 @@
 # 🔍 AUDIT COMPLET BBIA → REACHY INTEGRATION
 
-**Date**: octobre 2025
+**Date**: Oct / No2025025025025025
 **Référentiel Reachy**: pollen-robotics/reachy_mini@84c40c3
 **Commit utilisé**: 84c40c3
 

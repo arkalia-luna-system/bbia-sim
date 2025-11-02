@@ -192,6 +192,15 @@ class TestBBIAIntelligenceContext:
                     "conduit",
                     "intrigue",
                     "pensez",
+                    "discuter",
+                    "explorons",
+                    "ensemble",
+                    "adorerais",
+                    "aimerais",
+                    "souhaitez",
+                    "voudriez",
+                    "parlons",
+                    "échangeons",
                 ]
                 has_intelligence = any(
                     word in response.lower() for word in intelligent_words

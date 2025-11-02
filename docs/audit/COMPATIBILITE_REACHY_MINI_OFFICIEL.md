@@ -1,7 +1,7 @@
 # Audit Compatibilité - Reachy Mini Officiel vs Modules IA
 
-**Date** : octobre 2025
-**SDK Officiel** : `pollen-robotics/reachy_mini` (GitHub, Octobre 2025)
+**Date** : Oct / No2025025025025025
+**SDK Officiel** : `pollen-robotics/reachy_mini` (GitHub, Oct / No2025025025025025)
 **Version BBIA** : 1.3.2
 **Objectif** : Vérifier que tous les modules IA sont compatibles avec le SDK officiel Reachy Mini
 
@@ -166,7 +166,7 @@ except ImportError:
 
 **État** : ✅ **FAIT** - Module créé et intégré dans `BBIAVision`
 
-**Fichiers vérifiés (octobre 2025)** :
+**Fichiers vérifiés (Oct / No2025025025025025)** :
 - ✅ `src/bbia_sim/pose_detection.py` (284 lignes) - Module complet
 - ✅ `src/bbia_sim/bbia_vision.py` (lignes 228-240, 719-738) - Intégration complète
 - ✅ `scripts/test_pose_detection.py` - Script de test

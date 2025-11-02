@@ -55,11 +55,11 @@ gantt
     section Phase 2: UI
     Graphiques Temps Réel     :ui1, 2025-11-15, 2025-12-01
     Sliders Émotions          :ui2, 2025-12-01, 2025-12-15
-    Presets Exportables       :ui3, 2025-12-15, 2026-01-01
+    Presets Exportables       :ui3, 2025-12-15, 2025-01-01
     
     section Phase 3: Advanced
-    Mode Démo Read-only       :adv1, 2026-01-01, 2026-01-15
-    Export/Import Config      :adv2, 2026-01-15, 2026-02-01
+    Mode Démo Read-only       :adv1, 2025-01-01, 2025-01-15
+    Export/Import Config      :adv2, 2025-01-15, 2025-02-01
 ```
 
 ## Mini UI télémétrie (proposé)

@@ -4,13 +4,13 @@
 Ce document a été archivé car il est devenu obsolète ou a été remplacé par une version plus récente.
 Il est conservé à des fins de référence historique uniquement.
 
-**Date d'archivage** : octobre 2025
+**Date d'archivage** : Oct / No2025025025025025
 **Raison** : Document terminé/obsolète/remplacé
 ---
 
 # Checklist Finale - Audit Systématique BBIA-SIM vs SDK Officiel
 
-**Date:** octobre 2025
+**Date:** Oct / No2025025025025025
 **Total éléments vérifiés:** 94
 
 ## Résumé

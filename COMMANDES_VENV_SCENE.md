@@ -228,5 +228,5 @@ python -m bbia_sim --sim --scene piece_bbia_simple.xml --headless
 
 ---
 
-*Guide Commandes - BBIA-SIM - octobre 2025*
+*Guide Commandes - BBIA-SIM - Oct / No2025025025025025*
 

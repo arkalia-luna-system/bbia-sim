@@ -5,7 +5,7 @@
 > Voir `docs/status.md` → "État par axe" pour l’état actuel et les axes futurs (observabilité, perf, sécurité, CI/CD, etc.).
 
 **Version Actuelle:** 1.3.2
-**Date:** Octobre 2025
+**Date:** Oct / No2025025025025025
 
 ---
 
@@ -31,14 +31,14 @@ Les rapports détaillés des phases précédentes sont archivés dans `docs/arch
 
 ## 📊 Versions Principales
 
-### **v1.3.2 - Octobre 2025**
+### **v1.3.2 - Oct / No2025025025025025**
 **Alignement branches + release stable**
 - Fusion contrôlée future → develop → main (CI verte)
 - Tag `v1.3.2` et branche `backup-v1.3.2-stable`
 - Tests élargis (watchdog, performance, conformité avancée)
 - Documentation réorganisée et enrichie
 
-### **v1.3.0 - Octobre 2025**
+### **v1.3.0 - Oct / No2025025025025025**
 **Conformité SDK validée**
 - Conformité SDK officiel Reachy-Mini
 - Backend ReachyMini prêt pour robot physique
@@ -46,32 +46,32 @@ Les rapports détaillés des phases précédentes sont archivés dans `docs/arch
 - Tests: 18/18 passent
 - Performance: latence < 1 ms
 
-### **v1.2.1 - Octobre 2025**
+### **v1.2.1 - Oct / No2025025025025025**
 **Corrections et qualité**
 - Corrections typage MyPy
 - Formatage code (Black, Ruff)
 - 38 tests passent
 
-### **v1.2.0 - Octobre 2025**
+### **v1.2.0 - Oct / No2025025025025025**
 **IA légère activée**
 - Whisper STT + YOLOv8n
 - Dashboard web
 - Scripts one-click
 - Golden tests
 
-### **v1.1.1 - Octobre 2025**
+### **v1.1.1 - Oct / No2025025025025025**
 **RobotAPI unifié**
 - Interface abstraite Sim/Robot
 - Golden tests
 - CI/CD
 
-### **v1.1.0 - Octobre 2025**
+### **v1.1.0 - Oct / No2025025025025025**
 **Simulation complète**
 - Robot Reachy Mini assemblé
 - Modules BBIA intégrés
 - API REST + WebSocket
 
-### **v1.0.0 - Octobre 2025**
+### **v1.0.0 - Oct / No2025025025025025**
 **Première release**
 - Simulation MuJoCo base
 - Modules BBIA
@@ -81,22 +81,22 @@ Les rapports détaillés des phases précédentes sont archivés dans `docs/arch
 
 ## 🏆 Jalons Majeurs
 
-### **Conformité SDK** (Octobre 2025)
+### **Conformité SDK** (Oct / No2025025025025025)
 - Conformité 100% au SDK officiel Reachy-Mini
 - Backend ReachyMiniBackend opérationnel
 - Tests automatisés 18/18
 
-### **IA Intégrée** (Octobre 2025)
+### **IA Intégrée** (Oct / No2025025025025025)
 - Whisper STT pour reconnaissance vocale
 - YOLOv8n pour vision
 - MediaPipe pour détection visage
 
-### **RobotAPI Unifié** (Octobre 2025)
+### **RobotAPI Unifié** (Oct / No2025025025025025)
 - Interface abstraite pour tous backends
 - Migration transparente Sim ↔ Robot
 - Tests de conformité automatisés
 
-### **Simulation 3D** (Octobre 2025)
+### **Simulation 3D** (Oct / No2025025025025025)
 - Modèle MuJoCo officiel
 - Viewer 3D interactif
 - Assets STL officiels
@@ -132,7 +132,7 @@ Les rapports détaillés des phases précédentes sont archivés dans `docs/arch
 
 ## 🎯 Prochaines Étapes
 
-1. **Test Robot Physique** (Octobre 2025)
+1. **Test Robot Physique** (Oct / No2025025025025025)
 2. **Validation Matérielle** (60s dry-run)
 3. **Démo Professionnelle** (Robot réel)
 4. **v1.4.0** - Production ready

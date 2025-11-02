@@ -1,6 +1,6 @@
-# Résumé validation qualité code - Octobre 2025
+# Résumé validation qualité code - Oct / No2025025025025025
 
-**Date :** Octobre 2025
+**Date :** Oct / No2025025025025025
 **Outils exécutés :** black, ruff, mypy, bandit
 **Status :** tous les outils passent
 

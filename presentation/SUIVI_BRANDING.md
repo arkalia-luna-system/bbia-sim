@@ -1,6 +1,6 @@
 # 📊 Suivi Projet Branding BBIA
 
-> **Statut Global** : 🟢 **En cours** | **Dernière mise à jour** : octobre 2025  
+> **Statut Global** : 🟢 **En cours** | **Dernière mise à jour** : Oct / No2025025025025025  
 > **Phase** : Logo v1.1 livré (logos Reachy fidèles) | En discussion - Option iPad Pro
 
 ---
@@ -22,7 +22,7 @@ Créer l'identité visuelle complète de BBIA : logo, palette, bannière univers
 - ✅ Workflow open source (`WORKFLOW_OPEN_SOURCE.md`)
 - ✅ Structure livrables créée
 
-**Date de complétion** : octobre 2025
+**Date de complétion** : Oct / No2025025025025025
 
 ---
 
@@ -131,11 +131,11 @@ Créer l'identité visuelle complète de BBIA : logo, palette, bannière univers
 
 | Étape | Date | Statut | Responsable |
 |-------|------|--------|-------------|
-| **Réception** | octobre 2025 | ✅ Complété | Graphiste |
-| **Relecture fonctionnelle** | octobre 2025 | ✅ Passée | Client |
-| **Feedback visuel** | octobre 2025 | ✅ Reçu | Client |
-| **Corrections** | octobre 2025 | ✅ Complété | Graphiste |
-| **Validation** | octobre 2025 | 🔄 En discussion | Client |
+| **Réception** | Oct / No2025025025025025 | ✅ Complété | Graphiste |
+| **Relecture fonctionnelle** | Oct / No2025025025025025 | ✅ Passée | Client |
+| **Feedback visuel** | Oct / No2025025025025025 | ✅ Reçu | Client |
+| **Corrections** | Oct / No2025025025025025 | ✅ Complété | Graphiste |
+| **Validation** | Oct / No2025025025025025 | 🔄 En discussion | Client |
 
 **Livraison v2.0 - Nettoyage et préparation** :
 - ✅ **Structure nettoyée** : Tous fichiers temporaires/obsolètes supprimés
@@ -227,7 +227,7 @@ Créer l'identité visuelle complète de BBIA : logo, palette, bannière univers
 
 ### **Notes Créatives v1.0 → v1.1 - Fidélité Robot Réel**
 
-**Feedback reçu (octobre 2025)** :
+**Feedback reçu (Oct / No2025025025025025)** :
 - Process et documentation : ✅ Excellents
 - Design visuel initial : ❌ Ne correspond pas au vrai robot
 - Action : Créer logos fidèles au robot réel
@@ -287,8 +287,8 @@ Créer l'identité visuelle complète de BBIA : logo, palette, bannière univers
 |-----------|--------|
 | **Statut Global** | 🟢 En cours |
 | **Phase Actuelle** | Phase 2 - Logo v1.1 livré (fidèle Reachy) | Discussion iPad Pro |
-| **Date de démarrage** | octobre 2025 |
-| **Dernière mise à jour** | octobre 2025 |
+| **Date de démarrage** | Oct / No2025025025025025 |
+| **Dernière mise à jour** | Oct / No2025025025025025 |
 | **Version** | 1.1 |
 
 ---

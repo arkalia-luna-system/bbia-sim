@@ -1,6 +1,6 @@
-# ⚡ Optimisations Performance - Décembre 2024
+# ⚡ Optimisations Performance - Oct / Nov. 2025
 
-**Date** : Nov/Déc 2025
+**Date** : Oct / Nov. 2025
 **Objectif** : Optimisations performance supplémentaires pour Mac
 
 ---
@@ -118,6 +118,6 @@ Tous les tests passent :
 
 ---
 
-**Date** : Nov/Déc 2025
+**Date** : Oct / Nov. 2025
 **Statut** : ✅ Toutes optimisations appliquées et testées
 

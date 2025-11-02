@@ -1,6 +1,6 @@
 # 🎨 Dashboard Officiel-Like - Documentation
 
-**Date:** Octobre 2025
+**Date:** Oct / No2025025025025025
 **Conformité:** Identique au dashboard officiel `pollen-robotics/reachy_mini`
 
 ---

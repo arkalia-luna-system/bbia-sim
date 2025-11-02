@@ -5,7 +5,7 @@
 > Voir `docs/status.md` → "Communauté" pour les templates d’issues/discussions, roadmap publique et "good first issues".
 
 **Version** : 1.2.0 "Écosystème Ouvert"
-**Date** : Octobre 2025
+**Date** : Oct / No2025025025025025
 **Public** : Communauté Technique
 
 ## 🎯 **Configuration recommandée**

@@ -1,6 +1,6 @@
 # 🔧 CORRECTIONS - CONSTANTES ET VALIDATIONS
 
-**Date**: octobre 2025  
+**Date**: Oct / No2025025025025025  
 **Analyse**: Constantes, validations, assertions SDK officiel vs BBIA
 
 ---
@@ -200,5 +200,5 @@ Toutes les constantes, validations et assertions du SDK officiel sont maintenant
 
 ---
 
-**Date de génération**: octobre 2025
+**Date de génération**: Oct / No2025025025025025
 

@@ -106,7 +106,7 @@ Tester :
 
 ## 📚 Ressources utiles
 
-- [Guide de tests](docs/GUIDE_SYSTEME_TESTS.md)
+- [Guide de tests](../docs/GUIDE_SYSTEME_TESTS.md)
 - Exemple : `tests/test_bbia_memory.py` (base créée)
 ```
 

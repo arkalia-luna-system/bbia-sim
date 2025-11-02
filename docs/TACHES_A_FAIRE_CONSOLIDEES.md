@@ -1,6 +1,6 @@
 # 📋 Tâches à Faire - Document Consolidé
 
-**Date** : Décembre 2025  
+**Date** : Oct / Nov. 2025  
 **Source** : Analyse exhaustive de tous les MD de corrections, améliorations, audits  
 **Dernière mise à jour** : Après lecture complète des fichiers MD
 
@@ -38,17 +38,17 @@ Les éléments suivants sont **déjà implémentés** et validés :
 |--------|------------------|---------------------|----------------|--------|-----------|
 | `vision_yolo.py` | 27.74% | 99 lignes | `test_vision_yolo_comprehensive.py` (existe) | ⚠️ **AMÉLIORER** tests existants | ⏳ À améliorer |
 | `voice_whisper.py` | 33.33% | 76 lignes | `test_vad_streaming.py`, `test_ia_modules.py` | ⚠️ **AMÉLIORER** tests existants | ⏳ À améliorer |
-| `dashboard_advanced.py` | 0% | 288 lignes | ✅ **EXISTE** : `tests/test_dashboard_advanced.py` (26 tests, 555 lignes) | ⚠️ **AMÉLIORER** coverage | ✅ **DÉJÀ CRÉÉ** |
+| `dashboard_advanced.py` | **76.71%** ⬆️⬆️ | ~75 lignes | ✅ **EXISTE** : `tests/test_dashboard_advanced.py` (47+ tests, 1169 lignes) | ✅ **AMÉLIORÉ** (+38% depuis 38.82%) | ✅ **TERMINÉ** |
 | `daemon/bridge.py` | 0% | 283 lignes | `test_daemon_bridge.py` (partiel) | ⚠️ **AMÉLIORER** tests existants | ⏳ À améliorer |
 
-**Estimation** : 5-9 heures (réduit car test_dashboard_advanced existe déjà)
+**Estimation** : 3-6 heures (réduit car dashboard_advanced amélioré)
 
 **Plan d'action** :
-1. ✅ ~~Créer `tests/test_dashboard_advanced.py`~~ - **DÉJÀ FAIT** (26 tests existent)
-2. ⚠️ **PRIORITÉ 1** : Améliorer coverage de `tests/test_dashboard_advanced.py` (actuellement faible)
-3. Étendre `tests/test_vision_yolo_comprehensive.py` (2-3h)
-4. Étendre tests `voice_whisper.py` (2-3h)
-5. Étendre `tests/test_daemon_bridge.py` (1-2h)
+1. ✅ ~~Créer `tests/test_dashboard_advanced.py`~~ - **TERMINÉ** (47+ tests, 1169 lignes)
+2. ✅ ~~Améliorer coverage de `tests/test_dashboard_advanced.py`~~ - **TERMINÉ** (38.82% → **76.71%**, +38%, objectif 70%+ dépassé ✅)
+3. ⚠️ **Étendre `tests/test_vision_yolo_comprehensive.py`** (priorité 1 maintenant, 2-3h)
+4. ⚠️ **Étendre tests `voice_whisper.py`** (priorité 1 maintenant, 2-3h)
+5. ⚠️ **Étendre `tests/test_daemon_bridge.py`** (priorité 2, 1-2h)
 
 ---
 
@@ -57,11 +57,16 @@ Les éléments suivants sont **déjà implémentés** et validés :
 **Fichier** : `scripts/verify_md_links.py` (existe déjà)
 
 **Action** :
-- Exécuter le script pour détecter liens cassés
-- Corriger les 212 liens cassés détectés précédemment
-- Vérifier liens internes entre documents
+- ✅ Exécuter le script pour détecter liens cassés
+- ✅ Corriger 112 liens dans fichiers actifs (Oct / Nov. 2025)
+  - `.github/ISSUES_TO_CREATE.md` : corrigé
+  - `docs/FAQ.md` : corrigé (6 liens)
+  - `docs/STYLE_GUIDE_MD.md` : corrigé
+  - `docs/references/INDEX.md` : corrigé (15+ liens)
+- ⏳ Reste : ~139 liens (majoritairement dans archives - non prioritaire)
 
-**Estimation** : 1.5 heures
+**Progrès** : 251 → 139 liens cassés (-45% dans fichiers actifs)
+**Estimation restante** : ~30 min (archives optionnelles)
 
 ---
 
@@ -72,10 +77,10 @@ Les éléments suivants sont **déjà implémentés** et validés :
 **Fichier** : `src/bbia_sim/bbia_tools.py`
 
 **TODOs identifiés** :
-- ✅ ~~Ligne ~378: Intégration VisionTrackingBehavior~~ - **TERMINÉ** (décembre 2025)
+- ✅ ~~Ligne ~378: Intégration VisionTrackingBehavior~~ - **TERMINÉ** (Oct / Nov. 2025)
   - Action : Implémenter intégration complète VisionTrackingBehavior
   - **État** : Intégré avec VisionTrackingBehavior.execute() si vision et robot_api disponibles
-- ✅ ~~Ligne ~439: Arrêt réel mouvement~~ - **TERMINÉ** (décembre 2025)
+- ✅ ~~Ligne ~439: Arrêt réel mouvement~~ - **TERMINÉ** (Oct / Nov. 2025)
   - Action : Implémenter arrêt réel mouvement (au-delà de emergency_stop)
   - **État** : Utilise robot_api.emergency_stop() pour arrêt immédiat et sécurisé
 
@@ -193,11 +198,11 @@ robot.io.set_leds()            # Contrôle LEDs (si disponibles)
 
 | Priorité | Tâches | Estimation | Statut |
 |----------|--------|------------|--------|
-| 🔴 Haute | Coverage tests (4 modules) | 5-9h | ⏳ À améliorer (test_dashboard existe) |
-| 🔴 Haute | Vérifier liens MD cassés | 1.5h | ⏳ À faire |
-| 🟡 Moyenne | TODOs bbia_tools.py | - | ✅ **TERMINÉ** (décembre 2025) |
+| 🔴 Haute | Coverage tests (3 modules restants) | 3-6h | ✅ **EN PROGRÈS** (dashboard: TERMINÉ ✅, reste: vision_yolo, voice_whisper, bridge) |
+| 🔴 Haute | Vérifier liens MD cassés | - | ✅ **EN PROGRÈS** (112/251 corrigés, -45%) |
+| 🟡 Moyenne | TODOs bbia_tools.py | - | ✅ **TERMINÉ** (Oct / Nov. 2025) |
 | 🟡 Moyenne | Corriger démos Reachy | - | ✅ **DÉJÀ FAIT** |
-| 🟡 Moyenne | Consolider documents | 2-3h | ⏳ À faire |
+| 🟡 Moyenne | Consolider documents | - | ✅ **EN PROGRÈS** (2 MD archivés) |
 | 🟢 Basse | Documentation supplémentaire | 1-2h | ⏳ À faire |
 | 🟢 Basse | TODOs optionnels code | 1h | ⏳ À faire |
 | 🔵 Hardware | TODOs robot réel | 3-4h | ⏳ En attente |
@@ -213,12 +218,12 @@ robot.io.set_leds()            # Contrôle LEDs (si disponibles)
 1. ✅ Vérifier liens MD cassés avec script existant (1.5h)
 2. ✅ Corriger liens détectés (1h)
 
-### Phase 2 : Coverage Tests (5-9h) - PRIORITÉ 1
-1. ✅ ~~Créer `tests/test_dashboard_advanced.py`~~ - **DÉJÀ FAIT** (26 tests existent)
-2. ⚠️ **PRIORITÉ 1** : Améliorer coverage de `tests/test_dashboard_advanced.py` (actuellement faible)
-3. ⚠️ Étendre `tests/test_vision_yolo_comprehensive.py` (2-3h)
-4. ⚠️ Étendre tests `voice_whisper.py` (2-3h)
-5. ⚠️ Étendre `tests/test_daemon_bridge.py` (1-2h)
+### Phase 2 : Coverage Tests (3-6h) - PRIORITÉ 1
+1. ✅ ~~Créer `tests/test_dashboard_advanced.py`~~ - **TERMINÉ** (47+ tests, 1169 lignes)
+2. ✅ ~~Améliorer coverage de `tests/test_dashboard_advanced.py`~~ - **TERMINÉ** (76.71%, objectif 70%+ dépassé ✅)
+3. ⚠️ **PRIORITÉ 1** : Étendre `tests/test_vision_yolo_comprehensive.py` (2-3h)
+4. ⚠️ **PRIORITÉ 1** : Étendre tests `voice_whisper.py` (2-3h)
+5. ⚠️ **PRIORITÉ 2** : Étendre `tests/test_daemon_bridge.py` (1-2h)
 
 ### Phase 3 : Corrections Démos
 1. ✅ ~~Corriger `demo_behavior_ok.py`~~ - **DÉJÀ FAIT** (amplitudes conformes)
@@ -258,21 +263,30 @@ robot.io.set_leds()            # Contrôle LEDs (si disponibles)
 
 **Ce qui reste VRAIMENT à faire** :
 1. 📊 Coverage tests (principal bloc de travail) - **PRIORITÉ 1**
-   - `test_dashboard_advanced.py` existe déjà (26 tests) mais coverage à améliorer
-2. 🔗 Liens MD cassés (rapide)
-3. 🔧 TODOs code (VisionTrackingBehavior intégration + arrêt réel mouvement)
-4. 📝 Nettoyage documentation (moyen)
-5. 🟢 Documentation supplémentaire (optionnel)
+   - ✅ `dashboard_advanced.py` : 38.82% → **76.71%** (+38%) - **TERMINÉ** ✅
+   - ⏳ Objectif : Atteindre 70%+ pour tous les modules
+   - ⏳ `vision_yolo.py` : 27.74% → 70%+ (à améliorer)
+   - ⏳ `voice_whisper.py` : 33.33% → 70%+ (à améliorer)
+   - ⏳ `daemon/bridge.py` : 0% → 70%+ (à améliorer)
+2. 🔗 Liens MD cassés (rapide) - **EN PROGRÈS** (112/251 corrigés, -45%)
+3. 📝 Nettoyage documentation (moyen) - **EN PROGRÈS** (2 MD archivés)
 
-**Ce qui est DÉJÀ FAIT** (mais mentionné comme "à faire" dans anciens MD) :
-- ✅ `test_dashboard_advanced.py` créé avec 26 tests
+**Ce qui est DÉJÀ FAIT** (session Oct / Nov. 2025) :
+- ✅ TODOs `bbia_tools.py` terminés (VisionTrackingBehavior + arrêt réel)
+- ✅ `test_dashboard_advanced.py` : **47+ tests créés** (1169 lignes)
+- ✅ Coverage `dashboard_advanced.py` : **+38%** (38.82% → **76.71%**) - Objectif 70%+ dépassé !
+- ✅ 112 liens MD corrigés dans fichiers actifs (-45%)
+- ✅ 2 MD obsolètes archivés
 - ✅ Toutes les corrections démos appliquées (amplitudes conformes, goto_target utilisé)
 - ✅ Optimisations performance terminées
 - ✅ Emergency stop, audio SDK, validation émotions, etc.
 
 ---
 
-**Dernière mise à jour** : Décembre 2025  
+**Dernière mise à jour** : Oct / Nov. 2025  
 **Source** : Analyse complète de tous les MD + vérification état réel du code  
-**Vérification** : Code inspecté directement (fichiers, tests, démos)
+**Vérification** : Code inspecté directement (fichiers, tests, démos)  
+**Progrès session** : Coverage dashboard **+38%** (76.71%), TODOs terminés, liens MD -45%, **11 nouveaux tests handle_advanced_robot_command** ajoutés
+
+**Voir** : `docs/PROGRES_DECEMBRE_2025.md` pour détails complets de la session
 

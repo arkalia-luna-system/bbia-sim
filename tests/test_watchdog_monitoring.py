@@ -21,6 +21,9 @@ class TestWatchdogMonitoring:
         backend = ReachyMiniBackend(use_sim=True)
         backend.connect()
 
+        # Attendre un peu pour que le thread démarre
+        time.sleep(0.05)
+
         # Vérifier que le thread watchdog existe et est actif
         assert backend._watchdog_thread is not None
         assert backend._watchdog_thread.is_alive()
@@ -35,7 +38,7 @@ class TestWatchdogMonitoring:
         backend = ReachyMiniBackend(use_sim=True)
         backend.connect()
 
-        # OPTIMISATION RAM: Réduire sleep 0.2s → 0.1s (suffisant pour watchdog)
+        # Attendre que le watchdog démarre
         time.sleep(0.1)
 
         watchdog_thread = backend._watchdog_thread
@@ -59,7 +62,7 @@ class TestWatchdogMonitoring:
         backend = ReachyMiniBackend(use_sim=True)
         backend.connect()
 
-        # OPTIMISATION RAM: Réduire sleep 0.2s → 0.1s (suffisant pour watchdog)
+        # Attendre que le watchdog démarre
         time.sleep(0.1)
 
         watchdog_thread = backend._watchdog_thread
@@ -111,6 +114,9 @@ class TestWatchdogMonitoring:
         """Test que le watchdog est un thread daemon."""
         backend = ReachyMiniBackend(use_sim=True)
         backend.connect()
+
+        # Attendre que le watchdog démarre
+        time.sleep(0.05)
 
         assert backend._watchdog_thread is not None
         assert (
@@ -167,6 +173,9 @@ class TestWatchdogMonitoring:
         backend = ReachyMiniBackend(use_sim=True)
         backend.connect()
 
+        # Attendre que le watchdog démarre
+        time.sleep(0.05)
+
         # Vérifier que le watchdog a la constante timeout 2s
         # (vérifié dans le code: max_heartbeat_timeout = 2.0)
         # Le timeout doit être 2.0 secondes max sans heartbeat
@@ -183,7 +192,6 @@ class TestWatchdogMonitoring:
         # donc on ne peut pas déclencher le timeout ici
         # Mais on vérifie que la structure est présente
         initial_heartbeat = backend._last_heartbeat
-        # OPTIMISATION RAM: Réduire sleep 0.3s → 0.15s (suffisant pour watchdog)
         time.sleep(0.15)
         # En simulation, heartbeat doit être mis à jour
         assert backend._last_heartbeat >= initial_heartbeat

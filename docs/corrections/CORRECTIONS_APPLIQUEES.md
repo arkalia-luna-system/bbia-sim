@@ -4,7 +4,7 @@
 >
 > Voir `docs/status.md` → "État par axe" pour l’état consolidé post‑corrections et axes restants.
 
-**Date**: octobre 2025
+**Date**: Oct / Nov. 2025
 **Référentiel**: pollen-robotics/reachy_mini@84c40c3
 
 ---
@@ -26,7 +26,7 @@ Toutes les corrections prioritaires identifiées dans l'audit ont été appliqu�
 - `src/bbia_sim/backends/reachy_backend.py` - Implémentation robot réel
 
 **Tests créés**:
-- `tests/test_emergency_stop.py` - 4 tests (3 passent, 1 skip)
+- `tests/test_emergency_stop.py` - **4 tests** : 3 passed, 1 skipped (robot physique requis)
 
 **Validation**:
 ```bash
@@ -75,12 +75,11 @@ pytest tests/test_safety_limits_pid.py -v
 # ✅ 5 passed
 ```
 
-**Couverture**:
-- GLOBAL_SAFETY_LIMIT = 0.3 rad
-- Validation/clamping positions
-- Protection joints interdits
-- Limites hardware conformes SDK
-- Joints stewart non recommandés pour contrôle direct
+**Couverture sécurité**:
+- `GLOBAL_SAFETY_LIMIT = 0.3 rad` (défini dans `mapping_reachy.py`)
+- Validation et clamping automatique des positions
+- Protection des joints interdits (stewart, passifs)
+- Limites hardware conformes SDK officiel
 
 ---
 
@@ -126,4 +125,8 @@ tests/test_safety_limits_pid.py ......  5 passed
 5. **PID**: Documentation améliorée avec références SDK
 
 Toutes les corrections prioritaires sont **complètes et testées** ✅
+
+---
+
+**Référence** : Voir `docs/status.md` pour l'état consolidé post-corrections et axes restants.
 

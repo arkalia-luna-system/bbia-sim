@@ -448,5 +448,5 @@ python examples/view_scene_piece.py src/bbia_sim/sim/scenes/ma_scene_procreate.x
 
 ---
 
-*Guide Procreate Complet - BBIA-SIM - octobre 2025*
+*Guide Procreate Complet - BBIA-SIM - Oct / No2025025025025025*
 

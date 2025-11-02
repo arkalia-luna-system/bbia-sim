@@ -1,6 +1,6 @@
 # 📋 REACHY UPDATES LOG
 
-## 🔍 **AUDIT NOUVEAUTÉS REACHY - OCTOBRE 2025**
+## 🔍 **AUDIT NOUVEAUTÉS REACHY - Oct / No2025025025025025**
 
 ### **📊 ÉTAT ACTUEL**
 - **Reachy SDK** : Version installée via `reachy_mini` package
@@ -96,11 +96,11 @@
 
 ---
 
-**Date** :  Octobre 2025  
-**Mise à jour** : octobre 2025
+**Date** :  Oct / No2025025025025025  
+**Mise à jour** : Oct / No2025025025025025
 **Statut** : Audit terminé, corrections appliquées ✅
 
-### 📋 Corrections Appliquées (octobre 2025)
+### 📋 Corrections Appliquées (Oct / No2025025025025025)
 - ✅ XML : Antennes maintenant avec range [-0.300, 0.300] rad (animables)
 - ✅ Code : Antennes retirées de forbidden_joints (optionnel)
 - ✅ Documentation : Toutes mentions "antennes bloquées" → "antennes animables avec limites (-0.3 à 0.3 rad)"

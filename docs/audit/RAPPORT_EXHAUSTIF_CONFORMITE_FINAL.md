@@ -1,6 +1,6 @@
 # 📊 RAPPORT EXHAUSTIF DE CONFORMITÉ - BBIA vs REACHY MINI SDK
 
-**Date**: octobre 2025
+**Date**: Oct / No2025025025025025
 **Branche**: future
 **SDK Officiel**: pollen-robotics/reachy_mini (develop, v1.0.0-35-g2ba17f1)
 
@@ -186,7 +186,7 @@ Tous les endpoints critiques du SDK officiel sont présents:
 - ✅ **Mypy**: Aucune erreur
 - ✅ **Bandit**: Système actif
 
-### ✅ Corrections Récentes (octobre 2025)
+### ✅ Corrections Récentes (Oct / No2025025025025025)
 
 1. ✅ `play_move()` async (conforme SDK)
 2. ✅ `datetime.now(UTC)` (ruff UP017)
@@ -245,7 +245,7 @@ BBIA-SIM est **conforme** avec le SDK officiel Reachy Mini pour:
 
 ---
 
-**Date de génération**: octobre 2025
+**Date de génération**: Oct / No2025025025025025
 **Scripts utilisés**:
 - `scripts/analyse_exhaustive_conformite.py` (analyse générale)
 - `scripts/comparaison_profonde_methodes_backend.py` (analyse signatures)

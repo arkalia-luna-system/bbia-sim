@@ -1,6 +1,6 @@
-# 🧠 AMÉLIORATIONS INTELLIGENCE CONTEXTE BBIA - Octobre 2025
+# 🧠 AMÉLIORATIONS INTELLIGENCE CONTEXTE BBIA - Oct / No2025025025025025
 
-**Date :** Octobre 2025
+**Date :** Oct / No2025025025025025
 **Objectif :** Améliorer l'intelligence contextuelle et les réponses de BBIA pour un langage plus naturel
 **Conformité :** Toutes les améliorations vérifiées contre SDK Reachy-mini officiel ✅
 
@@ -166,5 +166,5 @@ if has_reference or random.random() < 0.4:
 - ✅ Aucune régression détectée
 - ✅ Code conforme (black, ruff)
 
-*Dernière mise à jour : Octobre 2025*
+*Dernière mise à jour : Oct / No2025025025025025*
 

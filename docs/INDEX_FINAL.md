@@ -12,7 +12,7 @@
 >   ```
 
 **Version:** v1.3.2
-**Dernière mise à jour:** Octobre 2025
+**Dernière mise à jour:** Oct / No2025025025025025
 
 ---
 
@@ -115,8 +115,8 @@
 
 ## 🔍 Archives
 
-### Octobre 2025
-- [Résumé final - Octobre 2025](archives/2025-10/resumes/RESUME_FINAL_ULTIME_OCTOBRE_2025.md)
+### Oct / No2025025025025025
+- [Résumé final - Oct / No2025025025025022025rchives/2025-10/resumes/RESUME_FINAL_ULTIME_OCTOBRE_2025.md)
 - [Résumés détaillés](archives/2025-10/resumes/)
 - [Corrections et améliorations](archives/2025-10/)
 - [Rapports d'audit](archives/audits/)

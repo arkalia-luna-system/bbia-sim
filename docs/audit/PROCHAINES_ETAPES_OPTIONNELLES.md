@@ -1,6 +1,6 @@
 # 🎯 Prochaines Étapes Optionnelles
 
-**Date** : Oct 25 / Nov 25
+**Date** : Oct / Nov. 2025
 **État** : Toutes les fonctionnalités critiques terminées ✅
 **Parité** : ~85-90% avec app officielle Reachy Mini
 **📚 [État actuel](./RESUME_ETAT_ACTUEL_BBIA.md)** | **🔍 [Comparaison détaillée](./COMPARAISON_APP_CONVERSATION_OFFICIELLE.md)**
@@ -200,5 +200,5 @@ graph LR
 
 ---
 
-**Dernière mise à jour** : Oct 25 / Nov 25
+**Dernière mise à jour** : Oct / Nov. 2025
 

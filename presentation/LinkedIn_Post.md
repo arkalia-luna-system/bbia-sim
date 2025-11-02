@@ -1,6 +1,6 @@
 # 🚀 Post LinkedIn - BBIA-SIM v1.3.0
 
-> **Statut** : ✅ **Prêt à publier** | **Version** : 1.0 | **Date** : octobre 2025  
+> **Statut** : ✅ **Prêt à publier** | **Version** : 1.0 | **Date** : Oct / No2025025025025025  
 > **Plateforme** : LinkedIn  
 > **Type** : Post de présentation projet
 
@@ -42,8 +42,8 @@ Cette innovation positionne BBIA-SIM comme la référence technique pour la comm
 |-----------|--------|
 | **Statut** | ✅ Prêt à publier |
 | **Version** | 1.0 |
-| **Date de création** | octobre 2025 |
-| **Dernière mise à jour** | octobre 2025 |
+| **Date de création** | Oct / No2025025025025025 |
+| **Dernière mise à jour** | Oct / No2025025025025025 |
 | **Plateforme** | LinkedIn |
 | **Type** | Post de présentation projet |
 | **Longueur** | ~280 mots (format optimisé) |

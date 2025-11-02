@@ -1,6 +1,6 @@
 # Rapport Final d'Audit de Conformité BBIA-SIM vs SDK Officiel Reachy Mini
 
-**Date:** octobre 2025
+**Date:** Oct / No2025025025025025
 **Branche:** future
 **SDK Cible:** `pollen-robotics/reachy_mini` (branch develop, commit 84c40c31ff898da4)
 **Version BBIA:** 1.3.1+

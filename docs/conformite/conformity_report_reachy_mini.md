@@ -1,6 +1,6 @@
 # 📊 RAPPORT DE CONFORMITÉ REACHY-MINI
 
-**Date:** octobre 2025
+**Date:** Oct / No2025025025025025
 **Version:** BBIA-SIM
 **SDK Cible:** reachy_mini (Pollen Robotics)
 

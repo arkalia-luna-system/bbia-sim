@@ -4,13 +4,13 @@
 Ce document a été archivé car il est devenu obsolète ou a été remplacé par une version plus récente.
 Il est conservé à des fins de référence historique uniquement.
 
-**Date d'archivage** : octobre 2025
+**Date d'archivage** : Oct / No2025025025025025
 **Raison** : Document terminé/obsolète/remplacé
 ---
 
 # ✅ CORRECTIONS COMPLÈTES - ANTENNES ANIMABLES
 
-**Date** : octobre 2025  
+**Date** : Oct / No2025025025025025  
 **Statut** : ✅ **TOUTES LES CORRECTIONS APPLIQUÉES**  
 **Résumé** : Tous les fichiers ont été corrigés pour refléter que les antennes sont maintenant animables avec limites de sécurité (-0.3 à 0.3 rad)
 
@@ -141,6 +141,6 @@ assert "passive_1" in forbidden
 
 ---
 
-**Date de finalisation** : octobre 2025  
-**Prochaine vérification** : Octobre 2025 (robot physique)
+**Date de finalisation** : Oct / No2025025025025025  
+**Prochaine vérification** : Oct / No2025025025025025 (robot physique)
 

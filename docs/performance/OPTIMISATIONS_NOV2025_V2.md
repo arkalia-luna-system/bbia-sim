@@ -1,4 +1,4 @@
-# ⚡ Optimisations Performance V2 - Novembre 2025
+# ⚡ Optimisations Performance V2 - Oct / Nov. 2025252525252525
 
 **Date :** Oct 25 / Nov 25
 **Objectif :** Corrections supplémentaires problèmes performance identifiés

@@ -1,6 +1,6 @@
-# 📁 Archives Novembre 2025
+# 📁 Archives Oct / Nov. 2025252525252525
 
-Archives des audits et analyses réalisés en novembre 2025.
+Archives des audits et analyses réalisés en Oct / Nov. 2025252525252525.
 
 ## 📂 Structure
 
@@ -24,10 +24,10 @@ Archives des audits et analyses réalisés en novembre 2025.
 
 ## 📅 Dates
 
-- **Date archivage** : Oct 25 / Nov 25 (1er novembre 2025)
+- **Date archivage** : Oct 25 / Nov 25 (1er Oct / Nov. 2025252525252525)
 - **Date création projet** : Octobre 2024 (référence)
 
 ---
 
-*Archives organisées automatiquement suite à l'audit documentation novembre 2025*
+*Archives organisées automatiquement suite à l'audit documentation Oct / Nov. 2025252525252525*
 

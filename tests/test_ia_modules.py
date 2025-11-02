@@ -6,7 +6,7 @@ Tests mockés pour Whisper, YOLO, MediaPipe et Dashboard
 
 import sys
 from pathlib import Path
-from unittest.mock import Mock, patch
+from unittest.mock import MagicMock, Mock, patch
 
 import pytest
 
@@ -48,7 +48,160 @@ class TestWhisperSTT:
             stt = WhisperSTT(model_size="tiny", language="fr")
             assert stt.model_size == "tiny"
             assert stt.language == "fr"
-            assert not stt.is_loaded
+
+    @patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", False)
+    def test_whisper_stt_init_no_whisper(self):
+        """Test initialisation WhisperSTT sans Whisper."""
+        stt = WhisperSTT(model_size="tiny", language="fr")
+        assert stt.model_size == "tiny"
+        assert stt.is_loaded is False
+        assert stt.model is None
+
+    @patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True)
+    @patch("bbia_sim.voice_whisper.whisper")
+    def test_whisper_stt_load_model_from_cache(self, mock_whisper_module):
+        """Test chargement modèle depuis cache."""
+        import bbia_sim.voice_whisper as voice_module
+
+        # Mettre modèle dans cache
+        mock_model = MagicMock()
+        voice_module._whisper_models_cache["tiny"] = mock_model
+        voice_module._whisper_model_last_used["tiny"] = 1000.0
+
+        stt = WhisperSTT(model_size="tiny", language="fr")
+        result = stt.load_model()
+
+        # Doit retourner True et utiliser cache
+        assert result is True
+        assert stt.is_loaded is True
+        assert stt.model is mock_model
+
+        # Nettoyer cache après test
+        voice_module._whisper_models_cache.clear()
+        voice_module._whisper_model_last_used.clear()
+
+    @patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True)
+    @patch("bbia_sim.voice_whisper.whisper")
+    def test_whisper_stt_load_model_new(self, mock_whisper_module):
+        """Test chargement nouveau modèle Whisper."""
+        import bbia_sim.voice_whisper as voice_module
+
+        # Nettoyer cache
+        voice_module._whisper_models_cache.clear()
+        voice_module._whisper_model_last_used.clear()
+
+        mock_model = MagicMock()
+        mock_whisper_module.load_model.return_value = mock_model
+
+        stt = WhisperSTT(model_size="tiny", language="fr")
+        result = stt.load_model()
+
+        assert result is True
+        assert stt.is_loaded is True
+        assert stt.model is mock_model
+        mock_whisper_module.load_model.assert_called_once_with("tiny")
+
+        # Nettoyer après test
+        voice_module._whisper_models_cache.clear()
+        voice_module._whisper_model_last_used.clear()
+
+    @patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True)
+    @patch("bbia_sim.voice_whisper.whisper")
+    def test_whisper_stt_load_model_error(self, mock_whisper_module):
+        """Test erreur chargement modèle Whisper."""
+        import bbia_sim.voice_whisper as voice_module
+
+        voice_module._whisper_models_cache.clear()
+        voice_module._whisper_model_last_used.clear()
+
+        mock_whisper_module.load_model.side_effect = Exception("Load error")
+
+        stt = WhisperSTT(model_size="tiny", language="fr")
+        result = stt.load_model()
+
+        assert result is False
+        assert stt.is_loaded is False
+
+    @patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", False)
+    def test_whisper_stt_transcribe_audio_no_whisper(self):
+        """Test transcription audio sans Whisper."""
+        stt = WhisperSTT(model_size="tiny", language="fr")
+        result = stt.transcribe_audio("test.wav")
+        assert result is None
+
+    @patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True)
+    @patch("bbia_sim.voice_whisper.whisper")
+    def test_whisper_stt_transcribe_audio_success(self, mock_whisper_module):
+        """Test transcription audio réussie."""
+        mock_model = MagicMock()
+        mock_model.transcribe.return_value = {"text": "Bonjour"}
+        mock_whisper_module.load_model.return_value = mock_model
+
+        stt = WhisperSTT(model_size="tiny", language="fr")
+        stt.model = mock_model
+        stt.is_loaded = True
+
+        result = stt.transcribe_audio("test.wav")
+        assert result == "Bonjour"
+        mock_model.transcribe.assert_called_once()
+
+    @patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True)
+    @patch("bbia_sim.voice_whisper.whisper")
+    def test_whisper_stt_transcribe_audio_model_not_loaded(self, mock_whisper_module):
+        """Test transcription avec modèle non chargé."""
+        stt = WhisperSTT(model_size="tiny", language="fr")
+        stt.is_loaded = False
+        # Mock load_model pour retourner False
+        stt.load_model = MagicMock(return_value=False)
+
+        result = stt.transcribe_audio("test.wav")
+        assert result is None
+
+    @patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True)
+    @patch("bbia_sim.voice_whisper.whisper")
+    def test_whisper_stt_transcribe_audio_error(self, mock_whisper_module):
+        """Test erreur transcription audio."""
+        mock_model = MagicMock()
+        mock_model.transcribe.side_effect = Exception("Transcription error")
+        mock_whisper_module.load_model.return_value = mock_model
+
+        stt = WhisperSTT(model_size="tiny", language="fr")
+        stt.model = mock_model
+        stt.is_loaded = True
+
+        result = stt.transcribe_audio("test.wav")
+        assert result is None
+
+    @patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True)
+    @patch("os.environ.get", return_value="1")
+    def test_whisper_stt_transcribe_microphone_disabled(self, mock_env):
+        """Test transcription microphone désactivé."""
+        stt = WhisperSTT(model_size="tiny", language="fr")
+        result = stt.transcribe_microphone(duration=1.0)
+        assert result is None
+
+    @patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", False)
+    def test_whisper_stt_transcribe_microphone_no_whisper(self):
+        """Test transcription microphone sans Whisper."""
+        stt = WhisperSTT(model_size="tiny", language="fr")
+        result = stt.transcribe_microphone(duration=1.0)
+        assert result is None
+
+    @patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True)
+    def test_whisper_stt_transcribe_audio_language_auto(self):
+        """Test transcription avec langue auto."""
+        mock_model = MagicMock()
+        mock_model.transcribe.return_value = {"text": "Hello"}
+
+        stt = WhisperSTT(model_size="tiny", language="auto")
+        stt.model = mock_model
+        stt.is_loaded = True
+
+        result = stt.transcribe_audio("test.wav")
+        assert result == "Hello"
+        # Vérifier que language=None a été passé (langue auto)
+        call_args = mock_model.transcribe.call_args
+        assert call_args[1]["language"] is None
 
     def test_whisper_stt_fallback(self):
         """Test fallback quand Whisper non disponible."""

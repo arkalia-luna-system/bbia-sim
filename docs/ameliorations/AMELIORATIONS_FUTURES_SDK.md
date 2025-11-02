@@ -4,7 +4,7 @@
 >
 > Voir `docs/status.md` → "État par axe" pour prioriser les améliorations (API/SDK, perf, sécurité, CI/CD).
 
-**Date :** Octobre 2025
+**Date :** Oct / No2025025025025025
 **Référence SDK :** https://github.com/pollen-robotics/reachy_mini
 
 ---
@@ -17,7 +17,7 @@ Documenter les features avancées du SDK Reachy Mini qui sont **disponibles** da
 
 ## 📊 **FEATURES SDK DISPONIBLES**
 
-### **1. Module Media SDK** ✅ **DÉJÀ INTÉGRÉ** (octobre 2025)
+### **1. Module Media SDK** ✅ **DÉJÀ INTÉGRÉ** (Oct / No2025025025025025)
 
 **Status :** ✅ **FAIT** - Intégré dans tous les modules concernés avec fallbacks gracieux
 
@@ -66,7 +66,7 @@ robot.io.set_leds()            # Contrôle LEDs (si disponibles)
 
 ---
 
-### **3. Techniques d'Interpolation Avancées** ✅ **DÉJÀ IMPLÉMENTÉ** (octobre 2025)
+### **3. Techniques d'Interpolation Avancées** ✅ **DÉJÀ IMPLÉMENTÉ** (Oct / No2025025025025025)
 
 **Status :** ✅ **FAIT** - Mapping émotion → interpolation adaptative implémenté dans `bbia_integration.py`
 
@@ -103,7 +103,7 @@ emotion_interpolation_map = {
 
 ---
 
-### **4. Enregistrement/Replay Avancé** ✅ **DÉJÀ IMPLÉMENTÉ** (octobre 2025)
+### **4. Enregistrement/Replay Avancé** ✅ **DÉJÀ IMPLÉMENTÉ** (Oct / No2025025025025025)
 
 **Status :** ✅ **FAIT** - Implémenté dans `bbia_behavior.py` et `reachy_mini_backend.py`
 
@@ -140,7 +140,7 @@ class BBIABehaviorManager:
 
 ---
 
-## ✅ **STATUT D'IMPLÉMENTATION** (octobre 2025)
+## ✅ **STATUT D'IMPLÉMENTATION** (Oct / No2025025025025025)
 
 ### **Phase 1 : Intégration Media SDK** ✅ **COMPLÉTÉE**
 

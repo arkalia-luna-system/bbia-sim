@@ -1,6 +1,6 @@
-# 📚 Index des Audits et Corrections - Novembre 2025
+# 📚 Index des Audits et Corrections - Oct / Nov. 2025
 
-**Date** : Oct 25 / Nov 25
+**Date** : Oct / Nov. 2025
 **Objectif** : Référence centralisée pour tous les audits et corrections effectués
 
 ---
@@ -15,7 +15,7 @@
    - **Utiliser ce fichier comme référence principale**
 
 2. **`VERIFICATION_DOC_COMPLETE_NOV2025.md`**
-   - Vérification complète de la documentation (Nov 2025)
+   - Vérification complète de la documentation (Oct / Nov. 2025)
    - Comparaison code vs docs
    - Claims vérifiés et validés
 
@@ -98,5 +98,5 @@ Les fichiers suivants sont conservés pour référence historique mais sont cons
 
 ---
 
-**Dernière mise à jour** : Oct 25 / Nov 25
+**Dernière mise à jour** : Oct / Nov. 2025
 

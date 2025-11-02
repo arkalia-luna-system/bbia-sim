@@ -1,6 +1,6 @@
-# 📊 État Actuel des Tâches - Décembre 2024
+# 📊 État Actuel des Tâches - Oct / Nov. 2025
 
-**Date vérification** : Décembre 2024
+**Date vérification** : Oct / Nov. 2025
 **Dernière mise à jour** : Après corrections lint (black, ruff, bandit, mypy)
 
 ---
@@ -9,10 +9,10 @@
 
 ### Tests et Coverage
 
-1. ✅ **`test_dashboard_advanced.py`** : **EXISTE DÉJÀ**
-   - 14 tests collectés
-   - Fichier : `tests/test_dashboard_advanced.py` (282 lignes)
-   - ⚠️ **MAIS** : Coverage encore 0% → **À AMÉLIORER**
+1. ✅ **`test_dashboard_advanced.py`** : **EXISTE ET AMÉLIORÉ** ✅
+   - **47+ tests collectés** (1169 lignes)
+   - Fichier : `tests/test_dashboard_advanced.py` (1169 lignes)
+   - ✅ **Coverage : 76.71%** (+38% depuis 38.82%) - **OBJECTIF 70%+ ATTEINT** ✅
 
 2. ✅ **Tests vision_yolo et voice_whisper** : **EXISTENT**
    - `test_vision_yolo_comprehensive.py` : Existe (403 lignes)
@@ -27,7 +27,7 @@
 4. ✅ **VisionTrackingBehavior** : **IMPLÉMENTÉ**
    - Classe existe dans `src/bbia_sim/bbia_behavior.py` (lignes 384-503)
    - Intégré dans `BBIABehaviorManager._register_default_behaviors()`
-   - ⚠️ **MAIS** : TODO ligne 378 dans `bbia_tools.py` pour intégration réelle → **À COMPLÉTER**
+   - ✅ **TODO ligne 378 TERMINÉ** : Intégration VisionTrackingBehavior implémentée (Oct / Nov. 2025)
 
 5. ✅ **Vérification liens Markdown** : **SCRIPT EXISTE**
    - `scripts/verify_docs_complete.py` existe et fonctionne
@@ -56,7 +56,7 @@
 
 | Module | Coverage Actuel | Tests Existant | Action |
 |--------|----------------|----------------|--------|
-| `dashboard_advanced.py` | **37.93%** ⬆️ | ✅ `test_dashboard_advanced.py` (24 tests) | ✅ **AMÉLIORÉ** (+12%, 10 nouveaux tests ajoutés) |
+| `dashboard_advanced.py` | **76.71%** ✅ | ✅ `test_dashboard_advanced.py` (47+ tests, 1169 lignes) | ✅ **TERMINÉ** (+38% depuis 38.82%, objectif 70%+ dépassé) |
 | `vision_yolo.py` | **27.74%** | ✅ `test_vision_yolo_comprehensive.py` (existe) | ⚠️ **AMÉLIORER** pour couvrir 99 lignes |
 | `voice_whisper.py` | **33.33%** | ✅ `test_voice_whisper_comprehensive.py` (existe) | ⚠️ **AMÉLIORER** pour couvrir 76 lignes |
 | `daemon/bridge.py` | **0%** | ⚠️ Tests partiels existent | ⚠️ **AMÉLIORER** pour couvrir 283 lignes |
@@ -78,14 +78,14 @@
 
 | Ligne | TODO | Priorité | Contexte |
 |-------|------|----------|----------|
-| **378** | Intégrer avec VisionTrackingBehavior | 🟡 Moyenne | `_execute_head_tracking()` - VisionTrackingBehavior existe déjà, juste besoin de l'intégrer |
-| **439** | Implémenter arrêt réel mouvement | 🟡 Moyenne | `_execute_stop_dance()` - Arrêter mouvement en cours réellement |
+| **378** | ✅ ~~Intégrer avec VisionTrackingBehavior~~ | ✅ **TERMINÉ** | `_execute_head_tracking()` - VisionTrackingBehavior intégré avec `VisionTrackingBehavior.execute()` |
+| **439** | ✅ ~~Implémenter arrêt réel mouvement~~ | ✅ **TERMINÉ** | `_execute_stop_dance()` - Utilise `robot_api.emergency_stop()` pour arrêt immédiat et sécurisé |
 
 **Actions** :
-1. **Ligne 378** : Utiliser `VisionTrackingBehavior` dans `_execute_head_tracking()` pour activation réelle
-2. **Ligne 439** : Implémenter arrêt réel du mouvement (probablement via `robot_api.stop()` ou équivalent)
+1. ✅ **Ligne 378 TERMINÉ** : VisionTrackingBehavior intégré dans `_execute_head_tracking()` (Oct / Nov. 2025)
+2. ✅ **Ligne 439 TERMINÉ** : Arrêt réel implémenté via `robot_api.emergency_stop()` (Oct / Nov. 2025)
 
-**Estimation** : 2-3 heures
+**Statut** : ✅ **TERMINÉ** (Oct / Nov. 2025)
 
 ---
 
@@ -124,8 +124,9 @@
 
 | Priorité | Tâche | Estimation | Statut |
 |----------|-------|------------|--------|
-| 🔴 Haute | Améliorer coverage tests (4 modules) | 8-12h | ⏳ **À FAIRE** |
-| 🟡 Moyenne | TODOs bbia_tools.py (2 TODOs) | 2-3h | ⏳ **À FAIRE** |
+| 🔴 Haute | Améliorer coverage tests (3 modules restants) | 5-8h | ⏳ **À FAIRE** |
+| ✅ | dashboard_advanced.py coverage | - | ✅ **TERMINÉ** (76.71%) |
+| ✅ | TODOs bbia_tools.py (2 TODOs) | - | ✅ **TERMINÉ** |
 | 🟡 Moyenne | Documentation supplémentaire | 1-2h | ⏳ Optionnel |
 | 🔵 Hardware | TODOs robot réel | 3-4h | ⏳ En attente |
 | ✅ | Linting (black, ruff, bandit, mypy) | - | ✅ **TERMINÉ** |
@@ -133,7 +134,7 @@
 | ✅ | Consolidation audits | - | ✅ **TERMINÉ** |
 | ✅ | Optimisations performance | - | ✅ **TERMINÉ** |
 
-**Total travail restant (sans hardware)** : **~11-17 heures**
+**Total travail restant (sans hardware)** : **~5-10 heures** (réduit car dashboard_advanced terminé)
 
 ---
 
@@ -141,9 +142,9 @@
 
 ### Phase 1 : Coverage Tests (Priorité 1)
 
-1. **dashboard_advanced.py** (3-4h)
-   - Étendre `tests/test_dashboard_advanced.py` existant
-   - Couvrir métriques, WebSocket, connexions
+1. ✅ **dashboard_advanced.py** - **TERMINÉ** ✅
+   - ✅ Coverage **76.71%** (objectif 70%+ dépassé)
+   - ✅ 47+ tests créés (1169 lignes)
 
 2. **vision_yolo.py** (2-3h)
    - Étendre `tests/test_vision_yolo_comprehensive.py`
@@ -159,11 +160,11 @@
 
 ### Phase 2 : TODOs Code (Priorité 2)
 
-1. **bbia_tools.py ligne 378** (1h)
-   - Intégrer `VisionTrackingBehavior` dans `_execute_head_tracking()`
+1. ✅ **bbia_tools.py ligne 378** - **TERMINÉ** ✅
+   - ✅ VisionTrackingBehavior intégré dans `_execute_head_tracking()`
 
-2. **bbia_tools.py ligne 439** (1h)
-   - Implémenter arrêt réel mouvement dans `_execute_stop_dance()`
+2. ✅ **bbia_tools.py ligne 439** - **TERMINÉ** ✅
+   - ✅ Arrêt réel implémenté via `robot_api.emergency_stop()`
 
 ---
 
@@ -177,12 +178,13 @@
 - ✅ Tests framework - Tous les fichiers tests existent
 
 **Ce qui reste VRAIMENT à faire** :
-1. 📊 Améliorer coverage des tests existants (principal travail)
-2. 🔧 Compléter 2 TODOs dans `bbia_tools.py` (optionnel mais utile)
-3. 📝 Documentation (optionnel)
+1. 📊 Améliorer coverage `vision_yolo.py` et `voice_whisper.py` (priorité 1)
+2. 📊 Améliorer coverage `daemon/bridge.py` (priorité 2)
+3. ✅ ~~Compléter 2 TODOs dans `bbia_tools.py`~~ - **TERMINÉ**
+4. 📝 Documentation (optionnel)
 
 ---
 
-**Dernière vérification** : Décembre 2024
+**Dernière vérification** : Oct / Nov. 2025
 **Prochaine révision** : Après amélioration coverage tests
 

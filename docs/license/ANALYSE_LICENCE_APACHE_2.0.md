@@ -1,6 +1,6 @@
 # 📜 Analyse Licence Apache 2.0 - Explication et Vérification BBIA
 
-**Date**: octobre 2025  
+**Date**: Oct / No2025025025025025  
 **Source**: Licence officielle Reachy Mini (Pollen Robotics)  
 **Licence actuelle BBIA**: MIT
 
@@ -204,5 +204,5 @@
 
 ---
 
-**Dernière mise à jour** : octobre 2025
+**Dernière mise à jour** : Oct / No2025025025025025
 

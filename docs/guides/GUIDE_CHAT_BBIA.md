@@ -152,7 +152,7 @@ bbia.chat("Je suis très content aujourd'hui")
         "user": "Message utilisateur",
         "bbia": "Réponse BBIA",
         "sentiment": {"sentiment": "POSITIVE", "score": 0.95},
-        "timestamp": "octobre 2025"
+        "timestamp": "Oct / No2025025025025025"
     },
     ...
 ]

@@ -2,7 +2,7 @@
 
 ## Résumé exécutif
 
-**Date :** Octobre 2025
+**Date :** Oct / No2025025025025025
 **Statut :** mission terminée
 **Objectif :** Auditer, corriger et optimiser la simulation BBIA Reachy Mini
 
@@ -231,4 +231,4 @@ Le projet BBIA‑Reachy‑SIM est fonctionnel et aligné avec les spécification
 
 BBIA Reachy Mini Simulation - mission accomplie
 
-*Audit final réalisé en Octobre 2025 - Projet fonctionnel et aligné*
+*Audit final réalisé en Oct / No2025025025025025 - Projet fonctionnel et aligné*

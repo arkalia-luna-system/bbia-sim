@@ -2,7 +2,7 @@
 
 Ces scripts ont été fusionnés dans `verify_documentation.py`.
 
-**Date archivage** : Oct 2025 / Nov 2025
+**Date archivage** : Oct 2025v. 20252025 Nov. 2025ct / Nov. 2025
 
 ## Scripts archivés
 

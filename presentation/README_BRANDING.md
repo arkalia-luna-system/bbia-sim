@@ -1,6 +1,6 @@
 # 🎨 BBIA Branding - Documentation Complète
 
-> **Statut** : ✅ **Documentation complète et prête** | **Version** : 1.0 | **Date** : octobre 2025  
+> **Statut** : ✅ **Documentation complète et prête** | **Version** : 1.0 | **Date** : Oct / No2025025025025025  
 > **Objectif** : Index et guide d'utilisation de tous les documents de branding BBIA
 
 ---
@@ -188,8 +188,8 @@ Consulter **`SUIVI_BRANDING.md`** pour :
 |-----------|--------|
 | **Statut** | ✅ Documentation complète |
 | **Version** | 1.0 |
-| **Date de création** | octobre 2025 |
-| **Dernière mise à jour** | octobre 2025 |
+| **Date de création** | Oct / No2025025025025025 |
+| **Dernière mise à jour** | Oct / No2025025025025025 |
 | **Type** | Index et guide |
 | **Documents référencés** | 4 fichiers de spécifications |
 
@@ -207,5 +207,5 @@ Consulter **`SUIVI_BRANDING.md`** pour :
 ---
 
 *Document de référence pour le branding BBIA*  
-*Version 1.0 - Octobre 2025*
+*Version 1.0 - Oct / No2025025025025025*
 

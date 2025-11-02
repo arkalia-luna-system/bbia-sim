@@ -4,7 +4,7 @@ Ce dossier contient les modèles 3D officiels de Reachy Mini, récupérés du d�
 
 ## Source
 - **Dépôt officiel** : https://github.com/pollen-robotics/reachy_mini
-- **Version** : v1.0.0rc5 (octobre 2025)
+- **Version** : v1.0.0rc5 (Oct / No2025025025025025)
 - **Chemin source** : `src/reachy_mini/descriptions/reachy_mini/mjcf/assets/`
 
 # 🎨 Assets Officiels Reachy Mini

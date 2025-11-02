@@ -77,7 +77,7 @@ mypy src/                  # Vérification de types
 ### **📝 Documentation Markdown**
 - **TOUJOURS ajouter des schémas Mermaid** pour les nouveaux fichiers MD
 - **JAMAIS de redondance** - consolider les informations
-- **TOUJOURS utiliser des dates "Octobre 2025"** (sans jour spécifique)
+- **TOUJOURS utiliser des dates "Oct / No2025025025025025"** (sans jour spécifique)
 - **TOUJOURS mettre à jour les statistiques** (531 tests, 418 passent, 76.70% coverage)
 
 ### **🎨 Schémas Mermaid Requis**

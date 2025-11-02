@@ -1,6 +1,6 @@
 # 📋 Plan de Nettoyage Documentation - BBIA-SIM
 
-**Date :** octobre 2025
+**Date :** Oct / No2025025025025025
 **Objectif :** Harmoniser, dédoublonner et organiser toute la documentation
 
 ---
@@ -73,7 +73,7 @@ docs/
 ├── unity/                             # Docs Unity
 ├── audit/                             # Audit docs
 └── archives/                          # Archives historiques
-    ├── 2025-10/                      # Docs Octobre 2025
+    ├── 2025-10/                      # Docs Oct / No2025025025025025
     └── phases/                       # Docs phases
 ```
 

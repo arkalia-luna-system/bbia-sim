@@ -1,6 +1,6 @@
 # 📋 RÉORGANISATION DES FICHIERS .MD
 
-**Date**: octobre 2025
+**Date**: Oct / No2025025025025025
 **Objectif**: Organiser tous les fichiers .md à leur bonne place
 
 ---

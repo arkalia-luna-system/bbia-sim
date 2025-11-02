@@ -161,7 +161,7 @@ code_here()
 ## 🔗 Liens
 
 ```markdown
-[Texte du lien](./GUIDE_DEBUTANT.md) (exemple)
+[Texte du lien](guides/GUIDE_DEBUTANT.md) (exemple)
 [Texte externe](https://example.com)
 ```
 
@@ -178,16 +178,16 @@ code_here()
 
 ```markdown
 **Date création :** Octobre 2024  # Fixe, ne jamais modifier
-**Date mise à jour :** Oct 25 / Nov 25  # Récentes (octobre/novembre 2025)
-**Date :** Octobre 2025  # Générales
-**Date cible :** Décembre 2025  # Futures
+**Date mise à jour :** Oct 25 / Nov 25  # Récentes (octobre/Oct / Nov. 2025252525252525)
+**Date :** Oct / No2025025025025025  # Générales
+**Date cible :** Oct / Nov. 2025252525252525  # Futures
 ```
 
 ### Historique
 
 - **Octobre 2024** : Date création projet (première release v1.0.0)
-- **Oct 25 / Nov 25** : Période actuelle (octobre/novembre 2025)
-- **Octobre 2025** : Dates générales 2025
+- **Oct 25 / Nov 25** : Période actuelle (octobre/Oct / Nov. 2025252525252525)
+- **Oct / No2025025025025025** : Date2025nérales 2025
 
 ---
 

@@ -1,6 +1,6 @@
 # 📋 Liste RÉELLE des Tâches Pas Encore Faites
 
-**Date** : Oct 25 / Nov 25
+**Date** : Oct / Nov. 2025
 **Source** : Audit exhaustif MD vs Code
 
 ---
@@ -42,7 +42,7 @@ Les fichiers suivants ont été corrigés pour refléter la réalité :
 - **Modules** :
   - `vision_yolo.py` : 27.74% coverage (99 lignes non couvertes)
   - `voice_whisper.py` : 33.33% coverage (76 lignes non couvertes)
-  - `dashboard_advanced.py` : 0% coverage (288 lignes)
+  - ✅ `dashboard_advanced.py` : **76.71% coverage** ✅ (47+ tests, 1169 lignes) - **TERMINÉ**
   - `daemon/bridge.py` : 0% coverage (283 lignes)
 - **Estimation** : 8-12 heures
 
@@ -103,6 +103,6 @@ Les fichiers suivants ont été corrigés pour refléter la réalité :
 
 ---
 
-**Dernière mise à jour** : Oct 25 / Nov 25
-**Prochaine révision** : Décembre 2024
+**Dernière mise à jour** : Oct / Nov. 2025
+**Prochaine révision** : Oct / Nov. 2025
 

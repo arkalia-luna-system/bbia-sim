@@ -4,18 +4,18 @@
 Ce document a été archivé car il est devenu obsolète ou a été remplacé par une version plus récente.
 Il est conservé à des fins de référence historique uniquement.
 
-**Date d'archivage** : octobre 2025
+**Date d'archivage** : Oct / No2025025025025025
 **Raison** : Document terminé/obsolète/remplacé
 ---
 
 # ✅ TOUTES LES DÉMOS CORRIGÉES
 
-**Date :** octobre 2025  
-**Dernière mise à jour :** Décembre 2025  
+**Date :** Oct / No2025025025025025  
+**Dernière mise à jour :** Oct / Nov. 2025252525252525  
 **Objectif :** Mouvements réalistes basés sur SDK Reachy Mini officiel  
 **Statut :** ✅ **TOUTES LES CORRECTIONS APPLIQUÉES ET VALIDÉES**
 
-**Vérification :** Décembre 2025 - Tous les fichiers ont été vérifiés et sont conformes.
+**Vérification :** Oct / Nov. 2025252525252525 - Tous les fichiers ont été vérifiés et sont conformes.
 
 ---
 
@@ -93,7 +93,7 @@ Il est conservé à des fins de référence historique uniquement.
 
 ---
 
-**Dernière vérification:** Décembre 2025  
+**Dernière vérification:** Oct / Nov. 2025252525252525  
 **Vérification complète:**
 - ✅ `demo_behavior_ok.py`: max 0.234 rad (ligne 121) - **CONFORME**
 - ✅ `demo_emotion_ok.py`: max 0.22 rad (ligne 49) - **CONFORME**

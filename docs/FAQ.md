@@ -1,6 +1,6 @@
 # ❓ FAQ - Questions Fréquentes BBIA
 
-**Date** : Oct 25 / Nov 25
+**Date** : Oct / Nov. 2025
 **Version** : 1.3.2
 **📚 [Documentation complète](../README.md)** | **🐛 [Signaler un problème](https://github.com/arkalia-luna-system/bbia-sim/issues)**
 
@@ -293,5 +293,5 @@ export BBIA_DISABLE_SIMULATION=1
 
 ---
 
-**Dernière mise à jour** : Oct 25 / Nov 25
+**Dernière mise à jour** : Oct / Nov. 2025
 

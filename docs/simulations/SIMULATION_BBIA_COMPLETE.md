@@ -230,7 +230,7 @@ ls -la
 🤖============================================================🤖
 🌟 BBIA - Brain-Based Interactive Agent
 🤖 Robot: Reachy Mini Wireless
-📅 Date: Octobre 2025
+📅 Date: Oct / No2025025025025025
 💻 Système: darwin
 🤖============================================================🤖
 

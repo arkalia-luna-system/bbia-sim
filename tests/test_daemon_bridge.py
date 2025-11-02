@@ -253,6 +253,133 @@ class TestDaemonBridge:
                 pytest.skip(f"Zenoh non disponible: {e}")
             raise
 
+    @patch("bbia_sim.daemon.bridge.ZENOH_AVAILABLE", True)
+    @patch("bbia_sim.daemon.bridge.zenoh")
+    @patch("bbia_sim.daemon.bridge.asyncio")
+    def test_zenoh_bridge_start_success(self, mock_asyncio, mock_zenoh_module):
+        """Test démarrage bridge Zenoh avec succès."""
+        try:
+            import asyncio
+
+            from bbia_sim.daemon.bridge import ZenohBridge
+
+            # Mock session Zenoh
+            mock_session = MagicMock()
+            mock_zenoh_module.open = MagicMock(return_value=mock_session)
+            mock_zenoh_module.Config.return_value = MagicMock()
+
+            bridge = ZenohBridge()
+            # Mock async methods
+            mock_asyncio.create_task = MagicMock()
+
+            # Test start (mocké pour éviter vraie connexion)
+            async def test():
+                result = await bridge.start()
+                # Vérifier que start retourne bool
+                assert isinstance(result, bool)
+
+            asyncio.run(test())
+        except ImportError:
+            pytest.skip("Module daemon.bridge non disponible")
+        except Exception as e:
+            if "zenoh" in str(e).lower() or "asyncio" in str(e).lower():
+                pytest.skip(f"Zenoh ou asyncio non disponible: {e}")
+            raise
+
+    @patch("bbia_sim.daemon.bridge.ZENOH_AVAILABLE", False)
+    def test_zenoh_bridge_start_no_zenoh(self):
+        """Test démarrage bridge sans Zenoh."""
+        try:
+            import asyncio
+
+            from bbia_sim.daemon.bridge import ZenohBridge
+
+            bridge = ZenohBridge()
+
+            async def test():
+                result = await bridge.start()
+                assert result is False
+
+            asyncio.run(test())
+        except ImportError:
+            pytest.skip("Module daemon.bridge non disponible")
+
+    @patch("bbia_sim.daemon.bridge.ZENOH_AVAILABLE", True)
+    def test_zenoh_bridge_stop(self):
+        """Test arrêt bridge Zenoh."""
+        try:
+            import asyncio
+
+            from bbia_sim.daemon.bridge import ZenohBridge
+
+            bridge = ZenohBridge()
+            bridge.connected = True
+            bridge.session = MagicMock()
+            bridge.session.close = MagicMock(return_value=None)
+
+            async def test():
+                await bridge.stop()
+                assert bridge.connected is False
+
+            asyncio.run(test())
+        except ImportError:
+            pytest.skip("Module daemon.bridge non disponible")
+
+    def test_zenoh_bridge_send_command(self):
+        """Test envoi commande via bridge."""
+        try:
+            import asyncio
+
+            from bbia_sim.daemon.bridge import RobotCommand, ZenohBridge
+
+            bridge = ZenohBridge()
+            bridge.connected = False
+
+            cmd = RobotCommand(command="test", parameters={})
+            # Bridge non connecté doit retourner False
+            result = asyncio.run(bridge.send_command(cmd))
+            assert result is False
+
+            # Bridge connecté avec publisher mocké
+            bridge.connected = True
+            bridge.publishers["commands"] = MagicMock()
+            bridge.publishers["commands"].put = MagicMock(return_value=None)
+
+            async def test():
+                result = await bridge.send_command(cmd)
+                # Doit retourner bool
+                assert isinstance(result, bool)
+
+            asyncio.run(test())
+        except ImportError:
+            pytest.skip("Module daemon.bridge non disponible")
+
+    def test_zenoh_bridge_get_current_state(self):
+        """Test récupération état actuel."""
+        try:
+            from bbia_sim.daemon.bridge import ZenohBridge
+
+            bridge = ZenohBridge()
+            state = bridge.get_current_state()
+            assert state is not None
+            assert hasattr(state, "joints")
+            assert hasattr(state, "emotions")
+            assert hasattr(state, "sensors")
+        except ImportError:
+            pytest.skip("Module daemon.bridge non disponible")
+
+    def test_zenoh_bridge_is_connected(self):
+        """Test vérification connexion."""
+        try:
+            from bbia_sim.daemon.bridge import ZenohBridge
+
+            bridge = ZenohBridge()
+            assert bridge.is_connected() is False
+            bridge.connected = True
+            assert bridge.is_connected() is True
+        except ImportError:
+            pytest.skip("Module daemon.bridge non disponible")
+
 
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])

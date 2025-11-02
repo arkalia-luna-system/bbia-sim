@@ -4,13 +4,13 @@
 Ce document a été archivé car il est devenu obsolète ou a été remplacé par une version plus récente.
 Il est conservé à des fins de référence historique uniquement.
 
-**Date d'archivage** : octobre 2025
+**Date d'archivage** : Oct / No2025025025025025
 **Raison** : Document terminé/obsolète/remplacé
 ---
 
 # 📋 Résumé Consolidation Scripts d'Audit/Comparaison
 
-**Date** : Octobre 2025  
+**Date** : Oct / No2025025025025025  
 **Objectif** : Fusionner et archiver les scripts redondants de comparaison avec Reachy Mini
 
 ---
@@ -153,5 +153,5 @@ python scripts/generate_conformity_report_reachy_mini.py
 
 ---
 
-**Dernière mise à jour** : Octobre 2025
+**Dernière mise à jour** : Oct / No2025025025025025
 

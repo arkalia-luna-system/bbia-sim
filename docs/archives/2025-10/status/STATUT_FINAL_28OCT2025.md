@@ -1,5 +1,5 @@
 # 📊 STATUT FINAL - BBIA-SIM
-## octobre 2025
+## Oct / No2025025025025025
 
 **Venv :** Activé et prêt
 **Tests créés aujourd'hui :** 99 tests dans 12 fichiers
@@ -110,7 +110,7 @@ black --check src/ tests/
 - 7 tests de performance
 - 0 issues de sécurité
 - Lint/Format OK
-- Docs à jour (Octobre 2025)
+- Docs à jour (Oct / No2025025025025025)
 - Tout rangé proprement
 - Tests complets à lancer
 
@@ -135,7 +135,7 @@ open htmlcov/index.html
 
 ---
 
-**Date :** octobre 2025
+**Date :** Oct / No2025025025025025
 **Tests :** 99
 **Status :** parfait
 

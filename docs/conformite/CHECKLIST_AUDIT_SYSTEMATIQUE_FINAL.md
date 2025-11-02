@@ -1,6 +1,6 @@
 # Checklist Finale - Audit Systématique BBIA-SIM vs SDK Officiel Reachy Mini
 
-**Date:** octobre 2025
+**Date:** Oct / No2025025025025025
 **Branche:** future
 **SDK Officiel:** `pollen-robotics/reachy_mini` @ `develop` (commit 2ba17f1)
 

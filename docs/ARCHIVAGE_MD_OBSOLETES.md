@@ -1,6 +1,6 @@
-# 📁 Archivage MD Obsolètes - Décembre 2025
+# 📁 Archivage MD Obsolètes - Oct / Nov. 2025
 
-**Date** : Décembre 2025  
+**Date** : Oct / Nov. 2025  
 **Objectif** : Archiver les MD qui mentionnent des tâches déjà terminées ou obsolètes
 
 ---

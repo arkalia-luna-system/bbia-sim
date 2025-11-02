@@ -258,4 +258,4 @@ python scripts/record_trace.py --emotion happy --duration 5
 
 ---
 
-*Dernière mise à jour : Octobre 2025*
+*Dernière mise à jour : Oct / No2025025025025025*

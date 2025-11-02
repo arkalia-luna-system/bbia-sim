@@ -1,6 +1,6 @@
 # 🎯 Good First Issues - Suggestions pour Nouveaux Contributeurs
 
-**Date**: octobre 2025  
+**Date**: Oct / Nov. 2025  
 **Pour nouveaux contributeurs** : Idéal pour débuter avec le projet
 
 ---
@@ -333,5 +333,5 @@ assignees: []
 
 ---
 
-**Dernière mise à jour** : octobre 2025
+**Dernière mise à jour** : Oct / Nov. 2025
 

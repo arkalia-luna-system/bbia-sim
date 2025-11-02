@@ -242,16 +242,16 @@ Tu es un **agent Cursor expert MuJoCo/Python** spécialisé dans la simulation r
   ```
 
 ### **❌ ERREURS DE DOCUMENTATION**
-- **JAMAIS laisser des dates incorrectes** (utiliser "Octobre 2025")
+- **JAMAIS laisser des dates incorrectes** (utiliser "Oct / No2025025025025025")
 - **JAMAIS documenter des fonctionnalités non testées**
 - **TOUJOURS mettre à jour la documentation** avec les modifications
 - **Exemples corrects :**
   ```markdown
-  *Dernière mise à jour : Octobre 2025*
+  *Dernière mise à jour : Oct / No2025025025025025*
   ```
 - **Exemples INCORRECTS :**
   ```markdown
-  *Dernière mise à jour : octobre 2025*  # ❌ Date incorrecte
+  *Dernière mise à jour : Oct / No2025025025025025*  # ❌ Date incorrecte
   *Dernière mise à jour : 2025*             # ❌ Date incorrecte
   ```
 
@@ -688,4 +688,4 @@ if "tourne" in command and "gauche" in command:
 
 **🤖 BBIA Reachy Mini Simulation - Mission Accomplie + Opportunités Identifiées ! ✨**
 
-*Prompt final - Octobre 2025 - Projet fonctionnel, aligné et prêt pour le développement avancé*
+*Prompt final - Oct / No2025025025025025 - Projet fonctionnel, aligné et prêt pour le développement avancé*

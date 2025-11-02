@@ -1,6 +1,6 @@
 # 🤖 Guide pour Assistants IA - BBIA-SIM
 
-> **Date de mise à jour :** Oct 25 / Nov 25  
+> **Date de mise à jour :** Oct / Nov. 2025  
 > **Version :** 1.0
 
 ## 📋 Vue d'ensemble
@@ -92,7 +92,7 @@ pytest tests/ --cov=src/bbia_sim --cov-report=html
 ## 📝 Conventions documentation
 
 ### Dates standardisées
-- **Date de mise à jour :** Toujours utiliser `Oct 25 / Nov 25`
+- **Date de mise à jour :** Toujours utiliser `Oct / Nov. 2025`
 - **Date de création :** Date du premier commit Git (immutable)
 
 ### Formatage Markdown
@@ -273,7 +273,7 @@ docs/
 
 ---
 
-**Dernière mise à jour :** Oct 25 / Nov 25  
+**Dernière mise à jour :** Oct / Nov. 2025  
 **Version guide :** 1.0  
-**Prochaine révision :** Décembre 2025
+**Prochaine révision :** Oct / Nov. 2025
 

@@ -4,13 +4,13 @@
 Ce document a été archivé car il est devenu obsolète ou a été remplacé par une version plus récente.
 Il est conservé à des fins de référence historique uniquement.
 
-**Date d'archivage** : octobre 2025
+**Date d'archivage** : Oct / No2025025025025025
 **Raison** : Document terminé/obsolète/remplacé
 ---
 
 # Rapport d'Audit de Conformité BBIA-SIM vs SDK Officiel Reachy Mini
 
-**Date:** octobre 2025
+**Date:** Oct / No2025025025025025
 **Total incohérences:** 6
 
 ## Résumé

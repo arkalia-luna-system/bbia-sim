@@ -5,7 +5,7 @@
 
 # 📊 INVENTAIRE COMPLET & PLAN D'ACTION
 
-**Date :** octobre 2025
+**Date :** Oct / No2025025025025025
 **Contexte :** Staff Engineer sur BBIA-SIM
 **Objectif :** Améliorations PRO sans doublons ni régression CI
 
@@ -466,6 +466,6 @@ pytest tests/ --cov=src/bbia_sim --cov-report=term-missing
 
 **Est-ce que tu veux que je crée ces fichiers maintenant ?** 🚀
 
-*Inventaire créé le octobre 2025*
+*Inventaire créé le Oct / No2025025025025025*
 *Staff Engineer*
 

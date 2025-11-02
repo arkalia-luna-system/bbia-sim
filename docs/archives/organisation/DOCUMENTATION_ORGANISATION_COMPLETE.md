@@ -1,6 +1,6 @@
 # 🎉 Documentation Organisée et Harmonisée - BBIA-SIM
 
-**Date :** octobre 2025
+**Date :** Oct / No2025025025025025
 **Mission :** Nettoyer, organiser et harmoniser toute la documentation
 
 ---
@@ -212,6 +212,6 @@ bbia-sim/
 
 ---
 
-*Dernière mise à jour : octobre 2025*
+*Dernière mise à jour : Oct / No2025025025025025*
 *Documentation organisée et harmonisée ✅*
 

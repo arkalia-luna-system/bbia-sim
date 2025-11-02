@@ -228,25 +228,25 @@ gantt
     title Plan de Développement BBIA
     dateFormat  YYYY-MM-DD
     section Phase 1: Préparation
-    Documentation complète    :done, doc, octobre 2025, octobre 2025
-    Environnement dev        :active, env, Octobre 2025, Octobre 2025
-    Simulation Unity         :sim, Octobre 2025, Octobre 2025
+    Documentation complète    :done, doc, Oct / No202502502Oct /2025. 2025. 2025. 2025. 2025
+    Environnement dev        :active, env, Oct / No202502502Oct /2025. 2025. 2025. 2025. 2025
+    Simulation Unity         :sim, Oct / No202502502Oct /2025. 2025. 2025. 2025. 2025
 
     section Phase 2: Core
-    Configuration robot      :robot, Octobre 2025, Octobre 2025
-    Tests mouvements         :move, Octobre 2025, Octobre 2025
-    Reconnaissance vocale    :voice, Octobre 2025, Octobre 2025
-    Système émotions         :emotions, Octobre 2025, Octobre 2025
+    Configuration robot      :robot, Oct / No202502502Oct /2025. 2025. 2025. 2025. 2025
+    Tests mouvements         :move, Oct / No202502502Oct /2025. 2025. 2025. 2025. 2025
+    Reconnaissance vocale    :voice, Oct / No202502502Oct /2025. 2025. 2025. 2025. 2025
+    Système émotions         :emotions, Oct / No202502502Oct /2025. 2025. 2025. 2025. 2025
 
     section Phase 3: Intelligence
-    Hugging Face             :hf, Octobre 2025, Octobre 2025
-    Modèles IA               :ai, Octobre 2025, Octobre 2025
-    Comportements complexes  :behavior, Octobre 2025, Octobre 2025
+    Hugging Face             :hf, Oct / No202502502Oct /2025. 2025. 2025. 2025. 2025
+    Modèles IA               :ai, Oct / No202502502Oct /2025. 2025. 2025. 2025. 2025
+    Comportements complexes  :behavior, Oct / No202502502Oct /2025. 2025. 2025. 2025. 2025
 
     section Phase 4: Optimisation
-    Performance              :perf, Octobre 2025, Octobre 2025
-    Nouvelles fonctionnalités :feat, Octobre 2025, Octobre 2025
-    Déploiement production   :deploy, Octobre 2025, Octobre 2025
+    Performance              :perf, Oct / No202502502Oct /2025. 2025. 2025. 2025. 2025
+    Nouvelles fonctionnalités :feat, Oct / No202502502Oct /2025. 2025. 2025. 2025. 2025
+    Déploiement production   :deploy, Oct / No202502502Oct /2025. 2025. 2025. 2025. 2025
 ```
 
 ---
@@ -503,6 +503,6 @@ Le **Reachy Mini Wireless** fournit une base solide pour BBIA :
 ---
 
 **Version** : 1.0
-**Date** : Octobre 2025
+**Date** : Oct / No2025025025025025
 **Statut** : Guide Reachy Mini Wireless
 **Auteur** : Assistant IA pour BBIA

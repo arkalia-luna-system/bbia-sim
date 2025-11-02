@@ -1,6 +1,6 @@
-# 🔍 Audit Complet Documentation Markdown - Novembre 2025
+# 🔍 Audit Complet Documentation Markdown - Oct / Nov. 2025
 
-**Date audit :** Oct 25 / Nov 25 (1er novembre 2025)
+**Date audit :** Oct / Nov. 2025
 **Date création projet :** Octobre 2024 (NE JAMAIS MODIFIER)
 
 ---
@@ -15,8 +15,8 @@
 
 ### Standardisation Dates Appliquée
 - ✅ **Date création** : **Octobre 2024** (ne jamais modifier)
-- ✅ **Dates récentes** : **Oct 25 / Nov 25** (novembre 2025)
-- ✅ **Autres dates** : **Octobre 2025**
+- ✅ **Dates récentes** : **Oct / Nov. 2025** (Oct / Nov. 2025)
+- ✅ **Autres dates** : **Oct / Nov. 2025**
 
 ---
 
@@ -121,7 +121,7 @@ Ces dates restent en **Octobre 2024** (correct, ne pas modifier) :
 
 1. ✅ **Dates standardisées** dans tous les fichiers MD (16 fichiers corrigés)
 2. ✅ **Date création fixée** à Octobre 2024 (ne jamais modifier)
-3. ✅ **Format dates récentes** : Oct 25 / Nov 25
+3. ✅ **Format dates récentes** : Oct / Nov. 2025
 4. ✅ **Vérification contenu vs code** : README et PROJECTS corrects
 5. ✅ **Dossiers archives créés** : `docs/archives/2025-11/`
 6. ✅ **Fichiers archivés** : 7 fichiers temporaires déplacés
@@ -154,22 +154,22 @@ Ces dates restent en **Octobre 2024** (correct, ne pas modifier) :
 
 ```
 ✅ Date création : Octobre 2024 (NE JAMAIS MODIFIER)
-✅ Dates récentes : Oct 25 / Nov 25 (novembre 2025)
-✅ Dates générales : Octobre 2025
-✅ Dates futures : Décembre 2024, Janvier 2026, etc.
+✅ Dates récentes : Oct / Nov. 2025 (Oct / Nov. 2025)
+✅ Dates générales : Oct / Nov. 2025
+✅ Dates futures : Oct / Nov. 2025, etc.
 ```
 
 ### Exemples Corrects
 
 ```markdown
 **Date création projet :** Octobre 2024
-**Date audit :** Oct 25 / Nov 25
-**Date mise à jour :** Octobre 2025
-**Date cible :** Décembre 2024
+**Date audit :** Oct / Nov. 2025
+**Date mise à jour :** Oct / Nov. 2025
+**Date cible :** Oct / Nov. 2025
 ```
 
 ---
 
-**Date création audit :** Oct 25 / Nov 25
-**Prochaine révision :** Décembre 2024
+**Date création audit :** Oct / Nov. 2025
+**Prochaine révision :** Oct / Nov. 2025
 

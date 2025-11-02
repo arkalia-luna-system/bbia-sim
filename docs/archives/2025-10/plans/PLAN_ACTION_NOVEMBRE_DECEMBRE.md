@@ -1,7 +1,7 @@
-# 🚀 PLAN D'ACTION NOVEMBRE-Octobre 2025
+# 🚀 PLAN D'ACTION NOVEMBRE-Oct / No2025025025025025
 
-**Situation actuelle :** octobre 2025
-**Robot reçu :** Octobre 2025 (environ 60 jours)
+**Situation actuelle :** Oct / No2025025025025025
+**Robot reçu :** Oct / No2025025025025025 (environ 60 jours)
 **Objectif :** Préparer BBIA pour robot réel
 
 ---
@@ -358,6 +358,6 @@ python src/bbia_sim/web_server.py
 
 **Veux-tu que je commence par créer le module BBIAAdvancedHF maintenant ?** 🚀
 
-*Plan créé le octobre 2025*
+*Plan créé le Oct / No2025025025025025*
 *Expert Robotique & IA*
 

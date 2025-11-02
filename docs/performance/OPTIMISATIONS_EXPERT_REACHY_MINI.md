@@ -4,7 +4,7 @@
 >
 > Voir `docs/status.md` → "Performance" pour l’état actuel, les tests présents (latence/jitter), et les baselines/axes futurs.
 
-**Date :** Octobre 2025
+**Date :** Oct / No2025025025025025
 **Référence :** SDK officiel GitHub https://github.com/pollen-robotics/reachy_mini
 
 ---
