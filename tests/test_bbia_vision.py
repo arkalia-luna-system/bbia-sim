@@ -31,9 +31,13 @@ def test_track_untrack_object() -> None:
 
     # Simuler un objet détecté pour le test (car recognize_object cherche dans objects_detected)
     # En mode simulation, scan_environment peut ne pas détecter d'objets réels
-    vision.objects_detected = [
-        {"name": "livre", "confidence": 0.8, "bbox": [100, 100, 200, 200]},
-    ]
+    from collections import deque
+
+    vision.objects_detected = deque(
+        [
+            {"name": "livre", "confidence": 0.8, "bbox": [100, 100, 200, 200]},
+        ]
+    )
 
     # Maintenant track_object devrait fonctionner
     result = vision.track_object("livre")
@@ -89,9 +93,11 @@ class TestBBIAVision:
             robot_api=None
         )  # OPTIMISATION RAM: Pas de chargement caméra
 
-        # Test que les listes de détection existent
-        assert isinstance(vision.objects_detected, list)
-        assert isinstance(vision.faces_detected, list)
+        # Test que les listes de détection existent (maintenant deque pour optimisation RAM)
+        from collections import deque
+
+        assert isinstance(vision.objects_detected, deque)
+        assert isinstance(vision.faces_detected, deque)
 
     @pytest.mark.fast
     def test_tracking_control(self):

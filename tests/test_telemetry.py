@@ -31,9 +31,17 @@ class TestTelemetryCollector:
 
     def test_initialization(self):
         """Test initialisation du collecteur."""
+        from collections import deque
+
         assert self.collector.output_dir == Path(self.temp_dir)
-        assert self.collector.step_times == []
-        assert self.collector.joint_positions == []
+        assert (
+            isinstance(self.collector.step_times, deque)
+            and len(self.collector.step_times) == 0
+        )
+        assert (
+            isinstance(self.collector.joint_positions, deque)
+            and len(self.collector.joint_positions) == 0
+        )
         assert self.collector.start_time is None
         assert self.collector.last_step_time is None
 

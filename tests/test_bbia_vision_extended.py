@@ -4,6 +4,7 @@
 Tests ciblés pour améliorer la couverture de code.
 """
 
+from collections import deque
 from datetime import datetime
 from unittest.mock import patch
 
@@ -19,11 +20,19 @@ class TestBBIAVisionExtended:
 
     def test_init_defaults(self):
         """Test initialisation avec valeurs par défaut."""
+        from collections import deque
+
         assert self.vision.camera_active is True
         assert self.vision.vision_quality == "HD"
         assert self.vision.detection_range == 3.0
-        assert self.vision.objects_detected == []
-        assert self.vision.faces_detected == []
+        assert (
+            isinstance(self.vision.objects_detected, deque)
+            and len(self.vision.objects_detected) == 0
+        )
+        assert (
+            isinstance(self.vision.faces_detected, deque)
+            and len(self.vision.faces_detected) == 0
+        )
         assert self.vision.tracking_active is False
         assert self.vision.current_focus is None
 
@@ -57,10 +66,12 @@ class TestBBIAVisionExtended:
     def test_recognize_object_found(self, mock_print):
         """Test reconnaissance d'objet trouvé."""
         self.vision.scan_environment()
-        # Mock objets détectés pour garantir test reproductible
-        self.vision.objects_detected = [
-            {"name": "chaise", "distance": 1.2, "confidence": 0.95},
-        ]
+        # Mock objets détectés pour garantir test reproductible (deque pour optimisation RAM)
+        self.vision.objects_detected = deque(
+            [
+                {"name": "chaise", "distance": 1.2, "confidence": 0.95},
+            ]
+        )
         result = self.vision.recognize_object("chaise")
 
         assert result is not None
@@ -86,11 +97,13 @@ class TestBBIAVisionExtended:
     @patch("builtins.print")
     def test_detect_faces_with_data(self, mock_print):
         """Test détection de visages avec données existantes."""
-        # Mock visages détectés pour garantir test reproductible
-        self.vision.faces_detected = [
-            {"name": "humain", "distance": 1.8, "emotion": "neutral"},
-            {"name": "humain", "distance": 2.3, "emotion": "happy"},
-        ]
+        # Mock visages détectés pour garantir test reproductible (deque pour optimisation RAM)
+        self.vision.faces_detected = deque(
+            [
+                {"name": "humain", "distance": 1.8, "emotion": "neutral"},
+                {"name": "humain", "distance": 2.3, "emotion": "happy"},
+            ]
+        )
         faces = self.vision.detect_faces()
 
         assert len(faces) == 2
@@ -100,8 +113,8 @@ class TestBBIAVisionExtended:
     @patch("builtins.print")
     def test_detect_faces_empty(self, mock_print):
         """Test détection de visages sans données."""
-        # Forcer liste vide initiale
-        self.vision.faces_detected = []
+        # Forcer liste vide initiale (deque pour optimisation RAM)
+        self.vision.faces_detected = deque()
         # scan_environment est appelé automatiquement, résultat variable selon environnement
         faces = self.vision.detect_faces()
 
@@ -111,10 +124,12 @@ class TestBBIAVisionExtended:
     @patch("builtins.print")
     def test_track_object_success(self, mock_print):
         """Test suivi d'objet réussi."""
-        # Mock objets détectés pour garantir test reproductible
-        self.vision.objects_detected = [
-            {"name": "livre", "distance": 0.8, "confidence": 0.88},
-        ]
+        # Mock objets détectés pour garantir test reproductible (deque pour optimisation RAM)
+        self.vision.objects_detected = deque(
+            [
+                {"name": "livre", "distance": 0.8, "confidence": 0.88},
+            ]
+        )
         result = self.vision.track_object("livre")
 
         assert result is True
@@ -134,10 +149,12 @@ class TestBBIAVisionExtended:
     @patch("builtins.print")
     def test_stop_tracking_active(self, mock_print):
         """Test arrêt de suivi actif."""
-        # Mock objets pour test reproductible
-        self.vision.objects_detected = [
-            {"name": "livre", "distance": 0.8, "confidence": 0.88},
-        ]
+        # Mock objets pour test reproductible (deque pour optimisation RAM)
+        self.vision.objects_detected = deque(
+            [
+                {"name": "livre", "distance": 0.8, "confidence": 0.88},
+            ]
+        )
         self.vision.track_object("livre")
         self.vision.stop_tracking()
 
@@ -154,15 +171,19 @@ class TestBBIAVisionExtended:
 
     def test_get_focus_status_tracking_active(self):
         """Test statut focus avec suivi actif."""
-        # Mock objets et visages pour test reproductible
-        self.vision.objects_detected = [
-            {"name": "livre", "distance": 0.8, "confidence": 0.88},
-            {"name": "chaise", "distance": 1.2, "confidence": 0.95},
-        ]
-        self.vision.faces_detected = [
-            {"name": "humain", "emotion": "neutral"},
-            {"name": "humain", "emotion": "happy"},
-        ]
+        # Mock objets et visages pour test reproductible (deque pour optimisation RAM)
+        self.vision.objects_detected = deque(
+            [
+                {"name": "livre", "distance": 0.8, "confidence": 0.88},
+                {"name": "chaise", "distance": 1.2, "confidence": 0.95},
+            ]
+        )
+        self.vision.faces_detected = deque(
+            [
+                {"name": "humain", "emotion": "neutral"},
+                {"name": "humain", "emotion": "happy"},
+            ]
+        )
         self.vision.track_object("livre")
         status = self.vision.get_focus_status()
 
@@ -226,14 +247,18 @@ class TestBBIAVisionExtended:
 
     def test_get_vision_stats_with_data(self):
         """Test statistiques vision avec données."""
-        # Mock objets et visages pour test reproductible
-        self.vision.objects_detected = [
-            {"name": "livre", "distance": 0.8, "confidence": 0.88},
-        ]
-        self.vision.faces_detected = [
-            {"name": "humain", "emotion": "neutral"},
-            {"name": "humain", "emotion": "happy"},
-        ]
+        # Mock objets et visages pour test reproductible (deque pour optimisation RAM)
+        self.vision.objects_detected = deque(
+            [
+                {"name": "livre", "distance": 0.8, "confidence": 0.88},
+            ]
+        )
+        self.vision.faces_detected = deque(
+            [
+                {"name": "humain", "emotion": "neutral"},
+                {"name": "humain", "emotion": "happy"},
+            ]
+        )
         self.vision.track_object("livre")
         stats = self.vision.get_vision_stats()
 
@@ -285,10 +310,12 @@ class TestBBIAVisionExtended:
 
     def test_current_focus_after_tracking(self):
         """Test focus actuel après suivi."""
-        # Mock objets pour test reproductible
-        self.vision.objects_detected = [
-            {"name": "table", "distance": 2.1, "confidence": 0.92},
-        ]
+        # Mock objets pour test reproductible (deque pour optimisation RAM)
+        self.vision.objects_detected = deque(
+            [
+                {"name": "table", "distance": 2.1, "confidence": 0.92},
+            ]
+        )
         self.vision.track_object("table")
 
         focus = self.vision.current_focus
@@ -299,19 +326,21 @@ class TestBBIAVisionExtended:
 
     def test_objects_detected_persistence(self):
         """Test persistance des objets détectés."""
-        # Mock objets pour test reproductible
-        self.vision.objects_detected = [
-            {"name": "livre", "distance": 0.8},
-            {"name": "chaise", "distance": 1.2},
-        ]
+        # Mock objets pour test reproductible (deque pour optimisation RAM)
+        self.vision.objects_detected = deque(
+            [
+                {"name": "livre", "distance": 0.8},
+                {"name": "chaise", "distance": 1.2},
+            ]
+        )
 
         # Nouveau scan - peut modifier objects_detected (YOLO/réel détection)
         # Le test vérifie juste que la liste existe et est cohérente
         self.vision.scan_environment()
 
         # scan_environment peut modifier les objets selon environnement
-        # Vérifier que la liste existe et est cohérente
-        assert isinstance(self.vision.objects_detected, list)
+        # Vérifier que le deque existe et est cohérent (deque pour optimisation RAM)
+        assert isinstance(self.vision.objects_detected, deque)
         assert (
             len(self.vision.objects_detected) >= 0
         )  # Peut être 0 ou différent selon détection

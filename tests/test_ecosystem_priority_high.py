@@ -48,6 +48,12 @@ class TestWebSocketTracking:
         """Test comptage sans gestionnaire (retourne 0)."""
         from bbia_sim.daemon.app.routers.ecosystem import get_active_connections
 
+        # Invalider le cache avant le test
+        import bbia_sim.daemon.app.routers.ecosystem as ecosystem_module
+
+        ecosystem_module._active_connections_cache = None
+        ecosystem_module._active_connections_cache_time = 0.0
+
         with patch(
             "bbia_sim.daemon.app.routers.ecosystem.get_ws_manager", return_value=None
         ):
@@ -57,6 +63,12 @@ class TestWebSocketTracking:
     def test_get_active_connections_empty(self):
         """Test comptage avec liste vide."""
         from bbia_sim.daemon.app.routers.ecosystem import get_active_connections
+
+        # Invalider le cache avant le test
+        import bbia_sim.daemon.app.routers.ecosystem as ecosystem_module
+
+        ecosystem_module._active_connections_cache = None
+        ecosystem_module._active_connections_cache_time = 0.0
 
         mock_manager = MagicMock()
         mock_manager.active_connections = []
