@@ -43,7 +43,7 @@ Les éléments suivants sont **déjà implémentés** et ne nécessitent **aucun
 - ✅ **Voice Whisper** : **TERMINÉ** - **75.83%** (47 tests créés, +52.56% depuis 23.27%), objectif 50%+ dépassé ✅
 - ⚠️ **Bridge Daemon** : **À AMÉLIORER** - Coverage **0.00%** (34 tests existent mais ne couvrent pas) ⚠️
 
-**Estimation** : **~1 heure restante** (voice_whisper uniquement : 38.33% → 50%+)
+**Estimation** : ⚠️ **3 modules à améliorer** (dashboard: 0%, vision_yolo: 17.49%, bridge: 0%)
 
 ---
 

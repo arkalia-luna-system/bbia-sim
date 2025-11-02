@@ -90,7 +90,7 @@
 **Actions** :
 - ✅ **Voice Whisper** : **TERMINÉ** (**75.83%** ✅, objectif 50%+ dépassé)
 
-**Estimation restante** : ✅ **TERMINÉ** (voice_whisper : **59.83%** ✅, objectif 50%+ atteint)
+**Estimation restante** : ⚠️ **1/4 TERMINÉ** (voice_whisper : **75.83%** ✅, objectif 50%+ dépassé. 3 modules à améliorer)
 
 ---
 
