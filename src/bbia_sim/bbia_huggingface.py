@@ -844,6 +844,32 @@ class BBIAHuggingFace:
             torch.cuda.empty_cache()
         logger.info("""🗑️ LLM conversationnel désactivé - Mémoire libérée""")
 
+    def _unload_lru_model(self) -> None:
+        """OPTIMISATION RAM: Décharge le modèle LRU (Least Recently Used).
+
+        Libère de la RAM en déchargant le modèle le moins récemment utilisé.
+        """
+        if not self._model_last_used:
+            return
+
+        # Trouver modèle avec timestamp le plus ancien
+        oldest_key = min(self._model_last_used.items(), key=lambda x: x[1])[0]
+
+        # Extraire nom modèle depuis clé (format: "model_name_type")
+        parts = oldest_key.rsplit("_", 1)
+        if len(parts) == 2:
+            model_name = parts[0]
+            # Décharger modèle
+            self.unload_model(model_name)
+            # Supprimer du tracking
+            if oldest_key in self._model_last_used:
+                del self._model_last_used[oldest_key]
+            logger.debug(f"♻️ Modèle LRU déchargé (optimisation RAM): {oldest_key}")
+
+    def _update_model_usage(self, model_key: str) -> None:
+        """OPTIMISATION RAM: Met à jour timestamp d'usage d'un modèle."""
+        self._model_last_used[model_key] = time.time()
+
     def unload_model(self, model_name: str) -> bool:
         """Décharge un modèle de la mémoire.
 

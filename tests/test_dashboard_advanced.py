@@ -68,7 +68,6 @@ class TestDashboardAdvanced:
             raise
 
     @patch("bbia_sim.dashboard_advanced.FASTAPI_AVAILABLE", True)
-    // @patch removed (using fixture)
     def test_websocket_manager_metrics_structure(self, mock_dashboard_dependencies):
         """Test structure des métriques."""
         try:
@@ -89,7 +88,6 @@ class TestDashboardAdvanced:
         except (ImportError, Exception) as e:
             pytest.skip(f"Dashboard advanced non disponible: {e}")
 
-    // @patch removed (using fixture)
     def test_get_available_joints_no_robot(self, mock_dashboard_dependencies):
         """Test récupération joints sans robot."""
         try:
@@ -129,7 +127,6 @@ class TestDashboardAdvanced:
         except (ImportError, Exception) as e:
             pytest.skip(f"Dashboard advanced non disponible: {e}")
 
-    // @patch removed (using fixture)
     def test_get_current_pose_no_robot(self, mock_dashboard_dependencies):
         """Test récupération pose sans robot."""
         try:
@@ -224,7 +221,6 @@ class TestDashboardAdvanced:
         except (ImportError, Exception) as e:
             pytest.skip(f"Dashboard advanced non disponible: {e}")
 
-    // @patch removed (using fixture)
     def test_performance_metrics_structure(self, mock_dashboard_dependencies):
         """Test structure métriques performance."""
         try:

@@ -44,7 +44,7 @@ def format_uptime(seconds: float) -> str:
 try:
     from ...ws.telemetry import manager as _telemetry_manager_import
 except ImportError:
-    _telemetry_manager_import = None
+    _telemetry_manager_import = None  # type: ignore[assignment]
 
 
 def get_ws_manager() -> Any | None:
