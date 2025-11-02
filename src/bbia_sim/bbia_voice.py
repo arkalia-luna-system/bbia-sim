@@ -269,21 +269,21 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
                 import wave as _wave
 
                 sr = 16000
-            num_samples = int(0.1 * sr)
-            silence = b"".join(_struct.pack("<h", 0) for _ in range(num_samples))
+                num_samples = int(0.1 * sr)
+                silence = b"".join(_struct.pack("<h", 0) for _ in range(num_samples))
 
-            sdk_audio_bytes: bytes
-            wav_buf = _io.BytesIO()
-            with _wave.open(wav_buf, "wb") as wf:
-                wf.setnchannels(1)
-                wf.setsampwidth(2)
-                wf.setframerate(sr)
-                wf.writeframes(silence)
-            sdk_audio_bytes = wav_buf.getvalue()
-
-            # Priorité 1: media.play_audio(bytes[, volume])
-            if hasattr(media, "play_audio"):
+                sdk_audio_bytes: bytes
+                wav_buf = _io.BytesIO()
                 try:
+                    with _wave.open(wav_buf, "wb") as wf:
+                    wf.setnchannels(1)
+                    wf.setsampwidth(2)
+                    wf.setframerate(sr)
+                    wf.writeframes(silence)
+                sdk_audio_bytes = wav_buf.getvalue()
+
+                # Priorité 1: media.play_audio(bytes[, volume])
+                if hasattr(media, "play_audio"):
                     try:
                         media.play_audio(sdk_audio_bytes, volume=1.0)
                     except TypeError:

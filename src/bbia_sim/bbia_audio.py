@@ -292,25 +292,25 @@ def lire_audio(fichier: str, robot_api: Optional["RobotAPI"] = None) -> None:
                 play_audio = getattr(media, "play_audio", None)
 
                 if play_audio is not None:
-                # OPTIMISATION SDK: Lecture via robot.media.play_audio()
-                # Bénéfice: Haut-parleur 5W optimisé hardware avec qualité supérieure
-                logging.info(f"Lecture via SDK (haut-parleur 5W) : {fichier}...")
-                # Lire le fichier audio en bytes
-                with open(fichier, "rb") as f:
-                    audio_bytes = f.read()
-                play_audio(audio_bytes)
-                logging.info("Lecture SDK terminée.")
-                return
-            elif speaker is not None and hasattr(speaker, "play"):
-                # Alternative: speaker.play() si disponible
-                with open(fichier, "rb") as f:
-                    audio_bytes = f.read()
-                speaker.play(audio_bytes)
-                logging.info("Lecture SDK terminée.")
-                return
-        except Exception as e:
-            logging.debug(f"Erreur lecture SDK (fallback sounddevice): {e}")
-            # Fallback vers sounddevice
+                    # OPTIMISATION SDK: Lecture via robot.media.play_audio()
+                    # Bénéfice: Haut-parleur 5W optimisé hardware avec qualité supérieure
+                    logging.info(f"Lecture via SDK (haut-parleur 5W) : {fichier}...")
+                    # Lire le fichier audio en bytes
+                    with open(fichier, "rb") as f:
+                        audio_bytes = f.read()
+                    play_audio(audio_bytes)
+                    logging.info("Lecture SDK terminée.")
+                    return
+                elif speaker is not None and hasattr(speaker, "play"):
+                    # Alternative: speaker.play() si disponible
+                    with open(fichier, "rb") as f:
+                        audio_bytes = f.read()
+                    speaker.play(audio_bytes)
+                    logging.info("Lecture SDK terminée.")
+                    return
+            except Exception as e:
+                logging.debug(f"Erreur lecture SDK (fallback sounddevice): {e}")
+                # Fallback vers sounddevice
 
     # Fallback: sounddevice (compatibilité)
     try:

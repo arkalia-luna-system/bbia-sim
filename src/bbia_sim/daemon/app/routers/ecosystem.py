@@ -56,28 +56,28 @@ def get_ws_manager() -> Any | None:
 
 def get_active_connections() -> int:
     """Récupère le nombre de connexions WebSocket actives.
-    
+
     Returns:
         Nombre de connexions WebSocket actives (toutes routes confondues)
     """
     try:
         # Essayer d'abord le manager de télémetry (principal)
         from ..ws.telemetry import manager as telemetry_manager
-        
+
         if telemetry_manager and hasattr(telemetry_manager, "active_connections"):
             return len(telemetry_manager.active_connections)
     except (ImportError, AttributeError):
         pass
-    
+
     try:
         # Fallback vers le manager général
         from ..ws import manager as ws_manager
-        
+
         if ws_manager and hasattr(ws_manager, "active_connections"):
             return len(ws_manager.active_connections)
     except (ImportError, AttributeError):
         pass
-    
+
     # Si aucun manager disponible, retourner 0
     return 0
 
