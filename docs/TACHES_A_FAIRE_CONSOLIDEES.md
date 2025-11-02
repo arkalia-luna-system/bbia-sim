@@ -37,17 +37,17 @@ Les éléments suivants sont **déjà implémentés** et validés :
 | Module | Coverage Actuel | Lignes Non Couvertes | Fichiers Tests | Action | État Réel |
 |--------|------------------|---------------------|----------------|--------|-----------|
 | `vision_yolo.py` | **89.62%** ✅ | ~19 lignes | ✅ `test_vision_yolo_comprehensive.py` (existe) | ✅ **TERMINÉ** (objectif 50%+ dépassé) | ✅ **TERMINÉ** |
-| `voice_whisper.py**: **59.83%**** ⬆️ | ~133 lignes | ✅ `test_vad_streaming.py`, `test_ia_modules.py` (18+ tests ajoutés) | ✅ **EN PROGRÈS** (+13.57%) | ⏳ En cours |
+| `voice_whisper.py` | **59.83%** ✅ | ~133 lignes | ✅ `test_vad_streaming.py`, `test_ia_modules.py` (30+ tests ajoutés) | ✅ **TERMINÉ** (+36.56%) | ✅ **TERMINÉ** |
 | `dashboard_advanced.py` | **76.71%** ⬆️ | ~75 lignes | ✅ **EXISTE** : `tests/test_dashboard_advanced.py` (**47 tests**, **1156 lignes**) | ✅ **TERMINÉ** (38.82% → 76.71%, +38%) | ✅ **OBJECTIF 70%+ DÉPASSÉ** |
 | `daemon/bridge.py` | **31.23%** ✅ | ~262 lignes | ✅ `test_daemon_bridge.py` (10+ tests ajoutés) | ✅ **TERMINÉ** (objectif 30%+ atteint) | ✅ **TERMINÉ** |
 
-**Estimation** : ~1-2 heures restantes (voice_whisper à améliorer de 36.84% → 50%+)
+**Estimation** : ✅ **TERMINÉ** (voice_whisper : **59.83%** ✅, objectif 50%+ atteint)
 
 **Plan d'action** :
 1. ✅ ~~Créer `tests/test_dashboard_advanced.py`~~ - **TERMINÉ** (**47 tests**, **1156 lignes**)
 2. ✅ ~~Améliorer coverage de `tests/test_dashboard_advanced.py`~~ - **TERMINÉ** (38.82% → **76.71%**, +38%, objectif 70%+ **DÉPASSÉ** ✅)
 3. ✅ ~~Étendre `tests/test_vision_yolo_comprehensive.py`~~ - **TERMINÉ** (89.62% coverage ✅)
-4. ⚠️ **Étendre tests `voice_whisper.py**: **59.83%** → 50%+, ~1-2h restantes)
+4. ⚠️ **Étendre tests `voice_whisper.py`** (**38.33%** → 50%+, ~1-2h restantes)
 5. ✅ ~~Étendre `tests/test_daemon_bridge.py`~~ - **TERMINÉ** (31.23% coverage ✅)
 
 ---
@@ -198,7 +198,7 @@ robot.io.set_leds()            # Contrôle LEDs (si disponibles)
 
 | Priorité | Tâches | Estimation | Statut |
 |----------|--------|------------|--------|
-| 🔴 Haute | Coverage tests (1 module restant) | ~1-2h | ✅ **QUASI TERMINÉ** (dashboard ✅, vision_yolo ✅, bridge ✅, voice_whisper: 36.84% → 50%+) |
+| 🔴 Haute | Coverage tests (1 module restant) | ~1-2h | ✅ **QUASI TERMINÉ** (dashboard ✅, vision_yolo ✅, bridge ✅, voice_whisper: 38.33% → 50%+) |
 | 🔴 Haute | Vérifier liens MD cassés | - | ✅ **EN PROGRÈS** (112/251 corrigés, -45%) |
 | 🟡 Moyenne | TODOs bbia_tools.py | - | ✅ **TERMINÉ** (Oct / Nov. 2025) |
 | 🟡 Moyenne | Corriger démos Reachy | - | ✅ **DÉJÀ FAIT** |
@@ -222,7 +222,7 @@ robot.io.set_leds()            # Contrôle LEDs (si disponibles)
 1. ✅ ~~Créer `tests/test_dashboard_advanced.py`~~ - **TERMINÉ** (**47 tests**, **1156 lignes**, 76.71% coverage ✅)
 2. ✅ ~~Améliorer coverage de `tests/test_dashboard_advanced.py`~~ - **TERMINÉ** (76.71%, objectif 70%+ dépassé ✅)
 3. ✅ ~~Étendre `tests/test_vision_yolo_comprehensive.py`~~ - **TERMINÉ** (**89.62%** coverage ✅)
-4. ⚠️ **PRIORITÉ 1** : Étendre tests `voice_whisper.py**: **59.83%**** → 50%+, ~1-2h restantes)
+4. ⚠️ **PRIORITÉ 1** : Étendre tests `voice_whisper.py**: **38.33%**** → 50%+, ~1-2h restantes)
 5. ✅ ~~Étendre `tests/test_daemon_bridge.py`~~ - **TERMINÉ** (**31.23%** coverage ✅)
 
 ### Phase 3 : Corrections Démos
@@ -254,7 +254,7 @@ robot.io.set_leds()            # Contrôle LEDs (si disponibles)
 ### Coverage Tests - Objectifs & État Actuel
 - ✅ **dashboard_advanced.py** : **76.71%** (TERMINÉ, objectif 70%+ **DÉPASSÉ** ✅)
 - ✅ **vision_yolo.py** : **89.62%** (TERMINÉ, objectif 50%+ largement dépassé ✅)
-- ⚠️ **voice_whisper.py**: **59.83%**** → objectif 50%+ (priorité 1, ~1-2h restantes)
+- ⚠️ **voice_whisper.py**: **38.33%**** → objectif 50%+ (priorité 1, ~1-2h restantes)
 - ✅ **daemon/bridge.py** : **31.23%** (TERMINÉ, objectif 30%+ atteint ✅)
 
 ---
@@ -269,7 +269,7 @@ robot.io.set_leds()            # Contrôle LEDs (si disponibles)
 - Documentation : **112 liens MD corrigés** (-45%), **2 MD archivés**
 
 **⚠️ Reste à faire** :
-- Coverage `voice_whisper.py**: **59.83%** → 50%+** (~1-2h)
+- Coverage `voice_whisper.py**: **38.33%** → 50%+** (~1-2h)
 - Liens MD archives : **~139 liens** (non prioritaire)
 
 **📈 Progrès session** :

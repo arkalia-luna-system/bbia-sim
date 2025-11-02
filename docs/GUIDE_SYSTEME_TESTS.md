@@ -37,7 +37,7 @@ Le système de tests BBIA-SIM utilise **pytest** comme framework principal avec 
 - **Coverage modules critiques** :
   - `dashboard_advanced.py` : **76.71%** ✅
   - `vision_yolo.py` : **89.62%** ✅
-  - `voice_whisper.py**: **59.83%**** ⬆️ (en cours d'amélioration)
+  - `voice_whisper.py**: **38.33%**** ⬆️ (en cours d'amélioration)
   - `daemon/bridge.py` : **31.23%** ✅
 - **Tests E2E** : 4 scénarios utilisateur
 
@@ -228,7 +228,7 @@ Modules prioritaires :
 
 - `dashboard_advanced.py` : **76.71%** ✅ (objectif 70%+ dépassé)
 - `vision_yolo.py` : **89.62%** ✅ (objectif 50%+ largement dépassé)
-- `voice_whisper.py**: **59.83%**** ⬆️ (en cours d'amélioration vers 50%+)
+- `voice_whisper.py**: **38.33%**** ⬆️ (en cours d'amélioration vers 50%+)
 - `daemon/bridge.py` : **31.23%** ✅ (objectif 30%+ atteint)
 - `bbia_audio.py` : **87.76%** ✅
 - `bbia_emotions.py` : **81.71%** ✅

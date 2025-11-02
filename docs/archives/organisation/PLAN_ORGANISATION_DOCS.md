@@ -1,6 +1,6 @@
 # 📚 PLAN D'ORGANISATION DE LA DOCUMENTATION
 
-**Date:** Oct / Oct / Nov. 20255
+**Date** : Oct / Nov. 2025
 **Objectif:** Nettoyer et organiser tous les fichiers .md du projet
 
 ---
@@ -33,7 +33,7 @@
   │   └── CORRECTIONS_FINALES_SDK_OFFICIEL.md
   │
   ├── archives/           # Documentation historique
-  │   └── 2025-10/        # Fichiers datés d'Oct / Oct / Nov. 20255
+  │   └── 2025-10/        # Fichiers datés d'Oct / Nov. 2025
   │
   └── INDEX.md            # Index principal mis à jour
 ```

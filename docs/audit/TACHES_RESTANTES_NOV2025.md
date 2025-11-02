@@ -65,7 +65,7 @@
 1. ✅ **`vision_yolo.py`** : **89.62% coverage** ✅ - **TERMINÉ**
    - **Statut** : Objectif 50%+ largement dépassé
 
-2. **`voice_whisper.py**: **59.83%** coverage** ⬆️ (18+ tests ajoutés, +13.57%)
+2. **`voice_whisper.py**: **38.33%** (+15.06%)
    - **Action** : Continuer amélioration vers 50%+ (~1-2h restantes)
    - **Focus** : transcribe_streaming, améliorer VAD
 

@@ -35,8 +35,8 @@
 
 ### ✅ `voice_whisper.py` - TERMINÉ
 - **Coverage** : **59.83%** (+36.56% depuis 23.27%)
-- **Tests** : 30+ tests ajoutés (load_model, transcribe_audio, VAD, streaming, edge cases)
-- **Statut** : ✅ **TERMINÉ** - Objectif 50%+ atteint et dépassé !
+- **Tests** : **30+ tests ajoutés** (load_model, transcribe_audio, VAD, streaming, edge cases)
+- **Statut** : ✅ **TERMINÉ** - Objectif 50%+ atteint ✅
 
 ---
 

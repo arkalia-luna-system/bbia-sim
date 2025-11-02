@@ -14,7 +14,7 @@
 | `dashboard_advanced.py` | 38.82% | **76.71%** | +38% | 70%+ | ✅ **TERMINÉ** |
 | `vision_yolo.py` | 27.74% | **89.62%** | +61.88% | 50%+ | ✅ **TERMINÉ** |
 | `daemon/bridge.py` | 0% | **31.23%** | +31.23% | 30%+ | ✅ **TERMINÉ** |
-| `voice_whisper.py**: **59.83%**** | +13.57% | 50%+ | ⬆️ **EN PROGRÈS** |
+| `voice_whisper.py**: **38.33%** (+15.06% | 50%+ | ⬆️ **EN PROGRÈS** |
 
 ---
 
@@ -67,7 +67,7 @@
 
 ### 4. ⬆️ `voice_whisper.py` - EN PROGRÈS
 
-**Coverage** : **36.84%** (+13.57% depuis 23.27%)
+**Coverage** : **38.33%** (+13.57% depuis 23.27%)
 
 **Tests ajoutés** (**18+ nouveaux tests**) :
 - Tests `load_model` : depuis cache, nouveau modèle, erreur chargement
@@ -89,7 +89,7 @@
 - ✅ `daemon/bridge.py` : 30%+ → **31.23%** ✅
 
 ### Objectif En Cours ⬆️
-- ⬆️ `voice_whisper.py**: **59.83%**** (progrès significatif, ~1-2h restantes pour atteindre 50%+)
+- ⬆️ `voice_whisper.py**: **38.33%**** (progrès significatif, ~1-2h restantes pour atteindre 50%+)
 
 ---
 
@@ -106,7 +106,7 @@
 - `dashboard_advanced.py` : +38%
 - `vision_yolo.py` : +61.88%
 - `daemon/bridge.py` : +31.23%
-- `voice_whisper.py` : +13.57%
+- `voice_whisper.py**: **38.33%** (+15.06%
 
 **Qualité code** :
 - ✅ Black : Formatage appliqué

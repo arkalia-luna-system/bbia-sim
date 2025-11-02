@@ -1,6 +1,6 @@
 # 📚 Index - Audits et Corrections
 
-**Dernière mise à jour**: Oct / Oct / Nov. 20255
+**Dernière mise à jour** : Oct / Nov. 2025
 
 ---
 
