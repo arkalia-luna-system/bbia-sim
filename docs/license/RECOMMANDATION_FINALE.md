@@ -1,6 +1,6 @@
 # ✅ Recommandation Finale - Licence BBIA
 
-**Date**: Oct / Oct / Nov. 20255  
+**Date**: Oct / Nov. 2025  
 **Question** : Dois-je changer quelque chose ?
 
 ---
@@ -132,5 +132,5 @@ S'assurer que toutes les dépendances Apache 2.0 sont listées.
 
 ---
 
-**Dernière vérification** : Oct / Oct / Nov. 20255
+**Dernière vérification** : Oct / Nov. 2025
 

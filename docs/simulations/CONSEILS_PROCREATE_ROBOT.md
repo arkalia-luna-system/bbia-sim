@@ -162,5 +162,5 @@
 
 ---
 
-*Conseils Robot - BBIA-SIM - Oct / Oct / Nov. 20255*
+*Conseils Robot - BBIA-SIM - Oct / Nov. 2025*
 

@@ -1,6 +1,6 @@
 # Intelligence conversationnelle LLM - guide complet
 
-**Date :** Oct / Oct / Nov. 20255
+**Date :** Oct / Nov. 2025
 **Objectif :** ajouter LLM pré-entraîné (Mistral 7B) pour conversations intelligentes
 
 ---

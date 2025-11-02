@@ -1,6 +1,6 @@
 # 🚀 Guide de Démarrage du Daemon BBIA-SIM
 
-**Date:** Oct / Oct / Nov. 20255
+**Date:** Oct / Nov. 2025
 **Note importante:** ✅ Fonctionne en mode simulation (MuJoCo) **sans robot physique**
 
 ---
@@ -26,6 +26,7 @@ python scripts/start_public_api.py
 ```
 
 **Options disponibles :**
+
 ```bash
 # Mode développement (reload activé)
 python scripts/start_public_api.py --dev

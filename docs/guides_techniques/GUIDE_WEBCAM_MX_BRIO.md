@@ -1,6 +1,6 @@
 # 📹 Guide Webcam Logitech MX Brio - Démarrage Rapide
 
-**Date** : Oct / Oct / Nov. 20255
+**Date** : Oct / Nov. 2025
 **Webcam** : Logitech MX Brio
 
 ---

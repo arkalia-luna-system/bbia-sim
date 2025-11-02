@@ -24,6 +24,8 @@
 
 ### Backend unifié
 
+Le backend unifié permet de développer et tester en simulation, puis de basculer vers le robot physique avec le même code.
+
 ```python
 # Backend unifié : Simulation ↔ Robot réel
 from bbia_sim.robot_factory import RobotFactory

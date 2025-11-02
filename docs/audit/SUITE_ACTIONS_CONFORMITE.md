@@ -1,6 +1,6 @@
 # 📋 SUITE DES ACTIONS - CONFORMITÉ REACHY MINI
 
-**Date** : Oct / Oct / Nov. 20255
+**Date** : Oct / Nov. 2025
 **Status** : ✅ Endpoints critiques implémentés (77% conformité)
 
 ---
@@ -141,7 +141,7 @@
 
 ---
 
-## 🔍 ANALYSE COMPLÉMENTAIRE (Oct / Oct / Nov. 20255)
+## 🔍 ANALYSE COMPLÉMENTAIRE (Oct / Nov. 2025)
 
 Une analyse exhaustive a été effectuée comparant TOUS les endpoints REST, classes, scripts, assets, modèles MuJoCo, guides, helpers et tests d'intégration entre BBIA-SIM et le SDK officiel.
 

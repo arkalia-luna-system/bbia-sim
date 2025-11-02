@@ -1,6 +1,6 @@
-# Analyse des modules non prioritaires - Oct / Oct / Nov. 20255
+# Analyse des modules non prioritaires - Oct / Nov. 2025
 
-**Date :** Oct / Oct / Nov. 20255
+**Date :** Oct / Nov. 2025
 **Référence SDK :** https://github.com/pollen-robotics/reachy_mini
 **Objectif :** Analyse experte pointilleuse de tous les modules restants, vérification conformité SDK, améliorations intelligence
 
@@ -112,5 +112,5 @@ robot.media.record_audio()  # Enregistrement optimisé
 
 ---
 
-**Dernière mise à jour :** Oct / Oct / Nov. 20255
+**Dernière mise à jour :** Oct / Nov. 2025
 

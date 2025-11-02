@@ -1,6 +1,6 @@
 # 🔄 Stratégie de Réutilisation du Code Officiel
 
-**Date** : Oct / Oct / Nov. 20255
+**Date** : Oct / Nov. 2025
 **Objectif** : Identifier ce qui peut être copié/réutilisé de l'app officielle sans tout recréer
 
 ---
@@ -372,5 +372,5 @@ class BBIABreathingAnimation:
 
 ---
 
-**Dernière mise à jour** : Oct / Oct / Nov. 20255
+**Dernière mise à jour** : Oct / Nov. 2025
 

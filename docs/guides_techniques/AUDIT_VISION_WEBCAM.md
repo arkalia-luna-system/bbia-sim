@@ -1,6 +1,6 @@
 # Audit Vision BBIA - Support Webcam USB
 
-**Date**: Oct / Oct / Nov. 20255
+**Date**: Oct / Nov. 2025
 **Objectif**: Évaluer l'état actuel du système de vision et identifier ce qui manque pour utiliser une webcam USB Logitech MX Brio.
 
 ---
@@ -28,7 +28,7 @@
 
 ---
 
-## ✅ Ce qui est maintenant disponible (Oct / Oct / Nov. 20255)
+## ✅ Ce qui est maintenant disponible (Oct / Nov. 2025)
 
 ### 1. Support OpenCV VideoCapture ✅ **DÉJÀ IMPLÉMENTÉ**
 
@@ -86,7 +86,7 @@ BBIA_CAMERA_DEVICE=/dev/video0 python scripts/test_webcam_simple.py
 
 ---
 
-## ✅ Statut implémentation (Oct / Oct / Nov. 20255)
+## ✅ Statut implémentation (Oct / Nov. 2025)
 
 ### Étape 1 : Support OpenCV VideoCapture ✅ **FAIT**
 
@@ -115,7 +115,7 @@ BBIA_CAMERA_DEVICE=/dev/video0 python scripts/test_webcam_simple.py
 
 ---
 
-## ✅ Checklist finale (mise à jour Oct / Oct / Nov. 20255)
+## ✅ Checklist finale (mise à jour Oct / Nov. 2025)
 
 Tout est prêt pour utiliser la Logitech MX Brio :
 
@@ -161,7 +161,7 @@ Tout est prêt pour utiliser la Logitech MX Brio :
 
 ---
 
-## ✅ Utilisation (Oct / Oct / Nov. 20255)
+## ✅ Utilisation (Oct / Nov. 2025)
 
 Tout est déjà implémenté ! Tu peux maintenant :
 

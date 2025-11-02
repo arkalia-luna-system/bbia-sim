@@ -1,6 +1,6 @@
 # 🔍 CLARIFICATION ANTENNES REACHY MINI
 
-**Date** : Oct / Oct / Nov. 20255
+**Date** : Oct / Nov. 2025
 **Question** : Les antennes sont-elles animées ou bloquées ?
 **Réponse** : ⚠️ **C'EST COMPLIQUÉ** - Différence entre robot réel et simulation
 
@@ -116,7 +116,7 @@ self.forbidden_joints = {
 
 ## 📝 ACTIONS IMMÉDIATES
 
-### À Faire Avant Oct / Oct / Nov. 20255
+### À Faire Avant Oct / Nov. 2025
 
 - [ ] **1. Vérifier repo officiel GitHub**
   - Regarder dernière version du modèle XML
@@ -128,7 +128,7 @@ self.forbidden_joints = {
   - Vérifier documentation SDK
   - Vérifier exemples officiels
 
-- [ ] **3. Tester avec robot physique** (Oct / Oct / Nov. 20255)
+- [ ] **3. Tester avec robot physique** (Oct / Nov. 2025)
   - Vérifier si les antennes fonctionnent vraiment
   - Tester limites sûres
   - Vérifier fragilité hardware
@@ -181,13 +181,13 @@ Si les antennes SONT animables dans le robot réel :
 **Action immédiate** :
 1. Vérifier repo officiel pour modèle XML à jour
 2. Vérifier SDK officiel pour accès antennes
-3. Débloquer avec limites sûres si confirmé (Oct / Oct / Nov. 20255 avec robot réel)
+3. Débloquer avec limites sûres si confirmé (Oct / Nov. 2025 avec robot réel)
 
 **En attendant** : Garder bloqué par sécurité, mais préparer le déblocage pour décembre.
 
 ---
 
 **Statut** : ⚠️ **À VÉRIFIER AVEC ROBOT PHYSIQUE**
-**Date** : Oct / Oct / Nov. 20255
-**Prochaine vérification** : Oct / Oct / Nov. 20255 (robot physique)
+**Date** : Oct / Nov. 2025
+**Prochaine vérification** : Oct / Nov. 2025 (robot physique)
 

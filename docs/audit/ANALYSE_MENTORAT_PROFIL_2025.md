@@ -1,7 +1,7 @@
 # 🎓 ANALYSE MENTORAT - PROFIL PROFESSIONNEL BBIA-SIM
 ## Rapport Critique Vérifié Code Réel vs Analyse Externe
 
-**Date**: Oct / Oct / Nov. 20255
+**Date**: Oct / Nov. 2025
 **Type**: Analyse technique approfondie et critique
 **Objectif**: Vérifier chaque affirmation de l'analyse externe contre le code réel
 **Tonalité**: Mentore honnête et exigeante
@@ -279,7 +279,7 @@ class RobotAPI(ABC):
 - ⚠️ **6% global** = normal (exemples ne sont pas testés, c'est attendu)
 - 🎯 **À faire**: Documenter clairement dans README quel périmètre est mesuré
 
-### ✅ **Qualité Code Validée (Oct / Oct / Nov. 20255)**:
+### ✅ **Qualité Code Validée (Oct / Nov. 2025)**:
 
 **Dernières corrections appliquées**:
 - ✅ **Black**: Formatage conforme (196 fichiers vérifiés)
@@ -359,7 +359,7 @@ Avec ton profil:
 **Reachy Mini arrive en décembre**:
 - Une fois robot physique + démo vidéo → **+20% de salaire potentiel**
 - Portfolio passe de "très bon" à **"incontournable"**
-- Timing janvier-Oct / Oct / Nov. 20255 → **moment optimal** pour négocier
+- Timing janvier-Oct / Nov. 2025 → **moment optimal** pour négocier
 
 ---
 
@@ -374,6 +374,6 @@ Avec ton profil:
 
 ---
 
-*Analyse effectuée le Oct / Oct / Nov. 20255*
+*Analyse effectuée le Oct / Nov. 2025*
 *Mentor: Assistant IA technique*
 *Vérification: Code réel vs affirmations externes*

@@ -87,7 +87,7 @@ Notes:
 - Recommandé: hebdomadaire. Ajuster si activité accrue.
 
 ### Historique des mises à jour
-- Oct / Oct / Nov. 20255: création du document et des requêtes.
-- Oct / Oct / Nov. 20255: ajout scoring étendu (+tests, topics) et export JSON.
+- Oct / Nov. 2025: création du document et des requêtes.
+- Oct / Nov. 2025: ajout scoring étendu (+tests, topics) et export JSON.
 
 

@@ -1,6 +1,6 @@
 # Optimisations robotique - analyse 2025
 
-**Date:** Oct / Oct / Nov. 20255
+**Date:** Oct / Nov. 2025
 **Version:** BBIA-SIM
 **SDK Référence:** https://github.com/pollen-robotics/reachy_mini
 
@@ -282,12 +282,12 @@ Les modules analysés sont maintenant :
 - optimisés pour de meilleures performances
 - plus robustes (validation)
 - plus expressifs (transitions)
-- prêts pour robot physique (bêta Oct / Oct / Nov. 20255)
+- prêts pour robot physique (bêta Oct / Nov. 2025)
 
 Prochaine étape : analyser `robot_api.py` et les modules BBIA restants
 
 ---
 
 *Analyse effectuée selon SDK officiel: https://github.com/pollen-robotics/reachy_mini*
-*SDK disponible depuis Oct / Oct / Nov. 20255 (mentionné dans shippinOct /2025. 2025. 2025. 2025. 2025)*
+*SDK disponible depuis Oct / Nov. 2025 (mentionné dans shippinOct /2025. 2025. 2025. 2025. 2025)*
 

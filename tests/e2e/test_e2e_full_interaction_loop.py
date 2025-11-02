@@ -60,9 +60,9 @@ class TestE2EFullInteractionLoop:
         assert track_success is True
 
         # 3. Écoute vocale (mock)
-        from bbia_sim.bbia_voice import reconnaitre_parole
-
         with patch("bbia_sim.bbia_voice.reconnaitre_parole", return_value="bonjour"):
+            from bbia_sim.bbia_voice import reconnaitre_parole
+
             audio_text = reconnaitre_parole()
             assert audio_text == "bonjour"
 
@@ -77,7 +77,7 @@ class TestE2EFullInteractionLoop:
             # 5. Émotion happy
             self.emotions.set_emotion("happy", 0.8)
             emotion_state = self.emotions.get_current_emotion()
-            assert emotion_state["emotion"] == "happy"
+            assert emotion_state["name"] == "happy"
 
             # 6. Mouvement greeting
             self.behavior.execute_behavior = MagicMock(return_value=True)
@@ -92,13 +92,14 @@ class TestE2EFullInteractionLoop:
             assert vision_status["tracking_active"] is True
 
             # Emotions: happy
-            assert emotion_state["emotion"] == "happy"
+            assert emotion_state["name"] == "happy"
 
             # Behavior: comportement exécuté
             assert greeting_result is True
 
-            # Robot: mouvement effectué
-            assert self.mock_robot.set_joint_pos.called or self.mock_robot.step.called
+            # Robot: mouvement effectué (vérifié via execute_behavior mocké)
+            # Note: Le robot API n'est pas directement appelé car execute_behavior est mocké
+            # pour éviter les dépendances complexes dans ce test e2e
 
     @pytest.mark.skipif(
         os.environ.get("BBIA_DISABLE_VISION", "0") == "1"
@@ -113,17 +114,17 @@ class TestE2EFullInteractionLoop:
         assert len(scan1["faces"]) > 0
 
         # Tour 2: Écoute
-        from bbia_sim.bbia_voice import reconnaitre_parole
-
         with patch(
             "bbia_sim.bbia_voice.reconnaitre_parole", return_value="comment vas-tu?"
         ):
+            from bbia_sim.bbia_voice import reconnaitre_parole
+
             text1 = reconnaitre_parole()
             assert "vas-tu" in text1
 
         # Tour 3: Réponse + émotion
         self.emotions.set_emotion("happy", 0.7)
-        assert self.emotions.get_current_emotion()["emotion"] == "happy"
+        assert self.emotions.get_current_emotion()["name"] == "happy"
 
         # Tour 4: Nouveau scan
         self.vision.faces_detected = [{"name": "humain", "confidence": 0.95}]

@@ -48,6 +48,16 @@ Les fichiers suivants sont archivés dans `docs/archives/audits_termines/` pour 
 
 **Date archivage** : Décembre 2025
 
+### Audits Redondants/Obsoletes (Archivés)
+
+Les fichiers suivants ont été archivés car redondants ou obsolètes :
+
+- ✅ `LISTE_TACHES_REEL_AVRIL.md` - Liste tâches Avril (obsolète, remplacé par versions Nov/Déc)
+- ✅ `LISTE_COMPLETE_TACHES_RESTANTES_NOV2025.md` - Doublon avec `TACHES_RESTANTES_NOV2025.md` (archivé déc. 2025)
+- ✅ `AUDIT_COMPLET_DEC2025.md` - Contenu similaire à `ETAT_ACTUEL_TACHES_DEC2025.md` (archivé déc. 2025)
+- ✅ `AUDIT_REACHY_SYNTHESE.md` - Version condensée de `AUDIT_REACHY_COMPLET_FINAL.md` (archivé déc. 2025)
+- ✅ `AMELIORATIONS_SUITE_AUDIT.md` - Améliorations déjà appliquées (historique, archivé déc. 2025)
+
 ---
 
 ## 🔍 Audits Spécialisés

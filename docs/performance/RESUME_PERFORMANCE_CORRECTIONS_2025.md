@@ -1,4 +1,4 @@
-# Résumé des corrections de performance - Oct / Oct / Nov. 20255
+# Résumé des corrections de performance - Oct / Nov. 2025
 
 **Problème :** Code "rame" (lent)
 **Responsable identifié et corrigé :** `pyttsx3.init()` appelé 2 fois par synthèse vocale

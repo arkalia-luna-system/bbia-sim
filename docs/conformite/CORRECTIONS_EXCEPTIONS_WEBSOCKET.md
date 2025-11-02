@@ -1,6 +1,6 @@
 # Corrections Gestion Exceptions et WebSocket - Conformité SDK
 
-**Date**: Oct / Oct / Nov. 20255
+**Date**: Oct / Nov. 2025
 **Fichiers modifiés**:
 - `src/bbia_sim/daemon/app/routers/move.py`
 - `src/bbia_sim/daemon/app/routers/kinematics.py`

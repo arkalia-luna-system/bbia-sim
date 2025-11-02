@@ -1,6 +1,6 @@
 # 🎬 Suggestions de GIF pour README - BBIA-SIM
 
-**Date** : Oct / Oct / Nov. 20255
+**Date** : Oct / Nov. 2025
 **Objectif** : Proposer des GIF animés pour améliorer la présentation du projet
 
 ---

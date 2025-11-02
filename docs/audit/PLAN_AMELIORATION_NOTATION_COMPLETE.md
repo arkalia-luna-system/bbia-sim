@@ -1,7 +1,7 @@
 # 🚀 PLAN D'AMÉLIORATION COMPLET - AUGMENTER LA NOTATION
 ## Axes de correction et amélioration pour passer de 7.1/10 à 9.0+/10
 
-**Date** : Oct / Oct / Nov. 20255
+**Date** : Oct / Nov. 2025
 **Objectif** : Identifier tous les axes d'amélioration pour augmenter la notation
 **Score actuel** : 7.1/10
 **Score cible** : 9.0+/10
@@ -121,7 +121,7 @@ class TestReachyMiniHardwareIntegration:
 
 **Impact** : +2.0 points (validation production hardware complète)
 
-**Timing** : Oct / Oct / Nov. 20255 (arrivée robot)
+**Timing** : Oct / Nov. 2025 (arrivée robot)
 
 ---
 
@@ -675,5 +675,5 @@ app = FastAPI(
 
 **Avec ces améliorations, ton score passera de 7.1/10 à 9.5/10 minimum.** 🎯
 
-*Document créé le Oct / Oct / Nov. 20255*
+*Document créé le Oct / Nov. 2025*
 *Plan d'action validé et actionnable*

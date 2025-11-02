@@ -97,8 +97,8 @@ Notes:
 from reachy_mini import ReachyMini
 from reachy_mini.utils import create_head_pose
 from reachy_mini.utils.interpolation import InterpolationTechnique
-# SDK Version: Compatible avec les spécifications d'Oct / Oct / Nov. 20255
-# GitHub: https://github.com/pollen-robotics/reachy_mini (disponible depuis Oct / Oct / Nov. 20255)
+# SDK Version: Compatible avec les spécifications d'Oct / Nov. 2025
+# GitHub: https://github.com/pollen-robotics/reachy_mini (disponible depuis Oct / Nov. 2025)
 ```
 
 #### Classe ReachyMini
@@ -621,7 +621,7 @@ python scripts/verify_tests_consolidation.py
 python scripts/generate_conformity_report_reachy_mini.py
 ```
 
-### 📊 Structure des Tests (Oct / Oct / Nov. 20255)
+### 📊 Structure des Tests (Oct / Nov. 2025)
 
 **Total: 118 tests** répartis dans **8 fichiers complémentaires**
 
@@ -660,13 +660,13 @@ python scripts/generate_conformity_report_reachy_mini.py
 
 ---
 
-## 🔴 AUDIT REST API ENDPOINTS (Oct / Oct / Nov. 20255)
+## 🔴 AUDIT REST API ENDPOINTS (Oct / Nov. 2025)
 
 ### Endpoints REST - Conformité Complète
 
 Comparaison exhaustive avec le repo officiel `pollen-robotics/reachy_mini` (branche `develop`) :
 
-#### ✅ CRITIQUE - IMPLÉMENTÉ (Oct / Oct / Nov. 20255)
+#### ✅ CRITIQUE - IMPLÉMENTÉ (Oct / Nov. 2025)
 
 1. **`/api/motors/*`** - Contrôle moteurs ✅
    - `GET /api/motors/status` - Statut (enabled/disabled/gravity_compensation) ✅
@@ -686,20 +686,20 @@ Comparaison exhaustive avec le repo officiel `pollen-robotics/reachy_mini` (bran
 4. **`POST /api/motion/goto_sleep`** - Séquence veille ✅
    - **Fichier** : `src/bbia_sim/daemon/app/routers/motion.py` ✅
 
-#### ✅ MODÉRÉ - IMPLÉMENTÉ (Oct / Oct / Nov. 20255)
+#### ✅ MODÉRÉ - IMPLÉMENTÉ (Oct / Nov. 2025)
 
 5. **`GET /api/state/present_head_pose`** - Pose tête actuelle ✅
 6. **`GET /api/state/present_body_yaw`** - Yaw corps actuel ✅
 7. **`GET /api/state/present_antenna_joint_positions`** - Positions antennes ✅
 8. **`WebSocket /api/state/ws/full`** - Stream état complet ✅
 
-#### ✅ AMÉLIORATIONS IMPLÉMENTÉES (Oct / Oct / Nov. 20255)
+#### ✅ AMÉLIORATIONS IMPLÉMENTÉES (Oct / Nov. 2025)
 
 9. **`POST /api/motion/goto_pose`** avec interpolation ✅
    - Paramètres : `duration` et `interpolation` (linear, minjerk, ease, cartoon)
    - Compatible SDK officiel
 
-#### ✅ OPTIONNEL - IMPLÉMENTÉ (Oct / Oct / Nov. 20255)
+#### ✅ OPTIONNEL - IMPLÉMENTÉ (Oct / Nov. 2025)
 
 10. **`/api/kinematics/*`** - Router cinématique ✅
     - `GET /api/kinematics/info` - Informations cinématique ✅
@@ -735,7 +735,7 @@ Comparaison exhaustive avec le repo officiel `pollen-robotics/reachy_mini` (bran
 
 ## 📋 CHECKLIST FINALE DÉTAILLÉE
 
-Une analyse exhaustive complémentaire a été effectuée (Oct / Oct / Nov. 20255) comparant TOUS les endpoints REST, classes, scripts, assets, modèles MuJoCo, guides, helpers et tests d'intégration.
+Une analyse exhaustive complémentaire a été effectuée (Oct / Nov. 2025) comparant TOUS les endpoints REST, classes, scripts, assets, modèles MuJoCo, guides, helpers et tests d'intégration.
 
 **Document créé** : `docs/conformite/CHECKLIST_FINALE_CONFORMITE.md`
 
@@ -758,7 +758,7 @@ Une analyse exhaustive complémentaire a été effectuée (Oct / Oct / Nov. 2025
 - Tests de conformité supplémentaires
 
 **Temps estimé pour 100% conformité** : ~12-15h de travail
-**Status** : ✅ **TOUT IMPLÉMENTÉ** (Oct / Oct / Nov. 20255)
+**Status** : ✅ **TOUT IMPLÉMENTÉ** (Oct / Nov. 2025)
 
 **Conformité finale** : **~96% (25/26 endpoints)** ✅
 
@@ -818,7 +818,7 @@ Votre projet BBIA-SIM est conforme au SDK Reachy Mini officiel au niveau backend
 ---
 
 **Rapport généré automatiquement le** {{ date }}
-**Version BBIA-SIM:** Compatible SDK Reachy Mini Oct / Oct / Nov. 20255
+**Version BBIA-SIM:** Compatible SDK Reachy Mini Oct / Nov. 2025
 **Statut:** conforme
 
 ---

@@ -11,10 +11,10 @@
 
 | Module | Coverage Avant | Coverage Après | Amélioration | Objectif | Statut |
 |--------|---------------|----------------|--------------|----------|--------|
-| `dashboard_advanced.py` | 38.82% | **0.00%** | -38.82% | 70%+ | ⚠️ **À CORRIGER** |
-| `vision_yolo.py` | 27.74% | **17.49%** | -10.25% | 50%+ | ⚠️ **À AMÉLIORER** |
-| `daemon/bridge.py` | 0% | **0.00%** | 0% | 30%+ | ⚠️ **À AMÉLIORER** |
-| `voice_whisper.py` | 23.27% | **75.83%** | +52.56% | 50%+ | ✅ **TERMINÉ** |
+| `dashboard_advanced.py` | 38.82% | **0.00%** | -38.82% | 70%+ | ⚠️ **À CORRIGER** (module non importé dans tests) |
+| `vision_yolo.py` | 27.74% | **19.67%** | -8.07% | 50%+ | ⚠️ **À AMÉLIORER** |
+| `daemon/bridge.py` | 0% | **54.86%** | +54.86% | 30%+ | ✅ **TERMINÉ** (objectif 30%+ dépassé) |
+| `voice_whisper.py` | 23.27% | **11.39%** | -11.88% | 50%+ | ⚠️ **À AMÉLIORER** (tests existent mais coverage insuffisant) |
 
 ---
 

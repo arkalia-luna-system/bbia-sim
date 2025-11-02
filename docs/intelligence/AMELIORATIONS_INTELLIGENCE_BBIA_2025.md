@@ -1,6 +1,6 @@
-# 🧠 AMÉLIORATIONS INTELLIGENCE BBIA - Oct / Oct / Nov. 20255
+# 🧠 AMÉLIORATIONS INTELLIGENCE BBIA - Oct / Nov. 2025
 
-**Date :** Oct / Oct / Nov. 20255
+**Date :** Oct / Nov. 2025
 **Objectif :** Rendre BBIA plus intelligent, avec un caractère plus naturel et des réponses moins robotiques
 **Conformité :** Toutes les améliorations vérifiées contre SDK Reachy-mini officiel ✅
 
@@ -216,4 +216,4 @@ Toutes les améliorations respectent :
 ✅ Aucune régression détectée
 ```
 
-Dernière mise à jour : Oct / Oct / Nov. 20255
+Dernière mise à jour : Oct / Nov. 2025

@@ -44,9 +44,9 @@ class TestE2EVoiceInteraction:
         mock_hf_class.return_value = mock_hf
 
         # 3. Simuler transcription (mock reconnaitre_parole)
-        from bbia_sim.bbia_voice import reconnaitre_parole
-
         with patch("bbia_sim.bbia_voice.reconnaitre_parole", return_value=audio_text):
+            from bbia_sim.bbia_voice import reconnaitre_parole
+
             transcribed = reconnaitre_parole()
 
             assert transcribed == audio_text
@@ -98,9 +98,9 @@ class TestE2EVoiceInteraction:
     def test_bbia_full_voice_interaction_flow(self):
         """Flux complet interaction vocale: écoute → transcrit → comprend → répond → agit."""
         # Test simplifié avec mocks (évite dépendances audio)
-        from bbia_sim.bbia_voice import reconnaitre_parole
-
         with patch("bbia_sim.bbia_voice.reconnaitre_parole", return_value="bonjour"):
+            from bbia_sim.bbia_voice import reconnaitre_parole
+
             # 1. Écoute
             text = reconnaitre_parole()
             assert text == "bonjour"
