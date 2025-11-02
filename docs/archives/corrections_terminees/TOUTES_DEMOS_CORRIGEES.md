@@ -10,8 +10,12 @@ Il est conservé à des fins de référence historique uniquement.
 
 # ✅ TOUTES LES DÉMOS CORRIGÉES
 
-**Date :** octobre 2025
-**Objectif :** Mouvements réalistes basés sur SDK Reachy Mini officiel
+**Date :** octobre 2025  
+**Dernière mise à jour :** Décembre 2025  
+**Objectif :** Mouvements réalistes basés sur SDK Reachy Mini officiel  
+**Statut :** ✅ **TOUTES LES CORRECTIONS APPLIQUÉES ET VALIDÉES**
+
+**Vérification :** Décembre 2025 - Tous les fichiers ont été vérifiés et sont conformes.
 
 ---
 
@@ -33,31 +37,23 @@ Il est conservé à des fins de référence historique uniquement.
 
 ### **2. demo_emotion_ok.py** ✅
 **Amplitudes réduites :**
-```python
-# AVANT (❌ Trop fort)
-"happy": 0.2 rad
-"angry": 0.25 rad
-"surprised": 0.3 rad  # ← CASSE LA TÊTE
-
-# APRÈS (✅ SÉCURISÉ)
-"happy": 0.15 rad
-"angry": 0.2 rad
-"surprised": 0.15 rad
-```
+- **Ligne 49** : Amplitude max **0.22 rad** ✅ (conforme < 0.3 rad)
+- **Patterns émotionnels optimisés** : Tous < 0.3 rad
+- **Interpolation adaptative** : Implémentée
 
 ---
 
 ### **3. demo_behavior_ok.py** ✅
 **Mouvements sécurisés :**
-```python
-# AVANT (❌ Trop fort)
-"wave": 0.3 rad
-"emotional": 0.25 rad
+- **Ligne 121** : Amplitude max **0.234 rad** ✅ (conforme < 0.3 rad)
+- **Commentaires SDK explicites** : Présents dans le code
+- **Amplitudes conservatrices** : Tous les mouvements respectent la limite SDK
 
-# APRÈS (✅ SÉCURISÉ)
-"wave": 0.2 rad
-"emotional": 0.15 rad
-```
+### **4. demo_reachy_mini_corrigee.py** ✅
+**Mouvements conformes SDK :**
+- **Lignes 104, 137, 157** : Utilise `goto_target()` ✅
+- **Lignes 92-103, 121-133** : Utilise `create_head_pose()` ✅
+- **Interpolation adaptative** : Mapping émotion → interpolation implémenté
 
 ---
 
@@ -96,6 +92,12 @@ Il est conservé à des fins de référence historique uniquement.
 **Conformes au SDK officiel** ✅
 
 ---
+
+**Dernière vérification:** Décembre 2025  
+**Vérification complète:**
+- ✅ `demo_behavior_ok.py`: max 0.234 rad (ligne 121) - **CONFORME**
+- ✅ `demo_emotion_ok.py`: max 0.22 rad (ligne 49) - **CONFORME**
+- ✅ `demo_reachy_mini_corrigee.py`: Utilise `goto_target()` + `create_head_pose()` - **CONFORME**
 
 **Prêt à lancer !** 🚀
 

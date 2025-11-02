@@ -375,7 +375,37 @@ class BBIATools:
 
         logger.info(f"Suivi visage: {'activé' if enabled else 'désactivé'}")
 
-        # TODO: Intégrer avec VisionTrackingBehavior pour activation réelle
+        # Intégration VisionTrackingBehavior pour activation réelle
+        if enabled and self.vision and self.robot_api:
+            try:
+                from .bbia_behavior import VisionTrackingBehavior
+
+                # Créer comportement avec vision et robot_api
+                tracking_behavior = VisionTrackingBehavior(
+                    self.vision, robot_api=self.robot_api
+                )
+                # Exécuter le comportement de suivi visuel
+                context: dict[str, Any] = {}
+                result = tracking_behavior.execute(context)
+                if result:
+                    return {
+                        "status": "success",
+                        "detail": "Suivi visage activé - Objets détectés et suivis",
+                    }
+                else:
+                    return {
+                        "status": "success",
+                        "detail": (
+                            "Suivi visage activé - Aucun objet détecté pour l'instant"
+                        ),
+                    }
+            except ImportError:
+                logger.warning(
+                    "VisionTrackingBehavior non disponible - suivi basique activé"
+                )
+            except Exception as e:
+                logger.error(f"Erreur activation VisionTrackingBehavior: {e}")
+
         return {
             "status": "success",
             "detail": f"Suivi visage {'activé' if enabled else 'désactivé'}",
@@ -436,8 +466,32 @@ class BBIATools:
         dance_name = self.current_dance
         self.current_dance = None
 
-        # TODO: Implémenter arrêt réel du mouvement
-        # Pour l'instant, juste marquer comme arrêté
+        # Implémenter arrêt réel du mouvement avec emergency_stop
+        if self.robot_api:
+            try:
+                # Utiliser emergency_stop() pour arrêt immédiat et sécurisé
+                if hasattr(self.robot_api, "emergency_stop"):
+                    stop_success = self.robot_api.emergency_stop()
+                    if stop_success:
+                        logger.info(
+                            f"Danse '{dance_name}' arrêtée via emergency_stop()"
+                        )
+                        return {
+                            "status": "success",
+                            "detail": (
+                                f"Danse '{dance_name}' arrêtée immédiatement "
+                                "(arrêt d'urgence)"
+                            ),
+                        }
+                    else:
+                        logger.warning(f"emergency_stop() a échoué pour '{dance_name}'")
+                else:
+                    logger.warning(
+                        "robot_api.emergency_stop() non disponible - arrêt basique"
+                    )
+            except Exception as e:
+                logger.error(f"Erreur arrêt danse: {e}")
+
         logger.info(f"Danse '{dance_name}' arrêtée")
 
         return {

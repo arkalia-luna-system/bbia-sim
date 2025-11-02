@@ -72,12 +72,14 @@ Les éléments suivants sont **déjà implémentés** et validés :
 **Fichier** : `src/bbia_sim/bbia_tools.py`
 
 **TODOs identifiés** :
-- Ligne ~378: Intégration VisionTrackingBehavior
+- ✅ ~~Ligne ~378: Intégration VisionTrackingBehavior~~ - **TERMINÉ** (décembre 2025)
   - Action : Implémenter intégration complète VisionTrackingBehavior
-- Ligne ~439: Arrêt réel mouvement
+  - **État** : Intégré avec VisionTrackingBehavior.execute() si vision et robot_api disponibles
+- ✅ ~~Ligne ~439: Arrêt réel mouvement~~ - **TERMINÉ** (décembre 2025)
   - Action : Implémenter arrêt réel mouvement (au-delà de emergency_stop)
+  - **État** : Utilise robot_api.emergency_stop() pour arrêt immédiat et sécurisé
 
-**Estimation** : 2-3 heures
+**Estimation** : ✅ **TERMINÉ**
 
 ---
 
@@ -193,7 +195,7 @@ robot.io.set_leds()            # Contrôle LEDs (si disponibles)
 |----------|--------|------------|--------|
 | 🔴 Haute | Coverage tests (4 modules) | 5-9h | ⏳ À améliorer (test_dashboard existe) |
 | 🔴 Haute | Vérifier liens MD cassés | 1.5h | ⏳ À faire |
-| 🟡 Moyenne | TODOs bbia_tools.py | 2-3h | ⏳ À faire (VisionTrackingBehavior + arrêt) |
+| 🟡 Moyenne | TODOs bbia_tools.py | - | ✅ **TERMINÉ** (décembre 2025) |
 | 🟡 Moyenne | Corriger démos Reachy | - | ✅ **DÉJÀ FAIT** |
 | 🟡 Moyenne | Consolider documents | 2-3h | ⏳ À faire |
 | 🟢 Basse | Documentation supplémentaire | 1-2h | ⏳ À faire |

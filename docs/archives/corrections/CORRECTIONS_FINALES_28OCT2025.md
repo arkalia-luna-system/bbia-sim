@@ -66,7 +66,8 @@ time.sleep(1 / 60)             # 60 FPS fluides
    - ✅ Mouvements doux et réalistes
 
 4. **examples/demo_reachy_mini_corrigee.py**
-   - ✅ Mouvements limités à 0.25 rad
+   - ✅ Utilise `goto_target()` avec `create_head_pose()` (lignes 104, 137, 157)
+   - ✅ Interpolation adaptative par émotion implémentée
    - ✅ Conforme SDK officiel
 
 ## 🎯 CONFORMITÉ SDK OFFICIEL
