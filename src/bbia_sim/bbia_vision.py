@@ -26,6 +26,25 @@ logger = logging.getLogger(__name__)
 _bbia_vision_singleton: "BBIAVision | None" = None
 _bbia_vision_lock = threading.Lock()
 
+
+def get_bbia_vision_singleton(robot_api: Any | None = None) -> "BBIAVision":
+    """OPTIMISATION RAM: Retourne instance singleton BBIAVision partagée.
+    
+    Args:
+        robot_api: Interface RobotAPI (optionnel)
+        
+    Returns:
+        Instance singleton BBIAVision (créée si nécessaire)
+    """
+    global _bbia_vision_singleton
+    if _bbia_vision_singleton is None:
+        with _bbia_vision_lock:
+            if _bbia_vision_singleton is None:
+                _bbia_vision_singleton = BBIAVision(robot_api=robot_api, _use_singleton=False)
+                logger.debug("✅ Singleton BBIAVision créé (optimisation RAM)")
+    return _bbia_vision_singleton
+
+
 # Réduction du bruit de logs TensorFlow/MediaPipe (avant tout import MediaPipe)
 try:
     import os as _os  # noqa: F401

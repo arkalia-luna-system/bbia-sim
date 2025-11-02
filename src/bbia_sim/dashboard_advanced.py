@@ -53,7 +53,13 @@ class BBIAAdvancedWebSocketManager:
 
         # Modules BBIA
         self.emotions = BBIAEmotions()
-        self.vision = BBIAVision()
+        # OPTIMISATION RAM: Utiliser singleton BBIAVision si disponible
+        try:
+            from ..bbia_vision import get_bbia_vision_singleton
+            self.vision = get_bbia_vision_singleton()
+        except (ImportError, AttributeError):
+            # Fallback si singleton non disponible
+            self.vision = BBIAVision()
         # self.voice = BBIAVoice()  # Pas encore implémenté
         self.behavior_manager = BBIABehaviorManager()
         self.bbia_hf: Any | None = None  # Hugging Face chat module
@@ -220,10 +226,8 @@ class BBIAAdvancedWebSocketManager:
                     # Mettre à jour les métriques
                     self._update_metrics()
 
-                    # Ajouter à l'historique
+                    # OPTIMISATION RAM: Ajouter à l'historique (deque gère automatiquement maxlen)
                     self.metrics_history.append(self.current_metrics.copy())
-                    if len(self.metrics_history) > self.max_history:
-                        self.metrics_history.pop(0)
 
                     # Envoyer mise à jour
                     await self.send_metrics_update()

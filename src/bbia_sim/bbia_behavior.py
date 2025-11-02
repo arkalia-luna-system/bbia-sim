@@ -960,7 +960,8 @@ class BBIABehaviorManager:
         """
         self.behaviors: dict[str, BBIABehavior] = {}
         self.active_behaviors: list[str] = []
-        self.behavior_queue: Queue[tuple[str, dict[str, Any]]] = Queue()
+        # OPTIMISATION RAM: Limiter queue comportements (max 50)
+        self.behavior_queue: Queue[tuple[str, dict[str, Any]]] = Queue(maxsize=50)
         self.is_running = False
         self.worker_thread: threading.Thread | None = None
 
@@ -972,9 +973,13 @@ class BBIABehaviorManager:
 
         # Initialiser les modules BBIA
         self.emotions = BBIAEmotions()
-        self.vision = BBIAVision(
-            robot_api=robot_api,
-        )  # Passer robot_api pour camera SDK
+        # OPTIMISATION RAM: Utiliser singleton BBIAVision si disponible
+        try:
+            from .bbia_vision import get_bbia_vision_singleton
+            self.vision = get_bbia_vision_singleton(robot_api)
+        except (ImportError, AttributeError):
+            # Fallback si singleton non disponible
+            self.vision = BBIAVision(robot_api=robot_api)
 
         # Enregistrer les comportements par défaut
         self._register_default_behaviors()

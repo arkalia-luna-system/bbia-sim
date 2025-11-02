@@ -432,8 +432,8 @@ class TestWhisperSTT:
             stt = WhisperSTT(model_size="tiny", language="fr", enable_vad=True)
             audio_chunk = np.random.rand(16000).astype(np.float32)
 
-            # Mock sf pour éviter erreur import
-            with patch("bbia_sim.voice_whisper.sf") as mock_sf:
+            # Mock sf pour éviter erreur import (patch nécessaire pour éviter ImportError)
+            with patch("bbia_sim.voice_whisper.sf"):
                 result = stt.detect_speech_activity(audio_chunk)
                 # Devrait retourner True pour SPEECH avec score > 0.5
                 assert result is True

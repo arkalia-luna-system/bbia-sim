@@ -41,6 +41,8 @@ class BBIAMemory:
     def save_conversation(self, conversation_history: list[dict[str, Any]]) -> bool:
         """Sauvegarde l'historique conversation dans JSON.
 
+        OPTIMISATION RAM: Limite historique à 1000 messages max.
+
         Args:
             conversation_history: Liste des conversations (format BBIAHuggingFace)
 
@@ -48,11 +50,15 @@ class BBIAMemory:
             True si sauvegarde réussie
         """
         try:
+            # OPTIMISATION RAM: Limiter historique à 1000 messages (supprimer anciens)
+            max_history = 1000
+            limited_history = conversation_history[-max_history:] if len(conversation_history) > max_history else conversation_history
+            
             # Sauvegarder avec timestamp
             data = {
                 "last_updated": datetime.now().isoformat(),
-                "conversation_count": len(conversation_history),
-                "history": conversation_history,
+                "conversation_count": len(limited_history),
+                "history": limited_history,
             }
 
             with open(self.conversation_file, "w", encoding="utf-8") as f:
