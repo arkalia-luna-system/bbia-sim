@@ -3,9 +3,42 @@
 **Date :** Oct 25 / Nov 25  
 **Objectif :** Corrections supplémentaires problèmes performance identifiés
 
+**📊 [Observabilité](../observabilite/OBSERVABILITE.md)** | **🔧 [Guide avancé](../guides/GUIDE_AVANCE.md)**
+
 ---
 
 ## 🔴 Problèmes Identifiés et Corrigés
+
+### Vue d'Ensemble Optimisations
+
+```mermaid
+graph TB
+    subgraph "Avant Optimisation"
+        BEFORE1[_is_safe_path<br/>~10-50ms par appel]
+        BEFORE2[ConversationBehavior<br/>Instance BBIAVision dupliquée]
+    end
+    
+    subgraph "Optimisations Appliquées"
+        OPT1[Cache cwd/temp_roots<br/>Calcul 1 seule fois]
+        OPT2[Réutilisation vision<br/>Évite duplication]
+    end
+    
+    subgraph "Résultats"
+        RESULT1[Latence -10 à -50ms<br/>après premier appel]
+        RESULT2[Mémoire économisée<br/>~500-2000ms initialisation]
+    end
+    
+    BEFORE1 --> OPT1
+    BEFORE2 --> OPT2
+    
+    OPT1 --> RESULT1
+    OPT2 --> RESULT2
+    
+    style BEFORE1 fill:#FFB6C1
+    style BEFORE2 fill:#FFB6C1
+    style RESULT1 fill:#90EE90
+    style RESULT2 fill:#90EE90
+```
 
 ### 1. `_is_safe_path()` : Opérations coûteuses répétées ⚠️
 
