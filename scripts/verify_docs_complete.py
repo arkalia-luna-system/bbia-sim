@@ -442,7 +442,6 @@ class DocsVerifier:
                 break
             link_count += 1
 
-            link_text = match.group(1)
             link_url = match.group(2)
 
             # Skip liens spéciaux (ancres, mailto)
@@ -559,7 +558,7 @@ class DocsVerifier:
             # Espaces doubles
             if "  " in line and not line.strip().startswith("```"):
                 if self.fix_mode:
-                    fixed = re.sub(r" +", " ", line)
+                    re.sub(r" +", " ", line)
                     self.fixes[md_file].append(f"Ligne {i}: espaces doubles corrigés")
                 else:
                     self.warnings[md_file].append(f"⚠️  Ligne {i}: espaces doubles")
@@ -622,7 +621,6 @@ class DocsVerifier:
             if line.strip().startswith("```") and not line.strip().endswith("```"):
                 # Trouver bloc ouvert
                 open_count = content[: content.find(line)].count("```")
-                close_count = content[: content.find(line)].count("```")
                 if open_count % 2 != 0:
                     # Rechercher fermeture après
                     remaining = content[content.find(line) + len(line) :]

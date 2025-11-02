@@ -157,7 +157,7 @@ def main():
 
     if signature_diff:
         print(f"\n⚠️  Méthodes avec signatures différentes: {len(signature_diff)}")
-        for method_name, reason, off_info, bbia_info in signature_diff:
+        for method_name, reason, _off_info, _bbia_info in signature_diff:
             print(f"  - {method_name}: {reason}")
     else:
         print("✅ Toutes les signatures communes sont compatibles")

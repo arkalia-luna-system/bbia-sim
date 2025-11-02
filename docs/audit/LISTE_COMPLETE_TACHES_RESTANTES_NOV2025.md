@@ -152,6 +152,7 @@ Les éléments suivants sont **déjà implémentés** et ne nécessitent **aucun
 |----------|-------|------------|--------|
 | 🔴 Haute | Coverage tests (4 modules) | 8-12h | ⏳ À faire |
 | 🔴 Haute | Vérifier liens MD cassés | 1.5h | ⏳ À faire |
+| 🔴 Haute | Optimisations performance | 2-3h | ✅ **TERMINÉ** (simulation 60Hz ✅, voix ✅, regex ✅) |
 | 🟡 Moyenne | Consolider documents | 2-3h | ⏳ À faire |
 | 🟡 Moyenne | TODOs bbia_tools.py | 2-3h | ⏳ À faire |
 | 🟢 Basse | Documentation supplémentaire | 1-2h | ⏳ À faire |

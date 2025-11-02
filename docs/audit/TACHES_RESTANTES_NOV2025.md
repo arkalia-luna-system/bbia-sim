@@ -175,7 +175,7 @@
 5. ⏳ **À FAIRE** : Vérifier liens markdown cassés (1h)
 
 **Actions longues (> 3h)** :
-1. ⏳ **À FAIRE** : Logique démarrage démo (1-2h)
+1. ✅ **TERMINÉ** : Logique démarrage démo (1-2h) - **COMPLÉTÉ**
 2. ⏳ **À FAIRE** : Consolider documents redondants (2-3h)
 
 ---
