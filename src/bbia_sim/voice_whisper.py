@@ -11,18 +11,16 @@ import time
 from pathlib import Path
 from typing import Any, cast
 
+# Déclarer whisper comme Any dès le début pour éviter conflit de types
+whisper: Any
+
 try:
     import whisper as _whisper_module
 
     WHISPER_AVAILABLE = True
+    whisper = _whisper_module
 except ImportError:
     WHISPER_AVAILABLE = False
-    _whisper_module = None  # type: ignore[assignment]
-
-# Exposer whisper pour compatibilité, avec typage correct
-if _whisper_module is not None:
-    whisper = _whisper_module
-else:
     whisper = None  # type: ignore[assignment]
 
 # Imports optionnels pour les patches dans les tests
@@ -35,6 +33,11 @@ try:
     import soundfile as sf
 except ImportError:
     sf = None
+
+try:
+    import sounddevice as sd
+except ImportError:
+    sd = None
 
 logger = logging.getLogger(__name__)
 
@@ -191,7 +194,6 @@ class WhisperSTT:
 
         try:
             import numpy as np
-            import sounddevice as sd
             import soundfile as sf
 
             logger.info(f"🎤 Enregistrement microphone ({duration}s)...")
@@ -375,7 +377,6 @@ class WhisperSTT:
             import tempfile
 
             import numpy as np
-            import sounddevice as sd
             import soundfile as sf
 
             logger.info(f"🎤 Enregistrement microphone avec VAD ({duration}s max)...")
@@ -493,7 +494,6 @@ class WhisperSTT:
             import tempfile
 
             import numpy as np
-            import sounddevice as sd
             import soundfile as sf
 
             logger.info(

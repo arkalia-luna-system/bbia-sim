@@ -96,8 +96,8 @@ class TestWhisperStreaming(unittest.TestCase):
         except ImportError as e:
             self.skipTest(f"Module non disponible: {e}")
 
-    @patch("sounddevice")
-    @patch("soundfile")
+    @patch("src.bbia_sim.voice_whisper.sd")
+    @patch("src.bbia_sim.voice_whisper.sf")
     @patch("src.bbia_sim.voice_whisper.whisper")
     def test_streaming_initialization(
         self,
@@ -121,6 +121,12 @@ class TestWhisperStreaming(unittest.TestCase):
 
         # Mock soundfile
         mock_soundfile.write.return_value = None
+
+        # S'assurer que les mocks sont utilisables dans le module
+        import src.bbia_sim.voice_whisper as voice_whisper_module
+
+        voice_whisper_module.sd = mock_sounddevice
+        voice_whisper_module.sf = mock_soundfile
 
         # Test streaming (court pour éviter timeout)
         # Note: Ne pas stocker result car test mock (serait None en vrai)

@@ -3,8 +3,8 @@
 [![Version](https://img.shields.io/badge/version-1.3.2-blue.svg)](https://github.com/arkalia-luna-system/bbia-sim)
 [![Python](https://img.shields.io/badge/python-3.11%2B-blue.svg)](https://python.org)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://github.com/arkalia-luna-system/bbia-sim/actions)
-[![Tests](https://img.shields.io/badge/tests-800%2B-brightgreen.svg)](https://github.com/arkalia-luna-system/bbia-sim/actions)
+[![CI Status](https://github.com/arkalia-luna-system/bbia-sim/actions/workflows/ci.yml/badge.svg)](https://github.com/arkalia-luna-system/bbia-sim/actions/workflows/ci.yml)
+[![Tests](https://img.shields.io/badge/tests-1200%2B-brightgreen.svg)](https://github.com/arkalia-luna-system/bbia-sim/actions)
 [![Code Quality](https://img.shields.io/badge/code%20quality-A%2B-brightgreen.svg)](https://github.com/arkalia-luna-system/bbia-sim)
 [![SDK Conformity](https://img.shields.io/badge/SDK%20conformity-100%25-brightgreen.svg)](https://github.com/pollen-robotics/reachy_mini)
 [![Documentation](https://img.shields.io/badge/docs-sphinx%20%7C%20readthedocs-blue.svg)](docs/)
@@ -15,16 +15,21 @@ Simulation BBIA ↔ robot conforme et opérationnelle.
 
 ## 📋 **EN 30 SECONDES :**
 
-BBIA-SIM est un moteur cognitif Python avec 12 émotions robotiques pour Reachy Mini.
+BBIA-SIM est un moteur cognitif Python avec **12 émotions robotiques** pour Reachy Mini.
 
 ![BBIA-SIM Reachy Mini Robot](./assets/images/robot_animation.gif)
 
-• Conforme au SDK officiel Pollen Robotics  
-• Backend unifié : même code en simulation et sur robot réel  
-• Validé par une large suite de tests et une couverture suivie en CI  
-• Open-source (MIT)
+### ✨ Points Clés
 
-**[🚀 Quick Start](#-démarrage-rapide)** | **[📚 Docs Débutant](docs/guides/GUIDE_DEBUTANT.md)** | **[🔬 Docs Avancé](docs/guides/GUIDE_AVANCE.md)**
+• ✅ **Conforme au SDK officiel Pollen Robotics** (100% validé)  
+• 🔄 **Backend unifié** : même code en simulation et sur robot réel  
+• 🧪 **1200+ tests automatisés** (unitaires, intégration, E2E)  
+• 📚 **280 fichiers documentation** Markdown (guides, API, architecture)  
+• ⚡ **Optimisations performance** : caches globaux (modèles IA réutilisés)  
+• 🔒 **CI/CD professionnel** : Black, Ruff, MyPy, Bandit, pip-audit  
+• 🌟 **Open-source** (MIT)
+
+**[🚀 Quick Start](#-démarrage-rapide)** | **[📚 Docs Débutant](docs/guides/GUIDE_DEBUTANT.md)** | **[🔬 Docs Avancé](docs/guides/GUIDE_AVANCE.md)** | **[📋 Projets](PROJECTS.md)**
 
 ---
 
@@ -64,12 +69,13 @@ python scripts/hardware_dry_run_reachy_mini.py --output-dir artifacts
 ### 🔗 Guide complet Reachy Mini
 - `docs/guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md`
 
-<!-- Badges CI/Qualité (exemple) -->
-[![CI](https://github.com/arkalia-luna-system/bbia-sim/actions/workflows/ci.yml/badge.svg)](https://github.com/arkalia-luna-system/bbia-sim/actions/workflows/ci.yml)
-[![Coverage](https://img.shields.io/badge/coverage-codecov-green)](https://app.codecov.io/gh/arkalia-luna-system/bbia-sim)
-[![Typing: mypy](https://img.shields.io/badge/typing-mypy-4B8BBE)](#)
-[![Lint: ruff](https://img.shields.io/badge/lint-ruff-46A2F1)](#)
-[![Security: bandit](https://img.shields.io/badge/security-bandit-2E5E82)](#)
+## 🏆 Badges Qualité & CI/CD
+
+[![CI Status](https://github.com/arkalia-luna-system/bbia-sim/actions/workflows/ci.yml/badge.svg)](https://github.com/arkalia-luna-system/bbia-sim/actions/workflows/ci.yml)
+[![Coverage](https://img.shields.io/badge/coverage-~50%25-green)](https://app.codecov.io/gh/arkalia-luna-system/bbia-sim)
+[![Typing: mypy](https://img.shields.io/badge/typing-mypy-4B8BBE)](https://github.com/arkalia-luna-system/bbia-sim)
+[![Lint: ruff](https://img.shields.io/badge/lint-ruff-46A2F1)](https://github.com/arkalia-luna-system/bbia-sim)
+[![Security: bandit](https://img.shields.io/badge/security-bandit-2E5E82)](https://github.com/arkalia-luna-system/bbia-sim)
 [![Release](https://img.shields.io/github/v/release/arkalia-luna-system/bbia-sim)](https://github.com/arkalia-luna-system/bbia-sim/releases)
 
 ## 🎯 Vue d'ensemble
@@ -618,4 +624,12 @@ open htmlcov/index.html
 Le robot Reachy Mini est simulé avec une fidélité élevée aux spécifications officielles. La suite de tests fournit une couverture suivie et des mesures de performance documentées (dry-run matériel et démonstrations sur robot réel).
 
 ---
+---
+
+## 📊 Projets & Portfolio
+
+Voir [`PROJECTS.md`](PROJECTS.md) pour la liste complète de mes projets (10+ projets actifs).
+
+---
+
 *Dernière mise à jour : Octobre 2025*

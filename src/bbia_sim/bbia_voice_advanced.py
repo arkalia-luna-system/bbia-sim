@@ -33,13 +33,9 @@ except ImportError:
     )
 
 # Import fallback pyttsx3 (éviter import circulaire)
-PYTTSX3_AVAILABLE = False
-try:
-    import pyttsx3
+import importlib.util
 
-    PYTTSX3_AVAILABLE = True
-except ImportError:
-    pass
+PYTTSX3_AVAILABLE = importlib.util.find_spec("pyttsx3") is not None
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -107,7 +103,10 @@ class BBIAVoiceAdvanced:
             logger.info("🔄 Utilisation fallback pyttsx3")
             try:
                 # OPTIMISATION PERFORMANCE: Utiliser cache global au lieu de pyttsx3.init() direct
-                from .bbia_voice import _get_pyttsx3_engine, _get_cached_voice_id
+                from .bbia_voice import (
+                    _get_cached_voice_id,
+                    _get_pyttsx3_engine,
+                )
 
                 self.pyttsx3_engine = (
                     _get_pyttsx3_engine()
