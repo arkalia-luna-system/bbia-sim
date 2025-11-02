@@ -1,7 +1,7 @@
 # ❓ FAQ - Questions Fréquentes BBIA
 
-**Date** : octobre 2025  
-**Version** : 1.3.1
+**Date** : Oct 25 / Nov 25  
+**Version** : 1.3.2
 
 ---
 
@@ -235,5 +235,5 @@ export BBIA_DISABLE_SIMULATION=1
 
 ---
 
-**Dernière mise à jour** : octobre 2025
+**Dernière mise à jour** : Oct 25 / Nov 25
 

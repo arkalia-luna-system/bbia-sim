@@ -66,7 +66,7 @@
 
 ### Robot cible
 - **Modèle** : Reachy Mini Wireless
-- **Livraison** : Fin 2025 / Début 2026
+- **Livraison** : Fin 2025 / Début 2025
 - **Prix** : 449$ (~500€)
 - **Statut** : Open source
 
@@ -119,7 +119,7 @@
 - **Il y a 5 jours** : Article TechCrunch
 - **Il y a 2 jours** : Autres publications
 - **Fin 2025** : Livraison prévue
-- **Début 2026** : Livraison alternative
+- **Début 2025** : Livraison alternative
 
 ### Partenaires
 - **Hugging Face** : Implication majeure
@@ -173,4 +173,4 @@ Référence visuelle Reachy Mini
 **Fabricant** : Pollen Robotics
 **Partenaire** : Hugging Face
 **Statut** : Open Source
-**Livraison** : Fin 2025 / Début 2026
+**Livraison** : Fin 2025 / Début 2025

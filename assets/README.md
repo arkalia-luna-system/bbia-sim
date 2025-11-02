@@ -38,7 +38,7 @@ graph TB
     end
     
     subgraph "Contexte BBIA"
-        LIVRAISON[Livraison<br/>Fin 2025 / Début 2026]
+        LIVRAISON[Livraison<br/>Fin 2025 / Début 2025]
         PRIX[Prix<br/>449$ (~500€)]
         FABRICANT[Fabricant<br/>Pollen Robotics]
     end
@@ -174,4 +174,4 @@ assets/
 **Fabricant** : Pollen Robotics  
 **Partenaire** : Hugging Face  
 **Statut** : Open Source  
-**Livraison** : Fin 2025 / Début 2026 
+**Livraison** : Fin 2025 / Début 2025 

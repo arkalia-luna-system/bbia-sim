@@ -282,12 +282,12 @@ Les modules analysés sont maintenant :
 - optimisés pour de meilleures performances
 - plus robustes (validation)
 - plus expressifs (transitions)
-- prêts pour robot physique (bêta octobre 2024)
+- prêts pour robot physique (bêta octobre 2025)
 
 Prochaine étape : analyser `robot_api.py` et les modules BBIA restants
 
 ---
 
 *Analyse effectuée selon SDK officiel: https://github.com/pollen-robotics/reachy_mini*
-*SDK disponible depuis Octobre 2024 (mentionné dans shipping update Octobre 2024)*
+*SDK disponible depuis Octobre 2025 (mentionné dans shipping update Octobre 2025)*
 

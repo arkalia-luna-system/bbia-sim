@@ -1,0 +1,835 @@
+[
+  {
+    "file": "ACTIVITE_GIT_ANALYSE.md",
+    "is_recent": false,
+    "issues": [
+      "Ligne 32: '2024' → '2025'",
+      "Ligne 46: '2024' → '2025'",
+      "Ligne 51: '2024' → '2025'",
+      "Ligne 103: '2024' → '2025'",
+      "Ligne 106: '2024' → '2025'",
+      "Ligne 109: '2024' → '2025'",
+      "Ligne 126: '2024' → '2025'",
+      "Ligne 20: 'novembre 2025' → 'Oct 2025 / Nov 2025'",
+      "Ligne 31: 'novembre 2025' → 'Oct 2025 / Nov 2025'",
+      "Ligne 61: 'novembre 2025' → 'Oct 2025 / Nov 2025'",
+      "Ligne 124: 'novembre 2025' → 'Oct 2025 / Nov 2025'",
+      "Ligne 20: 'novembre 2025' → 'Oct 2025 / Nov 2025'",
+      "Ligne 31: 'novembre 2025' → 'Oct 2025 / Nov 2025'",
+      "Ligne 61: 'novembre 2025' → 'Oct 2025 / Nov 2025'",
+      "Ligne 124: 'novembre 2025' → 'Oct 2025 / Nov 2025'"
+    ],
+    "changes": [
+      [
+        "2024",
+        "2025"
+      ],
+      [
+        "2024",
+        "2025"
+      ],
+      [
+        "2024",
+        "2025"
+      ],
+      [
+        "2024",
+        "2025"
+      ],
+      [
+        "2024",
+        "2025"
+      ],
+      [
+        "2024",
+        "2025"
+      ],
+      [
+        "2024",
+        "2025"
+      ],
+      [
+        "novembre 2025",
+        "Oct 2025 / Nov 2025"
+      ],
+      [
+        "novembre 2025",
+        "Oct 2025 / Nov 2025"
+      ],
+      [
+        "novembre 2025",
+        "Oct 2025 / Nov 2025"
+      ],
+      [
+        "novembre 2025",
+        "Oct 2025 / Nov 2025"
+      ],
+      [
+        "Novembre 2025",
+        "Oct 2025 / Nov 2025"
+      ],
+      [
+        "Novembre 2025",
+        "Oct 2025 / Nov 2025"
+      ],
+      [
+        "Novembre 2025",
+        "Oct 2025 / Nov 2025"
+      ],
+      [
+        "Novembre 2025",
+        "Oct 2025 / Nov 2025"
+      ]
+    ],
+    "line_count": 139
+  },
+  {
+    "file": "ANALYSE_PROFIL_PROFESSIONNEL.md",
+    "is_recent": true,
+    "issues": [
+      "Ligne 4: '2026' → '2025'",
+      "Ligne 127: '2026' → '2025'",
+      "Ligne 277: '2026' → '2025'",
+      "Ligne 282: '2026' → '2025'",
+      "Ligne 95: 'mars 2025' → 'octobre 2025'",
+      "Ligne 144: 'Décembre 2025' → 'octobre 2025'",
+      "Ligne 237: 'décembre 2025' → 'octobre 2025'",
+      "Ligne 273: 'Décembre 2025' → 'octobre 2025'",
+      "Ligne 95: 'mars 2025' → 'Octobre 2025'",
+      "Ligne 144: 'Décembre 2025' → 'Octobre 2025'",
+      "Ligne 237: 'décembre 2025' → 'Octobre 2025'",
+      "Ligne 273: 'Décembre 2025' → 'Octobre 2025'"
+    ],
+    "changes": [
+      [
+        "2026",
+        "2025"
+      ],
+      [
+        "2026",
+        "2025"
+      ],
+      [
+        "2026",
+        "2025"
+      ],
+      [
+        "2026",
+        "2025"
+      ],
+      [
+        "mars 2025",
+        "octobre 2025"
+      ],
+      [
+        "décembre 2025",
+        "octobre 2025"
+      ],
+      [
+        "décembre 2025",
+        "octobre 2025"
+      ],
+      [
+        "décembre 2025",
+        "octobre 2025"
+      ],
+      [
+        "Mars 2025",
+        "Octobre 2025"
+      ],
+      [
+        "Décembre 2025",
+        "Octobre 2025"
+      ],
+      [
+        "Décembre 2025",
+        "Octobre 2025"
+      ],
+      [
+        "Décembre 2025",
+        "Octobre 2025"
+      ]
+    ],
+    "line_count": 289
+  },
+  {
+    "file": "ANALYSE_VERIFICATION_PROJET.md",
+    "is_recent": true,
+    "issues": [
+      "Ligne 65: '2024' → '2025'",
+      "Ligne 66: '2024' → '2025'",
+      "Ligne 122: '2024' → '2025'",
+      "Ligne 125: '2024' → '2025'",
+      "Ligne 233: '2024' → '2025'",
+      "Ligne 209: '2026' → '2025'"
+    ],
+    "changes": [
+      [
+        "2024",
+        "2025"
+      ],
+      [
+        "2024",
+        "2025"
+      ],
+      [
+        "2024",
+        "2025"
+      ],
+      [
+        "2024",
+        "2025"
+      ],
+      [
+        "2024",
+        "2025"
+      ],
+      [
+        "2026",
+        "2025"
+      ]
+    ],
+    "line_count": 237
+  },
+  {
+    "file": "CHECKLIST_VALIDATION_HARDWARE_DECEMBRE_2025.md",
+    "is_recent": true,
+    "issues": [
+      "Ligne 1: 'Décembre 2025' → 'octobre 2025'",
+      "Ligne 4: 'Décembre 2025' → 'octobre 2025'",
+      "Ligne 368: 'Décembre 2025' → 'octobre 2025'",
+      "Ligne 1: 'Décembre 2025' → 'Octobre 2025'",
+      "Ligne 4: 'Décembre 2025' → 'Octobre 2025'",
+      "Ligne 368: 'Décembre 2025' → 'Octobre 2025'"
+    ],
+    "changes": [
+      [
+        "décembre 2025",
+        "octobre 2025"
+      ],
+      [
+        "décembre 2025",
+        "octobre 2025"
+      ],
+      [
+        "décembre 2025",
+        "octobre 2025"
+      ],
+      [
+        "Décembre 2025",
+        "Octobre 2025"
+      ],
+      [
+        "Décembre 2025",
+        "Octobre 2025"
+      ],
+      [
+        "Décembre 2025",
+        "Octobre 2025"
+      ]
+    ],
+    "line_count": 370
+  },
+  {
+    "file": "PROJECTS.md",
+    "is_recent": false,
+    "issues": [
+      "Ligne 208: '2024' → '2025'",
+      "Ligne 251: '2024' → '2025'"
+    ],
+    "changes": [
+      [
+        "2024",
+        "2025"
+      ],
+      [
+        "2024",
+        "2025"
+      ]
+    ],
+    "line_count": 253
+  },
+  {
+    "file": "RECAP_4_RECOMMANDATIONS_COMPLETE.md",
+    "is_recent": true,
+    "issues": [
+      "Ligne 21: '2024' → '2025'",
+      "Ligne 227: '2024' → '2025'",
+      "Ligne 228: '2024' → '2025'",
+      "Ligne 248: '2026' → '2025'",
+      "Ligne 269: '2026' → '2025'",
+      "Ligne 15: 'novembre 2025' → 'Oct 2025 / Nov 2025'",
+      "Ligne 38: 'novembre 2025' → 'Oct 2025 / Nov 2025'",
+      "Ligne 129: 'Décembre 2025' → 'octobre 2025'",
+      "Ligne 241: 'Décembre 2025' → 'octobre 2025'",
+      "Ligne 268: 'Décembre 2025' → 'octobre 2025'",
+      "Ligne 15: 'novembre 2025' → 'Oct 2025 / Nov 2025'",
+      "Ligne 38: 'novembre 2025' → 'Oct 2025 / Nov 2025'",
+      "Ligne 129: 'Décembre 2025' → 'Octobre 2025'",
+      "Ligne 241: 'Décembre 2025' → 'Octobre 2025'",
+      "Ligne 268: 'Décembre 2025' → 'Octobre 2025'",
+      "Ligne 274: Date récente à mettre à jour → 'Oct 2025 / Nov 2025'"
+    ],
+    "changes": [
+      [
+        "2024",
+        "2025"
+      ],
+      [
+        "2024",
+        "2025"
+      ],
+      [
+        "2024",
+        "2025"
+      ],
+      [
+        "2026",
+        "2025"
+      ],
+      [
+        "2026",
+        "2025"
+      ],
+      [
+        "novembre 2025",
+        "Oct 2025 / Nov 2025"
+      ],
+      [
+        "novembre 2025",
+        "Oct 2025 / Nov 2025"
+      ],
+      [
+        "décembre 2025",
+        "octobre 2025"
+      ],
+      [
+        "décembre 2025",
+        "octobre 2025"
+      ],
+      [
+        "décembre 2025",
+        "octobre 2025"
+      ],
+      [
+        "Novembre 2025",
+        "Oct 2025 / Nov 2025"
+      ],
+      [
+        "Novembre 2025",
+        "Oct 2025 / Nov 2025"
+      ],
+      [
+        "Décembre 2025",
+        "Octobre 2025"
+      ],
+      [
+        "Décembre 2025",
+        "Octobre 2025"
+      ],
+      [
+        "Décembre 2025",
+        "Octobre 2025"
+      ]
+    ],
+    "line_count": 276
+  },
+  {
+    "file": "assets/README.md",
+    "is_recent": false,
+    "issues": [
+      "Ligne 41: '2026' → '2025'",
+      "Ligne 177: '2026' → '2025'"
+    ],
+    "changes": [
+      [
+        "2026",
+        "2025"
+      ],
+      [
+        "2026",
+        "2025"
+      ]
+    ],
+    "line_count": 177
+  },
+  {
+    "file": "docs/archives/README.md",
+    "is_recent": false,
+    "issues": [
+      "Ligne 25: '2024' → '2025'",
+      "Ligne 25: '2024' → '2025'"
+    ],
+    "changes": [
+      [
+        "2024",
+        "2025"
+      ],
+      [
+        "2024",
+        "2025"
+      ]
+    ],
+    "line_count": 66
+  },
+  {
+    "file": "docs/archives/audits/ANALYSE_REDONDANCES_MD.md",
+    "is_recent": false,
+    "issues": [
+      "Ligne 16: '2024' → '2025'",
+      "Ligne 22: '2024' → '2025'",
+      "Ligne 136: '2024' → '2025'",
+      "Ligne 182: '2024' → '2025'"
+    ],
+    "changes": [
+      [
+        "2024",
+        "2025"
+      ],
+      [
+        "2024",
+        "2025"
+      ],
+      [
+        "2024",
+        "2025"
+      ],
+      [
+        "2024",
+        "2025"
+      ]
+    ],
+    "line_count": 199
+  },
+  {
+    "file": "docs/archives/audits_termines/CORRECTIONS_APPLIQUEES_2025_01_31.md",
+    "is_recent": false,
+    "issues": [
+      "Ligne 49: '2024' → '2025'",
+      "Ligne 79: '2024' → '2025'",
+      "Ligne 82: '2024' → '2025'",
+      "Ligne 87: '2024' → '2025'"
+    ],
+    "changes": [
+      [
+        "2024",
+        "2025"
+      ],
+      [
+        "2024",
+        "2025"
+      ],
+      [
+        "2024",
+        "2025"
+      ],
+      [
+        "2024",
+        "2025"
+      ]
+    ],
+    "line_count": 154
+  },
+  {
+    "file": "docs/archives/audits_termines/CORRECTIONS_FINALES_2025_01_31.md",
+    "is_recent": false,
+    "issues": [
+      "Ligne 66: '2024' → '2025'"
+    ],
+    "changes": [
+      [
+        "2024",
+        "2025"
+      ]
+    ],
+    "line_count": 138
+  },
+  {
+    "file": "docs/archives/audits_termines/NOTE_ARCHIVES_ANTENNES.md",
+    "is_recent": false,
+    "issues": [
+      "Ligne 49: '2024' → '2025'"
+    ],
+    "changes": [
+      [
+        "2024",
+        "2025"
+      ]
+    ],
+    "line_count": 63
+  },
+  {
+    "file": "docs/archives/conformite/CONFORMITE_SDK_RESUME.md",
+    "is_recent": false,
+    "issues": [
+      "Ligne 128: '2024' → '2025'"
+    ],
+    "changes": [
+      [
+        "2024",
+        "2025"
+      ]
+    ],
+    "line_count": 151
+  },
+  {
+    "file": "docs/archives/organisation/PLAN_NETTOYAGE_DOCUMENTATION_2025.md",
+    "is_recent": false,
+    "issues": [
+      "Ligne 49: '2024' → '2025'",
+      "Ligne 155: '2024' → '2025'"
+    ],
+    "changes": [
+      [
+        "2024",
+        "2025"
+      ],
+      [
+        "2024",
+        "2025"
+      ]
+    ],
+    "line_count": 213
+  },
+  {
+    "file": "docs/archives/organisation/RAPPORT_ANALYSE_EXPERT_COMPLETE.md",
+    "is_recent": false,
+    "issues": [
+      "Ligne 344: '2024' → '2025'",
+      "Ligne 306: '2026' → '2025'"
+    ],
+    "changes": [
+      [
+        "2024",
+        "2025"
+      ],
+      [
+        "2026",
+        "2025"
+      ]
+    ],
+    "line_count": 347
+  },
+  {
+    "file": "docs/archives/prompts/PROMPT_CURSOR_BBIA_REACHY_FINAL.md",
+    "is_recent": false,
+    "issues": [
+      "Ligne 255: '2024' → '2025'"
+    ],
+    "changes": [
+      [
+        "2024",
+        "2025"
+      ]
+    ],
+    "line_count": 691
+  },
+  {
+    "file": "docs/audit/ANALYSE_MENTORAT_PROFIL_2025.md",
+    "is_recent": false,
+    "issues": [
+      "Ligne 362: '2026' → '2025'"
+    ],
+    "changes": [
+      [
+        "2026",
+        "2025"
+      ]
+    ],
+    "line_count": 379
+  },
+  {
+    "file": "docs/audit/AUDIT_COMPARATIF_REPO_OFFICIEL_COMPLET.md",
+    "is_recent": false,
+    "issues": [
+      "Ligne 19: '2024' → '2025'",
+      "Ligne 29: '2024' → '2025'",
+      "Ligne 31: '2024' → '2025'",
+      "Ligne 47: '2024' → '2025'",
+      "Ligne 323: '2024' → '2025'",
+      "Ligne 360: '2024' → '2025'",
+      "Ligne 542: '2024' → '2025'",
+      "Ligne 547: '2024' → '2025'",
+      "Ligne 600: '2024' → '2025'"
+    ],
+    "changes": [
+      [
+        "2024",
+        "2025"
+      ],
+      [
+        "2024",
+        "2025"
+      ],
+      [
+        "2024",
+        "2025"
+      ],
+      [
+        "2024",
+        "2025"
+      ],
+      [
+        "2024",
+        "2025"
+      ],
+      [
+        "2024",
+        "2025"
+      ],
+      [
+        "2024",
+        "2025"
+      ],
+      [
+        "2024",
+        "2025"
+      ],
+      [
+        "2024",
+        "2025"
+      ]
+    ],
+    "line_count": 602
+  },
+  {
+    "file": "docs/audit/BILAN_COMPLET_MARKDOWN_CONFORMITE_2025.md",
+    "is_recent": false,
+    "issues": [
+      "Ligne 4: '2024' → '2025'",
+      "Ligne 41: '2024' → '2025'",
+      "Ligne 192: '2024' → '2025'",
+      "Ligne 255: '2024' → '2025'",
+      "Ligne 259: '2024' → '2025'",
+      "Ligne 333: '2024' → '2025'",
+      "Ligne 357: '2024' → '2025'",
+      "Ligne 364: '2024' → '2025'"
+    ],
+    "changes": [
+      [
+        "2024",
+        "2025"
+      ],
+      [
+        "2024",
+        "2025"
+      ],
+      [
+        "2024",
+        "2025"
+      ],
+      [
+        "2024",
+        "2025"
+      ],
+      [
+        "2024",
+        "2025"
+      ],
+      [
+        "2024",
+        "2025"
+      ],
+      [
+        "2024",
+        "2025"
+      ],
+      [
+        "2024",
+        "2025"
+      ]
+    ],
+    "line_count": 367
+  },
+  {
+    "file": "docs/audit/COMPATIBILITE_REACHY_MINI_OFFICIEL.md",
+    "is_recent": false,
+    "issues": [
+      "Ligne 4: '2024' → '2025'"
+    ],
+    "changes": [
+      [
+        "2024",
+        "2025"
+      ]
+    ],
+    "line_count": 318
+  },
+  {
+    "file": "docs/conformite/CONFORMITE_REACHY_MINI_COMPLETE.md",
+    "is_recent": false,
+    "issues": [
+      "Ligne 58: '2024' → '2025'"
+    ],
+    "changes": [
+      [
+        "2024",
+        "2025"
+      ]
+    ],
+    "line_count": 832
+  },
+  {
+    "file": "docs/guides/GUIDE_AVANCE.md",
+    "is_recent": false,
+    "issues": [
+      "Ligne 137: '2024' → '2025'",
+      "Ligne 137: '2024' → '2025'"
+    ],
+    "changes": [
+      [
+        "2024",
+        "2025"
+      ],
+      [
+        "2024",
+        "2025"
+      ]
+    ],
+    "line_count": 142
+  },
+  {
+    "file": "docs/guides/GUIDE_NLP_SMOLVLM.md",
+    "is_recent": false,
+    "issues": [
+      "Ligne 142: '2024' → '2025'"
+    ],
+    "changes": [
+      [
+        "2024",
+        "2025"
+      ]
+    ],
+    "line_count": 392
+  },
+  {
+    "file": "docs/guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md",
+    "is_recent": false,
+    "issues": [
+      "Ligne 18: '2026' → '2025'"
+    ],
+    "changes": [
+      [
+        "2026",
+        "2025"
+      ]
+    ],
+    "line_count": 467
+  },
+  {
+    "file": "docs/mouvements/MOUVEMENTS_REACHY_MINI.md",
+    "is_recent": false,
+    "issues": [
+      "Ligne 56: '2024' → '2025'"
+    ],
+    "changes": [
+      [
+        "2024",
+        "2025"
+      ]
+    ],
+    "line_count": 148
+  },
+  {
+    "file": "docs/performance/OPTIMISATIONS_EXPERT_ROBOTIQUE_2025.md",
+    "is_recent": false,
+    "issues": [
+      "Ligne 285: '2024' → '2025'",
+      "Ligne 292: '2024' → '2025'",
+      "Ligne 292: '2024' → '2025'"
+    ],
+    "changes": [
+      [
+        "2024",
+        "2025"
+      ],
+      [
+        "2024",
+        "2025"
+      ],
+      [
+        "2024",
+        "2025"
+      ]
+    ],
+    "line_count": 293
+  },
+  {
+    "file": "docs/reachy/REACHY_MINI_REFERENCE.md",
+    "is_recent": false,
+    "issues": [
+      "Ligne 69: '2026' → '2025'",
+      "Ligne 122: '2026' → '2025'",
+      "Ligne 176: '2026' → '2025'"
+    ],
+    "changes": [
+      [
+        "2026",
+        "2025"
+      ],
+      [
+        "2026",
+        "2025"
+      ],
+      [
+        "2026",
+        "2025"
+      ]
+    ],
+    "line_count": 176
+  },
+  {
+    "file": "docs/references/PROJECT_HISTORY.md",
+    "is_recent": false,
+    "issues": [
+      "Ligne 49: '2024' → '2025'",
+      "Ligne 55: '2024' → '2025'",
+      "Ligne 62: '2024' → '2025'",
+      "Ligne 68: '2024' → '2025'",
+      "Ligne 74: '2024' → '2025'",
+      "Ligne 89: '2024' → '2025'",
+      "Ligne 94: '2024' → '2025'",
+      "Ligne 99: '2024' → '2025'",
+      "Ligne 124: '2024' → '2025'"
+    ],
+    "changes": [
+      [
+        "2024",
+        "2025"
+      ],
+      [
+        "2024",
+        "2025"
+      ],
+      [
+        "2024",
+        "2025"
+      ],
+      [
+        "2024",
+        "2025"
+      ],
+      [
+        "2024",
+        "2025"
+      ],
+      [
+        "2024",
+        "2025"
+      ],
+      [
+        "2024",
+        "2025"
+      ],
+      [
+        "2024",
+        "2025"
+      ],
+      [
+        "2024",
+        "2025"
+      ]
+    ],
+    "line_count": 143
+  }
+]

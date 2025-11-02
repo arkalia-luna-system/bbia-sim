@@ -1,6 +1,6 @@
 # 🧠 Guide NLP et SmolVLM2 - BBIA
 
-**Date** : octobre 2025  
+**Date** : Oct 25 / Nov 25  
 **Version** : 1.3.1
 
 ---
@@ -139,7 +139,7 @@ model_configs["multimodal"] = {
     },
     "moondream2": {
         "repo_id": "vikhyatk/moondream2",
-        "revision": "2024-08-26",
+        "revision": "2025-08-26",
     },
 }
 ```
@@ -388,5 +388,5 @@ pip install transformers torch
 
 ---
 
-**Dernière mise à jour** : octobre 2025
+**Dernière mise à jour** : Oct 25 / Nov 25
 

@@ -10,7 +10,6 @@ from pathlib import Path
 import sys
 from typing import Any
 
-
 # Ajouter src au path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
@@ -125,7 +124,9 @@ def generate_report() -> str:
     missing_deps = [dep for dep, available in deps.items() if not available]
     if missing_deps:
         report_lines.append(f"  ⚠️  Dépendances manquantes: {', '.join(missing_deps)}")
-        report_lines.append(f"     Installer avec: pip install {' '.join(missing_deps)}")
+        report_lines.append(
+            f"     Installer avec: pip install {' '.join(missing_deps)}"
+        )
     else:
         report_lines.append("  ✅ Toutes les dépendances sont installées")
 

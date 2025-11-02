@@ -17,7 +17,7 @@
   4. `Fix: corrections black, ruff, mypy - formatage imports et types`
 
 **Observations :**
-- Activité concentrée récemment (novembre 2025)
+- Activité concentrée récemment (Oct 2025 / Nov 2025)
 - Commits de qualité : corrections, documentation, optimisations
 - Focus sur qualité code (linting, types, formatage)
 
@@ -28,8 +28,8 @@
 ### "Commits Quotidiens 7 Mois"
 
 ❓ **Vérification partielle :**
-- Seulement **4 commits trouvés** le 2 novembre 2025 sur branche `future`
-- Pas d'historique complet depuis avril 2024 visible sur cette branche
+- Seulement **4 commits trouvés** le 2 Oct 2025 / Nov 2025 sur branche `future`
+- Pas d'historique complet depuis octobre 2025 visible sur cette branche
 
 **Explications possibles :**
 1. ✅ Commits sur **branches locales non pushées** (backup, develop, main)
@@ -43,12 +43,12 @@
 git branch -a
 
 # Vérifier historique complet (toutes branches)
-git log --all --since="2024-04-01" --oneline | wc -l
+git log --all --since="2025-04-01" --oneline | wc -l
 
 # Vérifier activité par branche
 for branch in $(git branch -a | grep -v HEAD); do
   echo "=== $branch ==="
-  git log $branch --since="2024-04-01" --oneline | wc -l
+  git log $branch --since="2025-04-01" --oneline | wc -l
 done
 ```
 
@@ -58,7 +58,7 @@ done
 
 ### Branche `future` (active)
 
-- **Commits récents** : 4 (2 novembre 2025)
+- **Commits récents** : 4 (2 Oct 2025 / Nov 2025)
 - **Type commits** : Corrections, documentation, optimisations
 - **Qualité commits** : Messages clairs, conventionnelle
 
@@ -100,13 +100,13 @@ git gc --prune=now --aggressive
 
 ```bash
 # Analyser develop
-git log develop --since="2024-04-01" --oneline | wc -l
+git log develop --since="2025-04-01" --oneline | wc -l
 
 # Analyser main
-git log main --since="2024-04-01" --oneline | wc -l
+git log main --since="2025-04-01" --oneline | wc -l
 
 # Analyser backups (si réparés)
-git log backup-v1.3.2-stable --since="2024-04-01" --oneline | wc -l
+git log backup-v1.3.2-stable --since="2025-04-01" --oneline | wc -l
 ```
 
 ### 3. Documenter Activité Réelle
@@ -121,9 +121,9 @@ git log backup-v1.3.2-stable --since="2024-04-01" --oneline | wc -l
 ## 💡 Conclusion
 
 **Activité Git visible :**
-- ✅ Commits récents de qualité (novembre 2025)
+- ✅ Commits récents de qualité (Oct 2025 / Nov 2025)
 - ✅ Messages commits conventionnels
-- ⚠️ Historique complet depuis avril 2024 non visible sur branche `future`
+- ⚠️ Historique complet depuis octobre 2025 non visible sur branche `future`
 
 **Recommandation :**
 - Vérifier branches `develop` et `main` pour historique complet

@@ -62,8 +62,8 @@
 ### Commits Quotidiens (7 mois)
 
 ❓ **À vérifier** : Le texte dit "7 mois de commits quotidiens"
-- Seulement 3 commits trouvés depuis avril 2024 (peut être une branche différente)
-- **Action** : Vérifier avec `git log --all --since="2024-04-01" --format="%ai %s" | wc -l`
+- Seulement 3 commits trouvés depuis octobre 2025 (peut être une branche différente)
+- **Action** : Vérifier avec `git log --all --since="2025-04-01" --format="%ai %s" | wc -l`
 
 **Possible explication** : Commits sur branche locale non pushée, ou worktree séparé
 
@@ -119,10 +119,10 @@
 
 ```bash
 # Vérifier toutes les branches
-git log --all --since="2024-04-01" --oneline | wc -l
+git log --all --since="2025-04-01" --oneline | wc -l
 
 # Vérifier activité quotidienne
-git log --all --since="2024-04-01" --format="%ai" | cut -d' ' -f1 | sort | uniq -c
+git log --all --since="2025-04-01" --format="%ai" | cut -d' ' -f1 | sort | uniq -c
 
 # Vérifier stars/forks (manuellement sur GitHub)
 # https://github.com/arkalia-luna-system/bbia-sim
@@ -206,7 +206,7 @@ Avec pour chacun :
 1. **Visibilité** : README.md optimisé, badges, vidéos
 2. **Hardware** : Préparer validation Décembre
 3. **Portfolio** : Créer page démos avec vidéos
-4. **Promotion** : Plan pour post-robot (Janvier 2026)
+4. **Promotion** : Plan pour post-robot (octobre 2025)
 
 ---
 
@@ -230,7 +230,7 @@ Toutes les affirmations techniques vérifiées sont **VRAIES** :
 ---
 
 **Prochaine étape recommandée** :
-1. Vérifier commits : `git log --all --since="2024-04-01" | wc -l`
+1. Vérifier commits : `git log --all --since="2025-04-01" | wc -l`
 2. Créer `PROJECTS.md` listant tous tes projets
 3. Préparer checklist validation hardware (Décembre)
 4. Optimiser README.md avec badges et structure pro

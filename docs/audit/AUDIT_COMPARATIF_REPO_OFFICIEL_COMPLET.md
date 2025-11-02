@@ -16,7 +16,7 @@
 - ✅ Limites articulations extraites exactement du XML
 - ✅ Dépendances SDK officiel présentes dans `pyproject.toml`
 - ✅ Antennes correctement bloquées (`forbidden_joints`) - conforme XML officiel
-- ✅ Documentation mise à jour (octobre 2024)
+- ✅ Documentation mise à jour (octobre 2025)
 
 ### ✅ Corrections Appliquées (octobre 2025)
 - ✅ **Antennes** : Documentation corrigée - toutes mentions "antennes animées" → "antennes bloquées (sécurité hardware)"
@@ -26,9 +26,9 @@
 
 ### ⚠️ Points à Vérifier/Corriger (Actions Futures)
 - ⚠️ **Version SDK** : Vérifier version exacte utilisée dans repo officiel
-- ⚠️ **Software Release** : Vérifier version SDK disponible sur GitHub (email oct 2024 mentionne première version)
+- ⚠️ **Software Release** : Vérifier version SDK disponible sur GitHub (email oct 2025 mentionne première version)
 - ⚠️ **Configuration caméra** : Vérifier paramètres exacts (résolution, FOV) vs repo officiel
-- ⚠️ **Beta Shipments** : 125 unités en octobre 2024 - vérifier retours communauté pour ajustements
+- ⚠️ **Beta Shipments** : 125 unités en octobre 2025 - vérifier retours communauté pour ajustements
 
 ---
 
@@ -44,7 +44,7 @@ Poids : 1.5kg
 ```
 **Source** : `docs/reachy/REACHY_MINI_REFERENCE.md` ligne 100
 
-#### ⚠️ Repo Officiel (Email Octobre 2024)
+#### ⚠️ Repo Officiel (Email Octobre 2025)
 - **Hauteur** : 28 cm (actif) / 23 cm (veille) ✅ **CONFORME**
 - **Largeur** : 16 cm ✅ **CONFORME**
 - **Poids** : 1,5 kg ✅ **CONFORME**
@@ -320,7 +320,7 @@ self.joint_limits = {
 
 **Source** : `docs/reachy/REACHY_MINI_REFERENCE.md` ligne 82
 
-#### ⚠️ Email Officiel (Octobre 2024)
+#### ⚠️ Email Officiel (Octobre 2025)
 - **Wireless** : "4 microphones avec traitement en réseau" ✅
 - **Lite** : "2 microphones" ✅
 
@@ -357,7 +357,7 @@ self.joint_limits = {
 - `docs/conformite/CONFORMITE_REACHY_MINI_COMPLETE.md` ✅
 
 #### ⚠️ À Vérifier
-- Informations à jour avec dernières specs (octobre 2024)
+- Informations à jour avec dernières specs (octobre 2025)
 - Erreurs typographiques
 - Commandes SDK exactes
 
@@ -539,12 +539,12 @@ self.joint_limits = {
 
 ---
 
-## 11. 📧 INFORMATIONS EMAIL OFFICIEL (OCTOBRE 2024)
+## 11. 📧 INFORMATIONS EMAIL OFFICIEL (OCTOBRE 2025)
 
 ### Nouveautés Communiquées
 
 #### 🚀 Beta Shipments
-- **125 unités** expédiées en octobre 2024
+- **125 unités** expédiées en octobre 2025
 - **Programme** : Community Beta Program
 - **Objectif** : Recueillir feedback avant rollout plus large
 - **Sélection** : Testeurs sélectionnés pour capacité feedback régulier et constructif
@@ -597,6 +597,6 @@ self.joint_limits = {
 
 **Document créé le octobre 2025**  
 **Dernière mise à jour** : octobre 2025 (Corrections appliquées)  
-**Basé sur** : Email Pollen Robotics Octobre 2024, Repo officiel GitHub, Code BBIA v1.3.2  
+**Basé sur** : Email Pollen Robotics Octobre 2025, Repo officiel GitHub, Code BBIA v1.3.2  
 **Prochaine mise à jour** : Après réception robot physique (Octobre 2025)
 

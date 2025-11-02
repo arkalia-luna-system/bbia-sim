@@ -1,6 +1,6 @@
 # Analyse : Améliorations Gratuites Possibles
 
-**Date** : octobre 2025  
+**Date** : Oct 25 / Nov 25  
 **Objectif** : Identifier ce qui peut être amélioré avec des solutions 100% gratuites  
 **Contrainte** : Aucun service payant (pas d'OpenAI Realtime API, pas de gpt-realtime payant)
 
@@ -304,5 +304,5 @@ def detect_speech_activity(self, audio_chunk):
 
 ---
 
-**Dernière mise à jour** : octobre 2025
+**Dernière mise à jour** : Oct 25 / Nov 25
 

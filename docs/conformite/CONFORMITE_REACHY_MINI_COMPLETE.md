@@ -55,7 +55,7 @@ from reachy_mini import ReachyMini
 from reachy_mini.utils import create_head_pose
 from reachy_mini.utils.interpolation import InterpolationTechnique
 # SDK Version: Compatible avec les spécifications d'Octobre 2025
-# GitHub: https://github.com/pollen-robotics/reachy_mini (disponible depuis Octobre 2024)
+# GitHub: https://github.com/pollen-robotics/reachy_mini (disponible depuis Octobre 2025)
 ```
 
 #### Classe ReachyMini

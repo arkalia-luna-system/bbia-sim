@@ -46,32 +46,32 @@ Les rapports détaillés des phases précédentes sont archivés dans `docs/arch
 - Tests: 18/18 passent
 - Performance: latence < 1 ms
 
-### **v1.2.1 - Octobre 2024**
+### **v1.2.1 - Octobre 2025**
 **Corrections et qualité**
 - Corrections typage MyPy
 - Formatage code (Black, Ruff)
 - 38 tests passent
 
-### **v1.2.0 - Octobre 2024**
+### **v1.2.0 - Octobre 2025**
 **IA légère activée**
 - Whisper STT + YOLOv8n
 - Dashboard web
 - Scripts one-click
 - Golden tests
 
-### **v1.1.1 - Octobre 2024**
+### **v1.1.1 - Octobre 2025**
 **RobotAPI unifié**
 - Interface abstraite Sim/Robot
 - Golden tests
 - CI/CD
 
-### **v1.1.0 - Octobre 2024**
+### **v1.1.0 - Octobre 2025**
 **Simulation complète**
 - Robot Reachy Mini assemblé
 - Modules BBIA intégrés
 - API REST + WebSocket
 
-### **v1.0.0 - Octobre 2024**
+### **v1.0.0 - Octobre 2025**
 **Première release**
 - Simulation MuJoCo base
 - Modules BBIA
@@ -86,17 +86,17 @@ Les rapports détaillés des phases précédentes sont archivés dans `docs/arch
 - Backend ReachyMiniBackend opérationnel
 - Tests automatisés 18/18
 
-### **IA Intégrée** (Octobre 2024)
+### **IA Intégrée** (Octobre 2025)
 - Whisper STT pour reconnaissance vocale
 - YOLOv8n pour vision
 - MediaPipe pour détection visage
 
-### **RobotAPI Unifié** (Octobre 2024)
+### **RobotAPI Unifié** (Octobre 2025)
 - Interface abstraite pour tous backends
 - Migration transparente Sim ↔ Robot
 - Tests de conformité automatisés
 
-### **Simulation 3D** (Octobre 2024)
+### **Simulation 3D** (Octobre 2025)
 - Modèle MuJoCo officiel
 - Viewer 3D interactif
 - Assets STL officiels

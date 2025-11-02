@@ -1,6 +1,6 @@
 # 🔍 Comparaison : Application Conversation Officielle vs BBIA
 
-**Date** : octobre 2025  
+**Date** : Oct 25 / Nov 25  
 **Source** : Documentation officielle Reachy Mini Conversation App  
 **Version BBIA** : 1.3.2
 
@@ -193,7 +193,7 @@
 
 ## 🎯 Où en est BBIA ?
 
-### **Score Global** : **~85-90%** ✅ (mis à jour avec toutes améliorations terminées)
+### **Score Global** : **~85-90%** ✅ (mis à jour Oct 25 / Nov 25 avec toutes améliorations terminées)
 
 | Catégorie | Score | Détails |
 |-----------|-------|---------|
@@ -296,5 +296,5 @@
 
 ---
 
-**Dernière mise à jour** : octobre 2025 (outils LLM intégrés avec BBIAHuggingFace.chat())
+**Dernière mise à jour** : Oct 25 / Nov 25 (outils LLM intégrés avec BBIAHuggingFace.chat() + model_optimizer + bbia_doctor)
 

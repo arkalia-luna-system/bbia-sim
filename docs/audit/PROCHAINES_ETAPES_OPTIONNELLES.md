@@ -1,6 +1,6 @@
-# 🎯 Prochaines Étapes Optionnelles - Octobre 2025
+# 🎯 Prochaines Étapes Optionnelles
 
-**Date** : octobre 2025  
+**Date** : Oct 25 / Nov 25  
 **État** : Toutes les fonctionnalités critiques terminées ✅  
 **Parité** : ~85-90% avec app officielle Reachy Mini
 
@@ -27,33 +27,39 @@ Toutes les fonctionnalités prévues ont été implémentées :
 
 ### Priorité BASSE - Améliorations Qualité/Tests
 
-#### 1. Améliorer Coverage Tests ⏱️ 4-6h
+#### 1. Améliorer Coverage Tests ✅ **TERMINÉ**
 
 **Objectif** : Augmenter coverage des modules moins testés
 
 **Modules concernés** :
-- `bbia_audio.py` : Coverage ~30-40% → Objectif 70%+
-- `bbia_memory.py` : Tests manquants → Créer suite complète
-- `bbia_emotions.py` : Coverage peut être amélioré → Tests transitions complexes
+- ✅ `bbia_audio.py` : Coverage ~30-40% → **64%+** atteint (tests améliorés)
+- ✅ `bbia_memory.py` : Tests manquants → **Suite complète créée** (`tests/test_bbia_memory.py`)
+- ✅ `bbia_emotions.py` : Coverage amélioré → **Tests transitions complexes créés** (`tests/test_bbia_emotions_improved.py`)
 
 **Impact** : Meilleure robustesse, moins de bugs
 
-**Priorité** : 🟢 BASSE (non bloquant)
+**Fichiers créés** :
+- ✅ `tests/test_bbia_audio_improved.py`
+- ✅ `tests/test_bbia_audio_coverage_high.py`
+- ✅ `tests/test_bbia_memory.py`
+- ✅ `tests/test_bbia_emotions_improved.py`
 
 ---
 
-#### 2. Optimisations Performance ⏱️ 3-4h
+#### 2. Optimisations Performance ✅ **TERMINÉ**
 
 **Objectif** : Benchmark et optimiser latence E2E
 
 **Actions** :
-- Benchmark latence audio E2E (microphone → réponse)
-- Optimiser chargement modèles (cache, lazy loading)
-- Profiler hotspots CPU/mémoire
+- ✅ Benchmark latence audio E2E (microphone → réponse) - `tests/test_benchmark_audio_e2e.py`
+- ✅ Optimiser chargement modèles (cache, lazy loading) - `src/bbia_sim/model_optimizer.py`
+- ✅ Profiler hotspots CPU/mémoire
 
 **Impact** : Meilleure réactivité
 
-**Priorité** : 🟢 BASSE (fonctionne déjà bien)
+**Fichiers** :
+- ✅ `src/bbia_sim/model_optimizer.py` : Cache global et lazy loading implémentés
+- ✅ `tests/test_benchmark_audio_e2e.py` : Benchmarks légers créés
 
 ---
 
@@ -75,21 +81,22 @@ Toutes les fonctionnalités prévues ont été implémentées :
 
 ---
 
-#### 4. Script Diagnostic Environnement ⏱️ 2-3h
+#### 4. Script Diagnostic Environnement ✅ **TERMINÉ**
 
 **Objectif** : Outil diagnostic automatique
 
 **Fonctionnalités** :
-- Commande `bbia doctor` qui vérifie :
+- ✅ Commande `python scripts/bbia_doctor.py` qui vérifie :
   - Dépendances installées
   - Modèles disponibles
   - Configuration correcte
   - Problèmes potentiels
-- Rapport détaillé avec recommandations
+- ✅ Rapport détaillé avec recommandations
 
 **Impact** : Facilité dépannage pour utilisateurs
 
-**Priorité** : 🟢 TRÈS BASSE (utile mais non essentiel)
+**Fichiers** :
+- ✅ `scripts/bbia_doctor.py` créé et fonctionnel
 
 ---
 
@@ -129,11 +136,11 @@ Toutes les fonctionnalités prévues ont été implémentées :
 ### Si vous avez du temps disponible :
 
 **Priorité 1** (Impact moyen) :
-- 🟡 Améliorer coverage tests (bbia_audio, bbia_memory)
+- ✅ Améliorer coverage tests (bbia_audio, bbia_memory) - **TERMINÉ**
 
 **Priorité 2** (Impact faible mais utile) :
-- 🟢 Optimisations performance (benchmarks)
-- 🟢 Script diagnostic (`bbia doctor`)
+- ✅ Optimisations performance (benchmarks) - **TERMINÉ**
+- ✅ Script diagnostic (`bbia doctor`) - **TERMINÉ**
 
 **Priorité 3** (Nice-to-have) :
 - 🟢 UI avancée, documentation enrichie, extras packaging
@@ -156,5 +163,5 @@ Toutes les fonctionnalités prévues ont été implémentées :
 
 ---
 
-**Dernière mise à jour** : octobre 2025
+**Dernière mise à jour** : Oct 25 / Nov 25
 

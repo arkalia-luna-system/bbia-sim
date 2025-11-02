@@ -587,34 +587,53 @@ class OfficialRepoComparator:
         bbia_audio_dir = self.bbia_root / "assets" / "voice"
 
         if official_audio_dir.exists():
-            official_audio = {f.name for f in official_audio_dir.glob("*.wav") if not f.name.startswith("._")}
-            bbia_audio = {f.name for f in bbia_audio_dir.glob("*.wav")} if bbia_audio_dir.exists() else set()
+            official_audio = {
+                f.name
+                for f in official_audio_dir.glob("*.wav")
+                if not f.name.startswith("._")
+            }
+            bbia_audio = (
+                {f.name for f in bbia_audio_dir.glob("*.wav")}
+                if bbia_audio_dir.exists()
+                else set()
+            )
 
             missing_audio = official_audio - bbia_audio
             for audio_file in missing_audio:
-                diffs.append(Difference(
-                    category="Assets",
-                    file_path=f"assets/voice/{audio_file}",
-                    line=None,
-                    endpoint=None,
-                    description=f"Fichier audio {audio_file} présent dans SDK officiel mais absent dans BBIA",
-                    bbia_value=None,
-                    official_value=audio_file,
-                    severity="MEDIUM",
-                    status="pending",
-                    correction=f"Vérifier si {audio_file} doit être ajouté",
-                    test_file=None,
-                ))
+                diffs.append(
+                    Difference(
+                        category="Assets",
+                        file_path=f"assets/voice/{audio_file}",
+                        line=None,
+                        endpoint=None,
+                        description=f"Fichier audio {audio_file} présent dans SDK officiel mais absent dans BBIA",
+                        bbia_value=None,
+                        official_value=audio_file,
+                        severity="MEDIUM",
+                        status="pending",
+                        correction=f"Vérifier si {audio_file} doit être ajouté",
+                        test_file=None,
+                    )
+                )
 
         # Comparer constantes (constants.py)
-        official_constants = self.official_root / "src" / "reachy_mini" / "utils" / "constants.py"
+        official_constants = (
+            self.official_root / "src" / "reachy_mini" / "utils" / "constants.py"
+        )
         if official_constants.exists():
             try:
                 import re
+
                 official_content = official_constants.read_text()
                 # Chercher constantes importantes
-                constants_patterns = [r"URDF_ROOT_PATH", r"ASSETS_ROOT_PATH", r"MODELS_ROOT_PATH"]
-                found_constants = [c for c in constants_patterns if re.search(c, official_content)]
+                constants_patterns = [
+                    r"URDF_ROOT_PATH",
+                    r"ASSETS_ROOT_PATH",
+                    r"MODELS_ROOT_PATH",
+                ]
+                found_constants = [
+                    c for c in constants_patterns if re.search(c, official_content)
+                ]
 
                 if found_constants:
                     # Vérifier si ces constantes existent dans BBIA (chercher dans plusieurs fichiers)
@@ -632,19 +651,21 @@ class OfficialRepoComparator:
                                 break
 
                     if not bbia_has_constants and found_constants:
-                        diffs.append(Difference(
-                            category="Config",
-                            file_path="src/bbia_sim/",
-                            line=None,
-                            endpoint=None,
-                            description=f"Constantes {', '.join(found_constants)} présentes dans SDK officiel mais peut-être absentes dans BBIA",
-                            bbia_value=None,
-                            official_value="constants.py",
-                            severity="MEDIUM",
-                            status="pending",
-                            correction="Vérifier si ces constantes doivent être ajoutées",
-                            test_file=None,
-                        ))
+                        diffs.append(
+                            Difference(
+                                category="Config",
+                                file_path="src/bbia_sim/",
+                                line=None,
+                                endpoint=None,
+                                description=f"Constantes {', '.join(found_constants)} présentes dans SDK officiel mais peut-être absentes dans BBIA",
+                                bbia_value=None,
+                                official_value="constants.py",
+                                severity="MEDIUM",
+                                status="pending",
+                                correction="Vérifier si ces constantes doivent être ajoutées",
+                                test_file=None,
+                            )
+                        )
             except Exception as e:
                 logger.debug(f"Erreur comparaison constantes: {e}")
 

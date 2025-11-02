@@ -46,7 +46,7 @@ Il est conservé à des fins de référence historique uniquement.
 
 5. **`docs/audit/AUDIT_COMPARATIF_REPO_OFFICIEL_COMPLET.md`**
    - **Ajouté sections** :
-     - Section 11 : Informations Email Officiel (Octobre 2024)
+     - Section 11 : Informations Email Officiel (Octobre 2025)
      - Section 12 : Actions Correctives Appliquées
    - **Mis à jour** : Résumé exécutif avec corrections appliquées
 
@@ -76,15 +76,15 @@ Il est conservé à des fins de référence historique uniquement.
 
 ## 📧 INFORMATIONS EMAIL OFFICIEL INTÉGRÉES
 
-### Email Pollen Robotics (Octobre 2024)
+### Email Pollen Robotics (Octobre 2025)
 
 #### 🚀 Beta Shipments
-- **125 unités** expédiées en octobre 2024
+- **125 unités** expédiées en octobre 2025
 - Programme Community Beta
 - Feedback intégré dans software
 
 #### 📦 Shipments Restants
-- **~3,000 unités** avant Noël 2024
+- **~3,000 unités** avant Noël 2025
 - Livraisons supplémentaires octobre 2025
 - BBIA : Robot prévu en Octobre 2025 ✅
 

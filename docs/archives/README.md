@@ -22,7 +22,7 @@ Ce répertoire conserve l’historique. Pour éviter la redondance, voici les po
 
 ## Qualité & Conformité
 - Conformité SDK (résumé): `conformite/CONFORMITE_SDK_RESUME.md`
-- Rapport conformité 2024 (référence): `conformite/RAPPORT_CONFORMITE_SDK_2024.md`
+- Rapport conformité 2025 (référence): `conformite/RAPPORT_CONFORMITE_SDK_2024.md`
 
 ## Audit & Corrections
 - Audit 3D BBIA (référence): `audits/AUDIT_3D_BBIA.md`

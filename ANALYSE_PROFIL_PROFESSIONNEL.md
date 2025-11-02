@@ -1,7 +1,7 @@
 # 🔍 ANALYSE CRITIQUE DU PROFIL PROFESSIONNEL
 ## Vérification codebase vs. Affirmations reçues
 
-**Date d'analyse :** Janvier 2026  
+**Date d'analyse :** octobre 2025  
 **Codebase analysée :** `/Volumes/T7/bbia-reachy-sim`  
 **Venv utilisé :** `venv` (activé et validé)
 
@@ -92,7 +92,7 @@
 - L'affirmation est **conservatrice**, tu as MIEUX que prévu
 
 #### ❓ "Commits quotidiens depuis 7 mois"
-- **Vérification partielle** : 444 commits depuis ~mars 2025
+- **Vérification partielle** : 444 commits depuis ~octobre 2025
   - 7 mois = ~210 jours
   - 444 commits / 210 jours = **~2 commits/jour en moyenne**
   - **Pas "quotidiens" au sens strict**, mais activité **très régulière**
@@ -124,7 +124,7 @@
 
 ## ❌ CE QUI EST EXAGÉRÉ OU DOUTEUX
 
-### 1. Salaires Belges (2025-2026)
+### 1. Salaires Belges (2025-2025)
 
 #### ❌ "4 500-5 500€ brut/mois (54-66k€/an) - Senior hybride IA/robotique"
 - **⚠️ À VÉRIFIER** : Salaires belges peuvent être inférieurs
@@ -141,7 +141,7 @@
 
 ### 2. Timing Robot Reachy Mini
 
-#### ❓ "Décembre 2025 - Robot arrive"
+#### ❓ "octobre 2025 - Robot arrive"
 - **Non vérifiable ici** (dépend de commande/expédition)
 - ⚠️ **Si robot pas encore arrivé** : Tous les scénarios reposent sur cette date
 - **Recommandation** : Vérifier date réelle d'arrivée robot
@@ -234,7 +234,7 @@ pytest --cov=src/bbia_sim --cov-report=term --cov-report=html
 | **Coverage ~50%** | ❓ À VÉRIFIER | Mentionné dans README, à tester |
 | **Salaire 54-66k€/an** | ⚠️ OPTIMISTE | Probable : 48-54k€/an (démarrage) |
 | **0 stars GitHub** | ❓ NON VÉRIFIABLE | Nécessite vérification manuelle |
-| **Robot décembre 2025** | ❓ NON VÉRIFIABLE | Dépend commande |
+| **Robot octobre 2025** | ❓ NON VÉRIFIABLE | Dépend commande |
 
 ---
 
@@ -270,16 +270,16 @@ pytest --cov=src/bbia_sim --cov-report=term --cov-report=html
 2. ✅ Vérifier stats GitHub (manuellement)
 3. ✅ Lister tous tes repos GitHub
 
-### Décembre 2025 (si robot arrive) :
+### octobre 2025 (si robot arrive) :
 1. ✅ Tests hardware non-skippés
 2. ✅ 5 démos filmées (vision, audio, mouvements, émotions, intégration)
 
-### Janvier 2026 :
+### octobre 2025 :
 1. ✅ LinkedIn profil minimaliste (2h)
 2. ✅ README GitHub enrichi (4h)
 3. ✅ Page démos avec vidéos (2h)
 
-### Février 2026 :
+### octobre 2025 :
 1. ✅ Candidatures ciblées (20-30 offres)
 2. ✅ CV adapté par offre
 

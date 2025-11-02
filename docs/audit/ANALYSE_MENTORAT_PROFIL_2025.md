@@ -359,7 +359,7 @@ Avec ton profil:
 **Reachy Mini arrive en décembre**:
 - Une fois robot physique + démo vidéo → **+20% de salaire potentiel**
 - Portfolio passe de "très bon" à **"incontournable"**
-- Timing janvier-février 2026 → **moment optimal** pour négocier
+- Timing janvier-octobre 2025 → **moment optimal** pour négocier
 
 ---
 
