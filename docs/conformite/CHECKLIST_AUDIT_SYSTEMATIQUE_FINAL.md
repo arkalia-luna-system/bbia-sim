@@ -42,7 +42,7 @@ from fastapi import APIRouter, Depends, WebSocket, WebSocketDisconnect
 from ..backend_adapter import BackendAdapter, get_backend_adapter, ws_get_backend_adapter
 from ...models import AnyPose, FullState, as_any_pose
 ```
-**Test:** ✅ `pytest tests/test_api_apps.py::TestAppsEndpoints::test_list_available_apps_by_source` - PASS  
+**Test:** ✅ `pytest tests/test_api_apps.py::TestAppsEndpoints::test_list_available_apps_by_source` - PASS
 **QA:** ✅ Black formaté, Ruff corrigé (4 warnings noqa supprimés)
 
 ---

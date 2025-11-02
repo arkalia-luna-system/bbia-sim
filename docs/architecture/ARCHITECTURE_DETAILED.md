@@ -428,8 +428,8 @@ logging.basicConfig(
 class SafetyManager:
  """Gestionnaire de sécurité BBIA."""
 
-    def __init__(self):
-        self.safe_amplitude_limit = 0.3  # rad
+ def __init__(self):
+ self.safe_amplitude_limit = 0.3 # rad
  # Note: Antennes maintenant optionnelles (commentées dans forbidden_joints)
  self.forbidden_joints = {} # Antennes optionnelles, passive_* toujours bloqués
  self.max_latency_ms = 40.0

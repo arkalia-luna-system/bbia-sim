@@ -318,7 +318,7 @@ Résultats : 15/16 tests passent
 ### Simulation → robot réel
 ```mermaid
 sequenceDiagram
-    participant User as Utilisateur
+ participant User as Utilisateur
  participant Dashboard as Dashboard Web
  participant BBIA as Modules BBIA
  participant RobotAPI as RobotAPI Unifié
