@@ -1,7 +1,19 @@
 # 📊 Résumé État Actuel BBIA
 
 **Date** : Oct 25 / Nov 25  
-**Parité avec App Officielle** : **~85-90%** (vs Reachy Mini Conversation App)
+**Parité avec App Officielle** : **~85-90%** (vs Reachy Mini Conversation App)  
+**📚 [Comparaison détaillée](./COMPARAISON_APP_CONVERSATION_OFFICIELLE.md)** | **🎯 [Prochaines étapes](./PROCHAINES_ETAPES_OPTIONNELLES.md)**
+
+---
+
+## 🎯 Vue d'Ensemble Rapide
+
+```mermaid
+pie title Parité Fonctionnelle avec App Officielle
+    "Implémenté (Gratuit)" : 85
+    "Optionnel (Payant)" : 10
+    "Non critique" : 5
+```
 
 ---
 
@@ -30,42 +42,101 @@
 
 ## ✅ TOUT EST IMPLÉMENTÉ !
 
+### Architecture des Améliorations
+
+```mermaid
+graph LR
+    subgraph "Vision"
+        V1[YOLOv8n] --> V2[MediaPipe]
+        V2 --> V3[SmolVLM2]
+        V3 --> V4[Description Riche]
+    end
+    
+    subgraph "NLP"
+        N1[sentence-transformers] --> N2[Détection Outils]
+        N2 --> N3[30+ Patterns FR]
+        N1 --> N4[NER Extraction]
+        N4 --> N5[Angles/Intensités]
+    end
+    
+    subgraph "Audio"
+        A1[Whisper STT] --> A2[VAD silero/vad]
+        A2 --> A3[Streaming]
+        A3 --> A4[Latence 500ms]
+    end
+    
+    V4 --> BBIA[BBIAHuggingFace]
+    N5 --> BBIA
+    A4 --> BBIA
+    BBIA --> ROBOT[RobotAPI]
+```
+
 ### Toutes les améliorations ont été réalisées :
 
 1. ✅ **SmolVLM2 pour vision** - Alternative gratuite à gpt-realtime
    - Modèle : `HuggingFaceTB/SmolVLM` et `vikhyatk/moondream2`
+   - 📄 [Guide complet](../guides/GUIDE_NLP_SMOLVLM.md#smolvlm2-vision-enrichie)
    - Descriptions images plus riches implémentées
 
 2. ✅ **Détection NLP avec sentence-transformers**
    - Modèle : `sentence-transformers/all-MiniLM-L6-v2`
+   - 📄 [Guide NLP](../guides/GUIDE_NLP_SMOLVLM.md#détection-outils-avec-nlp)
    - Détection robuste avec score de confiance
    - 30+ patterns français étendus
 
 3. ✅ **Extraction paramètres NER**
    - Extraction angles : "30 degrés", "pi/4 radians", "50%"
    - Extraction intensités : "légèrement", "beaucoup", etc.
+   - 📄 [Détails NER](../guides/GUIDE_NLP_SMOLVLM.md#extraction-paramètres-ner)
 
 4. ✅ **VAD pour activation auto**
    - Modèle : `silero/vad` (Voice Activity Detection)
+   - 📄 [Guide VAD](../guides/GUIDE_NLP_SMOLVLM.md#vad-voice-activity-detection)
    - Activation automatique conversation implémentée
 
 5. ✅ **Whisper streaming**
    - Transcription continue avec latence réduite (~500ms)
    - Buffer contexte pour précision
+   - 📄 [Guide Streaming](../guides/GUIDE_NLP_SMOLVLM.md#whisper-streaming)
 
 ---
 
 ## 📈 Comparaison Finale
 
-| Fonctionnalité | App Officielle | BBIA (actuel) | BBIA (après améliorations) |
-|----------------|----------------|---------------|----------------------------|
-| **Vision** | gpt-realtime (payant) / SmolVLM2 | ✅ YOLOv8n + MediaPipe + **SmolVLM2** | ✅ **Parité** |
-| **Détection outils** | NLP avancé | ✅ **NLP sentence-transformers** + mots-clés | ✅ **Parité** |
-| **Conversation** | OpenAI Realtime (payant) | ✅ Whisper + **VAD** + **streaming** | ✅ **Équivalent** |
-| **LLM** | ? | ✅ Mistral/Llama/Phi-2/TinyLlama (gratuit) | ✅ **Meilleur** |
-| **Extraction paramètres** | ? | ✅ **NER** (angles, intensités) | ✅ **Avancé** |
+```mermaid
+graph TB
+    subgraph "App Officielle"
+        OFF1[OpenAI Realtime API<br/>💰 Payant]
+        OFF2[gpt-realtime Vision<br/>💰 Payant]
+        OFF3[NLP Avancé]
+    end
+    
+    subgraph "BBIA Gratuit ✅"
+        BBIA1[Whisper + VAD + Streaming<br/>🆓 Gratuit]
+        BBIA2[YOLO + MediaPipe + SmolVLM2<br/>🆓 Gratuit]
+        BBIA3[sentence-transformers + NER<br/>🆓 Gratuit]
+    end
+    
+    OFF1 -.->|Équivalent| BBIA1
+    OFF2 -.->|Équivalent| BBIA2
+    OFF3 -.->|Parité| BBIA3
+    
+    style BBIA1 fill:#90EE90
+    style BBIA2 fill:#90EE90
+    style BBIA3 fill:#90EE90
+```
+
+| Fonctionnalité | App Officielle | BBIA (actuel) | Statut | Coût |
+|----------------|----------------|---------------|--------|------|
+| **Vision** | gpt-realtime (payant) / SmolVLM2 | ✅ YOLOv8n + MediaPipe + **SmolVLM2** | ✅ **Parité** | 🆓 Gratuit |
+| **Détection outils** | NLP avancé | ✅ **NLP sentence-transformers** + mots-clés | ✅ **Parité** | 🆓 Gratuit |
+| **Conversation** | OpenAI Realtime (payant) | ✅ Whisper + **VAD** + **streaming** | ✅ **Équivalent** | 🆓 Gratuit |
+| **LLM** | ? | ✅ Mistral/Llama/Phi-2/TinyLlama | ✅ **Meilleur** | 🆓 Gratuit |
+| **Extraction paramètres** | ? | ✅ **NER** (angles, intensités) | ✅ **Avancé** | 🆓 Gratuit |
 
 **Parité estimée** : **~85-90%** (sans rien payer) ✅
+
+📄 [Comparaison détaillée fonction par fonction](./COMPARAISON_APP_CONVERSATION_OFFICIELLE.md)
 
 ---
 

@@ -1,19 +1,55 @@
 # ❓ FAQ - Questions Fréquentes BBIA
 
 **Date** : Oct 25 / Nov 25  
-**Version** : 1.3.2
+**Version** : 1.3.2  
+**📚 [Documentation complète](../README.md)** | **🐛 [Signaler un problème](https://github.com/arkalia-luna-system/bbia-sim/issues)**
 
 ---
 
 ## 📋 Table des Matières
 
-1. [Installation](#installation)
-2. [MuJoCo](#mujoco)
-3. [PortAudio/Audio](#portaudioaudio)
-4. [Modèles IA](#modèles-ia)
-5. [Performance](#performance)
-6. [Erreurs Communes](#erreurs-communes)
-7. [Compatibilité](#compatibilité)
+1. [Installation](#-installation)
+2. [MuJoCo](#-mujoco)
+3. [PortAudio/Audio](#-portaudioaudio)
+4. [Modèles IA](#-modèles-ia)
+5. [Performance](#-performance)
+6. [Erreurs Communes](#-erreurs-communes)
+7. [Compatibilité](#-compatibilité)
+
+## 🔄 Flux de Dépannage Rapide
+
+```mermaid
+flowchart TD
+    START{Problème rencontré?} --> INSTALL[Installation]
+    START --> MUJOCO[MuJoCo]
+    START --> AUDIO[Audio]
+    START --> MODELS[Modèles IA]
+    START --> PERF[Performance]
+    
+    INSTALL --> CHECK[python scripts/bbia_doctor.py]
+    CHECK --> INSTALL_OK{OK?}
+    INSTALL_OK -->|Non| PIP[pip install -e .]
+    INSTALL_OK -->|Oui| END1[✅ Résolu]
+    
+    MUJOCO --> MUJOCO_ERR{Erreur?}
+    MUJOCO_ERR -->|Not found| PIP_MUJOCO[pip install mujoco]
+    MUJOCO_ERR -->|Version| UPGRADE[pip install --upgrade mujoco]
+    MUJOCO_ERR -->|Headless| DISABLE[export BBIA_DISABLE_SIMULATION=1]
+    
+    AUDIO --> AUDIO_ERR{Erreur?}
+    AUDIO_ERR -->|PortAudio| BREW[brew install portaudio]
+    AUDIO_ERR -->|CI/Headless| DISABLE_AUDIO[export BBIA_DISABLE_AUDIO=1]
+    
+    MODELS --> MODELS_ERR{Erreur?}
+    MODELS_ERR -->|Too heavy| LIGHT[Utiliser modèles légers]
+    MODELS_ERR -->|Not found| INTERNET[Vérifier connexion]
+    MODELS_ERR -->|Cache| CLEAR[clear_model_cache]
+    
+    PERF --> PERF_SLOW{Lent?}
+    PERF_SLOW -->|Audio| STREAM[Activer streaming]
+    PERF_SLOW -->|Memory| LIGHT
+    PERF_SLOW -->|Simulation| HEADLESS[Headless mode]
+```
 
 ---
 
@@ -228,10 +264,22 @@ export BBIA_DISABLE_SIMULATION=1
 
 ## 📚 Ressources
 
-- **Documentation** : `docs/`
-- **Tests** : `tests/`
-- **Exemples** : `examples/`
-- **Diagnostic** : `python scripts/bbia_doctor.py`
+| Ressource | Lien | Description |
+|-----------|------|-------------|
+| 📖 **Documentation complète** | [`docs/README.md`](../README.md) | Index de toute la documentation |
+| 📊 **Architecture** | [`docs/architecture/ARCHITECTURE_OVERVIEW.md`](../architecture/ARCHITECTURE_OVERVIEW.md) | Vue d'ensemble technique |
+| 🧪 **Tests** | [`tests/`](../../tests/) | Suite de tests automatisés |
+| 💡 **Exemples** | [`examples/`](../../examples/) | Exemples d'utilisation |
+| 🔧 **Scripts** | [`scripts/`](../../scripts/) | Outils utilitaires |
+| 🎯 **Guide débutant** | [`docs/guides/GUIDE_DEBUTANT.md`](../guides/GUIDE_DEBUTANT.md) | Démarrage rapide |
+| 🔍 **Diagnostic** | `python scripts/bbia_doctor.py` | Vérification environnement |
+
+## 🔗 Liens Utiles
+
+- **GitHub** : [arkalia-luna-system/bbia-sim](https://github.com/arkalia-luna-system/bbia-sim)
+- **Issues** : [Signaler un bug](https://github.com/arkalia-luna-system/bbia-sim/issues)
+- **État du projet** : [`docs/audit/RESUME_ETAT_ACTUEL_BBIA.md`](../audit/RESUME_ETAT_ACTUEL_BBIA.md)
+- **Comparaison officielle** : [`docs/audit/COMPARAISON_APP_CONVERSATION_OFFICIELLE.md`](../audit/COMPARAISON_APP_CONVERSATION_OFFICIELLE.md)
 
 ---
 

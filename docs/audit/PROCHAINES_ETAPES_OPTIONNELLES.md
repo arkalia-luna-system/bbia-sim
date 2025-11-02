@@ -2,28 +2,65 @@
 
 **Date** : Oct 25 / Nov 25  
 **État** : Toutes les fonctionnalités critiques terminées ✅  
-**Parité** : ~85-90% avec app officielle Reachy Mini
+**Parité** : ~85-90% avec app officielle Reachy Mini  
+**📚 [État actuel](./RESUME_ETAT_ACTUEL_BBIA.md)** | **🔍 [Comparaison détaillée](./COMPARAISON_APP_CONVERSATION_OFFICIELLE.md)**
 
 ---
 
 ## ✅ CE QUI EST FAIT
 
+```mermaid
+gantt
+    title Timeline Implémentation Fonctionnalités
+    dateFormat YYYY-MM
+    section Critique
+    VAD + NER + Streaming    :done, 2025-10, 2025-10
+    Tests E2E                :done, 2025-10, 2025-10
+    Documentation            :done, 2025-10, 2025-10
+    section Optionnel
+    Coverage Tests           :done, 2025-11, 2025-11
+    Optimisations            :done, 2025-11, 2025-11
+    Scripts Utilitaires      :done, 2025-11, 2025-11
+```
+
 Toutes les fonctionnalités prévues ont été implémentées :
 
-1. ✅ **VAD activation auto** (silero/vad)
-2. ✅ **Extraction paramètres NER** (angles, intensités)
-3. ✅ **Whisper streaming** (latence réduite)
-4. ✅ **Tests E2E** (NLP + SmolVLM2 + VAD)
-5. ✅ **Documentation complète** (GUIDE_NLP_SMOLVLM.md)
+1. ✅ **VAD activation auto** (silero/vad) - 📄 [Guide](../guides/GUIDE_NLP_SMOLVLM.md#vad-voice-activity-detection)
+2. ✅ **Extraction paramètres NER** (angles, intensités) - 📄 [Détails](../guides/GUIDE_NLP_SMOLVLM.md#extraction-paramètres-ner)
+3. ✅ **Whisper streaming** (latence réduite) - 📄 [Guide](../guides/GUIDE_NLP_SMOLVLM.md#whisper-streaming)
+4. ✅ **Tests E2E** (NLP + SmolVLM2 + VAD) - 📄 [Tests](../../tests/test_bbia_nlp_detection.py)
+5. ✅ **Documentation complète** - 📄 [GUIDE_NLP_SMOLVLM.md](../guides/GUIDE_NLP_SMOLVLM.md)
 6. ✅ **Patterns français étendus** (30+ variantes)
-7. ✅ **NLP sentence-transformers** (détection robuste)
-8. ✅ **SmolVLM2 vision** (descriptions riches)
+7. ✅ **NLP sentence-transformers** (détection robuste) - 📄 [Guide](../guides/GUIDE_NLP_SMOLVLM.md#détection-outils-avec-nlp)
+8. ✅ **SmolVLM2 vision** (descriptions riches) - 📄 [Guide](../guides/GUIDE_NLP_SMOLVLM.md#smolvlm2-vision-enrichie)
 
 **Résultat** : BBIA est fonctionnellement complet et prêt à l'usage ! 🎉
 
 ---
 
 ## 🎯 PROCHAINES ÉTAPES (Optionnelles, Nice-to-Have)
+
+### Priorité et Statut
+
+```mermaid
+graph LR
+    subgraph "TERMINÉ ✅"
+        T1[Coverage Tests]
+        T2[Optimisations]
+        T3[Scripts Utilitaires]
+    end
+    
+    subgraph "Optionnel 🔵"
+        O1[UI Avancée]
+        O2[Packaging]
+    end
+    
+    style T1 fill:#90EE90
+    style T2 fill:#90EE90
+    style T3 fill:#90EE90
+    style O1 fill:#87CEEB
+    style O2 fill:#87CEEB
+```
 
 ### Priorité BASSE - Améliorations Qualité/Tests
 

@@ -2,9 +2,39 @@
 
 **Date** : Oct 25 / Nov 25  
 **Source** : Documentation officielle Reachy Mini Conversation App  
-**Version BBIA** : 1.3.2
+**Version BBIA** : 1.3.2  
+**📚 [État actuel](./RESUME_ETAT_ACTUEL_BBIA.md)** | **🎯 [Prochaines étapes](./PROCHAINES_ETAPES_OPTIONNELLES.md)** | **❓ [FAQ](../FAQ.md)**
 
 ---
+
+## 🔄 Flux de Comparaison
+
+```mermaid
+flowchart TD
+    START[App Officielle] --> OFF{Services Payants?}
+    OFF -->|Oui| PAY[OpenAI Realtime API<br/>gpt-realtime]
+    OFF -->|Non| FREE[Alternatives Gratuites]
+    
+    PAY -.->|Remplacé par| BBIA1[BBIA Gratuit]
+    
+    BBIA1 --> COMP1[Vision]
+    BBIA1 --> COMP2[Conversation]
+    BBIA1 --> COMP3[Mouvement]
+    BBIA1 --> COMP4[Outils LLM]
+    
+    COMP1 --> RES1[YOLO + MediaPipe<br/>+ SmolVLM2 ✅]
+    COMP2 --> RES2[Whisper + VAD<br/>+ Streaming ✅]
+    COMP3 --> RES3[Danses + Émotions<br/>+ Idle ✅]
+    COMP4 --> RES4[8 outils + NLP<br/>+ NER ✅]
+    
+    RES1 --> PARITY[Parité ~85-90%]
+    RES2 --> PARITY
+    RES3 --> PARITY
+    RES4 --> PARITY
+    
+    style BBIA1 fill:#90EE90
+    style PARITY fill:#FFD700
+```
 
 ## 📊 Vue d'Ensemble
 
@@ -195,15 +225,27 @@
 
 ### **Score Global** : **~85-90%** ✅ (mis à jour Oct 25 / Nov 25 avec toutes améliorations terminées)
 
-| Catégorie | Score | Détails |
-|-----------|-------|---------|
-| **Vision** | 95% | ✅ YOLO + MediaPipe + **SmolVLM2** (parité complète) |
-| **Contrôle Robot** | 90% | ✅ API complète |
-| **Émotions** | 70% | ✅ 12 émotions (format différent) |
-| **Conversation** | 85% | ✅ Outils LLM intégrés, ✅ **NLP sentence-transformers**, ✅ **VAD**, ✅ **Streaming** |
-| **Animations** | 85% | ✅ Danses API présente, ✅ Idle animations implémentées, ✅ Tremblement vocal |
-| **UI** | 60% | ✅ Dashboard (différent de Gradio) |
-| **Extraction paramètres** | 90% | ✅ **NER** (angles, intensités) |
+```mermaid
+%%{init: {'theme':'base', 'themeVariables': { 'primaryColor':'#90EE90', 'primaryTextColor':'#000', 'primaryBorderColor':'#7ACC7A', 'lineColor':'#F8B229', 'secondaryColor':'#006100', 'tertiaryColor':'#fff'}}}%%
+pie title Score par Catégorie
+    "Vision (95%)" : 95
+    "Contrôle Robot (90%)" : 90
+    "Extraction Paramètres (90%)" : 90
+    "Conversation (85%)" : 85
+    "Animations (85%)" : 85
+    "Émotions (70%)" : 70
+    "UI (60%)" : 60
+```
+
+| Catégorie | Score | Détails | Fichiers |
+|-----------|-------|---------|----------|
+| **Vision** | 95% | ✅ YOLO + MediaPipe + **SmolVLM2** (parité complète) | `bbia_vision.py`, `bbia_huggingface.py` |
+| **Contrôle Robot** | 90% | ✅ API complète | `robot_api.py`, `bbia_tools.py` |
+| **Émotions** | 70% | ✅ 12 émotions (format différent) | `bbia_emotions.py` |
+| **Conversation** | 85% | ✅ Outils LLM intégrés, ✅ **NLP sentence-transformers**, ✅ **VAD**, ✅ **Streaming** | `bbia_huggingface.py`, `voice_whisper.py` |
+| **Animations** | 85% | ✅ Danses API présente, ✅ Idle animations implémentées, ✅ Tremblement vocal | `bbia_idle_animations.py` |
+| **UI** | 60% | ✅ Dashboard (différent de Gradio) | `dashboard_advanced.py` |
+| **Extraction paramètres** | 90% | ✅ **NER** (angles, intensités) | `bbia_huggingface.py` |
 
 ---
 
