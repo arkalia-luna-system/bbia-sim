@@ -10,11 +10,13 @@
 ### Statistiques
 
 ```mermaid
-pie title MD Améliorés (17+ documents)
+pie title MD Améliorés (21+ documents)
     "Points d'Entrée" : 3
     "Guides Utilisateurs" : 4
-    "Guides Techniques" : 2
+    "Guides Techniques" : 3
     "Audit & Analyses" : 6
+    "Conformité & CI/CD" : 2
+    "Observabilité" : 1
     "Scripts & Utils" : 1
     "Guides Spécialisés" : 1
 ```
@@ -23,17 +25,17 @@ pie title MD Améliorés (17+ documents)
 
 | Type | Nombre | Utilisation |
 |------|--------|-------------|
-| **Flowchart** | 16+ | Flux processus, architecture, dépannage, préparation |
-| **Sequence** | 4+ | Interactions entre composants, intégration, validation |
+| **Flowchart** | 20+ | Flux processus, architecture, dépannage, préparation, CI/CD |
+| **Sequence** | 6+ | Interactions entre composants, intégration, validation, CI/CD, health checks |
 | **Gantt** | 1 | Timeline implémentation |
-| **Pie** | 3 | Scores parité, distribution |
-| **Mindmap** | 3 | Organisation tâches, documentation, scripts |
+| **Pie** | 4 | Scores parité, distribution, conformité |
+| **Mindmap** | 4 | Organisation tâches, documentation, scripts, métriques |
 | **State** | 1 | Statut global |
-| **Graph** | 8+ | Structures, dépendances, architecture |
+| **Graph** | 10+ | Structures, dépendances, architecture, conformité, observabilité |
 
 ---
 
-## 🎨 Documents Améliorés (17+)
+## 🎨 Documents Améliorés (21+)
 
 ### Niveau 1 : Points d'Entrée Principaux
 
@@ -119,6 +121,23 @@ pie title MD Améliorés (17+ documents)
 #### 17. **docs/guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md** ⭐⭐
 - ✅ Parcours préparation complet (flowchart)
 - ✅ Architecture hardware + software stack (déjà présent)
+
+#### 18. **docs/conformite/CONFORMITE_REACHY_MINI_COMPLETE.md** ⭐⭐⭐
+- ✅ Pie chart conformité SDK
+- ✅ Architecture conformité complète
+
+#### 19. **docs/ci/PIPELINE_CI.md** ⭐⭐⭐
+- ✅ Flowchart pipeline CI/CD complet
+- ✅ Séquence workflow GitHub Actions
+
+#### 20. **docs/observabilite/OBSERVABILITE.md** ⭐⭐⭐
+- ✅ Architecture observabilité complète
+- ✅ Flux logs structurés
+- ✅ Séquence health checks
+- ✅ Mindmap métriques Prometheus
+
+#### 21. **docs/guides_techniques/FAQ_TROUBLESHOOTING.md** ⭐⭐
+- ✅ Flowchart dépannage rapide complet
 
 ---
 
@@ -237,5 +256,5 @@ pie title Qualité Documentation
 ---
 
 **Dernière mise à jour :** Oct 25 / Nov 25  
-**Statut :** ✅ Documentation visuelle optimisée - **35+ diagrammes Mermaid ajoutés dans 17+ documents**
+**Statut :** ✅ Documentation visuelle optimisée - **43+ diagrammes Mermaid ajoutés dans 21+ documents**
 
