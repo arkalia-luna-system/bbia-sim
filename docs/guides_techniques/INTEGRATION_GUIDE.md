@@ -11,9 +11,10 @@
 >   pip install -e .
 >   ```
 
-**Version** : 1.2.0
-**Date** : Octobre 2025
-**Public** : développeurs, chercheurs, communauté technique
+**Version** : 1.2.0  
+**Date** : Oct 25 / Nov 25  
+**Public** : développeurs, chercheurs, communauté technique  
+**📚 [Guide débutant](../guides/GUIDE_DEBUTANT.md)** | **🔧 [Guide avancé](../guides/GUIDE_AVANCE.md)** | **🧪 [Guide tests](TESTING_GUIDE.md)**
 
 ## Introduction
 
@@ -34,7 +35,44 @@ Ce guide vous accompagne dans l'intégration de BBIA-SIM dans vos projets. BBIA-
 
 ---
 
-## Flux d'intégration
+## Architecture d'Intégration
+
+### Vue d'Ensemble
+
+```mermaid
+graph TB
+    subgraph "Application Externe"
+        APP[Votre Application<br/>Python/Web/CLI]
+        API_CLIENT[Client API<br/>FastAPI]
+    end
+    
+    subgraph "BBIA-SIM Core"
+        REST_API[REST API<br/>FastAPI]
+        WEBSOCKET[WebSocket<br/>Temps réel]
+        ROBOTAPI[RobotAPI<br/>Interface Unifiée]
+    end
+    
+    subgraph "Backends"
+        MUJOCO[Backend MuJoCo<br/>Simulation]
+        REACHY[Backend Reachy<br/>Robot Physique]
+    end
+    
+    APP --> API_CLIENT
+    API_CLIENT --> REST_API
+    API_CLIENT --> WEBSOCKET
+    
+    REST_API --> ROBOTAPI
+    WEBSOCKET --> ROBOTAPI
+    
+    ROBOTAPI --> MUJOCO
+    ROBOTAPI --> REACHY
+    
+    style APP fill:#90EE90
+    style ROBOTAPI fill:#FFD700
+    style REST_API fill:#87CEEB
+```
+
+### Flux d'Intégration
 
 ```mermaid
 flowchart TD
@@ -47,6 +85,31 @@ flowchart TD
 
     style START fill:#90EE90
     style DEPLOY fill:#87CEEB
+```
+
+### Séquence d'Intégration
+
+```mermaid
+sequenceDiagram
+    participant App as Application Externe
+    participant API as REST API
+    participant RobotAPI as RobotAPI
+    participant Backend as MuJoCo/Reachy
+    participant BBIA as Modules BBIA
+    
+    App->>API: POST /api/motion/goto_pose
+    API->>RobotAPI: move_head(direction, intensity)
+    
+    RobotAPI->>BBIA: Analyse contexte
+    BBIA-->>RobotAPI: Émotion suggérée
+    
+    RobotAPI->>Backend: Exécution mouvement
+    Backend-->>RobotAPI: ✅ Mouvement OK
+    
+    RobotAPI-->>API: Réponse succès
+    API-->>App: JSON response
+    
+    Note over App,BBIA: Intégration complète
 ```
 
 ---
