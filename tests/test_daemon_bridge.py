@@ -161,6 +161,94 @@ class TestDaemonBridge:
                 pytest.skip(f"Zenoh non disponible: {e}")
             raise
 
+    @patch("bbia_sim.daemon.bridge.ZENOH_AVAILABLE", True)
+    @patch("bbia_sim.daemon.bridge.REACHY_MINI_AVAILABLE", True)
+    def test_zenoh_bridge_config_parameter(self):
+        """Test initialisation ZenohBridge avec config personnalisée."""
+        try:
+            from bbia_sim.daemon.bridge import ZenohBridge, ZenohConfig
+
+            custom_config = ZenohConfig(
+                mode="client", connect=["tcp://custom:7447"], timeout=2000
+            )
+            bridge = ZenohBridge(config=custom_config)
+
+            assert bridge.config == custom_config
+            assert bridge.config.timeout == 2000
+        except ImportError:
+            pytest.skip("Module daemon.bridge non disponible")
+        except Exception as e:
+            if "zenoh" in str(e).lower():
+                pytest.skip(f"Zenoh non disponible: {e}")
+            raise
+
+    def test_robot_command_with_timestamp(self):
+        """Test RobotCommand avec timestamp fourni."""
+        try:
+            import time
+
+            from bbia_sim.daemon.bridge import RobotCommand
+
+            custom_timestamp = time.time() - 100
+            cmd = RobotCommand(
+                command="test", parameters={"param": "value"}, timestamp=custom_timestamp
+            )
+
+            assert cmd.timestamp == custom_timestamp
+        except ImportError:
+            pytest.skip("Module daemon.bridge non disponible")
+
+    def test_robot_state_with_timestamp(self):
+        """Test RobotState avec timestamp fourni."""
+        try:
+            import time
+
+            from bbia_sim.daemon.bridge import RobotState
+
+            custom_timestamp = time.time() - 100
+            state = RobotState(
+                joints={"yaw_body": 0.1},
+                emotions={"happy": 0.8},
+                sensors={"sensor": 1.0},
+                timestamp=custom_timestamp,
+            )
+
+            assert state.timestamp == custom_timestamp
+        except ImportError:
+            pytest.skip("Module daemon.bridge non disponible")
+
+    def test_zenoh_config_default_values(self):
+        """Test valeurs par défaut ZenohConfig."""
+        try:
+            from bbia_sim.daemon.bridge import ZenohConfig
+
+            config = ZenohConfig()
+            assert config.mode == "client"
+            assert isinstance(config.connect, list)
+            assert len(config.connect) > 0
+            assert "localhost" in str(config.connect[0]) or "7447" in str(config.connect[0])
+            assert config.timeout == 1000
+            assert config.retry_attempts == 3
+        except ImportError:
+            pytest.skip("Module daemon.bridge non disponible")
+
+    @patch("bbia_sim.daemon.bridge.ZENOH_AVAILABLE", True)
+    @patch("bbia_sim.daemon.bridge.Session")
+    def test_zenoh_bridge_subscribers_publishers_init(self, mock_session):
+        """Test initialisation subscribers et publishers."""
+        try:
+            from bbia_sim.daemon.bridge import ZenohBridge
+
+            bridge = ZenohBridge()
+            assert isinstance(bridge.subscribers, dict)
+            assert isinstance(bridge.publishers, dict)
+        except ImportError:
+            pytest.skip("Module daemon.bridge non disponible")
+        except Exception as e:
+            if "zenoh" in str(e).lower():
+                pytest.skip(f"Zenoh non disponible: {e}")
+            raise
+
 
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])

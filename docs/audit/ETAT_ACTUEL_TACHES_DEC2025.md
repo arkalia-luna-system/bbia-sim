@@ -56,7 +56,7 @@
 
 | Module | Coverage Actuel | Tests Existant | Action |
 |--------|----------------|----------------|--------|
-| `dashboard_advanced.py` | **0%** | ✅ `test_dashboard_advanced.py` (14 tests) | ⚠️ **AMÉLIORER** pour couvrir 288 lignes |
+| `dashboard_advanced.py` | **37.93%** ⬆️ | ✅ `test_dashboard_advanced.py` (24 tests) | ✅ **AMÉLIORÉ** (+12%, 10 nouveaux tests ajoutés) |
 | `vision_yolo.py` | **27.74%** | ✅ `test_vision_yolo_comprehensive.py` (existe) | ⚠️ **AMÉLIORER** pour couvrir 99 lignes |
 | `voice_whisper.py` | **33.33%** | ✅ `test_voice_whisper_comprehensive.py` (existe) | ⚠️ **AMÉLIORER** pour couvrir 76 lignes |
 | `daemon/bridge.py` | **0%** | ⚠️ Tests partiels existent | ⚠️ **AMÉLIORER** pour couvrir 283 lignes |

@@ -7,6 +7,8 @@ Reconnaissance d'objets, détection de visages, suivi d'objets.
 import logging
 import math
 import os
+import threading
+from collections import deque
 from collections.abc import Callable
 from datetime import datetime
 from typing import TYPE_CHECKING, Any, cast
@@ -19,6 +21,10 @@ import numpy as np
 import numpy.typing as npt
 
 logger = logging.getLogger(__name__)
+
+# OPTIMISATION RAM: Singleton BBIAVision partagé (évite créations multiples)
+_bbia_vision_singleton: "BBIAVision | None" = None
+_bbia_vision_lock = threading.Lock()
 
 # Réduction du bruit de logs TensorFlow/MediaPipe (avant tout import MediaPipe)
 try:
@@ -109,8 +115,11 @@ class BBIAVision:
         self.camera_active = True
         self.vision_quality = "HD"
         self.detection_range = 3.0  # mètres
-        self.objects_detected: list[dict[str, Any]] = []
-        self.faces_detected: list[dict[str, Any]] = []
+        # OPTIMISATION RAM: Limiter historique détections avec deque (max 50 objets/visages)
+        from collections import deque
+        self._max_detections_history = 50
+        self.objects_detected: deque[dict[str, Any]] = deque(maxlen=self._max_detections_history)
+        self.faces_detected: deque[dict[str, Any]] = deque(maxlen=self._max_detections_history)
         self.tracking_active = False
         self.current_focus: dict[str, Any] | None = None
 
@@ -199,9 +208,10 @@ class BBIAVision:
                 self._opencv_camera = None
                 logger.debug(f"Erreur initialisation webcam OpenCV: {e}")
 
-        # Initialiser détecteurs (YOLO pour objets, MediaPipe pour visages)
+        # OPTIMISATION RAM: Lazy loading YOLO/MediaPipe - ne charger que si caméra réelle disponible
         self.yolo_detector = None
-        if YOLO_AVAILABLE and create_yolo_detector is not None:
+        # Charger YOLO uniquement si caméra SDK réelle disponible (pas shim simulation)
+        if self._camera_sdk_available and YOLO_AVAILABLE and create_yolo_detector is not None:
             try:
                 # Seuil confiance 0.25 pour meilleure détection (au lieu de 0.5 par défaut)
                 confidence_threshold = float(
@@ -213,9 +223,11 @@ class BBIAVision:
                 )
                 if self.yolo_detector:
                     self.yolo_detector.load_model()
-                    logger.info("✅ Détecteur YOLO initialisé")
+                    logger.info("✅ Détecteur YOLO initialisé (lazy loading - caméra réelle)")
             except Exception as e:
                 logger.warning(f"⚠️ YOLO non disponible: {e}")
+        else:
+            logger.debug("YOLO non chargé (lazy loading - caméra simulation ou non disponible)")
 
         self.face_detector = None
         if MEDIAPIPE_AVAILABLE and mp:
@@ -819,60 +831,64 @@ class BBIAVision:
                     "source": "camera_sdk",
                 }
 
-        # Simulation de détection d'objets (fallback ou mode sim)
-        objects = [
-            {
-                "name": "chaise",
-                "distance": 1.2,
-                "confidence": 0.95,
-                "position": (0.5, 0.3),
-            },
-            {
-                "name": "table",
-                "distance": 2.1,
-                "confidence": 0.92,
-                "position": (0.8, 0.1),
-            },
-            {
-                "name": "livre",
-                "distance": 0.8,
-                "confidence": 0.88,
-                "position": (0.2, 0.4),
-            },
-            {
-                "name": "fenêtre",
-                "distance": 3.0,
-                "confidence": 0.97,
-                "position": (1.0, 0.5),
-            },
-            {
-                "name": "plante",
-                "distance": 1.5,
-                "confidence": 0.85,
-                "position": (0.6, 0.2),
-            },
-        ]
+        # OPTIMISATION RAM: Cache objets simulés réutilisé au lieu de recréer à chaque appel
+        if not hasattr(self, "_simulated_objects_cache"):
+            self._simulated_objects_cache = [
+                {
+                    "name": "chaise",
+                    "distance": 1.2,
+                    "confidence": 0.95,
+                    "position": (0.5, 0.3),
+                },
+                {
+                    "name": "table",
+                    "distance": 2.1,
+                    "confidence": 0.92,
+                    "position": (0.8, 0.1),
+                },
+                {
+                    "name": "livre",
+                    "distance": 0.8,
+                    "confidence": 0.88,
+                    "position": (0.2, 0.4),
+                },
+                {
+                    "name": "fenêtre",
+                    "distance": 3.0,
+                    "confidence": 0.97,
+                    "position": (1.0, 0.5),
+                },
+                {
+                    "name": "plante",
+                    "distance": 1.5,
+                    "confidence": 0.85,
+                    "position": (0.6, 0.2),
+                },
+            ]
+            self._simulated_faces_cache = [
+                {
+                    "name": "humain",
+                    "distance": 1.8,
+                    "confidence": 0.94,
+                    "emotion": "neutral",
+                    "position": (0.4, 0.3),
+                },
+                {
+                    "name": "humain",
+                    "distance": 2.3,
+                    "confidence": 0.91,
+                    "emotion": "happy",
+                    "position": (0.7, 0.2),
+                },
+            ]
+        
+        # Réutiliser cache au lieu de recréer
+        objects = list(self._simulated_objects_cache)
+        faces = list(self._simulated_faces_cache)
 
-        # Simulation de détection de visages
-        faces = [
-            {
-                "name": "humain",
-                "distance": 1.8,
-                "confidence": 0.94,
-                "emotion": "neutral",
-                "position": (0.4, 0.3),
-            },
-            {
-                "name": "humain",
-                "distance": 2.3,
-                "confidence": 0.91,
-                "emotion": "happy",
-                "position": (0.7, 0.2),
-            },
-        ]
-
-        self.objects_detected = objects
-        self.faces_detected = faces
+        # OPTIMISATION RAM: Convertir en list pour compatibilité, mais limiter taille
+        self.objects_detected = deque(objects[:self._max_detections_history], maxlen=self._max_detections_history)
+        self.faces_detected = deque(faces[:self._max_detections_history], maxlen=self._max_detections_history)
 
         return {
             "objects": objects,

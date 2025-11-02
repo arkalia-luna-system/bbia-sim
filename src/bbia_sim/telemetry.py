@@ -7,6 +7,7 @@ Export .csv dans artifacts/
 
 import csv
 import time
+from collections import deque
 from pathlib import Path
 from typing import Any
 
@@ -19,7 +20,6 @@ class TelemetryCollector:
         self.output_dir.mkdir(parents=True, exist_ok=True)
 
         # OPTIMISATION RAM: Limiter historique avec deque au lieu de liste infinie
-        from collections import deque
 
         self._max_steps_history = 10000  # Max 10000 steps en mémoire
         self.step_times: deque[float] = deque(maxlen=self._max_steps_history)

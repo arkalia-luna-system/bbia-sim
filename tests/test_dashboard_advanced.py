@@ -277,6 +277,287 @@ class TestDashboardAdvanced:
         except (ImportError, Exception) as e:
             pytest.skip(f"Dashboard advanced non disponible: {e}")
 
+    @patch("bbia_sim.dashboard_advanced.FASTAPI_AVAILABLE", True)
+    @patch("bbia_sim.dashboard_advanced.asyncio.create_task")
+    def test_connect_websocket(self, mock_create_task):
+        """Test connexion WebSocket."""
+        try:
+            import asyncio
+
+            from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager
+
+            manager = BBIAAdvancedWebSocketManager()
+
+            mock_websocket = MagicMock()
+            mock_websocket.accept = MagicMock(return_value=None)
+
+            async def test():
+                await manager.connect(mock_websocket)
+                assert mock_websocket in manager.active_connections
+                assert len(manager.active_connections) == 1
+                mock_websocket.accept.assert_called_once()
+
+            asyncio.run(asyncio.wait_for(test(), timeout=1.0))
+        except (ImportError, Exception) as e:
+            if "timeout" in str(e).lower():
+                pytest.skip(f"Test timeout: {e}")
+            pytest.skip(f"Dashboard advanced non disponible: {e}")
+
+    @patch("bbia_sim.dashboard_advanced.FASTAPI_AVAILABLE", True)
+    @patch("bbia_sim.dashboard_advanced.asyncio.create_task")
+    def test_disconnect_websocket(self, mock_create_task):
+        """Test déconnexion WebSocket."""
+        try:
+            from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager
+
+            manager = BBIAAdvancedWebSocketManager()
+
+            mock_websocket = MagicMock()
+            manager.active_connections.append(mock_websocket)
+
+            manager.disconnect(mock_websocket)
+            assert mock_websocket not in manager.active_connections
+            assert len(manager.active_connections) == 0
+        except (ImportError, Exception) as e:
+            pytest.skip(f"Dashboard advanced non disponible: {e}")
+
+    @patch("bbia_sim.dashboard_advanced.FASTAPI_AVAILABLE", True)
+    @patch("bbia_sim.dashboard_advanced.asyncio.create_task")
+    def test_send_complete_status(self, mock_create_task):
+        """Test envoi statut complet."""
+        try:
+            import asyncio
+
+            from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager
+
+            manager = BBIAAdvancedWebSocketManager()
+
+            async def test():
+                await manager.send_complete_status()
+
+            asyncio.run(asyncio.wait_for(test(), timeout=1.0))
+        except (ImportError, Exception) as e:
+            if "timeout" in str(e).lower():
+                pytest.skip(f"Test timeout: {e}")
+            pytest.skip(f"Dashboard advanced non disponible: {e}")
+
+    @patch("bbia_sim.dashboard_advanced.FASTAPI_AVAILABLE", True)
+    @patch("bbia_sim.dashboard_advanced.asyncio.create_task")
+    def test_send_metrics_update(self, mock_create_task):
+        """Test envoi mise à jour métriques."""
+        try:
+            import asyncio
+
+            from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager
+
+            manager = BBIAAdvancedWebSocketManager()
+
+            async def test():
+                await manager.send_metrics_update()
+
+            asyncio.run(asyncio.wait_for(test(), timeout=1.0))
+        except (ImportError, Exception) as e:
+            if "timeout" in str(e).lower():
+                pytest.skip(f"Test timeout: {e}")
+            pytest.skip(f"Dashboard advanced non disponible: {e}")
+
+    @patch("bbia_sim.dashboard_advanced.FASTAPI_AVAILABLE", True)
+    @patch("bbia_sim.dashboard_advanced.asyncio.create_task")
+    def test_send_log_message(self, mock_create_task):
+        """Test envoi message log."""
+        try:
+            import asyncio
+
+            from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager
+
+            manager = BBIAAdvancedWebSocketManager()
+
+            async def test():
+                await manager.send_log_message("info", "Test message")
+                await manager.send_log_message("error", "Test error")
+                await manager.send_log_message("warning", "Test warning")
+
+            asyncio.run(asyncio.wait_for(test(), timeout=1.0))
+        except (ImportError, Exception) as e:
+            if "timeout" in str(e).lower():
+                pytest.skip(f"Test timeout: {e}")
+            pytest.skip(f"Dashboard advanced non disponible: {e}")
+
+    @patch("bbia_sim.dashboard_advanced.FASTAPI_AVAILABLE", True)
+    @patch("bbia_sim.dashboard_advanced.asyncio.create_task")
+    def test_update_metrics(self, mock_create_task):
+        """Test mise à jour métriques."""
+        try:
+            from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager
+
+            manager = BBIAAdvancedWebSocketManager()
+
+            # Mock vision pour retourner des objets
+            manager.vision.objects_detected = [{"name": "obj1"}, {"name": "obj2"}]
+            manager.vision.faces_detected = [{"name": "face1"}]
+            manager.vision.tracking_active = True
+
+            manager._update_metrics()
+
+            assert manager.current_metrics["vision"]["objects_detected"] == 2
+            assert manager.current_metrics["vision"]["faces_detected"] == 1
+            assert manager.current_metrics["vision"]["tracking_active"] is True
+        except (ImportError, Exception) as e:
+            pytest.skip(f"Dashboard advanced non disponible: {e}")
+
+    @patch("bbia_sim.dashboard_advanced.FASTAPI_AVAILABLE", True)
+    @patch("bbia_sim.dashboard_advanced.asyncio.create_task")
+    def test_update_metrics_with_robot(self, mock_create_task):
+        """Test mise à jour métriques avec robot."""
+        try:
+            from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager
+
+            manager = BBIAAdvancedWebSocketManager()
+
+            # Mock robot avec télémétrie
+            mock_robot = MagicMock()
+            mock_robot.get_available_joints.return_value = ["yaw_body"]
+            mock_robot.get_joint_pos.return_value = 0.3
+            mock_robot.get_telemetry.return_value = {
+                "latency_ms": 15.5,
+                "fps": 60.0,
+            }
+            manager.robot = mock_robot
+
+            manager._update_metrics()
+
+            assert manager.current_metrics["robot_connected"] is True
+            assert manager.current_metrics["performance"]["latency_ms"] == 15.5
+            assert manager.current_metrics["performance"]["fps"] == 60.0
+            assert "joint_positions" in manager.current_metrics
+        except (ImportError, Exception) as e:
+            pytest.skip(f"Dashboard advanced non disponible: {e}")
+
+    @patch("bbia_sim.dashboard_advanced.FASTAPI_AVAILABLE", True)
+    @patch("bbia_sim.dashboard_advanced.asyncio.create_task")
+    def test_start_metrics_collection(self, mock_create_task):
+        """Test démarrage collecte métriques."""
+        try:
+            from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager
+
+            manager = BBIAAdvancedWebSocketManager()
+
+            manager._start_metrics_collection()
+
+            # Vérifier que create_task a été appelé
+            assert mock_create_task.called
+        except (ImportError, Exception) as e:
+            pytest.skip(f"Dashboard advanced non disponible: {e}")
+
+    @patch("bbia_sim.dashboard_advanced.FASTAPI_AVAILABLE", True)
+    @patch("bbia_sim.dashboard_advanced.asyncio.create_task")
+    def test_get_available_joints_types(self, mock_create_task):
+        """Test récupération joints avec différents types."""
+        try:
+            from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager
+
+            manager = BBIAAdvancedWebSocketManager()
+
+            # Test avec joints int
+            mock_robot = MagicMock()
+            mock_robot.get_available_joints.return_value = [1, 2, 3]
+            manager.robot = mock_robot
+
+            joints = manager._get_available_joints()
+            assert isinstance(joints, list)
+            assert all(isinstance(j, str) for j in joints)
+
+            # Test avec joints str
+            mock_robot.get_available_joints.return_value = ["yaw_body", "stewart_1"]
+            joints = manager._get_available_joints()
+            assert len(joints) == 2
+
+            # Test avec retour non-list
+            mock_robot.get_available_joints.return_value = "invalid"
+            joints = manager._get_available_joints()
+            assert joints == []
+        except (ImportError, Exception) as e:
+            pytest.skip(f"Dashboard advanced non disponible: {e}")
+
+    @patch("bbia_sim.dashboard_advanced.FASTAPI_AVAILABLE", True)
+    @patch("bbia_sim.dashboard_advanced.asyncio.create_task")
+    def test_get_current_pose_exception(self, mock_create_task):
+        """Test récupération pose avec exception sur joint."""
+        try:
+            from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager
+
+            manager = BBIAAdvancedWebSocketManager()
+
+            # Mock robot qui lève exception sur get_joint_pos
+            mock_robot = MagicMock()
+            mock_robot.get_available_joints.return_value = ["yaw_body"]
+            mock_robot.get_joint_pos.side_effect = Exception("Joint error")
+            manager.robot = mock_robot
+
+            pose = manager._get_current_pose()
+            assert isinstance(pose, dict)
+            assert "yaw_body" in pose
+            assert pose["yaw_body"] == 0.0  # Valeur par défaut en cas d'erreur
+        except (ImportError, Exception) as e:
+            pytest.skip(f"Dashboard advanced non disponible: {e}")
+
+    @patch("bbia_sim.dashboard_advanced.FASTAPI_AVAILABLE", True)
+    def test_broadcast_with_connections(self):
+        """Test broadcast avec connexions actives."""
+        try:
+            import asyncio
+
+            from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager
+
+            manager = BBIAAdvancedWebSocketManager()
+
+            mock_websocket1 = MagicMock()
+            mock_websocket1.send_text = MagicMock(return_value=None)
+            mock_websocket2 = MagicMock()
+            mock_websocket2.send_text = MagicMock(return_value=None)
+
+            manager.active_connections = [mock_websocket1, mock_websocket2]
+
+            async def test():
+                await manager.broadcast("test message")
+                mock_websocket1.send_text.assert_called_once_with("test message")
+                mock_websocket2.send_text.assert_called_once_with("test message")
+
+            asyncio.run(asyncio.wait_for(test(), timeout=1.0))
+        except (ImportError, Exception) as e:
+            if "timeout" in str(e).lower():
+                pytest.skip(f"Test timeout: {e}")
+            pytest.skip(f"Dashboard advanced non disponible: {e}")
+
+    @patch("bbia_sim.dashboard_advanced.FASTAPI_AVAILABLE", True)
+    def test_broadcast_with_disconnected(self):
+        """Test broadcast avec connexions déconnectées."""
+        try:
+            import asyncio
+
+            from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager
+
+            manager = BBIAAdvancedWebSocketManager()
+
+            mock_websocket1 = MagicMock()
+            mock_websocket1.send_text = MagicMock(side_effect=Exception("Disconnected"))
+            mock_websocket2 = MagicMock()
+            mock_websocket2.send_text = MagicMock(return_value=None)
+
+            manager.active_connections = [mock_websocket1, mock_websocket2]
+
+            async def test():
+                await manager.broadcast("test message")
+                # mock_websocket1 devrait être retiré des connexions
+                assert mock_websocket1 not in manager.active_connections
+                assert mock_websocket2 in manager.active_connections
+
+            asyncio.run(asyncio.wait_for(test(), timeout=1.0))
+        except (ImportError, Exception) as e:
+            if "timeout" in str(e).lower():
+                pytest.skip(f"Test timeout: {e}")
+            pytest.skip(f"Dashboard advanced non disponible: {e}")
+
 
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])

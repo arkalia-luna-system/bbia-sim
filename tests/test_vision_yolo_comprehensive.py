@@ -262,6 +262,103 @@ class TestYOLODetector:
         assert action is not None
         assert action["direction"] == "right"
 
+    @patch("bbia_sim.vision_yolo.YOLO")
+    def test_detect_objects_boxes_none(self, mock_yolo_class):
+        """Test détection avec boxes is None (couverture ligne 143)."""
+        with patch("bbia_sim.vision_yolo.YOLO_AVAILABLE", True):
+            import bbia_sim.vision_yolo as vision_yolo_module
+
+            vision_yolo_module._yolo_model_cache.clear()
+
+            mock_result = MagicMock()
+            mock_result.boxes = None  # Cas boxes is None
+
+            mock_model = MagicMock()
+            mock_model.return_value = [mock_result]
+            mock_model.names = {}
+
+            mock_yolo_class.return_value = mock_model
+
+            detector = YOLODetector(model_size="n", confidence_threshold=0.25)
+            detector.model = mock_model
+            detector.is_loaded = True
+
+            image = np.zeros((480, 640, 3), dtype=np.uint8)
+            detections = detector.detect_objects(image)
+
+            assert detections == []
+
+    @patch("bbia_sim.vision_yolo.YOLO")
+    def test_detect_objects_multiple_results(self, mock_yolo_class):
+        """Test détection avec plusieurs résultats (couverture boucle for result)."""
+        with patch("bbia_sim.vision_yolo.YOLO_AVAILABLE", True):
+            import bbia_sim.vision_yolo as vision_yolo_module
+
+            vision_yolo_module._yolo_model_cache.clear()
+
+            # Mock box 1
+            mock_box1 = MagicMock()
+            mock_box1.xyxy.__getitem__.return_value.cpu.return_value.numpy.return_value = np.array(
+                [10.0, 20.0, 100.0, 120.0]
+            )
+            mock_box1.conf.__getitem__.return_value.cpu.return_value.numpy.return_value = np.array(
+                0.8
+            )
+            mock_box1.cls.__getitem__.return_value.cpu.return_value.numpy.return_value = np.array(
+                0
+            )
+
+            # Mock box 2
+            mock_box2 = MagicMock()
+            mock_box2.xyxy.__getitem__.return_value.cpu.return_value.numpy.return_value = np.array(
+                [200.0, 300.0, 250.0, 350.0]
+            )
+            mock_box2.conf.__getitem__.return_value.cpu.return_value.numpy.return_value = np.array(
+                0.9
+            )
+            mock_box2.cls.__getitem__.return_value.cpu.return_value.numpy.return_value = np.array(
+                1
+            )
+
+            mock_result1 = MagicMock()
+            mock_result1.boxes = MagicMock()
+            mock_result1.boxes.__iter__ = lambda self: iter([mock_box1, mock_box2])
+
+            mock_result2 = MagicMock()
+            mock_result2.boxes = None  # Deuxième résultat sans boxes
+
+            mock_model = MagicMock()
+            mock_model.return_value = [mock_result1, mock_result2]
+            mock_model.names = {0: "person", 1: "book"}
+
+            mock_yolo_class.return_value = mock_model
+
+            detector = YOLODetector(model_size="n", confidence_threshold=0.25)
+            detector.model = mock_model
+            detector.is_loaded = True
+
+            image = np.zeros((480, 640, 3), dtype=np.uint8)
+            detections = detector.detect_objects(image)
+
+            assert isinstance(detections, list)
+
+    def test_get_best_detection_multiple_areas(self):
+        """Test get_best_detection avec plusieurs détections (priorité taille)."""
+        detector = YOLODetector(model_size="n", confidence_threshold=0.25)
+        detections = [
+            {
+                "class_name": "person",
+                "confidence": 0.7,
+                "area": 100000,
+            },  # Grande taille
+            {"class_name": "person", "confidence": 0.9, "area": 30000},  # Petite taille
+        ]
+
+        best = detector.get_best_detection(detections)
+        assert best is not None
+        # Devrait choisir celle avec meilleur score (confidence * (1 + area/100000))
+        assert best["class_name"] == "person"
+
 
 @pytest.mark.unit
 @pytest.mark.fast

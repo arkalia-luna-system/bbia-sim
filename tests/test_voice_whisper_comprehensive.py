@@ -365,6 +365,98 @@ class TestWhisperSTT:
             finally:
                 os.environ["BBIA_DISABLE_AUDIO"] = original_value
 
+    @patch("bbia_sim.voice_whisper.sd")
+    @patch("bbia_sim.voice_whisper.sf")
+    @patch("bbia_sim.voice_whisper.whisper")
+    def test_transcribe_microphone_with_vad_success_mock(
+        self, mock_whisper, mock_sf, mock_sd
+    ):
+        """Test transcription microphone avec VAD (mock optimisé RAM)."""
+        with patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True):
+            original_value = os.environ.get("BBIA_DISABLE_AUDIO", "0")
+            os.environ["BBIA_DISABLE_AUDIO"] = "0"
+
+            try:
+                # Mock optimisé: éviter chargement modèle réel
+                import bbia_sim.voice_whisper as voice_whisper_module
+
+                voice_whisper_module._whisper_models_cache.clear()
+                voice_whisper_module._vad_model_cache = None
+
+                mock_model = MagicMock()
+                mock_model.transcribe.return_value = {"text": "bonjour"}
+                mock_whisper.load_model.return_value = mock_model
+
+                # Mock audio recording
+                mock_audio = np.random.rand(8000).astype(np.float32)
+                mock_sd.rec.return_value = mock_audio
+                mock_sd.wait.return_value = None
+
+                # Mock VAD pour retourner True (parole détectée)
+                stt = WhisperSTT(model_size="tiny", language="fr", enable_vad=True)
+                with patch.object(stt, "detect_speech_activity", return_value=True):
+                    # Mock transcribe_audio pour éviter I/O
+                    with patch.object(stt, "transcribe_audio", return_value="bonjour"):
+                        result = stt.transcribe_microphone_with_vad(
+                            duration=0.1, silence_threshold=0.1
+                        )
+
+                # Avec mocks, peut retourner None ou résultat selon implémentation
+                assert result is None or isinstance(result, str)
+            finally:
+                os.environ["BBIA_DISABLE_AUDIO"] = original_value
+
+    def test_detect_speech_activity_empty_text(self):
+        """Test VAD avec résultat vide (couverture cas limites)."""
+        with patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True):
+            stt = WhisperSTT(model_size="tiny", language="fr", enable_vad=False)
+            # VAD désactivé devrait retourner True
+            result = stt.detect_speech_activity(np.array([], dtype=np.float32))
+            assert result is True
+
+    @patch("bbia_sim.voice_whisper.transformers_pipeline")
+    @patch.dict(os.environ, {"BBIA_DISABLE_AUDIO": "0"}, clear=False)
+    def test_detect_speech_activity_result_format(self, mock_pipeline):
+        """Test VAD avec différents formats de résultat."""
+        with patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True):
+            import bbia_sim.voice_whisper as voice_whisper_module
+
+            # Vider cache pour forcer chargement
+            voice_whisper_module._vad_model_cache = None
+
+            # Mock pipeline retournant différents formats
+            mock_vad = MagicMock()
+            mock_vad.return_value = [{"label": "SPEECH", "score": 0.95}]
+            mock_pipeline.return_value = mock_vad
+
+            stt = WhisperSTT(model_size="tiny", language="fr", enable_vad=True)
+            audio_chunk = np.random.rand(16000).astype(np.float32)
+
+            # Mock sf pour éviter erreur import
+            with patch("bbia_sim.voice_whisper.sf") as mock_sf:
+                result = stt.detect_speech_activity(audio_chunk)
+                # Devrait retourner True pour SPEECH avec score > 0.5
+                assert result is True
+
+    def test_map_command_partial_match(self):
+        """Test mapping commande avec correspondance partielle."""
+        mapper = VoiceCommandMapper()
+
+        # Test correspondance partielle (ligne 688-691)
+        result = mapper.map_command("Salut tout le monde")
+        assert result is not None
+        assert result["action"] == "greet"
+        assert result["confidence"] == 0.8  # Correspondance partielle
+
+    def test_map_command_empty_text(self):
+        """Test mapping avec texte vide (couverture ligne 675-676)."""
+        mapper = VoiceCommandMapper()
+        result = mapper.map_command("")
+        assert result is None
+
+        result = mapper.map_command("   ")
+        assert result is None
+
 
 @pytest.mark.unit
 @pytest.mark.fast

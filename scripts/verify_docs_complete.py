@@ -564,7 +564,7 @@ class DocsVerifier:
                         # Liste avec indentation = valide
                         continue
                 # Accepter si dans bloc code (vérification plus précise)
-                line_start_idx = sum(len(l) + 1 for l in lines[: i - 1])
+                line_start_idx = sum(len(line) + 1 for line in lines[: i - 1])
                 content_before = content[:line_start_idx]
                 # Compter ``` avant pour savoir si on est dans un bloc
                 code_blocks_before = content_before.count("```")
