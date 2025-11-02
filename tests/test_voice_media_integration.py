@@ -46,7 +46,9 @@ class FakeMedia:
 
 class FakeRobotAPI:
     def __init__(self, with_play_audio: bool = True, with_speaker: bool = True):
-        self.media = FakeMedia(with_play_audio=with_play_audio, with_speaker=with_speaker)
+        self.media = FakeMedia(
+            with_play_audio=with_play_audio, with_speaker=with_speaker
+        )
 
 
 @pytest.mark.parametrize(
@@ -64,7 +66,9 @@ def test_voice_advanced_prefers_media_when_available(
     robot_api = FakeRobotAPI(with_play_audio=with_play_audio, with_speaker=with_speaker)
 
     # Créer l'instance de voix avancée en mode "sans TTS" pour ne pas charger Coqui
-    voice = BBIAVoiceAdvanced(use_coqui=False, temp_dir=str(tmp_path), robot_api=robot_api)
+    voice = BBIAVoiceAdvanced(
+        use_coqui=False, temp_dir=str(tmp_path), robot_api=robot_api
+    )
 
     # Monkeypatch: forcer playsound None pour garantir qu'on ne joue pas localement
     import bbia_sim.bbia_voice_advanced as va
@@ -78,8 +82,14 @@ def test_voice_advanced_prefers_media_when_available(
 
     voice._play_audio_file(audio_file, volume=0.5)
 
-    assert robot_api.media.calls == 1 if expect_play_audio else robot_api.media.calls == 0
-    if expect_speaker_play_file and with_speaker and robot_api.media.speaker is not None:
+    assert (
+        robot_api.media.calls == 1 if expect_play_audio else robot_api.media.calls == 0
+    )
+    if (
+        expect_speaker_play_file
+        and with_speaker
+        and robot_api.media.speaker is not None
+    ):
         assert robot_api.media.speaker.play_file_calls == 1
     elif robot_api.media.speaker is not None:
         assert robot_api.media.speaker.play_file_calls == 0

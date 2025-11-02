@@ -45,7 +45,9 @@ class TestSDKSignaturesConformity:
         }
 
         for method_name, expected_params in core_methods.items():
-            assert hasattr(self.backend, method_name), f"Méthode {method_name} manquante"
+            assert hasattr(
+                self.backend, method_name
+            ), f"Méthode {method_name} manquante"
 
             sig = self.get_method_signature(self.backend, method_name)
             sig_params = list(sig.parameters.keys())
@@ -96,7 +98,9 @@ class TestSDKSignaturesConformity:
         }
 
         for method_name, expected_params in sdk_methods.items():
-            assert hasattr(self.backend, method_name), f"Méthode SDK {method_name} manquante"
+            assert hasattr(
+                self.backend, method_name
+            ), f"Méthode SDK {method_name} manquante"
 
             sig = self.get_method_signature(self.backend, method_name)
             sig_params = list(sig.parameters.keys())
@@ -160,7 +164,9 @@ class TestSDKSignaturesConformity:
         """Test que les paramètres optionnels ont des valeurs par défaut."""
         # Test set_emotion avec intensity optionnel
         sig = self.get_method_signature(self.backend, "set_emotion")
-        assert "intensity" in sig.parameters, "Paramètre intensity manquant dans set_emotion"
+        assert (
+            "intensity" in sig.parameters
+        ), "Paramètre intensity manquant dans set_emotion"
         intensity_param = sig.parameters["intensity"]
         assert (
             intensity_param.default != inspect.Parameter.empty
@@ -217,7 +223,9 @@ class TestSDKSignaturesConformity:
 
         for method_name in methods_to_check:
             method = getattr(self.backend, method_name)
-            assert method.__doc__ is not None, f"Méthode {method_name} n'a pas de docstring"
+            assert (
+                method.__doc__ is not None
+            ), f"Méthode {method_name} n'a pas de docstring"
 
     def test_sdk_methods_docstrings(self):
         """Test que les méthodes SDK ont des docstrings."""
@@ -237,7 +245,9 @@ class TestSDKSignaturesConformity:
 
         for method_name in sdk_methods:
             method = getattr(self.backend, method_name)
-            assert method.__doc__ is not None, f"Méthode SDK {method_name} n'a pas de docstring"
+            assert (
+                method.__doc__ is not None
+            ), f"Méthode SDK {method_name} n'a pas de docstring"
 
     def test_backend_initialization_signature(self):
         """Test signature du constructeur."""
@@ -245,7 +255,9 @@ class TestSDKSignaturesConformity:
         params = list(sig.parameters.keys())
 
         # Le constructeur doit accepter robot_ip et robot_port en option
-        assert "robot_ip" in params or "self" in params, "Paramètre robot_ip manquant dans __init__"
+        assert (
+            "robot_ip" in params or "self" in params
+        ), "Paramètre robot_ip manquant dans __init__"
 
     def test_no_missing_sdk_methods(self):
         """Test qu'aucune méthode SDK critique n'est manquante."""
@@ -267,7 +279,9 @@ class TestSDKSignaturesConformity:
             if not hasattr(self.backend, method_name):
                 missing_methods.append(method_name)
 
-        assert len(missing_methods) == 0, f"Méthodes SDK manquantes: {', '.join(missing_methods)}"
+        assert (
+            len(missing_methods) == 0
+        ), f"Méthodes SDK manquantes: {', '.join(missing_methods)}"
 
     def test_signature_compatibility(self):
         """Test que les signatures sont compatibles pour appels runtime."""

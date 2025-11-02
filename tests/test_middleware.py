@@ -78,7 +78,9 @@ class TestSecurityMiddleware:
         """Test ordre des middlewares."""
         # Ajouter plusieurs middlewares
         app.add_middleware(SecurityMiddleware)
-        app.add_middleware(RateLimitMiddleware, requests_per_minute=10, force_enable=True)
+        app.add_middleware(
+            RateLimitMiddleware, requests_per_minute=10, force_enable=True
+        )
 
         response = client.get("/")
 
@@ -111,7 +113,9 @@ class TestRateLimitMiddleware:
 
     def test_rate_limit_normal_usage(self, app, client):
         """Test utilisation normale (pas de limite)."""
-        app.add_middleware(RateLimitMiddleware, requests_per_minute=100, force_enable=True)
+        app.add_middleware(
+            RateLimitMiddleware, requests_per_minute=100, force_enable=True
+        )
 
         # Faire plusieurs requêtes rapidement
         for _ in range(5):
@@ -120,7 +124,9 @@ class TestRateLimitMiddleware:
 
     def test_rate_limit_exceeded(self, app, client):
         """Test dépassement limite de taux."""
-        app.add_middleware(RateLimitMiddleware, requests_per_minute=2, force_enable=True)
+        app.add_middleware(
+            RateLimitMiddleware, requests_per_minute=2, force_enable=True
+        )
 
         # Première requête
         response = client.get("/")
@@ -162,7 +168,9 @@ class TestRateLimitMiddleware:
 
     def test_rate_limit_per_client(self, app, client):
         """Test limite par client."""
-        app.add_middleware(RateLimitMiddleware, requests_per_minute=1, force_enable=True)
+        app.add_middleware(
+            RateLimitMiddleware, requests_per_minute=1, force_enable=True
+        )
 
         # Client 1
         response = client.get("/")
@@ -194,7 +202,9 @@ class TestRateLimitMiddleware:
 
     def test_rate_limit_exceeded_headers(self, app, client):
         """Test headers quand limite dépassée."""
-        app.add_middleware(RateLimitMiddleware, requests_per_minute=1, force_enable=True)
+        app.add_middleware(
+            RateLimitMiddleware, requests_per_minute=1, force_enable=True
+        )
 
         # Première requête
         response = client.get("/")

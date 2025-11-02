@@ -6,8 +6,8 @@ Usage:
 """
 
 import os
-from pathlib import Path
 import sys
+from pathlib import Path
 from typing import Any
 
 # Ajouter src au path

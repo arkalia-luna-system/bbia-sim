@@ -126,13 +126,16 @@ export BBIA_LLM_BACKEND=llama.cpp    # ou qwen
 ## Questions fréquentes
 
 ### Q : Je n'ai pas de robot Reachy Mini, ça marche ?
+
 R : Oui, le mode simulation est inclus. Vous pouvez développer maintenant et tester sur robot plus tard.
 
 ### Q : C'est compatible Mac/Linux/Windows ?
+
 R : Mac/Linux : oui
 Windows : à tester
 
 ### Q : Puis-je créer mes propres émotions ?
+
 R : Oui, le système est extensible. Voir `examples/demo_emotion_ok.py`
 
 ---

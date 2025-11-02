@@ -9,11 +9,19 @@
 [![SDK Conformity](https://img.shields.io/badge/SDK%20conformity-100%25-brightgreen.svg)](https://github.com/pollen-robotics/reachy_mini)
 [![Documentation](https://img.shields.io/badge/docs-sphinx%20%7C%20readthedocs-blue.svg)](docs/)
 
-Simulation BBIA ↔ robot conforme et opérationnelle.
+<div align="center">
+
+**Moteur cognitif Python pour robot Reachy Mini**  
+*Simulation fidèle • IA avancée • SDK 100% conforme*
+
+[![Stars](https://img.shields.io/github/stars/arkalia-luna-system/bbia-sim?style=social)](https://github.com/arkalia-luna-system/bbia-sim)
+[![Forks](https://img.shields.io/github/forks/arkalia-luna-system/bbia-sim?style=social)](https://github.com/arkalia-luna-system/bbia-sim)
+
+</div>
 
 ---
 
-## 📋 **EN 30 SECONDES :**
+## 📋 **EN 30 SECONDES**
 
 BBIA-SIM est un moteur cognitif Python avec **12 émotions robotiques** pour Reachy Mini.
 
@@ -35,9 +43,10 @@ BBIA-SIM est un moteur cognitif Python avec **12 émotions robotiques** pour Rea
 
 Version 1.3.2 – Alignement complet branches, tests élargis (perf/watchdog), doc enrichie, release stable.
 
-Ce projet fournit une simulation fidèle du robot Reachy Mini dans MuJoCo, avec une intégration des modules BBIA (Bio-Inspired Artificial Intelligence) et une conformité validée avec le SDK officiel de Pollen Robotics (octobre 2025).
+Ce projet fournit une simulation fidèle du robot Reachy Mini dans MuJoCo, avec une intégration des modules BBIA (Bio-Inspired Artificial Intelligence) et une conformité validée avec le SDK officiel de Pollen Robotics (Octobre 2025).
 
 ## 🚀 Quick Start
+
 ```bash
 # Installation (mode dev recommandé)
 pip install -e .[dev]
@@ -45,7 +54,6 @@ pip install -e .[dev]
 # Démarrage simulation
 python examples/demo_emotion_ok.py
 ```
-
 
 ## 🤖 Première utilisation – Reachy Mini (robot réel)
 
@@ -55,18 +63,21 @@ python examples/demo_emotion_ok.py
   - Ports réseau nécessaires ouverts
 
 ### ✅ Check‑list
+
 - Alimentation/LED OK
 - Wi‑Fi opérationnel (SSID/mot de passe)
 - Version SDK compatible (voir docs/conformité)
 - Dry‑run: connexion → wake_up → look_at_world → emergency_stop
 
 ### 📦 Dry‑run rapide
+
 ```bash
 pip install -e .[dev,test]
 python scripts/hardware_dry_run_reachy_mini.py --output-dir artifacts
 ```
 
 ### 🔗 Guide complet Reachy Mini
+
 - `docs/guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md`
 
 ## 🏆 Badges Qualité & CI/CD
@@ -144,6 +155,7 @@ graph TB
 ## 🚀 Démarrage Rapide
 
 ### Voir le robot en 3D
+
 ```bash
 # 🎯 Démos principales
 
@@ -161,6 +173,7 @@ python examples/demo_reachy_mini_corrigee.py --quick
 ```
 
 ### ⚠️ Règles de sécurité
+
 - **✅ TOUJOURS utiliser `yaw_body`** pour les animations visibles
 - **✅ Amplitude maximum** : 0.3 rad (clamp automatique)
 - **✅ Mode headless** : Stable et rapide pour les tests
@@ -169,6 +182,7 @@ python examples/demo_reachy_mini_corrigee.py --quick
 - **❌ JAMAIS dépasser** : 0.3 rad d'amplitude pour antennes
 
 ### 🌐 API Publique
+
 ```bash
 # Démarrage de l'API publique
 python deploy/public_api.py --dev
@@ -186,6 +200,7 @@ python scripts/demo_public_api.py
 ```
 
 ### 📡 Endpoints REST Conformes SDK Officiel (96%)
+
 - `/api/move/*` - Mouvements conformes SDK (goto, running, stop, play, set_target, ws/updates)
 - `/api/motors/*` - Contrôle moteurs (status, set_mode)
 - `/api/daemon/*` - Contrôle daemon (start, stop, restart, status)
@@ -195,6 +210,7 @@ python scripts/demo_public_api.py
 - `/api/apps/*` - Gestion applications HuggingFace (install, start, stop, status)
 
 ### 🤖 Backends Disponibles
+
 ```bash
 # Backend MuJoCo (simulation)
 python -c "from bbia_sim.robot_factory import RobotFactory; robot = RobotFactory.create_backend('mujoco')"
@@ -210,6 +226,7 @@ python scripts/hardware_dry_run_reachy_mini.py --duration 30
 ```
 
 ### 🧠 IA Avancée
+
 ```bash
 # Démonstration complète Phase 2
 python examples/demo_bbia_phase2_integration.py
@@ -243,6 +260,7 @@ export BBIA_LLM_BACKEND=llama.cpp    # ou qwen
 ```
 
 ### 🎯 Vertical Slices BBIA
+
 ```bash
 # Exemple de test e2e (motion roundtrip)
 python -m pytest tests/e2e/test_motion_roundtrip.py -v
@@ -255,6 +273,7 @@ python examples/demo_behavior_ok.py --behavior greeting --intensity 1.2
 ```
 
 ### 🔄 Backend Unifié
+
 ```bash
 # Switch facile entre Sim et Robot
 python examples/demo_emotion_ok.py --backend mujoco --emotion happy --duration 5  # Simulation
@@ -270,11 +289,11 @@ python scripts/replay_viewer.py artifacts/my_animation.jsonl --speed 1.5
 
 ### 📹 Vidéos de Démonstration
 
-**Nouvelles vidéos disponibles** (octobre 2025) : 3 captures vidéo de la simulation MuJoCo
+**Nouvelles vidéos disponibles** (Octobre 2025) : 3 captures vidéo de la simulation MuJoCo
 
-- `assets/videos/Enregistrement de l'écran octobre 2025 à 17.00.52.mov` (2.7 MB)
-- `assets/videos/Enregistrement de l'écran octobre 2025 à 17.01.27.mov` (3.4 MB)
-- `assets/videos/Enregistrement de l'écran octobre 2025 à 17.01.56.mov` (3.1 MB)
+- `assets/videos/Enregistrement de l'écran Octobre 2025 à 17.00.52.mov` (2.7 MB)
+- `assets/videos/Enregistrement de l'écran Octobre 2025 à 17.01.27.mov` (3.4 MB)
+- `assets/videos/Enregistrement de l'écran Octobre 2025 à 17.01.56.mov` (3.1 MB)
 
 **Source** : Toutes ces vidéos ont été enregistrées depuis `examples/demo_mujoco_continue.py` qui montre le robot en mouvement continu (tête + corps).
 
@@ -311,6 +330,7 @@ La documentation HTML offre :
  - **[Guide Contribution](docs/community/CONTRIBUTION_GUIDE.md)**
 
 ### Note
+
 Les antennes sont maintenant animables avec limites de sécurité (-0.3 à 0.3 rad). Utilisez `yaw_body` pour animations principales, antennes pour expressivité fine.
 
 ## 📁 Structure du Projet
@@ -335,6 +355,7 @@ src/bbia_sim/sim/
 ### 🚀 Guide rapide – Commandes essentielles
 
 #### 1) Activer les bons environnements
+
 - venv principal (simulation/hardware, dashboard, chat):
 ```bash
 source venv/bin/activate
@@ -345,6 +366,7 @@ source venv-vision-py310/bin/activate
 ```
 
 #### 2) Démo 3D immédiate (macOS)
+
 ```bash
 # venv principal
 source venv/bin/activate
@@ -352,6 +374,7 @@ source venv/bin/activate
 ```
 
 #### 3) Dashboard + chat en temps réel
+
 ```bash
 # venv principal
 source venv/bin/activate
@@ -360,6 +383,7 @@ python src/bbia_sim/dashboard_advanced.py --port 8000
 ```
 
 #### 4) Activer l’intelligence (LLM) une fois (internet requis)
+
 ```bash
 # venv principal
 source venv/bin/activate
@@ -372,6 +396,7 @@ PY
 ```
 
 #### 5) Test vision rapide (MediaPipe/OpenCV)
+
 ```bash
 # venv vision
 source venv-vision-py310/bin/activate
@@ -382,6 +407,7 @@ PY
 ```
 
 #### 5bis) Test webcam USB (Logitech MX Brio)
+
 ```bash
 # venv vision
 source venv-vision-py310/bin/activate
@@ -399,6 +425,7 @@ python scripts/test_vision_webcam.py
 **Note** : Au premier lancement, macOS demande l'autorisation caméra. Autoriser dans Réglages Système > Confidentialité > Caméra.
 
 #### 5ter) DeepFace - Reconnaissance visage personnalisée (optionnel)
+
 ```bash
 # venv vision
 source venv-vision-py310/bin/activate
@@ -419,6 +446,7 @@ python scripts/test_deepface.py --emotion photo.jpg
 **Note** : DeepFace permet à BBIA de reconnaître des personnes spécifiques et leurs émotions. Compatible SDK Reachy Mini ✅
 
 #### 5quater) MediaPipe Pose - Détection postures/gestes (optionnel)
+
 ```bash
 # venv vision (MediaPipe déjà installé)
 source venv-vision-py310/bin/activate
@@ -433,6 +461,7 @@ python scripts/test_pose_detection.py --image photo.jpg
 **Note** : MediaPipe Pose détecte la posture complète (33 points clés) et les gestes (bras levés, debout/assis). Déjà installé via MediaPipe ✅
 
 #### 6) Télémétrie WebSocket (5 messages)
+
 ```bash
 # venv principal
 source venv/bin/activate
@@ -440,6 +469,7 @@ python examples/subscribe_telemetry.py --count 5
 ```
 
 #### 7) Démo émotions (simulation)
+
 ```bash
 # venv principal pour logique + viewer (macOS: mjpython conseillé)
 source venv/bin/activate
@@ -451,6 +481,7 @@ Pour les détails et recommandations matériel (webcam USB UVC) et les profils d
 ## 🛠️ Scripts Utiles
 
 ### Scripts One-Click
+
 ```bash
 # Démo simulation complète (3D viewer)
 bash scripts/run_demo_sim.sh happy 15
@@ -466,6 +497,7 @@ python src/bbia_sim/dashboard_advanced.py --port 8000
 ```
 
 ### Scripts de Démo Avancés
+
 ```bash
 # Enregistrer une démo complète
 bash scripts/record_demo.sh happy 15
@@ -475,6 +507,7 @@ python scripts/plot_trace.py --input assets/videos/demo_happy_*.jsonl --output a
 ```
 
 ### Hardware Dry Run
+
 ```bash
 # Test hardware complet avec artefacts
 python scripts/hardware_dry_run.py --duration 10 --backend reachy
@@ -484,12 +517,14 @@ python scripts/hardware_dry_run.py --duration 5 --backend mujoco
 ```
 
 ### Téléchargement des STL officiels
+
 ```bash
 python scripts/download_ALL_stl.py
 ```
 Télécharge automatiquement les 41 fichiers STL depuis le repo officiel.
 
 ### Gestion des processus 
+
 ```bash
 python scripts/process_manager.py --cleanup
 ```
@@ -498,6 +533,7 @@ Nettoie les processus gourmands tout en préservant les applications importantes
 ## 🔧 Résolution de problèmes
 
 ### Problème : Robot en pièces détachées
+
 **Cause** : Fichiers STL corrompus (pointeurs Git LFS)
 **Solution** : 
 ```bash
@@ -505,10 +541,12 @@ python scripts/download_ALL_stl.py
 ```
 
 ### Problème : Erreur "No such file or directory"
+
 **Cause** : Chemin des assets incorrect
 **Solution** : Le modèle `reachy_mini_REAL_OFFICIAL.xml` a le bon chemin `meshdir="../assets/reachy_official"`
 
 ### Problème : la fenêtre 3D ne s'ouvre pas
+
 **Cause** : Mauvaise commande Python
 **Solution** : Utiliser `mjpython` au lieu de `python` sur macOS
 
@@ -615,9 +653,6 @@ python -m pytest tests/test_bbia_emotions.py -v
 # Voir le rapport HTML de coverage
 open htmlcov/index.html
 ```
-
-
-
 
 ## Statut du projet
 

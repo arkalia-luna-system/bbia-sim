@@ -51,7 +51,9 @@ class TestVerticalSlices:
                 timeout=30,
             )
 
-            assert result.returncode == 0, f"Erreur avec émotion {emotion}: {result.stderr}"
+            assert (
+                result.returncode == 0
+            ), f"Erreur avec émotion {emotion}: {result.stderr}"
             assert (
                 "Animation terminée" in result.stdout
                 or "Animation headless terminée" in result.stdout
@@ -89,7 +91,9 @@ class TestVerticalSlices:
                 timeout=30,
             )
 
-            assert result.returncode == 0, f"Erreur avec commande {command}: {result.stderr}"
+            assert (
+                result.returncode == 0
+            ), f"Erreur avec commande {command}: {result.stderr}"
             assert (
                 "Animation terminée" in result.stdout
                 or "Animation headless terminée" in result.stdout
@@ -151,7 +155,9 @@ class TestVerticalSlices:
                 timeout=30,
             )
 
-            assert result.returncode == 0, f"Erreur avec comportement {behavior}: {result.stderr}"
+            assert (
+                result.returncode == 0
+            ), f"Erreur avec comportement {behavior}: {result.stderr}"
             assert (
                 "Animation terminée" in result.stdout
                 or "Animation headless terminée" in result.stdout
@@ -270,5 +276,7 @@ class TestVerticalSlices:
                 timeout=30,
             )
 
-            assert result.returncode == 0, f"Smoke test échoué pour {demo_name}: {result.stderr}"
+            assert (
+                result.returncode == 0
+            ), f"Smoke test échoué pour {demo_name}: {result.stderr}"
             assert "terminée avec succès" in result.stdout

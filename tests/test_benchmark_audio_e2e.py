@@ -6,12 +6,10 @@ import time
 import unittest
 from unittest.mock import MagicMock, patch
 
-
 # Désactiver audio pour CI
 os.environ["BBIA_DISABLE_AUDIO"] = "1"
 
 import sys
-
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 

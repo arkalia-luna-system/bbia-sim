@@ -15,9 +15,10 @@ Développeuse Python autodidacte spécialisée en **IA**, **robotique** et **mob
 ## 🌟 Projets Principaux
 
 ### 1. **BBIA-SIM** - Robotique IA Cognitive
+
 **📁 Repository :** [arkalia-luna-system/bbia-sim](https://github.com/arkalia-luna-system/bbia-sim)  
 **🏷️ Statut :** ✅ Actif - Version 1.3.2  
-**📅 Création :** Avril 2025  
+**📅 Création :** Octobre 2024  
 **🔄 Dernière mise à jour :** Octobre 2025
 
 **Description :**
@@ -32,8 +33,8 @@ Moteur cognitif Python avec 12 émotions robotiques pour Reachy Mini. Simulation
 - SDK Reachy Mini officiel (100% conforme)
 
 **Métriques :**
-- ✅ **1208+ tests automatisés** (unitaires, intégration, E2E)
-- ✅ **280 fichiers documentation** Markdown
+- ✅ **1200+ tests automatisés** (unitaires, intégration, E2E)
+- ✅ **280+ fichiers documentation** Markdown
 - ✅ **CI/CD professionnel** : Black, Ruff, MyPy, Bandit, pip-audit
 - ✅ **Architecture senior** : Factory pattern, ABC, modularité
 - ✅ **Coverage modules core** : ~50%
@@ -54,6 +55,7 @@ Moteur cognitif Python avec 12 émotions robotiques pour Reachy Mini. Simulation
 ---
 
 ### 2. **Arkalia Aria** - Suivi Santé Intelligent
+
 **📁 Repository :** Local (non publié encore)  
 **🏷️ Statut :** ✅ Actif - En développement  
 **📅 Création :** 2025
@@ -83,6 +85,7 @@ Application complète de suivi santé avec IA : tracking douleur, analyse patter
 ---
 
 ### 3. **Athalia DevOps** - Framework DevOps Automatisé
+
 **📁 Repository :** Local (non publié encore)  
 **🏷️ Statut :** ✅ Actif - En développement  
 **📅 Création :** 2025
@@ -113,6 +116,7 @@ Framework DevOps complet avec automations CI/CD, sécurité, qualité code, moni
 ---
 
 ### 4. **Arkalia Quest** - Jeu Éducatif
+
 **📁 Repository :** Non localisé dans `/Volumes/T7/`  
 **🏷️ Statut :** ✅ Actif (mentionné dans analyse)  
 **📅 Création :** 2025
@@ -127,6 +131,7 @@ Jeu éducatif avec Flutter/Dart. Détails à compléter.
 ---
 
 ### 5. **Luna Logo** - Générateur SVG
+
 **📁 Repository :** Non localisé dans `/Volumes/T7/`  
 **🏷️ Statut :** ✅ Actif (mentionné dans analyse)  
 **📅 Création :** 2025
@@ -140,6 +145,7 @@ Générateur de logos en SVG. Détails à compléter.
 ---
 
 ### 6. **Mobile App** - Application Mobile
+
 **📁 Repository :** Local (`/Volumes/T7/mobile_app/`)  
 **🏷️ Statut :** ✅ Actif - En développement  
 **📅 Création :** 2025
@@ -160,6 +166,7 @@ Application mobile Flutter pour connectivité santé (modèles health_data, pain
 ---
 
 ### 7. **Nours Interface** - Interface Utilisateur
+
 **📁 Repository :** Local (`/Volumes/T7/nours_interface/`)  
 **🏷️ Statut :** ✅ Actif - En développement  
 **📅 Création :** 2025
@@ -170,6 +177,7 @@ Interface utilisateur (détails à compléter).
 ---
 
 ### 8. **Arkalia Metrics Collector** - Collecte Métriques
+
 **📁 Repository :** Local (`/Volumes/T7/arkalia-metrics-collector/`)  
 **🏷️ Statut :** ✅ Actif - En développement  
 **📅 Création :** 2025
@@ -180,6 +188,7 @@ Collecteur de métriques système et application (intégré dans Arkalia Aria).
 ---
 
 ### 9. **Reachy Mini** - Intégration Robot
+
 **📁 Repository :** Local (`/Volumes/T7/reachy_mini/`)  
 **🏷️ Statut :** ✅ Actif - Documentation SDK  
 **📅 Création :** 2025
@@ -190,6 +199,7 @@ Documentation et intégration SDK Reachy Mini officiel.
 ---
 
 ### 10. **Workspace Tools** - Outils Développement
+
 **📁 Repository :** Local (`/Volumes/T7/workspace-tools/`)  
 **🏷️ Statut :** ✅ Actif - Outils internes  
 **📅 Création :** 2025
@@ -202,18 +212,21 @@ Outils et scripts pour environnement de développement.
 ## 📈 Statistiques Globales
 
 ### Code
+
 - **Projets actifs** : 10+
 - **Tests automatisés** : 1200+
 - **Documentation** : 300+ fichiers MD
 - **Commits** : Actifs depuis octobre 2024
 
 ### Qualité
+
 - ✅ CI/CD professionnel (Black, Ruff, MyPy, Bandit)
 - ✅ Tests exhaustifs (unitaires, intégration, E2E)
 - ✅ Documentation complète
 - ✅ Architecture propre (patterns, modularité)
 
 ### Stack Complète
+
 - **Backend** : Python (FastAPI, Flask)
 - **Mobile** : Flutter/Dart (iOS + Android)
 - **IA** : Hugging Face, Whisper, YOLO, MediaPipe

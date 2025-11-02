@@ -1,6 +1,6 @@
 # ✅ Vérification Documentation Complète - Nov 2025
 
-**Date vérification :** Oct 25 / Nov 25 (1er novembre 2025)  
+**Date vérification :** Oct 25 / Nov 25 (1er Oct 25 / Nov 25)  
 **Date création projet :** Octobre 2024
 
 ---

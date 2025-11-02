@@ -94,10 +94,14 @@ def test_audio_pipeline_budget_cpu_ram() -> None:
             mem_increase = None
 
         # Budget: CPU < 0.5s pour 5s runtime (10% CPU max pipeline audio)
-        assert cpu_time < 0.5, f"Temps CPU trop élevé: {cpu_time:.2f}s pour {duration_s}s runtime"
+        assert (
+            cpu_time < 0.5
+        ), f"Temps CPU trop élevé: {cpu_time:.2f}s pour {duration_s}s runtime"
 
         # Budget: RAM < 50MB augmentation (pipeline audio léger)
         if mem_increase is not None:
-            assert mem_increase < 50.0, f"Augmentation RAM trop élevée: {mem_increase:.1f}MB"
+            assert (
+                mem_increase < 50.0
+            ), f"Augmentation RAM trop élevée: {mem_increase:.1f}MB"
     except Exception as e:
         pytest.skip(f"Test audio non disponible: {e}")

@@ -76,7 +76,9 @@ def test_backend_main_loop_budget_cpu_ram() -> None:
             mem_increase = None
 
         # Budget: CPU < 1s pour 5s runtime (20% CPU max)
-        assert cpu_time < 1.0, f"Temps CPU trop élevé: {cpu_time:.2f}s pour {duration_s}s runtime"
+        assert (
+            cpu_time < 1.0
+        ), f"Temps CPU trop élevé: {cpu_time:.2f}s pour {duration_s}s runtime"
 
         # Budget: RAM < 100MB augmentation (sur 10s)
         # NOTE: Seuil flexibilisé à 120MB pour CI car:

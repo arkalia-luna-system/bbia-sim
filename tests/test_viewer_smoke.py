@@ -116,7 +116,9 @@ class TestViewerSmoke:
             assert stl_path.stat().st_size > 0, f"Fichier STL vide: {stl_file}"
 
         # Vérifier la structure des assets officiels
-        official_dir = project_root / "src" / "bbia_sim" / "sim" / "assets" / "reachy_official"
+        official_dir = (
+            project_root / "src" / "bbia_sim" / "sim" / "assets" / "reachy_official"
+        )
         assert official_dir.exists(), "Répertoire reachy_official manquant"
 
         mapping_file = official_dir / "asset_mapping.py"

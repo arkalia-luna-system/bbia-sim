@@ -54,6 +54,7 @@ Avantages :
 ### Modules BBIA avancés
 
 #### 1. Module Émotions
+
 ```python
 from bbia_sim.bbia_emotions import BBIAEmotions
 
@@ -66,6 +67,7 @@ emotions.set_emotion('calm', intensity=0.4)
 ```
 
 #### 2. Module Comportements
+
 ```python
 from bbia_sim.bbia_behavior import BBIABehaviorManager
 
@@ -81,6 +83,7 @@ manager.register_behavior(MyBehavior())
 ```
 
 #### 3. Module Vision
+
 ```python
 from bbia_sim.bbia_vision import BBIAVision
 

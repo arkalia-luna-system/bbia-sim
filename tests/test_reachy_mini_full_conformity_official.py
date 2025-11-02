@@ -122,7 +122,9 @@ class TestReachyMiniFullConformity:
             else:
                 print(f"✅ Méthode disponible: {method_name}")
 
-        assert len(missing_methods) == 0, f"Méthodes manquantes: {', '.join(missing_methods)}"
+        assert (
+            len(missing_methods) == 0
+        ), f"Méthodes manquantes: {', '.join(missing_methods)}"
 
     def test_03_methods_signatures(self):
         """Test 3: Vérifier les signatures des méthodes."""
@@ -144,12 +146,16 @@ class TestReachyMiniFullConformity:
             # Vérifier les arguments (ordre flexible)
             missing_args = [arg for arg in expected_args if arg not in actual_args]
             if missing_args:
-                signature_errors.append(f"{method_name}: arguments manquants {missing_args}")
+                signature_errors.append(
+                    f"{method_name}: arguments manquants {missing_args}"
+                )
                 print(f"❌ {method_name}: {missing_args}")
             else:
                 print(f"✅ {method_name}: signature correcte")
 
-        assert len(signature_errors) == 0, f"Erreurs de signatures: {', '.join(signature_errors)}"
+        assert (
+            len(signature_errors) == 0
+        ), f"Erreurs de signatures: {', '.join(signature_errors)}"
 
     def test_04_joints_official_mapping(self):
         """Test 4: Vérifier le mapping des joints officiels."""
@@ -174,7 +180,9 @@ class TestReachyMiniFullConformity:
                 print(f"ℹ️  Joint supplémentaire: {joint}")
 
         # Les joints officiels doivent tous être présents
-        assert not missing_joints, f"Joints officiels manquants: {', '.join(missing_joints)}"
+        assert (
+            not missing_joints
+        ), f"Joints officiels manquants: {', '.join(missing_joints)}"
 
     def test_05_emotions_official(self):
         """Test 5: Vérifier les émotions officielles."""
@@ -197,7 +205,9 @@ class TestReachyMiniFullConformity:
         else:
             print("❌ Les émotions invalides ne sont pas rejetées")
 
-        assert len(emotion_errors) == 0, f"Émotions invalides: {', '.join(emotion_errors)}"
+        assert (
+            len(emotion_errors) == 0
+        ), f"Émotions invalides: {', '.join(emotion_errors)}"
         assert not invalid_result, "Les émotions invalides devraient être rejetées"
 
     def test_06_behaviors_official(self):
@@ -214,7 +224,9 @@ class TestReachyMiniFullConformity:
                 behavior_errors.append(behavior)
                 print(f"❌ Comportement invalide: {behavior}")
 
-        assert len(behavior_errors) == 0, f"Comportements invalides: {', '.join(behavior_errors)}"
+        assert (
+            len(behavior_errors) == 0
+        ), f"Comportements invalides: {', '.join(behavior_errors)}"
 
     def test_07_joint_limits_official(self):
         """Test 7: Vérifier les limites des joints officiels."""
@@ -256,7 +268,9 @@ class TestReachyMiniFullConformity:
         for joint in ["left_antenna", "right_antenna"]:
             result = self.backend.set_joint_pos(joint, 0.1)  # Dans limites -0.3 à 0.3
             # Les antennes sont maintenant animables, donc devrait fonctionner si pas dans forbidden_joints
-            print(f"   Antenne {joint}: {'✅ Animable' if result else '⚠️ Optionnellement bloquée'}")
+            print(
+                f"   Antenne {joint}: {'✅ Animable' if result else '⚠️ Optionnellement bloquée'}"
+            )
 
         print("✅ Mouvements sur joints interdits bloqués")
 
@@ -309,7 +323,9 @@ class TestReachyMiniFullConformity:
             else:
                 print(f"✅ Champ présent: {field}")
 
-        assert len(missing_fields) == 0, f"Champs télémétrie manquants: {', '.join(missing_fields)}"
+        assert (
+            len(missing_fields) == 0
+        ), f"Champs télémétrie manquants: {', '.join(missing_fields)}"
 
     def test_11_performance_official(self):
         """Test 11: Vérifier les performances."""
@@ -372,7 +388,9 @@ class TestReachyMiniFullConformity:
         # Vérifier que toutes les méthodes abstraites sont implémentées
         abstract_methods = ["connect", "disconnect", "get_available_joints"]
         for method_name in abstract_methods:
-            assert hasattr(self.backend, method_name), f"Méthode {method_name} manquante"
+            assert hasattr(
+                self.backend, method_name
+            ), f"Méthode {method_name} manquante"
             print(f"✅ Méthode abstraite implémentée: {method_name}")
 
     def test_14_sdk_official_comparison(self):
@@ -406,7 +424,9 @@ class TestReachyMiniFullConformity:
 
         # Test get_joint_pos retourne float
         result = self.backend.get_joint_pos("stewart_1")
-        assert isinstance(result, float | type(None)), "get_joint_pos doit retourner float ou None"
+        assert isinstance(
+            result, float | type(None)
+        ), "get_joint_pos doit retourner float ou None"
         print("✅ get_joint_pos retourne float")
 
         # Test set_joint_pos retourne bool
@@ -444,7 +464,8 @@ class TestReachyMiniFullConformity:
         for joint in available_joints:
             if not any(
                 [
-                    joint.startswith("stewart_") and joint.replace("stewart_", "").isdigit(),
+                    joint.startswith("stewart_")
+                    and joint.replace("stewart_", "").isdigit(),
                     joint in ["left_antenna", "right_antenna", "yaw_body"],
                 ]
             ):
@@ -521,7 +542,9 @@ class TestReachyMiniFullConformity:
             if not result:
                 print(f"✅ {joint} correctement bloqué (doit utiliser méthodes IK)")
             else:
-                print(f"⚠️  {joint} permet contrôle direct (non recommandé, utiliser goto_target)")
+                print(
+                    f"⚠️  {joint} permet contrôle direct (non recommandé, utiliser goto_target)"
+                )
 
         # Vérifier que goto_target() fonctionne correctement pour tête
         try:
@@ -589,9 +612,13 @@ class TestReachyMiniFullConformity:
 
         # Vérifier que look_at_world accepte duration et perform_movement (signature SDK officiel)
         if hasattr(self.backend, "look_at_world"):
-            result = self.backend.look_at_world(0.1, 0.2, 0.3, duration=1.5, perform_movement=False)
+            result = self.backend.look_at_world(
+                0.1, 0.2, 0.3, duration=1.5, perform_movement=False
+            )
             assert result is not None, "look_at_world doit retourner pose (matrice 4x4)"
-            print("✅ look_at_world accepte tous les paramètres SDK (duration, perform_movement)")
+            print(
+                "✅ look_at_world accepte tous les paramètres SDK (duration, perform_movement)"
+            )
         else:
             print("⚠️  look_at_world non disponible")
 
@@ -673,14 +700,18 @@ class TestReachyMiniFullConformity:
         # Arrêter enregistrement
         move_data = self.backend.stop_recording()
         assert move_data is not None, "stop_recording doit retourner des données"
-        assert isinstance(move_data, list | type(None)), "stop_recording doit retourner une liste"
+        assert isinstance(
+            move_data, list | type(None)
+        ), "stop_recording doit retourner une liste"
         print(f"✅ stop_recording() retourne données: {type(move_data)}")
 
         # Test playback (si données disponibles)
         if move_data and len(move_data) > 0:
             try:
                 # Créer un Move simple ou utiliser directement
-                self.backend.play_move(move_data, play_frequency=50.0, initial_goto_duration=0.5)
+                self.backend.play_move(
+                    move_data, play_frequency=50.0, initial_goto_duration=0.5
+                )
                 print("✅ play_move() exécuté avec succès")
             except Exception as e:
                 print(f"⚠️  play_move() erreur (acceptable en simulation): {e}")
@@ -699,7 +730,9 @@ class TestReachyMiniFullConformity:
         try:
             # Créer des données de mouvement fictives
             fake_move = [{"joint": "yaw_body", "position": 0.1}]
-            self.backend.async_play_move(fake_move, play_frequency=100.0, initial_goto_duration=0.0)
+            self.backend.async_play_move(
+                fake_move, play_frequency=100.0, initial_goto_duration=0.0
+            )
             print("✅ async_play_move() exécuté (non-bloquant)")
         except Exception as e:
             print(f"⚠️  async_play_move() erreur (acceptable en simulation): {e}")
@@ -746,14 +779,18 @@ class TestReachyMiniFullConformity:
             self.backend.enable_gravity_compensation()
             print("✅ enable_gravity_compensation() exécuté")
         except Exception as e:
-            print(f"⚠️  enable_gravity_compensation() erreur (acceptable en simulation): {e}")
+            print(
+                f"⚠️  enable_gravity_compensation() erreur (acceptable en simulation): {e}"
+            )
 
         # Test désactivation
         try:
             self.backend.disable_gravity_compensation()
             print("✅ disable_gravity_compensation() exécuté")
         except Exception as e:
-            print(f"⚠️  disable_gravity_compensation() erreur (acceptable en simulation): {e}")
+            print(
+                f"⚠️  disable_gravity_compensation() erreur (acceptable en simulation): {e}"
+            )
 
     def test_28_look_at_image_complete(self):
         """Test 28: Vérifier look_at_image avec tous les paramètres."""
@@ -762,7 +799,9 @@ class TestReachyMiniFullConformity:
 
         if hasattr(self.backend, "look_at_image"):
             # Test avec tous les paramètres SDK officiel
-            result = self.backend.look_at_image(u=320, v=240, duration=1.0, perform_movement=True)
+            result = self.backend.look_at_image(
+                u=320, v=240, duration=1.0, perform_movement=True
+            )
             assert result is not None, "look_at_image doit retourner pose (matrice 4x4)"
             print(
                 "✅ look_at_image() accepte tous les paramètres SDK (u, v, duration, perform_movement)"
@@ -770,7 +809,9 @@ class TestReachyMiniFullConformity:
 
             # Test avec paramètres par défaut
             result2 = self.backend.look_at_image(u=160, v=120)
-            assert result2 is not None, "look_at_image doit fonctionner avec paramètres par défaut"
+            assert (
+                result2 is not None
+            ), "look_at_image doit fonctionner avec paramètres par défaut"
             print("✅ look_at_image() fonctionne avec paramètres par défaut")
         else:
             print("⚠️  look_at_image non disponible")
@@ -784,8 +825,12 @@ class TestReachyMiniFullConformity:
         if hasattr(self.backend, "get_current_body_yaw"):
             try:
                 body_yaw = self.backend.get_current_body_yaw()
-                assert isinstance(body_yaw, float), "get_current_body_yaw doit retourner float"
-                assert -3.14159 <= body_yaw <= 3.14159, "body_yaw doit être entre -π et π"
+                assert isinstance(
+                    body_yaw, float
+                ), "get_current_body_yaw doit retourner float"
+                assert (
+                    -3.14159 <= body_yaw <= 3.14159
+                ), "body_yaw doit être entre -π et π"
                 print(f"✅ get_current_body_yaw() disponible: {body_yaw:.4f} rad")
             except Exception as e:
                 print(f"⚠️  get_current_body_yaw() erreur: {e}")
@@ -849,7 +894,9 @@ class TestReachyMiniFullConformity:
             for base_method in interpolation_techniques:
                 # Test méthode standard
                 try:
-                    self.backend.goto_target(head=pose, duration=0.3, method=base_method)
+                    self.backend.goto_target(
+                        head=pose, duration=0.3, method=base_method
+                    )
                     print(f"✅ {base_method} (standard) supportée")
                 except Exception as e:
                     print(f"⚠️  {base_method} (standard) erreur: {e}")
@@ -858,7 +905,9 @@ class TestReachyMiniFullConformity:
                 variants = interpolation_variants.get(base_method, [])
                 for variant in variants:
                     try:
-                        self.backend.goto_target(head=pose, duration=0.3, method=variant)
+                        self.backend.goto_target(
+                            head=pose, duration=0.3, method=variant
+                        )
                         print(f"✅ {base_method} (variant '{variant}') supportée")
                     except Exception as e:
                         print(f"⚠️  {base_method} (variant '{variant}') erreur: {e}")
@@ -897,9 +946,13 @@ class TestReachyMiniFullConformity:
             for x, y, z in invalid_coords:
                 try:
                     self.backend.look_at_world(x, y, z, duration=0.5)
-                    print(f"   ⚠️  ({x}, {y}, {z}): Accepté (devrait être validé/rejeté)")
+                    print(
+                        f"   ⚠️  ({x}, {y}, {z}): Accepté (devrait être validé/rejeté)"
+                    )
                 except (ValueError, Exception) as e:
-                    print(f"   ✅ ({x}, {y}, {z}): Rejeté correctement: {type(e).__name__}")
+                    print(
+                        f"   ✅ ({x}, {y}, {z}): Rejeté correctement: {type(e).__name__}"
+                    )
 
         if hasattr(self.backend, "look_at_image"):
             print("✅ Test look_at_image avec coordonnées valides:")
@@ -961,7 +1014,9 @@ class TestReachyMiniFullConformity:
             try:
                 # Test que set_emotion accepte l'intensité
                 success = self.backend.set_emotion(emotion, intensity)
-                assert success is True, f"set_emotion({emotion}, {intensity}) doit réussir"
+                assert (
+                    success is True
+                ), f"set_emotion({emotion}, {intensity}) doit réussir"
                 print(f"✅ Emotion '{emotion}' (intensité {intensity}): Appliquée")
             except Exception as e:
                 print(f"⚠️  Emotion '{emotion}' (intensité {intensity}): Erreur {e}")
@@ -1017,7 +1072,9 @@ class TestReachyMiniFullConformity:
             if joint in ReachyMapping.JOINTS:
                 mapping_info = ReachyMapping.JOINTS[joint]
                 # Les limites peuvent différer légèrement, mais doivent être cohérentes
-                backend_min, backend_max = self.backend.joint_limits.get(joint, (None, None))
+                backend_min, backend_max = self.backend.joint_limits.get(
+                    joint, (None, None)
+                )
                 if backend_min is not None and backend_max is not None:
                     # Vérifier que les limites sont proches (tolérance 0.1 rad)
                     assert (

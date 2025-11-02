@@ -105,7 +105,9 @@ class TestHuggingFaceSecurity:
         # (en pratique, on teste juste que les attributs sont modifiables)
         # Juste vérifier que les attributs existent et sont accessibles
         assert self.hf.chat_model is None or isinstance(self.hf.chat_model, object)
-        assert self.hf.chat_tokenizer is None or isinstance(self.hf.chat_tokenizer, object)
+        assert self.hf.chat_tokenizer is None or isinstance(
+            self.hf.chat_tokenizer, object
+        )
 
     def test_input_validation_none(self) -> None:
         """Test validation entrée None."""

@@ -129,7 +129,9 @@ class TestLLMChatFunctionality:
         # Tester chargement (peut échouer si modèle non disponible, c'est OK)
         # On teste juste que la méthode existe et accepte le type
         try:
-            result = self.hf.load_model("mistralai/Mistral-7B-Instruct-v0.2", model_type="chat")
+            result = self.hf.load_model(
+                "mistralai/Mistral-7B-Instruct-v0.2", model_type="chat"
+            )
             assert isinstance(result, bool)
         except Exception:
             # OK si échoue (modèle lourd, pas disponible en CI, etc.)

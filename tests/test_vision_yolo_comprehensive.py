@@ -90,7 +90,9 @@ class TestYOLODetector:
             )
 
             mock_box_cls = MagicMock()
-            mock_box_cls.__getitem__.return_value.cpu.return_value.numpy.return_value = np.array(0)
+            mock_box_cls.__getitem__.return_value.cpu.return_value.numpy.return_value = np.array(
+                0
+            )
 
             mock_box = MagicMock()
             mock_box.xyxy = mock_box_xyxy
@@ -227,7 +229,9 @@ class TestFaceDetector:
     @patch("mediapipe.solutions.face_detection.FaceDetection")
     @patch("mediapipe.solutions.drawing_utils")
     @patch("mediapipe.solutions.face_detection")
-    def test_init_with_mediapipe(self, mock_face_detection, mock_drawing, mock_fd_class):
+    def test_init_with_mediapipe(
+        self, mock_face_detection, mock_drawing, mock_fd_class
+    ):
         """Test initialisation avec MediaPipe."""
         mock_fd_instance = MagicMock()
         mock_fd_class.return_value = mock_fd_instance
@@ -331,7 +335,9 @@ class TestFactoryFunctions:
         assert detector is not None
         assert isinstance(detector, FaceDetector)
 
-    @patch("builtins.__import__", side_effect=ImportError("No module named 'mediapipe'"))
+    @patch(
+        "builtins.__import__", side_effect=ImportError("No module named 'mediapipe'")
+    )
     def test_create_face_detector_without_mediapipe(self, mock_import):
         """Test création sans MediaPipe."""
         detector = create_face_detector()

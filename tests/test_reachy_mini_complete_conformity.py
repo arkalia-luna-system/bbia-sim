@@ -62,7 +62,9 @@ class TestReachyMiniCompleteConformity:
         ]
 
         for method_name in sdk_methods:
-            assert hasattr(self.backend, method_name), f"Méthode {method_name} manquante"
+            assert hasattr(
+                self.backend, method_name
+            ), f"Méthode {method_name} manquante"
 
     def test_joint_mapping_conformity(self):
         """Test conformité mapping joints."""
@@ -209,7 +211,9 @@ class TestReachyMiniCompleteConformity:
         assert self.backend.look_at(0.1, 0.2, 0.3) is True
         assert self.backend.run_behavior("wake_up") is True
         assert self.backend.enable_motors() is None  # SDK officiel retourne None
-        assert self.backend.enable_gravity_compensation() is None  # SDK officiel retourne None
+        assert (
+            self.backend.enable_gravity_compensation() is None
+        )  # SDK officiel retourne None
 
     def test_performance_conformity(self):
         """Test conformité performance."""

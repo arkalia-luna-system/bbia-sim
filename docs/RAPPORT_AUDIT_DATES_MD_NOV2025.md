@@ -11,7 +11,7 @@
 ### Dates corrigées
 - **23 fichiers modifiés**
 - **102 corrections appliquées**
-- Remplacement de toutes les années incorrectes (2024, 2026) → 2025
+- Remplacement de toutes les années incorrectes (2025, 2026) → 2025
 - Remplacement de tous les mois incorrects → "octobre 2025"
 - Fichiers récents → "Oct 2025 / Nov 2025"
 
@@ -110,7 +110,7 @@ docs/
 - ✅ Dates de création (Avril 2025) préservées
 
 ### Dates
-- ✅ Toutes les années corrigées (2024/2026 → 2025)
+- ✅ Toutes les années corrigées (2025/2026 → 2025)
 - ✅ Tous les mois corrigés (janvier-septembre → octobre 2025)
 - ✅ Fichiers récents ont "Oct 2025 / Nov 2025"
 - ✅ Date de création (Avril 2025) préservée dans PROJECTS.md

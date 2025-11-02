@@ -128,7 +128,7 @@ def main():
                 if len(changes) > 3:
                     print(f"   ... et {len(changes) - 3} autres")
 
-    print(f"\n📊 Résumé:")
+    print("\n📊 Résumé:")
     print(f"   {len(files_changed)} fichiers modifiés")
     print(f"   {total_changes} corrections appliquées")
 

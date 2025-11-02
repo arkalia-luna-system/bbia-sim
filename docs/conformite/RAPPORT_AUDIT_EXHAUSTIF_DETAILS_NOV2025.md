@@ -1,6 +1,6 @@
 # Rapport d'Audit Exhaustif - Détails Subtils Octobre 2025
 
-**Date**: octobre 2025  
+**Date**: Oct 25 / Nov 25  
 **Objectif**: Vérifier et corriger tous les détails subtils entre BBIA-SIM et SDK Reachy Mini officiel
 
 ---

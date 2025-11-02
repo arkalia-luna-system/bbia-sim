@@ -2,7 +2,6 @@
 """Script pour remplacer toutes les dates dans les fichiers .md par des dates d'octobre 2025."""
 
 import re
-import os
 from pathlib import Path
 
 
@@ -92,7 +91,7 @@ def process_md_files(root_dir: str):
     for md_file in md_files:
         try:
             # Lire le contenu
-            with open(md_file, "r", encoding="utf-8", errors="ignore") as f:
+            with open(md_file, encoding="utf-8", errors="ignore") as f:
                 original_content = f.read()
 
             # Remplacer les dates

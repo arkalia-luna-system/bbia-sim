@@ -38,7 +38,9 @@ class TestDashboardAdvanced:
     @patch("bbia_sim.dashboard_advanced.BBIAEmotions")
     @patch("bbia_sim.dashboard_advanced.BBIAVision")
     @patch("bbia_sim.dashboard_advanced.BBIABehaviorManager")
-    def test_websocket_manager_initialization(self, mock_behavior, mock_vision, mock_emotions):
+    def test_websocket_manager_initialization(
+        self, mock_behavior, mock_vision, mock_emotions
+    ):
         """Test initialisation BBIAAdvancedWebSocketManager."""
         try:
             from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager

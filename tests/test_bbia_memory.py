@@ -164,7 +164,10 @@ class TestBBIAMemory:
             memory = BBIAMemory(memory_dir=str(tmpdir))
 
             assert memory.memory_dir.exists()
-            assert memory.conversation_file == memory.memory_dir / "conversation_history.json"
+            assert (
+                memory.conversation_file
+                == memory.memory_dir / "conversation_history.json"
+            )
             assert memory.preferences_file == memory.memory_dir / "preferences.json"
             assert memory.learnings_file == memory.memory_dir / "learnings.json"
 

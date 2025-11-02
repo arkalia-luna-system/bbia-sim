@@ -106,7 +106,9 @@ class TestYOLODetector:
 class TestFaceDetector:
     """Tests pour le module détection de visages."""
 
-    @pytest.mark.skip(reason="MediaPipe a des problèmes matplotlib dans l'environnement")
+    @pytest.mark.skip(
+        reason="MediaPipe a des problèmes matplotlib dans l'environnement"
+    )
     def test_face_detector_creation(self):
         """Test création FaceDetector."""
         detector = FaceDetector()
@@ -115,7 +117,9 @@ class TestFaceDetector:
             detector.mp_face_detection, "FaceDetection"
         )
 
-    @pytest.mark.skip(reason="MediaPipe a des problèmes matplotlib dans l'environnement")
+    @pytest.mark.skip(
+        reason="MediaPipe a des problèmes matplotlib dans l'environnement"
+    )
     def test_best_face_selection(self):
         """Test sélection meilleur visage."""
         detector = FaceDetector()

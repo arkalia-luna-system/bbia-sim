@@ -185,7 +185,6 @@ def main():
     audit_dir = Path("docs/audit")
     md_files = list(audit_dir.glob("*.md")) if audit_dir.exists() else []
 
-    issues_found = []
     for md_file in md_files:
         claims = find_md_claims(md_file)
         if claims:

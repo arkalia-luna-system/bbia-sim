@@ -119,7 +119,6 @@ class OfficialRepoComparator:
             )
 
             missing_in_bbia = official_files - bbia_files
-            extra_in_bbia = bbia_files - official_files
 
             for missing in missing_in_bbia:
                 if missing != "__init__.py":  # Ignorer __init__.py

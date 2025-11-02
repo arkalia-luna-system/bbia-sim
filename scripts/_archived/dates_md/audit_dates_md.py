@@ -1,10 +1,8 @@
 #!/usr/bin/env python3
 """Audit et correction des dates dans tous les fichiers MD."""
 
-import os
 import re
 from pathlib import Path
-from datetime import datetime
 
 # Date de création réelle (depuis PROJECTS.md mentionne Avril 2025)
 DATE_CREATION = "Avril 2025"

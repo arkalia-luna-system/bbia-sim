@@ -190,7 +190,7 @@ def generate_consolidation_report(
 
     if files_with_few_unique:
         print("   Fichiers potentiellement REDONDANTS (peu de tests uniques):")
-        for filepath, count in sorted(
+        for filepath, _count in sorted(
             files_with_few_unique.items(), key=lambda x: -len(all_tests[x[0]])
         ):
             total = len(all_tests[filepath])
