@@ -182,7 +182,7 @@
 
 ## 🔧 TODOs À IMPLÉMENTER (Points techniques)
 
-### 1. `daemon/app/routers/ecosystem.py`
+### 1. `daemon/app/routers/ecosystem.py` - ⚠️ PARTIELLEMENT TERMINÉ
 
 **TODOs trouvés :**
 ```python
@@ -192,11 +192,13 @@
 ```
 
 **Action :**
-- Implémenter calcul uptime réel
-- Implémenter comptage connexions WebSocket actives
-- Implémenter logique démarrage démo
+- ✅ **TERMINÉ** : Implémenter calcul uptime réel → Fonctions `get_app_start_time()` et `format_uptime()` implémentées
+- ⚠️ **EN COURS** : Implémenter comptage connexions WebSocket actives → Infrastructure `get_active_connections()` créée, nécessite intégration gestionnaire WS
+- ⏳ **À FAIRE** : Implémenter logique démarrage démo → TODO reste à la ligne 446
 
-**Estimation :** 1-2 heures
+**Statut** : ⚠️ 1/3 terminé, 1/3 partiel, 1/3 à faire
+
+**Estimation restante** : 1-2 heures (démo + WS tracking)
 
 ---
 

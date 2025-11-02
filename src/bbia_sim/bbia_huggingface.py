@@ -361,7 +361,7 @@ class BBIAHuggingFace:
         try:
             # Résolution d'alias éventuel (ex: 'emotion' -> id complet)
             resolved_name = self._resolve_model_name(model_name, model_type)
-            
+
             # OPTIMISATION PERFORMANCE: Vérifier si modèle déjà chargé avant de recharger
             if model_type == "chat":
                 # Modèles chat stockés dans self.chat_model et self.chat_tokenizer
@@ -380,7 +380,7 @@ class BBIAHuggingFace:
                 if model_key in self.models:
                     logger.debug(f"♻️ Modèle {model_type} déjà chargé ({resolved_name}), réutilisation")
                     return True
-            
+
             logger.info(f"📥 Chargement modèle {resolved_name} ({model_type})")
 
             if model_type == "vision":
@@ -809,7 +809,8 @@ class BBIAHuggingFace:
             True si déchargé avec succès
         """
         try:
-            keys_to_remove = [key for key in self.models.keys() if model_name in key]
+            # OPTIMISATION: Éviter création liste intermédiaire inutile
+            keys_to_remove = [key for key in self.models if model_name in key]
             for key in keys_to_remove:
                 del self.models[key]
 
@@ -2298,8 +2299,10 @@ class BBIAHuggingFace:
             "quoi",
             "comment",
         }
+        # OPTIMISATION: Cache .lower().split() pour éviter appel répété
+        words_lower = user_msg.lower().split()
         words = [
-            w for w in (words_lower := user_msg.lower().split()) if len(w) > 3 and w not in stop_words
+            w for w in words_lower if len(w) > 3 and w not in stop_words
         ]
 
         # Retourner le premier mot significatif si disponible
