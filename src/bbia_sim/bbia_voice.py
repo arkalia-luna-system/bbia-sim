@@ -274,13 +274,14 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
 
                 sdk_audio_bytes: bytes
                 wav_buf = _io.BytesIO()
-                try:
-                    with _wave.open(wav_buf, "wb") as wf:
+                with _wave.open(wav_buf, "wb") as wf:
                     wf.setnchannels(1)
                     wf.setsampwidth(2)
                     wf.setframerate(sr)
                     wf.writeframes(silence)
                 sdk_audio_bytes = wav_buf.getvalue()
+                except Exception:
+                    sdk_audio_bytes = b""  # Fallback si création WAV échoue
 
                 # Priorité 1: media.play_audio(bytes[, volume])
                 if hasattr(media, "play_audio"):

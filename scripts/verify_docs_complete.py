@@ -123,10 +123,20 @@ class DocsVerifier:
         self.md_files: list[Path] = []
         
     def find_all_md_files(self) -> list[Path]:
-        """Trouve tous les fichiers MD (sauf archives et _archived)."""
+        """Trouve tous les fichiers MD (sauf archives, _archived, fichiers cachés)."""
         md_files = []
         for md_file in PROJECT_ROOT.rglob("*.md"):
+            # Ignorer fichiers cachés macOS
+            if md_file.name.startswith("._"):
+                continue
+            # Ignorer archives
             if "_archived" in str(md_file) or ".git" in str(md_file):
+                continue
+            # Ignorer caches
+            if ".pytest_cache" in str(md_file) or "__pycache__" in str(md_file):
+                continue
+            # Ignorer venv/node_modules
+            if "venv" in str(md_file) or "node_modules" in str(md_file):
                 continue
             md_files.append(md_file)
         return sorted(md_files)

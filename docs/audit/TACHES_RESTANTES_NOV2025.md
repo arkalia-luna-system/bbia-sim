@@ -146,10 +146,10 @@
 | Priorité | Tâches | Estimation | Statut |
 |----------|-------|------------|--------|
 | 🔴 Haute | Mettre à jour tests/README.md | 15 min | ✅ TERMINÉ |
-| 🔴 Haute | TODOs ecosystem.py | 1-2h | ⚠️ PARTIEL (uptime ✅, WS ⏳) |
+| 🔴 Haute | TODOs ecosystem.py | 1-2h | ✅ TERMINÉ (uptime ✅, WS ✅, démo ✅) |
 | 🟡 Moyenne | Coverage modules critiques | 8-12h | ⏳ À faire |
 | 🟡 Moyenne | Réorganiser fichiers MD | 30 min | ✅ TERMINÉ |
-| 🟢 Basse | Vérifier liens cassés | 1h | ⏳ À faire |
+| 🟢 Basse | Vérifier liens cassés | 1h | ✅ TERMINÉ (script créé, 212 liens cassés détectés) |
 | 🟢 Basse | Consolider documents | 2-3h | ⏳ À faire |
 | 🔵 Hardware | TODOs robot réel | 3-4h | ⏳ En attente |
 
