@@ -10,13 +10,15 @@
 ### Statistiques
 
 ```mermaid
-pie title MD Améliorés (21+ documents)
+pie title MD Améliorés (24+ documents)
     "Points d'Entrée" : 3
     "Guides Utilisateurs" : 4
     "Guides Techniques" : 3
     "Audit & Analyses" : 6
     "Conformité & CI/CD" : 2
     "Observabilité" : 1
+    "API & Dashboard" : 2
+    "Performance" : 1
     "Scripts & Utils" : 1
     "Guides Spécialisés" : 1
 ```
@@ -25,17 +27,17 @@ pie title MD Améliorés (21+ documents)
 
 | Type | Nombre | Utilisation |
 |------|--------|-------------|
-| **Flowchart** | 20+ | Flux processus, architecture, dépannage, préparation, CI/CD |
-| **Sequence** | 6+ | Interactions entre composants, intégration, validation, CI/CD, health checks |
-| **Gantt** | 1 | Timeline implémentation |
+| **Flowchart** | 22+ | Flux processus, architecture, dépannage, préparation, CI/CD, authentification |
+| **Sequence** | 8+ | Interactions entre composants, intégration, validation, CI/CD, health checks, REST, WebSocket |
+| **Gantt** | 2 | Timeline implémentation, roadmap dashboard |
 | **Pie** | 4 | Scores parité, distribution, conformité |
-| **Mindmap** | 4 | Organisation tâches, documentation, scripts, métriques |
+| **Mindmap** | 5 | Organisation tâches, documentation, scripts, métriques, composants dashboard |
 | **State** | 1 | Statut global |
-| **Graph** | 10+ | Structures, dépendances, architecture, conformité, observabilité |
+| **Graph** | 12+ | Structures, dépendances, architecture, conformité, observabilité, optimisations |
 
 ---
 
-## 🎨 Documents Améliorés (21+)
+## 🎨 Documents Améliorés (24+)
 
 ### Niveau 1 : Points d'Entrée Principaux
 
@@ -138,6 +140,20 @@ pie title MD Améliorés (21+ documents)
 
 #### 21. **docs/guides_techniques/FAQ_TROUBLESHOOTING.md** ⭐⭐
 - ✅ Flowchart dépannage rapide complet
+
+#### 22. **docs/api/CONTRATS_REST_WS.md** ⭐⭐⭐
+- ✅ Architecture REST/WebSocket complète
+- ✅ Séquence flux REST
+- ✅ Séquence flux WebSocket
+- ✅ Flowchart authentification
+
+#### 23. **docs/dashboard/ROADMAP_DASHBOARD.md** ⭐⭐⭐
+- ✅ Architecture dashboard proposée
+- ✅ Roadmap Gantt implémentation
+- ✅ Mindmap composants dashboard
+
+#### 24. **docs/performance/OPTIMISATIONS_NOV2025_V2.md** ⭐⭐
+- ✅ Graph avant/après optimisations
 
 ---
 
@@ -256,5 +272,5 @@ pie title Qualité Documentation
 ---
 
 **Dernière mise à jour :** Oct 25 / Nov 25  
-**Statut :** ✅ Documentation visuelle optimisée - **43+ diagrammes Mermaid ajoutés dans 21+ documents**
+**Statut :** ✅ Documentation visuelle optimisée - **49+ diagrammes Mermaid ajoutés dans 24+ documents**
 
