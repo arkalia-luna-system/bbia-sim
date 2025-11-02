@@ -297,6 +297,44 @@ class DocsVerifier:
         if old_dates:
             self.errors[md_file].append(f"❌ Dates obsolètes trouvées: {old_dates}")
     
+    def check_code_consistency(self, md_file: Path, content: str) -> None:
+        """Vérifie cohérence avec code réel (fichiers, classes, méthodes mentionnés)."""
+        import subprocess
+        
+        # Vérifier fichiers mentionnés
+        file_pattern = r'`([a-zA-Z0-9_/\.-]+\.(?:py|sh|xml|stl|md))`'
+        for match in re.finditer(file_pattern, content):
+            file_path = match.group(1)
+            # Ignorer liens externes
+            if file_path.startswith("http"):
+                continue
+            # Vérifier existence
+            if not (PROJECT_ROOT / file_path.lstrip("/")).exists():
+                # Essayer chemin relatif depuis doc
+                if not (md_file.parent / file_path).exists():
+                    self.warnings[md_file].append(f"⚠️  Fichier mentionné non trouvé: {file_path}")
+        
+        # Vérifier classes mentionnées
+        class_pattern = r'`?([A-Z][a-zA-Z0-9_]+)`?(?:\s+class|\(|\.)'
+        for match in re.finditer(class_pattern, content):
+            class_name = match.group(1)
+            # Ignorer mots-clés Python
+            if class_name in ["True", "False", "None", "Dict", "List", "Any", "Optional", "Union"]:
+                continue
+            # Vérifier existence dans code (recherche basique)
+            try:
+                result = subprocess.run(
+                    ["grep", "-r", f"class {class_name}", "src/"],
+                    capture_output=True,
+                    text=True,
+                    timeout=5,
+                    cwd=str(PROJECT_ROOT)
+                )
+                if not result.stdout.strip() and class_name not in ["API", "CLI", "JSON", "YAML", "XML"]:
+                    self.warnings[md_file].append(f"⚠️  Classe mentionnée non trouvée: {class_name}")
+            except Exception:
+                pass  # Ignorer si grep non disponible
+    
     def check_spelling(self, md_file: Path, content: str) -> None:
         """Vérifie orthographe basique (mots techniques + français)."""
         # Extraire mots (ignorer code, liens, URLs)

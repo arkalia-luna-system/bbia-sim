@@ -150,7 +150,7 @@
 | 🟡 Moyenne | Coverage modules critiques | 8-12h | ⏳ À faire |
 | 🟡 Moyenne | Réorganiser fichiers MD | 30 min | ✅ TERMINÉ |
 | 🟢 Basse | Vérifier liens cassés | 1h | ✅ TERMINÉ (script créé, 212 liens cassés détectés) |
-| 🟢 Basse | Consolider documents | 2-3h | ⏳ À faire |
+| 🟢 Basse | Consolider documents | 2-3h | ✅ TERMINÉ (INDEX_AUDITS_CONSOLIDES.md créé) |
 | 🔵 Hardware | TODOs robot réel | 3-4h | ⏳ En attente |
 
 ---
@@ -194,11 +194,23 @@
 8. ✅ **Hugging Face** : Intégration vérifiée
 9. ✅ **Statut Beta** : Fallbacks robustes pour gérer bugs SDK
 
-### Points Potentiellement Problématiques Identifiés
+### Points Potentiellement Problématiques - ✅ TOUS CORRIGÉS
 
-1. ⚠️ **robot.io** : Peut être `None` en simulation (normal, mais à documenter)
-2. ⚠️ **robot.media** : Peut être `None` en simulation (normal, mais à documenter)
-3. ✅ **Fallbacks** : Implémentés partout (audio, vision, voice utilisent SDK en priorité)
+1. ✅ **robot.io** : **TOUJOURS DISPONIBLE** via `SimulationIOModule` en simulation
+   - Shim créé : `src/bbia_sim/backends/simulation_shims.py`
+   - Retourne toujours un objet valide (jamais None)
+   - Méthodes : `get_camera_stream()`, `get_audio_stream()`, `get_imu()`
+
+2. ✅ **robot.media** : **TOUJOURS DISPONIBLE** via `SimulationMediaModule` en simulation
+   - Shim créé avec `camera`, `microphone`, `speaker`
+   - Retourne toujours un objet valide (jamais None)
+   - Méthodes : `play_audio()`, `record_audio()`, `.camera.get_image()`, etc.
+
+3. ✅ **Fallbacks** : **RENFORCÉS ET VÉRIFIÉS**
+   - Audio : SDK → sounddevice → erreur gracieuse
+   - Vision : SDK camera → OpenCV webcam → simulation
+   - Voice : SDK speaker → pyttsx3 → erreur gracieuse
+   - Tous les fallbacks testés et documentés
 
 ### Conformité Validée
 
