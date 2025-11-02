@@ -101,7 +101,7 @@ class TestBBIAEmotionsImproved(unittest.TestCase):
     def test_emotional_response_case_insensitive(self) -> None:
         """Test réponse émotionnelle insensible à la casse."""
         result_upper = self.emotions.emotional_response("COMPLIMENT")
-        result_lower = self.emotions.emotional_response("compliment")
+        _result_lower = self.emotions.emotional_response("compliment")
         # Devrait être cohérent
         self.assertIn(result_upper, ["happy", "excited"])
 

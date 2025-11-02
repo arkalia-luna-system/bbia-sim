@@ -6,12 +6,10 @@ import time
 import unittest
 from unittest.mock import MagicMock, patch
 
-
 # Désactiver audio pour CI
 os.environ["BBIA_DISABLE_AUDIO"] = "1"
 
 import sys
-
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
@@ -29,14 +27,14 @@ class TestAudioE2EBenchmark(unittest.TestCase):
         whisper.model = None
         whisper.is_loaded = False
 
-        # Simuler benchmark
-        start = time.time()
-        # Simuler opération rapide
-        time.sleep(0.001)  # 1ms simule traitement
-        latency = time.time() - start
+        # Simuler benchmark (pas de sleep réel pour éviter délais)
+        start = time.perf_counter()
+        # Simuler opération rapide (calcul simple)
+        _ = sum(range(100))  # Opération très rapide
+        latency = time.perf_counter() - start
 
-        # Vérifier latence < 100ms (mock, marge pour CI)
-        self.assertLess(latency, 0.1)
+        # Vérifier latence < 1ms (mock, très rapide)
+        self.assertLess(latency, 0.001)
 
     @patch("os.environ.get", return_value="1")
     def test_benchmark_audio_processing(self, mock_env: MagicMock) -> None:
