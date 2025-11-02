@@ -151,6 +151,10 @@ class BBIAHuggingFace:
         self.cache_dir = cache_dir
         self.models: dict[str, Any] = {}
         self.processors: dict[str, Any] = {}
+        # OPTIMISATION RAM: Limiter nombre de modèles en mémoire simultanément (LRU cache)
+        self._max_models_in_memory = 4  # Max 3-4 modèles simultanés
+        self._model_last_used: dict[str, float] = {}  # Timestamp dernier usage pour LRU
+        self._inactivity_timeout = 300.0  # 5 minutes d'inactivité → déchargement auto
 
         # Chat intelligent : Historique et contexte
         self.conversation_history: list[dict[str, Any]] = []
@@ -407,8 +411,15 @@ class BBIAHuggingFace:
                     )
                     return True
 
+            # OPTIMISATION RAM: Vérifier limite modèles et décharger LRU si nécessaire
+            if len(self.models) >= self._max_models_in_memory:
+                self._unload_lru_model()
+            
             logger.info(f"📥 Chargement modèle {resolved_name} ({model_type})")
-
+            
+            # OPTIMISATION RAM: Enregistrer timestamp usage modèle
+            current_time = time.time()
+            
             if model_type == "vision":
                 if "clip" in model_name.lower():
                     clip_processor = CLIPProcessor.from_pretrained(  # nosec B615
@@ -505,6 +516,11 @@ class BBIAHuggingFace:
                 return self._load_multimodal_model(resolved_name)
 
             logger.info(f"✅ Modèle {resolved_name} chargé avec succès")
+            
+            # OPTIMISATION RAM: Enregistrer timestamp usage modèle
+            model_key = f"{model_name}_{model_type}"
+            self._model_last_used[model_key] = current_time
+            
             return True
 
         except Exception as e:
@@ -550,6 +566,9 @@ class BBIAHuggingFace:
 
                 processor = self.processors[processor_key]
                 model = self.models[model_key]
+                
+                # OPTIMISATION RAM: Mettre à jour usage modèle
+                self._update_model_usage(model_key)
 
                 inputs = processor(image, return_tensors="pt").to(self.device)
                 out = model.generate(**inputs, max_length=50)
@@ -900,6 +919,19 @@ class BBIAHuggingFace:
                     # Outil exécuté - retourner résultat
                     return tool_result
 
+            # OPTIMISATION RAM: Lazy loading LLM - charger uniquement si chat() appelé
+            if not self.use_llm_chat or self.chat_model is None or self.chat_tokenizer is None:
+                # Essayer de charger LLM automatiquement si disponible (lazy loading)
+                try:
+                    # Utiliser modèle léger par défaut (phi2 ou tinyllama)
+                    default_chat_model = self.model_configs.get("chat", {}).get("phi2") or self.model_configs.get("chat", {}).get("tinyllama")
+                    if default_chat_model:
+                        logger.info(f"📥 Chargement LLM à la demande (lazy loading): {default_chat_model}")
+                        if self.load_model(default_chat_model, model_type="chat"):
+                            logger.info("✅ LLM chargé avec succès (lazy loading)")
+                except Exception as e:
+                    logger.debug(f"Lazy loading LLM échoué (fallback enrichi): {e}")
+            
             # 3. Générer réponse avec LLM si disponible, sinon réponses enrichies
             if self.use_llm_chat and self.chat_model and self.chat_tokenizer:
                 # Utiliser LLM pré-entraîné (Mistral/Llama)

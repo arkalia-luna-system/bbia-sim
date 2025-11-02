@@ -320,12 +320,15 @@ class TestYOLODetector:
                 1
             )
 
+            # OPTIMISATION RAM: Mock itérable pour boxes (évite chargement modèle réel)
+            mock_boxes_iterable = MagicMock()
+            mock_boxes_iterable.__iter__ = lambda self: iter([mock_box1, mock_box2])
+
             mock_result1 = MagicMock()
-            mock_result1.boxes = MagicMock()
-            mock_result1.boxes.__iter__ = lambda self: iter([mock_box1, mock_box2])
+            mock_result1.boxes = mock_boxes_iterable
 
             mock_result2 = MagicMock()
-            mock_result2.boxes = None  # Deuxième résultat sans boxes
+            mock_result2.boxes = None  # Deuxième résultat sans boxes (couverture ligne 143)
 
             mock_model = MagicMock()
             mock_model.return_value = [mock_result1, mock_result2]

@@ -66,10 +66,11 @@ class BBIAEmotionRecognition:
         self.device = self._get_device(device)
         self.is_initialized = False
 
-        # Configuration MediaPipe
+        # OPTIMISATION RAM: Lazy loading MediaPipe - ne charger que si détection visage demandée
         self.mp_face_detection: Any = None
         self.mp_face_mesh: Any = None
         self.mp_drawing: Any = None
+        self._mediapipe_loaded = False  # Flag pour lazy loading
 
         # Modèles d'émotion
         self.emotion_models: dict[str, Any] = {}

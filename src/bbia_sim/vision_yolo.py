@@ -24,9 +24,11 @@ except ImportError:
 
 logger = logging.getLogger(__name__)
 
-# OPTIMISATION PERFORMANCE: Cache global pour modèles YOLO (évite chargements répétés)
+# OPTIMISATION RAM: Cache global LRU pour modèles YOLO (max 2 modèles: n, s)
 _yolo_model_cache: dict[str, Any] = {}
+_yolo_model_last_used: dict[str, float] = {}
 _yolo_cache_lock = threading.Lock()
+_MAX_YOLO_CACHE_SIZE = 2  # OPTIMISATION RAM: Limiter à 2 modèles YOLO max (n, s)
 
 # OPTIMISATION PERFORMANCE: Cache global pour MediaPipe FaceDetection (une seule instance suffit)
 _mediapipe_face_detection_cache: Any | None = None
@@ -86,26 +88,40 @@ class YOLODetector:
         # OPTIMISATION PERFORMANCE: Utiliser cache global pour éviter chargements répétés
         cache_key = f"yolov8{self.model_size}"
 
-        global _yolo_model_cache
+        global _yolo_model_cache, _yolo_model_last_used
+        import time as time_module
+        
         with _yolo_cache_lock:
             if cache_key in _yolo_model_cache:
                 logger.debug(f"♻️ Réutilisation modèle YOLO depuis cache ({cache_key})")
                 self.model = _yolo_model_cache[cache_key]
+                # OPTIMISATION RAM: Mettre à jour timestamp usage
+                _yolo_model_last_used[cache_key] = time_module.time()
                 self.is_loaded = True
                 return True
+            
+            # OPTIMISATION RAM: Vérifier limite cache et décharger LRU si nécessaire
+            if len(_yolo_model_cache) >= _MAX_YOLO_CACHE_SIZE:
+                # Trouver modèle le moins récemment utilisé
+                if _yolo_model_last_used:
+                    oldest_key = min(_yolo_model_last_used.items(), key=lambda x: x[1])[0]
+                    del _yolo_model_cache[oldest_key]
+                    del _yolo_model_last_used[oldest_key]
+                    logger.debug(f"♻️ Modèle YOLO LRU déchargé: {oldest_key} (optimisation RAM)")
 
         try:
             logger.info(f"📥 Chargement modèle YOLOv8{self.model_size}...")
-            start_time = time.time()
+            start_time = time_module.time()
 
             model = YOLO(f"yolov8{self.model_size}.pt")  # type: ignore
 
-            load_time = time.time() - start_time
+            load_time = time_module.time() - start_time
             logger.info(f"✅ Modèle YOLO chargé en {load_time:.1f}s")
 
-            # Mettre en cache
+            # OPTIMISATION RAM: Mettre en cache avec timestamp
             with _yolo_cache_lock:
                 _yolo_model_cache[cache_key] = model
+                _yolo_model_last_used[cache_key] = time_module.time()
 
             self.model = model
             self.is_loaded = True

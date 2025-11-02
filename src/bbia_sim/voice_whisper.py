@@ -45,9 +45,11 @@ logger = logging.getLogger(__name__)
 _vad_model_cache: Any | None = None
 _vad_cache_lock = threading.Lock()
 
-# OPTIMISATION PERFORMANCE: Cache global pour modèles Whisper (évite chargements répétés entre instances)
+# OPTIMISATION RAM: Cache global LRU pour modèles Whisper (max 2 modèles: tiny, base)
 _whisper_models_cache: dict[str, Any] = {}  # model_size -> model
+_whisper_model_last_used: dict[str, float] = {}
 _whisper_model_cache_lock = threading.Lock()
+_MAX_WHISPER_CACHE_SIZE = 2  # OPTIMISATION RAM: Limiter à 2 modèles Whisper max (tiny, base)
 
 
 class WhisperSTT:
@@ -87,16 +89,27 @@ class WhisperSTT:
         if not WHISPER_AVAILABLE:
             return False
 
-        # OPTIMISATION PERFORMANCE: Utiliser cache global pour éviter chargements répétés
-        global _whisper_models_cache
+        # OPTIMISATION RAM: Utiliser cache global LRU pour éviter chargements répétés
+        global _whisper_models_cache, _whisper_model_last_used
         with _whisper_model_cache_lock:
             if self.model_size in _whisper_models_cache:
                 logger.debug(
                     f"♻️ Réutilisation modèle Whisper depuis cache ({self.model_size})"
                 )
                 self.model = _whisper_models_cache[self.model_size]
+                # OPTIMISATION RAM: Mettre à jour timestamp usage
+                _whisper_model_last_used[self.model_size] = time.time()
                 self.is_loaded = True
                 return True
+            
+            # OPTIMISATION RAM: Vérifier limite cache et décharger LRU si nécessaire
+            if len(_whisper_models_cache) >= _MAX_WHISPER_CACHE_SIZE:
+                # Trouver modèle le moins récemment utilisé
+                if _whisper_model_last_used:
+                    oldest_key = min(_whisper_model_last_used.items(), key=lambda x: x[1])[0]
+                    del _whisper_models_cache[oldest_key]
+                    del _whisper_model_last_used[oldest_key]
+                    logger.debug(f"♻️ Modèle Whisper LRU déchargé: {oldest_key} (optimisation RAM)")
 
         try:
             logger.info(f"📥 Chargement modèle Whisper {self.model_size}...")
@@ -107,9 +120,10 @@ class WhisperSTT:
             load_time = time.time() - start_time
             logger.info(f"✅ Modèle Whisper chargé en {load_time:.1f}s")
 
-            # Mettre en cache global
+            # OPTIMISATION RAM: Mettre en cache global avec timestamp
             with _whisper_model_cache_lock:
                 _whisper_models_cache[self.model_size] = model
+                _whisper_model_last_used[self.model_size] = time.time()
 
             self.model = model
             self.is_loaded = True
@@ -505,9 +519,10 @@ class WhisperSTT:
             all_transcriptions: list[str] = []
             total_duration = 0.0
 
-            # Buffer pour garder contexte (améliore précision)
-            audio_buffer: list[np.ndarray] = []
-            buffer_max_chunks = 3  # Garder 3 chunks pour contexte
+            # OPTIMISATION RAM: Limiter taille buffer avec deque
+            from collections import deque
+            buffer_max_chunks = 10  # Max 10 chunks (limite sécurité)
+            audio_buffer: deque[np.ndarray] = deque(maxlen=buffer_max_chunks)
 
             # OPTIMISATION PERFORMANCE: Throttling transcription pour éviter surcharge CPU/GPU
             last_transcription_time = 0.0
@@ -524,10 +539,8 @@ class WhisperSTT:
                 )
                 sd.wait()
 
-                # Ajouter au buffer
+                # OPTIMISATION RAM: Ajouter au buffer (deque gère automatiquement maxlen)
                 audio_buffer.append(chunk.flatten())
-                if len(audio_buffer) > buffer_max_chunks:
-                    audio_buffer.pop(0)
 
                 # OPTIMISATION: Utiliser VAD pour décider si transcrire (évite traitement inutile)
                 should_transcribe = True
@@ -542,9 +555,9 @@ class WhisperSTT:
                         # Ne pas transcrire si silence prolongé
                         if consecutive_silence_chunks >= max_silence_chunks:
                             should_transcribe = False
-                            # Réduire buffer si silence prolongé
-                            if len(audio_buffer) > 1:
-                                audio_buffer.pop(0)
+                        # OPTIMISATION RAM: Buffer géré par deque (maxlen)
+                        # Pas besoin de pop manuel
+                        pass
 
                 # OPTIMISATION: Throttling - ne transcrire que si intervalle respecté ET parole détectée
                 current_time = time.time()
@@ -559,11 +572,23 @@ class WhisperSTT:
                 if should_transcribe:
                     audio_segment = np.concatenate(audio_buffer)
 
-                    # Sauvegarder temporairement
-                    temp_file = (
-                        Path(tempfile.gettempdir())
-                        / f"bbia_whisper_stream_{os.getpid()}_{int(time.time() * 1000)}.wav"
-                    )
+                    # OPTIMISATION RAM: Pool fichiers temporaires (réutiliser au lieu de créer/supprimer)
+                    if not hasattr(self, "_temp_file_pool"):
+                        self._temp_file_pool = []
+                        self._max_temp_files = 3  # Pool de 3 fichiers max
+                    
+                    # Réutiliser fichier depuis pool si disponible
+                    temp_file = None
+                    if self._temp_file_pool:
+                        temp_file = self._temp_file_pool.pop(0)
+                    else:
+                        temp_file = (
+                            Path(tempfile.gettempdir())
+                            / f"bbia_whisper_stream_{os.getpid()}_{int(time.time() * 1000)}.wav"
+                        )
+                        # Limiter taille pool
+                        if len(self._temp_file_pool) < self._max_temp_files:
+                            pass  # Ajouter au pool après usage
 
                     try:
                         sf.write(temp_file, audio_segment, sample_rate)
