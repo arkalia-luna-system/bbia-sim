@@ -11,7 +11,8 @@
 
 <div align="center">
 
-**Moteur cognitif Python pour robot Reachy Mini**  
+**Moteur cognitif Python pour robot Reachy Mini**
+
 *Simulation fidèle • IA avancée • SDK 100% conforme*
 
 [![Stars](https://img.shields.io/github/stars/arkalia-luna-system/bbia-sim?style=social)](https://github.com/arkalia-luna-system/bbia-sim)

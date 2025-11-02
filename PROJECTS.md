@@ -1,13 +1,15 @@
 # 🚀 Mes Projets GitHub - Portfolio Développeuse IA & Robotique
 
-**Date de mise à jour :** Oct 25 / Nov 25  
+**Date de mise à jour :** Oct 25 / Nov 25
+
 **Organisation :** [arkalia-luna-system](https://github.com/arkalia-luna-system)
 
 ---
 
 ## 📊 Vue d'ensemble
 
-Développeuse Python autodidacte spécialisée en **IA**, **robotique** et **mobile** (Flutter/Dart).  
+Développeuse Python autodidacte spécialisée en **IA**, **robotique** et **mobile** (Flutter/Dart).
+
 **10+ projets actifs** maintenus avec rigueur professionnelle : architecture propre, tests automatisés, CI/CD, documentation complète.
 
 ---
