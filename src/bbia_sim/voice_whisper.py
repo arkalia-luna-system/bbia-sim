@@ -636,7 +636,7 @@ class WhisperSTT:
                                 try:
                                     temp_file.unlink()
                                 except Exception:
-                                pass
+                                    pass  # Ignorer erreur suppression fichier
 
                 total_duration += chunk_duration
 
