@@ -98,7 +98,7 @@
 **Tests créés/améliorés** :
 - `dashboard_advanced.py` : **47 tests** (**1156 lignes**)
 - `daemon/bridge.py` : 10+ tests ajoutés
-- `voice_whisper.py` : **18+ tests ajoutés**
+- `voice_whisper.py` : **30+ tests ajoutés**
 
 **Total** : ~78+ tests créés/améliorés
 
@@ -106,7 +106,7 @@
 - `dashboard_advanced.py` : +38%
 - `vision_yolo.py` : +61.88%
 - `daemon/bridge.py` : +31.23%
-- `voice_whisper.py**: **38.33%** (+15.06%
+- `voice_whisper.py` : +15.06%
 
 **Qualité code** :
 - ✅ Black : Formatage appliqué
