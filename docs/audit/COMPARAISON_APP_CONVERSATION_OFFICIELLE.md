@@ -63,7 +63,7 @@ flowchart TD
 | **OpenAI Realtime API** | ✅ fastrtcp streaming | ❌ Absent | 🔴 **Manquant** |
 | **Boucle audio temps réel** | ✅ Latence faible | ⚠️ Partiel (Whisper) | 🟡 **Partiel** |
 | **Transcription en direct** | ✅ Gradio UI | ⚠️ Whisper offline | 🟡 **Partiel** |
-| **Streaming voix** | ✅ Continu | ❌ Pas de streaming | 🔴 **Manquant** |
+| **Streaming voix** | ✅ Continu | ✅ **Whisper streaming** | ✅ **Présent** |
 
 **Écart BBIA** :
 - ✅ **Whisper STT** : Présent (offline)
@@ -80,7 +80,7 @@ flowchart TD
 | Fonctionnalité | App Officielle | BBIA | Statut |
 |----------------|----------------|------|--------|
 | **gpt-realtime vision** | ✅ Intégré | ❌ Absent | 🔴 **Manquant** |
-| **SmolVLM2 local** | ✅ Optionnel | ❌ Absent | 🔴 **Manquant** |
+| **SmolVLM2 local** | ✅ Optionnel | ✅ **Implémenté** | ✅ **Présent** |
 | **YOLO tracking** | ✅ Optionnel | ✅ **YOLOv8n** | ✅ **Présent** |
 | **MediaPipe tracking** | ✅ Optionnel | ✅ **MediaPipe** | ✅ **Présent** |
 | **Détection objets** | ✅ gpt-realtime | ✅ YOLO | ✅ **Présent** |
@@ -88,10 +88,10 @@ flowchart TD
 
 **Écart BBIA** :
 - ✅ **YOLOv8n + MediaPipe** : Présents (équivalent)
-- ❌ **gpt-realtime vision** : Absent
-- ❌ **SmolVLM2** : Absent
+- ❌ **gpt-realtime vision** : Absent (mais SmolVLM2 gratuit fait l'affaire)
+- ✅ **SmolVLM2** : **Implémenté** (alternative gratuite)
 
-**Recommandation** : BBIA a déjà une stack vision solide (YOLO + MediaPipe). gpt-realtime serait un plus optionnel.
+**Recommandation** : BBIA a une stack vision complète (YOLO + MediaPipe + SmolVLM2). gpt-realtime serait redondant.
 
 ---
 

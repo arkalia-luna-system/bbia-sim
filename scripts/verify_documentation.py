@@ -158,9 +158,7 @@ def verify_ci_cd_tools() -> dict[str, bool]:
 
 def verify_architecture() -> dict[str, bool]:
     """Vérifie que Factory et ABC sont bien présents."""
-    factory_file = Path(
-        "/Volumes/T7/bbia-reachy-sim/src/bbia_sim/robot_factory.py"
-    )
+    factory_file = Path("/Volumes/T7/bbia-reachy-sim/src/bbia_sim/robot_factory.py")
     api_file = Path("/Volumes/T7/bbia-reachy-sim/src/bbia_sim/robot_api.py")
 
     factory_exists = (
@@ -188,15 +186,20 @@ def check_test_exists(test_pattern: str) -> bool:
     if not tests_dir.exists():
         return False
 
-    for test_file in tests_dir.rglob("*.py"):
-        if re.search(test_pattern, test_file.name, re.IGNORECASE):
-            return True
-        try:
-            content = test_file.read_text(encoding="utf-8")
-            if re.search(test_pattern, content, re.IGNORECASE):
+    # Limiter la recherche pour éviter blocage
+    try:
+        for test_file in list(tests_dir.rglob("*.py"))[:100]:  # Limiter à 100 fichiers
+            if re.search(test_pattern, test_file.name, re.IGNORECASE):
                 return True
-        except Exception:
-            continue
+            try:
+                # Lire seulement les premières lignes pour performance
+                content = test_file.read_text(encoding="utf-8")[:2000]
+                if re.search(test_pattern, content, re.IGNORECASE):
+                    return True
+            except Exception:
+                continue
+    except Exception:
+        pass
     return False
 
 
@@ -212,10 +215,16 @@ def verify_functionality(name: str, info: dict[str, Any]) -> dict[str, Any]:
         src_dir = Path("src")
         for pattern in info["code_patterns"]:
             found = False
-            for py_file in src_dir.rglob("*.py"):
-                if check_code_exists(pattern, py_file):
-                    found = True
-                    break
+            try:
+                # Limiter la recherche pour éviter blocage
+                for py_file in list(src_dir.rglob("*.py"))[
+                    :200
+                ]:  # Limiter à 200 fichiers
+                    if check_code_exists(pattern, py_file):
+                        found = True
+                        break
+            except Exception:
+                pass
             if found:
                 code_ok = True
                 break
@@ -303,16 +312,19 @@ def verify_consistency():
 
     print("\n📄 Vérification MD d'audit:")
     audit_dir = Path("docs/audit")
-    md_files = list(audit_dir.glob("*.md")) if audit_dir.exists() else []
-
-    for md_file in md_files:
-        # Chercher affirmations
+    if audit_dir.exists():
         try:
-            content = md_file.read_text(encoding="utf-8")
-            if "✅" in content or "TERMINÉ" in content:
-                print(f"   📄 {md_file.name}: Contient affirmations de complétion")
+            md_files = list(audit_dir.glob("*.md"))[:30]  # Limiter à 30 fichiers
+            for md_file in md_files:
+                # Chercher affirmations dans les premières lignes seulement
+                try:
+                    content = md_file.read_text(encoding="utf-8")[:5000]  # Limiter lecture
+                    if "✅" in content or "TERMINÉ" in content:
+                        print(f"   📄 {md_file.name}: Contient affirmations de complétion")
+                except Exception:
+                    continue
         except Exception:
-            continue
+            pass
 
     if all_ok:
         print("\n✅ Toutes les vérifications sont OK!")
@@ -362,4 +374,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

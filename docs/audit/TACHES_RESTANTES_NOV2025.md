@@ -156,14 +156,18 @@
 ## 🎯 Recommandations Immédiates
 
 **Actions rapides (< 1h)** :
-1. ✅ Mettre à jour `tests/README.md` avec 1210 tests
-2. ✅ Déplacer `logs/conformity_report_reachy_mini.md` vers `docs/conformite/`
-3. ✅ Implémenter calcul uptime réel dans ecosystem.py (15 min)
+1. ✅ **TERMINÉ** : Mettre à jour `tests/README.md` avec 1210 tests
+2. ✅ **TERMINÉ** : Déplacer `logs/comparison_official_report.md` vers `docs/conformite/`
+3. ✅ **TERMINÉ** : Implémenter calcul uptime réel dans ecosystem.py
 
 **Actions moyennes (1-3h)** :
-1. ✅ Implémenter comptage connexions WebSocket
-2. ✅ Améliorer coverage `vision_yolo.py` et `voice_whisper.py`
-3. ✅ Vérifier liens markdown cassés
+1. ⏳ **EN COURS** : Implémenter comptage connexions WebSocket (infrastructure prête, nécessite intégration WS)
+2. ⏳ **À FAIRE** : Améliorer coverage `vision_yolo.py` et `voice_whisper.py` (8-12h total)
+3. ⏳ **À FAIRE** : Vérifier liens markdown cassés (1h)
+
+**Actions longues (> 3h)** :
+1. ⏳ **À FAIRE** : Logique démarrage démo (1-2h)
+2. ⏳ **À FAIRE** : Consolider documents redondants (2-3h)
 
 ---
 

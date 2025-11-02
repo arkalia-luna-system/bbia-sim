@@ -215,71 +215,71 @@ def _detect_tool_with_similarity(self, user_message: str) -> str | None:
 
 ### Priorité MOYENNE (Améliorations optionnelles)
 
-#### 3. SmolVLM2 pour Vision (Alternative gpt-realtime) ⏱️ 3-4h
+#### 3. ✅ SmolVLM2 pour Vision (Alternative gpt-realtime) - TERMINÉ
 
-**Ce qui manque** :
+**Statut** : ✅ **IMPLÉMENTÉ** dans `src/bbia_sim/bbia_huggingface.py`
+
+**Ce qui était prévu** :
 - App officielle utilise `gpt-realtime` (payant) ou `SmolVLM2` (gratuit)
 
-**Solution GRATUITE** :
-- Intégrer `HuggingFaceTB/SmolVLM` (gratuit Hugging Face)
-- Alternative : `vikhyatk/moondream2` (plus léger)
+**Solution GRATUITE implémentée** :
+- ✅ Intégré `HuggingFaceTB/SmolVLM-Instruct` (gratuit Hugging Face)
+- ✅ Alternative : `vikhyatk/moondream2` (plus léger) également implémentée
 
-**Code à ajouter** :
-```python
-# Dans BBIAHuggingFace
-def describe_image_advanced(self, image: Image.Image) -> str:
-    """Description image avec SmolVLM2 (gratuit, alternative gpt-realtime)."""
-    try:
-        from transformers import AutoModelForVision2Seq
-        model = AutoModelForVision2Seq.from_pretrained("HuggingFaceTB/SmolVLM")
-        # Description riche comme gpt-realtime mais gratuit
-    except Exception:
-        # Fallback vers BLIP existant
-        return self.describe_image(image)
-```
+**Code implémenté** :
+- Méthode `_load_multimodal_model()` avec support SmolVLM2/Moondream2
+- Méthode `describe_image()` utilise SmolVLM2 si disponible
+- Tests E2E créés dans `tests/test_bbia_nlp_detection.py`
 
 **Impact** : Descriptions images plus riches (équivalent gpt-realtime)
 
 **Coût** : 100% GRATUIT (modèle Hugging Face)
 
+**📄 [Guide utilisateur](../guides/GUIDE_NLP_SMOLVLM.md#smolvlm2-vision-enrichie)**
+
 ---
 
-#### 4. VAD (Voice Activity Detection) pour Activation Auto ⏱️ 1-2h
+#### 4. ✅ VAD (Voice Activity Detection) pour Activation Auto - TERMINÉ
 
-**Ce qui manque** :
+**Statut** : ✅ **IMPLÉMENTÉ** dans `src/bbia_sim/voice_whisper.py`
+
+**Ce qui était prévu** :
 - Activation automatique Whisper quand utilisateur parle
 
-**Solution GRATUITE** :
-- `silero/vad` (gratuit Hugging Face)
+**Solution GRATUITE implémentée** :
+- ✅ `silero/vad` (gratuit Hugging Face) intégré
 
-**Code à ajouter** :
-```python
-# Dans voice_whisper.py
-from transformers import pipeline
-
-def detect_speech_activity(self, audio_chunk):
-    """Détecte si audio contient parole (gratuit)."""
-    vad = pipeline("audio-classification", model="silero/vad")
-    result = vad(audio_chunk)
-    return result[0]["label"] == "SPEECH"
-```
+**Code implémenté** :
+- Méthode `detect_speech_activity()` avec modèle `silero/vad`
+- Méthode `transcribe_microphone_with_vad()` pour transcription automatique
+- Méthode `transcribe_streaming()` pour streaming avec VAD
+- Tests E2E créés dans `tests/test_vad_streaming.py`
 
 **Impact** : Activation automatique conversation (meilleure UX)
 
 **Coût** : 100% GRATUIT (modèle Hugging Face)
 
+**📄 [Guide utilisateur](../guides/GUIDE_NLP_SMOLVLM.md#vad-voice-activity-detection)**
+
 ---
 
-#### 5. Extraction Paramètres avec NER (Named Entity Recognition) ⏱️ 2h
+#### 5. ✅ Extraction Paramètres avec NER (Named Entity Recognition) - TERMINÉ
 
-**Ce qui manque** :
+**Statut** : ✅ **IMPLÉMENTÉ** dans `src/bbia_sim/bbia_huggingface.py`
+
+**Ce qui était prévu** :
 - Extraire paramètres depuis phrases naturelles
 - Ex: "tourne la tête de 30 degrés" → `{"direction": "left", "angle": 30}`
 
-**Solution GRATUITE** :
-- Modèles NER français (si disponible) ou regex amélioré
+**Solution GRATUITE implémentée** :
+- ✅ Méthodes `_extract_angle()` et `_extract_intensity()` implémentées
+- ✅ Regex amélioré pour extraire nombres, angles, intensités
+- ✅ Support: "30 degrés", "pi/4 radians", "50%", "légèrement", "beaucoup"
+- ✅ Intégré dans `_execute_detected_tool()` pour extraction automatique
 
 **Impact** : Meilleure compréhension paramètres
+
+**📄 [Guide utilisateur](../guides/GUIDE_NLP_SMOLVLM.md#extraction-paramètres-ner)**
 
 **Coût** : 100% GRATUIT (regex ou modèles français libres)
 

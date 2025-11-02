@@ -96,6 +96,11 @@ def _get_robot_media_microphone(
     return None
 
 
+# OPTIMISATION PERFORMANCE: Cache pour _is_safe_path
+_temp_roots_cache: list[str] | None = None
+_cwd_cache: str | None = None
+
+
 def _is_safe_path(path: str) -> bool:
     """Validation simple de chemin pour éviter le path traversal.
 
@@ -104,28 +109,33 @@ def _is_safe_path(path: str) -> bool:
     - chemins absolus sous le répertoire courant (projet)
     - chemins sous répertoires temporaires usuels (/tmp, /dev/shm, pytest tmp)
     """
+    global _temp_roots_cache, _cwd_cache
+
     try:
         norm = os.path.normpath(path)
         if ".." in norm.split(os.sep):
             return False
         if os.path.isabs(norm):
-            cwd = os.path.abspath(os.getcwd())
-            abs_path = os.path.abspath(norm)
-            # Autoriser répertoires temporaires
-            import tempfile
+            # OPTIMISATION: Cache cwd et temp_roots (calculés une seule fois)
+            if _cwd_cache is None:
+                _cwd_cache = os.path.abspath(os.getcwd())
+            if _temp_roots_cache is None:
+                import tempfile
 
-            # Répertoires temporaires explicitement autorisés (sécurité contrôlée)
-            temp_roots = [
-                "/tmp",  # nosec B108
-                "/dev/shm",  # nosec B108
-                os.path.abspath(os.getenv("PYTEST_TMPDIR", "/tmp")),  # nosec B108
-                os.path.abspath(tempfile.gettempdir()),
-            ]
+                _temp_roots_cache = [
+                    "/tmp",  # nosec B108
+                    "/dev/shm",  # nosec B108
+                    os.path.abspath(os.getenv("PYTEST_TMPDIR", "/tmp")),  # nosec B108
+                    os.path.abspath(tempfile.gettempdir()),
+                ]
+
+            abs_path = os.path.abspath(norm)
             if any(
-                abs_path.startswith(tr + os.sep) or abs_path == tr for tr in temp_roots
+                abs_path.startswith(tr + os.sep) or abs_path == tr
+                for tr in _temp_roots_cache
             ):
                 return True
-            return abs_path.startswith(cwd + os.sep) or abs_path == cwd
+            return abs_path.startswith(_cwd_cache + os.sep) or abs_path == _cwd_cache
         return True
     except Exception:
         return False

@@ -197,10 +197,7 @@ def correct_dates_in_content(content: str, file_path: Path) -> tuple[str, list[s
 
             def replacer(m):
                 date = m.group(2).strip()
-                if (
-                    DATE_OCT_NOV_2025 not in date
-                    and "octobre 2025" not in date.lower()
-                ):
+                if DATE_OCT_NOV_2025 not in date and "octobre 2025" not in date.lower():
                     return f"{m.group(1)}Oct 2025 / Nov 2025"
                 return m.group(0)
 
@@ -256,9 +253,7 @@ def main():
         # Générer rapport
         report = Path("artifacts/audit_dates_md.json")
         report.parent.mkdir(parents=True, exist_ok=True)
-        report.write_text(
-            json.dumps(files_with_issues, indent=2, ensure_ascii=False)
-        )
+        report.write_text(json.dumps(files_with_issues, indent=2, ensure_ascii=False))
         print(f"\n📄 Rapport sauvegardé: {report}\n")
 
     # Correction
@@ -282,9 +277,10 @@ def main():
             except Exception as e:
                 print(f"❌ Erreur {md_file}: {e}")
 
-        print(f"\n✅ {len(files_changed)} fichiers modifiés ({total_changes} changements)")
+        print(
+            f"\n✅ {len(files_changed)} fichiers modifiés ({total_changes} changements)"
+        )
 
 
 if __name__ == "__main__":
     main()
-
