@@ -46,8 +46,10 @@ class BBIAAdvancedWebSocketManager:
         self.active_connections: list[WebSocket] = []
         self.robot: Any | None = None
         self.robot_backend = "mujoco"
-        self.metrics_history: list[dict[str, Any]] = []
+        # OPTIMISATION RAM: Utiliser deque au lieu de liste pour limiter historique
+        from collections import deque
         self.max_history = 1000  # Limite historique métriques
+        self.metrics_history: deque[dict[str, Any]] = deque(maxlen=self.max_history)
 
         # Modules BBIA
         self.emotions = BBIAEmotions()

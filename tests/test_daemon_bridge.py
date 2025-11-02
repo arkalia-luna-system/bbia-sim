@@ -191,7 +191,9 @@ class TestDaemonBridge:
 
             custom_timestamp = time.time() - 100
             cmd = RobotCommand(
-                command="test", parameters={"param": "value"}, timestamp=custom_timestamp
+                command="test",
+                parameters={"param": "value"},
+                timestamp=custom_timestamp,
             )
 
             assert cmd.timestamp == custom_timestamp
@@ -226,7 +228,9 @@ class TestDaemonBridge:
             assert config.mode == "client"
             assert isinstance(config.connect, list)
             assert len(config.connect) > 0
-            assert "localhost" in str(config.connect[0]) or "7447" in str(config.connect[0])
+            assert "localhost" in str(config.connect[0]) or "7447" in str(
+                config.connect[0]
+            )
             assert config.timeout == 1000
             assert config.retry_attempts == 3
         except ImportError:

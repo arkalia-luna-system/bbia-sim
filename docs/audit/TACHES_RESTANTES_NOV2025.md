@@ -1,7 +1,10 @@
 # 📋 Tâches Restantes Identifiées - Novembre 2025
 
 **Date** : Oct 25 / Nov 25
+
 **Audit** : Recherche exhaustive de ce qui n'a pas encore été fait
+
+> **🤖 Guide Assistants IA :** Pour scripts et conventions, voir [`../ASSISTANT_IA_GUIDE.md`](../ASSISTANT_IA_GUIDE.md)
 
 ---
 

@@ -116,7 +116,6 @@ class BBIAVision:
         self.vision_quality = "HD"
         self.detection_range = 3.0  # mètres
         # OPTIMISATION RAM: Limiter historique détections avec deque (max 50 objets/visages)
-        from collections import deque
         self._max_detections_history = 50
         self.objects_detected: deque[dict[str, Any]] = deque(maxlen=self._max_detections_history)
         self.faces_detected: deque[dict[str, Any]] = deque(maxlen=self._max_detections_history)
@@ -629,8 +628,9 @@ class BBIAVision:
             except Exception as e:
                 logger.debug(f"Erreur détection pose: {e}")
 
-        self.objects_detected = objects
-        self.faces_detected = faces
+        # OPTIMISATION RAM: Limiter taille historique avec deque
+        self.objects_detected = deque(objects[:self._max_detections_history], maxlen=self._max_detections_history)
+        self.faces_detected = deque(faces[:self._max_detections_history], maxlen=self._max_detections_history)
 
         return {
             "objects": objects,
@@ -821,8 +821,9 @@ class BBIAVision:
                     f"✅ Détection réelle: {len(objects)} objets, {len(faces)} visages, "
                     f"{len(poses)} postures"
                 )
-                self.objects_detected = objects
-                self.faces_detected = faces
+                # OPTIMISATION RAM: Limiter taille historique avec deque
+                self.objects_detected = deque(objects[:self._max_detections_history], maxlen=self._max_detections_history)
+                self.faces_detected = deque(faces[:self._max_detections_history], maxlen=self._max_detections_history)
                 return {
                     "objects": objects,
                     "faces": faces,
@@ -914,7 +915,8 @@ class BBIAVision:
         for _face in self.faces_detected:
             pass
 
-        return self.faces_detected
+        # OPTIMISATION RAM: Convertir deque en list pour compatibilité API
+        return list(self.faces_detected)
 
     def track_object(self, object_name: str) -> bool:
         """Active le suivi d'un objet."""

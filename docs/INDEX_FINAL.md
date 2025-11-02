@@ -26,6 +26,8 @@
 
 ## 📚 DOCUMENTATION PAR CATÉGORIE
 
+> **🤖 Guide Assistants IA :** Pour les assistants IA (Claude, GPT, Cursor, etc.), voir [`ASSISTANT_IA_GUIDE.md`](ASSISTANT_IA_GUIDE.md) - Scripts, conventions, tâches à poursuivre.
+
 ### 📖 Guides Utilisateurs
 - [Guide Débutant](guides/GUIDE_DEBUTANT.md) - Installation et premiers pas
 - [Guide Avancé](guides/GUIDE_AVANCE.md) - Fonctionnalités avancées
@@ -45,6 +47,9 @@
 - [Validation Qualité](qualite/) - Rapports de validation
 - [Résumés Validation](qualite/RESUME_VALIDATION_QUALITE_2025.md)
 - [Pipeline CI/CD](ci/PIPELINE_CI.md)
+
+### 🤖 Pour Assistants IA
+- [Guide Assistants IA](ASSISTANT_IA_GUIDE.md) - Scripts, conventions, workflow pour assistants IA
 
 ### 🔧 Corrections et Améliorations
 - [Corrections des démos Reachy](corrections/CORRECTIONS_DEMOS_REACHY.md)
