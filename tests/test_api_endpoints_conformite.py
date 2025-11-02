@@ -14,7 +14,8 @@ def api_token() -> str:
     """Token d'authentification pour les tests."""
     from src.bbia_sim.daemon.config import settings
 
-    return settings.api_token
+    token: str = str(settings.api_token)
+    return token
 
 
 class TestMotorsEndpoints:

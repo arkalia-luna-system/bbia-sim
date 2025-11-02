@@ -96,7 +96,7 @@ def acquire_lock(recursion_level: int = 0) -> bool:
                         return acquire_lock(recursion_level + 1)
                     pid, timestamp_str = lock_info.split(":", 1)
                     try:
-                        pid_int = int(pid)
+                        pid_int: int = int(pid)
                         lock_timestamp = float(timestamp_str)
                     except (ValueError, TypeError):
                         # Format invalide, nettoyer
