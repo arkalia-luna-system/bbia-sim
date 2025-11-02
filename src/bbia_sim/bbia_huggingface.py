@@ -1597,9 +1597,9 @@ class BBIAHuggingFace:
             # Convertir radians → degrés
             return math.degrees(angle_rad)
 
-        # Pattern 3: "à X%" (approximation angle)
+        # Pattern 3: "à X%" (approximation angle) (OPTIMISATION: regex compilée)
         pattern_pct = r"(\d+(?:\.\d+)?)%"
-        match_pct = re.search(pattern_pct, message_lower)
+        match_pct = _get_compiled_regex(pattern_pct).search(message_lower)
         if match_pct:
             pct = float(match_pct.group(1))
             # 100% ≈ 90 degrés

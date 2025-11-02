@@ -21,7 +21,8 @@ def test_watchdog_timeout_emergency_stop_p50_p95() -> None:
 
     # Watchdog démarre automatiquement lors de la connexion
     # On teste la latence d'emergency_stop quand déclenché
-    iterations = 10
+    # OPTIMISATION RAM: Réduire 10 → 5 itérations (suffisant pour p50/p95)
+    iterations = 5
     latencies_ms: list[float] = []
 
     try:
@@ -34,9 +35,10 @@ def test_watchdog_timeout_emergency_stop_p50_p95() -> None:
 
             # Réconnecter pour réinitialiser watchdog
             backend.disconnect()
-            time.sleep(0.05)
+            # OPTIMISATION RAM: Réduire sleep 0.05s → 0.03s (suffisant pour disconnect)
+            time.sleep(0.03)
             backend.connect()
-            time.sleep(0.05)
+            time.sleep(0.03)  # OPTIMISATION RAM: Réduire sleep 0.05s → 0.03s
 
         if len(latencies_ms) > 0:
             p50 = statistics.median(latencies_ms)

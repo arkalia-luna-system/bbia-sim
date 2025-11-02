@@ -182,9 +182,15 @@ class TestWhisperSTT:
             assert result is None
 
     @patch("bbia_sim.voice_whisper.transformers_pipeline")
+    @patch.dict(os.environ, {"BBIA_DISABLE_AUDIO": "0"}, clear=False)
     def test_detect_speech_activity_speech(self, mock_pipeline):
         """Test détection VAD - parole."""
         with patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True):
+            # Vider cache VAD
+            import bbia_sim.voice_whisper as voice_whisper_module
+
+            voice_whisper_module._vad_model_cache = None
+
             mock_vad = MagicMock()
             mock_vad.return_value = [{"label": "SPEECH", "score": 0.95}]
             mock_pipeline.return_value = mock_vad
@@ -233,9 +239,15 @@ class TestWhisperSTT:
 
     @patch("bbia_sim.voice_whisper.transformers_pipeline")
     @patch("bbia_sim.voice_whisper.sf")
+    @patch.dict(os.environ, {"BBIA_DISABLE_AUDIO": "0"}, clear=False)
     def test_detect_speech_activity_file_path(self, mock_sf, mock_pipeline):
         """Test VAD avec chemin fichier (couverture lignes 312-314)."""
         with patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True):
+            # Vider cache VAD
+            import bbia_sim.voice_whisper as voice_whisper_module
+
+            voice_whisper_module._vad_model_cache = None
+
             mock_vad = MagicMock()
             mock_vad.return_value = [{"label": "SPEECH", "score": 0.95}]
             mock_pipeline.return_value = mock_vad
@@ -274,6 +286,7 @@ class TestWhisperSTT:
             assert result is False
 
     @patch("bbia_sim.voice_whisper.transformers_pipeline")
+    @patch.dict(os.environ, {"BBIA_DISABLE_AUDIO": "0"}, clear=False)
     def test_detect_speech_activity_vad_model_none(self, mock_pipeline):
         """Test VAD avec modèle None (couverture lignes 326-327)."""
         with patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True):

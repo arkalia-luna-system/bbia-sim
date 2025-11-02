@@ -28,6 +28,14 @@ class TestReachyMiniBackend:
         self.robot.connect()
         self.mapping = ReachyMapping()
 
+    def teardown_method(self):
+        """Nettoyage après chaque test (OPTIMISATION RAM: éviter fuites)."""
+        if hasattr(self, "robot") and self.robot:
+            try:
+                self.robot.disconnect()
+            except Exception:
+                pass  # Ignorer erreurs de déconnexion
+
     @pytest.mark.unit
     @pytest.mark.fast
     def test_backend_creation(self):

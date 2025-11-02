@@ -14,7 +14,8 @@ from bbia_sim.bbia_vision import BBIAVision
 
 
 @pytest.mark.unit
-@pytest.mark.fast
+@pytest.mark.slow  # OPTIMISATION RAM: Test avec boucle (mais optimisé)
+@pytest.mark.heavy  # OPTIMISATION RAM: Test lourd (boucle 3s)
 def test_vision_fps_10s_simulated() -> None:
     if os.environ.get("BBIA_DISABLE_VISION", "0") == "1":
         pytest.skip("Vision désactivée par BBIA_DISABLE_VISION=1")
@@ -56,7 +57,8 @@ def test_vision_fps_10s_simulated() -> None:
 
 
 @pytest.mark.unit
-@pytest.mark.fast
+@pytest.mark.slow  # OPTIMISATION RAM: Test avec boucle (mais optimisé)
+@pytest.mark.heavy  # OPTIMISATION RAM: Test lourd (boucle 3s)
 def test_vision_budget_cpu_ram_10s() -> None:
     if os.environ.get("BBIA_DISABLE_VISION", "0") == "1":
         pytest.skip("Vision désactivée par BBIA_DISABLE_VISION=1")
