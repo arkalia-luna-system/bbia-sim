@@ -88,7 +88,21 @@ graph TB
     WS --> BBIA
     CI --> TESTS
     TESTS --> ROBOT
-```
+    
+    style WEB fill:#87CEEB
+    style CLI fill:#4ECDC4
+    style API fill:#45B7D1
+    style BBIA fill:#BB8FCE
+    style ROBOT fill:#FFD700
+    style SIM fill:#98D8C8
+    style BRIDGE fill:#F8B739
+    style SDK fill:#FF6B6B
+    style BACKENDS fill:#FFA07A
+    style ASSETS fill:#82E0AA
+    style CONFIG fill:#F7DC6F
+    style WS fill:#85C1E2
+    style CI fill:#DDA0DD
+    style TESTS fill:#20B2AA
 
 ---
 

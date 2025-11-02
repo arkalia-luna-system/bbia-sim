@@ -17,6 +17,8 @@ Les éléments suivants sont **déjà implémentés** et ne nécessitent **aucun
 5. ✅ **VAD** : Implémenté dans `voice_whisper.py`
 6. ✅ **NER extraction** : Méthodes `_extract_angle()` et `_extract_intensity()` implémentées
 7. ✅ **Whisper streaming** : Implémenté avec VAD
+8. ✅ **Optimisations performance** : Simulation 1000Hz → 60Hz, get_bbia_voice optimisé (10 boucles → 1 passe), regex compilées en cache
+9. ✅ **Tests prioritaires** : `test_ecosystem_priority_high.py` créé et tous les tests passent
 
 ---
 

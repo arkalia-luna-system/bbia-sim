@@ -47,6 +47,17 @@ graph TB
 
     MUJOCO --> SIM[MuJoCo Simulator<br/>3D Physics]
     REACHY --> ROBOT[Reachy Mini<br/>Hardware]
+    
+    style EMOTIONS fill:#BB8FCE
+    style VISION fill:#85C1E2
+    style AUDIO fill:#F8B739
+    style VOICE fill:#82E0AA
+    style BEHAVIOR fill:#FF6B6B
+    style API fill:#FFD700
+    style MUJOCO fill:#4ECDC4
+    style REACHY fill:#45B7D1
+    style SIM fill:#98D8C8
+    style ROBOT fill:#FFA07A
 ```
 
 ## 🔄 Workflow de Switch
@@ -79,7 +90,12 @@ sequenceDiagram
     DEV->>API: set_emotion("happy", 0.8)
     API->>ROBOT: Appliquer émotion
     ROBOT->>API: Confirmation
-```
+    
+    Note right of DEV: Couleur: développement
+    Note right of FACTORY: Couleur: factory
+    Note right of API: Couleur: API unifiée
+    Note right of SIM: Couleur: simulation
+    Note right of ROBOT: Couleur: robot réel
 
 ## 🚀 Utilisation
 
@@ -148,7 +164,9 @@ graph LR
     end
 
     SIM_FEATURES -.->|Migration| ROBOT_FEATURES
-```
+    
+    style SIM_FEATURES fill:#4ECDC4
+    style ROBOT_FEATURES fill:#FF6B6B
 
 ## 🔄 Migration Sim → Robot
 
@@ -162,7 +180,15 @@ flowchart TD
     WORK -->|Oui| SWITCH[Basculer vers ReachyBackend]
     SWITCH --> PROD[Tests sur robot réel]
     PROD --> DEPLOY[Déploiement production]
-```
+    
+    style START fill:#90EE90
+    style SIM fill:#4ECDC4
+    style TEST fill:#FFD700
+    style WORK fill:#87CEEB
+    style DEBUG fill:#FFA07A
+    style SWITCH fill:#FF6B6B
+    style PROD fill:#45B7D1
+    style DEPLOY fill:#98D8C8
 
 ## 🎬 Record & Replay
 

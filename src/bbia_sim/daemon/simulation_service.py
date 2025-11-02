@@ -117,7 +117,9 @@ class SimulationService:
                         logger.debug(f"Step {step_count}")
 
                 # OPTIMISATION PERFORMANCE: Réduire fréquence 1000Hz → 60Hz pour Mac
-                await asyncio.sleep(0.016)  # ~60 Hz (suffisant pour simulation fluide, moins de CPU)
+                await asyncio.sleep(
+                    0.016
+                )  # ~60 Hz (suffisant pour simulation fluide, moins de CPU)
 
             except Exception as e:
                 logger.error(f"Erreur dans la simulation headless : {e}")

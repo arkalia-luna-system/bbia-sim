@@ -24,7 +24,7 @@
 
 ---
 
-### 2. ✅ Implémenter TODOs dans ecosystem.py - PARTIELLEMENT TERMINÉ
+### 2. ✅ Implémenter TODOs dans ecosystem.py - **100% TERMINÉ**
 
 **Fichier** : `src/bbia_sim/daemon/app/routers/ecosystem.py`
 
@@ -39,13 +39,17 @@
    - **Action** : Implémentation complète de `get_active_connections()`
    - **Implémenté** : Tracking réel via gestionnaires WebSocket (telemetry + général)
    - **Fallback** : Retourne 0 si aucun manager disponible
+   - **Tests** : `test_ecosystem_priority_high.py` créé et tous passent
    - **Statut** : ✅ Complété
 
 3. ✅ **Ligne ~454** : `@router.post("/demo/start")` → **TERMINÉ**
    - **Action** : Logique de démarrage de démo automatique implémentée
    - **Implémenté** : Endpoint `/demo/start` avec modes (simulation, robot_real, mixed)
    - **Fonctionnalités** : Durée configurable, émotion optionnelle, arrêt automatique
+   - **Tests** : Tests créés et tous passent
    - **Statut** : ✅ Complété
+
+**Note** : Tous les TODOs prioritaires de `ecosystem.py` sont maintenant **100% implémentés et testés**.
 
 ---
 
@@ -146,7 +150,8 @@
 | Priorité | Tâches | Estimation | Statut |
 |----------|-------|------------|--------|
 | 🔴 Haute | Mettre à jour tests/README.md | 15 min | ✅ TERMINÉ |
-| 🔴 Haute | TODOs ecosystem.py | 1-2h | ✅ TERMINÉ (uptime ✅, WS ✅, démo ✅) |
+| 🔴 Haute | TODOs ecosystem.py | 1-2h | ✅ **100% TERMINÉ** (uptime ✅, WS ✅, démo ✅, tests ✅) |
+| 🔴 Haute | Optimisations performance | 2-3h | ✅ **TERMINÉ** (simulation 60Hz ✅, voix ✅, regex ✅) |
 | 🟡 Moyenne | Coverage modules critiques | 8-12h | ⏳ À faire |
 | 🟡 Moyenne | Réorganiser fichiers MD | 30 min | ✅ TERMINÉ |
 | 🟢 Basse | Vérifier liens cassés | 1h | ✅ TERMINÉ (script créé, 212 liens cassés détectés) |
@@ -163,9 +168,11 @@
 3. ✅ **TERMINÉ** : Implémenter calcul uptime réel dans ecosystem.py
 
 **Actions moyennes (1-3h)** :
-1. ⏳ **EN COURS** : Implémenter comptage connexions WebSocket (infrastructure prête, nécessite intégration WS)
-2. ⏳ **À FAIRE** : Améliorer coverage `vision_yolo.py` et `voice_whisper.py` (8-12h total)
-3. ⏳ **À FAIRE** : Vérifier liens markdown cassés (1h)
+1. ✅ **TERMINÉ** : Implémenter comptage connexions WebSocket (avec tests)
+2. ✅ **TERMINÉ** : Implémenter logique démarrage démo (avec tests)
+3. ✅ **TERMINÉ** : Optimisations performance (simulation 60Hz, voix, regex)
+4. ⏳ **À FAIRE** : Améliorer coverage `vision_yolo.py` et `voice_whisper.py` (8-12h total)
+5. ⏳ **À FAIRE** : Vérifier liens markdown cassés (1h)
 
 **Actions longues (> 3h)** :
 1. ⏳ **À FAIRE** : Logique démarrage démo (1-2h)

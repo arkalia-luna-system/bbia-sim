@@ -44,6 +44,11 @@ class TestYOLODetector:
     def test_load_model_success(self, mock_yolo_class):
         """Test chargement modèle réussi."""
         with patch("bbia_sim.vision_yolo.YOLO_AVAILABLE", True):
+            # Vider cache avant test pour forcer chargement
+            import bbia_sim.vision_yolo as vision_yolo_module
+
+            vision_yolo_module._yolo_model_cache.clear()
+
             mock_model = MagicMock()
             mock_yolo_class.return_value = mock_model
 
@@ -84,21 +89,29 @@ class TestYOLODetector:
     def test_detect_objects_success(self, mock_yolo_class):
         """Test détection objets réussie."""
         with patch("bbia_sim.vision_yolo.YOLO_AVAILABLE", True):
-            # Mock résultats YOLO avec vraie structure pour couvrir lignes 146-161
-            mock_box_instance = MagicMock()
-            mock_box_instance.xyxy = [np.array([10.0, 20.0, 100.0, 120.0])]
-            mock_box_instance.xyxy[0].cpu.return_value.numpy.return_value = np.array(
-                [10.0, 20.0, 100.0, 120.0]
+            # Vider cache avant test
+            import bbia_sim.vision_yolo as vision_yolo_module
+
+            vision_yolo_module._yolo_model_cache.clear()
+
+            # Mock résultats YOLO simplifié (structure complexe peut échouer)
+            mock_box = MagicMock()
+            # Simplifier le mock pour éviter problèmes d'indexation
+            mock_box.xyxy = MagicMock()
+            mock_box.xyxy.__getitem__.return_value.cpu.return_value.numpy.return_value = (
+                np.array([10.0, 20.0, 100.0, 120.0])
             )
-            mock_box_instance.conf = [np.array([0.8])]
-            mock_box_instance.conf[0].cpu.return_value.numpy.return_value = np.array(
-                0.8
+            mock_box.conf = MagicMock()
+            mock_box.conf.__getitem__.return_value.cpu.return_value.numpy.return_value = (
+                np.array(0.8)
             )
-            mock_box_instance.cls = [np.array([0])]
-            mock_box_instance.cls[0].cpu.return_value.numpy.return_value = np.array(0)
+            mock_box.cls = MagicMock()
+            mock_box.cls.__getitem__.return_value.cpu.return_value.numpy.return_value = (
+                np.array(0)
+            )
 
             mock_result = MagicMock()
-            mock_result.boxes = mock_box_instance
+            mock_result.boxes = mock_box
 
             mock_model = MagicMock()
             mock_model.return_value = [mock_result]

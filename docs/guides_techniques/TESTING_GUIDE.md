@@ -54,6 +54,15 @@ graph TB
     VERTICAL --> DEMO_VOICE[test_demo_voice_headless]
     VERTICAL --> DEMO_VISION[test_demo_vision_headless]
     VERTICAL --> DEMO_BEHAVIOR[test_demo_behavior_headless]
+    
+    style E2E fill:#87CEEB
+    style SIM fill:#4ECDC4
+    style WS fill:#45B7D1
+    style BBIA fill:#BB8FCE
+    style DAEMON fill:#F8B739
+    style WEBSOCKET fill:#FF6B6B
+    style VERTICAL fill:#98D8C8
+    style GOLDEN fill:#FFD700
 ```
 
 ## 📊 Couverture par module
@@ -120,6 +129,12 @@ graph LR
     INTEGRATION --> E2E
     E2E --> PERF
     REACHY --> INTEGRATION
+    
+    style UNIT fill:#90EE90
+    style INTEGRATION fill:#FFD700
+    style E2E fill:#87CEEB
+    style PERF fill:#FF6B6B
+    style REACHY fill:#BB8FCE
 ```
 
 ### 🤖 Tests Backend Reachy Mini (Octobre 2025)
