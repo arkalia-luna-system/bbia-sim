@@ -6,8 +6,9 @@
 
 ### 📊 **Statistiques de Couverture ACTUELLES**
 - **Coverage total** : **68.86%** (excellent)
-- **441 tests passent** (79% de réussite)
-- **11 tests skippés** (tests conditionnels)
+- **1210 tests collectés** (pytest --collect-only)
+- **Tests passent** : Voir résultats pytest récents
+- **Tests skippés** : Tests conditionnels (hardware, CI)
 - **Golden Tests** : 3 traces référence + validation
 
 ### 📊 **Détail par Module**

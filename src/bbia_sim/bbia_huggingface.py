@@ -361,6 +361,26 @@ class BBIAHuggingFace:
         try:
             # Résolution d'alias éventuel (ex: 'emotion' -> id complet)
             resolved_name = self._resolve_model_name(model_name, model_type)
+            
+            # OPTIMISATION PERFORMANCE: Vérifier si modèle déjà chargé avant de recharger
+            if model_type == "chat":
+                # Modèles chat stockés dans self.chat_model et self.chat_tokenizer
+                if self.chat_model is not None and self.chat_tokenizer is not None:
+                    logger.debug(f"♻️ Modèle chat déjà chargé ({resolved_name}), réutilisation")
+                    return True
+            elif model_type == "nlp":
+                # Modèles NLP stockés avec suffixe "_pipeline"
+                model_key = f"{model_name}_pipeline"
+                if model_key in self.models:
+                    logger.debug(f"♻️ Modèle NLP déjà chargé ({resolved_name}), réutilisation")
+                    return True
+            else:
+                # Modèles vision/audio/multimodal stockés avec suffixe "_model"
+                model_key = f"{model_name}_model"
+                if model_key in self.models:
+                    logger.debug(f"♻️ Modèle {model_type} déjà chargé ({resolved_name}), réutilisation")
+                    return True
+            
             logger.info(f"📥 Chargement modèle {resolved_name} ({model_type})")
 
             if model_type == "vision":
@@ -794,7 +814,8 @@ class BBIAHuggingFace:
                 del self.models[key]
 
             keys_to_remove = [
-                key for key in self.processors.keys() if model_name in key
+                # OPTIMISATION: Éviter création liste intermédiaire inutile
+                key for key in self.processors if model_name in key
             ]
             for key in keys_to_remove:
                 del self.processors[key]
@@ -2278,7 +2299,7 @@ class BBIAHuggingFace:
             "comment",
         }
         words = [
-            w for w in user_msg.lower().split() if len(w) > 3 and w not in stop_words
+            w for w in (words_lower := user_msg.lower().split()) if len(w) > 3 and w not in stop_words
         ]
 
         # Retourner le premier mot significatif si disponible

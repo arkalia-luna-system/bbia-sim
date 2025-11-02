@@ -1,6 +1,7 @@
 """Router pour les endpoints de l'écosystème BBIA-SIM - Phase 3."""
 
 import logging
+import time
 from datetime import datetime
 from typing import Any
 
@@ -14,6 +15,35 @@ from ....robot_factory import RobotFactory
 logger = logging.getLogger(__name__)
 
 router = APIRouter()
+
+# Temps de démarrage de l'application pour calcul uptime
+_app_start_time: float | None = None
+
+# Compteur de connexions WebSocket actives
+_active_websocket_connections: int = 0
+
+
+def get_app_start_time() -> float:
+    """Récupère ou initialise le temps de démarrage de l'application."""
+    global _app_start_time
+    if _app_start_time is None:
+        _app_start_time = time.time()
+    return _app_start_time
+
+
+def format_uptime(seconds: float) -> str:
+    """Formate le temps en format HH:MM:SS."""
+    hours = int(seconds // 3600)
+    minutes = int((seconds % 3600) // 60)
+    secs = int(seconds % 60)
+    return f"{hours:02d}:{minutes:02d}:{secs:02d}"
+
+
+def get_active_connections() -> int:
+    """Récupère le nombre de connexions WebSocket actives."""
+    # TODO: Implémenter tracking réel via gestionnaire WebSocket
+    # Pour l'instant, retourne 0 (sera implémenté avec le gestionnaire WebSocket)
+    return _active_websocket_connections
 
 
 # Modèles Pydantic pour l'API publique
@@ -115,13 +145,21 @@ async def get_api_status() -> APIStatus:
             robot_connected = False
             simulation_running = False
 
+        # Calculer uptime réel
+        start_time = get_app_start_time()
+        uptime_seconds = time.time() - start_time
+        uptime_formatted = format_uptime(uptime_seconds)
+
+        # Récupérer nombre de connexions actives
+        active_conn = get_active_connections()
+
         return APIStatus(
             version="1.2.0",
             status="running",
-            uptime="00:00:00",  # TODO: Calculer le temps réel
+            uptime=uptime_formatted,
             robot_connected=robot_connected,
             simulation_running=simulation_running,
-            active_connections=0,  # TODO: Compter les connexions WebSocket
+            active_connections=active_conn,
         )
     except Exception as e:
         logger.error(f"Erreur lors de la récupération du statut: {e}")
