@@ -70,9 +70,7 @@ class TestExamplesConformity:
                         if len(node.args) >= 1:
                             # Premier argument: nom du joint
                             arg = node.args[0]
-                            if isinstance(arg, ast.Constant) and isinstance(
-                                arg.value, str
-                            ):
+                            if isinstance(arg, ast.Constant) and isinstance(arg.value, str):
                                 joint_name = arg.value
                                 if joint_name.startswith("stewart_"):
                                     errors.append(
@@ -129,9 +127,9 @@ class TestExamplesConformity:
             else:
                 print("   ✅ Aucune erreur stewart détectée")
 
-        assert (
-            len(errors_found) == 0
-        ), "Erreurs détectées dans les exemples:\n" + "\n".join(errors_found)
+        assert len(errors_found) == 0, "Erreurs détectées dans les exemples:\n" + "\n".join(
+            errors_found
+        )
 
     def test_examples_use_sdk_methods(self):
         """Test: Les exemples doivent utiliser les méthodes SDK recommandées."""
@@ -163,9 +161,7 @@ class TestExamplesConformity:
         # Afficher statistiques
         for filename, file_stats in stats.items():
             used = [m for m, used in file_stats.items() if used]
-            print(
-                f"📄 {filename}: {len(used)}/{len(recommended_methods)} méthodes SDK utilisées"
-            )
+            print(f"📄 {filename}: {len(used)}/{len(recommended_methods)} méthodes SDK utilisées")
             if used:
                 print(f"   ✅ Utilise: {', '.join(used)}")
 

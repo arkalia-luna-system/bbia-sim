@@ -69,9 +69,7 @@ def test_memory_leaks_goto_target_iterations() -> None:
         if mem_before and mem_after:
             memory_increase = mem_after - mem_before
             # Augmentation acceptable: < 30MB sur 500 itérations (proportionnel)
-            assert (
-                memory_increase < 30.0
-            ), f"Fuite mémoire détectée: {memory_increase:.2f} MB"
+            assert memory_increase < 30.0, f"Fuite mémoire détectée: {memory_increase:.2f} MB"
     finally:
         backend.disconnect()
         gc.collect()

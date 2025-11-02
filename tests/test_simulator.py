@@ -137,14 +137,10 @@ class TestMuJoCoSimulator:
             simulator = MuJoCoSimulator(temp_model)
 
             # Mock l'erreur macOS
-            mock_mujoco.viewer.launch_passive.side_effect = RuntimeError(
-                "mjpython required"
-            )
+            mock_mujoco.viewer.launch_passive.side_effect = RuntimeError("mjpython required")
 
             with patch("src.bbia_sim.sim.simulator.sys.platform", "darwin"):
-                with pytest.raises(
-                    RuntimeError, match="Viewer MuJoCo non disponible sur macOS"
-                ):
+                with pytest.raises(RuntimeError, match="Viewer MuJoCo non disponible sur macOS"):
                     simulator.launch_simulation(headless=False)
 
         finally:
@@ -296,9 +292,7 @@ class TestMuJoCoSimulator:
             simulator.viewer = mock_viewer
 
             # Créer une scène temporaire
-            with tempfile.NamedTemporaryFile(
-                mode="w", suffix=".xml", delete=False
-            ) as scene_f:
+            with tempfile.NamedTemporaryFile(mode="w", suffix=".xml", delete=False) as scene_f:
                 scene_f.write(
                     """<?xml version="1.0"?>
 <mujoco model="scene">
@@ -396,9 +390,7 @@ class TestMuJoCoSimulator:
 
             try:
                 # Mock l'erreur fatale directement
-                mock_mujoco.MjModel.from_xml_path.side_effect = FatalError(
-                    "Invalid MJCF"
-                )
+                mock_mujoco.MjModel.from_xml_path.side_effect = FatalError("Invalid MJCF")
 
                 with pytest.raises(FatalError):
                     simulator.load_scene("invalid_scene.xml")

@@ -78,8 +78,7 @@ class TestReachyMappingComplete:
             joint_name = f"stewart_{i}"
             joint_info = JOINTS[joint_name]
             assert (
-                "goto_target" in joint_info.description
-                or "IK" in joint_info.description
+                "goto_target" in joint_info.description or "IK" in joint_info.description
             ), f"Description stewart_{i} doit mentionner IK/goto_target"
 
     def test_05_forbidden_joints_complete(self):
@@ -268,9 +267,7 @@ class TestReachyMappingComplete:
 
         # Cas 2: Position > hardware max (impossible pour yaw_body qui a grandes limites)
         # Testons avec un stewart qui a limites plus petites
-        is_valid, clamped = self.mapping.validate_position(
-            "stewart_4", -1.5
-        )  # < min_limit (-1.40)
+        is_valid, clamped = self.mapping.validate_position("stewart_4", -1.5)  # < min_limit (-1.40)
         assert is_valid is True
         # D'abord clamp hardware: -1.5 → -1.396 (min_limit)
         # Puis clamp safe: -1.396 < -0.2 → clamp à -0.2

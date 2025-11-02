@@ -68,9 +68,7 @@ def test_dire_texte_prefers_media_play_audio(monkeypatch):
         def say(self, *args, **kwargs):
             pass
 
-    monkeypatch.setattr(
-        voice, "pyttsx3", types.SimpleNamespace(init=lambda: _DummyEngine())
-    )
+    monkeypatch.setattr(voice, "pyttsx3", types.SimpleNamespace(init=lambda: _DummyEngine()))
 
     dire_texte("bonjour", robot_api=robot)
 
@@ -114,14 +112,11 @@ def test_dire_texte_fallbacks_to_speaker_when_no_play_audio(monkeypatch):
         def say(self, *args, **kwargs):
             pass
 
-    monkeypatch.setattr(
-        voice, "pyttsx3", types.SimpleNamespace(init=lambda: _DummyEngine())
-    )
+    monkeypatch.setattr(voice, "pyttsx3", types.SimpleNamespace(init=lambda: _DummyEngine()))
 
     dire_texte("bonjour", robot_api=robot)
 
     # Sans play_audio, on doit utiliser speaker.play_file ou speaker.play
     assert (
-        len(robot.media.speaker.play_file_calls)
-        + len(robot.media.speaker.play_bytes_calls)
+        len(robot.media.speaker.play_file_calls) + len(robot.media.speaker.play_bytes_calls)
     ) == 1

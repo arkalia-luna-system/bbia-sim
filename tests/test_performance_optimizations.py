@@ -52,9 +52,7 @@ class TestPerformanceOptimizations:
         ]
 
         for method in recording_methods:
-            assert hasattr(
-                backend, method
-            ), f"{method} doit être disponible (feature SDK)"
+            assert hasattr(backend, method), f"{method} doit être disponible (feature SDK)"
             print(f"✅ {method} disponible")
 
     def test_backend_has_media_io_properties(self):
@@ -108,9 +106,7 @@ class TestPerformanceOptimizations:
                         print(f"✅ goto_target accepte method='{method}'")
                     except Exception as e:
                         # En simulation, certaines méthodes peuvent ne pas être supportées
-                        print(
-                            f"⚠️  method='{method}': {type(e).__name__} (peut être limité en sim)"
-                        )
+                        print(f"⚠️  method='{method}': {type(e).__name__} (peut être limité en sim)")
 
             except ImportError:
                 pytest.skip("SDK reachy_mini non disponible pour test interpolation")
@@ -140,9 +136,7 @@ class TestPerformanceOptimizations:
 
             # Test appel avec perform_movement
             try:
-                backend.look_at_world(
-                    0.2, 0.0, 0.3, duration=0.1, perform_movement=False
-                )
+                backend.look_at_world(0.2, 0.0, 0.3, duration=0.1, perform_movement=False)
                 print("✅ look_at_world accepte perform_movement=False (simulation)")
             except TypeError:
                 # Peut-être que perform_movement n'est pas le bon nom
@@ -169,12 +163,8 @@ class TestPerformanceOptimizations:
                 pose = create_head_pose(pitch=0.05, yaw=0.05, degrees=False)
 
                 # Test mouvement combiné tête+corps (1 appel SDK = optimal)
-                backend.goto_target(
-                    head=pose, body_yaw=0.1, duration=0.2, method="minjerk"
-                )
-                print(
-                    "✅ goto_target supporte mouvements combinés tête+corps (1 appel optimal)"
-                )
+                backend.goto_target(head=pose, body_yaw=0.1, duration=0.2, method="minjerk")
+                print("✅ goto_target supporte mouvements combinés tête+corps (1 appel optimal)")
             except ImportError:
                 pytest.skip("SDK reachy_mini non disponible")
             except Exception as e:
@@ -189,9 +179,7 @@ class TestPerformanceOptimizations:
 
         # Vérifier dans le code source que goto_target est utilisé
         # Note: Test informatif seulement
-        behavior_file = (
-            Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_behavior.py"
-        )
+        behavior_file = Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_behavior.py"
 
         if behavior_file.exists():
             with open(behavior_file, encoding="utf-8") as f:
@@ -223,9 +211,7 @@ class TestPerformanceOptimizations:
         for emotion, intensity in test_emotions:
             try:
                 success = backend.set_emotion(emotion, intensity)
-                assert (
-                    success is True
-                ), f"set_emotion doit réussir pour {emotion}@{intensity}"
+                assert success is True, f"set_emotion doit réussir pour {emotion}@{intensity}"
                 print(f"✅ Emotion '{emotion}' (intensité {intensity}): OK")
             except Exception as e:
                 print(f"⚠️  Emotion '{emotion}' (intensité {intensity}): {e}")

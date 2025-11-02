@@ -58,9 +58,7 @@ class TestReachyMiniStrictConformity:
         errors = []
         for joint_name, (expected_min, expected_max) in EXACT_JOINT_LIMITS.items():
             if joint_name not in self.backend.joint_limits:
-                errors.append(
-                    f"❌ Joint {joint_name} MANQUANT dans joint_limits du backend"
-                )
+                errors.append(f"❌ Joint {joint_name} MANQUANT dans joint_limits du backend")
                 continue
 
             actual_min, actual_max = self.backend.joint_limits[joint_name]
@@ -82,9 +80,7 @@ class TestReachyMiniStrictConformity:
                     f"(diff: {max_diff:.2e})"
                 )
             else:
-                print(
-                    f"✅ {joint_name}: limites EXACTES [{actual_min:.15f}, {actual_max:.15f}]"
-                )
+                print(f"✅ {joint_name}: limites EXACTES [{actual_min:.15f}, {actual_max:.15f}]")
 
         assert len(errors) == 0, "Erreurs limites joints:\n" + "\n".join(errors)
 
@@ -110,9 +106,7 @@ class TestReachyMiniStrictConformity:
 
             # Test 2: Le joint doit être dans forbidden_joints
             if joint not in self.backend.forbidden_joints:
-                errors.append(
-                    f"❌ {joint}: devrait être dans forbidden_joints mais absent!"
-                )
+                errors.append(f"❌ {joint}: devrait être dans forbidden_joints mais absent!")
             else:
                 print(f"✅ {joint}: présent dans forbidden_joints")
 
@@ -201,15 +195,11 @@ class TestReachyMiniStrictConformity:
 
         # Vérifier que head_pos est une liste
         if not isinstance(head_pos, list):
-            errors.append(
-                f"❌ head_positions doit être une liste, obtenu {type(head_pos)}"
-            )
+            errors.append(f"❌ head_positions doit être une liste, obtenu {type(head_pos)}")
 
         # Vérifier la longueur (6 ou 12)
         if len(head_pos) not in [6, 12]:
-            errors.append(
-                f"❌ head_positions doit avoir 6 ou 12 éléments, obtenu {len(head_pos)}"
-            )
+            errors.append(f"❌ head_positions doit avoir 6 ou 12 éléments, obtenu {len(head_pos)}")
 
         # Vérifier qu'il n'y a pas de NaN ou inf
         for i, val in enumerate(head_pos):
@@ -218,20 +208,14 @@ class TestReachyMiniStrictConformity:
 
         # Vérifier antenna_positions
         if not isinstance(antenna_pos, list):
-            errors.append(
-                f"❌ antenna_positions doit être une liste, obtenu {type(antenna_pos)}"
-            )
+            errors.append(f"❌ antenna_positions doit être une liste, obtenu {type(antenna_pos)}")
 
         if len(antenna_pos) != 2:
-            errors.append(
-                f"❌ antenna_positions doit avoir 2 éléments, obtenu {len(antenna_pos)}"
-            )
+            errors.append(f"❌ antenna_positions doit avoir 2 éléments, obtenu {len(antenna_pos)}")
 
         if errors:
             print("\n".join(errors))
-            raise AssertionError(
-                "Erreurs structure head_positions:\n" + "\n".join(errors)
-            )
+            raise AssertionError("Erreurs structure head_positions:\n" + "\n".join(errors))
 
         print(
             f"✅ head_positions: {len(head_pos)} éléments, "
@@ -260,9 +244,7 @@ class TestReachyMiniStrictConformity:
 
             # Test méthode invalide (devrait être gérée gracieusement)
             try:
-                self.backend.goto_target(
-                    head=pose, duration=0.5, method="invalid_method"
-                )
+                self.backend.goto_target(head=pose, duration=0.5, method="invalid_method")
                 print("✅ Méthode invalide gérée (fallback accepté)")
             except Exception as e:
                 # C'est OK si une erreur est levée pour méthode invalide
@@ -300,9 +282,7 @@ class TestReachyMiniStrictConformity:
         # Vérifier que la valeur est dans des limites raisonnables
         if isinstance(yaw_value, int | float):
             if abs(yaw_value) > 3.2:  # Légèrement > limite max (2.79)
-                errors.append(
-                    f"⚠️  yaw_body hors limites raisonnables: {yaw_value:.6f} rad"
-                )
+                errors.append(f"⚠️  yaw_body hors limites raisonnables: {yaw_value:.6f} rad")
 
         assert len(errors) == 0, "Erreurs lecture yaw_body:\n" + "\n".join(errors)
 
@@ -324,9 +304,7 @@ class TestReachyMiniStrictConformity:
             elif math.isinf(value):
                 errors.append(f"❌ {joint_name}: get_joint_pos retourne inf")
             elif not isinstance(value, int | float):
-                errors.append(
-                    f"❌ {joint_name}: type incorrect {type(value)} au lieu de float"
-                )
+                errors.append(f"❌ {joint_name}: type incorrect {type(value)} au lieu de float")
             else:
                 # Vérifier que la valeur est dans les limites hardware
                 min_limit, max_limit = EXACT_JOINT_LIMITS[joint_name]
@@ -375,9 +353,7 @@ class TestReachyMiniStrictConformity:
                     "❌ look_at_world devrait retourner une pose même pour coordonnées extrêmes"
                 )
         except Exception as e:
-            print(
-                f"ℹ️  look_at_world avec coordonnées extrêmes rejeté (acceptable): {e}"
-            )
+            print(f"ℹ️  look_at_world avec coordonnées extrêmes rejeté (acceptable): {e}")
 
         assert len(errors) == 0, "Erreurs validation paramètres:\n" + "\n".join(errors)
 
@@ -406,13 +382,9 @@ class TestReachyMiniStrictConformity:
         errors = []
         for op_name, latency_ms, max_latency_ms in operations:
             if latency_ms > max_latency_ms:
-                errors.append(
-                    f"❌ {op_name}: latence {latency_ms:.2f}ms > {max_latency_ms:.2f}ms"
-                )
+                errors.append(f"❌ {op_name}: latence {latency_ms:.2f}ms > {max_latency_ms:.2f}ms")
             else:
-                print(
-                    f"✅ {op_name}: latence {latency_ms:.2f}ms < {max_latency_ms:.2f}ms"
-                )
+                print(f"✅ {op_name}: latence {latency_ms:.2f}ms < {max_latency_ms:.2f}ms")
 
         assert len(errors) == 0, "Erreurs performance:\n" + "\n".join(errors)
 

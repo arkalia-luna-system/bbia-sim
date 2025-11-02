@@ -70,9 +70,7 @@ class TestEdgeCasesConformity:
                 assert pose.shape == (4, 4), f"Pose shape incorrecte: {pose.shape}"
                 print(f"✅ Coordonnées ({x:.2f}, {y:.2f}, {z:.2f}): acceptées")
             except (ValueError, Exception) as e:
-                print(
-                    f"✅ Coordonnées ({x:.2f}, {y:.2f}, {z:.2f}): rejetées ({type(e).__name__})"
-                )
+                print(f"✅ Coordonnées ({x:.2f}, {y:.2f}, {z:.2f}): rejetées ({type(e).__name__})")
 
     def test_edge_case_interpolation_methods_edge_values(self):
         """Test edge: Méthodes d'interpolation avec valeurs limites."""
@@ -110,15 +108,11 @@ class TestEdgeCasesConformity:
                 result = self.backend.set_emotion(emotion, intensity)
                 # Les intensités doivent être clampées entre 0.0 et 1.0
                 if 0.0 <= intensity <= 1.0:
-                    assert (
-                        result is True
-                    ), f"Intensité {intensity} valide devrait réussir"
+                    assert result is True, f"Intensité {intensity} valide devrait réussir"
                     print(f"✅ Intensité {intensity:.2f}: OK")
                 else:
                     # Peut retourner False ou clampé automatiquement
-                    print(
-                        f"✅ Intensité {intensity:.2f}: {'Clampé' if result else 'Rejeté'}"
-                    )
+                    print(f"✅ Intensité {intensity:.2f}: {'Clampé' if result else 'Rejeté'}")
             except Exception as e:
                 print(f"⚠️  Intensité {intensity:.2f}: Erreur {type(e).__name__}")
 
@@ -162,12 +156,8 @@ class TestEdgeCasesConformity:
 
         # get_current_joint_positions doit toujours retourner quelque chose
         head_pos, antenna_pos = self.backend.get_current_joint_positions()
-        assert isinstance(
-            head_pos, list | tuple | np.ndarray
-        ), "head_pos doit être séquence"
-        assert isinstance(
-            antenna_pos, list | tuple | np.ndarray
-        ), "antenna_pos doit être séquence"
+        assert isinstance(head_pos, list | tuple | np.ndarray), "head_pos doit être séquence"
+        assert isinstance(antenna_pos, list | tuple | np.ndarray), "antenna_pos doit être séquence"
         assert len(head_pos) > 0, "head_pos ne doit pas être vide"
         assert len(antenna_pos) > 0, "antenna_pos ne doit pas être vide"
         print(f"✅ Head positions: {len(head_pos)} éléments")
@@ -192,9 +182,7 @@ class TestEdgeCasesConformity:
                             f"⚠️  {behavior}(duration={duration}): {'Accepté' if result else 'Rejeté'}"
                         )
                 except Exception as e:
-                    print(
-                        f"⚠️  {behavior}(duration={duration}): Erreur {type(e).__name__}"
-                    )
+                    print(f"⚠️  {behavior}(duration={duration}): Erreur {type(e).__name__}")
 
 
 if __name__ == "__main__":

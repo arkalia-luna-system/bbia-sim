@@ -132,9 +132,7 @@ class TestRobotAPILimits:
 
         try:
             # Même émotion doit être valide/invalide sur les deux
-            assert mujoco_robot.set_emotion("happy", 0.5) == reachy_robot.set_emotion(
-                "happy", 0.5
-            )
+            assert mujoco_robot.set_emotion("happy", 0.5) == reachy_robot.set_emotion("happy", 0.5)
             assert mujoco_robot.set_emotion("invalid", 0.5) == reachy_robot.set_emotion(
                 "invalid", 0.5
             )

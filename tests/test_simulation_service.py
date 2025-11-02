@@ -71,9 +71,7 @@ class TestSimulationService:
 
     @patch("src.bbia_sim.daemon.simulation_service.MuJoCoSimulator")
     @pytest.mark.asyncio
-    async def test_start_simulation_already_running(
-        self, mock_simulator_class, mock_simulator
-    ):
+    async def test_start_simulation_already_running(self, mock_simulator_class, mock_simulator):
         """Test démarrage simulation déjà en cours."""
         mock_simulator_class.return_value = mock_simulator
 
@@ -92,9 +90,7 @@ class TestSimulationService:
 
     @patch("src.bbia_sim.daemon.simulation_service.MuJoCoSimulator")
     @pytest.mark.asyncio
-    async def test_start_simulation_graphical_mode(
-        self, mock_simulator_class, mock_simulator
-    ):
+    async def test_start_simulation_graphical_mode(self, mock_simulator_class, mock_simulator):
         """Test démarrage simulation en mode graphique."""
         mock_simulator_class.return_value = mock_simulator
         mock_simulator.launch_simulation = Mock()
@@ -124,9 +120,7 @@ class TestSimulationService:
 
     @patch("src.bbia_sim.daemon.simulation_service.MuJoCoSimulator")
     @pytest.mark.asyncio
-    async def test_stop_simulation_not_running(
-        self, mock_simulator_class, mock_simulator
-    ):
+    async def test_stop_simulation_not_running(self, mock_simulator_class, mock_simulator):
         """Test arrêt simulation non démarrée."""
         mock_simulator_class.return_value = mock_simulator
 
@@ -153,9 +147,7 @@ class TestSimulationService:
 
     @patch("src.bbia_sim.daemon.simulation_service.MuJoCoSimulator")
     @pytest.mark.asyncio
-    async def test_run_graphical_simulation_fallback(
-        self, mock_simulator_class, mock_simulator
-    ):
+    async def test_run_graphical_simulation_fallback(self, mock_simulator_class, mock_simulator):
         """Test fallback vers headless en cas d'erreur graphique."""
         mock_simulator_class.return_value = mock_simulator
         mock_simulator.launch_simulation.side_effect = Exception("Viewer error")
@@ -172,9 +164,7 @@ class TestSimulationService:
         await service.stop_simulation()
 
     @patch("src.bbia_sim.daemon.simulation_service.MuJoCoSimulator")
-    def test_get_robot_state_simulation_not_running(
-        self, mock_simulator_class, mock_simulator
-    ):
+    def test_get_robot_state_simulation_not_running(self, mock_simulator_class, mock_simulator):
         """Test récupération état robot sans simulation."""
         mock_simulator_class.return_value = mock_simulator
 
@@ -187,9 +177,7 @@ class TestSimulationService:
         assert state["time"] == 0.0
 
     @patch("src.bbia_sim.daemon.simulation_service.MuJoCoSimulator")
-    def test_get_robot_state_simulator_error(
-        self, mock_simulator_class, mock_simulator
-    ):
+    def test_get_robot_state_simulator_error(self, mock_simulator_class, mock_simulator):
         """Test récupération état robot avec erreur simulateur."""
         mock_simulator_class.return_value = mock_simulator
         mock_simulator.get_robot_state.side_effect = Exception("State error")
@@ -205,9 +193,7 @@ class TestSimulationService:
         assert "time" in state
 
     @patch("src.bbia_sim.daemon.simulation_service.MuJoCoSimulator")
-    def test_get_joint_positions_simulation_not_running(
-        self, mock_simulator_class, mock_simulator
-    ):
+    def test_get_joint_positions_simulation_not_running(self, mock_simulator_class, mock_simulator):
         """Test récupération positions joints sans simulation."""
         mock_simulator_class.return_value = mock_simulator
 
@@ -220,9 +206,7 @@ class TestSimulationService:
         assert positions["yaw_body"] == 0.0
 
     @patch("src.bbia_sim.daemon.simulation_service.MuJoCoSimulator")
-    def test_get_joint_positions_simulator_error(
-        self, mock_simulator_class, mock_simulator
-    ):
+    def test_get_joint_positions_simulator_error(self, mock_simulator_class, mock_simulator):
         """Test récupération positions joints avec erreur simulateur."""
         mock_simulator_class.return_value = mock_simulator
         mock_simulator.get_robot_state.side_effect = Exception("State error")
@@ -238,9 +222,7 @@ class TestSimulationService:
         assert "yaw_body" in positions
 
     @patch("src.bbia_sim.daemon.simulation_service.MuJoCoSimulator")
-    def test_set_joint_position_simulation_not_running(
-        self, mock_simulator_class, mock_simulator
-    ):
+    def test_set_joint_position_simulation_not_running(self, mock_simulator_class, mock_simulator):
         """Test définition position joint sans simulation."""
         mock_simulator_class.return_value = mock_simulator
 
@@ -250,9 +232,7 @@ class TestSimulationService:
         assert result is False
 
     @patch("src.bbia_sim.daemon.simulation_service.MuJoCoSimulator")
-    def test_set_joint_position_simulator_error(
-        self, mock_simulator_class, mock_simulator
-    ):
+    def test_set_joint_position_simulator_error(self, mock_simulator_class, mock_simulator):
         """Test définition position joint avec erreur simulateur."""
         mock_simulator_class.return_value = mock_simulator
         mock_simulator.set_joint_position.side_effect = Exception("Set position error")
@@ -280,9 +260,7 @@ class TestSimulationService:
         mock_simulator.set_joint_position.assert_called_once_with("yaw_body", 0.5)
 
     @patch("src.bbia_sim.daemon.simulation_service.MuJoCoSimulator")
-    def test_get_available_joints_simulator_error(
-        self, mock_simulator_class, mock_simulator
-    ):
+    def test_get_available_joints_simulator_error(self, mock_simulator_class, mock_simulator):
         """Test récupération joints disponibles avec erreur simulateur."""
         mock_simulator_class.return_value = mock_simulator
         mock_simulator.get_available_joints.side_effect = Exception("Joints error")
@@ -403,9 +381,7 @@ class TestSimulationService:
 
     @patch("src.bbia_sim.daemon.simulation_service.MuJoCoSimulator")
     @pytest.mark.asyncio
-    async def test_simulation_thread_exception(
-        self, mock_simulator_class, mock_simulator
-    ):
+    async def test_simulation_thread_exception(self, mock_simulator_class, mock_simulator):
         """Test exception dans le thread de simulation."""
         mock_simulator_class.return_value = mock_simulator
 

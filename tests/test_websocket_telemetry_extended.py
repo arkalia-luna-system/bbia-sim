@@ -69,9 +69,7 @@ class TestWebSocketTelemetryExtended:
         """Test envoi de message personnel réussi."""
         mock_websocket = AsyncMock()
 
-        await self.connection_manager.send_personal_message(
-            "test message", mock_websocket
-        )
+        await self.connection_manager.send_personal_message("test message", mock_websocket)
 
         mock_websocket.send_text.assert_called_once_with("test message")
 
@@ -82,9 +80,7 @@ class TestWebSocketTelemetryExtended:
         mock_websocket.send_text.side_effect = Exception("Send error")
         self.connection_manager.active_connections.append(mock_websocket)
 
-        await self.connection_manager.send_personal_message(
-            "test message", mock_websocket
-        )
+        await self.connection_manager.send_personal_message("test message", mock_websocket)
 
         # Vérifier que la connexion a été supprimée
         assert mock_websocket not in self.connection_manager.active_connections
@@ -130,9 +126,7 @@ class TestWebSocketTelemetryExtended:
         assert self.connection_manager.is_broadcasting is False
 
         # Mock _broadcast_loop pour éviter l'exécution réelle
-        with patch.object(
-            self.connection_manager, "_broadcast_loop", new_callable=AsyncMock
-        ):
+        with patch.object(self.connection_manager, "_broadcast_loop", new_callable=AsyncMock):
             await self.connection_manager.start_broadcast()
 
             assert self.connection_manager.is_broadcasting is True

@@ -81,9 +81,7 @@ class TestWhisperSTT:
         """Test transcription audio réussie."""
         with patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True):
             mock_model = MagicMock()
-            mock_model.transcribe.return_value = {
-                "text": "Bonjour, comment allez-vous?"
-            }
+            mock_model.transcribe.return_value = {"text": "Bonjour, comment allez-vous?"}
             mock_whisper.load_model.return_value = mock_model
 
             stt = WhisperSTT(model_size="tiny", language="fr")

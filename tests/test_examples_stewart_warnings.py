@@ -60,16 +60,13 @@ class TestExamplesStewartWarnings:
 
                 # Vérifier présence d'avertissements
                 has_warning = any(
-                    keyword.lower() in content_lower
-                    or re.search(keyword, content, re.IGNORECASE)
+                    keyword.lower() in content_lower or re.search(keyword, content, re.IGNORECASE)
                     for keyword in warning_keywords
                 )
 
                 if not has_warning:
                     files_missing_warnings.append(py_file)
-                    print(
-                        f"⚠️  {py_file.name}: Utilise stewart_* sans avertissement explicite"
-                    )
+                    print(f"⚠️  {py_file.name}: Utilise stewart_* sans avertissement explicite")
 
         if files_with_stewart:
             print(f"\n📊 Fichiers utilisant stewart_*: {len(files_with_stewart)}")
@@ -131,9 +128,7 @@ class TestExamplesStewartWarnings:
                     print(f"⚠️  {py_file.name}:{i}: {line.strip()[:60]}...")
 
         if files_with_direct_stewart:
-            print(
-                f"\n⚠️  Modules utilisant stewart directement: {len(files_with_direct_stewart)}"
-            )
+            print(f"\n⚠️  Modules utilisant stewart directement: {len(files_with_direct_stewart)}")
             # Vérifier si c'est dans des backends ou fichiers acceptables
             problematic = [
                 (f, line_num)
@@ -150,9 +145,7 @@ class TestExamplesStewartWarnings:
             print("✅ Aucun usage direct stewart dans modules principaux")
 
         # Ne pas bloquer si c'est dans backends (acceptables)
-        backend_files = [
-            f for f, _, _ in files_with_direct_stewart if "backend" in str(f)
-        ]
+        backend_files = [f for f, _, _ in files_with_direct_stewart if "backend" in str(f)]
         if len(files_with_direct_stewart) > len(backend_files):
             problematic_count = len(files_with_direct_stewart) - len(backend_files)
             assert problematic_count == 0, (

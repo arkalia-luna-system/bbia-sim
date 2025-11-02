@@ -4,15 +4,16 @@
 import os
 import tempfile
 import unittest
-from pathlib import Path
 from unittest.mock import MagicMock, patch
 
 import numpy as np
+
 
 # Désactiver audio pour CI
 os.environ["BBIA_DISABLE_AUDIO"] = "1"
 
 import sys
+
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
@@ -56,9 +57,7 @@ class TestBBIAAudioImproved(unittest.TestCase):
         """Test validation chemin valide."""
         self.assertTrue(bbia_audio._is_safe_path("test.wav"))
         self.assertTrue(bbia_audio._is_safe_path("./test.wav"))
-        self.assertTrue(
-            bbia_audio._is_safe_path(os.path.join(self.temp_dir, "test.wav"))
-        )
+        self.assertTrue(bbia_audio._is_safe_path(os.path.join(self.temp_dir, "test.wav")))
 
     def test_is_safe_path_invalid(self) -> None:
         """Test validation chemin invalide (path traversal)."""

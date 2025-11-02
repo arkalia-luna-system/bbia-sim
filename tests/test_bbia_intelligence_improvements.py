@@ -35,9 +35,7 @@ class TestBBIAIntelligenceImprovements:
         behavior = ConversationBehavior()
         assert "greeting" in behavior.enriched_responses
         greeting_responses = behavior.enriched_responses["greeting"]
-        assert (
-            len(greeting_responses) >= 4
-        ), "Doit avoir au moins 4 réponses de salutation"
+        assert len(greeting_responses) >= 4, "Doit avoir au moins 4 réponses de salutation"
         # Vérifier que les réponses sont différentes
         assert len(set(greeting_responses)) == len(
             greeting_responses
@@ -64,10 +62,7 @@ class TestBBIAIntelligenceImprovements:
             "approfondir",
         ]
         has_intelligent_responses = any(
-            any(
-                indicator.lower() in resp.lower()
-                for indicator in intelligent_indicators
-            )
+            any(indicator.lower() in resp.lower() for indicator in intelligent_indicators)
             for resp in default_responses
         )
         assert (

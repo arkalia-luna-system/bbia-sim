@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Optimisation chargement modèles - Cache et lazy loading."""
 
-import logging
 from collections.abc import Callable
+import logging
 from typing import Any
+
 
 logger = logging.getLogger(__name__)
 
@@ -48,9 +49,7 @@ def get_cache_size() -> int:
     return len(_model_cache)
 
 
-def lazy_load_model(
-    model_key: str, loader_func: Callable[..., Any]
-) -> Callable[..., Any]:
+def lazy_load_model(model_key: str, loader_func: Callable[..., Any]) -> Callable[..., Any]:
     """Retourne fonction lazy loader (charge uniquement si appelée).
 
     Args:

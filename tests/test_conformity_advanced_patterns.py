@@ -57,9 +57,7 @@ class TestConformityAdvancedPatterns:
                     for j in range(i + 1, min(i + 6, len(lines))):
                         if "set_joint_pos" in lines[j] and "yaw_body" in lines[j]:
                             # Vérifier si goto_target n'est pas utilisé à la place
-                            context = "\n".join(
-                                lines[max(0, i - 3) : min(len(lines), j + 3)]
-                            )
+                            context = "\n".join(lines[max(0, i - 3) : min(len(lines), j + 3)])
                             if "goto_target" not in context:
                                 inefficient_patterns.append((py_file, i + 1, j + 1))
 
@@ -83,9 +81,7 @@ class TestConformityAdvancedPatterns:
         print("\n🧪 TEST EXPERT 2: Interpolation adaptative aux émotions")
         print("=" * 60)
 
-        integration_file = (
-            Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_integration.py"
-        )
+        integration_file = Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_integration.py"
         if not integration_file.exists():
             pytest.skip("Fichier bbia_integration.py introuvable")
 
@@ -96,8 +92,7 @@ class TestConformityAdvancedPatterns:
         has_cartoon = '"cartoon"' in content or "'cartoon'" in content
         has_ease_in_out = '"ease_in_out"' in content or "'ease_in_out'" in content
         uses_interpolation_in_goto = (
-            "method=interpolation_method" in content
-            or "method=emotion_interpolation" in content
+            "method=interpolation_method" in content or "method=emotion_interpolation" in content
         )
 
         assert has_emotion_interpolation_map, (
@@ -129,9 +124,7 @@ class TestConformityAdvancedPatterns:
         print("\n🧪 TEST EXPERT 3: Durée adaptative selon intensité")
         print("=" * 60)
 
-        integration_file = (
-            Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_integration.py"
-        )
+        integration_file = Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_integration.py"
         if not integration_file.exists():
             pytest.skip("Fichier bbia_integration.py introuvable")
 
@@ -159,20 +152,15 @@ class TestConformityAdvancedPatterns:
         print("=" * 60)
 
         # Vérifier bbia_vision.py
-        vision_file = (
-            Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_vision.py"
-        )
+        vision_file = Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_vision.py"
         if vision_file.exists():
             content = vision_file.read_text(encoding="utf-8", errors="ignore")
             has_robot_api_param = (
-                "robot_api"
-                in re.search(r"def __init__.*?:", content, re.DOTALL).group(0)
+                "robot_api" in re.search(r"def __init__.*?:", content, re.DOTALL).group(0)
                 if re.search(r"def __init__.*?:", content, re.DOTALL)
                 else False
             )
-            has_media_check = (
-                "robot.media" in content or "_camera_sdk_available" in content
-            )
+            has_media_check = "robot.media" in content or "_camera_sdk_available" in content
 
             assert has_robot_api_param and has_media_check, (
                 "EXPERT: BBIAVision doit accepter robot_api et vérifier robot.media.camera. "
@@ -181,9 +169,7 @@ class TestConformityAdvancedPatterns:
             print("✅ BBIAVision accepte robot_api et vérifie robot.media")
 
         # Vérifier bbia_integration.py passe robot_api aux modules
-        integration_file = (
-            Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_integration.py"
-        )
+        integration_file = Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_integration.py"
         if integration_file.exists():
             content = integration_file.read_text(encoding="utf-8", errors="ignore")
             # Chercher BBIAVision avec robot_api (peut être sur plusieurs lignes)

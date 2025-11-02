@@ -22,9 +22,7 @@ class TestSafetyParameters:
         """Test que l'amplitude par défaut est ≤ 0.3 rad."""
         # Test avec mapping Reachy
         safe_limit = ReachyMapping.GLOBAL_SAFETY_LIMIT
-        assert (
-            safe_limit <= 0.3
-        ), f"Limite d'amplitude trop élevée: {safe_limit} > 0.3 rad"
+        assert safe_limit <= 0.3, f"Limite d'amplitude trop élevée: {safe_limit} > 0.3 rad"
 
     def test_default_frequency_limit(self):
         """Test que la fréquence par défaut est ≤ 0.2 Hz."""
@@ -47,9 +45,7 @@ class TestSafetyParameters:
         # Test joint interdit
         is_valid, clamped_pos = ReachyMapping.validate_position("left_antenna", 0.1)
         assert not is_valid, "Joint interdit accepté"
-        assert (
-            clamped_pos == 0.0
-        ), f"Position non nulle pour joint interdit: {clamped_pos}"
+        assert clamped_pos == 0.0, f"Position non nulle pour joint interdit: {clamped_pos}"
 
     def test_forbidden_joints_list(self):
         """Test que la liste des joints interdits est correcte."""
@@ -88,9 +84,7 @@ class TestSafetyParameters:
         ]
 
         for input_amp, expected_max in test_cases:
-            is_valid, clamped_pos = ReachyMapping.validate_position(
-                "yaw_body", input_amp
-            )
+            is_valid, clamped_pos = ReachyMapping.validate_position("yaw_body", input_amp)
             assert abs(clamped_pos) <= abs(
                 expected_max
             ), f"Clamp incorrect: {input_amp} → {clamped_pos}"

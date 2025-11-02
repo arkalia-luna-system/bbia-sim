@@ -87,9 +87,7 @@ class TestDemoChatBBIA3D:
 
             def get_joint_id(model, joint_name):
                 try:
-                    return mujoco.mj_name2id(
-                        model, mujoco.mjtObj.mjOBJ_JOINT, joint_name
-                    )
+                    return mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_JOINT, joint_name)
                 except Exception:
                     return None
 
@@ -120,9 +118,7 @@ class TestDemoChatBBIA3D:
 
             def get_joint_id(model, joint_name):
                 try:
-                    return mujoco.mj_name2id(
-                        model, mujoco.mjtObj.mjOBJ_JOINT, joint_name
-                    )
+                    return mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_JOINT, joint_name)
                 except Exception:
                     return None
 
@@ -200,9 +196,7 @@ def test_demo_can_import():
     # Vérifier qu'il contient les bonnes fonctions
     content = demo_path.read_text()
     assert "def demo_chat_bbia_3d" in content, "Fonction demo_chat_bbia_3d manquante"
-    assert (
-        "def animate_robot_from_chat" in content
-    ), "Fonction animate_robot_from_chat manquante"
+    assert "def animate_robot_from_chat" in content, "Fonction animate_robot_from_chat manquante"
     assert "MockHuggingFace" in content, "Classe MockHuggingFace manquante"
 
 

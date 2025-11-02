@@ -43,9 +43,7 @@ class TestBBIAAudioCoverageHigh(unittest.TestCase):
     ) -> None:
         """Test enregistrement via SDK record_audio."""
         mock_robot = MagicMock()
-        mock_robot.media.record_audio = MagicMock(
-            return_value=np.zeros(16000, dtype=np.int16)
-        )
+        mock_robot.media.record_audio = MagicMock(return_value=np.zeros(16000, dtype=np.int16))
         mock_get_mic.return_value = mock_robot.media
 
         mock_wf = MagicMock()
@@ -59,18 +57,36 @@ class TestBBIAAudioCoverageHigh(unittest.TestCase):
     @patch("os.environ.get", return_value="0")
     @patch("bbia_sim.bbia_audio._get_robot_media_microphone")
     @patch("bbia_sim.bbia_audio.wave.open")
+    @patch("bbia_sim.bbia_audio.hasattr")
     def test_enregistrer_audio_with_sdk_microphone_record(
-        self, mock_wave: MagicMock, mock_get_mic: MagicMock, mock_env: MagicMock
+        self,
+        mock_hasattr: MagicMock,
+        mock_wave: MagicMock,
+        mock_get_mic: MagicMock,
+        mock_env: MagicMock,
     ) -> None:
         """Test enregistrement via SDK microphone.record."""
         mock_robot = MagicMock()
         mock_robot.media = MagicMock()
-        mock_robot.media.record_audio = None
+
+        # record_audio n'existe pas, mais microphone.record oui
+        # Simuler hasattr correctement : robot_api.media existe, record_audio n'existe pas, microphone.record existe
+        def hasattr_side_effect(obj, attr):
+            if obj == mock_robot:
+                return attr == "media"
+            elif obj == mock_robot.media:
+                # record_audio n'existe pas pour forcer fallback vers microphone.record
+                if attr == "record_audio":
+                    return False
+                return attr == "speaker" or attr == "microphone"
+            elif obj == mock_mic:
+                return attr == "record"
+            return False  # Par défaut, attribut n'existe pas
+
+        mock_hasattr.side_effect = hasattr_side_effect
 
         mock_mic = MagicMock()
-        mock_mic.record = MagicMock(
-            return_value=np.zeros(16000, dtype=np.int16).tobytes()
-        )
+        mock_mic.record = MagicMock(return_value=np.zeros(16000, dtype=np.int16).tobytes())
         mock_get_mic.return_value = mock_mic
 
         mock_wf = MagicMock()
