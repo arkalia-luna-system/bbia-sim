@@ -168,11 +168,11 @@ Les éléments suivants sont **déjà implémentés** et ne nécessitent **aucun
 1. ✅ Créer script `scripts/verify_md_links.py` (1h)
 2. ✅ Vérifier liens MD et corriger (30 min)
 
-### Phase 2 : Coverage Tests (~1-2h restantes)
-1. ✅ ~~Créer `tests/test_dashboard_advanced.py`~~ - **TERMINÉ** (**47 tests**, **1156 lignes**, 76.71% coverage) ✅
-2. ✅ ~~Étendre `tests/test_vision_yolo_comprehensive.py`~~ - **TERMINÉ** (**89.62%** coverage ✅)
-3. ⚠️ **Étendre tests `voice_whisper.py**: **38.33%** → 50%+, ~1-2h restantes)
-4. ✅ ~~Étendre `tests/test_daemon_bridge.py`~~ - **TERMINÉ** (**31.23%** coverage ✅)
+### Phase 2 : Coverage Tests (3 modules à améliorer)
+1. ✅ ~~Créer `tests/test_dashboard_advanced.py`~~ - **TERMINÉ** (**47 tests**, **1156 lignes** ✅, coverage 0.00% ⚠️)
+2. ⚠️ Étendre `tests/test_vision_yolo_comprehensive.py` - **À AMÉLIORER** (**17.49%** coverage ⚠️)
+3. ✅ ~~Étendre tests `voice_whisper.py`~~ - **TERMINÉ** (**75.83%** coverage ✅, objectif 50%+ dépassé)
+4. ⚠️ Étendre `tests/test_daemon_bridge.py` - **À AMÉLIORER** (**0.00%** coverage ⚠️)
 
 ### Phase 3 : Nettoyage Documentation (2-3h)
 1. ✅ Consolider documents redondants
