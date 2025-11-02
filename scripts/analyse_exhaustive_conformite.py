@@ -127,11 +127,11 @@ class ExhaustiveConformityAnalyzer:
 
         # Rechercher dans docs BBIA
         docs_files = list(self.bbia_root.glob("docs/**/*.md"))
-        official_docs = (
-            list(self.official_root.glob("docs/**/*.md"))
-            if (self.official_root / "docs").exists()
-            else []
-        )
+        # official_docs = (
+        #     list(self.official_root.glob("docs/**/*.md"))
+        #     if (self.official_root / "docs").exists()
+        #     else []
+        # )  # Non utilisé pour l'instant
 
         # Extraire mesures BBIA
         bbia_measures = {

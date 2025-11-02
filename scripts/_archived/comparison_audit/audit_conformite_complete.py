@@ -174,17 +174,6 @@ class ConformityAuditor:
 
         # Mapping des endpoints BBIA vers méthodes SDK
         # Ce mapping sera complété avec les informations du SDK officiel
-        endpoint_mapping = {
-            "/api/move/goto": "goto_target",
-            "/api/move/set_target": "set_target",
-            "/api/state/present_head_pose": "get_current_head_pose",
-            "/api/state/present_body_yaw": "get_current_body_yaw",
-            "/api/state/present_antenna_joint_positions": (
-                "get_present_antenna_joint_positions"
-            ),
-            "/api/move/play/wake_up": "wake_up",
-            "/api/move/play/goto_sleep": "goto_sleep",
-        }
 
         # Vérifier que tous les endpoints critiques existent
         critical_endpoints = [

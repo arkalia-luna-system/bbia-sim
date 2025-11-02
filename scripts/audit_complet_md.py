@@ -64,12 +64,12 @@ def check_dates_in_file(file_path: Path) -> list[dict[str, Any]]:
         ]
 
         # Vérifier si c'est un fichier récent (novembre 2025)
-        is_recent = (
-            "nov" in file_path.name.lower()
-            or "nov2025" in file_path.name.lower()
-            or file_path.name.startswith("VERIFICATION")
-            or "NOV" in file_path.name
-        )
+        # is_recent = (
+        #     "nov" in file_path.name.lower()
+        #     or "nov2025" in file_path.name.lower()
+        #     or file_path.name.startswith("VERIFICATION")
+        #     or "NOV" in file_path.name
+        # )
 
         for i, line in enumerate(lines, 1):
             # Chercher dates
@@ -126,7 +126,7 @@ def verify_content_against_code(file_path: Path, root_dir: Path) -> list[str]:
             (r"(Factory|ABC|Abstract)", "architecture", "src/"),
         ]
 
-        for pattern, check_type, code_path in checks:
+        for pattern, _check_type, code_path in checks:
             matches = re.findall(pattern, content, re.IGNORECASE)
             if matches:
                 # Vérifier dans le code
@@ -245,7 +245,7 @@ def main():
 
     # Analyser chaque fichier
     date_issues = defaultdict(list)
-    content_warnings = []
+    # content_warnings = []  # Non utilisé pour l'instant
     file_categories = defaultdict(list)
 
     for md_file in md_files:
@@ -292,8 +292,10 @@ def main():
 
     print(f"\n{GREEN}✅ Audit terminé{RESET}")
     print("\nActions recommandées:")
-    print(f"1. Corriger dates dans {len(date_issues)} fichiers")
-    print(f"2. Archiver {len(to_archive)} fichiers temporaires")
+    date_count = len(date_issues)
+    archive_count = len(to_archive)
+    print(f"1. Corriger dates dans {date_count} fichiers")
+    print(f"2. Archiver {archive_count} fichiers temporaires")
     print("3. Vérifier contenu vs code pour fichiers principaux")
 
 

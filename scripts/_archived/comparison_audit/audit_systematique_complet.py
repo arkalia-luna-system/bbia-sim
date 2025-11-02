@@ -116,7 +116,7 @@ class SystematicAuditor:
             try:
                 with open(router_file, encoding="utf-8") as f:
                     content = f.read()
-                    lines = content.split("\n")
+                    content.split("\n")
 
                 pattern = (
                     r'@router\.(get|post|put|delete|patch)\s*\(\s*["\']([^"\']+)["\']'
@@ -236,7 +236,7 @@ class SystematicAuditor:
 
         if official_mjcf.exists():
             official_xml = list(official_mjcf.glob("*.xml"))
-            bbia_xml = list(bbia_mjcf.glob("*.xml"))
+            list(bbia_mjcf.glob("*.xml"))
 
             for xml_file in official_xml:
                 bbia_equivalent = bbia_mjcf / xml_file.name

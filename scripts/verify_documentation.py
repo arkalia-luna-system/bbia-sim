@@ -174,7 +174,8 @@ def verify_architecture() -> dict[str, bool]:
 def check_code_exists(pattern: str, file_path: Path) -> bool:
     """Vérifie si un pattern existe dans un fichier."""
     try:
-        content = file_path.read_text(encoding="utf-8")
+        # Lire seulement les premières lignes pour performance
+        content = file_path.read_text(encoding="utf-8")[:5000]
         return bool(re.search(pattern, content, re.IGNORECASE))
     except Exception:
         return False
@@ -318,9 +319,13 @@ def verify_consistency():
             for md_file in md_files:
                 # Chercher affirmations dans les premières lignes seulement
                 try:
-                    content = md_file.read_text(encoding="utf-8")[:5000]  # Limiter lecture
+                    content = md_file.read_text(encoding="utf-8")[
+                        :5000
+                    ]  # Limiter lecture
                     if "✅" in content or "TERMINÉ" in content:
-                        print(f"   📄 {md_file.name}: Contient affirmations de complétion")
+                        print(
+                            f"   📄 {md_file.name}: Contient affirmations de complétion"
+                        )
                 except Exception:
                     continue
         except Exception:

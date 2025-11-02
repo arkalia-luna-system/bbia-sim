@@ -1,5 +1,6 @@
 """Router pour les endpoints de l'écosystème BBIA-SIM - Phase 3."""
 
+import asyncio
 import logging
 import time
 from datetime import datetime
@@ -19,8 +20,8 @@ router = APIRouter()
 # Temps de démarrage de l'application pour calcul uptime
 _app_start_time: float | None = None
 
-# Compteur de connexions WebSocket actives
-_active_websocket_connections: int = 0
+# Référence au gestionnaire WebSocket (sera initialisé à la demande)
+_ws_manager: Any | None = None
 
 
 def get_app_start_time() -> float:
@@ -39,11 +40,26 @@ def format_uptime(seconds: float) -> str:
     return f"{hours:02d}:{minutes:02d}:{secs:02d}"
 
 
+def get_ws_manager() -> Any | None:
+    """Récupère le gestionnaire WebSocket de télémétrie."""
+    global _ws_manager
+    if _ws_manager is None:
+        try:
+            from ...ws.telemetry import manager
+
+            _ws_manager = manager
+        except ImportError:
+            logger.debug("Gestionnaire WebSocket non disponible")
+            _ws_manager = None
+    return _ws_manager
+
+
 def get_active_connections() -> int:
     """Récupère le nombre de connexions WebSocket actives."""
-    # TODO: Implémenter tracking réel via gestionnaire WebSocket
-    # Pour l'instant, retourne 0 (sera implémenté avec le gestionnaire WebSocket)
-    return _active_websocket_connections
+    manager = get_ws_manager()
+    if manager is not None:
+        return len(manager.active_connections)
+    return 0
 
 
 # Modèles Pydantic pour l'API publique
@@ -443,17 +459,85 @@ async def start_demo_mode(
                 detail=f"Mode '{mode}' non valide. Modes disponibles: {valid_modes}",
             )
 
-        # TODO: Implémenter la logique de démarrage de démo
-        # Pour l'instant, on retourne une confirmation
-
-        return {
+        # Implémentation logique démarrage démo
+        demo_info: dict[str, Any] = {
             "mode": mode,
             "duration": duration,
             "emotion": emotion,
             "status": "started",
-            "message": f"Démonstration {mode} démarrée pour {duration} secondes",
             "timestamp": datetime.now().isoformat(),
         }
+
+        try:
+            # Démarrer simulation si nécessaire
+            if mode in ["simulation", "mixed"]:
+                from ...simulation_service import simulation_service
+
+                if not simulation_service.is_simulation_ready():
+                    success = await simulation_service.start_simulation(headless=True)
+                    if not success:
+                        raise HTTPException(
+                            status_code=500, detail="Échec démarrage simulation"
+                        )
+                    demo_info["simulation"] = "started"
+
+            # Appliquer émotion si demandée
+            if emotion:
+                try:
+                    from ....bbia_emotions import BBIAEmotions
+
+                    emotions_module = BBIAEmotions()
+                    # Valider émotion - utiliser toutes les émotions disponibles
+                    valid_emotions = list(emotions_module.emotions.keys())
+                    if emotion.lower() in valid_emotions:
+                        # Créer robot pour appliquer émotion
+                        robot = RobotFactory.create_backend(
+                            "mujoco" if mode != "robot_real" else "reachy"
+                        )
+                        if robot:
+                            robot.connect()
+                            # Utiliser set_emotion du robot si disponible
+                            if hasattr(robot, "set_emotion"):
+                                robot.set_emotion(emotion.lower(), 0.7)
+                            else:
+                                # Sinon, mettre à jour état émotions
+                                emotions_module.set_emotion(emotion.lower(), 0.7)
+                            demo_info["emotion_applied"] = emotion.lower()
+                            robot.disconnect()
+                except Exception as e:
+                    logger.warning(f"Émotion non appliquée: {e}")
+                    demo_info["emotion_error"] = str(e)
+
+            # Planifier arrêt après durée
+            if duration > 0:
+
+                async def stop_demo_after_duration() -> None:
+                    await asyncio.sleep(duration)
+                    try:
+                        if mode in ["simulation", "mixed"]:
+                            from ...simulation_service import (
+                                simulation_service as sim_service,
+                            )
+
+                            await sim_service.stop_simulation()
+                    except Exception as e:
+                        logger.warning(f"Erreur arrêt démo: {e}")
+
+                asyncio.create_task(stop_demo_after_duration())
+                demo_info["auto_stop"] = True
+
+            demo_info["message"] = (
+                f"Démonstration {mode} démarrée pour {duration} secondes"
+            )
+
+        except HTTPException:
+            raise
+        except Exception as e:
+            logger.error(f"Erreur logique démo: {e}")
+            demo_info["status"] = "error"
+            demo_info["error"] = str(e)
+
+        return demo_info
     except HTTPException:
         raise
     except Exception as e:

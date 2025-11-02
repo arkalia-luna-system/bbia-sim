@@ -110,13 +110,11 @@ class OfficialRepoComparator:
 
             # Lister fichiers dans chaque
             bbia_files = (
-                set(f.name for f in bbia_dir.rglob("*.py") if f.is_file())
+                {f.name for f in bbia_dir.rglob("*.py") if f.is_file()}
                 if bbia_dir.exists()
                 else set()
             )
-            official_files = set(
-                f.name for f in official_dir.rglob("*.py") if f.is_file()
-            )
+            official_files = {f.name for f in official_dir.rglob("*.py") if f.is_file()}
 
             missing_in_bbia = official_files - bbia_files
 

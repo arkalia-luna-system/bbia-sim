@@ -169,7 +169,7 @@ def correct_dates_in_content(content: str, file_path: Path) -> tuple[str, list[s
     is_recent = is_recent_file(file_path.name)
 
     for i, line in enumerate(lines):
-        original_line = line
+        # original_line = line  # Gardé pour référence mais pas utilisé
 
         # Ne pas modifier les dates de création
         if is_creation_date_context(line) and "2024" in line:

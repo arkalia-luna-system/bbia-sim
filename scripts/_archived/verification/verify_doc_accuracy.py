@@ -58,17 +58,17 @@ def count_emotions():
     emotions = set()
     lines = content.split("\n")
     in_emotions_dict = False
-    
+
     for line in lines:
         if "self.emotions = {" in line:
             in_emotions_dict = True
             continue
-        
+
         if in_emotions_dict:
             # Si on sort du dictionnaire, arrêter
             if line.strip() == "}" and '"' not in line:
                 break
-            
+
             # Pattern pour émotion principale: "nom": { en début de ligne indenté
             match = re.search(r'^\s*"([a-z_]+)":\s*\{$', line)
             if match:
@@ -76,7 +76,7 @@ def count_emotions():
                 # Ignorer propriétés internes
                 if name not in ["yeux", "antennes", "tete", "description", "color"]:
                     emotions.add(name)
-    
+
     return len(emotions)
 
 
