@@ -31,6 +31,8 @@ class TestWebSocketTracking:
 
     def test_get_active_connections_with_manager(self):
         """Test comptage connexions actives avec gestionnaire."""
+        from bbia_sim.daemon.app.routers.ecosystem import get_active_connections
+
         mock_manager = MagicMock()
         mock_manager.active_connections = [MagicMock(), MagicMock(), MagicMock()]
 
