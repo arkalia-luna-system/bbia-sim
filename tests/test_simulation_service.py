@@ -407,19 +407,59 @@ class TestSimulationService:
         self, mock_simulator_class, mock_simulator
     ):
         """Test exception dans le thread de simulation."""
-        mock_simulator_class.return_value = mock_simulator
+        # OPTIMISATION RAM: Créer un fichier temporaire pour éviter l'erreur FileNotFoundError
+        import tempfile
 
-        # Simuler une exception dans la boucle de simulation
-        mock_simulator._step_simulation.side_effect = Exception("Step error")
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".xml", delete=False) as f:
+            f.write(
+                """<?xml version="1.0"?>
+<mujoco model="test">
+  <worldbody>
+    <geom name="floor" type="plane" size="1 1 0.1"/>
+  </worldbody>
+</mujoco>"""
+            )
+            temp_model = f.name
 
-        service = SimulationService(model_path="test_model.xml")
+        try:
+            # OPTIMISATION RAM: Configurer le mock avant création du service
+            mock_simulator_class.return_value = mock_simulator
 
-        # Le thread devrait gérer l'exception et s'arrêter proprement
-        await service.start_simulation()
-        await asyncio.sleep(0.1)  # Laisser le temps à l'exception de se produire
+            # OPTIMISATION RAM: Simuler une exception après quelques appels seulement
+            call_count = 0
 
-        # Le service devrait toujours être en cours d'exécution malgré l'exception
-        assert service.is_running is True
+            def side_effect():
+                nonlocal call_count
+                call_count += 1
+                # Lever exception après 2 appels pour tester la gestion d'erreur
+                if call_count > 2:
+                    raise Exception("Step error")
+                # Retourner None pour les premiers appels (simulation normale)
 
-        # Nettoyer
-        await service.stop_simulation()
+            mock_simulator._step_simulation.side_effect = side_effect
+
+            service = SimulationService(model_path=temp_model)
+
+            # Le thread devrait gérer l'exception et continuer (la boucle gère les exceptions)
+            result = await service.start_simulation()
+            # Vérifier que le démarrage a réussi
+            assert result is True
+            assert service.is_running is True
+
+            # OPTIMISATION RAM: Réduire le temps d'attente mais assez pour que l'exception se produise
+            await asyncio.sleep(0.15)  # Laisser le temps à l'exception de se produire
+
+            # Le service devrait toujours être en cours d'exécution malgré l'exception
+            # (car la boucle gère les exceptions et continue avec un sleep)
+            assert service.is_running is True
+
+            # Nettoyer rapidement pour libérer RAM
+            await service.stop_simulation()
+            await asyncio.sleep(0.05)  # Attendre que le nettoyage se termine
+
+        finally:
+            # Nettoyer le fichier temporaire
+            import os
+
+            if os.path.exists(temp_model):
+                os.unlink(temp_model)

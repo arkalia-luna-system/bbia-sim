@@ -1,41 +1,119 @@
-# Documentation BBIA-SIM — Sommaire rapide
+# 📚 Documentation BBIA-SIM — Navigation Rapide
 
-Ce sommaire pointe vers les pages de référence les plus utiles.
+> **Moteur cognitif Python pour robot Reachy Mini**  
+> *Simulation fidèle • IA avancée • SDK 100% conforme*
 
-## Statut et Suivi
+---
 
-- `status.md` — État par axe (Observabilité, Performance, Sécurité, CI/CD, Packaging, API/SDK, Robot, UX, IA, Docs, Qualité, Communauté)
+## 🎯 Parcours Recommandé
 
-## Références Release
+```mermaid
+flowchart TB
+    START[🚀 Nouveau?] --> DEBUT[📖 Guide Débutant<br/>5 minutes]
+    START --> AVANCE[⚡ Expérimenté?]
+    
+    DEBUT --> INSTALL[📦 Installation]
+    INSTALL --> FIRST[🤖 Premier Robot]
+    FIRST --> GUIDE[➡️ Guide Avancé]
+    
+    AVANCE --> ARCH[🏗️ Architecture]
+    ARCH --> API[🔌 API & SDK]
+    API --> PERF[⚡ Performance]
+    
+    GUIDE --> NEXT[📚 Documentation Complète]
+    PERF --> NEXT
+    
+    style START fill:#90EE90
+    style DEBUT fill:#87CEEB
+    style AVANCE fill:#FFD700
+    style NEXT fill:#FFB6C1
+```
 
-- `references/RELEASE_NOTES.md` — Notes de version
-- `references/PROJECT_HISTORY.md` — Historique du projet
-- `../CHANGELOG.md` — Changelog
+---
 
-## Architecture
+## 📊 Statut et Suivi
 
-- `architecture/ARCHITECTURE_OVERVIEW.md` — Vue d’ensemble (v1.3.2)
-- `architecture/ARCHITECTURE.md` — Guide architecture
-- `architecture/ARCHITECTURE_DETAILED.md` — Détails techniques
+> **📈 Vue d'ensemble du projet**  
+> État par axe : Observabilité, Performance, Sécurité, CI/CD, Packaging, API/SDK, Robot, UX, IA, Docs, Qualité, Communauté
 
-## Guides
+👉 **[status.md](status.md)** — Tableau de bord complet du projet
 
-- `guides/GUIDE_DEBUTANT.md` — Débuter
-- `guides/GUIDE_AVANCE.md` — Avancé
-- `guides_techniques/INTEGRATION_GUIDE.md` — Intégration
-- `guides_techniques/TESTING_GUIDE.md` — Tests
-- `guides_techniques/MIGRATION_GUIDE.md` — Migration
+---
 
-## Performance & Qualité
+## 🏗️ Architecture & Design
 
-- `performance/RESUME_PERFORMANCE_CORRECTIONS_2025.md`
-- `qualite/VALIDATION_CODE_QUALITY_2025.md`
+> **Structure technique du projet**
 
-## Conformité & Audit
+### Documents Principaux
 
-- `conformite/CONFORMITE_SDK_RESUME.md` — Conformité SDK
-- `audit/AUDIT_REACHY_SYNTHESE.md` — Synthèse audit
+| Document | Description | Niveau |
+|----------|-------------|--------|
+| [ARCHITECTURE_OVERVIEW.md](architecture/ARCHITECTURE_OVERVIEW.md) | Vue d'ensemble (v1.3.2) | 🟢 Débutant |
+| [ARCHITECTURE.md](architecture/ARCHITECTURE.md) | Guide architecture | 🟡 Intermédiaire |
+| [ARCHITECTURE_DETAILED.md](architecture/ARCHITECTURE_DETAILED.md) | Détails techniques | 🔴 Avancé |
 
-## Archives
+---
 
-- `archives/README.md` — Index des archives (liens vers fichiers “final”)
+## 📖 Guides Utilisateurs
+
+> **Apprendre à utiliser BBIA-SIM**
+
+### Par Niveau
+
+- 🟢 **[Guide Débutant](guides/GUIDE_DEBUTANT.md)** — Installation et premiers pas en 5 minutes
+- 🟡 **[Guide Avancé](guides/GUIDE_AVANCE.md)** — Fonctionnalités avancées et architecture
+- 🔴 **[Guides Techniques](guides_techniques/)** — Intégration, tests, migration
+
+### Par Sujet
+
+- 🤖 **[Reachy Mini Wireless](guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md)** — Guide complet du robot physique
+- 💬 **[Chat BBIA](guides/GUIDE_CHAT_BBIA.md)** — Système de chat intelligent
+- 🧠 **[NLP & SmolVLM2](guides/GUIDE_NLP_SMOLVLM.md)** — Intelligence artificielle
+
+---
+
+## 📦 Références & Historique
+
+> **Version et historique du projet**
+
+- 📝 **[RELEASE_NOTES.md](references/RELEASE_NOTES.md)** — Notes de version
+- 📚 **[PROJECT_HISTORY.md](references/PROJECT_HISTORY.md)** — Historique du projet
+- 🔄 **[CHANGELOG.md](../CHANGELOG.md)** — Journal des modifications
+
+---
+
+## ✅ Conformité & Qualité
+
+> **Vérification et validation**
+
+### Conformité SDK
+
+- ✅ **[Conformité Complète](conformite/CONFORMITE_REACHY_MINI_COMPLETE.md)** — Validation SDK officiel
+- 🔍 **[Audit Synthèse](audit/INDEX_AUDITS_CONSOLIDES.md)** — Audits consolidés
+
+### Qualité Code
+
+- 🎯 **[Performance](performance/RESUME_PERFORMANCE_CORRECTIONS_2025.md)** — Optimisations appliquées
+- ✅ **[Validation Qualité](qualite/VALIDATION_FINALE_QUALITE_2025.md)** — Rapports de validation
+
+---
+
+## 📁 Navigation Complète
+
+👉 **[INDEX_FINAL.md](INDEX_FINAL.md)** — Index complet de toute la documentation avec navigation thématique
+
+---
+
+## 📚 Archives
+
+> **Documents historiques et terminés**
+
+👉 **[archives/README.md](archives/README.md)** — Index des archives (liens vers fichiers "final")
+
+---
+
+<div align="center">
+
+**💡 Besoin d'aide ?** Consultez le [Guide Débutant](guides/GUIDE_DEBUTANT.md) ou la [FAQ](FAQ.md)
+
+</div>

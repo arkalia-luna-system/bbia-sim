@@ -1,27 +1,77 @@
 # 📚 INDEX DE LA DOCUMENTATION BBIA-SIM
 
-> Compatibilité Python et CI
->
-> - Python supporté: 3.11+
-> - CI: `.github/workflows/ci.yml`
-> - Setup rapide:
-> ```bash
->   pyenv install 3.11.9 && pyenv local 3.11.9
->   python -m pip install --upgrade pip
->   pip install -e .
->   ```
+<div align="center">
 
-**Version** : v1.3.2  
-**Date** : Oct / Nov. 2025  
-**Dernière mise à jour** : Oct / Nov. 2025
+**🎯 Documentation complète du moteur cognitif BBIA-SIM**  
+*Organisée par catégorie • Navigation intuitive • Contenu exhaustif*
+
+</div>
 
 ---
 
-## 🎯 DÉMARRAGE RAPIDE
+## ⚡ Démarrage Rapide
 
-- [README](../README.md) - Vue d'ensemble du projet
-- [Guide Débutant](guides/GUIDE_DEBUTANT.md) - Commencer avec BBIA-SIM
-- [Reachy Mini Guide](guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md) - Utiliser le robot physique
+> **🚀 Prêt à commencer ?**
+
+| Action | Commande | Temps |
+|--------|----------|-------|
+| **Installation** | `pip install -e .[dev]` | ~2 min |
+| **Dashboard** | `python src/bbia_sim/dashboard_advanced.py` | Instant |
+| **Premier robot** | Voir [Guide Débutant](guides/GUIDE_DEBUTANT.md) | 5 min |
+
+### Configuration Requise
+
+```bash
+# Python 3.11+ requis
+pyenv install 3.11.9 && pyenv local 3.11.9
+python -m pip install --upgrade pip
+pip install -e .
+```
+
+> **📊 CI/CD** : `.github/workflows/ci.yml` • **Version** : v1.3.2 • **Date** : Oct / Nov. 2025
+
+---
+
+## 🎯 Navigation Visuelle
+
+```mermaid
+mindmap
+  root((📚 BBIA-SIM))
+    🚀 Démarrage
+      Guide Débutant
+      Installation
+      Premier Robot
+    🏗️ Architecture
+      Vue d'Ensemble
+      Détails Techniques
+      Modules BBIA
+    📖 Guides
+      Utilisateurs
+      Techniques
+      Spécialisés
+    ✅ Qualité
+      Conformité SDK
+      Tests
+      Performance
+    🤖 Intelligence
+      NLP & Vision
+      Chat BBIA
+      LLM Tools
+```
+
+---
+
+## 🎯 Points d'Entrée Principaux
+
+<div align="center">
+
+| Document | Description | ⏱️ Temps |
+|:--------:|-------------|:--------:|
+| **[README](../README.md)** | Vue d'ensemble complète | 2 min |
+| **[Guide Débutant](guides/GUIDE_DEBUTANT.md)** | Premiers pas en 5 minutes | 5 min |
+| **[Reachy Mini Guide](guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md)** | Guide robot physique | 10 min |
+
+</div>
 
 ---
 

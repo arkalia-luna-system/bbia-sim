@@ -4,7 +4,7 @@ Tests unitaires pour daemon/bridge.py
 Tests de la couche Zenoh/FastAPI pour Reachy Mini
 """
 
-from unittest.mock import MagicMock, patch
+from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
@@ -454,8 +454,9 @@ class TestDaemonBridge:
 
             bridge = ZenohBridge()
             bridge.session = MagicMock()
-            bridge.session.declare_subscriber = MagicMock(return_value=MagicMock())
-            bridge.session.declare_publisher = MagicMock(return_value=MagicMock())
+            # Les méthodes sont appelées avec await, donc elles doivent retourner des coroutines
+            bridge.session.declare_subscriber = AsyncMock(return_value=MagicMock())
+            bridge.session.declare_publisher = AsyncMock(return_value=MagicMock())
 
             await bridge._setup_zenoh_topics()
 
@@ -498,7 +499,8 @@ class TestDaemonBridge:
             from bbia_sim.daemon.bridge import ZenohBridge
 
             bridge = ZenohBridge()
-            bridge._publish_error = MagicMock()
+            # _publish_error est async, donc utiliser AsyncMock
+            bridge._publish_error = AsyncMock()
 
             mock_sample = MagicMock()
             large_payload = "x" * (1048577)  # 1MB + 1 byte
@@ -629,17 +631,13 @@ class TestDaemonBridge:
             pytest.skip("Module daemon.bridge non disponible")
 
     @patch("bbia_sim.daemon.bridge.bridge")
-    def test_fastapi_get_bridge_status_endpoint(self):
+    def test_fastapi_get_bridge_status_endpoint(self, mock_bridge):
         """Test endpoint GET /api/zenoh/status."""
         try:
             from bbia_sim.daemon.bridge import get_bridge_status
 
-            # Import global bridge
-            import bbia_sim.daemon.bridge as bridge_module
-
-            original_bridge = bridge_module.bridge
-            bridge_module.bridge = MagicMock()
-            bridge_module.bridge.is_connected.return_value = True
+            # Configure le mock bridge
+            mock_bridge.is_connected.return_value = True
 
             import asyncio
 
@@ -649,8 +647,6 @@ class TestDaemonBridge:
                 assert "zenoh_available" in result
 
             asyncio.run(test())
-
-            bridge_module.bridge = original_bridge
         except ImportError:
             pytest.skip("Module daemon.bridge non disponible")
 

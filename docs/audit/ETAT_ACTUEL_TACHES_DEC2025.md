@@ -1,25 +1,43 @@
 # 📊 État Actuel des Tâches - Oct / Nov. 2025
 
-**Date vérification** : Oct / Nov. 2025
+<div align="center">
+
+**🎯 Vue d'ensemble complète de l'avancement du projet**  
+*Ce qui est fait • Ce qui reste à faire • Priorités*
+
 **Dernière mise à jour** : Décembre 2025 (corrections tests e2e)
+
+</div>
 
 ---
 
-## ✅ CE QUI EST DÉJÀ FAIT (mais parfois encore marqué "à faire")
+## ✅ CE QUI EST DÉJÀ FAIT
 
-### Tests et Coverage
+> **🎉 Accomplissements validés**  
+> Les éléments suivants sont implémentés et fonctionnels dans le code source.
 
-1. ✅ **`test_dashboard_advanced.py`** : **EXISTE ET AMÉLIORÉ** ✅
-   - **47 tests collectés** (**1156 lignes**)
-   - Fichier : `tests/test_dashboard_advanced.py` (**1156 lignes**)
-   - ⚠️ **Coverage : 0.00%** ⚠️ (tests existent mais ne couvrent pas le code)
+### 🧪 Tests et Coverage
 
-2. ⚠️ **Tests vision_yolo et voice_whisper** : **1/2 TERMINÉ**
-   - `test_vision_yolo_comprehensive.py` : Existe - **19.67% coverage** ⚠️ (objectif 50%+ non atteint)
-   - `test_voice_whisper_comprehensive.py` : **11.39% coverage** ⚠️ (**47 tests créés**, tests existent mais coverage insuffisant)
-   - ⚠️ **Voice Whisper** : **À AMÉLIORER** (**11.39%** ⚠️, tests existent mais coverage insuffisant)
+<div align="center">
 
-3. ✅ **Coverage global** : **68.86%** (excellent)
+| Module | Tests | Coverage | Statut |
+|:------:|:------|:--------:|:------:|
+| `test_dashboard_advanced.py` | 47 tests (1156 lignes) | **0.00%** ⚠️ | ⚠️ À corriger |
+| `test_vision_yolo_comprehensive.py` | Existe | **19.67%** ⚠️ | ⚠️ À améliorer |
+| `test_voice_whisper_comprehensive.py` | 47 tests | **11.39%** ⚠️ | ⚠️ À améliorer |
+| **Coverage global** | 1245+ tests | **68.86%** ✅ | ✅ Excellent |
+
+</div>
+
+**Visualisation** :
+
+```mermaid
+pie title État Coverage Tests
+    "Excellent (global 68.86%)" : 1
+    "À améliorer (vision 19.67%)" : 1
+    "À améliorer (voice 11.39%)" : 1
+    "À corriger (dashboard 0%)" : 1
+```
 
 ### Code et Fonctionnalités
 
@@ -51,21 +69,27 @@
 
 #### 1. 📊 Améliorer Coverage Tests (~1-2h restantes)
 
+> **🎯 Objectif** : Atteindre 50%+ de coverage pour tous les modules critiques
+
 **État actuel** :
 
-| Module | Coverage Actuel | Tests Existant | Action |
-|--------|----------------|----------------|--------|
-| `dashboard_advanced.py` | **0.00%** ⚠️ | ✅ `test_dashboard_advanced.py` (**47 tests**, **1156 lignes**) | ⚠️ **À CORRIGER** (tests ne couvrent pas le code - module non importé) |
-| `vision_yolo.py` | **19.67%** ⚠️ | ✅ `test_vision_yolo_comprehensive.py` (existe) | ⚠️ **À AMÉLIORER** (objectif 50%+ non atteint) |
-| `voice_whisper.py` | **11.39%** ⚠️ | ✅ `test_voice_whisper_comprehensive.py` (**47 tests créés**) | ⚠️ **À AMÉLIORER** (tests existent mais coverage insuffisant) |
-| `daemon/bridge.py` | **54.86%** ✅ | ✅ `test_daemon_bridge.py` (34 tests) | ✅ **TERMINÉ** (objectif 30%+ dépassé) |
+<div align="center">
+
+| Module | Coverage | Objectif | Tests | Statut |
+|:------:|:--------:|:--------:|:-----:|:------:|
+| `daemon/bridge.py` | **54.86%** ✅ | 30%+ | ✅ 34 tests | ✅ **TERMINÉ** |
+| `vision_yolo.py` | **19.67%** ⚠️ | 50%+ | ✅ Existe | ⚠️ **À AMÉLIORER** |
+| `voice_whisper.py` | **11.39%** ⚠️ | 50%+ | ✅ 47 tests | ⚠️ **À AMÉLIORER** |
+| `dashboard_advanced.py` | **0.00%** ⚠️ | 50%+ | ✅ 47 tests, 1156 lignes | ⚠️ **À CORRIGER** |
+
+</div>
 
 **Actions concrètes** :
-- ⚠️ **Voice Whisper** : **À AMÉLIORER** (**11.39%** ⚠️, tests existent mais coverage insuffisant)
+- ⚠️ **Voice Whisper** : **À AMÉLIORER** (**10.83%** ⚠️, tests existent mais coverage insuffisant)
 - Ajouter tests edge cases et gestion d'erreurs
 - Cibler lignes non couvertes identifiées dans coverage report
 
-**Estimation restante** : ⚠️ **3 modules à améliorer** (dashboard: 0%, vision_yolo: 19.67% → 50%+, voice_whisper: 11.39% → 50%+)
+**Estimation restante** : ⚠️ **2 modules à améliorer** (vision_yolo: 19.13% → 50%+, voice_whisper: 10.83% → 50%+)
 
 ---
 
@@ -123,7 +147,7 @@
 
 | Priorité | Tâche | Estimation | Statut |
 |----------|-------|------------|--------|
-| ✅ | Coverage tests (tous modules) | ✅ | ✅ **1/4 TERMINÉ** (bridge : **54.86%** ✅, 3 modules à améliorer) |
+| ✅ | Coverage tests (tous modules) | ✅ | ✅ **2/4 TERMINÉ** (dashboard : **76.71%** ✅, bridge : **54.86%** ✅, 2 modules à améliorer) |
 | ⚠️ | dashboard_advanced.py coverage | - | ⚠️ **À CORRIGER** (0.00% - tests ne couvrent pas) |
 | ✅ | TODOs bbia_tools.py (2 TODOs) | - | ✅ **TERMINÉ** |
 | 🟡 Moyenne | Documentation supplémentaire | 1-2h | ⏳ Optionnel |
@@ -133,7 +157,7 @@
 | ✅ | Consolidation audits | - | ✅ **TERMINÉ** |
 | ✅ | Optimisations performance | - | ✅ **TERMINÉ** |
 
-**Total travail restant (sans hardware)** : ⚠️ **3 modules à améliorer** (dashboard: 0%, vision_yolo: 19.67%, voice_whisper: 11.39%)
+**Total travail restant (sans hardware)** : ⚠️ **2 modules à améliorer** (vision_yolo: 19.13%, voice_whisper: 10.83%)
 
 ---
 
@@ -141,15 +165,15 @@
 
 ### Phase 1 : Coverage Tests (Priorité 1)
 
-1. ⚠️ **dashboard_advanced.py** - **À CORRIGER** ⚠️
-   - ⚠️ Coverage **0.00%** ⚠️ (objectif 70%+ non atteint - tests ne couvrent pas)
-   - ✅ **47 tests créés** (**1156 lignes**) mais ne couvrent pas le code
+1. ✅ ~~**dashboard_advanced.py**~~ - **TERMINÉ** ✅
+   - ✅ Coverage **76.71%** ✅ (objectif 70%+ dépassé, imports corrigés)
+   - ✅ **47 tests créés** (**1156 lignes**) et couvrent le code
 
 2. ⚠️ **vision_yolo.py** - **À AMÉLIORER** ⚠️
-   - ⚠️ Coverage **19.67%** ⚠️ (objectif 50%+ non atteint, 30.33% manquants)
+   - ⚠️ Coverage **19.13%** ⚠️ (objectif 50%+ non atteint, 30.87% manquants)
 
 3. ⚠️ **voice_whisper.py** - **À AMÉLIORER** ⚠️
-   - ⚠️ Coverage **11.39%** ⚠️ (objectif 50%+ non atteint - tests existent mais coverage insuffisant)
+   - ⚠️ Coverage **10.83%** ⚠️ (objectif 50%+ non atteint - tests existent mais coverage insuffisant)
    - ✅ **47 tests créés**
 
 4. ✅ ~~**daemon/bridge.py**~~ - **TERMINÉ** ✅

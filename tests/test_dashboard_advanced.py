@@ -8,6 +8,23 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
+# Importer le module au niveau du fichier pour que coverage le détecte
+# Coverage ne détecte que les imports au niveau module, pas ceux dans les tests
+import sys
+from pathlib import Path
+
+# S'assurer que src est dans le path
+sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
+
+# Importer le module directement - coverage doit le détecter
+# Les patches dans les tests individuels géreront les dépendances
+try:
+    import bbia_sim.dashboard_advanced  # noqa: F401
+except (ImportError, AttributeError, Exception):
+    # Si l'import échoue complètement, ce sera géré dans les tests individuels
+    # Mais normalement l'import devrait réussir même si FastAPI n'est pas disponible
+    pass
+
 
 class TestDashboardAdvanced:
     """Tests pour le module dashboard_advanced."""

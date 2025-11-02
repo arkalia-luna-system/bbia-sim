@@ -1,20 +1,35 @@
 # ❓ FAQ - Questions Fréquentes BBIA
 
-**Date** : Oct / Nov. 2025
-**Version** : 1.3.2
-**📚 [Documentation complète](../README.md)** | **🐛 [Signaler un problème](https://github.com/arkalia-luna-system/bbia-sim/issues)**
+<div align="center">
+
+**💡 Réponses rapides aux questions les plus courantes**  
+*Trouvez rapidement la solution à votre problème*
+
+**Version** : 1.3.2 • **Date** : Oct / Nov. 2025
+
+[📚 Documentation complète](../README.md) • [🐛 Signaler un problème](https://github.com/arkalia-luna-system/bbia-sim/issues)
+
+</div>
 
 ---
 
-## 📋 Table des Matières
+## 📋 Navigation Rapide
 
-1. [Installation](#-installation)
-2. [MuJoCo](#-mujoco)
-3. [PortAudio/Audio](#-portaudioaudio)
-4. [Modèles IA](#-modèles-ia)
-5. [Performance](#-performance)
-6. [Erreurs Communes](#-erreurs-communes)
-7. [Compatibilité](#-compatibilité)
+<div align="center">
+
+| Catégorie | Questions | ⏱️ Temps |
+|:---------:|:---------:|:--------:|
+| [🔧 Installation](#-installation) | Dépendances, setup | 2 min |
+| [🎮 MuJoCo](#-mujoco) | Simulation 3D | 3 min |
+| [🔊 Audio](#-portaudioaudio) | PortAudio, TTS/STT | 5 min |
+| [🤖 Modèles IA](#-modèles-ia) | LLM, Vision, NLP | 5 min |
+| [⚡ Performance](#-performance) | Optimisations | 3 min |
+| [❌ Erreurs](#-erreurs-communes) | Solutions courantes | 5 min |
+| [🔌 Compatibilité](#-compatibilité) | OS, versions | 2 min |
+
+</div>
+
+---
 
 ## 🔄 Flux de Dépannage Rapide
 
@@ -65,14 +80,25 @@ flowchart TD
 
 ## 🔧 Installation
 
+> **⚡ Configuration rapide du projet**
+
 ### Comment installer BBIA ?
 
-```bash
-pip install -e .
-```
+<div align="center">
 
-Ou avec extras :
+| Mode | Commande | Description |
+|:----:|:--------:|-------------|
+| **Standard** | `pip install -e .` | Installation minimale |
+| **Développement** | `pip install -e .[dev]` | Avec outils dev |
+| **Complet** | `pip install -e .[dev,test,audio]` | Toutes dépendances |
+
+</div>
+
 ```bash
+# Installation standard (recommandée pour débuter)
+pip install -e .
+
+# Installation avec extras
 pip install -e ".[dev,test,audio]"
 ```
 

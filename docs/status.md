@@ -1,37 +1,64 @@
-# 📊 Status BBIA-SIM - Analyse Conformité Reachy Mini
+# 📊 Status BBIA-SIM - Tableau de Bord Complet
 
-> Navigation rapide: `docs/references/INDEX_THEMATIQUE.md` · README → liens principaux
+<div align="center">
 
-**Dernière mise à jour :** Oct / Nov. 2025 - Version 1.3.1 (Prêt pour arrivée robot)  
-**Référence SDK :** `pollen-robotics/reachy_mini` v1.0.0 @ `11ae6ad49eae22381946135fca29bdb4bfb1fdc1` (branch `develop`)
+**🎯 Vue d'ensemble de l'état du projet par axe**  
+*Fiabilité • Performance • Sécurité • CI/CD • Plus*
 
----
+**Version** : 1.3.1 • **Date** : Oct / Nov. 2025  
+**Prêt pour arrivée robot** 🤖
 
-## 🔍 Module : `bbia_huggingface.py`
+[📚 Navigation rapide](references/INDEX_THEMATIQUE.md) • [🏠 README](../README.md)
 
-> Compatibilité Python et CI
->
-> - Version requise: Python 3.11+
-> - CI: GitHub Actions (`.github/workflows/ci.yml`)
-> - Setup rapide (local macOS):
->   ```bash
->   pyenv install 3.11.9 && pyenv local 3.11.9
->   python -m pip install --upgrade pip
->   pip install -e .
->   ```
+</div>
 
 ---
 
-## ✅ État par axe (vérifié dans le code et la CI)
+## ⚡ Configuration Rapide
 
-### Fiabilité / Observabilité
-- État actuel:
-  - Endpoints FastAPI en place; watchdog/emergency-stop opérationnels.
-  - Pas d’exécution `/metrics` Prometheus; pas de endpoints `/healthz`/`/readyz` dédiés; logs non uniformisés en JSON.
-- Axes futurs:
-  - Exposer métriques (latence, CPU/RAM, FPS, watchdog) via `prometheus_client` et `/metrics`.
-  - Ajouter `GET /healthz` (liveness) et `GET /readyz` (readiness).
-  - Standardiser logs structurés JSON.
+> **🔧 Setup en 3 commandes**
+
+```bash
+# Python 3.11+ requis
+pyenv install 3.11.9 && pyenv local 3.11.9
+python -m pip install --upgrade pip
+pip install -e .
+```
+
+<div align="center">
+
+| Élément | Configuration | Statut |
+|:-------:|:-------------:|:------:|
+| **Python** | 3.11+ | ✅ Requis |
+| **CI/CD** | `.github/workflows/ci.yml` | ✅ GitHub Actions |
+| **SDK Référence** | `pollen-robotics/reachy_mini` v1.0.0 | ✅ Branch develop |
+
+</div>
+
+---
+
+## ✅ État par Axe
+
+> **📊 Analyse complète vérifiée dans le code et la CI**
+
+### 🔍 Fiabilité / Observabilité
+
+<div align="center">
+
+| Élément | État Actuel | Axes Futurs |
+|:-------:|:------------|:------------|
+| **Endpoints FastAPI** | ✅ En place | ➕ Améliorations |
+| **Watchdog/Emergency Stop** | ✅ Opérationnels | ➕ Monitoring |
+| **Métriques Prometheus** | ⚠️ Absentes | ➕ `/metrics` endpoint |
+| **Health Checks** | ⚠️ Basiques | ➕ `/healthz` & `/readyz` |
+| **Logs Structurés** | ⚠️ Non uniformisés | ➕ JSON standardisé |
+
+</div>
+
+**Actions futures** :
+- 📊 Exposer métriques (latence, CPU/RAM, FPS, watchdog) via `prometheus_client`
+- 🏥 Ajouter `GET /healthz` (liveness) et `GET /readyz` (readiness)
+- 📝 Standardiser logs structurés JSON
 
 ### Performance
 - État actuel:

@@ -56,7 +56,9 @@ flowchart TD
     style NEXT3 fill:#87CEEB
 ```
 
-### 1. Installation
+### 1. 📦 Installation
+
+> **⚡ Installation rapide en 2 minutes**
 
 ```bash
 # Cloner le projet
@@ -67,9 +69,16 @@ cd bbia-sim
 pip install -e .[dev]
 ```
 
-> 💡 **Note** : Le mode développement (`pip install -e .[dev]`) installe automatiquement toutes les dépendances nécessaires. Pour une installation minimale, utilisez `pip install -e .`.
+<div align="center">
 
-### 2. Accéder au dashboard web
+> 💡 **Astuce** : Le mode développement (`pip install -e .[dev]`) installe automatiquement toutes les dépendances nécessaires.  
+> Pour une installation minimale, utilisez `pip install -e .`.
+
+</div>
+
+### 2. 🌐 Accéder au dashboard web
+
+> **🚀 Interface web complète en un clic**
 
 ```bash
 # Lancer le dashboard (FastAPI + WebSocket)
@@ -79,11 +88,16 @@ python src/bbia_sim/dashboard_advanced.py
 # http://localhost:8000
 ```
 
-Le dashboard permet de :
-- chat interactif avec BBIA
-- contrôler le robot visuellement
-- voir les métriques en temps réel
-- ajuster les émotions et comportements
+<div align="center">
+
+| Fonctionnalité | Description |
+|:--------------:|-------------|
+| 💬 **Chat interactif** | Conversation avec BBIA en temps réel |
+| 🤖 **Contrôle robot** | Commande visuelle des mouvements |
+| 📊 **Métriques live** | Monitoring en temps réel |
+| 😊 **Émotions** | Ajustement des émotions et comportements |
+
+</div>
 
 ### 3. Premier programme Python
 
