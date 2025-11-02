@@ -29,10 +29,10 @@ _bbia_vision_lock = threading.Lock()
 
 def get_bbia_vision_singleton(robot_api: Any | None = None) -> "BBIAVision":
     """OPTIMISATION RAM: Retourne instance singleton BBIAVision partagée.
-    
+
     Args:
         robot_api: Interface RobotAPI (optionnel)
-        
+
     Returns:
         Instance singleton BBIAVision (créée si nécessaire)
     """
@@ -40,7 +40,9 @@ def get_bbia_vision_singleton(robot_api: Any | None = None) -> "BBIAVision":
     if _bbia_vision_singleton is None:
         with _bbia_vision_lock:
             if _bbia_vision_singleton is None:
-                _bbia_vision_singleton = BBIAVision(robot_api=robot_api, _use_singleton=False)
+                _bbia_vision_singleton = BBIAVision(
+                    robot_api=robot_api, _use_singleton=False
+                )
                 logger.debug("✅ Singleton BBIAVision créé (optimisation RAM)")
     return _bbia_vision_singleton
 
@@ -136,8 +138,12 @@ class BBIAVision:
         self.detection_range = 3.0  # mètres
         # OPTIMISATION RAM: Limiter historique détections avec deque (max 50 objets/visages)
         self._max_detections_history = 50
-        self.objects_detected: deque[dict[str, Any]] = deque(maxlen=self._max_detections_history)
-        self.faces_detected: deque[dict[str, Any]] = deque(maxlen=self._max_detections_history)
+        self.objects_detected: deque[dict[str, Any]] = deque(
+            maxlen=self._max_detections_history
+        )
+        self.faces_detected: deque[dict[str, Any]] = deque(
+            maxlen=self._max_detections_history
+        )
         self.tracking_active = False
         self.current_focus: dict[str, Any] | None = None
 
@@ -229,7 +235,11 @@ class BBIAVision:
         # OPTIMISATION RAM: Lazy loading YOLO/MediaPipe - ne charger que si caméra réelle disponible
         self.yolo_detector = None
         # Charger YOLO uniquement si caméra SDK réelle disponible (pas shim simulation)
-        if self._camera_sdk_available and YOLO_AVAILABLE and create_yolo_detector is not None:
+        if (
+            self._camera_sdk_available
+            and YOLO_AVAILABLE
+            and create_yolo_detector is not None
+        ):
             try:
                 # Seuil confiance 0.25 pour meilleure détection (au lieu de 0.5 par défaut)
                 confidence_threshold = float(
@@ -241,11 +251,15 @@ class BBIAVision:
                 )
                 if self.yolo_detector:
                     self.yolo_detector.load_model()
-                    logger.info("✅ Détecteur YOLO initialisé (lazy loading - caméra réelle)")
+                    logger.info(
+                        "✅ Détecteur YOLO initialisé (lazy loading - caméra réelle)"
+                    )
             except Exception as e:
                 logger.warning(f"⚠️ YOLO non disponible: {e}")
         else:
-            logger.debug("YOLO non chargé (lazy loading - caméra simulation ou non disponible)")
+            logger.debug(
+                "YOLO non chargé (lazy loading - caméra simulation ou non disponible)"
+            )
 
         self.face_detector = None
         if MEDIAPIPE_AVAILABLE and mp:
@@ -648,8 +662,12 @@ class BBIAVision:
                 logger.debug(f"Erreur détection pose: {e}")
 
         # OPTIMISATION RAM: Limiter taille historique avec deque
-        self.objects_detected = deque(objects[:self._max_detections_history], maxlen=self._max_detections_history)
-        self.faces_detected = deque(faces[:self._max_detections_history], maxlen=self._max_detections_history)
+        self.objects_detected = deque(
+            objects[: self._max_detections_history], maxlen=self._max_detections_history
+        )
+        self.faces_detected = deque(
+            faces[: self._max_detections_history], maxlen=self._max_detections_history
+        )
 
         return {
             "objects": objects,
@@ -841,8 +859,14 @@ class BBIAVision:
                     f"{len(poses)} postures"
                 )
                 # OPTIMISATION RAM: Limiter taille historique avec deque
-                self.objects_detected = deque(objects[:self._max_detections_history], maxlen=self._max_detections_history)
-                self.faces_detected = deque(faces[:self._max_detections_history], maxlen=self._max_detections_history)
+                self.objects_detected = deque(
+                    objects[: self._max_detections_history],
+                    maxlen=self._max_detections_history,
+                )
+                self.faces_detected = deque(
+                    faces[: self._max_detections_history],
+                    maxlen=self._max_detections_history,
+                )
                 return {
                     "objects": objects,
                     "faces": faces,
@@ -901,14 +925,18 @@ class BBIAVision:
                     "position": (0.7, 0.2),
                 },
             ]
-        
+
         # Réutiliser cache au lieu de recréer
         objects = list(self._simulated_objects_cache)
         faces = list(self._simulated_faces_cache)
 
         # OPTIMISATION RAM: Convertir en list pour compatibilité, mais limiter taille
-        self.objects_detected = deque(objects[:self._max_detections_history], maxlen=self._max_detections_history)
-        self.faces_detected = deque(faces[:self._max_detections_history], maxlen=self._max_detections_history)
+        self.objects_detected = deque(
+            objects[: self._max_detections_history], maxlen=self._max_detections_history
+        )
+        self.faces_detected = deque(
+            faces[: self._max_detections_history], maxlen=self._max_detections_history
+        )
 
         return {
             "objects": objects,

@@ -139,7 +139,9 @@ class BBIAEmotionRecognition:
         global _emotion_pipelines_cache
         with _emotion_cache_lock:
             if self.device in _emotion_pipelines_cache:
-                logger.debug(f"♻️ Réutilisation modèles émotion depuis cache (device: {self.device})")
+                logger.debug(
+                    f"♻️ Réutilisation modèles émotion depuis cache (device: {self.device})"
+                )
                 self.emotion_models = _emotion_pipelines_cache[self.device].copy()
                 logger.info("📥 Modèles d'émotion chargés (cache)")
                 return

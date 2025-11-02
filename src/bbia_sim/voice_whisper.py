@@ -49,7 +49,9 @@ _vad_cache_lock = threading.Lock()
 _whisper_models_cache: dict[str, Any] = {}  # model_size -> model
 _whisper_model_last_used: dict[str, float] = {}
 _whisper_model_cache_lock = threading.Lock()
-_MAX_WHISPER_CACHE_SIZE = 2  # OPTIMISATION RAM: Limiter à 2 modèles Whisper max (tiny, base)
+_MAX_WHISPER_CACHE_SIZE = (
+    2  # OPTIMISATION RAM: Limiter à 2 modèles Whisper max (tiny, base)
+)
 
 
 class WhisperSTT:
@@ -101,15 +103,19 @@ class WhisperSTT:
                 _whisper_model_last_used[self.model_size] = time.time()
                 self.is_loaded = True
                 return True
-            
+
             # OPTIMISATION RAM: Vérifier limite cache et décharger LRU si nécessaire
             if len(_whisper_models_cache) >= _MAX_WHISPER_CACHE_SIZE:
                 # Trouver modèle le moins récemment utilisé
                 if _whisper_model_last_used:
-                    oldest_key = min(_whisper_model_last_used.items(), key=lambda x: x[1])[0]
+                    oldest_key = min(
+                        _whisper_model_last_used.items(), key=lambda x: x[1]
+                    )[0]
                     del _whisper_models_cache[oldest_key]
                     del _whisper_model_last_used[oldest_key]
-                    logger.debug(f"♻️ Modèle Whisper LRU déchargé: {oldest_key} (optimisation RAM)")
+                    logger.debug(
+                        f"♻️ Modèle Whisper LRU déchargé: {oldest_key} (optimisation RAM)"
+                    )
 
         try:
             logger.info(f"📥 Chargement modèle Whisper {self.model_size}...")
@@ -521,6 +527,7 @@ class WhisperSTT:
 
             # OPTIMISATION RAM: Limiter taille buffer avec deque
             from collections import deque
+
             buffer_max_chunks = 10  # Max 10 chunks (limite sécurité)
             audio_buffer: deque[np.ndarray] = deque(maxlen=buffer_max_chunks)
 
@@ -574,9 +581,9 @@ class WhisperSTT:
 
                     # OPTIMISATION RAM: Pool fichiers temporaires (réutiliser au lieu de créer/supprimer)
                     if not hasattr(self, "_temp_file_pool"):
-                        self._temp_file_pool = []
+                        self._temp_file_pool: list[Path] = []
                         self._max_temp_files = 3  # Pool de 3 fichiers max
-                    
+
                     # Réutiliser fichier depuis pool si disponible
                     temp_file = None
                     if self._temp_file_pool:

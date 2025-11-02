@@ -52,8 +52,12 @@ class BBIAMemory:
         try:
             # OPTIMISATION RAM: Limiter historique à 1000 messages (supprimer anciens)
             max_history = 1000
-            limited_history = conversation_history[-max_history:] if len(conversation_history) > max_history else conversation_history
-            
+            limited_history = (
+                conversation_history[-max_history:]
+                if len(conversation_history) > max_history
+                else conversation_history
+            )
+
             # Sauvegarder avec timestamp
             data = {
                 "last_updated": datetime.now().isoformat(),

@@ -48,6 +48,7 @@ class BBIAAdvancedWebSocketManager:
         self.robot_backend = "mujoco"
         # OPTIMISATION RAM: Utiliser deque au lieu de liste pour limiter historique
         from collections import deque
+
         self.max_history = 1000  # Limite historique métriques
         self.metrics_history: deque[dict[str, Any]] = deque(maxlen=self.max_history)
 
@@ -56,6 +57,7 @@ class BBIAAdvancedWebSocketManager:
         # OPTIMISATION RAM: Utiliser singleton BBIAVision si disponible
         try:
             from ..bbia_vision import get_bbia_vision_singleton
+
             self.vision = get_bbia_vision_singleton()
         except (ImportError, AttributeError):
             # Fallback si singleton non disponible

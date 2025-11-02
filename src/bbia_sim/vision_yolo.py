@@ -6,7 +6,6 @@ Détection d'objets légère avec YOLOv8n (optionnel)
 
 import logging
 import threading
-import time
 from typing import Any
 
 import numpy as np
@@ -90,7 +89,7 @@ class YOLODetector:
 
         global _yolo_model_cache, _yolo_model_last_used
         import time as time_module
-        
+
         with _yolo_cache_lock:
             if cache_key in _yolo_model_cache:
                 logger.debug(f"♻️ Réutilisation modèle YOLO depuis cache ({cache_key})")
@@ -99,15 +98,19 @@ class YOLODetector:
                 _yolo_model_last_used[cache_key] = time_module.time()
                 self.is_loaded = True
                 return True
-            
+
             # OPTIMISATION RAM: Vérifier limite cache et décharger LRU si nécessaire
             if len(_yolo_model_cache) >= _MAX_YOLO_CACHE_SIZE:
                 # Trouver modèle le moins récemment utilisé
                 if _yolo_model_last_used:
-                    oldest_key = min(_yolo_model_last_used.items(), key=lambda x: x[1])[0]
+                    oldest_key = min(_yolo_model_last_used.items(), key=lambda x: x[1])[
+                        0
+                    ]
                     del _yolo_model_cache[oldest_key]
                     del _yolo_model_last_used[oldest_key]
-                    logger.debug(f"♻️ Modèle YOLO LRU déchargé: {oldest_key} (optimisation RAM)")
+                    logger.debug(
+                        f"♻️ Modèle YOLO LRU déchargé: {oldest_key} (optimisation RAM)"
+                    )
 
         try:
             logger.info(f"📥 Chargement modèle YOLOv8{self.model_size}...")

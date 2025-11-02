@@ -976,6 +976,7 @@ class BBIABehaviorManager:
         # OPTIMISATION RAM: Utiliser singleton BBIAVision si disponible
         try:
             from .bbia_vision import get_bbia_vision_singleton
+
             self.vision = get_bbia_vision_singleton(robot_api)
         except (ImportError, AttributeError):
             # Fallback si singleton non disponible

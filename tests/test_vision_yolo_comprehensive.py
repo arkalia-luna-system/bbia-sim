@@ -328,7 +328,9 @@ class TestYOLODetector:
             mock_result1.boxes = mock_boxes_iterable
 
             mock_result2 = MagicMock()
-            mock_result2.boxes = None  # Deuxième résultat sans boxes (couverture ligne 143)
+            mock_result2.boxes = (
+                None  # Deuxième résultat sans boxes (couverture ligne 143)
+            )
 
             mock_model = MagicMock()
             mock_model.return_value = [mock_result1, mock_result2]
