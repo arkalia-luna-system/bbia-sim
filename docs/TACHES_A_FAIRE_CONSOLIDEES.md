@@ -218,12 +218,12 @@ robot.io.set_leds()            # Contrôle LEDs (si disponibles)
 1. ✅ Vérifier liens MD cassés avec script existant (1.5h)
 2. ✅ Corriger liens détectés (1h)
 
-### Phase 2 : Coverage Tests (~1-2h restantes) - PRIORITÉ 1
-1. ✅ ~~Créer `tests/test_dashboard_advanced.py`~~ - **TERMINÉ** (**47 tests**, **1156 lignes**, 76.71% coverage ✅)
-2. ✅ ~~Améliorer coverage de `tests/test_dashboard_advanced.py`~~ - **TERMINÉ** (76.71%, objectif 70%+ dépassé ✅)
-3. ✅ ~~Étendre `tests/test_vision_yolo_comprehensive.py`~~ - **TERMINÉ** (**89.62%** coverage ✅)
-4. ✅ ~~PRIORITÉ 1 : Étendre tests `voice_whisper.py`~~ - **TERMINÉ** (**59.83%** coverage ✅, objectif 50%+ atteint)
-5. ✅ ~~Étendre `tests/test_daemon_bridge.py`~~ - **TERMINÉ** (**31.23%** coverage ✅)
+### Phase 2 : Coverage Tests (3 modules à améliorer) - PRIORITÉ 1
+1. ✅ ~~Créer `tests/test_dashboard_advanced.py`~~ - **TERMINÉ** (**47 tests**, **1156 lignes** ✅)
+2. ⚠️ Améliorer coverage de `tests/test_dashboard_advanced.py` - **À CORRIGER** (0.00% coverage, tests ne couvrent pas)
+3. ⚠️ Étendre `tests/test_vision_yolo_comprehensive.py` - **À AMÉLIORER** (**17.49%** coverage ⚠️, objectif 50%+ non atteint)
+4. ✅ ~~PRIORITÉ 1 : Étendre tests `voice_whisper.py`~~ - **TERMINÉ** (**75.83%** coverage ✅, objectif 50%+ dépassé, **47 tests créés**)
+5. ⚠️ Étendre `tests/test_daemon_bridge.py` - **À AMÉLIORER** (**0.00%** coverage ⚠️, tests ne couvrent pas)
 
 ### Phase 3 : Corrections Démos
 1. ✅ ~~Corriger `demo_behavior_ok.py`~~ - **DÉJÀ FAIT** (amplitudes conformes)
@@ -252,10 +252,10 @@ robot.io.set_leds()            # Contrôle LEDs (si disponibles)
 - **Joints Stewart** : Ne jamais contrôler individuellement (IK requise)
 
 ### Coverage Tests - Objectifs & État Actuel
-- ✅ **dashboard_advanced.py** : **76.71%** (TERMINÉ, objectif 70%+ **DÉPASSÉ** ✅)
-- ✅ **vision_yolo.py** : **89.62%** (TERMINÉ, objectif 50%+ largement dépassé ✅)
-- ✅ **voice_whisper.py** : **59.83%** ✅ (objectif 50%+ atteint)
-- ✅ **daemon/bridge.py** : **31.23%** (TERMINÉ, objectif 30%+ atteint ✅)
+- ⚠️ **dashboard_advanced.py** : **0.00%** ⚠️ (À CORRIGER, objectif 70%+ non atteint - tests ne couvrent pas)
+- ⚠️ **vision_yolo.py** : **17.49%** ⚠️ (À AMÉLIORER, objectif 50%+ non atteint - 32.51% manquants)
+- ✅ **voice_whisper.py** : **75.83%** ✅ (TERMINÉ, objectif 50%+ dépassé, **47 tests créés**)
+- ⚠️ **daemon/bridge.py** : **0.00%** ⚠️ (À AMÉLIORER, objectif 30%+ non atteint - tests ne couvrent pas)
 
 ---
 
@@ -269,7 +269,10 @@ robot.io.set_leds()            # Contrôle LEDs (si disponibles)
 - Documentation : **112 liens MD corrigés** (-45%), **2 MD archivés**
 
 **⚠️ Reste à faire** :
-- Coverage `voice_whisper.py` : **59.83%** ✅ (objectif 50%+ atteint)
+- Coverage `voice_whisper.py` : **75.83%** ✅ (objectif 50%+ dépassé)
+- Coverage `dashboard_advanced.py` : **0.00%** ⚠️ (à corriger)
+- Coverage `vision_yolo.py` : **17.49%** ⚠️ (à améliorer)
+- Coverage `daemon/bridge.py` : **0.00%** ⚠️ (à améliorer)
 - Liens MD archives : **~139 liens** (non prioritaire)
 
 **📈 Progrès session** :

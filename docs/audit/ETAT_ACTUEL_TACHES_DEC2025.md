@@ -123,7 +123,7 @@
 
 | Priorité | Tâche | Estimation | Statut |
 |----------|-------|------------|--------|
-| ✅ | Coverage tests (tous modules) | ✅ | ✅ **TERMINÉ** (voice_whisper : **59.83%** ✅) |
+| ⚠️ | Coverage tests (tous modules) | ⚠️ | ⚠️ **1/4 TERMINÉ** (voice_whisper : **75.83%** ✅, 3 modules à améliorer) |
 | ⚠️ | dashboard_advanced.py coverage | - | ⚠️ **À CORRIGER** (0.00% - tests ne couvrent pas) |
 | ✅ | TODOs bbia_tools.py (2 TODOs) | - | ✅ **TERMINÉ** |
 | 🟡 Moyenne | Documentation supplémentaire | 1-2h | ⏳ Optionnel |
@@ -133,7 +133,7 @@
 | ✅ | Consolidation audits | - | ✅ **TERMINÉ** |
 | ✅ | Optimisations performance | - | ✅ **TERMINÉ** |
 
-**Total travail restant (sans hardware)** : ✅ **TERMINÉ** (voice_whisper : **59.83%** ✅, objectif 50%+ atteint)
+**Total travail restant (sans hardware)** : ⚠️ **3 modules à améliorer** (dashboard: 0%, vision_yolo: 17.49%, bridge: 0%)
 
 ---
 
@@ -141,20 +141,20 @@
 
 ### Phase 1 : Coverage Tests (Priorité 1)
 
-1. ✅ **dashboard_advanced.py** - **TERMINÉ** ✅
+1. ⚠️ **dashboard_advanced.py** - **À CORRIGER** ⚠️
    - ⚠️ Coverage **0.00%** ⚠️ (objectif 70%+ non atteint - tests ne couvrent pas)
-   - ✅ **47 tests créés** (**1156 lignes**)
+   - ✅ **47 tests créés** (**1156 lignes**) mais ne couvrent pas le code
 
-2. ✅ ~~**vision_yolo.py**~~ - **TERMINÉ** ✅
+2. ⚠️ **vision_yolo.py** - **À AMÉLIORER** ⚠️
    - ⚠️ Coverage **17.49%** ⚠️ (objectif 50%+ non atteint, 32.51% manquants)
 
-3. ⚠️ **voice_whisper.py** (~1-2h restantes)
-   - **38.33%** coverage actuel, objectif 50%+
-   - Étendre tests `test_vad_streaming.py`, `test_ia_modules.py`
-   - Cibler `transcribe_streaming` (lignes 476-669) et VAD (lignes 289-315, 322-328)
+3. ✅ ~~**voice_whisper.py**~~ - **TERMINÉ** ✅
+   - ✅ **75.83%** coverage (objectif 50%+ dépassé)
+   - ✅ **47 tests créés**
 
-4. ✅ ~~**daemon/bridge.py**~~ - **TERMINÉ** ✅
+4. ⚠️ **daemon/bridge.py** - **À AMÉLIORER** ⚠️
    - ⚠️ Coverage **0.00%** ⚠️ (objectif 30%+ non atteint - tests ne couvrent pas)
+   - ✅ **34 tests** existent mais ne couvrent pas le code
 
 ### Phase 2 : TODOs Code (Priorité 2)
 
