@@ -11,6 +11,7 @@ import time
 import pytest
 
 
+@pytest.mark.heavy  # OPTIMISATION RAM: Test lourd (subprocess, lance scripts réels)
 class TestVerticalSlices:
     """Tests pour les 4 vertical slices BBIA."""
 
