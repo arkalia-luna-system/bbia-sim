@@ -186,6 +186,17 @@ graph TB
         VISION[Module Vision<br/>Reconnaissance objets]
         AUDIO[Module Audio<br/>Enregistrement]
         VOICE[Module Voix<br/>TTS/STT]
+    
+    style RASPBERRY fill:#FF6B6B
+    style CAMERA fill:#4ECDC4
+    style MICROPHONES fill:#45B7D1
+    style SPEAKER fill:#FFA07A
+    style MOTORS fill:#98D8C8
+    style ANTENNAS fill:#F7DC6F
+    style EMOTIONS fill:#BB8FCE
+    style VISION fill:#85C1E2
+    style AUDIO fill:#F8B739
+    style VOICE fill:#82E0AA
         BEHAVIOR[Module Comportements<br/>Actions complexes]
     end
 
@@ -374,6 +385,11 @@ sequenceDiagram
     DEV->>ROBOT: Déployer sur robot
     ROBOT->>DEV: Retour capteurs
     DEV->>API: Ajuster paramètres
+    
+    Note right of DEV: Style: développement actif
+    Note right of SIM: Style: simulation
+    Note right of ROBOT: Style: robot réel
+    Note right of API: Style: API unifiée
 
     Note over DEV,API: Phase 3: Production
     DEV->>API: Finaliser comportement

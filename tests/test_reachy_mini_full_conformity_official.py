@@ -787,7 +787,11 @@ class TestReachyMiniFullConformity:
                 camera = getattr(media_module, "camera", None)
                 if camera:
                     # Vérifier méthodes caméra
-                    if hasattr(camera, "get_image") or hasattr(camera, "capture") or hasattr(camera, "read"):
+                    if (
+                        hasattr(camera, "get_image")
+                        or hasattr(camera, "capture")
+                        or hasattr(camera, "read")
+                    ):
                         print("✅ robot.media.camera a méthode de capture")
             if hasattr(media_module, "microphone"):
                 print("✅ robot.media.microphone disponible")
@@ -1260,7 +1264,11 @@ class TestReachyMiniFullConformity:
                 if hasattr(media, "speaker"):
                     speaker = media.speaker
                     print(f"✅ robot.media.speaker: {type(speaker)}")
-                    if hasattr(speaker, "play") or hasattr(speaker, "play_file") or hasattr(media, "play_audio"):
+                    if (
+                        hasattr(speaker, "play")
+                        or hasattr(speaker, "play_file")
+                        or hasattr(media, "play_audio")
+                    ):
                         print("   ✅ Lecture disponible")
         else:
             print("ℹ️  Robot non connecté (mode simulation)")
@@ -1324,7 +1332,9 @@ class TestReachyMiniFullConformity:
                 print("✅ git-lfs installé")
             else:
                 print("⚠️  git-lfs non trouvé")
-                print("   💡 Installez avec: brew install git-lfs (macOS) ou apt install git-lfs (Linux)")
+                print(
+                    "   💡 Installez avec: brew install git-lfs (macOS) ou apt install git-lfs (Linux)"
+                )
         except Exception as e:
             print(f"⚠️  Impossible de vérifier git-lfs: {e}")
 

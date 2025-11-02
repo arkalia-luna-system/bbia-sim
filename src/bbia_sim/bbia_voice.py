@@ -109,73 +109,96 @@ def get_bbia_voice(engine: Any) -> str:
         "daniel",
     ]
 
-    # 1. PRIORITÉ ABSOLUE: Aurelie Enhanced (fr-FR) - Meilleure qualité
-    for v in voices:
-        v_id_lower = str(v.id).lower()
-        v_name_lower = normalize(v.name)
-        if (
-            ("aurelie" in v_name_lower or "aurélie" in v_name_lower)
-            and "enhanced" in v_id_lower
-            and "fr" in v_id_lower
-        ):
-            return str(v.id)
-
-    # 2. PRIORITÉ: Amelie Enhanced (si disponible)
-    for v in voices:
-        v_id_lower = str(v.id).lower()
-        v_name_lower = normalize(v.name)
-        if "amelie" in v_name_lower and "enhanced" in v_id_lower and "fr" in v_id_lower:
-            return str(v.id)
-
-    # 3. Aurelie standard (fr_FR priorité)
-    for v in voices:
-        v_id_lower = str(v.id).lower()
-        v_name_lower = normalize(v.name)
-        if ("aurelie" in v_name_lower or "aurélie" in v_name_lower) and (
-            "fr_FR" in v.id or "fr-FR" in v.id
-        ):
-            return str(v.id)
-
-    # 4. Aurelie standard (fr_CA)
-    for v in voices:
-        v_id_lower = str(v.id).lower()
-        v_name_lower = normalize(v.name)
-        if ("aurelie" in v_name_lower or "aurélie" in v_name_lower) and (
-            "fr_CA" in v.id or "fr-CA" in v.id
-        ):
-            return str(v.id)
-
-    # 5. Amelie (fr_FR priorité)
-    for v in voices:
-        if "amelie" in normalize(v.name) and ("fr_FR" in v.id or "fr-FR" in v.id):
-            return str(v.id)
-
-    # 6. Amelie (fr_CA)
-    for v in voices:
-        if "amelie" in normalize(v.name) and ("fr_CA" in v.id or "fr-CA" in v.id):
-            return str(v.id)
-
-    # 7. Toute Aurelie
-    for v in voices:
-        v_name_lower = normalize(v.name)
-        if "aurelie" in v_name_lower or "aurélie" in v_name_lower:
-            return str(v.id)
-
-    # 8. Toute Amelie
-    for v in voices:
-        if "amelie" in normalize(v.name):
-            return str(v.id)
-
-    # 9. Autres voix féminines françaises (Audrey, Virginie, Julie)
+    # OPTIMISATION PERFORMANCE: Une seule passe au lieu de 10 boucles for
+    # Préparer structures de recherche une seule fois
     femmes_fr = ["audrey", "virginie", "julie", "flo", "sandy", "shelley"]
-    for nom_femme in femmes_fr:
-        for v in voices:
-            v_id_lower = str(v.id).lower()
-            v_name_lower = normalize(v.name)
-            if nom_femme in v_name_lower and "fr" in v_id_lower:
-                # Vérifier que ce n'est pas une voix d'homme
-                if not any(indicator in v_name_lower for indicator in male_indicators):
-                    return str(v.id)
+
+    # Catégories de priorité (du plus spécifique au plus général)
+    candidates = {
+        "aurelie_enhanced_fr": None,
+        "amelie_enhanced_fr": None,
+        "aurelie_fr_FR": None,
+        "aurelie_fr_CA": None,
+        "amelie_fr_FR": None,
+        "amelie_fr_CA": None,
+        "aurelie_any": None,
+        "amelie_any": None,
+        "femme_fr": None,
+    }
+
+    # Une seule passe sur toutes les voix
+    for v in voices:
+        v_id_lower = str(v.id).lower()
+        v_name_lower = normalize(v.name)
+        is_aurelie = "aurelie" in v_name_lower or "aurélie" in v_name_lower
+        is_amelie = "amelie" in v_name_lower
+        has_enhanced = "enhanced" in v_id_lower
+        is_fr = "fr" in v_id_lower
+        is_fr_FR = "fr_FR" in v.id or "fr-FR" in v.id
+        is_fr_CA = "fr_CA" in v.id or "fr-CA" in v.id
+        is_male = any(indicator in v_name_lower for indicator in male_indicators)
+
+        # Priorité 1: Aurelie Enhanced fr
+        if (
+            is_aurelie
+            and has_enhanced
+            and is_fr
+            and candidates["aurelie_enhanced_fr"] is None
+        ):
+            candidates["aurelie_enhanced_fr"] = str(v.id)
+            continue
+
+        # Priorité 2: Amelie Enhanced fr
+        if (
+            is_amelie
+            and has_enhanced
+            and is_fr
+            and candidates["amelie_enhanced_fr"] is None
+        ):
+            candidates["amelie_enhanced_fr"] = str(v.id)
+            continue
+
+        # Priorité 3: Aurelie fr_FR
+        if is_aurelie and is_fr_FR and candidates["aurelie_fr_FR"] is None:
+            candidates["aurelie_fr_FR"] = str(v.id)
+            continue
+
+        # Priorité 4: Aurelie fr_CA
+        if is_aurelie and is_fr_CA and candidates["aurelie_fr_CA"] is None:
+            candidates["aurelie_fr_CA"] = str(v.id)
+            continue
+
+        # Priorité 5: Amelie fr_FR
+        if is_amelie and is_fr_FR and candidates["amelie_fr_FR"] is None:
+            candidates["amelie_fr_FR"] = str(v.id)
+            continue
+
+        # Priorité 6: Amelie fr_CA
+        if is_amelie and is_fr_CA and candidates["amelie_fr_CA"] is None:
+            candidates["amelie_fr_CA"] = str(v.id)
+            continue
+
+        # Priorité 7: Toute Aurelie
+        if is_aurelie and candidates["aurelie_any"] is None:
+            candidates["aurelie_any"] = str(v.id)
+            continue
+
+        # Priorité 8: Toute Amelie
+        if is_amelie and candidates["amelie_any"] is None:
+            candidates["amelie_any"] = str(v.id)
+            continue
+
+        # Priorité 9: Autres voix féminines françaises
+        if candidates["femme_fr"] is None and not is_male and is_fr:
+            for nom_femme in femmes_fr:
+                if nom_femme in v_name_lower:
+                    candidates["femme_fr"] = str(v.id)
+                    break
+
+    # Retourner le premier candidat trouvé selon priorité
+    for key in candidates:
+        if candidates[key] is not None:
+            return candidates[key]
 
     # 10. Sinon, message d'aide
     raise RuntimeError(

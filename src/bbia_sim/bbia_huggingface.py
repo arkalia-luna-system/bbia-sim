@@ -21,6 +21,26 @@ os.environ["TRANSFORMERS_VERBOSITY"] = "error"
 
 logger = logging.getLogger(__name__)
 
+# OPTIMISATION PERFORMANCE: Compiler regex une seule fois (évite recompilation à chaque appel)
+_regex_cache: dict[str, re.Pattern[str]] = {}
+
+
+def _get_compiled_regex(pattern: str, flags: int = 0) -> re.Pattern[str]:
+    """Retourne regex compilée depuis cache (évite recompilation répétée).
+
+    Args:
+        pattern: Pattern regex
+        flags: Flags re (ex: re.IGNORECASE)
+
+    Returns:
+        Regex compilée (cachée ou nouvellement compilée)
+    """
+    cache_key = f"{pattern}:{flags}"
+    if cache_key not in _regex_cache:
+        _regex_cache[cache_key] = re.compile(pattern, flags)
+    return _regex_cache[cache_key]
+
+
 # Constantes partagées pour éviter les doublons littéraux
 SAFE_FALLBACK: str = "Je peux préciser si besoin, qu'aimeriez-vous savoir exactement ?"
 SUFFIX_POOL: list[str] = [
@@ -366,19 +386,25 @@ class BBIAHuggingFace:
             if model_type == "chat":
                 # Modèles chat stockés dans self.chat_model et self.chat_tokenizer
                 if self.chat_model is not None and self.chat_tokenizer is not None:
-                    logger.debug(f"♻️ Modèle chat déjà chargé ({resolved_name}), réutilisation")
+                    logger.debug(
+                        f"♻️ Modèle chat déjà chargé ({resolved_name}), réutilisation"
+                    )
                     return True
             elif model_type == "nlp":
                 # Modèles NLP stockés avec suffixe "_pipeline"
                 model_key = f"{model_name}_pipeline"
                 if model_key in self.models:
-                    logger.debug(f"♻️ Modèle NLP déjà chargé ({resolved_name}), réutilisation")
+                    logger.debug(
+                        f"♻️ Modèle NLP déjà chargé ({resolved_name}), réutilisation"
+                    )
                     return True
             else:
                 # Modèles vision/audio/multimodal stockés avec suffixe "_model"
                 model_key = f"{model_name}_model"
                 if model_key in self.models:
-                    logger.debug(f"♻️ Modèle {model_type} déjà chargé ({resolved_name}), réutilisation")
+                    logger.debug(
+                        f"♻️ Modèle {model_type} déjà chargé ({resolved_name}), réutilisation"
+                    )
                     return True
 
             logger.info(f"📥 Chargement modèle {resolved_name} ({model_type})")
@@ -816,7 +842,9 @@ class BBIAHuggingFace:
 
             keys_to_remove = [
                 # OPTIMISATION: Éviter création liste intermédiaire inutile
-                key for key in self.processors if model_name in key
+                key
+                for key in self.processors
+                if model_name in key
             ]
             for key in keys_to_remove:
                 del self.processors[key]
@@ -1545,16 +1573,20 @@ class BBIAHuggingFace:
 
         message_lower = message.lower()
 
-        # Pattern 1: "X degrés" ou "X degrees"
+        # Pattern 1: "X degrés" ou "X degrees" (OPTIMISATION: regex compilée)
         pattern_deg = r"(\d+(?:\.\d+)?)\s*(?:degrés?|degrees?)"
-        match_deg = re.search(pattern_deg, message_lower)
+        match_deg = _get_compiled_regex(pattern_deg, flags=re.IGNORECASE).search(
+            message_lower
+        )
         if match_deg:
             angle_deg = float(match_deg.group(1))
             return angle_deg
 
-        # Pattern 2: "X radians" ou "pi/X radians"
+        # Pattern 2: "X radians" ou "pi/X radians" (OPTIMISATION: regex compilée)
         pattern_rad = r"(?:(\d+(?:\.\d+)?)|pi\s*/\s*(\d+(?:\.\d+)?))\s*(?:radians?)"
-        match_rad = re.search(pattern_rad, message_lower)
+        match_rad = _get_compiled_regex(pattern_rad, flags=re.IGNORECASE).search(
+            message_lower
+        )
         if match_rad:
             if match_rad.group(1):  # Nombre direct
                 angle_rad = float(match_rad.group(1))
@@ -1585,7 +1617,6 @@ class BBIAHuggingFace:
         Returns:
             Intensité entre 0.0 et 1.0, ou None si non trouvé
         """
-        import re
 
         message_lower = message.lower()
 
@@ -1615,7 +1646,7 @@ class BBIAHuggingFace:
 
         # Pattern: "à X%" (intensité directe)
         pattern = r"(\d+(?:\.\d+)?)%"
-        match = re.search(pattern, message_lower)
+        match = _get_compiled_regex(pattern).search(message_lower)
         if match:
             pct = float(match.group(1))
             return min(pct / 100.0, 1.0)
@@ -1642,12 +1673,12 @@ class BBIAHuggingFace:
             return self._safe_fallback()
 
         # 1) Retirer étiquettes et espaces superflus
-        cleaned = re.sub(
-            r"^(Assistant:|System:|User:)\s*", "", text.strip(), flags=re.IGNORECASE
-        )
+        cleaned = _get_compiled_regex(
+            r"^(Assistant:|System:|User:)\s*", flags=re.IGNORECASE
+        ).sub("", text.strip())
         cleaned = cleaned.replace("\u200b", "").strip()
 
-        # 2) Supprimer disclaimers/filler fréquents
+        # 2) Supprimer disclaimers/filler fréquents (OPTIMISATION: regex compilées)
         filler_patterns = [
             r"en tant qu'?ia",
             r"je ne suis pas autoris[ée]",
@@ -1656,15 +1687,17 @@ class BBIAHuggingFace:
             r"désol[ée]",
         ]
         for pat in filler_patterns:
-            cleaned = re.sub(pat, "", cleaned, flags=re.IGNORECASE)
+            cleaned = _get_compiled_regex(pat, flags=re.IGNORECASE).sub("", cleaned)
 
         # 3) Éviter l'écho de la question (suppression de phrases quasi-identiques)
+        # OPTIMISATION: Regex compilées pour split et sub
         um = user_message.strip().lower()
-        sentences = re.split(r"(?<=[.!?…])\s+", cleaned)
+        sentences = _get_compiled_regex(r"(?<=[.!?…])\s+").split(cleaned)
         filtered: list[str] = []
         seen = set()
+        whitespace_regex = _get_compiled_regex(r"\s+")
         for s in sentences:
-            s_norm = re.sub(r"\s+", " ", s).strip()
+            s_norm = whitespace_regex.sub(" ", s).strip()
             if not s_norm:
                 continue
             # supprimer écho direct
@@ -1690,13 +1723,13 @@ class BBIAHuggingFace:
         if len(result) > max_chars:
             # recouper à la dernière ponctuation avant budget
             cut = result[:max_chars]
-            m = re.search(r"[.!?…](?=[^.!?…]*$)", cut)
+            m = _get_compiled_regex(r"[.!?…](?=[^.!?…]*$)").search(cut)
             if m:
                 cut = cut[: m.end()]
             result = cut.strip()
 
-        # 6) Normalisation espaces finaux
-        result = re.sub(r"\s+", " ", result).strip()
+        # 6) Normalisation espaces finaux (OPTIMISATION: réutiliser regex compilée)
+        result = whitespace_regex.sub(" ", result).strip()
 
         # 7) Gardes-fous contre sorties non pertinentes ou trop courtes
         sentinels = {"", ":", ": {", "if"}
@@ -2301,9 +2334,7 @@ class BBIAHuggingFace:
         }
         # OPTIMISATION: Cache .lower().split() pour éviter appel répété
         words_lower = user_msg.lower().split()
-        words = [
-            w for w in words_lower if len(w) > 3 and w not in stop_words
-        ]
+        words = [w for w in words_lower if len(w) > 3 and w not in stop_words]
 
         # Retourner le premier mot significatif si disponible
         return str(words[0].capitalize()) if words else None

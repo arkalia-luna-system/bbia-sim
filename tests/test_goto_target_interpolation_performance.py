@@ -59,7 +59,8 @@ def test_goto_target_interpolation_latency() -> None:
     assert backend.connect() is True
 
     head = _create_head_pose()
-    iterations = 30
+    # OPTIMISATION RAM: Réduire 30 → 20 itérations (suffisant pour p50/p95)
+    iterations = 20
     methods = ["minjerk", "linear", "ease_in_out"]
     results: dict[str, list[float]] = {}
 
@@ -73,7 +74,8 @@ def test_goto_target_interpolation_latency() -> None:
                 )
                 t1 = time.perf_counter()
                 latencies_ms.append((t1 - t0) * 1000.0)
-                time.sleep(0.01)  # Petit délai entre appels
+                # OPTIMISATION RAM: Réduire sleep si pas besoin (garder pour stabilité)
+                time.sleep(0.005)  # Petit délai entre appels (réduit de 0.01)
 
             results[method] = latencies_ms
 

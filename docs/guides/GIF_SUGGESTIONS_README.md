@@ -228,11 +228,11 @@ import time
 ```markdown
 ## 📋 EN 30 SECONDES :
 
-![BBIA-SIM Reachy Mini Robot](./assets/images/robot_animation.gif)
+![BBIA-SIM Reachy Mini Robot](../assets/images/robot_animation.gif)
 
 ## 🚀 Quick Start
 
-![Quick Start Demo](./assets/images/quick_start_demo.gif)
+![Quick Start Demo](../assets/images/robot_animation.gif)
 
 ```bash
 # Installation...
@@ -240,7 +240,7 @@ import time
 
 ## 💬 Chat Interactif
 
-![Chat BBIA](./assets/images/chat_bbia_demo.gif)
+![Chat BBIA](../assets/images/robot_animation.gif)
 ```
 
 ---

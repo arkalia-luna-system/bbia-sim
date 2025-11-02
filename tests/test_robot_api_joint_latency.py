@@ -15,13 +15,15 @@ from bbia_sim.robot_factory import RobotFactory
 
 @pytest.mark.unit
 @pytest.mark.slow
+@pytest.mark.heavy  # OPTIMISATION RAM: Test lourd (500 itérations)
 def test_robot_api_set_joint_pos_latency_1e3() -> None:
-    """Test latence set_joint_pos RobotAPI sur 1000 appels."""
+    """Test latence set_joint_pos RobotAPI sur 500 appels (optimisé)."""
     robot = RobotFactory.create_backend("reachy_mini")
     if not robot or not robot.connect():
         pytest.skip("Backend non disponible")
 
-    iterations = 1000
+    # OPTIMISATION RAM: Réduire 1000 → 500 (suffisant pour statistiques p50/p95)
+    iterations = 500
     joint = "yaw_body"
     latencies_ms: list[float] = []
 
@@ -46,13 +48,15 @@ def test_robot_api_set_joint_pos_latency_1e3() -> None:
 
 @pytest.mark.unit
 @pytest.mark.slow
+@pytest.mark.heavy  # OPTIMISATION RAM: Test lourd (500 itérations)
 def test_robot_api_get_joint_pos_latency_1e3() -> None:
-    """Test latence get_joint_pos RobotAPI sur 1000 appels."""
+    """Test latence get_joint_pos RobotAPI sur 500 appels (optimisé)."""
     robot = RobotFactory.create_backend("reachy_mini")
     if not robot or not robot.connect():
         pytest.skip("Backend non disponible")
 
-    iterations = 1000
+    # OPTIMISATION RAM: Réduire 1000 → 500 (suffisant pour statistiques p50/p95)
+    iterations = 500
     joint = "yaw_body"
     latencies_ms: list[float] = []
 

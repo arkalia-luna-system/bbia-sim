@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 class SimulationIOModule:
     """Module IO de simulation pour Reachy Mini.
-    
+
     Fournit des implémentations de simulation pour toutes les méthodes IO officielles.
     """
 
@@ -22,7 +22,7 @@ class SimulationIOModule:
 
     def get_camera_stream(self) -> Any:
         """Stream vidéo de simulation.
-        
+
         Returns:
             Objet stream simulé (None pour l'instant, à implémenter si nécessaire)
         """
@@ -31,7 +31,7 @@ class SimulationIOModule:
 
     def get_audio_stream(self) -> Any:
         """Stream audio de simulation.
-        
+
         Returns:
             Objet stream simulé (None pour l'instant, à implémenter si nécessaire)
         """
@@ -40,7 +40,7 @@ class SimulationIOModule:
 
     def get_imu(self) -> dict[str, Any]:
         """Retourne données IMU simulées.
-        
+
         Returns:
             Dict avec accélération, gyroscope, magnétomètre (valeurs neutres)
         """
@@ -53,7 +53,7 @@ class SimulationIOModule:
 
 class SimulationMediaModule:
     """Module Media de simulation pour Reachy Mini.
-    
+
     Fournit des implémentations de simulation pour toutes les méthodes media officielles.
     """
 
@@ -81,22 +81,22 @@ class SimulationMediaModule:
 
     def play_audio(self, audio_bytes: bytes, volume: float = 1.0) -> None:
         """Joue de l'audio en simulation (log uniquement).
-        
+
         Args:
             audio_bytes: Données audio en bytes
             volume: Volume (0.0-1.0)
         """
-        logger.debug(f"🔊 play_audio() simulé ({len(audio_bytes)} bytes, volume={volume})")
+        logger.debug(
+            f"🔊 play_audio() simulé ({len(audio_bytes)} bytes, volume={volume})"
+        )
 
-    def record_audio(
-        self, duration: float = 3.0, sample_rate: int = 16000
-    ) -> bytes:
+    def record_audio(self, duration: float = 3.0, sample_rate: int = 16000) -> bytes:
         """Enregistre de l'audio en simulation (retourne silence).
-        
+
         Args:
             duration: Durée en secondes
             sample_rate: Fréquence d'échantillonnage
-            
+
         Returns:
             Bytes audio (silence simulé)
         """
@@ -113,7 +113,7 @@ class SimulationCamera:
 
     def get_image(self) -> Any:
         """Capture une image en simulation.
-        
+
         Returns:
             None (à implémenter si nécessaire avec numpy array simulé)
         """
@@ -126,7 +126,7 @@ class SimulationCamera:
 
     def read(self) -> tuple[bool, Any]:
         """Lit une frame (compatible OpenCV VideoCapture).
-        
+
         Returns:
             Tuple (success, frame) - (False, None) en simulation
         """
@@ -137,15 +137,13 @@ class SimulationCamera:
 class SimulationMicrophone:
     """Microphone de simulation."""
 
-    def record(
-        self, duration: float = 3.0, sample_rate: int = 16000
-    ) -> bytes:
+    def record(self, duration: float = 3.0, sample_rate: int = 16000) -> bytes:
         """Enregistre de l'audio en simulation.
-        
+
         Args:
             duration: Durée en secondes
             sample_rate: Fréquence d'échantillonnage
-            
+
         Returns:
             Bytes audio (silence simulé)
         """
@@ -161,7 +159,7 @@ class SimulationSpeaker:
 
     def play(self, audio_bytes: bytes) -> None:
         """Joue de l'audio en simulation.
-        
+
         Args:
             audio_bytes: Données audio en bytes
         """
@@ -169,9 +167,8 @@ class SimulationSpeaker:
 
     def play_file(self, file_path: str) -> None:
         """Joue un fichier audio en simulation.
-        
+
         Args:
             file_path: Chemin vers le fichier audio
         """
         logger.debug(f"🔊 play_file() simulé ({file_path})")
-

@@ -190,18 +190,27 @@ def pytest_configure(config: pytest.Config) -> None:
     try:
         # Nettoyer cache YOLO
         from bbia_sim.vision_yolo import _yolo_model_cache, _yolo_cache_lock
+
         with _yolo_cache_lock:
             _yolo_model_cache.clear()
 
         # Nettoyer cache MediaPipe
-        from bbia_sim.vision_yolo import _mediapipe_face_detection_cache, _mediapipe_cache_lock
+        from bbia_sim.vision_yolo import (
+            _mediapipe_face_detection_cache,
+            _mediapipe_cache_lock,
+        )
+
         with _mediapipe_cache_lock:
             global _mediapipe_face_detection_cache
             _mediapipe_face_detection_cache = None
 
         # Nettoyer cache Whisper
         try:
-            from bbia_sim.voice_whisper import _whisper_models_cache, _whisper_model_cache_lock
+            from bbia_sim.voice_whisper import (
+                _whisper_models_cache,
+                _whisper_model_cache_lock,
+            )
+
             with _whisper_model_cache_lock:
                 _whisper_models_cache.clear()
         except ImportError:
@@ -210,6 +219,7 @@ def pytest_configure(config: pytest.Config) -> None:
         # Nettoyer cache HuggingFace
         try:
             from bbia_sim.bbia_huggingface import BBIAHuggingFace
+
             if hasattr(BBIAHuggingFace, "_clear_cache"):
                 BBIAHuggingFace._clear_cache()
         except (ImportError, AttributeError):
@@ -243,6 +253,7 @@ def pytest_unconfigure(config: pytest.Config) -> None:
     # OPTIMISATION RAM: Nettoyer caches après tests
     try:
         from bbia_sim.vision_yolo import _yolo_model_cache, _yolo_cache_lock
+
         with _yolo_cache_lock:
             _yolo_model_cache.clear()
     except Exception:
@@ -259,6 +270,7 @@ def clear_model_caches_after_test():
     # Nettoyer après chaque test
     try:
         import gc
+
         gc.collect()  # Force garbage collection
     except Exception:
         pass
@@ -271,6 +283,7 @@ def mock_yolo_detector():
     OPTIMISATION RAM: Un seul mock pour toute la session de tests.
     """
     from unittest.mock import MagicMock
+
     mock = MagicMock()
     mock.is_loaded = True
     mock.model_size = "n"
@@ -284,6 +297,7 @@ def mock_whisper_stt():
     OPTIMISATION RAM: Un seul mock pour toute la session de tests.
     """
     from unittest.mock import MagicMock
+
     mock = MagicMock()
     mock.is_loaded = True
     mock.model_size = "tiny"

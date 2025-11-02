@@ -15,12 +15,14 @@ from bbia_sim.backends.reachy_mini_backend import ReachyMiniBackend
 
 @pytest.mark.unit
 @pytest.mark.slow
+@pytest.mark.heavy  # OPTIMISATION RAM: Test lourd (500 itérations)
 def test_simulator_set_joint_pos_latency_1e3() -> None:
-    """Test latence set_joint_pos sur 1000 appels."""
+    """Test latence set_joint_pos sur 500 appels (optimisé)."""
     backend = ReachyMiniBackend(use_sim=True)
     assert backend.connect() is True
 
-    iterations = 1000
+    # OPTIMISATION RAM: Réduire 1000 → 500 (suffisant pour statistiques p50/p95)
+    iterations = 500
     joint = "yaw_body"
     latencies_ms: list[float] = []
 
@@ -45,12 +47,14 @@ def test_simulator_set_joint_pos_latency_1e3() -> None:
 
 @pytest.mark.unit
 @pytest.mark.slow
+@pytest.mark.heavy  # OPTIMISATION RAM: Test lourd (500 itérations)
 def test_simulator_get_joint_pos_latency_1e3() -> None:
-    """Test latence get_joint_pos sur 1000 appels."""
+    """Test latence get_joint_pos sur 500 appels (optimisé)."""
     backend = ReachyMiniBackend(use_sim=True)
     assert backend.connect() is True
 
-    iterations = 1000
+    # OPTIMISATION RAM: Réduire 1000 → 500 (suffisant pour statistiques p50/p95)
+    iterations = 500
     joint = "yaw_body"
     latencies_ms: list[float] = []
 

@@ -41,6 +41,15 @@ graph TB
 
     API --> MUJOCO
     API --> REACHY
+    
+    style EMOTIONS fill:#BB8FCE
+    style VISION fill:#85C1E2
+    style AUDIO fill:#F8B739
+    style VOICE fill:#82E0AA
+    style BEHAVIOR fill:#FF6B6B
+    style API fill:#FFD700
+    style MUJOCO fill:#4ECDC4
+    style REACHY fill:#45B7D1
 ```
 
 Avantage : aucune modification des modules BBIA nécessaire.

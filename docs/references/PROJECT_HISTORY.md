@@ -121,7 +121,7 @@ Les rapports détaillés des phases précédentes sont archivés dans `docs/arch
 ### **Documentation Actuelle**
 - [Architecture Overview](./ARCHITECTURE_OVERVIEW.md)
 - [Architecture Detailed](./ARCHITECTURE_DETAILED.md)
-- [Conformité SDK](./RAPPORT_CONFORMITE_SDK_2024.md)
+- [Conformité SDK](../archives/conformite/RAPPORT_CONFORMITE_SDK_2024.md)
 
 ### **Archives**
 - [Phase 2 & 3 Reports](./archives/phases/)

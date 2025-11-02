@@ -53,7 +53,7 @@
 | Document | Description | Niveau |
 |---------|-------------|--------|
 | [Intégration](INTEGRATION_GUIDE.md) | Guide d'intégration | Expert |
-| [Migration](MIGRATION_GUIDE.md) | Guide de migration | Expert |
+| [Migration](../guides_techniques/MIGRATION_GUIDE.md) | Guide de migration | Expert |
 | [Contrat](CONTRACT.md) | Interface programmatique | Expert |
 | [Process Management](PROCESS_MANAGEMENT.md) | Gestion processus | Expert |
 

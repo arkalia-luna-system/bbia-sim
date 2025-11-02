@@ -59,7 +59,9 @@ class TestBBIAVision:
     @pytest.mark.fast  # OPTIMISATION RAM: Test rapide avec robot_api=None (simulation)
     def test_vision_creation(self):
         """Test création d'une instance BBIAVision."""
-        vision = BBIAVision(robot_api=None)  # OPTIMISATION RAM: Pas de chargement caméra
+        vision = BBIAVision(
+            robot_api=None
+        )  # OPTIMISATION RAM: Pas de chargement caméra
         assert vision.camera_active
         assert vision.vision_quality == "HD"
         assert vision.detection_range == 3.0
@@ -68,7 +70,9 @@ class TestBBIAVision:
     @pytest.mark.fast
     def test_vision_specs(self):
         """Test des spécifications hardware."""
-        vision = BBIAVision(robot_api=None)  # OPTIMISATION RAM: Pas de chargement caméra
+        vision = BBIAVision(
+            robot_api=None
+        )  # OPTIMISATION RAM: Pas de chargement caméra
 
         specs = vision.specs
         assert specs["camera"] == "Grand angle"
@@ -81,7 +85,9 @@ class TestBBIAVision:
     @pytest.mark.fast
     def test_detection_methods(self):
         """Test des méthodes de détection."""
-        vision = BBIAVision(robot_api=None)  # OPTIMISATION RAM: Pas de chargement caméra
+        vision = BBIAVision(
+            robot_api=None
+        )  # OPTIMISATION RAM: Pas de chargement caméra
 
         # Test que les listes de détection existent
         assert isinstance(vision.objects_detected, list)
@@ -90,7 +96,9 @@ class TestBBIAVision:
     @pytest.mark.fast
     def test_tracking_control(self):
         """Test contrôle du suivi."""
-        vision = BBIAVision(robot_api=None)  # OPTIMISATION RAM: Pas de chargement caméra
+        vision = BBIAVision(
+            robot_api=None
+        )  # OPTIMISATION RAM: Pas de chargement caméra
 
         # Test état initial
         assert not vision.tracking_active
@@ -102,7 +110,9 @@ class TestBBIAVision:
     @pytest.mark.fast
     def test_focus_control(self):
         """Test contrôle du focus."""
-        vision = BBIAVision(robot_api=None)  # OPTIMISATION RAM: Pas de chargement caméra
+        vision = BBIAVision(
+            robot_api=None
+        )  # OPTIMISATION RAM: Pas de chargement caméra
 
         # Test état initial
         assert vision.current_focus is None

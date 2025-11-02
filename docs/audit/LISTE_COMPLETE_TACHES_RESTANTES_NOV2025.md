@@ -55,7 +55,7 @@ Les éléments suivants sont **déjà implémentés** et ne nécessitent **aucun
 **Action** : Créer script automatique `scripts/verify_md_links.py`
 
 **Fonctionnalités du script** :
-- Vérifier tous les liens `[texte](chemin)` dans les MD
+- Vérifier tous les liens dans les MD (utiliser `scripts/verify_docs_complete.py`)
 - Vérifier liens internes (`#ancre`)
 - Vérifier liens vers fichiers (existe/n'existe pas)
 - Générer rapport des liens cassés

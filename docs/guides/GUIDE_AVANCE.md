@@ -187,7 +187,7 @@ bbia_sim.sim.enable_caching()
 
 ## Migration simulation → robot réel
 
-Voir : [MIGRATION_GUIDE.md](MIGRATION_GUIDE.md)
+Voir : [MIGRATION_GUIDE.md](../guides_techniques/MIGRATION_GUIDE.md)
 
 ---
 
@@ -205,7 +205,7 @@ robot.start_recording()
 robot.stop_recording()
 ```
 
-Voir : [RAPPORT_CONFORMITE_SDK_2024.md](./RAPPORT_CONFORMITE_SDK_2024.md)
+Voir : [RAPPORT_CONFORMITE_SDK_2024.md](../archives/conformite/RAPPORT_CONFORMITE_SDK_2024.md)
 
 ---
 

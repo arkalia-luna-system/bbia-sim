@@ -137,6 +137,7 @@ class BBIAVision:
                     if self._camera is not None:
                         # Vérifier si c'est une vraie caméra SDK ou un shim
                         from ..backends.simulation_shims import SimulationCamera
+
                         if isinstance(self._camera, SimulationCamera):
                             self._camera_sdk_available = False
                             logger.debug("Caméra simulation (shim) disponible")
