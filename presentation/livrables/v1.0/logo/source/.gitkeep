@@ -1,0 +1,9 @@
+# Dossier Source
+
+Fichiers sources éditables du logo BBIA :
+- `.svg` - Fichier source vectoriel (structure complète)
+- `.ai` - Adobe Illustrator (optionnel)
+- `.fig` - Figma (optionnel)
+
+Note : Les fichiers sources ne sont pas versionnés dans le repo public pour des raisons de taille. Utiliser un système de stockage externe (Git LFS, Drive, etc.).
+

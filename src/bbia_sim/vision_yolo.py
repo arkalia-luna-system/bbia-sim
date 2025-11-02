@@ -5,6 +5,7 @@ Détection d'objets légère avec YOLOv8n (optionnel)
 """
 
 import logging
+import threading
 import time
 from typing import Any
 
@@ -22,6 +23,14 @@ except ImportError:
     cv2 = None  # type: ignore
 
 logger = logging.getLogger(__name__)
+
+# OPTIMISATION PERFORMANCE: Cache global pour modèles YOLO (évite chargements répétés)
+_yolo_model_cache: dict[str, Any] = {}
+_yolo_cache_lock = threading.Lock()
+
+# OPTIMISATION PERFORMANCE: Cache global pour MediaPipe FaceDetection (une seule instance suffit)
+_mediapipe_face_detection_cache: Any | None = None
+_mediapipe_cache_lock = threading.Lock()
 
 # Réduction du bruit de logs TensorFlow/MediaPipe (avant import potentiel de MediaPipe)
 try:
@@ -70,18 +79,35 @@ class YOLODetector:
         )
 
     def load_model(self) -> bool:
-        """Charge le modèle YOLO."""
+        """Charge le modèle YOLO (utilise cache global si disponible)."""
         if not YOLO_AVAILABLE:
             return False
+
+        # OPTIMISATION PERFORMANCE: Utiliser cache global pour éviter chargements répétés
+        cache_key = f"yolov8{self.model_size}"
+
+        global _yolo_model_cache
+        with _yolo_cache_lock:
+            if cache_key in _yolo_model_cache:
+                logger.debug(f"♻️ Réutilisation modèle YOLO depuis cache ({cache_key})")
+                self.model = _yolo_model_cache[cache_key]
+                self.is_loaded = True
+                return True
 
         try:
             logger.info(f"📥 Chargement modèle YOLOv8{self.model_size}...")
             start_time = time.time()
 
-            self.model = YOLO(f"yolov8{self.model_size}.pt")  # type: ignore
+            model = YOLO(f"yolov8{self.model_size}.pt")  # type: ignore
 
             load_time = time.time() - start_time
             logger.info(f"✅ Modèle YOLO chargé en {load_time:.1f}s")
+
+            # Mettre en cache
+            with _yolo_cache_lock:
+                _yolo_model_cache[cache_key] = model
+
+            self.model = model
             self.is_loaded = True
             return True
 
@@ -216,20 +242,41 @@ class FaceDetector:
     """Module de détection de visages utilisant MediaPipe."""
 
     def __init__(self):
-        """Initialise le détecteur de visages."""
+        """Initialise le détecteur de visages (utilise cache global si disponible)."""
         self.mp_face_detection = None
         self.mp_drawing = None
         self.face_detection = None
+
+        # OPTIMISATION PERFORMANCE: Réutiliser instance MediaPipe depuis cache global
+        global _mediapipe_face_detection_cache
+        with _mediapipe_cache_lock:
+            if _mediapipe_face_detection_cache is not None:
+                logger.debug("♻️ Réutilisation détecteur MediaPipe depuis cache")
+                self.face_detection = _mediapipe_face_detection_cache
+                try:
+                    import mediapipe as mp
+
+                    self.mp_face_detection = mp.solutions.face_detection
+                    self.mp_drawing = mp.solutions.drawing_utils
+                except ImportError:
+                    pass
+                return
 
         try:
             import mediapipe as mp
 
             self.mp_face_detection = mp.solutions.face_detection
             self.mp_drawing = mp.solutions.drawing_utils
-            self.face_detection = self.mp_face_detection.FaceDetection(
+            face_detection = self.mp_face_detection.FaceDetection(
                 model_selection=0,  # 0 pour visages proches, 1 pour distants
                 min_detection_confidence=0.5,
             )
+
+            # Mettre en cache global
+            with _mediapipe_cache_lock:
+                _mediapipe_face_detection_cache = face_detection
+
+            self.face_detection = face_detection
             logger.info("👤 Détecteur de visages MediaPipe initialisé")
 
         except ImportError:

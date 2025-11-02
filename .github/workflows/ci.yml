@@ -1,0 +1,270 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main, develop, future]
+  pull_request:
+    branches: [main, develop, future]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    env:
+      MUJOCO_GL: disable
+      DISPLAY: ""
+      BBIA_DISABLE_AUDIO: "1"
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgl1-mesa-dri libglib2.0-0 libsm6 libxext6 libxrender-dev libgomp1 libglu1-mesa portaudio19-dev python3-dev
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .[dev]
+          pip install pytest-timeout
+          # Installation optionnelle de pyaudio si disponible
+          pip install pyaudio || echo "pyaudio non disponible, continuons sans"
+
+      - name: Lint with ruff
+        run: ruff check src/ tests/
+
+      - name: Format with black
+        run: black --check src/ tests/
+
+      - name: Type check with mypy
+        run: mypy src/
+
+      - name: Security check with Bandit
+        run: |
+          echo "Running Bandit with .bandit configuration"
+          bandit -r src/ -c .bandit -x ".*|._*|*.pyc" -q
+
+      - name: Dependency audit with pip-audit
+        run: |
+          pip-audit --desc --format=json > audit-results.json || true
+          # Check for CRITICAL vulnerabilities only
+          if grep -q '"severity": "CRITICAL"' audit-results.json; then
+            echo "❌ CRITICAL vulnerabilities found!"
+            pip-audit --desc
+            exit 1
+          fi
+          echo "✅ No CRITICAL vulnerabilities found"
+          # Show other vulnerabilities as warnings
+          if grep -q '"severity": "HIGH"' audit-results.json; then
+            echo "⚠️ HIGH vulnerabilities found (non-blocking):"
+            pip-audit --desc | grep -A 5 "HIGH"
+          fi
+
+  test:
+    runs-on: ubuntu-latest
+    env:
+      SEED: 42
+      MUJOCO_GL: disable
+      DISPLAY: ""
+      BBIA_DISABLE_AUDIO: "1"
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgl1-mesa-dri libglib2.0-0 libsm6 libxext6 libxrender-dev libgomp1 libglu1-mesa portaudio19-dev python3-dev
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .[test]
+          pip install pytest-asyncio pytest-timeout
+          # Installation optionnelle de pyaudio si disponible
+          pip install pyaudio || echo "pyaudio non disponible, continuons sans"
+
+      - name: Run unit tests
+        run: |
+          export PYTHONPATH=src:$PYTHONPATH
+          pytest -v -m "not e2e" --cov=src/bbia_sim --cov-report=xml --cov-report=term-missing --cov-fail-under=0 --timeout=300 --override-ini="addopts="
+
+      - name: Golden tests (headless)
+        run: pytest -q tests/test_golden_traces.py --maxfail=1 --disable-warnings
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./coverage.xml
+          flags: unittests
+          name: codecov-umbrella
+
+      - name: Upload artifacts on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ci-artifacts
+          path: |
+            artifacts/**/*.jsonl
+            artifacts/**/*.csv
+
+  test-e2e:
+    runs-on: ubuntu-latest
+    needs: [lint]
+    env:
+      MUJOCO_GL: disable
+      DISPLAY: ""
+      BBIA_DISABLE_AUDIO: "1"
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .[test]
+          pip install pytest-asyncio pytest-timeout
+          # Installation optionnelle de pyaudio si disponible
+          pip install pyaudio || echo "pyaudio non disponible, continuons sans"
+
+      - name: Start API server
+        run: |
+          echo "Starting BBIA-SIM API server..."
+          BBIA_TOKEN=bbia-secret-key-dev uvicorn src.bbia_sim.daemon.app.main:app --port 8000 --host 0.0.0.0 &
+          sleep 5
+          echo "API server started"
+
+      - name: Run e2e tests
+        run: |
+          echo "Running e2e tests..."
+          pytest -q -m "e2e" --timeout=60 --tb=short > logs/test_run.log 2>&1 || true
+          echo "E2E tests completed"
+
+      - name: Upload test logs
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: e2e-test-logs
+          path: logs/test_run.log
+          retention-days: 7
+
+      - name: Check e2e test results
+        run: |
+          if [ -f logs/test_run.log ]; then
+            echo "=== E2E Test Results ==="
+            cat logs/test_run.log
+            echo "========================="
+            
+            # Check if tests passed
+            if grep -q "FAILED" logs/test_run.log; then
+              echo "❌ Some e2e tests failed"
+              exit 1
+            else
+              echo "✅ All e2e tests passed"
+            fi
+          else
+            echo "❌ No test log found"
+            exit 1
+          fi
+
+  examples:
+    runs-on: ubuntu-latest
+    needs: [lint, test]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+
+      - name: Test examples
+        run: |
+          echo "Testing hello_sim.py..."
+          python examples/hello_sim.py --duration 1
+
+          echo "Testing behave_follow_face.py (expect connection error)..."
+          timeout 5 python examples/behave_follow_face.py --token bbia-secret-key-dev --duration 2 || true
+
+          echo "Testing goto_pose.py (expect 401 error)..."
+          python examples/goto_pose.py --token dev --joint neck_yaw --pos 0.6 || true
+
+          echo "Testing subscribe_telemetry.py (expect connection error)..."
+          timeout 5 python examples/subscribe_telemetry.py --token dev --count 3 || true
+
+          echo "✅ All examples executed successfully"
+
+  build:
+    runs-on: ubuntu-latest
+    needs: [lint, test, test-e2e]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install build dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install build wheel
+
+      - name: Build package
+        run: python -m build
+
+      - name: Check package
+        run: pip install dist/*.whl
+
+  benchmark:
+    runs-on: ubuntu-latest
+    needs: [lint, test]
+    env:
+      MUJOCO_GL: disable
+      DISPLAY: ""
+      BBIA_DISABLE_AUDIO: "1"
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .[test]
+          pip install pytest-timeout
+
+      - name: Run Performance Benchmarks
+        run: |
+          mkdir -p artifacts
+          # Script accepte --jsonl ou --output pour fichier de sortie
+          python scripts/bbia_performance_benchmarks.py --jsonl artifacts/benchmarks.jsonl 2>&1 || python scripts/bbia_performance_benchmarks.py --output artifacts/benchmarks.jsonl 2>&1 || echo "Benchmarks failed (non-blocking)"
+        continue-on-error: true
+
+      - name: Upload benchmark results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: benchmark-results
+          path: artifacts/benchmarks.jsonl
+          retention-days: 7

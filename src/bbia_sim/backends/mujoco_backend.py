@@ -146,8 +146,10 @@ class MuJoCoBackend(RobotAPI):
 
         Args:
             move: Objet Move du SDK reachy_mini.motion.move
-            play_frequency: Fréquence de lecture (Hz, défaut 100.0) - non utilisé en simulation
-            initial_goto_duration: Durée goto initial (s, défaut 0.0) - non utilisé en simulation
+            play_frequency: Fréquence de lecture (Hz, défaut 100.0)
+                           - non utilisé en simulation
+            initial_goto_duration: Durée goto initial (s, défaut 0.0)
+                                  - non utilisé en simulation
         """
         if not self.is_connected:
             logger.warning("MuJoCo non connecté, impossible de jouer le mouvement")

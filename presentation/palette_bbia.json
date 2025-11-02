@@ -1,0 +1,143 @@
+{
+    "palette_bbia": {
+        "name": "BBIA Color Palette",
+        "version": "1.0",
+        "description": "Palette de couleurs officielle BBIA - Assistant IA robotique Arkalia Luna System",
+        "colors": {
+            "bleu_celeste_neon": {
+                "name": "Bleu Céleste / Néon",
+                "hex": [
+                    "#87bcfa",
+                    "#3E6FFF"
+                ],
+                "rgb": {
+                    "#87bcfa": [
+                        135,
+                        188,
+                        250
+                    ],
+                    "#3E6FFF": [
+                        62,
+                        111,
+                        255
+                    ]
+                },
+                "usage": "Couleur principale, éléments IA, liens actifs",
+                "variations": {
+                    "light": "#B0D4FF",
+                    "medium": "#87bcfa",
+                    "dark": "#3E6FFF"
+                }
+            },
+            "violet_electrique": {
+                "name": "Violet Électrique",
+                "hex": [
+                    "#A680FF",
+                    "#C082FF"
+                ],
+                "rgb": {
+                    "#A680FF": [
+                        166,
+                        128,
+                        255
+                    ],
+                    "#C082FF": [
+                        192,
+                        130,
+                        255
+                    ]
+                },
+                "usage": "Accent créatif, éléments technologiques, highlights",
+                "variations": {
+                    "light": "#D4B0FF",
+                    "medium": "#A680FF",
+                    "dark": "#8B5FD4"
+                }
+            },
+            "turquoise_ethree": {
+                "name": "Turquoise Éthéré",
+                "hex": "#60e9e1",
+                "rgb": [
+                    96,
+                    233,
+                    225
+                ],
+                "usage": "Éléments lunaires, réseau lumineux, accents subtils",
+                "variations": {
+                    "light": "#8FEFEA",
+                    "medium": "#60e9e1",
+                    "dark": "#3FB8B2"
+                }
+            },
+            "gris_lunaire": {
+                "name": "Gris Lunaire",
+                "hex": [
+                    "#eaeaed",
+                    "#bfc9d9"
+                ],
+                "rgb": {
+                    "#eaeaed": [
+                        234,
+                        234,
+                        237
+                    ],
+                    "#bfc9d9": [
+                        191,
+                        201,
+                        217
+                    ]
+                },
+                "usage": "Fond, texte secondaire, séparateurs",
+                "variations": {
+                    "light": "#eaeaed",
+                    "medium": "#bfc9d9",
+                    "dark": "#8A94A8"
+                }
+            },
+            "rose_pastel": {
+                "name": "Rose Pastel",
+                "hex": "#FFDAEC",
+                "rgb": [
+                    255,
+                    218,
+                    236
+                ],
+                "usage": "Touches douces, émotions positives, accents chaleureux",
+                "variations": {
+                    "light": "#FFDAEC",
+                    "medium": "#FFB5D8",
+                    "dark": "#FF90C4"
+                }
+            }
+        },
+        "combinations": {
+            "primary": {
+                "description": "Combinaison principale",
+                "background": "#eaeaed",
+                "primary": "#87bcfa",
+                "accent": "#A680FF",
+                "text": "#1a1a1a"
+            },
+            "dark_mode": {
+                "description": "Pour fonds sombres",
+                "background": "#0f0f1a",
+                "primary": "#3E6FFF",
+                "accent": "#C082FF",
+                "text": "#eaeaed"
+            },
+            "lunar_theme": {
+                "description": "Thème lunaire éthéré",
+                "background": "#bfc9d9",
+                "primary": "#60e9e1",
+                "accent": "#A680FF",
+                "text": "#2a2a3a"
+            }
+        },
+        "guidelines": {
+            "contrast_minimum": "WCAG AA",
+            "saturation_principle": "Douce, non agressive",
+            "luminosity_principle": "Équilibre entre visibilité et douceur",
+            "usage_recommendation": "Les couleurs doivent rester accessibles et rassurantes"
+        }
+    }
+}

@@ -33,7 +33,7 @@ class TestVAD(unittest.TestCase):
         self.assertTrue(self.whisper.enable_vad)
         self.assertFalse(self.whisper._vad_loaded)
 
-    @patch("src.bbia_sim.voice_whisper.pipeline")
+    @patch("transformers.pipeline")
     def test_vad_detection_speech(self, mock_pipeline: MagicMock) -> None:
         """Test détection VAD - parole."""
         # Mock pipeline VAD
@@ -51,7 +51,7 @@ class TestVAD(unittest.TestCase):
 
         self.assertTrue(result, "Parole devrait être détectée")
 
-    @patch("src.bbia_sim.voice_whisper.pipeline")
+    @patch("transformers.pipeline")
     def test_vad_detection_silence(self, mock_pipeline: MagicMock) -> None:
         """Test détection VAD - silence."""
         # Mock pipeline VAD
@@ -96,8 +96,8 @@ class TestWhisperStreaming(unittest.TestCase):
         except ImportError as e:
             self.skipTest(f"Module non disponible: {e}")
 
-    @patch("src.bbia_sim.voice_whisper.sounddevice")
-    @patch("src.bbia_sim.voice_whisper.soundfile")
+    @patch("sounddevice")
+    @patch("soundfile")
     @patch("src.bbia_sim.voice_whisper.whisper")
     def test_streaming_initialization(
         self,

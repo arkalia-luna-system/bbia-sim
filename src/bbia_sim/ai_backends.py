@@ -11,7 +11,14 @@ import logging
 import os
 import shlex
 import subprocess
+import threading
 from typing import Any, Protocol
+
+# OPTIMISATION PERFORMANCE: Cache global pour modèles Whisper (évite chargements répétés)
+_whisper_models_cache: dict[str, dict[str, Any]] = (
+    {}
+)  # model_name -> {processor, model}
+_whisper_cache_lock = threading.Lock()
 
 
 class TextToSpeech(Protocol):
@@ -45,22 +52,31 @@ class Pyttsx3TTS:
         try:
             engine = self._engine
             if engine is None:
-                import pyttsx3  # lazy import
-
-                engine = pyttsx3.init()
-                self._engine = engine
-
-                # Sélectionner la meilleure voix féminine française
+                # OPTIMISATION PERFORMANCE: Utiliser cache global au lieu de pyttsx3.init() direct
                 try:
-                    # Import circulaire évité: import seulement quand nécessaire
-                    from .bbia_voice import get_bbia_voice
+                    from .bbia_voice import _get_cached_voice_id, _get_pyttsx3_engine
 
-                    self._voice_id = get_bbia_voice(engine)
-                    engine.setProperty("voice", self._voice_id)
-                except Exception:
-                    # Si get_bbia_voice échoue, utiliser voix par défaut
-                    # (peut être une voix d'homme, mais mieux que crash)
-                    pass  # noqa: S101 - Fallback silencieux vers voix par défaut si sélection échoue
+                    engine = (
+                        _get_pyttsx3_engine()
+                    )  # Utilise cache global (0ms après premier appel)
+                    self._engine = engine
+                    self._voice_id = _get_cached_voice_id()  # Utilise cache voice ID
+                except ImportError:
+                    # Fallback si cache non disponible (ne devrait pas arriver)
+                    import pyttsx3  # lazy import
+
+                    engine = pyttsx3.init()
+                    self._engine = engine
+
+                    # Sélectionner la meilleure voix féminine française
+                    try:
+                        from .bbia_voice import get_bbia_voice
+
+                        self._voice_id = get_bbia_voice(engine)
+                        engine.setProperty("voice", self._voice_id)
+                    except Exception:
+                        # Si get_bbia_voice échoue, utiliser voix par défaut
+                        pass  # noqa: S101 - Fallback silencieux vers voix par défaut si sélection échoue
 
             # Utiliser la voix sélectionnée si disponible
             if self._voice_id:
@@ -196,7 +212,8 @@ class OpenVoiceTTSTTS:
     Utilise la variable d'environnement OPENVOICE_CMD pour exécuter un
     générateur TTS qui écrit un fichier WAV. Fallback pyttsx3 si indisponible.
     Exemple:
-      export OPENVOICE_CMD="python scripts/voice_clone/generate_voice.py --text '{text}' --mode douce --out '{out}'"
+      export OPENVOICE_CMD="python scripts/voice_clone/generate_voice.py "
+      "--text '{text}' --mode douce --out '{out}'"
     """
 
     def __init__(self) -> None:
@@ -251,13 +268,39 @@ class WhisperSTT:
             )
 
             model_name = os.environ.get("BBIA_WHISPER_MODEL", "openai/whisper-base")
+
+            # OPTIMISATION PERFORMANCE: Utiliser cache global pour éviter chargements répétés
+            global _whisper_models_cache
+            with _whisper_cache_lock:
+                if model_name in _whisper_models_cache:
+                    logger = logging.getLogger(__name__)
+                    logger.debug(
+                        f"♻️ Réutilisation modèle Whisper depuis cache ({model_name})"
+                    )
+                    cached = _whisper_models_cache[model_name]
+                    self._processor = cached["processor"]
+                    self._model = cached["model"]
+                    self._ready = True
+                    return
+
+            # Charger modèle si pas en cache
             # nosec B615: révision explicite pour éviter latest flottant
-            self._processor = WhisperProcessor.from_pretrained(
+            processor = WhisperProcessor.from_pretrained(
                 model_name, revision="main"
             )  # nosec B615
-            self._model = WhisperForConditionalGeneration.from_pretrained(
+            model = WhisperForConditionalGeneration.from_pretrained(
                 model_name, revision="main"
             )  # nosec B615
+
+            # Mettre en cache global
+            with _whisper_cache_lock:
+                _whisper_models_cache[model_name] = {
+                    "processor": processor,
+                    "model": model,
+                }
+
+            self._processor = processor
+            self._model = model
             self._ready = True
         except Exception as e:  # pragma: no cover - environnement sans deps
             logging.getLogger(__name__).info(f"Whisper indisponible: {e}")

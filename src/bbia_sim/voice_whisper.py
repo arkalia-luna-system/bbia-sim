@@ -6,19 +6,45 @@ Intégration Speech-to-Text avec OpenAI Whisper (optionnel)
 
 import logging
 import os
+import threading
 import time
 from pathlib import Path
 from typing import Any, cast
 
 try:
-    import whisper
+    import whisper as _whisper_module
 
     WHISPER_AVAILABLE = True
 except ImportError:
     WHISPER_AVAILABLE = False
-    whisper = None
+    _whisper_module = None  # type: ignore[assignment]
+
+# Exposer whisper pour compatibilité, avec typage correct
+if _whisper_module is not None:
+    whisper = _whisper_module
+else:
+    whisper = None  # type: ignore[assignment]
+
+# Imports optionnels pour les patches dans les tests
+try:
+    from transformers import pipeline as transformers_pipeline
+except ImportError:
+    transformers_pipeline = None  # type: ignore[assignment]
+
+try:
+    import soundfile as sf
+except ImportError:
+    sf = None
 
 logger = logging.getLogger(__name__)
+
+# OPTIMISATION PERFORMANCE: Cache global pour modèle VAD (évite chargements répétés entre instances)
+_vad_model_cache: Any | None = None
+_vad_cache_lock = threading.Lock()
+
+# OPTIMISATION PERFORMANCE: Cache global pour modèles Whisper (évite chargements répétés entre instances)
+_whisper_models_cache: dict[str, Any] = {}  # model_size -> model
+_whisper_model_cache_lock = threading.Lock()
 
 
 class WhisperSTT:
@@ -54,18 +80,35 @@ class WhisperSTT:
         )
 
     def load_model(self) -> bool:
-        """Charge le modèle Whisper."""
+        """Charge le modèle Whisper (utilise cache global si disponible)."""
         if not WHISPER_AVAILABLE:
             return False
+
+        # OPTIMISATION PERFORMANCE: Utiliser cache global pour éviter chargements répétés
+        global _whisper_models_cache
+        with _whisper_model_cache_lock:
+            if self.model_size in _whisper_models_cache:
+                logger.debug(
+                    f"♻️ Réutilisation modèle Whisper depuis cache ({self.model_size})"
+                )
+                self.model = _whisper_models_cache[self.model_size]
+                self.is_loaded = True
+                return True
 
         try:
             logger.info(f"📥 Chargement modèle Whisper {self.model_size}...")
             start_time = time.time()
 
-            self.model = whisper.load_model(self.model_size)
+            model = whisper.load_model(self.model_size)
 
             load_time = time.time() - start_time
             logger.info(f"✅ Modèle Whisper chargé en {load_time:.1f}s")
+
+            # Mettre en cache global
+            with _whisper_model_cache_lock:
+                _whisper_models_cache[self.model_size] = model
+
+            self.model = model
             self.is_loaded = True
             return True
 
@@ -214,16 +257,34 @@ class WhisperSTT:
             return False
 
         try:
-            from transformers import pipeline
-
-            # Charger modèle VAD à la demande (gratuit Hugging Face)
-            if not self._vad_loaded or self._vad_model is None:
+            # OPTIMISATION PERFORMANCE: Utiliser cache global pour modèle VAD
+            global _vad_model_cache
+            if _vad_model_cache is not None:
+                logger.debug("♻️ Réutilisation modèle VAD depuis cache global")
+                self._vad_model = _vad_model_cache
+                self._vad_loaded = True
+            elif not self._vad_loaded or self._vad_model is None:
                 try:
                     logger.info("📥 Chargement modèle VAD (silero/vad)...")
-                    self._vad_model = pipeline(
+                    # Utiliser l'import au niveau module si disponible, sinon import local
+                    if transformers_pipeline is None:
+                        from transformers import pipeline
+
+                        vad_pipeline_func = pipeline
+                    else:
+                        vad_pipeline_func = transformers_pipeline
+
+                    vad_model = vad_pipeline_func(
                         "audio-classification",
                         model="silero/vad",
                     )
+
+                    # Mettre en cache global et local
+                    with _vad_cache_lock:
+                        if _vad_model_cache is None:
+                            _vad_model_cache = vad_model
+
+                    self._vad_model = vad_model
                     self._vad_loaded = True
                     logger.info("✅ Modèle VAD chargé")
                 except Exception as e:
@@ -233,11 +294,22 @@ class WhisperSTT:
 
             # Convertir audio_chunk si nécessaire (fichier -> array)
             import numpy as np
-            import soundfile as sf
+
+            # Utiliser l'import au niveau module si disponible, sinon import local
+            if sf is None:
+                try:
+                    import soundfile as soundfile_module
+                except ImportError:
+                    logger.warning(
+                        "⚠️ soundfile requis pour VAD fichier, fallback activé"
+                    )
+                    return True  # Fallback: considérer comme parole
+            else:
+                soundfile_module = sf
 
             if isinstance(audio_chunk, str | Path):
                 # C'est un chemin de fichier
-                audio_data, sample_rate = sf.read(audio_chunk)
+                audio_data, sample_rate = soundfile_module.read(audio_chunk)
             elif isinstance(audio_chunk, np.ndarray):
                 audio_data = audio_chunk
             else:
@@ -385,6 +457,7 @@ class WhisperSTT:
         callback: Any | None = None,
         chunk_duration: float = 0.5,
         max_duration: float = 30.0,
+        transcription_interval: float = 1.5,
     ) -> str | None:
         """
         Transcription en streaming (continuelle) depuis le microphone.
@@ -394,6 +467,8 @@ class WhisperSTT:
             callback: Fonction appelée à chaque chunk transcrit (optionnel)
             chunk_duration: Durée de chaque chunk en secondes (plus petit = latence plus faible)
             max_duration: Durée maximale d'enregistrement
+            transcription_interval: Intervalle minimum entre transcriptions (secondes).
+                                   Réduire pour latence plus faible, augmenter pour économiser CPU.
 
         Returns:
             Texte final complet transcrit, ou None si erreur
@@ -422,7 +497,7 @@ class WhisperSTT:
             import soundfile as sf
 
             logger.info(
-                f"🎤 Transcription streaming ({chunk_duration}s chunks, max {max_duration}s)..."
+                f"🎤 Transcription streaming ({chunk_duration}s chunks, max {max_duration}s, intervalle {transcription_interval}s)..."
             )
 
             sample_rate = 16000
@@ -433,6 +508,11 @@ class WhisperSTT:
             # Buffer pour garder contexte (améliore précision)
             audio_buffer: list[np.ndarray] = []
             buffer_max_chunks = 3  # Garder 3 chunks pour contexte
+
+            # OPTIMISATION PERFORMANCE: Throttling transcription pour éviter surcharge CPU/GPU
+            last_transcription_time = 0.0
+            consecutive_silence_chunks = 0
+            max_silence_chunks = 3  # Arrêter après 3 chunks de silence consécutifs
 
             while total_duration < max_duration:
                 # Enregistrer chunk
@@ -449,8 +529,34 @@ class WhisperSTT:
                 if len(audio_buffer) > buffer_max_chunks:
                     audio_buffer.pop(0)
 
+                # OPTIMISATION: Utiliser VAD pour décider si transcrire (évite traitement inutile)
+                should_transcribe = True
+                if self.enable_vad:
+                    has_speech = self.detect_speech_activity(chunk)
+                    if has_speech:
+                        consecutive_silence_chunks = 0
+                        logger.debug("🔊 Parole détectée")
+                    else:
+                        consecutive_silence_chunks += 1
+                        logger.debug(f"🔇 Silence: {consecutive_silence_chunks} chunks")
+                        # Ne pas transcrire si silence prolongé
+                        if consecutive_silence_chunks >= max_silence_chunks:
+                            should_transcribe = False
+                            # Réduire buffer si silence prolongé
+                            if len(audio_buffer) > 1:
+                                audio_buffer.pop(0)
+
+                # OPTIMISATION: Throttling - ne transcrire que si intervalle respecté ET parole détectée
+                current_time = time.time()
+                time_since_last_transcription = current_time - last_transcription_time
+                should_transcribe = (
+                    should_transcribe
+                    and time_since_last_transcription >= transcription_interval
+                    and len(audio_buffer) >= 2
+                )
+
                 # Transcription sur buffer complet (améliore précision)
-                if len(audio_buffer) >= 2:
+                if should_transcribe:
                     audio_segment = np.concatenate(audio_buffer)
 
                     # Sauvegarder temporairement
@@ -484,6 +590,7 @@ class WhisperSTT:
                         text = result["text"].strip()
                         if text and text.lower() not in ["", "you", "thank you"]:
                             all_transcriptions.append(text)
+                            last_transcription_time = current_time
                             logger.debug(f"📝 Chunk transcrit: '{text}'")
 
                             # Callback si fourni
@@ -503,11 +610,10 @@ class WhisperSTT:
 
                 total_duration += chunk_duration
 
-                # Arrêt si silence prolongé (VAD optionnel)
-                if self.enable_vad:
-                    if not self.detect_speech_activity(chunk):
-                        logger.debug("🔇 Silence détecté dans streaming")
-                        # Continuer quand même (détection faible)
+                # OPTIMISATION: Arrêt si silence prolongé (économise CPU)
+                if consecutive_silence_chunks >= max_silence_chunks * 2:
+                    logger.info("🔇 Arrêt automatique (silence prolongé)")
+                    break
 
             # Concaténer toutes les transcriptions
             final_text = " ".join(all_transcriptions).strip()

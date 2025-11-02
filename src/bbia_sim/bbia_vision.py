@@ -210,10 +210,37 @@ class BBIAVision:
         self.face_detector = None
         if MEDIAPIPE_AVAILABLE and mp:
             try:
-                self.face_detector = mp.solutions.face_detection.FaceDetection(
-                    model_selection=0, min_detection_confidence=0.5
-                )
-                logger.info("✅ Détecteur MediaPipe Face initialisé")
+                # OPTIMISATION PERFORMANCE: Réutiliser instance MediaPipe depuis cache si disponible
+                try:
+                    from .vision_yolo import (
+                        _mediapipe_cache_lock,
+                        _mediapipe_face_detection_cache,
+                    )
+
+                    with _mediapipe_cache_lock:
+                        if _mediapipe_face_detection_cache is not None:
+                            logger.debug(
+                                "♻️ Réutilisation détecteur MediaPipe depuis cache (bbia_vision)"
+                            )
+                            self.face_detector = _mediapipe_face_detection_cache
+                            logger.info(
+                                "✅ Détecteur MediaPipe Face initialisé (cache)"
+                            )
+                        else:
+                            # Créer nouvelle instance et mettre en cache
+                            self.face_detector = (
+                                mp.solutions.face_detection.FaceDetection(
+                                    model_selection=0, min_detection_confidence=0.5
+                                )
+                            )
+                            _mediapipe_face_detection_cache = self.face_detector
+                            logger.info("✅ Détecteur MediaPipe Face initialisé")
+                except ImportError:
+                    # Fallback si import cache échoue
+                    self.face_detector = mp.solutions.face_detection.FaceDetection(
+                        model_selection=0, min_detection_confidence=0.5
+                    )
+                    logger.info("✅ Détecteur MediaPipe Face initialisé")
             except Exception as e:
                 logger.warning(f"⚠️ MediaPipe non disponible: {e}")
 

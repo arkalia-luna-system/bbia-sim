@@ -1,0 +1,60 @@
+---
+# Configuration Codecov pour BBIA-SIM
+# Assure une couverture précise et cohérente avec les tests locaux
+
+coverage:
+  precision: 2
+  round: down
+  range: "70...100"
+  status:
+    project:
+      default:
+        target: 80%
+        threshold: 1%
+    patch:
+      default:
+        target: 80%
+        threshold: 1%
+
+# Inclure tous les modules Python BBIA
+codecov:
+  require_ci_to_pass: true
+  notify:
+    wait_for_ci: true
+
+# Configuration des flags pour correspondre aux tests unitaires
+flags:
+  unittests:
+    paths:
+      - src/bbia_sim/
+
+# Exclusions pour éviter les faux négatifs
+ignore:
+  - "tests/"
+  - "*/tests/*"
+  - "*/__pycache__/*"
+  - "reachy_repos/"
+  - "*/reachy_repos/*"
+  - "logs/"
+  - "assets/"
+  - "docs/"
+  - "scripts/"
+  - "venv/"
+  - "*.txt"
+  - "*.wav"
+  - "*.md"
+
+# Commentaires sur les PR
+comment:
+  layout: "reach, diff, flags, files"
+  behavior: default
+  require_changes: false
+  require_base: false
+  require_head: true
+
+# Notifications
+notify:
+  # GitHub Status API
+  github:
+    after_n_builds: 1
+    wait_for_ci: true

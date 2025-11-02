@@ -1,0 +1,57 @@
+# Exclure les fichiers cachés macOS
+global-exclude ._*
+global-exclude .DS_Store
+global-exclude **/._*
+global-exclude **/*._*
+
+# Exclure les caches Python
+global-exclude __pycache__/
+global-exclude **/__pycache__/
+global-exclude *.pyc
+global-exclude *.pyo
+
+# Exclure les fichiers de build
+global-exclude build/
+global-exclude dist/
+global-exclude *.egg-info/
+
+# Exclure les fichiers de test
+global-exclude tests/
+global-exclude test_*.py
+global-exclude *_test.py
+
+# Exclure les fichiers de développement
+global-exclude .git/
+global-exclude .github/
+global-exclude .pytest_cache/
+global-exclude .mypy_cache/
+global-exclude .ruff_cache/
+global-exclude .coverage
+global-exclude coverage.xml
+global-exclude htmlcov/
+
+# Exclure les fichiers de documentation
+global-exclude docs/
+global-exclude *.md
+global-exclude README*
+global-exclude LICENSE*
+global-exclude NOTICE*
+
+# Exclure les fichiers de configuration
+global-exclude .gitignore
+global-exclude .bandit
+global-exclude Makefile
+global-exclude requirements.txt
+global-exclude pytest.ini
+global-exclude codecov.yml
+
+# Exclure les fichiers de backup
+global-exclude bbia-sim-backup/
+global-exclude *.backup
+global-exclude *.bak
+
+# Exclure les fichiers temporaires
+global-exclude *.tmp
+global-exclude *.temp
+global-exclude logs/
+global-exclude *.log

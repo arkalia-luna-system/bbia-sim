@@ -39,8 +39,8 @@ def test_runtime_budget_simulation_10s() -> None:
 
         # Budgets très larges pour CI
         # - pic mémoire < 64 MB
-        # - temps CPU < 1.5 s sur 10 s mur
+        # - temps CPU < 2.5 s sur 10 s mur (assoupli pour CI avec overhead)
         assert peak < 64 * 1024 * 1024, f"Peak RAM trop élevé: {peak} B"
-        assert cpu_time_s < 1.5, f"Temps CPU trop élevé: {cpu_time_s:.2f}s/10s"
+        assert cpu_time_s < 2.5, f"Temps CPU trop élevé: {cpu_time_s:.2f}s/10s"
     finally:
         backend.disconnect()

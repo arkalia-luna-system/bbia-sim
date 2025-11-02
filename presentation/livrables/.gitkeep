@@ -1,0 +1,18 @@
+# Dossier Livrables
+
+Ce dossier contiendra toutes les versions des assets créés par le graphiste.
+
+Structure :
+- `v1.0/` : Première livraison
+- `v1.1/` : Corrections première livraison
+- `v2.0/` : Versions suivantes
+- etc.
+
+Chaque version contient :
+- `source/` : Fichiers sources éditables
+- `exports/` : Fichiers utilisables immédiatement
+- `tests/` : Previews et exemples d'intégration
+- `README.md` : Documentation de l'asset
+
+Voir `WORKFLOW_OPEN_SOURCE.md` pour la méthodologie complète.
+

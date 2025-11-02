@@ -1,0 +1,18 @@
+# Dépendances DeepFace pour reconnaissance visage personnalisée + émotions
+# Installer dans venv-vision-py310 (recommandé pour éviter conflits)
+
+# DeepFace (reconnaissance visage + émotions)
+deepface>=0.0.79
+
+# Backends DeepFace (optionnel, pour performance)
+# ONNX backend (recommandé pour Raspberry Pi 5 - plus rapide)
+onnxruntime>=1.16.0
+
+# Ou TensorFlow backend (plus lent mais parfois plus précis)
+# tensorflow>=2.13.0
+
+# Dépendances déjà dans venv-vision-py310
+# - numpy
+# - opencv-python
+# - pillow
+

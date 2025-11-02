@@ -1,0 +1,43 @@
+BBIA-SIM - NOTICE
+
+Copyright (c) 2025 arkalia-luna
+
+This project is licensed under the MIT License.
+
+THIRD-PARTY ATTRIBUTIONS:
+
+1. Reachy Mini Robot Specifications
+   - Source: Pollen Robotics (https://www.pollen-robotics.com/)
+   - Usage: Public specifications used for simulation model design
+   - License: Public domain specifications (no code copied)
+   - Attribution: Robot specifications referenced for MJCF model creation
+
+2. MuJoCo Physics Engine
+   - Source: DeepMind (https://mujoco.org/)
+   - Usage: Physics simulation engine
+   - License: Apache License 2.0
+   - Attribution: Used for 3D robot simulation
+
+3. FastAPI Web Framework
+   - Source: Sebastián Ramírez (https://fastapi.tiangolo.com/)
+   - Usage: REST API and WebSocket server
+   - License: MIT License
+   - Attribution: Used for API implementation
+
+4. Pydantic Data Validation
+   - Source: Samuel Colvin (https://pydantic.dev/)
+   - Usage: Data validation and settings management
+   - License: MIT License
+   - Attribution: Used for API data models
+
+5. Reachy Mini SDK
+   - Source: Pollen Robotics (https://github.com/pollen-robotics/reachy_mini)
+   - Usage: SDK backend pour robot physique (import conditionnel, dépendance optionnelle)
+   - License: Apache License 2.0
+   - Attribution: Used for physical robot control backend (optional dependency)
+
+DISCLAIMER:
+This project does not include any code directly copied from Apache-2.0 licensed
+projects. All implementations are original work based on public specifications
+and standard libraries. The MJCF model is a custom implementation inspired by
+public robot specifications, not derived from proprietary code.

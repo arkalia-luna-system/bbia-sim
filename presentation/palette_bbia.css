@@ -1,0 +1,99 @@
+/**
+ * BBIA Color Palette - CSS Variables
+ * Assistant IA robotique Arkalia Luna System
+ * Version 1.0
+ */
+
+:root {
+    /* Bleu Céleste / Néon */
+    --bbia-bleu-light: #B0D4FF;
+    --bbia-bleu-medium: #87bcfa;
+    --bbia-bleu-dark: #3E6FFF;
+
+    /* Violet Électrique */
+    --bbia-violet-light: #D4B0FF;
+    --bbia-violet-medium: #A680FF;
+    --bbia-violet-alt: #C082FF;
+    --bbia-violet-dark: #8B5FD4;
+
+    /* Turquoise Éthéré */
+    --bbia-turquoise-light: #8FEFEA;
+    --bbia-turquoise-medium: #60e9e1;
+    --bbia-turquoise-dark: #3FB8B2;
+
+    /* Gris Lunaire */
+    --bbia-gris-light: #eaeaed;
+    --bbia-gris-medium: #bfc9d9;
+    --bbia-gris-dark: #8A94A8;
+
+    /* Rose Pastel */
+    --bbia-rose-light: #FFDAEC;
+    --bbia-rose-medium: #FFB5D8;
+    --bbia-rose-dark: #FF90C4;
+
+    /* Combinaisons pré-définies */
+    --bbia-bg-primary: var(--bbia-gris-light);
+    --bbia-bg-dark: #0f0f1a;
+    --bbia-text-primary: #1a1a1a;
+    --bbia-text-light: var(--bbia-gris-light);
+    --bbia-text-dark: var(--bbia-gris-dark);
+
+    /* Accents */
+    --bbia-accent-primary: var(--bbia-bleu-medium);
+    --bbia-accent-secondary: var(--bbia-violet-medium);
+    --bbia-accent-lunar: var(--bbia-turquoise-medium);
+}
+
+/* Classes utilitaires */
+.bbia-color-bleu {
+    color: var(--bbia-bleu-medium);
+}
+
+.bbia-color-violet {
+    color: var(--bbia-violet-medium);
+}
+
+.bbia-color-turquoise {
+    color: var(--bbia-turquoise-medium);
+}
+
+.bbia-color-rose {
+    color: var(--bbia-rose-light);
+}
+
+.bbia-bg-bleu {
+    background-color: var(--bbia-bleu-medium);
+}
+
+.bbia-bg-violet {
+    background-color: var(--bbia-violet-medium);
+}
+
+.bbia-bg-turquoise {
+    background-color: var(--bbia-turquoise-medium);
+}
+
+.bbia-bg-rose {
+    background-color: var(--bbia-rose-light);
+}
+
+.bbia-border-bleu {
+    border-color: var(--bbia-bleu-medium);
+}
+
+.bbia-border-violet {
+    border-color: var(--bbia-violet-medium);
+}
+
+/* Gradients */
+.bbia-gradient-primary {
+    background: linear-gradient(135deg, var(--bbia-bleu-medium) 0%, var(--bbia-violet-medium) 100%);
+}
+
+.bbia-gradient-lunar {
+    background: linear-gradient(135deg, var(--bbia-turquoise-medium) 0%, var(--bbia-violet-medium) 100%);
+}
+
+.bbia-gradient-soft {
+    background: linear-gradient(135deg, var(--bbia-rose-light) 0%, var(--bbia-bleu-light) 100%);
+}

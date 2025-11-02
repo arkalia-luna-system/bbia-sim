@@ -1,0 +1,15 @@
+# Renseigne puis exporte dans ton shell, ex:
+#   export $(tr -d '\r' < scripts/onboarding/env_bbia_example.txt | xargs)
+
+# Hôte Reachy Mini (mDNS ou IP)
+BBIA_REACHY_HOST=reachy-mini.local
+
+# Backends IA conseillés pour démarrer
+BBIA_TTS=pyttsx3
+BBIA_STT=dummy
+BBIA_LLM=echo
+
+# Modèle LLM local (llama.cpp) si tu actives BBIA_LLM=llamacpp
+# BBIA_LLAMA_MODEL=/absolute/path/to/model.gguf
+
+

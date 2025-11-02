@@ -5,6 +5,7 @@ Détection et analyse des émotions faciales et vocales en temps réel
 """
 
 import logging
+import threading
 import time
 from typing import Any
 
@@ -12,6 +13,10 @@ import cv2
 import numpy as np
 
 logger = logging.getLogger(__name__)
+
+# OPTIMISATION PERFORMANCE: Cache global pour pipelines transformers (évite chargements répétés)
+_emotion_pipelines_cache: dict[str, dict[str, Any]] = {}  # device -> models dict
+_emotion_cache_lock = threading.Lock()
 
 # Réduction du bruit de logs TensorFlow/MediaPipe (avant tout import MediaPipe)
 try:
@@ -128,21 +133,41 @@ class BBIAEmotionRecognition:
             return False
 
     def _load_emotion_models(self) -> None:
-        """Charge les modèles de reconnaissance d'émotion."""
+        """Charge les modèles de reconnaissance d'émotion (utilise cache global si disponible)."""
+        # OPTIMISATION PERFORMANCE: Utiliser cache global pour éviter chargements répétés
+        global _emotion_pipelines_cache
+        with _emotion_cache_lock:
+            if self.device in _emotion_pipelines_cache:
+                logger.debug(f"♻️ Réutilisation modèles émotion depuis cache (device: {self.device})")
+                self.emotion_models = _emotion_pipelines_cache[self.device].copy()
+                logger.info("📥 Modèles d'émotion chargés (cache)")
+                return
+
         try:
             # Modèle de sentiment pour analyse vocale
-            self.emotion_models["sentiment"] = pipeline(
+            sentiment_model = pipeline(
                 "sentiment-analysis",
                 model="cardiffnlp/twitter-roberta-base-sentiment-latest",
                 device=self.device,
             )
 
             # Modèle d'émotion pour analyse textuelle
-            self.emotion_models["emotion"] = pipeline(
+            emotion_model = pipeline(
                 "text-classification",
                 model="j-hartmann/emotion-english-distilroberta-base",
                 device=self.device,
             )
+
+            # Stocker dans l'instance
+            self.emotion_models["sentiment"] = sentiment_model
+            self.emotion_models["emotion"] = emotion_model
+
+            # Mettre en cache global
+            with _emotion_cache_lock:
+                _emotion_pipelines_cache[self.device] = {
+                    "sentiment": sentiment_model,
+                    "emotion": emotion_model,
+                }
 
             logger.info("📥 Modèles d'émotion chargés")
 

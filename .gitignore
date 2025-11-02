@@ -1,0 +1,72 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Environnements virtuels
+venv/
+.env/
+.venv/
+ENV/
+.venv-veille/
+venv-voice/
+venv-vision/
+venv-vision-py310/
+venv-vision-*/
+venv-*/
+
+# macOS
+.DS_Store
+._*
+
+# VSCode
+.vscode/
+
+# PyCharm
+.idea/
+
+# Logs
+*.log
+log/*.csv
+log/*.json
+log/*.jsonl
+log/*.out
+log/*.err
+logs/**
+logs/bandit_report.json
+
+# Tests
+.coverage
+htmlcov/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Autres
+*.swp
+*.bak
+
+# Artefacts volumineux (garder seulement les traces courtes)
+assets/videos/*.jsonl
+assets/demos/*/trace_*.jsonl
+assets/plots/*.png
+artifacts/*/
+!artifacts/golden/
+!artifacts/test_dry_run.json/
+!artifacts/release_v1.2.0_dry_run/
+artifacts/golden/*_long.jsonl
+
+# Modèles IA (téléchargés à la volée)
+*.pt
+*.pth
+*.onnx
+*.bin
+
+# Répertoires de paquets (ne doivent jamais être commit)
+**/site-packages/**
+**/lib/python*/site-packages/**

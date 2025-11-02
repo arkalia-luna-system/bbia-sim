@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+  bbia-sim:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - BBIA_TOKEN=bbia-secret-key-dev
+      - PYTHONPATH=/app
+    volumes:
+      - ./logs:/app/logs
+      - ./src/bbia_sim/sim/assets:/app/src/bbia_sim/sim/assets
+    command:
+      [
+        "python",
+        "-m",
+        "uvicorn",
+        "src.bbia_sim.daemon.app.main:app",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "8000",
+        "--reload",
+      ]
+    restart: unless-stopped
+
+  # Service pour les tests
+  bbia-test:
+    build: .
+    environment:
+      - BBIA_TOKEN=bbia-secret-key-dev
+      - PYTHONPATH=/app
+    volumes:
+      - ./tests:/app/tests
+      - ./src:/app/src
+    command: ["python", "-m", "pytest", "tests/", "-v"]
+    depends_on:
+      - bbia-sim

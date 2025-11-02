@@ -64,6 +64,10 @@ class TestBBIATools:
 
     def test_execute_move_head(self, tools, mock_robot_api):
         """Test exécution move_head."""
+        try:
+            import reachy_mini.utils  # noqa: F401
+        except ImportError:
+            pytest.skip("reachy_mini non disponible")
         with patch("reachy_mini.utils.create_head_pose") as mock_pose:
             mock_pose.return_value = MagicMock()
 
@@ -142,6 +146,10 @@ class TestBBIATools:
 
     def test_dance_with_recorded_moves(self, tools, mock_robot_api):
         """Test exécution dance avec RecordedMoves."""
+        try:
+            import reachy_mini.motion.recorded_move  # noqa: F401
+        except ImportError:
+            pytest.skip("reachy_mini non disponible")
         with patch("reachy_mini.motion.recorded_move.RecordedMoves") as mock_recorded:
             mock_instance = MagicMock()
             mock_recorded.return_value = mock_instance

@@ -106,14 +106,17 @@ class BBIAVoiceAdvanced:
         if not self.use_coqui and PYTTSX3_AVAILABLE:
             logger.info("🔄 Utilisation fallback pyttsx3")
             try:
-                from .bbia_voice import get_bbia_voice
+                # OPTIMISATION PERFORMANCE: Utiliser cache global au lieu de pyttsx3.init() direct
+                from .bbia_voice import _get_pyttsx3_engine, _get_cached_voice_id
 
-                self.pyttsx3_engine = pyttsx3.init()
-                self.pyttsx3_voice_id = get_bbia_voice(self.pyttsx3_engine)
+                self.pyttsx3_engine = (
+                    _get_pyttsx3_engine()
+                )  # Utilise cache global (0ms après premier appel)
+                self.pyttsx3_voice_id = _get_cached_voice_id()  # Utilise cache voice ID
                 self.pyttsx3_engine.setProperty("voice", self.pyttsx3_voice_id)
                 self.pyttsx3_engine.setProperty("rate", 170)
                 self.pyttsx3_engine.setProperty("volume", 1.0)
-                logger.info("✅ Fallback pyttsx3 initialisé")
+                logger.info("✅ Fallback pyttsx3 initialisé (avec cache)")
             except Exception as e:
                 logger.error(f"❌ Erreur initialisation fallback: {e}")
                 self.pyttsx3_engine = None

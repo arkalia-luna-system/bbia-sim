@@ -126,6 +126,10 @@ class TestBBIAVocalTremor:
 
     def test_update_audio_level(self, vocal_tremor):
         """Test mise à jour niveau audio."""
+        try:
+            import reachy_mini.utils  # noqa: F401
+        except ImportError:
+            pytest.skip("reachy_mini non disponible")
         vocal_tremor.start()
 
         with patch("reachy_mini.utils.create_head_pose") as mock_pose:

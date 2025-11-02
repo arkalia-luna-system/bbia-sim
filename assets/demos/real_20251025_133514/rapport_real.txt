@@ -1,0 +1,16 @@
+Mouvements joints BBIA
+==================================================
+
+📊 STATISTIQUES GÉNÉRALES:
+  - Durée totale: 4.88s
+  - Nombre de mesures: 404
+  - Joints testés: 1
+  - Fréquence moyenne: 82.7 Hz
+
+🔧 JOINT YAW_BODY:
+  - Position min: 0.001 rad
+  - Position max: 0.200 rad
+  - Position moyenne: 0.130 rad
+  - Amplitude: 0.199 rad
+  ✅ Limites sécurité respectées
+

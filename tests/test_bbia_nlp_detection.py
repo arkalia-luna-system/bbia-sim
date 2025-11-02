@@ -206,7 +206,7 @@ class TestSmolVLM2Vision(unittest.TestCase):
         except ImportError as e:
             self.skipTest(f"Module non disponible: {e}")
 
-    @patch("src.bbia_sim.bbia_huggingface.PIL.Image")
+    @patch("src.bbia_sim.bbia_huggingface.Image")
     def test_smolvlm_available(self, mock_image: MagicMock) -> None:
         """Test vérification disponibilité SmolVLM2."""
         # Simuler modèle disponible
@@ -219,7 +219,7 @@ class TestSmolVLM2Vision(unittest.TestCase):
             logger.warning(f"⚠️ SmolVLM2 non testable: {e}")
             self.skipTest(f"SmolVLM2 non disponible: {e}")
 
-    @patch("src.bbia_sim.bbia_huggingface.PIL.Image.open")
+    @patch("src.bbia_sim.bbia_huggingface.Image.open")
     def test_moondream2_available(self, mock_open: MagicMock) -> None:
         """Test vérification disponibilité Moondream2."""
         try:

@@ -1,0 +1,16 @@
+Démo happy - Mouvements joints
+==================================================
+
+📊 STATISTIQUES GÉNÉRALES:
+  - Durée totale: 9.68s
+  - Nombre de mesures: 422882
+  - Joints testés: 1
+  - Fréquence moyenne: 43695.1 Hz
+
+🔧 JOINT YAW_BODY:
+  - Position min: -0.185 rad
+  - Position max: 0.185 rad
+  - Position moyenne: -0.001 rad
+  - Amplitude: 0.371 rad
+  ✅ Limites sécurité respectées
+
