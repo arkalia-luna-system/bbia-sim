@@ -394,7 +394,7 @@ class DocsVerifier:
             elif in_table and not line.strip():
                 in_table = False
     
-    def verify_all(self, links_only: bool = False, spell_only: bool = False, mermaid_only: bool = False) -> dict[str, Any]:
+    def verify_all(self, links_only: bool = False, spell_only: bool = False, mermaid_only: bool = False, code_consistency: bool = False) -> dict[str, Any]:
         """Exécute toutes les vérifications."""
         print("🔍 Recherche fichiers MD...")
         self.md_files = self.find_all_md_files()
@@ -433,6 +433,8 @@ class DocsVerifier:
                     self.check_dates(md_file, content)
                     self.check_spelling(md_file, content)
                     self.check_tables(md_file, content)
+                    if code_consistency:
+                        self.check_code_consistency(md_file, content)
                 else:
                     # Vérifications spécifiques
                     if links_only:
@@ -441,6 +443,8 @@ class DocsVerifier:
                         self.check_mermaid(md_file, content)
                     if spell_only:
                         self.check_spelling(md_file, content)
+                    if code_consistency:
+                        self.check_code_consistency(md_file, content)
                 
             except Exception as e:
                 # Ignorer erreurs sur fichiers cachés macOS
@@ -535,6 +539,11 @@ def main() -> int:
         action="store_true",
         help="Vérifier uniquement les schémas Mermaid"
     )
+    parser.add_argument(
+        "--code-consistency",
+        action="store_true",
+        help="Vérifier cohérence avec code réel (fichiers, classes mentionnés)"
+    )
     
     args = parser.parse_args()
     
@@ -542,7 +551,8 @@ def main() -> int:
     results = verifier.verify_all(
         links_only=args.links_only,
         spell_only=args.spell_only,
-        mermaid_only=args.mermaid_only
+        mermaid_only=args.mermaid_only,
+        code_consistency=args.code_consistency or (not args.links_only and not args.spell_only and not args.mermaid_only)
     )
     verifier.print_report(results)
     
