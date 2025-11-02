@@ -35,15 +35,17 @@
    - **Implémenté** : Fonctions `get_app_start_time()` et `format_uptime()`
    - **Statut** : ✅ Complété
 
-2. ⚠️ **Ligne ~124** : `active_connections=0` → **EN COURS**
-   - **Action** : Infrastructure préparée avec `get_active_connections()`
-   - **Restant** : Implémenter tracking réel via gestionnaire WebSocket
-   - **Statut** : ⏳ En cours (nécessite intégration avec gestionnaire WS)
+2. ✅ **Ligne ~124** : `active_connections=0` → **TERMINÉ**
+   - **Action** : Implémentation complète de `get_active_connections()`
+   - **Implémenté** : Tracking réel via gestionnaires WebSocket (telemetry + général)
+   - **Fallback** : Retourne 0 si aucun manager disponible
+   - **Statut** : ✅ Complété
 
-3. ⏳ **Ligne ~408** : `# TODO: Implémenter la logique de démarrage de démo`
-   - **Action** : Logique pour démarrer une démo automatiquement
-   - **Complexité** : Moyenne
-   - **Statut** : ⏳ À faire
+3. ✅ **Ligne ~454** : `@router.post("/demo/start")` → **TERMINÉ**
+   - **Action** : Logique de démarrage de démo automatique implémentée
+   - **Implémenté** : Endpoint `/demo/start` avec modes (simulation, robot_real, mixed)
+   - **Fonctionnalités** : Durée configurable, émotion optionnelle, arrêt automatique
+   - **Statut** : ✅ Complété
 
 ---
 

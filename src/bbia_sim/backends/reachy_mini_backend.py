@@ -1208,22 +1208,46 @@ class ReachyMiniBackend(RobotAPI):
     # ===== SUPPORT MODULES IO ET MEDIA =====
 
     @property
-    def io(self) -> object | None:
-        """Accès au module IO du robot."""
-        if not self.is_connected or not self.robot:
-            logger.warning("Mode simulation: io non disponible")
-            return None
-        result = getattr(self.robot, "io", None)
-        return result  # type: ignore[no-any-return]
+    def io(self) -> object:
+        """Accès au module IO du robot.
+        
+        Retourne toujours un objet IO valide :
+        - robot.io du SDK si robot physique disponible
+        - SimulationIOModule si en mode simulation
+        
+        Returns:
+            Module IO (SDK ou simulation)
+        """
+        if self.robot and hasattr(self.robot, "io") and self.robot.io:
+            return self.robot.io  # type: ignore[no-any-return]
+        
+        # Mode simulation : retourner shim de simulation
+        from .simulation_shims import SimulationIOModule
+        
+        if not hasattr(self, "_sim_io_module"):
+            self._sim_io_module = SimulationIOModule()
+        return self._sim_io_module
 
     @property
-    def media(self) -> object | None:
-        """Accès au module Media du robot."""
-        if not self.is_connected or not self.robot:
-            logger.warning("Mode simulation: media non disponible")
-            return None
-        result = getattr(self.robot, "media", None)
-        return result  # type: ignore[no-any-return]
+    def media(self) -> object:
+        """Accès au module Media du robot.
+        
+        Retourne toujours un objet Media valide :
+        - robot.media du SDK si robot physique disponible
+        - SimulationMediaModule si en mode simulation
+        
+        Returns:
+            Module Media (SDK ou simulation)
+        """
+        if self.robot and hasattr(self.robot, "media") and self.robot.media:
+            return self.robot.media  # type: ignore[no-any-return]
+        
+        # Mode simulation : retourner shim de simulation
+        from .simulation_shims import SimulationMediaModule
+        
+        if not hasattr(self, "_sim_media_module"):
+            self._sim_media_module = SimulationMediaModule()
+        return self._sim_media_module
 
     # ===== MÉTHODES UTILITAIRES POUR MOVE =====
 

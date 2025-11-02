@@ -125,15 +125,24 @@ class BBIAVision:
             "night_vision": False,
         }
 
-        # Vérifier disponibilité robot.media.camera
+        # Vérifier disponibilité robot.media.camera (toujours disponible via shim)
         self._camera_sdk_available = False
         self._camera = None
-        if robot_api and hasattr(robot_api, "media") and robot_api.media:
+        if robot_api and hasattr(robot_api, "media"):
             try:
-                self._camera = getattr(robot_api.media, "camera", None)
-                if self._camera is not None:
-                    self._camera_sdk_available = True
-                    logger.info("✅ Caméra SDK disponible: robot.media.camera")
+                media = robot_api.media
+                # Media est maintenant toujours disponible (shim en simulation)
+                if media:
+                    self._camera = getattr(media, "camera", None)
+                    if self._camera is not None:
+                        # Vérifier si c'est une vraie caméra SDK ou un shim
+                        from ..backends.simulation_shims import SimulationCamera
+                        if isinstance(self._camera, SimulationCamera):
+                            self._camera_sdk_available = False
+                            logger.debug("Caméra simulation (shim) disponible")
+                        else:
+                            self._camera_sdk_available = True
+                            logger.info("✅ Caméra SDK disponible: robot.media.camera")
             except Exception as e:
                 logger.debug(f"Caméra SDK non disponible (fallback simulation): {e}")
 

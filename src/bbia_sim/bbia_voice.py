@@ -256,18 +256,19 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
             # Fallback vers logique pyttsx3 plus bas
             pass  # noqa: S101 - Fallback silencieux vers pyttsx3 si tous les backends TTS échouent
 
-    # OPTIMISATION SDK: Utiliser robot.media.* si disponible (sans dépendre de pyttsx3)
+    # OPTIMISATION SDK: Utiliser robot.media.* si disponible (toujours disponible via shim)
     # Priorité stricte: media.play_audio(bytes[, volume]) puis media.speaker.*
-    if robot_api and hasattr(robot_api, "media") and robot_api.media:
-        try:
-            media = robot_api.media
+    if robot_api and hasattr(robot_api, "media"):
+        media = robot_api.media
+        # Media est maintenant toujours disponible (shim en simulation)
+        if media:
+            try:
+                # Générer un court WAV en mémoire (silence 100ms) pour garantir un flux audio
+                import io as _io
+                import struct as _struct
+                import wave as _wave
 
-            # Générer un court WAV en mémoire (silence 100ms) pour garantir un flux audio
-            import io as _io
-            import struct as _struct
-            import wave as _wave
-
-            sr = 16000
+                sr = 16000
             num_samples = int(0.1 * sr)
             silence = b"".join(_struct.pack("<h", 0) for _ in range(num_samples))
 

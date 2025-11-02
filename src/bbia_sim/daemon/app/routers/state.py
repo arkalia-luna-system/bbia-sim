@@ -79,10 +79,14 @@ def _read_sdk_telemetry() -> dict[str, Any] | None:
             if robot_obj is None:
                 return None
 
-            # Le SDK expose généralement robot.media
+            # Le SDK expose généralement robot.media (maintenant toujours disponible via shim)
             media_mgr = getattr(robot_obj, "media", None)
             if media_mgr is None:
-                return None
+                # Vérifier si c'est le backend qui a le shim
+                if hasattr(backend, "media"):
+                    media_mgr = backend.media
+                if media_mgr is None:
+                    return None
 
             # Batterie (si disponible)
             battery_level = None

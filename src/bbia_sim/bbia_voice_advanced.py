@@ -252,6 +252,7 @@ class BBIAVoiceAdvanced:
         try:
             if self.robot_api and hasattr(self.robot_api, "media"):
                 media = self.robot_api.media
+                # Media est maintenant toujours disponible (shim en simulation)
                 # Essayer play_audio(bytes, volume)
                 try:
                     with open(audio_path, "rb") as f:

@@ -85,12 +85,15 @@ def _get_robot_media_microphone(
         robot_api: Interface RobotAPI (optionnel)
 
     Returns:
-        robot.media.microphone ou None
+        robot.media.microphone ou None (jamais None si robot_api.media est disponible)
     """
-    if robot_api and hasattr(robot_api, "media") and robot_api.media:
+    if robot_api and hasattr(robot_api, "media"):
         try:
-            result = getattr(robot_api.media, "microphone", None)
-            return result  # type: ignore[no-any-return]
+            media = robot_api.media
+            # Media est maintenant toujours disponible (shim en simulation)
+            if media:
+                result = getattr(media, "microphone", None)
+                return result  # type: ignore[no-any-return]
         except Exception:
             return None
     return None
@@ -169,8 +172,9 @@ def enregistrer_audio(
     if not _is_safe_path(fichier):
         raise ValueError("Chemin de sortie non autorisé (path traversal)")
 
-    # OPTIMISATION SDK: Utiliser robot.media.microphone si disponible
+    # OPTIMISATION SDK: Utiliser robot.media.microphone si disponible (toujours disponible via shim)
     microphone_sdk = _get_robot_media_microphone(robot_api)
+    # microphone_sdk peut être None uniquement si robot_api.media n'existe pas du tout
     if microphone_sdk is not None:
         try:
             # OPTIMISATION SDK: Enregistrement via robot.media.record_audio()
@@ -278,13 +282,16 @@ def lire_audio(fichier: str, robot_api: Optional["RobotAPI"] = None) -> None:
             # Ignorer toute erreur côté soundfile, fallback plus bas
             pass
 
-    # OPTIMISATION SDK: Utiliser robot.media.speaker si disponible
-    if robot_api and hasattr(robot_api, "media") and robot_api.media:
-        try:
-            speaker = getattr(robot_api.media, "speaker", None)
-            play_audio = getattr(robot_api.media, "play_audio", None)
+    # OPTIMISATION SDK: Utiliser robot.media.speaker si disponible (toujours disponible via shim)
+    if robot_api and hasattr(robot_api, "media"):
+        media = robot_api.media
+        # Media est maintenant toujours disponible (shim en simulation)
+        if media:
+            try:
+                speaker = getattr(media, "speaker", None)
+                play_audio = getattr(media, "play_audio", None)
 
-            if play_audio is not None:
+                if play_audio is not None:
                 # OPTIMISATION SDK: Lecture via robot.media.play_audio()
                 # Bénéfice: Haut-parleur 5W optimisé hardware avec qualité supérieure
                 logging.info(f"Lecture via SDK (haut-parleur 5W) : {fichier}...")
