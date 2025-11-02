@@ -443,8 +443,9 @@ class DocsVerifier:
                         self.check_mermaid(md_file, content)
                     if spell_only:
                         self.check_spelling(md_file, content)
-                    if code_consistency:
-                        self.check_code_consistency(md_file, content)
+                # Toujours vérifier code consistency si demandé
+                if code_consistency:
+                    self.check_code_consistency(md_file, content)
                 
             except Exception as e:
                 # Ignorer erreurs sur fichiers cachés macOS
