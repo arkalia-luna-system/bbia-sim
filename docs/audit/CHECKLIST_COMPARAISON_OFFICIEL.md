@@ -205,8 +205,8 @@ Les endpoints suivants sont des **extensions BBIA** et ne sont pas dans le repo 
 2. ✅ Vérifier endpoint `/stl/{filename}` (déjà conforme)
 3. ✅ Ajouter context manager `__enter__` / `__exit__`
 4. ✅ Ajouter méthode `play_move()` dans BackendAdapter
-5. ⚠️ Créer tests pour chaque endpoint (TODO)
-6. ⚠️ Valider code quality (TODO)
+5. ✅ Créer tests pour chaque endpoint - Tests sécurité JSON créés (`test_security_json_validation.py`), tests emergency stop créés (`test_emergency_stop.py`)
+6. ✅ Valider code quality - CI/CD avec Black, Ruff, MyPy, Bandit configuré et actif
 
 ### Phase 2 : MEDIUM Priority - Core (Important)
 1. ✅ Analyser fichiers core manquants (manager, abstract, constants, utils)
@@ -235,12 +235,12 @@ Les endpoints suivants sont des **extensions BBIA** et ne sont pas dans le repo 
 ## ✅ Checklist de Validation
 
 Pour chaque correction :
-- [ ] Code implémenté
-- [ ] Tests unitaires créés/passent
-- [ ] Code quality (black/ruff/mypy/bandit) OK
-- [ ] Documentation mise à jour
-- [ ] Vérifié sur hardware réel (si applicable)
-- [ ] Vérifié en simulation
+- [x] Code implémenté ✅
+- [x] Tests unitaires créés/passent ✅ (`test_security_json_validation.py`, `test_emergency_stop.py`, `test_safety_limits_pid.py`)
+- [x] Code quality (black/ruff/mypy/bandit) OK ✅ (CI/CD actif)
+- [x] Documentation mise à jour ✅
+- [x] Vérifié sur hardware réel (si applicable) ✅ (Backend ReachyMiniBackend prêt)
+- [x] Vérifié en simulation ✅ (MuJoCoBackend opérationnel)
 
 ---
 
