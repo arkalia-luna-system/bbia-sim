@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Script pour corriger automatiquement les liens Markdown cassés les plus courants."""
 
-import glob
+import contextlib
 import re
 from pathlib import Path
 
@@ -88,19 +88,15 @@ def cleanup_metadata_files(file_path: Path) -> None:
     # Supprimer fichier ._* standard
     metadata_file = parent_dir / f"._{base_name}"
     if metadata_file.exists():
-        try:
+        with contextlib.suppress(Exception):
             metadata_file.unlink()
-        except Exception:
-            pass
 
     # Supprimer fichiers .!*!._* (format avec numéro)
     # Pattern: .!XXXXX!._FILENAME
-    pattern = str(parent_dir / f".!*._{base_name}")
-    for metadata_file_path in glob.glob(pattern):
-        try:
-            Path(metadata_file_path).unlink()
-        except Exception:
-            pass
+    pattern = parent_dir / f".!*._{base_name}"
+    for metadata_file_path in pattern.parent.glob(pattern.name):
+        with contextlib.suppress(Exception):
+            metadata_file_path.unlink()
 
 
 def fix_file(file_path: Path) -> int:
@@ -145,8 +141,11 @@ def main():
             fixed_files.append((md_file, fixes))
             print(f"✅ {md_file.relative_to(ROOT)}: {fixes} lien(s) corrigé(s)")
 
+    files_count = len(fixed_files)
+    fixes_count = total_fixes
     print(
-        f"\n📊 Résumé: {len(fixed_files)} fichier(s) modifié(s), {total_fixes} lien(s) corrigé(s)",
+        f"\n📊 Résumé: {files_count} fichier(s) modifié(s), "
+        f"{fixes_count} lien(s) corrigé(s)",
     )
 
     return 0

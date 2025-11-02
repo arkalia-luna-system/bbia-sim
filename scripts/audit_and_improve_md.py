@@ -4,7 +4,7 @@
 2. Améliorer présentation (moderne, professionnelle, impactante)
 """
 
-import glob
+import contextlib
 import re
 from pathlib import Path
 from typing import Any
@@ -18,18 +18,14 @@ def cleanup_metadata_files(file_path: Path) -> None:
     # Supprimer fichier ._* standard
     metadata_file = parent_dir / f"._{base_name}"
     if metadata_file.exists():
-        try:
+        with contextlib.suppress(Exception):
             metadata_file.unlink()
-        except Exception:
-            pass
 
     # Supprimer fichiers .!*!._* (format avec numéro)
-    pattern = str(parent_dir / f".!*._{base_name}")
-    for metadata_file_path in glob.glob(pattern):
-        try:
-            Path(metadata_file_path).unlink()
-        except Exception:
-            pass
+    pattern = parent_dir / f".!*._{base_name}"
+    for metadata_file_path in pattern.parent.glob(pattern.name):
+        with contextlib.suppress(Exception):
+            metadata_file_path.unlink()
 
 
 def verify_md_claims(md_file: Path) -> dict[str, Any]:
@@ -185,9 +181,10 @@ def main():
         if verification["issues"]:
             print(f"   ⚠️  {len(verification['issues'])} problèmes détectés")
             for issue in verification["issues"]:
-                print(
-                    f"      - {issue['type']}: {issue['value']} (ligne {issue['line']})",
-                )
+                issue_type = issue["type"]
+                issue_value = issue["value"]
+                issue_line = issue["line"]
+                print(f"      - {issue_type}: {issue_value} (ligne {issue_line})")
         else:
             print("   ✅ Aucun problème de véracité")
 

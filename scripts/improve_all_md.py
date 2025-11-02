@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Améliore tous les fichiers MD : vérifie véracité + style moderne professionnel."""
 
+import contextlib
 import re
 from pathlib import Path
 from typing import Any
@@ -16,18 +17,14 @@ def cleanup_metadata_files(file_path: Path) -> None:
     # Supprimer fichier ._* standard
     metadata_file = parent_dir / f"._{base_name}"
     if metadata_file.exists():
-        try:
+        with contextlib.suppress(Exception):
             metadata_file.unlink()
-        except Exception:
-            pass
 
     # Supprimer fichiers .!*!._* (format avec numéro)
-    pattern = str(parent_dir / f".!*._{base_name}")
-    for metadata_file_path in glob.glob(pattern):
-        try:
-            Path(metadata_file_path).unlink()
-        except Exception:
-            pass
+    pattern = parent_dir / f".!*._{base_name}"
+    for metadata_file_path in pattern.parent.glob(pattern.name):
+        with contextlib.suppress(Exception):
+            metadata_file_path.unlink()
 
 
 def verify_content(file_path: Path) -> list[str]:
@@ -46,9 +43,11 @@ def verify_content(file_path: Path) -> list[str]:
             # Vérifier si nombre spécifié est correct
             emotion_match = re.search(r"(\d+)\s+émotions?", content, re.IGNORECASE)
             if emotion_match and emotion_match.group(1) != "12":
-                issues.append(
-                    f"Nombre d'émotions incorrect: {emotion_match.group(1)} (devrait être 12)",
+                emotion_count = emotion_match.group(1)
+                issue_msg = (
+                    f"Nombre d'émotions incorrect: {emotion_count} " "(devrait être 12)"
                 )
+                issues.append(issue_msg)
 
     return issues
 

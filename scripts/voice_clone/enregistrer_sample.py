@@ -19,7 +19,10 @@ def main() -> None:
 
     print(f"[REC] Enregistrement {args.dur}s → {args.out} (mono {args.sr}Hz)")
     audio = sd.rec(
-        int(args.dur * args.sr), samplerate=args.sr, channels=1, dtype="float32",
+        int(args.dur * args.sr),
+        samplerate=args.sr,
+        channels=1,
+        dtype="float32",
     )
     sd.wait()
     sf.write(args.out, audio, args.sr)

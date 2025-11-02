@@ -14,7 +14,7 @@ Usage:
 """
 
 import argparse
-import glob
+import contextlib
 import json
 import re
 import subprocess
@@ -76,8 +76,12 @@ def get_first_commit_date() -> str | None:
         first_date = result.stdout.strip().split("\n")[0]
         if first_date:
             return first_date.split()[0]  # Juste la date YYYY-MM-DD
-    except Exception:
-        pass
+    except Exception as e:
+        # Git peut ne pas être disponible ou le repo peut ne pas avoir de commits
+        import logging
+
+        logger = logging.getLogger(__name__)
+        logger.debug(f"Impossible de récupérer la date git: {e}")
     return None
 
 
@@ -170,19 +174,15 @@ def cleanup_metadata_files(file_path: Path) -> None:
     # Supprimer fichier ._* standard
     metadata_file = parent_dir / f"._{base_name}"
     if metadata_file.exists():
-        try:
+        with contextlib.suppress(Exception):
             metadata_file.unlink()
-        except Exception:
-            pass
 
     # Supprimer fichiers .!*!._* (format avec numéro)
     # Pattern: .!XXXXX!._FILENAME
-    pattern = str(parent_dir / f".!*._{base_name}")
-    for metadata_file_path in glob.glob(pattern):
-        try:
-            Path(metadata_file_path).unlink()
-        except Exception:
-            pass
+    pattern = parent_dir / f".!*._{base_name}"
+    for metadata_file_path in pattern.parent.glob(pattern.name):
+        with contextlib.suppress(Exception):
+            metadata_file_path.unlink()
 
 
 def correct_dates_in_content(content: str, file_path: Path) -> tuple[str, list[str]]:
@@ -302,9 +302,8 @@ def main():
             except Exception as e:
                 print(f"❌ Erreur {md_file}: {e}")
 
-        print(
-            f"\n✅ {len(files_changed)} fichiers modifiés ({total_changes} changements)",
-        )
+        files_count = len(files_changed)
+        print(f"\n✅ {files_count} fichiers modifiés ({total_changes} changements)")
 
 
 if __name__ == "__main__":

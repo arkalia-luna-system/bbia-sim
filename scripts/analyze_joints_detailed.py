@@ -62,7 +62,8 @@ def analyze_joints(xml_path: str):
             safe_joints.append((name, joint_range, "TRÈS SÛR"))
         elif "stewart" in name:  # Joints Stewart - risqués
             range_size = joint_range[1] - joint_range[0]
-            if range_size > 2.0:
+            STEWART_RANGE_THRESHOLD = 2.0
+            if range_size > STEWART_RANGE_THRESHOLD:
                 status = "⚠️ RISKY"
                 risky_joints.append((name, joint_range, "PROBLÉMATIQUE"))
             else:

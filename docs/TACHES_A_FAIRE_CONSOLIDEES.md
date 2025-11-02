@@ -47,7 +47,7 @@ Les éléments suivants sont **déjà implémentés** et validés :
 1. ✅ ~~Créer `tests/test_dashboard_advanced.py`~~ - **TERMINÉ** (**47 tests**, **1156 lignes**)
 2. ✅ ~~Améliorer coverage de `tests/test_dashboard_advanced.py`~~ - **TERMINÉ** (38.82% → **76.71%**, +38%, objectif 70%+ **DÉPASSÉ** ✅)
 3. ✅ ~~Étendre `tests/test_vision_yolo_comprehensive.py`~~ - **TERMINÉ** (89.62% coverage ✅)
-4. ⚠️ **Étendre tests `voice_whisper.py`** (**38.33%** → 50%+, ~1-2h restantes)
+4. ✅ ~~Étendre tests `voice_whisper.py`~~ - **TERMINÉ** (**59.83%** coverage ✅, objectif 50%+ atteint)
 5. ✅ ~~Étendre `tests/test_daemon_bridge.py`~~ - **TERMINÉ** (31.23% coverage ✅)
 
 ---

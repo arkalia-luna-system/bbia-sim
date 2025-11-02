@@ -47,7 +47,7 @@
 - `daemon/bridge.py` : 10+ tests
 - `voice_whisper.py` : 30+ tests
 
-**Coverage amélioré total** : **+167.56%** cumulé
+**Coverage amélioré total** : **+145.06%** cumulé
 - `dashboard_advanced.py` : +37.89%
 - `vision_yolo.py` : +61.88%
 - `daemon/bridge.py` : +31.23%

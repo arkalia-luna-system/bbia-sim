@@ -27,7 +27,7 @@ Usage:
 """
 
 import argparse
-import glob
+import contextlib
 import re
 from collections import defaultdict
 from pathlib import Path
@@ -372,19 +372,15 @@ class DocsVerifier:
         # Supprimer fichier ._* standard
         metadata_file = parent_dir / f"._{base_name}"
         if metadata_file.exists():
-            try:
+            with contextlib.suppress(Exception):
                 metadata_file.unlink()
-            except Exception:
-                pass
 
         # Supprimer fichiers .!*!._* (format avec numéro)
         # Pattern: .!XXXXX!._FILENAME
-        pattern = str(parent_dir / f".!*._{base_name}")
-        for metadata_file_path in glob.glob(pattern):
-            try:
-                Path(metadata_file_path).unlink()
-            except Exception:
-                pass
+        pattern = parent_dir / f".!*._{base_name}"
+        for metadata_file_path in pattern.parent.glob(pattern.name):
+            with contextlib.suppress(Exception):
+                metadata_file_path.unlink()
 
     def find_all_md_files(self, limit_docs: bool = True) -> list[Path]:
         """Trouve tous les fichiers MD (optimisé - limite aux docs principaux par défaut)."""

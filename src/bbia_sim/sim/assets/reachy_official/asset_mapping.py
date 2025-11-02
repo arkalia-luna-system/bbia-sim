@@ -77,7 +77,7 @@ def get_asset_path(component_name: str) -> str:
 
 def get_available_assets() -> dict[str, str]:
     """Retourne les assets disponibles avec leur chemin."""
-    return {name: get_asset_path(name) for name in OFFICIAL_ASSETS.keys()}
+    return {name: get_asset_path(name) for name in OFFICIAL_ASSETS}
 
 
 def get_official_assets() -> dict[str, str]:

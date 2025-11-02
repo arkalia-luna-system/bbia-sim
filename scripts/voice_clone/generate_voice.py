@@ -170,7 +170,9 @@ def synthesize_with_coqui(
                     raise
                 # Fallback macOS say (voix féminine) si disponible
                 if _try_macos_say(
-                    text, out_path, os.environ.get("BBIA_SAY_VOICE", "Aurelie"),
+                    text,
+                    out_path,
+                    os.environ.get("BBIA_SAY_VOICE", "Aurelie"),
                 ):
                     print("[INFO] Fallback macOS say (voix): Aurelie")
                     _log_event("Fallback macOS say utilisé (Aurelie)")
@@ -188,7 +190,8 @@ def synthesize_with_coqui(
         else:
             # Pas de ref: utiliser modèle FR simple par défaut
             use_model = model_override or os.environ.get(
-                "BBIA_COQUI_MODEL", "tts_models/fr/css10/vits",
+                "BBIA_COQUI_MODEL",
+                "tts_models/fr/css10/vits",
             )
             tts = TTS(use_model)
             tts.tts_to_file(text=text, file_path=out_path)
@@ -242,12 +245,15 @@ def _try_macos_say(text: str, out_path: str, voice: str = "Aurelie") -> bool:
                     "LEI16",
                     out_path,
                 ],
-                check=False, capture_output=True,
+                check=False,
+                capture_output=True,
             )
             converted = r2.returncode == 0
         if not converted and shutil.which("ffmpeg") is not None:
             r3 = subprocess.run(
-                ["ffmpeg", "-y", "-i", tmp_path, out_path], check=False, capture_output=True,
+                ["ffmpeg", "-y", "-i", tmp_path, out_path],
+                check=False,
+                capture_output=True,
             )
             converted = r3.returncode == 0
         try:
@@ -305,7 +311,9 @@ def main() -> None:
     p = argparse.ArgumentParser()
     p.add_argument("--text", required=True)
     p.add_argument(
-        "--mode", choices=["douce", "enfant", "enthousiaste"], default="douce",
+        "--mode",
+        choices=["douce", "enfant", "enthousiaste"],
+        default="douce",
     )
     p.add_argument("--out", default="assets/voice/out.wav")
     p.add_argument("--ref", default=None, help="WAV de référence (voix personnelle)")
@@ -342,7 +350,12 @@ def main() -> None:
     )
 
     ok = synthesize_with_coqui(
-        text, args.out, args.ref, args.model, args.lang, args.force_clone,
+        text,
+        args.out,
+        args.ref,
+        args.model,
+        args.lang,
+        args.force_clone,
     )
     if ok:
         print("[OK] WAV généré:", args.out)

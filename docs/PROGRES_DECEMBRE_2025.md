@@ -145,7 +145,7 @@
 **Modules améliorés** :
 - ✅ **`vision_yolo.py`** : **89.62% coverage** ✅ (objectif 50%+ largement dépassé)
 - ✅ **`daemon/bridge.py`** : **31.23% coverage** ✅ (objectif 30%+ atteint, +31.23% depuis 0%)
-- ⬆️ **`voice_whisper.py**: **38.33%** (+15.06% depuis 23.27%, **18+ tests ajoutés**)
+- ✅ **`voice_whisper.py`** : **59.83% coverage** ✅ (+36.56% depuis 23.27%, **30+ tests ajoutés**)
 
 **Tests ajoutés** :
 - ✅ 10+ tests pour `daemon/bridge.py` (start, stop, send_command, get_current_state, is_connected)

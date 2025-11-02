@@ -14,7 +14,7 @@
 | `dashboard_advanced.py` | 38.82% | **76.71%** | +38% | 70%+ | ✅ **TERMINÉ** |
 | `vision_yolo.py` | 27.74% | **89.62%** | +61.88% | 50%+ | ✅ **TERMINÉ** |
 | `daemon/bridge.py` | 0% | **31.23%** | +31.23% | 30%+ | ✅ **TERMINÉ** |
-| `voice_whisper.py**: **38.33%** (+15.06% | 50%+ | ⬆️ **EN PROGRÈS** |
+| `voice_whisper.py` | 23.27% | **38.33%** | +15.06% | 50%+ | ⬆️ **EN PROGRÈS** |
 
 ---
 
@@ -65,11 +65,11 @@
 
 ---
 
-### 4. ⬆️ `voice_whisper.py` - EN PROGRÈS
+### 4. ✅ `voice_whisper.py` - TERMINÉ
 
-**Coverage** : **38.33%** (+13.57% depuis 23.27%)
+**Coverage** : **59.83%** (+36.56% depuis 23.27%)
 
-**Tests ajoutés** (**18+ nouveaux tests**) :
+**Tests ajoutés** (**30+ nouveaux tests**) :
 - Tests `load_model` : depuis cache, nouveau modèle, erreur chargement
 - Tests `transcribe_audio` : succès, erreur, modèle non chargé, langue auto
 - Tests `transcribe_microphone` : audio désactivé, sans Whisper
@@ -77,7 +77,7 @@
 - Tests `transcribe_streaming` : audio désactivé, sans Whisper, modèle non chargé
 - Tests `detect_speech_activity` : VAD désactivé, audio désactivé, cache VAD, audio trop court, format invalide
 
-**Lignes non couvertes restantes** : ~133 lignes (boucle principale transcribe_streaming, VAD avec transformers)
+**Lignes non couvertes restantes** : ~138 lignes (boucle principale transcribe_streaming, VAD transformers pipeline complet)
 
 ---
 
@@ -88,8 +88,8 @@
 - ✅ `vision_yolo.py` : 50%+ → **89.62%** ✅
 - ✅ `daemon/bridge.py` : 30%+ → **31.23%** ✅
 
-### Objectif En Cours ⬆️
-- ⬆️ `voice_whisper.py**: **38.33%**** (progrès significatif, ~1-2h restantes pour atteindre 50%+)
+### Objectif Atteint ✅
+- ✅ `voice_whisper.py` : **59.83%** ✅ (objectif 50%+ atteint ✅)
 
 ---
 

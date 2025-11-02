@@ -173,8 +173,13 @@ class ExhaustiveConformityAnalyzer:
 
         measures["bbia"] = {k: v for k, v in bbia_measures.items() if v is not None}
         measures["official"] = official_measures
+        # Tolérance pour comparaison de mesures (10cm)
+        MEASURE_TOLERANCE = 0.1
         measures["conformity"] = {
-            k: abs(measures["bbia"].get(k, 0) - official_measures.get(k, 0)) < 0.1
+            k: (
+                abs(measures["bbia"].get(k, 0) - official_measures.get(k, 0))
+                < MEASURE_TOLERANCE
+            )
             for k in official_measures
         }
 
@@ -246,7 +251,7 @@ class ExhaustiveConformityAnalyzer:
         previous_report = self.bbia_root / "logs/comparison_official_results.json"
         if previous_report.exists():
             try:
-                with open(previous_report) as f:
+                with previous_report.open(encoding="utf-8") as f:
                     previous_data = json.load(f)
                     self.results["api_endpoints"] = {
                         "summary": previous_data.get("summary", {}),
@@ -354,7 +359,7 @@ class ExhaustiveConformityAnalyzer:
 
     def save_results(self, output_path: Path) -> None:
         """Sauvegarde les résultats."""
-        with open(output_path, "w", encoding="utf-8") as f:
+        with output_path.open("w", encoding="utf-8") as f:
             json.dump(self.results, f, indent=2, ensure_ascii=False)
         logger.info(f"✅ Résultats sauvegardés: {output_path}")
 
