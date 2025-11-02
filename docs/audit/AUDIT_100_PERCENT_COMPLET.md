@@ -1,6 +1,6 @@
 # Audit BBIA → Reachy – bilan
 
-**Date**: Oct / No2025025025025025
+**Date**: Oct / Oct / Nov. 20255
 **Statut**: audit complété et validé
 
 ---

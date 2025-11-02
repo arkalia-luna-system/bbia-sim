@@ -1,6 +1,6 @@
 # Guide DeepFace - Reconnaissance Visage Personnalisée + Émotions
 
-**Date** : Oct / No2025025025025025
+**Date** : Oct / Oct / Nov. 20255
 **Compatibilité** : ✅ SDK Reachy Mini officiel, open-source, gratuit
 
 ---

@@ -157,7 +157,7 @@ class Matrix4x4Pose(BaseModel):
             float,
             float,
         ] = tuple(
-            arr.flatten().tolist()
+            arr.flatten().tolist(),
         )  # type: ignore[assignment]
         return cls(m=m)
 
@@ -173,8 +173,7 @@ def as_any_pose(pose: npt.NDArray[np.float64], use_matrix: bool) -> AnyPose:
     """Convertit un array numpy en AnyPose (conforme SDK)."""
     if use_matrix:
         return Matrix4x4Pose.from_pose_array(pose)
-    else:
-        return XYZRPYPose.from_pose_array(pose)
+    return XYZRPYPose.from_pose_array(pose)
 
 
 class FullBodyTarget(BaseModel):
@@ -197,9 +196,9 @@ class FullBodyTarget(BaseModel):
                         "yaw": 0.0,
                     },
                     "target_antennas": [0.0, 0.0],
-                }
-            ]
-        }
+                },
+            ],
+        },
     }
 
 

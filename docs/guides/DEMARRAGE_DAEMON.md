@@ -1,6 +1,6 @@
 # 🚀 Guide de Démarrage du Daemon BBIA-SIM
 
-**Date:** Oct / No2025025025025025
+**Date:** Oct / Oct / Nov. 20255
 **Note importante:** ✅ Fonctionne en mode simulation (MuJoCo) **sans robot physique**
 
 ---

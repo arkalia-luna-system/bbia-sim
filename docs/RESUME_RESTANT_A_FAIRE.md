@@ -35,7 +35,7 @@
 - **Fichier test** : `tests/test_vision_yolo_comprehensive.py` (existe déjà)
 - **Statut** : ✅ **TERMINÉ** - Coverage excellent, objectif largement dépassé
 
-#### 2. `voice_whisper.py` - **36.84%** → objectif 50%+ (en cours)
+#### 2. `voice_whisper.py**: **59.83%**** → objectif 50%+ (en cours)
 - **Fichiers tests** : `tests/test_vad_streaming.py`, `tests/test_ia_modules.py`
 - **Progrès** : 18+ nouveaux tests ajoutés (+13.57% depuis 23.27%)
 - **Actions restantes** :

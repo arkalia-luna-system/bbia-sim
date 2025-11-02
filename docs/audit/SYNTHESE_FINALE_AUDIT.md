@@ -4,7 +4,7 @@
 >
 > Voir `docs/status.md` → "État par axe" pour l’état actuel et les axes d’amélioration post‑audit.
 
-**Date**: Oct / No2025025025025025
+**Date**: Oct / Oct / Nov. 20255
 **Référentiel**: pollen-robotics/reachy_mini@84c40c3
 **Statut**: complet - toutes corrections appliquées
 
@@ -180,5 +180,5 @@ Le projet BBIA est maintenant conforme au SDK Reachy Mini officiel avec toutes l
 
 **Généré par**: Audit automatisé + corrections manuelles
 **Version**: 1.0
-**Date**: Oct / No2025025025025025
+**Date**: Oct / Oct / Nov. 20255
 

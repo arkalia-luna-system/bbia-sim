@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Validateur de traces golden pour RobotAPI
+"""Validateur de traces golden pour RobotAPI
 Compare une trace courante avec une référence et valide les tolérances
 """
 
@@ -26,6 +25,7 @@ def compare(ref, cur, tol_q=0.05, tol_rate=0.15):
 
     Returns:
         tuple: (ok, metrics)
+
     """
     assert len(ref) > 10 and len(cur) > 10, "Traces trop courtes"
 
@@ -60,10 +60,16 @@ def main():
     ap.add_argument("--ref", required=True, help="Fichier de référence")
     ap.add_argument("--cur", required=True, help="Fichier courant")
     ap.add_argument(
-        "--tol-q", type=float, default=0.05, help="Tolérance position (rad)"
+        "--tol-q",
+        type=float,
+        default=0.05,
+        help="Tolérance position (rad)",
     )
     ap.add_argument(
-        "--tol-rate", type=float, default=0.15, help="Tolérance cadence (%)"
+        "--tol-rate",
+        type=float,
+        default=0.15,
+        help="Tolérance cadence (%)",
     )
     args = ap.parse_args()
 
@@ -71,7 +77,7 @@ def main():
     print(f"   • Référence: {args.ref}")
     print(f"   • Courante: {args.cur}")
     print(f"   • Tolérance position: ±{args.tol_q} rad")
-    print(f"   • Tolérance cadence: ±{args.tol_rate*100:.1f}%")
+    print(f"   • Tolérance cadence: ±{args.tol_rate * 100:.1f}%")
 
     try:
         ref, cur = load(args.ref), load(args.cur)
@@ -87,9 +93,8 @@ def main():
         if ok:
             print("\n✅ Validation réussie")
             return 0
-        else:
-            print("\n❌ Validation échouée")
-            return 1
+        print("\n❌ Validation échouée")
+        return 1
 
     except Exception as e:
         print(f"\n❌ Erreur validation: {e}")

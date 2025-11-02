@@ -108,13 +108,15 @@ class UnityReachyMiniController:
                 command = input("🤖 BBIA > ").strip().lower()
                 if command in {"quit", "exit"}:
                     break
-                elif command == "help":
+                if command == "help":
                     self._show_help()
                 elif command == "status":
                     print(
-                        "Status: Connected"
-                        if self.is_connected
-                        else "Status: Disconnected"
+                        (
+                            "Status: Connected"
+                            if self.is_connected
+                            else "Status: Disconnected"
+                        ),
                     )
                 elif command.startswith("head "):
                     parts = command.split()[1:]
@@ -124,7 +126,7 @@ class UnityReachyMiniController:
                             self.move_head(x, y, z)
                         except ValueError:
                             print(
-                                "❌ Valeurs invalides pour head. Utilisez: head x y z"
+                                "❌ Valeurs invalides pour head. Utilisez: head x y z",
                             )
                     else:
                         print("❌ Commande head invalide. Utilisez: head x y z")

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Veille Reachy Mini: recherche de dépôts/profils proches et scoring de similarité.
+"""Veille Reachy Mini: recherche de dépôts/profils proches et scoring de similarité.
 
 Fonctions:
 - Recherche GitHub (API v3) avec liste de mots-clés configurés
@@ -98,12 +97,14 @@ def ensure_log_csv(path: str) -> None:
                     "score",
                     "details_json",
                     "description",
-                ]
+                ],
             )
 
 
 def github_search_repos(
-    keywords: list[str], gh_token: str | None, since_date: str | None = None
+    keywords: list[str],
+    gh_token: str | None,
+    since_date: str | None = None,
 ) -> list[dict]:
     headers = {"Accept": "application/vnd.github+json"}
     if gh_token:
@@ -288,7 +289,9 @@ def _is_reachy_mini_text(text: str) -> bool:
 
 
 def search_github_candidates(
-    keywords: list[str], gh_token: str | None, since_date: str | None = None
+    keywords: list[str],
+    gh_token: str | None,
+    since_date: str | None = None,
 ) -> list[Candidate]:
     repos = github_search_repos(keywords, gh_token, since_date=since_date)
     cands: list[Candidate] = []
@@ -301,7 +304,8 @@ def search_github_candidates(
         # Filtrage strict Reachy Mini
         text = f"{full_name} {desc}".lower()
         plausible = _is_reachy_mini_text(text) or signals.get(
-            "topic_reachy_mini", False
+            "topic_reachy_mini",
+            False,
         )
         identifier = html_url or full_name
         if plausible:
@@ -313,7 +317,7 @@ def search_github_candidates(
                     description=desc,
                     score=score,
                     details=signals,
-                )
+                ),
             )
     return cands
 
@@ -352,7 +356,7 @@ def search_hf_candidates(keywords: list[str]) -> list[Candidate]:
                         description=desc,
                         score=score,
                         details=signals,
-                    )
+                    ),
                 )
         except Exception as exc:  # pragma: no cover
             print(f"[veille][hf] Erreur pour '{kw}': {exc}", file=sys.stderr)
@@ -376,7 +380,7 @@ def write_csv_rows(path: str, candidates: list[Candidate]) -> None:
                     c.score,
                     json.dumps(c.details, ensure_ascii=False),
                     c.description,
-                ]
+                ],
             )
 
 
@@ -454,7 +458,9 @@ def get_previous_timestamp_iso(path: str) -> str | None:
 
 
 def write_diff_json(
-    path: str, prev: dict[str, dict[str, Any]], curr: list[Candidate]
+    path: str,
+    prev: dict[str, dict[str, Any]],
+    curr: list[Candidate],
 ) -> None:
     now = dt.datetime.utcnow().isoformat()
     curr_map: dict[str, dict[str, Any]] = {
@@ -484,7 +490,7 @@ def write_diff_json(
                     "identifier": i,
                     "prev_score": prev_score,
                     "curr_score": curr_score,
-                }
+                },
             )
 
     payload = {
@@ -551,7 +557,9 @@ def main(argv: list[str]) -> int:
     # Optionnel: petite pause entre sources pour ménager les quotas
     prev_overall_ts = get_previous_timestamp_iso(out_json)
     gh_candidates = search_github_candidates(
-        keywords, gh_token, since_date=prev_overall_ts
+        keywords,
+        gh_token,
+        since_date=prev_overall_ts,
     )
     if sleep_between > 0:
         try:
@@ -570,9 +578,9 @@ def main(argv: list[str]) -> int:
 
         def _is_official(c: Candidate) -> bool:
             return c.identifier.startswith(
-                "https://github.com/pollen-robotics/"
+                "https://github.com/pollen-robotics/",
             ) or c.identifier.startswith(
-                "https://huggingface.co/spaces/pollen-robotics/"
+                "https://huggingface.co/spaces/pollen-robotics/",
             )
 
         all_candidates = [c for c in all_candidates if not _is_official(c)]
@@ -614,20 +622,19 @@ def main(argv: list[str]) -> int:
         pass
     if not only_changes:
         print(
-            f"[veille] {len(all_candidates)} candidats consignés dans {out_csv} et {out_json}"
+            f"[veille] {len(all_candidates)} candidats consignés dans {out_csv} et {out_json}",
         )
         print(
-            f"[veille] Nouveaux: {changes_new}, Retirés: {changes_removed}, Scores modifiés: {changes_scores}"
+            f"[veille] Nouveaux: {changes_new}, Retirés: {changes_removed}, Scores modifiés: {changes_scores}",
         )
         for c in all_candidates[:10]:
             print(f"  - [{c.score}] {c.title} -> {c.identifier}")
-    else:
-        if changes_new or changes_removed or changes_scores:
-            print(
-                f"[veille] Changements détectés — Nouveaux:{changes_new} Retirés:{changes_removed} Scores:{changes_scores}"
-            )
-            for c in all_candidates[:5]:
-                print(f"  - [{c.score}] {c.title} -> {c.identifier}")
+    elif changes_new or changes_removed or changes_scores:
+        print(
+            f"[veille] Changements détectés — Nouveaux:{changes_new} Retirés:{changes_removed} Scores:{changes_scores}",
+        )
+        for c in all_candidates[:5]:
+            print(f"  - [{c.score}] {c.title} -> {c.identifier}")
 
     # Notifications ciblées: nouveaux candidats non-officiels et score >= seuil, avec API/WS/Dashboard
     try:
@@ -637,7 +644,7 @@ def main(argv: list[str]) -> int:
 
         def _is_official_identifier(ident: str) -> bool:
             return ident.startswith(
-                "https://github.com/pollen-robotics/"
+                "https://github.com/pollen-robotics/",
             ) or ident.startswith("https://huggingface.co/spaces/pollen-robotics/")
 
         def _has_signal(d: dict) -> bool:
@@ -670,7 +677,8 @@ def main(argv: list[str]) -> int:
             sess.headers.update(headers)
 
             repo = sess.get(
-                "https://api.github.com/repos/pollen-robotics/reachy_mini", timeout=20
+                "https://api.github.com/repos/pollen-robotics/reachy_mini",
+                timeout=20,
             )
             if repo.status_code == 200:
                 rj = repo.json()
@@ -682,7 +690,7 @@ def main(argv: list[str]) -> int:
                         "open_issues": rj.get("open_issues_count"),
                         "pushed_at": rj.get("pushed_at"),
                         "default_branch": default_branch,
-                    }
+                    },
                 )
                 rel = sess.get(
                     "https://api.github.com/repos/pollen-robotics/reachy_mini/releases/latest",
@@ -725,21 +733,24 @@ def main(argv: list[str]) -> int:
                     status["news_file_path"] = official_news_file
                     status["news_file_mtime"] = mtime
                     status["news_file_mtime_iso"] = time.strftime(
-                        "%Y-%m-%dT%H:%M:%SZ", time.gmtime(mtime)
+                        "%Y-%m-%dT%H:%M:%SZ",
+                        time.gmtime(mtime),
                     )
                     status["news_file_sha256"] = hashlib.sha256(blob).hexdigest()
                     # Heuristiques de parsing
                     lower = text.lower()
                     # beta_units: chercher "beta shipments" et un nombre proche
                     m_beta = re.search(
-                        r"beta\s+shipments[^\d]*(\d{1,4})\s+units", lower
+                        r"beta\s+shipments[^\d]*(\d{1,4})\s+units",
+                        lower,
                     )
                     if m_beta:
                         status.setdefault("shipping", {})
                         status["shipping"]["beta_units"] = int(m_beta.group(1))
                     # plan_units_q4: "around 3,000 Reachy-mini units" (tolérer virgule)
                     m_plan = re.search(
-                        r"around\s+([\d,]+)\s+reachy[-\s]?mini\s+units", lower
+                        r"around\s+([\d,]+)\s+reachy[-\s]?mini\s+units",
+                        lower,
                     )
                     if m_plan:
                         try:
@@ -797,7 +808,7 @@ def main(argv: list[str]) -> int:
                 )
             if changed_fields:
                 print(
-                    f"[veille] Officiel: {len(changed_fields)} changement(s) détecté(s)."
+                    f"[veille] Officiel: {len(changed_fields)} changement(s) détecté(s).",
                 )
         except Exception as exc:  # pragma: no cover
             print(f"[veille][official] Erreur suivi officiel: {exc}", file=sys.stderr)

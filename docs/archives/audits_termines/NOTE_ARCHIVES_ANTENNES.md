@@ -4,26 +4,26 @@
 Ce document a été archivé car il est devenu obsolète ou a été remplacé par une version plus récente.
 Il est conservé à des fins de référence historique uniquement.
 
-**Date d'archivage** : Oct / No2025025025025025
+**Date d'archivage** : Oct / Oct / Nov. 20255
 **Raison** : Document terminé/obsolète/remplacé
 ---
 
 # 📝 NOTE SUR LES ARCHIVES - ANTENNES
 
-**Date** : Oct / No2025025025025025  
+**Date** : Oct / Oct / Nov. 20255  
 **Objet** : Clarification sur les fichiers d'archives
 
 ---
 
 ## ℹ️ INFORMATIONS IMPORTANTES
 
-Les fichiers dans `docs/archives/` contiennent des **références historiques** datant d'avant la correction des antennes (Oct / No2025025025025025).
+Les fichiers dans `docs/archives/` contiennent des **références historiques** datant d'avant la correction des antennes (Oct / Oct / Nov. 20255).
 
 Ces fichiers mentionnent encore que les antennes sont bloquées, ce qui était **correct à l'époque** mais **plus maintenant**.
 
 ---
 
-## ✅ STATUT ACTUEL (Oct / No2025025025025025)
+## ✅ STATUT ACTUEL (Oct / Oct / Nov. 20255)
 
 **Les antennes sont maintenant ANIMABLES** avec limites de sécurité (-0.3 à 0.3 rad).
 

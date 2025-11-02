@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Configuration globale pour déterminisme et sécurité
+"""Configuration globale pour déterminisme et sécurité
 SEED global, limites sûres, failsafe
 """
 
@@ -89,7 +88,8 @@ class GlobalConfig:
     def clamp_amplitude(cls, amplitude: float) -> float:
         """Clamp une amplitude dans les limites sûres."""
         clamped = max(
-            -cls.SAFE_AMPLITUDE_LIMIT, min(cls.SAFE_AMPLITUDE_LIMIT, amplitude)
+            -cls.SAFE_AMPLITUDE_LIMIT,
+            min(cls.SAFE_AMPLITUDE_LIMIT, amplitude),
         )
         if clamped != amplitude:
             logger.warning(f"Amplitude clampée: {amplitude} → {clamped}")

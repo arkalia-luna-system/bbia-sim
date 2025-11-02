@@ -80,7 +80,7 @@ class GotoModelRequest(BaseModel):
                     "interpolation": "linear",
                 },
             ],
-        }
+        },
     }
 
 
@@ -103,7 +103,7 @@ def create_move_task(coro: Coroutine[Any, Any, None]) -> MoveUUID:
                         "type": message,
                         "uuid": str(uuid),
                         "details": details,
-                    }
+                    },
                 )
             except (RuntimeError, WebSocketDisconnect):
                 disconnected.append(ws)
@@ -153,7 +153,7 @@ async def stop_move_task(uuid: UUID) -> dict[str, str]:
 @router.get("/running")
 async def get_running_moves() -> list[MoveUUID]:
     """Récupère la liste des mouvements en cours."""
-    return [MoveUUID(uuid=uuid) for uuid in move_tasks.keys()]
+    return [MoveUUID(uuid=uuid) for uuid in move_tasks]
 
 
 @router.post("/goto")
@@ -169,7 +169,7 @@ async def goto(
             head=goto_req.head_pose.to_pose_array() if goto_req.head_pose else None,
             antennas=np.array(goto_req.antennas) if goto_req.antennas else None,
             duration=goto_req.duration,
-        )
+        ),
     )
 
 
@@ -287,7 +287,7 @@ async def ws_set_target(websocket: WebSocket) -> None:
                 await set_target(target, backend)
             except Exception as e:
                 await websocket.send_text(
-                    json.dumps({"status": "error", "detail": str(e)})
+                    json.dumps({"status": "error", "detail": str(e)}),
                 )
     except WebSocketDisconnect:
         pass

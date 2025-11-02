@@ -185,10 +185,10 @@ bandit -r src/
 2. ✅ ~~Créer `test_dashboard_advanced.py`~~ - **TERMINÉ** (**47 tests**, **76.71%** coverage ✅)
 3. ✅ ~~Améliorer `test_vision_yolo_comprehensive.py`~~ - **TERMINÉ** (**89.62%** coverage ✅)
 4. ✅ ~~Améliorer `test_daemon_bridge.py`~~ - **TERMINÉ** (**31.23%** coverage ✅)
-5. ⚠️ **Améliorer `voice_whisper.py`** - **EN PROGRÈS** (**36.84%** → 50%+, ~1-2h restantes)
+5. ⚠️ **Améliorer `voice_whisper.py**: **59.83%**** → 50%+, ~1-2h restantes)
 
 ### Court terme (semaine)
-1. ⚠️ Améliorer coverage `voice_whisper.py` (36.84% → 50%+, ~1-2h)
+1. ⚠️ Améliorer coverage `voice_whisper.py**: **59.83%** → 50%+, ~1-2h)
 2. ✅ Coverage dashboard, vision_yolo, bridge : **TERMINÉ** ✅
 
 ### Moyen terme (mois)

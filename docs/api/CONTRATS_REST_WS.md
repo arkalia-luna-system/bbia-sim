@@ -1,10 +1,14 @@
-# Contrats REST & WebSocket
+# 📡 Contrats REST & WebSocket
 
-> Compatibilité Python: 3.11+
->
-> Liens utiles: `docs/references/INDEX_THEMATIQUE.md`, `docs/status.md`
+**Date** : Oct / Nov. 2025  
+**Version** : 1.0  
+**Compatibilité Python** : 3.11+
+
+> **Liens utiles** : [`docs/references/INDEX_THEMATIQUE.md`](../references/INDEX_THEMATIQUE.md), [`docs/status.md`](../status.md)
 
 **📚 [Guide intégration](../guides_techniques/INTEGRATION_GUIDE.md)** | **📊 [CI/CD Pipeline](../ci/PIPELINE_CI.md)**
+
+---
 
 ## Architecture REST & WebSocket
 

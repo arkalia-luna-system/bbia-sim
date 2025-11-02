@@ -122,7 +122,7 @@
 ### Priorité 1 : Coverage Tests
 1. ✅ ~~Continuer amélioration `dashboard_advanced.py`~~ - **TERMINÉ** (76.71%, objectif 70%+ **DÉPASSÉ** ✅)
 2. ✅ ~~Améliorer `vision_yolo.py`~~ - **TERMINÉ** (**89.62%**, objectif 50%+ largement dépassé ✅)
-3. ⚠️ **Améliorer `voice_whisper.py`** - **EN PROGRÈS** (**36.84%** → 50%+, priorité 1, ~1-2h restantes)
+3. ⚠️ **Améliorer `voice_whisper.py**: **59.83%**** → 50%+, priorité 1, ~1-2h restantes)
 4. ✅ ~~Améliorer `daemon/bridge.py`~~ - **TERMINÉ** (**31.23%**, objectif 30%+ atteint ✅)
 
 ### Priorité 2 : Liens MD
@@ -145,11 +145,11 @@
 **Modules améliorés** :
 - ✅ **`vision_yolo.py`** : **89.62% coverage** ✅ (objectif 50%+ largement dépassé)
 - ✅ **`daemon/bridge.py`** : **31.23% coverage** ✅ (objectif 30%+ atteint, +31.23% depuis 0%)
-- ⬆️ **`voice_whisper.py`** : **36.84% coverage** ⬆️ (+13.57% depuis 23.27%, 21+ tests ajoutés)
+- ⬆️ **`voice_whisper.py**: **59.83%** coverage** ⬆️ (+13.57% depuis 23.27%, **18+ tests ajoutés**)
 
 **Tests ajoutés** :
 - ✅ 10+ tests pour `daemon/bridge.py` (start, stop, send_command, get_current_state, is_connected)
-- ✅ 21+ tests pour `voice_whisper.py` (load_model, transcribe_audio, VAD, streaming edge cases)
+- ✅ **18+ tests** pour `voice_whisper.py` (load_model, transcribe_audio, VAD, streaming edge cases)
 
 **Vérifications qualité** :
 - ✅ Black : Formatage appliqué

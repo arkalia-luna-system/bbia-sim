@@ -29,7 +29,8 @@ def _reachy_alive() -> dict[str, Any]:
             backend.disconnect()
         except Exception as cleanup_error:
             logging.getLogger(__name__).warning(
-                "Cleanup disconnect failed in _reachy_alive: %s", cleanup_error
+                "Cleanup disconnect failed in _reachy_alive: %s",
+                cleanup_error,
             )
 
 
@@ -58,5 +59,6 @@ async def sanity_emergency_stop() -> dict[str, Any]:
             backend.disconnect()
         except Exception as cleanup_error:
             logging.getLogger(__name__).warning(
-                "Cleanup disconnect failed in sanity_emergency_stop: %s", cleanup_error
+                "Cleanup disconnect failed in sanity_emergency_stop: %s",
+                cleanup_error,
             )

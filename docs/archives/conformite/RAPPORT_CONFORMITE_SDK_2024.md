@@ -1,5 +1,5 @@
 # 📊 RAPPORT DE CONFORMITÉ SDK REACHY-MINI
-**Date:** Oct / No2025025025025025
+**Date:** Oct / Oct / Nov. 20255
 **Version:** BBIA-SIM v1.3.0
 **SDK Cible:** reachy_mini (Pollen Robotics)
 
@@ -317,7 +317,7 @@ Au-delà du SDK officiel, BBIA-SIM offre:
 
 ### 1. Test Robot Physique (Priorité 1)
 ```bash
-# Quand le Reachy-Mini arrive (Oct / No2025025025025025)
+# Quand le Reachy-Mini arrive (Oct / Oct / Nov. 20255)
 python examples/demo_reachy_mini_corrigee.py --backend reachy_mini --real
 ```
 
@@ -372,6 +372,6 @@ python examples/demo_bbia_phase2_integration.py --real
 
 ---
 
-*Rapport généré automatiquement le Oct / No2025025025025025*
+*Rapport généré automatiquement le Oct / Oct / Nov. 20255*
 *BBIA-SIM v1.3.0 - Conformité SDK Reachy-Mini*
 

@@ -27,6 +27,7 @@ class AppInfo:
             source_kind: Source (huggingface, local, etc.)
             installed: Si l'app est installée
             status: Statut (running, stopped, etc.)
+
         """
         self.name = name
         self.source_kind = source_kind
@@ -53,6 +54,7 @@ class AppStatus:
             name: Nom de l'application
             status: Statut (running, stopped, error)
             running: Si l'app est en cours d'exécution
+
         """
         self.name = name
         self.status = status
@@ -88,6 +90,7 @@ async def list_available_apps(source_kind: str) -> list[dict[str, Any]]:
 
     Returns:
         Liste des applications disponibles
+
     """
     apps: list[dict[str, Any]] = _bbia_apps_manager["available_apps"]
     filtered: list[dict[str, Any]] = [
@@ -102,6 +105,7 @@ async def list_all_available_apps() -> list[dict[str, Any]]:
 
     Returns:
         Liste de toutes les applications disponibles
+
     """
     apps: list[dict[str, Any]] = _bbia_apps_manager["available_apps"]
     return apps
@@ -116,6 +120,7 @@ async def install_app(app_info: dict[str, Any]) -> dict[str, str]:
 
     Returns:
         ID du job en arrière-plan
+
     """
     app_name = app_info.get("name", "unknown")
     logger.info(f"Installation de l'application: {app_name}")
@@ -130,7 +135,7 @@ async def install_app(app_info: dict[str, Any]) -> dict[str, str]:
                 "name": app_name,
                 "source_kind": app_info.get("source_kind", "huggingface"),
                 "installed": True,
-            }
+            },
         )
 
     return {"job_id": job_id}
@@ -145,6 +150,7 @@ async def remove_app(app_name: str) -> dict[str, str]:
 
     Returns:
         ID du job en arrière-plan
+
     """
     logger.info(f"Suppression de l'application: {app_name}")
 
@@ -172,6 +178,7 @@ async def job_status(job_id: str) -> dict[str, Any]:
 
     Returns:
         Informations sur le job (status, logs, etc.)
+
     """
     # Simulation d'un job avec statut "completed" ou "running"
     return {
@@ -189,6 +196,7 @@ async def ws_apps_manager(websocket: WebSocket, job_id: str) -> None:
     Args:
         websocket: Connexion WebSocket
         job_id: ID du job à suivre
+
     """
     import asyncio
 
@@ -205,7 +213,7 @@ async def ws_apps_manager(websocket: WebSocket, job_id: str) -> None:
                     "status": "running" if i < 2 else "completed",
                     "progress": (i + 1) * 33,
                     "log": f"Étape {i + 1}/3 terminée",
-                }
+                },
             )
             await asyncio.sleep(0.5)
     except WebSocketDisconnect:
@@ -226,6 +234,7 @@ async def start_app(app_name: str) -> dict[str, Any]:
 
     Raises:
         HTTPException: Si l'app n'est pas installée ou erreur au démarrage
+
     """
     # Vérifier si l'app est installée
     installed = [app["name"] for app in _bbia_apps_manager["installed_apps"]] + [
@@ -236,7 +245,8 @@ async def start_app(app_name: str) -> dict[str, Any]:
 
     if app_name not in installed:
         raise HTTPException(
-            status_code=400, detail=f"Application '{app_name}' non installée"
+            status_code=400,
+            detail=f"Application '{app_name}' non installée",
         )
 
     # Démarrer l'app
@@ -256,11 +266,13 @@ async def restart_app() -> dict[str, Any]:
 
     Raises:
         HTTPException: Si aucune app n'est en cours d'exécution
+
     """
     current_app = _bbia_apps_manager.get("current_app")
     if not current_app:
         raise HTTPException(
-            status_code=400, detail="Aucune application en cours d'exécution"
+            status_code=400,
+            detail="Aucune application en cours d'exécution",
         )
 
     logger.info(f"Redémarrage de l'application: {current_app}")
@@ -277,11 +289,13 @@ async def stop_app() -> dict[str, Any] | None:
 
     Raises:
         HTTPException: Si aucune app n'est en cours d'exécution
+
     """
     current_app = _bbia_apps_manager.get("current_app")
     if not current_app:
         raise HTTPException(
-            status_code=400, detail="Aucune application en cours d'exécution"
+            status_code=400,
+            detail="Aucune application en cours d'exécution",
         )
 
     logger.info(f"Arrêt de l'application: {current_app}")
@@ -296,6 +310,7 @@ async def current_app_status() -> dict[str, Any] | None:
 
     Returns:
         Statut de l'app ou None si aucune app en cours
+
     """
     current_app = _bbia_apps_manager.get("current_app")
     if current_app:

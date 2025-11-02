@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Module bbia_voice_advanced.py
+"""Module bbia_voice_advanced.py
 Synthèse vocale avancée avec Coqui TTS pour BBIA-SIM.
 Résout tous les blocages macOS de pyttsx3 (pitch, émotion, tonalité contrôlables).
 
@@ -29,7 +28,7 @@ except ImportError:
     playsound = None
     logging.warning(
         "Coqui TTS non disponible. Installez avec: pip install TTS playsound\n"
-        "Fallback vers pyttsx3 activé."
+        "Fallback vers pyttsx3 activé.",
     )
 
 # Import fallback pyttsx3 (éviter import circulaire)
@@ -61,6 +60,7 @@ class BBIAVoiceAdvanced:
             use_coqui: Utiliser Coqui TTS si disponible, sinon fallback pyttsx3
             temp_dir: Répertoire temporaire pour fichiers audio (None = système)
             robot_api: Instance RobotAPI pour utiliser media.play_audio si disponible
+
         """
         self.use_coqui = use_coqui and COQUI_TTS_AVAILABLE
         self.temp_dir = Path(temp_dir) if temp_dir else Path(tempfile.gettempdir())
@@ -94,7 +94,7 @@ class BBIAVoiceAdvanced:
                 logger.info("✅ Coqui TTS initialisé avec succès")
             except Exception as e:
                 logger.warning(
-                    f"⚠️  Erreur initialisation Coqui TTS, fallback activé: {e}"
+                    f"⚠️  Erreur initialisation Coqui TTS, fallback activé: {e}",
                 )
                 self.use_coqui = False
 
@@ -139,6 +139,7 @@ class BBIAVoiceAdvanced:
 
         Returns:
             True si succès, False sinon
+
         """
         # Vérifier flag d'environnement pour désactiver audio (CI/headless)
         if os.environ.get("BBIA_DISABLE_AUDIO", "0") == "1":
@@ -154,11 +155,10 @@ class BBIAVoiceAdvanced:
         try:
             if self.use_coqui and self.tts:
                 return self._say_coqui(text, emotion, pitch, speed, volume)
-            elif self.pyttsx3_engine:
+            if self.pyttsx3_engine:
                 return self._say_pyttsx3(text, speed, volume)
-            else:
-                logger.error("❌ Aucun moteur TTS disponible")
-                return False
+            logger.error("❌ Aucun moteur TTS disponible")
+            return False
         except Exception as e:
             logger.error(f"❌ Erreur synthèse vocale: {e}")
             return False
@@ -204,7 +204,7 @@ class BBIAVoiceAdvanced:
             # Synthétiser
             logger.info(
                 f"🎤 Synthèse Coqui: '{text[:50]}...' "
-                f"(émotion={emotion}, pitch={pitch_value:.2f})"
+                f"(émotion={emotion}, pitch={pitch_value:.2f})",
             )
 
             # Note: Certains modèles Coqui TTS supportent directement pitch/emotion
@@ -308,6 +308,7 @@ class BBIAVoiceAdvanced:
 
         Args:
             emotion: Émotion BBIA (happy, sad, excited, etc.)
+
         """
         if emotion in self.emotion_map:
             self.current_emotion = emotion
@@ -331,6 +332,7 @@ class BBIAVoiceAdvanced:
 
         Returns:
             True si succès
+
         """
         emotion_config = self.emotion_map.get(bbia_emotion, self.emotion_map["neutral"])
 
@@ -369,6 +371,7 @@ def dire_texte_advanced(
 
     Returns:
         True si succès
+
     """
     # OPTIMISATION: Instance globale (lazy initialization)
     if "_global_voice_advanced" not in globals():
@@ -390,6 +393,7 @@ def dire_texte(texte: str) -> bool:
 
     Returns:
         True si succès
+
     """
     # Essayer Coqui TTS d'abord
     try:
@@ -402,7 +406,7 @@ def dire_texte(texte: str) -> bool:
             dire_texte_old(texte)  # Retourne None, mais exécution = succès
             return True
         except Exception as e:
-            logging.error(f"❌ Erreur synthèse vocale (tous moteurs): {e}")
+            logging.exception(f"❌ Erreur synthèse vocale (tous moteurs): {e}")
             return False
 
 

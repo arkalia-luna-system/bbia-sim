@@ -103,7 +103,7 @@ def correct_file(filepath: Path, dry_run: bool = False) -> tuple[int, list[str]]
 
 def main():
     """Correction principale."""
-    root = Path(".")
+    root = Path()
     md_files = sorted(root.rglob("*.md"))
     md_files = [
         f

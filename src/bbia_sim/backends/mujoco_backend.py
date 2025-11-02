@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-MuJoCoBackend - Implémentation MuJoCo de RobotAPI
+"""MuJoCoBackend - Implémentation MuJoCo de RobotAPI
 Backend pour simulation MuJoCo
 """
 
@@ -21,7 +20,8 @@ class MuJoCoBackend(RobotAPI):
     """Backend MuJoCo pour RobotAPI."""
 
     def __init__(
-        self, model_path: str = "src/bbia_sim/sim/models/reachy_mini_REAL_OFFICIAL.xml"
+        self,
+        model_path: str = "src/bbia_sim/sim/models/reachy_mini_REAL_OFFICIAL.xml",
     ) -> None:
         super().__init__()
         self.model_path = Path(model_path)
@@ -150,6 +150,7 @@ class MuJoCoBackend(RobotAPI):
                            - non utilisé en simulation
             initial_goto_duration: Durée goto initial (s, défaut 0.0)
                                   - non utilisé en simulation
+
         """
         if not self.is_connected:
             logger.warning("MuJoCo non connecté, impossible de jouer le mouvement")
@@ -235,14 +236,16 @@ class MuJoCoBackend(RobotAPI):
                 if self.model is not None:
                     for i in range(self.model.ntexture):
                         name = mujoco.mj_id2name(
-                            self.model, mujoco.mjtObj.mjOBJ_TEXTURE, i
+                            self.model,
+                            mujoco.mjtObj.mjOBJ_TEXTURE,
+                            i,
                         )
                         if name == "skybox_bbia":
                             logger.debug(f"Texture skybox_bbia trouvée à l'index {i}")
                             break
 
                 logger.info(
-                    "Viewer MuJoCo lancé (fond BBIA gris lunaire → bleu céleste)"
+                    "Viewer MuJoCo lancé (fond BBIA gris lunaire → bleu céleste)",
                 )
             except Exception as e:
                 logger.warning(f"Impossible de vérifier le skybox BBIA: {e}")
@@ -267,6 +270,7 @@ class MuJoCoBackend(RobotAPI):
             elevation: Angle vertical (-15 = légèrement au-dessus)
             distance: Distance du robot
             lookat: Point de visée [x, y, z] (défaut: [0, 0, 0.3])
+
         """
         if not self.viewer:
             logger.warning("Viewer non lancé, impossible de configurer la caméra")
@@ -281,7 +285,7 @@ class MuJoCoBackend(RobotAPI):
             else:
                 self.viewer.cam.lookat[:] = [0, 0, 0.3]
             logger.debug(
-                f"Caméra configurée: azimuth={azimuth}, elevation={elevation}, distance={distance}"
+                f"Caméra configurée: azimuth={azimuth}, elevation={elevation}, distance={distance}",
             )
             return True
         except Exception as e:

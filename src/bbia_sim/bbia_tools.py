@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-BBIA Tools - Outils LLM pour contrôle robot
+"""BBIA Tools - Outils LLM pour contrôle robot
 Expose les fonctions robot au LLM pour conversations intelligentes.
 
 Conforme à l'app conversationnelle officielle Reachy Mini.
@@ -32,6 +31,7 @@ class BBIATools:
             robot_api: Instance RobotAPI pour contrôle robot
             vision: Instance BBIAVision pour capture caméra
             hf_chat: Instance BBIAHuggingFace (optionnel)
+
         """
         self.robot_api = robot_api
         self.vision = vision
@@ -47,6 +47,7 @@ class BBIATools:
 
         Returns:
             Liste d'outils au format JSON Schema pour LLM function calling
+
         """
         return [
             {
@@ -229,7 +230,9 @@ class BBIATools:
         ]
 
     def execute_tool(
-        self, tool_name: str, parameters: dict[str, Any]
+        self,
+        tool_name: str,
+        parameters: dict[str, Any],
     ) -> dict[str, Any]:
         """Exécute un outil par son nom avec paramètres (conforme app officielle).
 
@@ -242,27 +245,27 @@ class BBIATools:
 
         Raises:
             ValueError: Si l'outil n'existe pas ou paramètres invalides
+
         """
         logger.info(f"🔧 Exécution outil: {tool_name} avec params: {parameters}")
 
         if tool_name == "move_head":
             return self._execute_move_head(parameters)
-        elif tool_name == "camera":
+        if tool_name == "camera":
             return self._execute_camera(parameters)
-        elif tool_name == "head_tracking":
+        if tool_name == "head_tracking":
             return self._execute_head_tracking(parameters)
-        elif tool_name == "dance":
+        if tool_name == "dance":
             return self._execute_dance(parameters)
-        elif tool_name == "stop_dance":
+        if tool_name == "stop_dance":
             return self._execute_stop_dance(parameters)
-        elif tool_name == "play_emotion":
+        if tool_name == "play_emotion":
             return self._execute_play_emotion(parameters)
-        elif tool_name == "stop_emotion":
+        if tool_name == "stop_emotion":
             return self._execute_stop_emotion(parameters)
-        elif tool_name == "do_nothing":
+        if tool_name == "do_nothing":
             return self._execute_do_nothing(parameters)
-        else:
-            raise ValueError(f"Outil inconnu: {tool_name}")
+        raise ValueError(f"Outil inconnu: {tool_name}")
 
     def _execute_move_head(self, parameters: dict[str, Any]) -> dict[str, Any]:
         """Exécute le mouvement de tête."""
@@ -352,7 +355,7 @@ class BBIATools:
                 summary_parts = []
                 if objects:
                     summary_parts.append(
-                        f"{len(objects)} objets détectés: {', '.join([o.get('name', 'unknown') for o in objects[:5]])}"
+                        f"{len(objects)} objets détectés: {', '.join([o.get('name', 'unknown') for o in objects[:5]])}",
                     )
                 if faces:
                     summary_parts.append(f"{len(faces)} visage(s) détecté(s)")
@@ -382,7 +385,8 @@ class BBIATools:
 
                 # Créer comportement avec vision et robot_api
                 tracking_behavior = VisionTrackingBehavior(
-                    self.vision, robot_api=self.robot_api
+                    self.vision,
+                    robot_api=self.robot_api,
                 )
                 # Exécuter le comportement de suivi visuel
                 context: dict[str, Any] = {}
@@ -392,16 +396,15 @@ class BBIATools:
                         "status": "success",
                         "detail": "Suivi visage activé - Objets détectés et suivis",
                     }
-                else:
-                    return {
-                        "status": "success",
-                        "detail": (
-                            "Suivi visage activé - Aucun objet détecté pour l'instant"
-                        ),
-                    }
+                return {
+                    "status": "success",
+                    "detail": (
+                        "Suivi visage activé - Aucun objet détecté pour l'instant"
+                    ),
+                }
             except ImportError:
                 logger.warning(
-                    "VisionTrackingBehavior non disponible - suivi basique activé"
+                    "VisionTrackingBehavior non disponible - suivi basique activé",
                 )
             except Exception as e:
                 logger.error(f"Erreur activation VisionTrackingBehavior: {e}")
@@ -418,7 +421,8 @@ class BBIATools:
 
         move_name = parameters.get("move_name")
         dataset = parameters.get(
-            "dataset", "pollen-robotics/reachy-mini-dances-library"
+            "dataset",
+            "pollen-robotics/reachy-mini-dances-library",
         )
 
         if not move_name:
@@ -434,7 +438,9 @@ class BBIATools:
             # Jouer le mouvement
             if hasattr(self.robot_api, "play_move"):
                 self.robot_api.play_move(
-                    move, play_frequency=100.0, initial_goto_duration=0.0
+                    move,
+                    play_frequency=100.0,
+                    initial_goto_duration=0.0,
                 )
             elif hasattr(self.robot_api, "async_play_move"):
                 import asyncio
@@ -474,7 +480,7 @@ class BBIATools:
                     stop_success = self.robot_api.emergency_stop()
                     if stop_success:
                         logger.info(
-                            f"Danse '{dance_name}' arrêtée via emergency_stop()"
+                            f"Danse '{dance_name}' arrêtée via emergency_stop()",
                         )
                         return {
                             "status": "success",
@@ -483,11 +489,10 @@ class BBIATools:
                                 "(arrêt d'urgence)"
                             ),
                         }
-                    else:
-                        logger.warning(f"emergency_stop() a échoué pour '{dance_name}'")
+                    logger.warning(f"emergency_stop() a échoué pour '{dance_name}'")
                 else:
                     logger.warning(
-                        "robot_api.emergency_stop() non disponible - arrêt basique"
+                        "robot_api.emergency_stop() non disponible - arrêt basique",
                     )
             except Exception as e:
                 logger.error(f"Erreur arrêt danse: {e}")

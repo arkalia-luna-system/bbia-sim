@@ -1,4 +1,4 @@
-# Plan de Nettoyage Documentation - Oct / No2025025025025025
+# Plan de Nettoyage Documentation - Oct / Oct / Nov. 20255
 
 **Objectif**: Organiser et nettoyer la documentation, éliminer les doublons, créer une structure claire.
 
@@ -111,7 +111,7 @@ docs/
 │   └── SWITCH_SIM_ROBOT.md            ✅ Garder
 │
 └── archives/                           # Archives historiques
-    ├── 2025-10/                       # Oct / No2025025025025025
+    ├── 2025-10/                       # Oct / Oct / Nov. 20255
     └── [autres périodes]/             # Autres archives
 ```
 

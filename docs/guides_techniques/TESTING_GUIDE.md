@@ -137,7 +137,7 @@ graph LR
     style REACHY fill:#BB8FCE
 ```
 
-### 🤖 Tests Backend Reachy Mini (Oct / No2025025025025025)
+### 🤖 Tests Backend Reachy Mini (Oct / Oct / Nov. 20255)
 
 **📊 Statistiques**:
 - ✅ **118 tests** répartis dans **8 fichiers complémentaires**
@@ -359,4 +359,4 @@ python -m pytest tests/test_config.py --cov=src --cov-report=term-missing
 
 ---
 
-*Dernière mise à jour : Oct / No2025025025025025*
+*Dernière mise à jour : Oct / Oct / Nov. 20255*

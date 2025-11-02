@@ -1,6 +1,6 @@
 # 📋 Checklist Exhaustive - Comparaison BBIA vs Repo Officiel
 
-> **Date**: Oct / No2025025025025025
+> **Date**: Oct / Oct / Nov. 20255
 > **Repo Officiel**: `/Volumes/T7/reachy_mini` (branch `develop`, commit `2ba17f1`)
 > **Total Différences**: 177
 
@@ -257,5 +257,5 @@ Pour chaque correction :
 
 ---
 
-**Dernière mise à jour**: Oct / No2025025025025025
+**Dernière mise à jour**: Oct / Oct / Nov. 20255
 

@@ -3,7 +3,7 @@
 import time
 from unittest.mock import Mock, patch
 
-from src.bbia_sim.sim.simulator import MuJoCoSimulator
+from bbia_sim.sim.simulator import MuJoCoSimulator
 
 
 class TestDurationFix:

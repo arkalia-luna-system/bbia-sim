@@ -51,7 +51,7 @@ class OfficialAlignmentChecker:
 
             # 1. Nombre de joints
             official_joints = len(
-                re.findall(r'<joint name="([^"]+)"', official_content)
+                re.findall(r'<joint name="([^"]+)"', official_content),
             )
             our_joints = len(re.findall(r'<joint name="([^"]+)"', our_content))
             results["comparisons"]["joints_count"] = {
@@ -62,7 +62,7 @@ class OfficialAlignmentChecker:
 
             # 2. Nombre d'actuateurs
             official_actuators = len(
-                re.findall(r'<actuator name="([^"]+)"', official_content)
+                re.findall(r'<actuator name="([^"]+)"', official_content),
             )
             our_actuators = len(re.findall(r'<actuator name="([^"]+)"', our_content))
             results["comparisons"]["actuators_count"] = {
@@ -91,10 +91,10 @@ class OfficialAlignmentChecker:
 
             # 5. Fichiers STL référencés
             official_stl_files = sorted(
-                set(re.findall(r'<mesh file="([^"]+\.stl)"', official_content))
+                set(re.findall(r'<mesh file="([^"]+\.stl)"', official_content)),
             )
             our_stl_files = sorted(
-                set(re.findall(r'<mesh file="([^"]+\.stl)"', our_content))
+                set(re.findall(r'<mesh file="([^"]+\.stl)"', our_content)),
             )
             results["comparisons"]["stl_files"] = {
                 "official": official_stl_files,
@@ -117,7 +117,7 @@ class OfficialAlignmentChecker:
             response.raise_for_status()
             official_content = response.text
             official_stl_files = sorted(
-                set(re.findall(r'<mesh file="([^"]+\.stl)"', official_content))
+                set(re.findall(r'<mesh file="([^"]+\.stl)"', official_content)),
             )
 
             # Vérifier nos assets
@@ -128,7 +128,7 @@ class OfficialAlignmentChecker:
                 return {"status": "error", "message": "Répertoire assets non trouvé"}
 
             our_stl_files = sorted(
-                [f for f in os.listdir(our_assets_dir) if f.endswith(".stl")]
+                [f for f in os.listdir(our_assets_dir) if f.endswith(".stl")],
             )
 
             results: dict[str, Any] = {
@@ -177,7 +177,8 @@ class OfficialAlignmentChecker:
 
             # Extraire les joints officiels
             official_joints = re.findall(
-                r'<joint name="([^"]+)"[^>]*range="([^"]+)"', official_content
+                r'<joint name="([^"]+)"[^>]*range="([^"]+)"',
+                official_content,
             )
             official_joint_ranges = dict(official_joints)
 
@@ -191,7 +192,8 @@ class OfficialAlignmentChecker:
 
             # Extraire nos joints
             our_joints = re.findall(
-                r'"([^"]+)": \(([^,]+), ([^)]+)\)', our_joints_content
+                r'"([^"]+)": \(([^,]+), ([^)]+)\)',
+                our_joints_content,
             )
             our_joint_ranges = {
                 name: (float(min_val), float(max_val))
@@ -206,10 +208,12 @@ class OfficialAlignmentChecker:
                     "official_count": len(official_joint_ranges),
                     "our_count": len(our_joint_ranges),
                     "missing_joints": list(
-                        set(official_joint_ranges.keys()) - set(our_joint_ranges.keys())
+                        set(official_joint_ranges.keys())
+                        - set(our_joint_ranges.keys()),
                     ),
                     "extra_joints": list(
-                        set(our_joint_ranges.keys()) - set(official_joint_ranges.keys())
+                        set(our_joint_ranges.keys())
+                        - set(official_joint_ranges.keys()),
                     ),
                 },
             }

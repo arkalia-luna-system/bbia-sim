@@ -178,8 +178,8 @@ async def get_full_state(
 
     Returns:
         État complet du robot (FullState - conforme SDK)
-    """
 
+    """
     result: dict[str, Any] = {}
 
     if with_control_mode:
@@ -240,7 +240,7 @@ async def get_full_state(
     if "temperature" not in result:
         result["temperature"] = 25.0
 
-    return cast(FullState, FullState.model_validate(result))
+    return cast("FullState", FullState.model_validate(result))
 
 
 @router.get("/position")
@@ -356,17 +356,16 @@ async def start_simulation() -> dict[str, Any]:
                 "message": "Simulation MuJoCo démarrée avec succès",
                 "timestamp": datetime.now().isoformat(),
             }
-        else:
-            return {
-                "status": "error",
-                "message": "Échec du démarrage de la simulation",
-                "timestamp": datetime.now().isoformat(),
-            }
+        return {
+            "status": "error",
+            "message": "Échec du démarrage de la simulation",
+            "timestamp": datetime.now().isoformat(),
+        }
     except Exception as e:
         logger.error(f"Erreur lors du démarrage de la simulation : {e}")
         return {
             "status": "error",
-            "message": f"Erreur : {str(e)}",
+            "message": f"Erreur : {e!s}",
             "timestamp": datetime.now().isoformat(),
         }
 
@@ -387,7 +386,7 @@ async def stop_simulation() -> dict[str, Any]:
         logger.error(f"Erreur lors de l'arrêt de la simulation : {e}")
         return {
             "status": "error",
-            "message": f"Erreur : {str(e)}",
+            "message": f"Erreur : {e!s}",
             "timestamp": datetime.now().isoformat(),
         }
 
@@ -424,6 +423,7 @@ async def get_present_head_pose(
 
     Returns:
         Dict avec clé 'head_pose' contenant la pose (conforme SDK + tests)
+
     """
     pose = backend.get_present_head_pose()
     pose_data = as_any_pose(pose, use_pose_matrix)
@@ -431,7 +431,7 @@ async def get_present_head_pose(
     return {
         "head_pose": (
             pose_data.model_dump() if hasattr(pose_data, "model_dump") else pose_data
-        )
+        ),
     }
 
 
@@ -446,6 +446,7 @@ async def get_present_body_yaw(
 
     Returns:
         Dict avec 'body_yaw' et 'unit' (conforme SDK + tests)
+
     """
     yaw = backend.get_present_body_yaw()
     return {"body_yaw": float(yaw), "unit": "radians"}
@@ -462,6 +463,7 @@ async def get_present_antenna_joint_positions(
 
     Returns:
         Dict avec 'antennas' (liste) ou 'left'/'right' (conforme SDK + tests)
+
     """
     pos = backend.get_present_antenna_joint_positions()
     assert len(pos) == 2
@@ -504,6 +506,7 @@ async def ws_full_state(
         with_passive_joints: Inclure joints passifs
         use_pose_matrix: Utiliser format matrice 4x4
         backend: Backend adaptateur
+
     """
     await websocket.accept()
     # Créer backend adapter directement (pas de Depends pour WebSockets)

@@ -39,7 +39,7 @@ async def get_kinematics_info(
         "info": {
             "engine": str(kinematics_engine),
             "collision_check": bool(check_collision),
-        }
+        },
     }
 
 
@@ -51,10 +51,9 @@ async def get_urdf(
     # Le backend doit avoir une méthode get_urdf()
     if hasattr(backend, "get_urdf"):
         return {"urdf": backend.get_urdf()}
-    elif hasattr(backend, "_robot") and hasattr(backend._robot, "get_urdf"):
+    if hasattr(backend, "_robot") and hasattr(backend._robot, "get_urdf"):
         return {"urdf": backend._robot.get_urdf()}
-    else:
-        return {"urdf": ""}
+    return {"urdf": ""}
 
 
 @router.get("/stl/{filename}")
@@ -69,11 +68,13 @@ async def get_stl_file(filename: str) -> Response:
 
     Raises:
         HTTPException: Si le fichier n'est pas trouvé ou extension invalide
+
     """
     # Sécurisation : ne permettre que les fichiers .stl
     if not filename.endswith(".stl"):
         raise HTTPException(
-            status_code=400, detail="Seuls les fichiers .stl sont autorisés"
+            status_code=400,
+            detail="Seuls les fichiers .stl sont autorisés",
         )
 
     # Nettoyer le chemin pour éviter les directory traversal (conforme SDK)
@@ -95,5 +96,6 @@ async def get_stl_file(filename: str) -> Response:
     except Exception as e:
         logger.error(f"Erreur lors de la lecture du fichier STL {filename}: {e}")
         raise HTTPException(
-            status_code=500, detail=f"Erreur lors de la lecture du fichier: {str(e)}"
+            status_code=500,
+            detail=f"Erreur lors de la lecture du fichier: {e!s}",
         ) from e

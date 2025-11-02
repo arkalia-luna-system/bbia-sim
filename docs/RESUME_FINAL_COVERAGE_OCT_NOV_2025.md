@@ -14,7 +14,7 @@
 | `dashboard_advanced.py` | 38.82% | **76.71%** | +38% | 70%+ | ✅ **TERMINÉ** |
 | `vision_yolo.py` | 27.74% | **89.62%** | +61.88% | 50%+ | ✅ **TERMINÉ** |
 | `daemon/bridge.py` | 0% | **31.23%** | +31.23% | 30%+ | ✅ **TERMINÉ** |
-| `voice_whisper.py` | 23.27% | **36.84%** | +13.57% | 50%+ | ⬆️ **EN PROGRÈS** |
+| `voice_whisper.py**: **59.83%**** | +13.57% | 50%+ | ⬆️ **EN PROGRÈS** |
 
 ---
 
@@ -69,7 +69,7 @@
 
 **Coverage** : **36.84%** (+13.57% depuis 23.27%)
 
-**Tests ajoutés** (21+ nouveaux tests) :
+**Tests ajoutés** (**18+ nouveaux tests**) :
 - Tests `load_model` : depuis cache, nouveau modèle, erreur chargement
 - Tests `transcribe_audio` : succès, erreur, modèle non chargé, langue auto
 - Tests `transcribe_microphone` : audio désactivé, sans Whisper
@@ -89,7 +89,7 @@
 - ✅ `daemon/bridge.py` : 30%+ → **31.23%** ✅
 
 ### Objectif En Cours ⬆️
-- ⬆️ `voice_whisper.py` : 50%+ → **36.84%** (progrès significatif, ~1-2h restantes pour atteindre 50%+)
+- ⬆️ `voice_whisper.py**: **59.83%**** (progrès significatif, ~1-2h restantes pour atteindre 50%+)
 
 ---
 
@@ -98,7 +98,7 @@
 **Tests créés/améliorés** :
 - `dashboard_advanced.py` : **47 tests** (**1156 lignes**)
 - `daemon/bridge.py` : 10+ tests ajoutés
-- `voice_whisper.py` : 21+ tests ajoutés (18+ selon autres MD)
+- `voice_whisper.py` : **18+ tests ajoutés**
 
 **Total** : ~78+ tests créés/améliorés
 

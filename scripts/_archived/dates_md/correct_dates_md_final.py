@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Correction automatique des dates dans tous les fichiers MD selon les règles :
+"""Correction automatique des dates dans tous les fichiers MD selon les règles :
 - Date création : Octobre 2024 (NE JAMAIS MODIFIER)
 - Dates récentes (novembre) : Oct 25 / Nov 25
 - Autres dates : Octobre 2025
@@ -35,7 +34,7 @@ def is_recent_file(file_path: Path) -> bool:
     name_lower = file_path.name.lower()
     recent_indicators = ["nov", "nov2025", "verification", "nov25"]
     return any(ind in name_lower for ind in recent_indicators) or "2025-11" in str(
-        file_path.parent
+        file_path.parent,
     )
 
 
@@ -56,7 +55,7 @@ def correct_dates_in_content(content: str, file_path: Path) -> tuple[str, list[s
         if "avril 2024" in line.lower() or "april 2024" in line.lower():
             if is_creation_date_context(line):
                 line = re.sub(
-                    r"(avril|april)\s+2024", "octobre 2024", line, flags=re.IGNORECASE
+                    r"(avril|april)\s+2024", "octobre 2024", line, flags=re.IGNORECASE,
                 )
                 if line != original_line:
                     changes.append(f"L{i+1}: {line[:60]}...")
@@ -77,7 +76,7 @@ def correct_dates_in_content(content: str, file_path: Path) -> tuple[str, list[s
             # "octobre 2024" → "octobre 2025" (sauf si contexte création)
             if "octobre 2024" in line.lower() and not is_creation_date_context(line):
                 line = re.sub(
-                    r"octobre\s+2024", "octobre 2025", line, flags=re.IGNORECASE
+                    r"octobre\s+2024", "octobre 2025", line, flags=re.IGNORECASE,
                 )
                 if line != original_line:
                     changes.append(f"L{i+1}: {line[:60]}...")
@@ -89,7 +88,7 @@ def correct_dates_in_content(content: str, file_path: Path) -> tuple[str, list[s
                 "octobre 2025" in line.lower() or "novembre 2025" in line.lower()
             ):
                 if re.search(
-                    r"date.*:.*(octobre|novembre)\s+2025", line, re.IGNORECASE
+                    r"date.*:.*(octobre|novembre)\s+2025", line, re.IGNORECASE,
                 ):
                     line = re.sub(
                         r"(octobre|novembre)\s+2025",

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Script de vérification pour la consolidation des tests.
+"""Script de vérification pour la consolidation des tests.
 Vérifie qu'aucun test n'est perdu lors de la consolidation.
 
 Usage:
@@ -36,6 +35,7 @@ def collect_tests_from_file(filepath: Path) -> list[str]:
         # Utiliser python -m pytest pour lister les tests
         result = subprocess.run(
             ["python", "-m", "pytest", str(filepath), "--collect-only", "-q"],
+            check=False,
             capture_output=True,
             text=True,
             timeout=30,
@@ -123,7 +123,9 @@ def find_unique_tests(all_tests: dict[str, list[str]]) -> dict[str, list[str]]:
 
 
 def generate_consolidation_report(
-    all_tests: dict, duplicates: dict, unique_by_file: dict
+    all_tests: dict,
+    duplicates: dict,
+    unique_by_file: dict,
 ):
     """Générer un rapport de consolidation."""
     print("\n" + "=" * 70)
@@ -191,7 +193,8 @@ def generate_consolidation_report(
     if files_with_few_unique:
         print("   Fichiers potentiellement REDONDANTS (peu de tests uniques):")
         for filepath, _count in sorted(
-            files_with_few_unique.items(), key=lambda x: -len(all_tests[x[0]])
+            files_with_few_unique.items(),
+            key=lambda x: -len(all_tests[x[0]]),
         ):
             total = len(all_tests[filepath])
             print(f"      ⚠️  {filepath}: {total} tests (aucun unique)")
@@ -208,7 +211,7 @@ def main():
 
     if not all_tests:
         print(
-            "❌ Aucun test collecté. Vérifiez que pytest est installé et que les fichiers existent."
+            "❌ Aucun test collecté. Vérifiez que pytest est installé et que les fichiers existent.",
         )
         sys.exit(1)
 
@@ -232,7 +235,7 @@ def main():
 
     if total_unique == total_before:
         print(
-            "   ✅ Aucun doublon détecté (ou tous les tests sont dans un seul fichier)"
+            "   ✅ Aucun doublon détecté (ou tous les tests sont dans un seul fichier)",
         )
     else:
         print(f"   ⚠️  {len(duplicates)} tests sont dupliqués")

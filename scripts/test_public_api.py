@@ -23,6 +23,7 @@ class BBIAAPITester:
 
         Args:
             base_url: URL de base de l'API
+
         """
         self.base_url = base_url
         self.client = httpx.AsyncClient(timeout=30.0)
@@ -38,9 +39,8 @@ class BBIAAPITester:
                 logger.info(f"✅ Endpoint racine OK: {data.get('message', 'N/A')}")
                 logger.info(f"📊 Version: {data.get('version', 'N/A')}")
                 return True
-            else:
-                logger.error(f"❌ Endpoint racine échoué: {response.status_code}")
-                return False
+            logger.error(f"❌ Endpoint racine échoué: {response.status_code}")
+            return False
         except Exception as e:
             logger.error(f"❌ Erreur endpoint racine: {e}")
             return False
@@ -55,9 +55,8 @@ class BBIAAPITester:
                 data = response.json()
                 logger.info(f"✅ Santé OK: {data.get('status', 'N/A')}")
                 return True
-            else:
-                logger.error(f"❌ Santé échouée: {response.status_code}")
-                return False
+            logger.error(f"❌ Santé échouée: {response.status_code}")
+            return False
         except Exception as e:
             logger.error(f"❌ Erreur santé: {e}")
             return False
@@ -73,9 +72,8 @@ class BBIAAPITester:
                 logger.info(f"✅ Info API OK: {data.get('name', 'N/A')}")
                 logger.info(f"📊 Phase: {data.get('phase', 'N/A')}")
                 return True
-            else:
-                logger.error(f"❌ Info API échouée: {response.status_code}")
-                return False
+            logger.error(f"❌ Info API échouée: {response.status_code}")
+            return False
         except Exception as e:
             logger.error(f"❌ Erreur info API: {e}")
             return False
@@ -85,7 +83,7 @@ class BBIAAPITester:
         try:
             logger.info("🔍 Test des capacités de l'écosystème...")
             response = await self.client.get(
-                f"{self.base_url}/api/ecosystem/capabilities"
+                f"{self.base_url}/api/ecosystem/capabilities",
             )
 
             if response.status_code == 200:
@@ -95,9 +93,8 @@ class BBIAAPITester:
                 logger.info(f"😊 Émotions: {len(data.get('emotions', []))}")
                 logger.info(f"🎭 Comportements: {len(data.get('behaviors', []))}")
                 return True
-            else:
-                logger.error(f"❌ Capacités échouées: {response.status_code}")
-                return False
+            logger.error(f"❌ Capacités échouées: {response.status_code}")
+            return False
         except Exception as e:
             logger.error(f"❌ Erreur capacités: {e}")
             return False
@@ -114,9 +111,8 @@ class BBIAAPITester:
                 logger.info(f"🤖 Robot connecté: {data.get('robot_connected', 'N/A')}")
                 logger.info(f"🎮 Simulation: {data.get('simulation_running', 'N/A')}")
                 return True
-            else:
-                logger.error(f"❌ Statut échoué: {response.status_code}")
-                return False
+            logger.error(f"❌ Statut échoué: {response.status_code}")
+            return False
         except Exception as e:
             logger.error(f"❌ Erreur statut: {e}")
             return False
@@ -126,7 +122,7 @@ class BBIAAPITester:
         try:
             logger.info("🔍 Test des émotions disponibles...")
             response = await self.client.get(
-                f"{self.base_url}/api/ecosystem/emotions/available"
+                f"{self.base_url}/api/ecosystem/emotions/available",
             )
 
             if response.status_code == 200:
@@ -134,12 +130,11 @@ class BBIAAPITester:
                 emotions = data.get("emotions", [])
                 logger.info(f"✅ Émotions OK: {len(emotions)} émotions disponibles")
                 logger.info(
-                    f"📊 Émotions: {', '.join(emotions[:5])}{'...' if len(emotions) > 5 else ''}"
+                    f"📊 Émotions: {', '.join(emotions[:5])}{'...' if len(emotions) > 5 else ''}",
                 )
                 return True
-            else:
-                logger.error(f"❌ Émotions échouées: {response.status_code}")
-                return False
+            logger.error(f"❌ Émotions échouées: {response.status_code}")
+            return False
         except Exception as e:
             logger.error(f"❌ Erreur émotions: {e}")
             return False
@@ -149,22 +144,21 @@ class BBIAAPITester:
         try:
             logger.info("🔍 Test des comportements disponibles...")
             response = await self.client.get(
-                f"{self.base_url}/api/ecosystem/behaviors/available"
+                f"{self.base_url}/api/ecosystem/behaviors/available",
             )
 
             if response.status_code == 200:
                 data = response.json()
                 behaviors = data.get("behaviors", [])
                 logger.info(
-                    f"✅ Comportements OK: {len(behaviors)} comportements disponibles"
+                    f"✅ Comportements OK: {len(behaviors)} comportements disponibles",
                 )
                 logger.info(
-                    f"📊 Comportements: {', '.join(behaviors[:5])}{'...' if len(behaviors) > 5 else ''}"
+                    f"📊 Comportements: {', '.join(behaviors[:5])}{'...' if len(behaviors) > 5 else ''}",
                 )
                 return True
-            else:
-                logger.error(f"❌ Comportements échoués: {response.status_code}")
-                return False
+            logger.error(f"❌ Comportements échoués: {response.status_code}")
+            return False
         except Exception as e:
             logger.error(f"❌ Erreur comportements: {e}")
             return False
@@ -174,7 +168,7 @@ class BBIAAPITester:
         try:
             logger.info("🔍 Test des modes de démonstration...")
             response = await self.client.get(
-                f"{self.base_url}/api/ecosystem/demo/modes"
+                f"{self.base_url}/api/ecosystem/demo/modes",
             )
 
             if response.status_code == 200:
@@ -183,9 +177,8 @@ class BBIAAPITester:
                 logger.info(f"✅ Modes démo OK: {len(modes)} modes disponibles")
                 logger.info(f"📊 Modes: {', '.join(modes.keys())}")
                 return True
-            else:
-                logger.error(f"❌ Modes démo échoués: {response.status_code}")
-                return False
+            logger.error(f"❌ Modes démo échoués: {response.status_code}")
+            return False
         except Exception as e:
             logger.error(f"❌ Erreur modes démo: {e}")
             return False
@@ -199,14 +192,13 @@ class BBIAAPITester:
             if response.status_code == 200:
                 data = response.json()
                 logger.info(
-                    f"✅ OpenAPI OK: {data.get('info', {}).get('title', 'N/A')}"
+                    f"✅ OpenAPI OK: {data.get('info', {}).get('title', 'N/A')}",
                 )
                 logger.info(f"📊 Version: {data.get('info', {}).get('version', 'N/A')}")
                 logger.info(f"📊 Endpoints: {len(data.get('paths', {}))}")
                 return True
-            else:
-                logger.error(f"❌ OpenAPI échoué: {response.status_code}")
-                return False
+            logger.error(f"❌ OpenAPI échoué: {response.status_code}")
+            return False
         except Exception as e:
             logger.error(f"❌ Erreur OpenAPI: {e}")
             return False
@@ -233,9 +225,9 @@ class BBIAAPITester:
         total = len(tests)
 
         for test_name, test_func in tests:
-            logger.info(f"\n{'='*50}")
+            logger.info(f"\n{'=' * 50}")
             logger.info(f"🧪 Test: {test_name}")
-            logger.info(f"{'='*50}")
+            logger.info(f"{'=' * 50}")
 
             try:
                 result = await test_func()
@@ -250,12 +242,12 @@ class BBIAAPITester:
                 results[test_name] = False
 
         # Résumé final
-        logger.info(f"\n{'='*50}")
+        logger.info(f"\n{'=' * 50}")
         logger.info("📊 RÉSUMÉ DES TESTS")
-        logger.info(f"{'='*50}")
+        logger.info(f"{'=' * 50}")
         logger.info(f"✅ Tests passés: {passed}/{total}")
         logger.info(f"❌ Tests échoués: {total - passed}/{total}")
-        logger.info(f"📊 Taux de réussite: {(passed/total)*100:.1f}%")
+        logger.info(f"📊 Taux de réussite: {(passed / total) * 100:.1f}%")
 
         if passed == total:
             logger.info("🎉 TOUS LES TESTS SONT PASSÉS !")

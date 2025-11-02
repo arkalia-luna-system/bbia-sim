@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Tests pour le module BBIA Emotions."""
 
-from src.bbia_sim.bbia_emotions import BBIAEmotions
+from bbia_sim.bbia_emotions import BBIAEmotions
 
 
 class TestBBIAEmotions:

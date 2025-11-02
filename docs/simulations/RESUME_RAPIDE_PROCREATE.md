@@ -70,5 +70,5 @@
 
 ---
 
-*Résumé Rapide - BBIA-SIM - Oct / No2025025025025025*
+*Résumé Rapide - BBIA-SIM - Oct / Oct / Nov. 20255*
 

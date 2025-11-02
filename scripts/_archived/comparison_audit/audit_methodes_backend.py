@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Audit exhaustif des méthodes Backend - Compare BackendAdapter avec Backend officiel.
+"""Audit exhaustif des méthodes Backend - Compare BackendAdapter avec Backend officiel.
 """
 
 import ast
@@ -164,10 +163,10 @@ def main():
 
     print("\n📊 Résumé:")
     print(
-        f"  - Méthodes officielles: {len([m for m in official_methods if not m.startswith('_')])}"
+        f"  - Méthodes officielles: {len([m for m in official_methods if not m.startswith('_')])}",
     )
     print(
-        f"  - Méthodes BBIA: {len([m for m in bbia_methods if not m.startswith('_')])}"
+        f"  - Méthodes BBIA: {len([m for m in bbia_methods if not m.startswith('_')])}",
     )
     print(f"  - Manquantes: {len(missing)}")
     print(f"  - Supplémentaires: {len(extra)}")

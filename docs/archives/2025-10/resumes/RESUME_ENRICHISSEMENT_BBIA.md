@@ -1,6 +1,6 @@
 # ✅ RÉSUMÉ ENRICHISSEMENT BBIA - CHAT INTELLIGENT
 
-**Date :** Oct / No2025025025025025
+**Date :** Oct / Oct / Nov. 20255
 **Statut :** ✅ TERMINÉ
 
 ---
@@ -177,5 +177,5 @@ python -m pytest tests/test_bbia_huggingface_chat.py -v
 
 **Enrichissement terminé avec succès !** 🎉
 
-*Résumé créé le Oct / No2025025025025025*
+*Résumé créé le Oct / Oct / Nov. 20255*
 

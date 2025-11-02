@@ -1,7 +1,7 @@
 # 🔍 ANALYSE CRITIQUE DU PROFIL PROFESSIONNEL
 ## Vérification codebase vs. Affirmations reçues
 
-**Date d'analyse :** Oct / No2025025025025025  
+**Date d'analyse :** Oct / Oct / Nov. 20255  
 **Codebase analysée :** `/Volumes/T7/bbia-reachy-sim`  
 **Venv utilisé :** `venv` (activé et validé)
 
@@ -92,7 +92,7 @@
 - L'affirmation est **conservatrice**, tu as MIEUX que prévu
 
 #### ❓ "Commits quotidiens depuis 7 mois"
-- **Vérification partielle** : 444 commits depuis ~Oct / No2025025025025025
+- **Vérification partielle** : 444 commits depuis ~Oct / Oct / Nov. 20255
   - 7 mois = ~210 jours
   - 444 commits / 210 jours = **~2 commits/jour en moyenne**
   - **Pas "quotidiens" au sens strict**, mais activité **très régulière**
@@ -141,7 +141,7 @@
 
 ### 2. Timing Robot Reachy Mini
 
-#### ❓ "Oct / No2025025025025025 - Robot arrive"
+#### ❓ "Oct / Oct / Nov. 20255 - Robot arrive"
 - **Non vérifiable ici** (dépend de commande/expédition)
 - ⚠️ **Si robot pas encore arrivé** : Tous les scénarios reposent sur cette date
 - **Recommandation** : Vérifier date réelle d'arrivée robot
@@ -234,7 +234,7 @@ pytest --cov=src/bbia_sim --cov-report=term --cov-report=html
 | **Coverage ~50%** | ❓ À VÉRIFIER | Mentionné dans README, à tester |
 | **Salaire 54-66k€/an** | ⚠️ OPTIMISTE | Probable : 48-54k€/an (démarrage) |
 | **0 stars GitHub** | ❓ NON VÉRIFIABLE | Nécessite vérification manuelle |
-| **Robot Oct / No2025025025025025** | ❓ NON VÉRIFIABLE | Dépend commande |
+| **Robot Oct / Oct / Nov. 20255** | ❓ NON VÉRIFIABLE | Dépend commande |
 
 ---
 
@@ -270,16 +270,16 @@ pytest --cov=src/bbia_sim --cov-report=term --cov-report=html
 2. ✅ Vérifier stats GitHub (manuellement)
 3. ✅ Lister tous tes repos GitHub
 
-### Oct / No2025025025025025 (si robot arrive) :
+### Oct / Oct / Nov. 20255 (si robot arrive) :
 1. ✅ Tests hardware non-skippés
 2. ✅ 5 démos filmées (vision, audio, mouvements, émotions, intégration)
 
-### Oct / No2025025025025025 :
+### Oct / Oct / Nov. 20255 :
 1. ✅ LinkedIn profil minimaliste (2h)
 2. ✅ README GitHub enrichi (4h)
 3. ✅ Page démos avec vidéos (2h)
 
-### Oct / No2025025025025025 :
+### Oct / Oct / Nov. 20255 :
 1. ✅ Candidatures ciblées (20-30 offres)
 2. ✅ CV adapté par offre
 

@@ -14,7 +14,8 @@ import psutil
 
 # Configuration du logging
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
 
@@ -35,7 +36,7 @@ class ProcessManager:
         running_processes = []
 
         for proc in psutil.process_iter(
-            ["pid", "name", "cmdline", "cpu_percent", "memory_info"]
+            ["pid", "name", "cmdline", "cpu_percent", "memory_info"],
         ):
             try:
                 cmdline = " ".join(proc.info["cmdline"]) if proc.info["cmdline"] else ""
@@ -57,7 +58,7 @@ class ProcessManager:
                             "cmdline": cmdline,
                             "cpu_percent": proc.info["cpu_percent"],
                             "memory_mb": proc.info["memory_info"].rss / 1024 / 1024,
-                        }
+                        },
                     )
             except (psutil.NoSuchProcess, psutil.AccessDenied):
                 continue
@@ -100,23 +101,24 @@ class ProcessManager:
             # Vérifier si le processus existe encore
             if psutil.pid_exists(pid):
                 return pid
-            else:
-                # Processus mort, nettoyer le verrou
-                self.remove_lock()
-                return None
+            # Processus mort, nettoyer le verrou
+            self.remove_lock()
+            return None
         except Exception:
             self.remove_lock()
             return None
 
     def start_process(
-        self, mode: str = "graphical", duration: int | None = None
+        self,
+        mode: str = "graphical",
+        duration: int | None = None,
     ) -> bool:
         """Démarre un processus BBIA avec vérification de doublons."""
         # Vérifier les doublons
         if self.is_locked():
             logger.error("❌ Un processus BBIA est déjà en cours d'exécution!")
             logger.error(
-                "💡 Utilisez 'python scripts/process_manager.py stop' pour l'arrêter"
+                "💡 Utilisez 'python scripts/process_manager.py stop' pour l'arrêter",
             )
             return False
 
@@ -146,10 +148,9 @@ class ProcessManager:
                 self._setup_terminal_exit_handler(process.pid)
 
                 return True
-            else:
-                logger.error("❌ Échec de la création du verrouillage")
-                process.terminate()
-                return False
+            logger.error("❌ Échec de la création du verrouillage")
+            process.terminate()
+            return False
 
         except Exception as e:
             logger.error(f"❌ Erreur démarrage: {e}")
@@ -270,7 +271,7 @@ class ProcessManager:
             for proc in running:
                 status = "🔒 VERROUILLÉ" if proc["pid"] == locked_pid else "🔄 ACTIF"
                 logger.info(
-                    f"   {status} PID {proc['pid']}: {proc['cpu_percent']:.1f}% CPU, {proc['memory_mb']:.1f}MB RAM"
+                    f"   {status} PID {proc['pid']}: {proc['cpu_percent']:.1f}% CPU, {proc['memory_mb']:.1f}MB RAM",
                 )
                 logger.info(f"      {proc['cmdline'][:100]}...")
         else:
@@ -281,7 +282,7 @@ class ProcessManager:
 
         def signal_handler(signum, frame):
             logger.info(
-                f"\n🛑 Signal {signum} reçu - Arrêt automatique du processus {pid}"
+                f"\n🛑 Signal {signum} reçu - Arrêt automatique du processus {pid}",
             )
             try:
                 process = psutil.Process(pid)
@@ -315,10 +316,14 @@ def main():
         help="Mode de démarrage",
     )
     parser.add_argument(
-        "--duration", type=int, help="Durée en secondes (headless uniquement)"
+        "--duration",
+        type=int,
+        help="Durée en secondes (headless uniquement)",
     )
     parser.add_argument(
-        "--force", action="store_true", help="Mode force (pas de confirmation)"
+        "--force",
+        action="store_true",
+        help="Mode force (pas de confirmation)",
     )
 
     args = parser.parse_args()
@@ -330,10 +335,10 @@ def main():
         if success:
             logger.info("✅ Démarrage réussi")
             logger.info(
-                "💡 Utilisez 'python scripts/process_manager.py status' pour vérifier"
+                "💡 Utilisez 'python scripts/process_manager.py status' pour vérifier",
             )
             logger.info(
-                "💡 Utilisez 'python scripts/process_manager.py stop' pour arrêter"
+                "💡 Utilisez 'python scripts/process_manager.py stop' pour arrêter",
             )
         else:
             logger.error("❌ Échec du démarrage")

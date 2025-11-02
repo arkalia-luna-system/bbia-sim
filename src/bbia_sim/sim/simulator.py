@@ -50,7 +50,9 @@ class MuJoCoSimulator:
             raise
 
     def launch_simulation(
-        self, headless: bool = False, duration: int | None = None
+        self,
+        headless: bool = False,
+        duration: int | None = None,
     ) -> None:
         """Lance la simulation MuJoCo.
 
@@ -74,14 +76,13 @@ class MuJoCoSimulator:
                         "💡 Solutions :\n"
                         "  • Utilisez : mjpython -m bbia_sim --sim --verbose\n"
                         "  • Ou utilisez : python -m bbia_sim --sim --headless\n"
-                        "  • Ou installez mjpython : pip install mujoco-python-viewer"
+                        "  • Ou installez mjpython : pip install mujoco-python-viewer",
                     )
                     raise RuntimeError(
-                        "Viewer MuJoCo non disponible sur macOS avec python standard"
+                        "Viewer MuJoCo non disponible sur macOS avec python standard",
                     ) from e
-                else:
-                    logger.error(f"Erreur lors du lancement du viewer : {e}")
-                    raise
+                logger.error(f"Erreur lors du lancement du viewer : {e}")
+                raise
 
     def _run_headless_simulation(self, duration: int | None) -> None:
         """Exécute la simulation en mode headless."""
@@ -111,7 +112,7 @@ class MuJoCoSimulator:
 
         actual_duration = time.monotonic() - start_time
         logger.info(
-            f"Simulation headless arrêtée après {step_count} steps ({actual_duration:.2f}s)"
+            f"Simulation headless arrêtée après {step_count} steps ({actual_duration:.2f}s)",
         )
 
         # OPTIMISATION RAM: Décharger modèle MuJoCo après arrêt pour libérer mémoire
@@ -159,7 +160,7 @@ class MuJoCoSimulator:
         new_model_path = Path("src/bbia_sim/sim/scenes") / scene_path
         if not new_model_path.exists():
             logger.warning(
-                f"Scène '{scene_path}' non trouvée. Chargement du modèle par défaut."
+                f"Scène '{scene_path}' non trouvée. Chargement du modèle par défaut.",
             )
             new_model_path = self.model_path
 
@@ -198,7 +199,7 @@ class MuJoCoSimulator:
                 min_limit = -3.14  # -π
                 max_limit = 3.14  # +π
                 logger.debug(
-                    f"Limites par défaut pour {joint_name}: [{min_limit}, {max_limit}]"
+                    f"Limites par défaut pour {joint_name}: [{min_limit}, {max_limit}]",
                 )
 
             # Clamp de l'angle dans les limites
@@ -207,7 +208,7 @@ class MuJoCoSimulator:
             if clamped_angle != angle:
                 logger.warning(
                     f"Angle {angle:.3f} clampé à {clamped_angle:.3f} "
-                    f"pour joint {joint_name} (limites: [{min_limit:.3f}, {max_limit:.3f}])"
+                    f"pour joint {joint_name} (limites: [{min_limit:.3f}, {max_limit:.3f}])",
                 )
 
             # Stockage de la position cible
@@ -221,7 +222,9 @@ class MuJoCoSimulator:
             actuator_id = None
             for i in range(self.model.nu):
                 actuator_name = mujoco.mj_id2name(
-                    self.model, mujoco.mjtObj.mjOBJ_ACTUATOR, i
+                    self.model,
+                    mujoco.mjtObj.mjOBJ_ACTUATOR,
+                    i,
                 )
                 if actuator_name == joint_name:
                     actuator_id = i
@@ -245,7 +248,7 @@ class MuJoCoSimulator:
                 logger.debug(f"Contrôle appliqué à {joint_name}: {control_force:.3f}")
             mujoco.mj_forward(self.model, self.data)
             logger.debug(
-                f"Articulation '{joint_name}' positionnée à {clamped_angle:.3f} rad"
+                f"Articulation '{joint_name}' positionnée à {clamped_angle:.3f} rad",
             )
         except KeyError:
             logger.error(f"Articulation '{joint_name}' non trouvée")

@@ -11,8 +11,9 @@
 >   pip install -e .
 >   ```
 
-**Version:** v1.3.2
-**Dernière mise à jour:** Oct / No2025025025025025
+**Version** : v1.3.2  
+**Date** : Oct / Nov. 2025  
+**Dernière mise à jour** : Oct / Nov. 2025
 
 ---
 
@@ -52,9 +53,9 @@
 - [Guide Assistants IA](ASSISTANT_IA_GUIDE.md) - Scripts, conventions, workflow pour assistants IA
 
 ### 🔧 Corrections et Améliorations
-- [Corrections des démos Reachy](corrections/CORRECTIONS_DEMOS_REACHY.md)
+- [Corrections des démos Reachy](archives/corrections_terminees/CORRECTIONS_DEMOS_REACHY.md)
 - [Corrections appliquées](corrections/CORRECTIONS_APPLIQUEES.md)
-- [Corrections modules non prioritaires](corrections/CORRECTIONS_MODULES_NON_PRIORITAIRES_2025.md)
+- [Corrections modules non prioritaires](archives/corrections_terminees/CORRECTIONS_MODULES_NON_PRIORITAIRES_2025.md)
 - [Améliorations futures du SDK](ameliorations/AMELIORATIONS_FUTURES_SDK.md)
 
 ### 🎮 Mouvements et Contrôle
@@ -115,8 +116,8 @@
 
 ## 🔍 Archives
 
-### Oct / No2025025025025025
-- [Résumé final - Oct / No2025025025025022025rchives/2025-10/resumes/RESUME_FINAL_ULTIME_OCTOBRE_2025.md)
+### Oct / Nov. 2025
+- [Résumé final - Octobre 2025](archives/2025-10/resumes/RESUME_FINAL_ULTIME_OCTOBRE_2025.md)
 - [Résumés détaillés](archives/2025-10/resumes/)
 - [Corrections et améliorations](archives/2025-10/)
 - [Rapports d'audit](archives/audits/)

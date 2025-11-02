@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Script d'audit des fichiers MD principaux contre le code réel.
+"""Script d'audit des fichiers MD principaux contre le code réel.
 
 Vérifie ligne par ligne chaque affirmation dans la documentation
 et détecte les incohérences avec le code source.
@@ -56,6 +55,7 @@ def count_tests() -> int:
     try:
         result = subprocess.run(
             ["python", "-m", "pytest", "--collect-only", "-q"],
+            check=False,
             capture_output=True,
             text=True,
             timeout=30,
@@ -100,10 +100,9 @@ def check_method_exists(methodname: str, classname: str | None, root_dir: Path) 
                 class_pattern = rf"class\s+{classname}[^:]*:.*?def\s+{methodname}\("
                 if re.search(class_pattern, content, re.DOTALL):
                     return True
-            else:
-                # Chercher méthode standalone
-                if f"def {methodname}(" in content:
-                    return True
+            # Chercher méthode standalone
+            elif f"def {methodname}(" in content:
+                return True
         except Exception:
             pass
     return False
@@ -130,7 +129,7 @@ def audit_md_file(md_path: Path, root_dir: Path) -> list[dict[str, Any]]:
                     "claimed": count_claimed,
                     "real": test_count_real,
                     "file": str(md_path),
-                }
+                },
             )
 
     # Vérifier fichiers mentionnés
@@ -144,7 +143,7 @@ def audit_md_file(md_path: Path, root_dir: Path) -> list[dict[str, Any]]:
                         "type": "file_not_found",
                         "file_mentioned": file_match,
                         "md_file": str(md_path),
-                    }
+                    },
                 )
 
     # Vérifier classes mentionnées
@@ -157,7 +156,7 @@ def audit_md_file(md_path: Path, root_dir: Path) -> list[dict[str, Any]]:
                         "type": "class_not_found",
                         "class_mentioned": class_match,
                         "md_file": str(md_path),
-                    }
+                    },
                 )
 
     return issues
@@ -185,7 +184,7 @@ def main():
             print(f"  ⚠️  {len(issues)} problème(s) détecté(s)")
             for issue in issues[:5]:  # Afficher max 5 par fichier
                 print(
-                    f"    - {issue['type']}: {issue.get('file_mentioned', issue.get('class_mentioned', 'N/A'))}"
+                    f"    - {issue['type']}: {issue.get('file_mentioned', issue.get('class_mentioned', 'N/A'))}",
                 )
         else:
             print("  ✅ Aucun problème détecté")

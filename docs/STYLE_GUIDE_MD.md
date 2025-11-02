@@ -1,7 +1,7 @@
 # 📐 Guide de Style Markdown - BBIA-SIM
 
-**Version :** 1.0  
-**Date :** Oct 25 / Nov 25  
+**Version** : 1.0  
+**Date** : Oct / Nov. 2025  
 **Objectif :** Documentation moderne, professionnelle, impactante
 
 ---
@@ -178,16 +178,15 @@ code_here()
 
 ```markdown
 **Date création :** Octobre 2024  # Fixe, ne jamais modifier
-**Date mise à jour :** Oct 25 / Nov 25  # Récentes (octobre/Oct / Nov. 2025252525252525)
-**Date :** Oct / No2025025025025025  # Générales
-**Date cible :** Oct / Nov. 2025252525252525  # Futures
+**Date mise à jour :** Oct / Nov. 2025  # Récentes
+**Date :** Oct / Nov. 2025  # Générales
+**Date cible :** Oct / Nov. 2025  # Futures
 ```
 
 ### Historique
 
 - **Octobre 2024** : Date création projet (première release v1.0.0)
-- **Oct 25 / Nov 25** : Période actuelle (octobre/Oct / Nov. 2025252525252525)
-- **Oct / No2025025025025025** : Date2025nérales 2025
+- **Oct / Nov. 2025** : Période actuelle
 
 ---
 
@@ -207,7 +206,7 @@ code_here()
 ### Vérification Contenu
 
 - [ ] 12 émotions (pas 11, pas 13)
-- [ ] Tests 1200+ (1157-1208 acceptable)
+- [ ] Tests **1245 tests** collectés (pytest --collect-only)
 - [ ] Docs 280+ (300 fichiers réels)
 - [ ] Architecture Factory+ABC confirmée
 - [ ] CI/CD outils présents
@@ -228,7 +227,7 @@ BBIA-SIM est un moteur cognitif Python avec **12 émotions robotiques**.
 
 • ✅ **Conforme au SDK officiel** (100% validé)
 • 🔄 **Backend unifié** : même code sim/hardware
-• 🧪 **1200+ tests automatisés**
+• 🧪 **1245 tests collectés** (68.86% coverage)
 
 ## 🚀 Quick Start
 
@@ -262,6 +261,6 @@ pip install
 
 ---
 
-**Dernière mise à jour :** Oct 25 / Nov 25  
+**Dernière mise à jour :** Oct / Nov. 2025  
 **Version :** 1.0
 

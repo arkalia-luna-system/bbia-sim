@@ -50,6 +50,7 @@ async def start_daemon(
 
     Raises:
         HTTPException: En cas d'erreur
+
     """
     try:
         if simulation_service.is_simulation_ready():
@@ -62,7 +63,8 @@ async def start_daemon(
         success = await simulation_service.start_simulation(headless=True)
         if not success:
             raise HTTPException(
-                status_code=500, detail="Échec du démarrage de la simulation"
+                status_code=500,
+                detail="Échec du démarrage de la simulation",
             )
 
         # Si wake_up demandé, utiliser comportement wake_up
@@ -90,7 +92,7 @@ async def start_daemon(
         raise
     except Exception as e:
         logger.error(f"Erreur lors du démarrage du daemon: {e}")
-        raise HTTPException(status_code=500, detail=f"Erreur: {str(e)}") from e
+        raise HTTPException(status_code=500, detail=f"Erreur: {e!s}") from e
 
 
 @router.post("/stop")
@@ -107,6 +109,7 @@ async def stop_daemon(
 
     Raises:
         HTTPException: En cas d'erreur
+
     """
     try:
         if goto_sleep:
@@ -133,7 +136,7 @@ async def stop_daemon(
         }
     except Exception as e:
         logger.error(f"Erreur lors de l'arrêt du daemon: {e}")
-        raise HTTPException(status_code=500, detail=f"Erreur: {str(e)}") from e
+        raise HTTPException(status_code=500, detail=f"Erreur: {e!s}") from e
 
 
 @router.post("/restart")
@@ -145,6 +148,7 @@ async def restart_daemon() -> dict[str, Any]:
 
     Raises:
         HTTPException: En cas d'erreur
+
     """
     try:
         # Arrêter d'abord
@@ -160,7 +164,8 @@ async def restart_daemon() -> dict[str, Any]:
         success = await simulation_service.start_simulation(headless=True)
         if not success:
             raise HTTPException(
-                status_code=500, detail="Échec du redémarrage de la simulation"
+                status_code=500,
+                detail="Échec du redémarrage de la simulation",
             )
 
         return {
@@ -172,7 +177,7 @@ async def restart_daemon() -> dict[str, Any]:
         raise
     except Exception as e:
         logger.error(f"Erreur lors du redémarrage du daemon: {e}")
-        raise HTTPException(status_code=500, detail=f"Erreur: {str(e)}") from e
+        raise HTTPException(status_code=500, detail=f"Erreur: {e!s}") from e
 
 
 @router.get("/status")
@@ -181,6 +186,7 @@ async def get_daemon_status() -> dict[str, Any]:
 
     Returns:
         Statut du daemon
+
     """
     try:
         is_running = simulation_service.is_simulation_ready()

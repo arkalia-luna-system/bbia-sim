@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Génère un WAV avec intonation (douce/enfant/enthousiaste) et support d'une voix
+"""Génère un WAV avec intonation (douce/enfant/enthousiaste) et support d'une voix
 de référence (--ref) pour un rendu personnel via modèle your_tts (Coqui).
 
 Usage:
@@ -171,7 +170,7 @@ def synthesize_with_coqui(
                     raise
                 # Fallback macOS say (voix féminine) si disponible
                 if _try_macos_say(
-                    text, out_path, os.environ.get("BBIA_SAY_VOICE", "Aurelie")
+                    text, out_path, os.environ.get("BBIA_SAY_VOICE", "Aurelie"),
                 ):
                     print("[INFO] Fallback macOS say (voix): Aurelie")
                     _log_event("Fallback macOS say utilisé (Aurelie)")
@@ -179,17 +178,17 @@ def synthesize_with_coqui(
                 # Sinon: Fallback modèle TTS générique (sans clonage)
                 fallback_model = "tts_models/fr/css10/vits"
                 _log_event(
-                    f"Clonage échoué, fallback vers {fallback_model} (sans clonage)"
+                    f"Clonage échoué, fallback vers {fallback_model} (sans clonage)",
                 )
                 print(
-                    f"[WARN] Clonage indisponible -> fallback {fallback_model} (voix générique)"
+                    f"[WARN] Clonage indisponible -> fallback {fallback_model} (voix générique)",
                 )
                 tts = TTS(fallback_model)
                 tts.tts_to_file(text=text, file_path=out_path)
         else:
             # Pas de ref: utiliser modèle FR simple par défaut
             use_model = model_override or os.environ.get(
-                "BBIA_COQUI_MODEL", "tts_models/fr/css10/vits"
+                "BBIA_COQUI_MODEL", "tts_models/fr/css10/vits",
             )
             tts = TTS(use_model)
             tts.tts_to_file(text=text, file_path=out_path)
@@ -227,7 +226,7 @@ def _try_macos_say(text: str, out_path: str, voice: str = "Aurelie") -> bool:
         with tempfile.NamedTemporaryFile(suffix=".aiff", delete=False) as tmp:
             tmp_path = tmp.name
         cmd = ["say", "-v", voice, "-o", tmp_path, text]
-        r = subprocess.run(cmd, capture_output=True)
+        r = subprocess.run(cmd, check=False, capture_output=True)
         if r.returncode != 0:
             return False
         # Conversion
@@ -243,12 +242,12 @@ def _try_macos_say(text: str, out_path: str, voice: str = "Aurelie") -> bool:
                     "LEI16",
                     out_path,
                 ],
-                capture_output=True,
+                check=False, capture_output=True,
             )
             converted = r2.returncode == 0
         if not converted and shutil.which("ffmpeg") is not None:
             r3 = subprocess.run(
-                ["ffmpeg", "-y", "-i", tmp_path, out_path], capture_output=True
+                ["ffmpeg", "-y", "-i", tmp_path, out_path], check=False, capture_output=True,
             )
             converted = r3.returncode == 0
         try:
@@ -306,7 +305,7 @@ def main() -> None:
     p = argparse.ArgumentParser()
     p.add_argument("--text", required=True)
     p.add_argument(
-        "--mode", choices=["douce", "enfant", "enthousiaste"], default="douce"
+        "--mode", choices=["douce", "enfant", "enthousiaste"], default="douce",
     )
     p.add_argument("--out", default="assets/voice/out.wav")
     p.add_argument("--ref", default=None, help="WAV de référence (voix personnelle)")
@@ -339,11 +338,11 @@ def main() -> None:
     if args.say_voice:
         os.environ["BBIA_SAY_VOICE"] = args.say_voice
     _log_event(
-        f"Synthèse demandée mode={args.mode} out={args.out} model={args.model or os.environ.get('BBIA_COQUI_MODEL')} lang={args.lang or os.environ.get('BBIA_COQUI_LANG','fr-fr')} say_voice={os.environ.get('BBIA_SAY_VOICE')}"
+        f"Synthèse demandée mode={args.mode} out={args.out} model={args.model or os.environ.get('BBIA_COQUI_MODEL')} lang={args.lang or os.environ.get('BBIA_COQUI_LANG','fr-fr')} say_voice={os.environ.get('BBIA_SAY_VOICE')}",
     )
 
     ok = synthesize_with_coqui(
-        text, args.out, args.ref, args.model, args.lang, args.force_clone
+        text, args.out, args.ref, args.model, args.lang, args.force_clone,
     )
     if ok:
         print("[OK] WAV généré:", args.out)

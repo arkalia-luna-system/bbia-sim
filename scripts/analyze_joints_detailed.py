@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Script d'analyse des joints MuJoCo pour BBIA Reachy Mini
+"""Script d'analyse des joints MuJoCo pour BBIA Reachy Mini
 Extrait et classe tous les joints du modèle officiel
 """
 
@@ -30,7 +29,7 @@ def analyze_joints(xml_path: str):
     print("\n📋 TABLEAU COMPLET DES JOINTS:")
     print("=" * 80)
     print(
-        f"{'Nom':<15} {'Type':<8} {'Range (rad)':<20} {'Range (°)':<15} {'Statut':<12}"
+        f"{'Nom':<15} {'Type':<8} {'Range (rad)':<20} {'Range (°)':<15} {'Statut':<12}",
     )
     print("=" * 80)
 
@@ -49,9 +48,9 @@ def analyze_joints(xml_path: str):
             joint_type = "other"
 
         # Conversion en degrés
-        range_deg = (
-            f"[{joint_range[0]*180/3.14159:.1f}°, {joint_range[1]*180/3.14159:.1f}°]"
-        )
+        deg_min = joint_range[0] * 180 / 3.14159
+        deg_max = joint_range[1] * 180 / 3.14159
+        range_deg = f"[{deg_min:.1f}°, {deg_max:.1f}°]"
         range_rad = f"[{joint_range[0]:.3f}, {joint_range[1]:.3f}]"
 
         # Classification
@@ -74,7 +73,7 @@ def analyze_joints(xml_path: str):
             safe_joints.append((name, joint_range, "SÛR"))
 
         print(
-            f"{name:<15} {joint_type:<8} {range_rad:<20} {range_deg:<15} {status:<12}"
+            f"{name:<15} {joint_type:<8} {range_rad:<20} {range_deg:<15} {status:<12}",
         )
 
     print("=" * 80)

@@ -76,6 +76,7 @@ def get_active_connections() -> int:
 
     Returns:
         Nombre de connexions WebSocket actives (toutes routes confondues)
+
     """
     global _active_connections_cache, _active_connections_cache_time
     current_time = time.time()
@@ -106,7 +107,10 @@ class EmotionResponse(BaseModel):
 
     emotion: str = Field(..., description="Nom de l'émotion appliquée")
     intensity: float = Field(
-        ..., ge=0.0, le=1.0, description="Intensité de l'émotion (0.0-1.0)"
+        ...,
+        ge=0.0,
+        le=1.0,
+        description="Intensité de l'émotion (0.0-1.0)",
     )
     duration: float = Field(..., gt=0, description="Durée en secondes")
     joints_affected: list[str] = Field(..., description="Joints affectés par l'émotion")
@@ -155,6 +159,7 @@ async def get_robot_capabilities() -> RobotCapabilities:
 
     Raises:
         HTTPException: En cas d'erreur
+
     """
     try:
         # Initialiser les modules BBIA
@@ -172,7 +177,8 @@ async def get_robot_capabilities() -> RobotCapabilities:
     except Exception as e:
         logger.error(f"Erreur lors de la récupération des capacités: {e}")
         raise HTTPException(
-            status_code=500, detail="Erreur lors de la récupération des capacités"
+            status_code=500,
+            detail="Erreur lors de la récupération des capacités",
         ) from e
 
 
@@ -185,6 +191,7 @@ async def get_api_status() -> APIStatus:
 
     Raises:
         HTTPException: En cas d'erreur
+
     """
     try:
         # Vérifier la connexion robot
@@ -218,7 +225,8 @@ async def get_api_status() -> APIStatus:
     except Exception as e:
         logger.error(f"Erreur lors de la récupération du statut: {e}")
         raise HTTPException(
-            status_code=500, detail="Erreur lors de la récupération du statut"
+            status_code=500,
+            detail="Erreur lors de la récupération du statut",
         ) from e
 
 
@@ -242,6 +250,7 @@ async def apply_emotion(
 
     Raises:
         HTTPException: En cas d'erreur
+
     """
     try:
         # Initialiser le module émotions
@@ -275,7 +284,8 @@ async def apply_emotion(
     except Exception as e:
         logger.error(f"Erreur lors de l'application de l'émotion: {e}")
         raise HTTPException(
-            status_code=500, detail="Erreur lors de l'application de l'émotion"
+            status_code=500,
+            detail="Erreur lors de l'application de l'émotion",
         ) from e
 
 
@@ -283,10 +293,15 @@ async def apply_emotion(
 async def execute_behavior(
     behavior: str = Query(..., description="Nom du comportement à exécuter"),
     intensity: float = Query(
-        1.0, ge=0.0, le=2.0, description="Intensité du comportement"
+        1.0,
+        ge=0.0,
+        le=2.0,
+        description="Intensité du comportement",
     ),
     duration: float | None = Query(
-        None, gt=0, description="Durée personnalisée en secondes"
+        None,
+        gt=0,
+        description="Durée personnalisée en secondes",
     ),
 ) -> BehaviorResponse:
     """Exécute un comportement BBIA.
@@ -301,6 +316,7 @@ async def execute_behavior(
 
     Raises:
         HTTPException: En cas d'erreur
+
     """
     try:
         # Initialiser le module comportements
@@ -330,7 +346,8 @@ async def execute_behavior(
     except Exception as e:
         logger.error(f"Erreur lors de l'exécution du comportement: {e}")
         raise HTTPException(
-            status_code=500, detail="Erreur lors de l'exécution du comportement"
+            status_code=500,
+            detail="Erreur lors de l'exécution du comportement",
         ) from e
 
 
@@ -343,6 +360,7 @@ async def get_available_emotions() -> dict[str, Any]:
 
     Raises:
         HTTPException: En cas d'erreur
+
     """
     try:
         emotions_module = BBIAEmotions()
@@ -376,7 +394,8 @@ async def get_available_emotions() -> dict[str, Any]:
     except Exception as e:
         logger.error(f"Erreur lors de la récupération des émotions: {e}")
         raise HTTPException(
-            status_code=500, detail="Erreur lors de la récupération des émotions"
+            status_code=500,
+            detail="Erreur lors de la récupération des émotions",
         ) from e
 
 
@@ -389,6 +408,7 @@ async def get_available_behaviors() -> dict[str, Any]:
 
     Raises:
         HTTPException: En cas d'erreur
+
     """
     try:
         behavior_manager = BBIABehaviorManager()
@@ -418,7 +438,8 @@ async def get_available_behaviors() -> dict[str, Any]:
     except Exception as e:
         logger.error(f"Erreur lors de la récupération des comportements: {e}")
         raise HTTPException(
-            status_code=500, detail="Erreur lors de la récupération des comportements"
+            status_code=500,
+            detail="Erreur lors de la récupération des comportements",
         ) from e
 
 
@@ -431,6 +452,7 @@ async def get_demo_modes() -> dict[str, Any]:
 
     Raises:
         HTTPException: En cas d'erreur
+
     """
     try:
         demo_modes = {
@@ -465,7 +487,8 @@ async def get_demo_modes() -> dict[str, Any]:
     except Exception as e:
         logger.error(f"Erreur lors de la récupération des modes de démo: {e}")
         raise HTTPException(
-            status_code=500, detail="Erreur lors de la récupération des modes de démo"
+            status_code=500,
+            detail="Erreur lors de la récupération des modes de démo",
         ) from e
 
 
@@ -487,6 +510,7 @@ async def start_demo_mode(
 
     Raises:
         HTTPException: En cas d'erreur
+
     """
     try:
         # Vérifier le mode
@@ -515,7 +539,8 @@ async def start_demo_mode(
                     success = await simulation_service.start_simulation(headless=True)
                     if not success:
                         raise HTTPException(
-                            status_code=500, detail="Échec démarrage simulation"
+                            status_code=500,
+                            detail="Échec démarrage simulation",
                         )
                     demo_info["simulation"] = "started"
 
@@ -530,7 +555,7 @@ async def start_demo_mode(
                     if emotion.lower() in valid_emotions:
                         # Créer robot pour appliquer émotion
                         robot = RobotFactory.create_backend(
-                            "mujoco" if mode != "robot_real" else "reachy"
+                            "mujoco" if mode != "robot_real" else "reachy",
                         )
                         if robot:
                             robot.connect()
@@ -581,5 +606,6 @@ async def start_demo_mode(
     except Exception as e:
         logger.error(f"Erreur lors du démarrage de la démo: {e}")
         raise HTTPException(
-            status_code=500, detail="Erreur lors du démarrage de la démo"
+            status_code=500,
+            detail="Erreur lors du démarrage de la démo",
         ) from e

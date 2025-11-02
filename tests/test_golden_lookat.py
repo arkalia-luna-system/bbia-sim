@@ -9,7 +9,7 @@ import math
 import numpy as np
 import pytest
 
-from src.bbia_sim.backends.reachy_mini_backend import ReachyMiniBackend
+from bbia_sim.backends.reachy_mini_backend import ReachyMiniBackend
 
 REF_TARGET = (0.5, 0.2, 0.3)
 TOL_ANGLE = 0.25  # radians

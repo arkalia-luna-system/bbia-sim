@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Script pour auditer et corriger les dates dans tous les fichiers MD.
+"""Script pour auditer et corriger les dates dans tous les fichiers MD.
 Recherche les dates et les met à jour selon les règles :
 - Date de création = premier commit Git (ne jamais modifier)
 - Dates récentes (Oct 25 / Nov 25) = Octobre 2025 / Novembre 2025
@@ -72,7 +71,7 @@ def analyze_md_file(file_path, first_commit_date):
                             "line": i,
                             "content": line.strip(),
                             "match": match.group(),
-                        }
+                        },
                     )
 
         return issues
@@ -106,7 +105,7 @@ def main():
                 {
                     "file": md_file,
                     "issues": issues,
-                }
+                },
             )
 
     # Rapport

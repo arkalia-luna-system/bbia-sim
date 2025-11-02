@@ -1,7 +1,7 @@
 # Guide du chat intelligent BBIA
 
-**Version :** 1.3.2
-**Date :** Oct 25 / Nov 25  
+**Version** : 1.3.2  
+**Date** : Oct / Nov. 2025  
 **📚 [FAQ](../FAQ.md)** | **🧠 [Guide NLP](../guides/GUIDE_NLP_SMOLVLM.md)** | **📊 [État actuel](../audit/RESUME_ETAT_ACTUEL_BBIA.md)**
 
 ---
@@ -152,7 +152,7 @@ bbia.chat("Je suis très content aujourd'hui")
         "user": "Message utilisateur",
         "bbia": "Réponse BBIA",
         "sentiment": {"sentiment": "POSITIVE", "score": 0.95},
-        "timestamp": "Oct / No2025025025025025"
+        "timestamp": "Oct / Nov. 2025"
     },
     ...
 ]

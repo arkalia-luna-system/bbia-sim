@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Audit complet des fichiers Markdown :
+"""Audit complet des fichiers Markdown :
 1. Vérifie et corrige toutes les dates (création vs autres)
 2. Vérifie que le contenu correspond au code réel
 3. Identifie les MD inutiles/rebarbatifs/obsolètes
@@ -92,7 +91,7 @@ def check_dates_in_file(file_path: Path) -> list[dict[str, Any]]:
                                     "match": full_match,
                                     "suggestion": line.replace(year, "2025"),
                                     "content": line.strip()[:80],
-                                }
+                                },
                             )
                     elif pattern_type == "year_only":
                         year = match.group(1)
@@ -104,7 +103,7 @@ def check_dates_in_file(file_path: Path) -> list[dict[str, Any]]:
                                     "match": full_match,
                                     "suggestion": line.replace(year, "2025"),
                                     "content": line.strip()[:80],
-                                }
+                                },
                             )
 
         return issues
@@ -224,7 +223,7 @@ def suggest_location(file_path: Path, root_dir: Path) -> str:
     if len(rel_path.parts) == 1:
         if any(ind in name for ind in ["analyse", "audit", "verification"]):
             return "docs/archives/2025-11/audits/"
-        elif any(ind in name for ind in ["resume", "recap", "bilan"]):
+        if any(ind in name for ind in ["resume", "recap", "bilan"]):
             return "docs/archives/2025-11/resumes/"
 
     return str(rel_path.parent)
@@ -257,7 +256,7 @@ def main():
         # Catégorisation
         cat_info = categorize_file(md_file, root_dir)
         file_categories[cat_info["category"]].append(
-            {"file": md_file, "info": cat_info}
+            {"file": md_file, "info": cat_info},
         )
 
     # Rapport dates

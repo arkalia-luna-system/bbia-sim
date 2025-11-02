@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Enregistreur de traces golden pour RobotAPI
+"""Enregistreur de traces golden pour RobotAPI
 Génère des traces de référence pour les tests de non-régression
 """
 
@@ -26,7 +25,9 @@ def main():
     ap.add_argument("--emotion", default="happy", help="Émotion BBIA")
     ap.add_argument("--seed", type=int, default=42, help="Seed pour reproductibilité")
     ap.add_argument(
-        "--out", default="artifacts/golden/tmp.jsonl", help="Fichier de sortie"
+        "--out",
+        default="artifacts/golden/tmp.jsonl",
+        help="Fichier de sortie",
     )
     ap.add_argument("--slow", action="store_true", help="Mode lent pour robot réel")
     args = ap.parse_args()

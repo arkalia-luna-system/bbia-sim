@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Script pour générer séquence d'émotions pour GIF
+"""Script pour générer séquence d'émotions pour GIF
 Enchaîne automatiquement : happy (2s) → neutral (1s) → curious (2s) → excited (2s) → calm (1s)
 Total : 8 secondes, prêt pour enregistrement écran
 
@@ -20,7 +19,10 @@ from bbia_sim.robot_factory import RobotFactory
 
 
 def emotion_to_pose(
-    emotion: str, intensity: float, step: int, total_steps: int
+    emotion: str,
+    intensity: float,
+    step: int,
+    total_steps: int,
 ) -> float:
     """Convertit une émotion en position d'articulation."""
     t = step / total_steps

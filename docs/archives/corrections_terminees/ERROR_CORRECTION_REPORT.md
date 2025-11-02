@@ -4,7 +4,7 @@
 Ce document a été archivé car il est devenu obsolète ou a été remplacé par une version plus récente.
 Il est conservé à des fins de référence historique uniquement.
 
-**Date d'archivage** : Oct / No2025025025025025
+**Date d'archivage** : Oct / Oct / Nov. 20255
 **Raison** : Document terminé/obsolète/remplacé
 ---
 
@@ -12,7 +12,7 @@ Il est conservé à des fins de référence historique uniquement.
 
 ## Statut final
 
-**Date** : Oct / No2025025025025025
+**Date** : Oct / Oct / Nov. 20255
 **Durée** : 30 minutes
 **Résultat** : corrections appliquées avec succès
 

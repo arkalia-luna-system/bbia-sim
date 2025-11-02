@@ -1,15 +1,19 @@
 # 🤖 Guide Complet Reachy Mini Wireless - Préparation BBIA
 
-> Compatibilité Python et CI
->
-> - Version requise: Python 3.11+
-> - CI: `.github/workflows/ci.yml`
-> - Setup rapide:
-> ```bash
+**Date** : Oct / Nov. 2025  
+**Version** : 1.0
+
+> **Compatibilité Python et CI**
+> - **Version requise** : Python 3.11+
+> - **CI** : `.github/workflows/ci.yml`
+> - **Setup rapide** :
+>   ```bash
 >   pyenv install 3.11.9 && pyenv local 3.11.9
 >   python -m pip install --upgrade pip
 >   pip install -e .
 >   ```
+
+---
 
 ## 🎯 Vue d'ensemble
 
@@ -228,25 +232,25 @@ gantt
     title Plan de Développement BBIA
     dateFormat  YYYY-MM-DD
     section Phase 1: Préparation
-    Documentation complète    :done, doc, Oct / No202502502Oct /2025. 2025. 2025. 2025. 2025
-    Environnement dev        :active, env, Oct / No202502502Oct /2025. 2025. 2025. 2025. 2025
-    Simulation Unity         :sim, Oct / No202502502Oct /2025. 2025. 2025. 2025. 2025
+    Documentation complète    :done, doc, Oct / Nov. 2025
+    Environnement dev        :active, env, Oct / Nov. 2025
+    Simulation Unity         :sim, Oct / Nov. 2025
 
     section Phase 2: Core
-    Configuration robot      :robot, Oct / No202502502Oct /2025. 2025. 2025. 2025. 2025
-    Tests mouvements         :move, Oct / No202502502Oct /2025. 2025. 2025. 2025. 2025
-    Reconnaissance vocale    :voice, Oct / No202502502Oct /2025. 2025. 2025. 2025. 2025
-    Système émotions         :emotions, Oct / No202502502Oct /2025. 2025. 2025. 2025. 2025
+    Configuration robot      :robot, Oct / Nov. 2025
+    Tests mouvements         :move, Oct / Nov. 2025
+    Reconnaissance vocale    :voice, Oct / Nov. 2025
+    Système émotions         :emotions, Oct / Nov. 2025
 
     section Phase 3: Intelligence
-    Hugging Face             :hf, Oct / No202502502Oct /2025. 2025. 2025. 2025. 2025
-    Modèles IA               :ai, Oct / No202502502Oct /2025. 2025. 2025. 2025. 2025
-    Comportements complexes  :behavior, Oct / No202502502Oct /2025. 2025. 2025. 2025. 2025
+    Hugging Face             :hf, Oct / Nov. 2025
+    Modèles IA               :ai, Oct / Nov. 2025
+    Comportements complexes  :behavior, Oct / Nov. 2025
 
     section Phase 4: Optimisation
-    Performance              :perf, Oct / No202502502Oct /2025. 2025. 2025. 2025. 2025
-    Nouvelles fonctionnalités :feat, Oct / No202502502Oct /2025. 2025. 2025. 2025. 2025
-    Déploiement production   :deploy, Oct / No202502502Oct /2025. 2025. 2025. 2025. 2025
+    Performance              :perf, Oct / Nov. 2025
+    Nouvelles fonctionnalités :feat, Oct / Nov. 2025
+    Déploiement production   :deploy, Oct / Nov. 2025
 ```
 
 ---
@@ -503,6 +507,6 @@ Le **Reachy Mini Wireless** fournit une base solide pour BBIA :
 ---
 
 **Version** : 1.0
-**Date** : Oct / No2025025025025025
+**Date** : Oct / Nov. 2025
 **Statut** : Guide Reachy Mini Wireless
 **Auteur** : Assistant IA pour BBIA

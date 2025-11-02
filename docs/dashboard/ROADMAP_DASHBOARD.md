@@ -1,8 +1,13 @@
-# Roadmap Dashboard / UX
+# 🗺️ Roadmap Dashboard / UX
 
-> Voir aussi: `docs/references/INDEX_THEMATIQUE.md` et `docs/status.md`
+**Date** : Oct / Nov. 2025  
+**Version** : 1.0
+
+> **Voir aussi** : [`docs/references/INDEX_THEMATIQUE.md`](../references/INDEX_THEMATIQUE.md) et [`docs/status.md`](../status.md)
 
 **📊 [CI/CD Pipeline](../ci/PIPELINE_CI.md)** | **🔧 [Guide avancé](../guides/GUIDE_AVANCE.md)**
+
+---
 
 ## Architecture Dashboard Proposée
 
@@ -96,5 +101,12 @@ mindmap
 ## Stack suggérée
 - FastAPI + HTMX/Alpine (léger) ou Streamlit (rapide)
 
-## Références
-- État par axe: `docs/status.md` → Dashboard / UX
+---
+
+## 📚 Références
+
+- **État par axe** : [`docs/status.md`](../status.md) → Dashboard / UX
+
+---
+
+**Dernière mise à jour** : Oct / Nov. 2025

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Compare les méthodes du SDK officiel avec celles de BBIA.
+"""Compare les méthodes du SDK officiel avec celles de BBIA.
 """
 
 import re
@@ -39,7 +38,7 @@ def main():
     """Compare les méthodes."""
     official_file = Path("/Volumes/T7/reachy_mini/src/reachy_mini/reachy_mini.py")
     bbia_file = Path(
-        "/Volumes/T7/bbia-reachy-sim/src/bbia_sim/backends/reachy_mini_backend.py"
+        "/Volumes/T7/bbia-reachy-sim/src/bbia_sim/backends/reachy_mini_backend.py",
     )
 
     official_methods = extract_methods_from_file(official_file)
@@ -56,7 +55,7 @@ def main():
     extra_in_bbia = bbia_methods - official_methods
 
     print(
-        f"\n✅ Méthodes présentes dans les deux: {len(official_methods & bbia_methods)}"
+        f"\n✅ Méthodes présentes dans les deux: {len(official_methods & bbia_methods)}",
     )
     print(f"⚠️  Méthodes manquantes dans BBIA: {len(missing_in_bbia)}")
     print(f"ℹ️  Méthodes supplémentaires dans BBIA: {len(extra_in_bbia)}")

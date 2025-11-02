@@ -1,7 +1,10 @@
 # 🎨 Dashboard Officiel-Like - Documentation
 
-**Date:** Oct / No2025025025025025
-**Conformité:** Identique au dashboard officiel `pollen-robotics/reachy_mini`
+**Date** : Oct / Nov. 2025  
+**Version** : 1.0  
+**Conformité** : Identique au dashboard officiel `pollen-robotics/reachy_mini`
+
+---
 
 ---
 

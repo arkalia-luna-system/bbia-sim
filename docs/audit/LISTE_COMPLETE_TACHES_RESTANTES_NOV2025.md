@@ -33,7 +33,7 @@ Les éléments suivants sont **déjà implémentés** et ne nécessitent **aucun
 | Module | Coverage Actuel | Lignes Non Couvertes | Fichiers Tests Existant | Action Nécessaire |
 |--------|----------------|---------------------|----------------------|-------------------|
 | `vision_yolo.py` | **89.62%** ✅ | ~19 lignes | ✅ `test_vision_yolo_comprehensive.py` (existe) | ✅ **TERMINÉ** (objectif 50%+ dépassé) |
-| `voice_whisper.py` | **36.84%** ⬆️ | ~133 lignes | ✅ `test_vad_streaming.py`, `test_ia_modules.py` (18+ tests ajoutés) | ✅ **EN PROGRÈS** (+13.57%) |
+| `voice_whisper.py**: **59.83%**** ⬆️ | ~133 lignes | ✅ `test_vad_streaming.py`, `test_ia_modules.py` (18+ tests ajoutés) | ✅ **EN PROGRÈS** (+13.57%) |
 | `dashboard_advanced.py` | **76.71%** ✅ | ~75 lignes | ✅ **EXISTE** : `tests/test_dashboard_advanced.py` (**47 tests**, **1156 lignes**) | ✅ **TERMINÉ** (+38% depuis 38.82%) |
 | `daemon/bridge.py` | **31.23%** ✅ | ~262 lignes | ✅ `test_daemon_bridge.py` (10+ tests ajoutés) | ✅ **TERMINÉ** (objectif 30%+ atteint) |
 
@@ -171,7 +171,7 @@ Les éléments suivants sont **déjà implémentés** et ne nécessitent **aucun
 ### Phase 2 : Coverage Tests (~1-2h restantes)
 1. ✅ ~~Créer `tests/test_dashboard_advanced.py`~~ - **TERMINÉ** (**47 tests**, **1156 lignes**, 76.71% coverage) ✅
 2. ✅ ~~Étendre `tests/test_vision_yolo_comprehensive.py`~~ - **TERMINÉ** (**89.62%** coverage ✅)
-3. ⚠️ **Étendre tests `voice_whisper.py`** - **EN PROGRÈS** (36.84% → 50%+, ~1-2h restantes)
+3. ⚠️ **Étendre tests `voice_whisper.py**: **59.83%** → 50%+, ~1-2h restantes)
 4. ✅ ~~Étendre `tests/test_daemon_bridge.py`~~ - **TERMINÉ** (**31.23%** coverage ✅)
 
 ### Phase 3 : Nettoyage Documentation (2-3h)

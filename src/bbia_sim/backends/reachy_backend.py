@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-ReachyBackend - Implémentation Reachy réel de RobotAPI
+"""ReachyBackend - Implémentation Reachy réel de RobotAPI
 Backend mock pour robot Reachy réel (à implémenter plus tard)
 """
 
@@ -173,7 +172,9 @@ class ReachyBackend(RobotAPI):
         }
 
     def send_command(
-        self, command: str, **kwargs: dict[str, Any]  # noqa: ANN401
+        self,
+        command: str,
+        **kwargs: dict[str, Any],
     ) -> bool:
         """Envoie une commande au robot Reachy."""
         if not self.is_connected:

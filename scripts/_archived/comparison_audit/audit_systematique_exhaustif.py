@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Audit systématique exhaustif BBIA-SIM vs SDK officiel reachy_mini.
+"""Audit systématique exhaustif BBIA-SIM vs SDK officiel reachy_mini.
 Compare TOUT : endpoints, classes, méthodes, modèles, tests, scripts, docs, etc.
 """
 
@@ -149,10 +148,10 @@ class ExhaustiveAuditor:
                                         category="MODEL",
                                         nature="joint_range",
                                         bbia_path=str(
-                                            bbia_joints_file.relative_to(PROJECT_ROOT)
+                                            bbia_joints_file.relative_to(PROJECT_ROOT),
                                         ),
                                         official_path=str(
-                                            official_xml.relative_to(OFFICIAL_REPO)
+                                            official_xml.relative_to(OFFICIAL_REPO),
                                         ),
                                         description=f"Joint {joint_name}: limites différentes",
                                         bbia_value=f"({min_b:.6f}, {max_b:.6f})",
@@ -167,10 +166,10 @@ class ExhaustiveAuditor:
                                         category="MODEL",
                                         nature="joint_range",
                                         bbia_path=str(
-                                            bbia_joints_file.relative_to(PROJECT_ROOT)
+                                            bbia_joints_file.relative_to(PROJECT_ROOT),
                                         ),
                                         official_path=str(
-                                            official_xml.relative_to(OFFICIAL_REPO)
+                                            official_xml.relative_to(OFFICIAL_REPO),
                                         ),
                                         description=f"Joint {joint_name}",
                                         status="OK",
@@ -185,10 +184,10 @@ class ExhaustiveAuditor:
                                 category="MODEL",
                                 nature="joint",
                                 bbia_path=str(
-                                    bbia_joints_file.relative_to(PROJECT_ROOT)
+                                    bbia_joints_file.relative_to(PROJECT_ROOT),
                                 ),
                                 official_path=str(
-                                    official_xml.relative_to(OFFICIAL_REPO)
+                                    official_xml.relative_to(OFFICIAL_REPO),
                                 ),
                                 description=f"Joint {joint_name} manquant",
                                 status="MISSING",
@@ -230,7 +229,7 @@ class ExhaustiveAuditor:
                                 category="TEST",
                                 nature="test_function",
                                 bbia_path=str(
-                                    bbia_equivalent.relative_to(PROJECT_ROOT)
+                                    bbia_equivalent.relative_to(PROJECT_ROOT),
                                 ),
                                 official_path=str(test_file.relative_to(OFFICIAL_REPO)),
                                 description=f"Test {func} manquant dans {test_name}",
@@ -244,7 +243,7 @@ class ExhaustiveAuditor:
                                 category="TEST",
                                 nature="test_function",
                                 bbia_path=str(
-                                    bbia_equivalent.relative_to(PROJECT_ROOT)
+                                    bbia_equivalent.relative_to(PROJECT_ROOT),
                                 ),
                                 official_path=str(test_file.relative_to(OFFICIAL_REPO)),
                                 description=f"Test {func} présent",
@@ -408,10 +407,10 @@ class ExhaustiveAuditor:
             lines.append(f"### {category} ({len(items)} items)")
             lines.append("")
             lines.append(
-                "| Nature | Fichier BBIA | Ligne | Status | Severity | Fix | Test | QA | Description |"
+                "| Nature | Fichier BBIA | Ligne | Status | Severity | Fix | Test | QA | Description |",
             )
             lines.append(
-                "|--------|--------------|-------|--------|----------|-----|------|-----|-------------|"
+                "|--------|--------------|-------|--------|----------|-----|------|-----|-------------|",
             )
 
             for item in sorted(
@@ -441,7 +440,7 @@ class ExhaustiveAuditor:
                 )
 
                 lines.append(
-                    f"| {item.nature} | `{item.bbia_path[:50]}` | {item.line or 'N/A'} | {status_icon} {item.status} | {severity_icon} {item.severity} | {fix_mark} | {test_mark} | {qa_mark} | {item.description[:60]} |"
+                    f"| {item.nature} | `{item.bbia_path[:50]}` | {item.line or 'N/A'} | {status_icon} {item.status} | {severity_icon} {item.severity} | {fix_mark} | {test_mark} | {qa_mark} | {item.description[:60]} |",
                 )
             lines.append("")
 
@@ -452,7 +451,7 @@ class ExhaustiveAuditor:
                 [
                     "## 🔴 Corrections Prioritaires (INCOMPATIBLE)",
                     "",
-                ]
+                ],
             )
             for idx, item in enumerate(incompatible, 1):
                 lines.append(f"{idx}. **{item.description}**")
@@ -469,11 +468,11 @@ class ExhaustiveAuditor:
                 [
                     "## ✅ Corrections Appliquées",
                     "",
-                ]
+                ],
             )
             for item in fixed:
                 lines.append(
-                    f"- **{item.description}** - `{item.bbia_path}`:{item.line or '?'} ✅"
+                    f"- **{item.description}** - `{item.bbia_path}`:{item.line or '?'} ✅",
                 )
                 if item.test_result == "PASSED":
                     lines.append(f"  - Test: ✅ PASS - {item.test_file}")
@@ -506,7 +505,7 @@ def main():
     summary = auditor.report.get_summary()
     if summary["by_severity"].get("INCOMPATIBLE", 0) > 0:
         print(
-            f"\n🔴 {summary['by_severity']['INCOMPATIBLE']} éléments INCOMPATIBLES détectés!"
+            f"\n🔴 {summary['by_severity']['INCOMPATIBLE']} éléments INCOMPATIBLES détectés!",
         )
         sys.exit(1)
     else:

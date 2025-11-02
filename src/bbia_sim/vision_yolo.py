@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-bbia_vision_yolo.py - Module YOLOv8n pour BBIA
+"""bbia_vision_yolo.py - Module YOLOv8n pour BBIA
 Détection d'objets légère avec YOLOv8n (optionnel)
 """
 
@@ -35,25 +34,25 @@ _mediapipe_cache_lock = threading.Lock()
 
 # Réduction du bruit de logs TensorFlow/MediaPipe (avant import potentiel de MediaPipe)
 try:
-    import os as _os  # noqa: F401
+    import os as _os
 
     _os.environ.setdefault("GLOG_minloglevel", "2")
     _os.environ.setdefault("TF_CPP_MIN_LOG_LEVEL", "2")
     _os.environ.setdefault("MEDIAPIPE_DISABLE_GPU", "1")
 except Exception:
-    pass  # noqa: S101 - Ignorer erreur configuration variables d'environnement MediaPipe
+    pass
 
 
 class YOLODetector:
     """Module de détection d'objets utilisant YOLOv8n."""
 
     def __init__(self, model_size: str = "n", confidence_threshold: float = 0.25):
-        """
-        Initialise le détecteur YOLO.
+        """Initialise le détecteur YOLO.
 
         Args:
             model_size: Taille du modèle ("n", "s", "m", "l", "x")
             confidence_threshold: Seuil de confiance pour les détections
+
         """
         self.model_size = model_size
         self.confidence_threshold = confidence_threshold
@@ -76,7 +75,7 @@ class YOLODetector:
             return
 
         logger.info(
-            f"🔍 Initialisation YOLO détecteur (modèle: {model_size}, seuil: {confidence_threshold})"
+            f"🔍 Initialisation YOLO détecteur (modèle: {model_size}, seuil: {confidence_threshold})",
         )
 
     def load_model(self) -> bool:
@@ -109,7 +108,7 @@ class YOLODetector:
                     del _yolo_model_cache[oldest_key]
                     del _yolo_model_last_used[oldest_key]
                     logger.debug(
-                        f"♻️ Modèle YOLO LRU déchargé: {oldest_key} (optimisation RAM)"
+                        f"♻️ Modèle YOLO LRU déchargé: {oldest_key} (optimisation RAM)",
                     )
 
         try:
@@ -135,14 +134,14 @@ class YOLODetector:
             return False
 
     def detect_objects(self, image: np.ndarray) -> list[dict[str, Any]]:
-        """
-        Détecte les objets dans une image.
+        """Détecte les objets dans une image.
 
         Args:
             image: Image numpy array (BGR)
 
         Returns:
             Liste des détections avec bbox, confiance, classe
+
         """
         if not self.is_loaded:
             if not self.load_model():
@@ -187,16 +186,17 @@ class YOLODetector:
             return []
 
     def get_best_detection(
-        self, detections: list[dict[str, Any]]
+        self,
+        detections: list[dict[str, Any]],
     ) -> dict[str, Any] | None:
-        """
-        Retourne la meilleure détection selon les critères BBIA.
+        """Retourne la meilleure détection selon les critères BBIA.
 
         Args:
             detections: Liste des détections
 
         Returns:
             Meilleure détection ou None
+
         """
         if not detections:
             return None
@@ -219,16 +219,17 @@ class YOLODetector:
         return best_detection
 
     def map_detection_to_action(
-        self, detection: dict[str, Any]
+        self,
+        detection: dict[str, Any],
     ) -> dict[str, Any] | None:
-        """
-        Mappe une détection vers une action RobotAPI.
+        """Mappe une détection vers une action RobotAPI.
 
         Args:
             detection: Détection d'objet
 
         Returns:
             Action mappée ou None
+
         """
         if not detection:
             return None
@@ -302,14 +303,14 @@ class FaceDetector:
             logger.warning("⚠️ MediaPipe non disponible")
 
     def detect_faces(self, image: np.ndarray) -> list[dict[str, Any]]:
-        """
-        Détecte les visages dans une image.
+        """Détecte les visages dans une image.
 
         Args:
             image: Image numpy array (RGB)
 
         Returns:
             Liste des détections de visages
+
         """
         if not self.face_detection:
             return []
@@ -352,31 +353,32 @@ class FaceDetector:
             return []
 
     def get_best_face(self, detections: list[dict[str, Any]]) -> dict[str, Any] | None:
-        """
-        Retourne le meilleur visage détecté.
+        """Retourne le meilleur visage détecté.
 
         Args:
             detections: Liste des détections de visages
 
         Returns:
             Meilleur visage ou None
+
         """
         if not detections:
             return None
 
         # Priorité: confiance + taille
         best_face = max(
-            detections, key=lambda d: d["confidence"] * (1 + d["area"] / 50000)
+            detections,
+            key=lambda d: d["confidence"] * (1 + d["area"] / 50000),
         )
 
         return best_face
 
 
 def create_yolo_detector(
-    model_size: str = "n", confidence_threshold: float = 0.25
+    model_size: str = "n",
+    confidence_threshold: float = 0.25,
 ) -> YOLODetector | None:
-    """
-    Factory function pour créer une instance YOLODetector.
+    """Factory function pour créer une instance YOLODetector.
 
     Args:
         model_size: Taille du modèle YOLO ("n", "s", "m", "l", "x")
@@ -384,22 +386,24 @@ def create_yolo_detector(
 
     Returns:
         Instance YOLODetector ou None si non disponible
+
     """
     if not YOLO_AVAILABLE:
         logger.warning("⚠️ YOLO non disponible")
         return None
 
     return YOLODetector(
-        model_size=model_size, confidence_threshold=confidence_threshold
+        model_size=model_size,
+        confidence_threshold=confidence_threshold,
     )
 
 
 def create_face_detector() -> FaceDetector | None:
-    """
-    Factory function pour créer une instance FaceDetector.
+    """Factory function pour créer une instance FaceDetector.
 
     Returns:
         Instance FaceDetector ou None si non disponible
+
     """
     try:
         import mediapipe as mp  # noqa: F401

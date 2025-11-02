@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Script de diagnostic des joints Reachy Mini
+"""Script de diagnostic des joints Reachy Mini
 Identifie les joints sûrs vs problématiques pour éviter les erreurs
 """
 
@@ -15,7 +14,6 @@ import mujoco
 
 def analyze_joints():
     """Analyse tous les joints et les classe par sécurité."""
-
     model_path = "src/bbia_sim/sim/models/reachy_mini_REAL_OFFICIAL.xml"
     model = mujoco.MjModel.from_xml_path(model_path)
 
@@ -43,7 +41,7 @@ def analyze_joints():
                 # Les joints Stewart sont plus complexes
                 if range_size > 2.0:  # Grande plage = potentiellement problématique
                     problematic_joints.append(
-                        (name, joint_range, "PROBLÉMATIQUE - Grande plage")
+                        (name, joint_range, "PROBLÉMATIQUE - Grande plage"),
                     )
                 else:
                     safe_joints.append((name, joint_range, "SÛR - Plage modérée"))
@@ -59,7 +57,7 @@ def analyze_joints():
     for name, joint_range, reason in safe_joints:
         range_size = joint_range[1] - joint_range[0]
         print(
-            f"   • {name:12} | [{joint_range[0]:6.3f}, {joint_range[1]:6.3f}] | {range_size:5.3f} rad | {reason}"
+            f"   • {name:12} | [{joint_range[0]:6.3f}, {joint_range[1]:6.3f}] | {range_size:5.3f} rad | {reason}",
         )
 
     if problematic_joints:
@@ -67,13 +65,13 @@ def analyze_joints():
         for name, joint_range, reason in problematic_joints:
             range_size = joint_range[1] - joint_range[0]
             print(
-                f"   • {name:12} | [{joint_range[0]:6.3f}, {joint_range[1]:6.3f}] | {range_size:5.3f} rad | {reason}"
+                f"   • {name:12} | [{joint_range[0]:6.3f}, {joint_range[1]:6.3f}] | {range_size:5.3f} rad | {reason}",
             )
 
     print(f"\n❌ JOINTS BLOQUÉS ({len(blocked_joints)}):")
     for name, joint_range in blocked_joints:
         print(
-            f"   • {name:12} | [{joint_range[0]:6.3f}, {joint_range[1]:6.3f}] | BLOQUÉ"
+            f"   • {name:12} | [{joint_range[0]:6.3f}, {joint_range[1]:6.3f}] | BLOQUÉ",
         )
 
     print("\n🎯 RECOMMANDATIONS:")

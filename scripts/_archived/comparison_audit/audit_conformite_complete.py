@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Script d'audit de conformité complet entre BBIA-SIM et le SDK officiel Reachy Mini.
+"""Script d'audit de conformité complet entre BBIA-SIM et le SDK officiel Reachy Mini.
 Compare tous les endpoints, classes, méthodes, modèles, tests, etc.
 """
 
@@ -117,7 +116,7 @@ class ConformityAuditor:
                 # Extraire la fonction suivante
                 func_start = content.find("\n", match.end())
                 func_match = re.search(
-                    r"def\s+(\w+)\s*\(", content[func_start : func_start + 500]
+                    r"def\s+(\w+)\s*\(", content[func_start : func_start + 500],
                 )
                 func_name = func_match.group(1) if func_match else "unknown"
 
@@ -127,7 +126,7 @@ class ConformityAuditor:
                         "path": path,
                         "function": func_name,
                         "file": str(router_file.relative_to(PROJECT_ROOT)),
-                    }
+                    },
                 )
         except Exception as e:
             logger.error(f"Error parsing router {router_file}: {e}")
@@ -198,7 +197,7 @@ class ConformityAuditor:
                         endpoint=f"{method} {endpoint_path}",
                         description=f"Endpoint critique manquant: {method} {endpoint_path}",
                         fix_suggestion=f"Ajouter l'endpoint {method} {endpoint_path} dans le router approprié",
-                    )
+                    ),
                 )
 
     def check_code_quality(self) -> None:
@@ -209,7 +208,7 @@ class ConformityAuditor:
         try:
             result = subprocess.run(
                 ["black", "--check", "--diff", str(BBIA_SRC)],
-                capture_output=True,
+                check=False, capture_output=True,
                 text=True,
                 timeout=30,
             )
@@ -221,7 +220,7 @@ class ConformityAuditor:
                         file="src/bbia_sim/",
                         description="Code non formaté avec black",
                         fix_suggestion="Exécuter: black src/bbia_sim/",
-                    )
+                    ),
                 )
         except Exception as e:
             logger.warning(f"Black check failed: {e}")
@@ -230,7 +229,7 @@ class ConformityAuditor:
         try:
             result = subprocess.run(
                 ["ruff", "check", str(BBIA_SRC)],
-                capture_output=True,
+                check=False, capture_output=True,
                 text=True,
                 timeout=30,
             )
@@ -243,7 +242,7 @@ class ConformityAuditor:
                         file="src/bbia_sim/",
                         description=f"Erreurs ruff détectées: {len(lines)}",
                         fix_suggestion="Exécuter: ruff check src/bbia_sim/ --fix",
-                    )
+                    ),
                 )
         except Exception as e:
             logger.warning(f"Ruff check failed: {e}")
@@ -281,7 +280,7 @@ class ConformityAuditor:
 
             for issue in issues:
                 report_lines.append(
-                    f"#### {issue.severity}: {issue.endpoint or issue.description}"
+                    f"#### {issue.severity}: {issue.endpoint or issue.description}",
                 )
                 report_lines.append(f"- **Fichier:** `{issue.file}`")
                 if issue.line:
@@ -298,13 +297,13 @@ class ConformityAuditor:
                 "",
                 "### À Corriger (INCOMPATIBLE)",
                 "",
-            ]
+            ],
         )
 
         incompatible = [i for i in self.report.issues if i.severity == "INCOMPATIBLE"]
         for idx, issue in enumerate(incompatible, 1):
             report_lines.append(
-                f"{idx}. [ ] {issue.description} - `{issue.file}`:{issue.line or '?'}"
+                f"{idx}. [ ] {issue.description} - `{issue.file}`:{issue.line or '?'}",
             )
 
         return "\n".join(report_lines)

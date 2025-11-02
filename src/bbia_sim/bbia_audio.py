@@ -20,18 +20,24 @@ class _SoundDeviceShim:
     """
 
     def rec(
-        self, *args: Any, **kwargs: Any
+        self,
+        *args: Any,
+        **kwargs: Any,
     ) -> Any:  # noqa: ANN401 - garde-fou pour module optionnel
         raise RuntimeError("sounddevice indisponible: sd.rec non opérationnel")
 
     def wait(
-        self, *args: Any, **kwargs: Any
-    ) -> None:  # noqa: ANN401 - garde-fou pour module optionnel
+        self,
+        *args: Any,
+        **kwargs: Any,
+    ) -> None:
         raise RuntimeError("sounddevice indisponible: sd.wait non opérationnel")
 
     def play(
-        self, *args: Any, **kwargs: Any
-    ) -> None:  # noqa: ANN401 - garde-fou pour module optionnel
+        self,
+        *args: Any,
+        **kwargs: Any,
+    ) -> None:
         raise RuntimeError("sounddevice indisponible: sd.play non opérationnel")
 
 
@@ -41,9 +47,7 @@ if TYPE_CHECKING:
     from .robot_api import RobotAPI
 
 
-def _get_sd() -> (
-    Any | None
-):  # noqa: ANN401 - retour dynamique selon disponibilité module
+def _get_sd() -> Any | None:
     """Import paresseux de sounddevice pour éviter l'init PortAudio au import."""
     global sd
     if sd is not None:
@@ -77,7 +81,7 @@ except Exception:  # pragma: no cover - environnement sans soundfile
 
 
 def _get_robot_media_microphone(
-    robot_api: Optional["RobotAPI"] = None,  # noqa: ANN401
+    robot_api: Optional["RobotAPI"] = None,
 ) -> object | None:
     """Récupère robot.media.microphone si disponible.
 
@@ -86,6 +90,7 @@ def _get_robot_media_microphone(
 
     Returns:
         robot.media.microphone ou None (jamais None si robot_api.media est disponible)
+
     """
     if robot_api and hasattr(robot_api, "media"):
         try:
@@ -148,7 +153,7 @@ def enregistrer_audio(
     fichier: str,
     duree: int = 3,
     frequence: int = DEFAULT_SAMPLE_RATE,
-    robot_api: Optional["RobotAPI"] = None,  # noqa: ANN401
+    robot_api: Optional["RobotAPI"] = None,
 ) -> bool:
     """Enregistre un fichier audio (WAV) depuis le micro.
 
@@ -162,6 +167,7 @@ def enregistrer_audio(
         duree: Durée d'enregistrement en secondes
         frequence: Fréquence d'échantillonnage
         robot_api: Interface RobotAPI (optionnel) pour accès robot.media.microphone
+
     """
     # Vérifier flag d'environnement pour désactiver audio (CI/headless)
     if os.environ.get("BBIA_DISABLE_AUDIO", "0") == "1":
@@ -186,10 +192,11 @@ def enregistrer_audio(
                 and hasattr(robot_api.media, "record_audio")
             ):
                 logging.info(
-                    f"Enregistrement via SDK (4 microphones) ({duree}s) dans {fichier}..."
+                    f"Enregistrement via SDK (4 microphones) ({duree}s) dans {fichier}...",
                 )
                 audio_data = robot_api.media.record_audio(
-                    duration=duree, sample_rate=frequence
+                    duration=duree,
+                    sample_rate=frequence,
                 )
                 # Sauvegarder dans fichier WAV
                 with wave.open(fichier, "wb") as wf:
@@ -205,19 +212,22 @@ def enregistrer_audio(
                         wf.writeframes(bytes(audio_data))
                 logging.info("Enregistrement SDK terminé.")
                 return True
-            elif hasattr(microphone_sdk, "record"):
+            if hasattr(microphone_sdk, "record"):
                 # Alternative: microphone.record() si disponible
                 audio_data = microphone_sdk.record(
-                    duration=duree, sample_rate=frequence
+                    duration=duree,
+                    sample_rate=frequence,
                 )
                 with wave.open(fichier, "wb") as wf:
                     wf.setnchannels(1)
                     wf.setsampwidth(2)
                     wf.setframerate(frequence)
                     wf.writeframes(
-                        bytes(audio_data)
-                        if isinstance(audio_data, bytes | bytearray)
-                        else audio_data.tobytes()
+                        (
+                            bytes(audio_data)
+                            if isinstance(audio_data, bytes | bytearray)
+                            else audio_data.tobytes()
+                        ),
                     )
                 logging.info("Enregistrement SDK terminé.")
                 return True
@@ -231,10 +241,13 @@ def enregistrer_audio(
         _sd = _get_sd()
         if _sd is None:
             raise RuntimeError(
-                "sounddevice indisponible (BBIA_DISABLE_AUDIO conseillé en CI)"
+                "sounddevice indisponible (BBIA_DISABLE_AUDIO conseillé en CI)",
             )
         audio = _sd.rec(
-            int(duree * frequence), samplerate=frequence, channels=1, dtype="int16"
+            int(duree * frequence),
+            samplerate=frequence,
+            channels=1,
+            dtype="int16",
         )
         _sd.wait()
         with wave.open(fichier, "wb") as wf:
@@ -245,7 +258,7 @@ def enregistrer_audio(
         logging.info("Enregistrement terminé.")
         return True
     except Exception as e:
-        logging.error(f"Erreur d'enregistrement audio : {e}")
+        logging.exception(f"Erreur d'enregistrement audio : {e}")
         raise
 
 
@@ -258,6 +271,7 @@ def lire_audio(fichier: str, robot_api: Optional["RobotAPI"] = None) -> None:
     Args:
         fichier: Chemin du fichier audio
         robot_api: Interface RobotAPI (optionnel) pour accès robot.media.speaker
+
     """
     # Vérifier flag d'environnement pour désactiver audio (CI/headless)
     if os.environ.get("BBIA_DISABLE_AUDIO", "0") == "1":
@@ -276,7 +290,7 @@ def lire_audio(fichier: str, robot_api: Optional["RobotAPI"] = None) -> None:
                 logging.warning(
                     f"⚠️  Sample rate {info.samplerate} Hz != "
                     f"SDK standard {DEFAULT_SAMPLE_RATE} Hz. "
-                    f"Performance audio peut être dégradée."
+                    f"Performance audio peut être dégradée.",
                 )
         except Exception:
             # Ignorer toute erreur côté soundfile, fallback plus bas
@@ -301,7 +315,7 @@ def lire_audio(fichier: str, robot_api: Optional["RobotAPI"] = None) -> None:
                     play_audio(audio_bytes)
                     logging.info("Lecture SDK terminée.")
                     return
-                elif speaker is not None and hasattr(speaker, "play"):
+                if speaker is not None and hasattr(speaker, "play"):
                     # Alternative: speaker.play() si disponible
                     with open(fichier, "rb") as f:
                         audio_bytes = f.read()
@@ -325,7 +339,7 @@ def lire_audio(fichier: str, robot_api: Optional["RobotAPI"] = None) -> None:
             _sd.wait()
         logging.info(f"Lecture de {fichier} terminée.")
     except Exception as e:
-        logging.error(f"Erreur de lecture audio : {e}")
+        logging.exception(f"Erreur de lecture audio : {e}")
         raise
 
 
@@ -352,7 +366,7 @@ def detecter_son(fichier: str, seuil: int = 500) -> bool:
             logging.info(f"Amplitude max détectée : {max_val}")
             return max_val > seuil
     except Exception as e:
-        logging.error(f"Erreur de détection de son : {e}")
+        logging.exception(f"Erreur de détection de son : {e}")
         return False
 
 

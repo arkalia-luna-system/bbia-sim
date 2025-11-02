@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Module de détection de postures/gestes avec MediaPipe Pose.
+"""Module de détection de postures/gestes avec MediaPipe Pose.
 
 Fonctionnalités :
 - Détection de la posture complète du corps (33 points clés)
@@ -40,13 +39,13 @@ class BBIAPoseDetection:
         min_tracking_confidence: float = 0.5,
         model_complexity: int = 1,
     ):
-        """
-        Initialise le module de détection de pose.
+        """Initialise le module de détection de pose.
 
         Args:
             min_detection_confidence: Confiance minimale pour détection (0.0-1.0)
             min_tracking_confidence: Confiance minimale pour tracking (0.0-1.0)
             model_complexity: Complexité du modèle (0=rapide, 1=équilibré, 2=précis)
+
         """
         self.min_detection_confidence = min_detection_confidence
         self.min_tracking_confidence = min_tracking_confidence
@@ -56,7 +55,7 @@ class BBIAPoseDetection:
 
         if not MEDIAPIPE_POSE_AVAILABLE:
             logger.warning(
-                "⚠️ MediaPipe non disponible. Installer avec: pip install mediapipe"
+                "⚠️ MediaPipe non disponible. Installer avec: pip install mediapipe",
             )
             return
 
@@ -69,15 +68,14 @@ class BBIAPoseDetection:
                 min_tracking_confidence=min_tracking_confidence,
             )
             logger.info(
-                f"✅ BBIAPoseDetection initialisé (complexité: {model_complexity})"
+                f"✅ BBIAPoseDetection initialisé (complexité: {model_complexity})",
             )
             self.is_initialized = True
         except Exception as e:
             logger.error(f"❌ Erreur initialisation MediaPipe Pose: {e}")
 
     def detect_pose(self, image: np.ndarray) -> dict[str, Any] | None:
-        """
-        Détecte la posture complète dans une image.
+        """Détecte la posture complète dans une image.
 
         Args:
             image: Image numpy array (BGR ou RGB)
@@ -85,6 +83,7 @@ class BBIAPoseDetection:
         Returns:
             Dict avec 'landmarks' (33 points), 'gestures' (gestes détectés),
             'posture' (debout/assis), ou None si pas de personne
+
         """
         if not self.is_initialized or not self.pose_detector:
             return None
@@ -120,7 +119,7 @@ class BBIAPoseDetection:
                         "visibility": landmark.visibility,
                         "pixel_x": int(landmark.x * width),
                         "pixel_y": int(landmark.y * height),
-                    }
+                    },
                 )
 
             # Détecter les gestes et posture
@@ -139,14 +138,14 @@ class BBIAPoseDetection:
             return None
 
     def _detect_gestures(self, landmarks: list[dict[str, Any]]) -> dict[str, bool]:
-        """
-        Détecte les gestes à partir des landmarks.
+        """Détecte les gestes à partir des landmarks.
 
         Args:
             landmarks: Liste des 33 landmarks MediaPipe
 
         Returns:
             Dict avec gestes détectés (bras_levés, debout, etc.)
+
         """
         if len(landmarks) < 33:
             return {}
@@ -200,14 +199,14 @@ class BBIAPoseDetection:
         return gestures
 
     def _detect_posture(self, landmarks: list[dict[str, Any]]) -> str:
-        """
-        Détecte la posture principale (debout/assis).
+        """Détecte la posture principale (debout/assis).
 
         Args:
             landmarks: Liste des 33 landmarks MediaPipe
 
         Returns:
             "debout", "assis", ou "inconnu"
+
         """
         if len(landmarks) < 33:
             return "inconnu"
@@ -244,8 +243,7 @@ def create_pose_detector(
     min_tracking_confidence: float = 0.5,
     model_complexity: int = 1,
 ) -> BBIAPoseDetection | None:
-    """
-    Factory function pour créer une instance BBIAPoseDetection.
+    """Factory function pour créer une instance BBIAPoseDetection.
 
     Args:
         min_detection_confidence: Confiance minimale pour détection
@@ -254,6 +252,7 @@ def create_pose_detector(
 
     Returns:
         Instance BBIAPoseDetection ou None si MediaPipe non disponible
+
     """
     if not MEDIAPIPE_POSE_AVAILABLE:
         logger.warning("⚠️ MediaPipe non disponible")

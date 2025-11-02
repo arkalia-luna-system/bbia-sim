@@ -1,10 +1,10 @@
-# Résumé améliorations intelligence BBIA - Oct / No2025025025025025
+# Résumé améliorations intelligence BBIA - Oct / Oct / Nov. 20255
 
 > Référence IA/Perf
 >
 > Voir `docs/status.md` → "Vision / Audio / IA" pour l’état actuel (tests, datasets/golden images) et axes futurs.
 
-**Date :** Oct / No2025025025025025
+**Date :** Oct / Oct / Nov. 20255
 **Statut :** toutes les améliorations terminées et validées
 
 ---
@@ -21,7 +21,7 @@
 
 ### 2. Réponses génériques améliorées
 
-- **8 → 15 variantes** plus intelligentes (session Oct / No2025025025025025)
+- **8 → 15 variantes** plus intelligentes (session Oct / Oct / Nov. 20255)
 - **Expressions naturelles :** "j'aime apprendre de vous", "j'adorerais en discuter"
 - **Questions ouvertes :** "Qu'est-ce qui vous a amené à penser ça ?"
 - **Longueur optimale :** ~80 caractères (au lieu de ~40)
@@ -29,7 +29,7 @@
 
 ### 3. Réponses questions enrichies
 
-- **5 → 10 variantes** enrichies (session Oct / No2025025025025025)
+- **5 → 10 variantes** enrichies (session Oct / Oct / Nov. 20255)
 - **Formulations intelligentes :** "Ça m'intrigue aussi !", "Qu'est-ce qui a provoqué cette curiosité ?"
 - **Nouvelles variantes :** "Hmm, c'est une question qui mérite qu'on s'y attarde", "Intéressant angle d'approche !"
 
@@ -65,5 +65,5 @@
 
 Impact global : BBIA est plus intelligent, avec un langage plus naturel et une meilleure cohérence conversationnelle.
 
-*Dernière mise à jour : Oct / No2025025025025025*
+*Dernière mise à jour : Oct / Oct / Nov. 20255*
 

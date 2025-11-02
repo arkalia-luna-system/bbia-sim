@@ -42,7 +42,7 @@ def check_corrections() -> dict[str, Any]:
                     "file": "kinematics_data.json",
                     "priority": "CRITICAL",
                     "action": "copy",
-                }
+                },
             )
         else:
             status["completed"].append("kinematics_data.json")
@@ -51,7 +51,7 @@ def check_corrections() -> dict[str, Any]:
     if CRITICAL_FILES["constants.py"]["official"].exists():
         if not CRITICAL_FILES["constants.py"]["bbia"].exists():
             status["missing"].append(
-                {"file": "constants.py", "priority": "HIGH", "action": "create_adapted"}
+                {"file": "constants.py", "priority": "HIGH", "action": "create_adapted"},
             )
         else:
             status["completed"].append("constants.py")
@@ -95,7 +95,7 @@ def apply_missing_corrections(status: dict[str, Any]) -> None:
         if item["action"] == "copy":
             # Créer répertoire si nécessaire
             CRITICAL_FILES[item["file"]]["bbia"].parent.mkdir(
-                parents=True, exist_ok=True
+                parents=True, exist_ok=True,
             )
             # Copier fichier
             shutil.copy2(
@@ -119,7 +119,7 @@ def apply_missing_corrections(status: dict[str, Any]) -> None:
             )
 
             CRITICAL_FILES["constants.py"]["bbia"].parent.mkdir(
-                parents=True, exist_ok=True
+                parents=True, exist_ok=True,
             )
             CRITICAL_FILES["constants.py"]["bbia"].write_text(adapted_content)
             print(f"✅ Créé: {item['file']} (adapté pour BBIA)")

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Script unifié pour auditer et corriger les dates dans tous les fichiers MD.
+"""Script unifié pour auditer et corriger les dates dans tous les fichiers MD.
 
 Fusion de :
 - audit_dates_md.py (audit)
@@ -15,6 +14,7 @@ Usage:
 """
 
 import argparse
+import glob
 import json
 import re
 import subprocess
@@ -151,7 +151,7 @@ def audit_file(filepath: Path) -> dict:
         current_date = match.group(1).strip()
         if is_recent and DATE_OCT_NOV_2025 not in current_date:
             issues.append(
-                f"Ligne {line_num}: Date récente à mettre à jour → '{DATE_OCT_NOV_2025}'"
+                f"Ligne {line_num}: Date récente à mettre à jour → '{DATE_OCT_NOV_2025}'",
             )
 
     return {
@@ -160,6 +160,29 @@ def audit_file(filepath: Path) -> dict:
         "issues": issues,
         "line_count": len(content.splitlines()),
     }
+
+
+def cleanup_metadata_files(file_path: Path) -> None:
+    """Supprime les fichiers de métadonnées macOS créés automatiquement."""
+    parent_dir = file_path.parent
+    base_name = file_path.name
+
+    # Supprimer fichier ._* standard
+    metadata_file = parent_dir / f"._{base_name}"
+    if metadata_file.exists():
+        try:
+            metadata_file.unlink()
+        except Exception:
+            pass
+
+    # Supprimer fichiers .!*!._* (format avec numéro)
+    # Pattern: .!XXXXX!._FILENAME
+    pattern = str(parent_dir / f".!*._{base_name}")
+    for metadata_file_path in glob.glob(pattern):
+        try:
+            Path(metadata_file_path).unlink()
+        except Exception:
+            pass
 
 
 def correct_dates_in_content(content: str, file_path: Path) -> tuple[str, list[str]]:
@@ -211,7 +234,7 @@ def correct_dates_in_content(content: str, file_path: Path) -> tuple[str, list[s
 def main():
     """Fonction principale."""
     parser = argparse.ArgumentParser(
-        description="Audit et correction des dates dans les fichiers MD"
+        description="Audit et correction des dates dans les fichiers MD",
     )
     parser.add_argument(
         "--audit-only",
@@ -269,6 +292,8 @@ def main():
 
                 if changes:
                     md_file.write_text(new_content, encoding="utf-8")
+                    # Nettoyer les métadonnées macOS créées automatiquement
+                    cleanup_metadata_files(md_file)
                     files_changed.append((md_file, changes))
                     total_changes += len(changes)
                     print(f"✅ {md_file.relative_to(root)}")
@@ -278,7 +303,7 @@ def main():
                 print(f"❌ Erreur {md_file}: {e}")
 
         print(
-            f"\n✅ {len(files_changed)} fichiers modifiés ({total_changes} changements)"
+            f"\n✅ {len(files_changed)} fichiers modifiés ({total_changes} changements)",
         )
 
 

@@ -1,6 +1,6 @@
 # 📊 RAPPORT AMÉLIORATIONS QUALITÉ - BBIA-SIM
 
-**Date :** Oct / No2025025025025025
+**Date :** Oct / Oct / Nov. 20255
 **Contexte :** Staff Engineer sur BBIA-SIM
 **Objectif :** Améliorations PRO sans doublons ni régression CI
 
@@ -260,6 +260,6 @@ python -m pytest tests/ --cov=src/bbia_sim --cov-report=term-missing
 
 ---
 
-**Rapport généré le Oct / No2025025025025025**
+**Rapport généré le Oct / Oct / Nov. 20255**
 **Staff Engineer - BBIA-SIM**
 

@@ -4,13 +4,13 @@
 Ce document a été archivé car il est devenu obsolète ou a été remplacé par une version plus récente.
 Il est conservé à des fins de référence historique uniquement.
 
-**Date d'archivage** : Oct / No2025025025025025
+**Date d'archivage** : Oct / Oct / Nov. 20255
 **Raison** : Document terminé/obsolète/remplacé
 ---
 
 # ✅ TOUTES LES DÉMOS CORRIGÉES
 
-**Date :** Oct / No2025025025025025  
+**Date :** Oct / Oct / Nov. 20255  
 **Dernière mise à jour :** Oct / Nov. 2025252525252525  
 **Objectif :** Mouvements réalistes basés sur SDK Reachy Mini officiel  
 **Statut :** ✅ **TOUTES LES CORRECTIONS APPLIQUÉES ET VALIDÉES**

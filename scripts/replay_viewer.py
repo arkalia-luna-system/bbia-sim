@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Record & Replay pour BBIA
+"""Record & Replay pour BBIA
 Enregistrement et rejeu des animations
 """
 
@@ -48,17 +47,16 @@ class AnimationRecorder:
     def stop_recording(self):
         """Arrête l'enregistrement et sauvegarde."""
         if not self.is_recording:
-            return
+            return None
 
         self.is_recording = False
 
         # Sauvegarder en JSONL
         with open(self.record_path, "w") as f:
-            for record in self.records:
-                f.write(json.dumps(record) + "\n")
+            f.writelines(json.dumps(record) + "\n" for record in self.records)
 
         print(
-            f"💾 Enregistrement sauvegardé: {len(self.records)} frames → {self.record_path}"
+            f"💾 Enregistrement sauvegardé: {len(self.records)} frames → {self.record_path}",
         )
         return len(self.records)
 

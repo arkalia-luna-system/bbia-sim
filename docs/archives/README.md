@@ -1,5 +1,5 @@
 @@
-# Archives BBIA-SIM — Index de Référence (Oct / No2025025025025025)
+# Archives BBIA-SIM — Index de Référence (Oct / Oct / Nov. 20255)
 
 > Avertissement archives
 >
@@ -59,7 +59,7 @@ Ce dossier contient les archives organisées de la documentation du projet.
 - **status/** - Statuts et checklists
 - **syntheses/** - Synthèses
 - **textes/** - Fichiers texte divers
-- **2025-10/** - Archives d'Oct / No2025025025025025 organisées par catégorie
+- **2025-10/** - Archives d'Oct / Oct / Nov. 20255 organisées par catégorie
 
 ## 🎯 Utilisation
 

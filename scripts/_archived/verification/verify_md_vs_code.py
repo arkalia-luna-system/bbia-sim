@@ -113,8 +113,7 @@ def verify_functionality(name: str, info: dict[str, Any]) -> dict[str, Any]:
             if found:
                 code_ok = True
                 break
-            else:
-                results["issues"].append(f"Pattern code non trouvé: {pattern}")
+            results["issues"].append(f"Pattern code non trouvé: {pattern}")
 
     results["code_ok"] = code_ok
 
@@ -128,7 +127,7 @@ def verify_functionality(name: str, info: dict[str, Any]) -> dict[str, Any]:
                     f"Test non trouvé: {pattern}"
                     for pattern in info["test_patterns"]
                     if not check_test_exists(pattern)
-                ]
+                ],
             )
 
     return results
@@ -159,7 +158,7 @@ def find_md_claims(md_file: Path) -> list[dict[str, Any]]:
                     "text": match.group(1).strip(),
                     "status": status,
                     "line": content[: match.start()].count("\n") + 1,
-                }
+                },
             )
 
     return claims

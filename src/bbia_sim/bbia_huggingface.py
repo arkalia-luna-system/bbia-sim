@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-BBIA Hugging Face Integration - Module d'intégration des modèles pré-entraînés
+"""BBIA Hugging Face Integration - Module d'intégration des modèles pré-entraînés
 Intégration avancée avec Hugging Face Hub pour enrichir les capacités IA de BBIA-SIM
 """
 
@@ -35,6 +34,7 @@ def _get_compiled_regex(pattern: str, flags: int = 0) -> re.Pattern[str]:
 
     Returns:
         Regex compilée (cachée ou nouvellement compilée)
+
     """
     cache_key = f"{pattern}:{flags}"
     if cache_key not in _regex_cache:
@@ -115,7 +115,7 @@ except ImportError:
     HF_AVAILABLE = False
     logger.warning(
         "Hugging Face transformers non disponible. "
-        "Installez avec: pip install transformers torch"
+        "Installez avec: pip install transformers torch",
     )
 
 
@@ -141,11 +141,12 @@ class BBIAHuggingFace:
             device: Device pour les modèles ("cpu", "cuda", "auto")
             cache_dir: Répertoire de cache pour les modèles
             tools: Instance BBIATools pour function calling (optionnel)
+
         """
         if not HF_AVAILABLE:
             raise ImportError(
                 "Hugging Face transformers requis. "
-                "Installez avec: pip install transformers torch"
+                "Installez avec: pip install transformers torch",
             )
 
         self.device = self._get_device(device)
@@ -177,7 +178,7 @@ class BBIAHuggingFace:
             if saved_history:
                 self.conversation_history = saved_history
                 logger.info(
-                    f"💾 Conversation chargée depuis mémoire ({len(saved_history)} messages)"
+                    f"💾 Conversation chargée depuis mémoire ({len(saved_history)} messages)",
                 )
         except ImportError:
             # Mémoire persistante optionnelle
@@ -229,30 +230,37 @@ class BBIAHuggingFace:
         if device == "auto":
             if HF_AVAILABLE and torch.cuda.is_available():
                 return "cuda"
-            elif HF_AVAILABLE and torch.backends.mps.is_available():
+            if HF_AVAILABLE and torch.backends.mps.is_available():
                 return "mps"  # Apple Silicon
-            else:
-                return "cpu"
+            return "cpu"
         return device
 
     def _load_vision_model(self, model_name: str) -> bool:
         """Charge un modèle de vision (CLIP ou BLIP)."""
         if "clip" in model_name.lower():
             processor: Any = CLIPProcessor.from_pretrained(  # nosec B615
-                model_name, cache_dir=self.cache_dir, revision="main"
+                model_name,
+                cache_dir=self.cache_dir,
+                revision="main",
             )
             model = CLIPModel.from_pretrained(  # nosec B615
-                model_name, cache_dir=self.cache_dir, revision="main"
+                model_name,
+                cache_dir=self.cache_dir,
+                revision="main",
             ).to(self.device)
             self.processors[f"{model_name}_processor"] = processor
             self.models[f"{model_name}_model"] = model
             return True
-        elif "blip" in model_name.lower():
+        if "blip" in model_name.lower():
             blip_processor: Any = BlipProcessor.from_pretrained(  # nosec B615
-                model_name, cache_dir=self.cache_dir, revision="main"
+                model_name,
+                cache_dir=self.cache_dir,
+                revision="main",
             )
             model = BlipForConditionalGeneration.from_pretrained(  # nosec B615
-                model_name, cache_dir=self.cache_dir, revision="main"
+                model_name,
+                cache_dir=self.cache_dir,
+                revision="main",
             ).to(self.device)
             self.processors[f"{model_name}_processor"] = blip_processor
             self.models[f"{model_name}_model"] = model
@@ -263,10 +271,14 @@ class BBIAHuggingFace:
         """Charge un modèle audio (Whisper)."""
         if "whisper" in model_name.lower():
             whisper_processor = WhisperProcessor.from_pretrained(  # nosec B615
-                model_name, cache_dir=self.cache_dir, revision="main"
+                model_name,
+                cache_dir=self.cache_dir,
+                revision="main",
             )
             model = WhisperForConditionalGeneration.from_pretrained(  # nosec B615
-                model_name, cache_dir=self.cache_dir, revision="main"
+                model_name,
+                cache_dir=self.cache_dir,
+                revision="main",
             ).to(self.device)
             self.processors[f"{model_name}_processor"] = whisper_processor
             self.models[f"{model_name}_model"] = model
@@ -284,7 +296,9 @@ class BBIAHuggingFace:
 
             logger.info(f"📥 Chargement LLM {model_name} (peut prendre 1-2 minutes)...")
             self.chat_tokenizer = AutoTokenizer.from_pretrained(  # type: ignore[no-untyped-call]
-                model_name, cache_dir=self.cache_dir, revision="main"
+                model_name,
+                cache_dir=self.cache_dir,
+                revision="main",
             )  # nosec B615
 
             if (
@@ -306,7 +320,7 @@ class BBIAHuggingFace:
         except Exception as e:
             logger.warning(f"⚠️  Échec de chargement LLM {model_name}: {e}")
             logger.info(
-                """💡 Fallback activé: réponses enrichies (stratégie règles v1)"""
+                """💡 Fallback activé: réponses enrichies (stratégie règles v1)""",
             )
             # Nettoyage défensif pour éviter des états partiels
             self.chat_model = None
@@ -318,15 +332,19 @@ class BBIAHuggingFace:
         """Charge un modèle multimodal (BLIP VQA, SmolVLM, Moondream2)."""
         if "blip" in model_name.lower() and "vqa" in model_name.lower():
             vqa_processor: Any = BlipProcessor.from_pretrained(  # nosec B615
-                model_name, cache_dir=self.cache_dir, revision="main"
+                model_name,
+                cache_dir=self.cache_dir,
+                revision="main",
             )
             model = BlipForConditionalGeneration.from_pretrained(  # nosec B615
-                model_name, cache_dir=self.cache_dir, revision="main"
+                model_name,
+                cache_dir=self.cache_dir,
+                revision="main",
             ).to(self.device)
             self.processors[f"{model_name}_processor"] = vqa_processor
             self.models[f"{model_name}_model"] = model
             return True
-        elif "smolvlm" in model_name.lower() or "moondream" in model_name.lower():
+        if "smolvlm" in model_name.lower() or "moondream" in model_name.lower():
             # SmolVLM2 / Moondream2 (alternative gratuite à gpt-realtime)
             try:
                 from transformers import (
@@ -336,10 +354,14 @@ class BBIAHuggingFace:
 
                 logger.info(f"📥 Chargement SmolVLM2/Moondream2: {model_name}")
                 processor: Any = AutoProcessor.from_pretrained(  # nosec B615
-                    model_name, cache_dir=self.cache_dir, revision="main"
+                    model_name,
+                    cache_dir=self.cache_dir,
+                    revision="main",
                 )
                 model = AutoModelForVision2Seq.from_pretrained(  # nosec B615
-                    model_name, cache_dir=self.cache_dir, revision="main"
+                    model_name,
+                    cache_dir=self.cache_dir,
+                    revision="main",
                 ).to(self.device)
                 self.processors[f"{model_name}_processor"] = processor
                 self.models[f"{model_name}_model"] = model
@@ -359,6 +381,7 @@ class BBIAHuggingFace:
 
         Returns:
             Identifiant de modèle résolu si alias connu, sinon le nom original
+
         """
         try:
             cfg = self.model_configs.get(model_type, {})
@@ -370,7 +393,7 @@ class BBIAHuggingFace:
             if isinstance(cfg, dict) and model_name in cfg:
                 return cfg[model_name]
         except Exception:
-            pass  # noqa: S101 - Ignorer erreur résolution alias modèle (retourner nom original)
+            pass
         return model_name
 
     def load_model(self, model_name: str, model_type: str = "vision") -> bool:
@@ -382,6 +405,7 @@ class BBIAHuggingFace:
 
         Returns:
             True si chargé avec succès
+
         """
         try:
             # Résolution d'alias éventuel (ex: 'emotion' -> id complet)
@@ -392,7 +416,7 @@ class BBIAHuggingFace:
                 # Modèles chat stockés dans self.chat_model et self.chat_tokenizer
                 if self.chat_model is not None and self.chat_tokenizer is not None:
                     logger.debug(
-                        f"♻️ Modèle chat déjà chargé ({resolved_name}), réutilisation"
+                        f"♻️ Modèle chat déjà chargé ({resolved_name}), réutilisation",
                     )
                     return True
             elif model_type == "nlp":
@@ -400,7 +424,7 @@ class BBIAHuggingFace:
                 model_key = f"{model_name}_pipeline"
                 if model_key in self.models:
                     logger.debug(
-                        f"♻️ Modèle NLP déjà chargé ({resolved_name}), réutilisation"
+                        f"♻️ Modèle NLP déjà chargé ({resolved_name}), réutilisation",
                     )
                     return True
             else:
@@ -408,7 +432,7 @@ class BBIAHuggingFace:
                 model_key = f"{model_name}_model"
                 if model_key in self.models:
                     logger.debug(
-                        f"♻️ Modèle {model_type} déjà chargé ({resolved_name}), réutilisation"
+                        f"♻️ Modèle {model_type} déjà chargé ({resolved_name}), réutilisation",
                     )
                     return True
 
@@ -424,20 +448,28 @@ class BBIAHuggingFace:
             if model_type == "vision":
                 if "clip" in model_name.lower():
                     clip_processor = CLIPProcessor.from_pretrained(  # nosec B615
-                        resolved_name, cache_dir=self.cache_dir, revision="main"
+                        resolved_name,
+                        cache_dir=self.cache_dir,
+                        revision="main",
                     )
                     model = CLIPModel.from_pretrained(  # nosec B615
-                        resolved_name, cache_dir=self.cache_dir, revision="main"
+                        resolved_name,
+                        cache_dir=self.cache_dir,
+                        revision="main",
                     ).to(self.device)
                     self.processors[f"{model_name}_processor"] = clip_processor
                     self.models[f"{model_name}_model"] = model
 
                 elif "blip" in model_name.lower():
                     blip_processor: Any = BlipProcessor.from_pretrained(  # nosec B615
-                        resolved_name, cache_dir=self.cache_dir, revision="main"
+                        resolved_name,
+                        cache_dir=self.cache_dir,
+                        revision="main",
                     )
                     model = BlipForConditionalGeneration.from_pretrained(  # nosec B615
-                        resolved_name, cache_dir=self.cache_dir, revision="main"
+                        resolved_name,
+                        cache_dir=self.cache_dir,
+                        revision="main",
                     ).to(self.device)
                     self.processors[f"{model_name}_processor"] = blip_processor
                     self.models[f"{model_name}_model"] = model
@@ -446,12 +478,16 @@ class BBIAHuggingFace:
                 if "whisper" in model_name.lower():
                     whisper_processor: Any = (
                         WhisperProcessor.from_pretrained(  # nosec B615
-                            resolved_name, cache_dir=self.cache_dir, revision="main"
+                            resolved_name,
+                            cache_dir=self.cache_dir,
+                            revision="main",
                         )
                     )
                     model = (
                         WhisperForConditionalGeneration.from_pretrained(  # nosec B615
-                            resolved_name, cache_dir=self.cache_dir, revision="main"
+                            resolved_name,
+                            cache_dir=self.cache_dir,
+                            revision="main",
                         ).to(self.device)
                     )
                     self.processors[f"{model_name}_processor"] = whisper_processor
@@ -508,7 +544,7 @@ class BBIAHuggingFace:
                 except Exception as e:
                     logger.warning(f"⚠️  Échec chargement LLM {model_name}: {e}")
                     logger.info(
-                        """💡 Fallback activé: réponses enrichies (stratégie règles v2)"""
+                        """💡 Fallback activé: réponses enrichies (stratégie règles v2)""",
                     )
                     self.use_llm_chat = False
                     return False
@@ -532,10 +568,9 @@ class BBIAHuggingFace:
         """Détermine le nom du pipeline basé sur le modèle."""
         if "sentiment" in model_name.lower():
             return "sentiment-analysis"
-        elif "emotion" in model_name.lower():
+        if "emotion" in model_name.lower():
             return "text-classification"
-        else:
-            return "text-classification"
+        return "text-classification"
 
     def describe_image(
         self,
@@ -550,6 +585,7 @@ class BBIAHuggingFace:
 
         Returns:
             Description textuelle de l'image
+
         """
         try:
             # Conversion de l'image
@@ -577,7 +613,7 @@ class BBIAHuggingFace:
 
                 return str(description)
 
-            elif "clip" in model_name.lower():
+            if "clip" in model_name.lower():
                 processor_key = f"{model_name}_processor"
                 model_key = f"{model_name}_model"
 
@@ -588,7 +624,10 @@ class BBIAHuggingFace:
                 model = self.models[model_key]
 
                 inputs = processor(
-                    text=["a photo of"], images=image, return_tensors="pt", padding=True
+                    text=["a photo of"],
+                    images=image,
+                    return_tensors="pt",
+                    padding=True,
                 ).to(self.device)
                 outputs = model(**inputs)
                 logits_per_image = outputs.logits_per_image
@@ -596,7 +635,7 @@ class BBIAHuggingFace:
 
                 return f"CLIP analysis: {probs.cpu().numpy()}"
 
-            elif "smolvlm" in model_name.lower() or "moondream" in model_name.lower():
+            if "smolvlm" in model_name.lower() or "moondream" in model_name.lower():
                 # SmolVLM2 / Moondream2 (alternative gratuite à gpt-realtime)
                 processor_key = f"{model_name}_processor"
                 model_key = f"{model_name}_model"
@@ -611,7 +650,7 @@ class BBIAHuggingFace:
                 prompt = "Décris cette image en détail."
 
                 inputs = processor(images=image, text=prompt, return_tensors="pt").to(
-                    self.device
+                    self.device,
                 )
 
                 with torch.no_grad():
@@ -641,6 +680,7 @@ class BBIAHuggingFace:
 
         Returns:
             Dictionnaire avec sentiment et score
+
         """
         try:
             model_key = f"{model_name}_pipeline"
@@ -671,6 +711,7 @@ class BBIAHuggingFace:
 
         Returns:
             Dictionnaire avec émotion détectée et score
+
         """
         try:
             model_key = f"{model_name}_pipeline"
@@ -701,6 +742,7 @@ class BBIAHuggingFace:
 
         Returns:
             Texte transcrit
+
         """
         try:
             processor_key = f"{model_name}_processor"
@@ -715,7 +757,9 @@ class BBIAHuggingFace:
             # Chargement de l'audio
             audio, sample_rate = processor.load_audio(audio_path)
             inputs = processor(
-                audio, sampling_rate=sample_rate, return_tensors="pt"
+                audio,
+                sampling_rate=sample_rate,
+                return_tensors="pt",
             ).to(self.device)
 
             # Transcription
@@ -723,7 +767,8 @@ class BBIAHuggingFace:
                 predicted_ids = model.generate(inputs["input_features"])
 
             transcription = processor.batch_decode(
-                predicted_ids, skip_special_tokens=True
+                predicted_ids,
+                skip_special_tokens=True,
             )[0]
 
             return str(transcription)
@@ -747,6 +792,7 @@ class BBIAHuggingFace:
 
         Returns:
             Réponse à la question
+
         """
         try:
             # Conversion de l'image
@@ -804,17 +850,18 @@ class BBIAHuggingFace:
             - TinyLlama : ~2GB RAM (ultra-léger)
             - Premier chargement : 1-2 minutes
             - Support Apple Silicon (MPS) automatique
+
         """
         # Résoudre alias vers ID complet si nécessaire
         resolved_name = self._resolve_model_name(model_name, "chat")
         logger.info(
-            f"📥 Activation LLM conversationnel: {model_name} → {resolved_name}"
+            f"📥 Activation LLM conversationnel: {model_name} → {resolved_name}",
         )
         success = self.load_model(resolved_name, model_type="chat")
         if success:
             logger.info(
                 "✅ LLM conversationnel activé - Conversations intelligentes "
-                "disponibles"
+                "disponibles",
             )
         else:
             logger.warning("""⚠️  LLM non chargé - Utilisation réponses enrichies""")
@@ -827,12 +874,12 @@ class BBIAHuggingFace:
             if hasattr(self, "chat_model") and self.chat_model is not None:
                 del self.chat_model
         except Exception:
-            pass  # noqa: S101 - Ignorer erreur désallocation modèle LLM (non critique)
+            pass
         try:
             if hasattr(self, "chat_tokenizer") and self.chat_tokenizer is not None:
                 del self.chat_tokenizer
         except Exception:
-            pass  # noqa: S101 - Ignorer erreur désallocation tokenizer LLM (non critique)
+            pass
 
         self.chat_model = None
         self.chat_tokenizer = None
@@ -879,6 +926,7 @@ class BBIAHuggingFace:
 
         Returns:
             True si déchargé avec succès
+
         """
         try:
             # OPTIMISATION: Éviter création liste intermédiaire inutile
@@ -930,6 +978,7 @@ class BBIAHuggingFace:
 
         Returns:
             Réponse intelligente de BBIA
+
         """
         try:
             # 1. Analyser sentiment du message (avec gestion erreur)
@@ -956,11 +1005,11 @@ class BBIAHuggingFace:
                 try:
                     # Utiliser modèle léger par défaut (phi2 ou tinyllama)
                     default_chat_model = self.model_configs.get("chat", {}).get(
-                        "phi2"
+                        "phi2",
                     ) or self.model_configs.get("chat", {}).get("tinyllama")
                     if default_chat_model:
                         logger.info(
-                            f"📥 Chargement LLM à la demande (lazy loading): {default_chat_model}"
+                            f"📥 Chargement LLM à la demande (lazy loading): {default_chat_model}",
                         )
                         if self.load_model(default_chat_model, model_type="chat"):
                             logger.info("✅ LLM chargé avec succès (lazy loading)")
@@ -971,7 +1020,9 @@ class BBIAHuggingFace:
             if self.use_llm_chat and self.chat_model and self.chat_tokenizer:
                 # Utiliser LLM pré-entraîné (Mistral/Llama)
                 bbia_response = self._generate_llm_response(
-                    user_message, use_context, enable_tools=enable_tools
+                    user_message,
+                    use_context,
+                    enable_tools=enable_tools,
                 )
             else:
                 # Fallback vers réponses enrichies (règles + variété)
@@ -986,13 +1037,14 @@ class BBIAHuggingFace:
                     "bbia": bbia_response,
                     "sentiment": sentiment,
                     "timestamp": datetime.now().isoformat(),
-                }
+                },
             )
 
             # 4. Adapter réponse selon personnalité BBIA (si pas LLM)
             if not self.use_llm_chat:
                 adapted_response = self._adapt_response_to_personality(
-                    bbia_response, sentiment
+                    bbia_response,
+                    sentiment,
                 )
             else:
                 adapted_response = bbia_response  # LLM gère déjà la personnalité
@@ -1029,6 +1081,7 @@ class BBIAHuggingFace:
 
         Returns:
             Réponse générée par LLM
+
         """
         try:
             if not self.chat_model or not self.chat_tokenizer:
@@ -1089,7 +1142,9 @@ class BBIAHuggingFace:
             try:
                 # Format instruct standard
                 prompt = self.chat_tokenizer.apply_chat_template(
-                    messages, tokenize=False, add_generation_prompt=True
+                    messages,
+                    tokenize=False,
+                    add_generation_prompt=True,
                 )
             except Exception:
                 # Fallback si pas de chat template
@@ -1097,7 +1152,10 @@ class BBIAHuggingFace:
 
             # Tokeniser
             inputs = self.chat_tokenizer(
-                prompt, return_tensors="pt", truncation=True, max_length=1024
+                prompt,
+                return_tensors="pt",
+                truncation=True,
+                max_length=1024,
             ).to(self.device)
 
             # Générer réponse
@@ -1115,7 +1173,8 @@ class BBIAHuggingFace:
 
             # Décoder réponse
             generated_text = self.chat_tokenizer.decode(
-                outputs[0][inputs["input_ids"].shape[1] :], skip_special_tokens=True
+                outputs[0][inputs["input_ids"].shape[1] :],
+                skip_special_tokens=True,
             ).strip()
 
             # Post-traitement anti-bavardage et coupe propre
@@ -1150,6 +1209,7 @@ class BBIAHuggingFace:
 
         Returns:
             Résultat texte de l'exécution d'outil, ou None si aucun outil détecté
+
         """
         if not self.tools:
             return None
@@ -1161,7 +1221,7 @@ class BBIAHuggingFace:
         if nlp_result:
             tool_name, confidence = nlp_result
             logger.info(
-                f"🔍 NLP détecté outil '{tool_name}' (confiance: {confidence:.2f})"
+                f"🔍 NLP détecté outil '{tool_name}' (confiance: {confidence:.2f})",
             )
             # Exécuter outil détecté par NLP
             return self._execute_detected_tool(tool_name, user_message, message_lower)
@@ -1378,12 +1438,11 @@ class BBIAHuggingFace:
                             detail = result.get("detail", "Action exécutée")
                             logger.info(f"✅ Outil '{tool_name}' exécuté: {detail}")
                             return f"✅ {detail}"
-                        else:
-                            error_detail = result.get("detail", "Erreur inconnue")
-                            logger.warning(
-                                f"⚠️ Erreur outil '{tool_name}': {error_detail}"
-                            )
-                            return f"⚠️ {error_detail}"
+                        error_detail = result.get("detail", "Erreur inconnue")
+                        logger.warning(
+                            f"⚠️ Erreur outil '{tool_name}': {error_detail}",
+                        )
+                        return f"⚠️ {error_detail}"
 
                     except Exception as e:
                         logger.error(f"❌ Erreur exécution outil '{tool_name}': {e}")
@@ -1393,8 +1452,9 @@ class BBIAHuggingFace:
         return None
 
     def _detect_tool_with_nlp(
-        self, user_message: str
-    ) -> tuple[str, float] | None:  # noqa: PLR0911
+        self,
+        user_message: str,
+    ) -> tuple[str, float] | None:
         """Détecte outil avec NLP (sentence-transformers) si disponible.
 
         Args:
@@ -1402,6 +1462,7 @@ class BBIAHuggingFace:
 
         Returns:
             Tuple (tool_name, confidence) si détecté, None sinon
+
         """
         try:
             # Charger modèle à la demande (gratuit Hugging Face)
@@ -1413,13 +1474,13 @@ class BBIAHuggingFace:
 
                     logger.info("📥 Chargement modèle NLP (sentence-transformers)...")
                     self._sentence_model = SentenceTransformer(
-                        "sentence-transformers/all-MiniLM-L6-v2"
+                        "sentence-transformers/all-MiniLM-L6-v2",
                     )
                     self._use_nlp_detection = True
                     logger.info("✅ Modèle NLP chargé")
                 except ImportError:
                     logger.debug(
-                        "ℹ️ sentence-transformers non disponible, fallback mots-clés"
+                        "ℹ️ sentence-transformers non disponible, fallback mots-clés",
                     )
                     self._use_nlp_detection = False
                     return None
@@ -1465,7 +1526,7 @@ class BBIAHuggingFace:
 
             message_embedding = self._sentence_model.encode([user_message])
             tool_embeddings = self._sentence_model.encode(
-                list(tool_descriptions.values())
+                list(tool_descriptions.values()),
             )
 
             similarities = cosine_similarity(message_embedding, tool_embeddings)[0]
@@ -1488,7 +1549,10 @@ class BBIAHuggingFace:
             return None
 
     def _execute_detected_tool(
-        self, tool_name: str, user_message: str, message_lower: str
+        self,
+        tool_name: str,
+        user_message: str,
+        message_lower: str,
     ) -> str | None:
         """Exécute un outil détecté (par NLP ou mots-clés).
 
@@ -1499,6 +1563,7 @@ class BBIAHuggingFace:
 
         Returns:
             Résultat textuel de l'exécution, ou None si erreur
+
         """
         if not self.tools:
             return None
@@ -1559,7 +1624,7 @@ class BBIAHuggingFace:
                     # Angle max ~90 degrés → intensité 1.0
                     params["intensity"] = min(extracted_angle / 90.0, 1.0)
                     logger.info(
-                        f"📐 Angle extrait: {extracted_angle}° → intensité: {params['intensity']:.2f}"
+                        f"📐 Angle extrait: {extracted_angle}° → intensité: {params['intensity']:.2f}",
                     )
                 else:
                     # Extraire intensité depuis mots-clés
@@ -1616,24 +1681,23 @@ class BBIAHuggingFace:
                 detail = result.get("detail", "Action exécutée")
                 logger.info(f"✅ Outil '{tool_name}' exécuté: {detail}")
                 return f"✅ {detail}"
-            else:
-                error_detail = result.get("detail", "Erreur inconnue")
-                logger.warning(f"⚠️ Erreur outil '{tool_name}': {error_detail}")
-                return f"⚠️ {error_detail}"
+            error_detail = result.get("detail", "Erreur inconnue")
+            logger.warning(f"⚠️ Erreur outil '{tool_name}': {error_detail}")
+            return f"⚠️ {error_detail}"
 
         except Exception as e:
             logger.error(f"❌ Erreur exécution outil '{tool_name}': {e}")
             return f"❌ Erreur lors de l'exécution: {e}"
 
     def _extract_angle(self, message: str) -> float | None:
-        """
-        Extrait un angle depuis un message (ex: "30 degrés", "pi/4 radians").
+        """Extrait un angle depuis un message (ex: "30 degrés", "pi/4 radians").
 
         Args:
             message: Message utilisateur
 
         Returns:
             Angle en degrés, ou None si non trouvé
+
         """
         import math
         import re
@@ -1643,7 +1707,7 @@ class BBIAHuggingFace:
         # Pattern 1: "X degrés" ou "X degrees" (OPTIMISATION: regex compilée)
         pattern_deg = r"(\d+(?:\.\d+)?)\s*(?:degrés?|degrees?)"
         match_deg = _get_compiled_regex(pattern_deg, flags=re.IGNORECASE).search(
-            message_lower
+            message_lower,
         )
         if match_deg:
             angle_deg = float(match_deg.group(1))
@@ -1652,7 +1716,7 @@ class BBIAHuggingFace:
         # Pattern 2: "X radians" ou "pi/X radians" (OPTIMISATION: regex compilée)
         pattern_rad = r"(?:(\d+(?:\.\d+)?)|pi\s*/\s*(\d+(?:\.\d+)?))\s*(?:radians?)"
         match_rad = _get_compiled_regex(pattern_rad, flags=re.IGNORECASE).search(
-            message_lower
+            message_lower,
         )
         if match_rad:
             if match_rad.group(1):  # Nombre direct
@@ -1675,16 +1739,15 @@ class BBIAHuggingFace:
         return None
 
     def _extract_intensity(self, message: str) -> float | None:
-        """
-        Extrait une intensité depuis un message (mots-clés comme "légèrement", "beaucoup").
+        """Extrait une intensité depuis un message (mots-clés comme "légèrement", "beaucoup").
 
         Args:
             message: Message utilisateur
 
         Returns:
             Intensité entre 0.0 et 1.0, ou None si non trouvé
-        """
 
+        """
         message_lower = message.lower()
 
         # Mapping mots-clés → intensité
@@ -1734,6 +1797,7 @@ class BBIAHuggingFace:
 
         Returns:
             Chaîne nettoyée et tronquée proprement
+
         """
         if not text:
             # Fallback sûr pour éviter sorties vides
@@ -1741,7 +1805,8 @@ class BBIAHuggingFace:
 
         # 1) Retirer étiquettes et espaces superflus
         cleaned = _get_compiled_regex(
-            r"^(Assistant:|System:|User:)\s*", flags=re.IGNORECASE
+            r"^(Assistant:|System:|User:)\s*",
+            flags=re.IGNORECASE,
         ).sub("", text.strip())
         cleaned = cleaned.replace("\u200b", "").strip()
 
@@ -1811,7 +1876,7 @@ class BBIAHuggingFace:
                 result
                 + SUFFIX_POOL[
                     _r.randrange(
-                        len(SUFFIX_POOL)
+                        len(SUFFIX_POOL),
                     )  # nosec B311 - Variété réponse non-crypto
                 ]
             ).strip()
@@ -1821,7 +1886,7 @@ class BBIAHuggingFace:
                     + " "
                     + SUFFIX_POOL[
                         _r.randrange(
-                            len(SUFFIX_POOL)
+                            len(SUFFIX_POOL),
                         )  # nosec B311 - Variété réponse non-crypto
                     ]
                 ).strip()
@@ -1859,7 +1924,7 @@ class BBIAHuggingFace:
 
                 addition = SUFFIX_POOL[
                     _r.randrange(
-                        len(SUFFIX_POOL)
+                        len(SUFFIX_POOL),
                     )  # nosec B311 - Variété réponse non-crypto
                 ]
                 candidate = f"{text} {addition}".strip()
@@ -1887,7 +1952,7 @@ class BBIAHuggingFace:
             ]
             suffix = SUFFIX_POOL[
                 _r.randrange(
-                    len(SUFFIX_POOL)
+                    len(SUFFIX_POOL),
                 )  # nosec B311 - Variété réponse non-crypto
             ]
             candidate = f"{base}{suffix}".strip()
@@ -1904,6 +1969,7 @@ class BBIAHuggingFace:
 
         Returns:
             Réponse intelligente et adaptative
+
         """
         import random
 
@@ -1949,7 +2015,7 @@ class BBIAHuggingFace:
             }
             variants = greetings.get(self.bbia_personality, greetings["friendly_robot"])
             return self._normalize_response_length(
-                random.choice(variants)  # nosec B311 - Variété réponse non-crypto
+                random.choice(variants),  # nosec B311 - Variété réponse non-crypto
             )
 
         # Au revoir - Réponses émotionnelles selon contexte
@@ -1982,7 +2048,7 @@ class BBIAHuggingFace:
             }
             variants = goodbyes.get(self.bbia_personality, goodbyes["friendly_robot"])
             return self._normalize_response_length(
-                random.choice(variants)  # nosec B311 - Variété réponse non-crypto
+                random.choice(variants),  # nosec B311 - Variété réponse non-crypto
             )
 
         # Positif - Réponses adaptées selon intensité
@@ -2026,10 +2092,11 @@ class BBIAHuggingFace:
                 ],
             }
             variants = positive_responses.get(
-                self.bbia_personality, positive_responses["friendly_robot"]
+                self.bbia_personality,
+                positive_responses["friendly_robot"],
             )
             return self._normalize_response_length(
-                random.choice(variants)  # nosec B311 - Variété réponse non-crypto
+                random.choice(variants),  # nosec B311 - Variété réponse non-crypto
             )
 
         # Négatif - Réponses empathiques
@@ -2071,10 +2138,11 @@ class BBIAHuggingFace:
                 ],
             }
             variants = negative_responses.get(
-                self.bbia_personality, negative_responses["friendly_robot"]
+                self.bbia_personality,
+                negative_responses["friendly_robot"],
             )
             return self._normalize_response_length(
-                random.choice(variants)  # nosec B311 - Variété réponse non-crypto
+                random.choice(variants),  # nosec B311 - Variété réponse non-crypto
             )
 
         # Questions - Réponses adaptées selon type de question
@@ -2126,10 +2194,11 @@ class BBIAHuggingFace:
                 ],
             }
             variants = question_responses.get(
-                self.bbia_personality, question_responses["friendly_robot"]
+                self.bbia_personality,
+                question_responses["friendly_robot"],
             )
             return self._normalize_response_length(
-                random.choice(variants)  # nosec B311 - Variété réponse non-crypto
+                random.choice(variants),  # nosec B311 - Variété réponse non-crypto
             )
 
         # Référence au contexte précédent si disponible
@@ -2191,10 +2260,11 @@ class BBIAHuggingFace:
                     ],
                 }
                 variants = context_responses.get(
-                    self.bbia_personality, context_responses["friendly_robot"]
+                    self.bbia_personality,
+                    context_responses["friendly_robot"],
                 )
                 return self._normalize_response_length(
-                    random.choice(variants)  # nosec B311 - Variété réponse non-crypto
+                    random.choice(variants),  # nosec B311 - Variété réponse non-crypto
                 )
 
         # Réponses génériques variées selon personnalité et sentiment
@@ -2248,14 +2318,17 @@ class BBIAHuggingFace:
             ],
         }
         variants = generic_responses.get(
-            self.bbia_personality, generic_responses["friendly_robot"]
+            self.bbia_personality,
+            generic_responses["friendly_robot"],
         )
         return self._normalize_response_length(
-            random.choice(variants)  # nosec B311 - Variété réponse non-crypto
+            random.choice(variants),  # nosec B311 - Variété réponse non-crypto
         )
 
     def _adapt_response_to_personality(
-        self, response: str, sentiment: dict[str, Any]  # noqa: ARG002
+        self,
+        response: str,
+        sentiment: dict[str, Any],  # noqa: ARG002
     ) -> str:
         """Adapte la réponse selon la personnalité BBIA avec nuances expressives.
 
@@ -2265,6 +2338,7 @@ class BBIAHuggingFace:
 
         Returns:
             Réponse adaptée avec emoji et nuances selon personnalité
+
         """
         # Les réponses sont déjà adaptées dans _generate_simple_response,
         # on ajoute juste l'emoji ici pour cohérence
@@ -2302,7 +2376,7 @@ class BBIAHuggingFace:
                     t
                     + SUFFIX_POOL[
                         _r.randrange(
-                            len(SUFFIX_POOL)
+                            len(SUFFIX_POOL),
                         )  # nosec B311 - Variété réponse non-crypto
                     ]
                 ).strip()
@@ -2313,7 +2387,7 @@ class BBIAHuggingFace:
                         + " "
                         + SUFFIX_POOL[
                             _r.randrange(
-                                len(SUFFIX_POOL)
+                                len(SUFFIX_POOL),
                             )  # nosec B311 - Variété réponse non-crypto
                         ]
                     ).strip()
@@ -2322,7 +2396,7 @@ class BBIAHuggingFace:
                 try:
                     t = self._avoid_recent_duplicates(t)
                 except Exception:
-                    pass  # noqa: S101 - Ignorer erreur évitement doublons (utiliser texte original)
+                    pass
                 return t
 
             cut = t[: max_len + 1]
@@ -2332,7 +2406,7 @@ class BBIAHuggingFace:
                 try:
                     t2 = self._avoid_recent_duplicates(t2)
                 except Exception:
-                    pass  # noqa: S101 - Ignorer erreur évitement doublons (utiliser texte coupé)
+                    pass
                 return t2
             last_space = cut.rfind(" ")
             if last_space >= min_len:
@@ -2340,15 +2414,15 @@ class BBIAHuggingFace:
                 try:
                     t3 = self._avoid_recent_duplicates(t3)
                 except Exception:
-                    pass  # noqa: S101 - Ignorer erreur évitement doublons (utiliser texte avec ...)
+                    pass
                 return t3
             t4 = (t[:max_len] + "...").strip()
             try:
                 t4 = self._avoid_recent_duplicates(t4)
             except Exception:
-                pass  # noqa: S101 - Ignorer erreur évitement doublons (utiliser texte final)
+                pass
             return t4
-        except Exception:  # noqa: S101 - Fallback sûr en cas d'erreur normalisation
+        except Exception:
             return text
 
     def _get_recent_context(self) -> str | None:
@@ -2356,6 +2430,7 @@ class BBIAHuggingFace:
 
         Returns:
             Mot-clé du dernier message utilisateur (si disponible)
+
         """
         if not self.conversation_history:
             return None
@@ -2411,6 +2486,7 @@ class BBIAHuggingFace:
 
         Returns:
             Chaîne de contexte basée sur l'historique
+
         """
         if not self.conversation_history:
             return (

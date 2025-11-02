@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Audit systématique complet BBIA-SIM vs SDK officiel reachy_mini.
+"""Audit systématique complet BBIA-SIM vs SDK officiel reachy_mini.
 Compare TOUS les fichiers, endpoints, classes, méthodes, modèles, tests, etc.
 """
 
@@ -132,7 +131,7 @@ class SystematicAuditor:
                             "path": path,
                             "file": str(router_file.relative_to(PROJECT_ROOT)),
                             "line": line_num,
-                        }
+                        },
                     )
             except Exception as e:
                 logger.warning(f"Error parsing {router_file}: {e}")
@@ -196,7 +195,7 @@ class SystematicAuditor:
                                 {
                                     "name": name,
                                     "signature": str(sig),
-                                }
+                                },
                             )
                         except Exception:
                             methods.append({"name": name, "signature": "unknown"})
@@ -219,7 +218,7 @@ class SystematicAuditor:
                         {
                             "name": node.name,
                             "line": node.lineno,
-                        }
+                        },
                     )
         except Exception as e:
             logger.error(f"Erreur parsing {backend_file}: {e}")
@@ -325,10 +324,10 @@ class SystematicAuditor:
             lines.append(f"### {category}")
             lines.append("")
             lines.append(
-                "| Nature | Fichier | Ligne | Status | Fix | Test | Description |"
+                "| Nature | Fichier | Ligne | Status | Fix | Test | Description |",
             )
             lines.append(
-                "|--------|---------|-------|--------|-----|------|-------------|"
+                "|--------|---------|-------|--------|-----|------|-------------|",
             )
 
             for item in sorted(by_category[category], key=lambda x: x.bbia_path):
@@ -345,7 +344,7 @@ class SystematicAuditor:
                 )
 
                 lines.append(
-                    f"| {item.nature} | `{item.bbia_path}` | {item.line or 'N/A'} | {status_mark} {item.status} | {fix_mark} | {test_mark} | {item.description[:60]} |"
+                    f"| {item.nature} | `{item.bbia_path}` | {item.line or 'N/A'} | {status_mark} {item.status} | {fix_mark} | {test_mark} | {item.description[:60]} |",
                 )
             lines.append("")
 

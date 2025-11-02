@@ -12,7 +12,7 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from src.bbia_sim.daemon.ws import (
+from bbia_sim.daemon.ws import (
     ConnectionManager,
     get_telemetry_info,
     manager,

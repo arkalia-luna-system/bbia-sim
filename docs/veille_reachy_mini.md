@@ -1,17 +1,28 @@
-## Veille Reachy Mini — Profils/Projets similaires
+# 🔍 Veille Reachy Mini — Profils/Projets Similaires
 
-> Compatibilité Python et CI
->
-> - Python: 3.11+
-> - CI: `.github/workflows/ci.yml`
-> - Setup rapide:
+**Date** : Oct / Nov. 2025  
+**Version** : 1.0
+
+> **Compatibilité Python et CI**
+> - **Python** : 3.11+
+> - **CI** : `.github/workflows/ci.yml`
+> - **Setup rapide** :
 >   ```bash
 >   pyenv install 3.11.9 && pyenv local 3.11.9
 >   python -m pip install --upgrade pip
 >   pip install -e .
 >   ```
 
-Objectif: détecter des développeurs et dépôts explicitement liés à Reachy Mini (pas Reachy 1/2) présentant des éléments d'architecture avancée (API réseau, dashboard, CI/coverage, simu, moteur cognitif/émotions, etc.).
+## 🎯 Objectif
+
+Détecter des développeurs et dépôts explicitement liés à **Reachy Mini** (pas Reachy 1/2) présentant des éléments d'architecture avancée :
+- API réseau (REST, WebSocket)
+- Dashboard web
+- CI/CD et coverage tests
+- Simulation MuJoCo
+- Moteur cognitif/émotions
+
+---
 
 ### Mots-clés principaux (FR/EN + variantes)
 - Reachy Mini, ReachyMini, Pollen Robotics Reachy Mini
@@ -76,7 +87,7 @@ Notes:
 - Recommandé: hebdomadaire. Ajuster si activité accrue.
 
 ### Historique des mises à jour
-- Oct / No2025025025025025: création du document et des requêtes.
-- Oct / No2025025025025025: ajout scoring étendu (+tests, topics) et export JSON.
+- Oct / Oct / Nov. 20255: création du document et des requêtes.
+- Oct / Oct / Nov. 20255: ajout scoring étendu (+tests, topics) et export JSON.
 
 

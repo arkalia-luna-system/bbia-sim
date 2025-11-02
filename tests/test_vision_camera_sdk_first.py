@@ -1,6 +1,6 @@
 import numpy as np
 
-from src.bbia_sim.bbia_vision import BBIAVision
+from bbia_sim.bbia_vision import BBIAVision
 
 
 class _Camera:

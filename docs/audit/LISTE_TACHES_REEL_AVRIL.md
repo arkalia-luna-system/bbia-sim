@@ -42,7 +42,7 @@ Les fichiers suivants ont été corrigés pour refléter la réalité :
 - **Modules** :
   - `vision_yolo.py` : 27.74% coverage (99 lignes non couvertes)
   - `voice_whisper.py` : 33.33% coverage (76 lignes non couvertes)
-  - ✅ `dashboard_advanced.py` : **76.71% coverage** ✅ (47+ tests, 1169 lignes) - **TERMINÉ**
+  - ✅ `dashboard_advanced.py` : **76.71% coverage** ✅ (**47 tests**, **1156 lignes**) - **TERMINÉ**
   - `daemon/bridge.py` : 0% coverage (283 lignes)
 - **Estimation** : 8-12 heures
 

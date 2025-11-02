@@ -1,6 +1,6 @@
 # 💬🤖 GUIDE DÉMO CHAT BBIA EN 3D
 
-**Date :** Oct / No2025025025025025
+**Date :** Oct / Oct / Nov. 20255
 **Fonctionnalité :** Chat BBIA + Visualisation 3D MuJoCo
 
 ---
@@ -136,5 +136,5 @@ python examples/demo_chat_bbia_3d.py
 
 ---
 
-*Guide créé le Oct / No2025025025025025*
+*Guide créé le Oct / Oct / Nov. 20255*
 

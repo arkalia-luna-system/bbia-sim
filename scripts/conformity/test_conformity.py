@@ -32,7 +32,7 @@ print(f'Actuateurs: {model.nu}')
 print('✅ Modèle officiel chargé avec succès')
 """,
                 ],
-                capture_output=True,
+                check=False, capture_output=True,
                 text=True,
                 cwd=self.project_root,
                 timeout=10,
@@ -78,7 +78,7 @@ print(f'Joints: {list(VALID_JOINTS.keys())}')
 print('✅ Spécifications joints OK')
 """,
                 ],
-                capture_output=True,
+                check=False, capture_output=True,
                 text=True,
                 cwd=self.project_root,
                 timeout=5,
@@ -198,7 +198,7 @@ assert isinstance(result, bool)
 print('✅ Modules BBIA fonctionnels')
 """,
                 ],
-                capture_output=True,
+                check=False, capture_output=True,
                 text=True,
                 cwd=self.project_root,
                 timeout=10,
@@ -241,7 +241,7 @@ else:
     print('⚠️ Performance simulation acceptable')
 """,
                 ],
-                capture_output=True,
+                check=False, capture_output=True,
                 text=True,
                 cwd=self.project_root,
                 timeout=15,

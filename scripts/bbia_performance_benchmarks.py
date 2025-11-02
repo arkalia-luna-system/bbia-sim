@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-BBIA Performance Benchmarks - Tests de performance détaillés
+"""BBIA Performance Benchmarks - Tests de performance détaillés
 Benchmarks complets pour latence, charge, mémoire et CPU
 """
 
@@ -64,7 +63,7 @@ class BBIAPerformanceBenchmark:
             if self.robot:
                 connected = self.robot.connect()
                 logger.info(
-                    f"Robot {self.backend} {'connecté' if connected else 'en simulation'}"
+                    f"Robot {self.backend} {'connecté' if connected else 'en simulation'}",
                 )
                 return True
             return False
@@ -252,7 +251,7 @@ class BBIAPerformanceBenchmark:
                         robot.get_joint_pos("yaw_body")
                         joint_end = time.perf_counter()
                         client_results["latencies"].append(
-                            (joint_end - joint_start) * 1000
+                            (joint_end - joint_start) * 1000,
                         )
 
                     elif operation == 1:
@@ -261,7 +260,7 @@ class BBIAPerformanceBenchmark:
                         robot.set_joint_pos("yaw_body", 0.1)
                         joint_end = time.perf_counter()
                         client_results["latencies"].append(
-                            (joint_end - joint_start) * 1000
+                            (joint_end - joint_start) * 1000,
                         )
 
                     elif operation == 2:
@@ -270,7 +269,7 @@ class BBIAPerformanceBenchmark:
                         robot.set_emotion("happy", 0.5)
                         emotion_end = time.perf_counter()
                         client_results["latencies"].append(
-                            (emotion_end - emotion_start) * 1000
+                            (emotion_end - emotion_start) * 1000,
                         )
 
                     elif operation == 3:
@@ -279,7 +278,7 @@ class BBIAPerformanceBenchmark:
                         robot.get_telemetry()
                         telemetry_end = time.perf_counter()
                         client_results["latencies"].append(
-                            (telemetry_end - telemetry_start) * 1000
+                            (telemetry_end - telemetry_start) * 1000,
                         )
 
                     client_results["successful_requests"] += 1
@@ -471,7 +470,7 @@ class BBIAPerformanceBenchmark:
                         "cpu_before": cpu_before,
                         "cpu_after": cpu_after,
                         "cpu_delta": cpu_after - cpu_before,
-                    }
+                    },
                 )
 
                 time.sleep(sample_interval)
@@ -578,10 +577,10 @@ class BBIAPerformanceBenchmark:
                 report.append(f"  Requests/sec: {test_data['requests_per_second']:.2f}")
                 report.append(f"  Success rate: {test_data['success_rate']:.2%}")
                 report.append(
-                    f"  Mean latency: {test_data['latency_stats']['mean_ms']:.3f} ms"
+                    f"  Mean latency: {test_data['latency_stats']['mean_ms']:.3f} ms",
                 )
                 report.append(
-                    f"  P95 latency: {test_data['latency_stats']['p95_ms']:.3f} ms"
+                    f"  P95 latency: {test_data['latency_stats']['p95_ms']:.3f} ms",
                 )
                 report.append("")
 
@@ -594,11 +593,11 @@ class BBIAPerformanceBenchmark:
             for test_name, test_data in memory_data["memory_tests"].items():
                 report.append(f"{test_name}:")
                 report.append(
-                    f"  Memory growth: {test_data['memory_growth_mb']:.2f} MB"
+                    f"  Memory growth: {test_data['memory_growth_mb']:.2f} MB",
                 )
                 if "peak_memory_mb" in test_data:
                     report.append(
-                        f"  Peak memory: {test_data['peak_memory_mb']:.2f} MB"
+                        f"  Peak memory: {test_data['peak_memory_mb']:.2f} MB",
                     )
                 report.append("")
 

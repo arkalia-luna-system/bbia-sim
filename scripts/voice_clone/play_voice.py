@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Lecture fiable d'un WAV via sounddevice (choix périphérique optionnel).
+"""Lecture fiable d'un WAV via sounddevice (choix périphérique optionnel).
 Usage:
   source venv/bin/activate
   python scripts/voice_clone/play_voice.py --file assets/voice/out.wav

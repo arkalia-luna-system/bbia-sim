@@ -6,9 +6,14 @@
 echo "🧹 Nettoyage du projet BBIA..."
 echo "================================"
 
-# 1. Supprimer les fichiers système macOS
+# 1. Supprimer les fichiers système macOS (métadonnées)
 echo "🗑️ Suppression des fichiers système macOS..."
-find . -name "._*" -type f -delete 2>/dev/null || true
+# Supprimer fichiers ._* partout sauf dans venv (qui contient des packages Python légitimes avec _)
+find . -name "._*" -type f ! -path "./venv/*" ! -path "./venv-*/*" ! -path "./dist/*" ! -path "./build/*" -delete 2>/dev/null || true
+# Supprimer aussi fichiers .!*!._* (métadonnées macOS sur disque réseau/externe)
+find . -name ".!*!._*" -type f ! -path "./venv/*" ! -path "./venv-*/*" ! -path "./dist/*" ! -path "./build/*" -delete 2>/dev/null || true
+# Supprimer aussi les fichiers .DS_Store
+find . -name ".DS_Store" -type f -delete 2>/dev/null || true
 
 # 2. Supprimer les fichiers temporaires
 echo "🗑️ Suppression des fichiers temporaires..."

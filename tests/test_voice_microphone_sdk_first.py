@@ -1,6 +1,6 @@
 from io import BytesIO
 
-from src.bbia_sim.bbia_voice import reconnaitre_parole
+from bbia_sim.bbia_voice import reconnaitre_parole
 
 
 class _MediaMic:

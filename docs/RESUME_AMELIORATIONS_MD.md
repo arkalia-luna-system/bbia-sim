@@ -64,7 +64,7 @@
 **Moteur cognitif Python pour robot Reachy Mini**  
 *Simulation fidèle • IA avancée • SDK 100% conforme*
 
-[![Stars](...)](...) [![Forks](...)](...)
+<!-- Liens badges GitHub (à remplacer par URLs réels) -->
 
 </div>
 ```

@@ -3,7 +3,7 @@
 import pytest
 from pydantic import ValidationError
 
-from src.bbia_sim.daemon.models import (
+from bbia_sim.daemon.models import (
     GripperControl,
     HeadControl,
     JointPosition,

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Script exhaustif de comparaison BBIA-SIM vs Repo Officiel reachy_mini
+"""Script exhaustif de comparaison BBIA-SIM vs Repo Officiel reachy_mini
 
 Compare TOUS les aspects:
 - API REST endpoints
@@ -24,7 +23,8 @@ from pathlib import Path
 from typing import Any
 
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
 
@@ -104,7 +104,7 @@ class OfficialRepoComparator:
                         status="pending",
                         correction=None,
                         test_file=None,
-                    )
+                    ),
                 )
                 continue
 
@@ -133,7 +133,7 @@ class OfficialRepoComparator:
                             status="pending",
                             correction=f"Vérifier si nécessaire d'ajouter {missing}",
                             test_file=None,
-                        )
+                        ),
                     )
 
         return diffs
@@ -202,7 +202,7 @@ class OfficialRepoComparator:
                     status="pending",
                     correction=f"Ajouter endpoint {endpoint} si nécessaire",
                     test_file=None,
-                )
+                ),
             )
 
         for endpoint in extra_in_bbia:
@@ -219,13 +219,13 @@ class OfficialRepoComparator:
                     status="pending",
                     correction=None,
                     test_file=None,
-                )
+                ),
             )
 
         logger.info(f"  Endpoints BBIA: {len(bbia_endpoints)}")
         logger.info(f"  Endpoints officiels: {len(official_endpoints)}")
         logger.info(
-            f"  Différences détectées: {len(missing_in_bbia)} manquants, {len(extra_in_bbia)} supplémentaires"
+            f"  Différences détectées: {len(missing_in_bbia)} manquants, {len(extra_in_bbia)} supplémentaires",
         )
 
         return diffs
@@ -268,7 +268,8 @@ class OfficialRepoComparator:
                 import re
 
                 def extract_methods(
-                    file_path: Path, include_private: bool = False
+                    file_path: Path,
+                    include_private: bool = False,
                 ) -> dict[str, dict[str, any]]:
                     """Extrait méthodes avec détails (async, property, ligne)."""
                     methods = {}
@@ -330,7 +331,7 @@ class OfficialRepoComparator:
 
                 # Comparer ReachyMini vs ReachyMiniBackend
                 missing_methods = set(official_methods.keys()) - set(
-                    bbia_backend_methods.keys()
+                    bbia_backend_methods.keys(),
                 )
                 for method in missing_methods:
                     method_info = official_methods[method]
@@ -348,20 +349,22 @@ class OfficialRepoComparator:
                             status="pending",
                             correction=f"Vérifier si {method} doit être implémentée",
                             test_file=None,
-                        )
+                        ),
                     )
 
                 # Comparer BackendAdapter vs Backend abstract (si fichiers existent)
                 if official_backend_abstract.exists() and bbia_adapter.exists():
                     official_backend_methods = extract_methods(
-                        official_backend_abstract, include_private=False
+                        official_backend_abstract,
+                        include_private=False,
                     )
                     bbia_adapter_methods = extract_methods(
-                        bbia_adapter, include_private=False
+                        bbia_adapter,
+                        include_private=False,
                     )
 
                     missing_adapter = set(official_backend_methods.keys()) - set(
-                        bbia_adapter_methods.keys()
+                        bbia_adapter_methods.keys(),
                     )
                     for method in missing_adapter:
                         if not method.startswith("_"):  # Ignorer méthodes privées
@@ -371,7 +374,7 @@ class OfficialRepoComparator:
                                 Difference(
                                     category="Class",
                                     file_path=str(
-                                        bbia_adapter.relative_to(self.bbia_root)
+                                        bbia_adapter.relative_to(self.bbia_root),
                                     ),
                                     line=method_info["line"],
                                     endpoint=None,
@@ -382,12 +385,12 @@ class OfficialRepoComparator:
                                     status="pending",
                                     correction=f"Vérifier si {method} doit être implémentée dans BackendAdapter",
                                     test_file=None,
-                                )
+                                ),
                             )
 
                     # Vérifier signatures async/sync compatibles
                     common_methods = set(official_backend_methods.keys()) & set(
-                        bbia_adapter_methods.keys()
+                        bbia_adapter_methods.keys(),
                     )
                     for method in common_methods:
                         if not method.startswith("_"):
@@ -398,7 +401,7 @@ class OfficialRepoComparator:
                                     Difference(
                                         category="Class",
                                         file_path=str(
-                                            bbia_adapter.relative_to(self.bbia_root)
+                                            bbia_adapter.relative_to(self.bbia_root),
                                         ),
                                         line=bbia_info["line"],
                                         endpoint=None,
@@ -409,7 +412,7 @@ class OfficialRepoComparator:
                                         status="pending",
                                         correction=f"Aligner signature async de {method}",
                                         test_file=None,
-                                    )
+                                    ),
                                 )
 
                 logger.info(f"  Méthodes SDK officiel: {len(official_methods)}")
@@ -458,10 +461,10 @@ class OfficialRepoComparator:
                     import re
 
                     official_joints = set(
-                        re.findall(r'<joint name="([^"]+)"', official_content)
+                        re.findall(r'<joint name="([^"]+)"', official_content),
                     )
                     bbia_joints = set(
-                        re.findall(r'<joint name="([^"]+)"', bbia_content)
+                        re.findall(r'<joint name="([^"]+)"', bbia_content),
                     )
 
                     missing_joints = official_joints - bbia_joints
@@ -480,7 +483,7 @@ class OfficialRepoComparator:
                                 status="pending",
                                 correction=f"Vérifier si joint {joint} doit être ajouté",
                                 test_file=None,
-                            )
+                            ),
                         )
 
                 except Exception as e:
@@ -520,7 +523,7 @@ class OfficialRepoComparator:
                         status="pending",
                         correction=f"Vérifier si test {test_name} doit être ajouté",
                         test_file=None,
-                    )
+                    ),
                 )
 
         logger.info(f"  Tests officiels: {len(official_test_names)}")
@@ -569,7 +572,7 @@ class OfficialRepoComparator:
                             status="pending",
                             correction=f"Vérifier si section '{section}' doit être ajoutée",
                             test_file=None,
-                        )
+                        ),
                     )
 
         return diffs
@@ -610,7 +613,7 @@ class OfficialRepoComparator:
                         status="pending",
                         correction=f"Vérifier si {audio_file} doit être ajouté",
                         test_file=None,
-                    )
+                    ),
                 )
 
         # Comparer constantes (constants.py)
@@ -661,7 +664,7 @@ class OfficialRepoComparator:
                                 status="pending",
                                 correction="Vérifier si ces constantes doivent être ajoutées",
                                 test_file=None,
-                            )
+                            ),
                         )
             except Exception as e:
                 logger.debug(f"Erreur comparaison constantes: {e}")
@@ -741,7 +744,7 @@ class OfficialRepoComparator:
 
         with open(output_file, "w", encoding="utf-8") as f:
             f.write(
-                "# 🔍 Rapport de Comparaison Exhaustive - BBIA vs Repo Officiel\n\n"
+                "# 🔍 Rapport de Comparaison Exhaustive - BBIA vs Repo Officiel\n\n",
             )
             f.write(f"**Date**: {Path(__file__).stat().st_mtime}\n\n")
             f.write("## 📊 Résumé Exécutif\n\n")
@@ -787,7 +790,7 @@ def main():
     import argparse
 
     parser = argparse.ArgumentParser(
-        description="Comparaison exhaustive BBIA vs Repo Officiel"
+        description="Comparaison exhaustive BBIA vs Repo Officiel",
     )
     parser.add_argument(
         "--bbia-root",
@@ -820,7 +823,8 @@ def main():
     output_dir = args.output_dir
     comparator.save_results(result, output_dir / "comparison_official_results.json")
     comparator.generate_markdown_report(
-        result, output_dir / "comparison_official_report.md"
+        result,
+        output_dir / "comparison_official_report.md",
     )
 
     # Afficher le résumé

@@ -6,7 +6,7 @@ import tempfile
 
 import pytest
 
-from src.bbia_sim.sim.simulator import MuJoCoSimulator
+from bbia_sim.sim.simulator import MuJoCoSimulator
 
 
 class TestViewerSmoke:

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-BBIA Adaptive Behavior - Module de comportements adaptatifs contextuels
+"""BBIA Adaptive Behavior - Module de comportements adaptatifs contextuels
 Génération de comportements dynamiques basés sur le contexte et l'état émotionnel
 """
 
@@ -37,6 +36,7 @@ class BBIAAdaptiveBehavior:
 
         Args:
             robot_api: Instance RobotAPI pour exécuter les comportements générés (optionnel)
+
         """
         self.is_active = False
         self.current_context = "neutral"
@@ -125,7 +125,7 @@ class BBIAAdaptiveBehavior:
                 "duration": 3.0,
                 "intensity_range": (0.1, 0.4),
                 "joints": [
-                    "head_pose"
+                    "head_pose",
                 ],  # head_pose = goto_target(head=pose) ou look_at_world()
             },
             "stretch": {
@@ -134,7 +134,7 @@ class BBIAAdaptiveBehavior:
                 "duration": 5.0,
                 "intensity_range": (0.3, 0.7),
                 "joints": [
-                    "head_pose"
+                    "head_pose",
                 ],  # head_pose = goto_target(head=pose) avec séquence de poses
             },
             "dance": {
@@ -194,6 +194,7 @@ class BBIAAdaptiveBehavior:
 
         Returns:
             True si contexte valide
+
         """
         if context not in self.contexts:
             logger.warning(f"Contexte inconnu: {context}")
@@ -212,6 +213,7 @@ class BBIAAdaptiveBehavior:
 
         Returns:
             True si émotion valide
+
         """
         self.current_emotion = emotion
         self.emotion_intensity = max(0.0, min(1.0, intensity))
@@ -226,6 +228,7 @@ class BBIAAdaptiveBehavior:
 
         Returns:
             Dictionnaire décrivant le comportement généré
+
         """
         try:
             # Sélection du comportement basée sur le contexte et l'émotion
@@ -263,7 +266,7 @@ class BBIAAdaptiveBehavior:
             self._update_preferences(behavior)
 
             logger.info(
-                f"🎭 Comportement généré: {behavior_name} pour contexte {self.current_context}"
+                f"🎭 Comportement généré: {behavior_name} pour contexte {self.current_context}",
             )
             return behavior
 
@@ -296,24 +299,34 @@ class BBIAAdaptiveBehavior:
             # Vérification compatibilité émotion
             emotions_list = behavior_config.get("emotions", [])
             if (
-                isinstance(emotions_list, list)
-                and self.current_emotion in emotions_list
-            ):
-                suitable.append(behavior_name)
-            # Vérification contexte
-            elif self.current_context in ("playful", "greeting") and behavior_name in (
-                "dance",
-                "celebrate",
-            ):
-                suitable.append(behavior_name)
-            elif self.current_context in ("serious", "attention") and behavior_name in (
-                "focus",
-                "nod",
-            ):
-                suitable.append(behavior_name)
-            elif self.current_context in ("rest", "sleepy") and behavior_name in (
-                "stretch",
-                "hide",
+                (
+                    isinstance(emotions_list, list)
+                    and self.current_emotion in emotions_list
+                )
+                or (
+                    self.current_context in ("playful", "greeting")
+                    and behavior_name
+                    in (
+                        "dance",
+                        "celebrate",
+                    )
+                )
+                or (
+                    self.current_context in ("serious", "attention")
+                    and behavior_name
+                    in (
+                        "focus",
+                        "nod",
+                    )
+                )
+                or (
+                    self.current_context in ("rest", "sleepy")
+                    and behavior_name
+                    in (
+                        "stretch",
+                        "hide",
+                    )
+                )
             ):
                 suitable.append(behavior_name)
 
@@ -354,7 +367,8 @@ class BBIAAdaptiveBehavior:
         return suitable_behaviors[selected_idx]
 
     def _generate_behavior_parameters(
-        self, behavior_config: dict[str, Any]
+        self,
+        behavior_config: dict[str, Any],
     ) -> dict[str, Any]:
         """Génère les paramètres spécifiques d'un comportement."""
         params = {
@@ -444,13 +458,13 @@ class BBIAAdaptiveBehavior:
             if time_since_interaction > 30:  # 30 secondes sans interaction
                 if self.current_context == "rest":
                     return self.generate_behavior("proactive_attention")
-                elif self.current_context == "conversation":
+                if self.current_context == "conversation":
                     return self.generate_behavior("proactive_engagement")
 
             # Comportements basés sur l'émotion
             if self.current_emotion == "excited" and self.emotion_intensity > 0.8:
                 return self.generate_behavior("proactive_celebration")
-            elif self.current_emotion == "curious" and self.emotion_intensity > 0.6:
+            if self.current_emotion == "curious" and self.emotion_intensity > 0.6:
                 return self.generate_behavior("proactive_exploration")
 
             return None
@@ -466,6 +480,7 @@ class BBIAAdaptiveBehavior:
             behavior_id: ID du comportement évalué
             feedback: Type de retour ("positive", "negative", "neutral")
             score: Score numérique (0.0-1.0)
+
         """
         try:
             # Recherche du comportement dans l'historique
@@ -477,7 +492,7 @@ class BBIAAdaptiveBehavior:
 
             if not behavior:
                 logger.warning(
-                    f"Comportement {behavior_id} non trouvé dans l'historique"
+                    f"Comportement {behavior_id} non trouvé dans l'historique",
                 )
                 return
 
@@ -497,11 +512,12 @@ class BBIAAdaptiveBehavior:
                     behavior_name
                 ] += adjustment
                 self.user_preferences["preferred_behaviors"][behavior_name] = max(
-                    0.0, self.user_preferences["preferred_behaviors"][behavior_name]
+                    0.0,
+                    self.user_preferences["preferred_behaviors"][behavior_name],
                 )
 
             logger.info(
-                f"🔄 Adaptation basée sur retour: {feedback} (score: {score:.2f})"
+                f"🔄 Adaptation basée sur retour: {feedback} (score: {score:.2f})",
             )
 
         except Exception as e:
@@ -552,7 +568,9 @@ class BBIAAdaptiveBehavior:
         logger.info("🔄 Apprentissage réinitialisé")
 
     def execute_behavior(
-        self, behavior: dict[str, Any], robot_api: Optional["RobotAPI"] = None
+        self,
+        behavior: dict[str, Any],
+        robot_api: Optional["RobotAPI"] = None,
     ) -> bool:
         """Exécute un comportement généré de manière conforme au SDK Reachy Mini.
 
@@ -565,6 +583,7 @@ class BBIAAdaptiveBehavior:
 
         Returns:
             True si exécuté avec succès
+
         """
         robot_api = robot_api or self.robot_api
         if not robot_api:
@@ -579,7 +598,7 @@ class BBIAAdaptiveBehavior:
             joints = params.get("joints", [])
 
             logger.info(
-                f"🎭 Exécution comportement '{behavior_name}' (durée={duration:.1f}s, intensité={intensity:.2f})"
+                f"🎭 Exécution comportement '{behavior_name}' (durée={duration:.1f}s, intensité={intensity:.2f})",
             )
 
             # OPTIMISATION EXPERT SDK: Exécuter selon type de comportement
@@ -603,15 +622,21 @@ class BBIAAdaptiveBehavior:
                 ):
                     # Mouvement tête: pitch vers haut puis retour
                     pose_up = create_head_pose(
-                        pitch=0.1 * intensity, yaw=0.0, degrees=False
+                        pitch=0.1 * intensity,
+                        yaw=0.0,
+                        degrees=False,
                     )
                     robot_api.goto_target(
-                        head=pose_up, duration=duration / 2, method="minjerk"
+                        head=pose_up,
+                        duration=duration / 2,
+                        method="minjerk",
                     )
                     time.sleep(duration / 2 + 0.1)
                     pose_neutral = create_head_pose(pitch=0.0, yaw=0.0, degrees=False)
                     robot_api.goto_target(
-                        head=pose_neutral, duration=duration / 2, method="minjerk"
+                        head=pose_neutral,
+                        duration=duration / 2,
+                        method="minjerk",
                     )
                     logger.info("✅ Hochement exécuté via goto_target (conforme SDK)")
                     return True
@@ -626,22 +651,32 @@ class BBIAAdaptiveBehavior:
                     # Mouvement tête: yaw gauche/droite
                     for _ in range(2):
                         pose_left = create_head_pose(
-                            pitch=0.0, yaw=-0.15 * intensity, degrees=False
+                            pitch=0.0,
+                            yaw=-0.15 * intensity,
+                            degrees=False,
                         )
                         robot_api.goto_target(
-                            head=pose_left, duration=duration / 4, method="cartoon"
+                            head=pose_left,
+                            duration=duration / 4,
+                            method="cartoon",
                         )
                         time.sleep(duration / 4 + 0.1)
                         pose_right = create_head_pose(
-                            pitch=0.0, yaw=0.15 * intensity, degrees=False
+                            pitch=0.0,
+                            yaw=0.15 * intensity,
+                            degrees=False,
                         )
                         robot_api.goto_target(
-                            head=pose_right, duration=duration / 4, method="cartoon"
+                            head=pose_right,
+                            duration=duration / 4,
+                            method="cartoon",
                         )
                         time.sleep(duration / 4 + 0.1)
                     pose_neutral = create_head_pose(pitch=0.0, yaw=0.0, degrees=False)
                     robot_api.goto_target(
-                        head=pose_neutral, duration=0.3, method="minjerk"
+                        head=pose_neutral,
+                        duration=0.3,
+                        method="minjerk",
                     )
                     logger.info("✅ Secouement exécuté via goto_target (conforme SDK)")
                     return True
@@ -666,7 +701,7 @@ class BBIAAdaptiveBehavior:
                             perform_movement=True,
                         )
                     logger.info(
-                        "✅ Look around exécuté via look_at_world (conforme SDK)"
+                        "✅ Look around exécuté via look_at_world (conforme SDK)",
                     )
                     return True
 
@@ -678,10 +713,14 @@ class BBIAAdaptiveBehavior:
                     and hasattr(robot_api, "goto_target")
                 ):
                     pose_focus = create_head_pose(
-                        pitch=0.05 * intensity, yaw=0.0, degrees=False
+                        pitch=0.05 * intensity,
+                        yaw=0.0,
+                        degrees=False,
                     )
                     robot_api.goto_target(
-                        head=pose_focus, duration=duration, method="minjerk"
+                        head=pose_focus,
+                        duration=duration,
+                        method="minjerk",
                     )
                     logger.info("✅ Focus exécuté via goto_target (conforme SDK)")
                     return True
@@ -699,7 +738,9 @@ class BBIAAdaptiveBehavior:
                     body_yaw = 0.15 * intensity * random.uniform(-1, 1)  # nosec B311
 
                     pose = create_head_pose(
-                        pitch=head_pitch, yaw=head_yaw, degrees=False
+                        pitch=head_pitch,
+                        yaw=head_yaw,
+                        degrees=False,
                     )
                     robot_api.goto_target(
                         head=pose,
@@ -708,7 +749,7 @@ class BBIAAdaptiveBehavior:
                         method="minjerk",
                     )
                     logger.info(
-                        f"✅ Comportement '{behavior_name}' exécuté via goto_target combiné (conforme SDK)"
+                        f"✅ Comportement '{behavior_name}' exécuté via goto_target combiné (conforme SDK)",
                     )
                     return True
 
@@ -720,7 +761,7 @@ class BBIAAdaptiveBehavior:
                 return True
 
             logger.warning(
-                f"⚠️ Comportement '{behavior_name}' non exécuté (robot_api ou méthodes SDK manquantes)"
+                f"⚠️ Comportement '{behavior_name}' non exécuté (robot_api ou méthodes SDK manquantes)",
             )
             return False
 

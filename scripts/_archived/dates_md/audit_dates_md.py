@@ -107,7 +107,7 @@ def audit_file(filepath: Path) -> dict:
         current_date = match.group(1).strip()
         if is_recent and DATE_OCT_NOV_2025 not in current_date:
             issues.append(
-                f"Ligne {line_num}: Date récente à mettre à jour → '{DATE_OCT_NOV_2025}'"
+                f"Ligne {line_num}: Date récente à mettre à jour → '{DATE_OCT_NOV_2025}'",
             )
 
     return {
@@ -121,7 +121,7 @@ def audit_file(filepath: Path) -> dict:
 
 def main():
     """Audit principal."""
-    root = Path(".")
+    root = Path()
     md_files = find_md_files(root)
 
     print(f"📋 Audit de {len(md_files)} fichiers MD\n")

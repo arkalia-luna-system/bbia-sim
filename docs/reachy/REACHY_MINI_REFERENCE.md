@@ -5,7 +5,7 @@
 ## Description de l'image de référence
 
 ### Source de l'image
-- **Date** : Oct / No2025025025025025
+- **Date** : Oct / Nov. 2025
 - **Source** : Résultats Google Images pour "Reachy Mini"
 - **Contexte** : Recherche d'images récentes du robot
 

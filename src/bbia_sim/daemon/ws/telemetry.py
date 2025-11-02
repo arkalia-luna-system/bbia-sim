@@ -33,7 +33,7 @@ class ConnectionManager:
         # OPTIMISATION RAM: Limiter nombre de connexions simultanées
         if len(self.active_connections) >= self._max_connections:
             logger.warning(
-                f"Limite de connexions atteinte ({self._max_connections}), rejet de nouvelle connexion"
+                f"Limite de connexions atteinte ({self._max_connections}), rejet de nouvelle connexion",
             )
             await websocket.close(code=1008, reason="Too many connections")
             return
@@ -41,7 +41,7 @@ class ConnectionManager:
         await websocket.accept()
         self.active_connections.append(websocket)
         logger.info(
-            f"Nouvelle connexion WebSocket. Total: {len(self.active_connections)}"
+            f"Nouvelle connexion WebSocket. Total: {len(self.active_connections)}",
         )
 
     def disconnect(self, websocket: WebSocket) -> None:
@@ -49,7 +49,7 @@ class ConnectionManager:
         if websocket in self.active_connections:
             self.active_connections.remove(websocket)
         logger.info(
-            f"Connexion WebSocket fermée. Total: {len(self.active_connections)}"
+            f"Connexion WebSocket fermée. Total: {len(self.active_connections)}",
         )
 
     async def send_personal_message(self, message: str, websocket: WebSocket) -> None:
@@ -234,7 +234,7 @@ async def websocket_endpoint(websocket: WebSocket) -> None:
                 if message.get("type") == "ping":
                     await manager.send_personal_message(
                         json.dumps(
-                            {"type": "pong", "timestamp": datetime.now().isoformat()}
+                            {"type": "pong", "timestamp": datetime.now().isoformat()},
                         ),
                         websocket,
                     )
@@ -246,7 +246,8 @@ async def websocket_endpoint(websocket: WebSocket) -> None:
                         "timestamp": datetime.now().isoformat(),
                     }
                     await manager.send_personal_message(
-                        json.dumps(status_data), websocket
+                        json.dumps(status_data),
+                        websocket,
                     )
 
             except WebSocketDisconnect:

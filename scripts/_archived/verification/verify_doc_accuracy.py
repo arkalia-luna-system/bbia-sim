@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Script pour vérifier l'exactitude de la documentation contre le code réel.
+"""Script pour vérifier l'exactitude de la documentation contre le code réel.
 """
 
 import re
@@ -23,7 +22,7 @@ def count_tests():
             "{}",
             ";",
         ],
-        capture_output=True,
+        check=False, capture_output=True,
         text=True,
         cwd="/Volumes/T7/bbia-reachy-sim",
     )
@@ -32,7 +31,7 @@ def count_tests():
             line
             for line in result.stdout.split("\n")
             if line.strip() and line.strip().startswith("def test_")
-        ]
+        ],
     )
 
 
@@ -40,7 +39,7 @@ def count_docs():
     """Compte le nombre réel de fichiers MD."""
     result = subprocess.run(
         ["find", "docs", "-name", "*.md", "-type", "f"],
-        capture_output=True,
+        check=False, capture_output=True,
         text=True,
         cwd="/Volumes/T7/bbia-reachy-sim",
     )

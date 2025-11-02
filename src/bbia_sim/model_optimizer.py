@@ -12,7 +12,10 @@ _model_cache: dict[str, Any] = {}
 
 
 def get_cached_model(
-    model_key: str, loader_func: Callable[..., Any], *args: Any, **kwargs: Any
+    model_key: str,
+    loader_func: Callable[..., Any],
+    *args: Any,
+    **kwargs: Any,
 ) -> Any:
     """Charge modèle avec cache (évite rechargements).
 
@@ -24,6 +27,7 @@ def get_cached_model(
 
     Returns:
         Modèle chargé (depuis cache ou nouveau)
+
     """
     if model_key in _model_cache:
         logger.debug(f"📦 Modèle '{model_key}' chargé depuis cache")
@@ -49,7 +53,8 @@ def get_cache_size() -> int:
 
 
 def lazy_load_model(
-    model_key: str, loader_func: Callable[..., Any]
+    model_key: str,
+    loader_func: Callable[..., Any],
 ) -> Callable[..., Any]:
     """Retourne fonction lazy loader (charge uniquement si appelée).
 
@@ -59,6 +64,7 @@ def lazy_load_model(
 
     Returns:
         Fonction lazy qui charge modèle à la demande
+
     """
 
     def lazy_loader(*args: Any, **kwargs: Any) -> Any:

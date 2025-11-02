@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-BBIA Idle Animations - Animations d'inactivité pour robot Reachy Mini
+"""BBIA Idle Animations - Animations d'inactivité pour robot Reachy Mini
 Respiration automatique, poses de passage subtiles, tremblement vocal.
 
 Inspiré de l'app conversationnelle officielle Reachy Mini.
@@ -26,6 +25,7 @@ class BBIABreathingAnimation:
 
         Args:
             robot_api: Instance RobotAPI pour contrôle robot
+
         """
         self.robot_api = robot_api
         self.is_active = False
@@ -54,7 +54,8 @@ class BBIABreathingAnimation:
 
         # Créer thread pour animation background
         self.breathing_thread = threading.Thread(
-            target=self._breathing_loop, daemon=True
+            target=self._breathing_loop,
+            daemon=True,
         )
         self.breathing_thread.start()
 
@@ -73,7 +74,7 @@ class BBIABreathingAnimation:
             self.breathing_thread.join(timeout=2.0)
             if self.breathing_thread.is_alive():
                 logger.warning(
-                    "Thread respiration n'a pas pu être arrêté dans les 2 secondes"
+                    "Thread respiration n'a pas pu être arrêté dans les 2 secondes",
                 )
 
         logger.info("⏹️ Animation respiration arrêtée")
@@ -104,13 +105,16 @@ class BBIABreathingAnimation:
 
                     # Position respiration: pitch légèrement relevé avec oscillation
                     pose = create_head_pose(
-                        pitch=base_pitch + breathing_offset, yaw=0.0
+                        pitch=base_pitch + breathing_offset,
+                        yaw=0.0,
                     )
 
                     # Appliquer mouvement fluide (duration courte pour continuité)
                     if hasattr(self.robot_api, "goto_target"):
                         self.robot_api.goto_target(
-                            head=pose, duration=0.5, method="minjerk"
+                            head=pose,
+                            duration=0.5,
+                            method="minjerk",
                         )
                     elif hasattr(self.robot_api, "set_target_head_pose"):
                         self.robot_api.set_target_head_pose(pose)
@@ -140,6 +144,7 @@ class BBIAPoseTransitionManager:
 
         Args:
             robot_api: Instance RobotAPI pour contrôle robot
+
         """
         self.robot_api = robot_api
         self.is_active = False
@@ -173,7 +178,8 @@ class BBIAPoseTransitionManager:
         self.stop_event.clear()
 
         self.pose_thread = threading.Thread(
-            target=self._pose_transition_loop, daemon=True
+            target=self._pose_transition_loop,
+            daemon=True,
         )
         self.pose_thread.start()
 
@@ -192,7 +198,7 @@ class BBIAPoseTransitionManager:
             self.pose_thread.join(timeout=2.0)
             if self.pose_thread.is_alive():
                 logger.warning(
-                    "Thread transitions poses n'a pas pu être arrêté dans les 2 secondes"
+                    "Thread transitions poses n'a pas pu être arrêté dans les 2 secondes",
                 )
 
         logger.info("⏹️ Transitions de poses arrêtées")
@@ -211,7 +217,7 @@ class BBIAPoseTransitionManager:
                 if elapsed >= self.pose_transition_interval:
                     # Sélectionner pose suivante
                     self.current_pose_index = (self.current_pose_index + 1) % len(
-                        self.idle_poses
+                        self.idle_poses,
                     )
                     pose = self.idle_poses[self.current_pose_index]
 
@@ -220,12 +226,15 @@ class BBIAPoseTransitionManager:
                         from reachy_mini.utils import create_head_pose
 
                         head_pose = create_head_pose(
-                            yaw=pose["yaw"], pitch=pose["pitch"]
+                            yaw=pose["yaw"],
+                            pitch=pose["pitch"],
                         )
 
                         if hasattr(self.robot_api, "goto_target"):
                             self.robot_api.goto_target(
-                                head=head_pose, duration=2.0, method="minjerk"
+                                head=head_pose,
+                                duration=2.0,
+                                method="minjerk",
                             )
                         elif hasattr(self.robot_api, "set_target_head_pose"):
                             self.robot_api.set_target_head_pose(head_pose)
@@ -254,6 +263,7 @@ class BBIAVocalTremor:
 
         Args:
             robot_api: Instance RobotAPI pour contrôle robot
+
         """
         self.robot_api = robot_api
         self.is_active = False
@@ -267,6 +277,7 @@ class BBIAVocalTremor:
 
         Args:
             audio_level: Niveau audio (0.0 à 1.0)
+
         """
         if not self.is_active or not self.robot_api:
             return
@@ -312,6 +323,7 @@ class BBIIdleAnimationManager:
 
         Args:
             robot_api: Instance RobotAPI pour contrôle robot
+
         """
         self.robot_api = robot_api
 
@@ -366,6 +378,7 @@ class BBIIdleAnimationManager:
 
         Args:
             audio_level: Niveau audio (0.0 à 1.0)
+
         """
         if self.is_active:
             self.vocal_tremor.update_audio_level(audio_level)

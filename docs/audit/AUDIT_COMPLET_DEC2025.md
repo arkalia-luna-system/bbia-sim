@@ -83,7 +83,7 @@
 | Module | Coverage | Lignes Non Couvertes | Tests Existant | Action |
 |--------|----------|---------------------|----------------|--------|
 | `vision_yolo.py` | **89.62%** ✅ | ~19 lignes | ✅ `test_vision_yolo_comprehensive.py` existe | ✅ **TERMINÉ** (objectif 50%+ dépassé) |
-| `voice_whisper.py` | **36.84%** ⬆️ | ~133 lignes | ✅ `test_vad_streaming.py`, `test_ia_modules.py` (18+ tests ajoutés) | ✅ **EN PROGRÈS** (+13.57% depuis 23.27%) |
+| `voice_whisper.py**: **59.83%**** ⬆️ | ~133 lignes | ✅ `test_vad_streaming.py`, `test_ia_modules.py` (18+ tests ajoutés) | ✅ **EN PROGRÈS** (+13.57% depuis 23.27%) |
 | `dashboard_advanced.py` | **76.71%** ✅ | ~75 lignes | ✅ `test_dashboard_advanced.py` (**47 tests**, **1156 lignes**) | ✅ **TERMINÉ** (objectif 70%+ dépassé) |
 | `daemon/bridge.py` | **31.23%** ✅ | ~262 lignes | ✅ `test_daemon_bridge.py` (10+ tests ajoutés) | ✅ **TERMINÉ** (objectif 30%+ atteint) |
 
@@ -193,7 +193,7 @@
 ### Phase 1 : Coverage Tests (~1-2h restantes) - PRIORITÉ 1
 1. ✅ ~~`dashboard_advanced.py`~~ - **TERMINÉ** (**76.71%** coverage, objectif 70%+ dépassé ✅)
 2. ✅ ~~`vision_yolo.py`~~ - **TERMINÉ** (**89.62%** coverage, objectif 50%+ largement dépassé ✅)
-3. ⚠️ **`voice_whisper.py`** - **EN PROGRÈS** (**36.84%** → 50%+, ~1-2h restantes)
+3. ⚠️ **`voice_whisper.py**: **59.83%**** → 50%+, ~1-2h restantes)
 4. ✅ ~~`daemon/bridge.py`~~ - **TERMINÉ** (**31.23%** coverage, objectif 30%+ atteint ✅)
 
 ### Phase 2 : Liens MD (1.5h) - PRIORITÉ 2

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-RobotAPI - Interface unifiée Sim/Robot
+"""RobotAPI - Interface unifiée Sim/Robot
 Backend unique pour MuJoCo et Reachy réel
 """
 
@@ -35,25 +34,23 @@ class RobotAPI(ABC):
     @abstractmethod
     def connect(self) -> bool:
         """Connecte au robot/simulateur."""
-        pass
 
     @abstractmethod
     def disconnect(self) -> bool:
         """Déconnecte du robot/simulateur."""
-        pass
 
     @abstractmethod
     def get_available_joints(self) -> list[str]:
         """Retourne la liste des joints disponibles."""
-        pass
 
     @abstractmethod
     def set_joint_pos(self, joint_name: str, position: float) -> bool:
         """Définit la position d'un joint."""
-        pass
 
     def _validate_joint_pos(
-        self, joint_name: str, position: float
+        self,
+        joint_name: str,
+        position: float,
     ) -> tuple[bool, float]:
         """Valide et clamp la position d'un joint."""
         # Vérifier si le joint est interdit
@@ -63,12 +60,13 @@ class RobotAPI(ABC):
 
         # Clamp l'amplitude pour la sécurité
         clamped_position = max(
-            -self.safe_amplitude_limit, min(self.safe_amplitude_limit, position)
+            -self.safe_amplitude_limit,
+            min(self.safe_amplitude_limit, position),
         )
 
         if clamped_position != position:
             logger.warning(
-                f"Position clampée: {position:.3f} → {clamped_position:.3f} rad"
+                f"Position clampée: {position:.3f} → {clamped_position:.3f} rad",
             )
 
         return True, clamped_position
@@ -76,12 +74,10 @@ class RobotAPI(ABC):
     @abstractmethod
     def get_joint_pos(self, joint_name: str) -> float | None:
         """Récupère la position actuelle d'un joint."""
-        pass
 
     @abstractmethod
     def step(self) -> bool:
         """Effectue un pas de simulation."""
-        pass
 
     @abstractmethod
     def emergency_stop(self) -> bool:
@@ -90,7 +86,6 @@ class RobotAPI(ABC):
         Arrête immédiatement tous les moteurs et désactive le contrôle.
         Conforme aux specs sécurité robotique.
         """
-        pass
 
     def set_emotion(self, emotion: str, intensity: float = 0.5) -> bool:
         """Définit l'émotion du robot."""
@@ -141,6 +136,7 @@ class RobotAPI(ABC):
 
         Returns:
             True si commande envoyée, False sinon
+
         """
         if not self.is_connected:
             logger.error("Robot non connecté")
@@ -151,7 +147,11 @@ class RobotAPI(ABC):
             try:
                 # Utiliser la méthode SDK avancée si disponible
                 self.look_at_world(
-                    target_x, target_y, target_z, duration=1.0, perform_movement=True
+                    target_x,
+                    target_y,
+                    target_z,
+                    duration=1.0,
+                    perform_movement=True,
                 )
                 return True
             except Exception as e:
@@ -168,7 +168,7 @@ class RobotAPI(ABC):
         ):
             logger.warning(
                 f"Coordonnées ({target_x}, {target_y}, {target_z}) hors limites recommandées "
-                "SDK (-2.0 ≤ x,y ≤ 2.0, 0.0 ≤ z ≤ 1.5). Clampage appliqué."
+                "SDK (-2.0 ≤ x,y ≤ 2.0, 0.0 ≤ z ≤ 1.5). Clampage appliqué.",
             )
             target_x = max(-2.0, min(2.0, target_x))
             target_y = max(-2.0, min(2.0, target_y))
@@ -183,7 +183,10 @@ class RobotAPI(ABC):
         return self.set_joint_pos("yaw_body", angle)
 
     def run_behavior(
-        self, behavior_name: str, duration: float = 5.0, **kwargs: Any
+        self,
+        behavior_name: str,
+        duration: float = 5.0,
+        **kwargs: Any,
     ) -> bool:
         """Exécute un comportement."""
         if not self.is_connected:
@@ -210,11 +213,10 @@ class RobotAPI(ABC):
         # Implémentation basique - à étendre selon le backend
         if behavior_name == "wake_up":
             return self._execute_wake_up(duration)
-        elif behavior_name == "greeting":
+        if behavior_name == "greeting":
             return self._execute_greeting(duration)
-        else:
-            logger.warning(f"Comportement {behavior_name} non implémenté")
-            return False
+        logger.warning(f"Comportement {behavior_name} non implémenté")
+        return False
 
     def _execute_wake_up(self, duration: float) -> bool:
         """Exécute le comportement de réveil."""
@@ -254,7 +256,8 @@ class RobotAPI(ABC):
 
         # Limites générales
         position = max(
-            -self.safe_amplitude_limit, min(self.safe_amplitude_limit, position)
+            -self.safe_amplitude_limit,
+            min(self.safe_amplitude_limit, position),
         )
 
         # Limites spécifiques par joint
@@ -285,7 +288,7 @@ class RobotAPI(ABC):
 def __getattr__(name: str) -> Any:
     """Import tardif pour RobotFactory depuis robot_factory."""
     if name == "RobotFactory":
-        from .robot_factory import RobotFactory  # noqa: F401
+        from .robot_factory import RobotFactory
 
         return RobotFactory
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Dashboard Gradio pour BBIA - Interface no-code simple
+"""Dashboard Gradio pour BBIA - Interface no-code simple
 Upload images, chat, test DeepFace, détection objets
 """
 
@@ -75,7 +74,7 @@ def scan_image(image):
             for obj in result["objects"][:5]:  # Limiter à 5
                 output.append(
                     f"- {obj.get('name', 'objet')} "
-                    f"(confiance: {obj.get('confidence', 0):.2f})"
+                    f"(confiance: {obj.get('confidence', 0):.2f})",
                 )
 
         if result.get("faces"):
@@ -86,7 +85,7 @@ def scan_image(image):
                 output.append(
                     f"- {name} "
                     f"(émotion: {emotion}, "
-                    f"confiance: {face.get('emotion_confidence', 0):.2f})"
+                    f"confiance: {face.get('emotion_confidence', 0):.2f})",
                 )
 
         if result.get("poses"):
@@ -97,7 +96,7 @@ def scan_image(image):
                 gesture_list = [k for k, v in gestures.items() if v]
                 output.append(
                     f"- {posture} "
-                    f"(gestes: {', '.join(gesture_list) if gesture_list else 'aucun'})"
+                    f"(gestes: {', '.join(gesture_list) if gesture_list else 'aucun'})",
                 )
 
         if (
@@ -165,8 +164,7 @@ def register_face(image, name):
 
         if success:
             return f"✅ Personne '{name}' enregistrée avec succès !"
-        else:
-            return f"❌ Erreur lors de l'enregistrement de '{name}'"
+        return f"❌ Erreur lors de l'enregistrement de '{name}'"
 
     except Exception as e:
         logger.error(f"Erreur enregistrement visage: {e}")
@@ -183,7 +181,7 @@ with gr.Blocks(title="BBIA Dashboard", theme=gr.themes.Soft()) as demo:
     - 📷 Upload images → détection objets/visages/postures
     - 💬 Chat avec BBIA
     - 👤 Enregistrer personnes (DeepFace)
-    """
+    """,
     )
 
     with gr.Tabs():
@@ -199,7 +197,9 @@ with gr.Blocks(title="BBIA Dashboard", theme=gr.themes.Soft()) as demo:
             gr.Markdown("### Chat avec BBIA")
             chatbot = gr.Chatbot(label="Conversation", height=400)
             msg = gr.Textbox(
-                label="Message", placeholder="Tapez votre message...", lines=2
+                label="Message",
+                placeholder="Tapez votre message...",
+                lines=2,
             )
             chat_button = gr.Button("Envoyer", variant="primary")
 
@@ -231,7 +231,7 @@ with gr.Blocks(title="BBIA Dashboard", theme=gr.themes.Soft()) as demo:
         with gr.Tab("👤 DeepFace"):
             gr.Markdown("### Enregistrer une personne")
             gr.Markdown(
-                "Upload une photo et donnez un nom pour que BBIA reconnaisse cette personne."
+                "Upload une photo et donnez un nom pour que BBIA reconnaisse cette personne.",
             )
             face_image = gr.Image(label="Photo de la personne", type="numpy")
             face_name = gr.Textbox(label="Nom", placeholder="Alice")

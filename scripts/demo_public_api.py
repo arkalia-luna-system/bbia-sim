@@ -25,6 +25,7 @@ class BBIADemo:
 
         Args:
             base_url: URL de base de l'API
+
         """
         self.base_url = base_url
         self.client = httpx.AsyncClient(timeout=30.0)
@@ -39,9 +40,8 @@ class BBIADemo:
                 data = response.json()
                 logger.info(f"✅ API accessible: {data.get('status', 'N/A')}")
                 return True
-            else:
-                logger.error(f"❌ API non accessible: {response.status_code}")
-                return False
+            logger.error(f"❌ API non accessible: {response.status_code}")
+            return False
         except Exception as e:
             logger.error(f"❌ Erreur de connexion: {e}")
             return False
@@ -80,7 +80,7 @@ class BBIADemo:
 
             # Capacités du robot
             response = await self.client.get(
-                f"{self.base_url}/api/ecosystem/capabilities"
+                f"{self.base_url}/api/ecosystem/capabilities",
             )
             if response.status_code == 200:
                 data = response.json()
@@ -88,17 +88,17 @@ class BBIADemo:
                 logger.info(f"   • Modèle: {data.get('model', 'N/A')}")
                 logger.info(f"   • Joints: {data.get('joints', 'N/A')}")
                 logger.info(
-                    f"   • Mode simulation: {data.get('simulation_mode', 'N/A')}"
+                    f"   • Mode simulation: {data.get('simulation_mode', 'N/A')}",
                 )
 
                 emotions = data.get("emotions", [])
                 logger.info(
-                    f"   • Émotions ({len(emotions)}): {', '.join(emotions[:5])}{'...' if len(emotions) > 5 else ''}"
+                    f"   • Émotions ({len(emotions)}): {', '.join(emotions[:5])}{'...' if len(emotions) > 5 else ''}",
                 )
 
                 behaviors = data.get("behaviors", [])
                 logger.info(
-                    f"   • Comportements ({len(behaviors)}): {', '.join(behaviors[:5])}{'...' if len(behaviors) > 5 else ''}"
+                    f"   • Comportements ({len(behaviors)}): {', '.join(behaviors[:5])}{'...' if len(behaviors) > 5 else ''}",
                 )
 
                 backends = data.get("backends", [])
@@ -116,7 +116,7 @@ class BBIADemo:
         try:
             # Récupération des émotions disponibles
             response = await self.client.get(
-                f"{self.base_url}/api/ecosystem/emotions/available"
+                f"{self.base_url}/api/ecosystem/emotions/available",
             )
             if response.status_code == 200:
                 data = response.json()
@@ -146,11 +146,11 @@ class BBIADemo:
                         data = response.json()
                         logger.info(f"   ✅ {emotion}: {data.get('status', 'N/A')}")
                         logger.info(
-                            f"      Joints affectés: {len(data.get('joints_affected', []))}"
+                            f"      Joints affectés: {len(data.get('joints_affected', []))}",
                         )
                     else:
                         logger.warning(
-                            f"   ⚠️ {emotion}: Échec (code {response.status_code})"
+                            f"   ⚠️ {emotion}: Échec (code {response.status_code})",
                         )
 
                     await asyncio.sleep(0.5)  # Pause entre les émotions
@@ -170,7 +170,7 @@ class BBIADemo:
         try:
             # Récupération des comportements disponibles
             response = await self.client.get(
-                f"{self.base_url}/api/ecosystem/behaviors/available"
+                f"{self.base_url}/api/ecosystem/behaviors/available",
             )
             if response.status_code == 200:
                 data = response.json()
@@ -201,11 +201,11 @@ class BBIADemo:
                         data = response.json()
                         logger.info(f"   ✅ {behavior}: {data.get('status', 'N/A')}")
                         logger.info(
-                            f"      Durée estimée: {data.get('estimated_duration', 'N/A')}s"
+                            f"      Durée estimée: {data.get('estimated_duration', 'N/A')}s",
                         )
                     else:
                         logger.warning(
-                            f"   ⚠️ {behavior}: Échec (code {response.status_code})"
+                            f"   ⚠️ {behavior}: Échec (code {response.status_code})",
                         )
 
                     await asyncio.sleep(1.0)  # Pause entre les comportements
@@ -225,7 +225,7 @@ class BBIADemo:
         try:
             # Récupération des modes disponibles
             response = await self.client.get(
-                f"{self.base_url}/api/ecosystem/demo/modes"
+                f"{self.base_url}/api/ecosystem/demo/modes",
             )
             if response.status_code == 200:
                 data = response.json()
@@ -239,7 +239,7 @@ class BBIADemo:
                     logger.info(f"\n   🎯 {mode_name.upper()}:")
                     logger.info(f"      • Nom: {mode_info.get('name', 'N/A')}")
                     logger.info(
-                        f"      • Description: {mode_info.get('description', 'N/A')}"
+                        f"      • Description: {mode_info.get('description', 'N/A')}",
                     )
                     logger.info(f"      • Backend: {mode_info.get('backend', 'N/A')}")
 
@@ -290,7 +290,7 @@ class BBIADemo:
                 logger.info(f"   • Titre: {info.get('title', 'N/A')}")
                 logger.info(f"   • Version: {info.get('version', 'N/A')}")
                 logger.info(
-                    f"   • Description: {info.get('description', 'N/A')[:100]}..."
+                    f"   • Description: {info.get('description', 'N/A')[:100]}...",
                 )
                 logger.info(f"   • Endpoints: {len(paths)}")
 
@@ -335,7 +335,7 @@ class BBIADemo:
         logger.info("🎉 DÉMONSTRATION TERMINÉE")
         logger.info("=" * 80)
         logger.info(
-            "✅ Toutes les fonctionnalités de l'API publique ont été démontrées"
+            "✅ Toutes les fonctionnalités de l'API publique ont été démontrées",
         )
         logger.info("🌐 L'écosystème BBIA-SIM est prêt pour l'intégration")
         logger.info("📚 Consultez la documentation pour plus de détails")

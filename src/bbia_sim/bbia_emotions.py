@@ -122,7 +122,7 @@ class BBIAEmotions:
                 "intensity": self.emotion_intensity,
                 "timestamp": datetime.now().isoformat(),
                 "previous": old_emotion,
-            }
+            },
         )
 
         # Afficher la transition
@@ -136,7 +136,7 @@ class BBIAEmotions:
         new_data = self.emotions[new_emotion]
 
         print(
-            f"🔄 Transition d'émotion : {old_data['color']} {old_emotion} → {new_data['color']} {new_emotion}"
+            f"🔄 Transition d'émotion : {old_data['color']} {old_emotion} → {new_data['color']} {new_emotion}",
         )
         print(f"📝 {old_data['description']} → {new_data['description']}")
         print(f"🎭 Intensité : {self.emotion_intensity:.1f}")
@@ -150,7 +150,7 @@ class BBIAEmotions:
                 "name": self.current_emotion,
                 "intensity": str(self.emotion_intensity),
                 "timestamp": datetime.now().isoformat(),
-            }
+            },
         )
         return emotion_data
 

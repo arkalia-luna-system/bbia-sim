@@ -20,7 +20,8 @@ def setup_logging(verbose: bool = False) -> None:
     """
     level = logging.DEBUG if verbose else logging.INFO
     logging.basicConfig(
-        level=level, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+        level=level,
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     )
 
 
@@ -61,11 +62,15 @@ Exemples d'utilisation:
 
     # Options BBIA
     parser.add_argument(
-        "--awake", action="store_true", help="Lance la séquence de réveil BBIA"
+        "--awake",
+        action="store_true",
+        help="Lance la séquence de réveil BBIA",
     )
     parser.add_argument("--voice", type=str, help="Texte à synthétiser vocalement")
     parser.add_argument(
-        "--listen", action="store_true", help="Active la reconnaissance vocale"
+        "--listen",
+        action="store_true",
+        help="Active la reconnaissance vocale",
     )
 
     # Options techniques
@@ -117,7 +122,7 @@ def run_simulation(args: argparse.Namespace) -> None:
                     "💡 Solutions :\n"
                     "  • Utilisez : mjpython -m bbia_sim --sim --verbose\n"
                     "  • Ou installez : pip install mujoco-python-viewer\n"
-                    "  • Ou utilisez : python -m bbia_sim --sim --headless"
+                    "  • Ou utilisez : python -m bbia_sim --sim --headless",
                 )
                 sys.exit(2)
             else:
@@ -127,7 +132,7 @@ def run_simulation(args: argparse.Namespace) -> None:
             logger.warning(
                 "⚠️ Module mujoco.viewer non disponible.\n"
                 "💡 Installez : pip install mujoco-python-viewer\n"
-                "   Ou utilisez : python -m bbia_sim --sim --headless"
+                "   Ou utilisez : python -m bbia_sim --sim --headless",
             )
         else:
             logger.info("✅ Viewer MuJoCo disponible")

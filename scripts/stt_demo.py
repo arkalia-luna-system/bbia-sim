@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-stt_demo.py - Démo Speech-to-Text avec Whisper
+"""stt_demo.py - Démo Speech-to-Text avec Whisper
 Script CLI pour tester les commandes vocales → actions RobotAPI
 """
 
@@ -20,8 +19,7 @@ logger = logging.getLogger(__name__)
 
 
 def test_voice_command(text: str, backend: str = "mujoco") -> bool:
-    """
-    Teste une commande vocale avec le robot.
+    """Teste une commande vocale avec le robot.
 
     Args:
         text: Commande vocale à tester
@@ -29,6 +27,7 @@ def test_voice_command(text: str, backend: str = "mujoco") -> bool:
 
     Returns:
         True si succès, False sinon
+
     """
     try:
         # Initialisation
@@ -98,14 +97,14 @@ def test_voice_command(text: str, backend: str = "mujoco") -> bool:
 
 
 def test_whisper_transcription(audio_file: str) -> bool:
-    """
-    Teste la transcription Whisper sur un fichier audio.
+    """Teste la transcription Whisper sur un fichier audio.
 
     Args:
         audio_file: Chemin vers le fichier audio
 
     Returns:
         True si succès, False sinon
+
     """
     if not WHISPER_AVAILABLE:
         logger.error("❌ Whisper non disponible")
@@ -122,7 +121,7 @@ def test_whisper_transcription(audio_file: str) -> bool:
 
         if text:
             logger.info(
-                f"✅ Transcription réussie en {transcription_time:.1f}s: '{text}'"
+                f"✅ Transcription réussie en {transcription_time:.1f}s: '{text}'",
             )
 
             # Test mapping
@@ -132,12 +131,10 @@ def test_whisper_transcription(audio_file: str) -> bool:
             if action_data:
                 logger.info(f"🎯 Action mappée: {action_data}")
                 return True
-            else:
-                logger.warning(f"⚠️ Commande non reconnue: '{text}'")
-                return False
-        else:
-            logger.error("❌ Transcription échouée")
+            logger.warning(f"⚠️ Commande non reconnue: '{text}'")
             return False
+        logger.error("❌ Transcription échouée")
+        return False
 
     except Exception as e:
         logger.error(f"❌ Erreur test Whisper: {e}")
@@ -154,7 +151,10 @@ def main():
         help="Backend robot à utiliser",
     )
     parser.add_argument(
-        "--lang", choices=["fr", "en"], default="fr", help="Langue des commandes"
+        "--lang",
+        choices=["fr", "en"],
+        default="fr",
+        help="Langue des commandes",
     )
     parser.add_argument(
         "--command",
@@ -163,7 +163,9 @@ def main():
     )
     parser.add_argument("--audio-file", type=str, help="Fichier audio à transcrire")
     parser.add_argument(
-        "--test-microphone", action="store_true", help="Test avec microphone (3s)"
+        "--test-microphone",
+        action="store_true",
+        help="Test avec microphone (3s)",
     )
     parser.add_argument(
         "--list-commands",
@@ -175,7 +177,8 @@ def main():
 
     # Configuration logging
     logging.basicConfig(
-        level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+        level=logging.INFO,
+        format="%(asctime)s - %(levelname)s - %(message)s",
     )
 
     print("🎤 Démo Speech-to-Text BBIA")

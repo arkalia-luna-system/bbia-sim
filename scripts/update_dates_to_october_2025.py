@@ -43,12 +43,16 @@ def replace_dates_to_october_2025(content: str) -> str:
 
     # Remplace dates format YYYY-MM-DD
     content = re.sub(
-        r"\b(20[0-9]{2})-([0-9]{2})-([0-9]{2})\b", replace_yyyy_mm_dd, content
+        r"\b(20[0-9]{2})-([0-9]{2})-([0-9]{2})\b",
+        replace_yyyy_mm_dd,
+        content,
     )
 
     # Remplace dates format DD/MM/YYYY
     content = re.sub(
-        r"\b([0-9]{1,2})/([0-9]{1,2})/(20[0-9]{2})\b", replace_dd_mm_yyyy, content
+        r"\b([0-9]{1,2})/([0-9]{1,2})/(20[0-9]{2})\b",
+        replace_dd_mm_yyyy,
+        content,
     )
 
     return content

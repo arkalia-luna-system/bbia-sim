@@ -4,7 +4,7 @@ import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
-from src.bbia_sim.daemon.middleware import RateLimitMiddleware, SecurityMiddleware
+from bbia_sim.daemon.middleware import RateLimitMiddleware, SecurityMiddleware
 
 
 class TestSecurityMiddleware:

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Analyse Exhaustive de Conformité BBIA vs Reachy Mini SDK Officiel
+"""Analyse Exhaustive de Conformité BBIA vs Reachy Mini SDK Officiel
 Vérifie: démos, exemples, mesures, documentation, fonctionnalités
 """
 
@@ -63,10 +62,10 @@ class ExhaustiveConformityAnalyzer:
         logger.info(f"  Démos officielles: {len(official_demo_names)}")
         logger.info(f"  Démos BBIA: {len(bbia_demo_names)}")
         logger.info(
-            f"  Manquantes dans BBIA: {len(self.results['demos']['missing_in_bbia'])}"
+            f"  Manquantes dans BBIA: {len(self.results['demos']['missing_in_bbia'])}",
         )
         logger.info(
-            f"  Extensions BBIA: {len(self.results['demos']['bbia_extensions'])}"
+            f"  Extensions BBIA: {len(self.results['demos']['bbia_extensions'])}",
         )
 
     def analyze_examples_compatibility(self) -> None:
@@ -125,13 +124,8 @@ class ExhaustiveConformityAnalyzer:
 
         measures: dict[str, Any] = {}
 
-        # Rechercher dans docs BBIA
+        # Rechercher dans docs BBIA (non utilisé pour l'instant)
         docs_files = list(self.bbia_root.glob("docs/**/*.md"))
-        # official_docs = (
-        #     list(self.official_root.glob("docs/**/*.md"))
-        #     if (self.official_root / "docs").exists()
-        #     else []
-        # )  # Non utilisé pour l'instant
 
         # Extraire mesures BBIA
         bbia_measures = {
@@ -145,10 +139,14 @@ class ExhaustiveConformityAnalyzer:
             content = doc_file.read_text(encoding="utf-8", errors="ignore")
             # Rechercher dimensions
             height_match = re.search(
-                r"(\d+)\s*cm.*(?:actif|veille|sleep|actif)", content, re.IGNORECASE
+                r"(\d+)\s*cm.*(?:actif|veille|sleep|actif)",
+                content,
+                re.IGNORECASE,
             )
             width_match = re.search(
-                r"(\d+)\s*cm.*(?:largeur|width)", content, re.IGNORECASE
+                r"(\d+)\s*cm.*(?:largeur|width)",
+                content,
+                re.IGNORECASE,
             )
             weight_match = re.search(r"(\d+[.,]\d+)\s*kg", content, re.IGNORECASE)
 
@@ -183,9 +181,9 @@ class ExhaustiveConformityAnalyzer:
         self.results["measures"] = measures
 
         logger.info(f"  Mesures BBIA: {measures['bbia']}")
-        logger.info(
-            f"  Conformité: {sum(measures['conformity'].values())}/{len(measures['conformity'])}"
-        )
+        conformity_sum = sum(measures["conformity"].values())
+        conformity_len = len(measures["conformity"])
+        logger.info(f"  Conformité: {conformity_sum}/{conformity_len}")
 
     def analyze_documentation(self) -> None:
         """Analyse la documentation."""
@@ -221,7 +219,8 @@ class ExhaustiveConformityAnalyzer:
         if bbia_readme.exists() and official_readme.exists():
             bbia_content = bbia_readme.read_text(encoding="utf-8", errors="ignore")
             official_content = official_readme.read_text(
-                encoding="utf-8", errors="ignore"
+                encoding="utf-8",
+                errors="ignore",
             )
 
             important_sections = ["Installation", "Usage", "Examples", "API", "SDK"]
@@ -254,9 +253,8 @@ class ExhaustiveConformityAnalyzer:
                         "critical_issues": 0,
                         "high_issues": 0,
                     }
-                    logger.info(
-                        f"  Rapport précédent chargé: {previous_data.get('summary', {}).get('total', 0)} différences"
-                    )
+                    prev_total = previous_data.get("summary", {}).get("total", 0)
+                    logger.info(f"  Rapport précédent chargé: {prev_total} différences")
             except Exception as e:
                 logger.warning(f"  Erreur lecture rapport: {e}")
         else:
@@ -334,7 +332,7 @@ class ExhaustiveConformityAnalyzer:
 
         logger.info(f"  Score de conformité: {summary['conformity_score']:.1f}%")
         logger.info(
-            f"  Checks passés: {summary['passed_checks']}/{summary['total_checks']}"
+            f"  Checks passés: {summary['passed_checks']}/{summary['total_checks']}",
         )
 
     def run_full_analysis(self) -> dict[str, Any]:
@@ -366,7 +364,7 @@ def main():
     import argparse
 
     parser = argparse.ArgumentParser(
-        description="Analyse exhaustive de conformité BBIA vs SDK officiel"
+        description="Analyse exhaustive de conformité BBIA vs SDK officiel",
     )
     parser.add_argument(
         "--bbia-root",

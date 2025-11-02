@@ -262,6 +262,204 @@ class TestWhisperSTT:
         result = stt.transcribe_streaming()
         assert result is None
 
+    @patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True)
+    @patch("bbia_sim.voice_whisper.sounddevice")
+    @patch("bbia_sim.voice_whisper.soundfile")
+    def test_whisper_stt_transcribe_streaming_import_error(self, mock_sf, mock_sd):
+        """Test transcription streaming avec ImportError."""
+        mock_sd.rec.side_effect = ImportError("sounddevice not available")
+        stt = WhisperSTT(model_size="tiny", language="fr")
+        stt.model = MagicMock()
+        stt.is_loaded = True
+        result = stt.transcribe_streaming()
+        assert result is None
+
+    @patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True)
+    @patch("bbia_sim.voice_whisper.transformers_pipeline", None)
+    def test_whisper_stt_detect_speech_activity_import_transformers_error(self):
+        """Test détection parole avec ImportError transformers."""
+        import bbia_sim.voice_whisper as voice_module
+
+        voice_module._vad_model_cache = None
+        stt = WhisperSTT(model_size="tiny", language="fr", enable_vad=True)
+
+        with patch(
+            "builtins.__import__",
+            side_effect=ImportError("No module named 'transformers'"),
+        ):
+            audio_chunk = b"fake_audio_data" * 100
+            result = stt.detect_speech_activity(audio_chunk)
+            # Doit retourner True (fallback)
+            assert result is True
+            assert stt.enable_vad is False  # VAD désactivé après erreur
+
+    @patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True)
+    @patch("bbia_sim.voice_whisper.soundfile")
+    def test_whisper_stt_detect_speech_activity_file_path(self, mock_sf):
+        """Test détection parole avec chemin fichier."""
+        import numpy as np
+
+        import bbia_sim.voice_whisper as voice_module
+
+        # Mock VAD model
+        mock_vad = MagicMock()
+        mock_vad.return_value = [{"label": "SPEECH", "score": 0.8}]
+        voice_module._vad_model_cache = mock_vad
+
+        mock_sf.read.return_value = (np.array([0.1] * 200), 16000)
+
+        stt = WhisperSTT(model_size="tiny", language="fr", enable_vad=True)
+        stt._vad_model = mock_vad
+        stt._vad_loaded = True
+
+        result = stt.detect_speech_activity("test.wav")
+        assert result is True
+        mock_sf.read.assert_called_once_with("test.wav")
+
+        voice_module._vad_model_cache = None
+
+    @patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True)
+    @patch("bbia_sim.voice_whisper.soundfile")
+    def test_whisper_stt_detect_speech_activity_soundfile_import_error(self, mock_sf):
+        """Test détection parole avec ImportError soundfile."""
+        import bbia_sim.voice_whisper as voice_module
+
+        voice_module._vad_model_cache = None
+        stt = WhisperSTT(model_size="tiny", language="fr", enable_vad=True)
+
+        with patch("bbia_sim.voice_whisper.sf", None):
+            with patch(
+                "builtins.__import__",
+                side_effect=ImportError("No module named 'soundfile'"),
+            ):
+                result = stt.detect_speech_activity("test.wav")
+                # Doit retourner True (fallback)
+                assert result is True
+
+    @patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True)
+    def test_whisper_stt_detect_speech_activity_vad_exception(self):
+        """Test détection parole avec exception VAD."""
+        import numpy as np
+
+        import bbia_sim.voice_whisper as voice_module
+
+        # Nettoyer cache d'abord
+        voice_module._vad_model_cache = None
+
+        stt = WhisperSTT(model_size="tiny", language="fr", enable_vad=True)
+        # Simuler VAD model qui lève exception
+        mock_vad = MagicMock()
+        mock_vad.side_effect = Exception("VAD error")
+        stt._vad_model = mock_vad
+        stt._vad_loaded = True
+
+        audio_chunk = np.array([0.1] * 200)
+        result = stt.detect_speech_activity(audio_chunk)
+        # Doit retourner True (fallback)
+        assert result is True
+
+    @patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True)
+    def test_whisper_stt_detect_speech_activity_vad_no_speech_label(self):
+        """Test détection parole avec label NON_SPEECH."""
+        import numpy as np
+
+        import bbia_sim.voice_whisper as voice_module
+
+        mock_vad = MagicMock()
+        mock_vad.return_value = [{"label": "NON_SPEECH", "score": 0.9}]
+        voice_module._vad_model_cache = mock_vad
+
+        stt = WhisperSTT(model_size="tiny", language="fr", enable_vad=True)
+        stt._vad_model = mock_vad
+        stt._vad_loaded = True
+
+        audio_chunk = np.array([0.1] * 200)
+        result = stt.detect_speech_activity(audio_chunk)
+        # NON_SPEECH doit retourner False
+        assert result is False
+
+        voice_module._vad_model_cache = None
+
+    @patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True)
+    def test_whisper_stt_detect_speech_activity_vad_low_score(self):
+        """Test détection parole avec score faible."""
+        import numpy as np
+
+        import bbia_sim.voice_whisper as voice_module
+
+        mock_vad = MagicMock()
+        mock_vad.return_value = [{"label": "SPEECH", "score": 0.3}]  # Score < 0.5
+        voice_module._vad_model_cache = mock_vad
+
+        stt = WhisperSTT(model_size="tiny", language="fr", enable_vad=True)
+        stt._vad_model = mock_vad
+        stt._vad_loaded = True
+
+        audio_chunk = np.array([0.1] * 200)
+        result = stt.detect_speech_activity(audio_chunk)
+        # Score < 0.5 doit retourner False
+        assert result is False
+
+        voice_module._vad_model_cache = None
+
+    @patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True)
+    def test_whisper_stt_detect_speech_activity_vad_empty_result(self):
+        """Test détection parole avec résultat VAD vide."""
+        import numpy as np
+
+        import bbia_sim.voice_whisper as voice_module
+
+        mock_vad = MagicMock()
+        mock_vad.return_value = []
+        voice_module._vad_model_cache = mock_vad
+
+        stt = WhisperSTT(model_size="tiny", language="fr", enable_vad=True)
+        stt._vad_model = mock_vad
+        stt._vad_loaded = True
+
+        audio_chunk = np.array([0.1] * 200)
+        result = stt.detect_speech_activity(audio_chunk)
+        # Résultat vide doit retourner False
+        assert result is False
+
+        voice_module._vad_model_cache = None
+
+    @patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True)
+    def test_whisper_stt_load_model_cache_lru_eviction(self):
+        """Test chargement modèle avec éviction LRU du cache."""
+        import time
+
+        import bbia_sim.voice_whisper as voice_module
+
+        # Nettoyer cache
+        voice_module._whisper_models_cache.clear()
+        voice_module._whisper_model_last_used.clear()
+
+        # Remplir cache jusqu'à limite
+        old_model = MagicMock()
+        older_model = MagicMock()
+        voice_module._whisper_models_cache["base"] = old_model
+        voice_module._whisper_model_last_used["base"] = time.time() - 100
+        voice_module._whisper_models_cache["small"] = older_model
+        voice_module._whisper_model_last_used["small"] = time.time() - 200
+
+        mock_new_model = MagicMock()
+        with patch("bbia_sim.voice_whisper.whisper") as mock_whisper:
+            mock_whisper.load_model.return_value = mock_new_model
+
+            stt = WhisperSTT(model_size="tiny", language="fr")
+            result = stt.load_model()
+
+            # Doit charger nouveau modèle et évincer un modèle (cache LRU)
+            assert result is True
+            assert "tiny" in voice_module._whisper_models_cache
+            # Le cache ne doit pas dépasser MAX_WHISPER_CACHE_SIZE (2)
+            assert len(voice_module._whisper_models_cache) <= 2
+
+        # Nettoyer après test
+        voice_module._whisper_models_cache.clear()
+        voice_module._whisper_model_last_used.clear()
+
     def test_whisper_stt_fallback(self):
         """Test fallback quand Whisper non disponible."""
         with patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", False):

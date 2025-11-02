@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Comparaison Profonde des Méthodes Backend - BBIA vs SDK Officiel
+"""Comparaison Profonde des Méthodes Backend - BBIA vs SDK Officiel
 Compare signatures, types, paramètres, valeurs de retour, exceptions
 """
 
@@ -30,7 +29,9 @@ class BackendMethodComparator:
         }
 
     def extract_method_signatures(
-        self, file_path: Path, class_name: str
+        self,
+        file_path: Path,
+        class_name: str,
     ) -> dict[str, dict]:
         """Extrait les signatures des méthodes d'une classe."""
         if not file_path.exists():
@@ -98,7 +99,8 @@ class BackendMethodComparator:
         # Extraire méthodes ReachyMiniBackend BBIA
         bbia_backend = self.bbia_path / "src/bbia_sim/backends/reachy_mini_backend.py"
         backend_methods = self.extract_method_signatures(
-            bbia_backend, "ReachyMiniBackend"
+            bbia_backend,
+            "ReachyMiniBackend",
         )
 
         # Combiner méthodes BBIA (adapter + backend)
@@ -149,7 +151,7 @@ class BackendMethodComparator:
                         "method": method_name,
                         "official": official_params,
                         "bbia": bbia_params,
-                    }
+                    },
                 )
 
             # Comparer types de retour
@@ -159,7 +161,7 @@ class BackendMethodComparator:
                         "method": method_name,
                         "official": official.get("return_type"),
                         "bbia": bbia.get("return_type"),
-                    }
+                    },
                 )
 
         # Méthodes extra dans BBIA
@@ -216,7 +218,7 @@ class BackendMethodComparator:
                             "method": method_name,
                             "official": official_sig,
                             "bbia": bbia_sig,
-                        }
+                        },
                     )
 
         self.results["default_values_diffs"] = defaults_diffs
@@ -236,7 +238,7 @@ class BackendMethodComparator:
                 continue
             if in_method:
                 if line.strip().startswith("def ") or line.strip().startswith(
-                    "async def"
+                    "async def",
                 ):
                     break
                 signature_lines.append(line.strip())
@@ -294,7 +296,7 @@ def main():
     import argparse
 
     parser = argparse.ArgumentParser(
-        description="Comparaison profonde méthodes backend"
+        description="Comparaison profonde méthodes backend",
     )
     parser.add_argument(
         "--official-root",

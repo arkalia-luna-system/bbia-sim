@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Shims de simulation pour robot.io et robot.media
+"""Shims de simulation pour robot.io et robot.media
 Garantit que ces modules sont toujours disponibles, même en simulation
 """
 
@@ -25,6 +24,7 @@ class SimulationIOModule:
 
         Returns:
             Objet stream simulé (None pour l'instant, à implémenter si nécessaire)
+
         """
         logger.debug("📹 get_camera_stream() appelé (simulation)")
         return None
@@ -34,6 +34,7 @@ class SimulationIOModule:
 
         Returns:
             Objet stream simulé (None pour l'instant, à implémenter si nécessaire)
+
         """
         logger.debug("🎤 get_audio_stream() appelé (simulation)")
         return None
@@ -43,6 +44,7 @@ class SimulationIOModule:
 
         Returns:
             Dict avec accélération, gyroscope, magnétomètre (valeurs neutres)
+
         """
         return {
             "acceleration": {"x": 0.0, "y": 0.0, "z": -9.81},
@@ -85,9 +87,10 @@ class SimulationMediaModule:
         Args:
             audio_bytes: Données audio en bytes
             volume: Volume (0.0-1.0)
+
         """
         logger.debug(
-            f"🔊 play_audio() simulé ({len(audio_bytes)} bytes, volume={volume})"
+            f"🔊 play_audio() simulé ({len(audio_bytes)} bytes, volume={volume})",
         )
 
     def record_audio(self, duration: float = 3.0, sample_rate: int = 16000) -> bytes:
@@ -99,6 +102,7 @@ class SimulationMediaModule:
 
         Returns:
             Bytes audio (silence simulé)
+
         """
         logger.debug(f"🎤 record_audio() simulé ({duration}s, {sample_rate}Hz)")
         # Retourner silence simulé
@@ -116,6 +120,7 @@ class SimulationCamera:
 
         Returns:
             None (à implémenter si nécessaire avec numpy array simulé)
+
         """
         logger.debug("📷 get_image() appelé (simulation)")
         return None
@@ -129,6 +134,7 @@ class SimulationCamera:
 
         Returns:
             Tuple (success, frame) - (False, None) en simulation
+
         """
         logger.debug("📷 read() appelé (simulation)")
         return (False, None)
@@ -146,6 +152,7 @@ class SimulationMicrophone:
 
         Returns:
             Bytes audio (silence simulé)
+
         """
         logger.debug(f"🎤 record() simulé ({duration}s, {sample_rate}Hz)")
         import struct
@@ -162,6 +169,7 @@ class SimulationSpeaker:
 
         Args:
             audio_bytes: Données audio en bytes
+
         """
         logger.debug(f"🔊 play() simulé ({len(audio_bytes)} bytes)")
 
@@ -170,5 +178,6 @@ class SimulationSpeaker:
 
         Args:
             file_path: Chemin vers le fichier audio
+
         """
         logger.debug(f"🔊 play_file() simulé ({file_path})")

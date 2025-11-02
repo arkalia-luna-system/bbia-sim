@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-plot_trace.py - Génère des graphiques à partir des traces BBIA
+"""plot_trace.py - Génère des graphiques à partir des traces BBIA
 Crée des visualisations des mouvements de joints pour les démos
 """
 
@@ -39,7 +38,6 @@ def plot_joint_movements(
     title: str = "Mouvements joints BBIA",
 ) -> bool:
     """Génère un rapport textuel des mouvements de joints."""
-
     if not trace_data:
         print("❌ Aucune donnée dans la trace")
         return False
@@ -64,7 +62,7 @@ def plot_joint_movements(
         f.write(f"  - Nombre de mesures: {len(trace_data)}\n")
         f.write(f"  - Joints testés: {len(unique_joints)}\n")
         f.write(
-            f"  - Fréquence moyenne: {len(trace_data) / (max(times) - min(times)):.1f} Hz\n\n"
+            f"  - Fréquence moyenne: {len(trace_data) / (max(times) - min(times)):.1f} Hz\n\n",
         )
 
         for joint in unique_joints:
@@ -97,7 +95,6 @@ def plot_joint_movements(
 
 def plot_latency_analysis(trace_data: list[dict[str, Any]], output_file: str) -> bool:
     """Génère un rapport d'analyse de latence."""
-
     if not trace_data:
         print("❌ Aucune donnée dans la trace")
         return False
@@ -122,9 +119,9 @@ def plot_latency_analysis(trace_data: list[dict[str, Any]], output_file: str) ->
         f.write("📊 STATISTIQUES TEMPORELLES:\n")
         f.write(f"  - Nombre de mesures: {len(trace_data)}\n")
         f.write(f"  - Durée totale: {max(times) - min(times):.3f}s\n")
-        f.write(f"  - Intervalle moyen: {mean_dt*1000:.1f}ms\n")
-        f.write(f"  - Intervalle min: {min_dt*1000:.1f}ms\n")
-        f.write(f"  - Intervalle max: {max_dt*1000:.1f}ms\n")
+        f.write(f"  - Intervalle moyen: {mean_dt * 1000:.1f}ms\n")
+        f.write(f"  - Intervalle min: {min_dt * 1000:.1f}ms\n")
+        f.write(f"  - Intervalle max: {max_dt * 1000:.1f}ms\n")
         f.write(f"  - FPS moyen: {fps:.1f}\n\n")
 
         # Analyse de stabilité
@@ -133,7 +130,7 @@ def plot_latency_analysis(trace_data: list[dict[str, Any]], output_file: str) ->
 
         f.write("🎯 ANALYSE DE STABILITÉ:\n")
         f.write(f"  - FPS cible: {target_fps}\n")
-        f.write(f"  - Intervalle cible: {target_dt*1000:.1f}ms\n")
+        f.write(f"  - Intervalle cible: {target_dt * 1000:.1f}ms\n")
 
         if fps >= target_fps * 0.9:  # 90% du FPS cible
             f.write(f"  ✅ Performance excellente ({fps:.1f} FPS)\n")
@@ -144,7 +141,7 @@ def plot_latency_analysis(trace_data: list[dict[str, Any]], output_file: str) ->
 
     print(f"✅ Analyse latence sauvegardée: {report_file}")
     print(f"📊 FPS moyen: {fps:.1f}")
-    print(f"📊 Intervalle moyen: {mean_dt*1000:.1f}ms")
+    print(f"📊 Intervalle moyen: {mean_dt * 1000:.1f}ms")
 
     return True
 
@@ -152,12 +149,14 @@ def plot_latency_analysis(trace_data: list[dict[str, Any]], output_file: str) ->
 def main():
     """Point d'entrée principal."""
     parser = argparse.ArgumentParser(
-        description="Génère des graphiques à partir des traces BBIA"
+        description="Génère des graphiques à partir des traces BBIA",
     )
     parser.add_argument("--input", required=True, help="Fichier trace JSONL")
     parser.add_argument("--output", required=True, help="Fichier de sortie PNG")
     parser.add_argument(
-        "--title", default="Mouvements joints BBIA", help="Titre du graphique"
+        "--title",
+        default="Mouvements joints BBIA",
+        help="Titre du graphique",
     )
     parser.add_argument(
         "--type",
@@ -198,9 +197,8 @@ def main():
     if success:
         print(f"🎉 Graphique généré avec succès: {args.output}")
         return 0
-    else:
-        print("❌ Erreur génération graphique")
-        return 1
+    print("❌ Erreur génération graphique")
+    return 1
 
 
 if __name__ == "__main__":

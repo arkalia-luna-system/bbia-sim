@@ -1,10 +1,14 @@
-# Pipeline CI/CD
+# 🔄 Pipeline CI/CD
 
-> Compatibilité Python: 3.11+ (prévoir matrice 3.12)
->
-> Voir aussi: `docs/references/INDEX_THEMATIQUE.md` et `docs/status.md`
+**Date** : Oct / Nov. 2025  
+**Version** : 1.0  
+**Compatibilité Python** : 3.11+ (prévoir matrice 3.12)
+
+> **Voir aussi** : [`docs/references/INDEX_THEMATIQUE.md`](../references/INDEX_THEMATIQUE.md) et [`docs/status.md`](../status.md)
 
 **📚 [Guide tests](../guides_techniques/TESTING_GUIDE.md)** | **🔧 [Guide avancé](../guides/GUIDE_AVANCE.md)**
+
+---
 
 ## État actuel
 - GitHub Actions (`.github/workflows/ci.yml`), Python 3.11

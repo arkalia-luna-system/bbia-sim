@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Script d'audit complet BBIA → Reachy Integration
+"""Script d'audit complet BBIA → Reachy Integration
 Génère JSONL par module + synthèse MD globale selon procédure stricte
 """
 
@@ -53,11 +52,11 @@ CRITICAL_MODULES = [
         "ref_files": [
             str(
                 REACHY_REF_PATH
-                / "src/reachy_mini/descriptions/reachy_mini/mjcf/reachy_mini.xml"
+                / "src/reachy_mini/descriptions/reachy_mini/mjcf/reachy_mini.xml",
             ),
             str(
                 REACHY_REF_PATH
-                / "src/reachy_mini/descriptions/reachy_mini/urdf/robot.urdf"
+                / "src/reachy_mini/descriptions/reachy_mini/urdf/robot.urdf",
             ),
         ],
     },
@@ -120,7 +119,7 @@ def run_command(cmd: list[str], cwd: Path | None = None) -> tuple[int, str, str]
         if resolved:
             cmd[0] = resolved
         result = subprocess.run(
-            cmd, cwd=cwd, capture_output=True, text=True, timeout=60
+            cmd, check=False, cwd=cwd, capture_output=True, text=True, timeout=60,
         )
         return result.returncode, result.stdout, result.stderr
     except subprocess.TimeoutExpired:
@@ -134,7 +133,7 @@ def run_command(cmd: list[str], cwd: Path | None = None) -> tuple[int, str, str]
 def check_black(file_path: Path) -> tuple[bool, str]:
     """Vérifie formatage black."""
     exit_code, stdout, stderr = run_command(
-        ["black", "--check", "--diff", str(file_path)]
+        ["black", "--check", "--diff", str(file_path)],
     )
     if exit_code == 0:
         return True, ""
@@ -144,7 +143,7 @@ def check_black(file_path: Path) -> tuple[bool, str]:
 def check_ruff(file_path: Path) -> tuple[list[dict], str]:
     """Vérifie ruff et retourne issues."""
     exit_code, stdout, stderr = run_command(
-        ["ruff", "check", "--output-format=json", str(file_path)]
+        ["ruff", "check", "--output-format=json", str(file_path)],
     )
     issues = []
     if stdout:
@@ -171,7 +170,7 @@ def check_bandit(file_path: Path) -> tuple[list[dict], str]:
             "-ll",
             "-i",
             str(file_path),
-        ]
+        ],
     )
     issues = []
     if stdout:
@@ -248,7 +247,7 @@ def audit_module(module_config: dict[str, Any]) -> dict[str, Any]:
                     "desc": "Black formatage non conforme",
                     "file": file_path_str,
                     "line": 0,
-                }
+                },
             )
             result["patches"].append({"file": file_path_str, "diff": black_diff[:500]})
 
@@ -264,7 +263,7 @@ def audit_module(module_config: dict[str, Any]) -> dict[str, Any]:
                     "desc": issue.get("message", ""),
                     "file": file_path_str,
                     "line": issue.get("location", {}).get("row", 0),
-                }
+                },
             )
 
         # 6. Bandit
@@ -277,7 +276,7 @@ def audit_module(module_config: dict[str, Any]) -> dict[str, Any]:
                     "desc": issue.get("issue_text", ""),
                     "file": file_path_str,
                     "line": issue.get("line_number", 0),
-                }
+                },
             )
 
         # 8. Tests (chercher tests correspondants)
@@ -299,7 +298,7 @@ def audit_module(module_config: dict[str, Any]) -> dict[str, Any]:
                         "desc": f"Tests échouent: {test_output[:200]}",
                         "file": str(test_file),
                         "line": 0,
-                    }
+                    },
                 )
 
     # Scoring (simplifié pour l'exemple)
@@ -309,7 +308,7 @@ def audit_module(module_config: dict[str, Any]) -> dict[str, Any]:
     )
 
     result["score"]["conformity"] = max(
-        0, 10 - total_issues_high * 2 - total_issues_medium
+        0, 10 - total_issues_high * 2 - total_issues_medium,
     )
     result["score"]["safety_tests"] = (
         7 if not total_issues_high else max(0, 10 - total_issues_high * 3)
@@ -332,8 +331,7 @@ def generate_jsonl_report(results: list[dict]) -> None:
     output_file.parent.mkdir(parents=True, exist_ok=True)
 
     with open(output_file, "w", encoding="utf-8") as f:
-        for result in results:
-            f.write(json.dumps(result, ensure_ascii=False) + "\n")
+        f.writelines(json.dumps(result, ensure_ascii=False) + "\n" for result in results)
 
     logger.info(f"✅ Rapport JSONL généré: {output_file}")
 

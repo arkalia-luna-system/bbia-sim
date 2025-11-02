@@ -275,10 +275,10 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
                         _sd.wait()
                     return
                 except Exception:
-                    pass  # noqa: S101 - Fallback silencieux vers pyttsx3 si TTS backend échoue
+                    pass
         except Exception:
             # Fallback vers logique pyttsx3 plus bas
-            pass  # noqa: S101 - Fallback silencieux vers pyttsx3 si tous les backends TTS échouent
+            pass
 
     # OPTIMISATION SDK: Utiliser robot.media.* si disponible (toujours disponible via shim)
     # Priorité stricte: media.play_audio(bytes[, volume]) puis media.speaker.*
@@ -334,7 +334,8 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
 
                         tmp_path = None
                         with _tempfile.NamedTemporaryFile(
-                            suffix=".wav", delete=False
+                            suffix=".wav",
+                            delete=False,
                         ) as tmp:
                             tmp_path = tmp.name
                             with open(tmp_path, "wb") as f:
@@ -347,7 +348,7 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
                             if tmp_path and os.path.exists(tmp_path):
                                 os.unlink(tmp_path)
                         except Exception:
-                            pass  # noqa: S101 - Ignorer erreur nettoyage fichier temp (déjà supprimé ou inexistant)
+                            pass
 
             except Exception as e:
                 logging.debug(f"Erreur synthèse SDK (fallback pyttsx3): {e}")
@@ -366,12 +367,14 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
         engine.say(texte)
         engine.runAndWait()
     except Exception as e:
-        logging.error(f"Erreur de synthèse vocale : {e}")
+        logging.exception(f"Erreur de synthèse vocale : {e}")
         raise
 
 
 def reconnaitre_parole(
-    duree: int = 3, frequence: int = 16000, robot_api: Any | None = None
+    duree: int = 3,
+    frequence: int = 16000,
+    robot_api: Any | None = None,
 ) -> str | None:
     """Reconnaît la parole via le micro (STT, français par défaut).
 
@@ -458,10 +461,10 @@ def reconnaitre_parole(
                 logging.warning("Aucune parole reconnue.")
                 return None
             except Exception as e:
-                logging.error(f"Erreur de reconnaissance vocale : {e}")
+                logging.exception(f"Erreur de reconnaissance vocale : {e}")
                 return None
     except Exception as e:
-        logging.error(f"Erreur d'accès au microphone : {e}")
+        logging.exception(f"Erreur d'accès au microphone : {e}")
         logging.warning(
             "La reconnaissance vocale nécessite pyaudio. "
             "Installez-le avec : pip install pyaudio",

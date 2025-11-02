@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Script de vérification des joints Reachy Mini
+"""Script de vérification des joints Reachy Mini
 Utilise ce script pour vérifier quels joints peuvent bouger avant de créer des animations.
 """
 
@@ -15,7 +14,6 @@ import mujoco as mj
 
 def check_joints():
     """Vérifie les limites de tous les joints du modèle Reachy Mini."""
-
     model_path = "src/bbia_sim/sim/models/reachy_mini_REAL_OFFICIAL.xml"
 
     print("🔍 Vérification des joints Reachy Mini...")
@@ -38,12 +36,12 @@ def check_joints():
             if joint_range[0] != joint_range[1]:
                 mobile_joints.append((name, joint_range))
                 print(
-                    f"✅ {name:15} | [{joint_range[0]:6.3f}, {joint_range[1]:6.3f}] rad | MOBILE"
+                    f"✅ {name:15} | [{joint_range[0]:6.3f}, {joint_range[1]:6.3f}] rad | MOBILE",
                 )
             else:
                 blocked_joints.append((name, joint_range))
                 print(
-                    f"❌ {name:15} | [{joint_range[0]:6.3f}, {joint_range[1]:6.3f}] rad | BLOQUÉ"
+                    f"❌ {name:15} | [{joint_range[0]:6.3f}, {joint_range[1]:6.3f}] rad | BLOQUÉ",
                 )
 
         print()
@@ -56,7 +54,7 @@ def check_joints():
         print("🎯 RECOMMANDATIONS:")
         print("   • Utilisez 'yaw_body' pour les animations principales")
         print(
-            "   • Les antennes (left_antenna, right_antenna) sont ANIMABLES avec limites (-0.3 à 0.3 rad)"
+            "   • Les antennes (left_antenna, right_antenna) sont ANIMABLES avec limites (-0.3 à 0.3 rad)",
         )
         print("   • Les joints passifs (passive_1-7) sont BLOQUÉES")
         print("   • La plateforme Stewart (stewart_1-6) est mobile mais complexe")
@@ -75,7 +73,6 @@ def check_joints():
 
 def suggest_animation_params(joint_name, mobile_joints):
     """Suggère des paramètres d'animation sûrs pour un joint."""
-
     for name, joint_range in mobile_joints:
         if name == joint_name:
             min_range, max_range = joint_range
@@ -86,7 +83,7 @@ def suggest_animation_params(joint_name, mobile_joints):
             print(f"   • Amplitude sûre: {safe_amplitude:.3f} rad")
             print("   • Fréquence recommandée: 0.1 Hz (SÉCURISÉ)")
             print(
-                f"   • Commande: mjpython examples/demo_viewer_bbia_simple.py --joint {joint_name} --amplitude {safe_amplitude:.3f}"
+                f"   • Commande: mjpython examples/demo_viewer_bbia_simple.py --joint {joint_name} --amplitude {safe_amplitude:.3f}",
             )
             return
 

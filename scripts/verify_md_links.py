@@ -15,6 +15,7 @@ def extract_links(content: str, file_path: Path) -> list[tuple[str, str]]:
 
     Returns:
         Liste de tuples (texte_du_lien, url_ou_chemin)
+
     """
     # Pattern pour liens Markdown [texte](url)
     link_pattern = r"\[([^\]]+)\]\(([^)]+)\)"
@@ -56,6 +57,7 @@ def resolve_link(link: str, base_path: Path) -> Path | None:
 
     Returns:
         Chemin résolu ou None si externe/invalide
+
     """
     # Enlever l'ancre si présente
     link_without_anchor = link.split("#")[0]
@@ -103,11 +105,11 @@ def check_file(file_path: Path) -> list[dict]:
                                 "file": str(file_path.relative_to(ROOT)),
                                 "line": (
                                     content[: content.find(f"[{text}]({link}")].count(
-                                        "\n"
+                                        "\n",
                                     )
                                     + 1
                                 ),
-                            }
+                            },
                         )
                 else:
                     issues.append(
@@ -120,7 +122,7 @@ def check_file(file_path: Path) -> list[dict]:
                                 content[: content.find(f"[{text}]({link}")].count("\n")
                                 + 1
                             ),
-                        }
+                        },
                     )
 
     except Exception as e:
@@ -129,7 +131,7 @@ def check_file(file_path: Path) -> list[dict]:
                 "type": "error",
                 "message": str(e),
                 "file": str(file_path.relative_to(ROOT)),
-            }
+            },
         )
 
     return issues
@@ -144,9 +146,18 @@ def main():
     md_files.extend(ROOT.rglob("*.MD"))
 
     # Filtrer fichiers ignorés
-    ignored_dirs = {".git", "venv", "__pycache__", ".pytest_cache", "htmlcov", "venv-voice", "venv-vision"}
+    ignored_dirs = {
+        ".git",
+        "venv",
+        "__pycache__",
+        ".pytest_cache",
+        "htmlcov",
+        "venv-voice",
+        "venv-vision",
+    }
     md_files = [
-        f for f in md_files 
+        f
+        for f in md_files
         if not any(part in ignored_dirs for part in f.parts)
         and not f.name.startswith("._")  # Ignorer fichiers macOS metadata
     ]
@@ -174,7 +185,7 @@ def main():
         print("📄 Fichiers introuvables:")
         for issue in broken_files:
             print(
-                f"  - {issue['file']}:{issue['line']} - [{issue['text']}]({issue['link']})"
+                f"  - {issue['file']}:{issue['line']} - [{issue['text']}]({issue['link']})",
             )
         print()
 
@@ -182,7 +193,7 @@ def main():
         print("🔗 Ancres introuvables:")
         for issue in broken_anchors:
             print(
-                f"  - {issue['file']}:{issue['line']} - [{issue['text']}]({issue['link']})"
+                f"  - {issue['file']}:{issue['line']} - [{issue['text']}]({issue['link']})",
             )
         print()
 

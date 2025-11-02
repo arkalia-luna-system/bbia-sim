@@ -9,7 +9,7 @@ from datetime import datetime
 from typing import Any
 from unittest.mock import patch
 
-from src.bbia_sim.bbia_vision import BBIAVision
+from bbia_sim.bbia_vision import BBIAVision
 
 
 class TestBBIAVisionExtended:

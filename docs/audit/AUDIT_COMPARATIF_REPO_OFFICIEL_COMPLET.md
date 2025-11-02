@@ -384,8 +384,8 @@ self.joint_limits = {
 ### 6.2 Coverage
 
 #### ✅ BBIA
-- **Modules core** : ~50% coverage ✅
-- **Tests totaux** : 1005 tests ✅
+- **Modules core** : **68.86%** coverage global ✅
+- **Tests totaux** : **1245 tests** collectés (pytest --collect-only) ✅
 
 #### ⚠️ À Améliorer
 - Coverage `reachy_mini_backend.py` : 8.7% ⚠️ **FAIBLE**

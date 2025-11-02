@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Bridge Zenoh/FastAPI pour BBIA-SIM
+"""Bridge Zenoh/FastAPI pour BBIA-SIM
 Permet l'intégration entre l'architecture FastAPI de BBIA-SIM et le daemon Zenoh de Reachy Mini
 """
 
@@ -184,20 +183,21 @@ class ZenohBridge:
         try:
             # Subscriber pour les commandes
             self.subscribers["commands"] = await self.session.declare_subscriber(  # type: ignore
-                self.topics["commands"], self._on_command_received
+                self.topics["commands"],
+                self._on_command_received,
             )
 
             # Publishers pour l'état et la télémétrie
             self.publishers["state"] = await self.session.declare_publisher(  # type: ignore
-                self.topics["state"]
+                self.topics["state"],
             )
 
             self.publishers["telemetry"] = await self.session.declare_publisher(  # type: ignore
-                self.topics["telemetry"]
+                self.topics["telemetry"],
             )
 
             self.publishers["errors"] = await self.session.declare_publisher(  # type: ignore
-                self.topics["errors"]
+                self.topics["errors"],
             )
 
             self.logger.info("Topics Zenoh configurés")
@@ -227,7 +227,7 @@ class ZenohBridge:
                 }
                 if any(k.lower() in forbidden_keys for k in command_data.keys()):
                     self.logger.warning(
-                        "Tentative d'envoi de secret détectée dans commande"
+                        "Tentative d'envoi de secret détectée dans commande",
                     )
                     await self._publish_error("Commande rejetée: secrets non autorisés")
                     return
@@ -312,7 +312,10 @@ class ZenohBridge:
                 )
             else:
                 self.reachy_mini.goto_target(
-                    head=head_pose, antennas=antennas, duration=duration, method=method
+                    head=head_pose,
+                    antennas=antennas,
+                    duration=duration,
+                    method=method,
                 )
 
     async def _cmd_set_target(self, params: dict[str, Any]) -> None:
@@ -351,20 +354,30 @@ class ZenohBridge:
                         # Fallback: créer pose tête selon émotion
                         emotion_poses = {
                             "happy": create_head_pose(
-                                pitch=0.1, yaw=0.0, degrees=False
+                                pitch=0.1,
+                                yaw=0.0,
+                                degrees=False,
                             ),
                             "sad": create_head_pose(pitch=-0.1, yaw=0.0, degrees=False),
                             "excited": create_head_pose(
-                                pitch=0.2, yaw=0.1, degrees=False
+                                pitch=0.2,
+                                yaw=0.1,
+                                degrees=False,
                             ),
                             "curious": create_head_pose(
-                                pitch=0.05, yaw=0.2, degrees=False
+                                pitch=0.05,
+                                yaw=0.2,
+                                degrees=False,
                             ),
                             "calm": create_head_pose(
-                                pitch=-0.05, yaw=0.0, degrees=False
+                                pitch=-0.05,
+                                yaw=0.0,
+                                degrees=False,
                             ),
                             "neutral": create_head_pose(
-                                pitch=0.0, yaw=0.0, degrees=False
+                                pitch=0.0,
+                                yaw=0.0,
+                                degrees=False,
                             ),
                         }
                         pose = emotion_poses.get(emotion, emotion_poses["neutral"])
@@ -396,7 +409,8 @@ class ZenohBridge:
             try:
                 # Utiliser robot.media.play_audio si disponible
                 if hasattr(self.reachy_mini, "media") and hasattr(
-                    self.reachy_mini.media, "play_audio"
+                    self.reachy_mini.media,
+                    "play_audio",
                 ):
                     # Convertir audio_data en bytes si nécessaire
                     if isinstance(audio_data, str):
@@ -433,7 +447,7 @@ class ZenohBridge:
                 # Validation coordonnées recommandées SDK (-2.0 ≤ x,y ≤ 2.0, 0.0 ≤ z ≤ 1.5)
                 if abs(x) > 2.0 or abs(y) > 2.0 or z < 0.0 or z > 1.5:
                     self.logger.warning(
-                        f"Coordonnées ({x}, {y}, {z}) hors limites SDK - clampage appliqué"
+                        f"Coordonnées ({x}, {y}, {z}) hors limites SDK - clampage appliqué",
                     )
                     x = max(-2.0, min(2.0, x))
                     y = max(-2.0, min(2.0, y))
@@ -441,7 +455,11 @@ class ZenohBridge:
 
                 # Utiliser look_at_world SDK officiel
                 self.reachy_mini.look_at_world(
-                    x, y, z, duration=duration, perform_movement=True
+                    x,
+                    y,
+                    z,
+                    duration=duration,
+                    perform_movement=True,
                 )
                 self.logger.info(f"Look_at_world SDK: ({x}, {y}, {z})")
             elif hasattr(self.reachy_mini, "look_at_image"):
@@ -456,12 +474,14 @@ class ZenohBridge:
                 pose = create_head_pose(pitch=pitch, yaw=yaw, degrees=False)
                 if hasattr(self.reachy_mini, "goto_target"):
                     self.reachy_mini.goto_target(
-                        head=pose, duration=duration, method="minjerk"
+                        head=pose,
+                        duration=duration,
+                        method="minjerk",
                     )
                 elif hasattr(self.reachy_mini, "set_target_head_pose"):
                     self.reachy_mini.set_target_head_pose(pose)
                 self.logger.info(
-                    f"Look_at fallback (pose calculée): pitch={pitch:.3f}, yaw={yaw:.3f}"
+                    f"Look_at fallback (pose calculée): pitch={pitch:.3f}, yaw={yaw:.3f}",
                 )
         except Exception as e:
             self.logger.error(f"Erreur look_at: {e}")
@@ -508,7 +528,7 @@ class ZenohBridge:
                             joints_state["right_antenna"] = float(antenna_positions[1])
                 except Exception as err:
                     self.logger.warning(
-                        f"Lecture joints via get_current_joint_positions a échoué: {err}"
+                        f"Lecture joints via get_current_joint_positions a échoué: {err}",
                     )
 
             # Optionnel: body_yaw si exposé par SDK
@@ -518,7 +538,7 @@ class ZenohBridge:
                     if yaw is not None:
                         joints_state["yaw_body"] = float(yaw)
             except Exception:
-                pass  # noqa: S101 - Ignorer erreur lecture yaw_body (non critique)
+                pass
 
             self.current_state.joints = joints_state
 
@@ -528,7 +548,8 @@ class ZenohBridge:
                 if hasattr(self.reachy_mini, "get_sensor_data"):
                     sensors_state = dict(self.reachy_mini.get_sensor_data())  # type: ignore[arg-type]
                 elif hasattr(self.reachy_mini, "io") and hasattr(
-                    self.reachy_mini.io, "get_imu"
+                    self.reachy_mini.io,
+                    "get_imu",
                 ):
                     sensors_state["imu"] = self.reachy_mini.io.get_imu()  # type: ignore[assignment]
             except Exception as err:
@@ -665,15 +686,15 @@ async def websocket_endpoint(websocket: WebSocket):
                         {
                             "status": "success" if success else "error",
                             "command": command.command,
-                        }
-                    )
+                        },
+                    ),
                 )
 
             # Envoyer l'état actuel
             if bridge:
                 state = bridge.get_current_state()
                 await websocket.send_text(
-                    json.dumps({"type": "state", "data": state.dict()})
+                    json.dumps({"type": "state", "data": state.dict()}),
                 )
 
     except WebSocketDisconnect:

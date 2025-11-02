@@ -1,8 +1,13 @@
-# Guide de contribution - BBIA-SIM
+# 🤝 Guide de Contribution - BBIA-SIM
 
-> Voir aussi: `docs/references/INDEX_THEMATIQUE.md` et `docs/status.md`
+**Date** : Oct / Nov. 2025  
+**Version** : 1.0
+
+> **Voir aussi** : [`docs/references/INDEX_THEMATIQUE.md`](../references/INDEX_THEMATIQUE.md) et [`docs/status.md`](../status.md)
 
 Bienvenue dans la communauté BBIA-SIM ! Ce guide vous aidera à contribuer efficacement au projet.
+
+---
 
 ---
 

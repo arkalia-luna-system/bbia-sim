@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-ReachyMiniBackend - Implémentation SDK officiel Reachy-Mini
+"""ReachyMiniBackend - Implémentation SDK officiel Reachy-Mini
 Backend utilisant le SDK officiel reachy_mini
 """
 
@@ -109,8 +108,7 @@ class ReachyMiniBackend(RobotAPI):
         log_level: str = "INFO",
         media_backend: str = "default",
     ) -> None:
-        """
-        Initialise le backend Reachy Mini officiel.
+        """Initialise le backend Reachy Mini officiel.
 
         Args:
             localhost_only: Si True, se connecte uniquement au localhost
@@ -120,6 +118,7 @@ class ReachyMiniBackend(RobotAPI):
             automatic_body_yaw: Active la rotation automatique du corps
             log_level: Niveau de log ('DEBUG', 'INFO', 'WARNING', 'ERROR')
             media_backend: Backend média à utiliser
+
         """
         super().__init__()
         self.localhost_only = localhost_only
@@ -204,7 +203,8 @@ class ReachyMiniBackend(RobotAPI):
                 spawn_daemon=self.spawn_daemon,
                 use_sim=False,  # Essayer la connexion réelle
                 timeout=min(
-                    self.timeout, 3.0
+                    self.timeout,
+                    3.0,
                 ),  # Max 3 secondes pour éviter timeout long
                 automatic_body_yaw=self.automatic_body_yaw,
                 log_level=self.log_level,
@@ -222,7 +222,7 @@ class ReachyMiniBackend(RobotAPI):
             # Pas de robot physique - mode simulation automatique
             logger.info(
                 f"⏱️  Pas de robot physique détecté (timeout/connexion) - "
-                f"mode simulation activé: {e}"
+                f"mode simulation activé: {e}",
             )
             self.robot = None
             self.is_connected = True  # Mode simulation
@@ -238,7 +238,7 @@ class ReachyMiniBackend(RobotAPI):
             if "timeout" in error_msg.lower() or "connection" in error_msg.lower():
                 logger.info(
                     f"⏱️  Erreur connexion (timeout probable) - "
-                    f"mode simulation activé: {error_msg}"
+                    f"mode simulation activé: {error_msg}",
                 )
                 self.robot = None
                 self.is_connected = True  # Mode simulation
@@ -246,11 +246,10 @@ class ReachyMiniBackend(RobotAPI):
                 self._last_heartbeat = time.time()
                 self._start_watchdog()
                 return True
-            else:
-                logger.warning(
-                    f"⚠️  Erreur connexion Reachy-Mini "
-                    f"(mode simulation activé): {error_msg}"
-                )
+            logger.warning(
+                f"⚠️  Erreur connexion Reachy-Mini "
+                f"(mode simulation activé): {error_msg}",
+            )
             self.robot = None
             self.is_connected = True  # Mode simulation par sécurité
             self.start_time = time.time()
@@ -344,7 +343,7 @@ class ReachyMiniBackend(RobotAPI):
                         except (AttributeError, RuntimeError, OSError) as e:
                             logger.warning(
                                 f"Watchdog: robot semble déconnecté: {e}. "
-                                f"Activation emergency_stop..."
+                                f"Activation emergency_stop...",
                             )
                             # Demander l'arrêt du watchdog avant emergency_stop
                             self._should_stop_watchdog.set()
@@ -361,7 +360,7 @@ class ReachyMiniBackend(RobotAPI):
                 if current_time - self._last_heartbeat > max_heartbeat_timeout:
                     logger.warning(
                         f"Watchdog: heartbeat timeout ({max_heartbeat_timeout}s). "
-                        f"Activation emergency_stop..."
+                        f"Activation emergency_stop...",
                     )
                     self._should_stop_watchdog.set()
                     self.emergency_stop()
@@ -383,7 +382,7 @@ class ReachyMiniBackend(RobotAPI):
         try:
             self._stop_watchdog()
         except Exception:
-            pass  # noqa: S101 - Ignorer erreur arrêt watchdog dans destructeur (best-effort cleanup)
+            pass
 
     def get_available_joints(self) -> list[str]:
         """Retourne la liste des joints disponibles."""
@@ -418,7 +417,8 @@ class ReachyMiniBackend(RobotAPI):
                 # du robot si disponible
                 try:
                     if hasattr(self.robot, "state") and hasattr(
-                        self.robot.state, "body_yaw"
+                        self.robot.state,
+                        "body_yaw",
                     ):
                         return float(self.robot.state.body_yaw)
                 except (AttributeError, Exception):
@@ -428,10 +428,10 @@ class ReachyMiniBackend(RobotAPI):
                 # En production, cette valeur devrait être lue via une API SDK dédiée
                 logger.debug(
                     "yaw_body: utilisation fallback (0.0) - "
-                    "vérifier SDK pour méthode de lecture dédiée"
+                    "vérifier SDK pour méthode de lecture dédiée",
                 )
                 return 0.0
-            elif joint_name in ["left_antenna", "right_antenna"]:
+            if joint_name in ["left_antenna", "right_antenna"]:
                 # Antennes dans antenna_positions
                 antenna_idx = 0 if joint_name == "left_antenna" else 1
                 return (
@@ -439,7 +439,7 @@ class ReachyMiniBackend(RobotAPI):
                     if len(antenna_positions) > antenna_idx
                     else 0.0
                 )
-            elif joint_name.startswith("stewart_"):
+            if joint_name.startswith("stewart_"):
                 # Stewart joints dans head_positions
                 # IMPORTANT: SDK retourne positions des 6 stewart joints directement
                 # Structure: head_positions contient 6 éléments (indices 0-5)
@@ -450,7 +450,7 @@ class ReachyMiniBackend(RobotAPI):
                 # Vérifier que l'index est valide et que le tableau a >= 6 éléments
                 if stewart_idx < 0 or stewart_idx > self.STEWART_MAX_INDEX:
                     logger.warning(
-                        f"Index stewart invalide: {stewart_idx} pour {joint_name}"
+                        f"Index stewart invalide: {stewart_idx} pour {joint_name}",
                     )
                     return 0.0
 
@@ -460,11 +460,11 @@ class ReachyMiniBackend(RobotAPI):
                     # Vérification sécurité: NaN ou inf
                     if not (float("-inf") < value < float("inf")):
                         logger.warning(
-                            f"Valeur invalide (NaN/inf) pour {joint_name}: {value}"
+                            f"Valeur invalide (NaN/inf) pour {joint_name}: {value}",
                         )
                         return 0.0
                     return value
-                elif len(head_positions) == self.HEAD_POSITIONS_LEGACY_COUNT:
+                if len(head_positions) == self.HEAD_POSITIONS_LEGACY_COUNT:
                     # Structure legacy: stewart joints aux indices impairs
                     # (1,3,5,7,9,11) - Existe dans certaines versions anciennes
                     head_idx = stewart_idx * 2 + 1  # 1,3,5,7,9,11 pour stewart_1-6
@@ -474,25 +474,23 @@ class ReachyMiniBackend(RobotAPI):
                         if not (float("-inf") < value < float("inf")):
                             logger.warning(
                                 f"Valeur invalide (NaN/inf) pour "
-                                f"{joint_name}: {value}"
+                                f"{joint_name}: {value}",
                             )
                             return 0.0
                         return value
-                    else:
-                        logger.warning(
-                            f"Index head_positions invalide: {head_idx} "
-                            f"pour {joint_name}"
-                        )
-                        return 0.0
-                else:
-                    # Structure inattendue - retourner 0.0 en sécurité
                     logger.warning(
-                        f"Structure head_positions inattendue "
-                        f"(len={len(head_positions)}, attendu "
-                        f"{self.STEWART_JOINTS_COUNT} ou "
-                        f"{self.HEAD_POSITIONS_LEGACY_COUNT}) pour {joint_name}"
+                        f"Index head_positions invalide: {head_idx} "
+                        f"pour {joint_name}",
                     )
                     return 0.0
+                # Structure inattendue - retourner 0.0 en sécurité
+                logger.warning(
+                    f"Structure head_positions inattendue "
+                    f"(len={len(head_positions)}, attendu "
+                    f"{self.STEWART_JOINTS_COUNT} ou "
+                    f"{self.HEAD_POSITIONS_LEGACY_COUNT}) pour {joint_name}",
+                )
+                return 0.0
 
             logger.warning(f"Joint {joint_name} non trouvé")
             return 0.0
@@ -521,7 +519,7 @@ class ReachyMiniBackend(RobotAPI):
                 f"   → Utilisez goto_target() ou set_target_head_pose() "
                 f"avec create_head_pose() pour contrôler la tête via la "
                 f"cinématique inverse, ou utilisez look_at_world() pour "
-                f"regarder vers un point."
+                f"regarder vers un point.",
             )
             return False  # Toujours False, même en simulation (conformité SDK)
 
@@ -538,7 +536,7 @@ class ReachyMiniBackend(RobotAPI):
                 logger.warning(
                     f"Position {position:.4f} rad hors limites hardware "
                     f"[{min_limit:.4f}, {max_limit:.4f}] pour joint "
-                    f"{joint_name} - clampage appliqué"
+                    f"{joint_name} - clampage appliqué",
                 )
                 # Clamp dans les limites hardware
                 position = max(min_limit, min(max_limit, position))
@@ -557,12 +555,13 @@ class ReachyMiniBackend(RobotAPI):
                     logger.debug(
                         f"Position {old_position:.4f} rad clampée à "
                         f"{position:.4f} rad par limite de sécurité "
-                        f"pour joint {joint_name}"
+                        f"pour joint {joint_name}",
                     )
         else:
             # Si pas de limite spécifique, utiliser seulement la limite de sécurité
             position = max(
-                -self.safe_amplitude_limit, min(self.safe_amplitude_limit, position)
+                -self.safe_amplitude_limit,
+                min(self.safe_amplitude_limit, position),
             )
 
         try:
@@ -580,46 +579,45 @@ class ReachyMiniBackend(RobotAPI):
                 else:
                     # Mode simulation
                     logger.info(f"Mode simulation: antenne {joint_name} = {position}")
+            # Contrôler la tête via pose (stewart joints) - API officielle
+            # NOTE: Les joints Stewart sont contrôlés via la pose de la tête
+            # (matrice 4x4). Le SDK ne permet pas de contrôler individuellement
+            # stewart_4, 5, 6. Pour stewart_1, 2, 3, on peut utiliser
+            # roll, pitch, yaw approximativement.
+            elif joint_name in ["stewart_4", "stewart_5", "stewart_6"]:
+                logger.warning(
+                    f"Les joints {joint_name} ne peuvent pas être contrôlés "
+                    f"individuellement via l'API SDK car la plateforme Stewart "
+                    f"utilise la cinématique inverse. Utilisez goto_target() ou "
+                    f"set_target_head_pose() avec une pose complète.",
+                )
+                # Retourner False car contrôle individuel impossible
+                return False
             else:
-                # Contrôler la tête via pose (stewart joints) - API officielle
-                # NOTE: Les joints Stewart sont contrôlés via la pose de la tête
-                # (matrice 4x4). Le SDK ne permet pas de contrôler individuellement
-                # stewart_4, 5, 6. Pour stewart_1, 2, 3, on peut utiliser
-                # roll, pitch, yaw approximativement.
-                if joint_name in ["stewart_4", "stewart_5", "stewart_6"]:
-                    logger.warning(
-                        f"Les joints {joint_name} ne peuvent pas être contrôlés "
-                        f"individuellement via l'API SDK car la plateforme Stewart "
-                        f"utilise la cinématique inverse. Utilisez goto_target() ou "
-                        f"set_target_head_pose() avec une pose complète."
-                    )
-                    # Retourner False car contrôle individuel impossible
-                    return False
-                else:
-                    # ATTENTION CRITIQUE (Expert Robotique):
-                    # Les joints stewart NE PEUVENT PAS être contrôlés
-                    # individuellement
-                    # car la plateforme Stewart utilise la cinématique inverse (IK).
-                    # Chaque joint stewart influence plusieurs degrés de liberté
-                    # simultanément (roll, pitch, yaw, position X/Y/Z).
-                    #
-                    # L'approximation roll/pitch/yaw est INCORRECTE car:
-                    # - stewart_1 ≠ roll, stewart_2 ≠ pitch, stewart_3 ≠ yaw
-                    # - Les 6 joints agissent ensemble via la cinématique inverse
-                    #
-                    # MÉTHODES CORRECTES pour contrôler la tête:
-                    # 1. goto_target(head=pose_4x4, ...) - méthode recommandée
-                    # 2. set_target_head_pose(pose_4x4) - contrôle direct
-                    # 3. look_at_world(x, y, z) - regarder vers un point 3D
-                    #
-                    # Cette méthode retourne False pour forcer l'utilisation
-                    # des méthodes correctes.
-                    logger.warning(
-                        f"⚠️ Contrôle individuel du joint {joint_name} IMPOSSIBLE "
-                        f"(cinématique inverse requise). Utilisez goto_target() ou "
-                        f"look_at_world() pour un contrôle correct."
-                    )
-                    return False
+                # ATTENTION CRITIQUE (Expert Robotique):
+                # Les joints stewart NE PEUVENT PAS être contrôlés
+                # individuellement
+                # car la plateforme Stewart utilise la cinématique inverse (IK).
+                # Chaque joint stewart influence plusieurs degrés de liberté
+                # simultanément (roll, pitch, yaw, position X/Y/Z).
+                #
+                # L'approximation roll/pitch/yaw est INCORRECTE car:
+                # - stewart_1 ≠ roll, stewart_2 ≠ pitch, stewart_3 ≠ yaw
+                # - Les 6 joints agissent ensemble via la cinématique inverse
+                #
+                # MÉTHODES CORRECTES pour contrôler la tête:
+                # 1. goto_target(head=pose_4x4, ...) - méthode recommandée
+                # 2. set_target_head_pose(pose_4x4) - contrôle direct
+                # 3. look_at_world(x, y, z) - regarder vers un point 3D
+                #
+                # Cette méthode retourne False pour forcer l'utilisation
+                # des méthodes correctes.
+                logger.warning(
+                    f"⚠️ Contrôle individuel du joint {joint_name} IMPOSSIBLE "
+                    f"(cinématique inverse requise). Utilisez goto_target() ou "
+                    f"look_at_world() pour un contrôle correct.",
+                )
+                return False
 
             return True
         except Exception as e:
@@ -639,7 +637,7 @@ class ReachyMiniBackend(RobotAPI):
         # Validation et clamp de l'intensité [0.0, 1.0] - conforme SDK
         if not 0.0 <= intensity <= 1.0:
             logger.warning(
-                f"Intensité {intensity} hors limites [0.0, 1.0], clamp appliqué"
+                f"Intensité {intensity} hors limites [0.0, 1.0], clamp appliqué",
             )
             intensity = max(0.0, min(1.0, intensity))
 
@@ -649,7 +647,7 @@ class ReachyMiniBackend(RobotAPI):
             self.current_emotion = emotion
             self.emotion_intensity = intensity
             logger.info(
-                f"Émotion simulée (sans SDK): {emotion} (intensité: {intensity})"
+                f"Émotion simulée (sans SDK): {emotion} (intensité: {intensity})",
             )
             return True
 
@@ -700,7 +698,7 @@ class ReachyMiniBackend(RobotAPI):
             # Mode simulation : toujours OK
             logger.info(
                 f"Look_at simulé: ({target_x}, {target_y}, {target_z}, "
-                f"duration={duration})"
+                f"duration={duration})",
             )
             return True
 
@@ -708,7 +706,11 @@ class ReachyMiniBackend(RobotAPI):
             # Utiliser la méthode officielle look_at_world
             # avec tous les paramètres SDK
             self.robot.look_at_world(
-                target_x, target_y, target_z, duration, perform_movement
+                target_x,
+                target_y,
+                target_z,
+                duration,
+                perform_movement,
             )
             return True
         except Exception as e:
@@ -792,7 +794,7 @@ class ReachyMiniBackend(RobotAPI):
                 import statistics
 
                 avg_latency = statistics.mean(
-                    self._operation_latencies[-100:]
+                    self._operation_latencies[-100:],
                 )  # Derniers 100
                 latency_info = {
                     "avg_latency_ms": avg_latency * 1000,
@@ -813,7 +815,7 @@ class ReachyMiniBackend(RobotAPI):
                             elif imu_raw is not None:
                                 # Si format différent, essayer de le normaliser
                                 logger.debug(
-                                    f"Format IMU non standard: {type(imu_raw)}"
+                                    f"Format IMU non standard: {type(imu_raw)}",
                                 )
                 except Exception as imu_err:
                     logger.debug(f"IMU non disponible: {imu_err}")
@@ -875,7 +877,7 @@ class ReachyMiniBackend(RobotAPI):
             # donc on retourne 0.0 comme valeur par défaut
             logger.debug(
                 "get_current_body_yaw non disponible dans SDK, "
-                "utilisation valeur par défaut"
+                "utilisation valeur par défaut",
             )
             return 0.0
         except Exception as e:
@@ -917,7 +919,11 @@ class ReachyMiniBackend(RobotAPI):
             logger.error(f"Erreur set_target_antenna_joint_positions: {e}")
 
     def look_at_image(
-        self, u: int, v: int, duration: float = 1.0, perform_movement: bool = True
+        self,
+        u: int,
+        v: int,
+        duration: float = 1.0,
+        perform_movement: bool = True,
     ) -> npt.NDArray[np.float64]:
         """Fait regarder le robot vers un point dans l'image."""
         if not self.is_connected or not self.robot:
@@ -960,12 +966,13 @@ class ReachyMiniBackend(RobotAPI):
             duration: Durée du mouvement en secondes (doit être > 0)
             method: Technique d'interpolation ("minjerk", "linear", "ease_in_out", "cartoon")
             body_yaw: Angle yaw du corps en radians (None = garder position actuelle, conforme SDK)
+
         """
         # Validation stricte: duration doit être positive et non-nulle (conforme SDK)
         duration_float = float(duration)
         if duration_float <= 0.0:
             raise ValueError(
-                "Duration must be positive and non-zero. Use set_target() for immediate position setting."
+                "Duration must be positive and non-zero. Use set_target() for immediate position setting.",
             )
 
         if not self.is_connected or not self.robot:
@@ -1015,7 +1022,7 @@ class ReachyMiniBackend(RobotAPI):
                     logger.warning(
                         f"Technique d'interpolation '{method}' non reconnue "
                         f"({conversion_error}), utilisation de MIN_JERK "
-                        f"par défaut (fluide et naturel)"
+                        f"par défaut (fluide et naturel)",
                     )
                     from reachy_mini.utils.interpolation import (
                         InterpolationTechnique,
@@ -1188,6 +1195,7 @@ class ReachyMiniBackend(RobotAPI):
             move: Objet Move du SDK reachy_mini.motion.move
             play_frequency: Fréquence de lecture (Hz, défaut 100.0)
             initial_goto_duration: Durée goto initial vers position de départ (s, défaut 0.0)
+
         """
         if not self.is_connected or not self.robot:
             logger.info("Mode simulation: play_move")
@@ -1228,6 +1236,7 @@ class ReachyMiniBackend(RobotAPI):
 
         Returns:
             Module IO (SDK ou simulation)
+
         """
         if self.robot and hasattr(self.robot, "io") and self.robot.io:
             return self.robot.io  # type: ignore[no-any-return]
@@ -1249,6 +1258,7 @@ class ReachyMiniBackend(RobotAPI):
 
         Returns:
             Module Media (SDK ou simulation)
+
         """
         if self.robot and hasattr(self.robot, "media") and self.robot.media:
             return self.robot.media  # type: ignore[no-any-return]
@@ -1263,7 +1273,9 @@ class ReachyMiniBackend(RobotAPI):
     # ===== MÉTHODES UTILITAIRES POUR MOVE =====
 
     def create_move_from_positions(
-        self, positions: list[dict[str, Any]], duration: float = 1.0
+        self,
+        positions: list[dict[str, Any]],
+        duration: float = 1.0,
     ) -> object | None:
         """Crée un objet Move à partir de positions."""
         try:
@@ -1272,7 +1284,9 @@ class ReachyMiniBackend(RobotAPI):
             # Créer une classe Move simple pour notre usage
             class SimpleMove(Move):  # type: ignore[misc]
                 def __init__(
-                    self, positions: list[dict[str, Any]], duration: float
+                    self,
+                    positions: list[dict[str, Any]],
+                    duration: float,
                 ) -> None:
                     self._positions = positions
                     self._duration = duration
@@ -1340,8 +1354,7 @@ class ReachyMiniBackend(RobotAPI):
             result = self.robot.get_current_joint_positions()
             if result is not None and len(result) == JOINT_POSITIONS_TUPLE_SIZE:
                 return (list(result[0]), list(result[1]))
-            else:
-                return ([0.0] * 12, [0.0, 0.0])
+            return ([0.0] * 12, [0.0, 0.0])
         except Exception as e:
             logger.error(f"Erreur get_current_joint_positions: {e}")
             return ([0.0] * 12, [0.0, 0.0])
@@ -1369,6 +1382,7 @@ class ReachyMiniBackend(RobotAPI):
 
         Returns:
             Matrice 4x4 représentant la pose de la tête si disponible, None sinon.
+
         """
         if not self.is_connected or not self.robot:
             logger.info(f"Mode simulation: look_at_world({x}, {y}, {z})")

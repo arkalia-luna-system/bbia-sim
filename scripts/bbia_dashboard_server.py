@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-bbia_dashboard_server.py - Serveur dashboard BBIA
+"""bbia_dashboard_server.py - Serveur dashboard BBIA
 Script pour lancer le dashboard web minimal
 """
 
@@ -19,7 +18,9 @@ def main():
     """Point d'entrée principal."""
     parser = argparse.ArgumentParser(description="Dashboard BBIA")
     parser.add_argument(
-        "--host", default="127.0.0.1", help="Adresse d'écoute"
+        "--host",
+        default="127.0.0.1",
+        help="Adresse d'écoute",
     )  # nosec B104
     parser.add_argument("--port", type=int, default=8000, help="Port d'écoute")
     parser.add_argument(
@@ -29,7 +30,9 @@ def main():
         help="Backend robot à utiliser",
     )
     parser.add_argument(
-        "--headless", action="store_true", help="Mode headless (pour CI)"
+        "--headless",
+        action="store_true",
+        help="Mode headless (pour CI)",
     )
 
     args = parser.parse_args()
@@ -39,7 +42,8 @@ def main():
         logging.basicConfig(level=logging.WARNING)
     else:
         logging.basicConfig(
-            level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+            level=logging.INFO,
+            format="%(asctime)s - %(levelname)s - %(message)s",
         )
 
     print("🤖 Dashboard BBIA")

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Module mémoire persistante BBIA - Sauvegarde conversation et préférences
+"""Module mémoire persistante BBIA - Sauvegarde conversation et préférences
 Permet à BBIA de se souvenir entre les sessions
 """
 
@@ -27,6 +26,7 @@ class BBIAMemory:
 
         Args:
             memory_dir: Répertoire pour stocker les fichiers mémoire
+
         """
         self.memory_dir = Path(memory_dir)
         self.memory_dir.mkdir(parents=True, exist_ok=True)
@@ -48,6 +48,7 @@ class BBIAMemory:
 
         Returns:
             True si sauvegarde réussie
+
         """
         try:
             # OPTIMISATION RAM: Limiter historique à 1000 messages (supprimer anciens)
@@ -69,7 +70,7 @@ class BBIAMemory:
                 json.dump(data, f, indent=2, ensure_ascii=False)
 
             logger.debug(
-                f"💾 Conversation sauvegardée ({len(conversation_history)} messages)"
+                f"💾 Conversation sauvegardée ({len(conversation_history)} messages)",
             )
             return True
         except Exception as e:
@@ -81,6 +82,7 @@ class BBIAMemory:
 
         Returns:
             Liste des conversations ou liste vide si erreur
+
         """
         try:
             if not self.conversation_file.exists():
@@ -92,7 +94,9 @@ class BBIAMemory:
             history = data.get("history", [])
             logger.debug(f"💾 Conversation chargée ({len(history)} messages)")
             return (
-                cast(list[dict[str, Any]], history) if isinstance(history, list) else []
+                cast("list[dict[str, Any]]", history)
+                if isinstance(history, list)
+                else []
             )
         except Exception as e:
             logger.warning(f"⚠️ Erreur chargement conversation: {e}")
@@ -107,6 +111,7 @@ class BBIAMemory:
 
         Returns:
             True si sauvegarde réussie
+
         """
         try:
             # Charger préférences existantes
@@ -133,6 +138,7 @@ class BBIAMemory:
 
         Returns:
             Dictionnaire des préférences ou dict vide si erreur
+
         """
         try:
             if not self.preferences_file.exists():
@@ -142,7 +148,7 @@ class BBIAMemory:
                 preferences = json.load(f)
 
             return (
-                cast(dict[str, Any], preferences)
+                cast("dict[str, Any]", preferences)
                 if isinstance(preferences, dict)
                 else {}
             )
@@ -159,6 +165,7 @@ class BBIAMemory:
 
         Returns:
             Valeur de la préférence ou default
+
         """
         preferences = self.load_preferences()
         if key in preferences:
@@ -176,6 +183,7 @@ class BBIAMemory:
 
         Returns:
             True si sauvegarde réussie
+
         """
         try:
             # Charger apprentissages existants
@@ -203,6 +211,7 @@ class BBIAMemory:
 
         Returns:
             Dictionnaire des apprentissages ou dict vide si erreur
+
         """
         try:
             if not self.learnings_file.exists():
@@ -212,7 +221,7 @@ class BBIAMemory:
                 learnings = json.load(f)
 
             return (
-                cast(dict[str, Any], learnings) if isinstance(learnings, dict) else {}
+                cast("dict[str, Any]", learnings) if isinstance(learnings, dict) else {}
             )
         except Exception as e:
             logger.warning(f"⚠️ Erreur chargement apprentissages: {e}")
@@ -226,6 +235,7 @@ class BBIAMemory:
 
         Returns:
             Réponse associée ou None si non trouvé
+
         """
         learnings = self.load_learnings()
         if pattern in learnings:
@@ -238,6 +248,7 @@ class BBIAMemory:
 
         Returns:
             True si effacement réussi
+
         """
         try:
             for file in [
@@ -266,13 +277,15 @@ def load_conversation_from_memory(
 
     Returns:
         Liste des conversations
+
     """
     memory = BBIAMemory(memory_dir=memory_dir)
     return memory.load_conversation()
 
 
 def save_conversation_to_memory(
-    conversation_history: list[dict[str, Any]], memory_dir: str = "bbia_memory"
+    conversation_history: list[dict[str, Any]],
+    memory_dir: str = "bbia_memory",
 ) -> bool:
     """Sauvegarde la conversation dans la mémoire persistante.
 
@@ -282,6 +295,7 @@ def save_conversation_to_memory(
 
     Returns:
         True si sauvegarde réussie
+
     """
     memory = BBIAMemory(memory_dir=memory_dir)
     return memory.save_conversation(conversation_history)

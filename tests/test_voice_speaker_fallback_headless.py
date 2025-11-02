@@ -6,7 +6,7 @@ Ne dépend d'aucun driver audio (mocks purs) et force l'audio ON via ENV.
 
 import types
 
-from src.bbia_sim.bbia_voice import dire_texte
+from bbia_sim.bbia_voice import dire_texte
 
 
 class _Speaker:

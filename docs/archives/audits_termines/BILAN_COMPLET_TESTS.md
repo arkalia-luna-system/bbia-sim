@@ -4,13 +4,13 @@
 Ce document a été archivé car il est devenu obsolète ou a été remplacé par une version plus récente.
 Il est conservé à des fins de référence historique uniquement.
 
-**Date d'archivage** : Oct / No2025025025025025
+**Date d'archivage** : Oct / Oct / Nov. 20255
 **Raison** : Document terminé/obsolète/remplacé
 ---
 
 # 📊 Bilan Complet - Tests & Coverage
 
-> **Date**: Oct / No2025025025025025  
+> **Date**: Oct / Oct / Nov. 20255  
 > **Statut**: ✅ Analyse complète réalisée
 
 ---
@@ -315,6 +315,6 @@ Il est conservé à des fins de référence historique uniquement.
 ---
 
 **Version**: 1.0  
-**Date**: Oct / No2025025025025025  
+**Date**: Oct / Oct / Nov. 20255  
 **Auteur**: Audit Automatique BBIA-SIM
 

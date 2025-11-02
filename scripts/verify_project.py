@@ -65,7 +65,6 @@ def check_stl_assets():
     stl_files = list(assets_dir.glob("*.stl"))
 
     if len(stl_files) == 41:
-
         # Vérifier la taille des fichiers
         valid_count = 0
         for stl_file in stl_files:
@@ -74,8 +73,7 @@ def check_stl_assets():
                 valid_count += 1
 
         return valid_count == len(stl_files)
-    else:
-        return False
+    return False
 
 
 def check_tests():
@@ -83,6 +81,7 @@ def check_tests():
     try:
         result = subprocess.run(
             [sys.executable, "-m", "pytest", "tests/", "--collect-only", "-q"],
+            check=False,
             capture_output=True,
             text=True,
             timeout=30,
@@ -96,8 +95,7 @@ def check_tests():
                     break
 
             return True
-        else:
-            return False
+        return False
 
     except Exception:
         return False
@@ -165,8 +163,7 @@ def main():
 
     if success_count == len(results):
         return 0
-    else:
-        return 1
+    return 1
 
 
 if __name__ == "__main__":

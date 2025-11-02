@@ -33,7 +33,8 @@ async def goto_pose(
     pose: Pose,
     duration: float = Query(2.5, gt=0, description="Durée du mouvement en secondes"),
     interpolation: InterpolationMode = Query(
-        InterpolationMode.MINJERK, description="Mode d'interpolation"
+        InterpolationMode.MINJERK,
+        description="Mode d'interpolation",
     ),
 ) -> dict[str, Any]:
     """Déplace le robot vers une position spécifique avec interpolation.
@@ -49,7 +50,7 @@ async def goto_pose(
     """
     logger.info(
         f"Mouvement vers la position : {pose.model_dump()}, "
-        f"duration={duration}, interpolation={interpolation.value}"
+        f"duration={duration}, interpolation={interpolation.value}",
     )
 
     try:
@@ -135,14 +136,15 @@ async def set_joint_positions(positions: list[JointPosition]) -> dict[str, Any]:
 
     """
     logger.info(
-        f"Définition des positions d'articulations : {len(positions)} articulations"
+        f"Définition des positions d'articulations : {len(positions)} articulations",
     )
 
     # Validation des noms de joints avec notre système centralisé
     for pos in positions:
         if not validate_joint_name(pos.joint_name):
             raise HTTPException(
-                status_code=422, detail=f"Joint '{pos.joint_name}' non valide"
+                status_code=422,
+                detail=f"Joint '{pos.joint_name}' non valide",
             )
 
         # Clamp des angles dans les limites
@@ -150,7 +152,7 @@ async def set_joint_positions(positions: list[JointPosition]) -> dict[str, Any]:
         if clamped_angle != pos.position:
             logger.warning(
                 f"Angle {pos.position:.3f} clampé à {clamped_angle:.3f} "
-                f"pour joint {pos.joint_name}"
+                f"pour joint {pos.joint_name}",
             )
             pos.position = clamped_angle
 
@@ -184,7 +186,8 @@ async def control_gripper(side: str, action: str) -> dict[str, Any]:
     """
     if side not in ["left", "right"]:
         raise HTTPException(
-            status_code=400, detail="Côté invalide. Utilisez 'left' ou 'right'"
+            status_code=400,
+            detail="Côté invalide. Utilisez 'left' ou 'right'",
         )
 
     if action not in ["open", "close", "grip"]:
@@ -216,13 +219,14 @@ async def control_head(head_control: HeadControl) -> dict[str, Any]:
 
     """
     logger.info(
-        f"Contrôle de la tête : yaw={head_control.yaw}, pitch={head_control.pitch}"
+        f"Contrôle de la tête : yaw={head_control.yaw}, pitch={head_control.pitch}",
     )
 
     # Application des positions dans la simulation
     success_yaw = simulation_service.set_joint_position("neck_yaw", head_control.yaw)
     success_pitch = simulation_service.set_joint_position(
-        "head_pitch", head_control.pitch
+        "head_pitch",
+        head_control.pitch,
     )
 
     return {
@@ -240,6 +244,7 @@ async def wake_up() -> dict[str, Any]:
 
     Returns:
         Statut du réveil
+
     """
     logger.info("Réveil du robot")
     try:
@@ -267,7 +272,7 @@ async def wake_up() -> dict[str, Any]:
         logger.error(f"Erreur lors du réveil: {e}")
         return {
             "status": "error",
-            "message": f"Erreur: {str(e)}",
+            "message": f"Erreur: {e!s}",
             "timestamp": datetime.now().isoformat(),
         }
 
@@ -278,6 +283,7 @@ async def goto_sleep() -> dict[str, Any]:
 
     Returns:
         Statut de la mise en veille
+
     """
     logger.info("Mise en veille du robot")
     try:
@@ -307,7 +313,7 @@ async def goto_sleep() -> dict[str, Any]:
         logger.error(f"Erreur lors de la mise en veille: {e}")
         return {
             "status": "error",
-            "message": f"Erreur: {str(e)}",
+            "message": f"Erreur: {e!s}",
             "timestamp": datetime.now().isoformat(),
         }
 
@@ -347,7 +353,7 @@ async def stop_motion() -> dict[str, Any]:
         # Appel direct asynchrone (stop_simulation est déjà async)
         await simulation_service.stop_simulation()
     except Exception:
-        pass  # noqa: S101 - Ignorer si simulation déjà arrêtée (comportement attendu)
+        pass
 
     return {
         "status": "stopped",

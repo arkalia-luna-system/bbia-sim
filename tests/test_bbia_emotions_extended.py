@@ -7,7 +7,7 @@ Tests ciblés pour améliorer la couverture de code.
 from datetime import datetime
 from unittest.mock import patch
 
-from src.bbia_sim.bbia_emotions import BBIAEmotions
+from bbia_sim.bbia_emotions import BBIAEmotions
 
 
 class TestBBIAEmotionsExtended:

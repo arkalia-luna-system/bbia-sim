@@ -6,8 +6,8 @@ Tests basiques sans dépendances complexes.
 import unittest
 from unittest.mock import MagicMock, patch
 
-from src.bbia_sim.daemon.config import Settings
-from src.bbia_sim.daemon.models import (
+from bbia_sim.daemon.config import Settings
+from bbia_sim.daemon.models import (
     GripperControl,
     HeadControl,
     JointPosition,
@@ -15,7 +15,7 @@ from src.bbia_sim.daemon.models import (
     Pose,
     TelemetryMessage,
 )
-from src.bbia_sim.sim.joints import MAIN_JOINTS, get_joint_limits, validate_joint_name
+from bbia_sim.sim.joints import MAIN_JOINTS, get_joint_limits, validate_joint_name
 
 
 class TestConfigCoverage(unittest.TestCase):

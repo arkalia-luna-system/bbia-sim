@@ -13,9 +13,9 @@ Ce guide est destiné aux **assistants IA** (Claude, GPT, Cursor AI, etc.) pour 
 
 ### ✅ Statut général
 - **Version :** 1.3.2
-- **Documentation :** 101 fichiers MD vérifiés (26 erreurs mineures restantes)
-- **Tests :** 1200+ tests automatisés
-- **Coverage :** ~50% modules core
+- **Documentation :** **300+ fichiers MD** dans `docs/`
+- **Tests :** **1245 tests** collectés (pytest --collect-only)
+- **Coverage :** **68.86%** global (excellent)
 - **Conformité SDK :** 100% validée
 
 ### 📊 Qualité documentation
@@ -249,7 +249,7 @@ docs/
 
 - **Documentation :** `docs/` (complet et à jour)
 - **Scripts :** `scripts/` (optimisés et testés)
-- **Tests :** `tests/` (1200+ tests automatisés)
+- **Tests :** `tests/` (**1245 tests** collectés, **68.86%** coverage)
 - **FAQ :** `docs/FAQ.md` (questions fréquentes)
 
 ---

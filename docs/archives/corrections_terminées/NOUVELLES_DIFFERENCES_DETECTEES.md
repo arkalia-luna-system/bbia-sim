@@ -1,6 +1,6 @@
 # 🔍 NOUVELLES DIFFÉRENCES DÉTECTÉES - BBIA vs SDK OFFICIEL
 
-**Date** : Oct / No2025025025025025  
+**Date** : Oct / Oct / Nov. 20255  
 **Référence** : Comparaison approfondie des endpoints `/api/move` et `backend_adapter`
 
 ---
@@ -331,5 +331,5 @@ await set_target(target, backend)  # Réutiliser fonction existante
 
 ---
 
-**Dernière mise à jour** : Oct / No2025025025025025
+**Dernière mise à jour** : Oct / Oct / Nov. 20255
 

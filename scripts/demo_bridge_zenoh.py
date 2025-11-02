@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Script de démonstration du Bridge Zenoh/FastAPI
+"""Script de démonstration du Bridge Zenoh/FastAPI
 Teste l'intégration entre BBIA-SIM et le SDK officiel Reachy Mini
 """
 
@@ -37,7 +36,8 @@ async def test_bridge_connection():
 
             # Test d'envoi de commande
             command = RobotCommand(
-                command="look_at", parameters={"x": 0.5, "y": 0.0, "z": 0.0}
+                command="look_at",
+                parameters={"x": 0.5, "y": 0.0, "z": 0.0},
             )
 
             sent = await bridge.send_command(command)

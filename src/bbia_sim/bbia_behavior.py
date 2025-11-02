@@ -289,7 +289,9 @@ class EmotionalResponseBehavior(BBIABehavior):
     """Comportement de réponse émotionnelle conforme au SDK Reachy Mini officiel."""
 
     def __init__(
-        self, emotions: BBIAEmotions, robot_api: RobotAPI | None = None
+        self,
+        emotions: BBIAEmotions,
+        robot_api: RobotAPI | None = None,
     ) -> None:
         super().__init__(
             "emotional_response",
@@ -299,7 +301,7 @@ class EmotionalResponseBehavior(BBIABehavior):
         self.emotions = emotions
         self.priority = 8
 
-    def execute(self, context: dict[str, Any]) -> bool:  # noqa: ARG002
+    def execute(self, context: dict[str, Any]) -> bool:
         stimulus = context.get("stimulus", "")
         logger.info(f"Stimulus reçu pour réponse émotionnelle : {stimulus}")
         if stimulus:
@@ -604,7 +606,6 @@ class ConversationBehavior(BBIABehavior):
 
     def _get_enriched_response(self, category: str) -> str:
         """Récupère une réponse enrichie aléatoire dans une catégorie."""
-
         responses = self.enriched_responses.get(
             category,
             self.enriched_responses["default"],
@@ -732,17 +733,15 @@ class ConversationBehavior(BBIABehavior):
             word in texte_lower for word in ["excité", "enthousiaste", "euphorique"]
         ):
             return "excited"
-        elif any(
+        if any(
             word in texte_lower for word in ["super", "génial", "content", "heureux"]
         ):
             return "happy"
-        elif any(word in texte_lower for word in ["triste", "déçu", "malheureux"]):
+        if any(word in texte_lower for word in ["triste", "déçu", "malheureux"]):
             return "sad"
-        elif any(
-            word in texte_lower for word in ["curieux", "intrigué", "intéressant"]
-        ):
+        if any(word in texte_lower for word in ["curieux", "intrigué", "intéressant"]):
             return "curious"
-        elif any(word in texte_lower for word in ["calme", "serein", "détendu"]):
+        if any(word in texte_lower for word in ["calme", "serein", "détendu"]):
             return "calm"
 
         return "neutral"
@@ -790,7 +789,7 @@ class AntennaAnimationBehavior(BBIABehavior):
         )
         self.priority = 5
 
-    def execute(self, context: dict[str, Any]) -> bool:  # noqa: ARG002
+    def execute(self, context: dict[str, Any]) -> bool:
         emotion = context.get("emotion", "neutral")
         logger.info(f"Animation expressive pour l'émotion : {emotion}")
 
@@ -1017,8 +1016,7 @@ class BBIABehaviorManager:
 
         if behavior.can_execute(context):
             return behavior.execute(context)
-        else:
-            return False
+        return False
 
     def add_to_queue(
         self,
@@ -1131,9 +1129,8 @@ class BBIABehaviorManager:
                     f"({len(move) if isinstance(move, list) else 'N/A'} frames)",
                 )
                 return move
-            else:
-                logger.warning(f"⚠️  Aucun mouvement enregistré pour '{behavior_name}'")
-                return None
+            logger.warning(f"⚠️  Aucun mouvement enregistré pour '{behavior_name}'")
+            return None
         except Exception as e:
             logger.error(
                 f"❌ Erreur enregistrement comportement '{behavior_name}': {e}",
@@ -1170,16 +1167,15 @@ class BBIABehaviorManager:
                     f"{len(move) if isinstance(move, list) else 'N/A'} frames",
                 )
                 return True
-            elif hasattr(self.robot_api, "play_move"):
+            if hasattr(self.robot_api, "play_move"):
                 self.robot_api.play_move(move, play_frequency=100.0)
                 logger.info(
                     f"▶️  Rejoué '{behavior_name}' (sync, bloquant) - "
                     f"{len(move) if isinstance(move, list) else 'N/A'} frames",
                 )
                 return True
-            else:
-                logger.warning("play_move non disponible dans robot_api")
-                return False
+            logger.warning("play_move non disponible dans robot_api")
+            return False
         except Exception as e:
             logger.error(f"❌ Erreur rejouant '{behavior_name}': {e}")
             return False

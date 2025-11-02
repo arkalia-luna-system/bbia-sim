@@ -2,7 +2,7 @@
 
 from unittest.mock import patch
 
-from src.bbia_sim.daemon.config import Settings
+from bbia_sim.daemon.config import Settings
 
 
 class TestSettings:

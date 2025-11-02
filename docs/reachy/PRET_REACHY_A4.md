@@ -1,6 +1,6 @@
 # 📋 CHECKLIST PRÉ-REACHY RÉEL (A4)
 
-**Date** : Oct / No2025025025025025
+**Date** : Oct / Oct / Nov. 20255
 **Version** : 1.1.1
 **Robot** : Reachy Mini Wireless (Pollen Robotics)
 
@@ -118,4 +118,4 @@ Observations: _______________
 
 **✅ CHECKLIST VALIDÉE** : Robot prêt pour les démos BBIA !
 
-*Dernière mise à jour : Oct / No2025025025025025*
+*Dernière mise à jour : Oct / Oct / Nov. 20255*

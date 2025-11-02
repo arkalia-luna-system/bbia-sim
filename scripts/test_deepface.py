@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Test DeepFace - Reconnaissance visage personnalisée + émotions
+"""Test DeepFace - Reconnaissance visage personnalisée + émotions
 
 Usage:
     # Dans venv-vision-py310 (où DeepFace est installé)
@@ -138,7 +137,9 @@ def main():
             print(f"   • Confiance: {result['confidence']:.2%}")
             print("\n   Scores détaillés:")
             for emotion, score in sorted(
-                result["scores"].items(), key=lambda x: x[1], reverse=True
+                result["scores"].items(),
+                key=lambda x: x[1],
+                reverse=True,
             ):
                 print(f"      • {emotion}: {score:.1f}%")
         else:

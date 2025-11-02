@@ -4,8 +4,8 @@ import pytest
 from fastapi.testclient import TestClient
 from uuid import UUID
 
-from src.bbia_sim.daemon.app.main import app
-from src.bbia_sim.daemon.config import settings
+from bbia_sim.daemon.app.main import app
+from bbia_sim.daemon.config import settings
 
 client = TestClient(app)
 

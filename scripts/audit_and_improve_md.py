@@ -1,13 +1,35 @@
 #!/usr/bin/env python3
-"""
-Script pour auditer et améliorer tous les fichiers MD :
+"""Script pour auditer et améliorer tous les fichiers MD :
 1. Vérifier véracité contre code réel
 2. Améliorer présentation (moderne, professionnelle, impactante)
 """
 
+import glob
 import re
 from pathlib import Path
 from typing import Any
+
+
+def cleanup_metadata_files(file_path: Path) -> None:
+    """Supprime les fichiers de métadonnées macOS créés automatiquement."""
+    parent_dir = file_path.parent
+    base_name = file_path.name
+
+    # Supprimer fichier ._* standard
+    metadata_file = parent_dir / f"._{base_name}"
+    if metadata_file.exists():
+        try:
+            metadata_file.unlink()
+        except Exception:
+            pass
+
+    # Supprimer fichiers .!*!._* (format avec numéro)
+    pattern = str(parent_dir / f".!*._{base_name}")
+    for metadata_file_path in glob.glob(pattern):
+        try:
+            Path(metadata_file_path).unlink()
+        except Exception:
+            pass
 
 
 def verify_md_claims(md_file: Path) -> dict[str, Any]:
@@ -46,7 +68,7 @@ def verify_md_claims(md_file: Path) -> dict[str, Any]:
                             "type": claim_type,
                             "value": number,
                             "line": content[: match.start()].count("\n") + 1,
-                        }
+                        },
                     )
 
     return {"file": md_file, "issues": issues}
@@ -54,7 +76,6 @@ def verify_md_claims(md_file: Path) -> dict[str, Any]:
 
 def improve_md_formatting(content: str) -> str:
     """Améliore le formatage MD pour le rendre plus moderne et impactant."""
-
     # 1. Améliorer titres avec emojis cohérents
     content = re.sub(
         r"^##\s+([^📋🎯✅⚠️❌🔍📊📝🎉🚀🏗️🧪📚⚡🔒🌟]+)",
@@ -92,7 +113,8 @@ def standardize_date(date_str: str) -> str:
         return date_str  # Déjà standardisé
     if "novembre 2025" in date_str.lower():
         return date_str.replace("novembre 2025", "Oct 25 / Nov 25").replace(
-            "Novembre 2025", "Oct 25 / Nov 25"
+            "Novembre 2025",
+            "Oct 25 / Nov 25",
         )
     if "octobre 2024" in date_str.lower() and "création" in date_str.lower():
         return date_str  # Date création ne pas modifier
@@ -114,10 +136,11 @@ def add_modern_header(content: str, title: str) -> str:
 
 def improve_readme(content: str) -> str:
     """Améliore spécifiquement le README pour le rendre plus impactant."""
-
     # Améliorer section "EN 30 SECONDES" avec meilleure structure
     content = re.sub(
-        r"## 📋 \*\*EN 30 SECONDES :\*\*", r"## 📋 **EN 30 SECONDES**", content
+        r"## 📋 \*\*EN 30 SECONDES :\*\*",
+        r"## 📋 **EN 30 SECONDES**",
+        content,
     )
 
     # Améliorer points clés avec meilleur formatage
@@ -163,7 +186,7 @@ def main():
             print(f"   ⚠️  {len(verification['issues'])} problèmes détectés")
             for issue in verification["issues"]:
                 print(
-                    f"      - {issue['type']}: {issue['value']} (ligne {issue['line']})"
+                    f"      - {issue['type']}: {issue['value']} (ligne {issue['line']})",
                 )
         else:
             print("   ✅ Aucun problème de véracité")
@@ -181,6 +204,8 @@ def main():
         # Sauvegarder si changé
         if content != original_content:
             full_path.write_text(content, encoding="utf-8")
+            # Nettoyer les métadonnées macOS créées automatiquement
+            cleanup_metadata_files(full_path)
             print("   ✨ Formatage amélioré")
         else:
             print("   ℹ️  Déjà bien formaté")

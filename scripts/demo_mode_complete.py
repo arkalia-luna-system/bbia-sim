@@ -25,6 +25,7 @@ class BBIADemoMode:
 
         Args:
             base_url: URL de base de l'API
+
         """
         self.base_url = base_url
         self.client = httpx.AsyncClient(timeout=30.0)
@@ -68,9 +69,8 @@ class BBIADemoMode:
                 data = response.json()
                 logger.info(f"✅ API accessible: {data.get('status', 'N/A')}")
                 return True
-            else:
-                logger.error(f"❌ API non accessible: {response.status_code}")
-                return False
+            logger.error(f"❌ API non accessible: {response.status_code}")
+            return False
         except Exception as e:
             logger.error(f"❌ Erreur de connexion: {e}")
             return False
@@ -79,7 +79,7 @@ class BBIADemoMode:
         """Récupère les informations de l'écosystème."""
         try:
             response = await self.client.get(
-                f"{self.base_url}/api/ecosystem/capabilities"
+                f"{self.base_url}/api/ecosystem/capabilities",
             )
             if response.status_code == 200:
                 return response.json()
@@ -132,11 +132,11 @@ class BBIADemoMode:
                         data = response.json()
                         logger.info(f"   ✅ {emotion}: {data.get('status', 'N/A')}")
                         logger.info(
-                            f"      Joints affectés: {len(data.get('joints_affected', []))}"
+                            f"      Joints affectés: {len(data.get('joints_affected', []))}",
                         )
                     else:
                         logger.warning(
-                            f"   ⚠️ {emotion}: Échec (code {response.status_code})"
+                            f"   ⚠️ {emotion}: Échec (code {response.status_code})",
                         )
 
                     await asyncio.sleep(1.0)  # Pause entre les émotions
@@ -161,11 +161,11 @@ class BBIADemoMode:
                         data = response.json()
                         logger.info(f"   ✅ {behavior}: {data.get('status', 'N/A')}")
                         logger.info(
-                            f"      Durée estimée: {data.get('estimated_duration', 'N/A')}s"
+                            f"      Durée estimée: {data.get('estimated_duration', 'N/A')}s",
                         )
                     else:
                         logger.warning(
-                            f"   ⚠️ {behavior}: Échec (code {response.status_code})"
+                            f"   ⚠️ {behavior}: Échec (code {response.status_code})",
                         )
 
                     await asyncio.sleep(2.0)  # Pause entre les comportements
@@ -229,11 +229,11 @@ class BBIADemoMode:
                         data = response.json()
                         logger.info(f"   ✅ {emotion}: {data.get('status', 'N/A')}")
                         logger.info(
-                            f"      Joints affectés: {len(data.get('joints_affected', []))}"
+                            f"      Joints affectés: {len(data.get('joints_affected', []))}",
                         )
                     else:
                         logger.warning(
-                            f"   ⚠️ {emotion}: Échec (code {response.status_code})"
+                            f"   ⚠️ {emotion}: Échec (code {response.status_code})",
                         )
 
                     await asyncio.sleep(2.0)  # Pause plus longue pour sécurité
@@ -258,11 +258,11 @@ class BBIADemoMode:
                         data = response.json()
                         logger.info(f"   ✅ {behavior}: {data.get('status', 'N/A')}")
                         logger.info(
-                            f"      Durée estimée: {data.get('estimated_duration', 'N/A')}s"
+                            f"      Durée estimée: {data.get('estimated_duration', 'N/A')}s",
                         )
                     else:
                         logger.warning(
-                            f"   ⚠️ {behavior}: Échec (code {response.status_code})"
+                            f"   ⚠️ {behavior}: Échec (code {response.status_code})",
                         )
 
                     await asyncio.sleep(3.0)  # Pause plus longue pour sécurité
@@ -304,7 +304,7 @@ class BBIADemoMode:
             # Test de disponibilité robot réel
             try:
                 response = await self.client.get(
-                    f"{self.base_url}/api/ecosystem/status"
+                    f"{self.base_url}/api/ecosystem/status",
                 )
                 if response.status_code == 200:
                     data = response.json()
@@ -316,7 +316,7 @@ class BBIADemoMode:
                     else:
                         logger.info("⚠️ Robot réel non détecté - Simulation uniquement")
                         logger.info(
-                            "💡 Connectez un robot Reachy Mini pour tester le mode réel"
+                            "💡 Connectez un robot Reachy Mini pour tester le mode réel",
                         )
             except Exception as e:
                 logger.warning(f"⚠️ Impossible de vérifier le statut robot: {e}")
@@ -355,10 +355,10 @@ class BBIADemoMode:
             logger.info(f"   • Joints: {ecosystem_info.get('joints', 'N/A')}")
             logger.info(f"   • Émotions: {len(ecosystem_info.get('emotions', []))}")
             logger.info(
-                f"   • Comportements: {len(ecosystem_info.get('behaviors', []))}"
+                f"   • Comportements: {len(ecosystem_info.get('behaviors', []))}",
             )
             logger.info(
-                f"   • Backends: {', '.join(ecosystem_info.get('backends', []))}"
+                f"   • Backends: {', '.join(ecosystem_info.get('backends', []))}",
             )
 
         # Exécution du mode spécifié

@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""
-Demo voix BBIA (pyttsx3) avec voix macOS forcée (ex: Amélie).
+"""Demo voix BBIA (pyttsx3) avec voix macOS forcée (ex: Amélie).
 Usage:
   source venv/bin/activate
   python scripts/voice_demo.py --text "Bonjour" --voice-id com.apple.voice.compact.fr-CA.Amelie --rate 160
 """
+
 import argparse
 
 import pyttsx3

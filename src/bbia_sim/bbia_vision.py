@@ -35,6 +35,7 @@ def get_bbia_vision_singleton(robot_api: Any | None = None) -> "BBIAVision":
 
     Returns:
         Instance singleton BBIAVision (créée si nécessaire)
+
     """
     global _bbia_vision_singleton
     if _bbia_vision_singleton is None:
@@ -47,13 +48,13 @@ def get_bbia_vision_singleton(robot_api: Any | None = None) -> "BBIAVision":
 
 # Réduction du bruit de logs TensorFlow/MediaPipe (avant tout import MediaPipe)
 try:
-    import os as _os  # noqa: F401
+    import os as _os
 
     _os.environ.setdefault("GLOG_minloglevel", "2")  # 0=INFO,1=WARNING,2=ERROR
     _os.environ.setdefault("TF_CPP_MIN_LOG_LEVEL", "2")  # 1=WARNING,2=ERROR
     _os.environ.setdefault("MEDIAPIPE_DISABLE_GPU", "1")  # éviter logs GPU inutiles
 except Exception:
-    pass  # noqa: S101 - Ignorer erreur configuration variables d'environnement
+    pass
 
 # Import conditionnel pour YOLO et MediaPipe
 try:
@@ -115,11 +116,11 @@ class BBIAVision:
     face_recognition: "BBIAPersonRecognition | None"
 
     def __init__(self, robot_api: Any | None = None) -> None:
-        """
-        Initialise le module de vision.
+        """Initialise le module de vision.
 
         Args:
             robot_api: Interface RobotAPI (optionnel) pour accès robot.media.camera
+
         """
         self.robot_api = robot_api
         self.camera_active = True
@@ -128,10 +129,10 @@ class BBIAVision:
         # OPTIMISATION RAM: Limiter historique détections avec deque (max 50 objets/visages)
         self._max_detections_history = 50
         self.objects_detected: deque[dict[str, Any]] = deque(
-            maxlen=self._max_detections_history
+            maxlen=self._max_detections_history,
         )
         self.faces_detected: deque[dict[str, Any]] = deque(
-            maxlen=self._max_detections_history
+            maxlen=self._max_detections_history,
         )
         self.tracking_active = False
         self.current_focus: dict[str, Any] | None = None
@@ -187,11 +188,11 @@ class BBIAVision:
                         camera_index = int(camera_index_str)
                         self._opencv_camera = cv2.VideoCapture(camera_index)
                         logger.info(
-                            f"🔌 Tentative ouverture webcam (index {camera_index})"
+                            f"🔌 Tentative ouverture webcam (index {camera_index})",
                         )
                     except ValueError:
                         logger.warning(
-                            f"⚠️ BBIA_CAMERA_INDEX invalide: {camera_index_str}, utilisation index 0"
+                            f"⚠️ BBIA_CAMERA_INDEX invalide: {camera_index_str}, utilisation index 0",
                         )
                         self._opencv_camera = cv2.VideoCapture(0)
 
@@ -205,7 +206,7 @@ class BBIAVision:
                         self._opencv_camera.release()
                         self._opencv_camera = None
                         logger.debug(
-                            "Webcam OpenCV ouverte mais ne capture pas d'images"
+                            "Webcam OpenCV ouverte mais ne capture pas d'images",
                         )
                 else:
                     if self._opencv_camera:
@@ -217,7 +218,7 @@ class BBIAVision:
                     try:
                         self._opencv_camera.release()
                     except Exception:
-                        pass  # noqa: S101 - Ignorer erreur libération caméra OpenCV (déjà libérée ou non critique)
+                        pass
                 self._opencv_camera = None
                 logger.debug(f"Erreur initialisation webcam OpenCV: {e}")
 
@@ -232,22 +233,23 @@ class BBIAVision:
             try:
                 # Seuil confiance 0.25 pour meilleure détection (au lieu de 0.5 par défaut)
                 confidence_threshold = float(
-                    os.environ.get("BBIA_YOLO_CONFIDENCE", "0.25")
+                    os.environ.get("BBIA_YOLO_CONFIDENCE", "0.25"),
                 )
                 # Créer détecteur avec seuil personnalisé
                 self.yolo_detector = create_yolo_detector(
-                    model_size="n", confidence_threshold=confidence_threshold
+                    model_size="n",
+                    confidence_threshold=confidence_threshold,
                 )
                 if self.yolo_detector:
                     self.yolo_detector.load_model()
                     logger.info(
-                        "✅ Détecteur YOLO initialisé (lazy loading - caméra réelle)"
+                        "✅ Détecteur YOLO initialisé (lazy loading - caméra réelle)",
                     )
             except Exception as e:
                 logger.warning(f"⚠️ YOLO non disponible: {e}")
         else:
             logger.debug(
-                "YOLO non chargé (lazy loading - caméra simulation ou non disponible)"
+                "YOLO non chargé (lazy loading - caméra simulation ou non disponible)",
             )
 
         self.face_detector = None
@@ -263,17 +265,18 @@ class BBIAVision:
                     with _mediapipe_cache_lock:
                         if _mediapipe_face_detection_cache is not None:
                             logger.debug(
-                                "♻️ Réutilisation détecteur MediaPipe depuis cache (bbia_vision)"
+                                "♻️ Réutilisation détecteur MediaPipe depuis cache (bbia_vision)",
                             )
                             self.face_detector = _mediapipe_face_detection_cache
                             logger.info(
-                                "✅ Détecteur MediaPipe Face initialisé (cache)"
+                                "✅ Détecteur MediaPipe Face initialisé (cache)",
                             )
                         else:
                             # Créer nouvelle instance et mettre en cache
                             self.face_detector = (
                                 mp.solutions.face_detection.FaceDetection(
-                                    model_selection=0, min_detection_confidence=0.5
+                                    model_selection=0,
+                                    min_detection_confidence=0.5,
                                 )
                             )
                             _mediapipe_face_detection_cache = self.face_detector
@@ -281,7 +284,8 @@ class BBIAVision:
                 except ImportError:
                     # Fallback si import cache échoue
                     self.face_detector = mp.solutions.face_detection.FaceDetection(
-                        model_selection=0, min_detection_confidence=0.5
+                        model_selection=0,
+                        min_detection_confidence=0.5,
                     )
                     logger.info("✅ Détecteur MediaPipe Face initialisé")
             except Exception as e:
@@ -296,7 +300,7 @@ class BBIAVision:
                 self.face_recognition = create_face_recognition(db_path, model_name)
                 if self.face_recognition and self.face_recognition.is_initialized:
                     logger.info(
-                        f"✅ DeepFace initialisé (db: {db_path}, modèle: {model_name})"
+                        f"✅ DeepFace initialisé (db: {db_path}, modèle: {model_name})",
                     )
             except Exception as e:
                 logger.warning(f"⚠️ DeepFace non disponible: {e}")
@@ -306,14 +310,14 @@ class BBIAVision:
         if MEDIAPIPE_POSE_AVAILABLE and create_pose_detector is not None:
             try:
                 model_complexity = int(
-                    os.environ.get("BBIA_POSE_COMPLEXITY", "1")
+                    os.environ.get("BBIA_POSE_COMPLEXITY", "1"),
                 )  # 0=rapide, 1=équilibré, 2=précis
                 self.pose_detector = create_pose_detector(
-                    model_complexity=model_complexity
+                    model_complexity=model_complexity,
                 )
                 if self.pose_detector and self.pose_detector.is_initialized:
                     logger.info(
-                        f"✅ MediaPipe Pose initialisé (complexité: {model_complexity})"
+                        f"✅ MediaPipe Pose initialisé (complexité: {model_complexity})",
                     )
             except Exception as e:
                 logger.warning(f"⚠️ MediaPipe Pose non disponible: {e}")
@@ -326,6 +330,7 @@ class BBIAVision:
 
         Returns:
             Image numpy array (BGR pour compatibilité OpenCV) ou None si non disponible
+
         """
         # Priorité 1: SDK Reachy Mini camera
         if self._camera_sdk_available and self._camera:
@@ -363,7 +368,7 @@ class BBIAVision:
                 image = self._camera()
             else:
                 logger.warning(
-                    "⚠️ robot.media.camera disponible mais méthode de capture inconnue"
+                    "⚠️ robot.media.camera disponible mais méthode de capture inconnue",
                 )
                 return None
 
@@ -395,7 +400,7 @@ class BBIAVision:
             if image.ndim < 2 or image.ndim > 3:
                 logger.warning(
                     f"Format image invalide (ndim={image.ndim}), "
-                    "attendu 2 ou 3 dimensions"
+                    "attendu 2 ou 3 dimensions",
                 )
                 return None
 
@@ -403,30 +408,29 @@ class BBIAVision:
             if not CV2_AVAILABLE or cv2 is None:
                 # Fallback sans cv2: supposer format correct
                 logger.debug("cv2 non disponible, format image supposé correct")
-            else:
-                # Convertir grayscale → BGR si nécessaire
-                if image.ndim == 2:
-                    # Grayscale: ajouter channel
+            # Convertir grayscale → BGR si nécessaire
+            elif image.ndim == 2:
+                # Grayscale: ajouter channel
+                image = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
+            elif image.ndim == 3:
+                # Image couleur: vérifier nombre de canaux
+                channels = image.shape[2]
+                if channels == 1:
                     image = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
-                elif image.ndim == 3:
-                    # Image couleur: vérifier nombre de canaux
-                    channels = image.shape[2]
-                    if channels == 1:
-                        image = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
-                    elif channels == 4:
-                        # RGBA → BGR
-                        image = cv2.cvtColor(image, cv2.COLOR_RGBA2BGR)
-                    elif channels == 3:
-                        # CORRECTION EXPERTE: SDK retourne généralement RGB
-                        # Mais OpenCV/YOLO attendent BGR, donc convertir RGB → BGR
-                        # Si SDK retourne déjà BGR, cette conversion sera effectuée
-                        # mais généralement les SDKs retournent RGB
-                        image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
-                else:
-                    logger.warning(
-                        f"Nombre de canaux invalide ({image.shape[2] if image.ndim == 3 else 'N/A'}), attendu 1, 3 ou 4"
-                    )
-                    return None
+                elif channels == 4:
+                    # RGBA → BGR
+                    image = cv2.cvtColor(image, cv2.COLOR_RGBA2BGR)
+                elif channels == 3:
+                    # CORRECTION EXPERTE: SDK retourne généralement RGB
+                    # Mais OpenCV/YOLO attendent BGR, donc convertir RGB → BGR
+                    # Si SDK retourne déjà BGR, cette conversion sera effectuée
+                    # mais généralement les SDKs retournent RGB
+                    image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+            else:
+                logger.warning(
+                    f"Nombre de canaux invalide ({image.shape[2] if image.ndim == 3 else 'N/A'}), attendu 1, 3 ou 4",
+                )
+                return None
 
             # Validation finale: s'assurer que l'image est valide
             if image.size == 0:
@@ -450,7 +454,7 @@ class BBIAVision:
 
             logger.debug("✅ Image capturée depuis robot.media.camera (format validé)")
             # Type narrowing: image est maintenant np.ndarray après toutes les validations
-            return cast(npt.NDArray[np.uint8], image)
+            return cast("npt.NDArray[np.uint8]", image)
 
         except Exception as e:
             logger.debug(f"Erreur capture caméra SDK (fallback simulation): {e}")
@@ -496,14 +500,15 @@ class BBIAVision:
                     return None
 
             logger.debug("✅ Image capturée depuis webcam USB OpenCV")
-            return cast(npt.NDArray[np.uint8], image)
+            return cast("npt.NDArray[np.uint8]", image)
 
         except Exception as e:
             logger.debug(f"Erreur capture webcam OpenCV: {e}")
             return None
 
     def scan_environment_from_image(
-        self, image: npt.NDArray[np.uint8]
+        self,
+        image: npt.NDArray[np.uint8],
     ) -> dict[str, Any]:
         """Scanne l'environnement depuis une image fournie (au lieu de la caméra).
 
@@ -512,6 +517,7 @@ class BBIAVision:
 
         Returns:
             Dict avec objets, visages, postures détectés
+
         """
         objects = []
         faces = []
@@ -598,13 +604,15 @@ class BBIAVision:
                         ):
                             try:
                                 person_result = self.face_recognition.recognize_person(
-                                    face_roi, enforce_detection=False
+                                    face_roi,
+                                    enforce_detection=False,
                                 )
                                 if person_result:
                                     recognized_name = person_result["name"]
 
                                 emotion_result = self.face_recognition.detect_emotion(
-                                    face_roi, enforce_detection=False
+                                    face_roi,
+                                    enforce_detection=False,
                                 )
                                 if emotion_result:
                                     detected_emotion = emotion_result["emotion"]
@@ -645,17 +653,19 @@ class BBIAVision:
                             "landmarks_count": pose_result["num_landmarks"],
                             "gestures": pose_result["gestures"],
                             "posture": pose_result["posture"],
-                        }
+                        },
                     )
             except Exception as e:
                 logger.debug(f"Erreur détection pose: {e}")
 
         # OPTIMISATION RAM: Limiter taille historique avec deque
         self.objects_detected = deque(
-            objects[: self._max_detections_history], maxlen=self._max_detections_history
+            objects[: self._max_detections_history],
+            maxlen=self._max_detections_history,
         )
         self.faces_detected = deque(
-            faces[: self._max_detections_history], maxlen=self._max_detections_history
+            faces[: self._max_detections_history],
+            maxlen=self._max_detections_history,
         )
 
         return {
@@ -769,20 +779,22 @@ class BBIAVision:
                                     # Reconnaître la personne
                                     person_result = (
                                         self.face_recognition.recognize_person(
-                                            face_roi, enforce_detection=False
+                                            face_roi,
+                                            enforce_detection=False,
                                         )
                                     )
                                     if person_result:
                                         recognized_name = person_result["name"]
                                         logger.debug(
                                             f"👤 Personne reconnue: {recognized_name} "
-                                            f"(confiance: {person_result['confidence']:.2f})"
+                                            f"(confiance: {person_result['confidence']:.2f})",
                                         )
 
                                     # Détecter l'émotion
                                     emotion_result = (
                                         self.face_recognition.detect_emotion(
-                                            face_roi, enforce_detection=False
+                                            face_roi,
+                                            enforce_detection=False,
                                         )
                                     )
                                     if emotion_result:
@@ -792,11 +804,11 @@ class BBIAVision:
                                         ]
                                         logger.debug(
                                             f"😊 Émotion détectée: {detected_emotion} "
-                                            f"(confiance: {emotion_confidence:.2f})"
+                                            f"(confiance: {emotion_confidence:.2f})",
                                         )
                                 except Exception as deepface_error:
                                     logger.debug(
-                                        f"DeepFace erreur (fallback): {deepface_error}"
+                                        f"DeepFace erreur (fallback): {deepface_error}",
                                     )
 
                             face = {
@@ -833,11 +845,11 @@ class BBIAVision:
                                 "landmarks_count": pose_result["num_landmarks"],
                                 "gestures": pose_result["gestures"],
                                 "posture": pose_result["posture"],
-                            }
+                            },
                         )
                         logger.debug(
                             f"🧍 Posture détectée: {pose_result['posture']}, "
-                            f"gestes: {pose_result['gestures']}"
+                            f"gestes: {pose_result['gestures']}",
                         )
                 except Exception as e:
                     logger.debug(f"Erreur détection pose: {e}")
@@ -845,7 +857,7 @@ class BBIAVision:
             if objects or faces or poses:
                 logger.info(
                     f"✅ Détection réelle: {len(objects)} objets, {len(faces)} visages, "
-                    f"{len(poses)} postures"
+                    f"{len(poses)} postures",
                 )
                 # OPTIMISATION RAM: Limiter taille historique avec deque
                 self.objects_detected = deque(
@@ -921,10 +933,12 @@ class BBIAVision:
 
         # OPTIMISATION RAM: Convertir en list pour compatibilité, mais limiter taille
         self.objects_detected = deque(
-            objects[: self._max_detections_history], maxlen=self._max_detections_history
+            objects[: self._max_detections_history],
+            maxlen=self._max_detections_history,
         )
         self.faces_detected = deque(
-            faces[: self._max_detections_history], maxlen=self._max_detections_history
+            faces[: self._max_detections_history],
+            maxlen=self._max_detections_history,
         )
 
         return {
@@ -961,8 +975,7 @@ class BBIAVision:
             self.tracking_active = True
             self.current_focus = obj
             return True
-        else:
-            return False
+        return False
 
     def stop_tracking(self) -> None:
         """Arrête le suivi d'objet."""

@@ -12,14 +12,14 @@
 
 ### 1. ✅ Mettre à jour tests/README.md avec chiffres réels - TERMINÉ
 
-**Problème** : Le fichier mentionnait "441 tests passent" alors qu'il y a maintenant **1210 tests**
+**Problème** : Le fichier mentionnait "441 tests passent" alors qu'il y a maintenant **1245 tests**
 
 **Fichier** : `tests/README.md`
 
 **Action** : ✅ CORRIGÉ
 ```markdown
 - **Coverage total** : **68.86%** (excellent)
-- **1210 tests collectés** (pytest --collect-only)
+- **1245 tests collectés** (pytest --collect-only)
 - **Tests passent** : Voir résultats pytest récents
 ```
 
@@ -65,7 +65,7 @@
 1. ✅ **`vision_yolo.py`** : **89.62% coverage** ✅ - **TERMINÉ**
    - **Statut** : Objectif 50%+ largement dépassé
 
-2. **`voice_whisper.py`** : **36.84% coverage** ⬆️ (18+ tests ajoutés, +13.57%)
+2. **`voice_whisper.py**: **59.83%** coverage** ⬆️ (18+ tests ajoutés, +13.57%)
    - **Action** : Continuer amélioration vers 50%+ (~1-2h restantes)
    - **Focus** : transcribe_streaming, améliorer VAD
 
@@ -161,7 +161,7 @@
 ## 🎯 Recommandations Immédiates
 
 **Actions rapides (< 1h)** :
-1. ✅ **TERMINÉ** : Mettre à jour `tests/README.md` avec 1210 tests
+1. ✅ **TERMINÉ** : Mettre à jour `tests/README.md` avec 1245 tests
 2. ✅ **TERMINÉ** : Déplacer `logs/comparison_official_report.md` vers `docs/conformite/`
 3. ✅ **TERMINÉ** : Implémenter calcul uptime réel dans ecosystem.py
 

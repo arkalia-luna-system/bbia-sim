@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Enregistre un échantillon de référence (mono 16 kHz) pour la voix personnalisée.
+"""Enregistre un échantillon de référence (mono 16 kHz) pour la voix personnalisée.
 Usage:
   source venv-voice-clone/bin/activate  # venv dédié si besoin
   python scripts/voice_clone/enregistrer_sample.py --out assets/voice/ref.wav --dur 30
@@ -20,7 +19,7 @@ def main() -> None:
 
     print(f"[REC] Enregistrement {args.dur}s → {args.out} (mono {args.sr}Hz)")
     audio = sd.rec(
-        int(args.dur * args.sr), samplerate=args.sr, channels=1, dtype="float32"
+        int(args.dur * args.sr), samplerate=args.sr, channels=1, dtype="float32",
     )
     sd.wait()
     sf.write(args.out, audio, args.sr)

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Script pour vérifier tous les MD et identifier :
+"""Script pour vérifier tous les MD et identifier :
 1. Tâches mentionnées comme "à faire" qui sont déjà faites → corriger MD
 2. Tâches vraiment pas encore faites → lister
 """
@@ -47,7 +46,7 @@ FUNCTIONALITIES_TO_CHECK = {
 
 
 def check_functionality_implemented(
-    name: str, info: dict[str, Any], root_dir: Path
+    name: str, info: dict[str, Any], root_dir: Path,
 ) -> bool:
     """Vérifie si une fonctionnalité est implémentée dans le code."""
     code_path = root_dir / info["code_path"]
@@ -71,7 +70,7 @@ def check_functionality_implemented(
                 if any(p in line for p in info["patterns"]):
                     # Vérifier lignes proches
                     nearby = " ".join(
-                        lines[max(0, i - 2) : min(len(lines), i + 3)]
+                        lines[max(0, i - 2) : min(len(lines), i + 3)],
                     ).upper()
                     if "TODO" in nearby:
                         return False  # TODO encore présent
@@ -102,7 +101,7 @@ def find_todos_in_md(file_path: Path) -> list[dict[str, Any]]:
                             "match": match.group(),
                             "content": line.strip(),
                             "context": context,
-                        }
+                        },
                     )
     except Exception:
         pass
@@ -163,7 +162,7 @@ def main():
                     is_outdated = True
                     outdated_docs.append((md_file, todo, func_name))
                     print(
-                        f"  ⚠️  OUTDATÉ (ligne {todo['line']}): {func_name} est implémenté"
+                        f"  ⚠️  OUTDATÉ (ligne {todo['line']}): {func_name} est implémenté",
                     )
                     break
 
@@ -176,7 +175,7 @@ def main():
     print("=" * 60)
     print("\n📊 RÉSUMÉ\n")
     print(
-        f"✅ Fonctionnalités implémentées: {sum(implemented.values())}/{len(implemented)}"
+        f"✅ Fonctionnalités implémentées: {sum(implemented.values())}/{len(implemented)}",
     )
     print(f"⚠️  MD à corriger (outdatés): {len(outdated_docs)}")
     print(f"⏳ Vrais TODOs restants: {len(real_todos)}\n")

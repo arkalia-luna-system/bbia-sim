@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-bbia_dashboard.py - Dashboard web minimal pour BBIA
+"""bbia_dashboard.py - Dashboard web minimal pour BBIA
 Interface web simple avec FastAPI + WebSocket pour contrôler le robot
 """
 
@@ -46,7 +45,7 @@ class BBIAWebSocketManager:
         await websocket.accept()
         self.active_connections.append(websocket)
         logger.info(
-            f"🔌 WebSocket connecté ({len(self.active_connections)} connexions)"
+            f"🔌 WebSocket connecté ({len(self.active_connections)} connexions)",
         )
 
         # Envoyer état initial
@@ -57,7 +56,7 @@ class BBIAWebSocketManager:
         if websocket in self.active_connections:
             self.active_connections.remove(websocket)
         logger.info(
-            f"🔌 WebSocket déconnecté ({len(self.active_connections)} connexions)"
+            f"🔌 WebSocket déconnecté ({len(self.active_connections)} connexions)",
         )
 
     async def send_personal_message(self, message: str, websocket: WebSocket):
@@ -381,12 +380,13 @@ async def handle_robot_command(command_data: dict[str, Any]):
         # Initialiser robot si nécessaire
         if not websocket_manager.robot:
             websocket_manager.robot = RobotFactory.create_backend(
-                websocket_manager.robot_backend
+                websocket_manager.robot_backend,
             )
             if websocket_manager.robot:
                 websocket_manager.robot.connect()
                 await websocket_manager.send_log_message(
-                    "info", f"Robot {websocket_manager.robot_backend} connecté"
+                    "info",
+                    f"Robot {websocket_manager.robot_backend} connecté",
                 )
 
         # Exécuter commande
@@ -394,7 +394,8 @@ async def handle_robot_command(command_data: dict[str, Any]):
             if command_type == "emotion":
                 websocket_manager.robot.set_emotion(str(value), intensity=0.8)
                 await websocket_manager.send_log_message(
-                    "info", f"Émotion définie: {value}"
+                    "info",
+                    f"Émotion définie: {value}",
                 )
 
             elif command_type == "action":
@@ -433,17 +434,17 @@ async def handle_robot_command(command_data: dict[str, Any]):
 
     except Exception as e:
         logger.error(f"❌ Erreur commande robot: {e}")
-        await websocket_manager.send_log_message("error", f"Erreur: {str(e)}")
+        await websocket_manager.send_log_message("error", f"Erreur: {e!s}")
 
 
 def run_dashboard(host: str = "127.0.0.1", port: int = 8000, backend: str = "mujoco"):
-    """
-    Lance le dashboard BBIA.
+    """Lance le dashboard BBIA.
 
     Args:
         host: Adresse d'écoute
         port: Port d'écoute
         backend: Backend robot à utiliser
+
     """
     if not FASTAPI_AVAILABLE:
         logger.error("❌ FastAPI non disponible")

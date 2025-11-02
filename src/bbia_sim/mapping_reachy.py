@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-mapping_reachy.py - Source de vérité pour les joints Reachy Mini
+"""mapping_reachy.py - Source de vérité pour les joints Reachy Mini
 Mapping unique des noms/limites joints pour éviter les divergences sim ↔ réel
 """
 
@@ -105,7 +104,7 @@ class ReachyMapping:
     #
     # RECOMMENDED_JOINTS ne liste que yaw_body car c'est le seul joint mobile pouvant être contrôlé directement.
     RECOMMENDED_JOINTS: set[str] = {
-        "yaw_body"
+        "yaw_body",
     }  # stewart_1-6 nécessitent goto_target() / IK
 
     # Limite de sécurité globale
@@ -124,8 +123,7 @@ class ReachyMapping:
 
     @classmethod
     def validate_position(cls, joint_name: str, position: float) -> tuple[bool, float]:
-        """
-        Valide et clamp une position de joint.
+        """Valide et clamp une position de joint.
 
         ⚠️ IMPORTANT (Sécurité Expert):
         - Applique d'abord les limites hardware (min_limit, max_limit)
@@ -134,6 +132,7 @@ class ReachyMapping:
 
         Returns:
             (is_valid, clamped_position)
+
         """
         if joint_name in cls.FORBIDDEN_JOINTS:
             return False, 0.0
@@ -206,7 +205,7 @@ if __name__ == "__main__":
     for joint_name in ReachyMapping.get_all_joints():
         joint_info = ReachyMapping.get_joint_info(joint_name)
         print(
-            f"  - {joint_name}: [{joint_info.min_limit:.2f}, {joint_info.max_limit:.2f}] rad"
+            f"  - {joint_name}: [{joint_info.min_limit:.2f}, {joint_info.max_limit:.2f}] rad",
         )
 
     print(f"\n🚫 Joints interdits: {len(ReachyMapping.get_forbidden_joints())}")

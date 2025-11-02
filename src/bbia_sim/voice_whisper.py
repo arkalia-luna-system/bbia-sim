@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-bbia_voice_whisper.py - Module Whisper STT pour BBIA
+"""bbia_voice_whisper.py - Module Whisper STT pour BBIA
 Intégration Speech-to-Text avec OpenAI Whisper (optionnel)
 """
 
@@ -36,7 +35,8 @@ except ImportError:
 
 try:
     import sounddevice as sd
-except ImportError:
+except (ImportError, OSError):
+    # OSError: PortAudio library not found (CI/headless)
     sd = None
 
 logger = logging.getLogger(__name__)
@@ -58,15 +58,18 @@ class WhisperSTT:
     """Module Speech-to-Text utilisant OpenAI Whisper."""
 
     def __init__(
-        self, model_size: str = "tiny", language: str = "fr", enable_vad: bool = True
+        self,
+        model_size: str = "tiny",
+        language: str = "fr",
+        enable_vad: bool = True,
     ):
-        """
-        Initialise le module Whisper STT.
+        """Initialise le module Whisper STT.
 
         Args:
             model_size: Taille du modèle ("tiny", "base", "small", "medium", "large")
             language: Langue cible ("fr", "en", "auto")
             enable_vad: Activer la détection d'activité vocale (VAD) pour activation auto
+
         """
         self.model_size = model_size
         self.language = language
@@ -78,12 +81,12 @@ class WhisperSTT:
 
         if not WHISPER_AVAILABLE:
             logger.warning(
-                "⚠️ Whisper non disponible. Fallback vers speech_recognition."
+                "⚠️ Whisper non disponible. Fallback vers speech_recognition.",
             )
             return
 
         logger.info(
-            f"🎤 Initialisation Whisper STT (modèle: {model_size}, langue: {language}, VAD: {enable_vad})"
+            f"🎤 Initialisation Whisper STT (modèle: {model_size}, langue: {language}, VAD: {enable_vad})",
         )
 
     def load_model(self) -> bool:
@@ -96,7 +99,7 @@ class WhisperSTT:
         with _whisper_model_cache_lock:
             if self.model_size in _whisper_models_cache:
                 logger.debug(
-                    f"♻️ Réutilisation modèle Whisper depuis cache ({self.model_size})"
+                    f"♻️ Réutilisation modèle Whisper depuis cache ({self.model_size})",
                 )
                 self.model = _whisper_models_cache[self.model_size]
                 # OPTIMISATION RAM: Mettre à jour timestamp usage
@@ -109,12 +112,13 @@ class WhisperSTT:
                 # Trouver modèle le moins récemment utilisé
                 if _whisper_model_last_used:
                     oldest_key = min(
-                        _whisper_model_last_used.items(), key=lambda x: x[1]
+                        _whisper_model_last_used.items(),
+                        key=lambda x: x[1],
                     )[0]
                     del _whisper_models_cache[oldest_key]
                     del _whisper_model_last_used[oldest_key]
                     logger.debug(
-                        f"♻️ Modèle Whisper LRU déchargé: {oldest_key} (optimisation RAM)"
+                        f"♻️ Modèle Whisper LRU déchargé: {oldest_key} (optimisation RAM)",
                     )
 
         try:
@@ -140,14 +144,14 @@ class WhisperSTT:
             return False
 
     def transcribe_audio(self, audio_path: str) -> str | None:
-        """
-        Transcrit un fichier audio en texte.
+        """Transcrit un fichier audio en texte.
 
         Args:
             audio_path: Chemin vers le fichier audio
 
         Returns:
             Texte transcrit ou None si erreur
+
         """
         # Vérification globale de disponibilité
         if not WHISPER_AVAILABLE:
@@ -170,7 +174,7 @@ class WhisperSTT:
                 return None
 
             result = cast(
-                dict[str, Any],
+                "dict[str, Any]",
                 self.model.transcribe(
                     audio_path,
                     language=self.language if self.language != "auto" else None,
@@ -182,7 +186,7 @@ class WhisperSTT:
             text = result["text"].strip()
 
             logger.info(
-                f"✅ Transcription terminée en {transcription_time:.1f}s: '{text}'"
+                f"✅ Transcription terminée en {transcription_time:.1f}s: '{text}'",
             )
             return text
 
@@ -191,19 +195,19 @@ class WhisperSTT:
             return None
 
     def transcribe_microphone(self, duration: float = 3.0) -> str | None:
-        """
-        Enregistre et transcrit depuis le microphone.
+        """Enregistre et transcrit depuis le microphone.
 
         Args:
             duration: Durée d'enregistrement en secondes
 
         Returns:
             Texte transcrit ou None si erreur
+
         """
         # Désactivation explicite audio (CI/headless)
         if os.environ.get("BBIA_DISABLE_AUDIO", "0") == "1":
             logger.info(
-                "🎤 Micro désactivé (BBIA_DISABLE_AUDIO=1) - skip enregistrement"
+                "🎤 Micro désactivé (BBIA_DISABLE_AUDIO=1) - skip enregistrement",
             )
             return None
 
@@ -254,7 +258,7 @@ class WhisperSTT:
 
         except ImportError:
             logger.error(
-                "❌ sounddevice/soundfile requis pour l'enregistrement microphone"
+                "❌ sounddevice/soundfile requis pour l'enregistrement microphone",
             )
             return None
         except Exception as e:
@@ -262,14 +266,14 @@ class WhisperSTT:
             return None
 
     def detect_speech_activity(self, audio_chunk: Any) -> bool:
-        """
-        Détecte si un chunk audio contient de la parole (VAD - Voice Activity Detection).
+        """Détecte si un chunk audio contient de la parole (VAD - Voice Activity Detection).
 
         Args:
             audio_chunk: Chunk audio (numpy array ou fichier)
 
         Returns:
             True si parole détectée, False sinon
+
         """
         if not self.enable_vad:
             return True  # Si VAD désactivé, considérer toujours comme parole
@@ -323,7 +327,7 @@ class WhisperSTT:
                     import soundfile as soundfile_module
                 except ImportError:
                     logger.warning(
-                        "⚠️ soundfile requis pour VAD fichier, fallback activé"
+                        "⚠️ soundfile requis pour VAD fichier, fallback activé",
                     )
                     return True  # Fallback: considérer comme parole
             else:
@@ -369,10 +373,11 @@ class WhisperSTT:
             return True  # Fallback: considérer comme parole
 
     def transcribe_microphone_with_vad(
-        self, duration: float = 3.0, silence_threshold: float = 0.3
+        self,
+        duration: float = 3.0,
+        silence_threshold: float = 0.3,
     ) -> str | None:
-        """
-        Enregistre et transcrit depuis le microphone avec détection VAD automatique.
+        """Enregistre et transcrit depuis le microphone avec détection VAD automatique.
 
         Args:
             duration: Durée maximale d'enregistrement en secondes
@@ -380,11 +385,12 @@ class WhisperSTT:
 
         Returns:
             Texte transcrit ou None si aucune parole détectée
+
         """
         # Désactivation explicite audio (CI/headless)
         if os.environ.get("BBIA_DISABLE_AUDIO", "0") == "1":
             logger.info(
-                "🎤 Micro désactivé (BBIA_DISABLE_AUDIO=1) - skip enregistrement"
+                "🎤 Micro désactivé (BBIA_DISABLE_AUDIO=1) - skip enregistrement",
             )
             return None
 
@@ -466,7 +472,7 @@ class WhisperSTT:
 
         except ImportError:
             logger.error(
-                "❌ sounddevice/soundfile requis pour l'enregistrement microphone"
+                "❌ sounddevice/soundfile requis pour l'enregistrement microphone",
             )
             return None
         except Exception as e:
@@ -480,8 +486,7 @@ class WhisperSTT:
         max_duration: float = 30.0,
         transcription_interval: float = 1.5,
     ) -> str | None:
-        """
-        Transcription en streaming (continuelle) depuis le microphone.
+        """Transcription en streaming (continuelle) depuis le microphone.
         Utile pour latence réduite (500ms vs 1-2s).
 
         Args:
@@ -493,6 +498,7 @@ class WhisperSTT:
 
         Returns:
             Texte final complet transcrit, ou None si erreur
+
         """
         # Désactivation explicite audio (CI/headless)
         if os.environ.get("BBIA_DISABLE_AUDIO", "0") == "1":
@@ -517,7 +523,7 @@ class WhisperSTT:
             import soundfile as sf
 
             logger.info(
-                f"🎤 Transcription streaming ({chunk_duration}s chunks, max {max_duration}s, intervalle {transcription_interval}s)..."
+                f"🎤 Transcription streaming ({chunk_duration}s chunks, max {max_duration}s, intervalle {transcription_interval}s)...",
             )
 
             sample_rate = 16000
@@ -564,7 +570,6 @@ class WhisperSTT:
                             should_transcribe = False
                         # OPTIMISATION RAM: Buffer géré par deque (maxlen)
                         # Pas besoin de pop manuel
-                        pass
 
                 # OPTIMISATION: Throttling - ne transcrire que si intervalle respecté ET parole détectée
                 current_time = time.time()
@@ -591,7 +596,8 @@ class WhisperSTT:
                     else:
                         temp_file = (
                             Path(tempfile.gettempdir())
-                            / f"bbia_whisper_stream_{os.getpid()}_{int(time.time() * 1000)}.wav"
+                            / f"bbia_whisper_stream_{os.getpid()}_"
+                            f"{int(time.time() * 1000)}.wav"
                         )
                         # Limiter taille pool
                         if len(self._temp_file_pool) < self._max_temp_files:
@@ -606,7 +612,7 @@ class WhisperSTT:
                             break
 
                         result = cast(
-                            dict[str, Any],
+                            "dict[str, Any]",
                             self.model.transcribe(
                                 str(temp_file),
                                 language=(
@@ -633,7 +639,8 @@ class WhisperSTT:
                                     logger.debug(f"Erreur callback: {callback_error}")
 
                     finally:
-                        # OPTIMISATION RAM: Remettre fichier dans pool au lieu de supprimer
+                        # OPTIMISATION RAM: Remettre fichier dans pool au lieu
+                        # de supprimer
                         if temp_file and temp_file.exists():
                             # Remettre dans pool si espace disponible
                             if len(self._temp_file_pool) < self._max_temp_files:
@@ -696,18 +703,18 @@ class VoiceCommandMapper:
         }
 
         logger.info(
-            f"🗣️ Mappeur de commandes initialisé ({len(self.commands)} commandes)"
+            f"🗣️ Mappeur de commandes initialisé ({len(self.commands)} commandes)",
         )
 
     def map_command(self, text: str) -> dict[str, Any] | None:
-        """
-        Mappe un texte vers une action RobotAPI.
+        """Mappe un texte vers une action RobotAPI.
 
         Args:
             text: Texte à mapper
 
         Returns:
             Dictionnaire d'action ou None si non reconnu
+
         """
         if not text:
             return None
@@ -732,10 +739,10 @@ class VoiceCommandMapper:
 
 
 def create_whisper_stt(
-    model_size: str = "tiny", language: str = "fr"
+    model_size: str = "tiny",
+    language: str = "fr",
 ) -> WhisperSTT | None:
-    """
-    Factory function pour créer une instance WhisperSTT.
+    """Factory function pour créer une instance WhisperSTT.
 
     Args:
         model_size: Taille du modèle Whisper
@@ -743,6 +750,7 @@ def create_whisper_stt(
 
     Returns:
         Instance WhisperSTT ou None si non disponible
+
     """
     if not WHISPER_AVAILABLE:
         logger.warning("⚠️ Whisper non disponible")
@@ -755,17 +763,17 @@ def create_whisper_stt(
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
 
-    print("🧪 Test module Whisper STT")
-    print("=" * 40)
+    logger.info("🧪 Test module Whisper STT")
+    logger.info("=" * 40)
 
     # Test disponibilité
-    print(f"Whisper disponible: {WHISPER_AVAILABLE}")
+    logger.info(f"Whisper disponible: {WHISPER_AVAILABLE}")
 
     if WHISPER_AVAILABLE:
         # Test création
         stt = create_whisper_stt("tiny", "fr")
         if stt:
-            print("✅ Module Whisper créé")
+            logger.info("✅ Module Whisper créé")
 
             # Test mappeur
             mapper = VoiceCommandMapper()
@@ -778,8 +786,8 @@ if __name__ == "__main__":
 
             for cmd in test_commands:
                 result = mapper.map_command(cmd)
-                print(f"  '{cmd}' → {result}")
+                logger.info(f"  '{cmd}' → {result}")
         else:
-            print("❌ Impossible de créer le module Whisper")
+            logger.error("❌ Impossible de créer le module Whisper")
     else:
-        print("❌ Whisper non installé")
+        logger.error("❌ Whisper non installé")

@@ -48,12 +48,12 @@ class SimulationService:
             if headless:
                 # Mode headless asynchrone
                 self._simulation_task = asyncio.create_task(
-                    self._run_headless_simulation()
+                    self._run_headless_simulation(),
                 )
             else:
                 # Mode graphique (nécessite un thread séparé)
                 self._simulation_task = asyncio.create_task(
-                    self._run_graphical_simulation()
+                    self._run_graphical_simulation(),
                 )
 
             self.is_running = True
@@ -109,7 +109,8 @@ class SimulationService:
                 if self.simulator:
                     # Note: mj_step est synchrone, on l'exécute dans un thread
                     await asyncio.get_event_loop().run_in_executor(
-                        None, self.simulator._step_simulation
+                        None,
+                        self.simulator._step_simulation,
                     )
                     step_count += 1
 
@@ -118,7 +119,7 @@ class SimulationService:
 
                 # OPTIMISATION PERFORMANCE: Réduire fréquence 1000Hz → 60Hz pour Mac
                 await asyncio.sleep(
-                    0.016
+                    0.016,
                 )  # ~60 Hz (suffisant pour simulation fluide, moins de CPU)
 
             except Exception as e:
@@ -135,7 +136,10 @@ class SimulationService:
             # Pour le mode graphique, on utilise le viewer MuJoCo
             # qui doit s'exécuter dans le thread principal
             await asyncio.get_event_loop().run_in_executor(
-                None, self.simulator.launch_simulation, False, None
+                None,
+                self.simulator.launch_simulation,
+                False,
+                None,
             )
         except Exception as e:
             logger.error(f"Erreur simulation graphique : {e}")
@@ -172,7 +176,8 @@ class SimulationService:
         try:
             state = self.simulator.get_robot_state()
             joint_positions = state.get(
-                "joint_positions", self._get_default_joint_positions()
+                "joint_positions",
+                self._get_default_joint_positions(),
             )
             if isinstance(joint_positions, dict):
                 return joint_positions

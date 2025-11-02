@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Module de reconnaissance faciale personnalisée avec DeepFace.
+"""Module de reconnaissance faciale personnalisée avec DeepFace.
 
 Fonctionnalités :
 - Reconnaissance de personnes spécifiques (famille, amis)
@@ -38,12 +37,12 @@ class BBIAPersonRecognition:
     """
 
     def __init__(self, db_path: str = "faces_db", model_name: str = "VGG-Face"):
-        """
-        Initialise le module de reconnaissance faciale.
+        """Initialise le module de reconnaissance faciale.
 
         Args:
             db_path: Chemin vers la base de données de visages (dossier avec photos)
             model_name: Modèle DeepFace à utiliser (VGG-Face, Facenet, etc.)
+
         """
         self.db_path = Path(db_path)
         self.model_name = model_name
@@ -51,7 +50,7 @@ class BBIAPersonRecognition:
 
         if not DEEPFACE_AVAILABLE:
             logger.warning(
-                "⚠️ DeepFace non disponible. Installer avec: pip install deepface"
+                "⚠️ DeepFace non disponible. Installer avec: pip install deepface",
             )
             return
 
@@ -59,13 +58,12 @@ class BBIAPersonRecognition:
         self.db_path.mkdir(parents=True, exist_ok=True)
 
         logger.info(
-            f"👤 BBIAPersonRecognition initialisé (db: {db_path}, modèle: {model_name})"
+            f"👤 BBIAPersonRecognition initialisé (db: {db_path}, modèle: {model_name})",
         )
         self.is_initialized = True
 
     def register_person(self, image_path: str, person_name: str) -> bool:
-        """
-        Enregistre une personne dans la base de données.
+        """Enregistre une personne dans la base de données.
 
         Args:
             image_path: Chemin vers la photo de la personne
@@ -73,6 +71,7 @@ class BBIAPersonRecognition:
 
         Returns:
             True si enregistré avec succès
+
         """
         if not self.is_initialized:
             logger.warning("⚠️ DeepFace non disponible, enregistrement impossible")
@@ -97,10 +96,11 @@ class BBIAPersonRecognition:
             return False
 
     def recognize_person(
-        self, image_path: str | np.ndarray, enforce_detection: bool = False
+        self,
+        image_path: str | np.ndarray,
+        enforce_detection: bool = False,
     ) -> dict[str, Any] | None:
-        """
-        Reconnaît une personne dans une image.
+        """Reconnaît une personne dans une image.
 
         Args:
             image_path: Chemin vers l'image ou numpy array (BGR)
@@ -109,6 +109,7 @@ class BBIAPersonRecognition:
         Returns:
             Dict avec 'name' (nom personne), 'confidence' (0-1), 'distance' (similarité)
             ou None si personne non reconnue
+
         """
         if not self.is_initialized:
             return None
@@ -121,7 +122,8 @@ class BBIAPersonRecognition:
 
                 # Utiliser tempfile pour créer un fichier temporaire sécurisé
                 fd, temp_path = tempfile.mkstemp(
-                    suffix=".jpg", prefix="bbia_face_temp_"
+                    suffix=".jpg",
+                    prefix="bbia_face_temp_",
                 )
                 os.close(fd)  # Fermer le descripteur de fichier
                 cv2.imwrite(temp_path, image_path)
@@ -180,13 +182,14 @@ class BBIAPersonRecognition:
                 try:
                     os.unlink(temp_path)
                 except Exception:
-                    pass  # noqa: S101 - Ignorer erreur nettoyage fichier temp (déjà supprimé ou inexistant)
+                    pass
 
     def detect_emotion(
-        self, image_path: str | np.ndarray, enforce_detection: bool = False
+        self,
+        image_path: str | np.ndarray,
+        enforce_detection: bool = False,
     ) -> dict[str, Any] | None:
-        """
-        Détecte l'émotion dominante sur un visage.
+        """Détecte l'émotion dominante sur un visage.
 
         Args:
             image_path: Chemin vers l'image ou numpy array (BGR)
@@ -195,6 +198,7 @@ class BBIAPersonRecognition:
         Returns:
             Dict avec 'emotion' (nom), 'confidence' (0-1), et détails de toutes les émotions
             ou None si aucun visage
+
         """
         if not self.is_initialized:
             return None
@@ -207,7 +211,8 @@ class BBIAPersonRecognition:
 
                 # Utiliser tempfile pour créer un fichier temporaire sécurisé
                 fd, temp_path = tempfile.mkstemp(
-                    suffix=".jpg", prefix="bbia_emotion_temp_"
+                    suffix=".jpg",
+                    prefix="bbia_emotion_temp_",
                 )
                 os.close(fd)  # Fermer le descripteur de fichier
                 cv2.imwrite(temp_path, image_path)
@@ -261,13 +266,13 @@ class BBIAPersonRecognition:
                 try:
                     os.unlink(temp_path)
                 except Exception:
-                    pass  # noqa: S101 - Ignorer erreur nettoyage fichier temp (déjà supprimé ou inexistant)
+                    pass
 
     def recognize_with_emotion(
-        self, image_path: str | np.ndarray
+        self,
+        image_path: str | np.ndarray,
     ) -> dict[str, Any] | None:
-        """
-        Reconnaît une personne ET détecte son émotion en une seule fois.
+        """Reconnaît une personne ET détecte son émotion en une seule fois.
 
         Args:
             image_path: Chemin vers l'image ou numpy array
@@ -275,6 +280,7 @@ class BBIAPersonRecognition:
         Returns:
             Dict avec 'name', 'confidence', 'emotion', 'emotion_confidence'
             ou None si personne non reconnue
+
         """
         if not self.is_initialized:
             return None
@@ -297,11 +303,11 @@ class BBIAPersonRecognition:
         return result
 
     def get_registered_persons(self) -> list[str]:
-        """
-        Retourne la liste des personnes enregistrées.
+        """Retourne la liste des personnes enregistrées.
 
         Returns:
             Liste des noms de personnes
+
         """
         if not self.db_path.exists():
             return []
@@ -315,10 +321,10 @@ class BBIAPersonRecognition:
 
 
 def create_face_recognition(
-    db_path: str = "faces_db", model_name: str = "VGG-Face"
+    db_path: str = "faces_db",
+    model_name: str = "VGG-Face",
 ) -> BBIAPersonRecognition | None:
-    """
-    Factory function pour créer une instance BBIAPersonRecognition.
+    """Factory function pour créer une instance BBIAPersonRecognition.
 
     Args:
         db_path: Chemin vers la base de données de visages
@@ -326,6 +332,7 @@ def create_face_recognition(
 
     Returns:
         Instance BBIAPersonRecognition ou None si DeepFace non disponible
+
     """
     if not DEEPFACE_AVAILABLE:
         logger.warning("⚠️ DeepFace non disponible")

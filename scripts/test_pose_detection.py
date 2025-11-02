@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Test MediaPipe Pose - Détection postures/gestes
+"""Test MediaPipe Pose - Détection postures/gestes
 
 Usage:
     # Dans venv-vision-py310 (où MediaPipe est installé)

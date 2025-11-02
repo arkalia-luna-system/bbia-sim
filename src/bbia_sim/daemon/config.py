@@ -65,9 +65,8 @@ class Settings(BaseSettings):
             if self.cors_origins == ["*"]:
                 return []  # Aucune origine autorisée par défaut en prod
             return self.cors_origins
-        else:
-            # En dev, permissif mais documenté
-            return ["*"]
+        # En dev, permissif mais documenté
+        return ["*"]
 
     def get_simulation_config(self) -> dict[str, Any]:
         """Retourne la configuration de la simulation."""

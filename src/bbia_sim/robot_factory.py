@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
-"""
-RobotFactory - Factory pour créer les backends RobotAPI
-"""
+"""RobotFactory - Factory pour créer les backends RobotAPI"""
 
 import logging
 
@@ -26,6 +24,7 @@ class RobotFactory:
 
         Returns:
             Instance du backend ou None si erreur
+
         """
         try:
             if backend_type.lower() == "mujoco":
@@ -35,12 +34,12 @@ class RobotFactory:
                 )
                 return MuJoCoBackend(model_path=model_path)
 
-            elif backend_type.lower() == "reachy":
+            if backend_type.lower() == "reachy":
                 robot_ip = kwargs.get("robot_ip", "localhost")
                 robot_port = kwargs.get("robot_port", 8080)
                 return ReachyBackend(robot_ip=robot_ip, robot_port=robot_port)
 
-            elif backend_type.lower() == "reachy_mini":
+            if backend_type.lower() == "reachy_mini":
                 # Paramètres SDK officiel ReachyMini
                 # use_sim=True par défaut pour éviter timeout si pas de robot physique
                 # L'utilisateur peut forcer use_sim=False pour chercher un robot réel
@@ -54,9 +53,8 @@ class RobotFactory:
                     media_backend=kwargs.get("media_backend", "default"),
                 )
 
-            else:
-                logger.error(f"Type de backend non supporté: {backend_type}")
-                return None
+            logger.error(f"Type de backend non supporté: {backend_type}")
+            return None
 
         except Exception as e:
             logger.error(f"Erreur création backend {backend_type}: {e}")

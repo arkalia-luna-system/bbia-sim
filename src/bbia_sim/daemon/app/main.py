@@ -58,7 +58,7 @@ def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)) 
     if credentials.credentials != settings.api_token:
         # Log sécurisé sans exposer le token
         logger.warning(
-            f"Tentative d'authentification avec token invalide: {settings.mask_token(credentials.credentials)}"
+            f"Tentative d'authentification avec token invalide: {settings.mask_token(credentials.credentials)}",
         )
         raise HTTPException(
             status_code=401,
@@ -69,7 +69,7 @@ def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)) 
     # Log de succès en mode debug uniquement
     if settings.log_level.upper() == "DEBUG":
         logger.debug(
-            f"Authentification réussie avec token: {settings.mask_token(credentials.credentials)}"
+            f"Authentification réussie avec token: {settings.mask_token(credentials.credentials)}",
         )
 
     return str(credentials.credentials)
@@ -217,7 +217,8 @@ app.add_middleware(SecurityMiddleware)
 # Rate limiting (en production uniquement)
 if settings.is_production():
     app.add_middleware(
-        RateLimitMiddleware, requests_per_minute=settings.rate_limit_requests
+        RateLimitMiddleware,
+        requests_per_minute=settings.rate_limit_requests,
     )
 
 # Inclusion des routers (conforme SDK officiel: router parent /api avec sous-routers)
@@ -232,7 +233,8 @@ app.include_router(api_router_http, dependencies=[Depends(verify_token)])
 # Router daemon SANS auth pour permettre l'accès depuis le dashboard
 # Note: Les endpoints daemon sont sécurisés mais le status doit être accessible
 app.include_router(
-    daemon.router, prefix="/api"
+    daemon.router,
+    prefix="/api",
 )  # Sans dépendance globale pour dashboard
 
 # Routers AVEC WebSockets (pas d'auth globale pour WebSockets)
@@ -241,10 +243,12 @@ app.include_router(
 # TODO: Implémenter auth WebSocket via query params ou messages initiaux si nécessaire
 app.include_router(state.router, prefix="/api")  # Contient /ws/full + endpoints HTTP
 app.include_router(
-    move.router, prefix="/api"
+    move.router,
+    prefix="/api",
 )  # Contient /ws/updates, /ws/set_target + endpoints HTTP
 app.include_router(
-    apps.router, prefix="/api"
+    apps.router,
+    prefix="/api",
 )  # Contient /ws/apps-manager/{job_id} + endpoints HTTP
 
 # Routers BBIA supplémentaires (extensions légitimes)
@@ -322,7 +326,7 @@ if STATIC_DIR.exists() and TEMPLATES_DIR.exists():
 else:
     logger.warning(
         "Dashboard templates non trouvés. Dashboard non disponible. "
-        f"STATIC_DIR: {STATIC_DIR}, TEMPLATES_DIR: {TEMPLATES_DIR}"
+        f"STATIC_DIR: {STATIC_DIR}, TEMPLATES_DIR: {TEMPLATES_DIR}",
     )
 
     @app.get("/", response_class=JSONResponse)

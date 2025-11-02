@@ -444,6 +444,216 @@ class TestDaemonBridge:
         except ImportError:
             pytest.skip("Module daemon.bridge non disponible")
 
+    @patch("bbia_sim.daemon.bridge.ZENOH_AVAILABLE", True)
+    @patch("bbia_sim.daemon.bridge.REACHY_MINI_AVAILABLE", True)
+    @pytest.mark.asyncio
+    async def test_zenoh_bridge_setup_topics(self):
+        """Test configuration topics Zenoh."""
+        try:
+            from bbia_sim.daemon.bridge import ZenohBridge
+
+            bridge = ZenohBridge()
+            bridge.session = MagicMock()
+            bridge.session.declare_subscriber = MagicMock(return_value=MagicMock())
+            bridge.session.declare_publisher = MagicMock(return_value=MagicMock())
+
+            await bridge._setup_zenoh_topics()
+
+            assert "commands" in bridge.subscribers
+            assert "state" in bridge.publishers
+            assert "telemetry" in bridge.publishers
+            assert "errors" in bridge.publishers
+        except ImportError:
+            pytest.skip("Module daemon.bridge non disponible")
+
+    @patch("bbia_sim.daemon.bridge.ZENOH_AVAILABLE", True)
+    @pytest.mark.asyncio
+    async def test_zenoh_bridge_on_command_received_valid(self):
+        """Test réception commande valide."""
+        try:
+            import json
+
+            from bbia_sim.daemon.bridge import ZenohBridge
+
+            bridge = ZenohBridge()
+            bridge.command_queue = MagicMock()
+            bridge.command_queue.put = MagicMock()
+
+            mock_sample = MagicMock()
+            mock_sample.payload.decode.return_value = json.dumps(
+                {"command": "test", "parameters": {}}
+            )
+
+            await bridge._on_command_received(mock_sample)
+
+            bridge.command_queue.put.assert_called_once()
+        except ImportError:
+            pytest.skip("Module daemon.bridge non disponible")
+
+    @patch("bbia_sim.daemon.bridge.ZENOH_AVAILABLE", True)
+    @pytest.mark.asyncio
+    async def test_zenoh_bridge_on_command_received_too_large(self):
+        """Test réception commande trop volumineuse."""
+        try:
+            from bbia_sim.daemon.bridge import ZenohBridge
+
+            bridge = ZenohBridge()
+            bridge._publish_error = MagicMock()
+
+            mock_sample = MagicMock()
+            large_payload = "x" * (1048577)  # 1MB + 1 byte
+            mock_sample.payload.decode.return_value = large_payload
+
+            await bridge._on_command_received(mock_sample)
+
+            bridge._publish_error.assert_called_once()
+        except ImportError:
+            pytest.skip("Module daemon.bridge non disponible")
+
+    @patch("bbia_sim.daemon.bridge.ZENOH_AVAILABLE", True)
+    @pytest.mark.asyncio
+    async def test_zenoh_bridge_execute_command_goto_target(self):
+        """Test exécution commande goto_target."""
+        try:
+            from bbia_sim.daemon.bridge import RobotCommand, ZenohBridge
+
+            bridge = ZenohBridge()
+            bridge.reachy_mini = MagicMock()
+            bridge.reachy_mini.goto_target = MagicMock()
+
+            cmd = RobotCommand(
+                command="goto_target",
+                parameters={
+                    "head": [1.0, 0.0, 0.0],
+                    "duration": 1.0,
+                    "method": "minjerk",
+                },
+            )
+
+            await bridge._execute_command(cmd)
+            bridge.reachy_mini.goto_target.assert_called_once()
+        except ImportError:
+            pytest.skip("Module daemon.bridge non disponible")
+
+    @patch("bbia_sim.daemon.bridge.ZENOH_AVAILABLE", True)
+    @pytest.mark.asyncio
+    async def test_zenoh_bridge_execute_command_set_emotion(self):
+        """Test exécution commande set_emotion."""
+        try:
+            from bbia_sim.daemon.bridge import RobotCommand, ZenohBridge
+
+            bridge = ZenohBridge()
+            bridge.reachy_mini = MagicMock()
+
+            cmd = RobotCommand(
+                command="set_emotion", parameters={"emotion": "happy", "intensity": 0.8}
+            )
+
+            await bridge._execute_command(cmd)
+            assert "happy" in bridge.current_state.emotions
+        except ImportError:
+            pytest.skip("Module daemon.bridge non disponible")
+
+    @patch("bbia_sim.daemon.bridge.ZENOH_AVAILABLE", True)
+    @pytest.mark.asyncio
+    async def test_zenoh_bridge_publish_state(self):
+        """Test publication état."""
+        try:
+            from bbia_sim.daemon.bridge import ZenohBridge
+
+            bridge = ZenohBridge()
+            bridge.publishers["state"] = MagicMock()
+            bridge.publishers["state"].put = MagicMock()
+
+            await bridge._publish_state()
+            bridge.publishers["state"].put.assert_called_once()
+        except ImportError:
+            pytest.skip("Module daemon.bridge non disponible")
+
+    @patch("bbia_sim.daemon.bridge.ZENOH_AVAILABLE", True)
+    @pytest.mark.asyncio
+    async def test_zenoh_bridge_publish_error(self):
+        """Test publication erreur."""
+        try:
+            from bbia_sim.daemon.bridge import ZenohBridge
+
+            bridge = ZenohBridge()
+            bridge.publishers["errors"] = MagicMock()
+            bridge.publishers["errors"].put = MagicMock()
+
+            await bridge._publish_error("Test error")
+            bridge.publishers["errors"].put.assert_called_once()
+        except ImportError:
+            pytest.skip("Module daemon.bridge non disponible")
+
+    @patch("bbia_sim.daemon.bridge.ZENOH_AVAILABLE", True)
+    @patch("bbia_sim.daemon.bridge.REACHY_MINI_AVAILABLE", True)
+    @pytest.mark.asyncio
+    async def test_zenoh_bridge_update_robot_state(self):
+        """Test mise à jour état robot."""
+        try:
+            from bbia_sim.daemon.bridge import ZenohBridge
+
+            bridge = ZenohBridge()
+            bridge.reachy_mini = MagicMock()
+            bridge.reachy_mini.get_current_joint_positions = MagicMock(
+                return_value=([0.1] * 6, [0.2, 0.3])
+            )
+
+            await bridge._update_robot_state()
+
+            assert len(bridge.current_state.joints) > 0
+        except ImportError:
+            pytest.skip("Module daemon.bridge non disponible")
+
+    @patch("bbia_sim.daemon.bridge.app")
+    @patch("bbia_sim.daemon.bridge.bridge")
+    def test_fastapi_get_robot_state_endpoint(self, mock_bridge, mock_app):
+        """Test endpoint GET /api/zenoh/state."""
+        try:
+            from bbia_sim.daemon.bridge import RobotState, get_robot_state
+
+            mock_bridge.is_connected.return_value = True
+            mock_state = RobotState(joints={}, emotions={}, sensors={})
+            mock_bridge.get_current_state.return_value = mock_state
+
+            # Test async endpoint (simulé)
+            import asyncio
+
+            async def test():
+                result = await get_robot_state()
+                assert "joints" in result
+
+            asyncio.run(test())
+        except ImportError:
+            pytest.skip("Module daemon.bridge non disponible")
+
+    @patch("bbia_sim.daemon.bridge.bridge")
+    def test_fastapi_get_bridge_status_endpoint(self):
+        """Test endpoint GET /api/zenoh/status."""
+        try:
+            from bbia_sim.daemon.bridge import get_bridge_status
+
+            # Import global bridge
+            import bbia_sim.daemon.bridge as bridge_module
+
+            original_bridge = bridge_module.bridge
+            bridge_module.bridge = MagicMock()
+            bridge_module.bridge.is_connected.return_value = True
+
+            import asyncio
+
+            async def test():
+                result = await get_bridge_status()
+                assert "connected" in result
+                assert "zenoh_available" in result
+
+            asyncio.run(test())
+
+            bridge_module.bridge = original_bridge
+        except ImportError:
+            pytest.skip("Module daemon.bridge non disponible")
+
 
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])

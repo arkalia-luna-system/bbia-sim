@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-hardware_dry_run_reachy_mini.py - Test hardware avec SDK officiel Reachy-Mini
+"""hardware_dry_run_reachy_mini.py - Test hardware avec SDK officiel Reachy-Mini
 Version adaptée pour le SDK officiel reachy_mini
 """
 
@@ -99,7 +98,7 @@ class ReachyMiniHardwareDryRun:
                 joint_info = self.mapping.get_joint_info(joint)
                 if joint_info:
                     logger.info(
-                        f"   {joint}: {joint_info.min_limit:.3f} à {joint_info.max_limit:.3f} rad"
+                        f"   {joint}: {joint_info.min_limit:.3f} à {joint_info.max_limit:.3f} rad",
                     )
                 else:
                     logger.warning(f"   {joint}: Pas d'info de limite")
@@ -127,9 +126,8 @@ class ReachyMiniHardwareDryRun:
             if abs(actual_pos) <= safe_limit:
                 logger.info("✅ Limite amplitude respectée")
                 return True
-            else:
-                logger.error(f"❌ Limite amplitude non respectée: {actual_pos}")
-                return False
+            logger.error(f"❌ Limite amplitude non respectée: {actual_pos}")
+            return False
 
         except Exception as e:
             logger.error(f"❌ Erreur test sécurité: {e}")
@@ -163,7 +161,7 @@ class ReachyMiniHardwareDryRun:
                         "actual": read_pos,
                         "latency_ms": latency_ms,
                         "success": success,
-                    }
+                    },
                 )
 
                 test_count += 1
@@ -174,7 +172,7 @@ class ReachyMiniHardwareDryRun:
                         sum(d["latency_ms"] for d in self.latency_data[-100:]) / 100
                     )
                     logger.info(
-                        f"   {test_count} tests, latence moyenne: {avg_latency:.2f}ms"
+                        f"   {test_count} tests, latence moyenne: {avg_latency:.2f}ms",
                     )
 
                 time.sleep(0.01)  # 100Hz
@@ -192,9 +190,8 @@ class ReachyMiniHardwareDryRun:
             if avg_latency < 40:
                 logger.info("✅ Latence acceptable (<40ms)")
                 return True
-            else:
-                logger.warning(f"⚠️  Latence élevée: {avg_latency:.2f}ms")
-                return False
+            logger.warning(f"⚠️  Latence élevée: {avg_latency:.2f}ms")
+            return False
 
         except Exception as e:
             logger.error(f"❌ Erreur test latence: {e}")
@@ -219,7 +216,7 @@ class ReachyMiniHardwareDryRun:
 
             success_rate = success_count / len(emotions)
             logger.info(
-                f"✅ Émotions: {success_count}/{len(emotions)} ({success_rate:.1%})"
+                f"✅ Émotions: {success_count}/{len(emotions)} ({success_rate:.1%})",
             )
 
             return success_rate >= 0.8  # 80% de succès minimum
@@ -247,7 +244,7 @@ class ReachyMiniHardwareDryRun:
 
             success_rate = success_count / len(behaviors)
             logger.info(
-                f"✅ Comportements: {success_count}/{len(behaviors)} ({success_rate:.1%})"
+                f"✅ Comportements: {success_count}/{len(behaviors)} ({success_rate:.1%})",
             )
 
             return success_rate >= 0.8  # 80% de succès minimum
@@ -343,7 +340,7 @@ class ReachyMiniHardwareDryRun:
 
         if self.latency_data:
             avg_latency = sum(d["latency_ms"] for d in self.latency_data) / len(
-                self.latency_data
+                self.latency_data,
             )
             logger.info(f"Latence moyenne: {avg_latency:.2f}ms")
 
@@ -353,21 +350,26 @@ class ReachyMiniHardwareDryRun:
         if success_rate >= 0.8:
             logger.info("🎉 TEST GLOBAL: SUCCÈS")
             return True
-        else:
-            logger.error("⚠️  TEST GLOBAL: ÉCHEC")
-            return False
+        logger.error("⚠️  TEST GLOBAL: ÉCHEC")
+        return False
 
 
 def main():
     """Point d'entrée principal."""
     parser = argparse.ArgumentParser(
-        description="Test hardware Reachy-Mini SDK officiel"
+        description="Test hardware Reachy-Mini SDK officiel",
     )
     parser.add_argument(
-        "--duration", type=int, default=30, help="Durée test latence (s)"
+        "--duration",
+        type=int,
+        default=30,
+        help="Durée test latence (s)",
     )
     parser.add_argument(
-        "--output", type=str, default="artifacts", help="Répertoire sortie"
+        "--output",
+        type=str,
+        default="artifacts",
+        help="Répertoire sortie",
     )
 
     args = parser.parse_args()

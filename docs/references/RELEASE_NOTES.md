@@ -57,12 +57,12 @@ Mise à niveau centrée sur la robustesse (watchdog, arrêt d’urgence), le ren
 - `docs/archives/*`: suppression de dossiers obsolètes, harmonisation v1.3.1.
 
 ### Documentation
-- README: badges de tests (800+ en CI), couverture validée en CI, Quick Start API publique, variables d’environnement utiles.
+- README: badges de tests (**1245 tests** en CI), couverture **68.86%** validée en CI, Quick Start API publique, variables d'environnement utiles.
 - Guides: Débutant et Tests simplifiés; Portfolio One-Pager mis à jour (métriques non figées, v1.3.1).
 - Index et statuts: versions/chemins cohérents.
 
 ### Qualité et CI
-- Tests: 800+ en CI (nombre variable selon pipeline).
+- Tests: **1245 tests** collectés (pytest --collect-only), **68.86%** coverage global.
 - Couverture: validée en CI (`coverage.xml`, `htmlcov/`).
 - Outils: Black, Ruff, MyPy, Bandit.
 
@@ -258,4 +258,4 @@ python scripts/record_trace.py --emotion happy --duration 5
 
 ---
 
-*Dernière mise à jour : Oct / No2025025025025025*
+*Dernière mise à jour : Oct / Nov. 2025*

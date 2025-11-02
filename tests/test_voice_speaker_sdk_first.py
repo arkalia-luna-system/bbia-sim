@@ -1,6 +1,6 @@
 import types
 
-from src.bbia_sim.bbia_voice import dire_texte
+from bbia_sim.bbia_voice import dire_texte
 
 
 class _Speaker:

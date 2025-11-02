@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Générateur de présentation PDF BBIA-SIM
+"""Générateur de présentation PDF BBIA-SIM
 Crée une présentation professionnelle pour recruteurs et communauté
 """
 
@@ -15,7 +14,6 @@ sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 def generate_presentation_content():
     """Génère le contenu de la présentation."""
-
     content = {
         "title": "BBIA-SIM v1.3.0",
         "subtitle": "Innovation Technique en Robotique Cognitive",
@@ -197,21 +195,20 @@ def generate_presentation_content():
 
 def generate_markdown_presentation():
     """Génère une présentation Markdown."""
-
     content = generate_presentation_content()
 
-    markdown = f"""# {content['title']} - {content['subtitle']}
+    markdown = f"""# {content["title"]} - {content["subtitle"]}
 
-**Auteur :** {content['author']}
-**Date :** {content['date']}
-**Version :** {content['version']}
+**Auteur :** {content["author"]}
+**Date :** {content["date"]}
+**Version :** {content["version"]}
 
 ---
 
 """
 
     for i, slide in enumerate(content["slides"], 1):
-        markdown += f"""## Slide {i}: {slide['title']}
+        markdown += f"""## Slide {i}: {slide["title"]}
 
 """
         for line in slide["content"]:
@@ -224,7 +221,6 @@ def generate_markdown_presentation():
 
 def generate_linkedin_post():
     """Génère un post LinkedIn optimisé."""
-
     generate_presentation_content()
 
     post = """🚀 **BBIA-SIM v1.3.0** - Innovation Technique en Robotique Cognitive
@@ -262,7 +258,6 @@ Cette innovation positionne BBIA-SIM comme la référence technique pour la comm
 
 def main():
     """Fonction principale."""
-
     # Créer le dossier de sortie
     output_dir = Path("presentation")
     output_dir.mkdir(exist_ok=True)
@@ -289,7 +284,7 @@ def main():
     print(f"📄 Markdown : {markdown_file}")
     print(f"💼 LinkedIn : {linkedin_file}")
     print(f"📋 JSON : {json_file}")
-    print("")
+    print()
     print("🎯 Prochaines étapes :")
     print("1. Convertir Markdown en PDF (pandoc, ou outil en ligne)")
     print("2. Poster sur LinkedIn")

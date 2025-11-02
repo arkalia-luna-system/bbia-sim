@@ -7,7 +7,7 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from src.bbia_sim.sim.simulator import MuJoCoSimulator
+from bbia_sim.sim.simulator import MuJoCoSimulator
 
 
 class TestMuJoCoSimulator:

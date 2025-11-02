@@ -6,7 +6,7 @@
 # 🔍 AUDIT 3D BBIA - Reachy Mini Wireless
 
 > **Audit complet du système 3D BBIA pour Reachy Mini Wireless**
-> **Date** : Oct / No2025025025025025
+> **Date** : Oct / Oct / Nov. 20255
 > **Version** : 2.0
 
 ## 📊 **RÉSUMÉ EXÉCUTIF**

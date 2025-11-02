@@ -202,6 +202,6 @@ python -m pytest tests/ -m "not e2e" -v
 ---
 
 **Version** : 1.3.1
-**Date** : Oct / No2025025025025025
+**Date** : Oct / Oct / Nov. 20255
 **Statut** : Production Ready
 **Licence** : MIT

@@ -40,7 +40,8 @@ class BackendAdapter:
             backend = RobotFactory.create_backend("reachy_mini")
         if backend is None:
             raise HTTPException(
-                status_code=503, detail="Aucun backend robot disponible"
+                status_code=503,
+                detail="Aucun backend robot disponible",
             )
         return backend
 
@@ -73,7 +74,7 @@ class BackendAdapter:
 
         if hasattr(self._robot, "get_current_body_yaw"):
             return float(self._robot.get_current_body_yaw())
-        elif hasattr(self._robot, "get_present_body_yaw"):
+        if hasattr(self._robot, "get_present_body_yaw"):
             return float(self._robot.get_present_body_yaw())
 
         return 0.0
@@ -86,7 +87,8 @@ class BackendAdapter:
             positions = self._robot.get_present_antenna_joint_positions()
             if isinstance(positions, list | tuple) and len(positions) >= 2:
                 return np.array(
-                    [float(positions[0]), float(positions[1])], dtype=np.float64
+                    [float(positions[0]), float(positions[1])],
+                    dtype=np.float64,
                 )
 
         return np.array([0.0, 0.0], dtype=np.float64)
@@ -139,11 +141,13 @@ class BackendAdapter:
             if mode_str == "enabled" and hasattr(self._robot.robot, "enable_motors"):
                 self._robot.robot.enable_motors()
             elif mode_str == "disabled" and hasattr(
-                self._robot.robot, "disable_motors"
+                self._robot.robot,
+                "disable_motors",
             ):
                 self._robot.robot.disable_motors()
             elif mode_str == "gravity_compensation" and hasattr(
-                self._robot.robot, "enable_gravity_compensation"
+                self._robot.robot,
+                "enable_gravity_compensation",
             ):
                 self._robot.robot.enable_gravity_compensation()
         else:
@@ -221,7 +225,8 @@ class BackendAdapter:
             self._robot.set_target(body_yaw=body_yaw)  # type: ignore[attr-defined]
 
     def set_target_head_joint_positions(
-        self, positions: npt.NDArray[np.float64] | None
+        self,
+        positions: npt.NDArray[np.float64] | None,
     ) -> None:
         """Définit les positions des joints de la tête (conforme SDK)."""
         self.connect_if_needed()
@@ -250,7 +255,8 @@ class BackendAdapter:
                         self._robot.set_joint_pos(joint_name, float(positions[i]))  # type: ignore[attr-defined]
 
     def set_target_antenna_joint_positions(
-        self, positions: npt.NDArray[np.float64] | list[float]
+        self,
+        positions: npt.NDArray[np.float64] | list[float],
     ) -> None:
         """Définit les positions des antennes (conforme SDK)."""
         self.connect_if_needed()
@@ -287,7 +293,9 @@ class BackendAdapter:
             or hasattr(self._robot, "set_target_antenna_joint_positions")
         ):
             self._robot.set_target(  # type: ignore[attr-defined]
-                head=head, antennas=antennas, body_yaw=body_yaw or 0.0
+                head=head,
+                antennas=antennas,
+                body_yaw=body_yaw or 0.0,
             )
 
     async def goto_joint_positions(
@@ -304,10 +312,11 @@ class BackendAdapter:
             antennas_joint_positions: Positions antennes [right, left] (2 éléments)
             duration: Durée du mouvement en secondes
             method: Méthode d'interpolation ("linear", "minjerk", "ease", "cartoon")
+
         """
         if duration <= 0.0:
             raise ValueError(
-                "Duration must be positive and non-zero. Use set_target() for immediate position setting."
+                "Duration must be positive and non-zero. Use set_target() for immediate position setting.",
             )
 
         self.connect_if_needed()
@@ -384,6 +393,7 @@ class BackendAdapter:
 
         Args:
             move: Objet Move du SDK reachy_mini.motion.move
+
         """
         self.connect_if_needed()
 
@@ -490,19 +500,19 @@ class BackendAdapter:
 
         if hasattr(self._robot, "update_target_head_joints_from_ik"):
             self._robot.update_target_head_joints_from_ik(pose, body_yaw)  # type: ignore[attr-defined]
-        else:
-            # Fallback: utiliser IK si disponible via robot (conforme SDK)
-            if hasattr(self._robot, "robot") and hasattr(
-                self._robot.robot, "head_kinematics"
-            ):
-                joints = self._robot.robot.head_kinematics.ik(pose, body_yaw=body_yaw)  # type: ignore[attr-defined]
-                if joints is None or np.any(np.isnan(joints)):
-                    raise ValueError(
-                        "WARNING: Collision detected or head pose not achievable!"
-                    )
-                # Conforme SDK: mettre à jour directement target_head_joint_positions
-                self.target_head_joint_positions = joints
-                self.ik_required = False  # Plus besoin d'IK après mise à jour directe
+        # Fallback: utiliser IK si disponible via robot (conforme SDK)
+        elif hasattr(self._robot, "robot") and hasattr(
+            self._robot.robot,
+            "head_kinematics",
+        ):
+            joints = self._robot.robot.head_kinematics.ik(pose, body_yaw=body_yaw)  # type: ignore[attr-defined]
+            if joints is None or np.any(np.isnan(joints)):
+                raise ValueError(
+                    "WARNING: Collision detected or head pose not achievable!",
+                )
+            # Conforme SDK: mettre à jour directement target_head_joint_positions
+            self.target_head_joint_positions = joints
+            self.ik_required = False  # Plus besoin d'IK après mise à jour directe
 
     def update_head_kinematics_model(
         self,
@@ -594,6 +604,7 @@ def ws_get_backend_adapter(websocket: WebSocket | None = None) -> BackendAdapter
 
     Returns:
         Instance de BackendAdapter
+
     """
     # Note: websocket paramètre requis pour FastAPI dependency system
     # mais non utilisé car BackendAdapter ne dépend pas du WebSocket

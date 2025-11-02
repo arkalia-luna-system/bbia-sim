@@ -10,7 +10,8 @@ from pathlib import Path
 
 # Configuration du logging
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
 
@@ -18,10 +19,14 @@ logger = logging.getLogger(__name__)
 def main():
     parser = argparse.ArgumentParser(description="Lanceur BBIA Reachy Mini complet")
     parser.add_argument(
-        "--model", default="reachy_mini_assembled.xml", help="Modèle MJCF à utiliser"
+        "--model",
+        default="reachy_mini_assembled.xml",
+        help="Modèle MJCF à utiliser",
     )
     parser.add_argument(
-        "--headless", action="store_true", help="Mode headless (pas de fenêtre 3D)"
+        "--headless",
+        action="store_true",
+        help="Mode headless (pas de fenêtre 3D)",
     )
     parser.add_argument(
         "--duration",
@@ -56,7 +61,7 @@ def main():
 
         logger.info("✅ Modèle chargé avec succès")
         logger.info(
-            f"🤖 Articulations disponibles : {[model.joint(i).name for i in range(model.njnt)]}"
+            f"🤖 Articulations disponibles : {[model.joint(i).name for i in range(model.njnt)]}",
         )
 
         if args.headless:
@@ -70,7 +75,7 @@ def main():
         else:
             logger.info("🎮 Mode graphique activé")
             logger.info(
-                "💡 Sur macOS, utilisez 'mjpython' au lieu de 'python' pour la fenêtre 3D"
+                "💡 Sur macOS, utilisez 'mjpython' au lieu de 'python' pour la fenêtre 3D",
             )
             _run_graphical_simulation(model, data)
 
@@ -104,7 +109,7 @@ def _run_headless_simulation(model, data, duration):
 
     final_time = time.monotonic() - start_time
     logger.info(
-        f"✅ Simulation headless terminée après {step_count} steps ({final_time:.2f}s)"
+        f"✅ Simulation headless terminée après {step_count} steps ({final_time:.2f}s)",
     )
 
 
@@ -122,7 +127,7 @@ def _run_headless_continuous(model, data):
         logger.info("\n🛑 Arrêt demandé par l'utilisateur")
         final_time = time.monotonic() - start_time
         logger.info(
-            f"✅ Simulation terminée après {step_count} steps ({final_time:.2f}s)"
+            f"✅ Simulation terminée après {step_count} steps ({final_time:.2f}s)",
         )
         sys.exit(0)
 

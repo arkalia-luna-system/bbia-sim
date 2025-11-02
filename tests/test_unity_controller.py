@@ -5,7 +5,7 @@ import tempfile
 from pathlib import Path
 from unittest.mock import patch
 
-from src.bbia_sim.unity_reachy_controller import UnityReachyMiniController
+from bbia_sim.unity_reachy_controller import UnityReachyMiniController
 
 
 class TestUnityReachyMiniController:

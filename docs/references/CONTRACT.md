@@ -7,7 +7,7 @@
 ## 📋 **CONTRAT D'INTERFACE UNIFIÉE SIM/ROBOT**
 
 **Version** : 1.1.x (gelée)
-**Date** : Oct / No2025025025025025
+**Date** : Oct / Nov. 2025
 **Statut** : STABLE - Aucune modification breaking autorisée
 
 ---
@@ -362,5 +362,5 @@ Pour les modifications futures :
 ---
 
 **Signé** : BBIA-REACHY-SIM Team
-**Date** : Oct / No2025025025025025
+**Date** : Oct / Nov. 2025
 **Statut** : ✅ VALIDÉ ET GELÉ

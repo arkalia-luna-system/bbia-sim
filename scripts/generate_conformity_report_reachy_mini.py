@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-📊 GÉNÉRATION RAPPORT CONFORMITÉ REACHY-MINI
+"""📊 GÉNÉRATION RAPPORT CONFORMITÉ REACHY-MINI
 Génère un rapport détaillé de conformité avec le SDK officiel Reachy Mini
 """
 
@@ -27,6 +26,7 @@ def run_conformity_tests():
             "-v",
             "--tb=short",
         ],
+        check=False,
         capture_output=True,
         text=True,
     )
@@ -92,12 +92,12 @@ def generate_markdown_report(test_results, test_output):
 
 | Métrique | Valeur | Statut |
 |----------|--------|--------|
-| **Tests totaux** | {test_results['total_tests']} | ✅ |
-| **Tests réussis** | {test_results['passed']} | {'✅' if test_results['pass_rate'] == 100 else '⚠️'} |
-| **Tests échoués** | {test_results['failed']} | {'✅' if test_results['failed'] == 0 else '❌'} |
-| **Taux de réussite** | {test_results['pass_rate']:.1f}% | {'✅' if test_results['pass_rate'] == 100 else '⚠️'} |
+| **Tests totaux** | {test_results["total_tests"]} | ✅ |
+| **Tests réussis** | {test_results["passed"]} | {"✅" if test_results["pass_rate"] == 100 else "⚠️"} |
+| **Tests échoués** | {test_results["failed"]} | {"✅" if test_results["failed"] == 0 else "❌"} |
+| **Taux de réussite** | {test_results["pass_rate"]:.1f}% | {"✅" if test_results["pass_rate"] == 100 else "⚠️"} |
 
-### 🎯 Statut Global: {"✅ 100% CONFORME" if test_results['pass_rate'] == 100 else "⚠️ Non conforme"}
+### 🎯 Statut Global: {"✅ 100% CONFORME" if test_results["pass_rate"] == 100 else "⚠️ Non conforme"}
 
 ---
 
@@ -222,7 +222,7 @@ Vérifie que toutes les méthodes ont une docstring.
 
 ## 📝 CONCLUSION
 
-{"🎉 **CONFORMITÉ 100%** - Votre projet est conforme au SDK officiel Reachy Mini!" if test_results['pass_rate'] == 100 else "⚠️ **Des ajustements sont nécessaires** - Vérifiez les erreurs ci-dessus."}
+{"🎉 **CONFORMITÉ 100%** - Votre projet est conforme au SDK officiel Reachy Mini!" if test_results["pass_rate"] == 100 else "⚠️ **Des ajustements sont nécessaires** - Vérifiez les erreurs ci-dessus."}
 
 ### 🚀 Prochaines étapes:
 1. ✅ Tests de conformité complétés
@@ -274,7 +274,7 @@ def main():
 
     print("\n✅ Rapport généré avec succès!")
     print(
-        f"📊 Résultats: {test_results['passed']}/{test_results['total_tests']} tests réussis"
+        f"📊 Résultats: {test_results['passed']}/{test_results['total_tests']} tests réussis",
     )
 
 

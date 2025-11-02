@@ -23,7 +23,6 @@ report = {
 def compare_docstrings() -> None:
     """Compare docstrings entre fichiers."""
     # À implémenter
-    pass
 
 
 def compare_tests() -> None:
@@ -39,12 +38,12 @@ def compare_tests() -> None:
 
     if missing:
         report["tests"].append(
-            {"type": "tests_missing", "items": sorted(missing), "severity": "HIGH"}
+            {"type": "tests_missing", "items": sorted(missing), "severity": "HIGH"},
         )
 
     if extra:
         report["tests"].append(
-            {"type": "tests_extra", "items": sorted(extra), "severity": "INFO"}
+            {"type": "tests_extra", "items": sorted(extra), "severity": "INFO"},
         )
 
 
@@ -52,7 +51,7 @@ def compare_assets() -> None:
     """Compare assets (WAV, STL, JSON, etc.)."""
     # Assets audio officiels
     official_audio = list(
-        (OFFICIAL_ROOT / "src" / "reachy_mini" / "assets").glob("*.wav")
+        (OFFICIAL_ROOT / "src" / "reachy_mini" / "assets").glob("*.wav"),
     )
     bbia_audio = list((BBIA_ROOT / "assets" / "voice").glob("*.wav"))
 
@@ -66,7 +65,7 @@ def compare_assets() -> None:
                 "type": "audio_missing",
                 "files": sorted(missing_audio),
                 "severity": "MEDIUM",
-            }
+            },
         )
 
 
@@ -81,7 +80,7 @@ def compare_examples() -> None:
     missing = official_names - bbia_names
     if missing:
         report["examples"].append(
-            {"type": "examples_missing", "files": sorted(missing), "severity": "MEDIUM"}
+            {"type": "examples_missing", "files": sorted(missing), "severity": "MEDIUM"},
         )
 
 
@@ -105,7 +104,7 @@ def compare_constants() -> None:
                 "type": "constants_check",
                 "official_file": str(official_constants),
                 "constants": constants_found,
-            }
+            },
         )
 
 
@@ -145,7 +144,7 @@ def compare_error_messages() -> None:
                     "pattern": pattern,
                     "official": len(official_matches),
                     "bbia": len(bbia_matches),
-                }
+                },
             )
 
 
@@ -171,7 +170,7 @@ def compare_config_files() -> None:
                         "file": "pyproject.toml",
                         "section": section,
                         "severity": "MEDIUM",
-                    }
+                    },
                 )
 
 

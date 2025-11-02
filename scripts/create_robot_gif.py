@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Crée une GIF animée avec 2 positions du robot
+"""Crée une GIF animée avec 2 positions du robot
 1. Neutre
 2. Tête inclinée vers haut-gauche
 """
@@ -13,7 +12,6 @@ from PIL import Image
 
 def create_robot_gif():
     """Crée une GIF avec les 2 positions."""
-
     print("=" * 70)
     print("🎬 CRÉATION GIF ROBOT")
     print("=" * 70)

@@ -76,7 +76,7 @@ class Pyttsx3TTS:
                         engine.setProperty("voice", self._voice_id)
                     except Exception:
                         # Si get_bbia_voice échoue, utiliser voix par défaut
-                        pass  # noqa: S101 - Fallback silencieux vers voix par défaut si sélection échoue
+                        pass
 
             # Utiliser la voix sélectionnée si disponible
             if self._voice_id:
@@ -115,7 +115,7 @@ class KittenTTSTTS:
             try:
                 return self._impl.synthesize_to_wav(text, outfile)
             except Exception:
-                pass  # noqa: S101 - Fallback silencieux vers pyttsx3 si backend TTS échoue
+                pass
         return self._fallback.synthesize_to_wav(text, outfile)
 
 
@@ -143,7 +143,7 @@ class KokoroTTS:
             try:
                 return self._impl.synthesize_to_wav(text, outfile)
             except Exception:
-                pass  # noqa: S101 - Fallback silencieux vers pyttsx3 si backend TTS échoue
+                pass
         return self._fallback.synthesize_to_wav(text, outfile)
 
 
@@ -171,7 +171,7 @@ class NeuTTSTTS:
             try:
                 return self._impl.synthesize_to_wav(text, outfile)
             except Exception:
-                pass  # noqa: S101 - Fallback silencieux vers pyttsx3 si backend TTS échoue
+                pass
         return self._fallback.synthesize_to_wav(text, outfile)
 
 
@@ -237,7 +237,8 @@ class OpenVoiceTTSTTS:
 
             # Exécuter sans shell pour éviter l'injection de commandes
             subprocess.check_call(
-                cmd_args, shell=False
+                cmd_args,
+                shell=False,
             )  # nosec B603 - cmd_args parsé via shlex
             return True
         except Exception:
@@ -275,7 +276,7 @@ class WhisperSTT:
                 if model_name in _whisper_models_cache:
                     logger = logging.getLogger(__name__)
                     logger.debug(
-                        f"♻️ Réutilisation modèle Whisper depuis cache ({model_name})"
+                        f"♻️ Réutilisation modèle Whisper depuis cache ({model_name})",
                     )
                     cached = _whisper_models_cache[model_name]
                     self._processor = cached["processor"]
@@ -286,10 +287,12 @@ class WhisperSTT:
             # Charger modèle si pas en cache
             # nosec B615: révision explicite pour éviter latest flottant
             processor = WhisperProcessor.from_pretrained(
-                model_name, revision="main"
+                model_name,
+                revision="main",
             )  # nosec B615
             model = WhisperForConditionalGeneration.from_pretrained(
-                model_name, revision="main"
+                model_name,
+                revision="main",
             )  # nosec B615
 
             # Mettre en cache global
@@ -320,7 +323,8 @@ class WhisperSTT:
                 feats = inputs.get("input_features")
                 pred_ids = self._model.generate(feats)
             decoded: list[str] = self._processor.batch_decode(
-                pred_ids, skip_special_tokens=True
+                pred_ids,
+                skip_special_tokens=True,
             )
             text: str = decoded[0] if decoded else ""
             return text
@@ -363,7 +367,9 @@ class LlamaCppLLM:
             return (prompt or "")[:max_tokens]
         try:
             out: dict[str, Any] = self._model(
-                prompt=prompt, max_tokens=max_tokens, echo=False
+                prompt=prompt,
+                max_tokens=max_tokens,
+                echo=False,
             )
             # Format standard llama.cpp: {"choices":[{"text":"..."}]}
             text = str(out.get("choices", [{}])[0].get("text", ""))

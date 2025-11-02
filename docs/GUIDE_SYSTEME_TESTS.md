@@ -1,7 +1,7 @@
 # 🧪 Guide Complet du Système de Tests BBIA-SIM
 
 **Version**: 1.0  
-**Date**: Oct / No2025025025025025
+**Date**: Oct / Nov. 2025
 
 ---
 
@@ -32,10 +32,13 @@ Le système de tests BBIA-SIM utilise **pytest** comme framework principal avec 
 
 ### Statistiques
 
-- **Total tests** : ~1000+ tests
-- **Coverage global** : 47%+ (modules core : 60%+)
-- **Coverage voice_whisper** : 85.09%
-- **Coverage vision_yolo** : ~82%
+- **Total tests** : **1245 tests collectés** (pytest --collect-only)
+- **Coverage global** : **68.86%** (excellent)
+- **Coverage modules critiques** :
+  - `dashboard_advanced.py` : **76.71%** ✅
+  - `vision_yolo.py` : **89.62%** ✅
+  - `voice_whisper.py**: **59.83%**** ⬆️ (en cours d'amélioration)
+  - `daemon/bridge.py` : **31.23%** ✅
 - **Tests E2E** : 4 scénarios utilisateur
 
 ---
@@ -223,10 +226,12 @@ pytest --cov=src/bbia_sim --cov-report=xml
 
 Modules prioritaires :
 
-- `voice_whisper.py` : **85.09%** ✅
-- `vision_yolo.py` : **~82%** ✅
-- `bbia_vision.py` : À améliorer
-- `bbia_emotions.py` : À améliorer
+- `dashboard_advanced.py` : **76.71%** ✅ (objectif 70%+ dépassé)
+- `vision_yolo.py` : **89.62%** ✅ (objectif 50%+ largement dépassé)
+- `voice_whisper.py**: **59.83%**** ⬆️ (en cours d'amélioration vers 50%+)
+- `daemon/bridge.py` : **31.23%** ✅ (objectif 30%+ atteint)
+- `bbia_audio.py` : **87.76%** ✅
+- `bbia_emotions.py` : **81.71%** ✅
 
 ### Objectifs Coverage
 
@@ -517,5 +522,5 @@ pip install -e .[dev,test]
 
 ---
 
-**Dernière mise à jour** : Oct / No2025025025025025
+**Dernière mise à jour** : Oct / Nov. 2025
 

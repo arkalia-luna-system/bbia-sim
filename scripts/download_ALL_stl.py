@@ -48,7 +48,6 @@ def download_all_stl():
     total_count = len(stl_files)
 
     for _i, stl_file in enumerate(stl_files, 1):
-
         try:
             # Télécharger le fichier
             response = requests.get(base_url + stl_file, timeout=30)
@@ -110,7 +109,6 @@ def verify_all_stl():
 
 
 if __name__ == "__main__":
-
     # Télécharger TOUS les fichiers
     success = download_all_stl()
 

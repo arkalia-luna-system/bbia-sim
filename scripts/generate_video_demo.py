@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Script de démonstration vidéo BBIA-SIM
+"""Script de démonstration vidéo BBIA-SIM
 Génère une démonstration complète pour LinkedIn/YouTube
 """
 
@@ -52,7 +51,7 @@ class BBIAVideoDemo:
                 "timestamp": time.time(),
                 "action": "wake_up",
                 "description": "Robot BBIA-SIM se réveille",
-            }
+            },
         )
 
         logger.info("✅ Robot configuré et réveillé")
@@ -83,7 +82,7 @@ class BBIAVideoDemo:
                     "emotion": emotion,
                     "intensity": intensity,
                     "description": description,
-                }
+                },
             )
 
             # Attendre pour voir l'effet
@@ -107,7 +106,7 @@ class BBIAVideoDemo:
 
         for obj in detected_objects:
             logger.info(
-                f"  📦 Objet détecté: {obj['name']} (confiance: {obj['confidence']:.2f})"
+                f"  📦 Objet détecté: {obj['name']} (confiance: {obj['confidence']:.2f})",
             )
 
             # Regarder vers l'objet
@@ -124,7 +123,7 @@ class BBIAVideoDemo:
                     "object": obj["name"],
                     "confidence": obj["confidence"],
                     "description": f"Le robot regarde vers {obj['name']}",
-                }
+                },
             )
 
             await asyncio.sleep(1.5)
@@ -155,7 +154,7 @@ class BBIAVideoDemo:
                 "context": "user_arrival",
                 "behavior": behavior["name"],
                 "description": "Comportement adaptatif généré",
-            }
+            },
         )
 
         await asyncio.sleep(3)
@@ -174,7 +173,7 @@ class BBIAVideoDemo:
                 "context": "task_execution",
                 "behavior": behavior["name"],
                 "description": "Comportement adaptatif pour travail",
-            }
+            },
         )
 
         await asyncio.sleep(2)
@@ -217,7 +216,7 @@ class BBIAVideoDemo:
                         "method": method,
                         "description": description,
                         "status": "success",
-                    }
+                    },
                 )
 
                 await asyncio.sleep(1)
@@ -246,7 +245,7 @@ class BBIAVideoDemo:
                     "action": "bridge_zenoh",
                     "description": "Bridge Zenoh pour communication distribuée",
                     "status": "ready",
-                }
+                },
             )
 
         except ImportError:

@@ -5,12 +5,8 @@ Connecte tous les modules BBIA au simulateur MuJoCo pour créer une simulation c
 
 import asyncio
 import logging
-from typing import TYPE_CHECKING
 
 from .bbia_audio import detecter_son, enregistrer_audio, lire_audio
-
-if TYPE_CHECKING:
-    pass
 from .bbia_behavior import BBIABehaviorManager
 from .bbia_emotions import BBIAEmotions
 from .bbia_vision import BBIAVision
@@ -57,7 +53,7 @@ class BBIAIntegration:
 
         self.emotions = BBIAEmotions()
         self.vision = BBIAVision(
-            robot_api=robot_api
+            robot_api=robot_api,
         )  # Passer robot_api pour camera SDK
 
         # OPTIMISATION EXPERT: Passer robot_api au BBIABehaviorManager si disponible
@@ -91,7 +87,7 @@ class BBIAIntegration:
         logger.info(f"   • Émotions disponibles : {len(self.emotions.emotions)}")
         logger.info("   • Articulations contrôlables : 16")
         logger.info(
-            f"   • Service simulation : {'✅' if self.simulation_service else '❌'}"
+            f"   • Service simulation : {'✅' if self.simulation_service else '❌'}",
         )
 
     def _create_emotion_mappings(self) -> dict[str, dict[str, float]]:
@@ -219,7 +215,9 @@ class BBIAIntegration:
         logger.info("✅ Intégration BBIA arrêtée")
 
     async def apply_emotion_to_robot(
-        self, emotion: str, intensity: float = 0.5
+        self,
+        emotion: str,
+        intensity: float = 0.5,
     ) -> bool:
         """Applique une émotion au robot via les articulations.
 
@@ -256,7 +254,8 @@ class BBIAIntegration:
 
             # Vérifier si on peut utiliser l'API directe
             if hasattr(self.simulation_service, "robot_api") and hasattr(
-                self.simulation_service.robot_api, "set_emotion"
+                self.simulation_service.robot_api,
+                "set_emotion",
             ):
                 # Utiliser l'API du backend directement (plus propre)
                 # Mapper les émotions BBIA vers les 6 émotions SDK officiel
@@ -306,14 +305,17 @@ class BBIAIntegration:
                 # Méthode 1 (préférée): goto_target avec interpolation optimisée selon l'émotion pour transitions expressives
                 # et mouvement combiné tête+corps synchronisé (meilleure expressivité émotionnelle)
                 if hasattr(robot_api, "goto_target") and hasattr(
-                    robot_api, "get_current_head_pose"
+                    robot_api,
+                    "get_current_head_pose",
                 ):
                     try:
                         from reachy_mini.utils import create_head_pose
 
                         # Créer pose tête avec angles de l'émotion
                         pose = create_head_pose(
-                            pitch=head_pitch, yaw=head_yaw, degrees=False
+                            pitch=head_pitch,
+                            yaw=head_yaw,
+                            degrees=False,
                         )
 
                         # Duration adaptative selon l'intensité (plus lente = plus expressive)
@@ -332,12 +334,12 @@ class BBIAIntegration:
                         logger.info(
                             f"✅ Émotion '{emotion}' appliquée via goto_target expressif "
                             f"(pitch={head_pitch:.3f}, yaw={head_yaw:.3f}, body={adjusted_yaw:.3f}, "
-                            f"duration={transition_duration:.2f}s, method={interpolation_method})"
+                            f"duration={transition_duration:.2f}s, method={interpolation_method})",
                         )
                         return True
                     except (ImportError, AttributeError, Exception) as e:
                         logger.debug(
-                            f"goto_target non disponible, fallback set_emotion: {e}"
+                            f"goto_target non disponible, fallback set_emotion: {e}",
                         )
 
                 # Méthode 2 (fallback): set_emotion directe (moins fluide mais fonctionne)
@@ -359,7 +361,7 @@ class BBIAIntegration:
                                 method="minjerk",
                             )
                             logger.debug(
-                                f"Body yaw ajusté via goto_target (optimisé): {adjusted_yaw:.3f}"
+                                f"Body yaw ajusté via goto_target (optimisé): {adjusted_yaw:.3f}",
                             )
                         except (ImportError, AttributeError, Exception) as e:
                             logger.debug(f"goto_target non disponible (fallback): {e}")
@@ -368,16 +370,17 @@ class BBIAIntegration:
                                 robot_api.set_joint_pos("yaw_body", adjusted_yaw)
                             else:
                                 self.simulation_service.set_joint_position(
-                                    "yaw_body", adjusted_yaw
+                                    "yaw_body",
+                                    adjusted_yaw,
                                 )
+                    # Fallback: application séparée directe
+                    elif hasattr(robot_api, "set_joint_pos"):
+                        robot_api.set_joint_pos("yaw_body", adjusted_yaw)
                     else:
-                        # Fallback: application séparée directe
-                        if hasattr(robot_api, "set_joint_pos"):
-                            robot_api.set_joint_pos("yaw_body", adjusted_yaw)
-                        else:
-                            self.simulation_service.set_joint_position(
-                                "yaw_body", adjusted_yaw
-                            )
+                        self.simulation_service.set_joint_position(
+                            "yaw_body",
+                            adjusted_yaw,
+                        )
 
                 if success:
                     logger.info(f"✅ Émotion '{emotion}' appliquée via SDK officiel")
@@ -405,7 +408,9 @@ class BBIAIntegration:
                     from reachy_mini.utils import create_head_pose
 
                     pose = create_head_pose(
-                        pitch=head_pitch, yaw=head_yaw, degrees=False
+                        pitch=head_pitch,
+                        yaw=head_yaw,
+                        degrees=False,
                     )
 
                     # Méthode 1 (préférée): goto_target avec interpolation fluide
@@ -418,42 +423,47 @@ class BBIAIntegration:
                         )
                         logger.info(
                             f"✅ Émotion '{emotion}' appliquée via goto_target SDK "
-                            f"(pitch={head_pitch:.3f}, yaw={head_yaw:.3f}, body={adjusted_yaw:.3f})"
+                            f"(pitch={head_pitch:.3f}, yaw={head_yaw:.3f}, body={adjusted_yaw:.3f})",
                         )
                     # Méthode 2 (fallback): set_target_head_pose + set_joint_pos séparés
                     elif hasattr(
-                        self.simulation_service.robot_api, "set_target_head_pose"
+                        self.simulation_service.robot_api,
+                        "set_target_head_pose",
                     ):
                         self.simulation_service.robot_api.set_target_head_pose(pose)
                         if adjusted_yaw != 0.0:
                             if hasattr(
-                                self.simulation_service.robot_api, "set_joint_pos"
+                                self.simulation_service.robot_api,
+                                "set_joint_pos",
                             ):
                                 self.simulation_service.robot_api.set_joint_pos(
-                                    "yaw_body", adjusted_yaw
+                                    "yaw_body",
+                                    adjusted_yaw,
                                 )
                             else:
                                 self.simulation_service.set_joint_position(
-                                    "yaw_body", adjusted_yaw
+                                    "yaw_body",
+                                    adjusted_yaw,
                                 )
                         logger.info(
                             f"✅ Émotion '{emotion}' appliquée via pose tête SDK "
-                            f"(pitch={head_pitch:.3f}, yaw={head_yaw:.3f})"
+                            f"(pitch={head_pitch:.3f}, yaw={head_yaw:.3f})",
                         )
                 except (ImportError, AttributeError, Exception) as e:
                     logger.warning(
                         f"Impossible d'utiliser create_head_pose/goto_target: {e}. "
-                        f"Utilisation fallback joints directs."
+                        f"Utilisation fallback joints directs.",
                     )
                     # Fallback final: utiliser seulement yaw_body
                     if adjusted_yaw != 0.0:
                         self.simulation_service.set_joint_position(
-                            "yaw_body", adjusted_yaw
+                            "yaw_body",
+                            adjusted_yaw,
                         )
 
             logger.info(
                 f"Émotion '{emotion}' : pitch={head_pitch:.3f}, "
-                f"yaw={head_yaw:.3f}, body={emotion_mapping.get('yaw_body', 0.0)*intensity:.3f}"
+                f"yaw={head_yaw:.3f}, body={emotion_mapping.get('yaw_body', 0.0) * intensity:.3f}",
             )
 
             logger.info(f"✅ Émotion '{emotion}' appliquée au robot")
@@ -478,7 +488,7 @@ class BBIAIntegration:
 
         try:
             # Réaction à la détection de visage
-            if "faces" in detection_data and detection_data["faces"]:
+            if detection_data.get("faces"):
                 logger.info("👤 Visage détecté - Réaction de curiosité")
                 await self.apply_emotion_to_robot("curious", 0.7)
 
@@ -503,10 +513,14 @@ class BBIAIntegration:
                                 and -1.0 <= z <= 1.0
                             ):
                                 robot_api.look_at_world(
-                                    x, y, z, duration=1.0, perform_movement=True
+                                    x,
+                                    y,
+                                    z,
+                                    duration=1.0,
+                                    perform_movement=True,
                                 )
                                 logger.info(
-                                    f"Look_at_world vers visage: ({x:.2f}, {y:.2f}, {z:.2f})"
+                                    f"Look_at_world vers visage: ({x:.2f}, {y:.2f}, {z:.2f})",
                                 )
                             else:
                                 raise ValueError("Position 3D hors limites")
@@ -519,7 +533,7 @@ class BBIAIntegration:
                                 if 0 <= u <= 640 and 0 <= v <= 480:
                                     robot_api.look_at_image(u, v, duration=1.0)
                                     logger.info(
-                                        f"Look_at_image vers visage: ({u}, {v})"
+                                        f"Look_at_image vers visage: ({u}, {v})",
                                     )
                         # Méthode 3 (fallback): rotation corps
                         elif hasattr(robot_api, "set_joint_pos"):
@@ -534,7 +548,8 @@ class BBIAIntegration:
                         face_position = face_data.get("position", (0, 0))
                         head_turn = float(face_position[0]) * 0.3
                         self.simulation_service.set_joint_position(
-                            "yaw_body", head_turn
+                            "yaw_body",
+                            head_turn,
                         )
                 else:
                     # Fallback: méthode originale sans SDK
@@ -545,7 +560,7 @@ class BBIAIntegration:
                 return True
 
             # Réaction à la détection d'objet intéressant
-            if "objects" in detection_data and detection_data["objects"]:
+            if detection_data.get("objects"):
                 logger.info("📦 Objet détecté - Réaction de surprise")
                 await self.apply_emotion_to_robot("surprised", 0.6)
 
@@ -558,7 +573,9 @@ class BBIAIntegration:
             return False
 
     async def sync_voice_with_movements(
-        self, text: str, emotion: str = "neutral"
+        self,
+        text: str,
+        emotion: str = "neutral",
     ) -> bool:
         """Synchronise la voix avec les mouvements du robot.
 
@@ -609,12 +626,14 @@ class BBIAIntegration:
                                 robot_api.set_joint_pos("yaw_body", head_movement)
                             else:
                                 self.simulation_service.set_joint_position(
-                                    "yaw_body", head_movement
+                                    "yaw_body",
+                                    head_movement,
                                 )
                     else:
                         # Fallback: méthode originale
                         self.simulation_service.set_joint_position(
-                            "yaw_body", head_movement
+                            "yaw_body",
+                            head_movement,
                         )
 
                 # Petite pause entre les mots
@@ -622,7 +641,8 @@ class BBIAIntegration:
 
             # Retour à l'émotion normale après la parole
             await self.apply_emotion_to_robot(
-                self.current_emotion, self.emotion_intensity
+                self.current_emotion,
+                self.emotion_intensity,
             )
 
             return True

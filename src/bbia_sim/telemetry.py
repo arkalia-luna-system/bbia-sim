@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Télémétrie minimale pour BBIA
+"""Télémétrie minimale pour BBIA
 Compteur steps/s, temps moyen step, drift max
 Export .csv dans artifacts/
 """
@@ -24,7 +23,7 @@ class TelemetryCollector:
         self._max_steps_history = 10000  # Max 10000 steps en mémoire
         self.step_times: deque[float] = deque(maxlen=self._max_steps_history)
         self.joint_positions: deque[dict[str, float]] = deque(
-            maxlen=self._max_steps_history
+            maxlen=self._max_steps_history,
         )
         self.start_time: float | None = None
         self.last_step_time: float | None = None
@@ -54,7 +53,7 @@ class TelemetryCollector:
                 "timestamp": current_time,
                 "elapsed": elapsed,
                 **joint_positions,
-            }
+            },
         )
 
         self.last_step_time = current_time
@@ -90,7 +89,7 @@ class TelemetryCollector:
         }
 
         print(
-            f"📊 Télémétrie arrêtée: {stats['total_steps']} steps, {stats['steps_per_second']:.1f} steps/s"
+            f"📊 Télémétrie arrêtée: {stats['total_steps']} steps, {stats['steps_per_second']:.1f} steps/s",
         )
         return stats
 

@@ -1,7 +1,8 @@
 # 📚 INDEX COMPLET - Documentation BBIA-SIM
 
-**Version :** 1.3.0
-**Dernière mise à jour :** Oct / No2025025025025025
+**Version** : 1.3.0  
+**Date** : Oct / Nov. 2025  
+**Dernière mise à jour** : Oct / Nov. 2025
 
 ---
 
@@ -15,7 +16,7 @@
 | Développeur expérimenté | [Guide Avancé](../guides/GUIDE_AVANCE.md) | [Architecture](../architecture/ARCHITECTURE.md) |
 | Chercheur | [Architecture](../architecture/ARCHITECTURE.md) | [Tests](../GUIDE_SYSTEME_TESTS.md) |
 | DevOps | [Statut Projet](STATUT_PROJET.md) | [Configuration](COMMUNITY_CONFIG.md) |
-| Utilisateur robot | [Guide Reachy Mini](guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md) | [Dashboard](STATUT_PROJET.md) |
+| Utilisateur robot | [Guide Reachy Mini](../guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md) | [Dashboard](STATUT_PROJET.md) |
 
 ---
 
@@ -43,41 +44,41 @@
 
 | Document | Description | Niveau |
 |---------|-------------|--------|
-| [Guide Reachy Mini](guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md) | Robot Reachy Mini | Intermédiaire |
-| [Guide Simulation](simulations/MUJOCO_SIMULATION_GUIDE.md) | Simulation MuJoCo | Intermédiaire |
-| [Guide Unity](unity/UNITY_BBIA_GUIDE.md) | Intégration Unity | Intermédiaire |
-| [Installation Audio](installation/AUDIO_SETUP.md) | Configuration audio | Intermédiaire |
+| [Guide Reachy Mini](../guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md) | Robot Reachy Mini | Intermédiaire |
+| [Guide Simulation](../simulations/MUJOCO_SIMULATION_GUIDE.md) | Simulation MuJoCo | Intermédiaire |
+| [Guide Unity](../unity/UNITY_BBIA_GUIDE.md) | Intégration Unity | Intermédiaire |
+| [Installation Audio](../installation/AUDIO_SETUP.md) | Configuration audio | Intermédiaire |
 
 ### 📚 **Référence**
 
 | Document | Description | Niveau |
 |---------|-------------|--------|
-| [Intégration](INTEGRATION_GUIDE.md) | Guide d'intégration | Expert |
+| [Intégration](../guides_techniques/INTEGRATION_GUIDE.md) | Guide d'intégration | Expert |
 | [Migration](../guides_techniques/MIGRATION_GUIDE.md) | Guide de migration | Expert |
 | [Contrat](CONTRACT.md) | Interface programmatique | Expert |
-| [Process Management](PROCESS_MANAGEMENT.md) | Gestion processus | Expert |
+| [Process Management](../organisation/PROCESS_MANAGEMENT.md) | Gestion processus | Expert |
 
 ### 📊 **Historique & Audit**
 
 | Document | Description | Niveau |
 |---------|-------------|--------|
 | [Historique Projet](PROJECT_HISTORY.md) | Historique complet | Tous |
-| [Audit Complet 2025](AUDIT_COMPLET_PROJET_2025.md) | Audit projet 2025 | Expert |
+| [Audit Complet 2025](../archives/audits_termines/AUDIT_COMPLET_PROJET_2025.md) | Audit projet 2025 | Expert |
 | [Release Notes](RELEASE_NOTES.md) | Notes de version | Tous |
-| [Conformité SDK](CONFORMITE_SDK_RESUME.md) | Conformité SDK | Expert |
+| [Conformité SDK](../archives/conformite/CONFORMITE_SDK_RESUME.md) | Conformité SDK | Expert |
 
 ### 🎮 **Guides Unity**
 
 | Document | Description | Niveau |
 |---------|-------------|--------|
-| [Unity BBIA Guide](unity/UNITY_BBIA_GUIDE.md) | Intégration Unity | Intermédiaire |
-| [Unity Troubleshooting](unity/UNITY_TROUBLESHOOTING.md) | Dépannage Unity | Intermédiaire |
+| [Unity BBIA Guide](../unity/UNITY_BBIA_GUIDE.md) | Intégration Unity | Intermédiaire |
+| [Unity Troubleshooting](../unity/UNITY_TROUBLESHOOTING.md) | Dépannage Unity | Intermédiaire |
 
 ### 📁 **Archives**
 
 | Document | Description | Niveau |
 |---------|-------------|--------|
-| [Archives Oct / No2025025025025022025rchives/2025-10/) | Documentation Octobre | Expert |
+| [Archives Octobre 2025](../archives/2025-10/) | Documentation Octobre | Expert |
 | [Audit 3D BBIA](audit/AUDIT_3D_BBIA_COMPLET.md) | Audit 3D | Expert |
 | [Vertical Slices](audit/VERTICAL_SLICES_ACCOMPLIS.md) | Slices verticaux | Expert |
 
@@ -106,7 +107,7 @@
 → [Statut Projet](../status.md) → Section Dashboard
 
 #### **... Intégrer Unity**
-→ [Unity BBIA Guide](unity/UNITY_BBIA_GUIDE.md)
+→ [Unity BBIA Guide](../unity/UNITY_BBIA_GUIDE.md)
 
 #### **... Dépanner un problème**
 → [Statut Projet](STATUT_PROJET.md) → Section Prochaines Étapes
@@ -150,7 +151,7 @@ bbia-sim/
 
 ---
 
-## 🎯 **NOUVEAUTÉS Oct / No2025025025025025**
+## 🎯 **NOUVEAUTÉS Oct / Nov. 2025**
 
 Nouveau :
 - [Statut Projet](STATUT_PROJET.md) - État actuel consolidé
@@ -169,5 +170,5 @@ Métriques actuelles :
 
 Documentation organisée et à jour.
 
-*Dernière mise à jour : Oct / No2025025025025025*
+*Dernière mise à jour : Oct / Nov. 2025*
 

@@ -4,13 +4,13 @@
 Ce document a été archivé car il est devenu obsolète ou a été remplacé par une version plus récente.
 Il est conservé à des fins de référence historique uniquement.
 
-**Date d'archivage** : Oct / No2025025025025025
+**Date d'archivage** : Oct / Nov. 2025
 **Raison** : Document terminé/obsolète/remplacé
 ---
 
 # 🔧 CORRECTIONS DOCUMENTATION MD APPLIQUÉES
 
-**Date**: Oct / No2025025025025025  
+**Date** : Oct / Nov. 2025  
 **Audit**: Vérification ligne par ligne de 10 fichiers MD principaux contre le code réel
 
 ---
@@ -27,17 +27,17 @@ Il est conservé à des fins de référence historique uniquement.
 
 ### 1. README.md - Nombre de tests ✅
 
-**Problème**: Documentation disait "800+ tests" mais pytest collect montre 1131 tests
+**Problème** : Documentation disait "800+ tests" mais pytest collect montre **1245 tests** (Oct / Nov. 2025)
 
-**Fichier**: `README.md:585`
+**Fichier** : `README.md:585`
 
-**Correction**:
+**Correction** (historique, maintenant **1245 tests**) :
 ```markdown
-- ✅ **Tests totaux** : 1005 tests (958+ passent, ~40 skippés conditionnels)
-+ ✅ **Tests totaux** : 1131 tests collectés (pytest --collect-only)
+- ✅ **Tests totaux** : 1245 tests collectés (pytest --collect-only)
+- ✅ **Coverage global** : 68.86%
 ```
 
-**Statut**: ✅ **CORRIGÉ**
+**Statut** : ✅ **CORRIGÉ** (valeur actuelle : **1245 tests**, **68.86%** coverage)
 
 ---
 
@@ -227,7 +227,7 @@ robot = RobotFactory.create_backend(backend_type="mujoco")
 
 ### ✅ Corrections Critiques Appliquées
 
-- [x] README.md - Nombre de tests (1131)
+- [x] README.md - Nombre de tests (maintenant **1245 tests**, **68.86%** coverage)
 - [x] README.md - Import RobotFactory (3x)
 - [x] GUIDE_DEBUTANT.md - Import RobotFactory
 - [x] GUIDE_AVANCE.md - Import RobotFactory
@@ -257,7 +257,7 @@ Toutes les incohérences critiques dans les 10 fichiers MD principaux ont été 
 
 ---
 
-**Date de génération**: Oct / No2025025025025025  
+**Date de génération** : Oct / Nov. 2025  
 **Fichiers audités**: 10 fichiers MD principaux  
 **Incohérences trouvées**: 8  
 **Corrections appliquées**: 6 critiques + 2 recommandations

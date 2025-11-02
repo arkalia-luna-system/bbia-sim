@@ -62,7 +62,7 @@
 ### Commits Quotidiens (7 mois)
 
 ❓ **À vérifier** : Le texte dit "7 mois de commits quotidiens"
-- Seulement 3 commits trouvés depuis Oct / No2025025025025025 (peut être une branche différente)
+- Seulement 3 commits trouvés depuis Oct / Oct / Nov. 20255 (peut être une branche différente)
 - **Action** : Vérifier avec `git log --all --since="2025-04-01" --format="%ai %s" | wc -l`
 
 **Possible explication** : Commits sur branche locale non pushée, ou worktree séparé
@@ -206,7 +206,7 @@ Avec pour chacun :
 1. **Visibilité** : README.md optimisé, badges, vidéos
 2. **Hardware** : Préparer validation Décembre
 3. **Portfolio** : Créer page démos avec vidéos
-4. **Promotion** : Plan pour post-robot (Oct / No2025025025025025)
+4. **Promotion** : Plan pour post-robot (Oct / Oct / Nov. 20255)
 
 ---
 

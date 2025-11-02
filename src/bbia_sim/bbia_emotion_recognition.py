@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-BBIA Emotion Recognition - Module de reconnaissance des émotions humaines
+"""BBIA Emotion Recognition - Module de reconnaissance des émotions humaines
 Détection et analyse des émotions faciales et vocales en temps réel
 """
 
@@ -20,7 +19,7 @@ _emotion_cache_lock = threading.Lock()
 
 # Réduction du bruit de logs TensorFlow/MediaPipe (avant tout import MediaPipe)
 try:
-    import os as _os  # noqa: F401
+    import os as _os
 
     _os.environ.setdefault("GLOG_minloglevel", "2")
     _os.environ.setdefault("TF_CPP_MIN_LOG_LEVEL", "2")
@@ -38,7 +37,7 @@ try:
 except ImportError:
     ML_AVAILABLE = False
     logger.warning(
-        "Dépendances ML non disponibles. Installez avec: pip install mediapipe torch transformers"
+        "Dépendances ML non disponibles. Installez avec: pip install mediapipe torch transformers",
     )
 
 
@@ -57,10 +56,11 @@ class BBIAEmotionRecognition:
 
         Args:
             device: Device pour les modèles ML ("cpu", "cuda", "auto")
+
         """
         if not ML_AVAILABLE:
             raise ImportError(
-                "Dépendances ML requises. Installez avec: pip install mediapipe torch transformers"
+                "Dépendances ML requises. Installez avec: pip install mediapipe torch transformers",
             )
 
         self.device = self._get_device(device)
@@ -108,10 +108,9 @@ class BBIAEmotionRecognition:
         if device == "auto":
             if torch.cuda.is_available():
                 return "cuda"
-            elif torch.backends.mps.is_available():
+            if torch.backends.mps.is_available():
                 return "mps"  # Apple Silicon
-            else:
-                return "cpu"
+            return "cpu"
         return device
 
     def initialize(self) -> bool:
@@ -140,7 +139,7 @@ class BBIAEmotionRecognition:
         with _emotion_cache_lock:
             if self.device in _emotion_pipelines_cache:
                 logger.debug(
-                    f"♻️ Réutilisation modèles émotion depuis cache (device: {self.device})"
+                    f"♻️ Réutilisation modèles émotion depuis cache (device: {self.device})",
                 )
                 self.emotion_models = _emotion_pipelines_cache[self.device].copy()
                 logger.info("📥 Modèles d'émotion chargés (cache)")
@@ -185,6 +184,7 @@ class BBIAEmotionRecognition:
 
         Returns:
             Liste des visages détectés avec coordonnées
+
         """
         if not self.is_initialized:
             self.initialize()
@@ -214,7 +214,6 @@ class BBIAEmotionRecognition:
                     "face_detection_confidence"
                 ],
             ) as face_detection:
-
                 results = face_detection.process(processed_image)
 
                 if results.detections:
@@ -253,6 +252,7 @@ class BBIAEmotionRecognition:
 
         Returns:
             Dictionnaire avec émotion détectée et confiance
+
         """
         try:
             # Pour l'instant, simulation basée sur des patterns visuels
@@ -276,7 +276,8 @@ class BBIAEmotionRecognition:
 
             # Sélection de l'émotion dominante
             dominant_emotion = max(
-                normalized_scores, key=lambda x: normalized_scores[x]
+                normalized_scores,
+                key=lambda x: normalized_scores[x],
             )
             confidence = normalized_scores[dominant_emotion]
 
@@ -300,6 +301,7 @@ class BBIAEmotionRecognition:
 
         Returns:
             Dictionnaire avec émotion détectée et confiance
+
         """
         try:
             if not self.emotion_models.get("emotion"):
@@ -310,7 +312,7 @@ class BBIAEmotionRecognition:
 
             # Analyse de sentiment
             sentiment_result: list[dict[str, Any]] = self.emotion_models["sentiment"](
-                text
+                text,
             )
 
             # Mapping des émotions du modèle vers nos émotions
@@ -325,7 +327,8 @@ class BBIAEmotionRecognition:
             }
 
             detected_emotion = emotion_mapping.get(
-                emotion_result[0]["label"], "neutral"
+                emotion_result[0]["label"],
+                "neutral",
             )
             emotion_confidence = float(emotion_result[0]["score"])
 
@@ -346,7 +349,9 @@ class BBIAEmotionRecognition:
             return {"error": str(e)}
 
     def fuse_emotions(
-        self, facial_result: dict[str, Any], vocal_result: dict[str, Any]
+        self,
+        facial_result: dict[str, Any],
+        vocal_result: dict[str, Any],
     ) -> dict[str, Any]:
         """Fusionne les résultats d'émotion faciale et vocale.
 
@@ -356,6 +361,7 @@ class BBIAEmotionRecognition:
 
         Returns:
             Résultat fusionné avec émotion finale
+
         """
         try:
             weights = self.detection_config["fusion_weights"]
@@ -402,7 +408,9 @@ class BBIAEmotionRecognition:
             return {"error": str(e)}
 
     def analyze_emotion_realtime(
-        self, image: np.ndarray | str, text: str | None = None
+        self,
+        image: np.ndarray | str,
+        text: str | None = None,
     ) -> dict[str, Any]:
         """Analyse complète des émotions en temps réel.
 
@@ -412,6 +420,7 @@ class BBIAEmotionRecognition:
 
         Returns:
             Résultat complet d'analyse d'émotion
+
         """
         try:
             # Analyse faciale
@@ -434,7 +443,7 @@ class BBIAEmotionRecognition:
 
             # Moyennage temporel si suffisamment d'historique
             temporal_window_size = int(
-                self.detection_config.get("temporal_window_size", 5)
+                self.detection_config.get("temporal_window_size", 5),
             )
             if len(self.emotion_history) >= temporal_window_size:
                 final_result = self._apply_temporal_smoothing(final_result)
@@ -456,7 +465,8 @@ class BBIAEmotionRecognition:
             self.emotion_history = self.emotion_history[-max_history:]
 
     def _apply_temporal_smoothing(
-        self, current_result: dict[str, Any]
+        self,
+        current_result: dict[str, Any],
     ) -> dict[str, Any]:
         """Applique un lissage temporel sur les émotions."""
         try:
@@ -465,7 +475,7 @@ class BBIAEmotionRecognition:
 
             # Moyennage des émotions récentes
             temporal_window_size = int(
-                self.detection_config.get("temporal_window_size", 5)
+                self.detection_config.get("temporal_window_size", 5),
             )
             recent_emotions = self.emotion_history[-temporal_window_size:]
 
@@ -483,7 +493,7 @@ class BBIAEmotionRecognition:
             if emotion_counts:
                 smoothed_emotion = max(emotion_counts, key=lambda x: emotion_counts[x])
                 smoothed_confidence = emotion_counts[smoothed_emotion] / len(
-                    recent_emotions
+                    recent_emotions,
                 )
 
                 current_result["emotion"] = smoothed_emotion
@@ -544,14 +554,14 @@ def main() -> None:
     # Test analyse émotion vocale
     print("\n🗣️ Test analyse émotion vocale...")
     vocal_result = emotion_rec.analyze_vocal_emotion(
-        "Je suis très heureux aujourd'hui!"
+        "Je suis très heureux aujourd'hui!",
     )
     print(f"Résultat: {vocal_result}")
 
     # Test analyse émotion faciale (simulation)
     print("\n😊 Test analyse émotion faciale...")
     facial_result = emotion_rec.analyze_facial_emotion(
-        np.random.randint(0, 255, (480, 640, 3), dtype=np.uint8)
+        np.random.randint(0, 255, (480, 640, 3), dtype=np.uint8),
     )
     print(f"Résultat: {facial_result}")
 

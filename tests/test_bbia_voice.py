@@ -3,7 +3,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from src.bbia_sim import bbia_voice
+from bbia_sim import bbia_voice
 
 
 class TestBBIAVoice(unittest.TestCase):

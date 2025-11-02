@@ -1,6 +1,6 @@
 # ✅ CORRECTIONS FINALES - SDK REACHY MINI OFFICIEL
 
-**Date :** Oct / No2025025025025025
+**Date :** Oct / Oct / Nov. 20255
 **Référence :** SDK officiel GitHub https://github.com/pollen-robotics/reachy_mini
 
 ---
@@ -135,7 +135,7 @@ python examples/demo_behavior_ok.py --behavior wake_up
 
 ---
 
-## 📅 **PRÊT POUR LE ROBOT RÉEL (Oct / No2025025025025025)**
+## 📅 **PRÊT POUR LE ROBOT RÉEL (Oct / Oct / Nov. 20255)**
 
 Toutes les démos utilisent maintenant les valeurs exactes du SDK Reachy Mini officiel.
 

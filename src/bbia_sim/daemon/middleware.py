@@ -27,7 +27,7 @@ class SecurityMiddleware(BaseHTTPMiddleware):
         if content_length and int(content_length) > max_size:
             logger.warning(
                 f"Requête trop volumineuse rejetée: {content_length} bytes "
-                f"(limite: {max_size})"
+                f"(limite: {max_size})",
             )
             return Response(
                 content="Request too large",
@@ -50,7 +50,7 @@ class SecurityMiddleware(BaseHTTPMiddleware):
             logger.info(
                 f"Request: {request.method} {request.url.path} "
                 f"Status: {response.status_code} "
-                f"Time: {process_time:.3f}s"
+                f"Time: {process_time:.3f}s",
             )
 
         return response

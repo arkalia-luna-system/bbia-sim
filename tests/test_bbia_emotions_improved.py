@@ -3,7 +3,7 @@
 
 import unittest
 
-from src.bbia_sim.bbia_emotions import BBIAEmotions
+from bbia_sim.bbia_emotions import BBIAEmotions
 
 
 class TestBBIAEmotionsImproved(unittest.TestCase):

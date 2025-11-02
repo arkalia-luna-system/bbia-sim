@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Script unifié pour vérifier la documentation (précision et cohérence).
+"""Script unifié pour vérifier la documentation (précision et cohérence).
 
 Fusion de :
 - verify_doc_accuracy.py (vérifie précision - fichiers/test existent)
@@ -85,6 +84,7 @@ def count_tests() -> int:
             "{}",
             ";",
         ],
+        check=False,
         capture_output=True,
         text=True,
         cwd="/Volumes/T7/bbia-reachy-sim",
@@ -94,7 +94,7 @@ def count_tests() -> int:
             line
             for line in result.stdout.split("\n")
             if line.strip() and line.strip().startswith("def test_")
-        ]
+        ],
     )
 
 
@@ -102,6 +102,7 @@ def count_docs() -> int:
     """Compte le nombre réel de fichiers MD."""
     result = subprocess.run(
         ["find", "docs", "-name", "*.md", "-type", "f"],
+        check=False,
         capture_output=True,
         text=True,
         cwd="/Volumes/T7/bbia-reachy-sim",
@@ -229,8 +230,7 @@ def verify_functionality(name: str, info: dict[str, Any]) -> dict[str, Any]:
             if found:
                 code_ok = True
                 break
-            else:
-                results["issues"].append(f"Pattern code non trouvé: {pattern}")
+            results["issues"].append(f"Pattern code non trouvé: {pattern}")
 
     results["code_ok"] = code_ok
 
@@ -244,7 +244,7 @@ def verify_functionality(name: str, info: dict[str, Any]) -> dict[str, Any]:
                     f"Test non trouvé: {pattern}"
                     for pattern in info["test_patterns"]
                     if not check_test_exists(pattern)
-                ]
+                ],
             )
 
     return results
@@ -324,7 +324,7 @@ def verify_consistency():
                     ]  # Limiter lecture
                     if "✅" in content or "TERMINÉ" in content:
                         print(
-                            f"   📄 {md_file.name}: Contient affirmations de complétion"
+                            f"   📄 {md_file.name}: Contient affirmations de complétion",
                         )
                 except Exception:
                     continue
@@ -342,7 +342,7 @@ def verify_consistency():
 def main():
     """Fonction principale."""
     parser = argparse.ArgumentParser(
-        description="Vérification documentation (précision et cohérence)"
+        description="Vérification documentation (précision et cohérence)",
     )
     parser.add_argument(
         "--accuracy",

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Script de validation des tests skippés BBIA-SIM
+"""Script de validation des tests skippés BBIA-SIM
 Valide que tous les skips sont justifiés et documente les raisons
 """
 
@@ -10,7 +9,6 @@ import sys
 
 def analyze_skipped_tests():
     """Analyse les tests skippés et valide leur justification."""
-
     print("🧪 Analyse des tests skippés BBIA-SIM")
     print("=" * 50)
 
@@ -58,7 +56,7 @@ def analyze_skipped_tests():
     print("📊 Résumé des tests skippés:")
     print(f"   Total skippés: {total_skipped}")
     print(f"   Justifiés: {total_justified}")
-    print(f"   Taux de justification: {total_justified/total_skipped*100:.1f}%")
+    print(f"   Taux de justification: {total_justified / total_skipped * 100:.1f}%")
     print()
 
     for category, info in skipped_categories.items():
@@ -82,7 +80,6 @@ def analyze_skipped_tests():
 
 def generate_test_coverage_report():
     """Génère un rapport de couverture de test."""
-
     print("\n📈 Génération du rapport de couverture...")
 
     try:
@@ -99,6 +96,7 @@ def generate_test_coverage_report():
                 "--cov-report=json:coverage.json",
                 "-q",
             ],
+            check=False,
             capture_output=True,
             text=True,
         )
@@ -124,7 +122,6 @@ def generate_test_coverage_report():
 
 def main():
     """Fonction principale."""
-
     # 1. Analyser les tests skippés
     all_justified = analyze_skipped_tests()
 

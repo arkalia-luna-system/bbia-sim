@@ -135,7 +135,7 @@ Endpoints disponibles :
         os.environ["BBIA_TELEMETRY_SDK"] = "true"
         os.environ["BBIA_TELEMETRY_TIMEOUT"] = str(args.sdk_telemetry_timeout)
         logger.info(
-            f"🧩 Télémétrie SDK-first activée (timeout={args.sdk_telemetry_timeout}s)"
+            f"🧩 Télémétrie SDK-first activée (timeout={args.sdk_telemetry_timeout}s)",
         )
 
     if args.no_audio:

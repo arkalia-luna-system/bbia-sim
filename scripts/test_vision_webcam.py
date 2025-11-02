@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Test Vision BBIA avec webcam USB - Détection objets et visages en temps réel
+"""Test Vision BBIA avec webcam USB - Détection objets et visages en temps réel
 
 Usage:
     source venv-vision-py310/bin/activate
@@ -54,7 +53,10 @@ def draw_detections(frame, objects, faces):
         # Label avec fond pour meilleure lisibilité
         label = f"{name} {conf:.2f}"
         (text_width, text_height), _ = cv2.getTextSize(
-            label, cv2.FONT_HERSHEY_SIMPLEX, 0.6, 2
+            label,
+            cv2.FONT_HERSHEY_SIMPLEX,
+            0.6,
+            2,
         )
         cv2.rectangle(
             frame,
@@ -93,7 +95,13 @@ def draw_detections(frame, objects, faces):
         # Label
         label = f"Face {conf:.2f} ({emotion})"
         cv2.putText(
-            frame, label, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 0), 2
+            frame,
+            label,
+            (x, y - 10),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            0.6,
+            (255, 0, 0),
+            2,
         )
 
 
@@ -109,7 +117,7 @@ def main():
         print("💡 Vérifie:")
         print("   - La webcam est branchée")
         print(
-            "   - Les permissions macOS (Réglages Système > Confidentialité > Caméra)"
+            "   - Les permissions macOS (Réglages Système > Confidentialité > Caméra)",
         )
         print("   - L'index est correct (BBIA_CAMERA_INDEX=0)")
         return 1
@@ -146,7 +154,7 @@ def main():
                 if objects or faces:
                     detection_count += 1
                     print(
-                        f"🔍 Frame {frame_count}: {len(objects)} objets, {len(faces)} visages"
+                        f"🔍 Frame {frame_count}: {len(objects)} objets, {len(faces)} visages",
                     )
 
                 # Dessiner détections
@@ -176,7 +184,7 @@ def main():
             if key == ord("q"):
                 print("\n👋 Arrêt demandé")
                 break
-            elif key == ord("s"):
+            if key == ord("s"):
                 from datetime import datetime
 
                 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")

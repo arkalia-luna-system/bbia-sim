@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Audit exhaustif vs SDK officiel Reachy Mini (Novembre 2025)
+"""Audit exhaustif vs SDK officiel Reachy Mini (Novembre 2025)
 Basé sur https://github.com/pollen-robotics/reachy_mini
 """
 
@@ -36,6 +35,7 @@ def check_sdk_installation() -> dict[str, Any]:
     try:
         result_pip = subprocess.run(
             ["pip", "show", "reachy-mini"],
+            check=False,
             capture_output=True,
             text=True,
             timeout=5,
@@ -58,6 +58,7 @@ def check_daemon_command() -> bool:
     try:
         result = subprocess.run(
             ["which", "reachy-mini-daemon"],
+            check=False,
             capture_output=True,
             text=True,
             timeout=2,
@@ -243,7 +244,7 @@ def main():
     our_impl = check_our_implementation()
     if our_impl["missing_methods"]:
         ISSUES.append(
-            f"❌ Méthodes manquantes dans ReachyMiniBackend: {our_impl['missing_methods']}"
+            f"❌ Méthodes manquantes dans ReachyMiniBackend: {our_impl['missing_methods']}",
         )
         print(f"❌ Méthodes manquantes: {our_impl['missing_methods']}")
     else:
@@ -282,12 +283,12 @@ def main():
     python_check = check_python_versions()
     if python_check["supported"]:
         SUCCESSES.append(
-            f"✅ Python {python_check['version']} supporté (officiel: 3.10-3.13)"
+            f"✅ Python {python_check['version']} supporté (officiel: 3.10-3.13)",
         )
         print(f"✅ Python {python_check['version']} supporté")
     else:
         WARNINGS.append(
-            f"⚠️ Python {python_check['version']} - officiel supporte 3.10-3.13"
+            f"⚠️ Python {python_check['version']} - officiel supporte 3.10-3.13",
         )
         print(f"⚠️ Python {python_check['version']} (officiel: 3.10-3.13)")
 

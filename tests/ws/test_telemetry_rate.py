@@ -7,7 +7,7 @@ import time
 import pytest
 from fastapi.testclient import TestClient
 
-from src.bbia_sim.daemon.app.main import app
+from bbia_sim.daemon.app.main import app
 
 
 class TestTelemetryRate:

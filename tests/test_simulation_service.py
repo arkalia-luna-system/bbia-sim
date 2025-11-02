@@ -5,7 +5,7 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from src.bbia_sim.daemon.simulation_service import SimulationService
+from bbia_sim.daemon.simulation_service import SimulationService
 
 
 class TestSimulationService:

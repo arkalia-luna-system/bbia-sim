@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-BBIA Advanced Dashboard - Interface de contrôle sophistiquée
+"""BBIA Advanced Dashboard - Interface de contrôle sophistiquée
 Dashboard web avancé avec métriques temps réel, visualisation 3D, et contrôle complet
 """
 
@@ -99,7 +98,7 @@ class BBIAAdvancedWebSocketManager:
         await websocket.accept()
         self.active_connections.append(websocket)
         logger.info(
-            f"🔌 WebSocket avancé connecté ({len(self.active_connections)} connexions)"
+            f"🔌 WebSocket avancé connecté ({len(self.active_connections)} connexions)",
         )
 
         # Démarrer la collecte de métriques si c'est la première connexion
@@ -114,7 +113,7 @@ class BBIAAdvancedWebSocketManager:
         if websocket in self.active_connections:
             self.active_connections.remove(websocket)
         logger.info(
-            f"🔌 WebSocket avancé déconnecté ({len(self.active_connections)} connexions)"
+            f"🔌 WebSocket avancé déconnecté ({len(self.active_connections)} connexions)",
         )
 
     async def broadcast(self, message: str):
@@ -128,8 +127,8 @@ class BBIAAdvancedWebSocketManager:
                 await connection.send_text(message)
             except Exception:
                 disconnected.append(
-                    connection
-                )  # noqa: S101 - Ajouter connexion fermée à liste nettoyage
+                    connection,
+                )
 
         # Nettoyer les connexions fermées
         for connection in disconnected:
@@ -214,9 +213,7 @@ class BBIAAdvancedWebSocketManager:
             try:
                 pose[joint] = self.robot.get_joint_pos(joint)
             except Exception:
-                pose[joint] = (
-                    0.0  # noqa: S101 - Valeur par défaut si lecture joint échoue
-                )
+                pose[joint] = 0.0
         return pose
 
     def _start_metrics_collection(self):
@@ -258,7 +255,8 @@ class BBIAAdvancedWebSocketManager:
             # Métriques de performance (simulation)
             telemetry = self.robot.get_telemetry()
             self.current_metrics["performance"]["latency_ms"] = telemetry.get(
-                "latency_ms", 0.0
+                "latency_ms",
+                0.0,
             )
             self.current_metrics["performance"]["fps"] = telemetry.get("fps", 0.0)
 
@@ -267,10 +265,10 @@ class BBIAAdvancedWebSocketManager:
         self.current_metrics["emotion_intensity"] = self.emotions.emotion_intensity
 
         self.current_metrics["vision"]["objects_detected"] = len(
-            self.vision.objects_detected
+            self.vision.objects_detected,
         )
         self.current_metrics["vision"]["faces_detected"] = len(
-            self.vision.faces_detected
+            self.vision.faces_detected,
         )
         self.current_metrics["vision"]["tracking_active"] = self.vision.tracking_active
 
@@ -1199,18 +1197,20 @@ if FASTAPI_AVAILABLE:
 
         if advanced_websocket_manager.robot:
             success = await advanced_websocket_manager.robot.set_emotion(
-                emotion, intensity
+                emotion,
+                intensity,
             )
             if success:
                 await advanced_websocket_manager.send_log_message(
-                    "info", f"Émotion définie: {emotion} (intensité: {intensity})"
+                    "info",
+                    f"Émotion définie: {emotion} (intensité: {intensity})",
                 )
                 return {"success": True, "emotion": emotion, "intensity": intensity}
-            else:
-                await advanced_websocket_manager.send_log_message(
-                    "error", f"Échec définition émotion: {emotion}"
-                )
-                return {"success": False, "error": "Failed to set emotion"}
+            await advanced_websocket_manager.send_log_message(
+                "error",
+                f"Échec définition émotion: {emotion}",
+            )
+            return {"success": False, "error": "Failed to set emotion"}
 
         return {"success": False, "error": "Robot not connected"}
 
@@ -1227,14 +1227,15 @@ if FASTAPI_AVAILABLE:
             success = advanced_websocket_manager.robot.set_joint_pos(joint, position)
             if success:
                 await advanced_websocket_manager.send_log_message(
-                    "info", f"Joint {joint} = {position}"
+                    "info",
+                    f"Joint {joint} = {position}",
                 )
                 return {"success": True, "joint": joint, "position": position}
-            else:
-                await advanced_websocket_manager.send_log_message(
-                    "error", f"Échec contrôle joint {joint}"
-                )
-                return {"success": False, "error": "Failed to set joint position"}
+            await advanced_websocket_manager.send_log_message(
+                "error",
+                f"Échec contrôle joint {joint}",
+            )
+            return {"success": False, "error": "Failed to set joint position"}
 
         return {"success": False, "error": "Robot not connected"}
 
@@ -1282,7 +1283,7 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
         if not advanced_websocket_manager.robot:
             # Initialiser le robot si nécessaire
             advanced_websocket_manager.robot = RobotFactory.create_backend(
-                advanced_websocket_manager.robot_backend
+                advanced_websocket_manager.robot_backend,
             )
             if advanced_websocket_manager.robot:
                 connected = advanced_websocket_manager.robot.connect()
@@ -1302,7 +1303,8 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
             emotion = value
             if not emotion or not isinstance(emotion, str):
                 await advanced_websocket_manager.send_log_message(
-                    "error", "Émotion invalide"
+                    "error",
+                    "Émotion invalide",
                 )
                 return
 
@@ -1310,22 +1312,27 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
             if advanced_websocket_manager.robot:
                 # Type narrowing après vérification isinstance
                 assert isinstance(
-                    emotion, str
-                )  # noqa: S101 - Type narrowing après vérification isinstance
+                    emotion,
+                    str,
+                )
                 success = advanced_websocket_manager.robot.set_emotion(
-                    emotion, intensity
+                    emotion,
+                    intensity,
                 )
                 if success:
                     await advanced_websocket_manager.send_log_message(
-                        "info", f"Émotion définie: {emotion}"
+                        "info",
+                        f"Émotion définie: {emotion}",
                     )
                 else:
                     await advanced_websocket_manager.send_log_message(
-                        "error", f"Échec émotion: {emotion}"
+                        "error",
+                        f"Échec émotion: {emotion}",
                     )
             else:
                 await advanced_websocket_manager.send_log_message(
-                    "error", "Robot non connecté"
+                    "error",
+                    "Robot non connecté",
                 )
 
         elif command_type == "action":
@@ -1333,14 +1340,13 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
             action = value
             if not advanced_websocket_manager.robot:
                 await advanced_websocket_manager.send_log_message(
-                    "error", "Robot non connecté"
+                    "error",
+                    "Robot non connecté",
                 )
                 return
 
             # Type narrowing après vérification robot
-            assert (
-                advanced_websocket_manager.robot is not None
-            )  # noqa: S101 - Type narrowing après vérification
+            assert advanced_websocket_manager.robot is not None
             robot = advanced_websocket_manager.robot
 
             if action == "look_at":
@@ -1360,11 +1366,13 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
 
             if success:
                 await advanced_websocket_manager.send_log_message(
-                    "info", f"Action exécutée: {action}"
+                    "info",
+                    f"Action exécutée: {action}",
                 )
             else:
                 await advanced_websocket_manager.send_log_message(
-                    "error", f"Échec action: {action}"
+                    "error",
+                    f"Échec action: {action}",
                 )
 
         elif command_type == "behavior":
@@ -1372,33 +1380,36 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
             behavior = value
             if not behavior or not isinstance(behavior, str):
                 await advanced_websocket_manager.send_log_message(
-                    "error", "Comportement invalide"
+                    "error",
+                    "Comportement invalide",
                 )
                 return
 
             if not advanced_websocket_manager.robot:
                 await advanced_websocket_manager.send_log_message(
-                    "error", "Robot non connecté"
+                    "error",
+                    "Robot non connecté",
                 )
                 return
 
             # Type narrowing après vérifications
             assert isinstance(
-                behavior, str
-            )  # noqa: S101 - Type narrowing après vérification isinstance
-            assert (
-                advanced_websocket_manager.robot is not None
-            )  # noqa: S101 - Type narrowing après vérification
+                behavior,
+                str,
+            )
+            assert advanced_websocket_manager.robot is not None
             robot = advanced_websocket_manager.robot
 
             success = robot.run_behavior(behavior, 5.0)
             if success:
                 await advanced_websocket_manager.send_log_message(
-                    "info", f"Comportement lancé: {behavior}"
+                    "info",
+                    f"Comportement lancé: {behavior}",
                 )
             else:
                 await advanced_websocket_manager.send_log_message(
-                    "error", f"Échec comportement: {behavior}"
+                    "error",
+                    f"Échec comportement: {behavior}",
                 )
 
         elif command_type == "joint":
@@ -1406,23 +1417,21 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
             joint_data = value
             if not joint_data:
                 await advanced_websocket_manager.send_log_message(
-                    "error", "Données joint manquantes"
+                    "error",
+                    "Données joint manquantes",
                 )
                 return
 
             if not advanced_websocket_manager.robot:
                 await advanced_websocket_manager.send_log_message(
-                    "error", "Robot non connecté"
+                    "error",
+                    "Robot non connecté",
                 )
                 return
 
             # Type narrowing après vérifications
-            assert (
-                joint_data is not None
-            )  # noqa: S101 - Type narrowing après vérification
-            assert (
-                advanced_websocket_manager.robot is not None
-            )  # noqa: S101 - Type narrowing après vérification
+            assert joint_data is not None
+            assert advanced_websocket_manager.robot is not None
             robot = advanced_websocket_manager.robot
 
             joint = joint_data.get("joint")
@@ -1430,11 +1439,13 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
             success = robot.set_joint_pos(joint, position)
             if success:
                 await advanced_websocket_manager.send_log_message(
-                    "info", f"Joint {joint} = {position}"
+                    "info",
+                    f"Joint {joint} = {position}",
                 )
             else:
                 await advanced_websocket_manager.send_log_message(
-                    "error", f"Échec joint {joint}"
+                    "error",
+                    f"Échec joint {joint}",
                 )
 
         elif command_type == "vision":
@@ -1451,7 +1462,8 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
             elif vision_action == "scan":
                 objects = advanced_websocket_manager.vision.scan_environment()
                 await advanced_websocket_manager.send_log_message(
-                    "info", f"Scan: {len(objects.get('objects', []))} objets détectés"
+                    "info",
+                    f"Scan: {len(objects.get('objects', []))} objets détectés",
                 )
             elif vision_action == "track":
                 advanced_websocket_manager.vision.tracking_active = (
@@ -1467,7 +1479,7 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
 
     except Exception as e:
         logger.error(f"❌ Erreur commande avancée: {e}")
-        await advanced_websocket_manager.send_log_message("error", f"Erreur: {str(e)}")
+        await advanced_websocket_manager.send_log_message("error", f"Erreur: {e!s}")
 
 
 async def handle_chat_message(message_data: dict[str, Any], websocket: WebSocket):
@@ -1476,6 +1488,7 @@ async def handle_chat_message(message_data: dict[str, Any], websocket: WebSocket
     Args:
         message_data: Données du message chat
         websocket: Connexion WebSocket pour réponse
+
     """
     try:
         user_message = message_data.get("message", "")
@@ -1483,7 +1496,8 @@ async def handle_chat_message(message_data: dict[str, Any], websocket: WebSocket
 
         if not user_message:
             await advanced_websocket_manager.send_log_message(
-                "error", "Message chat vide"
+                "error",
+                "Message chat vide",
             )
             return
 
@@ -1524,7 +1538,8 @@ async def handle_chat_message(message_data: dict[str, Any], websocket: WebSocket
             await websocket.send_text(json.dumps(chat_response_bbia))
 
             await advanced_websocket_manager.send_log_message(
-                "info", f"Chat: {len(user_message)} caractères → réponse BBIA"
+                "info",
+                f"Chat: {len(user_message)} caractères → réponse BBIA",
             )
         else:
             # Réponse fallback si HF indisponible
@@ -1540,20 +1555,23 @@ async def handle_chat_message(message_data: dict[str, Any], websocket: WebSocket
     except Exception as e:
         logger.error(f"❌ Erreur chat: {e}")
         await advanced_websocket_manager.send_log_message(
-            "error", f"Erreur chat: {str(e)}"
+            "error",
+            f"Erreur chat: {e!s}",
         )
 
 
 def run_advanced_dashboard(
-    host: str = "127.0.0.1", port: int = 8000, backend: str = "mujoco"
+    host: str = "127.0.0.1",
+    port: int = 8000,
+    backend: str = "mujoco",
 ):
-    """
-    Lance le dashboard BBIA avancé.
+    """Lance le dashboard BBIA avancé.
 
     Args:
         host: Adresse d'écoute
         port: Port d'écoute
         backend: Backend robot à utiliser
+
     """
     if not FASTAPI_AVAILABLE:
         logger.error("❌ FastAPI non disponible")

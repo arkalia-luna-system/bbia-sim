@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-bbia_advanced_dashboard_server.py - Serveur dashboard BBIA avancé
+"""bbia_advanced_dashboard_server.py - Serveur dashboard BBIA avancé
 Script pour lancer le dashboard web sophistiqué avec métriques temps réel
 """
 
@@ -19,7 +18,9 @@ def main():
     """Point d'entrée principal."""
     parser = argparse.ArgumentParser(description="BBIA Advanced Dashboard")
     parser.add_argument(
-        "--host", default="127.0.0.1", help="Adresse d'écoute"
+        "--host",
+        default="127.0.0.1",
+        help="Adresse d'écoute",
     )  # nosec B104
     parser.add_argument("--port", type=int, default=8000, help="Port d'écoute")
     parser.add_argument(

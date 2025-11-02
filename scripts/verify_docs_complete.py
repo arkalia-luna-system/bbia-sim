@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Script COMPLET de vérification professionnelle de la documentation BBIA.
+"""Script COMPLET de vérification professionnelle de la documentation BBIA.
 
 🔍 FUSION DE :
 - verify_documentation.py (précision et cohérence avec code)
@@ -28,6 +27,7 @@ Usage:
 """
 
 import argparse
+import glob
 import re
 from collections import defaultdict
 from pathlib import Path
@@ -352,7 +352,9 @@ class DocsVerifier:
     """Vérificateur complet de documentation."""
 
     def __init__(
-        self, fix_mode: bool = False, check_external_links: bool = False
+        self,
+        fix_mode: bool = False,
+        check_external_links: bool = False,
     ) -> None:
         self.fix_mode = fix_mode
         self.check_external_links = check_external_links
@@ -360,6 +362,29 @@ class DocsVerifier:
         self.warnings: dict[str, list[str]] = defaultdict(list)
         self.fixes: dict[str, list[str]] = defaultdict(list)
         self.md_files: list[Path] = []
+
+    @staticmethod
+    def cleanup_metadata_files(file_path: Path) -> None:
+        """Supprime les fichiers de métadonnées macOS créés automatiquement."""
+        parent_dir = file_path.parent
+        base_name = file_path.name
+
+        # Supprimer fichier ._* standard
+        metadata_file = parent_dir / f"._{base_name}"
+        if metadata_file.exists():
+            try:
+                metadata_file.unlink()
+            except Exception:
+                pass
+
+        # Supprimer fichiers .!*!._* (format avec numéro)
+        # Pattern: .!XXXXX!._FILENAME
+        pattern = str(parent_dir / f".!*._{base_name}")
+        for metadata_file_path in glob.glob(pattern):
+            try:
+                Path(metadata_file_path).unlink()
+            except Exception:
+                pass
 
     def find_all_md_files(self, limit_docs: bool = True) -> list[Path]:
         """Trouve tous les fichiers MD (optimisé - limite aux docs principaux par défaut)."""
@@ -405,7 +430,7 @@ class DocsVerifier:
                             f
                             for f in full_path.rglob("*.md")
                             if not f.name.startswith("._")
-                        ]
+                        ],
                     )
         else:
             # Mode complet (plus lent)
@@ -427,7 +452,10 @@ class DocsVerifier:
         return sorted(set(md_files))  # Dédupliquer
 
     def check_links(
-        self, md_file: Path, content: str, skip_external: bool = True
+        self,
+        md_file: Path,
+        content: str,
+        skip_external: bool = True,
     ) -> None:
         """Vérifie tous les liens (internes uniquement par défaut, plus rapide)."""
         # Pattern pour liens markdown: [text](url)
@@ -454,7 +482,7 @@ class DocsVerifier:
                     parsed = urlparse(link_url)
                     if not parsed.netloc:
                         self.errors[md_file].append(
-                            f"❌ Lien externe invalide: {link_url}"
+                            f"❌ Lien externe invalide: {link_url}",
                         )
                 continue
 
@@ -513,7 +541,7 @@ class DocsVerifier:
 
             if not valid_type and first_line:
                 self.warnings[md_file].append(
-                    f"⚠️  Type Mermaid non reconnu: {first_line[:30]}"
+                    f"⚠️  Type Mermaid non reconnu: {first_line[:30]}",
                 )
 
             # Vérifier couleurs/styles (recommandation)
@@ -522,7 +550,7 @@ class DocsVerifier:
                 for t in ["graph", "flowchart", "graph TB", "graph LR"]
             ):
                 self.warnings[md_file].append(
-                    "💡 Diagramme Mermaid sans couleurs (recommandation: ajouter styles)"
+                    "💡 Diagramme Mermaid sans couleurs (recommandation: ajouter styles)",
                 )
 
             # Vérifier syntaxe basique
@@ -532,7 +560,7 @@ class DocsVerifier:
                 close_brackets = diagram.count("]")
                 if open_brackets != close_brackets:
                     self.errors[md_file].append(
-                        f"❌ Mermaid: brackets non équilibrés ([{open_brackets}] vs ]{close_brackets})"
+                        f"❌ Mermaid: brackets non équilibrés ([{open_brackets}] vs ]{close_brackets})",
                     )
 
             # Vérifier indentation cohérente
@@ -547,7 +575,7 @@ class DocsVerifier:
             if len(indent_chars) > 1:
                 # Mélange de tabs et espaces
                 self.warnings[md_file].append(
-                    "⚠️  Mermaid: mélange tabs/espaces (utiliser uniquement espaces)"
+                    "⚠️  Mermaid: mélange tabs/espaces (utiliser uniquement espaces)",
                 )
 
     def check_spaces(self, md_file: Path, content: str) -> None:
@@ -588,12 +616,14 @@ class DocsVerifier:
                     fixed_line = re.sub(r" +", " ", line)
                     if fixed_line != line:
                         self.fixes[md_file].append(
-                            f"✅ Ligne {i}: espaces doubles corrigés"
+                            f"✅ Ligne {i}: espaces doubles corrigés",
                         )
                         lines[i - 1] = fixed_line
                         # Écrire correction
                         try:
                             md_file.write_text("\n".join(lines), encoding="utf-8")
+                            # Nettoyer les métadonnées macOS créées automatiquement
+                            self.cleanup_metadata_files(md_file)
                         except Exception:
                             pass
                 else:
@@ -613,11 +643,13 @@ class DocsVerifier:
                     fixed_line = line.rstrip()
                     if fixed_line != line:
                         self.fixes[md_file].append(
-                            f"✅ Ligne {i}: espaces finaux supprimés"
+                            f"✅ Ligne {i}: espaces finaux supprimés",
                         )
                         lines[i - 1] = fixed_line
                         try:
                             md_file.write_text("\n".join(lines), encoding="utf-8")
+                            # Nettoyer les métadonnées macOS créées automatiquement
+                            self.cleanup_metadata_files(md_file)
                         except Exception:
                             pass
                 else:
@@ -637,7 +669,8 @@ class DocsVerifier:
             if re.match(r"^[-*]\S", line) and not line.startswith("```"):
                 # Accepter si c'est une ligne de séparateur de tableau (---)
                 if line.strip() in ["---", "-", "---", "|---|---|"] or re.match(
-                    r"^[-*]{3,}", line.strip()
+                    r"^[-*]{3,}",
+                    line.strip(),
                 ):
                     continue
                 # Accepter si c'est dans un bloc de code ou inline code
@@ -647,8 +680,7 @@ class DocsVerifier:
                 if (
                     re.match(r"^[-*]\s*\*\*|^[-*]\s*\*[^*]", line)
                     or line.strip().startswith("**")
-                    or line.strip().startswith("*")
-                    and "**" in line
+                    or (line.strip().startswith("*") and "**" in line)
                 ):
                     # Formatage gras/italique avec astérisque, pas une liste
                     continue
@@ -707,7 +739,7 @@ class DocsVerifier:
                     continue
                 # Seulement signaler si vraiment isolée et suspecte
                 self.errors[md_file].append(
-                    f"❌ Ligne {i}: liste sans espace après - ou *"
+                    f"❌ Ligne {i}: liste sans espace après - ou *",
                 )
 
             # Code blocks: vérifier fermeture
@@ -719,7 +751,7 @@ class DocsVerifier:
                     remaining = content[content.find(line) + len(line) :]
                     if "```" not in remaining[:500]:
                         self.errors[md_file].append(
-                            f"❌ Ligne {i}: bloc code non fermé"
+                            f"❌ Ligne {i}: bloc code non fermé",
                         )
 
     def check_dates(self, md_file: Path, content: str) -> None:
@@ -732,7 +764,7 @@ class DocsVerifier:
 
         if not has_valid_date and "Date" in content[:500]:
             self.warnings[md_file].append(
-                "⚠️  Date non standardisée (attendu: Oct 25 / Nov 25)"
+                "⚠️  Date non standardisée (attendu: Oct 25 / Nov 25)",
             )
 
         # Vérifier dates obsolètes
@@ -745,7 +777,10 @@ class DocsVerifier:
             self.errors[md_file].append(f"❌ Dates obsolètes trouvées: {old_dates}")
 
     def check_code_consistency(
-        self, md_file: Path, content: str, quick: bool = True
+        self,
+        md_file: Path,
+        content: str,
+        quick: bool = True,
     ) -> None:
         """Vérifie cohérence avec code réel (rapide - seulement fichiers mentionnés)."""
         # Vérifier fichiers mentionnés (rapide)
@@ -766,7 +801,7 @@ class DocsVerifier:
             if not (PROJECT_ROOT / file_path.lstrip("/")).exists():
                 if not (md_file.parent / file_path).exists():
                     self.warnings[md_file].append(
-                        f"⚠️  Fichier mentionné non trouvé: {file_path}"
+                        f"⚠️  Fichier mentionné non trouvé: {file_path}",
                     )
 
         # Skip vérification classes si mode rapide (lent)
@@ -815,7 +850,7 @@ class DocsVerifier:
         # Seulement avertir si vraiment suspect
         if len(suspicious) > 5:
             self.warnings[md_file].append(
-                f"⚠️  Orthographe: {len(suspicious)} mots suspects dans échantillon (vérification manuelle recommandée)"
+                f"⚠️  Orthographe: {len(suspicious)} mots suspects dans échantillon (vérification manuelle recommandée)",
             )
 
     def check_tables(self, md_file: Path, content: str) -> None:
@@ -845,7 +880,7 @@ class DocsVerifier:
                                 if "---" not in sep_line and "|" in sep_line:
                                     # Pas de séparateur détecté
                                     self.errors[md_file].append(
-                                        f"❌ Ligne {i}: table sans séparateur (---)"
+                                        f"❌ Ligne {i}: table sans séparateur (---)",
                                     )
                 else:
                     # Vérifier nombre de colonnes cohérent (par rapport à header)
@@ -855,7 +890,7 @@ class DocsVerifier:
                         if cols != header_cols and "---" not in line:
                             # Tolérer différence si c'est le séparateur
                             self.warnings[md_file].append(
-                                f"⚠️  Ligne {i}: nombre de colonnes incohérent ({cols} vs {header_cols})"
+                                f"⚠️  Ligne {i}: nombre de colonnes incohérent ({cols} vs {header_cols})",
                             )
             elif in_table:
                 # Sortir du tableau si ligne vide OU bloc code
@@ -878,7 +913,7 @@ class DocsVerifier:
 
         if not full_scan and len(self.md_files) < 50:
             print(
-                "💡 Mode rapide: seulement docs principaux (utiliser --full-scan pour tout)"
+                "💡 Mode rapide: seulement docs principaux (utiliser --full-scan pour tout)",
             )
 
         print("📋 Vérification en cours...\n")
@@ -899,7 +934,9 @@ class DocsVerifier:
                 if not links_only and not spell_only and not mermaid_only:
                     # Vérification complète (mode rapide)
                     self.check_links(
-                        md_file, content, skip_external=not self.check_external_links
+                        md_file,
+                        content,
+                        skip_external=not self.check_external_links,
                     )
                     self.check_mermaid(md_file, content)
                     self.check_spaces(md_file, content)
@@ -996,7 +1033,7 @@ class DocsVerifier:
 def main() -> int:
     """Point d'entrée principal."""
     parser = argparse.ArgumentParser(
-        description="Vérification complète documentation BBIA"
+        description="Vérification complète documentation BBIA",
     )
     parser.add_argument(
         "--fix",
@@ -1004,10 +1041,14 @@ def main() -> int:
         help="Mode auto-correction (sûr uniquement: espaces, formatage basique)",
     )
     parser.add_argument(
-        "--links-only", action="store_true", help="Vérifier uniquement les liens"
+        "--links-only",
+        action="store_true",
+        help="Vérifier uniquement les liens",
     )
     parser.add_argument(
-        "--spell-only", action="store_true", help="Vérifier uniquement l'orthographe"
+        "--spell-only",
+        action="store_true",
+        help="Vérifier uniquement l'orthographe",
     )
     parser.add_argument(
         "--mermaid-only",
@@ -1033,7 +1074,8 @@ def main() -> int:
     args = parser.parse_args()
 
     verifier = DocsVerifier(
-        fix_mode=args.fix, check_external_links=args.check_external_links
+        fix_mode=args.fix,
+        check_external_links=args.check_external_links,
     )
     results = verifier.verify_all(
         links_only=args.links_only,

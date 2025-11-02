@@ -1,13 +1,33 @@
 #!/usr/bin/env python3
-"""
-Améliore tous les fichiers MD : vérifie véracité + style moderne professionnel.
-"""
+"""Améliore tous les fichiers MD : vérifie véracité + style moderne professionnel."""
 
 import re
 from pathlib import Path
 from typing import Any
 
 IMPROVEMENTS_MADE = []
+
+
+def cleanup_metadata_files(file_path: Path) -> None:
+    """Supprime les fichiers de métadonnées macOS créés automatiquement."""
+    parent_dir = file_path.parent
+    base_name = file_path.name
+
+    # Supprimer fichier ._* standard
+    metadata_file = parent_dir / f"._{base_name}"
+    if metadata_file.exists():
+        try:
+            metadata_file.unlink()
+        except Exception:
+            pass
+
+    # Supprimer fichiers .!*!._* (format avec numéro)
+    pattern = str(parent_dir / f".!*._{base_name}")
+    for metadata_file_path in glob.glob(pattern):
+        try:
+            Path(metadata_file_path).unlink()
+        except Exception:
+            pass
 
 
 def verify_content(file_path: Path) -> list[str]:
@@ -27,7 +47,7 @@ def verify_content(file_path: Path) -> list[str]:
             emotion_match = re.search(r"(\d+)\s+émotions?", content, re.IGNORECASE)
             if emotion_match and emotion_match.group(1) != "12":
                 issues.append(
-                    f"Nombre d'émotions incorrect: {emotion_match.group(1)} (devrait être 12)"
+                    f"Nombre d'émotions incorrect: {emotion_match.group(1)} (devrait être 12)",
                 )
 
     return issues
@@ -63,7 +83,7 @@ def improve_markdown_style(content: str) -> str:
                 ):
                     improved_lines.append("```python")
                     break
-                elif lines[j].strip().startswith(("git ", "cd ", "export ", "bash")):
+                if lines[j].strip().startswith(("git ", "cd ", "export ", "bash")):
                     improved_lines.append("```bash")
                     break
                 j += 1
@@ -99,7 +119,6 @@ def improve_markdown_style(content: str) -> str:
 
 def improve_readme_specifically(content: str) -> str:
     """Améliorations spécifiques pour README.md."""
-
     # Améliorer la section titre avec meilleure structure
     if not content.startswith("# BBIA"):
         # Ajouter header si nécessaire
@@ -113,12 +132,16 @@ def improve_readme_specifically(content: str) -> str:
 
     # Améliorer la section "EN 30 SECONDES"
     content = re.sub(
-        r"## 📋 \*\*EN 30 SECONDES :\*\*", r"## 📋 **EN 30 SECONDES**", content
+        r"## 📋 \*\*EN 30 SECONDES :\*\*",
+        r"## 📋 **EN 30 SECONDES**",
+        content,
     )
 
     # Améliorer les points clés avec meilleur formatage
     content = re.sub(
-        r"• ✅ \*\*([^*]+)\*\*\s*\(([^)]+)\)", r"• ✅ **\1** (\2)", content
+        r"• ✅ \*\*([^*]+)\*\*\s*\(([^)]+)\)",
+        r"• ✅ **\1** (\2)",
+        content,
     )
 
     IMPROVEMENTS_MADE.append("README spécifiquement amélioré")
@@ -127,7 +150,6 @@ def improve_readme_specifically(content: str) -> str:
 
 def improve_projects_specifically(content: str) -> str:
     """Améliorations spécifiques pour PROJECTS.md."""
-
     # Améliorer les sections projets avec meilleure structure
     content = re.sub(r"### (\d+)\. \*\*([^*]+)\*\*", r"### \1. **\2**", content)
 
@@ -162,6 +184,8 @@ def process_file(file_path: Path, is_main_file: bool = False) -> dict[str, Any]:
         # 3. Sauvegarder si changé
         if content != original:
             file_path.write_text(content, encoding="utf-8")
+            # Nettoyer les métadonnées macOS créées automatiquement
+            cleanup_metadata_files(file_path)
             return {
                 "file": str(file_path),
                 "changed": True,

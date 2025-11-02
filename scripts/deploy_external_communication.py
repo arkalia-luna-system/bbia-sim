@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Script de déploiement automatique BBIA-SIM
+"""Script de déploiement automatique BBIA-SIM
 Déploie la documentation publique et génère les assets de communication
 """
 
@@ -40,6 +39,7 @@ class BBIAExternalCommunication:
                     sys.executable,
                     str(self.project_root / "scripts" / "generate_presentation.py"),
                 ],
+                check=False,
                 capture_output=True,
                 text=True,
             )
@@ -60,6 +60,7 @@ class BBIAExternalCommunication:
                     sys.executable,
                     str(self.project_root / "scripts" / "generate_video_demo.py"),
                 ],
+                check=False,
                 capture_output=True,
                 text=True,
             )
@@ -185,14 +186,14 @@ class BBIAExternalCommunication:
         }
 
         # Générer le code Markdown des badges
-        badge_markdown = f"""[![Version](https://img.shields.io/badge/version-{badges['version']}-blue.svg)](https://github.com/arkalia-luna-system/bbia-sim)
-[![Python](https://img.shields.io/badge/python-{badges['python']}-blue.svg)](https://python.org)
-[![License](https://img.shields.io/badge/license-{badges['license']}-green.svg)](LICENSE)
-[![Build Status](https://img.shields.io/badge/build-{badges['build_status']}-brightgreen.svg)](https://github.com/arkalia-luna-system/bbia-sim/actions)
-[![Tests](https://img.shields.io/badge/tests-{badges['tests']}-brightgreen.svg)](https://github.com/arkalia-luna-system/bbia-sim/actions)
-[![Code Quality](https://img.shields.io/badge/code%20quality-{badges['code_quality']}-brightgreen.svg)](https://github.com/arkalia-luna-system/bbia-sim)
-[![SDK Conformity](https://img.shields.io/badge/SDK%20conformity-{badges['sdk_conformity']}-brightgreen.svg)](https://github.com/pollen-robotics/reachy_mini)
-[![Documentation](https://img.shields.io/badge/docs-{badges['documentation']}-blue.svg)](https://bbia-sim-docs.onrender.com)"""
+        badge_markdown = f"""[![Version](https://img.shields.io/badge/version-{badges["version"]}-blue.svg)](https://github.com/arkalia-luna-system/bbia-sim)
+[![Python](https://img.shields.io/badge/python-{badges["python"]}-blue.svg)](https://python.org)
+[![License](https://img.shields.io/badge/license-{badges["license"]}-green.svg)](LICENSE)
+[![Build Status](https://img.shields.io/badge/build-{badges["build_status"]}-brightgreen.svg)](https://github.com/arkalia-luna-system/bbia-sim/actions)
+[![Tests](https://img.shields.io/badge/tests-{badges["tests"]}-brightgreen.svg)](https://github.com/arkalia-luna-system/bbia-sim/actions)
+[![Code Quality](https://img.shields.io/badge/code%20quality-{badges["code_quality"]}-brightgreen.svg)](https://github.com/arkalia-luna-system/bbia-sim)
+[![SDK Conformity](https://img.shields.io/badge/SDK%20conformity-{badges["sdk_conformity"]}-brightgreen.svg)](https://github.com/pollen-robotics/reachy_mini)
+[![Documentation](https://img.shields.io/badge/docs-{badges["documentation"]}-blue.svg)](https://bbia-sim-docs.onrender.com)"""
 
         # Sauvegarder les badges
         badges_file = self.project_root / "BADGES.md"

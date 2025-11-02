@@ -125,7 +125,7 @@ def generate_report() -> str:
     if missing_deps:
         report_lines.append(f"  ⚠️  Dépendances manquantes: {', '.join(missing_deps)}")
         report_lines.append(
-            f"     Installer avec: pip install {' '.join(missing_deps)}"
+            f"     Installer avec: pip install {' '.join(missing_deps)}",
         )
     else:
         report_lines.append("  ✅ Toutes les dépendances sont installées")

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-🧪 TEST CONFORMITÉ SDK OFFICIEL REACHY-MINI
+"""🧪 TEST CONFORMITÉ SDK OFFICIEL REACHY-MINI
 Validation complète de la conformité avec le SDK officiel reachy_mini
 Basé sur les spécifications officielles de Pollen Robotics (décembre 2024)
 """

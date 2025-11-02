@@ -1,6 +1,6 @@
 # ✅ NETTOYAGE RACINE COMPLET
 
-**Date:** Oct / No2025025025025025
+**Date:** Oct / Oct / Nov. 20255
 **Mission:** Ranger les derniers fichiers .md de la racine
 
 ---
@@ -64,6 +64,6 @@
 
 ---
 
-**Date:** Oct / No2025025025025025
+**Date:** Oct / Oct / Nov. 20255
 **Statut:** ✅ TERMINÉ
 

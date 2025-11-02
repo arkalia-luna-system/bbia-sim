@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Test simple webcam USB - Preview en temps réel
+"""Test simple webcam USB - Preview en temps réel
 
 Usage:
     source venv-vision-py310/bin/activate
@@ -47,7 +46,7 @@ def main():
         print("💡 Vérifie:")
         print("   - La webcam est branchée")
         print(
-            "   - Les permissions macOS (Réglages Système > Confidentialité > Caméra)"
+            "   - Les permissions macOS (Réglages Système > Confidentialité > Caméra)",
         )
         print("   - L'index est correct (essaie 0, 1, 2...)")
         return 1
@@ -94,7 +93,7 @@ def main():
             if key == ord("q"):
                 print("\n👋 Arrêt demandé")
                 break
-            elif key == ord("s"):
+            if key == ord("s"):
                 from datetime import datetime
 
                 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")

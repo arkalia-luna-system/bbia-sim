@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-hardware_dry_run.py - Validation hardware Reachy réel
+"""hardware_dry_run.py - Validation hardware Reachy réel
 Script de validation pour préparer la connexion au robot Reachy réel.
 Mesure latence, valide joints, teste limites de sécurité.
 Génère des artefacts CSV/log pour la CI.
@@ -23,7 +22,8 @@ from bbia_sim.robot_factory import RobotFactory
 
 # Configuration logging
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
 
@@ -133,7 +133,7 @@ class HardwareDryRun:
                         "actual_pos": actual_pos,
                         "latency_ms": total_latency,
                         "test_count": test_count,
-                    }
+                    },
                 )
 
                 # Step de simulation
@@ -145,7 +145,7 @@ class HardwareDryRun:
                 if test_count % 10 == 0:
                     avg_latency = sum(self.latencies[-10:]) / 10
                     logger.info(
-                        f"  Test {test_count}: latence moyenne {avg_latency:.1f}ms"
+                        f"  Test {test_count}: latence moyenne {avg_latency:.1f}ms",
                     )
 
         except Exception as e:
@@ -283,7 +283,7 @@ class HardwareDryRun:
                             "actual_pos",
                             "latency_ms",
                             "test_count",
-                        ]
+                        ],
                     )
 
             logger.info(f"✅ CSV latence sauvegardé: {csv_file}")
@@ -296,8 +296,7 @@ class HardwareDryRun:
 
                 if self.errors:
                     f.write("❌ ERREURS:\n")
-                    for error in self.errors:
-                        f.write(f"  - {error}\n")
+                    f.writelines(f"  - {error}\n" for error in self.errors)
                 else:
                     f.write("✅ Aucune erreur\n")
 
@@ -351,11 +350,17 @@ def main():
     """Point d'entrée principal."""
     parser = argparse.ArgumentParser(description="Hardware dry run Reachy")
     parser.add_argument(
-        "--duration", type=float, default=10.0, help="Durée du test (s)"
+        "--duration",
+        type=float,
+        default=10.0,
+        help="Durée du test (s)",
     )
     parser.add_argument("--joint", type=str, help="Joint spécifique à tester")
     parser.add_argument(
-        "--output", type=str, default="artifacts", help="Répertoire de sortie"
+        "--output",
+        type=str,
+        default="artifacts",
+        help="Répertoire de sortie",
     )
     parser.add_argument(
         "--backend",
@@ -375,9 +380,8 @@ def main():
         logger.info("🎉 Hardware dry run réussi !")
         dry_run.save_artifacts()
         return 0
-    else:
-        logger.error("💥 Hardware dry run échoué !")
-        return 1
+    logger.error("💥 Hardware dry run échoué !")
+    return 1
 
 
 if __name__ == "__main__":
