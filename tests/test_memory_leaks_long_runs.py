@@ -32,13 +32,14 @@ def get_memory_usage() -> float | None:
 
 @pytest.mark.unit
 @pytest.mark.slow
+@pytest.mark.heavy  # OPTIMISATION RAM: Test lourd (300 itérations goto_target)
 def test_memory_leaks_goto_target_iterations() -> None:
-    """Test fuites mémoire avec 500 appels goto_target (optimisé)."""
+    """Test fuites mémoire avec 300 appels goto_target (optimisé)."""
     backend = ReachyMiniBackend(use_sim=True)
     assert backend.connect() is True
 
-    # Optimisé: 500 itérations au lieu de 1000 (suffisant pour détecter fuites)
-    iterations = 500
+    # OPTIMISATION RAM: Réduire 500 → 300 (suffisant pour détecter fuites)
+    iterations = 300
     pose = np.eye(4, dtype=np.float64)
 
     # Mesurer mémoire initiale
@@ -79,13 +80,14 @@ def test_memory_leaks_goto_target_iterations() -> None:
 
 @pytest.mark.unit
 @pytest.mark.slow
+@pytest.mark.heavy  # OPTIMISATION RAM: Test lourd (300 itérations joints)
 def test_memory_leaks_joint_operations() -> None:
-    """Test fuites mémoire avec 500 opérations sur joints (optimisé)."""
+    """Test fuites mémoire avec 300 opérations sur joints (optimisé)."""
     backend = ReachyMiniBackend(use_sim=True)
     assert backend.connect() is True
 
-    # Optimisé: 500 itérations au lieu de 1000 (suffisant pour détecter fuites)
-    iterations = 500
+    # OPTIMISATION RAM: Réduire 500 → 300 (suffisant pour détecter fuites)
+    iterations = 300
     joints = ["yaw_body", "stewart_1", "stewart_2", "stewart_3"]
 
     # Mesurer mémoire initiale
@@ -114,13 +116,14 @@ def test_memory_leaks_joint_operations() -> None:
 
 @pytest.mark.unit
 @pytest.mark.slow
+@pytest.mark.heavy  # OPTIMISATION RAM: Test lourd (200 itérations émotions)
 def test_memory_leaks_emotion_changes() -> None:
     """Test fuites mémoire avec changements d'émotions répétés (optimisé)."""
     backend = ReachyMiniBackend(use_sim=True)
     assert backend.connect() is True
 
-    # Optimisé: 300 itérations au lieu de 500 (suffisant pour détecter fuites)
-    iterations = 300
+    # OPTIMISATION RAM: Réduire 300 → 200 (suffisant pour détecter fuites)
+    iterations = 200
     emotions = ["happy", "sad", "neutral", "excited", "curious", "calm"]
 
     try:

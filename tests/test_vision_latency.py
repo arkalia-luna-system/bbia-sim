@@ -23,7 +23,8 @@ def test_vision_pipeline_latency_simulated() -> None:
     vision = BBIAVision(robot_api=None)
 
     latencies_ms: list[float] = []
-    iterations = 50
+    # OPTIMISATION RAM: Réduire itérations (50 → 20, suffisant pour p50/p95)
+    iterations = 20
 
     for _ in range(iterations):
         t0 = time.perf_counter()

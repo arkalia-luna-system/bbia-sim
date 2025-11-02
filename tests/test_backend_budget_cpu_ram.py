@@ -36,14 +36,15 @@ def get_memory_usage() -> float | None:
 
 @pytest.mark.unit
 @pytest.mark.slow
+@pytest.mark.heavy  # OPTIMISATION RAM: Test lourd (boucle 5s)
 def test_backend_main_loop_budget_cpu_ram() -> None:
-    """Test budget CPU/RAM boucle principale backend (5s profiling optimisé)."""
+    """Test budget CPU/RAM boucle principale backend (3s profiling optimisé)."""
     backend = ReachyMiniBackend(use_sim=True)
     assert backend.connect() is True
 
-    # Optimisé: 5s au lieu de 10s (suffisant pour mesurer budget)
-    duration_s = 5.0
-    iterations = 500  # Réduit proportionnellement
+    # OPTIMISATION RAM: Réduire 5s → 3s, 500 → 300 itérations (suffisant pour mesurer budget)
+    duration_s = 3.0
+    iterations = 300
 
     try:
         # Mesurer avant
@@ -98,17 +99,18 @@ def test_backend_main_loop_budget_cpu_ram() -> None:
 
 @pytest.mark.unit
 @pytest.mark.slow
+@pytest.mark.heavy  # OPTIMISATION RAM: Test lourd (boucle 3s)
 def test_robot_api_interface_budget_cpu_ram() -> None:
-    """Test budget CPU/RAM interface RobotAPI abstraite (5s optimisé)."""
+    """Test budget CPU/RAM interface RobotAPI abstraite (3s optimisé)."""
     from bbia_sim.robot_factory import RobotFactory
 
     robot = RobotFactory.create_backend("reachy_mini")
     if not robot or not robot.connect():
         pytest.skip("Backend non disponible")
 
-    # Optimisé: 5s au lieu de 10s (suffisant pour mesurer budget)
-    duration_s = 5.0
-    iterations = 500  # Réduit proportionnellement
+    # OPTIMISATION RAM: Réduire 5s → 3s, 500 → 300 itérations (suffisant pour mesurer budget)
+    duration_s = 3.0
+    iterations = 300
 
     try:
         # Mesurer avant

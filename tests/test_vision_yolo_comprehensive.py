@@ -59,6 +59,12 @@ class TestYOLODetector:
     def test_load_model_failure(self, mock_yolo_class):
         """Test chargement modèle échoué."""
         with patch("bbia_sim.vision_yolo.YOLO_AVAILABLE", True):
+            # Vider cache avant test pour forcer chargement
+            import bbia_sim.vision_yolo as vision_yolo_module
+
+            vision_yolo_module._yolo_model_cache.clear()
+
+            # Mock exception lors du chargement
             mock_yolo_class.side_effect = Exception("Erreur chargement")
 
             detector = YOLODetector(model_size="n", confidence_threshold=0.25)
@@ -78,29 +84,21 @@ class TestYOLODetector:
     def test_detect_objects_success(self, mock_yolo_class):
         """Test détection objets réussie."""
         with patch("bbia_sim.vision_yolo.YOLO_AVAILABLE", True):
-            # Mock résultats YOLO simplifiés
-            mock_box_xyxy = MagicMock()
-            mock_box_xyxy.__getitem__.return_value.cpu.return_value.numpy.return_value = np.array(
+            # Mock résultats YOLO avec vraie structure pour couvrir lignes 146-161
+            mock_box_instance = MagicMock()
+            mock_box_instance.xyxy = [np.array([10.0, 20.0, 100.0, 120.0])]
+            mock_box_instance.xyxy[0].cpu.return_value.numpy.return_value = np.array(
                 [10.0, 20.0, 100.0, 120.0]
             )
-
-            mock_box_conf = MagicMock()
-            mock_box_conf.__getitem__.return_value.cpu.return_value.numpy.return_value = np.array(
+            mock_box_instance.conf = [np.array([0.8])]
+            mock_box_instance.conf[0].cpu.return_value.numpy.return_value = np.array(
                 0.8
             )
-
-            mock_box_cls = MagicMock()
-            mock_box_cls.__getitem__.return_value.cpu.return_value.numpy.return_value = np.array(
-                0
-            )
-
-            mock_box = MagicMock()
-            mock_box.xyxy = mock_box_xyxy
-            mock_box.conf = mock_box_conf
-            mock_box.cls = mock_box_cls
+            mock_box_instance.cls = [np.array([0])]
+            mock_box_instance.cls[0].cpu.return_value.numpy.return_value = np.array(0)
 
             mock_result = MagicMock()
-            mock_result.boxes = mock_box
+            mock_result.boxes = mock_box_instance
 
             mock_model = MagicMock()
             mock_model.return_value = [mock_result]
@@ -116,16 +114,17 @@ class TestYOLODetector:
             image = np.zeros((480, 640, 3), dtype=np.uint8)
             detections = detector.detect_objects(image)
 
+            # Vérifier structure
+            assert isinstance(detections, list)
             # Si détections vides (mock complexe), au moins vérifier structure
             if len(detections) > 0:
                 assert "bbox" in detections[0]
                 assert "confidence" in detections[0]
                 assert "class_name" in detections[0]
-            # Sinon, test passe quand même (mock peut être limité)
 
     @patch("bbia_sim.vision_yolo.YOLO")
     def test_detect_objects_with_auto_load(self, mock_yolo_class):
-        """Test détection avec chargement automatique."""
+        """Test détection avec chargement automatique (couverture lignes 114-116)."""
         with patch("bbia_sim.vision_yolo.YOLO_AVAILABLE", True):
             mock_model = MagicMock()
             mock_model.return_value = []
@@ -139,6 +138,36 @@ class TestYOLODetector:
 
             assert isinstance(detections, list)
             assert detector.is_loaded is True
+
+    @patch("bbia_sim.vision_yolo.YOLO")
+    def test_detect_objects_model_none(self, mock_yolo_class):
+        """Test détection avec modèle None (couverture ligne 130)."""
+        with patch("bbia_sim.vision_yolo.YOLO_AVAILABLE", True):
+            detector = YOLODetector(model_size="n", confidence_threshold=0.25)
+            detector.is_loaded = True  # Force is_loaded mais model = None
+            detector.model = None
+
+            image = np.zeros((480, 640, 3), dtype=np.uint8)
+            detections = detector.detect_objects(image)
+
+            assert detections == []
+
+    @patch("bbia_sim.vision_yolo.YOLO")
+    def test_detect_objects_exception(self, mock_yolo_class):
+        """Test gestion exception détection (couverture lignes 166-168)."""
+        with patch("bbia_sim.vision_yolo.YOLO_AVAILABLE", True):
+            mock_model = MagicMock()
+            mock_model.side_effect = Exception("Erreur détection")
+            mock_yolo_class.return_value = mock_model
+
+            detector = YOLODetector(model_size="n", confidence_threshold=0.25)
+            detector.model = mock_model
+            detector.is_loaded = True
+
+            image = np.zeros((480, 640, 3), dtype=np.uint8)
+            detections = detector.detect_objects(image)
+
+            assert detections == []
 
     def test_get_best_detection_with_relevant(self):
         """Test get_best_detection avec détections pertinentes."""
@@ -253,6 +282,7 @@ class TestFaceDetector:
     def test_detect_faces_success(self, mock_cv2):
         """Test détection visages réussie."""
         mock_cv2.cvtColor = lambda img, code: img  # Mock conversion
+        mock_cv2.COLOR_BGR2RGB = 4  # Constante cv2
 
         mock_detection = MagicMock()
         mock_detection.location_data.relative_bounding_box.xmin = 0.1
@@ -276,6 +306,21 @@ class TestFaceDetector:
         assert len(faces) == 1
         assert "bbox" in faces[0]
         assert "confidence" in faces[0]
+
+    @patch("bbia_sim.vision_yolo.cv2")
+    def test_detect_faces_exception(self, mock_cv2):
+        """Test gestion exception détection visages (couverture lignes 331-333)."""
+        mock_cv2.cvtColor.side_effect = Exception("Erreur conversion")
+        mock_cv2.COLOR_BGR2RGB = 4
+
+        mock_face_detection = MagicMock()
+        detector = FaceDetector()
+        detector.face_detection = mock_face_detection
+
+        image = np.zeros((480, 640, 3), dtype=np.uint8)
+        faces = detector.detect_faces(image)
+
+        assert faces == []
 
     def test_detect_faces_no_detector(self):
         """Test détection sans détecteur."""

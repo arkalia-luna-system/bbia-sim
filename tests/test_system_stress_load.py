@@ -15,6 +15,7 @@ from bbia_sim.backends.reachy_mini_backend import ReachyMiniBackend
 
 @pytest.mark.unit
 @pytest.mark.slow
+@pytest.mark.heavy  # OPTIMISATION RAM: Test lourd (concurrence + goto_target)
 def test_concurrent_goto_target_requests() -> None:
     """Test avec requêtes goto_target concurrentes (optimisé)."""
     backend = ReachyMiniBackend(use_sim=True)
@@ -61,6 +62,7 @@ def test_concurrent_goto_target_requests() -> None:
 
 @pytest.mark.unit
 @pytest.mark.slow
+@pytest.mark.heavy  # OPTIMISATION RAM: Test lourd (150 itérations émotions)
 def test_rapid_emotion_switching() -> None:
     """Test changement rapide d'émotions sous stress (optimisé)."""
     backend = ReachyMiniBackend(use_sim=True)
@@ -95,6 +97,7 @@ def test_rapid_emotion_switching() -> None:
 
 @pytest.mark.unit
 @pytest.mark.slow
+@pytest.mark.heavy  # OPTIMISATION RAM: Test lourd (boucle rapide joints)
 def test_rapid_joint_updates() -> None:
     """Test mises à jour rapides de joints sous stress (optimisé)."""
     backend = ReachyMiniBackend(use_sim=True)

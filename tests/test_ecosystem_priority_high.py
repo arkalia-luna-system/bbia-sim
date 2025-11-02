@@ -36,12 +36,10 @@ class TestWebSocketTracking:
         mock_manager = MagicMock()
         mock_manager.active_connections = [MagicMock(), MagicMock(), MagicMock()]
 
-        # Mock l'import direct de manager dans get_active_connections
-        with (
-            patch(
-                "bbia_sim.daemon.app.routers.ecosystem.telemetry_manager", mock_manager
-            ),
-            patch("bbia_sim.daemon.ws.telemetry.manager", mock_manager),
+        # Mock get_ws_manager qui est maintenant utilisé par get_active_connections
+        with patch(
+            "bbia_sim.daemon.app.routers.ecosystem.get_ws_manager",
+            return_value=mock_manager,
         ):
             count = get_active_connections()
             assert count == 3

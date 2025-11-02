@@ -135,9 +135,9 @@ python_functions = ["test_*"]
 norecursedirs = [".git", "logs", ".venv", "venv", "__pycache__", "reachy_repos", "scripts"]
 minversion = "6.0"
 
-# OPTIMISATION RAM: Par défaut, exclure tests lents/lourds sauf si demandé explicitement
+# OPTIMISATION RAM: Par défaut, exclure tests lents/lourds/hardware sauf si demandé explicitement
 addopts = [
-    "-m", "not slow and not heavy",
+    "-m", "not slow and not heavy and not hardware",  # Skip tests webcam/hardware aussi
     "--verbose",
     "--tb=short",
     "-ra",

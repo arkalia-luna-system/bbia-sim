@@ -39,6 +39,8 @@ except ImportError:
 
 
 @pytest.mark.integration
+@pytest.mark.hardware  # OPTIMISATION RAM: Skip par défaut (nécessite webcam réelle)
+@pytest.mark.slow
 @pytest.mark.skipif(
     not CV2_AVAILABLE or not BBIA_VISION_AVAILABLE,
     reason="OpenCV ou BBIAVision non disponible. Activez venv-vision-py310",
@@ -67,6 +69,8 @@ def test_webcam_capture_real() -> None:
 
 
 @pytest.mark.integration
+@pytest.mark.hardware  # OPTIMISATION RAM: Skip par défaut (nécessite webcam réelle)
+@pytest.mark.slow
 @pytest.mark.skipif(
     not CV2_AVAILABLE or not BBIA_VISION_AVAILABLE,
     reason="OpenCV ou BBIAVision non disponible",
