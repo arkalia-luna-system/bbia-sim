@@ -115,6 +115,8 @@ flowchart LR
     
     style SUCCESS fill:#90EE90
     style DENY fill:#FFB6C1
+    style CHECK fill:#FFD700
+    style REQUEST fill:#87CEEB
 ```
 
 ## Références

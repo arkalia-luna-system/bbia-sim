@@ -36,17 +36,15 @@ class TestWebSocketTracking:
         mock_manager = MagicMock()
         mock_manager.active_connections = [MagicMock(), MagicMock(), MagicMock()]
 
-        # Mock directement get_ws_manager dans le module
-        import bbia_sim.daemon.app.routers.ecosystem as ecosystem_module
-
-        original_get_ws = ecosystem_module.get_ws_manager
-        ecosystem_module.get_ws_manager = MagicMock(return_value=mock_manager)
-
-        try:
+        # Mock l'import direct de manager dans get_active_connections
+        with (
+            patch(
+                "bbia_sim.daemon.app.routers.ecosystem.telemetry_manager", mock_manager
+            ),
+            patch("bbia_sim.daemon.ws.telemetry.manager", mock_manager),
+        ):
             count = get_active_connections()
             assert count == 3
-        finally:
-            ecosystem_module.get_ws_manager = original_get_ws
 
     def test_get_active_connections_no_manager(self):
         """Test comptage sans gestionnaire (retourne 0)."""

@@ -126,24 +126,7 @@ bbia_sim = ["*.py", "*.txt", "*.wav"]
 
 # Configuration pytest moderne et complète
 [tool.pytest.ini_options]
-# OPTIMISATION RAM: Marqueurs pour tests légers/lourds
-markers = [
-    "slow: marque les tests lents (peuvent charger modèles lourds)",
-    "fast: marque les tests rapides (utilisent mocks uniquement)",
-    "model: marque les tests qui chargent de vrais modèles (YOLO, Whisper, HuggingFace)",
-    "heavy: marque les tests très lourds en RAM/CPU",
-    "e2e: marque les tests end-to-end",
-    "unit: marque les tests unitaires",
-    "integration: marque les tests d'intégration",
-]
-
-# OPTIMISATION RAM: Par défaut, exclure tests lents/lourds sauf si demandé explicitement
-addopts = [
-    "-m", "not slow and not heavy",
-    "--tb=short",
-    "-ra",
-]
-
+# OPTIMISATION RAM: Configuration pytest optimisée
 pythonpath = ["src"]
 testpaths = ["tests"]
 python_files = ["test_*.py"]
@@ -151,12 +134,15 @@ python_classes = ["Test*"]
 python_functions = ["test_*"]
 norecursedirs = [".git", "logs", ".venv", "venv", "__pycache__", "reachy_repos", "scripts"]
 minversion = "6.0"
+
+# OPTIMISATION RAM: Par défaut, exclure tests lents/lourds sauf si demandé explicitement
 addopts = [
+    "-m", "not slow and not heavy",
     "--verbose",
     "--tb=short",
+    "-ra",
     "--strict-markers",
     "--disable-warnings",
-    "--cache-clear",
     "--import-mode=importlib",
     # Ne pas arrêter tôt pour que la couverture reflète toute la suite
     "--maxfail=0",
@@ -171,23 +157,29 @@ addopts = [
     "--timeout=300",
     "--timeout-method=thread",
 ]
+
 env = [
     "MUJOCO_GL=disable",
     "DISPLAY=",
     "BBIA_DISABLE_AUDIO=1",
 ]
+
+# Marqueurs pour tests légers/lourds (fusionné)
 markers = [
-    "fast: marks tests as fast (deselect with '-m \"not fast\"')",
-    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
-    "integration: marks tests as integration tests",
-    "unit: marks tests as unit tests",
-    "e2e: marks tests as end-to-end tests",
+    "slow: marque les tests lents (peuvent charger modèles lourds) / marks tests as slow (deselect with '-m \"not slow\"')",
+    "fast: marque les tests rapides (utilisent mocks uniquement) / marks tests as fast (deselect with '-m \"not fast\"')",
+    "model: marque les tests qui chargent de vrais modèles (YOLO, Whisper, HuggingFace)",
+    "heavy: marque les tests très lourds en RAM/CPU",
+    "e2e: marque les tests end-to-end / marks tests as end-to-end tests",
+    "unit: marque les tests unitaires / marks tests as unit tests",
+    "integration: marque les tests d'intégration / marks tests as integration tests",
     "audio: marks tests requiring audio hardware",
     "vision: marks tests requiring camera/vision",
     "robot: marks tests requiring real robot connection",
     "hardware: marks tests requiring hardware (webcam, microphone, etc.)",
     "ci_skip: tests to skip in CI environment",
 ]
+
 filterwarnings = [
     "ignore::DeprecationWarning",
     "ignore::PendingDeprecationWarning",
@@ -269,6 +261,11 @@ python_version = "3.11"
 incremental = true
 cache_fine_grained = true
 show_error_codes = true
+show_column_numbers = true
+show_error_context = true
+pretty = true
+color_output = true
+error_summary = true
 warn_unused_configs = false
 warn_unused_ignores = false
 warn_return_any = false
@@ -282,21 +279,11 @@ disallow_incomplete_defs = false
 check_untyped_defs = true
 disallow_untyped_decorators = false
 no_implicit_optional = false
+strict_equality = false
 
 # OPTIMISATION: Ne pas suivre imports externes (plus rapide, moins RAM)
 follow_imports = "skip"
 ignore_missing_imports = true
-warn_unused_ignores = true
-warn_redundant_casts = true
-warn_no_return = true
-warn_unreachable = true
-strict_equality = false
-show_error_codes = true
-show_column_numbers = true
-show_error_context = true
-pretty = true
-color_output = true
-error_summary = true
 exclude = [
     "tests/",
     "logs/",
