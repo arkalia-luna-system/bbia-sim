@@ -63,7 +63,11 @@ class TestDashboardAdvanced:
         except ImportError:
             pytest.skip("Module dashboard_advanced non disponible")
         except Exception as e:
-            if "FastAPI" in str(e) or "WebSocket" in str(e) or "unexpected keyword" in str(e):
+            if (
+                "FastAPI" in str(e)
+                or "WebSocket" in str(e)
+                or "unexpected keyword" in str(e)
+            ):
                 pytest.skip(f"Dashboard non disponible ou dépendance incompatible: {e}")
             raise
 
@@ -88,7 +92,7 @@ class TestDashboardAdvanced:
         except (ImportError, Exception) as e:
             pytest.skip(f"Dashboard advanced non disponible: {e}")
 
-    def test_get_available_joints_no_robot(self, mock_dashboard_dependencies):
+    def test_get_available_joints_no_robot(self):
         """Test récupération joints sans robot."""
         try:
             from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager
@@ -127,7 +131,7 @@ class TestDashboardAdvanced:
         except (ImportError, Exception) as e:
             pytest.skip(f"Dashboard advanced non disponible: {e}")
 
-    def test_get_current_pose_no_robot(self, mock_dashboard_dependencies):
+    def test_get_current_pose_no_robot(self):
         """Test récupération pose sans robot."""
         try:
             from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager
@@ -142,7 +146,7 @@ class TestDashboardAdvanced:
             pytest.skip(f"Dashboard advanced non disponible: {e}")
 
     @patch("bbia_sim.dashboard_advanced.FASTAPI_AVAILABLE", True)
-    def test_get_current_pose_with_robot(self, mock_dashboard_dependencies):
+    def test_get_current_pose_with_robot(self):
         """Test récupération pose avec robot."""
         try:
             from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager
@@ -164,7 +168,7 @@ class TestDashboardAdvanced:
             pytest.skip(f"Dashboard advanced non disponible: {e}")
 
     @patch("bbia_sim.dashboard_advanced.FASTAPI_AVAILABLE", True)
-    def test_metrics_history_limit(self, mock_dashboard_dependencies):
+    def test_metrics_history_limit(self):
         """Test limite historique métriques."""
         try:
             from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager
@@ -186,7 +190,7 @@ class TestDashboardAdvanced:
             pytest.skip(f"Dashboard advanced non disponible: {e}")
 
     @patch("bbia_sim.dashboard_advanced.FASTAPI_AVAILABLE", True)
-    def test_broadcast_no_connections(self, mock_dashboard_dependencies):
+    def test_broadcast_no_connections(self):
         """Test broadcast sans connexions."""
         try:
             import asyncio
@@ -206,7 +210,7 @@ class TestDashboardAdvanced:
                 pytest.skip(f"Test timeout (normal si métriques collectées): {e}")
             pytest.skip(f"Dashboard advanced non disponible: {e}")
 
-    def test_current_emotion_default(self, mock_dashboard_dependencies):
+    def test_current_emotion_default(self):
         """Test émotion par défaut."""
         try:
             from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager
@@ -218,7 +222,7 @@ class TestDashboardAdvanced:
         except (ImportError, Exception) as e:
             pytest.skip(f"Dashboard advanced non disponible: {e}")
 
-    def test_performance_metrics_structure(self, mock_dashboard_dependencies):
+    def test_performance_metrics_structure(self):
         """Test structure métriques performance."""
         try:
             from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager

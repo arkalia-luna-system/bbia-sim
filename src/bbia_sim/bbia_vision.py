@@ -76,10 +76,9 @@ _create_face_recognition_func: (
 ) = None
 DEEPFACE_AVAILABLE = False
 try:
-    from .face_recognition import (
-        create_face_recognition as _create_face_recognition_func,
-    )
+    from .face_recognition import create_face_recognition
 
+    _create_face_recognition_func = create_face_recognition
     DEEPFACE_AVAILABLE = True
 except ImportError:
     pass  # _create_face_recognition_func reste None
@@ -90,8 +89,9 @@ create_face_recognition = _create_face_recognition_func
 _create_pose_detector_func: Callable[..., "BBIAPoseDetection | None"] | None = None
 MEDIAPIPE_POSE_AVAILABLE = False
 try:
-    from .pose_detection import create_pose_detector as _create_pose_detector_func
+    from .pose_detection import create_pose_detector
 
+    _create_pose_detector_func = create_pose_detector
     MEDIAPIPE_POSE_AVAILABLE = True
 except ImportError:
     pass  # _create_pose_detector_func reste None
