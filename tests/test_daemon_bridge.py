@@ -380,6 +380,70 @@ class TestDaemonBridge:
         except ImportError:
             pytest.skip("Module daemon.bridge non disponible")
 
+    @patch("bbia_sim.daemon.bridge.ZENOH_AVAILABLE", True)
+    def test_zenoh_bridge_stop_with_reachy_mini(self):
+        """Test arrêt bridge avec Reachy Mini."""
+        try:
+            import asyncio
+
+            from bbia_sim.daemon.bridge import ZenohBridge
+
+            bridge = ZenohBridge()
+            bridge.connected = True
+            bridge.reachy_mini = MagicMock()
+            bridge.reachy_mini.close = MagicMock()
+
+            async def test():
+                await bridge.stop()
+                assert bridge.connected is False
+                bridge.reachy_mini.close.assert_called_once()
+
+            asyncio.run(test())
+        except ImportError:
+            pytest.skip("Module daemon.bridge non disponible")
+
+    @patch("bbia_sim.daemon.bridge.ZENOH_AVAILABLE", True)
+    def test_zenoh_bridge_stop_with_subscribers(self):
+        """Test arrêt bridge avec subscribers."""
+        try:
+            import asyncio
+
+            from bbia_sim.daemon.bridge import ZenohBridge
+
+            bridge = ZenohBridge()
+            bridge.connected = True
+            mock_sub = MagicMock()
+            mock_sub.close = MagicMock(return_value=None)
+            bridge.subscribers["commands"] = mock_sub
+
+            async def test():
+                await bridge.stop()
+                mock_sub.close.assert_called_once()
+
+            asyncio.run(test())
+        except ImportError:
+            pytest.skip("Module daemon.bridge non disponible")
+
+    @patch("bbia_sim.daemon.bridge.ZENOH_AVAILABLE", True)
+    def test_zenoh_bridge_send_command_not_connected(self):
+        """Test envoi commande bridge non connecté."""
+        try:
+            import asyncio
+
+            from bbia_sim.daemon.bridge import RobotCommand, ZenohBridge
+
+            bridge = ZenohBridge()
+            bridge.connected = False
+            cmd = RobotCommand(command="test", parameters={})
+
+            async def test():
+                result = await bridge.send_command(cmd)
+                assert result is False
+
+            asyncio.run(test())
+        except ImportError:
+            pytest.skip("Module daemon.bridge non disponible")
+
 
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])

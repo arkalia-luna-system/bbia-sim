@@ -7,28 +7,18 @@
 
 ## 📋 Liste des Issues Suggérées
 
-### 1. 🧪 Améliorer Coverage `bbia_audio.py`
+### 1. ✅ ~~Améliorer Coverage `bbia_audio.py`~~ - **DÉJÀ EXCELLENT**
 
-**Priorité** : Moyenne  
-**Difficulté** : Facile  
-**Temps estimé** : 2-3 heures
+**Priorité** : ✅ Complété  
+**Difficulté** : -  
+**Temps estimé** : -
 
 **Description** :
-- Actuellement coverage faible (~30-40%)
-- Créer tests pour fonctions principales :
-  - `detecter_son()`
-  - `_capture_audio_chunk()`
-  - Gestion erreurs audio
+- ✅ Coverage actuel : **87.76%** (excellent ✅)
+- Coverage déjà très bon, objectif 70%+ largement dépassé
+- Tests existants : `test_bbia_audio_coverage_high.py`, `test_bbia_audio_improved.py`
 
-**Fichiers concernés** :
-- `src/bbia_sim/bbia_audio.py`
-- `tests/test_bbia_audio.py` (créer/améliorer)
-
-**Étapes** :
-1. Analyser `bbia_audio.py` et identifier fonctions non testées
-2. Créer tests avec mocks `sounddevice`
-3. Tester cas limites (audio désactivé, erreurs)
-4. Vérifier coverage atteint 70%+
+**Statut** : ✅ **MODULE BIEN TESTÉ** - Pas d'action nécessaire pour ce module
 
 **Ressources** :
 - Voir `tests/test_voice_whisper_comprehensive.py` comme exemple
@@ -61,28 +51,24 @@
 
 ---
 
-### 3. 🎨 Améliorer Tests `bbia_emotions.py`
+### 3. 🎨 Améliorer Tests `bbia_emotions.py` (Optionnel)
 
-**Priorité** : Moyenne  
+**Priorité** : Basse (coverage déjà bon)  
 **Difficulté** : Facile-Moyenne  
 **Temps estimé** : 3-4 heures
 
 **Description** :
-- Coverage `bbia_emotions.py` peut être amélioré
-- Ajouter tests :
-  - Transitions émotions complexes
+- ✅ Coverage actuel : **81.71%** (déjà excellent ✅)
+- Améliorations optionnelles possibles :
+  - Transitions émotions complexes (si non couvertes)
   - Historique émotions
-  - Validation intensités limites
+  - Validation intensités limites (edge cases)
 
 **Fichiers concernés** :
 - `src/bbia_sim/bbia_emotions.py`
-- `tests/test_bbia_emotions.py` (améliorer)
+- `tests/test_bbia_emotions.py` (améliorer si besoin)
 
-**Étapes** :
-1. Analyser coverage actuel
-2. Identifier branches non testées
-3. Créer tests transition émotions
-4. Tester cas limites (intensité 0, 1, négative, >1)
+**Note** : Coverage déjà très bon (81.71%), amélioration optionnelle uniquement si nécessaire pour atteindre 90%+
 
 ---
 

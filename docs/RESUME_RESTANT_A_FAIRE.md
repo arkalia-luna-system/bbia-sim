@@ -31,32 +31,24 @@
 
 ### 🔴 Priorité Haute - Coverage Tests (3-6h)
 
-#### 1. `vision_yolo.py` - 27.74% → objectif 50%+ (2-3h)
+#### 1. ✅ `vision_yolo.py` - **89.62% coverage** ✅ (objectif 50%+ dépassé)
 - **Fichier test** : `tests/test_vision_yolo_comprehensive.py` (existe déjà)
-- **Lignes non couvertes** : 99 lignes
-- **Actions** :
-  - Étendre tests existants pour couvrir détection objets
-  - Ajouter tests classification
-  - Tester gestion images et erreurs
+- **Statut** : ✅ **TERMINÉ** - Coverage excellent, objectif largement dépassé
 
-#### 2. `voice_whisper.py` - 33.33% → objectif 50%+ (2-3h)
-- **Fichiers tests** : `tests/test_vad_streaming.py`, `tests/test_ia_modules.py` (existent)
-- **Lignes non couvertes** : 76 lignes
-- **Actions** :
-  - Étendre tests Whisper ASR
-  - Ajouter tests transcription
-  - Tester gestion erreurs et streaming
+#### 2. `voice_whisper.py` - **36.84%** → objectif 50%+ (en cours)
+- **Fichiers tests** : `tests/test_vad_streaming.py`, `tests/test_ia_modules.py`
+- **Progrès** : 18+ nouveaux tests ajoutés (+13.57% depuis 23.27%)
+- **Actions restantes** :
+  - Ajouter tests pour `transcribe_streaming` (lignes 476-669)
+  - Améliorer tests VAD (lignes 289-315, 322-328)
+- **Estimation** : ~1-2h restantes
 
-#### 3. `daemon/bridge.py` - 0% → objectif 30%+ (1-2h)
-- **Fichier test** : `tests/test_daemon_bridge.py` (existe partiellement)
-- **Lignes non couvertes** : 283 lignes
-- **Actions** :
-  - Étendre tests bridge Zenoh/FastAPI
-  - Tester connexion Zenoh (avec mocks)
-  - Tester envoi/reception de commandes
-  - Tester gestion erreurs
+#### 3. ✅ `daemon/bridge.py` - **31.23%** ✅ (objectif 30%+ atteint)
+- **Fichier test** : `tests/test_daemon_bridge.py`
+- **Progrès** : 10 nouveaux tests ajoutés (+31.23% depuis 0%)
+- **Statut** : ✅ **TERMINÉ** - Objectif 30%+ atteint !
 
-**Estimation totale** : 3-6 heures
+**Estimation totale restante** : ~1-2 heures (voice_whisper: améliorer streaming si souhaité)
 
 ---
 
@@ -80,7 +72,7 @@
 
 ---
 
-**Total estimé restant** : **3-8 heures** (sans hardware)
+**Total estimé restant** : **~1-2 heures** (voice_whisper: 36.84% → 50%+)
 
 **Voir** : `docs/TACHES_A_FAIRE_CONSOLIDEES.md` pour détails complets
 

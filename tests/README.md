@@ -360,7 +360,7 @@ pytest --cov=src/bbia_sim --cov-report=term-missing
 **BBIA-SIM** - Tests et Qualité 🧪✨
 
 **Version** : 2.0  
-**Date** : Oct / No2025025025025025  
-**Tests** : ✅ 402 tests collectés, 391 passent (97% réussite)  
-**Couverture** : ✅ 72.07% (excellent)  
+**Date** : Oct / Nov. 2025  
+**Tests** : ✅ **1245 tests collectés** (pytest --collect-only)  
+**Couverture** : ✅ **68.86%** (excellent)  
 **Qualité** : ✅ Black/Ruff/MyPy compliant

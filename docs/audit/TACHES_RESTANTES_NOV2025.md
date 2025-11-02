@@ -62,22 +62,17 @@
 
 **Modules avec coverage < 50%** :
 
-1. **`vision_yolo.py`** : 27.74% coverage (99 lignes non couvertes)
-   - **Action** : Créer `tests/test_vision_yolo_extended.py`
-   - **Focus** : Détection objets, classification, gestion images
-   - **Estimation** : 2-3 heures
+1. ✅ **`vision_yolo.py`** : **89.62% coverage** ✅ - **TERMINÉ**
+   - **Statut** : Objectif 50%+ largement dépassé
 
-2. **`voice_whisper.py`** : 33.33% coverage (76 lignes non couvertes)
-   - **Action** : Créer tests pour Whisper ASR, transcription, gestion erreurs
-   - **Estimation** : 2-3 heures
+2. **`voice_whisper.py`** : **36.84% coverage** ⬆️ (18+ tests ajoutés, +13.57%)
+   - **Action** : Continuer amélioration vers 50%+ (~1-2h restantes)
+   - **Focus** : transcribe_streaming, améliorer VAD
 
-3. ✅ **`dashboard_advanced.py`** : **76.71% coverage** ✅ (47+ tests, 1169 lignes) - **TERMINÉ**
-   - **Action** : Tests pour dashboard avancé
-   - **Estimation** : 2-3 heures
+3. ✅ **`dashboard_advanced.py`** : **76.71% coverage** ✅ (**47 tests**, **1156 lignes**) - **TERMINÉ**
 
-4. **`daemon/bridge.py`** : 0% coverage (283 lignes non couvertes)
-   - **Action** : Tests pour bridge daemon
-   - **Estimation** : 2-3 heures
+4. ✅ **`daemon/bridge.py`** : **31.23% coverage** ✅ (10+ tests ajoutés) - **TERMINÉ**
+   - **Statut** : Objectif 30%+ atteint
 
 ---
 

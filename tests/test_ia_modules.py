@@ -203,6 +203,65 @@ class TestWhisperSTT:
         call_args = mock_model.transcribe.call_args
         assert call_args[1]["language"] is None
 
+    @patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True)
+    @patch("os.environ.get", return_value="0")
+    def test_whisper_stt_detect_speech_activity_no_vad(self, mock_env):
+        """Test détection parole avec VAD désactivé."""
+        stt = WhisperSTT(model_size="tiny", language="fr", enable_vad=False)
+        # Si VAD désactivé, doit toujours retourner True
+        result = stt.detect_speech_activity(b"fake_audio")
+        assert result is True
+
+    @patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True)
+    @patch("os.environ.get", return_value="1")
+    def test_whisper_stt_detect_speech_activity_audio_disabled(self, mock_env):
+        """Test détection parole avec audio désactivé."""
+        stt = WhisperSTT(model_size="tiny", language="fr", enable_vad=True)
+        result = stt.detect_speech_activity(b"fake_audio")
+        assert result is False
+
+    @patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True)
+    @patch("os.environ.get", return_value="1")
+    def test_whisper_stt_transcribe_microphone_with_vad_disabled(self, mock_env):
+        """Test transcription microphone avec VAD et audio désactivé."""
+        stt = WhisperSTT(model_size="tiny", language="fr", enable_vad=True)
+        result = stt.transcribe_microphone_with_vad(duration=1.0)
+        assert result is None
+
+    @patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", False)
+    def test_whisper_stt_transcribe_microphone_with_vad_no_whisper(self):
+        """Test transcription microphone avec VAD sans Whisper."""
+        stt = WhisperSTT(model_size="tiny", language="fr", enable_vad=True)
+        result = stt.transcribe_microphone_with_vad(duration=1.0)
+        assert result is None
+
+    @patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True)
+    @patch("os.environ.get", return_value="1")
+    def test_whisper_stt_transcribe_streaming_disabled(self, mock_env):
+        """Test transcription streaming avec audio désactivé."""
+        stt = WhisperSTT(model_size="tiny", language="fr")
+        result = stt.transcribe_streaming()
+        assert result is None
+
+    @patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", False)
+    def test_whisper_stt_transcribe_streaming_no_whisper(self):
+        """Test transcription streaming sans Whisper."""
+        stt = WhisperSTT(model_size="tiny", language="fr")
+        result = stt.transcribe_streaming()
+        assert result is None
+
+    @patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True)
+    @patch("bbia_sim.voice_whisper.whisper")
+    def test_whisper_stt_transcribe_streaming_model_not_loaded(
+        self, mock_whisper_module
+    ):
+        """Test transcription streaming avec modèle non chargé."""
+        stt = WhisperSTT(model_size="tiny", language="fr")
+        stt.is_loaded = False
+        stt.load_model = MagicMock(return_value=False)
+        result = stt.transcribe_streaming()
+        assert result is None
+
     def test_whisper_stt_fallback(self):
         """Test fallback quand Whisper non disponible."""
         with patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", False):

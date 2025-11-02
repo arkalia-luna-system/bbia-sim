@@ -76,22 +76,22 @@
 
 ### 🔴 Priorité Haute
 
-#### 1. 📊 Améliorer Coverage Tests Modules Critiques (8-12h)
+#### 1. 📊 Améliorer Coverage Tests Modules Critiques (~1-2h restantes)
 
-**Modules avec coverage < 50%** :
+**État actuel** :
 
 | Module | Coverage | Lignes Non Couvertes | Tests Existant | Action |
 |--------|----------|---------------------|----------------|--------|
-| `vision_yolo.py` | 27.74% | 99 lignes | `test_vision_yolo_comprehensive.py` existe | ⚠️ **AMÉLIORER** tests existants |
-| `voice_whisper.py` | 33.33% | 76 lignes | Tests existent partiellement | ⚠️ **AMÉLIORER** tests existants |
-| `dashboard_advanced.py` | **76.71%** ✅ | ~75 lignes | ✅ `test_dashboard_advanced.py` (47+ tests, 1169 lignes) | ✅ **TERMINÉ** (objectif 70%+ dépassé) |
-| `daemon/bridge.py` | 0% | 283 lignes | `test_daemon_bridge.py` existe | ⚠️ **AMÉLIORER** tests existants |
+| `vision_yolo.py` | **89.62%** ✅ | ~19 lignes | ✅ `test_vision_yolo_comprehensive.py` existe | ✅ **TERMINÉ** (objectif 50%+ dépassé) |
+| `voice_whisper.py` | **36.84%** ⬆️ | ~133 lignes | ✅ `test_vad_streaming.py`, `test_ia_modules.py` (18+ tests ajoutés) | ✅ **EN PROGRÈS** (+13.57% depuis 23.27%) |
+| `dashboard_advanced.py` | **76.71%** ✅ | ~75 lignes | ✅ `test_dashboard_advanced.py` (**47 tests**, **1156 lignes**) | ✅ **TERMINÉ** (objectif 70%+ dépassé) |
+| `daemon/bridge.py` | **31.23%** ✅ | ~262 lignes | ✅ `test_daemon_bridge.py` (10+ tests ajoutés) | ✅ **TERMINÉ** (objectif 30%+ atteint) |
 
-**Actions** :
-- Améliorer tests existants pour augmenter coverage
-- Cibler lignes non couvertes identifiées
+**Actions restantes** :
+- ⚠️ **Voice Whisper uniquement** : Étendre tests pour atteindre 50%+ (36.84% → 50%+, ~1-2h)
+- Cibler `transcribe_streaming` (lignes 476-669) et VAD (lignes 289-315, 322-328)
 
-**Estimation** : 8-12 heures
+**Estimation restante** : **~1-2 heures** (voice_whisper uniquement)
 
 ---
 
@@ -131,11 +131,11 @@
 
 | Fichier | TODO | Priorité | Statut |
 |---------|------|----------|--------|
-| `src/bbia_sim/bbia_tools.py` | ✅ ~~Ligne 378: Intégration VisionTrackingBehavior~~ | ✅ **TERMINÉ** | Oct / Nov. 2025 |
-| `src/bbia_sim/bbia_tools.py` | ✅ ~~Ligne 439: Arrêt réel mouvement~~ | ✅ **TERMINÉ** | Oct / Nov. 2025 |
+| `src/bbia_sim/bbia_tools.py` | ✅ ~~Lignes 378-389: Intégration VisionTrackingBehavior~~ | ✅ **TERMINÉ** | Oct / Nov. 2025 |
+| `src/bbia_sim/bbia_tools.py` | ✅ ~~Lignes 469-493: Arrêt réel mouvement~~ | ✅ **TERMINÉ** | Oct / Nov. 2025 |
 | `src/bbia_sim/daemon/app/main.py` | Ligne 241: Auth WebSocket | 🟢 Basse | ⏳ Optionnel |
 
-**Estimation** : 2-3 heures
+**Estimation** : **~1h** (optionnel uniquement)
 
 ---
 
@@ -177,23 +177,24 @@
 
 | Priorité | Tâches | Estimation | Statut |
 |----------|-------|------------|--------|
-| 🔴 Haute | Coverage tests (4 modules) | 8-12h | ⏳ À faire |
-| 🔴 Haute | Vérifier liens MD cassés | 1.5h | ⏳ À faire |
+| 🔴 Haute | Coverage tests (1 module restant) | ~1-2h | ✅ **QUASI TERMINÉ** (dashboard ✅, vision_yolo ✅, bridge ✅, voice_whisper: 36.84% → 50%+) |
+| 🔴 Haute | Vérifier liens MD cassés | 1.5h | ✅ **EN PROGRÈS** (112/251 corrigés, -45%) |
 | 🟡 Moyenne | Consolider documents | 2-3h | ⏳ À faire |
-| 🟡 Moyenne | TODOs bbia_tools.py | 2-3h | ⏳ À faire |
-| 🟢 Basse | Documentation supplémentaire | 1-2h | ⏳ À faire |
+| 🟡 Moyenne | TODOs bbia_tools.py | - | ✅ **TERMINÉ** (Oct / Nov. 2025) |
+| 🟢 Basse | Documentation supplémentaire | 1-2h | ⏳ Optionnel |
 | 🔵 Hardware | TODOs robot réel | 3-4h | ⏳ En attente |
 
-**Total restant (sans hardware)** : **~13-21 heures** de travail
+**Total restant (sans hardware)** : **~3-5 heures** de travail (~1-2h coverage + 1.5h liens + 1-2h doc optionnelle)
 
 ---
 
 ## 🎯 Prochaines Étapes Recommandées
 
-### Phase 1 : Coverage Tests (8-12h) - PRIORITÉ 1
-1. ✅ ~~Commencer par `dashboard_advanced.py`~~ - **TERMINÉ** (76.71% coverage, objectif 70%+ dépassé)
-2. Ensuite `vision_yolo.py` et `voice_whisper.py` (tests existants à améliorer)
-3. Enfin `daemon/bridge.py` (tests existants à améliorer)
+### Phase 1 : Coverage Tests (~1-2h restantes) - PRIORITÉ 1
+1. ✅ ~~`dashboard_advanced.py`~~ - **TERMINÉ** (**76.71%** coverage, objectif 70%+ dépassé ✅)
+2. ✅ ~~`vision_yolo.py`~~ - **TERMINÉ** (**89.62%** coverage, objectif 50%+ largement dépassé ✅)
+3. ⚠️ **`voice_whisper.py`** - **EN PROGRÈS** (**36.84%** → 50%+, ~1-2h restantes)
+4. ✅ ~~`daemon/bridge.py`~~ - **TERMINÉ** (**31.23%** coverage, objectif 30%+ atteint ✅)
 
 ### Phase 2 : Liens MD (1.5h) - PRIORITÉ 2
 1. Utiliser ou améliorer script existant
