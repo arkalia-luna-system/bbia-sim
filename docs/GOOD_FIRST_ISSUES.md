@@ -318,7 +318,7 @@ assignees: []
 ## 📚 Ressources utiles
 
 - [Documentation du projet](README.md)
-- [Guide de tests](docs/GUIDE_SYSTEME_TESTS.md)
+- [Guide de tests](GUIDE_SYSTEME_TESTS.md)
 ```
 
 ---

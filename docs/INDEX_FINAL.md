@@ -36,7 +36,7 @@
 ### 🏗️ Architecture et Design
 - [Architecture Vue d'Ensemble](architecture/ARCHITECTURE_OVERVIEW.md)
 - [Architecture Détaillée](architecture/ARCHITECTURE_DETAILED.md)
-- [Architecture Complète](architecture/ARCHITECTURE.md)
+- [Guide Architecture](architecture/ARCHITECTURE_OVERVIEW.md) (référence principale)
 - [Index thématique (par profils)](references/INDEX_THEMATIQUE.md)
 
 ### ✅ Conformité et Qualité
@@ -48,9 +48,8 @@
 
 ### 🔧 Corrections et Améliorations
 - [Corrections des démos Reachy](corrections/CORRECTIONS_DEMOS_REACHY.md)
-- [Démos corrigées](corrections/TOUTES_DEMOS_CORRIGEES.md)
-- [Démo 3D corrigée](corrections/DEMO_3D_CORRIGEE.md)
-- [Corrections d'erreurs](corrections/CORRECTIONS_ERREURS_COMPLETE_2025.md)
+- [Corrections appliquées](corrections/CORRECTIONS_APPLIQUEES.md)
+- [Corrections modules non prioritaires](corrections/CORRECTIONS_MODULES_NON_PRIORITAIRES_2025.md)
 - [Améliorations futures du SDK](ameliorations/AMELIORATIONS_FUTURES_SDK.md)
 
 ### 🎮 Mouvements et Contrôle
@@ -112,7 +111,7 @@
 ## 🔍 Archives
 
 ### Octobre 2025
-- [Résumé final - Octobre 2025](archives/2025-10/resumes/RESUME_FINAL_OCTOBRE_2025_REFERENCE.md)
+- [Résumé final - Octobre 2025](archives/2025-10/resumes/RESUME_FINAL_ULTIME_OCTOBRE_2025.md)
 - [Résumés détaillés](archives/2025-10/resumes/)
 - [Corrections et améliorations](archives/2025-10/)
 - [Rapports d'audit](archives/audits/)
@@ -133,7 +132,7 @@ Voir le dossier `archives/` pour les rapports détaillés historiques.
 
 **Développeur**
 - [Guide avancé](guides/GUIDE_AVANCE.md)
-- [Architecture](architecture/ARCHITECTURE.md)
+- [Architecture](architecture/ARCHITECTURE_OVERVIEW.md)
 - [Guide de test](guides_techniques/TESTING_GUIDE.md)
 - [Guide d'intégration](guides_techniques/INTEGRATION_GUIDE.md)
 

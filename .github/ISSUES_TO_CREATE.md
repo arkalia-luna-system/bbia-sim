@@ -51,8 +51,8 @@ Créer tests pour fonctions principales :
 
 ## 📚 Ressources utiles
 
-- [Documentation du projet](README.md)
-- [Guide de tests](docs/GUIDE_SYSTEME_TESTS.md)
+- [Documentation du projet](../README.md)
+- [Guide de tests](../docs/GUIDE_SYSTEME_TESTS.md)
 - Voir `tests/test_voice_whisper_comprehensive.py` comme exemple
 ```
 

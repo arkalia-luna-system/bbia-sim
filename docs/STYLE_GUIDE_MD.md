@@ -161,7 +161,7 @@ code_here()
 ## 🔗 Liens
 
 ```markdown
-[Texte du lien](chemin/vers/fichier.md)
+[Texte du lien](./GUIDE_DEBUTANT.md) (exemple)
 [Texte externe](https://example.com)
 ```
 

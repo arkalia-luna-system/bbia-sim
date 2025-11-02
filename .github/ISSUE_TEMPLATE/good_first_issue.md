@@ -39,9 +39,9 @@ assignees: []
 
 ## 📚 Ressources utiles
 
-- [Documentation du projet](README.md)
-- [Guide de tests](tests/README.md)
-- [Guide de contribution](../CONTRIBUTING.md)
+- [Documentation du projet](../../README.md)
+- [Guide de tests](../../tests/README.md)
+- [Guide de contribution](../../CONTRIBUTING.md)
 
 ## 💡 Notes additionnelles
 

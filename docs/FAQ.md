@@ -268,9 +268,9 @@ export BBIA_DISABLE_SIMULATION=1
 |-----------|------|-------------|
 | 📖 **Documentation complète** | [`docs/README.md`](../README.md) | Index de toute la documentation |
 | 📊 **Architecture** | [`docs/architecture/ARCHITECTURE_OVERVIEW.md`](../architecture/ARCHITECTURE_OVERVIEW.md) | Vue d'ensemble technique |
-| 🧪 **Tests** | [`tests/`](../../tests/) | Suite de tests automatisés |
-| 💡 **Exemples** | [`examples/`](../../examples/) | Exemples d'utilisation |
-| 🔧 **Scripts** | [`scripts/`](../../scripts/) | Outils utilitaires |
+| 🧪 **Tests** | [`tests/README.md`](../../tests/README.md) | Guide des tests |
+| 💡 **Exemples** | [`examples/README.md`](../../examples/README.md) | Exemples d'utilisation |
+| 🔧 **Scripts** | [`scripts/README.md`](../../scripts/README.md) | Outils utilitaires |
 | 🎯 **Guide débutant** | [`docs/guides/GUIDE_DEBUTANT.md`](../guides/GUIDE_DEBUTANT.md) | Démarrage rapide |
 | 🔍 **Diagnostic** | `python scripts/bbia_doctor.py` | Vérification environnement |
 
@@ -278,8 +278,8 @@ export BBIA_DISABLE_SIMULATION=1
 
 - **GitHub** : [arkalia-luna-system/bbia-sim](https://github.com/arkalia-luna-system/bbia-sim)
 - **Issues** : [Signaler un bug](https://github.com/arkalia-luna-system/bbia-sim/issues)
-- **État du projet** : [`docs/audit/RESUME_ETAT_ACTUEL_BBIA.md`](../audit/RESUME_ETAT_ACTUEL_BBIA.md)
-- **Comparaison officielle** : [`docs/audit/COMPARAISON_APP_CONVERSATION_OFFICIELLE.md`](../audit/COMPARAISON_APP_CONVERSATION_OFFICIELLE.md)
+- **État du projet** : [`docs/audit/TACHES_RESTANTES_NOV2025.md`](../audit/TACHES_RESTANTES_NOV2025.md)
+- **Comparaison officielle** : [`docs/audit/COMPARAISON_DOCUMENTATION_OFFICIELLE.md`](../audit/COMPARAISON_DOCUMENTATION_OFFICIELLE.md)
 
 ---
 

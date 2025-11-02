@@ -211,5 +211,5 @@ Il est conservé à des fins de référence historique uniquement.
 
 ## 📋 RAPPORT FINAL DÉTAILLÉ
 
-Pour le rapport complet avec toutes les vérifications et corrections, voir : [`docs/AUDIT_DOCUMENTATION_FINAL.md`](./AUDIT_DOCUMENTATION_FINAL.md)
+Pour le rapport complet avec toutes les vérifications et corrections, voir : [`docs/AUDIT_DOCUMENTATION_FINAL.md`](../AUDIT_DOCUMENTATION_FINAL.md)
 
