@@ -57,7 +57,7 @@ class BBIAAdvancedWebSocketManager:
         self.bbia_hf: Any | None = None  # Hugging Face chat module
 
         # Métriques temps réel
-        self.current_metrics = {
+        self.current_metrics: dict[str, Any] = {
             "timestamp": time.time(),
             "robot_connected": False,
             "current_emotion": "neutral",

@@ -4,7 +4,7 @@ import asyncio
 import logging
 import os
 from datetime import datetime, timezone
-from typing import Any
+from typing import Any, cast
 
 from fastapi import APIRouter, Depends, WebSocket, WebSocketDisconnect
 from pydantic import BaseModel
@@ -240,7 +240,7 @@ async def get_full_state(
     if "temperature" not in result:
         result["temperature"] = 25.0
 
-    return FullState.model_validate(result)
+    return cast(FullState, FullState.model_validate(result))
 
 
 @router.get("/position")

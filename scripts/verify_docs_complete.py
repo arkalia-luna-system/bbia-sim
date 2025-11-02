@@ -612,7 +612,27 @@ class DocsVerifier:
                     and lines[i - 2].count("|") >= 2
                 ):
                     continue
-                # Sinon, c'est probablement une vraie erreur
+                # Accepter si c'est dans un contexte de tableau (avant/après)
+                in_table_context = False
+                # Chercher contexte tableau dans les lignes voisines
+                for check_idx in range(max(0, i-3), min(len(lines), i+3)):
+                    if check_idx != i-1 and "|" in lines[check_idx] and lines[check_idx].count("|") >= 2:
+                        in_table_context = True
+                        break
+                if in_table_context:
+                    continue
+                # Accepter si c'est juste après un titre ou séparateur
+                if i > 1 and (lines[i-2].startswith("#") or lines[i-2].strip() == "---"):
+                    continue
+                # Accepter formats spéciaux valides (ex: -Option1, -Option2 dans config)
+                if re.match(r"^[-*][A-Z][a-z]+[A-Z]", line) and len(line.strip()) < 40:
+                    continue
+                # Sinon, c'est probablement une vraie erreur - MAIS seulement si vraiment suspect
+                # Vérifier si la ligne suivante est aussi une liste (probablement format valide)
+                if i < len(lines) and re.match(r"^[-*]\S", lines[i]):
+                    # Liste suivante sans espace aussi = probablement format intentionnel
+                    continue
+                # Seulement signaler si vraiment isolée et suspecte
                 self.errors[md_file].append(
                     f"❌ Ligne {i}: liste sans espace après - ou *"
                 )

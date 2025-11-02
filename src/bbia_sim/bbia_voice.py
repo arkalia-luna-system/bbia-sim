@@ -114,7 +114,7 @@ def get_bbia_voice(engine: Any) -> str:
     femmes_fr = ["audrey", "virginie", "julie", "flo", "sandy", "shelley"]
 
     # Catégories de priorité (du plus spécifique au plus général)
-    candidates = {
+    candidates: dict[str, str | None] = {
         "aurelie_enhanced_fr": None,
         "amelie_enhanced_fr": None,
         "aurelie_fr_FR": None,
@@ -197,8 +197,9 @@ def get_bbia_voice(engine: Any) -> str:
 
     # Retourner le premier candidat trouvé selon priorité
     for key in candidates:
-        if candidates[key] is not None:
-            return candidates[key]
+        value = candidates[key]
+        if value is not None:
+            return value
 
     # 10. Sinon, message d'aide
     raise RuntimeError(
