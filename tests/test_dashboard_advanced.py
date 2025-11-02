@@ -63,11 +63,7 @@ class TestDashboardAdvanced:
         except ImportError:
             pytest.skip("Module dashboard_advanced non disponible")
         except Exception as e:
-            if (
-                "FastAPI" in str(e)
-                or "WebSocket" in str(e)
-                or "unexpected keyword" in str(e)
-            ):
+            if "FastAPI" in str(e) or "WebSocket" in str(e) or "unexpected keyword" in str(e):
                 pytest.skip(f"Dashboard non disponible ou dépendance incompatible: {e}")
             raise
 
@@ -237,7 +233,7 @@ class TestDashboardAdvanced:
         except (ImportError, Exception) as e:
             pytest.skip(f"Dashboard advanced non disponible: {e}")
 
-    def test_vision_metrics_structure(self, mock_dashboard_dependencies):
+    def test_vision_metrics_structure(self):
         """Test structure métriques vision."""
         try:
             from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager
@@ -251,7 +247,7 @@ class TestDashboardAdvanced:
         except (ImportError, Exception) as e:
             pytest.skip(f"Dashboard advanced non disponible: {e}")
 
-    def test_audio_metrics_structure(self, mock_dashboard_dependencies):
+    def test_audio_metrics_structure(self):
         """Test structure métriques audio."""
         try:
             from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager
@@ -266,7 +262,7 @@ class TestDashboardAdvanced:
             pytest.skip(f"Dashboard advanced non disponible: {e}")
 
     @patch("bbia_sim.dashboard_advanced.FASTAPI_AVAILABLE", True)
-    def test_connect_websocket(self, mock_dashboard_dependencies):
+    def test_connect_websocket(self):
         """Test connexion WebSocket."""
         try:
             import asyncio
@@ -291,7 +287,7 @@ class TestDashboardAdvanced:
             pytest.skip(f"Dashboard advanced non disponible: {e}")
 
     @patch("bbia_sim.dashboard_advanced.FASTAPI_AVAILABLE", True)
-    def test_disconnect_websocket(self, mock_dashboard_dependencies):
+    def test_disconnect_websocket(self):
         """Test déconnexion WebSocket."""
         try:
             from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager
@@ -308,7 +304,7 @@ class TestDashboardAdvanced:
             pytest.skip(f"Dashboard advanced non disponible: {e}")
 
     @patch("bbia_sim.dashboard_advanced.FASTAPI_AVAILABLE", True)
-    def test_send_complete_status(self, mock_dashboard_dependencies):
+    def test_send_complete_status(self):
         """Test envoi statut complet."""
         try:
             import asyncio

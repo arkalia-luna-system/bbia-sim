@@ -89,9 +89,9 @@ create_face_recognition = _create_face_recognition_func
 _create_pose_detector_func: Callable[..., "BBIAPoseDetection | None"] | None = None
 MEDIAPIPE_POSE_AVAILABLE = False
 try:
-    from .pose_detection import create_pose_detector
+    from .pose_detection import create_pose_detector as _pose_detector_imported
 
-    _create_pose_detector_func = create_pose_detector
+    _create_pose_detector_func = _pose_detector_imported
     MEDIAPIPE_POSE_AVAILABLE = True
 except ImportError:
     pass  # _create_pose_detector_func reste None
