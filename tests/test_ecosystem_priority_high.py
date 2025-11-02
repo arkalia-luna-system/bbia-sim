@@ -46,10 +46,9 @@ class TestWebSocketTracking:
 
     def test_get_active_connections_no_manager(self):
         """Test comptage sans gestionnaire (retourne 0)."""
-        from bbia_sim.daemon.app.routers.ecosystem import get_active_connections
-
         # Invalider le cache avant le test
         import bbia_sim.daemon.app.routers.ecosystem as ecosystem_module
+        from bbia_sim.daemon.app.routers.ecosystem import get_active_connections
 
         ecosystem_module._active_connections_cache = None
         ecosystem_module._active_connections_cache_time = 0.0
@@ -62,10 +61,9 @@ class TestWebSocketTracking:
 
     def test_get_active_connections_empty(self):
         """Test comptage avec liste vide."""
-        from bbia_sim.daemon.app.routers.ecosystem import get_active_connections
-
         # Invalider le cache avant le test
         import bbia_sim.daemon.app.routers.ecosystem as ecosystem_module
+        from bbia_sim.daemon.app.routers.ecosystem import get_active_connections
 
         ecosystem_module._active_connections_cache = None
         ecosystem_module._active_connections_cache_time = 0.0
@@ -165,14 +163,9 @@ class TestDemoLogic:
         mock_sim_service = MagicMock()
         mock_sim_service.is_simulation_ready.return_value = True
 
-        # Patch l'import dans la fonction
-        import sys
-
-        mock_module = type(sys)("sim_service_mock")
-        mock_module.simulation_service = mock_sim_service
-
-        with patch.dict(
-            "sys.modules", {"bbia_sim.daemon.simulation_service": mock_module}
+        # Patch l'import local dans la fonction start_demo_mode
+        with patch(
+            "bbia_sim.daemon.simulation_service.simulation_service", mock_sim_service
         ):
             result = await start_demo_mode(
                 mode="simulation", duration=10.0, emotion="happy"

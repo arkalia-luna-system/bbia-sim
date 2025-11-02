@@ -71,38 +71,30 @@ except ImportError:
     MEDIAPIPE_AVAILABLE = False
 
 # Import conditionnel DeepFace pour reconnaissance visage personnalisée
-_create_face_recognition_func: (
-    Callable[[str, str], "BBIAPersonRecognition | None"] | None
-) = None
+create_face_recognition: Callable[[str, str], "BBIAPersonRecognition | None"] | None = (
+    None
+)
 DEEPFACE_AVAILABLE = False
 try:
-    from .face_recognition import create_face_recognition
+    from .face_recognition import (
+        create_face_recognition as _create_face_recognition_imported,
+    )
 
-    _create_face_recognition_func = create_face_recognition
+    create_face_recognition = _create_face_recognition_imported
     DEEPFACE_AVAILABLE = True
 except ImportError:
-    pass  # _create_face_recognition_func reste None
-
-create_face_recognition = _create_face_recognition_func
+    pass  # create_face_recognition reste None
 
 # Import conditionnel MediaPipe Pose pour détection postures/gestes
-_create_pose_detector_func: Callable[..., "BBIAPoseDetection | None"] | None = None
+create_pose_detector: Callable[..., "BBIAPoseDetection | None"] | None = None
 MEDIAPIPE_POSE_AVAILABLE = False
 try:
-    from .pose_detection import create_pose_detector as _pose_detector_imported
+    from .pose_detection import create_pose_detector as _create_pose_detector_imported
 
-    _create_pose_detector_func = _pose_detector_imported
+    create_pose_detector = _create_pose_detector_imported
     MEDIAPIPE_POSE_AVAILABLE = True
 except ImportError:
-    pass  # _create_pose_detector_func reste None
-
-# Alias pour compatibilité (si disponible)
-if MEDIAPIPE_POSE_AVAILABLE and _create_pose_detector_func is not None:
-    create_pose_detector: Callable[..., "BBIAPoseDetection | None"] | None = (
-        _create_pose_detector_func
-    )
-else:
-    create_pose_detector = None
+    pass  # create_pose_detector reste None
 
 # Import conditionnel cv2 pour conversions couleur
 try:

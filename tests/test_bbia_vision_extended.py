@@ -6,6 +6,7 @@ Tests ciblés pour améliorer la couverture de code.
 
 from collections import deque
 from datetime import datetime
+from typing import Any
 from unittest.mock import patch
 
 from src.bbia_sim.bbia_vision import BBIAVision
@@ -205,7 +206,7 @@ class TestBBIAVisionExtended:
     @patch("builtins.print")
     def test_analyze_emotion_valid(self, mock_print):
         """Test analyse d'émotion valide."""
-        face_data = {"emotion": "happy"}
+        face_data: dict[str, Any] = {"emotion": "happy"}
         emotion = self.vision.analyze_emotion(face_data)
 
         assert emotion == "happy"
@@ -213,7 +214,7 @@ class TestBBIAVisionExtended:
     @patch("builtins.print")
     def test_analyze_emotion_default(self, mock_print):
         """Test analyse d'émotion par défaut."""
-        face_data = {}
+        face_data: dict[str, Any] = {}
         emotion = self.vision.analyze_emotion(face_data)
 
         assert emotion == "neutral"
