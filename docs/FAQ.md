@@ -49,6 +49,16 @@ flowchart TD
     PERF_SLOW -->|Audio| STREAM[Activer streaming]
     PERF_SLOW -->|Memory| LIGHT
     PERF_SLOW -->|Simulation| HEADLESS[Headless mode]
+    
+    style START fill:#FFD700
+    style INSTALL fill:#87CEEB
+    style MUJOCO fill:#4ECDC4
+    style AUDIO fill:#45B7D1
+    style MODELS fill:#BB8FCE
+    style PERF fill:#FF6B6B
+    style END1 fill:#90EE90
+    style CHECK fill:#F8B739
+    style INSTALL_OK fill:#FFA07A
 ```
 
 ---

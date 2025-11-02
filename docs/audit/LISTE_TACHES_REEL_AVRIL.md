@@ -21,17 +21,18 @@ Les fichiers suivants ont été corrigés pour refléter la réalité :
 
 ### 🔴 Priorité Haute
 
-#### 1. Tracking WebSocket Actif
+#### 1. ✅ Tracking WebSocket Actif - **TERMINÉ**
 - **Fichier** : `src/bbia_sim/daemon/app/routers/ecosystem.py`
-- **Statut** : Infrastructure créée (`get_active_connections()`), mais nécessite intégration avec gestionnaire WebSocket réel
-- **Action** : Implémenter compteur réel des connexions WS actives
-- **Estimation** : 1-2 heures
+- **Statut** : ✅ **COMPLÉTÉ** - Fonction `get_active_connections()` implémentée avec `get_ws_manager()`
+- **Tests** : `test_ecosystem_priority_high.py` créé et tous passent
+- **Statut** : ✅ **100% TERMINÉ**
 
-#### 2. Logique Démarrage Démo
-- **Fichier** : `src/bbia_sim/daemon/app/routers/ecosystem.py` (ligne ~446)
-- **Statut** : Endpoint `/demo/start` existe mais logique TODO reste
-- **Action** : Implémenter logique de démarrage automatique de démonstrations
-- **Estimation** : 1-2 heures
+#### 2. ✅ Logique Démarrage Démo - **TERMINÉ**
+- **Fichier** : `src/bbia_sim/daemon/app/routers/ecosystem.py` (lignes 434-549)
+- **Statut** : ✅ **COMPLÉTÉ** - Endpoint `/demo/start` complètement implémenté
+- **Fonctionnalités** : Modes (simulation, robot_real, mixed), durée, émotion, arrêt automatique
+- **Tests** : Tests créés et tous passent
+- **Statut** : ✅ **100% TERMINÉ**
 
 ---
 

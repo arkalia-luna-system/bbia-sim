@@ -69,6 +69,7 @@ def main() -> None:
     except Exception as e:
         print(f"\n❌ Erreur: {e}")
         import traceback
+
         traceback.print_exc()
     finally:
         if robot_api:
@@ -78,4 +79,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

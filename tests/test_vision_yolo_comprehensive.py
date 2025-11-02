@@ -98,16 +98,16 @@ class TestYOLODetector:
             mock_box = MagicMock()
             # Simplifier le mock pour éviter problèmes d'indexation
             mock_box.xyxy = MagicMock()
-            mock_box.xyxy.__getitem__.return_value.cpu.return_value.numpy.return_value = (
-                np.array([10.0, 20.0, 100.0, 120.0])
+            mock_box.xyxy.__getitem__.return_value.cpu.return_value.numpy.return_value = np.array(
+                [10.0, 20.0, 100.0, 120.0]
             )
             mock_box.conf = MagicMock()
-            mock_box.conf.__getitem__.return_value.cpu.return_value.numpy.return_value = (
-                np.array(0.8)
+            mock_box.conf.__getitem__.return_value.cpu.return_value.numpy.return_value = np.array(
+                0.8
             )
             mock_box.cls = MagicMock()
-            mock_box.cls.__getitem__.return_value.cpu.return_value.numpy.return_value = (
-                np.array(0)
+            mock_box.cls.__getitem__.return_value.cpu.return_value.numpy.return_value = np.array(
+                0
             )
 
             mock_result = MagicMock()
