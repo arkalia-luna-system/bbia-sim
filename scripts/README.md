@@ -2,13 +2,42 @@
 
 > **Scripts d'automatisation pour BBIA - Brain-Based Interactive Agent**
 
+**📚 [Documentation principale](../README.md)** | **📖 [Guide débutant](../docs/guides/GUIDE_DEBUTANT.md)** | **🔧 [Guide avancé](../docs/guides/GUIDE_AVANCE.md)**
+
+## 🎯 Vue d'Ensemble des Scripts
+
+```mermaid
+mindmap
+  root((Scripts BBIA))
+    Principaux
+      quick_start.sh
+      launch_unity.sh
+      launch_robot_3d.sh
+      launch_robot.py
+    Test & Validation
+      hardware_dry_run.py
+      record_trace.py
+      validate_trace.py
+      test_unity_setup.sh
+    Démo & Enregistrement
+      record_demo.sh
+      plot_trace.py
+    Audit & Documentation
+      compare_with_official_exhaustive.py
+      audit_and_correct_dates_md.py
+      verify_documentation.py
+    Installation
+      install_all_reachy_repos.sh
+      setup_reachy_environment.sh
+```
+
 ## ⚠️ **Scripts Dépréciés**
 
 - ❌ **`start_api.py`** → Utiliser `start_public_api.py` (archivé dans `_archived/`)
 - ❌ **`kill_greedy_processes.sh`** → Utiliser `smart_process_cleanup.sh` (archivé dans `_archived/`)
 - ⚠️ **`kill_mujoco_viewers.sh`** → Utiliser `process_manager.py stop` (déprécié mais gardé)
 
-### 🔄 **Scripts d'Audit Consolidés** (Octobre 2025)
+### 🔄 **Scripts d'Audit Consolidés** (Oct 2025 / Nov 2025)
 
 Les scripts de comparaison/audit avec le SDK officiel Reachy Mini ont été consolidés :
 
@@ -19,7 +48,20 @@ Les scripts de comparaison/audit avec le SDK officiel Reachy Mini ont été cons
 **Scripts archivés** dans `scripts/_archived/comparison_audit/` :
 - 8 scripts redondants ou obsolètes (voir `scripts/_archived/comparison_audit/README.md`)
 
-Voir `scripts/_archived/README.md` et `scripts/PLAN_CONSOLIDATION_AUDIT_SCRIPTS.md` pour plus de détails.
+### 📝 **Scripts Documentation Consolidés** (Oct 2025 / Nov 2025)
+
+- ✅ **`audit_and_correct_dates_md.py`** → Script unifié pour audit et correction des dates MD
+  - Fusion de : `audit_dates_md.py`, `audit_md_dates.py`, `correct_dates_md.py`, `correct_dates_md_final.py`
+  - Usage : `python scripts/audit_and_correct_dates_md.py [--audit-only|--correct]`
+  
+- ✅ **`verify_documentation.py`** → Script unifié pour vérification documentation
+  - Fusion de : `verify_doc_accuracy.py`, `verify_md_vs_code.py`
+  - Usage : `python scripts/verify_documentation.py [--accuracy|--consistency]`
+
+**Scripts archivés** dans `scripts/_archived/dates_md/` et `scripts/_archived/verification/` :
+- Voir `scripts/_archived/dates_md/README.md` et `scripts/_archived/verification/README.md`
+
+Voir `scripts/_archived/README.md`, `scripts/PLAN_CONSOLIDATION_AUDIT_SCRIPTS.md` et `scripts/PLAN_FUSION_SCRIPTS.md` pour plus de détails.
 
 ## 🎯 **Scripts Disponibles**
 
@@ -45,6 +87,28 @@ Voir `scripts/_archived/README.md` et `scripts/PLAN_CONSOLIDATION_AUDIT_SCRIPTS.
 ---
 
 ## 🚀 **Utilisation Rapide**
+
+### Workflow Principal
+
+```mermaid
+flowchart TD
+    START[🚀 Démarrage] --> MENU{Menu Interactif<br/>quick_start.sh}
+    
+    MENU -->|Option 1| TEST[Test BBIA<br/>Simulation rapide]
+    MENU -->|Option 6| UNITY[Lancer Unity 3D<br/>Visualisation 3D]
+    MENU -->|Option 7| CHECK[Test Config Unity<br/>Validation]
+    MENU -->|Option 8| FIX[Corriger Warnings Unity<br/>Fix automatique]
+    MENU -->|Option 10| INSTALL[Installer Repos GitHub<br/>Setup complet]
+    
+    TEST --> RESULT1[✅ Résultat Test]
+    UNITY --> RESULT2[✅ Unity Lancé]
+    CHECK --> RESULT3[✅ Config OK]
+    FIX --> RESULT4[✅ Warnings Corrigés]
+    INSTALL --> RESULT5[✅ Repos Installés]
+    
+    style MENU fill:#FFD700
+    style START fill:#90EE90
+```
 
 ### 🎮 **Menu Interactif (Recommandé)**
 ```bash

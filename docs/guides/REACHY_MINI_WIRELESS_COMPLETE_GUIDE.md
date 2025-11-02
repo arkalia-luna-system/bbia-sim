@@ -71,6 +71,31 @@
 
 ## 🚀 Préparation Immédiate (Maintenant)
 
+### Parcours Préparation
+
+```mermaid
+flowchart TD
+    START[🎯 Préparation Reachy Mini] --> DOC[📚 Documentation Officielle]
+    
+    DOC --> ENV[⚙️ Configuration Environnement]
+    ENV --> INSTALL[📦 Installation SDK]
+    INSTALL --> TEST[✅ Tests Connexion]
+    
+    TEST --> SIM[🎮 Simulation BBIA]
+    TEST --> REAL[🤖 Robot Physique]
+    
+    SIM --> READY1[✅ Prêt Simulation]
+    REAL --> READY2[✅ Prêt Robot Réel]
+    
+    READY1 --> DEV[Développement BBIA]
+    READY2 --> PROD[Production Robot]
+    
+    style START fill:#90EE90
+    style TEST fill:#FFD700
+    style DEV fill:#87CEEB
+    style PROD fill:#FFB6C1
+```
+
 ### 1. 📚 Documentation Officielle
 ```bash
 # Liens essentiels

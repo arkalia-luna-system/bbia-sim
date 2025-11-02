@@ -74,6 +74,26 @@ pie title Coverage par Module (exemple)
 
 ## 🧪 Types de tests
 
+### Hiérarchie des Tests
+
+```mermaid
+graph TB
+    subgraph "Pyramid Tests"
+        E2E[Tests E2E<br/>End-to-End<br/>Peu nombreux]
+        INTEGRATION[Tests Intégration<br/>Modules interagissant<br/>Moyen nombre]
+        UNIT[Tests Unitaires<br/>Fonctions isolées<br/>Beaucoup]
+    end
+    
+    E2E --> INTEGRATION
+    INTEGRATION --> UNIT
+    
+    style UNIT fill:#90EE90
+    style INTEGRATION fill:#FFD700
+    style E2E fill:#87CEEB
+```
+
+### Détails par Type
+
 ```mermaid
 graph LR
     subgraph "Tests Unitaires"
