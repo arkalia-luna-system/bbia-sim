@@ -287,12 +287,13 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
                 # Priorité 1: media.play_audio(bytes[, volume])
                 if hasattr(media, "play_audio"):
                     try:
-                        media.play_audio(sdk_audio_bytes, volume=1.0)
-                    except TypeError:
-                        media.play_audio(sdk_audio_bytes)
-                    return
-                except Exception as e:
-                    logging.debug(f"media.play_audio a échoué: {e}")
+                        try:
+                            media.play_audio(sdk_audio_bytes, volume=1.0)
+                        except TypeError:
+                            media.play_audio(sdk_audio_bytes)
+                        return
+                    except Exception as e:
+                        logging.debug(f"media.play_audio a échoué: {e}")
 
             # Priorité 2: media.speaker.play_file/ play(bytes)
             speaker = getattr(media, "speaker", None)

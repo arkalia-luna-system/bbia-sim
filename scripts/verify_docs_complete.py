@@ -248,9 +248,11 @@ class DocsVerifier:
             if re.match(r'^#{1,6}[^#\s]', line):
                 self.errors[md_file].append(f"❌ Ligne {i}: titre sans espace après #")
             
-            # Listes: espace après - ou *
+            # Listes: espace après - ou * (mais accepter certaines formes valides)
             if re.match(r'^[-*]\S', line) and not line.startswith("```"):
-                self.errors[md_file].append(f"❌ Ligne {i}: liste sans espace après - ou *")
+                # Accepter si c'est une ligne de séparateur ou code inline
+                if "`" not in line and not line.strip().startswith("---"):
+                    self.errors[md_file].append(f"❌ Ligne {i}: liste sans espace après - ou *")
             
             # Code blocks: vérifier fermeture
             if line.strip().startswith("```") and not line.strip().endswith("```"):
@@ -345,7 +347,15 @@ class DocsVerifier:
         
         for md_file in self.md_files:
             try:
-                content = md_file.read_text(encoding="utf-8")
+                # Essayer UTF-8, puis latin-1 pour fichiers macOS
+                try:
+                    content = md_file.read_text(encoding="utf-8")
+                except UnicodeDecodeError:
+                    try:
+                        content = md_file.read_text(encoding="latin-1")
+                    except Exception:
+                        self.errors[md_file].append(f"❌ Erreur encodage fichier")
+                        continue
                 
                 self.check_links(md_file, content)
                 self.check_mermaid(md_file, content)
@@ -356,7 +366,9 @@ class DocsVerifier:
                 self.check_tables(md_file, content)
                 
             except Exception as e:
-                self.errors[md_file].append(f"❌ Erreur lecture fichier: {e}")
+                # Ignorer erreurs sur fichiers cachés macOS
+                if not md_file.name.startswith("._"):
+                    self.errors[md_file].append(f"❌ Erreur lecture fichier: {e}")
         
         return {
             "errors": dict(self.errors),
