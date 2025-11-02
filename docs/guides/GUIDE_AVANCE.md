@@ -45,6 +45,31 @@ backend = 'mujoco' if os.getenv('DEV') else 'reachy_mini'
 robot = RobotFactory.create_backend(backend)
 ```
 
+#### Flux Backend Unifié
+
+```mermaid
+flowchart TB
+    CODE[Code Unifié<br/>RobotAPI] --> FACTORY[RobotFactory<br/>Factory Pattern]
+    
+    FACTORY --> CHECK{Environnement?}
+    
+    CHECK -->|DEV/TEST| MUJOCO[Backend MuJoCo<br/>Simulation 3D]
+    CHECK -->|PROD| REACHY[Backend Reachy Mini<br/>Robot Physique]
+    
+    MUJOCO --> MODEL[Modèle XML<br/>Physique Réaliste]
+    REACHY --> SDK[SDK Officiel<br/>Pollen Robotics]
+    
+    MODEL --> ACTIONS[Actions Robot<br/>Même Interface]
+    SDK --> ACTIONS
+    
+    ACTIONS --> EMOTIONS[12 Émotions<br/>Contrôlables]
+    ACTIONS --> MOVEMENT[Mouvements<br/>Danses/Animations]
+    
+    style CODE fill:#90EE90
+    style FACTORY fill:#FFD700
+    style ACTIONS fill:#87CEEB
+```
+
 Avantages :
 - développement sans matériel
 - tests automatisés
@@ -52,6 +77,37 @@ Avantages :
 - migration transparente vers robot réel
 
 ### Modules BBIA avancés
+
+#### Architecture Modules BBIA
+
+```mermaid
+graph LR
+    subgraph "Modules BBIA"
+        EMOTIONS[BBIAEmotions<br/>12 émotions]
+        VISION[BBIAVision<br/>YOLO + MediaPipe + SmolVLM2]
+        VOICE[BBIAVoice<br/>Whisper + TTS]
+        BEHAVIOR[BBIABehavior<br/>Comportements]
+        HF[BBIAHuggingFace<br/>LLM + NLP]
+        MEMORY[BBIAMemory<br/>Contexte]
+        TOOLS[BBIATools<br/>8 outils LLM]
+    end
+    
+    subgraph "Intégration"
+        ROBOT[RobotAPI<br/>Unifié]
+    end
+    
+    EMOTIONS --> ROBOT
+    VISION --> ROBOT
+    VOICE --> ROBOT
+    BEHAVIOR --> HF
+    BEHAVIOR --> MEMORY
+    HF --> TOOLS
+    TOOLS --> ROBOT
+    
+    style HF fill:#90EE90
+    style TOOLS fill:#FFD700
+    style ROBOT fill:#87CEEB
+```
 
 #### 1. Module Émotions
 
@@ -64,6 +120,18 @@ emotions = BBIAEmotions()
 emotions.set_emotion('excited', intensity=0.9)
 emotions.set_emotion('curious', intensity=0.6)
 emotions.set_emotion('calm', intensity=0.4)
+```
+
+**Flux Émotions** :
+```mermaid
+flowchart LR
+    INPUT[Input Utilisateur] --> SENTIMENT[Analyse Sentiment<br/>RoBERTa]
+    SENTIMENT --> EMOTION[Émotion Associée<br/>12 disponibles]
+    EMOTION --> ROBOT[RobotAPI<br/>Contrôle Articulations]
+    ROBOT --> DISPLAY[Affichage Robot]
+    
+    style EMOTION fill:#90EE90
+    style ROBOT fill:#87CEEB
 ```
 
 #### 2. Module Comportements

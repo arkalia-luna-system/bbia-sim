@@ -29,6 +29,33 @@ graph LR
     style ROBOT fill:#87CEEB
 ```
 
+### Parcours Démarrage Complet
+
+```mermaid
+flowchart TD
+    START[🚀 Installation] --> INSTALL{pip install -e .}
+    
+    INSTALL --> CHOICE{Méthode d'utilisation?}
+    
+    CHOICE -->|Web| DASH[🌐 Dashboard<br/>python dashboard_advanced.py]
+    CHOICE -->|CLI| SCRIPT[📝 Script Python<br/>RobotFactory]
+    CHOICE -->|3D| MUJOCO[🎮 MuJoCo Viewer<br/>mjpython examples/...]
+    
+    DASH --> CHAT[💬 Chat BBIA<br/>Interface Web]
+    SCRIPT --> EMOTION[😊 Émotions<br/>set_emotion]
+    MUJOCO --> VISUAL[👁️ Visualisation 3D<br/>Robot Animé]
+    
+    CHAT --> NEXT1[➡️ Guide Avancé]
+    EMOTION --> NEXT2[➡️ Comportements]
+    VISUAL --> NEXT3[➡️ Simulation Complète]
+    
+    style START fill:#90EE90
+    style CHOICE fill:#FFD700
+    style NEXT1 fill:#87CEEB
+    style NEXT2 fill:#87CEEB
+    style NEXT3 fill:#87CEEB
+```
+
 ### 1. Installation
 
 ```bash

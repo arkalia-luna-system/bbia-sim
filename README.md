@@ -103,41 +103,99 @@ BBIA-SIM v1.3.2 simule le robot Reachy Mini avec un haut niveau de fidélité :
 
 ## 🏗️ Architecture BBIA-SIM
 
+### Vue d'Ensemble Architecture Complète
+
 ```mermaid
 graph TB
-    subgraph "Modules BBIA"
-        EMOTIONS[bbia_emotions.py<br/>12 émotions]
-        VISION[bbia_vision.py<br/>Détection objets]
-        AUDIO[bbia_audio.py<br/>Enregistrement]
-        VOICE[bbia_voice.py<br/>TTS/STT]
-        BEHAVIOR[bbia_behavior.py<br/>Comportements]
+    subgraph "Interface Utilisateur"
+        WEB[Dashboard Web<br/>FastAPI + WebSocket]
+        CLI[CLI Python<br/>Scripts]
+        API[REST API<br/>OpenAPI/Swagger]
     end
     
-    subgraph "Simulation MuJoCo"
-        SIMULATOR[MuJoCoSimulator<br/>Physique 3D]
+    subgraph "Modules BBIA Cognitive"
+        EMOTIONS[bbia_emotions.py<br/>12 émotions robotiques]
+        VISION[bbia_vision.py<br/>YOLOv8n + MediaPipe + SmolVLM2]
+        AUDIO[bbia_audio.py<br/>Enregistrement/Audio]
+        VOICE[bbia_voice.py<br/>Whisper STT + pyttsx3 TTS]
+        BEHAVIOR[bbia_behavior.py<br/>Comportements intelligents]
+        HF[bbia_huggingface.py<br/>LLM + NLP + Tools]
+        MEMORY[bbia_memory.py<br/>Mémoire contextuelle]
+    end
+    
+    subgraph "Couche Abstraction"
+        ROBOTAPI[RobotAPI Unifié<br/>Interface Abstraite]
+        FACTORY[RobotFactory<br/>Backend Factory]
+    end
+    
+    subgraph "Backends Robot"
+        MUJOCO[MuJoCo Simulator<br/>Physique 3D]
+        REACHY[Reachy Mini SDK<br/>Robot Physique]
+    end
+    
+    subgraph "Modèles & Assets"
         MODEL[Modèle officiel<br/>reachy_mini_REAL_OFFICIAL.xml]
         ASSETS[41 Assets STL<br/>Officiels Pollen]
     end
     
-    subgraph "API & Services"
-        REST[REST API<br/>FastAPI]
-        WEBSOCKET[WebSocket<br/>Temps réel]
-        DAEMON[Daemon<br/>Service simulation]
-    end
+    WEB --> BEHAVIOR
+    CLI --> ROBOTAPI
+    API --> ROBOTAPI
     
-    EMOTIONS --> SIMULATOR
-    VISION --> SIMULATOR
-    AUDIO --> SIMULATOR
-    VOICE --> SIMULATOR
-    BEHAVIOR --> SIMULATOR
+    EMOTIONS --> ROBOTAPI
+    VISION --> ROBOTAPI
+    AUDIO --> ROBOTAPI
+    VOICE --> ROBOTAPI
+    BEHAVIOR --> HF
+    BEHAVIOR --> MEMORY
+    HF --> ROBOTAPI
     
-    SIMULATOR --> MODEL
+    ROBOTAPI --> FACTORY
+    FACTORY --> MUJOCO
+    FACTORY --> REACHY
+    
+    MUJOCO --> MODEL
     MODEL --> ASSETS
     
-    SIMULATOR --> REST
-    SIMULATOR --> WEBSOCKET
-    REST --> DAEMON
-    WEBSOCKET --> DAEMON
+    style WEB fill:#90EE90
+    style ROBOTAPI fill:#FFD700
+    style HF fill:#87CEEB
+    style MUJOCO fill:#FFB6C1
+    style REACHY fill:#FFB6C1
+```
+
+### Flux de Traitement Conversationnel
+
+```mermaid
+sequenceDiagram
+    participant User as Utilisateur
+    participant Web as Dashboard/API
+    participant Behavior as BBIABehavior
+    participant HF as BBIAHuggingFace
+    participant NLP as NLP Detection
+    participant Tools as BBIATools
+    participant Robot as RobotAPI
+    participant Backend as MuJoCo/Reachy
+    
+    User->>Web: Message vocal/texte
+    Web->>Behavior: execute(message)
+    Behavior->>HF: chat(message, enable_tools=True)
+    
+    HF->>NLP: Détection outil (sentence-transformers)
+    NLP-->>HF: Outil détecté + confiance
+    
+    alt Outil détecté
+        HF->>Tools: execute_tool(name, params)
+        Tools->>Robot: Action robot
+        Robot->>Backend: Commande mouvement
+        Backend-->>Robot: ✅ Mouvement exécuté
+    else Conversation normale
+        HF->>HF: Génération réponse LLM
+        HF-->>Behavior: Réponse textuelle
+    end
+    
+    Behavior->>Web: Réponse + Action
+    Web-->>User: Feedback visuel/audio
 ```
 
 ## 📊 Métriques du projet
