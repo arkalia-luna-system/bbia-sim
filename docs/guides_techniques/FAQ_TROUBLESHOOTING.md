@@ -4,6 +4,51 @@
 >
 > Voir aussi: `docs/references/INDEX_THEMATIQUE.md` et `docs/status.md` (État par axe)
 
+**📚 [FAQ principale](../FAQ.md)** | **🔧 [Guide avancé](../guides/GUIDE_AVANCE.md)** | **🧪 [Guide tests](TESTING_GUIDE.md)**
+
+---
+
+## 🎯 Guide de Dépannage Rapide
+
+```mermaid
+flowchart TD
+    START{Problème?} --> IA[Modules IA]
+    START --> AUDIO[Audio]
+    START --> ROBOT[Robot]
+    START --> SIM[Simulation]
+    
+    IA --> DEEPFACE{DeepFace?}
+    IA --> LLM{LLM?}
+    
+    DEEPFACE -->|Crash| FIX1[Fallback MediaPipe]
+    DEEPFACE -->|Lent| FIX2[Backend ONNX]
+    
+    LLM -->|OOM| FIX3[Modèle Léger<br/>Phi-2/TinyLlama]
+    LLM -->|Timeout| FIX4[Quantization 8bit]
+    
+    AUDIO --> PORTAUDIO{PortAudio?}
+    PORTAUDIO -->|Erreur| FIX5[brew install portaudio]
+    PORTAUDIO -->|CI| FIX6[BBIA_DISABLE_AUDIO=1]
+    
+    ROBOT --> CONNECTION{Connexion?}
+    CONNECTION -->|Échec| FIX7[Vérifier IP/WiFi]
+    
+    SIM --> MUJOCO{MuJoCo?}
+    MUJOCO -->|Not found| FIX8[pip install mujoco]
+    
+    FIX1 --> RESOLVED[✅ Résolu]
+    FIX2 --> RESOLVED
+    FIX3 --> RESOLVED
+    FIX4 --> RESOLVED
+    FIX5 --> RESOLVED
+    FIX6 --> RESOLVED
+    FIX7 --> RESOLVED
+    FIX8 --> RESOLVED
+    
+    style START fill:#FFD700
+    style RESOLVED fill:#90EE90
+```
+
 ---
 
 ## 🔴 Modules IA - Problèmes Critiques

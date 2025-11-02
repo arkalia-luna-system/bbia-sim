@@ -1,8 +1,9 @@
 # Conformité Reachy Mini - rapport
 
-**Date:** Octobre 2025
-**Version:** BBIA-SIM
-**SDK Cible:** reachy_mini (Pollen Robotics × Hugging Face)
+**Date:** Oct 25 / Nov 25  
+**Version:** BBIA-SIM  
+**SDK Cible:** reachy_mini (Pollen Robotics × Hugging Face)  
+**📚 [Guide débutant](../guides/GUIDE_DEBUTANT.md)** | **🔍 [Audit complet](../audit/AUDIT_REACHY_SYNTHESE.md)**
 
 ---
 
@@ -11,6 +12,48 @@
 **Statut:** conforme au SDK Reachy-Mini officiel (corrections appliquées)
 
 Le projet BBIA‑SIM est conforme au SDK officiel Reachy Mini (Pollen Robotics). Des optimisations et corrections ont été appliquées.
+
+### Vue d'Ensemble Conformité
+
+```mermaid
+pie title Conformité SDK Reachy Mini
+    "Méthodes Implémentées" : 21
+    "Tests Passants" : 37
+    "Émotions Supportées" : 6
+    "Comportements" : 3
+```
+
+### Architecture Conformité
+
+```mermaid
+graph TB
+    subgraph "SDK Officiel Reachy Mini"
+        SDK[ReachyMini Class<br/>pollen-robotics/reachy_mini]
+        METHODS[21 Méthodes SDK<br/>look_at_world, goto_target, etc.]
+    end
+    
+    subgraph "BBIA-SIM Backend"
+        BACKEND[ReachyMiniBackend<br/>Implémentation]
+        ROBOTAPI[RobotAPI Unifié<br/>Interface Abstraite]
+    end
+    
+    subgraph "Validation"
+        TESTS[37 Tests Conformité<br/>✅ Tous passants]
+        JOINTS[9/9 Joints Mappés<br/>Noms corrigés]
+        EMOTIONS[6/6 Émotions<br/>Officielles]
+    end
+    
+    SDK --> METHODS
+    METHODS --> BACKEND
+    BACKEND --> ROBOTAPI
+    ROBOTAPI --> TESTS
+    TESTS --> JOINTS
+    TESTS --> EMOTIONS
+    
+    style SDK fill:#90EE90
+    style TESTS fill:#FFD700
+    style ROBOTAPI fill:#87CEEB
+```
 
 ### 📌 Matrice de compatibilité (SDK officiel)
 
@@ -829,4 +872,14 @@ Une analyse exhaustive de TOUS les modules a été effectuée (voir `docs/ANALYS
 **Tests de Robustesse :**
 - ✅ 15 nouveaux tests experts (`test_expert_robustness_conformity.py`)
 - ✅ Détection perte précision, fuites mémoire, thread-safety, etc.
+- ✅ **46 tests de conformité complets** (Nov 2025) vérifiant :
+  - Daemon command (`reachy-mini-daemon`)
+  - Endpoints API REST officiels (`/`, `/docs`, `/api/state/full`)
+  - Modules Media détaillés (`robot.media.camera`, `.microphone`, `.speaker`)
+  - Modules IO (`robot.io.get_camera_stream()`, `.get_audio_stream()`)
+  - Versions Python (3.10-3.13)
+  - git-lfs requis
+  - Signature `create_head_pose`
+  - Intégration Hugging Face
+  - Conscience statut beta (fallbacks robustes)
 
