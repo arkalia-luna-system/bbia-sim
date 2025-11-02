@@ -177,17 +177,17 @@ bbia-reachy-sim/
 
 ### **Navigation Rapide**
 
-1. **Commencer :** [GUIDE_DEBUTANT.md](GUIDE_DEBUTANT.md)
-2. **État actuel :** [STATUT_PROJET.md](STATUT_PROJET.md)
-3. **Tout naviguer :** [INDEX.md](INDEX.md)
+1. **Commencer :** [GUIDE_DEBUTANT.md](../../guides/GUIDE_DEBUTANT.md)
+2. **État actuel :** [STATUT_PROJET.md](../../references/STATUT_PROJET.md)
+3. **Tout naviguer :** [INDEX.md](../../references/INDEX.md)
 
 ### **Par Profil**
 
 | Profil | Guide | Index |
 |--------|-------|-------|
-| 🟢 Débutant | [Guide Débutant](GUIDE_DEBUTANT.md) | [INDEX.md](INDEX.md) |
-| 🟡 Expert | [Guide Avancé](GUIDE_AVANCE.md) | [INDEX.md](INDEX.md) |
-| 🔴 Chercheur | [Architecture](ARCHITECTURE.md) | [INDEX.md](INDEX.md) |
+| 🟢 Débutant | [Guide Débutant](../../guides/GUIDE_DEBUTANT.md) | [INDEX.md](../../references/INDEX.md) |
+| 🟡 Expert | [Guide Avancé](../../guides/GUIDE_AVANCE.md) | [INDEX.md](../../references/INDEX.md) |
+| 🔴 Chercheur | [Architecture](../../architecture/ARCHITECTURE_OVERVIEW.md) | [INDEX.md](../../references/INDEX.md) |
 
 ---
 

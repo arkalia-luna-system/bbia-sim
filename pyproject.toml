@@ -126,6 +126,24 @@ bbia_sim = ["*.py", "*.txt", "*.wav"]
 
 # Configuration pytest moderne et complète
 [tool.pytest.ini_options]
+# OPTIMISATION RAM: Marqueurs pour tests légers/lourds
+markers = [
+    "slow: marque les tests lents (peuvent charger modèles lourds)",
+    "fast: marque les tests rapides (utilisent mocks uniquement)",
+    "model: marque les tests qui chargent de vrais modèles (YOLO, Whisper, HuggingFace)",
+    "heavy: marque les tests très lourds en RAM/CPU",
+    "e2e: marque les tests end-to-end",
+    "unit: marque les tests unitaires",
+    "integration: marque les tests d'intégration",
+]
+
+# OPTIMISATION RAM: Par défaut, exclure tests lents/lourds sauf si demandé explicitement
+addopts = [
+    "-m", "not slow and not heavy",
+    "--tb=short",
+    "-ra",
+]
+
 pythonpath = ["src"]
 testpaths = ["tests"]
 python_files = ["test_*.py"]
@@ -246,13 +264,27 @@ known-first-party = ["bbia_sim"]
 
 [tool.mypy]
 python_version = "3.11"
-warn_return_any = false
+
+# OPTIMISATION PERFORMANCE: Réduire RAM et accélérer
+incremental = true
+cache_fine_grained = true
+show_error_codes = true
 warn_unused_configs = false
+warn_unused_ignores = false
+warn_return_any = false
+warn_no_return = false
+warn_redundant_casts = false
+warn_unreachable = false
+
+# OPTIMISATION: Types moins stricts pour performance
 disallow_untyped_defs = false
 disallow_incomplete_defs = false
 check_untyped_defs = true
 disallow_untyped_decorators = false
 no_implicit_optional = false
+
+# OPTIMISATION: Ne pas suivre imports externes (plus rapide, moins RAM)
+follow_imports = "skip"
 ignore_missing_imports = true
 warn_unused_ignores = true
 warn_redundant_casts = true

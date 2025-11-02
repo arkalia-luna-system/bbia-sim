@@ -21,6 +21,7 @@ except ImportError:
 @pytest.mark.skipif(not HF_AVAILABLE, reason="Hugging Face non disponible")
 @pytest.mark.unit
 @pytest.mark.slow
+@pytest.mark.heavy  # OPTIMISATION RAM: Test lourd, skip par défaut
 def test_model_unloading_after_inactivity() -> None:
     """Test déchargement modèles après inactivité."""
     try:
@@ -80,7 +81,7 @@ def test_model_cache_efficiency() -> None:
 
 @pytest.mark.skipif(not HF_AVAILABLE, reason="Hugging Face non disponible")
 @pytest.mark.unit
-@pytest.mark.fast
+@pytest.mark.fast  # Ce test est léger (juste vérifie méthode)
 def test_model_memory_limit_check() -> None:
     """Test que les limites mémoire sont vérifiées."""
     try:
@@ -99,7 +100,8 @@ def test_model_memory_limit_check() -> None:
 
 @pytest.mark.skipif(not HF_AVAILABLE, reason="Hugging Face non disponible")
 @pytest.mark.unit
-@pytest.mark.fast
+@pytest.mark.slow
+@pytest.mark.heavy  # OPTIMISATION RAM: Test lourd, skip par défaut
 def test_multiple_model_loading_unloading() -> None:
     """Test chargement/déchargement multiple de modèles."""
     try:

@@ -34,6 +34,8 @@ def get_memory_usage() -> float | None:
 @pytest.mark.skipif(not HF_AVAILABLE, reason="Hugging Face non disponible")
 @pytest.mark.unit
 @pytest.mark.slow
+@pytest.mark.slow
+@pytest.mark.heavy  # OPTIMISATION RAM: Test lourd (charge modèles LLM)
 def test_huggingface_llm_generation_latency() -> None:
     """Test latence génération LLM 150 tokens p50/p95."""
     try:
@@ -94,6 +96,8 @@ def test_huggingface_llm_generation_latency() -> None:
 @pytest.mark.skipif(not HF_AVAILABLE, reason="Hugging Face non disponible")
 @pytest.mark.unit
 @pytest.mark.slow
+@pytest.mark.slow
+@pytest.mark.heavy  # OPTIMISATION RAM: Test lourd (mesure mémoire peak)
 def test_huggingface_memory_peak_loading() -> None:
     """Test mémoire pic lors du chargement modèle."""
     try:

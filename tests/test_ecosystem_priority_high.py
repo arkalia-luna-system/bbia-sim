@@ -9,10 +9,8 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from bbia_sim.daemon.app.routers.ecosystem import (
-    get_active_connections,
-    get_ws_manager,
-)
+# Import direct pour éviter problèmes de mock
+# Les fonctions seront importées dans chaque test
 
 
 class TestWebSocketTracking:
@@ -20,6 +18,8 @@ class TestWebSocketTracking:
 
     def test_get_ws_manager_import_success(self):
         """Test récupération gestionnaire WS avec import réussi."""
+        from bbia_sim.daemon.app.routers.ecosystem import get_ws_manager
+
         mock_manager = MagicMock()
         mock_manager.active_connections = [MagicMock(), MagicMock()]
         with patch(
@@ -34,15 +34,22 @@ class TestWebSocketTracking:
         mock_manager = MagicMock()
         mock_manager.active_connections = [MagicMock(), MagicMock(), MagicMock()]
 
-        with patch(
-            "bbia_sim.daemon.app.routers.ecosystem.get_ws_manager",
-            return_value=mock_manager,
-        ):
+        # Mock directement get_ws_manager dans le module
+        import bbia_sim.daemon.app.routers.ecosystem as ecosystem_module
+
+        original_get_ws = ecosystem_module.get_ws_manager
+        ecosystem_module.get_ws_manager = MagicMock(return_value=mock_manager)
+
+        try:
             count = get_active_connections()
             assert count == 3
+        finally:
+            ecosystem_module.get_ws_manager = original_get_ws
 
     def test_get_active_connections_no_manager(self):
         """Test comptage sans gestionnaire (retourne 0)."""
+        from bbia_sim.daemon.app.routers.ecosystem import get_active_connections
+
         with patch(
             "bbia_sim.daemon.app.routers.ecosystem.get_ws_manager", return_value=None
         ):
@@ -51,6 +58,8 @@ class TestWebSocketTracking:
 
     def test_get_active_connections_empty(self):
         """Test comptage avec liste vide."""
+        from bbia_sim.daemon.app.routers.ecosystem import get_active_connections
+
         mock_manager = MagicMock()
         mock_manager.active_connections = []
 
@@ -72,13 +81,14 @@ class TestDemoLogic:
         """Test démarrage démo mode simulation."""
         from bbia_sim.daemon.app.routers.ecosystem import start_demo_mode
 
-        # Mock simulation service
+        # Mock simulation service - patcher le module importé localement
         mock_sim_service = MagicMock()
         mock_sim_service.is_simulation_ready.return_value = False
         mock_sim_service.start_simulation = AsyncMock(return_value=True)
 
+        # Patcher le module avant l'appel de la fonction
         with patch(
-            "bbia_sim.daemon.app.routers.ecosystem.simulation_service", mock_sim_service
+            "bbia_sim.daemon.simulation_service.simulation_service", mock_sim_service
         ):
             # Mock robot factory
             mock_robot = MagicMock()

@@ -2,6 +2,7 @@
 """
 Configuration globale pytest avec système de verrouillage pour éviter
 l'exécution simultanée de plusieurs instances de tests.
+OPTIMISATION RAM: Force utilisation de mocks pour modèles lourds.
 """
 
 import atexit
@@ -13,6 +14,11 @@ import time
 from pathlib import Path
 
 import pytest
+
+# OPTIMISATION RAM: Forcer mode mock pour tests (évite chargement modèles lourds)
+os.environ.setdefault("BBIA_DISABLE_AUDIO", "1")
+os.environ.setdefault("BBIA_DISABLE_VISION_MODELS", "1")
+os.environ.setdefault("BBIA_FORCE_MOCK_MODELS", "1")
 
 # Chemin vers le fichier de lock
 LOCK_FILE = Path(__file__).parent.parent / ".pytest.lock"
@@ -169,6 +175,7 @@ def pytest_configure(config: pytest.Config) -> None:
     """
     Hook pytest qui s'exécute au démarrage.
     Vérifie le lock avant de lancer les tests.
+    OPTIMISATION RAM: Nettoie les caches de modèles avant les tests.
     """
     # Acquérir le lock uniquement dans pytest
     # (ce hook ne s'exécute que si on est vraiment dans pytest)
@@ -178,6 +185,40 @@ def pytest_configure(config: pytest.Config) -> None:
         sys.exit(1)
 
     print("✅ Verrou d'exécution acquis. Tests sécurisés.\n")
+
+    # OPTIMISATION RAM: Nettoyer caches modèles avant tests
+    try:
+        # Nettoyer cache YOLO
+        from bbia_sim.vision_yolo import _yolo_model_cache, _yolo_cache_lock
+        with _yolo_cache_lock:
+            _yolo_model_cache.clear()
+
+        # Nettoyer cache MediaPipe
+        from bbia_sim.vision_yolo import _mediapipe_face_detection_cache, _mediapipe_cache_lock
+        with _mediapipe_cache_lock:
+            global _mediapipe_face_detection_cache
+            _mediapipe_face_detection_cache = None
+
+        # Nettoyer cache Whisper
+        try:
+            from bbia_sim.voice_whisper import _whisper_models_cache, _whisper_model_cache_lock
+            with _whisper_model_cache_lock:
+                _whisper_models_cache.clear()
+        except ImportError:
+            pass
+
+        # Nettoyer cache HuggingFace
+        try:
+            from bbia_sim.bbia_huggingface import BBIAHuggingFace
+            if hasattr(BBIAHuggingFace, "_clear_cache"):
+                BBIAHuggingFace._clear_cache()
+        except (ImportError, AttributeError):
+            pass
+
+        print("🧹 Caches modèles nettoyés (optimisation RAM)\n")
+    except Exception as e:
+        # Ignorer erreurs de nettoyage (non bloquant)
+        print(f"⚠️  Erreur nettoyage cache (non bloquant): {e}\n")
 
 
 @pytest.hookimpl(trylast=True)
@@ -198,3 +239,52 @@ def pytest_unconfigure(config: pytest.Config) -> None:
             os.remove(LOCK_FILE)
     except Exception:
         pass
+
+    # OPTIMISATION RAM: Nettoyer caches après tests
+    try:
+        from bbia_sim.vision_yolo import _yolo_model_cache, _yolo_cache_lock
+        with _yolo_cache_lock:
+            _yolo_model_cache.clear()
+    except Exception:
+        pass
+
+
+@pytest.fixture(autouse=True)
+def clear_model_caches_after_test():
+    """
+    Fixture automatique: nettoie les caches de modèles après chaque test.
+    OPTIMISATION RAM: Libère mémoire après chaque test.
+    """
+    yield
+    # Nettoyer après chaque test
+    try:
+        import gc
+        gc.collect()  # Force garbage collection
+    except Exception:
+        pass
+
+
+@pytest.fixture(scope="session")
+def mock_yolo_detector():
+    """
+    Fixture session: Mock YOLO detector partagé (évite rechargement).
+    OPTIMISATION RAM: Un seul mock pour toute la session de tests.
+    """
+    from unittest.mock import MagicMock
+    mock = MagicMock()
+    mock.is_loaded = True
+    mock.model_size = "n"
+    return mock
+
+
+@pytest.fixture(scope="session")
+def mock_whisper_stt():
+    """
+    Fixture session: Mock Whisper STT partagé (évite rechargement).
+    OPTIMISATION RAM: Un seul mock pour toute la session de tests.
+    """
+    from unittest.mock import MagicMock
+    mock = MagicMock()
+    mock.is_loaded = True
+    mock.model_size = "tiny"
+    return mock

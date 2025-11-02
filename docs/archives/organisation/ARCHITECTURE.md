@@ -47,7 +47,7 @@ Vue d'ensemble complète de l'architecture BBIA-SIM v1.3.2:
 - Sécurité et limites
 - Évolutivité
 
-👉 [Lire ARCHITECTURE_OVERVIEW.md](./ARCHITECTURE_OVERVIEW.md)
+👉 [Lire ARCHITECTURE_OVERVIEW.md](../../architecture/ARCHITECTURE_OVERVIEW.md)
 
 ---
 
@@ -60,7 +60,7 @@ Documentation détaillée technique:
 - Simulation MuJoCo
 - Tests et CI
 
-👉 [Lire ARCHITECTURE_DETAILED.md](./ARCHITECTURE_DETAILED.md)
+👉 [Lire ARCHITECTURE_DETAILED.md](../../architecture/ARCHITECTURE_DETAILED.md)
 
 ---
 

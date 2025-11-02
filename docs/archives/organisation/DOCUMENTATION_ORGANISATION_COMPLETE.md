@@ -113,15 +113,15 @@ bbia-sim/
 
 ### Pour Démarrer Rapidement
 
-1. **Lire** : [INDEX.md](docs/INDEX.md) - Navigation complète
-2. **Commencer** : [GUIDE_DEBUTANT.md](docs/GUIDE_DEBUTANT.md)
-3. **Voir état** : [STATUT_PROJET.md](docs/STATUT_PROJET.md)
+1. **Lire** : [INDEX.md](../../references/INDEX.md) - Navigation complète
+2. **Commencer** : [GUIDE_DEBUTANT.md](../../guides/GUIDE_DEBUTANT.md)
+3. **Voir état** : [STATUT_PROJET.md](../../references/STATUT_PROJET.md)
 
 ### Pour Comprendre le Projet
 
-1. **Statut** : [STATUT_PROJET.md](docs/STATUT_PROJET.md) - État actuel
-2. **Architecture** : [ARCHITECTURE.md](docs/ARCHITECTURE.md)
-3. **Tests** : [TESTING_GUIDE.md](docs/TESTING_GUIDE.md)
+1. **Statut** : [STATUT_PROJET.md](../../references/STATUT_PROJET.md) - État actuel
+2. **Architecture** : [ARCHITECTURE_OVERVIEW.md](../../architecture/ARCHITECTURE_OVERVIEW.md)
+3. **Tests** : [TESTING_GUIDE.md](../../guides_techniques/TESTING_GUIDE.md)
 
 ### Pour Naviguer
 
