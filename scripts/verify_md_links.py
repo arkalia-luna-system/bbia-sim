@@ -144,9 +144,11 @@ def main():
     md_files.extend(ROOT.rglob("*.MD"))
 
     # Filtrer fichiers ignorés
-    ignored_dirs = {".git", "venv", "__pycache__", ".pytest_cache", "htmlcov"}
+    ignored_dirs = {".git", "venv", "__pycache__", ".pytest_cache", "htmlcov", "venv-voice", "venv-vision"}
     md_files = [
-        f for f in md_files if not any(part in ignored_dirs for part in f.parts)
+        f for f in md_files 
+        if not any(part in ignored_dirs for part in f.parts)
+        and not f.name.startswith("._")  # Ignorer fichiers macOS metadata
     ]
 
     print(f"📄 Vérification de {len(md_files)} fichiers Markdown...\n")
