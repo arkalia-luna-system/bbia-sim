@@ -282,26 +282,22 @@ class TestFaceDetector:
         assert detector.face_detection is not None
 
     @patch("bbia_sim.vision_yolo._mediapipe_face_detection_cache", None)
-    def test_init_without_mediapipe(self):
-        """Test initialisation sans MediaPipe."""
-        # Simuler ImportError en patchant l'import dans FaceDetector
-        # Utiliser un patch plus direct pour éviter blocage
-        with patch(
-            "bbia_sim.vision_yolo.mp",
-            None,
-            create=True,
-        ):
-            with patch(
-                "builtins.__import__",
-                side_effect=lambda name, *args, **kwargs: (
-                    __import__(name, *args, **kwargs)
-                    if "mediapipe" not in name
-                    else (_ for _ in ()).throw(ImportError("No module named 'mediapipe'"))
-                ),
-            ):
-                # Limiter le temps d'exécution
-                detector = FaceDetector()
-                assert detector.face_detection is None or True  # Accepter les deux cas
+    @patch("bbia_sim.vision_yolo._mediapipe_cache_lock")
+    def test_init_without_mediapipe(self, mock_lock):
+        """Test initialisation sans MediaPipe (optimisé pour éviter blocage)."""
+        # Patch direct de l'import mediapipe pour éviter blocage
+
+        original_import = __import__
+
+        def mock_import(name, *args, **kwargs):
+            if name == "mediapipe" or name.startswith("mediapipe"):
+                raise ImportError("No module named 'mediapipe'")
+            return original_import(name, *args, **kwargs)
+
+        with patch("builtins.__import__", side_effect=mock_import):
+            detector = FaceDetector()
+            # Vérifier que face_detection est None ou non initialisé
+            assert detector.face_detection is None
 
     @patch("bbia_sim.vision_yolo.cv2")
     def test_detect_faces_success(self, mock_cv2):

@@ -18,15 +18,22 @@ class TelemetryCollector:
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(parents=True, exist_ok=True)
 
-        self.step_times: list[float] = []
-        self.joint_positions: list[dict[str, float]] = []
+        # OPTIMISATION RAM: Limiter historique avec deque au lieu de liste infinie
+        from collections import deque
+
+        self._max_steps_history = 10000  # Max 10000 steps en mémoire
+        self.step_times: deque[float] = deque(maxlen=self._max_steps_history)
+        self.joint_positions: deque[dict[str, float]] = deque(
+            maxlen=self._max_steps_history
+        )
         self.start_time: float | None = None
         self.last_step_time: float | None = None
 
     def start_collection(self) -> None:
         """Démarre la collecte de télémétrie."""
-        self.step_times = []
-        self.joint_positions = []
+        # OPTIMISATION RAM: Clear deque (garder maxlen)
+        self.step_times.clear()
+        self.joint_positions.clear()
         self.start_time = time.time()
         self.last_step_time = self.start_time
         print("📊 Télémétrie démarrée")

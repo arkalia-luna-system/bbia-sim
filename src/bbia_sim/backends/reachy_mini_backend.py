@@ -213,8 +213,9 @@ class ReachyMiniBackend(RobotAPI):
             self.is_connected = True
             self.start_time = time.time()
             self._last_heartbeat = time.time()
-            # Démarrer watchdog pour monitoring temps réel
-            self._start_watchdog()
+            # OPTIMISATION RAM: Démarrer watchdog uniquement si pas en simulation
+            if not self.use_sim:
+                self._start_watchdog()
             logger.info("✅ Connecté au robot Reachy-Mini officiel")
             return True
         except (TimeoutError, ConnectionError, OSError) as e:

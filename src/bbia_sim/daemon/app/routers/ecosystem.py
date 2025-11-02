@@ -40,31 +40,64 @@ def format_uptime(seconds: float) -> str:
     return f"{hours:02d}:{minutes:02d}:{secs:02d}"
 
 
+# OPTIMISATION RAM: Import module-level au lieu de dynamique (évite imports répétés)
+try:
+    from ...ws.telemetry import manager as _telemetry_manager_import
+except ImportError:
+    _telemetry_manager_import = None
+
+
 def get_ws_manager() -> Any | None:
-    """Récupère le gestionnaire WebSocket de télémétrie."""
+    """Récupère le gestionnaire WebSocket de télémétrie.
+
+    OPTIMISATION RAM: Cache résultat + import module-level au lieu de dynamique.
+    """
     global _ws_manager
     if _ws_manager is None:
-        try:
-            from ...ws.telemetry import manager
-
-            _ws_manager = manager
-        except ImportError:
+        # OPTIMISATION RAM: Utiliser import module-level au lieu de dynamique
+        if _telemetry_manager_import is not None:
+            _ws_manager = _telemetry_manager_import
+        else:
             logger.debug("Gestionnaire WebSocket non disponible")
             _ws_manager = None
     return _ws_manager
 
 
+# OPTIMISATION RAM: Cache résultat avec TTL 1s (évite appels répétés)
+_active_connections_cache: int | None = None
+_active_connections_cache_time: float = 0.0
+_ACTIVE_CONNECTIONS_CACHE_TTL = 1.0  # 1 seconde
+
+
 def get_active_connections() -> int:
     """Récupère le nombre de connexions WebSocket actives.
+
+    OPTIMISATION RAM: Cache résultat avec TTL 1s pour éviter appels répétés.
 
     Returns:
         Nombre de connexions WebSocket actives (toutes routes confondues)
     """
-    # Utiliser get_ws_manager() pour cohérence et facilité de test
+    global _active_connections_cache, _active_connections_cache_time
+    current_time = time.time()
+
+    # Utiliser cache si valide (TTL 1s)
+    if (
+        _active_connections_cache is not None
+        and (current_time - _active_connections_cache_time)
+        < _ACTIVE_CONNECTIONS_CACHE_TTL
+    ):
+        return _active_connections_cache
+
+    # Calculer valeur réelle
     manager = get_ws_manager()
+    result = 0
     if manager is not None and hasattr(manager, "active_connections"):
-        return len(manager.active_connections)
-    return 0
+        result = len(manager.active_connections)
+
+    # Mettre en cache
+    _active_connections_cache = result
+    _active_connections_cache_time = current_time
+    return result
 
 
 # Modèles Pydantic pour l'API publique

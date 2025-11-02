@@ -133,7 +133,7 @@ Avantages :
 #### **BBIA Emotions**
 ```python
 class BBIAEmotions:
-    """Gestion des émotions avancées."""
+ """Gestion des émotions avancées."""
 
  def set_emotion(self, emotion: str, intensity: float) -> bool:
  """Définit une émotion avec intensité."""
@@ -150,7 +150,7 @@ class BBIAEmotions:
 #### **BBIA Vision**
 ```python
 class BBIAVision:
-    """Module de vision par ordinateur."""
+ """Module de vision par ordinateur."""
 
  def scan_environment(self) -> dict[str, Any]:
  """Scane l'environnement et détecte les objets."""
@@ -168,9 +168,9 @@ class BBIAVision:
 #### **BBIA Voice**
 ```python
 class BBIAVoice:
-    """Module de synthèse et reconnaissance vocale."""
+ """Module de synthèse et reconnaissance vocale."""
 
-    def speak(self, text: str) -> bool:
+ def speak(self, text: str) -> bool:
  """Synthèse vocale."""
 
  def listen(self) -> Optional[str]:
@@ -186,9 +186,9 @@ class BBIAVoice:
 #### **BBIA Behavior**
 ```python
 class BBIABehaviorManager:
-    """Gestionnaire de comportements complexes."""
+ """Gestionnaire de comportements complexes."""
 
-    def run_behavior(self, behavior_name: str, duration: float) -> bool:
+ def run_behavior(self, behavior_name: str, duration: float) -> bool:
  """Exécute un comportement."""
 ```
 
@@ -204,9 +204,9 @@ class BBIABehaviorManager:
 #### **MuJoCo Simulator**
 ```python
 class MuJoCoSimulator:
-    """Simulateur MuJoCo pour le robot Reachy Mini."""
+ """Simulateur MuJoCo pour le robot Reachy Mini."""
 
-    def __init__(self, model_path: str):
+ def __init__(self, model_path: str):
  """Initialise le simulateur."""
 
  def set_joint_position(self, joint_name: str, position: float):
@@ -254,10 +254,10 @@ class MuJoCoSimulator:
 
 ```mermaid
 sequenceDiagram
-    participant U as Utilisateur
-    participant D as Dashboard
-    participant B as BBIA
-    participant R as RobotAPI
+ participant U as Utilisateur
+ participant D as Dashboard
+ participant B as BBIA
+ participant R as RobotAPI
  participant S as Simulateur
 
  U->>D: Clic bouton émotion
@@ -279,8 +279,8 @@ sequenceDiagram
  participant W as WebSocket
  participant D as Dashboard
 
-    loop Chaque 100ms
-        M->>R: Collecter métriques
+ loop Chaque 100ms
+ M->>R: Collecter métriques
  R->>M: Données performance
  M->>W: Diffuser métriques
  W->>D: Mise à jour graphiques
@@ -297,8 +297,8 @@ sequenceDiagram
  participant A as Artefacts
 
  T->>R: Test conformité SDK
-    R->>B: Exécuter opérations
-    B->>R: Résultats
+ R->>B: Exécuter opérations
+ B->>R: Résultats
  R->>T: Validation
  T->>A: Sauvegarder résultats
 ```
@@ -314,7 +314,7 @@ tests/
 ├── test_robot_api.py # Tests RobotAPI unifié
 ├── test_reachy_mini_conformity.py # Tests conformité SDK officiel
 ├── test_bbia_*.py # Tests modules BBIA
-├── test_simulator.py              # Tests simulateur MuJoCo
+├── test_simulator.py # Tests simulateur MuJoCo
 ├── test_dashboard.py # Tests dashboard web
 ├── e2e/ # Tests end-to-end
 │ ├── test_api_simu_roundtrip.py
@@ -353,14 +353,14 @@ name: BBIA-SIM CI/CD
 on: [push, pull_request]
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
+ test:
+ runs-on: ubuntu-latest
+ steps:
       - uses: actions/checkout@v3
       - name: Setup Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
+ uses: actions/setup-python@v4
+ with:
+ python-version: '3.10'
       - name: Install dependencies
  run: pip install -r requirements.txt
       - name: Run tests
@@ -385,8 +385,8 @@ class MetricsCollector:
  "latency_ms": self.measure_latency(),
  "fps": self.measure_fps(),
  "joint_positions": self.get_joint_positions(),
-            "current_emotion": self.get_current_emotion()
-        }
+ "current_emotion": self.get_current_emotion()
+ }
 
  def collect_system_metrics(self) -> dict:
  """Métriques système."""
@@ -414,7 +414,7 @@ logging.basicConfig(
  handlers=[
  logging.FileHandler("log/bbia.log"),
  logging.StreamHandler()
-    ]
+ ]
 )
 ```
 
@@ -426,7 +426,7 @@ logging.basicConfig(
 
 ```python
 class SafetyManager:
-    """Gestionnaire de sécurité BBIA."""
+ """Gestionnaire de sécurité BBIA."""
 
     def __init__(self):
         self.safe_amplitude_limit = 0.3  # rad
@@ -435,8 +435,8 @@ class SafetyManager:
  self.max_latency_ms = 40.0
 
  def validate_joint_command(self, joint: str, position: float) -> bool:
-        """Valide une commande de joint."""
-        if joint in self.forbidden_joints:
+ """Valide une commande de joint."""
+ if joint in self.forbidden_joints:
  return False
  if abs(position) > self.safe_amplitude_limit:
  return False
@@ -500,9 +500,9 @@ python scripts/monitor_performance.py --daemon
 ```python
 # config/production.py
 class ProductionConfig:
-    """Configuration production."""
+ """Configuration production."""
 
-    # Robot
+ # Robot
  ROBOT_BACKEND = "reachy_mini"
  ROBOT_TIMEOUT = 5.0
 
@@ -552,9 +552,9 @@ class CustomBBIAModule:
 #### **Nouvelles Métriques**
 ```python
 class CustomMetricsCollector:
-    """Collecteur de métriques personnalisé."""
+ """Collecteur de métriques personnalisé."""
 
-    def collect_custom_metrics(self) -> dict:
+ def collect_custom_metrics(self) -> dict:
  """Métriques personnalisées."""
  return {
  "custom_metric": self.calculate_custom_metric()

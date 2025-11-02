@@ -156,7 +156,7 @@ Ces dates restent en **Octobre 2024** (correct, ne pas modifier) :
 ✅ Date création : Octobre 2024 (NE JAMAIS MODIFIER)
 ✅ Dates récentes : Oct 25 / Nov 25 (novembre 2025)
 ✅ Dates générales : Octobre 2025
-✅ Dates futures : Décembre 2025, Janvier 2026, etc.
+✅ Dates futures : Décembre 2024, Janvier 2026, etc.
 ```
 
 ### Exemples Corrects
@@ -165,11 +165,11 @@ Ces dates restent en **Octobre 2024** (correct, ne pas modifier) :
 **Date création projet :** Octobre 2024
 **Date audit :** Oct 25 / Nov 25
 **Date mise à jour :** Octobre 2025
-**Date cible :** Décembre 2025
+**Date cible :** Décembre 2024
 ```
 
 ---
 
 **Date création audit :** Oct 25 / Nov 25
-**Prochaine révision :** Décembre 2025
+**Prochaine révision :** Décembre 2024
 

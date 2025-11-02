@@ -181,7 +181,7 @@ Toutes les priorités identifiées ont été implémentées et sont opérationne
      if saved_history:
          self.conversation_history = saved_history
      ```
-   
+ 
    - **Sauvegarde automatique** :
      - **Fichier** : `src/bbia_sim/bbia_huggingface.py`
      - **Lignes** : 811-820

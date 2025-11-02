@@ -24,7 +24,7 @@ from ....robot_api import RobotAPI
 from ...robot_factory import RobotFactory
 from ...robot_api import RobotAPI
 ```
-**Test:** ✅ `pytest tests/test_api_apps.py::TestAppsEndpoints::test_list_available_apps_by_source` - PASS  
+**Test:** ✅ `pytest tests/test_api_apps.py::TestAppsEndpoints::test_list_available_apps_by_source` - PASS
 **QA:** ✅ Black formaté, Ruff corrigé
 
 ---

@@ -152,7 +152,7 @@ class BBIAEmotions:
 #### BBIAVision (`bbia_vision.py`)
 ```python
 class BBIAVision:
-    """Vision par ordinateur et reconnaissance d'objets."""
+ """Vision par ordinateur et reconnaissance d'objets."""
 
  def detect_objects(self, image: np.ndarray) -> list[dict]
  def track_objects(self, image: np.ndarray) -> list[dict]
@@ -164,7 +164,7 @@ class BBIAVision:
 #### BBIAVoice (`bbia_voice.py`)
 ```python
 class BBIAVoice:
-    """Synthèse vocale et reconnaissance vocale."""
+ """Synthèse vocale et reconnaissance vocale."""
 
  def text_to_speech(self, text: str, voice: str = "default") -> bytes
  def speech_to_text(self, audio_data: bytes) -> str
@@ -176,7 +176,7 @@ class BBIAVoice:
 #### BBIABehavior (`bbia_behavior.py`)
 ```python
 class BBIABehaviorManager:
-    """Gestionnaire de comportements complexes."""
+ """Gestionnaire de comportements complexes."""
 
  def run_behavior(self, behavior_name: str, duration: float) -> bool
  def wake_up(self) -> None
@@ -189,7 +189,7 @@ class BBIABehaviorManager:
 #### BBIAAdaptiveBehavior (`bbia_adaptive_behavior.py`)
 ```python
 class BBIAAdaptiveBehavior:
-    """Comportements adaptatifs basés sur le contexte."""
+ """Comportements adaptatifs basés sur le contexte."""
 
  def generate_behavior(self, context: str, emotion: str) -> dict
  def adapt_to_feedback(self, feedback: dict) -> None
@@ -203,9 +203,9 @@ class BBIAAdaptiveBehavior:
 #### MuJoCoBackend (`backends/mujoco_backend.py`)
 ```python
 class MuJoCoBackend(RobotAPI):
-    """Backend simulation MuJoCo."""
+ """Backend simulation MuJoCo."""
 
-    def __init__(self):
+ def __init__(self):
  self.simulator = MuJoCoSimulator()
  self.physics_engine = PhysicsEngine()
 ```
@@ -219,9 +219,9 @@ Caractéristiques :
 #### ReachyMiniBackend (`backends/reachy_mini_backend.py`)
 ```python
 class ReachyMiniBackend(RobotAPI):
-    """Backend robot Reachy Mini officiel."""
+ """Backend robot Reachy Mini officiel."""
 
-    def __init__(self):
+ def __init__(self):
  self.reachy_mini = ReachyMini()
  self.zenoh_client = ZenohClient()
 ```
@@ -237,9 +237,9 @@ Caractéristiques :
 
 ```python
 class ZenohBridge:
-    """Bridge entre FastAPI et Zenoh pour Reachy Mini."""
+ """Bridge entre FastAPI et Zenoh pour Reachy Mini."""
 
-    async def start(self) -> bool
+ async def start(self) -> bool
  async def send_command(self, command: RobotCommand) -> bool
  def get_current_state(self) -> RobotState
 ```
@@ -258,7 +258,7 @@ Fonctionnalités :
 ```python
 # tests/test_reachy_mini_complete_conformity.py
 class TestReachyMiniCompleteConformity:
-    def test_core_methods_conformity(self)
+ def test_core_methods_conformity(self)
  def test_sdk_official_methods_conformity(self)
  def test_joint_mapping_conformity(self)
  def test_emotion_api_conformity(self)
@@ -271,8 +271,8 @@ Résultats : 16/16 tests passent
 ```python
 # tests/test_bbia_phase2_modules.py
 class TestBBIAAdaptiveBehavior:
-    def test_generate_behavior(self)
-    def test_adapt_to_feedback(self)
+ def test_generate_behavior(self)
+ def test_adapt_to_feedback(self)
  def test_user_preferences(self)
 ```
 
@@ -282,8 +282,8 @@ Résultats : 11/11 tests passent
 ```python
 # tests/test_sdk_dependencies.py
 class TestSDKDependencies:
-    def test_reachy_mini_import(self)
-    def test_zenoh_import(self)
+ def test_reachy_mini_import(self)
+ def test_zenoh_import(self)
  def test_motor_controller_import(self)
 ```
 
@@ -319,8 +319,8 @@ Résultats : 15/16 tests passent
 ```mermaid
 sequenceDiagram
     participant User as Utilisateur
-    participant Dashboard as Dashboard Web
-    participant BBIA as Modules BBIA
+ participant Dashboard as Dashboard Web
+ participant BBIA as Modules BBIA
  participant RobotAPI as RobotAPI Unifié
  participant Backend as Backend (MuJoCo/Reachy)
  participant Robot as Robot Physique
@@ -350,7 +350,7 @@ sequenceDiagram
  participant FastAPI as FastAPI Server
  participant Bridge as Zenoh Bridge
  participant Zenoh as Zenoh Daemon
-    participant Robot as Reachy Mini
+ participant Robot as Reachy Mini
 
  Client->>FastAPI: POST /api/zenoh/command
  FastAPI->>Bridge: send_command()

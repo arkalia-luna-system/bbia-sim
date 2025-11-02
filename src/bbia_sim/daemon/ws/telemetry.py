@@ -24,9 +24,20 @@ class ConnectionManager:
         self.active_connections: list[WebSocket] = []
         self.is_broadcasting = False
         self.broadcast_task: asyncio.Task[None] | None = None
+        # OPTIMISATION RAM: Template JSON réutilisé (modification in-place au lieu de recréer)
+        self._telemetry_template: dict[str, Any] | None = None
+        self._max_connections = 10  # OPTIMISATION RAM: Limiter connexions simultanées
 
     async def connect(self, websocket: WebSocket) -> None:
         """Accepte une nouvelle connexion WebSocket."""
+        # OPTIMISATION RAM: Limiter nombre de connexions simultanées
+        if len(self.active_connections) >= self._max_connections:
+            logger.warning(
+                f"Limite de connexions atteinte ({self._max_connections}), rejet de nouvelle connexion"
+            )
+            await websocket.close(code=1008, reason="Too many connections")
+            return
+
         await websocket.accept()
         self.active_connections.append(websocket)
         logger.info(
@@ -104,10 +115,39 @@ class ConnectionManager:
                 await asyncio.sleep(1)
 
     def _generate_telemetry_data(self) -> dict[str, Any]:
-        """Génère des données de télémétrie depuis la simulation (optimisé)."""
+        """Génère des données de télémétrie depuis la simulation (optimisé).
+
+        OPTIMISATION RAM: Réutilise template JSON avec modification in-place au lieu de recréer.
+        """
+        # OPTIMISATION RAM: Initialiser template une seule fois si nécessaire
+        if self._telemetry_template is None:
+            self._telemetry_template = {
+                "timestamp": "",
+                "robot": {
+                    "position": {"x": 0.0, "y": 0.0, "z": 0.0},
+                    "orientation": {"roll": 0.0, "pitch": 0.0, "yaw": 0.0},
+                    "velocity": {"linear": 0.0, "angular": 0.0},
+                },
+                "joints": {},
+                "sensors": {
+                    "battery": 85.0,
+                    "temperature": 25.0,
+                    "cpu_usage": 20.0,
+                    "memory_usage": 50.0,
+                },
+                "status": {
+                    "mode": "autonomous",
+                    "simulation_ready": False,
+                    "errors": [],
+                    "warnings": [],
+                    "active_tasks": [],
+                },
+            }
+
         # Récupération des données depuis la simulation
         robot_state = simulation_service.get_robot_state()
         joint_positions = robot_state.get("joint_positions", {})
+
         # Compatibilité: exposer alias 'neck_yaw' pour 'yaw_body' si absent
         if (
             isinstance(joint_positions, dict)
@@ -136,48 +176,37 @@ class ConnectionManager:
                     jp_copy.setdefault(jname, 0.0)
                 joint_positions = jp_copy
 
-        # Données simulées optimisées (évite random() superflu)
-        current_time = time.time()
-        # Utilisation d'un pattern déterministe basé sur le temps pour éviter random()
-        # Ajout de microsecondes pour garantir l'unicité
+        # OPTIMISATION RAM: Modifier template in-place au lieu de recréer
         import math
 
+        current_time = time.time()
         sin_val = math.sin(current_time * 0.1) * 0.5 + 0.5  # Valeur entre 0 et 1
         cos_val = math.cos(current_time * 0.15) * 0.5 + 0.5  # Valeur entre 0 et 1
 
-        return {
-            "timestamp": datetime.now().isoformat(),
-            "robot": {
-                "position": {
-                    "x": round((sin_val - 0.5) * 0.2, 3),
-                    "y": round((cos_val - 0.5) * 0.2, 3),
-                    "z": round(0.1 + sin_val * 0.1, 3),
-                },
-                "orientation": {
-                    "roll": round((sin_val - 0.5) * 0.2, 3),
-                    "pitch": round((cos_val - 0.5) * 0.2, 3),
-                    "yaw": round(sin_val * 0.4, 3),
-                },
-                "velocity": {
-                    "linear": round(sin_val * 0.1, 3),
-                    "angular": round(cos_val * 0.2, 3),
-                },
-            },
-            "joints": joint_positions,  # Données réelles de la simulation
-            "sensors": {
-                "battery": round(85.0 + sin_val * 10.0, 1),
-                "temperature": round(25.0 + cos_val * 4.0, 1),
-                "cpu_usage": round(20.0 + sin_val * 20.0, 1),
-                "memory_usage": round(50.0 + cos_val * 20.0, 1),
-            },
-            "status": {
-                "mode": "autonomous",
-                "simulation_ready": simulation_service.is_simulation_ready(),
-                "errors": [],
-                "warnings": [],
-                "active_tasks": [],
-            },
-        }
+        # Modifier template in-place
+        template = self._telemetry_template
+        template["timestamp"] = datetime.now().isoformat()
+        template["robot"]["position"]["x"] = round((sin_val - 0.5) * 0.2, 3)
+        template["robot"]["position"]["y"] = round((cos_val - 0.5) * 0.2, 3)
+        template["robot"]["position"]["z"] = round(0.1 + sin_val * 0.1, 3)
+        template["robot"]["orientation"]["roll"] = round((sin_val - 0.5) * 0.2, 3)
+        template["robot"]["orientation"]["pitch"] = round((cos_val - 0.5) * 0.2, 3)
+        template["robot"]["orientation"]["yaw"] = round(sin_val * 0.4, 3)
+        template["robot"]["velocity"]["linear"] = round(sin_val * 0.1, 3)
+        template["robot"]["velocity"]["angular"] = round(cos_val * 0.2, 3)
+        template["joints"] = joint_positions  # Données réelles de la simulation
+        template["sensors"]["battery"] = round(85.0 + sin_val * 10.0, 1)
+        template["sensors"]["temperature"] = round(25.0 + cos_val * 4.0, 1)
+        template["sensors"]["cpu_usage"] = round(20.0 + sin_val * 20.0, 1)
+        template["sensors"]["memory_usage"] = round(50.0 + cos_val * 20.0, 1)
+        template["status"][
+            "simulation_ready"
+        ] = simulation_service.is_simulation_ready()
+
+        # Retourner copie pour éviter mutations simultanées
+        import copy
+
+        return copy.deepcopy(template)
 
 
 # Instance globale du gestionnaire de connexions

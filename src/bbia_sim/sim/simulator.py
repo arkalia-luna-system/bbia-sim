@@ -104,7 +104,7 @@ class MuJoCoSimulator:
                 elapsed = time.monotonic() - start_time
                 logger.info(f"Step {step_count} - Temps écoulé: {elapsed:.2f}s")
 
-            # Limite de sécurité pour éviter les boucles infinies
+            # OPTIMISATION RAM: Limite obligatoire pour éviter boucles infinies
             if duration is None and step_count > 10000:
                 logger.warning("Limite de 10000 steps atteinte en mode headless")
                 break
@@ -113,6 +113,14 @@ class MuJoCoSimulator:
         logger.info(
             f"Simulation headless arrêtée après {step_count} steps ({actual_duration:.2f}s)"
         )
+
+        # OPTIMISATION RAM: Décharger modèle MuJoCo après arrêt pour libérer mémoire
+        try:
+            del self.model
+            del self.data
+            logger.debug("Modèle MuJoCo déchargé (optimisation RAM)")
+        except Exception:
+            pass  # Ignorer si déjà déchargé
 
     def _run_graphical_simulation(self, duration: int | None) -> None:
         """Exécute la simulation avec l'interface graphique."""
@@ -132,6 +140,14 @@ class MuJoCoSimulator:
 
         self.viewer.close()
         logger.info(f"Simulation graphique arrêtée après {step_count} steps")
+
+        # OPTIMISATION RAM: Décharger modèle MuJoCo après arrêt pour libérer mémoire
+        try:
+            del self.model
+            del self.data
+            logger.debug("Modèle MuJoCo déchargé (optimisation RAM)")
+        except Exception:
+            pass  # Ignorer si déjà déchargé
 
     def load_scene(self, scene_path: str) -> None:
         """Charge une scène spécifique.

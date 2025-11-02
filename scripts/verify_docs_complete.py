@@ -564,7 +564,7 @@ class DocsVerifier:
                         # Liste avec indentation = valide
                         continue
                 # Accepter si dans bloc code (vérification plus précise)
-                line_start_idx = sum(len(l) + 1 for l in lines[:i-1])
+                line_start_idx = sum(len(l) + 1 for l in lines[: i - 1])
                 content_before = content[:line_start_idx]
                 # Compter ``` avant pour savoir si on est dans un bloc
                 code_blocks_before = content_before.count("```")
@@ -579,7 +579,7 @@ class DocsVerifier:
                 if re.match(r"^\s*\|?\s*:?-+:?\s*\|", line):
                     continue
                 # Accepter si ligne précédente/suivante est dans un tableau
-                if i > 1 and "|" in lines[i-2] and lines[i-2].count("|") >= 2:
+                if i > 1 and "|" in lines[i - 2] and lines[i - 2].count("|") >= 2:
                     continue
                 if i < len(lines) and "|" in lines[i] and lines[i].count("|") >= 2:
                     continue
@@ -587,8 +587,10 @@ class DocsVerifier:
                 if self.fix_mode:
                     fixed_line = re.sub(r" +", " ", line)
                     if fixed_line != line:
-                        self.fixes[md_file].append(f"✅ Ligne {i}: espaces doubles corrigés")
-                        lines[i-1] = fixed_line
+                        self.fixes[md_file].append(
+                            f"✅ Ligne {i}: espaces doubles corrigés"
+                        )
+                        lines[i - 1] = fixed_line
                         # Écrire correction
                         try:
                             md_file.write_text("\n".join(lines), encoding="utf-8")
@@ -610,8 +612,10 @@ class DocsVerifier:
                 if self.fix_mode:
                     fixed_line = line.rstrip()
                     if fixed_line != line:
-                        self.fixes[md_file].append(f"✅ Ligne {i}: espaces finaux supprimés")
-                        lines[i-1] = fixed_line
+                        self.fixes[md_file].append(
+                            f"✅ Ligne {i}: espaces finaux supprimés"
+                        )
+                        lines[i - 1] = fixed_line
                         try:
                             md_file.write_text("\n".join(lines), encoding="utf-8")
                         except Exception:
@@ -640,7 +644,12 @@ class DocsVerifier:
                 if "`" in line:
                     continue
                 # Accepter si c'est formatage Markdown (gras, italique) - ex: **Date** ou *texte*
-                if re.match(r"^[-*]\s*\*\*|^[-*]\s*\*[^*]", line) or line.strip().startswith("**") or line.strip().startswith("*") and "**" in line:
+                if (
+                    re.match(r"^[-*]\s*\*\*|^[-*]\s*\*[^*]", line)
+                    or line.strip().startswith("**")
+                    or line.strip().startswith("*")
+                    and "**" in line
+                ):
                     # Formatage gras/italique avec astérisque, pas une liste
                     continue
                 # Accepter si c'est dans une cellule de tableau (détection intelligente)
@@ -669,14 +678,20 @@ class DocsVerifier:
                 # Accepter si c'est dans un contexte de tableau (avant/après)
                 in_table_context = False
                 # Chercher contexte tableau dans les lignes voisines
-                for check_idx in range(max(0, i-3), min(len(lines), i+3)):
-                    if check_idx != i-1 and "|" in lines[check_idx] and lines[check_idx].count("|") >= 2:
+                for check_idx in range(max(0, i - 3), min(len(lines), i + 3)):
+                    if (
+                        check_idx != i - 1
+                        and "|" in lines[check_idx]
+                        and lines[check_idx].count("|") >= 2
+                    ):
                         in_table_context = True
                         break
                 if in_table_context:
                     continue
                 # Accepter si c'est juste après un titre ou séparateur
-                if i > 1 and (lines[i-2].startswith("#") or lines[i-2].strip() == "---"):
+                if i > 1 and (
+                    lines[i - 2].startswith("#") or lines[i - 2].strip() == "---"
+                ):
                     continue
                 # Accepter formats spéciaux valides (ex: -Option1, -Option2 dans config)
                 if re.match(r"^[-*][A-Z][a-z]+[A-Z]", line) and len(line.strip()) < 40:

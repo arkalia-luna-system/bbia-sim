@@ -1,4 +1,4 @@
-# ⚡ Optimisations Performance - Décembre 2025
+# ⚡ Optimisations Performance - Décembre 2024
 
 **Date** : Nov/Déc 2025
 **Objectif** : Optimisations performance supplémentaires pour Mac

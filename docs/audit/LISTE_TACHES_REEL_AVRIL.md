@@ -104,5 +104,5 @@ Les fichiers suivants ont été corrigés pour refléter la réalité :
 ---
 
 **Dernière mise à jour** : Oct 25 / Nov 25
-**Prochaine révision** : Décembre 2025
+**Prochaine révision** : Décembre 2024
 
