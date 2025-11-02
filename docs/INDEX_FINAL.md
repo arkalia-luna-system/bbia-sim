@@ -153,35 +153,93 @@ Voir le dossier `archives/` pour les rapports détaillés historiques.
 
 ## 📁 Structure des documents
 
+### Navigation Visuelle de la Documentation
+
+```mermaid
+mindmap
+  root((Documentation<br/>BBIA-SIM))
+    Démarrage
+      GUIDE_DEBUTANT
+      Quick Start
+      Installation
+    Guides Utilisateurs
+      GUIDE_AVANCE
+      GUIDE_CHAT_BBIA
+      GUIDE_NLP_SMOLVLM
+      REACHY_MINI
+    Architecture
+      ARCHITECTURE_OVERVIEW
+      ARCHITECTURE_DETAILED
+      ARCHITECTURE_COMPLETE
+    Technique
+      INTEGRATION_GUIDE
+      TESTING_GUIDE
+      MIGRATION_GUIDE
+    Conformité
+      CONFORMITE_REACHY_MINI
+      Audit Reports
+      Quality Reports
+    Intelligence
+      LLM Integration
+      NLP Detection
+      Vision Models
+    Performance
+      Optimisations
+      Benchmarks
+      Analyses
+```
+
+### Structure Détaillée par Catégorie
+
 ```mermaid
 graph TB
-    subgraph "Guides utilisateurs"
-        G1[guides/GUIDE_DEBUTANT.md]
-        G2[guides/GUIDE_AVANCE.md]
-        G3[guides/REACHY_MINI_*.md]
+    subgraph "🎯 Démarrage & Guides"
+        START[README.md<br/>Quick Start]
+        BEGINNER[GUIDE_DEBUTANT.md<br/>Premiers pas]
+        ADVANCED[GUIDE_AVANCE.md<br/>Fonctionnalités avancées]
+        CHAT[GUIDE_CHAT_BBIA.md<br/>Chat intelligent]
+        NLP[GUIDE_NLP_SMOLVLM.md<br/>NLP & Vision]
     end
-
-    subgraph "Architecture & Technique"
-        A1[architecture/ARCHITECTURE_*.md]
-        GT1[guides_techniques/INTEGRATION_GUIDE.md]
-        GT2[guides_techniques/TESTING_GUIDE.md]
+    
+    subgraph "🏗️ Architecture"
+        ARCH_OVER[ARCHITECTURE_OVERVIEW.md<br/>Vue d'ensemble]
+        ARCH_DET[ARCHITECTURE_DETAILED.md<br/>Détails techniques]
+        ARCH_COMP[ARCHITECTURE.md<br/>Guide complet]
     end
-
-    subgraph "Conformité & Qualité"
-        C1[conformite/CONFORMITE_*.md]
-        Q1[qualite/*.md]
-        AUD1[audit/*.md]
+    
+    subgraph "✅ Qualité & Conformité"
+        CONFORM[CONFORMITE_REACHY_MINI_COMPLETE.md<br/>Conformité SDK]
+        AUDIT[audit/*.md<br/>Audits complets]
+        QUALITY[qualite/*.md<br/>Validation qualité]
     end
-
-    subgraph "Configuration & Déploiement"
-        INST1[installation/*.md]
-        REF1[references/COMMUNITY_CONFIG.md]
-        DEPLOY[deploy/*.md]
+    
+    subgraph "🧠 Intelligence & IA"
+        LLM[intelligence/*.md<br/>LLM & Conversation]
+        VISION[ai/DATASETS_GOLDEN_IMAGES.md<br/>Vision & Datasets]
+        NLP_TECH[NLP & sentence-transformers]
     end
-
-    style G1 fill:#90EE90
-    style A1 fill:#87CEEB
-    style C1 fill:#FFB6C1
+    
+    subgraph "⚙️ Configuration"
+        INSTALL[installation/*.md<br/>Setup audio]
+        INTEGRATION[guides_techniques/<br/>INTEGRATION_GUIDE.md]
+        DEPLOY[deploy/*.md<br/>Déploiement]
+    end
+    
+    START --> BEGINNER
+    BEGINNER --> ADVANCED
+    BEGINNER --> CHAT
+    CHAT --> NLP
+    ADVANCED --> ARCH_OVER
+    ARCH_OVER --> ARCH_DET
+    ARCH_DET --> ARCH_COMP
+    ARCH_COMP --> CONFORM
+    CONFORM --> AUDIT
+    AUDIT --> QUALITY
+    
+    style START fill:#90EE90
+    style ARCH_OVER fill:#87CEEB
+    style CONFORM fill:#FFD700
+    style LLM fill:#FFB6C1
 ```
 
 **Organisation détaillée :**
