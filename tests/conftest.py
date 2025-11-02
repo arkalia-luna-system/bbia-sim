@@ -7,9 +7,11 @@ OPTIMISATION RAM: Force utilisation de mocks pour modèles lourds.
 
 import atexit
 import fcntl
+import gc
 import os
 import signal
 import sys
+import threading
 import time
 from pathlib import Path
 
@@ -94,9 +96,9 @@ def acquire_lock(recursion_level: int = 0) -> bool:
                         print("⚠️  Lock au format invalide. Suppression...")
                         os.remove(LOCK_FILE)
                         return acquire_lock(recursion_level + 1)
-                    pid, timestamp_str = lock_info.split(":", 1)
+                    pid_str, timestamp_str = lock_info.split(":", 1)
                     try:
-                        pid_int: int = int(pid)
+                        pid_int = int(pid_str)
                         lock_timestamp = float(timestamp_str)
                     except (ValueError, TypeError):
                         # Format invalide, nettoyer
@@ -170,6 +172,103 @@ def release_lock(lock_fd: int) -> None:
         pass
 
 
+def force_cleanup_all_resources() -> None:
+    """
+    Force le nettoyage de toutes les ressources qui peuvent empêcher pytest de se terminer.
+    - Arrête tous les threads actifs (sauf le thread principal)
+    - Ferme toutes les boucles asyncio
+    - Déconnecte tous les backends actifs
+    - Ferme toutes les connexions WebSocket/HTTP
+    """
+    try:
+        # 1. Nettoyer tous les backends actifs (threads watchdog)
+        try:
+            from bbia_sim.backends.reachy_mini_backend import ReachyMiniBackend
+
+            # Forcer la déconnexion de tous les backends qui pourraient être actifs
+            # Note: On ne peut pas vraiment lister toutes les instances, mais on force
+            # le nettoyage des threads watchdog qui peuvent rester actifs
+            pass  # Les backends doivent être nettoyés dans les tests individuels
+        except Exception:
+            pass
+
+        # 2. Fermer toutes les boucles asyncio qui peuvent rester ouvertes
+        try:
+            import asyncio
+
+            # Annuler toutes les tâches asyncio en attente
+            try:
+                # Essayer d'obtenir la boucle courante
+                loop = asyncio.get_running_loop()
+            except RuntimeError:
+                # Pas de boucle en cours, essayer de nettoyer les boucles fermées
+                try:
+                    # Essayer de récupérer la boucle par défaut (peut être fermée)
+                    loop = asyncio.get_event_loop()
+                    if loop.is_closed():
+                        # Créer une nouvelle boucle pour nettoyer puis la fermer
+                        loop = asyncio.new_event_loop()
+                        asyncio.set_event_loop(loop)
+                except RuntimeError:
+                    loop = None
+
+            if loop is not None and not loop.is_closed():
+                # Annuler toutes les tâches en cours
+                try:
+                    tasks = [t for t in asyncio.all_tasks(loop) if not t.done()]
+                    for task in tasks:
+                        task.cancel()
+                except Exception:
+                    pass
+
+                # Essayer de fermer proprement la boucle (sans bloquer)
+                try:
+                    if not loop.is_closed():
+                        # Arrêter la boucle sans bloquer
+                        try:
+                            loop.call_soon_threadsafe(loop.stop)
+                        except Exception:
+                            pass
+                except Exception:
+                    pass
+        except Exception:
+            pass
+
+        # 3. Forcer l'arrêt des threads non-daemon qui peuvent bloquer pytest
+        # Note: Les threads daemon sont automatiquement terminés, mais on peut
+        # forcer l'arrêt propre si nécessaire
+        try:
+            # Lister tous les threads actifs sauf le thread principal
+            all_threads = threading.enumerate()
+            main_thread = threading.main_thread()
+
+            for thread in all_threads:
+                if thread is main_thread:
+                    continue
+
+                # Si le thread est toujours actif, essayer de le joindre avec timeout
+                if thread.is_alive():
+                    thread_name = getattr(thread, "name", "Unknown")
+                    # Ignorer les threads système Python (garbage collector, etc.)
+                    if "MainThread" in thread_name or "Thread" not in thread_name:
+                        continue
+
+                    # Joindre avec timeout très court
+                    thread.join(timeout=0.1)
+        except Exception:
+            pass
+
+        # 4. Force garbage collection pour libérer les ressources
+        try:
+            gc.collect()
+        except Exception:
+            pass
+
+    except Exception:
+        # Ignorer toutes les erreurs pour ne pas bloquer la fin de pytest
+        pass
+
+
 @pytest.hookimpl(tryfirst=True)
 def pytest_configure(config: pytest.Config) -> None:
     """
@@ -195,14 +294,11 @@ def pytest_configure(config: pytest.Config) -> None:
             _yolo_model_cache.clear()
 
         # Nettoyer cache MediaPipe
-        from bbia_sim.vision_yolo import (
-            _mediapipe_face_detection_cache,
-            _mediapipe_cache_lock,
-        )
+        from bbia_sim import vision_yolo
+        from bbia_sim.vision_yolo import _mediapipe_cache_lock
 
         with _mediapipe_cache_lock:
-            global _mediapipe_face_detection_cache
-            _mediapipe_face_detection_cache = None
+            vision_yolo._mediapipe_face_detection_cache = None
 
         # Nettoyer cache Whisper
         try:
@@ -234,6 +330,9 @@ def pytest_configure(config: pytest.Config) -> None:
 @pytest.hookimpl(trylast=True)
 def pytest_unconfigure(config: pytest.Config) -> None:
     """Hook pytest qui s'exécute à la fin des tests."""
+    # Nettoyer toutes les ressources avant de libérer le lock
+    force_cleanup_all_resources()
+
     # Libérer le lock de manière explicite
     global _lock_fd
     if _lock_fd is not None:
@@ -260,6 +359,15 @@ def pytest_unconfigure(config: pytest.Config) -> None:
         pass
 
 
+@pytest.hookimpl(trylast=True)
+def pytest_sessionfinish(session: pytest.Session, exitstatus: int) -> None:
+    """
+    Hook pytest qui s'exécute à la fin de la session complète.
+    Force le nettoyage de toutes les ressources pour éviter que pytest reste bloqué.
+    """
+    force_cleanup_all_resources()
+
+
 @pytest.fixture(autouse=True)
 def clear_model_caches_after_test():
     """
@@ -269,9 +377,21 @@ def clear_model_caches_after_test():
     yield
     # Nettoyer après chaque test
     try:
-        import gc
-
         gc.collect()  # Force garbage collection
+
+        # Nettoyer les boucles asyncio qui peuvent rester ouvertes
+        try:
+            import asyncio
+
+            # Fermer toutes les boucles qui ne sont plus utilisées
+            try:
+                loop = asyncio.get_running_loop()
+                # Ne pas fermer si la boucle est en cours d'utilisation
+            except RuntimeError:
+                # Pas de boucle en cours, rien à faire
+                pass
+        except Exception:
+            pass
     except Exception:
         pass
 

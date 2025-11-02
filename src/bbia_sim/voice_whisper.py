@@ -651,10 +651,9 @@ class WhisperSTT:
                                     temp_file.unlink()
                                 except Exception as e:
                                     # Ignorer erreur suppression fichier temporaire
-                                    if self.logger:
-                                        self.logger.debug(
-                                            f"Impossible de supprimer fichier temporaire: {e}"
-                                        )
+                                    logger.debug(
+                                        f"Impossible de supprimer fichier temporaire: {e}"
+                                    )
 
                 total_duration += chunk_duration
 
