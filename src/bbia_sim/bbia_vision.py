@@ -74,6 +74,7 @@ except ImportError:
 _create_face_recognition_func: (
     Callable[[str, str], "BBIAPersonRecognition | None"] | None
 ) = None
+DEEPFACE_AVAILABLE = False
 try:
     from .face_recognition import (
         create_face_recognition as _create_face_recognition_func,
@@ -81,8 +82,7 @@ try:
 
     DEEPFACE_AVAILABLE = True
 except ImportError:
-    DEEPFACE_AVAILABLE = False
-    _create_face_recognition_func = None
+    pass  # _create_face_recognition_func reste None
 
 create_face_recognition = _create_face_recognition_func
 
@@ -94,8 +94,7 @@ try:
 
     MEDIAPIPE_POSE_AVAILABLE = True
 except ImportError:
-    MEDIAPIPE_POSE_AVAILABLE = False
-    _create_pose_detector_func = None
+    pass  # _create_pose_detector_func reste None
 
 # Alias pour compatibilité (si disponible)
 if MEDIAPIPE_POSE_AVAILABLE and _create_pose_detector_func is not None:
