@@ -40,9 +40,7 @@ def get_bbia_vision_singleton(robot_api: Any | None = None) -> "BBIAVision":
     if _bbia_vision_singleton is None:
         with _bbia_vision_lock:
             if _bbia_vision_singleton is None:
-                _bbia_vision_singleton = BBIAVision(
-                    robot_api=robot_api, _use_singleton=False
-                )
+                _bbia_vision_singleton = BBIAVision(robot_api=robot_api)
                 logger.debug("✅ Singleton BBIAVision créé (optimisation RAM)")
     return _bbia_vision_singleton
 

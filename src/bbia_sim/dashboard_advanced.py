@@ -169,7 +169,7 @@ class BBIAAdvancedWebSocketManager:
                 },
             },
             "metrics": self.current_metrics,
-            "history": self.metrics_history[-50:],  # 50 dernières métriques
+            "history": list(self.metrics_history)[-50:],  # 50 dernières métriques
         }
 
         await self.broadcast(json.dumps(status_data))
@@ -1176,7 +1176,7 @@ if FASTAPI_AVAILABLE:
         """API endpoint pour récupérer les métriques."""
         return {
             "current": advanced_websocket_manager.current_metrics,
-            "history": advanced_websocket_manager.metrics_history[
+            "history": list(advanced_websocket_manager.metrics_history)[
                 -100:
             ],  # 100 dernières
         }
