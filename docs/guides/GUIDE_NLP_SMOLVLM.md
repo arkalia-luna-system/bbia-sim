@@ -1,26 +1,79 @@
 # 🧠 Guide NLP et SmolVLM2 - BBIA
 
 **Date** : Oct 25 / Nov 25  
-**Version** : 1.3.1
+**Version** : 1.3.2  
+**📚 [FAQ](../FAQ.md)** | **📊 [État actuel](../audit/RESUME_ETAT_ACTUEL_BBIA.md)** | **🔍 [Comparaison](../audit/COMPARAISON_APP_CONVERSATION_OFFICIELLE.md)**
 
 ---
 
 ## 📋 Table des Matières
 
-1. [Détection NLP avec sentence-transformers](#détection-nlp)
-2. [Extraction paramètres NER](#extraction-paramètres)
-3. [Vision SmolVLM2](#vision-smolvlm2)
-4. [VAD (Voice Activity Detection)](#vad)
+1. [Détection NLP avec sentence-transformers](#détection-outils-avec-nlp)
+2. [Extraction paramètres NER](#extraction-paramètres-ner)
+3. [Vision SmolVLM2](#smolvlm2-vision-enrichie)
+4. [VAD (Voice Activity Detection)](#vad-voice-activity-detection)
 5. [Whisper Streaming](#whisper-streaming)
-6. [Exemples d'utilisation](#exemples)
+6. [Exemples d'utilisation](#exemples-dutilisation)
+
+## 🔄 Architecture NLP/Vision BBIA
+
+```mermaid
+flowchart TB
+    USER[Utilisateur] --> MSG[Message Texte/Voice]
+    
+    MSG --> NLP{NLP Detection}
+    NLP -->|Confiance > 0.7| TOOL[Détection Outil]
+    NLP -->|Confiance < 0.7| KEYWORD[Mots-clés Fallback]
+    
+    TOOL --> EXEC[Execute Tool]
+    KEYWORD --> EXEC
+    
+    EXEC --> NER{NER Extraction?}
+    NER -->|Oui| EXTRACT[Extraire Angles/Intensités]
+    NER -->|Non| PARAMS[Paramètres Par Défaut]
+    
+    EXTRACT --> ROBOT[RobotAPI]
+    PARAMS --> ROBOT
+    
+    subgraph "Vision"
+        IMG[Image Camera] --> VLM[SmolVLM2]
+        VLM --> DESC[Description Riche]
+        DESC --> CHAT[Chat LLM]
+    end
+    
+    CHAT --> RESPONSE[Réponse Utilisateur]
+    ROBOT --> ACTION[Action Robot]
+    
+    style TOOL fill:#90EE90
+    style VLM fill:#87CEEB
+    style NER fill:#FFD700
+```
 
 ---
 
-## 🎯 Détection NLP avec sentence-transformers
+## 🎯 Détection Outils avec NLP
 
 ### Description
 
 BBIA utilise `sentence-transformers` pour une détection robuste des intentions utilisateur par similarité sémantique, au lieu de simples mots-clés.
+
+```mermaid
+sequenceDiagram
+    participant User as Utilisateur
+    participant HF as BBIAHuggingFace
+    participant NLP as sentence-transformers
+    participant Tools as BBIATools
+    participant Robot as RobotAPI
+    
+    User->>HF: "peux-tu regarder à droite"
+    HF->>NLP: encode("peux-tu regarder à droite")
+    NLP-->>HF: Embedding vector
+    HF->>HF: cosine_similarity(embeddings)
+    HF-->>HF: Outil: "move_head" (conf: 0.85)
+    HF->>Tools: execute_tool("move_head", params)
+    Tools->>Robot: move_head(direction="right")
+    Robot-->>User: ✅ Tête orientée à droite
+```
 
 **Avantages** :
 - ✅ Détection robuste même avec variantes de phrases

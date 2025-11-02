@@ -2,7 +2,35 @@
 
 **Date** : Oct 25 / Nov 25  
 **État actuel** : ~85-90% parité avec app officielle Reachy Mini  
-**Dernière mise à jour** : Après implémentation NLP + SmolVLM2 + tests améliorés
+**Dernière mise à jour** : Après implémentation NLP + SmolVLM2 + tests améliorés  
+**📚 [État actuel](./RESUME_ETAT_ACTUEL_BBIA.md)** | **🎯 [Prochaines étapes](./PROCHAINES_ETAPES_OPTIONNELLES.md)** | **🔍 [Comparaison](./COMPARAISON_APP_CONVERSATION_OFFICIELLE.md)**
+
+---
+
+## ✅ STATUT GLOBAL
+
+```mermaid
+stateDiagram-v2
+    [*] --> Toutes_Taches_Terminees: 100% ✅
+    
+    Toutes_Taches_Terminees --> Priorite_Haute: ✅ TERMINÉ
+    Toutes_Taches_Terminees --> Priorite_Moyenne: ✅ TERMINÉ
+    Toutes_Taches_Terminees --> Priorite_Basse: ✅ TERMINÉ
+    
+    Priorite_Haute --> VAD: ✅
+    Priorite_Haute --> NER: ✅
+    Priorite_Moyenne --> Streaming: ✅
+    Priorite_Basse --> Tests_E2E: ✅
+    Priorite_Basse --> Documentation: ✅
+    
+    VAD --> [*]
+    NER --> [*]
+    Streaming --> [*]
+    Tests_E2E --> [*]
+    Documentation --> [*]
+```
+
+**Résultat** : ✅ **100% COMPLET** - Aucune tâche restante ! 🎉
 
 ---
 
@@ -19,6 +47,32 @@
 ---
 
 ## ✅ TÂCHES OPTIONNELLES - TOUTES TERMINÉES !
+
+### Vue d'Ensemble des Implémentations
+
+```mermaid
+mindmap
+  root((Tâches Terminées))
+    VAD
+      Activation Auto
+      silero/vad
+      voice_whisper.py
+    NER
+      Extraction Angles
+      Extraction Intensités
+      bbia_huggingface.py
+    Streaming
+      Whisper Streaming
+      Latence 500ms
+      Buffer Contexte
+    Tests
+      E2E NLP
+      E2E SmolVLM2
+      E2E VAD
+    Documentation
+      GUIDE_NLP_SMOLVLM.md
+      Tests Complets
+```
 
 ### Priorité MOYENNE (Améliorations UX, pas bloquant) ✅
 
@@ -39,6 +93,8 @@
 - ✅ `src/bbia_sim/voice_whisper.py` - Méthode `transcribe_microphone_with_vad()` implémentée
 - ✅ `tests/test_vad_streaming.py` - Tests créés
 
+**📄 [Guide VAD](../guides/GUIDE_NLP_SMOLVLM.md#vad-voice-activity-detection)**
+
 ---
 
 #### 2. Extraction Paramètres avec NER (Named Entity Recognition) ✅ **TERMINÉ**
@@ -56,6 +112,8 @@
 **Fichiers** :
 - ✅ `src/bbia_sim/bbia_huggingface.py` - Méthodes `_extract_angle()` et `_extract_intensity()` implémentées
 - ✅ `tests/test_bbia_nlp_detection.py` - Tests créés
+
+**📄 [Guide NER](../guides/GUIDE_NLP_SMOLVLM.md#extraction-paramètres-ner)**
 
 ---
 
@@ -75,6 +133,8 @@
 - ✅ `src/bbia_sim/voice_whisper.py` - Méthode `transcribe_streaming()` implémentée
 - ✅ `tests/test_vad_streaming.py` - Tests créés
 
+**📄 [Guide Streaming](../guides/GUIDE_NLP_SMOLVLM.md#whisper-streaming)**
+
 ---
 
 ### Priorité BASSE (Nice to have) ✅
@@ -87,8 +147,8 @@
 - ✅ Tests VAD et streaming
 
 **Solution** :
-- ✅ `tests/test_bbia_nlp_detection.py` créé
-- ✅ `tests/test_vad_streaming.py` créé
+- ✅ `tests/test_bbia_nlp_detection.py` créé - 📄 [Voir tests](../../tests/test_bbia_nlp_detection.py)
+- ✅ `tests/test_vad_streaming.py` créé - 📄 [Voir tests](../../tests/test_vad_streaming.py)
 
 **Impact** : Validation des nouvelles fonctionnalités
 
@@ -102,7 +162,7 @@
 - ✅ Documentation sur SmolVLM2
 
 **Solution** :
-- ✅ `docs/guides/GUIDE_NLP_SMOLVLM.md` créé (guide complet)
+- ✅ `docs/guides/GUIDE_NLP_SMOLVLM.md` créé (guide complet) - 📄 [Lire guide](../guides/GUIDE_NLP_SMOLVLM.md)
 
 **Impact** : Meilleure adoption des nouvelles fonctionnalités
 
