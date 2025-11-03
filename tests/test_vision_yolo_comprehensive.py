@@ -6,6 +6,7 @@ Tests complets pour vision_yolo.py - Amélioration coverage 49% → 70%+
 from unittest.mock import MagicMock, patch
 
 import numpy as np
+import numpy.typing as npt
 import pytest
 
 from bbia_sim.vision_yolo import (
@@ -124,7 +125,7 @@ class TestYOLODetector:
             detector.is_loaded = True
 
             # Image mock
-            image = np.zeros((480, 640, 3), dtype=np.uint8)
+            image: npt.NDArray[np.uint8] = np.zeros((480, 640, 3), dtype=np.uint8)
             detections = detector.detect_objects(image)
 
             # Vérifier structure
@@ -631,7 +632,12 @@ class TestFactoryFunctions:
         ):
             with patch("bbia_sim.vision_yolo._mediapipe_cache_lock"):
                 try:
-                    import mediapipe as mp
+                    # Test que le module peut être importé
+                    import importlib.util
+
+                    spec = importlib.util.find_spec("mediapipe")
+                    if spec is None:
+                        pytest.skip("MediaPipe non disponible")
 
                     detector = FaceDetector()
                     # Devrait utiliser le cache
@@ -688,11 +694,6 @@ class TestFactoryFunctions:
                 assert detections == []
 
 
-@pytest.mark.unit
-@pytest.mark.fast
-class TestFaceDetector:
-    """Tests pour FaceDetector."""
-
     def test_face_detector_cache_import_error(self):
         """Test FaceDetector avec ImportError dans cache (couverture lignes 280-281)."""
         # Simuler cache avec ImportError lors de l'import mediapipe
@@ -702,12 +703,6 @@ class TestFaceDetector:
                 # Devrait gérer l'erreur gracieusement (lignes 280-281)
                 assert detector is not None
 
-
-@pytest.mark.unit
-@pytest.mark.fast
-class TestFactoryFunctions:
-    """Tests pour fonctions factory."""
-
     def test_global_exception_handler(self):
         """Test exception handler global (couverture ligne 42)."""
         # Le handler global devrait gérer toute exception
@@ -716,3 +711,32 @@ class TestFactoryFunctions:
         import bbia_sim.vision_yolo  # noqa: F401
 
         assert True  # Si on arrive ici, le module a chargé
+
+    @patch("bbia_sim.vision_yolo.YOLO")
+    def test_load_model_cache_hit(self, mock_yolo_class):
+        """Test chargement modèle depuis cache (couverture lignes 93-98)."""
+        with patch("bbia_sim.vision_yolo.YOLO_AVAILABLE", True):
+            import time as time_module
+
+            import bbia_sim.vision_yolo as vision_yolo_module
+
+            # Vider cache
+            vision_yolo_module._yolo_model_cache.clear()
+            vision_yolo_module._yolo_model_last_used.clear()
+
+            # Créer un modèle mock et le mettre en cache
+            mock_model = MagicMock()
+            cache_key = "yolov8n"
+            vision_yolo_module._yolo_model_cache[cache_key] = mock_model
+            vision_yolo_module._yolo_model_last_used[cache_key] = time_module.time()
+
+            # Créer détecteur et charger - devrait utiliser le cache
+            detector = YOLODetector(model_size="n", confidence_threshold=0.25)
+            result = detector.load_model()
+
+            # Devrait retourner True et utiliser le modèle du cache
+            assert result is True
+            assert detector.is_loaded is True
+            assert detector.model == mock_model
+            # YOLO ne devrait pas avoir été appelé car on utilise le cache
+            mock_yolo_class.assert_not_called()
