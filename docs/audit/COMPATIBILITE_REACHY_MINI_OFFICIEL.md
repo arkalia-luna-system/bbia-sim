@@ -5,10 +5,31 @@
 **Version BBIA** : 1.3.2
 **Objectif** : Vérifier que tous les modules IA sont compatibles avec le SDK officiel Reachy Mini
 
-**État SDK local** : installé `reachy_mini==1.0.0rc5` (pré‑release)
+**État SDK** : utiliser la **dernière version stable** `reachy-mini` depuis PyPI (mise à jour régulière conseillée)
 
-**Recommandation** : passer à `reachy_mini==1.0.0` (release stable) dès que possible — voir releases GitHub
-([lien](https://github.com/pollen-robotics/reachy_mini)).
+**Installation (PyPI)** :
+
+```bash
+pip install -U reachy-mini
+# (Simulation MuJoCo officielle)
+pip install -U "reachy-mini[mujoco]"
+```
+
+**Daemon officiel** :
+
+```bash
+reachy-mini-daemon                # robot réel (ou réseau local)
+reachy-mini-daemon --sim          # simulation MuJoCo
+reachy-mini-daemon --sim --scene minimal
+```
+
+**macOS (MuJoCo)** :
+
+```bash
+mjpython -m reachy_mini.daemon.app.main --sim --scene minimal
+```
+
+**Docs et releases** : [GitHub – pollen-robotics/reachy_mini](https://github.com/pollen-robotics/reachy_mini)
 
 ---
 
