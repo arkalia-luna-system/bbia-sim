@@ -264,6 +264,68 @@ BBIA_ENVIRONMENT=prod  # Active auth WebSocket
 BBIA_API_TOKEN=your-secret-token
 ```
 
+### Buffer Circulaire Camera Frames
+
+**Nouvelle fonctionnalité** (Décembre 2025) : Buffer circulaire pour éviter perte de frames
+
+**Problème résolu** : "Circular buffer overrun" dans SDK officiel
+
+**Configuration** :
+```python
+# Taille du buffer (défaut: 10)
+os.environ["BBIA_CAMERA_BUFFER_SIZE"] = "20"  # Plus grand buffer
+
+# Utilisation
+from bbia_sim.bbia_vision import BBIAVision
+vision = BBIAVision()
+latest_frame = vision.get_latest_frame()  # Récupère frame la plus récente
+```
+
+**Métriques** : Disponibles via `get_vision_stats()` avec `buffer_overruns`, `camera_buffer_size`
+
+### Endpoint Discover Datasets
+
+**Nouvelle fonctionnalité** (Décembre 2025) : Découverte des datasets Hugging Face Hub
+
+**Utilisation** :
+```bash
+curl http://localhost:8000/api/move/recorded-move-datasets/discover
+```
+
+**Retourne** : Liste des datasets disponibles (ex: "pollen-robotics/reachy-mini-dances-library")
+
+### Métriques Performance
+
+**Nouvelle fonctionnalité** (Décembre 2025) : Endpoint `/metrics/performance` avec percentiles p50/p95/p99
+
+**Utilisation** :
+```bash
+curl http://localhost:8000/metrics/performance
+```
+
+**Retourne** :
+```json
+{
+  "timestamp": 1234567890.0,
+  "latency": {
+    "p50_ms": 10.5,
+    "p95_ms": 25.3,
+    "p99_ms": 50.1,
+    "samples": 1000
+  },
+  "system": {
+    "cpu_percent": 15.2,
+    "memory_mb": 256.5,
+    "memory_percent": 12.3
+  },
+  "simulation": {
+    "fps": 60.0
+  }
+}
+```
+
+**Note** : Les latences sont collectées automatiquement lors des requêtes (si middleware activé)
+
 ---
 
 ## 🟠 CORS & Sécurité

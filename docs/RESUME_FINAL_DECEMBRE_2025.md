@@ -47,10 +47,12 @@
 
 ### 🟡 PRIORITÉ MOYENNE - Optionnel
 
-1. **Métriques Performance** (Optionnel)
-   - Mesurer latence, jitter, budgets CPU/RAM
-   - **Estimation** : Variable
-   - **Statut** : ⏳ Optionnel - Non bloquant
+1. ✅ ~~**Métriques Performance**~~ - **TERMINÉ** (Décembre 2025)
+   - ✅ Endpoint `/metrics/performance` avec percentiles p50/p95/p99
+   - ✅ Calcul automatique depuis historique latences
+   - ✅ Métriques système (CPU, RAM, FPS)
+   - ✅ Tests ajoutés
+   - **Statut** : ✅ **TERMINÉ**
 
 2. **Liens MD Archives** (Non Prioritaire)
    - ~139 liens restants dans archives
@@ -59,11 +61,11 @@
 
 ### 🟢 PRIORITÉ BASSE - Optionnel
 
-3. **Documentation Supplémentaire**
-   - Mettre à jour FAQ
-   - Créer guides
-   - **Estimation** : 1-2h
-   - **Statut** : ⏳ Optionnel
+3. ✅ ~~**Documentation Supplémentaire**~~ - **TERMINÉ** (Décembre 2025)
+   - ✅ FAQ mise à jour (buffer circulaire, discover datasets, métriques performance)
+   - ✅ `tests/README.md` mis à jour avec coverage modules critiques
+   - ✅ Guide dashboard_advanced existe déjà
+   - **Statut** : ✅ **TERMINÉ**
 
 ### 🔵 HARDWARE - En Attente
 

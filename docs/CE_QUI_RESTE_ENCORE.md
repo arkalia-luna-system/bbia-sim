@@ -16,31 +16,36 @@
 
 ---
 
+## ✅ CE QUI EST TERMINÉ (Décembre 2025)
+
+### Dernières Corrections
+- ✅ TODO metrics.py (connexions actives) **TERMINÉ**
+
+---
+
 ## 🟡 CE QUI RESTE (Optionnel / Non Bloquant)
 
-### 1. TODO dans `metrics.py` (Optionnel)
+### 1. ✅ TODO dans `metrics.py` - **TERMINÉ**
 
 **Fichier** : `src/bbia_sim/daemon/app/routers/metrics.py`  
 **Ligne 99** : `# TODO: Récupérer depuis ConnectionManager`
 
-**Action** : Récupérer le nombre de connexions WebSocket actives depuis le ConnectionManager
+**Statut** : ✅ **TERMINÉ** (Décembre 2025) - Connexions actives récupérées depuis ConnectionManager
 
-**Statut** : 🟡 **Optionnel** - Non bloquant, métrique utile mais non critique
-
-**Estimation** : ~15-30 min
-
-**Code actuel** :
+**Implémentation** :
 ```python
-# Connexions actives (à implémenter si manager disponible)
-active_connections.set(0)  # TODO: Récupérer depuis ConnectionManager
-```
-
-**Solution suggérée** :
-```python
+# Import ConnectionManager pour métriques connexions actives
 try:
-    from ...ws.telemetry import manager
-    active_connections.set(len(manager.active_connections))
-except Exception:
+    from ...ws.telemetry import manager as telemetry_manager
+    TELEMETRY_MANAGER_AVAILABLE = True
+except ImportError:
+    TELEMETRY_MANAGER_AVAILABLE = False
+    telemetry_manager = None
+
+# Connexions actives (récupérées depuis ConnectionManager)
+if TELEMETRY_MANAGER_AVAILABLE and telemetry_manager:
+    active_connections.set(len(telemetry_manager.active_connections))
+else:
     active_connections.set(0)
 ```
 
@@ -84,11 +89,11 @@ except Exception:
 
 | Priorité | Tâche | Estimation | Statut |
 |----------|-------|------------|--------|
-| 🟡 Optionnel | TODO metrics.py (connexions actives) | 15-30 min | ⏳ Optionnel |
+| ✅ | TODO metrics.py (connexions actives) | ✅ | ✅ **TERMINÉ** |
 | 🟡 Optionnel | Liens MD archives | 30 min | ⏳ Non prioritaire |
 | 🔵 Hardware | TODOs robot réel | 3-4h | ⏳ En attente |
 
-**Total (sans hardware)** : **~45-60 minutes** de travail optionnel
+**Total (sans hardware)** : **~30 minutes** de travail optionnel (liens MD archives uniquement)
 
 ---
 
@@ -99,7 +104,7 @@ except Exception:
 **Tous les modules critiques sont terminés et testés avec un coverage excellent.**
 
 **Tâches restantes** :
-- 🟡 **Optionnel** : 1 TODO metrics.py (15-30 min)
+- ✅ **Terminé** : TODO metrics.py (connexions actives) ✅
 - 🟡 **Optionnel** : Corriger liens MD dans archives (30 min)
 - 🔵 **Normal** : 6 TODOs robot réel (en attente hardware)
 

@@ -122,7 +122,7 @@
 - 🟡 **Optionnel** : Métriques performance (si besoin d'optimisation)
 - 🟡 **Optionnel** : Corriger liens MD dans archives (30 min)
 - ✅ **Terminé** : Documentation supplémentaire (FAQ ✅, guide dashboard_advanced ✅, tests README ✅)
-- ✅ **Terminé** : 2 TODOs code non-bloquants (auth WebSocket ✅, migration imports ✅)
+- ✅ **Terminé** : 3 TODOs code non-bloquants (auth WebSocket ✅, migration imports ✅, metrics connexions ✅)
 - 🔵 **Normal** : 6 TODOs robot réel (en attente hardware)
 
 **Le projet est prêt pour le robot réel en décembre 2025.** ✅

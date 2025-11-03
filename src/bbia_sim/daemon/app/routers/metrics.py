@@ -131,8 +131,11 @@ async def get_prometheus_metrics() -> Response:
         else:
             simulation_fps.set(0.0)
 
-        # Connexions actives (à implémenter si manager disponible)
-        active_connections.set(0)  # TODO: Récupérer depuis ConnectionManager
+        # Connexions actives (récupérées depuis ConnectionManager)
+        if TELEMETRY_MANAGER_AVAILABLE and telemetry_manager:
+            active_connections.set(len(telemetry_manager.active_connections))
+        else:
+            active_connections.set(0)
 
     except Exception as e:
         logger.warning(f"Erreur mise à jour métriques: {e}")
