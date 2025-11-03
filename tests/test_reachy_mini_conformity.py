@@ -24,6 +24,9 @@ def test_reachy_mini_backend():
     print("\n1️⃣ Test création backend...")
     try:
         robot = RobotFactory.create_backend("reachy_mini")
+        if robot is None:
+            print("❌ Backend non disponible")
+            return False
         print("✅ Backend Reachy-Mini créé avec succès")
     except Exception as e:
         print(f"❌ Erreur création backend: {e}")
@@ -48,6 +51,7 @@ def test_reachy_mini_backend():
     # 4. Test méthodes API
     print("\n4️⃣ Test méthodes API...")
     try:
+        assert robot is not None  # Type narrowing pour mypy
         # Test get_available_joints
         available_joints = robot.get_available_joints()
         print(f"✅ Joints disponibles: {len(available_joints)} joints")
@@ -96,6 +100,7 @@ def test_reachy_mini_backend():
     # 6. Test sécurité
     print("\n6️⃣ Test sécurité...")
     try:
+        assert robot is not None  # Type narrowing pour mypy
         # Test joints interdits
         forbidden_joints = robot.forbidden_joints
         print(f"✅ Joints interdits: {forbidden_joints}")

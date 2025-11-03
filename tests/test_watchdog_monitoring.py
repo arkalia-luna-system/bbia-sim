@@ -78,7 +78,7 @@ class TestWatchdogMonitoring:
         backend.emergency_stop()
 
         # Attendre que le thread se termine
-        if watchdog_thread.is_alive():
+        if watchdog_thread is not None and watchdog_thread.is_alive():
             watchdog_thread.join(timeout=2.0)
 
         # Vérifier que le watchdog est arrêté
@@ -128,6 +128,7 @@ class TestWatchdogMonitoring:
         watchdog_thread = backend._watchdog_thread
         if watchdog_thread is None:
             pytest.skip("Watchdog non démarré en simulation")
+        assert watchdog_thread is not None  # Type narrowing pour mypy
         assert watchdog_thread.daemon is True, "Watchdog doit être un thread daemon"
 
         # Nettoyage

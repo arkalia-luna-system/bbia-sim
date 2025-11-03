@@ -626,7 +626,7 @@ class TestFactoryFunctions:
             mock_whisper.load_model.return_value = mock_model
 
             stt = WhisperSTT(model_size="tiny", language="auto")
-            stt.model = mock_model
+            stt.model = mock_model  # type: ignore[assignment]
             stt.is_loaded = True
 
             with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as f:
@@ -692,7 +692,7 @@ class TestFactoryFunctions:
                     callback_called.append((text, duration))
 
                 stt = WhisperSTT(model_size="tiny", language="fr")
-                stt.model = mock_model
+                stt.model = mock_model  # type: ignore[assignment]
                 stt.is_loaded = True
                 stt.enable_vad = False  # Désactiver VAD pour simplifier
 
@@ -776,7 +776,7 @@ class TestFactoryFunctions:
                 mock_sd.wait.return_value = None
 
                 stt = WhisperSTT(model_size="tiny", language="fr", enable_vad=False)
-                stt.model = mock_model
+                stt.model = mock_model  # type: ignore[assignment]
                 stt.is_loaded = True
 
                 # Mock transcribe pour retourner texte valide
@@ -827,7 +827,7 @@ class TestFactoryFunctions:
                 mock_sd.wait.return_value = None
 
                 stt = WhisperSTT(model_size="tiny", language="fr", enable_vad=True)
-                stt.model = mock_model
+                stt.model = mock_model  # type: ignore[assignment]
                 stt.is_loaded = True
 
                 # Mock VAD pour retourner False (silence)
@@ -870,7 +870,7 @@ class TestFactoryFunctions:
                 mock_sd.wait.return_value = None
 
                 stt = WhisperSTT(model_size="tiny", language="fr", enable_vad=False)
-                stt.model = mock_model
+                stt.model = mock_model  # type: ignore[assignment]
                 stt.is_loaded = True
 
                 # Pré-remplir pool
@@ -915,7 +915,7 @@ class TestFactoryFunctions:
                 mock_sd.wait.return_value = None
 
                 stt = WhisperSTT(model_size="tiny", language="fr", enable_vad=False)
-                stt.model = mock_model
+                stt.model = mock_model  # type: ignore[assignment]
                 stt.is_loaded = True
 
                 # Test avec texte filtré ("you", "thank you")
@@ -962,7 +962,7 @@ class TestFactoryFunctions:
                 mock_sd.wait.return_value = None
 
                 stt = WhisperSTT(model_size="tiny", language="fr", enable_vad=False)
-                stt.model = mock_model
+                stt.model = mock_model  # type: ignore[assignment]
                 stt.is_loaded = True
 
                 with patch("bbia_sim.voice_whisper.time") as mock_time:
@@ -1234,7 +1234,7 @@ class TestFactoryFunctions:
         """Test transcription microphone avec VAD et buffer vide (couverture lignes 448-450)."""
         with patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True):
             stt = WhisperSTT(model_size="tiny", language="fr", enable_vad=True)
-            stt.model = MagicMock()
+            stt.model = MagicMock()  # type: ignore[assignment]
             stt.is_loaded = True
 
             # Mock pour que audio_buffer reste vide - lever exception immédiatement
@@ -1257,7 +1257,7 @@ class TestFactoryFunctions:
         """Test transcription microphone avec VAD détectant silence (couverture lignes 438-446)."""
         with patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True):
             stt = WhisperSTT(model_size="tiny", language="fr", enable_vad=True)
-            stt.model = MagicMock()
+            stt.model = MagicMock()  # type: ignore[assignment]
             stt.is_loaded = True
 
             # Mock pour simuler parole puis silence
@@ -1292,7 +1292,7 @@ class TestFactoryFunctions:
         """Test transcription microphone avec VAD et erreur cleanup (couverture lignes 472-473)."""
         with patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True):
             stt = WhisperSTT(model_size="tiny", language="fr", enable_vad=True)
-            stt.model = MagicMock()
+            stt.model = MagicMock()  # type: ignore[assignment]
             stt.is_loaded = True
 
             mock_audio = np.random.rand(8000).astype(np.float32)
@@ -1349,7 +1349,7 @@ class TestFactoryFunctions:
             mock_sd.wait.return_value = None
 
             stt = WhisperSTT(model_size="tiny", language="fr", enable_vad=True)
-            stt.model = mock_model
+            stt.model = mock_model  # type: ignore[assignment]
             stt.is_loaded = True
 
             # Mock VAD pour retourner False (silence) plusieurs fois
@@ -1394,7 +1394,7 @@ class TestFactoryFunctions:
                 raise Exception("Callback error")
 
             stt = WhisperSTT(model_size="tiny", language="fr", enable_vad=False)
-            stt.model = mock_model
+            stt.model = mock_model  # type: ignore[assignment]
             stt.is_loaded = True
 
             with patch("bbia_sim.voice_whisper.time") as mock_time:
@@ -1433,7 +1433,7 @@ class TestFactoryFunctions:
             mock_sd.wait.return_value = None
 
             stt = WhisperSTT(model_size="tiny", language="fr", enable_vad=False)
-            stt.model = mock_model
+            stt.model = mock_model  # type: ignore[assignment]
             stt.is_loaded = True
 
             # Pré-remplir pool au maximum
@@ -1476,7 +1476,7 @@ class TestFactoryFunctions:
             mock_sd.wait.return_value = None
 
             stt = WhisperSTT(model_size="tiny", language="fr", enable_vad=True)
-            stt.model = mock_model
+            stt.model = mock_model  # type: ignore[assignment]
             stt.is_loaded = True
 
             # Mock VAD pour retourner False (silence) > 6 fois (max_silence_chunks * 2)

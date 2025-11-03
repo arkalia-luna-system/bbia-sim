@@ -80,11 +80,13 @@ class TestReachyMiniCompleteConformity:
             "right_antenna",
             "yaw_body",
         }
+        assert self.backend is not None  # Type narrowing pour mypy
         actual_joints = set(self.backend.get_available_joints())
         assert actual_joints == expected_joints
 
     def test_joint_positions_api_conformity(self):
         """Test conformité API positions joints."""
+        assert self.backend is not None  # Type narrowing pour mypy
         # Test get_joint_pos avec tous les joints
         for joint in ["stewart_1", "stewart_2", "yaw_body"]:
             pos = self.backend.get_joint_pos(joint)
@@ -94,6 +96,7 @@ class TestReachyMiniCompleteConformity:
 
     def test_emotion_api_conformity(self):
         """Test conformité API émotions."""
+        assert self.backend is not None  # Type narrowing pour mypy
         valid_emotions = ["happy", "sad", "neutral", "excited", "curious", "calm"]
 
         for emotion in valid_emotions:
@@ -106,6 +109,7 @@ class TestReachyMiniCompleteConformity:
 
     def test_behavior_api_conformity(self):
         """Test conformité API comportements."""
+        assert self.backend is not None  # Type narrowing pour mypy
         valid_behaviors = ["wake_up", "goto_sleep", "nod"]
 
         for behavior in valid_behaviors:
@@ -118,6 +122,7 @@ class TestReachyMiniCompleteConformity:
 
     def test_look_at_api_conformity(self):
         """Test conformité API look_at."""
+        assert self.backend is not None  # Type narrowing pour mypy
         # Test look_at_world
         result = self.backend.look_at(0.1, 0.2, 0.3)
         assert result is True  # Notre méthode look_at retourne bool
@@ -128,6 +133,7 @@ class TestReachyMiniCompleteConformity:
 
     def test_motor_control_conformity(self):
         """Test conformité contrôle moteurs."""
+        assert self.backend is not None  # Type narrowing pour mypy
         # Test enable/disable motors (SDK officiel retourne None)
         result = self.backend.enable_motors()  # type: ignore[attr-defined]
         assert result is None
@@ -137,6 +143,7 @@ class TestReachyMiniCompleteConformity:
 
     def test_gravity_compensation_conformity(self):
         """Test conformité compensation gravité."""
+        assert self.backend is not None  # Type narrowing pour mypy
         # Test enable/disable gravity compensation (SDK officiel retourne None)
         result = self.backend.enable_gravity_compensation()  # type: ignore[attr-defined]
         assert result is None
@@ -146,6 +153,7 @@ class TestReachyMiniCompleteConformity:
 
     def test_target_control_conformity(self):
         """Test conformité contrôle cibles."""
+        assert self.backend is not None  # Type narrowing pour mypy
         # Test set_target_body_yaw (SDK officiel retourne None)
         result = self.backend.set_target_body_yaw(0.1)  # type: ignore[attr-defined]
         assert result is None
@@ -156,6 +164,7 @@ class TestReachyMiniCompleteConformity:
 
     def test_goto_target_conformity(self):
         """Test conformité goto_target."""
+        assert self.backend is not None  # Type narrowing pour mypy
         # Test goto_target avec différents paramètres (SDK officiel retourne None)
         result = self.backend.goto_target()  # type: ignore[attr-defined]
         assert result is None
