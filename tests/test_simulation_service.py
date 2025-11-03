@@ -41,7 +41,7 @@ class TestSimulationService:
         mock_sim.set_joint_position.return_value = True
         return mock_sim
 
-    @patch("src.bbia_sim.daemon.simulation_service.MuJoCoSimulator")
+    @patch("bbia_sim.daemon.simulation_service.MuJoCoSimulator")
     def test_init_with_model_path(self, mock_simulator_class, mock_simulator):
         """Test initialisation avec chemin modèle."""
         mock_simulator_class.return_value = mock_simulator
@@ -53,7 +53,7 @@ class TestSimulationService:
         assert service.is_running is False
         assert service._simulation_task is None
 
-    @patch("src.bbia_sim.daemon.simulation_service.MuJoCoSimulator")
+    @patch("bbia_sim.daemon.simulation_service.MuJoCoSimulator")
     @pytest.mark.asyncio
     async def test_start_simulation(self, mock_simulator_class, mock_simulator):
         """Test démarrage simulation."""
@@ -69,7 +69,7 @@ class TestSimulationService:
         # Nettoyer
         await service.stop_simulation()
 
-    @patch("src.bbia_sim.daemon.simulation_service.MuJoCoSimulator")
+    @patch("bbia_sim.daemon.simulation_service.MuJoCoSimulator")
     @pytest.mark.asyncio
     async def test_start_simulation_already_running(
         self, mock_simulator_class, mock_simulator
@@ -90,7 +90,7 @@ class TestSimulationService:
         # Nettoyer
         await service.stop_simulation()
 
-    @patch("src.bbia_sim.daemon.simulation_service.MuJoCoSimulator")
+    @patch("bbia_sim.daemon.simulation_service.MuJoCoSimulator")
     @pytest.mark.asyncio
     async def test_start_simulation_graphical_mode(
         self, mock_simulator_class, mock_simulator
@@ -109,7 +109,7 @@ class TestSimulationService:
         # Nettoyer
         await service.stop_simulation()
 
-    @patch("src.bbia_sim.daemon.simulation_service.MuJoCoSimulator")
+    @patch("bbia_sim.daemon.simulation_service.MuJoCoSimulator")
     @pytest.mark.asyncio
     async def test_start_simulation_error(self, mock_simulator_class):
         """Test erreur lors du démarrage de la simulation."""
@@ -122,7 +122,7 @@ class TestSimulationService:
         assert service.is_running is False
         assert service.simulator is None
 
-    @patch("src.bbia_sim.daemon.simulation_service.MuJoCoSimulator")
+    @patch("bbia_sim.daemon.simulation_service.MuJoCoSimulator")
     @pytest.mark.asyncio
     async def test_stop_simulation_not_running(
         self, mock_simulator_class, mock_simulator
@@ -136,7 +136,7 @@ class TestSimulationService:
         assert result is True
         assert service.is_running is False
 
-    @patch("src.bbia_sim.daemon.simulation_service.MuJoCoSimulator")
+    @patch("bbia_sim.daemon.simulation_service.MuJoCoSimulator")
     @pytest.mark.asyncio
     async def test_stop_simulation_error(self, mock_simulator_class, mock_simulator):
         """Test erreur lors de l'arrêt de la simulation."""
@@ -151,7 +151,7 @@ class TestSimulationService:
         # Devrait retourner False à cause de l'erreur
         assert result is False
 
-    @patch("src.bbia_sim.daemon.simulation_service.MuJoCoSimulator")
+    @patch("bbia_sim.daemon.simulation_service.MuJoCoSimulator")
     @pytest.mark.asyncio
     async def test_run_graphical_simulation_fallback(
         self, mock_simulator_class, mock_simulator
@@ -171,7 +171,7 @@ class TestSimulationService:
         # Nettoyer
         await service.stop_simulation()
 
-    @patch("src.bbia_sim.daemon.simulation_service.MuJoCoSimulator")
+    @patch("bbia_sim.daemon.simulation_service.MuJoCoSimulator")
     def test_get_robot_state_simulation_not_running(
         self, mock_simulator_class, mock_simulator
     ):
@@ -186,7 +186,7 @@ class TestSimulationService:
         assert "time" in state
         assert state["time"] == 0.0
 
-    @patch("src.bbia_sim.daemon.simulation_service.MuJoCoSimulator")
+    @patch("bbia_sim.daemon.simulation_service.MuJoCoSimulator")
     def test_get_robot_state_simulator_error(
         self, mock_simulator_class, mock_simulator
     ):
@@ -204,7 +204,7 @@ class TestSimulationService:
         assert "joint_positions" in state
         assert "time" in state
 
-    @patch("src.bbia_sim.daemon.simulation_service.MuJoCoSimulator")
+    @patch("bbia_sim.daemon.simulation_service.MuJoCoSimulator")
     def test_get_joint_positions_simulation_not_running(
         self, mock_simulator_class, mock_simulator
     ):
@@ -219,7 +219,7 @@ class TestSimulationService:
         assert "yaw_body" in positions
         assert positions["yaw_body"] == 0.0
 
-    @patch("src.bbia_sim.daemon.simulation_service.MuJoCoSimulator")
+    @patch("bbia_sim.daemon.simulation_service.MuJoCoSimulator")
     def test_get_joint_positions_simulator_error(
         self, mock_simulator_class, mock_simulator
     ):
@@ -237,7 +237,7 @@ class TestSimulationService:
         assert isinstance(positions, dict)
         assert "yaw_body" in positions
 
-    @patch("src.bbia_sim.daemon.simulation_service.MuJoCoSimulator")
+    @patch("bbia_sim.daemon.simulation_service.MuJoCoSimulator")
     def test_set_joint_position_simulation_not_running(
         self, mock_simulator_class, mock_simulator
     ):
@@ -249,7 +249,7 @@ class TestSimulationService:
 
         assert result is False
 
-    @patch("src.bbia_sim.daemon.simulation_service.MuJoCoSimulator")
+    @patch("bbia_sim.daemon.simulation_service.MuJoCoSimulator")
     def test_set_joint_position_simulator_error(
         self, mock_simulator_class, mock_simulator
     ):
@@ -265,7 +265,7 @@ class TestSimulationService:
 
         assert result is False
 
-    @patch("src.bbia_sim.daemon.simulation_service.MuJoCoSimulator")
+    @patch("bbia_sim.daemon.simulation_service.MuJoCoSimulator")
     def test_set_joint_position_success(self, mock_simulator_class, mock_simulator):
         """Test définition position joint réussie."""
         mock_simulator_class.return_value = mock_simulator
@@ -279,7 +279,7 @@ class TestSimulationService:
         assert result is True
         mock_simulator.set_joint_position.assert_called_once_with("yaw_body", 0.5)
 
-    @patch("src.bbia_sim.daemon.simulation_service.MuJoCoSimulator")
+    @patch("bbia_sim.daemon.simulation_service.MuJoCoSimulator")
     def test_get_available_joints_simulator_error(
         self, mock_simulator_class, mock_simulator
     ):
@@ -345,7 +345,7 @@ class TestSimulationService:
         ready = service.is_simulation_ready()
         assert ready is False
 
-    @patch("src.bbia_sim.daemon.simulation_service.MuJoCoSimulator")
+    @patch("bbia_sim.daemon.simulation_service.MuJoCoSimulator")
     @pytest.mark.asyncio
     async def test_stop_simulation_running(self, mock_simulator_class, mock_simulator):
         """Test arrêt simulation en cours."""
@@ -364,7 +364,7 @@ class TestSimulationService:
         if service._simulation_task:
             await asyncio.sleep(0.1)
 
-    @patch("src.bbia_sim.daemon.simulation_service.MuJoCoSimulator")
+    @patch("bbia_sim.daemon.simulation_service.MuJoCoSimulator")
     def test_get_available_joints(self, mock_simulator_class, mock_simulator):
         """Test récupération articulations disponibles."""
         mock_simulator_class.return_value = mock_simulator
@@ -376,7 +376,7 @@ class TestSimulationService:
         assert len(joints) > 0
         assert "yaw_body" in joints
 
-    @patch("src.bbia_sim.daemon.simulation_service.MuJoCoSimulator")
+    @patch("bbia_sim.daemon.simulation_service.MuJoCoSimulator")
     @pytest.mark.asyncio
     async def test_multiple_start_stop(self, mock_simulator_class, mock_simulator):
         """Test démarrage/arrêt multiples."""
@@ -391,7 +391,7 @@ class TestSimulationService:
         await service.stop_simulation()
         assert service.is_running is False
 
-    @patch("src.bbia_sim.daemon.simulation_service.MuJoCoSimulator")
+    @patch("bbia_sim.daemon.simulation_service.MuJoCoSimulator")
     def test_simulator_error_handling(self, mock_simulator_class):
         """Test gestion erreurs simulateur."""
         # Simuler une erreur lors de l'initialisation
@@ -401,7 +401,7 @@ class TestSimulationService:
         service = SimulationService(model_path="test_model.xml")
         assert service.model_path == "test_model.xml"
 
-    @patch("src.bbia_sim.daemon.simulation_service.MuJoCoSimulator")
+    @patch("bbia_sim.daemon.simulation_service.MuJoCoSimulator")
     @pytest.mark.asyncio
     async def test_simulation_thread_exception(
         self, mock_simulator_class, mock_simulator
