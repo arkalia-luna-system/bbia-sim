@@ -929,8 +929,8 @@ Une analyse exhaustive de TOUS les modules a été effectuée (voir `docs/ANALYS
 
 **Performances SDK Disponibles (Optionnelles) :**
 - ⚠️ Recording/Playback : Méthodes disponibles mais non utilisées dans comportements (opportunité d'optimisation)
-- ⚠️ async_play_move : Disponible mais non exploité (opportunité de performance)
-- ⚠️ Modules IO/Media : Accès disponible mais non utilisé (usage futur possible)
+- ⚠️ async_play_move : Disponible mais non exploité (opportunité de performance - `bbia_behavior.py` utilise déjà `play_move`)
+- ⚠️ Modules IO streams (`get_camera_stream()`, `get_audio_stream()`) : Disponibles via SDK mais non utilisés dans BBIA (décision finale : non critique - code actuel `robot.media.camera.get_image()` fonctionne parfaitement)
 
 **Documentation Référence :**
 - 📄 **Analyse Complète :** `docs/ANALYSE_EXHAUSTIVE_MODULES_2025.md`
@@ -950,7 +950,7 @@ Une analyse exhaustive de TOUS les modules a été effectuée (voir `docs/ANALYS
   - Daemon command (`reachy-mini-daemon`)
   - Endpoints API REST officiels (`/`, `/docs`, `/api/state/full`)
   - Modules Media détaillés (`robot.media.camera`, `.microphone`, `.speaker`)
-  - Modules IO (`robot.io.get_camera_stream()`, `.get_audio_stream()`)
+  - Modules IO (`robot.io.get_camera_stream()`, `.get_audio_stream()`) (disponibles mais non utilisés - décision finale : non critique)
   - Versions Python (3.10-3.13)
   - git-lfs requis
   - Signature `create_head_pose`
