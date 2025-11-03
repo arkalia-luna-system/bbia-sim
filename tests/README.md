@@ -29,7 +29,7 @@
 - **vision_yolo.py** : **99.45%** ✅ (42 tests) - Objectif 50%+ largement dépassé
 - **voice_whisper.py** : **92.52%** ✅ (66 tests) - Objectif 50%+ largement dépassé
 - **dashboard_advanced.py** : **76.71%** ✅ (47 tests, 1156 lignes) - Objectif 50%+ dépassé
-- **daemon/bridge.py** : **54.86%** ✅ (34 tests) - Objectif 30%+ dépassé
+- **daemon/bridge.py** : **55.41%** ✅ (34 tests) - Objectif 30%+ dépassé
 
 **Total tests modules critiques** : **189 tests** pour les 4 modules critiques
 

@@ -28,6 +28,15 @@ from ...simulation_service import simulation_service
 
 logger = logging.getLogger(__name__)
 
+# Import ConnectionManager pour métriques connexions actives
+try:
+    from ...ws.telemetry import manager as telemetry_manager
+
+    TELEMETRY_MANAGER_AVAILABLE = True
+except ImportError:
+    TELEMETRY_MANAGER_AVAILABLE = False
+    telemetry_manager = None  # type: ignore[assignment]
+
 router = APIRouter(prefix="/metrics", tags=["metrics"])
 
 # Métriques Prometheus (si disponible)
@@ -49,6 +58,10 @@ if PROMETHEUS_AVAILABLE:
     )
 
 # Métriques système en mémoire (fallback si Prometheus non disponible)
+# Historique des latences pour calcul p50/p95/p99 (garder dernières 1000 mesures)
+_latency_history: list[float] = []
+_MAX_LATENCY_HISTORY = 1000
+
 _metrics_cache: dict[str, Any] = {
     "requests": {"total": 0, "by_endpoint": {}},
     "latency": {"p50": 0.0, "p95": 0.0, "p99": 0.0},
@@ -57,6 +70,29 @@ _metrics_cache: dict[str, Any] = {
     "connections": {"active": 0},
 }
 _metrics_cache_lock = time.time()
+
+
+def _calculate_percentiles(latencies: list[float]) -> dict[str, float]:
+    """Calcule les percentiles p50, p95, p99 depuis une liste de latences."""
+    if not latencies:
+        return {"p50": 0.0, "p95": 0.0, "p99": 0.0}
+
+    sorted_latencies = sorted(latencies)
+    n = len(sorted_latencies)
+
+    return {
+        "p50": sorted_latencies[int(n * 0.50)] if n > 0 else 0.0,
+        "p95": sorted_latencies[int(n * 0.95)] if n > 1 else sorted_latencies[-1],
+        "p99": sorted_latencies[int(n * 0.99)] if n > 1 else sorted_latencies[-1],
+    }
+
+
+def _record_latency(latency_ms: float) -> None:
+    """Enregistre une latence dans l'historique."""
+    _latency_history.append(latency_ms)
+    # Garder seulement les dernières N mesures
+    if len(_latency_history) > _MAX_LATENCY_HISTORY:
+        _latency_history.pop(0)
 
 
 @router.get("/prometheus")
@@ -102,6 +138,57 @@ async def get_prometheus_metrics() -> Response:
         logger.warning(f"Erreur mise à jour métriques: {e}")
 
     return Response(content=generate_latest(), media_type="text/plain")
+
+
+@router.get("/performance")
+async def get_performance_metrics() -> dict[str, Any]:
+    """Endpoint pour métriques de performance détaillées (p50/p95/p99).
+
+    Returns:
+        Métriques de performance avec percentiles
+    """
+    # Calculer percentiles depuis historique
+    percentiles = _calculate_percentiles(_latency_history)
+
+    # Mettre à jour cache
+    _metrics_cache["latency"] = percentiles
+
+    # Métriques système
+    system_info: dict[str, Any] = {}
+    if PSUTIL_AVAILABLE and psutil:
+        process = psutil.Process(os.getpid())
+        system_info = {
+            "cpu_percent": process.cpu_percent(interval=0.1),
+            "memory_mb": round(process.memory_info().rss / 1_048_576, 2),
+            "memory_percent": process.memory_percent(),
+        }
+    else:
+        system_info = {
+            "cpu_percent": 0.0,
+            "memory_mb": 0.0,
+            "memory_percent": 0.0,
+            "note": "psutil non disponible",
+        }
+
+    # FPS simulation
+    fps = 0.0
+    if simulation_service.is_simulation_ready():
+        try:
+            fps = getattr(simulation_service.simulator, "fps", 0.0)
+        except Exception:
+            fps = 0.0
+
+    return {
+        "timestamp": time.time(),
+        "latency": {
+            "p50_ms": percentiles["p50"],
+            "p95_ms": percentiles["p95"],
+            "p99_ms": percentiles["p99"],
+            "samples": len(_latency_history),
+        },
+        "system": system_info,
+        "simulation": {"fps": fps},
+    }
 
 
 @router.get("/healthz")

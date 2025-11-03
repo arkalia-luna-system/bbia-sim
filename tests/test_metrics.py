@@ -53,3 +53,17 @@ class TestMetrics:
             assert "text/plain" in response.headers["content-type"]
         else:
             assert "Prometheus non disponible" in response.text
+
+    def test_performance_metrics(self):
+        """Test endpoint /metrics/performance."""
+        response = client.get("/metrics/performance")
+        assert response.status_code == 200
+        data = response.json()
+        assert "timestamp" in data
+        assert "latency" in data
+        assert "p50_ms" in data["latency"]
+        assert "p95_ms" in data["latency"]
+        assert "p99_ms" in data["latency"]
+        assert "samples" in data["latency"]
+        assert "system" in data
+        assert "simulation" in data
