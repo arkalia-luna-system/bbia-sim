@@ -8,17 +8,16 @@ import threading
 from typing import Any
 
 import numpy as np
+import numpy.typing as npt
 
 try:
-    import cv2
-    from ultralytics import YOLO
+    import cv2  # type: ignore[import]
+    from ultralytics import YOLO  # type: ignore[import]
 
     YOLO_AVAILABLE = True
 except ImportError:
     YOLO_AVAILABLE = False
-    # Variables globales pour éviter les erreurs de type
-    YOLO = None  # type: ignore
-    cv2 = None  # type: ignore
+    # Imports non disponibles - le code vérifie YOLO_AVAILABLE avant utilisation
 
 logger = logging.getLogger(__name__)
 
@@ -115,7 +114,7 @@ class YOLODetector:
             logger.info(f"📥 Chargement modèle YOLOv8{self.model_size}...")
             start_time = time_module.time()
 
-            model = YOLO(f"yolov8{self.model_size}.pt")  # type: ignore
+            model = YOLO(f"yolov8{self.model_size}.pt")
 
             load_time = time_module.time() - start_time
             logger.info(f"✅ Modèle YOLO chargé en {load_time:.1f}s")
@@ -133,7 +132,9 @@ class YOLODetector:
             logger.error(f"❌ Erreur chargement YOLO: {e}")
             return False
 
-    def detect_objects(self, image: np.ndarray) -> list[dict[str, Any]]:
+    def detect_objects(
+        self, image: npt.NDArray[np.uint8]
+    ) -> list[dict[str, Any]]:
         """Détecte les objets dans une image.
 
         Args:
@@ -153,7 +154,7 @@ class YOLODetector:
                 logger.error("❌ Modèle YOLO non chargé")
                 return []
 
-            results = self.model(image, conf=self.confidence_threshold, verbose=False)  # type: ignore
+            results = self.model(image, conf=self.confidence_threshold, verbose=False)
 
             detections = []
             for result in results:
@@ -166,7 +167,7 @@ class YOLODetector:
                         # Confiance et classe
                         confidence = box.conf[0].cpu().numpy()
                         class_id = int(box.cls[0].cpu().numpy())
-                        class_name = self.model.names[class_id]  # type: ignore
+                        class_name = self.model.names[class_id]
 
                         detection = {
                             "bbox": [int(x1), int(y1), int(x2), int(y2)],
@@ -261,11 +262,11 @@ class YOLODetector:
 class FaceDetector:
     """Module de détection de visages utilisant MediaPipe."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialise le détecteur de visages (utilise cache global si disponible)."""
-        self.mp_face_detection = None
-        self.mp_drawing = None
-        self.face_detection = None
+        self.mp_face_detection: Any | None = None
+        self.mp_drawing: Any | None = None
+        self.face_detection: Any | None = None
 
         # OPTIMISATION PERFORMANCE: Réutiliser instance MediaPipe depuis cache global
         global _mediapipe_face_detection_cache
@@ -302,7 +303,9 @@ class FaceDetector:
         except ImportError:
             logger.warning("⚠️ MediaPipe non disponible")
 
-    def detect_faces(self, image: np.ndarray) -> list[dict[str, Any]]:
+    def detect_faces(
+        self, image: npt.NDArray[np.uint8]
+    ) -> list[dict[str, Any]]:
         """Détecte les visages dans une image.
 
         Args:

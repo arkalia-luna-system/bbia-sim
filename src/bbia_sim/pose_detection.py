@@ -22,7 +22,7 @@ try:
 
     MEDIAPIPE_POSE_AVAILABLE = True
 except ImportError:
-    mp = None  # type: ignore
+    mp = None
     logger.debug("MediaPipe non disponible. Installer avec: pip install mediapipe")
 
 
@@ -74,7 +74,9 @@ class BBIAPoseDetection:
         except Exception as e:
             logger.error(f"❌ Erreur initialisation MediaPipe Pose: {e}")
 
-    def detect_pose(self, image: np.ndarray) -> dict[str, Any] | None:
+    def detect_pose(
+        self, image: np.ndarray[Any, np.dtype[np.uint8]]
+    ) -> dict[str, Any] | None:
         """Détecte la posture complète dans une image.
 
         Args:

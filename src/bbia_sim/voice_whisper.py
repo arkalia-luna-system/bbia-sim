@@ -20,13 +20,13 @@ try:
     whisper = _whisper_module
 except ImportError:
     WHISPER_AVAILABLE = False
-    whisper = None  # type: ignore[assignment]
+    whisper = None
 
 # Imports optionnels pour les patches dans les tests
 try:
     from transformers import pipeline as transformers_pipeline
 except ImportError:
-    transformers_pipeline = None  # type: ignore[assignment]
+    transformers_pipeline = None
 
 try:
     import soundfile as sf
@@ -412,7 +412,7 @@ class WhisperSTT:
             chunk_duration = 0.5  # Analyser par chunks de 500ms
             chunk_samples = int(chunk_duration * sample_rate)
 
-            audio_buffer: list[np.ndarray] = []
+            audio_buffer: list[np.ndarray[Any, np.dtype[np.float32]]] = []
             silence_duration = 0.0
             max_silence = silence_threshold
             total_duration = 0.0
@@ -535,7 +535,9 @@ class WhisperSTT:
             from collections import deque
 
             buffer_max_chunks = 10  # Max 10 chunks (limite sécurité)
-            audio_buffer: deque[np.ndarray] = deque(maxlen=buffer_max_chunks)
+            audio_buffer: deque[np.ndarray[Any, np.dtype[np.float32]]] = deque(
+                maxlen=buffer_max_chunks
+            )
 
             # OPTIMISATION PERFORMANCE: Throttling transcription pour éviter surcharge CPU/GPU
             last_transcription_time = 0.0
