@@ -19,12 +19,8 @@ os.environ["BBIA_DISABLE_AUDIO"] = "1"
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 # Importer le module complet au niveau du fichier pour que coverage le détecte
-try:
-    import bbia_sim.voice_whisper  # noqa: F401
-except (ImportError, AttributeError, Exception):
-    # Si l'import échoue, ce sera géré dans les tests individuels
-    pass
-
+# IMPORTANT: Import direct (pas dans try/except) pour que coverage le détecte
+import bbia_sim.voice_whisper  # noqa: F401
 from bbia_sim.voice_whisper import (
     VoiceCommandMapper,
     WhisperSTT,

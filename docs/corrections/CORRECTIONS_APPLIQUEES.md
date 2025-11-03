@@ -2,7 +2,7 @@
 
 > Référence état global
 >
-> Voir `docs/status.md` → "État par axe" pour l’état consolidé post‑corrections et axes restants.
+> Voir `docs/reference/project-status.md` → "État par axe" pour l’état consolidé post‑corrections et axes restants.
 
 **Date**: Oct / Nov. 2025
 **Référentiel**: pollen-robotics/reachy_mini@84c40c3
@@ -128,5 +128,5 @@ Toutes les corrections prioritaires sont **complètes et testées** ✅
 
 ---
 
-**Référence** : Voir `docs/status.md` pour l'état consolidé post-corrections et axes restants.
+**Référence** : Voir `docs/reference/project-status.md` pour l'état consolidé post-corrections et axes restants.
 

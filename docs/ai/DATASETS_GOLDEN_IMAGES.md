@@ -3,7 +3,7 @@
 **Date** : Oct / Nov. 2025  
 **Version** : 1.0
 
-> **Voir aussi** : [`docs/references/INDEX_THEMATIQUE.md`](../references/INDEX_THEMATIQUE.md) et [`docs/status.md`](../status.md)
+> **Voir aussi** : [`docs/reference/INDEX_THEMATIQUE.md`](../reference/INDEX_THEMATIQUE.md) et [`docs/reference/project-status.md`](../reference/project-status.md)
 
 ---
 
@@ -32,7 +32,7 @@ assets/golden/
 
 ## 📚 Références
 
-- **État par axe** : [`docs/status.md`](../status.md) → Vision / Audio / IA
+- **État par axe** : [`docs/reference/project-status.md`](../reference/project-status.md) → Vision / Audio / IA
 
 ---
 

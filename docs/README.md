@@ -36,7 +36,7 @@ flowchart TB
 > **📈 Vue d'ensemble du projet**  
 > État par axe : Observabilité, Performance, Sécurité, CI/CD, Packaging, API/SDK, Robot, UX, IA, Docs, Qualité, Communauté
 
-👉 **[status.md](status.md)** — Tableau de bord complet du projet
+👉 **[project-status.md](reference/project-status.md)** — Tableau de bord complet du projet
 
 ---
 
@@ -48,9 +48,9 @@ flowchart TB
 
 | Document | Description | Niveau |
 |----------|-------------|--------|
-| [ARCHITECTURE_OVERVIEW.md](architecture/ARCHITECTURE_OVERVIEW.md) | Vue d'ensemble (v1.3.2) | 🟢 Débutant |
-| [ARCHITECTURE.md](architecture/ARCHITECTURE.md) | Guide architecture | 🟡 Intermédiaire |
-| [ARCHITECTURE_DETAILED.md](architecture/ARCHITECTURE_DETAILED.md) | Détails techniques | 🔴 Avancé |
+| [ARCHITECTURE_OVERVIEW.md](development/architecture/ARCHITECTURE_OVERVIEW.md) | Vue d'ensemble (v1.3.2) | 🟢 Débutant |
+| [ARCHITECTURE.md](development/architecture/ARCHITECTURE.md) | Guide architecture | 🟡 Intermédiaire |
+| [ARCHITECTURE_DETAILED.md](development/architecture/ARCHITECTURE_DETAILED.md) | Détails techniques | 🔴 Avancé |
 
 ---
 
@@ -62,7 +62,7 @@ flowchart TB
 
 - 🟢 **[Guide Débutant](guides/GUIDE_DEBUTANT.md)** — Installation et premiers pas en 5 minutes
 - 🟡 **[Guide Avancé](guides/GUIDE_AVANCE.md)** — Fonctionnalités avancées et architecture
-- 🔴 **[Guides Techniques](guides_techniques/)** — Intégration, tests, migration
+- 🔴 **[Guides Techniques](development/)** — Intégration, tests, migration
 
 ### Par Sujet
 
@@ -76,8 +76,8 @@ flowchart TB
 
 > **Version et historique du projet**
 
-- 📝 **[RELEASE_NOTES.md](references/RELEASE_NOTES.md)** — Notes de version
-- 📚 **[PROJECT_HISTORY.md](references/PROJECT_HISTORY.md)** — Historique du projet
+- 📝 **[RELEASE_NOTES.md](reference/RELEASE_NOTES.md)** — Notes de version
+- 📚 **[PROJECT_HISTORY.md](reference/PROJECT_HISTORY.md)** — Historique du projet
 - 🔄 **[CHANGELOG.md](../CHANGELOG.md)** — Journal des modifications
 
 ---
@@ -88,19 +88,25 @@ flowchart TB
 
 ### Conformité SDK
 
-- ✅ **[Conformité Complète](conformite/CONFORMITE_REACHY_MINI_COMPLETE.md)** — Validation SDK officiel
-- 🔍 **[Audit Synthèse](audit/INDEX_AUDITS_CONSOLIDES.md)** — Audits consolidés
+- ✅ **[Conformité Complète](quality/compliance/CONFORMITE_REACHY_MINI_COMPLETE.md)** — Validation SDK officiel
+- 🔍 **[Audit Synthèse](quality/audits/INDEX_AUDITS_CONSOLIDES.md)** — Audits consolidés
 
 ### Qualité Code
 
 - 🎯 **[Performance](performance/RESUME_PERFORMANCE_CORRECTIONS_2025.md)** — Optimisations appliquées
-- ✅ **[Validation Qualité](qualite/VALIDATION_FINALE_QUALITE_2025.md)** — Rapports de validation
+- ✅ **[Validation Qualité](quality/validation/VALIDATION_FINALE_QUALITE_2025.md)** — Rapports de validation
 
 ---
 
 ## 📁 Navigation Complète
 
-👉 **[INDEX_FINAL.md](INDEX_FINAL.md)** — Index complet de toute la documentation avec navigation thématique
+👉 **[INDEX_FINAL.md](INDEX_FINAL.md)** — Index complet de toute la documentation avec navigation thématique  
+👉 **[GUIDE_NAVIGATION.md](GUIDE_NAVIGATION.md)** — Guide de navigation rapide par profil
+
+### 📊 Rapports et Bilans (Archivés)
+- **[Bilan Final Documentation](archive/nettoyage-2025/BILAN_FINAL_DOCUMENTATION.md)** — Résumé complet du nettoyage documentation (archivé)
+- **[Résumé Corrections Finales](archive/nettoyage-2025/RESUME_CORRECTIONS_FINALES.md)** — Liste des corrections appliquées (archivé)
+- **[Tâches Restantes](archive/tasks/A_FAIRE_RESTANT.md)** — Tâches optionnelles restantes (archivé)
 
 ---
 
@@ -108,12 +114,12 @@ flowchart TB
 
 > **Documents historiques et terminés**
 
-👉 **[archives/README.md](archives/README.md)** — Index des archives (liens vers fichiers "final")
+👉 **[archive/README.md](archive/README.md)** — Index des archives (liens vers fichiers "final")
 
 ---
 
 <div align="center">
 
-**💡 Besoin d'aide ?** Consultez le [Guide Débutant](guides/GUIDE_DEBUTANT.md) ou la [FAQ](FAQ.md)
+**💡 Besoin d'aide ?** Consultez le [Guide Débutant](guides/GUIDE_DEBUTANT.md) ou le [Troubleshooting](getting-started/troubleshooting.md)
 
 </div>

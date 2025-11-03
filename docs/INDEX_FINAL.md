@@ -77,47 +77,55 @@ mindmap
 
 ## 📚 DOCUMENTATION PAR CATÉGORIE
 
-> **🤖 Guide Assistants IA :** Pour les assistants IA (Claude, GPT, Cursor, etc.), voir [`ASSISTANT_IA_GUIDE.md`](ASSISTANT_IA_GUIDE.md) - Scripts, conventions, tâches à poursuivre.
+> **🤖 Guide Assistants IA :** Pour les assistants IA (Claude, GPT, Cursor, etc.), voir [`assistant-ia-guide.md`](development/assistant-ia-guide.md) - Scripts, conventions, tâches à poursuivre.
 
 ### 📖 Guides Utilisateurs
 - [Guide Débutant](guides/GUIDE_DEBUTANT.md) - Installation et premiers pas
 - [Guide Avancé](guides/GUIDE_AVANCE.md) - Fonctionnalités avancées
 - [Guide Chat BBIA](guides/GUIDE_CHAT_BBIA.md) - Système de chat intelligent
 - [Guide Reachy Mini Wireless](guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md) - Guide complet du robot
-- [FAQ Troubleshooting](guides_techniques/FAQ_TROUBLESHOOTING.md)
+- [FAQ Troubleshooting](development/FAQ_TROUBLESHOOTING.md)
 
 ### 🏗️ Architecture et Design
-- [Architecture Vue d'Ensemble](architecture/ARCHITECTURE_OVERVIEW.md)
-- [Architecture Détaillée](architecture/ARCHITECTURE_DETAILED.md)
-- [Guide Architecture](architecture/ARCHITECTURE_OVERVIEW.md) (référence principale)
-- [Index thématique (par profils)](references/INDEX_THEMATIQUE.md)
+- [Architecture Vue d'Ensemble](development/architecture/ARCHITECTURE_OVERVIEW.md)
+- [Architecture Détaillée](development/architecture/ARCHITECTURE_DETAILED.md)
+- [Guide Architecture](development/architecture/ARCHITECTURE.md) (référence principale)
+- [Index thématique (par profils)](reference/INDEX_THEMATIQUE.md)
 
 ### ✅ Conformité et Qualité
-- [Conformité Reachy-Mini Complète](conformite/CONFORMITE_REACHY_MINI_COMPLETE.md)
-- [Rapports de Conformité](archives/conformite/) - Archives conformité
-- [Validation Qualité](qualite/VALIDATION_FINALE_QUALITE_2025.md) - Rapports de validation
-- [Pipeline CI/CD](ci/PIPELINE_CI.md)
+- [Conformité Reachy-Mini Complète](quality/compliance/CONFORMITE_REACHY_MINI_COMPLETE.md)
+- [Conformité Complète](quality/compliance/CONFORMITE_REACHY_MINI_COMPLETE.md) - Conformité SDK (archives référencées dans le fichier)
+- [Validation Qualité](quality/validation/VALIDATION_FINALE_QUALITE_2025.md) - Rapports de validation
+- [Pipeline CI/CD](deployment/PIPELINE_CI.md)
+
+### 📊 Documentation et Rapports
+- [Bilan Final Documentation](archive/nettoyage-2025/BILAN_FINAL_DOCUMENTATION.md) - Résumé complet du nettoyage (archivé)
+- [Résumé Corrections Finales](archive/nettoyage-2025/RESUME_CORRECTIONS_FINALES.md) - Liste des corrections appliquées (archivé)
+- [Statut Nettoyage Final](archive/nettoyage-2025/STATUT_NETTOYAGE_FINAL.md) - Statut final du nettoyage (archivé)
+- [Rapport Nettoyage Final](archive/nettoyage-2025/RAPPORT_NETTOYAGE_FINAL.md) - Rapport détaillé du nettoyage (archivé)
+- [Tâches Restantes](archive/tasks/A_FAIRE_RESTANT.md) - Tâches optionnelles restantes (archivé)
+- [Tâches Restantes Novembre 2025](quality/audits/TACHES_RESTANTES_NOV2025.md) - Liste des tâches restantes à jour
 
 ### 🤖 Pour Assistants IA
-- [Guide Assistants IA](ASSISTANT_IA_GUIDE.md) - Scripts, conventions, workflow pour assistants IA
+- [Guide Assistants IA](development/assistant-ia-guide.md) - Scripts, conventions, workflow pour assistants IA
 
 ### 🔧 Corrections et Améliorations
-- [Corrections des démos Reachy](archives/corrections_terminees/CORRECTIONS_DEMOS_REACHY.md)
+- [Corrections Appliquées](corrections/CORRECTIONS_APPLIQUEES.md) - Corrections démos et modules
 - [Corrections appliquées](corrections/CORRECTIONS_APPLIQUEES.md)
-- [Corrections modules non prioritaires](archives/corrections_terminees/CORRECTIONS_MODULES_NON_PRIORITAIRES_2025.md)
+- [Corrections Appliquées](corrections/CORRECTIONS_APPLIQUEES.md) - Corrections démos et modules
 - [Améliorations futures du SDK](ameliorations/AMELIORATIONS_FUTURES_SDK.md)
 
 ### 🎮 Mouvements et Contrôle
-- [Mouvements Reachy Mini](mouvements/MOUVEMENTS_REACHY_MINI.md)
+- [Mouvements Reachy Mini](hardware/MOUVEMENTS_REACHY_MINI.md)
 - [Guide Unity BBIA](unity/UNITY_BBIA_GUIDE.md)
 - [Dépannage Unity](unity/UNITY_TROUBLESHOOTING.md)
-- [Sécurité robot (DO/DON’T)](robot/SECURITE_ROBOT.md)
+- [Sécurité robot (DO/DON'T)](hardware/SECURITE_ROBOT.md)
 
 ### ⚙️ Installation et Configuration
 - [Installation Audio](installation/AUDIO_SETUP.md)
-- [Configuration communautaire](references/COMMUNITY_CONFIG.md)
-- [Guide d'intégration](guides_techniques/INTEGRATION_GUIDE.md)
-- [Guide de migration](guides_techniques/MIGRATION_GUIDE.md)
+- [Configuration communautaire](reference/COMMUNITY_CONFIG.md)
+- [Guide d'intégration](development/INTEGRATION_GUIDE.md)
+- [Guide de migration](development/MIGRATION_GUIDE.md)
 
 ### 🎯 Simulation
 - [Simulation BBIA complète](simulations/SIMULATION_BBIA_COMPLETE.md)
@@ -125,9 +133,9 @@ mindmap
 - [Observabilité (logs/metrics/santé)](observabilite/OBSERVABILITE.md)
 
 ### 🧪 Tests et Qualité
-- [Guide de test](guides_techniques/TESTING_GUIDE.md)
+- [Guide de test](development/TESTING_GUIDE.md)
 - [Organisation des tests d'intelligence](organisation/ORGANISATION_TESTS_INTELLIGENCE.md)
-- [Rapports d'audit](audit/) - Tous les audits
+- [Rapports d'audit](quality/audits/README.md) - Tous les audits
 
 ### 🤖 Intelligence et IA
 - [Améliorations intelligence BBIA](intelligence/AMELIORATIONS_INTELLIGENCE_BBIA_2025.md)
@@ -137,9 +145,9 @@ mindmap
 
 ### 📊 Analyses et Rapports
 - [Analyses de modules](analyses/ANALYSE_MODULES_NON_PRIORITAIRES_2025.md)
-- [Résumés d'analyses](analyses/RESUME_ANALYSE_EXPERT_FINALE_2025.md)
+- [Analyses](analyses/) - Analyses et rapports d'analyse
 - [Analyse code Unity AR](analyses/ANALYSE_CODE_UNITY_AR.md)
-- [Contrats REST/WS](api/CONTRATS_REST_WS.md)
+- [Contrats REST/WS](development/api/CONTRATS_REST_WS.md)
 - [Roadmap Dashboard/UX](dashboard/ROADMAP_DASHBOARD.md)
 
 ### ⚡ Performance
@@ -148,14 +156,14 @@ mindmap
 - [Résumé performance](performance/RESUME_PERFORMANCE_CORRECTIONS_2025.md)
 
 ### 🤖 Reachy et Robotique
-- [Prêt Reachy A4](reachy/PRET_REACHY_A4.md)
-- [Reachy updates log](reachy/REACHY_UPDATES_LOG.md)
+- [Prêt Reachy A4](hardware/reachy-mini/PRET_REACHY_A4.md)
+- [Reachy updates log](hardware/reachy-mini/REACHY_UPDATES_LOG.md)
 
 ### 📋 Références et statuts
-- [Statut du projet](references/STATUT_PROJET.md)
-- [Historique du projet](references/PROJECT_HISTORY.md)
-- [Release notes](references/RELEASE_NOTES.md)
-- [Contrat](references/CONTRACT.md)
+- [Statut du projet](reference/STATUT_PROJET.md)
+- [Historique du projet](reference/PROJECT_HISTORY.md)
+- [Release notes](reference/RELEASE_NOTES.md)
+- [Contrat](reference/CONTRACT.md)
 - [Gestion des processus](organisation/PROCESS_MANAGEMENT.md)
 
 ### 📱 Présentation
@@ -166,12 +174,12 @@ mindmap
 ## 🔍 Archives
 
 ### Oct / Nov. 2025
-- [Résumé final - Octobre 2025](archives/2025-10/resumes/RESUME_FINAL_ULTIME_OCTOBRE_2025.md)
-- [Résumés détaillés](archives/2025-10/resumes/)
-- [Corrections et améliorations](archives/2025-10/)
-- [Rapports d'audit](archives/audits/)
+- [Résumé Final Ultime](RESUME_FINAL_ULTIME.md) - Résumé complet du projet
+- [Archives Nettoyage](archive/nettoyage-2025/README.md) - Documents nettoyage
+- [Index Audits](quality/audits/INDEX_AUDITS_CONSOLIDES.md) - Tous les audits (historiques inclus)
+- [Tâches Archivées](archive/tasks/README.md) - Tâches archivées
 
-Voir le dossier `archives/` pour les rapports détaillés historiques.
+Voir le dossier `archive/` pour les rapports détaillés historiques.
 
 ---
 
@@ -180,28 +188,28 @@ Voir le dossier `archives/` pour les rapports détaillés historiques.
 ### Par Rôle
 
 **Chef de projet**
-- [Statut du projet](references/STATUT_PROJET.md)
-- [Release notes](references/RELEASE_NOTES.md)
-- [Historique](references/PROJECT_HISTORY.md)
+- [Statut du projet](reference/STATUT_PROJET.md)
+- [Release notes](reference/RELEASE_NOTES.md)
+- [Historique](reference/PROJECT_HISTORY.md)
 - [Gestion des processus](organisation/PROCESS_MANAGEMENT.md)
 
 **Développeur**
 - [Guide avancé](guides/GUIDE_AVANCE.md)
-- [Architecture](architecture/ARCHITECTURE_OVERVIEW.md)
-- [Guide de test](guides_techniques/TESTING_GUIDE.md)
-- [Guide d'intégration](guides_techniques/INTEGRATION_GUIDE.md)
+- [Architecture](development/architecture/ARCHITECTURE_OVERVIEW.md)
+- [Guide de test](development/TESTING_GUIDE.md)
+- [Guide d'intégration](development/INTEGRATION_GUIDE.md)
 
 **Utilisateur robotique**
 - [Guide Reachy Mini](guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md)
-- [Mouvements](mouvements/MOUVEMENTS_REACHY_MINI.md)
-- [Conformité](conformite/CONFORMITE_REACHY_MINI_COMPLETE.md)
+- [Mouvements](hardware/MOUVEMENTS_REACHY_MINI.md)
+- [Conformité](quality/compliance/CONFORMITE_REACHY_MINI_COMPLETE.md)
 - [Simulation MuJoCo](simulations/MUJOCO_SIMULATION_GUIDE.md)
 
 **QA / Tests**
-- [Guide de test](guides_techniques/TESTING_GUIDE.md)
-- [Rapports d'audit](audit/)
-- [Corrections](corrections/)
-- [Validation qualité](qualite/)
+- [Guide de test](development/TESTING_GUIDE.md)
+- [Index Audits](quality/audits/INDEX_AUDITS_CONSOLIDES.md) - Tous les audits
+- [Corrections Appliquées](corrections/CORRECTIONS_APPLIQUEES.md) - Corrections
+- [Validation Qualité](quality/validation/VALIDATION_FINALE_QUALITE_2025.md) - Validation qualité
 
 ---
 
@@ -256,15 +264,15 @@ graph TB
     end
     
     subgraph "🏗️ Architecture"
-        ARCH_OVER[ARCHITECTURE_OVERVIEW.md<br/>Vue d'ensemble]
-        ARCH_DET[ARCHITECTURE_DETAILED.md<br/>Détails techniques]
-        ARCH_COMP[ARCHITECTURE.md<br/>Guide complet]
+        ARCH_OVER[development/architecture/<br/>ARCHITECTURE_OVERVIEW.md<br/>Vue d'ensemble]
+        ARCH_DET[development/architecture/<br/>ARCHITECTURE_DETAILED.md<br/>Détails techniques]
+        ARCH_COMP[development/architecture/<br/>ARCHITECTURE.md<br/>Guide complet]
     end
     
     subgraph "✅ Qualité & Conformité"
         CONFORM[CONFORMITE_REACHY_MINI_COMPLETE.md<br/>Conformité SDK]
-        AUDIT[audit/*.md<br/>Audits complets]
-        QUALITY[qualite/*.md<br/>Validation qualité]
+        AUDIT[quality/audits/*.md<br/>Audits complets]
+        QUALITY[quality/validation/*.md<br/>Validation qualité]
     end
     
     subgraph "🧠 Intelligence & IA"
@@ -275,8 +283,8 @@ graph TB
     
     subgraph "⚙️ Configuration"
         INSTALL[installation/*.md<br/>Setup audio]
-        INTEGRATION[guides_techniques/<br/>INTEGRATION_GUIDE.md]
-        DEPLOY[deploy/*.md<br/>Déploiement]
+        INTEGRATION[development/<br/>INTEGRATION_GUIDE.md]
+        DEPLOY[deployment/*.md<br/>Déploiement]
     end
     
     START --> BEGINNER
@@ -299,26 +307,23 @@ graph TB
 **Organisation détaillée :**
 ```
 docs/
-├── guides/              # Guides utilisateurs
-├── architecture/         # Documentation architecture
-├── conformite/          # Conformité SDK
-├── corrections/         # Corrections appliquées
-├── qualite/            # Validation qualité
-├── analyses/            # Analyses du projet
-├── ameliorations/       # Améliorations futures
-├── mouvements/          # Mouvements robot
-├── reachy/              # Documentation Reachy
-├── organisation/        # Organisation projets
-├── presentation/        # Présentations
-├── references/          # Références (statut, historique, etc.)
-├── audit/              # Audits
-├── guides_techniques/  # Guides techniques
-├── installation/        # Guides d'installation
-├── intelligence/        # Documentation IA
-├── performance/         # Optimisations performance
-├── simulations/         # Simulation
-├── unity/              # Unity et AR
-└── archives/           # Archives historiques
+├── getting-started/     # 🚀 Démarrage rapide
+├── guides/              # 📖 Guides utilisateurs
+├── development/         # 💻 Développement (architecture, API, guides techniques)
+│   ├── development/architecture/
+│   └── development/api/
+├── deployment/          # 🚀 Déploiement (CI/CD, Render)
+├── hardware/           # 🤖 Hardware & robotique (Reachy Mini, mouvements)
+│   └── reachy-mini/
+├── intelligence/        # 🧠 Intelligence artificielle
+├── quality/            # ✅ Qualité & conformité (compliance, audits, validation)
+│   ├── compliance/
+│   ├── audits/
+│   └── validation/
+├── performance/         # ⚡ Performance
+├── reference/          # 📚 Références (statut, historique, releases)
+├── archive/            # 📦 Archives (nettoyage, tâches, historique)
+└── (autres dossiers spécifiques)
 ```
 
 ---
@@ -351,7 +356,7 @@ export BBIA_TELEMETRY_TIMEOUT=1.0
 2. **Installer le projet ?** → [Installation Audio](installation/AUDIO_SETUP.md)
 3. **Utiliser le robot ?** → [Guide Reachy Mini](guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md)
 4. **Développer ?** → [Guide Avancé](guides/GUIDE_AVANCE.md)
-5. **Tester ?** → [Guide de Test](guides_techniques/TESTING_GUIDE.md)
+5. **Tester ?** → [Guide de Test](development/TESTING_GUIDE.md)
 
 ---
 

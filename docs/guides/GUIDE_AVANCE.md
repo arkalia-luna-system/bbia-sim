@@ -1,6 +1,6 @@
 # Guide avancé - BBIA-SIM
 
-> Liens utiles: `docs/references/INDEX_THEMATIQUE.md` · `docs/status.md`
+> Liens utiles: `docs/reference/INDEX_THEMATIQUE.md` · `docs/reference/project-status.md`
 
 > Compatibilité Python et CI
 >
@@ -189,7 +189,7 @@ bbia_sim.sim.enable_caching()
 
 ## Migration simulation → robot réel
 
-Voir : [MIGRATION_GUIDE.md](../guides_techniques/MIGRATION_GUIDE.md)
+Voir : [MIGRATION_GUIDE.md](../development/MIGRATION_GUIDE.md)
 
 ---
 
@@ -207,7 +207,7 @@ robot.start_recording()
 robot.stop_recording()
 ```
 
-Voir : [RAPPORT_CONFORMITE_SDK_2024.md](../archives/conformite/RAPPORT_CONFORMITE_SDK_2024.md)
+Voir : [RAPPORT_CONFORMITE_SDK_2024.md](../archive/quality/compliance/RAPPORT_CONFORMITE_SDK_2024.md)
 
 ---
 

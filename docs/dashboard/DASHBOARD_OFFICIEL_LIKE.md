@@ -123,9 +123,9 @@ Les animations SVG pour le daemon sont optionnelles. Si absentes, le dashboard f
 - ✅ Route `GET /` qui rend le dashboard
 
 ### API conforme :
-- ✅ Endpoints `/api/daemon/*` pour contrôle daemon
-- ✅ Endpoints `/api/apps/*` pour gestion apps
-- ✅ Endpoints `/api/move/*` pour mouvements
+- ✅ Endpoints `/development/api/daemon/*` pour contrôle daemon
+- ✅ Endpoints `/development/api/apps/*` pour gestion apps
+- ✅ Endpoints `/development/api/move/*` pour mouvements
 - ✅ WebSocket pour temps réel
 
 ### JavaScript identique :
@@ -176,8 +176,8 @@ python -c "from bbia_sim.daemon.app.main import app; print('✅ OK')"
 ## 📚 Références
 
 - **SDK Officiel** : https://github.com/pollen-robotics/reachy_mini
-- **Documentation BBIA** : `docs/conformite/CONFORMITE_REACHY_MINI_COMPLETE.md`
-- **Comparaison** : `docs/audit/COMPARAISON_DOCUMENTATION_OFFICIELLE.md`
+- **Documentation BBIA** : `docs/quality/compliance/CONFORMITE_REACHY_MINI_COMPLETE.md`
+- **Comparaison** : `docs/quality/audits/COMPARAISON_DOCUMENTATION_OFFICIELLE.md`
 
 ---
 

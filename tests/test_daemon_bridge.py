@@ -14,12 +14,8 @@ import pytest
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 # Importer le module au niveau du fichier pour que coverage le détecte
-# Coverage ne détecte que les imports au niveau module, pas ceux dans les tests
-try:
-    import bbia_sim.daemon.bridge  # noqa: F401
-except (ImportError, AttributeError, Exception):
-    # Si l'import échoue, ce sera géré dans les tests individuels
-    pass
+# IMPORTANT: Import direct (pas dans try/except) pour que coverage le détecte
+import bbia_sim.daemon.bridge  # noqa: F401
 
 
 class TestDaemonBridge:

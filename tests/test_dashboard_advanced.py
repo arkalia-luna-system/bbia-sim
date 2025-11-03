@@ -16,21 +16,20 @@ import pytest
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 # Importer le module directement - coverage doit le détecter
+# IMPORTANT: Import direct (pas dans try/except) pour que coverage le détecte
 # Les patches dans les tests individuels géreront les dépendances
-# IMPORTANT: L'import doit être au niveau module pour que coverage le détecte
-try:
-    # Import direct du module pour coverage
-    import bbia_sim.dashboard_advanced  # noqa: F401
+import bbia_sim.dashboard_advanced  # noqa: F401
 
-    # Import des classes/fonctions pour tests
+# Import des classes/fonctions pour tests (peut échouer si FastAPI non disponible)
+try:
     from bbia_sim.dashboard_advanced import (  # noqa: F401
         FASTAPI_AVAILABLE,
         BBIAWebSocketManager,
     )
-except (ImportError, AttributeError, Exception):
-    # Si l'import échoue complètement, ce sera géré dans les tests individuels
-    # Mais normalement l'import devrait réussir même si FastAPI n'est pas disponible
-    pass
+except (ImportError, AttributeError):
+    # FastAPI peut ne pas être disponible en test
+    FASTAPI_AVAILABLE = False
+    BBIAWebSocketManager = None  # type: ignore[assignment,misc]
 
 
 class TestDashboardAdvanced:

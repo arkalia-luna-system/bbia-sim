@@ -1,6 +1,6 @@
 # Guide débutant - BBIA-SIM
 
-> Liens utiles: `docs/references/INDEX_THEMATIQUE.md` · `docs/status.md`
+> Liens utiles: `docs/reference/INDEX_THEMATIQUE.md` · `docs/reference/project-status.md`
 
 > Compatibilité Python et CI
 >
@@ -141,13 +141,13 @@ mjpython examples/demo_chat_bbia_3d.py
 
 ```bash
 # Démarrer l’API publique (mode dev)
-python deploy/public_api.py --dev
+python deployment/public_api.py --dev
 
 # Vérifier la santé
 curl http://localhost:8000/health
 
 # (Optionnel) Vérifier config rapide
-python deploy/public_api.py --check
+python deployment/public_api.py --check
 ```
 
 ### Variables d'environnement utiles
@@ -183,11 +183,11 @@ R : Oui, le système est extensible. Voir `examples/demo_emotion_ok.py`
 
 ## Prochaines étapes
 
-1. Découvrir : [Architecture (vue d'ensemble)](../architecture/ARCHITECTURE_OVERVIEW.md)
+1. Découvrir : [Architecture (vue d'ensemble)](../development/architecture/ARCHITECTURE_OVERVIEW.md)
 2. Créer : vos propres comportements avec `examples/demo_*`
-3. Comprendre : [Architecture détaillée](../architecture/ARCHITECTURE_DETAILED.md)
+3. Comprendre : [Architecture détaillée](../development/architecture/ARCHITECTURE_DETAILED.md)
 4. Avancer : [Guide Avancé](GUIDE_AVANCE.md)
-5. Index thématique : `docs/references/INDEX_THEMATIQUE.md`
+5. Index thématique : `docs/reference/INDEX_THEMATIQUE.md`
 
 ## 💬 Chat intelligent avec BBIA
 

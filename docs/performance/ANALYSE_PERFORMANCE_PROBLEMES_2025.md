@@ -2,7 +2,7 @@
 
 > Référence performance
 >
-> Voir `docs/status.md` → "Performance" pour l’état actuel (tests latence/jitter) et les baselines/axes futurs.
+> Voir `docs/reference/project-status.md` → "Performance" pour l’état actuel (tests latence/jitter) et les baselines/axes futurs.
 
 **Date :** Oct / Nov. 2025
 **Objectif :** Identifier les goulots d'étranglement et responsables des lenteurs

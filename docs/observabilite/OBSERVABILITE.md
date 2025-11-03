@@ -4,9 +4,9 @@
 **Version** : 1.0  
 **Compatibilité Python** : 3.11+
 
-> **Liens utiles** : [`docs/references/INDEX_THEMATIQUE.md`](../references/INDEX_THEMATIQUE.md), [`docs/status.md`](../status.md)
+> **Liens utiles** : [`docs/reference/INDEX_THEMATIQUE.md`](../reference/INDEX_THEMATIQUE.md), [`docs/reference/project-status.md`](../reference/project-status.md)
 
-**📊 [CI/CD Pipeline](../ci/PIPELINE_CI.md)** | **📚 [Guide avancé](../guides/GUIDE_AVANCE.md)**
+**📊 [CI/CD Pipeline](../deployment/PIPELINE_CI.md)** | **📚 [Guide avancé](../guides/GUIDE_AVANCE.md)**
 
 ---
 
@@ -131,4 +131,4 @@ mindmap
 - Publier `coverage.xml` + rapport perf (JSONL) en artifacts
 
 ## Références
-- État par axe: `docs/status.md` → Observabilité
+- État par axe: `docs/reference/project-status.md` → Observabilité

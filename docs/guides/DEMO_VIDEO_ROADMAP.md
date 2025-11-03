@@ -156,7 +156,7 @@ Une fois les vidéos créées, elles seront intégrées dans :
 
 - ✅ `README.md` - Section "Démo Vidéo" (déjà préparée)
 - ✅ `docs/guides/GUIDE_DEBUTANT.md` - Références ajoutées (en attente liens)
-- ✅ `docs/status.md` - Mise à jour quand disponible
+- ✅ `docs/reference/project-status.md` - Mise à jour quand disponible
 
 ---
 

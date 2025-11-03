@@ -2,7 +2,7 @@
 
 > Référence état global
 >
-> Voir `docs/status.md` → "État par axe" pour prioriser les améliorations (API/SDK, perf, sécurité, CI/CD).
+> Voir `docs/reference/project-status.md` → "État par axe" pour prioriser les améliorations (API/SDK, perf, sécurité, CI/CD).
 
 **Date :** Oct / Nov. 2025
 **Référence SDK :** https://github.com/pollen-robotics/reachy_mini

@@ -15,12 +15,8 @@ import pytest
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 # Importer le module complet au niveau du fichier pour que coverage le détecte
-try:
-    import bbia_sim.vision_yolo  # noqa: F401
-except (ImportError, AttributeError, Exception):
-    # Si l'import échoue, ce sera géré dans les tests individuels
-    pass
-
+# IMPORTANT: Import direct (pas dans try/except) pour que coverage le détecte
+import bbia_sim.vision_yolo  # noqa: F401
 from bbia_sim.vision_yolo import (
     FaceDetector,
     YOLODetector,
@@ -719,7 +715,6 @@ class TestFactoryFunctions:
         # Le handler global devrait gérer toute exception
         # On teste juste que le module se charge même si os.environ.setdefault échoue
         # (La ligne 42 est un except Exception: pass)
-        import bbia_sim.vision_yolo  # noqa: F401
 
         assert True  # Si on arrive ici, le module a chargé
 

@@ -28,7 +28,7 @@ if os.environ.get("BBIA_DISABLE_AUDIO", "0") == "1":
 ### 2. ✅ Endpoint /stop avec Emergency Stop
 
 **Fichiers modifiés**:
-- `src/bbia_sim/daemon/app/routers/motion.py` - Amélioration endpoint `/api/motion/stop`
+- `src/bbia_sim/daemon/app/routers/motion.py` - Amélioration endpoint `/development/api/motion/stop`
 
 **Amélioration**:
 ```python

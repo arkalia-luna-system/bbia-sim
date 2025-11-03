@@ -7,7 +7,7 @@
 
 **Version** : 1.3.2 • **Date** : Oct / Nov. 2025
 
-[📚 FAQ](../FAQ.md) • [🧠 Guide NLP](../guides/GUIDE_NLP_SMOLVLM.md) • [📊 État actuel](../audit/RESUME_ETAT_ACTUEL_BBIA.md)
+[📚 FAQ](../getting-started/troubleshooting.md) • [🧠 Guide NLP](../guides/GUIDE_NLP_SMOLVLM.md) • [📊 État actuel](../quality/audits/RESUME_ETAT_ACTUEL_BBIA.md)
 
 </div>
 

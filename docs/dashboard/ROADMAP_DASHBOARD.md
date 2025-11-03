@@ -3,9 +3,9 @@
 **Date** : Oct / Nov. 2025  
 **Version** : 1.0
 
-> **Voir aussi** : [`docs/references/INDEX_THEMATIQUE.md`](../references/INDEX_THEMATIQUE.md) et [`docs/status.md`](../status.md)
+> **Voir aussi** : [`docs/reference/INDEX_THEMATIQUE.md`](../reference/INDEX_THEMATIQUE.md) et [`docs/reference/project-status.md`](../reference/project-status.md)
 
-**📊 [CI/CD Pipeline](../ci/PIPELINE_CI.md)** | **🔧 [Guide avancé](../guides/GUIDE_AVANCE.md)**
+**📊 [CI/CD Pipeline](../deployment/PIPELINE_CI.md)** | **🔧 [Guide avancé](../guides/GUIDE_AVANCE.md)**
 
 ---
 
@@ -105,7 +105,7 @@ mindmap
 
 ## 📚 Références
 
-- **État par axe** : [`docs/status.md`](../status.md) → Dashboard / UX
+- **État par axe** : [`docs/reference/project-status.md`](../reference/project-status.md) → Dashboard / UX
 
 ---
 

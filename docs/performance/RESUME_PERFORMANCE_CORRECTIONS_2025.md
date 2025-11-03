@@ -5,7 +5,7 @@
 
 > Référence globale performance
 >
-> Pour un suivi transversal (latences p50/p95, budgets et axes futurs), voir `docs/status.md` → "Performance" dans "État par axe".
+> Pour un suivi transversal (latences p50/p95, budgets et axes futurs), voir `docs/reference/project-status.md` → "Performance" dans "État par axe".
 
 ---
 

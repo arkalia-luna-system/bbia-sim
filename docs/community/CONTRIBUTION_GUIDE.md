@@ -3,7 +3,7 @@
 **Date** : Oct / Nov. 2025  
 **Version** : 1.0
 
-> **Voir aussi** : [`docs/references/INDEX_THEMATIQUE.md`](../references/INDEX_THEMATIQUE.md) et [`docs/status.md`](../status.md)
+> **Voir aussi** : [`docs/reference/INDEX_THEMATIQUE.md`](../reference/INDEX_THEMATIQUE.md) et [`docs/reference/project-status.md`](../reference/project-status.md)
 
 Bienvenue dans la communauté BBIA-SIM ! Ce guide vous aidera à contribuer efficacement au projet.
 
@@ -190,8 +190,8 @@ pytest tests/test_bbia_voice.py -v
 ## 🎯 Roadmap Publique
 
 La roadmap est documentée dans :
-- `docs/status.md` → Section "Axes futurs"
-- `docs/references/PROJECT_HISTORY.md` → Historique des releases
+- `docs/reference/project-status.md` → Section "Axes futurs"
+- `docs/reference/PROJECT_HISTORY.md` → Historique des releases
 - Issues GitHub avec label `roadmap`
 
 **Principes** :
@@ -261,8 +261,8 @@ def fonction_exemple(param1: str, param2: int) -> bool:
 ### Où Documenter
 
 - **Guides utilisateur** : `docs/guides/`
-- **Guides techniques** : `docs/guides_techniques/`
-- **Architecture** : `docs/architecture/`
+- **Guides techniques** : `docs/development/`
+- **Architecture** : `docs/development/architecture/`
 - **API** : Docstrings Python → génération Sphinx (futur)
 
 ---
@@ -317,8 +317,8 @@ open htmlcov/index.html
 ### Documentation
 - **Guide Débutant** : `docs/guides/GUIDE_DEBUTANT.md`
 - **Guide Avancé** : `docs/guides/GUIDE_AVANCE.md`
-- **Architecture** : `docs/architecture/ARCHITECTURE_DETAILED.md`
-- **Conformité SDK** : `docs/conformite/CONFORMITE_REACHY_MINI_COMPLETE.md`
+- **Architecture** : `docs/development/architecture/ARCHITECTURE_DETAILED.md`
+- **Conformité SDK** : `docs/quality/compliance/CONFORMITE_REACHY_MINI_COMPLETE.md`
 
 ### Outils
 - **CI/CD** : `.github/workflows/ci.yml`

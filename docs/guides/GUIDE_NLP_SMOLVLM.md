@@ -2,7 +2,7 @@
 
 **Date** : Oct 25 / Nov 25
 **Version** : 1.3.2  
-**📚 [FAQ](../FAQ.md)** | **📊 [État actuel](../audit/RESUME_ETAT_ACTUEL_BBIA.md)** | **🔍 [Comparaison](../audit/COMPARAISON_APP_CONVERSATION_OFFICIELLE.md)**
+**📚 [FAQ](../getting-started/troubleshooting.md)** | **📊 [État actuel](../quality/audits/RESUME_ETAT_ACTUEL_BBIA.md)** | **🔍 [Comparaison](../quality/audits/COMPARAISON_APP_CONVERSATION_OFFICIELLE.md)**
 
 ---
 

@@ -22,18 +22,18 @@
 - **Script génération rapports**: `scripts/generate_conformity_report_reachy_mini.py` ✅
   - Usage: `python scripts/generate_conformity_report_reachy_mini.py`
  
-**Note** : `audit_systematique_exhaustif.py` archivé dans `scripts/_archived/comparison_audit/` (fonctionnalités intégrées dans script principal)
+**Note** : `audit_systematique_exhaustif.py` archivé dans `scripts/_archived/comparison_quality/audits/` (fonctionnalités intégrées dans script principal)
 - **Checklists finales**:
-  - `docs/conformite/CHECKLIST_FINALE_COMPARAISON_OFFICIELLE.md` (177 différences détectées)
-  - `docs/conformite/CHECKLIST_AUDIT_EXHAUSTIF.md` (audit systématique joints MuJoCo, tests, assets STL)
+  - `docs/quality/compliance/CHECKLIST_FINALE_COMPARAISON_OFFICIELLE.md` (177 différences détectées)
+  - `docs/quality/compliance/CHECKLIST_AUDIT_EXHAUSTIF.md` (audit systématique joints MuJoCo, tests, assets STL)
 - **Rapports précédents**: `logs/comparison_official_results.json` (177 différences détectées)
 
 **Endpoints déjà corrigés** (à vérifier conformité):
-- ✅ `GET /api/move/recorded-move-datasets/list/{dataset_name:path}` → `src/bbia_sim/daemon/app/routers/move.py:189`
-- ✅ `POST /api/move/play/recorded-move-dataset/{dataset_name:path}/{move_name}` → `src/bbia_sim/daemon/app/routers/move.py:207`
-- ✅ `GET /api/kinematics/stl/{filename}` → `src/bbia_sim/daemon/app/routers/kinematics.py:119` (utilise `{filename:path}` - compatible)
-- ✅ **Router `/api/move/*` complet** : `POST /goto`, `GET /running`, `POST /stop`, `POST /play/wake_up`, `POST /play/goto_sleep`, `POST /set_target`, `WebSocket /ws/updates`, `WebSocket /ws/set_target` → `src/bbia_sim/daemon/app/routers/move.py`
-- ✅ **Router `/api/state/*` amélioré** : `GET /full` (11 paramètres), `GET /present_head_pose`, `GET /present_body_yaw`, `GET /present_antenna_joint_positions`, `WebSocket /ws/full` → `src/bbia_sim/daemon/app/routers/state.py`
+- ✅ `GET /development/api/move/recorded-move-datasets/list/{dataset_name:path}` → `src/bbia_sim/daemon/app/routers/move.py:189`
+- ✅ `POST /development/api/move/play/recorded-move-dataset/{dataset_name:path}/{move_name}` → `src/bbia_sim/daemon/app/routers/move.py:207`
+- ✅ `GET /development/api/kinematics/stl/{filename}` → `src/bbia_sim/daemon/app/routers/kinematics.py:119` (utilise `{filename:path}` - compatible)
+- ✅ **Router `/development/api/move/*` complet** : `POST /goto`, `GET /running`, `POST /stop`, `POST /play/wake_up`, `POST /play/goto_sleep`, `POST /set_target`, `WebSocket /ws/updates`, `WebSocket /ws/set_target` → `src/bbia_sim/daemon/app/routers/move.py`
+- ✅ **Router `/development/api/state/*` amélioré** : `GET /full` (11 paramètres), `GET /present_head_pose`, `GET /present_body_yaw`, `GET /present_antenna_joint_positions`, `WebSocket /ws/full` → `src/bbia_sim/daemon/app/routers/state.py`
 - ✅ **BackendAdapter créé** : Adapte `RobotAPI` (BBIA) vers `Backend` (SDK) → `src/bbia_sim/daemon/app/backend_adapter.py`
 
 **Structure routers officiels**:
@@ -66,7 +66,7 @@
 
 1. **NE JAMAIS re-cloner ni télécharger** le repo officiel (déjà présent à `/Volumes/T7/reachy_mini`)
 2. **NE JAMAIS créer de nouveaux fichiers Markdown** sans vérifier d'abord les MD existants
-3. **RÉUTILISER/MODIFIER** les MD existants dans `docs/conformite/`, `docs/audit/`, `docs/guides/`
+3. **RÉUTILISER/MODIFIER** les MD existants dans `docs/quality/compliance/`, `docs/quality/audits/`, `docs/guides/`
 4. **NE PAS exécuter tous les tests en parallèle** (PC peu puissant) - UNIQUEMENT les tests liés à chaque correction
 5. **Valider immédiatement** chaque correction: black/ruff/mypy/bandit + test spécifique
 6. **NE JAMAIS modifier les dates** (logs/commits/timestamps existants)
@@ -84,7 +84,7 @@
 ## 🔍 CHECKLIST DE DÉTECTION (Pour chaque différence)
 
 ### 1. **Incohérences d'API REST**
-- **Chemins**: Comparer `/api/move/goto` vs `/api/motion/goto_pose`
+- **Chemins**: Comparer `/development/api/move/goto` vs `/development/api/motion/goto_pose`
 - **Noms**: Comparer `GotoModelRequest` vs `Pose` model
 - **Arguments**: Comparer types, valeurs par défaut, required/optional
 - **Retours**: Comparer structures de réponse, codes HTTP
@@ -124,7 +124,7 @@
 - **Warnings**: Comparer sections sécurité, onboarding
 - **README**: Comparer sections Usage, Installation, API
 - **Troubleshooting**: Comparer guides de résolution problèmes
-- **Files**: `README.md`, `docs/guides/`, `docs/conformite/`
+- **Files**: `README.md`, `docs/guides/`, `docs/quality/compliance/`
 
 ### 7. **Exemples/Scripts/Démos**
 - **Exemples**: Comparer `examples/` BBIA vs `/Volumes/T7/reachy_mini/examples/`
@@ -168,10 +168,10 @@
    ```
 2. **Lire les résultats**:
    - `logs/comparison_official_results.json` (endpoints/classes)
-   - `docs/conformite/CHECKLIST_AUDIT_EXHAUSTIF.md` (joints/tests/assets)
+   - `docs/quality/compliance/CHECKLIST_AUDIT_EXHAUSTIF.md` (joints/tests/assets)
 3. **Consulter les checklists**:
-   - `docs/conformite/CHECKLIST_FINALE_COMPARAISON_OFFICIELLE.md` (endpoints REST)
-   - `docs/conformite/CHECKLIST_AUDIT_EXHAUSTIF.md` (modèles MuJoCo, tests, assets)
+   - `docs/quality/compliance/CHECKLIST_FINALE_COMPARAISON_OFFICIELLE.md` (endpoints REST)
+   - `docs/quality/compliance/CHECKLIST_AUDIT_EXHAUSTIF.md` (modèles MuJoCo, tests, assets)
 
 ### Étape 2: Documentation
 - **Fichier**: Chemin relatif depuis racine BBIA
@@ -212,11 +212,11 @@ pytest tests/test_[nom_test].py::test_[fonction_specifique] -v
 
 ### Étape 6: Mise à jour checklist
 - **Ouvrir checklist appropriée**:
-  - **API/Classes**: `docs/conformite/CHECKLIST_FINALE_COMPARAISON_OFFICIELLE.md`
-  - **Modèles/Tests/Assets**: `docs/conformite/CHECKLIST_AUDIT_EXHAUSTIF.md`
+  - **API/Classes**: `docs/quality/compliance/CHECKLIST_FINALE_COMPARAISON_OFFICIELLE.md`
+  - **Modèles/Tests/Assets**: `docs/quality/compliance/CHECKLIST_AUDIT_EXHAUSTIF.md`
 - **Ajouter entrée**:
   ```markdown
-  - [x] **API** - Endpoint `GET /api/move/recorded-move-datasets/list/{dataset_name:path}`
+  - [x] **API** - Endpoint `GET /development/api/move/recorded-move-datasets/list/{dataset_name:path}`
     - Fichier: `src/bbia_sim/daemon/app/routers/move.py:184`
     - Correction: ✅ Implémenté avec RecordedMoves SDK
     - Test: ⚠️ À tester avec dataset réel
@@ -238,7 +238,7 @@ pytest tests/test_[nom_test].py::test_[fonction_specifique] -v
 - **Nettoyer**: Supprimer fichiers inutilisés, doublons
 
 ### Documentation
-- **Réutiliser**: Modifier MD existants dans `docs/conformite/`, `docs/audit/`
+- **Réutiliser**: Modifier MD existants dans `docs/quality/compliance/`, `docs/quality/audits/`
 - **NE PAS créer doublons**: Vérifier avant de créer nouveau MD
 - **Mettre à jour**: Checklist finale au lieu de créer nouveaux rapports
 
@@ -252,15 +252,15 @@ pytest tests/test_[nom_test].py::test_[fonction_specifique] -v
 ## 🟢 CHECKLIST EXPORT FINALE
 
 Pour **CHAQUE** erreur/correction/évolution détectée, documenter dans la checklist appropriée:
-- **API/Classes/Endpoints**: `docs/conformite/CHECKLIST_FINALE_COMPARAISON_OFFICIELLE.md`
-- **Modèles MuJoCo/Tests/Assets**: `docs/conformite/CHECKLIST_AUDIT_EXHAUSTIF.md`
+- **API/Classes/Endpoints**: `docs/quality/compliance/CHECKLIST_FINALE_COMPARAISON_OFFICIELLE.md`
+- **Modèles MuJoCo/Tests/Assets**: `docs/quality/compliance/CHECKLIST_AUDIT_EXHAUSTIF.md`
 
 ```markdown
 ### [Priorité] - [Nature]
 
 - [ ] **[Nature]** - [Description précise]
   - **Fichier**: `chemin/relatif/fichier.py:ligne`
-  - **Endpoint**: `METHOD /api/path` (si applicable)
+  - **Endpoint**: `METHOD /development/api/path` (si applicable)
   - **Différence**: [Description]
   - **BBIA**: [Valeur/état actuel]
   - **Officiel**: [Valeur/état attendu]
@@ -340,7 +340,7 @@ Pour **CHAQUE** erreur/correction/évolution détectée, documenter dans la chec
 
 6. **Checklist**:
    ```markdown
-   - [x] **API** - Endpoint `GET /api/move/recorded-move-datasets/list/{dataset_name:path}`
+   - [x] **API** - Endpoint `GET /development/api/move/recorded-move-datasets/list/{dataset_name:path}`
      - Fichier: `src/bbia_sim/daemon/app/routers/move.py:184`
      - Correction: ✅ Implémenté
      - Test: ⚠️ À tester avec dataset réel
@@ -365,14 +365,14 @@ ruff check src/bbia_sim/daemon/app/routers/*.py
 pytest tests/test_reachy_mini_backend.py::test_specific_function -v
 
 # Vérifier endpoint
-curl -X GET http://localhost:8000/api/move/recorded-move-datasets/list/dataset_name
+curl -X GET http://localhost:8000/development/api/move/recorded-move-datasets/list/dataset_name
 
 # Lire rapport
 cat logs/comparison_official_report.md
 
 # Checklists
-cat docs/conformite/CHECKLIST_FINALE_COMPARAISON_OFFICIELLE.md  # Endpoints/API
-cat docs/conformite/CHECKLIST_AUDIT_EXHAUSTIF.md  # Joints/Tests/Assets
+cat docs/quality/compliance/CHECKLIST_FINALE_COMPARAISON_OFFICIELLE.md  # Endpoints/API
+cat docs/quality/compliance/CHECKLIST_AUDIT_EXHAUSTIF.md  # Joints/Tests/Assets
 ```
 
 ---

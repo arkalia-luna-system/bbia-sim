@@ -95,7 +95,7 @@ python scripts/stt_demo.py --test-microphone --lang fr
 python src/bbia_sim/dashboard_advanced.py --port 8000
 
 # Démarrer l’API publique (mode dev)
-python deploy/public_api.py --dev
+python deployment/public_api.py --dev
 ```
 
 ---
@@ -135,9 +135,9 @@ bash scripts/run_demo_real.sh excited 15
 
 ### **📚 Documentation**
 - **README** : Guide principal et quickstart
-- **Architecture** : `docs/architecture/ARCHITECTURE.md`
-- **Contrat RobotAPI** : `docs/references/CONTRACT.md`
-- **Guide de Test** : `docs/guides_techniques/TESTING_GUIDE.md`
+- **Architecture** : `docs/development/architecture/ARCHITECTURE.md`
+- **Contrat RobotAPI** : `docs/reference/CONTRACT.md`
+- **Guide de Test** : `docs/development/TESTING_GUIDE.md`
 
 ### **🎯 Scripts utiles**
 - **`hardware_dry_run.py`** : Test matériel complet

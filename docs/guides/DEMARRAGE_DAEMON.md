@@ -52,7 +52,7 @@ python scripts/start_public_api.py --log-level debug
  
 2. **API FastAPI** : Accessible sur http://127.0.0.1:8000
    - Dashboard officiel-like sur `/`
-   - API REST complète sur `/api/*`
+   - API REST complète sur `/development/api/*`
    - WebSocket sur `/ws/*`
 
 3. **Dashboard** : Interface web complète disponible
@@ -110,7 +110,7 @@ Après démarrage, vérifier que tout fonctionne :
 
 ```bash
 # Vérifier que le serveur répond
-curl http://127.0.0.1:8000/api/ecosystem/info
+curl http://127.0.0.1:8000/development/api/ecosystem/info
 
 # Ou ouvrir dans le navigateur
 open http://127.0.0.1:8000/

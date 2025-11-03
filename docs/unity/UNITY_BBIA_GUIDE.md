@@ -162,9 +162,9 @@ python3 src/bbia_sim/test_unity_connection.py
 ## Ressources
 
 ### Documentation
-- [Guide complet Reachy](REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md)
-- [Résumé projet](PROJET_COMPLET.md)
-- [Démarrage rapide](🎯_DEMARRAGE_RAPIDE.md)
+- [Guide complet Reachy](../guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md)
+- [Résumé projet](../RESUME_FINAL_ULTIME.md)
+- [Démarrage rapide](../guides/GUIDE_DEBUTANT.md)
 
 ### Liens officiels
 - **Unity** : https://unity.com/
