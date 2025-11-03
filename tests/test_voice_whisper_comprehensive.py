@@ -108,7 +108,7 @@ class TestWhisperSTT:
             mock_whisper.load_model.return_value = mock_model
 
             stt = WhisperSTT(model_size="tiny", language="fr")
-            stt.model = mock_model
+            stt.model = mock_model  # type: ignore[assignment]
             stt.is_loaded = True
 
             # Créer fichier audio temporaire
@@ -130,7 +130,7 @@ class TestWhisperSTT:
         with patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True):
             stt = WhisperSTT(model_size="tiny", language="fr")
             stt.is_loaded = True
-            stt.model = None
+            stt.model = None  # type: ignore[assignment]
 
             result = stt.transcribe_audio("/fake/path.wav")
 
@@ -145,7 +145,7 @@ class TestWhisperSTT:
             mock_whisper.load_model.return_value = mock_model
 
             stt = WhisperSTT(model_size="tiny", language="fr")
-            stt.model = mock_model
+            stt.model = mock_model  # type: ignore[assignment]
             stt.is_loaded = True
 
             result = stt.transcribe_audio("/fake/path.wav")
@@ -1043,7 +1043,7 @@ class TestFactoryFunctions:
             mock_sd.wait.return_value = None
 
             stt = WhisperSTT(model_size="tiny", language="fr")
-            stt.model = mock_model
+            stt.model = mock_model  # type: ignore[assignment]
             stt.is_loaded = True
 
             with patch.object(stt, "transcribe_audio", return_value="bonjour"):

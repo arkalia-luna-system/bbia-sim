@@ -22,6 +22,7 @@ def test_robot_api_set_joint_pos_latency_1e3() -> None:
     if not robot or not robot.connect():
         pytest.skip("Backend non disponible")
 
+    assert robot is not None  # Type narrowing pour mypy
     # OPTIMISATION RAM: Réduire 1000 → 500 (suffisant pour statistiques p50/p95)
     iterations = 500
     joint = "yaw_body"
@@ -55,6 +56,7 @@ def test_robot_api_get_joint_pos_latency_1e3() -> None:
     if not robot or not robot.connect():
         pytest.skip("Backend non disponible")
 
+    assert robot is not None  # Type narrowing pour mypy
     # OPTIMISATION RAM: Réduire 1000 → 500 (suffisant pour statistiques p50/p95)
     iterations = 500
     joint = "yaw_body"

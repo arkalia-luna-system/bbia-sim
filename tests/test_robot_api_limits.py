@@ -106,7 +106,8 @@ class TestRobotAPILimits:
                 assert abs(pos) <= 0.3
 
             # Vérifier qu'il n'y a pas de drift excessif
-            max_pos = max(abs(p) for p in positions)
+            filtered_positions = [p for p in positions if p is not None]
+            max_pos = max(abs(p) for p in filtered_positions)
             assert max_pos <= 0.3
 
         finally:

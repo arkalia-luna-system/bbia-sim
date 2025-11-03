@@ -23,20 +23,20 @@ class TestBBIAWakeExtended:
     def test_main_function_exists(self):
         """Test que la fonction main existe."""
         try:
-            from bbia_sim.bbia_awake import main
+            from bbia_sim.bbia_awake import main  # type: ignore[attr-defined]
 
             assert callable(main)
-        except ImportError:
+        except (ImportError, AttributeError):
             pytest.skip("Fonction main non disponible")
 
     def test_wake_sequence_exists(self):
         """Test que la séquence réveil existe."""
         try:
-            from bbia_sim.bbia_awake import main
+            from bbia_sim.bbia_awake import main  # type: ignore[attr-defined]
 
             # Vérifier que main est callable
             assert callable(main)
-        except ImportError:
+        except (ImportError, AttributeError):
             pytest.skip("Fonction main non disponible")
 
 

@@ -123,52 +123,52 @@ class TestReachyMiniCompleteConformity:
         assert result is True  # Notre méthode look_at retourne bool
 
         # Test look_at_image (SDK officiel retourne numpy array)
-        result = self.backend.look_at_image(100, 200)
+        result = self.backend.look_at_image(100, 200)  # type: ignore[attr-defined]
         assert hasattr(result, "shape")  # Doit être un numpy array
 
     def test_motor_control_conformity(self):
         """Test conformité contrôle moteurs."""
         # Test enable/disable motors (SDK officiel retourne None)
-        result = self.backend.enable_motors()
+        result = self.backend.enable_motors()  # type: ignore[attr-defined]
         assert result is None
 
-        result = self.backend.disable_motors()
+        result = self.backend.disable_motors()  # type: ignore[attr-defined]
         assert result is None
 
     def test_gravity_compensation_conformity(self):
         """Test conformité compensation gravité."""
         # Test enable/disable gravity compensation (SDK officiel retourne None)
-        result = self.backend.enable_gravity_compensation()
+        result = self.backend.enable_gravity_compensation()  # type: ignore[attr-defined]
         assert result is None
 
-        result = self.backend.disable_gravity_compensation()
+        result = self.backend.disable_gravity_compensation()  # type: ignore[attr-defined]
         assert result is None
 
     def test_target_control_conformity(self):
         """Test conformité contrôle cibles."""
         # Test set_target_body_yaw (SDK officiel retourne None)
-        result = self.backend.set_target_body_yaw(0.1)
+        result = self.backend.set_target_body_yaw(0.1)  # type: ignore[attr-defined]
         assert result is None
 
         # Test set_target_antenna_joint_positions (SDK officiel retourne None)
-        result = self.backend.set_target_antenna_joint_positions([0.1, 0.2])
+        result = self.backend.set_target_antenna_joint_positions([0.1, 0.2])  # type: ignore[attr-defined]
         assert result is None
 
     def test_goto_target_conformity(self):
         """Test conformité goto_target."""
         # Test goto_target avec différents paramètres (SDK officiel retourne None)
-        result = self.backend.goto_target()
+        result = self.backend.goto_target()  # type: ignore[attr-defined]
         assert result is None
 
-        result = self.backend.goto_target(body_yaw=0.1)
+        result = self.backend.goto_target(body_yaw=0.1)  # type: ignore[attr-defined]
         assert result is None
 
-        result = self.backend.goto_target(antennas=[0.1, 0.2])
+        result = self.backend.goto_target(antennas=[0.1, 0.2])  # type: ignore[attr-defined]
         assert result is None
 
     def test_telemetry_conformity(self):
         """Test conformité télémétrie."""
-        telemetry = self.backend.get_telemetry()
+        telemetry = self.backend.get_telemetry()  # type: ignore[attr-defined]
         assert isinstance(telemetry, dict)
 
         required_keys = [
@@ -210,9 +210,9 @@ class TestReachyMiniCompleteConformity:
         assert self.backend.set_emotion("happy", 0.8) is True
         assert self.backend.look_at(0.1, 0.2, 0.3) is True
         assert self.backend.run_behavior("wake_up") is True
-        assert self.backend.enable_motors() is None  # SDK officiel retourne None
+        assert self.backend.enable_motors() is None  # type: ignore[attr-defined]  # SDK officiel retourne None
         assert (
-            self.backend.enable_gravity_compensation() is None
+            self.backend.enable_gravity_compensation() is None  # type: ignore[attr-defined]
         )  # SDK officiel retourne None
 
     def test_performance_conformity(self):

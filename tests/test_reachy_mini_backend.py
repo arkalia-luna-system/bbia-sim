@@ -24,6 +24,7 @@ class TestReachyMiniBackend:
     def setup_method(self):
         """Configuration avant chaque test."""
         self.robot = RobotFactory.create_backend("reachy_mini")
+        assert self.robot is not None  # Type narrowing pour mypy
         # Connecter le robot pour que les tests fonctionnent
         self.robot.connect()
         self.mapping = ReachyMapping()
