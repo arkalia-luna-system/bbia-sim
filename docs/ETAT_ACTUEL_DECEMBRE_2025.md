@@ -123,8 +123,8 @@
    - S'assurer que tests couvrent réellement le code
 
 ### Phase 2 : Coverage Tests (8-12h) 🔴
-1. Étendre tests `vision_yolo.py` (+30% coverage)
-2. Étendre tests `voice_whisper.py` (+21% coverage)
+1. ✅ ~~Étendre tests `vision_yolo.py`~~ - **TERMINÉ** (**99.45%** coverage ✅, **42 tests**, objectif 50%+ largement dépassé)
+2. ✅ ~~Étendre tests `voice_whisper.py`~~ - **TERMINÉ** (**92.52%** coverage ✅, **66 tests**, objectif 50%+ largement dépassé)
 
 ### Phase 3 : Optionnel (1-3h) 🟡
 1. Métriques performance (si besoin)

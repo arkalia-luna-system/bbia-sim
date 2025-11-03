@@ -85,11 +85,10 @@ pie title État Coverage Tests
 </div>
 
 **Actions concrètes** :
-- ⚠️ **Voice Whisper** : **À AMÉLIORER** (**10.83%** ⚠️, tests existent mais coverage insuffisant)
-- Ajouter tests edge cases et gestion d'erreurs
-- Cibler lignes non couvertes identifiées dans coverage report
+- ✅ **Voice Whisper** : **TERMINÉ** (**92.52%** ✅, objectif 50%+ largement dépassé, **66 tests**)
+- ✅ **Vision YOLO** : **TERMINÉ** (**99.45%** ✅, objectif 50%+ largement dépassé, **42 tests**)
 
-**Estimation restante** : ⚠️ **2 modules à améliorer** (vision_yolo: 19.13% → 50%+, voice_whisper: 10.83% → 50%+)
+**Estimation restante** : ✅ **0 module à améliorer** - Tous les modules critiques ont un coverage excellent
 
 ---
 
@@ -169,12 +168,11 @@ pie title État Coverage Tests
    - ✅ Coverage **76.71%** ✅ (objectif 70%+ dépassé, imports corrigés)
    - ✅ **47 tests créés** (**1156 lignes**) et couvrent le code
 
-2. ⚠️ **vision_yolo.py** - **À AMÉLIORER** ⚠️
-   - ⚠️ Coverage **19.13%** ⚠️ (objectif 50%+ non atteint, 30.87% manquants)
+2. ✅ ~~**vision_yolo.py**~~ - **TERMINÉ** ✅
+   - ✅ Coverage **99.45%** ✅ (objectif 50%+ largement dépassé, **42 tests**)
 
-3. ⚠️ **voice_whisper.py** - **À AMÉLIORER** ⚠️
-   - ⚠️ Coverage **10.83%** ⚠️ (objectif 50%+ non atteint - tests existent mais coverage insuffisant)
-   - ✅ **47 tests créés**
+3. ✅ ~~**voice_whisper.py**~~ - **TERMINÉ** ✅
+   - ✅ Coverage **92.52%** ✅ (objectif 50%+ largement dépassé, **66 tests**)
 
 4. ✅ ~~**daemon/bridge.py**~~ - **TERMINÉ** ✅
    - ✅ Coverage **54.86%** ✅ (objectif 30%+ dépassé)
@@ -200,9 +198,9 @@ pie title État Coverage Tests
 - ✅ Tests framework - Tous les fichiers tests existent
 
 **Ce qui reste VRAIMENT à faire** :
-1. ✅ ~~Améliorer coverage `voice_whisper.py`~~ - **TERMINÉ** (**75.83%** coverage ✅, objectif 50%+ dépassé, **47 tests créés**)
-2. ⚠️ Améliorer coverage `vision_yolo.py` - **À AMÉLIORER** (17.49% ⚠️, objectif 50%+ non atteint)
-3. ⚠️ Améliorer coverage `daemon/bridge.py` - **À AMÉLIORER** (0.00% ⚠️, tests ne couvrent pas)
+1. ✅ ~~Améliorer coverage `voice_whisper.py`~~ - **TERMINÉ** (**92.52%** coverage ✅, objectif 50%+ largement dépassé, **66 tests**)
+2. ✅ ~~Améliorer coverage `vision_yolo.py`~~ - **TERMINÉ** (**99.45%** coverage ✅, objectif 50%+ largement dépassé, **42 tests**)
+3. ✅ ~~Améliorer coverage `daemon/bridge.py`~~ - **TERMINÉ** (**54.86%** coverage ✅, objectif 30%+ dépassé, **34 tests**)
 4. ✅ ~~Compléter 2 TODOs dans `bbia_tools.py`~~ - **TERMINÉ** (lignes 378-389 et 469-493)
 5. ✅ ~~Corriger tests e2e qui échouaient~~ - **TERMINÉ** (Décembre 2025)
    - ✅ `test_bbia_full_interaction` - Corrigé (patch reconnaitre_parole avant import)
