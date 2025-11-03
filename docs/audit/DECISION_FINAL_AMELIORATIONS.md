@@ -11,8 +11,8 @@
 
 | Fonctionnalité | Statut BBIA | Où |
 |----------------|-------------|-----|
-| **API `/api/move/recorded-move-datasets/list/{dataset}`** | ✅ | `move.py:192` |
-| **API `/api/move/play/recorded-move-dataset/{dataset}/{move}`** | ✅ | `move.py:212` |
+| **API `/api/move/recorded-move-datasets/list/{dataset}`** | ✅ | `move.py:247` |
+| **API `/api/move/play/recorded-move-dataset/{dataset}/{move}`** | ✅ | `move.py:267` |
 | **Exemple `recorded_moves_example.py`** | ✅ | `examples/reachy_mini/` |
 | **Tool LLM `dance` avec RecordedMoves** | ✅ | `bbia_tools.py:417` |
 | **Dashboard recorded moves player** | ✅ | `dashboard/static/js/move_player.js` |
@@ -78,7 +78,7 @@
 
 **Implémentation** :
 - **Fichier** : `src/bbia_sim/daemon/app/routers/move.py`
-- **Ligne** : ~192-217
+- **Ligne** : ~192-244
 - **Fonction** : `discover_recorded_move_datasets()`
 - **Retourne** : Liste hardcodée de datasets connus (extensible avec HF Hub API si besoin)
 - **Tests** : ✅ **CRÉÉS** (Oct / Nov. 2025)

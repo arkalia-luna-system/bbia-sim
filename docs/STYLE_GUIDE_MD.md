@@ -1,8 +1,12 @@
 # 📐 Guide de Style Markdown - BBIA-SIM
 
-**Version** : 1.0  
+<div align="center">
+
+**Version** : 2.0  
 **Date** : Oct / Nov. 2025  
-**Objectif :** Documentation moderne, professionnelle, impactante
+**Objectif** : Documentation moderne, professionnelle, élégante et impactante
+
+</div>
 
 ---
 
@@ -13,12 +17,15 @@
 - **Ton neutre et factuel** : Privilégier la précision aux superlatifs
 - **Vouvoiement cohérent** : Utiliser "vous" dans toute la documentation
 - **Preuves > Promesses** : Chiffres mesurés plutôt que promesses vagues
+- **Précision** : Métriques vérifiées contre code réel
 
 ### Modernité & Impact Visuel
 
 - **Structure claire** : Hiérarchie de titres cohérente
 - **Emojis judicieux** : Dans les titres de section uniquement
 - **Espacement optimal** : 1 ligne vide entre sections, max 2 lignes
+- **Alignement centré** : Pour les en-têtes de document et sections importantes
+- **Tableaux élégants** : Formatage cohérent avec alignement
 
 ---
 
@@ -28,6 +35,13 @@
 
 ```markdown
 # Titre Principal (H1) - Avec emoji optionnel
+
+<div align="center">
+
+**Sous-titre ou description courte**
+
+</div>
+
 ## Section Principale (H2) - 🎯 Avec emoji descriptif
 ### Sous-section (H3) - ✅ Avec emoji fonctionnel
 #### Détail (H4) - Rarement utilisé
@@ -37,6 +51,7 @@
 - Espace après `#`
 - Pas de ponctuation finale
 - Emojis uniquement si pertinents
+- Utiliser `<div align="center">` pour les en-têtes de document
 
 ### Listes
 
@@ -92,30 +107,36 @@ code_here()
 ### Emojis Stratégiques
 
 **Dans les titres :**
-- 📋 Informations
-- 🎯 Objectifs
-- ✅ Accomplissements
+- 📋 Informations / Listes
+- 🎯 Objectifs / Buts
+- ✅ Accomplissements / Succès
 - ⚠️ Avertissements
-- ❌ Erreurs/Problèmes
-- 🔍 Recherches/Audits
-- 📊 Métriques/Stats
+- ❌ Erreurs / Problèmes
+- 🔍 Recherches / Audits
+- 📊 Métriques / Stats
 - 📝 Documentation
-- 🚀 Démarrage/Quick Start
+- 🚀 Démarrage / Quick Start
 - 🏗️ Architecture
 - 🧪 Tests
-- 📚 Guides/Docs
+- 📚 Guides / Docs
 - ⚡ Performance
 - 🔒 Sécurité
 - 🌟 Highlights
+- 🔴 Priorité haute
+- 🟡 Priorité moyenne
+- 🟢 Priorité basse
+- 🔵 Hardware / Matériel
 
 **Dans les listes :**
-- ✅ Confirmé/Vrai
-- ❌ Faux/Erreur
+- ✅ Confirmé / Vrai
+- ❌ Faux / Erreur
 - ⚠️ À vérifier
 - 🔄 Action
 - 📝 Note
 - 💡 Astuce
 - 🎯 Objectif
+- ⏳ En attente
+- 📌 Important
 
 ### Formatage Texte
 
@@ -141,20 +162,55 @@ code_here()
 > Multi-ligne si nécessaire
 ```
 
+### En-têtes de Document
+
+```markdown
+<div align="center">
+
+**Texte centré**
+**Date** : Oct / Nov. 2025
+**Statut** : ✅ Actif
+
+</div>
+```
+
 ---
 
 ## 📊 Tableaux
 
+### Format Standard
+
 ```markdown
+<div align="center">
+
 | Colonne 1 | Colonne 2 | Colonne 3 |
-|-----------|-----------|-----------|
+|:---------:|:---------:|:---------:|
 | Donnée 1  | Donnée 2  | Donnée 3  |
+
+</div>
 ```
 
 **Règles :**
 - Alignement avec `|`
 - Espaces autour des pipes
 - En-tête séparé par `---`
+- Utiliser `:---:` pour centrer
+- Utiliser `:---` pour aligner à gauche
+- Utiliser `---:` pour aligner à droite
+- Encadrer dans `<div align="center">` pour tableaux importants
+
+### Exemple Élégant
+
+```markdown
+<div align="center">
+
+| Module | Coverage | Objectif | Statut |
+|:------:|:--------:|:--------:|:------:|
+| `vision_yolo.py` | **99.45%** | 50%+ | ✅ **DÉPASSÉ** |
+| `voice_whisper.py` | **92.52%** | 50%+ | ✅ **DÉPASSÉ** |
+
+</div>
+```
 
 ---
 
@@ -178,15 +234,34 @@ code_here()
 
 ```markdown
 **Date création :** Octobre 2024  # Fixe, ne jamais modifier
-**Date mise à jour :** Oct / Nov. 2025  # Récentes
-**Date :** Oct / Nov. 2025  # Générales
-**Date cible :** Oct / Nov. 2025  # Futures
+**Date mise à jour :** Oct / Nov  # Récentes
+**Date :** Oct / Nov  # Générales
+**Date cible :** Oct / Nov  # Futures
 ```
 
 ### Historique
 
 - **Octobre 2024** : Date création projet (première release v1.0.0)
-- **Oct / Nov. 2025** : Période actuelle
+- **Oct / Nov** : Période actuelle
+
+---
+
+## 🎨 Design BBIA
+
+### Couleurs de la Marque
+
+- **Bleu céleste/néon** : `#87bcfa`, `#3E6FFF`
+- **Violet électrique** : `#A680FF`, `#C082FF`
+- **Turquoise éthérée** : `#60e9e1`
+- **Gris lunaire** : `#eaeaed`, `#bfc9d9`
+- **Rose pastel** : `#FFDAEC`
+
+### Ambiance Visuelle
+
+- **Futuriste doux** : Technologique mais accessible
+- **Poétique** : Inspiré de l'univers lunaire
+- **Friendly** : Chaleureux et rassurant
+- **Professionnel** : Précis et fiable
 
 ---
 
@@ -202,6 +277,8 @@ code_here()
 - [ ] Métriques vérifiées contre code réel
 - [ ] Ton neutre et professionnel
 - [ ] Vouvoiement cohérent
+- [ ] Tableaux alignés et formatés
+- [ ] En-têtes centrés pour documents importants
 
 ### Vérification Contenu
 
@@ -219,6 +296,17 @@ code_here()
 ### Bon Formatage
 
 ```markdown
+# 📐 Guide de Style Markdown
+
+<div align="center">
+
+**Version** : 2.0  
+**Date** : Oct / Nov. 2025
+
+</div>
+
+---
+
 ## 🎯 Vue d'ensemble
 
 BBIA-SIM est un moteur cognitif Python avec **12 émotions robotiques**.
@@ -235,6 +323,14 @@ BBIA-SIM est un moteur cognitif Python avec **12 émotions robotiques**.
 pip install -e .[dev]
 python examples/demo_emotion_ok.py
 ```
+
+<div align="center">
+
+| Module | Coverage | Statut |
+|:------:|:--------:|:------:|
+| `vision_yolo.py` | **99.45%** | ✅ |
+
+</div>
 ```
 
 ### Mauvais Formatage
@@ -261,6 +357,9 @@ pip install
 
 ---
 
-**Dernière mise à jour :** Oct / Nov. 2025  
-**Version :** 1.0
+<div align="center">
 
+**Dernière mise à jour :** Oct / Nov  
+**Version :** 2.0
+
+</div>

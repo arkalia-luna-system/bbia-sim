@@ -31,8 +31,8 @@ class FakeSpeaker:
 class FakeMedia:
     def __init__(self, with_play_audio: bool = True, with_speaker: bool = True):
         self.calls = 0
-        self.data = None
-        self.volume = None
+        self.data: bytes | None = None
+        self.volume: float | None = None
         self.speaker = FakeSpeaker() if with_speaker else None
         self._with_play_audio = with_play_audio
 

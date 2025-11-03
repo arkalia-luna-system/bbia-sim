@@ -454,11 +454,13 @@ class TestBBIAVisionExtended:
         print("\n🧪 TEST: Buffer stocke frames SDK capturées")
         print("=" * 60)
 
-        import numpy as np
         from unittest.mock import MagicMock
 
+        import numpy as np
+        import numpy.typing as npt
+
         # Créer un mock camera SDK qui retourne une image numpy array
-        mock_image = np.zeros((480, 640, 3), dtype=np.uint8)
+        mock_image: npt.NDArray[np.uint8] = np.zeros((480, 640, 3), dtype=np.uint8)
         mock_camera = MagicMock()
         mock_camera.get_image.return_value = mock_image.copy()
 
@@ -486,11 +488,13 @@ class TestBBIAVisionExtended:
         print("\n🧪 TEST: Buffer stocke frames OpenCV capturées")
         print("=" * 60)
 
-        import numpy as np
         from unittest.mock import MagicMock, patch
 
+        import numpy as np
+        import numpy.typing as npt
+
         # Créer un mock OpenCV VideoCapture qui retourne une image
-        mock_image = np.ones((240, 320, 3), dtype=np.uint8) * 128
+        mock_image: npt.NDArray[np.uint8] = np.ones((240, 320, 3), dtype=np.uint8) * 128
         mock_camera = MagicMock()
         mock_camera.isOpened.return_value = True
         mock_camera.read.return_value = (True, mock_image.copy())
@@ -501,8 +505,7 @@ class TestBBIAVisionExtended:
 
         # Capturer depuis OpenCV (appelle la vraie méthode qui ajoute au buffer)
         with patch("bbia_sim.bbia_vision.CV2_AVAILABLE", True):
-            with patch("bbia_sim.bbia_vision.cv2") as mock_cv2:
-                # Pas besoin de cv2 réel pour ce test
+            with patch("bbia_sim.bbia_vision.cv2"):  # Pas besoin de cv2 réel pour ce test
                 image = self.vision._capture_from_opencv_camera()
 
                 # Vérifier que l'image a été ajoutée au buffer
@@ -519,10 +522,11 @@ class TestBBIAVisionExtended:
         print("=" * 60)
 
         import numpy as np
+        import numpy.typing as npt
 
         # Ajouter des frames au buffer manuellement pour test
-        frame1 = np.zeros((100, 100, 3), dtype=np.uint8)
-        frame2 = np.ones((100, 100, 3), dtype=np.uint8) * 255
+        frame1: npt.NDArray[np.uint8] = np.zeros((100, 100, 3), dtype=np.uint8)
+        frame2: npt.NDArray[np.uint8] = np.ones((100, 100, 3), dtype=np.uint8) * 255
 
         self.vision._camera_frame_buffer.append(frame1)
         self.vision._camera_frame_buffer.append(frame2)
@@ -538,14 +542,14 @@ class TestBBIAVisionExtended:
         print("=" * 60)
 
         import numpy as np
+        import numpy.typing as npt
 
         # Créer un buffer avec maxlen=3 pour test rapide
         self.vision._camera_frame_buffer = deque(maxlen=3)
-        initial_overruns = self.vision._buffer_overrun_count
 
         # Ajouter plus de frames que maxlen
         for i in range(5):
-            frame = np.zeros((10, 10, 3), dtype=np.uint8) + i
+            frame: npt.NDArray[np.uint8] = np.zeros((10, 10, 3), dtype=np.uint8) + i
             self.vision._camera_frame_buffer.append(frame)
 
         # Vérifier que le buffer ne contient que les 3 dernières

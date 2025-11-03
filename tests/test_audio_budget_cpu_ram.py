@@ -50,6 +50,7 @@ def test_audio_pipeline_budget_cpu_ram() -> None:
     if sd is None:
         pytest.skip("sounddevice indisponible")
 
+    assert sd is not None  # Pour mypy, après le skip
     sample_rate = 16000
     blocksize = 512
     # Optimisé: 5s au lieu de 10s (suffisant pour mesurer budget)

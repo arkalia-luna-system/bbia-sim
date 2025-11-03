@@ -4,6 +4,7 @@ Tests avancés de validation des entrées utilisateur.
 Protection contre injection, validation longueur, format, etc.
 """
 
+
 import pytest
 
 from bbia_sim.robot_factory import RobotFactory
@@ -107,7 +108,7 @@ def test_emotion_name_validation() -> None:
             assert result is True or result is False  # Doit retourner bool
 
         # Émotions invalides
-        invalid_emotions = [
+        invalid_emotions: list[str | int | None] = [
             "../../etc/passwd",
             "'; DROP TABLE emotions; --",
             "",
@@ -115,11 +116,12 @@ def test_emotion_name_validation() -> None:
             123,
         ]
 
-        for emotion in invalid_emotions:
-            if emotion is None or not isinstance(emotion, str):
-                continue
+        # Filtrer pour ne garder que les strings (pour mypy)
+        invalid_emotion_strings = [e for e in invalid_emotions if isinstance(e, str)]
+
+        for emotion_str in invalid_emotion_strings:
             try:
-                result = robot.set_emotion(emotion, 0.5)
+                result = robot.set_emotion(emotion_str, 0.5)
                 # Doit soit rejeter (False) soit gérer gracieusement
                 assert result is True or result is False
             except (ValueError, TypeError):

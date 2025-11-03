@@ -29,6 +29,7 @@ def test_audio_buffer_stability_10s() -> None:
     if sd is None:
         pytest.skip("sounddevice indisponible sur cet environnement")
 
+    assert sd is not None  # Pour mypy, après le skip
     sample_rate = 16000
     blocksize = 512
     duration_s = 10.0

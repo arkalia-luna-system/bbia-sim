@@ -159,7 +159,7 @@ class TestYOLODetector:
             detector = YOLODetector(model_size="n", confidence_threshold=0.25)
             assert detector.is_loaded is False
 
-            image = np.zeros((480, 640, 3), dtype=np.uint8)
+            image: npt.NDArray[np.uint8] = np.zeros((480, 640, 3), dtype=np.uint8)
             detections = detector.detect_objects(image)
 
             assert isinstance(detections, list)
@@ -173,7 +173,7 @@ class TestYOLODetector:
             detector.is_loaded = True  # Force is_loaded mais model = None
             detector.model = None
 
-            image = np.zeros((480, 640, 3), dtype=np.uint8)
+            image: npt.NDArray[np.uint8] = np.zeros((480, 640, 3), dtype=np.uint8)
             detections = detector.detect_objects(image)
 
             assert detections == []
@@ -190,7 +190,7 @@ class TestYOLODetector:
             detector.model = mock_model
             detector.is_loaded = True
 
-            image = np.zeros((480, 640, 3), dtype=np.uint8)
+            image: npt.NDArray[np.uint8] = np.zeros((480, 640, 3), dtype=np.uint8)
             detections = detector.detect_objects(image)
 
             assert detections == []
@@ -296,7 +296,7 @@ class TestYOLODetector:
             detector.model = mock_model
             detector.is_loaded = True
 
-            image = np.zeros((480, 640, 3), dtype=np.uint8)
+            image: npt.NDArray[np.uint8] = np.zeros((480, 640, 3), dtype=np.uint8)
             detections = detector.detect_objects(image)
 
             assert detections == []
@@ -355,7 +355,7 @@ class TestYOLODetector:
             detector.model = mock_model
             detector.is_loaded = True
 
-            image = np.zeros((480, 640, 3), dtype=np.uint8)
+            image: npt.NDArray[np.uint8] = np.zeros((480, 640, 3), dtype=np.uint8)
             detections = detector.detect_objects(image)
 
             assert isinstance(detections, list)
@@ -436,7 +436,7 @@ class TestFaceDetector:
         detector = FaceDetector()
         detector.face_detection = mock_face_detection
 
-        image = np.zeros((480, 640, 3), dtype=np.uint8)
+        image: npt.NDArray[np.uint8] = np.zeros((480, 640, 3), dtype=np.uint8)
         faces = detector.detect_faces(image)
 
         assert len(faces) == 1
@@ -453,7 +453,7 @@ class TestFaceDetector:
         detector = FaceDetector()
         detector.face_detection = mock_face_detection
 
-        image = np.zeros((480, 640, 3), dtype=np.uint8)
+        image: npt.NDArray[np.uint8] = np.zeros((480, 640, 3), dtype=np.uint8)
         faces = detector.detect_faces(image)
 
         assert faces == []
@@ -463,7 +463,7 @@ class TestFaceDetector:
         detector = FaceDetector()
         detector.face_detection = None
 
-        image = np.zeros((480, 640, 3), dtype=np.uint8)
+        image: npt.NDArray[np.uint8] = np.zeros((480, 640, 3), dtype=np.uint8)
         faces = detector.detect_faces(image)
         assert faces == []
 
@@ -581,7 +581,7 @@ class TestFactoryFunctions:
             detector.model = mock_model
             detector.is_loaded = True
 
-            image = np.zeros((480, 640, 3), dtype=np.uint8)
+            image: npt.NDArray[np.uint8] = np.zeros((480, 640, 3), dtype=np.uint8)
             detections = detector.detect_objects(image)
 
             assert detections == []
@@ -601,7 +601,7 @@ class TestFactoryFunctions:
         detector = FaceDetector()
         detector.face_detection = mock_face_detection
 
-        image = np.zeros((480, 640, 3), dtype=np.uint8)
+        image: npt.NDArray[np.uint8] = np.zeros((480, 640, 3), dtype=np.uint8)
         faces = detector.detect_faces(image)
 
         assert faces == []
@@ -701,7 +701,7 @@ class TestFactoryFunctions:
             detector.is_loaded = False
             # Mock load_model pour retourner False
             with patch.object(detector, "load_model", return_value=False):
-                image = np.zeros((480, 640, 3), dtype=np.uint8)
+                image: npt.NDArray[np.uint8] = np.zeros((480, 640, 3), dtype=np.uint8)
                 detections = detector.detect_objects(image)
                 assert detections == []
 

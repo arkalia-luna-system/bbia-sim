@@ -12,7 +12,7 @@ client = TestClient(app)
 @pytest.fixture
 def api_token() -> str:
     """Token d'authentification pour les tests."""
-    return settings.api_token
+    return str(settings.api_token)
 
 
 class TestStateFull:
@@ -35,8 +35,7 @@ class TestStateFull:
             headers={"Authorization": f"Bearer {api_token}"},
         )
         assert response.status_code == 200
-        data = response.json()
-        # Peut avoir control_mode si disponible
+        response.json()  # Peut avoir control_mode si disponible
 
     def test_full_state_use_pose_matrix(self, api_token: str) -> None:
         """Test full state avec use_pose_matrix."""

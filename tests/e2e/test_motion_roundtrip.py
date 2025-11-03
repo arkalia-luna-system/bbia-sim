@@ -5,9 +5,9 @@ API → Simulateur → Mouvement → Télémétrie
 """
 
 import asyncio
-import os
 import json
 import logging
+import os
 import time
 from typing import Any, cast
 
@@ -52,7 +52,7 @@ class BBIAE2ETestClient:
         """
         try:
             response = await self.client.get(f"{self.api_url}/health")
-            return response.status_code == 200
+            return bool(response.status_code == 200)
         except Exception:
             return False
 

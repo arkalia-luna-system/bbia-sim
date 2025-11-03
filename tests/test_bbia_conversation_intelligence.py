@@ -7,6 +7,7 @@ et fallback enrichi sinon, avec réponses variées et personnalité.
 
 import sys
 from pathlib import Path
+from typing import Any
 
 # Ajouter le chemin src au PYTHONPATH
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
@@ -183,7 +184,7 @@ class TestBBIAConversationIntelligence:
         behavior = VisionTrackingBehavior(vision, robot_api=None)
 
         # Tester exécution (avec objets détectés)
-        context = {}
+        context: dict[str, Any] = {}
         result = behavior.execute(context)
         # Le résultat peut être True ou False selon si des objets sont détectés
         assert isinstance(result, bool)

@@ -12,6 +12,7 @@ import os
 import platform
 import statistics
 import time
+from typing import Any
 
 import numpy as np
 import pytest
@@ -25,7 +26,7 @@ except Exception:  # pragma: no cover
     sd = None  # type: ignore[assignment]
 
 
-def _get_wasapi_loopback_settings() -> object | None:
+def _get_wasapi_loopback_settings() -> Any | None:
     if sd is None:
         return None
     try:
@@ -52,6 +53,7 @@ def test_audio_latency_loopback_e2e() -> None:
     if wasapi_settings is None:
         pytest.skip("WASAPI loopback non disponible")
 
+    assert sd is not None  # Pour mypy, après le skip
     sample_rate = 16000
     duration_s = 0.25
     tone_hz = 1000

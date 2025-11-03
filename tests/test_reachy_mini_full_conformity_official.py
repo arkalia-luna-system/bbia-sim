@@ -10,6 +10,7 @@ import math
 import sys
 import time
 from pathlib import Path
+from typing import Any, cast
 
 import pytest
 
@@ -157,7 +158,8 @@ class TestReachyMiniFullConformity:
             actual_args = list(sig.parameters.keys())
             actual_args = [a for a in actual_args if a != "self"]  # Enlever self
 
-            expected_args = expected["args"]
+            expected_dict = cast(dict[str, Any], expected)
+            expected_args = expected_dict["args"]
 
             # Vérifier les arguments (ordre flexible)
             missing_args = [arg for arg in expected_args if arg not in actual_args]

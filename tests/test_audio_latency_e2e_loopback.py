@@ -29,6 +29,8 @@ def test_audio_latency_e2e_loopback() -> None:
     if sd is None:
         pytest.skip("sounddevice indisponible")
 
+    assert sd is not None  # Pour mypy, après le skip
+
     # Vérifier si loopback hardware disponible
     # En général, on skip ce test si pas de loopback
     try:

@@ -32,7 +32,7 @@ class TestSDKSignaturesConformity:
 
     def test_core_methods_signatures(self):
         """Test signatures des méthodes principales."""
-        core_methods = {
+        core_methods: dict[str, dict[str, Any]] = {
             "get_joint_pos": {"joint_name": str},
             "set_joint_pos": {"joint_name": str, "position": float},
             "get_available_joints": {},
@@ -60,7 +60,7 @@ class TestSDKSignaturesConformity:
 
     def test_sdk_official_methods_signatures(self):
         """Test signatures des méthodes SDK officiel."""
-        sdk_methods = {
+        sdk_methods: dict[str, dict[str, Any]] = {
             "get_current_head_pose": {},
             "get_present_antenna_joint_positions": {},
             "get_current_joint_positions": {},
