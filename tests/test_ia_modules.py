@@ -297,7 +297,9 @@ class TestWhisperSTT:
                 side_effect=lambda name, *args, **kwargs: (
                     __import__(name, *args, **kwargs)
                     if name != "transformers"
-                    else (_ for _ in ()).throw(ImportError("No module named 'transformers'"))
+                    else (_ for _ in ()).throw(
+                        ImportError("No module named 'transformers'")
+                    )
                 ),
             ),
         ):
@@ -350,7 +352,9 @@ class TestWhisperSTT:
                 side_effect=lambda name, *args, **kwargs: (
                     __import__(name, *args, **kwargs)
                     if name != "soundfile"
-                    else (_ for _ in ()).throw(ImportError("No module named 'soundfile'"))
+                    else (_ for _ in ()).throw(
+                        ImportError("No module named 'soundfile'")
+                    )
                 ),
             ):
                 result = stt.detect_speech_activity("test.wav")

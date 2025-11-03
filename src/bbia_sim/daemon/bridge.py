@@ -23,9 +23,9 @@ try:
     ZENOH_AVAILABLE = True
 except ImportError:
     ZENOH_AVAILABLE = False
-    zenoh: Any = None
-    Session: type[Any] | None = None
-    Config: type[Any] | None = None
+    zenoh = None  # type: ignore[assignment,no-redef]
+    Session = None  # type: ignore[assignment,no-redef]
+    Config = None  # type: ignore[assignment,no-redef]
 
 # Import conditionnel SDK officiel
 try:
@@ -35,8 +35,8 @@ try:
     REACHY_MINI_AVAILABLE = True
 except ImportError:
     REACHY_MINI_AVAILABLE = False
-    ReachyMini: type[Any] | None = None
-    create_head_pose: Any | None = None
+    ReachyMini = None  # type: ignore[assignment,no-redef]
+    create_head_pose = None  # type: ignore[assignment,no-redef]
 
 
 class ZenohConfig(BaseModel):  # type: ignore[misc]

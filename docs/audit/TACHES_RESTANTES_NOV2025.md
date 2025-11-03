@@ -192,7 +192,7 @@
 1. ✅ **Daemon** : Commande `reachy-mini-daemon` vérifiée
 2. ✅ **API REST** : Endpoints `/`, `/docs`, `/api/state/full` vérifiés
 3. ✅ **Modules Media** : `robot.media.camera`, `.microphone`, `.speaker` vérifiés
-4. ✅ **Modules IO** : `robot.io.get_camera_stream()`, `.get_audio_stream()` vérifiés
+4. ✅ **Modules IO** : `robot.io.get_camera_stream()`, `.get_audio_stream()` vérifiés (disponibles mais non utilisés dans BBIA - code actuel fonctionne parfaitement)
 5. ✅ **Versions Python** : Support 3.10-3.13 confirmé
 6. ✅ **git-lfs** : Requis vérifié
 7. ✅ **create_head_pose** : Signature conforme README
@@ -204,7 +204,7 @@
 1. ✅ **robot.io** : **TOUJOURS DISPONIBLE** via `SimulationIOModule` en simulation
    - Shim créé : `src/bbia_sim/backends/simulation_shims.py`
    - Retourne toujours un objet valide (jamais None)
-   - Méthodes : `get_camera_stream()`, `get_audio_stream()`, `get_imu()`
+   - Méthodes : `get_camera_stream()`, `get_audio_stream()`, `get_imu()` (disponibles mais non utilisés - décision finale : non critique)
 
 2. ✅ **robot.media** : **TOUJOURS DISPONIBLE** via `SimulationMediaModule` en simulation
    - Shim créé avec `camera`, `microphone`, `speaker`

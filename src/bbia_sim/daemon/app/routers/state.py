@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/state")
 
 
-class RobotState(BaseModel):
+class RobotState(BaseModel):  # type: ignore[misc]
     """Modèle pour l'état du robot."""
 
     position: dict[str, float]
@@ -136,7 +136,7 @@ def _read_sdk_telemetry() -> dict[str, Any] | None:
         return None
 
 
-class BatteryInfo(BaseModel):
+class BatteryInfo(BaseModel):  # type: ignore[misc]
     """Modèle pour les informations de batterie."""
 
     level: float
@@ -145,7 +145,7 @@ class BatteryInfo(BaseModel):
     estimated_time: str
 
 
-@router.get("/full")
+@router.get("/full")  # type: ignore[misc]
 async def get_full_state(
     with_control_mode: bool = True,
     with_head_pose: bool = True,
@@ -223,7 +223,9 @@ async def get_full_state(
 
     # Utiliser datetime.UTC pour Python 3.11+, fallback timezone.utc pour 3.10
     try:
-        from datetime import UTC  # type: ignore[attr-defined]
+        from datetime import (
+            UTC,
+        )  # Python 3.11+ (type: ignore nécessaire sur Python < 3.11 mais mypy ne le détecte pas)
 
         result["timestamp"] = datetime.now(UTC)
     except ImportError:
@@ -243,7 +245,7 @@ async def get_full_state(
     return cast("FullState", FullState.model_validate(result))
 
 
-@router.get("/position")
+@router.get("/position")  # type: ignore[misc]
 async def get_position() -> dict[str, Any]:
     """Récupère la position actuelle du robot.
 
@@ -260,7 +262,7 @@ async def get_position() -> dict[str, Any]:
     }
 
 
-@router.get("/battery", response_model=BatteryInfo)
+@router.get("/battery", response_model=BatteryInfo)  # type: ignore[misc]
 async def get_battery_level() -> BatteryInfo:
     """Récupère le niveau de batterie.
 
@@ -277,7 +279,7 @@ async def get_battery_level() -> BatteryInfo:
     sdk = _read_sdk_telemetry()
     if sdk and "battery" in sdk:
         try:
-            battery_level = float(sdk["battery"])  # type: ignore[index]
+            battery_level = float(sdk["battery"])
         except Exception:
             pass
     status = (
@@ -295,7 +297,7 @@ async def get_battery_level() -> BatteryInfo:
     )
 
 
-@router.get("/temperature")
+@router.get("/temperature")  # type: ignore[misc]
 async def get_temperature() -> dict[str, Any]:
     """Récupère la température du robot.
 
@@ -312,7 +314,7 @@ async def get_temperature() -> dict[str, Any]:
     sdk = _read_sdk_telemetry()
     if sdk and "temperature" in sdk:
         try:
-            temperature_c = float(sdk["temperature"])  # type: ignore[index]
+            temperature_c = float(sdk["temperature"])
         except Exception:
             pass
 
@@ -324,7 +326,7 @@ async def get_temperature() -> dict[str, Any]:
     }
 
 
-@router.get("/status")
+@router.get("/status")  # type: ignore[misc]
 async def get_status() -> dict[str, Any]:
     """Récupère le statut général du robot.
 
@@ -343,7 +345,7 @@ async def get_status() -> dict[str, Any]:
     }
 
 
-@router.post("/simulation/start")
+@router.post("/simulation/start")  # type: ignore[misc]
 async def start_simulation() -> dict[str, Any]:
     """Démarre la simulation MuJoCo."""
     logger.info("Démarrage de la simulation MuJoCo")
@@ -370,7 +372,7 @@ async def start_simulation() -> dict[str, Any]:
         }
 
 
-@router.post("/simulation/stop")
+@router.post("/simulation/stop")  # type: ignore[misc]
 async def stop_simulation() -> dict[str, Any]:
     """Arrête la simulation MuJoCo."""
     logger.info("Arrêt de la simulation MuJoCo")
@@ -391,7 +393,7 @@ async def stop_simulation() -> dict[str, Any]:
         }
 
 
-@router.get("/joints")
+@router.get("/joints")  # type: ignore[misc]
 async def get_joint_states() -> dict[str, Any]:
     logger.info("Récupération de l'état des articulations")
 
@@ -410,7 +412,7 @@ async def get_joint_states() -> dict[str, Any]:
     return {"joints": joints, "timestamp": datetime.now().isoformat()}
 
 
-@router.get("/present_head_pose")
+@router.get("/present_head_pose")  # type: ignore[misc]
 async def get_present_head_pose(
     use_pose_matrix: bool = False,
     backend: BackendAdapter = Depends(get_backend_adapter),
@@ -435,7 +437,7 @@ async def get_present_head_pose(
     }
 
 
-@router.get("/present_body_yaw")
+@router.get("/present_body_yaw")  # type: ignore[misc]
 async def get_present_body_yaw(
     backend: BackendAdapter = Depends(get_backend_adapter),
 ) -> dict[str, Any]:
@@ -452,7 +454,7 @@ async def get_present_body_yaw(
     return {"body_yaw": float(yaw), "unit": "radians"}
 
 
-@router.get("/present_antenna_joint_positions")
+@router.get("/present_antenna_joint_positions")  # type: ignore[misc]
 async def get_present_antenna_joint_positions(
     backend: BackendAdapter = Depends(get_backend_adapter),
 ) -> dict[str, Any]:
@@ -475,7 +477,7 @@ async def get_present_antenna_joint_positions(
     }
 
 
-@router.websocket("/ws/full")
+@router.websocket("/ws/full")  # type: ignore[misc]
 async def ws_full_state(
     websocket: WebSocket,
     frequency: float = 10.0,
@@ -535,7 +537,7 @@ async def ws_full_state(
         pass
 
 
-@router.get("/sensors")
+@router.get("/sensors")  # type: ignore[misc]
 async def get_sensor_data() -> dict[str, Any]:
     """Récupère les données des capteurs.
 
@@ -552,9 +554,9 @@ async def get_sensor_data() -> dict[str, Any]:
     }
 
     sdk = _read_sdk_telemetry()
-    if sdk and "imu" in sdk and isinstance(sdk["imu"], dict):  # type: ignore[index]
+    if sdk and "imu" in sdk and isinstance(sdk["imu"], dict):
         try:
-            imu_data = sdk["imu"]  # type: ignore[assignment,index]
+            imu_data = sdk["imu"]
         except Exception:
             pass
 
