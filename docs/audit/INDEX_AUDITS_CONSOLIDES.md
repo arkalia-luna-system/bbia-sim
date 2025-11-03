@@ -14,8 +14,8 @@
    - Mise à jour régulière
    - **Utiliser ce fichier comme référence principale**
 
-2. **`ETAT_ACTUEL_TACHES_DEC2025.md`** ⭐ **RECOMMANDÉ**
-   - État actuel des tâches (Oct / Nov. 2025)
+2. **`RESUME_ETAT_ACTUEL_BBIA.md`** ⭐ **RECOMMANDÉ**
+   - État actuel du projet (Oct / Nov. 2025)
    - Liste complète de ce qui est fait vs à faire
    - Mise à jour récente
 

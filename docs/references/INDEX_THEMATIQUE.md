@@ -25,7 +25,7 @@
 
 ## IA / Vision / Audio
 - Datasets & golden images: `docs/ai/DATASETS_GOLDEN_IMAGES.md`
-- Résumé améliorations IA: `docs/intelligence/RESUME_AMELIORATIONS_INTELLIGENCE_2025.md`
+- Améliorations IA: `docs/intelligence/AMELIORATIONS_INTELLIGENCE_BBIA_2025.md`, `docs/intelligence/AMELIORATIONS_INTELLIGENCE_CONTEXTE_2025.md`
 
 ## Dashboard / UX
 - Roadmap mini UI télémétrie: `docs/dashboard/ROADMAP_DASHBOARD.md`

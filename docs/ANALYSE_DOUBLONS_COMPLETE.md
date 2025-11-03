@@ -30,7 +30,15 @@
 - ⚠️ **ÉVALUER** : Les 3 checklists peuvent être fusionnées dans `CONFORMITE_REACHY_MINI_COMPLETE.md`
 - ⚠️ **ÉVALUER** : `RAPPORT_AUDIT_EXHAUSTIF_DETAILS_NOV2025.md` peut être archivé (historique)
 
-**Action** : Garder temporairement, mais considérer fusionner les checklists dans le fichier principal.
+**Analyse approfondie** :
+- `CHECKLIST_FINALE_CONFORMITE.md` - Référencée dans `CONFORMITE_REACHY_MINI_COMPLETE.md` et `SUITE_ACTIONS_CONFORMITE.md`
+- `CHECKLIST_FINALE_COMPARAISON_OFFICIELLE.md` - Référencée dans `PROMPT_AUDIT_EXHAUSTIF_REACHY_MINI.md`
+- `CHECKLIST_AUDIT_EXHAUSTIF.md` - Référencée dans scripts et guides
+- `RAPPORT_AUDIT_EXHAUSTIF_DETAILS_NOV2025.md` - Référencé dans plusieurs fichiers
+
+**Recommandation** :
+- ✅ **GARDER TOUS** : Chaque checklist a un focus spécifique et est référencée
+- ✅ **VALIDÉ** : Pas de redondance majeure, contenus complémentaires
 
 ---
 
@@ -131,11 +139,17 @@
 
 1. ⚠️ `audit/INDEX_AUDITS_CONSOLIDES.md` - Supprimer référence à `ETAT_REEL_PRIORITES.md` (ligne 89)
 
-### Fichiers à Évaluer Plus Tard (5 fichiers conformite/)
+### Fichiers Validés (conformite/)
 
-- Les 3 checklists dans `conformite/` peuvent être fusionnées dans le fichier principal
-- `RAPPORT_AUDIT_EXHAUSTIF_DETAILS_NOV2025.md` peut être archivé
-- **Action** : Garder temporairement, mais considérer consolidation future
+- ✅ **Tous les fichiers conformite/ sont validés** :
+  - `CONFORMITE_REACHY_MINI_COMPLETE.md` - Fichier principal (46 tests)
+  - `CHECKLIST_FINALE_CONFORMITE.md` - Référencée dans plusieurs fichiers
+  - `CHECKLIST_FINALE_COMPARAISON_OFFICIELLE.md` - Référencée dans guides
+  - `CHECKLIST_AUDIT_EXHAUSTIF.md` - Référencée dans scripts
+  - `RAPPORT_AUDIT_EXHAUSTIF_DETAILS_NOV2025.md` - Référencé dans plusieurs fichiers
+  - `CORRECTIONS_EXCEPTIONS_WEBSOCKET.md` - Corrections spécifiques
+
+**Action** : ✅ **GARDER TOUS** - Chaque fichier a un focus spécifique et est référencé
 
 ---
 

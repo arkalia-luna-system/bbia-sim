@@ -95,8 +95,7 @@ mindmap
 ### ✅ Conformité et Qualité
 - [Conformité Reachy-Mini Complète](conformite/CONFORMITE_REACHY_MINI_COMPLETE.md)
 - [Rapports de Conformité](archives/conformite/) - Archives conformité
-- [Validation Qualité](qualite/) - Rapports de validation
-- [Résumés Validation](qualite/RESUME_VALIDATION_QUALITE_2025.md)
+- [Validation Qualité](qualite/VALIDATION_FINALE_QUALITE_2025.md) - Rapports de validation
 - [Pipeline CI/CD](ci/PIPELINE_CI.md)
 
 ### 🤖 Pour Assistants IA
