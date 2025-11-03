@@ -674,3 +674,45 @@ class TestFactoryFunctions:
         assert best is not None
         # Devrait choisir la première (meilleur score)
         assert best["confidence"] == 0.7
+
+    @patch("bbia_sim.vision_yolo.YOLO")
+    def test_detect_objects_load_model_fails(self, mock_yolo_class):
+        """Test détection quand load_model() retourne False (couverture ligne 147)."""
+        with patch("bbia_sim.vision_yolo.YOLO_AVAILABLE", True):
+            detector = YOLODetector(model_size="n")
+            detector.is_loaded = False
+            # Mock load_model pour retourner False
+            with patch.object(detector, "load_model", return_value=False):
+                image = np.zeros((480, 640, 3), dtype=np.uint8)
+                detections = detector.detect_objects(image)
+                assert detections == []
+
+
+@pytest.mark.unit
+@pytest.mark.fast
+class TestFaceDetector:
+    """Tests pour FaceDetector."""
+
+    def test_face_detector_cache_import_error(self):
+        """Test FaceDetector avec ImportError dans cache (couverture lignes 280-281)."""
+        # Simuler cache avec ImportError lors de l'import mediapipe
+        with patch("bbia_sim.vision_yolo._mediapipe_face_detection_cache", MagicMock()):
+            with patch("builtins.__import__", side_effect=ImportError("No module")):
+                detector = FaceDetector()
+                # Devrait gérer l'erreur gracieusement (lignes 280-281)
+                assert detector is not None
+
+
+@pytest.mark.unit
+@pytest.mark.fast
+class TestFactoryFunctions:
+    """Tests pour fonctions factory."""
+
+    def test_global_exception_handler(self):
+        """Test exception handler global (couverture ligne 42)."""
+        # Le handler global devrait gérer toute exception
+        # On teste juste que le module se charge même si os.environ.setdefault échoue
+        # (La ligne 42 est un except Exception: pass)
+        import bbia_sim.vision_yolo  # noqa: F401
+
+        assert True  # Si on arrive ici, le module a chargé

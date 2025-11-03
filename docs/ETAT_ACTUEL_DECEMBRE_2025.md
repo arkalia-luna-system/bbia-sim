@@ -36,8 +36,8 @@
 
 | Module | Coverage Actuel | Objectif | Tests Existants | Action Requise | Estimation |
 |--------|----------------|----------|-----------------|----------------|------------|
-| `vision_yolo.py` | **20.33%** ⚠️ | 50%+ | ✅ Existent | ⚠️ Étendre tests (+30%) | 4-6h |
-| `voice_whisper.py` | **29.09%** ⚠️ | 50%+ | ✅ Existent | ⚠️ Étendre tests (+21%) | 4-6h |
+| `vision_yolo.py` | **0.00%** ⚠️ | 50%+ | ✅ Existent | ⚠️ **CORRIGER IMPORTS** + Étendre tests | 4-6h |
+| `voice_whisper.py` | **0.00%** ⚠️ | 50%+ | ✅ Existent | ⚠️ **CORRIGER IMPORTS** + Étendre tests | 4-6h |
 | `dashboard_advanced.py` | **0.00%** ⚠️ | 50%+ | ✅ 47 tests (1156 lignes) | ⚠️ **CORRIGER IMPORTS** - Tests ne couvrent pas | 2-3h |
 | `daemon/bridge.py` | **0.00%** ⚠️ | 30%+ | ✅ 34 tests | ⚠️ **CORRIGER IMPORTS** - Tests ne couvrent pas | 2-3h |
 

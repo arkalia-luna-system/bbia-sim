@@ -971,3 +971,47 @@ class TestFactoryFunctions:
                     assert result is None
             finally:
                 os.environ["BBIA_DISABLE_AUDIO"] = original_value
+
+    def test_transcribe_audio_whisper_not_available(self):
+        """Test transcribe_audio quand Whisper non disponible (couverture lignes 160-161)."""
+        with patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", False):
+            stt = WhisperSTT(model_size="tiny")
+            assert stt.transcribe_audio("test.wav") is None
+
+    def test_transcribe_audio_load_model_fails(self):
+        """Test transcribe_audio quand load_model() échoue (couverture lignes 166-167)."""
+        with patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True):
+            stt = WhisperSTT(model_size="tiny")
+            stt.is_loaded = False
+            with patch.object(stt, "load_model", return_value=False):
+                assert stt.transcribe_audio("test.wav") is None
+
+    @patch("bbia_sim.voice_whisper.sd")
+    @patch("bbia_sim.voice_whisper.sf")
+    def test_transcribe_microphone_import_error(self, mock_sf, mock_sd):
+        """Test transcribe_microphone avec ImportError (couverture ligne 261)."""
+        with patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True):
+            os.environ["BBIA_DISABLE_AUDIO"] = "0"
+            try:
+                stt = WhisperSTT(model_size="tiny")
+                stt.is_loaded = True
+                # Mock ImportError lors de l'import numpy/soundfile
+                with patch("builtins.__import__", side_effect=ImportError("No module")):
+                    assert stt.transcribe_microphone(duration=0.1) is None
+            finally:
+                os.environ["BBIA_DISABLE_AUDIO"] = "1"
+
+    @patch("bbia_sim.voice_whisper.sd")
+    @patch("bbia_sim.voice_whisper.sf")
+    def test_transcribe_microphone_exception(self, mock_sf, mock_sd):
+        """Test transcribe_microphone avec exception générale (couverture ligne 266)."""
+        with patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True):
+            os.environ["BBIA_DISABLE_AUDIO"] = "0"
+            try:
+                stt = WhisperSTT(model_size="tiny")
+                stt.is_loaded = True
+                # Mock exception lors de l'enregistrement
+                mock_sd.rec.side_effect = Exception("Audio error")
+                assert stt.transcribe_microphone(duration=0.1) is None
+            finally:
+                os.environ["BBIA_DISABLE_AUDIO"] = "1"
