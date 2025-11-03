@@ -505,7 +505,9 @@ class TestBBIAVisionExtended:
 
         # Capturer depuis OpenCV (appelle la vraie méthode qui ajoute au buffer)
         with patch("bbia_sim.bbia_vision.CV2_AVAILABLE", True):
-            with patch("bbia_sim.bbia_vision.cv2"):  # Pas besoin de cv2 réel pour ce test
+            with patch(
+                "bbia_sim.bbia_vision.cv2"
+            ):  # Pas besoin de cv2 réel pour ce test
                 image = self.vision._capture_from_opencv_camera()
 
                 # Vérifier que l'image a été ajoutée au buffer

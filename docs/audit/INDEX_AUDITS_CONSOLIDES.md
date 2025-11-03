@@ -86,7 +86,6 @@ Les fichiers suivants ont été archivés car redondants ou obsolètes :
 
 - `PLAN_AMELIORATION_NOTATION_COMPLETE.md` - Plan amélioration notation
 - `STRATEGIE_REUTILISATION_CODE_OFFICIEL.md` - Stratégie réutilisation code
-- `ETAT_REEL_PRIORITES.md` - Priorités réelles
 - `PROCHAINES_ETAPES_OPTIONNELLES.md` - Étapes optionnelles
 - `SUITE_ACTIONS_CONFORMITE.md` - Suite actions conformité
 
