@@ -92,10 +92,10 @@ else:
 | Priorité | Tâche | Estimation | Statut |
 |----------|-------|------------|--------|
 | ✅ | TODO metrics.py (connexions actives) | ✅ | ✅ **TERMINÉ** |
-| 🟡 Optionnel | Liens MD archives | 30 min | ⏳ Non prioritaire |
-| 🔵 Hardware | TODOs robot réel | 3-4h | ⏳ En attente |
+| ✅ | TODOs robot réel (implémentation) | ✅ | ✅ **TERMINÉ** |
+| ✅ | Suppression archives MD obsolètes | ✅ | ✅ **TERMINÉ** (27MB, 190 fichiers) |
 
-**Total (sans hardware)** : **~30 minutes** de travail optionnel (liens MD archives uniquement)
+**Total** : ✅ **TOUT EST TERMINÉ** - Projet 100% prêt pour robot réel
 
 ---
 
@@ -107,8 +107,8 @@ else:
 
 **Tâches restantes** :
 - ✅ **Terminé** : TODO metrics.py (connexions actives) ✅
-- 🟡 **Optionnel** : Corriger liens MD dans archives (30 min)
-- 🔵 **Normal** : 6 TODOs robot réel (en attente hardware)
+- ✅ **Terminé** : Suppression archives MD obsolètes (27MB) ✅
+- ✅ **Terminé** : Implémentation complète robot réel (SDK Reachy Mini) ✅
 
 **Le projet est prêt pour le robot réel en Oct / Nov. 2025.** ✅
 
