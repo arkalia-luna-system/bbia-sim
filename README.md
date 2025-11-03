@@ -110,12 +110,35 @@ Sur macOS, l’exécution MuJoCo peut nécessiter `mjpython` :
 mjpython -m reachy_mini.daemon.app.main --sim --scene minimal
 ```
 
-### 🔍 Vérifier l’API du daemon officiel
+### 🔍 Vérifier l'API du daemon officiel
 
 ```bash
 curl http://localhost:8000/api/state/full
 # ou ouvrir la doc OpenAPI quand le daemon tourne :
 # http://localhost:8000/docs
+```
+
+### 🏥 Health Checks et Métriques
+
+```bash
+# Health check (liveness)
+curl http://localhost:8000/metrics/healthz
+
+# Readiness check
+curl http://localhost:8000/metrics/readyz
+
+# Health détaillé
+curl http://localhost:8000/metrics/health
+
+# Métriques Prometheus
+curl http://localhost:8000/metrics/prometheus
+```
+
+### 🔧 Diagnostic Environnement
+
+```bash
+# Diagnostic complet de l'environnement
+python -m bbia_sim --doctor
 ```
 
 ### 🔗 Intégration côté BBIA‑SIM

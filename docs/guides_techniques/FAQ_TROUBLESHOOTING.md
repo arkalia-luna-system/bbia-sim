@@ -294,37 +294,53 @@ curl http://localhost:8000/api/move/recorded-move-datasets/discover
 
 **Retourne** : Liste des datasets disponibles (ex: "pollen-robotics/reachy-mini-dances-library")
 
-### Métriques Performance
+### Métriques Performance et Health Checks
 
-**Nouvelle fonctionnalité** (Décembre 2025) : Endpoint `/metrics/performance` avec percentiles p50/p95/p99
+**Nouveaux endpoints** (Décembre 2025) :
 
-**Utilisation** :
+#### Health Checks
+
 ```bash
-curl http://localhost:8000/metrics/performance
+# Liveness probe (vérifie si le service est vivant)
+curl http://localhost:8000/metrics/healthz
+
+# Readiness probe (vérifie si le service est prêt)
+curl http://localhost:8000/metrics/readyz
+
+# Health check détaillé (état complet)
+curl http://localhost:8000/metrics/health
 ```
 
-**Retourne** :
-```json
-{
-  "timestamp": 1234567890.0,
-  "latency": {
-    "p50_ms": 10.5,
-    "p95_ms": 25.3,
-    "p99_ms": 50.1,
-    "samples": 1000
-  },
-  "system": {
-    "cpu_percent": 15.2,
-    "memory_mb": 256.5,
-    "memory_percent": 12.3
-  },
-  "simulation": {
-    "fps": 60.0
-  }
-}
+#### Métriques Prometheus
+
+```bash
+# Métriques au format Prometheus
+curl http://localhost:8000/metrics/prometheus
 ```
 
-**Note** : Les latences sont collectées automatiquement lors des requêtes (si middleware activé)
+**Métriques disponibles** :
+- `bbia_requests_total` : Nombre total de requêtes
+- `bbia_request_duration_seconds` : Latence des requêtes
+- `bbia_cpu_usage_percent` : Utilisation CPU
+- `bbia_memory_usage_bytes` : Utilisation mémoire
+- `bbia_simulation_fps` : FPS simulation
+- `bbia_active_connections` : Connexions WebSocket actives
+
+#### Diagnostic Environnement
+
+```bash
+# Diagnostic complet de l'environnement BBIA-SIM
+python -m bbia_sim --doctor
+```
+
+**Vérifie** :
+- ✅ Python version (>=3.10)
+- ✅ Reachy Mini SDK disponible
+- ✅ MuJoCo disponible
+- ✅ SoundDevice disponible
+- ✅ OpenCV disponible
+- ✅ Network connectivity
+- ✅ File permissions
 
 ---
 

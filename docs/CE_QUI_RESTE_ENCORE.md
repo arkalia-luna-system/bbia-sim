@@ -25,16 +25,16 @@
 
 ## 🟡 CE QUI RESTE (Optionnel / Non Bloquant)
 
-### 1. ✅ TODO dans `metrics.py` - **TERMINÉ**
+### 1. ✅ TODO dans `metrics.py` - **TERMINÉ ET VÉRIFIÉ**
 
 **Fichier** : `src/bbia_sim/daemon/app/routers/metrics.py`  
-**Ligne 99** : `# TODO: Récupérer depuis ConnectionManager`
+**Ligne 135-138** : Connexions actives récupérées depuis ConnectionManager
 
-**Statut** : ✅ **TERMINÉ** (Décembre 2025) - Connexions actives récupérées depuis ConnectionManager
+**Statut** : ✅ **TERMINÉ ET VÉRIFIÉ** (Décembre 2025)
 
-**Implémentation** :
+**Implémentation vérifiée** :
 ```python
-# Import ConnectionManager pour métriques connexions actives
+# Lignes 31-38 : Import ConnectionManager
 try:
     from ...ws.telemetry import manager as telemetry_manager
     TELEMETRY_MANAGER_AVAILABLE = True
@@ -42,12 +42,14 @@ except ImportError:
     TELEMETRY_MANAGER_AVAILABLE = False
     telemetry_manager = None
 
-# Connexions actives (récupérées depuis ConnectionManager)
+# Lignes 135-138 : Utilisation pour métriques
 if TELEMETRY_MANAGER_AVAILABLE and telemetry_manager:
     active_connections.set(len(telemetry_manager.active_connections))
 else:
     active_connections.set(0)
 ```
+
+**✅ Code vérifié** : Fonctionne correctement, récupère bien les connexions actives
 
 ---
 
