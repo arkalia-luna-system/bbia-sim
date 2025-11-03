@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 """Tests pour le module BBIA Emotions."""
 
+# IMPORTANT: Import direct (pas dans try/except) pour que coverage le détecte
+import bbia_sim.bbia_emotions  # noqa: F401
+
 from bbia_sim.bbia_emotions import BBIAEmotions
 
 
@@ -95,3 +98,57 @@ class TestBBIAEmotions:
         emotions.set_emotion("sad", 0.6)
         assert emotions.current_emotion == "sad"
         assert emotions.emotion_intensity == 0.6
+
+    def test_reset_emotions(self):
+        """Test remise à zéro des émotions."""
+        emotions = BBIAEmotions()
+
+        # Changer plusieurs émotions
+        emotions.set_emotion("happy", 0.8)
+        emotions.set_emotion("sad", 0.6)
+        assert len(emotions.emotion_history) == 2
+
+        # Reset
+        emotions.reset_emotions()
+
+        # Vérifier reset
+        assert emotions.current_emotion == "neutral"
+        assert emotions.emotion_intensity == 0.5
+        assert len(emotions.emotion_history) == 0
+
+    def test_set_emotion_invalid(self):
+        """Test changement d'émotion invalide."""
+        emotions = BBIAEmotions()
+        original_emotion = emotions.current_emotion
+
+        # Test émotion invalide
+        result = emotions.set_emotion("invalid_emotion", 0.8)
+        assert result is False
+        assert emotions.current_emotion == original_emotion
+        assert len(emotions.emotion_history) == 0
+
+    def test_set_emotion_intensity_clamping(self):
+        """Test limitation de l'intensité (clamping)."""
+        emotions = BBIAEmotions()
+
+        # Test intensité trop élevée
+        emotions.set_emotion("happy", 1.5)
+        assert emotions.emotion_intensity == 1.0
+
+        # Test intensité trop faible
+        emotions.set_emotion("sad", -0.5)
+        assert emotions.emotion_intensity == 0.0
+
+    def test_emotional_response_unknown_stimulus(self):
+        """Test réponse émotionnelle à stimulus inconnu (ligne 197-198)."""
+        emotions = BBIAEmotions()
+
+        # Test avec un stimulus qui ne matche aucun pattern connu
+        # (éviter "unknown" car c'est un pattern reconnu)
+        result = emotions.emotional_response("xyz_completely_random_stimulus_12345")
+
+        # Devrait retourner "curious" par défaut (ligne 197-198) si aucun pattern ne matche
+        # Note: Le code vérifie si key in stimulus_lower, donc on évite tous les mots-clés
+        assert result == "curious"
+        assert emotions.current_emotion == "curious"
+        assert emotions.emotion_intensity == 0.5

@@ -9,6 +9,9 @@ from pathlib import Path
 
 import pytest
 
+# IMPORTANT: Import direct (pas dans try/except) pour que coverage le détecte
+import bbia_sim.bbia_memory  # noqa: F401
+
 from bbia_sim.bbia_memory import (
     BBIAMemory,
     load_conversation_from_memory,
