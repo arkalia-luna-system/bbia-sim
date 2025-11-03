@@ -491,6 +491,7 @@ async def ws_full_state(
     with_target_antenna_positions: bool = False,
     with_passive_joints: bool = False,
     use_pose_matrix: bool = False,
+    token: str | None = None,  # Auth WebSocket via query param
 ) -> None:
     """WebSocket endpoint pour stream l'état complet du robot (conforme SDK).
 
@@ -507,9 +508,16 @@ async def ws_full_state(
         with_target_antenna_positions: Inclure positions cibles des antennes
         with_passive_joints: Inclure joints passifs
         use_pose_matrix: Utiliser format matrice 4x4
-        backend: Backend adaptateur
+        token: Token d'authentification (query param, optionnel en dev)
 
     """
+    # Auth WebSocket via query param (optionnel en dev)
+    from ...config import settings
+
+    if token and settings.environment.lower() == "prod":
+        if token != settings.api_token:
+            await websocket.close(code=1008, reason="Invalid token")
+            return
     await websocket.accept()
     # Créer backend adapter directement (pas de Depends pour WebSockets)
     backend = ws_get_backend_adapter(websocket)

@@ -11,7 +11,7 @@ from pathlib import Path
 # Ajouter le chemin src au PYTHONPATH
 sys.path.insert(0, str(Path(__file__).parent.parent.parent / "src"))
 
-from bbia_sim.robot_api import RobotFactory
+from bbia_sim.robot_factory import RobotFactory
 
 
 def test_sdk_availability():

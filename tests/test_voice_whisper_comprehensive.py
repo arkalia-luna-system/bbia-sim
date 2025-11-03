@@ -4,6 +4,7 @@ Tests complets pour voice_whisper.py - Amélioration coverage 33% → 50%+
 """
 
 import os
+import sys
 import tempfile
 from pathlib import Path
 from unittest.mock import MagicMock, patch
@@ -11,14 +12,24 @@ from unittest.mock import MagicMock, patch
 import numpy as np
 import pytest
 
+# Désactiver audio pour CI
+os.environ["BBIA_DISABLE_AUDIO"] = "1"
+
+# S'assurer que src est dans le path pour coverage
+sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
+
+# Importer le module complet au niveau du fichier pour que coverage le détecte
+try:
+    import bbia_sim.voice_whisper  # noqa: F401
+except (ImportError, AttributeError, Exception):
+    # Si l'import échoue, ce sera géré dans les tests individuels
+    pass
+
 from bbia_sim.voice_whisper import (
     VoiceCommandMapper,
     WhisperSTT,
     create_whisper_stt,
 )
-
-# Désactiver audio pour CI
-os.environ["BBIA_DISABLE_AUDIO"] = "1"
 
 
 @pytest.mark.unit

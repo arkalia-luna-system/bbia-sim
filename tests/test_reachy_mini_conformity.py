@@ -11,7 +11,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 from bbia_sim.mapping_reachy import ReachyMapping
-from bbia_sim.robot_api import RobotFactory
+from bbia_sim.robot_factory import RobotFactory
 
 
 def test_reachy_mini_backend():

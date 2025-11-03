@@ -15,7 +15,37 @@
 
 ## 🔴 PRIORITÉ MOYENNE - Améliorations Code
 
-### 1. ✅ Implémenter Auth WebSocket (1-2h)
+### 1. ✅ Migration Imports RobotFactory (TERMINÉ - Décembre 2025)
+
+**Fichier** : `src/bbia_sim/robot_api.py`
+
+**Statut** : ✅ **TERMINÉ**
+- Tous les scripts/exemples utilisent maintenant `robot_factory` directement
+- Warning de dépréciation ajouté pour compatibilité ascendante
+- Tests passent
+
+### 2. ✅ Métriques Performance (TERMINÉ - Décembre 2025)
+
+**Fichiers** : `src/bbia_sim/daemon/app/routers/metrics.py`
+
+**Statut** : ✅ **TERMINÉ**
+- Endpoint `/metrics/prometheus` (Prometheus metrics)
+- Endpoint `/metrics/healthz` (Liveness probe)
+- Endpoint `/metrics/readyz` (Readiness probe)
+- Endpoint `/metrics/health` (Health check détaillé)
+- Support psutil et prometheus_client optionnels
+- Tests créés : `tests/test_metrics.py` (4 tests passent)
+
+### 3. ✅ Script Diagnostic (TERMINÉ - Décembre 2025)
+
+**Fichier** : `src/bbia_sim/__main__.py`
+
+**Statut** : ✅ **TERMINÉ**
+- Commande `python -m bbia_sim --doctor` disponible
+- Vérifie : Python version, Reachy Mini SDK, MuJoCo, Audio, Camera, Network, Permissions
+- Tests fonctionnels
+
+### 4. ⚠️ Implémenter Auth WebSocket (1-2h)
 
 **Fichier** : `src/bbia_sim/daemon/app/main.py` (ligne 243)
 
@@ -51,7 +81,7 @@ async def websocket_endpoint(websocket: WebSocket):
 
 ---
 
-### 2. ✅ Migrer Imports vers robot_factory.py (2-3h)
+### 5. ⚠️ Migrer Imports vers robot_factory.py (TERMINÉ - voir ci-dessus)
 
 **Fichier** : `src/bbia_sim/robot_api.py` (ligne 283)
 
@@ -80,7 +110,7 @@ grep -r "from.*robot_api import.*Robot" src/
 
 ## 🟡 PRIORITÉ MOYENNE - Améliorations Performance
 
-### 3. ✅ Métriques Performance (3-4h)
+### 6. ⚠️ Métriques Performance (TERMINÉ - voir ci-dessus)
 
 **Objectif** : Mesurer et exposer métriques de performance
 
@@ -153,7 +183,7 @@ class JSONFormatter(logging.Formatter):
 
 ---
 
-### 4. ✅ Script Diagnostic Environnement (1h)
+### 7. ⚠️ Script Diagnostic Environnement (TERMINÉ - voir ci-dessus)
 
 **Objectif** : Créer un script `bbia doctor` pour vérifier l'environnement
 

@@ -279,15 +279,27 @@ class RobotAPI(ABC):
         }
 
     # NOTE EXPERT: RobotFactory a été déplacé dans robot_factory.py pour éviter duplication
-    # Import de compatibilité pour éviter de casser le code existant
-    # TODO FUTUR: Migrer tous les imports vers robot_factory.py
+    # ✅ MIGRATION TERMINÉE (Décembre 2025): Tous les imports utilisent maintenant robot_factory.py
+    # Le mécanisme __getattr__ permet compatibilité ascendante pour code existant (déprécié)
     # Import déplacé en bas du fichier pour éviter circular import
 
 
 # Import tardif pour compatibilité avec code existant (évite circular import)
+# DÉPRÉCIÉ: Utiliser `from bbia_sim.robot_factory import RobotFactory` directement
 def __getattr__(name: str) -> Any:
-    """Import tardif pour RobotFactory depuis robot_factory."""
+    """Import tardif pour RobotFactory depuis robot_factory (déprécié).
+
+    Utiliser `from bbia_sim.robot_factory import RobotFactory` dans le nouveau code.
+    """
     if name == "RobotFactory":
+        import warnings
+
+        warnings.warn(
+            "Import de RobotFactory depuis robot_api est déprécié. "
+            "Utiliser 'from bbia_sim.robot_factory import RobotFactory' directement.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         from .robot_factory import RobotFactory
 
         return RobotFactory

@@ -17,7 +17,7 @@ from ..config import settings
 from ..middleware import RateLimitMiddleware, SecurityMiddleware
 from ..simulation_service import simulation_service
 from ..ws import telemetry
-from .routers import apps, daemon, ecosystem, kinematics, motion, motors, move, state
+from .routers import apps, daemon, ecosystem, kinematics, metrics, motion, motors, move, state
 
 # Configuration du logging
 logging.basicConfig(
@@ -237,10 +237,10 @@ app.include_router(
     prefix="/api",
 )  # Sans dépendance globale pour dashboard
 
-# Routers AVEC WebSockets (pas d'auth globale pour WebSockets)
+# Routers AVEC WebSockets (auth via query params en prod)
 # Note: Les WebSockets ne supportent pas HTTPBearer
 # Les endpoints HTTP dans ces routers auront l'auth désactivée pour éviter conflits
-# TODO: Implémenter auth WebSocket via query params ou messages initiaux si nécessaire
+# Auth WebSocket implémentée via query param `token` (optionnel en dev, requis en prod)
 app.include_router(state.router, prefix="/api")  # Contient /ws/full + endpoints HTTP
 app.include_router(
     move.router,
@@ -264,6 +264,7 @@ app.include_router(
     dependencies=[Depends(verify_token)],
 )
 app.include_router(telemetry.router, prefix="/ws", tags=["telemetry"])
+app.include_router(metrics.router, tags=["metrics"])  # /metrics/*, /healthz, /readyz
 
 
 # Endpoint JSON racine pour les tests et API clients

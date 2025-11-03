@@ -3,11 +3,23 @@
 Tests complets pour vision_yolo.py - Amélioration coverage 49% → 70%+
 """
 
+import sys
+from pathlib import Path
 from unittest.mock import MagicMock, patch
 
 import numpy as np
 import numpy.typing as npt
 import pytest
+
+# S'assurer que src est dans le path pour coverage
+sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
+
+# Importer le module complet au niveau du fichier pour que coverage le détecte
+try:
+    import bbia_sim.vision_yolo  # noqa: F401
+except (ImportError, AttributeError, Exception):
+    # Si l'import échoue, ce sera géré dans les tests individuels
+    pass
 
 from bbia_sim.vision_yolo import (
     FaceDetector,
@@ -692,7 +704,6 @@ class TestFactoryFunctions:
                 image = np.zeros((480, 640, 3), dtype=np.uint8)
                 detections = detector.detect_objects(image)
                 assert detections == []
-
 
     def test_face_detector_cache_import_error(self):
         """Test FaceDetector avec ImportError dans cache (couverture lignes 280-281)."""

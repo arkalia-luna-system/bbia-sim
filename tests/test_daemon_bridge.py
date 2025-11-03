@@ -4,9 +4,22 @@ Tests unitaires pour daemon/bridge.py
 Tests de la couche Zenoh/FastAPI pour Reachy Mini
 """
 
+import sys
+from pathlib import Path
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
+
+# S'assurer que src est dans le path pour coverage
+sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
+
+# Importer le module au niveau du fichier pour que coverage le détecte
+# Coverage ne détecte que les imports au niveau module, pas ceux dans les tests
+try:
+    import bbia_sim.daemon.bridge  # noqa: F401
+except (ImportError, AttributeError, Exception):
+    # Si l'import échoue, ce sera géré dans les tests individuels
+    pass
 
 
 class TestDaemonBridge:

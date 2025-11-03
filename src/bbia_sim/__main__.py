@@ -75,6 +75,11 @@ Exemples d'utilisation:
 
     # Options techniques
     parser.add_argument("--verbose", "-v", action="store_true", help="Mode verbose")
+    parser.add_argument(
+        "--doctor",
+        action="store_true",
+        help="Diagnostic de l'environnement BBIA-SIM",
+    )
     parser.add_argument("--version", action="version", version="BBIA-SIM 1.0.0")
 
     args = parser.parse_args()
@@ -91,6 +96,8 @@ Exemples d'utilisation:
             run_voice_synthesis(args.voice)
         elif args.listen:
             run_voice_recognition()
+        elif args.doctor:
+            run_doctor()
         else:
             # Mode par défaut : affichage de l'aide
             parser.print_help()
@@ -213,6 +220,100 @@ def run_voice_recognition() -> None:
     except ImportError as e:
         logger.error(f"Impossible d'importer le module vocal : {e}")
         sys.exit(1)
+
+
+def run_doctor() -> None:
+    """Lance le diagnostic de l'environnement BBIA-SIM."""
+    logger.info("🔍 Diagnostic de l'environnement BBIA-SIM...")
+    print("\n" + "=" * 60)
+    print("🔍 DIAGNOSTIC BBIA-SIM")
+    print("=" * 60 + "\n")
+
+    checks = {}
+    all_ok = True
+
+    # Python version
+    python_version = (
+        f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}"
+    )
+    python_ok = sys.version_info >= (3, 10)
+    checks["Python version"] = {
+        "status": python_ok,
+        "value": python_version,
+        "required": ">=3.10",
+    }
+    if not python_ok:
+        all_ok = False
+
+    # Reachy Mini SDK
+    try:
+        from reachy_mini import ReachyMini  # noqa: F401
+
+        checks["Reachy Mini SDK"] = {"status": True, "value": "disponible"}
+    except ImportError:
+        checks["Reachy Mini SDK"] = {"status": False, "value": "non disponible"}
+        all_ok = False
+
+    # MuJoCo
+    try:
+        import mujoco  # noqa: F401
+
+        checks["MuJoCo"] = {"status": True, "value": "disponible"}
+    except ImportError:
+        checks["MuJoCo"] = {"status": False, "value": "non disponible"}
+        all_ok = False
+
+    # Audio libraries
+    try:
+        import sounddevice  # noqa: F401
+
+        checks["SoundDevice"] = {"status": True, "value": "disponible"}
+    except ImportError:
+        checks["SoundDevice"] = {"status": False, "value": "non disponible"}
+        all_ok = False
+
+    # Camera access
+    try:
+        import cv2  # noqa: F401
+
+        checks["OpenCV"] = {"status": True, "value": "disponible"}
+    except ImportError:
+        checks["OpenCV"] = {"status": False, "value": "non disponible"}
+        all_ok = False
+
+    # Network connectivity
+    try:
+        import socket
+
+        socket.create_connection(("8.8.8.8", 53), timeout=3)
+        checks["Network"] = {"status": True, "value": "connecté"}
+    except Exception:
+        checks["Network"] = {"status": False, "value": "non connecté"}
+        all_ok = False
+
+    # File permissions
+    try:
+        test_file = Path("/tmp/bbia_test_write")
+        test_file.write_text("test")
+        test_file.unlink()
+        checks["File permissions"] = {"status": True, "value": "OK"}
+    except Exception as e:
+        checks["File permissions"] = {"status": False, "value": f"Erreur: {e}"}
+        all_ok = False
+
+    # Afficher résultats
+    for check_name, check_info in checks.items():
+        status_icon = "✅" if check_info["status"] else "❌"
+        print(f"{status_icon} {check_name}: {check_info['value']}")
+        if "required" in check_info:
+            print(f"   Requis: {check_info['required']}")
+
+    print("\n" + "=" * 60)
+    if all_ok:
+        print("✅ Tous les checks sont OK !")
+    else:
+        print("⚠️  Certains checks ont échoué")
+    print("=" * 60 + "\n")
 
 
 if __name__ == "__main__":

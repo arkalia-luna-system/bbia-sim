@@ -17,8 +17,16 @@ sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 # Importer le module directement - coverage doit le détecter
 # Les patches dans les tests individuels géreront les dépendances
+# IMPORTANT: L'import doit être au niveau module pour que coverage le détecte
 try:
+    # Import direct du module pour coverage
     import bbia_sim.dashboard_advanced  # noqa: F401
+
+    # Import des classes/fonctions pour tests
+    from bbia_sim.dashboard_advanced import (  # noqa: F401
+        FASTAPI_AVAILABLE,
+        BBIAWebSocketManager,
+    )
 except (ImportError, AttributeError, Exception):
     # Si l'import échoue complètement, ce sera géré dans les tests individuels
     # Mais normalement l'import devrait réussir même si FastAPI n'est pas disponible

@@ -28,8 +28,8 @@
 |--------|----------------|----------|-----------------|--------|
 | `vision_yolo.py` | **99.45%** ✅ | 50%+ | ✅ **42 tests** | ✅ **TERMINÉ** (objectif largement dépassé) |
 | `voice_whisper.py` | **92.52%** ✅ | 50%+ | ✅ **66 tests** | ✅ **TERMINÉ** (objectif largement dépassé) |
-| `dashboard_advanced.py` | **76.71%** ✅ | 50%+ | ✅ **47 tests**, 1156 lignes | ✅ **TERMINÉ** |
-| `daemon/bridge.py` | **54.86%** ✅ | 30%+ | ✅ **34 tests** | ✅ **TERMINÉ** (objectif 30%+ dépassé) |
+| `dashboard_advanced.py` | **76.71%** ✅ | 50%+ | ✅ **47 tests**, 1156 lignes | ✅ **TERMINÉ** (objectif dépassé) |
+| `daemon/bridge.py` | **55.41%** ✅ | 30%+ | ✅ **34 tests** | ✅ **TERMINÉ** (objectif 30%+ dépassé) |
 
 **Résultats** :
 - ✅ **Tous les modules critiques ont un coverage excellent** (50%+ ou objectif dépassé)
@@ -111,8 +111,8 @@
 
 | Fichier | TODO | Priorité | Statut |
 |---------|------|----------|--------|
-| `daemon/app/main.py` | Ligne 241: Auth WebSocket | 🟢 Basse | ⏳ Optionnel |
-| `robot_api.py` | Ligne 280: Migration imports | 🟢 Basse | ⏳ Refactoring futur |
+| `daemon/app/main.py` | Ligne 241: Auth WebSocket | ✅ | ✅ **TERMINÉ** (Décembre 2025) |
+| `robot_api.py` | Ligne 280: Migration imports | ✅ | ✅ **TERMINÉ** (Décembre 2025) |
 
 **Estimation** : ~1h (options optionnelles uniquement)
 

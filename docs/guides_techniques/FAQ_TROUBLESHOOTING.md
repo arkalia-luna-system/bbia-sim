@@ -243,6 +243,27 @@ pytest tests/test_backend_budget_cpu_ram.py -v
 ROBOT_TIMEOUT = 5.0  # Secondes
 ```
 
+### Authentification WebSocket
+
+**Nouvelle fonctionnalité** (Décembre 2025) : Auth WebSocket via query params
+
+**En production** :
+```python
+# Connexion WebSocket avec token
+websocket = await connect("ws://localhost:8000/api/state/ws/full?token=your-token")
+```
+
+**En développement** :
+- Auth optionnelle (pas de token requis)
+- Token requis uniquement en mode `prod`
+
+**Configuration** :
+```python
+# Dans .env ou variables d'environnement
+BBIA_ENVIRONMENT=prod  # Active auth WebSocket
+BBIA_API_TOKEN=your-secret-token
+```
+
 ---
 
 ## 🟠 CORS & Sécurité

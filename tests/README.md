@@ -25,6 +25,14 @@
 - **sim/simulator.py** : **90.00%** ✅
 - **unity_reachy_controller.py** : **81.20%** ✅
 
+### 📊 **Modules Critiques (Coverage Excellent)**
+- **vision_yolo.py** : **99.45%** ✅ (42 tests) - Objectif 50%+ largement dépassé
+- **voice_whisper.py** : **92.52%** ✅ (66 tests) - Objectif 50%+ largement dépassé
+- **dashboard_advanced.py** : **76.71%** ✅ (47 tests, 1156 lignes) - Objectif 50%+ dépassé
+- **daemon/bridge.py** : **54.86%** ✅ (34 tests) - Objectif 30%+ dépassé
+
+**Total tests modules critiques** : **189 tests** pour les 4 modules critiques
+
 ### 🧪 **Golden Tests**
 - **test_golden_traces.py** : 3 tests de non-régression
 - **Traces référence** : happy_mujoco.jsonl, lookat_mujoco.jsonl, wakeup_mujoco.jsonl
@@ -360,7 +368,10 @@ pytest --cov=src/bbia_sim --cov-report=term-missing
 **BBIA-SIM** - Tests et Qualité 🧪✨
 
 **Version** : 2.0  
-**Date** : Oct / Nov. 2025  
-**Tests** : ✅ **1245 tests collectés** (pytest --collect-only)  
+**Date** : Décembre 2025  
+**Tests** : ✅ **1245+ tests collectés** (pytest --collect-only)  
 **Couverture** : ✅ **68.86%** (excellent)  
+**Couverture modules critiques** : ✅ **99.45%** vision_yolo, **92.52%** voice_whisper, **76.71%** dashboard_advanced  
 **Qualité** : ✅ Black/Ruff/MyPy compliant
+
+**Dernière mise à jour** : Décembre 2025 - Coverage modules critiques amélioré, auth WebSocket ajoutée
