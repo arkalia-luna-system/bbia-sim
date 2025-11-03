@@ -50,6 +50,7 @@ class TestReachyMiniBackend:
     @pytest.mark.fast
     def test_joint_mapping(self):
         """Test du mapping des joints."""
+        assert self.robot is not None  # Type narrowing pour mypy
         # Vérifier que tous les joints officiels sont mappés (SDK officiel)
         expected_joints = {
             "stewart_1",
@@ -69,6 +70,7 @@ class TestReachyMiniBackend:
     @pytest.mark.fast
     def test_joint_limits(self):
         """Test des limites des joints."""
+        assert self.robot is not None  # Type narrowing pour mypy
         # Vérifier que les limites sont définies (SDK officiel)
         for joint in ["stewart_1", "stewart_2", "yaw_body"]:
             assert joint in self.robot.joint_limits
@@ -79,6 +81,7 @@ class TestReachyMiniBackend:
     @pytest.mark.fast
     def test_forbidden_joints(self):
         """Test des joints interdits."""
+        assert self.robot is not None  # Type narrowing pour mypy
         # Note: Antennes maintenant optionnelles (commentées dans forbidden_joints)
         # Les joints passifs sont toujours interdits
         assert isinstance(self.robot.forbidden_joints, set)

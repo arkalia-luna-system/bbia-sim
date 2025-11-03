@@ -177,6 +177,7 @@ class TestReachyMiniCompleteConformity:
 
     def test_telemetry_conformity(self):
         """Test conformité télémétrie."""
+        assert self.backend is not None  # Type narrowing pour mypy
         telemetry = self.backend.get_telemetry()  # type: ignore[attr-defined]
         assert isinstance(telemetry, dict)
 
@@ -193,6 +194,7 @@ class TestReachyMiniCompleteConformity:
 
     def test_safety_conformity(self):
         """Test conformité sécurité."""
+        assert self.backend is not None  # Type narrowing pour mypy
         # Test joints interdits
         forbidden_joints = self.backend.forbidden_joints
         # Note: Antennes maintenant optionnelles (commentées dans forbidden_joints)
@@ -211,6 +213,7 @@ class TestReachyMiniCompleteConformity:
         """Test conformité mode simulation."""
         # En mode simulation, toutes les méthodes doivent fonctionner (SDK officiel retourne None)
         # IMPORTANT: Les joints stewart ne peuvent pas être contrôlés individuellement
+        assert self.backend is not None  # Type narrowing pour mypy
         # Utiliser goto_target() ou look_at_world() à la place
         result = self.backend.set_joint_pos(
             "yaw_body", 0.1
@@ -228,6 +231,7 @@ class TestReachyMiniCompleteConformity:
         """Test conformité performance."""
         import time
 
+        assert self.backend is not None  # Type narrowing pour mypy
         # Test latence des méthodes critiques
         # Utiliser yaw_body au lieu de stewart_1 (stewart joints nécessitent IK)
         start_time = time.time()
