@@ -17,8 +17,9 @@ try:
     FASTAPI_AVAILABLE = True
 except ImportError:
     FASTAPI_AVAILABLE = False
-    FastAPI = None  # type: ignore
-    WebSocket = None  # type: ignore
+    # Types fallback pour mypy
+    FastAPI = Any  # type: ignore[assignment,misc]
+    WebSocket = Any  # type: ignore[assignment,misc]
 
 # Ajouter le chemin src pour les imports
 import sys
@@ -109,10 +110,11 @@ class BBIAWebSocketManager:
 websocket_manager = BBIAWebSocketManager()
 
 # Application FastAPI
+app: FastAPI | None
 if FASTAPI_AVAILABLE:
     app = FastAPI(title="BBIA Dashboard", version="1.2.0")
 else:
-    app = None  # type: ignore
+    app = None
 
 
 def create_dashboard_app() -> FastAPI | None:
@@ -331,6 +333,7 @@ DASHBOARD_HTML = """
 
 # Routes FastAPI
 if FASTAPI_AVAILABLE:
+    assert app is not None  # Type narrowing pour mypy
 
     @app.get("/", response_class=HTMLResponse)
     async def dashboard():
@@ -456,6 +459,9 @@ def run_dashboard(host: str = "127.0.0.1", port: int = 8000, backend: str = "muj
     logger.info(f"🔗 URL: http://{host}:{port}")
     logger.info(f"🤖 Backend robot: {backend}")
 
+    if app is None:
+        logger.error("❌ Application FastAPI non disponible")
+        return
     uvicorn.run(app, host=host, port=port, log_level="info")
 
 

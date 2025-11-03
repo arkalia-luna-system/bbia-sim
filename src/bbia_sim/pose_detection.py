@@ -19,11 +19,11 @@ logger = logging.getLogger(__name__)
 # Import conditionnel MediaPipe Pose
 MEDIAPIPE_POSE_AVAILABLE = False
 try:
-    import mediapipe as mp  # type: ignore[import]
+    import mediapipe as mp
 
     MEDIAPIPE_POSE_AVAILABLE = True
 except ImportError:
-    mp = None  # type: ignore[assignment]
+    mp = None
     logger.debug("MediaPipe non disponible. Installer avec: pip install mediapipe")
 
 

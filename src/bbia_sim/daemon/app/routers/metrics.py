@@ -12,7 +12,7 @@ try:
     PSUTIL_AVAILABLE = True
 except ImportError:
     PSUTIL_AVAILABLE = False
-    psutil = None  # type: ignore[assignment]
+    psutil = None
 
 from fastapi import APIRouter
 from fastapi.responses import Response

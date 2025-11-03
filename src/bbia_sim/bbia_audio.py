@@ -98,7 +98,7 @@ def _get_robot_media_microphone(
             # Media est maintenant toujours disponible (shim en simulation)
             if media:
                 result = getattr(media, "microphone", None)
-                return result  # type: ignore[no-any-return]
+                return result
         except Exception:
             return None
     return None

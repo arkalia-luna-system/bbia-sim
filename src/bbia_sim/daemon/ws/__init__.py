@@ -30,7 +30,7 @@ class ConnectionManager:
     def __init__(self) -> None:
         self.active_connections: list[WebSocket] = []
         self.is_broadcasting = False
-        self.broadcast_task: asyncio.Task | None = None
+        self.broadcast_task: asyncio.Task[None] | None = None
 
     async def connect(self, websocket: WebSocket) -> None:
         """Accepte une nouvelle connexion WebSocket."""

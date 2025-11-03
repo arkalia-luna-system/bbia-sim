@@ -212,7 +212,7 @@ class BBIAVoiceAdvanced:
             if self.tts is None:
                 raise ValueError("Coqui TTS non initialisé")
             # Type narrowing: mypy comprend maintenant que self.tts n'est pas None
-            self.tts.tts_to_file(  # type: ignore[union-attr]
+            self.tts.tts_to_file(
                 text=text,
                 file_path=str(audio_file),
                 # Certains modèles supportent ces paramètres :
@@ -258,7 +258,7 @@ class BBIAVoiceAdvanced:
                     with open(audio_path, "rb") as f:
                         data = f.read()
                     if hasattr(media, "play_audio"):
-                        media.play_audio(data, volume=volume)  # type: ignore[arg-type]
+                        media.play_audio(data, volume=volume)
                         logger.info("🔊 Lecture via robot.media.play_audio")
                         return
                 except Exception as e:
@@ -377,9 +377,9 @@ def dire_texte_advanced(
     if "_global_voice_advanced" not in globals():
         globals()["_global_voice_advanced"] = BBIAVoiceAdvanced()
 
-    voice_advanced: BBIAVoiceAdvanced = globals()["_global_voice_advanced"]  # type: ignore[assignment]
+    voice_advanced: BBIAVoiceAdvanced = globals()["_global_voice_advanced"]
     result = voice_advanced.say(texte, emotion=emotion, pitch=pitch)
-    return bool(result)  # type: ignore[return-value]
+    return bool(result)
 
 
 # Compatibilité avec ancien code (fallback automatique)

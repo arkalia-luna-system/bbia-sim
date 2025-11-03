@@ -19,8 +19,9 @@ try:
     FASTAPI_AVAILABLE = True
 except ImportError:
     FASTAPI_AVAILABLE = False
-    FastAPI = None  # type: ignore
-    WebSocket = None  # type: ignore
+    # Types fallback pour mypy
+    FastAPI = Any  # type: ignore[assignment,misc]
+    WebSocket = Any  # type: ignore[assignment,misc]
 
 # Ajouter le chemin src pour les imports
 import sys
@@ -283,6 +284,7 @@ class BBIAAdvancedWebSocketManager:
 advanced_websocket_manager = BBIAAdvancedWebSocketManager()
 
 # Application FastAPI avancée
+app: FastAPI | None
 if FASTAPI_AVAILABLE:
     app = FastAPI(
         title="BBIA Advanced Dashboard",
@@ -299,7 +301,7 @@ if FASTAPI_AVAILABLE:
         allow_headers=["*"],
     )
 else:
-    app = None  # type: ignore
+    app = None
 
 
 def create_advanced_dashboard_app() -> FastAPI | None:
@@ -1150,6 +1152,7 @@ ADVANCED_DASHBOARD_HTML = """
 
 # Routes FastAPI avancées
 if FASTAPI_AVAILABLE:
+    assert app is not None  # Type narrowing pour mypy
 
     @app.get("/", response_class=HTMLResponse)
     async def advanced_dashboard():
@@ -1585,6 +1588,9 @@ def run_advanced_dashboard(
     logger.info("📊 Métriques temps réel activées")
     logger.info("🎮 Contrôles avancés disponibles")
 
+    if app is None:
+        logger.error("❌ Application FastAPI non disponible")
+        return
     uvicorn.run(app, host=host, port=port, log_level="info")
 
 

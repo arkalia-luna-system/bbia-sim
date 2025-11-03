@@ -22,11 +22,11 @@ logger = logging.getLogger(__name__)
 # Import conditionnel DeepFace
 DEEPFACE_AVAILABLE = False
 try:
-    from deepface import DeepFace  # type: ignore[import]
+    from deepface import DeepFace
 
     DEEPFACE_AVAILABLE = True
 except ImportError:
-    DeepFace = None  # type: ignore[assignment]
+    DeepFace = None
     logger.debug("DeepFace non disponible. Installer avec: pip install deepface")
 
 

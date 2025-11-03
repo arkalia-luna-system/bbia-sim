@@ -23,7 +23,7 @@ from pydantic import BaseModel
 try:
     from reachy_mini.motion.recorded_move import RecordedMoves
 except ImportError:
-    RecordedMoves = None  # type: ignore
+    RecordedMoves = None
 
 from ...models import AnyPose, FullBodyTarget, MoveUUID
 from ..backend_adapter import (
@@ -261,7 +261,7 @@ async def list_recorded_move_dataset(dataset_name: str) -> list[str]:
     # S'assurer que le résultat est une liste de strings
     # Type: ignore car list_moves() retourne Any mais nous convertissons en list[str]
     move_list: list[str] = [str(move) for move in result] if result else []
-    return move_list  # type: ignore[no-any-return]
+    return move_list
 
 
 @router.post("/play/recorded-move-dataset/{dataset_name:path}/{move_name}")

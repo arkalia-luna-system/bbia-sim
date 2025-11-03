@@ -7,7 +7,7 @@ import asyncio
 import json
 import logging
 import time
-from typing import Any
+from typing import Any, cast
 
 import numpy as np
 from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
@@ -23,10 +23,10 @@ try:
     ZENOH_AVAILABLE = True
 except ImportError:
     ZENOH_AVAILABLE = False
-    zenoh = None  # type: ignore[assignment,no-redef]
-    # Créer des types fallback pour éviter réassignation de types importés
-    Config = type(None)  # type: ignore[assignment,no-redef,misc]
-    Session = type(None)  # type: ignore[assignment,no-redef,misc]
+    zenoh = None  # type: ignore[assignment]
+    # Types fallback pour mypy
+    Config = Any  # type: ignore[assignment,misc]
+    Session = Any  # type: ignore[assignment,misc]
 
 # Import conditionnel SDK officiel
 try:
@@ -36,8 +36,8 @@ try:
     REACHY_MINI_AVAILABLE = True
 except ImportError:
     REACHY_MINI_AVAILABLE = False
-    ReachyMini = None  # type: ignore[assignment,no-redef]
-    create_head_pose = None  # type: ignore[assignment,no-redef]
+    ReachyMini = cast(Any, None)
+    create_head_pose = cast(Any, None)
 
 
 class ZenohConfig(BaseModel):  # type: ignore[misc]
@@ -104,7 +104,7 @@ class ZenohBridge:
         self.publishers: dict[str, Any] = {}
 
         # État du robot
-        self.current_state = RobotState(joints={}, emotions={}, sensors={})  # type: ignore[call-arg]  # Pydantic constructeur
+        self.current_state = RobotState(joints={}, emotions={}, sensors={})
 
         # Queue de commandes
         self.command_queue: asyncio.Queue[RobotCommand] = asyncio.Queue()
@@ -119,19 +119,19 @@ class ZenohBridge:
             # Configuration Zenoh
             if zenoh is None:
                 raise RuntimeError("Zenoh non disponible")
-            zenoh_config = Config()  # type: ignore[misc,operator]
-            zenoh_config.insert_json5("mode", f'"{self.config.mode}"')  # type: ignore[attr-defined]
-            zenoh_config.insert_json5("connect", json.dumps(self.config.connect))  # type: ignore[attr-defined]
+            zenoh_config = Config()
+            zenoh_config.insert_json5("mode", f'"{self.config.mode}"')
+            zenoh_config.insert_json5("connect", json.dumps(self.config.connect))
 
             # Créer la session Zenoh (zenoh.open() est synchrone, utiliser to_thread)
-            self.session = await asyncio.to_thread(zenoh.open, zenoh_config)  # type: ignore[attr-defined,arg-type]
+            self.session = await asyncio.to_thread(zenoh.open, zenoh_config)
             self.logger.info("Session Zenoh créée")
 
             # Initialiser Reachy Mini
             if REACHY_MINI_AVAILABLE:
                 if ReachyMini is None:
                     raise RuntimeError("ReachyMini non disponible")
-                self.reachy_mini = ReachyMini()  # type: ignore[call-arg]
+                self.reachy_mini = ReachyMini()
                 self.logger.info("Reachy Mini initialisé")
             else:
                 self.logger.warning("SDK Reachy Mini non disponible - mode simulation")
@@ -158,7 +158,7 @@ class ZenohBridge:
         # Fermer Reachy Mini
         if self.reachy_mini:
             try:
-                self.reachy_mini.close()  # type: ignore[attr-defined]
+                self.reachy_mini.close()
             except Exception as e:
                 self.logger.error(f"Erreur fermeture Reachy Mini: {e}")
 
@@ -178,7 +178,7 @@ class ZenohBridge:
         # Fermer la session Zenoh
         if self.session:
             try:
-                await self.session.close()  # type: ignore[attr-defined]  # Zenoh API dynamique
+                await self.session.close()
             except Exception as e:
                 self.logger.error(f"Erreur fermeture session Zenoh: {e}")
 
@@ -191,21 +191,21 @@ class ZenohBridge:
 
         try:
             # Subscriber pour les commandes
-            self.subscribers["commands"] = await self.session.declare_subscriber(  # type: ignore
+            self.subscribers["commands"] = await self.session.declare_subscriber(
                 self.topics["commands"],
                 self._on_command_received,
             )
 
             # Publishers pour l'état et la télémétrie
-            self.publishers["state"] = await self.session.declare_publisher(  # type: ignore
+            self.publishers["state"] = await self.session.declare_publisher(
                 self.topics["state"],
             )
 
-            self.publishers["telemetry"] = await self.session.declare_publisher(  # type: ignore
+            self.publishers["telemetry"] = await self.session.declare_publisher(
                 self.topics["telemetry"],
             )
 
-            self.publishers["errors"] = await self.session.declare_publisher(  # type: ignore
+            self.publishers["errors"] = await self.session.declare_publisher(
                 self.topics["errors"],
             )
 
@@ -555,12 +555,12 @@ class ZenohBridge:
             sensors_state: dict[str, Any] = {}
             try:
                 if hasattr(self.reachy_mini, "get_sensor_data"):
-                    sensors_state = dict(self.reachy_mini.get_sensor_data())  # type: ignore[arg-type,no-any-return]  # SDK dynamique
+                    sensors_state = dict(self.reachy_mini.get_sensor_data())
                 elif hasattr(self.reachy_mini, "io") and hasattr(
                     self.reachy_mini.io,
                     "get_imu",
                 ):
-                    imu_data = self.reachy_mini.io.get_imu()  # type: ignore[attr-defined]  # SDK dynamique
+                    imu_data = self.reachy_mini.io.get_imu()
                     if imu_data is not None:
                         sensors_state["imu"] = imu_data
             except Exception as err:
@@ -580,7 +580,7 @@ class ZenohBridge:
             return
 
         try:
-            state_data: dict[str, Any] = self.current_state.model_dump()  # type: ignore[no-any-return]
+            state_data: dict[str, Any] = self.current_state.model_dump()
             await self.publishers["state"].put(json.dumps(state_data))
 
         except Exception as e:
@@ -604,7 +604,7 @@ class ZenohBridge:
             if not self.publishers.get("commands"):
                 return False
 
-            command_data: dict[str, Any] = command.model_dump()  # type: ignore[no-any-return]
+            command_data: dict[str, Any] = command.model_dump()
             await self.publishers["commands"].put(json.dumps(command_data))
             return True
 
@@ -664,7 +664,7 @@ async def get_robot_state() -> dict[str, Any]:
         raise HTTPException(status_code=503, detail="Bridge Zenoh non connecté")
 
     state = bridge.get_current_state()
-    state_dict: dict[str, Any] = state.model_dump()  # type: ignore[no-any-return]
+    state_dict: dict[str, Any] = state.model_dump()
     return state_dict
 
 
@@ -688,7 +688,7 @@ async def websocket_endpoint(websocket: WebSocket) -> None:
             # Recevoir des commandes via WebSocket
             data = await websocket.receive_text()
             command_data = json.loads(data)
-            command = RobotCommand(**command_data)  # type: ignore[call-arg]  # Pydantic constructeur
+            command = RobotCommand(**command_data)
 
             # Envoyer via Zenoh
             if bridge and bridge.is_connected():
@@ -706,7 +706,7 @@ async def websocket_endpoint(websocket: WebSocket) -> None:
             if bridge:
                 state = bridge.get_current_state()
                 await websocket.send_text(
-                    json.dumps({"type": "state", "data": state.model_dump()}),  # type: ignore[no-any-return]
+                    json.dumps({"type": "state", "data": state.model_dump()}),
                 )
 
     except WebSocketDisconnect:

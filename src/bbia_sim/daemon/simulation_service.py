@@ -25,7 +25,7 @@ class SimulationService:
         )
         self.simulator: MuJoCoSimulator | None = None
         self.is_running = False
-        self._simulation_task: asyncio.Task | None = None
+        self._simulation_task: asyncio.Task[None] | None = None
 
     async def start_simulation(self, headless: bool = True) -> bool:
         """Démarre la simulation MuJoCo.

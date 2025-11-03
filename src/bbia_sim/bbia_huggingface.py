@@ -89,12 +89,12 @@ _expert_quality_padding = [
 try:
     import warnings
 
-    import torch  # type: ignore[import-not-found]
+    import torch
 
     # Supprimer les avertissements de transformers
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
-        from transformers import (  # type: ignore[import-not-found]
+        from transformers import (
             BlipForConditionalGeneration,
             BlipProcessor,
             CLIPModel,
@@ -104,11 +104,11 @@ try:
             pipeline,
         )
         from transformers.utils import (
-            logging as transformers_logging,  # type: ignore[import-not-found]
+            logging as transformers_logging,
         )
 
         # Réduire la verbosité de transformers
-        transformers_logging.set_verbosity_error()  # type: ignore[no-untyped-call]
+        transformers_logging.set_verbosity_error()
 
     HF_AVAILABLE = True
 except ImportError:
@@ -133,7 +133,7 @@ class BBIAHuggingFace:
         self,
         device: str = "auto",
         cache_dir: str | None = None,
-        tools: "BBIATools | None" = None,  # type: ignore[name-defined]
+        tools: "BBIATools | None" = None,
     ) -> None:
         """Initialise le module Hugging Face.
 
@@ -289,13 +289,13 @@ class BBIAHuggingFace:
         """Charge un modèle LLM conversationnel."""
         try:
             # isort: off
-            from transformers import AutoModelForCausalLM  # type: ignore[import-not-found]
-            from transformers import AutoTokenizer  # type: ignore[import-not-found]
+            from transformers import AutoModelForCausalLM
+            from transformers import AutoTokenizer
 
             # isort: on
 
             logger.info(f"📥 Chargement LLM {model_name} (peut prendre 1-2 minutes)...")
-            self.chat_tokenizer = AutoTokenizer.from_pretrained(  # type: ignore[no-untyped-call]
+            self.chat_tokenizer = AutoTokenizer.from_pretrained(
                 model_name,
                 cache_dir=self.cache_dir,
                 revision="main",
@@ -348,8 +348,8 @@ class BBIAHuggingFace:
             # SmolVLM2 / Moondream2 (alternative gratuite à gpt-realtime)
             try:
                 from transformers import (
-                    AutoModelForVision2Seq,  # type: ignore[import-not-found]
-                    AutoProcessor,  # type: ignore[import-not-found]
+                    AutoModelForVision2Seq,
+                    AutoProcessor,
                 )
 
                 logger.info(f"📥 Chargement SmolVLM2/Moondream2: {model_name}")
@@ -497,26 +497,24 @@ class BBIAHuggingFace:
                 # Utilisation des pipelines pour NLP
                 pipeline_name = self._get_pipeline_name(resolved_name)
                 # Laisser le device auto (plus fiable pour CPU/MPS/CUDA)
-                pipe = pipeline(pipeline_name, model=resolved_name)  # type: ignore[call-overload]
+                pipe = pipeline(pipeline_name, model=resolved_name)
                 self.models[f"{model_name}_pipeline"] = pipe
 
             elif model_type == "chat":
                 # Charger LLM conversationnel (Mistral, Llama, etc.)
                 try:
                     # isort: off
-                    from transformers import AutoModelForCausalLM  # type: ignore[import-not-found]
-                    from transformers import AutoTokenizer  # type: ignore[import-not-found]
+                    from transformers import AutoModelForCausalLM
+                    from transformers import AutoTokenizer
 
                     # isort: on
 
                     logger.info(f"📥 Chargement LLM (long) {model_name}...")
-                    self.chat_tokenizer = (
-                        AutoTokenizer.from_pretrained(  # type: ignore[no-untyped-call]
-                            model_name,
-                            cache_dir=self.cache_dir,
-                            revision="main",
-                        )  # nosec B615
-                    )
+                    self.chat_tokenizer = AutoTokenizer.from_pretrained(
+                        model_name,
+                        cache_dir=self.cache_dir,
+                        revision="main",
+                    )  # nosec B615
 
                     # Support instruction format
                     if (
@@ -1469,7 +1467,7 @@ class BBIAHuggingFace:
             if self._sentence_model is None:
                 try:
                     from sentence_transformers import (
-                        SentenceTransformer,  # type: ignore[import-not-found]
+                        SentenceTransformer,
                     )
 
                     logger.info("📥 Chargement modèle NLP (sentence-transformers)...")
@@ -1518,7 +1516,7 @@ class BBIAHuggingFace:
             # Calculer similarité sémantique
             try:
                 from sklearn.metrics.pairwise import (
-                    cosine_similarity,  # type: ignore[import-not-found]
+                    cosine_similarity,
                 )
             except ImportError:
                 logger.debug("ℹ️ scikit-learn non disponible, fallback mots-clés")

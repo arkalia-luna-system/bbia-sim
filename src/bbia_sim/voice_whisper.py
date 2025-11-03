@@ -16,30 +16,30 @@ import numpy.typing as npt
 whisper: Any
 
 try:
-    import whisper as _whisper_module  # type: ignore[import]
+    import whisper as _whisper_module
 
     WHISPER_AVAILABLE = True
     whisper = _whisper_module
 except ImportError:
     WHISPER_AVAILABLE = False
-    whisper = None  # type: ignore[assignment]
+    whisper = None
 
 # Imports optionnels pour les patches dans les tests
 try:
-    from transformers import pipeline as transformers_pipeline  # type: ignore[import]
+    from transformers import pipeline as transformers_pipeline
 except ImportError:
-    transformers_pipeline = None  # type: ignore[assignment]
+    transformers_pipeline = None
 
 try:
-    import soundfile as sf  # type: ignore[import]
+    import soundfile as sf
 except ImportError:
-    sf = None  # type: ignore[assignment]
+    sf = None
 
 try:
-    import sounddevice as sd  # type: ignore[import]
+    import sounddevice as sd
 except (ImportError, OSError):
     # OSError: PortAudio library not found (CI/headless)
-    sd = None  # type: ignore[assignment]
+    sd = None
 
 logger = logging.getLogger(__name__)
 

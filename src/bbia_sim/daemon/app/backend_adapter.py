@@ -56,7 +56,7 @@ class BackendAdapter:
         self.connect_if_needed()
 
         if hasattr(self._robot, "get_current_head_pose"):
-            pose = self._robot.get_current_head_pose()  # type: ignore[attr-defined]
+            pose = self._robot.get_current_head_pose()
             if isinstance(pose, np.ndarray):
                 return pose.astype(np.float64)
             return np.eye(4, dtype=np.float64)
@@ -171,7 +171,7 @@ class BackendAdapter:
 
             def sync_goto() -> None:
                 if hasattr(self._robot, "goto_target"):
-                    self._robot.goto_target(  # type: ignore[attr-defined]
+                    self._robot.goto_target(
                         head=head,
                         antennas=antennas,
                         duration=duration,
@@ -209,9 +209,9 @@ class BackendAdapter:
         self.ik_required = True  # Conforme SDK
 
         if hasattr(self._robot, "set_target_head_pose"):
-            self._robot.set_target_head_pose(pose)  # type: ignore[attr-defined]
+            self._robot.set_target_head_pose(pose)
         elif hasattr(self._robot, "set_target"):
-            self._robot.set_target(head=pose)  # type: ignore[attr-defined]
+            self._robot.set_target(head=pose)
 
     def set_target_body_yaw(self, body_yaw: float) -> None:
         """Définit le yaw cible du corps (conforme SDK)."""
@@ -220,9 +220,9 @@ class BackendAdapter:
         self.ik_required = True  # Conforme SDK
 
         if hasattr(self._robot, "set_target_body_yaw"):
-            self._robot.set_target_body_yaw(body_yaw)  # type: ignore[attr-defined]
+            self._robot.set_target_body_yaw(body_yaw)
         elif hasattr(self._robot, "set_target"):
-            self._robot.set_target(body_yaw=body_yaw)  # type: ignore[attr-defined]
+            self._robot.set_target(body_yaw=body_yaw)
 
     def set_target_head_joint_positions(
         self,
@@ -237,7 +237,7 @@ class BackendAdapter:
         self.ik_required = False  # Conforme SDK (joint space = pas d'IK)
 
         if hasattr(self._robot, "set_target_head_joint_positions"):
-            self._robot.set_target_head_joint_positions(positions)  # type: ignore[attr-defined]
+            self._robot.set_target_head_joint_positions(positions)
         elif hasattr(self._robot, "set_joint_pos"):
             # Fallback: définir chaque joint individuellement
             if positions is not None and len(positions) >= 7:
@@ -252,7 +252,7 @@ class BackendAdapter:
                 ]
                 for i, joint_name in enumerate(joint_names):
                     if i < len(positions):
-                        self._robot.set_joint_pos(joint_name, float(positions[i]))  # type: ignore[attr-defined]
+                        self._robot.set_joint_pos(joint_name, float(positions[i]))
 
     def set_target_antenna_joint_positions(
         self,
@@ -265,9 +265,9 @@ class BackendAdapter:
         )
 
         if hasattr(self._robot, "set_target_antenna_joint_positions"):
-            self._robot.set_target_antenna_joint_positions(positions)  # type: ignore[attr-defined]
+            self._robot.set_target_antenna_joint_positions(positions)
         elif hasattr(self._robot, "set_target"):
-            self._robot.set_target(antennas=positions)  # type: ignore[attr-defined]
+            self._robot.set_target(antennas=positions)
 
     def set_target(
         self,
@@ -292,7 +292,7 @@ class BackendAdapter:
             or hasattr(self._robot, "set_target_body_yaw")
             or hasattr(self._robot, "set_target_antenna_joint_positions")
         ):
-            self._robot.set_target(  # type: ignore[attr-defined]
+            self._robot.set_target(
                 head=head,
                 antennas=antennas,
                 body_yaw=body_yaw or 0.0,
@@ -347,7 +347,7 @@ class BackendAdapter:
             import asyncio
 
             if hasattr(self._robot.goto_joint_positions, "__await__"):
-                await self._robot.goto_joint_positions(  # type: ignore[attr-defined]
+                await self._robot.goto_joint_positions(
                     head_joint_positions=head_joint_positions,
                     antennas_joint_positions=antennas_joint_positions,
                     duration=duration,
@@ -355,7 +355,7 @@ class BackendAdapter:
                 )
             else:
                 await asyncio.to_thread(
-                    self._robot.goto_joint_positions,  # type: ignore[attr-defined]
+                    self._robot.goto_joint_positions,
                     head_joint_positions,
                     antennas_joint_positions,
                     duration,
@@ -400,13 +400,15 @@ class BackendAdapter:
         if hasattr(self._robot, "play_move"):
             # Si play_move est async dans le SDK
             if hasattr(self._robot.play_move, "__await__"):
-                await self._robot.play_move(move, play_frequency=100.0, initial_goto_duration=0.0)  # type: ignore[attr-defined]
+                await self._robot.play_move(
+                    move, play_frequency=100.0, initial_goto_duration=0.0
+                )
             else:
                 # Si sync, exécuter dans thread
                 import asyncio
 
                 await asyncio.to_thread(
-                    self._robot.play_move,  # type: ignore[attr-defined]
+                    self._robot.play_move,
                     move,
                     100.0,
                     0.0,
@@ -416,7 +418,7 @@ class BackendAdapter:
             import asyncio
 
             await asyncio.to_thread(
-                self._robot.async_play_move,  # type: ignore[attr-defined]
+                self._robot.async_play_move,
                 move,
                 100.0,
                 0.0,
@@ -457,9 +459,9 @@ class BackendAdapter:
         self.connect_if_needed()
 
         if hasattr(self._robot, "play_sound"):
-            self._robot.play_sound(sound_file)  # type: ignore[attr-defined]
+            self._robot.play_sound(sound_file)
         elif hasattr(self._robot, "robot") and hasattr(self._robot.robot, "play_sound"):
-            self._robot.robot.play_sound(sound_file)  # type: ignore[attr-defined]
+            self._robot.robot.play_sound(sound_file)
         else:
             logger.debug(f"play_sound non disponible, fichier: {sound_file}")
 
@@ -468,7 +470,7 @@ class BackendAdapter:
         self.connect_if_needed()
 
         if hasattr(self._robot, "set_automatic_body_yaw"):
-            self._robot.set_automatic_body_yaw(body_yaw)  # type: ignore[attr-defined]
+            self._robot.set_automatic_body_yaw(body_yaw)
         else:
             logger.debug(f"set_automatic_body_yaw non disponible, yaw: {body_yaw}")
 
@@ -477,7 +479,7 @@ class BackendAdapter:
         self.connect_if_needed()
 
         if hasattr(self._robot, "set_target_head_joint_current"):
-            self._robot.set_target_head_joint_current(current)  # type: ignore[attr-defined]
+            self._robot.set_target_head_joint_current(current)
         else:
             logger.debug("set_target_head_joint_current non disponible (simulation)")
 
@@ -499,13 +501,13 @@ class BackendAdapter:
             body_yaw = self.target_body_yaw if self.target_body_yaw is not None else 0.0
 
         if hasattr(self._robot, "update_target_head_joints_from_ik"):
-            self._robot.update_target_head_joints_from_ik(pose, body_yaw)  # type: ignore[attr-defined]
+            self._robot.update_target_head_joints_from_ik(pose, body_yaw)
         # Fallback: utiliser IK si disponible via robot (conforme SDK)
         elif hasattr(self._robot, "robot") and hasattr(
             self._robot.robot,
             "head_kinematics",
         ):
-            joints = self._robot.robot.head_kinematics.ik(pose, body_yaw=body_yaw)  # type: ignore[attr-defined]
+            joints = self._robot.robot.head_kinematics.ik(pose, body_yaw=body_yaw)
             if joints is None or np.any(np.isnan(joints)):
                 raise ValueError(
                     "WARNING: Collision detected or head pose not achievable!",
@@ -523,7 +525,7 @@ class BackendAdapter:
         self.connect_if_needed()
 
         if hasattr(self._robot, "update_head_kinematics_model"):
-            self._robot.update_head_kinematics_model(  # type: ignore[attr-defined]
+            self._robot.update_head_kinematics_model(
                 head_joint_positions=head_joint_positions,
                 antennas_joint_positions=antennas_joint_positions,
             )
@@ -538,7 +540,7 @@ class BackendAdapter:
         """Ferme le backend (conforme SDK - lifecycle)."""
         try:
             if self._robot and hasattr(self._robot, "disconnect"):
-                self._robot.disconnect()  # type: ignore[attr-defined]
+                self._robot.disconnect()
             self._connected = False
         except Exception as e:
             logger.warning(f"Erreur lors de la fermeture: {e}")
@@ -548,7 +550,7 @@ class BackendAdapter:
         self.connect_if_needed()
 
         if hasattr(self._robot, "get_status"):
-            return self._robot.get_status()  # type: ignore[attr-defined]
+            return self._robot.get_status()
 
         # Retourner statut simple
         return {

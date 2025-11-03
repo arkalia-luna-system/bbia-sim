@@ -185,12 +185,12 @@ class CoquiTTSTTS:
         self._fallback = Pyttsx3TTS()
         self._ready = False
         try:  # pragma: no cover
-            from TTS.api import TTS as _COQUI_TTS  # type: ignore[import]
+            from TTS.api import TTS as _COQUI_TTS
 
             self._coqui_cls = _COQUI_TTS  # store class
             self._ready = True
         except Exception:
-            self._coqui_cls = None  # type: ignore[assignment]
+            self._coqui_cls = None
             self._ready = False
 
     def synthesize_to_wav(self, text: str, outfile: str) -> bool:

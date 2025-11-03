@@ -11,8 +11,8 @@ import numpy as np
 import numpy.typing as npt
 
 try:
-    import cv2  # type: ignore[import]
-    from ultralytics import YOLO  # type: ignore[import]
+    import cv2
+    from ultralytics import YOLO
 
     YOLO_AVAILABLE = True
 except ImportError:
