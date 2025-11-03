@@ -9,7 +9,7 @@ import os
 import json
 import logging
 import time
-from typing import Any
+from typing import Any, cast
 
 import httpx
 import pytest
@@ -67,7 +67,7 @@ class BBIAE2ETestClient:
             f"{self.api_url}/api/state/joints", headers=self.headers
         )
         response.raise_for_status()
-        return response.json()
+        return cast(dict[str, Any], response.json())
 
     async def set_joint_positions(self, joints: list[dict[str, Any]]) -> dict[str, Any]:
         """Définit les positions des joints.
@@ -85,7 +85,7 @@ class BBIAE2ETestClient:
             headers=self.headers,
         )
         response.raise_for_status()
-        return response.json()
+        return cast(dict[str, Any], response.json())
 
     async def connect_websocket(self):
         """Se connecte au WebSocket de télémétrie.
