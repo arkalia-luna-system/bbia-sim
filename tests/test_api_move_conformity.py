@@ -136,10 +136,12 @@ class TestMoveRecordedMoveDatasets:
 
     def test_list_recorded_move_dataset_without_token(self, api_token: str) -> None:
         """Test lister un dataset sans token (vérifie comportement sécurité)."""
-        # Sans token - peut retourner 401/403 (auth requise) ou 404 (dataset non trouvé)
+        # Sans token - peut retourner 401/403 (auth requise), 404 (dataset non trouvé),
+        # ou 501 (SDK non disponible)
         response = client.get("/api/move/recorded-move-datasets/list/test-dataset")
-        # 404 = dataset non trouvé (normal), 401/403 = auth requise, 200 = public endpoint
-        assert response.status_code in (200, 401, 403, 404)
+        # 404 = dataset non trouvé (normal), 401/403 = auth requise, 200 = public endpoint,
+        # 501 = SDK non disponible (comportement valide)
+        assert response.status_code in (200, 401, 403, 404, 501)
 
     def test_list_recorded_move_dataset_not_found(self, api_token: str) -> None:
         """Test dataset non trouvé retourne 404."""
