@@ -145,7 +145,7 @@ Tous les fichiers commençant par `._` sont des fichiers de métadonnées macOS 
 ✅ **7 fichiers redondants supprimés** :
 1. `CE_QUI_RESTE_VRAIMENT_A_FAIRE.md` (redondant avec RESUME_FINAL_ULTIME.md)
 2. `TACHES_A_FAIRE_CONSOLIDEES.md` (redondant avec RESUME_FINAL_ULTIME.md)
-3. `SYNTHESE_TACHES_RESTANTES.md` (redondant avec RESUME_FINAL_ULTIME.md) ✅ **SUPPRIMÉ Décembre 2025**
+3. `SYNTHESE_TACHES_RESTANTES.md` (redondant avec RESUME_FINAL_ULTIME.md) ✅ **SUPPRIMÉ Oct / Nov. 2025**
 4. `ETAT_ACTUEL_DECEMBRE_2025.md` (redondant avec RESUME_FINAL_ULTIME.md)
 5. `references/INDEX.md` (redondant avec INDEX_FINAL.md)
 6. `audit/INDEX_AUDITS_ET_CORRECTIONS.md` (redondant avec INDEX_AUDITS_CONSOLIDES.md)
@@ -162,7 +162,7 @@ Tous les fichiers commençant par `._` sont des fichiers de métadonnées macOS 
 
 ## ✅ SUPPRESSION SESSION 3 - Nettoyage Final
 
-**Date** : Décembre 2025
+**Date** : Oct / Nov. 2025
 
 ### Fichiers Supprimés (1 fichier)
 
@@ -179,7 +179,7 @@ Tous les fichiers commençant par `._` sont des fichiers de métadonnées macOS 
 
 **Résultat** : Documentation plus claire, organisée et sans redondances
 
-**Dernière mise à jour** : Décembre 2025
+**Dernière mise à jour** : Oct / Nov. 2025
 
 ---
 

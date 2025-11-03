@@ -167,7 +167,7 @@
 ✅ **7 fichiers redondants supprimés** :
 1. `CE_QUI_RESTE_VRAIMENT_A_FAIRE.md`
 2. `TACHES_A_FAIRE_CONSOLIDEES.md`
-3. `SYNTHESE_TACHES_RESTANTES.md` ✅ **SUPPRIMÉ Décembre 2025**
+3. `SYNTHESE_TACHES_RESTANTES.md` ✅ **SUPPRIMÉ Oct / Nov. 2025**
 4. `ETAT_ACTUEL_DECEMBRE_2025.md`
 5. `references/INDEX.md`
 6. `audit/INDEX_AUDITS_ET_CORRECTIONS.md`
@@ -181,7 +181,7 @@
 
 ## ✅ SUPPRESSION SESSION 3 - Nettoyage Final
 
-**Date** : Décembre 2025
+**Date** : Oct / Nov. 2025
 
 ### Fichiers Supprimés (1 fichier)
 

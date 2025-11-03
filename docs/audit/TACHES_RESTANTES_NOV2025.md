@@ -1,7 +1,7 @@
 # 📋 Tâches Restantes Identifiées - Oct / Nov. 2025
 
 **Date** : Oct / Nov. 2025  
-**Mise à jour** : Décembre 2025 (TODOs robot réel marqués TERMINÉ)
+**Mise à jour** : Oct / Nov. 2025 (TODOs robot réel marqués TERMINÉ)
 
 **Audit** : Recherche exhaustive de ce qui n'a pas encore été fait
 
