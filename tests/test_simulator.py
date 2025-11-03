@@ -13,7 +13,7 @@ from bbia_sim.sim.simulator import MuJoCoSimulator
 class TestMuJoCoSimulator:
     """Tests pour la classe MuJoCoSimulator."""
 
-    @patch("src.bbia_sim.sim.simulator.mujoco")
+    @patch("bbia_sim.sim.simulator.mujoco")
     def test_init_with_valid_model(self, mock_mujoco):
         """Test initialisation avec modèle valide."""
         # Mock des objets MuJoCo
@@ -51,7 +51,7 @@ class TestMuJoCoSimulator:
         with pytest.raises(FileNotFoundError):
             MuJoCoSimulator("nonexistent_model.xml")
 
-    @patch("src.bbia_sim.sim.simulator.mujoco")
+    @patch("bbia_sim.sim.simulator.mujoco")
     def test_init_with_invalid_model(self, mock_mujoco):
         """Test initialisation avec modèle invalide."""
         mock_mujoco.MjModel.from_xml_path.side_effect = RuntimeError("Invalid MJCF")
@@ -67,7 +67,7 @@ class TestMuJoCoSimulator:
         finally:
             os.unlink(temp_model)
 
-    @patch("src.bbia_sim.sim.simulator.mujoco")
+    @patch("bbia_sim.sim.simulator.mujoco")
     def test_launch_simulation_headless(self, mock_mujoco):
         """Test lancement simulation headless."""
         # Mock setup
@@ -159,7 +159,7 @@ class TestMuJoCoSimulator:
                 "mjpython required"
             )
 
-            with patch("src.bbia_sim.sim.simulator.sys.platform", "darwin"):
+            with patch("bbia_sim.sim.simulator.sys.platform", "darwin"):
                 with pytest.raises(
                     RuntimeError, match="Viewer MuJoCo non disponible sur macOS"
                 ):
@@ -168,7 +168,7 @@ class TestMuJoCoSimulator:
         finally:
             os.unlink(temp_model)
 
-    @patch("src.bbia_sim.sim.simulator.mujoco")
+    @patch("bbia_sim.sim.simulator.mujoco")
     def test_launch_simulation_graphical_other_error(self, mock_mujoco):
         """Test gestion autres erreurs pour simulation graphique."""
         # Mock setup
@@ -197,7 +197,7 @@ class TestMuJoCoSimulator:
             mock_mujoco.viewer.launch_passive.side_effect = RuntimeError("Other error")
 
             # S'assurer que l'exception est levée immédiatement (pas de timeout)
-            with patch("src.bbia_sim.sim.simulator.sys.platform", "linux"):
+            with patch("bbia_sim.sim.simulator.sys.platform", "linux"):
                 # Le code doit lever l'exception directement (pas de message spécifique, juste l'erreur originale)
                 with pytest.raises(RuntimeError):
                     simulator.launch_simulation(headless=False)
@@ -205,7 +205,7 @@ class TestMuJoCoSimulator:
         finally:
             os.unlink(temp_model)
 
-    @patch("src.bbia_sim.sim.simulator.mujoco")
+    @patch("bbia_sim.sim.simulator.mujoco")
     def test_run_graphical_simulation(self, mock_mujoco):
         """Test simulation graphique."""
         # Mock setup
@@ -253,7 +253,7 @@ class TestMuJoCoSimulator:
         finally:
             os.unlink(temp_model)
 
-    @patch("src.bbia_sim.sim.simulator.mujoco")
+    @patch("bbia_sim.sim.simulator.mujoco")
     def test_run_graphical_simulation_no_viewer(self, mock_mujoco):
         """Test simulation graphique sans viewer."""
         # Mock setup
@@ -287,7 +287,7 @@ class TestMuJoCoSimulator:
         finally:
             os.unlink(temp_model)
 
-    @patch("src.bbia_sim.sim.simulator.mujoco")
+    @patch("bbia_sim.sim.simulator.mujoco")
     def test_load_scene_success(self, mock_mujoco):
         """Test chargement de scène réussi."""
         # Mock setup
@@ -344,7 +344,7 @@ class TestMuJoCoSimulator:
         finally:
             os.unlink(temp_model)
 
-    @patch("src.bbia_sim.sim.simulator.mujoco")
+    @patch("bbia_sim.sim.simulator.mujoco")
     def test_load_scene_not_found(self, mock_mujoco):
         """Test chargement de scène inexistante."""
         # Mock setup
@@ -377,7 +377,7 @@ class TestMuJoCoSimulator:
         finally:
             os.unlink(temp_model)
 
-    @patch("src.bbia_sim.sim.simulator.mujoco")
+    @patch("bbia_sim.sim.simulator.mujoco")
     def test_load_scene_fatal_error(self, mock_mujoco):
         """Test chargement de scène avec erreur fatale."""
         # Mock setup
@@ -432,7 +432,7 @@ class TestMuJoCoSimulator:
         finally:
             os.unlink(temp_model)
 
-    @patch("src.bbia_sim.sim.simulator.mujoco")
+    @patch("bbia_sim.sim.simulator.mujoco")
     def test_get_robot_state(self, mock_mujoco):
         """Test récupération état robot."""
         # Mock setup
