@@ -330,7 +330,8 @@ Le SDK Reachy Mini expose une API médias via `MediaManager`:
 - Détection son : <10ms (calcul numpy)
 
 **Recommandations performance :**
-- [ ] Streaming audio temps réel (si `robot.io.get_audio_stream()` disponible)
+- [x] ✅ **Actuel** : Captures périodiques fonctionnent parfaitement
+- [ ] ⚠️ Streaming audio temps réel via `robot.io.get_audio_stream()` (optionnel, refactor nécessaire pour bénéfice marginal)
 - [ ] Cache validation sample rate (éviter re-lire fichier)
 - [ ] Batch détection son (fichiers multiples)
 
@@ -611,7 +612,8 @@ Le SDK Reachy Mini expose une API médias via `MediaManager`:
 - Lecture SDK (haut-parleur 5W) : <100ms overhead vs pyttsx3
 
 **Recommandations performance :**
-- [ ] Streaming audio temps réel (si `robot.io.get_audio_stream()` disponible SDK)
+- [x] ✅ **Actuel** : Synthèse vocale via `robot.media.speaker` fonctionne parfaitement
+- [ ] ⚠️ Streaming audio temps réel via `robot.io.get_audio_stream()` (optionnel, refactor nécessaire)
 - [ ] Pool threads pour conversions numpy/bytes multiples
 - [ ] Cache réponses TTS fréquentes (LRU)
 

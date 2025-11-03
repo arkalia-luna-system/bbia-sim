@@ -3,6 +3,7 @@
 import logging
 import time
 from collections.abc import Callable
+from typing import Any
 
 from fastapi import Request, Response
 from starlette.middleware.base import BaseHTTPMiddleware
@@ -12,14 +13,16 @@ from .config import settings
 logger = logging.getLogger(__name__)
 
 
-class SecurityMiddleware(BaseHTTPMiddleware):
+class SecurityMiddleware(BaseHTTPMiddleware):  # type: ignore[misc]
     """Middleware pour appliquer les headers de sécurité."""
 
-    def __init__(self, app, max_json_size: int | None = None):
+    def __init__(self, app: Any, max_json_size: int | None = None) -> None:
         super().__init__(app)
         self.max_json_size = max_json_size
 
-    async def dispatch(self, request: Request, call_next: Callable) -> Response:
+    async def dispatch(
+        self, request: Request, call_next: Callable[[Request], Any]
+    ) -> Response:
         """Applique les headers de sécurité et limite la taille des requêtes."""
         # Vérification de la taille de la requête
         content_length = request.headers.get("content-length")
@@ -56,17 +59,17 @@ class SecurityMiddleware(BaseHTTPMiddleware):
         return response
 
 
-class RateLimitMiddleware(BaseHTTPMiddleware):
+class RateLimitMiddleware(BaseHTTPMiddleware):  # type: ignore[misc]
     """Middleware simple de rate limiting en mémoire."""
 
     def __init__(
         self,
-        app,
+        app: Any,
         requests_per_minute: int = 100,
         window_seconds: int = 60,
         message: str = "Rate limit exceeded",
         force_enable: bool = False,
-    ):
+    ) -> None:
         super().__init__(app)
         self.requests_per_minute = requests_per_minute
         self.window_seconds = window_seconds
@@ -74,7 +77,9 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
         self.force_enable = force_enable
         self.requests: dict[str, list[float]] = {}
 
-    async def dispatch(self, request: Request, call_next: Callable) -> Response:
+    async def dispatch(
+        self, request: Request, call_next: Callable[[Request], Any]
+    ) -> Response:
         """Applique le rate limiting basique."""
         if settings.is_production() or self.force_enable:
             client_ip = request.client.host if request.client else "unknown"

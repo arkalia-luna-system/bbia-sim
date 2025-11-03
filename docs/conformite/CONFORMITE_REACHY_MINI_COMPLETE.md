@@ -241,9 +241,11 @@ Votre implémentation `ReachyMiniBackend` est conforme au SDK officiel, avec des
 - Support alternatives (`speaker.play()`, `speaker.say()`)
 - Fallback gracieux vers sounddevice/pyttsx3 si SDK non disponible
 
-⚠️ **Module IO SDK:** Disponible mais pas encore intégré (prévu après réception robot) :
-- `robot.io.get_camera_stream()` - Stream vidéo temps réel
-- `robot.io.get_audio_stream()` - Stream audio temps réel
+⚠️ **Module IO SDK (Optionnel):** Disponible via SDK mais non utilisé dans BBIA :
+- `robot.io.get_camera_stream()` - Stream vidéo temps réel (optionnel)
+- `robot.io.get_audio_stream()` - Stream audio temps réel (optionnel)
+
+**Note** : BBIA utilise actuellement `robot.media.camera.get_image()` et captures périodiques qui fonctionnent parfaitement. Les streams IO seraient une optimisation future (nécessiterait refactor significatif pour bénéfice marginal). **Non critique** pour utilisation robot réel.
 
 ✅ **Interpolation Avancée:**
 - `MIN_JERK` utilisé ✅

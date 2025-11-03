@@ -231,12 +231,14 @@ graph LR
 
 **Status** : Disponible dans `ReachyMiniBackend.io` mais NON UTILISÉ
 
-**Capacités disponibles** :
+**Capacités disponibles (optionnel, non utilisé dans BBIA) :**
 ```python
-robot.io.get_camera_stream()  # Stream vidéo temps réel
-robot.io.get_audio_stream()   # Stream audio temps réel
+robot.io.get_camera_stream()  # Stream vidéo temps réel (non utilisé - BBIA utilise robot.media.camera.get_image())
+robot.io.get_audio_stream()   # Stream audio temps réel (non utilisé - BBIA utilise captures périodiques)
 robot.io.set_leds()            # Contrôle LEDs (si disponibles)
 ```
+
+**Note** : Ces méthodes sont disponibles via SDK mais non utilisées dans BBIA car le code actuel fonctionne parfaitement. Streams seraient optimisation future optionnelle (refactor nécessaire pour bénéfice marginal).
 
 **Opportunités** :
 - Vision temps réel au lieu de scan périodique

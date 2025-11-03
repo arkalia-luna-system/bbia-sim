@@ -263,7 +263,7 @@ class TestWhisperSTT:
         assert result is None
 
     @patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True)
-    @patch("bbia_sim.voice_whisper.sounddevice")
+    @patch("bbia_sim.voice_whisper.sd")
     @patch("bbia_sim.voice_whisper.sf")
     def test_whisper_stt_transcribe_streaming_import_error(self, mock_sf, mock_sd):
         """Test transcription streaming avec ImportError."""
@@ -276,7 +276,10 @@ class TestWhisperSTT:
 
     @patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True)
     @patch("bbia_sim.voice_whisper.transformers_pipeline", None)
-    def test_whisper_stt_detect_speech_activity_import_transformers_error(self):
+    @patch("os.environ.get", return_value="0")
+    def test_whisper_stt_detect_speech_activity_import_transformers_error(
+        self, mock_env
+    ):
         """Test détection parole avec ImportError transformers."""
         import bbia_sim.voice_whisper as voice_module
 
@@ -292,9 +295,9 @@ class TestWhisperSTT:
             patch(
                 "builtins.__import__",
                 side_effect=lambda name, *args, **kwargs: (
-                    None
-                    if name == "transformers"
-                    else __import__(name, *args, **kwargs)
+                    __import__(name, *args, **kwargs)
+                    if name != "transformers"
+                    else (_ for _ in ()).throw(ImportError("No module named 'transformers'"))
                 ),
             ),
         ):
@@ -305,7 +308,8 @@ class TestWhisperSTT:
 
     @patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True)
     @patch("bbia_sim.voice_whisper.sf")
-    def test_whisper_stt_detect_speech_activity_file_path(self, mock_sf):
+    @patch("os.environ.get", return_value="0")
+    def test_whisper_stt_detect_speech_activity_file_path(self, mock_env, mock_sf):
         """Test détection parole avec chemin fichier."""
         import numpy as np
 
@@ -330,7 +334,10 @@ class TestWhisperSTT:
 
     @patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True)
     @patch("bbia_sim.voice_whisper.sf")
-    def test_whisper_stt_detect_speech_activity_soundfile_import_error(self, mock_sf):
+    @patch("os.environ.get", return_value="0")
+    def test_whisper_stt_detect_speech_activity_soundfile_import_error(
+        self, mock_env, mock_sf
+    ):
         """Test détection parole avec ImportError soundfile."""
         import bbia_sim.voice_whisper as voice_module
 
@@ -340,14 +347,19 @@ class TestWhisperSTT:
         with patch("bbia_sim.voice_whisper.sf", None):
             with patch(
                 "builtins.__import__",
-                side_effect=ImportError("No module named 'soundfile'"),
+                side_effect=lambda name, *args, **kwargs: (
+                    __import__(name, *args, **kwargs)
+                    if name != "soundfile"
+                    else (_ for _ in ()).throw(ImportError("No module named 'soundfile'"))
+                ),
             ):
                 result = stt.detect_speech_activity("test.wav")
                 # Doit retourner True (fallback)
                 assert result is True
 
     @patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True)
-    def test_whisper_stt_detect_speech_activity_vad_exception(self):
+    @patch("os.environ.get", return_value="0")
+    def test_whisper_stt_detect_speech_activity_vad_exception(self, mock_env):
         """Test détection parole avec exception VAD."""
         import numpy as np
 

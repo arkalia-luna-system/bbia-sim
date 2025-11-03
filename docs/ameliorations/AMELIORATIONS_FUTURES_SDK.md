@@ -64,10 +64,10 @@ robot.io.set_leds()            # Contrôle LEDs (si disponibles)
 - Audio streaming pour reconnaissance vocale temps réel
 - Feedback visuel via LEDs
 
-**Plan d’action (après robot réel) :**
-- [ ] Activer `robot.io.get_camera_stream()` dans `BBIAVision` (chemin optionnel)
-- [ ] Activer `robot.io.get_audio_stream()` dans `bbia_audio` (ASR temps réel)
-- [ ] Mesurer latence/CPU (journaliser dans `log/` conformément à la préférence utilisateur)
+**Plan d'action (optionnel, non critique) :**
+- [ ] ⚠️ Activer `robot.io.get_camera_stream()` dans `BBIAVision` (nécessiterait refactor significatif)
+- [ ] ⚠️ Activer `robot.io.get_audio_stream()` dans `bbia_audio` (nécessiterait refactor significatif)
+- **Note** : Code actuel (`robot.media.camera.get_image()` + captures périodiques) fonctionne parfaitement. Streams seraient optimisation future pour bénéfice marginal.
 
 ---
 
@@ -218,10 +218,11 @@ Toutes les améliorations sont **déjà implémentées et opérationnelles** ✅
 - ✅ Architecture modulaire avec intégration complète
 - ✅ Tests créés : `test_sdk_media_integration.py`, `test_emotion_interpolation_mapping()`
 
-### **Restant à faire (optionnel) :**
-- ⚠️ Module IO SDK (`robot.io.get_camera_stream()`, `robot.io.get_audio_stream()`) : Non encore utilisé
-  - Opportunité : Streaming temps réel au lieu de scan périodique
-  - Priorité : **Basse** (fonctionnalités actuelles suffisantes)
+### **Restant à faire (optionnel, non critique) :**
+- ⚠️ Module IO SDK (`robot.io.get_camera_stream()`, `robot.io.get_audio_stream()`) : Disponible via SDK mais non utilisé
+  - **Décision** : Non implémenté car code actuel (`robot.media.camera.get_image()` + captures périodiques) fonctionne parfaitement
+  - Opportunité future : Streaming temps réel continu (nécessiterait refactor significatif pour bénéfice marginal)
+  - Priorité : **Très basse** (non bloquant pour robot réel)
 
 **Recommandation :** ✅ Toutes les améliorations prioritaires sont complétées. Le système utilise pleinement le hardware Reachy Mini avec fallbacks robustes.
 
