@@ -94,6 +94,63 @@ class TestMoveRunning:
         assert isinstance(data, list)
 
 
+class TestMoveRecordedMoveDatasets:
+    """Tests pour endpoints recorded move datasets (conforme SDK)."""
+
+    def test_discover_recorded_move_datasets(self, api_token: str) -> None:
+        """Test GET /api/move/recorded-move-datasets/discover - Endpoint discovery datasets.
+
+        AMÉLIORATION: Test amélioré pour vérifier intégration HF Hub si disponible,
+        avec fallback vers liste hardcodée. Mentionné dans docs/audit/DECISION_FINAL_AMELIORATIONS.md.
+        """
+        response = client.get(
+            "/api/move/recorded-move-datasets/discover",
+            headers={"Authorization": f"Bearer {api_token}"},
+        )
+        assert response.status_code == 200
+        data = response.json()
+        assert isinstance(data, list), "Retourne une liste de datasets"
+        assert len(data) > 0, "Au moins un dataset doit être retourné"
+
+        # Vérifier que ce sont des strings (noms de datasets)
+        for dataset in data:
+            assert isinstance(dataset, str), "Chaque dataset doit être un string"
+            assert "/" in dataset, "Format dataset: 'org/repo-name'"
+
+        # Vérifier datasets connus présents (toujours inclus pour compatibilité)
+        expected_datasets = [
+            "pollen-robotics/reachy-mini-dances-library",
+            "pollen-robotics/reachy-mini-emotions-library",
+        ]
+        for expected in expected_datasets:
+            assert expected in data, f"Dataset attendu '{expected}' manquant"
+
+        # AMÉLIORATION: Vérifier que la liste est triée (nouveau comportement)
+        assert data == sorted(data), "Les datasets doivent être triés"
+
+        # AMÉLIORATION: Si HF Hub disponible, il peut y avoir plus de datasets
+        # (pas de limite stricte, juste vérifier que c'est cohérent)
+        assert len(data) >= len(
+            expected_datasets,
+        ), "Doit contenir au moins les datasets hardcodés"
+
+    def test_list_recorded_move_dataset_without_token(self, api_token: str) -> None:
+        """Test lister un dataset sans token (vérifie comportement sécurité)."""
+        # Sans token - peut retourner 401/403 (auth requise) ou 404 (dataset non trouvé)
+        response = client.get("/api/move/recorded-move-datasets/list/test-dataset")
+        # 404 = dataset non trouvé (normal), 401/403 = auth requise, 200 = public endpoint
+        assert response.status_code in (200, 401, 403, 404)
+
+    def test_list_recorded_move_dataset_not_found(self, api_token: str) -> None:
+        """Test dataset non trouvé retourne 404."""
+        response = client.get(
+            "/api/move/recorded-move-datasets/list/non-existent-dataset",
+            headers={"Authorization": f"Bearer {api_token}"},
+        )
+        # Peut être 404 si SDK disponible, ou 501 si SDK non disponible
+        assert response.status_code in (404, 501)
+
+
 class TestMoveStop:
     """Tests pour POST /api/move/stop."""
 

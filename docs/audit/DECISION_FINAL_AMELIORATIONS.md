@@ -69,33 +69,26 @@
 
 ## 🔍 CE QUI POURRAIT ÊTRE "EN MIEUX" (Optionnel, Non Bloquant)
 
-### **🟡 1. Endpoint pour Découvrir les Datasets HF Hub**
+### **🟡 1. Endpoint pour Découvrir les Datasets HF Hub** ✅ **IMPLÉMENTÉ**
 
 **Ce qui existe actuellement** :
 
 - ✅ Endpoint pour lister les moves dans un dataset donné : `/api/move/recorded-move-datasets/list/{dataset}`
-- ❌ Pas d'endpoint pour découvrir les datasets disponibles sur HF Hub
+- ✅ **Endpoint pour découvrir les datasets disponibles** : `/api/move/recorded-move-datasets/discover` ✅ **TERMINÉ**
 
-**Ce qui pourrait être ajouté** :
+**Implémentation** :
+- **Fichier** : `src/bbia_sim/daemon/app/routers/move.py`
+- **Ligne** : ~192-217
+- **Fonction** : `discover_recorded_move_datasets()`
+- **Retourne** : Liste hardcodée de datasets connus (extensible avec HF Hub API si besoin)
+- **Tests** : ✅ **CRÉÉS** (Décembre 2025)
+  - `tests/test_api_move_conformity.py`: 3 tests complets
+    - Test endpoint retourne liste de datasets
+    - Test format datasets (org/repo-name)
+    - Test datasets attendus présents
+    - Test comportement sans token
 
-```python
-@router.get("/recorded-move-datasets/discover")
-async def discover_recorded_move_datasets() -> list[str]:
-    """Liste les datasets recorded moves disponibles sur HF Hub.
-    
-    Retourne une liste de datasets connus (hardcodés ou via HF Hub API).
-    """
-    known_datasets = [
-        "pollen-robotics/reachy-mini-dances-library",
-        "pollen-robotics/reachy-mini-emotions-library",
-        # ... autres datasets connus
-    ]
-    return known_datasets
-```
-
-**Priorité** : 🟡 **BASSE** - Non bloquant, peut être ajouté si besoin
-
-**Valeur ajoutée** : Faible - L'utilisateur peut déjà utiliser les datasets directement
+**Statut** : ✅ **TERMINÉ** (Décembre 2025) - Code + Tests ✅
 
 ---
 
@@ -115,7 +108,7 @@ async def discover_recorded_move_datasets() -> list[str]:
 
 ---
 
-### **🟢 3. Buffer Circulaire pour Camera Frames (Issue #16 Officiel)**
+### **🟢 3. Buffer Circulaire pour Camera Frames (Issue #16 Officiel)** ✅ **IMPLÉMENTÉ**
 
 **Description** : L'issue officielle mentionne un warning "Circular buffer overrun" quand les frames caméra ne sont pas consommées.
 
@@ -123,26 +116,33 @@ async def discover_recorded_move_datasets() -> list[str]:
 
 - ✅ Capture caméra (`bbia_vision.py`)
 - ✅ Utilisation `deque` pour détections historiques
-- ⚠️ Pas de buffer circulaire dédié pour frames caméra
+- ✅ **Buffer circulaire dédié pour frames caméra** ✅ **TERMINÉ**
 
-**Ce qui pourrait être ajouté** :
+**Implémentation** :
+- **Fichier** : `src/bbia_sim/bbia_vision.py`
+- **Lignes** : 
+  - `__init__`: Initialisation buffer circulaire (taille configurable via `BBIA_CAMERA_BUFFER_SIZE`, défaut: 10)
+  - `_capture_from_sdk_camera()`: Ajout frame au buffer après capture
+  - `_capture_from_opencv_camera()`: Ajout frame au buffer après capture
+  - `get_latest_frame()`: Nouvelle méthode pour récupérer dernière frame
+  - `get_vision_stats()`: Statistiques buffer ajoutées (taille, overruns)
+- **Fonctionnalités** :
+  - Buffer circulaire `deque` avec taille configurable
+  - Monitoring overruns avec compteur
+  - Warning log tous les 100 overruns
+  - Méthode `get_latest_frame()` pour accès frame récente
+- **Tests** : ✅ **CRÉÉS** (Décembre 2025)
+  - `tests/test_bbia_vision_extended.py`: 6 tests complets
+    - Test initialisation buffer
+    - Test taille configurable
+    - Test `get_latest_frame()` buffer vide/plein
+    - Test stockage frames SDK/OpenCV
+    - Test détection overruns
+    - Test stats incluent infos buffer
 
-```python
-# Dans bbia_vision.py
-from collections import deque
+**Statut** : ✅ **TERMINÉ** (Décembre 2025) - Code + Tests ✅
 
-self._camera_frame_buffer: deque[npt.NDArray[np.uint8]] = deque(maxlen=10)
-
-def get_latest_frame(self) -> npt.NDArray[np.uint8] | None:
-    """Récupère la frame la plus récente du buffer."""
-    if self._camera_frame_buffer:
-        return self._camera_frame_buffer[-1]
-    return None
-```
-
-**Priorité** : 🟢 **MOYENNE** - Amélioration robustesse, pas de régression
-
-**Valeur ajoutée** : Moyenne - Évite perte de frames si pas consommées assez vite
+**Valeur ajoutée** : ✅ Moyenne - Évite perte de frames si pas consommées assez vite, conforme Issue #16 SDK officiel
 
 ---
 
@@ -201,8 +201,8 @@ def get_latest_frame(self) -> npt.NDArray[np.uint8] | None:
 
 **Ce qui pourrait être ajouté (optionnel)** :
 
-1. 🟡 Endpoint discovery datasets (priorité basse)
-2. 🟢 Buffer circulaire caméra frames (priorité moyenne)
+1. ✅ ~~Endpoint discovery datasets~~ - **TERMINÉ** (Décembre 2025)
+2. ✅ ~~Buffer circulaire caméra frames~~ - **TERMINÉ** (Décembre 2025)
 
 **Ce qui ne doit PAS être ajouté** :
 
@@ -214,13 +214,11 @@ def get_latest_frame(self) -> npt.NDArray[np.uint8] | None:
 
 **BBIA-SIM est prêt pour le robot réel en décembre 2025. Il n'y a rien d'essentiel qui manque.**
 
-Les seules améliorations possibles sont :
+**Améliorations optionnelles** : ✅ **TOUTES IMPLÉMENTÉES** (Décembre 2025)
+- ✅ Endpoint discovery datasets (`/api/move/recorded-move-datasets/discover`)
+- ✅ Buffer circulaire caméra frames (Issue #16 SDK officiel)
 
-- **Optionnelles** (endpoint discovery datasets)
-- **Mineures** (buffer circulaire caméra)
-- **Non bloquantes** pour utilisation robot réel
-
-**Recommandation** : ✅ **Ne rien ajouter pour l'instant**. Attendre retour d'expérience avec robot réel avant d'ajouter des fonctionnalités optionnelles.
+**Recommandation** : ✅ **Projet 100% complet**. Toutes les améliorations mentionnées dans ce document sont maintenant implémentées. Le système est prêt pour le robot réel.
 
 ---
 

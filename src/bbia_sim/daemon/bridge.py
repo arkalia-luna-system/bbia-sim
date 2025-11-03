@@ -24,8 +24,9 @@ try:
 except ImportError:
     ZENOH_AVAILABLE = False
     zenoh = None  # type: ignore[assignment,no-redef]
-    Session = None  # type: ignore[assignment,no-redef]
-    Config = None  # type: ignore[assignment,no-redef]
+    # Créer des types fallback pour éviter réassignation de types importés
+    Config = type(None)  # type: ignore[assignment,no-redef,misc]
+    Session = type(None)  # type: ignore[assignment,no-redef,misc]
 
 # Import conditionnel SDK officiel
 try:
@@ -81,8 +82,12 @@ class ZenohBridge:
     def __init__(self, config: ZenohConfig | None = None):
         """Initialise le bridge Zenoh."""
         self.config = config or ZenohConfig()
-        self.session: Session | None = None
-        self.reachy_mini: ReachyMini | None = None
+        self.session: Any | None = (
+            None  # ZenohSession | None, mais Any pour compatibilité
+        )
+        self.reachy_mini: Any | None = (
+            None  # ReachyMini | None, mais Any pour compatibilité
+        )
         self.connected = False
         self.logger = logging.getLogger(self.__class__.__name__)
 
@@ -112,12 +117,14 @@ class ZenohBridge:
 
         try:
             # Configuration Zenoh
-            zenoh_config = Config()
-            zenoh_config.insert_json5("mode", f'"{self.config.mode}"')
-            zenoh_config.insert_json5("connect", json.dumps(self.config.connect))
+            if zenoh is None:
+                raise RuntimeError("Zenoh non disponible")
+            zenoh_config = Config()  # type: ignore[misc,operator]
+            zenoh_config.insert_json5("mode", f'"{self.config.mode}"')  # type: ignore[attr-defined]
+            zenoh_config.insert_json5("connect", json.dumps(self.config.connect))  # type: ignore[attr-defined]
 
-            # Créer la session Zenoh
-            self.session = await zenoh.open(zenoh_config)  # type: ignore[attr-defined]  # Zenoh API dynamique
+            # Créer la session Zenoh (zenoh.open() est synchrone, utiliser to_thread)
+            self.session = await asyncio.to_thread(zenoh.open, zenoh_config)  # type: ignore[attr-defined,arg-type]
             self.logger.info("Session Zenoh créée")
 
             # Initialiser Reachy Mini

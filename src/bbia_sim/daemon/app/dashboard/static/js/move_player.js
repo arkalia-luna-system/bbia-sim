@@ -102,7 +102,48 @@ const movePlayer = {
     }
 };
 
+// AMÉLIORATION: Charger dynamiquement les datasets depuis /discover
+// Mentionnée dans docs/audit/DECISION_FINAL_AMELIORATIONS.md (🟡 2)
+const loadAvailableDatasets = async () => {
+    try {
+        const response = await fetch('/api/move/recorded-move-datasets/discover');
+        if (!response.ok) {
+            console.error(`Error fetching datasets: ${response.status}`);
+            return; // Fallback vers datasets hardcodés dans HTML
+        }
+        
+        const datasets = await response.json();
+        const moveDatasetToggle = document.getElementById('move-dataset-toggle');
+        
+        // Vider le select
+        moveDatasetToggle.innerHTML = '';
+        
+        // Ajouter chaque dataset trouvé
+        datasets.forEach(dataset => {
+            const option = document.createElement('option');
+            option.value = dataset;
+            // Afficher nom lisible (extraire après le dernier "/")
+            const displayName = dataset.split('/').pop().replace(/-/g, ' ').replace(/_/g, ' ');
+            option.textContent = displayName.charAt(0).toUpperCase() + displayName.slice(1);
+            moveDatasetToggle.appendChild(option);
+        });
+        
+        console.log(`✅ Loaded ${datasets.length} datasets dynamically`);
+        
+        // Initialiser les moves pour le premier dataset
+        if (datasets.length > 0) {
+            updateMoveItems(datasets[0]);
+        }
+    } catch (error) {
+        console.error('Error loading datasets:', error);
+        // Fallback: laisser les datasets hardcodés dans HTML
+    }
+};
+
 window.addEventListener('DOMContentLoaded', (event) => {
+    // Charger dynamiquement les datasets disponibles
+    loadAvailableDatasets();
+    
     const moveDatasetToggle = document.getElementById('move-dataset-toggle');
 
     moveDatasetToggle.addEventListener('change', (_) => {
@@ -123,9 +164,6 @@ window.addEventListener('DOMContentLoaded', (event) => {
     moveStopBtn.addEventListener('click', async () => {
         await movePlayer.stopMove();
     });
-
-    // Initialize move items on page load
-    updateMoveItems(moveDatasetToggle.value);
 
     movePlayer.checkMoveStatus();
     movePlayer.updateUI();

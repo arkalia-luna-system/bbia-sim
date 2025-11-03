@@ -63,9 +63,9 @@ pie title Fonctionnalités Implémentées
 | Module | Coverage | Objectif | Fichiers Tests | Statut |
 |:------:|:--------:|:--------:|:--------------:|:-----:|
 | `daemon/bridge.py` | **54.86%** ✅ | 30%+ | ✅ 34 tests | ✅ **TERMINÉ** |
-| `vision_yolo.py` | **19.67%** ⚠️ | 50%+ | ✅ Existe | ⚠️ **À AMÉLIORER** |
-| `voice_whisper.py` | **11.39%** ⚠️ | 50%+ | ✅ 47 tests | ⚠️ **À AMÉLIORER** |
-| `dashboard_advanced.py` | **0.00%** ⚠️ | 50%+ | ✅ 47 tests, 1156 lignes | ⚠️ **À CORRIGER** |
+| `vision_yolo.py` | **20.33%** ⚠️ | 50%+ | ✅ Existe | ⚠️ **À AMÉLIORER** (+30% nécessaire) |
+| `voice_whisper.py` | **29.09%** ⚠️ | 50%+ | ✅ Tests existent | ⚠️ **À AMÉLIORER** (+21% nécessaire) |
+| `dashboard_advanced.py` | **76.71%** ✅ | 50%+ | ✅ 47 tests, 1156 lignes | ✅ **TERMINÉ** |
 
 </div>
 
@@ -83,9 +83,9 @@ pie title Coverage Tests Modules Critiques
 
 **Plan d'action** :
 1. ✅ ~~Créer `tests/test_dashboard_advanced.py`~~ - **TERMINÉ** (**47 tests**, **1156 lignes**)
-2. ✅ ~~Améliorer coverage de `tests/test_dashboard_advanced.py`~~ - **TERMINÉ** (**76.71%** coverage ✅, objectif 70%+ dépassé, imports corrigés)
-3. ⚠️ Étendre `tests/test_vision_yolo_comprehensive.py` - **À AMÉLIORER** (19.13% coverage, objectif 50%+ non atteint)
-4. ⚠️ Étendre tests `voice_whisper.py` - **À AMÉLIORER** (**10.83%** coverage, tests existent mais coverage insuffisant)
+2. ✅ ~~Améliorer coverage de `tests/test_dashboard_advanced.py`~~ - **TERMINÉ** (**76.71%** coverage ✅, objectif 50%+ dépassé)
+3. ⚠️ Étendre `tests/test_vision_yolo_comprehensive.py` - **À AMÉLIORER** (20.33% coverage, objectif 50%+ non atteint, +30% nécessaire)
+4. ⚠️ Étendre tests `voice_whisper.py` - **À AMÉLIORER** (**29.09%** coverage, objectif 50%+ non atteint, +21% nécessaire)
 5. ✅ ~~Étendre `tests/test_daemon_bridge.py`~~ - **TERMINÉ** (**54.86%** coverage ✅, objectif 30%+ dépassé)
 
 ---

@@ -137,6 +137,14 @@ class BBIAVision:
         self.tracking_active = False
         self.current_focus: dict[str, Any] | None = None
 
+        # Buffer circulaire pour frames caméra (Issue #16 SDK officiel - éviter overrun)
+        # Taille configurable via env var (défaut: 10 frames)
+        buffer_size = int(os.environ.get("BBIA_CAMERA_BUFFER_SIZE", "10"))
+        self._camera_frame_buffer: deque[npt.NDArray[np.uint8]] = deque(
+            maxlen=buffer_size,
+        )
+        self._buffer_overrun_count = 0  # Compteur pour monitoring
+
         # Spécifications hardware réelles
         # Note: Résolution simulation = 1280x720 (XML officiel)
         # Résolution réelle peut être différente - vérifier avec robot physique
@@ -453,6 +461,24 @@ class BBIAVision:
                     return None
 
             logger.debug("✅ Image capturée depuis robot.media.camera (format validé)")
+
+            # Ajouter au buffer circulaire (Issue #16 SDK officiel)
+            # Le buffer garde les dernières frames capturées pour éviter perte si non consommées
+            buffer_maxlen = self._camera_frame_buffer.maxlen
+            if (
+                buffer_maxlen is not None
+                and len(self._camera_frame_buffer) >= buffer_maxlen
+            ):
+                self._buffer_overrun_count += 1
+                if (
+                    self._buffer_overrun_count % 100 == 0
+                ):  # Logger tous les 100 overruns
+                    logger.warning(
+                        f"⚠️ Camera buffer overrun: {self._buffer_overrun_count} frames perdues "
+                        f"(buffer size: {buffer_maxlen})",
+                    )
+            self._camera_frame_buffer.append(image.copy())
+
             # Type narrowing: image est maintenant np.ndarray après toutes les validations
             return cast("npt.NDArray[np.uint8]", image)
 
@@ -500,6 +526,21 @@ class BBIAVision:
                     return None
 
             logger.debug("✅ Image capturée depuis webcam USB OpenCV")
+
+            # Ajouter au buffer circulaire (Issue #16 SDK officiel)
+            buffer_maxlen = self._camera_frame_buffer.maxlen
+            if (
+                buffer_maxlen is not None
+                and len(self._camera_frame_buffer) >= buffer_maxlen
+            ):
+                self._buffer_overrun_count += 1
+                if self._buffer_overrun_count % 100 == 0:
+                    logger.warning(
+                        f"⚠️ Camera buffer overrun: {self._buffer_overrun_count} frames perdues "
+                        f"(buffer size: {buffer_maxlen})",
+                    )
+            self._camera_frame_buffer.append(image.copy())
+
             return cast("npt.NDArray[np.uint8]", image)
 
         except Exception as e:
@@ -1006,6 +1047,19 @@ class BBIAVision:
         distance = math.sqrt(x**2 + y**2)
         return distance
 
+    def get_latest_frame(self) -> npt.NDArray[np.uint8] | None:
+        """Récupère la frame la plus récente du buffer circulaire.
+
+        Permet d'accéder à la dernière image capturée sans appeler scan_environment().
+        Utile pour éviter perte de frames si pas consommées assez vite (Issue #16 SDK officiel).
+
+        Returns:
+            Dernière frame capturée ou None si buffer vide
+        """
+        if self._camera_frame_buffer:
+            return self._camera_frame_buffer[-1]
+        return None
+
     def get_vision_stats(self) -> dict[str, Any]:
         """Retourne les statistiques de vision."""
         return {
@@ -1016,6 +1070,9 @@ class BBIAVision:
             "faces_detected": len(self.faces_detected),
             "tracking_active": self.tracking_active,
             "specs": self.specs,
+            "camera_buffer_size": len(self._camera_frame_buffer),
+            "camera_buffer_max": self._camera_frame_buffer.maxlen,
+            "buffer_overruns": self._buffer_overrun_count,
         }
 
 

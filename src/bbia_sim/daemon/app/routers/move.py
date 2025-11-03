@@ -189,6 +189,61 @@ async def play_goto_sleep(
     return create_move_task(backend.goto_sleep())
 
 
+@router.get("/recorded-move-datasets/discover")
+async def discover_recorded_move_datasets() -> list[str]:
+    """Liste les datasets recorded moves disponibles sur HF Hub.
+
+    Amélioration implémentée: utilise l'API Hugging Face Hub si disponible,
+    avec fallback vers liste hardcodée pour robustesse.
+    Mentionnée dans docs/audit/DECISION_FINAL_AMELIORATIONS.md (🟡 1).
+
+    Returns:
+        Liste de noms de datasets disponibles (format: "org/repo-name")
+    """
+    # Datasets connus hardcodés (toujours inclus pour compatibilité)
+    known_datasets = [
+        "pollen-robotics/reachy-mini-dances-library",
+        "pollen-robotics/reachy-mini-emotions-library",
+    ]
+
+    # AMÉLIORATION: Récupérer depuis HF Hub API si disponible
+    try:
+        from huggingface_hub import HfApi
+
+        api = HfApi()
+        # Rechercher datasets avec préfixe "reachy-mini" ou "reachy_mini"
+        hf_datasets = api.list_datasets(
+            search="reachy-mini",
+            limit=50,
+        )
+
+        # Filtrer et ajouter les datasets trouvés (éviter doublons)
+        hf_dataset_ids: set[str] = set()
+        for ds in hf_datasets:
+            if ds.id and "reachy" in ds.id.lower():
+                hf_dataset_ids.add(ds.id)
+
+        # Merger avec liste hardcodée (éviter doublons)
+        all_datasets = list(set(known_datasets) | hf_dataset_ids)
+        logger.info(
+            f"✅ Découverte {len(hf_dataset_ids)} datasets HF Hub "
+            f"(total: {len(all_datasets)})",
+        )
+        return sorted(all_datasets)  # Trier pour affichage cohérent
+
+    except ImportError:
+        logger.debug(
+            "huggingface_hub non disponible - utilisation liste hardcodée uniquement",
+        )
+    except Exception as e:
+        logger.warning(
+            f"⚠️ Erreur récupération datasets HF Hub (fallback hardcodé): {e}",
+        )
+
+    # Fallback: retourner liste hardcodée seulement
+    return known_datasets
+
+
 @router.get("/recorded-move-datasets/list/{dataset_name:path}")
 async def list_recorded_move_dataset(dataset_name: str) -> list[str]:
     """Liste les mouvements enregistrés disponibles dans un dataset (conforme SDK)."""
