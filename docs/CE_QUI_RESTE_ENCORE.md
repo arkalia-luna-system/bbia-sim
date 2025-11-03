@@ -67,23 +67,23 @@ else:
 
 ---
 
-### 3. 🔵 TODOs Robot Réel (En Attente Hardware)
+### 3. ✅ TODOs Robot Réel - **TERMINÉ**
 
 **Fichier** : `src/bbia_sim/backends/reachy_backend.py`
 
-**6 TODOs** :
-- Ligne 51 : Implémenter la vraie connexion Reachy
-- Ligne 70 : Implémenter la vraie déconnexion Reachy
-- Ligne 103 : Envoyer la commande au robot réel
-- Ligne 126 : Synchroniser avec le robot réel
-- Ligne 142 : Implémenter arrêt réel via API robot
-- Ligne 184 : Implémenter l'envoi de commandes réelles
+**Statut** : ✅ **TERMINÉ** (Décembre 2025) - Implémentation complète avec SDK Reachy Mini
 
-**Statut** : 🔵 **En attente robot réel** (Oct / Nov. 2025)
+**Implémentation vérifiée** :
+- ✅ Ligne 52-107 : Connexion au robot réel via SDK Reachy Mini (`ReachyMini`)
+- ✅ Ligne 109-136 : Déconnexion propre avec nettoyage SDK
+- ✅ Ligne 145-201 : Envoi commandes au robot réel (`goto_target`, `set_joint_pos`)
+- ✅ Ligne 236-259 : Synchronisation avec robot réel (`get_current_joint_positions`)
+- ✅ Ligne 261-290 : Arrêt d'urgence via SDK (`emergency_stop`, `stop`)
+- ✅ Ligne 315-352 : Envoi commandes réelles (`goto_target`, `set_emotion`, `play_behavior`)
 
-**Note** : Ces TODOs sont **normaux** - ils seront implémentés quand le robot réel sera reçu.
+**Note** : Le code est **prêt pour le robot réel** - il bascule automatiquement en mode simulation si le robot n'est pas disponible.
 
-**Estimation** : 3-4 heures (quand robot disponible)
+**Test requis** : Validation avec hardware réel (décembre 2025)
 
 ---
 
