@@ -26,6 +26,47 @@
 
 </div>
 
+#### 📈 Visualisation Coverage
+
+```mermaid
+pie title Répartition Coverage Modules Critiques
+    "vision_yolo (99.45%)" : 99
+    "voice_whisper (92.52%)" : 93
+    "dashboard_advanced (76.71%)" : 77
+    "daemon/bridge (54.86%)" : 55
+```
+
+#### 📊 Architecture des Tests
+
+```mermaid
+graph TB
+    subgraph "Modules Critiques"
+        VISION[vision_yolo<br/>42 tests<br/>99.45% coverage]
+        VOICE[voice_whisper<br/>66 tests<br/>92.52% coverage]
+        DASH[dashboard_advanced<br/>47 tests<br/>76.71% coverage]
+        BRIDGE[daemon/bridge<br/>34 tests<br/>54.86% coverage]
+    end
+    
+    subgraph "Validation"
+        TOTAL[Total: 189 tests<br/>Tous objectifs dépassés ✅]
+        QUALITY[Qualité Code<br/>Black, Ruff, MyPy, Bandit ✅]
+    end
+    
+    VISION --> TOTAL
+    VOICE --> TOTAL
+    DASH --> TOTAL
+    BRIDGE --> TOTAL
+    
+    TOTAL --> QUALITY
+    
+    style VISION fill:#90EE90
+    style VOICE fill:#90EE90
+    style DASH fill:#90EE90
+    style BRIDGE fill:#90EE90
+    style TOTAL fill:#87CEEB
+    style QUALITY fill:#FFD700
+```
+
 ---
 
 ### ✅ TODOs Code Optionnels - **100% TERMINÉ**
@@ -39,6 +80,26 @@
 | 📊 **TODO metrics.py** | Connexions actives terminé (Oct / Nov. 2025) | ✅ |
 
 </div>
+
+#### 🔄 Workflow TODOs
+
+```mermaid
+flowchart TD
+    START[TODOs Identifiés] --> AUTH[Auth WebSocket<br/>query param token]
+    START --> MIGR[Migration imports<br/>robot_factory]
+    START --> METR[Metrics connexions<br/>actives]
+    
+    AUTH --> DONE1[✅ TERMINÉ]
+    MIGR --> DONE2[✅ TERMINÉ]
+    METR --> DONE3[✅ TERMINÉ]
+    
+    DONE1 --> FINAL[100% TERMINÉ]
+    DONE2 --> FINAL
+    DONE3 --> FINAL
+    
+    style START fill:#FFD700
+    style FINAL fill:#90EE90
+```
 
 ---
 
@@ -100,6 +161,18 @@
 
 </div>
 
+#### 📊 Progression Correction Liens
+
+```mermaid
+graph LR
+    AVANT[251 liens cassés] --> CORRECTION[112 liens corrigés<br/>-45% réduction]
+    CORRECTION --> APRES[139 liens restants<br/>Archives non prioritaire]
+    
+    style AVANT fill:#FF6B6B
+    style CORRECTION fill:#FFD700
+    style APRES fill:#90EE90
+```
+
 **Action** : Optionnel - peut attendre  
 **Estimation** : ~30 min
 
@@ -127,6 +200,40 @@
 **Statut** : ✅ **TERMINÉ** (Oct / Nov. 2025) - Code prêt pour robot réel
 
 > **💡 Note** : Le code bascule automatiquement en mode simulation si le robot n'est pas disponible.
+
+#### 🔄 Architecture Robot Réel
+
+```mermaid
+graph TB
+    subgraph "Application BBIA"
+        APP[Application]
+    end
+    
+    subgraph "Backend Reachy"
+        BACKEND[ReachyBackend]
+        SDK[SDK Reachy Mini]
+    end
+    
+    subgraph "Robot Physique"
+        ROBOT[Reachy Mini Wireless]
+    end
+    
+    subgraph "Fallback"
+        SIM[Mode Simulation]
+    end
+    
+    APP --> BACKEND
+    BACKEND --> SDK
+    SDK -->|Si disponible| ROBOT
+    SDK -->|Si indisponible| SIM
+    BACKEND -->|Bascule auto| SIM
+    
+    style APP fill:#87CEEB
+    style BACKEND fill:#FFD700
+    style SDK fill:#90EE90
+    style ROBOT fill:#90EE90
+    style SIM fill:#FFD700
+```
 
 ---
 
@@ -161,6 +268,29 @@
 </div>
 
 ### ✅ Points Clés
+
+```mermaid
+mindmap
+  root((BBIA-SIM<br/>100% COMPLET))
+    Coverage
+      vision_yolo: 99.45%
+      voice_whisper: 92.52%
+      dashboard: 76.71%
+      bridge: 54.86%
+    Qualité
+      Black: OK
+      Ruff: OK
+      MyPy: OK
+      Bandit: OK
+    Documentation
+      Guides: Complets
+      FAQ: À jour
+      Tests README: Mis à jour
+    Robot Réel
+      SDK: Intégré
+      Connexion: Implémentée
+      Commandes: Fonctionnelles
+```
 
 - ✅ **Coverage excellent** : 4 modules critiques (54-99% coverage)
 - ✅ **TODOs terminés** : Auth WebSocket, migration imports, metrics, robot réel

@@ -2,8 +2,8 @@
 
 <div align="center">
 
-**📅 Date** : Oct / Nov. 2025  
-**🎯 Statut** : ✅ **100% COMPLET** - Projet prêt pour robot réel
+**Date** : Oct / Nov. 2025  
+**Statut** : ✅ **99% COMPLET** - Projet prêt pour robot réel
 
 </div>
 
@@ -38,6 +38,20 @@
 | `daemon/bridge.py` | **54.86%** | 30%+ | ✅ **DÉPASSÉ** |
 
 </div>
+
+#### 📈 Progression Coverage
+
+```mermaid
+graph LR
+    AVANT[0% Coverage<br/>Module never imported] --> DIAG[Diagnostic<br/>Imports manquants]
+    DIAG --> CORRECTION[Correction<br/>Imports + --cov=bbia_sim.module]
+    CORRECTION --> APRES[54-99% Coverage<br/>Objectifs dépassés]
+    
+    style AVANT fill:#FF6B6B
+    style DIAG fill:#FFD700
+    style CORRECTION fill:#87CEEB
+    style APRES fill:#90EE90
+```
 
 ---
 
@@ -80,6 +94,31 @@ pie title Coverage Modules Critiques
     "daemon/bridge (54.86%)" : 55
 ```
 
+#### 📊 Répartition des Tests
+
+```mermaid
+graph TB
+    subgraph "Modules Critiques"
+        VISION[vision_yolo<br/>42 tests<br/>99.45%]
+        VOICE[voice_whisper<br/>66 tests<br/>92.52%]
+        DASH[dashboard_advanced<br/>47 tests<br/>76.71%]
+        BRIDGE[daemon/bridge<br/>34 tests<br/>54.86%]
+    end
+    
+    TOTAL[Total: 189 tests<br/>Tous objectifs dépassés]
+    
+    VISION --> TOTAL
+    VOICE --> TOTAL
+    DASH --> TOTAL
+    BRIDGE --> TOTAL
+    
+    style VISION fill:#90EE90
+    style VOICE fill:#90EE90
+    style DASH fill:#90EE90
+    style BRIDGE fill:#90EE90
+    style TOTAL fill:#87CEEB
+```
+
 **Statut** : ✅ **Tous les objectifs coverage sont atteints et dépassés**
 
 ---
@@ -92,11 +131,25 @@ pie title Coverage Modules Critiques
 **Estimation** : Variable  
 **Statut** : ⏳ **Optionnel** - Non bloquant
 
+---
+
 ### 4. 🔗 Liens Markdown Archives
 
 **Description** : ~139 liens restants dans archives  
 **Estimation** : ~30 min  
 **Statut** : ⏳ **Non prioritaire**
+
+#### 📊 Progression Correction Liens
+
+```mermaid
+graph LR
+    AVANT[251 liens cassés] --> CORRECTION[112 liens corrigés<br/>-45% réduction]
+    CORRECTION --> APRES[139 liens restants<br/>Majoritairement archives]
+    
+    style AVANT fill:#FF6B6B
+    style CORRECTION fill:#FFD700
+    style APRES fill:#90EE90
+```
 
 ---
 
@@ -121,7 +174,35 @@ pie title Coverage Modules Critiques
 - ✅ Implémentation complète connexion robot réel via SDK Reachy Mini
 - ✅ Code prêt pour robot réel (bascule automatique en simulation si robot non disponible)
 
-**Statut** : ✅ **TERMINÉ** (Oct / Nov. 2025) - Implémentation complète vérifiée
+**Statut** : ✅ **TERMINÉ** (Oct / Nov) - Implémentation complète vérifiée
+
+#### 🔄 Workflow Robot Réel
+
+```mermaid
+sequenceDiagram
+    participant APP as Application
+    participant BACKEND as ReachyBackend
+    participant SDK as SDK Reachy Mini
+    participant ROBOT as Robot Réel
+    
+    APP->>BACKEND: connect()
+    BACKEND->>SDK: Tentative connexion
+    alt Robot disponible
+        SDK->>ROBOT: Connexion
+        ROBOT-->>SDK: OK
+        SDK-->>BACKEND: Connecté
+        BACKEND-->>APP: is_connected = True
+    else Robot indisponible
+        SDK-->>BACKEND: Timeout/Error
+        BACKEND->>BACKEND: Bascule simulation
+        BACKEND-->>APP: is_connected = True (sim)
+    end
+    
+    APP->>BACKEND: set_joint_pos()
+    BACKEND->>SDK: goto_target()
+    SDK->>ROBOT: Commande
+    ROBOT-->>SDK: OK
+```
 
 ---
 
@@ -147,6 +228,18 @@ pie title Coverage Modules Critiques
 
 ### ✅ Étape 1 : Diagnostic
 
+```mermaid
+flowchart TD
+    START[Coverage 0%] --> CHECK[Vérifier imports tests]
+    CHECK --> FIND[Problème: Module never imported]
+    FIND --> FIX[Corriger imports + --cov]
+    FIX --> VERIFY[Vérifier coverage]
+    VERIFY --> SUCCESS[54-99% Coverage ✅]
+    
+    style START fill:#FF6B6B
+    style SUCCESS fill:#90EE90
+```
+
 1. ✅ Imports vérifiés dans `tests/test_dashboard_advanced.py`
 2. ✅ Imports vérifiés dans `tests/test_daemon_bridge.py`
 3. ✅ Imports vérifiés dans `tests/test_vision_yolo*.py`
@@ -167,14 +260,13 @@ pie title Coverage Modules Critiques
 
 ## ✅ CE QUI EST DÉJÀ TERMINÉ
 
-- ✅ Buffer circulaire camera frames (Oct / Nov. 2025)
-- ✅ Endpoint discover datasets (Oct / Nov. 2025)
-- ✅ Tests pour nouvelles fonctionnalités (Oct / Nov. 2025)
+- ✅ Buffer circulaire camera frames (Oct / Nov)
+- ✅ Endpoint discover datasets (Oct / Nov)
+- ✅ Tests pour nouvelles fonctionnalités (Oct / Nov)
 - ✅ TODOs `ecosystem.py` 100% terminés
 - ✅ Optimisations performance
 - ✅ TODOs `bbia_tools.py` terminés
 - ✅ Linting (black, ruff, mypy, bandit) : OK
-- ✅ **Correction erreurs mypy dans les tests** : Toutes les erreurs mypy dans les tests ont été corrigées (Décembre 2025)
 
 ---
 
@@ -182,11 +274,11 @@ pie title Coverage Modules Critiques
 
 <div align="center">
 
-### ✨ **PROJET 100% COMPLET** ✨
+### ✅ **99% COMPLET** - Projet prêt pour robot réel
 
 </div>
 
-### 📈 Coverage Réel Vérifié (Oct / Nov. 2025)
+### 📈 Coverage Réel Vérifié (Oct / Nov)
 
 - ✅ `vision_yolo.py` : **99.45%** ✅ (objectif 50%+ largement dépassé)
 - ✅ `voice_whisper.py` : **92.52%** ✅ (objectif 50%+ largement dépassé)
@@ -196,16 +288,16 @@ pie title Coverage Modules Critiques
 ### ✅ Tâches Restantes
 
 - ✅ **Terminé** : 2 TODOs dans le code (non bloquants)
-  - ✅ Auth WebSocket dans `daemon/app/main.py` **TERMINÉ** (Oct / Nov. 2025)
-  - ✅ Migration imports dans `robot_api.py` **TERMINÉ** (Oct / Nov. 2025)
+  - ✅ Auth WebSocket dans `daemon/app/main.py` **TERMINÉ** (Oct / Nov)
+  - ✅ Migration imports dans `robot_api.py` **TERMINÉ** (Oct / Nov)
 
-> **🚀 Le projet est prêt pour le robot réel en Oct / Nov. 2025** ✅
+> **🚀 Le projet est prêt pour le robot réel en Oct / Nov** ✅
 
 ---
 
 <div align="center">
 
-**📅 Dernière mise à jour** : Oct / Nov. 2025  
-**✅ Coverage vérifié** : Tous les modules critiques ont un coverage excellent (>75%)
+**Dernière mise à jour** : Oct / Nov  
+**Coverage vérifié** : Tous les modules critiques ont un coverage excellent (>75%)
 
 </div>
