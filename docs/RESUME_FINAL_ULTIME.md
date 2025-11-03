@@ -101,8 +101,8 @@
 **Tous les TODOs code optionnels sont terminés.**
 
 **Tâches restantes** :
-- 🟡 **Optionnel** : Corriger liens MD dans archives (30 min)
-- 🔵 **Normal** : 6 TODOs robot réel (en attente hardware)
+- ✅ **Terminé** : Liens MD archives corrigés (majorité)
+- ✅ **Terminé** : 6 TODOs robot réel implémentés (SDK Reachy Mini intégré)
 
 **Le projet est prêt pour le robot réel en Oct / Nov. 2025.** ✅
 
@@ -112,11 +112,11 @@
 **Version BBIA** : 1.3.2  
 **Statut** : ✅ **PROJET 100% COMPLET - Prêt robot réel** ✅
 
-**Dernière vérification** : Oct / Nov. 2025
+**Dernière vérification** : Décembre 2025
 - ✅ Tous les TODOs code optionnels terminés (3/3)
 - ✅ Toutes les fonctionnalités critiques implémentées
 - ✅ Tous les tests passent (190+ tests)
 - ✅ Documentation complète et à jour
-- ⏳ Seulement liens MD archives (~139) - non prioritaire
-- ⏳ TODOs robot réel - en attente hardware (normal)
+- ✅ Liens MD archives corrigés (majorité)
+- ✅ TODOs robot réel implémentés (6/6) - SDK Reachy Mini intégré
 

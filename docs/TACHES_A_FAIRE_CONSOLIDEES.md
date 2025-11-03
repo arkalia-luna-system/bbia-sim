@@ -62,7 +62,7 @@ pie title Fonctionnalités Implémentées
 
 | Module | Coverage | Objectif | Fichiers Tests | Statut |
 |:------:|:--------:|:--------:|:--------------:|:-----:|
-| `daemon/bridge.py` | **55.41%** ✅ | 30%+ | ✅ 34 tests | ✅ **TERMINÉ** - Objectif dépassé |
+| `daemon/bridge.py` | **54.86%** ✅ | 30%+ | ✅ 34 tests | ✅ **TERMINÉ** - Objectif dépassé |
 | `vision_yolo.py` | **99.45%** ✅ | 50%+ | ✅ 42 tests | ✅ **TERMINÉ** |
 | `voice_whisper.py` | **92.52%** ✅ | 50%+ | ✅ 66 tests | ✅ **TERMINÉ** |
 | `dashboard_advanced.py` | **76.71%** ✅ | 50%+ | ✅ 47 tests, 1156 lignes | ✅ **TERMINÉ** |
@@ -76,7 +76,7 @@ pie title Coverage Tests Modules Critiques
     "Terminé (vision 99.45%)" : 1
     "Terminé (voice 92.52%)" : 1
     "Terminé (dashboard 76.71%)" : 1
-    "Terminé (bridge 55.41%)" : 1
+    "Terminé (bridge 54.86%)" : 1
 ```
 
 > **📊 Estimation** : ✅ **4/4 TERMINÉ** • Tous les modules critiques ont un coverage excellent
@@ -86,7 +86,7 @@ pie title Coverage Tests Modules Critiques
 2. ✅ ~~Corriger imports dans tests~~ - **TERMINÉ** (Oct / Nov. 2025) - Solution : Imports au niveau fichier + `--cov=bbia_sim.module`
 3. ✅ ~~Étendre `tests/test_vision_yolo_comprehensive.py`~~ - **TERMINÉ** (**99.45%** coverage ✅, **42 tests**, objectif 50%+ largement dépassé)
 4. ✅ ~~Étendre tests `voice_whisper.py`~~ - **TERMINÉ** (**92.52%** coverage ✅, **66 tests**, objectif 50%+ largement dépassé)
-5. ✅ ~~Corriger imports dans `tests/test_daemon_bridge.py`~~ - **TERMINÉ** (**55.41%** coverage ✅, **34 tests**, objectif 30%+ dépassé)
+5. ✅ ~~Corriger imports dans `tests/test_daemon_bridge.py`~~ - **TERMINÉ** (**54.86%** coverage ✅, **34 tests**, objectif 30%+ dépassé)
 
 **Résultat final** : ✅ **TOUS LES MODULES CRITIQUES TERMINÉS** - Coverage excellent (55-99%)
 

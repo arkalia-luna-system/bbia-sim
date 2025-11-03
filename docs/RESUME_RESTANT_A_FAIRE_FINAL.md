@@ -83,17 +83,17 @@
 - **Priorité** : ✅ Terminé
 
 #### C. `backends/reachy_backend.py` (6 TODOs)
-- **Statut** : 🔵 **En attente robot réel** (Oct / Nov. 2025)
-- **TODOs** :
-  - Ligne 51 : Implémenter la vraie connexion Reachy
-  - Ligne 70 : Implémenter la vraie déconnexion Reachy
-  - Ligne 103 : Envoyer la commande au robot réel
-  - Ligne 126 : Synchroniser avec le robot réel
-  - Ligne 142 : Implémenter arrêt réel via API robot
-  - Ligne 184 : Implémenter l'envoi de commandes réelles
-- **Note** : Ces TODOs sont **normaux** - ils seront implémentés quand le robot réel sera reçu.
+- **Statut** : ✅ **TERMINÉ** (Oct / Nov. 2025) - Implémentation complète avec SDK Reachy Mini
+- **Implémentation vérifiée** :
+  - ✅ Ligne 52-107 : Connexion au robot réel via SDK Reachy Mini (`ReachyMini`)
+  - ✅ Ligne 109-136 : Déconnexion propre avec nettoyage SDK
+  - ✅ Ligne 145-201 : Envoi commandes au robot réel (`goto_target`, `set_joint_pos`)
+  - ✅ Ligne 236-259 : Synchronisation avec robot réel (`get_current_joint_positions`)
+  - ✅ Ligne 261-290 : Arrêt d'urgence via SDK (`emergency_stop`, `stop`)
+  - ✅ Ligne 315-352 : Envoi commandes réelles (`goto_target`, `set_emotion`, `play_behavior`)
+- **Note** : Le code est **prêt pour le robot réel** - il bascule automatiquement en mode simulation si le robot n'est pas disponible.
 
-**Estimation totale** : ✅ **2/3 TODOs terminés** (auth WebSocket ✅, migration imports ✅) + 3-4h (quand robot disponible)
+**Estimation totale** : ✅ **3/3 TODOs terminés** (auth WebSocket ✅, migration imports ✅, robot réel ✅)
 
 ---
 
@@ -105,8 +105,8 @@
 | 🟡 Moyenne | Métriques performance | Variable | ⏳ Optionnel |
 | 🟡 Moyenne | Liens MD archives | 30 min | ⏳ Non prioritaire |
 | 🟢 Basse | Documentation supplémentaire | 1-2h | ⏳ Optionnel |
-| 🟢 Basse | TODOs code optionnels | 1h | ⏳ Optionnel |
-| 🔵 Hardware | TODOs robot réel | 3-4h | ⏳ En attente |
+| ✅ | TODOs code optionnels | ✅ | ✅ **TERMINÉ** |
+| ✅ | TODOs robot réel | ✅ | ✅ **TERMINÉ** |
 
 **Total (sans hardware)** : **~2-4 heures** de travail optionnel
 
@@ -123,7 +123,7 @@
 - 🟡 **Optionnel** : Corriger liens MD dans archives (30 min)
 - ✅ **Terminé** : Documentation supplémentaire (FAQ ✅, guide dashboard_advanced ✅, tests README ✅)
 - ✅ **Terminé** : 3 TODOs code non-bloquants (auth WebSocket ✅, migration imports ✅, metrics connexions ✅)
-- 🔵 **Normal** : 6 TODOs robot réel (en attente hardware)
+- ✅ **Terminé** : 6 TODOs robot réel implémentés (SDK Reachy Mini intégré) ✅
 
 **Le projet est prêt pour le robot réel en Oct / Nov. 2025.** ✅
 

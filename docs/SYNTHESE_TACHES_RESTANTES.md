@@ -29,7 +29,7 @@
 | `vision_yolo.py` | **99.45%** ✅ | 50%+ | ✅ **42 tests** | ✅ **TERMINÉ** (objectif largement dépassé) |
 | `voice_whisper.py` | **92.52%** ✅ | 50%+ | ✅ **66 tests** | ✅ **TERMINÉ** (objectif largement dépassé) |
 | `dashboard_advanced.py` | **76.71%** ✅ | 50%+ | ✅ **47 tests**, 1156 lignes | ✅ **TERMINÉ** (objectif dépassé) |
-| `daemon/bridge.py` | **55.41%** ✅ | 30%+ | ✅ **34 tests** | ✅ **TERMINÉ** (objectif 30%+ dépassé) |
+| `daemon/bridge.py` | **54.86%** ✅ | 30%+ | ✅ **34 tests** | ✅ **TERMINÉ** (objectif 30%+ dépassé) |
 
 **Résultats** :
 - ✅ **Tous les modules critiques ont un coverage excellent** (50%+ ou objectif dépassé)

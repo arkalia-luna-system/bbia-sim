@@ -1,11 +1,21 @@
 #!/usr/bin/env python3
 """ReachyBackend - Implémentation Reachy réel de RobotAPI
-Backend mock pour robot Reachy réel (à implémenter plus tard)
+
+Backend pour robot Reachy réel avec support SDK Reachy Mini officiel.
+Implémentation complète avec :
+- Connexion/déconnexion via SDK Reachy Mini
+- Envoi de commandes au robot réel (goto_target, set_joint_pos)
+- Synchronisation avec robot réel (get_current_joint_positions)
+- Arrêt d'urgence via SDK (emergency_stop, stop)
+- Bascule automatique en mode simulation si robot non disponible
 """
 
 import logging
 import time
-from typing import Any
+from typing import TYPE_CHECKING, Any
+
+if TYPE_CHECKING:
+    pass
 
 from ..robot_api import RobotAPI
 
@@ -13,7 +23,11 @@ logger = logging.getLogger(__name__)
 
 
 class ReachyBackend(RobotAPI):
-    """Backend Reachy réel pour RobotAPI (Mock pour l'instant)."""
+    """Backend Reachy réel pour RobotAPI avec support SDK Reachy Mini.
+
+    Implémentation complète avec connexion au robot réel via SDK Reachy Mini.
+    Bascule automatiquement en mode simulation si le robot n'est pas disponible.
+    """
 
     def __init__(self, robot_ip: str = "localhost", robot_port: int = 8080) -> None:
         super().__init__()
@@ -48,7 +62,7 @@ class ReachyBackend(RobotAPI):
 
     def connect(self) -> bool:
         """Connecte au robot Reachy réel.
-        
+
         Note: Cette implémentation utilise le SDK Reachy Mini officiel.
         Pour utiliser avec un robot Reachy Mini:
         - Assurez-vous que le daemon Reachy Mini est lancé (reachy-mini-daemon)
@@ -64,7 +78,7 @@ class ReachyBackend(RobotAPI):
                     f"Tentative de connexion au robot Reachy Mini: "
                     f"{self.robot_ip}:{self.robot_port}"
                 )
-                
+
                 # Connexion avec timeout court pour éviter blocage
                 self.robot_sdk = ReachyMini(
                     localhost_only=(self.robot_ip == "localhost"),
@@ -72,24 +86,22 @@ class ReachyBackend(RobotAPI):
                     use_sim=False,  # Essayer connexion réelle
                     timeout=3.0,  # Timeout 3 secondes
                 )
-                
+
                 self.is_connected = True
                 self.start_time = time.time()
                 logger.info("✅ Connecté au robot Reachy Mini réel")
                 return True
-                
+
             except ImportError:
                 logger.warning("SDK Reachy Mini non disponible - mode simulation")
                 self.robot_sdk = None
                 self.is_connected = True  # Mode simulation
                 self.start_time = time.time()
                 return True
-                
+
             except (TimeoutError, ConnectionError, OSError) as e:
                 # Pas de robot physique - bascule en mode simulation
-                logger.info(
-                    f"⏱️  Pas de robot physique détecté - mode simulation: {e}"
-                )
+                logger.info(f"⏱️  Pas de robot physique détecté - mode simulation: {e}")
                 self.robot_sdk = None
                 self.is_connected = True  # Mode simulation
                 self.start_time = time.time()
@@ -107,7 +119,7 @@ class ReachyBackend(RobotAPI):
         """Déconnecte du robot Reachy réel."""
         try:
             logger.info("Déconnexion du robot Reachy")
-            
+
             # Fermer connexion SDK si disponible
             if self.robot_sdk is not None:
                 try:
@@ -163,10 +175,14 @@ class ReachyBackend(RobotAPI):
                     # Rotation du corps via SDK
                     if hasattr(self.robot_sdk, "goto_target"):
                         # Le SDK utilise goto_target avec body_yaw
-                        self.robot_sdk.goto_target(body_yaw=clamped_position, duration=0.1)
+                        self.robot_sdk.goto_target(
+                            body_yaw=clamped_position, duration=0.1
+                        )
                     else:
                         # Fallback: mise à jour directe si méthode disponible
-                        logger.warning(f"Méthode goto_target non disponible pour {joint_name}")
+                        logger.warning(
+                            f"Méthode goto_target non disponible pour {joint_name}"
+                        )
                 elif joint_name.startswith("stewart_"):
                     # Joints Stewart platform - utiliser head joint positions
                     # Le SDK attend un tableau de 6 positions pour la tête
@@ -180,21 +196,29 @@ class ReachyBackend(RobotAPI):
                                 head=head_positions, duration=0.1
                             )
                     else:
-                        logger.warning(f"Méthode goto_target non disponible pour {joint_name}")
-                
+                        logger.warning(
+                            f"Méthode goto_target non disponible pour {joint_name}"
+                        )
+
                 # Mettre à jour cache local pour cohérence
                 self.simulated_joints[joint_name] = clamped_position
-                logger.debug(f"Joint {joint_name} → {clamped_position:.3f} rad (robot réel)")
+                logger.debug(
+                    f"Joint {joint_name} → {clamped_position:.3f} rad (robot réel)"
+                )
                 return True
             except Exception as e:
-                logger.warning(f"Erreur envoi commande robot réel: {e} - bascule simulation")
+                logger.warning(
+                    f"Erreur envoi commande robot réel: {e} - bascule simulation"
+                )
                 # Fallback: simulation si erreur
                 self.simulated_joints[joint_name] = clamped_position
                 return True
         else:
             # Mode simulation
             self.simulated_joints[joint_name] = clamped_position
-            logger.debug(f"Joint {joint_name} → {clamped_position:.3f} rad (simulation)")
+            logger.debug(
+                f"Joint {joint_name} → {clamped_position:.3f} rad (simulation)"
+            )
             return True
 
     def get_joint_pos(self, joint_name: str) -> float | None:
@@ -246,7 +270,7 @@ class ReachyBackend(RobotAPI):
                         _ = self.robot_sdk.get_current_joint_positions()
                 except Exception as e:
                     logger.debug(f"Erreur synchronisation robot réel: {e}")
-            
+
             # Simulation: attendre un peu pour cohérence timing
             time.sleep(0.01)  # Simuler le temps de traitement
             self.step_count += 1
@@ -275,7 +299,7 @@ class ReachyBackend(RobotAPI):
                         self.robot_sdk.close()
                 except Exception as e:
                     logger.warning(f"Erreur arrêt d'urgence SDK: {e}")
-            
+
             self.is_connected = False
             self.robot_sdk = None
             logger.critical("🔴 ARRÊT D'URGENCE REACHY ACTIVÉ")
@@ -337,7 +361,7 @@ class ReachyBackend(RobotAPI):
                 else:
                     logger.warning(f"Commande non reconnue: {command}")
                     return False
-                
+
                 logger.info(f"Commande Reachy envoyée: {command} {kwargs}")
                 return True
             except Exception as e:

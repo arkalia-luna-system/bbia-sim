@@ -39,10 +39,10 @@
 | `vision_yolo.py` | **99.45%** ✅ | 50%+ | ✅ Existent | ✅ **TERMINÉ** - Objectif largement dépassé | ✅ |
 | `voice_whisper.py` | **92.52%** ✅ | 50%+ | ✅ Existent | ✅ **TERMINÉ** - Objectif largement dépassé | ✅ |
 | `dashboard_advanced.py` | **76.71%** ✅ | 50%+ | ✅ 47 tests (1156 lignes) | ✅ **TERMINÉ** - Objectif dépassé | ✅ |
-| `daemon/bridge.py` | **55.41%** ✅ | 30%+ | ✅ 34 tests | ✅ **TERMINÉ** - Objectif dépassé | ✅ |
+| `daemon/bridge.py` | **54.86%** ✅ | 30%+ | ✅ 34 tests | ✅ **TERMINÉ** - Objectif dépassé | ✅ |
 
 **Modules terminés** :
-- ✅ `daemon/bridge.py` : **55.41%** ✅ (objectif 30%+ dépassé)
+- ✅ `daemon/bridge.py` : **54.86%** ✅ (objectif 30%+ dépassé)
 - ✅ `dashboard_advanced.py` : **76.71%** ✅ (objectif 50%+ dépassé)
 - ✅ `vision_yolo.py` : **99.45%** ✅ (objectif 50%+ largement dépassé)
 - ✅ `voice_whisper.py` : **92.52%** ✅ (objectif 50%+ largement dépassé)

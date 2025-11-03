@@ -4,13 +4,13 @@
 Ce document a été archivé car il est devenu obsolète ou a été remplacé par une version plus récente.
 Il est conservé à des fins de référence historique uniquement.
 
-**Date d'archivage** : Oct / Oct / Nov. 20255
+**Date d'archivage** : Oct / Nov. 2025
 **Raison** : Document terminé/obsolète/remplacé
 ---
 
 # ✅ VÉRIFICATION FINALE - ANTENNES ANIMABLES
 
-**Date** : Oct / Oct / Nov. 20255  
+**Date** : Oct / Nov. 2025  
 **Statut** : ✅ **TOUTES LES CORRECTIONS VÉRIFIÉES ET APPLIQUÉES**
 
 ---
@@ -100,10 +100,10 @@ Il est conservé à des fins de référence historique uniquement.
 - ✅ Tests alignés avec réalité
 - ✅ Aucune incohérence dans fichiers actifs
 
-**Les fichiers d'archives sont conservés** comme référence historique et documentent l'état du projet avant les corrections (Oct / Oct / Nov. 20255).
+**Les fichiers d'archives sont conservés** comme référence historique et documentent l'état du projet avant les corrections (Oct / Nov. 2025).
 
 ---
 
-**Date de finalisation** : Oct / Oct / Nov. 20255  
+**Date de finalisation** : Oct / Nov. 2025  
 **Statut** : ✅ **VERIFICATION COMPLÈTE - TOUT EST COHÉRENT**
 

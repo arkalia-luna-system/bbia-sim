@@ -52,7 +52,7 @@ class MuJoCoSimulator:
     def launch_simulation(
         self,
         headless: bool = False,
-        duration: int | None = None,
+        duration: int | float | None = None,
     ) -> None:
         """Lance la simulation MuJoCo.
 
@@ -84,7 +84,7 @@ class MuJoCoSimulator:
                 logger.error(f"Erreur lors du lancement du viewer : {e}")
                 raise
 
-    def _run_headless_simulation(self, duration: int | None) -> None:
+    def _run_headless_simulation(self, duration: int | float | None) -> None:
         """Exécute la simulation en mode headless."""
         logger.info("Simulation headless démarrée")
         start_time = time.monotonic()  # Utiliser monotonic pour éviter la dérive
@@ -123,7 +123,7 @@ class MuJoCoSimulator:
         except Exception:
             pass  # Ignorer si déjà déchargé
 
-    def _run_graphical_simulation(self, duration: int | None) -> None:
+    def _run_graphical_simulation(self, duration: int | float | None) -> None:
         """Exécute la simulation avec l'interface graphique."""
         if self.viewer is None:
             logger.error("Le viewer n'est pas initialisé pour la simulation graphique.")

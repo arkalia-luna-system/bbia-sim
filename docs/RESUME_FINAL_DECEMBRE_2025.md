@@ -26,7 +26,7 @@
 | `vision_yolo.py` | **99.45%** ✅ | 50%+ | ✅ **TERMINÉ** - Objectif largement dépassé |
 | `voice_whisper.py` | **92.52%** ✅ | 50%+ | ✅ **TERMINÉ** - Objectif largement dépassé |
 | `dashboard_advanced.py` | **76.71%** ✅ | 50%+ | ✅ **TERMINÉ** - Objectif dépassé |
-| `daemon/bridge.py` | **55.41%** ✅ | 30%+ | ✅ **TERMINÉ** - Objectif dépassé |
+| `daemon/bridge.py` | **54.86%** ✅ | 30%+ | ✅ **TERMINÉ** - Objectif dépassé |
 
 **Problème résolu** : Coverage montrait "Module never imported" - corrigé en ajoutant imports au niveau fichier et en utilisant `--cov=bbia_sim.module`.
 

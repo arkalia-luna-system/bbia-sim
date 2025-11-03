@@ -47,7 +47,7 @@ class TestSecurityJSONValidation:
     @pytest.mark.fast
     def test_json_decode_error_handling(self):
         """Test gestion erreurs JSON invalide."""
-        invalid_json_cases = [
+        invalid_json_cases: list[str | bytes] = [
             "{invalid json}",
             '{"incomplete":',
             "not json at all",
@@ -62,4 +62,9 @@ class TestSecurityJSONValidation:
                     json.loads(invalid_json)
                 # Si pas d'erreur, c'est OK (certains peuvent être valides)
             except (json.JSONDecodeError, UnicodeDecodeError):
-                assert True, f"Erreur JSON gérée: {invalid_json}"
+                json_repr = (
+                    invalid_json.decode("utf-8", errors="replace")
+                    if isinstance(invalid_json, bytes)
+                    else str(invalid_json)
+                )
+                assert True, f"Erreur JSON gérée: {json_repr}"
