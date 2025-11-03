@@ -515,8 +515,9 @@ class TestFactoryFunctions:
     def test_load_model_cache_lru_eviction(self, mock_yolo_class):
         """Test éviction LRU du cache YOLO (couverture lignes 103-113)."""
         with patch("bbia_sim.vision_yolo.YOLO_AVAILABLE", True):
-            import bbia_sim.vision_yolo as vision_yolo_module
             import time as time_module
+
+            import bbia_sim.vision_yolo as vision_yolo_module
 
             # Vider cache
             vision_yolo_module._yolo_model_cache.clear()

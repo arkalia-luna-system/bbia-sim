@@ -1358,7 +1358,7 @@ class TestReachyMiniFullConformity:
         if found_params:
             print(f"✅ Paramètres conformes: {found_params}")
         else:
-            print(f"⚠️  Paramètres différents des exemples README")
+            print("⚠️  Paramètres différents des exemples README")
 
     def test_45_hugging_face_integration(self):
         """Test 45: Vérifier intégration Hugging Face (mentionné dans README)."""
@@ -1367,7 +1367,7 @@ class TestReachyMiniFullConformity:
 
         # Vérifier si on a des modules HF
         try:
-            from bbia_sim.bbia_huggingface import BBIAHuggingFace, HF_AVAILABLE
+            from bbia_sim.bbia_huggingface import HF_AVAILABLE, BBIAHuggingFace
 
             if HF_AVAILABLE:
                 print("✅ BBIAHuggingFace disponible")

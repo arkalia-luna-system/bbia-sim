@@ -4,14 +4,13 @@ Tests unitaires pour dashboard_advanced.py
 Tests du dashboard WebSocket avancé BBIA
 """
 
-from unittest.mock import MagicMock, patch
-
-import pytest
-
 # Importer le module au niveau du fichier pour que coverage le détecte
 # Coverage ne détecte que les imports au niveau module, pas ceux dans les tests
 import sys
 from pathlib import Path
+from unittest.mock import MagicMock, patch
+
+import pytest
 
 # S'assurer que src est dans le path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))

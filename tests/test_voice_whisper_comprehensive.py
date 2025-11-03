@@ -512,8 +512,9 @@ class TestFactoryFunctions:
     def test_load_model_cache_lru_eviction(self, mock_whisper):
         """Test éviction LRU du cache Whisper (couverture lignes 108-118)."""
         with patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True):
-            import bbia_sim.voice_whisper as voice_whisper_module
             import time as time_module
+
+            import bbia_sim.voice_whisper as voice_whisper_module
 
             # Vider cache
             voice_whisper_module._whisper_models_cache.clear()
@@ -847,8 +848,9 @@ class TestFactoryFunctions:
             os.environ["BBIA_DISABLE_AUDIO"] = "0"
 
             try:
-                import bbia_sim.voice_whisper as voice_whisper_module
                 from pathlib import Path
+
+                import bbia_sim.voice_whisper as voice_whisper_module
 
                 voice_whisper_module._whisper_models_cache.clear()
 

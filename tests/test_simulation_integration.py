@@ -11,7 +11,7 @@ from bbia_sim.sim.simulator import MuJoCoSimulator
 class TestSimulationIntegration:
     """Tests d'intégration pour la simulation."""
 
-    @patch("src.bbia_sim.sim.simulator.mujoco")
+    @patch("bbia_sim.sim.simulator.mujoco")
     def test_simulation_headless_performance(self, mock_mujoco):
         """Test performance simulation headless."""
         # Mock setup
@@ -48,17 +48,28 @@ class TestSimulationIntegration:
                 step_count += 1
                 # Pas besoin de lever d'exception, la durée va arrêter la simulation
 
-            mock_mujoco.mj_step = mock_mj_step
+            # Remplacer mj_step dans le mock
+            with (
+                patch(
+                    "bbia_sim.sim.simulator.mujoco.mj_step", side_effect=mock_mj_step
+                ),
+                patch(
+                    "bbia_sim.sim.simulator.time.monotonic",
+                    side_effect=lambda: (
+                        0.0 if step_count == 0 else 1.1
+                    ),  # Simule le temps qui passe
+                ),
+            ):
 
-            # Test performance headless avec une durée courte
-            start_time = time.time()
-            simulator.launch_simulation(
-                headless=True, duration=1
-            )  # 1 seconde seulement
-            end_time = time.time()
+                # Test performance headless avec une durée courte
+                start_time = time.time()
+                simulator.launch_simulation(
+                    headless=True, duration=1
+                )  # 1 seconde seulement
+                end_time = time.time()
 
-            # Vérifier que des steps ont été exécutés
-            assert step_count > 0
+                # Vérifier que des steps ont été exécutés
+                assert step_count > 0
 
             # Vérifier que la durée est raisonnable
             duration = end_time - start_time
@@ -67,7 +78,7 @@ class TestSimulationIntegration:
         finally:
             os.unlink(temp_model)
 
-    @patch("src.bbia_sim.sim.simulator.mujoco")
+    @patch("bbia_sim.sim.simulator.mujoco")
     def test_simulation_with_robot_model(self, mock_mujoco):
         """Test simulation avec modèle robot."""
         # Mock setup
@@ -139,14 +150,18 @@ class TestSimulationIntegration:
     <light pos="0 0 1" diffuse="0.5 0.5 0.5"/>
      <geom name="floor" type="plane" size="1 1 0.1"/>
 
-     <body name="torso">
+     <body name="torso" mass="1.0">
+      <inertia ixx="0.01" iyy="0.01" izz="0.01"/>
+      <geom name="torso_geom" type="box" size="0.05 0.05 0.1"/>
       <joint name="neck_yaw" type="hinge" axis="0 0 1" range="-1.57 1.57"/>
-      <body name="head">
+      <body name="head" mass="0.5">
+        <inertia ixx="0.005" iyy="0.005" izz="0.005"/>
         <joint name="head_pitch" type="hinge" axis="0 1 0" range="-0.5 0.5"/>
         <geom name="head" type="box" size="0.1 0.1 0.1"/>
       </body>
 
-      <body name="right_arm">
+      <body name="right_arm" mass="0.3">
+        <inertia ixx="0.003" iyy="0.003" izz="0.003"/>
         <joint name="right_shoulder_pitch" type="hinge" axis="0 1 0" range="-1.57 1.57"/>
         <geom name="right_arm" type="box" size="0.05 0.05 0.2"/>
       </body>
@@ -188,7 +203,7 @@ class TestSimulationIntegration:
         finally:
             os.unlink(temp_model)
 
-    @patch("src.bbia_sim.sim.simulator.mujoco")
+    @patch("bbia_sim.sim.simulator.mujoco")
     def test_simulation_error_handling(self, mock_mujoco):
         """Test gestion d'erreurs de simulation."""
         # Mock setup avec erreur
@@ -198,7 +213,7 @@ class TestSimulationIntegration:
         with pytest.raises((FileNotFoundError, RuntimeError)):
             MuJoCoSimulator("invalid_model.xml")
 
-    @patch("src.bbia_sim.sim.simulator.mujoco")
+    @patch("bbia_sim.sim.simulator.mujoco")
     def test_simulation_step_control(self, mock_mujoco):
         """Test contrôle step de simulation."""
         # Mock setup
@@ -235,7 +250,7 @@ class TestSimulationIntegration:
         finally:
             os.unlink(temp_model)
 
-    @patch("src.bbia_sim.sim.simulator.mujoco")
+    @patch("bbia_sim.sim.simulator.mujoco")
     def test_simulation_metrics(self, mock_mujoco):
         """Test métriques de simulation."""
         # Mock setup
@@ -292,7 +307,7 @@ class TestSimulationIntegration:
             # Test récupération des métriques
             state = simulator.get_robot_state()
 
-            assert state["n_joints"] == 5
+            assert state["n_joints"] == 5, f"Expected 5 joints, got {state['n_joints']}"
             assert state["n_bodies"] == 8
             assert state["time"] == 2.5
             assert len(state["qpos"]) == 5
@@ -307,7 +322,7 @@ class TestSimulationIntegration:
         finally:
             os.unlink(temp_model)
 
-    @patch("src.bbia_sim.sim.simulator.mujoco")
+    @patch("bbia_sim.sim.simulator.mujoco")
     def test_simulation_concurrent_access(self, mock_mujoco):
         """Test accès concurrent à la simulation."""
         # Mock setup

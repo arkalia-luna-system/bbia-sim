@@ -1,12 +1,7 @@
 """Tests pour WebSocket /api/state/ws/full."""
 
-import asyncio
-import json
-from typing import Any
 
 import pytest
-import websockets
-
 from fastapi.testclient import TestClient
 
 from bbia_sim.daemon.app.main import app
@@ -26,7 +21,6 @@ def api_token() -> str:
 @pytest.mark.asyncio
 async def test_websocket_state_full_basic() -> None:
     """Test WebSocket /api/state/ws/full - connexion de base."""
-    import httpx
 
     # Note: TestClient ne supporte pas WebSocket facilement
     # Test simplifié avec vérification endpoint existe

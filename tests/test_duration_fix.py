@@ -9,7 +9,7 @@ from bbia_sim.sim.simulator import MuJoCoSimulator
 class TestDurationFix:
     """Tests pour vérifier le respect de la durée en mode headless."""
 
-    @patch("src.bbia_sim.sim.simulator.mujoco")
+    @patch("bbia_sim.sim.simulator.mujoco")
     def test_headless_duration_respected(self, mock_mujoco):
         """Test que la durée headless est respectée avec une tolérance de 0.2s."""
         # Mock setup
@@ -51,7 +51,7 @@ class TestDurationFix:
         finally:
             os.unlink(temp_model)
 
-    @patch("src.bbia_sim.sim.simulator.mujoco")
+    @patch("bbia_sim.sim.simulator.mujoco")
     def test_headless_no_duration_limit(self, mock_mujoco):
         """Test que sans durée spécifiée, la simulation s'arrête à la limite de sécurité."""
         # Mock setup
@@ -78,11 +78,20 @@ class TestDurationFix:
         try:
             simulator = MuJoCoSimulator(temp_model)
 
+            # Mock mj_step pour compter les appels
+            step_count = 0
+
+            def mock_mj_step(model, data):
+                nonlocal step_count
+                step_count += 1
+
+            mock_mujoco.mj_step = mock_mj_step
+
             # Test sans durée (doit s'arrêter à 10000 steps)
             simulator.launch_simulation(headless=True, duration=None)
 
             # Vérifier que mj_step a été appelé environ 10000 fois
-            assert mock_mujoco.mj_step.call_count >= 10000
+            assert step_count >= 10000
 
         finally:
             os.unlink(temp_model)

@@ -1,7 +1,6 @@
 """Tests pour les nouveaux endpoints REST conformes au SDK officiel."""
 
 import pytest
-
 from fastapi.testclient import TestClient
 
 from bbia_sim.daemon.app.main import app

@@ -1,8 +1,9 @@
 """Tests pour les endpoints /api/move conformes SDK officiel."""
 
+from uuid import UUID
+
 import pytest
 from fastapi.testclient import TestClient
-from uuid import UUID
 
 from bbia_sim.daemon.app.main import app
 from bbia_sim.daemon.config import settings
