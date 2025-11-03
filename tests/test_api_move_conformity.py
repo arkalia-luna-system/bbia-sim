@@ -14,7 +14,7 @@ client = TestClient(app)
 @pytest.fixture
 def api_token() -> str:
     """Token d'authentification pour les tests."""
-    return settings.api_token
+    return str(settings.api_token)
 
 
 class TestMoveGoto:
