@@ -132,9 +132,7 @@ class YOLODetector:
             logger.error(f"❌ Erreur chargement YOLO: {e}")
             return False
 
-    def detect_objects(
-        self, image: npt.NDArray[np.uint8]
-    ) -> list[dict[str, Any]]:
+    def detect_objects(self, image: npt.NDArray[np.uint8]) -> list[dict[str, Any]]:
         """Détecte les objets dans une image.
 
         Args:
@@ -303,9 +301,7 @@ class FaceDetector:
         except ImportError:
             logger.warning("⚠️ MediaPipe non disponible")
 
-    def detect_faces(
-        self, image: npt.NDArray[np.uint8]
-    ) -> list[dict[str, Any]]:
+    def detect_faces(self, image: npt.NDArray[np.uint8]) -> list[dict[str, Any]]:
         """Détecte les visages dans une image.
 
         Args:

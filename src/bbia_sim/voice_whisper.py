@@ -10,34 +10,36 @@ import time
 from pathlib import Path
 from typing import Any, cast
 
+import numpy.typing as npt
+
 # Déclarer whisper comme Any dès le début pour éviter conflit de types
 whisper: Any
 
 try:
-    import whisper as _whisper_module
+    import whisper as _whisper_module  # type: ignore[import]
 
     WHISPER_AVAILABLE = True
     whisper = _whisper_module
 except ImportError:
     WHISPER_AVAILABLE = False
-    whisper = None
+    whisper = None  # type: ignore[assignment]
 
 # Imports optionnels pour les patches dans les tests
 try:
-    from transformers import pipeline as transformers_pipeline
+    from transformers import pipeline as transformers_pipeline  # type: ignore[import]
 except ImportError:
-    transformers_pipeline = None
+    transformers_pipeline = None  # type: ignore[assignment]
 
 try:
-    import soundfile as sf
+    import soundfile as sf  # type: ignore[import]
 except ImportError:
-    sf = None
+    sf = None  # type: ignore[assignment]
 
 try:
-    import sounddevice as sd
+    import sounddevice as sd  # type: ignore[import]
 except (ImportError, OSError):
     # OSError: PortAudio library not found (CI/headless)
-    sd = None
+    sd = None  # type: ignore[assignment]
 
 logger = logging.getLogger(__name__)
 
@@ -412,7 +414,7 @@ class WhisperSTT:
             chunk_duration = 0.5  # Analyser par chunks de 500ms
             chunk_samples = int(chunk_duration * sample_rate)
 
-            audio_buffer: list[np.ndarray[Any, np.dtype[np.float32]]] = []
+            audio_buffer: list[npt.NDArray[np.float32]] = []
             silence_duration = 0.0
             max_silence = silence_threshold
             total_duration = 0.0
@@ -535,7 +537,7 @@ class WhisperSTT:
             from collections import deque
 
             buffer_max_chunks = 10  # Max 10 chunks (limite sécurité)
-            audio_buffer: deque[np.ndarray[Any, np.dtype[np.float32]]] = deque(
+            audio_buffer: deque[npt.NDArray[np.float32]] = deque(
                 maxlen=buffer_max_chunks
             )
 

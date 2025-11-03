@@ -68,7 +68,9 @@ format: ## Formater le code
 
 security: ## Vérifications de sécurité
 	@echo "$(GREEN)🔒 Audit sécurité...$(NC)"
-	bandit -r src/bbia_sim/
+	@find src -name "._*" -type f -delete 2>/dev/null || true
+	@find tests -name "._*" -type f -delete 2>/dev/null || true
+	@bandit -r src/bbia_sim/ -x tests -c .bandit
 	@echo "$(YELLOW)Sécurité OK pour usage robotique$(NC)"
 
 clean: ## Nettoyer les fichiers temporaires

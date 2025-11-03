@@ -15,17 +15,18 @@ from pathlib import Path
 from typing import Any
 
 import numpy as np
+import numpy.typing as npt
 
 logger = logging.getLogger(__name__)
 
 # Import conditionnel DeepFace
 DEEPFACE_AVAILABLE = False
 try:
-    from deepface import DeepFace
+    from deepface import DeepFace  # type: ignore[import]
 
     DEEPFACE_AVAILABLE = True
 except ImportError:
-    DeepFace = None  # type: ignore
+    DeepFace = None  # type: ignore[assignment]
     logger.debug("DeepFace non disponible. Installer avec: pip install deepface")
 
 
@@ -97,7 +98,7 @@ class BBIAPersonRecognition:
 
     def recognize_person(
         self,
-        image_path: str | np.ndarray,
+        image_path: str | npt.NDArray[np.uint8],
         enforce_detection: bool = False,
     ) -> dict[str, Any] | None:
         """Reconnaît une personne dans une image.
@@ -186,7 +187,7 @@ class BBIAPersonRecognition:
 
     def detect_emotion(
         self,
-        image_path: str | np.ndarray,
+        image_path: str | npt.NDArray[np.uint8],
         enforce_detection: bool = False,
     ) -> dict[str, Any] | None:
         """Détecte l'émotion dominante sur un visage.
@@ -270,7 +271,7 @@ class BBIAPersonRecognition:
 
     def recognize_with_emotion(
         self,
-        image_path: str | np.ndarray,
+        image_path: str | npt.NDArray[np.uint8],
     ) -> dict[str, Any] | None:
         """Reconnaît une personne ET détecte son émotion en une seule fois.
 

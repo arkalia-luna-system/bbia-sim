@@ -160,7 +160,7 @@ class ReachyMiniBackend(RobotAPI):
         # Initialiser depuis GlobalConfig pour cohérence
         from ..global_config import GlobalConfig
 
-        self.forbidden_joints: set[str] = set(GlobalConfig.FORBIDDEN_JOINTS)  # type: ignore[assignment]
+        self.forbidden_joints: set[str] = set(GlobalConfig.FORBIDDEN_JOINTS)
         # Optionnel: ajouter "left_antenna" ou "right_antenna" pour bloquer
 
     def __enter__(self) -> "ReachyMiniBackend":
@@ -808,7 +808,7 @@ class ReachyMiniBackend(RobotAPI):
                     # Essayer d'accéder à robot.io.get_imu() si disponible
                     if hasattr(self.robot, "io") and self.robot.io:
                         if hasattr(self.robot.io, "get_imu"):
-                            imu_raw = self.robot.io.get_imu()  # type: ignore[attr-defined]
+                            imu_raw = self.robot.io.get_imu()  # type: ignore[attr-defined]  # SDK dynamique
                             # Normaliser format IMU (dict avec acceleration, gyroscope, magnetometer)
                             if isinstance(imu_raw, dict):
                                 imu_data = imu_raw
@@ -1239,7 +1239,7 @@ class ReachyMiniBackend(RobotAPI):
 
         """
         if self.robot and hasattr(self.robot, "io") and self.robot.io:
-            return self.robot.io  # type: ignore[no-any-return]
+            return self.robot.io  # type: ignore[no-any-return]  # SDK dynamique
 
         # Mode simulation : retourner shim de simulation
         from .simulation_shims import SimulationIOModule
@@ -1261,7 +1261,7 @@ class ReachyMiniBackend(RobotAPI):
 
         """
         if self.robot and hasattr(self.robot, "media") and self.robot.media:
-            return self.robot.media  # type: ignore[no-any-return]
+            return self.robot.media  # type: ignore[no-any-return]  # SDK dynamique
 
         # Mode simulation : retourner shim de simulation
         from .simulation_shims import SimulationMediaModule

@@ -2,6 +2,7 @@
 """RobotFactory - Factory pour créer les backends RobotAPI"""
 
 import logging
+from typing import Any
 
 from .backends.mujoco_backend import MuJoCoBackend
 from .backends.reachy_backend import ReachyBackend
@@ -15,7 +16,9 @@ class RobotFactory:
     """Factory pour créer les backends RobotAPI."""
 
     @staticmethod
-    def create_backend(backend_type: str = "mujoco", **kwargs) -> RobotAPI | None:
+    def create_backend(
+        backend_type: str = "mujoco", **kwargs: Any
+    ) -> "RobotAPI | None":
         """Crée un backend RobotAPI.
 
         Args:
@@ -66,7 +69,7 @@ class RobotFactory:
         return ["mujoco", "reachy", "reachy_mini"]
 
     @staticmethod
-    def get_backend_info(backend_type: str) -> dict:
+    def get_backend_info(backend_type: str) -> dict[str, Any]:
         """Retourne les informations sur un backend."""
         info = {
             "mujoco": {

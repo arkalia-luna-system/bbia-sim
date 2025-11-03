@@ -9,15 +9,15 @@ import numpy.typing as npt
 from pydantic import BaseModel, Field, field_validator
 
 
-class JointPosition(BaseModel):
+class JointPosition(BaseModel):  # type: ignore[misc]
     """Modèle pour une position d'articulation avec validation."""
 
     joint_name: str = Field(..., min_length=1, max_length=50)
     position: float = Field(..., ge=-3.14, le=3.14)  # Limite physique réaliste
 
-    @field_validator("joint_name")
+    @field_validator("joint_name")  # type: ignore[misc]
     @classmethod
-    def validate_joint_name(cls, v):
+    def validate_joint_name(cls, v: str) -> str:
         """Valide le nom de l'articulation."""
         from ..sim.joints import validate_joint_name
 
@@ -26,7 +26,7 @@ class JointPosition(BaseModel):
         return v
 
 
-class Pose(BaseModel):
+class Pose(BaseModel):  # type: ignore[misc]
     """Modèle pour une position avec validation."""
 
     x: float = Field(..., ge=-1.0, le=1.0)  # Limites réalistes en mètres
@@ -37,44 +37,44 @@ class Pose(BaseModel):
     yaw: float = Field(0.0, ge=-3.14, le=3.14)
 
 
-class HeadControl(BaseModel):
+class HeadControl(BaseModel):  # type: ignore[misc]
     """Modèle pour le contrôle de la tête avec validation."""
 
     yaw: float = Field(..., ge=-1.57, le=1.57)  # Limites physiques réalistes
     pitch: float = Field(..., ge=-0.5, le=0.5)
 
 
-class GripperControl(BaseModel):
+class GripperControl(BaseModel):  # type: ignore[misc]
     """Modèle pour le contrôle des pinces."""
 
     side: str = Field(..., pattern="^(left|right)$")
     action: str = Field(..., pattern="^(open|close|grip)$")
 
 
-class MotionCommand(BaseModel):
+class MotionCommand(BaseModel):  # type: ignore[misc]
     """Modèle pour une commande de mouvement personnalisée."""
 
     command: str = Field(..., min_length=1, max_length=100)
     parameters: dict[str, Any] = Field(default_factory=dict, max_length=10)
 
-    @field_validator("parameters")
+    @field_validator("parameters")  # type: ignore[misc]
     @classmethod
-    def validate_parameters(cls, v):
+    def validate_parameters(cls, v: dict[str, Any]) -> dict[str, Any]:
         """Valide les paramètres de la commande."""
         if len(v) > 10:
             raise ValueError("Trop de paramètres (max 10)")
         return v
 
 
-class TelemetryMessage(BaseModel):
+class TelemetryMessage(BaseModel):  # type: ignore[misc]
     """Modèle pour les messages de télémétrie WebSocket."""
 
     type: str = Field(..., pattern="^(ping|pong|status|telemetry)$")
     data: dict[str, Any] = Field(default_factory=dict, max_length=50)
 
-    @field_validator("data")
+    @field_validator("data")  # type: ignore[misc]
     @classmethod
-    def validate_data(cls, v):
+    def validate_data(cls, v: dict[str, Any]) -> dict[str, Any]:
         """Valide les données de télémétrie."""
         if len(v) > 50:
             raise ValueError("Trop de données (max 50 champs)")
@@ -82,7 +82,7 @@ class TelemetryMessage(BaseModel):
 
 
 # Modèles conformes SDK officiel
-class XYZRPYPose(BaseModel):
+class XYZRPYPose(BaseModel):  # type: ignore[misc]
     """Représente une pose 3D avec position (x, y, z) et orientation (roll, pitch, yaw)."""
 
     x: float = 0.0
@@ -113,7 +113,7 @@ class XYZRPYPose(BaseModel):
         return pose_matrix
 
 
-class Matrix4x4Pose(BaseModel):
+class Matrix4x4Pose(BaseModel):  # type: ignore[misc]
     """Représente une pose 3D par sa matrice de transformation 4x4."""
 
     m: tuple[
@@ -139,6 +139,8 @@ class Matrix4x4Pose(BaseModel):
     def from_pose_array(cls, arr: npt.NDArray[np.float64]) -> "Matrix4x4Pose":
         """Crée une pose Matrix4x4Pose depuis un array numpy 4x4 (conforme SDK)."""
         assert arr.shape == (4, 4), "Array must be of shape (4, 4)"
+        flattened_list: list[float] = arr.flatten().tolist()
+        # Type ignore nécessaire: tuple() retourne tuple[float, ...] mais on sait qu'il y a 16 éléments
         m: tuple[
             float,
             float,
@@ -156,9 +158,7 @@ class Matrix4x4Pose(BaseModel):
             float,
             float,
             float,
-        ] = tuple(
-            arr.flatten().tolist(),
-        )  # type: ignore[assignment]
+        ] = tuple(flattened_list)  # type: ignore[assignment]
         return cls(m=m)
 
     def to_pose_array(self) -> npt.NDArray[np.float64]:
@@ -176,7 +176,7 @@ def as_any_pose(pose: npt.NDArray[np.float64], use_matrix: bool) -> AnyPose:
     return XYZRPYPose.from_pose_array(pose)
 
 
-class FullBodyTarget(BaseModel):
+class FullBodyTarget(BaseModel):  # type: ignore[misc]
     """Représente le corps complet incluant pose tête et joints antennes (conforme SDK)."""
 
     target_head_pose: AnyPose | None = None
@@ -202,12 +202,12 @@ class FullBodyTarget(BaseModel):
     }
 
 
-class MoveUUID(BaseModel):
+class MoveUUID(BaseModel):  # type: ignore[misc]
     """Identifiant unique pour une tâche de mouvement (conforme SDK)."""
 
     uuid: UUID  # Conforme SDK officiel
 
-    @field_validator("uuid", mode="before")
+    @field_validator("uuid", mode="before")  # type: ignore[misc]
     @classmethod
     def validate_uuid(cls, v: Any) -> UUID:
         """Valide que l'UUID est valide (retourne 400 si invalide au lieu de 422)."""
@@ -222,7 +222,7 @@ class MoveUUID(BaseModel):
         raise ValueError(f"UUID invalide: {v}")
 
 
-class FullState(BaseModel):
+class FullState(BaseModel):  # type: ignore[misc]
     """Représente l'état complet du robot incluant toutes les positions d'articulations et poses (conforme SDK)."""
 
     control_mode: Any | None = (

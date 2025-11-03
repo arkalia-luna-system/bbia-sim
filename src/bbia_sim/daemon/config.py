@@ -5,7 +5,7 @@ from typing import Any
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
-class Settings(BaseSettings):
+class Settings(BaseSettings):  # type: ignore[misc]
     """Configuration de l'application."""
 
     model_config = SettingsConfigDict(env_file=".env", env_prefix="BBIA_")
@@ -47,7 +47,7 @@ class Settings(BaseSettings):
     rate_limit_requests: int = 100  # per minute
     rate_limit_window: int = 60  # seconds
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: Any) -> None:
         super().__init__(**kwargs)
         # Chargement depuis .env en dev uniquement
         if self.environment == "dev":

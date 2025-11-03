@@ -12,17 +12,18 @@ import logging
 from typing import Any
 
 import numpy as np
+import numpy.typing as npt
 
 logger = logging.getLogger(__name__)
 
 # Import conditionnel MediaPipe Pose
 MEDIAPIPE_POSE_AVAILABLE = False
 try:
-    import mediapipe as mp
+    import mediapipe as mp  # type: ignore[import]
 
     MEDIAPIPE_POSE_AVAILABLE = True
 except ImportError:
-    mp = None
+    mp = None  # type: ignore[assignment]
     logger.debug("MediaPipe non disponible. Installer avec: pip install mediapipe")
 
 
@@ -74,9 +75,7 @@ class BBIAPoseDetection:
         except Exception as e:
             logger.error(f"❌ Erreur initialisation MediaPipe Pose: {e}")
 
-    def detect_pose(
-        self, image: np.ndarray[Any, np.dtype[np.uint8]]
-    ) -> dict[str, Any] | None:
+    def detect_pose(self, image: npt.NDArray[np.uint8]) -> dict[str, Any] | None:
         """Détecte la posture complète dans une image.
 
         Args:

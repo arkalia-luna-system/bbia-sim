@@ -5,6 +5,7 @@ Connecte tous les modules BBIA au simulateur MuJoCo pour créer une simulation c
 
 import asyncio
 import logging
+from typing import Any
 
 from .bbia_audio import detecter_son, enregistrer_audio, lire_audio
 from .bbia_behavior import BBIABehaviorManager
@@ -473,7 +474,7 @@ class BBIAIntegration:
             logger.error(f"❌ Erreur application émotion : {e}")
             return False
 
-    async def react_to_vision_detection(self, detection_data: dict) -> bool:
+    async def react_to_vision_detection(self, detection_data: dict[str, Any]) -> bool:
         """Réagit aux détections visuelles en contrôlant le robot.
 
         Args:
@@ -693,7 +694,7 @@ class BBIAIntegration:
             logger.error(f"❌ Erreur exécution comportement : {e}")
             return False
 
-    def get_integration_status(self) -> dict:
+    def get_integration_status(self) -> dict[str, Any]:
         """Retourne le statut de l'intégration BBIA."""
         return {
             "is_active": self.is_active,
