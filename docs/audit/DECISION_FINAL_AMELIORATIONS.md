@@ -92,19 +92,30 @@
 
 ---
 
-### **🟡 2. Dashboard - Explorer Datasets Dynamiquement**
+### **🟡 2. Dashboard - Explorer Datasets Dynamiquement** ✅ **IMPLÉMENTÉ**
 
 **Ce qui existe actuellement** :
 
 - ✅ Dashboard avec recorded moves player
-- ✅ Sélection dataset en dur (hardcodé)
+- ✅ **Sélection dataset dynamique** (chargée automatiquement depuis `/discover`)
 
-**Ce qui pourrait être amélioré** :
+**Ce qui a été amélioré** :
 
-- Endpoint discovery → Dashboard affiche tous les datasets disponibles
-- Recherche de datasets HF Hub depuis dashboard
+✅ **AMÉLIORATION IMPLÉMENTÉE** : Dashboard charge maintenant automatiquement tous les datasets disponibles depuis l'endpoint `/discover`, au lieu d'être hardcodé.
 
-**Priorité** : 🟡 **TRÈS BASSE** - Non bloquant, amélioration UX mineure
+**Implémentation** :
+- **Fichier** : `src/bbia_sim/daemon/app/dashboard/static/js/move_player.js`
+- **Lignes** : ~105-141
+- **Fonction** : `loadAvailableDatasets()` - Charge dynamiquement les datasets depuis `/api/move/recorded-move-datasets/discover`
+- **Fonctionnalités** :
+  - Appel automatique au chargement de la page
+  - Formatage des noms de datasets pour affichage lisible
+  - Fallback vers datasets hardcodés dans HTML si échec
+  - Initialisation automatique des moves pour le premier dataset
+
+**Statut** : ✅ **TERMINÉ** (Décembre 2025) - Code JavaScript implémenté ✅
+
+**Valeur ajoutée** : ✅ **AMÉLIORÉE** - Dashboard affiche automatiquement tous les nouveaux datasets découverts via HF Hub
 
 ---
 
@@ -202,7 +213,8 @@
 **Ce qui pourrait être ajouté (optionnel)** :
 
 1. ✅ ~~Endpoint discovery datasets~~ - **TERMINÉ** (Décembre 2025)
-2. ✅ ~~Buffer circulaire caméra frames~~ - **TERMINÉ** (Décembre 2025)
+2. ✅ ~~Dashboard datasets dynamiques~~ - **TERMINÉ** (Décembre 2025)
+3. ✅ ~~Buffer circulaire caméra frames~~ - **TERMINÉ** (Décembre 2025)
 
 **Ce qui ne doit PAS être ajouté** :
 
