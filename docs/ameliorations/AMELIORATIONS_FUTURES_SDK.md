@@ -48,7 +48,7 @@ robot.media.record_audio()  # ✅ Utilisé dans bbia_audio.py
 
 ---
 
-### **2. Module IO SDK** ⚠️ Non Utilisé
+### **2. Module IO SDK** ⚠️ Non Utilisé (à prioriser dès réception robot)
 
 **Status :** Disponible dans `ReachyMiniBackend.io` mais NON UTILISÉ
 
@@ -63,6 +63,11 @@ robot.io.set_leds()            # Contrôle LEDs (si disponibles)
 - Vision temps réel au lieu de scan périodique
 - Audio streaming pour reconnaissance vocale temps réel
 - Feedback visuel via LEDs
+
+**Plan d’action (après robot réel) :**
+- [ ] Activer `robot.io.get_camera_stream()` dans `BBIAVision` (chemin optionnel)
+- [ ] Activer `robot.io.get_audio_stream()` dans `bbia_audio` (ASR temps réel)
+- [ ] Mesurer latence/CPU (journaliser dans `log/` conformément à la préférence utilisateur)
 
 ---
 

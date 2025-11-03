@@ -77,6 +77,52 @@ pip install -e .[dev,test]
 python scripts/hardware_dry_run_reachy_mini.py --output-dir artifacts
 ```
 
+### 🧩 Installation du SDK officiel + Daemon Reachy Mini
+
+> Le paquet `reachy-mini` n’est pas embarqué dans les dépendances de ce projet. Installez-le séparément (PyPI) pour contrôler le robot réel ou lancer la simulation officielle.
+
+```bash
+# Installer le SDK officiel (PC local)
+pip install -U reachy-mini
+
+# (Option simulation MuJoCo officielle)
+pip install -U "reachy-mini[mujoco]"
+```
+
+### 🟣 Lancer le daemon Reachy Mini (officiel)
+
+```bash
+# Démarrage standard (daemon officiel)
+reachy-mini-daemon
+
+# Mode simulation MuJoCo (daemon officiel)
+reachy-mini-daemon --sim
+
+# Scènes disponibles (simulation): empty|minimal (table+objets)
+reachy-mini-daemon --sim --scene minimal
+```
+
+#### Note macOS (MuJoCo)
+
+Sur macOS, l’exécution MuJoCo peut nécessiter `mjpython` :
+
+```bash
+mjpython -m reachy_mini.daemon.app.main --sim --scene minimal
+```
+
+### 🔍 Vérifier l’API du daemon officiel
+
+```bash
+curl http://localhost:8000/api/state/full
+# ou ouvrir la doc OpenAPI quand le daemon tourne :
+# http://localhost:8000/docs
+```
+
+### 🔗 Intégration côté BBIA‑SIM
+
+- BBIA‑SIM détecte et utilise le backend `reachy_mini` si le SDK est installé et le daemon accessible.
+- Pour la simulation interne BBIA‑SIM (sans daemon officiel), continuez à utiliser les démos `examples/*.py` et le backend `mujoco`.
+
 ### 🔗 Guide complet Reachy Mini
 
 - `docs/guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md`

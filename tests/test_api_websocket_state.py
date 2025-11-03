@@ -1,6 +1,5 @@
 """Tests pour WebSocket /api/state/ws/full."""
 
-
 import pytest
 from fastapi.testclient import TestClient
 

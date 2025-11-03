@@ -5,6 +5,11 @@
 **Version BBIA** : 1.3.2
 **Objectif** : Vérifier que tous les modules IA sont compatibles avec le SDK officiel Reachy Mini
 
+**État SDK local** : installé `reachy_mini==1.0.0rc5` (pré‑release)
+
+**Recommandation** : passer à `reachy_mini==1.0.0` (release stable) dès que possible — voir releases GitHub
+([lien](https://github.com/pollen-robotics/reachy_mini)).
+
 ---
 
 ## ✅ CONFORMITÉ SDK OFFICIEL - DÉJÀ VALIDÉE
@@ -33,6 +38,27 @@ except ImportError:
 ```
 
 ---
+
+## 🔎 Vérifications supplémentaires (Nov 2025)
+
+- **Versions Python supportées (officiel)**: 3.10 → 3.13  
+  - ✅ Projet configuré `requires-python = ">=3.10"`
+- **Paquet / import**:  
+  - PyPI: `reachy-mini`  
+  - Import Python: `reachy_mini`
+- **git‑lfs requis**:  
+  - macOS: `brew install git-lfs` • Linux: `sudo apt install git-lfs`
+- **Daemon**:  
+  - Local: `reachy-mini-daemon`  
+  - Simulation: `reachy-mini-daemon --sim --scene <empty|minimal>`  
+  - Réseau: `--localhost-only` (défaut) / `--no-localhost-only`
+- **macOS + MuJoCo**: lancer avec `mjpython`  
+  - Exemple: `mjpython -m reachy_mini.daemon.app.main --sim`
+- **Dashboard**: `http://localhost:8000/` (OpenAPI: `/docs`)
+- **Lite (USB)**: `-p <serial_port>` si auto‑détection échoue
+
+Conclusion: aucune anomalie détectée; vos implémentations (backend, API, bridge) restent conformes et prêtes pour robot réel.
+
 
 ### 2. Dépendances SDK Officiel ✅
 

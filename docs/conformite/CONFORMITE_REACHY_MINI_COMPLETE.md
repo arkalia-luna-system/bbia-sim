@@ -7,6 +7,11 @@
 
 **Version** : BBIA-SIM v1.3.2 • **Date** : Oct 25 / Nov 25  
 **SDK Cible** : `reachy_mini` (Pollen Robotics × Hugging Face)
+  
+**État SDK** : Utiliser la **dernière version stable** de `reachy-mini` publiée sur PyPI (mise à jour régulière recommandée)
+  
+Référence officielle: `pollen-robotics/reachy_mini` (GitHub) — voir `README` et instructions d’installation
+([lien](https://github.com/pollen-robotics/reachy_mini)).
 
 [📚 Guide débutant](../guides/GUIDE_DEBUTANT.md) • [🔍 Audit complet](../audit/INDEX_AUDITS_CONSOLIDES.md)
 
@@ -19,6 +24,23 @@
 > **✅ Statut global : CONFORME**  
 > Le projet BBIA‑SIM est **conforme** au SDK officiel Reachy Mini (Pollen Robotics).  
 > Des optimisations et corrections ont été appliquées et validées.
+
+### 🔐 Checklist pré‑réception (décembre)
+
+- **Installer SDK officiel**: `pip install reachy-mini` (PyPI)  
+  - **Simulation**: `pip install "reachy-mini[mujoco]"`
+- **macOS + MuJoCo**: utiliser `mjpython` pour lancer le daemon MuJoCo  
+  - Exemple: `mjpython -m reachy_mini.daemon.app.main --sim`
+- **git‑lfs requis** (assets):  
+  - macOS: `brew install git-lfs` • Linux: `sudo apt install git-lfs`
+- **Python supporté**: 3.10 à 3.13 (projet déjà `>=3.10`)
+- **Daemon**:  
+  - Local: `reachy-mini-daemon`  
+  - Simulation: `reachy-mini-daemon --sim --scene <empty|minimal>`  
+  - Réseau: `--localhost-only` (défaut) ou `--no-localhost-only`
+- **Dashboard**: `http://localhost:8000/` (docs: `http://localhost:8000/docs`)
+- **Lite (USB)**: si détection auto échoue → `-p <serial_port>`
+- **Import vs package**: paquet PyPI `reachy-mini`, import Python `reachy_mini`
 
 <div align="center">
 
@@ -75,7 +97,8 @@ graph TB
 
 ### 📌 Matrice de compatibilité (SDK officiel)
 
-- **Dépôt/commit SDK validé**: `pollen-robotics/reachy_mini` @ `84c40c31ff898da4` (branch `develop`)
+- **Référence SDK**: `pollen-robotics/reachy_mini` (branche active) et **dernière release** publiée sur PyPI
+  - Voir releases GitHub — [lien](https://github.com/pollen-robotics/reachy_mini)
 - **Surface API vérifiée** (extraits clés):
   - `look_at_world(x: float, y: float, z: float, duration: float, perform_movement: bool) -> Optional[np.ndarray|(4x4)]`
   - `look_at_image(u: int, v: int, duration: float, perform_movement: bool) -> Optional[np.ndarray|(4x4)]`
@@ -218,7 +241,7 @@ Votre implémentation `ReachyMiniBackend` est conforme au SDK officiel, avec des
 - Support alternatives (`speaker.play()`, `speaker.say()`)
 - Fallback gracieux vers sounddevice/pyttsx3 si SDK non disponible
 
-⚠️ **Module IO SDK:** Disponible mais pas encore intégré :
+⚠️ **Module IO SDK:** Disponible mais pas encore intégré (prévu après réception robot) :
 - `robot.io.get_camera_stream()` - Stream vidéo temps réel
 - `robot.io.get_audio_stream()` - Stream audio temps réel
 
@@ -579,8 +602,11 @@ Ces différences **n'affectent pas** la conformité avec le SDK officiel.
 ### Installation
 
 ```bash
-# Installer le SDK officiel
-pip install reachy-mini
+# Installer le SDK officiel (PyPI)
+pip install -U reachy-mini
+
+# (Option simulation MuJoCo officielle)
+pip install -U "reachy-mini[mujoco]"
 
 # Installer BBIA-SIM (votre projet)
 pip install -e .
@@ -615,6 +641,34 @@ print(telemetry)
 
 # Déconnecter
 robot.disconnect()
+```
+
+### Lancer le daemon officiel Reachy Mini
+
+```bash
+# Démarrage standard (réel si robot connecté / LAN)
+reachy-mini-daemon
+
+# Mode simulation MuJoCo
+reachy-mini-daemon --sim
+
+# Scène minimale (table + objets)
+reachy-mini-daemon --sim --scene minimal
+```
+
+#### Note macOS (MuJoCo)
+
+Sur macOS, utiliser `mjpython` pour lancer la simulation MuJoCo :
+
+```bash
+mjpython -m reachy_mini.daemon.app.main --sim --scene minimal
+```
+
+### Vérifier l’API du daemon
+
+```bash
+curl http://localhost:8000/api/state/full
+# Docs: http://localhost:8000/docs
 ```
 
 ### Exécuter les Tests de Conformité

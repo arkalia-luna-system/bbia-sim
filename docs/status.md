@@ -32,6 +32,7 @@ pip install -e .
 | **Python** | 3.11+ | ✅ Requis |
 | **CI/CD** | `.github/workflows/ci.yml` | ✅ GitHub Actions |
 | **SDK Référence** | `pollen-robotics/reachy_mini` v1.0.0 | ✅ Branch develop |
+| **SDK local** | `reachy_mini==1.0.0rc5` (pré‑release) → recomm. `1.0.0` | 🔄 Mise à jour conseillée ([lien](https://github.com/pollen-robotics/reachy_mini)) |
 
 </div>
 

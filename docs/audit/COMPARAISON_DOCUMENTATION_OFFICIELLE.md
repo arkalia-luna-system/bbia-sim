@@ -4,6 +4,9 @@
 **Source:** Documentation officielle `pollen-robotics/reachy_mini`
 **Objectif:** Identifier ce qui existe dans BBIA vs ce qui est mentionné officiellement
 
+**Note version SDK locale** : `reachy_mini==1.0.0rc5` installée (pré‑release). Recommandé : `reachy_mini==1.0.0` (release) — voir releases GitHub
+([lien](https://github.com/pollen-robotics/reachy_mini)).
+
 ---
 
 ## ✅ CE QUI EXISTE DANS BBIA
