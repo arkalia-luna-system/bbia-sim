@@ -946,7 +946,7 @@ Une analyse exhaustive de TOUS les modules a été effectuée (voir `docs/ANALYS
 **Tests de Robustesse :**
 - ✅ 15 nouveaux tests experts (`test_expert_robustness_conformity.py`)
 - ✅ Détection perte précision, fuites mémoire, thread-safety, etc.
-- ✅ **46 tests de conformité complets** (Oct 2025v. 2025v. 2025) vérifiant :
+- ✅ **46 tests de conformité complets** (Oct / Nov. 2025) vérifiant :
   - Daemon command (`reachy-mini-daemon`)
   - Endpoints API REST officiels (`/`, `/docs`, `/api/state/full`)
   - Modules Media détaillés (`robot.media.camera`, `.microphone`, `.speaker`)

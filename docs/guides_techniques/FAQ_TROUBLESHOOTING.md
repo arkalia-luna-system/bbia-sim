@@ -245,7 +245,7 @@ ROBOT_TIMEOUT = 5.0  # Secondes
 
 ### Authentification WebSocket
 
-**Nouvelle fonctionnalité** (Décembre 2025) : Auth WebSocket via query params
+**Nouvelle fonctionnalité** (Oct / Nov. 2025) : Auth WebSocket via query params
 
 **En production** :
 ```python
@@ -266,7 +266,7 @@ BBIA_API_TOKEN=your-secret-token
 
 ### Buffer Circulaire Camera Frames
 
-**Nouvelle fonctionnalité** (Décembre 2025) : Buffer circulaire pour éviter perte de frames
+**Nouvelle fonctionnalité** (Oct / Nov. 2025) : Buffer circulaire pour éviter perte de frames
 
 **Problème résolu** : "Circular buffer overrun" dans SDK officiel
 
@@ -285,7 +285,7 @@ latest_frame = vision.get_latest_frame()  # Récupère frame la plus récente
 
 ### Endpoint Discover Datasets
 
-**Nouvelle fonctionnalité** (Décembre 2025) : Découverte des datasets Hugging Face Hub
+**Nouvelle fonctionnalité** (Oct / Nov. 2025) : Découverte des datasets Hugging Face Hub
 
 **Utilisation** :
 ```bash
@@ -296,7 +296,7 @@ curl http://localhost:8000/api/move/recorded-move-datasets/discover
 
 ### Métriques Performance et Health Checks
 
-**Nouveaux endpoints** (Décembre 2025) :
+**Nouveaux endpoints** (Oct / Nov. 2025) :
 
 #### Health Checks
 

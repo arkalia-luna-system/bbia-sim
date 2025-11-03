@@ -1,6 +1,6 @@
 # 🎯 Décision Finale - Améliorations Possibles (Sans Régression)
 
-**Date** : Décembre 2025  
+**Date** : Oct / Nov. 2025  
 **Objectif** : Identifier ce qui manque vraiment et peut être ajouté "en mieux" sans régression ni perte dans BBIA
 
 ---
@@ -81,14 +81,14 @@
 - **Ligne** : ~192-217
 - **Fonction** : `discover_recorded_move_datasets()`
 - **Retourne** : Liste hardcodée de datasets connus (extensible avec HF Hub API si besoin)
-- **Tests** : ✅ **CRÉÉS** (Décembre 2025)
+- **Tests** : ✅ **CRÉÉS** (Oct / Nov. 2025)
   - `tests/test_api_move_conformity.py`: 3 tests complets
     - Test endpoint retourne liste de datasets
     - Test format datasets (org/repo-name)
     - Test datasets attendus présents
     - Test comportement sans token
 
-**Statut** : ✅ **TERMINÉ** (Décembre 2025) - Code + Tests ✅
+**Statut** : ✅ **TERMINÉ** (Oct / Nov. 2025) - Code + Tests ✅
 
 ---
 
@@ -113,7 +113,7 @@
   - Fallback vers datasets hardcodés dans HTML si échec
   - Initialisation automatique des moves pour le premier dataset
 
-**Statut** : ✅ **TERMINÉ** (Décembre 2025) - Code JavaScript implémenté ✅
+**Statut** : ✅ **TERMINÉ** (Oct / Nov. 2025) - Code JavaScript implémenté ✅
 
 **Valeur ajoutée** : ✅ **AMÉLIORÉE** - Dashboard affiche automatiquement tous les nouveaux datasets découverts via HF Hub
 
@@ -142,7 +142,7 @@
   - Monitoring overruns avec compteur
   - Warning log tous les 100 overruns
   - Méthode `get_latest_frame()` pour accès frame récente
-- **Tests** : ✅ **CRÉÉS** (Décembre 2025)
+- **Tests** : ✅ **CRÉÉS** (Oct / Nov. 2025)
   - `tests/test_bbia_vision_extended.py`: 6 tests complets
     - Test initialisation buffer
     - Test taille configurable
@@ -151,7 +151,7 @@
     - Test détection overruns
     - Test stats incluent infos buffer
 
-**Statut** : ✅ **TERMINÉ** (Décembre 2025) - Code + Tests ✅
+**Statut** : ✅ **TERMINÉ** (Oct / Nov. 2025) - Code + Tests ✅
 
 **Valeur ajoutée** : ✅ Moyenne - Évite perte de frames si pas consommées assez vite, conforme Issue #16 SDK officiel
 
@@ -212,9 +212,9 @@
 
 **Ce qui pourrait être ajouté (optionnel)** :
 
-1. ✅ ~~Endpoint discovery datasets~~ - **TERMINÉ** (Décembre 2025)
-2. ✅ ~~Dashboard datasets dynamiques~~ - **TERMINÉ** (Décembre 2025)
-3. ✅ ~~Buffer circulaire caméra frames~~ - **TERMINÉ** (Décembre 2025)
+1. ✅ ~~Endpoint discovery datasets~~ - **TERMINÉ** (Oct / Nov. 2025)
+2. ✅ ~~Dashboard datasets dynamiques~~ - **TERMINÉ** (Oct / Nov. 2025)
+3. ✅ ~~Buffer circulaire caméra frames~~ - **TERMINÉ** (Oct / Nov. 2025)
 
 **Ce qui ne doit PAS être ajouté** :
 
@@ -224,9 +224,9 @@
 
 ### 🎉 **CONCLUSION**
 
-**BBIA-SIM est prêt pour le robot réel en décembre 2025. Il n'y a rien d'essentiel qui manque.**
+**BBIA-SIM est prêt pour le robot réel en Oct / Nov. 2025. Il n'y a rien d'essentiel qui manque.**
 
-**Améliorations optionnelles** : ✅ **TOUTES IMPLÉMENTÉES** (Décembre 2025)
+**Améliorations optionnelles** : ✅ **TOUTES IMPLÉMENTÉES** (Oct / Nov. 2025)
 - ✅ Endpoint discovery datasets (`/api/move/recorded-move-datasets/discover`)
 - ✅ Buffer circulaire caméra frames (Issue #16 SDK officiel)
 
@@ -234,6 +234,6 @@
 
 ---
 
-**Document généré le** : Décembre 2025  
+**Document généré le** : Oct / Nov. 2025  
 **Version BBIA** : 1.3.2  
 **Statut** : ✅ **PROJET COMPLET ET PRÊT**

@@ -1,6 +1,6 @@
 # 📋 Analyse Issues Reachy Officiel vs BBIA-SIM
 
-**Date:** Décembre 2025  
+**Date:** Oct / Nov. 2025  
 **Objectif:** Identifier les fonctionnalités déjà implémentées dans BBIA-SIM et celles qui pourraient être contribuées au projet officiel.
 
 ---

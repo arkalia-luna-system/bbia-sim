@@ -1,6 +1,6 @@
-# ✨ Améliorations Visuelles Documentation MD - Décembre 2025
+# ✨ Améliorations Visuelles Documentation MD - Oct / Nov. 2025
 
-**Date** : Décembre 2025  
+**Date** : Oct / Nov. 2025  
 **Objectif** : Améliorer la cohérence et la lisibilité visuelle de tous les fichiers Markdown
 
 ---
@@ -11,11 +11,11 @@
 
 **Problème identifié** :
 - 56 fichiers contenaient des dates mal formatées
-- `Oct / Oct / Nov. 20255` → Dates dupliquées et année incorrecte
+- `Oct / Nov. 2025` → Dates dupliquées et année incorrecte
 - `2025252525252525` → Année répétée
 
 **Corrections appliquées** :
-- ✅ `Oct / Oct / Nov. 20255` → `Oct / Nov. 2025`
+- ✅ `Oct / Nov. 2025` → `Oct / Nov. 2025`
 - ✅ `2025252525252525` → `2025`
 - ✅ Tous les fichiers actifs corrigés (hors archives)
 

@@ -5,7 +5,7 @@
 **🎯 Vue d'ensemble complète de l'avancement du projet**  
 *Ce qui est fait • Ce qui reste à faire • Priorités*
 
-**Dernière mise à jour** : Décembre 2025 (corrections tests e2e)
+**Dernière mise à jour** : Oct / Nov. 2025 (corrections tests e2e)
 
 </div>
 
@@ -202,7 +202,7 @@ pie title État Coverage Tests
 2. ✅ ~~Améliorer coverage `vision_yolo.py`~~ - **TERMINÉ** (**99.45%** coverage ✅, objectif 50%+ largement dépassé, **42 tests**)
 3. ✅ ~~Améliorer coverage `daemon/bridge.py`~~ - **TERMINÉ** (**54.86%** coverage ✅, objectif 30%+ dépassé, **34 tests**)
 4. ✅ ~~Compléter 2 TODOs dans `bbia_tools.py`~~ - **TERMINÉ** (lignes 378-389 et 469-493)
-5. ✅ ~~Corriger tests e2e qui échouaient~~ - **TERMINÉ** (Décembre 2025)
+5. ✅ ~~Corriger tests e2e qui échouaient~~ - **TERMINÉ** (Oct / Nov. 2025)
    - ✅ `test_bbia_full_interaction` - Corrigé (patch reconnaitre_parole avant import)
    - ✅ `test_bbia_listens_and_responds` - Corrigé (patch reconnaitre_parole avant import)
    - ✅ `test_bbia_wakes_up_emotion_movement` - Corrigé (utilisation 'name' au lieu de 'emotion')

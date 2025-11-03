@@ -83,7 +83,7 @@ pie title Coverage Tests Modules Critiques
 
 **Plan d'action** :
 1. ✅ ~~Créer `tests/test_dashboard_advanced.py`~~ - **TERMINÉ** (**47 tests**, **1156 lignes**, **76.71%** coverage ✅)
-2. ✅ ~~Corriger imports dans tests~~ - **TERMINÉ** (Décembre 2025) - Solution : Imports au niveau fichier + `--cov=bbia_sim.module`
+2. ✅ ~~Corriger imports dans tests~~ - **TERMINÉ** (Oct / Nov. 2025) - Solution : Imports au niveau fichier + `--cov=bbia_sim.module`
 3. ✅ ~~Étendre `tests/test_vision_yolo_comprehensive.py`~~ - **TERMINÉ** (**99.45%** coverage ✅, **42 tests**, objectif 50%+ largement dépassé)
 4. ✅ ~~Étendre tests `voice_whisper.py`~~ - **TERMINÉ** (**92.52%** coverage ✅, **66 tests**, objectif 50%+ largement dépassé)
 5. ✅ ~~Corriger imports dans `tests/test_daemon_bridge.py`~~ - **TERMINÉ** (**55.41%** coverage ✅, **34 tests**, objectif 30%+ dépassé)
@@ -202,8 +202,8 @@ graph LR
 
 | Fichier | TODO | Priorité | Statut |
 |---------|------|----------|--------|
-| `src/bbia_sim/daemon/app/main.py` | Ligne 241: Auth WebSocket | ✅ | ✅ **TERMINÉ** (Décembre 2025) - Auth WebSocket via query params |
-| `src/bbia_sim/robot_api.py` | Ligne 283: Migration imports | ✅ | ✅ **TERMINÉ** (Décembre 2025) - Migration complétée |
+| `src/bbia_sim/daemon/app/main.py` | Ligne 241: Auth WebSocket | ✅ | ✅ **TERMINÉ** (Oct / Nov. 2025) - Auth WebSocket via query params |
+| `src/bbia_sim/robot_api.py` | Ligne 283: Migration imports | ✅ | ✅ **TERMINÉ** (Oct / Nov. 2025) - Migration complétée |
 
 **Estimation** : ✅ **TERMINÉ**
 

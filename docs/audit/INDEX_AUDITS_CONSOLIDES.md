@@ -15,7 +15,7 @@
    - **Utiliser ce fichier comme référence principale**
 
 2. **`ETAT_ACTUEL_TACHES_DEC2025.md`** ⭐ **RECOMMANDÉ**
-   - État actuel des tâches (Décembre 2025)
+   - État actuel des tâches (Oct / Nov. 2025)
    - Liste complète de ce qui est fait vs à faire
    - Mise à jour récente
 
@@ -46,7 +46,7 @@ Les fichiers suivants sont archivés dans `docs/archives/audits_termines/` pour 
 - ✅ `VERIFICATION_DOC_COMPLETE_NOV2025.md` - Vérification doc complète (archivé)
 - ✅ `BILAN_TACHES_RESTANTES.md` - Bilan tâches restantes (archivé)
 
-**Date archivage** : Décembre 2025
+**Date archivage** : Oct / Nov. 2025
 
 ### Audits Redondants/Obsoletes (Archivés)
 

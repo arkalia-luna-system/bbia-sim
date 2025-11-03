@@ -1,11 +1,11 @@
-# 🔴 CE QUI RESTE VRAIMENT À FAIRE - Décembre 2025
+# 🔴 CE QUI RESTE VRAIMENT À FAIRE - Oct / Nov. 2025
 
-**Date** : Décembre 2025  
+**Date** : Oct / Nov. 2025  
 **Problème critique détecté** : Les tests existent mais ne couvrent pas les modules car ils ne sont pas importés
 
 ---
 
-## ✅ PROBLÈME RÉSOLU - Décembre 2025
+## ✅ PROBLÈME RÉSOLU - Oct / Nov. 2025
 
 **Problème initial** : Coverage montrait `Module never imported` pour tous les modules critiques
 
@@ -96,7 +96,7 @@
 ### 6. TODOs Robot Réel
 - Implémenter connexion robot réel
 - **Estimation** : 3-4h
-- **Statut** : ⏳ En attente réception robot (décembre 2025)
+- **Statut** : ⏳ En attente réception robot (Oct / Nov. 2025)
 
 ---
 
@@ -135,9 +135,9 @@
 
 ## ✅ CE QUI EST DÉJÀ TERMINÉ
 
-- ✅ Buffer circulaire camera frames ✅ (Décembre 2025)
-- ✅ Endpoint discover datasets ✅ (Décembre 2025)
-- ✅ Tests pour nouvelles fonctionnalités ✅ (Décembre 2025)
+- ✅ Buffer circulaire camera frames ✅ (Oct / Nov. 2025)
+- ✅ Endpoint discover datasets ✅ (Oct / Nov. 2025)
+- ✅ Tests pour nouvelles fonctionnalités ✅ (Oct / Nov. 2025)
 - ✅ TODOs ecosystem.py 100% terminés
 - ✅ Optimisations performance
 - ✅ TODOs bbia_tools.py terminés
@@ -149,7 +149,7 @@
 
 **Statut global** : ✅ **99% COMPLET** - Projet prêt pour robot réel
 
-**Coverage réel vérifié (Décembre 2025)** :
+**Coverage réel vérifié (Oct / Nov. 2025)** :
 - ✅ `vision_yolo.py` : **99.45%** ✅ (objectif 50%+ largement dépassé)
 - ✅ `voice_whisper.py` : **92.52%** ✅ (objectif 50%+ largement dépassé)
 - ✅ `dashboard_advanced.py` : **76.71%** ✅ (objectif 50%+ dépassé)
@@ -157,13 +157,13 @@
 
 **Tâches restantes** :
 - ✅ **Terminé** : 2 TODOs dans le code (non bloquants)
-  - ✅ Auth WebSocket dans `daemon/app/main.py` **TERMINÉ** (Décembre 2025)
-  - ✅ Migration imports dans `robot_api.py` **TERMINÉ** (Décembre 2025)
+  - ✅ Auth WebSocket dans `daemon/app/main.py` **TERMINÉ** (Oct / Nov. 2025)
+  - ✅ Migration imports dans `robot_api.py` **TERMINÉ** (Oct / Nov. 2025)
 
-**Le projet est prêt pour le robot réel en décembre 2025** ✅
+**Le projet est prêt pour le robot réel en Oct / Nov. 2025** ✅
 
 ---
 
-**Dernière mise à jour** : Décembre 2025  
+**Dernière mise à jour** : Oct / Nov. 2025  
 **Coverage vérifié** : Tous les modules critiques ont un coverage excellent (>75%)
 

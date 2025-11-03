@@ -1,6 +1,6 @@
-# ✅ TÂCHES RÉALISABLES SANS ROBOT - Décembre 2025
+# ✅ TÂCHES RÉALISABLES SANS ROBOT - Oct / Nov. 2025
 
-**Date** : Décembre 2025  
+**Date** : Oct / Nov. 2025  
 **Statut** : Toutes ces tâches peuvent être faites maintenant, sans attendre le robot réel
 
 ---
@@ -15,7 +15,7 @@
 
 ## 🔴 PRIORITÉ MOYENNE - Améliorations Code
 
-### 1. ✅ Migration Imports RobotFactory (TERMINÉ - Décembre 2025)
+### 1. ✅ Migration Imports RobotFactory (TERMINÉ - Oct / Nov. 2025)
 
 **Fichier** : `src/bbia_sim/robot_api.py`
 
@@ -24,7 +24,7 @@
 - Warning de dépréciation ajouté pour compatibilité ascendante
 - Tests passent
 
-### 2. ✅ Métriques Performance (TERMINÉ - Décembre 2025)
+### 2. ✅ Métriques Performance (TERMINÉ - Oct / Nov. 2025)
 
 **Fichiers** : `src/bbia_sim/daemon/app/routers/metrics.py`
 
@@ -36,7 +36,7 @@
 - Support psutil et prometheus_client optionnels
 - Tests créés : `tests/test_metrics.py` (4 tests passent)
 
-### 3. ✅ Script Diagnostic (TERMINÉ - Décembre 2025)
+### 3. ✅ Script Diagnostic (TERMINÉ - Oct / Nov. 2025)
 
 **Fichier** : `src/bbia_sim/__main__.py`
 
@@ -529,5 +529,5 @@ cyclonedx-py -o sbom.json
 
 ---
 
-**Dernière mise à jour** : Décembre 2025
+**Dernière mise à jour** : Oct / Nov. 2025
 

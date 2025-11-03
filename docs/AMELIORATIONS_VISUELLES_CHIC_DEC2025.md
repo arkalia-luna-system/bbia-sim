@@ -1,6 +1,6 @@
-# ✨ Améliorations Visuelles "Chic" - Décembre 2025
+# ✨ Améliorations Visuelles "Chic" - Oct / Nov. 2025
 
-**Date** : Décembre 2025  
+**Date** : Oct / Nov. 2025  
 **Objectif** : Donner du "chic" et de l'élégance à la documentation BBIA-SIM
 
 ---

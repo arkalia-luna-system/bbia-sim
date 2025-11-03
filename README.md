@@ -44,7 +44,7 @@ BBIA-SIM est un moteur cognitif Python avec **12 émotions robotiques** pour Rea
 
 Version 1.3.2 – Alignement complet branches, tests élargis (perf/watchdog), doc enrichie, release stable.
 
-Ce projet fournit une simulation fidèle du robot Reachy Mini dans MuJoCo, avec une intégration des modules BBIA (Bio-Inspired Artificial Intelligence) et une conformité validée avec le SDK officiel de Pollen Robotics (Oct / No2025025025025025).
+Ce projet fournit une simulation fidèle du robot Reachy Mini dans MuJoCo, avec une intégration des modules BBIA (Bio-Inspired Artificial Intelligence) et une conformité validée avec le SDK officiel de Pollen Robotics (Oct / Nov. 2025).
 
 ## 🚀 Quick Start
 
@@ -417,11 +417,11 @@ python scripts/replay_viewer.py artifacts/my_animation.jsonl --speed 1.5
 
 ### 📹 Vidéos de Démonstration
 
-**Nouvelles vidéos disponibles** (Oct / No2025025025025025) : 3 captures vidéo de la simulation MuJoCo
+**Nouvelles vidéos disponibles** (Oct / Nov. 2025) : 3 captures vidéo de la simulation MuJoCo
 
-- `assets/videos/Enregistrement de l'écran Oct / No2025025025025025 à 17.00.52.mov` (2.7 MB)
-- `assets/videos/Enregistrement de l'écran Oct / No2025025025025025 à 17.01.27.mov` (3.4 MB)
-- `assets/videos/Enregistrement de l'écran Oct / No2025025025025025 à 17.01.56.mov` (3.1 MB)
+- `assets/videos/Enregistrement de l'écran Oct / Nov. 2025 à 17.00.52.mov` (2.7 MB)
+- `assets/videos/Enregistrement de l'écran Oct / Nov. 2025 à 17.01.27.mov` (3.4 MB)
+- `assets/videos/Enregistrement de l'écran Oct / Nov. 2025 à 17.01.56.mov` (3.1 MB)
 
 **Source** : Toutes ces vidéos ont été enregistrées depuis `examples/demo_mujoco_continue.py` qui montre le robot en mouvement continu (tête + corps).
 
@@ -796,4 +796,4 @@ Voir [`PROJECTS.md`](PROJECTS.md) pour la liste complète de mes projets (10+ pr
 
 ---
 
-*Dernière mise à jour : Oct / No2025025025025025*
+*Dernière mise à jour : Oct / Nov. 2025*

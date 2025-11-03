@@ -1,6 +1,6 @@
 # 📊 Guide Dashboard Advanced - BBIA-SIM
 
-**Date** : Décembre 2025  
+**Date** : Oct / Nov. 2025  
 **Version** : 1.0  
 **Compatibilité Python** : 3.11+
 
@@ -277,6 +277,6 @@ python -m bbia_sim.dashboard_advanced
 **BBIA-SIM** - Dashboard Advanced 📊✨
 
 **Version** : 1.0  
-**Date** : Décembre 2025  
+**Date** : Oct / Nov. 2025  
 **Coverage** : **76.71%** ✅ (47 tests)
 
