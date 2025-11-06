@@ -185,11 +185,14 @@ graph TB
     
     subgraph "Modules BBIA Cognitive"
         EMOTIONS[bbia_emotions.py<br/>12 émotions robotiques]
-        VISION[bbia_vision.py<br/>YOLOv8n + MediaPipe + SmolVLM2]
+        VISION[bbia_vision.py<br/>YOLOv8n + MediaPipe]
         AUDIO[bbia_audio.py<br/>Enregistrement/Audio]
         VOICE[bbia_voice.py<br/>Whisper STT + pyttsx3 TTS]
         BEHAVIOR[bbia_behavior.py<br/>Comportements intelligents]
+        ADAPTIVE[bbia_adaptive_behavior.py<br/>Comportements adaptatifs]
+        EMOTION_REC[bbia_emotion_recognition.py<br/>Reconnaissance émotions]
         HF[bbia_huggingface.py<br/>LLM + NLP + Tools]
+        TOOLS[bbia_tools.py<br/>Outils LLM robot]
         MEMORY[bbia_memory.py<br/>Mémoire contextuelle]
     end
     
@@ -217,7 +220,11 @@ graph TB
     AUDIO --> ROBOTAPI
     VOICE --> ROBOTAPI
     BEHAVIOR --> HF
+    BEHAVIOR --> ADAPTIVE
     BEHAVIOR --> MEMORY
+    BEHAVIOR --> EMOTION_REC
+    HF --> TOOLS
+    TOOLS --> ROBOTAPI
     HF --> ROBOTAPI
     
     ROBOTAPI --> FACTORY
@@ -278,7 +285,7 @@ sequenceDiagram
 
 > Suivi global (État par axe)
 >
-> Consultez `docs/status.md` (section "État par axe") pour l’état actuel et les axes d’amélioration vérifiés: Observabilité, Performance, Sécurité, CI/CD, Packaging, API/SDK, Robot, Dashboard/UX, Vision/Audio/IA, Docs, Qualité, Communauté.
+> Consultez `docs/reference/project-status.md` (section "État par axe") pour l'état actuel et les axes d'amélioration vérifiés: Observabilité, Performance, Sécurité, CI/CD, Packaging, API/SDK, Robot, Dashboard/UX, Vision/Audio/IA, Docs, Qualité, Communauté.
 
 ## 🚀 Démarrage Rapide
 
@@ -447,8 +454,8 @@ La documentation HTML offre :
 **Guides principaux :**
 - **[Guide Débutant](docs/guides/GUIDE_DEBUTANT.md)** : Guide pour débuter
 - **[Guide Avancé](docs/guides/GUIDE_AVANCE.md)** : Guide avancé
-- **[Vertical Slices](docs/audit/VERTICAL_SLICES_ACCOMPLIS.md)** : Documentation des vertical slices
- - **[Index thématique (par profils)](docs/references/INDEX_THEMATIQUE.md)**
+- **[Vertical Slices](docs/quality/audits/VERTICAL_SLICES_ACCOMPLIS.md)** : Documentation des vertical slices
+ - **[Index thématique (par profils)](docs/INDEX_FINAL.md)**
  - **[FAQ Troubleshooting](docs/guides_techniques/FAQ_TROUBLESHOOTING.md)**
  - **[Observabilité (logs/metrics/santé)](docs/observabilite/OBSERVABILITE.md)**
  - **[Pipeline CI/CD](docs/ci/PIPELINE_CI.md)**
