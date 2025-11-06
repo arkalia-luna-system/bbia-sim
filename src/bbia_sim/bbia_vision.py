@@ -930,13 +930,18 @@ class BBIAVision:
                                             enforce_detection=False,
                                         )
                                     )
-                                    if person_result:
-                                        recognized_name = person_result["name"]
-                                    logger.debug(
-                                        "👤 Personne reconnue: %s (conf: %.2f)",
-                                        recognized_name,
-                                        person_result["confidence"],
-                                    )
+                                    if person_result is not None:
+                                        recognized_name = str(
+                                            person_result.get("name", recognized_name)
+                                        )
+                                        confidence_value = float(
+                                            person_result.get("confidence", 0.0)
+                                        )
+                                        logger.debug(
+                                            "👤 Personne reconnue: %s (conf: %.2f)",
+                                            recognized_name,
+                                            confidence_value,
+                                        )
 
                                     # Détecter l'émotion
                                     emotion_result = (

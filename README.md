@@ -24,7 +24,7 @@
 
 ## 📋 **EN 30 SECONDES**
 
-BBIA-SIM est un moteur cognitif Python avec **12 émotions robotiques** pour Reachy Mini.
+BBIA-SIM est un moteur cognitif Python avec **12 émotions robotiques** (6 émotions SDK officiel + 6 émotions étendues) pour Reachy Mini.
 
 ![BBIA-SIM Reachy Mini Robot](./assets/images/robot_animation.gif)
 
@@ -33,7 +33,7 @@ BBIA-SIM est un moteur cognitif Python avec **12 émotions robotiques** pour Rea
 • ✅ **Conforme au SDK officiel Pollen Robotics** (100% validé)
 • 🔄 **Backend unifié** : même code en simulation et sur robot réel
 • 🧪 **1200+ tests automatisés** (unitaires, intégration, E2E)
-• 📚 **280+ fichiers documentation** Markdown (guides, API, architecture)
+• 📚 **150+ fichiers documentation** Markdown (guides, API, architecture)
 • ⚡ **Optimisations performance** : caches globaux (modèles IA réutilisés)
 • 🔒 **CI/CD professionnel** : Black, Ruff, MyPy, Bandit, pip-audit
 • 🌟 **Open-source** (MIT)
@@ -163,7 +163,7 @@ python -m bbia_sim --doctor
 
 BBIA-SIM v1.3.2 simule le robot Reachy Mini avec un haut niveau de fidélité :
 
-- 12 émotions robotiques contrôlant les articulations
+- 12 émotions robotiques BBIA (6 émotions SDK officiel + 6 émotions étendues)
 - Conformité au SDK officiel Pollen Robotics
 - Backend unifié : même code pour simulation et robot réel
 - IA optionnelle : Hugging Face, reconnaissance d’émotions, comportements
@@ -758,7 +758,7 @@ pytest -q --disable-warnings \
 - ✅ **Conformité SDK officiel** : 100% validée (18/18 tests)
 - ✅ **Coverage global** : **68.86%** (excellent)
 - ✅ **Coverage modules core** : ~50% (mesure pertinente)
-- ✅ **Tests totaux** : **1245 tests collectés** (pytest --collect-only)
+- ✅ **Tests totaux** : **1334 tests collectés** (pytest --collect-only)
 - ✅ **Qualité code** : Black, Ruff, MyPy, Bandit ✅
 - ✅ **Tests** : Suite complète + SDK officiel
 
