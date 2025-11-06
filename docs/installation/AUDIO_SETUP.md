@@ -1,5 +1,7 @@
 # 🎵 Installation Audio pour BBIA-SIM
 
+**Date** : Oct / Nov. 2025
+
 ## 🏗️ Architecture Audio BBIA
 
 ```mermaid

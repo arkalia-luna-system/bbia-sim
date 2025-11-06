@@ -1,5 +1,7 @@
 # 🎮 Simulation MuJoCo - Guide d'utilisation
 
+**Date** : Oct / Nov. 2025
+
 > Compatibilité Python et CI
 >
 > - Python requis: 3.11+

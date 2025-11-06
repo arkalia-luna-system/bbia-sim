@@ -8,8 +8,7 @@
 
 ### Je suis nouveau sur le projet
 1. **[Guide Débutant](../guides/GUIDE_DEBUTANT.md)** — Installation et premiers pas (5 min)
-2. **[Installation Audio](../installation/AUDIO_SETUP.md)** — Configuration audio
-3. **[Guide Reachy Mini](../guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md)** — Utiliser le robot
+2. **[Guide Reachy Mini](../guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md)** — Utiliser le robot
 
 ### Je veux développer
 1. **[Guide Avancé](../guides/GUIDE_AVANCE.md)** — Fonctionnalités avancées
@@ -19,9 +18,7 @@
 
 ### Je veux utiliser le robot
 1. **[Guide Reachy Mini](../guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md)** — Guide complet
-2. **[Mouvements Reachy Mini](../hardware/MOUVEMENTS_REACHY_MINI.md)** — Contrôle des mouvements
-3. **[Sécurité Robot](../hardware/SECURITE_ROBOT.md)** — DO/DON'T
-4. **[Simulation MuJoCo](../simulations/MUJOCO_SIMULATION_GUIDE.md)** — Simulation 3D
+2. **[Sécurité Robot](../hardware/SECURITE_ROBOT.md)** — DO/DON'T
 
 ### Je veux tester / QA
 1. **[Guide de Test](../development/testing.md)** — Guide complet

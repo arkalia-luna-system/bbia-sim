@@ -1,5 +1,7 @@
 # 🎮 Guide Unity + BBIA - Reachy Mini Wireless
 
+**Date** : Oct / Nov. 2025
+
 ## Configuration vérifiée
 
 Votre environnement Unity est maintenant correctement configuré :

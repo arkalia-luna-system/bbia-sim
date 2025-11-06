@@ -1,5 +1,7 @@
 # Guide avancé - BBIA-SIM
 
+**Date** : Oct / Nov. 2025
+
 > Liens utiles: `docs/reference/INDEX_THEMATIQUE.md` · `docs/reference/project-status.md`
 
 > Compatibilité Python et CI

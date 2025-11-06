@@ -1,9 +1,10 @@
 # Index thématique (par profils)
 
 ## Débutant
-- Démarrage rapide: `README.md` (Quick Start)
-- Guide Débutant: `docs/guides/GUIDE_DEBUTANT.md`
-- Simulation 3D: `docs/simulations/MUJOCO_SIMULATION_GUIDE.md`
+- **Point d'entrée** : `docs/README.md` — Navigation rapide avec lien vers Guide Débutant
+- **Guide Débutant** : `docs/guides/GUIDE_DEBUTANT.md` — Installation et premiers pas (5 min)
+- **Navigation** : `docs/getting-started/NAVIGATION.md` — Guide simple pour trouver ce dont vous avez besoin
+- **Simulation 3D** : `docs/simulations/MUJOCO_SIMULATION_GUIDE.md`
 
 ## Développeur robot (Sim/Physique)
 - Migration Sim → Robot: `docs/development/migration.md`
@@ -13,7 +14,7 @@
 ## Observabilité / Performance
 - État par axe (référence): `docs/reference/project-status.md`
 - Observabilité (logs JSON, /metrics, liveness/readiness): `docs/observabilite/OBSERVABILITE.md`
-- Performance (analyses, optimisations): `docs/quality/performance/ANALYSE_PERFORMANCE_PROBLEMES_2025.md`, `docs/quality/performance/OPTIMISATIONS_EXPERT_REACHY_MINI.md`
+- Performance (analyses, optimisations): `docs/quality/performance/ANALYSE_PERFORMANCE_PROBLEMES_2025.md`, `docs/quality/performance/OPTIMISATIONS_EXPERT_REACHY_MINI.md`, `docs/quality/performance/RESUME_PERFORMANCE_CORRECTIONS_2025.md`
 
 ## API / SDK / Front
 - Contrats REST/WS (pagination/filtre, WS versionné): `docs/development/api/CONTRATS_REST_WS.md`
