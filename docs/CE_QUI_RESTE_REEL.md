@@ -1,6 +1,5 @@
 # ✅ CE QUI RESTE VRAIMENT - Vérification Réelle Code
 
-**Date** : Décembre 2025  
 **Méthode** : Vérification directe dans le code source (pas juste les MD)
 
 ---
@@ -66,18 +65,66 @@ def test_watchdog_timeout_robot_disconnected(self):
 
 ## 📊 COVERAGE RÉEL VÉRIFIÉ
 
-### Tests Complets Lancés
+### Coverage Global (Janvier 2025)
 
-**Coverage modules critiques** :
-- ✅ `vision_yolo.py` : **99.45%** ✅ (182 lignes, 1 manquante)
-- ✅ `voice_whisper.py` : **92.52%** ✅ (361 lignes, 27 manquantes)
-- ✅ `dashboard_advanced.py` : **82.26%** ✅ (327 lignes, 58 manquantes)
-- ✅ `daemon/bridge.py` : **54.86%** ✅ (objectif 30%+ dépassé)
+**Coverage total** : **64.98%** ✅
 
 **Tests** :
-- ✅ 1330+ tests collectés (1386 total, 56 deselected)
-- ✅ Tous les tests passent
-- ✅ Imports corrigés pour coverage optimal
+- ✅ **1299 tests passent** (34 skipped, 1 failed)
+- ✅ **9699 lignes** de code total
+- ✅ **3397 lignes** non couvertes
+
+### Modules Critiques (Coverage Excellent)
+
+- ✅ `vision_yolo.py` : **99.45%** ✅ (182 lignes, 1 manquante)
+- ✅ `voice_whisper.py` : **95.84%** ✅ (361 lignes, 15 manquantes)
+- ✅ `dashboard_advanced.py` : **85.02%** ✅ (327 lignes, 49 manquantes)
+- ✅ `bbia_voice.py` : **83.92%** ✅ (255 lignes, 41 manquantes)
+- ✅ `daemon/simulation_service.py` : **90.91%** ✅
+
+### Modules < 70% (24 modules identifiés)
+
+**Priorité Haute** (Coverage très faible < 30%) :
+- ❌ `daemon/app/__main__.py` : **0.0%** (8 lignes)
+- ❌ `daemon/app/routers/sanity.py` : **0.0%** (37 lignes)
+- ❌ `model_optimizer.py` : **0.0%** (23 lignes)
+- ❌ `__main__.py` : **19.0%** (158 lignes, 128 manquantes)
+- ❌ `bbia_awake.py` : **20.0%** (15 lignes, 12 manquantes)
+- ❌ `bbia_integration.py` : **20.1%** (249 lignes, 199 manquantes)
+- ❌ `face_recognition.py` : **20.1%** (139 lignes, 111 manquantes)
+- ❌ `backends/reachy_backend.py` : **30.8%** (195 lignes, 135 manquantes)
+- ❌ `dashboard.py` : **32.2%** (146 lignes, 99 manquantes)
+
+**Priorité Moyenne** (Coverage 30-50%) :
+- ⚠️ `bbia_emotion_recognition.py` : **40.1%** (227 lignes, 136 manquantes)
+- ⚠️ `bbia_voice_advanced.py` : **42.5%** (174 lignes, 100 manquantes)
+- ⚠️ `daemon/app/routers/daemon.py` : **43.4%** (83 lignes, 47 manquantes)
+- ⚠️ `backends/mujoco_backend.py` : **45.3%** (192 lignes, 105 manquantes)
+
+**Priorité Basse** (Coverage 50-70%) :
+- 🟡 `bbia_adaptive_behavior.py` : **51.2%** (260 lignes, 127 manquantes)
+- 🟡 `backends/reachy_mini_backend.py` : **53.7%** (715 lignes, 331 manquantes)
+- 🟡 `daemon/app/backend_adapter.py` : **54.2%** (277 lignes, 127 manquantes)
+- 🟡 `bbia_huggingface.py` : **54.2%** (856 lignes, 392 manquantes)
+- 🟡 `daemon/app/routers/state.py` : **56.1%** (237 lignes, 104 manquantes)
+- 🟡 `robot_api.py` : **61.1%** (108 lignes, 42 manquantes)
+- 🟡 `backends/simulation_shims.py` : **62.5%** (56 lignes, 21 manquantes)
+- 🟡 `bbia_behavior.py` : **64.3%** (518 lignes)
+- 🟡 `bbia_vision.py` : **64.4%** (506 lignes, 180 manquantes)
+- 🟡 `daemon/bridge.py` : **64.9%** (388 lignes, 136 manquantes)
+- 🟡 `daemon/app/routers/move.py` : **68.6%** (159 lignes, 50 manquantes)
+
+### Modules ≥ 70% (Excellents)
+
+- ✅ `daemon/app/routers/ecosystem.py` : **70.32%**
+- ✅ `daemon/app/routers/kinematics.py` : **72.22%**
+- ✅ `pose_detection.py` : **73.68%**
+- ✅ `bbia_tools.py` : **74.21%**
+- ✅ `daemon/app/routers/metrics.py` : **74.78%**
+- ✅ `daemon/app/main.py` : **76.92%**
+- ✅ `daemon/app/routers/motion.py` : **81.48%**
+- ✅ `daemon/app/routers/apps.py` : **82.22%**
+- ✅ `unity_reachy_controller.py` : **82.96%**
 
 ---
 
@@ -97,12 +144,11 @@ def test_watchdog_timeout_robot_disconnected(self):
 
 ---
 
-**Dernière mise à jour** : Décembre 2025  
 **Vérification** : Code source réel (pas juste MDs)
 
 ---
 
-## 🎯 MISE À JOUR - Janvier 2025
+## 🎯 MISE À JOUR
 
 ### Normalisation Code Récente
 
@@ -114,7 +160,7 @@ def test_watchdog_timeout_robot_disconnected(self):
 
 ### Qualité Code
 
-✅ **TERMINÉ** : Passage outils qualité (Janvier 2025)
+✅ **TERMINÉ** : Passage outils qualité
 - **Black** : 123 fichiers formatés
 - **Ruff** : Tous les checks passent
 - **MyPy** : 1 erreur corrigée (`bbia_audio.py` ligne 101)
@@ -137,5 +183,5 @@ def test_watchdog_timeout_robot_disconnected(self):
 
 ---
 
-**Dernière mise à jour** : Janvier 2025
+
 

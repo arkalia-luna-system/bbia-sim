@@ -1,6 +1,5 @@
 # 📋 Tâches Restantes - Documentation
 
-**Date** : Oct / Nov. 2025  
 **Statut** : ✅ **Réorganisation 95% terminée**
 
 ---
@@ -107,12 +106,11 @@
 
 ---
 
-**Date** : Oct / Nov. 2025  
 **Recommandation** : Les tâches restantes sont **optionnelles** et n'impactent pas l'utilisation de la documentation. La réorganisation est **fonctionnelle et professionnelle**.
 
 ---
 
-## 🎯 TÂCHES RESTANTES - Mise à Jour Janvier 2025
+## 🎯 TÂCHES RESTANTES - Mise à jour
 
 ### Issues GitHub à Gérer
 
@@ -174,9 +172,25 @@
    - Utiliser messages dans `docs/verification/MESSAGES_ISSUES_GITHUB.md`
 
 ### Priorité Moyenne
-2. **Vérifier coverage réel** :
-   - Lancer `pytest --cov` pour vérifier coverage actuel
-   - Identifier modules avec coverage < 70%
+2. **✅ Coverage réel vérifié** (Janvier 2025) :
+   - **Coverage total** : **64.98%** ✅
+   - **24 modules < 70%** identifiés
+   - **Priorité Haute** (9 modules < 30%) :
+     - `daemon/app/__main__.py` : 0.0%
+     - `daemon/app/routers/sanity.py` : 0.0%
+     - `model_optimizer.py` : 0.0%
+     - `__main__.py` : 19.0%
+     - `bbia_awake.py` : 20.0%
+     - `bbia_integration.py` : 20.1%
+     - `face_recognition.py` : 20.1%
+     - `backends/reachy_backend.py` : 30.8%
+     - `dashboard.py` : 32.2%
+   - **Priorité Moyenne** (4 modules 30-50%) :
+     - `bbia_emotion_recognition.py` : 40.1%
+     - `bbia_voice_advanced.py` : 42.5%
+     - `daemon/app/routers/daemon.py` : 43.4%
+     - `backends/mujoco_backend.py` : 45.3%
+   - **Priorité Basse** (11 modules 50-70%) : Voir détails dans `docs/CE_QUI_RESTE_REEL.md`
 
 ### Priorité Basse
 3. **TODO test optionnel** :
