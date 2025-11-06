@@ -356,10 +356,10 @@ Avec ton profil:
 - Remote international: **+20-30%** (90-110k€)
 - Freelance: **200-250€/j** (minimum 150€/j)
 
-**Reachy Mini arrive en décembre**:
+**Reachy Mini arrive en Oct / Nov. 2025**:
 - Une fois robot physique + démo vidéo → **+20% de salaire potentiel**
 - Portfolio passe de "très bon" à **"incontournable"**
-- Timing janvier-Oct / Nov. 2025 → **moment optimal** pour négocier
+- Timing Oct / Nov. 2025 → **moment optimal** pour négocier
 
 ---
 

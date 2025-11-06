@@ -551,7 +551,7 @@ self.joint_limits = {
 
 #### 📦 Shipments Restants
 - **~3,000 unités** prévues avant Noël (Lite + Wireless)
-- **Calendrier** : Livraisons supplémentaires janvier-Oct / Nov. 2025
+- **Calendrier** : Livraisons supplémentaires Oct / Nov. 2025
 - **Qualité** : Équipe sur site avec fabricant pour qualité, tests, documentation
 
 #### 💻 Software Release

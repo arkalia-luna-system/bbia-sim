@@ -183,7 +183,7 @@ Si les antennes SONT animables dans le robot réel :
 2. Vérifier SDK officiel pour accès antennes
 3. Débloquer avec limites sûres si confirmé (Oct / Nov. 2025 avec robot réel)
 
-**En attendant** : Garder bloqué par sécurité, mais préparer le déblocage pour décembre.
+**En attendant** : Garder bloqué par sécurité, mais préparer le déblocage pour Oct / Nov. 2025.
 
 ---
 
