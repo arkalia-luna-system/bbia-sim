@@ -146,6 +146,11 @@
 - Tous les bbox ont maintenant la même structure
 - Fichier : `src/bbia_sim/bbia_vision.py` (lignes 689-690, 890-891)
 
+✅ **CORRECTION** : Fallback vision forcé en simulation si SDK caméra indisponible
+- Lorsque `robot_api=None` ou que la caméra SDK n'est pas disponible, `BBIAVision.scan_environment()` retourne désormais systématiquement `source = "simulation"` (même si une webcam OpenCV est présente)
+- Objectif : stabilité et prévisibilité en CI/tests (test: `test_vision_fallback_simulation`)
+- Fichier : `src/bbia_sim/bbia_vision.py` (logique `scan_environment`)
+
 ### Qualité Code
 
 ✅ **TERMINÉ** : Passage outils qualité

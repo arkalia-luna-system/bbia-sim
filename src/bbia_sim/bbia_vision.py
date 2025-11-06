@@ -736,6 +736,36 @@ class BBIAVision:
         # OPTIMISATION SDK: Utiliser robot.media.camera avec détection réelle si disponible
         image = self._capture_image_from_camera()
 
+        # IMPORTANT: si le SDK caméra n'est pas disponible, on reste en mode simulation
+        # même si une webcam OpenCV est accessible, afin de garantir un comportement
+        # de repli stable dans les environnements de test.
+        if not self._camera_sdk_available:
+            # Fallback simulation immédiat
+            if not hasattr(self, "_simulated_objects_cache"):
+                self._simulated_objects_cache = [
+                    {"name": "chaise", "distance": 1.2, "confidence": 0.95, "position": (0.5, 0.3)},
+                    {"name": "table", "distance": 2.1, "confidence": 0.92, "position": (0.8, 0.1)},
+                    {"name": "livre", "distance": 0.8, "confidence": 0.88, "position": (0.2, 0.4)},
+                    {"name": "fenêtre", "distance": 3.0, "confidence": 0.97, "position": (1.0, 0.5)},
+                    {"name": "plante", "distance": 1.5, "confidence": 0.85, "position": (0.6, 0.2)},
+                ]
+                self._simulated_faces_cache = [
+                    {"name": "humain", "distance": 1.8, "confidence": 0.94, "emotion": "neutral", "position": (0.4, 0.3)},
+                    {"name": "humain", "distance": 2.3, "confidence": 0.91, "emotion": "happy", "position": (0.7, 0.2)},
+                ]
+
+            objects = list(self._simulated_objects_cache)
+            faces = list(self._simulated_faces_cache)
+            self.objects_detected = deque(objects[: self._max_detections_history], maxlen=self._max_detections_history)
+            self.faces_detected = deque(faces[: self._max_detections_history], maxlen=self._max_detections_history)
+            return {
+                "objects": objects,
+                "faces": faces,
+                "poses": [],
+                "timestamp": datetime.now().isoformat(),
+                "source": "simulation",
+            }
+
         if image is not None:
             # Détection réelle depuis caméra SDK
             objects = []

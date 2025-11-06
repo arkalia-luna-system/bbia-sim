@@ -1,6 +1,5 @@
 # ✅ Statut Final - Réorganisation Documentation
 
-**Date** : Oct / Nov. 2025  
 **Statut** : ✅ **100% TERMINÉ - PRÊT POUR PRODUCTION**
 
 ---
@@ -117,18 +116,22 @@
 
 ---
 
-**Date** : Oct / Nov. 2025  
 **Statut** : ✅ **RÉORGANISATION 100% TERMINÉE - PRÊT POUR PRODUCTION**
 
 ---
 
-## 🎯 MISE À JOUR - Janvier 2025
+## 🎯 MISE À JOUR
 
 ### Code - Normalisation
 
 ✅ **TERMINÉ** : Structure bbox normalisée
 - Ajout de `center_x` et `center_y` aux visages MediaPipe
 - Tous les bbox ont maintenant la même structure (objets YOLO + visages MediaPipe)
+- Fichier : `src/bbia_sim/bbia_vision.py`
+
+✅ **CORRECTION** : Fallback vision forcé en simulation si SDK caméra indisponible
+- `BBIAVision.scan_environment()` retourne désormais `source = "simulation"` quand le SDK caméra n'est pas disponible (y compris si une webcam OpenCV est détectée)
+- Stabilise la CI et fait passer le test `test_vision_fallback_simulation`
 - Fichier : `src/bbia_sim/bbia_vision.py`
 
 ### Qualité Code
