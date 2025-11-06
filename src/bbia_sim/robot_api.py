@@ -18,17 +18,10 @@ class RobotAPI(ABC):
         self.current_emotion = "neutral"
         self.emotion_intensity = 0.5
         self.joint_limits: dict[str, tuple[float, float]] = {}
-        self.forbidden_joints = {
-            "left_antenna",
-            "right_antenna",
-            "passive_1",
-            "passive_2",
-            "passive_3",
-            "passive_4",
-            "passive_5",
-            "passive_6",
-            "passive_7",
-        }
+        # Utiliser GlobalConfig pour cohérence (antennes maintenant animables)
+        from .global_config import GlobalConfig
+
+        self.forbidden_joints = set(GlobalConfig.FORBIDDEN_JOINTS)
         self.safe_amplitude_limit = 0.3  # rad
 
     @abstractmethod

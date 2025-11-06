@@ -271,7 +271,7 @@ sequenceDiagram
 ## 📊 Métriques du projet
 
 - **✅ Modèle officiel** : `reachy_mini_REAL_OFFICIAL.xml`
-- **✅ Articulations** : 16 articulations contrôlables
+- **✅ Articulations** : 16 articulations au total (9 contrôlables : 7 mobiles + 2 antennes)
 - **✅ Intégration BBIA** : 12 émotions + IA avancée
 - **✅ Coverage modules core** : ~50% (mesure pertinente, voir section Tests)
 - **✅ API** : FastAPI + WebSocket opérationnels
@@ -305,7 +305,8 @@ python examples/demo_reachy_mini_corrigee.py --quick
 - **✅ TOUJOURS utiliser `yaw_body`** pour les animations visibles
 - **✅ Amplitude maximum** : 0.3 rad (clamp automatique)
 - **✅ Mode headless** : Stable et rapide pour les tests
-- **⚠️ Antennes animables** : `left_antenna`, `right_antenna` avec limites de sécurité (-0.3 à 0.3 rad)
+- **✅ Antennes animables** : `left_antenna`, `right_antenna` avec limites de sécurité (-0.3 à 0.3 rad)
+- **⚠️ Joints Stewart** : `stewart_1` à `stewart_6` ne peuvent PAS être contrôlés individuellement (utiliser `goto_target()` ou `look_at_world()` avec cinématique inverse)
 - **❌ JAMAIS animer** : `passive_*` (joints passifs bloqués)
 - **❌ JAMAIS dépasser** : 0.3 rad d'amplitude pour antennes
 
@@ -457,9 +458,11 @@ La documentation HTML offre :
  - **[Roadmap Dashboard/UX](docs/dashboard/ROADMAP_DASHBOARD.md)**
  - **[Guide Contribution](docs/community/CONTRIBUTION_GUIDE.md)**
 
-### Note
+### Note importante sur les joints
 
-Les antennes sont maintenant animables avec limites de sécurité (-0.3 à 0.3 rad). Utilisez `yaw_body` pour animations principales, antennes pour expressivité fine.
+- **Antennes** : Animables avec limites de sécurité (-0.3 à 0.3 rad). Utilisez `yaw_body` pour animations principales, antennes pour expressivité fine.
+- **Joints Stewart** : Les 6 joints de la plateforme Stewart (`stewart_1` à `stewart_6`) ne peuvent PAS être contrôlés individuellement car ils utilisent la cinématique inverse (IK). Utilisez `goto_target(head=pose)` ou `look_at_world(x, y, z)` pour contrôler la tête.
+- **Joints passifs** : Les 7 joints passifs (`passive_1` à `passive_7`) sont bloqués et ne peuvent pas être animés.
 
 ## 📁 Structure du Projet
 
@@ -684,7 +687,7 @@ python scripts/download_ALL_stl.py
 - **Simulateur** : MuJoCo
 - **Format** : MJCF (MuJoCo XML)
 - **Assets** : 41 fichiers STL officiels
-- **Articulations** : 16 (yaw_body + 6 stewart + 7 passive + 2 antennas)
+- **Articulations** : 16 au total (1 yaw_body + 6 stewart + 2 antennes + 7 passifs)
 - **Dimensions** : Fidèles aux spécifications officielles
 
 ## 🔗 Ressources Officielles
