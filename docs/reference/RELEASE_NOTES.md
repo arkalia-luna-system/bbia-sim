@@ -57,12 +57,12 @@ Mise à niveau centrée sur la robustesse (watchdog, arrêt d’urgence), le ren
 - `docs/archive/*`: suppression de dossiers obsolètes, harmonisation v1.3.1.
 
 ### Documentation
-- README: badges de tests (**1245 tests** en CI), couverture **68.86%** validée en CI, Quick Start API publique, variables d'environnement utiles.
+- README: badges de tests (**1362 tests sélectionnés** en CI), couverture **68.86%** validée en CI, Quick Start API publique, variables d'environnement utiles.
 - Guides: Débutant et Tests simplifiés; Portfolio One-Pager mis à jour (métriques non figées, v1.3.1).
 - Index et statuts: versions/chemins cohérents.
 
 ### Qualité et CI
-- Tests: **1245 tests** collectés (pytest --collect-only), **68.86%** coverage global.
+- Tests: **1362 tests sélectionnés** (1418 collectés, 56 deselected), **68.86%** coverage global.
 - Couverture: validée en CI (`coverage.xml`, `htmlcov/`).
 - Outils: Black, Ruff, MyPy, Bandit.
 

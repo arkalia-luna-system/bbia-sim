@@ -283,7 +283,7 @@ code_here()
 ### Vérification Contenu
 
 - [ ] 12 émotions (pas 11, pas 13)
-- [ ] Tests **1245 tests** collectés (pytest --collect-only)
+- [ ] Tests **1362 tests sélectionnés** (1418 collectés, 56 deselected)
 - [x] Docs 131 fichiers (après nettoyage, 53 fichiers supprimés)
 - [ ] Architecture Factory+ABC confirmée
 - [ ] CI/CD outils présents
@@ -315,7 +315,7 @@ BBIA-SIM est un moteur cognitif Python avec **12 émotions robotiques**.
 
 • ✅ **Conforme au SDK officiel** (100% validé)
 • 🔄 **Backend unifié** : même code sim/hardware
-• 🧪 **1245 tests collectés** (68.86% coverage)
+• 🧪 **1362 tests sélectionnés** (68.86% coverage)
 
 ## 🚀 Quick Start
 

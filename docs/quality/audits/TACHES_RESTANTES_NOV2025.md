@@ -165,7 +165,7 @@
 ## 🎯 Recommandations Immédiates
 
 **Actions rapides (< 1h)** :
-1. ✅ **TERMINÉ** : Mettre à jour `tests/README.md` avec 1245 tests
+1. ✅ **TERMINÉ** : Mettre à jour `tests/README.md` avec 1362 tests sélectionnés
 2. ✅ **TERMINÉ** : Déplacer `logs/comparison_official_report.md` vers `docs/quality/compliance/`
 3. ✅ **TERMINÉ** : Implémenter calcul uptime réel dans ecosystem.py
 

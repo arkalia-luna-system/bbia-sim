@@ -25,7 +25,7 @@ flowchart TB
     TRIGGER -->|PR| LINT
     
     LINT --> LINT_OK{Succès?}
-    LINT_OK -->|Oui| TESTS[Phase Tests<br/>pytest 1200+ tests]
+    LINT_OK -->|Oui| TESTS[Phase Tests<br/>pytest 1362 tests]
     LINT_OK -->|Non| FAIL[❌ Échec]
     
     TESTS --> TESTS_OK{Succès?}
@@ -60,7 +60,7 @@ sequenceDiagram
     Lint-->>GitHub: ✅ Lint OK
     
     GitHub->>Tests: Déclencher tests
-    Tests->>Tests: pytest 1200+ tests
+    Tests->>Tests: pytest 1362 tests
     Tests-->>GitHub: ✅ Tests OK
     
     GitHub->>E2E: Déclencher E2E

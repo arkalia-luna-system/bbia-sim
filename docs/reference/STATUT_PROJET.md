@@ -63,13 +63,13 @@ python examples/demo_chat_simple.py
 ### Métriques globales
 
 **Actuel :**
-- **Tests totaux** : **1245 tests collectés** (pytest --collect-only)
+- **Tests totaux** : **1362 tests sélectionnés** (1418 collectés, 56 deselected)
 - **Coverage** : **68.86%** (excellent)
 - **Sécurité** : 0 issues (Bandit OK)
 - **Lint** : OK (Ruff, Black, MyPy OK)
 
 **Objectif :**
-- **Tests totaux** : 1245+ (maintenir et améliorer)
+- **Tests totaux** : 1362+ (maintenir et améliorer)
 - **Coverage** : 70%+ pour modules critiques (dashboard ✅, vision_yolo ✅, bridge ✅)
 - **Sécurité** : 0 issues (maintenir)
 - **Modules critiques** : objectifs atteints
