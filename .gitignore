@@ -26,10 +26,6 @@ venv-vision-py310/
 venv-vision-*/
 venv-*/
 
-# macOS
-.DS_Store
-._*
-.!*!._*
 
 # VSCode
 .vscode/
