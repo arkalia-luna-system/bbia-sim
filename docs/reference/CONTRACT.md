@@ -194,11 +194,13 @@ def get_status(self) -> dict[str, Any]:
 ## 🔒 **LIMITES ET CONTRAINTES**
 
 ### **Amplitude des joints**
+
 - **Limite absolue** : ±0.3 rad (18°)
 - **Clamp automatique** : Si dépassement → Warning + clamp
 - **Joints interdits** : Antennes et passifs bloqués
 
 ### **Émotions valides**
+
 ```python
 VALID_EMOTIONS = {
     "neutral", "happy", "sad", "angry", "surprised",
@@ -207,6 +209,7 @@ VALID_EMOTIONS = {
 ```
 
 ### **Comportements valides**
+
 ```python
 VALID_BEHAVIORS = {
     "wake_up", "greeting", "emotional_response",
@@ -215,6 +218,7 @@ VALID_BEHAVIORS = {
 ```
 
 ### **Intensité**
+
 - **Limite** : 0.0 ≤ intensity ≤ 1.0
 - **Clamp automatique** : Si dépassement → Warning + clamp
 
@@ -251,6 +255,7 @@ class RobotFactory:
 ## 🧪 **TESTS ET VALIDATION**
 
 ### **Tests obligatoires**
+
 - ✅ Connexion/déconnexion
 - ✅ Validation des joints
 - ✅ Clamp des amplitudes
@@ -259,6 +264,7 @@ class RobotFactory:
 - ✅ Consistance entre backends
 
 ### **Tolérances**
+
 - **Amplitude** : ±0.001 rad
 - **Performance** : > 10 steps/s
 - **Latence** : < 100ms par commande
@@ -268,6 +274,7 @@ class RobotFactory:
 ## 📈 **MÉTRIQUES ET TÉLÉMÉTRIE**
 
 ### **Métriques collectées**
+
 ```python
 {
     "steps_per_second": float,
@@ -282,6 +289,7 @@ class RobotFactory:
 ```
 
 ### **Export**
+
 - **Format** : CSV dans `artifacts/`
 - **Fréquence** : À chaque démo
 - **Rétention** : 30 jours
@@ -291,11 +299,13 @@ class RobotFactory:
 ## 🔄 **VERSIONING ET COMPATIBILITÉ**
 
 ### **Versioning**
+
 - **Major** : Breaking changes (jamais prévu)
 - **Minor** : Nouvelles fonctionnalités
 - **Patch** : Corrections de bugs
 
 ### **Compatibilité**
+
 - **Python** : 3.10+
 - **Backward** : Garantie pour v1.1.x
 - **Forward** : Non garantie
@@ -315,6 +325,7 @@ class RobotFactory:
 ## 📝 **EXEMPLES D'USAGE**
 
 ### **Usage basique**
+
 ```python
 from bbia_sim.robot_factory import RobotFactory
 
@@ -335,6 +346,7 @@ if robot.connect():
 ```
 
 ### **Usage avec validation**
+
 ```python
 # Vérifier les joints disponibles
 joints = robot.get_available_joints()
@@ -354,6 +366,7 @@ if robot.is_connected():
 **Ce contrat est GELÉ en v1.1.x. Aucune modification breaking n'est autorisée.**
 
 Pour les modifications futures :
+
 1. Créer une nouvelle version (v1.2.x)
 2. Maintenir la compatibilité backward
 3. Mettre à jour ce contrat

@@ -93,16 +93,19 @@
 Pour une livraison rapide et opérationnelle, **focus sur** :
 
 ✅ **Logo BBIA vectoriel minimaliste**
+
 - Mascotte + typographie arrondie
 - Format : SVG + PNG (haute résolution)
 - Versions : couleur, monochrome, favicon
 
 ✅ **Palette complète**
+
 - Codes HEX détaillés
 - Guide d'utilisation (couleurs principales/secondaires/accentuations)
 - Exemples d'applications (fond clair/sombre)
 
 ✅ **Bannière "Univers"**
+
 - Composition : sphère, réseau lunaire, BBIA devant
 - Dimensions : 1920x1080px (web) + 2560x1440px (HD)
 - Formats : PNG, JPG haute qualité
@@ -154,6 +157,7 @@ Le but est de créer une identité forte et mémorable, tout en gardant la flexi
 ## Informations de Contexte
 
 **BBIA-SIM** est un moteur cognitif Python avancé pour robot Reachy Mini Wireless, intégrant :
+
 - Simulation MuJoCo
 - IA cognitive (émotions, vision, comportements)
 - RobotAPI unifié (simulation ↔ robot réel)
@@ -182,6 +186,6 @@ Le but est de créer une identité forte et mémorable, tout en gardant la flexi
 | **Priorité** | 🔥 Haute - Première livraison MVP graphique |
 
 **Changelog** :
+
 - v1.1 (Oct / No2025025025025025) : Ajout section MVP graphique + Liberté créative
 - v1.0 (Oct / No2025025025025025) : Création du brief initial
-

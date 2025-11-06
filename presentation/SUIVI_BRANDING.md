@@ -31,6 +31,7 @@ Créer l'identité visuelle complète de BBIA : logo, palette, bannière univers
 #### **2.1 Logo BBIA Vectoriel Fidèle Reachy Mini**
 
 **Fichiers Requis** (Workflow Open Source) :
+
 - [x] **Source** : Fichier éditable SVG dans `livrables/v1.0/logo/source/` ✅ **Livré**
 - [x] **Logos Reachy fidèles** : Vue face, 3/4, profil ✅ **Livrés**
 - [x] **Versions** : Avec/sans halo, horizontal + typographie ✅ **Livrés**
@@ -44,6 +45,7 @@ Créer l'identité visuelle complète de BBIA : logo, palette, bannière univers
 **Workflow** : Voir `WORKFLOW_OPEN_SOURCE.md`
 
 **Progrès Livraison v2.0 (Workflow Procreate)** :
+
 - ✅ **Structure nettoyée** : Tous fichiers temporaires supprimés
 - ✅ **Guides complets** : GUIDE_PROCREATE.md (instructions détaillées pour client)
 - ✅ **Documentation** : README.md, OPTION_IPAD_PRO.md, RESUME_IPAD_PRO.md
@@ -52,6 +54,7 @@ Créer l'identité visuelle complète de BBIA : logo, palette, bannière univers
 - ⏳ **En attente** : Logo client créé avec Procreate (PNG haute résolution)
 
 **Prochaines étapes** :
+
 - Client dessine avec Procreate (4096x4096px recommandé)
 - Export PNG haute résolution
 - Conversion PNG → SVG automatique
@@ -63,18 +66,21 @@ Créer l'identité visuelle complète de BBIA : logo, palette, bannière univers
 #### **Option iPad Pro - Dessin Client** 💡 **EN DISCUSSION**
 
 **Contexte** :
+
 - Client possède iPad Pro et souhaite dessiner lui-même le logo exactement comme il le veut
 - Besoin de comprendre si on peut vraiment utiliser ce qu'il dessine pour tout le projet
 
 **Réponse Technique** : ✅ **OUI, C'EST POSSIBLE**
 
 **Applications recommandées sur iPad Pro** :
+
 1. **Procreate** (dessin raster, export PNG/SVG possible)
 2. **Affinity Designer** (vectoriel natif, export SVG direct)
 3. **Adobe Illustrator iPad** (vectoriel natif, export SVG direct)
 4. **Vectornator/Linearity** (gratuit, vectoriel, export SVG)
 
 **Workflow avec Procreate** :
+
 1. **Client dessine sur iPad Pro** avec Procreate (4096x4096px recommandé)
 2. **Export PNG** haute résolution → Client transmet le fichier PNG
 3. **Conversion SVG** → Retraçage vectoriel automatique professionnel (je m'en occupe)
@@ -83,6 +89,7 @@ Créer l'identité visuelle complète de BBIA : logo, palette, bannière univers
 6. **Documentation** → Ajout au workflow open source existant
 
 **Avantages** :
+
 - ✅ Client a le contrôle total du design exact
 - ✅ Pas d'interprétation intermédiaire
 - ✅ Résultat correspond exactement à sa vision
@@ -91,6 +98,7 @@ Créer l'identité visuelle complète de BBIA : logo, palette, bannière univers
 - ✅ Qualité finale équivalente à vectoriel natif pour usage pratique
 
 **À prévoir** :
+
 - Export PNG haute résolution : **4096x4096px** (idéal) ou 2048x2048px minimum
 - Fond transparent activé
 - Organisation calques dans Procreate (tête, yeux, corps, antennes séparés) - facultatifs mais utiles
@@ -104,6 +112,7 @@ Créer l'identité visuelle complète de BBIA : logo, palette, bannière univers
 **Statut** : ✅ **Déjà créée** (`palette_bbia.json`, `palette_bbia.css`, `preview_palette.html`)
 
 **Fichiers Requis** :
+
 - [x] Palette JSON complète ✅
 - [x] Palette CSS avec variables ✅
 - [x] Preview HTML interactif ✅
@@ -116,6 +125,7 @@ Créer l'identité visuelle complète de BBIA : logo, palette, bannière univers
 **Statut** : ⏳ **En attente** - Dépend du logo final validé
 
 **Fichiers Requis** :
+
 - [ ] Bannière 1920x1080px (web)
 - [ ] Bannière 2560x1440px (HD)
 - [ ] Version mobile 1200x675px (optionnel)
@@ -138,6 +148,7 @@ Créer l'identité visuelle complète de BBIA : logo, palette, bannière univers
 | **Validation** | Oct / No2025025025025025 | 🔄 En discussion | Client |
 
 **Livraison v2.0 - Nettoyage et préparation** :
+
 - ✅ **Structure nettoyée** : Tous fichiers temporaires/obsolètes supprimés
 - ✅ **Guides complets** : GUIDE_PROCREATE.md, OPTION_IPAD_PRO.md, RESUME_IPAD_PRO.md
 - ✅ **Documentation** : README.md, MESURES_REACHY_MINI.md (référence)
@@ -145,6 +156,7 @@ Créer l'identité visuelle complète de BBIA : logo, palette, bannière univers
 - ✅ **Guides exports/tests** : Mis à jour pour workflow Procreate
 
 **Fichiers Actuels** :
+
 - 📚 **Guides** : GUIDE_PROCREATE.md, OPTION_IPAD_PRO.md, RESUME_IPAD_PRO.md
 - 📚 **Documentation** : README.md, CHANGELOG.md, MESURES_REACHY_MINI.md
 - 📁 **Structure** : `source/` (vide, prêt pour PNG client), `exports/` (vide, prêt pour génération)
@@ -152,6 +164,7 @@ Créer l'identité visuelle complète de BBIA : logo, palette, bannière univers
 - ⏳ **En attente** : Logo client créé avec Procreate
 
 **Checklist Prochaine Livraison (v2.0 - Workflow Procreate)** :
+
 - [ ] Logo client créé avec Procreate (PNG haute résolution 4096x4096px)
 - [ ] PNG transmis et placé dans `source/logo_client_procreate.png`
 - [ ] Conversion PNG → SVG effectuée
@@ -161,6 +174,7 @@ Créer l'identité visuelle complète de BBIA : logo, palette, bannière univers
 - [ ] Screenshots navigateur capturés
 
 **Statut Actuel (v2.0 - Workflow Procreate)** :
+
 - ✅ Structure nettoyée et organisée
 - ✅ Guides Procreate complets créés
 - ✅ Documentation workflow claire
@@ -168,6 +182,7 @@ Créer l'identité visuelle complète de BBIA : logo, palette, bannière univers
 - **Action** : Client dessine avec Procreate → Export PNG → Conversion SVG → Génération complète
 
 **Feedback Structuré** :
+
 ```markdown
 ## Points Validés ✅
 - Process et documentation excellents
@@ -191,6 +206,7 @@ Créer l'identité visuelle complète de BBIA : logo, palette, bannière univers
 **Réponse technique** : ✅ **OUI, ABSOLUMENT**
 
 **Application du client** : **Procreate** ✅ **EXCELLENT CHOIX**
+
 - ✅ Client possède déjà Procreate (pas besoin d'acheter autre chose)
 - ✅ Très professionnel : Utilisé par designers pros mondiaux
 - ✅ Outils puissants : Parfait pour dessiner librement
@@ -198,11 +214,13 @@ Créer l'identité visuelle complète de BBIA : logo, palette, bannière univers
 - ✅ Conversion SVG automatique : Retraçage vectoriel professionnel (je m'en occupe)
 
 **Alternatives si besoin** :
+
 1. **Affinity Designer** (vectoriel natif) → Export SVG direct
 2. **Adobe Illustrator iPad** (vectoriel natif) → Export SVG direct
 3. **Vectornator/Linearity** (gratuit) → Export SVG
 
 **Workflow complet possible** :
+
 1. Client dessine sur iPad Pro (Affinity Designer recommandé)
 2. Export SVG → Transférer dans `livrables/v1.0/logo/source/`
 3. Optimisation/Nettoyage SVG si besoin
@@ -216,6 +234,7 @@ Créer l'identité visuelle complète de BBIA : logo, palette, bannière univers
 6. Intégration directe dans code/doc/site
 
 **Avantages** :
+
 - ✅ Client contrôle 100% du design
 - ✅ Résultat exactement comme voulu (pas d'interprétation)
 - ✅ Utilisable immédiatement pour tout le projet
@@ -228,11 +247,13 @@ Créer l'identité visuelle complète de BBIA : logo, palette, bannière univers
 ### **Notes Créatives v1.0 → v1.1 - Fidélité Robot Réel**
 
 **Feedback reçu (Oct / No2025025025025025)** :
+
 - Process et documentation : ✅ Excellents
 - Design visuel initial : ❌ Ne correspond pas au vrai robot
 - Action : Créer logos fidèles au robot réel
 
 **Caractéristiques respectées** :
+
 - Corps ovoïde/barrel-shaped volumineux (fidèle au robot réel)
 - Tête rectangulaire arrondie (pas ronde, plus large que haute)
 - 2 grands yeux noirs reliés par barre horizontale (bien horizontale, jamais oblique)
@@ -241,6 +262,7 @@ Créer l'identité visuelle complète de BBIA : logo, palette, bannière univers
 - Mesures exactes depuis XML officiel
 
 **Logos créés** :
+
 - Vue face (avec/sans halo, horizontal)
 - Vue 3/4 (tête inclinée)
 - Vue profil (antennes bien visibles)
@@ -248,11 +270,13 @@ Créer l'identité visuelle complète de BBIA : logo, palette, bannière univers
 ---
 
 ### **Notes Créatives**
+
 - _Espace pour ajouter des inspirations ou corrections au fil de l'eau_
 
 ### **Ajustements Documentés** (Format Open Source)
 
 **Chaque ajustement doit inclure** :
+
 - ✅ **Description** : Ce qui doit être modifié
 - ✅ **Raison** : Pourquoi (brief, ADN BBIA, feedback)
 - ✅ **Fichiers impactés** : Liste des fichiers modifiés

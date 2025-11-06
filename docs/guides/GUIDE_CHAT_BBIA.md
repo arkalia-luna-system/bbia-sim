@@ -13,6 +13,19 @@
 
 ---
 
+## 📋 Table des Matières
+
+1. [Vue d'ensemble](#-vue-densemble)
+2. [Démarrage Rapide](#-démarrage-rapide)
+3. [Personnalités BBIA](#-personnalités-bbia)
+4. [Référence API](#référence-api)
+5. [Cas d'usage](#cas-dusage)
+6. [Configuration Avancée](#configuration-avancée)
+7. [Dépannage](#dépannage)
+8. [Navigation](#-navigation)
+
+---
+
 ## 🎯 Vue d'ensemble
 
 > **💡 Fonctionnalité clé**
@@ -461,4 +474,11 @@ if "heureux" in response.lower():
 - Exemples : `examples/demo_chat_bbia.py`
 - Tests : `tests/test_bbia_huggingface_chat.py`
 - Dashboard : `src/bbia_sim/dashboard_advanced.py`
+
+---
+
+## 🎯 Navigation
+
+**Retour à** : [README Documentation](../README.md)  
+**Voir aussi** : [Guide NLP](GUIDE_NLP_SMOLVLM.md) • [Guide Débutant](GUIDE_DEBUTANT.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)
 

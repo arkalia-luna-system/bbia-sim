@@ -25,15 +25,18 @@
 **Endpoint** : `POST /development/api/move/goto` (conforme SDK)
 
 **Problème** :
+
 - **Officiel** : Utilise `GotoModelRequest` avec `head_pose: AnyPose`, `antennas: tuple[float, float]`, `duration: float`, `interpolation: InterpolationMode`
 - **BBIA** : Utilise `Pose` (x, y, z, roll, pitch, yaw) + query params `duration` et `interpolation`
 - **Niveau** : ⚠️ **INCOMPATIBLE** - Structure de requête différente
 
 **Fichier** :
+
 - Officiel : `/Volumes/T7/reachy_mini/src/reachy_mini/daemon/app/routers/move.py:146`
 - BBIA : `/Volumes/T7/bbia-reachy-sim/src/bbia_sim/daemon/app/routers/motion.py:32`
 
 **Correctif** :
+
 ```python
 # Ajouter dans motion.py :
 from ...models import AnyPose, FullBodyTarget  # Si disponible
@@ -62,6 +65,7 @@ async def goto(goto_req: GotoModelRequest) -> dict[str, Any]:
 **Fichier officiel** : `/Volumes/T7/reachy_mini/src/reachy_mini/daemon/app/routers/move.py:140`
 
 **Implémentation requise** :
+
 ```python
 # src/bbia_sim/daemon/app/routers/motion.py
 move_tasks: dict[UUID, asyncio.Task[None]] = {}  # Ajouter en haut
@@ -85,6 +89,7 @@ async def get_running_moves() -> list[dict[str, str]]:
 **Fichier officiel** : `/Volumes/T7/reachy_mini/src/reachy_mini/daemon/app/routers/move.py:203`
 
 **Implémentation requise** :
+
 ```python
 class MoveUUID(BaseModel):
     uuid: UUID
@@ -113,6 +118,7 @@ async def stop_move(uuid: MoveUUID) -> dict[str, str]:
 **Fichier officiel** : `/Volumes/T7/reachy_mini/src/reachy_mini/daemon/app/routers/move.py:209`
 
 **Implémentation requise** :
+
 ```python
 move_listeners: list[WebSocket] = [] # Ajouter en haut
 
@@ -141,6 +147,7 @@ async def ws_move_updates(websocket: WebSocket) -> None:
 **Fichier officiel** : `/Volumes/T7/reachy_mini/src/reachy_mini/daemon/app/routers/move.py:224`
 
 **Implémentation requise** :
+
 ```python
 @router.post("/set_target")
 async def set_target(target: FullBodyTarget) -> dict[str, str]:
@@ -182,6 +189,7 @@ async def set_target(target: FullBodyTarget) -> dict[str, str]:
 **Fichier officiel** : `/Volumes/T7/reachy_mini/src/reachy_mini/daemon/app/routers/move.py:172`
 
 **Implémentation requise** :
+
 ```python
 from reachy_mini.motion.recorded_move import RecordedMoves # Ou équivalent BBIA
 
@@ -220,6 +228,7 @@ async def list_recorded_move_dataset(dataset_name: str) -> list[str]:
 **Fichier officiel** : `/Volumes/T7/reachy_mini/src/reachy_mini/daemon/app/routers/state.py:57`
 
 **Paramètres manquants dans BBIA** :
+
 - `with_control_mode: bool = True`
 - `with_target_head_pose: bool = False`
 - `with_head_joints: bool = False`
@@ -248,6 +257,7 @@ async def list_recorded_move_dataset(dataset_name: str) -> list[str]:
 **Fichier BBIA** : `/Volumes/T7/bbia-reachy-sim/src/bbia_sim/daemon/app/routers/state.py:342`
 
 **Correctif** :
+
 ```python
 @router.get("/present_head_pose")
 async def get_present_head_pose(
@@ -271,6 +281,7 @@ async def get_present_head_pose(
 **Fichier BBIA** : `/Volumes/T7/bbia-reachy-sim/src/bbia_sim/daemon/app/routers/state.py:478`
 
 **Paramètres manquants** :
+
 - `with_target_head_pose`
 - `with_head_joints`
 - `with_target_head_joints`
@@ -290,6 +301,7 @@ async def get_present_head_pose(
 ### 6. Modèle de retour `goto` - UUID vs dict
 
 **Problème** :
+
 - **Officiel** : Retourne `MoveUUID` (UUID pour tracking)
 - **BBIA** : Retourne `dict[str, Any]` avec status, target_pose, etc.
 
@@ -304,6 +316,7 @@ async def get_present_head_pose(
 ### 7. Endpoints BBIA supplémentaires non dans SDK
 
 **Endpoints BBIA uniques** :
+
 - `/development/api/ecosystem/*` - Écosystème BBIA (émotions, comportements)
 - `/development/api/motion/home` - Retour à la position d'origine
 - `/development/api/motion/gripper/{side}` - Contrôle des pinces
@@ -331,6 +344,7 @@ async def get_present_head_pose(
 ### 9. Tests de conformité manquants
 
 **Tests à ajouter** :
+
 - Test pour `goto` avec structure `GotoModelRequest`
 - Test pour `/move/running`
 - Test pour `/move/stop` avec UUID
@@ -418,6 +432,7 @@ async def get_present_head_pose(
 **Conformité Endpoints REST** : **~96% (25/26 endpoints)** ✅
 
 **Nouveaux endpoints implémentés** :
+
 - ✅ `POST /development/api/move/goto` - Structure conforme SDK
 - ✅ `GET /development/api/move/running` - Liste mouvements en cours
 - ✅ `POST /development/api/move/stop` - Arrêter mouvement par UUID
@@ -431,10 +446,12 @@ async def get_present_head_pose(
 - ✅ `WebSocket /development/api/state/ws/full` - 11 paramètres optionnels
 
 **Tests créés** :
+
 - ✅ `tests/test_api_move_conformity.py` - 14 tests
 - ✅ `tests/test_api_state_improved.py` - 5 tests
 
 **Modèles ajoutés** :
+
 - ✅ `XYZRPYPose`, `Matrix4x4Pose`, `AnyPose` - Conformes SDK
 - ✅ `FullBodyTarget`, `MoveUUID`, `GotoModelRequest` - Conformes SDK
 - ✅ Fonction `as_any_pose()` - Conforme SDK
@@ -465,4 +482,3 @@ async def get_present_head_pose(
 - **Extensions BBIA** : Conservées (ne cassent pas compatibilité)
 
 **Recommandation** : Corriger les 2 problèmes critiques d'abord, puis prioriser selon besoins réels avec robot physique.
-

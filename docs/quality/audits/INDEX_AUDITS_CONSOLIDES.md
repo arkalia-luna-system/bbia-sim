@@ -120,4 +120,3 @@ Les fichiers suivants ont été archivés car redondants ou obsolètes :
 ---
 
 **Dernière mise à jour** : Oct / Nov. 2025
-

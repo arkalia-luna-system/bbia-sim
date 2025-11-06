@@ -106,6 +106,15 @@ pip install pyaudio
   - Reconnaissance vocale via microphone non disponible
   - Messages d'avertissement dans les logs
 
+---
+
+## 🎯 Navigation
+
+**Retour à** : [README Documentation](../README.md)  
+**Voir aussi** : [Guide Débutant](../guides/GUIDE_DEBUTANT.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)
+
+---
+
 ## Tests
 
 Les tests continuent de fonctionner même sans pyaudio. Les tests de reconnaissance vocale retournent `None` au lieu de lever une exception.

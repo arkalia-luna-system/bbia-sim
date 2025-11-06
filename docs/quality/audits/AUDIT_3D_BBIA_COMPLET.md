@@ -84,14 +84,17 @@ sequenceDiagram
 
     Note over AUDITOR,DEMO: Tous les objectifs atteints
 ```
-```
+
+```text
 
 ### **Modules BBIA**
 ```
+
 src/bbia_sim/sim/simulator.py ✅ MuJoCoSimulator
 src/bbia_sim/daemon/simulation_service.py ✅ SimulationService
 src/bbia_sim/bbia_integration.py ✅ BBIAIntegration
-```
+
+```text
 
 ## 📊 TABLEAU DES JOINTS
 
@@ -124,43 +127,58 @@ src/bbia_sim/bbia_integration.py ✅ BBIAIntegration
 
 ### **Installation**
 ```bash
+
 # Activer l'environnement virtuel
+
 source venv/bin/activate
 
 # Vérifier les dépendances
+
 python -c "import mujoco; print('MuJoCo:', mujoco.__version__)"
 python -c "import glfw; print('GLFW:', glfw.__version__)"
-```
+
+```text
 
 ## 🎮 COMMANDES DE VALIDATION
 
 ### **Démo 3D (Recommandée)**
 ```bash
+
 # Mode headless (stable)
+
 python examples/demo_viewer_bbia_corrected.py --headless --duration 5 --joint yaw_body
 
 # Mode graphique (macOS)
+
 mjpython examples/demo_viewer_bbia_corrected.py --duration 10 --joint yaw_body
 
 # Lister tous les joints
+
 python examples/demo_viewer_bbia_corrected.py --list-joints
-```
+
+```text
 
 ### **Tests Automatiques**
 ```bash
+
 # Tests spécifiques à la démo
+
 python -m pytest tests/test_demo_viewer_bbia_corrected.py -v
 
 # Tests MuJoCo complets
+
 python -m pytest tests/test_adapter_mujoco.py -v
 
 # Tests complets (sans GUI)
+
 python -m pytest tests/ -m "not e2e" -v
-```
+
+```text
 
 ## 🏗️ ARCHITECTURE BBIA → SIM → VIEWER
 
 ```mermaid
+
 graph TD
  A[BBIAIntegration] --> B[SimulationService]
  B --> C[MuJoCoSimulator]
@@ -175,7 +193,8 @@ graph TD
  J[Vision] --> A
  K[Audio] --> A
  L[Comportements] --> A
-```
+
+```text
 
 ## ⚠️ RÈGLES DE SÉCURITÉ
 

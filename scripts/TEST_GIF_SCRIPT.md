@@ -99,4 +99,3 @@ timeout 5 mjpython scripts/generate_emotions_sequence_for_gif.py --azimuth 90 ||
 - **Fond noir** : C'est normal, le viewer MuJoCo ne peut pas changer le fond. Utilisez post-production vidéo.
 - **Caméra de côté** : Testez différentes valeurs d'`--azimuth` pour trouver la bonne orientation.
 - **Viewer bloqué** : Si une fenêtre reste ouverte, fermez-la avec `Cmd+Q` ou utilisez `kill_mujoco_viewers.sh`.
-

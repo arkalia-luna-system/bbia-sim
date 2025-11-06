@@ -10,6 +10,7 @@
 ## 📊 RÉSUMÉ EXÉCUTIF
 
 ### ✅ Points Conformes
+
 - ✅ SDK officiel correctement intégré (`reachy_mini`)
 - ✅ Modèle 3D officiel (`reachy_mini_REAL_OFFICIEL.xml`)
 - ✅ 41 fichiers STL officiels présents
@@ -19,12 +20,14 @@
 - ✅ Documentation mise à jour (Oct / Nov. 2025)
 
 ### ✅ Corrections Appliquées (Oct / Nov. 2025)
+
 - ✅ **Antennes** : Documentation corrigée - toutes mentions "antennes animées" → "antennes bloquées (sécurité hardware)"
 - ✅ **Scripts** : `quick_start.sh` corrigé pour mentionner antennes bloquées
 - ✅ **Global Config** : `antenna_animation` retiré des comportements valides (obsolète)
 - ✅ **REACHY_MINI_REFERENCE.md** : Clarification expressivité (yeux + mouvements tête/corps)
 
 ### ⚠️ Points à Vérifier/Corriger (Actions Futures)
+
 - ⚠️ **Version SDK** : Vérifier version exacte utilisée dans repo officiel
 - ⚠️ **Software Release** : Vérifier version SDK disponible sur GitHub (email Oct / Nov. 2025 mentionne première version)
 - ⚠️ **Configuration caméra** : Vérifier paramètres exacts (résolution, FOV) vs repo officiel
@@ -37,14 +40,17 @@
 ### 1.1 Dimensions Globales
 
 #### ✅ BBIA (Conforme)
-```
+
+```text
 Hauteur : 280mm (actif) / 230mm (veille)
 Largeur : 160mm
 Poids : 1.5kg
 ```
+
 **Source** : `docs/hardware/reachy-mini/REACHY_MINI_REFERENCE.md` ligne 100
 
 #### ⚠️ Repo Officiel (Email Oct / Nov. 2025)
+
 - **Hauteur** : 28 cm (actif) / 23 cm (veille) ✅ **CONFORME**
 - **Largeur** : 16 cm ✅ **CONFORME**
 - **Poids** : 1,5 kg ✅ **CONFORME**
@@ -56,10 +62,13 @@ Poids : 1.5kg
 ### 1.2 Position Tête (Frame "head")
 
 #### BBIA (Extrait XML)
+
 ```xml
 <site group="3" name="head" pos="-0.00611127 0.00370522 0.0291364"/>
 ```
+
 **En mm** :
+
 - X : -6.11mm (décalage gauche)
 - Y : 3.7mm (décalage avant)
 - Z : 29.14mm (hauteur depuis corps)
@@ -67,6 +76,7 @@ Poids : 1.5kg
 **Source** : `src/bbia_sim/sim/models/reachy_mini_REAL_OFFICIAL.xml` ligne 496
 
 #### ⚠️ À Vérifier dans Repo Officiel
+
 - Position exacte de la caméra (`camera_optical`)
 - Position des microphones
 
@@ -77,28 +87,35 @@ Poids : 1.5kg
 ### 1.3 Antennes
 
 #### BBIA (Extrait XML)
+
 ```xml
 <!-- Antenne Droite -->
 <geom type="mesh" pos="8.00228e-15 -0.0588 -0.0103" mesh="antenna"/>
 <!-- Antenne Gauche -->
 <geom type="mesh" pos="6.79838e-15 -0.0588 -0.0103" mesh="antenna"/>
 ```
+
 **Dimensions** :
+
 - Hauteur : 58.8mm
 - Profondeur : 10.3mm
 
 **Source** : `src/bbia_sim/sim/models/reachy_mini_REAL_OFFICIAL.xml` lignes 503, 523
 
 #### ⚠️ IMPORTANT - Limites Antennes
+
 ```xml
 <joint axis="0 0 1" name="right_antenna" type="hinge" class="chosen_actuator"/>
 <joint axis="0 0 1" name="left_antenna" type="hinge" class="chosen_actuator"/>
 ```
+
 **⚠️ PROBLÈME DÉTECTÉ** : Pas de `range` défini dans le XML officiel pour les antennes !
+
 - Dans BBIA : Limites conservatrices `(-1.0, 1.0)` rad
 - Dans XML : Pas de range → Antennes **bloquées** par défaut
 
 **Action Requise** :
+
 1. ✅ **Déjà fait** : BBIA bloque les antennes (`forbidden_joints`)
 2. ⚠️ **Vérifier** : Dans repo officiel SDK, comment les antennes sont gérées
 3. ⚠️ **Documenter** : Clarifier pourquoi antennes bloquées (fragilité hardware)
@@ -110,14 +127,17 @@ Poids : 1.5kg
 ### 1.4 Corps (Body)
 
 #### BBIA (Extrait XML)
+
 ```xml
 <geom type="mesh" pos="3.79972e-17 -3.70588e-18 0.195" mesh="body_down_3dprint"/>
 ```
+
 **Hauteur Z** : 195mm (19.5cm depuis base)
 
 **Source** : `src/bbia_sim/sim/models/reachy_mini_REAL_OFFICIAL.xml` ligne 90
 
 #### ⚠️ À Vérifier
+
 - Position exacte du centre de masse
 - Inertie (`fullinertia`) dans XML
 
@@ -130,6 +150,7 @@ Poids : 1.5kg
 ### 2.1 Import SDK Officiel
 
 #### ✅ BBIA (Conforme)
+
 ```python
 try:
     from reachy_mini import ReachyMini
@@ -138,9 +159,11 @@ try:
 except ImportError:
     REACHY_MINI_AVAILABLE = False
 ```
+
 **Source** : `src/bbia_sim/backends/reachy_mini_backend.py` lignes 15-23
 
 #### ⚠️ Repo Officiel (À Vérifier)
+
 - **Nom package** : `reachy_mini` ✅ (déjà vérifié)
 - **Version requise** : ? (v1.0.0?) ⚠️ **À VÉRIFIER**
 - **Méthodes disponibles** : `goto_target()`, `look_at_world()`, `look_at_image()` ✅
@@ -152,6 +175,7 @@ except ImportError:
 ### 2.2 Dépendances SDK
 
 #### ✅ BBIA (pyproject.toml lignes 47-59)
+
 ```toml
 "reachy_mini_motor_controller>=1.0.0", ✅
 "eclipse-zenoh>=1.4.0",                 ✅
@@ -169,7 +193,9 @@ except ImportError:
 ```
 
 #### ⚠️ À Comparer avec Repo Officiel
+
 **Action** : Vérifier `requirements.txt` ou `pyproject.toml` du repo officiel pour :
+
 - Versions exactes requises
 - Dépendances manquantes dans BBIA
 - Dépendances obsolètes dans BBIA
@@ -179,6 +205,7 @@ except ImportError:
 ### 2.3 Méthodes SDK Utilisées
 
 #### ✅ BBIA (Conforme)
+
 ```python
 # Méthodes utilisées dans BBIA
 robot.goto_target(head_pose, duration=duration)
@@ -191,6 +218,7 @@ robot.body.turn_on() / turn_off()
 **Source** : `src/bbia_sim/backends/reachy_mini_backend.py` (méthodes `move_head`, `look_at`)
 
 #### ⚠️ À Vérifier dans Repo Officiel
+
 - Toutes ces méthodes existent-elles ?
 - Nouveaux paramètres ajoutés ?
 - Méthodes dépréciées ?
@@ -204,14 +232,17 @@ robot.body.turn_on() / turn_off()
 ### 3.1 Modèle XML Principal
 
 #### ✅ BBIA
-```
+
+```text
 src/bbia_sim/sim/models/reachy_mini_REAL_OFFICIAL.xml
 ```
+
 - **Source** : Modèle officiel OnShape → XML (via `onshape-to-robot`)
 - **Ligne 4** : `<!-- Onshape https://cad.onshape.com/documents/... -->`
 - **Ligne 3** : URL OnShape officielle ✅
 
 #### ⚠️ À Vérifier
+
 - **Version modèle** : Le XML est-il à jour avec la dernière version OnShape ?
 - **Ligne 5** : `<compiler angle="radian" meshdir="../assets/reachy_official" autolimits="true"/>`
   - ✅ Chemin STL correct
@@ -224,7 +255,8 @@ src/bbia_sim/sim/models/reachy_mini_REAL_OFFICIAL.xml
 ### 3.2 Assets STL
 
 #### ✅ BBIA (41 fichiers STL)
-```
+
+```text
 src/bbia_sim/sim/assets/reachy_official/
 ├── body_down_3dprint.stl
 ├── body_top_3dprint.stl
@@ -234,9 +266,11 @@ src/bbia_sim/sim/assets/reachy_official/
 ├── antenna*.stl (4 fichiers)
 └── ... (31 autres)
 ```
+
 **Total** : 41 fichiers STL ✅
 
 #### ⚠️ À Vérifier
+
 - **Source** : STL téléchargés depuis repo officiel ?
 - **Version** : Dernière version des STL ?
 - **Checksums** : Vérifier intégrité des fichiers
@@ -248,6 +282,7 @@ src/bbia_sim/sim/assets/reachy_official/
 ### 3.3 Limites Articulations
 
 #### ✅ BBIA (Extrait Exact du XML)
+
 ```python
 self.joint_limits = {
     "stewart_1": (-0.8377580409572196, 1.3962634015955222),
@@ -259,13 +294,16 @@ self.joint_limits = {
     "yaw_body": (-2.792526803190975, 2.792526803190879),
 }
 ```
+
 **Source** : `src/bbia_sim/backends/reachy_mini_backend.py` lignes 108-125
 
 #### ⚠️ Vérification XML
+
 ```xml
 <joint axis="0 0 1" name="yaw_body" range="-2.792526803190975 2.792526803190879"/>
 <joint axis="0 0 1" name="stewart_1" range="-0.8377580409572196 1.3962634015955222"/>
 ```
+
 **Conclusion** : ✅ Limites extraites **exactement** du XML officiel
 
 ---
@@ -275,6 +313,7 @@ self.joint_limits = {
 ### 4.1 Configuration Caméra
 
 #### ✅ BBIA (Extrait XML)
+
 ```xml
 <camera name="eye_camera"
   mode="fixed"
@@ -282,9 +321,11 @@ self.joint_limits = {
   fovy="80"
 />
 ```
+
 **Source** : `src/bbia_sim/sim/models/reachy_mini_REAL_OFFICIAL.xml` lignes 489-493
 
 #### ⚠️ À Vérifier dans Repo Officiel
+
 - **Résolution réelle** : 1280x720 ? (Email mentionne "caméra grand-angle HD")
 - **FOV** : 80° correct ?
 - **Format** : MJPG? H264?
@@ -296,12 +337,15 @@ self.joint_limits = {
 ### 4.2 Position Caméra
 
 #### ✅ BBIA (Extrait XML)
+
 ```xml
 <site group="3" name="camera_optical"
   pos="-0.0321159 -0.05047 0.00257878" 
   quat="0.44884 0.458499 0.740682 -0.199279"/>
 ```
+
 **Position** :
+
 - X : -32.1mm (décalage gauche)
 - Y : -50.5mm (décalage arrière)
 - Z : 2.6mm (hauteur depuis tête)
@@ -315,12 +359,14 @@ self.joint_limits = {
 ### 4.3 Microphones
 
 #### ⚠️ BBIA (Documentation)
+
 - **Version Wireless** : 4 microphones ✅
 - **Version Lite** : 2 microphones ⚠️
 
 **Source** : `docs/hardware/reachy-mini/REACHY_MINI_REFERENCE.md` ligne 82
 
 #### ⚠️ Email Officiel (Oct / Nov. 2025)
+
 - **Wireless** : "4 microphones avec traitement en réseau" ✅
 - **Lite** : "2 microphones" ✅
 
@@ -335,6 +381,7 @@ self.joint_limits = {
 ### 5.1 README Principal
 
 #### ✅ BBIA
+
 - ✅ Badge "SDK Conformity 100%"
 - ✅ Référence repo officiel : `pollen-robotics/reachy_mini`
 - ✅ Guide démarrage rapide
@@ -343,6 +390,7 @@ self.joint_limits = {
 **Source** : `README.md`
 
 #### ⚠️ À Comparer
+
 - Structure sections
 - Exemples de code
 - Guide installation
@@ -352,11 +400,13 @@ self.joint_limits = {
 ### 5.2 Guides Spécifiques
 
 #### ✅ BBIA Guides
+
 - `docs/guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md` ✅
 - `docs/hardware/reachy-mini/REACHY_MINI_REFERENCE.md` ✅
 - `docs/quality/compliance/CONFORMITE_REACHY_MINI_COMPLETE.md` ✅
 
 #### ⚠️ À Vérifier
+
 - Informations à jour avec dernières specs (Oct / Nov. 2025)
 - Erreurs typographiques
 - Commandes SDK exactes
@@ -368,6 +418,7 @@ self.joint_limits = {
 ### 6.1 Tests Conformité SDK
 
 #### ✅ BBIA
+
 - `tests/test_reachy_mini_full_conformity_official.py` ✅
 - `tests/test_reachy_mini_advanced_conformity.py` ✅
 - 37/37 tests passent ✅
@@ -375,6 +426,7 @@ self.joint_limits = {
 **Source** : `docs/quality/audits/AUDIT_EXHAUSTIF_COMPLET_2025.md`
 
 #### ⚠️ À Améliorer
+
 - Tests avec robot physique (Oct / Nov. 2025)
 - Tests performance latence
 - Tests edge cases (timeouts, disconnections)
@@ -384,10 +436,12 @@ self.joint_limits = {
 ### 6.2 Coverage
 
 #### ✅ BBIA
+
 - **Modules core** : **68.86%** coverage global ✅
 - **Tests totaux** : **1362 tests sélectionnés** (1418 collectés, 56 deselected) ✅
 
 #### ⚠️ À Améliorer
+
 - Coverage `reachy_mini_backend.py` : 8.7% ⚠️ **FAIBLE**
 - Tests mock SDK (quand robot pas disponible)
 
@@ -400,6 +454,7 @@ self.joint_limits = {
 ### 7.1 🔴 CRITIQUE - Limites Antennes
 
 **Problème** :
+
 - XML officiel : Antennes **sans range** (bloquées par défaut)
 - BBIA : Limites conservatrices `(-1.0, 1.0)` mais joints interdits
 
@@ -412,12 +467,14 @@ self.joint_limits = {
 ### 7.2 🟡 MOYENNE - Version SDK
 
 **Problème** :
+
 - `pyproject.toml` : `reachy_mini_motor_controller>=1.0.0`
 - Version exacte utilisée inconnue
 
 **Impact** : Possibles incompatibilités futures
 
 **Action** :
+
 1. Vérifier version exacte dans repo officiel
 2. Pinner version si nécessaire
 
@@ -426,6 +483,7 @@ self.joint_limits = {
 ### 7.3 🟡 MOYENNE - Documentation Camera
 
 **Problème** :
+
 - Résolution caméra : 1280x720 dans XML
 - Email officiel : "caméra grand-angle HD" (non spécifique)
 
@@ -438,6 +496,7 @@ self.joint_limits = {
 ### 7.4 🟢 BASSE - Fichiers STL
 
 **Problème** :
+
 - 41 fichiers STL présents
 - Version/checksums non vérifiés
 
@@ -518,18 +577,21 @@ self.joint_limits = {
 ## 10. 🎯 RECOMMANDATIONS FINALES
 
 ### ✅ Points Excellents
+
 1. **Limites articulations** : Extraites **exactement** du XML officiel ✅
 2. **Modèle 3D** : Utilise modèle officiel OnShape ✅
 3. **SDK Integration** : Import conditionnel propre ✅
 4. **Documentation** : Références officielles présentes ✅
 
 ### ⚠️ Points à Améliorer
+
 1. **Version SDK** : Pinner version exacte
 2. **Tests coverage** : Augmenter coverage `reachy_mini_backend.py`
 3. **Documentation caméra** : Spécifier résolution exacte
 4. **Validation physique** : Tester sur robot réel (Oct / Nov. 2025)
 
 ### 🎯 Priorités
+
 1. **🔴 Priorité 1** : Vérifier version SDK exacte dans repo officiel
 2. **🟡 Priorité 2** : Comparer API complète SDK
 3. **🟡 Priorité 3** : Vérifier specs caméra exactes
@@ -544,31 +606,37 @@ self.joint_limits = {
 ### Nouveautés Communiquées
 
 #### 🚀 Beta Shipments
+
 - **125 unités** expédiées en Oct / Nov. 2025
 - **Programme** : Community Beta Program
 - **Objectif** : Recueillir feedback avant rollout plus large
 - **Sélection** : Testeurs sélectionnés pour capacité feedback régulier et constructif
 
 #### 📦 Shipments Restants
+
 - **~3,000 unités** prévues avant Noël (Lite + Wireless)
 - **Calendrier** : Livraisons supplémentaires Oct / Nov. 2025
 - **Qualité** : Équipe sur site avec fabricant pour qualité, tests, documentation
 
 #### 💻 Software Release
+
 - **Première version** : Disponible sur GitHub
 - **Repo** : https://github.com/pollen-robotics/reachy_mini
 - **Contenu** : Codebase, SDK, documentation précoce
 - **Action BBIA** : Vérifier version exacte et comparer avec notre implémentation
 
 #### 📅 Prochaines Mises à Jour
+
 - **Prochaine email** : Mi-Oct / Nov. 2025
 - **Contenu attendu** : Progrès production + software releases
 
 #### ✨ Actualité Bonus
+
 - **Reconnaissance** : TIME Best Inventions 2025 - Special Mentions
 - **Impact** : Visibilité accrue pour le projet
 
 #### 🤝 Améliorations Communauté
+
 - **Feedback beta** : Déjà reçu et intégré
 - **Bénéfice** : Software raffiné grâce aux testeurs beta
 - **Communauté** : Croissance continue de builders et créateurs
@@ -580,15 +648,17 @@ self.joint_limits = {
 ### Corrections Documentation
 
 #### 1. ✅ Antennes - Documentation Corrigée
+
 - **Fichiers corrigés** :
   - `docs/hardware/reachy-mini/REACHY_MINI_REFERENCE.md` : Ligne 157 - "Expressivité" clarifiée
   - `scripts/quick_start.sh` : Ligne 145 - Antennes → "bloquées (sécurité hardware)"
   - `src/bbia_sim/global_config.py` : `antenna_animation` retiré (obsolète)
- 
+
 - **Message standardisé** : "Antennes bloquées (sécurité hardware), utiliser yaw_body pour expressivité"
 - **Statut** : ✅ **TOUTES LES MENTIONS CORRIGÉES**
 
 #### 2. ✅ Clarifications Techniques
+
 - **Expressivité** : Clarifiée comme "Yeux + mouvements tête/corps" (pas antennes)
 - **Comportements** : `antenna_animation` → `body_yaw_animation`
 - **Scripts** : Tous mis à jour avec information correcte
@@ -599,4 +669,3 @@ self.joint_limits = {
 **Dernière mise à jour** : Oct / Nov. 2025 (Corrections appliquées)
 **Basé sur** : Email Pollen Robotics Oct / Nov. 2025, Repo officiel GitHub, Code BBIA v1.3.2
 **Prochaine mise à jour** : Après réception robot physique (Oct / Nov. 2025)
-

@@ -1,5 +1,7 @@
 # ⚡ Résumé Rapide - Procreate pour Scène MuJoCo
 
+**Date** : Oct / Nov. 2025
+
 > **Guide ultra-rapide** : Les essentiels en 2 minutes
 
 ---
@@ -7,6 +9,7 @@
 ## 🎯 Configuration Rapide
 
 **Document Procreate** :
+
 - Taille : **4096 x 4096 px** (qualité max)
 - Format : **RGB, sRGB**
 - Fond : **Transparent** ou **Blanc**
@@ -31,10 +34,10 @@
 
 1. **`mur.png`** (4096x4096px)
    - Base + texture + ombres/lumières
-   
+
 2. **`sol.png`** (4096x4096px)
    - Base + parquet/carrelage + jointures
-   
+
 3. **`plafond.png`** (4096x4096px, optionnel)
    - Base simple + texture subtile
 
@@ -70,5 +73,11 @@
 
 ---
 
-*Résumé Rapide - BBIA-SIM - Oct / Nov. 2025*
+## 🎯 Navigation
 
+**Retour à** : [README Documentation](../README.md)  
+**Voir aussi** : [Guide Procreate Complet](GUIDE_PROCREATE_SCENE_COMPLET.md) • [Index Simulations](INDEX_GUIDES_PROCREATE.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)
+
+---
+
+*Résumé Rapide - BBIA-SIM - Oct / Nov. 2025*

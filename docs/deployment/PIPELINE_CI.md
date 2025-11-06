@@ -95,6 +95,7 @@ sequenceDiagram
 **Dernière mise à jour** : Oct / Nov. 2025
 
 ## Pré-commit (optionnel)
+
 ```bash
 pip install pre-commit
 pre-commit install

@@ -13,7 +13,7 @@
   - Index complet de tous les audits
   - Point d'entrée principal pour les audits
 
-- **[CONFORMITE_REACHY_MINI_OFFICIEL.md](COMPATIBILITE_REACHY_MINI_OFFICIEL.md)**
+- **[COMPATIBILITE_REACHY_MINI_OFFICIEL.md](COMPATIBILITE_REACHY_MINI_OFFICIEL.md)**
   - Compatibilité avec SDK officiel Reachy Mini
   - Vérifications complètes
 
@@ -41,6 +41,5 @@
 
 ## 🎯 Navigation
 
-**Retour à** : [README Documentation](../README.md)  
-**Voir aussi** : [`docs/reference/INDEX_THEMATIQUE.md`](../reference/INDEX_THEMATIQUE.md)
-
+**Retour à** : [README Documentation](../../README.md)  
+**Voir aussi** : [Index Thématique](../../reference/INDEX_THEMATIQUE.md)

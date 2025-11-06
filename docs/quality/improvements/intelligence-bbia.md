@@ -180,6 +180,7 @@ Toutes les améliorations respectent :
 ### 📈 Nouvelles Améliorations (Session Actuelle)
 
 #### 4. **BBIA HuggingFace - Langage Naturel Amélioré** - ✅ COMPLÉTÉ
+
    - **Réponses Génériques :** 6 → 8 variantes pour `friendly_robot`
      - Expressions plus naturelles ("Ça m'intrigue !", "Explorons ça ensemble")
      - Moins de langage robotique ("pouvez-vous développer" → "Qu'est-ce qui vous intéresse ?")
@@ -192,6 +193,7 @@ Toutes les améliorations respectent :
    - **Impact :** Langage plus humain, conversations plus engageantes
 
 #### 5. **Mapping Reachy - Corrections Expertes** - ✅ COMPLÉTÉ
+
    - **Descriptions Stewart Joints :** Avertissements IK cohérents sur tous les joints stewart
    - **Logique validate_position :** Correction experte - clamp conditionnel (seulement si safe_amplitude est plus restrictive)
    - **Documentation RECOMMENDED_JOINTS :** Commentaires détaillés avec méthodes SDK listées
@@ -207,7 +209,7 @@ Toutes les améliorations respectent :
 
 ### 🧪 Validation Complète
 
-```
+```text
 ✅ test_mapping_reachy_complete.py: 28/28 passent
 ✅ test_bbia_intelligence_personality.py: 6/6 passent (2 skipped)
 ✅ test_bbia_conversation_intelligence.py: 10/10 passent

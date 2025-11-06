@@ -66,12 +66,14 @@ python examples/demo_chat_simple.py
 ### Métriques globales
 
 **Actuel :**
+
 - **Tests totaux** : **1362 tests sélectionnés** (1418 collectés, 56 deselected)
 - **Coverage** : **68.86%** (excellent)
 - **Sécurité** : 0 issues (Bandit OK)
 - **Lint** : OK (Ruff, Black, MyPy OK)
 
 **Objectif :**
+
 - **Tests totaux** : 1362+ (maintenir et améliorer)
 - **Coverage** : 70%+ pour modules critiques (dashboard ✅, vision_yolo ✅, bridge ✅)
 - **Sécurité** : 0 issues (maintenir)
@@ -82,6 +84,7 @@ python examples/demo_chat_simple.py
 #### Priorité critique - **TERMINÉ** ✅
 
 **1. ✅ `dashboard_advanced.py`** - **TERMINÉ** (**76.71%** coverage ✅, **47 tests**, objectif 50%+ dépassé)
+
 - Dashboard WebSocket ✅
 - Endpoints FastAPI avancés ✅
 - Statistiques temps réel ✅
@@ -90,21 +93,25 @@ python examples/demo_chat_simple.py
 #### Priorité haute (<50% coverage)
 
 **2. `bbia_emotion_recognition.py`** (33% - 138 lignes)
+
 - Détection visages et analyse émotions
 - **Estimation :** 12-15 tests, 2h
 
 **3. `bbia_huggingface.py`** (38% - 149 lignes)
+
 - Vision (CLIP, BLIP)
 - Audio (Whisper)
 - **Estimation :** 10-12 tests, 2h
 
 **4. `bbia_integration.py`** (26% - 106 lignes)
+
 - Orchestration modules BBIA
 - **Estimation :** 10-12 tests, 2h
 
 #### Priorité moyenne
 
 **5-8. Autres modules** (<40% coverage)
+
 - Voice Whisper, Vision YOLO, Awake, Reachy Mini
 - **Estimation totale :** 45-60 tests, 7-10h
 
@@ -184,6 +191,7 @@ bandit -r src/
 ## Prochaines étapes
 
 ### Immédiat (aujourd'hui)
+
 1. ✅ Nettoyer documentation - **TERMINÉ** (53 fichiers supprimés, références corrigées)
 2. ✅ ~~Créer `test_dashboard_advanced.py`~~ - **TERMINÉ** (**47 tests** ✅, coverage **76.71%** ✅)
 3. ✅ Améliorer `test_vision_yolo_comprehensive.py` - **TERMINÉ** (**99.45%** coverage ✅)
@@ -191,10 +199,12 @@ bandit -r src/
 5. ✅ ~~Améliorer `voice_whisper.py`~~ - **TERMINÉ** (**92.52%** coverage ✅, objectif 50%+ largement dépassé)
 
 ### Court terme (semaine)
+
 1. ✅ ~~Améliorer coverage `voice_whisper.py`~~ - **TERMINÉ** (**92.52%** coverage ✅)
 2. ✅ Coverage dashboard, vision_yolo, bridge : **TERMINÉ** ✅ (99.45%, 92.52%, 76.71%, 54.86%)
 
 ### Moyen terme (mois)
+
 1. ✅ Coverage 68.86% global atteint (excellent)
 2. ✅ Dashboard avancé : **76.71%** coverage ✅ (objectif 50%+ dépassé)
 3. ✅ Optimisations performance : **TERMINÉES** (simulation 60Hz, voix, regex)
@@ -224,4 +234,3 @@ bandit -r src/
 Le système est opérationnel et prêt pour le développement.
 
 *Dernière mise à jour : Oct / Nov. 2025*
-

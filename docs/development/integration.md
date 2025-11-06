@@ -13,7 +13,20 @@
 > pip install -e .
 > ```
 **Public** : développeurs, chercheurs, communauté technique  
-**📚 [Guide débutant](../guides/GUIDE_DEBUTANT.md)** | **🔧 [Guide avancé](../guides/GUIDE_AVANCE.md)** | **🧪 [Guide tests](TESTING_GUIDE.md)**
+**📚 [Guide débutant](../guides/GUIDE_DEBUTANT.md)** | **🔧 [Guide avancé](../guides/GUIDE_AVANCE.md)** | **🧪 [Guide tests](testing.md)**
+
+## 📋 Table des Matières
+
+1. [Introduction](#introduction)
+2. [Architecture d'Intégration](#architecture-dintégration)
+3. [Démarrage rapide](#démarrage-rapide)
+4. [Intégration API](#intégration-api)
+5. [Intégration robot](#intégration-robot)
+6. [Modes de démonstration](#modes-de-démonstration)
+7. [Exemples d'intégration](#exemples-dintégration)
+8. [Configuration avancée](#configuration-avancée)
+
+---
 
 ## Introduction
 
@@ -908,3 +921,10 @@ Vous avez intégré BBIA-SIM dans votre projet. Bienvenue dans l'écosystème BB
 ---
 
 **Dernière mise à jour** : Oct / Nov. 2025
+
+---
+
+## 🎯 Navigation
+
+**Retour à** : [README Documentation](../README.md)  
+**Voir aussi** : [Guide Avancé](../guides/GUIDE_AVANCE.md) • [Architecture](../development/architecture/ARCHITECTURE_OVERVIEW.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)

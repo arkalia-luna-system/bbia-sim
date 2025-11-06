@@ -1,5 +1,7 @@
 # 🎨 Guide Complet - Créer Scène MuJoCo avec Procreate
 
+**Date** : Oct / Nov. 2025
+
 > **Guide professionnel** pour créer des textures de pièce dans Procreate, optimisées pour MuJoCo
 
 ---
@@ -20,6 +22,7 @@
 ### **1. Créer le Document**
 
 **Paramètres recommandés** :
+
 - **Taille** : `4096 x 4096 pixels` (qualité maximale)
   - Alternative : `2048 x 2048 pixels` (qualité très bonne)
 - **Résolution** : `300 DPI` (pour impression si besoin)
@@ -27,6 +30,7 @@
 - **Fond** : `Transparent` ou `Blanc` selon usage
 
 **Pourquoi 4096x4096 ?**
+
 - ✅ Qualité maximale (pixels nets même zoomé)
 - ✅ MuJoCo peut redimensionner automatiquement
 - ✅ Flexible pour tous usages futurs
@@ -44,7 +48,7 @@
 
 ### **Structure Idéale pour Texture de Mur** :
 
-```
+```text
 📁 Calque "Mur Final" (groupe)
   ├── 📄 Calque "Base Couleur"
   ├── 📄 Calque "Texture/Motif"
@@ -55,7 +59,7 @@
 
 ### **Structure Idéale pour Texture de Sol** :
 
-```
+```text
 📁 Calque "Sol Final" (groupe)
   ├── 📄 Calque "Base"
   ├── 📄 Calque "Parquet/Carrelage"
@@ -67,11 +71,13 @@
 ### **Nombre de Calques Optimal** :
 
 **Pour une texture simple** : **3-5 calques**
+
 - Base couleur
 - Texture/motif
 - Ombres/lumières
 
 **Pour une texture complexe** : **7-10 calques**
+
 - Base
 - Texture principale
 - Texture secondaire
@@ -137,6 +143,7 @@
 #### **Étape 2 : Motif Parquet/Carrelage**
 
 **Option A : Parquet** :
+
 1. Créer calque "Parquet"
 2. Utiliser outil **"Formes"** → Rectangle
 3. Créer planches : rectangles horizontaux
@@ -144,12 +151,14 @@
 5. Couleur : Légèrement plus sombre/clair
 
 **Option B : Carrelage** :
+
 1. Créer calque "Carrelage"
 2. Grille de carrés : Outil **"Formes"** → Rectangle (carré)
 3. Répéter avec **"Sélection"** → **"Copier/Coller"**
 4. Jointures : Lignes fines entre carrés
 
 **Option C : Moquette** :
+
 1. Créer calque "Moquette"
 2. Pinceau "Texture" → "Hair"
 3. Créer effet fibre/tissu
@@ -189,6 +198,7 @@
 **Important** : Les textures doivent pouvoir se répéter sans couture visible !
 
 **Technique** :
+
 1. Créer motif sur une zone (ex: 512x512px)
 2. **Copier/Coller** pour remplir 4096x4096px
 3. **Fusionner** les calques de motif
@@ -200,6 +210,7 @@
 ### **2. Cohérence des Couleurs**
 
 **Palette BBIA recommandée** :
+
 - Gris lunaire : `#EAEAED`
 - Bleu céleste : `#87BCFA`
 - Violet : `#A680FF`
@@ -211,28 +222,34 @@
 ### **3. Pinceaux Procreate Recommandés**
 
 **Pour Textures** :
+
 - `Texture` → `Canvas` (fond texture)
 - `Artistic` → `Grunge` (effet usé)
 - `Elements` → `Rocks`, `Foliage` (détails naturels)
 
 **Pour Ombres/Lumières** :
+
 - `Airbrushing` → `Soft Brush` (dégradés doux)
 
 **Pour Lignes/Détails** :
+
 - `Inking` → `Technical Pen` (précision)
 - `Inking` → `Dry Ink` (détails fins)
 
 ### **4. Organisation des Calques**
 
 **Nommage clair** :
+
 - ✅ `Base`, `Texture`, `Ombres`, `Lumières`, `Détails`
 - ❌ `Calque 1`, `Calque 2`, `Calque copie`
 
 **Groupes** :
+
 - Créer **groupes** par texture (`Mur`, `Sol`, `Plafond`)
 - Facilite la gestion et export sélectif
 
 **Ordre des calques** (du bas vers le haut) :
+
 1. Base
 2. Texture principale
 3. Texture secondaire
@@ -244,6 +261,7 @@
 ### **5. Mode de Fusion des Calques**
 
 **Modes utiles** :
+
 - `Normal` : Base, détails
 - `Overlay` : Textures, contrastes
 - `Soft Light` : Lumières/ombres subtiles
@@ -256,6 +274,7 @@
 ### **6. Opacité Stratégique**
 
 **Règles générales** :
+
 - Base : `100%`
 - Textures : `30-60%`
 - Ombres : `20-40%`
@@ -267,6 +286,7 @@
 ### **7. Pensez à la Perspective MuJoCo**
 
 **Dans MuJoCo** :
+
 - Les textures sont projetées sur des surfaces planes
 - Pas de perspective 3D dans la texture elle-même
 - **Astuce** : Créer textures "plates" (sans perspective), MuJoCo gère la 3D
@@ -278,12 +298,14 @@
 ### **1. Export PNG**
 
 **Paramètres Procreate** :
+
 1. **Actions** → **Partager** → **PNG**
 2. **Qualité** : `Maximum`
 3. **Fond transparent** : Activé (si besoin)
 4. **Résolution** : `4096 x 4096 px` (ou 2048x2048)
 
 **Nommage** :
+
 - `mur.png` (pour mur)
 - `sol.png` (pour sol)
 - `plafond.png` (pour plafond)
@@ -291,6 +313,7 @@
 ### **2. Optimisation (optionnel)**
 
 **Avant export** :
+
 - Fusionner calques inutiles
 - Vérifier poids fichier (cibler < 10 MB si possible)
 - Tester texture dans MuJoCo avant finalisation
@@ -361,11 +384,13 @@ python examples/view_scene_piece.py src/bbia_sim/sim/scenes/ma_scene_procreate.x
 ## ✅ Checklist Complète
 
 ### **Avant de Commencer** :
+
 - [ ] Document créé : 4096x4096px, RGB, sRGB
 - [ ] Palette BBIA créée dans Procreate
 - [ ] Structure calques planifiée
 
 ### **Pendant la Création** :
+
 - [ ] Base couleur créée
 - [ ] Textures ajoutées (5-7 calques)
 - [ ] Ombres/lumières équilibrées
@@ -373,6 +398,7 @@ python examples/view_scene_piece.py src/bbia_sim/sim/scenes/ma_scene_procreate.x
 - [ ] Calques bien nommés et organisés
 
 ### **Avant Export** :
+
 - [ ] Texture répétable testée (tiling)
 - [ ] Opacités vérifiées (pas trop fort)
 - [ ] Cohérence couleurs vérifiée
@@ -380,6 +406,7 @@ python examples/view_scene_piece.py src/bbia_sim/sim/scenes/ma_scene_procreate.x
 - [ ] Version avec calques sauvegardée (pour modifications)
 
 ### **Après Export** :
+
 - [ ] PNG haute résolution exporté
 - [ ] Fichiers placés dans `assets/textures/`
 - [ ] Scène XML créée avec références textures
@@ -405,24 +432,29 @@ python examples/view_scene_piece.py src/bbia_sim/sim/scenes/ma_scene_procreate.x
 ## 💬 Conseils Bonus
 
 ### **Astuce 1 : Utiliser Références**
+
 - Importer photos réelles de murs/sols pour inspiration
 - Ne pas copier directement (droits), utiliser comme référence
 
 ### **Astuce 2 : Variantes Rapides**
+
 - Créer version avec calques séparés
 - Dupliquer document
 - Ajuster opacités/couleurs = nouvelle variante en 2 minutes
 
 ### **Astuce 3 : Masques et Sélections**
+
 - Utiliser **masques** pour transitions douces
 - **Sélections** pour zones précises
 - **Transformations** pour ajustements
 
 ### **Astuce 4 : Pinceaux Personnalisés**
+
 - Créer vos propres pinceaux pour style unique
 - Sauvegarder dans Procreate pour réutilisation
 
 ### **Astuce 5 : Test dans MuJoCo**
+
 - Exporter version temporaire
 - Tester dans MuJoCo
 - Ajuster opacités/contrastes selon rendu 3D
@@ -448,5 +480,11 @@ python examples/view_scene_piece.py src/bbia_sim/sim/scenes/ma_scene_procreate.x
 
 ---
 
-*Guide Procreate Complet - BBIA-SIM - Oct / Nov. 2025*
+## 🎯 Navigation
 
+**Retour à** : [README Documentation](../README.md)  
+**Voir aussi** : [Guide Import Images](GUIDE_IMPORT_IMAGES_MUJOCO.md) • [Conseils Robot](CONSEILS_PROCREATE_ROBOT.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)
+
+---
+
+*Guide Procreate Complet - BBIA-SIM - Oct / Nov. 2025*

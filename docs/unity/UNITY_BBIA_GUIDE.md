@@ -5,6 +5,7 @@
 ## Configuration vérifiée
 
 Votre environnement Unity est maintenant correctement configuré :
+
 - Unity Hub installé
 - Unity Editor installé
 - Projet Unity présent
@@ -13,17 +14,21 @@ Votre environnement Unity est maintenant correctement configuré :
 ## 🚀 Démarrage Rapide Unity
 
 ### Option 1: Menu Interactif
+
 ```bash
 ./quick_start.sh
 ```
+
 Puis choisissez l'option 6 pour lancer le simulateur Unity.
 
 ### Option 2: Lancement Direct
+
 ```bash
 ./launch_unity_simulator.sh
 ```
 
 ### Option 3: Test de Configuration
+
 ```bash
 ./test_unity_setup.sh
 ```
@@ -31,18 +36,22 @@ Puis choisissez l'option 6 pour lancer le simulateur Unity.
 ## 🎮 Instructions Unity
 
 ### 1. Ouvrir le Projet
+
 1. Lancez Unity Hub
 2. Cliquez sur "Open" ou "Ouvrir"
 3. Sélectionnez le dossier : `reachy-bbia-unity`
 4. Attendez que Unity charge le projet
 
 ### 2. Lancer le Simulateur
+
 1. Dans Unity, ouvrez la scène : `Assets/ReachySimulator.unity`
 2. Cliquez sur le bouton Play
 3. Vous devriez voir Reachy dans la fenêtre Unity
 
 ### 3. Contrôler BBIA
+
 Une fois le simulateur lancé, vous pouvez :
+
 - Utiliser le contrôleur Python pour programmer BBIA
 - Tester les émotions et mouvements
 - Développer de nouveaux comportements
@@ -111,6 +120,7 @@ sequenceDiagram
     UNITY->>ROBOT: Mouvements complexes
     ROBOT->>DEV: Validation visuelle
 ```
+
 - Neutral : Position de repos
 - Happy : Mouvements joyeux
 - Sad : Mouvements lents
@@ -119,6 +129,7 @@ sequenceDiagram
 - Excited : Mouvements énergiques
 
 ### Contrôles Python
+
 ```python
 # Exemple de contrôle BBIA
 from src.bbia_sim.unity_reachy_controller import UnityReachyController
@@ -138,6 +149,7 @@ controller.dance_move()
 ## 🔧 Dépannage
 
 ### Problème : Unity ne se lance pas
+
 ```bash
 # Vérifier la configuration
 ./test_unity_setup.sh
@@ -147,12 +159,14 @@ open "/Applications/Unity Hub.app"
 ```
 
 ### Problème : Projet ne charge pas
+
 1. Fermez Unity
 2. Supprimez le dossier `reachy-bbia-unity/Library/`
 3. Relancez Unity
 4. Le projet se recompilera
 
 ### Problème : Contrôleur Python ne fonctionne pas
+
 ```bash
 # Vérifier l'environnement virtuel
 source venv/bin/activate
@@ -164,11 +178,13 @@ python3 src/bbia_sim/test_unity_connection.py
 ## Ressources
 
 ### Documentation
+
 - [Guide complet Reachy](../guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md)
 - [Résumé projet](../reference/summaries/final-summary.md)
 - [Démarrage rapide](../guides/GUIDE_DEBUTANT.md)
 
 ### Liens officiels
+
 - **Unity** : https://unity.com/
 - **Pollen Robotics** : https://www.pollen-robotics.com/
 - **Discord** : https://discord.gg/pollen-robotics
@@ -183,18 +199,21 @@ python3 src/bbia_sim/test_unity_connection.py
 ## Conseils
 
 ### Développement
+
 - Sauvegardez régulièrement votre travail
 - Testez en simulation avant de déployer
 - Documentez vos nouveaux comportements
 - Utilisez Git pour le versioning
 
 ### Performance
+
 - Fermez les applications inutiles pendant le développement
 - Surveillez l'utilisation CPU/GPU
 - Optimisez les scripts Python
 - Utilisez des timeouts pour éviter les blocages
 
 ### Communauté
+
 - Rejoignez le Discord Pollen Robotics
 - Partagez vos expériences
 - Demandez de l'aide quand nécessaire
@@ -206,3 +225,10 @@ python3 src/bbia_sim/test_unity_connection.py
 *Pour Reachy Mini Wireless*
 
 Unity + BBIA = Puissance créative.
+
+---
+
+## 🎯 Navigation
+
+**Retour à** : [README Documentation](../README.md)  
+**Voir aussi** : [Dépannage Unity](UNITY_TROUBLESHOOTING.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)

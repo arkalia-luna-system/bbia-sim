@@ -30,11 +30,13 @@ Modules critiques: 5 | Modules moyens: 2
 **Estimation**: 6 heures
 
 **Fichiers audités**:
+
 - `src/bbia_sim/backends/reachy_mini_backend.py` (1023 lignes)
 - `src/bbia_sim/robot_api.py` (281 lignes)
 - `src/bbia_sim/mapping_reachy.py`
 
 **Fichiers référence**:
+
 - `/tmp/reachy_ref/src/reachy_mini/daemon/app/routers/motors.py@84c40c3`
 - `/tmp/reachy_ref/src/reachy_mini/daemon/backend/abstract.py@84c40c3`
 
@@ -56,12 +58,14 @@ Modules critiques: 5 | Modules moyens: 2
    - ✅ `emergency_stop()` explicite dans RobotAPI - **FAIT** (ligne 87 dans `robot_api.py`)
 
 **Corrections appliquées (Oct / Nov. 2025)** :
+
 1. ✅ Méthode `emergency_stop()` ajoutée dans RobotAPI abstraite (ligne 87)
 2. ✅ Watchdog thread implémenté dans `ReachyMiniBackend` (lignes 277-320)
 3. ✅ Implémentation `emergency_stop()` dans `ReachyMiniBackend` (lignes 983-1012)
 4. ✅ Tests créés : `tests/test_emergency_stop.py` (4 tests)
 
 **Code implémenté**:
+
 ```python
 # robot_api.py ligne 87
 @abstractmethod
@@ -85,6 +89,7 @@ def emergency_stop(self) -> bool:
 ```
 
 **Tests créés**:
+
 - ✅ `tests/test_emergency_stop.py` (4 tests) - Tous passent
 
 ---
@@ -96,11 +101,13 @@ def emergency_stop(self) -> bool:
 **Estimation**: 4 heures
 
 **Fichiers audités**:
+
 - `src/bbia_sim/bbia_audio.py`
 - `src/bbia_sim/bbia_voice.py`
 - `src/bbia_sim/bbia_voice_advanced.py`
 
 **Fichiers référence**:
+
 - `/tmp/reachy_ref/src/reachy_mini/media/@84c40c3`
 
 **Issues détectées**:
@@ -112,11 +119,13 @@ def emergency_stop(self) -> bool:
    - ⚠️ Buffer size non optimisé: SDK utilise buffers hardware, BBIA utilise `soundfile` par défaut
 
 **Corrections appliquées (Oct / Nov. 2025)** :
+
 1. ✅ Sample rate aligné SDK (16kHz par défaut) - **FAIT** (ligne 65 dans `bbia_audio.py`)
 2. ✅ Utilisation `robot.media.play_audio()` et `robot.media.record_audio()` si disponible
 3. ✅ Buffer size optimisé (512 samples) - **FAIT** (ligne 66)
 
 **Code implémenté**:
+
 ```python
 # bbia_audio.py lignes 65-67
 DEFAULT_SAMPLE_RATE = 16000  # ✅ SDK Reachy Mini standard (déjà aligné)
@@ -136,6 +145,7 @@ if robot_api and hasattr(robot_api.media, "record_audio"):
 **Estimation**: 4 heures
 
 **Fichiers audités**:
+
 - `src/bbia_sim/bbia_emotions.py`
 - `src/bbia_sim/bbia_emotion_recognition.py`
 
@@ -147,6 +157,7 @@ if robot_api and hasattr(robot_api.media, "record_audio"):
    - ✅ Validation intensité alignée SDK: Clamping `[0.0, 1.0]` implémenté (voir `CORRECTIONS_APPLIQUEES.md`)
 
 **Recommandations**:
+
 1. Ajouter validation drift émotionnel (vérifier normalisation outputs modèles)
 2. Tests unitaires pour mapping émotions BBIA → SDK
 
@@ -159,6 +170,7 @@ if robot_api and hasattr(robot_api.media, "record_audio"):
 **Estimation**: 4 heures
 
 **Fichiers audités**:
+
 - `src/bbia_sim/global_config.py`
 - `src/bbia_sim/mapping_reachy.py`
 
@@ -171,6 +183,7 @@ if robot_api and hasattr(robot_api.media, "record_audio"):
    - ⚠️ Pas de test explicite pour limites PID plausibles (SDK utilise `kp=17.11` pour stewart)
 
 **Recommandations**:
+
 1. Tests limites PID (vérifier gains kp, kv conformes SDK)
 2. Ajouter validation watchdog timeout (SDK: ~100ms max)
 
@@ -183,10 +196,12 @@ if robot_api and hasattr(robot_api.media, "record_audio"):
 **Estimation**: 4 heures
 
 **Fichiers audités**:
+
 - `src/bbia_sim/sim/models/reachy_mini_REAL_OFFICIAL.xml`
 - `src/bbia_sim/sim/models/reachy_mini.xml`
 
 **Fichiers référence**:
+
 - `/tmp/reachy_ref/src/reachy_mini/descriptions/reachy_mini/mjcf/reachy_mini.xml@84c40c3`
 - `/tmp/reachy_ref/src/reachy_mini/descriptions/reachy_mini/urdf/robot.urdf@84c40c3`
 
@@ -200,6 +215,7 @@ if robot_api and hasattr(robot_api.media, "record_audio"):
    - ⚠️ Vérifier meshdir path: BBIA utilise `../assets/reachy_official`, référence utilise `assets`
 
 **Recommandations**:
+
 1. Vérifier chemins meshes (aligner avec structure SDK si nécessaire)
 2. Ignorer linters Python pour fichiers XML (ajouter `.ruffignore`, exclure black)
 
@@ -212,10 +228,12 @@ if robot_api and hasattr(robot_api.media, "record_audio"):
 **Estimation**: 2 heures
 
 **Fichiers audités**:
+
 - `src/bbia_sim/bbia_behavior.py`
 - `src/bbia_sim/bbia_adaptive_behavior.py`
 
 **Issues détectées**:
+
 1. **HIGH - Tests échouent**: `test_bbia_behavior.py`
 
 **Recommandations**: Corriger tests unitaires, vérifier mocks
@@ -229,10 +247,12 @@ if robot_api and hasattr(robot_api.media, "record_audio"):
 **Estimation**: 2 heures
 
 **Fichiers audités**:
+
 - `src/bbia_sim/backends/reachy_mini_backend.py` (déjà audité)
 - `src/bbia_sim/robot_factory.py`
 
 **Issues détectées**:
+
 1. **HIGH - Tests échouent**: `test_reachy_mini_backend.py`
 
 **Recommandations**: Corriger tests unitaires
@@ -283,9 +303,11 @@ python scripts/audit_reachy_integration.py
 ## 📋 PR TEMPLATE
 
 ### Title
+
 `fix(audit): [MODULE] - [DESCRIPTION]`
 
 ### Body
+
 ```markdown
 ## 🔍 Audit BBIA → Reachy Integration
 
@@ -309,6 +331,7 @@ python scripts/audit_reachy_integration.py
 ```
 
 ### Reviewers suggérés
+
 @[expert-robotique]
 
 ---
@@ -316,4 +339,3 @@ python scripts/audit_reachy_integration.py
 **Généré par**: Script audit automatisé
 **Version**: 1.0
 **Date**: Oct / Nov. 2025
-

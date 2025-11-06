@@ -38,9 +38,11 @@ Bienvenue dans la communauté BBIA-SIM ! Ce guide vous aidera à contribuer effi
 Nous avons des templates pour faciliter la contribution :
 
 ### 🐛 Signaler un Bug
+
 **Template** : `.github/ISSUE_TEMPLATE/bug_report.md`
 
 Utilisez ce template pour :
+
 - Décrire clairement le problème
 - Fournir des étapes pour reproduire
 - Indiquer l'environnement (OS, Python, version BBIA)
@@ -49,9 +51,11 @@ Utilisez ce template pour :
 **Lien direct** : [Créer un bug report](https://github.com/arkalia-luna-system/bbia-sim/issues/new?template=bug_report.md)
 
 ### ✨ Proposer une Fonctionnalité
+
 **Template** : `.github/ISSUE_TEMPLATE/feature_request.md`
 
 Utilisez ce template pour :
+
 - Décrire la fonctionnalité souhaitée
 - Expliquer le problème/besoin
 - Identifier les modules concernés
@@ -60,17 +64,21 @@ Utilisez ce template pour :
 **Lien direct** : [Créer une feature request](https://github.com/arkalia-luna-system/bbia-sim/issues/new?template=feature_request.md)
 
 ### ❓ Poser une Question
+
 **Template** : `.github/ISSUE_TEMPLATE/question.md` (à créer si besoin)
 
 Pour les questions générales :
+
 - Utilisez le label `question` sur une issue standard
 - Référencez la documentation pertinente
 - Soyez précis sur votre environnement
 
 ### 🤝 Pull Request
+
 **Template** : `.github/PULL_REQUEST_TEMPLATE.md`
 
 Avant d'ouvrir une PR :
+
 - ✅ Lisez le template complet
 - ✅ Cochez tous les éléments pertinents
 - ✅ Assurez-vous que les tests passent
@@ -79,9 +87,11 @@ Avant d'ouvrir une PR :
 **Lien direct** : [Créer une Pull Request](https://github.com/arkalia-luna-system/bbia-sim/compare)
 
 ### 🎯 First Run / Onboarding
+
 **Template** : `.github/ISSUE_TEMPLATE/first_run.yml`
 
 Utilisez ce template après votre première installation :
+
 - Signalez les problèmes d'onboarding
 - Partagez votre environnement
 - Suggérez des améliorations
@@ -116,6 +126,7 @@ git checkout -b feature/nom-de-votre-contribution
 ```
 
 **Convention de nommage** :
+
 - `feature/` - Nouvelle fonctionnalité
 - `fix/` - Correction de bug
 - `docs/` - Documentation
@@ -125,13 +136,15 @@ git checkout -b feature/nom-de-votre-contribution
 ### 3. Développer
 
 **Standards de code** :
+
 - ✅ Formatage : `black` (88 colonnes)
 - ✅ Linting : `ruff`
 - ✅ Type hints : `mypy` (si possible)
 - ✅ Tests : Au moins un test pour nouvelle fonctionnalité
 
 **Structure de commit** :
-```
+
+```text
 type(scope): description courte
 
 Description plus longue si nécessaire
@@ -157,6 +170,7 @@ pytest tests/test_bbia_voice.py -v
 ### 5. Vérifier avant PR
 
 **Checklist** :
+
 - [ ] Code formaté avec `black`
 - [ ] Linting OK (`ruff check`)
 - [ ] Tests passent (`pytest`)
@@ -178,6 +192,7 @@ pytest tests/test_bbia_voice.py -v
 ### Pour les Débutants 🟢
 
 **Bons premiers pas** :
+
 - 📝 Documentation : Améliorer les guides, corriger les fautes
 - 🧪 Tests : Ajouter des tests pour modules non couverts
 - 🌐 Traduction : Aider à traduire la documentation
@@ -188,6 +203,7 @@ pytest tests/test_bbia_voice.py -v
 ### Pour les Experts 🔴
 
 **Domaines avancés** :
+
 - 🏗️ Architecture : Améliorer la structure modulaire
 - ⚡ Performance : Optimiser les hot-paths
 - 🤖 Robot : Améliorer l'intégration Reachy Mini
@@ -198,11 +214,13 @@ pytest tests/test_bbia_voice.py -v
 ## 🎯 Roadmap Publique
 
 La roadmap est documentée dans :
+
 - `docs/reference/project-status.md` → Section "Axes futurs"
 - `docs/reference/PROJECT_HISTORY.md` → Historique des releases
 - Issues GitHub avec label `roadmap`
 
 **Principes** :
+
 - 3–5 items par release
 - Statuts clairs (planifié, en cours, fait)
 - Priorités explicites
@@ -221,11 +239,13 @@ La roadmap est documentée dans :
 ### Code Review
 
 **En tant que contributeur** :
+
 - ✅ Répondez rapidement aux commentaires
 - ✅ Apprenez des suggestions
 - ✅ Soyez ouvert au feedback
 
 **En tant que reviewer** :
+
 - ✅ Soyez constructif et bienveillant
 - ✅ Expliquez vos suggestions
 - ✅ Félicitez les bonnes contributions
@@ -237,12 +257,14 @@ La roadmap est documentée dans :
 ### Standards de Documentation
 
 **Markdown** :
+
 - ✅ Utilisez des titres hiérarchiques (`##`, `###`)
 - ✅ Ajoutez des exemples de code commentés
 - ✅ Référencez les fichiers sources (numéros de lignes si pertinent)
 - ✅ Utilisez des diagrammes Mermaid pour l'architecture
 
 **Docstrings Python** :
+
 ```python
 def fonction_exemple(param1: str, param2: int) -> bool:
     """Description courte de la fonction.
@@ -280,6 +302,7 @@ def fonction_exemple(param1: str, param2: int) -> bool:
 ### Écrire des Tests
 
 **Structure** :
+
 ```python
 import pytest
 from bbia_sim.robot_factory import RobotFactory
@@ -302,6 +325,7 @@ class TestMaFonctionnalite:
 ```
 
 **Markers pytest** :
+
 - `@pytest.mark.unit` - Tests unitaires rapides
 - `@pytest.mark.fast` - Tests rapides (< 1s)
 - `@pytest.mark.e2e` - Tests end-to-end (peuvent être longs)
@@ -323,18 +347,21 @@ open htmlcov/index.html
 ## 🔗 Ressources
 
 ### Documentation
+
 - **Guide Débutant** : `docs/guides/GUIDE_DEBUTANT.md`
 - **Guide Avancé** : `docs/guides/GUIDE_AVANCE.md`
 - **Architecture** : `docs/development/architecture/ARCHITECTURE_DETAILED.md`
 - **Conformité SDK** : `docs/quality/compliance/CONFORMITE_REACHY_MINI_COMPLETE.md`
 
 ### Outils
+
 - **CI/CD** : `.github/workflows/ci.yml`
 - **Tests** : `pytest tests/ -v`
 - **Linting** : `ruff check src/`
 - **Formatage** : `black src/`
 
 ### Communauté
+
 - **Issues** : [GitHub Issues](https://github.com/arkalia-luna-system/bbia-sim/issues)
 - **Discussions** : (À créer si besoin)
 - **Releases** : [GitHub Releases](https://github.com/arkalia-luna-system/bbia-sim/releases)
@@ -344,6 +371,7 @@ open htmlcov/index.html
 ## ❓ Questions ?
 
 Si vous avez des questions :
+
 1. 📖 Consultez la documentation dans `docs/`
 2. 🔍 Recherchez dans les issues existantes
 3. 💬 Créez une issue avec le label `question`

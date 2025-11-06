@@ -95,6 +95,7 @@ pip install reachy-mini-rust-kinematics
 ### 2. Configuration du daemon
 
 #### Option A : Daemon Zenoh (recommandé)
+
 ```bash
 # Démarrer le daemon Zenoh
 reachy-mini-daemon --backend zenoh
@@ -104,6 +105,7 @@ curl http://localhost:8000/development/api/state/full
 ```
 
 #### Option B : Bridge FastAPI → Zenoh
+
 ```python
 # Utiliser le bridge intégré BBIA-SIM
 from bbia_sim.daemon.bridge import ZenohBridge
@@ -115,6 +117,7 @@ bridge.start()
 ### 3. Modification de configuration
 
 #### Fichier de configuration
+
 ```python
 # config/robot_config.py
 ROBOT_CONFIG = {
@@ -128,6 +131,7 @@ ROBOT_CONFIG = {
 ```
 
 #### Variables d'environnement
+
 ```bash
 export BBIA_ROBOT_BACKEND=reachy_mini
 export BBIA_DAEMON_URL=http://localhost:8000
@@ -161,10 +165,12 @@ emotions.set_emotion("excited", 0.9)
 ### Limitations matérielles
 
 #### Fréquence de contrôle
+
 - **Simulation** : 100Hz (10ms)
 - **Robot réel** : 50Hz (20ms) - limitation matérielle
 
 #### Sécurité
+
 ```python
 # Ajouter des limites de sécurité
 SAFETY_LIMITS = {
@@ -176,6 +182,7 @@ SAFETY_LIMITS = {
 ```
 
 #### Test "Dry Run"
+
 ```python
 # Mode test sans mouvement réel
 robot.set_dry_run_mode(True)
@@ -186,11 +193,13 @@ robot.set_dry_run_mode(False)  # Retour au mode normal
 ### Communication réseau
 
 #### Latence
+
 - **Simulation locale** : <1ms
 - **Robot Wi-Fi** : 5-20ms
 - **Robot USB** : 1-5ms
 
 #### Stabilité
+
 ```python
 # Gestion des déconnexions
 def handle_disconnection():
@@ -346,18 +355,21 @@ LOGGING_CONFIG = {
 ## Checklist de migration
 
 ### Pré-migration
+
 - [ ] SDK officiel installé
 - [ ] Daemon Zenoh configuré
 - [ ] Tests de connexion réussis
 - [ ] Configuration BBIA mise à jour
 
 ### Migration
+
 - [ ] Backend changé vers `reachy_mini`
 - [ ] Tests de conformité SDK passés
 - [ ] Tests de performance validés
 - [ ] Modules BBIA testés
 
 ### Post-migration
+
 - [ ] Monitoring configuré
 - [ ] Logs de debug activés
 - [ ] Optimisations appliquées
@@ -370,6 +382,7 @@ LOGGING_CONFIG = {
 ### Problèmes courants
 
 #### 1. Connexion daemon
+
 ```bash
 # Vérifier le statut du daemon
 curl http://localhost:8000/development/api/state/full
@@ -379,6 +392,7 @@ sudo systemctl restart reachy-mini-daemon
 ```
 
 #### 2. Latence élevée
+
 ```python
 # Optimiser la configuration réseau
 ZENOH_CONFIG = {
@@ -389,6 +403,7 @@ ZENOH_CONFIG = {
 ```
 
 #### 3. Erreurs de joint
+
 ```python
 # Vérifier les limites des joints
 joint_limits = robot.get_joint_limits()
@@ -403,6 +418,7 @@ for joint, limits in joint_limits.items():
 La migration de BBIA-SIM vers le robot Reachy Mini réel est facilitée par l'architecture RobotAPI unifiée.
 
 Points clés :
+
 - aucune modification des modules BBIA nécessaire
 - conformité SDK garantie
 - tests automatisés pour validation
@@ -413,3 +429,10 @@ Le projet BBIA-SIM est prêt pour le robot réel.
 ---
 
 **Dernière mise à jour** : Oct / Nov. 2025
+
+---
+
+## 🎯 Navigation
+
+**Retour à** : [README Documentation](../README.md)  
+**Voir aussi** : [Guide Avancé](../guides/GUIDE_AVANCE.md) • [Architecture](../development/architecture/ARCHITECTURE_OVERVIEW.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)

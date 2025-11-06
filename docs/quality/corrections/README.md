@@ -20,4 +20,3 @@
 
 **Retour à** : [README Documentation](../README.md)  
 **Voir aussi** : [`docs/reference/INDEX_THEMATIQUE.md`](../reference/INDEX_THEMATIQUE.md)
-

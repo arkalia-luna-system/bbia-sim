@@ -48,6 +48,7 @@
 ```
 
 **Règles :**
+
 - Espace après `#`
 - Pas de ponctuation finale
 - Emojis uniquement si pertinents
@@ -56,6 +57,7 @@
 ### Listes
 
 **Listes à puces modernes :**
+
 ```markdown
 • ✅ Point clé avec emoji
 • 🔄 Autre point avec emoji
@@ -63,6 +65,7 @@
 ```
 
 **Listes numérotées :**
+
 ```markdown
 1. Première étape
 2. Deuxième étape
@@ -70,6 +73,7 @@
 ```
 
 **Listes imbriquées :**
+
 ```markdown
 - Item principal
   - Sous-item
@@ -80,12 +84,16 @@
 
 ```markdown
 ```python
+
 # Toujours spécifier le langage
+
 code_here()
-```
+
+```text
 ```
 
 **Langages courants :**
+
 - `python` pour code Python
 - `bash` pour commandes shell
 - `markdown` pour exemples MD
@@ -107,6 +115,7 @@ code_here()
 ### Emojis Stratégiques
 
 **Dans les titres :**
+
 - 📋 Informations / Listes
 - 🎯 Objectifs / Buts
 - ✅ Accomplissements / Succès
@@ -128,6 +137,7 @@ code_here()
 - 🔵 Hardware / Matériel
 
 **Dans les listes :**
+
 - ✅ Confirmé / Vrai
 - ❌ Faux / Erreur
 - ⚠️ À vérifier
@@ -141,16 +151,19 @@ code_here()
 ### Formatage Texte
 
 **Gras pour l'emphase :**
+
 ```markdown
 **Texte important** - Fonctionnalités, métriques
 ```
 
 **Italique pour notes :**
+
 ```markdown
 *Note explicative* - Informations complémentaires
 ```
 
 **Code inline :**
+
 ```markdown
 `nom_variable` - Variables, fonctions, classes
 ```
@@ -191,6 +204,7 @@ code_here()
 ```
 
 **Règles :**
+
 - Alignement avec `|`
 - Espaces autour des pipes
 - En-tête séparé par `---`
@@ -222,6 +236,7 @@ code_here()
 ```
 
 **Règles :**
+
 - Chemins relatifs pour fichiers internes
 - URLs complètes pour externes
 - Texte descriptif (pas "ici", "ce lien")
@@ -320,9 +335,11 @@ BBIA-SIM est un moteur cognitif Python avec **12 émotions robotiques**.
 ## 🚀 Quick Start
 
 ```bash
+
 pip install -e .[dev]
 python examples/demo_emotion_ok.py
-```
+
+```xml
 
 <div align="center">
 
@@ -343,7 +360,9 @@ BBIA-SIM est un moteur...  # Pas de structure
 - Point 2
 
 ```code
+
 pip install
+
 ```  # Langage manquant
 ```
 

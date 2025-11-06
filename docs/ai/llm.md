@@ -140,6 +140,7 @@ BBIA: "Bonjour ! Content de te revoir. Comment s'est passée ta journée ?"
 ```
 
 Avantages LLM :
+
 - réponses naturelles et variées
 - compréhension du contexte
 - référence à l'historique conversationnel
@@ -183,6 +184,7 @@ bbia.enable_llm_chat("./models/mistral-7b-instruct")
 ### Personnalisation réponses
 
 Le LLM utilise ces paramètres par défaut :
+
 - `max_new_tokens=150` : Limite longueur réponse
 - `temperature=0.7` : Créativité modérée
 - `top_p=0.9` : Nucleus sampling
@@ -207,12 +209,14 @@ outputs = self.chat_model.generate(
 ### Ressources nécessaires
 
 **Mistral 7B Instruct :**
+
 - RAM : ~14 GB
 - Premier chargement : 1-2 minutes
 - Génération : ~1-3 secondes/réponse
 - Disk : ~14GB (cache modèle)
 
 **Optimisations :**
+
 - Apple Silicon (M1/M2/M3) : Accélération MPS automatique
 - CUDA : Accélération GPU si disponible
 - Quantization : Réduire RAM à ~8GB (qualité légèrement réduite)
@@ -310,3 +314,9 @@ response = bbia.chat("Bonjour")
 
 Status : phase 2 complétée - LLM conversationnel disponible
 
+---
+
+## 🎯 Navigation
+
+**Retour à** : [README Documentation](../README.md)  
+**Voir aussi** : [Modules IA](modules.md) • [Guide Chat BBIA](../guides/GUIDE_CHAT_BBIA.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)

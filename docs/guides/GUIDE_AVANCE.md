@@ -2,14 +2,14 @@
 
 **Date** : Oct / Nov. 2025
 
-> Liens utiles: `docs/reference/INDEX_THEMATIQUE.md` · `docs/reference/project-status.md`
+> **Liens utiles** : [`docs/reference/INDEX_THEMATIQUE.md`](../reference/INDEX_THEMATIQUE.md) · [`docs/reference/project-status.md`](../reference/project-status.md)
 
-> Compatibilité Python et CI
+> **Compatibilité Python et CI**
 >
-> - Python: 3.11+
-> - CI: `.github/workflows/ci.yml`
-> - Setup rapide:
-> ```bash
+> - **Python** : 3.11+
+> - **CI** : `.github/workflows/ci.yml`
+> - **Setup rapide** :
+>   ```bash
 >   pyenv install 3.11.9 && pyenv local 3.11.9
 >   python -m pip install --upgrade pip
 >   pip install -e .
@@ -17,8 +17,30 @@
 
 ## Pour développeurs avancés
 
-**Version :** 1.3.2
+**Version :** 1.3.2  
 **Public cible :** développeurs expérimentés souhaitant exploiter les fonctionnalités de BBIA
+
+---
+
+## 📋 Table des Matières
+
+- [Guide avancé - BBIA-SIM](#guide-avancé---bbia-sim)
+  - [Pour développeurs avancés](#pour-développeurs-avancés)
+  - [📋 Table des Matières](#-table-des-matières)
+  - [Architecture détaillée](#architecture-détaillée)
+    - [Backend unifié](#backend-unifié)
+      - [Flux Backend Unifié](#flux-backend-unifié)
+    - [Modules BBIA avancés](#modules-bbia-avancés)
+      - [Architecture Modules BBIA](#architecture-modules-bbia)
+      - [1. Module Émotions](#1-module-émotions)
+      - [2. Module Comportements](#2-module-comportements)
+      - [3. Module Vision](#3-module-vision)
+    - [Tests avancés](#tests-avancés)
+    - [Optimisations de performance](#optimisations-de-performance)
+  - [Migration simulation → robot réel](#migration-simulation--robot-réel)
+  - [API avancée](#api-avancée)
+    - [Conformité SDK officiel](#conformité-sdk-officiel)
+  - [🎯 Navigation](#-navigation)
 
 ---
 
@@ -74,11 +96,12 @@ flowchart TB
     style ACTIONS fill:#87CEEB
 ```
 
-Avantages :
-- développement sans matériel
-- tests automatisés
-- debugging facilité
-- migration transparente vers robot réel
+**Avantages :**
+
+- Développement sans matériel
+- Tests automatisés
+- Debugging facilité
+- Migration transparente vers robot réel
 
 ### Modules BBIA avancés
 
@@ -127,6 +150,7 @@ emotions.set_emotion('calm', intensity=0.4)
 ```
 
 **Flux Émotions** :
+
 ```mermaid
 flowchart LR
     INPUT[Input Utilisateur] --> SENTIMENT[Analyse Sentiment<br/>RoBERTa]
@@ -215,3 +239,9 @@ Voir : [Conformité SDK Complète](../quality/compliance/CONFORMITE_REACHY_MINI_
 
 **Pour plus d'infos :** Toute la documentation dans `docs/` 📚
 
+---
+
+## 🎯 Navigation
+
+**Retour à** : [README Documentation](../README.md)  
+**Voir aussi** : [Guide Débutant](GUIDE_DEBUTANT.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)

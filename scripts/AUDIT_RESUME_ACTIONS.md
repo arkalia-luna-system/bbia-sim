@@ -8,11 +8,13 @@
 ### 1. Scripts Archivés (Non utilisés)
 
 #### `start_api.py` → `scripts/_archived/start_api.py`
+
 - **Raison**: Aucune référence dans le codebase
 - **Alternative**: `scripts/start_public_api.py`
 - **Impact**: Aucun (non utilisé)
 
 #### `kill_greedy_processes.sh` → `scripts/_archived/kill_greedy_processes.sh`
+
 - **Raison**: Aucune référence dans le codebase
 - **Alternative**: `scripts/smart_process_cleanup.sh` ou `python scripts/process_manager.py stop`
 - **Impact**: Aucun (non utilisé)
@@ -20,6 +22,7 @@
 ### 2. Scripts Modifiés
 
 #### `kill_mujoco_viewers.sh`
+
 - **Action**: Warning de dépréciation ajouté
 - **Raison**: Utilisé dans `TEST_GIF_SCRIPT.md` mais déprécié
 - **Alternative recommandée**: `python scripts/process_manager.py stop`
@@ -36,11 +39,13 @@
 ## 📊 Résultats
 
 ### Avant
+
 - 69 scripts dans `scripts/`
 - 2 scripts obsolètes actifs
 - 1 script dangereux sans warning
 
 ### Après
+
 - 67 scripts actifs dans `scripts/`
 - 2 scripts archivés dans `scripts/_archived/`
 - 1 script avec warning de dépréciation
@@ -65,4 +70,3 @@
 - Tous les MD ont été mis à jour avec les nouvelles informations
 
 **Statut**: ✅ **COMPLET**
-

@@ -47,6 +47,7 @@ graph TB
 ```
 
 ## REST
+
 - Pagination: `?limit=50&offset=0`
 - Filtre: paramètres explicites (`?emotion=happy`), pas d'opérateur caché
 - Codes HTTP: 200/400/401/404/429/500 (minimaux)
@@ -73,6 +74,7 @@ sequenceDiagram
 ```
 
 ## WebSocket
+
 - Channel: `/ws/telemetry`
 - Messages typés (`type`): ping/pong/status/telemetry
 - Versionnement: champ `schema_version` (semver), compat descendante sur 1 version
@@ -102,6 +104,7 @@ sequenceDiagram
 ```
 
 ## Sécurité
+
 - Auth Bearer (facultatif en dev)
 - CORS strict côté REST
 
@@ -129,6 +132,7 @@ flowchart LR
 - **État par axe** : `docs/reference/project-status.md` → API & SDK
 
 ### Curl rapide
+
 ```bash
 curl -s http://localhost:8000/health || true
 curl -s http://localhost:8000/openapi.json | head -n 20
@@ -137,3 +141,10 @@ curl -s http://localhost:8000/openapi.json | head -n 20
 ---
 
 **Dernière mise à jour** : Oct / Nov. 2025
+
+---
+
+## 🎯 Navigation
+
+**Retour à** : [README Documentation](../README.md)  
+**Voir aussi** : [Guide Intégration](../integration.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)

@@ -48,6 +48,7 @@ mjpython -m reachy_mini.daemon.app.main --sim --scene minimal
 - ✅ Import conditionnel : `REACHY_MINI_AVAILABLE` (fallback si SDK non installé)
 
 **Preuve** :
+
 ```python
 # Ligne 16-23
 try:
@@ -79,7 +80,6 @@ except ImportError:
 - **Lite (USB)**: `-p <serial_port>` si auto‑détection échoue
 
 Conclusion: aucune anomalie détectée; vos implémentations (backend, API, bridge) restent conformes et prêtes pour robot réel.
-
 
 ### 2. Dépendances SDK Officiel ✅
 
@@ -113,21 +113,25 @@ Conclusion: aucune anomalie détectée; vos implémentations (backend, API, brid
 ### 1. Vision (YOLO + MediaPipe) ✅ COMPATIBLE
 
 **Modules** :
+
 - `ultralytics>=8.0.0` (YOLOv8)
 - `mediapipe>=0.10.0` (Face Detection)
 
 **Compatibilité SDK** :
+
 - ✅ **Pas de conflit** : SDK Reachy Mini n'utilise pas YOLO/MediaPipe
 - ✅ **Disponibilité** : Dans venv principal (`pyproject.toml`) OU venv-vision-py310 (au choix)
 - ✅ **Import conditionnel** : Modules chargés uniquement si disponibles, fallback gracieux si indisponible
 - ✅ **Pas de crash** : Si YOLO/MediaPipe absents → fallback simulation automatique
 
 **Hardware Reachy Mini (Raspberry Pi 5)** :
+
 - ⚠️ **YOLOv8n** : OK (modèle nano léger, ~6MB)
 - ⚠️ **YOLOv8s/m** : Peut être lent (nécessite CPU puissant)
 - ✅ **MediaPipe** : Optimisé pour mobile/RPi, fonctionne bien
 
 **Recommandation** :
+
 - ✅ Garder YOLOv8n (modèle nano) pour performance
 - ✅ MediaPipe fonctionne parfaitement sur RPi 5
 
@@ -136,19 +140,23 @@ Conclusion: aucune anomalie détectée; vos implémentations (backend, API, brid
 ### 2. LLM (Mistral 7B, Llama 3) ⚠️ LIMITATIONS HARDWARE
 
 **Modules** :
+
 - `transformers>=4.30.0`
 - `torch>=2.0.0`
 
 **Compatibilité SDK** :
+
 - ✅ **Pas de conflit** : SDK Reachy Mini n'utilise pas ces modèles
 - ✅ **Isolation** : Utilisé dans venv principal (optionnel)
 
 **Hardware Reachy Mini (Raspberry Pi 5)** :
+
 - ❌ **Mistral 7B** : 14GB RAM requise → RPi 5 a seulement 8GB max
 - ❌ **Llama 3 8B** : 16GB RAM requise → Trop lourd
 - ✅ **Solution** : Utiliser LLM léger (Phi-2, TinyLlama) ou API externe
 
 **Recommandation** :
+
 - ✅ **Option 1** : LLM léger (Phi-2 2.7B, ~5GB RAM) - Compatible RPi 5
 - ✅ **Option 2** : LLM via API (Hugging Face Inference API, gratuite)
 - ⚠️ **Option 3** : Désactiver LLM local si RAM insuffisante
@@ -158,20 +166,24 @@ Conclusion: aucune anomalie détectée; vos implémentations (backend, API, brid
 ### 3. Audio (Whisper + Coqui TTS) ✅ COMPATIBLE
 
 **Modules** :
+
 - `openai-whisper>=20231117` (STT)
 - `TTS` (Coqui TTS, dans venv-voice)
 
 **Compatibilité SDK** :
+
 - ✅ **Pas de conflit** : SDK utilise `robot.media.speaker` / `robot.media.microphone` (différent)
 - ✅ **Isolation recommandée** : Coqui TTS peut être dans `venv-voice` séparé (évite conflits numpy)
 - ✅ **Fallback** : Whisper optionnel, fallback vers `speech_recognition` si indisponible
 
 **Hardware Reachy Mini (Raspberry Pi 5)** :
+
 - ⚠️ **Whisper base/tiny** : OK (modèles légers)
 - ⚠️ **Whisper small/medium** : Peut être lent
 - ✅ **Coqui TTS** : OK (génération WAV, puis lecture via SDK)
 
 **Recommandation** :
+
 - ✅ Utiliser Whisper "tiny" ou "base" pour performance
 - ✅ Générer WAV avec Coqui TTS, puis `robot.media.play_audio()` (SDK)
 
@@ -182,22 +194,28 @@ Conclusion: aucune anomalie détectée; vos implémentations (backend, API, brid
 **Module à ajouter** : `deepface`
 
 **Compatibilité SDK** :
+
 - ✅ **Pas de conflit** : SDK Reachy Mini n'utilise pas DeepFace
 - ✅ **Dépendances** : `tensorflow` ou `onnxruntime` (déjà installés via MediaPipe/Whisper)
 - ✅ **Isolation** : Peut être ajouté dans `venv-vision-py310`
 
 **Hardware Reachy Mini (Raspberry Pi 5)** :
+
 - ⚠️ **DeepFace avec TensorFlow** : Peut être lent (première analyse ~2-3s)
 - ✅ **DeepFace avec ONNX** : Plus rapide (~1s)
 - ✅ **Recommandé** : Utiliser backend ONNX pour RPi 5
 
 **Recommandation** :
+
 - ✅ **Ajouter DeepFace** dans `venv-vision-py310` :
+
   ```bash
  source venv-vision-py310/bin/activate
   pip install deepface
   ```
+
 - ✅ **Utiliser backend ONNX** :
+
   ```python
   from deepface import DeepFace
   result = DeepFace.verify(img1_path, img2_path, model_name="VGG-Face", detector_backend="opencv", enforce_detection=False)
@@ -214,17 +232,20 @@ Conclusion: aucune anomalie détectée; vos implémentations (backend, API, brid
 **État** : ✅ **FAIT** - Module créé et intégré dans `BBIAVision`
 
 **Fichiers vérifiés (Oct / Nov. 2025)** :
+
 - ✅ `src/bbia_sim/pose_detection.py` (284 lignes) - Module complet
 - ✅ `src/bbia_sim/bbia_vision.py` (lignes 228-240, 719-738) - Intégration complète
 - ✅ `scripts/test_pose_detection.py` - Script de test
 
 **Fonctionnalités** :
+
 - ✅ Détection 33 points clés corps (`detect_pose()`)
 - ✅ Détection gestes (`detect_gesture()` - bras levés, debout, assis)
 - ✅ Détection posture (`detect_posture()`)
 - ✅ Utilisé automatiquement dans `BBIAVision.scan_environment()`
 
 **Compatibilité SDK** :
+
 - ✅ **Pas de conflit** : MediaPipe déjà installé et utilisé
 - ✅ **Pas d'installation supplémentaire** : Déjà dans venv-vision
 - ✅ **Optimisé** : MediaPipe Pose optimisé pour mobile/RPi
@@ -238,10 +259,12 @@ Conclusion: aucune anomalie détectée; vos implémentations (backend, API, brid
 ### Analyse NumPy/Scipy
 
 **SDK Reachy Mini** :
+
 - Utilise `numpy` (via `reachy-mini-rust-kinematics`)
 - Utilise `scipy>=1.15.3` (dans pyproject.toml)
 
 **Modules IA** :
+
 - `numpy>=1.24.0` (dans pyproject.toml)
 - `scipy>=1.15.3` (dans pyproject.toml)
 
@@ -255,9 +278,11 @@ Conclusion: aucune anomalie détectée; vos implémentations (backend, API, brid
 ### Analyse Torch/Transformers
 
 **SDK Reachy Mini** :
+
 - ❌ N'utilise pas `torch` ou `transformers`
 
 **Modules IA** :
+
 - `torch>=2.0.0`
 - `transformers>=4.30.0`
 
@@ -271,9 +296,11 @@ Conclusion: aucune anomalie détectée; vos implémentations (backend, API, brid
 ### Analyse OpenCV
 
 **SDK Reachy Mini** :
+
 - Utilise `cv2_enumerate_cameras>=1.2.1` (pour lister caméras)
 
 **Modules IA** :
+
 - `opencv-python>=4.8.0` (pour vision)
 
 **Conflit potentiel** : ❌ **AUCUN**
@@ -345,12 +372,14 @@ Conclusion: aucune anomalie détectée; vos implémentations (backend, API, brid
 **Ton projet est 100% COMPATIBLE avec le SDK officiel Reachy Mini** ✅
 
 **Points forts** :
+
 - ✅ Architecture modulaire bien conçue
 - ✅ Isolation des dépendances (venv séparés)
 - ✅ Imports conditionnels (fallbacks)
 - ✅ Backend SDK conforme
 
 **Ajouts recommandés (sans risque)** :
+
 1. ✅ **DeepFace** - Reconnaissance visage + émotions ✅ **AJOUTÉ ET OPÉRATIONNEL**
 2. ✅ **MediaPipe Pose** - Détection postures ✅ **AJOUTÉ ET OPÉRATIONNEL**
 3. ✅ **LLM léger** - Phi-2 et TinyLlama configurés pour RPi 5 ✅ **AJOUTÉ ET OPÉRATIONNEL**
@@ -362,4 +391,3 @@ Conclusion: aucune anomalie détectée; vos implémentations (backend, API, brid
 **État** : ✅ **100% PRÊT** - Toutes les améliorations recommandées sont implémentées !
 
 **Résumé final** : ✅ **100% COMPLET** - DeepFace, MediaPipe Pose, LLM léger, Dashboard Gradio, Mémoire persistante, Tests sécurité, Benchmarks CI : TOUT EST FAIT
-

@@ -137,20 +137,40 @@ mjpython examples/demo_chat_bbia_3d.py
 > `mjpython` est installé automatiquement avec MuJoCo et permet d'afficher la fenêtre 3D.
 > Si `mjpython` n'est pas disponible, utilisez `python` (le viewer peut ne pas s'ouvrir en mode headless).
 
----
+### 5. 💬 Chat intelligent avec BBIA
 
-## Quick start - API publique
+Une fois le dashboard lancé ou les modules installés, vous pouvez discuter avec BBIA de plusieurs façons :
 
 ```bash
-# Démarrer l’API publique (mode dev)
-python deployment/public_api.py --dev
+# Chat simple via terminal
+python examples/demo_chat_simple.py
 
-# Vérifier la santé
-curl http://localhost:8000/health
-
-# (Optionnel) Vérifier config rapide
-python deployment/public_api.py --check
+# Chat complet avec Hugging Face
+python examples/demo_chat_bbia.py
 ```
+
+> 💡 **Astuce** : Le chat utilise l'intelligence artificielle pour comprendre vos messages et répondre naturellement. Voir le [Guide Chat BBIA](GUIDE_CHAT_BBIA.md) pour plus de détails.
+
+---
+
+## 📚 Fonctionnalités principales
+
+### Émotions disponibles
+
+BBIA supporte 12 émotions robotiques :
+
+- 😊 `happy` - Joie
+- 😍 `excited` - Excitation
+- 🤔 `curious` - Curiosité
+- 😌 `calm` - Calme
+- 😢 `sad` - Tristesse
+- 😴 `tired` - Fatigue
+- 😰 `scared` - Peur
+- 😠 `angry` - Colère
+- 😮 `surprised` - Surprise
+- 😐 `neutral` - Neutre
+- 😊 `playful` - Espiègle
+- 🧐 `focused` - Concentré
 
 ### Variables d'environnement utiles
 
@@ -166,7 +186,7 @@ export BBIA_LLM_BACKEND=llama.cpp    # ou qwen
 
 ---
 
-## Questions fréquentes
+## ❓ Questions fréquentes
 
 ### Q : Je n'ai pas de robot Reachy Mini, ça marche ?
 
@@ -174,7 +194,7 @@ R : Oui, le mode simulation est inclus. Vous pouvez développer maintenant et te
 
 ### Q : C'est compatible Mac/Linux/Windows ?
 
-R : Mac/Linux : oui
+R : Mac/Linux : oui  
 Windows : à tester
 
 ### Q : Puis-je créer mes propres émotions ?
@@ -183,43 +203,21 @@ R : Oui, le système est extensible. Voir `examples/demo_emotion_ok.py`
 
 ---
 
-## Prochaines étapes
+## 🚀 Prochaines étapes
 
-1. Découvrir : [Architecture (vue d'ensemble)](../development/architecture/ARCHITECTURE_OVERVIEW.md)
-2. Créer : vos propres comportements avec `examples/demo_*`
-3. Comprendre : [Architecture détaillée](../development/architecture/ARCHITECTURE_DETAILED.md)
-4. Avancer : [Guide Avancé](GUIDE_AVANCE.md)
-5. Index thématique : `docs/reference/INDEX_THEMATIQUE.md`
-
-## 💬 Chat intelligent avec BBIA
-
-Une fois le dashboard lancé ou les modules installés, vous pouvez discuter avec BBIA de plusieurs façons :
-
-```bash
-# Chat simple via terminal
-python examples/demo_chat_simple.py
-
-# Chat complet avec Hugging Face
-python examples/demo_chat_bbia.py
-```
-
-## Émotions disponibles
-
-BBIA supporte 12 émotions robotiques :
-- 😊 `happy` - Joie
-- 😍 `excited` - Excitation
-- 🤔 `curious` - Curiosité
-- 😌 `calm` - Calme
-- 😢 `sad` - Tristesse
-- 😴 `tired` - Fatigue
-- 😰 `scared` - Peur
-- 😠 `angry` - Colère
-- 😮 `surprised` - Surprise
-- 😐 `neutral` - Neutre
-- 😊 `playful` - Espiègle
-- 🧐 `focused` - Concentré
+1. **Découvrir** : [Architecture (vue d'ensemble)](../development/architecture/ARCHITECTURE_OVERVIEW.md)
+2. **Créer** : vos propres comportements avec `examples/demo_*`
+3. **Comprendre** : [Architecture détaillée](../development/architecture/ARCHITECTURE_DETAILED.md)
+4. **Avancer** : [Guide Avancé](GUIDE_AVANCE.md)
+5. **Index thématique** : [Index Thématique](../reference/INDEX_THEMATIQUE.md)
 
 ---
 
 Besoin d'aide ? Ouvrez une issue sur GitHub ou rejoignez le Discord Reachy.
 
+---
+
+## 🎯 Navigation
+
+**Retour à** : [README Documentation](../README.md)  
+**Voir aussi** : [Guide Avancé](GUIDE_AVANCE.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)

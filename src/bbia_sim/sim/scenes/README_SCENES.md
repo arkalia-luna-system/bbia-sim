@@ -9,6 +9,7 @@
 ### **1. Créer Textures avec Procreate**
 
 Créez vos textures dans Procreate :
+
 - `mur.png` - Texture murale (2048x2048px recommandé)
 - `sol.png` - Texture sol
 - `plafond.png` - Texture plafond (optionnel)
@@ -22,6 +23,7 @@ Placez dans : `assets/textures/`
 Créez votre fichier XML dans : `src/bbia_sim/sim/scenes/votre_scene.xml`
 
 **Exemple minimal** :
+
 ```xml
 <mujoco model="ma_scene">
   <compiler angle="radian" meshdir="../../assets/reachy_official"/>
@@ -67,12 +69,14 @@ python examples/view_scene_piece.py src/bbia_sim/sim/scenes/votre_scene.xml
 ## 📚 Documentation Complète
 
 ### **Guides Procreate** (Recommandé pour créer vos textures) :
+
 - **🚀 Résumé Rapide** : `docs/simulations/RESUME_RAPIDE_PROCREATE.md` (2 minutes)
 - **📖 Guide Complet** : `docs/simulations/GUIDE_PROCREATE_SCENE_COMPLET.md` (référence complète)
 - **🤖 Conseils Robot** : `docs/simulations/CONSEILS_PROCREATE_ROBOT.md` (robot en texture)
 - **📚 Index** : `docs/simulations/INDEX_GUIDES_PROCREATE.md` (navigation tous guides)
 
 ### **Guides MuJoCo** :
+
 - **Guide Import Images** : `docs/simulations/GUIDE_IMPORT_IMAGES_MUJOCO.md`
 - **Dossier Textures** : `assets/textures/README.md`
 
@@ -81,6 +85,7 @@ python examples/view_scene_piece.py src/bbia_sim/sim/scenes/votre_scene.xml
 ## 🎮 Configuration Caméra
 
 Ajustez dans `examples/view_scene_piece.py` :
+
 - `azimuth` : Angle horizontal (180° = face)
 - `elevation` : Angle vertical (-15° = vue de haut)
 - `distance` : Distance caméra (2.5 = distance moyenne)

@@ -34,16 +34,19 @@
 **Statut BBIA-SIM:** ✅ **DÉJÀ IMPLÉMENTÉ**
 
 **Ce qui existe:**
+
 - Dashboard FastAPI avec HTTPS support (`dashboard.py`, `dashboard_advanced.py`)
 - Middleware sécurité avec CORS (`daemon/middleware.py`)
 - Configuration SSL via variables d'environnement (`daemon/config.py`)
 
 **Fichiers pertinents:**
+
 - `src/bbia_sim/daemon/app/main.py` (lignes 40-76: authentification)
 - `src/bbia_sim/daemon/middleware.py` (headers sécurité)
 - `src/bbia_sim/dashboard.py` (dashboard web)
 
 **Contribution possible:**
+
 - ✅ Patcher `verify_ssl=False` option dans FastAPI/uvicorn
 - ✅ Documentation SSL troubleshooting
 - ✅ Certificats auto-signés pour développement
@@ -58,6 +61,7 @@
 **Statut BBIA-SIM:** ✅ **DÉJÀ IMPLÉMENTÉ COMPLÈTEMENT**
 
 **Ce qui existe:**
+
 - ✅ Watchdog monitoring temps réel (`backends/reachy_mini_backend.py` lignes 278-370)
 - ✅ Heartbeat tracking avec timeout 2s
 - ✅ Automatic shutdown sur inactivité
@@ -65,11 +69,13 @@
 - ✅ Tests complets (`tests/test_watchdog_monitoring.py`)
 
 **Fichiers pertinents:**
+
 - `src/bbia_sim/backends/reachy_mini_backend.py` (méthodes `_start_watchdog`, `_watchdog_monitor`)
 - `docs/performance/WATCHDOG_IMPLEMENTATION.md`
 - `tests/test_watchdog_monitoring.py` (9 tests)
 
 **Contribution possible:**
+
 - ✅ Code complet prêt à contribuer
 - ✅ Documentation technique
 - ✅ Tests unitaires
@@ -84,17 +90,20 @@
 **Statut BBIA-SIM:** ✅ **DÉJÀ IMPLÉMENTÉ**
 
 **Ce qui existe:**
+
 - ✅ Fallback caméra automatique (`bbia_vision.py` lignes 150-199)
 - ✅ Priorité: SDK → OpenCV webcam → simulation
 - ✅ Support `BBIA_CAMERA_INDEX` et `BBIA_CAMERA_DEVICE`
 - ✅ Détection automatique type caméra (raspicam/arducam via OpenCV)
 
 **Fichiers pertinents:**
+
 - `src/bbia_sim/bbia_vision.py` (méthode `_capture_from_opencv_camera`)
 - `docs/development/setup/vision-webcam.md`
 - `scripts/test_webcam_simple.py`
 
 **Contribution possible:**
+
 - ✅ Logique fallback caméra
 - ✅ Support vid/pid personnalisés (issue #20)
 - ✅ Documentation configuration caméra
@@ -109,17 +118,20 @@
 **Statut BBIA-SIM:** ✅ **DÉJÀ IMPLÉMENTÉ COMPLÈTEMENT**
 
 **Ce qui existe:**
+
 - ✅ Endpoint `/development/api/state/present_body_yaw` (`daemon/app/routers/state.py` ligne 438)
 - ✅ Support body yaw dans `goto_target()` (`bbia_integration.py` lignes 346-373)
 - ✅ WebSocket `/ws/full` avec `with_body_yaw` option
 - ✅ Intégration émotions avec body yaw (`ecosystem.py` ligne 263)
 
 **Fichiers pertinents:**
+
 - `src/bbia_sim/daemon/app/routers/state.py` (endpoints body_yaw)
 - `src/bbia_sim/backends/reachy_mini_backend.py` (ligne 569: `set_joint_pos("yaw_body")`)
 - `src/bbia_sim/bbia_integration.py` (body yaw avec émotions)
 
 **Contribution possible:**
+
 - ✅ Endpoint REST complet
 - ✅ Documentation API
 - ✅ Tests d'intégration
@@ -134,21 +146,25 @@
 **Statut BBIA-SIM:** ⚠️ **PARTIEL**
 
 **Ce qui existe:**
+
 - ✅ Support `RecordedMoves` via Hugging Face Hub (`bbia_tools.py` lignes 414-459)
 - ✅ Endpoint `/development/api/move/play/recorded-move-dataset/{dataset}/{move_name}` (`move.py` ligne 212)
 - ⚠️ Pas de chaînage automatique entre danses (une danse à la fois)
 
 **Fichiers pertinents:**
+
 - `src/bbia_sim/bbia_tools.py` (`_execute_dance`)
 - `src/bbia_sim/daemon/app/routers/move.py` (play recorded move)
 - `examples/reachy_mini/recorded_moves_example.py`
 
 **Ce qui manque:**
+
 - ❌ Fonction de chaînage automatique avec transition fluide
 - ❌ Gestion queue de danses
 - ❌ Interpolation entre danses
 
 **Contribution possible:**
+
 - ✅ Améliorer `bbia_tools._execute_dance` pour chaînage
 - ✅ Endpoint queue de danses
 - ✅ Interpolation entre transitions
@@ -163,21 +179,25 @@
 **Statut BBIA-SIM:** ⚠️ **PARTIEL**
 
 **Ce qui existe:**
+
 - ✅ Support microphone SDK (`bbia_audio.py` lignes 147-249)
 - ✅ Support 4 microphones directionnels Reachy
 - ⚠️ Pas de firmware respeaker spécifique
 - ⚠️ Pas de DoA (Direction of Arrival) fonction
 
 **Fichiers pertinents:**
+
 - `src/bbia_sim/bbia_audio.py` (enregistrement audio SDK)
 - `src/bbia_sim/voice_whisper.py` (STT)
 
 **Ce qui manque:**
+
 - ❌ Firmware respeaker
 - ❌ Fonction DoA (détection direction son)
 - ❌ Documentation DoA
 
 **Contribution possible:**
+
 - ⚠️ Documentation améliorée microphone
 - ⚠️ Test firmware respeaker (si hardware disponible)
 
@@ -191,6 +211,7 @@
 **Statut BBIA-SIM:** ✅ **DÉJÀ IMPLÉMENTÉ COMPLÈTEMENT**
 
 **Ce qui existe:**
+
 - ✅ 10+ exemples MuJoCo (`examples/` directory)
 - ✅ `demo_mujoco_continue.py` - Simulation continue avec viewer
 - ✅ `demo_behavior_ok.py` - Comportements animés
@@ -198,12 +219,14 @@
 - ✅ Documentation complète (`docs/simulations/MUJOCO_SIMULATION_GUIDE.md`)
 
 **Fichiers pertinents:**
+
 - `examples/demo_mujoco_continue.py` (simulation continue)
 - `examples/demo_behavior_ok.py` (comportements)
 - `examples/demo_emotion_ok.py` (émotions)
 - `docs/simulations/MUJOCO_SIMULATION_GUIDE.md`
 
 **Contribution possible:**
+
 - ✅ 10+ exemples prêts à contribuer
 - ✅ Documentation MuJoCo
 - ✅ Scripts de démo
@@ -218,15 +241,18 @@
 **Statut BBIA-SIM:** ✅ **DÉJÀ IMPLÉMENTÉ**
 
 **Ce qui existe:**
+
 - ✅ Sélection automatique caméra simulation (`bbia_vision.py` lignes 321-339)
 - ✅ Fallback simulation si pas de caméra SDK (`SimulationCamera` dans `simulation_shims.py`)
 - ✅ Configuration `BBIA_CAMERA_INDEX` pour simulation
 
 **Fichiers pertinents:**
+
 - `src/bbia_sim/bbia_vision.py` (`_capture_image_from_camera`)
 - `src/bbia_sim/backends/simulation_shims.py` (`SimulationCamera`)
 
 **Contribution possible:**
+
 - ✅ Logique sélection caméra simulation
 - ✅ Documentation configuration
 
@@ -240,16 +266,19 @@
 **Statut BBIA-SIM:** ✅ **DÉJÀ CORRIGÉ**
 
 **Ce qui existe:**
+
 - ✅ Gestion robuste canaux audio (`bbia_audio.py` lignes 147-249)
 - ✅ Validation channels avant enregistrement
 - ✅ Fallback mono/stéréo automatique
 - ✅ Support SDK 4 microphones directionnels
 
 **Fichiers pertinents:**
+
 - `src/bbia_sim/bbia_audio.py` (gestion channels)
 - `src/bbia_sim/voice_whisper.py` (channels=1 pour Whisper)
 
 **Contribution possible:**
+
 - ✅ Patch validation channels
 - ✅ Correction script `sound_record.py`
 
@@ -263,15 +292,18 @@
 **Statut BBIA-SIM:** ❌ **MANQUANT**
 
 **Ce qui existe:**
+
 - ✅ Mapping joints (`mapping_reachy.py`)
 - ✅ Configuration limites joints (`backends/reachy_mini_backend.py`)
 - ❌ Pas de fonction factory reset moteurs
 
 **Fichiers pertinents:**
+
 - `src/bbia_sim/mapping_reachy.py`
 - `src/bbia_sim/backends/reachy_mini_backend.py` (joint_limits)
 
 **Contribution possible:**
+
 - ✅ Implémenter `factory_reset_motor_config()`
 - ✅ Endpoint REST `/development/api/motors/factory-reset`
 - ✅ Documentation
@@ -286,21 +318,25 @@
 **Statut BBIA-SIM:** ⚠️ **PARTIEL**
 
 **Ce qui existe:**
+
 - ✅ Dashboard FastAPI (`dashboard.py`)
 - ✅ Dashboard avancé (`dashboard_advanced.py`)
 - ✅ Dashboard Gradio no-code (`scripts/dashboard_gradio.py`)
 - ⚠️ Pas de GUI debug dédiée (comme Tkinter/PyQt)
 
 **Fichiers pertinents:**
+
 - `src/bbia_sim/dashboard.py` (dashboard web)
 - `src/bbia_sim/dashboard_advanced.py` (dashboard avancé)
 - `scripts/dashboard_gradio.py` (Gradio UI)
 
 **Ce qui manque:**
+
 - ❌ GUI desktop (Tkinter/PyQt) dédiée debug
 - ❌ Outils debug spécialisés (log viewer, performance monitor)
 
 **Contribution possible:**
+
 - ✅ Créer GUI debug Tkinter/PyQt
 - ✅ Intégrer avec dashboard existant
 
@@ -314,15 +350,18 @@
 **Statut BBIA-SIM:** ❌ **MANQUANT**
 
 **Ce qui existe:**
+
 - ✅ Contrôle joints (`set_joint_pos`, `get_joint_pos`)
 - ✅ Émotions et comportements
 - ❌ Pas de gestion modes moteur (position/velocity/torque)
 
 **Fichiers pertinents:**
+
 - `src/bbia_sim/backends/reachy_mini_backend.py` (contrôle joints)
 - `src/bbia_sim/daemon/app/routers/motors.py` (endpoints moteurs)
 
 **Contribution possible:**
+
 - ✅ Implémenter modes moteur (position/velocity/torque)
 - ✅ Endpoint `/development/api/motors/set-mode`
 - ✅ Validation mode
@@ -337,14 +376,17 @@
 **Statut BBIA-SIM:** ⚠️ **PARTIEL**
 
 **Ce qui existe:**
+
 - ✅ Détection devices audio (`bbia_audio.py`)
 - ✅ Fallback default device
 - ⚠️ Pas de détection spécifique "respeaker" par nom
 
 **Fichiers pertinents:**
+
 - `src/bbia_sim/bbia_audio.py` (détection devices)
 
 **Contribution possible:**
+
 - ✅ Améliorer détection respeaker par nom/ID
 - ✅ Patch message warning
 
@@ -358,15 +400,18 @@
 **Statut BBIA-SIM:** ❌ **NON APPLICABLE** (BBIA optimisé)
 
 **Ce qui existe:**
+
 - ✅ Lazy loading modèles (`bbia_huggingface.py` lignes 132-173)
 - ✅ Cache global modèles (évite rechargements)
 - ✅ Optimisations RAM (déchargement auto modèles inactifs)
 
 **Fichiers pertinents:**
+
 - `src/bbia_sim/bbia_huggingface.py` (lazy loading)
 - `docs/performance/OPTIMISATIONS_PERFORMANCE_DEC2025.md`
 
 **Contribution possible:**
+
 - ✅ Optimisations lazy loading
 - ✅ Cache modèles partagé
 
@@ -380,10 +425,12 @@
 **Statut BBIA-SIM:** ❌ **MANQUANT**
 
 **Ce qui existe:**
+
 - ✅ Modèle MuJoCo XML (`sim/models/reachy_mini_REAL_OFFICIAL.xml`)
 - ❌ Pas de fichiers STL 3D
 
 **Contribution possible:**
+
 - ⚠️ Générer STL depuis MuJoCo XML (si compétences 3D)
 
 **Difficulté:** Moyen (nécessite compétences 3D)  
@@ -396,11 +443,13 @@
 **Statut BBIA-SIM:** ❌ **MANQUANT**
 
 **Ce qui existe:**
+
 - ✅ Capture caméra (`bbia_vision.py`)
 - ❌ Pas de buffer circulaire pour frames
 - ❌ Pas de gestion overrun
 
 **Contribution possible:**
+
 - ✅ Implémenter buffer circulaire (`collections.deque`)
 - ✅ Gestion overrun avec warning/log
 
@@ -414,6 +463,7 @@
 **Statut BBIA-SIM:** ✅ **DÉJÀ IMPLÉMENTÉ COMPLÈTEMENT**
 
 **Ce qui existe:**
+
 - ✅ Module `BBIAHuggingFace` complet (`bbia_huggingface.py`)
 - ✅ Intégration Hugging Face Hub (`huggingface-hub>=0.34.4`)
 - ✅ Support datasets Hugging Face (`RecordedMoves` via HF Hub)
@@ -421,10 +471,12 @@
 - ✅ Cache local modèles
 
 **Fichiers pertinents:**
+
 - `src/bbia_sim/bbia_huggingface.py` (module complet)
 - `src/bbia_sim/bbia_tools.py` (datasets HF Hub)
 
 **Contribution possible:**
+
 - ✅ Code intégration HF Hub complet
 - ✅ Documentation
 - ✅ Exemples utilisation
@@ -439,6 +491,7 @@
 **Statut BBIA-SIM:** ✅ **DÉJÀ FAIT**
 
 **Ce qui existe:**
+
 - ✅ Dashboard avancé (`dashboard_advanced.py` - 1570 lignes)
 - ✅ Dashboard Gradio (`scripts/dashboard_gradio.py`)
 - ✅ Intégration complète modules BBIA
@@ -446,11 +499,13 @@
 - ✅ WebSocket pour updates
 
 **Fichiers pertinents:**
+
 - `src/bbia_sim/dashboard_advanced.py` (dashboard complet)
 - `scripts/dashboard_gradio.py` (UI Gradio)
 - `docs/dashboard/ROADMAP_DASHBOARD.md`
 
 **Contribution possible:**
+
 - ✅ Dashboard code complet
 - ✅ Architecture dashboard
 - ✅ Documentation
@@ -465,16 +520,19 @@
 **Statut BBIA-SIM:** ✅ **DÉJÀ IMPLÉMENTÉ**
 
 **Ce qui existe:**
+
 - ✅ Comportement `GreetBehavior` (`bbia_behavior.py`)
 - ✅ Scripts demo avec salutations (`demo_behavior_ok.py`, `demo_chat_bbia_3d.py`)
 - ✅ Intégration émotions avec salutations
 - ✅ Patterns vocaux "Bonjour" variés
 
 **Fichiers pertinents:**
+
 - `src/bbia_sim/bbia_behavior.py` (GreetBehavior)
 - `examples/demo_behavior_ok.py` (salutations)
 
 **Contribution possible:**
+
 - ✅ Scripts greetings
 - ✅ Patterns vocaux/animations
 
@@ -488,14 +546,17 @@
 **Statut BBIA-SIM:** ⚠️ **PARTIEL**
 
 **Ce qui existe:**
+
 - ✅ Support `BBIA_CAMERA_DEVICE` (chemin device)
 - ✅ Support `BBIA_CAMERA_INDEX` (index USB)
 - ❌ Pas de support vid/pid spécifiques
 
 **Fichiers pertinents:**
+
 - `src/bbia_sim/bbia_vision.py` (configuration caméra)
 
 **Contribution possible:**
+
 - ✅ Ajouter support vid/pid via `BBIA_CAMERA_VID_PID`
 - ✅ Détection automatique par vid/pid
 
@@ -509,16 +570,19 @@
 **Statut BBIA-SIM:** ⚠️ **PARTIEL**
 
 **Ce qui existe:**
+
 - ✅ API REST (fonctionne sur réseau)
 - ✅ WebSocket pour communication temps réel
 - ✅ Authentification API (`daemon/app/main.py`)
 - ❌ Pas de configuration spécifique wireless/batterie
 
 **Fichiers pertinents:**
+
 - `src/bbia_sim/daemon/app/main.py` (API REST)
 - `src/bbia_sim/daemon/config.py` (configuration)
 
 **Contribution possible:**
+
 - ⚠️ Tests sur hardware wireless (si disponible)
 - ⚠️ Optimisations batterie
 
@@ -532,11 +596,13 @@
 **Statut BBIA-SIM:** ❌ **MANQUANT**
 
 **Ce qui existe:**
+
 - ✅ API REST complète
 - ✅ Endpoints daemon (`daemon/app/routers/daemon.py`)
 - ❌ Pas de route update OTA (Over-The-Air)
 
 **Contribution possible:**
+
 - ✅ Implémenter `/development/api/daemon/update` endpoint
 - ✅ Gestion updates OTA
 
@@ -550,10 +616,12 @@
 **Statut BBIA-SIM:** ❌ **MANQUANT**
 
 **Ce qui existe:**
+
 - ✅ Dashboard web complet
 - ❌ Pas de configuration réseau/hotspot
 
 **Contribution possible:**
+
 - ✅ Ajouter onglet réseau dans dashboard
 - ✅ Configuration hotspot WiFi
 
@@ -567,17 +635,20 @@
 **Statut BBIA-SIM:** ✅ **DÉJÀ IMPLÉMENTÉ**
 
 **Ce qui existe:**
+
 - ✅ Tests précision joints (`test_reachy_mini_strict_conformity.py`)
 - ✅ Tests latence mouvement (`test_robot_api_joint_latency.py`)
 - ✅ Tests répétabilité (`test_motion_roundtrip.py`)
 - ✅ Tests précision interpolation (`test_goto_target_interpolation_performance.py`)
 
 **Fichiers pertinents:**
+
 - `tests/test_reachy_mini_strict_conformity.py` (précision exacte)
 - `tests/test_robot_api_joint_latency.py` (latence)
 - `tests/e2e/test_motion_roundtrip.py` (roundtrip)
 
 **Contribution possible:**
+
 - ✅ Tests unitaires précision
 - ✅ Tests répétabilité
 - ✅ Framework tests performance
@@ -592,14 +663,17 @@
 **Statut BBIA-SIM:** ⚠️ **PARTIEL**
 
 **Ce qui existe:**
+
 - ✅ Détection postures MediaPipe (`pose_detection.py`)
 - ✅ Détection gestes (bras levés, mains sur tête)
 - ❌ Pas de détection tactile hardware
 
 **Fichiers pertinents:**
+
 - `src/bbia_sim/pose_detection.py` (détection gestes)
 
 **Contribution possible:**
+
 - ✅ Extension détection tactiles via vision (approche)
 - ⚠️ Support hardware capteurs tactiles (si disponibles)
 
@@ -708,6 +782,7 @@ git checkout -b feature/mujoco-examples
 ### Étape 2: Extraire le Code BBIA-SIM
 
 Pour chaque fonctionnalité:
+
 1. Identifier le code BBIA-SIM pertinent
 2. Adapter pour le projet officiel (API/style)
 3. Ajouter tests unitaires
@@ -716,6 +791,7 @@ Pour chaque fonctionnalité:
 ### Étape 3: Créer Pull Requests
 
 Pour chaque contribution:
+
 1. **Title:** `[Feature] Add keep-alive mechanism for automatic shutdown`
 2. **Description:**
    - Explication du problème
@@ -756,4 +832,3 @@ Pour chaque contribution:
 BBIA-SIM a **12 fonctionnalités complètes** qui peuvent être contribuées immédiatement au projet Reachy officiel. Cela représente une **valeur énorme** pour la communauté et montre que BBIA-SIM est un projet mature et aligné avec les besoins du projet officiel.
 
 **Recommandation:** Commencer par les contributions rapides (Phase 1) qui sont déjà complètes dans BBIA-SIM, puis continuer avec les améliorations partielles (Phase 2).
-

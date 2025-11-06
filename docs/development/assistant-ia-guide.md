@@ -20,6 +20,7 @@ Ce guide est destiné aux **assistants IA** (Claude, GPT, Cursor AI, etc.) pour 
 ## 🎯 État actuel du projet
 
 ### ✅ Statut général
+
 - **Version :** 1.3.2
 - **Documentation :** **131 fichiers MD** dans `docs/` (après nettoyage)
 - **Tests :** **1362 tests sélectionnés** (1418 collectés, 56 deselected)
@@ -27,6 +28,7 @@ Ce guide est destiné aux **assistants IA** (Claude, GPT, Cursor AI, etc.) pour 
 - **Conformité SDK :** 100% validée
 
 ### 📊 Qualité documentation
+
 - ✅ 0 lien brisé
 - ✅ 16+ schémas Mermaid colorés
 - ✅ 4756+ corrections auto appliquées
@@ -38,6 +40,7 @@ Ce guide est destiné aux **assistants IA** (Claude, GPT, Cursor AI, etc.) pour 
 ## 🛠️ Scripts essentiels
 
 ### 1. Vérification documentation
+
 ```bash
 # Script principal : scripts/verify_docs_complete.py
 
@@ -61,6 +64,7 @@ python scripts/verify_docs_complete.py --check-external-links
 ```
 
 **Fonctionnalités :**
+
 - ✅ Vérification liens (internes/externes)
 - ✅ Validation syntaxe Mermaid
 - ✅ Détection erreurs formatage (espaces, listes, tables)
@@ -70,6 +74,7 @@ python scripts/verify_docs_complete.py --check-external-links
 - ✅ Auto-correction (mode `--fix`)
 
 ### 2. Diagnostic environnement
+
 ```bash
 # Script : scripts/bbia_doctor.py
 
@@ -77,12 +82,14 @@ python scripts/bbia_doctor.py
 ```
 
 **Fonctionnalités :**
+
 - Vérification dépendances installées
 - Vérification modèles IA disponibles
 - Vérification variables d'environnement
 - Vérification configuration projet
 
 ### 3. Tests
+
 ```bash
 # Tests unitaires
 pytest tests/ -v
@@ -100,20 +107,24 @@ pytest tests/ --cov=src/bbia_sim --cov-report=html
 ## 📝 Conventions documentation
 
 ### Dates standardisées
+
 - **Date de mise à jour :** Toujours utiliser `Oct / Nov. 2025`
 - **Date de création :** Date du premier commit Git (immutable)
 
 ### Formatage Markdown
+
 - ✅ Espaces : pas d'espaces doubles, pas d'espaces finaux
 - ✅ Listes : toujours espace après `-` ou `*`
 - ✅ Tables : toujours séparateur `---` après header
 - ✅ Titres : toujours espace après `#`
 
 ### Schémas Mermaid
+
 - ✅ Toujours ajouter des couleurs/styles pour meilleure visibilité
 - ✅ Types supportés : `graph`, `flowchart`, `sequenceDiagram`, `gantt`, `pie`, `mindmap`, etc.
 
 ### Liens
+
 - ✅ Liens internes : chemins relatifs depuis fichier MD
 - ✅ Liens vers qualité : `../quality/compliance/`
 - ✅ Liens vers guides : `../guides/` ou `../development/`
@@ -123,6 +134,7 @@ pytest tests/ --cov=src/bbia_sim --cov-report=html
 ## 🔄 Tâches à poursuivre
 
 ### 1. Documentation (priorité haute)
+
 - [ ] Corriger les 26 erreurs restantes
   - Tables sans séparateur (quelques cas)
   - Blocs code "non fermés" (faux positifs à améliorer dans script)
@@ -133,15 +145,18 @@ pytest tests/ --cov=src/bbia_sim --cov-report=html
 - [ ] Ajouter schémas Mermaid colorés aux MD restants
 
 ### 2. Tests (priorité moyenne)
-- [ ] Augmenter coverage `bbia_audio.py` (30-40% → 70%+)
+
+- [x] ~~Augmenter coverage `bbia_audio.py` (30-40% → 70%+)~~ ✅ **TERMINÉ** - Coverage actuel : **87.76%** (objectif 70%+ largement dépassé)
 - [ ] Tests `bbia_memory.py` (complet)
-- [ ] Améliorer tests `bbia_emotions.py`
+- [ ] Améliorer tests `bbia_emotions.py` (coverage actuel : 81.71% ✅)
 
 ### 3. Performance (priorité moyenne)
+
 - [ ] Benchmark latence E2E audio
 - [ ] Optimiser chargement modèles (caching, lazy loading)
 
 ### 4. Features (priorité basse)
+
 - [ ] UI avancée avec presets/sliders
 - [ ] Script diagnostic (`bbia doctor`) amélioré
 - [ ] Vidéos/GIF pour onboarding
@@ -151,7 +166,7 @@ pytest tests/ --cov=src/bbia_sim --cov-report=html
 
 ## 📁 Structure documentation
 
-```
+```text
 docs/
 ├── guides/              # Guides utilisateurs (débutant, avancé)
 ├── development/   # Guides techniques (migration, testing, etc.)
@@ -171,6 +186,7 @@ docs/
 ## 🔍 Points d'attention
 
 ### Scripts à ne PAS modifier sans précaution
+
 1. `scripts/verify_docs_complete.py`
    - Script optimisé et testé
    - Modifications nécessitent tests approfondis
@@ -181,12 +197,14 @@ docs/
    - Modifications doivent maintenir compatibilité
 
 ### Fichiers critiques
+
 1. `README.md` - Point d'entrée principal
 2. `PROJECTS.md` - Portfolio projets
 3. `docs/INDEX_FINAL.md` - Index documentation
 4. `docs/getting-started/troubleshooting.md` - Questions fréquentes
 
 ### Conventions code
+
 - **Python :** 3.11+
 - **Formatage :** Black, Ruff, MyPy, Bandit
 - **Tests :** pytest avec markers (`@pytest.mark.unit`, `@pytest.mark.fast`)
@@ -197,6 +215,7 @@ docs/
 ## 🚀 Workflow recommandé
 
 ### Pour corriger documentation
+
 1. Lancer `python scripts/verify_docs_complete.py`
 2. Identifier erreurs réelles (pas faux positifs)
 3. Corriger manuellement ou avec `--fix`
@@ -204,6 +223,7 @@ docs/
 5. Commit avec message descriptif
 
 ### Pour ajouter fonctionnalité
+
 1. Vérifier état actuel (`bbia doctor`)
 2. Créer tests avant implémentation
 3. Implémenter fonctionnalité
@@ -212,6 +232,7 @@ docs/
 6. Vérifier documentation (`verify_docs_complete.py`)
 
 ### Pour améliorer script
+
 1. Comprendre logique actuelle
 2. Tester avec `--full-scan` avant modifications
 3. Modifier progressivement
@@ -223,6 +244,7 @@ docs/
 ## 📚 Ressources importantes
 
 ### Documentation clé
+
 - `docs/INDEX_FINAL.md` - Index complet documentation
 - `docs/guides/GUIDE_DEBUTANT.md` - Guide débutant
 - `docs/guides/GUIDE_AVANCE.md` - Guide avancé
@@ -230,10 +252,12 @@ docs/
 - `docs/quality/audits/RESUME_ETAT_ACTUEL_BBIA.md` - État actuel détaillé
 
 ### Scripts principaux
+
 - `scripts/verify_docs_complete.py` - Vérification documentation
 - `scripts/bbia_doctor.py` - Diagnostic environnement
 
 ### Tests importants
+
 - `tests/test_reachy_mini_*.py` - Tests conformité SDK
 - `tests/test_bbia_*.py` - Tests modules BBIA
 - `tests/test_robot_api.py` - Tests API unifiée
@@ -265,16 +289,19 @@ docs/
 ## 🎯 Objectifs futurs
 
 ### Court terme (1-2 semaines)
+
 - ✅ Documentation vérifiée et corrigée (TERMINÉ)
 - ⏳ Réduire 26 erreurs → 0
 - ⏳ Réduire 1001 avertissements → ~500
 
 ### Moyen terme (1 mois)
+
 - ⏳ Coverage tests 70%+
 - ⏳ Optimisations performance
 - ⏳ UI avancée
 
 ### Long terme (3+ mois)
+
 - ⏳ Vidéos/GIF onboarding
 - ⏳ FAQ complète
 - ⏳ Promotion projet
@@ -282,6 +309,11 @@ docs/
 ---
 
 **Dernière mise à jour :** Oct / Nov. 2025  
-**Version guide :** 1.0  
-**Prochaine révision :** Oct / Nov. 2025
+**Version guide :** 1.0
 
+---
+
+## 🎯 Navigation
+
+**Retour à** : [README Documentation](../README.md)  
+**Voir aussi** : [Guide Débutant](../guides/GUIDE_DEBUTANT.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)

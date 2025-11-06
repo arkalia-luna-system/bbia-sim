@@ -1,5 +1,7 @@
 ## Mise en place de la veille Reachy Mini (automatisation)
 
+**Date** : Oct / Nov. 2025
+
 > Référence état global
 >
 > Voir `docs/reference/project-status.md` → "État par axe" (versions Python, CI, packaging) pour l’état actuel et les axes futurs.
@@ -16,6 +18,7 @@ pip install -r requirements/requirements-veille.txt
 ```
 
 Variables optionnelles:
+
 - `GH_TOKEN`: jeton GitHub pour élargir les quotas API (Settings → Developer settings → tokens)
 - `VEILLE_SLEEP_BETWEEN`: pause (secondes) entre sources pour limiter les rate-limits (ex: `0.5`)
 - `VEILLE_STOP_ON_RATE_LIMIT`: si `true`, arrêter la collecte GitHub à la première alerte (par défaut `true`)
@@ -41,6 +44,7 @@ python scripts/veille_reachy_mini.py
 ```
 
 Sortie:
+
 - Résultats ajoutés dans `log/veille_reachy_mini.csv` (horodatés)
 - Export détaillé JSON: `log/veille_reachy_mini.json`
 - Diff JSON (nouveaux/retirés/scores modifiés): `log/veille_diff.json`
@@ -100,10 +104,12 @@ Entrée exemple (tous les jours à 02:15):
 ```
 
 ### 5) Exploitation des résultats
+
 - CSV: `log/veille_reachy_mini.csv`
 - Document: `docs/veille_reachy_mini.md` (requêtes, scoring, tableau de suivi)
 
 ### Notes
+
 - Respect du dossier `log/` pour éviter d’encombrer la racine du projet.
 - Le script peut tourner sans `GH_TOKEN` mais avec limites API.
 - Vous pouvez adapter la fréquence (jour/heure) selon vos besoins.
@@ -129,4 +135,3 @@ bash scripts/onboarding/run_demo_safe.sh
 ```
 
 Bonnes pratiques réseau: même SSID/VLAN, éviter réseau invité/isolation client. En cas d’instabilité Wi‑Fi, envisager CPL (Powerline). Les journaux sont centralisés dans `log/`.
-

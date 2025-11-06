@@ -29,6 +29,7 @@ Toutes les corrections prioritaires identifiées dans l'audit ont été appliqu�
 - `tests/test_emergency_stop.py` - **4 tests** : 3 passed, 1 skipped (robot physique requis)
 
 **Validation**:
+
 ```bash
 pytest tests/test_emergency_stop.py -v
 # ✅ 3 passed, 1 skipped
@@ -49,6 +50,7 @@ pytest tests/test_emergency_stop.py -v
 - Validation sample rate avec avertissement si non conforme
 
 **Validation**:
+
 - Constantes exportées et utilisées partout
 - Warning si fichier audio n'est pas à 16kHz
 
@@ -57,9 +59,11 @@ pytest tests/test_emergency_stop.py -v
 ### 3. ✅ Validation Émotions SDK
 
 **Fichiers modifiés**:
+
 - `src/bbia_sim/backends/reachy_mini_backend.py` - Validation intensité [0.0, 1.0]
 
 **Améliorations**:
+
 - Clamp automatique de l'intensité si hors limites
 - Message d'avertissement clair
 - Conformité aux 6 émotions SDK officiel
@@ -69,9 +73,11 @@ pytest tests/test_emergency_stop.py -v
 ### 4. ✅ Tests Sécurité Limites
 
 **Fichiers créés**:
+
 - `tests/test_safety_limits_pid.py` - 5 tests sécurité complets
 
 **Tests validés**:
+
 ```bash
 pytest tests/test_safety_limits_pid.py -v
 # ✅ 5 passed
@@ -101,7 +107,7 @@ pytest tests/test_safety_limits_pid.py -v
 
 ## 📊 RÉSULTATS TESTS
 
-```
+```text
 tests/test_emergency_stop.py ..........  3 passed, 1 skipped
 tests/test_safety_limits_pid.py ......  5 passed
 ```
@@ -138,4 +144,3 @@ Toutes les corrections prioritaires sont **complètes et testées** ✅
 ---
 
 **Référence** : Voir `docs/reference/project-status.md` pour l'état consolidé post-corrections et axes restants.
-

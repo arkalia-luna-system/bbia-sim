@@ -1,4 +1,5 @@
 # 🚀 PLAN D'AMÉLIORATION COMPLET - AUGMENTER LA NOTATION
+
 ## Axes de correction et amélioration pour passer de 7.1/10 à 9.0+/10
 
 **Date** : Oct / Nov. 2025
@@ -23,6 +24,7 @@
 ### 1. ✅ TESTS ROBOT PHYSIQUE - VALIDATION HARDWARE
 
 **Problème actuel** :
+
 - ❌ Tous les tests robot réel sont `@pytest.mark.skip`
 - ❌ Aucune validation CI sur hardware
 - ❌ Limite la crédibilité "production-ready"
@@ -30,6 +32,7 @@
 **Actions concrètes** :
 
 #### A. Créer tests mock avancés (2 semaines)
+
 ```python
 # tests/mocks/reachy_mini_mock.py
 class ReachyMiniMock:
@@ -43,11 +46,13 @@ class ReachyMiniMock:
 ```
 
 **Fichiers à créer** :
+
 - `tests/mocks/reachy_mini_mock.py`
 - `tests/mocks/__init__.py`
 - `tests/test_reachy_mini_backend_mocked.py` (tests avec mock)
 
 **Commandes** :
+
 ```bash
 # Créer structure mocks
 mkdir -p tests/mocks
@@ -63,6 +68,7 @@ python -m pytest tests/test_reachy_mini_backend_mocked.py -v
 ---
 
 #### B. Tests conditionnels avec variable d'environnement (1 semaine)
+
 ```python
 # tests/test_reachy_mini_backend.py
 import os
@@ -77,6 +83,7 @@ class TestReachyMiniBackendReal:
 ```
 
 **Action** :
+
 - Modifier tous les tests robot skippés pour utiliser `skipif` avec env var
 - Documenter dans README comment activer tests réels
 
@@ -85,6 +92,7 @@ class TestReachyMiniBackendReal:
 ---
 
 #### C. Tests robot réel automatisés (quand robot arrive, Oct / Nov. 2025)
+
 ```python
 # tests/hardware/test_reachy_mini_integration.py
 @pytest.mark.hardware
@@ -104,12 +112,14 @@ class TestReachyMiniHardwareIntegration:
 ```
 
 **Fichiers à créer** :
+
 - `tests/hardware/__init__.py`
 - `tests/hardware/test_reachy_mini_integration.py`
 - `tests/hardware/test_emergency_stop_real.py`
 - `tests/hardware/test_watchdog_real.py`
 
 **CI/CD à modifier** :
+
 ```yaml
 # .github/workflows/ci.yml
 - name: Tests hardware (si robot disponible)
@@ -128,6 +138,7 @@ class TestReachyMiniHardwareIntegration:
 ### 2. ✅ BRANDING VISUEL - LIVRABLES FINALISÉS
 
 **Problème actuel** :
+
 - ❌ Process documenté mais zéro visuels livrés
 - ❌ Dossiers `exports/` et `source/` vides
 - ❌ Pas de logo SVG/PNG dans le repo
@@ -135,7 +146,9 @@ class TestReachyMiniHardwareIntegration:
 **Actions concrètes** :
 
 #### A. Finaliser logo avec Procreate (1 semaine)
+
 **Actions** :
+
 1. Créer logo final dans Procreate (iPad Pro)
 2. Exporter en SVG (vectoriel) + PNG (haute résolution)
 3. Versions multiples :
@@ -145,7 +158,8 @@ class TestReachyMiniHardwareIntegration:
    - Favicon (16x16, 32x32, 64x64)
 
 **Fichiers à créer** :
-```
+
+```text
 presentation/livrables/v1.0/logo/exports/
   - logo_bbia_monochrome_noir.svg
   - logo_bbia_monochrome_blanc.svg
@@ -155,6 +169,7 @@ presentation/livrables/v1.0/logo/exports/
 ```
 
 **Commandes** :
+
 ```bash
 # Vérifier exports
 ls -la presentation/livrables/v1.0/logo/exports/
@@ -168,14 +183,17 @@ file presentation/livrables/v1.0/logo/exports/*.svg
 ---
 
 #### B. Intégrer logo dans repo (1 jour)
+
 **Actions** :
+
 1. Ajouter logo dans `assets/logo/`
 2. Ajouter dans README (badge/image)
 3. Créer `assets/images/logo_bbia.svg` (pour README)
 4. Ajouter favicon pour docs web
 
 **Fichiers à créer** :
-```
+
+```text
 assets/
  logo/
     logo_bbia_monochrome_noir.svg
@@ -192,7 +210,9 @@ docs/
 ---
 
 #### C. Documentation branding complète (2 jours)
+
 **Actions** :
+
 1. Créer `docs/branding/BRAND_GUIDELINES.md`
 2. Documenter couleurs, typographie, usage
 3. Exemples d'utilisation (README, docs, etc.)
@@ -204,6 +224,7 @@ docs/
 ### 3. ✅ COUVERTURE GLOBALE - AUGMENTER À 70%+
 
 **Problème actuel** :
+
 - ⚠️ Coverage global : 15.54% (faible)
 - ⚠️ Coverage core : ~50% (correct mais améliorable)
 - ⚠️ Objectif : 70%+ sur modules core
@@ -211,6 +232,7 @@ docs/
 **Actions concrètes** :
 
 #### A. Identifier modules non couverts (1 jour)
+
 ```bash
 # Rapport coverage détaillé
 python -m pytest --cov=src/bbia_sim --cov-report=term-missing \
@@ -222,6 +244,7 @@ python -m pytest --cov=src/bbia_sim --cov-report=term-missing \
 ```
 
 **Modules probables à améliorer** :
+
 - `bbia_integration.py` (couverture faible)
 - `bbia_adaptive_behavior.py` (couverture faible)
 - `daemon/bridge.py` (couverture faible)
@@ -232,7 +255,9 @@ python -m pytest --cov=src/bbia_sim --cov-report=term-missing \
 ---
 
 #### B. Tests pour modules faiblement couverts (4 semaines)
+
 **Plan d'action** :
+
 1. **Semaine 1** : `bbia_integration.py`
    - Tests intégration complète
    - Tests synchronisation modules
@@ -254,7 +279,8 @@ python -m pytest --cov=src/bbia_sim --cov-report=term-missing \
    - Tests scripts diagnose
 
 **Fichiers à créer** :
-```
+
+```text
 tests/test_bbia_integration_complete.py
 tests/test_bbia_adaptive_behavior_extended.py
 tests/test_daemon_bridge_extended.py
@@ -266,7 +292,9 @@ tests/test_scripts_utilities.py
 ---
 
 #### C. Configuration coverage stricte (1 jour)
+
 **Actions** :
+
 1. Modifier `.coveragerc` pour exclure vraiment les exemples
 2. Ajouter seuil CI à 70%
 3. Documenter périmètre mesuré
@@ -287,6 +315,7 @@ omit =
 ```
 
 **CI/CD à modifier** :
+
 ```yaml
 # .github/workflows/ci.yml
 - name: Coverage check
@@ -304,6 +333,7 @@ omit =
 ### 4. ✅ COMMUNAUTÉ OPEN SOURCE - PREMIERS CONTRIBUTEURS
 
 **Problème actuel** :
+
 - ❌ Aucune PR externe
 - ❌ Zéro issue ouverte
 - ❌ Zéro contributeur externe
@@ -312,19 +342,23 @@ omit =
 **Actions concrètes** :
 
 #### A. Créer issues "good first issue" (1 jour)
+
 **Actions** :
+
 1. Identifier tâches simples pour nouveaux contributeurs
 2. Créer 5-10 issues "good first issue"
 3. Ajouter label `good-first-issue`
 4. Documenter dans CONTRIBUTING.md
 
 **Exemples d'issues** :
+
 - "Ajouter test unitaire pour fonction X"
 - "Corriger typo dans doc Y"
 - "Améliorer docstring fonction Z"
 - "Traduire README en anglais"
 
 **Template** :
+
 ```markdown
 ## 🎯 Good First Issue
 
@@ -347,7 +381,9 @@ omit =
 ---
 
 #### B. Documentation contributeurs enrichie (2 jours)
+
 **Actions** :
+
 1. Enrichir `CONTRIBUTING.md` avec :
    - Guide setup local
    - Guide tests
@@ -363,7 +399,9 @@ omit =
 ---
 
 #### C. Communication publique (2 semaines)
+
 **Actions** :
+
 1. **Semaine 1** :
    - Post LinkedIn/Reddit : "BBIA-SIM : projet open source robotique IA"
    - Post Twitter/X : démo vidéo (quand robot arrive)
@@ -381,14 +419,18 @@ omit =
 ### 5. ✅ TESTS E2E COMPLETS - SCÉNARIOS UTILISATEUR
 
 **Problème actuel** :
+
 - ⚠️ Tests E2E existent mais peuvent être plus complets
 - ⚠️ Scénarios utilisateur réels manquants
 
 **Actions concrètes** :
 
 #### A. Scénarios utilisateur complets (2 semaines)
+
 **Scénarios à créer** :
+
 1. **Scénario 1** : Démarrage complet robot
+
    ```python
  # tests/e2e/test_user_scenario_startup.py
    def test_user_startup_complete():
@@ -402,6 +444,7 @@ omit =
    ```
 
 2. **Scénario 2** : Interaction conversationnelle
+
    ```python
  # tests/e2e/test_user_scenario_conversation.py
    def test_user_conversation_complete():
@@ -409,6 +452,7 @@ omit =
    ```
 
 3. **Scénario 3** : Détection et réaction
+
    ```python
  # tests/e2e/test_user_scenario_detection.py
    def test_user_detection_reaction():
@@ -416,7 +460,8 @@ omit =
    ```
 
 **Fichiers à créer** :
-```
+
+```text
 tests/e2e/scenarios/
   __init__.py
   test_user_startup.py
@@ -432,12 +477,14 @@ tests/e2e/scenarios/
 ### 6. ✅ PERFORMANCE BENCHMARKING AUTOMATISÉ
 
 **Problème actuel** :
+
 - ⚠️ Tests performance existent mais pas automatisés en CI
 - ⚠️ Pas de tracking historique performance
 
 **Actions concrètes** :
 
 #### A. CI/CD benchmarking (1 semaine)
+
 ```yaml
 # .github/workflows/benchmark.yml
 name: Performance Benchmarking
@@ -462,6 +509,7 @@ jobs:
 ```
 
 **Fichiers à créer** :
+
 - `.github/workflows/benchmark.yml`
 - `scripts/analyze_benchmarks.py`
 
@@ -474,19 +522,23 @@ jobs:
 ### 7. ✅ DOCUMENTATION VIDÉOS - DÉMOS VISUELLES
 
 **Problème actuel** :
+
 - ⚠️ Documentation textuelle excellente
 - ⚠️ Pas de vidéos démos (surtout important pour robot)
 
 **Actions concrètes** :
 
 #### A. Vidéos démos (quand robot arrive, 1 semaine)
+
 **Vidéos à créer** :
+
 1. **Démo 1** : BBIA démarrage + wake_up (2 min)
 2. **Démo 2** : BBIA conversation + émotions (3 min)
 3. **Démo 3** : BBIA vision + réaction (2 min)
 4. **Démo 4** : Architecture et installation (5 min)
 
 **Actions** :
+
 - Enregistrer avec OBS Studio
 - Upload YouTube (chaîne BBIA-SIM)
 - Embed dans README et docs
@@ -498,14 +550,17 @@ jobs:
 ### 8. ✅ SÉCURITÉ TESTS - VALIDATION APPROFONDIE
 
 **Problème actuel** :
+
 - ✅ Bandit présent mais tests sécurité peuvent être plus complets
 - ⚠️ Pas de tests injection, validation avancée
 
 **Actions concrètes** :
 
 #### A. Tests sécurité approfondis (1 semaine)
+
 **Tests à créer** :
-```
+
+```text
 tests/security/
  test_input_injection.py
   test_api_security.py
@@ -520,12 +575,14 @@ tests/security/
 ### 9. ✅ DOCUMENTATION API - REFERENCE COMPLÈTE
 
 **Problème actuel** :
+
 - ⚠️ API documentée mais peut être plus complète
 - ⚠️ Pas de Swagger/OpenAPI auto-généré
 
 **Actions concrètes** :
 
 #### A. OpenAPI/Swagger automatique (2 jours)
+
 ```python
 # src/bbia_sim/daemon/app/main.py
 from fastapi.openapi.utils import get_openapi
@@ -538,6 +595,7 @@ app = FastAPI(
 ```
 
 **Actions** :
+
 - Ajouter OpenAPI automatique
 - Générer docs Swagger
 - Embed dans README
@@ -551,9 +609,11 @@ app = FastAPI(
 ### 10. ✅ PACKAGING PYPI - PUBLICATION OFFICIELLE
 
 **Problème actuel** :
+
 - ⚠️ Projet installable localement mais pas sur PyPI
 
 **Actions** :
+
 ```bash
 # pyproject.toml déjà configuré
 # Actions :
@@ -570,9 +630,11 @@ app = FastAPI(
 ### 11. ✅ CI/CD AVANCÉ - MATRICE BUILD
 
 **Problème actuel** :
+
 - ✅ CI/CD présent mais peut être plus robuste
 
 **Actions** :
+
 - Ajouter matrix build (Python 3.11, 3.12)
 - Tests multiples OS (Linux, macOS)
 - Cache optimisé
@@ -584,9 +646,11 @@ app = FastAPI(
 ### 12. ✅ METRICS DASHBOARD - VISUALISATION MÉTRIQUES
 
 **Problème actuel** :
+
 - ⚠️ Métriques présentes mais pas visualisées
 
 **Actions** :
+
 - Dashboard Grafana (optionnel)
 - Métriques Prometheus (optionnel)
 - Ou simple page HTML avec charts
@@ -617,6 +681,7 @@ app = FastAPI(
 ## 🎯 PLAN D'ACTION RECOMMANDÉ (2-3 mois)
 
 ### Phase 1 : Quick Wins (2 semaines) - +2.5 points
+
 1. ✅ Tests robot mock (2 sem) → +1.5
 2. ✅ Branding visuel (1 sem) → +1.0
 3. ✅ Issues good first issue (1 jour) → +0.5 (partiel)
@@ -624,6 +689,7 @@ app = FastAPI(
 **Score après Phase 1** : 7.1 → 9.6/10 ✅
 
 ### Phase 2 : Améliorations Core (4 semaines) - +1.0 point
+
 1. ✅ Coverage 70%+ (4 sem) → +1.0
 2. ✅ Tests E2E complets (2 sem) → +0.5
 3. ✅ Benchmarking CI (1 sem) → +0.3
@@ -631,6 +697,7 @@ app = FastAPI(
 **Score après Phase 2** : 9.6 → 10.9/10 (surdimensionné, objectif réaliste 9.5)
 
 ### Phase 3 : Communication & Visibilité (2 semaines) - +0.7 point
+
 1. ✅ Vidéos démos (quand robot arrive) → +0.7
 2. ✅ Communication publique → +0.7
 
@@ -641,6 +708,7 @@ app = FastAPI(
 ## 🚀 ACTIONS IMMÉDIATES (Cette semaine)
 
 1. **Créer tests mock** (2h)
+
    ```bash
  mkdir -p tests/mocks
    touch tests/mocks/reachy_mini_mock.py

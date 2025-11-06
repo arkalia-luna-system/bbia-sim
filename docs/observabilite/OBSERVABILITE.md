@@ -48,6 +48,7 @@ graph TB
 ```
 
 ## Logs structurés (proposé)
+
 - Format: JSON par ligne
 - Champs recommandés: timestamp, level, logger, message, module, request_id
 - Sinks: console (dev), fichier `log/bbia.log` (prod), agrégateur (optionnel)
@@ -70,6 +71,7 @@ flowchart LR
 ```
 
 ## Endpoints santé (proposé)
+
 - Liveness: `GET /healthz` → 200 si process OK
 - Readiness: `GET /readyz` → 200 si dépendances OK (SDK/Zenoh/config)
 
@@ -100,6 +102,7 @@ sequenceDiagram
 ```
 
 ## Métriques Prometheus (proposé)
+
 - Exposition: `GET /metrics`
 - Métriques recommandées:
   - bbia_request_latency_seconds (histogram)
@@ -127,8 +130,10 @@ mindmap
 ```
 
 ## Intégration CI
+
 - Vérifier `/healthz` et `/readyz` en job e2e
 - Publier `coverage.xml` + rapport perf (JSONL) en artifacts
 
 ## Références
+
 - État par axe: `docs/reference/project-status.md` → Observabilité

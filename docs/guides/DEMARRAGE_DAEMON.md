@@ -14,6 +14,7 @@ python -m bbia_sim.daemon.app.main
 ```
 
 **Résultat attendu :**
+
 - Dashboard accessible sur http://127.0.0.1:8000/
 - API Docs sur http://127.0.0.1:8000/docs
 - Simulation MuJoCo démarrée automatiquement (mode headless)
@@ -49,7 +50,7 @@ python scripts/start_public_api.py --log-level debug
 1. **Simulation MuJoCo** : Démarre automatiquement en mode headless
    - Utilise le modèle `reachy_mini_REAL_OFFICIAL.xml`
    - Mode simulation pure (pas de hardware requis)
- 
+
 2. **API FastAPI** : Accessible sur http://127.0.0.1:8000
    - Dashboard officiel-like sur `/`
    - API REST complète sur `/development/api/*`
@@ -81,11 +82,13 @@ python scripts/start_public_api.py --log-level debug
 ### Erreur "Could not import module 'main'"
 
 **Solution :** Utiliser la méthode recommandée :
+
 ```bash
 python -m bbia_sim.daemon.app.main
 ```
 
 Ou via le script :
+
 ```bash
 python scripts/start_public_api.py
 ```
@@ -99,6 +102,7 @@ Le fichier `__main__.py` a été corrigé pour importer directement l'app (pas d
 ### Simulation ne démarre pas
 
 **Vérifier :**
+
 - MuJoCo installé : `pip install mujoco`
 - Modèle XML présent : `src/bbia_sim/sim/models/reachy_mini_REAL_OFFICIAL.xml`
 
@@ -123,6 +127,7 @@ open http://127.0.0.1:8000/
 **Le daemon BBIA-SIM fonctionne parfaitement en mode simulation sans robot physique !**
 
 Toutes les fonctionnalités sont disponibles :
+
 - ✅ Dashboard officiel-like
 - ✅ API REST complète
 - ✅ Simulation MuJoCo automatique
@@ -130,8 +135,16 @@ Toutes les fonctionnalités sont disponibles :
 - ✅ Contrôle mouvements (simulation)
 
 **Le robot physique est optionnel et n'est requis que pour :**
+
 - Tests hardware réels
-- Validation physique
-- Déploiement production
+
+---
 
 **Pour utiliser le robot physique :** Configurer le backend `reachy_mini` avec `use_sim=False` (sera automatiquement utilisé si détecté).
+
+---
+
+## 🎯 Navigation
+
+**Retour à** : [README Documentation](../README.md)  
+**Voir aussi** : [Guide Débutant](GUIDE_DEBUTANT.md) • [Guide Avancé](GUIDE_AVANCE.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)

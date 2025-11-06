@@ -24,7 +24,7 @@
 
 **RobotAPI Unifié** - Innovation architecturale majeure
 
-```
+```text
 Simulation MuJoCo ←→ RobotAPI ←→ Robot Reachy Mini
      ↓                ↓              ↓
 Modules BBIA ←→ Interface ←→ SDK Officiel
@@ -185,4 +185,3 @@ Modules BBIA ←→ Interface ←→ SDK Officiel
 | **Nombre de slides** | 10 |
 
 ---
-

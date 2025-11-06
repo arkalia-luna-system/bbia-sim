@@ -84,23 +84,31 @@ sequenceDiagram
 ```
 
 # 2. Voix → Action
+
 python examples/demo_voice_ok.py --headless --duration 5 --command "regarde-moi"
 
 # 3. Vision → Suivi
+
 python examples/demo_vision_ok.py --headless --duration 10 --target-speed 0.02
 
 # 4. Comportement → Scénario
+
 python examples/demo_behavior_ok.py --headless --duration 8 --behavior wake_up --intensity 1.0
-```
+
+```text
 
 ### **🧪 Tests Automatiques**
 ```bash
+
 # Tests des vertical slices
+
 python -m pytest tests/test_vertical_slices.py -v
 
 # Tests complets
+
 python -m pytest tests/ -m "not e2e" -q
-```
+
+```text
 
 ## 📊 **DÉTAIL DES VERTICAL SLICES**
 

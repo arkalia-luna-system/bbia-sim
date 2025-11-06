@@ -2,6 +2,7 @@
 
 **Date**: Oct / Nov. 2025
 **Fichiers modifiés**:
+
 - `src/bbia_sim/daemon/app/routers/move.py`
 - `src/bbia_sim/daemon/app/routers/kinematics.py`
 
@@ -12,10 +13,12 @@
 ### 1. Import `RecordedMoves` - Position dans fichier
 
 **Problème détecté**:
+
 - **SDK officiel**: Import `RecordedMoves` en haut du fichier (ligne 21)
 - **BBIA**: Import conditionnel dans chaque fonction
 
 **Correction**:
+
 ```python
 # AVANT
 @router.get("/recorded-move-datasets/list/{dataset_name:path}")
@@ -43,10 +46,12 @@ async def list_recorded_move_dataset(dataset_name: str) -> list[str]:
 ### 2. Gestion Exceptions HTTPException - Exception Chaining
 
 **Problème détecté**:
+
 - **SDK officiel**: `raise HTTPException(...)` sans `from e`
 - **BBIA**: `raise HTTPException(...) from e` (exception chaining)
 
 **Correction**:
+
 ```python
 # AVANT
 except RepositoryNotFoundError as e:
@@ -64,10 +69,12 @@ except RepositoryNotFoundError as e:
 ### 3. Gestion FileNotFoundError - kinematics.py
 
 **Problème détecté**:
+
 - **SDK officiel**: `try/except FileNotFoundError` sans vérification `exists()` avant
 - **BBIA**: Vérification `if not file_path.exists()` avant try
 
 **Correction**:
+
 ```python
 # AVANT
 file_path = STL_ASSETS_DIR / filename
@@ -91,10 +98,12 @@ except FileNotFoundError:
 ### 4. WebSocket ws_move_updates - Gestion remove()
 
 **Problème détecté**:
+
 - **SDK officiel**: `move_listeners.remove(websocket)` directement dans except
 - **BBIA**: Vérification `if websocket in move_listeners:` avant remove
 
 **Correction**:
+
 ```python
 # AVANT
 except WebSocketDisconnect:
@@ -111,10 +120,12 @@ except WebSocketDisconnect:
 ### 5. notify_listeners - Gestion move_listeners.remove()
 
 **Problème détecté**:
+
 - **SDK officiel**: `move_listeners.remove(ws)` directement dans except
 - **BBIA**: Liste `disconnected` puis suppression après boucle
 
 **Correction**:
+
 ```python
 # AVANT
 disconnected = []
@@ -141,10 +152,12 @@ for ws in move_listeners:
 ### 6. wrap_coro - Logging
 
 **Problème détecté**:
+
 - **SDK officiel**: Pas de `logger.error()` dans wrap_coro
 - **BBIA**: `logger.error()` ajouté
 
 **Correction**:
+
 ```python
 # AVANT
 except Exception as e:
@@ -168,4 +181,3 @@ except Exception as e:
 ---
 
 **Impact**: Gestion d'erreurs identique au SDK officiel, comportement WebSocket conforme.
-

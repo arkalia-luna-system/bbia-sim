@@ -13,11 +13,13 @@
 #### **1. Logo Principal "BBIA" (Mascotte + Typographie)**
 
 **Format** :
+
 - SVG (vectoriel, échelle infinie)
 - PNG haute résolution (min 2048x2048px pour logo complet)
 - PNG favicon (32x32px, 64x64px, 128x128px)
 
 **Versions** :
+
 - ✅ Couleur complète (mascotte + typographie)
 - ✅ Monochrome (noir ou gris pour fonds clairs)
 - ✅ Monochrome inversé (blanc pour fonds sombres)
@@ -25,6 +27,7 @@
 - ✅ Typographie seule (texte "BBIA" stylisé)
 
 **Dimensions recommandées** :
+
 - Logo horizontal : ratio 3:1 (ex: 1500x500px)
 - Logo carré : ratio 1:1 (ex: 1000x1000px)
 - Logo vertical : ratio 1:2 (ex: 500x1000px)
@@ -35,6 +38,7 @@
 ### **2. Composants du Logo**
 
 #### **A. Mascotte BBIA**
+
 - **Style** : Robot compagnon arrondi, chibi/kawaï
 - **Posture** : Active, ouverte, bienveillante
 - **Éléments clés** :
@@ -45,6 +49,7 @@
 - **Palette** : Utiliser les couleurs BBIA (bleu, violet, turquoise)
 
 #### **B. Typographie "BBIA"**
+
 - **Style** : Arrondie, moderne, friendly
 - **Suggestions** :
   - Google Fonts : "Nunito", "Comfortaa", "Poppins" (rondes)
@@ -59,11 +64,13 @@
 ### **3. Variations et Déclinaisons**
 
 #### **Versions Simples**
+
 - Logo compact (pour headers)
 - Logo étendu (pour bannières)
 - Mascotte isolée (pour favicon/avatar)
 
 #### **Couleurs**
+
 - Version couleur complète
 - Version monochrome (niveaux de gris)
 - Version inversée (pour fonds sombres)
@@ -73,14 +80,17 @@
 ### **4. Contraintes Techniques**
 
 **Espacement minimum** :
+
 - Garder un espace équivalent à la hauteur du "B" entre le logo et tout élément adjacent
 
 **Tailles d'utilisation** :
+
 - Grande taille : Headers, bannières (min 200px de hauteur)
 - Moyenne taille : Navigation, footers (50-100px de hauteur)
 - Petite taille : Favicon, badges (16-32px)
 
 **Fond transparent** :
+
 - Tous les exports doivent avoir un fond transparent (PNG avec alpha)
 
 ---
@@ -88,16 +98,19 @@
 ### **5. Exemples d'Usage**
 
 **Dans la documentation** :
+
 - Header avec logo horizontal
 - Favicon pour onglet navigateur
 - Watermark discret (optionnel)
 
 **Sur le site web** :
+
 - Logo principal en header
 - Logo compact dans navigation mobile
 - Favicon
 
 **Pour la communication** :
+
 - Email signatures
 - Présentations
 - Documents PDF
@@ -123,12 +136,14 @@
 ### **7. Notes Créatives**
 
 **Inspirations acceptées** :
+
 - Variantes d'expression de la mascotte (curieux, joyeux, pensif)
 - Interprétations créatives des "yeux" du robot
 - Stylisations différentes de la typographie
 - **Tant que ça reste** dans la filiation BBIA/Arkalia/futur lunaire/douceur tech
 
 **Personnalité à transmettre** :
+
 - Curiosité
 - Douceur
 - Ouverture
@@ -150,4 +165,3 @@
 | **Type** | Spécifications techniques |
 | **Priorité** | 🔥 Haute - MVP Graphique |
 | **Document lié** | `BRIEF_GRAPHISTE_DA_BBIA.md` |
-

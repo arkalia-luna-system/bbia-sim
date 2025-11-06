@@ -9,7 +9,7 @@
 
 ## 📁 Structure Actuelle
 
-```
+```text
 artifacts/golden/
   happy_mujoco.jsonl          # Trace référence émotion "happy"
   lookat_mujoco.jsonl         # Trace référence "lookat"
@@ -61,3 +61,10 @@ python scripts/record_trace.py --emotion happy --duration 2 --out current_trace.
 ---
 
 **Dernière mise à jour** : Oct / Nov. 2025
+
+---
+
+## 🎯 Navigation
+
+**Retour à** : [README Documentation](../README.md)  
+**Voir aussi** : [Modules IA](modules.md) • [Intelligence LLM](llm.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)

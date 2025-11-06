@@ -9,12 +9,14 @@
 ## ✅ **PRÉPARATION HARDWARE**
 
 ### **🔌 Connexion Robot**
+
 - [ ] **SDK Reachy installé** : Version notée _______________
 - [ ] **Robot allumé** : LED de statut verte
 - [ ] **Connexion réseau** : IP robot _______________
 - [ ] **Ports ouverts** : 8080 (API), 8081 (WebSocket)
 
 ### **🛡️ Sécurité**
+
 - [ ] **Bouton STOP** : Coupure d'urgence accessible
 - [ ] **Espace libre** : 2m autour du robot
 - [ ] **Personnes averties** : Équipe informée du test
@@ -25,12 +27,14 @@
 ## ✅ **VALIDATION LOGICIELLE**
 
 ### **🧪 Tests Automatiques**
+
 - [ ] **hardware_dry_run.py** : Script exécuté avec succès
 - [ ] **Latence cible** : <40ms set→read mesurée
 - [ ] **Joints validés** : Noms et limites corrects
 - [ ] **Limites sécurité** : Clamp automatique actif
 
 ### **📊 Métriques Cibles**
+
 - [ ] **Latence moyenne** : <40ms
 - [ ] **Latence max** : <100ms
 - [ ] **Erreurs** : 0 erreur critique
@@ -41,11 +45,13 @@
 ## ✅ **MAPPING JOINTS**
 
 ### **🎯 Joints Principaux**
+
 - [ ] **yaw_body** : Rotation corps (limite ±0.3 rad)
 - [ ] **head_yaw** : Rotation tête (limite ±0.3 rad)
 - [ ] **head_pitch** : Inclinaison tête (limite ±0.3 rad)
 
 ### **🚫 Joints Interdits**
+
 - [x] **left_antenna** : Animable avec limites (-0.3 à 0.3 rad)
 - [x] **right_antenna** : Animable avec limites (-0.3 à 0.3 rad)
 - [ ] **passive_1-7** : BLOQUÉS (passifs)
@@ -55,6 +61,7 @@
 ## ✅ **COMMANDES DE TEST**
 
 ### **🚀 Test Complet**
+
 ```bash
 # Activer le venv
 source venv/bin/activate
@@ -67,7 +74,8 @@ python scripts/hardware_dry_run.py --joint yaw_body --duration 5
 ```
 
 ### **📊 Résultats Attendus**
-```
+
+```text
 ✅ Robot Reachy connecté avec succès
 ✅ Tous les joints de test sont disponibles
 ✅ Limite d'amplitude respectée
@@ -82,12 +90,14 @@ python scripts/hardware_dry_run.py --joint yaw_body --duration 5
 ## ✅ **EN CAS DE PROBLÈME**
 
 ### **❌ Erreurs Courantes**
+
 - **Connexion échouée** : Vérifier IP, ports, SDK
 - **Latence élevée** : Vérifier réseau, charge système
 - **Joint introuvable** : Vérifier mapping SDK
 - **Limite non respectée** : Vérifier RobotAPI
 
 ### **🔧 Actions Correctives**
+
 1. **Redémarrer robot** : Power cycle
 2. **Vérifier SDK** : Version compatible
 3. **Tester réseau** : ping, telnet
@@ -98,6 +108,7 @@ python scripts/hardware_dry_run.py --joint yaw_body --duration 5
 ## ✅ **VALIDATION FINALE**
 
 ### **🎯 Critères de Succès**
+
 - [ ] **Connexion stable** : Pas de déconnexion
 - [ ] **Latence acceptable** : <40ms moyenne
 - [ ] **Sécurité active** : Limites respectées
@@ -105,7 +116,8 @@ python scripts/hardware_dry_run.py --joint yaw_body --duration 5
 - [ ] **Erreurs zéro** : Aucune erreur critique
 
 ### **📝 Notes**
-```
+
+```text
 Date du test: _______________
 Opérateur: _______________
 Version SDK: _______________

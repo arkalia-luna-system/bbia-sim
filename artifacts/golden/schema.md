@@ -27,16 +27,19 @@ Chaque ligne = JSON valide avec les champs suivants :
 ## Exemples de traces
 
 ### Happy (émotion joyeuse)
+
 - Durée : 6s
 - Pattern : Sinusoïde 0.5 Hz, amplitude 0.3 rad
 - Émotion : "happy"
 
 ### Look-at (regard latéral)
+
 - Durée : 6s  
 - Pattern : Sinusoïde 0.5 Hz, amplitude 0.3 rad
 - Émotion : "neutral"
 
 ### Wake-up (réveil)
+
 - Durée : 6s
 - Pattern : Sinusoïde 0.5 Hz, amplitude 0.3 rad
 - Émotion : "excited"

@@ -24,17 +24,20 @@
 ### Installation SDK
 
 - [ ] **SDK Reachy Mini installé**
+
   ```bash
   pip install reachy-mini-motor-controller
   # ou selon version SDK officielle
   ```
 
 - [ ] **Vérification connexion SDK**
+
   ```bash
   python -c "from reachy_mini_motor_controller import ReachyMini; robot = ReachyMini(); print(robot.is_connected)"
   ```
 
 - [ ] **Test basique SDK**
+
   ```bash
   python examples/demo_reachy_mini_corrigee.py --quick
   ```
@@ -47,6 +50,7 @@
   - Ports réseau ouverts (vérifier firewall)
 
 - [ ] **Test connexion réseau**
+
   ```bash
   ping <robot_ip>
   # ou
@@ -60,6 +64,7 @@
 ### Activation Tests Hardware
 
 - [ ] **Variables d'environnement configurées**
+
   ```bash
   export SKIP_HARDWARE_TESTS=0
   export REACHY_REAL=1
@@ -67,6 +72,7 @@
   ```
 
 - [ ] **Tests hardware activés**
+
   ```bash
   SKIP_HARDWARE_TESTS=0 pytest tests/test_reachy_mini_backend.py::TestReachyMiniBackendReal -v
   ```
@@ -74,16 +80,19 @@
 ### Tests Conformité SDK
 
 - [ ] **Test connexion réelle**
+
   ```bash
   SKIP_HARDWARE_TESTS=0 pytest tests/test_reachy_mini_backend.py::TestReachyMiniBackendReal::test_real_connection -v
   ```
 
 - [ ] **Test contrôle joints**
+
   ```bash
   SKIP_HARDWARE_TESTS=0 pytest tests/test_reachy_mini_backend.py::TestReachyMiniBackendReal::test_real_joint_control -v
   ```
 
 - [ ] **Dry-run complet**
+
   ```bash
   python scripts/hardware_dry_run_reachy_mini.py --output-dir artifacts --duration 30
   ```
@@ -91,18 +100,21 @@
 ### Tests Modules BBIA
 
 - [ ] **Vision (caméra SDK)**
+
   ```bash
   SKIP_HARDWARE_TESTS=0 pytest tests/test_camera_sdk_latency_real.py -v
   python examples/demo_vision_ok.py --backend reachy_mini
   ```
 
 - [ ] **Audio (microphones)**
+
   ```bash
   python examples/demo_voice_ok.py --backend reachy_mini
   python examples/demo_chat_bbia.py --backend reachy_mini
   ```
 
 - [ ] **Mouvements (articulations)**
+
   ```bash
   python examples/demo_emotion_ok.py --backend reachy_mini --emotion happy --duration 5
   python examples/demo_behavior_ok.py --backend reachy_mini --behavior greeting
@@ -115,35 +127,44 @@
 ### Latence Mesurée
 
 - [ ] **Latence joints (p50/p95)**
+
   ```bash
   # Mesurer latence set_joint_pos()
   python scripts/bbia_performance_benchmarks.py --jsonl artifacts/latency_reachy_mini.csv
   ```
+
   - Cible p50 : < 20ms
   - Cible p95 : < 50ms
 
 - [ ] **Latence caméra SDK**
+
   ```bash
   SKIP_HARDWARE_TESTS=0 pytest tests/test_camera_sdk_latency_real.py::test_camera_sdk_latency_and_fps_placeholder -v
   ```
+
   - Cible FPS : 30 FPS stable
   - Cible latence : < 33ms par frame
 
 - [ ] **Latence audio (microphones)**
+
   ```bash
   python examples/demo_voice_ok.py --backend reachy_mini --measure-latency
   ```
+
   - Cible latence STT : < 500ms
 
 ### Watchdog & Sécurité
 
 - [ ] **Test watchdog timeout**
+
   ```bash
   SKIP_HARDWARE_TESTS=0 pytest tests/test_watchdog_monitoring.py::test_watchdog_timeout_triggers_emergency_stop_real -v
   ```
+
   - Vérifier que timeout > 2s déclenche `emergency_stop()`
 
 - [ ] **Test emergency stop**
+
   ```bash
   python -c "from bbia_sim.robot_factory import RobotFactory; r = RobotFactory.create_backend('reachy_mini', use_sim=False); r.connect(); r.wake_up(); r.emergency_stop(); print('Emergency stop OK')"
   ```
@@ -225,6 +246,7 @@
 ### Validation Finale
 
 - [ ] **Tous tests hardware passent**
+
   ```bash
   SKIP_HARDWARE_TESTS=0 pytest tests/ -k "real" -v
   ```
@@ -262,11 +284,13 @@
 ### Technique
 
 ✅ **Robot fonctionne avec BBIA-SIM**
+
 - Connexion stable
 - Tests hardware passent
 - Latence acceptable (< 50ms p95)
 
 ✅ **Démos fonctionnelles**
+
 - 5 vidéos montrent fonctionnalités
 - Pas d'erreurs visibles
 - Qualité suffisante pour portfolio
@@ -274,6 +298,7 @@
 ### Portfolio
 
 ✅ **Preuve hardware**
+
 - Vidéos montrent robot réel (pas simulation)
 - Performances mesurées documentées
 - Guides hardware complets
@@ -285,10 +310,12 @@
 ### Robot ne connecte pas
 
 **Symptômes :**
+
 - Timeout connexion
 - SDK ne trouve pas robot
 
 **Solutions :**
+
 1. Vérifier réseau Wi-Fi (même réseau)
 2. Scanner réseau pour IP robot
 3. Vérifier firewall ports
@@ -297,10 +324,12 @@
 ### Tests timeout
 
 **Symptômes :**
+
 - Tests hardware timeout
 - Robot ne répond pas
 
 **Solutions :**
+
 1. Vérifier batterie/alimentation
 2. Redémarrer robot
 3. Augmenter timeout tests (`--timeout=60`)
@@ -309,10 +338,12 @@
 ### Latence élevée
 
 **Symptômes :**
+
 - Mouvements saccadés
 - Latence > 100ms
 
 **Solutions :**
+
 1. Vérifier qualité réseau Wi-Fi
 2. Réduire charge CPU (fermer autres apps)
 3. Utiliser USB si disponible
@@ -321,10 +352,12 @@
 ### Caméra ne fonctionne pas
 
 **Symptômes :**
+
 - `robot.media.camera` retourne None
 - Pas de frames
 
 **Solutions :**
+
 1. Vérifier permissions caméra
 2. Vérifier SDK version (compatibilité)
 3. Tester caméra directement (SDK seul)
@@ -367,4 +400,3 @@
 **Date création :** Oct / No2025025025025025  
 **Date validation cible :** Fin Oct / No2025025025025025  
 **Status :** ⏳ En attente réception robot
-

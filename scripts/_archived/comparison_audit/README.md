@@ -96,4 +96,3 @@ Les fonctionnalités des scripts archivés ont été intégrées dans `compare_w
 ---
 
 **Dernière mise à jour** : Oct / No2025025025025025
-

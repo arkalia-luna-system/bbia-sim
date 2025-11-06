@@ -25,10 +25,12 @@ Les mouvements utilisant plusieurs `set_joint_pos()` successifs créent des mouv
 **Solution :** utiliser `goto_target()` avec interpolation automatique (`method="minjerk"`) pour des mouvements plus fluides et synchronisés.
 
 **Fichiers concernés :**
+
 - `bbia_behavior.py` - WakeUpBehavior, GreetingBehavior, AntennaAnimationBehavior, HideBehavior
 - `bbia_integration.py` - apply_emotion_to_robot(), sync_voice_with_movements()
 
 **Exemple avant :**
+
 ```python
 self.robot_api.set_joint_pos("yaw_body", 0.15)
 time.sleep(0.5)
@@ -38,6 +40,7 @@ self.robot_api.set_joint_pos("yaw_body", 0.0)
 ```
 
 **Exemple après :**
+
 ```python
 # Mouvement fluide avec interpolation automatique
 self.robot_api.goto_target(
@@ -63,16 +66,19 @@ Les mouvements de tête et corps appliqués séparément créent une désynchron
 **Solution :** combiner tête et corps dans un seul appel `goto_target()` pour une meilleure synchronisation.
 
 **Fichiers concernés :**
+
 - `bbia_integration.py` - apply_emotion_to_robot()
 - `bbia_behavior.py` - HideBehavior
 
 **Exemple avant :**
+
 ```python
 self.robot_api.set_emotion("happy", 0.6)
 self.robot_api.set_joint_pos("yaw_body", 0.1)
 ```
 
 **Exemple après :**
+
 ```python
 pose = create_head_pose(pitch=0.08, yaw=0.0, degrees=False)
 self.robot_api.goto_target(
@@ -93,16 +99,19 @@ Le suivi visuel utilisait directement `set_joint_position()` sans utiliser les c
 **Solution :** utiliser `look_at_world()` pour les positions 3D et `look_at_image()` pour les coordonnées pixel avec validation des limites.
 
 **Fichiers concernés :**
+
 - `bbia_behavior.py` - VisionTrackingBehavior
 - `bbia_integration.py` - react_to_vision_detection()
 
 **Exemple avant ❌:**
+
 ```python
 head_turn = face_position[0] * 0.3
 self.simulation_service.set_joint_position("yaw_body", head_turn)
 ```
 
 **Exemple après ✅:**
+
 ```python
 # Validation et utilisation SDK optimisée
 if hasattr(robot_api, 'look_at_world'):
@@ -124,10 +133,12 @@ Les comportements BBIA ne pouvaient pas contrôler directement le robot physique
 Passer `robot_api` au `BBIABehaviorManager` pour contrôle direct du robot via SDK.
 
 **Fichiers corrigés :**
+
 - ✅ `bbia_integration.py` - __init__() passe robot_api au BBIABehaviorManager
 - ✅ `bbia_behavior.py` - Tous les comportements acceptent et utilisent robot_api
 
 **Impact :**
+
 - ✅ Contrôle direct du robot par les comportements
 - ✅ Utilisation automatique des optimisations SDK
 - ✅ Fallbacks gracieux si SDK non disponible
@@ -143,6 +154,7 @@ Erreurs non gérées si SDK non disponible ou méthodes manquantes.
 Système de fallbacks à 3 niveaux : SDK optimisé → SDK basique → Simulation.
 
 **Exemple de pattern :**
+
 ```python
 try:
     # Méthode 1 (préférée): goto_target avec interpolation
@@ -164,18 +176,22 @@ except Exception as e:
 ## Bénéfices performance
 
 ### **Fluidité des mouvements**
+
 - Avant : mouvements saccadés (3-5 appels SDK séparés)
 - Après : mouvements plus fluides (1 appel SDK avec interpolation)
 
 ### **Synchronisation**
+
 - Avant : tête et corps désynchronisés (2 appels séparés)
 - Après : synchronisation améliorée (1 appel combiné)
 
 ### **Précision suivi visuel**
+
 - Avant : rotation approximative (set_joint_pos direct)
 - Après : utilisation IK via SDK (`look_at_world`)
 
 ### **Résilience**
+
 - Avant : erreurs si SDK non disponible
 - Après : fallbacks pour maintenir le fonctionnement
 
@@ -210,8 +226,8 @@ except Exception as e:
 ## Prêt pour robot physique
 
 Ces optimisations apportent :
+
 - des mouvements plus naturels et fluides
 - une meilleure synchronisation tête+corps
 - un suivi visuel via IK
 - une résilience accrue (avec ou sans SDK)
-

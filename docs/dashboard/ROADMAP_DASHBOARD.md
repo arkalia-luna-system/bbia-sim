@@ -68,6 +68,7 @@ gantt
 ```
 
 ## Mini UI télémétrie (proposé)
+
 - Graphiques temps réel: latence, FPS, CPU/RAM
 - Sliders émotions + presets exportables (JSON)
 - Mode démo read-only (pas d'actions)
@@ -99,6 +100,7 @@ mindmap
 ```
 
 ## Stack suggérée
+
 - FastAPI + HTMX/Alpine (léger) ou Streamlit (rapide)
 
 ---

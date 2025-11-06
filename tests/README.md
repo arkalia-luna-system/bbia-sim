@@ -5,6 +5,7 @@
 ## 🎯 **Couverture de Tests**
 
 ### 📊 **Statistiques de Couverture ACTUELLES**
+
 - **Coverage total** : **68.86%** (excellent)
 - **1210 tests collectés** (pytest --collect-only)
 - **Tests passent** : Voir résultats pytest récents
@@ -12,6 +13,7 @@
 - **Golden Tests** : 3 traces référence + validation
 
 ### 📊 **Détail par Module**
+
 - **bbia_audio.py** : **87.76%** ✅
 - **bbia_behavior.py** : **72.50%** ✅
 - **bbia_emotions.py** : **81.71%** ✅
@@ -26,6 +28,7 @@
 - **unity_reachy_controller.py** : **81.20%** ✅
 
 ### 📊 **Modules Critiques (Coverage Excellent)**
+
 - **vision_yolo.py** : **99.45%** ✅ (42 tests) - Objectif 50%+ largement dépassé
 - **voice_whisper.py** : **92.52%** ✅ (66 tests) - Objectif 50%+ largement dépassé
 - **dashboard_advanced.py** : **76.71%** ✅ (47 tests, 1156 lignes) - Objectif 50%+ dépassé
@@ -34,6 +37,7 @@
 **Total tests modules critiques** : **189 tests** pour les 4 modules critiques
 
 ### 🧪 **Golden Tests**
+
 - **test_golden_traces.py** : 3 tests de non-régression
 - **Traces référence** : happy_mujoco.jsonl, lookat_mujoco.jsonl, wakeup_mujoco.jsonl
 - **Tolérances** : ±0.25 rad position, ±20% cadence
@@ -71,6 +75,7 @@ python -m pytest tests/test_vertical_slices.py -v
 ### 🧪 **Tests Spécialisés**
 
 #### **Golden Tests**
+
 ```bash
 # Tests de non-régression
 python -m pytest tests/test_golden_traces.py -v
@@ -83,6 +88,7 @@ python scripts/validate_trace.py --ref artifacts/golden/happy_mujoco.jsonl --cur
 ```
 
 #### **RobotAPI Tests**
+
 ```bash
 # Tests limites et sécurité
 python -m pytest tests/test_robot_api_limits.py -v
@@ -92,6 +98,7 @@ python -m pytest tests/test_robot_api_smoke.py -v
 ```
 
 #### **Vertical Slices**
+
 ```bash
 # Tests 4 démos BBIA
 python -m pytest tests/test_vertical_slices.py -v
@@ -101,7 +108,7 @@ python -m pytest tests/test_vertical_slices.py -v
 
 ## 📁 **Structure des Tests**
 
-```
+```text
 tests/
 ├── 🧪 test_simulator.py              # Tests MuJoCo Simulator (97% couverture)
 ├── 🧪 test_simulation_service.py     # Tests Simulation Service (90% couverture)
@@ -124,6 +131,7 @@ tests/
 ### 🤖 **Tests Backend Reachy Mini**
 
 **📊 Statistiques (Oct / No2025025025025025)**:
+
 - ✅ **118 tests** répartis dans **8 fichiers complémentaires**
 - ✅ **116 tests uniques** (98.3% - très peu de redondance)
 - ✅ **1 doublon mineur** (`test_robot_factory_integration`)
@@ -162,6 +170,7 @@ python scripts/verify_tests_consolidation.py
 ## 🎯 **Types de Tests**
 
 ### 🧪 **Tests Unitaires**
+
 - **Simulateur** : Tests MuJoCo headless/graphique, gestion erreurs, clamp angles
 - **Service** : Cycle de vie simulation, gestion erreurs, état robot
 - **Routers** : Endpoints API, validation données, gestion erreurs
@@ -170,11 +179,13 @@ python scripts/verify_tests_consolidation.py
 - **Modèles** : Validation Pydantic, contraintes données
 
 ### 🔗 **Tests d'Intégration**
+
 - **Simulation** : Tests durée, performance, accès concurrent
 - **API** : Tests endpoints complets, middleware, authentification
 - **Joints** : Validation limites physiques, clamp automatique
 
 ### 🌐 **Tests End-to-End**
+
 - **Motion** : Cycle complet GET → SET → GET avec vérification
 - **WebSocket** : Télémétrie temps réel, fréquence messages
 - **Performance** : Temps de réponse, mouvements concurrents
@@ -184,12 +195,14 @@ python scripts/verify_tests_consolidation.py
 ## 🎯 **Qualité du Code**
 
 ### ✅ **Standards Respectés**
+
 - **Black** : Formatage automatique
 - **Ruff** : Linting et corrections automatiques  
 - **MyPy** : Vérification types statiques
 - **Pytest** : Framework de tests moderne
 
 ### 🚀 **Commandes Qualité**
+
 ```bash
 # Vérification complète
 ruff check src/ tests/
@@ -206,6 +219,7 @@ black src/ tests/
 ## 🎯 **Tests par Module**
 
 ### 🤖 **Simulateur MuJoCo** (`test_simulator.py`)
+
 - ✅ Simulation headless/graphique
 - ✅ Chargement scènes avec gestion erreurs
 - ✅ Clamp angles dans limites physiques
@@ -213,6 +227,7 @@ black src/ tests/
 - ✅ Fermeture propre simulateur
 
 ### 🔧 **Service Simulation** (`test_simulation_service.py`)
+
 - ✅ Cycle de vie start/stop simulation
 - ✅ Mode graphique avec fallback headless
 - ✅ Gestion erreurs simulateur
@@ -220,6 +235,7 @@ black src/ tests/
 - ✅ Méthodes par défaut
 
 ### 🌐 **Routers API** (`test_routers.py`)
+
 - ✅ Endpoints motion (joints, gripper, head, stop)
 - ✅ Endpoints state (full, position, battery, temperature, status, sensors)
 - ✅ Validation joints invalides
@@ -227,6 +243,7 @@ black src/ tests/
 - ✅ Validation gripper (côté/action)
 
 ### ⚙️ **Configuration** (`test_config.py`)
+
 - ✅ Environnements dev/prod
 - ✅ Chargement dotenv avec gestion erreurs
 - ✅ CORS origins selon environnement
@@ -234,12 +251,14 @@ black src/ tests/
 - ✅ Masquage tokens pour logs
 
 ### 🛡️ **Middleware** (`test_middleware.py`)
+
 - ✅ Rate limiting par minute
 - ✅ Headers sécurité
 - ✅ Gestion requêtes volumineuses
 - ✅ Ordre middlewares
 
 ### 📋 **Modèles** (`test_models.py`)
+
 - ✅ Validation Pydantic complète
 - ✅ Contraintes physiques réalistes
 - ✅ Messages d'erreur explicites
@@ -250,18 +269,21 @@ black src/ tests/
 ## 🎯 **Tests d'Intégration**
 
 ### 🔗 **Simulation** (`test_simulation_integration.py`)
+
 - ✅ Durée headless précise (±0.05s)
 - ✅ Performance simulation
 - ✅ Accès concurrent sécurisé
 - ✅ Gestion erreurs robuste
 
 ### 🌐 **API** (`test_api_integration.py`)
+
 - ✅ Endpoints complets avec authentification
 - ✅ Middleware CORS et sécurité
 - ✅ Gestion erreurs HTTP
 - ✅ Headers sécurité
 
 ### 🎯 **Joints** (`test_joints.py`)
+
 - ✅ Validation noms joints autorisés
 - ✅ Clamp angles dans limites physiques
 - ✅ Gestion erreurs explicites
@@ -271,6 +293,7 @@ black src/ tests/
 ## 🎯 **Tests End-to-End**
 
 ### 🌐 **Motion Roundtrip** (`e2e/test_motion_roundtrip.py`)
+
 - ✅ Cycle complet GET → SET → GET
 - ✅ Vérification changement positions
 - ✅ WebSocket télémétrie temps réel
@@ -283,6 +306,7 @@ black src/ tests/
 ## 🎯 **Commandes Rapides**
 
 ### 🚀 **Tests Principaux**
+
 ```bash
 # Tous les tests
 pytest tests/ -v
@@ -297,6 +321,7 @@ pytest tests/test_routers.py -v
 ```
 
 ### 🔍 **Vérifications Qualité**
+
 ```bash
 # Linting et formatage
 ruff check src/ tests/
@@ -309,6 +334,7 @@ black src/ tests/
 ```
 
 ### 📊 **Couverture**
+
 ```bash
 # Rapport HTML
 pytest --cov=src/bbia_sim --cov-report=html
@@ -323,17 +349,20 @@ pytest --cov=src/bbia_sim --cov-report=term-missing
 ## 🎯 **Résultats Attendus**
 
 ### ✅ **Tests Unitaires**
+
 - **215+ tests** passent avec succès
 - **Couverture globale** ≥80% (objectif atteint)
 - **Qualité code** : Black/Ruff/MyPy ✅
 - **Stabilité** : Aucun test flaky
 
 ### ✅ **Tests d'Intégration**
+
 - **Simulation** : Durée précise, performance optimale
 - **API** : Endpoints robustes, authentification sécurisée
 - **Joints** : Validation physique réaliste
 
 ### ✅ **Tests E2E**
+
 - **Motion** : Cycle complet fonctionnel
 - **WebSocket** : Télémétrie temps réel
 - **Performance** : Réponses rapides
@@ -353,11 +382,13 @@ pytest --cov=src/bbia_sim --cov-report=term-missing
 ## 🎯 **Dépannage**
 
 ### ❌ **Problèmes Courants**
+
 - **Tests E2E lents** : Utilisez `-m "not e2e"` pour les exclure
 - **Erreurs MuJoCo** : Tests en mode headless uniquement
 - **Imports** : Vérifiez les chemins relatifs dans les tests
 
 ### ✅ **Solutions**
+
 - **Tous les tests** sont fonctionnels et stables
 - **Gestion d'erreurs** robuste avec mocks appropriés
 - **Documentation** complète pour chaque test

@@ -43,11 +43,13 @@ Voir [Guide Débutant](../guides/GUIDE_DEBUTANT.md) pour les premiers pas.
 ## 🎯 Par où commencer ?
 
 ### Je suis nouveau
+
 1. **[Guide Débutant](../guides/GUIDE_DEBUTANT.md)** — Installation et premiers pas
 2. **[Guide de Navigation](NAVIGATION.md)** — Trouver ce dont vous avez besoin
 3. **[FAQ Troubleshooting](troubleshooting.md)** — Questions fréquentes
 
 ### Je veux développer
+
 1. **[Guide Avancé](../guides/GUIDE_AVANCE.md)** — Fonctionnalités avancées
 2. **[Architecture](../development/architecture/ARCHITECTURE_OVERVIEW.md)** — Structure du projet
 3. **[Guide Contribuer](contributing.md)** — Comment contribuer

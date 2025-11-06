@@ -86,7 +86,7 @@
 
 ## 📁 STRUCTURE FINALE
 
-```
+```text
 scripts/
 ├── compare_with_official_exhaustive.py  ✅ (principal, amélioré avec fusions)
 ├── check_official_alignment.py          ✅ (alignement MJCF/STL)
@@ -131,4 +131,3 @@ scripts/
 ---
 
 **Statut** : Plan créé, en attente d'exécution
-

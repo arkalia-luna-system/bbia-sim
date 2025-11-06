@@ -8,6 +8,7 @@
 ## 🎯 Réponse Directe
 
 **OUI**, si vous dessinez le logo sur iPad Pro et exportez en **SVG**, on peut :
+
 - ✅ L'utiliser **directement** dans le site web
 - ✅ Générer **toutes les versions** (favicons, monochrome, PNG, etc.)
 - ✅ L'intégrer dans **tout le code** et la documentation
@@ -19,6 +20,7 @@
 ## 📱 Application à Utiliser
 
 **Vous avez déjà** : **Procreate** ✅ **PARFAIT**
+
 - ✅ **Très professionnel** : Utilisé par designers pros mondiaux
 - ✅ **Outils puissants** : Excellent pour dessiner librement
 - ✅ **Export PNG haute résolution** : 4096x4096px (qualité maximale)
@@ -50,4 +52,3 @@ Voir le guide complet : [`OPTION_IPAD_PRO.md`](OPTION_IPAD_PRO.md)
 ---
 
 *Résumé rapide - Option iPad Pro - Oct / No2025025025025025*
-

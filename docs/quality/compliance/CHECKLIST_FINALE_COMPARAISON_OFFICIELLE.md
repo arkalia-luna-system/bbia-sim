@@ -10,6 +10,7 @@
 ## 🎯 RÉSUMÉ EXÉCUTIF
 
 **Total différences détectées**: 173 (audit exhaustif Oct / Nov. 2025)
+
 - 🔴 **CRITICAL**: 0 ✅
 - 🟠 **HIGH**: 0 ✅ (toutes corrigées lors de l'audit précédent)
 - 🟡 **MEDIUM**: 148 (majoritairement fichiers structure/exemples/tests - non critiques)
@@ -27,6 +28,7 @@
 ### 0. Router State (`state.py`) - ✅ CONFORMITÉ AMÉLIORÉE
 
 #### ✅ Endpoint `GET /development/api/state/full`
+
 - **Fichier**: `src/bbia_sim/daemon/app/routers/state.py:143-221`
 - **Corrections appliquées**:
  1. **Assertion `with_target_head_pose`**: Utilisation de `assert target_pose is not None` (conforme SDK) au lieu de vérification conditionnelle
@@ -43,6 +45,7 @@
 ### 1. Router Move (`move.py`) - ✅ CONFORMITÉ AMÉLIORÉE
 
 #### ✅ Endpoints du router move
+
 - **Fichier**: `src/bbia_sim/daemon/app/routers/move.py`
 - **Corrections appliquées**:
  1. **Endpoint `POST /goto`**: Supprimé paramètres `method` et `body_yaw` de l'appel à `goto_target()` (non utilisés dans l'appel SDK officiel, bien que le backend les accepte)
@@ -62,6 +65,7 @@
 ### 3. Router Motors (`motors.py`) - ✅ CONFORMITÉ AMÉLIORÉE
 
 #### ✅ Endpoints du router motors
+
 - **Fichier**: `src/bbia_sim/daemon/app/routers/motors.py`
 - **Corrections appliquées**:
  1. **Utilisation BackendAdapter**: Remplacé logique complexe par utilisation directe de `BackendAdapter` via `get_backend_adapter` (conforme SDK)
@@ -78,6 +82,7 @@
 ### 4. Router Kinematics (`kinematics.py`) - ✅ CONFORMITÉ AMÉLIORÉE
 
 #### ✅ Endpoints du router kinematics
+
 - **Fichier**: `src/bbia_sim/daemon/app/routers/kinematics.py`
 - **Corrections appliquées**:
  1. **Utilisation BackendAdapter**: Remplacé logique complexe avec RobotFactory par utilisation directe de `BackendAdapter` (conforme SDK)
@@ -94,6 +99,7 @@
 ### 5. Router Daemon (`daemon.py`) - ℹ️ EXTENSION BBIA
 
 #### ℹ️ Endpoints du router daemon
+
 - **Fichier**: `src/bbia_sim/daemon/app/routers/daemon.py`
 - **Note**: Ce router est une **extension BBIA légitime** adaptée pour la simulation MuJoCo
 - **Différences justifiées**:
@@ -108,6 +114,7 @@
 ### 6. Router Apps (`apps.py`) - ℹ️ EXTENSION BBIA
 
 #### ℹ️ Endpoints du router apps
+
 - **Fichier**: `src/bbia_sim/daemon/app/routers/apps.py`
 - **Note**: Ce router est une **extension BBIA légitime** simplifiée pour la simulation
 - **Différences justifiées**:
@@ -122,6 +129,7 @@
 ### 8. BackendAdapter (`backend_adapter.py`) - ✅ CONFORMITÉ COMPLÈTE
 
 #### ✅ Corrections majeures appliquées
+
 - **Fichier**: `src/bbia_sim/daemon/app/backend_adapter.py`
 - **Corrections appliquées**:
  1. **Attributs target**: Changé de propriétés `@property` vers attributs directs `self.target_*` (conforme SDK - ligne 28-32)
@@ -148,6 +156,7 @@
 **Fichier**: `src/bbia_sim/daemon/app/routers/move.py:184`
 
 **Correction**:
+
 ```python
 @router.get("/recorded-move-datasets/list/{dataset_name:path}")
 async def list_recorded_move_dataset(dataset_name: str) -> list[str]:
@@ -173,6 +182,7 @@ async def list_recorded_move_dataset(dataset_name: str) -> list[str]:
 **Fichier**: `src/bbia_sim/daemon/app/routers/move.py:202`
 
 **Correction**:
+
 ```python
 @router.post("/play/recorded-move-dataset/{dataset_name:path}/{move_name}")
 async def play_recorded_move_dataset(
@@ -222,6 +232,7 @@ async def play_recorded_move_dataset(
 **Décision**: ✅ **NON CRITIQUE** - Structure BBIA différente mais fonctionnelle.
 
 **Fichiers potentiellement utiles** (à évaluer):
+
 - `src/reachy_mini/motion/recorded_move.py` - Déjà utilisé via import
 - Exemples dans `examples/` - À évaluer selon besoins
 - Tests officiels - À comparer avec tests BBIA existants
@@ -231,6 +242,7 @@ async def play_recorded_move_dataset(
 ### Tests (18 différences - MEDIUM)
 
 **Tests officiels manquants dans BBIA**:
+
 - `test_daemon.py` - Tests daemon
 - `test_collision.py` - Tests collision
 - `test_analytical_kinematics.py` - Tests cinématique analytique
@@ -242,6 +254,7 @@ async def play_recorded_move_dataset(
 - `test_app.py` - Tests app
 
 **Tests BBIA existants** (168 tests):
+
 - `test_reachy_mini_backend.py` - Tests backend
 - `test_reachy_mini_full_conformity_official.py` - Tests conformité
 - `test_reachy_mini_strict_conformity.py` - Tests conformité stricte
@@ -394,6 +407,7 @@ bandit -r src/bbia_sim/daemon/app/routers/move.py
 **Statut Global**: ✅ **CONFORME** avec le SDK officiel pour endpoints REST critiques.
 
 **Actions Complétées**:
+
 - ✅ 2 endpoints recorded-move ajoutés
 - ✅ Code formaté et vérifié (black, ruff)
 - ✅ Imports corrigés
@@ -403,12 +417,14 @@ bandit -r src/bbia_sim/daemon/app/routers/move.py
 - ✅ BackendAdapter.play_move() maintenant async
 
 **Actions Recommandées** (Audit Oct / Nov. 2025):
+
 - ✅ Comparer tests critiques (daemon, collision) - **TERMINÉ**: BBIA a couverture équivalente ou supérieure
 - ⚠️ Tester endpoints recorded-move avec dataset réel (optionnel - nécessite SDK + HuggingFace Hub)
 - ✅ Documenter extensions BBIA - **TERMINÉ**: 24 endpoints INFO documentés comme extensions légitimes
 - ✅ Documenter différences daemon/apps - **TERMINÉ**: Différences `bg_job_register` vs `simulation_service` justifiées et documentées
 
 **Vérification Qualité Code (Oct / Nov. 2025)**:
+
 - ✅ Black: Formatage OK
 - ✅ Ruff: Aucune erreur
 - ✅ Mypy: Aucune erreur (3 fichiers vérifiés)
@@ -422,4 +438,3 @@ bandit -r src/bbia_sim/daemon/app/routers/move.py
 **Script utilisé**: `scripts/compare_with_official_exhaustive.py`
 **Rapports**: `logs/comparison_official_results.json`, `logs/comparison_official_report.md`
 **Prompt d'audit exhaustif**: `docs/guides/PROMPT_AUDIT_EXHAUSTIF_REACHY_MINI.md` (pour audits futurs automatisés)
-

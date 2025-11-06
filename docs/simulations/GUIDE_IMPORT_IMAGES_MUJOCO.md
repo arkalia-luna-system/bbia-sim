@@ -1,5 +1,7 @@
 # 🎨 Guide - Importer Images dans MuJoCo
 
+**Date** : Oct / Nov. 2025
+
 > **Question** : Peut-on importer des images créées (ex: pièce avec audit) dans MuJoCo pour les scènes 3D ?  
 > **Réponse** : ✅ **OUI, C'EST POSSIBLE ET RELATIVEMENT SIMPLE !**
 
@@ -8,6 +10,7 @@
 ## ✅ Réponse Directe
 
 **OUI**, vous pouvez importer vos images (textures) dans MuJoCo pour :
+
 - ✅ **Murs de pièce** : Image de texture murale
 - ✅ **Sol/Plafond** : Image de texture sol/plafond
 - ✅ **Objets décoratifs** : Images sur surfaces planes
@@ -76,12 +79,14 @@ Vous dessinez vos textures → MuJoCo les applique automatiquement.
 ## 🖼️ Formats d'Images Supportés
 
 ### **Formats Acceptés**
+
 - ✅ **PNG** (recommandé : transparence)
 - ✅ **JPG/JPEG**
 - ✅ **BMP**
 - ✅ **TGA**
 
 ### **Tailles Recommandées**
+
 - **Textures murs/sol** : 1024x1024px ou 2048x2048px
 - **Détails fins** : 512x512px minimum
 - **Skybox** : 2048x2048px (ou 4096x4096px pour qualité max)
@@ -95,11 +100,13 @@ Vous dessinez vos textures → MuJoCo les applique automatiquement.
 ### **Étape 1 : Créer vos Textures**
 
 **Dans Procreate** :
+
 1. Créez vos textures (mur, sol, plafond, décor)
 2. Taille recommandée : **2048x2048px** (qualité pro)
 3. Export PNG haute résolution
 
 **Textures à créer** :
+
 - `mur.png` - Texture murale (peut être répétée)
 - `sol.png` - Texture sol
 - `plafond.png` - Texture plafond (optionnel)
@@ -107,7 +114,7 @@ Vous dessinez vos textures → MuJoCo les applique automatiquement.
 
 ### **Étape 2 : Organiser les Fichiers**
 
-```
+```text
 bbia-reachy-sim/
 ├── assets/
 │   └── textures/           # NOUVEAU : Dossier textures
@@ -185,6 +192,7 @@ bbia-reachy-sim/
 **Image Procreate** : `mur.png` (2048x2048px, texture murale)
 
 **Dans XML** :
+
 ```xml
 <texture name="mur" type="2d" file="assets/textures/mur.png"/>
 <material name="mat_mur" texture="mur"/>
@@ -200,6 +208,7 @@ bbia-reachy-sim/
 **Image Procreate** : `sol.png` (parquet, carrelage, moquette, etc.)
 
 **Dans XML** :
+
 ```xml
 <texture name="sol" type="2d" file="assets/textures/sol.png"/>
 <material name="mat_sol" texture="sol"/>
@@ -215,6 +224,7 @@ bbia-reachy-sim/
 **Image Procreate** : `tableau.png`, `plante.png`, etc.
 
 **Dans XML** :
+
 ```xml
 <texture name="tableau" type="2d" file="assets/textures/tableau.png"/>
 <material name="mat_tableau" texture="tableau"/>
@@ -228,6 +238,7 @@ bbia-reachy-sim/
 ## 💡 Avantages vs Coder en 3D
 
 ### **Avec Images (Procreate)**
+
 - ✅ **Plus rapide** : Vous dessinez → MuJoCo applique
 - ✅ **Plus créatif** : Liberté totale sur le design
 - ✅ **Plus simple** : Pas besoin de modéliser en 3D
@@ -235,6 +246,7 @@ bbia-reachy-sim/
 - ✅ **Plus flexible** : Changement d'image = changement d'ambiance
 
 ### **Sans Images (Code pur)**
+
 - ⚠️ **Plus long** : Modéliser chaque détail en 3D
 - ⚠️ **Plus technique** : Nécessite connaissance 3D avancée
 - ⚠️ **Moins créatif** : Limité par les primitives géométriques
@@ -248,11 +260,13 @@ bbia-reachy-sim/
 ### **Chemins de Fichiers**
 
 **Option 1 : Chemin relatif depuis XML**
+
 ```xml
 <texture name="mur" type="2d" file="../../../assets/textures/mur.png"/>
 ```
 
 **Option 2 : Chemin absolu** (si images ailleurs)
+
 ```xml
 <texture name="mur" type="2d" file="/Volumes/T7/bbia-reachy-sim/assets/textures/mur.png"/>
 ```
@@ -290,15 +304,18 @@ bbia-reachy-sim/
 **Votre cas** : Pièce avec éléments auditifs (audio/son)
 
 **Approche** :
+
 1. **Textures visuelles** : Murs, sol, plafond avec Procreate
 2. **Positionnement objets** : Haut-parleurs, microphones visibles dans scène
 3. **Audio** : Géré séparément par le code Python (pas dans MuJoCo directement)
 
 **MuJoCo gère** :
+
 - ✅ Visuel (textures, objets 3D)
 - ✅ Positionnement objets audio visuels
 
 **Code Python gère** :
+
 - ✅ Audio réel (son, microphone)
 - ✅ Interaction audio-robot
 
@@ -358,5 +375,11 @@ sim.launch_simulation()
 
 ---
 
-*Guide Import Images MuJoCo - BBIA-SIM - Oct / Nov. 2025*
+## 🎯 Navigation
 
+**Retour à** : [README Documentation](../README.md)  
+**Voir aussi** : [Guide MuJoCo](MUJOCO_SIMULATION_GUIDE.md) • [Index Simulations](../simulations/INDEX_GUIDES_PROCREATE.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)
+
+---
+
+*Guide Import Images MuJoCo - BBIA-SIM - Oct / Nov. 2025*

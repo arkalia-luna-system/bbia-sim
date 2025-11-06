@@ -50,7 +50,7 @@ python -m bbia_sim --sim --model /path/to/custom_model.xml
 
 ## 📁 Structure des fichiers
 
-```
+```text
 src/bbia_sim/sim/
 ├── __init__.py              # Module de simulation
 ├── simulator.py             # Classe MuJoCoSimulator
@@ -196,18 +196,21 @@ Les scènes utilisent le format MJCF (MuJoCo XML). Exemple minimal :
 ### Problèmes courants
 
 1. **Erreur "MuJoCo not found"**
+
    ```bash
    # Vérifier l'installation
    python -c "import mujoco; print(mujoco.__version__)"
    ```
 
 2. **Fenêtre graphique ne s'ouvre pas**
+
    ```bash
    # Tester en mode headless
    python -m bbia_sim --sim --headless
    ```
 
 3. **Modèle MJCF invalide**
+
    ```bash
    # Vérifier la syntaxe XML
    xmllint --noout src/bbia_sim/sim/models/reachy_mini.xml
@@ -297,3 +300,10 @@ flowchart TD
 - [ ] Enregistrement/replay de mouvements
 - [ ] Interface graphique améliorée
 - [ ] Support multi-robots
+
+---
+
+## 🎯 Navigation
+
+**Retour à** : [README Documentation](../README.md)  
+**Voir aussi** : [Index Simulations](INDEX_GUIDES_PROCREATE.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)

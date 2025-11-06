@@ -1,5 +1,7 @@
 # 📚 Index - Guides Procreate pour Scènes MuJoCo
 
+**Date** : Oct / Nov. 2025
+
 > **Navigation rapide** : Tous les guides disponibles
 
 ---
@@ -9,6 +11,7 @@
 ### **🚀 Démarrage Rapide (2 minutes)**
 
 **👉 `RESUME_RAPIDE_PROCREATE.md`**
+
 - Configuration basique
 - Structure calques (5 calques)
 - Export rapide
@@ -21,6 +24,7 @@
 ### **📖 Guide Complet (Référence)**
 
 **👉 `GUIDE_PROCREATE_SCENE_COMPLET.md`**
+
 - Configuration détaillée Procreate
 - Organisation calques professionnelle
 - Création textures (mur, sol, plafond)
@@ -35,6 +39,7 @@
 ### **🤖 Robot dans la Scène**
 
 **👉 `CONSEILS_PROCREATE_ROBOT.md`**
+
 - Robot en texture OU 3D ?
 - Dessiner robot (si optionnel)
 - Intégration dans scène
@@ -47,6 +52,7 @@
 ### **🔧 Importer dans MuJoCo**
 
 **👉 `GUIDE_IMPORT_IMAGES_MUJOCO.md`**
+
 - Types de textures MuJoCo
 - Format XML complet
 - Exemples code
@@ -71,11 +77,13 @@
 ## 📋 Résumé des Essentiels
 
 ### **Configuration Procreate** :
+
 - Taille : **4096 x 4096 px**
 - Format : **RGB, sRGB**
 - Fond : **Transparent** ou **Blanc**
 
 ### **Structure Calques (Par Texture)** :
+
 - **5 calques** = Équilibre parfait
   1. Base (100%)
   2. Texture (40%, Overlay)
@@ -84,15 +92,18 @@
   5. Détails (15%, Normal)
 
 ### **Textures à Créer** :
+
 - `mur.png` (4096x4096px)
 - `sol.png` (4096x4096px)
 - `plafond.png` (4096x4096px, optionnel)
 
 ### **Export** :
+
 - PNG maximum qualité
 - Placer dans `assets/textures/`
 
 ### **Robot** :
+
 - ✅ Utiliser modèle 3D MuJoCo (recommandé)
 - ✅ Texture robot optionnelle (pour décor)
 
@@ -106,5 +117,11 @@
 
 ---
 
-*Index Guides Procreate - BBIA-SIM - Oct / Nov. 2025*
+## 🎯 Navigation
 
+**Retour à** : [README Documentation](../README.md)  
+**Voir aussi** : [Guide MuJoCo](MUJOCO_SIMULATION_GUIDE.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)
+
+---
+
+*Index Guides Procreate - BBIA-SIM - Oct / Nov. 2025*

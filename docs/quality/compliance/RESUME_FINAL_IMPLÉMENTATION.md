@@ -23,6 +23,7 @@
 **Fichier** : `src/bbia_sim/daemon/app/routers/move.py` (NOUVEAU)
 
 **Endpoints implémentés** :
+
 - ✅ `POST /development/api/move/goto` - Mouvement avec `GotoModelRequest` (conforme SDK)
 - ✅ `GET /development/api/move/running` - Liste mouvements en cours (UUIDs)
 - ✅ `POST /development/api/move/stop` - Arrêter mouvement par UUID
@@ -33,6 +34,7 @@
 - ✅ `WebSocket /development/api/move/ws/set_target` - Stream set_target
 
 **Fonctionnalités clés** :
+
 - ✅ `create_move_task()` - Crée tâche avec UUID, notifications WebSocket
 - ✅ `move_tasks` dict - Gestion globale des tâches actives
 - ✅ `move_listeners` - Système de notifications WebSocket
@@ -47,6 +49,7 @@
 **Fichier** : `src/bbia_sim/daemon/models.py`
 
 **Modèles ajoutés** :
+
 - ✅ `XYZRPYPose` - Pose 3D (x, y, z, roll, pitch, yaw)
   - Méthode `from_pose_array()` - Conversion depuis matrice 4x4
   - Méthode `to_pose_array()` - Conversion vers matrice 4x4
@@ -59,6 +62,7 @@
 - ✅ `GotoModelRequest` - Requête goto (head_pose, antennas, duration, interpolation)
 
 **Fonctions utilitaires** :
+
 - ✅ `as_any_pose(pose, use_matrix)` - Conversion conforme SDK
 
 ---
@@ -70,6 +74,7 @@
 **Fichier** : `src/bbia_sim/daemon/app/routers/state.py:145`
 
 **Paramètres ajoutés** (11 total) :
+
 - ✅ `with_control_mode: bool = True`
 - ✅ `with_head_pose: bool = True`
 - ✅ `with_target_head_pose: bool = False`
@@ -91,6 +96,7 @@
 **Fichier** : `src/bbia_sim/daemon/app/routers/state.py:342`
 
 **Paramètre ajouté** :
+
 - ✅ `use_pose_matrix: bool = False` - Choisit format retour (matrice 4x4 ou xyzrpy)
 
 **Conformité** : 100% conforme au SDK officiel
@@ -102,6 +108,7 @@
 **Fichier** : `src/bbia_sim/daemon/app/routers/state.py:630`
 
 **Paramètres ajoutés** (11 total) :
+
 - Tous les paramètres de `get_full_state()` sont maintenant disponibles
 - Réutilise `get_full_state()` pour cohérence
 
@@ -116,6 +123,7 @@
 **Fichier** : `tests/test_api_move_conformity.py`
 
 **14 tests** :
+
 - ✅ `TestMoveGoto::test_goto_with_head_pose`
 - ✅ `TestMoveGoto::test_goto_with_antennas`
 - ✅ `TestMoveGoto::test_goto_all_interpolation_modes` (linear, minjerk, ease, cartoon)
@@ -135,6 +143,7 @@
 **Fichier** : `tests/test_api_state_improved.py`
 
 **5 tests** :
+
 - ✅ `TestStateFull::test_full_state_default`
 - ✅ `TestStateFull::test_full_state_with_control_mode`
 - ✅ `TestStateFull::test_full_state_use_pose_matrix`
@@ -157,6 +166,7 @@
 | **TOTAL** | 26 | 25 | 1 | ✅ **96%** |
 
 **Endpoint optionnel restant** :
+
 - `GET /development/api/move/recorded-move-datasets/list/{dataset_name:path}` - HuggingFace datasets (optionnel)
 - `POST /development/api/move/play/recorded-move-dataset/{dataset_name:path}/{move_name}` - Jouer moves depuis datasets (optionnel)
 
@@ -174,11 +184,13 @@
 ## 📝 FICHIERS MODIFIÉS/CRÉÉS
 
 ### Nouveaux fichiers
+
 - ✅ `src/bbia_sim/daemon/app/routers/move.py` - Router conforme SDK
 - ✅ `tests/test_api_move_conformity.py` - Tests move
 - ✅ `tests/test_api_state_improved.py` - Tests state améliorés
 
 ### Fichiers modifiés
+
 - ✅ `src/bbia_sim/daemon/models.py` - Ajout modèles conformes SDK
 - ✅ `src/bbia_sim/daemon/app/routers/state.py` - Améliorations paramètres
 - ✅ `src/bbia_sim/daemon/app/main.py` - Ajout router move
@@ -198,6 +210,7 @@
 Tous les endpoints critiques et modérés sont implémentés et testés. Le seul endpoint restant est optionnel (RecordedMoves HuggingFace) et nécessite une intégration HuggingFace Hub spécifique.
 
 **Git** :
+
 - Commits : Implémentation complète
 - Branche : `future`
 - Push : ✅ Effectué
@@ -213,17 +226,19 @@ Tous les endpoints critiques et modérés sont implémentés et testés. Le seul
 ## ℹ️ DIFFÉRENCES D'ARCHITECTURE JUSTIFIÉES
 
 ### Router Daemon
+
 - **SDK**: `bg_job_register` (jobs background), retourne `{"job_id": job_id}`
 - **BBIA**: `simulation_service` (synchrone), retourne statut direct
 - **Justification**: Simulation rapide, pas besoin de jobs background
 
 ### Router Apps
+
 - **SDK**: `AppManager` + `bg_job_register` (opérations async longues)
 - **BBIA**: Gestionnaire simplifié en mémoire (opérations synchrones)
 - **Justification**: Apps locales/simulation, pas besoin de jobs background
 
 ### Endpoints Supplémentaires
+
 - **24 endpoints BBIA supplémentaires** documentés comme extensions légitimes
 - **Exemples**: `/development/api/motion/*`, `/development/api/ecosystem/*`, `/development/api/sanity/*`
 - **Statut**: ✅ Extensions légitimes, n'interfèrent pas avec conformité SDK
-

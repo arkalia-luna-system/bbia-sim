@@ -12,10 +12,12 @@
 **Fichier** : `src/bbia_sim/daemon/simulation_service.py`
 
 **Problème** :
+
 - Simulation tournait à 1000Hz (`await asyncio.sleep(0.001)`)
 - Trop élevé pour Mac, consommation CPU excessive
 
 **Solution** :
+
 ```python
 # Avant
 await asyncio.sleep(0.001)  # ~1000 Hz
@@ -35,10 +37,12 @@ await asyncio.sleep(0.016)  # ~60 Hz (suffisant pour simulation fluide, moins de
 **Fichier** : `src/bbia_sim/bbia_voice.py`
 
 **Problème** :
+
 - Fonction parcourait toutes les voix **10 fois** (10 boucles `for v in voices`)
 - Opération très lente si beaucoup de voix installées
 
 **Solution** :
+
 - **Une seule passe** avec dictionnaire de candidats
 - Recherche prioritaire optimisée
 
@@ -56,10 +60,12 @@ await asyncio.sleep(0.016)  # ~60 Hz (suffisant pour simulation fluide, moins de
 **Fichier** : `src/bbia_sim/bbia_huggingface.py`
 
 **Problème** :
+
 - Regex compilées à chaque appel (`re.sub()`, `re.search()`)
 - Recompilation répétée = latence inutile
 
 **Solution** :
+
 - Cache global `_regex_cache` avec fonction `_get_compiled_regex()`
 - **11 regex compilées** une seule fois et réutilisées :
   - `_postprocess_llm_output()` : 7 regex
@@ -67,6 +73,7 @@ await asyncio.sleep(0.016)  # ~60 Hz (suffisant pour simulation fluide, moins de
   - `_extract_intensity()` : 1 regex
 
 **Code** :
+
 ```python
 _regex_cache: dict[str, re.Pattern[str]] = {}
 
@@ -89,6 +96,7 @@ def _get_compiled_regex(pattern: str, flags: int = 0) -> re.Pattern[str]:
 **Fichier** : `src/bbia_sim/daemon/simulation_service.py`
 
 **Ajout** :
+
 - Limite de 10k steps avec pause automatique
 - Protection contre boucles infinies
 
@@ -112,6 +120,7 @@ def _get_compiled_regex(pattern: str, flags: int = 0) -> re.Pattern[str]:
 ## ✅ Tests
 
 Tous les tests passent :
+
 - `tests/test_ecosystem_priority_high.py` : 7/7 ✅
 - Formatage : Black + Ruff ✅
 - Type checking : Mypy ✅
@@ -120,4 +129,3 @@ Tous les tests passent :
 
 **Date** : Oct / Nov. 2025
 **Statut** : ✅ Toutes optimisations appliquées et testées
-

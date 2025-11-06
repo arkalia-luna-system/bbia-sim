@@ -39,6 +39,7 @@ flowchart TD
 ## 📊 Vue d'Ensemble
 
 ### **Application Officielle** (Pollen Robotics)
+
 - Application conversationnelle temps réel avec OpenAI Realtime API
 - Pipeline vision avec gpt-realtime ou SmolVLM2 local
 - Système mouvement multicouche (danses, émotions, poses, respiration, tremblement vocal)
@@ -46,6 +47,7 @@ flowchart TD
 - Outils LLM exposés pour contrôle robot
 
 ### **BBIA Actuel**
+
 - Moteur cognitif avec 12 émotions robotiques
 - Vision avec YOLOv8n + MediaPipe
 - Backend unifié (simulation + robot réel)
@@ -66,6 +68,7 @@ flowchart TD
 | **Streaming voix** | ✅ Continu | ✅ **Whisper streaming** | ✅ **Présent** |
 
 **Écart BBIA** :
+
 - ✅ **Whisper STT** : Présent (offline)
 - ✅ **TTS pyttsx3** : Présent (offline)
 - ❌ **OpenAI Realtime API** : Absent
@@ -87,6 +90,7 @@ flowchart TD
 | **Détection visages** | ✅ Suivi visage | ✅ MediaPipe | ✅ **Présent** |
 
 **Écart BBIA** :
+
 - ✅ **YOLOv8n + MediaPipe** : Présents (équivalent)
 - ❌ **gpt-realtime vision** : Absent (mais SmolVLM2 gratuit fait l'affaire)
 - ✅ **SmolVLM2** : **Implémenté** (alternative gratuite)
@@ -105,6 +109,7 @@ flowchart TD
 | **Face tracking réactif** | ✅ Intégré mouvement | ❌ Absent | 🔴 **Manquant** |
 
 **Écart BBIA** :
+
 - ✅ **YOLO + MediaPipe** : Présents
 - ⚠️ **Intégration mouvement** : Partielle
 - ❌ **Tracking réactif automatique** : À améliorer
@@ -125,6 +130,7 @@ flowchart TD
 | **File d'attente mouvements** | ✅ Multicouche | ⚠️ Basique | 🟡 **Partiel** |
 
 **Écart BBIA** :
+
 - ✅ **12 émotions BBIA** : Présentes (codées)
 - ❌ **Danses** : Absentes
 - ❌ **Poses de passage** : Absentes
@@ -149,6 +155,7 @@ flowchart TD
 | **do_nothing** | ✅ Rester inactif | ✅ Action vide implémentée | ✅ **Implémenté** |
 
 **État BBIA** :
+
 - ✅ **Module `bbia_tools.py`** : 8 outils implémentés
 - ✅ **Intégration `BBIAHuggingFace.chat()`** : Function calling opérationnel
 - ✅ **Détection automatique** : Patterns français (tourne la tête, danse, etc.)
@@ -168,6 +175,7 @@ flowchart TD
 | **Dashboard web** | ❌ Absent | ✅ **Dashboard FastAPI** | ✅ **Présent** |
 
 **Écart BBIA** :
+
 - ✅ **Dashboard FastAPI** : Présent (différent de Gradio)
 - ❌ **Gradio UI** : Absent
 - ❌ **Transcriptions live** : Absent
@@ -186,6 +194,7 @@ flowchart TD
 | **.env configuration** | ✅ OPENAI_API_KEY | ⚠️ Autres clés | 🟡 **Partiel** |
 
 **Écart BBIA** :
+
 - ✅ **pip install** : Présent
 - ⚠️ **Extras optionnels** : Partiels
 - ❌ **uv support** : Absent (optionnel)
@@ -313,6 +322,7 @@ pie title Score par Catégorie
 ## 🎯 Conclusion
 
 ### **État Actuel BBIA** :
+
 - ✅ **Architecture solide** : Comparable ou meilleure
 - ✅ **Vision complète** : YOLO + MediaPipe
 - ✅ **API complète** : REST + WebSocket
@@ -325,6 +335,7 @@ pie title Score par Catégorie
 **BBIA est à ~85-90% de parité fonctionnelle** avec l'app officielle (mis à jour Oct / Nov. 2025).
 
 **Toutes les fonctionnalités prévues sont implémentées** :
+
 1. ✅ **Danses** (✅ API `/play/recorded-move-dataset` disponible, ✅ intégrée dans outils LLM)
 2. ✅ **Animations idle** (✅ `bbia_idle_animations.py` créé, ✅ `BBIIdleAnimationManager` implémenté)
 3. ✅ **Outils LLM** (✅ `bbia_tools.py` créé, ✅ intégré avec `BBIAHuggingFace.chat()`)
@@ -339,4 +350,3 @@ pie title Score par Catégorie
 ---
 
 **Dernière mise à jour** : Oct / Nov. 2025 (outils LLM intégrés avec BBIAHuggingFace.chat() + model_optimizer + bbia_doctor)
-

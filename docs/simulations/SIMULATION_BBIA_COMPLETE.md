@@ -1,5 +1,7 @@
 # Simulation BBIA complète - tous les modes
 
+**Date** : Oct / Nov. 2025
+
 > Compatibilité Python et CI
 >
 > - Python requis: 3.11+
@@ -11,17 +13,18 @@
 >   pip install -e .
 >   ```
 
-## État actuel - phase 1 terminée
+## État actuel - Phase 1 terminée
 
 ### Dépôts installés avec succès
-- `reachy-docs` : documentation officielle complète
-- `reachy-unity-package` : simulation Unity
-- `pollen-vision` : vision par ordinateur (testé)
-- `reachy2-sdk-audio-server-rs` : serveur audio
-- `reachy2-behaviors-dev` : comportements
-- `reachy-dashboard` : interface web
-- `reachy-face-tracking` : suivi de visage
-- `reachy2-tutorials` : tutoriels et exemples
+
+- **`reachy-docs`** : Documentation officielle complète
+- **`reachy-unity-package`** : Simulation Unity
+- **`pollen-vision`** : Vision par ordinateur (testé)
+- **`reachy2-sdk-audio-server-rs`** : Serveur audio
+- **`reachy2-behaviors-dev`** : Comportements
+- **`reachy-dashboard`** : Interface web
+- **`reachy-face-tracking`** : Suivi de visage
+- **`reachy2-tutorials`** : Tutoriels et exemples
 
 ---
 
@@ -120,8 +123,9 @@ graph LR
 ```
 
 ## Modes de simulation disponibles
-```
+
 **Ce que vous verrez :**
+
 - 🎮 Modèle 3D complet de Reachy
 - 🎭 Expressions faciales animées
 - 🤖 Mouvements fluides en temps réel
@@ -129,17 +133,21 @@ graph LR
 - 🎯 Contrôle via interface Unity
 
 ### 3. Interface web dashboard
+
 ```bash
 cd reachy_repos/reachy-dashboard
 # Suivre les instructions du README
 ```
+
 **Ce que vous verrez :**
+
 - 📊 Interface web de contrôle
 - 📈 Visualisation en temps réel
 - 🎛️ Contrôles avancés
 - 📱 Interface responsive
 
 ### 4. Vision par ordinateur
+
 ```bash
 python3 -c "
 import pollen_vision
@@ -151,29 +159,37 @@ print('  • Analyse d\'expressions')
 print('  • Suivi de mouvements')
 "
 ```
+
 **Ce que vous verrez :**
+
 - 👁️ Reconnaissance d'objets en temps réel
 - 🎭 Détection d'expressions faciales
 - 🎯 Suivi de visages
 - 📊 Analyse de mouvements
 
 ### 5. Suivi de visage
+
 ```bash
 cd reachy_repos/reachy-face-tracking
 # Suivre les instructions du README
 ```
+
 **Ce que vous verrez :**
+
 - 🎯 Suivi automatique des visages
 - 👁️ Regard qui suit l'utilisateur
 - 🎭 Détection d'expressions
 - 🤖 Mouvements de tête automatiques
 
 ### 6. Comportements avancés
+
 ```bash
 cd reachy_repos/reachy2-behaviors-dev
 # Explorer les exemples de comportements
 ```
+
 **Ce que vous verrez :**
+
 - 🎪 Comportements pré-programmés
 - 🎭 Réactions automatiques
 - 🤖 Actions complexes
@@ -184,6 +200,7 @@ cd reachy_repos/reachy2-behaviors-dev
 ## Guide de démarrage rapide
 
 ### Option 1 : Simulation complète (recommandée)
+
 ```bash
 # 1. Lancer BBIA de base
 python3 test_bbia_reachy.py
@@ -198,16 +215,20 @@ cd reachy_repos/reachy-dashboard
 ```
 
 ### Option 2 : Menu interactif
+
 ```bash
 ./quick_start.sh
 ```
+
 **Options disponibles :**
+
 - Option 1 : Tester BBIA (simulation rapide)
 - Option 6 : Lancer Unity
 - Option 7 : Tester Unity
 - Option 10 : Installer dépôts (déjà fait)
 
 ### Option 3 : Simulation avancée
+
 ```bash
 # 1. Tester pollen-vision
 python3 -c "import pollen_vision; print('Vision OK')"
@@ -226,7 +247,8 @@ ls -la
 ## Détails des simulations
 
 ### Simulation BBIA de base
-```
+
+```text
 🤖============================================================🤖
 🌟 BBIA - Brain-Based Interactive Agent
 🤖 Robot: Reachy Mini Wireless
@@ -295,6 +317,7 @@ ls -la
 ```
 
 ### Simulation Unity 3D
+
 - **Modèle 3D** : Reachy Mini Wireless complet
 - **Environnement** : Salle d'interaction
 - **Contrôles** : Souris + clavier
@@ -307,6 +330,7 @@ ls -la
   - 📷 Vision par ordinateur
 
 ### Dashboard web
+
 - **Interface** : Web responsive
 - **Fonctionnalités** :
   - 📈 Visualisation temps réel
@@ -320,12 +344,14 @@ ls -la
 ## Prochaines étapes - phase 2
 
 ### Semaine prochaine : intégration
+
 1. **Intégrer** `pollen-vision` dans BBIA
 2. **Intégrer** les comportements avancés
 3. **Configurer** le serveur audio
 4. **Tester** en simulation Unity
 
 ### Dans 2 semaines : comportements
+
 1. **Étudier** `reachy2-behaviors-dev`
 2. **Créer** des comportements personnalisés
 3. **Intégrer** le suivi de visage
@@ -336,6 +362,7 @@ ls -la
 ## Commandes rapides
 
 ### Lancer toutes les simulations
+
 ```bash
 # Terminal 1 : BBIA de base
 python3 test_bbia_reachy.py
@@ -350,6 +377,7 @@ cd reachy_repos/reachy-dashboard
 ```
 
 ### Vérifier les installations
+
 ```bash
 # Vérifier les dépôts
 ls -la reachy_repos/
@@ -363,6 +391,7 @@ python3 -c "import pollen_vision; print('✅ Vision OK')"
 ```
 
 ### Explorer la documentation
+
 ```bash
 # Documentation officielle
 cd reachy_repos/reachy-docs
@@ -378,12 +407,14 @@ ls -la
 ## Résumé
 
 ### Phase 1 terminée
+
 - Tous les dépôts GitHub installés
 - `pollen-vision` testé et fonctionnel
 - Documentation officielle disponible
 - Tutoriels et exemples accessibles
 
 ### Simulations disponibles
+
 - 🤖 BBIA de base (émotions, mouvements, voix)
 - 🎮 Unity 3D (modèle complet interactif)
 - 📊 Dashboard web (interface avancée)
@@ -392,6 +423,7 @@ ls -la
 - 🎪 Comportements avancés (actions complexes)
 
 ### 🚀 **Prêt pour la Phase 2**
+
 Vous pouvez maintenant commencer l'intégration des composants dans BBIA !
 
 ---
@@ -405,16 +437,19 @@ Vous pouvez maintenant commencer l'intégration des composants dans BBIA !
 ## 🤖 Séquence de Réveil Réaliste BBIA
 
 La simulation BBIA intègre désormais une séquence de réveil immersive, fidèle au robot Reachy Mini Wireless :
+
 - Lumière progressive, halo bleu, respiration simulée
 - Son de démarrage, mouvements de tête et bras, expression, parole
 - Synchronisation possible avec Unity pour une expérience complète
 
 **Pour lancer la séquence :**
+
 - Version Python : `python src/bbia_sim/bbia_awake.py`
 - Version Unity : via le contrôleur (`python src/bbia_sim/unity_reachy_controller.py awake`)
 
-**Exemple de sortie :**
-```
+**Exemple de sortie :**
+
+```text
 ✨ [BBIA] Initialisation du réveil...
 💡 Lumière blanche faible...
 💡 Lumière qui s'intensifie doucement...
@@ -428,3 +463,10 @@ La simulation BBIA intègre désormais une séquence de réveil immersive, fidè
 🗣️ Première pensée : 'Je suis là, Athalia.'
 ✨ BBIA est complètement réveillé et prêt !
 ```
+
+---
+
+## 🎯 Navigation
+
+**Retour à** : [README Documentation](../README.md)  
+**Voir aussi** : [Guide MuJoCo](MUJOCO_SIMULATION_GUIDE.md) • [Index Simulations](INDEX_GUIDES_PROCREATE.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)

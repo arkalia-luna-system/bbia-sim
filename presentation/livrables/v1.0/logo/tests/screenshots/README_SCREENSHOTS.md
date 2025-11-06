@@ -10,11 +10,13 @@
 ### **1. Favicon Navigateur**
 
 **À capturer** :
+
 - [ ] Favicon dans Chrome (onglet navigateur)
 - [ ] Favicon dans Firefox (onglet navigateur)
 - [ ] Favicon dans Safari (onglet navigateur)
 
 **Instructions** :
+
 1. Créer page HTML test avec favicon
 2. Ouvrir dans chaque navigateur
 3. Capturer screenshot de l'onglet
@@ -25,11 +27,13 @@
 ### **2. Header Web**
 
 **À capturer** :
+
 - [ ] Logo dans header web (desktop 1920px)
 - [ ] Logo dans header web (mobile 375px)
 - [ ] Logo dans header web (tablet 768px)
 
 **Instructions** :
+
 1. Créer page HTML avec header incluant logo
 2. Tester responsive (320px, 768px, 1920px)
 3. Capturer screenshot complet header
@@ -40,10 +44,12 @@
 ### **3. Documentation Markdown**
 
 **À capturer** :
+
 - [ ] Logo dans README.md GitHub
 - [ ] Logo dans documentation (si applicable)
 
 **Instructions** :
+
 1. Intégrer logo dans markdown
 2. Prévisualiser sur GitHub/docs
 3. Capturer screenshot
@@ -54,7 +60,8 @@
 ## 📁 Organisation
 
 **Placer screenshots dans** :
-```
+
+```text
 tests/screenshots/
 ├── favicon_chrome.png
 ├── favicon_firefox.png

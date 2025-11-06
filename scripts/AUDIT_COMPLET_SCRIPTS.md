@@ -9,6 +9,7 @@
 ## 📊 Résumé Exécutif
 
 ### Statistiques Globales
+
 - **Total scripts Python**: ~48 fichiers
 - **Total scripts Shell**: ~21 fichiers
 - **Total scripts analysés**: 69 fichiers
@@ -37,6 +38,7 @@
 ### 1. **Lanceurs API** - 3 fichiers (POTENTIEL DOUBLON)
 
 #### `start_api.py` vs `start_public_api.py`
+
 - **`start_api.py`** (34 lignes):
   - Simple wrapper uvicorn
   - Variables d'environnement: `BBIA_HOST`, `BBIA_PORT`, `BBIA_RELOAD`
@@ -57,6 +59,7 @@
 ### 2. **Lanceurs Robot** - 4 fichiers (POTENTIEL DOUBLON)
 
 #### `launch_robot.py` vs `launch_complete_robot.py`
+
 - **`launch_robot.py`** (48 lignes):
   - Simple wrapper qui appelle `launch_complete_robot.py`
   - Mode par défaut: `graphical`
@@ -71,6 +74,7 @@
 **Verdict**: `launch_robot.py` est un wrapper léger, pas un doublon réel. Complémentaire.
 
 #### `launch_robot_3d.sh` vs `launch_complete_robot.py`
+
 - **`launch_robot_3d.sh`** (162 lignes):
   - Script bash avec couleurs et menu
   - Support macOS (`mjpython`)
@@ -84,6 +88,7 @@
 ### 3. **Tests Hardware** - 2 fichiers (DOUBLON PARTIEL)
 
 #### `hardware_dry_run.py` vs `hardware_dry_run_reachy_mini.py`
+
 - **`hardware_dry_run.py`** (385 lignes):
   - Tests pour backend générique `"reachy"` (Reachy 2)
   - Joints de test: `ReachyMapping.get_recommended_joints()`
@@ -104,6 +109,7 @@
 ### 4. **Vérification Joints** - 3 fichiers (DOUBLON PARTIEL)
 
 #### `check_joints.py` vs `analyze_joints_detailed.py` vs `diagnose_joints.py`
+
 - **`check_joints.py`** (100 lignes):
   - Vérification simple des joints mobiles vs bloqués
   - Suggestions d'animation
@@ -126,6 +132,7 @@
 ### 5. **Nettoyage Processus** - 3 fichiers (DOUBLON PARTIEL)
 
 #### `kill_greedy_processes.sh` vs `kill_mujoco_viewers.sh` vs `smart_process_cleanup.sh`
+
 - **`kill_greedy_processes.sh`** (90 lignes):
   - Tue processus gourmands (CPU >10% ou RAM >500MB)
   - Garde: Cursor, ChatGPT, Perplexity, VS Code
@@ -150,6 +157,7 @@
 ### 6. **Dashboard** - 3 fichiers (COMPLÉMENTAIRES)
 
 #### `bbia_dashboard_server.py` vs `bbia_advanced_dashboard_server.py` vs `dashboard_gradio.py`
+
 - **`bbia_dashboard_server.py`** (72 lignes):
   - Dashboard web minimal
   - Backends: `mujoco`, `reachy`
@@ -173,6 +181,7 @@
 ### 7. **API Tests** - 2 fichiers (COMPLÉMENTAIRES)
 
 #### `test_public_api.py` vs `demo_public_api.py`
+
 - **`test_public_api.py`** (328 lignes):
   - Tests automatisés de l'API
   - 9 tests: root, health, info, capabilities, status, emotions, behaviors, modes, OpenAPI
@@ -264,16 +273,19 @@
 ## 📦 SCRIPTS OBSOLÈTES (VÉRIFIÉS)
 
 ### 1. **`start_api.py`** ✅ **ARCHIVER**
+
 - **Vérification**: Aucune référence dans le codebase
 - **Remplacé par**: `start_public_api.py`
 - **Action**: ✅ **ARCHIVER** dans `scripts/_archived/`
 
 ### 2. **`kill_greedy_processes.sh`** ✅ **ARCHIVER**
+
 - **Vérification**: Aucune référence dans le codebase
 - **Remplacé par**: `smart_process_cleanup.sh` et `process_manager.py`
 - **Action**: ✅ **ARCHIVER** dans `scripts/_archived/`
 
 ### 3. **`kill_mujoco_viewers.sh`** ⚠️ **GARDER avec WARNING**
+
 - **Vérification**: Utilisé dans `TEST_GIF_SCRIPT.md`
 - **Alternative**: `process_manager.py stop` ou `smart_process_cleanup.sh`
 - **Action**: ⚠️ **GARDER** mais ajouter warning de dépréciation dans le script
@@ -283,17 +295,20 @@
 ## 🔄 UTILISATIONS D'OUTILS EN DOUBLE
 
 ### 1. **MuJoCo - Plusieurs lanceurs**
+
 - `launch_complete_robot.py` - Lanceur Python
 - `launch_robot_3d.sh` - Wrapper bash
 - `launch_robot.py` - Wrapper Python
 - **Impact**: Faible, complémentaires
 
 ### 2. **Uvicorn - Démarrage API**
+
 - `start_api.py` - Simple
 - `start_public_api.py` - Complet
 - **Impact**: Moyen, `start_api.py` obsolète
 
 ### 3. **Processus Kill - Plusieurs méthodes**
+
 - `kill_greedy_processes.sh` - Force kill
 - `kill_mujoco_viewers.sh` - Force kill MuJoCo
 - `smart_process_cleanup.sh` - Intelligent
@@ -301,6 +316,7 @@
 - **Impact**: Moyen, redondance
 
 ### 4. **Joints Analysis - 3 scripts**
+
 - `check_joints.py` - Basique
 - `analyze_joints_detailed.py` - Détaillé
 - `diagnose_joints.py` - Sécurité
@@ -369,18 +385,21 @@
 ## 🎯 CONCLUSION FINALE
 
 ### Doublons Identifiés et Résolus
+
 - ✅ 2 scripts de nettoyage processus → **1 archivé**, **1 avec warning**
 - ✅ 2 scripts de démarrage API → **1 archivé**
 - ⚠️ 2 scripts de test hardware → **Gardés** (utilisés activement)
 - ⚠️ 3 scripts d'analyse joints → **Gardés** (focus différents, tous utiles)
 
 ### Actions Effectuées ✅
+
 1. ✅ **2 scripts archivés** (non utilisés)
 2. ✅ **1 script modifié** (warning de dépréciation)
 3. ✅ **Documentation complète** créée et mise à jour
 4. ✅ **Vérification exhaustive** des utilisations
 
 ### Scripts Gardés (Vérifiés Actifs)
+
 - ✅ `hardware_dry_run.py` - Utilisé dans README, guides, scripts
 - ✅ `hardware_dry_run_reachy_mini.py` - Utilisé dans README, docs
 - ✅ `check_joints.py` - Utilisé dans docs d'audit
@@ -392,13 +411,16 @@
 ## ✅ ACTIONS EFFECTUÉES
 
 ### Scripts Archivés
+
 1. ✅ `start_api.py` → `scripts/_archived/start_api.py`
 2. ✅ `kill_greedy_processes.sh` → `scripts/_archived/kill_greedy_processes.sh`
 
 ### Scripts Modifiés
+
 3. ✅ `kill_mujoco_viewers.sh` → Warning de dépréciation ajouté
 
 ### Documentation Créée
+
 4. ✅ `scripts/_archived/README.md` → Documentation des scripts archivés
 5. ✅ `scripts/AUDIT_COMPLET_SCRIPTS.md` → Ce rapport (mis à jour)
 
@@ -424,4 +446,3 @@
 - ✅ Aucune régression introduite
 
 **Statut**: ✅ **AUDIT COMPLET ET ACTIONS EFFECTUÉES**
-

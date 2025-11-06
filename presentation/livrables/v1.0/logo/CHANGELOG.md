@@ -11,6 +11,7 @@
 **Décision** : Client dessine le logo lui-même avec Procreate sur iPad Pro
 
 **Nettoyage effectué** :
+
 - ❌ Supprimé toutes les versions SVG temporaires (non fidèles ou obsolètes)
 - ❌ Supprimé documentation redondante (VARIANTES.md, RESUME_LIVRAISON.md, etc.)
 - ✅ Conservé uniquement l'essentiel :
@@ -19,6 +20,7 @@
   - Structure source/exports/tests (prête pour nouveau logo)
 
 **Fichiers conservés** :
+
 - `GUIDE_PROCREATE.md` - Guide complet Procreate
 - `OPTION_IPAD_PRO.md` - Workflow iPad Pro
 - `RESUME_IPAD_PRO.md` - Résumé rapide
@@ -30,6 +32,7 @@
 - Structure `tests/` (prête pour tests)
 
 **Prochaines étapes** :
+
 1. Client dessine logo avec Procreate
 2. Export PNG haute résolution
 3. Conversion SVG automatique
@@ -43,6 +46,7 @@
 **Création** : Logos basés sur mesures exactes XML + visuels réels
 
 **Caractéristiques** :
+
 - Corps ovoïde volumineux
 - Tête rectangulaire arrondie
 - 2 grands yeux noirs + barre horizontale

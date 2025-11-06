@@ -13,9 +13,11 @@
 ## 📁 Description des Fichiers
 
 ### 1. `test_reachy_mini_full_conformity_official.py` (37 tests)
+
 **📌 Rôle**: Tests de conformité complète avec le SDK officiel Reachy Mini
 
 **Couverture**:
+
 - ✅ Toutes les méthodes SDK officielles (37 méthodes)
 - ✅ Mapping des joints officiels
 - ✅ Émotions et comportements officiels
@@ -28,9 +30,11 @@
 ---
 
 ### 2. `test_reachy_mini_backend.py` (24 tests)
+
 **📌 Rôle**: Tests de base du backend Reachy Mini
 
 **Couverture**:
+
 - ✅ Création et initialisation du backend
 - ✅ Mapping des joints
 - ✅ Limites des joints
@@ -45,9 +49,11 @@
 ---
 
 ### 3. `test_reachy_mini_complete_conformity.py` (16 tests)
+
 **📌 Rôle**: Tests de conformité API complète
 
 **Couverture**:
+
 - ✅ Intégration RobotFactory
 - ✅ Méthodes principales (core + SDK)
 - ✅ Mapping joints conforme
@@ -68,9 +74,11 @@
 ---
 
 ### 4. `test_reachy_mini_advanced_conformity.py` (12 tests)
+
 **📌 Rôle**: Tests patterns et optimisations expertes
 
 **Couverture**:
+
 - ✅ Utilisation `goto_target` vs `set_joint_pos` répétés
 - ✅ Techniques d'interpolation
 - ✅ Intégration modules media/io SDK
@@ -89,9 +97,11 @@
 ---
 
 ### 5. `test_reachy_mini_strict_conformity.py` (10 tests)
+
 **📌 Rôle**: Tests ultra-stricts avec valeurs EXACTES du XML officiel
 
 **Couverture**:
+
 - ✅ Limites joints exactes (précision 1e-10)
 - ✅ Protection stricte joints interdits
 - ✅ Interdiction contrôle individuel stewart (IK)
@@ -108,9 +118,11 @@
 ---
 
 ### 6. `test_reachy_mini_backend_extended.py` (9 tests)
+
 **📌 Rôle**: Tests étendus pour coverage et structure
 
 **Couverture**:
+
 - ✅ Initialisation sans SDK
 - ✅ Structure forbidden_joints
 - ✅ Structure safe_amplitude_limit
@@ -126,9 +138,11 @@
 ---
 
 ### 7. `test_reachy_mini_backend_rapid.py` (8 tests)
+
 **📌 Rôle**: Tests rapides pour coverage minimale
 
 **Couverture**:
+
 - ✅ set_joint_pos
 - ✅ get_joint_pos
 - ✅ set_emotion
@@ -143,9 +157,11 @@
 ---
 
 ### 8. `test_reachy_mini_conformity.py` (2 tests)
+
 **📌 Rôle**: Script de vérification manuelle de conformité
 
 **Couverture**:
+
 - ✅ Test backend principal
 - ✅ Comparaison backends disponibles
 
@@ -156,6 +172,7 @@
 ## 🔄 Doublons Identifiés
 
 ### `test_robot_factory_integration`
+
 - ✅ Présent dans: `test_reachy_mini_backend.py` ET `test_reachy_mini_complete_conformity.py`
 - ⚠️ **Action**: Laisser tel quel (les deux tests peuvent avoir des assertions différentes)
 - 📝 **Note**: Doublon mineur, pas critique
@@ -165,20 +182,24 @@
 ## 🎯 Recommandations d'Utilisation
 
 ### Pour les Développements Nouveaux:
+
 1. Commencer par `test_reachy_mini_backend.py` (tests de base)
 2. Vérifier avec `test_reachy_mini_full_conformity_official.py` (conformité)
 3. Valider avec `test_reachy_mini_strict_conformity.py` (précision)
 
 ### Pour la Validation de Conformité:
+
 1. `test_reachy_mini_full_conformity_official.py` - Test principal
 2. `test_reachy_mini_complete_conformity.py` - API complète
 3. `test_reachy_mini_strict_conformity.py` - Valeurs exactes
 
 ### Pour l'Optimisation:
+
 1. `test_reachy_mini_advanced_conformity.py` - Patterns inefficaces
 2. `test_reachy_mini_backend_extended.py` - Coverage structure
 
 ### Pour les Tests Rapides:
+
 1. `test_reachy_mini_backend_rapid.py` - Coverage minimale
 2. `test_reachy_mini_conformity.py` - Vérification manuelle
 
@@ -203,4 +224,3 @@ Chaque fichier a un rôle spécifique et des tests uniques essentiels pour maint
 
 **📅 Dernière mise à jour**: Oct / No2025025025025025  
 **🔧 Script d'analyse**: `scripts/verify_tests_consolidation.py`
-

@@ -128,6 +128,7 @@ Diagnostic complet de l'environnement.
 **Cause** : MuJoCo non installé ou non configuré.
 
 **Solution** :
+
 ```bash
 pip install mujoco
 ```
@@ -137,6 +138,7 @@ pip install mujoco
 **Cause** : Version MuJoCo trop ancienne.
 
 **Solution** :
+
 ```bash
 pip install --upgrade mujoco
 ```
@@ -148,6 +150,7 @@ export BBIA_DISABLE_SIMULATION=1
 ```
 
 Ou dans code :
+
 ```python
 os.environ["BBIA_DISABLE_SIMULATION"] = "1"
 ```
@@ -161,6 +164,7 @@ os.environ["BBIA_DISABLE_SIMULATION"] = "1"
 **Cause** : PortAudio non installé.
 
 **Solutions** :
+
 - **macOS** : `brew install portaudio`
 - **Linux** : `sudo apt-get install portaudio19-dev`
 - **Windows** : Installer depuis [PortAudio](http://www.portaudio.com/)
@@ -174,11 +178,13 @@ export BBIA_DISABLE_AUDIO=1
 ### Erreur "sounddevice unavailable"
 
 **Solution** :
+
 ```bash
 pip install sounddevice soundfile
 ```
 
 Ou désactiver audio :
+
 ```bash
 export BBIA_DISABLE_AUDIO=1
 ```
@@ -188,6 +194,7 @@ export BBIA_DISABLE_AUDIO=1
 **Cause** : Configuration audio ALSA/PulseAudio.
 
 **Solutions** :
+
 1. Vérifier `alsamixer` (volume)
 2. Configurer `~/.asoundrc`
 3. Utiliser `export BBIA_DISABLE_AUDIO=1` si non nécessaire
@@ -199,6 +206,7 @@ export BBIA_DISABLE_AUDIO=1
 ### Modèles trop lourds pour Raspberry Pi
 
 **Solution** : Utiliser modèles légers configurés par défaut :
+
 - Whisper `tiny` (au lieu de `base`/`small`)
 - LLM `phi-2` ou `tinyllama` (au lieu de `mistral-7b`)
 - YOLOv8n (nano, déjà configuré)
@@ -212,12 +220,14 @@ export BBIA_DISABLE_AUDIO=1
 ### Modèles en cache trop volumineux
 
 **Solution** : Effacer cache :
+
 ```python
 from bbia_sim.model_optimizer import clear_model_cache
 clear_model_cache()
 ```
 
 Ou manuellement :
+
 ```bash
 rm -rf ~/.cache/huggingface/
 ```
@@ -229,6 +239,7 @@ rm -rf ~/.cache/huggingface/
 ### Latence audio élevée (> 2s)
 
 **Solutions** :
+
 1. Utiliser Whisper `tiny` au lieu de `base`
 2. Activer streaming : `transcribe_streaming()`
 3. Utiliser VAD pour activation automatique
@@ -236,6 +247,7 @@ rm -rf ~/.cache/huggingface/
 ### Mémoire insuffisante
 
 **Solutions** :
+
 1. Utiliser modèles légers (phi-2, tinyllama)
 2. Effacer cache modèles : `clear_model_cache()`
 3. Désactiver fonctionnalités non utilisées
@@ -243,6 +255,7 @@ rm -rf ~/.cache/huggingface/
 ### Simulation MuJoCo lente
 
 **Solutions** :
+
 1. Réduire résolution si visualisation
 2. Utiliser headless : `BBIA_DISABLE_SIMULATION=1`
 3. Accélération GPU si disponible
@@ -254,6 +267,7 @@ rm -rf ~/.cache/huggingface/
 ### `ModuleNotFoundError: No module named 'bbia_sim'`
 
 **Solution** :
+
 ```bash
 pip install -e .
 ```
@@ -261,6 +275,7 @@ pip install -e .
 ### `ImportError: cannot import name 'RobotAPI'`
 
 **Solution** : Vérifier structure projet :
+
 ```bash
 python scripts/bbia_doctor.py
 ```
@@ -268,6 +283,7 @@ python scripts/bbia_doctor.py
 ### Tests échouent en CI
 
 **Solution** : Désactiver audio/simulation :
+
 ```bash
 export BBIA_DISABLE_AUDIO=1
 export BBIA_DISABLE_SIMULATION=1
@@ -292,6 +308,7 @@ export BBIA_DISABLE_SIMULATION=1
 **Réponse** : Oui, avec modèles légers configurés par défaut.
 
 **Recommandations** :
+
 - Utiliser Python 3.11+
 - Modèles légers uniquement
 - Désactiver simulation si non nécessaire
@@ -314,8 +331,8 @@ export BBIA_DISABLE_SIMULATION=1
 
 - **GitHub** : [arkalia-luna-system/bbia-sim](https://github.com/arkalia-luna-system/bbia-sim)
 - **Issues** : [Signaler un bug](https://github.com/arkalia-luna-system/bbia-sim/issues)
-- **État du projet** : [`../quality/audits/TACHES_RESTANTES_NOV2025.md`](../quality/audits/TACHES_RESTANTES_NOV2025.md) (si existe)
-- **Comparaison officielle** : [`../quality/audits/COMPARAISON_DOCUMENTATION_OFFICIELLE.md`](../quality/audits/COMPARAISON_DOCUMENTATION_OFFICIELLE.md) (si existe)
+- **État du projet** : [`../reference/STATUT_PROJET.md`](../reference/STATUT_PROJET.md) — État opérationnel
+- **Tableau de bord** : [`../reference/project-status.md`](../reference/project-status.md) — État par axe
 
 ---
 
@@ -330,3 +347,9 @@ export BBIA_DISABLE_SIMULATION=1
 
 **Dernière mise à jour** : Oct / Nov. 2025
 
+---
+
+## 🎯 Navigation
+
+**Retour à** : [README Documentation](../README.md)  
+**Voir aussi** : [Guide Débutant](../guides/GUIDE_DEBUTANT.md) • [Troubleshooting Technique](../development/troubleshooting.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)
