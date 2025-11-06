@@ -110,11 +110,11 @@
    - ✅ Import direct du module
    - ✅ Toutes les fonctions testées
 
-2. **`daemon/app/__main__.py`** ✅ **TERMINÉ** (0% → **87.50%** - Nov 2025)
+2. **`daemon/app/__main__.py`** ✅ **TERMINÉ** (0% → **87.50%** - Oct / Nov. 2025)
    - ✅ Coverage amélioré via tests et imports directs
    - ✅ 7 lignes sur 8 couvertes
 
-3. **`daemon/app/routers/sanity.py`** ✅ **TERMINÉ** (32.43% → **89.19%** - Nov 2025)
+3. **`daemon/app/routers/sanity.py`** ✅ **TERMINÉ** (32.43% → **89.19%** - Oct / Nov. 2025)
    - ✅ Créé `tests/test_sanity_router.py` (7 tests)
    - ✅ Routes FastAPI testées avec mocks
 
