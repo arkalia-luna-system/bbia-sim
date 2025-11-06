@@ -7,7 +7,7 @@
 [![Tests](https://img.shields.io/badge/tests-1334-brightgreen.svg)](https://github.com/arkalia-luna-system/bbia-sim/actions)
 [![Code Quality](https://img.shields.io/badge/code%20quality-A%2B-brightgreen.svg)](https://github.com/arkalia-luna-system/bbia-sim)
 [![SDK Conformity](https://img.shields.io/badge/SDK%20conformity-100%25-brightgreen.svg)](https://github.com/pollen-robotics/reachy_mini)
-[![Documentation](https://img.shields.io/badge/docs-sphinx%20%7C%20readthedocs-blue.svg)](docs/)
+[![Documentation](https://img.shields.io/badge/docs-mkdocs-blue.svg)](docs/)
 
 <div align="center">
 
@@ -100,7 +100,7 @@ reachy-mini-daemon
 # Mode simulation MuJoCo (daemon officiel)
 reachy-mini-daemon --sim
 
-# Scènes disponibles (simulation): empty|minimal (table+objets)
+# Scènes disponibles (simulation): minimal (table+objets)
 reachy-mini-daemon --sim --scene minimal
 ```
 

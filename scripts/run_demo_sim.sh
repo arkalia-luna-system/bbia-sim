@@ -44,7 +44,7 @@ echo "   - Fermez la fenêtre quand terminé"
 echo ""
 
 # Lancer la démo avec viewer
-mjpython examples/demo_emotion_fixed.py \
+mjpython examples/demo_emotion_ok.py \
     --emotion "$EMOTION" \
     --duration "$DURATION" \
     --intensity 0.8

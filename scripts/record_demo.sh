@@ -26,7 +26,7 @@ if ! command -v mjpython &> /dev/null; then
 fi
 
 # Vérifier que le script de démo existe
-DEMO_SCRIPT="examples/demo_emotion_fixed.py"
+DEMO_SCRIPT="examples/demo_emotion_ok.py"
 if [ ! -f "$DEMO_SCRIPT" ]; then
     echo "❌ Script de démo non trouvé: $DEMO_SCRIPT"
     exit 1
@@ -58,7 +58,7 @@ fi
 # Note: Pour la vidéo, on utilise une approche différente
 # car MuJoCo ne permet pas facilement l'enregistrement vidéo programmatique
 echo "📝 Note: Pour la vidéo, utilisez un enregistreur d'écran"
-echo "   - Lancez: mjpython examples/demo_emotion_fixed.py --emotion $DEMO_NAME --duration $DURATION"
+echo "   - Lancez: mjpython examples/demo_emotion_ok.py --emotion $DEMO_NAME --duration $DURATION"
 echo "   - Enregistrez l'écran pendant $DURATION secondes"
 echo "   - Sauvegardez comme: $VIDEO_FILE"
 
@@ -84,4 +84,4 @@ echo "   - Graphe: $PLOT_DIR/demo_${DEMO_NAME}_${TIMESTAMP}.png"
 echo "   - Vidéo: $VIDEO_FILE (à enregistrer manuellement)"
 echo ""
 echo "🚀 Pour voir la démo:"
-echo "   mjpython examples/demo_emotion_fixed.py --emotion $DEMO_NAME --duration $DURATION"
+echo "   mjpython examples/demo_emotion_ok.py --emotion $DEMO_NAME --duration $DURATION"
