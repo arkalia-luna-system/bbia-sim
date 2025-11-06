@@ -43,6 +43,9 @@ logs/bandit_report.json
 
 # Tests
 .coverage
+coverage.xml
+coverage.json
+coverage_report.json
 htmlcov/
 .pytest_cache/
 .mypy_cache/
