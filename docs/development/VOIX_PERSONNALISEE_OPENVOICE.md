@@ -89,7 +89,10 @@ bandit -r src/bbia_sim -ll
 ---
 
 ### Remarques
+
 - Le script `generate_voice.py` utilise Coqui TTS par défaut (offline). OpenVoice pourra être branché ultérieurement dans ce même pipeline.
-- Ce guide n’altère pas le venv principal; il reste sûr pour la simu/robot.
+- Ce guide n'altère pas le venv principal; il reste sûr pour la simu/robot.
 
+---
 
+**Dernière mise à jour** : Oct / Nov. 2025

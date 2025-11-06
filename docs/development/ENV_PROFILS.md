@@ -169,6 +169,8 @@ bbia.enable_llm_chat()  # Télécharge/charge le LLM (internet requis au premier
 - Pourquoi séparer les venv ?
   - Certains paquets demandent des versions de numpy/scipy incompatibles entre eux (mediapipe vs hardware/reachy-mini/others). Les séparer évite de tout casser.
 - Puis-je utiliser l’iPad comme caméra ?
-  - Oui pour des apps macOS (FaceTime/Zoom). Pour OpenCV/Python, l’USB UVC est plus simple.
+  - Oui pour des apps macOS (FaceTime/Zoom). Pour OpenCV/Python, l'USB UVC est plus simple.
 
+---
 
+**Dernière mise à jour** : Oct / Nov. 2025

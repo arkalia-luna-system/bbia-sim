@@ -409,3 +409,7 @@ Points clés :
 - monitoring intégré pour debugging
 
 Le projet BBIA-SIM est prêt pour le robot réel.
+
+---
+
+**Dernière mise à jour** : Oct / Nov. 2025

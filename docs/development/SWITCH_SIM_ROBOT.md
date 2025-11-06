@@ -277,3 +277,7 @@ python examples/demo_emotion_ok.py --emotion happy
 - **Golden Tests** : 3 traces référence + validation
 - **Latence** : 0.0ms moyenne (cible <40ms) ✅
 - **CI Solide** : Seed fixé, artefacts, headless
+
+---
+
+**Dernière mise à jour** : Oct / Nov. 2025

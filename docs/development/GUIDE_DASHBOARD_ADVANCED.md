@@ -280,3 +280,7 @@ python -m bbia_sim.dashboard_advanced
 **Date** : Oct / Nov. 2025  
 **Coverage** : **76.71%** ✅ (47 tests)
 
+---
+
+**Dernière mise à jour** : Oct / Nov. 2025
+

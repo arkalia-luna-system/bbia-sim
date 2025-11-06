@@ -177,3 +177,7 @@ Tout est déjà implémenté ! Tu peux maintenant :
 
 **Statut** : ✅ **Support webcam USB complètement implémenté et fonctionnel**
 
+---
+
+**Dernière mise à jour** : Oct / Nov. 2025
+

@@ -907,3 +907,7 @@ asyncio.run(validate_integration())
 ---
 
 Vous avez intégré BBIA-SIM dans votre projet. Bienvenue dans l'écosystème BBIA-SIM.
+
+---
+
+**Dernière mise à jour** : Oct / Nov. 2025
