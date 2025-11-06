@@ -52,7 +52,10 @@ def _read_sdk_telemetry() -> dict[str, Any] | None:
 
         try:
             timeout = float(os.environ.get("BBIA_TELEMETRY_TIMEOUT", "1.0") or 1.0)
-        except Exception:
+        except Exception as e:
+            logger.debug(
+                f"Erreur lors de la lecture de BBIA_TELEMETRY_TIMEOUT, utilisation valeur par défaut: {e}"
+            )
             timeout = 1.0
 
         # Créer un backend SDK avec tentative connexion rapide
@@ -67,8 +70,9 @@ def _read_sdk_telemetry() -> dict[str, Any] | None:
 
         try:
             backend.connect()
-        except Exception:
+        except Exception as e:
             # Ne pas bloquer si la connexion échoue
+            logger.debug(f"Échec de la connexion au backend pour télémetrie: {e}")
             return None
 
         try:
@@ -93,12 +97,18 @@ def _read_sdk_telemetry() -> dict[str, Any] | None:
             if hasattr(media_mgr, "get_battery_level"):
                 try:
                     battery_level = float(media_mgr.get_battery_level())
-                except Exception:
+                except Exception as e:
+                    logger.debug(
+                        f"Erreur lors de la lecture du niveau de batterie (get_battery_level): {e}"
+                    )
                     battery_level = None
             elif hasattr(media_mgr, "battery"):
                 try:
                     battery_level = float(media_mgr.battery)
-                except Exception:
+                except Exception as e:
+                    logger.debug(
+                        f"Erreur lors de la lecture du niveau de batterie (battery): {e}"
+                    )
                     battery_level = None
 
             if battery_level is not None:
@@ -109,7 +119,8 @@ def _read_sdk_telemetry() -> dict[str, Any] | None:
             if hasattr(media_mgr, "get_temperature"):
                 try:
                     temperature = float(media_mgr.get_temperature())
-                except Exception:
+                except Exception as e:
+                    logger.debug(f"Erreur lors de la lecture de la température: {e}")
                     temperature = None
             if temperature is not None:
                 data["temperature"] = temperature
@@ -121,7 +132,8 @@ def _read_sdk_telemetry() -> dict[str, Any] | None:
                 try:
                     if hasattr(io_mgr, "get_imu"):
                         imu = io_mgr.get_imu()  # doit renvoyer dict-like
-                except Exception:
+                except Exception as e:
+                    logger.debug(f"Erreur lors de la lecture de l'IMU: {e}")
                     imu = None
             if imu and isinstance(imu, dict):
                 data["imu"] = imu
@@ -283,8 +295,10 @@ async def get_battery_level() -> BatteryInfo:
     if sdk and "battery" in sdk:
         try:
             battery_level = float(sdk["battery"])
-        except Exception:
-            pass
+        except Exception as e:
+            logger.debug(
+                f"Erreur lors de la conversion du niveau de batterie en float: {e}"
+            )
     status = (
         "good" if battery_level > 20 else "low" if battery_level > 10 else "critical"
     )
@@ -318,8 +332,10 @@ async def get_temperature() -> dict[str, Any]:
     if sdk and "temperature" in sdk:
         try:
             temperature_c = float(sdk["temperature"])
-        except Exception:
-            pass
+        except Exception as e:
+            logger.debug(
+                f"Erreur lors de la conversion de la température en float: {e}"
+            )
 
     return {
         "temperature": temperature_c,
@@ -569,8 +585,8 @@ async def get_sensor_data() -> dict[str, Any]:
     if sdk and "imu" in sdk and isinstance(sdk["imu"], dict):
         try:
             imu_data = sdk["imu"]
-        except Exception:
-            pass
+        except Exception as e:
+            logger.debug(f"Erreur lors de la lecture des données IMU: {e}")
 
     return {
         "camera": {"status": "active", "resolution": "640x480", "fps": 30},

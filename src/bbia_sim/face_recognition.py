@@ -182,8 +182,10 @@ class BBIAPersonRecognition:
             if temp_path and os.path.exists(temp_path):
                 try:
                     os.unlink(temp_path)
-                except Exception:
-                    pass
+                except Exception as cleanup_error:
+                    logger.debug(
+                        f"Erreur lors du nettoyage du fichier temporaire {temp_path}: {cleanup_error}"
+                    )
 
     def detect_emotion(
         self,
@@ -266,8 +268,10 @@ class BBIAPersonRecognition:
             if temp_path and os.path.exists(temp_path):
                 try:
                     os.unlink(temp_path)
-                except Exception:
-                    pass
+                except Exception as cleanup_error:
+                    logger.debug(
+                        f"Erreur lors du nettoyage du fichier temporaire {temp_path}: {cleanup_error}"
+                    )
 
     def recognize_with_emotion(
         self,

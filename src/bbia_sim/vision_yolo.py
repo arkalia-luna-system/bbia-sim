@@ -38,8 +38,10 @@ try:
     _os.environ.setdefault("GLOG_minloglevel", "2")
     _os.environ.setdefault("TF_CPP_MIN_LOG_LEVEL", "2")
     _os.environ.setdefault("MEDIAPIPE_DISABLE_GPU", "1")
-except Exception:
-    pass
+except Exception as e:
+    logger.debug(
+        f"Impossible de configurer variables d'environnement MediaPipe/TensorFlow: {e}"
+    )
 
 
 class YOLODetector:

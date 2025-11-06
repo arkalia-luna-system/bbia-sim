@@ -19,6 +19,7 @@ import pyttsx3
 import speech_recognition as sr
 
 logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 try:
     # Sélecteurs IA optionnels (TTS local type KittenTTS)
     from .ai_backends import get_tts_backend
@@ -258,8 +259,10 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
                             if hasattr(speaker, "play"):
                                 speaker.play(audio_bytes)
                                 return
-                except Exception:
-                    pass
+                except Exception as e:
+                    logger.debug(
+                        f"Erreur lors de la lecture audio via SDK speaker: {e}"
+                    )
                 try:
                     # Fallback simple: lecture locale sans dépendance forte
                     import wave as _wave
@@ -274,11 +277,15 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
                         _sd.play(data, sr)
                         _sd.wait()
                     return
-                except Exception:
-                    pass
-        except Exception:
+                except Exception as e:
+                    logger.debug(
+                        f"Erreur lors de la lecture audio locale (fallback sounddevice): {e}"
+                    )
+        except Exception as e:
             # Fallback vers logique pyttsx3 plus bas
-            pass
+            logger.debug(
+                f"Erreur lors de la synthèse vocale avancée, fallback pyttsx3: {e}"
+            )
 
     # OPTIMISATION SDK: Utiliser robot.media.* si disponible (toujours disponible via shim)
     # Priorité stricte: media.play_audio(bytes[, volume]) puis media.speaker.*
@@ -347,8 +354,10 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
                         try:
                             if tmp_path and os.path.exists(tmp_path):
                                 os.unlink(tmp_path)
-                        except Exception:
-                            pass
+                        except Exception as cleanup_error:
+                            logger.debug(
+                                f"Erreur lors du nettoyage du fichier temporaire {tmp_path}: {cleanup_error}"
+                            )
 
             except Exception as e:
                 logging.debug(f"Erreur synthèse SDK (fallback pyttsx3): {e}")

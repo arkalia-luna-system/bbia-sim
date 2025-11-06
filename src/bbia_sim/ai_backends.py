@@ -14,6 +14,8 @@ import subprocess
 import threading
 from typing import Any, Protocol
 
+logger = logging.getLogger(__name__)
+
 # OPTIMISATION PERFORMANCE: Cache global pour modèles Whisper
 # (évite chargements répétés)
 _whisper_models_cache: dict[str, dict[str, Any]] = (
@@ -76,9 +78,11 @@ class Pyttsx3TTS:
 
                         self._voice_id = get_bbia_voice(engine)
                         engine.setProperty("voice", self._voice_id)
-                    except Exception:
+                    except Exception as e:
                         # Si get_bbia_voice échoue, utiliser voix par défaut
-                        pass
+                        logger.debug(
+                            f"Impossible de définir voix personnalisée, utilisation par défaut: {e}"
+                        )
 
             # Utiliser la voix sélectionnée si disponible
             if self._voice_id:
@@ -116,8 +120,8 @@ class KittenTTSTTS:
         if self._impl is not None:
             try:
                 return self._impl.synthesize_to_wav(text, outfile)
-            except Exception:
-                pass
+            except Exception as e:
+                logger.debug(f"Échec synthèse avec impl principale, fallback: {e}")
         return self._fallback.synthesize_to_wav(text, outfile)
 
 
@@ -144,8 +148,8 @@ class KokoroTTS:
         if self._impl is not None:
             try:
                 return self._impl.synthesize_to_wav(text, outfile)
-            except Exception:
-                pass
+            except Exception as e:
+                logger.debug(f"Échec synthèse avec impl principale, fallback: {e}")
         return self._fallback.synthesize_to_wav(text, outfile)
 
 
@@ -172,8 +176,8 @@ class NeuTTSTTS:
         if self._impl is not None:
             try:
                 return self._impl.synthesize_to_wav(text, outfile)
-            except Exception:
-                pass
+            except Exception as e:
+                logger.debug(f"Échec synthèse avec impl principale, fallback: {e}")
         return self._fallback.synthesize_to_wav(text, outfile)
 
 

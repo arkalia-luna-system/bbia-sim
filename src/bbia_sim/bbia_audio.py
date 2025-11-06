@@ -12,6 +12,8 @@ from typing import TYPE_CHECKING, Any, Optional
 
 import numpy as np
 
+logger = logging.getLogger(__name__)
+
 
 class _SoundDeviceShim:
     """Shim minimal pour permettre le patch dans les tests (sd.rec/play/wait).
@@ -296,9 +298,11 @@ def lire_audio(fichier: str, robot_api: Optional["RobotAPI"] = None) -> None:
                     f"SDK standard {DEFAULT_SAMPLE_RATE} Hz. "
                     f"Performance audio peut être dégradée.",
                 )
-        except Exception:
+        except Exception as e:
             # Ignorer toute erreur côté soundfile, fallback plus bas
-            pass
+            logger.debug(
+                f"Impossible de lire métadonnées audio avec soundfile, fallback: {e}"
+            )
 
     # OPTIMISATION SDK: Utiliser robot.media.speaker si disponible
     # (toujours disponible via shim)

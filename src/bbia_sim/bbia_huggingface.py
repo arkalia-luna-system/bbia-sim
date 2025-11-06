@@ -392,8 +392,10 @@ class BBIAHuggingFace:
             # vision/audio/multimodal/chat: si la clé exacte existe
             if isinstance(cfg, dict) and model_name in cfg:
                 return cfg[model_name]
-        except Exception:
-            pass
+        except Exception as e:
+            logger.debug(
+                f"Erreur lors de la résolution du nom de modèle '{model_name}': {e}"
+            )
         return model_name
 
     def load_model(self, model_name: str, model_type: str = "vision") -> bool:
@@ -871,13 +873,13 @@ class BBIAHuggingFace:
         try:
             if hasattr(self, "chat_model") and self.chat_model is not None:
                 del self.chat_model
-        except Exception:
-            pass
+        except Exception as e:
+            logger.debug(f"Erreur lors de la suppression de chat_model: {e}")
         try:
             if hasattr(self, "chat_tokenizer") and self.chat_tokenizer is not None:
                 del self.chat_tokenizer
-        except Exception:
-            pass
+        except Exception as e:
+            logger.debug(f"Erreur lors de la suppression de chat_tokenizer: {e}")
 
         self.chat_model = None
         self.chat_tokenizer = None
@@ -2393,8 +2395,10 @@ class BBIAHuggingFace:
                 # Anti-duplication récente
                 try:
                     t = self._avoid_recent_duplicates(t)
-                except Exception:
-                    pass
+                except Exception as e:
+                    logger.debug(
+                        f"Erreur lors de l'évitement des doublons récents: {e}"
+                    )
                 return t
 
             cut = t[: max_len + 1]

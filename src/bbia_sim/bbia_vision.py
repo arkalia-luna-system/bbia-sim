@@ -53,8 +53,10 @@ try:
     _os.environ.setdefault("GLOG_minloglevel", "2")  # 0=INFO,1=WARNING,2=ERROR
     _os.environ.setdefault("TF_CPP_MIN_LOG_LEVEL", "2")  # 1=WARNING,2=ERROR
     _os.environ.setdefault("MEDIAPIPE_DISABLE_GPU", "1")  # éviter logs GPU inutiles
-except Exception:
-    pass
+except Exception as e:
+    logger.debug(
+        f"Impossible de configurer variables d'environnement MediaPipe/TensorFlow: {e}"
+    )
 
 # Import conditionnel pour YOLO et MediaPipe
 try:
@@ -227,8 +229,10 @@ class BBIAVision:
                 if self._opencv_camera:
                     try:
                         self._opencv_camera.release()
-                    except Exception:
-                        pass
+                    except Exception as release_error:
+                        logger.debug(
+                            f"Erreur lors de la libération de la webcam OpenCV: {release_error}"
+                        )
                 self._opencv_camera = None
                 logger.debug(f"Erreur initialisation webcam OpenCV: {e}")
 

@@ -546,8 +546,8 @@ class ZenohBridge:
                     yaw = self.reachy_mini.get_current_body_yaw()
                     if yaw is not None:
                         joints_state["yaw_body"] = float(yaw)
-            except Exception:
-                pass
+            except Exception as e:
+                logger.debug(f"Erreur lors de la lecture du yaw_body: {e}")
 
             self.current_state.joints = joints_state
 
