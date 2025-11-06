@@ -1,28 +1,59 @@
-# 🚀 Getting Started - Documentation BBIA-SIM
+# 🚀 Getting Started — BBIA-SIM
 
 > **Point de départ pour nouveaux utilisateurs et développeurs**
 
 ---
 
-## 📖 Guides Rapides
+## 🎯 Commencez ici !
 
-### Pour Débutants
-- **[Troubleshooting](troubleshooting.md)** - FAQ et solutions aux problèmes courants
-- **[Contributing](contributing.md)** - Guide pour contribuer au projet (issues first)
-
-### Liens Utiles
-- **[Guide Débutant](../guides/GUIDE_DEBUTANT.md)** - Installation et premiers pas (5 minutes)
-- **[Guide Installation Audio](../installation/AUDIO_SETUP.md)** - Configuration audio
+> **⭐ NOUVEAU ?** Commencez par le **[Guide Débutant](../guides/GUIDE_DEBUTANT.md)** — Installation et premiers pas en 5 minutes
 
 ---
 
-## 🎯 Navigation
+## ⚡ Quick Start
 
-- **Vous êtes nouveau ?** → Commencez par le [Guide Débutant](../guides/GUIDE_DEBUTANT.md)
-- **Vous avez un problème ?** → Consultez le [Troubleshooting](troubleshooting.md)
-- **Vous voulez contribuer ?** → Voir [Contributing](contributing.md)
+### Installation (2 minutes)
+
+```bash
+# Python 3.11+ requis
+pyenv install 3.11.9 && pyenv local 3.11.9
+python -m pip install --upgrade pip
+pip install -e .[dev]
+```
+
+### Premier Robot (5 minutes)
+
+Voir [Guide Débutant](../guides/GUIDE_DEBUTANT.md) pour les premiers pas.
+
+---
+
+## 📖 Guides Essentiels
+
+| Guide | Description | Temps |
+|-------|-------------|-------|
+| **[Guide Débutant](../guides/GUIDE_DEBUTANT.md)** | Installation et premiers pas | 5 min |
+| **[Guide de Navigation](NAVIGATION.md)** | Trouver rapidement ce dont vous avez besoin | 2 min |
+| **[FAQ Troubleshooting](troubleshooting.md)** | Questions fréquentes et solutions | 5 min |
+| **[Guide Contribuer](contributing.md)** | Good First Issues pour nouveaux contributeurs | 10 min |
+
+> **💡 Navigation complète** : Consultez [NAVIGATION.md](NAVIGATION.md) pour une vue d'ensemble de toute la documentation.
+
+---
+
+## 🎯 Par où commencer ?
+
+### Je suis nouveau
+1. **[Guide Débutant](../guides/GUIDE_DEBUTANT.md)** — Installation et premiers pas
+2. **[Guide de Navigation](NAVIGATION.md)** — Trouver ce dont vous avez besoin
+3. **[FAQ Troubleshooting](troubleshooting.md)** — Questions fréquentes
+
+### Je veux développer
+1. **[Guide Avancé](../guides/GUIDE_AVANCE.md)** — Fonctionnalités avancées
+2. **[Architecture](../development/architecture/ARCHITECTURE_OVERVIEW.md)** — Structure du projet
+3. **[Guide Contribuer](contributing.md)** — Comment contribuer
 
 ---
 
 **Retour à la [documentation principale](../README.md)**
 
+**Date** : Oct / Nov. 2025

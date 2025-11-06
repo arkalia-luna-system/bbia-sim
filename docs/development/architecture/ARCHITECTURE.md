@@ -7,10 +7,20 @@
 
 ## 📖 Navigation
 
-Ce fichier est le **guide complet** de l'architecture BBIA-SIM.
+> **💡 Point d'entrée pour l'architecture**  
+> Ce fichier sert de **table des matières** pour la documentation d'architecture.  
+> Pour le contenu réel, consultez les fichiers ci-dessous.
 
-- **[Architecture Vue d'Ensemble](ARCHITECTURE_OVERVIEW.md)** - Commencez ici pour une vue générale
-- **[Architecture Détaillée](ARCHITECTURE_DETAILED.md)** - Détails techniques approfondis
+### 🎯 Par où commencer ?
+
+1. **🟢 Débutant ?** → **[Architecture Vue d'Ensemble](ARCHITECTURE_OVERVIEW.md)** - Vue générale accessible
+2. **🟡 Intermédiaire ?** → **[Architecture Vue d'Ensemble](ARCHITECTURE_OVERVIEW.md)** - Détails techniques
+3. **🔴 Expert ?** → **[Architecture Détaillée](ARCHITECTURE_DETAILED.md)** - Détails techniques approfondis
+
+### 📚 Documents disponibles
+
+- **[Architecture Vue d'Ensemble](ARCHITECTURE_OVERVIEW.md)** - Commencez ici pour une vue générale (🟢 Débutant)
+- **[Architecture Détaillée](ARCHITECTURE_DETAILED.md)** - Détails techniques approfondis (🔴 Avancé)
 
 ---
 

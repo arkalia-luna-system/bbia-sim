@@ -5,6 +5,12 @@
 
 ---
 
+## 🚀 Nouveau sur le projet ? Commencez ici !
+
+> **⭐ POINT DE DÉPART RECOMMANDÉ** : Si vous êtes nouveau, commencez par le **[Guide Débutant](guides/GUIDE_DEBUTANT.md)** — Installation et premiers pas en 5 minutes
+
+---
+
 ## 🎯 Parcours Recommandé
 
 ```mermaid
@@ -34,9 +40,11 @@ flowchart TB
 ## 📊 Statut et Suivi
 
 > **📈 Vue d'ensemble du projet**
-> État par axe : Observabilité, Performance, Sécurité, CI/CD, Packaging, API/SDK, Robot, UX, IA, Docs, Qualité, Communauté
 
-👉 **[project-status.md](reference/project-status.md)** — Tableau de bord complet du projet
+| Document | Description | Public |
+|----------|-------------|--------|
+| **[project-status.md](reference/project-status.md)** | Tableau de bord complet par axe | Tous |
+| **[STATUT_PROJET.md](reference/STATUT_PROJET.md)** | État opérationnel (dashboard, tests) | Développeurs |
 
 ---
 
@@ -100,21 +108,8 @@ flowchart TB
 
 ## 📁 Navigation Complète
 
-👉 **[INDEX_FINAL.md](INDEX_FINAL.md)** — Index complet de toute la documentation avec navigation thématique
-👉 **[index.md](index.md)** — Index consolidé avec parcours recommandé
-
-### 📊 Rapports et Bilans (Archivés)
-- **[Bilan Final Documentation](archive/nettoyage-2025/BILAN_FINAL_DOCUMENTATION.md)** — Résumé complet du nettoyage documentation (archivé)
-- **[Résumé Corrections Finales](archive/nettoyage-2025/RESUME_CORRECTIONS_FINALES.md)** — Liste des corrections appliquées (archivé)
-- **[Tâches Restantes](archive/tasks/A_FAIRE_RESTANT.md)** — Tâches optionnelles restantes (archivé)
-
----
-
-## 📚 Archives
-
-> **Documents historiques et terminés**
-
-👉 **[archive/README.md](archive/README.md)** — Index des archives (liens vers fichiers "final")
+- **[Guide de Navigation](getting-started/NAVIGATION.md)** — Guide simple pour trouver rapidement ce dont vous avez besoin
+- **[INDEX_FINAL.md](INDEX_FINAL.md)** — Index complet avec navigation par profil et catégorie
 
 ---
 

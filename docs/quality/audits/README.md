@@ -1,57 +1,46 @@
-# 📚 Audits de Qualité
+# 📊 Audits, Analyses et Rapports
 
-> **Référence centralisée pour tous les audits effectués sur le projet**
-
----
-
-## 📋 Index Principal
-
-👉 **[INDEX_AUDITS_CONSOLIDES.md](INDEX_AUDITS_CONSOLIDES.md)** — Index complet de tous les audits
+**Date** : Oct / Nov. 2025  
+**Objectif** : Audits techniques, analyses et rapports d'évaluation du projet
 
 ---
 
-## 🔍 Audits Principaux
+## 📋 Fichiers Principaux
 
-### ✅ Audits Complets et à Jour
+### 🔍 Audits et Conformité
 
-1. **[TACHES_RESTANTES_NOV2025.md](TACHES_RESTANTES_NOV2025.md)** ⭐ **RECOMMANDÉ**
-   - Liste exhaustive des tâches restantes avec statuts
-   - Mise à jour régulière
+- **[INDEX_AUDITS_CONSOLIDES.md](INDEX_AUDITS_CONSOLIDES.md)** ⭐
+  - Index complet de tous les audits
+  - Point d'entrée principal pour les audits
 
-2. **[RESUME_ETAT_ACTUEL_BBIA.md](RESUME_ETAT_ACTUEL_BBIA.md)** ⭐ **RECOMMANDÉ**
-   - État actuel du projet (Oct / Nov. 2025)
-   - Liste complète de ce qui est fait vs à faire
+- **[CONFORMITE_REACHY_MINI_OFFICIEL.md](COMPATIBILITE_REACHY_MINI_OFFICIEL.md)**
+  - Compatibilité avec SDK officiel Reachy Mini
+  - Vérifications complètes
 
-3. **[AUDIT_COVERAGE_IMPORTS.md](AUDIT_COVERAGE_IMPORTS.md)**
-   - Audit coverage et imports
-   - Corrections appliquées pour améliorer le coverage
+### 📊 Analyses Techniques
 
----
+- **[modules-non-prioritaires.md](modules-non-prioritaires.md)**
+  - Analyse des modules non prioritaires
+  - Vérification conformité SDK
+  - Décisions et recommandations
+  - **Statut** : ✅ Toutes améliorations prioritaires terminées
 
-## 📁 Par Catégorie
+- **[coverage-details.md](coverage-details.md)**
+  - Analyse détaillée du code coverage
+  - Problèmes identifiés et solutions
+  - Modules corrigés (5 modules < 30% → 70%+)
 
-### Architecture et Code
-- `AUDIT_EXPERT_MODULES_CRITIQUES_2025.md`
-- `AUDIT_IA_MODULES_PRETRAINES.md`
-- `AUDIT_3D_BBIA_COMPLET.md`
-- `RESUME_SESSION_QUALITE_CODE.md`
+### 📈 Analyses Externes
 
-### Conformité et Compatibilité
-- `COMPATIBILITE_REACHY_MINI_OFFICIEL.md`
-- `CHECKLIST_COMPARAISON_OFFICIEL.md`
-- `COMPARAISON_APP_CONVERSATION_OFFICIELLE.md`
-
-### Documentation
-- `BILAN_COMPLET_MARKDOWN_CONFORMITE_2025.md`
-- `CLARIFICATION_ANTENNES_REACHY_MINI.md`
-
-### Plans et Stratégies
-- `PLAN_AMELIORATION_NOTATION_COMPLETE.md`
-- `STRATEGIE_REUTILISATION_CODE_OFFICIEL.md`
-- `PROCHAINES_ETAPES_OPTIONNELLES.md`
-- `SUITE_ACTIONS_CONFORMITE.md`
+- **[unity-ar.md](unity-ar.md)**
+  - Analyse d'un code Unity AR externe (TikTok)
+  - Évaluation de pertinence pour BBIA
+  - **Conclusion** : ❌ Non pertinent (MuJoCo déjà meilleur)
 
 ---
 
-**Retour à** : [README Qualité](../README.md)
+## 🎯 Navigation
+
+**Retour à** : [README Documentation](../README.md)  
+**Voir aussi** : [`docs/reference/INDEX_THEMATIQUE.md`](../reference/INDEX_THEMATIQUE.md)
 

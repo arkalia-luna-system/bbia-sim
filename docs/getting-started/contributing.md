@@ -319,5 +319,18 @@ assignees: []
 
 ---
 
+---
+
+## 🔗 Guide Complet de Contribution
+
+> **💡 Pour le guide complet de contribution**  
+> Consultez le [Guide de Contribution Complet](../community/CONTRIBUTION_GUIDE.md) qui inclut :
+> - Templates GitHub (bug report, feature request)
+> - Standards de code détaillés
+> - Processus de Pull Request
+> - Guidelines de commit
+
+---
+
 **Dernière mise à jour** : Oct / Nov. 2025
 

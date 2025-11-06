@@ -319,5 +319,14 @@ export BBIA_DISABLE_SIMULATION=1
 
 ---
 
+---
+
+## 🔗 Guides Complémentaires
+
+> **💡 Besoin d'aide plus technique ?**  
+> Consultez le [Guide Troubleshooting Technique](../development/troubleshooting.md) pour les problèmes avancés (IA, modules, CI, etc.)
+
+---
+
 **Dernière mise à jour** : Oct / Nov. 2025
 

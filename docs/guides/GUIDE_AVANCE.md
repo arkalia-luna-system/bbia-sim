@@ -207,7 +207,7 @@ robot.start_recording()
 robot.stop_recording()
 ```
 
-Voir : [RAPPORT_CONFORMITE_SDK_2024.md](../archive/quality/compliance/RAPPORT_CONFORMITE_SDK_2024.md)
+Voir : [Conformité SDK Complète](../quality/compliance/CONFORMITE_REACHY_MINI_COMPLETE.md)
 
 ---
 

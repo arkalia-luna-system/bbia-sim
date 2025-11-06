@@ -7,6 +7,16 @@
 
 Bienvenue dans la communauté BBIA-SIM ! Ce guide vous aidera à contribuer efficacement au projet.
 
+> **💡 Nouveau contributeur ?**  
+> Commencez par consulter les [Good First Issues](../getting-started/contributing.md) pour trouver des tâches adaptées aux débutants.
+
+---
+
+## 🎯 Ce Guide vs Good First Issues
+
+- **[Good First Issues](../getting-started/contributing.md)** : Liste d'issues suggérées pour nouveaux contributeurs
+- **Ce guide** : Processus complet de contribution, templates, standards
+
 ---
 
 ## 🚀 Démarrage Rapide

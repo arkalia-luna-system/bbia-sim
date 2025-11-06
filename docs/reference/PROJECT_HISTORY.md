@@ -17,7 +17,7 @@ BBIA-SIM a évolué à travers plusieurs phases de développement depuis sa cré
 
 ## 📚 Archives par Phase
 
-Les rapports détaillés des phases précédentes sont archivés dans `docs/archive/phases/`:
+Les rapports détaillés des phases précédentes sont disponibles dans la documentation :
 
 ### **Phase 2**
 - `PHASE2_PROGRESS.md` - Progrès de la Phase 2
@@ -124,7 +124,7 @@ Les rapports détaillés des phases précédentes sont archivés dans `docs/arch
 - [Conformité SDK](../quality/compliance/CONFORMITE_REACHY_MINI_COMPLETE.md)
 
 ### **Archives**
-- [Archives Complètes](../archive/README.md) - Index des archives
+- [Index Complet Documentation](../INDEX_FINAL.md) - Index complet de la documentation
 
 ---
 

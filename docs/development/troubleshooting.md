@@ -5,7 +5,11 @@
 
 > **Voir aussi** : [`docs/reference/INDEX_THEMATIQUE.md`](../reference/INDEX_THEMATIQUE.md) et [`docs/reference/project-status.md`](../reference/project-status.md) (État par axe)
 
-**📚 [FAQ principale](../getting-started/troubleshooting.md)** | **🔧 [Guide avancé](../guides/GUIDE_AVANCE.md)** | **🧪 [Guide tests](TESTING_GUIDE.md)**
+**📚 [FAQ principale](../getting-started/troubleshooting.md)** | **🔧 [Guide avancé](../guides/GUIDE_AVANCE.md)** | **🧪 [Guide tests](testing.md)**
+
+> **💡 Ce guide est complémentaire à la [FAQ principale](../getting-started/troubleshooting.md)**  
+> - **FAQ principale** : Questions fréquentes pour débutants (installation, MuJoCo, audio basique)  
+> - **Ce guide** : Problèmes techniques avancés (IA, modules, CI, WebSocket, etc.)
 
 ---
 

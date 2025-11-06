@@ -54,7 +54,7 @@ Mise à niveau centrée sur la robustesse (watchdog, arrêt d’urgence), le ren
 - `reachy_mini_backend.py`: watchdog par instance; évite la réutilisation globale; compatibilité tests `test_watchdog_*`.
 - `bbia_audio.py`: shim `sounddevice` patchable en CI; fallback robuste (tests audio étendus OK).
 - `docs/*`: remplacement de `scripts/start_public_api.py` et `scripts/test_public_api.py` par `deployment/public_api.py --dev/--check`.
-- `docs/archive/*`: suppression de dossiers obsolètes, harmonisation v1.3.1.
+- `docs/`: simplification structure documentation, suppression dossiers obsolètes, harmonisation v1.3.1.
 
 ### Documentation
 - README: badges de tests (**1362 tests sélectionnés** en CI), couverture **68.86%** validée en CI, Quick Start API publique, variables d'environnement utiles.
