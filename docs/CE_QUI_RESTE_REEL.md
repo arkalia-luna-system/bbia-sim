@@ -100,3 +100,42 @@ def test_watchdog_timeout_robot_disconnected(self):
 **Dernière mise à jour** : Décembre 2025  
 **Vérification** : Code source réel (pas juste MDs)
 
+---
+
+## 🎯 MISE À JOUR - Janvier 2025
+
+### Normalisation Code Récente
+
+✅ **TERMINÉ** : Structure bbox normalisée
+- **Fichier** : `src/bbia_sim/bbia_vision.py`
+- **Changement** : Ajout de `center_x` et `center_y` aux visages MediaPipe
+- **Lignes** : 689-690 (scan_environment_from_image), 890-891 (scan_environment)
+- **Résultat** : Tous les bbox (objets YOLO et visages MediaPipe) ont maintenant la même structure
+
+### Qualité Code
+
+✅ **TERMINÉ** : Passage outils qualité (Janvier 2025)
+- **Black** : 123 fichiers formatés
+- **Ruff** : Tous les checks passent
+- **MyPy** : 1 erreur corrigée (`bbia_audio.py` ligne 101)
+- **Bandit** : Warnings mineurs (commentaires dans code, non bloquants)
+
+### Issues GitHub
+
+⚠️ **À FAIRE** : Gérer 5 issues GitHub
+- Issue #2 : Fermer (tests déjà complets)
+- Issues #1, #3, #5 : Modifier (ajouter précisions)
+- Issue #4 : Aucune action (prête pour implémentation)
+- Messages prêts dans : `docs/verification/MESSAGES_ISSUES_GITHUB.md`
+
+### TODOs Restants
+
+🟡 **Optionnel** : 1 TODO test
+- `tests/test_watchdog_monitoring.py` ligne 227
+- Test watchdog timeout robot déconnecté
+- Estimation : ~30 min
+
+---
+
+**Dernière mise à jour** : Janvier 2025
+

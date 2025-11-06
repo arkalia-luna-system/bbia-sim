@@ -110,3 +110,81 @@
 **Date** : Oct / Nov. 2025  
 **Recommandation** : Les tâches restantes sont **optionnelles** et n'impactent pas l'utilisation de la documentation. La réorganisation est **fonctionnelle et professionnelle**.
 
+---
+
+## 🎯 TÂCHES RESTANTES - Mise à Jour Janvier 2025
+
+### Issues GitHub à Gérer
+
+1. **Issue #2** (`bbia_memory.py`) : **À FERMER** ✅
+   - Tests déjà complets (198 lignes dans `test_bbia_memory.py`)
+   - Toutes les fonctionnalités testées
+   - Action : Fermer l'issue avec message dans `docs/verification/MESSAGES_ISSUES_GITHUB.md`
+
+2. **Issue #1** (`bbia_audio.py`) : **À MODIFIER** ⚠️
+   - `detecter_son()` déjà bien testé
+   - Manque : Tests pour `_capture_audio_chunk()` spécifiquement
+   - Action : Ajouter précision dans l'issue (voir `docs/verification/MESSAGES_ISSUES_GITHUB.md`)
+
+3. **Issue #3** (`bbia_emotions.py`) : **À MODIFIER** ⚠️
+   - Historique et intensités limites déjà testés
+   - Manque : Tests transitions complexes (séquences rapides, stress tests)
+   - Action : Ajouter exemples dans l'issue (voir `docs/verification/MESSAGES_ISSUES_GITHUB.md`)
+
+4. **Issue #4** (Bbox structure) : **PRÊTE** ✅
+   - Code normalisé (center_x/center_y ajoutés aux visages MediaPipe)
+   - Test à implémenter par @yummyash
+   - Action : Aucune, l'issue est claire
+
+5. **Issue #5** (Commandes vocales) : **À MODIFIER** ⚠️
+   - Tests de base existent
+   - Manque : Tests ponctuation, multi-mots complexes, variations linguistiques
+   - Action : Ajouter exemples concrets dans l'issue (voir `docs/verification/MESSAGES_ISSUES_GITHUB.md`)
+
+### Code - Normalisation Récente
+
+✅ **TERMINÉ** : Normalisation structure bbox
+- Ajout de `center_x` et `center_y` aux visages MediaPipe
+- Tous les bbox ont maintenant la même structure
+- Fichier : `src/bbia_sim/bbia_vision.py` (lignes 689-690, 890-891)
+
+### Qualité Code
+
+✅ **TERMINÉ** : Passage outils qualité
+- Black : 123 fichiers formatés
+- Ruff : Tous les checks passent
+- MyPy : 1 erreur corrigée
+- Bandit : Warnings mineurs (non bloquants)
+
+### Documentation
+
+✅ **TERMINÉ** : Rapports de vérification créés
+- `docs/verification/RAPPORT_VERIFICATION_PROJET.md` : Vérification complète projet
+- `docs/verification/ANALYSE_ISSUES_GITHUB.md` : Analyse des issues GitHub
+- `docs/verification/MESSAGES_ISSUES_GITHUB.md` : Messages prêts pour GitHub
+
+---
+
+## 📋 ACTIONS IMMÉDIATES
+
+### Priorité Haute
+1. **Gérer les issues GitHub** :
+   - Fermer Issue #2 (tests déjà faits)
+   - Modifier Issues #1, #3, #5 (ajouter précisions)
+   - Utiliser messages dans `docs/verification/MESSAGES_ISSUES_GITHUB.md`
+
+### Priorité Moyenne
+2. **Vérifier coverage réel** :
+   - Lancer `pytest --cov` pour vérifier coverage actuel
+   - Identifier modules avec coverage < 70%
+
+### Priorité Basse
+3. **TODO test optionnel** :
+   - `tests/test_watchdog_monitoring.py` ligne 227
+   - Test watchdog timeout robot déconnecté
+   - Estimation : ~30 min (optionnel)
+
+---
+
+**Dernière mise à jour** : Janvier 2025
+
