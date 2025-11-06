@@ -287,7 +287,10 @@ class MuJoCoBackend(RobotAPI):
             else:
                 self.viewer.cam.lookat[:] = [0, 0, 0.3]
             logger.debug(
-                f"Caméra configurée: azimuth={azimuth}, elevation={elevation}, distance={distance}",
+                (
+                    f"Caméra configurée: azimuth={azimuth}, "
+                    f"elevation={elevation}, distance={distance}"
+                ),
             )
             return True
         except Exception as e:
