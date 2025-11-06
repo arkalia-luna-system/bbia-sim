@@ -234,8 +234,8 @@ pip install deepface onnxruntime
 
 ## 📚 Références
 
-- **DeepFace GitHub** : https://github.com/serengil/deepface
-- **Documentation** : https://github.com/serengil/deepface/blob/master/README.md
+- **DeepFace GitHub** : <https://github.com/serengil/deepface>
+- **Documentation** : <https://github.com/serengil/deepface/blob/master/README.md>
 - **Modèles disponibles** : VGG-Face, Facenet, OpenFace, DeepID, ArcFace
 
 ---

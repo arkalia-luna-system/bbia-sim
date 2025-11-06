@@ -360,6 +360,4 @@ python -m pytest tests/test_config.py --cov=src --cov-report=term-missing
 
 ---
 
----
-
 **Dernière mise à jour** : Oct / Nov. 2025
