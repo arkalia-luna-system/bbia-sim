@@ -113,7 +113,8 @@ class WakeUpBehavior(BBIABehavior):
                 success = self.robot_api.run_behavior("wake_up", duration=5.0)
                 if success:
                     logger.info("Réveil via SDK réussi")
-                    # AMÉLIORATION INTELLIGENCE: Messages de réveil variés, personnels et expressifs
+                    # AMÉLIORATION INTELLIGENCE: Messages de réveil variés,
+                    # personnels et expressifs
                     wake_messages = [
                         "Bonjour Athalia ! Je suis là, prêt à interagir avec vous.",
                         "Salut ! BBIA est réveillé et prêt à discuter !",
@@ -132,7 +133,8 @@ class WakeUpBehavior(BBIABehavior):
             except Exception as e:
                 logger.error(f"Erreur wake_up SDK: {e}")
 
-        # Fallback: Séquence manuelle conforme SDK (utilise create_head_pose et yaw_body)
+        # Fallback: Séquence manuelle conforme SDK
+        # (utilise create_head_pose et yaw_body)
         logger.info(
             "Étape : Mouvement de tête vers position neutre puis légèrement relevée",
         )
@@ -186,7 +188,8 @@ class WakeUpBehavior(BBIABehavior):
         time.sleep(1)
 
         logger.info("Étape : Première parole d'éveil")
-        # AMÉLIORATION INTELLIGENCE: Messages de réveil plus variés, personnels et expressifs
+        # AMÉLIORATION INTELLIGENCE: Messages de réveil plus variés,
+        # personnels et expressifs
         wake_messages = [
             "Bonjour Athalia ! Je suis là, prêt à interagir avec vous.",
             "Salut ! BBIA est réveillé et prêt à discuter !",
@@ -234,11 +237,13 @@ class GreetingBehavior(BBIABehavior):
         if self.robot_api and hasattr(self.robot_api, "set_emotion"):
             self.robot_api.set_emotion("happy", 0.6)
 
-        # OPTIMISATION EXPERT: Utiliser goto_target pour mouvement fluide avec interpolation
-        # au lieu de set_target_head_pose répétés (évite mouvements saccadés)
+        # OPTIMISATION EXPERT: Utiliser goto_target pour mouvement fluide
+        # avec interpolation au lieu de set_target_head_pose répétés
+        # (évite mouvements saccadés)
         if self.robot_api and (REACHY_MINI_UTILS_AVAILABLE and create_head_pose):
             try:
-                # Méthode 1 (recommandée): goto_target avec interpolation fluide (minjerk)
+                # Méthode 1 (recommandée): goto_target avec interpolation
+                # fluide (minjerk)
                 if hasattr(self.robot_api, "goto_target"):
                     pose = create_head_pose(pitch=0.08, yaw=0.0, degrees=False)
                     self.robot_api.goto_target(
@@ -420,7 +425,8 @@ class VisionTrackingBehavior(BBIABehavior):
             dire_texte(comment, robot_api=self.robot_api)
             logger.info(f"Synthèse vocale (vision) : {comment}")
 
-            # OPTIMISATION EXPERT: Utiliser look_at_world/look_at_image avec gestion d'erreur robuste
+            # OPTIMISATION EXPERT: Utiliser look_at_world/look_at_image
+            # avec gestion d'erreur robuste
             if self.robot_api:
                 try:
                     # Méthode 1 (préférée): look_at_world si position 3D disponible
@@ -444,7 +450,10 @@ class VisionTrackingBehavior(BBIABehavior):
                                     perform_movement=True,
                                 )
                                 logger.info(
-                                    f"Look_at_world vers position 3D: ({x:.2f}, {y:.2f}, {z:.2f})",
+                                    (
+                                        f"Look_at_world vers position 3D: "
+                                        f"({x:.2f}, {y:.2f}, {z:.2f})"
+                                    ),
                                 )
                             else:
                                 logger.warning(
@@ -535,7 +544,10 @@ class ConversationBehavior(BBIABehavior):
             # Créer BBIAHuggingFace avec outils intégrés
             self.hf_chat = BBIAHuggingFace(tools=tools)
             logger.info(
-                "✅ BBIAHuggingFace avec outils LLM disponible - Conversation intelligente + function calling activé",
+                (
+                    "✅ BBIAHuggingFace avec outils LLM disponible - "
+                    "Conversation intelligente + function calling activé"
+                ),
             )
         except (ImportError, Exception) as e:
             logger.info(f"ℹ️  BBIAHuggingFace non disponible - Mode enrichi activé: {e}")
@@ -629,7 +641,8 @@ class ConversationBehavior(BBIABehavior):
         dire_texte(greeting, robot_api=self.robot_api)
         logger.info(f"Synthèse vocale : {greeting}")
 
-        # OPTIMISATION SDK: Reconnaissance vocale via robot.media.microphone si disponible
+        # OPTIMISATION SDK: Reconnaissance vocale via robot.media.microphone
+        # si disponible
         # Bénéfice: 4 microphones directionnels avec annulation de bruit automatique
         texte = reconnaitre_parole(duree=5, robot_api=self.robot_api)
         logger.info(f"Texte reconnu : {texte}")
@@ -637,7 +650,8 @@ class ConversationBehavior(BBIABehavior):
         if texte:
             texte_lower = texte.lower()
 
-            # Utiliser BBIAHuggingFace si disponible (intelligence avancée + function calling)
+            # Utiliser BBIAHuggingFace si disponible
+            # (intelligence avancée + function calling)
             if self.hf_chat:
                 try:
                     # Chat avec outils LLM activés pour détection automatique
@@ -728,7 +742,8 @@ class ConversationBehavior(BBIABehavior):
     def _detect_emotion_from_text(self, texte_lower: str) -> str | None:
         """Détecte une émotion basique depuis le texte."""
         # Mapping simple texte → émotion SDK officielle
-        # IMPORTANT: Vérifier "excited" AVANT "happy" pour éviter conflit (excité peut être dans les deux)
+        # IMPORTANT: Vérifier "excited" AVANT "happy" pour éviter conflit
+        # (excité peut être dans les deux)
         if any(
             word in texte_lower for word in ["excité", "enthousiaste", "euphorique"]
         ):
@@ -767,7 +782,10 @@ class ConversationBehavior(BBIABehavior):
             if hasattr(self.robot_api, "set_emotion"):
                 self.robot_api.set_emotion(emotion, intensity)
                 logger.info(
-                    f"Émotion appliquée via sentiment : {emotion} (intensité: {intensity:.2f})",
+                    (
+                        f"Émotion appliquée via sentiment : {emotion} "
+                        f"(intensité: {intensity:.2f})"
+                    ),
                 )
         except Exception as e:
             logger.warning(f"Erreur application sentiment au robot : {e}")
@@ -776,9 +794,12 @@ class ConversationBehavior(BBIABehavior):
 class AntennaAnimationBehavior(BBIABehavior):
     """Comportement d'animation expressivité (alternative aux antennes).
 
-    ✅ IMPORTANT: Les antennes sont maintenant ANIMABLES dans le modèle officiel (range=[-0.300, 0.300]).
-    Ce comportement utilise les antennes avec limites de sécurité (-0.3 à 0.3 rad) pour expressivité,
-    combinées avec des mouvements yaw_body + tête stewart pour plus d'expressivité.
+    ✅ IMPORTANT: Les antennes sont maintenant ANIMABLES dans le modèle
+    officiel (range=[-0.300, 0.300]).
+    Ce comportement utilise les antennes avec limites de sécurité
+    (-0.3 à 0.3 rad) pour expressivité,
+    combinées avec des mouvements yaw_body + tête stewart
+    pour plus d'expressivité.
     """
 
     def __init__(self, robot_api: RobotAPI | None = None) -> None:
@@ -815,8 +836,9 @@ class AntennaAnimationBehavior(BBIABehavior):
                     sdk_emotion = emotion_map.get(emotion, "neutral")
                     self.robot_api.set_emotion(sdk_emotion, 0.8)
 
-            # OPTIMISATION EXPERT: Utiliser goto_target pour mouvements fluides expressifs
-            # au lieu de set_joint_pos répétés (meilleure fluidité et performance)
+            # OPTIMISATION EXPERT: Utiliser goto_target pour mouvements
+            # fluides expressifs au lieu de set_joint_pos répétés
+            # (meilleure fluidité et performance)
             movements = {
                 "happy": 0.12,
                 "excited": 0.15,
@@ -857,7 +879,8 @@ class AntennaAnimationBehavior(BBIABehavior):
 class HideBehavior(BBIABehavior):
     """Comportement 'se cacher' (hide) conforme au SDK Reachy Mini officiel.
 
-    Simule le repli en baissant la tête (pitch négatif) et rotation corps vers l'arrière.
+    Simule le repli en baissant la tête (pitch négatif)
+    et rotation corps vers l'arrière.
     Les antennes ne sont PAS contrôlées (protégées pour sécurité hardware).
     """
 
@@ -887,8 +910,9 @@ class HideBehavior(BBIABehavior):
         print("👁️ Yeux qui se ferment (ou s'éteignent)...")
         logger.info("Étape : Yeux qui se ferment")
 
-        # OPTIMISATION EXPERT: Utiliser goto_target pour mouvement combiné tête+corps fluide
-        # au lieu de mouvements séparés (meilleure synchronisation)
+        # OPTIMISATION EXPERT: Utiliser goto_target pour mouvement combiné
+        # tête+corps fluide au lieu de mouvements séparés
+        # (meilleure synchronisation)
         if self.robot_api:
             try:
                 if (
@@ -918,7 +942,8 @@ class HideBehavior(BBIABehavior):
                     # Baisser encore plus la tête si possible
                     if REACHY_MINI_UTILS_AVAILABLE and create_head_pose:
                         if hasattr(self.robot_api, "set_target_head_pose"):
-                            # Pose tête baissée (conforme SDK sad: pitch=-0.1, ici plus fort)
+                            # Pose tête baissée (conforme SDK sad: pitch=-0.1,
+                            # ici plus fort)
                             pose = create_head_pose(pitch=-0.15, yaw=0.0, degrees=False)
                             self.robot_api.set_target_head_pose(pose)
             except Exception as e:
@@ -954,7 +979,8 @@ class BBIABehaviorManager:
 
         Args:
             robot_api: Instance RobotAPI pour contrôler le robot (optionnel).
-                      Si None, les comportements fonctionneront en mode simulation/logs uniquement.
+                       Si None, les comportements fonctionneront
+                       en mode simulation/logs uniquement.
 
         """
         self.behaviors: dict[str, BBIABehavior] = {}
@@ -967,7 +993,8 @@ class BBIABehaviorManager:
         # RobotAPI pour contrôler le robot physique
         self.robot_api = robot_api
 
-        # OPTIMISATION PERFORMANCE: Bibliothèque de mouvements enregistrés pour réutilisation
+        # OPTIMISATION PERFORMANCE: Bibliothèque de mouvements enregistrés
+        # pour réutilisation
         self.saved_moves: dict[str, Any] = {}
 
         # Initialiser les modules BBIA
@@ -1108,7 +1135,10 @@ class BBIABehaviorManager:
 
         try:
             logger.info(
-                f"🎬 Enregistrement mouvement comportement '{behavior_name}' ({duration}s)...",
+                (
+                    f"🎬 Enregistrement mouvement comportement "
+                    f"'{behavior_name}' ({duration}s)..."
+                ),
             )
             self.robot_api.start_recording()
 
@@ -1159,7 +1189,8 @@ class BBIABehaviorManager:
         try:
             move = self.saved_moves[behavior_name]
 
-            # OPTIMISATION PERFORMANCE: Utiliser async_play_move si disponible (non bloquant)
+            # OPTIMISATION PERFORMANCE: Utiliser async_play_move si disponible
+            # (non bloquant)
             if use_async and hasattr(self.robot_api, "async_play_move"):
                 self.robot_api.async_play_move(move, play_frequency=100.0)
                 logger.info(
