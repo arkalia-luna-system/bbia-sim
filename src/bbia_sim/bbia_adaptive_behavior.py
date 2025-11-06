@@ -26,9 +26,11 @@ class BBIAAdaptiveBehavior:
     - Comportements proactifs et réactifs
 
     ⚠️ IMPORTANT EXPERT ROBOTIQUE:
-    Les comportements générés utilisent "head_pose" au lieu de joints stewart individuels,
-    car la plateforme Stewart nécessite la cinématique inverse (IK). Les comportements doivent
-    être exécutés via goto_target(head=pose) ou look_at_world() du SDK Reachy Mini officiel.
+    Les comportements générés utilisent "head_pose"
+    au lieu de joints stewart individuels,
+    car la plateforme Stewart nécessite la cinématique inverse (IK).
+    Les comportements doivent être exécutés via goto_target(head=pose)
+    ou look_at_world() du SDK Reachy Mini officiel.
     """
 
     def __init__(self, robot_api: Optional["RobotAPI"] = None) -> None:

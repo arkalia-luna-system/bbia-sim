@@ -56,7 +56,8 @@ class SimulationIOModule:
 class SimulationMediaModule:
     """Module Media de simulation pour Reachy Mini.
 
-    Fournit des implémentations de simulation pour toutes les méthodes media officielles.
+    Fournit des implémentations de simulation
+    pour toutes les méthodes media officielles.
     """
 
     def __init__(self) -> None:
