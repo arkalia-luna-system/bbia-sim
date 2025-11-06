@@ -120,3 +120,47 @@
 **Date** : Oct / Nov. 2025  
 **Statut** : ✅ **RÉORGANISATION 100% TERMINÉE - PRÊT POUR PRODUCTION**
 
+---
+
+## 🎯 MISE À JOUR - Janvier 2025
+
+### Code - Normalisation
+
+✅ **TERMINÉ** : Structure bbox normalisée
+- Ajout de `center_x` et `center_y` aux visages MediaPipe
+- Tous les bbox ont maintenant la même structure (objets YOLO + visages MediaPipe)
+- Fichier : `src/bbia_sim/bbia_vision.py`
+
+### Qualité Code
+
+✅ **TERMINÉ** : Passage outils qualité
+- Black : 123 fichiers formatés
+- Ruff : Tous les checks passent
+- MyPy : 1 erreur corrigée
+- Bandit : Warnings mineurs (non bloquants)
+
+### Issues GitHub
+
+⚠️ **À FAIRE** : Gérer 5 issues GitHub
+- **Issue #2** : À fermer (tests déjà complets)
+- **Issues #1, #3, #5** : À modifier (ajouter précisions)
+- **Issue #4** : Prête (aucune action)
+- Messages prêts : `docs/verification/MESSAGES_ISSUES_GITHUB.md`
+
+### Documentation
+
+✅ **TERMINÉ** : Rapports de vérification
+- `docs/verification/RAPPORT_VERIFICATION_PROJET.md`
+- `docs/verification/ANALYSE_ISSUES_GITHUB.md`
+- `docs/verification/MESSAGES_ISSUES_GITHUB.md`
+
+### Actions Immédiates
+
+1. **Gérer issues GitHub** (priorité haute)
+2. **Vérifier coverage réel** avec `pytest --cov` (priorité moyenne)
+3. **TODO test optionnel** watchdog (priorité basse, ~30 min)
+
+---
+
+**Dernière mise à jour** : Janvier 2025
+
