@@ -47,11 +47,13 @@ class TestRobotAPILimits:
             pytest.skip("MuJoCo non disponible")
 
         try:
-            # Test joint interdit
-            result = robot.set_joint_pos("left_antenna", 0.1)
+            # Test joints interdits (passive joints)
+            # Note: left_antenna et right_antenna ne sont plus interdits par défaut
+            # (animables avec limites de sécurité -0.3 à 0.3 rad)
+            result = robot.set_joint_pos("passive_1", 0.1)
             assert result is False  # Doit échouer
 
-            result = robot.set_joint_pos("passive_1", 0.1)
+            result = robot.set_joint_pos("passive_2", 0.1)
             assert result is False  # Doit échouer
 
         finally:
