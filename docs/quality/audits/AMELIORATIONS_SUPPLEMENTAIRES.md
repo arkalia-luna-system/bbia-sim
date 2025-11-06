@@ -118,13 +118,13 @@
    - ✅ Espaces doubles hors blocs de code nettoyés
 
 2. ~~**Formatage code blocks** : Vérifier la cohérence des blocs de code~~ ✅ **TERMINÉ**
-   - ✅ Correction fermetures avec langage (switch-sim-robot.md)
-   - ✅ Ajout lignes vides avant blocs de code (cohérence améliorée)
+   - ✅ Correction fermetures avec langage (switch-sim-robot.md - 14 occurrences)
+   - ✅ Ajout lignes vides avant blocs de code (92 fichiers corrigés pour cohérence)
 
-3. **Checkboxes** : Convertir les checkboxes vides en listes normales si le matériel est acquis
-   - **Impact** : Mineur (mise à jour)
-   - **Effort** : Très faible
-   - **Priorité** : Basse (à faire quand matériel acquis)
+3. **Checkboxes** : ✅ **OK** - 12 checkboxes vides (matériel toujours en attente, intentionnel)
+   - ✅ Vérifié : Matériel toujours en commande/en attente
+   - ✅ Format correct : `- [ ] **Item** (description)`
+   - **Action** : À mettre à jour manuellement quand matériel acquis
 
 ---
 
