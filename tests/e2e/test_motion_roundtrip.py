@@ -63,9 +63,7 @@ class BBIAE2ETestClient:
             Dict avec les positions des joints
 
         """
-        response = await self.client.get(
-            f"{self.api_url}/api/state/joints", headers=self.headers
-        )
+        response = await self.client.get(f"{self.api_url}/api/state/joints", headers=self.headers)
         response.raise_for_status()
         return cast(dict[str, Any], response.json())
 
@@ -159,9 +157,7 @@ class TestMotionRoundtrip:
 
         # 6. Vérification que le changement est significatif
         position_change = abs(final_yaw_body - initial_yaw_body)
-        assert (
-            position_change >= 0.1
-        ), f"Changement trop faible: {position_change:.3f} rad"
+        assert position_change >= 0.1, f"Changement trop faible: {position_change:.3f} rad"
 
         logger.info(f"✅ Changement de position détecté: {position_change:.3f} rad")
 
@@ -192,9 +188,7 @@ class TestMotionRoundtrip:
                     assert isinstance(data["joints"], dict)
 
                     messages_received += 1
-                    logger.debug(
-                        f"Message télémétrie #{messages_received}: {data['timestamp']}"
-                    )
+                    logger.debug(f"Message télémétrie #{messages_received}: {data['timestamp']}")
 
                 except TimeoutError:
                     # Timeout normal, continue
@@ -230,9 +224,7 @@ class TestMotionRoundtrip:
             await client.set_joint_positions(invalid_joints)
             raise AssertionError("Devrait lever une exception pour joint invalide")
         except httpx.HTTPStatusError as e:
-            assert (
-                e.response.status_code == 422
-            ), f"Mauvais code d'erreur: {e.response.status_code}"
+            assert e.response.status_code == 422, f"Mauvais code d'erreur: {e.response.status_code}"
             logger.info("✅ Joint invalide correctement rejeté avec 422")
 
     async def test_joint_angle_clamping(self, client: BBIAE2ETestClient):
@@ -258,13 +250,9 @@ class TestMotionRoundtrip:
             final_position = final_state["joints"]["yaw_body"]["position"]
 
             # La position devrait être dans les limites raisonnables
-            assert (
-                -2.0 <= final_position <= 2.0
-            ), f"Position non clampée: {final_position}"
+            assert -2.0 <= final_position <= 2.0, f"Position non clampée: {final_position}"
 
-            logger.info(
-                f"✅ Angle clampé de {extreme_angle} à {final_position:.3f} rad"
-            )
+            logger.info(f"✅ Angle clampé de {extreme_angle} à {final_position:.3f} rad")
 
         except httpx.HTTPStatusError as e:
             if e.response.status_code == 422:

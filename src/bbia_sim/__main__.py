@@ -146,9 +146,7 @@ def run_simulation(args: argparse.Namespace) -> None:
 
     # Détermination du modèle à utiliser
     if args.scene == "reachy_mini.xml":
-        model_path = (
-            Path(__file__).parent / "sim" / "models" / "reachy_mini_REAL_OFFICIAL.xml"
-        )
+        model_path = Path(__file__).parent / "sim" / "models" / "reachy_mini_REAL_OFFICIAL.xml"
     elif args.scene == "minimal.xml":
         model_path = Path(__file__).parent / "sim" / "scenes" / "minimal.xml"
     else:
@@ -233,9 +231,7 @@ def run_doctor() -> None:
     all_ok = True
 
     # Python version
-    python_version = (
-        f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}"
-    )
+    python_version = f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}"
     python_ok = sys.version_info >= (3, 10)
     checks["Python version"] = {
         "status": python_ok,

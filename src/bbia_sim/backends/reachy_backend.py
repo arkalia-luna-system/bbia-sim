@@ -175,14 +175,10 @@ class ReachyBackend(RobotAPI):
                     # Rotation du corps via SDK
                     if hasattr(self.robot_sdk, "goto_target"):
                         # Le SDK utilise goto_target avec body_yaw
-                        self.robot_sdk.goto_target(
-                            body_yaw=clamped_position, duration=0.1
-                        )
+                        self.robot_sdk.goto_target(body_yaw=clamped_position, duration=0.1)
                     else:
                         # Fallback: mise à jour directe si méthode disponible
-                        logger.warning(
-                            f"Méthode goto_target non disponible pour {joint_name}"
-                        )
+                        logger.warning(f"Méthode goto_target non disponible pour {joint_name}")
                 elif joint_name.startswith("stewart_"):
                     # Joints Stewart platform - utiliser head joint positions
                     # Le SDK attend un tableau de 6 positions pour la tête
@@ -192,33 +188,23 @@ class ReachyBackend(RobotAPI):
                         stewart_idx = int(joint_name.split("_")[1]) - 1
                         if 0 <= stewart_idx < 6:
                             head_positions[stewart_idx] = clamped_position
-                            self.robot_sdk.goto_target(
-                                head=head_positions, duration=0.1
-                            )
+                            self.robot_sdk.goto_target(head=head_positions, duration=0.1)
                     else:
-                        logger.warning(
-                            f"Méthode goto_target non disponible pour {joint_name}"
-                        )
+                        logger.warning(f"Méthode goto_target non disponible pour {joint_name}")
 
                 # Mettre à jour cache local pour cohérence
                 self.simulated_joints[joint_name] = clamped_position
-                logger.debug(
-                    f"Joint {joint_name} → {clamped_position:.3f} rad (robot réel)"
-                )
+                logger.debug(f"Joint {joint_name} → {clamped_position:.3f} rad (robot réel)")
                 return True
             except Exception as e:
-                logger.warning(
-                    f"Erreur envoi commande robot réel: {e} - bascule simulation"
-                )
+                logger.warning(f"Erreur envoi commande robot réel: {e} - bascule simulation")
                 # Fallback: simulation si erreur
                 self.simulated_joints[joint_name] = clamped_position
                 return True
         else:
             # Mode simulation
             self.simulated_joints[joint_name] = clamped_position
-            logger.debug(
-                f"Joint {joint_name} → {clamped_position:.3f} rad (simulation)"
-            )
+            logger.debug(f"Joint {joint_name} → {clamped_position:.3f} rad (simulation)")
             return True
 
     def get_joint_pos(self, joint_name: str) -> float | None:
@@ -233,9 +219,7 @@ class ReachyBackend(RobotAPI):
         if self.robot_sdk is not None:
             try:
                 if hasattr(self.robot_sdk, "get_current_joint_positions"):
-                    head_positions, antenna_positions = (
-                        self.robot_sdk.get_current_joint_positions()
-                    )
+                    head_positions, antenna_positions = self.robot_sdk.get_current_joint_positions()
                     if joint_name == "yaw_body":
                         # Yaw body peut être dans une structure séparée
                         if hasattr(self.robot_sdk, "get_current_body_yaw"):
@@ -244,9 +228,7 @@ class ReachyBackend(RobotAPI):
                     elif joint_name.startswith("stewart_"):
                         stewart_idx = int(joint_name.split("_")[1]) - 1
                         if 0 <= stewart_idx < len(head_positions):
-                            self.simulated_joints[joint_name] = float(
-                                head_positions[stewart_idx]
-                            )
+                            self.simulated_joints[joint_name] = float(head_positions[stewart_idx])
                             return self.simulated_joints[joint_name]
             except Exception as e:
                 logger.debug(f"Erreur lecture position robot réel: {e}")
@@ -321,12 +303,8 @@ class ReachyBackend(RobotAPI):
         return {
             "step_count": self.step_count,
             "elapsed_time": elapsed_time,
-            "steps_per_second": (
-                self.step_count / elapsed_time if elapsed_time > 0 else 0
-            ),
-            "average_step_time": (
-                elapsed_time / self.step_count if self.step_count > 0 else 0
-            ),
+            "steps_per_second": self.step_count / elapsed_time if elapsed_time > 0 else 0,
+            "average_step_time": elapsed_time / self.step_count if self.step_count > 0 else 0,
             "current_joint_positions": self.simulated_joints.copy(),
             "robot_ip": self.robot_ip,
             "robot_port": self.robot_port,

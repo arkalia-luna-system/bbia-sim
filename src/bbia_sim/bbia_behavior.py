@@ -151,10 +151,7 @@ class WakeUpBehavior(BBIABehavior):
         # pour mouvement fluide avec interpolation automatique (minjerk)
         if self.robot_api:
             try:
-                if (
-                    hasattr(self.robot_api, "goto_target")
-                    and REACHY_MINI_UTILS_AVAILABLE
-                ):
+                if hasattr(self.robot_api, "goto_target") and REACHY_MINI_UTILS_AVAILABLE:
                     # Mouvement fluide avec interpolation SDK (meilleure performance)
                     self.robot_api.goto_target(
                         body_yaw=0.15,
@@ -431,11 +428,7 @@ class VisionTrackingBehavior(BBIABehavior):
                             y = float(pos.get("y", 0.1))
                             z = float(pos.get("z", 0.0))
                             # Validation des coordonnées (éviter valeurs extrêmes)
-                            if (
-                                -2.0 <= x <= 2.0
-                                and -2.0 <= y <= 2.0
-                                and -1.0 <= z <= 1.0
-                            ):
+                            if -2.0 <= x <= 2.0 and -2.0 <= y <= 2.0 and -1.0 <= z <= 1.0:
                                 self.robot_api.look_at_world(
                                     x,
                                     y,
@@ -682,30 +675,21 @@ class ConversationBehavior(BBIABehavior):
     def _generate_enriched_response(self, texte_lower: str) -> str:
         """Génère une réponse enrichie basée sur le texte reconnu."""
         # Salutations
-        if any(
-            word in texte_lower for word in ["bonjour", "salut", "hello", "hi", "hey"]
-        ):
+        if any(word in texte_lower for word in ["bonjour", "salut", "hello", "hi", "hey"]):
             return self._get_enriched_response("greeting")
 
         # Comment allez-vous
-        if any(
-            word in texte_lower
-            for word in ["comment", "comment ça va", "ça va", "vas-tu"]
-        ):
+        if any(word in texte_lower for word in ["comment", "comment ça va", "ça va", "vas-tu"]):
             return self._get_enriched_response("how_are_you")
 
         # Au revoir
         if any(
-            word in texte_lower
-            for word in ["au revoir", "bye", "goodbye", "à bientôt", "adieu"]
+            word in texte_lower for word in ["au revoir", "bye", "goodbye", "à bientôt", "adieu"]
         ):
             return self._get_enriched_response("goodbye")
 
         # Remerciements
-        if any(
-            word in texte_lower
-            for word in ["merci", "thanks", "thank you", "merci beaucoup"]
-        ):
+        if any(word in texte_lower for word in ["merci", "thanks", "thank you", "merci beaucoup"]):
             return self._get_enriched_response("thanks")
 
         # Positif
@@ -717,8 +701,7 @@ class ConversationBehavior(BBIABehavior):
 
         # Questions
         if "?" in texte_lower or any(
-            word in texte_lower
-            for word in ["qui", "quoi", "comment", "pourquoi", "où", "quand"]
+            word in texte_lower for word in ["qui", "quoi", "comment", "pourquoi", "où", "quand"]
         ):
             return self._get_enriched_response("question")
 
@@ -729,13 +712,9 @@ class ConversationBehavior(BBIABehavior):
         """Détecte une émotion basique depuis le texte."""
         # Mapping simple texte → émotion SDK officielle
         # IMPORTANT: Vérifier "excited" AVANT "happy" pour éviter conflit (excité peut être dans les deux)
-        if any(
-            word in texte_lower for word in ["excité", "enthousiaste", "euphorique"]
-        ):
+        if any(word in texte_lower for word in ["excité", "enthousiaste", "euphorique"]):
             return "excited"
-        if any(
-            word in texte_lower for word in ["super", "génial", "content", "heureux"]
-        ):
+        if any(word in texte_lower for word in ["super", "génial", "content", "heureux"]):
             return "happy"
         if any(word in texte_lower for word in ["triste", "déçu", "malheureux"]):
             return "sad"

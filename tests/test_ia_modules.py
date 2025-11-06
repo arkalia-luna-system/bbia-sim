@@ -252,9 +252,7 @@ class TestWhisperSTT:
 
     @patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True)
     @patch("bbia_sim.voice_whisper.whisper")
-    def test_whisper_stt_transcribe_streaming_model_not_loaded(
-        self, mock_whisper_module
-    ):
+    def test_whisper_stt_transcribe_streaming_model_not_loaded(self, mock_whisper_module):
         """Test transcription streaming avec modèle non chargé."""
         stt = WhisperSTT(model_size="tiny", language="fr")
         stt.is_loaded = False
@@ -277,9 +275,7 @@ class TestWhisperSTT:
     @patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True)
     @patch("bbia_sim.voice_whisper.transformers_pipeline", None)
     @patch("os.environ.get", return_value="0")
-    def test_whisper_stt_detect_speech_activity_import_transformers_error(
-        self, mock_env
-    ):
+    def test_whisper_stt_detect_speech_activity_import_transformers_error(self, mock_env):
         """Test détection parole avec ImportError transformers."""
         import bbia_sim.voice_whisper as voice_module
 
@@ -297,9 +293,7 @@ class TestWhisperSTT:
                 side_effect=lambda name, *args, **kwargs: (
                     __import__(name, *args, **kwargs)
                     if name != "transformers"
-                    else (_ for _ in ()).throw(
-                        ImportError("No module named 'transformers'")
-                    )
+                    else (_ for _ in ()).throw(ImportError("No module named 'transformers'"))
                 ),
             ),
         ):
@@ -337,9 +331,7 @@ class TestWhisperSTT:
     @patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True)
     @patch("bbia_sim.voice_whisper.sf")
     @patch("os.environ.get", return_value="0")
-    def test_whisper_stt_detect_speech_activity_soundfile_import_error(
-        self, mock_env, mock_sf
-    ):
+    def test_whisper_stt_detect_speech_activity_soundfile_import_error(self, mock_env, mock_sf):
         """Test détection parole avec ImportError soundfile."""
         import bbia_sim.voice_whisper as voice_module
 
@@ -352,9 +344,7 @@ class TestWhisperSTT:
                 side_effect=lambda name, *args, **kwargs: (
                     __import__(name, *args, **kwargs)
                     if name != "soundfile"
-                    else (_ for _ in ()).throw(
-                        ImportError("No module named 'soundfile'")
-                    )
+                    else (_ for _ in ()).throw(ImportError("No module named 'soundfile'"))
                 ),
             ):
                 result = stt.detect_speech_activity("test.wav")
@@ -543,9 +533,7 @@ class TestYOLODetector:
 class TestFaceDetector:
     """Tests pour le module détection de visages."""
 
-    @pytest.mark.skip(
-        reason="MediaPipe a des problèmes matplotlib dans l'environnement"
-    )
+    @pytest.mark.skip(reason="MediaPipe a des problèmes matplotlib dans l'environnement")
     def test_face_detector_creation(self):
         """Test création FaceDetector."""
         detector = FaceDetector()
@@ -554,9 +542,7 @@ class TestFaceDetector:
             detector.mp_face_detection, "FaceDetection"
         )
 
-    @pytest.mark.skip(
-        reason="MediaPipe a des problèmes matplotlib dans l'environnement"
-    )
+    @pytest.mark.skip(reason="MediaPipe a des problèmes matplotlib dans l'environnement")
     def test_best_face_selection(self):
         """Test sélection meilleur visage."""
         detector = FaceDetector()

@@ -41,9 +41,7 @@ class TestBBIAAudioCoverageHigh(unittest.TestCase):
     ) -> None:
         """Test enregistrement via SDK record_audio."""
         mock_robot = MagicMock()
-        mock_robot.media.record_audio = MagicMock(
-            return_value=np.zeros(16000, dtype=np.int16)
-        )
+        mock_robot.media.record_audio = MagicMock(return_value=np.zeros(16000, dtype=np.int16))
         mock_get_mic.return_value = mock_robot.media
 
         mock_wf = MagicMock()
@@ -86,9 +84,7 @@ class TestBBIAAudioCoverageHigh(unittest.TestCase):
         mock_hasattr.side_effect = hasattr_side_effect
 
         mock_mic = MagicMock()
-        mock_mic.record = MagicMock(
-            return_value=np.zeros(16000, dtype=np.int16).tobytes()
-        )
+        mock_mic.record = MagicMock(return_value=np.zeros(16000, dtype=np.int16).tobytes())
         mock_get_mic.return_value = mock_mic
 
         mock_wf = MagicMock()

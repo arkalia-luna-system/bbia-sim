@@ -215,9 +215,7 @@ async def get_full_state(
             if isinstance(joints, dict):
                 result["passive_joints"] = list(joints.values())
             else:
-                result["passive_joints"] = (
-                    list(joints) if hasattr(joints, "__iter__") else None
-                )
+                result["passive_joints"] = list(joints) if hasattr(joints, "__iter__") else None
         else:
             result["passive_joints"] = None
 
@@ -282,12 +280,8 @@ async def get_battery_level() -> BatteryInfo:
             battery_level = float(sdk["battery"])
         except Exception:
             pass
-    status = (
-        "good" if battery_level > 20 else "low" if battery_level > 10 else "critical"
-    )
-    estimated_time = (
-        f"{battery_level * 0.8:.1f}h" if battery_level > 20 else "Recharge nécessaire"
-    )
+    status = "good" if battery_level > 20 else "low" if battery_level > 10 else "critical"
+    estimated_time = f"{battery_level * 0.8:.1f}h" if battery_level > 20 else "Recharge nécessaire"
 
     return BatteryInfo(
         level=battery_level,
@@ -431,9 +425,7 @@ async def get_present_head_pose(
     pose_data = as_any_pose(pose, use_pose_matrix)
     # Wrapper dans dict pour conformité avec les tests
     return {
-        "head_pose": (
-            pose_data.model_dump() if hasattr(pose_data, "model_dump") else pose_data
-        ),
+        "head_pose": pose_data.model_dump() if hasattr(pose_data, "model_dump") else pose_data,
     }
 
 

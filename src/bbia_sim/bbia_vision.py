@@ -72,9 +72,7 @@ except ImportError:
     MEDIAPIPE_AVAILABLE = False
 
 # Import conditionnel DeepFace pour reconnaissance visage personnalisée
-create_face_recognition: Callable[[str, str], "BBIAPersonRecognition | None"] | None = (
-    None
-)
+create_face_recognition: Callable[[str, str], "BBIAPersonRecognition | None"] | None = None
 DEEPFACE_AVAILABLE = False
 try:
     from .face_recognition import (
@@ -233,11 +231,7 @@ class BBIAVision:
         # OPTIMISATION RAM: Lazy loading YOLO/MediaPipe - ne charger que si caméra réelle disponible
         self.yolo_detector = None
         # Charger YOLO uniquement si caméra SDK réelle disponible (pas shim simulation)
-        if (
-            self._camera_sdk_available
-            and YOLO_AVAILABLE
-            and create_yolo_detector is not None
-        ):
+        if self._camera_sdk_available and YOLO_AVAILABLE and create_yolo_detector is not None:
             try:
                 # Seuil confiance 0.25 pour meilleure détection (au lieu de 0.5 par défaut)
                 confidence_threshold = float(
@@ -281,11 +275,9 @@ class BBIAVision:
                             )
                         else:
                             # Créer nouvelle instance et mettre en cache
-                            self.face_detector = (
-                                mp.solutions.face_detection.FaceDetection(
-                                    model_selection=0,
-                                    min_detection_confidence=0.5,
-                                )
+                            self.face_detector = mp.solutions.face_detection.FaceDetection(
+                                model_selection=0,
+                                min_detection_confidence=0.5,
                             )
                             _mediapipe_face_detection_cache = self.face_detector
                             logger.info("✅ Détecteur MediaPipe Face initialisé")
@@ -407,8 +399,7 @@ class BBIAVision:
             # Valider shape (doit être 2D ou 3D)
             if image.ndim < 2 or image.ndim > 3:
                 logger.warning(
-                    f"Format image invalide (ndim={image.ndim}), "
-                    "attendu 2 ou 3 dimensions",
+                    f"Format image invalide (ndim={image.ndim}), " "attendu 2 ou 3 dimensions",
                 )
                 return None
 
@@ -465,14 +456,9 @@ class BBIAVision:
             # Ajouter au buffer circulaire (Issue #16 SDK officiel)
             # Le buffer garde les dernières frames capturées pour éviter perte si non consommées
             buffer_maxlen = self._camera_frame_buffer.maxlen
-            if (
-                buffer_maxlen is not None
-                and len(self._camera_frame_buffer) >= buffer_maxlen
-            ):
+            if buffer_maxlen is not None and len(self._camera_frame_buffer) >= buffer_maxlen:
                 self._buffer_overrun_count += 1
-                if (
-                    self._buffer_overrun_count % 100 == 0
-                ):  # Logger tous les 100 overruns
+                if self._buffer_overrun_count % 100 == 0:  # Logger tous les 100 overruns
                     logger.warning(
                         f"⚠️ Camera buffer overrun: {self._buffer_overrun_count} frames perdues "
                         f"(buffer size: {buffer_maxlen})",
@@ -529,10 +515,7 @@ class BBIAVision:
 
             # Ajouter au buffer circulaire (Issue #16 SDK officiel)
             buffer_maxlen = self._camera_frame_buffer.maxlen
-            if (
-                buffer_maxlen is not None
-                and len(self._camera_frame_buffer) >= buffer_maxlen
-            ):
+            if buffer_maxlen is not None and len(self._camera_frame_buffer) >= buffer_maxlen:
                 self._buffer_overrun_count += 1
                 if self._buffer_overrun_count % 100 == 0:
                     logger.warning(
@@ -617,10 +600,7 @@ class BBIAVision:
 
                         # Extraire ROI pour DeepFace
                         face_roi = None
-                        if (
-                            self.face_recognition
-                            and self.face_recognition.is_initialized
-                        ):
+                        if self.face_recognition and self.face_recognition.is_initialized:
                             x = int(bbox.xmin * width)
                             y = int(bbox.ymin * height)
                             w = int(bbox.width * width)
@@ -661,12 +641,18 @@ class BBIAVision:
                             except Exception as deepface_error:
                                 logger.debug(f"DeepFace erreur: {deepface_error}")
 
+                        # Calculer centre pour cohérence avec objets YOLO
+                        bbox_x = int(bbox.xmin * width)
+                        bbox_y = int(bbox.ymin * height)
+                        bbox_w = int(bbox.width * width)
+                        bbox_h = int(bbox.height * height)
+                        center_x = bbox_x + bbox_w / 2
+                        center_y = bbox_y + bbox_h / 2
+
                         face = {
                             "name": recognized_name,
                             "distance": 1.5,
-                            "confidence": (
-                                detection.score[0] if detection.score else 0.8
-                            ),
+                            "confidence": detection.score[0] if detection.score else 0.8,
                             "emotion": detected_emotion,
                             "emotion_confidence": emotion_confidence,
                             "position": (
@@ -674,10 +660,12 @@ class BBIAVision:
                                 bbox.ymin + bbox.height / 2,
                             ),
                             "bbox": {
-                                "x": int(bbox.xmin * width),
-                                "y": int(bbox.ymin * height),
-                                "width": int(bbox.width * width),
-                                "height": int(bbox.height * height),
+                                "x": bbox_x,
+                                "y": bbox_y,
+                                "width": bbox_w,
+                                "height": bbox_h,
+                                "center_x": int(center_x),
+                                "center_y": int(center_y),
                             },
                         }
                         faces.append(face)
@@ -754,9 +742,7 @@ class BBIAVision:
                         # Convertir détection YOLO au format BBIA
                         obj = {
                             "name": det.get("class_name", det.get("class", "objet")),
-                            "distance": (
-                                1.5
-                            ),  # Estimation basée sur bbox size (peut améliorer)
+                            "distance": 1.5,  # Estimation basée sur bbox size (peut améliorer)
                             "confidence": det.get("confidence", 0.5),
                             "position": (center_x / width, center_y / height),
                             "bbox": {
@@ -788,10 +774,7 @@ class BBIAVision:
 
                             # Extraire le visage détecté pour DeepFace (optionnel)
                             face_roi = None
-                            if (
-                                self.face_recognition
-                                and self.face_recognition.is_initialized
-                            ):
+                            if self.face_recognition and self.face_recognition.is_initialized:
                                 # Extraire ROI du visage pour DeepFace
                                 x = int(bbox.xmin * width)
                                 y = int(bbox.ymin * height)
@@ -818,11 +801,9 @@ class BBIAVision:
                             ):
                                 try:
                                     # Reconnaître la personne
-                                    person_result = (
-                                        self.face_recognition.recognize_person(
-                                            face_roi,
-                                            enforce_detection=False,
-                                        )
+                                    person_result = self.face_recognition.recognize_person(
+                                        face_roi,
+                                        enforce_detection=False,
                                     )
                                     if person_result:
                                         recognized_name = person_result["name"]
@@ -832,17 +813,13 @@ class BBIAVision:
                                         )
 
                                     # Détecter l'émotion
-                                    emotion_result = (
-                                        self.face_recognition.detect_emotion(
-                                            face_roi,
-                                            enforce_detection=False,
-                                        )
+                                    emotion_result = self.face_recognition.detect_emotion(
+                                        face_roi,
+                                        enforce_detection=False,
                                     )
                                     if emotion_result:
                                         detected_emotion = emotion_result["emotion"]
-                                        emotion_confidence = emotion_result[
-                                            "confidence"
-                                        ]
+                                        emotion_confidence = emotion_result["confidence"]
                                         logger.debug(
                                             f"😊 Émotion détectée: {detected_emotion} "
                                             f"(confiance: {emotion_confidence:.2f})",
@@ -852,12 +829,18 @@ class BBIAVision:
                                         f"DeepFace erreur (fallback): {deepface_error}",
                                     )
 
+                            # Calculer centre pour cohérence avec objets YOLO
+                            bbox_x = int(bbox.xmin * width)
+                            bbox_y = int(bbox.ymin * height)
+                            bbox_w = int(bbox.width * width)
+                            bbox_h = int(bbox.height * height)
+                            center_x = bbox_x + bbox_w / 2
+                            center_y = bbox_y + bbox_h / 2
+
                             face = {
                                 "name": recognized_name,
                                 "distance": 1.5,  # Estimation basée sur bbox size
-                                "confidence": (
-                                    detection.score[0] if detection.score else 0.8
-                                ),
+                                "confidence": detection.score[0] if detection.score else 0.8,
                                 "emotion": detected_emotion,
                                 "emotion_confidence": emotion_confidence,
                                 "position": (
@@ -865,10 +848,12 @@ class BBIAVision:
                                     bbox.ymin + bbox.height / 2,
                                 ),
                                 "bbox": {
-                                    "x": int(bbox.xmin * width),
-                                    "y": int(bbox.ymin * height),
-                                    "width": int(bbox.width * width),
-                                    "height": int(bbox.height * height),
+                                    "x": bbox_x,
+                                    "y": bbox_y,
+                                    "width": bbox_w,
+                                    "height": bbox_h,
+                                    "center_x": int(center_x),
+                                    "center_y": int(center_y),
                                 },
                             }
                             faces.append(face)

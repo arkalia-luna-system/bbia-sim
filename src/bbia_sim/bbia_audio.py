@@ -138,10 +138,7 @@ def _is_safe_path(path: str) -> bool:
                 ]
 
             abs_path = os.path.abspath(norm)
-            if any(
-                abs_path.startswith(tr + os.sep) or abs_path == tr
-                for tr in _temp_roots_cache
-            ):
+            if any(abs_path.startswith(tr + os.sep) or abs_path == tr for tr in _temp_roots_cache):
                 return True
             return abs_path.startswith(_cwd_cache + os.sep) or abs_path == _cwd_cache
         return True

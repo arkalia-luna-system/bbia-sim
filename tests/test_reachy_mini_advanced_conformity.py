@@ -45,9 +45,7 @@ class TestReachyMiniAdvancedConformity:
         print("=" * 60)
 
         # Lire le code source de bbia_behavior.py
-        behavior_file = (
-            Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_behavior.py"
-        )
+        behavior_file = Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_behavior.py"
         if not behavior_file.exists():
             pytest.skip("Fichier bbia_behavior.py non trouvé")
 
@@ -125,9 +123,7 @@ class TestReachyMiniAdvancedConformity:
 
         # Vérifier diversité
         methods_used = sum(1 for found in interpolation_methods_found.values() if found)
-        print(
-            f"\n📊 {methods_used}/{len(interpolation_methods_found)} techniques utilisées"
-        )
+        print(f"\n📊 {methods_used}/{len(interpolation_methods_found)} techniques utilisées")
 
         if methods_used < 2:
             print("⚠️  Diversité faible - recommander utilisation CARTOON pour émotions")
@@ -166,9 +162,7 @@ class TestReachyMiniAdvancedConformity:
             print("❌ robot.io non disponible")
 
         # Vérifier utilisation dans modules BBIA
-        vision_file = (
-            Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_vision.py"
-        )
+        vision_file = Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_vision.py"
         audio_file = Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_audio.py"
 
         media_used_vision = False
@@ -200,12 +194,8 @@ class TestReachyMiniAdvancedConformity:
             print("❌ async_play_move non disponible")
 
         # Vérifier utilisation dans code
-        behavior_file = (
-            Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_behavior.py"
-        )
-        integration_file = (
-            Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_integration.py"
-        )
+        behavior_file = Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_behavior.py"
+        integration_file = Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_integration.py"
 
         async_used = False
         for file_path in [behavior_file, integration_file]:
@@ -217,9 +207,7 @@ class TestReachyMiniAdvancedConformity:
 
         print(f"📊 async_play_move utilisé: {'✅' if async_used else '❌'}")
         if not async_used:
-            print(
-                "💡 Recommandation: Utiliser async_play_move pour comportements complexes"
-            )
+            print("💡 Recommandation: Utiliser async_play_move pour comportements complexes")
 
     def test_23_combined_movements(self):
         """Test 23: Vérifier mouvements combinés tête+corps via goto_target."""
@@ -227,12 +215,8 @@ class TestReachyMiniAdvancedConformity:
         print("=" * 60)
 
         # Lire code pour détecter patterns combinés
-        integration_file = (
-            Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_integration.py"
-        )
-        behavior_file = (
-            Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_behavior.py"
-        )
+        integration_file = Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_integration.py"
+        behavior_file = Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_behavior.py"
 
         combined_patterns = 0
         separated_patterns = 0
@@ -242,9 +226,7 @@ class TestReachyMiniAdvancedConformity:
                 code = file_path.read_text(encoding="utf-8")
 
                 # Pattern combiné: goto_target(head=..., body_yaw=...)
-                combined_patterns += code.count("goto_target") - code.count(
-                    "goto_target("
-                )
+                combined_patterns += code.count("goto_target") - code.count("goto_target(")
 
                 # Pattern séparé: set_emotion() puis set_joint_pos("yaw_body")
                 # Simplifié: compter appels séparés
@@ -271,9 +253,7 @@ class TestReachyMiniAdvancedConformity:
         print("=" * 60)
 
         # Vérifier gestion d'erreurs dans bbia_behavior.py
-        behavior_file = (
-            Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_behavior.py"
-        )
+        behavior_file = Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_behavior.py"
         if not behavior_file.exists():
             pytest.skip("Fichier bbia_behavior.py non trouvé")
 
@@ -316,15 +296,11 @@ class TestReachyMiniAdvancedConformity:
         print(f"   play_move: {'✅' if has_play else '❌'}")
 
         # Vérifier utilisation dans comportements
-        behavior_file = (
-            Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_behavior.py"
-        )
+        behavior_file = Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_behavior.py"
         if behavior_file.exists():
             code = behavior_file.read_text(encoding="utf-8")
             recording_used = "start_recording" in code or "record_movement" in code
-            print(
-                f"\n📊 Utilisation dans comportements: {'✅' if recording_used else '❌'}"
-            )
+            print(f"\n📊 Utilisation dans comportements: {'✅' if recording_used else '❌'}")
             if not recording_used:
                 print("💡 Recommandation: Implémenter enregistrement de comportements")
 
@@ -334,9 +310,7 @@ class TestReachyMiniAdvancedConformity:
         print("=" * 60)
 
         # Vérifier dans bbia_integration.py
-        integration_file = (
-            Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_integration.py"
-        )
+        integration_file = Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_integration.py"
         if not integration_file.exists():
             pytest.skip("Fichier bbia_integration.py non trouvé")
 
@@ -355,9 +329,7 @@ class TestReachyMiniAdvancedConformity:
         if adaptive_found:
             print("✅ Durée s'adapte selon intensité émotion")
         else:
-            print(
-                "💡 Recommandation: Utiliser duration adaptative (0.5-1.0s selon intensité)"
-            )
+            print("💡 Recommandation: Utiliser duration adaptative (0.5-1.0s selon intensité)")
 
     def test_27_coordinate_validation(self):
         """Test 27: Vérifier validation coordonnées look_at_world/look_at_image."""
@@ -387,9 +359,7 @@ class TestReachyMiniAdvancedConformity:
         print(f"📊 Validation coordonnées: {'✅' if validation_found else '❌'}")
 
         if look_at_usage and not validation_found:
-            print(
-                "⚠️  look_at utilisé sans validation - risques de valeurs hors limites"
-            )
+            print("⚠️  look_at utilisé sans validation - risques de valeurs hors limites")
             print("💡 Recommandation: Ajouter validation coordonnées")
 
     def test_28_emotion_interpolation_mapping(self):
@@ -398,9 +368,7 @@ class TestReachyMiniAdvancedConformity:
         print("=" * 60)
 
         # Vérifier dans bbia_integration.py
-        integration_file = (
-            Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_integration.py"
-        )
+        integration_file = Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_integration.py"
         if not integration_file.exists():
             pytest.skip("Fichier bbia_integration.py non trouvé")
 
@@ -460,12 +428,8 @@ class TestReachyMiniAdvancedConformity:
         print("\n🧪 TEST 30: Patterns Performance")
         print("=" * 60)
 
-        behavior_file = (
-            Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_behavior.py"
-        )
-        integration_file = (
-            Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_integration.py"
-        )
+        behavior_file = Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_behavior.py"
+        integration_file = Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_integration.py"
 
         patterns = {
             "async_play_move": 0,

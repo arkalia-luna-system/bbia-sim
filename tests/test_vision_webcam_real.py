@@ -125,9 +125,7 @@ def test_deepface_webcam_real() -> None:
 
         # Détecter émotions sur image réelle
         result = vision.face_recognition.detect_emotions(frame)
-        assert isinstance(
-            result, list
-        ), "Rétultat détection émotions doit être une liste"
+        assert isinstance(result, list), "Rétultat détection émotions doit être une liste"
         # Accepte 0 visages détectés (pas forcément quelqu'un devant la caméra)
     finally:
         cap.release()

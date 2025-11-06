@@ -43,9 +43,7 @@ class TestVAD(unittest.TestCase):
         # Configurer pour que l'appel du mock (comme fonction) retourne le résultat
         mock_vad_instance.return_value = [{"label": "SPEECH", "score": 0.95}]
         # Configurer le mock pour qu'il soit appelable
-        mock_vad_instance.side_effect = lambda *args, **kwargs: [
-            {"label": "SPEECH", "score": 0.95}
-        ]
+        mock_vad_instance.side_effect = lambda *args, **kwargs: [{"label": "SPEECH", "score": 0.95}]
         mock_pipeline.return_value = mock_vad_instance
 
         # Forcer le chargement du modèle VAD dans whisper AVANT d'appeler detect_speech_activity

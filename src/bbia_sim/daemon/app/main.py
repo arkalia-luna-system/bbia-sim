@@ -286,9 +286,7 @@ async def root_api() -> dict[str, Any]:
         "message": "BBIA-SIM API - Écosystème Reachy Mini",
         "version": "1.2.0",
         "status": "running",
-        "description": (
-            "API publique pour le contrôle du robot Reachy Mini avec modules BBIA"
-        ),
+        "description": "API publique pour le contrôle du robot Reachy Mini avec modules BBIA",
         "endpoints": {
             "ecosystem": "/api/ecosystem",
             "state": "/api/state",
@@ -347,9 +345,7 @@ else:
             "message": "BBIA-SIM API - Écosystème Reachy Mini",
             "version": "1.2.0",
             "status": "running",
-            "description": (
-                "API publique pour le contrôle du robot Reachy Mini avec modules BBIA"
-            ),
+            "description": "API publique pour le contrôle du robot Reachy Mini avec modules BBIA",
             "endpoints": {
                 "ecosystem": "/api/ecosystem",
                 "state": "/api/state",
@@ -402,9 +398,7 @@ async def api_info() -> dict[str, Any]:
     return {
         "name": "BBIA-SIM API - Écosystème Reachy Mini",
         "version": "1.2.0",
-        "description": (
-            "API publique pour le contrôle du robot Reachy Mini avec modules BBIA"
-        ),
+        "description": "API publique pour le contrôle du robot Reachy Mini avec modules BBIA",
         "phase": "Phase 3 - Ouverture Écosystème",
         "features": [
             "REST API",

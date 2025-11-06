@@ -132,9 +132,7 @@ class TestSimulatorCoverage(unittest.TestCase):
         mock_mujoco.mj_makeData.return_value = MagicMock()
 
         # Utiliser le vrai modèle
-        simulator = MuJoCoSimulator(
-            "src/bbia_sim/sim/models/reachy_mini_REAL_OFFICIAL.xml"
-        )
+        simulator = MuJoCoSimulator("src/bbia_sim/sim/models/reachy_mini_REAL_OFFICIAL.xml")
         self.assertIsNotNone(simulator)
         # Vérifier que le simulateur a été créé (le mock peut retourner différentes valeurs)
         self.assertIsNotNone(simulator.model)
@@ -157,9 +155,7 @@ class TestSimulatorCoverage(unittest.TestCase):
         mock_mujoco.mj_makeData.return_value = MagicMock()
 
         # Utiliser le vrai modèle
-        simulator = MuJoCoSimulator(
-            "src/bbia_sim/sim/models/reachy_mini_REAL_OFFICIAL.xml"
-        )
+        simulator = MuJoCoSimulator("src/bbia_sim/sim/models/reachy_mini_REAL_OFFICIAL.xml")
         joints = simulator.get_available_joints()
         self.assertIsInstance(joints, list)
         # Accepter n'importe quelle longueur car le mock peut varier

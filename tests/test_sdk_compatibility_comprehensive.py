@@ -41,9 +41,7 @@ def test_sdk_method_signatures_match() -> None:
         # Vérifier signatures spécifiques
         sig = inspect.signature(backend.goto_target)
         params = list(sig.parameters.keys())
-        assert (
-            "head" in params or "body_yaw" in params
-        ), "goto_target doit avoir head ou body_yaw"
+        assert "head" in params or "body_yaw" in params, "goto_target doit avoir head ou body_yaw"
     finally:
         backend.disconnect()
 
@@ -153,8 +151,6 @@ def test_sdk_api_consistency() -> None:
 
         # Vérifier méthodes abstraites implémentées
         assert hasattr(backend, "is_connected")
-        assert hasattr(backend, "get_telemetry") or hasattr(
-            backend, "get_current_state"
-        )
+        assert hasattr(backend, "get_telemetry") or hasattr(backend, "get_current_state")
     finally:
         backend.disconnect()

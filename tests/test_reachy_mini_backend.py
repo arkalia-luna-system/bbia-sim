@@ -86,10 +86,7 @@ class TestReachyMiniBackend:
         # Les joints passifs sont toujours interdits
         assert isinstance(self.robot.forbidden_joints, set)
         # Vérifier que passive_1 est bien interdit
-        assert (
-            "passive_1" in self.robot.forbidden_joints
-            or len(self.robot.forbidden_joints) >= 0
-        )
+        assert "passive_1" in self.robot.forbidden_joints or len(self.robot.forbidden_joints) >= 0
 
     @pytest.mark.unit
     @pytest.mark.fast

@@ -53,9 +53,7 @@ if PROMETHEUS_AVAILABLE:
     cpu_usage = Gauge("bbia_cpu_usage_percent", "CPU usage percentage")
     memory_usage = Gauge("bbia_memory_usage_bytes", "Memory usage in bytes")
     simulation_fps = Gauge("bbia_simulation_fps", "Simulation FPS")
-    active_connections = Gauge(
-        "bbia_active_connections", "Active WebSocket connections"
-    )
+    active_connections = Gauge("bbia_active_connections", "Active WebSocket connections")
 
 # Métriques système en mémoire (fallback si Prometheus non disponible)
 # Historique des latences pour calcul p50/p95/p99 (garder dernières 1000 mesures)
@@ -278,9 +276,7 @@ async def health() -> dict[str, Any]:
             "services": {
                 "api": "running",
                 "simulator": (
-                    "available"
-                    if simulation_service.is_simulation_ready()
-                    else "unavailable"
+                    "available" if simulation_service.is_simulation_ready() else "unavailable"
                 ),
                 "robot": "ready",
             },

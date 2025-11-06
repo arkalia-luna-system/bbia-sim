@@ -16,9 +16,7 @@ class RobotFactory:
     """Factory pour créer les backends RobotAPI."""
 
     @staticmethod
-    def create_backend(
-        backend_type: str = "mujoco", **kwargs: Any
-    ) -> "RobotAPI | None":
+    def create_backend(backend_type: str = "mujoco", **kwargs: Any) -> "RobotAPI | None":
         """Crée un backend RobotAPI.
 
         Args:

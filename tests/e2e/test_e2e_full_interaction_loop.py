@@ -114,9 +114,7 @@ class TestE2EFullInteractionLoop:
         assert len(scan1["faces"]) > 0
 
         # Tour 2: Écoute
-        with patch(
-            "bbia_sim.bbia_voice.reconnaitre_parole", return_value="comment vas-tu?"
-        ):
+        with patch("bbia_sim.bbia_voice.reconnaitre_parole", return_value="comment vas-tu?"):
             from bbia_sim.bbia_voice import reconnaitre_parole
 
             text1 = reconnaitre_parole()

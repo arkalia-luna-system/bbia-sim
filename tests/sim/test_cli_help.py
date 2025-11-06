@@ -52,9 +52,7 @@ class TestCLIHelp:
         # Vérifier la présence du message macOS
         macos_indicators = ["macOS", "mjpython", "mujoco.viewer"]
 
-        found_indicators = [
-            indicator for indicator in macos_indicators if indicator in output
-        ]
+        found_indicators = [indicator for indicator in macos_indicators if indicator in output]
 
         if found_indicators:
             pass

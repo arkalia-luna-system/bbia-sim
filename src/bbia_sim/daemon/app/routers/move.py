@@ -226,8 +226,7 @@ async def discover_recorded_move_datasets() -> list[str]:
         # Merger avec liste hardcodée (éviter doublons)
         all_datasets = list(set(known_datasets) | hf_dataset_ids)
         logger.info(
-            f"✅ Découverte {len(hf_dataset_ids)} datasets HF Hub "
-            f"(total: {len(all_datasets)})",
+            f"✅ Découverte {len(hf_dataset_ids)} datasets HF Hub " f"(total: {len(all_datasets)})",
         )
         return sorted(all_datasets)  # Trier pour affichage cohérent
 
@@ -317,9 +316,7 @@ async def set_target(
     """Définit un target directement (sans mouvement) - conforme SDK."""
     # Conforme SDK officiel: utiliser to_pose_array() directement
     backend.set_target(
-        head=(
-            target.target_head_pose.to_pose_array() if target.target_head_pose else None
-        ),
+        head=(target.target_head_pose.to_pose_array() if target.target_head_pose else None),
         antennas=np.array(target.target_antennas) if target.target_antennas else None,
     )
     return {"status": "ok"}

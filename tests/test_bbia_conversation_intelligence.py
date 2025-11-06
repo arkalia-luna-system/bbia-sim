@@ -72,9 +72,7 @@ class TestBBIAConversationIntelligence:
         assert (
             len(unique_responses) >= 2
         ), "La sélection doit produire de la variété après 10 tentatives"
-        print(
-            f"✅ Variété des réponses: {len(unique_responses)} réponses uniques sur 10"
-        )
+        print(f"✅ Variété des réponses: {len(unique_responses)} réponses uniques sur 10")
 
     def test_emotion_detection_from_text(self):
         """Test 4: Vérifier détection d'émotion depuis texte."""

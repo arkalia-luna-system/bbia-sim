@@ -247,8 +247,7 @@ class ReachyMiniBackend(RobotAPI):
                 self._start_watchdog()
                 return True
             logger.warning(
-                f"⚠️  Erreur connexion Reachy-Mini "
-                f"(mode simulation activé): {error_msg}",
+                f"⚠️  Erreur connexion Reachy-Mini " f"(mode simulation activé): {error_msg}",
             )
             self.robot = None
             self.is_connected = True  # Mode simulation par sécurité
@@ -443,9 +442,7 @@ class ReachyMiniBackend(RobotAPI):
                 # Stewart joints dans head_positions
                 # IMPORTANT: SDK retourne positions des 6 stewart joints directement
                 # Structure: head_positions contient 6 éléments (indices 0-5)
-                stewart_idx = (
-                    int(joint_name.split("_")[1]) - 1
-                )  # Convertir 1-6 vers 0-5
+                stewart_idx = int(joint_name.split("_")[1]) - 1  # Convertir 1-6 vers 0-5
 
                 # Vérifier que l'index est valide et que le tableau a >= 6 éléments
                 if stewart_idx < 0 or stewart_idx > self.STEWART_MAX_INDEX:
@@ -473,14 +470,12 @@ class ReachyMiniBackend(RobotAPI):
                         # Vérification sécurité: NaN ou inf
                         if not (float("-inf") < value < float("inf")):
                             logger.warning(
-                                f"Valeur invalide (NaN/inf) pour "
-                                f"{joint_name}: {value}",
+                                f"Valeur invalide (NaN/inf) pour " f"{joint_name}: {value}",
                             )
                             return 0.0
                         return value
                     logger.warning(
-                        f"Index head_positions invalide: {head_idx} "
-                        f"pour {joint_name}",
+                        f"Index head_positions invalide: {head_idx} " f"pour {joint_name}",
                     )
                     return 0.0
                 # Structure inattendue - retourner 0.0 en sécurité
@@ -697,8 +692,7 @@ class ReachyMiniBackend(RobotAPI):
         if not self.is_connected or not self.robot:
             # Mode simulation : toujours OK
             logger.info(
-                f"Look_at simulé: ({target_x}, {target_y}, {target_z}, "
-                f"duration={duration})",
+                f"Look_at simulé: ({target_x}, {target_y}, {target_z}, " f"duration={duration})",
             )
             return True
 
@@ -823,9 +817,7 @@ class ReachyMiniBackend(RobotAPI):
             telemetry = {
                 "step_count": self.step_count,
                 "elapsed_time": elapsed_time,
-                "steps_per_second": (
-                    self.step_count / elapsed_time if elapsed_time > 0 else 0
-                ),
+                "steps_per_second": self.step_count / elapsed_time if elapsed_time > 0 else 0,
                 "current_emotion": self.current_emotion,
                 "emotion_intensity": self.emotion_intensity,
                 "is_connected": self.is_connected,
@@ -876,8 +868,7 @@ class ReachyMiniBackend(RobotAPI):
             # Note: yaw_body n'est pas dans head_positions ou antenna_positions
             # donc on retourne 0.0 comme valeur par défaut
             logger.debug(
-                "get_current_body_yaw non disponible dans SDK, "
-                "utilisation valeur par défaut",
+                "get_current_body_yaw non disponible dans SDK, " "utilisation valeur par défaut",
             )
             return 0.0
         except Exception as e:

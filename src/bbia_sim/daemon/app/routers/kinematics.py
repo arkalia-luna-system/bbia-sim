@@ -30,9 +30,7 @@ async def get_kinematics_info(
     """Récupère les informations sur la cinématique du robot (conforme SDK)."""
     # Le backend doit exposer kinematics_engine et check_collision
     # Pour l'instant, utiliser valeurs par défaut si non disponibles
-    kinematics_engine = (
-        getattr(backend, "kinematics_engine", None) or "AnalyticalKinematics"
-    )
+    kinematics_engine = getattr(backend, "kinematics_engine", None) or "AnalyticalKinematics"
     check_collision = getattr(backend, "check_collision", False)
 
     return {

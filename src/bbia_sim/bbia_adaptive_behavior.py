@@ -41,9 +41,7 @@ class BBIAAdaptiveBehavior:
         self.is_active = False
         self.current_context = "neutral"
         self.behavior_history: list[dict[str, Any]] = []
-        self.robot_api = (
-            robot_api  # OPTIMISATION SDK: Passer robot_api pour exécution conforme
-        )
+        self.robot_api = robot_api  # OPTIMISATION SDK: Passer robot_api pour exécution conforme
 
         # Contexte et états
         self.contexts = {
@@ -299,10 +297,7 @@ class BBIAAdaptiveBehavior:
             # Vérification compatibilité émotion
             emotions_list = behavior_config.get("emotions", [])
             if (
-                (
-                    isinstance(emotions_list, list)
-                    and self.current_emotion in emotions_list
-                )
+                (isinstance(emotions_list, list) and self.current_emotion in emotions_list)
                 or (
                     self.current_context in ("playful", "greeting")
                     and behavior_name
@@ -342,9 +337,7 @@ class BBIAAdaptiveBehavior:
 
             # Bonus pour les préférences utilisateur
             if behavior_name in self.user_preferences["preferred_behaviors"]:
-                weight += (
-                    self.user_preferences["preferred_behaviors"][behavior_name] * 0.5
-                )
+                weight += self.user_preferences["preferred_behaviors"][behavior_name] * 0.5
 
             # Bonus pour l'intensité émotionnelle
             if self.emotion_intensity > 0.7:
@@ -383,9 +376,7 @@ class BBIAAdaptiveBehavior:
         min_intensity, max_intensity = behavior_config["intensity_range"]
 
         # Ajustement basé sur l'intensité émotionnelle
-        base_intensity = (
-            min_intensity + (max_intensity - min_intensity) * self.emotion_intensity
-        )
+        base_intensity = min_intensity + (max_intensity - min_intensity) * self.emotion_intensity
 
         # Variation aléatoire
         intensity_variation = random.uniform(-0.1, 0.1)  # nosec B311
@@ -508,9 +499,7 @@ class BBIAAdaptiveBehavior:
 
             # Mise à jour des préférences
             if behavior_name in self.user_preferences["preferred_behaviors"]:
-                self.user_preferences["preferred_behaviors"][
-                    behavior_name
-                ] += adjustment
+                self.user_preferences["preferred_behaviors"][behavior_name] += adjustment
                 self.user_preferences["preferred_behaviors"][behavior_name] = max(
                     0.0,
                     self.user_preferences["preferred_behaviors"][behavior_name],

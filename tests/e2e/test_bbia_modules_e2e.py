@@ -132,9 +132,7 @@ class TestBBIAModules:
         # Mock de la fonction de détection de son
         mock_wf = MagicMock()
         mock_wf.getnframes.return_value = 1000
-        mock_wf.readframes.return_value = (
-            b"\x00\x01\x02\x03" * 250
-        )  # Données audio simulées
+        mock_wf.readframes.return_value = b"\x00\x01\x02\x03" * 250  # Données audio simulées
         mock_wave_open.return_value.__enter__.return_value = mock_wf
 
         # Test détection sonore avec fichier temporaire
@@ -148,9 +146,7 @@ class TestBBIAModules:
 
         try:
             result = detecter_son(temp_path)
-            assert isinstance(
-                bool(result), bool
-            )  # Convertir numpy.bool_ en bool Python
+            assert isinstance(bool(result), bool)  # Convertir numpy.bool_ en bool Python
         finally:
             if os.path.exists(temp_path):
                 os.unlink(temp_path)

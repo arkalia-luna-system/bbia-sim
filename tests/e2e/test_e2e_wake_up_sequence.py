@@ -92,9 +92,7 @@ class TestE2EWakeUpSequence:
         # Ici on simule juste la transition vers greeting
 
         # 4. Transition vers greeting
-        greeting_result = self.behavior.execute_behavior(
-            "greeting", {"from_wake_up": True}
-        )
+        greeting_result = self.behavior.execute_behavior("greeting", {"from_wake_up": True})
         assert greeting_result is True
 
         # 5. Émotion transition (happy après greeting)

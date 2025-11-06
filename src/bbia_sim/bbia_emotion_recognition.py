@@ -210,9 +210,7 @@ class BBIAEmotionRecognition:
 
             with self.mp_face_detection.FaceDetection(
                 model_selection=0,
-                min_detection_confidence=self.detection_config[
-                    "face_detection_confidence"
-                ],
+                min_detection_confidence=self.detection_config["face_detection_confidence"],
             ) as face_detection:
                 results = face_detection.process(processed_image)
 
@@ -378,15 +376,11 @@ class BBIAEmotionRecognition:
 
             # Score facial pondéré
             facial_weight = weights["facial"] * facial_confidence
-            emotion_scores[facial_emotion] = (
-                emotion_scores.get(facial_emotion, 0) + facial_weight
-            )
+            emotion_scores[facial_emotion] = emotion_scores.get(facial_emotion, 0) + facial_weight
 
             # Score vocal pondéré
             vocal_weight = weights["vocal"] * vocal_confidence
-            emotion_scores[vocal_emotion] = (
-                emotion_scores.get(vocal_emotion, 0) + vocal_weight
-            )
+            emotion_scores[vocal_emotion] = emotion_scores.get(vocal_emotion, 0) + vocal_weight
 
             # Émotion finale
             final_emotion = max(emotion_scores, key=lambda x: emotion_scores[x])
@@ -518,9 +512,9 @@ class BBIAEmotionRecognition:
             emotion_counts[emotion] = emotion_counts.get(emotion, 0) + 1
 
         # Confiance moyenne
-        avg_confidence = sum(
-            r.get("confidence", 0) for r in self.emotion_history
-        ) / len(self.emotion_history)
+        avg_confidence = sum(r.get("confidence", 0) for r in self.emotion_history) / len(
+            self.emotion_history
+        )
 
         return {
             "total_analyses": len(self.emotion_history),

@@ -32,9 +32,7 @@ class TestBBIAPersonality:
         print(f"✅ {len(behavior.greetings)} salutations disponibles")
 
         # Vérifier que les salutations ne sont pas identiques
-        assert len(set(behavior.greetings)) == len(
-            behavior.greetings
-        ), "Salutations dupliquées"
+        assert len(set(behavior.greetings)) == len(behavior.greetings), "Salutations dupliquées"
         print("✅ Aucune salutation dupliquée")
 
         # Vérifier variété formel/décontracté

@@ -177,9 +177,7 @@ class TestDaemonBridge:
         try:
             from bbia_sim.daemon.bridge import ZenohBridge, ZenohConfig
 
-            custom_config = ZenohConfig(
-                mode="client", connect=["tcp://custom:7447"], timeout=2000
-            )
+            custom_config = ZenohConfig(mode="client", connect=["tcp://custom:7447"], timeout=2000)
             bridge = ZenohBridge(config=custom_config)
 
             assert bridge.config == custom_config
@@ -237,9 +235,7 @@ class TestDaemonBridge:
             assert config.mode == "client"
             assert isinstance(config.connect, list)
             assert len(config.connect) > 0
-            assert "localhost" in str(config.connect[0]) or "7447" in str(
-                config.connect[0]
-            )
+            assert "localhost" in str(config.connect[0]) or "7447" in str(config.connect[0])
             assert config.timeout == 1000
             assert config.retry_attempts == 3
         except ImportError:

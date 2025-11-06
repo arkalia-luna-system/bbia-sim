@@ -46,10 +46,7 @@ class BBIAIntegration:
         # Modules BBIA
         # OPTIMISATION SDK: Passer robot_api aux modules pour utiliser robot.media
         robot_api = None
-        if (
-            hasattr(self.simulation_service, "robot_api")
-            and self.simulation_service.robot_api
-        ):
+        if hasattr(self.simulation_service, "robot_api") and self.simulation_service.robot_api:
             robot_api = self.simulation_service.robot_api
 
         self.emotions = BBIAEmotions()
@@ -320,9 +317,7 @@ class BBIAIntegration:
                         )
 
                         # Duration adaptative selon l'intensité (plus lente = plus expressive)
-                        transition_duration = 0.5 + (
-                            intensity * 0.5
-                        )  # 0.5 à 1.0 secondes
+                        transition_duration = 0.5 + (intensity * 0.5)  # 0.5 à 1.0 secondes
 
                         # Mouvement combiné tête+corps avec interpolation optimisée selon l'émotion
                         robot_api.goto_target(
@@ -349,10 +344,7 @@ class BBIAIntegration:
                 # Appliquer yaw_body séparément si goto_target n'a pas été utilisé
                 if "yaw_body" in emotion_mapping and success:
                     # Utiliser goto_target si disponible pour mouvement fluide combiné
-                    if (
-                        hasattr(robot_api, "goto_target")
-                        and REACHY_MINI_UTILS_AVAILABLE
-                    ):
+                    if hasattr(robot_api, "goto_target") and REACHY_MINI_UTILS_AVAILABLE:
                         try:
                             # Utiliser la pose actuelle de la tête (préservée par set_emotion)
                             # et ajouter seulement le mouvement corps
@@ -393,18 +385,13 @@ class BBIAIntegration:
             head_pitch = emotion_mapping.get("head_pitch", 0.0) * intensity
             head_yaw = emotion_mapping.get("head_yaw", 0.0) * intensity
             adjusted_yaw = (
-                emotion_mapping["yaw_body"] * intensity
-                if "yaw_body" in emotion_mapping
-                else 0.0
+                emotion_mapping["yaw_body"] * intensity if "yaw_body" in emotion_mapping else 0.0
             )
 
             # IMPORTANT (Expert Robotique): Les joints stewart NE PEUVENT PAS être contrôlés individuellement
             # car la plateforme Stewart utilise la cinématique inverse (IK).
             # Utiliser goto_target (méthode recommandée SDK) pour mouvement combiné fluide
-            if (
-                hasattr(self.simulation_service, "robot_api")
-                and self.simulation_service.robot_api
-            ):
+            if hasattr(self.simulation_service, "robot_api") and self.simulation_service.robot_api:
                 try:
                     from reachy_mini.utils import create_head_pose
 
@@ -508,11 +495,7 @@ class BBIAIntegration:
                             x = float(pos_3d.get("x", 0.3))
                             y = float(pos_3d.get("y", 0.0))
                             z = float(pos_3d.get("z", 0.2))
-                            if (
-                                -2.0 <= x <= 2.0
-                                and -2.0 <= y <= 2.0
-                                and -1.0 <= z <= 1.0
-                            ):
+                            if -2.0 <= x <= 2.0 and -2.0 <= y <= 2.0 and -1.0 <= z <= 1.0:
                                 robot_api.look_at_world(
                                     x,
                                     y,
@@ -539,9 +522,7 @@ class BBIAIntegration:
                         # Méthode 3 (fallback): rotation corps
                         elif hasattr(robot_api, "set_joint_pos"):
                             face_position = face_data.get("position", (0, 0))
-                            head_turn = (
-                                float(face_position[0]) * 0.3
-                            )  # Ajuster selon la position
+                            head_turn = float(face_position[0]) * 0.3  # Ajuster selon la position
                             robot_api.set_joint_pos("yaw_body", head_turn)
                     except Exception as e:
                         logger.warning(f"Erreur suivi visage SDK (fallback): {e}")
@@ -601,10 +582,7 @@ class BBIAIntegration:
             # au lieu de set_joint_position répétés (meilleure fluidité et performance)
             words = text.split()
             robot_api = None
-            if (
-                hasattr(self.simulation_service, "robot_api")
-                and self.simulation_service.robot_api
-            ):
+            if hasattr(self.simulation_service, "robot_api") and self.simulation_service.robot_api:
                 robot_api = self.simulation_service.robot_api
 
             for i, _word in enumerate(words):

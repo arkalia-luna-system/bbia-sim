@@ -325,12 +325,8 @@ class MuJoCoBackend(RobotAPI):
         return {
             "step_count": self.step_count,
             "elapsed_time": elapsed_time,
-            "steps_per_second": (
-                self.step_count / elapsed_time if elapsed_time > 0 else 0
-            ),
-            "average_step_time": (
-                elapsed_time / self.step_count if self.step_count > 0 else 0
-            ),
+            "steps_per_second": self.step_count / elapsed_time if elapsed_time > 0 else 0,
+            "average_step_time": elapsed_time / self.step_count if self.step_count > 0 else 0,
             "current_qpos": self.data.qpos.copy() if self.data else [],
             "model_path": str(self.model_path),
         }

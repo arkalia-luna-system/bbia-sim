@@ -82,12 +82,8 @@ class ZenohBridge:
     def __init__(self, config: ZenohConfig | None = None):
         """Initialise le bridge Zenoh."""
         self.config = config or ZenohConfig()
-        self.session: Any | None = (
-            None  # ZenohSession | None, mais Any pour compatibilité
-        )
-        self.reachy_mini: Any | None = (
-            None  # ReachyMini | None, mais Any pour compatibilité
-        )
+        self.session: Any | None = None  # ZenohSession | None, mais Any pour compatibilité
+        self.reachy_mini: Any | None = None  # ReachyMini | None, mais Any pour compatibilité
         self.connected = False
         self.logger = logging.getLogger(self.__class__.__name__)
 

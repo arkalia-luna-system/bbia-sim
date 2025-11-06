@@ -15,9 +15,7 @@ class TestReachyMiniBackendRapid:
     def test_set_joint_pos_method(self):
         """Test méthode set_joint_pos."""
         try:
-            with patch(
-                "bbia_sim.backends.reachy_mini_backend.REACHY_MINI_AVAILABLE", False
-            ):
+            with patch("bbia_sim.backends.reachy_mini_backend.REACHY_MINI_AVAILABLE", False):
                 from bbia_sim.backends.reachy_mini_backend import ReachyMiniBackend
 
                 backend = ReachyMiniBackend()
@@ -29,9 +27,7 @@ class TestReachyMiniBackendRapid:
     def test_get_joint_pos_method(self):
         """Test méthode get_joint_pos."""
         try:
-            with patch(
-                "bbia_sim.backends.reachy_mini_backend.REACHY_MINI_AVAILABLE", False
-            ):
+            with patch("bbia_sim.backends.reachy_mini_backend.REACHY_MINI_AVAILABLE", False):
                 from bbia_sim.backends.reachy_mini_backend import ReachyMiniBackend
 
                 backend = ReachyMiniBackend()
@@ -43,9 +39,7 @@ class TestReachyMiniBackendRapid:
     def test_set_emotion_method(self):
         """Test méthode set_emotion."""
         try:
-            with patch(
-                "bbia_sim.backends.reachy_mini_backend.REACHY_MINI_AVAILABLE", False
-            ):
+            with patch("bbia_sim.backends.reachy_mini_backend.REACHY_MINI_AVAILABLE", False):
                 from bbia_sim.backends.reachy_mini_backend import ReachyMiniBackend
 
                 backend = ReachyMiniBackend()
@@ -57,9 +51,7 @@ class TestReachyMiniBackendRapid:
     def test_look_at_method(self):
         """Test méthode look_at."""
         try:
-            with patch(
-                "bbia_sim.backends.reachy_mini_backend.REACHY_MINI_AVAILABLE", False
-            ):
+            with patch("bbia_sim.backends.reachy_mini_backend.REACHY_MINI_AVAILABLE", False):
                 from bbia_sim.backends.reachy_mini_backend import ReachyMiniBackend
 
                 backend = ReachyMiniBackend()
@@ -71,9 +63,7 @@ class TestReachyMiniBackendRapid:
     def test_run_behavior_method(self):
         """Test méthode run_behavior."""
         try:
-            with patch(
-                "bbia_sim.backends.reachy_mini_backend.REACHY_MINI_AVAILABLE", False
-            ):
+            with patch("bbia_sim.backends.reachy_mini_backend.REACHY_MINI_AVAILABLE", False):
                 from bbia_sim.backends.reachy_mini_backend import ReachyMiniBackend
 
                 backend = ReachyMiniBackend()
@@ -85,9 +75,7 @@ class TestReachyMiniBackendRapid:
     def test_get_telemetry_method(self):
         """Test méthode get_telemetry."""
         try:
-            with patch(
-                "bbia_sim.backends.reachy_mini_backend.REACHY_MINI_AVAILABLE", False
-            ):
+            with patch("bbia_sim.backends.reachy_mini_backend.REACHY_MINI_AVAILABLE", False):
                 from bbia_sim.backends.reachy_mini_backend import ReachyMiniBackend
 
                 backend = ReachyMiniBackend()
@@ -99,9 +87,7 @@ class TestReachyMiniBackendRapid:
     def test_get_current_pose_method(self):
         """Test méthode get_current_pose."""
         try:
-            with patch(
-                "bbia_sim.backends.reachy_mini_backend.REACHY_MINI_AVAILABLE", False
-            ):
+            with patch("bbia_sim.backends.reachy_mini_backend.REACHY_MINI_AVAILABLE", False):
                 from bbia_sim.backends.reachy_mini_backend import ReachyMiniBackend
 
                 backend = ReachyMiniBackend()
@@ -126,10 +112,7 @@ class TestReachyMiniBackendRapid:
             # Test joints interdits
             # Note: Antennes maintenant optionnelles (commentées dans forbidden_joints)
             # Vérifier que les joints passifs sont toujours bloqués
-            assert (
-                "passive_1" in backend.forbidden_joints
-                or len(backend.forbidden_joints) >= 0
-            )
+            assert "passive_1" in backend.forbidden_joints or len(backend.forbidden_joints) >= 0
         except ImportError:
             pytest.skip("Module non disponible")
 

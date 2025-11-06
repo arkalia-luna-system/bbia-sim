@@ -156,9 +156,7 @@ class TestWebSocketIntegration:
             message_count = 0
             start_time = time.time()
 
-            while (
-                message_count < 3 and (time.time() - start_time) < 1.0
-            ):  # Max 1 seconde
+            while message_count < 3 and (time.time() - start_time) < 1.0:  # Max 1 seconde
                 try:
                     data = websocket.receive_text(timeout=0.2)  # Timeout court
                     message = json.loads(data)
@@ -183,9 +181,7 @@ class TestWebSocketIntegration:
                 data = websocket.receive_text(timeout=0.5)  # Timeout court
                 message = json.loads(data)
                 # Le message devrait contenir des informations d'erreur ou de statut
-                assert (
-                    "error" in message or "status" in message or "timestamp" in message
-                )
+                assert "error" in message or "status" in message or "timestamp" in message
             except Exception:
                 # L'erreur est acceptable si elle est gérée proprement
                 pass

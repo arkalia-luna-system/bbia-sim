@@ -31,8 +31,7 @@ class TestBBIAVisionExtended:
             and len(self.vision.objects_detected) == 0
         )
         assert (
-            isinstance(self.vision.faces_detected, deque)
-            and len(self.vision.faces_detected) == 0
+            isinstance(self.vision.faces_detected, deque) and len(self.vision.faces_detected) == 0
         )
         assert self.vision.tracking_active is False
         assert self.vision.current_focus is None
@@ -342,9 +341,7 @@ class TestBBIAVisionExtended:
         # scan_environment peut modifier les objets selon environnement
         # Vérifier que le deque existe et est cohérent (deque pour optimisation RAM)
         assert isinstance(self.vision.objects_detected, deque)
-        assert (
-            len(self.vision.objects_detected) >= 0
-        )  # Peut être 0 ou différent selon détection
+        assert len(self.vision.objects_detected) >= 0  # Peut être 0 ou différent selon détection
 
     def test_faces_detected_persistence(self):
         """Test persistance des visages détectés."""
@@ -505,9 +502,7 @@ class TestBBIAVisionExtended:
 
         # Capturer depuis OpenCV (appelle la vraie méthode qui ajoute au buffer)
         with patch("bbia_sim.bbia_vision.CV2_AVAILABLE", True):
-            with patch(
-                "bbia_sim.bbia_vision.cv2"
-            ):  # Pas besoin de cv2 réel pour ce test
+            with patch("bbia_sim.bbia_vision.cv2"):  # Pas besoin de cv2 réel pour ce test
                 image = self.vision._capture_from_opencv_camera()
 
                 # Vérifier que l'image a été ajoutée au buffer

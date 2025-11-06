@@ -85,9 +85,7 @@ def test_rapid_emotion_switching() -> None:
         ops_per_second = iterations / duration
 
         # Vérifier que le système reste rapide même sous stress
-        assert (
-            ops_per_second > 50.0
-        ), f"Performance dégradée: {ops_per_second:.1f} ops/s"
+        assert ops_per_second > 50.0, f"Performance dégradée: {ops_per_second:.1f} ops/s"
 
         # Vérifier que le backend fonctionne toujours
         assert backend.is_connected
@@ -122,8 +120,6 @@ def test_rapid_joint_updates() -> None:
         ops_per_second = (iterations * len(joints)) / duration
 
         # Vérifier que le système reste performant
-        assert (
-            ops_per_second > 100.0
-        ), f"Performance dégradée: {ops_per_second:.1f} ops/s"
+        assert ops_per_second > 100.0, f"Performance dégradée: {ops_per_second:.1f} ops/s"
     finally:
         backend.disconnect()

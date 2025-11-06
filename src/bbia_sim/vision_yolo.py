@@ -101,9 +101,7 @@ class YOLODetector:
             if len(_yolo_model_cache) >= _MAX_YOLO_CACHE_SIZE:
                 # Trouver modèle le moins récemment utilisé
                 if _yolo_model_last_used:
-                    oldest_key = min(_yolo_model_last_used.items(), key=lambda x: x[1])[
-                        0
-                    ]
+                    oldest_key = min(_yolo_model_last_used.items(), key=lambda x: x[1])[0]
                     del _yolo_model_cache[oldest_key]
                     del _yolo_model_last_used[oldest_key]
                     logger.debug(
@@ -201,9 +199,7 @@ class YOLODetector:
             return None
 
         # Filtrer par classes d'intérêt
-        relevant_detections = [
-            d for d in detections if d["class_name"] in self.target_classes
-        ]
+        relevant_detections = [d for d in detections if d["class_name"] in self.target_classes]
 
         if not relevant_detections:
             return None
@@ -211,8 +207,7 @@ class YOLODetector:
         # Priorité: confiance + taille
         best_detection = max(
             relevant_detections,
-            key=lambda d: d["confidence"]
-            * (1 + d["area"] / 100000),  # Bonus pour grande taille
+            key=lambda d: d["confidence"] * (1 + d["area"] / 100000),  # Bonus pour grande taille
         )
 
         return best_detection

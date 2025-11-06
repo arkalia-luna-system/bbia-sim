@@ -84,8 +84,7 @@ def get_active_connections() -> int:
     # Utiliser cache si valide (TTL 1s)
     if (
         _active_connections_cache is not None
-        and (current_time - _active_connections_cache_time)
-        < _ACTIVE_CONNECTIONS_CACHE_TTL
+        and (current_time - _active_connections_cache_time) < _ACTIVE_CONNECTIONS_CACHE_TTL
     ):
         return _active_connections_cache
 
@@ -589,9 +588,7 @@ async def start_demo_mode(
                 asyncio.create_task(stop_demo_after_duration())
                 demo_info["auto_stop"] = True
 
-            demo_info["message"] = (
-                f"Démonstration {mode} démarrée pour {duration} secondes"
-            )
+            demo_info["message"] = f"Démonstration {mode} démarrée pour {duration} secondes"
 
         except HTTPException:
             raise

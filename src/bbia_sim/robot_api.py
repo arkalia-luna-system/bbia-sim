@@ -160,12 +160,7 @@ class RobotAPI(ABC):
         # Fallback: Mapping cible → angle de rotation (yaw_body) simplifié
         # CORRECTION EXPERTE: Validation coordonnées avant utilisation
         # Limites recommandées SDK: -2.0 ≤ x,y ≤ 2.0 mètres, 0.0 ≤ z ≤ 1.5 mètres
-        if (
-            abs(target_x) > 2.0
-            or abs(target_y) > 2.0
-            or target_z < 0.0
-            or target_z > 1.5
-        ):
+        if abs(target_x) > 2.0 or abs(target_y) > 2.0 or target_z < 0.0 or target_z > 1.5:
             logger.warning(
                 f"Coordonnées ({target_x}, {target_y}, {target_z}) hors limites recommandées "
                 "SDK (-2.0 ≤ x,y ≤ 2.0, 0.0 ≤ z ≤ 1.5). Clampage appliqué.",
