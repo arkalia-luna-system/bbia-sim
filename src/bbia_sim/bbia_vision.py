@@ -201,7 +201,8 @@ class BBIAVision:
                         )
                     except ValueError:
                         logger.warning(
-                            f"⚠️ BBIA_CAMERA_INDEX invalide: {camera_index_str}, utilisation index 0",
+                            f"⚠️ BBIA_CAMERA_INDEX invalide: {camera_index_str}, "
+                            f"utilisation index 0",
                         )
                         self._opencv_camera = cv2.VideoCapture(0)
 
@@ -231,7 +232,8 @@ class BBIAVision:
                 self._opencv_camera = None
                 logger.debug(f"Erreur initialisation webcam OpenCV: {e}")
 
-        # OPTIMISATION RAM: Lazy loading YOLO/MediaPipe - ne charger que si caméra réelle disponible
+        # OPTIMISATION RAM: Lazy loading YOLO/MediaPipe
+        # Ne charger que si caméra réelle disponible
         self.yolo_detector = None
         # Charger YOLO uniquement si caméra SDK réelle disponible (pas shim simulation)
         if (
@@ -240,7 +242,8 @@ class BBIAVision:
             and create_yolo_detector is not None
         ):
             try:
-                # Seuil confiance 0.25 pour meilleure détection (au lieu de 0.5 par défaut)
+                # Seuil confiance 0.25 pour meilleure détection
+                # (au lieu de 0.5 par défaut)
                 confidence_threshold = float(
                     os.environ.get("BBIA_YOLO_CONFIDENCE", "0.25"),
                 )
@@ -264,7 +267,8 @@ class BBIAVision:
         self.face_detector = None
         if MEDIAPIPE_AVAILABLE and mp:
             try:
-                # OPTIMISATION PERFORMANCE: Réutiliser instance MediaPipe depuis cache si disponible
+                # OPTIMISATION PERFORMANCE: Réutiliser instance MediaPipe
+                # depuis cache si disponible
                 try:
                     from .vision_yolo import (
                         _mediapipe_cache_lock,
@@ -274,7 +278,8 @@ class BBIAVision:
                     with _mediapipe_cache_lock:
                         if _mediapipe_face_detection_cache is not None:
                             logger.debug(
-                                "♻️ Réutilisation détecteur MediaPipe depuis cache (bbia_vision)",
+                                "♻️ Réutilisation détecteur MediaPipe depuis cache "
+                                "(bbia_vision)",
                             )
                             self.face_detector = _mediapipe_face_detection_cache
                             logger.info(
@@ -326,13 +331,15 @@ class BBIAVision:
                 )
                 if self.pose_detector and self.pose_detector.is_initialized:
                     logger.info(
-                        f"✅ MediaPipe Pose initialisé (complexité: {model_complexity})",
+                        f"✅ MediaPipe Pose initialisé "
+                        f"(complexité: {model_complexity})",
                     )
             except Exception as e:
                 logger.warning(f"⚠️ MediaPipe Pose non disponible: {e}")
 
     def _capture_image_from_camera(self) -> npt.NDArray[np.uint8] | None:
-        """Capture une image depuis robot.media.camera si disponible, sinon webcam USB OpenCV.
+        """Capture une image depuis robot.media.camera si disponible,
+        sinon webcam USB OpenCV.
 
         CORRECTION EXPERTE: Validation robuste du format d'image SDK avec gestion
         des différents formats possibles (RGB, BGR, grayscale, etc.)
@@ -437,7 +444,11 @@ class BBIAVision:
                     image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
             else:
                 logger.warning(
-                    f"Nombre de canaux invalide ({image.shape[2] if image.ndim == 3 else 'N/A'}), attendu 1, 3 ou 4",
+                    (
+                        "Nombre de canaux invalide "
+                        f"({image.shape[2] if image.ndim == 3 else 'N/A'}), "
+                        "attendu 1, 3 ou 4"
+                    ),
                 )
                 return None
 
@@ -464,7 +475,8 @@ class BBIAVision:
             logger.debug("✅ Image capturée depuis robot.media.camera (format validé)")
 
             # Ajouter au buffer circulaire (Issue #16 SDK officiel)
-            # Le buffer garde les dernières frames capturées pour éviter perte si non consommées
+            # Le buffer garde les dernières frames
+            # capturées pour éviter perte si non consommées
             buffer_maxlen = self._camera_frame_buffer.maxlen
             if (
                 buffer_maxlen is not None
@@ -475,12 +487,16 @@ class BBIAVision:
                     self._buffer_overrun_count % 100 == 0
                 ):  # Logger tous les 100 overruns
                     logger.warning(
-                        f"⚠️ Camera buffer overrun: {self._buffer_overrun_count} frames perdues "
-                        f"(buffer size: {buffer_maxlen})",
+                        (
+                            f"⚠️ Camera buffer overrun: "
+                            f"{self._buffer_overrun_count} frames perdues "
+                            f"(buffer size: {buffer_maxlen})"
+                        ),
                     )
             self._camera_frame_buffer.append(image.copy())
 
-            # Type narrowing: image est maintenant np.ndarray après toutes les validations
+            # Type narrowing: image est maintenant np.ndarray
+            # après toutes les validations
             return cast("npt.NDArray[np.uint8]", image)
 
         except Exception as e:
@@ -537,8 +553,11 @@ class BBIAVision:
                 self._buffer_overrun_count += 1
                 if self._buffer_overrun_count % 100 == 0:
                     logger.warning(
-                        f"⚠️ Camera buffer overrun: {self._buffer_overrun_count} frames perdues "
-                        f"(buffer size: {buffer_maxlen})",
+                        (
+                            f"⚠️ Camera buffer overrun: "
+                            f"{self._buffer_overrun_count} frames perdues "
+                            f"(buffer size: {buffer_maxlen})"
+                        ),
                     )
             self._camera_frame_buffer.append(image.copy())
 
@@ -731,10 +750,12 @@ class BBIAVision:
     def scan_environment(self) -> dict[str, Any]:
         """Scanne l'environnement et détecte les objets.
 
-        Utilise robot.media.camera si disponible (SDK officiel) avec détection YOLO/MediaPipe,
+        Utilise robot.media.camera si disponible (SDK officiel)
+        avec détection YOLO/MediaPipe,
         sinon utilise simulation pour compatibilité.
         """
-        # OPTIMISATION SDK: Utiliser robot.media.camera avec détection réelle si disponible
+        # OPTIMISATION SDK: Utiliser robot.media.camera
+        # avec détection réelle si disponible
         image = self._capture_image_from_camera()
 
         # IMPORTANT: si le SDK caméra n'est pas disponible, on reste en mode simulation
@@ -889,7 +910,8 @@ class BBIAVision:
                                 h = min(height - y, h + 2 * margin)
                                 face_roi = image[y : y + h, x : x + w]
 
-                            # Détection DeepFace (reconnaissance + émotion) si disponible
+                            # Détection DeepFace (reconnaissance + émotion)
+                            # si disponible
                             recognized_name = "humain"
                             detected_emotion = "neutral"
                             emotion_confidence = 0.0
@@ -910,10 +932,11 @@ class BBIAVision:
                                     )
                                     if person_result:
                                         recognized_name = person_result["name"]
-                                        logger.debug(
-                                            f"👤 Personne reconnue: {recognized_name} "
-                                            f"(confiance: {person_result['confidence']:.2f})",
-                                        )
+                                    logger.debug(
+                                        "👤 Personne reconnue: %s (conf: %.2f)",
+                                        recognized_name,
+                                        person_result["confidence"],
+                                    )
 
                                     # Détecter l'émotion
                                     emotion_result = (
@@ -991,8 +1014,10 @@ class BBIAVision:
 
             if objects or faces or poses:
                 logger.info(
-                    f"✅ Détection réelle: {len(objects)} objets, {len(faces)} visages, "
-                    f"{len(poses)} postures",
+                    "✅ Détection réelle: %d objets, %d visages, %d postures",
+                    len(objects),
+                    len(faces),
+                    len(poses),
                 )
                 # OPTIMISATION RAM: Limiter taille historique avec deque
                 self.objects_detected = deque(
@@ -1011,7 +1036,8 @@ class BBIAVision:
                     "source": "camera_sdk",
                 }
 
-        # OPTIMISATION RAM: Cache objets simulés réutilisé au lieu de recréer à chaque appel
+        # OPTIMISATION RAM: Cache objets simulés réutilisé
+        # au lieu de recréer à chaque appel
         if not hasattr(self, "_simulated_objects_cache"):
             self._simulated_objects_cache = [
                 {
@@ -1145,7 +1171,8 @@ class BBIAVision:
         """Récupère la frame la plus récente du buffer circulaire.
 
         Permet d'accéder à la dernière image capturée sans appeler scan_environment().
-        Utile pour éviter perte de frames si pas consommées assez vite (Issue #16 SDK officiel).
+        Utile pour éviter perte de frames si pas consommées assez vite
+        (Issue #16 SDK officiel).
 
         Returns:
             Dernière frame capturée ou None si buffer vide
