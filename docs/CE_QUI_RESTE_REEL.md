@@ -28,7 +28,7 @@
 
 ### 2. TODO Test Optionnel - **TROUVÉ**
 
-**Fichier** : `tests/test_watchdog_monitoring.py`  
+**Fichier** : `tests/test_watchdog_monitoring.py`
 **Ligne 227** : `# TODO: Implémenter avec robot physique ou mock avancé`
 
 **Contexte** :
