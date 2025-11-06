@@ -295,3 +295,7 @@ Une fois que la webcam fonctionne :
 ---
 
 **Tout est prêt ! Tu peux maintenant brancher ta webcam et la tester ! 🎉**
+
+---
+
+**Dernière mise à jour** : Oct / Nov. 2025

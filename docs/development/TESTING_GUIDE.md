@@ -1,8 +1,9 @@
-# 🧪 Guide des tests et de la couverture - BBIA Reachy Mini
+# 🧪 Guide des Tests et de la Couverture - BBIA Reachy Mini
 
-> Référence état global
->
-> Voir `docs/reference/project-status.md` → "État par axe" (Qualité/Performance/CI) pour l’état actuel et les axes futurs.
+**Date** : Oct / Nov. 2025  
+**Version** : 1.0
+
+> **Référence état global** : Voir [`docs/reference/project-status.md`](../reference/project-status.md) → "État par axe" (Qualité/Performance/CI) pour l'état actuel et les axes futurs.
 
 ## 📊 Résumé des performances
 
@@ -359,4 +360,6 @@ python -m pytest tests/test_config.py --cov=src --cov-report=term-missing
 
 ---
 
-*Dernière mise à jour : Oct / Nov. 2025*
+---
+
+**Dernière mise à jour** : Oct / Nov. 2025

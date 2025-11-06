@@ -251,3 +251,7 @@ pip install deepface onnxruntime
 
 **Une fois tout ça fait, BBIA peut reconnaître ta famille et leurs émotions !** 🎉
 
+---
+
+**Dernière mise à jour** : Oct / Nov. 2025
+
