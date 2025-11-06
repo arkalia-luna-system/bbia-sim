@@ -187,8 +187,8 @@
      - ✅ `daemon/app/__main__.py` : **87.50%** ✅ (corrigé - Oct / Nov. 2025)
      - ✅ `daemon/app/routers/sanity.py` : **89.19%** ✅ (corrigé - Oct / Nov. 2025)
      - ✅ `model_optimizer.py` : **100%** ✅ (corrigé - Oct / Nov. 2025)
-     - ✅ `__main__.py` : **~70%+** ✅ (corrigé - Nov 2025, tests main() ajoutés)
-     - ✅ `bbia_awake.py` : **~80%+** ✅ (corrigé - Nov 2025, import direct)
+     - ✅ `__main__.py` : **~70%+** ✅ (corrigé - Oct / Nov. 2025, tests main() ajoutés)
+     - ✅ `bbia_awake.py` : **~80%+** ✅ (corrigé - Oct / Nov. 2025, import direct)
      - `bbia_integration.py` : 20.1%
      - `face_recognition.py` : 20.1%
      - `backends/reachy_backend.py` : 30.8%
