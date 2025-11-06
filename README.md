@@ -154,12 +154,16 @@ python -m bbia_sim --doctor
 
 ## 🏆 Badges Qualité & CI/CD
 
+<div align="center">
+
 [![CI Status](https://github.com/arkalia-luna-system/bbia-sim/actions/workflows/ci.yml/badge.svg)](https://github.com/arkalia-luna-system/bbia-sim/actions/workflows/ci.yml)
 [![Coverage](https://img.shields.io/badge/coverage-~50%25-green)](https://app.codecov.io/gh/arkalia-luna-system/bbia-sim)
 [![Typing: mypy](https://img.shields.io/badge/typing-mypy-4B8BBE)](https://github.com/arkalia-luna-system/bbia-sim)
 [![Lint: ruff](https://img.shields.io/badge/lint-ruff-46A2F1)](https://github.com/arkalia-luna-system/bbia-sim)
 [![Security: bandit](https://img.shields.io/badge/security-bandit-2E5E82)](https://github.com/arkalia-luna-system/bbia-sim)
 [![Release](https://img.shields.io/github/v/release/arkalia-luna-system/bbia-sim)](https://github.com/arkalia-luna-system/bbia-sim/releases)
+
+</div>
 
 ## 🎯 Vue d'ensemble
 
@@ -279,11 +283,17 @@ sequenceDiagram
 
 ## 📊 Métriques du projet
 
-- **✅ Modèle officiel** : `reachy_mini_REAL_OFFICIAL.xml`
-- **✅ Articulations** : 16 articulations au total (9 contrôlables : 7 mobiles + 2 antennes)
-- **✅ Intégration BBIA** : 12 émotions + IA avancée
-- **✅ Coverage modules core** : ~50% (mesure pertinente, voir section Tests)
-- **✅ API** : FastAPI + WebSocket opérationnels
+<div align="center">
+
+| Métrique | Valeur | Statut |
+|:--------:|:------:|:-----:|
+| **Modèle officiel** | `reachy_mini_REAL_OFFICIAL.xml` | ✅ |
+| **Articulations** | 16 total (9 contrôlables) | ✅ |
+| **Intégration BBIA** | 12 émotions + IA avancée | ✅ |
+| **Coverage modules core** | ~50% | ✅ |
+| **API** | FastAPI + WebSocket | ✅ |
+
+</div>
 
 > Suivi global (État par axe)
 >
@@ -337,15 +347,17 @@ python scripts/demo_public_api.py
 # OpenAPI: http://localhost:8000/openapi.json
 ```
 
-### 📡 Endpoints REST Conformes SDK Officiel (96%)
+### 📡 Endpoints REST Conformes SDK Officiel
 
-- `/api/move/*` - Mouvements conformes SDK (goto, running, stop, play, set_target, ws/updates)
-- `/api/motors/*` - Contrôle moteurs (status, set_mode)
-- `/api/daemon/*` - Contrôle daemon (start, stop, restart, status)
-- `/api/motion/*` - Mouvements BBIA (goto_pose, wake_up, goto_sleep, joints, etc.)
-- `/api/state/*` - État robot (full avec 11 params, present_head_pose avec use_pose_matrix, ws/full)
-- `/api/kinematics/*` - Cinématique (info, urdf, stl)
-- `/api/apps/*` - Gestion applications HuggingFace (install, start, stop, status)
+> **Note** : La conformité des endpoints REST est validée à 100% pour les méthodes SDK officielles. Les endpoints BBIA étendus sont en plus.
+
+- **`/api/move/*`** - Mouvements conformes SDK (goto, running, stop, play, set_target, ws/updates)
+- **`/api/motors/*`** - Contrôle moteurs (status, set_mode)
+- **`/api/daemon/*`** - Contrôle daemon (start, stop, restart, status)
+- **`/api/motion/*`** - Mouvements BBIA (goto_pose, wake_up, goto_sleep, joints, etc.)
+- **`/api/state/*`** - État robot (full avec 11 params, present_head_pose avec use_pose_matrix, ws/full)
+- **`/api/kinematics/*`** - Cinématique (info, urdf, stl)
+- **`/api/apps/*`** - Gestion applications HuggingFace (install, start, stop, status)
 
 ### 🤖 Backends Disponibles
 
@@ -454,18 +466,19 @@ La documentation HTML offre :
 - Liens ancres pour navigation rapide
 
 **Guides principaux :**
+
 - **[Guide Débutant](docs/guides/GUIDE_DEBUTANT.md)** : Guide pour débuter
 - **[Guide Avancé](docs/guides/GUIDE_AVANCE.md)** : Guide avancé
 - **[Vertical Slices](docs/quality/audits/VERTICAL_SLICES_ACCOMPLIS.md)** : Documentation des vertical slices
- - **[Index thématique (par profils)](docs/INDEX_FINAL.md)**
- - **[FAQ Troubleshooting](docs/development/FAQ_TROUBLESHOOTING.md)**
- - **[Observabilité (logs/metrics/santé)](docs/observabilite/OBSERVABILITE.md)**
- - **[Pipeline CI/CD](docs/deployment/PIPELINE_CI.md)**
- - **[Contrats REST/WS](docs/development/api/CONTRATS_REST_WS.md)**
- - **[Sécurité robot DO/DON'T](docs/hardware/SECURITE_ROBOT.md)**
- - **[Datasets & Golden Images](docs/ai/DATASETS_GOLDEN_IMAGES.md)**
- - **[Roadmap Dashboard/UX](docs/dashboard/ROADMAP_DASHBOARD.md)**
- - **[Guide Contribution](docs/community/CONTRIBUTION_GUIDE.md)**
+- **[Index thématique (par profils)](docs/INDEX_FINAL.md)**
+- **[FAQ Troubleshooting](docs/development/FAQ_TROUBLESHOOTING.md)**
+- **[Observabilité (logs/metrics/santé)](docs/observabilite/OBSERVABILITE.md)**
+- **[Pipeline CI/CD](docs/deployment/PIPELINE_CI.md)**
+- **[Contrats REST/WS](docs/development/api/CONTRATS_REST_WS.md)**
+- **[Sécurité robot DO/DON'T](docs/hardware/SECURITE_ROBOT.md)**
+- **[Datasets & Golden Images](docs/ai/DATASETS_GOLDEN_IMAGES.md)**
+- **[Roadmap Dashboard/UX](docs/dashboard/ROADMAP_DASHBOARD.md)**
+- **[Guide Contribution](docs/community/CONTRIBUTION_GUIDE.md)**
 
 ### Note importante sur les joints
 
@@ -797,7 +810,6 @@ open htmlcov/index.html
 
 Le robot Reachy Mini est simulé avec une fidélité élevée aux spécifications officielles. La suite de tests fournit une couverture suivie et des mesures de performance documentées (dry-run matériel et démonstrations sur robot réel).
 
----
 ---
 
 ## 📊 Projets & Portfolio
