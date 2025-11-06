@@ -78,19 +78,17 @@ Les fichiers suivants ont été archivés car redondants ou obsolètes :
 
 - `AUDIT_EXPERT_MODULES_CRITIQUES_2025.md` - Modules critiques analysés
 - `AUDIT_3D_BBIA_COMPLET.md` - Composant 3D
-- `RESUME_SESSION_QUALITE_CODE.md` - Qualité code
 
 > **Note** : `AUDIT_IA_MODULES_PRETRAINES.md` a été déplacé vers `docs/ai/` (Oct / Nov. 2025)
 
 ### Conformité et Compatibilité
 
 - `COMPATIBILITE_REACHY_MINI_OFFICIEL.md` - Compatibilité SDK
-- `CHECKLIST_COMPARAISON_OFFICIEL.md` - Checklist conformité
 - `COMPARAISON_APP_CONVERSATION_OFFICIELLE.md` - App conversation officielle
+- `COMPARAISON_DOCUMENTATION_OFFICIELLE.md` - Comparaison documentation officielle
 
 ### Documentation
 
-- `BILAN_COMPLET_MARKDOWN_CONFORMITE_2025.md` - Conformité Markdown
 - `CLARIFICATION_ANTENNES_REACHY_MINI.md` - Clarification antennes
 
 ---
@@ -98,9 +96,7 @@ Les fichiers suivants ont été archivés car redondants ou obsolètes :
 ## 📝 Plans et Stratégies
 
 - `PLAN_AMELIORATION_NOTATION_COMPLETE.md` - Plan amélioration notation
-- `STRATEGIE_REUTILISATION_CODE_OFFICIEL.md` - Stratégie réutilisation code
-- `PROCHAINES_ETAPES_OPTIONNELLES.md` - Étapes optionnelles
-- `SUITE_ACTIONS_CONFORMITE.md` - Suite actions conformité
+- `DECISION_FINAL_AMELIORATIONS.md` - Décisions finales améliorations
 
 ---
 
