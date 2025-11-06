@@ -474,20 +474,21 @@ La documentation HTML offre :
 ## 📁 Structure du Projet
 
 ```
-src/bbia_sim/sim/
-├── models/
-│   ├── reachy_mini_REAL_OFFICIAL.xml    # Modèle officiel principal
-│   └── reachy_mini.xml                   # Modèle de base (backup)
-├── assets/reachy_official/              # 41 fichiers STL officiels
-│   ├── body_down_3dprint.stl
-│   ├── body_top_3dprint.stl
-│   ├── head_front_3dprint.stl
-│   ├── head_back_3dprint.stl
-│   ├── stewart_*.stl                     # Bras Stewart
-│   └── ... (36 autres STL)
+src/bbia_sim/
+├── sim/
+│   ├── models/
+│   │   ├── reachy_mini_REAL_OFFICIAL.xml    # Modèle officiel principal
+│   │   └── reachy_mini.xml                   # Modèle de base (backup)
+│   └── assets/reachy_official/              # 41 fichiers STL officiels
+│       ├── body_down_3dprint.stl
+│       ├── body_top_3dprint.stl
+│       ├── head_front_3dprint.stl
+│       ├── head_back_3dprint.stl
+│       ├── stewart_*.stl                     # Bras Stewart
+│       └── ... (36 autres STL)
 └── scripts/
-    ├── launch_complete_robot.py         # Lanceur principal
-    └── download_ALL_stl.py              # Script de téléchargement STL
+    ├── launch_complete_robot.py         # Lanceur principal (dans scripts/)
+    └── download_ALL_stl.py              # Script de téléchargement STL (dans scripts/)
 ```
 
 ### 🚀 Guide rapide – Commandes essentielles
