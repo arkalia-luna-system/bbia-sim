@@ -63,6 +63,12 @@ Les fichiers suivants ont été archivés car redondants ou obsolètes :
 - ✅ `AUDIT_COMPLET_DEC2025.md` - Contenu similaire à `ETAT_ACTUEL_TACHES_DEC2025.md` (archivé Oct / Nov. 2025)
 - ✅ `AUDIT_REACHY_SYNTHESE.md` - Version condensée de `AUDIT_REACHY_COMPLET_FINAL.md` (archivé Oct / Nov. 2025)
 - ✅ `AMELIORATIONS_SUITE_AUDIT.md` - Améliorations déjà appliquées (historique, archivé Oct / Nov. 2025)
+- ✅ `CHECKLIST_COMPARAISON_OFFICIEL.md` - Remplacé par `CHECKLIST_FINALE_COMPARAISON_OFFICIELLE.md` (archivé Oct / Nov. 2025)
+- ✅ `BILAN_COMPLET_MARKDOWN_CONFORMITE_2025.md` - Remplacé par `CONFORMITE_REACHY_MINI_COMPLETE.md` (archivé Oct / Nov. 2025)
+- ✅ `SUITE_ACTIONS_CONFORMITE.md` - Actions conformité terminées (archivé Oct / Nov. 2025)
+- ✅ `STRATEGIE_REUTILISATION_CODE_OFFICIEL.md` - Stratégie appliquée, tâches terminées (archivé Oct / Nov. 2025)
+- ✅ `RESUME_SESSION_QUALITE_CODE.md` - Session qualité code terminée (archivé Oct / Nov. 2025)
+- ✅ `PROCHAINES_ETAPES_OPTIONNELLES.md` - Toutes fonctionnalités implémentées (archivé Oct / Nov. 2025)
 
 ---
 

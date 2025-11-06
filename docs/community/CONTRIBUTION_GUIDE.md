@@ -9,8 +9,6 @@ Bienvenue dans la communauté BBIA-SIM ! Ce guide vous aidera à contribuer effi
 
 ---
 
----
-
 ## 🚀 Démarrage Rapide
 
 ### Pour les nouveaux contributeurs

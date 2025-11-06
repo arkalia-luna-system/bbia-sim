@@ -147,9 +147,9 @@ mindmap
 - [Analyse voix et intelligence](intelligence/ANALYSE_VOIX_ET_INTELLIGENCE_BBIA.md)
 
 ### 📊 Analyses et Rapports
-- [Analyses de modules](analyses/ANALYSE_MODULES_NON_PRIORITAIRES_2025.md)
-- [Analyses](analyses/) - Analyses et rapports d'analyse
-- [Analyse code Unity AR](analyses/ANALYSE_CODE_UNITY_AR.md)
+- [Analyse Modules Non Prioritaires](analyses/ANALYSE_MODULES_NON_PRIORITAIRES_2025.md) - Analyse modules et conformité SDK
+- [Analyse Coverage Détails](analyses/ANALYSE_COVERAGE_DETAILS.md) - Analyse détaillée code coverage
+- [Analyse Code Unity AR](analyses/ANALYSE_CODE_UNITY_AR.md) - Évaluation pertinence Unity AR
 - [Contrats REST/WS](development/api/CONTRATS_REST_WS.md)
 - [Roadmap Dashboard/UX](dashboard/ROADMAP_DASHBOARD.md)
 

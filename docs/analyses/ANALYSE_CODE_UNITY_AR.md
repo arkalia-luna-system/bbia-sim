@@ -285,6 +285,8 @@ class MobileARController:
 
 Votre projet actuel est bien plus avancé et pertinent. Focus sur ce qui marche déjà : **MuJoCo, RobotAPI, Modules BBIA** ! 🚀
 
-*Analyse effectuée le Oct / Nov. 2025*
-*Expert Robotique, IA & AR*
+---
+
+**Dernière mise à jour** : Oct / Nov. 2025  
+**Expert** : Robotique, IA & AR
 

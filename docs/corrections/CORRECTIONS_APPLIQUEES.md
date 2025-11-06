@@ -1,11 +1,9 @@
 # ✅ CORRECTIONS APPLIQUÉES - Audit BBIA → Reachy Integration
 
-> Référence état global
->
-> Voir `docs/reference/project-status.md` → "État par axe" pour l’état consolidé post‑corrections et axes restants.
+**Date** : Oct / Nov. 2025  
+**Référentiel** : pollen-robotics/reachy_mini@84c40c3
 
-**Date**: Oct / Nov. 2025
-**Référentiel**: pollen-robotics/reachy_mini@84c40c3
+> **Référence état global** : Voir `docs/reference/project-status.md` → "État par axe" pour l'état consolidé post‑corrections et axes restants.
 
 ---
 
@@ -19,13 +17,15 @@ Toutes les corrections prioritaires identifiées dans l'audit ont été appliqu�
 
 ### 1. ✅ Emergency Stop (CRITIQUE)
 
-**Fichiers modifiés**:
-- `src/bbia_sim/robot_api.py` - Ajout méthode abstraite `emergency_stop()`
+**Fichiers modifiés** :
+
+- `src/bbia_sim/robot_api.py` (ligne 76) - Ajout méthode abstraite `emergency_stop()`
 - `src/bbia_sim/backends/reachy_mini_backend.py` - Implémentation SDK
-- `src/bbia_sim/backends/mujoco_backend.py` - Implémentation simulation
+- `src/bbia_sim/backends/mujoco_backend.py` (ligne 201) - Implémentation simulation
 - `src/bbia_sim/backends/reachy_backend.py` - Implémentation robot réel
 
-**Tests créés**:
+**Tests créés** :
+
 - `tests/test_emergency_stop.py` - **4 tests** : 3 passed, 1 skipped (robot physique requis)
 
 **Validation**:
@@ -38,11 +38,13 @@ pytest tests/test_emergency_stop.py -v
 
 ### 2. ✅ Audio SDK Alignment (16kHz)
 
-**Fichiers modifiés**:
-- `src/bbia_sim/bbia_audio.py` - Constantes SDK + validation sample rate
+**Fichiers modifiés** :
 
-**Améliorations**:
-- `DEFAULT_SAMPLE_RATE = 16000` (aligné SDK Reachy Mini)
+- `src/bbia_sim/bbia_audio.py` (ligne 71) - Constantes SDK + validation sample rate
+
+**Améliorations** :
+
+- `DEFAULT_SAMPLE_RATE = 16000` (aligné SDK Reachy Mini) - **VÉRIFIÉ** ligne 71
 - `DEFAULT_BUFFER_SIZE = 512` (optimisé latence)
 - Validation sample rate avec avertissement si non conforme
 
@@ -75,7 +77,8 @@ pytest tests/test_safety_limits_pid.py -v
 # ✅ 5 passed
 ```
 
-**Couverture sécurité**:
+**Couverture sécurité** :
+
 - `GLOBAL_SAFETY_LIMIT = 0.3 rad` (défini dans `mapping_reachy.py`)
 - Validation et clamping automatique des positions
 - Protection des joints interdits (stewart, passifs)
@@ -85,10 +88,12 @@ pytest tests/test_safety_limits_pid.py -v
 
 ### 5. ✅ Documentation PID/Sécurité
 
-**Fichiers modifiés**:
+**Fichiers modifiés** :
+
 - `src/bbia_sim/sim/simulator.py` - Commentaires gains PID SDK
 
-**Améliorations**:
+**Améliorations** :
+
 - Documentation gains PID (kp=17.11 stewart, kp=2.54 xc330m288t)
 - Références SDK officiel dans commentaires
 
@@ -118,13 +123,17 @@ tests/test_safety_limits_pid.py ......  5 passed
 
 ## 📝 NOTES
 
-1. **Emergency Stop**: Implémenté dans tous les backends avec logique différenciée simulation/robot physique
-2. **Audio**: Sample rate 16kHz aligné, validation ajoutée
-3. **Émotions**: Intensité clampée [0.0, 1.0], conforme SDK
-4. **Sécurité**: Tests complets ajoutés, limites validées
-5. **PID**: Documentation améliorée avec références SDK
+1. **Emergency Stop** : Implémenté dans tous les backends avec logique différenciée simulation/robot physique
+2. **Audio** : Sample rate 16kHz aligné, validation ajoutée
+3. **Émotions** : Intensité clampée [0.0, 1.0], conforme SDK
+4. **Sécurité** : Tests complets ajoutés, limites validées
+5. **PID** : Documentation améliorée avec références SDK
 
 Toutes les corrections prioritaires sont **complètes et testées** ✅
+
+---
+
+**Dernière mise à jour** : Oct / Nov. 2025
 
 ---
 

@@ -78,7 +78,7 @@ pip install -e .
 
 ### 🚀 Getting Started
 - **[Troubleshooting](getting-started/troubleshooting.md)** — FAQ et solutions
-- **[Contributing](getting-started/contributing.md)** — Guide contribution
+- **[Guide Contribution](community/CONTRIBUTION_GUIDE.md)** — Guide complet contribution
 
 ### 📖 Guides Utilisateurs
 - **[Guide Débutant](guides/GUIDE_DEBUTANT.md)** — Installation et premiers pas
