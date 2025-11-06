@@ -1,7 +1,7 @@
 # BBIA Reachy Mini Simulation
 
 [![Version](https://img.shields.io/badge/version-1.3.2-blue.svg)](https://github.com/arkalia-luna-system/bbia-sim)
-[![Python](https://img.shields.io/badge/python-3.11%2B-blue.svg)](https://python.org)
+[![Python](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://python.org)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![CI Status](https://github.com/arkalia-luna-system/bbia-sim/actions/workflows/ci.yml/badge.svg)](https://github.com/arkalia-luna-system/bbia-sim/actions/workflows/ci.yml)
 [![Tests](https://img.shields.io/badge/tests-1334-brightgreen.svg)](https://github.com/arkalia-luna-system/bbia-sim/actions)
@@ -52,7 +52,9 @@ Ce projet fournit une simulation fidèle du robot Reachy Mini dans MuJoCo, avec 
 # Installation (mode dev recommandé)
 pip install -e .[dev]
 
-# Démarrage simulation
+# Démarrage simulation (macOS: utiliser mjpython)
+mjpython examples/demo_emotion_ok.py
+# ou sur Linux/Windows:
 python examples/demo_emotion_ok.py
 ```
 
@@ -456,11 +458,11 @@ La documentation HTML offre :
 - **[Guide Avancé](docs/guides/GUIDE_AVANCE.md)** : Guide avancé
 - **[Vertical Slices](docs/quality/audits/VERTICAL_SLICES_ACCOMPLIS.md)** : Documentation des vertical slices
  - **[Index thématique (par profils)](docs/INDEX_FINAL.md)**
- - **[FAQ Troubleshooting](docs/guides_techniques/FAQ_TROUBLESHOOTING.md)**
+ - **[FAQ Troubleshooting](docs/development/FAQ_TROUBLESHOOTING.md)**
  - **[Observabilité (logs/metrics/santé)](docs/observabilite/OBSERVABILITE.md)**
- - **[Pipeline CI/CD](docs/ci/PIPELINE_CI.md)**
- - **[Contrats REST/WS](docs/api/CONTRATS_REST_WS.md)**
- - **[Sécurité robot DO/DON’T](docs/robot/SECURITE_ROBOT.md)**
+ - **[Pipeline CI/CD](docs/deployment/PIPELINE_CI.md)**
+ - **[Contrats REST/WS](docs/development/api/CONTRATS_REST_WS.md)**
+ - **[Sécurité robot DO/DON'T](docs/hardware/SECURITE_ROBOT.md)**
  - **[Datasets & Golden Images](docs/ai/DATASETS_GOLDEN_IMAGES.md)**
  - **[Roadmap Dashboard/UX](docs/dashboard/ROADMAP_DASHBOARD.md)**
  - **[Guide Contribution](docs/community/CONTRIBUTION_GUIDE.md)**
@@ -615,7 +617,7 @@ source venv/bin/activate
 mjpython examples/demo_emotion_ok.py --emotion happy --duration 10 --backend mujoco
 ```
 
-Pour les détails et recommandations matériel (webcam USB UVC) et les profils d’environnements, voir `docs/guides_techniques/ENV_PROFILS.md`.
+Pour les détails et recommandations matériel (webcam USB UVC) et les profils d'environnements, voir `docs/development/ENV_PROFILS.md`.
 
 ## 🛠️ Scripts Utiles
 
