@@ -101,7 +101,7 @@ flowchart TB
 ## 📁 Navigation Complète
 
 👉 **[INDEX_FINAL.md](INDEX_FINAL.md)** — Index complet de toute la documentation avec navigation thématique
-👉 **[GUIDE_NAVIGATION.md](GUIDE_NAVIGATION.md)** — Guide de navigation rapide par profil
+👉 **[index.md](index.md)** — Index consolidé avec parcours recommandé
 
 ### 📊 Rapports et Bilans (Archivés)
 - **[Bilan Final Documentation](archive/nettoyage-2025/BILAN_FINAL_DOCUMENTATION.md)** — Résumé complet du nettoyage documentation (archivé)

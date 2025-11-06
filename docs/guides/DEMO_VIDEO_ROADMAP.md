@@ -8,9 +8,9 @@
 
 ---
 
-## 🎯 Objectifs (Futur)
+## 🎯 Objectifs
 
-Créer des démonstrations vidéo pour faciliter l'onboarding et la compréhension de BBIA-SIM (à faire plus tard).
+✅ **Objectifs atteints** - Des vidéos de démonstration sont maintenant disponibles dans `assets/videos/`. Voir section "Vidéos Disponibles" ci-dessous.
 
 ---
 

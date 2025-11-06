@@ -1,7 +1,8 @@
 # 🎤 Migration vers Coqui TTS - Guide Complet
 
-**Date :** Oct / Nov. 2025
-**Objectif :** Remplacer pyttsx3 par Coqui TTS pour résoudre blocages macOS
+**Date** : Oct / Nov. 2025  
+**Version** : 1.0  
+**Objectif** : Remplacer pyttsx3 par Coqui TTS pour résoudre blocages macOS
 
 ---
 
@@ -305,5 +306,9 @@ if __name__ == "__main__":
 
 ---
 
-**Status :** ✅ Phase 1 complétée - Module prêt à l'utilisation !
+**Status** : ✅ Phase 1 complétée - Module prêt à l'utilisation !
+
+---
+
+**Dernière mise à jour** : Oct / Nov. 2025
 

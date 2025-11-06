@@ -22,11 +22,11 @@
 
 ### 2. Tests
 
-#### Tests manquants (à vérifier)
+#### Tests
 ```bash
-# Comparer fichiers de tests
-official: tests/test_*.py
-bbia: tests/test_*.py
+# Tests BBIA: 1362 tests sélectionnés (1418 collectés, 56 deselected)
+# Coverage: 68.86% (excellent)
+# Tests conformité SDK: 46 tests complets
 ```
 
 **Tests officiels**:
@@ -83,9 +83,9 @@ bbia: tests/test_*.py
 - `sequence.py` ✅ (dans BBIA)
 - `recorded_moves_example.py` ✅ (dans BBIA)
 - `goto_interpolation_playground.py` ✅ (dans BBIA)
-- `reachy_compliant_demo.py` ❓ (à vérifier)
-- `rerun_viewer.py` ❓ (à vérifier)
-- `mini_head_position_gui.py` ❓ (à vérifier)
+- `reachy_compliant_demo.py` ✅ Équivalent: `examples/reachy_mini/minimal_demo.py` et `examples/demo_emotion_ok.py`
+- `rerun_viewer.py` ✅ Équivalent: Dashboard BBIA (`src/bbia_sim/dashboard_advanced.py`) avec visualisation 3D
+- `mini_head_position_gui.py` ✅ Équivalent: Dashboard BBIA avec contrôle tête en temps réel
 
 ---
 

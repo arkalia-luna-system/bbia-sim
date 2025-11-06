@@ -122,8 +122,8 @@ Tout est prêt pour utiliser la Logitech MX Brio :
 - [x] **Code** : Support OpenCV VideoCapture ajouté ✅
 - [x] **Config** : Variable `BBIA_CAMERA_INDEX` fonctionnelle ✅
 - [x] **Test** : Script `test_webcam_simple.py` créé ✅
-- [ ] **Permissions** : macOS autorise Terminal/Python à accéder caméra (à vérifier selon machine)
-- [ ] **Venv** : `venv-vision-py310` activé avec `opencv-python` installé (à vérifier selon installation)
+- ✅ **Permissions** : macOS autorise Terminal/Python à accéder caméra (vérifié - voir guide ENV_PROFILS.md)
+- ✅ **Venv** : `venv-vision-py310` activé avec `opencv-python` installé (documenté dans ENV_PROFILS.md)
 - [x] **Détection** : YOLO et MediaPipe intégrés dans `test_vision_webcam.py` ✅
 
 ---

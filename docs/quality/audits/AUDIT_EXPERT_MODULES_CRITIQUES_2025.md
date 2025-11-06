@@ -196,7 +196,7 @@ description="Plateforme Stewart - joint tête 1 (⚠️ Nécessite IK via goto_t
 | Méthode Potentielle | Où | Status |
 |---------------------|-----|--------|
 | `robot.io.*` | Modules contrôles GPIO/LEDs | ⚠️ Non utilisé |
-| `robot.media.camera.stream()` | `bbia_vision.py` | ⚠️ À vérifier |
+| `robot.media.camera.stream()` | `bbia_vision.py` | ✅ Utilisé via `robot.media.camera` (lignes 126-137) |
 | `async_play_move()` | `bbia_behavior.py` | ✅ Disponible dans backend |
 | `start_recording()` / `stop_recording()` | Modules enregistrement mouvements | ⚠️ Disponible mais peu utilisé |
 
