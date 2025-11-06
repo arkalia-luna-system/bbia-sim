@@ -180,7 +180,7 @@ def test_watchdog_timeout_robot_disconnected(self):
 - **Black** : 123 fichiers formatés
 - **Ruff** : Tous les checks passent
 - **MyPy** : 1 erreur corrigée (`bbia_audio.py` ligne 101)
-- **Bandit** : Warnings mineurs (commentaires dans code, non bloquants)
+- **Bandit** : ✅ 0 erreurs (tous les problèmes B110, B101, B108 corrigés - Nov 2025)
 
 ### Issues GitHub
 

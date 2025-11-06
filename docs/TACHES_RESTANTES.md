@@ -157,7 +157,7 @@
 - Black : 123 fichiers formatés
 - Ruff : Tous les checks passent
 - MyPy : 1 erreur corrigée
-- Bandit : Warnings mineurs (non bloquants)
+- Bandit : ✅ 0 erreurs (tous les problèmes B110, B101, B108 corrigés - Nov 2025)
 
 ### Documentation
 

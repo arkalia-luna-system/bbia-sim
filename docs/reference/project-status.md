@@ -175,6 +175,7 @@ Le SDK officiel Reachy Mini expose une intégration Hugging Face Spaces via `hf_
 4. ✅ **Type ignores inutilisés** → Supprimés (14 occurrences)
 5. ✅ **Indentation commentaire** → Corrigée (ligne 1001)
 6. ✅ **Formatage automatique** → Black appliqué (246 lignes modifiées)
+7. ✅ **Bandit B110/B101/B108** → Tous corrigés (Nov 2025) : 0 erreurs (try/except pass → logging, assert → validations explicites, /tmp hardcodé → tempfile)
 
 **Bandit B615 :** Unsafe Hugging Face download  
 - **Justification :** Utilisation explicite `revision="main"` dans tous les appels `from_pretrained()`  

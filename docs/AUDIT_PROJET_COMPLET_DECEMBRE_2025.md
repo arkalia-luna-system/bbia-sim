@@ -46,7 +46,7 @@
 - ✅ Black : Formatage OK
 - ✅ Ruff : Linting OK (0 erreurs F401, F841)
 - ✅ MyPy : Types OK
-- ✅ Bandit : Sécurité OK
+- ✅ Bandit : Sécurité OK (0 erreurs - tous les problèmes B110, B101, B108 corrigés - Nov 2025)
 
 ---
 
@@ -111,7 +111,7 @@
 - ✅ **Black** : OK
 - ✅ **Ruff** : OK (0 erreurs F401, F841)
 - ✅ **MyPy** : OK
-- ✅ **Bandit** : OK
+- ✅ **Bandit** : OK (0 erreurs - tous les problèmes B110, B101, B108 corrigés - Nov 2025)
 
 ---
 
