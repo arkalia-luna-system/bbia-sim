@@ -43,6 +43,7 @@ class ReachyMiniMock:
         # Simule comportement réel
         pass
     # ... toutes les méthodes SDK
+
 ```
 
 **Fichiers à créer** :
@@ -61,6 +62,7 @@ touch tests/mocks/reachy_mini_mock.py
 
 # Tests avec mock activables en CI
 python -m pytest tests/test_reachy_mini_backend_mocked.py -v
+
 ```
 
 **Impact** : +1.5 points (validation hardware même sans robot physique)
@@ -80,6 +82,7 @@ REAL_ROBOT_AVAILABLE = os.environ.get("BBIA_TEST_REAL_ROBOT", "false") == "true"
 )
 class TestReachyMiniBackendReal:
     """Tests robot réel (nécessite BBIA_TEST_REAL_ROBOT=true)."""
+
 ```
 
 **Action** :
@@ -109,6 +112,7 @@ class TestReachyMiniHardwareIntegration:
     def test_real_wake_up(self, robot):
         """Test wake_up sur robot réel."""
         assert robot.wake_up() is True
+
 ```
 
 **Fichiers à créer** :
@@ -127,6 +131,7 @@ class TestReachyMiniHardwareIntegration:
   run: |
     export BBIA_TEST_REAL_ROBOT=true
     pytest tests/hardware/ -v
+
 ```
 
 **Impact** : +2.0 points (validation production hardware complète)
@@ -166,6 +171,7 @@ presentation/livrables/v1.0/logo/exports/
   - logo_bbia_couleur.svg
   - logo_bbia_favicon.ico
   - logo_bbia_png/ (versions PNG 512x512, 1024x1024)
+
 ```
 
 **Commandes** :
@@ -176,6 +182,7 @@ ls -la presentation/livrables/v1.0/logo/exports/
 
 # Valider formats
 file presentation/livrables/v1.0/logo/exports/*.svg
+
 ```
 
 **Impact** : +1.0 point (branding professionnel visible)
@@ -203,6 +210,7 @@ assets/
 docs/
   _static/
     favicon.ico
+
 ```
 
 **Impact** : +0.5 point (visibilité immédiate)
@@ -241,6 +249,7 @@ python -m pytest --cov=src/bbia_sim --cov-report=term-missing \
 # Ouvrir htmlcov/index.html et identifier :
 # - Modules < 50% coverage
 # - Lignes non testées (term-missing)
+
 ```
 
 **Modules probables à améliorer** :
@@ -285,6 +294,7 @@ tests/test_bbia_integration_complete.py
 tests/test_bbia_adaptive_behavior_extended.py
 tests/test_daemon_bridge_extended.py
 tests/test_scripts_utilities.py
+
 ```
 
 **Impact** : +1.0 point (coverage 70%+ sur core)
@@ -312,6 +322,7 @@ omit =
     */scripts/*
     */venv/*
     */tests/*
+
 ```
 
 **CI/CD à modifier** :
@@ -322,6 +333,7 @@ omit =
   run: |
     pytest --cov=src/bbia_sim --cov-report=xml \
       --cov-fail-under=70
+
 ```
 
 **Impact** : +0.5 point (objectif clair et mesurable)
@@ -374,6 +386,7 @@ omit =
 5. PR
 
 **Besoin d'aide ?** Ouvre une discussion !
+
 ```
 
 **Impact** : +0.5 point (ouverture communauté)
@@ -441,6 +454,7 @@ omit =
        vision = BBIAVision()
        result = vision.scan_environment()
        assert result is not None
+
    ```
 
 2. **Scénario 2** : Interaction conversationnelle
@@ -449,6 +463,7 @@ omit =
  # tests/e2e/test_user_scenario_conversation.py
    def test_user_conversation_complete():
        """Utilisateur discute avec BBIA, émotions, comportements."""
+
    ```
 
 3. **Scénario 3** : Détection et réaction
@@ -457,6 +472,7 @@ omit =
  # tests/e2e/test_user_scenario_detection.py
    def test_user_detection_reaction():
        """Utilisateur entre, BBIA détecte, réagit avec émotion."""
+
    ```
 
 **Fichiers à créer** :
@@ -468,6 +484,7 @@ tests/e2e/scenarios/
   test_user_conversation.py
   test_user_detection.py
   test_user_emergency.py
+
 ```
 
 **Impact** : +0.5 point (validation scénarios réels)
@@ -506,6 +523,7 @@ jobs:
             --benchmark-json=benchmark.json
       - name: Store results
         uses: benchmark-action/github-action@master
+
 ```
 
 **Fichiers à créer** :
@@ -566,6 +584,7 @@ tests/security/
   test_api_security.py
   test_model_security.py
   test_validation_advanced.py
+
 ```
 
 **Impact** : +0.3 point (sécurité renforcée)
@@ -592,6 +611,7 @@ app = FastAPI(
     version="1.3.2",
     openapi_url="/openapi.json"
 )
+
 ```
 
 **Actions** :
@@ -621,6 +641,7 @@ app = FastAPI(
 2. Build package : python -m build
 3. Upload : twine upload dist/*
 4. Versionner automatiquement
+
 ```
 
 **Impact** : +0.2 point (facilité installation)
@@ -713,6 +734,7 @@ app = FastAPI(
  mkdir -p tests/mocks
    touch tests/mocks/reachy_mini_mock.py
    # Implémenter mock basique
+
    ```
 
 2. **Finaliser logo** (4h)

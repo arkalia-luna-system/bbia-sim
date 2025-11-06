@@ -74,6 +74,7 @@ flowchart TD
     style END1 fill:#90EE90
     style CHECK fill:#F8B739
     style INSTALL_OK fill:#FFA07A
+
 ```
 
 ---
@@ -100,6 +101,7 @@ pip install -e .
 
 # Installation avec extras
 pip install -e ".[dev,test,audio]"
+
 ```
 
 ### Quelles sont les dépendances requises ?
@@ -115,6 +117,7 @@ Voir `pyproject.toml` pour liste complète.
 
 ```bash
 python scripts/bbia_doctor.py
+
 ```
 
 Diagnostic complet de l'environnement.
@@ -131,6 +134,7 @@ Diagnostic complet de l'environnement.
 
 ```bash
 pip install mujoco
+
 ```
 
 ### Erreur "MuJoCo version incompatible"
@@ -141,18 +145,21 @@ pip install mujoco
 
 ```bash
 pip install --upgrade mujoco
+
 ```
 
 ### Comment désactiver MuJoCo (headless) ?
 
 ```bash
 export BBIA_DISABLE_SIMULATION=1
+
 ```
 
 Ou dans code :
 
 ```python
 os.environ["BBIA_DISABLE_SIMULATION"] = "1"
+
 ```
 
 ---
@@ -173,6 +180,7 @@ os.environ["BBIA_DISABLE_SIMULATION"] = "1"
 
 ```bash
 export BBIA_DISABLE_AUDIO=1
+
 ```
 
 ### Erreur "sounddevice unavailable"
@@ -181,12 +189,14 @@ export BBIA_DISABLE_AUDIO=1
 
 ```bash
 pip install sounddevice soundfile
+
 ```
 
 Ou désactiver audio :
 
 ```bash
 export BBIA_DISABLE_AUDIO=1
+
 ```
 
 ### Audio ne fonctionne pas sur Raspberry Pi
@@ -224,12 +234,14 @@ export BBIA_DISABLE_AUDIO=1
 ```python
 from bbia_sim.model_optimizer import clear_model_cache
 clear_model_cache()
+
 ```
 
 Ou manuellement :
 
 ```bash
 rm -rf ~/.cache/huggingface/
+
 ```
 
 ---
@@ -270,6 +282,7 @@ rm -rf ~/.cache/huggingface/
 
 ```bash
 pip install -e .
+
 ```
 
 ### `ImportError: cannot import name 'RobotAPI'`
@@ -278,6 +291,7 @@ pip install -e .
 
 ```bash
 python scripts/bbia_doctor.py
+
 ```
 
 ### Tests échouent en CI
@@ -287,6 +301,7 @@ python scripts/bbia_doctor.py
 ```bash
 export BBIA_DISABLE_AUDIO=1
 export BBIA_DISABLE_SIMULATION=1
+
 ```
 
 ---

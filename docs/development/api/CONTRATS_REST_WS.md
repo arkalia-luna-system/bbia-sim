@@ -44,6 +44,7 @@ graph TB
     style REST fill:#90EE90
     style WS_ENDPOINT fill:#87CEEB
     style AUTH fill:#FFD700
+
 ```
 
 ## REST
@@ -71,6 +72,7 @@ sequenceDiagram
     API-->>Client: 200 OK + JSON
     
     Note over Client,Robot: Codes HTTP standards
+
 ```
 
 ## WebSocket
@@ -101,6 +103,7 @@ sequenceDiagram
     WS-->>Client: pong
     
     Note over Client,Robot: Messages typés + schema_version
+
 ```
 
 ## Sécurité
@@ -124,6 +127,7 @@ flowchart LR
     style DENY fill:#FFB6C1
     style CHECK fill:#FFD700
     style REQUEST fill:#87CEEB
+
 ```
 
 ## Références
@@ -136,6 +140,7 @@ flowchart LR
 ```bash
 curl -s http://localhost:8000/health || true
 curl -s http://localhost:8000/openapi.json | head -n 20
+
 ```
 
 ---

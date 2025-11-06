@@ -78,6 +78,7 @@
 <body name="tableau_mur" pos="0 1.8 1.2">
   <geom type="box" size="0.01 0.5 0.5" material="mat_poster"/>
 </body>
+
 ```
 
 ---

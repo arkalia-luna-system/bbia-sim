@@ -18,6 +18,7 @@ artifacts/golden/
   lookat_mujoco_long.jsonl    # Version longue
   wakeup_mujoco_long.jsonl    # Version longue
   schema.md                   # Schéma des traces
+
 ```
 
 > **Note** : Les traces golden sont stockées dans `artifacts/golden/` (pas `assets/golden/`)
@@ -37,6 +38,7 @@ python scripts/record_trace.py --emotion happy --duration 5 --out artifacts/gold
 
 # Enregistrer une trace de test
 python scripts/record_trace.py --emotion happy --duration 2 --out current_trace.jsonl
+
 ```
 
 ## ✅ Validation

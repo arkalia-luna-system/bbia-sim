@@ -67,6 +67,7 @@ Caméra:
   source venv-vision-py310/bin/activate
   pip install -r requirements/requirements-deepface.txt
   # Ou: pip install deepface onnxruntime
+
   ```
 
 - Utilisation:
@@ -97,6 +98,7 @@ Caméra:
 from bbia_sim.bbia_huggingface import BBIAHuggingFace
 bbia = BBIAHuggingFace()
 bbia.enable_llm_chat()  # Télécharge/charge le LLM (internet requis au premier run)
+
 ```
 
 ---

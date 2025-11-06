@@ -53,6 +53,7 @@ graph TB
     style API fill:#FFD700
     style MUJOCO fill:#4ECDC4
     style REACHY fill:#45B7D1
+
 ```
 
 Avantage : aucune modification des modules BBIA nécessaire.
@@ -78,6 +79,7 @@ flowchart TD
 
     style START fill:#90EE90
     style READY fill:#87CEEB
+
 ```
 
 ### 1. Installation du SDK officiel
@@ -90,6 +92,7 @@ pip install reachy-mini
 pip install eclipse-zenoh
 pip install reachy-mini-motor-controller
 pip install reachy-mini-rust-kinematics
+
 ```
 
 ### 2. Configuration du daemon
@@ -102,6 +105,7 @@ reachy-mini-daemon --backend zenoh
 
 # Vérifier la connexion
 curl http://localhost:8000/development/api/state/full
+
 ```
 
 #### Option B : Bridge FastAPI → Zenoh
@@ -112,6 +116,7 @@ from bbia_sim.daemon.bridge import ZenohBridge
 
 bridge = ZenohBridge()
 bridge.start()
+
 ```
 
 ### 3. Modification de configuration
@@ -128,6 +133,7 @@ ROBOT_CONFIG = {
         "connect": ["tcp://localhost:7447"]
     }
 }
+
 ```
 
 #### Variables d'environnement
@@ -136,6 +142,7 @@ ROBOT_CONFIG = {
 export BBIA_ROBOT_BACKEND=reachy_mini
 export BBIA_DAEMON_URL=http://localhost:8000
 export BBIA_ZENOH_MODE=client
+
 ```
 
 ### 4. Test de migration
@@ -156,6 +163,7 @@ robot.look_at(0.5, 0.0, 0.0)
 from bbia_sim.bbia_emotions import BBIAEmotions
 emotions = BBIAEmotions()
 emotions.set_emotion("excited", 0.9)
+
 ```
 
 ---
@@ -179,6 +187,7 @@ SAFETY_LIMITS = {
     "emergency_stop": True,
     "collision_detection": True
 }
+
 ```
 
 #### Test "Dry Run"
@@ -188,6 +197,7 @@ SAFETY_LIMITS = {
 robot.set_dry_run_mode(True)
 robot.goto_target(head=pose)  # Simulation seulement
 robot.set_dry_run_mode(False)  # Retour au mode normal
+
 ```
 
 ### Communication réseau
@@ -206,6 +216,7 @@ def handle_disconnection():
     robot.set_emergency_stop()
     robot.save_current_state()
     # Tentative de reconnexion automatique
+
 ```
 
 ---
@@ -232,6 +243,7 @@ def test_sdk_conformity():
 
     result = robot.goto_target(head=pose, duration=1.0)
     assert result is None  # Conformité SDK
+
 ```
 
 ### 2. Tests de performance
@@ -253,6 +265,7 @@ def test_performance_migration():
 
     # Vérifier que la latence reste acceptable
     assert real_latency < sim_latency * 10  # Max 10x plus lent
+
 ```
 
 ### 3. Tests d'intégration BBIA
@@ -276,6 +289,7 @@ def test_bbia_modules_migration():
     from bbia_sim.bbia_behavior import BBIABehaviorManager
     behavior = BBIABehaviorManager()
     behavior.run_behavior("greeting", 3.0)
+
 ```
 
 ---
@@ -292,6 +306,7 @@ OPTIMIZATION_CONFIG = {
     "gpu_acceleration": False,  # Pas de GPU sur Pi
     "audio_buffer_size": 1024,  # Buffer plus petit
 }
+
 ```
 
 ### 2. Gestion audio
@@ -304,6 +319,7 @@ AUDIO_CONFIG = {
     "buffer_size": 512,
     "latency": "low",
 }
+
 ```
 
 ### 3. Gestion vidéo
@@ -316,6 +332,7 @@ VIDEO_CONFIG = {
     "compression": "h264",
     "bitrate": 500000,  # Bitrate réduit
 }
+
 ```
 
 ---
@@ -335,6 +352,7 @@ def monitor_robot_performance():
         "joint_errors": robot.get_joint_errors(),
     }
     return metrics
+
 ```
 
 ### 2. Logs de debug
@@ -348,6 +366,7 @@ LOGGING_CONFIG = {
     "rotation": "1 day",
     "retention": "7 days",
 }
+
 ```
 
 ---
@@ -389,6 +408,7 @@ curl http://localhost:8000/development/api/state/full
 
 # Redémarrer le daemon
 sudo systemctl restart reachy-mini-daemon
+
 ```
 
 #### 2. Latence élevée
@@ -400,6 +420,7 @@ ZENOH_CONFIG = {
     "connect": ["tcp://192.168.1.100:7447"],  # IP directe
     "timeout": 1000,  # Timeout réduit
 }
+
 ```
 
 #### 3. Erreurs de joint
@@ -409,6 +430,7 @@ ZENOH_CONFIG = {
 joint_limits = robot.get_joint_limits()
 for joint, limits in joint_limits.items():
     print(f"{joint}: {limits}")
+
 ```
 
 ---

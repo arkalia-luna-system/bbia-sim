@@ -10,10 +10,10 @@
 > - CI: `.github/workflows/ci.yml`
 > - Setup rapide:
 > ```bash
->   pyenv install 3.11.9 && pyenv local 3.11.9
->   python -m pip install --upgrade pip
->   pip install -e .
->   ```
+> pyenv install 3.11.9 && pyenv local 3.11.9
+> python -m pip install --upgrade pip
+> pip install -e .
+> ```
 
 ## Votre premier robot BBIA en 5 minutes
 
@@ -29,6 +29,7 @@ graph LR
 
     style USER fill:#90EE90
     style ROBOT fill:#87CEEB
+
 ```
 
 ### Parcours Démarrage Complet
@@ -56,6 +57,7 @@ flowchart TD
     style NEXT1 fill:#87CEEB
     style NEXT2 fill:#87CEEB
     style NEXT3 fill:#87CEEB
+
 ```
 
 ### 1. 📦 Installation
@@ -69,6 +71,7 @@ cd bbia-sim
 
 # Installer les dépendances (mode développement recommandé)
 pip install -e .[dev]
+
 ```
 
 <div align="center">
@@ -88,6 +91,7 @@ python src/bbia_sim/dashboard_advanced.py
 
 # Ouvrir dans le navigateur
 # http://localhost:8000
+
 ```
 
 <div align="center">
@@ -118,6 +122,7 @@ robot.run_behavior('wake_up', duration=3.0)
 
 # Déconnecter
 robot.disconnect()
+
 ```
 
 ### 4. Tester en simulation 3D
@@ -131,6 +136,7 @@ mjpython examples/demo_emotion_ok.py --emotion happy --duration 10
 
 # Chat BBIA en 3D
 mjpython examples/demo_chat_bbia_3d.py
+
 ```
 
 > 💡 **Astuce macOS** : Utilisez `mjpython` au lieu de `python` pour les démos 3D.
@@ -147,6 +153,7 @@ python examples/demo_chat_simple.py
 
 # Chat complet avec Hugging Face
 python examples/demo_chat_bbia.py
+
 ```
 
 > 💡 **Astuce** : Le chat utilise l'intelligence artificielle pour comprendre vos messages et répondre naturellement. Voir le [Guide Chat BBIA](GUIDE_CHAT_BBIA.md) pour plus de détails.
@@ -182,6 +189,7 @@ export BBIA_DISABLE_AUDIO=1
 export BBIA_TTS_BACKEND=pyttsx3      # ou kitten/kokoro/neutts si installés
 export BBIA_STT_BACKEND=whisper      # ou parakeet
 export BBIA_LLM_BACKEND=llama.cpp    # ou qwen
+
 ```
 
 ---

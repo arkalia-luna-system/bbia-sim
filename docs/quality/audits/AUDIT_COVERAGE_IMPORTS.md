@@ -19,6 +19,7 @@ try:
     import bbia_sim.vision_yolo  # noqa: F401
 except (ImportError, AttributeError, Exception):
     pass
+
 ```
 
 **Après :**
@@ -26,6 +27,7 @@ except (ImportError, AttributeError, Exception):
 ```python
 # IMPORTANT: Import direct (pas dans try/except) pour que coverage le détecte
 import bbia_sim.vision_yolo  # noqa: F401
+
 ```
 
 ### 2. `test_voice_whisper_comprehensive.py` ✅
@@ -37,6 +39,7 @@ try:
     import bbia_sim.voice_whisper  # noqa: F401
 except (ImportError, AttributeError, Exception):
     pass
+
 ```
 
 **Après :**
@@ -44,6 +47,7 @@ except (ImportError, AttributeError, Exception):
 ```python
 # IMPORTANT: Import direct (pas dans try/except) pour que coverage le détecte
 import bbia_sim.voice_whisper  # noqa: F401
+
 ```
 
 ### 3. `test_dashboard_advanced.py` ✅
@@ -56,6 +60,7 @@ try:
     from bbia_sim.dashboard_advanced import (...)
 except (ImportError, AttributeError, Exception):
     pass
+
 ```
 
 **Après :**
@@ -64,6 +69,7 @@ except (ImportError, AttributeError, Exception):
 # IMPORTANT: Import direct (pas dans try/except) pour que coverage le détecte
 import bbia_sim.dashboard_advanced  # noqa: F401
 from bbia_sim.dashboard_advanced import (...)
+
 ```
 
 ### 4. `test_daemon_bridge.py` ✅
@@ -75,6 +81,7 @@ try:
     import bbia_sim.daemon.bridge  # noqa: F401
 except (ImportError, AttributeError, Exception):
     pass
+
 ```
 
 **Après :**
@@ -82,6 +89,7 @@ except (ImportError, AttributeError, Exception):
 ```python
 # IMPORTANT: Import direct (pas dans try/except) pour que coverage le détecte
 import bbia_sim.daemon.bridge  # noqa: F401
+
 ```
 
 ---
@@ -113,6 +121,7 @@ try:
     import bbia_sim.dashboard_advanced  # noqa: F401
 except (ImportError, AttributeError, Exception):
     pass
+
 ```
 
 **Solution appliquée** : ✅ Tous les imports sont maintenant directs au niveau module

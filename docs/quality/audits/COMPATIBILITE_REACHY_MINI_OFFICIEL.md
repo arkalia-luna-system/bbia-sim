@@ -13,6 +13,7 @@
 pip install -U reachy-mini
 # (Simulation MuJoCo officielle)
 pip install -U "reachy-mini[mujoco]"
+
 ```
 
 **Daemon officiel** :
@@ -21,12 +22,14 @@ pip install -U "reachy-mini[mujoco]"
 reachy-mini-daemon                # robot réel (ou réseau local)
 reachy-mini-daemon --sim          # simulation MuJoCo
 reachy-mini-daemon --sim --scene minimal
+
 ```
 
 **macOS (MuJoCo)** :
 
 ```bash
 mjpython -m reachy_mini.daemon.app.main --sim --scene minimal
+
 ```
 
 **Docs et releases** : [GitHub – pollen-robotics/reachy_mini](https://github.com/pollen-robotics/reachy_mini)
@@ -57,6 +60,7 @@ try:
     REACHY_MINI_AVAILABLE = True
 except ImportError:
     REACHY_MINI_AVAILABLE = False
+
 ```
 
 ---
@@ -102,6 +106,7 @@ Conclusion: aucune anomalie détectée; vos implémentations (backend, API, brid
 "psutil>=5.9.0",                        ✅
 "jinja2>=3.1.0",                        ✅
 "pyserial>=3.5",                        ✅
+
 ```
 
 **Conclusion** : Toutes les dépendances SDK officiel sont présentes dans `pyproject.toml` ✅
@@ -212,6 +217,7 @@ Conclusion: aucune anomalie détectée; vos implémentations (backend, API, brid
   ```bash
  source venv-vision-py310/bin/activate
   pip install deepface
+
   ```
 
 - ✅ **Utiliser backend ONNX** :
@@ -219,6 +225,7 @@ Conclusion: aucune anomalie détectée; vos implémentations (backend, API, brid
   ```python
   from deepface import DeepFace
   result = DeepFace.verify(img1_path, img2_path, model_name="VGG-Face", detector_backend="opencv", enforce_detection=False)
+
   ```
 
 **Impact** : Aucun impact sur SDK officiel ✅

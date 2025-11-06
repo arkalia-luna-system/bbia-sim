@@ -15,6 +15,7 @@ Option recommandée: utiliser ton venv principal
 ```bash
 . venv/bin/activate
 pip install -r requirements/requirements-veille.txt
+
 ```
 
 Variables optionnelles:
@@ -41,6 +42,7 @@ export VEILLE_NOTIFY_MACOS=true
 export VEILLE_NOTIFY_THRESHOLD=2
 export VEILLE_MAX_ENTRIES=5
 python scripts/veille_reachy_mini.py
+
 ```
 
 Sortie:
@@ -82,6 +84,7 @@ Créer un LaunchAgent ex: `~/Library/LaunchAgents/com.reachymini.veille.plist`:
   </dict>
 </dict>
   </plist>
+
 ```
 
 Charger et démarrer:
@@ -89,18 +92,21 @@ Charger et démarrer:
 ```bash
 launchctl load ~/Library/LaunchAgents/com.reachymini.veille.plist
 launchctl start com.reachymini.veille
+
 ```
 
 ### 4) Automatisation Linux (cron)
 
 ```bash
 crontab -e
+
 ```
 
 Entrée exemple (tous les jours à 02:15):
 
 ```cron
 15 2 * * * cd /Volumes/T7/bbia-reachy-sim && . venv/bin/activate && GH_TOKEN="REPLACE_IF_USED" VEILLE_MIN_SCORE=2 VEILLE_EXCLUDE_OFFICIAL=true VEILLE_ONLY_CHANGES=true VEILLE_NOTIFY_MACOS=true VEILLE_NOTIFY_THRESHOLD=2 VEILLE_MAX_ENTRIES=5 python scripts/veille_reachy_mini.py >> log/veille_cron.out 2>> log/veille_cron.err
+
 ```
 
 ### 5) Exploitation des résultats
@@ -132,6 +138,7 @@ bash scripts/onboarding/check_network.sh "$BBIA_REACHY_HOST"
 
 # Lancer une démo "safe" et journaliser dans log/onboarding_demo.log
 bash scripts/onboarding/run_demo_safe.sh
+
 ```
 
 Bonnes pratiques réseau: même SSID/VLAN, éviter réseau invité/isolation client. En cas d’instabilité Wi‑Fi, envisager CPL (Powerline). Les journaux sont centralisés dans `log/`.

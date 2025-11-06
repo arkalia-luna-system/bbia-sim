@@ -47,6 +47,7 @@ flowchart TB
     style TOOL fill:#90EE90
     style VLM fill:#87CEEB
     style NER fill:#FFD700
+
 ```
 
 ---
@@ -73,6 +74,7 @@ sequenceDiagram
     HF->>Tools: execute_tool("move_head", params)
     Tools->>Robot: move_head(direction="right")
     Robot-->>User: ✅ Tête orientée à droite
+
 ```
 
 **Avantages** :
@@ -88,6 +90,7 @@ Le NLP est activé automatiquement si `sentence-transformers` est installé :
 
 ```bash
 pip install sentence-transformers
+
 ```
 
 **Modèle utilisé** : `sentence-transformers/all-MiniLM-L6-v2` (gratuit, Hugging Face)
@@ -107,6 +110,7 @@ hf = BBIAHuggingFace(tools=tools)
 # Chat avec détection NLP automatique
 response = hf.chat("peux-tu orienter ta tête vers la droite", enable_tools=True)
 # → Détecte automatiquement "move_head" via NLP
+
 ```
 
 ### Méthode manuelle
@@ -118,6 +122,7 @@ result = hf._detect_tool_with_nlp("tourne la tête à gauche")
 if result:
     tool_name, confidence = result
     print(f"Outil: {tool_name}, Confiance: {confidence:.2f}")
+
 ```
 
 ### Seuil de confiance
@@ -167,6 +172,7 @@ flowchart LR
     
     style EXTRACT fill:#FFD700
     style PARAMS fill:#90EE90
+
 ```
 
 ### Exemples
@@ -183,6 +189,7 @@ hf.chat("à pi/2 radians vers le haut", enable_tools=True)
 
 hf.chat("à 75% vers la gauche", enable_tools=True)
 # → Extraie: angle=67.5° (75% de 90°)
+
 ```
 
 #### Extraction intensités
@@ -196,6 +203,7 @@ hf.chat("beaucoup plus haut", enable_tools=True)
 
 hf.chat("à 50% vers le bas", enable_tools=True)
 # → Intensité: 0.5
+
 ```
 
 ### Mots-clés intensité
@@ -231,6 +239,7 @@ model_configs["multimodal"] = {
         "revision": "2025-08-26",
     },
 }
+
 ```
 
 ### Utilisation
@@ -248,6 +257,7 @@ hf.enable_multimodal_model("smolvlm")
 # Décrire image
 description = hf.describe_image(image_path, model_name="smolvlm")
 print(description)
+
 ```
 
 ### Modèles disponibles
@@ -281,6 +291,7 @@ whisper = WhisperSTT(enable_vad=True)
 import numpy as np
 audio_chunk = np.random.rand(16000).astype(np.float32)
 is_speech = whisper.detect_speech_activity(audio_chunk)
+
 ```
 
 #### Transcription avec VAD automatique
@@ -291,6 +302,7 @@ text = whisper.transcribe_microphone_with_vad(
     duration=10.0,  # Durée max
     silence_threshold=0.3  # Arrêt après 0.3s de silence
 )
+
 ```
 
 ### Désactivation VAD
@@ -298,6 +310,7 @@ text = whisper.transcribe_microphone_with_vad(
 ```python
 whisper = WhisperSTT(enable_vad=False)
 # → Toujours considère comme parole (pas de détection)
+
 ```
 
 ---
@@ -320,6 +333,7 @@ text = whisper.transcribe_streaming(
     chunk_duration=0.5,  # Chunks de 500ms
     max_duration=30.0  # Durée max
 )
+
 ```
 
 #### Streaming avec callback
@@ -332,6 +346,7 @@ text = whisper.transcribe_streaming(
     callback=on_chunk_transcribed,
     chunk_duration=0.5
 )
+
 ```
 
 ### Optimisations
@@ -365,6 +380,7 @@ for msg in messages:
     response = hf.chat(msg, enable_tools=True)
     print(f"Utilisateur: {msg}")
     print(f"BBIA: {response}\n")
+
 ```
 
 ### Exemple 2 : Extraction paramètres avancée
@@ -377,6 +393,7 @@ hf.chat("tourne la tête de 30 degrés vers la droite", enable_tools=True)
 # Extraction intensité
 hf.chat("légèrement vers la gauche", enable_tools=True)
 # → Paramètres: direction="left", intensity=0.2
+
 ```
 
 ### Exemple 3 : VAD + Streaming
@@ -396,6 +413,7 @@ text = whisper.transcribe_streaming(
     chunk_duration=0.5,
     max_duration=10.0
 )
+
 ```
 
 ### Exemple 4 : SmolVLM2 pour description images
@@ -411,6 +429,7 @@ hf.enable_multimodal_model("smolvlm")
 # Décrire image
 description = hf.describe_image("image.jpg", model_name="smolvlm")
 print(f"Description: {description}")
+
 ```
 
 ---
@@ -425,6 +444,7 @@ export BBIA_DISABLE_AUDIO=1
 
 # Modèle Whisper
 export WHISPER_MODEL_SIZE=tiny  # tiny, base, small, medium, large
+
 ```
 
 ### Dependencies
@@ -436,6 +456,7 @@ dependencies = [
     "transformers>=4.30.0",  # VAD, SmolVLM2
     "openai-whisper>=20231117",  # Streaming
 ]
+
 ```
 
 ---
@@ -450,6 +471,7 @@ dependencies = [
 
 ```bash
 pip install sentence-transformers scikit-learn
+
 ```
 
 ### VAD erreur chargement
@@ -460,6 +482,7 @@ pip install sentence-transformers scikit-learn
 
 ```bash
 pip install transformers torch
+
 ```
 
 ### SmolVLM2 lent

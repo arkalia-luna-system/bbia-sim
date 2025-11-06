@@ -53,6 +53,7 @@ robot.media.microphone      # Accès 4 microphones directionnels avec annulation
 robot.media.speaker         # Haut-parleur 5W optimisé hardware
 robot.media.play_audio()    # Lecture audio optimisée
 robot.media.record_audio()  # Enregistrement optimisé
+
 ```
 
 **Modules implémentés :**

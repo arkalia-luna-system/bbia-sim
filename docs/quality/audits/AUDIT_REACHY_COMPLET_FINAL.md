@@ -86,6 +86,7 @@ def emergency_stop(self) -> bool:
         except Exception as e:
             logger.error(f"Erreur emergency_stop: {e}")
     return False
+
 ```
 
 **Tests créés**:
@@ -134,6 +135,7 @@ DEFAULT_BUFFER_SIZE = 512    # ✅ SDK optimisé (déjà aligné)
 # Utilisation robot.media.record_audio() lignes 162-208
 if robot_api and hasattr(robot_api.media, "record_audio"):
     audio_data = robot_api.media.record_audio(duration=duree, sample_rate=frequence)
+
 ```
 
 ---
@@ -296,6 +298,7 @@ pytest tests/test_reachy_mini_backend.py -q -k "unit or fast" -m "not e2e"
 
 # 6. Réexécuter audit complet
 python scripts/audit_reachy_integration.py
+
 ```
 
 ---
@@ -328,6 +331,7 @@ python scripts/audit_reachy_integration.py
 - [ ] bandit (pas de high) ✅
 - [ ] pytest unit/fast ✅
 - [ ] Conformité SDK vérifiée ✅
+
 ```
 
 ### Reviewers suggérés

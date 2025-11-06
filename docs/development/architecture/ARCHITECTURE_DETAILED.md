@@ -147,6 +147,7 @@ Avantages :
 **Structure :** `src/bbia_sim/bbia_*.py`
 
 #### **BBIA Emotions**
+
 ```python
 
 class BBIAEmotions:
@@ -166,6 +167,7 @@ class BBIAEmotions:
 - `fearful`, `disgusted`, `contemptuous`, `embarrassed`
 
 #### **BBIA Vision**
+
 ```python
 
 class BBIAVision:
@@ -186,6 +188,7 @@ class BBIAVision:
 - Caméra grand angle 1080p
 
 #### **BBIA Voice**
+
 ```python
 
 class BBIAVoice:
@@ -206,6 +209,7 @@ class BBIAVoice:
 - **Latence :** <800ms STT
 
 #### **BBIA Behavior**
+
 ```python
 
 class BBIABehaviorManager:
@@ -226,6 +230,7 @@ class BBIABehaviorManager:
 **Structure :** `src/bbia_sim/sim/`
 
 #### **MuJoCo Simulator**
+
 ```python
 
 class MuJoCoSimulator:
@@ -526,6 +531,7 @@ warn_return_any = false
 ### **Environnements**
 
 #### **Développement**
+
 ```bash
 
 # Dashboard avancé
@@ -543,6 +549,7 @@ python scripts/bbia_performance_benchmarks.py --benchmark all
 ```text
 
 #### **Production**
+
 ```bash
 
 # Robot réel
@@ -590,6 +597,7 @@ class ProductionConfig:
 ### **Points d'Extension**
 
 #### **Nouveaux Backends**
+
 ```python
 
 class CustomBackend(RobotAPI):
@@ -602,6 +610,7 @@ class CustomBackend(RobotAPI):
 ```text
 
 #### **Nouveaux Modules BBIA**
+
 ```python
 
 class CustomBBIAModule:
@@ -617,6 +626,7 @@ class CustomBBIAModule:
 ```text
 
 #### **Nouvelles Métriques**
+
 ```python
 
 class CustomMetricsCollector:

@@ -30,6 +30,7 @@ pip install -r requirements/requirements-deepface.txt
 
 # Ou directement
 pip install deepface onnxruntime
+
 ```
 
 ### Option 2 : Dans venv principal (si pas de conflit)
@@ -37,6 +38,7 @@ pip install deepface onnxruntime
 ```bash
 source venv/bin/activate
 pip install deepface onnxruntime
+
 ```
 
 **Note** : `onnxruntime` est recommandé pour Raspberry Pi 5 (plus rapide que TensorFlow)
@@ -50,6 +52,7 @@ pip install deepface onnxruntime
 ```bash
 # Prendre une photo claire (visage bien visible)
 python scripts/test_deepface.py --register photo_alice.jpg --name Alice
+
 ```
 
 **Résultat** : La photo est copiée dans `faces_db/Alice/`
@@ -59,6 +62,7 @@ python scripts/test_deepface.py --register photo_alice.jpg --name Alice
 ```bash
 # Avec webcam ou image
 python scripts/test_deepface.py --recognize frame.jpg
+
 ```
 
 **Résultat** :
@@ -68,12 +72,14 @@ python scripts/test_deepface.py --recognize frame.jpg
    • Nom: Alice
    • Confiance: 87%
    • Distance: 0.132
+
 ```
 
 ### 3. Détecter l'émotion
 
 ```bash
 python scripts/test_deepface.py --emotion photo.jpg
+
 ```
 
 **Résultat** :
@@ -88,6 +94,7 @@ python scripts/test_deepface.py --emotion photo.jpg
       • neutral: 3.1%
       • sad: 1.2%
       • ...
+
 ```
 
 ---
@@ -110,6 +117,7 @@ for face in result["faces"]:
     print(f"Personne: {face['name']}")  # "Alice" au lieu de "humain"
     print(f"Émotion: {face['emotion']}")  # "happy", "sad", etc.
     print(f"Confiance émotion: {face['emotion_confidence']}")
+
 ```
 
 **Ce qui se passe** :
@@ -132,6 +140,7 @@ export BBIA_FACES_DB="faces_db"
 # Modèle DeepFace (défaut: VGG-Face)
 # Options: VGG-Face, Facenet, OpenFace, DeepID, ArcFace
 export BBIA_DEEPFACE_MODEL="VGG-Face"
+
 ```
 
 ### Modèles DeepFace
@@ -161,6 +170,7 @@ faces_db/
 │   └── photo_maman.jpg
 └── Papa/
     └── photo_papa.jpg
+
 ```
 
 **Format** : Un dossier par personne, photos à l'intérieur
@@ -187,6 +197,7 @@ for face in result["faces"]:
             dire_texte("Tu as l'air heureux aujourd'hui !", robot_api=None)
         elif face["emotion"] == "sad":
             dire_texte("Tu as l'air triste, veux-tu parler ?", robot_api=None)
+
 ```
 
 ### Exemple 2 : Enregistrer depuis webcam
@@ -207,6 +218,7 @@ cv2.imwrite("temp_face.jpg", frame)
 
 # Enregistrer
 face_rec.register_person("temp_face.jpg", "Alice")
+
 ```
 
 ---
@@ -220,6 +232,7 @@ face_rec.register_person("temp_face.jpg", "Alice")
 ```bash
 source venv-vision-py310/bin/activate
 pip install deepface onnxruntime
+
 ```
 
 ### Erreur : "No face detected"

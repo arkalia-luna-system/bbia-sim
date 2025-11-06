@@ -25,6 +25,7 @@
 <!-- Antennes -->
 <joint name="right_antenna" type="hinge"/>
 <joint name="left_antenna" type="hinge"/>
+
 ```
 
 #### **Joints Passifs (Ball joints)**
@@ -37,6 +38,7 @@
 <joint name="passive_5" type="ball"/>
 <joint name="passive_6" type="ball"/>
 <joint name="passive_7" type="ball"/>
+
 ```
 
 ### **Différences détectées**

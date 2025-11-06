@@ -45,6 +45,7 @@ graph TB
     style APP fill:#90EE90
     style METRICS fill:#FFD700
     style HEALTH fill:#87CEEB
+
 ```
 
 ## Logs structurés (proposé)
@@ -68,6 +69,7 @@ flowchart LR
     
     style EVENT fill:#90EE90
     style LOGGER fill:#FFD700
+
 ```
 
 ## Endpoints santé (proposé)
@@ -99,6 +101,7 @@ sequenceDiagram
     CONFIG-->>API: ✅ OK
     
     API-->>LB: 200 Ready
+
 ```
 
 ## Métriques Prometheus (proposé)
@@ -127,6 +130,7 @@ mindmap
     Robot
       bbia_watchdog_heartbeat_age_seconds
       bbia_robot_connected
+
 ```
 
 ## Intégration CI

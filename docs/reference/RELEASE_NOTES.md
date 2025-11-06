@@ -7,11 +7,11 @@
 > - Version Python supportée: 3.11+
 > - CI: GitHub Actions (`.github/workflows/ci.yml`)
 > - Setup rapide:
->   ```bash
->   pyenv install 3.11.9 && pyenv local 3.11.9
->   python -m pip install --upgrade pip
->   pip install -e .
->   ```
+> ```bash
+> pyenv install 3.11.9 && pyenv local 3.11.9
+> python -m pip install --upgrade pip
+> pip install -e .
+> ```
 
 ## Version 1.3.2 - Alignement complet et release stable
 
@@ -191,6 +191,7 @@ graph TB
     SMOKE --> API
     CI --> GOLDEN
     CI --> SMOKE
+
 ```
 
 ## Améliorations techniques
@@ -239,6 +240,7 @@ python examples/demo_emotion_ok.py --backend mujoco --emotion happy
 
 # Robot réel (mock)
 python examples/demo_emotion_ok.py --backend reachy --emotion happy
+
 ```
 
 ### Golden tests
@@ -249,6 +251,7 @@ pytest -q tests/test_golden_traces.py
 
 # Régénérer référence
 python scripts/record_trace.py --emotion happy --duration 5
+
 ```
 
 ## Migration depuis v1.0.x

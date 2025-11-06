@@ -15,6 +15,7 @@
 python -m venv venv-voice
 source venv-voice/bin/activate
 pip install -r requirements/requirements-voice.txt
+
 ```
 
 ---
@@ -24,6 +25,7 @@ pip install -r requirements/requirements-voice.txt
 ```bash
 source venv-voice/bin/activate
 python scripts/voice_clone/enregistrer_sample.py --out assets/voice/ref.wav --dur 30
+
 ```
 
 Conseils: parle calmement, quelques phrases variées; micro proche, pièce calme.
@@ -48,6 +50,7 @@ python scripts/voice_clone/generate_voice.py \
 python scripts/voice_clone/generate_voice.py \
   --text "Salut ! C’est génial de te retrouver ! On commence ?" \
   --mode enthousiaste --out assets/voice/bbia_enthousiaste.wav
+
 ```
 
 ---
@@ -60,6 +63,7 @@ python scripts/voice_clone/play_voice.py --file assets/voice/bbia_enfant.wav
 # Lister périphériques et choisir la sortie si besoin
 python scripts/voice_clone/play_voice.py --list-devices
 python scripts/voice_clone/play_voice.py --file assets/voice/bbia_enfant.wav --output 1
+
 ```
 
 ---
@@ -71,6 +75,7 @@ Tu peux router `dire_texte()` vers la génération locale (offline) via une comm
 ```bash
 export OPENVOICE_CMD="python scripts/voice_clone/generate_voice.py --text '{text}' --mode enfant --out '{out}'"
 export BBIA_TTS_BACKEND=openvoice
+
 ```
 
 Si la commande échoue, BBIA retombe automatiquement sur `pyttsx3` (voix système).
@@ -95,6 +100,7 @@ black .
 ruff check --fix .
 mypy .
 bandit -r src/bbia_sim -ll
+
 ```
 
 ---

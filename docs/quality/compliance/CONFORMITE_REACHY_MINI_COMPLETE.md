@@ -75,6 +75,7 @@ pie title Conformité SDK Reachy Mini
     "Tests Passants" : 37
     "Émotions Supportées" : 6
     "Comportements" : 3
+
 ```
 
 ### Architecture Conformité
@@ -107,6 +108,7 @@ graph TB
     style SDK fill:#90EE90
     style TESTS fill:#FFD700
     style ROBOTAPI fill:#87CEEB
+
 ```
 
 ### 📌 Matrice de compatibilité (SDK officiel)
@@ -156,6 +158,7 @@ from reachy_mini.utils import create_head_pose
 from reachy_mini.utils.interpolation import InterpolationTechnique
 # SDK Version: Compatible avec les spécifications d'Oct / Nov. 2025
 # GitHub: https://github.com/pollen-robotics/reachy_mini (disponible depuis Oct / Nov. 2025)
+
 ```
 
 #### Classe ReachyMini
@@ -678,6 +681,7 @@ pip install -U "reachy-mini[mujoco]"
 
 # Installer BBIA-SIM (votre projet)
 pip install -e .
+
 ```
 
 ### Utilisation basique
@@ -709,6 +713,7 @@ print(telemetry)
 
 # Déconnecter
 robot.disconnect()
+
 ```
 
 ### Lancer le daemon officiel Reachy Mini
@@ -722,6 +727,7 @@ reachy-mini-daemon --sim
 
 # Scène minimale (table + objets)
 reachy-mini-daemon --sim --scene minimal
+
 ```
 
 #### Note macOS (MuJoCo)
@@ -730,6 +736,7 @@ Sur macOS, utiliser `mjpython` pour lancer la simulation MuJoCo :
 
 ```bash
 mjpython -m reachy_mini.daemon.app.main --sim --scene minimal
+
 ```
 
 ### Vérifier l’API du daemon
@@ -737,6 +744,7 @@ mjpython -m reachy_mini.daemon.app.main --sim --scene minimal
 ```bash
 curl http://localhost:8000/development/api/state/full
 # Docs: http://localhost:8000/docs
+
 ```
 
 ### Exécuter les Tests de Conformité
@@ -759,6 +767,7 @@ python scripts/verify_tests_consolidation.py
 
 # Générer le rapport
 python scripts/generate_conformity_report_reachy_mini.py
+
 ```
 
 ### 📊 Structure des Tests (Oct / Nov. 2025)

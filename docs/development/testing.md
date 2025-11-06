@@ -64,6 +64,7 @@ graph TB
     style WEBSOCKET fill:#FF6B6B
     style VERTICAL fill:#98D8C8
     style GOLDEN fill:#FFD700
+
 ```
 
 ## 📊 Couverture par module
@@ -80,6 +81,7 @@ pie title Coverage par Module (exemple)
     "sim/simulator.py" : 99.29
     "unity_reachy_controller.py" : 81.68
     "Autres" : 23.07
+
 ```
 
 ## 🧪 Types de tests
@@ -100,6 +102,7 @@ graph TB
     style UNIT fill:#90EE90
     style INTEGRATION fill:#FFD700
     style E2E fill:#87CEEB
+
 ```
 
 ### Détails par Type
@@ -136,6 +139,7 @@ graph LR
     style E2E fill:#87CEEB
     style PERF fill:#FF6B6B
     style REACHY fill:#BB8FCE
+
 ```
 
 ### 🤖 Tests Backend Reachy Mini (Oct / Nov. 2025)
@@ -167,6 +171,7 @@ pytest tests/test_reachy_mini*.py -v
 
 # Vérifier les doublons/redondances
 python scripts/verify_tests_consolidation.py
+
 ```
 
 │ ├── test_bbia_emotions.py # Tests émotions
@@ -185,6 +190,7 @@ python scripts/verify_tests_consolidation.py
 ## Commandes de tests
 
 ### Tests complets
+
 ```bash
 
 # Lancer tous les tests avec coverage complet
@@ -202,6 +208,7 @@ python -m pytest tests/ --cov=src --cov-report=term-missing -x
 ```text
 
 ### Tests golden traces
+
 ```bash
 
 # Tests de non-régression golden traces
@@ -219,6 +226,7 @@ python scripts/validate_trace.py --ref artifacts/golden/happy_mujoco.jsonl --cur
 ```text
 
 ### Tests spécifiques
+
 ```bash
 
 # Tests d'un module spécifique
@@ -248,6 +256,7 @@ python -m pytest tests/test_bbia_emotions.py::TestBBIAEmotions::test_set_emotion
 ```text
 
 ### Vérification de la couverture
+
 ```bash
 
 # Ouvrir le rapport HTML (macOS)
@@ -267,6 +276,7 @@ python -m pytest tests/test_bbia_emotions.py --cov=src.bbia_sim.bbia_emotions --
 ## ⚙️ Configuration
 
 ### pyproject.toml
+
 ```toml
 
 [tool.pytest.ini_options]
@@ -297,6 +307,7 @@ precision = 2
 ```text
 
 ### .coveragerc
+
 ```ini
 
 [run]
@@ -336,6 +347,7 @@ output = coverage.xml
 **Solutions :**
 
 1. **Vérifier la configuration pytest :**
+
 ```bash
 
 python -m pytest --collect-only -q | wc -l
@@ -345,6 +357,7 @@ python -m pytest --collect-only -q | wc -l
 ```text
 
 2. **Vérifier la structure des dossiers :**
+
 ```bash
 
 find tests/ -name "test_*.py" | wc -l
@@ -352,6 +365,7 @@ find tests/ -name "test_*.py" | wc -l
 ```text
 
 3. **Vérifier les fichiers __init__.py :**
+
 ```bash
 
 find tests/ -name "__init__.py"
@@ -359,6 +373,7 @@ find tests/ -name "__init__.py"
 ```text
 
 4. **Tester la configuration coverage :**
+
 ```bash
 
 python -m pytest tests/test_config.py --cov=src --cov-report=term-missing

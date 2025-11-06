@@ -44,6 +44,7 @@ docs/
 ├── ai/                  # 🧠 Intelligence artificielle
 ├── simulations/         # 🎯 Simulation
 └── reference/           # 📚 Références
+
 ```
 
 ---

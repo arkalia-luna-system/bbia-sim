@@ -50,6 +50,7 @@ class GotoModelRequest(BaseModel):
 @router.post("/goto")  # Changer de goto_pose
 async def goto(goto_req: GotoModelRequest) -> dict[str, Any]:
     # Implémentation conforme
+
 ```
 
 **Test** : `tests/test_api_motion_goto_conformity.py`
@@ -74,6 +75,7 @@ move_tasks: dict[UUID, asyncio.Task[None]] = {}  # Ajouter en haut
 async def get_running_moves() -> list[dict[str, str]]:
     """Récupère la liste des mouvements en cours."""
     return [{"uuid": str(uuid)} for uuid in move_tasks.keys()]
+
 ```
 
 **Niveau** : 🟡 **COMPATIBLE** - Utile pour debugging/monitoring
@@ -103,6 +105,7 @@ async def stop_move(uuid: MoveUUID) -> dict[str, str]:
     if task:
         task.cancel()
     return {"message": f"Stopped move {uuid.uuid}"}
+
 ```
 
 **Niveau** : 🟡 **COMPATIBLE** - Utile pour contrôler les mouvements
@@ -132,6 +135,7 @@ async def ws_move_updates(websocket: WebSocket) -> None:
             _ = await websocket.receive_text()
     except WebSocketDisconnect:
         move_listeners.remove(websocket)
+
 ```
 
 **Niveau** : 🟡 **COMPATIBLE** - Utile pour monitoring temps réel
@@ -162,6 +166,7 @@ async def set_target(target: FullBodyTarget) -> dict[str, str]:
             )
         robot.disconnect()
     return {"status": "ok"}
+
 ```
 
 **Niveau** : 🟡 **COMPATIBLE** - Utile pour contrôles directs
@@ -201,6 +206,7 @@ async def list_recorded_move_dataset(dataset_name: str) -> list[str]:
         return moves.list_moves()
     except Exception as e:
         raise HTTPException(status_code=404, detail=str(e))
+
 ```
 
 **Niveau** : 🟢 **OPTIONNEL** - Nécessite intégration HuggingFace Hub
@@ -264,6 +270,7 @@ async def get_present_head_pose(
     use_pose_matrix: bool = Query(False, description="Use 4x4 matrix format")
 ) -> dict[str, Any]:
     # Retourner Matrix4x4Pose ou XYZRPYPose selon use_pose_matrix
+
 ```
 
 **Niveau** : 🟡 **COMPATIBLE** - Améliore l'interopérabilité

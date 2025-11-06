@@ -113,6 +113,7 @@ Toutes les différences subtiles détectées ont été corrigées pour garantir 
 ```python
 app.include_router(state.router, prefix="/development/api/state", ...)
 app.include_router(move.router, prefix="/development/api/move", ...)
+
 ```
 
 **Après** (Conforme SDK):
@@ -126,6 +127,7 @@ api_router.include_router(daemon.router)
 api_router.include_router(kinematics.router)
 api_router.include_router(apps.router)
 app.include_router(api_router, dependencies=[Depends(verify_token)])
+
 ```
 
 ---
@@ -161,6 +163,7 @@ return create_move_task(
         # ✅ Pas de method passé (utilise MIN_JERK par défaut)
     )
 )
+
 ```
 
 ---
@@ -192,6 +195,7 @@ backend.set_target(
     else None,
     antennas=np.array(target.target_antennas) if target.target_antennas else None,
 )
+
 ```
 
 ---
@@ -216,6 +220,7 @@ backend.set_target(...)
 # APRÈS (conforme SDK)
 target = FullBodyTarget.model_validate_json(data)
 await set_target(target, backend)
+
 ```
 
 ---
@@ -250,6 +255,7 @@ class FullBodyTarget(BaseModel):
             ]
         }
     }
+
 ```
 
 ---
@@ -274,6 +280,7 @@ if with_target_head_pose:
     target_pose = backend.target_head_pose
     if target_pose is not None:  # ✅ Gestion gracieuse
         result["target_head_pose"] = as_any_pose(target_pose, use_pose_matrix)
+
 ```
 
 ---
@@ -295,6 +302,7 @@ if joints is None or np.any(np.isnan(joints)):
 # Conforme SDK: mettre à jour directement target_head_joint_positions
 self.target_head_joint_positions = joints
 self.ik_required = False
+
 ```
 
 ---

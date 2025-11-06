@@ -13,6 +13,7 @@ pie title Parité Fonctionnelle avec App Officielle
     "Implémenté (Gratuit)" : 85
     "Optionnel (Payant)" : 10
     "Non critique" : 5
+
 ```
 
 ---
@@ -71,6 +72,7 @@ graph LR
     N5 --> BBIA
     A4 --> BBIA
     BBIA --> ROBOT[RobotAPI]
+
 ```
 
 ### Toutes les améliorations ont été réalisées :
@@ -126,6 +128,7 @@ graph TB
     style BBIA1 fill:#90EE90
     style BBIA2 fill:#90EE90
     style BBIA3 fill:#90EE90
+
 ```
 
 | Fonctionnalité | App Officielle | BBIA (actuel) | Statut | Coût |

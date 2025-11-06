@@ -32,6 +32,7 @@ source venv/bin/activate
 
 # Vérifier dépendances
 pip install fastapi uvicorn websockets
+
 ```
 
 ### Lancement
@@ -42,6 +43,7 @@ python -m bbia_sim.dashboard_advanced
 
 # Ou directement
 python src/bbia_sim/dashboard_advanced.py
+
 ```
 
 Le dashboard sera accessible sur : **http://localhost:8080**
@@ -60,6 +62,7 @@ from bbia_sim.dashboard_advanced import WebSocketManager
 manager = WebSocketManager()
 await manager.connect(websocket)
 await manager.broadcast({"type": "status", "data": {...}})
+
 ```
 
 **Métriques disponibles** :
@@ -85,6 +88,7 @@ await manager.broadcast({"type": "status", "data": {...}})
 ```python
 metrics = manager.get_performance_metrics()
 # Retourne: {"cpu": 15.2, "ram": 245.5, "latency": 12.3, ...}
+
 ```
 
 ### 3. Contrôle Robot
@@ -105,6 +109,7 @@ await websocket.send_json({
     "emotion": "happy",
     "intensity": 0.8
 })
+
 ```
 
 ### 4. Chat Interactif
@@ -124,6 +129,7 @@ await websocket.send_json({
     "response": "Je vais sourire et tourner la tête à droite.",
     "actions": ["emotion:happy", "head_pose:right"]
 }
+
 ```
 
 ---
@@ -140,6 +146,7 @@ pytest tests/test_dashboard_advanced.py -v
 
 # Avec coverage
 pytest tests/test_dashboard_advanced.py --cov=src/bbia_sim/dashboard_advanced --cov-report=term-missing
+
 ```
 
 **Tests principaux** :
@@ -169,6 +176,7 @@ pytest tests/test_dashboard_advanced.py --cov=src/bbia_sim/dashboard_advanced --
     "emotion": "happy",
     "intensity": 0.8
 }
+
 ```
 
 **Messages sortants** :
@@ -181,6 +189,7 @@ pytest tests/test_dashboard_advanced.py --cov=src/bbia_sim/dashboard_advanced --
     "vision": {"fps": 30.0, "detections": 5},
     "audio": {"latency": 12.3, "buffer": 0.95}
 }
+
 ```
 
 ---
@@ -201,6 +210,7 @@ BBIA_METRICS_HISTORY_LIMIT=100
 
 # Log level (défaut: INFO)
 BBIA_LOG_LEVEL=INFO
+
 ```
 
 ---
@@ -257,6 +267,7 @@ lsof -i :8080
 
 # Relancer dashboard
 python -m bbia_sim.dashboard_advanced
+
 ```
 
 ### Métriques ne s'affichent pas

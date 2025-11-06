@@ -23,6 +23,7 @@
 pyenv install 3.11.9 && pyenv local 3.11.9
 python -m pip install --upgrade pip
 pip install -e .
+
 ```
 
 <div align="center">
@@ -255,6 +256,7 @@ pytest -q tests/test_bbia_huggingface_chat.py -v
 
 # Sécurité
 bandit -r src/bbia_sim/bbia_huggingface.py -ll
+
 ```
 
 ### 🎯 Score & Recommandation
@@ -388,6 +390,7 @@ pytest -q tests/test_bbia_audio.py tests/test_bbia_audio_extended.py -v
 
 # Sécurité
 bandit -r src/bbia_sim/bbia_audio.py -ll
+
 ```
 
 ### 🎯 Score & Recommandation
@@ -543,6 +546,7 @@ pytest -q -m "not e2e" -k "reachy_mini_backend or unit or fast"
 
 # Sécurité
 bandit -r src/bbia_sim/backends/reachy_mini_backend.py -ll
+
 ```
 
 ### 🎯 Score & Recommandation
@@ -690,6 +694,7 @@ bandit -r src/bbia_sim/bbia_voice.py -ll
 
 # Tests unitaires
 pytest -q -m "not e2e" -k "voice or stt or tts" -v
+
 ```
 
 ### 🎯 Score & Recommandation
@@ -739,6 +744,7 @@ pytest -q tests/test_ai_backends_selection.py -v
 BBIA_TTS_BACKEND=pyttsx3 pytest -q tests/test_ai_backends_selection.py::test_tts_selection_fallback -q
 BBIA_TTS_BACKEND=kokoro pytest -q tests/test_ai_backends_selection.py::test_tts_selection_kokoro_neutts -q
 BBIA_STT_BACKEND=whisper pytest -q tests/test_ai_backends_selection.py::test_stt_selection_default -q
+
 ```
 
 ## 📝 Modules Restants à Analyser
@@ -879,6 +885,7 @@ bandit -r src/bbia_sim/<module>.py -ll
 
 # Tests ciblés (rapides)
 pytest -q -m "not e2e" -k "<module_name> or unit or fast"
+
 ```
 
 ## 🛠️ Backlog vérif & perfs
@@ -998,6 +1005,7 @@ pytest -q -m "not e2e" -k "reachy_mini_backend or unit or fast" --durations=10
 pytest -q tests/test_emergency_stop_latency.py -v
 pytest -q tests/test_control_loop_jitter.py -v
 pytest -q tests/test_goto_target_latency.py --durations=10
+
 ```
 
 **2. Robot API (`src/bbia_sim/robot_api.py`)**
@@ -1018,6 +1026,7 @@ pytest -q tests/test_goto_target_latency.py --durations=10
 ```bash
 pytest -q tests/test_robot_api.py -k "unit or fast" --durations=10
 mypy --strict src/bbia_sim/robot_api.py
+
 ```
 
 **3. Vision (`src/bbia_sim/bbia_vision.py`)**
@@ -1039,6 +1048,7 @@ mypy --strict src/bbia_sim/robot_api.py
 ```bash
 pytest -q tests/test_bbia_vision.py -k "unit or fast" --durations=10
 pytest -q tests/test_vision_latency.py
+
 ```
 
 #### Priorité 2 - Modules moyens (Audio, Emotions, Simulation)
@@ -1064,6 +1074,7 @@ pytest -q tests/test_audio_latency_e2e.py -v
 # À ajouter si hardware loopback disponible
 pytest -q tests/test_audio_latency_loopback.py -v
 pytest -q tests/test_audio_buffer_stability.py -v
+
 ```
 
 **5. Emotions (`src/bbia_sim/bbia_emotions.py`)**
@@ -1080,6 +1091,7 @@ pytest -q tests/test_audio_buffer_stability.py -v
 ```bash
 pytest -q tests/test_bbia_emotions*.py --durations=10
 pytest -q tests/test_emotions_latency.py
+
 ```
 
 **6. Simulation MuJoCo (`src/bbia_sim/sim/simulator.py`, `sim/joints.py`)**
@@ -1095,6 +1107,7 @@ pytest -q tests/test_emotions_latency.py
 ```bash
 pytest -q tests/test_simulator*.py -k "unit or fast" --durations=10
 pytest -q tests/test_sim_latency.py
+
 ```
 
 #### Priorité 3 - Modules utilitaires
@@ -1116,6 +1129,7 @@ pytest -q tests/test_sim_latency.py
 ```bash
 pytest -q tests/test_bbia_huggingface_chat.py -k "fast" --durations=10
 pytest -q tests/test_huggingface_latency.py
+
 ```
 
 ### 🎯 Prochaines étapes immédiates (ordre d'exécution)
@@ -1181,6 +1195,7 @@ Chaque benchmark génère une entrée JSONL avec métriques p50/p95 :
     "environment": "simulation"
   }
 }
+
 ```
 
 ## 🔍 Module : `robot_api.py`
@@ -1271,12 +1286,14 @@ Le fichier `robot_api.py` définit une API abstraite (connect/disconnect, set/ge
 
   ```bash
   uvx --from reachy-mini[mujoco] reachy-mini-daemon --sim
+
   ```
 
 - macOS (zsh, noter les guillemets pour extras):
 
   ```bash
   pip install "reachy-mini[mujoco]"
+
   ```
 
 Notes:

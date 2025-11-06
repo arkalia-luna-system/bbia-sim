@@ -61,6 +61,7 @@ python scripts/verify_docs_complete.py --full-scan
 
 # Vérifier liens externes
 python scripts/verify_docs_complete.py --check-external-links
+
 ```
 
 **Fonctionnalités :**
@@ -79,6 +80,7 @@ python scripts/verify_docs_complete.py --check-external-links
 # Script : scripts/bbia_doctor.py
 
 python scripts/bbia_doctor.py
+
 ```
 
 **Fonctionnalités :**
@@ -100,6 +102,7 @@ pytest tests/test_reachy_mini_*.py -v
 
 # Tests avec coverage
 pytest tests/ --cov=src/bbia_sim --cov-report=html
+
 ```
 
 ---
@@ -179,6 +182,7 @@ docs/
 ├── dashboard/          # Roadmap dashboard/UX
 ├── performance/        # Optimisations performance
 └── reference/         # Index, historique projet
+
 ```
 
 ---

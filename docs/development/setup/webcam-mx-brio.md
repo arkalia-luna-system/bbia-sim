@@ -22,6 +22,7 @@ source venv-vision-py310/bin/activate
 
 # Vérifier que OpenCV est installé
 python -c "import cv2; print(f'✅ OpenCV version: {cv2.__version__}')"
+
 ```
 
 **Si erreur** :
@@ -29,6 +30,7 @@ python -c "import cv2; print(f'✅ OpenCV version: {cv2.__version__}')"
 ```bash
 # Installer OpenCV si manquant
 pip install opencv-python
+
 ```
 
 ---
@@ -41,6 +43,7 @@ pip install opencv-python
 # Dans venv-vision-py310
 export BBIA_CAMERA_INDEX=0  # Défaut: 0 (première caméra USB)
 python scripts/test_webcam_simple.py
+
 ```
 
 **Tu devrais voir** :
@@ -64,6 +67,7 @@ python scripts/test_webcam_simple.py
 ```bash
 # Toujours dans venv-vision-py310
 python scripts/test_vision_webcam.py
+
 ```
 
 **Tu devrais voir** :
@@ -77,6 +81,7 @@ python scripts/test_vision_webcam.py
 
 ```bash
 pip install ultralytics
+
 ```
 
 **💡 Pour améliorer la détection** :
@@ -104,6 +109,7 @@ python scripts/test_deepface.py --register photo.jpg --name "Alice"
 # Tester reconnaissance depuis webcam
 python scripts/test_vision_webcam.py
 # (BBIA dira "Alice" si elle est détectée)
+
 ```
 
 ---
@@ -115,6 +121,7 @@ python scripts/test_vision_webcam.py
 ```bash
 # Dans venv-vision-py310
 python scripts/test_pose_detection.py --webcam
+
 ```
 
 **Tu devrais voir** :
@@ -136,6 +143,7 @@ pip install gradio
 
 # Lancer le dashboard
 python scripts/dashboard_gradio.py --port 7860
+
 ```
 
 **Ensuite** :
@@ -167,6 +175,7 @@ result = vision.scan_environment()
 print(f"Objets détectés: {result.get('objects')}")
 print(f"Visages détectés: {result.get('faces')}")
 print(f"Postures détectées: {result.get('poses')}")
+
 ```
 
 **La webcam sera utilisée automatiquement** si :
@@ -189,6 +198,7 @@ print(f"Postures détectées: {result.get('poses')}")
    # Dans ton code, créer détecteur avec seuil plus bas
    from bbia_sim.vision_yolo import YOLODetector
    detector = YOLODetector(confidence_threshold=0.15)  # Plus sensible
+
    ```
 
 2. **Meilleure éclairage** :
@@ -205,6 +215,7 @@ print(f"Postures détectées: {result.get('poses')}")
 export BBIA_CAMERA_INDEX=0  # Première caméra (défaut)
 export BBIA_CAMERA_INDEX=1  # Deuxième caméra
 export BBIA_CAMERA_INDEX=2  # Troisième caméra
+
 ```
 
 ### Résolution personnalisée
@@ -215,6 +226,7 @@ Par défaut, BBIA utilise 640x480 pour performance. Pour changer (dans code) :
 # Dans test_webcam_simple.py ou test_vision_webcam.py
 cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
+
 ```
 
 ---
@@ -239,6 +251,7 @@ cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
    ```bash
    # Lister caméras disponibles (macOS)
    system_profiler SPCameraDataType
+
    ```
 
 3. **Index incorrect ?**
@@ -249,6 +262,7 @@ cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
 ```bash
 source venv-vision-py310/bin/activate
 pip install opencv-python
+
 ```
 
 ### "YOLO/MediaPipe non disponible"
@@ -256,6 +270,7 @@ pip install opencv-python
 ```bash
 source venv-vision-py310/bin/activate
 pip install ultralytics mediapipe
+
 ```
 
 ### "Gradio : Invalid requirement: '#'"
@@ -265,6 +280,7 @@ pip install ultralytics mediapipe
 ```bash
 pip install gradio
 python scripts/dashboard_gradio.py --port 7860
+
 ```
 
 ---

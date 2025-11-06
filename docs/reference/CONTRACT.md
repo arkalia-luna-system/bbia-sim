@@ -40,6 +40,7 @@ class RobotAPI(ABC):
             "passive_4", "passive_5", "passive_6", "passive_7"
         }
         self.safe_amplitude_limit: float = 0.3  # rad
+
 ```
 
 ### **Méthodes abstraites (à implémenter)**
@@ -99,6 +100,7 @@ def step(self) -> bool:
     Returns:
         bool: True si step réussi, False sinon
     """
+
 ```
 
 ### **Méthodes concrètes (implémentées)**
@@ -165,6 +167,7 @@ def get_status(self) -> dict[str, Any]:
     Returns:
         dict: Statut (connected, emotion, joints, etc.)
     """
+
 ```
 
 ---
@@ -176,6 +179,7 @@ def get_status(self) -> dict[str, Any]:
 ```python
 # Aucune exception custom levée - utilisation de bool + logging
 # Toutes les erreurs sont loggées et retournent False/None
+
 ```
 
 ### **Codes d'erreur (via logging)**
@@ -206,6 +210,7 @@ VALID_EMOTIONS = {
     "neutral", "happy", "sad", "angry", "surprised",
     "confused", "determined", "nostalgic", "proud"
 }
+
 ```
 
 ### **Comportements valides**
@@ -215,6 +220,7 @@ VALID_BEHAVIORS = {
     "wake_up", "greeting", "emotional_response",
     "vision_tracking", "conversation", "antenna_animation", "body_yaw_animation", "hide"  # Note: antenna_animation disponible (antennes animables -0.3 à 0.3 rad)
 }
+
 ```
 
 ### **Intensité**
@@ -241,6 +247,7 @@ class RobotFactory:
         Returns:
             Optional[RobotAPI]: Instance du backend, None si erreur
         """
+
 ```
 
 ### **Backends supportés**
@@ -286,6 +293,7 @@ class RobotFactory:
     "emotion_intensity": float,
     "active_joints": list[str]
 }
+
 ```
 
 ### **Export**
@@ -343,6 +351,7 @@ if robot.connect():
 
     # Déconnecter
     robot.disconnect()
+
 ```
 
 ### **Usage avec validation**
@@ -357,6 +366,7 @@ if "yaw_body" in joints:
 if robot.is_connected():
     status = robot.get_status()
     print(f"Émotion: {status['current_emotion']}")
+
 ```
 
 ---

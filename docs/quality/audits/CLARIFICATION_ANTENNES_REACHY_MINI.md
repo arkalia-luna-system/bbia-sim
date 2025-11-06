@@ -31,6 +31,7 @@
 ```xml
 <joint axis="0 0 1" name="right_antenna" type="hinge" class="chosen_actuator"/>
 <joint axis="0 0 1" name="left_antenna" type="hinge" class="chosen_actuator"/>
+
 ```
 
 **Problème détecté :**
@@ -84,6 +85,7 @@ self.forbidden_joints = {
 # Limites conservatrices
 "left_antenna": (-1.0, 1.0),   # Limite de sécurité (hardware fragile)
 "right_antenna": (-1.0, 1.0),  # Limite de sécurité (hardware fragile)
+
 ```
 
 **Raison** : Protection hardware (antennes fragiles)
@@ -103,6 +105,7 @@ self.forbidden_joints = {
    # Vérifier si ça existe :
    robot.head.left_antenna  # ?
    robot.head.right_antenna  # ?
+
    ```
 
 2. **Vérifier dernière version XML** dans le repo officiel :
@@ -116,6 +119,7 @@ self.forbidden_joints = {
    ```xml
    <joint axis="0 0 1" name="right_antenna" type="hinge" range="-0.5 0.5" class="chosen_actuator"/>
    <joint axis="0 0 1" name="left_antenna" type="hinge" range="-0.5 0.5" class="chosen_actuator"/>
+
    ```
 
 2. **Retirer de `forbidden_joints`** (avec prudence)
@@ -159,12 +163,14 @@ Si les antennes SONT animables dans le robot réel :
    ```xml
    <joint name="right_antenna" type="hinge" range="-0.3 0.3" class="chosen_actuator"/>
    <joint name="left_antenna" type="hinge" range="-0.3 0.3" class="chosen_actuator"/>
+
    ```
 
 2. **Retirer de `forbidden_joints`** :
 
    ```python
    # Retirer "left_antenna" et "right_antenna"
+
    ```
 
 3. **Ajouter limites dans `joint_limits`** :
@@ -172,6 +178,7 @@ Si les antennes SONT animables dans le robot réel :
    ```python
    "left_antenna": (-0.3, 0.3),   # Limite sûre pour protection
    "right_antenna": (-0.3, 0.3),  # Limite sûre pour protection
+
    ```
 
 4. **Mettre à jour documentation** :

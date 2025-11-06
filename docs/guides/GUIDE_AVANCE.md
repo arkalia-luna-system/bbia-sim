@@ -9,11 +9,11 @@
 > - **Python** : 3.11+
 > - **CI** : `.github/workflows/ci.yml`
 > - **Setup rapide** :
->   ```bash
->   pyenv install 3.11.9 && pyenv local 3.11.9
->   python -m pip install --upgrade pip
->   pip install -e .
->   ```
+> ```bash
+> pyenv install 3.11.9 && pyenv local 3.11.9
+> python -m pip install --upgrade pip
+> pip install -e .
+> ```
 
 ## Pour développeurs avancés
 
@@ -69,6 +69,7 @@ robot_real.set_emotion('happy', 0.8)
 # Basculer facilement
 backend = 'mujoco' if os.getenv('DEV') else 'reachy_mini'
 robot = RobotFactory.create_backend(backend)
+
 ```
 
 #### Flux Backend Unifié
@@ -94,6 +95,7 @@ flowchart TB
     style CODE fill:#90EE90
     style FACTORY fill:#FFD700
     style ACTIONS fill:#87CEEB
+
 ```
 
 **Avantages :**
@@ -134,6 +136,7 @@ graph LR
     style HF fill:#90EE90
     style TOOLS fill:#FFD700
     style ROBOT fill:#87CEEB
+
 ```
 
 #### 1. Module Émotions
@@ -147,6 +150,7 @@ emotions = BBIAEmotions()
 emotions.set_emotion('excited', intensity=0.9)
 emotions.set_emotion('curious', intensity=0.6)
 emotions.set_emotion('calm', intensity=0.4)
+
 ```
 
 **Flux Émotions** :
@@ -160,6 +164,7 @@ flowchart LR
     
     style EMOTION fill:#90EE90
     style ROBOT fill:#87CEEB
+
 ```
 
 #### 2. Module Comportements
@@ -176,6 +181,7 @@ class MyBehavior(BBIABehavior):
         pass
 
 manager.register_behavior(MyBehavior())
+
 ```
 
 #### 3. Module Vision
@@ -186,6 +192,7 @@ from bbia_sim.bbia_vision import BBIAVision
 vision = BBIAVision()
 objects = vision.scan_environment()
 faces = vision.detect_faces()
+
 ```
 
 ### Tests avancés
@@ -199,6 +206,7 @@ pytest tests/ --cov=src --cov-report=html
 
 # Voir rapport coverage
 open htmlcov/index.html
+
 ```
 
 ### Optimisations de performance
@@ -209,6 +217,7 @@ MUJOCO_GL=disable python your_script.py
 
 # Activer cache simulation
 bbia_sim.sim.enable_caching()
+
 ```
 
 ---
@@ -231,6 +240,7 @@ robot.look_at_world(x, y, z)
 robot.goto_target(head=pose)
 robot.start_recording()
 robot.stop_recording()
+
 ```
 
 Voir : [Conformité SDK Complète](../quality/compliance/CONFORMITE_REACHY_MINI_COMPLETE.md)

@@ -54,6 +54,7 @@ graph TB
 
     CRITERIA --> STABILITY
     STABILITY --> AUTOMATION
+
 ```
 
 ## 📊 Résultats des Tests
@@ -64,6 +65,7 @@ pie title Répartition des Tests
     "Tests Voix" : 25
     "Tests Vision" : 25
     "Tests Comportement" : 25
+
 ```
 
 ## 🔄 Workflow de Validation
@@ -81,6 +83,7 @@ sequenceDiagram
     VALID->>DEV: ✅ Démos vertes
 
     Note over DEV,VALID: Cycle de validation complet
+
 ```
 
 # 2. Voix → Action
@@ -98,6 +101,7 @@ python examples/demo_behavior_ok.py --headless --duration 8 --behavior wake_up -
 ```text
 
 ### **🧪 Tests Automatiques**
+
 ```bash
 
 # Tests des vertical slices

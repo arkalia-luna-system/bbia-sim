@@ -7,11 +7,11 @@
 > - Python requis: 3.11+
 > - CI: `.github/workflows/ci.yml`
 > - Setup local:
->   ```bash
->   pyenv install 3.11.9 && pyenv local 3.11.9
->   python -m pip install --upgrade pip
->   pip install -e .
->   ```
+> ```bash
+> pyenv install 3.11.9 && pyenv local 3.11.9
+> python -m pip install --upgrade pip
+> pip install -e .
+> ```
 
 ## Problème résolu
 
@@ -41,6 +41,7 @@ graph TB
     MULTIPLE --> SINGLE
     NO_DETECTION --> DETECTION
     NO_CLEANUP --> CLEANUP
+
 ```
 
 ## Système de sécurité
@@ -64,6 +65,7 @@ graph LR
     SIGNALS --> STOP
     START --> STOP
     STOP --> KILL
+
 ```
 
 ## Workflow de gestion
@@ -95,6 +97,7 @@ sequenceDiagram
     P->>R: Arrêter robot
     P->>L: Supprimer verrouillage
     S-->>U: Robot arrêté avec succès
+
 ```
 
 ### Utilisation
@@ -111,6 +114,7 @@ sequenceDiagram
 
 # Tuer tous les processus (DANGEREUX)
 ./scripts/bbia_safe.sh kill-all
+
 ```
 
 ### Fonctionnalités de sécurité
@@ -145,6 +149,7 @@ $ ./scripts/bbia_safe.sh status
 🔍 1 processus BBIA en cours:
    🔒 VERROUILLÉ PID 12345: 2.3% CPU, 45.2MB RAM
       python3 scripts/launch_complete_robot.py --headless
+
 ```
 
 ### Protection contre les problèmes
@@ -158,6 +163,7 @@ python3 scripts/launch_complete_robot.py --headless
 # Processus qui traînent après Ctrl+C
 # Pas de détection de doublons
 # Pas d'arrêt automatique
+
 ```
 
 #### Après (sécurisé)
@@ -170,6 +176,7 @@ python3 scripts/launch_complete_robot.py --headless
 # ✅ Arrêt automatique à la fermeture du terminal
 # ✅ Confirmation avant arrêt
 # ✅ Monitoring des ressources
+
 ```
 
 ### Installation des dépendances
@@ -179,6 +186,7 @@ Le script installe automatiquement `psutil` si nécessaire :
 ```bash
 # Installation automatique
 pip install psutil
+
 ```
 
 ### Fichiers de configuration
@@ -200,6 +208,7 @@ Si des processus traînent encore :
 
 # En dernier recours (DANGEREUX)
 ./scripts/bbia_safe.sh kill-all
+
 ```
 
 ### Recommandations

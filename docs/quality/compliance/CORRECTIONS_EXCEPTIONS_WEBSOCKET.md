@@ -39,6 +39,7 @@ async def list_recorded_move_dataset(dataset_name: str) -> list[str]:
     if RecordedMoves is None:
         raise HTTPException(status_code=501, ...)
     ...
+
 ```
 
 ---
@@ -60,6 +61,7 @@ except RepositoryNotFoundError as e:
 # APRÈS (conforme SDK)
 except RepositoryNotFoundError as e:
     raise HTTPException(status_code=404, detail=str(e))  # ✅ Conforme SDK
+
 ```
 
 **Note**: Ruff détecte B904 (exception chaining manquante), mais on ajoute `# noqa: B904` pour être conforme au SDK officiel qui ne fait pas de chaining.
@@ -91,6 +93,7 @@ try:
         ...
 except FileNotFoundError:
     raise HTTPException(status_code=404, detail=f"STL file not found {file_path}")
+
 ```
 
 ---
@@ -113,6 +116,7 @@ except WebSocketDisconnect:
 # APRÈS (conforme SDK)
 except WebSocketDisconnect:
     move_listeners.remove(websocket)  # ✅ Direct comme SDK
+
 ```
 
 ---
@@ -145,6 +149,7 @@ for ws in move_listeners:
         await ws.send_json(...)
     except (RuntimeError, WebSocketDisconnect):
         move_listeners.remove(ws)  # ✅ Direct comme SDK
+
 ```
 
 ---
@@ -167,6 +172,7 @@ except Exception as e:
 # APRÈS (conforme SDK)
 except Exception as e:
     await notify_listeners("move_failed", details=str(e))  # ✅ Pas de logging
+
 ```
 
 ---

@@ -44,6 +44,7 @@ graph TB
     style UI fill:#90EE90
     style WS fill:#87CEEB
     style ROBOT fill:#FFD700
+
 ```
 
 ## Roadmap Implémentation
@@ -65,6 +66,7 @@ gantt
     section Phase 3: Advanced
     Mode Démo Read-only       :adv1, 2025-01-01, 2025-01-15
     Export/Import Config      :adv2, 2025-01-15, 2025-02-01
+
 ```
 
 ## Mini UI télémétrie (proposé)
@@ -97,6 +99,7 @@ mindmap
       Démo Read-only
       Contrôle Complet
       Édition Presets
+
 ```
 
 ## Stack suggérée

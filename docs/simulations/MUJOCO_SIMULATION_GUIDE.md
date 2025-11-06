@@ -7,11 +7,11 @@
 > - Python requis: 3.11+
 > - CI: `.github/workflows/ci.yml`
 > - Setup rapide:
->   ```bash
->   pyenv install 3.11.9 && pyenv local 3.11.9
->   python -m pip install --upgrade pip
->   pip install -e .
->   ```
+> ```bash
+> pyenv install 3.11.9 && pyenv local 3.11.9
+> python -m pip install --upgrade pip
+> pip install -e .
+> ```
 
 ## Vue d'ensemble
 
@@ -30,6 +30,7 @@ sudo apt-get install libglfw3-dev libgl1-mesa-dev
 
 # Installation des dépendances Python
 pip install -e .[dev]
+
 ```
 
 ### Lancement de la simulation
@@ -46,6 +47,7 @@ python -m bbia_sim --sim --headless
 
 # Modèle personnalisé
 python -m bbia_sim --sim --model /path/to/custom_model.xml
+
 ```
 
 ## 📁 Structure des fichiers
@@ -61,6 +63,7 @@ src/bbia_sim/sim/
 └── assets/
     ├── meshes/             # Modèles 3D (futur)
     └── textures/           # Textures (futur)
+
 ```
 
 ## 🤖 Architecture MuJoCo
@@ -95,6 +98,7 @@ graph TB
     INPUT --> STEP
     STEP --> PHYSICS
     PHYSICS --> OUTPUT
+
 ```
 
 ## 🎯 Joints du Robot Reachy Mini
@@ -124,6 +128,7 @@ graph LR
     CONTROLLER --> L_SHOULDER
     CONTROLLER --> L_ELBOW
     CONTROLLER --> L_WRIST
+
 ```
 
 ## 🎯 Utilisation programmatique
@@ -138,6 +143,7 @@ simulator = MuJoCoSimulator("src/bbia_sim/sim/models/reachy_mini.xml")
 
 # Lancement de la simulation
 simulator.launch_simulation()
+
 ```
 
 ### Contrôle du robot
@@ -151,6 +157,7 @@ print(f"Positions articulations : {state['joint_positions']}")
 import numpy as np
 positions = np.array([0.1, 0.2, 0.3, -0.1, -0.2, -0.3, 0.0, 0.0])
 simulator.set_joint_positions(positions)
+
 ```
 
 ### Mode headless
@@ -158,6 +165,7 @@ simulator.set_joint_positions(positions)
 ```python
 # Simulation sans interface graphique
 simulator.launch_simulation(headless=True)
+
 ```
 
 ## 🎨 Scènes personnalisées
@@ -170,6 +178,7 @@ from bbia_sim.sim.simulator import create_simple_scene
 # Crée une scène avec des objets de test
 scene_path = create_simple_scene()
 simulator.load_scene(scene_path)
+
 ```
 
 ### Format MJCF
@@ -189,6 +198,7 @@ Les scènes utilisent le format MJCF (MuJoCo XML). Exemple minimal :
     </body>
   </worldbody>
 </mujoco>
+
 ```
 
 ## 🔧 Dépannage
@@ -200,6 +210,7 @@ Les scènes utilisent le format MJCF (MuJoCo XML). Exemple minimal :
    ```bash
    # Vérifier l'installation
    python -c "import mujoco; print(mujoco.__version__)"
+
    ```
 
 2. **Fenêtre graphique ne s'ouvre pas**
@@ -207,6 +218,7 @@ Les scènes utilisent le format MJCF (MuJoCo XML). Exemple minimal :
    ```bash
    # Tester en mode headless
    python -m bbia_sim --sim --headless
+
    ```
 
 3. **Modèle MJCF invalide**
@@ -214,6 +226,7 @@ Les scènes utilisent le format MJCF (MuJoCo XML). Exemple minimal :
    ```bash
    # Vérifier la syntaxe XML
    xmllint --noout src/bbia_sim/sim/models/reachy_mini.xml
+
    ```
 
 ### Logs et débogage
@@ -225,6 +238,7 @@ python -m bbia_sim --sim --verbose
 # Logs détaillés
 export MUJOCO_LOG_LEVEL=DEBUG
 python -m bbia_sim --sim
+
 ```
 
 ## 🚀 Intégration avec l'API
@@ -244,6 +258,7 @@ class RobotController:
         positions = self.calculate_joint_positions(pose)
         self.simulator.set_joint_positions(positions)
         return {"status": "moving", "pose": pose}
+
 ```
 
 ## 📈 Performance et Optimisation
@@ -275,6 +290,7 @@ graph TB
     CACHE --> CPU
     CACHE --> GPU
     CACHE --> RAM
+
 ```
 
 ## 🔧 Workflow de Développement
@@ -290,6 +306,7 @@ flowchart TD
     WORK -->|Oui| DEV[Développement BBIA]
     DEV --> INTEGRATION[Intégration API]
     INTEGRATION --> DEPLOY[Déploiement]
+
 ```
 
 ## 🔮 Roadmap

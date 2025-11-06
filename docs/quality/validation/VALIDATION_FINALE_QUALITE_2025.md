@@ -13,6 +13,7 @@
 ```text
 All done! ✨ 🍰 ✨
 2 files would be left unchanged.
+
 ```
 
 - ✅ Tous fichiers formatés selon PEP 8
@@ -25,6 +26,7 @@ All done! ✨ 🍰 ✨
 
 ```text
 All checks passed!
+
 ```
 
 **Corrections appliquées :**
@@ -49,6 +51,7 @@ All checks passed!
 
 ```text
 Success: no issues found in 2 source files
+
 ```
 
 **Corrections :**
@@ -63,6 +66,7 @@ Success: no issues found in 2 source files
 ```text
 Test results:
 	No issues identified.
+
 ```
 
 **Corrections appliquées :**
@@ -76,6 +80,7 @@ Test results:
 
 ```text
 ======================== 4 passed, 2 skipped in 10.29s =========================
+
 ```
 
 - ✅ Tous les tests passent

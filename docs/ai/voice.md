@@ -77,6 +77,7 @@ tts.tts_to_file(
     emotion="happy",  # Émotion contrôlable
     pitch=0.2  # Pitch contrôlable
 )
+
 ```
 
 **Modèles français disponibles :**
@@ -90,6 +91,7 @@ tts.tts_to_file(
 pip install TTS
 # Optionnel : pour voix haute qualité
 pip install TTS[all]
+
 ```
 
 ---
@@ -123,6 +125,7 @@ audio = voice.synthesize(
     noise_scale=0.667,  # Variation
     noise_w=0.8
 )
+
 ```
 
 ---
@@ -156,6 +159,7 @@ tts.tts_to_file(
     language="fr",
     emotion="happy"
 )
+
 ```
 
 ---
@@ -203,6 +207,7 @@ def chat(self, user_message: str) -> str:
     # 2. Génération réponse (❌ Règles basiques)
     response = self._generate_response_from_sentiment(sentiment)
     # → Pas de vrai modèle de langage !
+
 ```
 
 **Ce qui manque :**
@@ -239,6 +244,7 @@ def apply_emotion_to_robot(self, emotion: str, intensity: float):
         duration=adaptive_duration(intensity),
         method="minjerk"
     )
+
 ```
 
 **✅ État : Fonctionnel et optimisé**
@@ -266,6 +272,7 @@ def reconnaitre_parole(duree=3):
 # Dans voice_whisper.py (optionnel)
 whisper_stt = WhisperSTT(model_size="tiny")
 texte = whisper_stt.transcribe(audio)
+
 ```
 
 **✅ État : Fonctionnel (Whisper = meilleure qualité si disponible)**
@@ -319,6 +326,7 @@ class BBIAVoiceAdvanced:
         )
         # Jouer audio
         playsound("temp_audio.wav")
+
 ```
 
 ---
@@ -338,6 +346,7 @@ class BBIAVoiceAdvanced:
 
 ```bash
 pip install transformers accelerate
+
 ```
 
 **Intégration :**
@@ -386,6 +395,7 @@ class BBIAHuggingFace:
         self._apply_sentiment_to_robot(sentiment)
 
         return response
+
 ```
 
 #### B. Llama 3 8B (Alternative)
@@ -432,6 +442,7 @@ class BBIAVoiceAdvanced:
 
         # Jouer + synchroniser avec mouvements robot
         playsound("temp_audio.wav")
+
 ```
 
 ---

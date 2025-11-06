@@ -72,6 +72,7 @@ Vous dessinez vos textures → MuJoCo les applique automatiquement.
     <include file="reachy_mini_REAL_OFFICIAL.xml"/>
   </worldbody>
 </mujoco>
+
 ```
 
 ---
@@ -126,6 +127,7 @@ bbia-reachy-sim/
     ├── models/
     └── scenes/
         └── piece_bbia.xml  # NOUVEAU : Scène avec vos textures
+
 ```
 
 ### **Étape 3 : Créer le XML MuJoCo**
@@ -181,6 +183,7 @@ bbia-reachy-sim/
     <include file="../models/reachy_mini_REAL_OFFICIAL.xml"/>
   </worldbody>
 </mujoco>
+
 ```
 
 ---
@@ -197,6 +200,7 @@ bbia-reachy-sim/
 <texture name="mur" type="2d" file="assets/textures/mur.png"/>
 <material name="mat_mur" texture="mur"/>
 <geom type="box" size="0.1 3 2" material="mat_mur"/>
+
 ```
 
 **Résultat** : Votre image appliquée sur le mur !
@@ -213,6 +217,7 @@ bbia-reachy-sim/
 <texture name="sol" type="2d" file="assets/textures/sol.png"/>
 <material name="mat_sol" texture="sol"/>
 <geom name="sol" type="plane" size="3 3" material="mat_sol"/>
+
 ```
 
 **Résultat** : Votre sol personnalisé !
@@ -231,6 +236,7 @@ bbia-reachy-sim/
 <body name="tableau_mur" pos="0 1.8 1.2">
   <geom type="box" size="0.01 0.5 0.5" material="mat_tableau"/>
 </body>
+
 ```
 
 ---
@@ -263,12 +269,14 @@ bbia-reachy-sim/
 
 ```xml
 <texture name="mur" type="2d" file="../../../assets/textures/mur.png"/>
+
 ```
 
 **Option 2 : Chemin absolu** (si images ailleurs)
 
 ```xml
 <texture name="mur" type="2d" file="/Volumes/T7/bbia-reachy-sim/assets/textures/mur.png"/>
+
 ```
 
 **Recommandation** : Utiliser chemin relatif pour portabilité.
@@ -329,6 +337,7 @@ bbia-reachy-sim/
 
 ```bash
 mkdir -p /Volumes/T7/bbia-reachy-sim/assets/textures
+
 ```
 
 ### **Étape 2 : Dessiner Textures Procreate**
@@ -349,6 +358,7 @@ from bbia_sim.sim.simulator import MuJoCoSimulator
 sim = MuJoCoSimulator()
 sim.load_scene("piece_bbia.xml")  # Votre scène avec textures
 sim.launch_simulation()
+
 ```
 
 ---

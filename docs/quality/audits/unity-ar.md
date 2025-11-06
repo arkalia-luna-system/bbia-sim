@@ -38,6 +38,7 @@ public class ARimageAnchorHandler
     // Détection de marqueurs visuels
     // Placement d'objets virtuels dans l'espace
 }
+
 ```
 
 ### Fonctionnalités Probables
@@ -82,6 +83,7 @@ class MuJoCoBackend:
     - Collisions réelles ✅
     - Gravité, forces ✅
     - Performance <1ms ✅
+
 ```
 
 **Unity AR serait :**
@@ -128,6 +130,7 @@ class ARRobotOverlay:
         """Afficher émotions actives"""
         # Icons émotions flottantes
         pass
+
 ```
 
 **Utilité :** 📊 Debug visuel avancé
@@ -150,6 +153,7 @@ class ARDemoBBIA:
         """Expliquer comportements en AR"""
         # Overlay graphiques montrant workflow
         pass
+
 ```
 
 **Utilité :** 📚 Pédagogique
@@ -167,6 +171,7 @@ class MobileARController:
         """Panel de contrôle AR sur smartphone"""
         # Boutons virtuels pour contrôler robot
         pass
+
 ```
 
 **Utilité :** 📱 Interface mobile

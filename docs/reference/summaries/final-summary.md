@@ -34,6 +34,7 @@ pie title Répartition Coverage Modules Critiques
     "voice_whisper (92.52%)" : 93
     "dashboard_advanced (76.71%)" : 77
     "daemon/bridge (54.86%)" : 55
+
 ```
 
 #### 📊 Architecture des Tests
@@ -65,6 +66,7 @@ graph TB
     style BRIDGE fill:#90EE90
     style TOTAL fill:#87CEEB
     style QUALITY fill:#FFD700
+
 ```
 
 ---
@@ -99,6 +101,7 @@ flowchart TD
 
     style START fill:#FFD700
     style FINAL fill:#90EE90
+
 ```
 
 ---
@@ -171,6 +174,7 @@ graph LR
     style AVANT fill:#FF6B6B
     style CORRECTION fill:#FFD700
     style APRES fill:#90EE90
+
 ```
 
 **Action** : Optionnel - peut attendre
@@ -233,6 +237,7 @@ graph TB
     style SDK fill:#90EE90
     style ROBOT fill:#90EE90
     style SIM fill:#FFD700
+
 ```
 
 ---
@@ -290,6 +295,7 @@ mindmap
       SDK: Intégré
       Connexion: Implémentée
       Commandes: Fonctionnelles
+
 ```
 
 - ✅ **Coverage excellent** : 4 modules critiques (54-99% coverage)

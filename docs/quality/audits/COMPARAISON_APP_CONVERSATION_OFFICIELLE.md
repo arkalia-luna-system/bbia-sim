@@ -34,6 +34,7 @@ flowchart TD
     
     style BBIA1 fill:#90EE90
     style PARITY fill:#FFD700
+
 ```
 
 ## 📊 Vue d'Ensemble
@@ -244,6 +245,7 @@ pie title Score par Catégorie
     "Animations (85%)" : 85
     "Émotions (70%)" : 70
     "UI (60%)" : 60
+
 ```
 
 | Catégorie | Score | Détails | Fichiers |

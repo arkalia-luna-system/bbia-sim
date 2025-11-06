@@ -24,6 +24,7 @@ await asyncio.sleep(0.001)  # ~1000 Hz
 
 # Après
 await asyncio.sleep(0.016)  # ~60 Hz (suffisant pour simulation fluide, moins de CPU)
+
 ```
 
 **Gain** : **-93% CPU** sur simulation headless
@@ -83,6 +84,7 @@ def _get_compiled_regex(pattern: str, flags: int = 0) -> re.Pattern[str]:
     if cache_key not in _regex_cache:
         _regex_cache[cache_key] = re.compile(pattern, flags)
     return _regex_cache[cache_key]
+
 ```
 
 **Gain** : **-30 à -50% latence** sur opérations regex

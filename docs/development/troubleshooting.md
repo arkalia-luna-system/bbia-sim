@@ -52,6 +52,7 @@ flowchart TD
     
     style START fill:#FFD700
     style RESOLVED fill:#90EE90
+
 ```
 
 ---
@@ -73,6 +74,7 @@ flowchart TD
 ```bash
 source venv-vision-py310/bin/activate
 pip install deepface onnxruntime
+
 ```
 
 2. **Aucun visage détecté** :
@@ -84,6 +86,7 @@ pip install deepface onnxruntime
 ```python
 # Dans face_recognition.py
 recognize_person(image, enforce_detection=False)
+
 ```
 
 3. **Performance lente sur RPi 5** :
@@ -95,6 +98,7 @@ recognize_person(image, enforce_detection=False)
 # Configuration optimale RPi 5
 os.environ["BBIA_DEEPFACE_MODEL"] = "VGG-Face"
 os.environ["BBIA_DEEPFACE_BACKEND"] = "opencv"
+
 ```
 
 4. **Fallback automatique** :
@@ -130,6 +134,7 @@ model_configs["chat"] = {
         "quantization": "8bit",
     }
 }
+
 ```
 
 2. **API externe (alternative)** :
@@ -140,6 +145,7 @@ model_configs["chat"] = {
 # Configuration API externe
 os.environ["BBIA_HF_API_KEY"] = "your_api_key"
 hf.chat("message", use_api=True)
+
 ```
 
 3. **Timeout trop court** :
@@ -148,6 +154,7 @@ hf.chat("message", use_api=True)
 ```python
 # Dans test_huggingface_latency.py
 assert p95 < 30000.0  # 30s max (CI tolérant)
+
 ```
 
 ---
@@ -167,6 +174,7 @@ assert p95 < 30000.0  # 30s max (CI tolérant)
 ```bash
 source venv-voice/bin/activate  # ou venv principal
 pip install openai-whisper
+
 ```
 
 2. **Modèle trop lourd** :
@@ -176,6 +184,7 @@ pip install openai-whisper
 ```python
 # Dans voice_whisper.py
 model_size = os.environ.get("BBIA_WHISPER_MODEL", "tiny")
+
 ```
 
 3. **Microphone non détecté** :
@@ -200,6 +209,7 @@ model_size = os.environ.get("BBIA_WHISPER_MODEL", "tiny")
 
 ```python
 os.environ["BBIA_POSE_COMPLEXITY"] = "1"  # ou "0" pour plus rapide
+
 ```
 
 ---
@@ -232,6 +242,7 @@ os.environ["BBIA_POSE_COMPLEXITY"] = "1"  # ou "0" pour plus rapide
 # Local : devrait être < 50MB
 # CI : tolère jusqu'à 120MB (variations machine)
 pytest tests/test_backend_budget_cpu_ram.py -v
+
 ```
 
 4. **Si test échoue vraiment** :
@@ -263,6 +274,7 @@ pytest tests/test_backend_budget_cpu_ram.py -v
 ```python
 # Dans reachy_mini_backend.py
 ROBOT_TIMEOUT = 5.0  # Secondes
+
 ```
 
 ### Authentification WebSocket
@@ -274,6 +286,7 @@ ROBOT_TIMEOUT = 5.0  # Secondes
 ```python
 # Connexion WebSocket avec token
 websocket = await connect("ws://localhost:8000/development/api/state/ws/full?token=your-token")
+
 ```
 
 **En développement** :
@@ -287,6 +300,7 @@ websocket = await connect("ws://localhost:8000/development/api/state/ws/full?tok
 # Dans .env ou variables d'environnement
 BBIA_ENVIRONMENT=prod  # Active auth WebSocket
 BBIA_API_TOKEN=your-secret-token
+
 ```
 
 ### Buffer Circulaire Camera Frames
@@ -305,6 +319,7 @@ os.environ["BBIA_CAMERA_BUFFER_SIZE"] = "20"  # Plus grand buffer
 from bbia_sim.bbia_vision import BBIAVision
 vision = BBIAVision()
 latest_frame = vision.get_latest_frame()  # Récupère frame la plus récente
+
 ```
 
 **Métriques** : Disponibles via `get_vision_stats()` avec `buffer_overruns`, `camera_buffer_size`
@@ -317,6 +332,7 @@ latest_frame = vision.get_latest_frame()  # Récupère frame la plus récente
 
 ```bash
 curl http://localhost:8000/development/api/move/recorded-move-datasets/discover
+
 ```
 
 **Retourne** : Liste des datasets disponibles (ex: "pollen-robotics/reachy-mini-dances-library")
@@ -336,6 +352,7 @@ curl http://localhost:8000/metrics/readyz
 
 # Health check détaillé (état complet)
 curl http://localhost:8000/metrics/health
+
 ```
 
 #### Métriques Prometheus
@@ -343,6 +360,7 @@ curl http://localhost:8000/metrics/health
 ```bash
 # Métriques au format Prometheus
 curl http://localhost:8000/metrics/prometheus
+
 ```
 
 **Métriques disponibles** :
@@ -359,6 +377,7 @@ curl http://localhost:8000/metrics/prometheus
 ```bash
 # Diagnostic complet de l'environnement BBIA-SIM
 python -m bbia_sim --doctor
+
 ```
 
 **Vérifie** :
