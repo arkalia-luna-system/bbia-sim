@@ -1,6 +1,6 @@
 # ⚡ Optimisation Tests RAM V3 - Oct / Nov. 2025
 
-**Date** : Oct 25 / Nov 25
+**Date** : Oct / Nov. 2025
 **Objectif** : Réduire encore plus la consommation RAM en optimisant boucles, sleeps et instanciations
 
 ---
