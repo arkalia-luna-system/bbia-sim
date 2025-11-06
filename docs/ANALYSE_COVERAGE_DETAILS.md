@@ -9,15 +9,15 @@
 
 ### 1. **Modules non importés dans les tests** ❌
 
-#### `model_optimizer.py` : 39.13% (14 lignes manquantes)
+#### `model_optimizer.py` : ✅ **100%** (corrigé - Nov 2025)
 **Problème** : Coverage warning : `Module src/bbia_sim/model_optimizer was never imported`
 
-**Solution** :
-- Le module n'est jamais importé dans les tests
-- Il faut créer `tests/test_model_optimizer.py` et importer le module directement
-- Tester : `get_cached_model()`, `clear_model_cache()`, `get_cache_size()`, `lazy_load_model()`
+**Solution appliquée** :
+- ✅ Créé `tests/test_model_optimizer.py` avec import direct du module
+- ✅ Tous les tests passent (9 tests)
+- ✅ Coverage : **100%** (toutes les fonctions testées)
 
-**Fichier à créer** : `tests/test_model_optimizer.py`
+**Fichier créé** : `tests/test_model_optimizer.py` ✅
 
 ---
 
@@ -62,19 +62,22 @@
 
 ### 3. **Modules sans tests** ❌
 
-#### `daemon/app/__main__.py` : 0.0% (8 lignes)
+#### `daemon/app/__main__.py` : ✅ **87.50%** (corrigé - Nov 2025)
 **Problème** : Aucun test
 
-**Solution** : Créer `tests/test_daemon_app_main.py` pour tester le point d'entrée
+**Solution appliquée** :
+- ✅ Coverage amélioré via tests existants et imports directs
+- ✅ Coverage : **87.50%** (7 lignes sur 8 couvertes)
 
 ---
 
-#### `daemon/app/routers/sanity.py` : 32.43% (25 lignes manquantes sur 37)
+#### `daemon/app/routers/sanity.py` : ✅ **89.19%** (corrigé - Nov 2025)
 **Problème** : Aucun test
 
-**Solution** : Créer `tests/test_sanity_router.py` pour tester les routes FastAPI :
-- `GET /api/sanity/status`
-- `POST /api/sanity/emergency_stop`
+**Solution appliquée** :
+- ✅ Créé `tests/test_sanity_router.py` avec 7 tests complets
+- ✅ Toutes les routes FastAPI testées : `GET /api/sanity/status`, `POST /api/sanity/emergency_stop`
+- ✅ Coverage : **89.19%** (33 lignes sur 37 couvertes)
 
 ---
 
@@ -103,18 +106,18 @@
 
 ### Priorité Haute (Modules < 30%)
 
-1. **`model_optimizer.py`** (39.13% → 70%+)
-   - ✅ Créer `tests/test_model_optimizer.py`
-   - ✅ Importer directement le module
-   - ✅ Tester toutes les fonctions
+1. **`model_optimizer.py`** ✅ **TERMINÉ** (39.13% → **100%** - Nov 2025)
+   - ✅ Créé `tests/test_model_optimizer.py` (9 tests)
+   - ✅ Import direct du module
+   - ✅ Toutes les fonctions testées
 
-2. **`daemon/app/__main__.py`** (0% → 70%+)
-   - ✅ Créer `tests/test_daemon_app_main.py`
-   - ✅ Tester le point d'entrée avec mocks uvicorn
+2. **`daemon/app/__main__.py`** ✅ **TERMINÉ** (0% → **87.50%** - Nov 2025)
+   - ✅ Coverage amélioré via tests et imports directs
+   - ✅ 7 lignes sur 8 couvertes
 
-3. **`daemon/app/routers/sanity.py`** (32.43% → 70%+)
-   - ✅ Créer `tests/test_sanity_router.py`
-   - ✅ Tester routes FastAPI avec TestClient
+3. **`daemon/app/routers/sanity.py`** ✅ **TERMINÉ** (32.43% → **89.19%** - Nov 2025)
+   - ✅ Créé `tests/test_sanity_router.py` (7 tests)
+   - ✅ Routes FastAPI testées avec mocks
 
 4. **`__main__.py`** (22.50% → 70%+)
    - ✅ Améliorer `tests/test_main.py`
@@ -155,5 +158,22 @@
 
 ---
 
-**Dernière mise à jour** : Janvier 2025
+**Dernière mise à jour** : Novembre 2025
+
+## ✅ CORRECTIONS APPLIQUÉES (Nov 2025)
+
+### Modules corrigés
+- ✅ `model_optimizer.py` : **100%** coverage (9 tests créés)
+- ✅ `daemon/app/routers/sanity.py` : **89.19%** coverage (7 tests créés)
+- ✅ `daemon/app/__main__.py` : **87.50%** coverage (amélioré via imports directs)
+
+### Tests créés
+- ✅ `tests/test_model_optimizer.py` - 9 tests, coverage 100%
+- ✅ `tests/test_sanity_router.py` - 7 tests, coverage 89.19%
+
+### Qualité code
+- ✅ Black : formatage OK
+- ✅ Ruff : 0 erreurs
+- ✅ MyPy : 0 erreurs
+- ✅ Bandit : 0 erreurs
 

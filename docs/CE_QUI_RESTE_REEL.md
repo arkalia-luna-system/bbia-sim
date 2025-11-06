@@ -89,9 +89,9 @@ def test_watchdog_timeout_robot_disconnected(self):
 
 **Priorité Haute** (Coverage très faible < 30%) :
 
-- ❌ `daemon/app/__main__.py` : **0.0%** (8 lignes)
-- ❌ `daemon/app/routers/sanity.py` : **0.0%** (37 lignes)
-- ❌ `model_optimizer.py` : **0.0%** (23 lignes)
+- ✅ `daemon/app/__main__.py` : **87.50%** (corrigé - Nov 2025)
+- ✅ `daemon/app/routers/sanity.py` : **89.19%** (corrigé - Nov 2025)
+- ✅ `model_optimizer.py` : **100%** (corrigé - Nov 2025)
 - ❌ `__main__.py` : **19.0%** (158 lignes, 128 manquantes)
 - ❌ `bbia_awake.py` : **20.0%** (15 lignes, 12 manquantes)
 - ❌ `bbia_integration.py` : **20.1%** (249 lignes, 199 manquantes)

@@ -184,9 +184,9 @@
    - **Coverage total** : **64.98%** ✅
    - **24 modules < 70%** identifiés
    - **Priorité Haute** (9 modules < 30%) :
-     - `daemon/app/__main__.py` : 0.0%
-     - `daemon/app/routers/sanity.py` : 0.0%
-     - `model_optimizer.py` : 0.0%
+     - ✅ `daemon/app/__main__.py` : **87.50%** (corrigé - Nov 2025)
+     - ✅ `daemon/app/routers/sanity.py` : **89.19%** (corrigé - Nov 2025)
+     - ✅ `model_optimizer.py` : **100%** (corrigé - Nov 2025)
      - `__main__.py` : 19.0%
      - `bbia_awake.py` : 20.0%
      - `bbia_integration.py` : 20.1%
