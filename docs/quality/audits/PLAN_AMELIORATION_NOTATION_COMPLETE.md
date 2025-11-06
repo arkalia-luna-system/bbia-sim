@@ -84,7 +84,7 @@ class TestReachyMiniBackendReal:
 
 ---
 
-#### C. Tests robot réel automatisés (quand robot arrive, décembre)
+#### C. Tests robot réel automatisés (quand robot arrive, Oct / Nov. 2025)
 ```python
 # tests/hardware/test_reachy_mini_integration.py
 @pytest.mark.hardware

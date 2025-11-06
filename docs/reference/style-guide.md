@@ -234,9 +234,9 @@ code_here()
 
 ```markdown
 **Date création :** Octobre 2024  # Fixe, ne jamais modifier
-**Date mise à jour :** Oct / Nov  # Récentes
-**Date :** Oct / Nov  # Générales
-**Date cible :** Oct / Nov  # Futures
+**Date mise à jour :** Oct / Nov. 2025  # Récentes
+**Date :** Oct / Nov. 2025  # Générales
+**Date cible :** Oct / Nov. 2025  # Futures
 ```
 
 ### Historique

@@ -32,7 +32,7 @@
 
 ### Article principal (TechCrunch)
 - **Titre** : "Hugging Face ouvre les commandes de ses robots de bureau Reachy..."
-- **Date** : Il y a 5 jours
+- **Date** : Oct / Nov. 2025
 - **Source** : TechCrunch
 - **Signification** : Confirmation de l'implication de Hugging Face
 

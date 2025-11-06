@@ -39,7 +39,7 @@ Pour des vérifications détaillées par aspect, consultez :
 > Le projet BBIA‑SIM est **conforme** au SDK officiel Reachy Mini (Pollen Robotics).  
 > Des optimisations et corrections ont été appliquées et validées.
 
-### 🔐 Checklist pré‑réception (décembre)
+### 🔐 Checklist pré‑réception (Oct / Nov. 2025)
 
 - **Installer SDK officiel**: `pip install reachy-mini` (PyPI)  
   - **Simulation**: `pip install "reachy-mini[mujoco]"`
