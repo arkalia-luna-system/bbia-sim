@@ -178,7 +178,8 @@ def enregistrer_audio(
     if not _is_safe_path(fichier):
         raise ValueError("Chemin de sortie non autorisé (path traversal)")
 
-    # OPTIMISATION SDK: Utiliser robot.media.microphone si disponible (toujours disponible via shim)
+    # OPTIMISATION SDK: Utiliser robot.media.microphone si disponible
+    # (toujours disponible via shim)
     microphone_sdk = _get_robot_media_microphone(robot_api)
     # microphone_sdk peut être None uniquement si robot_api.media n'existe pas du tout
     if microphone_sdk is not None:
@@ -192,7 +193,10 @@ def enregistrer_audio(
                 and hasattr(robot_api.media, "record_audio")
             ):
                 logging.info(
-                    f"Enregistrement via SDK (4 microphones) ({duree}s) dans {fichier}...",
+                    (
+                        f"Enregistrement via SDK (4 microphones) ({duree}s) "
+                        f"dans {fichier}..."
+                    ),
                 )
                 audio_data = robot_api.media.record_audio(
                     duration=duree,
@@ -296,7 +300,8 @@ def lire_audio(fichier: str, robot_api: Optional["RobotAPI"] = None) -> None:
             # Ignorer toute erreur côté soundfile, fallback plus bas
             pass
 
-    # OPTIMISATION SDK: Utiliser robot.media.speaker si disponible (toujours disponible via shim)
+    # OPTIMISATION SDK: Utiliser robot.media.speaker si disponible
+    # (toujours disponible via shim)
     if robot_api and hasattr(robot_api, "media"):
         media = robot_api.media
         # Media est maintenant toujours disponible (shim en simulation)
@@ -307,7 +312,8 @@ def lire_audio(fichier: str, robot_api: Optional["RobotAPI"] = None) -> None:
 
                 if play_audio is not None:
                     # OPTIMISATION SDK: Lecture via robot.media.play_audio()
-                    # Bénéfice: Haut-parleur 5W optimisé hardware avec qualité supérieure
+                    # Bénéfice: Haut-parleur 5W optimisé hardware
+                    # avec qualité supérieure
                     logging.info(f"Lecture via SDK (haut-parleur 5W) : {fichier}...")
                     # Lire le fichier audio en bytes
                     with open(fichier, "rb") as f:
