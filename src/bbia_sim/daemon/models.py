@@ -97,7 +97,8 @@ class XYZRPYPose(BaseModel):  # type: ignore[misc]
         """Crée une pose XYZRPYPose depuis un array numpy 4x4 (conforme SDK)."""
         from scipy.spatial.transform import Rotation as R
 
-        assert arr.shape == (4, 4), "Array must be of shape (4, 4)"
+        if arr.shape != (4, 4):
+            raise ValueError(f"Array must be of shape (4, 4), got {arr.shape}")
         x, y, z = arr[0, 3], arr[1, 3], arr[2, 3]
         roll, pitch, yaw = R.from_matrix(arr[:3, :3]).as_euler("xyz")
         return cls(x=x, y=y, z=z, roll=roll, pitch=pitch, yaw=yaw)
@@ -138,7 +139,8 @@ class Matrix4x4Pose(BaseModel):  # type: ignore[misc]
     @classmethod
     def from_pose_array(cls, arr: npt.NDArray[np.float64]) -> "Matrix4x4Pose":
         """Crée une pose Matrix4x4Pose depuis un array numpy 4x4 (conforme SDK)."""
-        assert arr.shape == (4, 4), "Array must be of shape (4, 4)"
+        if arr.shape != (4, 4):
+            raise ValueError(f"Array must be of shape (4, 4), got {arr.shape}")
         flattened_list: list[float] = arr.flatten().tolist()
         # Type ignore nécessaire: tuple() retourne tuple[float, ...] mais on sait qu'il y a 16 éléments
         m: tuple[

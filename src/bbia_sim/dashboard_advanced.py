@@ -1152,7 +1152,8 @@ ADVANCED_DASHBOARD_HTML = """
 
 # Routes FastAPI avancées
 if FASTAPI_AVAILABLE:
-    assert app is not None  # Type narrowing pour mypy
+    if app is None:
+        raise RuntimeError("FastAPI app is None but FASTAPI_AVAILABLE is True")
 
     @app.get("/", response_class=HTMLResponse)
     async def advanced_dashboard():
@@ -1314,10 +1315,8 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
             intensity = 0.8  # Intensité par défaut
             if advanced_websocket_manager.robot:
                 # Type narrowing après vérification isinstance
-                assert isinstance(
-                    emotion,
-                    str,
-                )
+                if not isinstance(emotion, str):
+                    raise TypeError(f"Expected emotion to be str, got {type(emotion)}")
                 success = advanced_websocket_manager.robot.set_emotion(
                     emotion,
                     intensity,
@@ -1349,7 +1348,8 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                 return
 
             # Type narrowing après vérification robot
-            assert advanced_websocket_manager.robot is not None
+            if advanced_websocket_manager.robot is None:
+                raise RuntimeError("Robot is None after check")
             robot = advanced_websocket_manager.robot
 
             if action == "look_at":
@@ -1396,11 +1396,10 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                 return
 
             # Type narrowing après vérifications
-            assert isinstance(
-                behavior,
-                str,
-            )
-            assert advanced_websocket_manager.robot is not None
+            if not isinstance(behavior, str):
+                raise TypeError(f"Expected behavior to be str, got {type(behavior)}")
+            if advanced_websocket_manager.robot is None:
+                raise RuntimeError("Robot is None after check")
             robot = advanced_websocket_manager.robot
 
             success = robot.run_behavior(behavior, 5.0)
@@ -1433,8 +1432,10 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                 return
 
             # Type narrowing après vérifications
-            assert joint_data is not None
-            assert advanced_websocket_manager.robot is not None
+            if joint_data is None:
+                raise ValueError("joint_data is None after check")
+            if advanced_websocket_manager.robot is None:
+                raise RuntimeError("Robot is None after check")
             robot = advanced_websocket_manager.robot
 
             joint = joint_data.get("joint")

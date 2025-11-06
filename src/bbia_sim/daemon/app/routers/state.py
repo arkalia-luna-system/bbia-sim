@@ -192,7 +192,10 @@ async def get_full_state(
 
     if with_target_head_pose:
         target_pose = backend.target_head_pose
-        assert target_pose is not None
+        if target_pose is None:
+            raise ValueError(
+                "target_head_pose is None but with_target_head_pose is True"
+            )
         result["target_head_pose"] = as_any_pose(target_pose, use_pose_matrix)
     if with_head_joints:
         result["head_joints"] = backend.get_present_head_joint_positions()
@@ -468,7 +471,8 @@ async def get_present_antenna_joint_positions(
 
     """
     pos = backend.get_present_antenna_joint_positions()
-    assert len(pos) == 2
+    if len(pos) != 2:
+        raise ValueError(f"Expected 2 antenna positions, got {len(pos)}")
     # Retourner dans format attendu par tests (antennas ou left/right)
     return {
         "antennas": [float(pos[0]), float(pos[1])],

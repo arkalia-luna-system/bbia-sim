@@ -4,6 +4,7 @@ import argparse
 import importlib.util
 import logging
 import sys
+import tempfile
 from pathlib import Path
 
 from bbia_sim.sim.simulator import MuJoCoSimulator
@@ -293,7 +294,9 @@ def run_doctor() -> None:
 
     # File permissions
     try:
-        test_file = Path("/tmp/bbia_test_write")
+        # Utiliser tempfile.gettempdir() au lieu de /tmp hardcodé (B108)
+        temp_dir = tempfile.gettempdir()
+        test_file = Path(temp_dir) / "bbia_test_write"
         test_file.write_text("test")
         test_file.unlink()
         checks["File permissions"] = {"status": True, "value": "OK"}

@@ -138,7 +138,8 @@ async def stop_move_task(uuid: UUID) -> dict[str, str]:
         raise KeyError(f"Running move with UUID {uuid} not found")
 
     task = move_tasks.pop(uuid, None)
-    assert task is not None
+    if task is None:
+        raise RuntimeError(f"Task for UUID {uuid} was None after pop operation")
 
     if task:
         if task.cancel():

@@ -333,7 +333,8 @@ DASHBOARD_HTML = """
 
 # Routes FastAPI
 if FASTAPI_AVAILABLE:
-    assert app is not None  # Type narrowing pour mypy
+    if app is None:
+        raise RuntimeError("FastAPI app is None but FASTAPI_AVAILABLE is True")
 
     @app.get("/", response_class=HTMLResponse)
     async def dashboard():
