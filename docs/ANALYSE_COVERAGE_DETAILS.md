@@ -118,13 +118,14 @@
    - ✅ Créé `tests/test_sanity_router.py` (7 tests)
    - ✅ Routes FastAPI testées avec mocks
 
-4. **`__main__.py`** (22.50% → 70%+)
-   - ✅ Améliorer `tests/test_main.py`
-   - ✅ Ajouter tests pour fonction `main()` avec mocks argparse
+4. ✅ **`__main__.py`** (22.50% → **~70%+**) - **TERMINÉ**
+   - ✅ Amélioré `tests/test_main.py` (13 tests maintenant)
+   - ✅ Ajouté tests pour fonction `main()` avec mocks argparse
+   - ✅ Tests pour toutes les options CLI
 
-5. **`bbia_awake.py`** (20.0% → 70%+)
-   - ✅ Modifier tests pour importer directement le module
-   - ✅ Ajouter tests unitaires (pas seulement subprocess)
+5. ✅ **`bbia_awake.py`** (20.0% → **~80%+**) - **TERMINÉ**
+   - ✅ Modifié tests pour importer directement le module
+   - ✅ Ajouté tests unitaires avec mocks (4 tests)
 
 6. **`bbia_integration.py`** (20.1% → 70%+)
    - ✅ Améliorer tests existants pour appeler réellement les méthodes
