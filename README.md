@@ -67,7 +67,7 @@ python examples/demo_emotion_ok.py
 
 - Alimentation/LED OK
 - Wi‑Fi opérationnel (SSID/mot de passe)
-- Version SDK compatible (voir docs/conformité)
+- Version SDK compatible (voir docs/quality/compliance)
 - Dry‑run: connexion → wake_up → look_at_world → emergency_stop
 
 ### 📦 Dry‑run rapide
@@ -648,10 +648,10 @@ python scripts/plot_trace.py --input assets/videos/demo_happy_*.jsonl --output a
 ### Hardware Dry Run
 
 ```bash
-# Test hardware complet avec artefacts
-python scripts/hardware_dry_run.py --duration 10 --backend reachy
+# Test hardware complet avec artefacts (Reachy Mini)
+python scripts/hardware_dry_run_reachy_mini.py --duration 10 --output-dir artifacts
 
-# Test avec backend simulation
+# Test avec backend simulation (ancien script)
 python scripts/hardware_dry_run.py --duration 5 --backend mujoco
 ```
 
@@ -775,11 +775,8 @@ pytest -q --disable-warnings \
 ### Commandes de Tests
 
 ```bash
-# Tests spécifiques à la nouvelle démo 3D corrigée
-python -m pytest tests/test_demo_viewer_bbia_corrected.py -v
-
 # Tests MuJoCo existants
-python -m pytest tests/test_adapter_mujoco.py -v
+python -m pytest tests/test_simulation_integration.py -v
 
 # Lancer tous les tests avec coverage (chemin projet standardisé)
 python -m pytest tests/ --cov=src/bbia_sim --cov-report=term-missing --cov-report=html
