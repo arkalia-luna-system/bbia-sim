@@ -411,5 +411,9 @@ hf.enable_llm_chat("tinyllama")  # ✅ Fonctionne (~2GB RAM)
 
 ---
 
-**Prochaine étape** : Veux-tu que j'ajoute DeepFace dans le projet ? (compatible SDK, gratuit, open-source)
+**Note** : DeepFace a été ajouté et est opérationnel (voir `src/bbia_sim/face_recognition.py`)
+
+---
+
+**Dernière mise à jour** : Oct / Nov. 2025
 

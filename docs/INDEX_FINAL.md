@@ -111,9 +111,12 @@ mindmap
 
 ### 🔧 Corrections et Améliorations
 - [Corrections Appliquées](corrections/CORRECTIONS_APPLIQUEES.md) - Corrections démos et modules
-- [Corrections appliquées](corrections/CORRECTIONS_APPLIQUEES.md)
-- [Corrections Appliquées](corrections/CORRECTIONS_APPLIQUEES.md) - Corrections démos et modules
-- [Améliorations futures du SDK](ameliorations/AMELIORATIONS_FUTURES_SDK.md)
+- [Améliorations Finales](ameliorations/AMELIORATIONS_FINALES.md) - Améliorations post-audit
+- [Améliorations Futures SDK](ameliorations/AMELIORATIONS_FUTURES_SDK.md) - Features SDK avancées
+- [Améliorations Intelligence BBIA](ameliorations/AMELIORATIONS_INTELLIGENCE_BBIA_2025.md) - Intelligence conversationnelle
+- [Améliorations Intelligence Contexte](ameliorations/AMELIORATIONS_INTELLIGENCE_CONTEXTE_2025.md) - Intelligence contextuelle
+- [Analyse Améliorations Gratuites](ameliorations/ANALYSE_AMELIORATIONS_GRATUITES.md) - Solutions gratuites
+- [Décision Finale Améliorations](ameliorations/DECISION_FINAL_AMELIORATIONS.md) - Décisions améliorations
 
 ### 🎮 Mouvements et Contrôle
 - [Mouvements Reachy Mini](hardware/MOUVEMENTS_REACHY_MINI.md)
@@ -138,10 +141,10 @@ mindmap
 - [Rapports d'audit](quality/audits/README.md) - Tous les audits
 
 ### 🤖 Intelligence et IA
-- [Améliorations intelligence BBIA](intelligence/AMELIORATIONS_INTELLIGENCE_BBIA_2025.md)
+- [Audit IA Modules Pré-entraînés](ai/AUDIT_IA_MODULES_PRETRAINES.md)
+- [Datasets & Golden Images](ai/DATASETS_GOLDEN_IMAGES.md)
 - [Intelligence conversationnelle LLM](intelligence/INTELLIGENCE_CONVERSATIONNELLE_LLM.md)
 - [Analyse voix et intelligence](intelligence/ANALYSE_VOIX_ET_INTELLIGENCE_BBIA.md)
-- [Datasets & Golden Images](ai/DATASETS_GOLDEN_IMAGES.md)
 
 ### 📊 Analyses et Rapports
 - [Analyses de modules](analyses/ANALYSE_MODULES_NON_PRIORITAIRES_2025.md)

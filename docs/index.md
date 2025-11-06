@@ -106,10 +106,10 @@ pip install -e .
 - **[Sécurité Robot](hardware/SECURITE_ROBOT.md)** — DO/DON'T sécurité
 
 ### 🧠 Intelligence Artificielle
-- **[Améliorations Intelligence BBIA](intelligence/AMELIORATIONS_INTELLIGENCE_BBIA_2025.md)** — Améliorations IA
+- **[Audit IA Modules Pré-entraînés](ai/AUDIT_IA_MODULES_PRETRAINES.md)** — Modèles IA utilisés
+- **[Datasets & Golden Images](ai/DATASETS_GOLDEN_IMAGES.md)** — Vision & datasets
 - **[Intelligence Conversationnelle LLM](intelligence/INTELLIGENCE_CONVERSATIONNELLE_LLM.md)** — LLM & conversation
 - **[Analyse Voix et Intelligence](intelligence/ANALYSE_VOIX_ET_INTELLIGENCE_BBIA.md)** — Analyse voix
-- **[Datasets & Golden Images](ai/DATASETS_GOLDEN_IMAGES.md)** — Vision & datasets
 
 ### ✅ Qualité & Conformité
 - **[Conformité Reachy-Mini Complète](quality/compliance/CONFORMITE_REACHY_MINI_COMPLETE.md)** — 46 tests conformité SDK

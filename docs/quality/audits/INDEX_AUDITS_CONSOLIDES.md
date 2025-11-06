@@ -71,9 +71,10 @@ Les fichiers suivants ont été archivés car redondants ou obsolètes :
 ### Architecture et Code
 
 - `AUDIT_EXPERT_MODULES_CRITIQUES_2025.md` - Modules critiques analysés
-- `AUDIT_IA_MODULES_PRETRAINES.md` - Modules IA pré-entraînés
 - `AUDIT_3D_BBIA_COMPLET.md` - Composant 3D
 - `RESUME_SESSION_QUALITE_CODE.md` - Qualité code
+
+> **Note** : `AUDIT_IA_MODULES_PRETRAINES.md` a été déplacé vers `docs/ai/` (Oct / Nov. 2025)
 
 ### Conformité et Compatibilité
 
