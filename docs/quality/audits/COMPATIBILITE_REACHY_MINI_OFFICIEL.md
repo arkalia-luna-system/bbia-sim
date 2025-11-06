@@ -60,7 +60,7 @@ except ImportError:
 
 ---
 
-## 🔎 Vérifications supplémentaires (Nov 2025)
+## 🔎 Vérifications supplémentaires (Oct / Nov. 2025)
 
 - **Versions Python supportées (officiel)**: 3.10 → 3.13  
   - ✅ Projet configuré `requires-python = ">=3.10"`

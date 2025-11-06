@@ -600,7 +600,7 @@ app = FastAPI(
 | Axe | Priorité | Impact | Temps | Score + |
 |-----|----------|--------|-------|---------|
 | Tests robot mock | 🔴 Critique | +1.5 | 2 sem | +1.5 |
-| Tests robot réel | 🔴 Critique | +2.0 | Décembre | +2.0 |
+| Tests robot réel | 🔴 Critique | +2.0 | Oct / Nov. 2025 | +2.0 |
 | Branding visuel | 🔴 Critique | +1.0 | 1 sem | +1.0 |
 | Coverage 70%+ | 🔴 Critique | +1.0 | 4 sem | +1.0 |
 | Communauté issues | 🟠 Haute | +0.5 | 1 jour | +0.5 |
@@ -666,7 +666,7 @@ app = FastAPI(
 - [ ] Logo finalisé et intégré
 - [ ] Issues "good first issue" créées
 - [ ] Coverage 70%+ atteint
-- [ ] Tests robot réel (décembre)
+- [ ] Tests robot réel (Oct / Nov. 2025)
 - [ ] Vidéos démos créées
 - [ ] Communication publique lancée
 - [ ] Communauté active (premiers contributeurs)
