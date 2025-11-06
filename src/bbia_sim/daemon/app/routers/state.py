@@ -142,8 +142,10 @@ def _read_sdk_telemetry() -> dict[str, Any] | None:
         finally:
             try:
                 backend.disconnect()
-            except Exception:
-                pass
+            except Exception as disconnect_error:
+                logger.debug(
+                    f"Erreur lors de la déconnexion du backend: {disconnect_error}"
+                )
     except Exception:
         return None
 

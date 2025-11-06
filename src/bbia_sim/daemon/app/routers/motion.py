@@ -352,8 +352,10 @@ async def stop_motion() -> dict[str, Any]:
     try:
         # Appel direct asynchrone (stop_simulation est déjà async)
         await simulation_service.stop_simulation()
-    except Exception:
-        pass
+    except Exception as e:
+        logger.debug(
+            f"Erreur lors de l'arrêt de la simulation (peut être déjà arrêtée): {e}"
+        )
 
     return {
         "status": "stopped",

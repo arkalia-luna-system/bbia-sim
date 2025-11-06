@@ -2407,22 +2407,28 @@ class BBIAHuggingFace:
                 t2 = cut[: last_stop + 1].strip()
                 try:
                     t2 = self._avoid_recent_duplicates(t2)
-                except Exception:
-                    pass
+                except Exception as e:
+                    logger.debug(
+                        f"Erreur lors de l'évitement des doublons récents (t2): {e}"
+                    )
                 return t2
             last_space = cut.rfind(" ")
             if last_space >= min_len:
                 t3 = (cut[:last_space] + "...").strip()
                 try:
                     t3 = self._avoid_recent_duplicates(t3)
-                except Exception:
-                    pass
+                except Exception as e:
+                    logger.debug(
+                        f"Erreur lors de l'évitement des doublons récents (t3): {e}"
+                    )
                 return t3
             t4 = (t[:max_len] + "...").strip()
             try:
                 t4 = self._avoid_recent_duplicates(t4)
-            except Exception:
-                pass
+            except Exception as e:
+                logger.debug(
+                    f"Erreur lors de l'évitement des doublons récents (t4): {e}"
+                )
             return t4
         except Exception:
             return text
