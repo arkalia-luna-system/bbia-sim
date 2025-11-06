@@ -14,7 +14,8 @@ import subprocess
 import threading
 from typing import Any, Protocol
 
-# OPTIMISATION PERFORMANCE: Cache global pour modèles Whisper (évite chargements répétés)
+# OPTIMISATION PERFORMANCE: Cache global pour modèles Whisper
+# (évite chargements répétés)
 _whisper_models_cache: dict[str, dict[str, Any]] = (
     {}
 )  # model_name -> {processor, model}
@@ -52,7 +53,8 @@ class Pyttsx3TTS:
         try:
             engine = self._engine
             if engine is None:
-                # OPTIMISATION PERFORMANCE: Utiliser cache global au lieu de pyttsx3.init() direct
+                # OPTIMISATION PERFORMANCE: Utiliser cache global
+                # au lieu de pyttsx3.init() direct
                 try:
                     from .bbia_voice import _get_cached_voice_id, _get_pyttsx3_engine
 
@@ -270,7 +272,8 @@ class WhisperSTT:
 
             model_name = os.environ.get("BBIA_WHISPER_MODEL", "openai/whisper-base")
 
-            # OPTIMISATION PERFORMANCE: Utiliser cache global pour éviter chargements répétés
+            # OPTIMISATION PERFORMANCE: Utiliser cache global
+            # pour éviter chargements répétés
             global _whisper_models_cache
             with _whisper_cache_lock:
                 if model_name in _whisper_models_cache:

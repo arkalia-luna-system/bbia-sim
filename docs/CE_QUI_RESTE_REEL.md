@@ -206,6 +206,14 @@ def test_watchdog_timeout_robot_disconnected(self):
 - ✅ Fichiers essentiels présents (README, LICENSE, CONTRIBUTING, etc.)
 - ✅ Release v1.3.2 publiée
 
+### Archives
+
+✅ **TERMINÉ** : Nettoyage archives (Janvier 2025)
+
+- ✅ Suppression de 13 fichiers d'archive obsolètes
+- ✅ Conservation uniquement des README.md référencés
+- ✅ Structure archives allégée et propre
+
 ### TODOs Restants
 
 🟡 **Optionnel** : 1 TODO test

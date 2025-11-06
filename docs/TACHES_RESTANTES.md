@@ -201,7 +201,11 @@
    - **Priorité Basse** (11 modules 50-70%) : Voir détails dans `docs/CE_QUI_RESTE_REEL.md`
 
 ### Priorité Basse
-3. **TODO test optionnel** :
+3. ✅ **Nettoyage archives** - **TERMINÉ** (Janvier 2025) :
+   - ✅ 13 fichiers d'archive obsolètes supprimés
+   - ✅ Structure archives allégée
+
+4. 🟡 **TODO test optionnel** :
    - `tests/test_watchdog_monitoring.py` ligne 227
    - Test watchdog timeout robot déconnecté
    - Estimation : ~30 min (optionnel)

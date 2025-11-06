@@ -229,7 +229,8 @@ class MuJoCoBackend(RobotAPI):
                 self.viewer = mujoco.viewer.launch(self.model, self.data)
 
             # Fond BBIA configuré selon brief graphiste
-            # Palette BBIA : Bleu céleste #87bcfa, Violet #A680FF, Turquoise #60e9e1, Gris lunaire #eaeaed, Rose #FFDAEC
+            # Palette BBIA : Bleu céleste #87bcfa, Violet #A680FF,
+            # Turquoise #60e9e1, Gris lunaire #eaeaed, Rose #FFDAEC
             # Skybox avec dégradé gris lunaire → bleu céleste dans le modèle XML
             try:
                 # Chercher la texture skybox_bbia
@@ -266,7 +267,8 @@ class MuJoCoBackend(RobotAPI):
         """Configure la caméra du viewer pour orienter face au robot.
 
         Args:
-            azimuth: Angle horizontal (180 = face optimal au robot, 0 = côté droit, 90 = face alternative)
+            azimuth: Angle horizontal (180 = face optimal au robot,
+                0 = côté droit, 90 = face alternative)
             elevation: Angle vertical (-15 = légèrement au-dessus)
             distance: Distance du robot
             lookat: Point de visée [x, y, z] (défaut: [0, 0, 0.3])
