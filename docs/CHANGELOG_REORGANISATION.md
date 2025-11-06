@@ -1,6 +1,6 @@
 # 📝 Changelog - Réorganisation Documentation
 
-**Date** : Oct / Nov. 2025  
+**Date** : Oct / Nov. 2025
 **Version** : Documentation v2.0 (Réorganisée)
 
 ---
@@ -82,6 +82,6 @@
 
 ---
 
-**Date** : Oct / Nov. 2025  
+**Date** : Oct / Nov. 2025
 **Statut** : ✅ **RÉORGANISATION TERMINÉE**
 

@@ -2,8 +2,8 @@
 
 <div align="center">
 
-**🎯 Documentation complète du moteur cognitif BBIA-SIM**  
-*Organisée par catégorie • Navigation intuitive • Contenu exhaustif*
+**🎯 Documentation complète du moteur cognitif BBIA-SIM**
+* Organisée par catégorie • Navigation intuitive • Contenu exhaustif*
 
 </div>
 
@@ -262,31 +262,31 @@ graph TB
         CHAT[GUIDE_CHAT_BBIA.md<br/>Chat intelligent]
         NLP[GUIDE_NLP_SMOLVLM.md<br/>NLP & Vision]
     end
-    
+
     subgraph "🏗️ Architecture"
         ARCH_OVER[development/architecture/<br/>ARCHITECTURE_OVERVIEW.md<br/>Vue d'ensemble]
         ARCH_DET[development/architecture/<br/>ARCHITECTURE_DETAILED.md<br/>Détails techniques]
         ARCH_COMP[development/architecture/<br/>ARCHITECTURE.md<br/>Guide complet]
     end
-    
+
     subgraph "✅ Qualité & Conformité"
         CONFORM[CONFORMITE_REACHY_MINI_COMPLETE.md<br/>Conformité SDK]
         AUDIT[quality/audits/*.md<br/>Audits complets]
         QUALITY[quality/validation/*.md<br/>Validation qualité]
     end
-    
+
     subgraph "🧠 Intelligence & IA"
         LLM[intelligence/*.md<br/>LLM & Conversation]
         VISION[ai/DATASETS_GOLDEN_IMAGES.md<br/>Vision & Datasets]
         NLP_TECH[NLP & sentence-transformers]
     end
-    
+
     subgraph "⚙️ Configuration"
         INSTALL[installation/*.md<br/>Setup audio]
         INTEGRATION[development/<br/>INTEGRATION_GUIDE.md]
         DEPLOY[deployment/*.md<br/>Déploiement]
     end
-    
+
     START --> BEGINNER
     BEGINNER --> ADVANCED
     BEGINNER --> CHAT
@@ -297,7 +297,7 @@ graph TB
     ARCH_COMP --> CONFORM
     CONFORM --> AUDIT
     AUDIT --> QUALITY
-    
+
     style START fill:#90EE90
     style ARCH_OVER fill:#87CEEB
     style CONFORM fill:#FFD700

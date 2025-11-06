@@ -1,6 +1,6 @@
 # 📚 Documentation BBIA-SIM — Index Complet
 
-> **Moteur cognitif Python pour robot Reachy Mini**  
+> **Moteur cognitif Python pour robot Reachy Mini**
 > *Simulation fidèle • IA avancée • SDK 100% conforme*
 
 ---
@@ -11,18 +11,18 @@
 flowchart TB
     START[🚀 Nouveau?] --> DEBUT[📖 Guide Débutant<br/>5 minutes]
     START --> AVANCE[⚡ Expérimenté?]
-    
+
     DEBUT --> INSTALL[📦 Installation]
     INSTALL --> FIRST[🤖 Premier Robot]
     FIRST --> GUIDE[➡️ Guide Avancé]
-    
+
     AVANCE --> ARCH[🏗️ Architecture]
     ARCH --> API[🔌 API & SDK]
     API --> PERF[⚡ Performance]
-    
+
     GUIDE --> NEXT[📚 Documentation Complète]
     PERF --> NEXT
-    
+
     style START fill:#90EE90
     style DEBUT fill:#87CEEB
     style AVANCE fill:#FFD700
@@ -67,7 +67,7 @@ pip install -e .
 
 ## 📊 Statut et Suivi
 
-> **📈 Vue d'ensemble du projet**  
+> **📈 Vue d'ensemble du projet**
 > État par axe : Observabilité, Performance, Sécurité, CI/CD, Packaging, API/SDK, Robot, UX, IA, Docs, Qualité, Communauté
 
 👉 **[project-status.md](reference/project-status.md)** — Tableau de bord complet du projet

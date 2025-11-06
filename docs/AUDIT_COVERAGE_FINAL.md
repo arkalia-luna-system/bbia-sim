@@ -1,7 +1,7 @@
 # ✅ AUDIT COVERAGE COMPLET - CORRECTIONS APPLIQUÉES
 
-**Date** : Décembre 2025  
-**Problème** : Imports dans try/except empêchaient coverage de détecter les modules  
+**Date** : Décembre 2025
+**Problème** : Imports dans try/except empêchaient coverage de détecter les modules
 **Solution** : Imports directs au niveau module
 
 ---
@@ -14,39 +14,39 @@
 ```python
 # AVANT (masquait le module de coverage)
 try:
-    import bbia_sim.vision_yolo  # noqa: F401
+    import bbia_sim.vision_yolo # noqa: F401
 except (ImportError, AttributeError, Exception):
     pass
 
 # APRÈS (coverage peut détecter)
 # IMPORTANT: Import direct (pas dans try/except) pour que coverage le détecte
-import bbia_sim.vision_yolo  # noqa: F401
+import bbia_sim.vision_yolo # noqa: F401
 ```
 
 #### 2. `tests/test_voice_whisper_comprehensive.py` ✅
 ```python
 # AVANT (masquait le module de coverage)
 try:
-    import bbia_sim.voice_whisper  # noqa: F401
+    import bbia_sim.voice_whisper # noqa: F401
 except (ImportError, AttributeError, Exception):
     pass
 
 # APRÈS (coverage peut détecter)
 # IMPORTANT: Import direct (pas dans try/except) pour que coverage le détecte
-import bbia_sim.voice_whisper  # noqa: F401
+import bbia_sim.voice_whisper # noqa: F401
 ```
 
 #### 3. `tests/test_dashboard_advanced.py` ✅
 ```python
 # AVANT (masquait le module de coverage)
 try:
-    import bbia_sim.dashboard_advanced  # noqa: F401
+    import bbia_sim.dashboard_advanced # noqa: F401
     from bbia_sim.dashboard_advanced import (...)
 except (ImportError, AttributeError, Exception):
     pass
 
 # APRÈS (coverage peut détecter)
-import bbia_sim.dashboard_advanced  # noqa: F401
+import bbia_sim.dashboard_advanced # noqa: F401
 # Import des classes (peut échouer si FastAPI non disponible)
 try:
     from bbia_sim.dashboard_advanced import (...)
@@ -59,13 +59,13 @@ except (ImportError, AttributeError):
 ```python
 # AVANT (masquait le module de coverage)
 try:
-    import bbia_sim.daemon.bridge  # noqa: F401
+    import bbia_sim.daemon.bridge # noqa: F401
 except (ImportError, AttributeError, Exception):
     pass
 
 # APRÈS (coverage peut détecter)
 # IMPORTANT: Import direct (pas dans try/except) pour que coverage le détecte
-import bbia_sim.daemon.bridge  # noqa: F401
+import bbia_sim.daemon.bridge # noqa: F401
 ```
 
 ---
@@ -128,6 +128,6 @@ pytest tests/test_vision_yolo_comprehensive.py --cov=src/bbia_sim/vision_yolo --
 
 ---
 
-**Dernière mise à jour** : Décembre 2025  
+**Dernière mise à jour** : Décembre 2025
 **Statut** : ✅ **CORRECTIONS APPLIQUÉES - COVERAGE CORRECT**
 

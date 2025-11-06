@@ -15,13 +15,13 @@
 ```python
 # AVANT
 try:
-    import bbia_sim.vision_yolo  # noqa: F401
+    import bbia_sim.vision_yolo # noqa: F401
 except (ImportError, AttributeError, Exception):
     pass
 
 # APRÈS
 # IMPORTANT: Import direct (pas dans try/except) pour que coverage le détecte
-import bbia_sim.vision_yolo  # noqa: F401
+import bbia_sim.vision_yolo # noqa: F401
 ```
 
 #### 2. `test_voice_whisper_comprehensive.py` ✅
@@ -30,13 +30,13 @@ import bbia_sim.vision_yolo  # noqa: F401
 ```python
 # AVANT
 try:
-    import bbia_sim.voice_whisper  # noqa: F401
+    import bbia_sim.voice_whisper # noqa: F401
 except (ImportError, AttributeError, Exception):
     pass
 
 # APRÈS
 # IMPORTANT: Import direct (pas dans try/except) pour que coverage le détecte
-import bbia_sim.voice_whisper  # noqa: F401
+import bbia_sim.voice_whisper # noqa: F401
 ```
 
 #### 3. `test_dashboard_advanced.py` ✅
@@ -45,14 +45,14 @@ import bbia_sim.voice_whisper  # noqa: F401
 ```python
 # AVANT
 try:
-    import bbia_sim.dashboard_advanced  # noqa: F401
+    import bbia_sim.dashboard_advanced # noqa: F401
     from bbia_sim.dashboard_advanced import (...)
 except (ImportError, AttributeError, Exception):
     pass
 
 # APRÈS
 # IMPORTANT: Import direct (pas dans try/except) pour que coverage le détecte
-import bbia_sim.dashboard_advanced  # noqa: F401
+import bbia_sim.dashboard_advanced # noqa: F401
 # Import des classes (peut échouer si FastAPI non disponible)
 try:
     from bbia_sim.dashboard_advanced import (...)
@@ -67,13 +67,13 @@ except (ImportError, AttributeError):
 ```python
 # AVANT
 try:
-    import bbia_sim.daemon.bridge  # noqa: F401
+    import bbia_sim.daemon.bridge # noqa: F401
 except (ImportError, AttributeError, Exception):
     pass
 
 # APRÈS
 # IMPORTANT: Import direct (pas dans try/except) pour que coverage le détecte
-import bbia_sim.daemon.bridge  # noqa: F401
+import bbia_sim.daemon.bridge # noqa: F401
 ```
 
 ---

@@ -1,7 +1,7 @@
 # 🔍 Audit Complet de la Documentation BBIA-SIM
 
-**Date** : Oct / Nov. 2025  
-**Auditeur** : Expert Documentation  
+**Date** : Oct / Nov. 2025
+**Auditeur** : Expert Documentation
 **Objectif** : Évaluer et réorganiser la documentation pour une structure professionnelle, claire et sans redondance
 
 ---
@@ -241,6 +241,6 @@ docs/
 
 ---
 
-**Date de création** : Oct / Nov. 2025  
+**Date de création** : Oct / Nov. 2025
 **Statut** : 📝 Audit terminé - Prêt pour réorganisation
 

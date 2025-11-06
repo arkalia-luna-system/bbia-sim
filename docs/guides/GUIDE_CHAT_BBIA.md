@@ -2,8 +2,8 @@
 
 <div align="center">
 
-**🤖 Conversations naturelles avec votre robot Reachy Mini**  
-*IA avancée • Réponses contextuelles • Personnalités multiples*
+**🤖 Conversations naturelles avec votre robot Reachy Mini**
+* IA avancée • Réponses contextuelles • Personnalités multiples*
 
 **Version** : 1.3.2 • **Date** : Oct / Nov. 2025
 
@@ -15,8 +15,8 @@
 
 ## 🎯 Vue d'ensemble
 
-> **💡 Fonctionnalité clé**  
-> Le chat intelligent BBIA permet d'avoir une conversation naturelle avec votre robot Reachy Mini.  
+> **💡 Fonctionnalité clé**
+> Le chat intelligent BBIA permet d'avoir une conversation naturelle avec votre robot Reachy Mini.
 > BBIA analyse le sentiment de vos messages et répond selon sa personnalité configurée.
 
 ### 🎨 Ce que vous pouvez faire
@@ -37,24 +37,24 @@
 ```mermaid
 flowchart TB
     USER[Utilisateur] --> INPUT[Message Entrant]
-    
+
     INPUT --> SENTIMENT[Analyse Sentiment<br/>RoBERTa]
     INPUT --> NLP{NLP Détection?}
-    
+
     NLP -->|Oui| TOOL[Détection Outil<br/>sentence-transformers]
     NLP -->|Non| CHAT[Chat LLM]
-    
+
     TOOL --> EXEC[Exécution Action]
     SENTIMENT --> EMOTION[Émotion Associée]
     CHAT --> RESPONSE[Réponse Textuelle]
-    
+
     EMOTION --> ROBOT[RobotAPI]
     EXEC --> ROBOT
     RESPONSE --> TTS[Synthèse Vocale<br/>pyttsx3]
-    
+
     ROBOT --> ACTION[Action Robot]
     TTS --> SPEAKER[Audio Sortie]
-    
+
     style TOOL fill:#90EE90
     style SENTIMENT fill:#87CEEB
     style CHAT fill:#FFD700
@@ -92,7 +92,7 @@ bbia = BBIAHuggingFace()
 
 # Chat simple
 response = bbia.chat("Bonjour")
-print(response)  # 🤖 Bonjour ! Comment allez-vous ? Je suis BBIA, votre robot compagnon.
+print(response) # 🤖 Bonjour ! Comment allez-vous ? Je suis BBIA, votre robot compagnon.
 ```
 
 <div align="center">
@@ -126,7 +126,7 @@ BBIA peut adopter différentes personnalités qui influencent ses réponses et s
 
 ```python
 bbia.bbia_personality = "friendly_robot"
-print(bbia.chat("Salut"))  # 🤖 Salut ! Comment allez-vous ?
+print(bbia.chat("Salut")) # 🤖 Salut ! Comment allez-vous ?
 ```
 
 ### curious
@@ -136,7 +136,7 @@ print(bbia.chat("Salut"))  # 🤖 Salut ! Comment allez-vous ?
 
 ```python
 bbia.bbia_personality = "curious"
-print(bbia.chat("Comment ça va ?"))  # 🤔 Comment ça va ?
+print(bbia.chat("Comment ça va ?")) # 🤔 Comment ça va ?
 ```
 
 ### enthusiastic
@@ -146,7 +146,7 @@ print(bbia.chat("Comment ça va ?"))  # 🤔 Comment ça va ?
 
 ```python
 bbia.bbia_personality = "enthusiastic"
-print(bbia.chat("Super projet !"))  # 🎉 Super projet !
+print(bbia.chat("Super projet !")) # 🎉 Super projet !
 ```
 
 ### calm
@@ -156,7 +156,7 @@ print(bbia.chat("Super projet !"))  # 🎉 Super projet !
 
 ```python
 bbia.bbia_personality = "calm"
-print(bbia.chat("Je suis stressé"))  # 😌 Respirez, tout va bien...
+print(bbia.chat("Je suis stressé")) # 😌 Respirez, tout va bien...
 ```
 
 ---
@@ -230,7 +230,7 @@ bbia = BBIAHuggingFace()
 
 # Conversation
 print(bbia.chat("Bonjour"))           # 🤖 Bonjour ! ...
-print(bbia.chat("Comment allez-vous ?"))  # 🤖 Ça va bien...
+print(bbia.chat("Comment allez-vous ?")) # 🤖 Ça va bien...
 print(bbia.chat("Au revoir"))         # 🤖 Au revoir ! À bientôt !
 ```
 
@@ -351,7 +351,7 @@ def _generate_simple_response(self, message: str, sentiment: dict) -> str:
 
 personality_responses = {
     "friendly_robot": f"🤖 {response}",
-    "your_personality": f"🆕 {response}",  # Nouvelle personnalité
+    "your_personality": f"🆕 {response}", # Nouvelle personnalité
 }
 
 # Utilisation
@@ -435,7 +435,7 @@ bbia = BBIAHuggingFace()
 response = bbia.chat("Bonjour")
 
 # Interaction avec robot
-robot = RobotFactory.create_backend('mujoco')  # ou 'reachy_mini'
+robot = RobotFactory.create_backend('mujoco') # ou 'reachy_mini'
 robot.connect()
 
 # Définir émotion selon chat
