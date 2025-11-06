@@ -38,7 +38,7 @@ Dossiers actuels :
 
 #### 🟡 MOYEN - Redondances Potentielles
 **Fichiers similaires identifiés** :
-- `RESUME_FINAL_ULTIME.md` vs `RESUME_CORRECTIONS_FINALES.md`
+- `reference/summaries/final-summary.md` vs `RESUME_CORRECTIONS_FINALES.md`
 - `ANALYSE_DOUBLONS_MD.md` vs `ANALYSE_DOUBLONS_COMPLETE.md`
 - `BILAN_FINAL_DOCUMENTATION.md` vs `RAPPORT_NETTOYAGE_FINAL.md` vs `STATUT_NETTOYAGE_FINAL.md`
 - `guides/` vs `development/` (déjà identifié)
@@ -128,8 +128,8 @@ docs/
 
 #### 1. Fichiers de Résumé/Statut (8 fichiers)
 **Actuellement à la racine** :
-- `RESUME_FINAL_ULTIME.md` - **GARDER** (fichier principal)
-- `RESUME_CORRECTIONS_FINALES.md` - **FUSIONNER** dans RESUME_FINAL_ULTIME.md
+- `reference/summaries/final-summary.md` - **GARDER** (fichier principal)
+- `RESUME_CORRECTIONS_FINALES.md` - **FUSIONNER** dans reference/summaries/final-summary.md
 - `BILAN_FINAL_DOCUMENTATION.md` - **ARCHIVER** (historique)
 - `RAPPORT_NETTOYAGE_FINAL.md` - **ARCHIVER** (historique)
 - `STATUT_NETTOYAGE_FINAL.md` - **ARCHIVER** (historique)

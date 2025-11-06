@@ -126,8 +126,8 @@
 |---------|-----------|------------|----------------|
 | `docs/guides/GUIDE_DEBUTANT.md` | ✅ **EXCELLENT** | Guide clair, exemples pratiques, architecture simple | ✅ **CONSERVER** |
 | `docs/README.md` | ✅ **EXCELLENT** | Quick start clair, badges, liens utiles | ✅ **CONSERVER** |
-| `docs/development/ENV_PROFILS.md` | ✅ **TRÈS BON** | Setup venv clair, profils expliqués | ✅ **CONSERVER** |
-| `docs/development/GUIDE_WEBCAM_MX_BRIO.md` | ✅ **BON** | Guide spécifique webcam, utile | ✅ **CONSERVER** |
+| `docs/development/setup/environments.md` | ✅ **TRÈS BON** | Setup venv clair, profils expliqués | ✅ **CONSERVER** |
+| `docs/development/setup/webcam-mx-brio.md` | ✅ **BON** | Guide spécifique webcam, utile | ✅ **CONSERVER** |
 | `docs/simulations/MUJOCO_SIMULATION_GUIDE.md` | ✅ **BON** | Guide simulation MuJoCo, débutants OK | ✅ **CONSERVER** |
 
 **Points forts** :
@@ -147,7 +147,7 @@
 | `docs/development/architecture/ARCHITECTURE_DETAILED.md` | ✅ **EXCELLENT** | Détails techniques complets | ✅ **CONSERVER** |
 | `docs/quality/audits/AUDIT_EXPERT_MODULES_CRITIQUES_2025.md` | ✅ **EXCELLENT** | Audit technique approfondi | ✅ **CONSERVER** |
 | `docs/quality/compliance/CONFORMITE_REACHY_MINI_COMPLETE.md` | ✅ **EXCELLENT** | Conformité SDK détaillée | ✅ **CONSERVER** |
-| `docs/performance/OPTIMISATIONS_EXPERT_REACHY_MINI.md` | ✅ **TRÈS BON** | Optimisations avancées | ✅ **CONSERVER** |
+| `docs/quality/performance/OPTIMISATIONS_EXPERT_REACHY_MINI.md` | ✅ **TRÈS BON** | Optimisations avancées | ✅ **CONSERVER** |
 
 **Points forts** :
 - ✅ Documentation technique approfondie
@@ -180,7 +180,7 @@
 | `docs/guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md` | ✅ **EXCELLENT** | Guide complet robot réel, hardware, setup | ✅ **CONSERVER** |
 | `docs/quality/audits/COMPATIBILITE_REACHY_MINI_OFFICIEL.md` | ✅ **EXCELLENT** | Compatibilité SDK/hardware documentée | ✅ **CONSERVER** |
 | `docs/quality/compliance/CONFORMITE_REACHY_MINI_COMPLETE.md` | ✅ **EXCELLENT** | Conformité robot réel validée | ✅ **CONSERVER** |
-| `docs/development/SWITCH_SIM_ROBOT.md` | ✅ **TRÈS BON** | Passage simulation → robot réel | ✅ **CONSERVER** |
+| `docs/development/switch-sim-robot.md` | ✅ **TRÈS BON** | Passage simulation → robot réel | ✅ **CONSERVER** |
 | `docs/hardware/SECURITE_ROBOT.md` | ✅ **TRÈS BON** | Sécurité hardware documentée | ✅ **CONSERVER** |
 
 **Points forts** :

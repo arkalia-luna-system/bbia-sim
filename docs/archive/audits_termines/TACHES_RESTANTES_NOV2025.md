@@ -5,7 +5,7 @@
 
 **Audit** : Recherche exhaustive de ce qui n'a pas encore été fait
 
-> **⚠️ Note** : Ce fichier a été mis à jour pour refléter l'état actuel. Les TODOs robot réel sont maintenant **TERMINÉ** selon `RESUME_FINAL_ULTIME.md`.
+> **⚠️ Note** : Ce fichier a été mis à jour pour refléter l'état actuel. Les TODOs robot réel sont maintenant **TERMINÉ** selon `reference/summaries/final-summary.md`.
 
 > **🤖 Guide Assistants IA :** Pour scripts et conventions, voir [`../ASSISTANT_IA_GUIDE.md`](../ASSISTANT_IA_GUIDE.md)
 

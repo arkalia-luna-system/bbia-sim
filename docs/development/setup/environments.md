@@ -64,7 +64,7 @@ Caméra:
   - Enregistrer personnes: `python scripts/test_deepface.py --register photo.jpg --name Alice`
   - Reconnaître: `python scripts/test_deepface.py --recognize frame.jpg`
   - Détecter émotion: `python scripts/test_deepface.py --emotion photo.jpg`
-- Documentation complète: `docs/development/DEEPFACE_SETUP.md`
+- Documentation complète: `docs/development/setup/deepface.md`
 
 ---
 
@@ -97,7 +97,7 @@ bbia.enable_llm_chat()  # Télécharge/charge le LLM (internet requis au premier
   - Installation : `pip install -r requirements/requirements-deepface.txt`
   - Usage : Reconnaissance visage personnalisée, détection émotions (7 émotions)
   - Profil : `venv-vision-py310` (recommandé)
-  - Documentation : `docs/development/DEEPFACE_SETUP.md`
+  - Documentation : `docs/development/setup/deepface.md`
 
 - **MediaPipe** (détection postures/gestes) :
   - Installation : `pip install mediapipe` (déjà inclus dans venv-vision-py310)

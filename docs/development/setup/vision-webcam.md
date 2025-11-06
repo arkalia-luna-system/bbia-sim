@@ -110,7 +110,7 @@ BBIA_CAMERA_DEVICE=/dev/video0 python scripts/test_webcam_simple.py
 ### Étape 3 : Documentation ⏳ **À vérifier**
 
 **À mettre à jour** (si nécessaire) :
-- `docs/development/ENV_PROFILS.md` : Section webcam USB (à vérifier si présent)
+- `docs/development/setup/environments.md` : Section webcam USB (à vérifier si présent)
 - `README.md` : Commandes test webcam (à vérifier si présent)
 
 ---

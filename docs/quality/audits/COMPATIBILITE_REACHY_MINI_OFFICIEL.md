@@ -291,7 +291,7 @@ Conclusion: aucune anomalie détectée; vos implémentations (backend, API, brid
    - ✅ Compatible SDK (module créé : `src/bbia_sim/face_recognition.py`)
    - ✅ Intégré dans `BBIAVision` (reconnaissance + émotions automatiques)
    - ✅ Script test : `scripts/test_deepface.py`
-   - ✅ Documentation : `docs/development/DEEPFACE_SETUP.md`
+   - ✅ Documentation : `docs/development/setup/deepface.md`
    - ✅ Installation : `pip install deepface onnxruntime` (dans venv-vision-py310)
    - ✅ Backend ONNX recommandé pour RPi 5
 

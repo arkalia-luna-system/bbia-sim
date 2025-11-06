@@ -257,9 +257,9 @@ export BBIA_RATE_LIMIT=1000
 
 ### Guides techniques
 
-- **Guide d'Intégration** : `docs/development/INTEGRATION_GUIDE.md`
+- **Guide d'Intégration** : `docs/development/integration.md`
 - **Architecture** : `docs/development/architecture/ARCHITECTURE.md`
-- **Tests** : `docs/development/TESTING_GUIDE.md`
+- **Tests** : `docs/development/testing.md`
 
 ### Support communautaire
 

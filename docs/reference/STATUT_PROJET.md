@@ -207,7 +207,7 @@ bandit -r src/
 - **[Guide Avancé](../guides/GUIDE_AVANCE.md)** - Pour développeurs expérimentés
 - **[Guide Chat BBIA](../guides/GUIDE_CHAT_BBIA.md)** - Chat intelligent
 - **[Architecture](../development/architecture/ARCHITECTURE.md)** - Architecture complète
-- **[Tests](../development/TESTING_GUIDE.md)** - Guide des tests
+- **[Tests](../development/testing.md)** - Guide des tests
 
 ### Liens utiles
 

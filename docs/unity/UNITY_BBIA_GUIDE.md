@@ -163,7 +163,7 @@ python3 src/bbia_sim/test_unity_connection.py
 
 ### Documentation
 - [Guide complet Reachy](../guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md)
-- [Résumé projet](../RESUME_FINAL_ULTIME.md)
+- [Résumé projet](../reference/summaries/final-summary.md)
 - [Démarrage rapide](../guides/GUIDE_DEBUTANT.md)
 
 ### Liens officiels

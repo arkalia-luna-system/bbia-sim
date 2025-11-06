@@ -120,9 +120,9 @@ pip install -e .
 - **[Audit Coverage Imports](quality/audits/AUDIT_COVERAGE_IMPORTS.md)** — Audit coverage
 
 ### ⚡ Performance
-- **[Optimisations Expert Reachy Mini](quality/performance/OPTIMISATIONS_EXPERT_REACHY_MINI.md)** — Optimisations spécifiques
-- **[Optimisations Expert Robotique](quality/performance/OPTIMISATIONS_EXPERT_ROBOTIQUE_2025.md)** — Optimisations générales
-- **[Résumé Performance](quality/performance/RESUME_PERFORMANCE_CORRECTIONS_2025.md)** — Résumé optimisations
+- **[Optimisations Expert Reachy Mini](quality/quality/performance/OPTIMISATIONS_EXPERT_REACHY_MINI.md)** — Optimisations spécifiques
+- **[Optimisations Expert Robotique](quality/quality/performance/OPTIMISATIONS_EXPERT_ROBOTIQUE_2025.md)** — Optimisations générales
+- **[Résumé Performance](quality/quality/performance/RESUME_PERFORMANCE_CORRECTIONS_2025.md)** — Résumé optimisations
 
 ### 🚀 Déploiement
 - **[Pipeline CI/CD](deployment/PIPELINE_CI.md)** — Configuration CI/CD

@@ -189,7 +189,7 @@ bbia_sim.sim.enable_caching()
 
 ## Migration simulation → robot réel
 
-Voir : [MIGRATION_GUIDE.md](../development/MIGRATION_GUIDE.md)
+Voir : [MIGRATION_GUIDE.md](../development/migration.md)
 
 ---
 

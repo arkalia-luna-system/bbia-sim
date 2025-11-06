@@ -72,7 +72,7 @@
 - ✅ `src/bbia_sim/face_recognition.py` (344 lignes) - Module complet
 - ✅ `scripts/test_deepface.py` (155 lignes) - Script de test
 - ✅ `requirements/requirements-deepface.txt` - Dépendances
-- ✅ `docs/development/DEEPFACE_SETUP.md` - Documentation
+- ✅ `docs/development/setup/deepface.md` - Documentation
 
 **Fonctionnalités** :
 - ✅ Enregistrement personnes (`register_person()`)

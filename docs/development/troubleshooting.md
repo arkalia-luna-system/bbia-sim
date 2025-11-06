@@ -355,8 +355,8 @@ python -m bbia_sim --doctor
 ## 📚 Références
 
 - État par axe: `docs/reference/project-status.md` → Docs / Onboarding
-- Guide DeepFace: `docs/development/DEEPFACE_SETUP.md`
-- Guide Webcam : `docs/development/GUIDE_WEBCAM_MX_BRIO.md`
+- Guide DeepFace: `docs/development/setup/deepface.md`
+- Guide Webcam : `docs/development/setup/webcam-mx-brio.md`
 
 ---
 

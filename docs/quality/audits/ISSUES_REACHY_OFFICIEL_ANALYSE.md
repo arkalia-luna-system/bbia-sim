@@ -91,7 +91,7 @@
 
 **Fichiers pertinents:**
 - `src/bbia_sim/bbia_vision.py` (méthode `_capture_from_opencv_camera`)
-- `docs/development/AUDIT_VISION_WEBCAM.md`
+- `docs/development/setup/vision-webcam.md`
 - `scripts/test_webcam_simple.py`
 
 **Contribution possible:**

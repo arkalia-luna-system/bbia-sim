@@ -14,8 +14,8 @@
 ### 💻 Vous êtes Développeur ?
 1. **[Architecture](development/architecture/ARCHITECTURE_OVERVIEW.md)** - Vue d'ensemble technique
 2. **[Guide Avancé](guides/GUIDE_AVANCE.md)** - Fonctionnalités avancées
-3. **[Testing Guide](development/TESTING_GUIDE.md)** - Guide de tests
-4. **[Integration Guide](development/INTEGRATION_GUIDE.md)** - Guide d'intégration
+3. **[Testing Guide](development/testing.md)** - Guide de tests
+4. **[Integration Guide](development/integration.md)** - Guide d'intégration
 
 ### 🤖 Vous travaillez avec le Robot ?
 1. **[Guide Reachy Mini](guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md)** - Guide complet robot
@@ -24,7 +24,7 @@
 4. **[Conformité SDK](quality/compliance/CONFORMITE_REACHY_MINI_COMPLETE.md)** - Tests conformité
 
 ### ✅ Vous êtes QA / Tests ?
-1. **[Testing Guide](development/TESTING_GUIDE.md)** - Guide de tests
+1. **[Testing Guide](development/testing.md)** - Guide de tests
 2. **[Audits](quality/audits/README.md)** - Tous les audits
 3. **[Validation Qualité](quality/validation/VALIDATION_FINALE_QUALITE_2025.md)** - Rapports validation
 
@@ -101,7 +101,7 @@
 - **Installation** → `getting-started/` + `installation/AUDIO_SETUP.md`
 - **Architecture** → `development/architecture/`
 - **API** → `development/api/`
-- **Tests** → `development/TESTING_GUIDE.md`
+- **Tests** → `development/testing.md`
 - **Conformité** → `quality/compliance/`
 - **Performance** → `performance/`
 - **Simulation** → `simulations/`

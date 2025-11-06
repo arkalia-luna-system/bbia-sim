@@ -45,7 +45,7 @@
 1. `README.md` - Point d'entrée principal
 2. `INDEX_FINAL.md` - Index complet
 3. `GUIDE_NAVIGATION.md` - Guide de navigation rapide
-4. `RESUME_FINAL_ULTIME.md` - Résumé principal projet
+4. `reference/summaries/final-summary.md` - Résumé principal projet
 5. `AUDIT_DOCUMENTATION_COMPLET.md` - Rapport d'audit
 6. `CHANGELOG_REORGANISATION.md` - Changelog réorganisation
 

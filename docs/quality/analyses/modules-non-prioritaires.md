@@ -111,7 +111,7 @@ robot.media.record_audio()  # Enregistrement optimisé
 - ✅ `bbia_audio.py` : Utilise `robot.media.microphone` et `robot.media.record_audio()` avec fallback sounddevice
 - ✅ `bbia_voice.py` : Utilise `robot.media.speaker` et `robot.media.play_audio()` avec fallback pyttsx3
 
-**Voir** : `docs/ameliorations/AMELIORATIONS_FUTURES_SDK.md` pour détails complets
+**Voir** : `docs/quality/improvements/sdk-future.md` pour détails complets
 
 ---
 

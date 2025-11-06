@@ -84,7 +84,7 @@ mindmap
 - [Guide Avancé](guides/GUIDE_AVANCE.md) - Fonctionnalités avancées
 - [Guide Chat BBIA](guides/GUIDE_CHAT_BBIA.md) - Système de chat intelligent
 - [Guide Reachy Mini Wireless](guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md) - Guide complet du robot
-- [FAQ Troubleshooting](development/FAQ_TROUBLESHOOTING.md)
+- [FAQ Troubleshooting](development/troubleshooting.md)
 
 ### 🏗️ Architecture et Design
 - [Architecture Vue d'Ensemble](development/architecture/ARCHITECTURE_OVERVIEW.md)
@@ -153,9 +153,9 @@ mindmap
 - [Roadmap Dashboard/UX](dashboard/ROADMAP_DASHBOARD.md)
 
 ### ⚡ Performance
-- [Optimisations expert Reachy Mini](quality/performance/OPTIMISATIONS_EXPERT_REACHY_MINI.md)
-- [Optimisations expert robotique](quality/performance/OPTIMISATIONS_EXPERT_ROBOTIQUE_2025.md)
-- [Résumé performance](quality/performance/RESUME_PERFORMANCE_CORRECTIONS_2025.md)
+- [Optimisations expert Reachy Mini](quality/quality/performance/OPTIMISATIONS_EXPERT_REACHY_MINI.md)
+- [Optimisations expert robotique](quality/quality/performance/OPTIMISATIONS_EXPERT_ROBOTIQUE_2025.md)
+- [Résumé performance](quality/quality/performance/RESUME_PERFORMANCE_CORRECTIONS_2025.md)
 
 ### 🤖 Reachy et Robotique
 - [Prêt Reachy A4](hardware/reachy-mini/PRET_REACHY_A4.md)
@@ -279,7 +279,7 @@ graph TB
 
     subgraph "🧠 Intelligence & IA"
         LLM[intelligence/*.md<br/>LLM & Conversation]
-        VISION[ai/DATASETS_GOLDEN_IMAGES.md<br/>Vision & Datasets]
+        VISION[ai/datasets.md<br/>Vision & Datasets]
         NLP_TECH[NLP & sentence-transformers]
     end
 

@@ -137,7 +137,7 @@ bash scripts/run_demo_real.sh excited 15
 - **README** : Guide principal et quickstart
 - **Architecture** : `docs/development/architecture/ARCHITECTURE.md`
 - **Contrat RobotAPI** : `docs/reference/CONTRACT.md`
-- **Guide de Test** : `docs/development/TESTING_GUIDE.md`
+- **Guide de Test** : `docs/development/testing.md`
 
 ### **🎯 Scripts utiles**
 - **`hardware_dry_run.py`** : Test matériel complet
