@@ -188,7 +188,9 @@ class BBIAPoseDetection:
                 gestures["bras_levés"] = True
 
             # Mains sur tête (approximatif : poignets très haut)
-            tete_y = landmarks[0]["y"] if len(landmarks) > 0 else 0.5  # Landmark 0 = nez
+            tete_y = (
+                landmarks[0]["y"] if len(landmarks) > 0 else 0.5
+            )  # Landmark 0 = nez
             if poignet_gauche["y"] < tete_y + 0.1 or poignet_droit["y"] < tete_y + 0.1:
                 gestures["mains_sur_tete"] = True
 

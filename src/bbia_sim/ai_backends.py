@@ -15,7 +15,9 @@ import threading
 from typing import Any, Protocol
 
 # OPTIMISATION PERFORMANCE: Cache global pour modèles Whisper (évite chargements répétés)
-_whisper_models_cache: dict[str, dict[str, Any]] = {}  # model_name -> {processor, model}
+_whisper_models_cache: dict[str, dict[str, Any]] = (
+    {}
+)  # model_name -> {processor, model}
 _whisper_cache_lock = threading.Lock()
 
 
@@ -54,7 +56,9 @@ class Pyttsx3TTS:
                 try:
                     from .bbia_voice import _get_cached_voice_id, _get_pyttsx3_engine
 
-                    engine = _get_pyttsx3_engine()  # Utilise cache global (0ms après premier appel)
+                    engine = (
+                        _get_pyttsx3_engine()
+                    )  # Utilise cache global (0ms après premier appel)
                     self._engine = engine
                     self._voice_id = _get_cached_voice_id()  # Utilise cache voice ID
                 except ImportError:

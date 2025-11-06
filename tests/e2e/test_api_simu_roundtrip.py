@@ -66,7 +66,9 @@ class TestAPISimuRoundtrip:
                     assert data["success_count"] == 1
 
                     # 2. GET : Récupérer la position
-                    response = httpx.get(f"{base_url}/api/state/joints", headers=headers, timeout=5)
+                    response = httpx.get(
+                        f"{base_url}/api/state/joints", headers=headers, timeout=5
+                    )
                     assert response.status_code == 200
                     data = response.json()
 
@@ -110,7 +112,9 @@ class TestAPISimuRoundtrip:
                 assert data["success_count"] == len(joints)
 
                 # Vérifier toutes les positions
-                response = httpx.get(f"{base_url}/api/state/joints", headers=headers, timeout=5)
+                response = httpx.get(
+                    f"{base_url}/api/state/joints", headers=headers, timeout=5
+                )
                 assert response.status_code == 200
                 data = response.json()
 
@@ -186,7 +190,9 @@ class TestAPISimuRoundtrip:
 
         try:
             # Test /api/state/status
-            response = httpx.get(f"{base_url}/api/state/status", headers=headers, timeout=5)
+            response = httpx.get(
+                f"{base_url}/api/state/status", headers=headers, timeout=5
+            )
             # Accepter différents codes selon l'état de l'API
             assert response.status_code in [200, 404, 500]
 

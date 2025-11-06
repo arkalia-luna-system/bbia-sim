@@ -58,7 +58,9 @@ class TestDashboardAdvanced:
     @patch("bbia_sim.dashboard_advanced.BBIAEmotions")
     @patch("bbia_sim.dashboard_advanced.BBIABehaviorManager")
     @patch("bbia_sim.dashboard_advanced.FASTAPI_AVAILABLE", False)
-    def test_fastapi_import_not_available(self, mock_behavior, mock_emotions, mock_vision):
+    def test_fastapi_import_not_available(
+        self, mock_behavior, mock_emotions, mock_vision
+    ):
         """Test que FastAPI n'est pas disponible."""
         from bbia_sim.dashboard_advanced import FASTAPI_AVAILABLE
 
@@ -88,7 +90,11 @@ class TestDashboardAdvanced:
         except ImportError:
             pytest.skip("Module dashboard_advanced non disponible")
         except Exception as e:
-            if "FastAPI" in str(e) or "WebSocket" in str(e) or "unexpected keyword" in str(e):
+            if (
+                "FastAPI" in str(e)
+                or "WebSocket" in str(e)
+                or "unexpected keyword" in str(e)
+            ):
                 pytest.skip(f"Dashboard non disponible ou dépendance incompatible: {e}")
             raise
 
@@ -398,7 +404,9 @@ class TestDashboardAdvanced:
             # Mock vision pour retourner des objets (deque pour optimisation RAM)
             from collections import deque
 
-            manager.vision.objects_detected = deque([{"name": "obj1"}, {"name": "obj2"}])
+            manager.vision.objects_detected = deque(
+                [{"name": "obj1"}, {"name": "obj2"}]
+            )
             manager.vision.faces_detected = deque([{"name": "face1"}])
             manager.vision.tracking_active = True
 
@@ -597,7 +605,9 @@ class TestDashboardAdvanced:
             advanced_websocket_manager.robot = None
 
             async def test():
-                await handle_advanced_robot_command({"command_type": "emotion", "value": "happy"})
+                await handle_advanced_robot_command(
+                    {"command_type": "emotion", "value": "happy"}
+                )
                 # Vérifier que set_emotion a été appelé si robot créé
                 if advanced_websocket_manager.robot:
                     assert advanced_websocket_manager.robot.set_emotion.called
@@ -769,7 +779,9 @@ class TestDashboardAdvanced:
 
             try:
                 client = TestClient(app)
-                response = client.post("/api/emotion", json={"emotion": "happy", "intensity": 0.7})
+                response = client.post(
+                    "/api/emotion", json={"emotion": "happy", "intensity": 0.7}
+                )
 
                 assert response.status_code == 200
                 data = response.json()
@@ -802,7 +814,9 @@ class TestDashboardAdvanced:
 
             try:
                 client = TestClient(app)
-                response = client.post("/api/joint", json={"joint": "yaw_body", "position": 0.3})
+                response = client.post(
+                    "/api/joint", json={"joint": "yaw_body", "position": 0.3}
+                )
 
                 assert response.status_code == 200
                 data = response.json()
@@ -855,13 +869,21 @@ class TestDashboardAdvanced:
 
             async def test():
                 # Test action "look_at"
-                await handle_advanced_robot_command({"command_type": "action", "value": "look_at"})
+                await handle_advanced_robot_command(
+                    {"command_type": "action", "value": "look_at"}
+                )
                 # Test action "greet"
-                await handle_advanced_robot_command({"command_type": "action", "value": "greet"})
+                await handle_advanced_robot_command(
+                    {"command_type": "action", "value": "greet"}
+                )
                 # Test action "stop"
-                await handle_advanced_robot_command({"command_type": "action", "value": "stop"})
+                await handle_advanced_robot_command(
+                    {"command_type": "action", "value": "stop"}
+                )
                 # Test action "invalid" (échec)
-                await handle_advanced_robot_command({"command_type": "action", "value": "invalid"})
+                await handle_advanced_robot_command(
+                    {"command_type": "action", "value": "invalid"}
+                )
 
             asyncio.run(asyncio.wait_for(test(), timeout=2.0))
             # Restaurer robot original
@@ -888,7 +910,9 @@ class TestDashboardAdvanced:
             mock_factory.create_backend.return_value = None
 
             async def test():
-                await handle_advanced_robot_command({"command_type": "action", "value": "look_at"})
+                await handle_advanced_robot_command(
+                    {"command_type": "action", "value": "look_at"}
+                )
                 # Doit envoyer message d'erreur "Robot non connecté"
 
             asyncio.run(asyncio.wait_for(test(), timeout=1.0))
@@ -924,7 +948,9 @@ class TestDashboardAdvanced:
                 )
                 # Test behavior avec échec
                 if advanced_websocket_manager.robot:
-                    advanced_websocket_manager.robot.run_behavior = MagicMock(return_value=False)
+                    advanced_websocket_manager.robot.run_behavior = MagicMock(
+                        return_value=False
+                    )
                     await handle_advanced_robot_command(
                         {"command_type": "behavior", "value": "invalid_behavior"}
                     )
@@ -946,9 +972,13 @@ class TestDashboardAdvanced:
 
             async def test():
                 # Test behavior None
-                await handle_advanced_robot_command({"command_type": "behavior", "value": None})
+                await handle_advanced_robot_command(
+                    {"command_type": "behavior", "value": None}
+                )
                 # Test behavior non-string
-                await handle_advanced_robot_command({"command_type": "behavior", "value": 123})
+                await handle_advanced_robot_command(
+                    {"command_type": "behavior", "value": 123}
+                )
 
             asyncio.run(asyncio.wait_for(test(), timeout=1.0))
         except (ImportError, Exception) as e:
@@ -985,7 +1015,9 @@ class TestDashboardAdvanced:
                 )
                 # Test joint avec échec
                 if advanced_websocket_manager.robot:
-                    advanced_websocket_manager.robot.set_joint_pos = MagicMock(return_value=False)
+                    advanced_websocket_manager.robot.set_joint_pos = MagicMock(
+                        return_value=False
+                    )
                     await handle_advanced_robot_command(
                         {
                             "command_type": "joint",
@@ -1010,9 +1042,13 @@ class TestDashboardAdvanced:
 
             async def test():
                 # Test joint_data None
-                await handle_advanced_robot_command({"command_type": "joint", "value": None})
+                await handle_advanced_robot_command(
+                    {"command_type": "joint", "value": None}
+                )
                 # Test joint_data vide
-                await handle_advanced_robot_command({"command_type": "joint", "value": {}})
+                await handle_advanced_robot_command(
+                    {"command_type": "joint", "value": {}}
+                )
 
             asyncio.run(asyncio.wait_for(test(), timeout=1.0))
         except (ImportError, Exception) as e:
@@ -1044,11 +1080,17 @@ class TestDashboardAdvanced:
 
             async def test():
                 # Test vision "toggle"
-                await handle_advanced_robot_command({"command_type": "vision", "value": "toggle"})
+                await handle_advanced_robot_command(
+                    {"command_type": "vision", "value": "toggle"}
+                )
                 # Test vision "scan"
-                await handle_advanced_robot_command({"command_type": "vision", "value": "scan"})
+                await handle_advanced_robot_command(
+                    {"command_type": "vision", "value": "scan"}
+                )
                 # Test vision "track"
-                await handle_advanced_robot_command({"command_type": "vision", "value": "track"})
+                await handle_advanced_robot_command(
+                    {"command_type": "vision", "value": "track"}
+                )
 
             asyncio.run(asyncio.wait_for(test(), timeout=2.0))
             advanced_websocket_manager.vision = original_vision
@@ -1068,9 +1110,13 @@ class TestDashboardAdvanced:
 
             async def test():
                 # Test émotion None
-                await handle_advanced_robot_command({"command_type": "emotion", "value": None})
+                await handle_advanced_robot_command(
+                    {"command_type": "emotion", "value": None}
+                )
                 # Test émotion non-string
-                await handle_advanced_robot_command({"command_type": "emotion", "value": 123})
+                await handle_advanced_robot_command(
+                    {"command_type": "emotion", "value": 123}
+                )
 
             asyncio.run(asyncio.wait_for(test(), timeout=1.0))
         except (ImportError, Exception) as e:
@@ -1095,7 +1141,9 @@ class TestDashboardAdvanced:
             mock_factory.create_backend.return_value = None
 
             async def test():
-                await handle_advanced_robot_command({"command_type": "emotion", "value": "happy"})
+                await handle_advanced_robot_command(
+                    {"command_type": "emotion", "value": "happy"}
+                )
                 # Doit envoyer message d'erreur "Robot non connecté"
 
             asyncio.run(asyncio.wait_for(test(), timeout=1.0))
@@ -1116,7 +1164,9 @@ class TestDashboardAdvanced:
 
             async def test():
                 # Test type inconnu (doit juste retourner sans erreur)
-                await handle_advanced_robot_command({"command_type": "unknown", "value": "test"})
+                await handle_advanced_robot_command(
+                    {"command_type": "unknown", "value": "test"}
+                )
 
             asyncio.run(asyncio.wait_for(test(), timeout=1.0))
         except (ImportError, Exception) as e:

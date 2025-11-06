@@ -241,7 +241,9 @@ class BBIAPersonRecognition:
                 emotion_scores = result.get("emotion", {})
 
                 # Trouver la confiance de l'émotion dominante
-                confidence = emotion_scores.get(emotion, 0.0) / 100.0  # Convertir % → 0-1
+                confidence = (
+                    emotion_scores.get(emotion, 0.0) / 100.0
+                )  # Convertir % → 0-1
 
                 return {
                     "emotion": emotion,

@@ -93,7 +93,11 @@ class BBIAMemory:
 
             history = data.get("history", [])
             logger.debug(f"💾 Conversation chargée ({len(history)} messages)")
-            return cast("list[dict[str, Any]]", history) if isinstance(history, list) else []
+            return (
+                cast("list[dict[str, Any]]", history)
+                if isinstance(history, list)
+                else []
+            )
         except Exception as e:
             logger.warning(f"⚠️ Erreur chargement conversation: {e}")
             return []
@@ -143,7 +147,11 @@ class BBIAMemory:
             with open(self.preferences_file, encoding="utf-8") as f:
                 preferences = json.load(f)
 
-            return cast("dict[str, Any]", preferences) if isinstance(preferences, dict) else {}
+            return (
+                cast("dict[str, Any]", preferences)
+                if isinstance(preferences, dict)
+                else {}
+            )
         except Exception as e:
             logger.warning(f"⚠️ Erreur chargement préférences: {e}")
             return {}
@@ -212,7 +220,9 @@ class BBIAMemory:
             with open(self.learnings_file, encoding="utf-8") as f:
                 learnings = json.load(f)
 
-            return cast("dict[str, Any]", learnings) if isinstance(learnings, dict) else {}
+            return (
+                cast("dict[str, Any]", learnings) if isinstance(learnings, dict) else {}
+            )
         except Exception as e:
             logger.warning(f"⚠️ Erreur chargement apprentissages: {e}")
             return {}

@@ -69,7 +69,9 @@ def test_goto_target_interpolation_latency() -> None:
             latencies_ms: list[float] = []
             for _ in range(iterations):
                 t0 = time.perf_counter()
-                backend.goto_target(head=head, duration=0.1, method=method, body_yaw=0.0)
+                backend.goto_target(
+                    head=head, duration=0.1, method=method, body_yaw=0.0
+                )
                 t1 = time.perf_counter()
                 latencies_ms.append((t1 - t0) * 1000.0)
                 # OPTIMISATION RAM: Réduire sleep si pas besoin (garder pour stabilité)
@@ -98,7 +100,9 @@ def test_goto_target_with_body_yaw() -> None:
 
     try:
         # Vérifier que mouvement combiné fonctionne
-        backend.goto_target(head=head, body_yaw=body_yaw, duration=0.2, method="minjerk")
+        backend.goto_target(
+            head=head, body_yaw=body_yaw, duration=0.2, method="minjerk"
+        )
         time.sleep(0.25)
 
         # Vérifier position corps

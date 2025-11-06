@@ -32,7 +32,9 @@ class TestBBIAAudioExtended:
 
         try:
             with (
-                patch("os.environ.get", return_value="0"),  # Désactiver BBIA_DISABLE_AUDIO
+                patch(
+                    "os.environ.get", return_value="0"
+                ),  # Désactiver BBIA_DISABLE_AUDIO
                 patch("bbia_sim.bbia_audio.sd.rec") as mock_rec,
                 patch("bbia_sim.bbia_audio.sd.wait"),
                 patch("builtins.open", mock_open()),
@@ -71,7 +73,9 @@ class TestBBIAAudioExtended:
 
         try:
             with (
-                patch("os.environ.get", return_value="0"),  # Désactiver BBIA_DISABLE_AUDIO
+                patch(
+                    "os.environ.get", return_value="0"
+                ),  # Désactiver BBIA_DISABLE_AUDIO
                 patch("bbia_sim.bbia_audio.sd.rec") as mock_rec,
                 patch("bbia_sim.bbia_audio.sd.wait"),
                 patch("builtins.open", mock_open()),
@@ -97,8 +101,12 @@ class TestBBIAAudioExtended:
 
         try:
             with (
-                patch("os.environ.get", return_value="0"),  # Désactiver BBIA_DISABLE_AUDIO
-                patch("bbia_sim.bbia_audio.soundfile", None),  # Forcer fallback vers wave
+                patch(
+                    "os.environ.get", return_value="0"
+                ),  # Désactiver BBIA_DISABLE_AUDIO
+                patch(
+                    "bbia_sim.bbia_audio.soundfile", None
+                ),  # Forcer fallback vers wave
                 patch("bbia_sim.bbia_audio.wave.open") as mock_wave_open,
                 patch("bbia_sim.bbia_audio.sd.play"),
                 patch("bbia_sim.bbia_audio.sd.wait"),
@@ -143,7 +151,9 @@ class TestBBIAAudioExtended:
 
         try:
             with (
-                patch("os.environ.get", return_value="0"),  # Désactiver BBIA_DISABLE_AUDIO
+                patch(
+                    "os.environ.get", return_value="0"
+                ),  # Désactiver BBIA_DISABLE_AUDIO
                 patch("bbia_sim.bbia_audio.wave.open") as mock_wave_open,
                 patch("bbia_sim.bbia_audio.sd.play"),
                 patch("bbia_sim.bbia_audio.sd.wait"),
@@ -172,7 +182,9 @@ class TestBBIAAudioExtended:
 
         try:
             with (
-                patch("os.environ.get", return_value="0"),  # Désactiver BBIA_DISABLE_AUDIO
+                patch(
+                    "os.environ.get", return_value="0"
+                ),  # Désactiver BBIA_DISABLE_AUDIO
                 patch("bbia_sim.bbia_audio.wave.open") as mock_wave_open,
             ):
                 mock_wf = MagicMock()
@@ -198,7 +210,9 @@ class TestBBIAAudioExtended:
 
         try:
             with (
-                patch("os.environ.get", return_value="0"),  # Désactiver BBIA_DISABLE_AUDIO
+                patch(
+                    "os.environ.get", return_value="0"
+                ),  # Désactiver BBIA_DISABLE_AUDIO
                 patch("bbia_sim.bbia_audio.wave.open") as mock_wave_open,
             ):
                 mock_wf = MagicMock()
@@ -235,7 +249,9 @@ class TestBBIAAudioExtended:
 
         try:
             with (
-                patch("os.environ.get", return_value="0"),  # Désactiver BBIA_DISABLE_AUDIO
+                patch(
+                    "os.environ.get", return_value="0"
+                ),  # Désactiver BBIA_DISABLE_AUDIO
                 patch("bbia_sim.bbia_audio.wave.open") as mock_wave_open,
             ):
                 mock_wf = MagicMock()
@@ -264,7 +280,9 @@ class TestBBIAAudioExtended:
 
         try:
             with (
-                patch("os.environ.get", return_value="0"),  # Désactiver BBIA_DISABLE_AUDIO
+                patch(
+                    "os.environ.get", return_value="0"
+                ),  # Désactiver BBIA_DISABLE_AUDIO
                 patch("bbia_sim.bbia_audio.wave.open") as mock_wave_open,
             ):
                 mock_wf = MagicMock()
@@ -289,7 +307,9 @@ class TestBBIAAudioExtended:
 
         try:
             with (
-                patch("os.environ.get", return_value="0"),  # Désactiver BBIA_DISABLE_AUDIO
+                patch(
+                    "os.environ.get", return_value="0"
+                ),  # Désactiver BBIA_DISABLE_AUDIO
                 patch("bbia_sim.bbia_audio.sd.rec") as mock_rec,
                 patch("bbia_sim.bbia_audio.sd.wait"),
                 patch("bbia_sim.bbia_audio.wave.open") as mock_wave_open,
@@ -320,7 +340,9 @@ class TestBBIAAudioExtended:
 
         try:
             with (
-                patch("os.environ.get", return_value="0"),  # Désactiver BBIA_DISABLE_AUDIO
+                patch(
+                    "os.environ.get", return_value="0"
+                ),  # Désactiver BBIA_DISABLE_AUDIO
                 patch("bbia_sim.bbia_audio.wave.open") as mock_wave_open,
                 patch("bbia_sim.bbia_audio.sd.play"),
                 patch("bbia_sim.bbia_audio.sd.wait"),
@@ -351,7 +373,9 @@ class TestBBIAAudioExtended:
 
         try:
             with (
-                patch("os.environ.get", return_value="0"),  # Désactiver BBIA_DISABLE_AUDIO
+                patch(
+                    "os.environ.get", return_value="0"
+                ),  # Désactiver BBIA_DISABLE_AUDIO
                 patch("bbia_sim.bbia_audio.wave.open") as mock_wave_open,
             ):
                 mock_wf = MagicMock()
@@ -380,7 +404,9 @@ class TestBBIAAudioExtended:
 
         try:
             with (
-                patch("os.environ.get", return_value="0"),  # Désactiver BBIA_DISABLE_AUDIO
+                patch(
+                    "os.environ.get", return_value="0"
+                ),  # Désactiver BBIA_DISABLE_AUDIO
                 patch("bbia_sim.bbia_audio.sd.rec") as mock_rec,
                 patch("bbia_sim.bbia_audio.sd.wait"),
                 patch("bbia_sim.bbia_audio.wave.open") as mock_wave_open,

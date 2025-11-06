@@ -20,7 +20,9 @@ class SimulationService:
             model_path: Chemin vers le modèle MJCF/XML
 
         """
-        self.model_path = model_path or "src/bbia_sim/sim/models/reachy_mini_REAL_OFFICIAL.xml"
+        self.model_path = (
+            model_path or "src/bbia_sim/sim/models/reachy_mini_REAL_OFFICIAL.xml"
+        )
         self.simulator: MuJoCoSimulator | None = None
         self.is_running = False
         self._simulation_task: asyncio.Task[None] | None = None

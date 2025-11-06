@@ -51,7 +51,8 @@ class TestHeadlessDuration:
 
             # Tolérance réaliste : ±0.1s (1.074s avec machine variable)
             assert 0.9 <= actual_duration <= 1.1, (
-                f"Durée non respectée: {actual_duration:.3f}s " f"(attendu: {duration}s ±0.1s)"
+                f"Durée non respectée: {actual_duration:.3f}s "
+                f"(attendu: {duration}s ±0.1s)"
             )
 
         finally:
@@ -64,7 +65,9 @@ class TestHeadlessDuration:
         mock_data = Mock()
         mock_mujoco.MjModel.from_xml_path.return_value = mock_model
         mock_mujoco.MjData.return_value = mock_data
-        mock_mujoco.mj_step.side_effect = lambda m, d: None  # Pas de sleep pour test rapide
+        mock_mujoco.mj_step.side_effect = (
+            lambda m, d: None
+        )  # Pas de sleep pour test rapide
 
         with tempfile.NamedTemporaryFile(mode="w", suffix=".xml", delete=False) as f:
             f.write(
@@ -100,7 +103,9 @@ class TestHeadlessDuration:
         mock_data = Mock()
         mock_mujoco.MjModel.from_xml_path.return_value = mock_model
         mock_mujoco.MjData.return_value = mock_data
-        mock_mujoco.mj_step.side_effect = lambda m, d: None  # Pas de sleep pour test rapide
+        mock_mujoco.mj_step.side_effect = (
+            lambda m, d: None
+        )  # Pas de sleep pour test rapide
 
         with tempfile.NamedTemporaryFile(mode="w", suffix=".xml", delete=False) as f:
             f.write(

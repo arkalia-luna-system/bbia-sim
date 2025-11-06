@@ -46,7 +46,9 @@ class TestNLPDetection(unittest.TestCase):
             result = self.hf._detect_tool_with_nlp(message)
             if result:
                 tool_name, confidence = result
-                logger.info(f"✅ '{message}' → {tool_name} (confiance: {confidence:.2f})")
+                logger.info(
+                    f"✅ '{message}' → {tool_name} (confiance: {confidence:.2f})"
+                )
                 # Vérifier que c'est bien move_head
                 self.assertEqual(tool_name, "move_head")
                 self.assertGreater(confidence, 0.5)
@@ -67,7 +69,9 @@ class TestNLPDetection(unittest.TestCase):
             result = self.hf._detect_tool_with_nlp(message)
             if result:
                 tool_name, confidence = result
-                logger.info(f"✅ '{message}' → {tool_name} (confiance: {confidence:.2f})")
+                logger.info(
+                    f"✅ '{message}' → {tool_name} (confiance: {confidence:.2f})"
+                )
                 self.assertEqual(tool_name, "camera")
 
     def test_nlp_detection_dance(self) -> None:
@@ -86,7 +90,9 @@ class TestNLPDetection(unittest.TestCase):
             result = self.hf._detect_tool_with_nlp(message)
             if result:
                 tool_name, confidence = result
-                logger.info(f"✅ '{message}' → {tool_name} (confiance: {confidence:.2f})")
+                logger.info(
+                    f"✅ '{message}' → {tool_name} (confiance: {confidence:.2f})"
+                )
                 self.assertEqual(tool_name, "dance")
 
 

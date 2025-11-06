@@ -187,11 +187,15 @@ class TestBBIAVoiceExtended:
         mock_recognizer.listen.assert_called_once_with(
             mock_microphone_instance, phrase_time_limit=3
         )
-        mock_recognizer.recognize_google.assert_called_once_with(mock_audio, language="fr-FR")
+        mock_recognizer.recognize_google.assert_called_once_with(
+            mock_audio, language="fr-FR"
+        )
 
     @patch("bbia_sim.bbia_voice.sr.Recognizer")
     @patch("bbia_sim.bbia_voice.sr.Microphone")
-    def test_reconnaitre_parole_unknown_value(self, mock_microphone, mock_recognizer_class):
+    def test_reconnaitre_parole_unknown_value(
+        self, mock_microphone, mock_recognizer_class
+    ):
         """Test reconnaissance vocale sans parole."""
         mock_recognizer = MagicMock()
         mock_recognizer_class.return_value = mock_recognizer
@@ -209,7 +213,9 @@ class TestBBIAVoiceExtended:
 
     @patch("bbia_sim.bbia_voice.sr.Recognizer")
     @patch("bbia_sim.bbia_voice.sr.Microphone")
-    def test_reconnaitre_parole_general_error(self, mock_microphone, mock_recognizer_class):
+    def test_reconnaitre_parole_general_error(
+        self, mock_microphone, mock_recognizer_class
+    ):
         """Test reconnaissance vocale erreur générale."""
         mock_recognizer = MagicMock()
         mock_recognizer_class.return_value = mock_recognizer
@@ -363,7 +369,9 @@ class TestBBIAVoiceExtended:
     @patch("bbia_sim.bbia_voice._bbia_voice_id_cache", None)
     @patch("bbia_sim.bbia_voice._get_pyttsx3_engine")
     @patch("bbia_sim.bbia_voice.get_bbia_voice")
-    def test_dire_texte_engine_properties(self, mock_get_voice, mock_get_engine, mock_env_get):
+    def test_dire_texte_engine_properties(
+        self, mock_get_voice, mock_get_engine, mock_env_get
+    ):
         """Test propriétés du moteur de synthèse."""
         mock_engine = MagicMock()
         mock_get_engine.return_value = mock_engine
@@ -389,7 +397,9 @@ class TestBBIAVoiceExtended:
 
     @patch("bbia_sim.bbia_voice.sr.Recognizer")
     @patch("bbia_sim.bbia_voice.sr.Microphone")
-    def test_reconnaitre_parole_custom_parameters(self, mock_microphone, mock_recognizer_class):
+    def test_reconnaitre_parole_custom_parameters(
+        self, mock_microphone, mock_recognizer_class
+    ):
         """Test reconnaissance avec paramètres personnalisés."""
         mock_recognizer = MagicMock()
         mock_recognizer_class.return_value = mock_recognizer

@@ -80,7 +80,9 @@ def test_emotions_stress_bounds_under_load() -> None:
     # Vérifier pas de dérive (état final stable)
     final_intensity = emotions.emotion_intensity
     assert isinstance(final_intensity, float | int)
-    assert 0.0 <= float(final_intensity) <= 1.0, f"Intensité finale hors bornes: {final_intensity}"
+    assert (
+        0.0 <= float(final_intensity) <= 1.0
+    ), f"Intensité finale hors bornes: {final_intensity}"
 
 
 @pytest.mark.unit

@@ -144,7 +144,9 @@ class BBIAVoiceAdvanced:
         # Vérifier flag d'environnement pour désactiver audio (CI/headless)
         if os.environ.get("BBIA_DISABLE_AUDIO", "0") == "1":
             logger.debug(f"Audio désactivé (BBIA_DISABLE_AUDIO=1): '{text}' ignoré")
-            return True  # Retourner True car c'est un succès (ignoré intentionnellement)
+            return (
+                True  # Retourner True car c'est un succès (ignoré intentionnellement)
+            )
 
         if not text or not text.strip():
             logger.warning("Texte vide, rien à dire")
@@ -191,7 +193,9 @@ class BBIAVoiceAdvanced:
         # Évite accumulation de fichiers temporaires en cas d'erreur
         import time
 
-        audio_file = self.temp_dir / f"bbia_tts_{os.getpid()}_{int(time.time() * 1000)}.wav"
+        audio_file = (
+            self.temp_dir / f"bbia_tts_{os.getpid()}_{int(time.time() * 1000)}.wav"
+        )
 
         try:
             # Note: Certains modèles Coqui TTS supportent directement

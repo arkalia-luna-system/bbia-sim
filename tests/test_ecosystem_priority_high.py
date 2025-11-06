@@ -53,7 +53,9 @@ class TestWebSocketTracking:
         ecosystem_module._active_connections_cache = None
         ecosystem_module._active_connections_cache_time = 0.0
 
-        with patch("bbia_sim.daemon.app.routers.ecosystem.get_ws_manager", return_value=None):
+        with patch(
+            "bbia_sim.daemon.app.routers.ecosystem.get_ws_manager", return_value=None
+        ):
             count = get_active_connections()
             assert count == 0
 
@@ -93,7 +95,9 @@ class TestDemoLogic:
         mock_sim_service.start_simulation = AsyncMock(return_value=True)
 
         # Patcher le module avant l'appel de la fonction
-        with patch("bbia_sim.daemon.simulation_service.simulation_service", mock_sim_service):
+        with patch(
+            "bbia_sim.daemon.simulation_service.simulation_service", mock_sim_service
+        ):
             # Mock robot factory
             mock_robot = MagicMock()
             mock_robot.connect = MagicMock()
@@ -160,8 +164,12 @@ class TestDemoLogic:
         mock_sim_service.is_simulation_ready.return_value = True
 
         # Patch l'import local dans la fonction start_demo_mode
-        with patch("bbia_sim.daemon.simulation_service.simulation_service", mock_sim_service):
-            result = await start_demo_mode(mode="simulation", duration=10.0, emotion="happy")
+        with patch(
+            "bbia_sim.daemon.simulation_service.simulation_service", mock_sim_service
+        ):
+            result = await start_demo_mode(
+                mode="simulation", duration=10.0, emotion="happy"
+            )
 
             assert result["emotion"] == "happy"
             assert "emotion_applied" in result or "emotion_error" in result

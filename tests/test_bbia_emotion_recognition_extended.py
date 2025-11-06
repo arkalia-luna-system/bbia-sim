@@ -18,7 +18,9 @@ class TestBBIAEmotionRecognitionExtended:
         with patch("bbia_sim.bbia_emotion_recognition.ML_AVAILABLE", True):
             with patch("bbia_sim.bbia_emotion_recognition.mp") as mock_mp:
                 with patch("bbia_sim.bbia_emotion_recognition.torch") as mock_torch:
-                    with patch("bbia_sim.bbia_emotion_recognition.pipeline") as mock_pipeline:
+                    with patch(
+                        "bbia_sim.bbia_emotion_recognition.pipeline"
+                    ) as mock_pipeline:
                         yield mock_mp, mock_torch, mock_pipeline
 
     def test_ml_import_available(self):

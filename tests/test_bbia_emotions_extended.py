@@ -156,7 +156,9 @@ class TestBBIAEmotionsExtended:
     @patch("secrets.choice")
     @patch("secrets.randbelow")
     @patch("builtins.print")
-    def test_emotional_response_compliment(self, mock_print, mock_randbelow, mock_choice):
+    def test_emotional_response_compliment(
+        self, mock_print, mock_randbelow, mock_choice
+    ):
         """Test réponse émotionnelle à un compliment."""
         mock_choice.return_value = "happy"
         mock_randbelow.return_value = 50  # 50/100 + 0.4 = 0.9

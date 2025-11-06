@@ -28,7 +28,9 @@ class BackendAdapter:
         self.target_head_pose: npt.NDArray[np.float64] | None = None
         self.target_body_yaw: float | None = None
         self.target_head_joint_positions: npt.NDArray[np.float64] | None = None
-        self.target_antenna_joint_positions: npt.NDArray[np.float64] | list[float] | None = None
+        self.target_antenna_joint_positions: (
+            npt.NDArray[np.float64] | list[float] | None
+        ) = None
         self.ik_required: bool = False  # Flag pour IK computation (conforme SDK)
 
     def _create_backend(self) -> RobotAPI:
@@ -377,7 +379,9 @@ class BackendAdapter:
                 interp_time = time_trajectory(t / duration, method=method)
 
                 head_interp = start_head + (target_head - start_head) * interp_time
-                antennas_interp = start_antennas + (target_antennas - start_antennas) * interp_time
+                antennas_interp = (
+                    start_antennas + (target_antennas - start_antennas) * interp_time
+                )
 
                 self.set_target_head_joint_positions(head_interp)
                 self.set_target_antenna_joint_positions(antennas_interp)
@@ -396,7 +400,9 @@ class BackendAdapter:
         if hasattr(self._robot, "play_move"):
             # Si play_move est async dans le SDK
             if hasattr(self._robot.play_move, "__await__"):
-                await self._robot.play_move(move, play_frequency=100.0, initial_goto_duration=0.0)
+                await self._robot.play_move(
+                    move, play_frequency=100.0, initial_goto_duration=0.0
+                )
             else:
                 # Si sync, exécuter dans thread
                 import asyncio
@@ -426,7 +432,10 @@ class BackendAdapter:
 
         # Chercher URDF dans les emplacements standards
         urdf_paths = [
-            Path(__file__).parent.parent.parent.parent / "sim" / "models" / "robot.urdf",
+            Path(__file__).parent.parent.parent.parent
+            / "sim"
+            / "models"
+            / "robot.urdf",
             Path(__file__).parent.parent.parent.parent.parent
             / "reachy_mini"
             / "src"

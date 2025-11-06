@@ -34,7 +34,10 @@ class TestTelemetryCollector:
         from collections import deque
 
         assert self.collector.output_dir == Path(self.temp_dir)
-        assert isinstance(self.collector.step_times, deque) and len(self.collector.step_times) == 0
+        assert (
+            isinstance(self.collector.step_times, deque)
+            and len(self.collector.step_times) == 0
+        )
         assert (
             isinstance(self.collector.joint_positions, deque)
             and len(self.collector.joint_positions) == 0

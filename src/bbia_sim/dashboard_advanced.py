@@ -273,7 +273,9 @@ class BBIAAdvancedWebSocketManager:
         )
         self.current_metrics["vision"]["tracking_active"] = self.vision.tracking_active
 
-        self.current_metrics["audio"]["microphone_active"] = False  # Pas encore implémenté
+        self.current_metrics["audio"][
+            "microphone_active"
+        ] = False  # Pas encore implémenté
         self.current_metrics["audio"]["speaker_active"] = False  # Pas encore implémenté
         self.current_metrics["audio"]["volume_level"] = 0.0
 
@@ -1175,7 +1177,9 @@ if FASTAPI_AVAILABLE:
         """API endpoint pour récupérer les métriques."""
         return {
             "current": advanced_websocket_manager.current_metrics,
-            "history": list(advanced_websocket_manager.metrics_history)[-100:],  # 100 dernières
+            "history": list(advanced_websocket_manager.metrics_history)[
+                -100:
+            ],  # 100 dernières
         }
 
     @app.get("/api/joints")
@@ -1521,7 +1525,10 @@ async def handle_chat_message(message_data: dict[str, Any], websocket: WebSocket
         await websocket.send_text(json.dumps(chat_response))
 
         # Générer réponse BBIA
-        if hasattr(advanced_websocket_manager, "bbia_hf") and advanced_websocket_manager.bbia_hf:
+        if (
+            hasattr(advanced_websocket_manager, "bbia_hf")
+            and advanced_websocket_manager.bbia_hf
+        ):
             bbia_response = advanced_websocket_manager.bbia_hf.chat(user_message)
 
             # Envoyer réponse BBIA

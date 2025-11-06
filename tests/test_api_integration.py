@@ -120,7 +120,9 @@ class TestAPIIntegration:
         headers = {"Authorization": "Bearer bbia-secret-key-dev"}
         payload = [{"joint_name": "invalid_joint", "position": 0.5}]
         response = client.post("/api/motion/joints", json=payload, headers=headers)
-        assert response.status_code == 422  # Pydantic retourne 422 pour validation échouée
+        assert (
+            response.status_code == 422
+        )  # Pydantic retourne 422 pour validation échouée
 
     def test_motion_joints_invalid_payload(self, client):
         """Test endpoint motion/joints avec payload invalide."""

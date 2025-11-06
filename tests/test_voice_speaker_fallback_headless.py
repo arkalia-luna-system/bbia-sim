@@ -60,7 +60,9 @@ def test_fallback_speaker_play_bytes_when_no_play_audio(monkeypatch):
         def runAndWait(self):  # noqa: D401
             pass
 
-    monkeypatch.setattr(voice, "pyttsx3", types.SimpleNamespace(init=lambda: _DummyEngine()))
+    monkeypatch.setattr(
+        voice, "pyttsx3", types.SimpleNamespace(init=lambda: _DummyEngine())
+    )
 
     # Exécuter
     dire_texte("bonjour", robot_api=robot)

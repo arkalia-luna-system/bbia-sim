@@ -44,7 +44,10 @@ def acquire_lock(recursion_level: int = 0) -> bool:
     """
     # Protection contre récursion infinie
     if recursion_level >= _MAX_RECURSION:
-        print(f"⚠️  Trop de tentatives de récupération lock ({recursion_level}). " f"Abandon.")
+        print(
+            f"⚠️  Trop de tentatives de récupération lock ({recursion_level}). "
+            f"Abandon."
+        )
         return False
 
     if not LOCK_FILE.parent.exists():
@@ -100,7 +103,8 @@ def acquire_lock(recursion_level: int = 0) -> bool:
                     except (ValueError, TypeError):
                         # Format invalide, nettoyer
                         print(
-                            f"⚠️  Lock contient données invalides: {lock_info}. " f"Suppression..."
+                            f"⚠️  Lock contient données invalides: {lock_info}. "
+                            f"Suppression..."
                         )
                         os.remove(LOCK_FILE)
                         return acquire_lock(recursion_level + 1)

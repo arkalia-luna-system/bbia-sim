@@ -82,7 +82,9 @@ class TestWatchdogMonitoring:
             watchdog_thread.join(timeout=2.0)
 
         # Vérifier que le watchdog est arrêté
-        assert backend._watchdog_thread is None or not backend._watchdog_thread.is_alive()
+        assert (
+            backend._watchdog_thread is None or not backend._watchdog_thread.is_alive()
+        )
 
     @pytest.mark.unit
     @pytest.mark.fast
@@ -153,7 +155,9 @@ class TestWatchdogMonitoring:
 
         # Devrait toujours être le même thread (idempotence démarrage)
         assert backend._watchdog_thread is first_thread
-        assert backend._watchdog_thread is not None and backend._watchdog_thread.is_alive()
+        assert (
+            backend._watchdog_thread is not None and backend._watchdog_thread.is_alive()
+        )
 
         # Nettoyage
         backend.disconnect()

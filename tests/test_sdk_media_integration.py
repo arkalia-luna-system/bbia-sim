@@ -139,7 +139,9 @@ class TestSDKMediaIntegration:
                     mock_wave.return_value.__enter__.return_value = mock_wf
 
                     try:
-                        enregistrer_audio("test.wav", duree=0.1, robot_api=mock_robot_api)
+                        enregistrer_audio(
+                            "test.wav", duree=0.1, robot_api=mock_robot_api
+                        )
                         print("✅ enregistrer_audio vérifie robot.media.microphone")
                     except Exception:
                         # Peut échouer en test car sounddevice nécessite setup réel
@@ -175,7 +177,9 @@ class TestSDKMediaIntegration:
         print("=" * 60)
 
         # Vérifier que bbia_integration utilise le mapping émotion → interpolation
-        integration_file = Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_integration.py"
+        integration_file = (
+            Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_integration.py"
+        )
 
         if integration_file.exists():
             content = integration_file.read_text(encoding="utf-8")
@@ -185,13 +189,19 @@ class TestSDKMediaIntegration:
             has_cartoon = '"cartoon"' in content or "'cartoon'" in content
             has_ease_in_out = '"ease_in_out"' in content or "'ease_in_out'" in content
 
-            assert has_emotion_map, "bbia_integration doit avoir emotion_interpolation_map"
+            assert (
+                has_emotion_map
+            ), "bbia_integration doit avoir emotion_interpolation_map"
             print("✅ emotion_interpolation_map présent")
 
-            assert has_cartoon, "Mapping doit inclure 'cartoon' pour émotions expressives"
+            assert (
+                has_cartoon
+            ), "Mapping doit inclure 'cartoon' pour émotions expressives"
             print("✅ 'cartoon' utilisé pour émotions expressives")
 
-            assert has_ease_in_out, "Mapping doit inclure 'ease_in_out' pour émotions douces"
+            assert (
+                has_ease_in_out
+            ), "Mapping doit inclure 'ease_in_out' pour émotions douces"
             print("✅ 'ease_in_out' utilisé pour émotions douces")
 
 

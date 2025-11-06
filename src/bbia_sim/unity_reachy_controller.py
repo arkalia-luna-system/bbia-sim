@@ -112,7 +112,11 @@ class UnityReachyMiniController:
                     self._show_help()
                 elif command == "status":
                     print(
-                        ("Status: Connected" if self.is_connected else "Status: Disconnected"),
+                        (
+                            "Status: Connected"
+                            if self.is_connected
+                            else "Status: Disconnected"
+                        ),
                     )
                 elif command.startswith("head "):
                     parts = command.split()[1:]

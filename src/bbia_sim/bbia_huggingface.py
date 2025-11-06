@@ -199,14 +199,20 @@ class BBIAHuggingFace:
             },
             "chat": {
                 # LLM conversationnel (optionnel, activé si disponible)
-                "mistral": "mistralai/Mistral-7B-Instruct-v0.2",  # ⭐ Recommandé (14GB RAM)
+                "mistral": (
+                    "mistralai/Mistral-7B-Instruct-v0.2"
+                ),  # ⭐ Recommandé (14GB RAM)
                 "llama": "meta-llama/Llama-3-8B-Instruct",  # Alternative (16GB RAM)
                 "phi2": "microsoft/phi-2",  # ⭐ Léger pour RPi 5 (2.7B, ~5GB RAM)
-                "tinyllama": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",  # Ultra-léger (~2GB RAM)
+                "tinyllama": (
+                    "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
+                ),  # Ultra-léger (~2GB RAM)
             },
             "multimodal": {
                 "blip_vqa": "Salesforce/blip-vqa-base",
-                "smolvlm": "HuggingFaceTB/SmolVLM-Instruct",  # Alternative gratuite à gpt-realtime
+                "smolvlm": (
+                    "HuggingFaceTB/SmolVLM-Instruct"
+                ),  # Alternative gratuite à gpt-realtime
                 "moondream2": "vikhyatk/moondream2",  # Alternative plus légère
             },
         }
@@ -295,7 +301,10 @@ class BBIAHuggingFace:
                 revision="main",
             )  # nosec B615
 
-            if self.chat_tokenizer is not None and self.chat_tokenizer.pad_token is None:
+            if (
+                self.chat_tokenizer is not None
+                and self.chat_tokenizer.pad_token is None
+            ):
                 self.chat_tokenizer.pad_token = self.chat_tokenizer.eos_token
 
             self.chat_model = AutoModelForCausalLM.from_pretrained(  # nosec B615
@@ -467,16 +476,20 @@ class BBIAHuggingFace:
 
             elif model_type == "audio":
                 if "whisper" in model_name.lower():
-                    whisper_processor: Any = WhisperProcessor.from_pretrained(  # nosec B615
-                        resolved_name,
-                        cache_dir=self.cache_dir,
-                        revision="main",
+                    whisper_processor: Any = (
+                        WhisperProcessor.from_pretrained(  # nosec B615
+                            resolved_name,
+                            cache_dir=self.cache_dir,
+                            revision="main",
+                        )
                     )
-                    model = WhisperForConditionalGeneration.from_pretrained(  # nosec B615
-                        resolved_name,
-                        cache_dir=self.cache_dir,
-                        revision="main",
-                    ).to(self.device)
+                    model = (
+                        WhisperForConditionalGeneration.from_pretrained(  # nosec B615
+                            resolved_name,
+                            cache_dir=self.cache_dir,
+                            revision="main",
+                        ).to(self.device)
+                    )
                     self.processors[f"{model_name}_processor"] = whisper_processor
                     self.models[f"{model_name}_model"] = model
 
@@ -504,15 +517,22 @@ class BBIAHuggingFace:
                     )  # nosec B615
 
                     # Support instruction format
-                    if self.chat_tokenizer is not None and self.chat_tokenizer.pad_token is None:
+                    if (
+                        self.chat_tokenizer is not None
+                        and self.chat_tokenizer.pad_token is None
+                    ):
                         self.chat_tokenizer.pad_token = self.chat_tokenizer.eos_token
 
-                    chat_model_load: Any = AutoModelForCausalLM.from_pretrained(  # nosec B615
-                        model_name,
-                        cache_dir=self.cache_dir,
-                        revision="main",
-                        device_map="auto",  # Auto-détecte MPS/CPU/CUDA
-                        torch_dtype=(torch.float16 if self.device != "cpu" else torch.float32),
+                    chat_model_load: Any = (
+                        AutoModelForCausalLM.from_pretrained(  # nosec B615
+                            model_name,
+                            cache_dir=self.cache_dir,
+                            revision="main",
+                            device_map="auto",  # Auto-détecte MPS/CPU/CUDA
+                            torch_dtype=(
+                                torch.float16 if self.device != "cpu" else torch.float32
+                            ),
+                        )
                     )
                     self.chat_model = chat_model_load
 
@@ -637,7 +657,9 @@ class BBIAHuggingFace:
                 description = processor.decode(outputs[0], skip_special_tokens=True)
                 return str(description.strip())
 
-            return "Erreur (describe_image): modèle non supporté — vérifiez le nom choisi"
+            return (
+                "Erreur (describe_image): modèle non supporté — vérifiez le nom choisi"
+            )
 
         except Exception as e:
             logger.error(f"❌ Erreur description image: {e}")
@@ -836,7 +858,8 @@ class BBIAHuggingFace:
         success = self.load_model(resolved_name, model_type="chat")
         if success:
             logger.info(
-                "✅ LLM conversationnel activé - Conversations intelligentes " "disponibles",
+                "✅ LLM conversationnel activé - Conversations intelligentes "
+                "disponibles",
             )
         else:
             logger.warning("""⚠️  LLM non chargé - Utilisation réponses enrichies""")
@@ -971,7 +994,11 @@ class BBIAHuggingFace:
                     return tool_result
 
             # OPTIMISATION RAM: Lazy loading LLM - charger uniquement si chat() appelé
-            if not self.use_llm_chat or self.chat_model is None or self.chat_tokenizer is None:
+            if (
+                not self.use_llm_chat
+                or self.chat_model is None
+                or self.chat_tokenizer is None
+            ):
                 # Essayer de charger LLM automatiquement si disponible (lazy loading)
                 try:
                     # Utiliser modèle léger par défaut (phi2 ou tinyllama)
@@ -1152,7 +1179,11 @@ class BBIAHuggingFace:
             cleaned = self._postprocess_llm_output(generated_text, user_message)
 
             logger.info(f"🤖 LLM réponse générée: {cleaned[:100]}...")
-            return self._normalize_response_length(cleaned) if cleaned else self._safe_fallback()
+            return (
+                self._normalize_response_length(cleaned)
+                if cleaned
+                else self._safe_fallback()
+            )
 
         except Exception as e:
             logger.warning(f"⚠️  Erreur génération LLM, fallback enrichi: {e}")
@@ -1393,7 +1424,9 @@ class BBIAHuggingFace:
                         elif tool_name == "dance":
                             # Utiliser danse par défaut ou extraire nom
                             params["move_name"] = "happy_dance"  # Par défaut
-                            params["dataset"] = "pollen-robotics/reachy-mini-dances-library"
+                            params["dataset"] = (
+                                "pollen-robotics/reachy-mini-dances-library"
+                            )
 
                         # Exécuter outil
                         result = self.tools.execute_tool(tool_name, params)
@@ -1474,7 +1507,8 @@ class BBIAHuggingFace:
                 "stop_dance": "Arrêter la danse en cours, stopper la danse",
                 "stop_emotion": "Arrêter l'émotion en cours, stopper l'émotion",
                 "head_tracking": (
-                    "Activer ou désactiver le suivi automatique du visage, " "tracking visage"
+                    "Activer ou désactiver le suivi automatique du visage, "
+                    "tracking visage"
                 ),
                 "do_nothing": "Rester inactif, ne rien faire, reste tranquille",
             }
@@ -1862,7 +1896,8 @@ class BBIAHuggingFace:
             else:
                 last_space = cut.rfind(" ")
                 result = (
-                    (cut[:last_space] if last_space >= min_len else cut[:max_len]) + "..."
+                    (cut[:last_space] if last_space >= min_len else cut[:max_len])
+                    + "..."
                 ).strip()
 
         # 8) Éviter répétitions récentes dans l'historique
@@ -1944,7 +1979,9 @@ class BBIAHuggingFace:
         recent_context = self._get_recent_context()
 
         # Salutations - Réponses variées selon personnalité
-        if any(word in message_lower for word in ["bonjour", "salut", "hello", "hi", "hey"]):
+        if any(
+            word in message_lower for word in ["bonjour", "salut", "hello", "hi", "hey"]
+        ):
             greetings = {
                 "friendly_robot": [
                     "Bonjour ! Ravi de vous revoir ! Comment allez-vous aujourd'hui ?",
@@ -1981,7 +2018,8 @@ class BBIAHuggingFace:
 
         # Au revoir - Réponses émotionnelles selon contexte
         if any(
-            word in message_lower for word in ["au revoir", "bye", "goodbye", "à bientôt", "adieu"]
+            word in message_lower
+            for word in ["au revoir", "bye", "goodbye", "à bientôt", "adieu"]
         ):
             goodbyes = {
                 "friendly_robot": [
@@ -1996,7 +2034,8 @@ class BBIAHuggingFace:
                 ],
                 "enthusiastic": [
                     "Au revoir ! C'était génial de discuter ! Revenez vite !",
-                    "À bientôt ! J'ai hâte de vous revoir pour de nouvelles " "aventures !",
+                    "À bientôt ! J'ai hâte de vous revoir pour de nouvelles "
+                    "aventures !",
                     "Au revoir ! C'était super ! Revenez quand vous voulez !",
                 ],
                 "calm": [
@@ -2113,16 +2152,20 @@ class BBIAHuggingFace:
             # Détection type de question pour réponses plus intelligentes
             question_responses: dict[str, list[str]] = {
                 "friendly_robot": [
-                    "Bonne question ! Laissez-moi réfléchir... " "Comment puis-je vous aider ?",
+                    "Bonne question ! Laissez-moi réfléchir... "
+                    "Comment puis-je vous aider ?",
                     "Je comprends votre interrogation. Pouvez-vous me donner plus de "
                     "détails pour que je puisse mieux vous répondre ?",
                     "Intéressant ! Cette question mérite réflexion. "
                     "Qu'est-ce que vous en pensez vous-même ?",
-                    "Ah, excellente question ! C'est quoi qui vous intrigue " "là-dedans ?",
+                    "Ah, excellente question ! C'est quoi qui vous intrigue "
+                    "là-dedans ?",
                     "Hmm, intéressant. Dites-moi plus sur ce qui vous pousse à vous "
                     "poser cette question.",
-                    "Ça m'intrigue aussi ! Qu'est-ce qui vous amène à vous " "demander ça ?",
-                    "Très bonne question ! Qu'est-ce qui a provoqué cette curiosité " "chez vous ?",
+                    "Ça m'intrigue aussi ! Qu'est-ce qui vous amène à vous "
+                    "demander ça ?",
+                    "Très bonne question ! Qu'est-ce qui a provoqué cette curiosité "
+                    "chez vous ?",
                     "Excellente question ! J'aimerais bien comprendre ce qui motive "
                     "votre questionnement.",
                     "Hmm, c'est une question qui mérite qu'on s'y attarde. "
@@ -2131,12 +2174,14 @@ class BBIAHuggingFace:
                     "autour de cette question.",
                 ],
                 "curious": [
-                    "Ah, j'aime cette question ! Qu'est-ce qui vous amène à vous " "demander ça ?",
+                    "Ah, j'aime cette question ! Qu'est-ce qui vous amène à vous "
+                    "demander ça ?",
                     "Fascinant ! Pourquoi cette question vous préoccupe-t-elle ?",
                     "Excellente question ! J'aimerais explorer ça ensemble avec vous.",
                 ],
                 "enthusiastic": [
-                    "Super question ! Je suis tout excité de réfléchir à ça " "avec vous !",
+                    "Super question ! Je suis tout excité de réfléchir à ça "
+                    "avec vous !",
                     "Génial ! Cette question pique ma curiosité ! Partons explorer !",
                     "Wow ! Quelle question intéressante ! Analysons ça ensemble !",
                 ],
@@ -2172,7 +2217,8 @@ class BBIAHuggingFace:
             has_reference = any(ref in message_lower for ref in reference_words)
 
             if (
-                has_reference or random.random() < 0.4  # nosec B311 - Variété réponse non-crypto
+                has_reference
+                or random.random() < 0.4  # nosec B311 - Variété réponse non-crypto
             ):  # 40% de chance si référence, sinon 30%
                 context_responses = {
                     "friendly_robot": [
@@ -2191,12 +2237,14 @@ class BBIAHuggingFace:
                     "curious": [
                         f"Ah oui, {recent_context.lower()} ! "
                         "C'est exactement ce qui m'intéresse !",
-                        f"En rapport avec {recent_context.lower()}, j'ai plein de " "questions !",
+                        f"En rapport avec {recent_context.lower()}, j'ai plein de "
+                        "questions !",
                         f"{recent_context.lower()} me passionne ! "
                         "Continuons à explorer ça ensemble.",
                     ],
                     "enthusiastic": [
-                        f"C'est génial, {recent_context.lower()} ! " "Continuons à creuser ça !",
+                        f"C'est génial, {recent_context.lower()} ! "
+                        "Continuons à creuser ça !",
                         f"Super, {recent_context.lower()} ! C'est trop intéressant !",
                         f"{recent_context.lower()} ? Wow, allons plus loin là-dessus !",
                     ],
@@ -2240,7 +2288,8 @@ class BBIAHuggingFace:
                 "Wow, ça sonne intéressant. Comment voulez-vous développer ? "
                 "J'aimerais mieux comprendre.",
                 "C'est noté. Qu'est-ce qui vous pousse à réfléchir ainsi ?",
-                "Ah, c'est un point de vue intéressant. " "Qu'est-ce qui vous fait penser ainsi ?",
+                "Ah, c'est un point de vue intéressant. "
+                "Qu'est-ce qui vous fait penser ainsi ?",
                 "Je comprends votre perspective. Pourquoi avez-vous cette vision ? "
                 "J'aimerais approfondir.",
                 "C'est une réflexion qui pique ma curiosité. D'où vient cette idée ?",
@@ -2258,7 +2307,8 @@ class BBIAHuggingFace:
                 "Wow ! C'est passionnant ! Allons plus loin !",
             ],
             "calm": [
-                "Je comprends. Pourquoi avez-vous cette réflexion ? " "Explorons cela ensemble.",
+                "Je comprends. Pourquoi avez-vous cette réflexion ? "
+                "Explorons cela ensemble.",
                 "Intéressant. Comment avez-vous développé cette idée ? "
                 "Continuons cette conversation sereinement.",
                 "Je vois. Qu'est-ce qui vous amène à penser ainsi ? "
@@ -2437,7 +2487,9 @@ class BBIAHuggingFace:
 
         """
         if not self.conversation_history:
-            return "Conversation avec BBIA (robot Reachy Mini). Soyez amical et curieux."
+            return (
+                "Conversation avec BBIA (robot Reachy Mini). Soyez amical et curieux."
+            )
 
         context = "Historique conversation:\n"
         for entry in self.conversation_history[-3:]:  # Derniers 3 échanges

@@ -375,7 +375,9 @@ class TestWhisperSTT:
     @patch("bbia_sim.voice_whisper.sd")
     @patch("bbia_sim.voice_whisper.sf")
     @patch("bbia_sim.voice_whisper.whisper")
-    def test_transcribe_microphone_with_vad_success_mock(self, mock_whisper, mock_sf, mock_sd):
+    def test_transcribe_microphone_with_vad_success_mock(
+        self, mock_whisper, mock_sf, mock_sd
+    ):
         """Test transcription microphone avec VAD (mock optimisé RAM)."""
         with patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True):
             original_value = os.environ.get("BBIA_DISABLE_AUDIO", "0")
@@ -584,7 +586,9 @@ class TestFactoryFunctions:
             mock_vad.return_value = [{"label": "SPEECH", "score": 0.95}]
             mock_pipeline.return_value = mock_vad
 
-            mock_sf_read = MagicMock(return_value=(np.random.rand(16000).astype(np.float32), 16000))
+            mock_sf_read = MagicMock(
+                return_value=(np.random.rand(16000).astype(np.float32), 16000)
+            )
             with patch("bbia_sim.voice_whisper.sf") as mock_sf:
                 mock_sf.read = mock_sf_read
 
@@ -776,7 +780,9 @@ class TestFactoryFunctions:
                 stt.is_loaded = True
 
                 # Mock transcribe pour retourner texte valide
-                with patch.object(mock_model, "transcribe", return_value={"text": "hello world"}):
+                with patch.object(
+                    mock_model, "transcribe", return_value={"text": "hello world"}
+                ):
                     # Mock time pour contrôler transcription_interval
                     with patch("bbia_sim.voice_whisper.time") as mock_time:
                         mock_time.time.side_effect = [
@@ -800,7 +806,9 @@ class TestFactoryFunctions:
     @patch("bbia_sim.voice_whisper.sf")
     @patch("bbia_sim.voice_whisper.whisper")
     @patch.dict(os.environ, {"BBIA_DISABLE_AUDIO": "0"}, clear=False)
-    def test_transcribe_streaming_with_vad_silence(self, mock_whisper, mock_sf, mock_sd):
+    def test_transcribe_streaming_with_vad_silence(
+        self, mock_whisper, mock_sf, mock_sd
+    ):
         """Test streaming avec VAD détectant silence (couverture lignes 554-567)."""
         with patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True):
             original_value = os.environ.get("BBIA_DISABLE_AUDIO", "0")
@@ -827,7 +835,9 @@ class TestFactoryFunctions:
                     with patch("bbia_sim.voice_whisper.time") as mock_time:
                         mock_time.time.side_effect = [0.0, 2.0, 4.0, 6.0]
 
-                        result = stt.transcribe_streaming(max_duration=0.5, chunk_duration=0.25)
+                        result = stt.transcribe_streaming(
+                            max_duration=0.5, chunk_duration=0.25
+                        )
 
                         # Devrait arrêter après silence prolongé
                         assert result is None or isinstance(result, str)
@@ -909,7 +919,9 @@ class TestFactoryFunctions:
                 stt.is_loaded = True
 
                 # Test avec texte filtré ("you", "thank you")
-                with patch.object(mock_model, "transcribe", return_value={"text": "you"}):
+                with patch.object(
+                    mock_model, "transcribe", return_value={"text": "you"}
+                ):
                     with patch("bbia_sim.voice_whisper.time") as mock_time:
                         mock_time.time.side_effect = [0.0, 2.0]
 
@@ -928,7 +940,9 @@ class TestFactoryFunctions:
     @patch("bbia_sim.voice_whisper.sf")
     @patch("bbia_sim.voice_whisper.whisper")
     @patch.dict(os.environ, {"BBIA_DISABLE_AUDIO": "0"}, clear=False)
-    def test_transcribe_streaming_empty_final_text(self, mock_whisper, mock_sf, mock_sd):
+    def test_transcribe_streaming_empty_final_text(
+        self, mock_whisper, mock_sf, mock_sd
+    ):
         """Test streaming avec texte final vide (couverture lignes 655-662)."""
         with patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True):
             original_value = os.environ.get("BBIA_DISABLE_AUDIO", "0")
@@ -1171,7 +1185,9 @@ class TestFactoryFunctions:
             # que le modèle est None après toutes les vérifications
             # En fait, le code va recharger le modèle, donc on doit mock le chargement pour qu'il échoue
             # ou qu'il retourne None
-            assert result is True or result is False  # Accepte les deux car le code peut recharger
+            assert (
+                result is True or result is False
+            )  # Accepte les deux car le code peut recharger
 
     @patch("bbia_sim.voice_whisper.transformers_pipeline")
     @patch.dict(os.environ, {"BBIA_DISABLE_AUDIO": "0"}, clear=False)
@@ -1212,7 +1228,9 @@ class TestFactoryFunctions:
     @patch("bbia_sim.voice_whisper.sf")
     @patch("bbia_sim.voice_whisper.whisper")
     @patch.dict(os.environ, {"BBIA_DISABLE_AUDIO": "0"}, clear=False)
-    def test_transcribe_microphone_with_vad_empty_buffer(self, mock_whisper, mock_sf, mock_sd):
+    def test_transcribe_microphone_with_vad_empty_buffer(
+        self, mock_whisper, mock_sf, mock_sd
+    ):
         """Test transcription microphone avec VAD et buffer vide (couverture lignes 448-450)."""
         with patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True):
             stt = WhisperSTT(model_size="tiny", language="fr", enable_vad=True)
@@ -1223,7 +1241,9 @@ class TestFactoryFunctions:
             mock_sd.rec.side_effect = Exception("Audio error")
             mock_sd.wait.return_value = None
 
-            result = stt.transcribe_microphone_with_vad(duration=0.1, silence_threshold=0.05)
+            result = stt.transcribe_microphone_with_vad(
+                duration=0.1, silence_threshold=0.05
+            )
             # Devrait retourner None en cas d'erreur ou buffer vide
             assert result is None
 
@@ -1231,7 +1251,9 @@ class TestFactoryFunctions:
     @patch("bbia_sim.voice_whisper.sf")
     @patch("bbia_sim.voice_whisper.whisper")
     @patch.dict(os.environ, {"BBIA_DISABLE_AUDIO": "0"}, clear=False)
-    def test_transcribe_microphone_with_vad_silence_detection(self, mock_whisper, mock_sf, mock_sd):
+    def test_transcribe_microphone_with_vad_silence_detection(
+        self, mock_whisper, mock_sf, mock_sd
+    ):
         """Test transcription microphone avec VAD détectant silence (couverture lignes 438-446)."""
         with patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True):
             stt = WhisperSTT(model_size="tiny", language="fr", enable_vad=True)
@@ -1254,7 +1276,9 @@ class TestFactoryFunctions:
                 mock_sd.wait.return_value = None
 
                 with patch.object(stt, "transcribe_audio", return_value="test"):
-                    result = stt.transcribe_microphone_with_vad(duration=0.5, silence_threshold=0.2)
+                    result = stt.transcribe_microphone_with_vad(
+                        duration=0.5, silence_threshold=0.2
+                    )
                     # Devrait arrêter après silence prolongé
                     assert result is None or isinstance(result, str)
 
@@ -1262,7 +1286,9 @@ class TestFactoryFunctions:
     @patch("bbia_sim.voice_whisper.sf")
     @patch("bbia_sim.voice_whisper.whisper")
     @patch.dict(os.environ, {"BBIA_DISABLE_AUDIO": "0"}, clear=False)
-    def test_transcribe_microphone_with_vad_cleanup_error(self, mock_whisper, mock_sf, mock_sd):
+    def test_transcribe_microphone_with_vad_cleanup_error(
+        self, mock_whisper, mock_sf, mock_sd
+    ):
         """Test transcription microphone avec VAD et erreur cleanup (couverture lignes 472-473)."""
         with patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True):
             stt = WhisperSTT(model_size="tiny", language="fr", enable_vad=True)
@@ -1276,7 +1302,9 @@ class TestFactoryFunctions:
             with patch.object(stt, "detect_speech_activity", return_value=True):
                 with patch.object(stt, "transcribe_audio", return_value="test"):
                     # Mock fichier temporaire qui existe mais échoue à supprimer
-                    with patch("pathlib.Path.unlink", side_effect=Exception("Cleanup error")):
+                    with patch(
+                        "pathlib.Path.unlink", side_effect=Exception("Cleanup error")
+                    ):
                         result = stt.transcribe_microphone_with_vad(
                             duration=0.1, silence_threshold=0.05
                         )
@@ -1287,7 +1315,9 @@ class TestFactoryFunctions:
     @patch("bbia_sim.voice_whisper.sf")
     @patch("bbia_sim.voice_whisper.whisper")
     @patch.dict(os.environ, {"BBIA_DISABLE_AUDIO": "0"}, clear=False)
-    def test_transcribe_streaming_load_model_fails(self, mock_whisper, mock_sf, mock_sd):
+    def test_transcribe_streaming_load_model_fails(
+        self, mock_whisper, mock_sf, mock_sd
+    ):
         """Test streaming avec load_model qui échoue (couverture lignes 518-519)."""
         with patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True):
             stt = WhisperSTT(model_size="tiny", language="fr")
@@ -1301,7 +1331,9 @@ class TestFactoryFunctions:
     @patch("bbia_sim.voice_whisper.sf")
     @patch("bbia_sim.voice_whisper.whisper")
     @patch.dict(os.environ, {"BBIA_DISABLE_AUDIO": "0"}, clear=False)
-    def test_transcribe_streaming_consecutive_silence(self, mock_whisper, mock_sf, mock_sd):
+    def test_transcribe_streaming_consecutive_silence(
+        self, mock_whisper, mock_sf, mock_sd
+    ):
         """Test streaming avec silence consécutif (couverture ligne 574)."""
         with patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True):
             import bbia_sim.voice_whisper as voice_whisper_module
@@ -1381,7 +1413,9 @@ class TestFactoryFunctions:
     @patch("bbia_sim.voice_whisper.sf")
     @patch("bbia_sim.voice_whisper.whisper")
     @patch.dict(os.environ, {"BBIA_DISABLE_AUDIO": "0"}, clear=False)
-    def test_transcribe_streaming_temp_file_pool_full(self, mock_whisper, mock_sf, mock_sd):
+    def test_transcribe_streaming_temp_file_pool_full(
+        self, mock_whisper, mock_sf, mock_sd
+    ):
         """Test streaming avec pool fichiers temp plein (couverture lignes 654-658)."""
         with patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True):
             from pathlib import Path

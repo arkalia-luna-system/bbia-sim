@@ -64,7 +64,9 @@ class TestExpertRobustnessConformity:
                 assert (
                     abs(backend_max - max_limit) < 1e-10
                 ), f"{joint} max_limit perd en précision: {backend_max} != {max_limit}"
-                print(f"✅ {joint}: Précision préservée (min={backend_min}, max={backend_max})")
+                print(
+                    f"✅ {joint}: Précision préservée (min={backend_min}, max={backend_max})"
+                )
 
     def test_expert_02_thread_safety_concurrent_access(self):
         """Test expert: Accès concurrent multi-thread ne doit pas casser."""
@@ -156,7 +158,9 @@ class TestExpertRobustnessConformity:
             ), f"Duration non respectée: {elapsed:.3f}s au lieu de {test_duration}s"
             print(f"✅ Duration respectée: {elapsed:.3f}s (attendu {test_duration}s)")
         else:
-            print(f"ℹ️  Mode simulation: duration={test_duration}s, elapsed={elapsed:.3f}s")
+            print(
+                f"ℹ️  Mode simulation: duration={test_duration}s, elapsed={elapsed:.3f}s"
+            )
 
     def test_expert_05_memory_leak_detection(self):
         """Test expert: Détecter fuites mémoire lors d'opérations répétées."""
@@ -185,7 +189,9 @@ class TestExpertRobustnessConformity:
         total_diff = sum(stat.size_diff for stat in top_stats[:10])
         total_mb = total_diff / (1024 * 1024)
 
-        assert total_mb < 10.0, f"Fuite mémoire détectée: {total_mb:.2f}MB après 100 opérations"
+        assert (
+            total_mb < 10.0
+        ), f"Fuite mémoire détectée: {total_mb:.2f}MB après 100 opérations"
         print(f"✅ Mémoire: {total_mb:.2f}MB (sain, <10MB)")
 
         tracemalloc.stop()
@@ -204,7 +210,9 @@ class TestExpertRobustnessConformity:
 
             # Vérifier que l'état est cohérent (télémetrie)
             telemetry = self.backend.get_telemetry()
-            assert "current_emotion" in telemetry, "Télémetrie doit contenir current_emotion"
+            assert (
+                "current_emotion" in telemetry
+            ), "Télémetrie doit contenir current_emotion"
             # Note: L'émotion peut être mappée (ex: BBIA 12 émotions → SDK 6 émotions)
             # Donc on vérifie juste que l'état existe
             print(
@@ -340,7 +348,9 @@ class TestExpertRobustnessConformity:
             elapsed = telemetry1["elapsed_time"]
             # elapsed_time doit être >= 0 et cohérent avec start_time
             assert elapsed >= 0, f"elapsed_time négatif: {elapsed}"
-            print(f"✅ Timestamp cohérent: elapsed_time={elapsed:.3f}s (mesuré: {t2-t1:.3f}s)")
+            print(
+                f"✅ Timestamp cohérent: elapsed_time={elapsed:.3f}s (mesuré: {t2-t1:.3f}s)"
+            )
 
     def test_expert_13_interpolation_method_flexibility(self):
         """Test expert: Toutes les méthodes d'interpolation doivent fonctionner."""

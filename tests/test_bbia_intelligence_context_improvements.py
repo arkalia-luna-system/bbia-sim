@@ -95,7 +95,9 @@ class TestBBIAIntelligenceContext:
             for question in questions:
                 response = hf.chat(question)
                 assert isinstance(response, str)
-                assert len(response) > 15, "Réponses questions doivent être substantielles"
+                assert (
+                    len(response) > 15
+                ), "Réponses questions doivent être substantielles"
                 # Vérifier que c'est une réponse intelligente (contient mots indicateurs)
                 has_intelligent_indicator = any(
                     word in response.lower()
@@ -163,7 +165,9 @@ class TestBBIAIntelligenceContext:
                 response = hf.chat(msg)
 
                 # Vérifier longueur (doit être substantielle)
-                assert len(response) >= 25, f"Réponse trop courte: {len(response)} caractères"
+                assert (
+                    len(response) >= 25
+                ), f"Réponse trop courte: {len(response)} caractères"
 
                 # Vérifier intelligence (contient questions ou encouragements)
                 intelligent_words = [
@@ -198,9 +202,13 @@ class TestBBIAIntelligenceContext:
                     "parlons",
                     "échangeons",
                 ]
-                has_intelligence = any(word in response.lower() for word in intelligent_words)
+                has_intelligence = any(
+                    word in response.lower() for word in intelligent_words
+                )
 
-                assert has_intelligence, f"Réponse doit être intelligente: {response[:100]}"
+                assert (
+                    has_intelligence
+                ), f"Réponse doit être intelligente: {response[:100]}"
 
                 print(
                     f"✅ Message générique '{msg}' → Réponse intelligente ({len(response)} chars)"

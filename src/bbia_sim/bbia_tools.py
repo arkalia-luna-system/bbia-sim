@@ -102,13 +102,17 @@ class BBIATools:
                 "type": "function",
                 "function": {
                     "name": "head_tracking",
-                    "description": "Activer ou désactiver le suivi automatique du visage",
+                    "description": (
+                        "Activer ou désactiver le suivi automatique du visage"
+                    ),
                     "parameters": {
                         "type": "object",
                         "properties": {
                             "enabled": {
                                 "type": "boolean",
-                                "description": "True pour activer, False pour désactiver",
+                                "description": (
+                                    "True pour activer, False pour désactiver"
+                                ),
                             },
                         },
                         "required": ["enabled"],
@@ -134,7 +138,9 @@ class BBIATools:
                             "dataset": {
                                 "type": "string",
                                 "default": "pollen-robotics/reachy-mini-dances-library",
-                                "description": "Dataset HuggingFace contenant les danses",
+                                "description": (
+                                    "Dataset HuggingFace contenant les danses"
+                                ),
                             },
                         },
                         "required": ["move_name"],
@@ -355,7 +361,9 @@ class BBIATools:
                     summary_parts.append(f"{len(faces)} visage(s) détecté(s)")
 
                 result["summary"] = (
-                    "; ".join(summary_parts) if summary_parts else "Aucun objet ou visage détecté"
+                    "; ".join(summary_parts)
+                    if summary_parts
+                    else "Aucun objet ou visage détecté"
                 )
 
             return result
@@ -390,7 +398,9 @@ class BBIATools:
                     }
                 return {
                     "status": "success",
-                    "detail": "Suivi visage activé - Aucun objet détecté pour l'instant",
+                    "detail": (
+                        "Suivi visage activé - Aucun objet détecté pour l'instant"
+                    ),
                 }
             except ImportError:
                 logger.warning(
@@ -475,7 +485,8 @@ class BBIATools:
                         return {
                             "status": "success",
                             "detail": (
-                                f"Danse '{dance_name}' arrêtée immédiatement " "(arrêt d'urgence)"
+                                f"Danse '{dance_name}' arrêtée immédiatement "
+                                "(arrêt d'urgence)"
                             ),
                         }
                     logger.warning(f"emergency_stop() a échoué pour '{dance_name}'")

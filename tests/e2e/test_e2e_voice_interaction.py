@@ -61,7 +61,9 @@ class TestE2EVoiceInteraction:
                 # Si réponse contient indication mouvement, activer comportement
                 if "signe" in response.lower() or "mouvement" in response.lower():
                     self.behavior.execute_behavior = MagicMock(return_value=True)
-                    behavior_result = self.behavior.execute_behavior("greeting", {"text": response})
+                    behavior_result = self.behavior.execute_behavior(
+                        "greeting", {"text": response}
+                    )
                     assert behavior_result is True
 
     @patch("bbia_sim.voice_whisper.create_whisper_stt")

@@ -50,7 +50,9 @@ class TestSimulationIntegration:
 
             # Remplacer mj_step dans le mock
             with (
-                patch("bbia_sim.sim.simulator.mujoco.mj_step", side_effect=mock_mj_step),
+                patch(
+                    "bbia_sim.sim.simulator.mujoco.mj_step", side_effect=mock_mj_step
+                ),
                 patch(
                     "bbia_sim.sim.simulator.time.monotonic",
                     side_effect=lambda: (
@@ -61,7 +63,9 @@ class TestSimulationIntegration:
 
                 # Test performance headless avec une durée courte
                 start_time = time.time()
-                simulator.launch_simulation(headless=True, duration=1)  # 1 seconde seulement
+                simulator.launch_simulation(
+                    headless=True, duration=1
+                )  # 1 seconde seulement
                 end_time = time.time()
 
                 # Vérifier que des steps ont été exécutés

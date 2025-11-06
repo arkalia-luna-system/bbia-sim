@@ -104,9 +104,13 @@ class TestConformityEnhanced:
                     # Vérifier que la position demandée était dans les limites ou a été clampée
                     actual_pos = self.backend.get_joint_pos(joint)
                     if exp_min <= actual_pos <= exp_max:
-                        print(f"✅ {joint}({pos}): Clampé correctement dans [{exp_min}, {exp_max}]")
+                        print(
+                            f"✅ {joint}({pos}): Clampé correctement dans [{exp_min}, {exp_max}]"
+                        )
                     else:
-                        print(f"⚠️  {joint}({pos}): Position {actual_pos} hors limites attendues")
+                        print(
+                            f"⚠️  {joint}({pos}): Position {actual_pos} hors limites attendues"
+                        )
             except Exception as e:
                 print(f"⚠️  {joint}({pos}): Erreur {e}")
 
@@ -128,7 +132,9 @@ class TestConformityEnhanced:
             # set_joint_pos sur stewart doit retourner False
             result = self.backend.set_joint_pos(joint, 0.1)
             if not result:
-                print(f"✅ {joint}: Contrôle individuel correctement bloqué (requiert IK)")
+                print(
+                    f"✅ {joint}: Contrôle individuel correctement bloqué (requiert IK)"
+                )
             else:
                 print(f"❌ {joint}: Contrôle individuel accepté (DEVRAIT être bloqué)")
 
@@ -139,7 +145,9 @@ class TestConformityEnhanced:
             pose = create_head_pose(pitch=0.1, yaw=0.0, degrees=False)
             if hasattr(self.backend, "goto_target"):
                 self.backend.goto_target(head=pose, duration=0.3, method="minjerk")
-                print("✅ goto_target() fonctionne (méthode correcte pour stewart joints)")
+                print(
+                    "✅ goto_target() fonctionne (méthode correcte pour stewart joints)"
+                )
         except ImportError:
             print("⚠️  SDK non disponible - test goto_target ignoré")
 
@@ -163,7 +171,9 @@ class TestConformityEnhanced:
             for base_method, variant_list in variants.items():
                 for variant in variant_list:
                     try:
-                        self.backend.goto_target(head=pose, duration=0.2, method=variant)
+                        self.backend.goto_target(
+                            head=pose, duration=0.2, method=variant
+                        )
                         print(f"✅ {variant} → {base_method}: Mapping fonctionne")
                     except Exception as e:
                         print(f"⚠️  {variant} → {base_method}: Erreur {e}")
@@ -245,7 +255,9 @@ class TestConformityEnhanced:
                     # Vérifier que l'émotion est enregistrée
                     assert self.backend.current_emotion == emotion
                     assert abs(self.backend.emotion_intensity - intensity) < 0.01
-                    print(f"✅ {emotion} (intensité {intensity}): Appliquée correctement")
+                    print(
+                        f"✅ {emotion} (intensité {intensity}): Appliquée correctement"
+                    )
                 else:
                     print(f"⚠️  {emotion} (intensité {intensity}): Échec")
             except Exception as e:
@@ -284,7 +296,9 @@ class TestConformityEnhanced:
                     backend_min, backend_max = backend_limits
                     if math.isclose(
                         backend_min, mapping_info.min_limit, abs_tol=1e-10
-                    ) and math.isclose(backend_max, mapping_info.max_limit, abs_tol=1e-10):
+                    ) and math.isclose(
+                        backend_max, mapping_info.max_limit, abs_tol=1e-10
+                    ):
                         print(f"✅ {joint}: Limites cohérentes backend=mapping")
                     else:
                         print(

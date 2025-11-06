@@ -62,7 +62,9 @@ class TestReachyMiniCompleteConformity:
         ]
 
         for method_name in sdk_methods:
-            assert hasattr(self.backend, method_name), f"Méthode {method_name} manquante"
+            assert hasattr(
+                self.backend, method_name
+            ), f"Méthode {method_name} manquante"
 
     def test_joint_mapping_conformity(self):
         """Test conformité mapping joints."""

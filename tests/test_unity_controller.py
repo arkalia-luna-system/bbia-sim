@@ -42,7 +42,9 @@ class TestUnityReachyMiniController:
 
     def test_init_communication_files_error(self):
         """Test gestion d'erreur lors de l'initialisation."""
-        with patch("pathlib.Path.exists", side_effect=PermissionError("Permission denied")):
+        with patch(
+            "pathlib.Path.exists", side_effect=PermissionError("Permission denied")
+        ):
             controller = UnityReachyMiniController()
             assert controller.is_connected is False
 
@@ -168,7 +170,9 @@ class TestUnityReachyMiniController:
             controller = UnityReachyMiniController()
             controller.is_connected = False
             result = controller.bbia_awake()
-            assert result is True  # La méthode retourne toujours True même en cas d'erreur
+            assert (
+                result is True
+            )  # La méthode retourne toujours True même en cas d'erreur
 
     def test_interactive_mode_help_command(self):
         """Test commande help dans le mode interactif."""
@@ -246,7 +250,9 @@ class TestUnityReachyMiniController:
                 with patch("builtins.print") as mock_print:
                     controller.interactive_mode()
             # Vérifier qu'un message d'erreur a été affiché
-            mock_print.assert_called_with("❌ Commande inconnue. Tapez 'help' pour l'aide.")
+            mock_print.assert_called_with(
+                "❌ Commande inconnue. Tapez 'help' pour l'aide."
+            )
 
     def test_interactive_mode_keyboard_interrupt(self):
         """Test interruption clavier dans le mode interactif."""
@@ -263,7 +269,9 @@ class TestUnityReachyMiniController:
         with tempfile.TemporaryDirectory() as _:
             controller = UnityReachyMiniController()
             # Simuler une exception après quelques commandes normales, puis quit pour éviter la boucle infinie
-            with patch("builtins.input", side_effect=["help", Exception("Test error"), "quit"]):
+            with patch(
+                "builtins.input", side_effect=["help", Exception("Test error"), "quit"]
+            ):
                 with patch("builtins.print") as mock_print:
                     controller.interactive_mode()
             # Vérifier qu'un message d'erreur a été affiché

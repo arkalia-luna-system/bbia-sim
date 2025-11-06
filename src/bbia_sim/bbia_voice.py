@@ -91,7 +91,12 @@ def get_bbia_voice(engine: Any) -> str:
     voices = engine.getProperty("voices")
 
     def normalize(s: str) -> str:
-        return unicodedata.normalize("NFKD", s).encode("ASCII", "ignore").decode("ASCII").lower()
+        return (
+            unicodedata.normalize("NFKD", s)
+            .encode("ASCII", "ignore")
+            .decode("ASCII")
+            .lower()
+        )
 
     # Voix à éviter (masculines)
     male_indicators = [
@@ -134,12 +139,22 @@ def get_bbia_voice(engine: Any) -> str:
         is_male = any(indicator in v_name_lower for indicator in male_indicators)
 
         # Priorité 1: Aurelie Enhanced fr
-        if is_aurelie and has_enhanced and is_fr and candidates["aurelie_enhanced_fr"] is None:
+        if (
+            is_aurelie
+            and has_enhanced
+            and is_fr
+            and candidates["aurelie_enhanced_fr"] is None
+        ):
             candidates["aurelie_enhanced_fr"] = str(v.id)
             continue
 
         # Priorité 2: Amelie Enhanced fr
-        if is_amelie and has_enhanced and is_fr and candidates["amelie_enhanced_fr"] is None:
+        if (
+            is_amelie
+            and has_enhanced
+            and is_fr
+            and candidates["amelie_enhanced_fr"] is None
+        ):
             candidates["amelie_enhanced_fr"] = str(v.id)
             continue
 

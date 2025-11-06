@@ -27,7 +27,9 @@ OPTIONAL_PATTERNS = [
 def test_bbia_awake_sequence():
     """Test de la séquence de réveil BBIA."""
     # Chemin correct vers le script
-    script_path = os.path.join(os.path.dirname(__file__), "..", "src", "bbia_sim", "bbia_awake.py")
+    script_path = os.path.join(
+        os.path.dirname(__file__), "..", "src", "bbia_sim", "bbia_awake.py"
+    )
 
     result = subprocess.run(
         [sys.executable, script_path], capture_output=True, text=True, timeout=30

@@ -295,7 +295,9 @@ class TestMotionRouter:
     def test_control_gripper_invalid_side(self, client):
         """Test endpoint motion/gripper/{side} avec côté invalide."""
         headers = {"Authorization": "Bearer bbia-secret-key-dev"}
-        response = client.post("/api/motion/gripper/invalid?action=open", headers=headers)
+        response = client.post(
+            "/api/motion/gripper/invalid?action=open", headers=headers
+        )
 
         assert response.status_code == 400
         data = response.json()
@@ -305,7 +307,9 @@ class TestMotionRouter:
     def test_control_gripper_invalid_action(self, client):
         """Test endpoint motion/gripper/{side} avec action invalide."""
         headers = {"Authorization": "Bearer bbia-secret-key-dev"}
-        response = client.post("/api/motion/gripper/left?action=invalid", headers=headers)
+        response = client.post(
+            "/api/motion/gripper/left?action=invalid", headers=headers
+        )
 
         assert response.status_code == 400
         data = response.json()

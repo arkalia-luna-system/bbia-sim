@@ -56,7 +56,9 @@ class TestE2EFaceDetectionGreeting:
 
         # 3. Activer comportement greeting
         # Vérifier que comportement existe
-        assert "greeting" in self.behavior.behaviors or hasattr(self.behavior, "execute_behavior")
+        assert "greeting" in self.behavior.behaviors or hasattr(
+            self.behavior, "execute_behavior"
+        )
 
         # Simuler activation comportement (mock si nécessaire)
         if hasattr(self.behavior, "execute_behavior"):
@@ -100,7 +102,9 @@ class TestE2EFaceDetectionGreeting:
 
         # 4. Activer greeting
         self.behavior.execute_behavior = MagicMock(return_value=True)
-        greeting_success = self.behavior.execute_behavior("greeting", {"target": "face"})
+        greeting_success = self.behavior.execute_behavior(
+            "greeting", {"target": "face"}
+        )
         assert greeting_success is True
 
     @pytest.mark.skipif(

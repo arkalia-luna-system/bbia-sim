@@ -27,7 +27,9 @@ class Settings(BaseSettings):  # type: ignore[misc]
 
     # Simulation
     simulation_model_path: str = "src/bbia_sim/sim/models/reachy_mini_REAL_OFFICIAL.xml"
-    simulation_headless: bool = True  # Headless par défaut pour éviter les problèmes macOS
+    simulation_headless: bool = (
+        True  # Headless par défaut pour éviter les problèmes macOS
+    )
     simulation_step_frequency: float = 0.01  # 100 Hz
     simulation_duration: int | None = None
 

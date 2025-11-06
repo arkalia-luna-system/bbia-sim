@@ -51,7 +51,9 @@ _vad_cache_lock = threading.Lock()
 _whisper_models_cache: dict[str, Any] = {}  # model_size -> model
 _whisper_model_last_used: dict[str, float] = {}
 _whisper_model_cache_lock = threading.Lock()
-_MAX_WHISPER_CACHE_SIZE = 2  # OPTIMISATION RAM: Limiter à 2 modèles Whisper max (tiny, base)
+_MAX_WHISPER_CACHE_SIZE = (
+    2  # OPTIMISATION RAM: Limiter à 2 modèles Whisper max (tiny, base)
+)
 
 
 class WhisperSTT:
@@ -535,7 +537,9 @@ class WhisperSTT:
             from collections import deque
 
             buffer_max_chunks = 10  # Max 10 chunks (limite sécurité)
-            audio_buffer: deque[npt.NDArray[np.float32]] = deque(maxlen=buffer_max_chunks)
+            audio_buffer: deque[npt.NDArray[np.float32]] = deque(
+                maxlen=buffer_max_chunks
+            )
 
             # OPTIMISATION PERFORMANCE: Throttling transcription pour éviter surcharge CPU/GPU
             last_transcription_time = 0.0
@@ -595,7 +599,8 @@ class WhisperSTT:
                         temp_file = self._temp_file_pool.pop(0)
                     else:
                         temp_file = (
-                            Path(tempfile.gettempdir()) / f"bbia_whisper_stream_{os.getpid()}_"
+                            Path(tempfile.gettempdir())
+                            / f"bbia_whisper_stream_{os.getpid()}_"
                             f"{int(time.time() * 1000)}.wav"
                         )
                         # Limiter taille pool
@@ -614,7 +619,9 @@ class WhisperSTT:
                             "dict[str, Any]",
                             self.model.transcribe(
                                 str(temp_file),
-                                language=(self.language if self.language != "auto" else None),
+                                language=(
+                                    self.language if self.language != "auto" else None
+                                ),
                                 fp16=False,
                                 # Optimisations streaming
                                 initial_prompt="",  # Pas de prompt initial pour latence
@@ -648,7 +655,9 @@ class WhisperSTT:
                                     temp_file.unlink()
                                 except Exception as e:
                                     # Ignorer erreur suppression fichier temporaire
-                                    logger.debug(f"Impossible de supprimer fichier temporaire: {e}")
+                                    logger.debug(
+                                        f"Impossible de supprimer fichier temporaire: {e}"
+                                    )
 
                 total_duration += chunk_duration
 

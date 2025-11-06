@@ -14,7 +14,9 @@ class TestBBIAVoice(unittest.TestCase):
     @patch("bbia_sim.bbia_voice.pyttsx3.init")
     @patch("bbia_sim.bbia_voice.get_bbia_voice")
     @patch("bbia_sim.bbia_voice._get_pyttsx3_engine")
-    def test_dire_texte(self, mock_get_engine, mock_get_voice, mock_pyttsx3_init, mock_env_get):
+    def test_dire_texte(
+        self, mock_get_engine, mock_get_voice, mock_pyttsx3_init, mock_env_get
+    ):
         mock_engine = MagicMock()
         mock_pyttsx3_init.return_value = mock_engine
         mock_get_engine.return_value = mock_engine

@@ -46,4 +46,6 @@ def test_sdk_surface_api_signatures():
         if params and params[0] == "self":
             params = params[1:]
         for rp in required_params:
-            assert rp in params, f"Paramètre requis {rp} manquant dans {method_name}({params})"
+            assert (
+                rp in params
+            ), f"Paramètre requis {rp} manquant dans {method_name}({params})"

@@ -93,7 +93,9 @@ async def list_available_apps(source_kind: str) -> list[dict[str, Any]]:
 
     """
     apps: list[dict[str, Any]] = _bbia_apps_manager["available_apps"]
-    filtered: list[dict[str, Any]] = [app for app in apps if app.get("source_kind") == source_kind]
+    filtered: list[dict[str, Any]] = [
+        app for app in apps if app.get("source_kind") == source_kind
+    ]
     return filtered
 
 
@@ -236,7 +238,9 @@ async def start_app(app_name: str) -> dict[str, Any]:
     """
     # Vérifier si l'app est installée
     installed = [app["name"] for app in _bbia_apps_manager["installed_apps"]] + [
-        app["name"] for app in _bbia_apps_manager["available_apps"] if app.get("installed")
+        app["name"]
+        for app in _bbia_apps_manager["available_apps"]
+        if app.get("installed")
     ]
 
     if app_name not in installed:

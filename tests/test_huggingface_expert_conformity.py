@@ -48,7 +48,9 @@ class TestBBIAHuggingFaceExpertConformity:
             pytest.skip("BBIAHuggingFace non disponible")
 
         # Lire le fichier source pour vérifier variété
-        hf_file = Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_huggingface.py"
+        hf_file = (
+            Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_huggingface.py"
+        )
         if not hf_file.exists():
             pytest.skip("Fichier bbia_huggingface.py introuvable")
 
@@ -58,12 +60,16 @@ class TestBBIAHuggingFaceExpertConformity:
         import re
 
         # Chercher les listes de greetings friendly_robot
-        greeting_matches = re.findall(r'"friendly_robot":\s*\[(.*?)\]', content, re.DOTALL)
+        greeting_matches = re.findall(
+            r'"friendly_robot":\s*\[(.*?)\]', content, re.DOTALL
+        )
         if greeting_matches:
             # Compter les éléments dans la liste
             greeting_text = greeting_matches[0]
             variants = [
-                line.strip() for line in greeting_text.split(",") if line.strip() and '"' in line
+                line.strip()
+                for line in greeting_text.split(",")
+                if line.strip() and '"' in line
             ]
 
             assert len(variants) >= 8, (
@@ -83,7 +89,9 @@ class TestBBIAHuggingFaceExpertConformity:
         if not self.hf_available:
             pytest.skip("BBIAHuggingFace non disponible")
 
-        hf_file = Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_huggingface.py"
+        hf_file = (
+            Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_huggingface.py"
+        )
         if not hf_file.exists():
             pytest.skip("Fichier bbia_huggingface.py introuvable")
 
@@ -103,7 +111,9 @@ class TestBBIAHuggingFaceExpertConformity:
             "réfléchir",
         ]
 
-        found_elements = sum(1 for elem in engaging_elements if elem in question_responses)
+        found_elements = sum(
+            1 for elem in engaging_elements if elem in question_responses
+        )
 
         assert found_elements >= 3, (
             f"EXPERT: Les réponses questions doivent inclure au moins 3 éléments engageants "
@@ -119,17 +129,22 @@ class TestBBIAHuggingFaceExpertConformity:
         if not self.hf_available:
             pytest.skip("BBIAHuggingFace non disponible")
 
-        hf_file = Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_huggingface.py"
+        hf_file = (
+            Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_huggingface.py"
+        )
         if not hf_file.exists():
             pytest.skip("Fichier bbia_huggingface.py introuvable")
 
         content = hf_file.read_text(encoding="utf-8")
 
         # Vérifier que le code utilise le contexte récent
-        has_context_check = "recent_context" in content or "_get_recent_context" in content
+        has_context_check = (
+            "recent_context" in content or "_get_recent_context" in content
+        )
         has_reference_words = (
             "reference_words" in content
-            or "ça" in content  # Les références contextuelles utilisent "ça", "ce", etc.
+            or "ça"
+            in content  # Les références contextuelles utilisent "ça", "ce", etc.
         )
 
         assert has_context_check or has_reference_words, (
@@ -146,7 +161,9 @@ class TestBBIAHuggingFaceExpertConformity:
         if not self.hf_available:
             pytest.skip("BBIAHuggingFace non disponible")
 
-        hf_file = Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_huggingface.py"
+        hf_file = (
+            Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_huggingface.py"
+        )
         if not hf_file.exists():
             pytest.skip("Fichier bbia_huggingface.py introuvable")
 
@@ -176,7 +193,9 @@ class TestBBIAHuggingFaceExpertConformity:
         if not self.hf_available:
             pytest.skip("BBIAHuggingFace non disponible")
 
-        hf_file = Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_huggingface.py"
+        hf_file = (
+            Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_huggingface.py"
+        )
         if not hf_file.exists():
             pytest.skip("Fichier bbia_huggingface.py introuvable")
 
@@ -206,7 +225,9 @@ class TestBBIAHuggingFaceExpertConformity:
         if not self.hf_available:
             pytest.skip("BBIAHuggingFace non disponible")
 
-        hf_file = Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_huggingface.py"
+        hf_file = (
+            Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_huggingface.py"
+        )
         if not hf_file.exists():
             pytest.skip("Fichier bbia_huggingface.py introuvable")
 
@@ -284,7 +305,9 @@ class TestBBIAHuggingFaceExpertConformity:
                 f"Réponses trop courtes = perçues comme peu engageantes, "
                 f"trop longues = perçues comme verbeuses et peu naturelles."
             )
-            print(f"✅ {percentage_appropriate:.1f}% des réponses ont une longueur appropriée")
+            print(
+                f"✅ {percentage_appropriate:.1f}% des réponses ont une longueur appropriée"
+            )
         else:
             print("⚠️  Impossible d'extraire les réponses pour analyse")
 
@@ -296,7 +319,9 @@ class TestBBIAHuggingFaceExpertConformity:
         if not self.hf_available:
             pytest.skip("BBIAHuggingFace non disponible")
 
-        hf_file = Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_huggingface.py"
+        hf_file = (
+            Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_huggingface.py"
+        )
         if not hf_file.exists():
             pytest.skip("Fichier bbia_huggingface.py introuvable")
 
@@ -326,7 +351,9 @@ class TestBBIAHuggingFaceExpertConformity:
         if not self.hf_available:
             pytest.skip("BBIAHuggingface non disponible")
 
-        hf_file = Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_huggingface.py"
+        hf_file = (
+            Path(__file__).parent.parent / "src" / "bbia_sim" / "bbia_huggingface.py"
+        )
         if not hf_file.exists():
             pytest.skip("Fichier bbia_huggingface.py introuvable")
 
