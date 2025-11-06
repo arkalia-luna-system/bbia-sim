@@ -126,7 +126,8 @@ class BBIAVision:
         self.camera_active = True
         self.vision_quality = "HD"
         self.detection_range = 3.0  # mètres
-        # OPTIMISATION RAM: Limiter historique détections avec deque (max 50 objets/visages)
+        # OPTIMISATION RAM: Limiter historique détections avec deque
+        # (max 50 objets/visages)
         self._max_detections_history = 50
         self.objects_detected: deque[dict[str, Any]] = deque(
             maxlen=self._max_detections_history,
