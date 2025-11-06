@@ -22,7 +22,7 @@
 
 **Ressources** :
 - Voir `tests/test_voice_whisper_comprehensive.py` comme exemple
-- Documentation : `docs/development/testing.md`
+- Documentation : `docs/development/TESTING_GUIDE.md`
 
 ---
 
@@ -239,7 +239,7 @@
 1. **Fork** le repository
 2. **Cloner** votre fork localement
 3. **Créer branche** : `git checkout -b feature/issue-X`
-4. **Lire** : `docs/development/testing.md`
+4. **Lire** : `docs/development/TESTING_GUIDE.md`
 5. **Créer** tests/fonctionnalités
 6. **Vérifier** : `pytest`, `black`, `ruff`
 7. **Push** et créer Pull Request
@@ -304,7 +304,7 @@ assignees: []
 ## 📚 Ressources utiles
 
 - [Documentation du projet](../README.md)
-- [Guide de tests](../development/testing.md)
+- [Guide de tests](../development/TESTING_GUIDE.md)
 ```
 
 ---

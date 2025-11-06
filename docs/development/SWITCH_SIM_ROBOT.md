@@ -1,15 +1,17 @@
 # 🔄 Switch Sim → Robot
 
-> Compatibilité Python et CI
->
-> - Version requise: Python 3.11+
-> - CI: `.github/workflows/ci.yml`
-> - Setup rapide:
+**Date** : Oct / Nov. 2025  
+**Version** : 1.0
+
+> **Compatibilité Python et CI** :
+> - Version requise : Python 3.11+
+> - CI : `.github/workflows/ci.yml`
+> - Setup rapide :
 > ```bash
->   pyenv install 3.11.9 && pyenv local 3.11.9
->   python -m pip install --upgrade pip
->   pip install -e .
->   ```
+> pyenv install 3.11.9 && pyenv local 3.11.9
+> python -m pip install --upgrade pip
+> pip install -e .
+> ```
 
 ## Backend Unifié RobotAPI
 

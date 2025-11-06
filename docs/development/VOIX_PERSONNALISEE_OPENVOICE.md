@@ -1,6 +1,8 @@
-## Voix personnalisée (offline) – Pipeline propre et sûr
+# 🎤 Voix Personnalisée (Offline) – Pipeline Propre et Sûr
 
-### Objectif
+**Date** : Oct / Nov. 2025
+
+## Objectif
 - Générer des voix “mignonnes”/enfantines ou “douces” en local (offline), sans casser les venv existants.
 - Lire les WAV via BBIA (`robot.media.play_audio`) ou activer un backend dédié.
 

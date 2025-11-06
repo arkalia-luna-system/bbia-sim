@@ -1,6 +1,9 @@
-# BBIA-SIM - guide d’architecture détaillé
+# 🏗️ BBIA-SIM - Guide d'Architecture Détaillé
 
-> Liens utiles: `docs/reference/INDEX_THEMATIQUE.md` · `docs/reference/project-status.md`
+**Date** : Oct / Nov. 2025  
+**Version** : 1.3.2
+
+> **Liens utiles** : [`docs/reference/INDEX_THEMATIQUE.md`](../reference/INDEX_THEMATIQUE.md) · [`docs/reference/project-status.md`](../reference/project-status.md)
 
 ## Vue d'ensemble
 

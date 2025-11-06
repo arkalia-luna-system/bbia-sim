@@ -1,6 +1,8 @@
-## Profils d'environnement (venv) et caméra – Guide rapide
+# 📦 Profils d'Environnement (venv) et Caméra – Guide Rapide
 
-### Objectif
+**Date** : Oct / Nov. 2025
+
+## Objectif
 - Séparer les outils pour éviter les conflits de dépendances (numpy, mediapipe, reachy, TTS avancé).
 - Avoir une vision qui marche tout de suite, sans casser le reste.
 

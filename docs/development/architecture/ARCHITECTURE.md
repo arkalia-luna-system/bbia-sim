@@ -35,3 +35,7 @@ Pour plus de détails, consultez :
 
 **Note** : Ce fichier sert de point d'entrée. Pour les détails, voir `ARCHITECTURE_OVERVIEW.md` et `ARCHITECTURE_DETAILED.md`.
 
+---
+
+**Dernière mise à jour** : Oct / Nov. 2025
+

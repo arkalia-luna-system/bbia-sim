@@ -1,8 +1,9 @@
-# FAQ Troubleshooting - Guide Complet
+# ❓ FAQ Troubleshooting - Guide Complet
 
-> Compatibilité Python: 3.11+
->
-> Voir aussi: `docs/reference/INDEX_THEMATIQUE.md` et `docs/reference/project-status.md` (État par axe)
+**Date** : Oct / Nov. 2025  
+**Compatibilité Python** : 3.11+
+
+> **Voir aussi** : [`docs/reference/INDEX_THEMATIQUE.md`](../reference/INDEX_THEMATIQUE.md) et [`docs/reference/project-status.md`](../reference/project-status.md) (État par axe)
 
 **📚 [FAQ principale](../getting-started/troubleshooting.md)** | **🔧 [Guide avancé](../guides/GUIDE_AVANCE.md)** | **🧪 [Guide tests](TESTING_GUIDE.md)**
 
