@@ -756,7 +756,7 @@ pytest -q --disable-warnings \
 
 **📊 Qualité & Conformité :**
 - ✅ **Conformité SDK officiel** : 100% validée (18/18 tests)
-- ✅ **Coverage global** : **68.86%** (excellent)
+- ✅ **Coverage global** : **~64%** (excellent)
 - ✅ **Coverage modules core** : ~50% (mesure pertinente)
 - ✅ **Tests totaux** : **1334 tests collectés** (pytest --collect-only)
 - ✅ **Qualité code** : Black, Ruff, MyPy, Bandit ✅
