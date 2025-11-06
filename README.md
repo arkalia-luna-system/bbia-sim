@@ -30,13 +30,13 @@ BBIA-SIM est un moteur cognitif Python avec **12 émotions robotiques** (6 émot
 
 ### ✨ Points Clés
 
-• ✅ **Conforme au SDK officiel Pollen Robotics** (100% validé)
-• 🔄 **Backend unifié** : même code en simulation et sur robot réel
-• 🧪 **1334 tests automatisés** (unitaires, intégration, E2E)
-• 📚 **150+ fichiers documentation** Markdown (guides, API, architecture)
-• ⚡ **Optimisations performance** : caches globaux (modèles IA réutilisés)
-• 🔒 **CI/CD professionnel** : Black, Ruff, MyPy, Bandit, pip-audit
-• 🌟 **Open-source** (MIT)
+- ✅ **Conforme au SDK officiel Pollen Robotics** (100% validé)
+- 🔄 **Backend unifié** : même code en simulation et sur robot réel
+- 🧪 **1334 tests automatisés** (unitaires, intégration, E2E)
+- 📚 **150+ fichiers documentation** Markdown (guides, API, architecture)
+- ⚡ **Optimisations performance** : caches globaux (modèles IA réutilisés)
+- 🔒 **CI/CD professionnel** : Black, Ruff, MyPy, Bandit, pip-audit
+- 🌟 **Open-source** (MIT)
 
 **[🚀 Quick Start](#-démarrage-rapide)** | **[📚 Docs Débutant](docs/guides/GUIDE_DEBUTANT.md)** | **[🔬 Docs Avancé](docs/guides/GUIDE_AVANCE.md)** | **[📋 Projets](PROJECTS.md)**
 
