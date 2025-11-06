@@ -7,7 +7,7 @@
 
 ## 📚 Documentation Corrections
 
-- **[Corrections Appliquées](CORRECTIONS_APPLIQUEES.md)** - Liste complète des corrections démos et modules
+- **[Corrections Appliquées](applied.md)** - Liste complète des corrections démos et modules
   - Emergency Stop implémenté (3 backends)
   - Audio SDK aligné (16kHz)
   - Validation émotions SDK

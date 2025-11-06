@@ -94,11 +94,13 @@ pip install -e .
 - **[Index thématique (par profils)](reference/INDEX_THEMATIQUE.md)** — Navigation par rôle
 
 ### 💻 Développement
-- **[Integration Guide](development/INTEGRATION_GUIDE.md)** — Guide d'intégration
-- **[Testing Guide](development/TESTING_GUIDE.md)** — Guide de tests
-- **[Migration Guide](development/MIGRATION_GUIDE.md)** — Guide de migration
+- **[Integration Guide](development/integration.md)** — Guide d'intégration
+- **[Testing Guide](development/testing.md)** — Guide de tests
+- **[Migration Guide](development/migration.md)** — Guide de migration
+- **[Troubleshooting](development/troubleshooting.md)** — FAQ technique
 - **[API Contracts](development/api/CONTRATS_REST_WS.md)** — Contrats REST/WebSocket
 - **[Assistant IA Guide](development/assistant-ia-guide.md)** — Guide assistants IA
+- **[Setup Guides](development/setup/)** — Configuration (environments, deepface, webcam, etc.)
 
 ### 🤖 Hardware & Robotique
 - **[Reachy Mini Reference](hardware/reachy-mini/REACHY_MINI_REFERENCE.md)** — Référence complète
@@ -106,10 +108,10 @@ pip install -e .
 - **[Sécurité Robot](hardware/SECURITE_ROBOT.md)** — DO/DON'T sécurité
 
 ### 🧠 Intelligence Artificielle
-- **[Audit IA Modules Pré-entraînés](ai/AUDIT_IA_MODULES_PRETRAINES.md)** — Modèles IA utilisés
-- **[Datasets & Golden Images](ai/DATASETS_GOLDEN_IMAGES.md)** — Vision & datasets
-- **[Intelligence Conversationnelle LLM](intelligence/INTELLIGENCE_CONVERSATIONNELLE_LLM.md)** — LLM & conversation
-- **[Analyse Voix et Intelligence](intelligence/ANALYSE_VOIX_ET_INTELLIGENCE_BBIA.md)** — Analyse voix
+- **[Modules IA](ai/modules.md)** — Audit modules pré-entraînés
+- **[Datasets & Golden Images](ai/datasets.md)** — Vision & datasets
+- **[Intelligence Conversationnelle LLM](ai/llm.md)** — LLM & conversation
+- **[Analyse Voix et Intelligence](ai/voice.md)** — Analyse voix
 
 ### ✅ Qualité & Conformité
 - **[Conformité Reachy-Mini Complète](quality/compliance/CONFORMITE_REACHY_MINI_COMPLETE.md)** — 46 tests conformité SDK
@@ -118,9 +120,9 @@ pip install -e .
 - **[Audit Coverage Imports](quality/audits/AUDIT_COVERAGE_IMPORTS.md)** — Audit coverage
 
 ### ⚡ Performance
-- **[Optimisations Expert Reachy Mini](performance/OPTIMISATIONS_EXPERT_REACHY_MINI.md)** — Optimisations spécifiques
-- **[Optimisations Expert Robotique](performance/OPTIMISATIONS_EXPERT_ROBOTIQUE_2025.md)** — Optimisations générales
-- **[Résumé Performance](performance/RESUME_PERFORMANCE_CORRECTIONS_2025.md)** — Résumé optimisations
+- **[Optimisations Expert Reachy Mini](quality/performance/OPTIMISATIONS_EXPERT_REACHY_MINI.md)** — Optimisations spécifiques
+- **[Optimisations Expert Robotique](quality/performance/OPTIMISATIONS_EXPERT_ROBOTIQUE_2025.md)** — Optimisations générales
+- **[Résumé Performance](quality/performance/RESUME_PERFORMANCE_CORRECTIONS_2025.md)** — Résumé optimisations
 
 ### 🚀 Déploiement
 - **[Pipeline CI/CD](deployment/PIPELINE_CI.md)** — Configuration CI/CD
@@ -149,8 +151,8 @@ pip install -e .
 ### 💻 Développeur
 - [Guide Avancé](guides/GUIDE_AVANCE.md)
 - [Architecture](development/architecture/ARCHITECTURE_OVERVIEW.md)
-- [Testing Guide](development/TESTING_GUIDE.md)
-- [Integration Guide](development/INTEGRATION_GUIDE.md)
+- [Testing Guide](development/testing.md)
+- [Integration Guide](development/integration.md)
 
 ### 🤖 Utilisateur Robotique
 - [Guide Reachy Mini](guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md)
@@ -159,7 +161,7 @@ pip install -e .
 - [Simulation MuJoCo](simulations/MUJOCO_SIMULATION_GUIDE.md)
 
 ### ✅ QA / Tests
-- [Testing Guide](development/TESTING_GUIDE.md)
+- [Testing Guide](development/testing.md)
 - [Audits](quality/audits/README.md)
 - [Validation Qualité](quality/validation/VALIDATION_FINALE_QUALITE_2025.md)
 
@@ -177,12 +179,14 @@ docs/
 ├── deployment/          # 🚀 Déploiement
 ├── hardware/           # 🤖 Hardware & robotique
 │   └── reachy-mini/
-├── intelligence/        # 🧠 Intelligence artificielle
+├── ai/                 # 🧠 Intelligence artificielle
 ├── quality/            # ✅ Qualité & conformité
 │   ├── compliance/
 │   ├── audits/
-│   └── validation/
-├── performance/         # ⚡ Performance
+│   ├── performance/
+│   ├── analyses/
+│   ├── improvements/
+│   └── corrections/
 ├── reference/          # 📚 Références
 └── archive/           # 📦 Archives
 ```

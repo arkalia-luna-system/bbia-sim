@@ -110,13 +110,11 @@ mindmap
 - [Guide Assistants IA](development/assistant-ia-guide.md) - Scripts, conventions, workflow pour assistants IA
 
 ### 🔧 Corrections et Améliorations
-- [Corrections Appliquées](corrections/CORRECTIONS_APPLIQUEES.md) - Corrections démos et modules
-- [Améliorations Finales](ameliorations/AMELIORATIONS_FINALES.md) - Améliorations post-audit
-- [Améliorations Futures SDK](ameliorations/AMELIORATIONS_FUTURES_SDK.md) - Features SDK avancées
-- [Améliorations Intelligence BBIA](ameliorations/AMELIORATIONS_INTELLIGENCE_BBIA_2025.md) - Intelligence conversationnelle
-- [Améliorations Intelligence Contexte](ameliorations/AMELIORATIONS_INTELLIGENCE_CONTEXTE_2025.md) - Intelligence contextuelle
-- [Analyse Améliorations Gratuites](ameliorations/ANALYSE_AMELIORATIONS_GRATUITES.md) - Solutions gratuites
-- [Décision Finale Améliorations](ameliorations/DECISION_FINAL_AMELIORATIONS.md) - Décisions améliorations
+- [Corrections Appliquées](quality/corrections/applied.md) - Corrections démos et modules
+- [Améliorations Futures SDK](quality/improvements/sdk-future.md) - Features SDK avancées
+- [Améliorations Intelligence BBIA](quality/improvements/intelligence-bbia.md) - Intelligence conversationnelle
+- [Améliorations Intelligence Contexte](quality/improvements/intelligence-context.md) - Intelligence contextuelle
+- [Analyse Améliorations Gratuites](quality/improvements/free-improvements.md) - Solutions gratuites
 
 ### 🎮 Mouvements et Contrôle
 - [Mouvements Reachy Mini](hardware/MOUVEMENTS_REACHY_MINI.md)
@@ -127,8 +125,9 @@ mindmap
 ### ⚙️ Installation et Configuration
 - [Installation Audio](installation/AUDIO_SETUP.md)
 - [Configuration communautaire](reference/COMMUNITY_CONFIG.md)
-- [Guide d'intégration](development/INTEGRATION_GUIDE.md)
-- [Guide de migration](development/MIGRATION_GUIDE.md)
+- [Guide d'intégration](development/integration.md)
+- [Guide de migration](development/migration.md)
+- [Setup Guides](development/setup/) - Configuration (environments, deepface, webcam, etc.)
 
 ### 🎯 Simulation
 - [Simulation BBIA complète](simulations/SIMULATION_BBIA_COMPLETE.md)
@@ -136,27 +135,27 @@ mindmap
 - [Observabilité (logs/metrics/santé)](observabilite/OBSERVABILITE.md)
 
 ### 🧪 Tests et Qualité
-- [Guide de test](development/TESTING_GUIDE.md)
+- [Guide de test](development/testing.md)
 - [Organisation des tests d'intelligence](organisation/ORGANISATION_TESTS_INTELLIGENCE.md)
 - [Rapports d'audit](quality/audits/README.md) - Tous les audits
 
 ### 🤖 Intelligence et IA
-- [Audit IA Modules Pré-entraînés](ai/AUDIT_IA_MODULES_PRETRAINES.md)
-- [Datasets & Golden Images](ai/DATASETS_GOLDEN_IMAGES.md)
-- [Intelligence conversationnelle LLM](intelligence/INTELLIGENCE_CONVERSATIONNELLE_LLM.md)
-- [Analyse voix et intelligence](intelligence/ANALYSE_VOIX_ET_INTELLIGENCE_BBIA.md)
+- [Modules IA](ai/modules.md) - Audit modules pré-entraînés
+- [Datasets & Golden Images](ai/datasets.md)
+- [Intelligence conversationnelle LLM](ai/llm.md)
+- [Analyse voix et intelligence](ai/voice.md)
 
 ### 📊 Analyses et Rapports
-- [Analyse Modules Non Prioritaires](analyses/ANALYSE_MODULES_NON_PRIORITAIRES_2025.md) - Analyse modules et conformité SDK
-- [Analyse Coverage Détails](analyses/ANALYSE_COVERAGE_DETAILS.md) - Analyse détaillée code coverage
-- [Analyse Code Unity AR](analyses/ANALYSE_CODE_UNITY_AR.md) - Évaluation pertinence Unity AR
+- [Analyse Modules Non Prioritaires](quality/analyses/modules-non-prioritaires.md) - Analyse modules et conformité SDK
+- [Analyse Coverage Détails](quality/analyses/coverage-details.md) - Analyse détaillée code coverage
+- [Analyse Code Unity AR](quality/analyses/unity-ar.md) - Évaluation pertinence Unity AR
 - [Contrats REST/WS](development/api/CONTRATS_REST_WS.md)
 - [Roadmap Dashboard/UX](dashboard/ROADMAP_DASHBOARD.md)
 
 ### ⚡ Performance
-- [Optimisations expert Reachy Mini](performance/OPTIMISATIONS_EXPERT_REACHY_MINI.md)
-- [Optimisations expert robotique](performance/OPTIMISATIONS_EXPERT_ROBOTIQUE_2025.md)
-- [Résumé performance](performance/RESUME_PERFORMANCE_CORRECTIONS_2025.md)
+- [Optimisations expert Reachy Mini](quality/performance/OPTIMISATIONS_EXPERT_REACHY_MINI.md)
+- [Optimisations expert robotique](quality/performance/OPTIMISATIONS_EXPERT_ROBOTIQUE_2025.md)
+- [Résumé performance](quality/performance/RESUME_PERFORMANCE_CORRECTIONS_2025.md)
 
 ### 🤖 Reachy et Robotique
 - [Prêt Reachy A4](hardware/reachy-mini/PRET_REACHY_A4.md)
@@ -177,7 +176,7 @@ mindmap
 ## 🔍 Archives
 
 ### Oct / Nov. 2025
-- [Résumé Final Ultime](RESUME_FINAL_ULTIME.md) - Résumé complet du projet
+- [Résumé Final Ultime](reference/summaries/final-summary.md) - Résumé complet du projet
 - [Archives Nettoyage](archive/nettoyage-2025/README.md) - Documents nettoyage
 - [Index Audits](quality/audits/INDEX_AUDITS_CONSOLIDES.md) - Tous les audits (historiques inclus)
 - [Tâches Archivées](archive/tasks/README.md) - Tâches archivées
@@ -199,8 +198,8 @@ Voir le dossier `archive/` pour les rapports détaillés historiques.
 **Développeur**
 - [Guide avancé](guides/GUIDE_AVANCE.md)
 - [Architecture](development/architecture/ARCHITECTURE_OVERVIEW.md)
-- [Guide de test](development/TESTING_GUIDE.md)
-- [Guide d'intégration](development/INTEGRATION_GUIDE.md)
+- [Guide de test](development/testing.md)
+- [Guide d'intégration](development/integration.md)
 
 **Utilisateur robotique**
 - [Guide Reachy Mini](guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md)
@@ -209,9 +208,9 @@ Voir le dossier `archive/` pour les rapports détaillés historiques.
 - [Simulation MuJoCo](simulations/MUJOCO_SIMULATION_GUIDE.md)
 
 **QA / Tests**
-- [Guide de test](development/TESTING_GUIDE.md)
+- [Guide de test](development/testing.md)
 - [Index Audits](quality/audits/INDEX_AUDITS_CONSOLIDES.md) - Tous les audits
-- [Corrections Appliquées](corrections/CORRECTIONS_APPLIQUEES.md) - Corrections
+- [Corrections Appliquées](quality/corrections/applied.md) - Corrections
 - [Validation Qualité](quality/validation/VALIDATION_FINALE_QUALITE_2025.md) - Validation qualité
 
 ---
@@ -359,7 +358,7 @@ export BBIA_TELEMETRY_TIMEOUT=1.0
 2. **Installer le projet ?** → [Installation Audio](installation/AUDIO_SETUP.md)
 3. **Utiliser le robot ?** → [Guide Reachy Mini](guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md)
 4. **Développer ?** → [Guide Avancé](guides/GUIDE_AVANCE.md)
-5. **Tester ?** → [Guide de Test](development/TESTING_GUIDE.md)
+5. **Tester ?** → [Guide de Test](development/testing.md)
 
 ---
 

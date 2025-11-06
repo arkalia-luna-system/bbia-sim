@@ -19,27 +19,21 @@
 
 ### Guides Techniques
 
-- **[Integration Guide](INTEGRATION_GUIDE.md)** - Guide d'intégration
-- **[Testing Guide](TESTING_GUIDE.md)** - Guide de tests complet
-- **[Migration Guide](MIGRATION_GUIDE.md)** - Guide de migration
-- **[FAQ Troubleshooting](FAQ_TROUBLESHOOTING.md)** - FAQ technique
+- **[Integration Guide](integration.md)** - Guide d'intégration
+- **[Testing Guide](testing.md)** - Guide de tests complet
+- **[Migration Guide](migration.md)** - Guide de migration
+- **[Troubleshooting](troubleshooting.md)** - FAQ technique
+- **[Switch Sim → Robot](switch-sim-robot.md)** - Basculer entre simulation et robot réel
+- **[Dashboard Advanced](dashboard-advanced.md)** - Guide dashboard avancé
 
 ### Configuration & Setup
 
-- **[Environment Profiles](ENV_PROFILS.md)** - Profils venv (vision, voice, etc.)
-- **[Switch Sim → Robot](SWITCH_SIM_ROBOT.md)** - Basculer entre simulation et robot réel
-- **[DeepFace Setup](DEEPFACE_SETUP.md)** - Installation DeepFace
-- **[Webcam MX Brio](GUIDE_WEBCAM_MX_BRIO.md)** - Guide webcam Logitech
-- **[Vision Webcam Audit](AUDIT_VISION_WEBCAM.md)** - Audit support webcam USB
-
-### Migration & Voice
-
-- **[Migration Coqui TTS](MIGRATION_COQUI_TTS.md)** - Migration vers Coqui TTS
-- **[Voix Personnalisée OpenVoice](VOIX_PERSONNALISEE_OPENVOICE.md)** - Pipeline voix personnalisée
-
-### Dashboards
-
-- **[Dashboard Advanced Guide](GUIDE_DASHBOARD_ADVANCED.md)** - Guide dashboard avancé
+- **[Environment Profiles](setup/environments.md)** - Profils venv (vision, voice, etc.)
+- **[DeepFace Setup](setup/deepface.md)** - Installation DeepFace
+- **[Webcam MX Brio](setup/webcam-mx-brio.md)** - Guide webcam Logitech
+- **[Vision Webcam Audit](setup/vision-webcam.md)** - Audit support webcam USB
+- **[Migration Coqui TTS](setup/coqui-tts.md)** - Migration vers Coqui TTS
+- **[Voix Personnalisée OpenVoice](setup/openvoice.md)** - Pipeline voix personnalisée
 
 ### Pour Assistants IA
 
