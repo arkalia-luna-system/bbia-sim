@@ -9,10 +9,10 @@
 
 ### ✅ Audits Complets et à Jour
 
-1. **`TACHES_RESTANTES_NOV2025.md`** ⭐ **RECOMMANDÉ**
+1. **`TACHES_RESTANTES_NOV2025.md`** ⭐ **ARCHIVÉ** (toutes tâches terminées)
    - Liste exhaustive des tâches restantes avec statuts
-   - Mise à jour régulière
-   - **Utiliser ce fichier comme référence principale**
+   - **Toutes les tâches sont maintenant terminées** ✅
+   - Archivé dans `docs/archive/audits_termines/`
 
 2. **`RESUME_ETAT_ACTUEL_BBIA.md`** ⭐ **RECOMMANDÉ**
    - État actuel du projet (Oct / Nov. 2025)
@@ -104,7 +104,7 @@ Les fichiers suivants ont été archivés car redondants ou obsolètes :
 
 | Fichier | Usage |
 |---------|-------|
-| `TACHES_RESTANTES_NOV2025.md` | **Référence principale** - Tâches à faire |
+| `TACHES_RESTANTES_NOV2025.md` | **ARCHIVÉ** - Toutes tâches terminées ✅ |
 | `INDEX_AUDITS_CONSOLIDES.md` | Ce fichier - Index des audits |
 | `RESUME_ETAT_ACTUEL_BBIA.md` | État actuel du projet |
 | `VERTICAL_SLICES_ACCOMPLIS.md` | Slices accomplis |

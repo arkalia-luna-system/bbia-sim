@@ -104,7 +104,7 @@ mindmap
 - [Statut Nettoyage Final](archive/nettoyage-2025/STATUT_NETTOYAGE_FINAL.md) - Statut final du nettoyage (archivé)
 - [Rapport Nettoyage Final](archive/nettoyage-2025/RAPPORT_NETTOYAGE_FINAL.md) - Rapport détaillé du nettoyage (archivé)
 - [Tâches Restantes](archive/tasks/A_FAIRE_RESTANT.md) - Tâches optionnelles restantes (archivé)
-- [Tâches Restantes Oct / Nov. 2025](quality/audits/TACHES_RESTANTES_NOV2025.md) - Liste des tâches restantes à jour
+- [Tâches Restantes Oct / Nov. 2025](archive/audits_termines/TACHES_RESTANTES_NOV2025.md) - ✅ **ARCHIVÉ** (toutes tâches terminées)
 
 ### 🤖 Pour Assistants IA
 - [Guide Assistants IA](development/assistant-ia-guide.md) - Scripts, conventions, workflow pour assistants IA
