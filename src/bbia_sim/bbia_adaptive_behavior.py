@@ -37,7 +37,8 @@ class BBIAAdaptiveBehavior:
         """Initialise le module de comportements adaptatifs.
 
         Args:
-            robot_api: Instance RobotAPI pour exécuter les comportements générés (optionnel)
+            robot_api: Instance RobotAPI pour exécuter les comportements
+                générés (optionnel)
 
         """
         self.is_active = False
@@ -87,9 +88,12 @@ class BBIAAdaptiveBehavior:
         }
 
         # Comportements disponibles
-        # ⚠️ IMPORTANT EXPERT ROBOTIQUE: Les joints stewart (stewart_1-6) NE PEUVENT PAS être contrôlés individuellement
-        # car la plateforme Stewart utilise la cinématique inverse (IK). Utiliser goto_target() avec create_head_pose()
-        # pour contrôler la tête. Les joints stewart listés ici sont indicatifs uniquement pour documentation.
+        # ⚠️ IMPORTANT EXPERT ROBOTIQUE: Les joints stewart (stewart_1-6)
+        # NE PEUVENT PAS être contrôlés individuellement
+        # car la plateforme Stewart utilise la cinématique inverse (IK).
+        # Utiliser goto_target() avec create_head_pose() pour contrôler la tête.
+        # Les joints stewart listés ici sont indicatifs uniquement
+        # pour documentation.
         self.behaviors = {
             "nod": {
                 "description": "Hochement de tête",
@@ -268,7 +272,10 @@ class BBIAAdaptiveBehavior:
             self._update_preferences(behavior)
 
             logger.info(
-                f"🎭 Comportement généré: {behavior_name} pour contexte {self.current_context}",
+                (
+                    f"🎭 Comportement généré: {behavior_name} "
+                    f"pour contexte {self.current_context}"
+                ),
             )
             return behavior
 
@@ -600,7 +607,10 @@ class BBIAAdaptiveBehavior:
             joints = params.get("joints", [])
 
             logger.info(
-                f"🎭 Exécution comportement '{behavior_name}' (durée={duration:.1f}s, intensité={intensity:.2f})",
+                (
+                    f"🎭 Exécution comportement '{behavior_name}' "
+                    f"(durée={duration:.1f}s, intensité={intensity:.2f})"
+                ),
             )
 
             # OPTIMISATION EXPERT SDK: Exécuter selon type de comportement
@@ -751,7 +761,10 @@ class BBIAAdaptiveBehavior:
                         method="minjerk",
                     )
                     logger.info(
-                        f"✅ Comportement '{behavior_name}' exécuté via goto_target combiné (conforme SDK)",
+                        (
+                            f"✅ Comportement '{behavior_name}' exécuté "
+                            f"via goto_target combiné (conforme SDK)"
+                        ),
                     )
                     return True
 
@@ -763,7 +776,10 @@ class BBIAAdaptiveBehavior:
                 return True
 
             logger.warning(
-                f"⚠️ Comportement '{behavior_name}' non exécuté (robot_api ou méthodes SDK manquantes)",
+                (
+                    f"⚠️ Comportement '{behavior_name}' non exécuté "
+                    f"(robot_api ou méthodes SDK manquantes)"
+                ),
             )
             return False
 
