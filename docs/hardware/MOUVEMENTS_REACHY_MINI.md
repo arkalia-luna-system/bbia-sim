@@ -75,6 +75,7 @@ D'après l'analyse du modèle officiel `reachy_mini_REAL_OFFICIAL.xml` :
 
 ```bash
 python scripts/check_joints.py
+
 ```
 
 2. **Utiliser les 9 joints mobiles :**
@@ -109,6 +110,7 @@ python scripts/check_joints.py
 stewart_1: 0.2-0.3 rad (pitch up)
 stewart_2: 0.1-0.15 rad (yaw latéral)
 yaw_body: 0.15 rad (rotation vers utilisateur)
+
 ```
 
 ### 2. Émotion Positive/Joyeuse
@@ -118,6 +120,7 @@ yaw_body: 0.15 rad (rotation vers utilisateur)
 stewart_1: 0.3-0.4 rad (pitch up fort)
 stewart_3: 0.15-0.2 rad (roll expressif)
 yaw_body: 0.2-0.25 rad (rotation joyeuse)
+
 ```
 
 ### 3. Curiosité/Question
@@ -126,6 +129,7 @@ yaw_body: 0.2-0.25 rad (rotation joyeuse)
 # Inclinaison tête curieuse
 stewart_2: 0.2-0.25 rad (yaw latéral fort)
 yaw_body: 0.15 rad (rotation curiosité)
+
 ```
 
 ### 4. Tristesse/Empathie
@@ -134,6 +138,7 @@ yaw_body: 0.15 rad (rotation curiosité)
 # Position basse empathique
 stewart_1: -0.2 à -0.3 rad (pitch down)
 yaw_body: -0.15 rad (rotation lente)
+
 ```
 
 ---

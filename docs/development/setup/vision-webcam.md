@@ -50,6 +50,7 @@ if not self._camera_sdk_available and CV2_AVAILABLE and cv2:
     else:
         camera_index = int(camera_index_str)
         self._opencv_camera = cv2.VideoCapture(camera_index)
+
 ```
 
 ### 2. Configuration device index/path ✅ **DÉJÀ IMPLÉMENTÉ**
@@ -71,6 +72,7 @@ BBIA_CAMERA_INDEX=1 python scripts/test_webcam_simple.py
 
 # Utiliser device path (macOS/Linux)
 BBIA_CAMERA_DEVICE=/dev/video0 python scripts/test_webcam_simple.py
+
 ```
 
 ### 3. Scripts de test webcam ✅ **DÉJÀ CRÉÉS**

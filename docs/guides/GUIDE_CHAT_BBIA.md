@@ -71,6 +71,7 @@ flowchart TB
     style TOOL fill:#90EE90
     style SENTIMENT fill:#87CEEB
     style CHAT fill:#FFD700
+
 ```
 
 ---
@@ -87,6 +88,7 @@ source venv/bin/activate
 
 # Installer dépendances (si nécessaire)
 pip install transformers torch
+
 ```
 
 ### 💻 Utilisation Basique
@@ -106,6 +108,7 @@ bbia = BBIAHuggingFace()
 # Chat simple
 response = bbia.chat("Bonjour")
 print(response) # 🤖 Bonjour ! Comment allez-vous ? Je suis BBIA, votre robot compagnon.
+
 ```
 
 <div align="center">
@@ -140,6 +143,7 @@ BBIA peut adopter différentes personnalités qui influencent ses réponses et s
 ```python
 bbia.bbia_personality = "friendly_robot"
 print(bbia.chat("Salut")) # 🤖 Salut ! Comment allez-vous ?
+
 ```
 
 ### curious
@@ -150,6 +154,7 @@ print(bbia.chat("Salut")) # 🤖 Salut ! Comment allez-vous ?
 ```python
 bbia.bbia_personality = "curious"
 print(bbia.chat("Comment ça va ?")) # 🤔 Comment ça va ?
+
 ```
 
 ### enthusiastic
@@ -160,6 +165,7 @@ print(bbia.chat("Comment ça va ?")) # 🤔 Comment ça va ?
 ```python
 bbia.bbia_personality = "enthusiastic"
 print(bbia.chat("Super projet !")) # 🎉 Super projet !
+
 ```
 
 ### calm
@@ -170,6 +176,7 @@ print(bbia.chat("Super projet !")) # 🎉 Super projet !
 ```python
 bbia.bbia_personality = "calm"
 print(bbia.chat("Je suis stressé")) # 😌 Respirez, tout va bien...
+
 ```
 
 ---
@@ -200,6 +207,7 @@ bbia.chat("Comment tu te portes ?")
 
 bbia.chat("Je suis très content aujourd'hui")
 # 🤖 C'est super ! Je suis content pour vous. Continuez comme ça !
+
 ```
 
 ### `conversation_history: list[dict]`
@@ -207,6 +215,7 @@ bbia.chat("Je suis très content aujourd'hui")
 **Description :** Historique des conversations
 
 **Structure :**
+
 ```python
 [
     {
@@ -217,6 +226,7 @@ bbia.chat("Je suis très content aujourd'hui")
     },
     ...
 ]
+
 ```
 
 **Exemple :**
@@ -228,6 +238,7 @@ for entry in bbia.conversation_history:
     print(f"BBIA: {entry['bbia']}")
     print(f"Sentiment: {entry['sentiment']['sentiment']}")
     print()
+
 ```
 
 ---
@@ -245,6 +256,7 @@ bbia = BBIAHuggingFace()
 print(bbia.chat("Bonjour"))           # 🤖 Bonjour ! ...
 print(bbia.chat("Comment allez-vous ?")) # 🤖 Ça va bien...
 print(bbia.chat("Au revoir"))         # 🤖 Au revoir ! À bientôt !
+
 ```
 
 ### Cas 2 : Analyse Sentiment
@@ -256,6 +268,7 @@ bbia.chat("Je suis très heureux !")
 
 bbia.chat("Je suis triste")
 # 🤖 Je comprends. Parlez-moi de ce qui ne va pas.
+
 ```
 
 ### Cas 3 : Changer Personnalité
@@ -270,6 +283,7 @@ print(bbia.chat("Salut !"))
 bbia.bbia_personality = "curious"
 print(bbia.chat("Je travaille sur un projet"))
 # 🤔 C'est intéressant ! Dis-moi en plus sur ton projet...
+
 ```
 
 ### Cas 4 : Historique et Contexte
@@ -279,6 +293,7 @@ print(bbia.chat("Je travaille sur un projet"))
 bbia.chat("Je m'appelle Alice")
 bbia.chat("Comment je m'appelle ?")
 # BBIA se souviendra du contexte
+
 ```
 
 ---
@@ -293,6 +308,7 @@ python src/bbia_sim/dashboard_advanced.py --port 8000
 
 # Ouvrir dans navigateur
 # http://localhost:8000
+
 ```
 
 ### Utiliser le panel chat
@@ -321,6 +337,7 @@ python -m pytest tests/test_bbia_huggingface_chat.py -v
 
 # Test spécifique
 python -m pytest tests/test_bbia_huggingface_chat.py::TestBBIAHuggingFaceChat::test_chat_simple_greeting -v
+
 ```
 
 ### Exemple de test
@@ -335,6 +352,7 @@ def test_chat():
 
     # Test historique
     assert len(hf.conversation_history) == 1
+
 ```
 
 ---
@@ -355,6 +373,7 @@ def _generate_simple_response(self, message: str, sentiment: dict) -> str:
         return "Votre réponse personnalisée"
 
     # ... reste du code
+
 ```
 
 ### Ajouter une nouvelle personnalité
@@ -369,6 +388,7 @@ personality_responses = {
 
 # Utilisation
 bbia.bbia_personality = "your_personality"
+
 ```
 
 ---
@@ -378,8 +398,10 @@ bbia.bbia_personality = "your_personality"
 ### Problème : "Hugging Face transformers requis"
 
 **Solution :**
+
 ```bash
 pip install transformers torch
+
 ```
 
 ### Problème : "Je ne comprends pas bien"
@@ -402,6 +424,7 @@ Voir `examples/demo_chat_bbia.py` pour un exemple complet :
 
 ```bash
 python examples/demo_chat_bbia.py
+
 ```
 
 ---
@@ -422,6 +445,7 @@ python examples/demo_chat_bbia.py
 5. Sauvegarde dans historique
    ↓
 6. Retourne réponse avec emoji
+
 ```
 
 ### Analyse Sentiment
@@ -454,6 +478,7 @@ robot.connect()
 # Définir émotion selon chat
 if "heureux" in response.lower():
     robot.set_emotion("happy", 0.8)
+
 ```
 
 ---

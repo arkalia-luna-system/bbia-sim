@@ -38,6 +38,7 @@ Après : limites issues de `reachy_mini_REAL_OFFICIAL.xml`
 # APRÈS (exact)
 "stewart_1": (-0.8377580409572196, 1.3962634015955222)  # Exact XML
 "yaw_body": (-2.792526803190975, 2.792526803190879)     # Exact XML
+
 ```
 
 Effet : précision accrue, moins d’erreurs de dépassement
@@ -52,6 +53,7 @@ Effet : précision accrue, moins d’erreurs de dépassement
 # Méthode 1: get_current_body_yaw() si disponible
 # Méthode 2: robot.state.body_yaw si disponible
 # Méthode 3: Fallback sécurisé 0.0
+
 ```
 
 Effet : robustesse et compatibilité multi‑versions du SDK
@@ -67,6 +69,7 @@ if len(head_positions) == 6:
     # Format direct: indices 0-5 = stewart_1 à stewart_6
 elif len(head_positions) == 12:
     # Format legacy: indices impairs 1,3,5,7,9,11
+
 ```
 
 Effet : compatibilité avec plusieurs versions du SDK, validation NaN/inf
@@ -83,6 +86,7 @@ position = clamp(position, min_hardware, max_hardware)
 # Niveau 2: Limite sécurité (seulement si plus restrictive)
 if safe_limit < hardware_limit:
     position = clamp(position, safe_limit)
+
 ```
 
 Effet : précision et sécurité, sans clamp excessif
@@ -125,6 +129,7 @@ Effet : performance améliorée et mouvements plus fluides
 # Validation 3D: -2.0 ≤ x,y ≤ +2.0, -1.0 ≤ z ≤ +1.0
 # Validation 2D: 0 ≤ u ≤ 640, 0 ≤ v ≤ 480
 # Fallbacks multiples en cascade
+
 ```
 
 Effet : robustesse, évite les erreurs sur coordonnées invalides
@@ -150,6 +155,7 @@ Effet : debugging facilité, continuité de service en cas d’erreur
 # Plus l'intensité est forte, plus la transition est lente (expressif)
 transition_duration = 0.5 + (intensity * 0.5)
 robot_api.goto_target(head=pose, body_yaw=yaw, duration=transition_duration, method="minjerk")
+
 ```
 
 Effet : transitions plus naturelles
@@ -189,6 +195,7 @@ move = backend.stop_recording()
 
 # Rejouer avec performance optimale
 backend.async_play_move(move, play_frequency=100.0)
+
 ```
 
 Conseil : enregistrer des mouvements complexes puis les rejouer
@@ -198,6 +205,7 @@ Conseil : enregistrer des mouvements complexes puis les rejouer
 ```python
 # Pour mouvements plus naturels (économie d'énergie)
 backend.enable_gravity_compensation()
+
 ```
 
 Conseil : activer lors de mouvements expressifs prolongés
@@ -207,6 +215,7 @@ Conseil : activer lors de mouvements expressifs prolongés
 ```python
 # Mouvement non-bloquant pour interactions temps réel
 backend.async_play_move(move, play_frequency=100.0)
+
 ```
 
 Conseil : utile pour comportements non bloquants
@@ -267,6 +276,7 @@ head_positions = [pos_stewart_1, pos_stewart_2, ..., pos_stewart_6]  # 6 éléme
 # Format legacy (anciennes versions)
 head_positions = [pos0, pos_stewart_1, pos2, pos_stewart_2, ...]  # 12 éléments
                                                                     # stewart aux indices impairs
+
 ```
 
 **Gestion:** Détection automatique avec validation NaN/inf
@@ -280,6 +290,7 @@ backend.set_joint_pos("stewart_1", 0.1)  # IMPOSSIBLE (retourne False)
 # ✅ CORRECT - Utiliser poses complètes
 pose = create_head_pose(pitch=0.1, yaw=0.0, degrees=False)
 backend.goto_target(head=pose, duration=0.8, method="minjerk")
+
 ```
 
 **Raison:** La plateforme Stewart nécessite la cinématique inverse pour coordonner les 6 joints simultanément.

@@ -27,6 +27,7 @@ pip install transformers accelerate torch
 
 # Optionnel : optimisations Apple Silicon
 # (accélération automatique via MPS si disponible)
+
 ```
 
 ---
@@ -49,6 +50,7 @@ if success:
     print("LLM activé - conversations intelligentes disponibles")
 else:
     print("LLM non chargé - utilisation réponses enrichies (règles)")
+
 ```
 
 ### Utilisation automatique
@@ -61,6 +63,7 @@ from bbia_sim.bbia_behavior import ConversationBehavior
 # Le comportement utilise automatiquement le LLM si activé
 behavior = ConversationBehavior()
 # Les conversations utiliseront Mistral 7B si disponible
+
 ```
 
 ### Conversation avec LLM
@@ -80,6 +83,7 @@ print(response)  # Réponse naturelle générée par Mistral 7B
 # Avec contexte (utilise historique)
 response2 = bbia.chat("Tu te rappelles ce que je viens de dire ?", use_context=True)
 print(response2)  # Réponse qui référence la conversation précédente
+
 ```
 
 ### Désactiver LLM (Libérer Mémoire)
@@ -87,6 +91,7 @@ print(response2)  # Réponse qui référence la conversation précédente
 ```python
 # Désactiver pour libérer ~14 GB RAM
 bbia.disable_llm_chat()
+
 ```
 
 ---
@@ -115,6 +120,7 @@ response = bbia.chat("Salut !")
 bbia.bbia_personality = "calm"
 response = bbia.chat("Salut !")
 # → Réponse sereine et apaisante
+
 ```
 
 ---
@@ -128,6 +134,7 @@ response = bbia.chat("Salut !")
 User: "Bonjour"
 BBIA: "Bonjour ! Ravi de vous revoir ! Comment allez-vous aujourd'hui ?"
 # → Variantes limitées (6-8 réponses possibles)
+
 ```
 
 ### Après (LLM Mistral 7B)
@@ -137,6 +144,7 @@ BBIA: "Bonjour ! Ravi de vous revoir ! Comment allez-vous aujourd'hui ?"
 User: "Bonjour"
 BBIA: "Bonjour ! Content de te revoir. Comment s'est passée ta journée ?"
 # → Réponses naturelles, variées, contextuelles
+
 ```
 
 Avantages LLM :
@@ -175,6 +183,7 @@ bbia.enable_llm_chat("meta-llama/Llama-3-8B-Instruct")
 
 # Ou utiliser modèle local
 bbia.enable_llm_chat("./models/mistral-7b-instruct")
+
 ```
 
 ---
@@ -200,6 +209,7 @@ outputs = self.chat_model.generate(
     top_p=0.95,
     do_sample=True,
 )
+
 ```
 
 ---
@@ -229,6 +239,7 @@ if need_intelligent_chat:
     bbia.enable_llm_chat()
     response = bbia.chat(user_message)
     bbia.disable_llm_chat()  # Libérer mémoire après
+
 ```
 
 ---
@@ -251,6 +262,7 @@ if bbia.enable_llm_chat():
 else:
     print('LLM non chargé')
 "
+
 ```
 
 ---
@@ -290,6 +302,7 @@ response = bbia.chat("Bonjour")
 bbia.enable_llm_chat()
 response = bbia.chat("Bonjour")
 # → Utilise Mistral 7B pour réponse intelligente
+
 ```
 
 ---

@@ -41,6 +41,7 @@ graph TB
     PYTHON --> RECORD
     PYTHON --> PLAY
     PYTHON --> PROCESS
+
 ```
 
 ## 🔧 Workflow d'Installation Audio
@@ -75,6 +76,7 @@ flowchart TD
 
     DEBUG --> FIX[Corriger problèmes]
     FIX --> TEST
+
 ```
 
 ## 📊 Comparaison des Options d'Installation
@@ -84,6 +86,7 @@ pie title Options d'Installation Audio
     "Installation standard" : 30
     "Installation avec audio" : 50
     "Installation complète" : 20
+
 ```
 
 ```bash
@@ -95,6 +98,7 @@ pip install -r requirements/requirements-audio.txt
 
 # Option 3 : Installation manuelle
 pip install pyaudio
+
 ```
 
 ## Fonctionnalités affectées

@@ -47,6 +47,7 @@
 
 # Via terminal
 python examples/demo_chat_simple.py
+
 ```
 
 ---
@@ -133,6 +134,7 @@ open htmlcov/index.html
 # Tests spécifiques
 pytest tests/test_dashboard_advanced.py -v
 pytest tests/test_bbia_*.py -v
+
 ```
 
 ### Démo et utilisation
@@ -149,6 +151,7 @@ mjpython examples/demo_mujoco_continue.py
 
 # Émotions
 mjpython examples/demo_emotion_ok.py --emotion happy --duration 10
+
 ```
 
 ### Qualité du code
@@ -165,6 +168,7 @@ mypy src/
 
 # Sécurité
 bandit -r src/
+
 ```
 
 ---

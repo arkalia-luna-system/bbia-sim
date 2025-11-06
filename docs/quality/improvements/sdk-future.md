@@ -35,6 +35,7 @@ robot.media.microphone      # ✅ Utilisé dans bbia_audio.py (4 mics)
 robot.media.speaker         # ✅ Utilisé dans bbia_voice.py (5W)
 robot.media.play_audio()    # ✅ Utilisé dans bbia_voice.py et bbia_audio.py
 robot.media.record_audio()  # ✅ Utilisé dans bbia_audio.py
+
 ```
 
 **Modules améliorés :**
@@ -62,6 +63,7 @@ robot.media.record_audio()  # ✅ Utilisé dans bbia_audio.py
 robot.io.get_camera_stream()  # Stream vidéo temps réel
 robot.io.get_audio_stream()   # Stream audio temps réel
 robot.io.set_leds()            # Contrôle LEDs (si disponibles)
+
 ```
 
 **Opportunités :**
@@ -94,6 +96,7 @@ InterpolationTechnique.MIN_JERK       # ✅ Utilisé (neutral, curious, determin
 InterpolationTechnique.LINEAR         # ✅ Disponible (backends/reachy_mini_backend.py:914)
 InterpolationTechnique.EASE_IN_OUT    # ✅ Utilisé (calm, sad, nostalgic, fearful)
 InterpolationTechnique.CARTOON        # ✅ Utilisé (happy, excited, surprised, angry, proud)
+
 ```
 
 **Implémentation actuelle :**
@@ -114,6 +117,7 @@ emotion_interpolation_map = {
     "determined": "minjerk", # ✅ Naturel mais ferme
     "proud": "cartoon",     # ✅ Expressif
 }
+
 ```
 
 ---
@@ -134,6 +138,7 @@ robot.start_recording()           # ✅ Disponible (reachy_mini_backend.py:1065)
 move = robot.stop_recording()      # ✅ Disponible (reachy_mini_backend.py:1076)
 robot.play_move(move)              # ✅ Disponible (reachy_mini_backend.py:1089)
 robot.async_play_move(move)        # ✅ Disponible (reachy_mini_backend.py:1105)
+
 ```
 
 **Implémentation actuelle :**
@@ -154,6 +159,7 @@ class BBIABehaviorManager:
                 robot.async_play_move(move, play_frequency=100.0)  # ✅ Non bloquant
             else:
                 robot.play_move(move, play_frequency=100.0)  # ✅ Bloquant
+
 ```
 
 ---

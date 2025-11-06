@@ -66,6 +66,7 @@ graph TB
     BEHAVIOR --> API
 
     API --> SIMULATOR
+
 ```
 
 ## Workflow de simulation
@@ -95,6 +96,7 @@ sequenceDiagram
     USER->>BBIA: Commande vocale
     BBIA->>SIM: Traiter audio
     SIM->>ROBOT: Réponse vocale
+
 ```
 
 ## Comparaison des modes de simulation
@@ -120,6 +122,7 @@ graph LR
     BASE_FEATURES -.->|Évolution| ADV_FEATURES
     ADV_FEATURES -.->|Choix| UNITY_FEATURES
     ADV_FEATURES -.->|Choix| MUJOCO_FEATURES
+
 ```
 
 ## Modes de simulation disponibles
@@ -137,6 +140,7 @@ graph LR
 ```bash
 cd reachy_repos/reachy-dashboard
 # Suivre les instructions du README
+
 ```
 
 **Ce que vous verrez :**
@@ -158,6 +162,7 @@ print('  • Détection de visages')
 print('  • Analyse d\'expressions')
 print('  • Suivi de mouvements')
 "
+
 ```
 
 **Ce que vous verrez :**
@@ -172,6 +177,7 @@ print('  • Suivi de mouvements')
 ```bash
 cd reachy_repos/reachy-face-tracking
 # Suivre les instructions du README
+
 ```
 
 **Ce que vous verrez :**
@@ -186,6 +192,7 @@ cd reachy_repos/reachy-face-tracking
 ```bash
 cd reachy_repos/reachy2-behaviors-dev
 # Explorer les exemples de comportements
+
 ```
 
 **Ce que vous verrez :**
@@ -212,12 +219,14 @@ python3 test_bbia_reachy.py
 # 3. Ouvrir le dashboard web
 cd reachy_repos/reachy-dashboard
 # Suivre les instructions
+
 ```
 
 ### Option 2 : Menu interactif
 
 ```bash
 ./quick_start.sh
+
 ```
 
 **Options disponibles :**
@@ -240,6 +249,7 @@ ls -la
 # 3. Tester le suivi de visage
 cd reachy_repos/reachy-face-tracking
 ls -la
+
 ```
 
 ---
@@ -314,6 +324,7 @@ ls -la
 🔋 Batterie: 100% → 93%
 
 🎉 Simulation terminée !
+
 ```
 
 ### Simulation Unity 3D
@@ -374,6 +385,7 @@ python3 test_bbia_reachy.py
 # Terminal 3 : Dashboard
 cd reachy_repos/reachy-dashboard
 # Suivre README
+
 ```
 
 ### Vérifier les installations
@@ -388,6 +400,7 @@ pip list | grep -i pollen
 
 # Tester pollen-vision
 python3 -c "import pollen_vision; print('✅ Vision OK')"
+
 ```
 
 ### Explorer la documentation
@@ -400,6 +413,7 @@ ls -la content/
 # Tutoriels
 cd reachy_repos/reachy2-tutorials
 ls -la
+
 ```
 
 ---
@@ -462,6 +476,7 @@ La simulation BBIA intègre désormais une séquence de réveil immersive, fidè
 😊 Expression : sourire doux.
 🗣️ Première pensée : 'Je suis là, Athalia.'
 ✨ BBIA est complètement réveillé et prêt !
+
 ```
 
 ---

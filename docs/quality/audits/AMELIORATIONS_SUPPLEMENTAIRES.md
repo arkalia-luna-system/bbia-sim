@@ -117,10 +117,9 @@
    - ✅ Correction appliquée sur 11 fichiers MD
    - ✅ Espaces doubles hors blocs de code nettoyés
 
-2. **Formatage code blocks** : Vérifier la cohérence des blocs de code
-   - **Impact** : Mineur (lisibilité)
-   - **Effort** : Faible
-   - **Priorité** : Basse
+2. ~~**Formatage code blocks** : Vérifier la cohérence des blocs de code~~ ✅ **TERMINÉ**
+   - ✅ Correction fermetures avec langage (switch-sim-robot.md)
+   - ✅ Ajout lignes vides avant blocs de code (cohérence améliorée)
 
 3. **Checkboxes** : Convertir les checkboxes vides en listes normales si le matériel est acquis
    - **Impact** : Mineur (mise à jour)
@@ -148,8 +147,8 @@ Toutes les améliorations critiques ont été appliquées. Les points restants s
 
 ## 🎯 Prochaines étapes (optionnelles)
 
-1. **Maintenance continue** : Vérifier périodiquement les liens externes
-2. **Mise à jour matériel** : Mettre à jour les checkboxes quand le matériel est acquis
+1. **Maintenance continue** : Vérifier périodiquement les liens externes ✅ **VÉRIFIÉ** (26 liens, tous valides)
+2. **Mise à jour matériel** : Mettre à jour les checkboxes quand le matériel est acquis (12 checkboxes, matériel toujours en attente)
 3. ~~**Optimisations mineures** : Nettoyer les espaces doubles~~ ✅ **TERMINÉ**
 
 ---

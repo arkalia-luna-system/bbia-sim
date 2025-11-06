@@ -33,6 +33,7 @@ src/bbia_sim/daemon/app/dashboard/
 │   │   └── move_player.js    # Lecteur mouvements
 │   └── assets/
 │       └── README.md          # Documentation assets SVG
+
 ```
 
 ---
@@ -90,6 +91,7 @@ python -m bbia_sim.daemon.app.main
 
 # Ou via script
 python scripts/start_public_api.py
+
 ```
 
 ### Accès
@@ -174,6 +176,7 @@ ls src/bbia_sim/daemon/app/dashboard/static/js/
 
 # 4. Vérifier intégration
 python -c "from bbia_sim.daemon.app.main import app; print('✅ OK')"
+
 ```
 
 ---

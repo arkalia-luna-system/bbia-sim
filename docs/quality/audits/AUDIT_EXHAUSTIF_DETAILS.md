@@ -31,6 +31,7 @@
 # Tests BBIA: 1362 tests sélectionnés (1418 collectés, 56 deselected)
 # Coverage: 68.86% (excellent)
 # Tests conformité SDK: 46 tests complets
+
 ```
 
 **Tests officiels**:

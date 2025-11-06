@@ -107,6 +107,7 @@
 ```bash
 source venv-vision-py310/bin/activate
 pip install -r requirements/requirements-deepface.txt
+
 ```
 
 ---
@@ -148,6 +149,7 @@ from bbia_sim.bbia_vision import BBIAVision
 vision = BBIAVision()
 result = vision.scan_environment()
 # result["faces"] contient maintenant "emotion" et "emotion_confidence"
+
 ```
 
 ---
@@ -195,6 +197,7 @@ def get_tts_backend():
     elif name == "openvoice":
         return OpenVoiceTTSTTS()
     return Pyttsx3TTS()  # Fallback
+
 ```
 
 **✅ Voix corrigée et vérifiée** :
@@ -238,6 +241,7 @@ DeepFace.represent("photo_alice.jpg", model_name="VGG-Face")
 # BBIA reconnaît Alice
 result = DeepFace.find("frame.jpg", db_path="./faces_db")
 # Retourne : {"identity": "faces_db/alice.jpg", "distance": 0.2}
+
 ```
 
 **2. YOLO Custom Training** :
@@ -283,6 +287,7 @@ vision = BBIAVision()
 if st.button("Scan Environment"):
     result = vision.scan_environment()
     st.json(result)
+
 ```
 
 **Option 2 : Gradio** (Hugging Face)
@@ -349,6 +354,7 @@ if st.button("Scan Environment"):
 ```bash
 source venv-vision-py310/bin/activate
 pip install -r requirements/requirements-deepface.txt
+
 ```
 
 **Utilisation** :
@@ -362,6 +368,7 @@ python scripts/test_deepface.py --recognize frame.jpg
 
 # Détecter émotion
 python scripts/test_deepface.py --emotion photo.jpg
+
 ```
 
 ---
@@ -383,6 +390,7 @@ python scripts/test_pose_detection.py --webcam
 
 # Test avec image
 python scripts/test_pose_detection.py --image photo.jpg
+
 ```
 
 **Aucune installation supplémentaire** : MediaPipe déjà installé ✅
@@ -401,6 +409,7 @@ python scripts/test_pose_detection.py --image photo.jpg
     "phi2": "microsoft/phi-2",  # ✅ Déjà ajouté
     "tinyllama": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",  # ✅ Déjà ajouté
 }
+
 ```
 
 **Usage** :
@@ -409,6 +418,7 @@ python scripts/test_pose_detection.py --image photo.jpg
 hf = BBIAHuggingFace()
 hf.enable_llm_chat("phi2")  # ✅ Fonctionne (~5GB RAM)
 hf.enable_llm_chat("tinyllama")  # ✅ Fonctionne (~2GB RAM)
+
 ```
 
 ---

@@ -82,6 +82,7 @@ graph TB
     style APP fill:#90EE90
     style ROBOTAPI fill:#FFD700
     style REST_API fill:#87CEEB
+
 ```
 
 ### Flux d'Intégration
@@ -97,6 +98,7 @@ flowchart TD
 
     style START fill:#90EE90
     style DEPLOY fill:#87CEEB
+
 ```
 
 ### Séquence d'Intégration
@@ -122,6 +124,7 @@ sequenceDiagram
     API-->>App: JSON response
     
     Note over App,BBIA: Intégration complète
+
 ```
 
 ---
@@ -140,6 +143,7 @@ pip install -r requirements.txt
 
 # Installer en mode développement
 pip install -e .
+
 ```
 
 ### 2. Démarrage de l'API
@@ -150,6 +154,7 @@ python -m bbia_sim.daemon.app.main
 
 # Ou via uvicorn directement
 uvicorn bbia_sim.daemon.app.main:app --host 0.0.0.0 --port 8000 --reload
+
 ```
 
 ### 3. Test de l'API
@@ -163,6 +168,7 @@ python scripts/demo_public_api.py
 
 # Mode démo spécifique
 python scripts/demo_mode_complete.py --mode simulation
+
 ```
 
 ### 4. Documentation interactive
@@ -193,6 +199,7 @@ async with httpx.AsyncClient() as client:
         headers=headers
     )
     data = response.json()
+
 ```
 
 ### Endpoints principaux
@@ -214,6 +221,7 @@ GET /development/api/ecosystem/behaviors/available
 
 # Modes de démonstration
 GET /development/api/ecosystem/demo/modes
+
 ```
 
 #### Moteurs et Daemon
@@ -232,6 +240,7 @@ GET /development/api/daemon/status
 POST /development/api/daemon/start
 POST /development/api/daemon/stop
 POST /development/api/daemon/restart
+
 ```
 
 #### Mouvement avec Interpolation
@@ -251,6 +260,7 @@ POST /development/api/motion/wake_up
 
 # Mettre en veille
 POST /development/api/motion/goto_sleep
+
 ```
 
 #### État du Robot
@@ -267,6 +277,7 @@ GET /development/api/state/present_antenna_joint_positions
 
 # WebSocket streaming état complet
 WS /development/api/state/ws/full?frequency=10.0
+
 ```
 
 #### Cinématique
@@ -280,6 +291,7 @@ GET /development/api/kinematics/urdf
 
 # Fichiers STL (assets)
 GET /development/api/kinematics/stl/{filename}
+
 ```
 
 #### Applications HuggingFace
@@ -318,6 +330,7 @@ POST /development/api/apps/stop-current-app
 
 # Statut de l'application courante
 GET /development/api/apps/current-app-status
+
 ```
 
 #### Émotions BBIA
@@ -331,6 +344,7 @@ POST /development/api/ecosystem/emotions/apply
     "duration": 5.0,
     "joint": "yaw_body"  # optionnel
 }
+
 ```
 
 #### Comportements BBIA
@@ -343,6 +357,7 @@ POST /development/api/ecosystem/behaviors/execute
     "intensity": 1.0,
     "duration": 10.0  # optionnel
 }
+
 ```
 
 #### Modes de démonstration
@@ -355,6 +370,7 @@ POST /development/api/ecosystem/demo/start
     "duration": 30.0,
     "emotion": "happy"  # optionnel
 }
+
 ```
 
 #### Contrôle moteurs (SDK officiel)
@@ -365,6 +381,7 @@ GET /development/api/motors/status
 
 # Changer mode moteurs
 POST /development/api/motors/set_mode/{mode}  # enabled, disabled, gravity_compensation
+
 ```
 
 #### Contrôle daemon (SDK officiel)
@@ -381,6 +398,7 @@ POST /development/api/daemon/stop?goto_sleep=false
 
 # Redémarrer le daemon
 POST /development/api/daemon/restart
+
 ```
 
 #### Mouvements robot (SDK officiel)
@@ -391,6 +409,7 @@ POST /development/api/motion/wake_up
 
 # Mettre en veille
 POST /development/api/motion/goto_sleep
+
 ```
 
 #### État robot (SDK officiel)
@@ -404,6 +423,7 @@ GET /development/api/state/present_body_yaw
 
 # Positions des antennes
 GET /development/api/state/present_antenna_joint_positions
+
 ```
 
 ### WebSocket télémétrie
@@ -424,6 +444,7 @@ async def telemetry_client():
 
 # Démarrage du client
 asyncio.run(telemetry_client())
+
 ```
 
 ---
@@ -445,6 +466,7 @@ robot = RobotFactory.create_backend("reachy_mini")
 
 # Backend Reachy Mock (développement)
 robot = RobotFactory.create_backend("reachy")
+
 ```
 
 ### Contrôle direct
@@ -462,6 +484,7 @@ emotions.apply_emotion("happy", intensity=0.8, duration=5.0)
 
 # Contrôle direct des joints
 robot.set_joint_position("yaw_body", 0.2)
+
 ```
 
 ### Modules BBIA
@@ -483,6 +506,7 @@ emotions.apply_emotion("curious", 0.6, 3.0)
 behavior.execute_behavior("greeting", 1.0)
 vision.detect_objects()
 voice.speak("Bonjour !")
+
 ```
 
 ---
@@ -501,6 +525,7 @@ python scripts/demo_mode_complete.py --mode simulation
 # - Contrôle complet
 # - Sécurité maximale
 # - Fonctionnalités complètes
+
 ```
 
 ### Mode robot réel
@@ -515,6 +540,7 @@ python scripts/demo_mode_complete.py --mode robot_real
 # - Contrôle sécurisé
 # - Intensités réduites
 # - Surveillance continue
+
 ```
 
 ### Mode mixte
@@ -528,6 +554,7 @@ python scripts/demo_mode_complete.py --mode mixed
 # - Comparaison simulation/réel
 # - Tests de conformité
 # - Analyse des performances
+
 ```
 
 ---
@@ -590,6 +617,7 @@ async def home():
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=3000)
+
 ```
 
 ### Exemple 2 : Client Python
@@ -661,6 +689,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 ```
 
 ### Exemple 3 : Intégration ROS2
@@ -734,6 +763,7 @@ def main(args=None):
 
 if __name__ == '__main__':
     main()
+
 ```
 
 ---
@@ -755,6 +785,7 @@ export BBIA_DISABLE_AUDIO=1
 # Configuration Robot
 export REACHY_SDK_PATH=/path/to/reachy-sdk
 export REACHY_ROBOT_IP=192.168.1.100
+
 ```
 
 ### Configuration Docker
@@ -776,6 +807,7 @@ EXPOSE 8000
 
 # Démarrage
 CMD ["python", "scripts/start_public_api.py", "--prod"]
+
 ```
 
 ### Configuration production
@@ -790,6 +822,7 @@ uvicorn.run(
     log_level="info",
     access_log=True
 )
+
 ```
 
 ---
@@ -810,6 +843,7 @@ python scripts/conformity/test_conformity_sdk_officiel.py
 
 # Tests de performance
 python scripts/hardware_dry_run.py --duration 30
+
 ```
 
 ### Validation de l'intégration
@@ -848,6 +882,7 @@ async def validate_integration():
         await client.aclose()
 
 asyncio.run(validate_integration())
+
 ```
 
 ---

@@ -45,6 +45,7 @@ python deployment/public_api.py --dev
 
 # Vérifier santé
 curl http://localhost:8000/health
+
 ```
 
 ## Conseils

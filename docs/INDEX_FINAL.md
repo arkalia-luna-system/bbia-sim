@@ -174,6 +174,7 @@ export BBIA_DISABLE_AUDIO=1
 # Télémétrie SDK-first (avec robot, non bloquant si absent)
 export BBIA_TELEMETRY_SDK=true
 export BBIA_TELEMETRY_TIMEOUT=1.0
+
 ```
 
 ---

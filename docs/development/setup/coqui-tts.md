@@ -34,6 +34,7 @@ pip install TTS playsound
 
 # Vérifier installation
 python -c "from TTS.api import TTS; print('✅ Coqui TTS installé')"
+
 ```
 
 ### Option 2 : Installation Minimale
@@ -41,6 +42,7 @@ python -c "from TTS.api import TTS; print('✅ Coqui TTS installé')"
 ```bash
 pip install TTS
 pip install playsound
+
 ```
 
 **Note :** Si Coqui TTS n'est pas installé, le module utilise automatiquement pyttsx3 (fallback).
@@ -56,6 +58,7 @@ from bbia_sim.bbia_voice_advanced import dire_texte
 
 # Utilisation identique à l'ancien code
 dire_texte("Bonjour, je suis BBIA")
+
 ```
 
 ### Utilisation Avancée (Nouvelles Fonctionnalités)
@@ -85,6 +88,7 @@ voice.say(
 # Définir émotion par défaut
 voice.set_emotion("curious")
 voice.say("Toutes mes futures phrases utiliseront cette émotion")
+
 ```
 
 ### Intégration avec Émotions Robot
@@ -105,6 +109,7 @@ voice.say_with_emotion(
     emotion=emotion,
     intensity=0.8
 )
+
 ```
 
 ---
@@ -117,6 +122,7 @@ Le module `bbia_voice_advanced.py` est **100% compatible** avec l'ancien code :
 
 ```bash
 pip install TTS playsound
+
 ```
 
 ✅ **Rien ne casse** - L'ancien code continue de fonctionner avec pyttsx3
@@ -132,6 +138,7 @@ dire_texte_advanced(
     emotion="happy",
     pitch=0.2
 )
+
 ```
 
 ### Étape 3 : Migration Graduelle (Quand Prêt)
@@ -184,6 +191,7 @@ Le module mappe automatiquement les 12 émotions BBIA vers les paramètres vocau
 cd /Volumes/T7/bbia-reachy-sim
 source venv/bin/activate
 python -m bbia_sim.bbia_voice_advanced
+
 ```
 
 ---
@@ -212,6 +220,7 @@ from TTS.api import TTS
 
 # Lister tous les modèles disponibles
 print(TTS.list_models())
+
 ```
 
 ---
@@ -224,6 +233,7 @@ print(TTS.list_models())
 
 ```bash
 pip install TTS playsound
+
 ```
 
 ### Problème : "playsound not working on macOS"
@@ -233,6 +243,7 @@ pip install TTS playsound
 ```bash
 # Alternative : utiliser pyobjc
 pip install pyobjc
+
 ```
 
 Ou modifier `bbia_voice_advanced.py` pour utiliser `afplay` (macOS natif) :
@@ -241,6 +252,7 @@ Ou modifier `bbia_voice_advanced.py` pour utiliser `afplay` (macOS natif) :
 import subprocess
 
 subprocess.run(["afplay", str(audio_file)])
+
 ```
 
 ### Problème : Modèle ne se charge pas
@@ -297,6 +309,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 ```
 
 ---

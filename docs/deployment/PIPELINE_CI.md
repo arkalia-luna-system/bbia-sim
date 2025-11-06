@@ -41,6 +41,7 @@ flowchart TB
     style START fill:#90EE90
     style SUCCESS fill:#87CEEB
     style FAIL fill:#FFB6C1
+
 ```
 
 ### Workflow GitHub Actions
@@ -70,6 +71,7 @@ sequenceDiagram
     GitHub->>Artifacts: Générer artifacts
     Artifacts->>Artifacts: coverage.xml, htmlcov/
     Artifacts-->>Dev: ✅ CI Succès
+
 ```
 
 ## Axes d'amélioration
@@ -100,4 +102,5 @@ sequenceDiagram
 pip install pre-commit
 pre-commit install
 pre-commit run --all-files
+
 ```

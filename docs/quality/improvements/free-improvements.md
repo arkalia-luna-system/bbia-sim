@@ -32,6 +32,7 @@ graph LR
     style BBIA3 fill:#90EE90
     style OFF1 fill:#FFB6C1
     style OFF2 fill:#FFB6C1
+
 ```
 
 ### ✅ Ce qui est DÉJÀ fait (gratuit)
@@ -90,6 +91,7 @@ tool_patterns = {
     "move_head": {"keywords": ["tourne la tête", ...]},
     ...
 }
+
 ```
 
 **Ce qui manque** :
@@ -188,6 +190,7 @@ def _detect_tool_with_similarity(self, user_message: str) -> str | None:
     if similarities[best_idx] > 0.6:  # Seuil configurable
         return list(tool_descriptions.keys())[best_idx]
     return None
+
 ```
 
 **Impact** : Détection beaucoup plus robuste, supporte variantes naturelles
@@ -219,6 +222,7 @@ def _detect_tool_with_similarity(self, user_message: str) -> str | None:
     ],
     ...
 }
+
 ```
 
 **Impact** : Meilleure détection sans NLP (solution intermédiaire)

@@ -29,6 +29,7 @@ Les modules critiques sont conformes au SDK Reachy Mini. Les corrections appliqu
 if REACHY_UTILS_AVAILABLE and create_head_pose:
     pose_up = create_head_pose(pitch=0.1 * intensity, yaw=0.0, degrees=False)
     robot_api.goto_target(head=pose_up, duration=duration / 2, method="minjerk")
+
 ```
 
 **Conformité SDK**: utilise les méthodes recommandées
@@ -50,6 +51,7 @@ if REACHY_UTILS_AVAILABLE and create_head_pose:
 
 ```python
 description="Plateforme Stewart - joint tête 1 (⚠️ Nécessite IK via goto_target/set_target_head_pose)"
+
 ```
 
 **Conformité SDK**: mapping conforme au modèle officiel

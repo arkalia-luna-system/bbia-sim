@@ -121,6 +121,7 @@ flowchart TD
     style TEST fill:#FFD700
     style DEV fill:#87CEEB
     style PROD fill:#FFB6C1
+
 ```
 
 ### 1. 📚 Documentation Officielle
@@ -152,6 +153,7 @@ pip install opencv-python
 pip install speechrecognition
 pip install pyaudio
 pip install transformers torch
+
 ```
 
 #### Outils de Simulation
@@ -163,6 +165,7 @@ sudo apt-get install gazebo11
 
 # RViz pour visualisation ROS
 sudo apt-get install ros-noetic-rviz
+
 ```
 
 ### 3. 📁 Structure de Projet Recommandée
@@ -194,6 +197,7 @@ reachy-bbia-project/
     ├── scripts/
     ├── configs/
     └── monitoring/
+
 ```
 
 ---
@@ -249,6 +253,7 @@ graph TB
     BEHAVIOR --> API
 
     SDK --> API
+
 ```
 
 ## 🎯 Plan de Développement BBIA
@@ -277,6 +282,7 @@ gantt
     Performance              :perf, Oct / Nov. 2025
     Nouvelles fonctionnalités :feat, Oct / Nov. 2025
     Déploiement production   :deploy, Oct / Nov. 2025
+
 ```
 
 ---
@@ -309,6 +315,7 @@ pip install requests aiohttp
 # Monitoring & Logs
 pip install prometheus_client
 pip install grafana-api
+
 ```
 
 ### 2. 🎮 Outils de Simulation
@@ -323,6 +330,7 @@ sudo apt-get install ros-noetic-rviz
 
 # CoppeliaSim (alternative)
 # Télécharger depuis https://www.coppeliarobotics.com/
+
 ```
 
 ### 3. 🛠️ Outils de Développement
@@ -339,6 +347,7 @@ git remote add origin https://github.com/votre-username/reachy-bbia
 # Monitoring
 sudo apt-get install htop
 sudo apt-get install nvtop  # Pour GPU monitoring
+
 ```
 
 ---
@@ -361,6 +370,7 @@ git clone https://github.com/pollen-robotics/reachy2021-unity-package.git
 
 # Exemples et Tutoriels
 git clone https://github.com/pollen-robotics/reachy-examples.git
+
 ```
 
 ### 2. 🤖 Communauté et Extensions
@@ -376,6 +386,7 @@ git clone https://github.com/pollen-robotics/reachy-voice.git
 
 # Computer Vision
 git clone https://github.com/pollen-robotics/reachy-vision.git
+
 ```
 
 ### 3. 🧠 IA et Machine Learning
@@ -391,6 +402,7 @@ git clone https://github.com/ultralytics/yolov5.git
 
 # Speech Recognition
 git clone https://github.com/speechbrain/speechbrain.git
+
 ```
 
 ---
@@ -405,6 +417,7 @@ pie title Répartition des Capacités Reachy Mini
     "IA/ML" : 15
     "Connectivité" : 10
     "Autonomie" : 10
+
 ```
 
 ## 🔄 Workflow de Développement
@@ -435,6 +448,7 @@ sequenceDiagram
     DEV->>API: Finaliser comportement
     API->>ROBOT: Exécuter en production
     ROBOT->>API: Monitoring temps réel
+
 ```
 
 ---
@@ -492,6 +506,7 @@ source venv/bin/activate
 
 # Installer les dépendances de base
 pip install reachy-sdk numpy opencv-python
+
 ```
 
 ### 3. 🎮 Simulation
@@ -502,6 +517,7 @@ pip install reachy-sdk numpy opencv-python
 
 # Tester les fonctionnalités BBIA
 python3 test_unity_simulator.py
+
 ```
 
 ---

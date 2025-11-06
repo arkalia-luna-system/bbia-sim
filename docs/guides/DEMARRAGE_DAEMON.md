@@ -11,6 +11,7 @@
 
 ```bash
 python -m bbia_sim.daemon.app.main
+
 ```
 
 **Résultat attendu :**
@@ -24,6 +25,7 @@ python -m bbia_sim.daemon.app.main
 
 ```bash
 python scripts/start_public_api.py
+
 ```
 
 **Options disponibles :**
@@ -37,6 +39,7 @@ python scripts/start_public_api.py --prod --port 8000
 
 # Logs détaillés
 python scripts/start_public_api.py --log-level debug
+
 ```
 
 ---
@@ -85,12 +88,14 @@ python scripts/start_public_api.py --log-level debug
 
 ```bash
 python -m bbia_sim.daemon.app.main
+
 ```
 
 Ou via le script :
 
 ```bash
 python scripts/start_public_api.py
+
 ```
 
 Le fichier `__main__.py` a été corrigé pour importer directement l'app (pas de string d'import).
@@ -118,6 +123,7 @@ curl http://127.0.0.1:8000/development/api/ecosystem/info
 
 # Ou ouvrir dans le navigateur
 open http://127.0.0.1:8000/
+
 ```
 
 ---

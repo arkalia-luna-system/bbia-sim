@@ -19,6 +19,7 @@
 pyenv install 3.11.9 && pyenv local 3.11.9
 python -m pip install --upgrade pip
 pip install -e .[dev]
+
 ```
 
 ### Premier Robot (5 minutes)

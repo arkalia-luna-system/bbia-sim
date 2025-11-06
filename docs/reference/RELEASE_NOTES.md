@@ -191,6 +191,7 @@ graph TB
     SMOKE --> API
     CI --> GOLDEN
     CI --> SMOKE
+
 ```
 
 ## Améliorations techniques
@@ -239,6 +240,7 @@ python examples/demo_emotion_ok.py --backend mujoco --emotion happy
 
 # Robot réel (mock)
 python examples/demo_emotion_ok.py --backend reachy --emotion happy
+
 ```
 
 ### Golden tests
@@ -249,6 +251,7 @@ pytest -q tests/test_golden_traces.py
 
 # Régénérer référence
 python scripts/record_trace.py --emotion happy --duration 5
+
 ```
 
 ## Migration depuis v1.0.x

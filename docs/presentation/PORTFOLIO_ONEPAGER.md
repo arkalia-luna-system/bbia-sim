@@ -79,6 +79,7 @@
 bash scripts/run_demo_sim.sh happy 15
 
 # Résultat : Trace + rapport + vidéo 3D
+
 ```
 
 ### 🤖 Démo robot réel
@@ -88,6 +89,7 @@ bash scripts/run_demo_sim.sh happy 15
 bash scripts/run_demo_real.sh excited 20
 
 # Résultat : Trace + rapport + comparaison référence
+
 ```
 
 ### 🎤 Démo IA légère
@@ -98,6 +100,7 @@ python scripts/stt_demo.py --command "salue" --backend mujoco
 
 # Test microphone
 python scripts/stt_demo.py --test-microphone --lang fr
+
 ```
 
 ### 🌐 Dashboard web et API publique
@@ -108,6 +111,7 @@ python src/bbia_sim/dashboard_advanced.py --port 8000
 
 # Démarrer l'API publique (mode dev)
 python deployment/public_api.py --dev
+
 ```
 
 ---
@@ -132,6 +136,7 @@ pip install -e .[dev]
 
 # Test installation
 python scripts/hardware_dry_run.py --duration 5 --backend mujoco
+
 ```
 
 ### Première démo
@@ -142,6 +147,7 @@ bash scripts/run_demo_sim.sh happy 10
 
 # Démo robot réel
 bash scripts/run_demo_real.sh excited 15
+
 ```
 
 ---
@@ -173,6 +179,7 @@ python -m pytest tests/test_golden_traces.py -v
 
 # Tests headless
 python -m pytest tests/ -m "not e2e" -v
+
 ```
 
 ---

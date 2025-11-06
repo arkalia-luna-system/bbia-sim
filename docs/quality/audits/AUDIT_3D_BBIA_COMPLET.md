@@ -54,6 +54,7 @@ graph TB
     TESTS --> DEMO
     DEMO --> ADAPTER
     ADAPTER --> DOCS
+
 ```
 
 ## 📊 Résultats de l'Audit Complet
@@ -64,6 +65,7 @@ pie title Répartition des Composants Audités
     "Assets 3D" : 25
     "Modèles MuJoCo" : 20
     "Documentation" : 20
+
 ```
 
 ## 🔄 Workflow d'Audit Complet
@@ -83,11 +85,13 @@ sequenceDiagram
     DEMO->>AUDITOR: ✅ Audit complet
 
     Note over AUDITOR,DEMO: Tous les objectifs atteints
+
 ```
 
 ```text
 
 ### **Modules BBIA**
+
 ```
 
 src/bbia_sim/sim/simulator.py ✅ MuJoCoSimulator
@@ -126,6 +130,7 @@ src/bbia_sim/bbia_integration.py ✅ BBIAIntegration
 - **OS** : macOS/Linux ✅
 
 ### **Installation**
+
 ```bash
 
 # Activer l'environnement virtuel
@@ -142,6 +147,7 @@ python -c "import glfw; print('GLFW:', glfw.__version__)"
 ## 🎮 COMMANDES DE VALIDATION
 
 ### **Démo 3D (Recommandée)**
+
 ```bash
 
 # Mode headless (stable)
@@ -159,6 +165,7 @@ python examples/demo_viewer_bbia_corrected.py --list-joints
 ```text
 
 ### **Tests Automatiques**
+
 ```bash
 
 # Tests spécifiques à la démo

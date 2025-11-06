@@ -169,6 +169,7 @@ async def list_recorded_move_dataset(dataset_name: str) -> list[str]:
         raise HTTPException(status_code=501, detail="RecordedMoves non disponible") from None
     except RepositoryNotFoundError as e:
         raise HTTPException(status_code=404, detail=str(e)) from e
+
 ```
 
 **Test**: À tester avec dataset réel (requiert SDK officiel)
@@ -192,6 +193,7 @@ async def play_recorded_move_dataset(
 ) -> MoveUUID:
     """Demande au robot de jouer un mouvement enregistré depuis un dataset (conforme SDK)."""
     # Implémentation avec async_play_move via coroutine
+
 ```
 
 **Test**: À tester avec dataset réel (requiert SDK officiel + robot physique)
@@ -344,6 +346,7 @@ pytest tests/test_reachy_mini_full_conformity_official.py -v
 
 # Test recorded moves (requiert SDK officiel)
 pytest tests/test_api_recorded_moves.py -v  # À créer si nécessaire
+
 ```
 
 ### Tests Critiques
@@ -372,6 +375,7 @@ mypy src/bbia_sim/daemon/app/routers/move.py
 
 # Vérifier bandit
 bandit -r src/bbia_sim/daemon/app/routers/move.py
+
 ```
 
 ---

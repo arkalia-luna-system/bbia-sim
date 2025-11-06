@@ -17,6 +17,7 @@ Votre environnement Unity est maintenant correctement configuré :
 
 ```bash
 ./quick_start.sh
+
 ```
 
 Puis choisissez l'option 6 pour lancer le simulateur Unity.
@@ -25,12 +26,14 @@ Puis choisissez l'option 6 pour lancer le simulateur Unity.
 
 ```bash
 ./launch_unity_simulator.sh
+
 ```
 
 ### Option 3: Test de Configuration
 
 ```bash
 ./test_unity_setup.sh
+
 ```
 
 ## 🎮 Instructions Unity
@@ -92,6 +95,7 @@ graph TB
     API --> FILES
     SOCKET --> SCRIPTS
     FILES --> SCRIPTS
+
 ```
 
 ## 🎮 Workflow Unity + BBIA
@@ -119,6 +123,7 @@ sequenceDiagram
     PYTHON->>UNITY: Exécuter séquence
     UNITY->>ROBOT: Mouvements complexes
     ROBOT->>DEV: Validation visuelle
+
 ```
 
 - Neutral : Position de repos
@@ -144,6 +149,7 @@ controller.set_emotion("happy")
 controller.wave_hello()
 controller.look_around()
 controller.dance_move()
+
 ```
 
 ## 🔧 Dépannage
@@ -156,6 +162,7 @@ controller.dance_move()
 
 # Relancer Unity Hub
 open "/Applications/Unity Hub.app"
+
 ```
 
 ### Problème : Projet ne charge pas
@@ -173,6 +180,7 @@ source venv/bin/activate
 
 # Tester la connexion
 python3 src/bbia_sim/test_unity_connection.py
+
 ```
 
 ## Ressources

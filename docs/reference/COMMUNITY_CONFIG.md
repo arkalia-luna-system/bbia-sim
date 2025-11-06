@@ -27,6 +27,7 @@ export BBIA_API_HOST=127.0.0.1
 export BBIA_API_PORT=8000
 export BBIA_LOG_LEVEL=info
 export MUJOCO_GL=egl
+
 ```
 
 ### **Environnement de production**
@@ -39,6 +40,7 @@ export BBIA_LOG_LEVEL=warning
 export BBIA_API_TOKEN=your_secret_token
 export BBIA_RATE_LIMIT=100
 export MUJOCO_GL=egl
+
 ```
 
 ---
@@ -56,6 +58,7 @@ python deployment/public_api.py --dev --log-level debug
 
 # Démarrage sur port personnalisé
 python deployment/public_api.py --dev --port 3000
+
 ```
 
 ### **Production**
@@ -66,6 +69,7 @@ python deployment/public_api.py --prod --workers 4
 
 # Démarrage avec configuration personnalisée
 python deployment/public_api.py --prod --host 0.0.0.0 --port 8000 --workers 2
+
 ```
 
 ### **Docker**
@@ -79,6 +83,7 @@ docker run -p 8000:8000 bbia-sim
 
 # Démarrage avec variables d'environnement
 docker run -p 8000:8000 -e BBIA_API_TOKEN=secret bbia-sim
+
 ```
 
 ---
@@ -96,6 +101,7 @@ python scripts/test_public_api.py --log-level debug
 
 # Tests sur URL personnalisée
 python scripts/test_public_api.py --url http://localhost:3000
+
 ```
 
 ### **Démonstrations**
@@ -108,6 +114,7 @@ python scripts/demo_public_api.py
 python scripts/demo_mode_complete.py --mode simulation
 python scripts/demo_mode_complete.py --mode robot_real
 python scripts/demo_mode_complete.py --mode mixed
+
 ```
 
 ### **Tests de conformité**
@@ -121,6 +128,7 @@ python scripts/hardware_dry_run_reachy_mini.py --duration 30
 
 # Tests de performance
 python -m pytest tests/test_performance.py -v
+
 ```
 
 ---
@@ -141,6 +149,7 @@ logging.basicConfig(
         logging.StreamHandler()
     ]
 )
+
 ```
 
 ### **Métriques de performance**
@@ -154,6 +163,7 @@ python scripts/analyze_logs.py --input log/bbia.log
 
 # Rapport de santé
 python scripts/health_report.py
+
 ```
 
 ---
@@ -168,6 +178,7 @@ python scripts/generate_token.py
 
 # Configuration de l'authentification
 export BBIA_API_TOKEN=$(python scripts/generate_token.py)
+
 ```
 
 ### **Configuration CORS**
@@ -179,6 +190,7 @@ CORS_ORIGINS = [
     "http://localhost:8080",
     "https://yourdomain.com"
 ]
+
 ```
 
 ### **Rate limiting**
@@ -187,6 +199,7 @@ CORS_ORIGINS = [
 # Configuration rate limiting
 RATE_LIMIT_REQUESTS = 100  # requêtes par minute
 RATE_LIMIT_WINDOW = 60     # fenêtre en secondes
+
 ```
 
 ---
@@ -210,6 +223,7 @@ graph TB
     style DEV fill:#90EE90
     style PROD fill:#FFB6C1
     style DOCKER fill:#87CEEB
+
 ```
 
 ### Développement local
@@ -220,6 +234,7 @@ export BBIA_ENV=development
 export BBIA_DEBUG=true
 export BBIA_API_HOST=127.0.0.1
 export BBIA_API_PORT=8000
+
 ```
 
 ### Staging
@@ -231,6 +246,7 @@ export BBIA_DEBUG=false
 export BBIA_API_HOST=0.0.0.0
 export BBIA_API_PORT=8000
 export BBIA_API_TOKEN=staging_token
+
 ```
 
 ### Production
@@ -243,6 +259,7 @@ export BBIA_API_HOST=0.0.0.0
 export BBIA_API_PORT=8000
 export BBIA_API_TOKEN=production_token
 export BBIA_RATE_LIMIT=1000
+
 ```
 
 ---
@@ -282,6 +299,7 @@ pip install -e .
 
 # Démarrage
 python deployment/public_api.py --prod
+
 ```
 
 ### Déploiement Docker
@@ -293,6 +311,7 @@ docker run -d -p 8000:8000 --name bbia-sim-api bbia-sim
 
 # Vérification
 curl http://localhost:8000/health
+
 ```
 
 ### Déploiement cloud
@@ -305,6 +324,7 @@ export BBIA_API_TOKEN=cloud_token
 
 # Démarrage avec gunicorn
 gunicorn bbia_sim.daemon.app.main:app -w 4 -k uvicorn.workers.UvicornWorker
+
 ```
 
 ---
@@ -322,6 +342,7 @@ pip install -r requirements.txt --upgrade
 
 # Redémarrage
 python deployment/public_api.py --prod
+
 ```
 
 ### Sauvegarde
@@ -332,6 +353,7 @@ cp -r config/ backup/config_$(date +%Y%m%d)/
 
 # Sauvegarde des logs
 cp -r log/ backup/log_$(date +%Y%m%d)/
+
 ```
 
 ### Nettoyage
@@ -343,6 +365,7 @@ find log/ -name "*.log" -mtime +30 -delete
 # Nettoyage des fichiers temporaires
 rm -rf tmp/
 rm -rf __pycache__/
+
 ```
 
 ---

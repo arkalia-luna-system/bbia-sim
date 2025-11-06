@@ -45,6 +45,7 @@
 ## Section Principale (H2) - 🎯 Avec emoji descriptif
 ### Sous-section (H3) - ✅ Avec emoji fonctionnel
 #### Détail (H4) - Rarement utilisé
+
 ```
 
 **Règles :**
@@ -62,6 +63,7 @@
 • ✅ Point clé avec emoji
 • 🔄 Autre point avec emoji
 - Point simple (sans emoji)
+
 ```
 
 **Listes numérotées :**
@@ -70,6 +72,7 @@
 1. Première étape
 2. Deuxième étape
 3. Troisième étape
+
 ```
 
 **Listes imbriquées :**
@@ -78,6 +81,7 @@
 - Item principal
   - Sous-item
   - Autre sous-item
+
 ```
 
 ### Blocs de Code
@@ -104,6 +108,7 @@ code_here()
 
 ```markdown
 ---  # Standard (3 tirets, pas plus)
+
 ```
 
 **Pas de variations :** `===`, `---`, `___`, etc.
@@ -154,18 +159,21 @@ code_here()
 
 ```markdown
 **Texte important** - Fonctionnalités, métriques
+
 ```
 
 **Italique pour notes :**
 
 ```markdown
 *Note explicative* - Informations complémentaires
+
 ```
 
 **Code inline :**
 
 ```markdown
 `nom_variable` - Variables, fonctions, classes
+
 ```
 
 ### Citations
@@ -173,6 +181,7 @@ code_here()
 ```markdown
 > Citation importante ou note
 > Multi-ligne si nécessaire
+
 ```
 
 ### En-têtes de Document
@@ -185,6 +194,7 @@ code_here()
 **Statut** : ✅ Actif
 
 </div>
+
 ```
 
 ---
@@ -201,6 +211,7 @@ code_here()
 | Donnée 1  | Donnée 2  | Donnée 3  |
 
 </div>
+
 ```
 
 **Règles :**
@@ -224,6 +235,7 @@ code_here()
 | `voice_whisper.py` | **92.52%** | 50%+ | ✅ **DÉPASSÉ** |
 
 </div>
+
 ```
 
 ---
@@ -233,6 +245,7 @@ code_here()
 ```markdown
 [Guide Débutant](../guides/GUIDE_DEBUTANT.md) (exemple)
 [Texte externe](https://example.com)
+
 ```
 
 **Règles :**
@@ -252,6 +265,7 @@ code_here()
 **Date mise à jour :** Oct / Nov. 2025  # Récentes
 **Date :** Oct / Nov. 2025  # Générales
 **Date cible :** Oct / Nov. 2025  # Futures
+
 ```
 
 ### Historique
@@ -348,6 +362,7 @@ python examples/demo_emotion_ok.py
 | `vision_yolo.py` | **99.45%** | ✅ |
 
 </div>
+
 ```
 
 ### Mauvais Formatage

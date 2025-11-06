@@ -552,7 +552,8 @@ class BBIAHuggingFace:
                 except Exception as e:
                     logger.warning(f"⚠️  Échec chargement LLM {model_name}: {e}")
                     logger.info(
-                        """💡 Fallback activé: réponses enrichies (stratégie règles v2)""",
+                        """💡 Fallback activé: réponses enrichies """
+                        """(stratégie règles v2)""",
                     )
                     self.use_llm_chat = False
                     return False
@@ -1213,7 +1214,8 @@ class BBIAHuggingFace:
         (ex: "fais danser le robot", "tourne la tête à gauche",
         "capture une image") et exécute les outils correspondants.
 
-        Utilise d'abord NLP (sentence-transformers) si disponible, sinon mots-clés étendus.
+        Utilise d'abord NLP (sentence-transformers) si disponible, sinon
+        mots-clés étendus.
 
         Args:
             user_message: Message utilisateur

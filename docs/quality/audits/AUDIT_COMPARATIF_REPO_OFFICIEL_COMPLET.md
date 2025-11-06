@@ -45,6 +45,7 @@
 Hauteur : 280mm (actif) / 230mm (veille)
 Largeur : 160mm
 Poids : 1.5kg
+
 ```
 
 **Source** : `docs/hardware/reachy-mini/REACHY_MINI_REFERENCE.md` ligne 100
@@ -65,6 +66,7 @@ Poids : 1.5kg
 
 ```xml
 <site group="3" name="head" pos="-0.00611127 0.00370522 0.0291364"/>
+
 ```
 
 **En mm** :
@@ -93,6 +95,7 @@ Poids : 1.5kg
 <geom type="mesh" pos="8.00228e-15 -0.0588 -0.0103" mesh="antenna"/>
 <!-- Antenne Gauche -->
 <geom type="mesh" pos="6.79838e-15 -0.0588 -0.0103" mesh="antenna"/>
+
 ```
 
 **Dimensions** :
@@ -107,6 +110,7 @@ Poids : 1.5kg
 ```xml
 <joint axis="0 0 1" name="right_antenna" type="hinge" class="chosen_actuator"/>
 <joint axis="0 0 1" name="left_antenna" type="hinge" class="chosen_actuator"/>
+
 ```
 
 **⚠️ PROBLÈME DÉTECTÉ** : Pas de `range` défini dans le XML officiel pour les antennes !
@@ -130,6 +134,7 @@ Poids : 1.5kg
 
 ```xml
 <geom type="mesh" pos="3.79972e-17 -3.70588e-18 0.195" mesh="body_down_3dprint"/>
+
 ```
 
 **Hauteur Z** : 195mm (19.5cm depuis base)
@@ -158,6 +163,7 @@ try:
     REACHY_MINI_AVAILABLE = True
 except ImportError:
     REACHY_MINI_AVAILABLE = False
+
 ```
 
 **Source** : `src/bbia_sim/backends/reachy_mini_backend.py` lignes 15-23
@@ -190,6 +196,7 @@ except ImportError:
 "psutil>=5.9.0",                         ✅
 "jinja2>=3.1.0",                         ✅
 "pyserial>=3.5",                         ✅
+
 ```
 
 #### ⚠️ À Comparer avec Repo Officiel
@@ -213,6 +220,7 @@ robot.look_at_world(point_3d, duration=duration)
 robot.look_at_image(point_2d, duration=duration)
 robot.head.motors[0].goal_position = angle
 robot.body.turn_on() / turn_off()
+
 ```
 
 **Source** : `src/bbia_sim/backends/reachy_mini_backend.py` (méthodes `move_head`, `look_at`)
@@ -235,6 +243,7 @@ robot.body.turn_on() / turn_off()
 
 ```text
 src/bbia_sim/sim/models/reachy_mini_REAL_OFFICIAL.xml
+
 ```
 
 - **Source** : Modèle officiel OnShape → XML (via `onshape-to-robot`)
@@ -265,6 +274,7 @@ src/bbia_sim/sim/assets/reachy_official/
 ├── stewart_*.stl (6 fichiers)
 ├── antenna*.stl (4 fichiers)
 └── ... (31 autres)
+
 ```
 
 **Total** : 41 fichiers STL ✅
@@ -293,6 +303,7 @@ self.joint_limits = {
     "stewart_6": (-1.3962634015954123, 0.8377580409573296),
     "yaw_body": (-2.792526803190975, 2.792526803190879),
 }
+
 ```
 
 **Source** : `src/bbia_sim/backends/reachy_mini_backend.py` lignes 108-125
@@ -302,6 +313,7 @@ self.joint_limits = {
 ```xml
 <joint axis="0 0 1" name="yaw_body" range="-2.792526803190975 2.792526803190879"/>
 <joint axis="0 0 1" name="stewart_1" range="-0.8377580409572196 1.3962634015955222"/>
+
 ```
 
 **Conclusion** : ✅ Limites extraites **exactement** du XML officiel
@@ -320,6 +332,7 @@ self.joint_limits = {
   resolution="1280 720"
   fovy="80"
 />
+
 ```
 
 **Source** : `src/bbia_sim/sim/models/reachy_mini_REAL_OFFICIAL.xml` lignes 489-493
@@ -342,6 +355,7 @@ self.joint_limits = {
 <site group="3" name="camera_optical"
   pos="-0.0321159 -0.05047 0.00257878" 
   quat="0.44884 0.458499 0.740682 -0.199279"/>
+
 ```
 
 **Position** :

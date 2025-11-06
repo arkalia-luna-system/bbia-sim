@@ -777,6 +777,7 @@ git checkout -b feature/keep-alive-mechanism
 git checkout -b feature/body-yaw-rest-api
 git checkout -b feature/mujoco-examples
 # etc.
+
 ```
 
 ### Étape 2: Extraire le Code BBIA-SIM

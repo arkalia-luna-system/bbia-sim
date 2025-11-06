@@ -30,6 +30,7 @@ flowchart TD
     TEST --> WORK{Fonctionne ?}
     WORK -->|Oui| SUCCESS[✅ Problème résolu]
     WORK -->|Non| DEBUG[Débogage avancé]
+
 ```
 
 ## Solutions par priorité
@@ -50,6 +51,7 @@ graph LR
 
     CRITICAL --> IMPORTANT
     IMPORTANT --> MINOR
+
 ```
 
 ### 3. Nettoyer le cache Unity
@@ -69,6 +71,7 @@ rm -rf reachy-bbia-unity/Temp/
 
 # Corriger les avertissements
 ./fix_unity_warnings.sh
+
 ```
 
 ### 4. Scripts C# non trouvés
@@ -86,6 +89,7 @@ ls -la reachy-bbia-unity/Assets/Scripts/
 
 # 2. Recréer les scripts si nécessaire
 ./setup_reachy_environment.sh
+
 ```
 
 ### 5. Communication Python-Unity échoue
@@ -106,6 +110,7 @@ chmod 666 log/reachy_commands.txt log/reachy_response.txt
 
 # 2. Tester la communication
 python3 src/bbia_sim/test_unity_connection.py
+
 ```
 
 ## 🛠️ Scripts de correction
@@ -114,6 +119,7 @@ python3 src/bbia_sim/test_unity_connection.py
 
 ```bash
 ./fix_unity_warnings.sh
+
 ```
 
 Ce script automatise les corrections suivantes :
@@ -129,6 +135,7 @@ Ce script automatise les corrections suivantes :
 
 ```bash
 ./test_unity_setup.sh
+
 ```
 
 Ce script vérifie :
@@ -145,12 +152,14 @@ Ce script vérifie :
 
 ```bash
 ./test_unity_setup.sh
+
 ```
 
 ### Étape 2 : correction
 
 ```bash
 ./fix_unity_warnings.sh
+
 ```
 
 ### Étape 3 : test
@@ -164,6 +173,7 @@ open "/Applications/Unity Hub.app"
 
 # Tester BBIA
 python3 test_bbia_reachy.py
+
 ```
 
 ## 🔍 Vérifications manuelles
@@ -172,12 +182,14 @@ python3 test_bbia_reachy.py
 
 ```bash
 ls -la "/Applications/Unity Hub.app"
+
 ```
 
 ### 2. Vérifier Unity Editor
 
 ```bash
 ls -la "/Applications/Unity/Hub/Editor/"
+
 ```
 
 ### 3. Vérifier le projet
@@ -185,6 +197,7 @@ ls -la "/Applications/Unity/Hub/Editor/"
 ```bash
 ls -la reachy-bbia-unity/
 ls -la reachy-bbia-unity/Assets/Scripts/
+
 ```
 
 ### 4. Vérifier les scripts Python
@@ -192,6 +205,7 @@ ls -la reachy-bbia-unity/Assets/Scripts/
 ```bash
 ls -la src/bbia_sim/
 python3 test_bbia_reachy.py
+
 ```
 
 ## Problèmes majeurs
@@ -210,6 +224,7 @@ rm -rf reachy-bbia-unity/
 
 # Restaurer les scripts
 cp -r scripts_backup/* reachy-bbia-unity/Assets/Scripts/
+
 ```
 
 ### Unity Hub ne fonctionne plus
@@ -221,6 +236,7 @@ rm -rf "/Applications/Unity Hub.app"
 
 # 2. Télécharger depuis https://unity.com/download
 # 3. Réinstaller
+
 ```
 
 ## 📞 Support
@@ -239,6 +255,7 @@ cat ~/Library/Logs/UnityHub.log
 
 # Logs Unity Editor
 cat ~/Library/Logs/Unity/Editor.log
+
 ```
 
 ## Prévention
@@ -263,6 +280,7 @@ find . -name "._*" -delete
 
 # Corriger les avertissements
 ./fix_unity_warnings.sh
+
 ```
 
 ---

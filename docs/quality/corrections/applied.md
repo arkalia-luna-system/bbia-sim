@@ -33,6 +33,7 @@ Toutes les corrections prioritaires identifiées dans l'audit ont été appliqu�
 ```bash
 pytest tests/test_emergency_stop.py -v
 # ✅ 3 passed, 1 skipped
+
 ```
 
 ---
@@ -81,6 +82,7 @@ pytest tests/test_emergency_stop.py -v
 ```bash
 pytest tests/test_safety_limits_pid.py -v
 # ✅ 5 passed
+
 ```
 
 **Couverture sécurité** :
@@ -110,6 +112,7 @@ pytest tests/test_safety_limits_pid.py -v
 ```text
 tests/test_emergency_stop.py ..........  3 passed, 1 skipped
 tests/test_safety_limits_pid.py ......  5 passed
+
 ```
 
 **Total**: 8 tests passent, 1 skip (robot physique)

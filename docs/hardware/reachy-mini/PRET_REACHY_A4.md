@@ -71,6 +71,7 @@ python scripts/hardware_dry_run.py --duration 10
 
 # Test joint spécifique
 python scripts/hardware_dry_run.py --joint yaw_body --duration 5
+
 ```
 
 ### **📊 Résultats Attendus**
@@ -83,6 +84,7 @@ python scripts/hardware_dry_run.py --joint yaw_body --duration 5
 ⏱️ Latence moyenne: 25.3ms
 ✅ Latence cible atteinte (<40ms)
 🎉 Hardware dry run réussi !
+
 ```
 
 ---
@@ -124,6 +126,7 @@ Version SDK: _______________
 IP Robot: _______________
 Latence mesurée: _______________
 Observations: _______________
+
 ```
 
 ---

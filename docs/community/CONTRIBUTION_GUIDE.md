@@ -112,6 +112,7 @@ pytest tests/ -v --tb=short
 # Formater le code
 black src/ tests/
 ruff check --fix src/ tests/
+
 ```
 
 ### 2. Créer une Branche
@@ -123,6 +124,7 @@ git pull origin main
 
 # Créer votre branche
 git checkout -b feature/nom-de-votre-contribution
+
 ```
 
 **Convention de nommage** :
@@ -150,6 +152,7 @@ type(scope): description courte
 Description plus longue si nécessaire
 
 Fixes #123
+
 ```
 
 Types : `feat`, `fix`, `docs`, `test`, `refactor`, `chore`
@@ -165,6 +168,7 @@ pytest tests/ --cov=src --cov-report=html
 
 # Tests spécifiques
 pytest tests/test_bbia_voice.py -v
+
 ```
 
 ### 5. Vérifier avant PR
@@ -286,6 +290,7 @@ def fonction_exemple(param1: str, param2: int) -> bool:
         True
     """
     pass
+
 ```
 
 ### Où Documenter
@@ -322,6 +327,7 @@ class TestMaFonctionnalite:
         
         # Assert
         assert result is True
+
 ```
 
 **Markers pytest** :
@@ -340,6 +346,7 @@ class TestMaFonctionnalite:
 # Voir la couverture
 pytest tests/ --cov=src --cov-report=html
 open htmlcov/index.html
+
 ```
 
 ---

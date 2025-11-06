@@ -35,6 +35,7 @@ flowchart TB
     style DEBUT fill:#87CEEB
     style AVANCE fill:#FFD700
     style NEXT fill:#FFB6C1
+
 ```
 
 ---

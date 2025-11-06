@@ -50,6 +50,7 @@ def _get_pyttsx3_engine():
             if _pyttsx3_engine_cache is None:
                 _pyttsx3_engine_cache = pyttsx3.init()  # Une seule fois
     return _pyttsx3_engine_cache  # Réutilisé ensuite
+
 ```
 
 Résultat de test :
@@ -71,6 +72,7 @@ def _get_cached_voice_id():
         engine = _get_pyttsx3_engine()
         _bbia_voice_id_cache = get_bbia_voice(engine)
     return _bbia_voice_id_cache
+
 ```
 
 **Gain :** -50-100 ms par appel après le premier

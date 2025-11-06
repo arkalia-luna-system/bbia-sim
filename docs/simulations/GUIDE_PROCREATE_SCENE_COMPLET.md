@@ -55,6 +55,7 @@
   ├── 📄 Calque "Ombres/Lumières"
   ├── 📄 Calque "Détails"
   └── 📄 Calque "Filtres/Effets" (optionnel)
+
 ```
 
 ### **Structure Idéale pour Texture de Sol** :
@@ -66,6 +67,7 @@
   ├── 📄 Calque "Jointures/Interstices"
   ├── 📄 Calque "Usure/Patine"
   └── 📄 Calque "Reflets" (optionnel)
+
 ```
 
 ### **Nombre de Calques Optimal** :
@@ -331,6 +333,7 @@
 assets/textures/mur.png
 assets/textures/sol.png
 assets/textures/plafond.png
+
 ```
 
 ### **2. Créer Scène XML**
@@ -370,6 +373,7 @@ assets/textures/plafond.png
     <include file="../models/reachy_mini_REAL_OFFICIAL.xml"/>
   </worldbody>
 </mujoco>
+
 ```
 
 ### **3. Visualiser**
@@ -377,6 +381,7 @@ assets/textures/plafond.png
 ```bash
 source venv/bin/activate
 python examples/view_scene_piece.py src/bbia_sim/sim/scenes/ma_scene_procreate.xml
+
 ```
 
 ---

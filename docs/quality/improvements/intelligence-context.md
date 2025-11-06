@@ -51,6 +51,7 @@ has_reference = any(ref in message_lower for ref in reference_words)
 
 if has_reference or random.random() < 0.4:
     # Utiliser réponses contextuelles enrichies
+
 ```
 
 **Avantages :**

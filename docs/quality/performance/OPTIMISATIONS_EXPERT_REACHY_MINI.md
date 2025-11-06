@@ -37,6 +37,7 @@ time.sleep(0.5)
 self.robot_api.set_joint_pos("yaw_body", -0.15)
 time.sleep(0.5)
 self.robot_api.set_joint_pos("yaw_body", 0.0)
+
 ```
 
 **Exemple après :**
@@ -54,6 +55,7 @@ self.robot_api.goto_target(
     duration=0.8,
     method="minjerk"
 )
+
 ```
 
 ---
@@ -75,6 +77,7 @@ Les mouvements de tête et corps appliqués séparément créent une désynchron
 ```python
 self.robot_api.set_emotion("happy", 0.6)
 self.robot_api.set_joint_pos("yaw_body", 0.1)
+
 ```
 
 **Exemple après :**
@@ -87,6 +90,7 @@ self.robot_api.goto_target(
     duration=0.6,
     method="minjerk"
 )
+
 ```
 
 ---
@@ -108,6 +112,7 @@ Le suivi visuel utilisait directement `set_joint_position()` sans utiliser les c
 ```python
 head_turn = face_position[0] * 0.3
 self.simulation_service.set_joint_position("yaw_body", head_turn)
+
 ```
 
 **Exemple après ✅:**
@@ -120,6 +125,7 @@ if hasattr(robot_api, 'look_at_world'):
         x, y, z = float(pos_3d.get("x")), float(pos_3d.get("y")), float(pos_3d.get("z"))
         if -2.0 <= x <= 2.0 and -2.0 <= y <= 2.0 and -1.0 <= z <= 1.0:
             robot_api.look_at_world(x, y, z, duration=1.0, perform_movement=True)
+
 ```
 
 ---
@@ -169,6 +175,7 @@ try:
 except Exception as e:
     logger.warning(f"Erreur (fallback): {e}")
     # Fallback final vers simulation
+
 ```
 
 ---

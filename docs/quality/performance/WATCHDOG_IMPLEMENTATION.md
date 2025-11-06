@@ -23,6 +23,7 @@ Implémenter un système de monitoring watchdog temps réel conforme au SDK Reac
 
 ```python
 import threading
+
 ```
 
 2. **Variables d'instance** (dans `__init__`):
@@ -33,6 +34,7 @@ self._watchdog_thread: Optional[threading.Thread] = None
 self._should_stop_watchdog = threading.Event()
 self._watchdog_interval = 0.1  # 100ms entre vérifications
 self._last_heartbeat: float = 0.0
+
 ```
 
 3. **Méthodes watchdog**:
@@ -104,6 +106,7 @@ black --check src/bbia_sim/backends/reachy_mini_backend.py
 # Lint
 ruff check src/bbia_sim/backends/reachy_mini_backend.py
 # ✅ OK
+
 ```
 
 ---

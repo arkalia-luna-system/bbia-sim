@@ -145,6 +145,7 @@ class RobotAPI:
     def play_audio(self, audio_data: bytes, volume: float = 0.5) -> None
     def look_at(self, x: float, y: float, z: float) -> None
     def set_emotion(self, emotion: str, intensity: float) -> None
+
 ```
 
 **Avantages :**
@@ -165,6 +166,7 @@ class BBIAEmotions:
     def set_emotion(self, emotion: str, intensity: float) -> None
     def get_current_emotion(self) -> dict[str, Any]
     def animate_emotion(self, emotion: str, duration: float) -> None
+
 ```
 
 **Émotions supportées :** 12 émotions (neutral, happy, sad, angry, surprised, confused, determined, nostalgic, proud, curious, excited, fearful)
@@ -178,6 +180,7 @@ class BBIAVision:
     def detect_objects(self, image: np.ndarray) -> list[dict]
     def track_objects(self, image: np.ndarray) -> list[dict]
     def recognize_faces(self, image: np.ndarray) -> list[dict]
+
 ```
 
 **Technologies :** YOLOv8n, MediaPipe, OpenCV
@@ -191,11 +194,13 @@ class BBIAVoice:
     def text_to_speech(self, text: str, voice: str = "default") -> bytes
     def speech_to_text(self, audio_data: bytes) -> str
     def process_voice_command(self, command: str) -> dict
+
 ```
 
 **Technologies :** Whisper STT, pyttsx3 TTS
 
 #### BBIABehavior (`bbia_behavior.py`)
+
 ```python
 
 class BBIABehaviorManager:
@@ -211,6 +216,7 @@ class BBIABehaviorManager:
 **Comportements :** wake_up, greeting, goto_sleep, nod, wave, dance, etc.
 
 #### BBIAAdaptiveBehavior (`bbia_adaptive_behavior.py`)
+
 ```python
 
 class BBIAAdaptiveBehavior:
@@ -227,6 +233,7 @@ class BBIAAdaptiveBehavior:
 ### 3. Backends robot
 
 #### MuJoCoBackend (`backends/mujoco_backend.py`)
+
 ```python
 
 class MuJoCoBackend(RobotAPI):
@@ -245,6 +252,7 @@ Caractéristiques :
 - performance : 100 Hz, latence <1 ms
 
 #### ReachyMiniBackend (`backends/reachy_mini_backend.py`)
+
 ```python
 
 class ReachyMiniBackend(RobotAPI):
@@ -287,6 +295,7 @@ Fonctionnalités :
 ## Tests et validation
 
 ### Tests de conformité SDK
+
 ```python
 
 # tests/test_reachy_mini_complete_conformity.py
@@ -303,6 +312,7 @@ class TestReachyMiniCompleteConformity:
 Résultats : 16/16 tests passent
 
 ### Tests modules BBIA
+
 ```python
 
 # tests/test_bbia_phase2_modules.py
@@ -317,6 +327,7 @@ class TestBBIAAdaptiveBehavior:
 Résultats : 11/11 tests passent
 
 ### Tests dépendances SDK
+
 ```python
 
 # tests/test_sdk_dependencies.py
@@ -357,6 +368,7 @@ Résultats : 15/16 tests passent
 ## Flux de données
 
 ### Simulation → robot réel
+
 ```mermaid
 
 sequenceDiagram
@@ -387,6 +399,7 @@ sequenceDiagram
 ```text
 
 ### Bridge Zenoh/FastAPI
+
 ```mermaid
 
 sequenceDiagram
@@ -412,6 +425,7 @@ sequenceDiagram
 ## Déploiement et intégration
 
 ### Environnement de développement
+
 ```bash
 
 # Installation
@@ -436,6 +450,7 @@ bandit -r src/
 ```text
 
 ### Environnement de production
+
 ```bash
 
 # Simulation
@@ -453,6 +468,7 @@ uvicorn src.bbia_sim.daemon.app.main:app --host 0.0.0.0 --port 8000
 ```text
 
 ### Docker (optionnel)
+
 ```dockerfile
 
 FROM python:3.11-slim
@@ -482,6 +498,7 @@ CMD ["uvicorn", "src.bbia_sim.daemon.app.main:app", "--host", "0.0.0.0", "--port
 - 📄 **OpenAPI** : `http://localhost:8000/openapi.json`
 
 ### Exemples d’utilisation
+
 ```python
 
 # Exemple basique
