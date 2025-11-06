@@ -153,9 +153,9 @@ mindmap
 - [Roadmap Dashboard/UX](dashboard/ROADMAP_DASHBOARD.md)
 
 ### ⚡ Performance
-- [Optimisations expert Reachy Mini](quality/quality/performance/OPTIMISATIONS_EXPERT_REACHY_MINI.md)
-- [Optimisations expert robotique](quality/quality/performance/OPTIMISATIONS_EXPERT_ROBOTIQUE_2025.md)
-- [Résumé performance](quality/quality/performance/RESUME_PERFORMANCE_CORRECTIONS_2025.md)
+- [Optimisations expert Reachy Mini](quality/performance/OPTIMISATIONS_EXPERT_REACHY_MINI.md)
+- [Optimisations expert robotique](quality/performance/OPTIMISATIONS_EXPERT_ROBOTIQUE_2025.md)
+- [Résumé performance](quality/performance/RESUME_PERFORMANCE_CORRECTIONS_2025.md)
 
 ### 🤖 Reachy et Robotique
 - [Prêt Reachy A4](hardware/reachy-mini/PRET_REACHY_A4.md)

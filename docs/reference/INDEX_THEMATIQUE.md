@@ -13,7 +13,7 @@
 ## Observabilité / Performance
 - État par axe (référence): `docs/reference/project-status.md`
 - Observabilité (logs JSON, /metrics, liveness/readiness): `docs/observabilite/OBSERVABILITE.md`
-- Performance (analyses, optimisations): `docs/quality/quality/performance/ANALYSE_PERFORMANCE_PROBLEMES_2025.md`, `docs/quality/quality/performance/OPTIMISATIONS_EXPERT_REACHY_MINI.md`
+- Performance (analyses, optimisations): `docs/quality/performance/ANALYSE_PERFORMANCE_PROBLEMES_2025.md`, `docs/quality/performance/OPTIMISATIONS_EXPERT_REACHY_MINI.md`
 
 ## API / SDK / Front
 - Contrats REST/WS (pagination/filtre, WS versionné): `docs/development/api/CONTRATS_REST_WS.md`

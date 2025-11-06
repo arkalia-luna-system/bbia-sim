@@ -93,7 +93,7 @@ flowchart TB
 
 ### Qualité Code
 
-- 🎯 **[Performance](quality/quality/performance/RESUME_PERFORMANCE_CORRECTIONS_2025.md)** — Optimisations appliquées
+- 🎯 **[Performance](quality/performance/RESUME_PERFORMANCE_CORRECTIONS_2025.md)** — Optimisations appliquées
 - ✅ **[Validation Qualité](quality/validation/VALIDATION_FINALE_QUALITE_2025.md)** — Rapports de validation
 
 ---
