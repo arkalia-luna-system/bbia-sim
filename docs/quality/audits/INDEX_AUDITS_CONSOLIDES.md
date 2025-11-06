@@ -113,7 +113,7 @@ Les fichiers suivants ont été archivés car redondants ou obsolètes :
 
 ## 📌 Recommandations
 
-1. **Pour trouver les tâches restantes** : Consulter `TACHES_RESTANTES_NOV2025.md`
+1. **Pour trouver les tâches restantes** : Consulter `RESUME_ETAT_ACTUEL_BBIA.md` (toutes les tâches de `TACHES_RESTANTES_NOV2025.md` sont terminées ✅)
 2. **Pour vérifier conformité SDK** : Consulter `docs/quality/compliance/CONFORMITE_REACHY_MINI_COMPLETE.md`
 3. **Pour audits historiques** : Consulter fichiers dans `docs/archive/audits_termines/`
 
