@@ -3,7 +3,7 @@
 **Date**: Oct / Nov. 2025 (Mise à jour audit exhaustif)
 **Branche**: future
 **Repo Officiel**: pollen-robotics/reachy_mini (develop)
-**Version BBIA**: 1.3.1+
+**Version BBIA**: 1.3.2
 
 ---
 

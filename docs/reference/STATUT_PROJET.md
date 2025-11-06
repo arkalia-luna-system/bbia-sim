@@ -1,6 +1,6 @@
 # Statut du projet BBIA-SIM - Oct / Nov. 2025
 
-**Version :** 1.3.0
+**Version :** 1.3.2
 **Date :** Oct / Nov. 2025
 **Statut global :** opérationnel et en développement actif
 

@@ -122,7 +122,7 @@ bbia: tests/test_*.py
 
 #### pyproject.toml
 **Différences**:
-- Version: `1.0.0rc5` (officiel) vs `1.3.1` (BBIA)
+- Version: `1.0.0rc5` (officiel) vs `1.3.2` (BBIA)
 - Python: `>=3.10` (officiel) vs `>=3.11` (BBIA)
 - Dependencies: Officiel utilise versions plus précises
 - Optional dependencies: Structure différente
