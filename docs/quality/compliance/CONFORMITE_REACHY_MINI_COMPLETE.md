@@ -5,7 +5,7 @@
 **🎯 Validation complète de la conformité SDK officiel**  
 *21 méthodes implémentées • 37 tests passants • 100% conforme*
 
-**Version** : BBIA-SIM v1.3.2 • **Date** : Oct 25 / Nov 25  
+**Version** : BBIA-SIM v1.3.2 • **Date** : Oct / Nov. 2025  
 **SDK Cible** : `reachy_mini` (Pollen Robotics × Hugging Face)
   
 **État SDK** : Utiliser la **dernière version stable** de `reachy-mini` publiée sur PyPI (mise à jour régulière recommandée)
