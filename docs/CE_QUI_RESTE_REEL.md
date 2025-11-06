@@ -67,9 +67,9 @@ def test_watchdog_timeout_robot_disconnected(self):
 
 ## 📊 COVERAGE RÉEL VÉRIFIÉ
 
-### Coverage Global (Novembre 2025)
+### Coverage Global (Oct / Nov. 2025)
 
-**Coverage total** : **66.18%** ✅ (amélioré depuis 64.98% - Nov 2025)
+**Coverage total** : **66.18%** ✅ (amélioré depuis 64.98% - Oct / Nov. 2025)
 
 **Tests** :
 
@@ -89,11 +89,11 @@ def test_watchdog_timeout_robot_disconnected(self):
 
 **Priorité Haute** (Coverage très faible < 30%) :
 
-- ✅ `daemon/app/__main__.py` : **87.50%** ✅ (corrigé - Janvier 2025)
-- ✅ `daemon/app/routers/sanity.py` : **89.19%** ✅ (corrigé - Janvier 2025)
-- ✅ `model_optimizer.py` : **100%** ✅ (corrigé - Janvier 2025)
-- ✅ `__main__.py` : **~70%+** ✅ (corrigé - Janvier 2025, tests main() ajoutés)
-- ✅ `bbia_awake.py` : **~80%+** ✅ (corrigé - Janvier 2025, import direct)
+- ✅ `daemon/app/__main__.py` : **87.50%** ✅ (corrigé - Oct / Nov. 2025)
+- ✅ `daemon/app/routers/sanity.py` : **89.19%** ✅ (corrigé - Oct / Nov. 2025)
+- ✅ `model_optimizer.py` : **100%** ✅ (corrigé - Oct / Nov. 2025)
+- ✅ `__main__.py` : **~70%+** ✅ (corrigé - Oct / Nov. 2025, tests main() ajoutés)
+- ✅ `bbia_awake.py` : **~80%+** ✅ (corrigé - Oct / Nov. 2025, import direct)
 - ❌ `bbia_integration.py` : **20.1%** (249 lignes, 199 manquantes)
 - ❌ `face_recognition.py` : **20.1%** (139 lignes, 111 manquantes)
 - ❌ `backends/reachy_backend.py` : **30.8%** (195 lignes, 135 manquantes)
@@ -180,11 +180,11 @@ def test_watchdog_timeout_robot_disconnected(self):
 - **Black** : 123 fichiers formatés
 - **Ruff** : Tous les checks passent
 - **MyPy** : 1 erreur corrigée (`bbia_audio.py` ligne 101)
-- **Bandit** : ✅ 0 erreurs (tous les problèmes B110, B101, B108 corrigés - Nov 2025)
+- **Bandit** : ✅ 0 erreurs (tous les problèmes B110, B101, B108 corrigés - Oct / Nov. 2025)
 
 ### Issues GitHub
 
-✅ **TERMINÉ** : Toutes les issues GitHub gérées (Janvier 2025)
+✅ **TERMINÉ** : Toutes les issues GitHub gérées (Oct / Nov. 2025)
 
 - ✅ **Issue #5** (`bbia_memory.py`) : **FERMÉE** - Tests déjà complets (198 lignes)
 - ✅ **Issue #4** (`bbia_audio.py`) : **MODIFIÉE** - Précision ajoutée sur `_capture_audio_chunk()`
@@ -195,7 +195,7 @@ def test_watchdog_timeout_robot_disconnected(self):
 
 ### Repo GitHub
 
-✅ **VÉRIFIÉ** : Repo GitHub professionnel et complet (Janvier 2025)
+✅ **VÉRIFIÉ** : Repo GitHub professionnel et complet (Oct / Nov. 2025)
 
 - ✅ Topics/Tags ajoutés : `robotics-python-ai-mujoco-simulation-reachy-mini`
 - ✅ Description raccourcie et professionnelle
@@ -208,7 +208,7 @@ def test_watchdog_timeout_robot_disconnected(self):
 
 ### Archives
 
-✅ **TERMINÉ** : Nettoyage archives (Janvier 2025)
+✅ **TERMINÉ** : Nettoyage archives (Oct / Nov. 2025)
 
 - ✅ Suppression de 13 fichiers d'archive obsolètes
 - ✅ Conservation uniquement des README.md référencés

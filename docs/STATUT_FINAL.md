@@ -161,7 +161,7 @@
 
 ### Issues GitHub
 
-✅ **TERMINÉ** : Toutes les issues GitHub gérées (Janvier 2025)
+✅ **TERMINÉ** : Toutes les issues GitHub gérées (Oct / Nov. 2025)
 
 - ✅ **Issue #5** (`bbia_memory.py`) : **FERMÉE** - Tests déjà complets (198 lignes)
 - ✅ **Issue #4** (`bbia_audio.py`) : **MODIFIÉE** - Précision ajoutée sur `_capture_audio_chunk()`
@@ -186,7 +186,7 @@
 
 ### Coverage Tests
 
-✅ **AMÉLIORÉ** : 4 modules corrigés (Janvier 2025)
+✅ **AMÉLIORÉ** : 4 modules corrigés (Oct / Nov. 2025)
 - ✅ `model_optimizer.py` : 39.13% → **100%** (+60.87%)
 - ✅ `daemon/app/routers/sanity.py` : 32.43% → **89.19%** (+56.76%)
 - ✅ `__main__.py` : 22.50% → **~70%+** (+47.5%+)
@@ -203,4 +203,4 @@
 
 ---
 
-**Dernière mise à jour** : Janvier 2025
+**Dernière mise à jour** : Oct / Nov. 2025

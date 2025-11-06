@@ -1,4 +1,4 @@
-# 🔍 AUDIT COVERAGE COMPLET - Décembre 2025
+# 🔍 AUDIT COVERAGE COMPLET - Oct / Nov. 2025
 
 **Problème détecté** : Imports dans try/except empêchaient coverage de détecter les modules
 **Solution appliquée** : Imports directs au niveau module
@@ -112,5 +112,5 @@ Le warning `Module was never imported` peut encore apparaître mais :
 
 ---
 
-**Dernière mise à jour** : Décembre 2025
+**Dernière mise à jour** : Oct / Nov. 2025
 

@@ -1,6 +1,6 @@
-# ✅ Résumé des Tâches Optionnelles - Décembre 2025
+# ✅ Résumé des Tâches Optionnelles - Oct / Nov. 2025
 
-**Date** : Décembre 2025  
+**Date** : Oct / Nov. 2025  
 **Statut** : ✅ **Toutes les tâches optionnelles faisables terminées**
 
 ---
@@ -75,6 +75,6 @@ Les améliorations ont été appliquées sans attendre votre retour, comme deman
 
 ---
 
-**Date** : Décembre 2025  
+**Date** : Oct / Nov. 2025  
 **Statut** : ✅ **100% DES TÂCHES OPTIONNELLES FAISABLES TERMINÉES**
 

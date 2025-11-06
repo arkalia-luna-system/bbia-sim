@@ -1,6 +1,6 @@
 # 🏗️ Architecture BBIA-SIM - Guide Complet
 
-**Date** : Oct 25 / Nov 25
+**Date** : Oct / Nov. 2025
 **Version** : 1.3.2
 
 ---

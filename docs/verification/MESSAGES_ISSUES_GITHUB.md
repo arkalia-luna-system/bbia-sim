@@ -1,6 +1,6 @@
 # 📝 Messages Prêts pour GitHub Issues
 
-**Date** : 2025-01-XX  
+**Date** : Oct / Nov. 2025  
 **Objectif** : Messages à copier-coller directement sur GitHub pour modifier/fermer les issues
 
 ---

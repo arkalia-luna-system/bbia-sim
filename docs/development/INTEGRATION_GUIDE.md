@@ -12,7 +12,7 @@
 >   ```
 
 **Version** : 1.2.0
-**Date** : Oct 25 / Nov 25
+**Date** : Oct / Nov. 2025
 **Public** : développeurs, chercheurs, communauté technique  
 **📚 [Guide débutant](../guides/GUIDE_DEBUTANT.md)** | **🔧 [Guide avancé](../guides/GUIDE_AVANCE.md)** | **🧪 [Guide tests](TESTING_GUIDE.md)**
 

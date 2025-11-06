@@ -1,4 +1,4 @@
-# ✅ AUDIT COVERAGE IMPORTS - CORRIGÉ - Décembre 2025
+# ✅ AUDIT COVERAGE IMPORTS - CORRIGÉ - Oct / Nov. 2025
 
 **Problème** : Coverage disait "Module was never imported" même si les tests passaient  
 **Solution** : Imports directs au niveau module (pas dans try/except)
@@ -127,5 +127,5 @@ Le warning "Module was never imported" peut encore apparaître mais :
 
 **Coverage correct pour tous les modules critiques** ✅
 
-**Dernière mise à jour** : Décembre 2025
+**Dernière mise à jour** : Oct / Nov. 2025
 

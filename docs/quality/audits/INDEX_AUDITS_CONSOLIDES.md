@@ -27,7 +27,7 @@
 4. **`AUDIT_COVERAGE_IMPORTS.md`** ⭐
    - Audit coverage et imports
    - Corrections appliquées pour améliorer le coverage
-   - Dernière mise à jour : Décembre 2025
+   - Dernière mise à jour : Oct / Nov. 2025
 
 5. **`COMPARAISON_DOCUMENTATION_OFFICIELLE.md`** (si existe)
    - Comparaison avec README officiel Pollen Robotics

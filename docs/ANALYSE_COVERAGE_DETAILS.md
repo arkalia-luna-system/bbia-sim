@@ -1,6 +1,6 @@
 # 📊 Analyse Détaillée Coverage - Problèmes Identifiés
 
-**Date** : Janvier 2025  
+**Date** : Oct / Nov. 2025  
 **Objectif** : Identifier pourquoi certains modules ont un coverage faible malgré des tests existants
 
 ---
@@ -9,7 +9,7 @@
 
 ### 1. **Modules non importés dans les tests** ❌
 
-#### `model_optimizer.py` : ✅ **100%** (corrigé - Nov 2025)
+#### `model_optimizer.py` : ✅ **100%** (corrigé - Oct / Nov. 2025)
 **Problème** : Coverage warning : `Module src/bbia_sim/model_optimizer was never imported`
 
 **Solution appliquée** :
@@ -23,7 +23,7 @@
 
 ### 2. **Tests existants mais coverage partiel** ⚠️
 
-#### `__main__.py` : ✅ **~70%+** (corrigé - Janvier 2025)
+#### `__main__.py` : ✅ **~70%+** (corrigé - Oct / Nov. 2025)
 **Tests existants** : `tests/test_main.py` (13 tests maintenant)
 
 **Solution appliquée** :
@@ -37,7 +37,7 @@
 
 ---
 
-#### `bbia_awake.py` : ✅ **~80%+** (corrigé - Janvier 2025)
+#### `bbia_awake.py` : ✅ **~80%+** (corrigé - Oct / Nov. 2025)
 **Tests existants** : `tests/test_bbia_awake.py` (modifié)
 
 **Solution appliquée** :
@@ -61,7 +61,7 @@
 
 ### 3. **Modules sans tests** ❌
 
-#### `daemon/app/__main__.py` : ✅ **87.50%** (corrigé - Nov 2025)
+#### `daemon/app/__main__.py` : ✅ **87.50%** (corrigé - Oct / Nov. 2025)
 **Problème** : Aucun test
 
 **Solution appliquée** :
@@ -70,7 +70,7 @@
 
 ---
 
-#### `daemon/app/routers/sanity.py` : ✅ **89.19%** (corrigé - Nov 2025)
+#### `daemon/app/routers/sanity.py` : ✅ **89.19%** (corrigé - Oct / Nov. 2025)
 **Problème** : Aucun test
 
 **Solution appliquée** :
@@ -158,9 +158,9 @@
 
 ---
 
-**Dernière mise à jour** : Novembre 2025
+**Dernière mise à jour** : Oct / Nov. 2025
 
-## ✅ CORRECTIONS APPLIQUÉES (Janvier 2025)
+## ✅ CORRECTIONS APPLIQUÉES (Oct / Nov. 2025)
 
 ### Modules corrigés
 - ✅ `model_optimizer.py` : **100%** coverage (9 tests créés)
