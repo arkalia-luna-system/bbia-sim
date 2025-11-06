@@ -81,7 +81,8 @@ class Pyttsx3TTS:
                     except Exception as e:
                         # Si get_bbia_voice échoue, utiliser voix par défaut
                         logger.debug(
-                            f"Impossible de définir voix personnalisée, utilisation par défaut: {e}"
+                            f"Impossible de définir voix personnalisée, "
+                            f"utilisation par défaut: {e}"
                         )
 
             # Utiliser la voix sélectionnée si disponible

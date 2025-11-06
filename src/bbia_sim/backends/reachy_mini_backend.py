@@ -386,7 +386,8 @@ class ReachyMiniBackend(RobotAPI):
         try:
             self._stop_watchdog()
         except Exception as e:
-            # Logging silencieux en __del__ pour éviter erreurs lors du garbage collection
+            # Logging silencieux en __del__ pour éviter erreurs lors du
+            # garbage collection
             logger.debug(f"Erreur lors de l'arrêt du watchdog dans __del__: {e}")
 
     def get_available_joints(self) -> list[str]:
