@@ -4,8 +4,8 @@
 >
 > Voir `docs/reference/project-status.md` → "État par axe" pour prioriser les améliorations (API/SDK, perf, sécurité, CI/CD).
 
-**Date :** Oct / Nov. 2025
-**Référence SDK :** https://github.com/pollen-robotics/reachy_mini
+**Date :** Oct / Nov. 2025  
+**Référence SDK :** <https://github.com/pollen-robotics/reachy_mini>
 
 ---
 
@@ -22,11 +22,13 @@ Documenter les features avancées du SDK Reachy Mini qui sont **disponibles** da
 **Status :** ✅ **FAIT** - Intégré dans tous les modules concernés avec fallbacks gracieux
 
 **Vérification code :**
+
 - ✅ `bbia_vision.py` (lignes 126-137) : Utilise `robot.media.camera` si disponible
 - ✅ `bbia_audio.py` (lignes 162-208) : Utilise `robot.media.microphone` et `robot.media.record_audio()` si disponible
 - ✅ `bbia_voice.py` (lignes 259-342) : Utilise `robot.media.speaker` et `robot.media.play_audio()` si disponible
 
 **Capacités :**
+
 ```python
 robot.media.camera          # ✅ Utilisé dans bbia_vision.py
 robot.media.microphone      # ✅ Utilisé dans bbia_audio.py (4 mics)
@@ -36,11 +38,13 @@ robot.media.record_audio()  # ✅ Utilisé dans bbia_audio.py
 ```
 
 **Modules améliorés :**
+
 - ✅ `bbia_vision.py` → Utilise `robot.media.camera` avec fallback simulation
 - ✅ `bbia_audio.py` → Utilise `robot.media.microphone` (4 mics) avec fallback sounddevice
 - ✅ `bbia_voice.py` → Utilise `robot.media.speaker` (5W) avec fallback pyttsx3
 
 **Avantages :**
+
 - ✅ Qualité hardware optimale (4 microphones directionnels)
 - ✅ Annulation de bruit automatique
 - ✅ Caméra grand angle 1080p temps réel
@@ -53,6 +57,7 @@ robot.media.record_audio()  # ✅ Utilisé dans bbia_audio.py
 **Status :** Disponible dans `ReachyMiniBackend.io` mais NON UTILISÉ
 
 **Capacités :**
+
 ```python
 robot.io.get_camera_stream()  # Stream vidéo temps réel
 robot.io.get_audio_stream()   # Stream audio temps réel
@@ -60,11 +65,13 @@ robot.io.set_leds()            # Contrôle LEDs (si disponibles)
 ```
 
 **Opportunités :**
+
 - Vision temps réel au lieu de scan périodique
 - Audio streaming pour reconnaissance vocale temps réel
 - Feedback visuel via LEDs
 
 **Plan d'action (optionnel, non critique) :**
+
 - [ ] ⚠️ Activer `robot.io.get_camera_stream()` dans `BBIAVision` (nécessiterait refactor significatif)
 - [ ] ⚠️ Activer `robot.io.get_audio_stream()` dans `bbia_audio` (nécessiterait refactor significatif)
 - **Note** : Code actuel (`robot.media.camera.get_image()` + captures périodiques) fonctionne parfaitement. Streams seraient optimisation future pour bénéfice marginal.
@@ -76,10 +83,12 @@ robot.io.set_leds()            # Contrôle LEDs (si disponibles)
 **Status :** ✅ **FAIT** - Mapping émotion → interpolation adaptative implémenté dans `bbia_integration.py`
 
 **Vérification code :**
+
 - ✅ `bbia_integration.py` (lignes 289-305) : `emotion_interpolation_map` avec CARTOON, EASE_IN_OUT, MIN_JERK
 - ✅ `backends/reachy_mini_backend.py` (lignes 914-918) : Support toutes les techniques d'interpolation
 
 **Disponibles et utilisées :**
+
 ```python
 InterpolationTechnique.MIN_JERK       # ✅ Utilisé (neutral, curious, determined)
 InterpolationTechnique.LINEAR         # ✅ Disponible (backends/reachy_mini_backend.py:914)
@@ -88,6 +97,7 @@ InterpolationTechnique.CARTOON        # ✅ Utilisé (happy, excited, surprised,
 ```
 
 **Implémentation actuelle :**
+
 ```python
 # bbia_integration.py lignes 290-304
 emotion_interpolation_map = {
@@ -113,10 +123,12 @@ emotion_interpolation_map = {
 **Status :** ✅ **FAIT** - Implémenté dans `bbia_behavior.py` et `reachy_mini_backend.py`
 
 **Vérification code :**
+
 - ✅ `backends/reachy_mini_backend.py` (lignes 1065-1119) : `start_recording()`, `stop_recording()`, `play_move()`, `async_play_move()`
-- ✅ `bbia_behavior.py` (lignes 1087-1166) : `BBIABehaviorManager.record_behavior()` et `play_saved_behavior()` avec support async
+- ✅ `bbia_behavior.py` (lignes 1115-1170) : `BBIABehaviorManager.record_behavior_movement()` et `play_saved_behavior()` avec support async
 
 **Disponible et utilisé :**
+
 ```python
 robot.start_recording()           # ✅ Disponible (reachy_mini_backend.py:1065)
 move = robot.stop_recording()      # ✅ Disponible (reachy_mini_backend.py:1076)
@@ -125,18 +137,19 @@ robot.async_play_move(move)        # ✅ Disponible (reachy_mini_backend.py:1105
 ```
 
 **Implémentation actuelle :**
+
 ```python
-# bbia_behavior.py lignes 1087-1166
+# bbia_behavior.py lignes 1115-1170
 class BBIABehaviorManager:
-    def record_behavior(self, name: str):  # ✅ Implémenté
+    def record_behavior_movement(self, behavior_name: str, duration: float = 3.0):  # ✅ Implémenté
         robot.start_recording()
         # ... exécution comportement ...
         move = robot.stop_recording()
-        self.saved_behaviors[name] = move
+        self.saved_moves[behavior_name] = move
 
-    def play_saved_behavior(self, name: str, use_async: bool = True):  # ✅ Implémenté
-        if name in self.saved_behaviors:
-            move = self.saved_behaviors[name]
+    def play_saved_behavior(self, behavior_name: str, use_async: bool = True):  # ✅ Implémenté
+        if behavior_name in self.saved_moves:
+            move = self.saved_moves[behavior_name]
             if use_async and hasattr(robot, "async_play_move"):
                 robot.async_play_move(move, play_frequency=100.0)  # ✅ Non bloquant
             else:
@@ -169,17 +182,19 @@ class BBIABehaviorManager:
 **Fichier :** `bbia_integration.py` (lignes 289-305)
 
 ✅ **Implémenté** : Mapping complet émotion → interpolation avec 12 émotions :
+
 - CARTOON : happy, excited, surprised, angry, proud
 - EASE_IN_OUT : calm, sad, nostalgic, fearful
 - MIN_JERK : neutral, curious, determined
 
 ### **Phase 3 : Enregistrement Comportements** ✅ **COMPLÉTÉE**
 
-**Fichier :** `bbia_behavior.py` (lignes 1087-1166)
+**Fichier :** `bbia_behavior.py` (lignes 1115-1170)
 
 ✅ **Implémenté** :
-- `BBIABehaviorManager.record_behavior()` : Enregistre comportements
-- `BBIABehaviorManager.play_saved_behavior()` : Rejoue avec support async
+
+- `BBIABehaviorManager.record_behavior_movement()` : Enregistre comportements (ligne 1115)
+- `BBIABehaviorManager.play_saved_behavior()` : Rejoue avec support async (ligne 1170)
 - Bibliothèque `saved_behaviors` pour réutilisation mouvements
 
 ---
@@ -187,16 +202,19 @@ class BBIABehaviorManager:
 ## 📈 **BÉNÉFICES ATTENDUS**
 
 ### **Performance**
+
 - ✅ Vision temps réel (au lieu de simulation)
 - ✅ Audio qualité hardware (4 mics directionnels)
 - ✅ Synthèse vocale optimisée (5W hardware)
 
 ### **Expressivité**
+
 - ✅ Mouvements plus expressifs avec `CARTOON`
 - ✅ Transitions plus douces avec `EASE_IN_OUT`
 - ✅ Réutilisation de mouvements complexes
 
 ### **Robustesse**
+
 - ✅ Hardware optimisé vs logiciel générique
 - ✅ Annulation de bruit automatique
 - ✅ Stream temps réel pour réactivité
@@ -208,21 +226,23 @@ class BBIABehaviorManager:
 Toutes les améliorations sont **déjà implémentées et opérationnelles** ✅
 
 ### **État actuel :**
+
 - ✅ Phase 1 (Media SDK) : **COMPLÉTÉE** - Tous les modules utilisent `robot.media`
 - ✅ Phase 2 (Interpolation) : **COMPLÉTÉE** - Mapping émotion → technique implémenté
 - ✅ Phase 3 (Record/Replay) : **COMPLÉTÉE** - `BBIABehaviorManager` avec support async
 
 ### **Validation code :**
+
 - ✅ Backend expose `robot.media` et utilisé partout
 - ✅ Fallbacks gracieux en place (simulation, sounddevice, pyttsx3)
 - ✅ Architecture modulaire avec intégration complète
 - ✅ Tests créés : `test_sdk_media_integration.py`, `test_emotion_interpolation_mapping()`
 
 ### **Restant à faire (optionnel, non critique) :**
+
 - ⚠️ Module IO SDK (`robot.io.get_camera_stream()`, `robot.io.get_audio_stream()`) : Disponible via SDK mais non utilisé
   - **Décision** : Non implémenté car code actuel (`robot.media.camera.get_image()` + captures périodiques) fonctionne parfaitement
   - Opportunité future : Streaming temps réel continu (nécessiterait refactor significatif pour bénéfice marginal)
   - Priorité : **Très basse** (non bloquant pour robot réel)
 
 **Recommandation :** ✅ Toutes les améliorations prioritaires sont complétées. Le système utilise pleinement le hardware Reachy Mini avec fallbacks robustes.
-

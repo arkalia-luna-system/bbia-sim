@@ -1,36 +1,43 @@
 # ✅ AMÉLIORATIONS FINALES - Audit BBIA → Reachy Integration
 
-**Date**: Oct / Nov. 2025
-**Phase**: Améliorations continues post-audit
+**Date** : Oct / Nov. 2025  
+**Phase** : Améliorations continues post-audit
 
 ---
 
 ## 🔧 NOUVELLES AMÉLIORATIONS
 
-### 1. ✅ Support BBIA_DISABLE_AUDIO dans TTS/Audio
+### 1. ✅ Support `BBIA_DISABLE_AUDIO` dans TTS/Audio
 
-**Fichiers modifiés**:
-- `src/bbia_sim/bbia_voice.py` - Vérification flag avant TTS
-- `src/bbia_sim/bbia_audio.py` - Vérification flag avant lecture audio
+**Fichiers modifiés** :
 
-**Amélioration**:
+- `src/bbia_sim/bbia_voice.py` (ligne 227) - Vérification flag avant TTS
+- `src/bbia_sim/bbia_audio.py` (lignes 175, 283, 368) - Vérification flag avant lecture/enregistrement audio
+- `src/bbia_sim/voice_whisper.py` (lignes 210, 284, 393, 506) - Vérification flag avant STT
+
+**Amélioration** :
+
 ```python
 # Respect du flag d'environnement BBIA_DISABLE_AUDIO=1 (CI/headless)
 if os.environ.get("BBIA_DISABLE_AUDIO", "0") == "1":
-    logging.debug(f"Audio désactivé: '{texte}' ignoré")
+    logging.debug(f"Audio désactivé (BBIA_DISABLE_AUDIO=1): '{texte}' ignoré")
     return
 ```
 
-**Bénéfice**: Tests CI/headless ne bloquent plus sur audio, respecte déjà configuré dans `pyproject.toml`
+**Bénéfice** : Tests CI/headless ne bloquent plus sur audio, respecte déjà configuré dans `pyproject.toml`
+
+**Vérification code** : ✅ Tous les modules audio vérifient le flag avant toute opération audio
 
 ---
 
-### 2. ✅ Endpoint /stop avec Emergency Stop
+### 2. ✅ Endpoint `/stop` avec Emergency Stop
 
-**Fichiers modifiés**:
-- `src/bbia_sim/daemon/app/routers/motion.py` - Amélioration endpoint `/development/api/motion/stop`
+**Fichiers modifiés** :
 
-**Amélioration**:
+- `src/bbia_sim/daemon/app/routers/motion.py` (lignes 333-344) - Amélioration endpoint `/development/api/motion/stop`
+
+**Amélioration** :
+
 ```python
 @router.post("/stop")
 async def stop_motion() -> dict[str, Any]:
@@ -43,36 +50,42 @@ async def stop_motion() -> dict[str, Any]:
     # Fallback arrêt standard
 ```
 
-**Bénéfice**: API REST utilise maintenant `emergency_stop()` pour arrêt sécurisé hardware
+**Bénéfice** : API REST utilise maintenant `emergency_stop()` pour arrêt sécurisé hardware
+
+**Vérification code** : ✅ Ligne 339-340 de `motion.py` utilise `emergency_stop()` si disponible
 
 ---
 
 ## 📊 RÉCAPITULATIF COMPLET
 
 ### Corrections Phase 1 ✅
+
 - Emergency stop implémenté (3 backends)
 - Audio SDK 16kHz aligné
 - Validation émotions intensité [0.0, 1.0]
 - Tests sécurité limites (5 tests)
 
 ### Améliorations Phase 2 ✅
-- Support `BBIA_DISABLE_AUDIO` flag
-- Endpoint `/stop` avec emergency_stop
+
+- Support `BBIA_DISABLE_AUDIO` flag (6 modules vérifiés)
+- Endpoint `/stop` avec `emergency_stop()`
 - Robustesse fallbacks audio/TTS
 
 ### Tests Validés ✅
-```
+
+```bash
 tests/test_emergency_stop.py ..........  3 passed, 1 skipped
 tests/test_safety_limits_pid.py ......  5 passed
 ```
 
-**Total**: 8 tests passent, 1 skip
+**Total** : 8 tests passent, 1 skip
 
 ---
 
 ## 🎯 CONFORMITÉ SDK
 
-Toutes les améliorations sont conformes au SDK Reachy Mini officiel:
+Toutes les améliorations sont conformes au SDK Reachy Mini officiel :
+
 - ✅ Emergency stop conforme specs sécurité
 - ✅ Sample rate 16kHz aligné SDK
 - ✅ Intensité émotions [0.0, 1.0] validée
@@ -82,9 +95,8 @@ Toutes les améliorations sont conformes au SDK Reachy Mini officiel:
 
 ## 📝 NOTES FINALES
 
-1. **BBIA_DISABLE_AUDIO**: Déjà configuré dans `pyproject.toml` pour pytest, maintenant respecté dans le code
-2. **Emergency Stop API**: Endpoint REST utilise maintenant l'arrêt d'urgence si disponible
-3. **Robustesse**: Tous les fallbacks sont testés et fonctionnels
+1. **`BBIA_DISABLE_AUDIO`** : Déjà configuré dans `pyproject.toml` pour pytest, maintenant respecté dans le code (6 modules)
+2. **Emergency Stop API** : Endpoint REST `/development/api/motion/stop` utilise maintenant l'arrêt d'urgence si disponible
+3. **Robustesse** : Tous les fallbacks sont testés et fonctionnels
 
-**État**: ✅ Toutes améliorations appliquées et validées
-
+**État** : ✅ Toutes améliorations appliquées et validées (Oct / Nov. 2025)
