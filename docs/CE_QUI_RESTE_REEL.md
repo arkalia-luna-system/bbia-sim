@@ -173,11 +173,13 @@ def test_watchdog_timeout_robot_disconnected(self):
 
 ### Issues GitHub
 
-⚠️ **À FAIRE** : Gérer 5 issues GitHub
-- Issue #2 : Fermer (tests déjà complets)
-- Issues #1, #3, #5 : Modifier (ajouter précisions)
-- Issue #4 : Aucune action (prête pour implémentation)
-- Messages prêts dans : `docs/verification/MESSAGES_ISSUES_GITHUB.md`
+✅ **TERMINÉ** : Toutes les issues GitHub gérées (Janvier 2025)
+- ✅ **Issue #5** (`bbia_memory.py`) : **FERMÉE** - Tests déjà complets (198 lignes)
+- ✅ **Issue #4** (`bbia_audio.py`) : **MODIFIÉE** - Précision ajoutée sur `_capture_audio_chunk()`
+- ✅ **Issue #6** (`bbia_emotions.py`) : **MODIFIÉE** - Exemples transitions complexes ajoutés
+- ✅ **Issue #8** (Commandes vocales) : **MODIFIÉE** - Exemples concrets de commandes ajoutés
+- ✅ **Issue #7** (Bbox structure) : **CONFIRMÉE** - Code normalisé, prête pour @yummyash
+- Messages utilisés depuis : `docs/verification/MESSAGES_ISSUES_GITHUB.md`
 
 ### TODOs Restants
 
