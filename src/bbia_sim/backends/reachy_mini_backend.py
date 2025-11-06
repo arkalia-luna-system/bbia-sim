@@ -59,7 +59,8 @@ SLEEP_HEAD_POSE = np.array(
 
 logger = logging.getLogger(__name__)
 
-# OPTIMISATION RAM: Constantes module-level partagées (évite recréation à chaque instance)
+# OPTIMISATION RAM: Constantes module-level partagées
+# (évite recréation à chaque instance)
 JOINT_MAPPING_STATIC = {
     # Tête (6 joints Stewart platform - noms réels)
     "stewart_1": 0,  # Premier joint tête
@@ -145,7 +146,8 @@ class ReachyMiniBackend(RobotAPI):
         self.STEWART_MAX_INDEX = 5  # Indices 0-5 pour stewart_1-6
         self.HEAD_POSITIONS_LEGACY_COUNT = 12  # Structure legacy (indices impairs)
 
-        # OPTIMISATION RAM: Référencer constantes module-level partagées (évite recréation)
+        # OPTIMISATION RAM: Référencer constantes module-level partagées
+        # (évite recréation)
         # Mapping joints officiel Reachy-Mini (noms réels du modèle MuJoCo)
         # 6 joints tête + 2 antennes + 1 corps = 9 joints total
         self.joint_mapping = JOINT_MAPPING_STATIC
@@ -180,7 +182,8 @@ class ReachyMiniBackend(RobotAPI):
             self.is_connected = True  # Mode simulation
             self.start_time = time.time()
             self._last_heartbeat = time.time()
-            # OPTIMISATION RAM: Désactiver watchdog en simulation (consomme RAM pour rien)
+            # OPTIMISATION RAM: Désactiver watchdog en simulation
+            # (consomme RAM pour rien)
             if not self.use_sim:
                 self._start_watchdog()
             return True
@@ -228,7 +231,8 @@ class ReachyMiniBackend(RobotAPI):
             self.is_connected = True  # Mode simulation
             self.start_time = time.time()
             self._last_heartbeat = time.time()
-            # OPTIMISATION RAM: Désactiver watchdog en simulation (consomme RAM pour rien)
+            # OPTIMISATION RAM: Désactiver watchdog en simulation
+            # (consomme RAM pour rien)
             if not self.use_sim:
                 self._start_watchdog()
             return True
@@ -809,7 +813,8 @@ class ReachyMiniBackend(RobotAPI):
                     if hasattr(self.robot, "io") and self.robot.io:
                         if hasattr(self.robot.io, "get_imu"):
                             imu_raw = self.robot.io.get_imu()
-                            # Normaliser format IMU (dict avec acceleration, gyroscope, magnetometer)
+                            # Normaliser format IMU (dict avec acceleration,
+                            # gyroscope, magnetometer)
                             if isinstance(imu_raw, dict):
                                 imu_data = imu_raw
                             elif imu_raw is not None:
@@ -958,21 +963,27 @@ class ReachyMiniBackend(RobotAPI):
         method: str = "minjerk",
         body_yaw: float | None = 0.0,
     ) -> None:
-        """Va vers une cible spécifique avec technique d'interpolation (conforme SDK officiel).
+        """Va vers une cible spécifique avec technique d'interpolation
+        (conforme SDK officiel).
 
         Args:
             head: Matrice 4x4 représentant la pose de la tête (ou None)
             antennas: Angles des antennes en radians [right, left] (ou None)
             duration: Durée du mouvement en secondes (doit être > 0)
-            method: Technique d'interpolation ("minjerk", "linear", "ease_in_out", "cartoon")
-            body_yaw: Angle yaw du corps en radians (None = garder position actuelle, conforme SDK)
+            method: Technique d'interpolation
+                ("minjerk", "linear", "ease_in_out", "cartoon")
+            body_yaw: Angle yaw du corps en radians
+                (None = garder position actuelle, conforme SDK)
 
         """
         # Validation stricte: duration doit être positive et non-nulle (conforme SDK)
         duration_float = float(duration)
         if duration_float <= 0.0:
             raise ValueError(
-                "Duration must be positive and non-zero. Use set_target() for immediate position setting.",
+                (
+                    "Duration must be positive and non-zero. "
+                    "Use set_target() for immediate position setting."
+                ),
             )
 
         if not self.is_connected or not self.robot:
@@ -1194,7 +1205,8 @@ class ReachyMiniBackend(RobotAPI):
         Args:
             move: Objet Move du SDK reachy_mini.motion.move
             play_frequency: Fréquence de lecture (Hz, défaut 100.0)
-            initial_goto_duration: Durée goto initial vers position de départ (s, défaut 0.0)
+            initial_goto_duration: Durée goto initial vers position de départ
+                (s, défaut 0.0)
 
         """
         if not self.is_connected or not self.robot:
