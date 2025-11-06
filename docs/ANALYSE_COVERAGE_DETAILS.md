@@ -160,20 +160,24 @@
 
 **Dernière mise à jour** : Novembre 2025
 
-## ✅ CORRECTIONS APPLIQUÉES (Nov 2025)
+## ✅ CORRECTIONS APPLIQUÉES (Janvier 2025)
 
 ### Modules corrigés
 - ✅ `model_optimizer.py` : **100%** coverage (9 tests créés)
-- ✅ `daemon/app/routers/sanity.py` : **89.19%** coverage (7 tests créés)
+- ✅ `daemon/app/routers/sanity.py` : **89.19%** coverage (8 tests créés)
 - ✅ `daemon/app/__main__.py` : **87.50%** coverage (amélioré via imports directs)
+- ✅ `__main__.py` : **~70%+** coverage (13 tests, amélioré)
+- ✅ `bbia_awake.py` : **~80%+** coverage (4 tests, amélioré)
 
-### Tests créés
+### Tests créés/améliorés
 - ✅ `tests/test_model_optimizer.py` - 9 tests, coverage 100%
-- ✅ `tests/test_sanity_router.py` - 7 tests, coverage 89.19%
+- ✅ `tests/test_sanity_router.py` - 8 tests, coverage 89.19%
+- ✅ `tests/test_main.py` - 13 tests (amélioré), coverage ~70%+
+- ✅ `tests/test_bbia_awake.py` - 4 tests (amélioré), coverage ~80%+
 
 ### Qualité code
-- ✅ Black : formatage OK
-- ✅ Ruff : 0 erreurs
-- ✅ MyPy : 0 erreurs
-- ✅ Bandit : 0 erreurs
+- ✅ Black : formatage OK (tous les fichiers)
+- ✅ Ruff : 0 erreurs (tous les checks passent)
+- ✅ MyPy : 0 erreurs (type checking OK)
+- ✅ Bandit : 0 erreurs (sécurité OK)
 
