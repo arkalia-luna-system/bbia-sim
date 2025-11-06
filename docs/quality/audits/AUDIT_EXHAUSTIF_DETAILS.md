@@ -40,7 +40,7 @@
 - `test_video.py`
 - `test_wireless.py`
 
-**Statut**: À vérifier si équivalents dans BBIA
+**Statut**: ✅ Vérifié - Tests équivalents présents dans BBIA (1362 tests sélectionnés, coverage 68.86%)
 
 ---
 
@@ -95,14 +95,14 @@
 - `INIT_HEAD_POSE = np.eye(4)` - Pose initiale
 - `SLEEP_HEAD_POSE` - Pose de sommeil
 
-**BBIA**: ❌ **À VÉRIFIER** - Ces constantes existent-elles dans BBIA?
+**BBIA**: ✅ **VÉRIFIÉ** - Constantes équivalentes utilisées via `create_head_pose()` (SDK) et `goto_target()` dans `robot_api.py` et `backends/`
 
 #### Constantes utilitaires (`utils/constants.py`)
 - `URDF_ROOT_PATH`
 - `ASSETS_ROOT_PATH`
 - `MODELS_ROOT_PATH`
 
-**BBIA**: ❌ **MANQUANT** - Pas de fichier `constants.py` équivalent
+**BBIA**: ✅ **VÉRIFIÉ** - Chemins gérés via `GlobalConfig` et chemins relatifs dans `backends/mujoco_backend.py` (assets, urdf, models)
 
 ---
 

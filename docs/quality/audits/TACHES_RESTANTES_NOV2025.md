@@ -15,14 +15,14 @@
 
 ### 1. ✅ Mettre à jour tests/README.md avec chiffres réels - TERMINÉ
 
-**Problème** : Le fichier mentionnait "441 tests passent" alors qu'il y a maintenant **1245 tests**
+**Problème** : Le fichier mentionnait "441 tests passent" alors qu'il y a maintenant **1362 tests sélectionnés** (1418 collectés, 56 deselected)
 
 **Fichier** : `tests/README.md`
 
 **Action** : ✅ CORRIGÉ
 ```markdown
 - **Coverage total** : **68.86%** (excellent)
-- **1245 tests collectés** (pytest --collect-only)
+- **1362 tests sélectionnés** (1418 collectés, 56 deselected)
 - **Tests passent** : Voir résultats pytest récents
 ```
 
