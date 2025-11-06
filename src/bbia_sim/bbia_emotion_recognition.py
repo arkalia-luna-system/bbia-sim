@@ -13,7 +13,8 @@ import numpy as np
 
 logger = logging.getLogger(__name__)
 
-# OPTIMISATION PERFORMANCE: Cache global pour pipelines transformers (évite chargements répétés)
+# OPTIMISATION PERFORMANCE: Cache global pour pipelines transformers
+# (évite chargements répétés)
 _emotion_pipelines_cache: dict[str, dict[str, Any]] = {}  # device -> models dict
 _emotion_cache_lock = threading.Lock()
 
@@ -39,7 +40,8 @@ try:
 except ImportError:
     ML_AVAILABLE = False
     logger.warning(
-        "Dépendances ML non disponibles. Installez avec: pip install mediapipe torch transformers",
+        "Dépendances ML non disponibles. "
+        "Installez avec: pip install mediapipe torch transformers",
     )
 
 
@@ -62,13 +64,15 @@ class BBIAEmotionRecognition:
         """
         if not ML_AVAILABLE:
             raise ImportError(
-                "Dépendances ML requises. Installez avec: pip install mediapipe torch transformers",
+                "Dépendances ML requises. "
+                "Installez avec: pip install mediapipe torch transformers",
             )
 
         self.device = self._get_device(device)
         self.is_initialized = False
 
-        # OPTIMISATION RAM: Lazy loading MediaPipe - ne charger que si détection visage demandée
+        # OPTIMISATION RAM: Lazy loading MediaPipe - ne charger que si
+        # détection visage demandée
         self.mp_face_detection: Any = None
         self.mp_face_mesh: Any = None
         self.mp_drawing: Any = None
@@ -135,13 +139,16 @@ class BBIAEmotionRecognition:
             return False
 
     def _load_emotion_models(self) -> None:
-        """Charge les modèles de reconnaissance d'émotion (utilise cache global si disponible)."""
-        # OPTIMISATION PERFORMANCE: Utiliser cache global pour éviter chargements répétés
+        """Charge les modèles de reconnaissance d'émotion (utilise cache
+        global si disponible)."""
+        # OPTIMISATION PERFORMANCE: Utiliser cache global pour éviter
+        # chargements répétés
         global _emotion_pipelines_cache
         with _emotion_cache_lock:
             if self.device in _emotion_pipelines_cache:
                 logger.debug(
-                    f"♻️ Réutilisation modèles émotion depuis cache (device: {self.device})",
+                    f"♻️ Réutilisation modèles émotion depuis cache "
+                    f"(device: {self.device})",
                 )
                 self.emotion_models = _emotion_pipelines_cache[self.device].copy()
                 logger.info("📥 Modèles d'émotion chargés (cache)")

@@ -136,7 +136,8 @@ class BBIAEmotions:
         new_data = self.emotions[new_emotion]
 
         print(
-            f"🔄 Transition d'émotion : {old_data['color']} {old_emotion} → {new_data['color']} {new_emotion}",
+            f"🔄 Transition d'émotion : {old_data['color']} {old_emotion} → "
+            f"{new_data['color']} {new_emotion}",
         )
         print(f"📝 {old_data['description']} → {new_data['description']}")
         print(f"🎭 Intensité : {self.emotion_intensity:.1f}")

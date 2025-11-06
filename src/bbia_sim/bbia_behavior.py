@@ -119,11 +119,13 @@ class WakeUpBehavior(BBIABehavior):
                         "Bonjour Athalia ! Je suis là, prêt à interagir avec vous.",
                         "Salut ! BBIA est réveillé et prêt à discuter !",
                         "Coucou Athalia ! Content de me réveiller à vos côtés.",
-                        "Bonjour ! Je suis BBIA, votre robot compagnon. Comment allez-vous ?",
+                        "Bonjour ! Je suis BBIA, votre robot compagnon. "
+                        "Comment allez-vous ?",
                         "Salut Athalia ! Je me sens bien et énergisé aujourd'hui !",
                         "Hello ! Je suis prêt pour une nouvelle journée avec vous !",
                         "Me voilà ! Je suis là pour vous accompagner, Athalia.",
-                        "Bonjour ! Je me réveille avec enthousiasme pour passer du temps ensemble.",
+                        "Bonjour ! Je me réveille avec enthousiasme "
+                        "pour passer du temps ensemble.",
                     ]
                     wake_message = secrets.choice(wake_messages)
                     # OPTIMISATION SDK: Passer robot_api pour utiliser haut-parleur 5W
@@ -560,10 +562,13 @@ class ConversationBehavior(BBIABehavior):
         """Initialise les réponses enrichies avec variété."""
         return {
             "greeting": [
-                "Bonjour ! Je suis ravi de vous entendre. Comment allez-vous aujourd'hui ?",
+                "Bonjour ! Je suis ravi de vous entendre. "
+                "Comment allez-vous aujourd'hui ?",
                 "Salut ! Ça fait plaisir de vous voir ! Qu'est-ce qui vous amène ?",
-                "Hello ! Je suis BBIA, votre compagnon robotique. Que puis-je faire pour vous ?",
-                "Bonjour ! Prêt pour une belle conversation ? Dites-moi ce qui vous passe par la tête.",
+                "Hello ! Je suis BBIA, votre compagnon robotique. "
+                "Que puis-je faire pour vous ?",
+                "Bonjour ! Prêt pour une belle conversation ? "
+                "Dites-moi ce qui vous passe par la tête.",
                 "Salut ! Content de vous revoir. Comment s'est passée votre journée ?",
                 "Bonjour ! Je suis tout ouïe. Qu'est-ce que vous aimeriez partager ?",
             ],
@@ -598,13 +603,18 @@ class ConversationBehavior(BBIABehavior):
                 "Je comprends votre interrogation. Voici mon avis :",
             ],
             "default": [
-                "C'est intéressant ! Pouvez-vous m'en dire plus ? J'aimerais mieux comprendre votre point de vue.",
-                "Je comprends. Continuez, je vous écoute attentivement. N'hésitez pas à développer.",
+                "C'est intéressant ! Pouvez-vous m'en dire plus ? "
+                "J'aimerais mieux comprendre votre point de vue.",
+                "Je comprends. Continuez, je vous écoute attentivement. "
+                "N'hésitez pas à développer.",
                 "Ah, c'est fascinant ! Racontez-moi davantage, ça m'intrigue.",
-                "Je vois. C'est un sujet qui mérite réflexion. Que pensez-vous vous-même de ça ?",
+                "Je vois. C'est un sujet qui mérite réflexion. "
+                "Que pensez-vous vous-même de ça ?",
                 "Hmm, intriguant ! Qu'est-ce qui vous a amené à penser à ça ?",
-                "Intéressant ! Je suis curieux d'en apprendre plus. Partagez-moi vos réflexions.",
-                "Je comprends votre perspective. Voulez-vous approfondir ce sujet ensemble ?",
+                "Intéressant ! Je suis curieux d'en apprendre plus. "
+                "Partagez-moi vos réflexions.",
+                "Je comprends votre perspective. "
+                "Voulez-vous approfondir ce sujet ensemble ?",
             ],
             "not_heard": [
                 "Je n'ai pas bien entendu. Pouvez-vous répéter s'il vous plaît ?",

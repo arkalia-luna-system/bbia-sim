@@ -21,7 +21,8 @@ os.environ["TRANSFORMERS_VERBOSITY"] = "error"
 
 logger = logging.getLogger(__name__)
 
-# OPTIMISATION PERFORMANCE: Compiler regex une seule fois (évite recompilation à chaque appel)
+# OPTIMISATION PERFORMANCE: Compiler regex une seule fois
+# (évite recompilation à chaque appel)
 _regex_cache: dict[str, re.Pattern[str]] = {}
 
 
@@ -57,12 +58,14 @@ _expert_quality_padding = [
     "Je peux vous aider à clarifier ce point, dites-m'en un peu plus s'il vous plaît.",
     "Merci pour votre message, explorons calmement ce sujet ensemble si vous voulez.",
     "C'est intéressant, pouvez-vous préciser votre idée pour que je comprenne mieux ?",
-    "J'entends votre question, que souhaitez-vous approfondir en priorité aujourd'hui ?",
+    "J'entends votre question, que souhaitez-vous approfondir "
+    "en priorité aujourd'hui ?",
     "Je comprends votre point de vue, qu'est-ce qui vous amène à penser ainsi ?",
     "Très bien, prenons un instant pour détailler ce qui est le plus important ici.",
-    "Merci, je vous écoute. Quel aspect souhaitez-vous développer davantage maintenant ?",
+    "Merci, je vous écoute. Quel aspect souhaitez-vous développer "
+    "davantage maintenant ?",
     "Je vois, précisez-moi le contexte pour que je vous réponde plus précisément.",
-    "Bonne remarque, sur quoi voulez-vous que nous nous concentrions en premier ?",
+    "Bonne remarque, sur quoi voulez-vous que nous nous concentrions " "en premier ?",
     "D'accord, dites-m'en plus pour que je puisse vous guider efficacement.",
     "Je note votre intérêt, qu'aimeriez-vous découvrir ou tester concrètement ?",
     "Parfait, avançons étape par étape pour éclaircir chaque point ensemble.",
@@ -72,7 +75,8 @@ _expert_quality_padding = [
     "Très intéressant, quels objectifs souhaitez-vous atteindre avec cette idée ?",
     "Je suis là pour vous aider, que voulez-vous comprendre en priorité ?",
     "Bonne question, regardons les implications avant de proposer une solution.",
-    "Je saisis l'enjeu, souhaitez-vous que je reformule pour valider ma compréhension ?",
+    "Je saisis l'enjeu, souhaitez-vous que je reformule "
+    "pour valider ma compréhension ?",
     "Super, expliquons les points clés puis approfondissons ceux qui vous importent.",
     "Je vous suis, précisez la contrainte principale pour adapter la réponse.",
     "Merci, je perçois votre intention, voyons comment la concrétiser posément.",
@@ -153,7 +157,8 @@ class BBIAHuggingFace:
         self.cache_dir = cache_dir
         self.models: dict[str, Any] = {}
         self.processors: dict[str, Any] = {}
-        # OPTIMISATION RAM: Limiter nombre de modèles en mémoire simultanément (LRU cache)
+        # OPTIMISATION RAM: Limiter nombre de modèles en mémoire
+        # simultanément (LRU cache)
         self._max_models_in_memory = 4  # Max 3-4 modèles simultanés
         self._model_last_used: dict[str, float] = {}  # Timestamp dernier usage pour LRU
         self._inactivity_timeout = 300.0  # 5 minutes d'inactivité → déchargement auto
@@ -178,7 +183,8 @@ class BBIAHuggingFace:
             if saved_history:
                 self.conversation_history = saved_history
                 logger.info(
-                    f"💾 Conversation chargée depuis mémoire ({len(saved_history)} messages)",
+                    f"💾 Conversation chargée depuis mémoire "
+                    f"({len(saved_history)} messages)",
                 )
         except ImportError:
             # Mémoire persistante optionnelle
@@ -413,7 +419,8 @@ class BBIAHuggingFace:
             # Résolution d'alias éventuel (ex: 'emotion' -> id complet)
             resolved_name = self._resolve_model_name(model_name, model_type)
 
-            # OPTIMISATION PERFORMANCE: Vérifier si modèle déjà chargé avant de recharger
+            # OPTIMISATION PERFORMANCE: Vérifier si modèle déjà chargé
+            # avant de recharger
             if model_type == "chat":
                 # Modèles chat stockés dans self.chat_model et self.chat_tokenizer
                 if self.chat_model is not None and self.chat_tokenizer is not None:
@@ -434,7 +441,8 @@ class BBIAHuggingFace:
                 model_key = f"{model_name}_model"
                 if model_key in self.models:
                     logger.debug(
-                        f"♻️ Modèle {model_type} déjà chargé ({resolved_name}), réutilisation",
+                        f"♻️ Modèle {model_type} déjà chargé "
+                        f"({resolved_name}), réutilisation",
                     )
                     return True
 
@@ -838,7 +846,8 @@ class BBIAHuggingFace:
         """Active le LLM conversationnel (optionnel, lourd).
 
         Args:
-            model_name: Modèle LLM à charger (alias: "mistral", "llama", "phi2", "tinyllama"
+            model_name: Modèle LLM à charger (alias: "mistral", "llama",
+                "phi2", "tinyllama"
                        ou ID complet Hugging Face)
 
         Returns:
@@ -1009,7 +1018,8 @@ class BBIAHuggingFace:
                     ) or self.model_configs.get("chat", {}).get("tinyllama")
                     if default_chat_model:
                         logger.info(
-                            f"📥 Chargement LLM à la demande (lazy loading): {default_chat_model}",
+                            f"📥 Chargement LLM à la demande "
+                            f"(lazy loading): {default_chat_model}",
                         )
                         if self.load_model(default_chat_model, model_type="chat"):
                             logger.info("✅ LLM chargé avec succès (lazy loading)")
@@ -1199,8 +1209,9 @@ class BBIAHuggingFace:
     def _detect_and_execute_tools(self, user_message: str) -> str | None:
         """Détecte et exécute des outils depuis le message utilisateur.
 
-        Analyse le message pour détecter des commandes d'outils (ex: "fais danser le robot",
-        "tourne la tête à gauche", "capture une image") et exécute les outils correspondants.
+        Analyse le message pour détecter des commandes d'outils
+        (ex: "fais danser le robot", "tourne la tête à gauche",
+        "capture une image") et exécute les outils correspondants.
 
         Utilise d'abord NLP (sentence-transformers) si disponible, sinon mots-clés étendus.
 
@@ -2071,9 +2082,14 @@ class BBIAHuggingFace:
         ):
             positive_responses = {
                 "friendly_robot": [
-                    "C'est vraiment formidable ! Je suis content que vous vous sentiez bien. Pourquoi cela vous rend-il heureux aujourd'hui ?",
-                    "Super nouvelle ! Continuez comme ça, vous allez très bien ! Racontez-moi ce qui vous motive, j'aimerais comprendre.",
-                    "C'est excellent ! Votre bonne humeur est contagieuse ! Comment aimeriez-vous explorer cette dynamique positive ?",
+                    "C'est vraiment formidable ! Je suis content que vous "
+                    "vous sentiez bien. Pourquoi cela vous rend-il heureux "
+                    "aujourd'hui ?",
+                    "Super nouvelle ! Continuez comme ça, vous allez très "
+                    "bien ! Racontez-moi ce qui vous motive, j'aimerais "
+                    "comprendre.",
+                    "C'est excellent ! Votre bonne humeur est contagieuse ! "
+                    "Comment aimeriez-vous explorer cette dynamique positive ?",
                 ],
                 "curious": [
                     "Super ! Qu'est-ce qui vous rend si heureux ?",
@@ -2610,14 +2626,22 @@ _EXPERT_TEST_PADDING_RESPONSES: list[str] = [
 
 # Ensemble additionnel: réponses uniques, longueur contrôlée (≈60–120) pour conformité tests
 _EXPERT_TEST_CANONICAL_RESPONSES: list[str] = [
-    "Je peux détailler calmement les étapes à venir afin que vous avanciez avec clarté et confiance dans votre projet actuel.",
-    "Votre question est pertinente; je vous propose une réponse concise puis une suggestion concrète pour progresser sereinement.",
-    "Pour rester efficace, nous allons prioriser trois actions simples et mesurables avant d'examiner d'éventuels raffinements.",
-    "Je note vos objectifs; structurons une courte feuille de route et validons chaque point pour sécuriser le résultat attendu.",
-    "Afin d'éviter toute ambiguïté, je vais reformuler l'enjeu puis proposer une approche pragmatique en deux paragraphes clairs.",
-    "Merci pour ce retour; je suggère d'itérer rapidement, recueillir un signal fiable, puis stabiliser la solution retenue ensemble.",
-    "Voici une synthèse courte: contexte, contrainte principale, décision raisonnable; ensuite, un plan d'exécution réaliste.",
-    "Je recommande d'expérimenter à petite échelle, mesurer l'impact, et documenter brièvement pour capitaliser sans lourdeur inutile.",
+    "Je peux détailler calmement les étapes à venir afin que vous "
+    "avanciez avec clarté et confiance dans votre projet actuel.",
+    "Votre question est pertinente; je vous propose une réponse concise "
+    "puis une suggestion concrète pour progresser sereinement.",
+    "Pour rester efficace, nous allons prioriser trois actions simples "
+    "et mesurables avant d'examiner d'éventuels raffinements.",
+    "Je note vos objectifs; structurons une courte feuille de route et "
+    "validons chaque point pour sécuriser le résultat attendu.",
+    "Afin d'éviter toute ambiguïté, je vais reformuler l'enjeu puis "
+    "proposer une approche pragmatique en deux paragraphes clairs.",
+    "Merci pour ce retour; je suggère d'itérer rapidement, recueillir un "
+    "signal fiable, puis stabiliser la solution retenue ensemble.",
+    "Voici une synthèse courte: contexte, contrainte principale, "
+    "décision raisonnable; ensuite, un plan d'exécution réaliste.",
+    "Je recommande d'expérimenter à petite échelle, mesurer l'impact, et "
+    "documenter brièvement pour capitaliser sans lourdeur inutile.",
     "Nous pouvons équilibrer qualité et délai: limiter la portée initiale, livrer tôt, et améliorer avec des retours concrets et utiles.",
     "Votre idée est solide; clarifions la définition de terminé pour cadrer l'effort et éviter les dérives de portée fréquentes.",
     "Si vous êtes d'accord, je prépare un résumé d'une phrase, une liste d'étapes minimales, et un critère de succès vérifiable.",
