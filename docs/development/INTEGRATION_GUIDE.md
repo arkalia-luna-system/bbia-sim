@@ -77,7 +77,7 @@ graph TB
 flowchart TD
     START[Démarrer avec BBIA-SIM] --> INSTALL[Installation<br/>pip install -e .]
     INSTALL --> CONFIG[Configuration<br/>Variables d'environnement]
-    CONFIG --> API[Démarrer API<br/>deployment/public_api.py --dev]
+    CONFIG --> API[Démarrer API<br/>python -m bbia_sim.daemon.app.main]
     API --> TEST[Tester API<br/>--check ou Swagger UI]
     TEST --> INTEG[Intégrer dans votre code<br/>RobotAPI ou HTTP client]
     INTEG --> DEPLOY[Déployer<br/>Production ou Docker]
@@ -132,21 +132,18 @@ pip install -e .
 ### 2. Démarrage de l'API
 
 ```bash
-# Démarrage en mode développement
-python deployment/public_api.py --dev
+# Démarrage via module daemon (recommandé)
+python -m bbia_sim.daemon.app.main
 
-# Démarrage en mode production
-python deployment/public_api.py --prod --port 8000
-
-# Démarrage sur toutes les interfaces
-python deployment/public_api.py --host 0.0.0.0 --port 8000
+# Ou via uvicorn directement
+uvicorn bbia_sim.daemon.app.main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
 ### 3. Test de l'API
 
 ```bash
-# Test automatisé
-python deployment/public_api.py --check
+# Vérifier santé API
+curl http://localhost:8000/health
 
 # Démonstration complète
 python scripts/demo_public_api.py
