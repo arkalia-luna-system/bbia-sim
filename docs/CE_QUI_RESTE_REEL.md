@@ -13,6 +13,7 @@
 **Résultat** : ✅ **AUCUN TODO TROUVÉ** dans le code source
 
 **Explication** :
+
 - Le code est **déjà implémenté** :
   - `connect()` : ✅ Implémenté (lignes 63-116)
   - `disconnect()` : ✅ Implémenté (lignes 118-145)
@@ -32,6 +33,7 @@
 **Ligne 227** : `# TODO: Implémenter avec robot physique ou mock avancé`
 
 **Contexte** :
+
 ```python
 def test_watchdog_timeout_robot_disconnected(self):
     """Test watchdog timeout quand robot déconnecté.
@@ -70,6 +72,7 @@ def test_watchdog_timeout_robot_disconnected(self):
 **Coverage total** : **64.98%** ✅
 
 **Tests** :
+
 - ✅ **1299 tests passent** (34 skipped, 1 failed)
 - ✅ **9699 lignes** de code total
 - ✅ **3397 lignes** non couvertes
@@ -85,6 +88,7 @@ def test_watchdog_timeout_robot_disconnected(self):
 ### Modules < 70% (24 modules identifiés)
 
 **Priorité Haute** (Coverage très faible < 30%) :
+
 - ❌ `daemon/app/__main__.py` : **0.0%** (8 lignes)
 - ❌ `daemon/app/routers/sanity.py` : **0.0%** (37 lignes)
 - ❌ `model_optimizer.py` : **0.0%** (23 lignes)
@@ -96,12 +100,14 @@ def test_watchdog_timeout_robot_disconnected(self):
 - ❌ `dashboard.py` : **32.2%** (146 lignes, 99 manquantes)
 
 **Priorité Moyenne** (Coverage 30-50%) :
+
 - ⚠️ `bbia_emotion_recognition.py` : **40.1%** (227 lignes, 136 manquantes)
 - ⚠️ `bbia_voice_advanced.py` : **42.5%** (174 lignes, 100 manquantes)
 - ⚠️ `daemon/app/routers/daemon.py` : **43.4%** (83 lignes, 47 manquantes)
 - ⚠️ `backends/mujoco_backend.py` : **45.3%** (192 lignes, 105 manquantes)
 
 **Priorité Basse** (Coverage 50-70%) :
+
 - 🟡 `bbia_adaptive_behavior.py` : **51.2%** (260 lignes, 127 manquantes)
 - 🟡 `backends/reachy_mini_backend.py` : **53.7%** (715 lignes, 331 manquantes)
 - 🟡 `daemon/app/backend_adapter.py` : **54.2%** (277 lignes, 127 manquantes)
@@ -133,10 +139,12 @@ def test_watchdog_timeout_robot_disconnected(self):
 ### ✅ **TOUS LES TODOs CODE SONT TERMINÉS !**
 
 **Vérification** :
+
 - ✅ `reachy_backend.py` : **AUCUN TODO** dans le code (tout est implémenté)
 - ✅ Tous les autres modules : **AUCUN TODO** restant
 
 **Tâches restantes** :
+
 - 🟡 **Optionnel** : 1 TODO test (`test_watchdog_monitoring.py` ligne 227)
 - 🟡 **Optionnel** : Liens MD archives (~30 min)
 
@@ -153,12 +161,14 @@ def test_watchdog_timeout_robot_disconnected(self):
 ### Normalisation Code Récente
 
 ✅ **TERMINÉ** : Structure bbox normalisée
+
 - **Fichier** : `src/bbia_sim/bbia_vision.py`
 - **Changement** : Ajout de `center_x` et `center_y` aux visages MediaPipe
 - **Lignes** : 689-690 (scan_environment_from_image), 890-891 (scan_environment)
 - **Résultat** : Tous les bbox (objets YOLO et visages MediaPipe) ont maintenant la même structure
 
 ✅ **CORRECTION** : Fallback vision en simulation lorsque SDK caméra indisponible
+
 - `BBIAVision.scan_environment()` renvoie désormais `source = "simulation"` si le SDK caméra n'est pas disponible, même si une webcam OpenCV est détectée
 - Garantit la réussite du test `test_vision_fallback_simulation` et une CI stable
 - **Fichier** : `src/bbia_sim/bbia_vision.py`
@@ -166,6 +176,7 @@ def test_watchdog_timeout_robot_disconnected(self):
 ### Qualité Code
 
 ✅ **TERMINÉ** : Passage outils qualité
+
 - **Black** : 123 fichiers formatés
 - **Ruff** : Tous les checks passent
 - **MyPy** : 1 erreur corrigée (`bbia_audio.py` ligne 101)
@@ -174,6 +185,7 @@ def test_watchdog_timeout_robot_disconnected(self):
 ### Issues GitHub
 
 ✅ **TERMINÉ** : Toutes les issues GitHub gérées (Janvier 2025)
+
 - ✅ **Issue #5** (`bbia_memory.py`) : **FERMÉE** - Tests déjà complets (198 lignes)
 - ✅ **Issue #4** (`bbia_audio.py`) : **MODIFIÉE** - Précision ajoutée sur `_capture_audio_chunk()`
 - ✅ **Issue #6** (`bbia_emotions.py`) : **MODIFIÉE** - Exemples transitions complexes ajoutés
@@ -184,6 +196,7 @@ def test_watchdog_timeout_robot_disconnected(self):
 ### Repo GitHub
 
 ✅ **VÉRIFIÉ** : Repo GitHub professionnel et complet (Janvier 2025)
+
 - ✅ Topics/Tags ajoutés : `robotics-python-ai-mujoco-simulation-reachy-mini`
 - ✅ Description raccourcie et professionnelle
 - ✅ Issue Templates configurés (Bug, Feature, First Run, etc.)
@@ -196,11 +209,9 @@ def test_watchdog_timeout_robot_disconnected(self):
 ### TODOs Restants
 
 🟡 **Optionnel** : 1 TODO test
+
 - `tests/test_watchdog_monitoring.py` ligne 227
 - Test watchdog timeout robot déconnecté
 - Estimation : ~30 min
 
 ---
-
-
-
