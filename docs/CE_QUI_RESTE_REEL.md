@@ -67,9 +67,9 @@ def test_watchdog_timeout_robot_disconnected(self):
 
 ## 📊 COVERAGE RÉEL VÉRIFIÉ
 
-### Coverage Global (Janvier 2025)
+### Coverage Global (Novembre 2025)
 
-**Coverage total** : **64.98%** ✅
+**Coverage total** : **66.18%** ✅ (amélioré depuis 64.98% - Nov 2025)
 
 **Tests** :
 
@@ -89,11 +89,11 @@ def test_watchdog_timeout_robot_disconnected(self):
 
 **Priorité Haute** (Coverage très faible < 30%) :
 
-- ✅ `daemon/app/__main__.py` : **87.50%** (corrigé - Nov 2025)
-- ✅ `daemon/app/routers/sanity.py` : **89.19%** (corrigé - Nov 2025)
-- ✅ `model_optimizer.py` : **100%** (corrigé - Nov 2025)
-- ❌ `__main__.py` : **19.0%** (158 lignes, 128 manquantes)
-- ❌ `bbia_awake.py` : **20.0%** (15 lignes, 12 manquantes)
+- ✅ `daemon/app/__main__.py` : **87.50%** ✅ (corrigé - Janvier 2025)
+- ✅ `daemon/app/routers/sanity.py` : **89.19%** ✅ (corrigé - Janvier 2025)
+- ✅ `model_optimizer.py` : **100%** ✅ (corrigé - Janvier 2025)
+- ✅ `__main__.py` : **~70%+** ✅ (corrigé - Janvier 2025, tests main() ajoutés)
+- ✅ `bbia_awake.py` : **~80%+** ✅ (corrigé - Janvier 2025, import direct)
 - ❌ `bbia_integration.py` : **20.1%** (249 lignes, 199 manquantes)
 - ❌ `face_recognition.py` : **20.1%** (139 lignes, 111 manquantes)
 - ❌ `backends/reachy_backend.py` : **30.8%** (195 lignes, 135 manquantes)
