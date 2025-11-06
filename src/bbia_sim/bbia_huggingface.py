@@ -1506,7 +1506,8 @@ class BBIAHuggingFace:
                     "(gauche, droite, haut, bas, orienter la tête)"
                 ),
                 "camera": (
-                    "Capturer une image, prendre une photo, analyser l'environnement visuel, "
+                    "Capturer une image, prendre une photo, analyser "
+                    "l'environnement visuel, "
                     "regarder autour, que vois-tu"
                 ),
                 "dance": (
@@ -1635,7 +1636,8 @@ class BBIAHuggingFace:
                     # Angle max ~90 degrés → intensité 1.0
                     params["intensity"] = min(extracted_angle / 90.0, 1.0)
                     logger.info(
-                        f"📐 Angle extrait: {extracted_angle}° → intensité: {params['intensity']:.2f}",
+                        f"📐 Angle extrait: {extracted_angle}° → "
+                        f"intensité: {params['intensity']:.2f}",
                     )
                 else:
                     # Extraire intensité depuis mots-clés
@@ -1750,7 +1752,8 @@ class BBIAHuggingFace:
         return None
 
     def _extract_intensity(self, message: str) -> float | None:
-        """Extrait une intensité depuis un message (mots-clés comme "légèrement", "beaucoup").
+        """Extrait une intensité depuis un message (mots-clés comme
+        "légèrement", "beaucoup").
 
         Args:
             message: Message utilisateur
@@ -1956,7 +1959,8 @@ class BBIAHuggingFace:
             base_pool = [
                 "Je peux préciser si besoin, qu'aimeriez-vous savoir exactement ?",
                 "D'accord, dites-m'en un peu plus pour que je vous réponde au mieux.",
-                "Merci pour votre message, souhaitez-vous que je détaille un point précis ?",
+                "Merci pour votre message, souhaitez-vous que je détaille "
+                "un point précis ?",
             ]
             base = base_pool[
                 _r.randrange(len(base_pool))  # nosec B311 - Variété réponse non-crypto
@@ -2036,12 +2040,15 @@ class BBIAHuggingFace:
         ):
             goodbyes = {
                 "friendly_robot": [
-                    "Au revoir ! Ce fut un plaisir de discuter avec vous. Revenez quand vous voulez !",
-                    "À bientôt ! N'hésitez pas à revenir pour continuer notre conversation.",
+                    "Au revoir ! Ce fut un plaisir de discuter avec vous. "
+                    "Revenez quand vous voulez !",
+                    "À bientôt ! N'hésitez pas à revenir pour continuer "
+                    "notre conversation.",
                     "Au revoir ! J'espère vous revoir bientôt. Portez-vous bien !",
                 ],
                 "curious": [
-                    "Au revoir ! J'espère qu'on pourra continuer nos échanges intéressants !",
+                    "Au revoir ! J'espère qu'on pourra continuer nos "
+                    "échanges intéressants !",
                     "À bientôt ! J'ai encore plein de questions à vous poser !",
                     "Au revoir ! Revenez pour partager de nouvelles découvertes !",
                 ],
@@ -2133,13 +2140,17 @@ class BBIAHuggingFace:
         ):
             negative_responses = {
                 "friendly_robot": [
-                    "Je comprends que vous ne vous sentiez pas bien. Je suis là pour vous écouter.",
+                    "Je comprends que vous ne vous sentiez pas bien. "
+                    "Je suis là pour vous écouter.",
                     "C'est difficile parfois. Voulez-vous en parler ? Je vous écoute.",
-                    "Je ressens votre malaise. Comment puis-je vous aider à vous sentir mieux ?",
+                    "Je ressens votre malaise. Comment puis-je vous aider "
+                    "à vous sentir mieux ?",
                 ],
                 "curious": [
-                    "Qu'est-ce qui vous préoccupe ? J'aimerais comprendre pour mieux vous aider.",
-                    "Votre message reflète de la tristesse. Partagez-moi ce qui vous tracasse.",
+                    "Qu'est-ce qui vous préoccupe ? J'aimerais comprendre "
+                    "pour mieux vous aider.",
+                    "Votre message reflète de la tristesse. Partagez-moi "
+                    "ce qui vous tracasse.",
                     "Qu'est-ce qui cause cette difficulté ? Je veux vous aider.",
                 ],
                 "enthusiastic": [
@@ -2642,9 +2653,13 @@ _EXPERT_TEST_CANONICAL_RESPONSES: list[str] = [
     "décision raisonnable; ensuite, un plan d'exécution réaliste.",
     "Je recommande d'expérimenter à petite échelle, mesurer l'impact, et "
     "documenter brièvement pour capitaliser sans lourdeur inutile.",
-    "Nous pouvons équilibrer qualité et délai: limiter la portée initiale, livrer tôt, et améliorer avec des retours concrets et utiles.",
-    "Votre idée est solide; clarifions la définition de terminé pour cadrer l'effort et éviter les dérives de portée fréquentes.",
-    "Si vous êtes d'accord, je prépare un résumé d'une phrase, une liste d'étapes minimales, et un critère de succès vérifiable.",
+    "Nous pouvons équilibrer qualité et délai: limiter la portée "
+    "initiale, livrer tôt, et améliorer avec des retours concrets et "
+    "utiles.",
+    "Votre idée est solide; clarifions la définition de terminé pour "
+    "cadrer l'effort et éviter les dérives de portée fréquentes.",
+    "Si vous êtes d'accord, je prépare un résumé d'une phrase, une liste "
+    "d'étapes minimales, et un critère de succès vérifiable.",
     "Je propose d'articuler la réponse autour de la valeur utilisateur, en explicitant les compromis et les risques maîtrisés.",
     "Pour garantir la lisibilité, je segmente la solution en modules simples, testables, et indépendants au maximum les uns des autres.",
     "Nous viserons une réponse chaleureuse et naturelle, en privilégiant la clarté sur la technicité excessive, pour rester engageants.",

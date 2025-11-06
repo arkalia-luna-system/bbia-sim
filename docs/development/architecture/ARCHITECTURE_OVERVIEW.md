@@ -49,11 +49,11 @@
 > - **Python requis** : 3.11+
 > - **Workflow** : `.github/workflows/ci.yml`
 > - **Installation locale** :
->   ```bash
->   pyenv install 3.11.9 && pyenv local 3.11.9
->   python -m pip install --upgrade pip
->   pip install -e .
->   ```
+> ```bash
+> pyenv install 3.11.9 && pyenv local 3.11.9
+> python -m pip install --upgrade pip
+> pip install -e .
+> ```
 
 - Documentation : complète et à jour
 
