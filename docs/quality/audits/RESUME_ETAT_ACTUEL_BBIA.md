@@ -20,6 +20,7 @@ pie title Parité Fonctionnelle avec App Officielle
 ## ✅ CE QUI EST DÉJÀ FAIT (100% gratuit)
 
 ### Modèles Hugging Face (10+ modèles gratuits)
+
 - ✅ **LLM** : Mistral 7B, Llama 3 8B, Phi-2, TinyLlama
 - ✅ **Vision** : CLIP, BLIP, BLIP VQA
 - ✅ **Audio** : Whisper (STT)
@@ -27,6 +28,7 @@ pie title Parité Fonctionnelle avec App Officielle
 - ✅ **Architecture** : Modulaire, extensible
 
 ### Fonctionnalités
+
 - ✅ **Outils LLM** : 8 outils intégrés (`bbia_tools.py`)
 - ✅ **Function calling** : `BBIAHuggingFace.chat()` avec `enable_tools=True`
 - ✅ **Détection NLP** : sentence-transformers + mots-clés (30+ patterns français)
@@ -145,6 +147,7 @@ graph TB
 **BBIA est maintenant très complet** avec ~85-90% de parité fonctionnelle avec l'app officielle !
 
 **Tout ce qui était prévu a été implémenté (100% gratuitement)** :
+
 1. ✅ Patterns français étendus (30+ variantes) - **TERMINÉ**
 2. ✅ sentence-transformers NLP (détection robuste) - **TERMINÉ**
 3. ✅ SmolVLM2 vision (descriptions riches) - **TERMINÉ**
@@ -157,4 +160,3 @@ graph TB
 ---
 
 **Dernière mise à jour** : Oct / Nov. 2025
-

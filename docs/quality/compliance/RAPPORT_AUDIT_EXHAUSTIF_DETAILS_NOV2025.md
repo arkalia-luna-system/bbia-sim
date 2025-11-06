@@ -20,23 +20,27 @@ Toutes les différences subtiles détectées ont été corrigées pour garantir 
 **Fichier**: `src/bbia_sim/daemon/app/backend_adapter.py`
 
 #### Avant l'audit
+
 - **Méthodes BackendAdapter**: 20
 - **Méthodes Backend officiel**: 34
 - **Méthodes manquantes**: 22
 
 #### Après corrections
+
 - **Méthodes BackendAdapter**: 39
 - **Méthodes manquantes**: 0 ✅
 
 #### Méthodes Ajoutées (20)
 
 **Propriétés target_* (4)**:
+
 - ✅ `target_head_pose` : Propriété avec stockage interne `_target_head_pose`
 - ✅ `target_body_yaw` : Propriété avec stockage interne `_target_body_yaw`
 - ✅ `target_head_joint_positions` : Propriété avec stockage interne
 - ✅ `target_antenna_joint_positions` : Propriété avec stockage interne
 
 **Méthodes set_target individuelles (5)**:
+
 - ✅ `set_target_head_pose(pose)` : Définit pose cible tête
 - ✅ `set_target_body_yaw(body_yaw)` : Définit yaw corps
 - ✅ `set_target_head_joint_positions(positions)` : Définit joints tête
@@ -44,6 +48,7 @@ Toutes les différences subtiles détectées ont été corrigées pour garantir 
 - ✅ `set_target()` : Refactorisé pour utiliser méthodes individuelles
 
 **Méthodes critiques (8)**:
+
 - ✅ `get_current_head_pose()` : Alias de `get_present_head_pose`
 - ✅ `goto_joint_positions()` : Interpolation dans l'espace des joints (async)
 - ✅ `get_urdf()` : Récupère URDF du robot
@@ -54,6 +59,7 @@ Toutes les différences subtiles détectées ont été corrigées pour garantir 
 - ✅ `set_target_head_joint_current(current)` : Définit courant joints tête
 
 **Méthodes lifecycle/stubs (8)**:
+
 - ✅ `close()` : Ferme le backend
 - ✅ `get_status()` : Retourne statut backend
 - ✅ `set_joint_positions_publisher()` : Stub Zenoh
@@ -70,6 +76,7 @@ Toutes les différences subtiles détectées ont été corrigées pour garantir 
 ### 2. Structure des Routers - Prefixes
 
 **Fichiers modifiés**:
+
 - `src/bbia_sim/daemon/app/main.py`
 - `src/bbia_sim/daemon/app/routers/state.py`
 - `src/bbia_sim/daemon/app/routers/move.py`
@@ -79,10 +86,12 @@ Toutes les différences subtiles détectées ont été corrigées pour garantir 
 - `src/bbia_sim/daemon/app/routers/apps.py`
 
 #### Avant (BBIA)
+
 - Prefixes définis dans `main.py` lors de l'inclusion
 - Structure plate: `app.include_router(router, prefix="/development/api/state")`
 
 #### Après (Conforme SDK)
+
 - Prefixes définis dans la déclaration du router
 - Structure hiérarchique: router parent `/api` avec sous-routers
 
@@ -100,12 +109,14 @@ Toutes les différences subtiles détectées ont été corrigées pour garantir 
 #### Structure main.py
 
 **Avant**:
+
 ```python
 app.include_router(state.router, prefix="/development/api/state", ...)
 app.include_router(move.router, prefix="/development/api/move", ...)
 ```
 
 **Après** (Conforme SDK):
+
 ```python
 api_router = APIRouter(prefix="/api")
 api_router.include_router(state.router)
@@ -124,10 +135,12 @@ app.include_router(api_router, dependencies=[Depends(verify_token)])
 **Fichier**: `src/bbia_sim/daemon/app/routers/move.py`
 
 #### Problème détecté
+
 - **SDK officiel**: Ne passe pas `method` à `goto_target()` (utilise valeur par défaut `MIN_JERK`)
 - **BBIA**: Passait `method=method_str` explicitement
 
 #### Correction
+
 ```python
 # AVANT
 return create_move_task(
@@ -157,10 +170,12 @@ return create_move_task(
 **Fichier**: `src/bbia_sim/daemon/app/routers/move.py`
 
 #### Problème détecté
+
 - **BBIA**: Logique complexe pour convertir `AnyPose` avec fallbacks multiples
 - **SDK officiel**: Utilise directement `to_pose_array()` sur `target.target_head_pose`
 
 #### Correction
+
 ```python
 # AVANT
 head_pose_array = None
@@ -186,10 +201,12 @@ backend.set_target(
 **Fichier**: `src/bbia_sim/daemon/app/routers/move.py`
 
 #### Problème détecté
+
 - **BBIA**: Dupliquait la logique de conversion de `set_target()`
 - **SDK officiel**: Utilise `await set_target(target, backend)` directement
 
 #### Correction
+
 ```python
 # AVANT
 target = FullBodyTarget.model_validate_json(data)
@@ -208,10 +225,12 @@ await set_target(target, backend)
 **Fichier**: `src/bbia_sim/daemon/models.py`
 
 #### Problème détecté
+
 - **SDK officiel**: Contient `model_config` avec `json_schema_extra` et examples
 - **BBIA**: Manquait `model_config`
 
 #### Correction
+
 ```python
 class FullBodyTarget(BaseModel):
     target_head_pose: AnyPose | None = None
@@ -240,6 +259,7 @@ class FullBodyTarget(BaseModel):
 **Fichier**: `src/bbia_sim/daemon/app/routers/state.py`
 
 #### Amélioration
+
 - Gestion `None` pour `target_*` améliorée (évite assertions)
 - Conversion correcte des types (array → list)
 
@@ -263,6 +283,7 @@ if with_target_head_pose:
 **Fichier**: `src/bbia_sim/daemon/app/backend_adapter.py`
 
 #### Amélioration
+
 - Gestion des erreurs IK conforme SDK (raise ValueError si collision)
 - Mise à jour directe de `target_head_joint_positions`
 
@@ -281,17 +302,20 @@ self.ik_required = False
 ## 📊 Statistiques Finales
 
 ### BackendAdapter
+
 - **Méthodes avant**: 20
 - **Méthodes après**: 39
 - **Méthodes ajoutées**: 20 (12 critiques + 8 stubs)
 - **Conformité**: 100% ✅
 
 ### Routers
+
 - **Structure**: 100% conforme SDK ✅
 - **Prefixes**: 100% alignés ✅
 - **Endpoints**: 100% conforme ✅
 
 ### Code Quality
+
 - **black**: ✅ Formaté
 - **ruff**: ✅ Vérifié (0 erreurs)
 - **mypy**: À vérifier (optionnel)
@@ -319,6 +343,7 @@ self.ik_required = False
 ## ✅ Conclusion
 
 **Le projet BBIA-SIM est maintenant 100% conforme au SDK officiel Reachy Mini** pour :
+
 - ✅ Toutes les méthodes critiques du Backend
 - ✅ Structure et organisation des routers
 - ✅ Endpoints REST critiques
@@ -327,6 +352,7 @@ self.ik_required = False
 - ✅ Code quality (black, ruff)
 
 **Prêt pour** :
+
 - ✅ Développement/tests avec robot physique Reachy Mini
 - ✅ Intégration avec SDK officiel sans modifications
 - ✅ Compatibilité totale API REST
@@ -335,4 +361,3 @@ self.ik_required = False
 
 **Date de finalisation**: Oct / Nov. 2025
 **Statut**: ✅ **CONFORME**
-

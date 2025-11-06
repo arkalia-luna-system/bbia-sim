@@ -15,6 +15,7 @@ source venv/bin/activate
 ### **Vérifier que c'est actif** :
 
 Le prompt devrait afficher `(venv)` :
+
 ```bash
 # Vous devriez voir : (venv) dans votre prompt
 which python
@@ -40,6 +41,7 @@ python examples/view_scene_piece.py
 ```
 
 **Sur macOS** (si viewer ne s'ouvre pas avec `python`) :
+
 ```bash
 # Activer le venv
 source venv/bin/activate
@@ -104,6 +106,7 @@ source venv/bin/activate
 ## 🎮 Contrôles dans le Viewer
 
 Une fois la fenêtre 3D ouverte :
+
 - **Souris** : Rotation de la vue
 - **Molette** : Zoom
 - **Clic droit** : Déplacer la vue
@@ -147,7 +150,7 @@ python -c "import mujoco; m = mujoco.MjModel.from_xml_path('src/bbia_sim/sim/sce
 
 ## 📁 Structure des Fichiers
 
-```
+```text
 /Volumes/T7/bbia-reachy-sim/
 ├── venv/                          # Venv principal (activer ici)
 │   └── bin/activate               # Script d'activation
@@ -229,4 +232,3 @@ python -m bbia_sim --sim --scene piece_bbia_simple.xml --headless
 ---
 
 *Guide Commandes - BBIA-SIM - Oct / No2025025025025025*
-

@@ -3,12 +3,14 @@
 **Date** : Oct / Nov. 2025
 
 ## Objectif
+
 - Générer des voix “mignonnes”/enfantines ou “douces” en local (offline), sans casser les venv existants.
 - Lire les WAV via BBIA (`robot.media.play_audio`) ou activer un backend dédié.
 
 ---
 
 ### 1) Environnement dédié
+
 ```bash
 python -m venv venv-voice
 source venv-voice/bin/activate
@@ -18,6 +20,7 @@ pip install -r requirements/requirements-voice.txt
 ---
 
 ### 2) Enregistrer un échantillon de référence (optionnel)
+
 ```bash
 source venv-voice/bin/activate
 python scripts/voice_clone/enregistrer_sample.py --out assets/voice/ref.wav --dur 30
@@ -28,6 +31,7 @@ Conseils: parle calmement, quelques phrases variées; micro proche, pièce calme
 ---
 
 ### 3) Générer des WAV avec intonation
+
 ```bash
 source venv-voice/bin/activate
 # Douce
@@ -49,6 +53,7 @@ python scripts/voice_clone/generate_voice.py \
 ---
 
 ### 4) Lecture fiable
+
 ```bash
 source venv/bin/activate
 python scripts/voice_clone/play_voice.py --file assets/voice/bbia_enfant.wav
@@ -60,16 +65,20 @@ python scripts/voice_clone/play_voice.py --file assets/voice/bbia_enfant.wav --o
 ---
 
 ### 5) Activer l’usage automatique dans BBIA (optionnel)
+
 Tu peux router `dire_texte()` vers la génération locale (offline) via une commande externe sûre:
+
 ```bash
 export OPENVOICE_CMD="python scripts/voice_clone/generate_voice.py --text '{text}' --mode enfant --out '{out}'"
 export BBIA_TTS_BACKEND=openvoice
 ```
+
 Si la commande échoue, BBIA retombe automatiquement sur `pyttsx3` (voix système).
 
 ---
 
 ### 6) Bonnes pratiques d’intonation
+
 - Scinder en courtes phrases; ajouter micro‑pauses (…)
 - Utiliser des interjections (hi hi ! youpi ! oh !)
 - Ajuster vitesse/pitch en post‑traitement si nécessaire (ffmpeg/sox)
@@ -77,7 +86,9 @@ Si la commande échoue, BBIA retombe automatiquement sur `pyttsx3` (voix systèm
 ---
 
 ### 7) Tests/Qualité
+
 Avant de committer, lancer:
+
 ```bash
 source venv/bin/activate
 black .

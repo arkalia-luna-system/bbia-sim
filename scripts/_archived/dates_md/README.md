@@ -16,6 +16,7 @@ Ces scripts ont été fusionnés dans `audit_and_correct_dates_md.py`.
 Utiliser maintenant : `scripts/audit_and_correct_dates_md.py`
 
 **Fonctionnalités** :
+
 - Audit des dates (comme les anciens scripts)
 - Récupération date création depuis git (comme `audit_md_dates.py`)
 - Correction robuste (comme `correct_dates_md_final.py`)
@@ -24,4 +25,3 @@ Utiliser maintenant : `scripts/audit_and_correct_dates_md.py`
 ---
 
 *Archivé pour référence historique*
-

@@ -76,6 +76,7 @@ sequenceDiagram
 ```
 
 **Avantages** :
+
 - ✅ Détection robuste même avec variantes de phrases
 - ✅ Support synonymes et expressions naturelles
 - ✅ Score de confiance pour chaque détection
@@ -130,6 +131,7 @@ Le seuil par défaut est **0.6** (ajustable dans `_detect_tool_with_nlp()`).
 ### Description
 
 BBIA extrait automatiquement des paramètres numériques depuis les phrases naturelles :
+
 - **Angles** : "30 degrés", "pi/4 radians", "50%"
 - **Intensités** : "légèrement", "beaucoup", "à 75%"
 
@@ -445,6 +447,7 @@ dependencies = [
 **Symptôme** : Fallback vers mots-clés seulement
 
 **Solution** :
+
 ```bash
 pip install sentence-transformers scikit-learn
 ```
@@ -454,6 +457,7 @@ pip install sentence-transformers scikit-learn
 **Symptôme** : `⚠️ Impossible de charger VAD`
 
 **Solution** :
+
 ```bash
 pip install transformers torch
 ```
@@ -475,5 +479,11 @@ pip install transformers torch
 
 ---
 
-**Dernière mise à jour** : Oct 25 / Nov 25
+**Dernière mise à jour** : Oct / Nov. 2025
 
+---
+
+## 🎯 Navigation
+
+**Retour à** : [README Documentation](../README.md)  
+**Voir aussi** : [Guide Chat BBIA](GUIDE_CHAT_BBIA.md) • [Guide Débutant](GUIDE_DEBUTANT.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)

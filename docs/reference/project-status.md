@@ -57,11 +57,13 @@ pip install -e .
 </div>
 
 **Actions futures** :
+
 - 📊 Exposer métriques (latence, CPU/RAM, FPS, watchdog) via `prometheus_client`
 - 🏥 Ajouter `GET /healthz` (liveness) et `GET /readyz` (readiness)
 - 📝 Standardiser logs structurés JSON
 
 ### Performance
+
 - État actuel:
   - Tests de latence/jitter/bench présents (ex: `tests/test_control_loop_jitter.py`, `tests/test_emergency_stop_latency.py`).
   - Rapports p50/p95 non agrégés automatiquement en CI.
@@ -70,6 +72,7 @@ pip install -e .
   - Seuils/perf-baselines simples dans la CI.
 
 ### Sécurité
+
 - État actuel:
   - Bandit + pip-audit en CI; clamp sécurité et validation JSON en place; pas de secrets versionnés détectés.
   - CORS/ratelimiting/scopes OAuth non configurés; SBOM/semgrep/gitleaks absents.
@@ -78,6 +81,7 @@ pip install -e .
   - Générer SBOM (CycloneDX) + ajouter semgrep/gitleaks en CI.
 
 ### CI/CD
+
 - État actuel:
   - Pipeline GitHub Actions unifié Python 3.11, codecov OK.
   - Pas de matrice 3.12, pas de pré-commit, pas de sharding tests.
@@ -85,6 +89,7 @@ pip install -e .
   - Étendre matrice (3.11/3.12); pré-commit (ruff/black/mypy); shards tests si durée ↑.
 
 ### Compatibilité / Packaging
+
 - État actuel:
   - `pyproject` PEP 621 OK; extras `dev/test/audio`; Dockerfile présent.
   - Pas de script de diagnostic environnement.
@@ -92,6 +97,7 @@ pip install -e .
   - Extras `lite/full/robot`; images Docker CPU/MPS; script "bbia doctor".
 
 ### API & SDK
+
 - État actuel:
   - OpenAPI via FastAPI; WS télémétrie stable.
   - Pas de versionnement de schémas WS; pagination/filtre REST absents.
@@ -99,6 +105,7 @@ pip install -e .
   - Client SDK auto-généré (Python/TS); versionner schémas WS; pagination/filtre.
 
 ### Fonctionnalités robot
+
 - État actuel:
   - Record/replay, watchdog OK; scripts d’intégration présents.
   - Résilience réseau ROS2/Zenoh peu documentée.
@@ -106,6 +113,7 @@ pip install -e .
   - Timelines scriptables; reconnexion WS/Zenoh; guide résilience.
 
 ### Dashboard / UX
+
 - État actuel:
   - `dashboard_advanced.py` disponible.
   - Pas d’UI chartée avec presets/sliders.
@@ -113,6 +121,7 @@ pip install -e .
   - Mini UI télémétrie (graph + sliders émotions), presets exportables, mode read-only.
 
 ### Vision / Audio / IA
+
 - État actuel:
   - ✅ Modules et tests présents; flags headless.
   - ✅ DeepFace ajouté (reconnaissance visage + émotions) - Opérationnel
@@ -123,6 +132,7 @@ pip install -e .
   - ✅ LLM léger (Phi-2/TinyLlama) pour RPi 5 - **FAIT** (configuré dans `bbia_huggingface.py`)
 
 ### Docs / Onboarding
+
 - État actuel:
   - Docs riches, 3.11+ harmonisé; bandeaux archives OK.
   - Pas de vidéos/GIF; FAQ à compléter.
@@ -131,6 +141,7 @@ pip install -e .
   - 📝 **Note** : Vidéos prévues pour plus tard, pas prioritaire maintenant.
 
 ### Qualité
+
 - État actuel:
   - ruff/black/mypy/bandit OK; golden traces; couverture bonne sur critiques.
   - Semgrep absent; couverture par module non publiée.
@@ -138,6 +149,7 @@ pip install -e .
   - Semgrep léger; badges couverture par sous-modules; tests surface API additionnels.
 
 ### Communauté
+
 - État actuel:
   - PR template présent.
   - Pas de templates issues/discussions ni roadmap publique.
@@ -147,12 +159,14 @@ pip install -e .
 ### 📋 Référence Reachy Mini
 
 **Référence précise @84c40c31 :**
+
 - `/tmp/reachy_ref/src/reachy_mini/apps/sources/hf_space.py`
 
 **Type :** Extension BBIA (non core SDK)  
 **Statut :** Module BBIA original - intégration Hugging Face pour IA conversationnelle
 
 Le SDK officiel Reachy Mini expose une intégration Hugging Face Spaces via `hf_space.py` pour lister les apps disponibles. Le module `bbia_huggingface.py` est une **extension BBIA** enrichissant les capacités IA avec :
+
 - Vision : CLIP, BLIP
 - Audio : Whisper STT
 - NLP : Sentiment, émotions
@@ -169,6 +183,7 @@ Le SDK officiel Reachy Mini expose une intégration Hugging Face Spaces via `hf_
 | Bandit security | ⚠️ | 2 findings B615 (justifié `revision="main"`) |
 
 **Issues corrigées (Oct / Nov. 2025) :**
+
 1. ✅ **44 lignes > 100 chars** → Toutes corrigées (chaînes multilignes, assignments)
 2. ✅ **Import `numpy.typing`** manquant → Ajouté `import numpy.typing as npt`
 3. ✅ **Type hints incomplets** → Ajouté `dict[str, Any]` pour signatures
@@ -178,6 +193,7 @@ Le SDK officiel Reachy Mini expose une intégration Hugging Face Spaces via `hf_
 7. ✅ **Bandit B110/B101/B108** → Tous corrigés (Oct / Nov. 2025) : 0 erreurs (try/except pass → logging, assert → validations explicites, /tmp hardcodé → tempfile)
 
 **Bandit B615 :** Unsafe Hugging Face download  
+
 - **Justification :** Utilisation explicite `revision="main"` dans tous les appels `from_pretrained()`  
 - **Risque accepté :** Mise à jour automatique des modèles (comportement souhaité)  
 - **Status :** 2 findings Medium (tolérés, justifiés)
@@ -187,6 +203,7 @@ Le SDK officiel Reachy Mini expose une intégration Hugging Face Spaces via `hf_
 **Tests existants :** `tests/test_bbia_huggingface_chat.py` (195 lignes, 15 tests)
 
 **Coverage :**
+
 - Chat simple (salutations)
 - Historique conversation
 - Réponses enrichies (sentiment)
@@ -194,6 +211,7 @@ Le SDK officiel Reachy Mini expose une intégration Hugging Face Spaces via `hf_
 - Contexte conversationnel
 
 **Tests recommandés supplémentaires :**
+
 - [x] Test sécurité : Validation entrée utilisateur (injection) ✅ **FAIT** (`tests/test_huggingface_security.py`)
 - [ ] Test performance : Latence génération LLM (<5s pour 150 tokens)
 - [ ] Test mémoire : Déchargement modèles après inactivité
@@ -201,17 +219,20 @@ Le SDK officiel Reachy Mini expose une intégration Hugging Face Spaces via `hf_
 ### ⚡ Performance
 
 **Optimisations présentes :**
+
 - Cache modèles (évite rechargement)
 - Device auto-détection (CUDA/MPS/CPU)
 - Lazy loading (chargement à la demande)
 - `torch.float16` pour GPU (économie mémoire)
 
 **Métriques observées :**
+
 - Chargement LLM Mistral 7B : ~1-2 min (première fois)
 - Génération réponse : ~2-5s (150 tokens, CPU)
 - Analyse sentiment : <500ms
 
 **Recommandations performance :**
+
 - [ ] Limiter longueur prompts (<1024 tokens)
 - [ ] Cache réponses fréquentes (LRU)
 - [ ] Batch processing pour analyses sentiment multiples
@@ -247,12 +268,14 @@ bandit -r src/bbia_sim/bbia_huggingface.py -ll
 | **TOTAL** | **8.9/10** | 100% |
 
 **Recommandation :** Module prêt production (Oct / Nov. 2025). Tous les critères qualité respectés :
+
 - ✅ Lignes ≤ 100 chars
 - ✅ Ruff + Black + Mypy OK
 - ✅ Types stricts
 - ✅ Formatage cohérent
 
 **Améliorations futures (optionnelles) :**
+
 - Tests sécurité : Validation entrée utilisateur (injection)
 - Monitoring performance : Latence LLM (<5s pour 150 tokens)
 - Cache LRU pour réponses fréquentes
@@ -264,6 +287,7 @@ bandit -r src/bbia_sim/bbia_huggingface.py -ll
 ### 📋 Référence Reachy Mini
 
 **Références précises @84c40c31 :**
+
 - `/tmp/reachy_ref/src/reachy_mini/media/media_manager.py`
 - `/tmp/reachy_ref/src/reachy_mini/media/audio_base.py`
 
@@ -271,12 +295,14 @@ bandit -r src/bbia_sim/bbia_huggingface.py -ll
 **Statut :** ✅ Conforme SDK - Utilise `robot.media.microphone` et `robot.media.speaker`
 
 Le SDK Reachy Mini expose une API médias via `MediaManager`:
+
 - `robot.media.microphone` : 4 microphones directionnels (ReSpeaker)
 - `robot.media.speaker` : Haut-parleur 5W optimisé hardware
 - `robot.media.record_audio()` : Enregistrement optimisé SDK
 - `robot.media.play_audio()` : Lecture optimisée SDK
 
 **Alignement BBIA :**
+
 - ✅ `DEFAULT_SAMPLE_RATE = 16000` (aligné SDK `AudioBase.SAMPLE_RATE`)
 - ✅ `DEFAULT_BUFFER_SIZE = 512` (optimisé latence minimale)
 - ✅ Fallback gracieux vers `sounddevice` si SDK non disponible
@@ -293,19 +319,23 @@ Le SDK Reachy Mini expose une API médias via `MediaManager`:
 | Bandit security | ✅ | 1 finding low (justifié `#nosec B110`) |
 
 **Issues corrigées :**
+
 1. ✅ 1 ligne > 100 chars (ligne 181) → Corrigée
 
 **Bandit B110 :** Exception catch générique  
+
 - **Justification :** Nettoyage PortAudio (`_cleanup_sounddevice`) - comportement souhaité ignorer erreurs de terminaison  
 - **Risque accepté :** Fonction de cleanup, erreurs non critiques
 
 ### 🔒 Sécurité & Tests
 
 **Tests existants :** `tests/test_bbia_audio.py` + `test_bbia_audio_extended.py` (18 tests)
+
  - `tests/test_audio_latency_e2e.py` (lecture) → PASS
  - `tests/test_runtime_budget.py` (10s simulation) → PASS
 
 **Coverage :**
+
 - Enregistrement audio (SDK + fallback)
 - Lecture audio (SDK + fallback)
 - Détection de son (seuil, amplitude)
@@ -313,6 +343,7 @@ Le SDK Reachy Mini expose une API médias via `MediaManager`:
 - Flag `BBIA_DISABLE_AUDIO` (CI/headless)
 
 **Tests recommandés supplémentaires :**
+
 - [x] Test sécurité : Validation chemins fichiers (path traversal) — ajouté (`tests/test_bbia_audio.py`)
 - [ ] Test performance : Latence enregistrement (<50ms overhead SDK)
 - [ ] Test intégration SDK : Vérifier `robot.media.record_audio()` format retour
@@ -320,17 +351,20 @@ Le SDK Reachy Mini expose une API médias via `MediaManager`:
 ### ⚡ Performance
 
 **Optimisations présentes :**
+
 - Sample rate aligné SDK (16kHz)
 - Buffer size optimisé (512 samples)
 - Fallback non-bloquant (sounddevice)
 - Flag désactivation audio (CI)
 
 **Métriques observées :**
+
 - Enregistrement 3s : <100ms overhead SDK vs fallback
 - Lecture fichier WAV : <50ms overhead SDK
 - Détection son : <10ms (calcul numpy)
 
 **Recommandations performance :**
+
 - [x] ✅ **Actuel** : Captures périodiques fonctionnent parfaitement
 - [ ] ⚠️ Streaming audio temps réel via `robot.io.get_audio_stream()` (optionnel, refactor nécessaire pour bénéfice marginal)
 - [ ] Cache validation sample rate (éviter re-lire fichier)
@@ -375,6 +409,7 @@ bandit -r src/bbia_sim/bbia_audio.py -ll
 ### 📋 Référence Reachy Mini
 
 **Références précises @84c40c31**  
+
 - Backend: `/tmp/reachy_ref/src/reachy_mini/daemon/backend/hardware/backend.py`  
 - URDF: `/tmp/reachy_ref/src/reachy_mini/descriptions/reachy_mini/urdf/robot.urdf`  
 - Fréquence boucle: `control_loop_frequency = 50.0` Hz (backend.py)  
@@ -384,6 +419,7 @@ bandit -r src/bbia_sim/bbia_audio.py -ll
 **Statut :** ✅ Conformité améliorée - Validation duration corrigée, magic numbers extraits
 
 Le SDK officiel `RobotBackend` expose:
+
 - Boucle contrôle 50 Hz (`control_loop_frequency = 50.0`) - ligne 52 backend.py
 - Watchdog via `last_alive` + timeout 1s (`multiprocessing.Event should_stop`) - ligne 216
 - Modes moteur: `Enabled`, `Disabled`, `GravityCompensation`
@@ -392,6 +428,7 @@ Le SDK officiel `RobotBackend` expose:
 - `goto_target()` valide `duration <= 0.0` (ligne 241 reachy_mini.py)
 
 **Alignement BBIA (audit Oct / Nov. 2025) :**
+
 - ✅ Limites joints stewart alignées URDF officiel (exactes du XML)
 - ✅ Watchdog implémenté fonctionnellement (timeout 2.0s vs 1.0s SDK - plus conservateur, acceptable)
 - ✅ Emergency stop présent (`disable_motors()` + déconnexion - conforme)
@@ -412,6 +449,7 @@ Le SDK officiel `RobotBackend` expose:
 | Bandit security | ✅ | **0 issues** (scan clean) |
 
 **Issues corrigées (Oct / Nov. 2025) :**
+
 1. ✅ **Import cast non utilisé** → Supprimé
 2. ✅ **Type hints npt.NDArray** → Ajouté `npt.NDArray[np.float64]` pour `antennas` paramètres
 3. ✅ **Retour manquant set_target_head_pose** → Ajouté `return None`
@@ -420,6 +458,7 @@ Le SDK officiel `RobotBackend` expose:
 6. ✅ **Type ignore inutilisé** → Nettoyé ligne 861
 
 **Décisions :**
+
 - Magic numbers: ✅ **CORRIGÉ** - Constantes module-level (lignes 30-34)
 - Validation duration: ✅ **CORRIGÉ** - Conforme SDK (ligne 870)
 - Watchdog timeout 2.0s vs 1.0s SDK: Acceptable (plus conservateur, sécurité améliorée)
@@ -432,6 +471,7 @@ Le SDK officiel `RobotBackend` expose:
 **Tests existants :** `tests/test_reachy_mini_backend*.py` (10 fichiers, 200+ tests)
 
 **Coverage :**
+
 - ✅ Connexion/déconnexion (simulation + réel)
 - ✅ Limites joints (clamping multi-niveaux)
 - ✅ Watchdog monitoring (heartbeat timeout)
@@ -439,6 +479,7 @@ Le SDK officiel `RobotBackend` expose:
 - ✅ Mapping joints (stewart, antennas, yaw_body)
 
 **Tests existants (audit Oct / Nov. 2025) :**
+
 - ✅ 91 tests passent, 3 skipped (tests rapides exclus e2e)
 - ✅ `test_reachy_mini_backend.py` (22 tests) - Connexion, joints, limites, sécurité
 - ✅ `test_watchdog_monitoring.py` (8 tests) - Watchdog start/stop, heartbeat, emergency_stop, **logique timeout 2s vérifiée**
@@ -450,10 +491,12 @@ Le SDK officiel `RobotBackend` expose:
 - ✅ `test_safety_limits_pid.py` (5 tests) - Clamping multi-niveaux, limites PID
 
 **Note sur test watchdog timeout :**
+
 - ✅ Test `test_watchdog_timeout_logic_exists` ajouté : Vérifie que la logique timeout 2s existe dans le code (lignes 310-316)
 - ⚠️ Déclenchement réel du timeout nécessite robot physique ou mock avancé (simulation met toujours à jour heartbeat automatiquement)
 
 **Tests recommandés supplémentaires (backlog) :**
+
 - [x] Test logique watchdog timeout 2s → ✅ **AJOUTÉ** (vérifie existence logique)
 - [x] Test déclenchement timeout watchdog (simulation) → ✅ `tests/test_watchdog_timeout_latency.py`
 - [ ] Test déclenchement réel timeout (nécessite hardware/mock hardware)
@@ -464,17 +507,20 @@ Le SDK officiel `RobotBackend` expose:
 ### ⚡ Performance
 
 **Optimisations présentes :**
+
 - ✅ Watchdog interval 100ms (équilibré charge/rapidité)
 - ✅ Fallback rapide simulation (timeout 3s max)
 - ✅ Cache modèles IK si disponible
 - ✅ Interpolation `minjerk` par défaut (fluide)
 
 **Métriques observées :**
+
 - Connexion robot réel : <3s (timeout configurable)
 - Watchdog monitoring : <1ms overhead par cycle
 - `goto_target()` avec interpolation : ~50-100ms latence
 
 **Recommandations performance :**
+
 - [ ] Constantes extraites (éviter recalculs)
 - [ ] Typage strict (améliorer optimisations mypy)
 - [ ] Pool threads pour I/O non-bloquantes si SDK supporte
@@ -545,6 +591,7 @@ bandit -r src/bbia_sim/backends/reachy_mini_backend.py -ll
 ### 📋 Référence Reachy Mini
 
 **Références précises @84c40c31 :**
+
 - `/tmp/reachy_ref/src/reachy_mini/media/media_manager.py`
 - `/tmp/reachy_ref/src/reachy_mini/media/audio_base.py`
 
@@ -552,11 +599,13 @@ bandit -r src/bbia_sim/backends/reachy_mini_backend.py -ll
 **Statut :** ✅ Conforme SDK - Cache pyttsx3 optimisé, intégration `robot.media.speaker`/`microphone`
 
 Le SDK Reachy Mini expose une API médias via `MediaManager`:
+
 - `robot.media.speaker` : Haut-parleur 5W optimisé hardware (`play_audio()`, `speaker.play_file()`)
 - `robot.media.microphone` : 4 microphones directionnels (ReSpeaker)
 - `robot.media.record_audio()` : Enregistrement optimisé SDK
 
 **Alignement BBIA :**
+
 - Sample rate aligné SDK (`16000` Hz)
 - Cache pyttsx3 global (`_pyttsx3_engine_cache`) - évite 0.8s d'init répétée
 - Intégration SDK avec fallbacks gracieux (`play_audio()` → `speaker.play_file()` → `speaker.play()` → pyttsx3)
@@ -574,10 +623,12 @@ Le SDK Reachy Mini expose une API médias via `MediaManager`:
 | Bandit security | ✅ | 0 issues (1 low justifié `nosec B110`) |
 
 **Issues corrigées :**
+
 1. ✅ 11 `type: ignore` inutilisés → Supprimés (mypy strict passe)
 2. ✅ `# noqa: B110` invalide → Corrigé en `# nosec B110` (ruff + bandit)
 
 **Bandit B110 :** Exception catch générique (nettoyage fichiers temporaires)  
+
 - **Justification :** Nettoyage fichier temp après synthèse vocale - erreurs non critiques  
 - **Risque accepté :** Fonction de cleanup, comportement souhaité
 
@@ -586,6 +637,7 @@ Le SDK Reachy Mini expose une API médias via `MediaManager`:
 **Tests existants :** `tests/test_bbia_voice*.py` + tests e2e comportement
 
 **Coverage :**
+
 - Synthèse vocale TTS (SDK + fallback pyttsx3)
 - Reconnaissance vocale STT (SDK 4 microphones + fallback speech_recognition)
 - Cache pyttsx3 (évite réinitialisation)
@@ -593,6 +645,7 @@ Le SDK Reachy Mini expose une API médias via `MediaManager`:
 - Flag `BBIA_DISABLE_AUDIO` (CI/headless)
 
 **Tests recommandés supplémentaires :**
+
 - [ ] Test performance : Latence TTS (cache vs sans cache, <50ms overhead)
 - [ ] Test sécurité : Validation chemins fichiers temporaires (path traversal)
 - [ ] Test intégration SDK : Vérifier format retour `robot.media.record_audio()` (bytes vs ndarray)
@@ -600,6 +653,7 @@ Le SDK Reachy Mini expose une API médias via `MediaManager`:
 ### ⚡ Performance
 
 **Optimisations présentes :**
+
 - Cache pyttsx3 global (`_pyttsx3_engine_cache`) - évite 0.8s d'init répétée
 - Cache voice ID (`_bbia_voice_id_cache`) - évite recherche répétée
 - Thread-safe avec `threading.Lock()` (`_pyttsx3_lock`)
@@ -607,12 +661,14 @@ Le SDK Reachy Mini expose une API médias via `MediaManager`:
 - Fichiers temporaires nettoyés (finally block)
 
 **Métriques observées :**
+
 - Init pyttsx3 (première fois) : ~0.8s
 - Init pyttsx3 (cache) : ~0ms
 - Génération audio WAV (pyttsx3) : ~50-200ms selon longueur texte
 - Lecture SDK (haut-parleur 5W) : <100ms overhead vs pyttsx3
 
 **Recommandations performance :**
+
 - [x] ✅ **Actuel** : Synthèse vocale via `robot.media.speaker` fonctionne parfaitement
 - [ ] ⚠️ Streaming audio temps réel via `robot.io.get_audio_stream()` (optionnel, refactor nécessaire)
 - [ ] Pool threads pour conversions numpy/bytes multiples
@@ -653,11 +709,13 @@ pytest -q -m "not e2e" -k "voice or stt or tts" -v
 ## 🔧 Backends IA (TTS/STT/LLM) — Sélecteurs runtime (macOS compatibles)
 
 **Nouveaux flags (env) :**
+
 - `BBIA_TTS_BACKEND` ∈ {`kitten`, `kokoro`, `neutts`, `pyttsx3`} — défaut: `kitten` (fallback pyttsx3)
 - `BBIA_STT_BACKEND` ∈ {`whisper`, `parakeet`} — défaut: `whisper` (dummy fallback)
 - `BBIA_LLM_BACKEND` ∈ {`llama.cpp`, `qwen`} — défaut: `llama.cpp` (Echo fallback)
 
 **Implémentation :**
+
 - `src/bbia_sim/ai_backends.py` — interfaces `TextToSpeech`, `SpeechToText`, `LocalLLM` et sélecteurs (lazy import).
   - TTS: Kitten/Kokoro/NeuTTS → fallback pyttsx3
   - STT: Whisper (transformers) → fallback dummy, Parakeet réservé
@@ -665,13 +723,16 @@ pytest -q -m "not e2e" -k "voice or stt or tts" -v
 - Intégration TTS dans `bbia_voice.py` si `BBIA_TTS_BACKEND` est défini: synthèse en WAV temp → lecture via SDK ou fallback local. Si absent: comportement historique pyttsx3.
 
 **Tests ajoutés :**
+
 - `tests/test_ai_backends_selection.py` (6 tests) — sélection/fallback TTS (parametrize kokoro/neutts), STT/LLM, factory.
 
 **Compatibilité macOS mini :**
+
 - Aucun paquet lourd requis par défaut; imports paresseux; fallbacks légers.
 - Support CPU/MPS (llama.cpp/KittenTTS à brancher ultérieurement sans casser l’API).
 
 **Commandes de repro :**
+
 ```bash
 pytest -q tests/test_ai_backends_selection.py -v
 # Exemples:
@@ -680,21 +741,23 @@ BBIA_TTS_BACKEND=kokoro pytest -q tests/test_ai_backends_selection.py::test_tts_
 BBIA_STT_BACKEND=whisper pytest -q tests/test_ai_backends_selection.py::test_stt_selection_default -q
 ```
 
-
 ## 📝 Modules Restants à Analyser
 
 ### Priorité 1 (Critiques)
+
 - [ ] `robot_api.py` - Interface unifiée Sim/Robot (base abstraite)
 - [x] `bbia_emotions.py` - ✅ Audité (score 9.2/10)
 - [x] `bbia_vision.py` - ✅ Audité (vision/YOLO, capture SDK, latence à instrumenter)
 
 ### Priorité 2 (Moyens)
+
 - [ ] `bbia_behavior.py` - Comportements adaptatifs
 - [ ] `sim/simulator.py` - Simulateur MuJoCo
 - [ ] `sim/joints.py` - Gestion joints simulation
 - [ ] `mapping_reachy.py` - Mapping centralisé joints
 
 ### Priorité 3 (Utilitaires)
+
 - [ ] `bbia_voice_advanced.py` - TTS avancé
 - [ ] `bbia_integration.py` - Intégration modules
 - [ ] Scripts utilitaires CI
@@ -724,6 +787,7 @@ BBIA_STT_BACKEND=whisper pytest -q tests/test_ai_backends_selection.py::test_stt
 Résultats ciblés: 90 tests pass (sélection émotion) — aucune régression.
 
 Points clés:
+
 - Intensité clampée dans [0.0, 1.0]
 - Historique état conservé, stats disponibles
 - Ensemble d’émotions étendu BBIA cohérent avec l’écosystème des tests
@@ -768,18 +832,21 @@ Points clés:
 - **Docs/tests/CI**: Guides complets, golden traces, seeds, ruff/black/mypy/Bandit/pip‑audit, e2e headless
 
 Actions recommandées (priorité haute):
+
 - Harmoniser `daemon/bridge.py` avec les API réelles du SDK (remplacer `get_joint_positions`/`get_sensor_data` par interfaces documentées: `get_current_joint_positions`/capteurs)
 - Décider politique antennes: lecture seule stricte vs écriture via `set_target_antenna_joint_positions()`; aligner backend/tests/docs
 - Ajouter tests de « surface API » contre la version SDK référencée (échec explicite si rupture)
 - Ajouter profils perf légers CI (CPU/RAM/jitter 10–30 s) et secrets‑scan (trufflehog/gitleaks)
 
 Références de preuve (code):
+
 - Backend SDK/IK/clamp/WD/e-stop: `src/bbia_sim/backends/reachy_mini_backend.py`
 - Mapping et clamp centralisés: `src/bbia_sim/mapping_reachy.py`
 - Bridge Zenoh sécurité JSON & API SDK joints: `src/bbia_sim/daemon/bridge.py` (utilise `get_current_joint_positions`)
 - CI: `.github/workflows/ci.yml`
 
 Tests ajoutés:
+
 - `tests/test_sdk_surface_compat.py` — surface API Reachy Mini (signatures clés)
 - (SDK-first) Audio/Voix/Caméra: `tests/test_voice_speaker_sdk_first.py`, `tests/test_voice_microphone_sdk_first.py`, `tests/test_vision_camera_sdk_first.py`
   - Note CI/headless: `test_voice_speaker_sdk_first.py` force `BBIA_DISABLE_AUDIO=0` pour valider la chaîne `bytes → media.play_audio` sans drivers audio
@@ -823,6 +890,7 @@ pytest -q -m "not e2e" -k "<module_name> or unit or fast"
 ### 📊 État synthétique des vérifications
 
 **Modules audités (8/45+) :**
+
 - ✅ `bbia_huggingface.py` : Qualité code OK, tests présents, métriques latence LLM manquantes
 - ✅ `bbia_audio.py` : Conforme SDK, tests présents, métriques latence E2E manquantes
 - ✅ `backends/reachy_mini_backend.py` : Conforme SDK partiel, watchdog présent, tests timeout/manquants
@@ -855,6 +923,7 @@ pytest -q -m "not e2e" -k "<module_name> or unit or fast"
 
 **Tests existants :** `tests/test_ai_backends_selection.py`  
 **Couverture :**
+
 - Respect des variables d’environnement (désactivation en CI)
 - Fallback prévisible si dépendances IA absentes
 
@@ -871,6 +940,7 @@ pytest -q -m "not e2e" -k "<module_name> or unit or fast"
 **Recommandation :** Conserver la sélection explicite des backends et le respect des flags CI; ajouter, si besoin, un métrique de choix (logs) pour audit.
 
 **Modules non audités (Priorité 1 - Critiques) :**
+
 - [x] `robot_api.py` : ✅ Audité
 - [x] `bbia_vision.py` : ✅ Audité
 - [ ] `sim/simulator.py` : MuJoCo, métriques jitter/latence manquantes
@@ -878,18 +948,21 @@ pytest -q -m "not e2e" -k "<module_name> or unit or fast"
 ### 🔍 Manquants identifiés (validation Reachy / safety / métriques)
 
 **Validation Reachy officielle absente :**
+
 - [ ] `robot_api.py` : Mapping API ↔ Reachy SDK (constantes, unités, limites mécaniques)
 - [ ] `bbia_vision.py` : Noms topics/flux ROS2, unités, QoS si applicable
 - [ ] `sim/simulator.py` : URDF ↔ cinématique BBIA (frames, longueurs, offsets)
 - [ ] `mapping_reachy.py` : Mapping joints centralisé, validation URDF
 
 **Tests safety manquants ou partiels :**
+
 - [x] `watchdog` présent et testé (`test_watchdog_monitoring.py`) → **MANQUE** : Test timeout 2s → `emergency_stop()` avec métriques p50/p95
 - [x] `emergency_stop` testé (`test_emergency_stop.py`) → **MANQUE** : Mesure latence p50/p95
 - [ ] Limites PID plausibles : `safe_amplitude_limit` testée avec bornes (clamping validé)
 - [ ] Modules non audités : emergency_stop, watchdog, limites mécaniques non vérifiés
 
 **Métriques de latence/temps réel manquantes :**
+
 - [x] `backends/reachy_mini_backend.py` : Latence `goto_target()` p50/p95 (simulation)
 - [x] `backends/reachy_mini_backend.py` : Jitter boucle 50 Hz p50/p95 (simulation)
 - [x] `backends/reachy_mini_backend.py` : Latence `emergency_stop` p50/p95 (simulation)
@@ -904,6 +977,7 @@ pytest -q -m "not e2e" -k "<module_name> or unit or fast"
 **1. Backend Reachy Mini (`src/bbia_sim/backends/reachy_mini_backend.py`)**
 
 **Vérifications conformité :**
+
 - [x] Emergency stop présent (`disable_motors()` + déconnexion)
 - [x] Watchdog présent (implémentation `threading.Event`, tests `test_watchdog_monitoring.py`)
 - [ ] **Test watchdog timeout** : Timeout 2s → `emergency_stop()` déclenché (latence p50/p95)
@@ -911,12 +985,14 @@ pytest -q -m "not e2e" -k "<module_name> or unit or fast"
 - [ ] **Typage strict mypy** : Corriger 11 erreurs (`npt.NDArray[np.float64]`, `dict[str, Any]`)
 
 **Benchmarks requis :**
+
 - [x] Latence `emergency_stop_ms_p50` / `emergency_stop_ms_p95` (simulation) — `tests/test_emergency_stop_latency.py`
 - [x] Jitter boucle contrôle 50 Hz : p50/p95 (simulation) — `tests/test_control_loop_jitter.py`
 - [ ] Latence `goto_target()` avec interpolation : p50/p95 (N=100 appels, interpolation active)
 - [ ] Budget CPU/RAM boucle principale : 10–30s (profilage léger avec `psutil`)
 
 **Commandes repro :**
+
 ```bash
 pytest -q -m "not e2e" -k "reachy_mini_backend or unit or fast" --durations=10
 pytest -q tests/test_emergency_stop_latency.py -v
@@ -927,15 +1003,18 @@ pytest -q tests/test_goto_target_latency.py --durations=10
 **2. Robot API (`src/bbia_sim/robot_api.py`)**
 
 **Vérifications conformité :**
+
 - [ ] Mapping API ↔ Reachy SDK : Constantes (unités, limites), `emergency_stop()`, watchdog
 - [ ] Tests safety : Timeouts, limites mécaniques, validation joints
 - [ ] Conformité QoS ROS2 : Si applicable (topics/services)
 
 **Benchmarks requis :**
+
 - [ ] Latence `set_joint_pos` / `get_joint_pos` : p50/p95 (N=1e3 appels)
 - [ ] Budget CPU/RAM interface abstraite : 10s (overhead minimal attendu)
 
 **Commandes repro :**
+
 ```bash
 pytest -q tests/test_robot_api.py -k "unit or fast" --durations=10
 mypy --strict src/bbia_sim/robot_api.py
@@ -944,16 +1023,19 @@ mypy --strict src/bbia_sim/robot_api.py
 **3. Vision (`src/bbia_sim/bbia_vision.py`)**
 
 **Vérifications conformité :**
+
 - [ ] Validation Reachy : Noms topics/flux si ROS2, unités, QoS
 - [ ] Latence pipeline YOLO : Préproc → inférence → postproc p50/p95
 - [ ] Budget CPU/GPU : FPS stable (≥10 FPS CPU, ≥20 FPS GPU si disponible)
 
 **Benchmarks requis :**
+
 - [ ] Latence pipeline YOLO : p50/p95 (100 images de test)
 - [ ] FPS stable : Mesure sur 30s (cible ≥10 FPS CPU)
 - [ ] Budget CPU/GPU : 30s profiling léger
 
 **Commandes repro :**
+
 ```bash
 pytest -q tests/test_bbia_vision.py -k "unit or fast" --durations=10
 pytest -q tests/test_vision_latency.py
@@ -964,15 +1046,18 @@ pytest -q tests/test_vision_latency.py
 **4. Audio (`src/bbia_sim/bbia_audio.py`)**
 
 **Vérifications sécurité :**
+
 - [x] Test path traversal : Validation chemins fichiers I/O — `tests/test_bbia_audio.py`
 
 **Benchmarks requis :**
+
 - [x] Latence audio E2E courte (lecture) — `tests/test_audio_latency_e2e.py`
 - [ ] Latence E2E complète in→out (loopback) p50/p95 (si hardware)
 - [ ] Stabilité buffers : `sample_rate` 16kHz, `buffer_size` 512, underruns/overruns=0 sur 30s
 - [ ] Budget CPU/RAM pipeline audio : 10–30s (top/sampling)
 
 **Commandes repro :**
+
 ```bash
 pytest -q tests/test_bbia_audio*.py -k "unit or fast" --durations=10
 pytest -q tests/test_audio_latency_e2e.py -v
@@ -984,12 +1069,14 @@ pytest -q tests/test_audio_buffer_stability.py -v
 **5. Emotions (`src/bbia_sim/bbia_emotions.py`)**
 
 **Vérifications (déjà OK qualitativement, benchmarks manquants) :**
+
 - [x] Normalisation [0.0, 1.0] : Clamp validé dans tests
 - [x] Bornes et persistance état : Tests existants
 - [ ] Benchmark latence inférence : p50/p95 (N=1e3 évaluations)
 - [ ] Test stress bornes : Parametrize sous charge (dérive/oscillation)
 
 **Commandes repro :**
+
 ```bash
 pytest -q tests/test_bbia_emotions*.py --durations=10
 pytest -q tests/test_emotions_latency.py
@@ -998,11 +1085,13 @@ pytest -q tests/test_emotions_latency.py
 **6. Simulation MuJoCo (`src/bbia_sim/sim/simulator.py`, `sim/joints.py`)**
 
 **Benchmarks requis :**
+
 - [ ] Jitter boucle `step()` : p50/p95 (écart à période théorique)
 - [ ] Latence `set/get_joint_pos` : N=1e3 appels p50/p95
 - [ ] Budget CPU/RAM viewer : 10–30s (inactif/actif)
 
 **Commandes repro :**
+
 ```bash
 pytest -q tests/test_simulator*.py -k "unit or fast" --durations=10
 pytest -q tests/test_sim_latency.py
@@ -1013,14 +1102,17 @@ pytest -q tests/test_sim_latency.py
 **7. Hugging Face (`src/bbia_sim/bbia_huggingface.py`)**
 
 **Vérifications sécurité :**
+
 - [ ] Test validation entrée utilisateur : Anti-injection (prompts malveillants)
 - [ ] Test mémoire : Déchargement modèles après inactivité (timeout configurable)
 
 **Benchmarks requis :**
+
 - [ ] Latence génération LLM : 150 tokens p50/p95 (CPU + MPS/CUDA si disponible)
 - [ ] Budget CPU/RAM : 30s en charge légère (pic mémoire chargement)
 
 **Commandes repro :**
+
 ```bash
 pytest -q tests/test_bbia_huggingface_chat.py -k "fast" --durations=10
 pytest -q tests/test_huggingface_latency.py
@@ -1077,6 +1169,7 @@ pytest -q tests/test_huggingface_latency.py
 ### 📝 Format benchmarks attendu (JSONL)
 
 Chaque benchmark génère une entrée JSONL avec métriques p50/p95 :
+
 ```json
 {
   "module": "backends/reachy_mini_backend",
@@ -1095,6 +1188,7 @@ Chaque benchmark génère une entrée JSONL avec métriques p50/p95 :
 ### 📋 Référence Reachy Mini
 
 **Références précises @84c40c31**  
+
 - Abstraction Backend: `/tmp/reachy_ref/src/reachy_mini/daemon/backend/abstract.py`  
 - Backend réel: `/tmp/reachy_ref/src/reachy_mini/daemon/backend/hardware/backend.py`  
 - URDF: `/tmp/reachy_ref/src/reachy_mini/descriptions/reachy_mini/urdf/robot.urdf`
@@ -1115,6 +1209,7 @@ Le fichier `robot_api.py` définit une API abstraite (connect/disconnect, set/ge
 | Bandit security | ✅ | 0 issues |
 
 **Points de conformité clés :**
+
 1. ✅ Unités en radians partout (aligné SDK)
 2. ✅ Clamp sécurité amplitude ±0.3 rad par défaut (logiciel) + respect `joint_limits` si fournis
 3. ✅ Joints interdits: antennes et passives par défaut (prévention dommages)
@@ -1124,10 +1219,12 @@ Le fichier `robot_api.py` définit une API abstraite (connect/disconnect, set/ge
 ### 🔒 Sécurité & Tests
 
 **Tests pertinents (suite existante) :**
+
 - `tests/test_watchdog_monitoring.py` (watchdog démarrage/arrêt sur backend Reachy)
 - `tests/test_emergency_stop.py` (interface arrêt d’urgence)
 
 **Tests recommandés (spécifiques RobotAPI) :**
+
 - [x] Validation `clamp_joint_position` avec bornes spécifiques par joint (couvert par tests existants)
 - [x] Refus joints interdits (`passive_*` uniquement), antennes animables avec limites (-0.3 à 0.3 rad) (couvert par tests existants)
 - [x] Budget temps `step()` non bloquant (test ajouté `test_robot_api_step_non_blocking.py`)
@@ -1135,10 +1232,12 @@ Le fichier `robot_api.py` définit une API abstraite (connect/disconnect, set/ge
 ### ⚡ Performance
 
 **Observations :**
+
 - API abstraite sans I/O bloquante (OK)
 - Boucles de comportements simples utilisent `time.sleep(0.1)` à 10 Hz (non critique, acceptable car exemples)
 
 **Recommandations :**
+
 - [ ] Éviter `sleep` dans l’API de base; laisser le backend gérer la cadence temps réel
 
 ### 📚 Documentation
@@ -1169,15 +1268,19 @@ Le fichier `robot_api.py` définit une API abstraite (connect/disconnect, set/ge
 ### 🔁 Interop SDK + Simulation officielle (alignement Discord)
 
 - Windows (MuJoCo natif recommandé):
+
   ```bash
   uvx --from reachy-mini[mujoco] reachy-mini-daemon --sim
   ```
+
 - macOS (zsh, noter les guillemets pour extras):
+
   ```bash
   pip install "reachy-mini[mujoco]"
   ```
 
 Notes:
+
 - Ce dépôt BBIA-SIM reste simulation-first côté MuJoCo, interopérable avec le SDK Reachy Mini (référence ci-dessus). Les tests de conformité/latence sont alignés.
 - STL fournis: usage simulation (MuJoCo). Pour impression physique: attendre la publication OnShape officielle (à référencer ici lorsqu’elle sera publique).
 

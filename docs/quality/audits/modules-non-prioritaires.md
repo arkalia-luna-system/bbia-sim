@@ -46,6 +46,7 @@
 **Statut d’utilisation :** complet (SDK-first + fallbacks, tests présents)
 
 **Capacités :**
+
 ```python
 robot.media.camera          # Accès direct caméra grand angle 1080p
 robot.media.microphone      # Accès 4 microphones directionnels avec annulation de bruit
@@ -65,20 +66,24 @@ robot.media.record_audio()  # Enregistrement optimisé
 ## Tests existants
 
 ### **Vision**
+
 - `tests/test_bbia_vision.py` - Tests basiques
 - `tests/e2e/test_bbia_modules_e2e.py::test_bbia_vision_module` - Tests E2E
 - `tests/test_vision_yolo_extended.py` - Tests YOLO étendus
 
 ### **Audio**
+
 - `tests/test_bbia_audio.py` - Tests unitaires
 - `tests/e2e/test_bbia_modules_e2e.py` - Tests E2E
 
 ### **Voice**
+
 - `tests/test_bbia_voice.py` - Tests unitaires
 - `tests/test_voice_whisper_extended.py` - Tests Whisper étendus
 - `tests/e2e/test_bbia_modules_e2e.py::test_bbia_voice_functions` - Tests E2E (mockés)
 
 **Couverture actuelle :**
+
 - `bbia_vision.py` : 88.52%
 - `bbia_audio.py` : 87.76%
 - `bbia_voice.py` : 61.96% (à améliorer)
@@ -94,10 +99,12 @@ robot.media.record_audio()  # Enregistrement optimisé
 3. ✅ **`bbia_audio.py`** - Enregistrement via `robot.media.record_audio()` + test - **FAIT**
 
 ### Priorité moyenne (améliorations)
+
 1. Améliorer variété et naturalité des commentaires dans `bbia_vision.py`
 2. Améliorer gestion erreurs et logging dans tous les modules média
 
 ### Priorité basse (tests)
+
 1. Créer tests spécifiques pour intégration `robot.media.*` SDK
 2. Améliorer couverture `bbia_voice.py` (actuellement 61.96%)
 
@@ -116,4 +123,3 @@ robot.media.record_audio()  # Enregistrement optimisé
 ---
 
 **Dernière mise à jour :** Oct / Nov. 2025
-

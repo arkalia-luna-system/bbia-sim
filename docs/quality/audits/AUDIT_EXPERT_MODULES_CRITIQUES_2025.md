@@ -16,12 +16,14 @@ Les modules critiques sont conformes au SDK Reachy Mini. Les corrections appliqu
 **État**: correct; utilise le SDK Reachy Mini
 
 **Points clés**:
+
 - ✅ Utilise `goto_target()` avec `create_head_pose()` pour tous les mouvements tête
 - ✅ Méthode `execute_behavior()` utilise IK conforme SDK (pas de contrôle direct stewart)
 - ✅ Interpolation adaptée selon comportement (minjerk, cartoon, ease_in_out)
 - ✅ Commentaires explicites sur IK requise pour plateforme Stewart
 
 **Exemple**:
+
 ```python
 # Hochement tête (happy/excited/curious)
 if REACHY_UTILS_AVAILABLE and create_head_pose:
@@ -38,12 +40,14 @@ if REACHY_UTILS_AVAILABLE and create_head_pose:
 **État**: source de vérité pour joints et limites
 
 **Points clés**:
+
 - ✅ Limites exactes du XML officiel préservées (précision ±1e-10)
 - ✅ Commentaires explicites sur IK requise pour joints stewart
 - ✅ Clampage deux-niveaux (hardware puis sécurité) aligné avec backend
 - ✅ `RECOMMENDED_JOINTS` = `{"yaw_body"}` seulement (stewart nécessitent IK)
 
 **Exemple**:
+
 ```python
 description="Plateforme Stewart - joint tête 1 (⚠️ Nécessite IK via goto_target/set_target_head_pose)"
 ```
@@ -57,12 +61,14 @@ description="Plateforme Stewart - joint tête 1 (⚠️ Nécessite IK via goto_t
 **État**: utilise `robot.media.camera` si disponible
 
 **Points clés**:
+
 - ✅ Vérification `robot.media.camera` avec fallback simulation
 - ✅ Support méthodes SDK: `get_image()`, `capture()`
 - ✅ Détection YOLO + MediaPipe pour objets/visages
 - ✅ Intégration propre avec `look_at_world()` pour suivi objets
 
 **Améliorations possibles**:
+
 - ⚠️ Vérifier si SDK expose méthodes spécifiques (ex: `capture_frame()`, `get_stream()`)
 - ⚠️ Optimiser pour utiliser `robot.media.camera.stream()` si disponible pour performance
 
@@ -75,6 +81,7 @@ description="Plateforme Stewart - joint tête 1 (⚠️ Nécessite IK via goto_t
 **État**: utilise `robot.media.microphone` et `robot.media.speaker`
 
 **Points clés**:
+
 - ✅ Vérification `robot.media.microphone` (4 microphones directionnels)
 - ✅ Vérification `robot.media.speaker` (haut-parleur 5W optimisé)
 - ✅ Support méthodes: `record_audio()`, `play_audio()`, `speaker.play()`
@@ -89,6 +96,7 @@ description="Plateforme Stewart - joint tête 1 (⚠️ Nécessite IK via goto_t
 **État**: utilise `robot.media` pour la synthèse vocale
 
 **Points clés**:
+
 - ✅ Priorité: `robot.media.play_audio(bytes, volume)`
 - ✅ Fallback: `robot.media.speaker.play_file()` ou `.play(bytes)`
 - ✅ Support volume control SDK
@@ -101,14 +109,17 @@ description="Plateforme Stewart - joint tête 1 (⚠️ Nécessite IK via goto_t
 ## Corrections appliquées
 
 ### Correction 1: `surprise_3d_mujoco_viewer.py`
+
 - ❌ **AVANT**: `set_joint_pos("stewart_1")` - Violation SDK
 - ✅ **APRÈS**: `goto_target(head=pose)` avec `create_head_pose()` - Conforme SDK
 
 ### Correction 2: `demo_chat_bbia_3d.py`
+
 - ❌ **AVANT**: `data.qpos[stewart_*]` sans avertissements
 - ✅ **APRÈS**: Commentaires explicites "⚠️ MuJoCo direct uniquement - Robot réel nécessite IK"
 
 ### Correction 3: tests de conformité
+
 - ✅ Gestion erreurs encodage (UTF-8, latin-1, bytes null)
 - ✅ Détection violations Stewart joints
 - ✅ Tests LLM fonctionnalités
@@ -118,10 +129,12 @@ description="Plateforme Stewart - joint tête 1 (⚠️ Nécessite IK via goto_t
 ## Tests créés/améliorés
 
 ### Nouveaux tests
+
 1. ✅ `test_llm_chat_functionality.py` - Tests fonctionnalités LLM (enable_llm_chat, disable_llm_chat)
 2. ✅ `test_examples_conformity.py` - Tests conformité exemples (détection violations Stewart)
 
 ### Tests améliorés
+
 1. ✅ `test_examples_conformity.py` - Gestion encodage améliorée
 2. ✅ `test_expert_robustness_conformity.py` - Tests robustesse existants
 
@@ -215,6 +228,7 @@ description="Plateforme Stewart - joint tête 1 (⚠️ Nécessite IK via goto_t
 ### Tests à renforcer
 
 **Recommandations**:
+
 - Ajouter test vérifiant que `robot.media.camera` méthodes existent vraiment dans SDK
 - Ajouter test vérifiant que `robot.media.microphone` capture 4 canaux si disponible
 - Ajouter test vérifiant que toutes les méthodes interpolation sont supportées
@@ -245,10 +259,10 @@ description="Plateforme Stewart - joint tête 1 (⚠️ Nécessite IK via goto_t
 ## Conclusion
 
 Les modules critiques sont conformes au SDK Reachy‑Mini. Les corrections appliquées apportent :
+
 - ✅ Utilisation correcte des méthodes SDK (goto_target, create_head_pose, IK)
 - ✅ Optimisations expertes (interpolation adaptée, mouvements combinés)
 - ✅ Intégration hardware (robot.media pour caméra, micro, haut-parleur)
 - ✅ Tests robustes avec détection problèmes subtils
 
 État final : conforme et optimisé
-

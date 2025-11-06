@@ -46,6 +46,7 @@ Les scripts de comparaison/audit avec le SDK officiel Reachy Mini ont été cons
 - ✅ **`generate_conformity_report_reachy_mini.py`** → Génération rapports (conservé)
 
 **Scripts archivés** dans `scripts/_archived/comparison_audit/` :
+
 - 8 scripts redondants ou obsolètes (voir `scripts/_archived/comparison_audit/README.md`)
 
 ### 📝 **Scripts Documentation Consolidés** (Oct 2025v. 20252025 Nov. 2025ct / Nov. 2025)
@@ -53,12 +54,13 @@ Les scripts de comparaison/audit avec le SDK officiel Reachy Mini ont été cons
 - ✅ **`audit_and_correct_dates_md.py`** → Script unifié pour audit et correction des dates MD
   - Fusion de : `audit_dates_md.py`, `audit_md_dates.py`, `correct_dates_md.py`, `correct_dates_md_final.py`
   - Usage : `python scripts/audit_and_correct_dates_md.py [--audit-only|--correct]`
-  
+
 - ✅ **`verify_documentation.py`** → Script unifié pour vérification documentation
   - Fusion de : `verify_doc_accuracy.py`, `verify_md_vs_code.py`
   - Usage : `python scripts/verify_documentation.py [--accuracy|--consistency]`
 
 **Scripts archivés** dans `scripts/_archived/dates_md/` et `scripts/_archived/verification/` :
+
 - Voir `scripts/_archived/dates_md/README.md` et `scripts/_archived/verification/README.md`
 
 Voir `scripts/_archived/README.md`, `scripts/PLAN_CONSOLIDATION_AUDIT_SCRIPTS.md` et `scripts/PLAN_FUSION_SCRIPTS.md` pour plus de détails.
@@ -66,6 +68,7 @@ Voir `scripts/_archived/README.md`, `scripts/PLAN_CONSOLIDATION_AUDIT_SCRIPTS.md
 ## 🎯 **Scripts Disponibles**
 
 ### 🎮 **Scripts Principaux**
+
 - **`quick_start.sh`** - Menu interactif principal
 - **`launch_unity.sh`** - Lancement de la simulation Unity 3D
 - **`launch_robot_3d.sh`** - Lancement du robot Reachy Mini en 3D
@@ -74,6 +77,7 @@ Voir `scripts/_archived/README.md`, `scripts/PLAN_CONSOLIDATION_AUDIT_SCRIPTS.md
 - **`setup_reachy_environment.sh`** - Configuration de l'environnement
 
 ### 🧪 **Scripts de Test**
+
 - **`test_unity_setup.sh`** - Test de la configuration Unity
 - **`fix_unity_warnings.sh`** - Correction des avertissements Unity
 - **`hardware_dry_run.py`** - Validation hardware Reachy réel ✅
@@ -81,11 +85,13 @@ Voir `scripts/_archived/README.md`, `scripts/PLAN_CONSOLIDATION_AUDIT_SCRIPTS.md
 - **`validate_trace.py`** - Validation traces contre référence
 
 ### ✅ **Scripts de Vérification Documentation** (Nouveaux)
+
 - **`verify_docs_complete.py`** ⭐ - Vérification complète documentation (liens, Mermaid, orthographe, formatage)
 - **`verify_documentation.py`** - Vérification précision et cohérence (fusionné)
 - **`audit_and_correct_dates_md.py`** - Audit et correction dates MD
 
 ### 🎬 **Scripts de Démo (NOUVEAUX)**
+
 - **`record_demo.sh`** - Enregistrement démo complète ✅
 - **`plot_trace.py`** - Génération rapports d'analyse ✅
 
@@ -116,10 +122,13 @@ flowchart TD
 ```
 
 ### 🎮 **Menu Interactif (Recommandé)**
+
 ```bash
 ./scripts/quick_start.sh
 ```
+
 **Options disponibles :**
+
 - Option 1 : Tester BBIA (simulation rapide)
 - Option 6 : Lancer Unity 3D
 - Option 7 : Tester la configuration Unity
@@ -129,6 +138,7 @@ flowchart TD
 ### 🧪 **Scripts de Validation**
 
 #### **Hardware Dry Run**
+
 ```bash
 # Test hardware complet (10s)
 python scripts/hardware_dry_run.py --duration 10
@@ -138,7 +148,8 @@ python scripts/hardware_dry_run.py --joint yaw_body --duration 5
 ```
 
 **Résultat attendu** :
-```
+
+```text
 ✅ Robot Reachy connecté avec succès
 ✅ Tous les joints de test sont disponibles
 ✅ Limite d'amplitude respectée
@@ -149,6 +160,7 @@ python scripts/hardware_dry_run.py --joint yaw_body --duration 5
 ```
 
 #### **Scripts de Démo**
+
 ```bash
 # Enregistrer une démo complète
 bash scripts/record_demo.sh happy 15
@@ -158,6 +170,7 @@ python scripts/plot_trace.py --input assets/videos/demo_happy_*.jsonl --output a
 ```
 
 #### **Golden Tests**
+
 ```bash
 # Enregistrer une trace de référence
 python scripts/record_trace.py --emotion happy --duration 5 --out artifacts/golden/happy_mujoco.jsonl
@@ -167,7 +180,8 @@ python scripts/validate_trace.py --ref artifacts/golden/happy_mujoco.jsonl --cur
 ```
 
 **Résultat attendu** :
-```
+
+```text
 ✅ Validation réussie
 📊 Métriques:
    • Max abs qpos err: 0.1234
@@ -178,6 +192,7 @@ python scripts/validate_trace.py --ref artifacts/golden/happy_mujoco.jsonl --cur
 ```
 
 ### 🤖 **Lancement Robot 3D**
+
 ```bash
 # Script bash (recommandé)
 ./scripts/launch_robot_3d.sh
@@ -185,26 +200,34 @@ python scripts/validate_trace.py --ref artifacts/golden/happy_mujoco.jsonl --cur
 # Script Python
 python scripts/launch_robot.py
 ```
+
 **Fonctionnalités :**
+
 - Robot Reachy Mini complet en 3D
 - Mode graphique et headless
 - Détection automatique macOS/Linux
 - Test rapide disponible
 
 ### 🎯 **Lancement Unity**
+
 ```bash
 ./scripts/launch_unity.sh
 ```
+
 **Fonctionnalités :**
+
 - Détection automatique du projet Unity
 - Lancement via Unity Hub
 - Gestion des erreurs
 
 ### 📚 **Installation Dépôts**
+
 ```bash
 ./scripts/install_all_reachy_repos.sh
 ```
+
 **Dépôts installés :**
+
 - reachy-docs
 - pollen-vision
 - reachy2-tutorials
@@ -215,10 +238,13 @@ python scripts/launch_robot.py
 - reachy-unity-package
 
 ### 🔧 **Configuration Environnement**
+
 ```bash
 ./scripts/setup_reachy_environment.sh
 ```
+
 **Configuration :**
+
 - Installation des dépendances Python
 - Configuration de l'environnement virtuel
 - Vérification des installations
@@ -228,19 +254,25 @@ python scripts/launch_robot.py
 ## 🧪 **Tests et Dépannage**
 
 ### 🔍 **Test Unity**
+
 ```bash
 ./scripts/test_unity_setup.sh
 ```
+
 **Vérifications :**
+
 - Présence d'Unity Hub
 - Configuration du projet Unity
 - Permissions des fichiers
 
 ### 🔧 **Correction Avertissements**
+
 ```bash
 ./scripts/fix_unity_warnings.sh
 ```
+
 **Corrections :**
+
 - Mise à jour des packages Unity
 - Correction des conflits de versions
 - Optimisation des paramètres
@@ -249,7 +281,7 @@ python scripts/launch_robot.py
 
 ## 📁 **Structure des Scripts**
 
-```
+```text
 scripts/
 ├── 🎮 quick_start.sh                              # Menu interactif principal
 ├── 🎯 launch_unity.sh                             # Lancement Unity 3D
@@ -271,31 +303,37 @@ scripts/
 ## 🎯 **Détails des Scripts**
 
 ### 🎮 **quick_start.sh**
+
 **Fonction :** Menu interactif principal avec toutes les options
 **Utilisation :** Point d'entrée principal pour BBIA
 **Options :** 10 options différentes pour toutes les fonctionnalités
 
 ### 🎯 **launch_unity.sh**
+
 **Fonction :** Lancement de la simulation Unity 3D
 **Détection :** Automatique du dossier `reachy-bbia-unity`
 **Lancement :** Via Unity Hub avec gestion d'erreurs
 
 ### 📚 **install_all_reachy_repos.sh**
+
 **Fonction :** Installation automatique de tous les dépôts GitHub
 **Dépôts :** 8 dépôts officiels de Pollen Robotics
 **Vérification :** Test automatique après installation
 
 ### 🔧 **setup_reachy_environment.sh**
+
 **Fonction :** Configuration complète de l'environnement
 **Dépendances :** Installation des packages Python
 **Vérification :** Test de l'installation
 
 ### 🧪 **test_unity_setup.sh**
+
 **Fonction :** Test de la configuration Unity
 **Vérifications :** Unity Hub, projet, permissions
 **Rapport :** État détaillé de la configuration
 
 ### 🔧 **fix_unity_warnings.sh**
+
 **Fonction :** Correction des avertissements Unity
 **Corrections :** Packages, versions, paramètres
 **Optimisation :** Performance et stabilité
@@ -305,6 +343,7 @@ scripts/
 ## 🎯 **Commandes Rapides**
 
 ### 🚀 **Démarrage Immédiat**
+
 ```bash
 # Menu interactif
 ./scripts/quick_start.sh
@@ -317,6 +356,7 @@ scripts/
 ```
 
 ### 🔍 **Tests et Vérifications**
+
 ```bash
 # Test Unity
 ./scripts/test_unity_setup.sh
@@ -343,12 +383,14 @@ scripts/
 ## 🎯 **Dépannage**
 
 ### ❌ **Problèmes Courants**
+
 - **Permission denied** : `chmod +x scripts/*.sh`
 - **Unity non trouvé** : Vérifiez l'installation d'Unity Hub
 - **Dépôts non installés** : Lancez `install_all_reachy_repos.sh`
 - **Erreurs Python** : Lancez `setup_reachy_environment.sh`
 
 ### ✅ **Solutions**
+
 - **Tous les scripts** sont testés et fonctionnels
 - **Gestion d'erreurs** intégrée dans chaque script
 - **Vérifications automatiques** après chaque installation
@@ -362,4 +404,4 @@ scripts/
 **Version** : 2.0  
 **Date** : Oct / No2025025025025025  
 **Scripts** : ✅ 6 scripts fonctionnels  
-**Automatisation** : ✅ Complète 
+**Automatisation** : ✅ Complète

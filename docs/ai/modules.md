@@ -1,15 +1,30 @@
 # Audit IA : Modules Pré-entraînés dans BBIA
 
-**Date** : Oct / Nov. 2025
+**Date** : Oct / Nov. 2025  
 **Objectif** : Vérifier quels modèles IA pré-entraînés sont utilisés, où ils sont utilisés, et identifier ce qui manque.
 
 ---
 
-## ✅ 1. MODÈLES PRÉ-ENTRAÎNÉS UTILISÉS
+## 📋 Table des Matières
 
-### 🎯 Vision - DÉJÀ IMPLÉMENTÉ ✅
+1. [Modèles Pré-entraînés Utilisés](#-1-modèles-pré-entraînés-utilisés)
+2. [Ce qui est déjà ajouté](#-2-ce-qui-est-déjà-ajouté-modules-récemment-créés)
+3. [Architecture Modulaire](#-3-architecture-modulaire---déjà-fait-)
+4. [Finetuned Models](#️-4-finetuned-models-reconnaissance-personnalisée)
+5. [No-Code/Low-Code](#️-5-no-codelow-code---partiellement-fait)
+6. [Entraînement Progressif](#-6-entraînement-progressif---déjà-supporté-)
+7. [Résumé](#-résumé---ce-qui-existe-vs-manque)
+8. [Priorités Recommandées](#-priorités-recommandées-opensource--gratuit)
+9. [Navigation](#-navigation)
 
-**Modèles utilisés** :
+---
+
+## ✅ 1. Modèles pré-entraînés utilisés
+
+### 🎯 Vision - Déjà implémenté ✅
+
+**Modèles utilisés :**
+
 - ✅ **YOLOv8n** (Ultralytics) - Détection objets
 - ✅ **MediaPipe Face Detection** - Détection visages
 - ✅ **MediaPipe Face Mesh** - Landmarks faciaux
@@ -17,70 +32,78 @@
 - ✅ **BLIP** (Salesforce) - Description images
 - ✅ **BLIP VQA** - Visual Question Answering
 
-**Où c'est utilisé** :
-- `src/bbia_sim/vision_yolo.py` : `YOLODetector` classe → charge `yolov8n.pt`
-- `src/bbia_sim/bbia_vision.py` : `BBIAVision` → utilise YOLO + MediaPipe
-- `src/bbia_sim/bbia_huggingface.py` : `BBIAHuggingFace._load_vision_model()` → CLIP/BLIP
+**Où c'est utilisé :**
+
+- **`src/bbia_sim/vision_yolo.py`** : `YOLODetector` classe → charge `yolov8n.pt`
+- **`src/bbia_sim/bbia_vision.py`** : `BBIAVision` → utilise YOLO + MediaPipe
+- **`src/bbia_sim/bbia_huggingface.py`** : `BBIAHuggingFace._load_vision_model()` → CLIP/BLIP
 
 **État** : ✅ **FONCTIONNEL** - Modèles pré-entraînés chargés automatiquement depuis Hugging Face/Ultralytics
 
 ---
 
-### 💬 Langage (LLM) - DÉJÀ IMPLÉMENTÉ ✅
+### 💬 Langage (LLM) - Déjà implémenté ✅
 
-**Modèles utilisés** :
+**Modèles utilisés :**
+
 - ✅ **Mistral 7B Instruct** (`mistralai/Mistral-7B-Instruct-v0.2`)
 - ✅ **Llama 3 8B Instruct** (`meta-llama/Llama-3-8B-Instruct`)
 - ✅ **llama.cpp** (GGUF, local) - Fallback léger
 - ✅ **Twitter RoBERTa Sentiment** (`cardiffnlp/twitter-roberta-base-sentiment-latest`)
 - ✅ **Emotion DistilRoBERTa** (`j-hartmann/emotion-english-distilroberta-base`)
 
-**Où c'est utilisé** :
-- `src/bbia_sim/bbia_huggingface.py` : `BBIAHuggingFace.enable_llm_chat()` → charge Mistral/Llama
-- `src/bbia_sim/bbia_emotion_recognition.py` : `BBIAEmotionRecognition._load_emotion_models()` → sentiment/émotion
-- `src/bbia_sim/ai_backends.py` : `LlamaCppLLM` → support llama.cpp
+**Où c'est utilisé :**
+
+- **`src/bbia_sim/bbia_huggingface.py`** : `BBIAHuggingFace.enable_llm_chat()` → charge Mistral/Llama
+- **`src/bbia_sim/bbia_emotion_recognition.py`** : `BBIAEmotionRecognition._load_emotion_models()` → sentiment/émotion
+- **`src/bbia_sim/ai_backends.py`** : `LlamaCppLLM` → support llama.cpp
 
 **État** : ✅ **FONCTIONNEL** - LLM conversationnel + analyse sentiment/émotion
 
 ---
 
-### 🎤 Audio/Parole - DÉJÀ IMPLÉMENTÉ ✅
+### 🎤 Audio/Parole - Déjà implémenté ✅
 
-**Modèles utilisés** :
+**Modèles utilisés :**
+
 - ✅ **OpenAI Whisper** - STT (Speech-to-Text)
 - ✅ **Coqui TTS** - TTS avec clonage voix (XTTS v2)
 - ✅ **SpeechRecognition** (Google API) - STT fallback
 - ✅ **pyttsx3** - TTS système macOS (fallback)
 
-**Où c'est utilisé** :
-- `src/bbia_sim/voice_whisper.py` : `WhisperSTT` → charge `whisper-{size}.pt`
-- `src/bbia_sim/ai_backends.py` : `CoquiTTSTTS` → utilise `TTS.api`
-- `scripts/voice_clone/generate_voice.py` : Clonage voix avec XTTS v2
-- `src/bbia_sim/bbia_voice.py` : Intégration TTS/STT
+**Où c'est utilisé :**
+
+- **`src/bbia_sim/voice_whisper.py`** : `WhisperSTT` → charge `whisper-{size}.pt`
+- **`src/bbia_sim/ai_backends.py`** : `CoquiTTSTTS` → utilise `TTS.api`
+- **`scripts/voice_clone/generate_voice.py`** : Clonage voix avec XTTS v2
+- **`src/bbia_sim/bbia_voice.py`** : Intégration TTS/STT
 
 **État** : ✅ **FONCTIONNEL** - STT avancé (Whisper) + TTS personnalisable (Coqui)
 
 ---
 
-## ✅ 2. CE QUI EST DÉJÀ AJOUTÉ (modules récemment créés)
+## ✅ 2. Ce qui est déjà ajouté (modules récemment créés)
 
-### ✅ Reconnaissance Visage Personnalisée (DeepFace) - **AJOUTÉ !**
+### ✅ Reconnaissance visage personnalisée (DeepFace) - Ajouté !
 
 **État** : ✅ **Module créé et intégré**
 
 **Fichiers créés** :
+
 - ✅ `src/bbia_sim/face_recognition.py` (344 lignes) - Module complet
 - ✅ `scripts/test_deepface.py` (155 lignes) - Script de test
 - ✅ `requirements/requirements-deepface.txt` - Dépendances
 - ✅ `docs/development/setup/deepface.md` - Documentation
 
 **Fonctionnalités** :
+
 - ✅ Enregistrement personnes (`register_person()`)
 - ✅ Reconnaissance personnes (`recognize_person()`)
 - ✅ Détection émotions (`detect_emotion()`)
 - ✅ Intégré dans `BBIAVision.scan_environment()`
 
 **Installation** :
+
 ```bash
 source venv-vision-py310/bin/activate
 pip install -r requirements/requirements-deepface.txt
@@ -88,15 +111,17 @@ pip install -r requirements/requirements-deepface.txt
 
 ---
 
-### ✅ Détection Postures/Corps (MediaPipe Pose) - **AJOUTÉ !**
+### ✅ Détection postures/corps (MediaPipe Pose) - Ajouté !
 
 **État** : ✅ **Module créé et intégré**
 
-**Fichiers créés** :
-- ✅ `src/bbia_sim/pose_detection.py` (284 lignes) - Module complet
-- ✅ `scripts/test_pose_detection.py` (215 lignes) - Script de test
+**Fichiers créés :**
+
+- ✅ **`src/bbia_sim/pose_detection.py`** (284 lignes) - Module complet
+- ✅ **`scripts/test_pose_detection.py`** (215 lignes) - Script de test
 
 **Fonctionnalités** :
+
 - ✅ Détection 33 points clés (`detect_pose()`)
 - ✅ Détection gestes (bras levés, mains sur tête)
 - ✅ Détection posture (debout/assis)
@@ -106,16 +131,18 @@ pip install -r requirements/requirements-deepface.txt
 
 ---
 
-### ✅ Détection Émotions Visuelles (DeepFace) - **AJOUTÉ !**
+### ✅ Détection émotions visuelles (DeepFace) - Ajouté !
 
 **État** : ✅ **Intégré dans DeepFace**
 
-**Fonctionnalités** :
+**Fonctionnalités :**
+
 - ✅ Détection émotions via `detect_emotion()` dans `face_recognition.py`
 - ✅ Émotions détectées : happy, sad, angry, surprise, fear, neutral, disgust
 - ✅ Intégré automatiquement dans `BBIAVision.scan_environment()`
 
 **Exemple** :
+
 ```python
 from bbia_sim.bbia_vision import BBIAVision
 vision = BBIAVision()
@@ -125,35 +152,40 @@ result = vision.scan_environment()
 
 ---
 
-### ✅ LLM Local Léger (optionnel) - **DÉJÀ IMPLÉMENTÉ**
+### ✅ LLM local léger (optionnel) - Déjà implémenté
 
 **État actuel** : ✅ **FAIT** - Phi-2 et TinyLlama configurés pour RPi 5
 
-**Solutions implémentées** :
+**Solutions implémentées :**
+
 - ✅ **Phi-2** (2.7B) - Microsoft, ~5GB RAM - **AJOUTÉ** (ligne 164)
 - ✅ **TinyLlama** (1.1B) - Ultra-léger, ~2GB RAM - **AJOUTÉ** (ligne 165-166)
 
 **Vérification code (Oct / Nov. 2025)** :
+
 - ✅ `bbia_huggingface.py` (lignes 164-166) : Configs Phi-2 et TinyLlama ajoutées
 - ✅ `enable_llm_chat("phi2")` et `enable_llm_chat("tinyllama")` fonctionnent
 
 **Pourquoi c'est utile** :
+
 - ✅ Fonctionne sur machines moins puissantes (RPi 5 compatible)
 - ✅ Plus rapide pour réponses simples
 
 ---
 
-## ✅ 3. ARCHITECTURE MODULAIRE - DÉJÀ FAIT ✅
+## ✅ 3. Architecture modulaire - Déjà fait ✅
 
 **État** : ✅ **EXCELLENT**
 
-**Preuve** :
-- Modules séparés : `bbia_vision.py`, `bbia_voice.py`, `bbia_huggingface.py`
-- Backends sélectionnables via variables d'env (`BBIA_TTS_BACKEND`, `BBIA_LLM_BACKEND`)
-- Plug-and-play : chaque module fonctionne indépendamment
-- Fallbacks : si un modèle échoue, fallback automatique
+**Preuve :**
+
+- **Modules séparés** : `bbia_vision.py`, `bbia_voice.py`, `bbia_huggingface.py`
+- **Backends sélectionnables** : Via variables d'env (`BBIA_TTS_BACKEND`, `BBIA_LLM_BACKEND`)
+- **Plug-and-play** : Chaque module fonctionne indépendamment
+- **Fallbacks** : Si un modèle échoue, fallback automatique
 
 **Exemple** :
+
 ```python
 # Dans ai_backends.py
 def get_tts_backend():
@@ -166,11 +198,13 @@ def get_tts_backend():
 ```
 
 **✅ Voix corrigée et vérifiée** :
+
 - ✅ `Pyttsx3TTS` dans `ai_backends.py` **UTILISE** `get_bbia_voice()` (ligne 56-58)
 - ✅ `get_bbia_voice()` sélectionne automatiquement : Aurelie Enhanced > Amelie Enhanced > Aurelie > Amelie
 - ✅ Si `BBIA_TTS_BACKEND` = "kitten" (défaut), fallback sur `Pyttsx3TTS` qui utilise `get_bbia_voice()` → Aurelie Enhanced sélectionnée
 
 **Recommandation** :
+
 - ✅ Défaut actuel fonctionne bien (kitten → Pyttsx3TTS → Aurelie Enhanced)
 - ✅ Option avancée : `BBIA_TTS_BACKEND=coqui` pour contrôle pitch/émotion (Coqui TTS)
 
@@ -178,21 +212,24 @@ def get_tts_backend():
 
 ---
 
-## ⚠️ 4. FINETUNED MODELS (Reconnaissance Personnalisée)
+## ⚠️ 4. Finetuned models (Reconnaissance personnalisée)
 
 ### État Actuel
 
 **Déjà fait** :
+
 - ✅ Clonage voix (Coqui XTTS v2) - Tu enregistres ta voix, BBIA l'utilise
 - ✅ Comportements personnalisés (`bbia_behavior.py`) - Tu peux créer tes propres comportements
 
 **Manque** :
+
 - ❌ Reconnaissance visage personnalisée (DeepFace)
 - ❌ Entraînement objets custom (ex: reconnaître tes objets spécifiques)
 
 ### Solutions Open-Source
 
 **1. DeepFace - Reconnaissance Visage** :
+
 ```python
 # Enregistrer ta famille
 DeepFace.build_model("VGG-Face")
@@ -204,32 +241,37 @@ result = DeepFace.find("frame.jpg", db_path="./faces_db")
 ```
 
 **2. YOLO Custom Training** :
+
 - Utiliser **YOLOv8** avec ton dataset
 - Exemple : entraîner pour reconnaître tes objets (ex: "Télécommande BBIA", "Lampe préférée")
 - Guide : https://docs.ultralytics.com/modes/train/
 
 **Où l'ajouter** :
+
 - `scripts/train_custom_yolo.py` - Script d'entraînement personnalisé
 - `src/bbia_sim/face_recognition.py` - Module DeepFace
 
 ---
 
-## ⚠️ 5. NO-CODE/LOW-CODE - PARTIELLEMENT FAIT
+## ⚠️ 5. No-code/Low-code - Partiellement fait
 
 ### État Actuel
 
 **Déjà fait** :
+
 - ✅ Dashboard web (`dashboard_advanced.py`) - Interface graphique pour contrôler BBIA
 - ✅ Chat en temps réel (WebSocket) - Tu parles, BBIA répond
 - ✅ Variables d'environnement - Configuration sans code
 
 **Manque** :
+
 - ❌ Interface drag-and-drop pour créer comportements
 - ❌ Dashboard pour entraîner modèles custom (ex: upload photos pour DeepFace)
 
 ### Recommandations Open-Source
 
 **Option 1 : Streamlit Dashboard** (Simple)
+
 ```python
 # Créer scripts/dashboard_streamlit.py
 import streamlit as st
@@ -244,32 +286,37 @@ if st.button("Scan Environment"):
 ```
 
 **Option 2 : Gradio** (Hugging Face)
+
 - Interface simple pour tester modèles
 - Upload images → voir détections
 - Pas besoin de coder HTML/JS
 
 **Où l'ajouter** :
+
 - `scripts/dashboard_gradio.py` - Interface simple pour vision/chat
 
 ---
 
-## ✅ 6. ENTRÂINEMENT PROGRESSIF - DÉJÀ SUPPORTÉ ✅
+## ✅ 6. Entraînement progressif - Déjà supporté ✅
 
 **Preuve** :
+
 - Conversation history (`BBIAHuggingFace.conversation_history`) - BBIA se souvient du contexte
 - Comportements adaptatifs (`bbia_adaptive_behavior.py`) - Apprend des patterns
 - Fallbacks intelligents - Si un modèle échoue, BBIA essaie autre chose
 
 **Amélioration possible** :
+
 - Sauvegarder apprentissages dans fichier JSON/database
 - Exemple : "Quand je dis 'salut', BBIA me reconnaît" → sauvegarde pour prochaine fois
 
 **Où l'ajouter** :
+
 - `src/bbia_sim/bbia_memory.py` - Module mémoire persistante
 
 ---
 
-## 📊 RÉSUMÉ - CE QUI EXISTE vs MANQUE
+## 📊 Résumé - Ce qui existe vs manque
 
 | Catégorie | État | Où c'est | Recommandation |
 |-----------|------|----------|----------------|
@@ -286,23 +333,26 @@ if st.button("Scan Environment"):
 
 ---
 
-## 🎯 PRIORITÉS RECOMMANDÉES (Open-Source & Gratuit)
+## 🎯 Priorités recommandées (Open-Source & Gratuit)
 
-### ✅ Priorité 1 : DeepFace ⭐⭐⭐ - **DÉJÀ FAIT !**
+### ✅ Priorité 1 : DeepFace ⭐⭐⭐ - Déjà fait !
 
 **État** : ✅ **Module créé et intégré**
 
 **Fichiers** :
+
 - ✅ `src/bbia_sim/face_recognition.py` - Module complet avec toutes les fonctionnalités
 - ✅ Intégré dans `BBIAVision.scan_environment()`
 
 **Installation** :
+
 ```bash
 source venv-vision-py310/bin/activate
 pip install -r requirements/requirements-deepface.txt
 ```
 
 **Utilisation** :
+
 ```bash
 # Enregistrer une personne
 python scripts/test_deepface.py --register photo_alice.jpg --name Alice
@@ -316,15 +366,17 @@ python scripts/test_deepface.py --emotion photo.jpg
 
 ---
 
-### ✅ Priorité 2 : MediaPipe Pose ⭐⭐ - **DÉJÀ FAIT !**
+### ✅ Priorité 2 : MediaPipe Pose ⭐⭐ - Déjà fait !
 
 **État** : ✅ **Module créé et intégré**
 
 **Fichiers** :
+
 - ✅ `src/bbia_sim/pose_detection.py` - Module complet
 - ✅ Intégré dans `BBIAVision.scan_environment()`
 
 **Utilisation** :
+
 ```bash
 # Test avec webcam
 python scripts/test_pose_detection.py --webcam
@@ -337,11 +389,12 @@ python scripts/test_pose_detection.py --image photo.jpg
 
 ---
 
-### ✅ Priorité 3 : LLM Léger (Phi-2) ⭐ - **DÉJÀ FAIT**
+### ✅ Priorité 3 : LLM léger (Phi-2) ⭐ - Déjà fait
 
 **État** : ✅ **FAIT** - Phi-2 et TinyLlama configurés et fonctionnels
 
 **Vérification code** :
+
 ```python
 # bbia_huggingface.py lignes 164-166
 "chat": {
@@ -351,6 +404,7 @@ python scripts/test_pose_detection.py --image photo.jpg
 ```
 
 **Usage** :
+
 ```python
 hf = BBIAHuggingFace()
 hf.enable_llm_chat("phi2")  # ✅ Fonctionne (~5GB RAM)
@@ -359,7 +413,7 @@ hf.enable_llm_chat("tinyllama")  # ✅ Fonctionne (~2GB RAM)
 
 ---
 
-## 📝 CONCLUSION
+## 📝 Conclusion
 
 **Ton projet est DÉJÀ très bien** ! ✅
 
@@ -368,6 +422,7 @@ hf.enable_llm_chat("tinyllama")  # ✅ Fonctionne (~2GB RAM)
 - ✅ Support TTS/STT/LLM/Vision complet
 
 **Ce qui était manquant (maintenant tous ajoutés)** :
+
 1. ✅ **DeepFace** pour reconnaissance visage + émotions - **AJOUTÉ !** (voir `src/bbia_sim/face_recognition.py`)
 2. ✅ **MediaPipe Pose** pour détection postures - **ACTIVÉ !** (voir `src/bbia_sim/pose_detection.py`)
 3. ✅ **LLM léger** - **AJOUTÉ !** Phi-2 et TinyLlama configurés (voir `bbia_huggingface.py` lignes 164-166)
@@ -376,7 +431,7 @@ hf.enable_llm_chat("tinyllama")  # ✅ Fonctionne (~2GB RAM)
 
 ---
 
-## 🔒 COMPATIBILITÉ REACHY MINI OFFICIEL
+## 🔒 Compatibilité Reachy Mini officiel
 
 **⚠️ IMPORTANT** : Audit de compatibilité complet disponible dans `COMPATIBILITE_REACHY_MINI_OFFICIEL.md`
 
@@ -397,7 +452,7 @@ hf.enable_llm_chat("tinyllama")  # ✅ Fonctionne (~2GB RAM)
 - ⚠️ **YOLOv8s/m** : Peut être lent
 - ✅ **Solution** : Garder YOLOv8n (nano, optimisé)
 
-### Ajouts Recommandés (sans risque pour SDK)
+### Ajouts recommandés (sans risque pour SDK)
 
 1. ✅ **DeepFace** - **AJOUTÉ ET OPÉRATIONNEL** - Compatible, installé dans `venv-vision-py310`
 2. ✅ **MediaPipe Pose** - **AJOUTÉ ET OPÉRATIONNEL** - Intégré dans `BBIAVision`
@@ -417,3 +472,9 @@ hf.enable_llm_chat("tinyllama")  # ✅ Fonctionne (~2GB RAM)
 
 **Dernière mise à jour** : Oct / Nov. 2025
 
+---
+
+## 🎯 Navigation
+
+**Retour à** : [README Documentation](../README.md)  
+**Voir aussi** : [Intelligence LLM](llm.md) • [Analyse Voix](voice.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)

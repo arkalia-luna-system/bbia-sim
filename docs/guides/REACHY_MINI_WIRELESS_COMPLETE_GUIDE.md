@@ -4,6 +4,7 @@
 **Version** : 1.0
 
 > **Compatibilité Python et CI**
+>
 > - **Version requise** : Python 3.11+
 > - **CI** : `.github/workflows/ci.yml`
 > - **Setup rapide** :
@@ -12,6 +13,20 @@
 >   python -m pip install --upgrade pip
 >   pip install -e .
 >   ```
+
+---
+
+## 📋 Table des Matières
+
+1. [Vue d'ensemble](#-vue-densemble)
+2. [Spécifications Techniques](#-spécifications-techniques-complètes)
+3. [Préparation Immédiate](#-préparation-immédiate-maintenant)
+4. [Architecture BBIA](#-architecture-bbia-pour-reachy-mini)
+5. [Plan de Développement](#-plan-de-développement-bbia)
+6. [Outils et Dépendances](#-outils-et-dépendances-requises)
+7. [Dépôts GitHub](#-dépôts-github-utiles)
+8. [Comparaison des Capacités](#-comparaison-des-capacités)
+9. [Workflow de Développement](#-workflow-de-développement)
 
 ---
 
@@ -27,46 +42,54 @@
 ## 📋 Spécifications Techniques Complètes
 
 ### 📏 Dimensions et Poids
+
 - **Hauteur** : 28 cm (mode actif) / 23 cm (mode veille)
 - **Largeur** : 16 cm
 - **Poids** : 1,5 kg (3,3 lb)
 - **Forme** : Compacte et portable
 
 ### 💻 Cerveau Embarqué
+
 - **Processeur** : Raspberry Pi 5 intégré
 - **Capacités** : IA locale, traitement en temps réel
 - **Connectivité** : Wi-Fi intégré
 - **Stockage** : Carte SD extensible
 
 ### 🌐 Connectivité & Alimentation
+
 - **Wi-Fi** : Intégré (connexion sans fil)
 - **Batterie** : Intégrée + alimentation USB-C
 - **Autonomie** : Mobilité complète sans câble
 - **Recharge** : Via USB-C
 
 ### 🗣️ Audio & Micros
+
 - **Microphones** : 4 microphones pour reconnaissance vocale
 - **Haut-parleur** : 5W pour voix claire
 - **Qualité** : Optimisé pour interactions vocales
 
 ### 📷 Caméra & Capteurs
+
 - **Caméra** : Grand angle pour vision et reconnaissance
 - **Accéléromètre** : Mesure mouvements et tremblements
 - **Capteurs** : Pour interaction et sécurité
 
 ### 🤖 Mouvements & Expressivité
+
 - **Tête** : 6 degrés de liberté (rotations précises)
 - **Corps** : Rotation complète
 - **Antennes** : 2 antennes animables avec limites de sécurité (-0.3 à 0.3 rad), utiliser yaw_body pour animations principales
 - **Fluidité** : Mouvements naturels et expressifs
 
 ### 🛠️ Logiciel & Écosystème
+
 - **SDK Principal** : Python (reachy-sdk)
 - **SDK Futurs** : JavaScript et Scratch (bientôt)
 - **Simulation** : Disponible pour développement préalable
 - **Comportements** : 15+ préinstallés (suivi main, danse, etc.)
 
 ### 🌱 Open-Source & Communauté
+
 - **Licence** : 100% open-source (matériel + logiciel)
 - **Hugging Face** : Intégration native (1,7M+ modèles IA)
 - **Communauté** : Discord, Spaces, GitHub actifs
@@ -101,18 +124,19 @@ flowchart TD
 ```
 
 ### 1. 📚 Documentation Officielle
-```bash
-# Liens essentiels
-- Site officiel : https://www.pollen-robotics.com/reachy-mini-wireless/
-- Documentation : https://docs.pollen-robotics.com/
-- GitHub : https://github.com/pollen-robotics/
-- Discord : https://discord.gg/pollen-robotics
-- Hugging Face : https://huggingface.co/pollen-robotics
-```
+
+**Liens essentiels :**
+
+- **Site officiel** : https://www.pollen-robotics.com/reachy-mini-wireless/
+- **Documentation** : https://docs.pollen-robotics.com/
+- **GitHub** : https://github.com/pollen-robotics/
+- **Discord** : https://discord.gg/pollen-robotics
+- **Hugging Face** : https://huggingface.co/pollen-robotics
 
 ### 2. 🛠️ Outils de Développement à Installer
 
 #### Environnement Python
+
 ```bash
 # Créer un environnement dédié
 python3 -m venv reachy_env
@@ -131,6 +155,7 @@ pip install transformers torch
 ```
 
 #### Outils de Simulation
+
 ```bash
 # Unity pour simulation 3D (déjà configuré)
 # Gazebo pour simulation physique
@@ -141,7 +166,8 @@ sudo apt-get install ros-noetic-rviz
 ```
 
 ### 3. 📁 Structure de Projet Recommandée
-```
+
+```text
 reachy-bbia-project/
 ├── Documentation/
 │   ├── specs.md
@@ -258,6 +284,7 @@ gantt
 ## 🔧 Outils et Dépendances Requises
 
 ### 1. 📦 Dépendances Python Essentielles
+
 ```bash
 # Core BBIA
 pip install numpy pandas scipy
@@ -278,15 +305,14 @@ pip install websockets
 # Web & API
 pip install fastapi uvicorn
 pip install requests aiohttp
-pip install websockets
 
 # Monitoring & Logs
-pip install logging
 pip install prometheus_client
 pip install grafana-api
 ```
 
 ### 2. 🎮 Outils de Simulation
+
 ```bash
 # Unity (déjà configuré)
 # Gazebo
@@ -300,6 +326,7 @@ sudo apt-get install ros-noetic-rviz
 ```
 
 ### 3. 🛠️ Outils de Développement
+
 ```bash
 # IDE & Éditeurs
 code .  # VS Code
@@ -319,6 +346,9 @@ sudo apt-get install nvtop  # Pour GPU monitoring
 ## 📚 Dépôts GitHub Utiles
 
 ### 1. 🏢 Officiels Pollen Robotics
+
+**Dépôts principaux :**
+
 ```bash
 # SDK Principal
 git clone https://github.com/pollen-robotics/reachy-sdk.git
@@ -334,6 +364,9 @@ git clone https://github.com/pollen-robotics/reachy-examples.git
 ```
 
 ### 2. 🤖 Communauté et Extensions
+
+**Extensions utiles :**
+
 ```bash
 # Hugging Face Integration
 git clone https://github.com/pollen-robotics/reachy-huggingface.git
@@ -346,6 +379,9 @@ git clone https://github.com/pollen-robotics/reachy-vision.git
 ```
 
 ### 3. 🧠 IA et Machine Learning
+
+**Outils IA :**
+
 ```bash
 # Transformers pour Reachy
 git clone https://github.com/huggingface/transformers.git
@@ -406,42 +442,47 @@ sequenceDiagram
 ## 🔍 Ce qui vous manque actuellement
 
 ### 1. Matériel
+
 - [ ] **Reachy Mini Wireless** (en commande)
 - [ ] **Carte SD haute performance** (64GB+)
 - [ ] **Chargeur USB-C** (si pas inclus)
 - [ ] **Support/stand** (optionnel)
 
 ### 2. Logiciel
+
 - [ ] **SDK Reachy** (à installer)
 - [ ] **ROS Noetic** (optionnel)
 - [ ] **Gazebo** (pour simulation physique)
 - [ ] **Hugging Face** (modèles IA)
 
 ### 3. Ressources
+
 - [ ] **Documentation officielle** (à étudier)
 - [ ] **Tutoriels vidéo** (YouTube)
 - [ ] **Communauté Discord** (à rejoindre)
-- [ **Cours IA/ML** (recommandé)
+- [ ] **Cours IA/ML** (recommandé)
 
 ---
 
 ## 🚀 Actions Immédiates Recommandées
 
 ### 1. 📚 Étude et Formation
-```bash
-# Rejoindre la communauté
-- Discord Pollen Robotics
-- GitHub Pollen Robotics
-- Hugging Face Spaces
 
-# Cours recommandés
+**Rejoindre la communauté :**
+
+- **Discord** : Pollen Robotics
+- **GitHub** : Pollen Robotics
+- **Hugging Face** : Spaces
+
+**Cours recommandés :**
+
 - Python pour IA/ML
 - Computer Vision
 - Speech Recognition
 - Robot Operating System (ROS)
-```
 
 ### 2. 🛠️ Configuration Environnement
+
 ```bash
 # Créer l'environnement de développement
 mkdir reachy-bbia-project
@@ -454,6 +495,7 @@ pip install reachy-sdk numpy opencv-python
 ```
 
 ### 3. 🎮 Simulation
+
 ```bash
 # Utiliser le simulateur Unity existant
 ./launch_unity_simulator.sh
@@ -467,18 +509,21 @@ python3 test_unity_simulator.py
 ## 💡 Conseils et Bonnes Pratiques
 
 ### 1. 🔒 Sécurité
+
 - Toujours tester en simulation d'abord
 - Respecter les limites de mouvement du robot
 - Sauvegarder régulièrement votre code
 - Utiliser des timeouts pour éviter les blocages
 
 ### 2. 🧪 Tests
+
 - Tests unitaires pour chaque fonction
 - Tests d'intégration pour BBIA
 - Tests de performance
 - Tests de sécurité
 
 ### 3. 📊 Monitoring
+
 - Logs détaillés de toutes les actions
 - Monitoring des performances
 - Surveillance de la batterie
@@ -497,16 +542,23 @@ Le **Reachy Mini Wireless** fournit une base solide pour BBIA :
 - Vision (caméra grand angle)
 - Écosystème open‑source complet
 
-**Prochaines étapes** :
+**Prochaines étapes :**
+
 1. Étudier la documentation officielle
 2. Configurer l'environnement de développement
 3. Tester en simulation
 4. Préparer l'architecture BBIA
-5. Attendre la livraison.
+5. Attendre la livraison
 
 ---
 
-**Version** : 1.0
-**Date** : Oct / Nov. 2025
+## 🎯 Navigation
+
+**Retour à** : [README Documentation](../README.md)  
+**Voir aussi** : [Guide Débutant](GUIDE_DEBUTANT.md) • [Guide Avancé](GUIDE_AVANCE.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)
+
+---
+
+**Version** : 1.0  
+**Date** : Oct / Nov. 2025  
 **Statut** : Guide Reachy Mini Wireless
-**Auteur** : Assistant IA pour BBIA

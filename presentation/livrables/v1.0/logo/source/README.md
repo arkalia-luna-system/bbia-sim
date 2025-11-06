@@ -7,6 +7,7 @@
 ## 📋 Fichiers Attendus
 
 **À venir** :
+
 1. `logo_client_procreate.png` - PNG haute résolution exporté depuis Procreate
 2. `logo_client_procreate.svg` - SVG converti depuis PNG (après conversion automatique)
 
@@ -34,4 +35,3 @@
 ---
 
 *Source Logo BBIA - Workflow Procreate*
-

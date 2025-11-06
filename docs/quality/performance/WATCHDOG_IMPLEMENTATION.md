@@ -20,11 +20,13 @@ Implémenter un système de monitoring watchdog temps réel conforme au SDK Reac
 ### Ajouts
 
 1. **Import threading**:
+
 ```python
 import threading
 ```
 
 2. **Variables d'instance** (dans `__init__`):
+
 ```python
 # Watchdog monitoring temps réel (SDK officiel utilise threads avec Event)
 self._watchdog_thread: Optional[threading.Thread] = None
@@ -109,6 +111,7 @@ ruff check src/bbia_sim/backends/reachy_mini_backend.py
 ## Conformité SDK
 
 Conforme au SDK Reachy Mini officiel :
+
 - Utilise threads avec `Event` comme SDK
 - Monitoring temps réel à 100ms
 - Détection automatique déconnexion
@@ -120,6 +123,7 @@ Conforme au SDK Reachy Mini officiel :
 ## Sécurité
 
 Mécanismes de sécurité :
+
 - Timeout heartbeat: 2 secondes max sans activité
 - Détection déconnexion robot via exceptions SDK
 - Activation automatique emergency stop en cas d'anomalie
@@ -131,14 +135,17 @@ Mécanismes de sécurité :
 ## Notes techniques
 
 ### Intervalle Monitoring
+
 - **100ms** (10 Hz) - Optimale pour équilibrer réactivité et charge CPU
 - Configurable via `_watchdog_interval`
 
 ### Timeout Heartbeat
+
 - **2.0 secondes** - Détecte déconnexion ou robot bloqué
 - Configurable via `max_heartbeat_timeout` dans `_watchdog_monitor()`
 
 ### Thread Daemon
+
 - Thread daemon = s'arrête automatiquement si programme principal se termine
 - Ne bloque pas l'arrêt du programme
 
@@ -159,4 +166,3 @@ Le système BBIA dispose maintenant d'un monitoring watchdog temps réel conform
 ---
 
 **Statut**: terminé et validé
-

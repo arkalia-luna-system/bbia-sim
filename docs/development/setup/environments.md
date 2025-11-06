@@ -3,12 +3,14 @@
 **Date** : Oct / Nov. 2025
 
 ## Objectif
+
 - Séparer les outils pour éviter les conflits de dépendances (numpy, mediapipe, reachy, TTS avancé).
 - Avoir une vision qui marche tout de suite, sans casser le reste.
 
 ---
 
 ### Profil A – venv principal (simulation/hardware)
+
 - Emplacement: `venv`
 - Usage: simulation MuJoCo, API, dashboard, intégration Reachy (hardware mock/réel), chat (HF si dispo)
 - Commandes utiles:
@@ -17,11 +19,13 @@
   - Démo 3D (macOS): `./LANCE_DEMO_3D.sh` (utilise `mjpython`)
 
 Notes:
+
 - N’installer ni Coqui TTS ni mediapipe ici pour éviter conflits.
 
 ---
 
 ### Profil B – venv vision (recommandé)
+
 - Emplacement: `venv-vision-py310`
 - Usage: vision temps réel (MediaPipe, YOLO, OpenCV)
 - Création (déjà fait):
@@ -34,6 +38,7 @@ Notes:
   - `python -c "import mediapipe, cv2; print('VISION OK')"`
 
 Caméra:
+
 - **Webcam USB UVC (recommandé)** : Plug-and-play, compatible OpenCV (ex. Logitech C920, Logitech MX Brio).
   - Configuration : `export BBIA_CAMERA_INDEX=0` (défaut: 0 = première caméra USB)
   - Test rapide : `python scripts/test_webcam_simple.py` (dans venv-vision-py310)
@@ -44,6 +49,7 @@ Caméra:
 ---
 
 ### Profil C – venv voix avancée (optionnel)
+
 - Usage: générer des WAV jolis (pitch/émotions) avec Coqui TTS, sans toucher au venv principal
 - Conseils:
   - Créer un venv séparé (ex. `venv-voice`) et y installer `TTS`/`playsound`
@@ -53,13 +59,16 @@ Caméra:
 ---
 
 ### Profil D – DeepFace (optionnel, dans venv-vision-py310)
+
 - Usage: Reconnaissance visage personnalisée + détection émotions
 - Installation:
+
   ```bash
   source venv-vision-py310/bin/activate
   pip install -r requirements/requirements-deepface.txt
   # Ou: pip install deepface onnxruntime
   ```
+
 - Utilisation:
   - Enregistrer personnes: `python scripts/test_deepface.py --register photo.jpg --name Alice`
   - Reconnaître: `python scripts/test_deepface.py --recognize frame.jpg`
@@ -69,6 +78,7 @@ Caméra:
 ---
 
 ### Lancer les démos sans conflit
+
 - Simulation 3D (profil A):
   - `source venv/bin/activate`
   - `./LANCE_DEMO_3D.sh` (macOS: ouvre le viewer via `mjpython`)
@@ -79,8 +89,10 @@ Caméra:
 ---
 
 ### Activer l'intelligence (LLM) – optionnel
+
 - Prérequis (profil A): `transformers`, `torch` installés (déjà présents)
 - Exemple d’activation ponctuelle:
+
 ```python
 from bbia_sim.bbia_huggingface import BBIAHuggingFace
 bbia = BBIAHuggingFace()
@@ -92,6 +104,7 @@ bbia.enable_llm_chat()  # Télécharge/charge le LLM (internet requis au premier
 ### Dépendances Optionnelles - Centralisées
 
 **Vision et Détection :**
+
 - **DeepFace** (reconnaissance visage + émotions) :
   - Fichier : `requirements/requirements-deepface.txt`
   - Installation : `pip install -r requirements/requirements-deepface.txt`
@@ -112,6 +125,7 @@ bbia.enable_llm_chat()  # Télécharge/charge le LLM (internet requis au premier
   - Intégration : Automatique via `bbia_vision.py`
 
 **IA et LLM :**
+
 - **Hugging Face Transformers** (LLM conversationnel) :
   - Installation : `pip install transformers torch` (déjà présents dans `requirements.txt`)
   - Modèles disponibles :
@@ -130,6 +144,7 @@ bbia.enable_llm_chat()  # Télécharge/charge le LLM (internet requis au premier
   - Backend : Auto-détection, fallback dummy si non disponible
 
 **TTS Avancé (optionnel) :**
+
 - **KittenTTS / Kokoro / NeuTTS** :
   - Installation : Selon backend choisi
   - Configuration : `export BBIA_TTS_BACKEND=kitten` (ou `kokoro`, `neutts`)
@@ -142,6 +157,7 @@ bbia.enable_llm_chat()  # Télécharge/charge le LLM (internet requis au premier
   - Profil : `venv-voice` séparé (évite conflits numpy)
 
 **Dashboard :**
+
 - **Gradio** (interface no-code) :
   - Fichier : `requirements/requirements-gradio.txt`
   - Installation : `pip install gradio`
@@ -166,6 +182,7 @@ bbia.enable_llm_chat()  # Télécharge/charge le LLM (internet requis au premier
 ---
 
 ### FAQ
+
 - Pourquoi séparer les venv ?
   - Certains paquets demandent des versions de numpy/scipy incompatibles entre eux (mediapipe vs hardware/reachy-mini/others). Les séparer évite de tout casser.
 - Puis-je utiliser l’iPad comme caméra ?

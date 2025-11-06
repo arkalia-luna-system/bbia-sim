@@ -7,6 +7,7 @@
 ## 📋 Documents Principaux
 
 ### Document Principal
+
 - **[CONFORMITE_REACHY_MINI_COMPLETE.md](CONFORMITE_REACHY_MINI_COMPLETE.md)** ⭐ **RECOMMANDÉ**
   - Document principal de conformité
   - Vue d'ensemble complète
@@ -37,9 +38,11 @@ Ces checklists fournissent des détails supplémentaires pour des aspects spéci
 ## 🎯 Utilisation
 
 ### Pour une Vue d'Ensemble
+
 👉 **Consultez** : [CONFORMITE_REACHY_MINI_COMPLETE.md](CONFORMITE_REACHY_MINI_COMPLETE.md)
 
 ### Pour des Détails Spécifiques
+
 - **Endpoints REST** → `CHECKLIST_FINALE_CONFORMITE.md`
 - **Comparaison officiel** → `CHECKLIST_FINALE_COMPARAISON_OFFICIELLE.md`
 - **Audit exhaustif** → `CHECKLIST_AUDIT_EXHAUSTIF.md`
@@ -58,4 +61,3 @@ Ces checklists fournissent des détails supplémentaires pour des aspects spéci
 ---
 
 **Retour à** : [README Qualité](../README.md)
-

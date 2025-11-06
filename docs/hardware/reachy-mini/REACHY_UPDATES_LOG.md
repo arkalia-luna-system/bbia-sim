@@ -3,6 +3,7 @@
 ## 🔍 **AUDIT NOUVEAUTÉS REACHY - Oct / Nov. 2025**
 
 ### **📊 ÉTAT ACTUEL**
+
 - **Reachy SDK** : Version installée via `reachy_mini` package
 - **Modèle MJCF** : `reachy_mini.xml` officiel trouvé dans le package
 - **Joints identifiés** : 7 joints mobiles + 2 antennes + 7 passifs
@@ -10,6 +11,7 @@
 ### **🔧 JOINTS OFFICIELS DÉTECTÉS**
 
 #### **Joints Mobiles (Actuators)**
+
 ```xml
 <!-- Joints principaux -->
 <joint name="yaw_body" range="-2.792526803190975 2.792526803190879"/>
@@ -26,6 +28,7 @@
 ```
 
 #### **Joints Passifs (Ball joints)**
+
 ```xml
 <joint name="passive_1" type="ball"/>
 <joint name="passive_2" type="ball"/>
@@ -39,17 +42,20 @@
 ### **Différences détectées**
 
 #### **1. Limites de joints**
+
 - **Notre mapping** : Limites simplifiées (-0.3, 0.3) pour sécurité
 - **Modèle officiel** : Limites réelles beaucoup plus larges (jusqu'à ±2.79 rad)
 - **Impact** : Notre clamp de sécurité est correct mais très conservateur
 
 #### **2. Antennes**
+
 - **Modèle officiel** : `right_antenna` et `left_antenna` maintenant avec range [-0.300, 0.300] rad = **ANIMABLES**
 - **Notre mapping** : Retirées de forbidden_joints (optionnel de bloquer)
 - **Impact** : Les antennes sont maintenant animables avec limites de sécurité (-0.3 à 0.3 rad)
 - **Vérification** : Script `check_joints.py` confirme range [-0.300, 0.300] = animables
 
 #### **3. Joints passifs**
+
 - **Modèle officiel** : 7 joints `passive_1` à `passive_7` (type ball)
 - **Notre mapping** : Correctement identifiés comme interdits
 - **Impact** : Aucun, notre mapping est correct
@@ -57,17 +63,20 @@
 ### **Plan de migration proposé**
 
 #### **Option A : Garder le mapping actuel (recommandé)**
+
 - **Avantages** : Sécurité maximale, pas de régression
 - **Inconvénients** : Limites très conservatrices
 - **Action** : Aucune modification nécessaire
 
 #### **Option B : Mise à jour progressive**
+
 - **Étape 1** : Ajouter les vraies limites du modèle officiel
 - **Étape 2** : Garder le clamp de sécurité à 0.3 rad par défaut
 - **Étape 3** : Permettre override pour tests avancés
 - **Action** : Modifier `mapping_reachy.py` avec vraies limites
 
 #### **Option C : Antennes mobiles** ✅ **APPLIQUÉ**
+
 - ✅ **Étape 1** : Retiré `left_antenna` et `right_antenna` des joints interdits
 - ✅ **Étape 2** : Ajouté limites pour les antennes (-0.3 à 0.3 rad dans XML)
 - ✅ **Étape 3** : Antennes maintenant animables avec protection hardware
@@ -101,6 +110,7 @@
 **Statut** : Audit terminé, corrections appliquées ✅
 
 ### 📋 Corrections Appliquées (Oct / Nov. 2025)
+
 - ✅ XML : Antennes maintenant avec range [-0.300, 0.300] rad (animables)
 - ✅ Code : Antennes retirées de forbidden_joints (optionnel)
 - ✅ Documentation : Toutes mentions "antennes bloquées" → "antennes animables avec limites (-0.3 à 0.3 rad)"

@@ -17,6 +17,7 @@
 ## 📹 Vidéos Disponibles (Nouveau - Oct / Nov. 2025)
 
 ### ✅ Vidéos de Démonstration MuJoCo
+
 **Localisation** : `assets/videos/`
 
 1. **Démo MuJoCo #1** (2.7 MB)
@@ -48,6 +49,7 @@
 **Objectif** : Installation complète en 5 minutes
 
 **Contenu** :
+
 - Clonage du repo
 - Installation des dépendances
 - Premier lancement de la simulation
@@ -65,6 +67,7 @@
 **Objectif** : Faire bouger le robot avec des émotions
 
 **Contenu** :
+
 - Lancer une simulation MuJoCo
 - Exécuter différentes émotions
 - Comprendre les paramètres d'intensité
@@ -81,6 +84,7 @@
 **Objectif** : Utiliser l'interface graphique
 
 **Contenu** :
+
 - Démarrer le dashboard FastAPI
 - Utiliser le chat interactif avec BBIA
 - Contrôler le robot visuellement
@@ -97,6 +101,7 @@
 **Objectif** : Utiliser BBIA avec un Reachy Mini physique
 
 **Contenu** :
+
 - Prérequis hardware (Wi-Fi, alimentation)
 - Configuration réseau
 - Connexion au robot réel
@@ -114,6 +119,7 @@
 **Objectif** : Comprendre l'architecture pour développeurs
 
 **Contenu** :
+
 - Structure des modules BBIA
 - Backend unifié (simulation ↔ réel)
 - Intégration SDK Reachy Mini
@@ -128,6 +134,7 @@
 ## 📋 Checklist de Production
 
 ### Préparation
+
 - [ ] Script de démonstration finalisé
 - [ ] Environnement de test propre
 - [ ] Outils de capture vidéo configurés (OBS, QuickTime, etc.)
@@ -135,6 +142,7 @@
 - [ ] Robot Reachy Mini disponible (pour vidéo #4)
 
 ### Production
+
 - [ ] Capture vidéo (résolution minimale : 1920x1080)
 - [ ] Enregistrement audio (qualité claire, sans bruit)
 - [ ] Montage (coupures, annotations, transitions)
@@ -142,6 +150,7 @@
 - [ ] Miniature attractive
 
 ### Publication
+
 - [ ] Upload sur YouTube
 - [ ] Description complète avec timestamps
 - [ ] Liens vers documentation
@@ -163,13 +172,20 @@ Une fois les vidéos créées, elles seront intégrées dans :
 ## 📝 Notes
 
 - **Format recommandé** : MP4, 1920x1080, 30fps
+
+---
+
 - **Durée optimale** : 3-7 minutes par vidéo
 - **Ton** : Accessible mais professionnel
 - **Langue** : Français (sous-titres anglais optionnel)
 
----
-
 **Prochaine étape** : Production des vidéos une fois le projet en version stable.
 
-**Contribuer** : Si vous souhaitez contribuer à la création de ces vidéos, contactez les maintainers via GitHub Issues.
+---
 
+## 🎯 Navigation
+
+**Retour à** : [README Documentation](../README.md)  
+**Voir aussi** : [Guide Débutant](GUIDE_DEBUTANT.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)
+
+**Contribuer** : Si vous souhaitez contribuer à la création de ces vidéos, contactez les maintainers via GitHub Issues.

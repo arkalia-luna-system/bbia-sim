@@ -25,6 +25,7 @@ python -c "import cv2; print(f'✅ OpenCV version: {cv2.__version__}')"
 ```
 
 **Si erreur** :
+
 ```bash
 # Installer OpenCV si manquant
 pip install opencv-python
@@ -43,12 +44,14 @@ python scripts/test_webcam_simple.py
 ```
 
 **Tu devrais voir** :
+
 - ✅ Une fenêtre avec le flux vidéo de ta webcam
 - ✅ Un compteur de frames en haut
 - ✅ Appuie sur `q` pour quitter
 - ✅ Appuie sur `s` pour sauvegarder une capture
 
 **Si ça ne marche pas** :
+
 - Vérifie les permissions macOS (Réglages Système > Confidentialité > Caméra)
 - Essaie un autre index : `export BBIA_CAMERA_INDEX=1` puis relance
 
@@ -64,17 +67,20 @@ python scripts/test_vision_webcam.py
 ```
 
 **Tu devrais voir** :
+
 - ✅ Fenêtre avec flux vidéo
 - ✅ **Objets détectés** : rectangles verts avec noms (person, phone, cup, etc.)
 - ✅ **Visages détectés** : rectangles bleus avec confiance
 - ✅ Appuie sur `q` pour quitter
 
 **Si YOLO n'est pas installé** :
+
 ```bash
 pip install ultralytics
 ```
 
 **💡 Pour améliorer la détection** :
+
 - Assure-toi d'être bien éclairé
 - Réduis la distance (pas besoin d'être très loin)
 - Le seuil de confiance est maintenant à 0.25 (au lieu de 0.5) pour détecter plus d'objets
@@ -112,6 +118,7 @@ python scripts/test_pose_detection.py --webcam
 ```
 
 **Tu devrais voir** :
+
 - ✅ Flux vidéo avec squelette dessiné sur ton corps
 - ✅ Détection gestes (main levée, debout, assis, etc.)
 - ✅ Appuie sur `q` pour quitter
@@ -132,6 +139,7 @@ python scripts/dashboard_gradio.py --port 7860
 ```
 
 **Ensuite** :
+
 1. Ouvrir ton navigateur : `http://127.0.0.1:7860`
 2. Onglet **📷 Vision** : Upload une image → voir détections
 3. Onglet **💬 Chat** : Chat avec BBIA
@@ -162,6 +170,7 @@ print(f"Postures détectées: {result.get('poses')}")
 ```
 
 **La webcam sera utilisée automatiquement** si :
+
 - Pas de robot Reachy connecté
 - Pas de SDK camera disponible
 - OpenCV disponible dans le venv
@@ -175,6 +184,7 @@ print(f"Postures détectées: {result.get('poses')}")
 **Problème** : Pas assez de détections ?
 
 1. **Réduire le seuil de confiance** :
+
    ```python
    # Dans ton code, créer détecteur avec seuil plus bas
    from bbia_sim.vision_yolo import YOLODetector
@@ -214,6 +224,7 @@ cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
 ### "Erreur détection YOLO: 'list' object has no attribute 'get'"
 
 **✅ CORRIGÉ !** Cette erreur est maintenant résolue. Si tu la vois encore :
+
 1. Relance le script après mise à jour
 2. Vérifie que tu utilises la dernière version du code
 
@@ -224,6 +235,7 @@ cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
    - Autoriser Terminal ou Python
 
 2. **Webcam branchée ?**
+
    ```bash
    # Lister caméras disponibles (macOS)
    system_profiler SPCameraDataType
@@ -283,11 +295,13 @@ Une fois que la webcam fonctionne :
 ## 📝 Notes de performance
 
 **Détection améliorée** :
+
 - ✅ Seuil de confiance réduit à 0.25 (au lieu de 0.5) pour plus de détections
 - ✅ Format YOLO corrigé (bbox est maintenant correctement converti)
 - ✅ Détection toutes les 3 frames (au lieu de 5) pour meilleure réactivité
 
 **Si détection toujours faible** :
+
 - Vérifie l'éclairage
 - Réduis la distance
 - Augmente la confiance : `YOLODetector(confidence_threshold=0.15)`

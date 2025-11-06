@@ -67,6 +67,7 @@
 ## 🔄 Utilisation dans MuJoCo
 
 **Dans XML scène** :
+
 ```xml
 <texture name="mur" type="2d" file="assets/textures/mur.png"/>
 <material name="mat_mur" texture="mur"/>
@@ -78,4 +79,3 @@
 ---
 
 *Dossier Textures - BBIA-SIM*
-

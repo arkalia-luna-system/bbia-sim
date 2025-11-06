@@ -1,5 +1,7 @@
 # Système de gestion sécurisée des processus BBIA
 
+**Date** : Oct / Nov. 2025
+
 > Compatibilité Python et CI
 >
 > - Python requis: 3.11+
@@ -14,6 +16,7 @@
 ## Problème résolu
 
 Votre Mac ramait à cause de **multiples processus BBIA** qui tournaient en arrière-plan :
+
 - `launch_complete_robot.py` consommait **73.6% CPU**
 - **15+ processus pytest** traînaient depuis l'après-midi
 - **Processus websocket_integration** multiples
@@ -94,6 +97,9 @@ sequenceDiagram
     S-->>U: Robot arrêté avec succès
 ```
 
+### Utilisation
+
+```bash
 # Vérifier le statut
 ./scripts/bbia_safe.sh status
 
@@ -144,6 +150,7 @@ $ ./scripts/bbia_safe.sh status
 ### Protection contre les problèmes
 
 #### Avant (problématique)
+
 ```bash
 # Risqué - peut créer des doublons
 python3 scripts/launch_complete_robot.py --headless
@@ -154,6 +161,7 @@ python3 scripts/launch_complete_robot.py --headless
 ```
 
 #### Après (sécurisé)
+
 ```bash
 # Sécurisé - détection de doublons
 ./scripts/bbia_safe.sh start headless
@@ -175,9 +183,9 @@ pip install psutil
 
 ### Fichiers de configuration
 
-- **`~/.bbia_sim.lock`** - Fichier de verrouillage principal
-- **`~/.bbia_sim.pid`** - PID du processus verrouillé
-- **Nettoyage automatique** à l'arrêt
+- **`~/.bbia_sim.lock`** : Fichier de verrouillage principal
+- **`~/.bbia_sim.pid`** : PID du processus verrouillé
+- **Nettoyage automatique** : À l'arrêt
 
 ### En cas de problème
 
@@ -201,13 +209,22 @@ Si des processus traînent encore :
 3. **Arrêtez proprement** : `./scripts/bbia_safe.sh stop`
 4. **Évitez** `kill-all` sauf en cas d'urgence
 
+---
+
 ## Résultat
 
-- Plus de processus qui traînent
-- Détection automatique des doublons
-- Arrêt automatique à la fermeture du terminal
-- Confirmation avant arrêt
-- Monitoring des ressources
-- Mac plus réactif
+- ✅ Plus de processus qui traînent
+- ✅ Détection automatique des doublons
+- ✅ Arrêt automatique à la fermeture du terminal
+- ✅ Confirmation avant arrêt
+- ✅ Monitoring des ressources
+- ✅ Mac plus réactif
 
 Votre Mac ne devrait plus ramer à cause des processus BBIA.
+
+---
+
+## 🎯 Navigation
+
+**Retour à** : [README Documentation](../README.md)  
+**Voir aussi** : [Index Thématique](../reference/INDEX_THEMATIQUE.md)

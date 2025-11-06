@@ -5,7 +5,9 @@ Ce dossier contient les scripts de test de conformité pour valider que BBIA-SIM
 ## 📋 Scripts Disponibles
 
 ### `test_conformity.py`
+
 Test basique de conformité :
+
 - Chargement modèle officiel
 - Qualité assets STL
 - Spécifications joints
@@ -14,18 +16,22 @@ Test basique de conformité :
 - Performance simulation
 
 **Usage:**
+
 ```bash
 python scripts/conformity/test_conformity.py
 ```
 
 ### `test_conformity_sdk_officiel.py`
+
 Test complet de conformité avec le SDK officiel `reachy-mini` :
+
 - Disponibilité SDK
 - Conformité backend
 - Compatibilité API
 - Performances
 
 **Usage:**
+
 ```bash
 # Nécessite: pip install reachy-mini
 python scripts/conformity/test_conformity_sdk_officiel.py
@@ -34,6 +40,7 @@ python scripts/conformity/test_conformity_sdk_officiel.py
 ## 🎯 Objectif
 
 Ces tests vérifient que BBIA-SIM respecte :
+
 - Les spécifications officielles du SDK Reachy Mini
 - Les interfaces et signatures attendues
 - Les limites de sécurité
@@ -49,4 +56,3 @@ Ces tests vérifient que BBIA-SIM respecte :
 
 **Version**: 1.0  
 **Date**: Oct / No2025025025025025
-

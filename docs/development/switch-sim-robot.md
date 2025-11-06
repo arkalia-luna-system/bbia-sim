@@ -103,59 +103,78 @@ sequenceDiagram
 
 ### **Simulation MuJoCo (Développement)**
 ```bash
+
 # Démo avec backend MuJoCo - MODE GRAPHIQUE (voir la 3D)
+
 mjpython examples/demo_emotion_ok.py --backend mujoco --emotion happy --duration 5
 
 # Démo avec backend MuJoCo - MODE HEADLESS (tests rapides)
+
 python examples/demo_emotion_ok.py --headless --backend mujoco --emotion happy --duration 5
 
 # Tests avec MuJoCo
+
 python -m pytest tests/test_robot_api_smoke.py -v
-```
+
+```text
 
 ### **Robot Reachy Réel (Production)**
 ```bash
+
 # Démo avec backend Reachy réel
+
 python examples/demo_emotion_ok.py --backend reachy --emotion happy --duration 5
 
 # Configuration robot
+
 python examples/demo_emotion_ok.py --backend reachy --robot-ip 192.168.1.100 --robot-port 8080
-```
+
+```text
 
 ## 🔧 Code Exemple
 
 ### **Utilisation Simple**
 ```python
+
 from bbia_sim.robot_factory import RobotFactory
 
 # Créer le backend
+
 robot = RobotFactory.create_backend("mujoco") # ou "reachy"
 
 # Connecter
+
 robot.connect()
 
 # Utiliser l'API unifiée
+
 robot.set_emotion("happy", intensity=0.8)
 robot.set_joint_pos("yaw_body", 0.3)
 robot.look_at(target_x=0.5, target_y=0.0)
 robot.run_behavior("wake_up", duration=5.0)
 
 # Déconnecter
+
 robot.disconnect()
-```
+
+```text
 
 ### **Switch Automatique**
 ```python
+
 import os
 
 # Variable d'environnement pour choisir le backend
+
 backend_type = os.environ.get("BBIA_BACKEND", "mujoco")
 robot = RobotFactory.create_backend(backend_type)
-```
+
+```text
 
 ## 📊 Comparaison des Backends
 
 ```mermaid
+
 graph LR
  subgraph "MuJoCoBackend (Simulation)"
  SIM_FEATURES[✅ Physique 3D<br/>✅ Viewer graphique<br/>✅ Mode headless<br/>✅ Tests automatisés<br/>✅ Débogage facile<br/>❌ Pas de robot physique]
@@ -166,7 +185,7 @@ graph LR
  end
 
     SIM_FEATURES -.->|Migration| ROBOT_FEATURES
-    
+
  style SIM_FEATURES fill:#4ECDC4
  style ROBOT_FEATURES fill:#FF6B6B
 
@@ -196,32 +215,42 @@ flowchart TD
 
 ### **Enregistrement**
 ```bash
+
 # Enregistrer une animation
+
 python examples/demo_emotion_ok.py --record artifacts/my_animation.jsonl --emotion happy --duration 10
-```
+
+```text
 
 ### **Rejeu**
 ```bash
+
 # Rejouer une animation
+
 python scripts/replay_viewer.py artifacts/my_animation.jsonl --speed 1.5
-```
+
+```text
 
 ## 📈 Télémétrie
 
 ### **Collecte Automatique**
 ```python
+
 from bbia_sim.telemetry import TelemetryCollector
 
 telemetry = TelemetryCollector()
 telemetry.start_collection()
 
 # Pendant l'animation
+
 telemetry.record_step({"yaw_body": 0.3, "stewart_1": 0.1})
 
 # Export
+
 stats = telemetry.stop_collection()
 telemetry.export_csv("demo_stats.csv", stats)
-```
+
+```text
 
 ### **Métriques**
 - Steps par seconde
@@ -233,24 +262,33 @@ telemetry.export_csv("demo_stats.csv", stats)
 
 ### **Étape 1 : Développement**
 ```bash
+
 # Utiliser MuJoCo pour le développement
+
 export BBIA_BACKEND=mujoco
 python examples/demo_emotion_ok.py --emotion happy
-```
+
+```text
 
 ### **Étape 2 : Tests**
 ```bash
+
 # Tester avec les deux backends
+
 python -m pytest tests/test_robot_api_smoke.py -v
-```
+
+```text
 
 ### **Étape 3 : Production**
 ```bash
+
 # Basculer vers le robot réel
+
 export BBIA_BACKEND=reachy
 export BBIA_ROBOT_IP=192.168.1.100
 python examples/demo_emotion_ok.py --emotion happy
-```
+
+```text
 
 ## ✅ Avantages
 

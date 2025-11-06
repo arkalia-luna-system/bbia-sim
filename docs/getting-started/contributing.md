@@ -14,6 +14,7 @@
 **Temps estimé** : -
 
 **Description** :
+
 - ✅ Coverage actuel : **87.76%** (excellent ✅)
 - Coverage déjà très bon, objectif 70%+ largement dépassé
 - Tests existants : `test_bbia_audio_coverage_high.py`, `test_bbia_audio_improved.py`
@@ -21,6 +22,7 @@
 **Statut** : ✅ **MODULE BIEN TESTÉ** - Pas d'action nécessaire pour ce module
 
 **Ressources** :
+
 - Voir `tests/test_voice_whisper_comprehensive.py` comme exemple
 - Documentation : `docs/development/testing.md`
 
@@ -33,6 +35,7 @@
 **Temps estimé** : 2-3 heures
 
 **Description** :
+
 - Module mémoire persistante manque tests
 - Tester :
   - Sauvegarde/conservation conversations
@@ -40,10 +43,12 @@
   - Gestion fichiers JSON/YAML
 
 **Fichiers concernés** :
+
 - `src/bbia_sim/bbia_memory.py`
 - `tests/test_bbia_memory.py` (créer)
 
 **Étapes** :
+
 1. Lire `bbia_memory.py` pour comprendre fonctionnalités
 2. Créer tests avec fichiers temporaires (`tempfile`)
 3. Tester sauvegarde/chargement
@@ -58,6 +63,7 @@
 **Temps estimé** : 3-4 heures
 
 **Description** :
+
 - ✅ Coverage actuel : **81.71%** (déjà excellent ✅)
 - Améliorations optionnelles possibles :
   - Transitions émotions complexes (si non couvertes)
@@ -65,6 +71,7 @@
   - Validation intensités limites (edge cases)
 
 **Fichiers concernés** :
+
 - `src/bbia_sim/bbia_emotions.py`
 - `tests/test_bbia_emotions.py` (améliorer si besoin)
 
@@ -79,13 +86,16 @@
 **Temps estimé** : 1-2 heures
 
 **Description** :
+
 - Vérifier structure bbox retournées par vision
 - Tests validation format données
 
 **Fichiers concernés** :
+
 - `tests/test_bbia_vision_extended.py`
 
 **Étapes** :
+
 1. Ajouter test `test_bbox_structure_valid()` dans `test_bbia_vision_extended.py`
 2. Vérifier champs requis : `x`, `y`, `width`, `height`, `center_x`, `center_y`
 3. Vérifier types corrects (int)
@@ -100,6 +110,7 @@
 **Temps estimé** : 2 heures
 
 **Description** :
+
 - Étendre tests `VoiceCommandMapper`
 - Tester :
   - Commandes avec ponctuation
@@ -107,9 +118,11 @@
   - Variations linguistiques (verlan, abréviations)
 
 **Fichiers concernés** :
+
 - `tests/test_voice_whisper_comprehensive.py`
 
 **Étapes** :
+
 1. Ajouter tests dans `TestVoiceCommandMapper`
 2. Tester commandes : "salue!", "regarde moi s'il te plaît"
 3. Tester commandes partielles complexes
@@ -124,6 +137,7 @@
 **Temps estimé** : 3-4 heures
 
 **Description** :
+
 - Créer benchmark détaillé pipeline vision
 - Mesurer latence chaque étape :
   - Capture image
@@ -132,15 +146,18 @@
   - Post-processing
 
 **Fichiers concernés** :
+
 - `tests/test_vision_pipeline_benchmark.py` (créer)
 
 **Étapes** :
+
 1. Analyser `bbia_vision.py` pipeline
 2. Instrumenter avec timestamps
 3. Mesurer latence chaque étape
 4. Générer rapport statistiques (p50, p95, p99)
 
 **Ressources** :
+
 - Voir `tests/test_vision_latency.py` comme référence
 
 ---
@@ -152,14 +169,17 @@
 **Temps estimé** : 4-5 heures
 
 **Description** :
+
 - Tester validation inputs utilisateur
 - Protection injection prompts
 - Validation joints, émotions, intensités
 
 **Fichiers concernés** :
+
 - `tests/test_input_validation_advanced.py` (améliorer)
 
 **Étapes** :
+
 1. Identifier tous points d'entrée utilisateur
 2. Créer tests injection prompts
 3. Tester validation limites (joints, émotions)
@@ -174,14 +194,17 @@
 **Temps estimé** : 2-3 heures
 
 **Description** :
+
 - Enrichir `ReachyMiniMock` avec comportements réalistes
 - Simuler latence joints
 - Simuler erreurs (joint bloqué, timeout)
 
 **Fichiers concernés** :
+
 - `tests/reachy_mini_mock.py`
 
 **Étapes** :
+
 1. Analyser `ReachyMiniBackend` comportements réels
 2. Ajouter latence simulée (`time.sleep` proportionnel)
 3. Simuler erreurs conditionnelles
@@ -196,16 +219,19 @@
 **Temps estimé** : 1-2 heures par module
 
 **Description** :
+
 - Documenter architecture tests par module
 - Exemples utilisation mocks
 - Cas d'usage typiques
 
 **Fichiers concernés** :
+
 - `docs/tests/VISION_TESTS.md` (créer)
 - `docs/tests/VOICE_TESTS.md` (créer)
 - `docs/tests/EMOTIONS_TESTS.md` (créer)
 
 **Étapes** :
+
 1. Choisir module (vision, voice, emotions)
 2. Documenter tests existants
 3. Ajouter exemples code
@@ -220,11 +246,13 @@
 **Temps estimé** : 2-3 heures
 
 **Description** :
+
 - Identifier tests redondants/dupliqués
 - Consolider tests similaires
 - Supprimer tests obsolètes
 
 **Étapes** :
+
 1. Analyser tous fichiers tests
 2. Identifier duplications
 3. Consolider en tests paramétrés (`@pytest.mark.parametrize`)
@@ -334,3 +362,9 @@ assignees: []
 
 **Dernière mise à jour** : Oct / Nov. 2025
 
+---
+
+## 🎯 Navigation
+
+**Retour à** : [README Documentation](../README.md)  
+**Voir aussi** : [Guide Contribution Complet](../community/CONTRIBUTION_GUIDE.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)

@@ -9,6 +9,7 @@
 ## 🎯 Qu'est-ce que DeepFace ?
 
 **DeepFace** permet à BBIA de :
+
 - ✅ **Reconnaître des personnes spécifiques** (famille, amis) - "Bonjour Alice !"
 - ✅ **Détecter les émotions** sur visages (happy, sad, angry, etc.)
 - ✅ **Compatible SDK Reachy Mini** (pas de conflit)
@@ -61,7 +62,8 @@ python scripts/test_deepface.py --recognize frame.jpg
 ```
 
 **Résultat** :
-```
+
+```text
 ✅ Personne reconnue:
    • Nom: Alice
    • Confiance: 87%
@@ -75,7 +77,8 @@ python scripts/test_deepface.py --emotion photo.jpg
 ```
 
 **Résultat** :
-```
+
+```text
 ✅ Émotion détectée:
    • Émotion dominante: happy
    • Confiance: 94%
@@ -110,6 +113,7 @@ for face in result["faces"]:
 ```
 
 **Ce qui se passe** :
+
 1. MediaPipe détecte le visage (rapide)
 2. DeepFace reconnaît la personne (si enregistrée)
 3. DeepFace détecte l'émotion
@@ -133,10 +137,12 @@ export BBIA_DEEPFACE_MODEL="VGG-Face"
 ### Modèles DeepFace
 
 **VGG-Face** (défaut) :
+
 - ✅ Bon équilibre vitesse/précision
 - ✅ Compatible Raspberry Pi 5 (avec ONNX)
 
 **ArcFace** (plus précis) :
+
 - ⚠️ Plus lent, mais meilleure précision
 - ⚠️ Nécessite plus de RAM
 
@@ -146,7 +152,7 @@ export BBIA_DEEPFACE_MODEL="VGG-Face"
 
 ## 📁 Structure Base de Données
 
-```
+```text
 faces_db/
 ├── Alice/
 │   ├── photo_alice.jpg
@@ -210,6 +216,7 @@ face_rec.register_person("temp_face.jpg", "Alice")
 ### Erreur : "DeepFace non disponible"
 
 **Solution** :
+
 ```bash
 source venv-vision-py310/bin/activate
 pip install deepface onnxruntime
@@ -218,6 +225,7 @@ pip install deepface onnxruntime
 ### Erreur : "No face detected"
 
 **Solutions** :
+
 - Photo trop petite ou floue
 - Visage de profil
 - Éclairage insuffisant
@@ -226,6 +234,7 @@ pip install deepface onnxruntime
 ### Performance lente sur RPi 5
 
 **Solutions** :
+
 - Utiliser backend `opencv` (plus rapide que `retinaface`)
 - Utiliser modèle `VGG-Face` (plus léger)
 - Installer `onnxruntime` (plus rapide que TensorFlow)
@@ -254,4 +263,3 @@ pip install deepface onnxruntime
 ---
 
 **Dernière mise à jour** : Oct / Nov. 2025
-

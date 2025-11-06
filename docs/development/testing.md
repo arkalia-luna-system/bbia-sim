@@ -141,6 +141,7 @@ graph LR
 ### 🤖 Tests Backend Reachy Mini (Oct / Nov. 2025)
 
 **📊 Statistiques**:
+
 - ✅ **118 tests** répartis dans **8 fichiers complémentaires**
 - ✅ **116 tests uniques** (98.3% - très peu de redondance)
 - ⚠️ **1 doublon mineur** (`test_robot_factory_integration`)
@@ -167,6 +168,7 @@ pytest tests/test_reachy_mini*.py -v
 # Vérifier les doublons/redondances
 python scripts/verify_tests_consolidation.py
 ```
+
 │ ├── test_bbia_emotions.py # Tests émotions
 │ ├── test_bbia_emotions_extended.py
 │ ├── test_bbia_vision.py # Tests vision
@@ -177,71 +179,96 @@ python scripts/verify_tests_consolidation.py
 ├── test_simulator.py # Tests simulateur MuJoCo
 ├── test_unity_controller.py # Tests contrôleur Unity
 └── test_*.py # Tests unitaires
-```
+
+```text
 
 ## Commandes de tests
 
 ### Tests complets
 ```bash
+
 # Lancer tous les tests avec coverage complet
+
 python -m pytest tests/ --cov=src --cov-report=term-missing --cov-report=html
 
 # Tests rapides sans détails
+
 python -m pytest tests/ --cov=src --cov-fail-under=0 --tb=no -q
 
 # Tests avec arrêt au premier échec
+
 python -m pytest tests/ --cov=src --cov-report=term-missing -x
-```
+
+```text
 
 ### Tests golden traces
 ```bash
+
 # Tests de non-régression golden traces
+
 python -m pytest tests/test_golden_traces.py -v
 
 # Régénérer une trace de référence
+
 python scripts/record_trace.py --emotion happy --duration 5 --out artifacts/golden/happy_mujoco.jsonl
 
 # Valider une trace contre référence
+
 python scripts/validate_trace.py --ref artifacts/golden/happy_mujoco.jsonl --cur current_trace.jsonl
-```
+
+```text
 
 ### Tests spécifiques
 ```bash
+
 # Tests d'un module spécifique
+
 python -m pytest tests/test_bbia_emotions.py -v
 
 # Tests Reachy Mini (tous les fichiers)
+
 pytest tests/test_reachy_mini*.py -v
 
 # Test de conformité complet (recommandé)
+
 pytest tests/test_reachy_mini_full_conformity_official.py -v
 
 # Tests stricts (valeurs exactes XML)
+
 pytest tests/test_reachy_mini_strict_conformity.py -v
 
 # Tests d'un sous-dossier
+
 python -m pytest tests/e2e/ -v
 
 # Test spécifique
+
 python -m pytest tests/test_bbia_emotions.py::TestBBIAEmotions::test_set_emotion -v
-```
+
+```text
 
 ### Vérification de la couverture
 ```bash
+
 # Ouvrir le rapport HTML (macOS)
+
 open htmlcov/index.html
 
 # Compter le nombre de tests collectés (variable selon CI)
+
 python -m pytest --collect-only -q | wc -l
 
 # Coverage d'un module spécifique
+
 python -m pytest tests/test_bbia_emotions.py --cov=src.bbia_sim.bbia_emotions --cov-report=term-missing
-```
+
+```text
 
 ## ⚙️ Configuration
 
 ### pyproject.toml
 ```toml
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 python_files = ["test_*.py"]
@@ -266,10 +293,12 @@ omit = [
 fail_under = 1
 show_missing = true
 precision = 2
-```
+
+```text
 
 ### .coveragerc
 ```ini
+
 [run]
 source = src
 omit = */tests/*, */test_*, */__pycache__/*, */venv/*
@@ -287,7 +316,8 @@ title = BBIA Reachy Mini Simulation Coverage Report
 
 [xml]
 output = coverage.xml
-```
+
+```text
 
 ## 🔧 Résolution des problèmes
 
@@ -307,24 +337,33 @@ output = coverage.xml
 
 1. **Vérifier la configuration pytest :**
 ```bash
+
 python -m pytest --collect-only -q | wc -l
+
 # Nombre indicatif selon la configuration CI
-```
+
+```text
 
 2. **Vérifier la structure des dossiers :**
 ```bash
+
 find tests/ -name "test_*.py" | wc -l
-```
+
+```text
 
 3. **Vérifier les fichiers __init__.py :**
 ```bash
+
 find tests/ -name "__init__.py"
-```
+
+```text
 
 4. **Tester la configuration coverage :**
 ```bash
+
 python -m pytest tests/test_config.py --cov=src --cov-report=term-missing
-```
+
+```text
 
 ### Problème : tests qui échouent
 

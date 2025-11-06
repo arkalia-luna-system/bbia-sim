@@ -9,11 +9,13 @@
 ## 🎯 Objectifs de la Migration
 
 ✅ **Résoudre blocages macOS :**
+
 - Pitch contrôlable (actuellement bloqué)
 - Contrôle émotionnel (actuellement inexistant)
 - Meilleure qualité vocale
 
 ✅ **Maintenir compatibilité :**
+
 - Fallback automatique vers pyttsx3 si Coqui TTS non disponible
 - API compatible avec code existant
 
@@ -219,6 +221,7 @@ print(TTS.list_models())
 ### Problème : "TTS not available"
 
 **Solution :**
+
 ```bash
 pip install TTS playsound
 ```
@@ -226,6 +229,7 @@ pip install TTS playsound
 ### Problème : "playsound not working on macOS"
 
 **Solution :**
+
 ```bash
 # Alternative : utiliser pyobjc
 pip install pyobjc
@@ -242,6 +246,7 @@ subprocess.run(["afplay", str(audio_file)])
 ### Problème : Modèle ne se charge pas
 
 **Solution :**
+
 1. Vérifier connexion Internet (téléchargement modèle)
 2. Vérifier espace disque (~500MB-2GB selon modèle)
 3. Utiliser cache_dir personnalisé si nécessaire
@@ -311,4 +316,3 @@ if __name__ == "__main__":
 ---
 
 **Dernière mise à jour** : Oct / Nov. 2025
-

@@ -61,6 +61,7 @@ flowchart TD
 ### DeepFace crash ou erreur
 
 **Symptômes** :
+
 - `DeepFace non disponible` ou `ImportError`
 - `No face detected` même avec visage visible
 - Performance très lente (>5s par analyse)
@@ -68,6 +69,7 @@ flowchart TD
 **Solutions** :
 
 1. **Installation manquante** :
+
 ```bash
 source venv-vision-py310/bin/activate
 pip install deepface onnxruntime
@@ -78,6 +80,7 @@ pip install deepface onnxruntime
 - Visage face caméra (pas de profil)
 - Résolution image suffisante (min 320x240)
 - Utiliser `enforce_detection=False` (par défaut)
+
 ```python
 # Dans face_recognition.py
 recognize_person(image, enforce_detection=False)
@@ -87,6 +90,7 @@ recognize_person(image, enforce_detection=False)
 - Utiliser backend ONNX au lieu de TensorFlow
 - Modèle VGG-Face (plus léger que Facenet)
 - Backend détecteur OpenCV (plus rapide que RetinaFace)
+
 ```python
 # Configuration optimale RPi 5
 os.environ["BBIA_DEEPFACE_MODEL"] = "VGG-Face"
@@ -102,6 +106,7 @@ os.environ["BBIA_DEEPFACE_BACKEND"] = "opencv"
 ### LLM (HuggingFace) timeout ou mémoire insuffisante
 
 **Symptômes** :
+
 - Latence > 30s pour réponse
 - `OutOfMemoryError` ou crash
 - Modèle ne charge pas
@@ -112,6 +117,7 @@ os.environ["BBIA_DEEPFACE_BACKEND"] = "opencv"
 - ❌ Mistral 7B (14GB) → Trop lourd
 - ❌ Llama 3 8B (16GB) → Trop lourd
 - ✅ **Utiliser Phi-2 (2.7B, ~5GB)** ou **TinyLlama (1.1B, ~2GB)**
+
 ```python
 # Dans bbia_huggingface.py
 model_configs["chat"] = {
@@ -129,6 +135,7 @@ model_configs["chat"] = {
 2. **API externe (alternative)** :
 - Utiliser Hugging Face Inference API (gratuite)
 - Pas de chargement modèle local
+
 ```python
 # Configuration API externe
 os.environ["BBIA_HF_API_KEY"] = "your_api_key"
@@ -137,6 +144,7 @@ hf.chat("message", use_api=True)
 
 3. **Timeout trop court** :
 - Augmenter timeout (défaut: 30s)
+
 ```python
 # Dans test_huggingface_latency.py
 assert p95 < 30000.0  # 30s max (CI tolérant)
@@ -147,6 +155,7 @@ assert p95 < 30000.0  # 30s max (CI tolérant)
 ### Whisper STT ne détecte rien ou lent
 
 **Symptômes** :
+
 - `Whisper non disponible`
 - Transcription vide
 - Latence > 10s
@@ -154,6 +163,7 @@ assert p95 < 30000.0  # 30s max (CI tolérant)
 **Solutions** :
 
 1. **Installation** :
+
 ```bash
 source venv-voice/bin/activate  # ou venv principal
 pip install openai-whisper
@@ -162,6 +172,7 @@ pip install openai-whisper
 2. **Modèle trop lourd** :
 - Utiliser `whisper-tiny` ou `whisper-base` sur RPi 5
 - Éviter `whisper-medium/large` (> 5GB)
+
 ```python
 # Dans voice_whisper.py
 model_size = os.environ.get("BBIA_WHISPER_MODEL", "tiny")
@@ -177,13 +188,16 @@ model_size = os.environ.get("BBIA_WHISPER_MODEL", "tiny")
 ### MediaPipe Pose ne détecte rien
 
 **Symptômes** :
+
 - Aucun point clé détecté
 - Résultat vide
 
 **Solutions** :
+
 - Personne doit être visible en entier (pas coupée)
 - Éclairage suffisant
 - Complexité modèle : `0=rapide, 1=équilibré, 2=précis` (défaut: 1)
+
 ```python
 os.environ["BBIA_POSE_COMPLEXITY"] = "1"  # ou "0" pour plus rapide
 ```
@@ -195,6 +209,7 @@ os.environ["BBIA_POSE_COMPLEXITY"] = "1"  # ou "0" pour plus rapide
 ### Tests budget RAM/CPU échouent en CI
 
 **Symptômes** :
+
 - `test_backend_budget_cpu_ram` échoue
 - `test_huggingface_latency` timeout
 - Mémoire augmente > seuil attendu
@@ -212,6 +227,7 @@ os.environ["BBIA_POSE_COMPLEXITY"] = "1"  # ou "0" pour plus rapide
    - HuggingFace latence : < 30s p95 (au lieu de 5s idéal)
 
 3. **Vérification locale vs CI** :
+
 ```bash
 # Local : devrait être < 50MB
 # CI : tolère jusqu'à 120MB (variations machine)
@@ -243,6 +259,7 @@ pytest tests/test_backend_budget_cpu_ram.py -v
 
 - Déconnexions: vérifier proxy/timeouts; réduire fréquence, logs côté serveur
 - Latence réseau robot réel : configurer timeout Zenoh
+
 ```python
 # Dans reachy_mini_backend.py
 ROBOT_TIMEOUT = 5.0  # Secondes
@@ -253,16 +270,19 @@ ROBOT_TIMEOUT = 5.0  # Secondes
 **Nouvelle fonctionnalité** (Oct / Nov. 2025) : Auth WebSocket via query params
 
 **En production** :
+
 ```python
 # Connexion WebSocket avec token
 websocket = await connect("ws://localhost:8000/development/api/state/ws/full?token=your-token")
 ```
 
 **En développement** :
+
 - Auth optionnelle (pas de token requis)
 - Token requis uniquement en mode `prod`
 
 **Configuration** :
+
 ```python
 # Dans .env ou variables d'environnement
 BBIA_ENVIRONMENT=prod  # Active auth WebSocket
@@ -276,6 +296,7 @@ BBIA_API_TOKEN=your-secret-token
 **Problème résolu** : "Circular buffer overrun" dans SDK officiel
 
 **Configuration** :
+
 ```python
 # Taille du buffer (défaut: 10)
 os.environ["BBIA_CAMERA_BUFFER_SIZE"] = "20"  # Plus grand buffer
@@ -293,6 +314,7 @@ latest_frame = vision.get_latest_frame()  # Récupère frame la plus récente
 **Nouvelle fonctionnalité** (Oct / Nov. 2025) : Découverte des datasets Hugging Face Hub
 
 **Utilisation** :
+
 ```bash
 curl http://localhost:8000/development/api/move/recorded-move-datasets/discover
 ```
@@ -324,6 +346,7 @@ curl http://localhost:8000/metrics/prometheus
 ```
 
 **Métriques disponibles** :
+
 - `bbia_requests_total` : Nombre total de requêtes
 - `bbia_request_duration_seconds` : Latence des requêtes
 - `bbia_cpu_usage_percent` : Utilisation CPU
@@ -339,6 +362,7 @@ python -m bbia_sim --doctor
 ```
 
 **Vérifie** :
+
 - ✅ Python version (>=3.10)
 - ✅ Reachy Mini SDK disponible
 - ✅ MuJoCo disponible
@@ -365,3 +389,10 @@ python -m bbia_sim --doctor
 ---
 
 **Dernière mise à jour** : Oct / Nov. 2025
+
+---
+
+## 🎯 Navigation
+
+**Retour à** : [README Documentation](../README.md)  
+**Voir aussi** : [FAQ Principale](../getting-started/troubleshooting.md) • [Guide Avancé](../guides/GUIDE_AVANCE.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)

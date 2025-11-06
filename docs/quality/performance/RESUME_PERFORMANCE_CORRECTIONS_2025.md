@@ -16,13 +16,15 @@
 **Fichier responsable :** `src/bbia_sim/bbia_voice.py`
 
 **Problème :**
+
 - `pyttsx3.init()` prend **0.8 secondes** par appel
 - `dire_texte()` l'appelait **2 fois** :
- 1. Ligne 87 (path SDK avec `play_audio`)
- 2. Ligne 131 (fallback pyttsx3 direct)
+  1. Ligne 87 (path SDK avec `play_audio`)
+  2. Ligne 131 (fallback pyttsx3 direct)
 - **Total : 1.6s de latence** à chaque synthèse vocale
 
 **Impact utilisateur :**
+
 - BBIA met du temps à répondre vocalement
 - Expérience dégradée
 
@@ -33,6 +35,7 @@
 ### 1. Cache global thread-safe
 
 **Code ajouté :**
+
 ```python
 # Cache global pour éviter réinitialisation répétée
 _pyttsx3_engine_cache: Optional[Any] = None
@@ -50,6 +53,7 @@ def _get_pyttsx3_engine():
 ```
 
 Résultat de test :
+
 - Premier appel : 0.52s (initialisation normale)
 - Deuxième appel : **0.000001s** (cache)
 
@@ -58,6 +62,7 @@ Résultat de test :
 ### 2. Cache du voice ID
 
 **Code ajouté :**
+
 ```python
 def _get_cached_voice_id():
     """Retourne voice ID en cache."""
@@ -75,55 +80,66 @@ def _get_cached_voice_id():
 ## Résultats
 
 ### Avant
+
 - `dire_texte()` : **~1.6-1.7s latence système**
-- Utilisateur : "BBIA met du temps"
+- **Utilisateur** : "BBIA met du temps"
 
 ### Après
-- `dire_texte()` : **~0 ms latence système** (seulement génération audio)
-- Utilisateur : "BBIA répond instantanément"
 
-Amélioration : environ −1.7 s par synthèse vocale
+- `dire_texte()` : **~0 ms latence système** (seulement génération audio)
+- **Utilisateur** : "BBIA répond instantanément"
+
+**Amélioration** : environ **−1.7 s** par synthèse vocale
 
 ---
 
 ## Autres points identifiés (non critiques)
 
-### **Instances Multiples**
+### Instances Multiples
 
 **Fichiers concernés :**
-- `bbia_integration.py` : Crée `BBIAVision()`
-- `bbia_behavior.py` : `BBIABehaviorManager` crée aussi `BBIAVision()`
-- `dashboard_advanced.py` : Crée `BBIAVision()` et `BBIAHuggingFace()`
+
+- **`bbia_integration.py`** : Crée `BBIAVision()`
+- **`bbia_behavior.py`** : `BBIABehaviorManager` crée aussi `BBIAVision()`
+- **`dashboard_advanced.py`** : Crée `BBIAVision()` et `BBIAHuggingFace()`
 
 **Impact :**
+
 - YOLO chargé 2-3 fois (1-2s par chargement)
 - MediaPipe chargé 2-3 fois (200-500ms par chargement)
 
-**Action :** À optimiser si nécessaire (non critique, seulement à l'initialisation)
+**Action** : À optimiser si nécessaire (non critique, seulement à l'initialisation)
 
 ---
 
 ## Validation
 
-- Ruff : All checks passed
-- Imports : Tous fonctionnent
-- Thread-safe : Lock ajouté
-- Tests : Cache fonctionne (0.000001 s après premier appel)
+- ✅ **Ruff** : All checks passed
+- ✅ **Imports** : Tous fonctionnent
+- ✅ **Thread-safe** : Lock ajouté
+- ✅ **Tests** : Cache fonctionne (0.000001 s après premier appel)
 
 ---
 
 ## Conclusion
 
-**Responsable principal :** `pyttsx3.init()` appelé 2 fois par synthèse vocale
+**Responsable principal** : `pyttsx3.init()` appelé 2 fois par synthèse vocale
 
-**Correction :** Cache global thread-safe
+**Correction** : Cache global thread-safe
 
-**Gain :** **-1.7s de latence par synthèse vocale**
+**Gain** : **-1.7s de latence par synthèse vocale**
 
-Impact : réponse vocale significativement plus rapide.
+**Impact** : Réponse vocale significativement plus rapide
 
 **Documentation :**
+
 - `docs/ANALYSE_PERFORMANCE_PROBLEMES_2025.md` - Analyse détaillée
 - `docs/CORRECTIONS_PERFORMANCE_2025.md` - Corrections techniques
 - `docs/RESUME_PERFORMANCE_CORRECTIONS_2025.md` - Ce résumé
 
+---
+
+## 🎯 Navigation
+
+**Retour à** : [README Documentation](../README.md)  
+**Voir aussi** : [Index Audits](../quality/audits/INDEX_AUDITS_CONSOLIDES.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)

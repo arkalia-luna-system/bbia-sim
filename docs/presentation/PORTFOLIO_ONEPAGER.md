@@ -1,60 +1,68 @@
 # 🤖 BBIA - Moteur Cognitif pour Robot Reachy Mini
 
-## 📋 **Résumé exécutif**
+**Date** : Oct / Nov. 2025
+
+## 📋 Résumé exécutif
 
 **BBIA** est un moteur cognitif Python pour robot Reachy Mini Wireless, intégrant la simulation MuJoCo, une intelligence artificielle légère et un contrôle unifié via `RobotAPI`. Le projet fournit une plateforme pour développer, tester et déployer des comportements robotiques.
 
 ---
 
-## 🎯 **Valeur proposée**
+## 🎯 Valeur proposée
 
-### **🔬 Innovation technique**
+### 🔬 Innovation technique
+
 - **RobotAPI unifié** : interface abstraite pour simulation (MuJoCo) et robot réel
 - **IA légère** : Whisper STT + YOLOv8n + MediaPipe pour interactions naturelles
 - **Golden tests** : validation de non-régression avec traces de référence
 - **Dashboard web** : interface de contrôle temps réel via WebSocket
 
-### **🛡️ Sécurité et fiabilité**
+### 🛡️ Sécurité et fiabilité
+
 - **Limites de sécurité** : clamp automatique à 0.3 rad, joints interdits centralisés
 - **Tests automatisés** : suite validée en CI (800+ tests)
 - **CI/CD** : pipeline GitHub Actions avec artefacts et validation
 - **Déterminisme** : graine fixée (SEED=42) pour reproductibilité
 
-### **🚀 Facilité d’usage**
+### 🚀 Facilité d'usage
+
 - **Scripts one‑click** : démo simulation et robot réel en une commande
 - **Documentation** : guides développeur, architecture, contrats
 - **Backend flexible** : bascule simulation ↔ robot réel sans modification du code
 
 ---
 
-## 📊 **Métriques clés**
+## 📊 Métriques clés
 
 | Métrique | Valeur | Statut |
 |----------|--------|--------|
-| **Tests** | 800+ (CI) | OK |
-| **Couverture** | Validée en CI | OK |
-| **Modules BBIA** | 7 modules | OK |
-| **Backends** | MuJoCo + Reachy mock | OK |
-| **Golden traces** | 3 références | OK |
+| **Tests** | 800+ (CI) | ✅ OK |
+| **Couverture** | Validée en CI | ✅ OK |
+| **Modules BBIA** | 7 modules | ✅ OK |
+| **Backends** | MuJoCo + Reachy mock | ✅ OK |
+| **Golden traces** | 3 références | ✅ OK |
 
 ---
 
-## 🏗️ **Architecture technique**
+## 🏗️ Architecture technique
 
-### **🎭 Vertical slices (4 fonctionnalités)**
+### 🎭 Vertical slices (4 fonctionnalités)
+
 1. **Émotion → Pose** : Mapping émotions vers mouvements joints
 2. **Voix → Action** : Commandes vocales via Whisper STT
 3. **Vision → Suivi** : Détection objets/visages avec YOLOv8n + MediaPipe
 4. **Comportement → Scénario** : Scripts comportementaux complexes
 
-### **🔧 Composants principaux**
+### 🔧 Composants principaux
+
 - **`RobotAPI`** : Interface abstraite unifiée
 - **`MuJoCoBackend`** : Implémentation simulation MuJoCo
 - **`ReachyBackend`** : Implémentation robot réel (mock)
 - **`mapping_reachy.py`** : Source de vérité joints/limites
 - **`hardware_dry_run.py`** : Validation matériel avec artefacts
 
-### **🧪 Système de tests**
+### 🧪 Système de tests
+
 - **Tests Unitaires** : Validation composants individuels
 - **Tests d'Intégration** : Validation vertical slices
 - **Golden Tests** : Validation non-régression avec traces
@@ -62,9 +70,10 @@
 
 ---
 
-## 🎬 **Démos disponibles**
+## 🎬 Démos disponibles
 
-### **🎥 Démo simulation (3D)**
+### 🎥 Démo simulation (3D)
+
 ```bash
 # Démo complète avec viewer MuJoCo
 bash scripts/run_demo_sim.sh happy 15
@@ -72,7 +81,8 @@ bash scripts/run_demo_sim.sh happy 15
 # Résultat : Trace + rapport + vidéo 3D
 ```
 
-### **🤖 Démo robot réel**
+### 🤖 Démo robot réel
+
 ```bash
 # Démo robot réel (headless)
 bash scripts/run_demo_real.sh excited 20
@@ -80,7 +90,8 @@ bash scripts/run_demo_real.sh excited 20
 # Résultat : Trace + rapport + comparaison référence
 ```
 
-### **🎤 Démo IA légère**
+### 🎤 Démo IA légère
+
 ```bash
 # Test commandes vocales
 python scripts/stt_demo.py --command "salue" --backend mujoco
@@ -89,25 +100,28 @@ python scripts/stt_demo.py --command "salue" --backend mujoco
 python scripts/stt_demo.py --test-microphone --lang fr
 ```
 
-### **🌐 Dashboard web et API publique**
+### 🌐 Dashboard web et API publique
+
 ```bash
 # Interface web temps réel (dashboard)
 python src/bbia_sim/dashboard_advanced.py --port 8000
 
-# Démarrer l’API publique (mode dev)
+# Démarrer l'API publique (mode dev)
 python deployment/public_api.py --dev
 ```
 
 ---
 
-## 🛠️ **Installation rapide**
+## 🛠️ Installation rapide
 
-### **Prérequis**
+### Prérequis
+
 - Python 3.11+
 - macOS/Linux
 - 4GB RAM minimum
 
-### **Installation**
+### Installation
+
 ```bash
 # Clone et setup
 git clone https://github.com/arkalia-luna-system/bbia-sim.git
@@ -120,7 +134,8 @@ pip install -e .[dev]
 python scripts/hardware_dry_run.py --duration 5 --backend mujoco
 ```
 
-### **Première démo**
+### Première démo
+
 ```bash
 # Démo simulation 3D
 bash scripts/run_demo_sim.sh happy 10
@@ -131,21 +146,24 @@ bash scripts/run_demo_real.sh excited 15
 
 ---
 
-## 🔗 **Ressources**
+## 🔗 Ressources
 
-### **📚 Documentation**
+### 📚 Documentation
+
 - **README** : Guide principal et quickstart
 - **Architecture** : `docs/development/architecture/ARCHITECTURE.md`
 - **Contrat RobotAPI** : `docs/reference/CONTRACT.md`
 - **Guide de Test** : `docs/development/testing.md`
 
-### **🎯 Scripts utiles**
+### 🎯 Scripts utiles
+
 - **`hardware_dry_run.py`** : Test matériel complet
 - **`record_demo.sh`** : Enregistrement démo + traces
 - **`plot_trace.py`** : Analyse et rapports
 - **`stt_demo.py`** : Test commandes vocales
 
-### **🧪 Tests**
+### 🧪 Tests
+
 ```bash
 # Tests complets
 python -m pytest tests/ -v
@@ -159,21 +177,24 @@ python -m pytest tests/ -m "not e2e" -v
 
 ---
 
-## 🎯 **Prochaines étapes**
+## 🎯 Prochaines étapes
 
-### **🚀 Déploiement robot réel**
+### 🚀 Déploiement robot réel
+
 1. Configuration connexion Reachy SDK
 2. Tests hardware dry run sur matériel
 3. Validation latence et limites sécurité
 4. Déploiement production
 
-### **🧠 Améliorations IA**
+### 🧠 Améliorations IA
+
 1. Entraînement modèles personnalisés
 2. Intégration reconnaissance gestes
 3. Système de dialogue avancé
 4. Apprentissage comportemental
 
-### **🌐 Extensions web**
+### 🌐 Extensions web
+
 1. Interface mobile responsive
 2. Streaming vidéo temps réel
 3. API REST complète
@@ -181,13 +202,13 @@ python -m pytest tests/ -m "not e2e" -v
 
 ---
 
-## 📞 **CONTACT & SUPPORT**
+## 📞 Contact & Support
 
-> Compatibilité Python et CI
+> **Compatibilité Python et CI**
 >
-> - Python: 3.11+
-> - CI: `.github/workflows/ci.yml`
-> - Setup rapide:
+> - **Python** : 3.11+
+> - **CI** : `.github/workflows/ci.yml`
+> - **Setup rapide** :
 >   ```bash
 >   pyenv install 3.11.9 && pyenv local 3.11.9
 >   python -m pip install --upgrade pip
@@ -200,6 +221,11 @@ python -m pytest tests/ -m "not e2e" -v
 - **CI/CD** : GitHub Actions pour validation continue
 
 ---
+
+## 🎯 Navigation
+
+**Retour à** : [README Documentation](../README.md)  
+**Voir aussi** : [Index Thématique](../reference/INDEX_THEMATIQUE.md)
 
 **Version** : 1.3.2
 **Date** : Oct / Nov. 2025

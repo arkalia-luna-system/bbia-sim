@@ -5,6 +5,7 @@
 ## 🎯 **Contenu du Dossier Assets**
 
 ### 📹 **Vidéos de Démonstration**
+
 - **3 nouvelles vidéos MuJoCo** (Oct / No2025025025025025) : Captures d'écran de la simulation 3D
   - `Enregistrement de l'écran Oct / No2025025025025025 à 17.00.52.mov` (2.7 MB)
   - `Enregistrement de l'écran Oct / No2025025025025025 à 17.01.27.mov` (3.4 MB)
@@ -13,6 +14,7 @@
 - **Inventaire complet** : Voir [`MEDIAS_INVENTAIRE.md`](./MEDIAS_INVENTAIRE.md)
 
 ### 🖼️ **Images**
+
 - **Référence visuelle déplacée** : Voir `docs/reachy/REACHY_MINI_REFERENCE.md` - Référence visuelle du robot Reachy Mini
 - **10 nouvelles captures d'écran** (Oct / No2025025025025025) : Séquence de captures montrant le robot en mouvement
 - **5 captures d'écran** (Oct / No2025025025025025) : Captures de référence antérieures
@@ -64,6 +66,7 @@ pie title Types de Ressources Assets
     "Spécifications techniques" : 20
     "Liens externes" : 10
 ```
+
 - **Statut** : Open source
 
 ---
@@ -71,18 +74,21 @@ pie title Types de Ressources Assets
 ## 🎮 **Utilisation pour le Développement**
 
 ### 🧠 **Simulation BBIA**
+
 - **Référence visuelle** : Pour les simulations Unity
 - **Design UI** : Interface utilisateur cohérente
 - **Animations** : Expressions et mouvements fidèles
 - **Testing** : Validation des fonctionnalités
 
 ### 🎯 **Fonctionnalités BBIA**
+
 - **6 émotions** : Basées sur les "yeux" et antennes
 - **4 microphones** : Reconnaissance vocale
 - **Caméra grand angle** : Vision par ordinateur
 - **Mouvements tête** : 6 DOF + animation antennes
 
 ### 📚 **Documentation**
+
 - **Guides** : Support visuel
 - **Tutoriels** : Exemples concrets
 - **Présentation** : Communication projet
@@ -93,6 +99,7 @@ pie title Types de Ressources Assets
 ## 🎯 **Informations Techniques**
 
 ### 🔧 **Spécifications Hardware**
+
 - **Processeur** : Raspberry Pi 5 intégré
 - **Connectivité** : Wi-Fi intégré
 - **Audio** : 4 microphones + haut-parleur 5W
@@ -103,6 +110,7 @@ pie title Types de Ressources Assets
 - **Dimensions** : 28cm (actif) / 23cm (veille) x 16cm
 
 ### 🎮 **Simulation Unity**
+
 - **Modèle 3D** : Représentation fidèle
 - **Expressions** : Animations faciales
 - **Mouvements** : Fluides et naturels
@@ -113,12 +121,14 @@ pie title Types de Ressources Assets
 ## 🌟 **Actualité Récente**
 
 ### 📰 **Couverture Média**
+
 - **TechCrunch** : Article principal
 - **YouTube** : Vidéos de présentation
 - **Medium** : Articles techniques
 - **Blogs personnels** : Retours d'expérience
 
 ### 🔗 **Partners**
+
 - **Hugging Face** : Implication majeure
 - **Pollen Robotics** : Fabricant
 - **Open Source** : Communauté active
@@ -128,12 +138,14 @@ pie title Types de Ressources Assets
 ## 💡 **Observations Clés**
 
 ### ✅ **Points Positifs**
+
 - **Design épuré** : Facile à reproduire
 - **Expressivité** : "Yeux" expressifs + mouvements tête/corps (yaw_body + stewart joints)
 - **Taille compacte** : Parfait pour bureau/maison
 - **Open source** : Développement communautaire
 
 ### 🎯 **Pour BBIA**
+
 - **Robot parfait** : Pour l'IA émotionnelle
 - **Expressivité** : Idéal pour les émotions
 - **Interactions** : Design adapté aux interactions
@@ -144,7 +156,8 @@ pie title Types de Ressources Assets
 ## 🎯 **Navigation**
 
 ### 📁 **Structure**
-```
+
+```text
 assets/
 ├── 📖 README.md                      # Ce fichier
 ├── 📹 MEDIAS_INVENTAIRE.md           # Inventaire complet vidéos/images
@@ -162,6 +175,7 @@ assets/
 ```
 
 ### 🔍 **Accès Rapide**
+
 - **Référence visuelle** : `docs/reachy/REACHY_MINI_REFERENCE.md`
 - **Description complète** : Voir le fichier de référence
 
@@ -174,4 +188,4 @@ assets/
 **Fabricant** : Pollen Robotics  
 **Partenaire** : Hugging Face  
 **Statut** : Open Source  
-**Livraison** : Fin 2025 / Début 2025 
+**Livraison** : Fin 2025 / Début 2025

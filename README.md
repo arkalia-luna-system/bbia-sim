@@ -453,6 +453,7 @@ python scripts/replay_viewer.py artifacts/my_animation.jsonl --speed 1.5
 ### 📋 Documentation
 
 **Documentation interactive HTML** (recommandé)
+
 ```bash
 # Générer la documentation HTML complète avec navigation
 scripts/docs/build_docs_html.sh
@@ -460,6 +461,7 @@ scripts/docs/build_docs_html.sh
 ```
 
 La documentation HTML offre :
+
 - Navigation latérale avec table des matières
 - Rendu Mermaid automatique des diagrammes
 - Thème sombre adapté au développement
@@ -488,7 +490,7 @@ La documentation HTML offre :
 
 ## 📁 Structure du Projet
 
-```
+```text
 src/bbia_sim/
 ├── sim/
 │   ├── models/
@@ -511,10 +513,13 @@ src/bbia_sim/
 #### 1) Activer les bons environnements
 
 - venv principal (simulation/hardware, dashboard, chat):
+
 ```bash
 source venv/bin/activate
 ```
+
 - venv vision (MediaPipe/YOLO/OpenCV):
+
 ```bash
 source venv-vision-py310/bin/activate
 ```
@@ -675,6 +680,7 @@ python scripts/hardware_dry_run.py --duration 5 --backend mujoco
 ```bash
 python scripts/download_ALL_stl.py
 ```
+
 Télécharge automatiquement les 41 fichiers STL depuis le repo officiel.
 
 ### Gestion des processus
@@ -682,6 +688,7 @@ Télécharge automatiquement les 41 fichiers STL depuis le repo officiel.
 ```bash
 python scripts/process_manager.py --cleanup
 ```
+
 Nettoie les processus gourmands tout en préservant les applications importantes.
 
 ## 🔧 Résolution de problèmes
@@ -690,6 +697,7 @@ Nettoie les processus gourmands tout en préservant les applications importantes
 
 **Cause** : Fichiers STL corrompus (pointeurs Git LFS)
 **Solution** :
+
 ```bash
 python scripts/download_ALL_stl.py
 ```
@@ -758,6 +766,7 @@ python -m pytest --cov=src/bbia_sim --cov-report=term
 ### Tests & Commandes
 
 Recommandation (locale, mesure complète non bloquante) :
+
 ```bash
 python -m pytest \
   --cov=src/bbia_sim \
@@ -768,6 +777,7 @@ python -m pytest \
 ```
 
 CI (seuil progressif initial 30%) :
+
 ```bash
 pytest -q --disable-warnings \
   --cov=src/bbia_sim \
@@ -778,6 +788,7 @@ pytest -q --disable-warnings \
 ### Résultats des Tests
 
 **📊 Qualité & Conformité :**
+
 - ✅ **Conformité SDK officiel** : 100% validée (46 tests de conformité complète)
 - ✅ **Coverage global** : **~64%** (excellent)
 - ✅ **Coverage modules core** : ~50% (mesure pertinente)

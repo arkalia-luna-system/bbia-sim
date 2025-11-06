@@ -12,6 +12,7 @@
 **Fichier** : `tests/test_runtime_budget.py`
 
 **Optimisations** :
+
 - Durée : 10s → **3s**
 - Seuil CPU : 2.5s/10s → **1.0s/3s** (proportionnel)
 - Marqué `@pytest.mark.heavy`
@@ -25,6 +26,7 @@
 **Fichier** : `tests/test_vision_fps_budget.py`
 
 **Optimisations** :
+
 - Durée : 5s → **3s**
 - Seuil CPU : 5.0s/5s → **3.0s/3s** (proportionnel)
 - Marqués `@pytest.mark.heavy`
@@ -38,6 +40,7 @@
 **Fichier** : `tests/test_watchdog_monitoring.py`
 
 **Optimisations** :
+
 - `sleep(0.2)` → **0.1s** (4 occurrences)
 - `sleep(0.3)` → **0.15s** (2 occurrences)
 - `sleep(0.15)` → **0.1s** (1 occurrence)
@@ -51,6 +54,7 @@
 **Fichier** : `tests/test_goto_target_interpolation_performance.py`
 
 **Optimisations** :
+
 - Itérations : 30 → **20** (par méthode)
 - Sleep : 0.01s → **0.005s** entre appels
 
@@ -61,10 +65,12 @@
 ### 5. Tests Simulator Joint Latency
 
 **Fichiers** :
+
 - `tests/test_simulator_joint_latency.py`
 - `tests/test_robot_api_joint_latency.py`
 
 **Optimisations** :
+
 - Itérations : 1000 → **500** (×2 fichiers = 4 tests)
 - Marqués `@pytest.mark.heavy`
 
@@ -77,6 +83,7 @@
 **Fichier** : `tests/test_websocket_telemetry_extended.py`
 
 **Optimisations** :
+
 - Itérations : 10 → **5** (test caractère aléatoire)
 - Sleep : 0.01s → **0.005s**
 - Seuil : 7/10 → **3/5** (proportionnel)
@@ -90,6 +97,7 @@
 **Fichier** : `tests/test_watchdog_timeout_p50_p95.py`
 
 **Optimisations** :
+
 - Itérations : 10 → **5**
 - Sleep : 0.05s → **0.03s** (×2 occurrences)
 
@@ -104,6 +112,7 @@
 **Problème** : `setup_method` crée backend mais pas de `teardown_method` → fuites mémoire potentielles
 
 **Optimisation** :
+
 - Ajouté `teardown_method` avec `disconnect()` pour nettoyer après chaque test
 
 **Résultat** : Pas de fuites mémoire, backend proprement nettoyé
@@ -127,6 +136,7 @@
 **Réduction totale consommation RAM : ~80-90%** selon catégorie de tests ! 🎯
 
 Tous les tests lourds :
+
 - ✅ Skip par défaut (`-m "not slow and not heavy and not hardware"`)
 - ✅ Itérations réduites (mais suffisantes statistiquement)
 - ✅ Sleeps optimisés
@@ -137,4 +147,3 @@ Tous les tests lourds :
 ---
 
 **RAM tests optimisée de ~80-90% au total !** 🎯
-

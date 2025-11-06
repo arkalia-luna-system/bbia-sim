@@ -7,6 +7,7 @@
 ## ✅ Procreate est Excellent
 
 **Procreate est un logiciel très professionnel** :
+
 - ✅ Utilisé par des designers professionnels mondiaux
 - ✅ Outils puissants : Pinceaux, formes, symétrie, calques
 - ✅ Export haute résolution : Jusqu'à 8192x8192px
@@ -14,6 +15,7 @@
 - ✅ Résultat professionnel garanti
 
 **Le fait que ce soit raster (pixel) n'est pas un problème** :
+
 - Conversion PNG → SVG automatique fonctionne parfaitement
 - Qualité finale équivalente à vectoriel natif pour usage pratique
 - Je m'occupe de toute la conversion
@@ -27,7 +29,7 @@
 1. **Créez un nouveau document** :
    - Taille : **4096 x 4096 pixels** (qualité maximale)
    - Alternative : 2048 x 2048 pixels (plus que suffisant)
-   
+
 2. **Paramètres importants** :
    - **Fond transparent** : Actif ✅ (pour logo)
    - **DPI** : 300 (standard professionnel)
@@ -38,6 +40,7 @@
 ## 🎨 Organisation en Calques (Recommandé)
 
 **Créez ces calques** (pour faciliter les ajustements) :
+
 1. **Calque "Corps"** - Le corps ovoïde volumineux
 2. **Calque "Tête"** - La tête rectangulaire arrondie
 3. **Calque "Yeux"** - Les 2 grands yeux noirs
@@ -51,15 +54,18 @@
 ## 🖌️ Outils Utiles dans Procreate
 
 ### **Formes Géométriques**
+
 - **Cercle** : Pour les yeux (grands cercles noirs)
 - **Rectangle arrondi** : Pour la tête (rectangulaire avec coins arrondis)
 - **Ellipse** : Pour le corps ovoïde
 
 ### **Symétrie**
+
 - Activez **symétrie verticale** pour dessiner antennes identiques
 - Menu Actions → Canvas → Symmetry Drawing → Vertical
 
 ### **Outils de Dessin**
+
 - **Pinceau technique** : Pour lignes nettes (antennes)
 - **Formes parfaites** : Pour cercles et rectangles parfaits
 - **Ajustement** : Pour aligner et positionner précisément
@@ -78,6 +84,7 @@
 | **Antennes** | `#1a1a1a` | Noir |
 
 **Comment ajouter dans Procreate** :
+
 1. Menu Couleur → Palette → Créer nouvelle palette
 2. Ajouter les couleurs ci-dessus
 3. Utilisez pour dessiner
@@ -192,4 +199,3 @@ Avant d'exporter, vérifiez :
 ---
 
 *Guide Procreate - Logo BBIA - Oct / No2025025025025025*
-

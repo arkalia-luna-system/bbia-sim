@@ -63,6 +63,7 @@ await manager.broadcast({"type": "status", "data": {...}})
 ```
 
 **Métriques disponibles** :
+
 - Nombre de connexions actives
 - Historique des métriques (limite configurable)
 - Performance (latence, CPU, RAM)
@@ -72,6 +73,7 @@ await manager.broadcast({"type": "status", "data": {...}})
 ### 2. Métriques Performance
 
 **Métriques système** :
+
 - CPU usage (%)
 - RAM usage (MB)
 - Latence réseau (ms)
@@ -79,6 +81,7 @@ await manager.broadcast({"type": "status", "data": {...}})
 - Buffer audio
 
 **Accès** :
+
 ```python
 metrics = manager.get_performance_metrics()
 # Retourne: {"cpu": 15.2, "ram": 245.5, "latency": 12.3, ...}
@@ -87,11 +90,13 @@ metrics = manager.get_performance_metrics()
 ### 3. Contrôle Robot
 
 **Commandes disponibles** :
+
 - **Emotions** : `happy`, `sad`, `angry`, `surprised`, `neutral`
 - **Mouvements** : Head pose, antennas, body yaw
 - **Actions** : Wake up, sleep, stop
 
 **Exemple** :
+
 ```python
 # Via WebSocket
 await websocket.send_json({
@@ -128,6 +133,7 @@ await websocket.send_json({
 **Coverage** : **76.71%** ✅ (47 tests, 1156 lignes)
 
 **Lancer les tests** :
+
 ```bash
 # Tests dashboard_advanced
 pytest tests/test_dashboard_advanced.py -v
@@ -137,6 +143,7 @@ pytest tests/test_dashboard_advanced.py --cov=src/bbia_sim/dashboard_advanced --
 ```
 
 **Tests principaux** :
+
 - ✅ Initialisation WebSocketManager
 - ✅ Connexion/déconnexion WebSocket
 - ✅ Métriques performance
@@ -154,6 +161,7 @@ pytest tests/test_dashboard_advanced.py --cov=src/bbia_sim/dashboard_advanced --
 **`/ws/dashboard`** : Connexion principale dashboard
 
 **Messages entrants** :
+
 ```json
 {
     "type": "robot_command",
@@ -164,6 +172,7 @@ pytest tests/test_dashboard_advanced.py --cov=src/bbia_sim/dashboard_advanced --
 ```
 
 **Messages sortants** :
+
 ```json
 {
     "type": "metrics_update",
@@ -237,6 +246,7 @@ BBIA_LOG_LEVEL=INFO
 ### WebSocket ne se connecte pas
 
 **Vérifier** :
+
 1. Port 8080 disponible
 2. Firewall ne bloque pas
 3. Logs serveur pour erreurs
@@ -252,6 +262,7 @@ python -m bbia_sim.dashboard_advanced
 ### Métriques ne s'affichent pas
 
 **Vérifier** :
+
 1. Robot connecté (`backend.connect()`)
 2. WebSocket connecté
 3. Métriques activées dans code
@@ -259,6 +270,7 @@ python -m bbia_sim.dashboard_advanced
 ### Chat IA ne répond pas
 
 **Vérifier** :
+
 1. Module `bbia_huggingface` disponible
 2. Modèle LLM chargé
 3. Logs pour erreurs
@@ -284,3 +296,9 @@ python -m bbia_sim.dashboard_advanced
 
 **Dernière mise à jour** : Oct / Nov. 2025
 
+---
+
+## 🎯 Navigation
+
+**Retour à** : [README Documentation](../README.md)  
+**Voir aussi** : [Guide Débutant](../guides/GUIDE_DEBUTANT.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)

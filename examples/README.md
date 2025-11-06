@@ -5,6 +5,7 @@ Ce dossier contient des exemples pratiques pour utiliser BBIA-SIM.
 ## 📚 Exemples Reachy Mini (SDK Officiel)
 
 Les exemples dans `reachy_mini/` sont adaptés du repo officiel `pollen-robotics/reachy_mini` :
+
 - `minimal_demo.py` - Demo minimale (mouvements tête + antennes)
 - `look_at_image.py` - Vision interactive (cliquer pour regarder)
 - `sequence.py` - Séquences de mouvements animés
@@ -18,6 +19,7 @@ Les exemples dans `reachy_mini/` sont adaptés du repo officiel `pollen-robotics
 ## Scripts disponibles
 
 ### `hello_sim.py` - Test Conformité Parfaite SDK Officiel
+
 Test complet de la conformité parfaite avec le SDK officiel Reachy-Mini.
 
 ```bash
@@ -27,6 +29,7 @@ python examples/hello_sim.py
 **Résultat attendu** : Test de toutes les méthodes SDK officiel, conformité 100% parfaite
 
 ### `demo_mujoco_continue.py` - Simulation MuJoCo Continue ⭐ **Source des vidéos**
+
 Simulation MuJoCo continue avec contrôle temps réel. Le robot bouge en continu (tête + corps).
 
 ```bash
@@ -41,6 +44,7 @@ python examples/demo_mujoco_continue.py --duration 10 --headless
 **📹 Note** : Les vidéos disponibles dans `assets/videos/` ont été enregistrées depuis ce script.
 
 ### `goto_pose.py` - Contrôle mouvement robot
+
 Contrôle une articulation du robot via l'API REST.
 
 ```bash
@@ -50,6 +54,7 @@ python examples/goto_pose.py --token dev --joint neck_yaw --pos 0.6
 **Résultat attendu** : Position articulation changée, confirmation API
 
 ### `subscribe_telemetry.py` - Télémétrie WebSocket
+
 S'abonne à la télémétrie temps réel via WebSocket.
 
 ```bash
@@ -59,6 +64,7 @@ python examples/subscribe_telemetry.py --token dev --count 5
 **Résultat attendu** : 5 messages de télémétrie affichés
 
 ### `demo_emotion_ok.py` - Démo Émotion → Pose (RobotAPI)
+
 Démo BBIA utilisant le backend unifié RobotAPI.
 
 ```bash
@@ -72,6 +78,7 @@ mjpython examples/demo_emotion_ok.py --emotion happy --duration 10 --backend muj
 **Résultat attendu** : Animation émotion → joint, backend unifié
 
 ### `demo_chat_bbia_3d.py` - Démo 3D Chat BBIA
+
 Démo 3D avec chat intelligent BBIA.
 
 ```bash
@@ -82,6 +89,7 @@ mjpython examples/demo_chat_bbia_3d.py --duration 10
 **Résultat attendu** : Chat intelligent avec robot 3D
 
 ### `demo_voice_ok.py` - Démo Voix → Action
+
 Démo BBIA Voix utilisant RobotAPI.
 
 ```bash
@@ -91,6 +99,7 @@ python examples/demo_voice_ok.py --command "regarde-moi" --duration 5 --headless
 **Résultat attendu** : Commande vocale → action robot
 
 ### `demo_vision_ok.py` - Démo Vision → Tracking
+
 Démo BBIA Vision utilisant RobotAPI.
 
 ```bash
@@ -100,6 +109,7 @@ python examples/demo_vision_ok.py --target "virtual_target" --duration 5 --headl
 **Résultat attendu** : Tracking visuel → mouvement robot
 
 ### `demo_behavior_ok.py` - Démo Comportement → Scénario
+
 Démo BBIA Comportement utilisant RobotAPI.
 
 ```bash
@@ -130,11 +140,13 @@ Toutes les démos supportent le backend unifié :
 ## Prérequis
 
 1. **API démarrée** :
+
    ```bash
    BBIA_ENV=prod BBIA_TOKEN=dev uvicorn src.bbia_sim.daemon.app.main:app --port 8000
    ```
 
 2. **Dépendances installées** :
+
    ```bash
    pip install httpx websockets
    ```

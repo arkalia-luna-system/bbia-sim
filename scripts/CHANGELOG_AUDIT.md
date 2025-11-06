@@ -3,17 +3,20 @@
 ## ✅ Actions Effectuées
 
 ### Scripts Archivés
+
 - ✅ `start_api.py` → `scripts/_archived/start_api.py`
 - ✅ `kill_greedy_processes.sh` → `scripts/_archived/kill_greedy_processes.sh`
 
 **Raison**: Aucune référence dans le codebase, remplacés par des versions plus complètes.
 
 ### Scripts Modifiés
+
 - ✅ `kill_mujoco_viewers.sh` → Warning de dépréciation ajouté
 
 **Raison**: Utilisé dans documentation mais déprécié, alternative recommandée.
 
 ### Documentation
+
 - ✅ `scripts/_archived/README.md` créé
 - ✅ `scripts/AUDIT_COMPLET_SCRIPTS.md` mis à jour
 - ✅ `scripts/AUDIT_RESUME_ACTIONS.md` créé
@@ -36,4 +39,3 @@
 4. ✅ Tous les MD mis à jour
 
 **Date**: Oct / No2025025025025025
-

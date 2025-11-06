@@ -27,6 +27,7 @@
 ## 🎯 Vue d'Ensemble Rapide
 
 BBIA-SIM est un moteur cognitif Python pour robot Reachy Mini avec :
+
 - **12 émotions robotiques** définies
 - **Backend unifié** : même code simulation/réel
 - **IA avancée** : Whisper, YOLO, MediaPipe, Hugging Face
@@ -37,6 +38,7 @@ BBIA-SIM est un moteur cognitif Python pour robot Reachy Mini avec :
 ## 📚 Références
 
 Pour plus de détails, consultez :
+
 - [Architecture Vue d'Ensemble](ARCHITECTURE_OVERVIEW.md) - Vue générale
 - [Architecture Détaillée](ARCHITECTURE_DETAILED.md) - Détails techniques
 - [Conformité SDK](../quality/compliance/CONFORMITE_REACHY_MINI_COMPLETE.md) - Conformité complète
@@ -49,3 +51,9 @@ Pour plus de détails, consultez :
 
 **Dernière mise à jour** : Oct / Nov. 2025
 
+---
+
+## 🎯 Navigation
+
+**Retour à** : [README Documentation](../README.md)  
+**Voir aussi** : [Architecture Vue d'Ensemble](ARCHITECTURE_OVERVIEW.md) • [Architecture Détaillée](ARCHITECTURE_DETAILED.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)

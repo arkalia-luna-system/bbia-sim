@@ -14,11 +14,13 @@ Ces scripts ont été fusionnés dans `verify_documentation.py`.
 Utiliser maintenant : `scripts/verify_documentation.py`
 
 **Fonctionnalités** :
+
 - Mode 1 : Vérification précision (de `verify_doc_accuracy.py`)
 - Mode 2 : Vérification cohérence (de `verify_md_vs_code.py`)
 - Par défaut : Les deux modes
 
 **Usage** :
+
 ```bash
 python scripts/verify_documentation.py           # Les deux modes
 python scripts/verify_documentation.py --accuracy   # Précision uniquement
@@ -28,4 +30,3 @@ python scripts/verify_documentation.py --consistency # Cohérence uniquement
 ---
 
 *Archivé pour référence historique*
-

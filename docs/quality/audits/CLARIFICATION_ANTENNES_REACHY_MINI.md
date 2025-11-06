@@ -9,12 +9,15 @@
 ## 📊 SITUATION ACTUELLE
 
 ### ✅ Robot Physique Réel (Reachy Mini)
+
 **D'après documentation officielle et sources web :**
+
 - ✅ **Les antennes SONT animées** dans le robot réel
 - ✅ **Antennes expressives** : 2 antennes mobiles pour expressivité
 - ✅ **SDK officiel** : Les antennes sont probablement accessibles via `robot.head.left_antenna` et `robot.head.right_antenna`
 
 **Sources :**
+
 - Documentation Pollen Robotics
 - Sites spécialisés (actuia.com, planeterobots.com)
 - Marketing : "2 antennes animées pour expressivité"
@@ -24,17 +27,20 @@
 ### ⚠️ Modèle de Simulation XML (`reachy_mini_REAL_OFFICIAL.xml`)
 
 **Dans notre modèle XML :**
+
 ```xml
 <joint axis="0 0 1" name="right_antenna" type="hinge" class="chosen_actuator"/>
 <joint axis="0 0 1" name="left_antenna" type="hinge" class="chosen_actuator"/>
 ```
 
 **Problème détecté :**
+
 - ❌ **Pas d'attribut `range`** défini dans le XML
 - ✅ **CORRIGÉ** : Range `[-0.300, 0.300]` maintenant défini dans XML
 - ✅ **Le modèle XML est maintenant complet et à jour**
 
 **Vérification :**
+
 - Script `check_joints.py` confirme : range `[-0.300, 0.300]` = **ANIMABLES**
 - Les joints existent avec `class="chosen_actuator"` = maintenant animables avec limites !
 
@@ -45,16 +51,19 @@
 ### Hypothèses
 
 #### Hypothèse 1 : Modèle XML Incomplet
+
 - Le XML de simulation n'a peut-être pas les limites définies pour les antennes
 - `autolimits="true"` a peut-être calculé des limites à zéro par erreur
 - **Solution** : Définir manuellement les limites dans le XML
 
 #### Hypothèse 2 : Antennes Fragiles (Sécurité)
+
 - Les antennes SONT animables mais fragiles hardware
 - Pollen Robotics recommande de ne pas les animer trop souvent
 - **Solution** : Limites conservatrices pour sécurité
 
 #### Hypothèse 3 : Modèle XML Obsolète
+
 - Le modèle XML date peut-être d'avant que les antennes soient fonctionnelles
 - Nouvelle version du SDK pourrait avoir les antennes animables
 - **Solution** : Vérifier dernière version du modèle XML officiel
@@ -64,6 +73,7 @@
 ## ✅ CE QUE BBIA FAIT ACTUELLEMENT
 
 ### Code Actuel
+
 ```python
 # src/bbia_sim/backends/reachy_mini_backend.py
 self.forbidden_joints = {
@@ -83,7 +93,9 @@ self.forbidden_joints = {
 ## 🎯 RECOMMANDATIONS
 
 ### Option A : Vérifier SDK Officiel (RECOMMANDÉ)
+
 1. **Vérifier dans le repo officiel** si les antennes sont accessibles :
+
    ```python
    # Test à faire avec robot réel ou SDK
    from reachy_mini import ReachyMini
@@ -98,7 +110,9 @@ self.forbidden_joints = {
    - Quelle est la dernière version du modèle ?
 
 ### Option B : Débloquer Antennes dans Simulation
+
 1. **Ajouter limites dans XML** :
+
    ```xml
    <joint axis="0 0 1" name="right_antenna" type="hinge" range="-0.5 0.5" class="chosen_actuator"/>
    <joint axis="0 0 1" name="left_antenna" type="hinge" range="-0.5 0.5" class="chosen_actuator"/>
@@ -109,6 +123,7 @@ self.forbidden_joints = {
 3. **Tester avec amplitudes faibles** (0.1-0.2 rad)
 
 ### Option C : Garder Bloqué (Actuel - SÉCURITÉ)
+
 - ✅ **Avantage** : Sécurité maximale, pas de risque de casser
 - ⚠️ **Inconvénient** : Ne correspond pas au robot réel
 
@@ -140,17 +155,20 @@ self.forbidden_joints = {
 Si les antennes SONT animables dans le robot réel :
 
 1. **Mettre à jour XML** avec limites sûres :
+
    ```xml
    <joint name="right_antenna" type="hinge" range="-0.3 0.3" class="chosen_actuator"/>
    <joint name="left_antenna" type="hinge" range="-0.3 0.3" class="chosen_actuator"/>
    ```
 
 2. **Retirer de `forbidden_joints`** :
+
    ```python
    # Retirer "left_antenna" et "right_antenna"
    ```
 
 3. **Ajouter limites dans `joint_limits`** :
+
    ```python
    "left_antenna": (-0.3, 0.3),   # Limite sûre pour protection
    "right_antenna": (-0.3, 0.3),  # Limite sûre pour protection
@@ -179,6 +197,7 @@ Si les antennes SONT animables dans le robot réel :
 **Le problème** : Le modèle XML de simulation avait les antennes bloquées (`range=[0.000, 0.000]`), mais c'est maintenant **CORRIGÉ** avec `range=[-0.300, 0.300]`.
 
 **Action immédiate** :
+
 1. Vérifier repo officiel pour modèle XML à jour
 2. Vérifier SDK officiel pour accès antennes
 3. Débloquer avec limites sûres si confirmé (Oct / Nov. 2025 avec robot réel)
@@ -190,4 +209,3 @@ Si les antennes SONT animables dans le robot réel :
 **Statut** : ⚠️ **À VÉRIFIER AVEC ROBOT PHYSIQUE**
 **Date** : Oct / Nov. 2025
 **Prochaine vérification** : Oct / Nov. 2025 (robot physique)
-

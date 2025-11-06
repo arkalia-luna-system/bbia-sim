@@ -7,9 +7,9 @@
 
 **Version** : BBIA-SIM v1.3.2 • **Date** : Oct / Nov. 2025  
 **SDK Cible** : `reachy_mini` (Pollen Robotics × Hugging Face)
-  
+
 **État SDK** : Utiliser la **dernière version stable** de `reachy-mini` publiée sur PyPI (mise à jour régulière recommandée)
-  
+
 Référence officielle: `pollen-robotics/reachy_mini` (GitHub) — voir `README` et instructions d’installation
 ([lien](https://github.com/pollen-robotics/reachy_mini)).
 
@@ -125,6 +125,7 @@ graph TB
   - `enable_motors()/disable_motors()/enable_gravity_compensation()/disable_gravity_compensation() -> None`
 
 Notes:
+
 - Les méthodes asynchrones (`async_play_move`) et d’enregistrement/replay sont présentes et supportées côté BBIA‑SIM.
 - Les joints Stewart ne sont pas contrôlés individuellement (IK via `set_target_head_pose`/`goto_target`).
 
@@ -148,6 +149,7 @@ Notes:
 ### 1. SDK OFFICIEL REACHY-MINI
 
 #### Modules installés
+
 ```python
 from reachy_mini import ReachyMini
 from reachy_mini.utils import create_head_pose
@@ -157,9 +159,11 @@ from reachy_mini.utils.interpolation import InterpolationTechnique
 ```
 
 #### Classe ReachyMini
+
 Le SDK officiel fournit la classe `ReachyMini` avec toutes les méthodes suivantes:
 
 **Méthodes de contrôle des mouvements:**
+
 - `wake_up()` - Réveiller le robot
 - `goto_sleep()` - Mettre le robot en veille
 - `look_at_world(x, y, z, duration, perform_movement)` - Regarder vers un point 3D avec contrôle fluide
@@ -168,6 +172,7 @@ Le SDK officiel fournit la classe `ReachyMini` avec toutes les méthodes suivant
 - `set_target(head, antennas, body_yaw)` - Définir une cible complète synchronisée
 
 **Méthodes de contrôle des joints:**
+
 - `get_current_joint_positions()` - Retourne `(head_positions, antenna_positions)` avec structure flexible (6 ou 12 éléments pour head_positions selon version SDK)
 - `set_target_head_pose(pose)` - Contrôler la tête via cinématique inverse (matrice 4x4)
 - `set_target_body_yaw(yaw)` - Contrôler le corps
@@ -176,6 +181,7 @@ Le SDK officiel fournit la classe `ReachyMini` avec toutes les méthodes suivant
 - `get_present_antenna_joint_positions()` - Obtenir positions antennes
 
 **Méthodes de contrôle des moteurs:**
+
 - `enable_motors()` - Activer les moteurs
 - `disable_motors()` - Désactiver les moteurs
 - `enable_gravity_compensation()` - Activer compensation gravité
@@ -183,12 +189,14 @@ Le SDK officiel fournit la classe `ReachyMini` avec toutes les méthodes suivant
 - `set_automatic_body_yaw(body_yaw)` - Rotation automatique du corps
 
 **Méthodes avancées (performance et expression):**
+
 - `goto_target(head, antennas, duration, method, body_yaw)` - Interpolation fluide avec 4 techniques: `MIN_JERK`, `LINEAR`, `EASE_IN_OUT`, `CARTOON`
 - `async_play_move()` - Jouer mouvement enregistré de manière asynchrone (performance)
 - `start_recording()` / `stop_recording()` - Enregistrer mouvements pour réutilisation
 - `play_move()` - Rejouer mouvement enregistré avec contrôle fréquence
 
 **Modules media et IO (matériel):**
+
 - `robot.media.camera` - Accès direct caméra grand angle (4K disponible)
 - `robot.media.microphone` - Accès 4 microphones avec annulation de bruit
 - `robot.media.speaker` - Haut-parleur 5W optimisé hardware
@@ -215,6 +223,7 @@ Votre implémentation `ReachyMiniBackend` est conforme au SDK officiel, avec des
 #### Optimisations implémentées
 
 ✅ **BBIAAdaptiveBehavior - Exécution Conforme SDK** ⭐ NOUVEAU
+
    - Ajout méthode `execute_behavior()` utilisant `goto_target` avec IK
    - Support complet comportements : nod, shake, look_around, focus
    - Utilise `look_at_world()` pour mouvements naturels
@@ -222,6 +231,7 @@ Votre implémentation `ReachyMiniBackend` est conforme au SDK officiel, avec des
    - Fallback gracieux via `set_emotion()` si SDK non disponible
 
 ✅ **Tests de Conformité Renforcés** ⭐ NOUVEAU
+
    - `test_examples_stewart_warnings.py` : Vérifie avertissements dans demos (2 tests)
    - `test_conformity_advanced_patterns.py` : Détecte patterns inefficaces (6 tests experts)
      * Usage inefficace (set_joint_pos répétés au lieu de goto_target)
@@ -241,27 +251,32 @@ Votre implémentation `ReachyMiniBackend` est conforme au SDK officiel, avec des
 #### Fonctions SDK disponibles mais non utilisées (évolutions possibles)
 
 **Module Media Camera intégré:** `robot.media.camera` disponible et utilisé dans `bbia_vision.py` :
+
 - Capture d'image depuis caméra SDK avec détection YOLO/MediaPipe réelle
 - Fallback gracieux vers simulation si SDK non disponible
 
 **Module Media Microphone intégré:** `robot.media.microphone` disponible et utilisé dans `bbia_audio.py` :
+
 - Enregistrement via `robot.media.record_audio()` (4 microphones directionnels avec annulation de bruit)
 - Support alternatives (`microphone.record()`)
 - Fallback gracieux vers sounddevice si SDK non disponible
 
 **Module Media Speaker intégré:** `robot.media.speaker` disponible et utilisé dans `bbia_audio.py` et `bbia_voice.py` :
+
 - Lecture audio via `robot.media.play_audio()` (haut-parleur 5W optimisé hardware)
 - Synthèse vocale TTS via SDK speaker (génération pyttsx3 + lecture SDK)
 - Support alternatives (`speaker.play()`, `speaker.say()`)
 - Fallback gracieux vers sounddevice/pyttsx3 si SDK non disponible
 
 ⚠️ **Module IO SDK (Optionnel):** Disponible via SDK mais non utilisé dans BBIA :
+
 - `robot.io.get_camera_stream()` - Stream vidéo temps réel (optionnel)
 - `robot.io.get_audio_stream()` - Stream audio temps réel (optionnel)
 
 **Note** : BBIA utilise actuellement `robot.media.camera.get_image()` et captures périodiques qui fonctionnent parfaitement. Les streams IO seraient une optimisation future (nécessiterait refactor significatif pour bénéfice marginal). **Non critique** pour utilisation robot réel.
 
 ✅ **Interpolation Avancée:**
+
 - `MIN_JERK` utilisé ✅
 - `LINEAR`, `EASE_IN_OUT`, `CARTOON` disponibles et utilisés ✅
 - **Mapping émotion → interpolation implémenté** dans `bbia_integration.py` (lignes 289-305)
@@ -270,6 +285,7 @@ Votre implémentation `ReachyMiniBackend` est conforme au SDK officiel, avec des
   - MIN_JERK pour neutral, curious, determined
 
 ✅ **Enregistrement/Replay:**
+
 - Méthodes implémentées ✅
 - **Utilisé dans comportements BBIA** : `BBIABehaviorManager.record_behavior()` et `play_saved_behavior()` (lignes 1087-1166 dans `bbia_behavior.py`)
 - Support async avec `async_play_move()` pour performance
@@ -286,6 +302,7 @@ Votre implémentation `ReachyMiniBackend` est conforme au SDK officiel, avec des
 Le Reachy Mini a **9 joints officiels**:
 
 #### Tête (6 joints - Plateforme Stewart)
+
 - `stewart_1` - Premier joint tête (limite: [-0.838, 1.396] rad)
 - `stewart_2` - Deuxième joint tête (limite: [-1.400, 1.222] rad)
 - `stewart_3` - Troisième joint tête (limite: [-0.838, 1.396] rad)
@@ -296,16 +313,19 @@ Le Reachy Mini a **9 joints officiels**:
 **⚠️ IMPORTANT (Expert Robotique):** Les joints stewart **ne peuvent pas être contrôlés individuellement** car la plateforme Stewart utilise la **cinématique inverse (IK)**. Chaque joint stewart influence plusieurs degrés de liberté simultanément (roll, pitch, yaw, position X/Y/Z).
 
 **Méthodes Correctes pour Contrôler la Tête:**
+
 1. `goto_target(head=pose_4x4, ...)` - ⭐ Recommandé avec interpolation `minjerk`
 2. `set_target_head_pose(pose_4x4)` - Contrôle direct via cinématique inverse
 3. `look_at_world(x, y, z)` - Calcul IK automatique vers point 3D
 4. `create_head_pose(pitch, yaw, roll)` puis `set_target_head_pose()` - Interface simple
 
 **Structure get_current_joint_positions():**
+
 - Format standard: `head_positions` contient **12 éléments** (les stewart joints sont aux indices impairs: 1,3,5,7,9,11)
 - Format alternatif (legacy): `head_positions` contient **6 éléments** directement (indices 0-5)
 
 #### Antennes (2 joints)
+
 - `left_antenna` - Antenne gauche (⚠️ protégée)
 - `right_antenna` - Antenne droite (⚠️ protégée)
 
@@ -313,6 +333,7 @@ Le Reachy Mini a **9 joints officiels**:
 **Statut:** Joints interdits pour sécurité (trop fragiles)
 
 #### Corps (1 joint)
+
 - `yaw_body` - Rotation du corps
 
 **Limites:** [-2.793, 2.793] radians (rotation complète ~±160°)
@@ -322,6 +343,7 @@ Le Reachy Mini a **9 joints officiels**:
 ### 4. ÉMOTIONS OFFICIELLES
 
 Le SDK officiel supporte **6 émotions**:
+
 - `happy` - Joie
 - `sad` - Tristesse
 - `neutral` - Neutre
@@ -334,6 +356,7 @@ Le SDK officiel supporte **6 émotions**:
 ### 5. COMPORTEMENTS OFFICIELS
 
 Le SDK officiel supporte **3 comportements**:
+
 - `wake_up` - Réveiller
 - `goto_sleep` - Mise en veille
 - `nod` - Hochement de tête
@@ -347,11 +370,13 @@ Le SDK officiel supporte **3 comportements**:
 ### Limites de Mouvement
 
 #### Limites Hardware (Modèle Officiel)
+
 - **Stewart joints:** Limites exactes depuis XML (voir ci-dessus)
 - **yaw_body:** [-2.79, 2.79] radians (rotation complète)
 - **Antennes:** Limites conservatrices [-1.0, 1.0] rad pour sécurité hardware
 
 #### Limite de Sécurité Logicielle
+
 - **Amplitude Max:** 0.3 radians (≈17°) pour `yaw_body`, 0.2 radians pour stewart joints - appliquée seulement si plus restrictive que limites hardware
 - **Validation:** Clamping multi-niveaux (hardware puis sécurité) via `ReachyMapping.validate_position()`
 - **Vitesse:** Contrôlée via `goto_target()` avec `duration` adaptative (0.5-1.2s)
@@ -359,23 +384,29 @@ Le SDK officiel supporte **3 comportements**:
 - **Mapping Centralisé:** Module `mapping_reachy.py` comme source de vérité unique pour noms/limites joints (sim ↔ réel)
 
 ### Joints Protégés
+
 Les joints suivants sont **interdits** pour éviter d'endommager le robot:
+
 - `left_antenna` - Antenne gauche (⚠️ Fragile)
 - `right_antenna` - Antenne droite (⚠️ Fragile)
 
 Ces joints sont automatiquement bloqués, même si vous essayez de les contrôler.
 
 ### Validation Automatique
+
 Toutes les commandes sont validées avant exécution:
+
 - Vérification des limites de sécurité
 - Clamp automatique des amplitudes excessives
 - Rejet des mouvements dangereux
 - Protection des joints fragiles
 
 ### Module Mapping Centralisé (`mapping_reachy.py`)
+
 **Source de vérité unique** pour les joints Reachy Mini (sim ↔ réel):
 
 ✅ **Fonctionnalités:**
+
 - Mapping complet des 7 joints mobiles (6 stewart + 1 yaw_body)
 - Limites exactes du SDK officiel (extrait du XML MuJoCo)
 - Validation multi-niveaux (hardware puis sécurité)
@@ -383,6 +414,7 @@ Toutes les commandes sont validées avant exécution:
 - Descriptions expertes avec avertissements IK pour stewart joints
 
 ✅ **Conformité SDK:**
+
 - Limites identiques à `ReachyMiniBackend`
 - Avertissements IK cohérents sur tous les stewart joints
 - `RECOMMENDED_JOINTS` ne liste que `yaw_body` (seul joint contrôlable directement)
@@ -390,6 +422,7 @@ Toutes les commandes sont validées avant exécution:
 ✅ **Tests:** 28 tests exhaustifs dans `tests/test_mapping_reachy_complete.py`
 
 ✅ **Sécurité:**
+
 - Clamp double niveau: d'abord limites hardware, puis `safe_amplitude`
 - `yaw_body`: safe_amplitude = 0.3 rad
 - `stewart_*`: safe_amplitude = 0.2 rad (plus restrictif car nécessitent IK)
@@ -399,6 +432,7 @@ Toutes les commandes sont validées avant exécution:
 ## ⚡ PERFORMANCES
 
 ### Latence
+
 - **Simulation:** < 0.01 ms (instantané)
 - **Robot Physique:** ~10 ms (variable selon réseau)
 - **Avec `goto_target()` interpolation:** Optimisé avec minjerk pour fluidité maximale
@@ -413,12 +447,14 @@ Toutes les commandes sont validées avant exécution:
 ✅ **Async Play Move:** Support de `async_play_move()` pour mouvements complexes non-bloquants
 
 ### Fréquence de Mise à Jour
+
 - **Recommandée:** 100 Hz
 - **Minimum:** 10 Hz
 - **Maximum:** Contenu par SDK
 - **Avec interpolation:** Fréquence optimisée automatiquement par le SDK
 
 ### Consommation Ressources
+
 - **CPU:** < 1%
 - **Mémoire:** ~50 MB
 - **Réseau:** Variable selon robot
@@ -477,6 +513,7 @@ Votre projet inclut **37 tests de conformité** qui vérifient:
 ### Corrections Critiques Modules Daemon & API
 
 #### 1. `daemon/bridge.py` - Méthodes SDK Complétées ✅
+
 - **`_cmd_set_emotion`** : Implémentation complète avec mapping vers 6 émotions SDK officiel
   - Utilise `robot.set_emotion()` si disponible
   - Fallback vers `create_head_pose()` + `set_target_head_pose()` si nécessaire
@@ -492,22 +529,26 @@ Votre projet inclut **37 tests de conformité** qui vérifient:
   - Mouvement combiné tête+corps si `body_yaw` spécifié (plus expressif)
 
 #### 2. `daemon/simulation_service.py` - Noms Joints Corrigés ✅
+
 - **CORRECTION MAJEURE** : Noms joints par défaut corrigés pour Reachy Mini officiel
   - Avant : `neck_yaw`, `head_pitch` (incorrects)
   - Après : `yaw_body`, `stewart_1-6` (avec avertissements IK)
   - Joints par défaut retournent seulement `["yaw_body"]` (stewart nécessitent IK)
 
 #### 3. `robot_api.py` - Duplication Supprimée et Améliorations ✅
+
 - **Suppression duplication** : `RobotFactory` supprimé (déplacé dans `robot_factory.py`)
 - **`look_at()` amélioré** : Validation coordonnées SDK et détection automatique `look_at_world()`
   - Priorité : `robot_api.look_at_world()` → fallback générique avec validation
 - **Import compatibilité** : Ajouté pour éviter régression code existant
 
 #### 4. `bbia_voice_advanced.py` - Intégration Media SDK ✅
+
 - **Intégration `robot.media.play_audio()`** : Priorité SDK puis fallback local
 - **Priorité d'exécution** : `media.play_audio` → `media.speaker.play_file` → `playsound` local
 
 #### 5. `sim/joints.py` - Documentation Limites ✅
+
 - **Limites génériques documentées** : Références vers `mapping_reachy.py` pour valeurs exactes
 - **Avertissements stewart** : Documentation complète sur nécessité IK
 
@@ -520,6 +561,7 @@ Votre projet inclut **37 tests de conformité** qui vérifient:
 **Nouvelles fonctionnalités :** Intelligence augmentée dans tous les comportements BBIA
 
 #### ConversationBehavior Intelligent
+
 ✅ **Intelligence Avancée :** Utilise BBIAHuggingFace si disponible pour analyse de sentiment et réponses contextuelles
 ✅ **Fallback Robuste :** Système de réponses enrichies avec 8 catégories et 4+ variantes par catégorie
 ✅ **Variété des Réponses :** Sélection aléatoire pour éviter répétitions
@@ -528,6 +570,7 @@ Votre projet inclut **37 tests de conformité** qui vérifient:
 ✅ **Aucune Régression :** API existante préservée, fallback gracieux si HuggingFace indisponible
 
 **Catégories de Réponses Enrichies :**
+
 - Salutations (greeting) : 4 variantes
 - Comment allez-vous (how_are_you) : 4 variantes
 - Au revoir (goodbye) : 4 variantes
@@ -538,21 +581,25 @@ Votre projet inclut **37 tests de conformité** qui vérifient:
 - Non entendu (not_heard) : 4 variantes
 
 #### EmotionalResponseBehavior Expressif
+
 ✅ **Commentaires Vocaux Variés :** 6 catégories d'émotions avec 3-4 commentaires expressifs chacun
 ✅ **Réactions Naturelles :** Commentaires adaptés selon l'émotion SDK appliquée (happy, excited, curious, sad, calm, neutral)
 ✅ **Personnalité Enrichie :** Langage moins "robotique", plus naturel et expressif
 
 #### VisionTrackingBehavior Contextuel
+
 ✅ **Détection Vocale :** Commentaires variés lors de détection d'objets (5 variantes)
 ✅ **Feedback Absence :** Messages variés quand aucun objet détecté (5 variantes)
 ✅ **Expressivité Contextuelle :** Messages adaptés à la situation (détection vs absence)
 
 #### WakeUpBehavior & HideBehavior Améliorés
+
 ✅ **Messages de Réveil Variés :** 3-5 variantes selon comportement
 ✅ **Salutations Enrichies :** 10 variantes (formel + décontracté)
 ✅ **Messages de Cache Variés :** 5 variantes pour expressions discrètes
 
 **Tests Créés :**
+
 - `tests/test_bbia_conversation_intelligence.py` (10 tests, tous passent ✅)
 - `tests/test_edge_cases_conformity.py` (8 nouveaux tests edge cases pour détecter problèmes subtils ✅)
 - `tests/test_reachy_mini_full_conformity_official.py` (37 tests complets de conformité ✅)
@@ -562,25 +609,30 @@ Votre projet inclut **37 tests de conformité** qui vérifient:
 Votre implémentation va **au-delà** du SDK officiel avec des optimisations expertes :
 
 **1. Support Complet des Techniques d'Interpolation:**
+
 - Mapping flexible acceptant différentes écritures (MIN_JERK, MINJERK, MIN-JERK, etc.)
 - Support des 4 techniques : MIN_JERK, LINEAR, EASE_IN_OUT, CARTOON
 - Utilisation optimisée dans `bbia_behavior.py` avec `goto_target()` pour mouvements fluides
 
 **2. Enregistrement et Replay de Mouvements:**
+
 - Méthodes `play_move()` et `async_play_move()` disponibles
 - Permet de pré-enregistrer des comportements complexes pour meilleure performance
 - Réduction de la latence en rejouant plutôt qu'en recalculant
 
 **3. Méthodes Expertes:**
+
 - `get_current_body_yaw()` - Récupération optimisée sans recharger toutes les positions
 - Utilisé pour synchronisation fine dans comportements complexes
 
 **4. Optimisations dans bbia_behavior.py:**
+
 - Utilisation de `goto_target()` au lieu de `set_joint_pos()` répétés (mouvements fluides)
 - Support des techniques d'interpolation CARTOON pour animations expressives
 - Validation robuste des coordonnées avant `look_at_world`/`look_at_image`
 
 **5. Optimisations dans bbia_integration.py (Transitions Émotionnelles Expressives):**
+
 - Utilisation de `goto_target()` avec **interpolation intelligente** selon l'émotion au lieu de `set_emotion()` directe
   - **CARTOON** pour émotions expressives (happy, excited, surprised, angry, proud) - Mouvements animés et sautillants
   - **EASE_IN_OUT** pour émotions douces (calm, sad, nostalgic, fearful) - Transitions fluides et mélancoliques
@@ -736,11 +788,13 @@ python scripts/generate_conformity_report_reachy_mini.py
 ## Ressources
 
 ### Documentation officielle
+
 - [SDK Reachy Mini GitHub](https://github.com/pollen-robotics/reachy_mini)
 - [Documentation Pollen Robotics](https://docs.pollen-robotics.com/)
 - [Hugging Face Reachy Mini](https://huggingface.co/blog/reachy-mini)
 
 ### Références projet
+
 - **Code:** `src/bbia_sim/backends/reachy_mini_backend.py`
 - **Tests:** `tests/test_reachy_mini_full_conformity_official.py`
 - **Rapport:** `log/conformity_report_reachy_mini.md`
@@ -830,10 +884,12 @@ Une analyse exhaustive complémentaire a été effectuée (Oct / Nov. 2025) comp
 ### Résumé des incohérences identifiées
 
 **🔴 CRITIQUES** (2) : ✅ **TOUT CORRIGÉ**
+
 1. ✅ **Structure API `/development/api/move/goto`** : Implémenté avec `GotoModelRequest` conforme SDK
 2. ✅ **Retour `goto`** : Retourne maintenant `MoveUUID` conforme SDK
 
 **🟡 MODÉRÉES** (7) : ✅ **TOUT CORRIGÉ**
+
 - ✅ Endpoints `/move` : `running`, `stop`, `ws/updates`, `set_target`, `ws/set_target` implémentés
 - ✅ Paramètres complétés : `/state/full` (11 paramètres), `/state/ws/full` (11 paramètres), `/present_head_pose` (use_pose_matrix)
 
@@ -842,6 +898,7 @@ Une analyse exhaustive complémentaire a été effectuée (Oct / Nov. 2025) comp
 **Nouveaux tests** : `tests/test_api_move_conformity.py`, `tests/test_api_state_improved.py` ✅
 
 **🟢 OPTIONNELLES** (2 fonctionnalités avancées) :
+
 - Support RecordedMoves HuggingFace (datasets)
 - Tests de conformité supplémentaires
 
@@ -859,6 +916,7 @@ Une analyse exhaustive complémentaire a été effectuée (Oct / Nov. 2025) comp
 Votre projet BBIA-SIM est conforme au SDK Reachy Mini officiel au niveau backend, mais présente des lacunes au niveau endpoints REST API.
 
 ### Points forts
+
 - Conformité totale avec le SDK officiel
 - 37 tests de conformité passent (17 basiques + 20 avancés experts)
 - Mode simulation fonctionnel (timeout géré automatiquement)
@@ -879,6 +937,7 @@ Votre projet BBIA-SIM est conforme au SDK Reachy Mini officiel au niveau backend
 **Fichier :** `tests/test_mapping_reachy_complete.py`
 
 **28 tests exhaustifs** pour validation complète du module mapping :
+
 - ✅ test_19: Détection patterns inefficaces (set_joint_pos répétés)
 - ✅ test_20: Diversité techniques interpolation
 - ✅ test_21: Intégration modules media/io SDK
@@ -893,10 +952,12 @@ Votre projet BBIA-SIM est conforme au SDK Reachy Mini officiel au niveau backend
 - ✅ test_30: Patterns performance
 
 **Bénéfices :** Détection automatique de patterns sous-optimaux et recommandations d'amélioration.
+
 - ✅ **Optimisations expertes:** Transitions émotionnelles fluides via `goto_target()` avec interpolation `minjerk` dans `bbia_integration.py`
 - ✅ **Expressivité améliorée:** Duration adaptative selon intensité émotionnelle pour mouvements plus naturels
 
 ### Prochaines étapes
+
 1. ✅ Tests de conformité complétés
 2. 🔄 Tester avec robot physique (quand disponible)
 3. 📝 Développer nouveaux comportements
@@ -920,12 +981,14 @@ Une analyse exhaustive de TOUS les modules a été effectuée (voir `docs/ANALYS
 **Statut Global :** ✅ **98% CONFORME** avec optimisations expertes
 
 **Modules Analysés :**
+
 - ✅ **Modules Prioritaires :** conformes (backend, behavior, integration, factory)
 - ✅ **Modules Non-Prioritaires :** Tous vérifiés (audio, vision, voice, adaptive_behavior)
 - ✅ **Exemples/Démos :** Vérifiés (améliorations optionnelles identifiées)
 - ✅ **Tests :** Renforcés de 23 à 37 tests pour couverture complète
 
 **Nouveaux Tests Ajoutés (24-37) :**
+
 - ✅ Test 24: Recording/Playback (`start_recording`, `stop_recording`, `play_move`)
 - ✅ Test 25: Lecture Asynchrone (`async_play_move`)
 - ✅ Test 26: Modules IO et Media (accès `io` et `media`)
@@ -942,22 +1005,26 @@ Une analyse exhaustive de TOUS les modules a été effectuée (voir `docs/ANALYS
 - ✅ Test 37: Logique Clamping Cohérente (mapping vs backend alignment)
 
 **Performances SDK Disponibles (Optionnelles) :**
+
 - ⚠️ Recording/Playback : Méthodes disponibles mais non utilisées dans comportements (opportunité d'optimisation)
 - ⚠️ async_play_move : Disponible mais non exploité (opportunité de performance - `bbia_behavior.py` utilise déjà `play_move`)
 - ⚠️ Modules IO streams (`get_camera_stream()`, `get_audio_stream()`) : Disponibles via SDK mais non utilisés dans BBIA (décision finale : non critique - code actuel `robot.media.camera.get_image()` fonctionne parfaitement)
 
 **Documentation Référence :**
+
 - 📄 **Analyse Complète :** `docs/ANALYSE_EXHAUSTIVE_MODULES_2025.md`
 - 📄 **Analyse Experte Finale :** `docs/ANALYSE_EXPERTE_MODULES_FINAL_2025.md`
 
 ### Corrections Expertes Récentes
 
 **Module `bbia_voice.py` :**
+
 - ✅ Reconnaissance vocale utilise `robot.media.microphone` (4 microphones SDK)
 - ✅ Synthèse vocale utilise `play_audio(bytes, volume)` avec paramètre volume
 - ✅ Tests experts créés pour détecter problèmes subtils
 
 **Tests de Robustesse :**
+
 - ✅ 15 nouveaux tests experts (`test_expert_robustness_conformity.py`)
 - ✅ Détection perte précision, fuites mémoire, thread-safety, etc.
 - ✅ **46 tests de conformité complets** (Oct / Nov. 2025) vérifiant :
@@ -970,4 +1037,3 @@ Une analyse exhaustive de TOUS les modules a été effectuée (voir `docs/ANALYS
   - Signature `create_head_pose`
   - Intégration Hugging Face
   - Conscience statut beta (fallbacks robustes)
-

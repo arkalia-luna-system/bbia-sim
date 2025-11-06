@@ -37,6 +37,7 @@ graph LR
 ### ✅ Ce qui est DÉJÀ fait (gratuit)
 
 **Modèles Hugging Face gratuits** :
+
 - ✅ Mistral 7B (`mistralai/Mistral-7B-Instruct-v0.2`)
 - ✅ Llama 3 8B (`meta-llama/Llama-3-8B-Instruct`)
 - ✅ Phi-2 (`microsoft/phi-2`) - Léger RPi 5
@@ -49,6 +50,7 @@ graph LR
 - ✅ Émotion (`j-hartmann/emotion-english-distilroberta-base`)
 
 **Fonctionnalités** :
+
 - ✅ Outils LLM intégrés avec `BBIAHuggingFace.chat()`
 - ✅ Détection basique avec mots-clés
 - ✅ Animations idle (respiration, poses, tremblement vocal)
@@ -65,10 +67,12 @@ graph LR
 **BBIA Actuel** : YOLOv8n + MediaPipe (gratuit) ✅
 
 **Ce qui manque** :
+
 - ❌ SmolVLM2 local (gratuit) - Alternative à gpt-realtime
 - ❌ Description images plus riche (mais BLIP existe déjà)
 
 **Recommandation** :
+
 - ✅ **YOLOv8n + MediaPipe** suffisent (équivalent)
 - 🟡 **SmolVLM2** : Optionnel, améliore descriptions mais pas essentiel
   - Modèle : `vikhyatk/moondream2` ou `HuggingFaceTB/SmolVLM` (gratuit)
@@ -78,6 +82,7 @@ graph LR
 ### 2. Détection NLP : Mots-clés vs Modèles Gratuits
 
 **État Actuel** :
+
 ```python
 # bbia_huggingface.py ligne 996
 # Détection simple basée sur mots-clés (peut être amélioré avec NLP)
@@ -88,10 +93,12 @@ tool_patterns = {
 ```
 
 **Ce qui manque** :
+
 - ❌ Modèle intent detection (gratuit Hugging Face)
 - ❌ Extraction paramètres plus intelligente
 
 **Alternatives GRATUITES** :
+
 1. **Modèle intent classification** (gratuit Hugging Face) :
    - `Bingsu/bart-base-koen-v2` (intent detection)
    - `facebook/bart-large-mnli` (zero-shot classification)
@@ -114,10 +121,12 @@ tool_patterns = {
 **BBIA Actuel** : Whisper offline + pyttsx3 (gratuit) ✅
 
 **Ce qui manque** :
+
 - ❌ Streaming audio temps réel (latence faible)
 - ❌ Transcription en continu
 
 **Alternatives GRATUITES** :
+
 1. **Whisper en streaming** (gratuit) :
    - `openai/whisper-{size}` peut être utilisé en streaming
    - Bibliothèque : `whisper-streaming` (gratuit)
@@ -132,6 +141,7 @@ tool_patterns = {
    - pyttsx3 déjà en streaming
 
 **Recommandation** :
+
 - ✅ **Whisper offline** fonctionne bien
 - 🟡 **Amélioration** : Ajouter VAD pour activation automatique
 - 🟡 **Optionnel** : Whisper streaming pour latence plus faible
@@ -145,11 +155,13 @@ tool_patterns = {
 #### 1. Améliorer Détection Outils avec NLP Gratuit ⏱️ 2-3h
 
 **Ce qui peut être fait** :
+
 - Utiliser `sentence-transformers/all-MiniLM-L6-v2` pour similarité sémantique
 - Comparer message utilisateur avec descriptions outils
 - Score de confiance au lieu de simple "keyword in message"
 
 **Code à ajouter** :
+
 ```python
 # Dans _detect_and_execute_tools()
 from sentence_transformers import SentenceTransformer
@@ -187,11 +199,13 @@ def _detect_tool_with_similarity(self, user_message: str) -> str | None:
 #### 2. Ajouter plus de Patterns Français ⏱️ 1h
 
 **Ce qui peut être fait** :
+
 - Étendre `tool_patterns` avec plus de variantes
 - Support formes verbales (impératif, infinitif, participe)
 - Synonymes et expressions courantes
 
 **Exemple** :
+
 ```python
 "move_head": {
     "keywords": [
@@ -220,13 +234,16 @@ def _detect_tool_with_similarity(self, user_message: str) -> str | None:
 **Statut** : ✅ **IMPLÉMENTÉ** dans `src/bbia_sim/bbia_huggingface.py`
 
 **Ce qui était prévu** :
+
 - App officielle utilise `gpt-realtime` (payant) ou `SmolVLM2` (gratuit)
 
 **Solution GRATUITE implémentée** :
+
 - ✅ Intégré `HuggingFaceTB/SmolVLM-Instruct` (gratuit Hugging Face)
 - ✅ Alternative : `vikhyatk/moondream2` (plus léger) également implémentée
 
 **Code implémenté** :
+
 - Méthode `_load_multimodal_model()` avec support SmolVLM2/Moondream2
 - Méthode `describe_image()` utilise SmolVLM2 si disponible
 - Tests E2E créés dans `tests/test_bbia_nlp_detection.py`
@@ -244,12 +261,15 @@ def _detect_tool_with_similarity(self, user_message: str) -> str | None:
 **Statut** : ✅ **IMPLÉMENTÉ** dans `src/bbia_sim/voice_whisper.py`
 
 **Ce qui était prévu** :
+
 - Activation automatique Whisper quand utilisateur parle
 
 **Solution GRATUITE implémentée** :
+
 - ✅ `silero/vad` (gratuit Hugging Face) intégré
 
 **Code implémenté** :
+
 - Méthode `detect_speech_activity()` avec modèle `silero/vad`
 - Méthode `transcribe_microphone_with_vad()` pour transcription automatique
 - Méthode `transcribe_streaming()` pour streaming avec VAD
@@ -268,10 +288,12 @@ def _detect_tool_with_similarity(self, user_message: str) -> str | None:
 **Statut** : ✅ **IMPLÉMENTÉ** dans `src/bbia_sim/bbia_huggingface.py`
 
 **Ce qui était prévu** :
+
 - Extraire paramètres depuis phrases naturelles
 - Ex: "tourne la tête de 30 degrés" → `{"direction": "left", "angle": 30}`
 
 **Solution GRATUITE implémentée** :
+
 - ✅ Méthodes `_extract_angle()` et `_extract_intensity()` implémentées
 - ✅ Regex amélioré pour extraire nombres, angles, intensités
 - ✅ Support: "30 degrés", "pi/4 radians", "50%", "légèrement", "beaucoup"
@@ -290,9 +312,11 @@ def _detect_tool_with_similarity(self, user_message: str) -> str | None:
 #### 6. Streaming Whisper pour Latence Plus Faible ⏱️ 2-3h
 
 **Ce qui manque** :
+
 - Transcription en continu (comme OpenAI Realtime API)
 
 **Solution GRATUITE** :
+
 - `whisper-streaming` (bibliothèque gratuite)
 - Whisper déjà utilisé, juste mode streaming
 
@@ -331,4 +355,3 @@ def _detect_tool_with_similarity(self, user_message: str) -> str | None:
 ---
 
 **Dernière mise à jour** : Oct / Nov. 2025
-

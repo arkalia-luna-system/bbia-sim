@@ -22,6 +22,7 @@
 **Client dessine le logo lui-même** avec Procreate sur iPad Pro.
 
 **Workflow** :
+
 1. Client dessine le logo exactement comme voulu (Procreate)
 2. Export PNG haute résolution (4096x4096px recommandé)
 3. Conversion automatique PNG → SVG (je m'en occupe)
@@ -58,7 +59,7 @@
 
 ## 📁 Structure des Fichiers
 
-```
+```text
 livrables/v1.0/logo/
 ├── GUIDE_PROCREATE.md          # Guide Procreate (À LIRE)
 ├── OPTION_IPAD_PRO.md          # Workflow iPad Pro complet

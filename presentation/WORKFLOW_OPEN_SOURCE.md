@@ -8,27 +8,35 @@
 ## 📋 Principes Fondamentaux
 
 ### **1. Versionnage Complet**
+
 Chaque asset livré doit inclure :
+
 - ✅ **Format source** (SVG, AI, PSD, Figma, etc.) - versionnable
 - ✅ **Formats exportés** (PNG, JPG, PDF, etc.) - utilisables immédiatement
 - ✅ **Métadonnées** (dimensions, poids, usage) - dans README associé
 
 ### **2. Documentation Synthétique**
+
 Pour chaque asset :
+
 - ✅ **README.md** ou fichier `.md` associé
 - ✅ **Spécifications techniques** (dimensions, formats, couleurs)
 - ✅ **Exemples d'usage** (intégration code, doc, UI)
 - ✅ **Justification créative** (choix couleurs, typographie, variantes)
 
 ### **3. Tests en Conditions Réelles**
+
 Chaque asset doit être testé :
+
 - ✅ **Preview HTML/CSS** (aperçu visuel)
 - ✅ **Intégration dans doc** (exemple markdown, site)
 - ✅ **Favicon web** (test navigateur)
 - ✅ **Rendu UI** (mockup ou screenshot)
 
 ### **4. Relecture Collaborative**
+
 Workflow type "Pull Request" :
+
 - ✅ **Relecture fonctionnelle** (conformité brief, spécifications)
 - ✅ **Relecture visuelle** (cohérence, esprit BBIA)
 - ✅ **Test d'intégration** (code, doc, UI)
@@ -38,7 +46,7 @@ Workflow type "Pull Request" :
 
 ## 📁 Structure des Livrables
 
-```
+```text
 presentation/
 ├── livrables/
 │   ├── v1.0/                    # Version initiale
@@ -130,9 +138,11 @@ presentation/
 
 **Intégration** :
 ```html
+
 <!-- Exemple code HTML/CSS -->
 <img src="logo_bbia_complet.svg" alt="BBIA Logo">
-```
+
+```text
 
 **Rendu testé** :
 - ✅ Documentation markdown
@@ -155,33 +165,40 @@ presentation/
 ## 🔍 Processus de Relecture
 
 ### **Étape 1 : Livraison**
+
 Graphiste livre dans `livrables/v[X.X]/[type]/`
 
 ### **Étape 2 : Relecture Fonctionnelle**
+
 - [ ] Conformité au brief
 - [ ] Respect des spécifications techniques
 - [ ] Formats livrés complets
 - [ ] Documentation présente
 
 ### **Étape 3 : Test Intégration**
+
 - [ ] Preview HTML fonctionne
 - [ ] Intégration dans doc testée
 - [ ] Favicon testé en navigateur
 - [ ] Rendu UI vérifié
 
 ### **Étape 4 : Relecture Visuelle**
+
 - [ ] Cohérence avec ADN BBIA
 - [ ] Esprit "douceur tech" respecté
 - [ ] Palette couleurs cohérente
 - [ ] Qualité artistique
 
 ### **Étape 5 : Feedback**
+
 Documenter dans `SUIVI_BRANDING.md` :
+
 - Points validés ✅
 - Ajustements demandés 🔄
 - Suggestions 💡
 
 ### **Étape 6 : Corrections & Validation**
+
 - Graphiste corrige selon feedback
 - Nouvelle livraison en `v[X.X+1]/`
 - Validation finale
@@ -193,24 +210,28 @@ Documenter dans `SUIVI_BRANDING.md` :
 Pour chaque asset livré, vérifier :
 
 ### **Fichiers**
+
 - [ ] Source (format éditable)
 - [ ] Exports (formats utilisables)
 - [ ] Documentation (README.md)
 - [ ] Tests (preview HTML, exemples)
 
 ### **Documentation**
+
 - [ ] Spécifications techniques
 - [ ] Justification créative
 - [ ] Exemples d'usage
 - [ ] Historique versions
 
 ### **Tests**
+
 - [ ] Preview HTML/CSS
 - [ ] Intégration doc
 - [ ] Intégration web
 - [ ] Rendu final validé
 
 ### **Qualité**
+
 - [ ] Conformité brief
 - [ ] Qualité artistique
 - [ ] Cohérence BBIA
@@ -228,4 +249,3 @@ Pour chaque asset livré, vérifier :
 ---
 
 *Workflow adapté aux projets open source - Version 1.0*
-

@@ -10,6 +10,7 @@
 ### 📹 Vidéos Capture d'Écran MuJoCo (macOS)
 
 #### **Vidéo 1 : Démo MuJoCo - 17:00:52**
+
 - **Fichier** : `assets/videos/Enregistrement de l'écran Oct / No2025025025025025 à 17.00.52.mov`
 - **Taille** : 2.7 MB
 - **Date** : Oct / No2025025025025025
@@ -19,6 +20,7 @@
 - **Usage** : Documentation, présentation, README
 
 #### **Vidéo 2 : Démo MuJoCo - 17:01:27**
+
 - **Fichier** : `assets/videos/Enregistrement de l'écran Oct / No2025025025025025 à 17.01.27.mov`
 - **Taille** : 3.4 MB
 - **Date** : Oct / No2025025025025025
@@ -28,6 +30,7 @@
 - **Usage** : Documentation, présentation, README
 
 #### **Vidéo 3 : Démo MuJoCo - 17:01:56**
+
 - **Fichier** : `assets/videos/Enregistrement de l'écran Oct / No2025025025025025 à 17.01.56.mov`
 - **Taille** : 3.1 MB
 - **Date** : Oct / No2025025025025025
@@ -37,6 +40,7 @@
 - **Usage** : Documentation, présentation, README
 
 ### 📊 Traces JSONL (Anciennes)
+
 - `demo_happy_20251025_130404.jsonl` - Trace émotion "happy"
 - `demo_happy_20251025_130419.jsonl` - Trace émotion "happy"
 - `demo_happy_20251025_130500.jsonl` - Trace émotion "happy"
@@ -49,6 +53,7 @@
 ### 🎯 Captures Récentes (Oct / No2025025025025025)
 
 #### **Série de captures - 16:48**
+
 - **Capture 1** : `assets/images/Capture d'écran Oct / No2025025025025025 à 16.48.20.png`
 - **Capture 2** : `assets/images/Capture d'écran Oct / No2025025025025025 à 16.48.29.png`
 - **Capture 3** : `assets/images/Capture d'écran Oct / No2025025025025025 à 16.48.37.png`
@@ -59,6 +64,7 @@
 - **Usage** : Documentation, présentation visuelle, guides
 
 #### **Série de captures - 16:49**
+
 - **Capture 6** : `assets/images/Capture d'écran Oct / No2025025025025025 à 16.49.04.png`
 - **Capture 7** : `assets/images/Capture d'écran Oct / No2025025025025025 à 16.49.11.png` (61K)
 - **Capture 8** : `assets/images/Capture d'écran Oct / No2025025025025025 à 16.49.19.png` (77K)
@@ -69,6 +75,7 @@
 - **Usage** : Documentation, présentation visuelle, guides
 
 ### 📅 Captures Anciennes (Oct / No2025025025025025)
+
 - `Capture d'écran Oct / No2025025025025025 à 17.40.37.png` (38K)
 - `Capture d'écran Oct / No2025025025025025 à 17.40.44.png` (36K)
 - `Capture d'écran Oct / No2025025025025025 à 17.40.52.png` (31K)
@@ -76,6 +83,7 @@
 - `Capture d'écran Oct / No2025025025025025 à 17.41.26.png` (40K)
 
 ### 🎨 Images Finales
+
 - `robot_3d_final.png` (38K) - Vue 3D finale du robot
 - `robot_animation.gif` - Animation GIF du robot
 
@@ -114,4 +122,3 @@ mjpython examples/demo_mujoco_continue.py
 
 **BBIA-SIM** - Brain-Based Interactive Agent  
 *Inventaire des médias disponibles*
-

@@ -24,29 +24,34 @@
 ## 🎯 Navigation par Profil
 
 ### 🟢 Nouveau Utilisateur
+
 1. [Guide Débutant](guides/GUIDE_DEBUTANT.md) — Premiers pas en 5 minutes
 2. [Installation Audio](installation/AUDIO_SETUP.md) — Configuration audio
 3. [Guide Reachy Mini](guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md) — Utiliser le robot
 
 ### 💻 Développeur
+
 1. [Guide Avancé](guides/GUIDE_AVANCE.md) — Fonctionnalités avancées
 2. [Architecture Vue d'Ensemble](development/architecture/ARCHITECTURE_OVERVIEW.md) — Structure du projet
 3. [Guide d'Intégration](development/integration.md) — Intégrer BBIA-SIM
 4. [Guide de Test](development/testing.md) — Tests et qualité
 
 ### 🤖 Utilisateur Robotique
+
 1. [Guide Reachy Mini](guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md) — Guide complet
 2. [Mouvements Reachy Mini](hardware/MOUVEMENTS_REACHY_MINI.md) — Contrôle des mouvements
 3. [Sécurité Robot](hardware/SECURITE_ROBOT.md) — DO/DON'T
 4. [Simulation MuJoCo](simulations/MUJOCO_SIMULATION_GUIDE.md) — Simulation 3D
 
 ### ✅ QA / Tests
+
 1. [Guide de Test](development/testing.md) — Guide complet
 2. [Index Audits](quality/audits/INDEX_AUDITS_CONSOLIDES.md) — Tous les audits
 3. [Corrections Appliquées](quality/corrections/applied.md) — Corrections
 4. [Validation Qualité](quality/validation/VALIDATION_FINALE_QUALITE_2025.md) — Rapports
 
 ### 📊 Chef de Projet
+
 1. [Tableau de Bord Complet](reference/project-status.md) — État par axe (Fiabilité, Performance, etc.)
 2. [Statut Opérationnel](reference/STATUT_PROJET.md) — État système (dashboard, tests, commandes)
 3. [Release Notes](reference/RELEASE_NOTES.md) — Notes de version
@@ -57,6 +62,7 @@
 ## 📖 Documentation par Catégorie
 
 ### 🚀 Démarrage & Guides
+
 - [Guide Débutant](guides/GUIDE_DEBUTANT.md) — Installation et premiers pas
 - [Guide Avancé](guides/GUIDE_AVANCE.md) — Fonctionnalités avancées
 - [Guide Chat BBIA](guides/GUIDE_CHAT_BBIA.md) — Système de chat intelligent
@@ -64,24 +70,28 @@
 - [FAQ Troubleshooting](development/troubleshooting.md) — Dépannage
 
 ### 🏗️ Architecture & Design
+
 - [Architecture Vue d'Ensemble](development/architecture/ARCHITECTURE_OVERVIEW.md) — Vue générale
 - [Architecture Détaillée](development/architecture/ARCHITECTURE_DETAILED.md) — Détails techniques
 - [Guide Architecture](development/architecture/ARCHITECTURE.md) — Référence principale
 - [Index Thématique](reference/INDEX_THEMATIQUE.md) — Navigation par profils
 
 ### ✅ Qualité & Conformité
+
 - [Conformité Reachy-Mini](quality/compliance/CONFORMITE_REACHY_MINI_COMPLETE.md) — Conformité SDK
 - [Validation Qualité](quality/validation/VALIDATION_FINALE_QUALITE_2025.md) — Rapports de validation
 - [Index Audits](quality/audits/INDEX_AUDITS_CONSOLIDES.md) — Tous les audits
 - [Pipeline CI/CD](deployment/PIPELINE_CI.md) — Intégration continue
 
 ### 🧠 Intelligence & IA
+
 - [Modules IA](ai/modules.md) — Audit modules pré-entraînés
 - [Datasets & Golden Images](ai/datasets.md) — Datasets et traces
 - [Intelligence LLM](ai/llm.md) — Intelligence conversationnelle
 - [Analyse Voix](ai/voice.md) — Analyse voix et intelligence
 
 ### 🔧 Développement
+
 - [Guide d'Intégration](development/integration.md) — Intégrer BBIA-SIM
 - [Guide de Migration](development/migration.md) — Migration Sim → Robot
 - [Guide de Test](development/testing.md) — Tests et qualité
@@ -89,28 +99,33 @@
 - [API REST/WS](development/api/CONTRATS_REST_WS.md) — Contrats API
 
 ### 🤖 Hardware & Robotique
+
 - [Mouvements Reachy Mini](hardware/MOUVEMENTS_REACHY_MINI.md) — Contrôle des mouvements
 - [Sécurité Robot](hardware/SECURITE_ROBOT.md) — DO/DON'T
 - [Prêt Reachy A4](hardware/reachy-mini/PRET_REACHY_A4.md) — Configuration A4
 - [Reachy Updates Log](hardware/reachy-mini/REACHY_UPDATES_LOG.md) — Journal des mises à jour
 
 ### ⚡ Performance
+
 - [Optimisations Reachy Mini](quality/performance/OPTIMISATIONS_EXPERT_REACHY_MINI.md) — Optimisations spécifiques
 - [Optimisations Robotique](quality/performance/OPTIMISATIONS_EXPERT_ROBOTIQUE_2025.md) — Optimisations générales
 - [Résumé Performance](quality/performance/RESUME_PERFORMANCE_CORRECTIONS_2025.md) — Résumé optimisations
 
 ### 🎯 Simulation
+
 - [Simulation BBIA Complète](simulations/SIMULATION_BBIA_COMPLETE.md) — Simulation complète
 - [Guide MuJoCo](simulations/MUJOCO_SIMULATION_GUIDE.md) — Simulation 3D
 - [Observabilité](observabilite/OBSERVABILITE.md) — Logs, metrics, santé
 
 ### 📊 Analyses & Rapports
+
 - [Analyse Modules Non Prioritaires](quality/audits/modules-non-prioritaires.md) — Analyse modules
 - [Analyse Coverage](quality/audits/coverage-details.md) — Analyse code coverage
 - [Analyse Unity AR](quality/audits/unity-ar.md) — Évaluation Unity AR
 - [Roadmap Dashboard](dashboard/ROADMAP_DASHBOARD.md) — Roadmap UX
 
 ### 🔧 Corrections & Améliorations
+
 - [Corrections Appliquées](quality/corrections/applied.md) — Corrections démos et modules
 - [Améliorations SDK Futures](quality/improvements/sdk-future.md) — Features SDK avancées
 - [Améliorations Intelligence BBIA](quality/improvements/intelligence-bbia.md) — Intelligence conversationnelle
@@ -118,12 +133,14 @@
 - [Améliorations Gratuites](quality/improvements/free-improvements.md) — Solutions gratuites
 
 ### 📋 Références
+
 - [Statut du Projet](reference/STATUT_PROJET.md) — État actuel
 - [Release Notes](reference/RELEASE_NOTES.md) — Notes de version
 - [Historique](reference/PROJECT_HISTORY.md) — Historique complet
 - [Résumé Final](reference/summaries/final-summary.md) — Résumé complet
 
 ### 🎮 Unity & Jeux
+
 - [Guide Unity BBIA](unity/UNITY_BBIA_GUIDE.md) — Intégration Unity
 - [Dépannage Unity](unity/UNITY_TROUBLESHOOTING.md) — Dépannage Unity
 
@@ -162,3 +179,10 @@ export BBIA_TELEMETRY_TIMEOUT=1.0
 ---
 
 **Note :** Ce fichier est l'index principal de la documentation. Tous les documents sont organisés dans des sous-dossiers par catégorie.
+
+---
+
+## 🎯 Navigation
+
+**Retour à** : [README Documentation](README.md)  
+**Voir aussi** : [Index Thématique](reference/INDEX_THEMATIQUE.md)

@@ -14,7 +14,7 @@ Le dashboard BBIA-SIM a été créé pour être **identique** au dashboard offic
 
 ## 🏗️ Structure
 
-```
+```text
 src/bbia_sim/daemon/app/dashboard/
 ├── templates/
 │   ├── base.html              # Template de base (Tailwind CSS)
@@ -52,23 +52,27 @@ src/bbia_sim/daemon/app/dashboard/
 ## 🚀 Fonctionnalités
 
 ### 1. **Section Daemon**
+
 - ✅ Toggle ON/OFF pour démarrer/arrêter le daemon
 - ✅ Animation SVG selon l'état (réveil, éveillé, endormi, erreur)
 - ✅ Statut backend affiché (Up and ready, Waking up, etc.)
 - ✅ Lecteur de mouvements enregistrés intégré
 
 ### 2. **Section Apps**
+
 - ✅ Liste des applications installées
 - ✅ Toggle pour démarrer/arrêter chaque app
 - ✅ Bouton suppression d'app
 
 ### 3. **Section App Store**
+
 - ✅ Liste des apps disponibles sur Hugging Face
 - ✅ Bouton "Install" pour chaque app
 - ✅ Modal d'installation avec logs
 - ✅ WebSocket pour suivi installation en temps réel
 
 ### 4. **Lecteur de Mouvements**
+
 - ✅ Sélection dataset (Dances/Emotions)
 - ✅ Liste des mouvements disponibles
 - ✅ Boutons Play/Stop
@@ -115,18 +119,21 @@ Les animations SVG pour le daemon sont optionnelles. Si absentes, le dashboard f
 ## ✅ Conformité avec SDK Officiel
 
 ### Structure identique :
+
 - ✅ Templates Jinja2 modulaires
 - ✅ Sections séparées (daemon, apps, appstore)
 - ✅ Static files montés sur `/static`
 - ✅ Route `GET /` qui rend le dashboard
 
 ### API conforme :
+
 - ✅ Endpoints `/development/api/daemon/*` pour contrôle daemon
 - ✅ Endpoints `/development/api/apps/*` pour gestion apps
 - ✅ Endpoints `/development/api/move/*` pour mouvements
 - ✅ WebSocket pour temps réel
 
 ### JavaScript identique :
+
 - ✅ Même logique de gestion daemon
 - ✅ Même structure apps/appstore
 - ✅ Même lecteur de mouvements
@@ -186,4 +193,3 @@ python -c "from bbia_sim.daemon.app.main import app; print('✅ OK')"
 ✅ **Design conforme**
 ✅ **Intégration complète dans main.py**
 ⚠️ **Assets SVG optionnels (peuvent être ajoutés plus tard)**
-

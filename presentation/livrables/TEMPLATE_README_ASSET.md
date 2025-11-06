@@ -22,12 +22,14 @@
 ### **Formats Disponibles**
 
 **Source** (versionnable) :
+
 - `.ai` (Adobe Illustrator)
 - `.svg` (vectoriel)
 - `.psd` (Photoshop)
 - `.fig` (Figma)
 
 **Exports** (utilisables) :
+
 - `.png` (haute résolution, fond transparent)
 - `.svg` (vectoriel)
 - `.jpg` (optimisé web)
@@ -70,6 +72,7 @@
 ### **Choix de Conception**
 
 [Expliquer en détail les choix créatifs :]
+
 - Pourquoi ces couleurs ?
 - Pourquoi ce style ?
 - Comment ça s'inscrit dans l'ADN BBIA ?
@@ -78,16 +81,19 @@
 ### **Variantes Proposées**
 
 **Variante A** : [description]
+
 - Usage : [contexte d'utilisation]
 - Différences : [ce qui change]
 
 **Variante B** : [description]
+
 - Usage : [contexte d'utilisation]
 - Différences : [ce qui change]
 
 ### **Alternatives Créatives**
 
 [Si variantes supplémentaires proposées :]
+
 - [Description des alternatives]
 - [Justification si cohérent avec branding]
 
@@ -100,6 +106,7 @@
 **Fichier** : `tests/preview_[asset].html`
 
 **Contenu** :
+
 - Aperçu de l'asset
 - Différentes tailles
 - Différents fonds (clair/sombre)
@@ -108,12 +115,14 @@
 ### **Intégration Code**
 
 **HTML** :
+
 ```html
 <!-- Exemple d'intégration -->
 <img src="logo_bbia_complet.svg" alt="BBIA Logo" class="bbia-logo">
 ```
 
 **CSS** :
+
 ```css
 .bbia-logo {
     max-width: 200px;
@@ -122,6 +131,7 @@
 ```
 
 **Markdown** (Documentation) :
+
 ```markdown
 ![BBIA Logo](logo_bbia_complet.png)
 ```
@@ -129,6 +139,7 @@
 ### **Intégration Web**
 
 **Favicon** :
+
 ```html
 <link rel="icon" type="image/png" sizes="32x32" href="favicon_32x32.png">
 <link rel="icon" type="image/png" sizes="64x64" href="favicon_64x64.png">
@@ -160,6 +171,7 @@
 ### **Pour Documentation**
 
 1. Intégrer dans README.md :
+
 ```markdown
 ![BBIA Logo](../livrables/v1.0/logo/exports/logo_bbia_complet.png)
 ```
@@ -183,6 +195,7 @@
 | 1.2 | YYYY-MM-DD | [Ajustements finaux] | ✅ Validé |
 
 **Détails modifications** :
+
 - v1.1 : [Description détaillée des corrections]
 - v1.2 : [Description détaillée des ajustements]
 
@@ -191,16 +204,19 @@
 ## ✅ Validation
 
 ### **Relecture Fonctionnelle**
+
 - [x] Conformité brief
 - [x] Spécifications techniques respectées
 - [x] Formats complets
 
 ### **Relecture Visuelle**
+
 - [x] Cohérence ADN BBIA
 - [x] Esprit "douceur tech"
 - [x] Qualité artistique
 
 ### **Tests Intégration**
+
 - [x] Preview fonctionne
 - [x] Code intégré testé
 - [x] Documentation validée
@@ -217,4 +233,3 @@
 ---
 
 *Template de documentation asset - BBIA Branding*
-

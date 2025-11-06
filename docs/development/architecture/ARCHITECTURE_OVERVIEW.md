@@ -11,35 +11,50 @@
 
 ---
 
+## 📋 Table des Matières
+
+1. [Objectifs architecturaux](#objectifs-architecturaux)
+2. [Architecture générale](#architecture-générale)
+3. [Composants principaux](#composants-principaux)
+4. [Tests et validation](#tests-et-validation)
+5. [Métriques de performance](#métriques-de-performance)
+6. [Navigation](#-navigation)
+
+---
+
 ## Objectifs architecturaux
 
 ### Conformité SDK
+
 - 21/21 méthodes du SDK officiel implémentées
 - Types de retour conformes (None, numpy.ndarray, tuple)
 - Backend ReachyMiniBackend prêt pour robot physique
 - Tests de conformité automatisés
 
 ### Innovation technique
+
 - RobotAPI unifié : interface abstraite simulation ↔ robot réel
 - Modules BBIA : IA cognitive (émotions, vision, comportements)
 - Bridge Zenoh/FastAPI : intégration distribution
 - Dashboard web : interface temps réel
 
 ### Qualité
+
 - Tests automatisés : 27 passent, 13 skippés
 - Outils qualité : Black, Ruff, MyPy, Bandit
 - CI/CD : GitHub Actions avec artefacts
 
-> Compatibilité Python et CI
+> **Compatibilité Python et CI**
 >
-> - Python requis: 3.11+
-> - Workflow: `.github/workflows/ci.yml`
-> - Installation locale:
-> ```bash
+> - **Python requis** : 3.11+
+> - **Workflow** : `.github/workflows/ci.yml`
+> - **Installation locale** :
+>   ```bash
 >   pyenv install 3.11.9 && pyenv local 3.11.9
 >   python -m pip install --upgrade pip
 >   pip install -e .
 >   ```
+
 - Documentation : complète et à jour
 
 ---
@@ -121,63 +136,68 @@ graph TB
 
 ```python
 class RobotAPI:
- """Interface abstraite unifiée pour simulation et robot réel."""
+    """Interface abstraite unifiée pour simulation et robot réel."""
 
- # Méthodes SDK officiel conformes
- def goto_target(self, head=None, antennas=None, duration=1.0) -> None
- def set_target(self, head=None, antennas=None) -> None
- def create_head_pose(self, x=0, y=0, z=0, roll=0, pitch=0, yaw=0) -> np.ndarray
- def play_audio(self, audio_data: bytes, volume: float = 0.5) -> None
- def look_at(self, x: float, y: float, z: float) -> None
- def set_emotion(self, emotion: str, intensity: float) -> None
+    # Méthodes SDK officiel conformes
+    def goto_target(self, head=None, antennas=None, duration=1.0) -> None
+    def set_target(self, head=None, antennas=None) -> None
+    def create_head_pose(self, x=0, y=0, z=0, roll=0, pitch=0, yaw=0) -> np.ndarray
+    def play_audio(self, audio_data: bytes, volume: float = 0.5) -> None
+    def look_at(self, x: float, y: float, z: float) -> None
+    def set_emotion(self, emotion: str, intensity: float) -> None
 ```
 
-Avantages :
-- même code pour simulation et robot réel
-- conformité SDK
-- tests automatisés de conformité
-- migration simulation → robot
+**Avantages :**
+
+- Même code pour simulation et robot réel
+- Conformité SDK
+- Tests automatisés de conformité
+- Migration simulation → robot
 
 ### 2. Modules BBIA (Bio-Inspired Artificial Intelligence)
 
 #### BBIAEmotions (`bbia_emotions.py`)
+
 ```python
 class BBIAEmotions:
- """Gestion des émotions robotiques."""
+    """Gestion des émotions robotiques."""
 
- def set_emotion(self, emotion: str, intensity: float) -> None
- def get_current_emotion(self) -> dict[str, Any]
- def animate_emotion(self, emotion: str, duration: float) -> None
+    def set_emotion(self, emotion: str, intensity: float) -> None
+    def get_current_emotion(self) -> dict[str, Any]
+    def animate_emotion(self, emotion: str, duration: float) -> None
 ```
 
 **Émotions supportées :** 12 émotions (neutral, happy, sad, angry, surprised, confused, determined, nostalgic, proud, curious, excited, fearful)
 
 #### BBIAVision (`bbia_vision.py`)
+
 ```python
 class BBIAVision:
- """Vision par ordinateur et reconnaissance d'objets."""
+    """Vision par ordinateur et reconnaissance d'objets."""
 
- def detect_objects(self, image: np.ndarray) -> list[dict]
- def track_objects(self, image: np.ndarray) -> list[dict]
- def recognize_faces(self, image: np.ndarray) -> list[dict]
+    def detect_objects(self, image: np.ndarray) -> list[dict]
+    def track_objects(self, image: np.ndarray) -> list[dict]
+    def recognize_faces(self, image: np.ndarray) -> list[dict]
 ```
 
 **Technologies :** YOLOv8n, MediaPipe, OpenCV
 
 #### BBIAVoice (`bbia_voice.py`)
+
 ```python
 class BBIAVoice:
- """Synthèse vocale et reconnaissance vocale."""
+    """Synthèse vocale et reconnaissance vocale."""
 
- def text_to_speech(self, text: str, voice: str = "default") -> bytes
- def speech_to_text(self, audio_data: bytes) -> str
- def process_voice_command(self, command: str) -> dict
+    def text_to_speech(self, text: str, voice: str = "default") -> bytes
+    def speech_to_text(self, audio_data: bytes) -> str
+    def process_voice_command(self, command: str) -> dict
 ```
 
 **Technologies :** Whisper STT, pyttsx3 TTS
 
 #### BBIABehavior (`bbia_behavior.py`)
 ```python
+
 class BBIABehaviorManager:
  """Gestionnaire de comportements complexes."""
 
@@ -185,19 +205,22 @@ class BBIABehaviorManager:
  def wake_up(self) -> None
  def goto_sleep(self) -> None
  def greeting(self) -> None
-```
+
+```text
 
 **Comportements :** wake_up, greeting, goto_sleep, nod, wave, dance, etc.
 
 #### BBIAAdaptiveBehavior (`bbia_adaptive_behavior.py`)
 ```python
+
 class BBIAAdaptiveBehavior:
  """Comportements adaptatifs basés sur le contexte."""
 
  def generate_behavior(self, context: str, emotion: str) -> dict
  def adapt_to_feedback(self, feedback: dict) -> None
  def learn_user_preferences(self, interaction: dict) -> None
-```
+
+```text
 
 **Innovation :** Apprentissage des préférences utilisateur, adaptation contextuelle
 
@@ -205,13 +228,15 @@ class BBIAAdaptiveBehavior:
 
 #### MuJoCoBackend (`backends/mujoco_backend.py`)
 ```python
+
 class MuJoCoBackend(RobotAPI):
  """Backend simulation MuJoCo."""
 
  def __init__(self):
  self.simulator = MuJoCoSimulator()
  self.physics_engine = PhysicsEngine()
-```
+
+```text
 
 Caractéristiques :
 - physique : gravité, collisions, dynamiques
@@ -221,13 +246,15 @@ Caractéristiques :
 
 #### ReachyMiniBackend (`backends/reachy_mini_backend.py`)
 ```python
+
 class ReachyMiniBackend(RobotAPI):
  """Backend robot Reachy Mini officiel."""
 
  def __init__(self):
  self.reachy_mini = ReachyMini()
  self.zenoh_client = ZenohClient()
-```
+
+```text
 
 Caractéristiques :
 - SDK officiel : conformité avec `reachy_mini`
@@ -239,13 +266,15 @@ Caractéristiques :
 **Fichier principal :** `src/bbia_sim/daemon/bridge.py`
 
 ```python
+
 class ZenohBridge:
  """Bridge entre FastAPI et Zenoh pour Reachy Mini."""
 
  async def start(self) -> bool
  async def send_command(self, command: RobotCommand) -> bool
  def get_current_state(self) -> RobotState
-```
+
+```text
 
 Fonctionnalités :
 - communication distribuée (Zenoh)
@@ -259,36 +288,45 @@ Fonctionnalités :
 
 ### Tests de conformité SDK
 ```python
+
 # tests/test_reachy_mini_complete_conformity.py
+
 class TestReachyMiniCompleteConformity:
  def test_core_methods_conformity(self)
  def test_sdk_official_methods_conformity(self)
  def test_joint_mapping_conformity(self)
  def test_emotion_api_conformity(self)
  def test_behavior_api_conformity(self)
-```
+
+```text
 
 Résultats : 16/16 tests passent
 
 ### Tests modules BBIA
 ```python
+
 # tests/test_bbia_phase2_modules.py
+
 class TestBBIAAdaptiveBehavior:
  def test_generate_behavior(self)
  def test_adapt_to_feedback(self)
  def test_user_preferences(self)
-```
+
+```text
 
 Résultats : 11/11 tests passent
 
 ### Tests dépendances SDK
 ```python
+
 # tests/test_sdk_dependencies.py
+
 class TestSDKDependencies:
  def test_reachy_mini_import(self)
  def test_zenoh_import(self)
  def test_motor_controller_import(self)
-```
+
+```text
 
 Résultats : 15/16 tests passent
 
@@ -320,6 +358,7 @@ Résultats : 15/16 tests passent
 
 ### Simulation → robot réel
 ```mermaid
+
 sequenceDiagram
  participant User as Utilisateur
  participant Dashboard as Dashboard Web
@@ -344,10 +383,12 @@ sequenceDiagram
  RobotAPI->>BBIA: Success
  BBIA->>Dashboard: État mis à jour
  Dashboard->>User: Confirmation
-```
+
+```text
 
 ### Bridge Zenoh/FastAPI
 ```mermaid
+
 sequenceDiagram
  participant Client as Client Web
  participant FastAPI as FastAPI Server
@@ -363,7 +404,8 @@ sequenceDiagram
  Zenoh->>Bridge: Publish State
  Bridge->>FastAPI: Current State
  FastAPI->>Client: JSON Response
-```
+
+```text
 
 ---
 
@@ -371,36 +413,48 @@ sequenceDiagram
 
 ### Environnement de développement
 ```bash
+
 # Installation
+
 pip install -e .
 
 # Dépendances optionnelles
+
 pip install -e ".[dev,test,docs]"
 
 # Tests
+
 pytest tests/ -v
 
 # Qualité code
+
 black src/ tests/
 ruff check src/ tests/
 mypy src/
 bandit -r src/
-```
+
+```text
 
 ### Environnement de production
 ```bash
+
 # Simulation
+
 python -m bbia_sim.dashboard_advanced
 
 # Robot réel
+
 python -m bbia_sim.daemon.bridge
 
 # API publique
+
 uvicorn src.bbia_sim.daemon.app.main:app --host 0.0.0.0 --port 8000
-```
+
+```text
 
 ### Docker (optionnel)
 ```dockerfile
+
 FROM python:3.11-slim
 
 WORKDIR /app
@@ -409,7 +463,8 @@ RUN pip install -e .
 
 EXPOSE 8000
 CMD ["uvicorn", "src.bbia_sim.daemon.app.main:app", "--host", "0.0.0.0", "--port", "8000"]
-```
+
+```text
 
 ---
 
@@ -428,7 +483,9 @@ CMD ["uvicorn", "src.bbia_sim.daemon.app.main:app", "--host", "0.0.0.0", "--port
 
 ### Exemples d’utilisation
 ```python
+
 # Exemple basique
+
 from bbia_sim.robot_factory import RobotFactory
 
 robot = RobotFactory.create_backend(backend_type="mujoco")
@@ -437,6 +494,7 @@ robot.set_emotion("happy", 0.8)
 robot.look_at(0.5, 0.0, 0.0)
 
 # Exemple avancé
+
 from bbia_sim.bbia_emotions import BBIAEmotions
 from bbia_sim.bbia_vision import BBIAVision
 
@@ -445,7 +503,8 @@ vision = BBIAVision()
 
 emotions.set_emotion("excited", 0.9)
 objects = vision.detect_objects(camera_image)
-```
+
+```text
 
 ---
 
@@ -471,6 +530,13 @@ objects = vision.detect_objects(camera_image)
 - Méthodes SDK critiques alignées
 - Benchmarks + bridge robot réel
 - Docs finales + publication v1.3.2
+
+---
+
+## 🎯 Navigation
+
+**Retour à** : [README Documentation](../README.md)  
+**Voir aussi** : [Architecture Détaillée](ARCHITECTURE_DETAILED.md) • [Guide Architecture](ARCHITECTURE.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)
 
 ---
 

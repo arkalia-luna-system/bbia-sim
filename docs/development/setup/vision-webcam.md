@@ -33,11 +33,13 @@
 ### 1. Support OpenCV VideoCapture ✅ **DÉJÀ IMPLÉMENTÉ**
 
 **Vérification code** :
+
 - ✅ `bbia_vision.py` (lignes 139-165) : Fallback OpenCV `cv2.VideoCapture()` implémenté
 - ✅ Priorité : `robot.media.camera` (SDK) → `cv2.VideoCapture()` (webcam USB) → simulation
 - ✅ Gestion d'erreurs avec fallback gracieux
 
 **Code actuel** :
+
 ```python
 # bbia_vision.py lignes 141-162
 if not self._camera_sdk_available and CV2_AVAILABLE and cv2:
@@ -53,11 +55,13 @@ if not self._camera_sdk_available and CV2_AVAILABLE and cv2:
 ### 2. Configuration device index/path ✅ **DÉJÀ IMPLÉMENTÉ**
 
 **Vérification code** :
+
 - ✅ Variable `BBIA_CAMERA_INDEX` supportée (défaut: `"0"`) - ligne 144
 - ✅ Variable `BBIA_CAMERA_DEVICE` supportée (chemin device) - ligne 145
 - ✅ Fallback automatique vers index 0 si index invalide - ligne 162
 
 **Usage** :
+
 ```bash
 # Utiliser première webcam USB (défaut)
 python scripts/test_webcam_simple.py
@@ -72,16 +76,19 @@ BBIA_CAMERA_DEVICE=/dev/video0 python scripts/test_webcam_simple.py
 ### 3. Scripts de test webcam ✅ **DÉJÀ CRÉÉS**
 
 **Scripts disponibles** :
+
 - ✅ `scripts/test_webcam_simple.py` - Preview simple webcam
 - ✅ `scripts/test_vision_webcam.py` - Vision complète avec YOLO + MediaPipe (lignes 100-130)
 
 ### 4. Permissions macOS
 
 **Vérification nécessaire** :
+
 - ✅ macOS demande automatiquement permission caméra au premier `cv2.VideoCapture()`
 - ⚠️ Vérifier que Terminal/Python a la permission dans Réglages Système
 
 **Documentation** :
+
 - Ajouter section "Permissions macOS" dans guide
 
 ---
@@ -93,23 +100,27 @@ BBIA_CAMERA_DEVICE=/dev/video0 python scripts/test_webcam_simple.py
 **Fichier** : `src/bbia_sim/bbia_vision.py` (lignes 139-165)
 
 **Implémenté** :
+
 - ✅ Attribut `_opencv_camera` ajouté dans `__init__()`
 - ✅ Initialisation `cv2.VideoCapture(device_index)` si pas de SDK camera
 - ✅ Méthode `_capture_image_from_camera()` utilise OpenCV en fallback
 
 **Variables d'environnement** :
+
 - ✅ `BBIA_CAMERA_INDEX` : index de la caméra (défaut `0`)
 - ✅ `BBIA_CAMERA_DEVICE` : chemin du device (optionnel, macOS/Linux)
 
 ### Étape 2 : Scripts de test ✅ **FAITS**
 
 **Scripts créés** :
+
 - ✅ `scripts/test_webcam_simple.py` : Preview simple (OpenCV)
 - ✅ `scripts/test_vision_webcam.py` : Vision complète (YOLO + MediaPipe)
 
 ### Étape 3 : Documentation ⏳ **À vérifier**
 
 **À mettre à jour** (si nécessaire) :
+
 - `docs/development/setup/environments.md` : Section webcam USB (à vérifier si présent)
 - `README.md` : Commandes test webcam (à vérifier si présent)
 
@@ -180,4 +191,3 @@ Tout est déjà implémenté ! Tu peux maintenant :
 ---
 
 **Dernière mise à jour** : Oct / Nov. 2025
-

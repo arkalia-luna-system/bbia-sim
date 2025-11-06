@@ -11,7 +11,7 @@ BBIA-SIM (Brain-Based Interactive Agent Simulation) est un moteur cognitif Pytho
 
 > Référence état global
 >
-> Voir `docs/reference/project-status.md` → section "État par axe" pour l’état actuel (Observabilité, Performance, Sécurité, CI/CD, etc.) et les axes d’amélioration.
+> Voir `docs/reference/project-status.md` → section "État par axe" pour l'état actuel (Observabilité, Performance, Sécurité, CI/CD, etc.) et les axes d'amélioration.
 
 ### Objectifs architecturaux
 
@@ -20,6 +20,17 @@ BBIA-SIM (Brain-Based Interactive Agent Simulation) est un moteur cognitif Pytho
 - **Modules BBIA modulaires** et extensibles
 - **Performance** avec métriques temps réel
 - **Qualité** (tests, CI/CD, documentation)
+
+---
+
+## 📋 Table des Matières
+
+1. [Architecture générale](#architecture-générale)
+2. [Composants principaux](#composants-principaux)
+3. [Modules BBIA](#modules-bbia)
+4. [Backends](#backends)
+5. [API et Interfaces](#api-et-interfaces)
+6. [Configuration et Déploiement](#configuration-et-déploiement)
 
 ---
 
@@ -85,6 +96,7 @@ graph TB
 **Fichier principal :** `src/bbia_sim/robot_api.py`
 
 ```python
+
 class RobotAPI:
  """Interface abstraite unifiée pour simulation et robot réel."""
 
@@ -99,7 +111,8 @@ class RobotAPI:
 
  def get_telemetry(self) -> dict[str, Any]:
  """Récupère les données de télémétrie."""
-```
+
+```text
 
 Avantages :
 - Code identique simulation ↔ robot réel
@@ -135,6 +148,7 @@ Avantages :
 
 #### **BBIA Emotions**
 ```python
+
 class BBIAEmotions:
  """Gestion des émotions avancées."""
 
@@ -143,7 +157,8 @@ class BBIAEmotions:
 
  def get_available_emotions(self) -> list[str]:
  """Retourne les émotions disponibles."""
-```
+
+```text
 
 **Émotions supportées :**
 - `happy`, `sad`, `angry`, `excited`
@@ -152,6 +167,7 @@ class BBIAEmotions:
 
 #### **BBIA Vision**
 ```python
+
 class BBIAVision:
  """Module de vision par ordinateur."""
 
@@ -160,7 +176,8 @@ class BBIAVision:
 
  def detect_faces(self) -> list[dict[str, Any]]:
  """Détecte les visages dans l'image."""
-```
+
+```text
 
 **Fonctionnalités :**
 - Détection d'objets (YOLOv8n)
@@ -170,6 +187,7 @@ class BBIAVision:
 
 #### **BBIA Voice**
 ```python
+
 class BBIAVoice:
  """Module de synthèse et reconnaissance vocale."""
 
@@ -178,7 +196,8 @@ class BBIAVoice:
 
  def listen(self) -> Optional[str]:
  """Reconnaissance vocale."""
-```
+
+```text
 
 **Technologies :**
 - **TTS :** pyttsx3 (synthèse vocale)
@@ -188,12 +207,14 @@ class BBIAVoice:
 
 #### **BBIA Behavior**
 ```python
+
 class BBIABehaviorManager:
  """Gestionnaire de comportements complexes."""
 
  def run_behavior(self, behavior_name: str, duration: float) -> bool:
  """Exécute un comportement."""
-```
+
+```text
 
 **Comportements disponibles :**
 - `greeting`, `exploration`, `interaction`
@@ -206,6 +227,7 @@ class BBIABehaviorManager:
 
 #### **MuJoCo Simulator**
 ```python
+
 class MuJoCoSimulator:
  """Simulateur MuJoCo pour le robot Reachy Mini."""
 
@@ -217,7 +239,8 @@ class MuJoCoSimulator:
 
  def get_joint_position(self, joint_name: str) -> float:
  """Récupère la position d'un joint."""
-```
+
+```text
 
 **Modèles :**
 - `reachy_mini_REAL_OFFICIAL.xml` : Modèle officiel
@@ -256,6 +279,7 @@ class MuJoCoSimulator:
 ### **1. Flux de Contrôle Standard**
 
 ```mermaid
+
 sequenceDiagram
  participant U as Utilisateur
  participant D as Dashboard
@@ -271,11 +295,13 @@ sequenceDiagram
  R->>B: Succès
  B->>D: Mise à jour statut
  D->>U: Feedback visuel
-```
+
+```text
 
 ### **2. Flux de Métriques Temps Réel**
 
 ```mermaid
+
 sequenceDiagram
  participant M as Métriques
  participant R as RobotAPI
@@ -288,11 +314,13 @@ sequenceDiagram
  M->>W: Diffuser métriques
  W->>D: Mise à jour graphiques
  end
-```
+
+```text
 
 ### **3. Flux de Tests Automatisés**
 
 ```mermaid
+
 sequenceDiagram
  participant T as Tests
  participant R as RobotAPI
@@ -304,7 +332,8 @@ sequenceDiagram
  B->>R: Résultats
  R->>T: Validation
  T->>A: Sauvegarder résultats
-```
+
+```text
 
 ---
 
@@ -313,6 +342,7 @@ sequenceDiagram
 ### **Structure des Tests**
 
 ```
+
 tests/
 ├── test_robot_api.py # Tests RobotAPI unifié
 ├── test_reachy_mini_conformity.py # Tests conformité SDK officiel
@@ -323,7 +353,8 @@ tests/
 │ ├── test_api_simu_roundtrip.py
 │ └── test_bbia_modules_e2e.py
 └── test_performance.py # Tests de performance
-```
+
+```text
 
 ### **Types de Tests**
 
@@ -351,7 +382,9 @@ tests/
 ### **CI/CD Pipeline**
 
 ```yaml
+
 # .github/workflows/ci.yml
+
 name: BBIA-SIM CI/CD
 on: [push, pull_request]
 
@@ -359,18 +392,23 @@ jobs:
  test:
  runs-on: ubuntu-latest
  steps:
+
       - uses: actions/checkout@v3
       - name: Setup Python
  uses: actions/setup-python@v4
  with:
  python-version: '3.10'
+
       - name: Install dependencies
  run: pip install -r requirements.txt
+
       - name: Run tests
  run: pytest tests/ --cov=src --cov-report=xml
+
       - name: Upload coverage
  uses: codecov/codecov-action@v3
-```
+
+```text
 
 ---
 
@@ -379,6 +417,7 @@ jobs:
 ### **Métriques Temps Réel**
 
 ```python
+
 class MetricsCollector:
  """Collecteur de métriques BBIA."""
 
@@ -398,7 +437,8 @@ class MetricsCollector:
  "memory_usage": psutil.virtual_memory().percent,
  "active_connections": len(self.websocket_connections)
  }
-```
+
+```text
 
 ### **Dashboard Métriques**
 
@@ -410,7 +450,9 @@ class MetricsCollector:
 ### **Logs et Traces**
 
 ```python
+
 # Configuration logging
+
 logging.basicConfig(
  level=logging.INFO,
  format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
@@ -419,7 +461,8 @@ logging.basicConfig(
  logging.StreamHandler()
  ]
 )
-```
+
+```text
 
 ---
 
@@ -428,6 +471,7 @@ logging.basicConfig(
 ### **Contraintes de Sécurité**
 
 ```python
+
 class SafetyManager:
  """Gestionnaire de sécurité BBIA."""
 
@@ -444,7 +488,8 @@ class SafetyManager:
  if abs(position) > self.safe_amplitude_limit:
  return False
  return True
-```
+
+```bash
 
 ### **Outils de Qualité**
 
@@ -457,7 +502,9 @@ class SafetyManager:
 ### **Configuration Qualité**
 
 ```toml
+
 # pyproject.toml
+
 [tool.black]
 line-length = 88
 target-version = ['py311']
@@ -469,7 +516,8 @@ line-length = 88
 [tool.mypy]
 python_version = "3.11"
 warn_return_any = false
-```
+
+```text
 
 ---
 
@@ -479,29 +527,40 @@ warn_return_any = false
 
 #### **Développement**
 ```bash
+
 # Dashboard avancé
+
 python scripts/bbia_advanced_dashboard_server.py --backend mujoco
 
 # Tests
+
 pytest tests/ -v --cov=src
 
 # Benchmarks
+
 python scripts/bbia_performance_benchmarks.py --benchmark all
-```
+
+```text
 
 #### **Production**
 ```bash
+
 # Robot réel
+
 python scripts/bbia_advanced_dashboard_server.py --backend reachy_mini
 
 # Monitoring
+
 python scripts/monitor_performance.py --daemon
-```
+
+```text
 
 ### **Configuration Production**
 
 ```python
+
 # config/production.py
+
 class ProductionConfig:
  """Configuration production."""
 
@@ -521,7 +580,8 @@ class ProductionConfig:
  # Logging
  LOG_LEVEL = "INFO"
  LOG_FILE = "log/bbia_production.log"
-```
+
+```text
 
 ---
 
@@ -531,16 +591,19 @@ class ProductionConfig:
 
 #### **Nouveaux Backends**
 ```python
+
 class CustomBackend(RobotAPI):
  """Backend personnalisé."""
 
  def get_joint_pos(self, joint_name: str) -> float:
  # Implémentation personnalisée
  pass
-```
+
+```text
 
 #### **Nouveaux Modules BBIA**
 ```python
+
 class CustomBBIAModule:
  """Module BBIA personnalisé."""
 
@@ -550,10 +613,12 @@ class CustomBBIAModule:
  def set_robot_api(self, robot_api: RobotAPI):
  """Injection de dépendance."""
  self.robot_api = robot_api
-```
+
+```text
 
 #### **Nouvelles Métriques**
 ```python
+
 class CustomMetricsCollector:
  """Collecteur de métriques personnalisé."""
 
@@ -562,7 +627,8 @@ class CustomMetricsCollector:
  return {
  "custom_metric": self.calculate_custom_metric()
  }
-```
+
+```text
 
 ### **Architecture Modulaire**
 
@@ -626,6 +692,11 @@ L'architecture BBIA-SIM est conçue pour être :
 Cette architecture permet à BBIA-SIM d'être une **référence technique** pour l'intégration Reachy Mini et l'IA cognitive robotique.
 
 ---
+
+## 🎯 Navigation
+
+**Retour à** : [README Documentation](../README.md)  
+**Voir aussi** : [Architecture Vue d'Ensemble](ARCHITECTURE_OVERVIEW.md) • [Guide Architecture](ARCHITECTURE.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)
 
 *Dernière mise à jour : Oct / Nov. 2025*
 *Version : 1.3.2 – Alignement et release stable*
