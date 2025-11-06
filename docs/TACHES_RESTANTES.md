@@ -181,7 +181,7 @@
 
 ### Priorité Moyenne
 2. **✅ Coverage réel vérifié** (Janvier 2025) :
-   - **Coverage total** : **66.18%** ✅ (amélioré depuis 64.98% - Nov 2025)
+   - **Coverage total** : **66.18%** ✅ (amélioré depuis 64.98% - oct 2025)
    - **24 modules < 70%** identifiés
    - **Priorité Haute** (9 modules < 30%) :
      - ✅ `daemon/app/__main__.py` : **87.50%** ✅ (corrigé - Janvier 2025)

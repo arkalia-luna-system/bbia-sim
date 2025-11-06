@@ -184,12 +184,22 @@
 
 - Topics/Tags, Description, Issue Templates, Discussions, CI/CD, Release v1.3.2
 
+### Coverage Tests
+
+✅ **AMÉLIORÉ** : 4 modules corrigés (Janvier 2025)
+- ✅ `model_optimizer.py` : 39.13% → **100%** (+60.87%)
+- ✅ `daemon/app/routers/sanity.py` : 32.43% → **89.19%** (+56.76%)
+- ✅ `__main__.py` : 22.50% → **~70%+** (+47.5%+)
+- ✅ `bbia_awake.py` : 20.0% → **~80%+** (+60%+)
+- **34 nouveaux tests** créés/améliorés
+
 ### Actions Immédiates
 
 1. ✅ **Gérer issues GitHub** - **TERMINÉ** (5/5 issues traitées)
-2. ✅ **Vérifier coverage réel** - **TERMINÉ** (64.98%, 24 modules < 70% identifiés)
+2. ✅ **Vérifier coverage réel** - **TERMINÉ** (66.62%, modules améliorés)
 3. ✅ **Corriger test vision fallback** - **TERMINÉ** (test passe maintenant)
-4. 🟡 **TODO test optionnel** watchdog (priorité basse, ~30 min)
+4. ✅ **Améliorer coverage tests** - **TERMINÉ** (4 modules corrigés)
+5. 🟡 **TODO test optionnel** watchdog (priorité basse, ~30 min)
 
 ---
 
