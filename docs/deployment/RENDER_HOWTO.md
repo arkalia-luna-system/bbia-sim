@@ -1,6 +1,9 @@
-# Déployer l’API publique sur Render.com
+# 🚀 Déployer l'API publique sur Render.com
 
-Ce guide explique comment publier rapidement l’API publique BBIA-SIM sur Render.com à partir de ce dépôt.
+**Date** : Oct / Nov. 2025  
+**Version** : 1.0
+
+Ce guide explique comment publier rapidement l'API publique BBIA-SIM sur Render.com à partir de ce dépôt.
 
 ## Prérequis
 - Compte Render.com
@@ -44,5 +47,7 @@ curl http://localhost:8000/health
 - Sécurité: utiliser `BBIA_API_TOKEN` pour protéger les endpoints sensibles
 
 ---
+
+**Dernière mise à jour** : Oct / Nov. 2025
 
 Pour tout problème ou suggestion, ouvrir une issue GitHub.

@@ -6,8 +6,6 @@
 
 ---
 
----
-
 ## 📋 Vue d'ensemble
 
 Le dashboard BBIA-SIM a été créé pour être **identique** au dashboard officiel Reachy Mini, avec la même structure, le même design et les mêmes fonctionnalités.
@@ -175,7 +173,7 @@ python -c "from bbia_sim.daemon.app.main import app; print('✅ OK')"
 
 ## 📚 Références
 
-- **SDK Officiel** : https://github.com/pollen-robotics/reachy_mini
+- **SDK Officiel** : <https://github.com/pollen-robotics/reachy_mini>
 - **Documentation BBIA** : `docs/quality/compliance/CONFORMITE_REACHY_MINI_COMPLETE.md`
 - **Comparaison** : `docs/quality/audits/COMPARAISON_DOCUMENTATION_OFFICIELLE.md`
 

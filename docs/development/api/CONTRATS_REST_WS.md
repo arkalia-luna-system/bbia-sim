@@ -124,10 +124,16 @@ flowchart LR
 ```
 
 ## Références
-- OpenAPI: `http://localhost:8000/openapi.json`
-- État par axe: `docs/reference/project-status.md` → API & SDK
- - Curl rapide:
+
+- **OpenAPI** : `http://localhost:8000/openapi.json`
+- **État par axe** : `docs/reference/project-status.md` → API & SDK
+
+### Curl rapide
 ```bash
 curl -s http://localhost:8000/health || true
 curl -s http://localhost:8000/openapi.json | head -n 20
 ```
+
+---
+
+**Dernière mise à jour** : Oct / Nov. 2025

@@ -11,8 +11,9 @@
 ---
 
 ## État actuel
-- GitHub Actions (`.github/workflows/ci.yml`), Python 3.11
-- Phases: lint (ruff/black/mypy), tests, e2e headless, artifacts, codecov
+
+- **GitHub Actions** : `.github/workflows/ci.yml`, Python 3.11
+- **Phases** : lint (ruff/black/mypy), tests, e2e headless, artifacts, codecov
 
 ### Architecture Pipeline CI/CD
 
@@ -72,19 +73,26 @@ sequenceDiagram
 ```
 
 ## Axes d'amélioration
-- Matrice Python: 3.11 / 3.12
-- Hooks pre-commit: ruff/black/mypy
+
+- Matrice Python : 3.11 / 3.12
+- Hooks pre-commit : ruff/black/mypy
 - Sharding/xdist tests si durée > 10 min
 - Semgrep/gitleaks (sécurité) en jobs non-bloquants au début
-- Perf baselines: exporter p50/p95 en JSONL et valider fourchette
+- Perf baselines : exporter p50/p95 en JSONL et valider fourchette
 
 ## Artifacts & Reporting
-- Coverage: `coverage.xml`, `htmlcov/`
-- Logs e2e: upload sur échec
+
+- **Coverage** : `coverage.xml`, `htmlcov/`
+- **Logs e2e** : upload sur échec
 
 ## Références
-- État par axe: `docs/reference/project-status.md` → CI/CD
- - Index: `docs/reference/INDEX_THEMATIQUE.md`
+
+- **État par axe** : `docs/reference/project-status.md` → CI/CD
+- **Index** : `docs/reference/INDEX_THEMATIQUE.md`
+
+---
+
+**Dernière mise à jour** : Oct / Nov. 2025
 
 ## Pré-commit (optionnel)
 ```bash
