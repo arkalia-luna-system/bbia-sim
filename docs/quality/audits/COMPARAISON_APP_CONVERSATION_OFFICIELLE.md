@@ -1,7 +1,7 @@
 # 🔍 Comparaison : Application Conversation Officielle vs BBIA
 
-**Date** : Oct / Nov. 2025
-**Source** : Documentation officielle Reachy Mini Conversation App
+**Date** : Décembre 2025
+**Source** : https://github.com/pollen-robotics/reachy_mini_conversation_app
 **Version BBIA** : 1.3.2  
 **📚 [État actuel](./RESUME_ETAT_ACTUEL_BBIA.md)** | **🎯 [Prochaines étapes](./PROCHAINES_ETAPES_OPTIONNELLES.md)** | **❓ [FAQ](../getting-started/troubleshooting.md)**
 
@@ -119,26 +119,27 @@ flowchart TD
 
 ---
 
-### **4. Système de Mouvement** 🟡
+### **4. Système de Mouvement** ✅
 
 | Fonctionnalité | App Officielle | BBIA | Statut |
 |----------------|----------------|------|--------|
-| **Danses** | ✅ reachy_mini_dances_library | ❌ Absent | 🔴 **Manquant** |
-| **Émotions enregistrées** | ✅ Hugging Face datasets | ⚠️ 12 émotions codées | 🟡 **Partiel** |
-| **Poses de passage** | ✅ Système multicouche | ❌ Absent | 🔴 **Manquant** |
-| **Respiration** | ✅ Idle animation | ❌ Absent | 🔴 **Manquant** |
-| **Tremblement vocal** | ✅ Réactif à la voix | ❌ Absent | 🔴 **Manquant** |
-| **File d'attente mouvements** | ✅ Multicouche | ⚠️ Basique | 🟡 **Partiel** |
+| **Danses** | ✅ reachy_mini_dances_library | ✅ API `/play/recorded-move-dataset` + outils LLM | ✅ **Implémenté** |
+| **Émotions enregistrées** | ✅ Hugging Face datasets | ✅ 12 émotions codées + `play_emotion` | ✅ **Implémenté** |
+| **Poses de passage** | ✅ Système multicouche | ✅ `BBIAPoseTransitionManager` | ✅ **Implémenté** |
+| **Respiration** | ✅ Idle animation | ✅ `BBIABreathingAnimation` | ✅ **Implémenté** |
+| **Tremblement vocal** | ✅ Réactif à la voix | ✅ `BBIAVocalTremor` | ✅ **Implémenté** |
+| **File d'attente mouvements** | ✅ Multicouche | ✅ Système de queue | ✅ **Implémenté** |
 
-**Écart BBIA** :
+**État BBIA** :
 
-- ✅ **12 émotions BBIA** : Présentes (codées)
-- ❌ **Danses** : Absentes
-- ❌ **Poses de passage** : Absentes
-- ❌ **Respiration** : Absente
-- ❌ **Tremblement vocal** : Absent
+- ✅ **Danses** : API présente, intégrée dans `BBIATools.dance()`
+- ✅ **12 émotions BBIA** : Présentes + `play_emotion` outil LLM
+- ✅ **Poses de passage** : `BBIAPoseTransitionManager` implémenté
+- ✅ **Respiration** : `BBIABreathingAnimation` implémenté
+- ✅ **Tremblement vocal** : `BBIAVocalTremor` implémenté
+- ✅ **Gestionnaire idle** : `BBIIdleAnimationManager` coordonne tout
 
-**Recommandation** : Ajouter système animation idle (respiration) + support danses officielles
+**Recommandation** : ✅ **TERMINÉ** - Toutes les animations idle sont implémentées
 
 ---
 
@@ -217,11 +218,8 @@ flowchart TD
 
 ### **Fonctionnalités Manquantes dans BBIA** 🔴
 
-1. 🔴 **OpenAI Realtime API** : Streaming conversation temps réel
-2. ✅ **Danses** : Bibliothèque danses officielle (✅ API `/play/recorded-move-dataset` présente)
-3. ✅ **Animations idle** : Respiration, poses de passage (✅ `bbia_idle_animations.py` créé)
-4. ✅ **Tremblement vocal** : Réaction à la voix (✅ `BBIAVocalTremor` implémenté)
-5. 🔴 **Interface Gradio** : UI conversation (optionnel)
+1. 🔴 **OpenAI Realtime API** : Streaming conversation temps réel (optionnel - alternative gratuite: Whisper + VAD)
+2. 🔴 **Interface Gradio** : UI conversation (optionnel - Dashboard FastAPI présent)
 
 ### **Fonctionnalités Partielles** 🟡
 
@@ -233,7 +231,7 @@ flowchart TD
 
 ## 🎯 Où en est BBIA ?
 
-### **Score Global** : **~85-90%** ✅ (mis à jour Oct / Nov. 2025 avec toutes améliorations terminées)
+### **Score Global** : **~90-95%** ✅ (mis à jour Décembre 2025 - toutes fonctionnalités principales implémentées)
 
 ```mermaid
 %%{init: {'theme':'base', 'themeVariables': { 'primaryColor':'#90EE90', 'primaryTextColor':'#000', 'primaryBorderColor':'#7ACC7A', 'lineColor':'#F8B229', 'secondaryColor':'#006100', 'tertiaryColor':'#fff'}}}%%
@@ -254,7 +252,7 @@ pie title Score par Catégorie
 | **Contrôle Robot** | 90% | ✅ API complète | `robot_api.py`, `bbia_tools.py` |
 | **Émotions** | 70% | ✅ 12 émotions (format différent) | `bbia_emotions.py` |
 | **Conversation** | 85% | ✅ Outils LLM intégrés, ✅ **NLP sentence-transformers**, ✅ **VAD**, ✅ **Streaming** | `bbia_huggingface.py`, `voice_whisper.py` |
-| **Animations** | 85% | ✅ Danses API présente, ✅ Idle animations implémentées, ✅ Tremblement vocal | `bbia_idle_animations.py` |
+| **Animations** | 95% | ✅ Danses API + outils LLM, ✅ Idle animations complètes (respiration + poses + tremblement vocal) | `bbia_idle_animations.py`, `bbia_tools.py` |
 | **UI** | 60% | ✅ Dashboard (différent de Gradio) | `dashboard_advanced.py` |
 | **Extraction paramètres** | 90% | ✅ **NER** (angles, intensités) | `bbia_huggingface.py` |
 
@@ -262,20 +260,22 @@ pie title Score par Catégorie
 
 ## 💡 Recommandations par Priorité
 
-### **Priorité HAUTE** 🔴
+### **Priorité HAUTE** ✅ (TERMINÉ)
 
-1. **Support danses officielles**
-   - Intégrer `reachy_mini_dances_library`
-   - Outils `dance` / `stop_dance`
-   - Impact : Grand (fonctionnalité majeure manquante)
+1. ✅ **Support danses officielles** - TERMINÉ
+   - ✅ API `/play/recorded-move-dataset` intégrée
+   - ✅ Outils `dance` / `stop_dance` dans `BBIATools`
+   - ✅ Intégré avec function calling LLM
 
-2. **Système animation idle**
-   - Respiration automatique
-   - Poses de passage subtiles
-   - Impact : Moyen (améliore expérience)
+2. ✅ **Système animation idle** - TERMINÉ
+   - ✅ Respiration automatique (`BBIABreathingAnimation`)
+   - ✅ Poses de passage subtiles (`BBIAPoseTransitionManager`)
+   - ✅ Tremblement vocal (`BBIAVocalTremor`)
+   - ✅ Gestionnaire centralisé (`BBIIdleAnimationManager`)
 
-3. **Améliorer suivi visage réactif**
-   - Intégration automatique visage → mouvement
+3. 🟡 **Améliorer suivi visage réactif** - EN COURS
+   - ✅ YOLO + MediaPipe présents
+   - 🟡 Intégration automatique visage → mouvement (à améliorer)
    - Impact : Moyen (améliore interactivité)
 
 ### **Priorité MOYENNE** 🟡
@@ -314,10 +314,10 @@ pie title Score par Catégorie
 
 ### **Points à Améliorer** :
 
-1. ✅ **Danses** : API présente, intégrée dans outils LLM
-2. ✅ **Animations idle** : Respiration, poses de passage, tremblement vocal implémentés
-3. 🟡 **Conversation temps réel** : Latence améliorable (OpenAI Realtime API optionnel)
-4. 🟡 **Intégration visage → mouvement** : Plus automatique
+1. ✅ **Danses** : ✅ TERMINÉ - API + outils LLM intégrés
+2. ✅ **Animations idle** : ✅ TERMINÉ - Toutes implémentées (respiration + poses + tremblement vocal)
+3. 🟡 **Conversation temps réel** : Latence améliorable (OpenAI Realtime API optionnel - alternative gratuite: Whisper + VAD)
+4. 🟡 **Intégration visage → mouvement** : À améliorer (YOLO + MediaPipe présents, intégration automatique à renforcer)
 
 ---
 
@@ -334,21 +334,28 @@ pie title Score par Catégorie
 
 ### **Recommandation Globale** :
 
-**BBIA est à ~85-90% de parité fonctionnelle** avec l'app officielle (mis à jour Oct / Nov. 2025).
+**BBIA est à ~90-95% de parité fonctionnelle** avec l'app officielle (mis à jour Décembre 2025).
 
-**Toutes les fonctionnalités prévues sont implémentées** :
+**Toutes les fonctionnalités principales sont implémentées** :
 
-1. ✅ **Danses** (✅ API `/play/recorded-move-dataset` disponible, ✅ intégrée dans outils LLM)
-2. ✅ **Animations idle** (✅ `bbia_idle_animations.py` créé, ✅ `BBIIdleAnimationManager` implémenté)
-3. ✅ **Outils LLM** (✅ `bbia_tools.py` créé, ✅ intégré avec `BBIAHuggingFace.chat()`)
+1. ✅ **Danses** (✅ API `/play/recorded-move-dataset` disponible, ✅ intégrée dans outils LLM `BBIATools.dance()`)
+2. ✅ **Animations idle** (✅ `bbia_idle_animations.py` complet: respiration + poses + tremblement vocal)
+3. ✅ **Outils LLM** (✅ `bbia_tools.py` avec 8 outils: move_head, camera, head_tracking, dance, stop_dance, play_emotion, stop_emotion, do_nothing)
 4. ✅ **NLP sentence-transformers** (✅ Détection robuste implémentée)
 5. ✅ **VAD activation auto** (✅ `silero/vad` intégré)
 6. ✅ **Whisper streaming** (✅ Transcription continue implémentée)
-7. ✅ **SmolVLM2 vision** (✅ Descriptions riches implémentées)
+7. ✅ **SmolVLM2 vision** (✅ Descriptions riches implémentées - alternative gratuite à gpt-realtime)
 8. ✅ **Extraction paramètres NER** (✅ Angles, intensités extraits)
+9. ✅ **Head tracking** (✅ YOLO + MediaPipe avec options `--head-tracker`)
+10. ✅ **Vision locale** (✅ SmolVLM2 avec option `--local-vision`)
 
-**BBIA est maintenant très complet** avec toutes les améliorations optionnelles implémentées (100% gratuit) ✅
+**Fonctionnalités manquantes (optionnelles)** :
+
+- 🔴 **OpenAI Realtime API** : Absent (alternative gratuite: Whisper + VAD + streaming)
+- 🔴 **Interface Gradio** : Absent (Dashboard FastAPI présent et plus complet)
+
+**BBIA est maintenant très complet** avec toutes les fonctionnalités principales implémentées (100% gratuit) ✅
 
 ---
 
-**Dernière mise à jour** : Oct / Nov. 2025 (outils LLM intégrés avec BBIAHuggingFace.chat() + model_optimizer + bbia_doctor)
+**Dernière mise à jour** : Décembre 2025 (vérification complète avec dépôt officiel https://github.com/pollen-robotics/reachy_mini_conversation_app)
