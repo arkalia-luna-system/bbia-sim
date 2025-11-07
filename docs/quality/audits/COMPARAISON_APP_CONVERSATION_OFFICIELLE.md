@@ -1,6 +1,6 @@
 # 🔍 Comparaison : Application Conversation Officielle vs BBIA
 
-**Date** : Décembre 2025
+**Date** : Oct / Nov. 2025
 **Source** : https://github.com/pollen-robotics/reachy_mini_conversation_app
 **Version BBIA** : 1.3.2  
 **📚 [État actuel](./RESUME_ETAT_ACTUEL_BBIA.md)** | **🎯 [Prochaines étapes](./PROCHAINES_ETAPES_OPTIONNELLES.md)** | **❓ [FAQ](../getting-started/troubleshooting.md)**
@@ -231,7 +231,7 @@ flowchart TD
 
 ## 🎯 Où en est BBIA ?
 
-### **Score Global** : **~90-95%** ✅ (mis à jour Décembre 2025 - toutes fonctionnalités principales implémentées)
+### **Score Global** : **~90-95%** ✅ (mis à jour Oct / Nov. 2025 - toutes fonctionnalités principales implémentées)
 
 ```mermaid
 %%{init: {'theme':'base', 'themeVariables': { 'primaryColor':'#90EE90', 'primaryTextColor':'#000', 'primaryBorderColor':'#7ACC7A', 'lineColor':'#F8B229', 'secondaryColor':'#006100', 'tertiaryColor':'#fff'}}}%%
@@ -334,7 +334,7 @@ pie title Score par Catégorie
 
 ### **Recommandation Globale** :
 
-**BBIA est à ~90-95% de parité fonctionnelle** avec l'app officielle (mis à jour Décembre 2025).
+**BBIA est à ~90-95% de parité fonctionnelle** avec l'app officielle (mis à jour Oct / Nov. 2025).
 
 **Toutes les fonctionnalités principales sont implémentées** :
 
@@ -358,4 +358,4 @@ pie title Score par Catégorie
 
 ---
 
-**Dernière mise à jour** : Décembre 2025 (vérification complète avec dépôt officiel https://github.com/pollen-robotics/reachy_mini_conversation_app)
+**Dernière mise à jour** : Oct / Nov. 2025 (vérification complète avec dépôt officiel https://github.com/pollen-robotics/reachy_mini_conversation_app)
