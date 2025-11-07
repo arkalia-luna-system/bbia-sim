@@ -1,7 +1,7 @@
 # Logo BBIA - Documentation
 
 > **Asset** : Logo vectoriel BBIA (dessin client avec Procreate)  
-> **Version** : 2.0 | **Date** : Oct / No2025025025025025 | **Statut** : ⏳ **En attente création client**
+> **Version** : 2.0 | **Date** : Décembre 2025 | **Statut** : 🚧 **En cours de création**
 
 ---
 
@@ -10,25 +10,31 @@
 | Propriété | Valeur |
 |-----------|--------|
 | **Version** | 2.0 |
-| **Date création** | En cours |
+| **Date création** | Décembre 2025 |
 | **Auteur** | Client (Procreate sur iPad Pro) |
-| **Statut** | ⏳ **En attente dessin client** |
+| **Statut** | 🚧 **En cours - Modèle 3D préparé** |
 | **Priorité** | 🔥 Haute - MVP Graphique |
 
 ---
 
 ## 🎯 Direction Actuelle
 
-**Client dessine le logo lui-même** avec Procreate sur iPad Pro.
+**Client dessine le logo lui-même** avec Procreate sur iPad Pro en utilisant un modèle 3D de référence du robot Reachy Mini.
 
 **Workflow** :
 
-1. Client dessine le logo exactement comme voulu (Procreate)
-2. Export PNG haute résolution (4096x4096px recommandé)
-3. Conversion automatique PNG → SVG (je m'en occupe)
-4. Génération automatique de toutes les versions (favicons, monochrome, PNG)
-5. Documentation complète créée
-6. Prêt à utiliser partout dans BBIA
+1. ✅ **Modèle 3D assemblé créé** (Décembre 2025)
+   - Scripts Blender pour assembler le robot
+   - Positions exactes depuis XML officiel
+   - Format USDZ compatible Procreate
+   - Voir `ASSEMBLAGE_ROBOT_3D.md` pour détails
+
+2. 🚧 Client dessine le logo avec le modèle 3D comme référence (Procreate)
+3. ⏳ Export PNG haute résolution (4096x4096px recommandé)
+4. ⏳ Conversion automatique PNG → SVG
+5. ⏳ Génération automatique de toutes les versions (favicons, monochrome, PNG)
+6. ⏳ Documentation complète créée
+7. ⏳ Prêt à utiliser partout dans BBIA
 
 ---
 
