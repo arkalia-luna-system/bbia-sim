@@ -73,7 +73,11 @@ class TroubleshootingChecker:
             "total": total_checks,
             "passed": passed_checks,
             "failed": total_checks - passed_checks,
-            "score": round((passed_checks / total_checks) * 100, 1) if total_checks > 0 else 0,
+            "score": (
+                round((passed_checks / total_checks) * 100, 1)
+                if total_checks > 0
+                else 0
+            ),
         }
 
         return self.results
@@ -97,7 +101,11 @@ class TroubleshootingChecker:
                     if is_valid
                     else f"Python {version_str} ⚠️ (3.10+ recommandé)"
                 ),
-                "fix": "Installer Python 3.10+ depuis https://www.python.org/" if not is_valid else None,
+                "fix": (
+                    "Installer Python 3.10+ depuis https://www.python.org/"
+                    if not is_valid
+                    else None
+                ),
             }
         except Exception as e:
             return {
@@ -129,7 +137,11 @@ class TroubleshootingChecker:
             except ImportError:
                 missing.append(name)
 
-        status = "ok" if not missing else "warning" if len(missing) < len(dependencies) else "error"
+        status = (
+            "ok"
+            if not missing
+            else "warning" if len(missing) < len(dependencies) else "error"
+        )
 
         return {
             "status": status,
@@ -140,11 +152,7 @@ class TroubleshootingChecker:
                 if not missing
                 else f"⚠️ Dépendances manquantes: {', '.join(missing)}"
             ),
-            "fix": (
-                f"pip install {' '.join(missing)}"
-                if missing
-                else None
-            ),
+            "fix": f"pip install {' '.join(missing)}" if missing else None,
         }
 
     def check_camera(self) -> dict[str, Any]:
@@ -464,15 +472,20 @@ class TroubleshootingChecker:
             for i in range(device_count):
                 try:
                     info = audio.get_device_info_by_index(i)
-                    if info.get("maxInputChannels") > 0 or info.get("maxOutputChannels") > 0:
-                        devices.append({
-                            "index": i,
-                            "name": info.get("name", "Unknown"),
-                            "channels": {
-                                "input": info.get("maxInputChannels", 0),
-                                "output": info.get("maxOutputChannels", 0),
-                            },
-                        })
+                    if (
+                        info.get("maxInputChannels") > 0
+                        or info.get("maxOutputChannels") > 0
+                    ):
+                        devices.append(
+                            {
+                                "index": i,
+                                "name": info.get("name", "Unknown"),
+                                "channels": {
+                                    "input": info.get("maxInputChannels", 0),
+                                    "output": info.get("maxOutputChannels", 0),
+                                },
+                            }
+                        )
                 except Exception:
                     pass
 
@@ -591,4 +604,3 @@ def get_documentation_links() -> dict[str, str]:
         Liens vers documentation
     """
     return _checker.get_documentation_links()
-
