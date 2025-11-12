@@ -47,7 +47,7 @@ python src/bbia_sim/dashboard_advanced.py
 
 ```
 
-Le dashboard sera accessible sur : **http://localhost:8080**
+Le dashboard sera accessible sur : <http://localhost:8080>
 
 ---
 
@@ -260,7 +260,7 @@ BBIA_LOG_LEVEL=INFO
 
 **Utilisation** :
 
-1. Ouvrir le dashboard : http://localhost:8080
+1. Ouvrir le dashboard : <http://localhost:8080>
 2. Descendre jusqu'au panneau "🔧 Troubleshooting"
 3. Cliquer sur "🔍 Vérifier Tout" pour un diagnostic complet
 4. Utiliser les boutons "Test" pour vérifier individuellement :
