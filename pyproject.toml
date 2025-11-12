@@ -213,6 +213,7 @@ extend-exclude = '''
   | lib/python.*/site-packages
 )/
 '''
+# Mode preview désactivé pour compatibilité CI/CD
 preview = false
 
 [tool.ruff]
