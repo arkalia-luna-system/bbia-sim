@@ -4,7 +4,7 @@
 [![Python](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://python.org)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![CI Status](https://github.com/arkalia-luna-system/bbia-sim/actions/workflows/ci.yml/badge.svg)](https://github.com/arkalia-luna-system/bbia-sim/actions/workflows/ci.yml)
-[![Tests](https://img.shields.io/badge/tests-1334-brightgreen.svg)](https://github.com/arkalia-luna-system/bbia-sim/actions)
+[![Tests](https://img.shields.io/badge/tests-1362-brightgreen.svg)](https://github.com/arkalia-luna-system/bbia-sim/actions)
 [![Code Quality](https://img.shields.io/badge/code%20quality-A%2B-brightgreen.svg)](https://github.com/arkalia-luna-system/bbia-sim)
 [![SDK Conformity](https://img.shields.io/badge/SDK%20conformity-100%25-brightgreen.svg)](https://github.com/pollen-robotics/reachy_mini)
 [![Documentation](https://img.shields.io/badge/docs-mkdocs-blue.svg)](docs/)
@@ -32,7 +32,7 @@ BBIA-SIM est un moteur cognitif Python avec **12 émotions robotiques** (6 émot
 
 - ✅ **Conforme au SDK officiel Pollen Robotics** (100% validé)
 - 🔄 **Backend unifié** : même code en simulation et sur robot réel
-- 🧪 **1334 tests automatisés** (unitaires, intégration, E2E)
+- 🧪 **1362 tests automatisés** (unitaires, intégration, E2E)
 - 📚 **150+ fichiers documentation** Markdown (guides, API, architecture)
 - ⚡ **Optimisations performance** : caches globaux (modèles IA réutilisés)
 - 🔒 **CI/CD professionnel** : Black, Ruff, MyPy, Bandit, pip-audit
@@ -792,7 +792,7 @@ pytest -q --disable-warnings \
 - ✅ **Conformité SDK officiel** : 100% validée (46 tests de conformité complète)
 - ✅ **Coverage global** : **~64%** (excellent)
 - ✅ **Coverage modules core** : ~50% (mesure pertinente)
-- ✅ **Tests totaux** : **1334 tests collectés** (pytest --collect-only)
+- ✅ **Tests totaux** : **1362 tests collectés** (1418 collectés, 56 deselected)
 - ✅ **Qualité code** : Black, Ruff, MyPy, Bandit ✅
 - ✅ **Tests** : Suite complète + SDK officiel
 

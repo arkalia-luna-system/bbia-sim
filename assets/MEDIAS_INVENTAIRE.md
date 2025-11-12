@@ -87,6 +87,13 @@
 - `robot_3d_final.png` (38K) - Vue 3D finale du robot
 - `robot_animation.gif` - Animation GIF du robot
 
+### 🤖 Textures Robot (Procreate)
+
+- `textures/robot_reachy_mini.png` (36K, 944x712px) - Robot Reachy Mini stylisé créé avec Procreate
+  - Fond transparent
+  - Style épuré et minimaliste
+  - Utilisable comme texture décorative dans MuJoCo
+
 ---
 
 ## 📋 Utilisation

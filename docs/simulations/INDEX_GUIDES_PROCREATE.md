@@ -106,6 +106,7 @@
 
 - ✅ Utiliser modèle 3D MuJoCo (recommandé)
 - ✅ Texture robot optionnelle (pour décor)
+  - **Fichier existant** : `assets/textures/robot_reachy_mini.png` (944x712px, créé avec Procreate)
 
 ---
 

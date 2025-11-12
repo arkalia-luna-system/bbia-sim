@@ -19,6 +19,7 @@
 - **10 nouvelles captures d'écran** (Oct / No2025025025025025) : Séquence de captures montrant le robot en mouvement
 - **5 captures d'écran** (Oct / No2025025025025025) : Captures de référence antérieures
 - **Images finales** : `robot_3d_final.png`, `robot_animation.gif`
+- **Texture robot Procreate** : `textures/robot_reachy_mini.png` (créé avec Procreate, 944x712px)
 - **Inventaire complet** : Voir [`MEDIAS_INVENTAIRE.md`](./MEDIAS_INVENTAIRE.md)
 
 ---

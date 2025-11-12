@@ -68,18 +68,19 @@
 **Étape 3 : Export**
 
 - PNG transparent
-- Placer dans `assets/textures/poster_robot.png`
+- Placer dans `assets/textures/robot_reachy_mini.png` (ou `poster_robot.png`)
 
 **Étape 4 : Intégration XML**
 
 ```xml
-<texture name="poster_robot" type="2d" file="../../../assets/textures/poster_robot.png"/>
-<material name="mat_poster" texture="poster_robot"/>
+<texture name="robot_poster" type="2d" file="../../../assets/textures/robot_reachy_mini.png"/>
+<material name="mat_robot_poster" texture="robot_poster"/>
 <body name="tableau_mur" pos="0 1.8 1.2">
-  <geom type="box" size="0.01 0.5 0.5" material="mat_poster"/>
+  <geom type="box" size="0.01 0.5 0.5" material="mat_robot_poster"/>
 </body>
-
 ```
+
+**Note** : Le fichier `robot_reachy_mini.png` existe déjà dans `assets/textures/` (créé avec Procreate, 944x712px).
 
 ---
 
@@ -161,8 +162,10 @@
 - [ ] Silhouette reconnaissable (corps ovoïde, tête rectangulaire, yeux, antennes)
 - [ ] Couleurs BBIA cohérentes
 - [ ] Export PNG transparent
-- [ ] Placé dans `assets/textures/poster_robot.png`
+- [ ] Placé dans `assets/textures/robot_reachy_mini.png` (ou `poster_robot.png`)
 - [ ] Intégré dans XML comme géométrie plane
+
+**Note** : ✅ Le fichier `robot_reachy_mini.png` existe déjà (944x712px, créé avec Procreate).
 
 ---
 
