@@ -115,7 +115,8 @@ pip install pyaudio
 ## 🎯 Navigation
 
 **Retour à** : [README Documentation](../README.md)  
-**Voir aussi** : 
+**Voir aussi** :
+
 - [Guide ReSpeaker](RESPEAKER_SETUP.md) - Configuration ReSpeaker 4 microphones
 - [Guide Débutant](../guides/GUIDE_DEBUTANT.md)
 - [Index Thématique](../reference/INDEX_THEMATIQUE.md)
