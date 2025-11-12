@@ -6,7 +6,6 @@ Détection automatique de problèmes et solutions interactives.
 import logging
 import os
 import socket
-import subprocess
 import sys
 from pathlib import Path
 from typing import Any
@@ -380,7 +379,7 @@ class TroubleshootingChecker:
             "message": (
                 f"✅ Permissions OK ({len(checks)}/{len(dirs_to_check)})"
                 if len(checks) == len(dirs_to_check)
-                else f"⚠️ Problèmes permissions détectés"
+                else "⚠️ Problèmes permissions détectés"
             ),
             "fix": (
                 "Vérifier permissions fichiers: chmod -R u+r ."
