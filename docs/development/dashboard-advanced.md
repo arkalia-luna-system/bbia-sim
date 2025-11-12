@@ -218,7 +218,7 @@ BBIA_LOG_LEVEL=INFO
 
 ## 🎨 Interface Web
 
-**Interface moderne** accessible sur `http://localhost:8080` :
+**Interface moderne** accessible sur <http://localhost:8080> :
 
 - **Dashboard principal** : Vue d'ensemble métriques
 - **Contrôle robot** : Panel commandes (emotions, mouvements)
@@ -280,15 +280,15 @@ BBIA_LOG_LEVEL=INFO
 
 ```bash
 # Vérification complète
-curl http://localhost:8080/api/troubleshooting/check
+curl <http://localhost:8080/api/troubleshooting/check>
 
 # Tests individuels
-curl -X POST http://localhost:8080/api/troubleshooting/test/camera
-curl -X POST http://localhost:8080/api/troubleshooting/test/audio
-curl -X POST http://localhost:8080/api/troubleshooting/test/network
+curl -X POST <http://localhost:8080/api/troubleshooting/test/camera>
+curl -X POST <http://localhost:8080/api/troubleshooting/test/audio>
+curl -X POST <http://localhost:8080/api/troubleshooting/test/network>
 
 # Documentation
-curl http://localhost:8080/api/troubleshooting/docs
+curl <http://localhost:8080/api/troubleshooting/docs>
 ```
 
 ### WebSocket ne se connecte pas
