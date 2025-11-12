@@ -9,14 +9,14 @@
 
 | # | Tâche | Statut | Détails |
 |---|-------|--------|---------|
-| 1 | Script all-in-one onboarding | ❌ **NON FAIT** | Aucun script `reachy-mini-sim-starter.sh` trouvé |
-| 2 | Panneau troubleshooting interactif | ❌ **NON FAIT** | Dashboard existe mais pas de panneau interactif |
+| 1 | Script all-in-one onboarding | ✅ **FAIT** | `scripts/reachy-mini-sim-starter.sh` créé et fonctionnel |
+| 2 | Panneau troubleshooting interactif | ✅ **FAIT** | Module `troubleshooting.py` + panneau UI dans dashboard |
 | 3 | Badges coverage automatisés | ✅ **FAIT** | Codecov configuré + badge présent |
 | 4 | Section "5 min pour tester" | ✅ **FAIT** | Présent dans README + GUIDE_DEBUTANT.md |
-| 5 | Objectiver métriques | ⚠️ **PARTIEL** | Métriques présentes mais liens manquants |
-| 6 | Guides ReSpeaker | ⚠️ **PARTIEL** | Mentionné mais pas de guide dédié |
+| 5 | Objectiver métriques | ✅ **FAIT** | Liens Codecov ajoutés, "95 modules" → 68, coverage harmonisé |
+| 6 | Guides ReSpeaker | ✅ **FAIT** | `docs/installation/RESPEAKER_SETUP.md` créé (guide complet) |
 | 7 | GIF/screenshots | ✅ **FAIT** | `robot_animation.gif` existe et référencé |
-| 8 | Topics GitHub | ❓ **NON VÉRIFIABLE** | Pas de fichier de config visible |
+| 8 | Topics GitHub | ❓ **NON VÉRIFIABLE** | Vérification manuelle requise (15 min) |
 
 ---
 
@@ -205,14 +205,15 @@
 
 | Tâche | Statut | Priorité | Temps estimé |
 |-------|--------|-----------|--------------|
-| [ ] Script all-in-one onboarding | ❌ Non fait | 🔴 Critique | 2h |
-| [ ] Panneau troubleshooting interactif | ❌ Non fait | 🔴 Critique | 3h |
-| [x] Badges coverage automatisés | ✅ Fait | - | - |
-| [x] Section "5 min pour tester" | ✅ Fait | - | - |
-| [ ] Objectiver métriques (liens + cohérence) | ⚠️ Partiel | 🟠 Haute | 1h |
-| [ ] Guide ReSpeaker dédié | ⚠️ Partiel | 🟠 Haute | 1-2h |
-| [x] GIF/screenshots | ✅ Fait | - | - |
+| [x] Script all-in-one onboarding | ✅ **FAIT** | - | - |
+| [x] Panneau troubleshooting interactif | ✅ **FAIT** | - | - |
+| [x] Badges coverage automatisés | ✅ **FAIT** | - | - |
+| [x] Section "5 min pour tester" | ✅ **FAIT** | - | - |
+| [x] Objectiver métriques (liens + cohérence) | ✅ **FAIT** | - | - |
+| [x] Guide ReSpeaker dédié | ✅ **FAIT** | - | - |
+| [x] GIF/screenshots | ✅ **FAIT** | - | - |
 | [ ] Topics GitHub (vérification manuelle) | ❓ Non vérifiable | 🟡 Moyenne | 15 min |
+| [ ] Screenshots dashboard (optionnel) | ⚠️ Optionnel | 🟡 Moyenne | 45 min |
 
 ---
 
