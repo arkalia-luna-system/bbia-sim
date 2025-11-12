@@ -312,7 +312,7 @@ sequenceDiagram
 | **Modèle officiel** | `reachy_mini_REAL_OFFICIAL.xml` | ✅ |
 | **Articulations** | 16 total (9 contrôlables) | ✅ |
 | **Intégration BBIA** | 12 émotions + IA avancée | ✅ |
-| **Coverage modules core** | ~50% | ✅ |
+| **Coverage modules core** | ~50% | ✅ [📊 Rapport](https://app.codecov.io/gh/arkalia-luna-system/bbia-sim) |
 | **API** | FastAPI + WebSocket | ✅ |
 
 </div>
@@ -812,9 +812,10 @@ pytest -q --disable-warnings \
 **📊 Qualité & Conformité :**
 
 - ✅ **Conformité SDK officiel** : 100% validée (46 tests de conformité complète)
-- ✅ **Coverage global** : **68.86%** (excellent) — [Rapport Codecov](https://app.codecov.io/gh/arkalia-luna-system/bbia-sim)
-- ✅ **Coverage modules core** : ~50% (mesure pertinente) — [Rapport HTML local](htmlcov/index.html)
-- ✅ **Tests totaux** : **1362 tests collectés** (1418 collectés, 56 deselected)
+- ✅ **Coverage global** : **68.86%** (excellent) — [📊 Rapport Codecov](https://app.codecov.io/gh/arkalia-luna-system/bbia-sim) | [📁 Rapport HTML local](htmlcov/index.html)
+- ✅ **Coverage modules core** : **~50%** (mesure pertinente) — [📊 Rapport Codecov](https://app.codecov.io/gh/arkalia-luna-system/bbia-sim) | [📁 Rapport HTML local](htmlcov/index.html)
+- ✅ **Tests totaux** : **1362 tests collectés** (1418 collectés, 56 deselected) — [📊 Détails CI](https://github.com/arkalia-luna-system/bbia-sim/actions)
+- ✅ **Fichiers Python** : **68 modules** dans `src/bbia_sim/` — [📁 Source](src/bbia_sim)
 - ✅ **Qualité code** : Black, Ruff, MyPy, Bandit ✅
 - ✅ **Tests** : Suite complète + SDK officiel
 
