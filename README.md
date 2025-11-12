@@ -33,7 +33,7 @@ BBIA-SIM est un moteur cognitif Python avec **12 émotions robotiques** (6 émot
 - ✅ **Conforme au SDK officiel Pollen Robotics** (100% validé)
 - 🔄 **Backend unifié** : même code en simulation et sur robot réel
 - 🧪 **1362 tests automatisés** (unitaires, intégration, E2E)
-- 📚 **150+ fichiers documentation** Markdown (guides, API, architecture)
+- 📚 **128 fichiers documentation** Markdown (guides, API, architecture)
 - ⚡ **Optimisations performance** : caches globaux (modèles IA réutilisés)
 - 🔒 **CI/CD professionnel** : Black, Ruff, MyPy, Bandit, pip-audit
 - 🌟 **Open-source** (MIT)
@@ -157,7 +157,7 @@ python -m bbia_sim --doctor
 <div align="center">
 
 [![CI Status](https://github.com/arkalia-luna-system/bbia-sim/actions/workflows/ci.yml/badge.svg)](https://github.com/arkalia-luna-system/bbia-sim/actions/workflows/ci.yml)
-[![Coverage](https://img.shields.io/badge/coverage-~50%25-green)](https://app.codecov.io/gh/arkalia-luna-system/bbia-sim)
+[![Coverage](https://img.shields.io/badge/coverage-68.86%25-brightgreen)](https://app.codecov.io/gh/arkalia-luna-system/bbia-sim)
 [![Typing: mypy](https://img.shields.io/badge/typing-mypy-4B8BBE)](https://github.com/arkalia-luna-system/bbia-sim)
 [![Lint: ruff](https://img.shields.io/badge/lint-ruff-46A2F1)](https://github.com/arkalia-luna-system/bbia-sim)
 [![Security: bandit](https://img.shields.io/badge/security-bandit-2E5E82)](https://github.com/arkalia-luna-system/bbia-sim)
@@ -790,13 +790,15 @@ pytest -q --disable-warnings \
 **📊 Qualité & Conformité :**
 
 - ✅ **Conformité SDK officiel** : 100% validée (46 tests de conformité complète)
-- ✅ **Coverage global** : **~64%** (excellent)
-- ✅ **Coverage modules core** : ~50% (mesure pertinente)
+- ✅ **Coverage global** : **68.86%** (excellent) — [Rapport Codecov](https://app.codecov.io/gh/arkalia-luna-system/bbia-sim)
+- ✅ **Coverage modules core** : ~50% (mesure pertinente) — [Rapport HTML local](htmlcov/index.html)
 - ✅ **Tests totaux** : **1362 tests collectés** (1418 collectés, 56 deselected)
 - ✅ **Qualité code** : Black, Ruff, MyPy, Bandit ✅
 - ✅ **Tests** : Suite complète + SDK officiel
 
-> **Pour plus de détails** : `python -m pytest --cov=src/bbia_sim --cov-report=html`
+> **Pour plus de détails** :
+> - 📊 [Rapport Codecov en ligne](https://app.codecov.io/gh/arkalia-luna-system/bbia-sim)
+> - 📁 Rapport HTML local : `python -m pytest --cov=src/bbia_sim --cov-report=html && open htmlcov/index.html`
 
 ### Commandes de Tests
 
