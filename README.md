@@ -48,6 +48,28 @@ Ce projet fournit une simulation fidèle du robot Reachy Mini dans MuJoCo, avec 
 
 ## 🚀 Quick Start
 
+### Option 1 : Script All-in-One (Recommandé) ⚡
+
+```bash
+# Installation automatique complète + dashboard
+./scripts/reachy-mini-sim-starter.sh
+
+# Le script fait tout automatiquement :
+# ✅ Vérifie prérequis (Python, pip, mjpython)
+# ✅ Crée/active l'environnement virtuel
+# ✅ Installe BBIA-SIM + dépendances
+# ✅ Vérifie l'installation (bbia_doctor)
+# ✅ Lance le dashboard sur http://localhost:8000
+```
+
+**Options disponibles** :
+
+- `--skip-install` : Saute l'installation (vérification uniquement)
+- `--skip-dashboard` : Ne lance pas le dashboard
+- `--help` : Affiche l'aide complète
+
+### Option 2 : Installation Manuelle
+
 ```bash
 # Installation (mode dev recommandé)
 pip install -e .[dev]

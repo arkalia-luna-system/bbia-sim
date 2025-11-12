@@ -36,13 +36,17 @@ graph LR
 
 ```mermaid
 flowchart TD
-    START[🚀 Installation] --> INSTALL{pip install -e .}
-
-    INSTALL --> CHOICE{Méthode d'utilisation?}
-
-    CHOICE -->|Web| DASH[🌐 Dashboard<br/>python dashboard_advanced.py]
-    CHOICE -->|CLI| SCRIPT[📝 Script Python<br/>RobotFactory]
-    CHOICE -->|3D| MUJOCO[🎮 MuJoCo Viewer<br/>mjpython examples/...]
+    START[🚀 Démarrage] --> CHOICE{Quelle méthode?}
+    
+    CHOICE -->|⚡ Automatique| AUTO[Script All-in-One<br/>./scripts/reachy-mini-sim-starter.sh]
+    CHOICE -->|🔧 Manuelle| MANUAL[Installation manuelle<br/>pip install -e .]
+    
+    AUTO --> DASH_AUTO[🌐 Dashboard auto<br/>http://localhost:8000]
+    MANUAL --> CHOICE2{Méthode d'utilisation?}
+    
+    CHOICE2 -->|Web| DASH[🌐 Dashboard<br/>python dashboard_advanced.py]
+    CHOICE2 -->|CLI| SCRIPT[📝 Script Python<br/>RobotFactory]
+    CHOICE2 -->|3D| MUJOCO[🎮 MuJoCo Viewer<br/>mjpython examples/...]
 
     DASH --> CHAT[💬 Chat BBIA<br/>Interface Web]
     SCRIPT --> EMOTION[😊 Émotions<br/>set_emotion]
@@ -62,7 +66,34 @@ flowchart TD
 
 ### 1. 📦 Installation
 
-> **⚡ Installation rapide en 2 minutes**
+#### Option A : Script All-in-One (Recommandé) ⚡
+
+> **🚀 Installation automatique complète en une commande**
+
+```bash
+# Cloner le projet
+git clone https://github.com/arkalia-luna-system/bbia-sim.git
+cd bbia-sim
+
+# Lancer le script all-in-one (fait tout automatiquement)
+./scripts/reachy-mini-sim-starter.sh
+
+# Le script :
+# ✅ Vérifie Python 3, pip, mjpython (macOS)
+# ✅ Crée/active l'environnement virtuel
+# ✅ Installe BBIA-SIM + dépendances
+# ✅ Vérifie l'installation (bbia_doctor)
+# ✅ Lance le dashboard sur http://localhost:8000
+```
+
+**Options disponibles** :
+- `--skip-install` : Vérification uniquement (sans installation)
+- `--skip-dashboard` : Installation sans lancer le dashboard
+- `--help` : Aide complète
+
+#### Option B : Installation Manuelle
+
+> **⚡ Installation manuelle en 2 minutes**
 
 ```bash
 # Cloner le projet
