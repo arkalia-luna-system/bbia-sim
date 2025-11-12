@@ -18,6 +18,7 @@ Le `dashboard_advanced.py` est un dashboard amélioré qui offre :
 - ✅ **Métriques audio** (latence, buffer, underruns)
 - ✅ **Contrôle robot** (emotions, mouvements)
 - ✅ **Chat interactif** avec IA
+- ✅ **Panneau troubleshooting interactif** (détection automatique + tests)
 - ✅ **Interface Web** moderne avec FastAPI
 
 ---
@@ -253,13 +254,51 @@ BBIA_LOG_LEVEL=INFO
 
 ## 🐛 Dépannage
 
+### Panneau Troubleshooting Interactif
+
+**Nouveau** : Le dashboard inclut maintenant un panneau troubleshooting interactif !
+
+**Utilisation** :
+
+1. Ouvrir le dashboard : http://localhost:8080
+2. Descendre jusqu'au panneau "🔧 Troubleshooting"
+3. Cliquer sur "🔍 Vérifier Tout" pour un diagnostic complet
+4. Utiliser les boutons "Test" pour vérifier individuellement :
+   - 📷 Test Caméra
+   - 🔊 Test Audio
+   - 🌐 Test Réseau
+
+**Fonctionnalités** :
+
+- ✅ Détection automatique de problèmes (Python, dépendances, caméra, audio, réseau, MuJoCo, ports, permissions)
+- ✅ Score global de santé système
+- ✅ Solutions suggérées pour chaque problème
+- ✅ Liens automatiques vers documentation
+- ✅ Tests interactifs par composant
+
+**API Endpoints** :
+
+```bash
+# Vérification complète
+curl http://localhost:8080/api/troubleshooting/check
+
+# Tests individuels
+curl -X POST http://localhost:8080/api/troubleshooting/test/camera
+curl -X POST http://localhost:8080/api/troubleshooting/test/audio
+curl -X POST http://localhost:8080/api/troubleshooting/test/network
+
+# Documentation
+curl http://localhost:8080/api/troubleshooting/docs
+```
+
 ### WebSocket ne se connecte pas
 
 **Vérifier** :
 
-1. Port 8080 disponible
-2. Firewall ne bloque pas
-3. Logs serveur pour erreurs
+1. Utiliser le panneau troubleshooting (voir ci-dessus)
+2. Port 8080 disponible
+3. Firewall ne bloque pas
+4. Logs serveur pour erreurs
 
 ```bash
 # Vérifier port
@@ -274,9 +313,10 @@ python -m bbia_sim.dashboard_advanced
 
 **Vérifier** :
 
-1. Robot connecté (`backend.connect()`)
-2. WebSocket connecté
-3. Métriques activées dans code
+1. Utiliser le panneau troubleshooting pour diagnostic
+2. Robot connecté (`backend.connect()`)
+3. WebSocket connecté
+4. Métriques activées dans code
 
 ### Chat IA ne répond pas
 

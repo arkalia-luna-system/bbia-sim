@@ -1175,5 +1175,94 @@ class TestDashboardAdvanced:
             pytest.skip(f"Dashboard advanced non disponible: {e}")
 
 
+class TestTroubleshooting:
+    """Tests pour le module troubleshooting."""
+
+    def test_troubleshooting_checker_initialization(self):
+        """Test initialisation TroubleshootingChecker."""
+        try:
+            from bbia_sim.troubleshooting import TroubleshootingChecker
+
+            checker = TroubleshootingChecker()
+            assert checker.project_root.exists()
+            assert isinstance(checker.results, dict)
+        except ImportError:
+            pytest.skip("Module troubleshooting non disponible")
+
+    def test_check_python(self):
+        """Test vérification Python."""
+        try:
+            from bbia_sim.troubleshooting import TroubleshootingChecker
+
+            checker = TroubleshootingChecker()
+            result = checker.check_python()
+
+            assert isinstance(result, dict)
+            assert "status" in result
+            assert "version" in result
+            assert "message" in result
+            assert result["status"] in ["ok", "warning", "error"]
+        except ImportError:
+            pytest.skip("Module troubleshooting non disponible")
+
+    def test_check_dependencies(self):
+        """Test vérification dépendances."""
+        try:
+            from bbia_sim.troubleshooting import TroubleshootingChecker
+
+            checker = TroubleshootingChecker()
+            result = checker.check_dependencies()
+
+            assert isinstance(result, dict)
+            assert "status" in result
+            assert "available" in result
+            assert "missing" in result
+            assert isinstance(result["available"], list)
+            assert isinstance(result["missing"], list)
+        except ImportError:
+            pytest.skip("Module troubleshooting non disponible")
+
+    def test_check_all(self):
+        """Test exécution tous les checks."""
+        try:
+            from bbia_sim.troubleshooting import TroubleshootingChecker
+
+            checker = TroubleshootingChecker()
+            results = checker.check_all()
+
+            assert isinstance(results, dict)
+            assert "summary" in results
+            assert "python" in results
+            assert "dependencies" in results
+            assert "camera" in results
+            assert "audio" in results
+            assert "network" in results
+            assert "mujoco" in results
+            assert "ports" in results
+            assert "permissions" in results
+
+            # Vérifier summary
+            summary = results["summary"]
+            assert "total" in summary
+            assert "passed" in summary
+            assert "failed" in summary
+            assert "score" in summary
+        except ImportError:
+            pytest.skip("Module troubleshooting non disponible")
+
+    def test_get_documentation_links(self):
+        """Test récupération liens documentation."""
+        try:
+            from bbia_sim.troubleshooting import get_documentation_links
+
+            links = get_documentation_links()
+
+            assert isinstance(links, dict)
+            assert "faq" in links
+            assert "guide_avance" in links
+        except ImportError:
+            pytest.skip("Module troubleshooting non disponible")
+
+
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])

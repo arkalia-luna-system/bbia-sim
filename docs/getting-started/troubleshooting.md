@@ -19,6 +19,7 @@
 
 | Catégorie | Questions | ⏱️ Temps |
 |:---------:|:---------:|:--------:|
+| [🔧 Troubleshooting Interactif](#-troubleshooting-interactif-dashboard) | Panneau dashboard | 1 min |
 | [🔧 Installation](#-installation) | Dépendances, setup | 2 min |
 | [🎮 MuJoCo](#-mujoco) | Simulation 3D | 3 min |
 | [🔊 Audio](#-portaudioaudio) | PortAudio, TTS/STT | 5 min |
@@ -31,15 +32,78 @@
 
 ---
 
+## 🔧 Troubleshooting Interactif (Dashboard)
+
+> **⚡ NOUVEAU** : Panneau troubleshooting interactif dans le dashboard !
+
+### Utilisation Rapide
+
+1. **Lancer le dashboard** :
+   ```bash
+   python -m bbia_sim.dashboard_advanced --port 8080
+   ```
+
+2. **Ouvrir dans le navigateur** : http://localhost:8080
+
+3. **Accéder au panneau Troubleshooting** :
+   - Descendre jusqu'au panneau "🔧 Troubleshooting"
+   - Cliquer sur "🔍 Vérifier Tout" pour un diagnostic complet
+
+### Fonctionnalités
+
+- ✅ **Vérification automatique** : Python, dépendances, caméra, audio, réseau, MuJoCo, ports, permissions
+- ✅ **Tests interactifs** : Boutons "Test" pour vérifier individuellement chaque composant
+- ✅ **Solutions suggérées** : Chaque problème affiche une solution avec commandes
+- ✅ **Score global** : Pourcentage de santé système (ex: 87.5%)
+- ✅ **Liens documentation** : Accès direct aux guides de dépannage
+
+### Tests Disponibles
+
+- **📷 Test Caméra** : Vérifie disponibilité et fonctionnement caméra
+- **🔊 Test Audio** : Vérifie périphériques audio et PyAudio
+- **🌐 Test Réseau** : Vérifie connectivité internet et ports
+
+### Exemple de Résultat
+
+```
+📊 Résumé
+Score: 87.5% (7/8 checks OK)
+
+🐍 Python
+✅ Python 3.11.9 ✅
+
+📦 Dependencies
+✅ Toutes dépendances installées (4/4)
+
+📷 Camera
+✅ Caméra disponible (opencv)
+
+🔊 Audio
+⚠️ Audio non disponible
+💡 Fix: macOS: brew install portaudio
+```
+
+---
+
+---
+
 ## 🔄 Flux de Dépannage Rapide
 
 ```mermaid
 flowchart TD
-    START{Problème rencontré?} --> INSTALL[Installation]
+    START{Problème rencontré?} --> DASH[Dashboard Troubleshooting]
+    START --> INSTALL[Installation]
     START --> MUJOCO[MuJoCo]
     START --> AUDIO[Audio]
     START --> MODELS[Modèles IA]
     START --> PERF[Performance]
+    
+    DASH --> DASH_CHECK[Ouvrir http://localhost:8080<br/>Panneau Troubleshooting]
+    DASH_CHECK --> DASH_TEST[Cliquer "Vérifier Tout"]
+    DASH_TEST --> DASH_OK{OK?}
+    DASH_OK -->|Oui| END_DASH[✅ Résolu]
+    DASH_OK -->|Non| DASH_FIX[Suivre solutions suggérées]
+    DASH_FIX --> END_DASH
     
     INSTALL --> CHECK[python scripts/bbia_doctor.py]
     CHECK --> INSTALL_OK{OK?}
