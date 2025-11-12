@@ -213,7 +213,7 @@ extend-exclude = '''
   | lib/python.*/site-packages
 )/
 '''
-preview = true
+preview = false
 
 [tool.ruff]
 target-version = "py311"
