@@ -34,6 +34,13 @@ from bbia_sim.bbia_behavior import BBIABehaviorManager
 from bbia_sim.bbia_emotions import BBIAEmotions
 from bbia_sim.bbia_vision import BBIAVision
 from bbia_sim.robot_factory import RobotFactory
+from bbia_sim.troubleshooting import (
+    check_all,
+    get_documentation_links,
+    test_audio,
+    test_camera,
+    test_network_ping,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -572,6 +579,96 @@ ADVANCED_DASHBOARD_HTML = """
             opacity: 0.8;
         }
 
+        /* Styles Troubleshooting */
+        .troubleshooting-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .troubleshooting-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .troubleshooting-results {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-size: 0.9em;
+        }
+
+        .troubleshooting-placeholder {
+            text-align: center;
+            opacity: 0.6;
+            font-style: italic;
+        }
+
+        .troubleshooting-item {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .troubleshooting-item.ok {
+            border-left: 3px solid #4CAF50;
+        }
+
+        .troubleshooting-item.warning {
+            border-left: 3px solid #FF9800;
+        }
+
+        .troubleshooting-item.error {
+            border-left: 3px solid #F44336;
+        }
+
+        .troubleshooting-item h4 {
+            margin: 0 0 5px 0;
+            font-size: 1em;
+        }
+
+        .troubleshooting-item p {
+            margin: 5px 0;
+            font-size: 0.9em;
+        }
+
+        .troubleshooting-fix {
+            margin-top: 5px;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+        }
+
+        .troubleshooting-docs {
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .troubleshooting-docs h4 {
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        .troubleshooting-docs a {
+            color: #87CEEB;
+            text-decoration: none;
+            display: block;
+            padding: 5px 0;
+        }
+
+        .troubleshooting-docs a:hover {
+            text-decoration: underline;
+        }
+
         @media (max-width: 1200px) {
             .main-container {
                 grid-template-columns: 1fr;
@@ -777,6 +874,26 @@ ADVANCED_DASHBOARD_HTML = """
                     <input type="text" id="chat-input" placeholder="Tapez votre message..."
                            onkeypress="if(event.key==='Enter') sendChatMessage()">
                     <button class="control-button" onclick="sendChatMessage()">Envoyer</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Panel Troubleshooting -->
+        <div class="panel">
+            <h3>🔧 Troubleshooting</h3>
+            <div class="troubleshooting-panel">
+                <div class="troubleshooting-actions">
+                    <button class="control-button" onclick="runAllChecks()">🔍 Vérifier Tout</button>
+                    <button class="control-button" onclick="testCamera()">📷 Test Caméra</button>
+                    <button class="control-button" onclick="testAudio()">🔊 Test Audio</button>
+                    <button class="control-button" onclick="testNetwork()">🌐 Test Réseau</button>
+                </div>
+                <div class="troubleshooting-results" id="troubleshooting-results">
+                    <p class="troubleshooting-placeholder">Cliquez sur "Vérifier Tout" pour commencer</p>
+                </div>
+                <div class="troubleshooting-docs" id="troubleshooting-docs" style="display: none;">
+                    <h4>📚 Documentation</h4>
+                    <div id="troubleshooting-docs-links"></div>
                 </div>
             </div>
         </div>
@@ -1144,6 +1261,181 @@ ADVANCED_DASHBOARD_HTML = """
                 container.removeChild(container.firstChild);
             }
         }
+
+        // Fonctions Troubleshooting
+        async function runAllChecks() {
+            const resultsDiv = document.getElementById('troubleshooting-results');
+            resultsDiv.innerHTML = '<p>🔍 Vérification en cours...</p>';
+
+            try {
+                const response = await fetch('/api/troubleshooting/check');
+                const data = await response.json();
+
+                if (data.success) {
+                    displayTroubleshootingResults(data.results);
+                    loadDocumentationLinks();
+                } else {
+                    resultsDiv.innerHTML = `<p class="troubleshooting-item error">❌ Erreur: ${data.error || 'Erreur inconnue'}</p>`;
+                }
+            } catch (error) {
+                resultsDiv.innerHTML = `<p class="troubleshooting-item error">❌ Erreur réseau: ${error.message}</p>`;
+            }
+        }
+
+        async function testCamera() {
+            const resultsDiv = document.getElementById('troubleshooting-results');
+            resultsDiv.innerHTML = '<p>📷 Test caméra en cours...</p>';
+
+            try {
+                const response = await fetch('/api/troubleshooting/test/camera', { method: 'POST' });
+                const data = await response.json();
+
+                if (data.success) {
+                    const result = data.result;
+                    const statusClass = result.status === 'ok' ? 'ok' : result.status === 'warning' ? 'warning' : 'error';
+                    let html = `<div class="troubleshooting-item ${statusClass}">`;
+                    html += `<h4>📷 Caméra</h4>`;
+                    html += `<p>${result.message}</p>`;
+                    if (result.fix) {
+                        html += `<div class="troubleshooting-fix">💡 Fix: ${result.fix}</div>`;
+                    }
+                    if (result.frame_size) {
+                        html += `<p>Taille: ${result.frame_size}</p>`;
+                    }
+                    html += `</div>`;
+                    resultsDiv.innerHTML = html;
+                } else {
+                    resultsDiv.innerHTML = `<p class="troubleshooting-item error">❌ Erreur: ${data.error || 'Erreur inconnue'}</p>`;
+                }
+            } catch (error) {
+                resultsDiv.innerHTML = `<p class="troubleshooting-item error">❌ Erreur réseau: ${error.message}</p>`;
+            }
+        }
+
+        async function testAudio() {
+            const resultsDiv = document.getElementById('troubleshooting-results');
+            resultsDiv.innerHTML = '<p>🔊 Test audio en cours...</p>';
+
+            try {
+                const response = await fetch('/api/troubleshooting/test/audio', { method: 'POST' });
+                const data = await response.json();
+
+                if (data.success) {
+                    const result = data.result;
+                    const statusClass = result.status === 'ok' ? 'ok' : result.status === 'warning' ? 'warning' : 'error';
+                    let html = `<div class="troubleshooting-item ${statusClass}">`;
+                    html += `<h4>🔊 Audio</h4>`;
+                    html += `<p>${result.message}</p>`;
+                    if (result.fix) {
+                        html += `<div class="troubleshooting-fix">💡 Fix: ${result.fix}</div>`;
+                    }
+                    if (result.devices && result.devices.length > 0) {
+                        html += `<p>Devices disponibles: ${result.devices.length}</p>`;
+                    }
+                    html += `</div>`;
+                    resultsDiv.innerHTML = html;
+                } else {
+                    resultsDiv.innerHTML = `<p class="troubleshooting-item error">❌ Erreur: ${data.error || 'Erreur inconnue'}</p>`;
+                }
+            } catch (error) {
+                resultsDiv.innerHTML = `<p class="troubleshooting-item error">❌ Erreur réseau: ${error.message}</p>`;
+            }
+        }
+
+        async function testNetwork() {
+            const resultsDiv = document.getElementById('troubleshooting-results');
+            resultsDiv.innerHTML = '<p>🌐 Test réseau en cours...</p>';
+
+            try {
+                const response = await fetch('/api/troubleshooting/test/network?host=8.8.8.8', { method: 'POST' });
+                const data = await response.json();
+
+                if (data.success) {
+                    const result = data.result;
+                    const statusClass = result.status === 'ok' ? 'ok' : 'error';
+                    let html = `<div class="troubleshooting-item ${statusClass}">`;
+                    html += `<h4>🌐 Réseau</h4>`;
+                    html += `<p>${result.message}</p>`;
+                    if (result.fix) {
+                        html += `<div class="troubleshooting-fix">💡 Fix: ${result.fix}</div>`;
+                    }
+                    html += `</div>`;
+                    resultsDiv.innerHTML = html;
+                } else {
+                    resultsDiv.innerHTML = `<p class="troubleshooting-item error">❌ Erreur: ${data.error || 'Erreur inconnue'}</p>`;
+                }
+            } catch (error) {
+                resultsDiv.innerHTML = `<p class="troubleshooting-item error">❌ Erreur réseau: ${error.message}</p>`;
+            }
+        }
+
+        function displayTroubleshootingResults(results) {
+            const resultsDiv = document.getElementById('troubleshooting-results');
+            let html = '';
+
+            // Résumé
+            if (results.summary) {
+                const summary = results.summary;
+                html += `<div class="troubleshooting-item ${summary.score >= 80 ? 'ok' : summary.score >= 50 ? 'warning' : 'error'}">`;
+                html += `<h4>📊 Résumé</h4>`;
+                html += `<p>Score: ${summary.score}% (${summary.passed}/${summary.total} checks OK)</p>`;
+                html += `</div>`;
+            }
+
+            // Checks individuels
+            const checks = ['python', 'dependencies', 'camera', 'audio', 'network', 'mujoco', 'ports', 'permissions'];
+            for (const checkName of checks) {
+                if (results[checkName]) {
+                    const check = results[checkName];
+                    const statusClass = check.status === 'ok' ? 'ok' : check.status === 'warning' ? 'warning' : 'error';
+                    html += `<div class="troubleshooting-item ${statusClass}">`;
+                    html += `<h4>${getCheckIcon(checkName)} ${checkName.charAt(0).toUpperCase() + checkName.slice(1)}</h4>`;
+                    html += `<p>${check.message || check.status}</p>`;
+                    if (check.fix) {
+                        html += `<div class="troubleshooting-fix">💡 Fix: ${check.fix}</div>`;
+                    }
+                    html += `</div>`;
+                }
+            }
+
+            resultsDiv.innerHTML = html;
+        }
+
+        function getCheckIcon(checkName) {
+            const icons = {
+                'python': '🐍',
+                'dependencies': '📦',
+                'camera': '📷',
+                'audio': '🔊',
+                'network': '🌐',
+                'mujoco': '🎮',
+                'ports': '🔌',
+                'permissions': '🔐',
+            };
+            return icons[checkName] || '✓';
+        }
+
+        async function loadDocumentationLinks() {
+            try {
+                const response = await fetch('/api/troubleshooting/docs');
+                const data = await response.json();
+
+                if (data.success && data.links) {
+                    const docsDiv = document.getElementById('troubleshooting-docs');
+                    const linksDiv = document.getElementById('troubleshooting-docs-links');
+                    let html = '';
+
+                    for (const [name, path] of Object.entries(data.links)) {
+                        html += `<a href="${path}" target="_blank">📄 ${name.replace('_', ' ')}</a>`;
+                    }
+
+                    linksDiv.innerHTML = html;
+                    docsDiv.style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Erreur chargement docs:', error);
+            }
+        }
     </script>
 </body>
 </html>
@@ -1253,6 +1545,57 @@ if FASTAPI_AVAILABLE:
             "robot_connected": advanced_websocket_manager.robot is not None,
             "active_connections": len(advanced_websocket_manager.active_connections),
         }
+
+    # Endpoints Troubleshooting
+    @app.get("/api/troubleshooting/check")
+    async def troubleshooting_check():
+        """Exécute tous les checks de troubleshooting."""
+        try:
+            results = check_all()
+            return {"success": True, "results": results}
+        except Exception as e:
+            logger.error(f"Erreur troubleshooting check: {e}")
+            return {"success": False, "error": str(e)}
+
+    @app.post("/api/troubleshooting/test/camera")
+    async def troubleshooting_test_camera():
+        """Test interactif de la caméra."""
+        try:
+            result = test_camera()
+            return {"success": True, "result": result}
+        except Exception as e:
+            logger.error(f"Erreur test caméra: {e}")
+            return {"success": False, "error": str(e)}
+
+    @app.post("/api/troubleshooting/test/audio")
+    async def troubleshooting_test_audio():
+        """Test interactif de l'audio."""
+        try:
+            result = test_audio()
+            return {"success": True, "result": result}
+        except Exception as e:
+            logger.error(f"Erreur test audio: {e}")
+            return {"success": False, "error": str(e)}
+
+    @app.post("/api/troubleshooting/test/network")
+    async def troubleshooting_test_network(host: str = "8.8.8.8"):
+        """Test interactif du réseau."""
+        try:
+            result = test_network_ping(host)
+            return {"success": True, "result": result}
+        except Exception as e:
+            logger.error(f"Erreur test réseau: {e}")
+            return {"success": False, "error": str(e)}
+
+    @app.get("/api/troubleshooting/docs")
+    async def troubleshooting_docs():
+        """Retourne les liens vers la documentation."""
+        try:
+            links = get_documentation_links()
+            return {"success": True, "links": links}
+        except Exception as e:
+            logger.error(f"Erreur récupération docs: {e}")
+            return {"success": False, "error": str(e)}
 
     @app.websocket("/ws")
     async def websocket_endpoint(websocket: WebSocket):
