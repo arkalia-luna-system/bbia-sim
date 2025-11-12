@@ -78,8 +78,8 @@ Ce document fait un inventaire exhaustif de **TOUT** ce que propose le repo offi
 | **`robot.media.camera`** | ✅ Accès caméra 4K | ✅ **Intégré** | Utilisé dans `bbia_vision.py` |
 | **`robot.media.microphone`** | ✅ 4 microphones | ✅ **Intégré** | Utilisé dans `bbia_audio.py` |
 | **`robot.media.speaker`** | ✅ Haut-parleur 5W | ✅ **Intégré** | Utilisé dans `bbia_voice.py` |
-| **`robot.io.get_camera_stream()`** | ✅ Stream vidéo | ⚠️ **Disponible mais non utilisé** | Opportunité future |
-| **`robot.io.get_audio_stream()`** | ✅ Stream audio | ⚠️ **Disponible mais non utilisé** | Opportunité future |
+| **`robot.io.get_camera_stream()`** | ✅ Stream vidéo | ⚠️ **Disponible mais non utilisé** | Opportunité future (voir recommandation ci-dessous) |
+| **`robot.io.get_audio_stream()`** | ✅ Stream audio | ⚠️ **Disponible mais non utilisé** | Opportunité future (voir recommandation ci-dessous) |
 
 **Statut** : ✅ **100% CONFORME** - Toutes les méthodes SDK officielles sont implémentées et testées (46 tests)
 
@@ -193,7 +193,34 @@ Ce document fait un inventaire exhaustif de **TOUT** ce que propose le repo offi
 
 **Statut** : ⚠️ **PARTIEL** - Infrastructure présente mais pas de chargement dynamique depuis Hugging Face Hub
 
-**Recommandation** : La fonctionnalité n'est **pas critique** car BBIA a ses propres comportements (`greeting`, `conversation`, `vision_tracking`, `emotional_response`, etc.) qui sont plus avancés que les behaviors de base HF.
+#### 📋 Recommandation Détaillée : Ne PAS implémenter maintenant
+
+**Pourquoi ne pas le faire maintenant ?**
+
+1. **Vous n'avez pas encore le robot** : Impossible de tester avec le vrai hardware. Risque d'ajouter du code qui ne fonctionne pas comme prévu.
+
+2. **Le système actuel fonctionne déjà** : Vous avez 3 apps locales qui fonctionnent parfaitement (`bbia_vision`, `bbia_chat`, `bbia_emotions`). Pas besoin d'ajouter de la complexité avant d'avoir testé.
+
+3. **Complexité vs bénéfice** : 
+   - **Complexité** : Gestion cache, authentification HF, installation dépendances, gestion erreurs réseau
+   - **Bénéfice** : Découvrir des apps que vous n'utiliserez peut-être pas
+   - **Risque** : Introduire des bugs, rendre le code plus complexe
+
+4. **Principe "Ne réparez pas ce qui n'est pas cassé"** : Votre système fonctionne. Mieux vaut tester d'abord avec le robot, identifier les vrais besoins, puis optimiser si nécessaire.
+
+**Quand est-ce que ça devient utile ?**
+
+- ✅ Quand vous voulez tester des apps créées par d'autres développeurs
+- ✅ Quand vous voulez partager vos apps facilement avec la communauté
+- ✅ Quand vous avez besoin de beaucoup d'apps différentes régulièrement
+
+**Plan d'action recommandé :**
+
+1. **Maintenant (avant robot)** : Ne rien changer, vérifier que tout fonctionne
+2. **Quand vous recevez le robot** : Tester avec le système actuel, voir si ça répond à vos besoins
+3. **Après les tests** : Si besoin identifié → ajouter le chargement dynamique
+
+**Conclusion** : La fonctionnalité n'est **pas critique** car BBIA a ses propres comportements (`greeting`, `conversation`, `vision_tracking`, `emotional_response`, etc.) qui sont plus avancés que les behaviors de base HF. **Mieux vaut attendre d'avoir le robot pour décider si c'est vraiment nécessaire.**
 
 ---
 
@@ -285,8 +312,9 @@ Ce document fait un inventaire exhaustif de **TOUT** ce que propose le repo offi
 
 ### ⚠️ PARTIEL (Infrastructure présente, amélioration future optionnelle)
 
-- ⚠️ **Applications Hugging Face Hub** : Router `/development/api/apps/*` complet (11 endpoints) mais apps en dur (pas de chargement dynamique depuis HF Hub). **Non critique** : BBIA a ses propres behaviors plus avancés que les 15+ behaviors HF de base.
-- ⚠️ **Modules IO streams** : `robot.io.get_camera_stream()` et `robot.io.get_audio_stream()` disponibles via SDK mais non utilisés dans BBIAVision/bbia_audio. **Non critique** : Le code actuel utilise `robot.media.camera.get_image()` et captures périodiques qui fonctionnent parfaitement. Les streams seraient une optimisation future pour streaming temps réel continu (nécessiterait refactor significatif).
+- ⚠️ **Applications Hugging Face Hub** : Router `/development/api/apps/*` complet (11 endpoints) mais apps en dur (pas de chargement dynamique depuis HF Hub). **Non critique** : BBIA a ses propres behaviors plus avancés que les 15+ behaviors HF de base. **Recommandation** : Ne pas implémenter maintenant, attendre réception du robot pour tester et décider si nécessaire.
+
+- ⚠️ **Modules IO streams** : `robot.io.get_camera_stream()` et `robot.io.get_audio_stream()` disponibles via SDK mais non utilisés dans BBIAVision/bbia_audio. **Non critique** : Le code actuel utilise `robot.media.camera.get_image()` et captures périodiques qui fonctionnent parfaitement. Les streams seraient une optimisation future pour streaming temps réel continu (nécessiterait refactor significatif). **Recommandation** : Ne pas implémenter maintenant, tester d'abord avec le robot pour voir si les captures périodiques suffisent.
 
 ### ❌ NON IMPLÉMENTÉ (Non critique, optionnel)
 
@@ -307,9 +335,53 @@ Ce document fait un inventaire exhaustif de **TOUT** ce que propose le repo offi
 
 ### 🟡 Améliorations Futures Optionnelles (Non bloquantes)
 
-1. 🟡 **Chargement dynamique apps HF Hub** : Ajouter fonctionnalité pour lister/charger les 15+ behaviors depuis Hugging Face Spaces. **Priorité basse** : BBIA a déjà ses propres behaviors plus avancés.
-2. 🟡 **Modules IO streams temps réel** : Utiliser `robot.io.get_camera_stream()` et `robot.io.get_audio_stream()` pour streaming continu. **Priorité basse** : Code actuel (`robot.media.camera.get_image()` + captures périodiques) fonctionne parfaitement. Streams nécessiteraient refactor significatif pour bénéfice marginal.
-3. 🟡 **Intégration Lerobot** : Si besoin identifié pour futures fonctionnalités avancées. **Priorité très basse** : Pas d'utilisation identifiée actuellement.
+#### 1. 🟡 Chargement dynamique apps HF Hub
+
+**Description** : Ajouter fonctionnalité pour lister/charger les 15+ behaviors depuis Hugging Face Spaces.
+
+**Pourquoi ne pas le faire maintenant ?**
+
+- ❌ **Vous n'avez pas encore le robot** : Impossible de tester avec le vrai hardware
+- ✅ **Le système actuel fonctionne** : 3 apps locales suffisent pour commencer
+- ⚠️ **Complexité élevée** : Gestion cache, authentification, installation dépendances
+- 🎯 **Bénéfice incertain** : Vous avez déjà vos propres behaviors plus avancés
+
+**Quand le faire ?**
+
+- ✅ Après réception du robot et tests avec le système actuel
+- ✅ Si besoin identifié de tester des apps créées par d'autres
+- ✅ Si besoin de partager vos apps facilement avec la communauté
+
+**Priorité** : 🟡 **Basse** - BBIA a déjà ses propres behaviors plus avancés.
+
+---
+
+#### 2. 🟡 Modules IO streams temps réel
+
+**Description** : Utiliser `robot.io.get_camera_stream()` et `robot.io.get_audio_stream()` pour streaming continu.
+
+**Pourquoi ne pas le faire maintenant ?**
+
+- ❌ **Vous n'avez pas encore le robot** : Impossible de tester les performances réelles
+- ✅ **Le système actuel fonctionne** : `robot.media.camera.get_image()` + captures périodiques = stable et performant
+- ⚠️ **Refactor significatif** : Nécessiterait réécriture de `BBIAVision` et `bbia_audio`
+- 🎯 **Bénéfice marginal** : Gain de latence minime (quelques millisecondes) vs complexité ajoutée
+
+**Quand le faire ?**
+
+- ✅ Après réception du robot et validation que les captures périodiques suffisent
+- ✅ Si besoin identifié de suivre des objets en mouvement rapide
+- ✅ Si la latence devient critique pour vos cas d'usage
+
+**Priorité** : 🟡 **Basse** - Code actuel fonctionne parfaitement. Streams nécessiteraient refactor significatif pour bénéfice marginal.
+
+---
+
+#### 3. 🟡 Intégration Lerobot
+
+**Description** : Si besoin identifié pour futures fonctionnalités avancées.
+
+**Priorité** : 🟡 **Très basse** - Pas d'utilisation identifiée actuellement.
 
 ### ❌ Ce qui n'est PAS critique
 
@@ -343,6 +415,14 @@ Tous les composants essentiels sont en place :
 - ✅ Comportements avancés
 
 Les fonctionnalités manquantes (chargement dynamique apps HF Hub, IO streams temps réel, Lerobot) sont **optionnelles** et ne bloquent pas l'utilisation avec le robot réel. BBIA utilise déjà des méthodes plus adaptées à ses besoins (`robot.media.camera.get_image()` pour captures, behaviors BBIA personnalisés au lieu de behaviors HF de base).
+
+**📋 Plan d'action recommandé :**
+
+1. **Maintenant (avant robot)** : Ne rien changer, vérifier que tout fonctionne en simulation
+2. **Quand vous recevez le robot** : Tester avec le système actuel, mesurer les performances réelles
+3. **Après les tests** : Si besoin identifié → implémenter les features optionnelles
+
+**💡 Principe à suivre :** "Ne réparez pas ce qui n'est pas cassé" - Votre système fonctionne déjà bien. Mieux vaut tester d'abord avec le robot réel, identifier les vrais besoins, puis optimiser si nécessaire.
 
 ---
 

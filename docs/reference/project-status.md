@@ -166,7 +166,7 @@ pip install -e .
 **Type :** Extension BBIA (non core SDK)  
 **Statut :** Module BBIA original - intégration Hugging Face pour IA conversationnelle
 
-Le SDK officiel Reachy Mini expose une intégration Hugging Face Spaces via `hf_space.py` pour lister les apps disponibles. Le module `bbia_huggingface.py` est une **extension BBIA** enrichissant les capacités IA avec :
+Le SDK officiel Reachy Mini expose une intégration Hugging Face Spaces via `hf_space.py` pour lister les apps disponibles. **Note** : Le chargement dynamique des apps HF Hub n'est pas implémenté dans BBIA (apps en dur). **Recommandation** : Ne pas implémenter maintenant, attendre réception robot pour tester et décider si nécessaire. Le module `bbia_huggingface.py` est une **extension BBIA** enrichissant les capacités IA avec :
 
 - Vision : CLIP, BLIP
 - Audio : Whisper STT
@@ -368,7 +368,7 @@ Le SDK Reachy Mini expose une API médias via `MediaManager`:
 **Recommandations performance :**
 
 - [x] ✅ **Actuel** : Captures périodiques fonctionnent parfaitement
-- [ ] ⚠️ Streaming audio temps réel via `robot.io.get_audio_stream()` (optionnel, refactor nécessaire pour bénéfice marginal)
+- [ ] ⚠️ Streaming audio temps réel via `robot.io.get_audio_stream()` (optionnel, refactor nécessaire pour bénéfice marginal) - **Recommandation** : Ne pas implémenter maintenant, attendre réception robot pour tester et décider si nécessaire
 - [ ] Cache validation sample rate (éviter re-lire fichier)
 - [ ] Batch détection son (fichiers multiples)
 
@@ -674,7 +674,7 @@ Le SDK Reachy Mini expose une API médias via `MediaManager`:
 **Recommandations performance :**
 
 - [x] ✅ **Actuel** : Synthèse vocale via `robot.media.speaker` fonctionne parfaitement
-- [ ] ⚠️ Streaming audio temps réel via `robot.io.get_audio_stream()` (optionnel, refactor nécessaire)
+- [ ] ⚠️ Streaming audio temps réel via `robot.io.get_audio_stream()` (optionnel, refactor nécessaire) - **Recommandation** : Ne pas implémenter maintenant, attendre réception robot pour tester et décider si nécessaire
 - [ ] Pool threads pour conversions numpy/bytes multiples
 - [ ] Cache réponses TTS fréquentes (LRU)
 
