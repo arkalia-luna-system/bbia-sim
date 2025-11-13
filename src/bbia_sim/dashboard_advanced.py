@@ -54,6 +54,9 @@ class BBIAAdvancedWebSocketManager:
         self.active_connections: list[WebSocket] = []
         self.robot: Any | None = None
         self.robot_backend = "mujoco"
+        # Lock pour éviter les race conditions lors de l'initialisation du robot
+        import threading
+        self._robot_init_lock = threading.Lock()
         # OPTIMISATION RAM: Utiliser deque au lieu de liste pour limiter historique
         from collections import deque
 
@@ -102,6 +105,50 @@ class BBIAAdvancedWebSocketManager:
         # Démarrer la collecte de métriques
         # self._start_metrics_collection()  # Démarré lors de la première connexion WebSocket
 
+        # Initialiser le robot automatiquement au démarrage
+        self._initialize_robot_async()
+
+    def _initialize_robot_async(self):
+        """Initialise le robot de manière asynchrone."""
+
+        def init_robot():
+            with self._robot_init_lock:
+                try:
+                    if not self.robot:
+                        logger.info(f"🔧 Initialisation robot {self.robot_backend}...")
+                        self.robot = RobotFactory.create_backend(self.robot_backend)
+                        if self.robot:
+                            connected = self.robot.connect()
+                            if connected:
+                                if self.robot_backend == "mujoco":
+                                    logger.info(
+                                        f"✅ Robot {self.robot_backend} initialisé (mode simulation)"
+                                    )
+                                else:
+                                    logger.info(
+                                        f"✅ Robot {self.robot_backend} connecté automatiquement"
+                                    )
+                            else:
+                                logger.warning(
+                                    f"⚠️ Robot {self.robot_backend} en mode simulation"
+                                )
+                        else:
+                            logger.error(
+                                f"❌ RobotFactory.create_backend('{self.robot_backend}') a retourné None"
+                            )
+                except Exception as e:
+                    logger.error(f"❌ Erreur initialisation robot: {e}", exc_info=True)
+                    # En cas d'erreur, le dashboard fonctionne quand même en mode simulation
+                    logger.info(
+                        "ℹ️ Dashboard fonctionne en mode simulation (sans robot réel)"
+                    )
+
+        # Démarrer dans un thread pour ne pas bloquer
+        import threading
+
+        thread = threading.Thread(target=init_robot, daemon=True)
+        thread.start()
+
     async def connect(self, websocket: WebSocket):
         """Accepte une nouvelle connexion WebSocket."""
         await websocket.accept()
@@ -113,6 +160,54 @@ class BBIAAdvancedWebSocketManager:
         # Démarrer la collecte de métriques si c'est la première connexion
         if len(self.active_connections) == 1:
             self._start_metrics_collection()
+
+        # S'assurer que le robot est initialisé - FORCER l'initialisation
+        if not self.robot:
+            logger.warning(
+                "⚠️ Robot non initialisé lors de la connexion WebSocket - initialisation forcée"
+            )
+            try:
+                self.robot = RobotFactory.create_backend(self.robot_backend)
+                if self.robot:
+                    connected = self.robot.connect()
+                    if connected:
+                        logger.info(f"✅ Robot {self.robot_backend} connecté (forcé)")
+                        await self.send_log_message(
+                            "info", f"✅ Robot {self.robot_backend} connecté"
+                        )
+                    else:
+                        logger.warning(
+                            f"⚠️ Robot {self.robot_backend} connect() a retourné False"
+                        )
+                        await self.send_log_message(
+                            "warning",
+                            f"⚠️ Robot {self.robot_backend} en mode simulation",
+                        )
+                else:
+                    logger.error(
+                        f"❌ RobotFactory.create_backend('{self.robot_backend}') a retourné None"
+                    )
+                    await self.send_log_message(
+                        "error", f"❌ Impossible de créer le robot {self.robot_backend}"
+                    )
+            except Exception as e:
+                logger.error(
+                    f"❌ Erreur initialisation robot forcée: {e}", exc_info=True
+                )
+                await self.send_log_message("error", f"❌ Erreur robot: {e}")
+
+        # Vérifier que le robot est vraiment connecté
+        if self.robot:
+            logger.info(
+                f"✅ Robot présent: {type(self.robot).__name__}, is_connected={self.robot.is_connected}"
+            )
+            if not self.robot.is_connected:
+                logger.warning(
+                    "⚠️ Robot présent mais is_connected=False - reconnexion..."
+                )
+                self.robot.connect()
+        else:
+            logger.error("❌ Robot est None après vérification")
 
         # Envoyer état initial complet
         await self.send_complete_status()
@@ -231,6 +326,14 @@ class BBIAAdvancedWebSocketManager:
         async def collect_metrics():
             while True:
                 try:
+                    # FAIRE AVANCER LA SIMULATION MuJoCo si robot connecté
+                    if self.robot and hasattr(self.robot, "step"):
+                        try:
+                            # Faire un step de simulation pour que le robot bouge
+                            self.robot.step()
+                        except Exception as e:
+                            logger.debug(f"Erreur step robot: {e}")
+
                     # Mettre à jour les métriques
                     self._update_metrics()
 
@@ -361,12 +464,12 @@ ADVANCED_DASHBOARD_HTML = """
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #008181 0%, #006666 100%);
-            background-attachment: fixed;
-            color: white;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
+            color: #4D4D4D;
             min-height: 100vh;
             overflow-x: hidden;
+            line-height: 1.6;
         }
 
         /* Animation d'entrée */
@@ -391,27 +494,30 @@ ADVANCED_DASHBOARD_HTML = """
         .panel:nth-child(4) { animation-delay: 0.4s; }
 
         .header {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 20px;
+            background: #ffffff;
+            padding: 25px;
             text-align: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            border-bottom: 2px solid #4D4D4D;
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 8px rgba(77, 77, 77, 0.1);
         }
 
         .header h1 {
-            font-size: 2.5em;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            color: #4D4D4D;
             margin-bottom: 10px;
+            font-weight: 700;
+            font-size: 2.2em;
         }
 
         .header .subtitle {
-            font-size: 1.2em;
-            opacity: 0.8;
+            color: #4D4D4D;
+            font-size: 0.95em;
+            font-weight: 500;
+            text-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
         }
+
 
         .main-container {
             display: grid;
@@ -424,25 +530,29 @@ ADVANCED_DASHBOARD_HTML = """
         }
 
         .panel {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
+            background: #ffffff;
+            border-radius: 8px;
             padding: 25px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid #E6E6E6;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 8px rgba(77, 77, 77, 0.08);
         }
 
         .panel:hover {
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 4px 12px rgba(77, 77, 77, 0.12);
             transform: translateY(-2px);
+            border-color: #4D4D4D;
         }
 
         .panel h3 {
             margin-bottom: 20px;
-            font-size: 1.4em;
-            text-align: center;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            font-size: 1.3em;
+            text-align: left;
+            color: #4D4D4D;
+            font-weight: 600;
+            border-bottom: 2px solid #4D4D4D;
+            padding-bottom: 10px;
+            margin-top: 0;
         }
 
         .status-panel {
@@ -453,18 +563,19 @@ ADVANCED_DASHBOARD_HTML = """
         }
 
         .status-item {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            border-radius: 10px;
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
             text-align: center;
             transition: all 0.3s ease;
-            border: 2px solid transparent;
+            border: 1px solid #E6E6E6;
         }
 
         .status-item:hover {
-            background: rgba(255, 255, 255, 0.15);
+            background: #ffffff;
+            border-color: #4D4D4D;
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 12px rgba(77, 77, 77, 0.15);
         }
 
         .status-value {
@@ -472,6 +583,7 @@ ADVANCED_DASHBOARD_HTML = """
             font-weight: bold;
             margin-bottom: 5px;
             transition: transform 0.2s ease;
+            color: #4D4D4D;
         }
 
         .status-value.updating {
@@ -485,20 +597,31 @@ ADVANCED_DASHBOARD_HTML = """
 
         .status-label {
             font-size: 0.9em;
-            opacity: 0.8;
+            color: #4D4D4D;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.85em;
         }
 
         .connection-indicator {
             display: inline-block;
-            width: 12px;
-            height: 12px;
+            width: 14px;
+            height: 14px;
             border-radius: 50%;
             margin-right: 10px;
             animation: pulse 2s infinite;
+            box-shadow: 0 0 8px currentColor;
         }
 
-        .connected { background: #4CAF50; }
-        .disconnected { background: #F44336; }
+        .connected {
+            background: #10b981;
+            color: #10b981;
+        }
+        .disconnected {
+            background: #ef4444;
+            color: #ef4444;
+        }
 
         @keyframes pulse {
             0% { opacity: 1; }
@@ -514,19 +637,19 @@ ADVANCED_DASHBOARD_HTML = """
         }
 
         .control-button {
-            padding: 15px 10px;
-            border: none;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
+            padding: 12px 20px;
+            border: 1px solid #4D4D4D;
+            border-radius: 6px;
+            background: #ffffff;
+            color: #4D4D4D;
             font-size: 14px;
+            font-weight: 500;
             cursor: pointer;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            backdrop-filter: blur(5px);
+            transition: all 0.2s ease;
             text-align: center;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 1px 3px rgba(77, 77, 77, 0.1);
         }
 
         .control-button::before {
@@ -548,9 +671,11 @@ ADVANCED_DASHBOARD_HTML = """
         }
 
         .control-button:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            background: #4D4D4D;
+            color: #ffffff;
+            border-color: #4D4D4D;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(77, 77, 77, 0.25);
         }
 
         .control-button:active {
@@ -586,16 +711,47 @@ ADVANCED_DASHBOARD_HTML = """
             to { transform: rotate(360deg); }
         }
 
+        /* Loading spinner standalone */
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(77, 77, 77, 0.2);
+            border-top-color: #4D4D4D;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            vertical-align: middle;
+            margin-right: 8px;
+        }
+
         .emotion-button {
-            background: linear-gradient(45deg, #008181, #006666);
+            border-color: rgba(77, 77, 77, 0.3);
+            color: #4D4D4D;
+        }
+
+        .emotion-button:hover {
+            background: linear-gradient(135deg, #4D4D4D 0%, #4D4D4D 100%);
+            color: #ffffff;
         }
 
         .action-button {
-            background: linear-gradient(45deg, #00a0a0, #008181);
+            border-color: rgba(77, 77, 77, 0.3);
+            color: #4D4D4D;
+        }
+
+        .action-button:hover {
+            background: linear-gradient(135deg, #4D4D4D 0%, #4D4D4D 100%);
+            color: #ffffff;
         }
 
         .behavior-button {
-            background: linear-gradient(45deg, #00cccc, #008181);
+            border-color: rgba(77, 77, 77, 0.3);
+            color: #4D4D4D;
+        }
+
+        .behavior-button:hover {
+            background: linear-gradient(135deg, #4D4D4D 0%, #4D4D4D 100%);
+            color: #ffffff;
         }
 
         .chart-container {
@@ -612,15 +768,27 @@ ADVANCED_DASHBOARD_HTML = """
         }
 
         .joint-control {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            border-radius: 10px;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            padding: 18px;
+            border-radius: 12px;
+            border: 2px solid rgba(77, 77, 77, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .joint-control:hover {
+            border-color: rgba(77, 77, 77, 0.4);
+            box-shadow: 0 4px 12px rgba(77, 77, 77, 0.15);
+            transform: translateY(-2px);
         }
 
         .joint-name {
-            font-weight: bold;
+            font-weight: 600;
             margin-bottom: 10px;
             text-align: center;
+            color: #4D4D4D;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .joint-slider {
@@ -631,12 +799,13 @@ ADVANCED_DASHBOARD_HTML = """
         .joint-value {
             text-align: center;
             font-size: 0.9em;
-            opacity: 0.8;
+            color: #4D4D4D;
+            font-weight: 500;
             transition: all 0.2s ease;
         }
 
         .joint-value.updating {
-            color: #00cccc;
+            color: #4D4D4D;
             font-weight: bold;
             transform: scale(1.1);
         }
@@ -644,24 +813,46 @@ ADVANCED_DASHBOARD_HTML = """
         .logs-container {
             height: 400px;
             overflow-y: auto;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 10px;
-            padding: 15px;
-            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            border: 2px solid rgba(77, 77, 77, 0.15);
+            border-radius: 12px;
+            padding: 18px;
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', 'Courier New', monospace;
             font-size: 13px;
         }
 
         .log-entry {
-            margin-bottom: 8px;
-            padding: 5px;
-            border-radius: 5px;
-            background: rgba(255, 255, 255, 0.05);
+            margin-bottom: 10px;
+            padding: 10px 14px;
+            border-radius: 8px;
+            background: #ffffff;
+            border-left: 4px solid #e0e0e0;
+            color: #4D4D4D;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         }
 
-        .log-info { color: #4CAF50; }
-        .log-warning { color: #FF9800; }
-        .log-error { color: #F44336; }
-        .log-debug { color: #2196F3; }
+        .log-entry:hover {
+            transform: translateX(4px);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .log-info {
+            border-left-color: #10b981;
+            background: linear-gradient(90deg, rgba(16, 185, 129, 0.05) 0%, #ffffff 100%);
+        }
+        .log-warning {
+            border-left-color: #f59e0b;
+            background: linear-gradient(90deg, rgba(245, 158, 11, 0.05) 0%, #ffffff 100%);
+        }
+        .log-error {
+            border-left-color: #ef4444;
+            background: linear-gradient(90deg, rgba(239, 68, 68, 0.05) 0%, #ffffff 100%);
+        }
+        .log-debug {
+            border-left-color: #4D4D4D;
+            background: linear-gradient(90deg, rgba(77, 77, 77, 0.05) 0%, #ffffff 100%);
+        }
 
         .metrics-grid {
             display: grid;
@@ -671,21 +862,33 @@ ADVANCED_DASHBOARD_HTML = """
         }
 
         .metric-item {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            border-radius: 10px;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            padding: 18px;
+            border-radius: 12px;
             text-align: center;
+            border: 2px solid rgba(77, 77, 77, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .metric-item:hover {
+            border-color: rgba(77, 77, 77, 0.4);
+            box-shadow: 0 4px 12px rgba(77, 77, 77, 0.15);
+            transform: translateY(-2px);
         }
 
         .metric-value {
             font-size: 1.5em;
             font-weight: bold;
             margin-bottom: 5px;
+            color: #4D4D4D;
         }
 
         .metric-label {
-            font-size: 0.8em;
-            opacity: 0.8;
+            font-size: 0.85em;
+            color: #4D4D4D;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .vision-panel {
@@ -695,21 +898,33 @@ ADVANCED_DASHBOARD_HTML = """
         }
 
         .vision-item {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            border-radius: 10px;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            padding: 18px;
+            border-radius: 12px;
             text-align: center;
+            border: 2px solid rgba(77, 77, 77, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .vision-item:hover {
+            border-color: rgba(77, 77, 77, 0.4);
+            box-shadow: 0 4px 12px rgba(77, 77, 77, 0.15);
+            transform: translateY(-2px);
         }
 
         .vision-count {
             font-size: 2em;
             font-weight: bold;
             margin-bottom: 5px;
+            color: #4D4D4D;
         }
 
         .vision-label {
-            font-size: 0.9em;
-            opacity: 0.8;
+            font-size: 0.85em;
+            color: #4D4D4D;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         /* Styles Troubleshooting */
@@ -727,9 +942,10 @@ ADVANCED_DASHBOARD_HTML = """
         }
 
         .troubleshooting-results {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 10px;
-            padding: 15px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            border: 2px solid rgba(102, 126, 234, 0.15);
+            border-radius: 12px;
+            padding: 18px;
             max-height: 300px;
             overflow-y: auto;
             font-size: 0.9em;
@@ -865,7 +1081,7 @@ ADVANCED_DASHBOARD_HTML = """
         /* Focus visible pour accessibilité */
         button:focus-visible,
         input:focus-visible {
-            outline: 2px solid rgba(255, 255, 255, 0.8);
+            outline: 2px solid #4D4D4D;
             outline-offset: 2px;
         }
 
@@ -883,10 +1099,17 @@ ADVANCED_DASHBOARD_HTML = """
         }
 
         .troubleshooting-item {
-            margin-bottom: 10px;
-            padding: 10px;
-            border-radius: 5px;
-            background: rgba(255, 255, 255, 0.05);
+            margin-bottom: 12px;
+            padding: 14px;
+            border-radius: 10px;
+            background: #ffffff;
+            border: 2px solid rgba(102, 126, 234, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .troubleshooting-item:hover {
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+            transform: translateX(4px);
         }
 
         .troubleshooting-item.ok {
@@ -912,19 +1135,22 @@ ADVANCED_DASHBOARD_HTML = """
         }
 
         .troubleshooting-fix {
-            margin-top: 5px;
-            padding: 8px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 5px;
+            margin-top: 8px;
+            padding: 10px;
+            background: #f5f5f5;
+            border-left: 3px solid #4D4D4D;
+            border-radius: 4px;
             font-family: 'Courier New', monospace;
             font-size: 0.85em;
+            color: #4D4D4D;
         }
 
         .troubleshooting-docs {
             margin-top: 15px;
             padding: 15px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
+            background: #f5f5f5;
+            border: 1px solid #E6E6E6;
+            border-radius: 8px;
         }
 
         .troubleshooting-docs h4 {
@@ -933,13 +1159,15 @@ ADVANCED_DASHBOARD_HTML = """
         }
 
         .troubleshooting-docs a {
-            color: #87CEEB;
+            color: #4D4D4D;
             text-decoration: none;
             display: block;
             padding: 5px 0;
+            transition: color 0.2s ease;
         }
 
         .troubleshooting-docs a:hover {
+            color: #008181;
             text-decoration: underline;
         }
 
@@ -957,19 +1185,19 @@ ADVANCED_DASHBOARD_HTML = """
         }
 
         .chat-messages {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 10px;
-            padding: 15px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            border: 2px solid rgba(102, 126, 234, 0.15);
+            border-radius: 12px;
+            padding: 18px;
             overflow-y: auto;
             flex: 1;
             margin-bottom: 15px;
-            font-family: 'Courier New', monospace;
-            font-size: 13px;
+            font-family: 'Segoe UI', sans-serif;
+            font-size: 14px;
         }
 
         .chat-message {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 10px;
+            padding: 12px 15px;
             border-radius: 8px;
             margin-bottom: 10px;
             transition: all 0.3s ease;
@@ -977,25 +1205,42 @@ ADVANCED_DASHBOARD_HTML = """
         }
 
         .chat-message:hover {
-            background: rgba(255, 255, 255, 0.15);
-            transform: scale(1.02);
+            box-shadow: 0 2px 8px rgba(77, 77, 77, 0.1);
+            transform: translateY(-1px);
         }
 
         .chat-message.chat-user {
-            background: rgba(0, 160, 160, 0.3);
+            background: linear-gradient(135deg, #4D4D4D 0%, #4D4D4D 100%);
+            color: #ffffff;
+            border-left: 4px solid #4D4D4D;
             text-align: right;
+            margin-left: 20%;
+            box-shadow: 0 2px 8px rgba(77, 77, 77, 0.2);
         }
 
         .chat-message.chat-bbia {
-            background: rgba(0, 129, 129, 0.3);
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            color: #4D4D4D;
+            border-left: 4px solid #4D4D4D;
             text-align: left;
+            margin-right: 20%;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
         }
 
         .chat-author {
-            font-weight: bold;
+            font-weight: 700;
             font-size: 11px;
-            opacity: 0.7;
-            margin-bottom: 5px;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .chat-message.chat-user .chat-author {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .chat-message.chat-bbia .chat-author {
+            color: #4D4D4D;
         }
 
         .chat-text {
@@ -1009,30 +1254,106 @@ ADVANCED_DASHBOARD_HTML = """
 
         .chat-input-group input {
             flex: 1;
-            padding: 12px;
-            border: 2px solid transparent;
+            padding: 14px 18px;
+            border: 2px solid rgba(102, 126, 234, 0.2);
             border-radius: 10px;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
+            background: #ffffff;
+            color: #2c3e50;
             font-size: 14px;
             transition: all 0.3s ease;
             outline: none;
         }
 
         .chat-input-group input:focus {
-            border-color: rgba(255, 255, 255, 0.5);
-            background: rgba(255, 255, 255, 0.15);
-            box-shadow: 0 0 10px rgba(0, 129, 129, 0.3);
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.15);
         }
 
         .chat-input-group input::placeholder {
-            color: rgba(255, 255, 255, 0.5);
+            color: #999;
+        }
+
+        /* Toast Notifications - Style professionnel inspiré de Reachy Mini */
+        .toast {
+            position: relative;
+            padding: 16px 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            min-width: 300px;
+            max-width: 400px;
+            font-size: 14px;
+            font-weight: 500;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            pointer-events: auto;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .toast.success {
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.95), rgba(56, 142, 60, 0.95));
+            color: white;
+        }
+
+        .toast.error {
+            background: linear-gradient(135deg, rgba(244, 67, 54, 0.95), rgba(198, 40, 40, 0.95));
+            color: white;
+        }
+
+        .toast.warning {
+            background: linear-gradient(135deg, rgba(255, 152, 0, 0.95), rgba(245, 124, 0, 0.95));
+            color: white;
+        }
+
+        .toast.info {
+            background: linear-gradient(135deg, rgba(33, 150, 243, 0.95), rgba(25, 118, 210, 0.95));
+            color: white;
+        }
+
+        /* Amélioration du statut robot avec animations */
+        .robot-status-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .robot-status-container::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(0, 204, 204, 0.2);
+            animation: pulse-ring 2s ease-out infinite;
+        }
+
+        @keyframes pulse-ring {
+            0% {
+                transform: translate(-50%, -50%) scale(0.8);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1.4);
+                opacity: 0;
+            }
+        }
+
+        /* Amélioration de l'accessibilité */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
         }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1>🤖 BBIA Advanced Dashboard</h1>
+        <h1>BBIA Advanced Dashboard</h1>
         <div class="subtitle">
             <span id="connection-indicator" class="connection-indicator disconnected"></span>
             <span id="connection-text">Déconnecté</span> |
@@ -1072,37 +1393,37 @@ ADVANCED_DASHBOARD_HTML = """
 
         <!-- Panel de contrôle -->
         <div class="panel">
-            <h3>🎮 Contrôles</h3>
+            <h3>Contrôles</h3>
 
             <div class="controls-grid">
-                <button class="control-button emotion-button" onclick="setEmotion('happy')">😊 Heureux</button>
-                <button class="control-button emotion-button" onclick="setEmotion('sad')">😢 Triste</button>
-                <button class="control-button emotion-button" onclick="setEmotion('excited')">🤩 Excité</button>
-                <button class="control-button emotion-button" onclick="setEmotion('angry')">😠 Colère</button>
-                <button class="control-button emotion-button" onclick="setEmotion('neutral')">😐 Neutre</button>
-                <button class="control-button emotion-button" onclick="setEmotion('curious')">🤔 Curieux</button>
+                <button class="control-button emotion-button" onclick="setEmotion('happy', this)">Heureux</button>
+                <button class="control-button emotion-button" onclick="setEmotion('sad', this)">Triste</button>
+                <button class="control-button emotion-button" onclick="setEmotion('excited', this)">Excité</button>
+                <button class="control-button emotion-button" onclick="setEmotion('angry', this)">Colère</button>
+                <button class="control-button emotion-button" onclick="setEmotion('neutral', this)">Neutre</button>
+                <button class="control-button emotion-button" onclick="setEmotion('curious', this)">Curieux</button>
             </div>
 
             <div class="controls-grid">
-                <button class="control-button action-button" onclick="sendAction('look_at')">👀 Regarder</button>
-                <button class="control-button action-button" onclick="sendAction('greet')">👋 Saluer</button>
-                <button class="control-button action-button" onclick="sendAction('wake_up')">🌅 Réveil</button>
-                <button class="control-button action-button" onclick="sendAction('sleep')">😴 Dormir</button>
-                <button class="control-button action-button" onclick="sendAction('nod')">👍 Hocher</button>
-                <button class="control-button action-button" onclick="sendAction('stop')">⏹️ Arrêter</button>
+                <button class="control-button action-button" onclick="sendAction('look_at', this)">Regarder</button>
+                <button class="control-button action-button" onclick="sendAction('greet', this)">Saluer</button>
+                <button class="control-button action-button" onclick="sendAction('wake_up', this)">Réveil</button>
+                <button class="control-button action-button" onclick="sendAction('sleep', this)">Dormir</button>
+                <button class="control-button action-button" onclick="sendAction('nod', this)">Hocher</button>
+                <button class="control-button action-button" onclick="sendAction('stop', this)">Arrêter</button>
             </div>
 
             <div class="controls-grid">
-                <button class="control-button behavior-button" onclick="runBehavior('greeting')">👋 Salutation</button>
-                <button class="control-button behavior-button" onclick="runBehavior('exploration')">🔍 Exploration</button>
-                <button class="control-button behavior-button" onclick="runBehavior('interaction')">💬 Interaction</button>
-                <button class="control-button behavior-button" onclick="runBehavior('demo')">🎪 Démo</button>
+                <button class="control-button behavior-button" onclick="runBehavior('greeting', this)">Salutation</button>
+                <button class="control-button behavior-button" onclick="runBehavior('exploration', this)">Exploration</button>
+                <button class="control-button behavior-button" onclick="runBehavior('interaction', this)">Interaction</button>
+                <button class="control-button behavior-button" onclick="runBehavior('demo', this)">Démo</button>
             </div>
         </div>
 
         <!-- Panel de métriques -->
         <div class="panel">
-            <h3>📊 Métriques Temps Réel</h3>
+            <h3>Métriques Temps Réel</h3>
             <div class="chart-container">
                 <canvas id="metricsChart"></canvas>
             </div>
@@ -1128,7 +1449,7 @@ ADVANCED_DASHBOARD_HTML = """
 
         <!-- Panel de contrôle des joints -->
         <div class="panel">
-            <h3>🔧 Contrôle des Joints</h3>
+            <h3>Contrôle des Joints</h3>
             <div class="joint-controls" id="joint-controls">
                 <!-- Les contrôles de joints seront générés dynamiquement -->
             </div>
@@ -1136,7 +1457,10 @@ ADVANCED_DASHBOARD_HTML = """
 
         <!-- Panel de vision -->
         <div class="panel">
-            <h3>👁️ Vision</h3>
+            <h3>Vision</h3>
+            <div style="margin-bottom: 20px;">
+                <video id="camera-stream" autoplay style="width: 100%; max-width: 640px; border-radius: 8px; border: 2px solid #4D4D4D; background: #000;"></video>
+            </div>
             <div class="vision-panel">
                 <div class="vision-item">
                     <div class="vision-count" id="objects-count">0</div>
@@ -1148,23 +1472,22 @@ ADVANCED_DASHBOARD_HTML = """
                 </div>
             </div>
             <div class="controls-grid">
-                <button class="control-button" onclick="toggleVision()">👁️ Basculer Vision</button>
-                <button class="control-button" onclick="scanEnvironment()">🔍 Scanner</button>
-                <button class="control-button" onclick="trackObject()">🎯 Suivre Objet</button>
+                <button class="control-button" onclick="toggleVision()">Basculer Vision</button>
+                <button class="control-button" onclick="scanEnvironment()">Scanner</button>
+                <button class="control-button" onclick="trackObject()">Suivre Objet</button>
             </div>
         </div>
 
         <!-- Panel Chat BBIA -->
         <div class="panel">
-            <h3>💬 Chat avec BBIA</h3>
+            <h3>Chat avec BBIA</h3>
             <div class="chat-container">
                 <div class="chat-messages" id="chat-messages"></div>
                 <div class="chat-input-group">
                     <input type="text" id="chat-input" placeholder="Tapez votre message..."
-                           onkeypress="if(event.key==='Enter') sendChatMessage()"
                            aria-label="Message chat BBIA"
                            data-tooltip="Appuyez sur Entrée pour envoyer">
-                    <button class="control-button" onclick="sendChatMessage()"
+                    <button class="control-button" id="chat-send-button" onclick="sendChatMessage()"
                             aria-label="Envoyer message"
                             data-tooltip="Envoyer le message">Envoyer</button>
                 </div>
@@ -1173,13 +1496,13 @@ ADVANCED_DASHBOARD_HTML = """
 
         <!-- Panel Troubleshooting -->
         <div class="panel">
-            <h3>🔧 Troubleshooting</h3>
+            <h3>Troubleshooting</h3>
             <div class="troubleshooting-panel">
                 <div class="troubleshooting-actions">
-                    <button class="control-button" onclick="runAllChecks()">🔍 Vérifier Tout</button>
-                    <button class="control-button" onclick="testCamera()">📷 Test Caméra</button>
-                    <button class="control-button" onclick="testAudio()">🔊 Test Audio</button>
-                    <button class="control-button" onclick="testNetwork()">🌐 Test Réseau</button>
+                    <button class="control-button" onclick="runAllChecks(this)">🔍 Vérifier Tout</button>
+                    <button class="control-button" onclick="testCamera(this)">📷 Test Caméra</button>
+                    <button class="control-button" onclick="testAudio(this)">🔊 Test Audio</button>
+                    <button class="control-button" onclick="testNetwork(this)">🌐 Test Réseau</button>
                 </div>
                 <div class="troubleshooting-results" id="troubleshooting-results">
                     <p class="troubleshooting-placeholder">Cliquez sur "Vérifier Tout" pour commencer</p>
@@ -1193,7 +1516,7 @@ ADVANCED_DASHBOARD_HTML = """
 
         <!-- Panel de logs -->
         <div class="panel" style="grid-column: 1 / -1;">
-            <h3>📝 Logs Temps Réel</h3>
+            <h3>Logs Temps Réel</h3>
             <div class="logs-container" id="logs-container">
                 <!-- Les logs seront ajoutés dynamiquement -->
             </div>
@@ -1201,65 +1524,229 @@ ADVANCED_DASHBOARD_HTML = """
     </div>
 
     <script>
-        // Variables globales
-        let ws = null;
-        let reconnectInterval = null;
-        let metricsChart = null;
-        let metricsData = {
-            labels: [],
-            latency: [],
-            fps: [],
-            cpu: [],
-            memory: []
+        // Variables globales - Architecture modulaire inspirée de Reachy Mini
+        const dashboard = {
+            ws: null,
+            reconnectInterval: null,
+            metricsChart: null,
+            metricsData: {
+                labels: [],
+                latency: [],
+                fps: [],
+                cpu: [],
+                memory: []
+            },
+            currentStatus: {
+                robot: { connected: false, backend: '-' },
+                emotion: 'neutral',
+                joints: [],
+                vision: { objects: 0, faces: 0 }
+            },
+            lastMetricsUpdate: 0,
+            METRICS_UPDATE_INTERVAL: 100,
+            statusPollInterval: null,
+            isPolling: false
         };
-
-        // Optimisation performance: throttling pour les mises à jour
-        let lastMetricsUpdate = 0;
-        const METRICS_UPDATE_INTERVAL = 100; // ms
-
-        // Debouncing pour les commandes
-        let commandQueue = [];
-        let commandTimeout = null;
 
         // Initialisation
         document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Initialisation dashboard...');
             initializeChart();
             connect();
+            startStatusPolling();
+            startVideoStream();
+
+            // Ajouter event listener pour Enter sur input chat
+            const chatInput = document.getElementById('chat-input');
+            if (chatInput) {
+                chatInput.addEventListener('keypress', function(event) {
+                    if (event.key === 'Enter' || event.keyCode === 13) {
+                        event.preventDefault();
+                        sendChatMessage();
+                    }
+                });
+                console.log('✅ Event listener Enter ajouté au chat input');
+            } else {
+                console.error('❌ Input chat non trouvé à l\'initialisation');
+            }
+
+            // Les fonctions sont maintenant assignées directement après leur définition
+            // Plus besoin de setTimeout car elles sont définies avant d'être utilisées
+            console.log('✅ Initialisation terminée - Toutes les fonctions sont globales');
+
+            // Vérifier que sendChatMessage est accessible
+            if (typeof window.sendChatMessage === 'function') {
+                console.log('✅ sendChatMessage est accessible globalement');
+            } else {
+                console.error('❌ sendChatMessage n\'est pas accessible globalement');
+            }
+
+            // Ajouter un event listener au bouton d'envoi comme backup
+            const sendButton = document.getElementById('chat-send-button');
+            if (sendButton) {
+                sendButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    console.log('🔵 Bouton cliqué - Appel sendChatMessage');
+                    if (typeof window.sendChatMessage === 'function') {
+                        window.sendChatMessage();
+                    } else {
+                        console.error('❌ sendChatMessage n\'est pas une fonction');
+                        showToast('❌ Erreur: fonction d\'envoi non disponible', 'error', 3000);
+                    }
+                });
+                console.log('✅ Event listener ajouté au bouton d\'envoi');
+            } else {
+                console.warn('⚠️ Bouton d\'envoi non trouvé');
+            }
         });
 
-        // Connexion WebSocket
+        // Stream vidéo caméra
+        function startVideoStream() {
+            const video = document.getElementById('camera-stream');
+            if (!video) {
+                console.warn('❌ Élément video non trouvé');
+                return;
+            }
+
+            console.log('📹 Démarrage stream vidéo...');
+            // Utiliser endpoint MJPEG
+            video.src = '/api/camera/stream';
+            video.onloadstart = function() {
+                console.log('✅ Stream vidéo démarré');
+            };
+            video.onerror = function(e) {
+                console.error('❌ Erreur stream vidéo:', e);
+                video.style.display = 'none';
+                addLog('error', 'Erreur stream vidéo - Vérifiez la caméra');
+            };
+            video.onloadeddata = function() {
+                console.log('✅ Première frame vidéo chargée');
+            };
+        }
+
+        // Connexion WebSocket - Gestion robuste comme Reachy Mini
         function connect() {
             const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
             const wsUrl = `${protocol}//${window.location.host}/ws`;
 
-            ws = new WebSocket(wsUrl);
+            try {
+                dashboard.ws = new WebSocket(wsUrl);
 
-            ws.onopen = function(event) {
-                console.log('WebSocket connecté');
-                updateConnectionStatus(true);
-                clearInterval(reconnectInterval);
-                addLog('info', 'Connexion WebSocket établie');
-                showToast('✅ Connecté au serveur', 'success');
-            };
+                dashboard.ws.onopen = function(event) {
+                    console.log('✅ WebSocket connecté');
+                    updateConnectionStatus(true);
+                    if (dashboard.reconnectInterval) {
+                        clearInterval(dashboard.reconnectInterval);
+                        dashboard.reconnectInterval = null;
+                    }
+                    addLog('info', 'Connexion WebSocket établie');
+                    showToast('✅ Connecté au serveur', 'success', 2000);
+                    // Message de bienvenue dans le chat
+                    addChatMessage('bbia', 'Bonjour ! Je suis BBIA. Comment puis-je vous aider aujourd\'hui ?');
+                };
 
-            ws.onmessage = function(event) {
-                const data = JSON.parse(event.data);
-                handleMessage(data);
-            };
+                dashboard.ws.onmessage = function(event) {
+                    try {
+                        console.log('📥 [WS] Message reçu:', event.data);
+                        const data = JSON.parse(event.data);
+                        console.log('📥 [WS] Message parsé:', data);
+                        handleMessage(data);
+                    } catch (error) {
+                        console.error('❌ [WS] Erreur parsing:', error, 'Data:', event.data);
+                        addLog('error', `Erreur parsing: ${error.message}`);
+                    }
+                };
 
-            ws.onclose = function(event) {
-                console.log('WebSocket fermé');
+                dashboard.ws.onclose = function(event) {
+                    console.log('⚠️ WebSocket fermé', event.code, event.reason);
+                    updateConnectionStatus(false);
+                    addLog('warning', `Connexion fermée (code: ${event.code})`);
+
+                    // Reconnexion automatique avec backoff exponentiel
+                    if (!dashboard.reconnectInterval) {
+                        let delay = 1000;
+                        const maxDelay = 10000;
+                        const reconnect = () => {
+                            if (dashboard.ws && dashboard.ws.readyState === WebSocket.OPEN) {
+                                return;
+                            }
+                            console.log(`Tentative de reconnexion dans ${delay}ms...`);
+                            setTimeout(() => {
+                                connect();
+                                delay = Math.min(delay * 1.5, maxDelay);
+                            }, delay);
+                        };
+                        dashboard.reconnectInterval = setInterval(reconnect, delay);
+                    }
+                };
+
+                dashboard.ws.onerror = function(error) {
+                    console.error('❌ Erreur WebSocket:', error);
+                    addLog('error', 'Erreur WebSocket');
+                    updateConnectionStatus(false);
+                    showToast('❌ Erreur de connexion', 'error', 3000);
+                };
+            } catch (error) {
+                console.error('Erreur création WebSocket:', error);
+                addLog('error', `Erreur création WebSocket: ${error.message}`);
                 updateConnectionStatus(false);
-                addLog('error', 'Connexion WebSocket fermée');
-                showToast('⚠️ Reconnexion en cours...', 'warning');
-                reconnectInterval = setInterval(connect, 3000);
+            }
+        }
+
+        // Polling de statut régulier comme Reachy Mini (500ms)
+        async function startStatusPolling() {
+            if (dashboard.isPolling) return;
+            dashboard.isPolling = true;
+
+            const pollStatus = async () => {
+                try {
+                    const response = await fetch('/api/status');
+                    if (response.ok) {
+                        const data = await response.json();
+                        updateStatusFromAPI(data);
+                    }
+                } catch (error) {
+                    console.error('Erreur polling statut:', error);
+                }
             };
 
-            ws.onerror = function(error) {
-                console.error('Erreur WebSocket:', error);
-                addLog('error', 'Erreur WebSocket');
-                updateConnectionStatus(false);
-            };
+            // Polling initial
+            await pollStatus();
+
+            // Polling régulier toutes les 500ms comme Reachy Mini
+            dashboard.statusPollInterval = setInterval(pollStatus, 500);
+        }
+
+        function updateStatusFromAPI(data) {
+            // Mettre à jour le statut seulement si changé (comme Reachy Mini)
+            const previousState = JSON.stringify(dashboard.currentStatus);
+
+            if (data.robot_connected !== undefined) {
+                dashboard.currentStatus.robot.connected = data.robot_connected;
+            }
+            if (data.backend) {
+                dashboard.currentStatus.robot.backend = data.backend;
+            }
+            if (data.metrics) {
+                updateMetrics(data.metrics);
+            }
+
+            const currentState = JSON.stringify(dashboard.currentStatus);
+            if (previousState !== currentState) {
+                updateUIFromStatus();
+            }
+        }
+
+        function updateUIFromStatus() {
+            // Mise à jour UI seulement si nécessaire
+            const robotStatusEl = document.getElementById('robot-status');
+            if (robotStatusEl) {
+                robotStatusEl.textContent = dashboard.currentStatus.robot.connected ? '✅' : '❌';
+            }
+            const backendEl = document.getElementById('robot-backend');
+            if (backendEl) {
+                backendEl.textContent = dashboard.currentStatus.robot.backend || '-';
+            }
         }
 
         // Gestion des messages
@@ -1275,55 +1762,88 @@ ADVANCED_DASHBOARD_HTML = """
                     addLog(data.level, data.message);
                     break;
                 case 'chat_response':
-                    // Réponse chat de BBIA ou confirmation message user
-                    addChatMessage(data.sender, data.message);
+                    // Réponse chat de BBIA
+                    console.log('💬 [CHAT] Réponse reçue:', data);
+                    if (data.sender && data.message) {
+                        console.log(`✅ [CHAT] Ajout message ${data.sender}`);
+                        addChatMessage(data.sender, data.message);
+                        addLog('info', `Réponse ${data.sender} reçue`);
+                    } else {
+                        console.warn('⚠️ [CHAT] Données incomplètes:', data);
+                        addChatMessage('bbia', 'Désolé, je n\'ai pas pu traiter votre message correctement.');
+                    }
                     break;
             }
         }
 
         // Mise à jour du statut complet
         function updateCompleteStatus(data) {
+            if (!data) return;
+
             // Statut robot
-            document.getElementById('robot-status').textContent =
-                data.robot.connected ? '✅' : '❌';
-            document.getElementById('robot-backend').textContent =
-                data.robot.backend || '-';
+            const robotStatusEl = document.getElementById('robot-status');
+            if (robotStatusEl && data.robot) {
+                robotStatusEl.textContent = data.robot.connected ? '✅' : '❌';
+            }
+            const backendEl = document.getElementById('robot-backend');
+            if (backendEl && data.robot) {
+                backendEl.textContent = data.robot.backend || '-';
+            }
 
             // Statut émotion
-            document.getElementById('emotion-status').textContent =
-                getEmotionEmoji(data.bbia_modules.emotions.current);
+            const emotionStatusEl = document.getElementById('emotion-status');
+            if (emotionStatusEl && data.bbia_modules && data.bbia_modules.emotions) {
+                emotionStatusEl.textContent = getEmotionEmoji(data.bbia_modules.emotions.current);
+            }
 
             // Joints disponibles
-            updateJointControls(data.robot.joints);
+            if (data.robot && data.robot.joints) {
+                updateJointControls(data.robot.joints);
+            }
 
             // Vision
-            document.getElementById('objects-count').textContent =
-                data.bbia_modules.vision.objects;
-            document.getElementById('faces-count').textContent =
-                data.bbia_modules.vision.faces;
+            const objectsCountEl = document.getElementById('objects-count');
+            if (objectsCountEl && data.bbia_modules && data.bbia_modules.vision) {
+                objectsCountEl.textContent = data.bbia_modules.vision.objects || 0;
+            }
+            const facesCountEl = document.getElementById('faces-count');
+            if (facesCountEl && data.bbia_modules && data.bbia_modules.vision) {
+                facesCountEl.textContent = data.bbia_modules.vision.faces || 0;
+            }
         }
 
-        // Mise à jour des métriques (optimisée avec throttling)
+        // Mise à jour des métriques (optimisée avec throttling) - Style Reachy Mini
         function updateMetrics(metrics) {
+            if (!metrics) return;
+
             const now = Date.now();
-            if (now - lastMetricsUpdate < METRICS_UPDATE_INTERVAL) {
+            if (now - dashboard.lastMetricsUpdate < dashboard.METRICS_UPDATE_INTERVAL) {
                 return; // Skip si trop tôt
             }
-            lastMetricsUpdate = now;
+            dashboard.lastMetricsUpdate = now;
 
             // Utiliser requestAnimationFrame pour des mises à jour fluides
             requestAnimationFrame(() => {
                 // Statut temps réel avec animation
-                updateValueWithAnimation('latency-status', Math.round(metrics.performance.latency_ms) + 'ms');
-                updateValueWithAnimation('fps-status', Math.round(metrics.performance.fps));
-                updateValueWithAnimation('objects-status', metrics.vision.objects_detected);
-                updateValueWithAnimation('faces-status', metrics.vision.faces_detected);
+                if (metrics.performance) {
+                    updateValueWithAnimation('latency-status', Math.round(metrics.performance.latency_ms || 0) + 'ms');
+                    updateValueWithAnimation('fps-status', Math.round(metrics.performance.fps || 0));
+                    updateValueWithAnimation('cpu-metric', Math.round(metrics.performance.cpu_usage || 0) + '%');
+                    updateValueWithAnimation('memory-metric', Math.round(metrics.performance.memory_usage || 0) + '%');
+                }
 
-                // Métriques détaillées
-                updateValueWithAnimation('cpu-metric', Math.round(metrics.performance.cpu_usage) + '%');
-                updateValueWithAnimation('memory-metric', Math.round(metrics.performance.memory_usage) + '%');
-                updateValueWithAnimation('volume-metric', Math.round(metrics.audio.volume_level * 100) + '%');
-                updateValueWithAnimation('intensity-metric', Math.round(metrics.emotion_intensity * 100) + '%');
+                if (metrics.vision) {
+                    updateValueWithAnimation('objects-status', metrics.vision.objects_detected || 0);
+                    updateValueWithAnimation('faces-status', metrics.vision.faces_detected || 0);
+                }
+
+                if (metrics.audio) {
+                    updateValueWithAnimation('volume-metric', Math.round((metrics.audio.volume_level || 0) * 100) + '%');
+                }
+
+                if (metrics.emotion_intensity !== undefined) {
+                    updateValueWithAnimation('intensity-metric', Math.round(metrics.emotion_intensity * 100) + '%');
+                }
 
                 // Mise à jour du graphique
                 updateChart(metrics);
@@ -1346,32 +1866,38 @@ ADVANCED_DASHBOARD_HTML = """
 
         // Initialisation du graphique
         function initializeChart() {
-            const ctx = document.getElementById('metricsChart').getContext('2d');
-            metricsChart = new Chart(ctx, {
+            const canvas = document.getElementById('metricsChart');
+            if (!canvas) return;
+
+            const ctx = canvas.getContext('2d');
+            dashboard.metricsChart = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: metricsData.labels,
+                    labels: dashboard.metricsData.labels,
                     datasets: [
                         {
                             label: 'Latence (ms)',
-                            data: metricsData.latency,
-                            borderColor: '#00cccc',
-                            backgroundColor: 'rgba(0, 204, 204, 0.1)',
-                            tension: 0.4
+                            data: dashboard.metricsData.latency,
+                            borderColor: '#4D4D4D',
+                            backgroundColor: 'rgba(77, 77, 77, 0.1)',
+                            tension: 0.4,
+                            fill: true
                         },
                         {
                             label: 'FPS',
-                            data: metricsData.fps,
-                            borderColor: '#00a0a0',
-                            backgroundColor: 'rgba(0, 160, 160, 0.1)',
-                            tension: 0.4
+                            data: dashboard.metricsData.fps,
+                            borderColor: '#008181',
+                            backgroundColor: 'rgba(0, 129, 129, 0.1)',
+                            tension: 0.4,
+                            fill: true
                         },
                         {
                             label: 'CPU (%)',
-                            data: metricsData.cpu,
-                            borderColor: '#008181',
-                            backgroundColor: 'rgba(0, 129, 129, 0.1)',
-                            tension: 0.4
+                            data: dashboard.metricsData.cpu,
+                            borderColor: '#4D4D4D',
+                            backgroundColor: 'rgba(77, 77, 77, 0.15)',
+                            tension: 0.4,
+                            fill: true
                         }
                     ]
                 },
@@ -1382,25 +1908,28 @@ ADVANCED_DASHBOARD_HTML = """
                         y: {
                             beginAtZero: true,
                             grid: {
-                                color: 'rgba(255, 255, 255, 0.1)'
+                                color: 'rgba(77, 77, 77, 0.1)'
                             },
                             ticks: {
-                                color: 'white'
+                                color: '#4D4D4D'
                             }
                         },
                         x: {
                             grid: {
-                                color: 'rgba(255, 255, 255, 0.1)'
+                                color: 'rgba(77, 77, 77, 0.1)'
                             },
                             ticks: {
-                                color: 'white'
+                                color: '#4D4D4D'
                             }
                         }
                     },
                     plugins: {
                         legend: {
                             labels: {
-                                color: 'white'
+                                color: '#4D4D4D',
+                                font: {
+                                    weight: '500'
+                                }
                             }
                         }
                     }
@@ -1408,31 +1937,31 @@ ADVANCED_DASHBOARD_HTML = """
             });
         }
 
-        // Mise à jour du graphique (optimisée)
+        // Mise à jour du graphique (optimisée) - Style professionnel
         function updateChart(metrics) {
-            if (!metricsChart) return;
+            if (!dashboard.metricsChart || !metrics || !metrics.performance) return;
 
             const now = new Date().toLocaleTimeString();
 
             // Ajouter nouvelles données
-            metricsData.labels.push(now);
-            metricsData.latency.push(metrics.performance.latency_ms);
-            metricsData.fps.push(metrics.performance.fps);
-            metricsData.cpu.push(metrics.performance.cpu_usage);
-            metricsData.memory.push(metrics.performance.memory_usage);
+            dashboard.metricsData.labels.push(now);
+            dashboard.metricsData.latency.push(metrics.performance.latency_ms || 0);
+            dashboard.metricsData.fps.push(metrics.performance.fps || 0);
+            dashboard.metricsData.cpu.push(metrics.performance.cpu_usage || 0);
+            dashboard.metricsData.memory.push(metrics.performance.memory_usage || 0);
 
             // Limiter à 30 points pour plus de données
             const maxPoints = 30;
-            if (metricsData.labels.length > maxPoints) {
-                metricsData.labels.shift();
-                metricsData.latency.shift();
-                metricsData.fps.shift();
-                metricsData.cpu.shift();
-                metricsData.memory.shift();
+            if (dashboard.metricsData.labels.length > maxPoints) {
+                dashboard.metricsData.labels.shift();
+                dashboard.metricsData.latency.shift();
+                dashboard.metricsData.fps.shift();
+                dashboard.metricsData.cpu.shift();
+                dashboard.metricsData.memory.shift();
             }
 
             // Mettre à jour le graphique avec animation fluide
-            metricsChart.update({
+            dashboard.metricsChart.update({
                 duration: 0, // Pas d'animation pour performance
                 lazy: true
             });
@@ -1467,8 +1996,8 @@ ADVANCED_DASHBOARD_HTML = """
         }
 
         // Fonctions de contrôle avec feedback visuel
-        function setEmotion(emotion) {
-            const button = event?.target || document.querySelector(`button[onclick*="setEmotion('${emotion}')"]`);
+        function setEmotion(emotion, buttonElement) {
+            const button = buttonElement || (window.event && window.event.target) || document.querySelector(`button[onclick*="setEmotion('${emotion}')"]`);
             if (button) {
                 button.classList.add('loading');
                 setTimeout(() => button.classList.remove('loading'), 500);
@@ -1477,8 +2006,8 @@ ADVANCED_DASHBOARD_HTML = """
             addLog('info', `Émotion définie: ${emotion}`);
         }
 
-        function sendAction(action) {
-            const button = event?.target || document.querySelector(`button[onclick*="sendAction('${action}')"]`);
+        function sendAction(action, buttonElement) {
+            const button = buttonElement || (window.event && window.event.target) || document.querySelector(`button[onclick*="sendAction('${action}')"]`);
             if (button) {
                 button.classList.add('loading');
                 setTimeout(() => button.classList.remove('loading'), 500);
@@ -1487,8 +2016,8 @@ ADVANCED_DASHBOARD_HTML = """
             addLog('info', `Action envoyée: ${action}`);
         }
 
-        function runBehavior(behavior) {
-            const button = event?.target || document.querySelector(`button[onclick*="runBehavior('${behavior}')"]`);
+        function runBehavior(behavior, buttonElement) {
+            const button = buttonElement || (window.event && window.event.target) || document.querySelector(`button[onclick*="runBehavior('${behavior}')"]`);
             if (button) {
                 button.classList.add('loading');
                 setTimeout(() => button.classList.remove('loading'), 1000);
@@ -1525,33 +2054,36 @@ ADVANCED_DASHBOARD_HTML = """
                 delete jointUpdateTimeouts[joint];
             }, 100);
         }
+        window.setJointPosition = setJointPosition;
 
         function toggleVision() {
             sendCommand('vision', 'toggle');
             addLog('info', 'Vision basculée');
         }
+        window.toggleVision = toggleVision;
 
         function scanEnvironment() {
             sendCommand('vision', 'scan');
             addLog('info', 'Scan environnement lancé');
         }
+        window.scanEnvironment = scanEnvironment;
 
         function trackObject() {
             sendCommand('vision', 'track');
             addLog('info', 'Suivi objet activé');
         }
+        window.trackObject = trackObject;
 
         // Fonctions utilitaires
         function updateConnectionStatus(connected) {
             const indicator = document.getElementById('connection-indicator');
             const text = document.getElementById('connection-text');
 
-            if (connected) {
-                indicator.className = 'connection-indicator connected';
-                text.textContent = 'Connecté';
-            } else {
-                indicator.className = 'connection-indicator disconnected';
-                text.textContent = 'Déconnecté';
+            if (indicator) {
+                indicator.className = 'connection-indicator ' + (connected ? 'connected' : 'disconnected');
+            }
+            if (text) {
+                text.textContent = connected ? 'Connecté' : 'Déconnecté';
             }
         }
 
@@ -1602,23 +2134,62 @@ ADVANCED_DASHBOARD_HTML = """
             }
         }
 
-        // Toast notifications
-        function showToast(message, type = 'info') {
+        // Toast notifications - Système professionnel inspiré de Reachy Mini
+        const toastQueue = [];
+        let toastContainer = null;
+
+        function initToastContainer() {
+            if (!toastContainer) {
+                toastContainer = document.createElement('div');
+                toastContainer.id = 'toast-container';
+                toastContainer.style.cssText = 'position: fixed; top: 20px; right: 20px; z-index: 10000; display: flex; flex-direction: column; gap: 10px; pointer-events: none;';
+                document.body.appendChild(toastContainer);
+            }
+        }
+
+        function showToast(message, type = 'info', duration = 3000) {
+            initToastContainer();
+
             const toast = document.createElement('div');
             toast.className = `toast ${type}`;
             toast.textContent = message;
-            document.body.appendChild(toast);
-            
-            setTimeout(() => {
-                toast.style.transition = 'all 0.3s ease';
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateX(120%)';
+            toastContainer.appendChild(toast);
+
+            // Animation d'entrée
+            requestAnimationFrame(() => {
+                toast.style.opacity = '1';
+                toast.style.transform = 'translateX(0)';
+            });
+
+            // Auto-dismiss
+            const timeout = setTimeout(() => {
                 toast.style.opacity = '0';
-                toast.style.transform = 'translateX(100%)';
-                setTimeout(() => toast.remove(), 300);
-            }, 3000);
+                toast.style.transform = 'translateX(120%)';
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        toast.parentNode.removeChild(toast);
+                    }
+                }, 300);
+            }, duration);
+
+            // Permettre de fermer manuellement
+            toast.style.cursor = 'pointer';
+            toast.addEventListener('click', () => {
+                clearTimeout(timeout);
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(120%)';
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        toast.parentNode.removeChild(toast);
+                    }
+                }, 300);
+            });
         }
 
         function sendCommand(type, value) {
-            if (ws && ws.readyState === WebSocket.OPEN) {
+            if (dashboard.ws && dashboard.ws.readyState === WebSocket.OPEN) {
                 try {
                     const command = {
                         type: 'command',
@@ -1626,42 +2197,113 @@ ADVANCED_DASHBOARD_HTML = """
                         value: value,
                         timestamp: new Date().toISOString()
                     };
-                    ws.send(JSON.stringify(command));
-                    showToast(`✅ Commande ${type} envoyée`, 'success');
+                    console.log('Envoi commande:', command);
+                    dashboard.ws.send(JSON.stringify(command));
+                    showToast(`✅ Commande ${type} envoyée`, 'success', 2000);
                 } catch (error) {
                     console.error('Erreur envoi commande:', error);
                     addLog('error', `Erreur envoi commande: ${error.message}`);
-                    showToast(`❌ Erreur: ${error.message}`, 'error');
+                    showToast(`❌ Erreur: ${error.message}`, 'error', 4000);
                 }
             } else {
-                addLog('error', 'WebSocket non connecté - tentative de reconnexion...');
-                showToast('⚠️ Reconnexion en cours...', 'warning');
-                connect();
+                console.warn('WebSocket non connecté pour commande:', type, value);
+                addLog('warning', 'WebSocket non connecté - tentative de reconnexion...');
+                showToast('⚠️ Reconnexion en cours...', 'warning', 3000);
+                if (!dashboard.reconnectInterval) {
+                    connect();
+                }
             }
         }
+        window.sendCommand = sendCommand;
 
-        // Fonctions Chat BBIA
+        // Fonctions Chat BBIA - Version simplifiée et robuste
         function sendChatMessage() {
+            console.log('🔵 [CHAT] sendChatMessage appelé');
+
+            // Récupérer l'input
             const input = document.getElementById('chat-input');
-            if (!input) return;
+            if (!input) {
+                console.error('❌ [CHAT] Input chat non trouvé');
+                alert('Erreur: champ de saisie introuvable');
+                return;
+            }
+
             const message = input.value.trim();
-            if (message && ws && ws.readyState === WebSocket.OPEN) {
-                const command = {
+            if (!message) {
+                console.warn('⚠️ [CHAT] Message vide');
+                return;
+            }
+
+            console.log('📤 [CHAT] Message:', message);
+            console.log('🔌 [CHAT] WebSocket existe?', !!dashboard.ws);
+            console.log('🔌 [CHAT] WebSocket state:', dashboard.ws ? dashboard.ws.readyState : 'null');
+
+            // Vérifier WebSocket
+            if (!dashboard.ws) {
+                console.error('❌ [CHAT] WebSocket non initialisé - Reconnexion...');
+                alert('WebSocket non connecté. Reconnexion en cours...');
+                connect();
+                // Réessayer après 1 seconde
+                setTimeout(() => {
+                    if (dashboard.ws && dashboard.ws.readyState === WebSocket.OPEN) {
+                        sendChatMessage();
+                    }
+                }, 1000);
+                return;
+            }
+
+            // Vérifier état WebSocket
+            if (dashboard.ws.readyState !== WebSocket.OPEN) {
+                console.error('❌ [CHAT] WebSocket pas ouvert, état:', dashboard.ws.readyState);
+                alert('WebSocket non connecté. Reconnexion...');
+                connect();
+                setTimeout(() => {
+                    if (dashboard.ws && dashboard.ws.readyState === WebSocket.OPEN) {
+                        sendChatMessage();
+                    }
+                }, 1000);
+                return;
+            }
+
+            // Envoyer le message
+            try {
+                const chatMessage = {
                     type: 'chat',
                     message: message,
                     timestamp: new Date().toISOString()
                 };
-                ws.send(JSON.stringify(command));
+
+                console.log('📨 [CHAT] Envoi:', JSON.stringify(chatMessage));
+                dashboard.ws.send(JSON.stringify(chatMessage));
+                console.log('✅ [CHAT] Message envoyé avec succès');
+
+                // Afficher immédiatement le message utilisateur
                 addChatMessage('user', message);
+
+                // Vider l'input
                 input.value = '';
-            } else {
-                addLog('warning', 'Impossible d\'envoyer le message');
+                input.focus();
+
+                addLog('info', `Message envoyé: ${message.substring(0, 30)}...`);
+
+            } catch (error) {
+                console.error('❌ [CHAT] Erreur:', error);
+                alert('Erreur envoi: ' + error.message);
+                addLog('error', `Erreur: ${error.message}`);
             }
         }
 
+        // Rendre la fonction accessible globalement
+        window.sendChatMessage = sendChatMessage;
+        console.log('✅ Fonction sendChatMessage rendue globale');
+
         function addChatMessage(sender, message) {
+            console.log('addChatMessage appelé:', sender, message);
             const container = document.getElementById('chat-messages');
-            if (!container) return;
+            if (!container) {
+                console.error('Container chat-messages non trouvé');
+                return;
+            }
 
             const entry = document.createElement('div');
             entry.className = `chat-message chat-${sender}`;
@@ -1700,10 +2342,14 @@ ADVANCED_DASHBOARD_HTML = """
             }
         }
 
+        // Rendre la fonction accessible globalement
+        window.addChatMessage = addChatMessage;
+
         // Fonctions Troubleshooting avec feedback visuel
-        async function runAllChecks() {
+        async function runAllChecks(buttonElement) {
             const resultsDiv = document.getElementById('troubleshooting-results');
-            const button = event?.target;
+            if (!resultsDiv) return;
+            const button = buttonElement || (window.event && window.event.target);
 
             if (button) {
                 button.disabled = true;
@@ -1731,10 +2377,12 @@ ADVANCED_DASHBOARD_HTML = """
                 }
             }
         }
+        window.runAllChecks = runAllChecks;
 
-        async function testCamera() {
+        async function testCamera(buttonElement) {
             const resultsDiv = document.getElementById('troubleshooting-results');
-            const button = event?.target;
+            if (!resultsDiv) return;
+            const button = buttonElement || (window.event && window.event.target);
 
             if (button) {
                 button.disabled = true;
@@ -1773,10 +2421,12 @@ ADVANCED_DASHBOARD_HTML = """
                 }
             }
         }
+        window.testCamera = testCamera;
 
-        async function testAudio() {
+        async function testAudio(buttonElement) {
             const resultsDiv = document.getElementById('troubleshooting-results');
-            const button = event?.target;
+            if (!resultsDiv) return;
+            const button = buttonElement || (window.event && window.event.target);
 
             if (button) {
                 button.disabled = true;
@@ -1815,10 +2465,12 @@ ADVANCED_DASHBOARD_HTML = """
                 }
             }
         }
+        window.testAudio = testAudio;
 
-        async function testNetwork() {
+        async function testNetwork(buttonElement) {
             const resultsDiv = document.getElementById('troubleshooting-results');
-            const button = event?.target;
+            if (!resultsDiv) return;
+            const button = buttonElement || (window.event && window.event.target);
 
             if (button) {
                 button.disabled = true;
@@ -1854,9 +2506,11 @@ ADVANCED_DASHBOARD_HTML = """
                 }
             }
         }
+        window.testNetwork = testNetwork;
 
         function displayTroubleshootingResults(results) {
             const resultsDiv = document.getElementById('troubleshooting-results');
+            if (!resultsDiv || !results) return;
             let html = '';
 
             // Résumé
@@ -2097,6 +2751,78 @@ if FASTAPI_AVAILABLE:
             logger.error(f"Erreur récupération docs: {e}")
             return {"success": False, "error": str(e)}
 
+    @app.get("/api/camera/stream")
+    async def camera_stream():
+        """Stream vidéo MJPEG depuis la caméra."""
+        from fastapi.responses import StreamingResponse
+
+        async def generate_frames():
+            try:
+                import cv2
+                import numpy as np
+            except ImportError:
+                logger.warning("OpenCV non disponible pour stream vidéo")
+                return
+
+            vision = advanced_websocket_manager.vision
+            frame_count = 0
+            while True:
+                try:
+                    frame = None
+                    if vision:
+                        try:
+                            # Utiliser la méthode privée _capture_image_from_camera
+                            # qui gère SDK camera et OpenCV
+                            frame = vision._capture_image_from_camera()
+                        except Exception as e:
+                            logger.debug(f"Erreur capture frame: {e}")
+
+                    if frame is None:
+                        # Frame de test avec texte si pas de caméra
+                        frame = np.zeros((480, 640, 3), dtype=np.uint8)
+                        # Ajouter texte "Caméra non disponible"
+                        try:
+                            cv2.putText(
+                                frame,
+                                "Camera not available",
+                                (50, 240),
+                                cv2.FONT_HERSHEY_SIMPLEX,
+                                1,
+                                (255, 255, 255),
+                                2,
+                            )
+                        except Exception:
+                            pass
+
+                    # Encoder en JPEG
+                    success, buffer = cv2.imencode(
+                        ".jpg", frame, [cv2.IMWRITE_JPEG_QUALITY, 85]
+                    )
+                    if not success:
+                        logger.warning("Échec encodage JPEG")
+                        await asyncio.sleep(0.1)
+                        continue
+
+                    frame_bytes = buffer.tobytes()
+
+                    yield (
+                        b"--frame\r\n"
+                        b"Content-Type: image/jpeg\r\n\r\n" + frame_bytes + b"\r\n"
+                    )
+
+                    frame_count += 1
+                    if frame_count % 30 == 0:
+                        logger.debug(f"Stream vidéo: {frame_count} frames envoyées")
+
+                    await asyncio.sleep(0.033)  # ~30 FPS
+                except Exception as e:
+                    logger.error(f"Erreur stream vidéo: {e}", exc_info=True)
+                    await asyncio.sleep(1)
+
+        return StreamingResponse(
+            generate_frames(), media_type="multipart/x-mixed-replace; boundary=frame"
+        )
+
     @app.websocket("/ws")
     async def websocket_endpoint(websocket: WebSocket):
         """Endpoint WebSocket pour communication temps réel."""
@@ -2109,14 +2835,23 @@ if FASTAPI_AVAILABLE:
                 message = json.loads(data)
 
                 # Traiter commande ou chat
+                logger.info(f"📨 [WS] Message reçu, type: {message.get('type')}")
                 if message.get("type") == "command":
+                    logger.info("🎯 [WS] Traitement commande")
                     await handle_advanced_robot_command(message)
                 elif message.get("type") == "chat":
+                    logger.info("💬 [WS] Traitement chat")
                     await handle_chat_message(message, websocket)
+                else:
+                    logger.warning(
+                        f"⚠️ [WS] Type de message inconnu: {message.get('type')}"
+                    )
 
         except WebSocketDisconnect:
+            logger.info("🔌 WebSocket déconnecté normalement")
             advanced_websocket_manager.disconnect(websocket)
         except Exception as e:
+            logger.error(f"❌ Erreur WebSocket: {e}", exc_info=True)
             logger.error(f"❌ Erreur WebSocket avancé: {e}")
             advanced_websocket_manager.disconnect(websocket)
 
@@ -2128,22 +2863,42 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
         value = command_data.get("value")
 
         if not advanced_websocket_manager.robot:
-            # Initialiser le robot si nécessaire
-            advanced_websocket_manager.robot = RobotFactory.create_backend(
-                advanced_websocket_manager.robot_backend,
-            )
-            if advanced_websocket_manager.robot:
-                connected = advanced_websocket_manager.robot.connect()
-                if connected:
-                    await advanced_websocket_manager.send_log_message(
-                        "info",
-                        f"Robot {advanced_websocket_manager.robot_backend} connecté",
-                    )
-                else:
-                    await advanced_websocket_manager.send_log_message(
-                        "warning",
-                        f"Robot {advanced_websocket_manager.robot_backend} en mode simulation",
-                    )
+            # Initialiser le robot si nécessaire avec lock
+            logger.warning("⚠️ Robot non initialisé lors de la commande - initialisation forcée")
+            with advanced_websocket_manager._robot_init_lock:
+                # Double-check pattern
+                if not advanced_websocket_manager.robot:
+                    try:
+                        logger.info(f"🔧 Initialisation robot {advanced_websocket_manager.robot_backend} (forcé)...")
+                        advanced_websocket_manager.robot = RobotFactory.create_backend(
+                            advanced_websocket_manager.robot_backend,
+                        )
+                        if advanced_websocket_manager.robot:
+                            connected = advanced_websocket_manager.robot.connect()
+                            if connected:
+                                logger.info(f"✅ Robot {advanced_websocket_manager.robot_backend} connecté (forcé)")
+                                await advanced_websocket_manager.send_log_message(
+                                    "info",
+                                    f"✅ Robot {advanced_websocket_manager.robot_backend} connecté",
+                                )
+                            else:
+                                logger.warning("⚠️ Robot connect() a retourné False")
+                                await advanced_websocket_manager.send_log_message(
+                                    "warning",
+                                    f"⚠️ Robot {advanced_websocket_manager.robot_backend} en mode simulation",
+                                )
+                        else:
+                            logger.error("❌ RobotFactory.create_backend a retourné None")
+                            await advanced_websocket_manager.send_log_message(
+                                "error",
+                                "❌ Impossible de créer le robot",
+                            )
+                    except Exception as e:
+                        logger.error(f"❌ Erreur initialisation robot: {e}", exc_info=True)
+                        await advanced_websocket_manager.send_log_message(
+                            "error",
+                            f"❌ Erreur robot: {e}",
+                        )
 
         if command_type == "emotion":
             # Définir émotion
@@ -2160,24 +2915,47 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                 # Type narrowing après vérification isinstance
                 if not isinstance(emotion, str):
                     raise TypeError(f"Expected emotion to be str, got {type(emotion)}")
-                success = advanced_websocket_manager.robot.set_emotion(
-                    emotion,
-                    intensity,
-                )
-                if success:
-                    await advanced_websocket_manager.send_log_message(
-                        "info",
-                        f"Émotion définie: {emotion}",
+                try:
+                    logger.info(
+                        f"🎭 [CMD] Exécution set_emotion: {emotion} (intensité: {intensity})"
                     )
-                else:
+                    success = advanced_websocket_manager.robot.set_emotion(
+                        emotion,
+                        intensity,
+                    )
+                    logger.info(f"🎭 [CMD] set_emotion retourné: {success}")
+
+                    # Faire plusieurs steps pour que le changement soit visible
+                    if hasattr(advanced_websocket_manager.robot, "step"):
+                        for _ in range(5):
+                            try:
+                                advanced_websocket_manager.robot.step()
+                            except Exception:
+                                pass
+
+                    if success:
+                        logger.info(f"✅ [CMD] Émotion {emotion} appliquée avec succès")
+                        await advanced_websocket_manager.send_log_message(
+                            "info",
+                            f"✅ Émotion définie: {emotion} (intensité: {intensity})",
+                        )
+                    else:
+                        logger.warning("⚠️ [CMD] set_emotion a retourné False")
+                        await advanced_websocket_manager.send_log_message(
+                            "error",
+                            f"❌ Échec émotion: {emotion}",
+                        )
+                except Exception as e:
+                    logger.error(f"❌ [CMD] Erreur set_emotion: {e}", exc_info=True)
                     await advanced_websocket_manager.send_log_message(
                         "error",
-                        f"Échec émotion: {emotion}",
+                        f"❌ Erreur émotion: {e}",
                     )
             else:
+                # Mode simulation - émotion simulée
                 await advanced_websocket_manager.send_log_message(
-                    "error",
-                    "Robot non connecté",
+                    "info",
+                    f"ℹ️ Émotion simulée: {emotion} (robot non initialisé)",
                 )
 
         elif command_type == "action":
@@ -2195,30 +2973,65 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                 raise RuntimeError("Robot is None after check")
             robot = advanced_websocket_manager.robot
 
-            if action == "look_at":
-                success = robot.look_at(0.5, 0.0, 0.0)
-            elif action == "greet":
-                success = robot.run_behavior("greeting", 3.0)
-            elif action == "wake_up":
-                success = robot.run_behavior("wake_up", 2.0)
-            elif action == "sleep":
-                success = robot.run_behavior("goto_sleep", 2.0)
-            elif action == "nod":
-                success = robot.run_behavior("nod", 1.0)
-            elif action == "stop":
-                success = True  # Arrêt immédiat
-            else:
-                success = False
+            # Initialiser success avant la fonction async
+            success = False
+
+            # Exécuter les actions de manière asynchrone pour ne pas bloquer
+            async def execute_action():
+                nonlocal success
+                try:
+                    if action == "look_at":
+                        success = robot.look_at(0.5, 0.0, 0.0)
+                    elif action == "greet":
+                        # Exécuter en arrière-plan
+                        await asyncio.to_thread(robot.run_behavior, "greeting", 3.0)
+                        success = True
+                    elif action == "wake_up":
+                        await asyncio.to_thread(robot.run_behavior, "wake_up", 2.0)
+                        success = True
+                    elif action == "sleep":
+                        await asyncio.to_thread(robot.run_behavior, "goto_sleep", 2.0)
+                        success = True
+                    elif action == "nod":
+                        await asyncio.to_thread(robot.run_behavior, "nod", 1.0)
+                        success = True
+                    elif action == "stop":
+                        # Arrêter tous les mouvements en cours
+                        # Remettre tous les joints à leur position neutre
+                        for joint in robot.get_available_joints():
+                            try:
+                                robot.set_joint_pos(joint, 0.0)
+                            except Exception:
+                                pass
+                        robot.step()
+                        success = True
+                    else:
+                        success = False
+                except Exception as e:
+                    logger.error(f"Erreur exécution action {action}: {e}")
+                    success = False
+
+            await execute_action()
+
+            # Faire plusieurs steps pour que l'action soit visible
+            if advanced_websocket_manager.robot and hasattr(
+                advanced_websocket_manager.robot, "step"
+            ):
+                for _ in range(10):  # 10 steps pour que l'action soit visible
+                    try:
+                        advanced_websocket_manager.robot.step()
+                    except Exception:
+                        pass
 
             if success:
                 await advanced_websocket_manager.send_log_message(
                     "info",
-                    f"Action exécutée: {action}",
+                    f"✅ Action exécutée: {action}",
                 )
             else:
                 await advanced_websocket_manager.send_log_message(
                     "error",
-                    f"Échec action: {action}",
+                    f"❌ Échec action: {action}",
                 )
 
         elif command_type == "behavior":
@@ -2232,9 +3045,10 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                 return
 
             if not advanced_websocket_manager.robot:
+                # Mode simulation - comportement simulé
                 await advanced_websocket_manager.send_log_message(
-                    "error",
-                    "Robot non connecté",
+                    "info",
+                    f"Comportement simulé: {behavior} (mode simulation MuJoCo)",
                 )
                 return
 
@@ -2245,16 +3059,31 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                 raise RuntimeError("Robot is None after check")
             robot = advanced_websocket_manager.robot
 
-            success = robot.run_behavior(behavior, 5.0)
+            # Exécuter le comportement de manière asynchrone
+            try:
+                success = await asyncio.to_thread(robot.run_behavior, behavior, 5.0)
+                # Faire plusieurs steps pour que le comportement soit visible
+                if hasattr(robot, "step"):
+                    for _ in range(
+                        50
+                    ):  # 50 steps pour que le comportement soit visible
+                        try:
+                            robot.step()
+                        except Exception:
+                            pass
+            except Exception as e:
+                logger.error(f"Erreur exécution comportement {behavior}: {e}")
+                success = False
+
             if success:
                 await advanced_websocket_manager.send_log_message(
                     "info",
-                    f"Comportement lancé: {behavior}",
+                    f"✅ Comportement lancé: {behavior}",
                 )
             else:
                 await advanced_websocket_manager.send_log_message(
                     "error",
-                    f"Échec comportement: {behavior}",
+                    f"❌ Échec comportement: {behavior}",
                 )
 
         elif command_type == "joint":
@@ -2268,9 +3097,12 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                 return
 
             if not advanced_websocket_manager.robot:
+                # Mode simulation - joint simulé
+                joint = joint_data.get("joint")
+                position = joint_data.get("position", 0.0)
                 await advanced_websocket_manager.send_log_message(
-                    "error",
-                    "Robot non connecté",
+                    "info",
+                    f"Joint simulé: {joint} = {position} (mode simulation MuJoCo)",
                 )
                 return
 
@@ -2283,16 +3115,36 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
 
             joint = joint_data.get("joint")
             position = joint_data.get("position", 0.0)
-            success = robot.set_joint_pos(joint, position)
-            if success:
-                await advanced_websocket_manager.send_log_message(
-                    "info",
-                    f"Joint {joint} = {position}",
-                )
-            else:
+            try:
+                logger.info(f"🔧 Exécution set_joint_pos: {joint} = {position}")
+                success = robot.set_joint_pos(joint, position)
+                logger.info(f"🔧 set_joint_pos retourné: {success}")
+
+                # Faire plusieurs steps pour que le joint bouge vraiment
+                if hasattr(robot, "step"):
+                    for _ in range(5):
+                        try:
+                            robot.step()
+                        except Exception:
+                            pass
+
+                if success:
+                    logger.info(f"✅ Joint {joint} = {position:.2f} appliqué")
+                    await advanced_websocket_manager.send_log_message(
+                        "info",
+                        f"✅ Joint {joint} = {position:.2f}",
+                    )
+                else:
+                    logger.warning(f"⚠️ set_joint_pos a retourné False pour {joint}")
+                    await advanced_websocket_manager.send_log_message(
+                        "error",
+                        f"❌ Échec joint {joint}",
+                    )
+            except Exception as e:
+                logger.error(f"❌ Erreur set_joint_pos: {e}", exc_info=True)
                 await advanced_websocket_manager.send_log_message(
                     "error",
-                    f"Échec joint {joint}",
+                    f"❌ Erreur joint {joint}: {e}",
                 )
 
         elif command_type == "vision":
@@ -2307,11 +3159,22 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                     f"Vision: {'activée' if advanced_websocket_manager.vision.camera_active else 'désactivée'}",
                 )
             elif vision_action == "scan":
-                objects = advanced_websocket_manager.vision.scan_environment()
-                await advanced_websocket_manager.send_log_message(
-                    "info",
-                    f"Scan: {len(objects.get('objects', []))} objets détectés",
-                )
+                try:
+                    # Exécuter le scan de manière asynchrone
+                    objects = await asyncio.to_thread(
+                        advanced_websocket_manager.vision.scan_environment
+                    )
+                    num_objects = len(objects.get("objects", []))
+                    await advanced_websocket_manager.send_log_message(
+                        "info",
+                        f"Scan: {num_objects} objets détectés",
+                    )
+                except Exception as e:
+                    logger.error(f"Erreur scan environnement: {e}")
+                    await advanced_websocket_manager.send_log_message(
+                        "error",
+                        f"Erreur scan: {e}",
+                    )
             elif vision_action == "track":
                 advanced_websocket_manager.vision.tracking_active = (
                     not advanced_websocket_manager.vision.tracking_active
@@ -2338,42 +3201,58 @@ async def handle_chat_message(message_data: dict[str, Any], websocket: WebSocket
 
     """
     try:
+        logger.info(f"📨 [CHAT] Message reçu: {message_data}")
         user_message = message_data.get("message", "")
-        timestamp = message_data.get("timestamp", "")
+        logger.info(f"📨 [CHAT] Texte extrait: '{user_message}'")
 
         if not user_message:
+            logger.warning("Message chat vide reçu")
             await advanced_websocket_manager.send_log_message(
                 "error",
                 "Message chat vide",
             )
+            # Envoyer quand même une réponse d'erreur
+            error_response = {
+                "type": "chat_response",
+                "sender": "bbia",
+                "message": "Désolé, votre message est vide. Pouvez-vous réessayer ?",
+                "timestamp": datetime.now().isoformat(),
+            }
+            await websocket.send_text(json.dumps(error_response))
             return
 
         # Importer BBIAHuggingFace et initialiser une seule fois
-        if not hasattr(advanced_websocket_manager, "bbia_hf"):
+        if (
+            not hasattr(advanced_websocket_manager, "bbia_hf")
+            or advanced_websocket_manager.bbia_hf is None
+        ):
             try:
                 from bbia_sim.bbia_huggingface import BBIAHuggingFace
 
                 advanced_websocket_manager.bbia_hf = BBIAHuggingFace()
                 logger.info("🤗 Module BBIAHuggingFace initialisé pour chat")
-            except ImportError:
-                logger.warning("⚠️ Hugging Face non disponible, chat limité")
+            except ImportError as e:
+                logger.warning(f"⚠️ Hugging Face non disponible: {e}")
+                advanced_websocket_manager.bbia_hf = None
+            except Exception as e:
+                logger.error(f"❌ Erreur initialisation BBIAHuggingFace: {e}")
                 advanced_websocket_manager.bbia_hf = None
 
-        # Envoyer message utilisateur
-        chat_response = {
-            "type": "chat_response",
-            "sender": "user",
-            "message": user_message,
-            "timestamp": timestamp,
-        }
-        await websocket.send_text(json.dumps(chat_response))
+        # NE PAS renvoyer le message utilisateur (déjà affiché côté client)
+        # Générer directement la réponse BBIA
 
         # Générer réponse BBIA
         if (
             hasattr(advanced_websocket_manager, "bbia_hf")
-            and advanced_websocket_manager.bbia_hf
+            and advanced_websocket_manager.bbia_hf is not None
         ):
-            bbia_response = advanced_websocket_manager.bbia_hf.chat(user_message)
+            try:
+                logger.info(f"🤖 Génération réponse BBIA pour: {user_message[:50]}...")
+                bbia_response = advanced_websocket_manager.bbia_hf.chat(user_message)
+                logger.info(f"✅ Réponse BBIA générée: {bbia_response[:50]}...")
+            except Exception as e:
+                logger.error(f"❌ Erreur génération réponse BBIA: {e}")
+                bbia_response = f"Désolé, une erreur s'est produite lors de la génération de la réponse: {str(e)}"
 
             # Envoyer réponse BBIA
             chat_response_bbia = {
@@ -2382,29 +3261,52 @@ async def handle_chat_message(message_data: dict[str, Any], websocket: WebSocket
                 "message": bbia_response,
                 "timestamp": datetime.now().isoformat(),
             }
-            await websocket.send_text(json.dumps(chat_response_bbia))
+            logger.info(
+                f"📤 [CHAT] Envoi réponse BBIA ({len(bbia_response)} caractères)"
+            )
+            response_json = json.dumps(chat_response_bbia)
+            logger.debug(f"📤 [CHAT] JSON réponse: {response_json[:100]}...")
+            await websocket.send_text(response_json)
+            logger.info("✅ [CHAT] Réponse envoyée avec succès")
 
             await advanced_websocket_manager.send_log_message(
                 "info",
-                f"Chat: {len(user_message)} caractères → réponse BBIA",
+                f"Chat: {len(user_message)} caractères → réponse BBIA ({len(bbia_response)} caractères)",
             )
         else:
             # Réponse fallback si HF indisponible
-            fallback_response = f"Je comprends: {user_message}. Hugging Face non disponible pour réponse intelligente."
+            fallback_response = f"Bonjour ! J'ai bien reçu votre message : '{user_message}'. Le module Hugging Face n'est pas disponible actuellement, mais je peux toujours interagir avec vous via les commandes du dashboard."
             chat_response_bbia = {
                 "type": "chat_response",
                 "sender": "bbia",
                 "message": fallback_response,
                 "timestamp": datetime.now().isoformat(),
             }
+            logger.info("📤 [CHAT] Envoi réponse fallback")
             await websocket.send_text(json.dumps(chat_response_bbia))
+            logger.info("✅ [CHAT] Réponse fallback envoyée")
+            await advanced_websocket_manager.send_log_message(
+                "info",
+                f"Chat fallback: {len(user_message)} caractères",
+            )
 
     except Exception as e:
-        logger.error(f"❌ Erreur chat: {e}")
-        await advanced_websocket_manager.send_log_message(
-            "error",
-            f"Erreur chat: {e!s}",
-        )
+        logger.error(f"❌ Erreur chat: {e}", exc_info=True)
+        try:
+            await advanced_websocket_manager.send_log_message(
+                "error",
+                f"Erreur chat: {e!s}",
+            )
+            # Envoyer une réponse d'erreur au client
+            error_response = {
+                "type": "chat_response",
+                "sender": "bbia",
+                "message": f"Désolé, une erreur s'est produite: {str(e)}",
+                "timestamp": datetime.now().isoformat(),
+            }
+            await websocket.send_text(json.dumps(error_response))
+        except Exception as e2:
+            logger.error(f"❌ Erreur lors de l'envoi du message d'erreur: {e2}")
 
 
 def run_advanced_dashboard(

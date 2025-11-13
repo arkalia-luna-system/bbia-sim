@@ -196,6 +196,9 @@ class RobotAPI(ABC):
             "hide",
             "nod",  # Ajouté pour compatibilité démos
             "goto_sleep",  # Ajouté pour compatibilité démos
+            "exploration",  # Comportement d'exploration
+            "interaction",  # Comportement d'interaction
+            "demo",  # Comportement de démonstration
         }
         if behavior_name not in valid_behaviors:
             logger.error(f"Comportement invalide: {behavior_name}")
@@ -208,6 +211,16 @@ class RobotAPI(ABC):
             return self._execute_wake_up(duration)
         if behavior_name == "greeting":
             return self._execute_greeting(duration)
+        if behavior_name == "nod":
+            return self._execute_nod(duration)
+        if behavior_name == "goto_sleep":
+            return self._execute_goto_sleep(duration)
+        if behavior_name == "exploration":
+            return self._execute_exploration(duration)
+        if behavior_name == "interaction":
+            return self._execute_interaction(duration)
+        if behavior_name == "demo":
+            return self._execute_demo(duration)
         logger.warning(f"Comportement {behavior_name} non implémenté")
         return False
 
@@ -235,6 +248,91 @@ class RobotAPI(ABC):
         for step in range(steps):
             t = step / steps
             angle = 0.2 * math.sin(4 * math.pi * t)  # Mouvement de salutation
+            self.set_joint_pos("yaw_body", angle)
+            self.step()
+            time.sleep(0.1)
+
+        return True
+
+    def _execute_nod(self, duration: float) -> bool:
+        """Exécute un hochement de tête."""
+        import math
+        import time
+
+        steps = int(duration * 10)  # 10 Hz
+        for step in range(steps):
+            t = step / steps
+            # Mouvement de hochement (pitch)
+            pitch = 0.15 * math.sin(2 * math.pi * t)
+            if "pitch_head" in self.get_available_joints():
+                self.set_joint_pos("pitch_head", pitch)
+            self.step()
+            time.sleep(0.1)
+
+        return True
+
+    def _execute_goto_sleep(self, duration: float) -> bool:
+        """Exécute le comportement d'endormissement."""
+        import time
+
+        steps = int(duration * 10)  # 10 Hz
+        for step in range(steps):
+            t = step / steps
+            # Mouvement lent vers position neutre
+            angle = 0.2 * (1 - t)  # Retour progressif à 0
+            self.set_joint_pos("yaw_body", angle)
+            self.step()
+            time.sleep(0.1)
+
+        return True
+
+    def _execute_exploration(self, duration: float) -> bool:
+        """Exécute le comportement d'exploration."""
+        import math
+        import time
+
+        steps = int(duration * 10)  # 10 Hz
+        for step in range(steps):
+            t = step / steps
+            # Mouvement d'exploration (balayage)
+            angle = 0.3 * math.sin(2 * math.pi * t / 2)  # Balayage lent
+            self.set_joint_pos("yaw_body", angle)
+            self.step()
+            time.sleep(0.1)
+
+        return True
+
+    def _execute_interaction(self, duration: float) -> bool:
+        """Exécute le comportement d'interaction."""
+        import math
+        import time
+
+        steps = int(duration * 10)  # 10 Hz
+        for step in range(steps):
+            t = step / steps
+            # Mouvement d'interaction (petits mouvements)
+            angle = 0.15 * math.sin(6 * math.pi * t)  # Mouvements rapides
+            self.set_joint_pos("yaw_body", angle)
+            self.step()
+            time.sleep(0.1)
+
+        return True
+
+    def _execute_demo(self, duration: float) -> bool:
+        """Exécute le comportement de démonstration."""
+        import math
+        import time
+
+        steps = int(duration * 10)  # 10 Hz
+        for step in range(steps):
+            t = step / steps
+            # Séquence de démonstration (combinaison de mouvements)
+            if t < 0.33:
+                angle = 0.2 * math.sin(4 * math.pi * t)
+            elif t < 0.66:
+                angle = 0.3 * (1 - math.cos(math.pi * (t - 0.33) * 3))
+            else:
+                angle = 0.2 * math.sin(4 * math.pi * t)
             self.set_joint_pos("yaw_body", angle)
             self.step()
             time.sleep(0.1)

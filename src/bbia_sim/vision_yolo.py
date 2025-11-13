@@ -36,8 +36,18 @@ try:
     import os as _os
 
     _os.environ.setdefault("GLOG_minloglevel", "2")
-    _os.environ.setdefault("TF_CPP_MIN_LOG_LEVEL", "2")
+    _os.environ.setdefault(
+        "TF_CPP_MIN_LOG_LEVEL", "3"
+    )  # 0=INFO,1=WARNING,2=ERROR,3=FATAL
     _os.environ.setdefault("MEDIAPIPE_DISABLE_GPU", "1")
+    # Supprimer les logs TensorFlow Lite
+    _os.environ.setdefault("TFLITE_LOG_VERBOSITY", "0")  # 0=ERROR, 1=WARNING, 2=INFO
+    # Supprimer les logs OpenGL (ne pas définir MUJOCO_GL sur macOS, utilise la valeur par défaut)
+    # Sur macOS, laisser MuJoCo choisir automatiquement (glfw ou egl)
+    import sys
+
+    if sys.platform != "darwin":  # Pas macOS
+        _os.environ.setdefault("MUJOCO_GL", "egl")  # Utiliser EGL sur Linux/Windows
 except Exception as e:
     logger.debug(
         f"Impossible de configurer variables d'environnement MediaPipe/TensorFlow: {e}"
@@ -298,7 +308,7 @@ class FaceDetector:
                 _mediapipe_face_detection_cache = face_detection
 
             self.face_detection = face_detection
-            logger.info("👤 Détecteur de visages MediaPipe initialisé")
+            logger.debug("👤 Détecteur de visages MediaPipe initialisé")
 
         except ImportError:
             logger.warning("⚠️ MediaPipe non disponible")

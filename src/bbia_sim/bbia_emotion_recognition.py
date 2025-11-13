@@ -4,14 +4,25 @@ Détection et analyse des émotions faciales et vocales en temps réel
 """
 
 import logging
+import sys
 import threading
 import time
 from typing import Any
 
-import cv2
 import numpy as np
 
 logger = logging.getLogger(__name__)
+
+# Import conditionnel de cv2
+try:
+    import cv2  # type: ignore[import-untyped]
+
+    CV2_AVAILABLE = True
+except ImportError:
+    CV2_AVAILABLE = False
+    logger.warning(
+        "OpenCV (cv2) non disponible. " "Installez avec: pip install opencv-python",
+    )
 
 # OPTIMISATION PERFORMANCE: Cache global pour pipelines transformers
 # (évite chargements répétés)
@@ -23,8 +34,16 @@ try:
     import os as _os
 
     _os.environ.setdefault("GLOG_minloglevel", "2")
-    _os.environ.setdefault("TF_CPP_MIN_LOG_LEVEL", "2")
+    _os.environ.setdefault(
+        "TF_CPP_MIN_LOG_LEVEL", "3"
+    )  # 0=INFO,1=WARNING,2=ERROR,3=FATAL
     _os.environ.setdefault("MEDIAPIPE_DISABLE_GPU", "1")
+    # Supprimer les logs TensorFlow Lite
+    _os.environ.setdefault("TFLITE_LOG_VERBOSITY", "0")  # 0=ERROR, 1=WARNING, 2=INFO
+    # Supprimer les logs OpenGL (ne pas définir MUJOCO_GL sur macOS, utilise la valeur par défaut)
+    # Sur macOS, laisser MuJoCo choisir automatiquement (glfw ou egl)
+    if sys.platform != "darwin":  # Pas macOS
+        _os.environ.setdefault("MUJOCO_GL", "egl")  # Utiliser EGL sur Linux/Windows
 except Exception as e:
     logger.debug(
         f"Impossible de configurer variables d'environnement MediaPipe/TensorFlow: {e}"
@@ -32,7 +51,7 @@ except Exception as e:
 
 # Import conditionnel des dépendances ML
 try:
-    import mediapipe as mp
+    import mediapipe as mp  # type: ignore[import-untyped]
     import torch
     from transformers import pipeline
 
@@ -198,17 +217,21 @@ class BBIAEmotionRecognition:
         if not self.is_initialized:
             self.initialize()
 
+        if not CV2_AVAILABLE:
+            logger.error("OpenCV (cv2) requis pour la détection de visages")
+            return []
+
         try:
             # Conversion de l'image
             processed_image: np.ndarray | None = None
 
             if isinstance(image, str):
-                loaded_image = cv2.imread(image)
+                loaded_image = cv2.imread(image)  # type: ignore[name-defined]
                 if loaded_image is not None:
-                    processed_image = cv2.cvtColor(loaded_image, cv2.COLOR_BGR2RGB)
+                    processed_image = cv2.cvtColor(loaded_image, cv2.COLOR_BGR2RGB)  # type: ignore[name-defined]
             elif isinstance(image, np.ndarray):
                 if len(image.shape) == 3 and image.shape[2] == 3:
-                    processed_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+                    processed_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)  # type: ignore[name-defined]
                 else:
                     processed_image = image
 
