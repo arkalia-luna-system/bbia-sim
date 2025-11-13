@@ -99,9 +99,8 @@ class TestJointsCoverage(unittest.TestCase):
         # Test joints invalides
         self.assertFalse(validate_joint_name("invalid_joint"))
         self.assertFalse(validate_joint_name(""))
-        # None n'est pas accepté par validate_joint_name (type str requis)
-        with self.assertRaises((TypeError, AttributeError)):
-            validate_joint_name(None)  # type: ignore[arg-type]
+        # None retourne False (None n'est pas dans VALID_JOINT_NAMES)
+        self.assertFalse(validate_joint_name(None))  # type: ignore[arg-type]
 
     def test_get_joint_limits(self):
         """Test récupération des limites de joints."""
