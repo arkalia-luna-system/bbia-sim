@@ -123,6 +123,8 @@ python src/bbia_sim/dashboard_advanced.py
 # Ouvrir dans le navigateur
 # http://localhost:8000
 
+# 📸 Captures d'écran disponibles : Voir `assets/images/` pour 4 captures du dashboard (Nov 2025)
+
 ```
 
 <div align="center">
