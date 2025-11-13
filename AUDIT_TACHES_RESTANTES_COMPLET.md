@@ -16,7 +16,7 @@
 | 5 | Objectiver métriques | ✅ **FAIT** | Liens Codecov ajoutés, "95 modules" → 68, coverage harmonisé |
 | 6 | Guides ReSpeaker | ✅ **FAIT** | `docs/installation/RESPEAKER_SETUP.md` créé (guide complet) |
 | 7 | GIF/screenshots | ✅ **FAIT** | `robot_animation.gif` existe et référencé |
-| 8 | Topics GitHub | ❓ **À VÉRIFIER** | Topics GitHub ne sont pas versionnés (configurés via interface GitHub web) |
+| 8 | Topics GitHub | ✅ **FAIT** | 7 topics ajoutés : ai, robotics, python, mujoco, computer-vision, reachy-mini, simulation |
 
 ---
 
@@ -180,18 +180,28 @@
 
 ---
 
-### 8. ❓ Topics GitHub
+### 8. ✅ Topics GitHub
 
 **Recherche effectuée** :
 
 - `grep` : "topics|tags|github.*topics" → 42 résultats (mais tous concernent ROS2 topics, pas GitHub topics)
-- Aucun fichier `.github/topics` ou similaire trouvé
+- Fichier `.github/TOPICS.md` créé avec instructions
+- Vérification manuelle effectuée sur GitHub
 
-**Verdict** : ❓ **NON VÉRIFIABLE** — Topics GitHub ne sont pas versionnés dans le repo (configurés via interface GitHub).
+**Ce qui existe** :
 
-**Action requise** : Vérifier manuellement sur GitHub et ajouter si manquants :
+- ✅ Fichier `.github/TOPICS.md` avec instructions et liste des topics
+- ✅ 7 topics ajoutés sur GitHub (2025-01-27) :
+  - `ai`
+  - `robotics`
+  - `python`
+  - `mujoco`
+  - `computer-vision`
+  - `reachy-mini`
+  - `simulation`
+- ✅ Topics visibles dans la section "About" du repository GitHub
 
-- `ai`, `robotics`, `python`, `mujoco`, `computer-vision`, `reachy-mini`, `simulation`
+**Verdict** : ✅ **FAIT** — Tous les topics GitHub ont été ajoutés avec succès.
 
 ---
 
@@ -206,7 +216,7 @@
 | [x] Objectiver métriques (liens + cohérence) | ✅ **FAIT** | - | - |
 | [x] Guide ReSpeaker dédié | ✅ **FAIT** | - | - |
 | [x] GIF/screenshots | ✅ **FAIT** | - | - |
-| [ ] Topics GitHub | ❓ **À VÉRIFIER** | Vérifier manuellement sur GitHub (15 min) |
+| [x] Topics GitHub | ✅ **FAIT** | 7 topics ajoutés sur GitHub (2025-01-27) |
 | [x] Screenshots dashboard (optionnel) | ✅ **FAIT** | - | - |
 
 ---
@@ -220,14 +230,10 @@
 3. ✅ **Objectiver métriques** — Liens Codecov ajoutés, métriques harmonisées (68 modules, 68.86% coverage)
 4. ✅ **Guide ReSpeaker** — `docs/installation/RESPEAKER_SETUP.md` créé (guide complet)
 
-### 🟡 Tâches Optionnelles Restantes (15 min)
+### ✅ Toutes les Tâches sont TERMINÉES
 
-1. **Topics GitHub** (15 min) — Vérifier manuellement sur GitHub et ajouter si manquants :
-
-   - `ai`, `robotics`, `python`, `mujoco`, `computer-vision`, `reachy-mini`, `simulation`
-   - **Note** : Topics GitHub ne sont pas versionnés dans le repo (configurés via interface GitHub web)
-
-**✅ Screenshots dashboard** : Déjà fait (4 captures dans `assets/images/` - Nov 2025)
+**✅ Topics GitHub** : 7 topics ajoutés sur GitHub (2025-01-27)  
+**✅ Screenshots dashboard** : 4 captures dans `assets/images/` (Nov 2025)
 
 ---
 
