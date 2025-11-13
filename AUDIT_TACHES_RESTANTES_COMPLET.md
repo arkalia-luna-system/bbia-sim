@@ -22,58 +22,51 @@
 
 ## 🔍 VÉRIFICATION DÉTAILLÉE
 
-### 1. ❌ Script all-in-one onboarding
+### 1. ✅ Script all-in-one onboarding
 
 **Recherche effectuée** :
 
-- `glob_file_search` : `**/*starter*.sh` → 0 fichiers
-- `glob_file_search` : `**/*starter*.py` → 0 fichiers
-- `grep` : "starter|all-in-one|all_in_one|tout-en-un" → 1 résultat (référence dans docs, pas de script)
+- `glob_file_search` : `**/*starter*.sh` → `scripts/reachy-mini-sim-starter.sh` trouvé
+- `read_file` : Script complet et fonctionnel (339 lignes)
 
 **Ce qui existe** :
 
-- ✅ `scripts/quick_start.sh` (menu interactif, pas automatique)
-- ✅ `scripts/onboarding/setup_env.sh` (setup venv uniquement)
-- ✅ `scripts/onboarding/run_demo_safe.sh` (démo sécurisée)
-- ✅ `scripts/bbia_doctor.py` (diagnostic, pas starter complet)
+- ✅ `scripts/reachy-mini-sim-starter.sh` (script all-in-one complet)
+  - Vérifie prérequis (Python, pip, mjpython)
+  - Crée/active environnement virtuel
+  - Installe BBIA-SIM + dépendances
+  - Vérifie l'installation (bbia_doctor)
+  - Lance le dashboard automatiquement
+  - Options : `--skip-install`, `--skip-dashboard`, `--help`
+- ✅ Référencé dans README ligne 55
 
-**Verdict** : ❌ **NON FAIT** — Scripts séparés existent mais pas de script unique automatique qui fait tout.
-
-**Action requise** : Créer `scripts/reachy-mini-sim-starter.sh` qui :
-
-1. Vérifie prérequis (Python, pip, etc.)
-2. Installe dépendances
-3. Lance checks (network, hardware, etc.)
-4. Démarre dashboard automatiquement
-5. Affiche instructions suivantes
+**Verdict** : ✅ **FAIT** — Script all-in-one complet et fonctionnel.
 
 ---
 
-### 2. ❌ Panneau troubleshooting interactif
+### 2. ✅ Panneau troubleshooting interactif
 
 **Recherche effectuée** :
 
-- `codebase_search` : "interactive troubleshooting panel" → Dashboard existe mais pas de panneau
-- `grep` : "troubleshooting.*panel|panel.*troubleshooting|interactive.*troubleshooting" → 0 résultats
+- `read_file` : `src/bbia_sim/troubleshooting.py` → Module complet (606 lignes)
+- `grep` : "troubleshooting" dans `dashboard_advanced.py` → 72 occurrences
+- `codebase_search` : Panneau troubleshooting dans dashboard → Intégré
 
 **Ce qui existe** :
 
-- ✅ `src/bbia_sim/dashboard.py` (dashboard basique)
-- ✅ `src/bbia_sim/dashboard_advanced.py` (dashboard avancé avec métriques)
-- ✅ `docs/getting-started/troubleshooting.md` (370 lignes, guide statique)
-- ✅ `docs/development/troubleshooting.md` (guide technique statique)
-- ✅ `scripts/bbia_doctor.py` (diagnostic CLI, pas interactif dans dashboard)
+- ✅ `src/bbia_sim/troubleshooting.py` (module complet avec `TroubleshootingChecker`)
+  - Détection automatique : Python, dépendances, caméra, audio, réseau, MuJoCo, ports, permissions
+  - Tests interactifs : `test_camera()`, `test_audio()`, `test_network_ping()`
+  - Solutions suggérées avec liens vers documentation
+- ✅ Panneau UI dans `dashboard_advanced.py` :
+  - Endpoint `/api/troubleshooting/check` (vérification complète)
+  - Endpoints `/api/troubleshooting/test/camera`, `/audio`, `/network` (tests individuels)
+  - Endpoint `/api/troubleshooting/docs` (liens documentation)
+  - Interface web avec boutons "Test" et "Vérifier Tout"
+- ✅ Documentation : `docs/getting-started/troubleshooting.md` (437 lignes)
+- ✅ Référencé dans `docs/development/dashboard-advanced.md`
 
-**Ce qui manque** :
-
-- ❌ Panneau "Troubleshooting" dans l'UI du dashboard
-- ❌ Détection automatique de problèmes (webcam, réseau, SDK, ports)
-- ❌ Boutons interactifs "Test", "Fix"
-- ❌ Solutions interactives avec liens vers guides
-
-**Verdict** : ❌ **NON FAIT** — Guides troubleshooting existent (statiques) mais pas de panneau interactif dans dashboard.
-
-**Action requise** : Créer module `src/bbia_sim/troubleshooting.py` et ajouter panneau dans dashboard.
+**Verdict** : ✅ **FAIT** — Panneau troubleshooting interactif complet et intégré dans dashboard.
 
 ---
 
@@ -142,37 +135,26 @@
 
 ---
 
-### 6. ⚠️ Guides ReSpeaker
+### 6. ✅ Guides ReSpeaker
 
 **Recherche effectuée** :
 
-- `grep` : "respeaker|ReSpeaker|re.*speaker" → 30 résultats
-- `read_file` : `docs/installation/AUDIO_SETUP.md` → Guide audio général (PortAudio)
-- `codebase_search` : "ReSpeaker audio configuration guides" → Mentions mais pas de guide dédié
+- `glob_file_search` : `**/*RESPEAKER*.md` → `docs/installation/RESPEAKER_SETUP.md` trouvé
+- `read_file` : Guide complet (160 lignes)
 
 **Ce qui existe** :
 
-- ✅ `docs/installation/AUDIO_SETUP.md` (guide audio général avec PortAudio)
-- ✅ Mentions ReSpeaker dans code : `robot.media.microphone` : 4 microphones directionnels (ReSpeaker)
-- ✅ `docs/reference/project-status.md` : Mentions ReSpeaker (lignes 301, 607)
-- ✅ `docs/quality/audits/ISSUES_REACHY_OFFICIEL_ANALYSE.md` : Analyse issues ReSpeaker (lignes 177-205)
+- ✅ `docs/installation/RESPEAKER_SETUP.md` (guide complet ReSpeaker)
+  - Détection devices ReSpeaker
+  - Configuration canaux (4 microphones directionnels)
+  - Taux d'échantillonnage
+  - Matrices compatibilité OS (Linux, macOS, Windows)
+  - Scripts de test audio
+  - Troubleshooting spécifique ReSpeaker
+- ✅ Mentions dans code : `robot.media.microphone` (4 microphones directionnels ReSpeaker)
+- ✅ Référencé dans `docs/reference/project-status.md`
 
-**Ce qui manque** :
-
-- ❌ Guide dédié "ReSpeaker Setup & Troubleshooting"
-- ❌ Détection automatique devices ReSpeaker
-- ❌ Matrices de compatibilité OS
-- ❌ Scripts de test "sound_in/out check"
-
-**Verdict** : ⚠️ **PARTIEL** — ReSpeaker mentionné dans docs et code mais pas de guide dédié complet.
-
-**Action requise** : Créer `docs/installation/RESPEAKER_SETUP.md` avec :
-
-1. Détection devices
-2. Configuration canaux
-3. Taux d'échantillonnage
-4. Matrices compatibilité OS
-5. Scripts de test
+**Verdict** : ✅ **FAIT** — Guide ReSpeaker complet et détaillé disponible.
 
 ---
 
@@ -194,7 +176,7 @@
 
 **Verdict** : ✅ **FAIT** — GIF animation présent et référencé dans README.
 
-**Note** : ✅ Screenshots dashboard ajoutés (4 captures d'écran dans `assets/images/` - Nov 2025).
+**Note** : ✅ Screenshots dashboard ajoutés (4 captures d'écran dans `assets/images/` - Nov 2025). Référencés dans `docs/guides/GUIDE_DEBUTANT.md` et `assets/MEDIAS_INVENTAIRE.md`.
 
 ---
 
@@ -238,13 +220,14 @@
 3. ✅ **Objectiver métriques** — Liens Codecov ajoutés, métriques harmonisées (68 modules, 68.86% coverage)
 4. ✅ **Guide ReSpeaker** — `docs/installation/RESPEAKER_SETUP.md` créé (guide complet)
 
-### 🟡 Tâches Optionnelles Restantes (1h)
+### 🟡 Tâches Optionnelles Restantes (15 min)
 
 1. **Topics GitHub** (15 min) — Vérifier manuellement sur GitHub et ajouter si manquants :
 
    - `ai`, `robotics`, `python`, `mujoco`, `computer-vision`, `reachy-mini`, `simulation`
+   - **Note** : Topics GitHub ne sont pas versionnés dans le repo (configurés via interface GitHub web)
 
-2. **Screenshots dashboard** (45 min) — Capturer screenshots dashboard et ajouter dans README (optionnel)
+**✅ Screenshots dashboard** : Déjà fait (4 captures dans `assets/images/` - Nov 2025)
 
 ---
 
