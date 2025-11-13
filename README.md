@@ -469,6 +469,8 @@ python scripts/replay_viewer.py artifacts/my_animation.jsonl --speed 1.5
 
 **Source** : Toutes ces vidéos ont été enregistrées depuis `examples/demo_mujoco_continue.py` qui montre le robot en mouvement continu (tête + corps).
 
+**Captures d'écran dashboard** (Nov 2025) : 4 captures du dashboard BBIA Advanced Dashboard disponibles dans `assets/images/` montrant l'interface complète avec métriques temps réel, contrôles joints, vision et chat.
+
 **Inventaire complet** : Voir [`assets/MEDIAS_INVENTAIRE.md`](assets/MEDIAS_INVENTAIRE.md)
 **Roadmap vidéos** : Voir [`docs/guides/DEMO_VIDEO_ROADMAP.md`](docs/guides/DEMO_VIDEO_ROADMAP.md)
 

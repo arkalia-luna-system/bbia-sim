@@ -49,6 +49,8 @@
    - Descendre jusqu'au panneau "🔧 Troubleshooting"
    - Cliquer sur "🔍 Vérifier Tout" pour un diagnostic complet
 
+> **📸 Captures d'écran** : 4 captures du dashboard sont disponibles dans `assets/images/` (Nov 2025) - Voir [`assets/MEDIAS_INVENTAIRE.md`](../../assets/MEDIAS_INVENTAIRE.md) pour l'inventaire complet.
+
 ### Fonctionnalités
 
 - ✅ **Vérification automatique** : Python, dépendances, caméra, audio, réseau, MuJoCo, ports, permissions

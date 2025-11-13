@@ -18,6 +18,7 @@
 - **Référence visuelle déplacée** : Voir `docs/reachy/REACHY_MINI_REFERENCE.md` - Référence visuelle du robot Reachy Mini
 - **10 nouvelles captures d'écran** (Oct / No2025025025025025) : Séquence de captures montrant le robot en mouvement
 - **5 captures d'écran** (Oct / No2025025025025025) : Captures de référence antérieures
+- **4 captures d'écran dashboard** (Nov 2025) : Captures du dashboard BBIA Advanced Dashboard montrant l'interface complète avec métriques, contrôles, vision et chat
 - **Images finales** : `robot_3d_final.png`, `robot_animation.gif`
 - **Texture robot Procreate** : `textures/robot_reachy_mini.png` (créé avec Procreate, 944x712px)
 - **Inventaire complet** : Voir [`MEDIAS_INVENTAIRE.md`](./MEDIAS_INVENTAIRE.md)
@@ -170,6 +171,7 @@ assets/
 ├── 🖼️ images/                        # Captures d'écran et images
 │   ├── Capture d'écran Oct / No2025025025025025 à 16.48.XX.png (série)
 │   ├── Capture d'écran Oct / No2025025025025025 à 16.49.XX.png (série)
+│   ├── Capture d'écran 2025-11-13 à 14.14.XX.png (série dashboard - 4 captures)
 │   ├── robot_3d_final.png
 │   └── robot_animation.gif
 └── 🎨 textures/                      # Textures Procreate pour MuJoCo

@@ -111,7 +111,9 @@ mindmap
 ## 📚 Références
 
 - **État par axe** : [`docs/reference/project-status.md`](../reference/project-status.md) → Dashboard / UX
+- **Guide dashboard avancé** : [`docs/development/dashboard-advanced.md`](../development/dashboard-advanced.md)
+- **Captures d'écran** : 4 captures du dashboard disponibles dans `assets/images/` (Nov 2025) - Voir [`assets/MEDIAS_INVENTAIRE.md`](../../assets/MEDIAS_INVENTAIRE.md)
 
 ---
 
-**Dernière mise à jour** : Oct / Nov. 2025
+**Dernière mise à jour** : Nov 2025
