@@ -339,7 +339,7 @@ ADVANCED_DASHBOARD_HTML = """
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #008181 0%, #006666 100%);
             color: white;
             min-height: 100vh;
             overflow-x: hidden;
@@ -462,15 +462,15 @@ ADVANCED_DASHBOARD_HTML = """
         }
 
         .emotion-button {
-            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            background: linear-gradient(45deg, #008181, #006666);
         }
 
         .action-button {
-            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+            background: linear-gradient(45deg, #00a0a0, #008181);
         }
 
         .behavior-button {
-            background: linear-gradient(45deg, #a8edea, #fed6e3);
+            background: linear-gradient(45deg, #00cccc, #008181);
         }
 
         .chart-container {
@@ -702,12 +702,12 @@ ADVANCED_DASHBOARD_HTML = """
         }
 
         .chat-message.chat-user {
-            background: rgba(78, 205, 196, 0.3);
+            background: rgba(0, 160, 160, 0.3);
             text-align: right;
         }
 
         .chat-message.chat-bbia {
-            background: rgba(255, 107, 107, 0.3);
+            background: rgba(0, 129, 129, 0.3);
             text-align: left;
         }
 
@@ -1038,22 +1038,22 @@ ADVANCED_DASHBOARD_HTML = """
                         {
                             label: 'Latence (ms)',
                             data: metricsData.latency,
-                            borderColor: '#ff6b6b',
-                            backgroundColor: 'rgba(255, 107, 107, 0.1)',
+                            borderColor: '#00cccc',
+                            backgroundColor: 'rgba(0, 204, 204, 0.1)',
                             tension: 0.4
                         },
                         {
                             label: 'FPS',
                             data: metricsData.fps,
-                            borderColor: '#4ecdc4',
-                            backgroundColor: 'rgba(78, 205, 196, 0.1)',
+                            borderColor: '#00a0a0',
+                            backgroundColor: 'rgba(0, 160, 160, 0.1)',
                             tension: 0.4
                         },
                         {
                             label: 'CPU (%)',
                             data: metricsData.cpu,
-                            borderColor: '#ffa726',
-                            backgroundColor: 'rgba(255, 167, 38, 0.1)',
+                            borderColor: '#008181',
+                            backgroundColor: 'rgba(0, 129, 129, 0.1)',
                             tension: 0.4
                         }
                     ]
@@ -1118,17 +1118,26 @@ ADVANCED_DASHBOARD_HTML = """
         // Mise à jour des contrôles de joints
         function updateJointControls(joints) {
             const container = document.getElementById('joint-controls');
+            if (!container) return;
+
             container.innerHTML = '';
+
+            if (!joints || joints.length === 0) {
+                container.innerHTML = '<p style="text-align: center; opacity: 0.7;">Aucun joint disponible</p>';
+                return;
+            }
 
             joints.forEach(joint => {
                 const control = document.createElement('div');
                 control.className = 'joint-control';
+                // Échapper les caractères spéciaux pour éviter les injections XSS
+                const safeJoint = String(joint).replace(/[<>"']/g, '');
                 control.innerHTML = `
-                    <div class="joint-name">${joint}</div>
-                    <input type="range" class="joint-slider" id="slider-${joint}"
+                    <div class="joint-name">${safeJoint}</div>
+                    <input type="range" class="joint-slider" id="slider-${safeJoint}"
                            min="-3.14" max="3.14" step="0.01" value="0"
-                           onchange="setJointPosition('${joint}', this.value)">
-                    <div class="joint-value" id="value-${joint}">0.00</div>
+                           onchange="setJointPosition('${safeJoint}', this.value)">
+                    <div class="joint-value" id="value-${safeJoint}">0.00</div>
                 `;
                 container.appendChild(control);
             });
@@ -1151,8 +1160,16 @@ ADVANCED_DASHBOARD_HTML = """
         }
 
         function setJointPosition(joint, position) {
-            sendCommand('joint', { joint: joint, position: parseFloat(position) });
-            document.getElementById(`value-${joint}`).textContent = parseFloat(position).toFixed(2);
+            const numPosition = parseFloat(position);
+            if (isNaN(numPosition)) {
+                addLog('error', `Position invalide pour joint ${joint}: ${position}`);
+                return;
+            }
+            sendCommand('joint', { joint: joint, position: numPosition });
+            const valueElement = document.getElementById(`value-${joint}`);
+            if (valueElement) {
+                valueElement.textContent = numPosition.toFixed(2);
+            }
         }
 
         function toggleVision() {
@@ -1257,9 +1274,13 @@ ADVANCED_DASHBOARD_HTML = """
 
             const entry = document.createElement('div');
             entry.className = `chat-message chat-${sender}`;
+            // Échapper HTML pour éviter XSS
+            const safeMessage = String(message).replace(/[<>]/g, function(match) {
+                return match === '<' ? '&lt;' : '&gt;';
+            });
             entry.innerHTML = `
                 <div class="chat-author">${sender === 'user' ? 'Vous' : 'BBIA'}</div>
-                <div class="chat-text">${message}</div>
+                <div class="chat-text">${safeMessage}</div>
             `;
             container.appendChild(entry);
             container.scrollTop = container.scrollHeight;
@@ -1502,7 +1523,7 @@ if FASTAPI_AVAILABLE:
             intensity = emotion_data.get("intensity", 0.5)
 
             if advanced_websocket_manager.robot:
-                success = await advanced_websocket_manager.robot.set_emotion(
+                success = advanced_websocket_manager.robot.set_emotion(
                     emotion,
                     intensity,
                 )
@@ -1535,7 +1556,9 @@ if FASTAPI_AVAILABLE:
                 raise HTTPException(status_code=400, detail="Joint name required")
 
             if advanced_websocket_manager.robot:
-                success = advanced_websocket_manager.robot.set_joint_pos(joint, position)
+                success = advanced_websocket_manager.robot.set_joint_pos(
+                    joint, position
+                )
                 if success:
                     await advanced_websocket_manager.send_log_message(
                         "info",
