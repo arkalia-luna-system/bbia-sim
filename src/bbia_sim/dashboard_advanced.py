@@ -2852,7 +2852,6 @@ if FASTAPI_AVAILABLE:
             advanced_websocket_manager.disconnect(websocket)
         except Exception as e:
             logger.error(f"❌ Erreur WebSocket: {e}", exc_info=True)
-            logger.error(f"❌ Erreur WebSocket avancé: {e}")
             advanced_websocket_manager.disconnect(websocket)
 
 
