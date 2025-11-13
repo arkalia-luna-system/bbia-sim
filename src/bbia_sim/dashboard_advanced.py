@@ -12,7 +12,7 @@ from typing import Any
 
 try:
     import uvicorn
-    from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
+    from fastapi import FastAPI, HTTPException, Request, WebSocket, WebSocketDisconnect
     from fastapi.middleware.cors import CORSMiddleware
     from fastapi.responses import HTMLResponse
 
@@ -22,6 +22,7 @@ except ImportError:
     # Types fallback pour mypy
     FastAPI = Any  # type: ignore[assignment,misc]
     WebSocket = Any  # type: ignore[assignment,misc]
+    Request = Any  # type: ignore[assignment,misc]
 
 # Ajouter le chemin src pour les imports
 import sys
@@ -955,6 +956,7 @@ ADVANCED_DASHBOARD_HTML = """
             ws.onerror = function(error) {
                 console.error('Erreur WebSocket:', error);
                 addLog('error', 'Erreur WebSocket');
+                updateConnectionStatus(false);
             };
         }
 
@@ -1212,15 +1214,21 @@ ADVANCED_DASHBOARD_HTML = """
 
         function sendCommand(type, value) {
             if (ws && ws.readyState === WebSocket.OPEN) {
-                const command = {
-                    type: 'command',
-                    command_type: type,
-                    value: value,
-                    timestamp: new Date().toISOString()
-                };
-                ws.send(JSON.stringify(command));
+                try {
+                    const command = {
+                        type: 'command',
+                        command_type: type,
+                        value: value,
+                        timestamp: new Date().toISOString()
+                    };
+                    ws.send(JSON.stringify(command));
+                } catch (error) {
+                    console.error('Erreur envoi commande:', error);
+                    addLog('error', `Erreur envoi commande: ${error.message}`);
+                }
             } else {
-                addLog('error', 'WebSocket non connecté');
+                addLog('error', 'WebSocket non connecté - tentative de reconnexion...');
+                connect();
             }
         }
 
@@ -1486,54 +1494,66 @@ if FASTAPI_AVAILABLE:
         return {"joints": [], "current_positions": {}}
 
     @app.post("/api/emotion")
-    async def set_emotion(emotion_data: dict):
+    async def set_emotion(request: Request):
         """API endpoint pour définir une émotion."""
-        emotion = emotion_data.get("emotion", "neutral")
-        intensity = emotion_data.get("intensity", 0.5)
+        try:
+            emotion_data = await request.json()
+            emotion = emotion_data.get("emotion", "neutral")
+            intensity = emotion_data.get("intensity", 0.5)
 
-        if advanced_websocket_manager.robot:
-            success = await advanced_websocket_manager.robot.set_emotion(
-                emotion,
-                intensity,
-            )
-            if success:
-                await advanced_websocket_manager.send_log_message(
-                    "info",
-                    f"Émotion définie: {emotion} (intensité: {intensity})",
+            if advanced_websocket_manager.robot:
+                success = await advanced_websocket_manager.robot.set_emotion(
+                    emotion,
+                    intensity,
                 )
-                return {"success": True, "emotion": emotion, "intensity": intensity}
-            await advanced_websocket_manager.send_log_message(
-                "error",
-                f"Échec définition émotion: {emotion}",
-            )
-            return {"success": False, "error": "Failed to set emotion"}
+                if success:
+                    await advanced_websocket_manager.send_log_message(
+                        "info",
+                        f"Émotion définie: {emotion} (intensité: {intensity})",
+                    )
+                    return {"success": True, "emotion": emotion, "intensity": intensity}
+                await advanced_websocket_manager.send_log_message(
+                    "error",
+                    f"Échec définition émotion: {emotion}",
+                )
+                return {"success": False, "error": "Failed to set emotion"}
 
-        return {"success": False, "error": "Robot not connected"}
+            return {"success": False, "error": "Robot not connected"}
+        except Exception as e:
+            logger.error(f"Erreur set_emotion: {e}")
+            return {"success": False, "error": str(e)}
 
     @app.post("/api/joint")
-    async def set_joint_position(joint_data: dict):
+    async def set_joint_position(request: Request):
         """API endpoint pour définir la position d'un joint."""
-        joint = joint_data.get("joint")
-        position = joint_data.get("position", 0.0)
+        try:
+            joint_data = await request.json()
+            joint = joint_data.get("joint")
+            position = joint_data.get("position", 0.0)
 
-        if not joint:
-            raise HTTPException(status_code=400, detail="Joint name required")
+            if not joint:
+                raise HTTPException(status_code=400, detail="Joint name required")
 
-        if advanced_websocket_manager.robot:
-            success = advanced_websocket_manager.robot.set_joint_pos(joint, position)
-            if success:
+            if advanced_websocket_manager.robot:
+                success = advanced_websocket_manager.robot.set_joint_pos(joint, position)
+                if success:
+                    await advanced_websocket_manager.send_log_message(
+                        "info",
+                        f"Joint {joint} = {position}",
+                    )
+                    return {"success": True, "joint": joint, "position": position}
                 await advanced_websocket_manager.send_log_message(
-                    "info",
-                    f"Joint {joint} = {position}",
+                    "error",
+                    f"Échec contrôle joint {joint}",
                 )
-                return {"success": True, "joint": joint, "position": position}
-            await advanced_websocket_manager.send_log_message(
-                "error",
-                f"Échec contrôle joint {joint}",
-            )
-            return {"success": False, "error": "Failed to set joint position"}
+                return {"success": False, "error": "Failed to set joint position"}
 
-        return {"success": False, "error": "Robot not connected"}
+            return {"success": False, "error": "Robot not connected"}
+        except HTTPException:
+            raise
+        except Exception as e:
+            logger.error(f"Erreur set_joint_position: {e}")
+            return {"success": False, "error": str(e)}
 
     @app.get("/healthz")
     async def health_check():
