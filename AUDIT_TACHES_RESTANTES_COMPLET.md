@@ -16,7 +16,7 @@
 | 5 | Objectiver métriques | ✅ **FAIT** | Liens Codecov ajoutés, "95 modules" → 68, coverage harmonisé |
 | 6 | Guides ReSpeaker | ✅ **FAIT** | `docs/installation/RESPEAKER_SETUP.md` créé (guide complet) |
 | 7 | GIF/screenshots | ✅ **FAIT** | `robot_animation.gif` existe et référencé |
-| 8 | Topics GitHub | ✅ **FAIT** | 7 topics ajoutés : ai, robotics, python, mujoco, computer-vision, reachy-mini, simulation |
+| 8 | Topics GitHub | ❓ **À VÉRIFIER** | Topics GitHub ne sont pas versionnés (configurés via interface GitHub web) |
 
 ---
 
@@ -206,7 +206,7 @@
 | [x] Objectiver métriques (liens + cohérence) | ✅ **FAIT** | - | - |
 | [x] Guide ReSpeaker dédié | ✅ **FAIT** | - | - |
 | [x] GIF/screenshots | ✅ **FAIT** | - | - |
-| [x] Topics GitHub | ✅ **FAIT** | - | - |
+| [ ] Topics GitHub | ❓ **À VÉRIFIER** | Vérifier manuellement sur GitHub (15 min) |
 | [x] Screenshots dashboard (optionnel) | ✅ **FAIT** | - | - |
 
 ---
