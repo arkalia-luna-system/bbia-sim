@@ -1546,7 +1546,11 @@ ADVANCED_DASHBOARD_HTML = """
             lastMetricsUpdate: 0,
             METRICS_UPDATE_INTERVAL: 100,
             statusPollInterval: null,
-            isPolling: false
+            isPolling: false,
+            videoErrorLogged: false,
+            lastWSErrorLog: 0,
+            lastCommandErrorLog: 0,
+            lastChatErrorLog: 0
         };
 
         // Initialisation
@@ -1610,7 +1614,7 @@ ADVANCED_DASHBOARD_HTML = """
             }
 
             console.log('📹 Démarrage stream vidéo...');
-            
+
             // Utiliser endpoint MJPEG - gestion d'erreur silencieuse
             video.src = '/api/camera/stream';
             video.onloadstart = function() {
@@ -1618,10 +1622,15 @@ ADVANCED_DASHBOARD_HTML = """
             };
             video.onerror = function(e) {
                 // Erreur silencieuse - la caméra peut ne pas être disponible
-                // Ne pas logger l'erreur complète pour éviter le bruit dans la console
-                console.debug('⚠️ Stream vidéo non disponible (caméra peut être absente)');
+                // Ne pas logger l'erreur pour éviter le bruit dans la console
                 video.style.display = 'none';
-                // Ne pas ajouter de log d'erreur pour éviter le bruit
+                // Log uniquement une fois au démarrage
+                if (!dashboard.videoErrorLogged) {
+                    console.debug('⚠️ Stream vidéo non disponible (caméra peut être absente)');
+                    dashboard.videoErrorLogged = true;
+                }
+                // Empêcher la propagation de l'erreur dans la console
+                return false;
             };
             video.onloadeddata = function() {
                 console.log('✅ Première frame vidéo chargée');
@@ -1671,15 +1680,51 @@ ADVANCED_DASHBOARD_HTML = """
 
                     // Reconnexion automatique avec backoff exponentiel
                     if (!dashboard.reconnectInterval) {
-                        let delay = 1000;
-                        const maxDelay = 10000;
+                        let delay = 3000; // Démarrer à 3 secondes
+                        const maxDelay = 30000; // Max 30 secondes
+                        let reconnectAttempts = 0;
+                        const MAX_RECONNECT_ATTEMPTS = 20; // Arrêter après 20 tentatives
+
                         const reconnect = () => {
                             if (dashboard.ws && dashboard.ws.readyState === WebSocket.OPEN) {
+                                reconnectAttempts = 0;
+                                delay = 3000; // Réinitialiser le délai
+                                if (dashboard.reconnectInterval) {
+                                    clearInterval(dashboard.reconnectInterval);
+                                    dashboard.reconnectInterval = null;
+                                }
                                 return;
                             }
-                            console.log(`Tentative de reconnexion dans ${delay}ms...`);
+
+                            reconnectAttempts++;
+
+                            // Arrêter après trop de tentatives
+                            if (reconnectAttempts >= MAX_RECONNECT_ATTEMPTS) {
+                                if (dashboard.reconnectInterval) {
+                                    clearInterval(dashboard.reconnectInterval);
+                                    dashboard.reconnectInterval = null;
+                                }
+                                console.debug('⚠️ Trop de tentatives de reconnexion WebSocket - arrêt temporaire');
+                                // Réessayer après 30 secondes
+                                setTimeout(() => {
+                                    reconnectAttempts = 0;
+                                    delay = 3000;
+                                    if (!dashboard.reconnectInterval) {
+                                        dashboard.reconnectInterval = setInterval(reconnect, delay);
+                                    }
+                                }, 30000);
+                                return;
+                            }
+
+                            // Logger seulement toutes les 5 tentatives
+                            if (reconnectAttempts === 1 || reconnectAttempts % 5 === 0) {
+                                console.debug(`🔄 Tentative de reconnexion ${reconnectAttempts}/${MAX_RECONNECT_ATTEMPTS}...`);
+                            }
+
                             setTimeout(() => {
-                                connect();
+                                if (dashboard.ws && dashboard.ws.readyState !== WebSocket.OPEN) {
+                                    connect();
+                                }
                                 delay = Math.min(delay * 1.5, maxDelay);
                             }, delay);
                         };
@@ -1688,40 +1733,120 @@ ADVANCED_DASHBOARD_HTML = """
                 };
 
                 dashboard.ws.onerror = function(error) {
-                    console.error('❌ Erreur WebSocket:', error);
-                    addLog('error', 'Erreur WebSocket');
+                    // Erreur silencieuse - ne pas logger l'objet Event complet
+                    // Logger seulement une fois toutes les 5 secondes
+                    const now = Date.now();
+                    if (!dashboard.lastWSErrorLog || (now - dashboard.lastWSErrorLog) >= 5000) {
+                        console.debug('⚠️ Erreur WebSocket (serveur peut être arrêté)');
+                        dashboard.lastWSErrorLog = now;
+                    }
                     updateConnectionStatus(false);
-                    showToast('❌ Erreur de connexion', 'error', 3000);
+                    // Ne pas afficher de toast à chaque erreur pour éviter le spam
+                    // Empêcher la propagation de l'erreur dans la console
+                    return false;
                 };
             } catch (error) {
-                console.error('Erreur création WebSocket:', error);
-                addLog('error', `Erreur création WebSocket: ${error.message}`);
+                // Erreur silencieuse
+                console.debug('⚠️ Erreur création WebSocket (serveur peut être arrêté)');
                 updateConnectionStatus(false);
             }
         }
 
-        // Polling de statut régulier comme Reachy Mini (500ms)
+        // Polling de statut régulier avec backoff exponentiel
+        let pollingErrorCount = 0;
+        let lastPollingErrorLog = 0;
+        let pollingInterval = 500; // Intervalle initial
+        const POLLING_ERROR_LOG_INTERVAL = 10000; // Logger seulement toutes les 10 secondes
+        const MAX_CONSECUTIVE_ERRORS = 10; // Arrêter après 10 erreurs consécutives
+        const MAX_POLLING_INTERVAL = 30000; // Max 30 secondes entre les tentatives
+
         async function startStatusPolling() {
             if (dashboard.isPolling) return;
             dashboard.isPolling = true;
 
             const pollStatus = async () => {
                 try {
-                    const response = await fetch('/api/status');
-                    if (response.ok) {
+                    // Utiliser un timeout manuel pour compatibilité
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 2000);
+
+                    const response = await fetch('/api/status', {
+                        signal: controller.signal
+                    }).catch(() => null); // Intercepter toutes les erreurs silencieusement
+
+                    clearTimeout(timeoutId);
+
+                    if (response && response.ok) {
                         const data = await response.json();
                         updateStatusFromAPI(data);
+                        // Reset en cas de succès
+                        if (pollingErrorCount > 0) {
+                            pollingErrorCount = 0;
+                            pollingInterval = 500; // Réinitialiser l'intervalle
+                            console.debug('✅ Connexion serveur rétablie');
+                            // Redémarrer le polling à l'intervalle normal
+                            if (dashboard.statusPollInterval) {
+                                clearInterval(dashboard.statusPollInterval);
+                            }
+                            dashboard.statusPollInterval = setInterval(pollStatus, pollingInterval);
+                        }
+                    } else {
+                        // Erreur HTTP ou pas de réponse
+                        pollingErrorCount++;
+                        handlePollingError();
                     }
                 } catch (error) {
-                    console.error('Erreur polling statut:', error);
+                    // Erreur silencieuse - ne pas propager
+                    pollingErrorCount++;
+                    handlePollingError();
                 }
             };
+
+            function handlePollingError() {
+                // Arrêter le polling après trop d'erreurs
+                if (pollingErrorCount >= MAX_CONSECUTIVE_ERRORS) {
+                    if (dashboard.statusPollInterval) {
+                        clearInterval(dashboard.statusPollInterval);
+                        dashboard.statusPollInterval = null;
+                    }
+                    const now = Date.now();
+                    if ((now - lastPollingErrorLog) >= POLLING_ERROR_LOG_INTERVAL) {
+                        console.debug('⚠️ Serveur non disponible - polling suspendu. Reconnexion automatique...');
+                        lastPollingErrorLog = now;
+                    }
+                    // Réessayer après un délai plus long
+                    setTimeout(() => {
+                        pollingErrorCount = 0;
+                        pollingInterval = 500;
+                        if (!dashboard.statusPollInterval) {
+                            dashboard.statusPollInterval = setInterval(pollStatus, pollingInterval);
+                        }
+                    }, 10000); // Réessayer après 10 secondes
+                    return;
+                }
+
+                // Augmenter l'intervalle avec backoff exponentiel
+                pollingInterval = Math.min(pollingInterval * 1.5, MAX_POLLING_INTERVAL);
+
+                // Redémarrer le polling avec le nouvel intervalle
+                if (dashboard.statusPollInterval) {
+                    clearInterval(dashboard.statusPollInterval);
+                }
+                dashboard.statusPollInterval = setInterval(pollStatus, pollingInterval);
+
+                // Logger seulement toutes les 10 secondes
+                const now = Date.now();
+                if (pollingErrorCount === 1 || (now - lastPollingErrorLog) >= POLLING_ERROR_LOG_INTERVAL) {
+                    console.debug(`⚠️ Serveur non disponible (${pollingErrorCount} erreurs, intervalle: ${Math.round(pollingInterval)}ms)`);
+                    lastPollingErrorLog = now;
+                }
+            }
 
             // Polling initial
             await pollStatus();
 
-            // Polling régulier toutes les 500ms comme Reachy Mini
-            dashboard.statusPollInterval = setInterval(pollStatus, 500);
+            // Polling régulier avec intervalle adaptatif
+            dashboard.statusPollInterval = setInterval(pollStatus, pollingInterval);
         }
 
         function updateStatusFromAPI(data) {
@@ -2216,9 +2341,13 @@ ADVANCED_DASHBOARD_HTML = """
                     showToast(`❌ Erreur: ${error.message}`, 'error', 4000);
                 }
             } else {
-                console.warn('WebSocket non connecté pour commande:', type, value);
-                addLog('warning', 'WebSocket non connecté - tentative de reconnexion...');
-                showToast('⚠️ Reconnexion en cours...', 'warning', 3000);
+                // Logger seulement une fois toutes les 5 secondes pour éviter le spam
+                const now = Date.now();
+                if (!dashboard.lastCommandErrorLog || (now - dashboard.lastCommandErrorLog) >= 5000) {
+                    console.debug('⚠️ WebSocket non connecté (serveur peut être arrêté)');
+                    dashboard.lastCommandErrorLog = now;
+                }
+                // Ne pas afficher de toast pour éviter le spam
                 if (!dashboard.reconnectInterval) {
                     connect();
                 }
@@ -2250,8 +2379,12 @@ ADVANCED_DASHBOARD_HTML = """
 
             // Vérifier WebSocket
             if (!dashboard.ws) {
-                console.error('❌ [CHAT] WebSocket non initialisé - Reconnexion...');
-                alert('WebSocket non connecté. Reconnexion en cours...');
+                // Logger seulement une fois toutes les 5 secondes
+                const now = Date.now();
+                if (!dashboard.lastChatErrorLog || (now - dashboard.lastChatErrorLog) >= 5000) {
+                    console.debug('⚠️ [CHAT] WebSocket non initialisé (serveur peut être arrêté)');
+                    dashboard.lastChatErrorLog = now;
+                }
                 connect();
                 // Réessayer après 1 seconde
                 setTimeout(() => {
@@ -2264,8 +2397,12 @@ ADVANCED_DASHBOARD_HTML = """
 
             // Vérifier état WebSocket
             if (dashboard.ws.readyState !== WebSocket.OPEN) {
-                console.error('❌ [CHAT] WebSocket pas ouvert, état:', dashboard.ws.readyState);
-                alert('WebSocket non connecté. Reconnexion...');
+                // Logger seulement une fois toutes les 5 secondes
+                const now = Date.now();
+                if (!dashboard.lastChatErrorLog || (now - dashboard.lastChatErrorLog) >= 5000) {
+                    console.debug('⚠️ [CHAT] WebSocket pas ouvert (serveur peut être arrêté)');
+                    dashboard.lastChatErrorLog = now;
+                }
                 connect();
                 setTimeout(() => {
                     if (dashboard.ws && dashboard.ws.readyState === WebSocket.OPEN) {
@@ -2602,6 +2739,11 @@ if FASTAPI_AVAILABLE:
         """Page principale du dashboard avancé."""
         return ADVANCED_DASHBOARD_HTML
 
+    @app.get("/.well-known/appspecific/com.chrome.devtools.json")
+    async def chrome_devtools_config():
+        """Endpoint pour Chrome DevTools - évite les 404 dans les logs."""
+        return {}  # Retourne un JSON vide pour Chrome DevTools
+
     @app.get("/api/status")
     async def get_status():
         """API endpoint pour récupérer le statut complet."""
@@ -2756,10 +2898,49 @@ if FASTAPI_AVAILABLE:
         """Retourne les liens vers la documentation."""
         try:
             links = get_documentation_links()
-            return {"success": True, "links": links}
+            # Convertir les chemins relatifs en URLs absolues
+            base_url = "/api/docs/view"
+            links_with_urls = {
+                name: f"{base_url}?path={path}" for name, path in links.items()
+            }
+            return {"success": True, "links": links_with_urls}
         except Exception as e:
             logger.error(f"Erreur récupération docs: {e}")
             return {"success": False, "error": str(e)}
+
+    @app.get("/api/docs/view")
+    async def view_documentation(path: str):
+        """Affiche un fichier de documentation."""
+        from fastapi.responses import FileResponse, PlainTextResponse
+        from pathlib import Path
+
+        try:
+            # Sécuriser le chemin pour éviter les accès non autorisés
+            doc_path = Path(path)
+            if ".." in str(doc_path) or doc_path.is_absolute():
+                raise HTTPException(status_code=400, detail="Chemin invalide")
+
+            # Construire le chemin complet depuis la racine du projet
+            project_root = Path(__file__).parent.parent.parent
+            full_path = project_root / doc_path
+
+            # Vérifier que le fichier existe et est dans le dossier docs
+            if not full_path.exists() or not str(full_path).startswith(str(project_root / "docs")):
+                raise HTTPException(status_code=404, detail="Fichier non trouvé")
+
+            # Si c'est un fichier markdown, retourner en texte brut (le navigateur peut l'afficher)
+            if full_path.suffix == ".md":
+                return PlainTextResponse(
+                    content=full_path.read_text(encoding="utf-8"),
+                    media_type="text/plain; charset=utf-8",
+                )
+            else:
+                return FileResponse(full_path)
+        except HTTPException:
+            raise
+        except Exception as e:
+            logger.error(f"Erreur lecture documentation {path}: {e}")
+            raise HTTPException(status_code=500, detail=f"Erreur lecture fichier: {e}")
 
     @app.get("/api/camera/stream")
     async def camera_stream():

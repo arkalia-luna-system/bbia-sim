@@ -103,7 +103,8 @@ class TestSDKMediaIntegration:
         mock_robot_api.media.camera = MagicMock()
 
         service = SimulationService()
-        service.robot_api = mock_robot_api
+        # robot_api n'est pas un attribut public, utiliser setattr pour le test
+        setattr(service, "robot_api", mock_robot_api)  # type: ignore[attr-defined]
 
         integration = BBIAIntegration(simulation_service=service)
 
@@ -140,7 +141,7 @@ class TestSDKMediaIntegration:
 
                     try:
                         enregistrer_audio(
-                            "test.wav", duree=0.1, robot_api=mock_robot_api
+                            "test.wav", duree=1, robot_api=mock_robot_api  # duree doit être int
                         )
                         print("✅ enregistrer_audio vérifie robot.media.microphone")
                     except Exception:

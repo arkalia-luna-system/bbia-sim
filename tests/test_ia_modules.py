@@ -30,13 +30,18 @@ class TestWhisperSTT:
         mapper = VoiceCommandMapper()
 
         # Test commandes françaises
-        assert mapper.map_command("salue")["action"] == "greet"
-        assert mapper.map_command("regarde-moi")["action"] == "look_at"
-        assert mapper.map_command("sois content")["action"] == "happy"
+        result1 = mapper.map_command("salue")
+        assert result1 is not None and result1["action"] == "greet"
+        result2 = mapper.map_command("regarde-moi")
+        assert result2 is not None and result2["action"] == "look_at"
+        result3 = mapper.map_command("sois content")
+        assert result3 is not None and result3["action"] == "happy"
 
         # Test commandes anglaises
-        assert mapper.map_command("hello")["action"] == "greet"
-        assert mapper.map_command("look at me")["action"] == "look_at"
+        result4 = mapper.map_command("hello")
+        assert result4 is not None and result4["action"] == "greet"
+        result5 = mapper.map_command("look at me")
+        assert result5 is not None and result5["action"] == "look_at"
 
         # Test commande non reconnue
         assert mapper.map_command("commande inconnue") is None
@@ -138,7 +143,7 @@ class TestWhisperSTT:
         mock_whisper_module.load_model.return_value = mock_model
 
         stt = WhisperSTT(model_size="tiny", language="fr")
-        stt.model = mock_model
+        stt.model = mock_model  # type: ignore[assignment]
         stt.is_loaded = True
 
         result = stt.transcribe_audio("test.wav")
@@ -152,7 +157,7 @@ class TestWhisperSTT:
         stt = WhisperSTT(model_size="tiny", language="fr")
         stt.is_loaded = False
         # Mock load_model pour retourner False
-        stt.load_model = MagicMock(return_value=False)
+        setattr(stt, "load_model", MagicMock(return_value=False))  # type: ignore[method-assign]
 
         result = stt.transcribe_audio("test.wav")
         assert result is None
@@ -166,7 +171,7 @@ class TestWhisperSTT:
         mock_whisper_module.load_model.return_value = mock_model
 
         stt = WhisperSTT(model_size="tiny", language="fr")
-        stt.model = mock_model
+        stt.model = mock_model  # type: ignore[assignment]
         stt.is_loaded = True
 
         result = stt.transcribe_audio("test.wav")
@@ -194,7 +199,7 @@ class TestWhisperSTT:
         mock_model.transcribe.return_value = {"text": "Hello"}
 
         stt = WhisperSTT(model_size="tiny", language="auto")
-        stt.model = mock_model
+        stt.model = mock_model  # type: ignore[assignment]
         stt.is_loaded = True
 
         result = stt.transcribe_audio("test.wav")
@@ -258,7 +263,7 @@ class TestWhisperSTT:
         """Test transcription streaming avec modèle non chargé."""
         stt = WhisperSTT(model_size="tiny", language="fr")
         stt.is_loaded = False
-        stt.load_model = MagicMock(return_value=False)
+        setattr(stt, "load_model", MagicMock(return_value=False))  # type: ignore[method-assign]
         result = stt.transcribe_streaming()
         assert result is None
 
@@ -269,7 +274,7 @@ class TestWhisperSTT:
         """Test transcription streaming avec ImportError."""
         mock_sd.rec.side_effect = ImportError("sounddevice not available")
         stt = WhisperSTT(model_size="tiny", language="fr")
-        stt.model = MagicMock()
+        stt.model = MagicMock()  # type: ignore[assignment]
         stt.is_loaded = True
         result = stt.transcribe_streaming()
         assert result is None

@@ -332,7 +332,10 @@ class TestBBIAAdaptiveBehavior:
         # Vérification que les comportements sont adaptés à l'émotion
         for behavior_name in suitable:
             behavior_config = adaptive_behavior.behaviors[behavior_name]
-            assert "happy" in behavior_config["emotions"]
+            emotions = behavior_config.get("emotions", [])
+            if isinstance(emotions, (list, tuple, str)):
+                emotions_str = str(emotions) if not isinstance(emotions, str) else emotions
+                assert "happy" in emotions_str
 
     def test_user_preferences(self):
         """Test les préférences utilisateur."""

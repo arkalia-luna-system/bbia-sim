@@ -4,6 +4,7 @@ Test E2E: Scénario utilisateur - BBIA détecte visage → suit → salue
 """
 
 import os
+from collections import deque
 from unittest.mock import MagicMock
 
 import pytest
@@ -28,7 +29,7 @@ class TestE2EFaceDetectionGreeting:
         # Vision avec mock
         self.vision = BBIAVision(robot_api=self.mock_robot)
         # Mock faces détectées
-        self.vision.faces_detected = [
+        self.vision.faces_detected = deque([  # type: ignore[assignment]
             {
                 "name": "humain",
                 "distance": 1.5,
@@ -36,7 +37,7 @@ class TestE2EFaceDetectionGreeting:
                 "emotion": "happy",
                 "position": (0.5, 0.5),
             },
-        ]
+        ])
 
         # Behavior manager
         self.behavior = BBIABehaviorManager(robot_api=self.mock_robot)
@@ -83,14 +84,14 @@ class TestE2EFaceDetectionGreeting:
 
         # 2. Activer tracking visage
         # Pour tracking visage, on peut tracker l'objet "humain"
-        self.vision.objects_detected = [
+        self.vision.objects_detected = deque([  # type: ignore[assignment]
             {
                 "name": "humain",
                 "distance": 1.5,
                 "confidence": 0.95,
                 "bbox": [100, 100, 200, 200],
             },
-        ]
+        ])
 
         track_success = self.vision.track_object("humain")
         assert track_success is True
@@ -101,7 +102,7 @@ class TestE2EFaceDetectionGreeting:
         assert status["current_focus"] is not None
 
         # 4. Activer greeting
-        self.behavior.execute_behavior = MagicMock(return_value=True)
+        setattr(self.behavior, "execute_behavior", MagicMock(return_value=True))  # type: ignore[method-assign]
         greeting_success = self.behavior.execute_behavior(
             "greeting", {"target": "face"}
         )
@@ -121,14 +122,14 @@ class TestE2EFaceDetectionGreeting:
         faces = self.vision.detect_faces()
         if len(faces) > 0:
             # 3. Tracking si visage trouvé
-            self.vision.objects_detected = [
+            self.vision.objects_detected = deque([  # type: ignore[assignment]
                 {"name": "humain", "confidence": 0.9, "bbox": [100, 100, 200, 200]},
-            ]
+            ])
             track_success = self.vision.track_object("humain")
 
             if track_success:
                 # 4. Activer greeting
-                self.behavior.execute_behavior = MagicMock(return_value=True)
+                setattr(self.behavior, "execute_behavior", MagicMock(return_value=True))  # type: ignore[method-assign]
                 greeting_result = self.behavior.execute_behavior("greeting", {})
 
                 # 5. Vérifier état final

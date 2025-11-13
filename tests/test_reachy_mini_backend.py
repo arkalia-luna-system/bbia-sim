@@ -352,6 +352,7 @@ class TestReachyMiniBackendReal:
         if robot is None:
             pytest.skip("Backend reachy_mini non disponible")
 
+        assert robot is not None  # Type narrowing pour mypy
         # Ce test nécessite un robot physique connecté
         success = robot.connect()
         # Ne peut pas être testé sans robot physique
@@ -368,6 +369,7 @@ class TestReachyMiniBackendReal:
         if robot is None:
             pytest.skip("Backend reachy_mini non disponible")
 
+        assert robot is not None  # Type narrowing pour mypy
         # Ce test nécessite un robot physique connecté
         if robot.connect():
             success = robot.set_joint_pos("stewart_1", 0.1)

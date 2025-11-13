@@ -60,7 +60,7 @@ class TestE2EVoiceInteraction:
                 # 5. Mouvement réponse (nod ou autre comportement)
                 # Si réponse contient indication mouvement, activer comportement
                 if "signe" in response.lower() or "mouvement" in response.lower():
-                    self.behavior.execute_behavior = MagicMock(return_value=True)
+                    setattr(self.behavior, "execute_behavior", MagicMock(return_value=True))  # type: ignore[method-assign]
                     behavior_result = self.behavior.execute_behavior(
                         "greeting", {"text": response}
                     )
@@ -87,7 +87,7 @@ class TestE2EVoiceInteraction:
         assert action["action"] == "greet"
 
         # 4. Exécuter action via behavior
-        self.behavior.execute_behavior = MagicMock(return_value=True)
+        setattr(self.behavior, "execute_behavior", MagicMock(return_value=True))  # type: ignore[method-assign]
         result = self.behavior.execute_behavior(action["action"], {})
         assert result is True
 
@@ -113,6 +113,6 @@ class TestE2EVoiceInteraction:
 
             if action:
                 # 3. Exécution action
-                self.behavior.execute_behavior = MagicMock(return_value=True)
+                setattr(self.behavior, "execute_behavior", MagicMock(return_value=True))  # type: ignore[method-assign]
                 result = self.behavior.execute_behavior(action["action"], {})
                 assert result is True

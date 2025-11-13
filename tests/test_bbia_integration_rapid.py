@@ -25,7 +25,9 @@ class TestBBIAIntegrationRapid:
 
             integration = BBIAIntegration()
             integration.is_active = True
-            integration.apply_emotion_to_robot("happy", 0.8)
+            # apply_emotion_to_robot est async, utiliser asyncio.run
+            import asyncio
+            asyncio.run(integration.apply_emotion_to_robot("happy", 0.8))
         except (ImportError, Exception) as e:
             pytest.skip(f"Module non disponible: {e}")
 
@@ -42,7 +44,9 @@ class TestBBIAIntegrationRapid:
 
             integration = BBIAIntegration()
             integration.is_active = True
-            integration.react_to_face_detection({"faces": [{"pos": (0.5, 0.5)}]})
+            # Utiliser react_to_vision_detection au lieu de react_to_face_detection
+            import asyncio
+            asyncio.run(integration.react_to_vision_detection({"faces": [{"pos": (0.5, 0.5)}]}))
         except (ImportError, Exception) as e:
             pytest.skip(f"Module non disponible: {e}")
 
