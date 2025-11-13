@@ -183,6 +183,7 @@ class MockCamera:
         """Simule récupération d'une frame."""
         # Retourner une image vide (640x480x3)
         from numpy.typing import NDArray
+
         result: NDArray[np.uint8] = np.zeros((480, 640, 3), dtype=np.uint8)
         return result  # type: ignore[no-any-return]
 

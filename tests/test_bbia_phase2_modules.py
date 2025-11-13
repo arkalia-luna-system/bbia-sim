@@ -334,7 +334,9 @@ class TestBBIAAdaptiveBehavior:
             behavior_config = adaptive_behavior.behaviors[behavior_name]
             emotions = behavior_config.get("emotions", [])
             if isinstance(emotions, (list, tuple, str)):
-                emotions_str = str(emotions) if not isinstance(emotions, str) else emotions
+                emotions_str = (
+                    str(emotions) if not isinstance(emotions, str) else emotions
+                )
                 assert "happy" in emotions_str
 
     def test_user_preferences(self):

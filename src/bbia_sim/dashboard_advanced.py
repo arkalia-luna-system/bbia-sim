@@ -2713,7 +2713,9 @@ ADVANCED_DASHBOARD_HTML = """
                     let html = '';
 
                     for (const [name, path] of Object.entries(data.links)) {
-                        html += `<a href="${path}" target="_blank">📄 ${name.replace('_', ' ')}</a>`;
+                        // path est maintenant une URL complète depuis l'API
+                        const displayName = name.replace(/_/g, ' ').replace(/\\b\\w/g, (l) => l.toUpperCase());
+                        html += `<a href="${path}" target="_blank">📄 ${displayName}</a>`;
                     }
 
                     linksDiv.innerHTML = html;
@@ -2910,9 +2912,11 @@ if FASTAPI_AVAILABLE:
 
     @app.get("/api/docs/view")
     async def view_documentation(path: str):
-        """Affiche un fichier de documentation."""
-        from fastapi.responses import FileResponse, PlainTextResponse
+        """Affiche un fichier de documentation en HTML formaté."""
+        import html
         from pathlib import Path
+
+        from fastapi.responses import FileResponse, HTMLResponse
 
         try:
             # Sécuriser le chemin pour éviter les accès non autorisés
@@ -2925,22 +2929,83 @@ if FASTAPI_AVAILABLE:
             full_path = project_root / doc_path
 
             # Vérifier que le fichier existe et est dans le dossier docs
-            if not full_path.exists() or not str(full_path).startswith(str(project_root / "docs")):
+            if not full_path.exists() or not str(full_path).startswith(
+                str(project_root / "docs")
+            ):
                 raise HTTPException(status_code=404, detail="Fichier non trouvé")
 
-            # Si c'est un fichier markdown, retourner en texte brut (le navigateur peut l'afficher)
+            # Si c'est un fichier markdown, convertir en HTML
             if full_path.suffix == ".md":
-                return PlainTextResponse(
-                    content=full_path.read_text(encoding="utf-8"),
-                    media_type="text/plain; charset=utf-8",
-                )
+                content = full_path.read_text(encoding="utf-8")
+                # Échapper le HTML et convertir les retours à la ligne en <br>
+                content_html = html.escape(content).replace("\n", "<br>\n")
+                # Créer une page HTML simple avec le contenu
+                html_page = f"""
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation - {doc_path.name}</title>
+    <style>
+        body {{
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            color: #4D4D4D;
+            background: #f5f7fa;
+        }}
+        pre {{
+            background: #ffffff;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #E6E6E6;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+        }}
+        code {{
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+        }}
+        h1, h2, h3 {{
+            color: #4D4D4D;
+            border-bottom: 2px solid #4D4D4D;
+            padding-bottom: 10px;
+        }}
+        a {{
+            color: #008181;
+            text-decoration: none;
+        }}
+        a:hover {{
+            text-decoration: underline;
+        }}
+    </style>
+</head>
+<body>
+    <h1>📚 {doc_path.name}</h1>
+    <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+        <pre style="white-space: pre-wrap; font-family: inherit;">{content_html}</pre>
+    </div>
+    <p style="margin-top: 20px; text-align: center;">
+        <a href="/">← Retour au dashboard</a>
+    </p>
+</body>
+</html>
+"""
+                return HTMLResponse(content=html_page)
             else:
                 return FileResponse(full_path)
         except HTTPException:
             raise
         except Exception as e:
             logger.error(f"Erreur lecture documentation {path}: {e}")
-            raise HTTPException(status_code=500, detail=f"Erreur lecture fichier: {e}")
+            raise HTTPException(
+                status_code=500, detail=f"Erreur lecture fichier: {e}"
+            ) from e
 
     @app.get("/api/camera/stream")
     async def camera_stream():

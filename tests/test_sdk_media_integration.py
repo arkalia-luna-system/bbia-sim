@@ -141,7 +141,9 @@ class TestSDKMediaIntegration:
 
                     try:
                         enregistrer_audio(
-                            "test.wav", duree=1, robot_api=mock_robot_api  # duree doit être int
+                            "test.wav",
+                            duree=1,
+                            robot_api=mock_robot_api,  # duree doit être int
                         )
                         print("✅ enregistrer_audio vérifie robot.media.microphone")
                     except Exception:

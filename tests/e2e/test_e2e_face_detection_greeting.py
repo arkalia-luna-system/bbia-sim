@@ -29,15 +29,17 @@ class TestE2EFaceDetectionGreeting:
         # Vision avec mock
         self.vision = BBIAVision(robot_api=self.mock_robot)
         # Mock faces détectées
-        self.vision.faces_detected = deque([  # type: ignore[assignment]
-            {
-                "name": "humain",
-                "distance": 1.5,
-                "confidence": 0.95,
-                "emotion": "happy",
-                "position": (0.5, 0.5),
-            },
-        ])
+        self.vision.faces_detected = deque(
+            [  # type: ignore[assignment]
+                {
+                    "name": "humain",
+                    "distance": 1.5,
+                    "confidence": 0.95,
+                    "emotion": "happy",
+                    "position": (0.5, 0.5),
+                },
+            ]
+        )
 
         # Behavior manager
         self.behavior = BBIABehaviorManager(robot_api=self.mock_robot)
@@ -84,14 +86,16 @@ class TestE2EFaceDetectionGreeting:
 
         # 2. Activer tracking visage
         # Pour tracking visage, on peut tracker l'objet "humain"
-        self.vision.objects_detected = deque([  # type: ignore[assignment]
-            {
-                "name": "humain",
-                "distance": 1.5,
-                "confidence": 0.95,
-                "bbox": [100, 100, 200, 200],
-            },
-        ])
+        self.vision.objects_detected = deque(
+            [  # type: ignore[assignment]
+                {
+                    "name": "humain",
+                    "distance": 1.5,
+                    "confidence": 0.95,
+                    "bbox": [100, 100, 200, 200],
+                },
+            ]
+        )
 
         track_success = self.vision.track_object("humain")
         assert track_success is True
@@ -122,9 +126,11 @@ class TestE2EFaceDetectionGreeting:
         faces = self.vision.detect_faces()
         if len(faces) > 0:
             # 3. Tracking si visage trouvé
-            self.vision.objects_detected = deque([  # type: ignore[assignment]
-                {"name": "humain", "confidence": 0.9, "bbox": [100, 100, 200, 200]},
-            ])
+            self.vision.objects_detected = deque(
+                [  # type: ignore[assignment]
+                    {"name": "humain", "confidence": 0.9, "bbox": [100, 100, 200, 200]},
+                ]
+            )
             track_success = self.vision.track_object("humain")
 
             if track_success:

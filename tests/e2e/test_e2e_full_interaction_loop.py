@@ -41,23 +41,29 @@ class TestE2EFullInteractionLoop:
         """Scénario complet: détection → écoute → réponse → mouvement."""
         # 1. Détection visage (mock)
         from collections import deque
-        self.vision.faces_detected = deque([  # type: ignore[assignment]
-            {
-                "name": "humain",
-                "distance": 1.5,
-                "confidence": 0.95,
-                "emotion": "happy",
-            },
-        ])
+
+        self.vision.faces_detected = deque(
+            [  # type: ignore[assignment]
+                {
+                    "name": "humain",
+                    "distance": 1.5,
+                    "confidence": 0.95,
+                    "emotion": "happy",
+                },
+            ]
+        )
 
         scan_result = self.vision.scan_environment()
         assert len(scan_result["faces"]) > 0
 
         # 2. Tracking visage
         from collections import deque
-        self.vision.objects_detected = deque([  # type: ignore[assignment]
-            {"name": "humain", "confidence": 0.9, "bbox": [100, 100, 200, 200]},
-        ])
+
+        self.vision.objects_detected = deque(
+            [  # type: ignore[assignment]
+                {"name": "humain", "confidence": 0.9, "bbox": [100, 100, 200, 200]},
+            ]
+        )
         track_success = self.vision.track_object("humain")
         assert track_success is True
 
@@ -112,6 +118,7 @@ class TestE2EFullInteractionLoop:
         """Boucle interactive multiple tours: scan → écoute → réponse → scan."""
         # Tour 1: Détection initiale
         from collections import deque
+
         self.vision.faces_detected = deque([{"name": "humain", "confidence": 0.9}])  # type: ignore[assignment]
         scan1 = self.vision.scan_environment()
         assert len(scan1["faces"]) > 0
@@ -132,6 +139,7 @@ class TestE2EFullInteractionLoop:
 
         # Tour 4: Nouveau scan
         from collections import deque
+
         self.vision.faces_detected = deque([{"name": "humain", "confidence": 0.95}])  # type: ignore[assignment]
         scan2 = self.vision.scan_environment()
         assert len(scan2["faces"]) > 0

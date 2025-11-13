@@ -464,7 +464,9 @@ class TestReachyMiniFullConformity:
 
         # Test get_available_joints retourne list
         joints_result: list[str] = self.backend.get_available_joints()  # type: ignore[assignment]
-        assert isinstance(joints_result, list), "get_available_joints doit retourner list"
+        assert isinstance(
+            joints_result, list
+        ), "get_available_joints doit retourner list"
         print("✅ get_available_joints retourne list")
 
     def test_16_joint_names_official(self):
