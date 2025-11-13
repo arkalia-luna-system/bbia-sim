@@ -82,6 +82,34 @@
 - `Capture d'écran Oct / No2025025025025025 à 17.41.09.png` (35K)
 - `Capture d'écran Oct / No2025025025025025 à 17.41.26.png` (40K)
 
+### 🖥️ Captures Dashboard BBIA (Nov 2025)
+
+#### **Série de captures dashboard - 14:14**
+
+- **Capture Dashboard 1** : `assets/images/Capture d'écran 2025-11-13 à 14.14.20.png` (1.0K)
+  - Vue initiale du dashboard avec sliders joints (PASSIVE_6, PASSIVE_7, RIGHT_ANTENNA, LEFT_ANTENNA)
+  - Panneau Chat avec BBIA, section Troubleshooting, et logs temps réel
+  - Statut : Connecté | Backend: mujoco | Version: 1.2.0
+
+- **Capture Dashboard 2** : `assets/images/Capture d'écran 2025-11-13 à 14.14.27.png` (340K)
+  - Vue complète du dashboard avec 6 indicateurs de statut (ROBOT, ÉMOTION, LATENCE, FPS, OBJETS, VISAGES)
+  - 4 panneaux principaux : Contrôles, Métriques Temps Réel, Contrôle des Joints, Vision
+  - Graphique de métriques temps réel affiché
+
+- **Capture Dashboard 3** : `assets/images/Capture d'écran 2025-11-13 à 14.14.51.png` (424K)
+  - Vue détaillée des métriques avec graphique (Latence, FPS, CPU)
+  - Métriques système affichées (CPU: 0%, Mémoire: 0%, Volume: 0%, Intensité: 50%)
+  - Contrôles des joints avec sliders pour YAW_BODY, STEWART_1-6, PASSIVE_1-5
+
+- **Capture Dashboard 4** : `assets/images/Capture d'écran 2025-11-13 à 14.14.59.png` (574K)
+  - Vue complète du dashboard avec tous les panneaux visibles
+  - Panneau Vision avec compteurs (5 objets détectés, 2 visages détectés)
+  - Boutons de contrôle vision (Basculer Vision, Scanner, Suivre Objet)
+
+- **Description** : Captures d'écran du dashboard BBIA Advanced Dashboard montrant l'interface complète
+- **Contenu** : Interface de contrôle avec métriques temps réel, contrôles joints, vision, chat, et troubleshooting
+- **Usage** : Documentation dashboard, README, guides utilisateur
+
 ### 🎨 Images Finales
 
 - `robot_3d_final.png` (38K) - Vue 3D finale du robot

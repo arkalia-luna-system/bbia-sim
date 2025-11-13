@@ -21,6 +21,17 @@ Le `dashboard_advanced.py` est un dashboard amélioré qui offre :
 - ✅ **Panneau troubleshooting interactif** (détection automatique + tests)
 - ✅ **Interface Web** moderne avec FastAPI
 
+### 📸 Captures d'écran
+
+Des captures d'écran du dashboard sont disponibles dans `assets/images/` :
+
+- `Capture d'écran 2025-11-13 à 14.14.20.png` - Vue initiale avec sliders joints
+- `Capture d'écran 2025-11-13 à 14.14.27.png` - Vue complète avec indicateurs de statut
+- `Capture d'écran 2025-11-13 à 14.14.51.png` - Métriques détaillées et graphiques
+- `Capture d'écran 2025-11-13 à 14.14.59.png` - Vue complète avec tous les panneaux
+
+**Voir** : [`assets/MEDIAS_INVENTAIRE.md`](../../assets/MEDIAS_INVENTAIRE.md) pour l'inventaire complet.
+
 ---
 
 ## 🚀 Installation et Démarrage

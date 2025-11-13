@@ -205,7 +205,7 @@
 
 **Verdict** : ✅ **FAIT** — GIF animation présent et référencé dans README.
 
-**Note** : Pourrait être amélioré avec screenshots dashboard (non trouvés).
+**Note** : ✅ Screenshots dashboard ajoutés (4 captures d'écran dans `assets/images/` - Nov 2025).
 
 ---
 
@@ -236,7 +236,7 @@
 | [x] Guide ReSpeaker dédié | ✅ **FAIT** | - | - |
 | [x] GIF/screenshots | ✅ **FAIT** | - | - |
 | [x] Topics GitHub | ✅ **FAIT** | - | - |
-| [ ] Screenshots dashboard (optionnel) | ⚠️ Optionnel | 🟡 Moyenne | 45 min |
+| [x] Screenshots dashboard (optionnel) | ✅ **FAIT** | - | - |
 
 ---
 
