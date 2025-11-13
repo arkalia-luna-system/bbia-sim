@@ -337,13 +337,58 @@ ADVANCED_DASHBOARD_HTML = """
             box-sizing: border-box;
         }
 
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+        }
+
+        *::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        *::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        *::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+        }
+
+        *::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #008181 0%, #006666 100%);
+            background-attachment: fixed;
             color: white;
             min-height: 100vh;
             overflow-x: hidden;
         }
+
+        /* Animation d'entrée */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .panel {
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        .panel:nth-child(1) { animation-delay: 0.1s; }
+        .panel:nth-child(2) { animation-delay: 0.2s; }
+        .panel:nth-child(3) { animation-delay: 0.3s; }
+        .panel:nth-child(4) { animation-delay: 0.4s; }
 
         .header {
             background: rgba(255, 255, 255, 0.1);
@@ -351,6 +396,10 @@ ADVANCED_DASHBOARD_HTML = """
             padding: 20px;
             text-align: center;
             border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
         .header h1 {
@@ -380,6 +429,13 @@ ADVANCED_DASHBOARD_HTML = """
             padding: 25px;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .panel:hover {
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
         }
 
         .panel h3 {
@@ -401,12 +457,30 @@ ADVANCED_DASHBOARD_HTML = """
             padding: 15px;
             border-radius: 10px;
             text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .status-item:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
 
         .status-value {
             font-size: 2em;
             font-weight: bold;
             margin-bottom: 5px;
+            transition: transform 0.2s ease;
+        }
+
+        .status-value.updating {
+            animation: pulse-value 0.5s ease;
+        }
+
+        @keyframes pulse-value {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
         }
 
         .status-label {
@@ -447,18 +521,69 @@ ADVANCED_DASHBOARD_HTML = """
             color: white;
             font-size: 14px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             backdrop-filter: blur(5px);
             text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .control-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .control-button:active::before {
+            width: 300px;
+            height: 300px;
         }
 
         .control-button:hover {
             background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
 
         .control-button:active {
-            transform: translateY(0);
+            transform: translateY(-1px) scale(0.98);
+        }
+
+        .control-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .control-button.loading {
+            pointer-events: none;
+            position: relative;
+        }
+
+        .control-button.loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 16px;
+            height: 16px;
+            margin: -8px 0 0 -8px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
         .emotion-button {
@@ -507,6 +632,13 @@ ADVANCED_DASHBOARD_HTML = """
             text-align: center;
             font-size: 0.9em;
             opacity: 0.8;
+            transition: all 0.2s ease;
+        }
+
+        .joint-value.updating {
+            color: #00cccc;
+            font-weight: bold;
+            transform: scale(1.1);
         }
 
         .logs-container {
@@ -607,6 +739,147 @@ ADVANCED_DASHBOARD_HTML = """
             text-align: center;
             opacity: 0.6;
             font-style: italic;
+            padding: 40px 20px;
+        }
+
+        .troubleshooting-placeholder::before {
+            content: '🔍';
+            display: block;
+            font-size: 3em;
+            margin-bottom: 10px;
+            opacity: 0.5;
+        }
+
+        /* Toast notifications */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            animation: slideInRight 0.3s ease-out;
+            max-width: 300px;
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .toast.success {
+            border-left: 4px solid #4CAF50;
+        }
+
+        .toast.error {
+            border-left: 4px solid #F44336;
+        }
+
+        .toast.warning {
+            border-left: 4px solid #FF9800;
+        }
+
+        .toast.info {
+            border-left: 4px solid #2196F3;
+        }
+
+        /* Empty states */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            opacity: 0.7;
+        }
+
+        .empty-state::before {
+            content: '📭';
+            display: block;
+            font-size: 4em;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+
+        /* Tooltip */
+        [data-tooltip] {
+            position: relative;
+            cursor: help;
+        }
+
+        [data-tooltip]:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            white-space: nowrap;
+            z-index: 1000;
+            margin-bottom: 5px;
+            animation: fadeInUp 0.2s ease-out;
+        }
+
+        [data-tooltip]:hover::before {
+            content: '';
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 5px solid transparent;
+            border-top-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-container {
+                grid-template-columns: 1fr;
+                padding: 10px;
+                gap: 15px;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .controls-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .status-panel {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        /* Focus visible pour accessibilité */
+        button:focus-visible,
+        input:focus-visible {
+            outline: 2px solid rgba(255, 255, 255, 0.8);
+            outline-offset: 2px;
+        }
+
+        /* Skeleton loading */
+        .skeleton {
+            background: linear-gradient(90deg, rgba(255,255,255,0.1) 25%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0.1) 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s ease-in-out infinite;
+            border-radius: 4px;
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
         }
 
         .troubleshooting-item {
@@ -699,6 +972,13 @@ ADVANCED_DASHBOARD_HTML = """
             padding: 10px;
             border-radius: 8px;
             margin-bottom: 10px;
+            transition: all 0.3s ease;
+            word-wrap: break-word;
+        }
+
+        .chat-message:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: scale(1.02);
         }
 
         .chat-message.chat-user {
@@ -730,11 +1010,19 @@ ADVANCED_DASHBOARD_HTML = """
         .chat-input-group input {
             flex: 1;
             padding: 12px;
-            border: none;
+            border: 2px solid transparent;
             border-radius: 10px;
             background: rgba(255, 255, 255, 0.1);
             color: white;
             font-size: 14px;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .chat-input-group input:focus {
+            border-color: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 10px rgba(0, 129, 129, 0.3);
         }
 
         .chat-input-group input::placeholder {
@@ -873,8 +1161,12 @@ ADVANCED_DASHBOARD_HTML = """
                 <div class="chat-messages" id="chat-messages"></div>
                 <div class="chat-input-group">
                     <input type="text" id="chat-input" placeholder="Tapez votre message..."
-                           onkeypress="if(event.key==='Enter') sendChatMessage()">
-                    <button class="control-button" onclick="sendChatMessage()">Envoyer</button>
+                           onkeypress="if(event.key==='Enter') sendChatMessage()"
+                           aria-label="Message chat BBIA"
+                           data-tooltip="Appuyez sur Entrée pour envoyer">
+                    <button class="control-button" onclick="sendChatMessage()"
+                            aria-label="Envoyer message"
+                            data-tooltip="Envoyer le message">Envoyer</button>
                 </div>
             </div>
         </div>
@@ -921,6 +1213,14 @@ ADVANCED_DASHBOARD_HTML = """
             memory: []
         };
 
+        // Optimisation performance: throttling pour les mises à jour
+        let lastMetricsUpdate = 0;
+        const METRICS_UPDATE_INTERVAL = 100; // ms
+
+        // Debouncing pour les commandes
+        let commandQueue = [];
+        let commandTimeout = null;
+
         // Initialisation
         document.addEventListener('DOMContentLoaded', function() {
             initializeChart();
@@ -939,6 +1239,7 @@ ADVANCED_DASHBOARD_HTML = """
                 updateConnectionStatus(true);
                 clearInterval(reconnectInterval);
                 addLog('info', 'Connexion WebSocket établie');
+                showToast('✅ Connecté au serveur', 'success');
             };
 
             ws.onmessage = function(event) {
@@ -950,6 +1251,7 @@ ADVANCED_DASHBOARD_HTML = """
                 console.log('WebSocket fermé');
                 updateConnectionStatus(false);
                 addLog('error', 'Connexion WebSocket fermée');
+                showToast('⚠️ Reconnexion en cours...', 'warning');
                 reconnectInterval = setInterval(connect, 3000);
             };
 
@@ -1001,30 +1303,45 @@ ADVANCED_DASHBOARD_HTML = """
                 data.bbia_modules.vision.faces;
         }
 
-        // Mise à jour des métriques
+        // Mise à jour des métriques (optimisée avec throttling)
         function updateMetrics(metrics) {
-            // Statut temps réel
-            document.getElementById('latency-status').textContent =
-                Math.round(metrics.performance.latency_ms) + 'ms';
-            document.getElementById('fps-status').textContent =
-                Math.round(metrics.performance.fps);
-            document.getElementById('objects-status').textContent =
-                metrics.vision.objects_detected;
-            document.getElementById('faces-status').textContent =
-                metrics.vision.faces_detected;
+            const now = Date.now();
+            if (now - lastMetricsUpdate < METRICS_UPDATE_INTERVAL) {
+                return; // Skip si trop tôt
+            }
+            lastMetricsUpdate = now;
 
-            // Métriques détaillées
-            document.getElementById('cpu-metric').textContent =
-                Math.round(metrics.performance.cpu_usage) + '%';
-            document.getElementById('memory-metric').textContent =
-                Math.round(metrics.performance.memory_usage) + '%';
-            document.getElementById('volume-metric').textContent =
-                Math.round(metrics.audio.volume_level * 100) + '%';
-            document.getElementById('intensity-metric').textContent =
-                Math.round(metrics.emotion_intensity * 100) + '%';
+            // Utiliser requestAnimationFrame pour des mises à jour fluides
+            requestAnimationFrame(() => {
+                // Statut temps réel avec animation
+                updateValueWithAnimation('latency-status', Math.round(metrics.performance.latency_ms) + 'ms');
+                updateValueWithAnimation('fps-status', Math.round(metrics.performance.fps));
+                updateValueWithAnimation('objects-status', metrics.vision.objects_detected);
+                updateValueWithAnimation('faces-status', metrics.vision.faces_detected);
 
-            // Mise à jour du graphique
-            updateChart(metrics);
+                // Métriques détaillées
+                updateValueWithAnimation('cpu-metric', Math.round(metrics.performance.cpu_usage) + '%');
+                updateValueWithAnimation('memory-metric', Math.round(metrics.performance.memory_usage) + '%');
+                updateValueWithAnimation('volume-metric', Math.round(metrics.audio.volume_level * 100) + '%');
+                updateValueWithAnimation('intensity-metric', Math.round(metrics.emotion_intensity * 100) + '%');
+
+                // Mise à jour du graphique
+                updateChart(metrics);
+            });
+        }
+
+        // Fonction helper pour mettre à jour avec animation
+        function updateValueWithAnimation(elementId, newValue) {
+            const element = document.getElementById(elementId);
+            if (!element) return;
+
+            if (element.textContent !== String(newValue)) {
+                element.classList.add('updating');
+                element.textContent = newValue;
+                setTimeout(() => {
+                    element.classList.remove('updating');
+                }, 500);
+            }
         }
 
         // Initialisation du graphique
@@ -1091,8 +1408,10 @@ ADVANCED_DASHBOARD_HTML = """
             });
         }
 
-        // Mise à jour du graphique
+        // Mise à jour du graphique (optimisée)
         function updateChart(metrics) {
+            if (!metricsChart) return;
+
             const now = new Date().toLocaleTimeString();
 
             // Ajouter nouvelles données
@@ -1102,8 +1421,9 @@ ADVANCED_DASHBOARD_HTML = """
             metricsData.cpu.push(metrics.performance.cpu_usage);
             metricsData.memory.push(metrics.performance.memory_usage);
 
-            // Limiter à 20 points
-            if (metricsData.labels.length > 20) {
+            // Limiter à 30 points pour plus de données
+            const maxPoints = 30;
+            if (metricsData.labels.length > maxPoints) {
                 metricsData.labels.shift();
                 metricsData.latency.shift();
                 metricsData.fps.shift();
@@ -1111,8 +1431,11 @@ ADVANCED_DASHBOARD_HTML = """
                 metricsData.memory.shift();
             }
 
-            // Mettre à jour le graphique
-            metricsChart.update('none');
+            // Mettre à jour le graphique avec animation fluide
+            metricsChart.update({
+                duration: 0, // Pas d'animation pour performance
+                lazy: true
+            });
         }
 
         // Mise à jour des contrôles de joints
@@ -1143,21 +1466,39 @@ ADVANCED_DASHBOARD_HTML = """
             });
         }
 
-        // Fonctions de contrôle
+        // Fonctions de contrôle avec feedback visuel
         function setEmotion(emotion) {
+            const button = event?.target || document.querySelector(`button[onclick*="setEmotion('${emotion}')"]`);
+            if (button) {
+                button.classList.add('loading');
+                setTimeout(() => button.classList.remove('loading'), 500);
+            }
             sendCommand('emotion', emotion);
             addLog('info', `Émotion définie: ${emotion}`);
         }
 
         function sendAction(action) {
+            const button = event?.target || document.querySelector(`button[onclick*="sendAction('${action}')"]`);
+            if (button) {
+                button.classList.add('loading');
+                setTimeout(() => button.classList.remove('loading'), 500);
+            }
             sendCommand('action', action);
             addLog('info', `Action envoyée: ${action}`);
         }
 
         function runBehavior(behavior) {
+            const button = event?.target || document.querySelector(`button[onclick*="runBehavior('${behavior}')"]`);
+            if (button) {
+                button.classList.add('loading');
+                setTimeout(() => button.classList.remove('loading'), 1000);
+            }
             sendCommand('behavior', behavior);
             addLog('info', `Comportement lancé: ${behavior}`);
         }
+
+        // Debouncing pour les sliders de joints
+        let jointUpdateTimeouts = {};
 
         function setJointPosition(joint, position) {
             const numPosition = parseFloat(position);
@@ -1165,11 +1506,24 @@ ADVANCED_DASHBOARD_HTML = """
                 addLog('error', `Position invalide pour joint ${joint}: ${position}`);
                 return;
             }
-            sendCommand('joint', { joint: joint, position: numPosition });
+
+            // Mise à jour immédiate de l'affichage
             const valueElement = document.getElementById(`value-${joint}`);
             if (valueElement) {
                 valueElement.textContent = numPosition.toFixed(2);
+                valueElement.classList.add('updating');
+                setTimeout(() => valueElement.classList.remove('updating'), 300);
             }
+
+            // Debounce: envoyer la commande après 100ms d'inactivité
+            if (jointUpdateTimeouts[joint]) {
+                clearTimeout(jointUpdateTimeouts[joint]);
+            }
+
+            jointUpdateTimeouts[joint] = setTimeout(() => {
+                sendCommand('joint', { joint: joint, position: numPosition });
+                delete jointUpdateTimeouts[joint];
+            }, 100);
         }
 
         function toggleVision() {
@@ -1217,16 +1571,50 @@ ADVANCED_DASHBOARD_HTML = """
 
         function addLog(level, message) {
             const container = document.getElementById('logs-container');
+            if (!container) return;
+
             const entry = document.createElement('div');
             entry.className = `log-entry log-${level}`;
+            entry.style.opacity = '0';
+            entry.style.transform = 'translateY(-10px)';
             entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
             container.appendChild(entry);
-            container.scrollTop = container.scrollHeight;
 
-            // Limiter à 100 entrées
-            while (container.children.length > 100) {
-                container.removeChild(container.firstChild);
+            // Animation d'apparition
+            requestAnimationFrame(() => {
+                entry.style.transition = 'all 0.3s ease';
+                entry.style.opacity = '1';
+                entry.style.transform = 'translateY(0)';
+            });
+
+            // Scroll fluide
+            container.scrollTo({
+                top: container.scrollHeight,
+                behavior: 'smooth'
+            });
+
+            // Limiter à 100 entrées (optimisé)
+            if (container.children.length > 100) {
+                const toRemove = container.children.length - 100;
+                for (let i = 0; i < toRemove; i++) {
+                    container.removeChild(container.firstChild);
+                }
             }
+        }
+
+        // Toast notifications
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.transition = 'all 0.3s ease';
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(100%)';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
         }
 
         function sendCommand(type, value) {
@@ -1239,12 +1627,15 @@ ADVANCED_DASHBOARD_HTML = """
                         timestamp: new Date().toISOString()
                     };
                     ws.send(JSON.stringify(command));
+                    showToast(`✅ Commande ${type} envoyée`, 'success');
                 } catch (error) {
                     console.error('Erreur envoi commande:', error);
                     addLog('error', `Erreur envoi commande: ${error.message}`);
+                    showToast(`❌ Erreur: ${error.message}`, 'error');
                 }
             } else {
                 addLog('error', 'WebSocket non connecté - tentative de reconnexion...');
+                showToast('⚠️ Reconnexion en cours...', 'warning');
                 connect();
             }
         }
@@ -1274,6 +1665,9 @@ ADVANCED_DASHBOARD_HTML = """
 
             const entry = document.createElement('div');
             entry.className = `chat-message chat-${sender}`;
+            entry.style.opacity = '0';
+            entry.style.transform = sender === 'user' ? 'translateX(20px)' : 'translateX(-20px)';
+
             // Échapper HTML pour éviter XSS
             const safeMessage = String(message).replace(/[<>]/g, function(match) {
                 return match === '<' ? '&lt;' : '&gt;';
@@ -1283,18 +1677,40 @@ ADVANCED_DASHBOARD_HTML = """
                 <div class="chat-text">${safeMessage}</div>
             `;
             container.appendChild(entry);
-            container.scrollTop = container.scrollHeight;
+
+            // Animation d'apparition
+            requestAnimationFrame(() => {
+                entry.style.transition = 'all 0.3s ease';
+                entry.style.opacity = '1';
+                entry.style.transform = 'translateX(0)';
+            });
+
+            // Scroll fluide
+            container.scrollTo({
+                top: container.scrollHeight,
+                behavior: 'smooth'
+            });
 
             // Limiter à 50 messages
-            while (container.children.length > 50) {
-                container.removeChild(container.firstChild);
+            if (container.children.length > 50) {
+                const toRemove = container.children.length - 50;
+                for (let i = 0; i < toRemove; i++) {
+                    container.removeChild(container.firstChild);
+                }
             }
         }
 
-        // Fonctions Troubleshooting
+        // Fonctions Troubleshooting avec feedback visuel
         async function runAllChecks() {
             const resultsDiv = document.getElementById('troubleshooting-results');
-            resultsDiv.innerHTML = '<p>🔍 Vérification en cours...</p>';
+            const button = event?.target;
+
+            if (button) {
+                button.disabled = true;
+                button.classList.add('loading');
+            }
+
+            resultsDiv.innerHTML = '<p style="text-align: center;"><span class="loading-spinner"></span> 🔍 Vérification en cours...</p>';
 
             try {
                 const response = await fetch('/api/troubleshooting/check');
@@ -1308,12 +1724,24 @@ ADVANCED_DASHBOARD_HTML = """
                 }
             } catch (error) {
                 resultsDiv.innerHTML = `<p class="troubleshooting-item error">❌ Erreur réseau: ${error.message}</p>`;
+            } finally {
+                if (button) {
+                    button.disabled = false;
+                    button.classList.remove('loading');
+                }
             }
         }
 
         async function testCamera() {
             const resultsDiv = document.getElementById('troubleshooting-results');
-            resultsDiv.innerHTML = '<p>📷 Test caméra en cours...</p>';
+            const button = event?.target;
+
+            if (button) {
+                button.disabled = true;
+                button.classList.add('loading');
+            }
+
+            resultsDiv.innerHTML = '<p style="text-align: center;"><span class="loading-spinner"></span> 📷 Test caméra en cours...</p>';
 
             try {
                 const response = await fetch('/api/troubleshooting/test/camera', { method: 'POST' });
@@ -1338,12 +1766,24 @@ ADVANCED_DASHBOARD_HTML = """
                 }
             } catch (error) {
                 resultsDiv.innerHTML = `<p class="troubleshooting-item error">❌ Erreur réseau: ${error.message}</p>`;
+            } finally {
+                if (button) {
+                    button.disabled = false;
+                    button.classList.remove('loading');
+                }
             }
         }
 
         async function testAudio() {
             const resultsDiv = document.getElementById('troubleshooting-results');
-            resultsDiv.innerHTML = '<p>🔊 Test audio en cours...</p>';
+            const button = event?.target;
+
+            if (button) {
+                button.disabled = true;
+                button.classList.add('loading');
+            }
+
+            resultsDiv.innerHTML = '<p style="text-align: center;"><span class="loading-spinner"></span> 🔊 Test audio en cours...</p>';
 
             try {
                 const response = await fetch('/api/troubleshooting/test/audio', { method: 'POST' });
@@ -1368,12 +1808,24 @@ ADVANCED_DASHBOARD_HTML = """
                 }
             } catch (error) {
                 resultsDiv.innerHTML = `<p class="troubleshooting-item error">❌ Erreur réseau: ${error.message}</p>`;
+            } finally {
+                if (button) {
+                    button.disabled = false;
+                    button.classList.remove('loading');
+                }
             }
         }
 
         async function testNetwork() {
             const resultsDiv = document.getElementById('troubleshooting-results');
-            resultsDiv.innerHTML = '<p>🌐 Test réseau en cours...</p>';
+            const button = event?.target;
+
+            if (button) {
+                button.disabled = true;
+                button.classList.add('loading');
+            }
+
+            resultsDiv.innerHTML = '<p style="text-align: center;"><span class="loading-spinner"></span> 🌐 Test réseau en cours...</p>';
 
             try {
                 const response = await fetch('/api/troubleshooting/test/network?host=8.8.8.8', { method: 'POST' });
@@ -1395,6 +1847,11 @@ ADVANCED_DASHBOARD_HTML = """
                 }
             } catch (error) {
                 resultsDiv.innerHTML = `<p class="troubleshooting-item error">❌ Erreur réseau: ${error.message}</p>`;
+            } finally {
+                if (button) {
+                    button.disabled = false;
+                    button.classList.remove('loading');
+                }
             }
         }
 
