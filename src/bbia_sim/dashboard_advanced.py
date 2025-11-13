@@ -56,6 +56,7 @@ class BBIAAdvancedWebSocketManager:
         self.robot_backend = "mujoco"
         # Lock pour éviter les race conditions lors de l'initialisation du robot
         import threading
+
         self._robot_init_lock = threading.Lock()
         # OPTIMISATION RAM: Utiliser deque au lieu de liste pour limiter historique
         from collections import deque
@@ -817,7 +818,7 @@ ADVANCED_DASHBOARD_HTML = """
             border: 2px solid rgba(77, 77, 77, 0.15);
             border-radius: 12px;
             padding: 18px;
-            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', 'Courier New', monospace;
+            font-family: "SF Mono", "Monaco", "Inconsolata", "Fira Code", "Courier New", monospace;
             font-size: 13px;
         }
 
@@ -1140,7 +1141,7 @@ ADVANCED_DASHBOARD_HTML = """
             background: #f5f5f5;
             border-left: 3px solid #4D4D4D;
             border-radius: 4px;
-            font-family: 'Courier New', monospace;
+            font-family: "Courier New", monospace;
             font-size: 0.85em;
             color: #4D4D4D;
         }
@@ -1567,7 +1568,7 @@ ADVANCED_DASHBOARD_HTML = """
                 });
                 console.log('✅ Event listener Enter ajouté au chat input');
             } else {
-                console.error('❌ Input chat non trouvé à l\'initialisation');
+                console.error('❌ Input chat non trouvé à l\\'initialisation');
             }
 
             // Les fonctions sont maintenant assignées directement après leur définition
@@ -1578,7 +1579,7 @@ ADVANCED_DASHBOARD_HTML = """
             if (typeof window.sendChatMessage === 'function') {
                 console.log('✅ sendChatMessage est accessible globalement');
             } else {
-                console.error('❌ sendChatMessage n\'est pas accessible globalement');
+                console.error('❌ sendChatMessage n\\'est pas accessible globalement');
             }
 
             // Ajouter un event listener au bouton d'envoi comme backup
@@ -1590,13 +1591,13 @@ ADVANCED_DASHBOARD_HTML = """
                     if (typeof window.sendChatMessage === 'function') {
                         window.sendChatMessage();
                     } else {
-                        console.error('❌ sendChatMessage n\'est pas une fonction');
-                        showToast('❌ Erreur: fonction d\'envoi non disponible', 'error', 3000);
+                        console.error('❌ sendChatMessage n\\'est pas une fonction');
+                        showToast('❌ Erreur: fonction d\\'envoi non disponible', 'error', 3000);
                     }
                 });
-                console.log('✅ Event listener ajouté au bouton d\'envoi');
+                console.log('✅ Event listener ajouté au bouton d\\'envoi');
             } else {
-                console.warn('⚠️ Bouton d\'envoi non trouvé');
+                console.warn('⚠️ Bouton d\\'envoi non trouvé');
             }
         });
 
@@ -1609,18 +1610,22 @@ ADVANCED_DASHBOARD_HTML = """
             }
 
             console.log('📹 Démarrage stream vidéo...');
-            // Utiliser endpoint MJPEG
+            
+            // Utiliser endpoint MJPEG - gestion d'erreur silencieuse
             video.src = '/api/camera/stream';
             video.onloadstart = function() {
                 console.log('✅ Stream vidéo démarré');
             };
             video.onerror = function(e) {
-                console.error('❌ Erreur stream vidéo:', e);
+                // Erreur silencieuse - la caméra peut ne pas être disponible
+                // Ne pas logger l'erreur complète pour éviter le bruit dans la console
+                console.debug('⚠️ Stream vidéo non disponible (caméra peut être absente)');
                 video.style.display = 'none';
-                addLog('error', 'Erreur stream vidéo - Vérifiez la caméra');
+                // Ne pas ajouter de log d'erreur pour éviter le bruit
             };
             video.onloadeddata = function() {
                 console.log('✅ Première frame vidéo chargée');
+                video.style.display = 'block';
             };
         }
 
@@ -1642,7 +1647,9 @@ ADVANCED_DASHBOARD_HTML = """
                     addLog('info', 'Connexion WebSocket établie');
                     showToast('✅ Connecté au serveur', 'success', 2000);
                     // Message de bienvenue dans le chat
-                    addChatMessage('bbia', 'Bonjour ! Je suis BBIA. Comment puis-je vous aider aujourd\'hui ?');
+                    if (typeof addChatMessage === 'function') {
+                        addChatMessage("bbia", "Bonjour ! Je suis BBIA. Comment puis-je vous aider aujourd'hui ?");
+                    }
                 };
 
                 dashboard.ws.onmessage = function(event) {
@@ -1770,7 +1777,7 @@ ADVANCED_DASHBOARD_HTML = """
                         addLog('info', `Réponse ${data.sender} reçue`);
                     } else {
                         console.warn('⚠️ [CHAT] Données incomplètes:', data);
-                        addChatMessage('bbia', 'Désolé, je n\'ai pas pu traiter votre message correctement.');
+                        addChatMessage('bbia', 'Désolé, je n\\'ai pas pu traiter votre message correctement.');
                     }
                     break;
             }
@@ -2005,6 +2012,7 @@ ADVANCED_DASHBOARD_HTML = """
             sendCommand('emotion', emotion);
             addLog('info', `Émotion définie: ${emotion}`);
         }
+        window.setEmotion = setEmotion;
 
         function sendAction(action, buttonElement) {
             const button = buttonElement || (window.event && window.event.target) || document.querySelector(`button[onclick*="sendAction('${action}')"]`);
@@ -2015,6 +2023,7 @@ ADVANCED_DASHBOARD_HTML = """
             sendCommand('action', action);
             addLog('info', `Action envoyée: ${action}`);
         }
+        window.sendAction = sendAction;
 
         function runBehavior(behavior, buttonElement) {
             const button = buttonElement || (window.event && window.event.target) || document.querySelector(`button[onclick*="runBehavior('${behavior}')"]`);
@@ -2025,6 +2034,7 @@ ADVANCED_DASHBOARD_HTML = """
             sendCommand('behavior', behavior);
             addLog('info', `Comportement lancé: ${behavior}`);
         }
+        window.runBehavior = runBehavior;
 
         // Debouncing pour les sliders de joints
         let jointUpdateTimeouts = {};
@@ -2863,19 +2873,25 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
 
         if not advanced_websocket_manager.robot:
             # Initialiser le robot si nécessaire avec lock
-            logger.warning("⚠️ Robot non initialisé lors de la commande - initialisation forcée")
+            logger.warning(
+                "⚠️ Robot non initialisé lors de la commande - initialisation forcée"
+            )
             with advanced_websocket_manager._robot_init_lock:
                 # Double-check pattern
                 if not advanced_websocket_manager.robot:
                     try:
-                        logger.info(f"🔧 Initialisation robot {advanced_websocket_manager.robot_backend} (forcé)...")
+                        logger.info(
+                            f"🔧 Initialisation robot {advanced_websocket_manager.robot_backend} (forcé)..."
+                        )
                         advanced_websocket_manager.robot = RobotFactory.create_backend(
                             advanced_websocket_manager.robot_backend,
                         )
                         if advanced_websocket_manager.robot:
                             connected = advanced_websocket_manager.robot.connect()
                             if connected:
-                                logger.info(f"✅ Robot {advanced_websocket_manager.robot_backend} connecté (forcé)")
+                                logger.info(
+                                    f"✅ Robot {advanced_websocket_manager.robot_backend} connecté (forcé)"
+                                )
                                 await advanced_websocket_manager.send_log_message(
                                     "info",
                                     f"✅ Robot {advanced_websocket_manager.robot_backend} connecté",
@@ -2887,13 +2903,17 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                                     f"⚠️ Robot {advanced_websocket_manager.robot_backend} en mode simulation",
                                 )
                         else:
-                            logger.error("❌ RobotFactory.create_backend a retourné None")
+                            logger.error(
+                                "❌ RobotFactory.create_backend a retourné None"
+                            )
                             await advanced_websocket_manager.send_log_message(
                                 "error",
                                 "❌ Impossible de créer le robot",
                             )
                     except Exception as e:
-                        logger.error(f"❌ Erreur initialisation robot: {e}", exc_info=True)
+                        logger.error(
+                            f"❌ Erreur initialisation robot: {e}", exc_info=True
+                        )
                         await advanced_websocket_manager.send_log_message(
                             "error",
                             f"❌ Erreur robot: {e}",

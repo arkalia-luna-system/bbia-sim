@@ -231,7 +231,7 @@ class YOLODetector:
 
     def map_detection_to_action(
         self,
-        detection: dict[str, Any],
+        detection: dict[str, Any] | None,
     ) -> dict[str, Any] | None:
         """Mappe une détection vers une action RobotAPI.
 

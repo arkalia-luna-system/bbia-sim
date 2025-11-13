@@ -20,14 +20,14 @@ class TestVisionYoloExtended:
             pytest.skip("Module vision_yolo non disponible")
 
     def test_yolo_detection_functions_exist(self):
-        """Test que les fonctions de détection existent."""
+        """Test que les classes de détection existent."""
         try:
-            from bbia_sim.vision_yolo import classify_object, detect_objects
+            from bbia_sim.vision_yolo import YOLODetector, create_yolo_detector
 
-            assert detect_objects is not None
-            assert classify_object is not None
+            assert YOLODetector is not None
+            assert create_yolo_detector is not None
         except ImportError:
-            pytest.skip("Fonctions vision_yolo non disponibles")
+            pytest.skip("Classes vision_yolo non disponibles")
 
 
 if __name__ == "__main__":
