@@ -497,12 +497,12 @@ La documentation HTML offre :
 - **[Guide Avancé](docs/guides/GUIDE_AVANCE.md)** : Guide avancé
 - **[Vertical Slices](docs/quality/audits/VERTICAL_SLICES_ACCOMPLIS.md)** : Documentation des vertical slices
 - **[Index thématique (par profils)](docs/INDEX_FINAL.md)**
-- **[FAQ Troubleshooting](docs/development/FAQ_TROUBLESHOOTING.md)**
+- **[FAQ Troubleshooting](docs/development/troubleshooting.md)**
 - **[Observabilité (logs/metrics/santé)](docs/observabilite/OBSERVABILITE.md)**
 - **[Pipeline CI/CD](docs/deployment/PIPELINE_CI.md)**
 - **[Contrats REST/WS](docs/development/api/CONTRATS_REST_WS.md)**
 - **[Sécurité robot DO/DON'T](docs/hardware/SECURITE_ROBOT.md)**
-- **[Datasets & Golden Images](docs/ai/DATASETS_GOLDEN_IMAGES.md)**
+- **[Datasets & Golden Images](docs/ai/datasets.md)**
 - **[Roadmap Dashboard/UX](docs/dashboard/ROADMAP_DASHBOARD.md)**
 - **[Guide Contribution](docs/community/CONTRIBUTION_GUIDE.md)**
 
