@@ -43,6 +43,22 @@ python examples/demo_mujoco_continue.py --duration 10 --headless
 **Résultat attendu** : Simulation continue, robot animé (yaw_body + stewart joints), viewer MuJoCo ouvert  
 **📹 Note** : Les vidéos disponibles dans `assets/videos/` ont été enregistrées depuis ce script.
 
+### `demo_mujoco_amelioree.py` - Simulation MuJoCo Améliorée ⭐ **RECOMMANDÉ**
+
+Version améliorée avec mouvements plus visibles et corrections des indices de joints. Le robot bouge de manière très visible avec des amplitudes augmentées.
+
+```bash
+# Mode graphique (voir 3D) - RECOMMANDÉ
+mjpython examples/demo_mujoco_amelioree.py
+```
+
+**Résultat attendu** : Simulation avec mouvements très visibles (amplitude 0.3 rad), robot animé (yaw_body + stewart joints), viewer MuJoCo ouvert  
+**✨ Améliorations** : 
+- Mouvements plus visibles (amplitude augmentée)
+- Correction des indices de joints (utilisation de `model.jnt_qposadr`)
+- Meilleure synchronisation (ordre correct mj_forward/mj_step)
+- Vérifications améliorées avec affichage des joints trouvés
+
 ### `goto_pose.py` - Contrôle mouvement robot
 
 Contrôle une articulation du robot via l'API REST.

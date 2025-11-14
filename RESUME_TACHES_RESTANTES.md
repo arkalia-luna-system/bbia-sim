@@ -65,5 +65,27 @@ Le projet BBIA est dans un excellent état avec :
 
 ---
 
+---
+
+## 🆕 Dernières Améliorations
+
+### Démo MuJoCo Améliorée (2025-01-27)
+
+**Nouveau fichier** : `examples/demo_mujoco_amelioree.py`
+
+**Améliorations** :
+- ✅ Mouvements plus visibles (amplitude augmentée à 0.3 rad)
+- ✅ Correction des indices de joints (utilisation de `model.jnt_qposadr`)
+- ✅ Meilleure synchronisation (ordre correct mj_forward/mj_step)
+- ✅ Vérifications améliorées avec affichage des joints trouvés
+- ✅ Documentation mise à jour dans `examples/README.md`
+
+**Utilisation** :
+```bash
+mjpython examples/demo_mujoco_amelioree.py
+```
+
+---
+
 **Dernière mise à jour** : 2025-01-27
 
