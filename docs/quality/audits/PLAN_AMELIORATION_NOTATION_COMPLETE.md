@@ -20,12 +20,7 @@
 
 ## ✅ Améliorations Déjà Complétées
 
-Voir la documentation complète pour les détails :
-
-- **📄 [État du Projet](../../reference/project-status.md)** : État consolidé par axe
-- **📄 [Release Notes](../../reference/RELEASE_NOTES.md)** : Historique des versions
-- **📄 [Corrections Appliquées](../corrections/applied.md)** : Détails des corrections
-- **📄 [Améliorations Gratuites](../improvements/free-improvements.md)** : Améliorations implémentées
+Voir **[Améliorations Gratuites](../improvements/free-improvements.md)** et **[Corrections Appliquées](../corrections/applied.md)** pour les détails.
 
 ---
 
@@ -188,9 +183,7 @@ Voir la documentation complète pour les détails :
 
 ---
 
-## 📚 Documentation Référencée
-
-Pour les détails complets, voir :
+## 📚 Documentation
 
 - **📄 [État du Projet](../../reference/project-status.md)** : État consolidé par axe
 - **📄 [Release Notes](../../reference/RELEASE_NOTES.md)** : Historique des versions

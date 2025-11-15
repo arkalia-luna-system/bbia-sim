@@ -8,7 +8,7 @@
 
 ## 🎯 Approche : Texture OU Objet 3D ?
 
-### **Option 1 : Robot en Texture (Image 2D)** 
+### **Option 1 : Robot en Texture (Image 2D)**
 
 **Quand utiliser** :
 
@@ -190,7 +190,7 @@
 
 ## 🎯 Navigation
 
-**Retour à** : [README Documentation](../README.md)  
+**Retour à** : [README Documentation](../README.md)
 **Voir aussi** : [Guide Procreate Complet](GUIDE_PROCREATE_SCENE_COMPLET.md) • [Index Simulations](INDEX_GUIDES_PROCREATE.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)
 
 ---

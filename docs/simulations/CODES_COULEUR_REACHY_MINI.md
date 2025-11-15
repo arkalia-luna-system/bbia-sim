@@ -1,7 +1,7 @@
 # 🎨 Codes Couleur - Reachy Mini Simulation MuJoCo
 
-> **Document de référence** : Codes couleur utilisés dans la simulation MuJoCo du Reachy Mini  
-> **Date** : 2025  
+> **Document de référence** : Codes couleur utilisés dans la simulation MuJoCo du Reachy Mini
+> **Date** : 2025
 > **Projet** : BBIA - Simulation Reachy Mini
 
 ---
@@ -22,7 +22,7 @@
 
 #### **Bleu Céleste / Néon**
 - **HEX** : `#87bcfa` (principal) / `#3E6FFF` (sombre)
-- **RGB** : 
+- **RGB** :
   - `#87bcfa` → `rgb(135, 188, 250)` → MuJoCo: `0.529 0.737 0.980`
   - `#3E6FFF` → `rgb(62, 111, 255)` → MuJoCo: `0.243 0.435 1.000`
 - **Variations** :
@@ -72,7 +72,7 @@
 
 ### Skybox BBIA
 ```xml
-<texture name="skybox_bbia" type="skybox" builtin="gradient" 
+<texture name="skybox_bbia" type="skybox" builtin="gradient"
          rgb1="0.92 0.92 0.93" rgb2="0.53 0.74 0.98"/>
 ```
 - **rgb1** (Gris lunaire) : `0.92 0.92 0.93` = `#EAEAED`
@@ -235,6 +235,6 @@ print(hex_to_mujoco_rgba("#87bcfa"))  # 0.529412 0.737255 0.980392 1.0
 
 ---
 
-**Dernière mise à jour** : 2025  
+**Dernière mise à jour** : 2025
 **Fichier source** : `docs/simulations/CODES_COULEUR_REACHY_MINI.md`
 

@@ -4,7 +4,7 @@
 >
 > Voir `docs/reference/project-status.md` → "État par axe" pour prioriser les améliorations (API/SDK, perf, sécurité, CI/CD).
 
-**Date :** Oct / Nov. 2025  
+**Date :** Oct / Nov. 2025
 **Référence SDK :** <https://github.com/pollen-robotics/reachy_mini>
 
 ---
@@ -78,7 +78,7 @@ robot.io.set_leds()            # Contrôle LEDs (si disponibles)
 
 1. **Vous n'avez pas encore le robot** : Impossible de tester les performances réelles avec le vrai hardware. Les streams peuvent être plus lents que prévu, ou nécessiter des ajustements spécifiques au hardware.
 
-2. **Le système actuel fonctionne déjà** : 
+2. **Le système actuel fonctionne déjà** :
    - `robot.media.camera.get_image()` + captures périodiques = **stable et performant**
    - Le code actuel est testé et fonctionne bien en simulation
    - Pas besoin d'ajouter de la complexité avant d'avoir testé

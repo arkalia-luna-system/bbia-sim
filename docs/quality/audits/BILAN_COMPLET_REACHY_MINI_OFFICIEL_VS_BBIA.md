@@ -1,7 +1,7 @@
 # 📊 Bilan Complet : Reachy Mini Officiel vs BBIA-SIM
 
-**Date** : Oct / Nov. 2025  
-**Version BBIA** : 1.3.2  
+**Date** : Oct / Nov. 2025
+**Version BBIA** : 1.3.2
 **Référence Officielle** : [pollen-robotics/reachy_mini](https://github.com/pollen-robotics/reachy_mini) (GitHub)
 
 ---
@@ -201,7 +201,7 @@ Ce document fait un inventaire exhaustif de **TOUT** ce que propose le repo offi
 
 2. **Le système actuel fonctionne déjà** : Vous avez 3 apps locales qui fonctionnent parfaitement (`bbia_vision`, `bbia_chat`, `bbia_emotions`). Pas besoin d'ajouter de la complexité avant d'avoir testé.
 
-3. **Complexité vs bénéfice** : 
+3. **Complexité vs bénéfice** :
    - **Complexité** : Gestion cache, authentification HF, installation dépendances, gestion erreurs réseau
    - **Bénéfice** : Découvrir des apps que vous n'utiliserez peut-être pas
    - **Risque** : Introduire des bugs, rendre le code plus complexe
@@ -426,6 +426,6 @@ Les fonctionnalités manquantes (chargement dynamique apps HF Hub, IO streams te
 
 ---
 
-**Document généré le** : Oct / Nov. 2025  
-**Version BBIA** : 1.3.2  
+**Document généré le** : Oct / Nov. 2025
+**Version BBIA** : 1.3.2
 **Référence** : [pollen-robotics/reachy_mini](https://github.com/pollen-robotics/reachy_mini)

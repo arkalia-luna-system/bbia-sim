@@ -22,9 +22,7 @@
 
 ---
 
-## 📚 Documentation Référencée
-
-Pour les détails complets de chaque amélioration, voir :
+## 📚 Documentation
 
 - **📄 [Guide NLP SmolVLM](../guides/GUIDE_NLP_SMOLVLM.md)** : Détails SmolVLM2, VAD, NER
 - **📄 [État du Projet](../../reference/project-status.md)** : État consolidé par axe

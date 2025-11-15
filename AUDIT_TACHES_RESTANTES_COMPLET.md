@@ -28,9 +28,7 @@ Toutes les 8 tâches critiques identifiées ont été complétées et validées.
 
 ---
 
-## 📚 Documentation Référencée
-
-Pour les détails complets de chaque tâche, voir :
+## 📚 Documentation
 
 - **📄 [État du Projet](../docs/reference/project-status.md)** : État consolidé par axe
 - **📄 [Release Notes](../docs/reference/RELEASE_NOTES.md)** : Historique des versions
@@ -40,16 +38,4 @@ Pour les détails complets de chaque tâche, voir :
 
 ---
 
-## 📊 STATISTIQUES
-
-- **Fichiers Python** : 65 dans `src/bbia_sim/`
-- **Fichiers documentation** : 128 fichiers `.md` dans `docs/`
-- **Tests** : 1362 tests collectés (1418 total, 56 deselected)
-- **Coverage** : 68.86% global / ~50% modules core — ✅ **HARMONISÉ**
-- **GIF/Screenshots** : 1 GIF + 16 PNG dans `assets/images/`
-
----
-
-**Rapport généré le** : 2025-01-27  
-**Version** : V1 (Audit complet systématique)  
-**Vérifié par** : Recherche exhaustive dans codebase avec outils multiples
+**Dernière mise à jour** : 2025-01-27
