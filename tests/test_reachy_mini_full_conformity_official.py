@@ -458,13 +458,15 @@ class TestReachyMiniFullConformity:
         print("✅ set_emotion retourne bool")
 
         # Test get_telemetry retourne dict
-        result = self.backend.get_telemetry()
-        assert isinstance(result, dict), "get_telemetry doit retourner dict"
+        telemetry_result: dict[str, Any] = self.backend.get_telemetry()  # type: ignore[assignment]
+        assert isinstance(telemetry_result, dict), "get_telemetry doit retourner dict"
         print("✅ get_telemetry retourne dict")
 
         # Test get_available_joints retourne list
-        result = self.backend.get_available_joints()
-        assert isinstance(result, list), "get_available_joints doit retourner list"
+        joints_result: list[str] = self.backend.get_available_joints()  # type: ignore[assignment]
+        assert isinstance(
+            joints_result, list
+        ), "get_available_joints doit retourner list"
         print("✅ get_available_joints retourne list")
 
     def test_16_joint_names_official(self):
@@ -515,8 +517,8 @@ class TestReachyMiniFullConformity:
         # 3. Mouvements tête (CORRECTION EXPERTE: Ne pas utiliser set_joint_pos sur stewart)
         # Les joints stewart ne peuvent pas être contrôlés individuellement (cinématique inverse)
         # Utiliser goto_target() ou look_at_world() à la place
-        result = self.backend.look_at_world(0.2, 0.1, 0.3, duration=0.5)
-        assert result is not None, "look_at_world doit réussir"
+        look_at_result: Any = self.backend.look_at_world(0.2, 0.1, 0.3, duration=0.5)  # type: ignore[assignment]
+        assert look_at_result is not None, "look_at_world doit réussir"
         print("✅ look_at_world réussi (méthode correcte pour contrôle tête)")
 
         # 4. Look at

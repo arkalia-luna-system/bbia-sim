@@ -50,7 +50,7 @@ class BBIAPersonRecognition:
         self.is_initialized = False
 
         if not DEEPFACE_AVAILABLE:
-            logger.warning(
+            logger.debug(
                 "⚠️ DeepFace non disponible. Installer avec: pip install deepface",
             )
             return
@@ -340,7 +340,7 @@ def create_face_recognition(
 
     """
     if not DEEPFACE_AVAILABLE:
-        logger.warning("⚠️ DeepFace non disponible")
+        logger.debug("⚠️ DeepFace non disponible")
         return None
 
     return BBIAPersonRecognition(db_path=db_path, model_name=model_name)

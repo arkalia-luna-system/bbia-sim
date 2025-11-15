@@ -108,6 +108,7 @@ def test_robot_api_interface_budget_cpu_ram() -> None:
     if not robot or not robot.connect():
         pytest.skip("Backend non disponible")
 
+    assert robot is not None  # Type narrowing pour mypy
     # OPTIMISATION RAM: Réduire 5s → 3s, 500 → 300 itérations (suffisant pour mesurer budget)
     duration_s = 3.0
     iterations = 300

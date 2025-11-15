@@ -9,10 +9,10 @@ import sys
 
 def hex_to_rgb(hex_color: str) -> tuple[int, int, int]:
     """Convertit HEX en RGB (0-255)"""
-    hex_color = hex_color.lstrip('#')
+    hex_color = hex_color.lstrip("#")
     if len(hex_color) == 3:
         # Format court #RGB -> #RRGGBB
-        hex_color = ''.join([c*2 for c in hex_color])
+        hex_color = "".join([c * 2 for c in hex_color])
     r = int(hex_color[0:2], 16)
     g = int(hex_color[2:4], 16)
     b = int(hex_color[4:6], 16)
@@ -48,9 +48,11 @@ def mujoco_rgba_to_hex(rgba_str: str) -> tuple[str, float]:
     return (hex_color, alpha)
 
 
-def print_color_info(hex_color: str | None = None,
-                     rgb: tuple[int, int, int] | None = None,
-                     mujoco_rgba: str | None = None):
+def print_color_info(
+    hex_color: str | None = None,
+    rgb: tuple[int, int, int] | None = None,
+    mujoco_rgba: str | None = None,
+):
     """Affiche les informations de couleur dans tous les formats"""
 
     if hex_color:
@@ -82,7 +84,9 @@ def main():
         print("Usage:")
         print("  python color_converter.py <HEX>              # Ex: #87bcfa")
         print("  python color_converter.py <RGB>              # Ex: 135,188,250")
-        print("  python color_converter.py <MuJoCo>           # Ex: '0.529 0.737 0.980'")
+        print(
+            "  python color_converter.py <MuJoCo>           # Ex: '0.529 0.737 0.980'"
+        )
         print("\nExemples:")
         print("  python color_converter.py #87bcfa")
         print("  python color_converter.py 135,188,250")
@@ -97,13 +101,13 @@ def main():
     input_str = sys.argv[1].strip()
 
     # Détection du format
-    if input_str.startswith('#'):
+    if input_str.startswith("#"):
         # Format HEX
         print_color_info(hex_color=input_str)
 
-    elif ',' in input_str:
+    elif "," in input_str:
         # Format RGB (0-255)
-        parts = [int(x.strip()) for x in input_str.split(',')]
+        parts = [int(x.strip()) for x in input_str.split(",")]
         if len(parts) == 3:
             print_color_info(rgb=(parts[0], parts[1], parts[2]))
         else:
@@ -121,4 +125,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

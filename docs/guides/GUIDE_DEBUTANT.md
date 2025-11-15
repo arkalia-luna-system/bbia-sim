@@ -123,6 +123,8 @@ python src/bbia_sim/dashboard_advanced.py
 # Ouvrir dans le navigateur
 # http://localhost:8000
 
+# 📸 Captures d'écran disponibles : Voir `assets/images/` pour 4 captures du dashboard (Nov 2025)
+
 ```
 
 <div align="center">
@@ -253,10 +255,3 @@ R : Oui, le système est extensible. Voir `examples/demo_emotion_ok.py`
 ---
 
 Besoin d'aide ? Ouvrez une issue sur GitHub ou rejoignez le Discord Reachy.
-
----
-
-## 🎯 Navigation
-
-**Retour à** : [README Documentation](../README.md)  
-**Voir aussi** : [Guide Avancé](GUIDE_AVANCE.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)

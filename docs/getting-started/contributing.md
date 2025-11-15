@@ -348,8 +348,6 @@ assignees: []
 
 ---
 
----
-
 ## 🔗 Guide Complet de Contribution
 
 > **💡 Pour le guide complet de contribution**  

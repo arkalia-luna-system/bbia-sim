@@ -153,7 +153,7 @@ addopts = [
     "--cov-report=term-missing",
     "--cov-report=xml:coverage.xml",
     "--cov-report=html:htmlcov",
-    "--cov-append",
+    # "--cov-append",  # DÉSACTIVÉ : peut causer des problèmes de terminaison pytest
     "--cov-fail-under=0",
     # Timeout global pour éviter les tests qui bouclent (300s = 5 minutes)
     "--timeout=300",
@@ -350,7 +350,7 @@ omit = [
 branch = true
 relative_files = true
 data_file = ".coverage"
-parallel = true
+parallel = false  # DÉSACTIVÉ : peut causer des problèmes de terminaison pytest
 
 [tool.coverage.report]
 exclude_lines = [

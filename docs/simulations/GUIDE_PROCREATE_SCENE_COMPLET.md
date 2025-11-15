@@ -343,32 +343,32 @@ assets/textures/plafond.png
 ```xml
 <mujoco model="scene_procreate">
   <compiler angle="radian" meshdir="../../assets/reachy_official"/>
-  
+
   <asset>
     <!-- Vos textures Procreate -->
     <texture name="texture_mur" type="2d" file="../../../assets/textures/mur.png"/>
     <texture name="texture_sol" type="2d" file="../../../assets/textures/sol.png"/>
     <texture name="texture_plafond" type="2d" file="../../../assets/textures/plafond.png"/>
-    
+
     <!-- Matériaux -->
     <material name="mat_mur" texture="texture_mur"/>
     <material name="mat_sol" texture="texture_sol"/>
     <material name="mat_plafond" texture="texture_plafond"/>
-    
+
     <!-- Skybox BBIA -->
-    <texture name="skybox_bbia" type="skybox" builtin="gradient" 
+    <texture name="skybox_bbia" type="skybox" builtin="gradient"
              rgb1="0.92 0.92 0.93" rgb2="0.53 0.74 0.98"/>
   </asset>
-  
+
   <worldbody>
     <!-- Sol avec votre texture -->
     <geom name="sol" type="plane" size="5 5" material="mat_sol"/>
-    
+
     <!-- Murs avec vos textures -->
     <body name="mur_fond" pos="0 4 1.5">
       <geom type="box" size="0.1 5 2" material="mat_mur"/>
     </body>
-    
+
     <!-- Robot Reachy -->
     <include file="../models/reachy_mini_REAL_OFFICIAL.xml"/>
   </worldbody>
@@ -487,7 +487,7 @@ python examples/view_scene_piece.py src/bbia_sim/sim/scenes/ma_scene_procreate.x
 
 ## 🎯 Navigation
 
-**Retour à** : [README Documentation](../README.md)  
+**Retour à** : [README Documentation](../README.md)
 **Voir aussi** : [Guide Import Images](GUIDE_IMPORT_IMAGES_MUJOCO.md) • [Conseils Robot](CONSEILS_PROCREATE_ROBOT.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)
 
 ---

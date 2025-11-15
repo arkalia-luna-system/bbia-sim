@@ -186,6 +186,8 @@ python -c "from bbia_sim.daemon.app.main import app; print('✅ OK')"
 - **SDK Officiel** : <https://github.com/pollen-robotics/reachy_mini>
 - **Documentation BBIA** : `docs/quality/compliance/CONFORMITE_REACHY_MINI_COMPLETE.md`
 - **Comparaison** : `docs/quality/audits/COMPARAISON_DOCUMENTATION_OFFICIELLE.md`
+- **Dashboard avancé** : [`docs/development/dashboard-advanced.md`](../development/dashboard-advanced.md) - Dashboard BBIA avec métriques temps réel, chat et vision
+- **Captures d'écran** : 4 captures du dashboard avancé disponibles dans `assets/images/` (Nov 2025) - Voir [`assets/MEDIAS_INVENTAIRE.md`](../../assets/MEDIAS_INVENTAIRE.md)
 
 ---
 

@@ -24,12 +24,12 @@ import bbia_sim.dashboard_advanced  # noqa: F401
 try:
     from bbia_sim.dashboard_advanced import (  # noqa: F401
         FASTAPI_AVAILABLE,
-        BBIAWebSocketManager,
+        BBIAAdvancedWebSocketManager,
     )
 except (ImportError, AttributeError):
     # FastAPI peut ne pas être disponible en test
     FASTAPI_AVAILABLE = False
-    BBIAWebSocketManager = None  # type: ignore[assignment,misc]
+    BBIAAdvancedWebSocketManager = None  # type: ignore[assignment,misc]
 
 
 class TestDashboardAdvanced:
@@ -208,7 +208,7 @@ class TestDashboardAdvanced:
                 manager.metrics_history.append({"data": i})
                 # Simuler la limite comme dans le code réel
                 if len(manager.metrics_history) > manager.max_history:
-                    manager.metrics_history.pop(0)
+                    manager.metrics_history.popleft()
 
             # Vérifier que l'historique est limité (on n'a ajouté que 100, donc < max_history)
             assert len(manager.metrics_history) <= test_count

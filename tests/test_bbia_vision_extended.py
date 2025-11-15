@@ -40,11 +40,14 @@ class TestBBIAVisionExtended:
     def test_init_specs(self):
         """Test spécifications hardware."""
         specs = self.vision.specs
+        assert specs is not None
         assert specs["camera"] == "Grand angle"
         # Resolution a été clarifiée avec simulation/réel
-        assert "1280x720" in specs["resolution"] or "HD" in specs["resolution"]
+        resolution = str(specs["resolution"]) if specs["resolution"] is not None else ""
+        assert "1280x720" in resolution or "HD" in resolution
         # FOV a été clarifié avec simulation/réel
-        assert "80°" in specs["fov"] or "120°" in specs["fov"]
+        fov = str(specs["fov"]) if specs["fov"] is not None else ""
+        assert "80°" in fov or "120°" in fov
         assert specs["focus"] == "Auto"
         assert specs["night_vision"] is False
 

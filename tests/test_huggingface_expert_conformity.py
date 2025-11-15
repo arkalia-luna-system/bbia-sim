@@ -33,10 +33,10 @@ class TestBBIAHuggingFaceExpertConformity:
                 self.hf_class = BBIAHuggingFace
                 self.hf_available = True
             except ImportError:
-                self.hf_class = None
+                self.hf_class = None  # type: ignore[assignment]
                 self.hf_available = False
         except ImportError:
-            self.hf_class = None
+            self.hf_class = None  # type: ignore[assignment]
             self.hf_available = False
 
     def test_01_greeting_variety_sufficient(self):

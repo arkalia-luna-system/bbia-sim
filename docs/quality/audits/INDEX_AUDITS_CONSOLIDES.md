@@ -11,8 +11,7 @@
 
 1. **`TACHES_RESTANTES_NOV2025.md`** ⭐ **ARCHIVÉ** (toutes tâches terminées)
    - Liste exhaustive des tâches restantes avec statuts
-   - **Toutes les tâches sont maintenant terminées** ✅
-   - Toutes les tâches sont terminées ✅
+   - **Toutes les tâches sont terminées** ✅
 
 2. **`RESUME_ETAT_ACTUEL_BBIA.md`** ⭐ **RECOMMANDÉ**
    - État actuel du projet (Oct / Nov. 2025)
@@ -97,25 +96,6 @@ Les fichiers suivants ont été archivés car redondants ou obsolètes :
 
 - `PLAN_AMELIORATION_NOTATION_COMPLETE.md` - Plan amélioration notation
 - `DECISION_FINAL_AMELIORATIONS.md` - Décisions finales améliorations
-
----
-
-## 🎯 Fichiers de Référence Rapide
-
-| Fichier | Usage |
-|---------|-------|
-| `TACHES_RESTANTES_NOV2025.md` | **ARCHIVÉ** - Toutes tâches terminées ✅ |
-| `INDEX_AUDITS_CONSOLIDES.md` | Ce fichier - Index des audits |
-| `RESUME_ETAT_ACTUEL_BBIA.md` | État actuel du projet |
-| `VERTICAL_SLICES_ACCOMPLIS.md` | Slices accomplis |
-
----
-
-## 📌 Recommandations
-
-1. **Pour trouver les tâches restantes** : Consulter `RESUME_ETAT_ACTUEL_BBIA.md` (toutes les tâches de `TACHES_RESTANTES_NOV2025.md` sont terminées ✅)
-2. **Pour vérifier conformité SDK** : Consulter `docs/quality/compliance/CONFORMITE_REACHY_MINI_COMPLETE.md`
-3. **Pour audits historiques** : Consulter les fichiers dans ce dossier `quality/audits/`
 
 ---
 

@@ -31,7 +31,8 @@ class TestDemoChatBBIA3D:
                     self.bbia_personality = "friendly_robot"
                     self.conversation_history = []
 
-            bbia = MockHuggingFace()
+            bbia_fallback: BBIAHuggingFace = MockHuggingFace()  # type: ignore[assignment]
+            bbia = bbia_fallback
             assert hasattr(bbia, "bbia_personality")
 
     def test_chat_method(self):
@@ -49,7 +50,8 @@ class TestDemoChatBBIA3D:
                 def chat(self, message):
                     return "🤖 Bonjour !"
 
-            bbia = MockHuggingFace()
+            bbia_fallback: BBIAHuggingFace = MockHuggingFace()  # type: ignore[assignment]
+            bbia = bbia_fallback
             response = bbia.chat("Bonjour")
             assert isinstance(response, str)
 
@@ -161,7 +163,8 @@ class TestDemoChatBBIA3D:
                 def chat(self, msg):
                     self.conversation_history.append({"user": msg, "bbia": "🤖 OK"})
 
-            bbia = MockHuggingFace()
+            bbia_fallback: BBIAHuggingFace = MockHuggingFace()  # type: ignore[assignment]
+            bbia = bbia_fallback
             bbia.chat("Test")
             assert len(bbia.conversation_history) == 1
 
@@ -187,7 +190,8 @@ class TestDemoChatBBIA3D:
                 def __init__(self):
                     self.bbia_personality = "friendly_robot"
 
-            bbia = MockHuggingFace()
+            bbia_fallback: BBIAHuggingFace = MockHuggingFace()  # type: ignore[assignment]
+            bbia = bbia_fallback
             assert bbia.bbia_personality == "friendly_robot"
 
 

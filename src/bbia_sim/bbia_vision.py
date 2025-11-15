@@ -49,10 +49,19 @@ def get_bbia_vision_singleton(robot_api: Any | None = None) -> "BBIAVision":
 # Réduction du bruit de logs TensorFlow/MediaPipe (avant tout import MediaPipe)
 try:
     import os as _os
+    import sys
 
     _os.environ.setdefault("GLOG_minloglevel", "2")  # 0=INFO,1=WARNING,2=ERROR
-    _os.environ.setdefault("TF_CPP_MIN_LOG_LEVEL", "2")  # 1=WARNING,2=ERROR
+    _os.environ.setdefault(
+        "TF_CPP_MIN_LOG_LEVEL", "3"
+    )  # 0=INFO,1=WARNING,2=ERROR,3=FATAL
     _os.environ.setdefault("MEDIAPIPE_DISABLE_GPU", "1")  # éviter logs GPU inutiles
+    # Supprimer les logs TensorFlow Lite
+    _os.environ.setdefault("TFLITE_LOG_VERBOSITY", "0")  # 0=ERROR, 1=WARNING, 2=INFO
+    # Supprimer les logs OpenGL (ne pas définir MUJOCO_GL sur macOS, utilise la valeur par défaut)
+    # Sur macOS, laisser MuJoCo choisir automatiquement (glfw ou egl)
+    if sys.platform != "darwin":  # Pas macOS
+        _os.environ.setdefault("MUJOCO_GL", "egl")  # Utiliser EGL sur Linux/Windows
 except Exception as e:
     logger.debug(
         f"Impossible de configurer variables d'environnement MediaPipe/TensorFlow: {e}"
@@ -286,7 +295,7 @@ class BBIAVision:
                                 "(bbia_vision)",
                             )
                             self.face_detector = _mediapipe_face_detection_cache
-                            logger.info(
+                            logger.debug(
                                 "✅ Détecteur MediaPipe Face initialisé (cache)",
                             )
                         else:
@@ -298,14 +307,14 @@ class BBIAVision:
                                 )
                             )
                             _mediapipe_face_detection_cache = self.face_detector
-                            logger.info("✅ Détecteur MediaPipe Face initialisé")
+                            logger.debug("✅ Détecteur MediaPipe Face initialisé")
                 except ImportError:
                     # Fallback si import cache échoue
                     self.face_detector = mp.solutions.face_detection.FaceDetection(
                         model_selection=0,
                         min_detection_confidence=0.5,
                     )
-                    logger.info("✅ Détecteur MediaPipe Face initialisé")
+                    logger.debug("✅ Détecteur MediaPipe Face initialisé")
             except Exception as e:
                 logger.warning(f"⚠️ MediaPipe non disponible: {e}")
 
@@ -321,7 +330,7 @@ class BBIAVision:
                         f"✅ DeepFace initialisé (db: {db_path}, modèle: {model_name})",
                     )
             except Exception as e:
-                logger.warning(f"⚠️ DeepFace non disponible: {e}")
+                logger.debug(f"⚠️ DeepFace non disponible: {e}")
 
         # Module MediaPipe Pose pour détection postures/gestes
         self.pose_detector = None

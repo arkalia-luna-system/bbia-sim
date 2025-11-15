@@ -68,9 +68,7 @@ def generate_bbia_image_viewer(pose: str = "happy"):
     pose_config = poses[pose]
     for joint_name, angle in pose_config.items():
         try:
-            joint_id = mujoco.mj_name2id(
-                model, mujoco.mjtObj.mjOBJ_JOINT, joint_name
-            )
+            joint_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_JOINT, joint_name)
             if joint_id >= 0:
                 data.qpos[joint_id] = angle
         except Exception:
@@ -147,4 +145,3 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main())
-

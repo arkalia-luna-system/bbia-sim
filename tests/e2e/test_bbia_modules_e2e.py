@@ -75,17 +75,20 @@ class TestBBIAModules:
         specs = vision.specs
         assert specs["camera"] == "Grand angle"
         # Resolution a été clarifiée avec simulation/réel (format: "1280x720 (simulation) / HD grand-angle (réel)")
-        resolution = specs["resolution"]
+        resolution = str(specs["resolution"]) if specs["resolution"] is not None else ""
         assert "1280x720" in resolution or "HD" in resolution or "1080p" in resolution
         # FOV a été clarifié avec simulation/réel
-        assert "80°" in specs["fov"] or "120°" in specs["fov"]
+        fov = str(specs["fov"]) if specs["fov"] is not None else ""
+        assert "80°" in fov or "120°" in fov
 
         # Test contrôle
         vision.tracking_active = True
         assert vision.tracking_active
 
-        vision.current_focus = "test_object"
-        assert vision.current_focus == "test_object"
+        # current_focus est un dict, pas un str
+        test_object = {"name": "test_object", "position": (0.5, 0.5)}
+        vision.current_focus = test_object
+        assert vision.current_focus == test_object
 
     @patch("bbia_sim.bbia_voice.pyttsx3.init")
     @patch("bbia_sim.bbia_voice.get_bbia_voice")
@@ -110,9 +113,8 @@ class TestBBIAModules:
 
         # Test synthèse vocale
         text = "Bonjour, je suis BBIA"
-        result = dire_texte(text)
+        dire_texte(text)  # dire_texte ne retourne rien (None), ne pas assigner
         # Accepter None car la fonction peut retourner None
-        assert result is None or result is True
 
         # Test reconnaissance vocale (simulation)
         with patch("bbia_sim.bbia_voice.sr.Recognizer") as mock_recognizer:

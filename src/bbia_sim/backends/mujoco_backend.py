@@ -319,6 +319,70 @@ class MuJoCoBackend(RobotAPI):
         except Exception:
             return False
 
+    def set_emotion(self, emotion: str, intensity: float = 0.5) -> bool:
+        """Définit une émotion sur le robot MuJoCo - BOUGE VRAIMENT LES JOINTS."""
+        if not self.is_connected:
+            logger.error("MuJoCo non connecté")
+            return False
+
+        # Appeler la méthode parente pour validation
+        if not super().set_emotion(emotion, intensity):
+            return False
+
+        # Mapper les émotions vers des positions de joints de tête
+        # Pour que ça soit visible dans la simulation
+        emotion_poses = {
+            "happy": {"pitch": 0.1 * intensity, "yaw": 0.0},
+            "sad": {"pitch": -0.1 * intensity, "yaw": 0.0},
+            "neutral": {"pitch": 0.0, "yaw": 0.0},
+            "excited": {"pitch": 0.2 * intensity, "yaw": 0.1 * intensity},
+            "curious": {"pitch": 0.05 * intensity, "yaw": 0.2 * intensity},
+            "angry": {"pitch": -0.15 * intensity, "yaw": 0.0},
+            "surprised": {"pitch": 0.25 * intensity, "yaw": 0.0},
+            "calm": {"pitch": -0.05 * intensity, "yaw": 0.0},
+        }
+
+        pose = emotion_poses.get(emotion, {"pitch": 0.0, "yaw": 0.0})
+
+        # Appliquer les positions aux joints de tête si disponibles
+        available_joints = self.get_available_joints()
+
+        # Chercher les joints de tête
+        head_joints: dict[str, str | None] = {
+            "pitch": None,
+            "yaw": None,
+        }
+
+        for joint in available_joints:
+            joint_lower = joint.lower()
+            if "pitch" in joint_lower and "head" in joint_lower:
+                head_joints["pitch"] = joint
+            elif "yaw" in joint_lower and "head" in joint_lower:
+                head_joints["yaw"] = joint
+
+        # Appliquer les positions
+        if head_joints["pitch"]:
+            try:
+                self.set_joint_pos(head_joints["pitch"], pose["pitch"])
+                logger.info(f"Émotion {emotion}: pitch_head = {pose['pitch']:.3f}")
+            except Exception as e:
+                logger.debug(f"Impossible de bouger pitch_head: {e}")
+
+        if head_joints["yaw"]:
+            try:
+                self.set_joint_pos(head_joints["yaw"], pose["yaw"])
+                logger.info(f"Émotion {emotion}: yaw_head = {pose['yaw']:.3f}")
+            except Exception as e:
+                logger.debug(f"Impossible de bouger yaw_head: {e}")
+
+        # Faire un step pour que le changement soit visible
+        self.step()
+
+        logger.info(
+            f"✅ Émotion {emotion} appliquée (intensité: {intensity}) - joints bougés"
+        )
+        return True
+
     def get_telemetry(self) -> dict[str, Any]:
         """Retourne les données de télémétrie."""
         if not self.is_connected:
@@ -338,4 +402,6 @@ class MuJoCoBackend(RobotAPI):
             ),
             "current_qpos": self.data.qpos.copy() if self.data else [],
             "model_path": str(self.model_path),
+            "latency_ms": 0.0,  # Simulation
+            "fps": (self.step_count / elapsed_time if elapsed_time > 0 else 0),
         }

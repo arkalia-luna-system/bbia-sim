@@ -312,10 +312,7 @@ docs/
 
 ---
 
-**Dernière mise à jour :** Oct / Nov. 2025  
-**Version guide :** 1.0
-
----
+**Dernière mise à jour :** Oct / Nov. 2025
 
 ## 🎯 Navigation
 

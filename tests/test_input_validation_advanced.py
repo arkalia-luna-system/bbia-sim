@@ -18,6 +18,7 @@ def test_joint_name_validation() -> None:
     if not robot or not robot.connect():
         pytest.skip("MuJoCo non disponible")
 
+    assert robot is not None  # Type narrowing pour mypy
     try:
         # Noms de joints malveillants/invalides
         malicious_names = [
@@ -65,6 +66,7 @@ def test_joint_position_range_validation() -> None:
     if not robot or not robot.connect():
         pytest.skip("MuJoCo non disponible")
 
+    assert robot is not None  # Type narrowing pour mypy
     try:
         # Valeurs extrêmes
         extreme_values = [
@@ -99,6 +101,7 @@ def test_emotion_name_validation() -> None:
     if not robot or not robot.connect():
         pytest.skip("MuJoCo non disponible")
 
+    assert robot is not None  # Type narrowing pour mypy
     try:
         # Émotions valides
         valid_emotions = ["happy", "sad", "neutral", "excited", "curious", "calm"]
@@ -139,6 +142,7 @@ def test_emotion_intensity_validation() -> None:
     if not robot or not robot.connect():
         pytest.skip("MuJoCo non disponible")
 
+    assert robot is not None  # Type narrowing pour mypy
     try:
         # Intensités valides
         valid_intensities = [0.0, 0.5, 1.0, 0.25, 0.75]

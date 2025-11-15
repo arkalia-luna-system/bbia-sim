@@ -11,7 +11,6 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 from bbia_sim.robot_factory import RobotFactory
-import time
 
 
 def test_sound_in():
@@ -108,4 +107,3 @@ if __name__ == "__main__":
     test_sound_out()
 
     print("\n✅ Tests terminés")
-

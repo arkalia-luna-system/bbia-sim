@@ -79,11 +79,14 @@ class TestBBIAVision:
         )  # OPTIMISATION RAM: Pas de chargement caméra
 
         specs = vision.specs
+        assert specs is not None
         assert specs["camera"] == "Grand angle"
         # Resolution a été clarifiée avec simulation/réel
-        assert "1280x720" in specs["resolution"] or "HD" in specs["resolution"]
+        resolution = str(specs["resolution"]) if specs["resolution"] is not None else ""
+        assert "1280x720" in resolution or "HD" in resolution
         # FOV a été clarifié avec simulation/réel
-        assert "80°" in specs["fov"] or "120°" in specs["fov"]
+        fov = str(specs["fov"]) if specs["fov"] is not None else ""
+        assert "80°" in fov or "120°" in fov
         assert specs["focus"] == "Auto"
 
     @pytest.mark.fast
@@ -123,6 +126,7 @@ class TestBBIAVision:
         # Test état initial
         assert vision.current_focus is None
 
-        # Test changement de focus
-        vision.current_focus = "test_object"
-        assert vision.current_focus == "test_object"
+        # Test changement de focus (current_focus est un dict, pas un str)
+        test_object = {"name": "test_object", "position": (0.5, 0.5)}
+        vision.current_focus = test_object
+        assert vision.current_focus == test_object

@@ -1,5 +1,6 @@
-# macOS metadata files
+# macOS metadata files (incluant .git/)
 ._*
+**/._*
 .DS_Store
 .AppleDouble
 .LSOverride

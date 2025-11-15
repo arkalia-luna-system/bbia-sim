@@ -8,7 +8,6 @@ import sys
 from pathlib import Path
 
 import mujoco
-import numpy as np
 from PIL import Image
 
 # Ajouter le chemin src au PYTHONPATH
@@ -80,9 +79,7 @@ def generate_bbia_image(
     pose_config = poses[pose]
     for joint_name, angle in pose_config.items():
         try:
-            joint_id = mujoco.mj_name2id(
-                model, mujoco.mjtObj.mjOBJ_JOINT, joint_name
-            )
+            joint_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_JOINT, joint_name)
             if joint_id >= 0:
                 data.qpos[joint_id] = angle
         except Exception:
@@ -109,7 +106,7 @@ def generate_bbia_image(
 
     # Mettre à jour la scène avec les données
     renderer.update_scene(data)
-    
+
     # Rendre l'image
     image = renderer.render()
 
@@ -195,4 +192,3 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main())
-
