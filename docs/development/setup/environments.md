@@ -16,7 +16,7 @@
 - Commandes utiles:
   - Activer: `source venv/bin/activate`
   - Démarrer dashboard: `python src/bbia_sim/dashboard_advanced.py --port 8000`
-  - Démo 3D (macOS): `./LANCE_DEMO_3D.sh` (utilise `mjpython`)
+  - Démo 3D (macOS): `./examples/LANCE_DEMO_3D.sh` (utilise `mjpython`)
 
 Notes:
 
@@ -82,7 +82,7 @@ Caméra:
 
 - Simulation 3D (profil A):
   - `source venv/bin/activate`
-  - `./LANCE_DEMO_3D.sh` (macOS: ouvre le viewer via `mjpython`)
+  - `./examples/LANCE_DEMO_3D.sh` (macOS: ouvre le viewer via `mjpython`)
 - Vision seule (profil B):
   - `source venv-vision-py310/bin/activate`
   - Script vision/abonnements/analyses (selon besoins)

@@ -203,7 +203,7 @@ docs/
 ### Fichiers critiques
 
 1. `README.md` - Point d'entrée principal
-2. `PROJECTS.md` - Portfolio projets
+2. `docs/reference/PROJECTS.md` - Portfolio projets
 3. `docs/INDEX_FINAL.md` - Index documentation
 4. `docs/getting-started/troubleshooting.md` - Questions fréquentes
 

@@ -85,7 +85,7 @@ BBIA-SIM maintient des standards stricts de qualité:
 - **Sécurité**: Analyse statique avec Bandit
 - **Performance**: Optimisations continues et monitoring
 
-**[🚀 Quick Start](#-démarrage-rapide)** | **[📚 Docs Débutant](docs/guides/GUIDE_DEBUTANT.md)** | **[🔬 Docs Avancé](docs/guides/GUIDE_AVANCE.md)** | **[📋 Projets](PROJECTS.md)**
+**[🚀 Quick Start](#-démarrage-rapide)** | **[📚 Docs Débutant](docs/guides/GUIDE_DEBUTANT.md)** | **[🔬 Docs Avancé](docs/guides/GUIDE_AVANCE.md)** | **[📋 Projets](docs/reference/PROJECTS.md)**
 
 ---
 
@@ -600,7 +600,7 @@ source venv-vision-py310/bin/activate
 ```bash
 # venv principal
 source venv/bin/activate
-./LANCE_DEMO_3D.sh
+./examples/LANCE_DEMO_3D.sh
 ```
 
 #### 3) Dashboard + chat en temps réel
@@ -899,7 +899,7 @@ Le robot Reachy Mini est simulé avec une fidélité élevée aux spécification
 
 ## 📊 Projets & Portfolio
 
-Voir [`PROJECTS.md`](PROJECTS.md) pour la liste complète de mes projets (10+ projets actifs).
+Voir [`PROJECTS.md`](docs/reference/PROJECTS.md) pour la liste complète de mes projets (10+ projets actifs).
 
 ---
 
