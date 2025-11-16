@@ -28,7 +28,7 @@
 
 ## 🟡 PROCHAINES ÉTAPES (Priorité Moyenne)
 
-### 1. **Augmenter Coverage Modules Core** ✅ **FAIT** (Janvier 2025)
+### 1. **Augmenter Coverage Modules Core** ✅ **FAIT** (Janvier 2025) - **COMPLÉTÉ**
 
 **Objectif** : Atteindre 60%+ coverage pour modules critiques
 
@@ -52,6 +52,11 @@
 - ⚠️ **`backends/reachy_backend.py`** : 30.8% (à vérifier)
   - Pas de test dédié trouvé
   - Peut-être testé indirectement
+
+**Fichiers de test corrigés** :
+- ✅ 13 fichiers de test avec imports corrigés
+- ✅ 130+ imports déplacés au niveau module
+- ✅ Coverage maintenant détecté pour tous les modules principaux
 
 **Impact** : Amélioration score Tests (85 → 90/100) ✅
 

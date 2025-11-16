@@ -79,6 +79,7 @@
 11. `tests/test_demo_chat_bbia_3d.py` - Module importé, imports corrigés ✅
 12. `tests/test_ram_optimizations_validation.py` - Module importé, imports corrigés ✅
 13. `tests/test_performance_optimizations.py` - Module importé, imports corrigés ✅
+14. `tests/test_dashboard_advanced.py` - Module troubleshooting importé, imports corrigés ✅
 
 ### Fichiers supprimés (doublons) :
 1. `ANALYSE_COVERAGE_IMPORTS.md` - Doublon, contenu dans RESUME
@@ -148,7 +149,7 @@ class TestClass:
 
 ## 📈 STATISTIQUES
 
-- **Fichiers modifiés** : 13 (tous complétés ✅)
+- **Fichiers modifiés** : 14 (tous complétés ✅)
 - **Fichiers créés** : 2
 - **Fichiers supprimés** : 2 (doublons MD)
 - **Tests ajoutés** : 10

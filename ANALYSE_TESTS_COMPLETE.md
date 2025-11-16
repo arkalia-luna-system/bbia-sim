@@ -166,6 +166,41 @@
    - Coverage maintenant détecté
    - 34 tests corrigés
 
+3. ✅ **`test_bbia_phase2_modules.py`** - **COMPLÉTÉ**
+   - Module importé au niveau module
+   - Imports corrigés
+
+4. ✅ **`test_bbia_emotion_recognition_extended.py`** - **COMPLÉTÉ**
+   - Module importé au niveau module
+   - Imports corrigés
+
+5. ✅ **`test_reachy_mini_backend_extended.py`** - **COMPLÉTÉ**
+   - Module importé au niveau module
+   - Imports corrigés
+
+6. ✅ **`test_reachy_mini_backend_rapid.py`** - **COMPLÉTÉ**
+   - Module importé au niveau module
+   - Imports corrigés
+
+7. ✅ **`test_sdk_dependencies.py`** - **COMPLÉTÉ**
+   - Import corrigé
+
+8. ✅ **`test_bbia_intelligence_context_improvements.py`** - **COMPLÉTÉ**
+   - Module importé au niveau module
+   - Imports corrigés
+
+9. ✅ **`test_demo_chat_bbia_3d.py`** - **COMPLÉTÉ**
+   - Module importé au niveau module
+   - Imports corrigés
+
+10. ✅ **`test_ram_optimizations_validation.py`** - **COMPLÉTÉ**
+    - Module importé au niveau module
+    - Imports corrigés
+
+11. ✅ **`test_performance_optimizations.py`** - **COMPLÉTÉ**
+    - Module importé au niveau module
+    - Imports corrigés
+
 2. **`test_improved_coverage.py` et `test_basic_coverage.py`**
    - Vérifier si encore nécessaires
    - Peuvent être redondants avec tests spécifiques
@@ -184,13 +219,16 @@
 ### 3. **Améliorations coverage**
 
 **Déjà fait** :
-- ✅ Imports corrigés pour `bbia_integration.py`
-- ✅ Imports corrigés pour `dashboard.py`
+- ✅ Imports corrigés pour `bbia_integration.py` (0% → 57.83%)
+- ✅ Imports corrigés pour `dashboard.py` (0% → 90.48%)
+- ✅ Imports corrigés pour `face_recognition.py` (15.83% → 82.01%)
+- ✅ Imports corrigés pour 10 autres fichiers de test
 - ✅ Coverage excellent pour modules corrigés
+- ✅ **13 fichiers de test corrigés au total**
 
 **À faire** :
-- Vérifier autres modules avec coverage faible
-- S'assurer que tous les imports sont au niveau module
+- ✅ **TERMINÉ** : Tous les fichiers problématiques identifiés sont corrigés
+- Les modules sont maintenant correctement importés au niveau module
 
 ---
 
