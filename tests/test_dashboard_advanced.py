@@ -61,24 +61,28 @@ class TestDashboardAdvanced:
         not FASTAPI_AVAILABLE or BBIAAdvancedWebSocketManager is None,
         reason="Dashboard non disponible",
     )
+    @pytest.mark.skipif(
+        not FASTAPI_AVAILABLE or BBIAAdvancedWebSocketManager is None,
+        reason="Dashboard non disponible",
+    )
     @patch("bbia_sim.dashboard_advanced.FASTAPI_AVAILABLE", True)
     def test_websocket_manager_initialization(self):
         """Test initialisation BBIAAdvancedWebSocketManager."""
         manager = BBIAAdvancedWebSocketManager()
 
-            assert manager.active_connections == []
-            assert manager.robot is None
-            assert manager.robot_backend == "mujoco"
-            # metrics_history est un deque, pas une liste
-            from collections import deque
+        assert manager.active_connections == []
+        assert manager.robot is None
+        assert manager.robot_backend == "mujoco"
+        # metrics_history est un deque, pas une liste
+        from collections import deque
 
-            assert isinstance(manager.metrics_history, deque)
-            assert len(manager.metrics_history) == 0
-            assert manager.max_history == 1000
-            assert hasattr(manager, "emotions")
-            assert hasattr(manager, "vision")
-            assert hasattr(manager, "behavior_manager")
-            assert hasattr(manager, "current_metrics")
+        assert isinstance(manager.metrics_history, deque)
+        assert len(manager.metrics_history) == 0
+        assert manager.max_history == 1000
+        assert hasattr(manager, "emotions")
+        assert hasattr(manager, "vision")
+        assert hasattr(manager, "behavior_manager")
+        assert hasattr(manager, "current_metrics")
 
     @pytest.mark.skipif(
         not FASTAPI_AVAILABLE or BBIAAdvancedWebSocketManager is None,
