@@ -406,8 +406,8 @@ class BBIAAdvancedWebSocketManager:
 
         # Démarrer la tâche en arrière-plan
         try:
-            loop = asyncio.get_event_loop()
-            self._metrics_task = loop.create_task(collect_metrics())
+            # Essayer d'utiliser asyncio.create_task() si une boucle est en cours
+            self._metrics_task = asyncio.create_task(collect_metrics())
         except RuntimeError:
             # Pas de boucle en cours, créer une nouvelle
             loop = asyncio.new_event_loop()
