@@ -134,7 +134,12 @@ def main() -> None:
 
                     # Positions cibles fixes
                     print("🎯 Positions cibles fixes")
-                    offsets: list[list[float]] = [[0.02, 0.02], [0.00, 0.02], [0.00, -0.02], [0, 0]]
+                    offsets: list[list[float]] = [
+                        [0.02, 0.02],
+                        [0.00, 0.02],
+                        [0.00, -0.02],
+                        [0, 0],
+                    ]
                     for offset in offsets:
                         pose[:3, 3] = [offset[0], offset[1], 0.0]
                         if offset[0] == 0 and offset[1] != 0:

@@ -7,6 +7,7 @@ import logging
 import os
 import threading
 import time
+from collections import deque
 from pathlib import Path
 from typing import Any, cast
 
@@ -414,7 +415,8 @@ class WhisperSTT:
             chunk_duration = 0.5  # Analyser par chunks de 500ms
             chunk_samples = int(chunk_duration * sample_rate)
 
-            audio_buffer: list[npt.NDArray[np.float32]] = []
+            # OPTIMISATION RAM: Limiter taille buffer avec deque (max 10 chunks)
+            audio_buffer: deque[npt.NDArray[np.float32]] = deque(maxlen=10)
             silence_duration = 0.0
             max_silence = silence_threshold
             total_duration = 0.0
@@ -534,8 +536,6 @@ class WhisperSTT:
             total_duration = 0.0
 
             # OPTIMISATION RAM: Limiter taille buffer avec deque
-            from collections import deque
-
             buffer_max_chunks = 10  # Max 10 chunks (limite sécurité)
             audio_buffer: deque[npt.NDArray[np.float32]] = deque(
                 maxlen=buffer_max_chunks

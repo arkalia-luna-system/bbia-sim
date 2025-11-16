@@ -40,7 +40,7 @@ if not USE_SDK:
             MIN_JERK = "minjerk"
             EASE_IN_OUT = "ease"
             CARTOON = "cartoon"
-        
+
         InterpolationTechnique = InterpolationTechniqueLocal  # type: ignore[assignment]
 
 

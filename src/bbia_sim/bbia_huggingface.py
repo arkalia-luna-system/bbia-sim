@@ -163,6 +163,14 @@ class BBIAHuggingFace:
         self._model_last_used: dict[str, float] = {}  # Timestamp dernier usage pour LRU
         self._inactivity_timeout = 300.0  # 5 minutes d'inactivité → déchargement auto
 
+        # OPTIMISATION RAM: Thread pour déchargement automatique après inactivité
+        import threading
+
+        self._unload_thread: threading.Thread | None = None
+        self._unload_thread_stop = threading.Event()
+        self._unload_thread_lock = threading.Lock()
+        self._start_auto_unload_thread()
+
         # Chat intelligent : Historique et contexte
         self.conversation_history: list[dict[str, Any]] = []
         self.context: dict[str, Any] = {}
@@ -927,6 +935,69 @@ class BBIAHuggingFace:
     def _update_model_usage(self, model_key: str) -> None:
         """OPTIMISATION RAM: Met à jour timestamp d'usage d'un modèle."""
         self._model_last_used[model_key] = time.time()
+
+    def _start_auto_unload_thread(self) -> None:
+        """OPTIMISATION RAM: Démarre le thread de déchargement automatique après inactivité."""
+        import threading
+
+        def _auto_unload_loop() -> None:
+            """Boucle de déchargement automatique des modèles inactifs."""
+            while not self._unload_thread_stop.is_set():
+                try:
+                    # Attendre 60 secondes entre vérifications
+                    if self._unload_thread_stop.wait(60.0):
+                        break  # Arrêt demandé
+
+                    current_time = time.time()
+                    models_to_unload: list[tuple[str, float]] = []
+
+                    # Identifier modèles inactifs > 5 min
+                    with self._unload_thread_lock:
+                        for model_key, last_used in list(self._model_last_used.items()):
+                            inactivity = current_time - last_used
+                            if inactivity > self._inactivity_timeout:
+                                models_to_unload.append((model_key, inactivity))
+
+                    # Décharger modèles inactifs (hors lock pour éviter deadlock)
+                    for model_key, inactivity in models_to_unload:
+                        try:
+                            # Extraire nom modèle depuis clé
+                            parts = model_key.rsplit("_", 1)
+                            if len(parts) == 2:
+                                model_name = parts[0]
+                                logger.debug(
+                                    f"🗑️ Déchargement auto modèle inactif "
+                                    f"({inactivity:.0f}s): {model_key}"
+                                )
+                                self.unload_model(model_name)
+                                # Supprimer du tracking
+                                with self._unload_thread_lock:
+                                    if model_key in self._model_last_used:
+                                        del self._model_last_used[model_key]
+                        except Exception as e:
+                            logger.debug(f"Erreur déchargement auto {model_key}: {e}")
+
+                except Exception as e:
+                    logger.debug(f"Erreur boucle déchargement auto: {e}")
+                    # Continuer même en cas d'erreur
+
+        with self._unload_thread_lock:
+            if self._unload_thread is None or not self._unload_thread.is_alive():
+                self._unload_thread_stop.clear()
+                self._unload_thread = threading.Thread(
+                    target=_auto_unload_loop,
+                    daemon=True,
+                    name="BBIAHF-AutoUnload",
+                )
+                self._unload_thread.start()
+                logger.debug("✅ Thread déchargement auto Hugging Face démarré")
+
+    def _stop_auto_unload_thread(self) -> None:
+        """OPTIMISATION RAM: Arrête le thread de déchargement automatique."""
+        if self._unload_thread and self._unload_thread.is_alive():
+            self._unload_thread_stop.set()
+            self._unload_thread.join(timeout=2.0)
+            logger.debug("Thread déchargement auto Hugging Face arrêté")
 
     def unload_model(self, model_name: str) -> bool:
         """Décharge un modèle de la mémoire.

@@ -52,7 +52,7 @@ def get_frame_from_backend(backend, vision_source="cv2"):
             cap = getattr(click, "_cap", None)  # type: ignore[attr-defined]
             if cap is None:
                 cap = cv2.VideoCapture(0)
-                setattr(click, "_cap", cap)  # type: ignore[attr-defined]
+                click._cap = cap  # type: ignore[attr-defined]
             ret, frame = cap.read()
             if ret:
                 return frame

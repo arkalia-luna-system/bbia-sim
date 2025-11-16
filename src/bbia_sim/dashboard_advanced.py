@@ -64,6 +64,10 @@ class BBIAAdvancedWebSocketManager:
         self.max_history = 1000  # Limite historique métriques
         self.metrics_history: deque[dict[str, Any]] = deque(maxlen=self.max_history)
 
+        # OPTIMISATION RAM: Nettoyage connexions WebSocket inactives (>5 min)
+        self._connection_last_activity: dict[WebSocket, float] = {}
+        self._connection_cleanup_interval = 300.0  # 5 minutes
+
         # Modules BBIA
         self.emotions = BBIAEmotions()
         # OPTIMISATION RAM: Utiliser singleton BBIAVision si disponible
@@ -154,6 +158,8 @@ class BBIAAdvancedWebSocketManager:
         """Accepte une nouvelle connexion WebSocket."""
         await websocket.accept()
         self.active_connections.append(websocket)
+        # OPTIMISATION RAM: Enregistrer timestamp activité connexion
+        self._connection_last_activity[websocket] = time.time()
         logger.info(
             f"🔌 WebSocket avancé connecté ({len(self.active_connections)} connexions)",
         )
@@ -217,9 +223,34 @@ class BBIAAdvancedWebSocketManager:
         """Déconnecte un WebSocket."""
         if websocket in self.active_connections:
             self.active_connections.remove(websocket)
+        # OPTIMISATION RAM: Supprimer du tracking activité
+        if websocket in self._connection_last_activity:
+            del self._connection_last_activity[websocket]
         logger.info(
             f"🔌 WebSocket avancé déconnecté ({len(self.active_connections)} connexions)",
         )
+
+    def _cleanup_inactive_connections(self) -> None:
+        """OPTIMISATION RAM: Nettoie les connexions WebSocket inactives (>5 min)."""
+        current_time = time.time()
+        inactive_connections: list[tuple[WebSocket, float]] = []
+
+        for connection, last_activity in list(self._connection_last_activity.items()):
+            inactivity = current_time - last_activity
+            if inactivity > self._connection_cleanup_interval:
+                inactive_connections.append((connection, inactivity))
+
+        # Fermer connexions inactives
+        for connection, inactivity in inactive_connections:
+            try:
+                # Tenter fermeture propre
+                if connection in self.active_connections:
+                    self.disconnect(connection)
+                    logger.debug(
+                        f"🗑️ Connexion WebSocket inactive fermée ({inactivity:.0f}s)"
+                    )
+            except Exception as e:
+                logger.debug(f"Erreur nettoyage connexion inactive: {e}")
 
     async def broadcast(self, message: str):
         """Diffuse un message à toutes les connexions actives."""
@@ -227,9 +258,12 @@ class BBIAAdvancedWebSocketManager:
             return
 
         disconnected = []
+        current_time = time.time()
         for connection in self.active_connections:
             try:
                 await connection.send_text(message)
+                # OPTIMISATION RAM: Mettre à jour timestamp activité
+                self._connection_last_activity[connection] = current_time
             except (ConnectionError, RuntimeError, WebSocketDisconnect):
                 disconnected.append(
                     connection,
@@ -238,6 +272,9 @@ class BBIAAdvancedWebSocketManager:
         # Nettoyer les connexions fermées
         for connection in disconnected:
             self.disconnect(connection)
+
+        # OPTIMISATION RAM: Nettoyer connexions inactives périodiquement
+        self._cleanup_inactive_connections()
 
     async def send_complete_status(self):
         """Envoie le statut complet du système."""

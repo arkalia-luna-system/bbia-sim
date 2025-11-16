@@ -208,10 +208,7 @@ def main():
         if hasattr(robot, "viewer") and robot.viewer is not None:
             print("\n⏸️  Viewer ouvert - fermez la fenêtre pour quitter...")
             try:
-                while (
-                    hasattr(robot, "is_viewer_running")
-                    and robot.is_viewer_running()
-                ):
+                while hasattr(robot, "is_viewer_running") and robot.is_viewer_running():
                     if hasattr(robot, "sync_viewer"):
                         robot.sync_viewer()
                     time.sleep(0.05)  # Petit délai pour éviter de surcharger le CPU
