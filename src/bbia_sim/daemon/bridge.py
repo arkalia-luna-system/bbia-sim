@@ -79,7 +79,7 @@ class RobotState(BaseModel):
 class ZenohBridge:
     """Bridge entre FastAPI et Zenoh pour Reachy Mini."""
 
-    def __init__(self, config: ZenohConfig | None = None):
+    def __init__(self, config: ZenohConfig | None = None) -> None:
         """Initialise le bridge Zenoh."""
         self.config = config or ZenohConfig()
         self.session: Any | None = (
@@ -341,6 +341,36 @@ class ZenohBridge:
 
             self.reachy_mini.set_target(head=head_pose, antennas=antennas)
 
+    def _get_emotion_pose(self, emotion: str) -> np.ndarray | None:
+        """Crée une pose tête selon l'émotion (fallback si set_emotion non disponible).
+        
+        Returns:
+            Matrice 4x4 numpy représentant la pose de tête, ou None si create_head_pose
+            n'est pas disponible.
+        """
+        if not create_head_pose:
+            return None
+
+        emotion_poses: dict[str, np.ndarray] = {
+            "happy": create_head_pose(pitch=0.1, yaw=0.0, degrees=False),
+            "sad": create_head_pose(pitch=-0.1, yaw=0.0, degrees=False),
+            "excited": create_head_pose(pitch=0.2, yaw=0.1, degrees=False),
+            "curious": create_head_pose(pitch=0.05, yaw=0.2, degrees=False),
+            "calm": create_head_pose(pitch=-0.05, yaw=0.0, degrees=False),
+            "neutral": create_head_pose(pitch=0.0, yaw=0.0, degrees=False),
+        }
+        return emotion_poses.get(emotion, emotion_poses["neutral"])
+
+    def _map_emotion_to_sdk(self, emotion: str) -> str:
+        """Mappe une émotion non-SDK vers une émotion SDK."""
+        emotion_map = {
+            "angry": "excited",
+            "surprised": "curious",
+            "fearful": "sad",
+            "confused": "curious",
+        }
+        return emotion_map.get(emotion, "neutral")
+
     async def _cmd_set_emotion(self, params: dict[str, Any]) -> None:
         """Commande set_emotion conforme SDK Reachy Mini."""
         emotion = params.get("emotion", "neutral")
@@ -349,65 +379,31 @@ class ZenohBridge:
         # Mettre à jour l'état des émotions
         self.current_state.emotions[emotion] = intensity
 
-        # Exécuter l'émotion sur le robot via SDK officiel
-        if self.reachy_mini:
-            try:
-                # Valider les 6 émotions SDK officiel
-                sdk_emotions = {"happy", "sad", "neutral", "excited", "curious", "calm"}
+        if not self.reachy_mini:
+            return
 
-                if emotion in sdk_emotions:
-                    # Utiliser set_emotion SDK si disponible
-                    if hasattr(self.reachy_mini, "set_emotion"):
-                        self.reachy_mini.set_emotion(emotion, intensity)
-                    elif create_head_pose:
-                        # Fallback: créer pose tête selon émotion
-                        emotion_poses = {
-                            "happy": create_head_pose(
-                                pitch=0.1,
-                                yaw=0.0,
-                                degrees=False,
-                            ),
-                            "sad": create_head_pose(pitch=-0.1, yaw=0.0, degrees=False),
-                            "excited": create_head_pose(
-                                pitch=0.2,
-                                yaw=0.1,
-                                degrees=False,
-                            ),
-                            "curious": create_head_pose(
-                                pitch=0.05,
-                                yaw=0.2,
-                                degrees=False,
-                            ),
-                            "calm": create_head_pose(
-                                pitch=-0.05,
-                                yaw=0.0,
-                                degrees=False,
-                            ),
-                            "neutral": create_head_pose(
-                                pitch=0.0,
-                                yaw=0.0,
-                                degrees=False,
-                            ),
-                        }
-                        pose = emotion_poses.get(emotion, emotion_poses["neutral"])
-                        # Appliquer intensité
-                        pose[0, 0] *= intensity
+        try:
+            sdk_emotions = {"happy", "sad", "neutral", "excited", "curious", "calm"}
+
+            if emotion in sdk_emotions:
+                # Utiliser set_emotion SDK si disponible
+                if hasattr(self.reachy_mini, "set_emotion"):
+                    self.reachy_mini.set_emotion(emotion, intensity)
+                else:
+                    # Fallback: créer pose tête selon émotion
+                    pose = self._get_emotion_pose(emotion)
+                    if pose is not None:
+                        pose[0, 0] *= intensity  # Appliquer intensité
                         if hasattr(self.reachy_mini, "set_target_head_pose"):
                             self.reachy_mini.set_target_head_pose(pose)
-                else:
-                    # Mapper émotion non-SDK vers émotion SDK la plus proche
-                    emotion_map = {
-                        "angry": "excited",
-                        "surprised": "curious",
-                        "fearful": "sad",
-                        "confused": "curious",
-                    }
-                    sdk_emotion = emotion_map.get(emotion, "neutral")
-                    if hasattr(self.reachy_mini, "set_emotion"):
-                        self.reachy_mini.set_emotion(sdk_emotion, intensity)
-                    self.logger.info(f"Émotion {emotion} mappée vers {sdk_emotion}")
-            except Exception as e:
-                self.logger.error(f"Erreur set_emotion: {e}")
+            else:
+                # Mapper émotion non-SDK vers émotion SDK
+                sdk_emotion = self._map_emotion_to_sdk(emotion)
+                if hasattr(self.reachy_mini, "set_emotion"):
+                    self.reachy_mini.set_emotion(sdk_emotion, intensity)
+                self.logger.info(f"Émotion {emotion} mappée vers {sdk_emotion}")
+        except Exception as e:
+            self.logger.error(f"Erreur set_emotion: {e}")
 
     async def _cmd_play_audio(self, params: dict[str, Any]) -> None:
         """Commande play_audio conforme SDK Reachy Mini (media.play_audio)."""
@@ -439,6 +435,51 @@ class ZenohBridge:
             except Exception as e:
                 self.logger.error(f"Erreur play_audio: {e}")
 
+    def _validate_look_at_coordinates(
+        self, x: float, y: float, z: float
+    ) -> tuple[float, float, float]:
+        """Valide et clamp les coordonnées look_at selon limites SDK.
+        
+        Args:
+            x: Coordonnée X (mètres, limite: -2.0 à 2.0)
+            y: Coordonnée Y (mètres, limite: -2.0 à 2.0)
+            z: Coordonnée Z (mètres, limite: 0.0 à 1.5)
+            
+        Returns:
+            Tuple (x, y, z) avec valeurs clampées dans les limites SDK.
+        """
+        if abs(x) > 2.0 or abs(y) > 2.0 or z < 0.0 or z > 1.5:
+            self.logger.warning(
+                f"Coordonnées ({x}, {y}, {z}) hors limites SDK - clampage appliqué",
+            )
+            x = max(-2.0, min(2.0, x))
+            y = max(-2.0, min(2.0, y))
+            z = max(0.0, min(1.5, z))
+        return x, y, z
+
+    def _look_at_fallback(self, x: float, y: float, z: float, duration: float) -> None:
+        """Fallback: calculer pitch/yaw depuis x/y/z (approximation).
+        
+        Args:
+            x: Coordonnée X (mètres)
+            y: Coordonnée Y (mètres)
+            z: Coordonnée Z (mètres)
+            duration: Durée du mouvement (secondes)
+        """
+        if not create_head_pose:
+            return
+
+        pitch = z * 0.2  # Approximation verticale
+        yaw = x * 0.3  # Approximation horizontale
+        pose: np.ndarray = create_head_pose(pitch=pitch, yaw=yaw, degrees=False)
+        if hasattr(self.reachy_mini, "goto_target"):
+            self.reachy_mini.goto_target(head=pose, duration=duration, method="minjerk")
+        elif hasattr(self.reachy_mini, "set_target_head_pose"):
+            self.reachy_mini.set_target_head_pose(pose)
+        self.logger.info(
+            f"Look_at fallback (pose calculée): pitch={pitch:.3f}, yaw={yaw:.3f}",
+        )
+
     async def _cmd_look_at(self, params: dict[str, Any]) -> None:
         """Commande look_at conforme SDK Reachy Mini (look_at_world/look_at_image)."""
         x = params.get("x", 0.0)
@@ -450,48 +491,17 @@ class ZenohBridge:
             return
 
         try:
-            # CORRECTION EXPERTE: create_head_pose prend pitch/yaw/roll, pas x/y/z
-            # Utiliser look_at_world() pour coordonnées 3D (méthode SDK recommandée)
             if hasattr(self.reachy_mini, "look_at_world"):
-                # Validation coordonnées recommandées SDK (-2.0 ≤ x,y ≤ 2.0, 0.0 ≤ z ≤ 1.5)
-                if abs(x) > 2.0 or abs(y) > 2.0 or z < 0.0 or z > 1.5:
-                    self.logger.warning(
-                        f"Coordonnées ({x}, {y}, {z}) hors limites SDK - clampage appliqué",
-                    )
-                    x = max(-2.0, min(2.0, x))
-                    y = max(-2.0, min(2.0, y))
-                    z = max(0.0, min(1.5, z))
-
-                # Utiliser look_at_world SDK officiel
+                x, y, z = self._validate_look_at_coordinates(x, y, z)
                 self.reachy_mini.look_at_world(
-                    x,
-                    y,
-                    z,
-                    duration=duration,
-                    perform_movement=True,
+                    x, y, z, duration=duration, perform_movement=True
                 )
                 self.logger.info(f"Look_at_world SDK: ({x}, {y}, {z})")
             elif hasattr(self.reachy_mini, "look_at_image"):
-                # Fallback: look_at_image si coordonnées image (u, v)
                 self.reachy_mini.look_at_image(int(x), int(y))
                 self.logger.info(f"Look_at_image SDK: ({int(x)}, {int(y)})")
-            elif create_head_pose:
-                # Fallback final: calculer pitch/yaw depuis x/y/z (approximation)
-                # Note: Cette approximation est moins précise que look_at_world()
-                pitch = z * 0.2  # Approximation verticale
-                yaw = x * 0.3  # Approximation horizontale
-                pose = create_head_pose(pitch=pitch, yaw=yaw, degrees=False)
-                if hasattr(self.reachy_mini, "goto_target"):
-                    self.reachy_mini.goto_target(
-                        head=pose,
-                        duration=duration,
-                        method="minjerk",
-                    )
-                elif hasattr(self.reachy_mini, "set_target_head_pose"):
-                    self.reachy_mini.set_target_head_pose(pose)
-                self.logger.info(
-                    f"Look_at fallback (pose calculée): pitch={pitch:.3f}, yaw={yaw:.3f}",
-                )
+            else:
+                self._look_at_fallback(x, y, z, duration)
         except Exception as e:
             self.logger.error(f"Erreur look_at: {e}")
 
