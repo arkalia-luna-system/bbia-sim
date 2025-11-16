@@ -341,9 +341,9 @@ class ZenohBridge:
 
             self.reachy_mini.set_target(head=head_pose, antennas=antennas)
 
-    def _get_emotion_pose(self, emotion: str) -> np.ndarray | None:
+    def _get_emotion_pose(self, emotion: str) -> Any | None:
         """Crée une pose tête selon l'émotion (fallback si set_emotion non disponible).
-        
+
         Returns:
             Matrice 4x4 numpy représentant la pose de tête, ou None si create_head_pose
             n'est pas disponible.
@@ -351,7 +351,7 @@ class ZenohBridge:
         if not create_head_pose:
             return None
 
-        emotion_poses: dict[str, np.ndarray] = {
+        emotion_poses: dict[str, Any] = {
             "happy": create_head_pose(pitch=0.1, yaw=0.0, degrees=False),
             "sad": create_head_pose(pitch=-0.1, yaw=0.0, degrees=False),
             "excited": create_head_pose(pitch=0.2, yaw=0.1, degrees=False),
@@ -439,12 +439,12 @@ class ZenohBridge:
         self, x: float, y: float, z: float
     ) -> tuple[float, float, float]:
         """Valide et clamp les coordonnées look_at selon limites SDK.
-        
+
         Args:
             x: Coordonnée X (mètres, limite: -2.0 à 2.0)
             y: Coordonnée Y (mètres, limite: -2.0 à 2.0)
             z: Coordonnée Z (mètres, limite: 0.0 à 1.5)
-            
+
         Returns:
             Tuple (x, y, z) avec valeurs clampées dans les limites SDK.
         """
@@ -472,9 +472,15 @@ class ZenohBridge:
         pitch = z * 0.2  # Approximation verticale
         yaw = x * 0.3  # Approximation horizontale
         pose: np.ndarray = create_head_pose(pitch=pitch, yaw=yaw, degrees=False)
-        if hasattr(self.reachy_mini, "goto_target"):
+        if (
+            self.reachy_mini is not None
+            and hasattr(self.reachy_mini, "goto_target")
+        ):
             self.reachy_mini.goto_target(head=pose, duration=duration, method="minjerk")
-        elif hasattr(self.reachy_mini, "set_target_head_pose"):
+        elif (
+            self.reachy_mini is not None
+            and hasattr(self.reachy_mini, "set_target_head_pose")
+        ):
             self.reachy_mini.set_target_head_pose(pose)
         self.logger.info(
             f"Look_at fallback (pose calculée): pitch={pitch:.3f}, yaw={yaw:.3f}",
