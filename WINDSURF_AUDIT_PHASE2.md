@@ -306,7 +306,7 @@ uvicorn.run(
 ## 📊 SYNTHÈSE PHASE 2
 
 **Score global : 9.3/10**
-- ✅ **ReachyMini()** : Utilisation parfaite (1/10)
+- ✅ **ReachyMini()** : Utilisation parfaite (10/10)
 - ✅ **create_head_pose()** : Utilisation cohérente (10/10)
 - ✅ **Dépendances SDK** : Versions à jour (10/10)
 - ⚠️ **Arguments CLI** : Support partiel (7/10)
