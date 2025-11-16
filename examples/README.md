@@ -2,6 +2,43 @@
 
 Ce dossier contient des exemples pratiques pour utiliser BBIA-SIM.
 
+## 📊 **Résumé des Examples** (Nov. 2025)
+
+- **✅ Examples utiles** : ~20 exemples fonctionnels et maintenus
+- **⚠️ Examples à améliorer** : ~5 exemples à consolider
+- **❌ Examples inutiles** : ~4 exemples à archiver
+- **🚀 Examples prioritaires** : ~10 exemples essentiels
+
+### 🎯 **Examples Prioritaires**
+
+**Immédiat - Démos Principales :**
+1. `demo_mujoco_amelioree.py` ⭐ - Meilleure démo 3D (RECOMMANDÉ)
+2. `demo_chat_bbia_3d.py` - Chat + 3D interactif
+3. `demo_emotion_ok.py` - Émotions robot
+
+**Formation - SDK Officiel :**
+1. `reachy_mini/minimal_demo.py` - Point de départ
+2. `reachy_mini/sequence.py` - Mouvements complexes
+3. `reachy_mini/look_at_image.py` - Intégration vision
+
+**Utilitaires - API :**
+1. `goto_pose.py` - Contrôle API REST
+2. `subscribe_telemetry.py` - WebSocket temps réel
+3. `hello_sim.py` - Test conformité
+
+### ⚠️ **Examples à Consolider**
+
+- **`demo_chat_bbia.py`**, **`demo_chat_simple.py`**, **`demo_chat_with_tools.py`** → Fusionner en `demo_chat_bbia_3d.py`
+- **`demo_reachy_mini_corrigee.py`** → Utiliser `reachy_mini/*` officiels à la place
+
+### ❌ **Examples Obsolètes (À Archiver)**
+
+- `demo_chat_simple.py` → Remplacé par `demo_chat_bbia_3d.py`
+- `demo_chat_with_tools.py` → Fusionner dans version 3D
+- `demo_reachy_mini_corrigee.py` → Utiliser `reachy_mini/` officiels
+- `demo_bbia_phase2_integration.py` → Test intégration, plus utile
+- `surprise_3d_mujoco_viewer.py` → Démo spécifique, peu utilisée
+
 ## 📚 Exemples Reachy Mini (SDK Officiel)
 
 Les exemples dans `reachy_mini/` sont adaptés du repo officiel `pollen-robotics/reachy_mini` :
@@ -93,9 +130,9 @@ mjpython examples/demo_emotion_ok.py --emotion happy --duration 10 --backend muj
 
 **Résultat attendu** : Animation émotion → joint, backend unifié
 
-### `demo_chat_bbia_3d.py` - Démo 3D Chat BBIA
+### `demo_chat_bbia_3d.py` - Démo 3D Chat BBIA ⭐ **RECOMMANDÉ**
 
-Démo 3D avec chat intelligent BBIA.
+Démo 3D avec chat intelligent BBIA (version consolidée).
 
 ```bash
 # Voir la 3D avec chat
@@ -103,6 +140,8 @@ mjpython examples/demo_chat_bbia_3d.py --duration 10
 ```
 
 **Résultat attendu** : Chat intelligent avec robot 3D
+
+**Note** : Cette version remplace `demo_chat_bbia.py`, `demo_chat_simple.py` et `demo_chat_with_tools.py`.
 
 ### `demo_voice_ok.py` - Démo Voix → Action
 

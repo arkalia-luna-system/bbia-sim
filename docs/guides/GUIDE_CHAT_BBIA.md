@@ -496,7 +496,8 @@ if "heureux" in response.lower():
 ## Voir aussi
 
 - Documentation API : docstrings dans `bbia_huggingface.py`
-- Exemples : `examples/demo_chat_bbia.py`
+- Exemples : `examples/demo_chat_bbia_3d.py` ⭐ (RECOMMANDÉ - version consolidée)
+  - Note : `demo_chat_bbia.py`, `demo_chat_simple.py` et `demo_chat_with_tools.py` sont dépréciés
 - Tests : `tests/test_bbia_huggingface_chat.py`
 - Dashboard : `src/bbia_sim/dashboard_advanced.py`
 

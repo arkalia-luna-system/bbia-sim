@@ -108,7 +108,7 @@ cd bbia-sim
 # ✅ Vérifie Python 3, pip, mjpython (macOS)
 # ✅ Crée/active l'environnement virtuel
 # ✅ Installe BBIA-SIM + dépendances
-# ✅ Vérifie l'installation (bbia_doctor)
+# ✅ Vérifie l'installation (bbia_doctor - inclut Zenoh, daemon, WiFi)
 # ✅ Lance le dashboard sur http://localhost:8000
 ```
 
@@ -243,11 +243,14 @@ mjpython examples/demo_chat_bbia_3d.py
 Une fois le dashboard lancé ou les modules installés, vous pouvez discuter avec BBIA de plusieurs façons :
 
 ```bash
-# Chat simple via terminal
-python examples/demo_chat_simple.py
+# Chat 3D avec BBIA (RECOMMANDÉ)
+mjpython examples/demo_chat_bbia_3d.py
 
-# Chat complet avec Hugging Face
-python examples/demo_chat_bbia.py
+# Chat simple via terminal (déprécié, utiliser demo_chat_bbia_3d.py)
+# python examples/demo_chat_simple.py
+
+# Chat complet avec Hugging Face (déprécié, utiliser demo_chat_bbia_3d.py)
+# python examples/demo_chat_bbia.py
 
 ```
 
