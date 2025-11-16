@@ -42,7 +42,7 @@ Ce guide est destiné aux **assistants IA** (Claude, GPT, Cursor AI, etc.) pour 
 ### 1. Vérification documentation
 
 ```bash
-# Script principal : scripts/verify_docs_complete.py
+# Script principal : scripts/verify_docs_complete.py ⭐ RECOMMANDÉ
 
 # Vérification complète
 python scripts/verify_docs_complete.py
@@ -55,14 +55,23 @@ python scripts/verify_docs_complete.py --code-consistency # Cohérence avec code
 
 # Mode auto-correction
 python scripts/verify_docs_complete.py --fix
-
-# Mode complet (tous fichiers)
-python scripts/verify_docs_complete.py --full-scan
-
-# Vérifier liens externes
-python scripts/verify_docs_complete.py --check-external-links
-
 ```
+
+### 2. Scripts prioritaires
+
+- **`scripts/quick_start.sh`** - Menu interactif principal (point d'entrée)
+- **`scripts/launch_complete_robot.py`** - Lanceur robot complet
+- **`scripts/start_public_api.py`** - API publique robuste
+- **`scripts/hardware_dry_run_reachy_mini.py`** - Tests hardware Reachy Mini
+- **`scripts/smart_process_cleanup.sh`** - Nettoyage processus sécurisé
+
+### 3. Scripts d'audit (consolidés)
+
+- **`scripts/compare_with_official_exhaustive.py`** - Comparaison exhaustive BBIA vs SDK officiel (script principal)
+- **`scripts/check_official_alignment.py`** - Alignement MJCF/STL
+- **`scripts/generate_conformity_report_reachy_mini.py`** - Génération rapports conformité
+
+**Note** : Les scripts `audit_sdk_officiel_nov2025.py` et `comparaison_profonde_methodes_backend.py` peuvent être fusionnés dans `compare_with_official_exhaustive.py`.
 
 **Fonctionnalités :**
 
@@ -80,15 +89,20 @@ python scripts/verify_docs_complete.py --check-external-links
 # Script : scripts/bbia_doctor.py
 
 python scripts/bbia_doctor.py
+# ou
+python -m bbia_sim --doctor
 
 ```
 
 **Fonctionnalités :**
 
-- Vérification dépendances installées
-- Vérification modèles IA disponibles
-- Vérification variables d'environnement
-- Vérification configuration projet
+- ✅ Vérification dépendances installées (numpy, opencv, transformers, **zenoh**, **reachy_mini**, etc.)
+- ✅ Vérification modèles IA disponibles
+- ✅ Vérification variables d'environnement
+- ✅ Vérification configuration projet
+- ✅ **Zenoh** (installation + session locale) - Préparation robot
+- ✅ **Daemon** `reachy-mini-daemon` - Préparation robot
+- ✅ **Réseau** (IP locale + ports 8000, 7447) - Préparation WiFi
 
 ### 3. Tests
 

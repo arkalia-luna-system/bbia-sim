@@ -84,11 +84,12 @@ Voir `scripts/_archived/README.md`, `scripts/PLAN_CONSOLIDATION_AUDIT_SCRIPTS.md
 - **`record_trace.py`** - Enregistrement traces golden
 - **`validate_trace.py`** - Validation traces contre référence
 
-### ✅ **Scripts de Vérification Documentation** (Nouveaux)
+### ✅ **Scripts de Vérification Documentation**
 
-- **`verify_docs_complete.py`** ⭐ - Vérification complète documentation (liens, Mermaid, orthographe, formatage)
-- **`verify_documentation.py`** - Vérification précision et cohérence (fusionné)
-- **`audit_and_correct_dates_md.py`** - Audit et correction dates MD
+- **`verify_docs_complete.py`** ⭐ - Vérification complète documentation (liens, Mermaid, orthographe, formatage, cohérence code) - **RECOMMANDÉ**
+- **`verify_documentation.py`** - Vérification précision et cohérence (peut fusionner avec `audit_and_improve_md.py`)
+- **`audit_and_correct_dates_md.py`** - Audit et correction dates MD (bien consolidé)
+- **`audit_and_improve_md.py`** - Audit et amélioration documentation MD
 
 ### 🎬 **Scripts de Démo (NOUVEAUX)**
 
@@ -401,7 +402,33 @@ scripts/
 **BBIA** - Brain-Based Interactive Agent  
 *Scripts d'automatisation* 🚀✨
 
-**Version** : 2.0  
-**Date** : Oct / No2025025025025025  
-**Scripts** : ✅ 6 scripts fonctionnels  
+## 📊 **Résumé des Scripts** (Nov. 2025)
+
+- **✅ Scripts utiles** : ~35 scripts actifs et maintenus
+- **❌ Scripts inutiles** : 2 scripts déjà archivés (`start_api.py`, `kill_greedy_processes.sh`)
+- **⚠️ Scripts à améliorer** : ~5 scripts à consolider (audit, documentation)
+- **🚀 Scripts prioritaires** : ~10 scripts essentiels (quick_start.sh, launch_complete_robot.py, start_public_api.py, etc.)
+
+### 🎯 **Scripts Prioritaires**
+
+**Immédiat :**
+1. `quick_start.sh` - Point d'entrée principal
+2. `launch_complete_robot.py` - Lanceur robot complet
+3. `start_public_api.py` - API robuste
+
+**Maintenance :**
+1. `verify_docs_complete.py` - Vérification documentation
+2. `hardware_dry_run_reachy_mini.py` - Tests hardware Reachy Mini
+3. `smart_process_cleanup.sh` - Nettoyage processus sécurisé
+
+**Développement :**
+1. `dashboard_gradio.py` - Interface moderne
+2. `record_demo.sh` - Enregistrement démos
+3. `plot_trace.py` - Analyse traces
+
+---
+
+**Version** : 2.1  
+**Date** : Nov. 2025  
+**Scripts** : ✅ ~35 scripts fonctionnels  
 **Automatisation** : ✅ Complète
