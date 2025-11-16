@@ -10,6 +10,8 @@ from typing import Any
 import numpy as np
 import numpy.typing as npt
 
+from ..utils.types import DetectionResult
+
 try:
     import cv2
     from ultralytics import YOLO
@@ -144,14 +146,14 @@ class YOLODetector:
             logger.error(f"❌ Erreur chargement YOLO: {e}")
             return False
 
-    def detect_objects(self, image: npt.NDArray[np.uint8]) -> list[dict[str, Any]]:
+    def detect_objects(self, image: npt.NDArray[np.uint8]) -> list[DetectionResult]:
         """Détecte les objets dans une image.
 
         Args:
             image: Image numpy array (BGR)
 
         Returns:
-            Liste des détections avec bbox, confiance, classe
+            Liste des détections avec bbox, confiance, classe (typée avec DetectionResult)
 
         """
         if not self.is_loaded:
@@ -198,7 +200,7 @@ class YOLODetector:
 
     def detect_objects_batch(
         self, images: list[npt.NDArray[np.uint8]]
-    ) -> list[list[dict[str, Any]]]:
+    ) -> list[list[DetectionResult]]:
         """Détecte les objets dans un batch d'images (OPTIMISATION PERFORMANCE).
 
         Args:
@@ -206,6 +208,7 @@ class YOLODetector:
 
         Returns:
             Liste de listes de détections (une par image) avec bbox, confiance, classe
+            (typée avec DetectionResult)
 
         Note:
             Le batch processing est beaucoup plus efficace que d'appeler detect_objects
@@ -225,9 +228,7 @@ class YOLODetector:
 
             # OPTIMISATION PERFORMANCE: YOLO traite le batch en une seule passe
             # (beaucoup plus rapide que boucle sur images individuelles)
-            results = self.model(
-                images, conf=self.confidence_threshold, verbose=False
-            )
+            results = self.model(images, conf=self.confidence_threshold, verbose=False)
 
             all_detections = []
             for result in results:
@@ -266,8 +267,8 @@ class YOLODetector:
 
     def get_best_detection(
         self,
-        detections: list[dict[str, Any]],
-    ) -> dict[str, Any] | None:
+        detections: list[DetectionResult],
+    ) -> DetectionResult | None:
         """Retourne la meilleure détection selon les critères BBIA.
 
         Args:

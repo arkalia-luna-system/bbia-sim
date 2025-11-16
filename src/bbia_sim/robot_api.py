@@ -7,6 +7,8 @@ import logging
 from abc import ABC, abstractmethod
 from typing import Any
 
+from .utils.types import RobotStatus
+
 logger = logging.getLogger(__name__)
 
 
@@ -388,8 +390,12 @@ class RobotAPI(ABC):
 
         return position
 
-    def get_status(self) -> dict[str, Any]:
-        """Retourne le statut du robot."""
+    def get_status(self) -> RobotStatus:
+        """Retourne le statut du robot.
+
+        Returns:
+            RobotStatus: Dictionnaire typé contenant le statut du robot
+        """
         return {
             "connected": self.is_connected,
             "current_emotion": self.current_emotion,

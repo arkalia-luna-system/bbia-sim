@@ -103,3 +103,75 @@ class MetricsData(TypedDict, total=False):
     is_connected: bool
     current_emotion: str
     emotion_intensity: float
+
+
+class ConversationEntry(TypedDict, total=False):
+    """Entrée dans l'historique de conversation."""
+
+    user: str
+    bbia: str
+    sentiment: str
+    timestamp: str
+
+
+class DetectionResult(TypedDict, total=False):
+    """Résultat de détection d'objet (YOLO)."""
+
+    bbox: list[int]  # [x1, y1, x2, y2]
+    confidence: float
+    class_id: int
+    class_name: str
+    center: list[int]  # [center_x, center_y]
+    area: int
+
+
+class FaceDetection(TypedDict, total=False):
+    """Résultat de détection de visage."""
+
+    name: str
+    distance: float
+    confidence: float
+    emotion: str
+    emotion_confidence: float
+    position: tuple[float, float]
+    bbox: dict[str, int | float]
+
+
+class RobotStatus(TypedDict, total=False):
+    """Statut du robot."""
+
+    connected: bool
+    current_emotion: str
+    emotion_intensity: float
+    available_joints: int
+    forbidden_joints: int
+    safe_amplitude_limit: float
+
+
+class ModelInfo(TypedDict, total=False):
+    """Informations sur un modèle chargé."""
+
+    name: str
+    loaded: bool
+    device: str
+    memory_mb: float
+    last_used: float
+
+
+class SentimentResult(TypedDict, total=False):
+    """Résultat d'analyse de sentiment."""
+
+    text: str
+    sentiment: str
+    score: float
+    model: str
+    error: str
+    emotion: str  # Pour analyze_emotion
+
+
+class SentimentDict(TypedDict, total=False):
+    """Dictionnaire de sentiment (pour paramètres)."""
+
+    label: str
+    score: float
+    sentiment: str

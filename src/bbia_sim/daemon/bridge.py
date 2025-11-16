@@ -420,7 +420,7 @@ class ZenohBridge:
                             self.reachy_mini.set_target_head_pose(pose)
             else:
                 # Mapper émotion non-SDK vers émotion SDK
-                sdk_emotion = self._map_emotion_to_sdk(emotion)
+                sdk_emotion = ZenohBridge._map_emotion_to_sdk(emotion)
                 if hasattr(self.reachy_mini, "set_emotion"):
                     self.reachy_mini.set_emotion(sdk_emotion, intensity)
                 self.logger.info(f"Émotion {emotion} mappée vers {sdk_emotion}")
@@ -437,8 +437,11 @@ class ZenohBridge:
                 # Si c'est un chemin de fichier, lire le fichier
                 with open(audio_data, "rb") as f:
                     audio_bytes: bytes = f.read()
-            else:
+            elif isinstance(audio_data, bytes):
                 audio_bytes = audio_data
+            else:
+                # Convertir en bytes si nécessaire
+                audio_bytes = bytes(audio_data) if audio_data else b""  # type: ignore[arg-type]
             try:
                 # Utiliser robot.media.play_audio si disponible
                 if hasattr(self.reachy_mini, "media") and hasattr(

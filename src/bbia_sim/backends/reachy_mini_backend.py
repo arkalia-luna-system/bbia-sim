@@ -747,7 +747,16 @@ class ReachyMiniBackend(RobotAPI):
         duration: float = 5.0,
         **kwargs: dict[str, Any],  # noqa: ARG002
     ) -> bool:
-        """Exécute un comportement."""
+        """Exécute un comportement.
+
+        Args:
+            behavior_name: Nom du comportement à exécuter ("wake_up", "goto_sleep", "nod")
+            duration: Durée du comportement en secondes
+            **kwargs: Arguments supplémentaires pour le comportement (non utilisés actuellement)
+
+        Returns:
+            True si le comportement a été exécuté avec succès, False sinon
+        """
         # Vérifier si le comportement est valide
         valid_behaviors = ["wake_up", "goto_sleep", "nod"]
         if behavior_name not in valid_behaviors:

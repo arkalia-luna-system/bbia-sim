@@ -15,6 +15,8 @@ import numpy as np
 import numpy.typing as npt
 from PIL import Image
 
+from .utils.types import ConversationEntry, SentimentDict, SentimentResult
+
 if TYPE_CHECKING:
     from .bbia_tools import BBIATools
 
@@ -22,6 +24,7 @@ if TYPE_CHECKING:
 os.environ["TRANSFORMERS_VERBOSITY"] = "error"
 
 logger = logging.getLogger(__name__)
+
 
 # OPTIMISATION PERFORMANCE: Utiliser @lru_cache pour regex (plus efficace que cache manuel)
 @lru_cache(maxsize=128)
@@ -172,7 +175,9 @@ class BBIAHuggingFace:
         # Chat intelligent : Historique et contexte
         # OPTIMISATION RAM: Utiliser deque avec maxlen pour limiter l'historique
         max_history_size = 1000  # Limiter à 1000 messages max
-        self.conversation_history: deque[dict[str, Any]] = deque(maxlen=max_history_size)
+        self.conversation_history: deque[ConversationEntry] = deque(
+            maxlen=max_history_size
+        )
         self.context: dict[str, Any] = {}
         self.bbia_personality = "friendly_robot"
 
@@ -692,7 +697,7 @@ class BBIAHuggingFace:
         self,
         text: str,
         model_name: str = "cardiffnlp/twitter-roberta-base-sentiment-latest",
-    ) -> dict[str, Any]:
+    ) -> SentimentResult:
         """Analyse le sentiment d'un texte.
 
         Args:
@@ -723,7 +728,9 @@ class BBIAHuggingFace:
             logger.error(f"❌ Erreur analyse sentiment: {e}")
             return {"error": str(e)}
 
-    def analyze_emotion(self, text: str, model_name: str = "emotion") -> dict[str, Any]:
+    def analyze_emotion(
+        self, text: str, model_name: str = "emotion"
+    ) -> SentimentResult:
         """Analyse les émotions dans un texte.
 
         Args:
@@ -1051,7 +1058,12 @@ class BBIAHuggingFace:
             return False
 
     def get_model_info(self) -> dict[str, Any]:
-        """Retourne les informations sur les modèles chargés."""
+        """Retourne les informations sur les modèles chargés.
+
+        Returns:
+            dict[str, Any]: Dictionnaire contenant les informations sur les modèles,
+                incluant device, loaded_models, available_models, et cache_dir.
+        """
         return {
             "device": self.device,
             "loaded_models": self.get_loaded_models(),
@@ -1127,25 +1139,42 @@ class BBIAHuggingFace:
                 )
             else:
                 # Fallback vers réponses enrichies (règles + variété)
-                bbia_response = self._generate_simple_response(user_message, sentiment)
+                # Convertir SentimentResult en SentimentDict pour _generate_simple_response
+                sentiment_dict: SentimentDict = {
+                    "label": sentiment.get("sentiment", "neutral"),
+                    "score": sentiment.get("score", 0.5),
+                }
+                bbia_response = self._generate_simple_response(user_message, sentiment_dict)
 
             # 3. Sauvegarder dans l'historique
             from datetime import datetime
 
+            # Extraire la valeur du sentiment (str) depuis SentimentResult
+            sentiment_str: str = (
+                sentiment.get("sentiment", "neutral")
+                if isinstance(sentiment, dict)
+                else "neutral"
+            )
+
             self.conversation_history.append(
-                {
-                    "user": user_message,
-                    "bbia": bbia_response,
-                    "sentiment": sentiment,
-                    "timestamp": datetime.now().isoformat(),
-                },
+                ConversationEntry(
+                    user=user_message,
+                    bbia=bbia_response,
+                    sentiment=sentiment_str,
+                    timestamp=datetime.now().isoformat(),
+                ),
             )
 
             # 4. Adapter réponse selon personnalité BBIA (si pas LLM)
             if not self.use_llm_chat:
+                # Convertir SentimentResult en SentimentDict
+                sentiment_dict: SentimentDict = {
+                    "label": sentiment.get("sentiment", "neutral"),
+                    "score": sentiment.get("score", 0.5),
+                }
                 adapted_response = self._adapt_response_to_personality(
                     bbia_response,
-                    sentiment,
+                    sentiment_dict,
                 )
             else:
                 adapted_response = bbia_response  # LLM gère déjà la personnalité
@@ -1156,7 +1185,7 @@ class BBIAHuggingFace:
 
                 # Sauvegarder toutes les 10 messages pour éviter I/O excessif
                 if len(self.conversation_history) % 10 == 0:
-                    save_conversation_to_memory(self.conversation_history)
+                    save_conversation_to_memory(list(self.conversation_history))
             except ImportError:
                 # Mémoire persistante optionnelle
                 pass
@@ -2071,7 +2100,7 @@ class BBIAHuggingFace:
         except (ValueError, RuntimeError, TypeError):
             return SAFE_FALLBACK
 
-    def _generate_simple_response(self, message: str, sentiment: dict[str, Any]) -> str:
+    def _generate_simple_response(self, message: str, sentiment: SentimentDict) -> str:
         """Génère réponse intelligente basée sur sentiment, contexte et personnalité.
 
         Args:
@@ -2451,7 +2480,7 @@ class BBIAHuggingFace:
     def _adapt_response_to_personality(
         self,
         response: str,
-        sentiment: dict[str, Any],  # noqa: ARG002
+        sentiment: SentimentDict,  # noqa: ARG002
     ) -> str:
         """Adapte la réponse selon la personnalité BBIA avec nuances expressives.
 
@@ -2568,7 +2597,9 @@ class BBIAHuggingFace:
 
         # Prendre le dernier message utilisateur
         # OPTIMISATION: Accéder au dernier élément (deque supporte [-1] mais type checker se plaint)
-        last_entry = list(self.conversation_history)[-1] if self.conversation_history else None
+        last_entry = (
+            list(self.conversation_history)[-1] if self.conversation_history else None
+        )
         if last_entry is None:
             return None
         user_msg = last_entry.get("user", "")
