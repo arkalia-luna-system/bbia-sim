@@ -140,6 +140,17 @@ Pour chaque action :
 
 ---
 
+## ⚠️ VÉRIFICATION DE COHÉRENCE
+
+**APRÈS avoir complété toutes les actions, vérifie :**
+1. Les scores individuels correspondent-ils aux calculs pondérés ?
+2. Les conclusions correspondent-elles aux résultats détaillés ?
+3. Y a-t-il des contradictions entre les actions ?
+
+**Si tu trouves une incohérence, note-la clairement dans le résumé.**
+
+---
+
 ## 🚀 COMMENCE MAINTENANT
 
 **Exécute les 3 actions dans l'ordre et rapporte les résultats.**

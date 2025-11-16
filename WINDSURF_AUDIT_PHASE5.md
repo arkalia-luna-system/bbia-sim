@@ -28,13 +28,31 @@ Audit de l'intégration MuJoCo et optimisation de la simulation
 5. **Répète** pour `src/bbia_sim/sim/models/reachy_mini_REAL_OFFICIAL.xml`
 6. **Compare** les deux fichiers
 
-**RÉSULTAT ATTENDU :**
+**RÉSULTAT OBTENU :**
 | Propriété | reachy_mini.xml | REAL_OFFICIAL.xml | Différence |
 |-----------|-----------------|-------------------|------------|
-| Nombre joints | ? | ? | ? |
-| Masses | ? | ? | ? |
+| Nombre joints | 7 | 16 | ❌ -9 |
+| Masses | 0 (non spécifiées) | 15 (spécifiées) | ❌ -15 |
 
----
+**Analyse détaillée :**
+
+**reachy_mini.xml :**
+- 7 joints : neck_yaw, right_shoulder_pitch, right_elbow_pitch, right_gripper_joint, left_shoulder_pitch, left_elbow_pitch, left_gripper_joint
+- Aucune balise `<mass>` détectée
+- Modèle simplifié sans masses
+
+**reachy_mini_REAL_OFFICIAL.xml :**
+- 16 joints : yaw_body, stewart_1-6, passive_1-7, right_antenna, left_antenna
+- 15 balises `<mass>` avec valeurs précises
+- Modèle complet avec masses réelles
+
+**Problèmes identifiés :**
+- **Incohérence majeure** : Les deux modèles ne décrivent pas le même robot
+- **reachy_mini.xml** : Bras articulés (version simplifiée)
+- **REAL_OFFICIAL.xml** : Stewart platform + antennes (version réelle)
+- **Masses manquantes** : Le modèle simplifié n'a pas de masses physiques
+
+**Score : 2/10**
 
 ### Action 5.2 : Analyser la performance de simulation
 
@@ -43,12 +61,35 @@ Audit de l'intégration MuJoCo et optimisation de la simulation
 2. Cherche les fonctions : `step()`, `render()`
 3. Identifie les calculs redondants (IK/FK calculés plusieurs fois)
 
-**RÉSULTAT ATTENDU :**
+**RÉSULTAT OBTENU :**
 | Fonction | Ligne | Calculs redondants ? | Optimisation possible |
 |----------|-------|----------------------|----------------------|
-| `step` | ? | ? | ? |
+| `mj_step` (appelé dans run_headless) | 94 | ❌ NON | ✅ Caching durée |
+| `mj_step` (appelé dans run_graphical) | 140 | ❌ NON | ✅ Caching durée |
+| `_step_simulation` (interne) | 317 | ❌ NON | ✅ Batch steps |
 
----
+**Analyse détaillée :**
+
+**Fonction `run_headless` (lignes 88-116) :**
+- Appel `mujoco.mj_step()` dans boucle
+- Vérification durée après chaque step (coûteux)
+- Logging tous les 10000 steps (bon)
+
+**Fonction `run_graphical` (lignes 132-147) :**
+- Appel `mujoco.mj_step()` dans boucle
+- Pas de vérification de durée (problème)
+
+**Fonction `_step_simulation` (lignes 315-317) :**
+- Wrapper simple autour de `mj_step`
+- Pas d'optimisation
+
+**Problèmes identifiés :**
+- **Vérification durée fréquente** : `time.time()` appelé après chaque step
+- **Pas de batch processing** : Steps traités individuellement
+- **Mode graphique sans contrôle durée** : Risque de boucle infinie
+- **Pas de cache positions** : IK/FK recalculés à chaque step
+
+**Score : 4/10**
 
 ### Action 5.3 : Vérifier la cohérence sim vs réel
 
@@ -63,12 +104,49 @@ Audit de l'intégration MuJoCo et optimisation de la simulation
    - Note la signature complète
    - **Compare** avec la version mujoco_backend
 
-**RÉSULTAT ATTENDU :**
+**RÉSULTAT OBTENU :**
 | Méthode | mujoco_backend | reachy_mini_backend | Cohérent ? |
 |---------|----------------|---------------------|------------|
-| `goto_target` | `(head, duration)` | `(head, duration)` | ? |
+| `goto_target` | ❌ MANQUANTE | `(head, antennas, duration, method, body_yaw)` | ❌ NON |
+| `get_joint_pos` | `(joint_name) -> float | None` | `(joint_name) -> float` | ⚠️ PARTIEL |
+| `get_image` | ❌ MANQUANTE | ❌ MANQUANTE | N/A |
 
----
+**Analyse détaillée :**
+
+**mujoco_backend.py :**
+- **`get_joint_pos`** : `def get_joint_pos(self, joint_name: str) -> float | None:`
+- **`goto_target`** : Non implémenté (méthode manquante)
+- **`get_image`** : Non implémenté (méthode manquante)
+
+**reachy_mini_backend.py :**
+- **`get_joint_pos`** : `def get_joint_pos(self, joint_name: str) -> float:`
+- **`goto_target`** : `def goto_target(self, head, antennas, duration, method, body_yaw) -> None:`
+- **`get_image`** : Non implémenté
+
+**Problèmes identifiés :**
+- **INCOHÉRENCE MAJEURE** : `mujoco_backend` n'implémente pas `goto_target`
+- **Type retour différent** : `float | None` vs `float` pour `get_joint_pos`
+- **Signature incomplète** : `mujoco_backend` manque des paramètres importants
+- **Interface non unifiée** : Les deux backends n'ont pas la même API
+- **Fonctionnalités manquantes** : `get_image` non implémenté dans les deux backends
+
+**Score : 1/10**
+
+----
+
+## 📊 RÉSUMÉ PHASE 5
+
+### Scores par action :
+- **Action 5.1** (Modèles XML) : 2/10
+- **Action 5.2** (Performance simulation) : 4/10
+- **Action 5.3** (Cohérence sim/réel) : 1/10
+
+### Score global Phase 5 : **2.3/10**
+
+### Conclusions :
+- **Points forts** : Aucun identifié
+- **Points faibles critiques** : Incohérence majeure entre modèles, API non unifiée, fonctionnalités manquantes
+- **Actions prioritaires** : Unifier l'API des backends, corriger les modèles, implémenter les méthodes manquantes
 
 ## 🎨 FORMAT DE RÉPONSE
 
@@ -87,6 +165,17 @@ Pour chaque action :
 1. Utilise `read_file` pour ouvrir chaque fichier
 2. Lis le fichier complètement
 3. Analyse ligne par ligne dans ta mémoire
+
+---
+
+## ⚠️ VÉRIFICATION DE COHÉRENCE
+
+**APRÈS avoir complété toutes les actions, vérifie :**
+1. Les scores individuels correspondent-ils aux calculs pondérés ?
+2. Les conclusions correspondent-elles aux résultats détaillés ?
+3. Y a-t-il des contradictions entre les actions ?
+
+**Si tu trouves une incohérence, note-la clairement dans le résumé.**
 
 ---
 

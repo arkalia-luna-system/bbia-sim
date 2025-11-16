@@ -184,6 +184,17 @@ Pour chaque action :
 
 ---
 
+## ⚠️ VÉRIFICATION DE COHÉRENCE
+
+**APRÈS avoir complété toutes les actions, vérifie :**
+1. Les scores individuels correspondent-ils aux calculs pondérés ?
+2. Les conclusions correspondent-elles aux résultats détaillés ?
+3. Y a-t-il des contradictions entre les actions ?
+
+**Si tu trouves une incohérence, note-la clairement dans le résumé.**
+
+---
+
 ## 🚀 COMMENCE MAINTENANT
 
 **Exécute les 4 actions dans l'ordre :**
@@ -197,4 +208,253 @@ Pour chaque action :
 - Il vaut mieux être prudent et ne pas marquer un import comme inutilisé s'il y a un doute
 
 **Rapporte les résultats pour chaque action.**
+
+## 📊 RÉSULTATS
+
+### Action 3.1 : Compter les fonctions sans type hints
+
+**RÉSULTAT :**
+| Fichier | Fonctions totales | Avec type hint | Sans type hint | % avec hints |
+|---------|------------------|----------------|----------------|---------------|
+| reachy_mini_backend.py | 47 | 36 | 11 | 76.6% |
+| bridge.py | 27 | 26 | 1 | 96.3% |
+
+**DÉTAILS :**
+
+**reachy_mini_backend.py :**
+- Fonctions SANS type hints (11) :
+  - Ligne 102 : `def __init__(` (constructeur principal)
+  - Ligne 694 : `def look_at(` (méthode de regard)
+  - Ligne 726 : `def run_behavior(` (exécution de comportement)
+  - Ligne 928 : `def look_at_image(` (regard image)
+  - Ligne 960 : `def goto_target(` (déplacement vers cible)
+  - Ligne 1156 : `def set_target(` (définition cible)
+  - Ligne 1196 : `def play_move(` (lecture mouvement)
+  - Ligne 1225 : `def async_play_move(` (lecture async)
+  - Ligne 1289 : `def create_move_from_positions(` (création mouvement)
+  - Ligne 1387 : `def look_at_world(` (regard monde 3D)
+  - Ligne 1300 : `def __init__(` (classe interne SimpleMove)
+
+**bridge.py :**
+- Fonctions SANS type hints (1) :
+  - Ligne 82 : `def __init__(self, config: ZenohConfig | None = None):`
+
+**EXEMPLES CONCRETS :**
+```python
+# ❌ Sans type hint
+def __init__(self, config: ZenohConfig | None = None):
+
+# ✅ Avec type hint
+def connect(self) -> bool:
+```
+
+**PROBLÈMES :**
+- ❌ 12 fonctions sans type hints sur 74 totaux (16.2%)
+- ❌ Constructeurs sans type hints de retour (atteint `-> None` manquant)
+- ❌ Fonctions complexes sans retour typé
+
+**SCORE :** 7/10
+
+---
+
+### Action 3.2 : Chercher les fonctions trop longues
+
+**RÉSULTAT :**
+| Fonction | Ligne début | Ligne fin | Nombre lignes | Problème |
+|----------|-------------|-----------|---------------|----------|
+| `connect` | 177 | 264 | 87 | > 50 lignes |
+| `get_joint_pos` | 397 | 507 | 110 | > 50 lignes |
+| `set_joint_pos` | 508 | 632 | 124 | > 50 lignes |
+| `_watchdog_monitor` | 324 | 384 | 60 | > 50 lignes |
+| `_cmd_set_emotion` | 344 | 411 | 67 | > 50 lignes |
+| `_cmd_look_at` | 442 | 497 | 55 | > 50 lignes |
+
+**DÉTAILS :**
+
+**reachy_mini_backend.py (4 fonctions longues) :**
+1. **`connect`** (87 lignes) : Logique de connexion avec fallback simulation
+2. **`get_joint_pos`** (110 lignes) : Gestion position articulations avec cas spéciaux
+3. **`set_joint_pos`** (124 lignes) : Positionnement avec vérifications sécurité
+4. **`_watchdog_monitor`** (60 lignes) : Surveillance heartbeat robot
+
+**bridge.py (2 fonctions longues) :**
+1. **`_cmd_set_emotion`** (67 lignes) : Mapping émotions vers poses SDK
+2. **`_cmd_look_at`** (55 lignes) : Calculs coordonnées regard
+
+**EXEMPLE CONCRET :**
+```python
+# ❌ Fonction trop longue (124 lignes)
+def set_joint_pos(self, joint_name: str, position: float) -> bool:
+    # ... 124 lignes de logique complexe
+```
+
+**PROBLÈMES :**
+- ❌ 6 fonctions > 50 lignes (complexité élevée)
+- ❌ `set_joint_pos` : 124 lignes (trop monolithique)
+- ❌ Logique métier mélangée dans fonctions longues
+
+**RECOMMANDATIONS :**
+- ✅ Extraire sous-fonctions pour la logique complexe
+- ✅ Séparer validation de logique métier
+- ✅ Créer helpers pour calculs récurrents
+
+**SCORE :** 4/10
+
+---
+
+### Action 3.3 : Chercher les `Any` utilisés
+
+**RÉSULTAT :**
+
+**reachy_mini_backend.py (9 occurrences) :**
+| Ligne | Contexte | Acceptable ? |
+|-------|----------|-------------|
+| 9 | Import `from typing import TYPE_CHECKING, Any, Optional` | ✅ Oui |
+| 173 | `def __exit__(self, exc_type: Any, exc_value: Any, traceback: Any)` | ✅ Oui (Python standard) |
+| 730 | `**kwargs: dict[str, Any]` | ✅ Oui (kwargs dynamiques) |
+| 786 | `def get_telemetry(self) -> dict[str, Any]` | ⚠️ À vérifier |
+| 1183 | `def stop_recording(self) -> list[dict[str, Any]] | None` | ⚠️ À vérifier |
+| 1291 | `positions: list[dict[str, Any]]` | ⚠️ À vérifier |
+| 1302 | `positions: list[dict[str, Any]]` | ⚠️ À vérifier |
+| 1311 | `def evaluate(self, t: float) -> dict[str, Any]` | ⚠️ À vérifier |
+| 1343 | `def record_movement(self) -> list[dict[str, Any]] | None` | ⚠️ À vérifier |
+
+**bridge.py (23 occurrences) :**
+| Ligne | Contexte | Acceptable ? |
+|-------|----------|-------------|
+| 10 | Import `from typing import Any, cast` | ✅ Oui |
+| 28 | `Config = Any` | ✅ Oui (compatibilité) |
+| 29 | `Session = Any` | ✅ Oui (compatibilité) |
+| 39 | `ReachyMini = cast(Any, None)` | ✅ Oui (import conditionnel) |
+| 40 | `create_head_pose = cast(Any, None)` | ✅ Oui (import conditionnel) |
+| 56 | `parameters: dict[str, Any]` | ✅ Oui (Pydantic) |
+| 59 | `def __init__(self, **data: Any)` | ✅ Oui (Pydantic) |
+| 69 | `emotions: dict[str, Any]` | ✅ Oui (Pydantic) |
+| 70 | `sensors: dict[str, Any]` | ✅ Oui (Pydantic) |
+| 73 | `def __init__(self, **data: Any)` | ✅ Oui (Pydantic) |
+| 85 | `self.session: Any | None` | ⚠️ À vérifier |
+| 88 | `self.reachy_mini: Any | None` | ⚠️ À vérifier |
+| 103 | `self.subscribers: dict[str, Any]` | ⚠️ À vérifier |
+| 104 | `self.publishers: dict[str, Any]` | ⚠️ À vérifier |
+| 217 | `async def _on_command_received(self, sample: Any)` | ⚠️ À vérifier |
+| 296 | `async def _cmd_goto_target(self, params: dict[str, Any])` | ⚠️ À vérifier |
+| 330 | `async def _cmd_set_target(self, params: dict[str, Any])` | ⚠️ À vérifier |
+| 344 | `async def _cmd_set_emotion(self, params: dict[str, Any])` | ⚠️ À vérifier |
+| 412 | `async def _cmd_play_audio(self, params: dict[str, Any])` | ⚠️ À vérifier |
+| 442 | `async def _cmd_look_at(self, params: dict[str, Any])` | ⚠️ À vérifier |
+| 661 | `async def get_robot_state() -> dict[str, Any]` | ⚠️ À vérifier |
+| 672 | `async def get_bridge_status() -> dict[str, Any | bool]` | ⚠️ À vérifier |
+
+**EXEMPLES CONCRETS :**
+```python
+# ✅ Acceptable (import conditionnel)
+ReachyMini = cast(Any, None)
+
+# ⚠️ À améliorer (dict structuré)
+def get_telemetry(self) -> dict[str, Any]:
+    # Devrait être dict[str, str|int|float|bool]
+```
+
+**PROBLÈMES :**
+- ❌ 32 occurrences de `Any` au total
+- ❌ `dict[str, Any]` utilisé pour structures données complexes
+- ❌ Types Zenoh en `Any` pour compatibilité (acceptable)
+
+**RECOMMANDATIONS :**
+- ✅ Créer TypedDict pour structures données
+- ✅ Définir interfaces précises pour params commandes
+- ✅ Garder `Any` uniquement pour compatibilité SDK
+
+**SCORE :** 5/10
+
+---
+
+### Action 3.4 : Chercher les imports inutilisés
+
+**RÉSULTAT :**
+
+**reachy_mini_backend.py :**
+| Ligne | Import | Nom cherché | Utilisé ? | Action |
+|-------|--------|-------------|-----------|--------|
+| 6 | `import logging` | logging | ✅ OUI | Garder |
+| 7 | `import threading` | threading | ✅ OUI | Garder |
+| 8 | `import time` | time | ✅ OUI | Garder |
+| 9 | `from typing import TYPE_CHECKING, Any, Optional` | TYPE_CHECKING | ✅ OUI | Garder |
+| 9 | `from typing import TYPE_CHECKING, Any, Optional` | Any | ✅ OUI | Garder |
+| 9 | `from typing import TYPE_CHECKING, Any, Optional` | Optional | ❌ NON | À vérifier |
+| 11 | `import numpy as np` | np | ✅ OUI | Garder |
+| 12 | `import numpy.typing as npt` | npt | ✅ OUI | Garder |
+| 15 | `from reachy_mini import ReachyMini` | ReachyMini | ✅ OUI | Garder |
+| 16 | `from reachy_mini.utils import create_head_pose` | create_head_pose | ✅ OUI | Garder |
+| 25 | `from reachy_mini.utils import HeadPose` | HeadPose | ✅ OUI | Garder |
+| 27 | `from ..robot_api import RobotAPI` | RobotAPI | ✅ OUI | Garder |
+
+**bridge.py :**
+| Ligne | Import | Nom cherché | Utilisé ? | Action |
+|-------|--------|-------------|-----------|--------|
+| 6 | `import asyncio` | asyncio | ✅ OUI | Garder |
+| 7 | `import json` | json | ✅ OUI | Garder |
+| 8 | `import logging` | logging | ✅ OUI | Garder |
+| 9 | `import time` | time | ✅ OUI | Garder |
+| 10 | `from typing import Any, cast` | Any | ✅ OUI | Garder |
+| 10 | `from typing import Any, cast` | cast | ✅ OUI | Garder |
+| 12 | `import numpy as np` | np | ✅ OUI | Garder |
+| 13 | `from fastapi import FastAPI` | FastAPI | ✅ OUI | Garder |
+| 13 | `from fastapi import HTTPException` | HTTPException | ❌ NON | À vérifier |
+| 13 | `from fastapi import WebSocket` | WebSocket | ✅ OUI | Garder |
+| 13 | `from fastapi import WebSocketDisconnect` | WebSocketDisconnect | ❌ NON | À vérifier |
+| 14 | `from pydantic import BaseModel` | BaseModel | ✅ OUI | Garder |
+
+**EXEMPLES CONCRETS :**
+```python
+# ✅ Utilisé correctement
+import logging
+logging.info("Message")
+
+# ❌ Potentiellement inutilisé
+from typing import Optional  # Non trouvé dans le code
+```
+
+**PROBLÈMES :**
+- ❌ `Optional` potentiellement inutilisé dans reachy_mini_backend.py
+- ❌ `HTTPException` et `WebSocketDisconnect` potentiellement inutilisés dans bridge.py
+
+**RECOMMANDATIONS :**
+- ✅ Vérifier usage `Optional` dans type hints conditionnels
+- ✅ Ajouter gestion exceptions HTTP si nécessaire
+- ✅ Conserver imports pour futures fonctionnalités
+
+**SCORE :** 8/10
+
+---
+
+## 📈 SCORE GLOBAL PHASE 3
+
+| Action | Score | Poids | Score pondéré |
+|--------|-------|--------|---------------|
+| 3.1 Type hints | 7/10 | 30% | 2.1/3 |
+| 3.2 Fonctions longues | 4/10 | 30% | 1.2/3 |
+| 3.3 Usage de Any | 5/10 | 25% | 1.25/2.5 |
+| 3.4 Imports inutilisés | 8/10 | 15% | 1.2/1.5 |
+| **TOTAL** | | **100%** | **5.75/10** |
+
+## 🎯 CONCLUSION PHASE 3
+
+**POINTS FORTS :**
+- ✅ Bon couverture type hints (76.6% et 96.3%)
+- ✅ Imports généralement bien utilisés
+- ✅ Code structuré avec classes cohérentes
+
+**POINTS FAIBLES :**
+- ❌ 6 fonctions trop longues (>50 lignes)
+- ❌ Usage excessif de `Any` (32 occurrences)
+- ❌ Quelques fonctions sans type hints
+
+**ACTIONS PRIORITAIRES :**
+1. **URGENT** : Découper `set_joint_pos` (124 lignes) en sous-fonctions
+2. **IMPORTANT** : Créer TypedDict pour remplacer `dict[str, Any]`
+3. **RECOMMANDÉ** : Ajouter type hints manquants
+4. **OPTIONNEL** : Nettoyer imports potentiellement inutilisés
+
+**QUALITÉ GLOBALE :** MOYENNE (5.75/10)
 
