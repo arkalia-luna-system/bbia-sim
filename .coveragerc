@@ -25,8 +25,8 @@ include = src/bbia_sim/**/*.py
 # Cette option a été déplacée vers [report] dans les versions récentes
 
 [report]
-# Seuil minimum de coverage (strict: 50%)
-fail_under = 50
+# Seuil minimum de coverage (strict: 80%)
+fail_under = 80
 
 # Exclure les fichiers avec coverage très faible
 skip_covered = False

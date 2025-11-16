@@ -33,7 +33,7 @@ class UnityReachyMiniController:
             if not self.response_file.exists():
                 self.response_file.write_text("")
             self.is_connected = True
-        except Exception:
+        except (OSError, PermissionError, IOError):
             self.is_connected = False
 
     def _send_command(self, command: str) -> bool:
@@ -42,7 +42,7 @@ class UnityReachyMiniController:
         try:
             self.command_file.write_text(command)
             return True
-        except Exception:
+        except (OSError, PermissionError, IOError):
             return False
 
     def _wait_for_response(self, timeout: float = 1.0) -> str:
@@ -58,7 +58,7 @@ class UnityReachyMiniController:
             except OSError:  # nosec B110
                 # Erreur de lecture de fichier - ignorer et continuer
                 pass
-            except Exception:  # nosec B110
+            except (RuntimeError, ValueError, TypeError):  # nosec B110
                 # Autres erreurs inattendues - ignorer et continuer
                 pass
             time.sleep(0.01)  # Réduit de 0.1s à 0.01s pour les tests

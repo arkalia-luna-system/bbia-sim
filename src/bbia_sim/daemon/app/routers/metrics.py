@@ -126,7 +126,7 @@ async def get_prometheus_metrics() -> Response:
             try:
                 fps = getattr(simulation_service.simulator, "fps", 0.0)
                 simulation_fps.set(fps)
-            except Exception:
+            except (AttributeError, TypeError, RuntimeError):
                 simulation_fps.set(0.0)
         else:
             simulation_fps.set(0.0)
@@ -178,7 +178,7 @@ async def get_performance_metrics() -> dict[str, Any]:
     if simulation_service.is_simulation_ready():
         try:
             fps = getattr(simulation_service.simulator, "fps", 0.0)
-        except Exception:
+        except (AttributeError, TypeError, RuntimeError):
             fps = 0.0
 
     return {

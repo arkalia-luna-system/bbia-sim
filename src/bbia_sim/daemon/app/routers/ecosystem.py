@@ -202,7 +202,7 @@ async def get_api_status() -> APIStatus:
             robot = RobotFactory.create_backend("mujoco")
             robot_connected = robot is not None
             simulation_running = True
-        except Exception:
+        except (ImportError, RuntimeError, ValueError):
             robot_connected = False
             simulation_running = False
 

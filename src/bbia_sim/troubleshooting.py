@@ -172,7 +172,7 @@ class TroubleshootingChecker:
                     cap.release()
                     if ret and frame is not None:
                         checks.append("opencv")
-            except Exception:
+            except (ImportError, ModuleNotFoundError, cv2.error):
                 pass
 
         # Check SDK camera (si robot disponible)
@@ -180,7 +180,7 @@ class TroubleshootingChecker:
             # Essayer d'importer et vérifier SDK camera
             # Note: Ne pas importer directement pour éviter erreurs si SDK non disponible
             checks.append("sdk_available")
-        except Exception:
+        except (ImportError, ModuleNotFoundError):
             pass
 
         status = "ok" if checks else "warning"
@@ -224,7 +224,7 @@ class TroubleshootingChecker:
                 audio.terminate()
                 if device_count > 0:
                     checks.append("pyaudio")
-            except Exception:
+            except (OSError, RuntimeError, ValueError):
                 pass
 
         status = "ok" if checks else "warning"
@@ -485,7 +485,7 @@ class TroubleshootingChecker:
                                 },
                             }
                         )
-                except Exception:
+                except (ValueError, TypeError, RuntimeError):
                     pass
 
             audio.terminate()

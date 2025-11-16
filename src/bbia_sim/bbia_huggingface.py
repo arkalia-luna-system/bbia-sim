@@ -994,7 +994,7 @@ class BBIAHuggingFace:
             # 1. Analyser sentiment du message (avec gestion erreur)
             try:
                 sentiment = self.analyze_sentiment(user_message)
-            except Exception:
+            except (ValueError, RuntimeError, KeyError):
                 # Fallback si sentiment indisponible
                 sentiment = {"sentiment": "NEUTRAL", "score": 0.5}
 
@@ -1157,7 +1157,7 @@ class BBIAHuggingFace:
                     tokenize=False,
                     add_generation_prompt=True,
                 )
-            except Exception:
+            except (ValueError, AttributeError, TypeError):
                 # Fallback si pas de chat template
                 prompt = f"{system_prompt}\n\nUser: {user_message}\nAssistant:"
 
@@ -1203,7 +1203,7 @@ class BBIAHuggingFace:
             # Fallback vers réponses enrichies
             try:
                 sentiment = self.analyze_sentiment(user_message)
-            except Exception:
+            except (ValueError, RuntimeError, KeyError):
                 sentiment = {"sentiment": "NEUTRAL", "score": 0.5}
             return self._generate_simple_response(user_message, sentiment)
 
@@ -1432,7 +1432,7 @@ class BBIAHuggingFace:
                                         sentiment.get("sentiment", "NEUTRAL"),
                                         "neutral",
                                     )
-                                except Exception:
+                                except (KeyError, ValueError, TypeError):
                                     params["emotion"] = "neutral"
                             params["intensity"] = 0.7
 
@@ -1667,7 +1667,7 @@ class BBIAHuggingFace:
                             sentiment.get("sentiment", "NEUTRAL"),
                             "neutral",
                         )
-                    except Exception:
+                    except (ValueError, KeyError, TypeError):
                         params["emotion"] = "neutral"
                 params["intensity"] = 0.7
 
@@ -1946,7 +1946,7 @@ class BBIAHuggingFace:
                 candidate = f"{text} {addition}".strip()
                 return self._normalize_response_length(candidate)
             return text
-        except Exception:
+        except (ValueError, RuntimeError, TypeError):
             return text
 
     def _safe_fallback(self) -> str:
@@ -1974,7 +1974,7 @@ class BBIAHuggingFace:
             ]
             candidate = f"{base}{suffix}".strip()
             return self._normalize_response_length(candidate)
-        except Exception:
+        except (ValueError, RuntimeError, TypeError):
             return SAFE_FALLBACK
 
     def _generate_simple_response(self, message: str, sentiment: dict[str, Any]) -> str:
@@ -2459,7 +2459,7 @@ class BBIAHuggingFace:
                     f"Erreur lors de l'évitement des doublons récents (t4): {e}"
                 )
             return t4
-        except Exception:
+        except (ValueError, RuntimeError, TypeError):
             return text
 
     def _get_recent_context(self) -> str | None:

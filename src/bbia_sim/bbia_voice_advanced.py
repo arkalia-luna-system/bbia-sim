@@ -398,7 +398,7 @@ def dire_texte(texte: str) -> bool:
     # Essayer Coqui TTS d'abord
     try:
         return dire_texte_advanced(texte)
-    except Exception:
+    except (ImportError, RuntimeError, ValueError):
         # Fallback vers pyttsx3 original
         try:
             from .bbia_voice import dire_texte as dire_texte_old

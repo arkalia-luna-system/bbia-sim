@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
 try:
     # Sélecteurs IA optionnels (TTS local type KittenTTS)
     from .ai_backends import get_tts_backend
-except Exception:  # pragma: no cover - non critique si absent
+except ImportError:  # pragma: no cover - non critique si absent
     get_tts_backend = None  # type: ignore[assignment]
 
 # Liste des voix féminines douces/enfantines à privilégier sur macOS
@@ -312,7 +312,7 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
                         wf.setframerate(sr)
                         wf.writeframes(silence)
                     sdk_audio_bytes = wav_buf.getvalue()
-                except Exception:
+                except (ValueError, RuntimeError, TypeError):
                     sdk_audio_bytes = b""  # Fallback si création WAV échoue
 
                 # Priorité 1: media.play_audio(bytes[, volume])
@@ -494,7 +494,7 @@ def lister_voix_disponibles() -> list[Any]:
                 if hasattr(v.languages[0], "decode")
                 else str(v.languages[0])
             )
-        except Exception:
+        except (AttributeError, TypeError, ValueError):
             _ = str(v.languages) if hasattr(v, "languages") and v.languages else ""
         result.append(v)
     return result

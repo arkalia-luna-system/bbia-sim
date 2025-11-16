@@ -1,5 +1,5 @@
 # Dockerfile pour BBIA-SIM
-FROM python:3.10-slim
+FROM python:3.11-slim
 
 # Variables d'environnement
 ENV PYTHONUNBUFFERED=1

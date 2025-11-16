@@ -270,14 +270,15 @@ def create_pose_detector(
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
 
-    print("🧪 Test module Pose Detection BBIA")
-    print("=" * 40)
+    logger.info("🧪 Test module Pose Detection BBIA")
+    logger.info("=" * 40)
 
-    pose_detector = create_pose_detector()
-    if pose_detector:
-        print("✅ Module Pose Detection créé")
-        print(f"   • Initialisé: {pose_detector.is_initialized}")
-        print(f"   • Complexité modèle: {pose_detector.model_complexity}")
+    pose_detector = BBIAPoseDetection()
+
+    if pose_detector.is_initialized:
+        logger.info("✅ Module Pose Detection créé")
+        logger.info(f"   • Initialisé: {pose_detector.is_initialized}")
+        logger.info(f"   • Complexité modèle: {pose_detector.model_complexity}")
     else:
-        print("❌ Impossible de créer le module (MediaPipe non disponible)")
-        print("   Installer avec: pip install mediapipe")
+        logger.info("❌ Impossible de créer le module (MediaPipe non disponible)")
+        logger.info("   Installer avec: pip install mediapipe")

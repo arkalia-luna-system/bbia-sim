@@ -230,7 +230,7 @@ class BBIAAdvancedWebSocketManager:
         for connection in self.active_connections:
             try:
                 await connection.send_text(message)
-            except Exception:
+            except (ConnectionError, RuntimeError, WebSocketDisconnect):
                 disconnected.append(
                     connection,
                 )
@@ -317,7 +317,7 @@ class BBIAAdvancedWebSocketManager:
         for joint in self._get_available_joints():
             try:
                 pose[joint] = self.robot.get_joint_pos(joint)
-            except Exception:
+            except (ConnectionError, RuntimeError, WebSocketDisconnect):
                 pose[joint] = 0.0
         return pose
 
@@ -3047,7 +3047,7 @@ if FASTAPI_AVAILABLE:
                                 (255, 255, 255),
                                 2,
                             )
-                        except Exception:
+                        except (ConnectionError, RuntimeError, WebSocketDisconnect):
                             pass
 
                     # Encoder en JPEG
@@ -3195,7 +3195,7 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                         for _ in range(5):
                             try:
                                 advanced_websocket_manager.robot.step()
-                            except Exception:
+                            except (ConnectionError, RuntimeError, WebSocketDisconnect):
                                 pass
 
                     if success:
@@ -3266,7 +3266,7 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                         for joint in robot.get_available_joints():
                             try:
                                 robot.set_joint_pos(joint, 0.0)
-                            except Exception:
+                            except (ConnectionError, RuntimeError, WebSocketDisconnect):
                                 pass
                         robot.step()
                         success = True
@@ -3285,7 +3285,7 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                 for _ in range(10):  # 10 steps pour que l'action soit visible
                     try:
                         advanced_websocket_manager.robot.step()
-                    except Exception:
+                    except (ConnectionError, RuntimeError, WebSocketDisconnect):
                         pass
 
             if success:
@@ -3334,9 +3334,9 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                     ):  # 50 steps pour que le comportement soit visible
                         try:
                             robot.step()
-                        except Exception:
+                        except (ConnectionError, RuntimeError, WebSocketDisconnect):
                             pass
-            except Exception as e:
+            except (ValueError, RuntimeError, KeyError) as e:
                 logger.error(f"Erreur exécution comportement {behavior}: {e}")
                 success = False
 
@@ -3390,7 +3390,7 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                     for _ in range(5):
                         try:
                             robot.step()
-                        except Exception:
+                        except (ConnectionError, RuntimeError, WebSocketDisconnect):
                             pass
 
                 if success:

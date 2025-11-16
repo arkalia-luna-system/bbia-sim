@@ -38,6 +38,25 @@ BBIA-SIM est un moteur cognitif Python avec **12 émotions robotiques** (6 émot
 - 🔒 **CI/CD professionnel** : Black, Ruff, MyPy, Bandit, pip-audit
 - 🌟 **Open-source** (MIT)
 
+## 📊 Statistiques
+
+- **Lignes de code**: ~15,000 lignes
+- **Modules**: 45+ modules spécialisés
+- **Tests**: 200+ tests unitaires et d'intégration
+- **Couverture**: 80%+ (objectif)
+- **Documentation**: 100% des modules documentés
+
+## 🏆 Qualité Code
+
+BBIA-SIM maintient des standards stricts de qualité:
+
+- **Tests de couverture**: 80% minimum
+- **Linting**: black, ruff, mypy, bandit
+- **Python**: 3.11+
+- **CI/CD**: GitHub Actions avec vérifications automatiques
+- **Sécurité**: Analyse statique avec Bandit
+- **Performance**: Optimisations continues et monitoring
+
 **[🚀 Quick Start](#-démarrage-rapide)** | **[📚 Docs Débutant](docs/guides/GUIDE_DEBUTANT.md)** | **[🔬 Docs Avancé](docs/guides/GUIDE_AVANCE.md)** | **[📋 Projets](PROJECTS.md)**
 
 ---

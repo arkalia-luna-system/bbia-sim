@@ -316,7 +316,7 @@ class MuJoCoBackend(RobotAPI):
 
         try:
             return self.viewer.is_running()  # type: ignore
-        except Exception:
+        except (AttributeError, RuntimeError, TypeError):
             return False
 
     def set_emotion(self, emotion: str, intensity: float = 0.5) -> bool:

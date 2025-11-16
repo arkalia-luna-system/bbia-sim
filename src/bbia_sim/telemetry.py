@@ -5,6 +5,7 @@ Export .csv dans artifacts/
 """
 
 import csv
+import logging
 import time
 from collections import deque
 from pathlib import Path
@@ -35,7 +36,7 @@ class TelemetryCollector:
         self.joint_positions.clear()
         self.start_time = time.time()
         self.last_step_time = self.start_time
-        print("📊 Télémétrie démarrée")
+        logging.info("📊 Télémétrie démarrée")
 
     def record_step(self, joint_positions: dict[str, float]) -> None:
         """Enregistre un pas de simulation."""
@@ -88,7 +89,7 @@ class TelemetryCollector:
             "end_time": time.time(),
         }
 
-        print(
+        logging.info(
             f"📊 Télémétrie arrêtée: {stats['total_steps']} steps, {stats['steps_per_second']:.1f} steps/s",
         )
         return stats
@@ -113,7 +114,7 @@ class TelemetryCollector:
                 csv_writer.writeheader()
                 csv_writer.writerows(self.joint_positions)
 
-        print(f"💾 Télémétrie exportée: {csv_path} + {stats_path}")
+        logging.info(f"💾 Télémétrie exportée: {csv_path} + {stats_path}")
         return str(csv_path)
 
     def get_live_stats(self) -> dict[str, Any]:

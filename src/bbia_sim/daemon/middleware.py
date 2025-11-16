@@ -13,7 +13,7 @@ from .config import settings
 logger = logging.getLogger(__name__)
 
 
-class SecurityMiddleware(BaseHTTPMiddleware):  # type: ignore[misc]
+class SecurityMiddleware(BaseHTTPMiddleware):
     """Middleware pour appliquer les headers de sécurité."""
 
     def __init__(self, app: Any, max_json_size: int | None = None) -> None:
@@ -59,7 +59,7 @@ class SecurityMiddleware(BaseHTTPMiddleware):  # type: ignore[misc]
         return response
 
 
-class RateLimitMiddleware(BaseHTTPMiddleware):  # type: ignore[misc]
+class RateLimitMiddleware(BaseHTTPMiddleware):
     """Middleware simple de rate limiting en mémoire."""
 
     def __init__(
