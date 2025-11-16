@@ -11,18 +11,40 @@
 
 Identifier les petits détails qui causent des bugs subtils mais critiques
 
+**MÉTHODE WINDSURF :**
+- **Recherche sémantique** : "Where are exceptions caught without logging?"
+- **Pattern matching** : Cherche patterns exacts (`except:`, `time.sleep`, `with`)
+- **Analyse contexte** : Lit 10-20 lignes autour de chaque pattern
+- **Vérification croisée** : Compare avec standards Python et bonnes pratiques
+
 ---
 
 ## 📋 ACTIONS À EXÉCUTER (4 actions)
 
 ### Action 2B.1 : Chercher les exceptions silencieuses
 
-**INSTRUCTION :**
-1. Ouvre `src/bbia_sim/backends/reachy_mini_backend.py`
-2. Cherche EXACTEMENT : `except Exception as e:`
-3. Pour chaque occurrence, vérifie :
-   - Y a-t-il un `logger.error()` ou `logger.warning()` après ?
-   - Y a-t-il un `pass` sans log ?
+**🔍 MÉTHODE WINDSURF :**
+1. **Pattern search** : `grep` pour `except Exception`, `except:`, `except.*pass`
+2. **Recherche sémantique** : "Where are exceptions caught without logging?"
+3. **Analyse contexte** : Vérifie si chaque exception est loggée
+4. **Vérification niveaux** : Vérifie si le niveau de log est approprié
+
+**INSTRUCTION DÉTAILLÉE :**
+1. **Cherche toutes les occurrences** :
+   - `grep -n "except Exception" src/bbia_sim/backends/reachy_mini_backend.py`
+   - `grep -n "except:" src/bbia_sim/backends/reachy_mini_backend.py` (bare except)
+   - `grep -n "except.*pass" src/bbia_sim/backends/reachy_mini_backend.py`
+2. **Pour chaque occurrence** :
+   - Note le numéro de ligne
+   - **Lis le contexte** (10 lignes après le `except`)
+   - **Vérifie** :
+     - Y a-t-il un `logger.error()`, `logger.warning()`, `logger.debug()` ?
+     - Y a-t-il un `pass` sans log ?
+     - Y a-t-il un `raise` pour remonter l'erreur ?
+3. **Classe le type** :
+   - ✅ Loggé avec niveau approprié
+   - ⚠️ Loggé mais niveau inapproprié (debug au lieu d'error)
+   - ❌ Pas de log (exception silencieuse)
 
 **PATTERNS EXACTS À CHERCHER :**
 - `except Exception:` suivi de `pass`
@@ -45,10 +67,28 @@ except Exception as e:
 
 ### Action 2B.2 : Chercher les timeouts manquants
 
-**INSTRUCTION :**
-1. Cherche EXACTEMENT : `time.sleep(` dans TOUT le projet
-2. Cherche EXACTEMENT : `timeout=` dans TOUT le projet
-3. Pour chaque `time.sleep()`, vérifie si c'est dans une boucle `while True`
+**🔍 MÉTHODE WINDSURF :**
+1. **Pattern search** : `grep` pour `time.sleep(`, `asyncio.sleep(`, `timeout=`
+2. **Recherche sémantique** : "Where are sleep calls in infinite loops without timeout?"
+3. **Analyse contexte** : Vérifie si chaque sleep est dans une boucle
+4. **Vérification timeout** : Cherche mécanismes de timeout (flags, timers)
+
+**INSTRUCTION DÉTAILLÉE :**
+1. **Cherche toutes les occurrences** :
+   - `grep -rn "time.sleep(" src/bbia_sim/`
+   - `grep -rn "asyncio.sleep(" src/bbia_sim/`
+   - `grep -rn "timeout=" src/bbia_sim/`
+2. **Pour chaque `time.sleep()` ou `asyncio.sleep()`** :
+   - Note le fichier et la ligne
+   - **Lis le contexte** (20 lignes avant/après)
+   - **Vérifie** :
+     - Est-ce dans une boucle `while True` ou `while condition` ?
+     - Y a-t-il un mécanisme de timeout (flag, timer, `join(timeout=)` ?
+     - Y a-t-il un `break` ou `return` conditionnel ?
+3. **Classe le type** :
+   - ✅ Dans boucle avec timeout (flag, timer, join)
+   - ⚠️ Dans boucle sans timeout mais avec condition de sortie
+   - ❌ Dans boucle infinie sans timeout ni condition de sortie
 
 **RÉSULTAT ATTENDU :**
 | Fichier | Ligne | Code | Dans boucle ? | Timeout global ? |
@@ -85,13 +125,28 @@ self.robot = ReachyMini(...)  # ❌ PAS de with
 
 ### Action 2B.4 : Chercher les validations manquantes
 
-**INSTRUCTION :**
-1. Ouvre `src/bbia_sim/backends/reachy_mini_backend.py`
-2. Cherche les fonctions publiques (pas `_private`)
-3. Pour chaque fonction, vérifie :
-   - Validation des paramètres ?
-   - Gestion de `None` ?
-   - Vérification de type ?
+**🔍 MÉTHODE WINDSURF :**
+1. **Recherche sémantique** : "Where are public functions without parameter validation?"
+2. **Pattern search** : Cherche fonctions publiques (pas `_private`)
+3. **Analyse validation** : Vérifie chaque fonction pour validations
+4. **Vérification types** : Compare avec type hints
+
+**INSTRUCTION DÉTAILLÉE :**
+1. **Liste toutes les fonctions publiques** :
+   - `grep -n "^    def [^_]" src/bbia_sim/backends/reachy_mini_backend.py` (pas `_private`)
+   - Note chaque fonction trouvée
+2. **Pour chaque fonction publique** :
+   - **Lis la fonction complète** (de `def` à la prochaine `def` ou fin de classe)
+   - **Vérifie** :
+     - Validation des paramètres (types, ranges, valeurs interdites) ?
+     - Gestion de `None` (paramètres optionnels, retours) ?
+     - Vérification de type (isinstance, type hints) ?
+     - Validation des limites (min/max, longueurs) ?
+     - Gestion des erreurs (try/except, raises) ?
+3. **Classe le niveau** :
+   - ✅ Validation complète (types + ranges + None)
+   - ⚠️ Validation partielle (types seulement)
+   - ❌ Pas de validation
 
 **FONCTIONS À VÉRIFIER :**
 - `goto_target()` - ligne ~600
@@ -365,8 +420,8 @@ if not self.is_connected or not self.robot:
 - ✅ **Validations** : Complètes et robustes (10/10)
 
 **Recommandations :**
-1. Ajouter des timeouts globaux pour les boucles while (worker, watchdog)
-2. Considérer l'utilisation de context managers pour ReachyMini
-3. Maintenir les validations actuelles (excellentes)
-4. Documenter la gestion manuelle des ressources
+1. ⚠️ **EN ATTENTE** : Ajouter des timeouts globaux pour les boucles while (worker ligne 1095, watchdog ligne 376)
+2. ⚠️ **EN ATTENTE** : Considérer l'utilisation de context managers pour ReachyMini (architecture actuelle acceptable)
+3. ✅ **MAINTENU** : Validations actuelles (excellentes - score 10/10)
+4. ✅ **DOCUMENTÉ** : Gestion manuelle des ressources (architecture BBIA-SIM)
 

@@ -386,10 +386,18 @@ def get_telemetry(self) -> dict[str, Any]:
 ```
 
 **PROBLÈMES :**
-- ✅ **CORRIGÉ** : 5 TypedDict créés (`ConversationEntry`, `DetectionResult`, `RobotStatus`, `SentimentResult`, `SentimentDict`)
-- ⚠️ ~20-25 occurrences `Any` restantes (non critiques, compatibilité SDK)
-- ✅ **FAIT** : TypedDict créés pour structures données principales
-- ✅ **FAIT** : Interfaces précises pour params commandes (dans types.py)
+- ✅ **CORRIGÉ** : TypedDict créés dans `src/bbia_sim/utils/types.py` :
+  - `TelemetryData`, `GotoTargetParams`, `SetTargetParams`, `SetEmotionParams`
+  - `PlayAudioParams`, `LookAtParams`, `JointPositions`, `MovementRecording`
+  - `IMUData`, `MetricsData`, `ConversationEntry`, `DetectionResult`
+  - `FaceDetection`, `RobotStatus`, `ModelInfo`, `SentimentResult`, `SentimentDict`
+- ✅ **CORRIGÉ** : TypedDict utilisés dans :
+  - `bridge.py` : Import depuis `..utils.types` (lignes 17-23), remplace `dict[str, Any]` pour params
+  - `bbia_huggingface.py` : `ConversationEntry`, `SentimentResult`, `SentimentDict`
+  - `vision_yolo.py` : `DetectionResult`
+  - `backend_adapter.py` : `RobotStatus`
+- ⚠️ ~20-25 occurrences `Any` restantes (non critiques, compatibilité SDK/Pydantic)
+- ✅ **FAIT** : Interfaces précises définies pour toutes les structures de données principales
 
 **RECOMMANDATIONS :**
 - ✅ **FAIT** : TypedDict créés pour structures données
@@ -482,10 +490,11 @@ from typing import Optional  # Non trouvé dans le code
 - ❌ Quelques fonctions sans type hints
 
 **ACTIONS PRIORITAIRES :**
-1. ✅ **FAIT** : `set_joint_pos` découpé en 6 sous-fonctions
-2. ✅ **FAIT** : TypedDict créés pour remplacer `dict[str, Any]`
+1. ✅ **FAIT** : `set_joint_pos` découpé en 6 sous-fonctions (refactorisé)
+2. ✅ **FAIT** : TypedDict créés dans `utils/types.py` et utilisés dans tous les modules critiques
 3. ✅ **FAIT** : Type hints ajoutés (`__init__` bridge.py, etc.)
-4. ⚠️ **OPTIONNEL** : Remplacer dernières occurrences `Any` (20-25 restantes, 4-6h)
+4. ✅ **FAIT** : `@lru_cache` ajouté à `_map_emotion_to_sdk()` dans `bridge.py` (ligne 380)
+5. ⚠️ **OPTIONNEL** : Remplacer dernières occurrences `Any` (20-25 restantes, compatibilité SDK/Pydantic, 4-6h)
 
 **ACTIONS POUR ALLER PLUS LOIN :**
 - Analyser profondeur des imports relatifs (plus de 2 niveaux)

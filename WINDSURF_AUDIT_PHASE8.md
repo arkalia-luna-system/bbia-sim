@@ -193,8 +193,12 @@ Pour chaque action :
 - **Devrait être deque ?** : ❌ **NON** (JavaScript, pas Python)
 
 **Problèmes identifiés :**
-- ✅ **Aucun problème** : deque utilisé correctement pour l'historique
-- ✅ **Choix appropriés** : list utilisé là où c'est pertinent
+- ✅ **CORRIGÉ** : `deque(maxlen=...)` utilisé dans :
+  - `dashboard_advanced.py` : `metrics_history` (ligne 70), `inactive_connections` (ligne 251), `disconnected` (ligne 276)
+  - `bbia_huggingface.py` : `models_to_unload` (ligne 973)
+  - `voice_whisper.py` : `audio_buffer` (ligne 419)
+  - `telemetry.py` : `step_times` (ligne 25)
+- ✅ **Choix appropriés** : list utilisé là où c'est pertinent (connexions actives)
 
 **Score :** 10/10
 
@@ -310,7 +314,8 @@ def get_available_joints(self) -> list[str]:
 
 **Problèmes identifiés :**
 - ✅ **CORRIGÉ** : `get_available_joints` maintenant caché (cache manuel ajouté)
-- ✅ **CORRIGÉ** : `@lru_cache` ajouté à `_get_compiled_regex()` dans `bbia_huggingface.py`
+- ✅ **CORRIGÉ** : `@lru_cache` ajouté à `_get_compiled_regex()` dans `bbia_huggingface.py` (ligne 30)
+- ✅ **CORRIGÉ** : `@lru_cache(maxsize=32)` ajouté à `_map_emotion_to_sdk()` dans `bridge.py` (ligne 380)
 - ⚠️ **Autres fonctions** : Peuvent être analysées pour `@lru_cache` (optionnel)
 
 **Score :** 7.5/10 (amélioré de 7/10 - cache ajouté pour fonctions critiques)
