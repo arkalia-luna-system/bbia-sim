@@ -110,6 +110,10 @@ class BBIAAdvancedWebSocketManager:
         # Démarrer la collecte de métriques
         # self._start_metrics_collection()  # Démarré lors de la première connexion WebSocket
 
+        # Flag pour arrêter la collecte de métriques (pour tests)
+        self._stop_metrics = False
+        self._metrics_task: asyncio.Task | None = None
+
         # Initialiser le robot automatiquement au démarrage
         self._initialize_robot_async()
 
@@ -229,6 +233,9 @@ class BBIAAdvancedWebSocketManager:
         logger.info(
             f"🔌 WebSocket avancé déconnecté ({len(self.active_connections)} connexions)",
         )
+        # Arrêter la collecte de métriques si plus aucune connexion
+        if len(self.active_connections) == 0:
+            self._stop_metrics_collection()
 
     def _cleanup_inactive_connections(self) -> None:
         """OPTIMISATION RAM: Nettoie les connexions WebSocket inactives (>5 min)."""
@@ -361,9 +368,13 @@ class BBIAAdvancedWebSocketManager:
 
     def _start_metrics_collection(self):
         """Démarre la collecte automatique de métriques."""
+        # Arrêter la collecte précédente si elle existe
+        self._stop_metrics_collection()
+
+        self._stop_metrics = False
 
         async def collect_metrics():
-            while True:
+            while not self._stop_metrics:
                 try:
                     # FAIRE AVANCER LA SIMULATION MuJoCo si robot connecté
                     if self.robot and hasattr(self.robot, "step"):
@@ -385,12 +396,30 @@ class BBIAAdvancedWebSocketManager:
                     # Attendre 100ms avant prochaine collecte
                     await asyncio.sleep(0.1)
 
+                except asyncio.CancelledError:
+                    # Tâche annulée, sortir proprement
+                    break
                 except Exception as e:
-                    logger.error(f"Erreur collecte métriques: {e}")
+                    if not self._stop_metrics:
+                        logger.error(f"Erreur collecte métriques: {e}")
                     await asyncio.sleep(1.0)
 
         # Démarrer la tâche en arrière-plan
-        asyncio.create_task(collect_metrics())
+        try:
+            loop = asyncio.get_event_loop()
+            self._metrics_task = loop.create_task(collect_metrics())
+        except RuntimeError:
+            # Pas de boucle en cours, créer une nouvelle
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            self._metrics_task = loop.create_task(collect_metrics())
+
+    def _stop_metrics_collection(self):
+        """Arrête la collecte de métriques."""
+        self._stop_metrics = True
+        if self._metrics_task and not self._metrics_task.done():
+            self._metrics_task.cancel()
+            self._metrics_task = None
 
     def _update_metrics(self):
         """Met à jour les métriques actuelles."""
