@@ -13,7 +13,7 @@ class JointPosition(BaseModel):
     """Modèle pour une position d'articulation avec validation."""
 
     joint_name: str = Field(..., min_length=1, max_length=50)
-    position: float = Field(..., ge=-3.14, le=3.14)  
+    position: float = Field(..., ge=-3.14, le=3.14)
 
     @field_validator("joint_name")
     @classmethod

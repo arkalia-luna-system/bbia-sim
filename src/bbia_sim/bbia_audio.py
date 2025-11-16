@@ -78,7 +78,11 @@ try:  # pragma: no cover - import optionnel
     import soundfile as _soundfile
 
     soundfile = _soundfile
-except (ImportError, RuntimeError, AttributeError):  # pragma: no cover - environnement sans soundfile
+except (
+    ImportError,
+    RuntimeError,
+    AttributeError,
+):  # pragma: no cover - environnement sans soundfile
     soundfile = None
 
 
