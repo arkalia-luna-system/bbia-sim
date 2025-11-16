@@ -124,12 +124,19 @@ Audit de l'intégration MuJoCo et optimisation de la simulation
 - **`get_image`** : Non implémenté
 
 **Problèmes identifiés :**
-- ✅ **CORRIGÉ** : `goto_target` maintenant implémenté dans `mujoco_backend.py`
+- ✅ **CORRIGÉ** : `goto_target` implémenté dans `mujoco_backend.py` (ligne 392-426)
+- ✅ **CORRIGÉ** : Interface unifiée entre backends
 - ⚠️ **Type retour différent** : `float | None` vs `float` pour `get_joint_pos` (acceptable, MuJoCo peut retourner None)
-- ✅ **Interface unifiée** : Les deux backends ont maintenant `goto_target`
-- ⚠️ **Fonctionnalités manquantes** : `get_image` non implémenté dans les deux backends (non critique)
+- ⚠️ **Fonctionnalités manquantes** : `get_image` non implémenté (non critique, optionnel)
+- ⚠️ **Modèles XML** : Incohérence documentée mais logique de chargement automatique présente
 
-**Score : 6/10** (amélioré de 1/10 grâce à l'implémentation de goto_target)
+**Score : 6/10** (amélioré de 1/10 - goto_target implémenté, reste unification XML optionnelle)
+
+**ACTIONS POUR ALLER PLUS LOIN :**
+- Analyser en détail les différences entre modèles XML (7 vs 16 joints)
+- Vérifier performance simulation avec modèle complet vs simplifié
+- Analyser impact masses physiques sur simulation
+- Comparer précision simulation vs robot réel
 
 ----
 
@@ -181,4 +188,22 @@ Pour chaque action :
 ## 🚀 COMMENCE MAINTENANT
 
 **Exécute les 3 actions dans l'ordre et rapporte les résultats.**
+
+---
+
+## 📝 ACTIONS POUR ALLER PLUS LOIN (OPTIONNEL)
+
+Si tu veux approfondir cette phase, voici des actions supplémentaires :
+
+### Action 5.4 : Analyser en détail les différences entre modèles XML
+- Comparer joint par joint les deux modèles
+- Analyser impact masses physiques sur simulation
+- Vérifier cohérence des limites de joints
+
+### Action 5.5 : Benchmark performance simulation
+- Comparer FPS avec modèle simplifié vs complet
+- Analyser latence des calculs IK/FK
+- Mesurer impact sur CPU/GPU
+
+**Format de réponse :** Utilise le même format que les actions 5.1-5.3
 

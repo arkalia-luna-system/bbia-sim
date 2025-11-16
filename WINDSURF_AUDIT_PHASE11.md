@@ -114,6 +114,27 @@ Pour chaque action :
 
 **IMPORTANT :**
 - Vérifie chaque problème dans la phase correspondante avant de le lister
-- Ne liste PAS le problème #4 sur les fuites WebSocket (Phase 7 = 10/10, aucune fuite)
+- ✅ **CORRIGÉ** : Ne liste PAS le problème #4 sur les fuites WebSocket (Phase 7 = 10/10, aucune fuite)
+- ✅ **CORRIGÉ** : Ne liste PAS `goto_target` manquant (Phase 5 - implémenté)
+- ✅ **CORRIGÉ** : Ne liste PAS `set_joint_pos` trop long (Phase 3 - refactorisé)
+- ✅ **CORRIGÉ** : Ne liste PAS tests manquants (Phase 4 - 31+ tests créés)
+- ✅ **CORRIGÉ** : Ne liste PAS Mistral v0.2 obsolète (Phase 6 - v0.3)
+- ✅ **CORRIGÉ** : Ne liste PAS YOLO sans batch (Phase 6 - batch processing ajouté)
+- ✅ **CORRIGÉ** : Ne liste PAS `unload_model` incomplet (Phase 6 - amélioré)
+- ✅ **CORRIGÉ** : Ne liste PAS `get_available_joints` non caché (Phase 8 - cache ajouté)
+- ✅ **CORRIGÉ** : Ne liste PAS `video_stream()` bloquant (Phase 8 - amélioré)
+- ✅ **CORRIGÉ** : Ne liste PAS listes non optimisées (Phase 8 - deque appliqué)
 - Sois précis sur les efforts estimés (basé sur complexité réelle)
+
+**PROBLÈMES DÉJÀ CORRIGÉS (ne pas lister) :**
+- goto_target manquant → ✅ Implémenté
+- set_joint_pos trop long → ✅ Refactorisé
+- Tests manquants → ✅ 31+ tests créés
+- Mistral v0.2 → ✅ v0.3
+- YOLO sans batch → ✅ Batch processing
+- unload_model incomplet → ✅ Amélioré
+- get_available_joints non caché → ✅ Cache ajouté
+- video_stream bloquant → ✅ Amélioré
+- Listes non optimisées → ✅ deque appliqué
+- Fuites WebSocket → ✅ Faux positif (10/10)
 

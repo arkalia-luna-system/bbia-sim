@@ -101,6 +101,24 @@ Pour chaque action :
 
 ---
 
+## 📝 ACTIONS POUR ALLER PLUS LOIN (OPTIONNEL)
+
+Si tu veux approfondir cette phase, voici des actions supplémentaires :
+
+### Action 10.4 : Analyser les vulnérabilités de sécurité
+- Vérifier dépendances avec outils (safety, pip-audit)
+- Identifier CVE connues
+- Analyser politique de mise à jour
+
+### Action 10.5 : Vérifier la configuration CI/CD
+- Analyser workflows GitHub Actions
+- Vérifier couverture tests dans CI
+- Analyser stratégie de déploiement
+
+**Format de réponse :** Utilise le même format que les actions 10.1-10.3
+
+---
+
 ## ✅ RÉSULTATS PHASE 10
 
 ### Action 10.1 : Vérifier les entry points CLI

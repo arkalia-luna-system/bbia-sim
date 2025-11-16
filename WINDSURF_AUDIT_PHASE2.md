@@ -130,6 +130,24 @@ Pour chaque action :
 
 ---
 
+## 📝 ACTIONS POUR ALLER PLUS LOIN (OPTIONNEL)
+
+Si tu veux approfondir cette phase, voici des actions supplémentaires :
+
+### Action 2.5 : Analyser la compatibilité API complète
+- Comparer toutes les méthodes publiques du SDK officiel avec BBIA
+- Identifier les méthodes manquantes ou incomplètes
+- Vérifier la compatibilité des types de retour
+
+### Action 2.6 : Vérifier les comportements edge cases
+- Analyser gestion des erreurs vs SDK officiel
+- Vérifier comportement timeout vs SDK
+- Comparer gestion des déconnexions
+
+**Format de réponse :** Utilise le même format que les actions 2.1-2.4
+
+---
+
 ## ✅ RÉSULTATS PHASE 2
 
 ### Action 2.1 : Vérifier l'utilisation de `ReachyMini`

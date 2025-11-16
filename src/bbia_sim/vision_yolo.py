@@ -30,6 +30,7 @@ else:
             center: list[int]
             area: int
 
+
 try:
     import cv2  # type: ignore[import-untyped]
     from ultralytics import YOLO  # type: ignore[import-untyped]

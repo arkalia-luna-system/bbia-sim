@@ -104,6 +104,24 @@ Pour chaque action :
 
 **Exécute les 3 actions dans l'ordre et rapporte les résultats.**
 
+---
+
+## 📝 ACTIONS POUR ALLER PLUS LOIN (OPTIONNEL)
+
+Si tu veux approfondir cette phase, voici des actions supplémentaires :
+
+### Action 9.4 : Analyser la qualité des docstrings
+- Vérifier présence de Args/Returns/Raises
+- Analyser cohérence du format
+- Identifier docstrings incomplètes
+
+### Action 9.5 : Vérifier les exemples dans la documentation
+- Compter les exemples de code
+- Vérifier que les exemples sont à jour
+- Identifier sections sans exemples
+
+**Format de réponse :** Utilise le même format que les actions 9.1-9.3
+
 ## 📊 RÉSULTATS
 
 ### Action 9.1 : Compter les docstrings manquantes

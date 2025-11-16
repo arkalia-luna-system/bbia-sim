@@ -198,6 +198,24 @@ Pour chaque action :
 
 **Exécute les 3 actions dans l'ordre et rapporte les résultats.**
 
+---
+
+## 📝 ACTIONS POUR ALLER PLUS LOIN (OPTIONNEL)
+
+Si tu veux approfondir cette phase, voici des actions supplémentaires :
+
+### Action 7.4 : Analyser la sécurité des endpoints REST
+- Vérifier présence d'authentification/autorisation
+- Analyser protection CSRF/XSS
+- Vérifier validation des inputs
+
+### Action 7.5 : Analyser la scalabilité Zenoh
+- Identifier limites de connexions simultanées
+- Analyser gestion de la charge
+- Vérifier stratégie de reconnexion
+
+**Format de réponse :** Utilise le même format que les actions 7.1-7.3
+
 ## 📊 RÉSULTATS
 
 ### Action 7.1 : Analyser le bridge Zenoh ligne par ligne
