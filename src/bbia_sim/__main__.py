@@ -226,9 +226,9 @@ def run_voice_recognition() -> None:
 def run_doctor() -> None:
     """Lance le diagnostic de l'environnement BBIA-SIM."""
     logger.info("🔍 Diagnostic de l'environnement BBIA-SIM...")
-    print("\n" + "=" * 60)
-    print("🔍 DIAGNOSTIC BBIA-SIM")
-    print("=" * 60 + "\n")
+    logger.info("\n" + "=" * 60)
+    logger.info("🔍 DIAGNOSTIC BBIA-SIM")
+    logger.info("=" * 60 + "\n")
 
     checks = {}
     all_ok = True
@@ -288,7 +288,7 @@ def run_doctor() -> None:
 
         socket.create_connection(("8.8.8.8", 53), timeout=3)
         checks["Network"] = {"status": True, "value": "connecté"}
-    except Exception:
+    except (socket.gaierror, OSError, TimeoutError):
         checks["Network"] = {"status": False, "value": "non connecté"}
         all_ok = False
 
@@ -307,16 +307,16 @@ def run_doctor() -> None:
     # Afficher résultats
     for check_name, check_info in checks.items():
         status_icon = "✅" if check_info["status"] else "❌"
-        print(f"{status_icon} {check_name}: {check_info['value']}")
+        logger.info(f"{status_icon} {check_name}: {check_info['value']}")
         if "required" in check_info:
-            print(f"   Requis: {check_info['required']}")
+            logger.info(f"   Requis: {check_info['required']}")
 
-    print("\n" + "=" * 60)
+    logger.info("\n" + "=" * 60)
     if all_ok:
-        print("✅ Tous les checks sont OK !")
+        logger.info("✅ Tous les checks sont OK !")
     else:
-        print("⚠️  Certains checks ont échoué")
-    print("=" * 60 + "\n")
+        logger.info("⚠️  Certains checks ont échoué")
+    logger.info("=" * 60 + "\n")
 
 
 if __name__ == "__main__":

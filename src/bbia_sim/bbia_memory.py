@@ -308,5 +308,5 @@ if __name__ == "__main__":
     memory = BBIAMemory()
     memory.remember_preference("voix_preferee", "aurelie")
     memory.remember_learning("user_says_salut", "recognize_user")
-    print(f"Préférence voix: {memory.get_preference('voix_preferee')}")
-    print(f"Apprentissage: {memory.get_learning('user_says_salut')}")
+    logger.info(f"Préférence voix: {memory.get_preference('voix_preferee')}")
+    logger.info(f"Apprentissage: {memory.get_learning('user_says_salut')}")

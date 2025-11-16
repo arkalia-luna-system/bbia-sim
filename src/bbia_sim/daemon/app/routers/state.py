@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/state")
 
 
-class RobotState(BaseModel):  # type: ignore[misc]
+class RobotState(BaseModel):
     """Modèle pour l'état du robot."""
 
     position: dict[str, float]
@@ -146,11 +146,11 @@ def _read_sdk_telemetry() -> dict[str, Any] | None:
                 logger.debug(
                     f"Erreur lors de la déconnexion du backend: {disconnect_error}"
                 )
-    except Exception:
+    except (RuntimeError, AttributeError, TypeError):
         return None
 
 
-class BatteryInfo(BaseModel):  # type: ignore[misc]
+class BatteryInfo(BaseModel):
     """Modèle pour les informations de batterie."""
 
     level: float
@@ -159,7 +159,7 @@ class BatteryInfo(BaseModel):  # type: ignore[misc]
     estimated_time: str
 
 
-@router.get("/full")  # type: ignore[misc]
+@router.get("/full")
 async def get_full_state(
     with_control_mode: bool = True,
     with_head_pose: bool = True,
@@ -262,7 +262,7 @@ async def get_full_state(
     return cast("FullState", FullState.model_validate(result))
 
 
-@router.get("/position")  # type: ignore[misc]
+@router.get("/position")
 async def get_position() -> dict[str, Any]:
     """Récupère la position actuelle du robot.
 
@@ -279,7 +279,7 @@ async def get_position() -> dict[str, Any]:
     }
 
 
-@router.get("/battery", response_model=BatteryInfo)  # type: ignore[misc]
+@router.get("/battery", response_model=BatteryInfo)
 async def get_battery_level() -> BatteryInfo:
     """Récupère le niveau de batterie.
 
@@ -316,7 +316,7 @@ async def get_battery_level() -> BatteryInfo:
     )
 
 
-@router.get("/temperature")  # type: ignore[misc]
+@router.get("/temperature")
 async def get_temperature() -> dict[str, Any]:
     """Récupère la température du robot.
 
@@ -347,7 +347,7 @@ async def get_temperature() -> dict[str, Any]:
     }
 
 
-@router.get("/status")  # type: ignore[misc]
+@router.get("/status")
 async def get_status() -> dict[str, Any]:
     """Récupère le statut général du robot.
 
@@ -366,7 +366,7 @@ async def get_status() -> dict[str, Any]:
     }
 
 
-@router.post("/simulation/start")  # type: ignore[misc]
+@router.post("/simulation/start")
 async def start_simulation() -> dict[str, Any]:
     """Démarre la simulation MuJoCo."""
     logger.info("Démarrage de la simulation MuJoCo")
@@ -393,7 +393,7 @@ async def start_simulation() -> dict[str, Any]:
         }
 
 
-@router.post("/simulation/stop")  # type: ignore[misc]
+@router.post("/simulation/stop")
 async def stop_simulation() -> dict[str, Any]:
     """Arrête la simulation MuJoCo."""
     logger.info("Arrêt de la simulation MuJoCo")
@@ -414,7 +414,7 @@ async def stop_simulation() -> dict[str, Any]:
         }
 
 
-@router.get("/joints")  # type: ignore[misc]
+@router.get("/joints")
 async def get_joint_states() -> dict[str, Any]:
     logger.info("Récupération de l'état des articulations")
 
@@ -433,7 +433,7 @@ async def get_joint_states() -> dict[str, Any]:
     return {"joints": joints, "timestamp": datetime.now().isoformat()}
 
 
-@router.get("/present_head_pose")  # type: ignore[misc]
+@router.get("/present_head_pose")
 async def get_present_head_pose(
     use_pose_matrix: bool = False,
     backend: BackendAdapter = Depends(get_backend_adapter),
@@ -458,7 +458,7 @@ async def get_present_head_pose(
     }
 
 
-@router.get("/present_body_yaw")  # type: ignore[misc]
+@router.get("/present_body_yaw")
 async def get_present_body_yaw(
     backend: BackendAdapter = Depends(get_backend_adapter),
 ) -> dict[str, Any]:
@@ -475,7 +475,7 @@ async def get_present_body_yaw(
     return {"body_yaw": float(yaw), "unit": "radians"}
 
 
-@router.get("/present_antenna_joint_positions")  # type: ignore[misc]
+@router.get("/present_antenna_joint_positions")
 async def get_present_antenna_joint_positions(
     backend: BackendAdapter = Depends(get_backend_adapter),
 ) -> dict[str, Any]:
@@ -499,7 +499,7 @@ async def get_present_antenna_joint_positions(
     }
 
 
-@router.websocket("/ws/full")  # type: ignore[misc]
+@router.websocket("/ws/full")
 async def ws_full_state(
     websocket: WebSocket,
     frequency: float = 10.0,
@@ -567,7 +567,7 @@ async def ws_full_state(
         pass
 
 
-@router.get("/sensors")  # type: ignore[misc]
+@router.get("/sensors")
 async def get_sensor_data() -> dict[str, Any]:
     """Récupère les données des capteurs.
 

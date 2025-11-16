@@ -28,7 +28,7 @@
 
 #### 📈 Visualisation Coverage
 
-```mermaid
+```mermaid 📊
 pie title Répartition Coverage Modules Critiques
     "vision_yolo (99.45%)" : 99
     "voice_whisper (92.52%)" : 93
@@ -39,7 +39,7 @@ pie title Répartition Coverage Modules Critiques
 
 #### 📊 Architecture des Tests
 
-```mermaid
+```mermaid 📊
 graph TB
     subgraph "Modules Critiques"
         VISION[vision_yolo<br/>42 tests<br/>99.45% coverage]
@@ -85,7 +85,7 @@ graph TB
 
 #### 🔄 Workflow TODOs
 
-```mermaid
+```mermaid 📊
 flowchart TD
     START[TODOs Identifiés] --> AUTH[Auth WebSocket<br/>query param token]
     START --> MIGR[Migration imports<br/>robot_factory]
@@ -166,7 +166,7 @@ flowchart TD
 
 #### 📊 Progression Correction Liens
 
-```mermaid
+```mermaid 📊
 graph LR
     AVANT[251 liens cassés] --> CORRECTION[112 liens corrigés<br/>-45% réduction]
     CORRECTION --> APRES[139 liens restants<br/>Archives non prioritaire]
@@ -207,7 +207,7 @@ graph LR
 
 #### 🔄 Architecture Robot Réel
 
-```mermaid
+```mermaid 📊
 graph TB
     subgraph "Application BBIA"
         APP[Application]
@@ -274,7 +274,7 @@ graph TB
 
 ### ✅ Points Clés
 
-```mermaid
+```mermaid 📊
 mindmap
   root((BBIA-SIM<br/>100% COMPLET))
     Coverage

@@ -11,7 +11,7 @@
 
 ## Architecture Dashboard Proposée
 
-```mermaid
+```mermaid 📊
 graph TB
     subgraph "Frontend Dashboard"
         UI[Interface Utilisateur<br/>HTMX/Alpine ou Streamlit]
@@ -49,7 +49,7 @@ graph TB
 
 ## Roadmap Implémentation
 
-```mermaid
+```mermaid 📊
 gantt
     title Roadmap Dashboard / UX
     dateFormat  YYYY-MM-DD
@@ -77,7 +77,7 @@ gantt
 
 ### Composants Dashboard
 
-```mermaid
+```mermaid 📊
 mindmap
   root((Dashboard BBIA))
     Télémétrie

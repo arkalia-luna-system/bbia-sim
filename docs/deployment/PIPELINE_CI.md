@@ -17,7 +17,7 @@
 
 ### Architecture Pipeline CI/CD
 
-```mermaid
+```mermaid 📊
 flowchart TB
     START[Push/PR] --> TRIGGER{Event?}
     
@@ -46,7 +46,7 @@ flowchart TB
 
 ### Workflow GitHub Actions
 
-```mermaid
+```mermaid 📊
 sequenceDiagram
     participant Dev as Développeur
     participant GitHub as GitHub

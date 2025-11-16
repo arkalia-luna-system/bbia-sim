@@ -398,7 +398,7 @@ def dire_texte(texte: str) -> bool:
     # Essayer Coqui TTS d'abord
     try:
         return dire_texte_advanced(texte)
-    except Exception:
+    except (ImportError, RuntimeError, ValueError):
         # Fallback vers pyttsx3 original
         try:
             from .bbia_voice import dire_texte as dire_texte_old
@@ -413,36 +413,36 @@ def dire_texte(texte: str) -> bool:
 if __name__ == "__main__":
     """Test du module de synthèse vocale avancée."""
 
-    print("🎤 Test BBIA Voice Advanced")
-    print("=" * 50)
+    logging.info("🎤 Test BBIA Voice Advanced")
+    logging.info("=" * 50)
 
     # Tester Coqui TTS
     if COQUI_TTS_AVAILABLE:
-        print("✅ Coqui TTS disponible")
+        logging.info("✅ Coqui TTS disponible")
         voice = BBIAVoiceAdvanced()
 
         if voice.is_coqui_available():
-            print("\n🧪 Test synthèse avec émotion:")
+            logging.info("\n🧪 Test synthèse avec émotion:")
             voice.say_with_emotion(
                 "Bonjour, je suis BBIA avec une voix contrôlable !",
                 "happy",
                 intensity=0.8,
             )
 
-            print("\n🧪 Test synthèse avec pitch personnalisé:")
+            logging.info("\n🧪 Test synthèse avec pitch personnalisé:")
             voice.say(
                 "Je peux maintenant contrôler le pitch sur macOS !",
                 emotion="excited",
                 pitch=0.3,
             )
         else:
-            print("⚠️  Coqui TTS non initialisé, utilisation fallback")
+            logging.warning("⚠️  Coqui TTS non initialisé, utilisation fallback")
     else:
-        print("❌ Coqui TTS non disponible")
-        print("💡 Installez avec: pip install TTS playsound")
+        logging.error("❌ Coqui TTS non disponible")
+        logging.info("💡 Installez avec: pip install TTS playsound")
 
     # Tester fallback
     if PYTTSX3_AVAILABLE:
-        print("\n✅ Fallback pyttsx3 disponible")
+        logging.info("\n✅ Fallback pyttsx3 disponible")
     else:
-        print("\n❌ Fallback pyttsx3 non disponible")
+        logging.error("\n❌ Fallback pyttsx3 non disponible")

@@ -112,7 +112,7 @@
 
 ## 🔗 Autres Ressources
 
-- **Commandes Venv** : `/COMMANDES_VENV_SCENE.md`
+- **Commandes Venv** : `/docs/development/setup/COMMANDES_VENV_SCENE.md`
 - **README Scènes** : `src/bbia_sim/sim/scenes/README_SCENES.md`
 - **Guide Simulation** : `MUJOCO_SIMULATION_GUIDE.md`
 

@@ -24,7 +24,7 @@ Votre Mac ramait à cause de **multiples processus BBIA** qui tournaient en arri
 
 ## Architecture du système de gestion
 
-```mermaid
+```mermaid 📊
 graph TB
     subgraph "Avant (Problématique)"
         MULTIPLE[Multiples processus BBIA<br/>73.6% CPU<br/>15+ processus pytest<br/>Processus websocket multiples]
@@ -46,7 +46,7 @@ graph TB
 
 ## Système de sécurité
 
-```mermaid
+```mermaid 📊
 graph LR
     subgraph "Protection"
         LOCK[Fichiers de verrouillage<br/>~/.bbia_sim.lock<br/>~/.bbia_sim.pid]
@@ -70,7 +70,7 @@ graph LR
 
 ## Workflow de gestion
 
-```mermaid
+```mermaid 📊
 sequenceDiagram
     participant U as Utilisateur
     participant S as Script bbia_safe.sh

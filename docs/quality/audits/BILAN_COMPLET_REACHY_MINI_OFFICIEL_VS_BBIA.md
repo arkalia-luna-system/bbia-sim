@@ -278,8 +278,8 @@ Ce document fait un inventaire exhaustif de **TOUT** ce que propose le repo offi
 
 | Démo | Statut Officiel | Statut BBIA | Notes |
 |------|----------------|-------------|-------|
-| **`reachy_mini_conversation_demo`** | ✅ Conversational demo | ⚠️ **Équivalent BBIA** | `demo_chat_bbia.py`, `demo_chat_bbia_3d.py` |
-| **Exemples SDK basiques** | ✅ Dans README | ✅ **Multiples demos** | `demo_reachy_mini_corrigee.py`, etc. |
+| **`reachy_mini_conversation_demo`** | ✅ Conversational demo | ✅ **Équivalent BBIA** | `demo_chat_bbia_3d.py` ⭐ (RECOMMANDÉ) |
+| **Exemples SDK basiques** | ✅ Dans README | ✅ **Multiples demos** | `reachy_mini/minimal_demo.py`, `reachy_mini/sequence.py`, etc. |
 
 #### Démos BBIA (Plus Avancées)
 
@@ -289,7 +289,8 @@ Ce document fait un inventaire exhaustif de **TOUT** ce que propose le repo offi
 | `demo_vision_ok.py` | YOLO + MediaPipe + DeepFace | ✅ |
 | `demo_voice_ok.py` | Whisper STT + TTS | ✅ |
 | `demo_behavior_ok.py` | Comportements intelligents | ✅ |
-| `demo_chat_bbia.py` | Chat LLM + function calling | ✅ |
+| `demo_chat_bbia_3d.py` ⭐ | Chat LLM + function calling + 3D | ✅ (RECOMMANDÉ) |
+| `demo_chat_bbia.py` | Chat LLM (déprécié) | ⚠️ Utiliser `demo_chat_bbia_3d.py` |
 | `demo_mujoco_continue.py` | Mouvement continu 3D | ✅ |
 
 **Statut** : ✅ **SUPÉRIEUR** - BBIA a plus de démos que le repo officiel

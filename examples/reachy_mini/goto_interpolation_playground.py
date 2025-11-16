@@ -31,17 +31,17 @@ if not USE_SDK:
     from bbia_sim.backends.reachy_mini_backend import ReachyMiniBackend
 
     # Pour BBIA, utiliser les constantes d'interpolation si disponibles
-    try:
-        from reachy_mini.utils.interpolation import InterpolationTechnique
-    except ImportError:
+    if InterpolationTechnique is None:
         # Fallback: définir manuellement
         from enum import Enum
 
-        class InterpolationTechnique(Enum):
+        class InterpolationTechniqueLocal(Enum):  # Renommé pour éviter conflit
             LINEAR = "linear"
             MIN_JERK = "minjerk"
             EASE_IN_OUT = "ease"
             CARTOON = "cartoon"
+
+        InterpolationTechnique = InterpolationTechniqueLocal  # type: ignore[assignment]
 
 
 def main() -> None:

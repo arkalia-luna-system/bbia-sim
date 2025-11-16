@@ -17,7 +17,7 @@ Ce guide vous accompagne dans la migration de votre projet BBIA-SIM depuis la si
 
 ### RobotAPI unifié — avantage clé
 
-```mermaid
+```mermaid 📊
 graph TB
     subgraph "BBIA Modules"
         EMOTIONS[bbia_emotions.py]
@@ -64,7 +64,7 @@ Avantage : aucune modification des modules BBIA nécessaire.
 
 ### Flux de migration
 
-```mermaid
+```mermaid 📊
 flowchart TD
     START[Projet en simulation<br/>MuJoCoBackend] --> CHECK{SDK installé ?}
     CHECK -->|Non| INSTALL[Installer reachy-mini<br/>pip install reachy-mini]
@@ -429,7 +429,7 @@ ZENOH_CONFIG = {
 # Vérifier les limites des joints
 joint_limits = robot.get_joint_limits()
 for joint, limits in joint_limits.items():
-    print(f"{joint}: {limits}")
+    logging.info(f"{joint}: {limits}")
 
 ```
 

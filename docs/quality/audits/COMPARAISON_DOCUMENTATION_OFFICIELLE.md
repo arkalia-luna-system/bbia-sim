@@ -145,7 +145,7 @@ with ReachyMini() as reachy_mini:
  3. `sequence.py` - Séquences mouvements ✅
  4. `recorded_moves_example.py` - Mouvements enregistrés ✅
  5. `goto_interpolation_playground.py` - Playground interpolation ✅
-- ✅ **Démo conversationnelle** : `demo_chat_bbia.py`, `demo_chat_bbia_3d.py`
+- ✅ **Démo conversationnelle** : `demo_chat_bbia_3d.py` ⭐ (RECOMMANDÉ - `demo_chat_bbia.py` est déprécié)
 - ✅ **Intégration HuggingFace** : `BBIAHuggingFace` avec chat conversationnel
 - ⚠️ **Différence** : Pas exactement `reachy_mini_conversation_demo`, mais équivalent
 

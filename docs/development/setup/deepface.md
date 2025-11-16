@@ -114,9 +114,9 @@ vision = BBIAVision()
 result = vision.scan_environment()
 
 for face in result["faces"]:
-    print(f"Personne: {face['name']}")  # "Alice" au lieu de "humain"
-    print(f"Émotion: {face['emotion']}")  # "happy", "sad", etc.
-    print(f"Confiance émotion: {face['emotion_confidence']}")
+    logging.info(f"Personne: {face['name']}")  # "Alice" au lieu de "humain"
+    logging.info(f"Émotion: {face['emotion']}")  # "happy", "sad", etc.
+    logging.info(f"Confiance émotion: {face['emotion_confidence']}")
 
 ```
 

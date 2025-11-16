@@ -1296,7 +1296,7 @@ class ReachyMiniBackend(RobotAPI):
             from reachy_mini.motion.move import Move
 
             # Créer une classe Move simple pour notre usage
-            class SimpleMove(Move):  # type: ignore[misc]
+            class SimpleMove(Move):
                 def __init__(
                     self,
                     positions: list[dict[str, Any]],

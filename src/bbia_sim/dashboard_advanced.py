@@ -64,6 +64,10 @@ class BBIAAdvancedWebSocketManager:
         self.max_history = 1000  # Limite historique métriques
         self.metrics_history: deque[dict[str, Any]] = deque(maxlen=self.max_history)
 
+        # OPTIMISATION RAM: Nettoyage connexions WebSocket inactives (>5 min)
+        self._connection_last_activity: dict[WebSocket, float] = {}
+        self._connection_cleanup_interval = 300.0  # 5 minutes
+
         # Modules BBIA
         self.emotions = BBIAEmotions()
         # OPTIMISATION RAM: Utiliser singleton BBIAVision si disponible
@@ -105,6 +109,10 @@ class BBIAAdvancedWebSocketManager:
 
         # Démarrer la collecte de métriques
         # self._start_metrics_collection()  # Démarré lors de la première connexion WebSocket
+
+        # Flag pour arrêter la collecte de métriques (pour tests)
+        self._stop_metrics = False
+        self._metrics_task: asyncio.Task | None = None
 
         # Initialiser le robot automatiquement au démarrage
         self._initialize_robot_async()
@@ -154,6 +162,8 @@ class BBIAAdvancedWebSocketManager:
         """Accepte une nouvelle connexion WebSocket."""
         await websocket.accept()
         self.active_connections.append(websocket)
+        # OPTIMISATION RAM: Enregistrer timestamp activité connexion
+        self._connection_last_activity[websocket] = time.time()
         logger.info(
             f"🔌 WebSocket avancé connecté ({len(self.active_connections)} connexions)",
         )
@@ -217,9 +227,37 @@ class BBIAAdvancedWebSocketManager:
         """Déconnecte un WebSocket."""
         if websocket in self.active_connections:
             self.active_connections.remove(websocket)
+        # OPTIMISATION RAM: Supprimer du tracking activité
+        if websocket in self._connection_last_activity:
+            del self._connection_last_activity[websocket]
         logger.info(
             f"🔌 WebSocket avancé déconnecté ({len(self.active_connections)} connexions)",
         )
+        # Arrêter la collecte de métriques si plus aucune connexion
+        if len(self.active_connections) == 0:
+            self._stop_metrics_collection()
+
+    def _cleanup_inactive_connections(self) -> None:
+        """OPTIMISATION RAM: Nettoie les connexions WebSocket inactives (>5 min)."""
+        current_time = time.time()
+        inactive_connections: list[tuple[WebSocket, float]] = []
+
+        for connection, last_activity in list(self._connection_last_activity.items()):
+            inactivity = current_time - last_activity
+            if inactivity > self._connection_cleanup_interval:
+                inactive_connections.append((connection, inactivity))
+
+        # Fermer connexions inactives
+        for connection, inactivity in inactive_connections:
+            try:
+                # Tenter fermeture propre
+                if connection in self.active_connections:
+                    self.disconnect(connection)
+                    logger.debug(
+                        f"🗑️ Connexion WebSocket inactive fermée ({inactivity:.0f}s)"
+                    )
+            except Exception as e:
+                logger.debug(f"Erreur nettoyage connexion inactive: {e}")
 
     async def broadcast(self, message: str):
         """Diffuse un message à toutes les connexions actives."""
@@ -227,10 +265,13 @@ class BBIAAdvancedWebSocketManager:
             return
 
         disconnected = []
+        current_time = time.time()
         for connection in self.active_connections:
             try:
                 await connection.send_text(message)
-            except Exception:
+                # OPTIMISATION RAM: Mettre à jour timestamp activité
+                self._connection_last_activity[connection] = current_time
+            except (ConnectionError, RuntimeError, WebSocketDisconnect):
                 disconnected.append(
                     connection,
                 )
@@ -238,6 +279,9 @@ class BBIAAdvancedWebSocketManager:
         # Nettoyer les connexions fermées
         for connection in disconnected:
             self.disconnect(connection)
+
+        # OPTIMISATION RAM: Nettoyer connexions inactives périodiquement
+        self._cleanup_inactive_connections()
 
     async def send_complete_status(self):
         """Envoie le statut complet du système."""
@@ -317,15 +361,20 @@ class BBIAAdvancedWebSocketManager:
         for joint in self._get_available_joints():
             try:
                 pose[joint] = self.robot.get_joint_pos(joint)
-            except Exception:
+            except (ConnectionError, RuntimeError, WebSocketDisconnect, Exception):
+                # Gérer toutes les exceptions pour éviter les crashes
                 pose[joint] = 0.0
         return pose
 
     def _start_metrics_collection(self):
         """Démarre la collecte automatique de métriques."""
+        # Arrêter la collecte précédente si elle existe
+        self._stop_metrics_collection()
+
+        self._stop_metrics = False
 
         async def collect_metrics():
-            while True:
+            while not self._stop_metrics:
                 try:
                     # FAIRE AVANCER LA SIMULATION MuJoCo si robot connecté
                     if self.robot and hasattr(self.robot, "step"):
@@ -347,12 +396,30 @@ class BBIAAdvancedWebSocketManager:
                     # Attendre 100ms avant prochaine collecte
                     await asyncio.sleep(0.1)
 
+                except asyncio.CancelledError:
+                    # Tâche annulée, sortir proprement
+                    break
                 except Exception as e:
-                    logger.error(f"Erreur collecte métriques: {e}")
+                    if not self._stop_metrics:
+                        logger.error(f"Erreur collecte métriques: {e}")
                     await asyncio.sleep(1.0)
 
         # Démarrer la tâche en arrière-plan
-        asyncio.create_task(collect_metrics())
+        try:
+            loop = asyncio.get_event_loop()
+            self._metrics_task = loop.create_task(collect_metrics())
+        except RuntimeError:
+            # Pas de boucle en cours, créer une nouvelle
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            self._metrics_task = loop.create_task(collect_metrics())
+
+    def _stop_metrics_collection(self):
+        """Arrête la collecte de métriques."""
+        self._stop_metrics = True
+        if self._metrics_task and not self._metrics_task.done():
+            self._metrics_task.cancel()
+            self._metrics_task = None
 
     def _update_metrics(self):
         """Met à jour les métriques actuelles."""
@@ -3047,7 +3114,7 @@ if FASTAPI_AVAILABLE:
                                 (255, 255, 255),
                                 2,
                             )
-                        except Exception:
+                        except (ConnectionError, RuntimeError, WebSocketDisconnect):
                             pass
 
                     # Encoder en JPEG
@@ -3195,7 +3262,7 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                         for _ in range(5):
                             try:
                                 advanced_websocket_manager.robot.step()
-                            except Exception:
+                            except (ConnectionError, RuntimeError, WebSocketDisconnect):
                                 pass
 
                     if success:
@@ -3266,7 +3333,7 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                         for joint in robot.get_available_joints():
                             try:
                                 robot.set_joint_pos(joint, 0.0)
-                            except Exception:
+                            except (ConnectionError, RuntimeError, WebSocketDisconnect):
                                 pass
                         robot.step()
                         success = True
@@ -3285,7 +3352,7 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                 for _ in range(10):  # 10 steps pour que l'action soit visible
                     try:
                         advanced_websocket_manager.robot.step()
-                    except Exception:
+                    except (ConnectionError, RuntimeError, WebSocketDisconnect):
                         pass
 
             if success:
@@ -3334,9 +3401,9 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                     ):  # 50 steps pour que le comportement soit visible
                         try:
                             robot.step()
-                        except Exception:
+                        except (ConnectionError, RuntimeError, WebSocketDisconnect):
                             pass
-            except Exception as e:
+            except (ValueError, RuntimeError, KeyError) as e:
                 logger.error(f"Erreur exécution comportement {behavior}: {e}")
                 success = False
 
@@ -3390,7 +3457,7 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                     for _ in range(5):
                         try:
                             robot.step()
-                        except Exception:
+                        except (ConnectionError, RuntimeError, WebSocketDisconnect):
                             pass
 
                 if success:

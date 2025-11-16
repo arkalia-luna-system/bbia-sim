@@ -204,7 +204,7 @@ async def list_recorded_move_dataset(dataset_name: str) -> list[str]:
     try:
         moves = RecordedMoves(dataset_name)
         return moves.list_moves()
-    except Exception as e:
+    except (ValueError, RuntimeError, ConnectionError) as e:
         raise HTTPException(status_code=404, detail=str(e))
 
 ```

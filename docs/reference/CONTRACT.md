@@ -365,7 +365,7 @@ if "yaw_body" in joints:
 # Vérifier la connexion
 if robot.is_connected():
     status = robot.get_status()
-    print(f"Émotion: {status['current_emotion']}")
+    logging.info(f"Émotion: {status['current_emotion']}")
 
 ```
 

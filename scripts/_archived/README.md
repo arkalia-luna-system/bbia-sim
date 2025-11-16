@@ -18,6 +18,23 @@
 - **Utilisation**: ❌ Aucune référence dans le codebase
 - **Alternative**: Utiliser `scripts/smart_process_cleanup.sh` ou `python scripts/process_manager.py stop`
 
+### Scripts Consolidés (Nov. 2025)
+
+#### `audit_sdk_officiel_nov2025.py` → `scripts/_archived/comparison_audit/`
+- **Date archivé**: Nov. 2025
+- **Raison**: Fusionné dans `compare_with_official_exhaustive.py`
+- **Alternative**: Utiliser `scripts/compare_with_official_exhaustive.py`
+
+#### `comparaison_profonde_methodes_backend.py` → `scripts/_archived/comparison_audit/`
+- **Date archivé**: Nov. 2025
+- **Raison**: Fusionné dans `compare_with_official_exhaustive.py`
+- **Alternative**: Utiliser `scripts/compare_with_official_exhaustive.py`
+
+#### `audit_and_improve_md.py` → `scripts/_archived/`
+- **Date archivé**: Nov. 2025
+- **Raison**: Fusionné dans `verify_documentation.py`
+- **Alternative**: Utiliser `scripts/verify_documentation.py --improve`
+
 ## 💡 Notes
 
 Ces scripts sont conservés pour référence historique mais **ne doivent pas être utilisés**.

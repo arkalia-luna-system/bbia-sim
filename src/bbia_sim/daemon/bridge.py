@@ -40,7 +40,7 @@ except ImportError:
     create_head_pose = cast(Any, None)
 
 
-class ZenohConfig(BaseModel):  # type: ignore[misc]
+class ZenohConfig(BaseModel):
     """Configuration Zenoh."""
 
     mode: str = "client"
@@ -49,7 +49,7 @@ class ZenohConfig(BaseModel):  # type: ignore[misc]
     retry_attempts: int = 3
 
 
-class RobotCommand(BaseModel):  # type: ignore[misc]
+class RobotCommand(BaseModel):
     """Commande robot via Zenoh."""
 
     command: str
@@ -62,7 +62,7 @@ class RobotCommand(BaseModel):  # type: ignore[misc]
         super().__init__(**data)
 
 
-class RobotState(BaseModel):  # type: ignore[misc]
+class RobotState(BaseModel):
     """État du robot via Zenoh."""
 
     joints: dict[str, float]
@@ -628,7 +628,7 @@ app = FastAPI(title="BBIA-SIM Zenoh Bridge", version="1.3.0")
 bridge: ZenohBridge | None = None
 
 
-@app.on_event("startup")  # type: ignore[misc]
+@app.on_event("startup")
 async def startup_event() -> None:
     """Démarre le bridge au démarrage de l'app."""
     global bridge
@@ -636,7 +636,7 @@ async def startup_event() -> None:
     await bridge.start()
 
 
-@app.on_event("shutdown")  # type: ignore[misc]
+@app.on_event("shutdown")
 async def shutdown_event() -> None:
     """Arrête le bridge à l'arrêt de l'app."""
     global bridge
@@ -644,7 +644,7 @@ async def shutdown_event() -> None:
         await bridge.stop()
 
 
-@app.post("/api/zenoh/command")  # type: ignore[misc]
+@app.post("/api/zenoh/command")
 async def send_robot_command(command: RobotCommand) -> dict[str, str]:
     """Envoie une commande au robot via Zenoh."""
     if not bridge or not bridge.is_connected():
@@ -657,7 +657,7 @@ async def send_robot_command(command: RobotCommand) -> dict[str, str]:
     return {"status": "success", "command": command.command}
 
 
-@app.get("/api/zenoh/state")  # type: ignore[misc]
+@app.get("/api/zenoh/state")
 async def get_robot_state() -> dict[str, Any]:
     """Récupère l'état actuel du robot."""
     if not bridge or not bridge.is_connected():
@@ -668,7 +668,7 @@ async def get_robot_state() -> dict[str, Any]:
     return state_dict
 
 
-@app.get("/api/zenoh/status")  # type: ignore[misc]
+@app.get("/api/zenoh/status")
 async def get_bridge_status() -> dict[str, Any | bool]:
     """Récupère le statut du bridge."""
     return {
@@ -678,7 +678,7 @@ async def get_bridge_status() -> dict[str, Any | bool]:
     }
 
 
-@app.websocket("/ws/zenoh")  # type: ignore[misc]
+@app.websocket("/ws/zenoh")
 async def websocket_endpoint(websocket: WebSocket) -> None:
     """WebSocket pour communication temps réel avec Zenoh."""
     await websocket.accept()

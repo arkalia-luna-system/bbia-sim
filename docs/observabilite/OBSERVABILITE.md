@@ -12,7 +12,7 @@
 
 ## Architecture Observabilité
 
-```mermaid
+```mermaid 📊
 graph TB
     subgraph "Sources de Données"
         APP[Application BBIA<br/>Modules & API]
@@ -56,7 +56,7 @@ graph TB
 
 ### Flux Logs
 
-```mermaid
+```mermaid 📊
 flowchart LR
     EVENT[Événement<br/>Application] --> LOGGER[Logger<br/>Structured JSON]
     
@@ -79,7 +79,7 @@ flowchart LR
 
 ### Flux Health Checks
 
-```mermaid
+```mermaid 📊
 sequenceDiagram
     participant LB as Load Balancer
     participant API as BBIA API
@@ -115,7 +115,7 @@ sequenceDiagram
 
 ### Métriques Disponibles
 
-```mermaid
+```mermaid 📊
 mindmap
   root((Métriques BBIA))
     Performance

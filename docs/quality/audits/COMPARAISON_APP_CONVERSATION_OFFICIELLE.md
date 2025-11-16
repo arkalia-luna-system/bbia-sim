@@ -351,4 +351,4 @@ pie title Score par Catégorie
 
 ---
 
-**Dernière mise à jour** : Oct / Nov. 2025 (outils LLM intégrés avec BBIAHuggingFace.chat() + model_optimizer + bbia_doctor)
+**Dernière mise à jour** : Nov. 2025 (outils LLM intégrés avec BBIAHuggingFace.chat() + model_optimizer + bbia_doctor avec tests Zenoh/daemon/WiFi)

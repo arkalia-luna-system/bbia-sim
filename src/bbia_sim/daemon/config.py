@@ -5,7 +5,7 @@ from typing import Any
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
-class Settings(BaseSettings):  # type: ignore[misc]
+class Settings(BaseSettings):
     """Configuration de l'application."""
 
     model_config = SettingsConfigDict(env_file=".env", env_prefix="BBIA_")

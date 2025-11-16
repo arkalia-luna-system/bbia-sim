@@ -4,7 +4,8 @@
 echo "🎮 Lancement démo BBIA 3D (taille fixe)..."
 echo ""
 
-# Activer le venv
+# Activer le venv (depuis examples/, remonter d'un niveau)
+cd "$(dirname "$0")/.." || exit
 source venv/bin/activate
 
 # Utiliser mjpython pour voir le viewer 3D (fonctionne sur macOS)

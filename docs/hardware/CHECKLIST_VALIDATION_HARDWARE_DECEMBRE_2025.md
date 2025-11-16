@@ -33,13 +33,14 @@
 - [ ] **Vérification connexion SDK**
 
   ```bash
-  python -c "from reachy_mini_motor_controller import ReachyMini; robot = ReachyMini(); print(robot.is_connected)"
+  python -c "from reachy_mini_motor_controller import ReachyMini; import logging; robot = ReachyMini(); logging.info(robot.is_connected)"
   ```
 
 - [ ] **Test basique SDK**
 
   ```bash
-  python examples/demo_reachy_mini_corrigee.py --quick
+  python examples/reachy_mini/minimal_demo.py
+  # ⚠️ Note: demo_reachy_mini_corrigee.py est déprécié, utiliser reachy_mini/* (SDK officiel)
   ```
 
 ### Configuration Réseau
@@ -110,7 +111,8 @@
 
   ```bash
   python examples/demo_voice_ok.py --backend reachy_mini
-  python examples/demo_chat_bbia.py --backend reachy_mini
+  mjpython examples/demo_chat_bbia_3d.py
+  # ⚠️ Note: demo_chat_bbia.py est déprécié, utiliser demo_chat_bbia_3d.py
   ```
 
 - [ ] **Mouvements (articulations)**
@@ -166,7 +168,7 @@
 - [ ] **Test emergency stop**
 
   ```bash
-  python -c "from bbia_sim.robot_factory import RobotFactory; r = RobotFactory.create_backend('reachy_mini', use_sim=False); r.connect(); r.wake_up(); r.emergency_stop(); print('Emergency stop OK')"
+  python -c "from bbia_sim.robot_factory import RobotFactory; import logging; r = RobotFactory.create_backend('reachy_mini', use_sim=False); r.connect(); r.wake_up(); r.emergency_stop(); logging.info('Emergency stop OK')"
   ```
 
 ---

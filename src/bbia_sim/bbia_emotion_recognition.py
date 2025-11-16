@@ -571,39 +571,39 @@ class BBIAEmotionRecognition:
 def main() -> None:
     """Test du module BBIA Emotion Recognition."""
     if not ML_AVAILABLE:
-        print("❌ Dépendances ML non disponibles")
-        print("Installez avec: pip install mediapipe torch transformers")
+        logging.error("❌ Dépendances ML non disponibles")
+        logging.info("Installez avec: pip install mediapipe torch transformers")
         return
 
     # Initialisation
     emotion_rec = BBIAEmotionRecognition()
 
     # Test initialisation
-    print("🚀 Test initialisation...")
+    logging.info("🚀 Test initialisation...")
     success = emotion_rec.initialize()
-    print(f"Résultat: {'✅' if success else '❌'}")
+    logging.info(f"Résultat: {'✅' if success else '❌'}")
 
     # Test analyse émotion vocale
-    print("\n🗣️ Test analyse émotion vocale...")
+    logging.info("\n🗣️ Test analyse émotion vocale...")
     vocal_result = emotion_rec.analyze_vocal_emotion(
         "Je suis très heureux aujourd'hui!",
     )
-    print(f"Résultat: {vocal_result}")
+    logging.info(f"Résultat: {vocal_result}")
 
     # Test analyse émotion faciale (simulation)
-    print("\n😊 Test analyse émotion faciale...")
+    logging.info("\n😊 Test analyse émotion faciale...")
     facial_result = emotion_rec.analyze_facial_emotion(
         np.random.randint(0, 255, (480, 640, 3), dtype=np.uint8),
     )
-    print(f"Résultat: {facial_result}")
+    logging.info(f"Résultat: {facial_result}")
 
     # Test fusion
-    print("\n🔄 Test fusion émotions...")
+    logging.info("\n🔄 Test fusion émotions...")
     fusion_result = emotion_rec.fuse_emotions(facial_result, vocal_result)
-    print(f"Résultat: {fusion_result}")
+    logging.info(f"Résultat: {fusion_result}")
 
     # Statistiques
-    print(f"\n📊 Statistiques: {emotion_rec.get_emotion_statistics()}")
+    logging.info(f"\n📊 Statistiques: {emotion_rec.get_emotion_statistics()}")
 
 
 if __name__ == "__main__":

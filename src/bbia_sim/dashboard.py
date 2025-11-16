@@ -470,13 +470,13 @@ def run_dashboard(host: str = "127.0.0.1", port: int = 8000, backend: str = "muj
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
 
-    print("🧪 Test Dashboard BBIA")
-    print("=" * 40)
+    logging.info("🧪 Test Dashboard BBIA")
+    logging.info("=" * 40)
 
-    print(f"FastAPI disponible: {FASTAPI_AVAILABLE}")
+    logging.info(f"FastAPI disponible: {FASTAPI_AVAILABLE}")
 
     if FASTAPI_AVAILABLE:
-        print("✅ Dashboard prêt")
-        print("🚀 Pour lancer: python scripts/bbia_dashboard.py")
+        logging.info("✅ Dashboard prêt")
+        logging.info("🚀 Pour lancer: python scripts/bbia_dashboard.py")
     else:
-        print("❌ FastAPI requis pour le dashboard")
+        logging.error("❌ FastAPI requis pour le dashboard")

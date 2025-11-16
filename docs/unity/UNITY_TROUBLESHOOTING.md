@@ -8,7 +8,7 @@
 
 ## 🔧 Diagnostic des Problèmes Unity
 
-```mermaid
+```mermaid 📊
 flowchart TD
     START[Problème Unity] --> TYPE{Type d'erreur ?}
 
@@ -35,7 +35,7 @@ flowchart TD
 
 ## Solutions par priorité
 
-```mermaid
+```mermaid 📊
 graph LR
     subgraph "Priorité 1 - Critique"
         CRITICAL[Projet ne se charge pas<br/>Erreurs de compilation<br/>Scène corrompue]

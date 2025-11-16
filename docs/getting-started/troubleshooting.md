@@ -7,7 +7,7 @@
 
 **Version** : 1.3.2 • **Date** : Oct / Nov. 2025
 
-[📚 Documentation complète](../README.md) • [🐛 Signaler un problème](https://github.com/arkalia-luna-system/bbia-sim/issues)
+[![📚 Documentation](https://img.shields.io/badge/📚-Documentation-blue)](../README.md) • [![🐛 Issue](https://img.shields.io/badge/🐛-Signaler%20un%20problème-red)](https://github.com/arkalia-luna-system/bbia-sim/issues)
 
 </div>
 
@@ -406,7 +406,7 @@ export BBIA_DISABLE_SIMULATION=1
 | 💡 **Exemples** | [`../../examples/README.md`](../../examples/README.md) | Exemples d'utilisation |
 | 🔧 **Scripts** | [`../../scripts/README.md`](../../scripts/README.md) | Outils utilitaires |
 | 🎯 **Guide débutant** | [`../guides/GUIDE_DEBUTANT.md`](../guides/GUIDE_DEBUTANT.md) | Démarrage rapide |
-| 🔍 **Diagnostic** | `python scripts/bbia_doctor.py` | Vérification environnement |
+| 🔍 **Diagnostic** | `python scripts/bbia_doctor.py` | Vérification environnement (Zenoh, daemon, WiFi) |
 
 ## 🔗 Liens Utiles
 

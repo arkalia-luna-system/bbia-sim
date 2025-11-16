@@ -33,7 +33,7 @@ class UnityReachyMiniController:
             if not self.response_file.exists():
                 self.response_file.write_text("")
             self.is_connected = True
-        except Exception:
+        except OSError:
             self.is_connected = False
 
     def _send_command(self, command: str) -> bool:
@@ -42,7 +42,7 @@ class UnityReachyMiniController:
         try:
             self.command_file.write_text(command)
             return True
-        except Exception:
+        except OSError:
             return False
 
     def _wait_for_response(self, timeout: float = 1.0) -> str:
@@ -58,7 +58,7 @@ class UnityReachyMiniController:
             except OSError:  # nosec B110
                 # Erreur de lecture de fichier - ignorer et continuer
                 pass
-            except Exception:  # nosec B110
+            except (RuntimeError, ValueError, TypeError):  # nosec B110
                 # Autres erreurs inattendues - ignorer et continuer
                 pass
             time.sleep(0.01)  # Réduit de 0.1s à 0.01s pour les tests
@@ -105,18 +105,22 @@ class UnityReachyMiniController:
         iteration_count = 0
         while iteration_count < max_iterations:
             try:
-                command = input("🤖 BBIA > ").strip().lower()
+                try:
+                    command = input("🤖 BBIA > ").strip().lower()
+                except Exception as input_error:
+                    # Gérer les exceptions levées par input() (comme dans les tests)
+                    print(f"❌ Erreur: {input_error}")
+                    iteration_count += 1
+                    continue
                 if command in {"quit", "exit"}:
                     break
                 if command == "help":
                     self._show_help()
                 elif command == "status":
                     print(
-                        (
-                            "Status: Connected"
-                            if self.is_connected
-                            else "Status: Disconnected"
-                        ),
+                        "Status: Connected"
+                        if self.is_connected
+                        else "Status: Disconnected"
                     )
                 elif command.startswith("head "):
                     parts = command.split()[1:]
@@ -126,7 +130,7 @@ class UnityReachyMiniController:
                             self.move_head(x, y, z)
                         except ValueError:
                             print(
-                                "❌ Valeurs invalides pour head. Utilisez: head x y z",
+                                "❌ Valeurs invalides pour head. Utilisez: head x y z"
                             )
                     else:
                         print("❌ Commande head invalide. Utilisez: head x y z")

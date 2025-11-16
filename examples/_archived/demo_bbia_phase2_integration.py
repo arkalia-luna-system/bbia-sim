@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# ⚠️ OBSOLÈTE : Test intégration phase 2, plus utilisé
+# Ce fichier peut être archivé dans une future version
 """
 Exemple d'intégration des modules BBIA Phase 2
 Démonstration des nouvelles fonctionnalités : Hugging Face, Emotion Recognition, Adaptive Behavior
@@ -28,8 +30,12 @@ def demo_huggingface_integration():
         # Affichage des modèles disponibles
         print("\n📋 Modèles disponibles:")
         models = hf.get_available_models()
-        for category, model_list in models.items():
-            print(f"  {category}: {list(model_list.keys())}")
+        if isinstance(models, dict):
+            for category, model_list in models.items():
+                if isinstance(model_list, dict):
+                    print(f"  {category}: {list(model_list.keys())}")
+                else:
+                    print(f"  {category}: {model_list}")
 
         # Test analyse sentiment
         print("\n📝 Test analyse sentiment...")

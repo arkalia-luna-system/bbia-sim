@@ -92,7 +92,7 @@ class Pyttsx3TTS:
             engine.save_to_file(text, outfile)
             engine.runAndWait()
             return True
-        except Exception:
+        except (RuntimeError, OSError, ValueError):
             return False
 
 
@@ -114,7 +114,7 @@ class KittenTTSTTS:
                     return True
 
             self._impl = _KittenImpl()
-        except Exception:
+        except (ImportError, RuntimeError, AttributeError):
             self._impl = None
 
     def synthesize_to_wav(self, text: str, outfile: str) -> bool:
@@ -142,7 +142,7 @@ class KokoroTTS:
                     return True
 
             self._impl = _KokoroImpl()
-        except Exception:
+        except (ImportError, RuntimeError, AttributeError):
             self._impl = None
 
     def synthesize_to_wav(self, text: str, outfile: str) -> bool:
@@ -170,7 +170,7 @@ class NeuTTSTTS:
                     return True
 
             self._impl = _NeuImpl()
-        except Exception:
+        except (ImportError, RuntimeError, AttributeError):
             self._impl = None
 
     def synthesize_to_wav(self, text: str, outfile: str) -> bool:
@@ -196,7 +196,7 @@ class CoquiTTSTTS:
 
             self._coqui_cls = _COQUI_TTS  # store class
             self._ready = True
-        except Exception:
+        except (ImportError, RuntimeError, AttributeError):
             self._coqui_cls = None
             self._ready = False
 
@@ -209,7 +209,7 @@ class CoquiTTSTTS:
             tts = self._coqui_cls(model_name)
             tts.tts_to_file(text=text, file_path=outfile)
             return True
-        except Exception:
+        except (RuntimeError, OSError, ValueError):
             return self._fallback.synthesize_to_wav(text, outfile)
 
 
@@ -248,7 +248,7 @@ class OpenVoiceTTSTTS:
                 shell=False,
             )  # nosec B603 - cmd_args parsé via shlex
             return True
-        except Exception:
+        except (RuntimeError, OSError, ValueError):
             return self._fallback.synthesize_to_wav(text, outfile)
 
 

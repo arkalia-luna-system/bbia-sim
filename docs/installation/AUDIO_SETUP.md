@@ -4,7 +4,7 @@
 
 ## 🏗️ Architecture Audio BBIA
 
-```mermaid
+```mermaid 📊
 graph TB
     subgraph "Hardware Audio"
         MICROPHONE[Microphone<br/>Entrée audio]
@@ -57,7 +57,7 @@ graph TB
 > pip install -e .[audio]
 > ```
 
-```mermaid
+```mermaid 📊
 flowchart TD
     START[Début installation] --> OS{Système d'exploitation ?}
 
@@ -81,7 +81,7 @@ flowchart TD
 
 ## 📊 Comparaison des Options d'Installation
 
-```mermaid
+```mermaid 📊
 pie title Options d'Installation Audio
     "Installation standard" : 30
     "Installation avec audio" : 50

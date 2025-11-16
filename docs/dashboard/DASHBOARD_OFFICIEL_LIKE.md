@@ -175,7 +175,7 @@ ls src/bbia_sim/daemon/app/dashboard/static/
 ls src/bbia_sim/daemon/app/dashboard/static/js/
 
 # 4. Vérifier intégration
-python -c "from bbia_sim.daemon.app.main import app; print('✅ OK')"
+python -c "from bbia_sim.daemon.app.main import app; import logging; logging.info('✅ OK')"
 
 ```
 

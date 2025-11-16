@@ -163,6 +163,14 @@ class BBIAHuggingFace:
         self._model_last_used: dict[str, float] = {}  # Timestamp dernier usage pour LRU
         self._inactivity_timeout = 300.0  # 5 minutes d'inactivité → déchargement auto
 
+        # OPTIMISATION RAM: Thread pour déchargement automatique après inactivité
+        import threading
+
+        self._unload_thread: threading.Thread | None = None
+        self._unload_thread_stop = threading.Event()
+        self._unload_thread_lock = threading.Lock()
+        self._start_auto_unload_thread()
+
         # Chat intelligent : Historique et contexte
         self.conversation_history: list[dict[str, Any]] = []
         self.context: dict[str, Any] = {}
@@ -928,6 +936,69 @@ class BBIAHuggingFace:
         """OPTIMISATION RAM: Met à jour timestamp d'usage d'un modèle."""
         self._model_last_used[model_key] = time.time()
 
+    def _start_auto_unload_thread(self) -> None:
+        """OPTIMISATION RAM: Démarre le thread de déchargement automatique après inactivité."""
+        import threading
+
+        def _auto_unload_loop() -> None:
+            """Boucle de déchargement automatique des modèles inactifs."""
+            while not self._unload_thread_stop.is_set():
+                try:
+                    # Attendre 60 secondes entre vérifications
+                    if self._unload_thread_stop.wait(60.0):
+                        break  # Arrêt demandé
+
+                    current_time = time.time()
+                    models_to_unload: list[tuple[str, float]] = []
+
+                    # Identifier modèles inactifs > 5 min
+                    with self._unload_thread_lock:
+                        for model_key, last_used in list(self._model_last_used.items()):
+                            inactivity = current_time - last_used
+                            if inactivity > self._inactivity_timeout:
+                                models_to_unload.append((model_key, inactivity))
+
+                    # Décharger modèles inactifs (hors lock pour éviter deadlock)
+                    for model_key, inactivity in models_to_unload:
+                        try:
+                            # Extraire nom modèle depuis clé
+                            parts = model_key.rsplit("_", 1)
+                            if len(parts) == 2:
+                                model_name = parts[0]
+                                logger.debug(
+                                    f"🗑️ Déchargement auto modèle inactif "
+                                    f"({inactivity:.0f}s): {model_key}"
+                                )
+                                self.unload_model(model_name)
+                                # Supprimer du tracking
+                                with self._unload_thread_lock:
+                                    if model_key in self._model_last_used:
+                                        del self._model_last_used[model_key]
+                        except Exception as e:
+                            logger.debug(f"Erreur déchargement auto {model_key}: {e}")
+
+                except Exception as e:
+                    logger.debug(f"Erreur boucle déchargement auto: {e}")
+                    # Continuer même en cas d'erreur
+
+        with self._unload_thread_lock:
+            if self._unload_thread is None or not self._unload_thread.is_alive():
+                self._unload_thread_stop.clear()
+                self._unload_thread = threading.Thread(
+                    target=_auto_unload_loop,
+                    daemon=True,
+                    name="BBIAHF-AutoUnload",
+                )
+                self._unload_thread.start()
+                logger.debug("✅ Thread déchargement auto Hugging Face démarré")
+
+    def _stop_auto_unload_thread(self) -> None:
+        """OPTIMISATION RAM: Arrête le thread de déchargement automatique."""
+        if self._unload_thread and self._unload_thread.is_alive():
+            self._unload_thread_stop.set()
+            self._unload_thread.join(timeout=2.0)
+            logger.debug("Thread déchargement auto Hugging Face arrêté")
+
     def unload_model(self, model_name: str) -> bool:
         """Décharge un modèle de la mémoire.
 
@@ -994,7 +1065,7 @@ class BBIAHuggingFace:
             # 1. Analyser sentiment du message (avec gestion erreur)
             try:
                 sentiment = self.analyze_sentiment(user_message)
-            except Exception:
+            except (ValueError, RuntimeError, KeyError):
                 # Fallback si sentiment indisponible
                 sentiment = {"sentiment": "NEUTRAL", "score": 0.5}
 
@@ -1157,7 +1228,7 @@ class BBIAHuggingFace:
                     tokenize=False,
                     add_generation_prompt=True,
                 )
-            except Exception:
+            except (ValueError, AttributeError, TypeError):
                 # Fallback si pas de chat template
                 prompt = f"{system_prompt}\n\nUser: {user_message}\nAssistant:"
 
@@ -1203,7 +1274,7 @@ class BBIAHuggingFace:
             # Fallback vers réponses enrichies
             try:
                 sentiment = self.analyze_sentiment(user_message)
-            except Exception:
+            except (ValueError, RuntimeError, KeyError):
                 sentiment = {"sentiment": "NEUTRAL", "score": 0.5}
             return self._generate_simple_response(user_message, sentiment)
 
@@ -1432,7 +1503,7 @@ class BBIAHuggingFace:
                                         sentiment.get("sentiment", "NEUTRAL"),
                                         "neutral",
                                     )
-                                except Exception:
+                                except (KeyError, ValueError, TypeError):
                                     params["emotion"] = "neutral"
                             params["intensity"] = 0.7
 
@@ -1667,7 +1738,7 @@ class BBIAHuggingFace:
                             sentiment.get("sentiment", "NEUTRAL"),
                             "neutral",
                         )
-                    except Exception:
+                    except (ValueError, KeyError, TypeError):
                         params["emotion"] = "neutral"
                 params["intensity"] = 0.7
 
@@ -1946,7 +2017,7 @@ class BBIAHuggingFace:
                 candidate = f"{text} {addition}".strip()
                 return self._normalize_response_length(candidate)
             return text
-        except Exception:
+        except (ValueError, RuntimeError, TypeError):
             return text
 
     def _safe_fallback(self) -> str:
@@ -1974,7 +2045,7 @@ class BBIAHuggingFace:
             ]
             candidate = f"{base}{suffix}".strip()
             return self._normalize_response_length(candidate)
-        except Exception:
+        except (ValueError, RuntimeError, TypeError):
             return SAFE_FALLBACK
 
     def _generate_simple_response(self, message: str, sentiment: dict[str, Any]) -> str:
@@ -2459,7 +2530,7 @@ class BBIAHuggingFace:
                     f"Erreur lors de l'évitement des doublons récents (t4): {e}"
                 )
             return t4
-        except Exception:
+        except (ValueError, RuntimeError, TypeError):
             return text
 
     def _get_recent_context(self) -> str | None:
@@ -2540,38 +2611,40 @@ class BBIAHuggingFace:
 def main() -> None:
     """Test du module BBIA Hugging Face."""
     if not HF_AVAILABLE:
-        print("❌ Hugging Face transformers non disponible")
-        print("Installez avec: pip install transformers torch")
+        logging.error("❌ Hugging Face transformers non disponible")
+        logging.info("Installez avec: pip install transformers torch")
         return
 
     # Initialisation
     hf = BBIAHuggingFace()
 
     # Test chargement modèle
-    print("📥 Test chargement modèle BLIP...")
+    logging.info("📥 Test chargement modèle BLIP...")
     success = hf.load_model("Salesforce/blip-image-captioning-base", "vision")
-    print(f"Résultat: {'✅' if success else '❌'}")
+    logging.info(f"Résultat: {'✅' if success else '❌'}")
 
     # Test analyse sentiment
-    print("\n📝 Test analyse sentiment...")
+    logging.info("\n📝 Test analyse sentiment...")
     sentiment_result = hf.analyze_sentiment("Je suis très heureux aujourd'hui!")
-    print(f"Résultat: {sentiment_result}")
+    logging.info(f"Résultat: {sentiment_result}")
 
     # Test analyse émotion
-    print("\n😊 Test analyse émotion...")
+    logging.info("\n😊 Test analyse émotion...")
     emotion_result = hf.analyze_emotion("Je suis excité par ce projet!")
-    print(f"Résultat: {emotion_result}")
+    logging.info(f"Résultat: {emotion_result}")
 
     # Test chat intelligent
-    print("\n💬 Test chat intelligent...")
+    logging.info("\n💬 Test chat intelligent...")
     chat_result1 = hf.chat("Bonjour")
-    print(f"BBIA: {chat_result1}")
+    logging.info(f"BBIA: {chat_result1}")
     chat_result2 = hf.chat("Comment allez-vous ?")
-    print(f"BBIA: {chat_result2}")
+    logging.info(f"BBIA: {chat_result2}")
 
     # Informations
-    print(f"\n📊 Informations: {hf.get_model_info()}")
-    print(f"\n📝 Historique conversation: {len(hf.conversation_history)} messages")
+    logging.info(f"\n📊 Informations: {hf.get_model_info()}")
+    logging.info(
+        f"\n📝 Historique conversation: {len(hf.conversation_history)} messages"
+    )
 
 
 if __name__ == "__main__":

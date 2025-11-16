@@ -386,7 +386,7 @@ tests/
 
 ### **CI/CD Pipeline**
 
-```yaml
+```yaml ⚙️
 
 # .github/workflows/ci.yml
 

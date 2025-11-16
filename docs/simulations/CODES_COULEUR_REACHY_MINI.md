@@ -188,7 +188,7 @@ def hex_to_mujoco_rgba(hex_color, alpha=1.0):
     return f"{r:.6f} {g:.6f} {b:.6f} {alpha}"
 
 # Exemple
-print(hex_to_mujoco_rgba("#87bcfa"))  # 0.529412 0.737255 0.980392 1.0
+logging.info(hex_to_mujoco_rgba("#87bcfa"))  # 0.529412 0.737255 0.980392 1.0
 ```
 
 ---

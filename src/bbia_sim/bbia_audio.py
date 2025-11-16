@@ -60,7 +60,7 @@ def _get_sd() -> Any | None:
         # Remplacer le shim par le vrai module sounddevice
         globals()["sd"] = _sd
         return _sd
-    except Exception:
+    except (ImportError, RuntimeError, AttributeError):
         # Retourner le shim pour rester patchable dans les tests
         return sd
 
@@ -78,7 +78,11 @@ try:  # pragma: no cover - import optionnel
     import soundfile as _soundfile
 
     soundfile = _soundfile
-except Exception:  # pragma: no cover - environnement sans soundfile
+except (
+    ImportError,
+    RuntimeError,
+    AttributeError,
+):  # pragma: no cover - environnement sans soundfile
     soundfile = None
 
 
@@ -101,7 +105,7 @@ def _get_robot_media_microphone(
             if media:
                 result = getattr(media, "microphone", None)
                 return result  # type: ignore[no-any-return]
-        except Exception:
+        except (AttributeError, ImportError, RuntimeError):
             return None
     return None
 
@@ -147,7 +151,7 @@ def _is_safe_path(path: str) -> bool:
                 return True
             return abs_path.startswith(_cwd_cache + os.sep) or abs_path == _cwd_cache
         return True
-    except Exception:
+    except (OSError, ValueError, TypeError):
         return False
 
 

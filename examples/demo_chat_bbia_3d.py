@@ -229,10 +229,10 @@ def demo_chat_bbia_3d():
             bbia = BBIAHuggingFace()
             print(f"\n🤖 BBIA initialisé avec personnalité: {bbia.bbia_personality}")
         except Exception:
-            bbia = MockHuggingFace()
+            bbia = MockHuggingFace()  # type: ignore[assignment]
             print("\n🤖 BBIA (mode fallback) initialisé")
     else:
-        bbia = MockHuggingFace()
+        bbia = MockHuggingFace()  # type: ignore[assignment]
         print("\n🤖 BBIA (mode fallback) initialisé")
 
     # Charger le modèle MuJoCo

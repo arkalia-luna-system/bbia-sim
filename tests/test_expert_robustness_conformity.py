@@ -17,7 +17,17 @@ import pytest
 # Ajouter le chemin src au PYTHONPATH
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
+# OPTIMISATION COVERAGE: Importer les modules au niveau module pour que coverage les détecte
+import bbia_sim.backends.reachy_mini_backend  # noqa: F401
+import bbia_sim.bbia_huggingface  # noqa: F401
+
 from bbia_sim.backends.reachy_mini_backend import ReachyMiniBackend
+
+# Importer BBIAHuggingFace pour les tests
+try:
+    from bbia_sim.bbia_huggingface import BBIAHuggingFace  # noqa: F401
+except (ImportError, AttributeError):
+    BBIAHuggingFace = None  # type: ignore[assignment,misc]
 
 # Import SDK officiel si disponible
 try:
@@ -414,9 +424,10 @@ class TestExpertRobustnessConformity:
         print("\n🧪 EXPERT TEST 15: Limite Mémoire Historique Conversation")
         print("=" * 60)
 
-        try:
-            from bbia_sim.bbia_huggingface import BBIAHuggingFace
+        if BBIAHuggingFace is None:
+            pytest.skip("BBIAHuggingFace non disponible")
 
+        try:
             bbia = BBIAHuggingFace()
 
             # Noter la longueur initiale (peut contenir historique chargé depuis mémoire)

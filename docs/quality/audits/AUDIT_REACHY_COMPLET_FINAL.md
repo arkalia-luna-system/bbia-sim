@@ -83,7 +83,7 @@ def emergency_stop(self) -> bool:
             self.robot.disable_motors()
         self.is_connected = False
             return True
-        except Exception as e:
+        except (ValueError, RuntimeError, ConnectionError) as e:
             logger.error(f"Erreur emergency_stop: {e}")
     return False
 

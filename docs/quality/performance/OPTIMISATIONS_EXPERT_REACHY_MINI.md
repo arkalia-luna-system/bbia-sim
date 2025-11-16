@@ -31,7 +31,7 @@ Les mouvements utilisant plusieurs `set_joint_pos()` successifs créent des mouv
 
 **Exemple avant :**
 
-```python
+```python 🐍
 self.robot_api.set_joint_pos("yaw_body", 0.15)
 time.sleep(0.5)
 self.robot_api.set_joint_pos("yaw_body", -0.15)
@@ -42,7 +42,7 @@ self.robot_api.set_joint_pos("yaw_body", 0.0)
 
 **Exemple après :**
 
-```python
+```python 🐍
 # Mouvement fluide avec interpolation automatique
 self.robot_api.goto_target(
     body_yaw=0.15,
@@ -74,7 +74,7 @@ Les mouvements de tête et corps appliqués séparément créent une désynchron
 
 **Exemple avant :**
 
-```python
+```python 🐍
 self.robot_api.set_emotion("happy", 0.6)
 self.robot_api.set_joint_pos("yaw_body", 0.1)
 
@@ -82,7 +82,7 @@ self.robot_api.set_joint_pos("yaw_body", 0.1)
 
 **Exemple après :**
 
-```python
+```python 🐍
 pose = create_head_pose(pitch=0.08, yaw=0.0, degrees=False)
 self.robot_api.goto_target(
     head=pose,
@@ -109,7 +109,7 @@ Le suivi visuel utilisait directement `set_joint_position()` sans utiliser les c
 
 **Exemple avant ❌:**
 
-```python
+```python 🐍
 head_turn = face_position[0] * 0.3
 self.simulation_service.set_joint_position("yaw_body", head_turn)
 
@@ -117,7 +117,7 @@ self.simulation_service.set_joint_position("yaw_body", head_turn)
 
 **Exemple après ✅:**
 
-```python
+```python 🐍
 # Validation et utilisation SDK optimisée
 if hasattr(robot_api, 'look_at_world'):
     pos_3d = face_data.get("position_3d", {})
@@ -161,7 +161,7 @@ Système de fallbacks à 3 niveaux : SDK optimisé → SDK basique → Simulatio
 
 **Exemple de pattern :**
 
-```python
+```python 🐍
 try:
     # Méthode 1 (préférée): goto_target avec interpolation
     if hasattr(robot_api, 'goto_target'):
@@ -172,7 +172,7 @@ try:
     # Méthode 3 (fallback final): set_joint_pos
     else:
         robot_api.set_joint_pos(...)
-except Exception as e:
+except (ValueError, RuntimeError, ConnectionError) as e:
     logger.warning(f"Erreur (fallback): {e}")
     # Fallback final vers simulation
 

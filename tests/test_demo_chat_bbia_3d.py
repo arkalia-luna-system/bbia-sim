@@ -12,48 +12,42 @@ import pytest
 # Ajouter le chemin src au PYTHONPATH
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
+# OPTIMISATION COVERAGE: Importer le module au niveau module pour que coverage le détecte
+import bbia_sim.bbia_huggingface  # noqa: F401
+
+# Importer les classes pour les tests
+try:
+    from bbia_sim.bbia_huggingface import BBIAHuggingFace
+
+    BBIA_HUGGINGFACE_AVAILABLE = True
+except ImportError:
+    BBIA_HUGGINGFACE_AVAILABLE = False
+    BBIAHuggingFace = None  # type: ignore[assignment,misc]
+
 
 class TestDemoChatBBIA3D:
     """Tests pour la démo chat BBIA 3D."""
 
+    @pytest.mark.skipif(
+        not BBIA_HUGGINGFACE_AVAILABLE or BBIAHuggingFace is None,
+        reason="Module bbia_huggingface non disponible",
+    )
     def test_chat_initialization(self):
         """Test que le chat peut s'initialiser."""
-        try:
-            from bbia_sim.bbia_huggingface import BBIAHuggingFace
+        bbia = BBIAHuggingFace()
+        assert hasattr(bbia, "bbia_personality")
+        assert hasattr(bbia, "conversation_history")
 
-            bbia = BBIAHuggingFace()
-            assert hasattr(bbia, "bbia_personality")
-            assert hasattr(bbia, "conversation_history")
-        except ImportError:
-            # Fallback sans HF
-            class MockHuggingFace:
-                def __init__(self):
-                    self.bbia_personality = "friendly_robot"
-                    self.conversation_history = []
-
-            bbia_fallback: BBIAHuggingFace = MockHuggingFace()  # type: ignore[assignment]
-            bbia = bbia_fallback
-            assert hasattr(bbia, "bbia_personality")
-
+    @pytest.mark.skipif(
+        not BBIA_HUGGINGFACE_AVAILABLE or BBIAHuggingFace is None,
+        reason="Module bbia_huggingface non disponible",
+    )
     def test_chat_method(self):
         """Test que la méthode chat fonctionne."""
-        try:
-            from bbia_sim.bbia_huggingface import BBIAHuggingFace
-
-            bbia = BBIAHuggingFace()
-            response = bbia.chat("Bonjour")
-            assert isinstance(response, str)
-            assert len(response) > 0
-        except ImportError:
-            # Fallback sans HF
-            class MockHuggingFace:
-                def chat(self, message):
-                    return "🤖 Bonjour !"
-
-            bbia_fallback: BBIAHuggingFace = MockHuggingFace()  # type: ignore[assignment]
-            bbia = bbia_fallback
-            response = bbia.chat("Bonjour")
-            assert isinstance(response, str)
+        bbia = BBIAHuggingFace()
+        response = bbia.chat("Bonjour")
+        assert isinstance(response, str)
+        assert len(response) > 0
 
     def test_mujoco_model_load(self):
         """Test que le modèle MuJoCo peut être chargé."""
@@ -143,56 +137,36 @@ class TestDemoChatBBIA3D:
         except ImportError:
             pytest.skip("MuJoCo non disponible")
 
+    @pytest.mark.skipif(
+        not BBIA_HUGGINGFACE_AVAILABLE or BBIAHuggingFace is None,
+        reason="Module bbia_huggingface non disponible",
+    )
     def test_conversation_history(self):
         """Test que l'historique est sauvegardé."""
-        try:
-            from bbia_sim.bbia_huggingface import BBIAHuggingFace
+        bbia = BBIAHuggingFace()
+        initial_count = len(bbia.conversation_history)
 
-            bbia = BBIAHuggingFace()
-            initial_count = len(bbia.conversation_history)
+        bbia.chat("Test message")
 
-            bbia.chat("Test message")
+        assert len(bbia.conversation_history) == initial_count + 1
 
-            assert len(bbia.conversation_history) == initial_count + 1
-        except ImportError:
-            # Fallback sans HF
-            class MockHuggingFace:
-                def __init__(self):
-                    self.conversation_history = []
-
-                def chat(self, msg):
-                    self.conversation_history.append({"user": msg, "bbia": "🤖 OK"})
-
-            bbia_fallback: BBIAHuggingFace = MockHuggingFace()  # type: ignore[assignment]
-            bbia = bbia_fallback
-            bbia.chat("Test")
-            assert len(bbia.conversation_history) == 1
-
+    @pytest.mark.skipif(
+        not BBIA_HUGGINGFACE_AVAILABLE or BBIAHuggingFace is None,
+        reason="Module bbia_huggingface non disponible",
+    )
     def test_bbia_personality(self):
         """Test que la personnalité BBIA fonctionne."""
-        try:
-            from bbia_sim.bbia_huggingface import BBIAHuggingFace
+        bbia = BBIAHuggingFace()
+        assert bbia.bbia_personality in [
+            "friendly_robot",
+            "curious",
+            "enthusiastic",
+            "calm",
+        ]
 
-            bbia = BBIAHuggingFace()
-            assert bbia.bbia_personality in [
-                "friendly_robot",
-                "curious",
-                "enthusiastic",
-                "calm",
-            ]
-
-            # Tester changement de personnalité
-            bbia.bbia_personality = "curious"
-            assert bbia.bbia_personality == "curious"
-        except ImportError:
-            # Fallback
-            class MockHuggingFace:
-                def __init__(self):
-                    self.bbia_personality = "friendly_robot"
-
-            bbia_fallback: BBIAHuggingFace = MockHuggingFace()  # type: ignore[assignment]
-            bbia = bbia_fallback
-            assert bbia.bbia_personality == "friendly_robot"
+        # Tester changement de personnalité
+        bbia.bbia_personality = "curious"
+        assert bbia.bbia_personality == "curious"
 
 
 def test_demo_can_import():

@@ -440,7 +440,7 @@ async def telemetry_client():
         while True:
             data = await websocket.recv()
             telemetry = json.loads(data)
-            print(f"Télémétrie: {telemetry}")
+            logging.info(f"Télémétrie: {telemetry}")
 
 # Démarrage du client
 asyncio.run(telemetry_client())
@@ -670,9 +670,9 @@ async def main():
     try:
         # Récupération des capacités
         capabilities = await client.get_capabilities()
-        print(f"Robot: {capabilities['model']}")
-        print(f"Joints: {capabilities['joints']}")
-        print(f"Émotions: {len(capabilities['emotions'])}")
+        logging.info(f"Robot: {capabilities['model']}")
+        logging.info(f"Joints: {capabilities['joints']}")
+        logging.info(f"Émotions: {len(capabilities['emotions'])}")
 
         # Application d'émotions
         await client.apply_emotion("happy", 0.8, 5.0)
@@ -746,7 +746,7 @@ class BBIAROS2Node(Node):
                 )
                 self.get_logger().info(f'Comportement {behavior} exécuté')
 
-        except Exception as e:
+        except (ValueError, RuntimeError, ConnectionError) as e:
             self.get_logger().error(f'Erreur: {e}')
 
 def main(args=None):
@@ -790,7 +790,7 @@ export REACHY_ROBOT_IP=192.168.1.100
 
 ### Configuration Docker
 
-```dockerfile
+```dockerfile 🐳
 FROM python:3.11-slim
 
 WORKDIR /app
@@ -874,10 +874,10 @@ async def validate_integration():
         response = await client.get("http://localhost:8000/development/api/ecosystem/behaviors/available")
         assert response.status_code == 200
 
-        print("Intégration validée avec succès")
+        logging.info("Intégration validée avec succès")
 
-    except Exception as e:
-        print(f"Erreur de validation: {e}")
+    except (ValueError, RuntimeError, ConnectionError) as e:
+        logging.error(f"Erreur de validation: {e}")
     finally:
         await client.aclose()
 
