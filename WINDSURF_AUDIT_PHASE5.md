@@ -47,7 +47,12 @@ Audit de l'intégration MuJoCo et optimisation de la simulation
 - Modèle complet avec masses réelles
 
 **Problèmes identifiés :**
-- **Incohérence majeure** : Les deux modèles ne décrivent pas le même robot
+1. **Incohérence CRITIQUE** : Les deux modèles ne décrivent pas le même robot
+2. **reachy_mini.xml** : Robot simplifié (7 joints)
+3. **reachy_mini_REAL_OFFICIAL.xml** : Robot Stewart platform (16 joints)
+4. **Impact** : Simulation ne correspond pas au robot réel
+
+**Score : 2.3/10**
 - **reachy_mini.xml** : Bras articulés (version simplifiée)
 - **REAL_OFFICIAL.xml** : Stewart platform + antennes (version réelle)
 - **Masses manquantes** : Le modèle simplifié n'a pas de masses physiques
