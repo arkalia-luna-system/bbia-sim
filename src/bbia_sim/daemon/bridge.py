@@ -459,7 +459,7 @@ class ZenohBridge:
 
     def _look_at_fallback(self, x: float, y: float, z: float, duration: float) -> None:
         """Fallback: calculer pitch/yaw depuis x/y/z (approximation).
-        
+
         Args:
             x: Coordonnée X (mètres)
             y: Coordonnée Y (mètres)
