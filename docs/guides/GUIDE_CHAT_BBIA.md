@@ -420,12 +420,13 @@ pip install transformers torch
 
 ## Exemples complets
 
-Voir `examples/demo_chat_bbia.py` pour un exemple complet :
+Voir `examples/demo_chat_bbia_3d.py` ⭐ (RECOMMANDÉ) pour un exemple complet :
 
 ```bash
-python examples/demo_chat_bbia.py
-
+mjpython examples/demo_chat_bbia_3d.py
 ```
+
+⚠️ **Note** : `demo_chat_bbia.py` est déprécié, utiliser `demo_chat_bbia_3d.py` à la place.
 
 ---
 

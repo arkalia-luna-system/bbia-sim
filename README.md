@@ -208,9 +208,20 @@ curl http://localhost:8000/metrics/prometheus
 ### 🔧 Diagnostic Environnement
 
 ```bash
-# Diagnostic complet de l'environnement
+# Diagnostic complet de l'environnement (inclut Zenoh, daemon, WiFi)
 python -m bbia_sim --doctor
+# ou
+python scripts/bbia_doctor.py
 ```
+
+**Vérifie :**
+- ✅ Dépendances (numpy, opencv, transformers, zenoh, reachy_mini, etc.)
+- ✅ Modèles IA disponibles
+- ✅ Variables d'environnement
+- ✅ Configuration projet
+- ✅ **Zenoh** (installation + session locale)
+- ✅ **Daemon** `reachy-mini-daemon`
+- ✅ **Réseau** (IP locale + ports 8000, 7447)
 
 ### 🔗 Intégration côté BBIA‑SIM
 
@@ -381,11 +392,9 @@ mjpython examples/demo_mujoco_continue.py
 # Démo émotions BBIA avec viewer MuJoCo
 mjpython examples/demo_emotion_ok.py --emotion happy --duration 10 --joint yaw_body
 
-# Démo surprise complète
-mjpython examples/surprise_3d_mujoco_viewer.py
-
-# Démo SDK officiel (headless)
-python examples/demo_reachy_mini_corrigee.py --quick
+# Démo SDK officiel (RECOMMANDÉ)
+python examples/reachy_mini/minimal_demo.py
+# ⚠️ Note: surprise_3d_mujoco_viewer.py et demo_reachy_mini_corrigee.py sont obsolètes
 ```
 
 ### ⚠️ Règles de sécurité

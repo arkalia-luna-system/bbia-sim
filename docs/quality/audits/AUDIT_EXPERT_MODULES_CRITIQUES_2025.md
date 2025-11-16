@@ -110,7 +110,7 @@ description="Plateforme Stewart - joint tête 1 (⚠️ Nécessite IK via goto_t
 
 ## Corrections appliquées
 
-### Correction 1: `surprise_3d_mujoco_viewer.py`
+### Correction 1: `surprise_3d_mujoco_viewer.py` ⚠️ (OBSOLÈTE)
 
 - ❌ **AVANT**: `set_joint_pos("stewart_1")` - Violation SDK
 - ✅ **APRÈS**: `goto_target(head=pose)` avec `create_head_pose()` - Conforme SDK

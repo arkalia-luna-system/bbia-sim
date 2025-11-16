@@ -39,7 +39,8 @@
 - [ ] **Test basique SDK**
 
   ```bash
-  python examples/demo_reachy_mini_corrigee.py --quick
+  python examples/reachy_mini/minimal_demo.py
+  # ⚠️ Note: demo_reachy_mini_corrigee.py est déprécié, utiliser reachy_mini/* (SDK officiel)
   ```
 
 ### Configuration Réseau
@@ -110,7 +111,8 @@
 
   ```bash
   python examples/demo_voice_ok.py --backend reachy_mini
-  python examples/demo_chat_bbia.py --backend reachy_mini
+  mjpython examples/demo_chat_bbia_3d.py
+  # ⚠️ Note: demo_chat_bbia.py est déprécié, utiliser demo_chat_bbia_3d.py
   ```
 
 - [ ] **Mouvements (articulations)**

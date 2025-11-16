@@ -45,8 +45,9 @@
 # Attendre connexion (indicateur vert)
 # Descendre jusqu'à panel "💬 Chat avec BBIA"
 
-# Via terminal
-python examples/demo_chat_simple.py
+# Via terminal (RECOMMANDÉ)
+mjpython examples/demo_chat_bbia_3d.py
+# ⚠️ Note: demo_chat_simple.py est déprécié
 
 ```
 
@@ -143,8 +144,9 @@ pytest tests/test_bbia_*.py -v
 # Dashboard web
 # Ouvrir http://localhost:8000
 
-# Chat simple
-python examples/demo_chat_simple.py
+# Chat 3D (RECOMMANDÉ)
+mjpython examples/demo_chat_bbia_3d.py
+# ⚠️ Note: demo_chat_simple.py est déprécié
 
 # Simulation MuJoCo
 mjpython examples/demo_mujoco_continue.py
