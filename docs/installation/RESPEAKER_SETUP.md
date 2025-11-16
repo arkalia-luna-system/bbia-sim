@@ -1,13 +1,34 @@
 # 🎤 Guide ReSpeaker - Configuration et Dépannage
 
+<div align="center">
+
 **Date** : Oct / Nov. 2025  
 **Hardware** : ReSpeaker 4 microphones directionnels (Reachy Mini)
+
+[![🎤 Audio](https://img.shields.io/badge/🎤-Audio%20Hardware-blue.svg)](#-vue-densemble)
+[![🔧 Configuration](https://img.shields.io/badge/🔧-Configuration-green.svg)](#-détection-et-configuration)
+[![🧪 Tests](https://img.shields.io/badge/🧪-Tests%20Audio-orange.svg)](#-scripts-de-test)
+[![🔍 Dépannage](https://img.shields.io/badge/🔍-Dépannage-purple.svg)](#-dépannage)
+
+</div>
 
 > **Référence SDK** : `robot.media.microphone` - 4 microphones directionnels avec annulation de bruit automatique
 
 ---
 
 ## 📋 Vue d'ensemble
+
+<div align="center">
+
+### 🎯 ReSpeaker 4 Microphones Directionnels
+
+**Capture audio avancée pour robot Reachy Mini**
+
+[![🎤 Hardware](https://img.shields.io/badge/🎤-4%20Microphones-blue)](#-canaux-disponibles)
+[![🔇 Noise Cancel](https://img.shields.io/badge/🔇-Annulation%20Bruit-green)](#-vue-densemble)
+[![📍 DoA](https://img.shields.io/badge/📍-Localisation%20Source-orange)](#-vue-densemble)
+
+</div>
 
 Le Reachy Mini utilise un **ReSpeaker avec 4 microphones directionnels** pour la capture audio avancée :
 
@@ -19,6 +40,16 @@ Le Reachy Mini utilise un **ReSpeaker avec 4 microphones directionnels** pour la
 ---
 
 ## 🔧 Détection et Configuration
+
+<div align="center">
+
+### 🚀 Détection automatique et configuration simple
+
+[![🔍 Détection](https://img.shields.io/badge/🔍-Détection%20Auto-blue)](#1-détection-automatique)
+[![✅ Vérification](https://img.shields.io/badge/✅-Vérification%20Script-green)](#2-vérification-via-script)
+[![🎛️ Canaux](https://img.shields.io/badge/🎛️-Configuration%20Canaux-orange)](#-configuration-canaux)
+
+</div>
 
 ### 1. Détection Automatique
 
@@ -87,6 +118,16 @@ if __name__ == "__main__":
 
 ## 🎛️ Configuration Canaux
 
+<div align="center">
+
+### 🎯 4 Canaux Audio Directionnels
+
+[![📊 Tableau](https://img.shields.io/badge/📊-Tableau%20Canaux-blue)](#-canaux-disponibles)
+[![🔧 Config](https://img.shields.io/badge/🔧-Configuration%20Avancée-green)](#-configuration-sample-rate)
+[![🎙️ Multi-Canal](https://img.shields.io/badge/🎙️-Multi-Canal-orange)](#-enregistrement-multi-canal)
+
+</div>
+
 ### Canaux Disponibles
 
 Le ReSpeaker expose **4 canaux** (1 par microphone) :
@@ -130,6 +171,16 @@ audio_mono = robot.media.record_audio(
 ---
 
 ## 🖥️ Matrices de Compatibilité OS
+
+<div align="center">
+
+### 💻 Support Multi-Plateformes
+
+[![🍎 macOS](https://img.shields.io/badge/🍎-macOS-blue)](#macos)
+[![🐧 Linux](https://img.shields.io/badge/🐧-Linux-green)](#linux-ubuntudebian)
+[![🪟 Windows](https://img.shields.io/badge/🪟-Windows-orange)](#windows)
+
+</div>
 
 ### macOS
 
@@ -192,6 +243,16 @@ arecord -l  # Liste devices d'enregistrement
 ---
 
 ## 🧪 Scripts de Test
+
+<div align="center">
+
+### 🔧 Scripts de test complets
+
+[![🎤 Sound In](https://img.shields.io/badge/🎤-Sound%20In-blue)](#test-sound-inout)
+[![🔊 Sound Out](https://img.shields.io/badge/🔊-Sound%20Out-green)](#test-sound-inout)
+[![📋 Devices](https://img.shields.io/badge/📋-Devices%20List-orange)](#test-détection-devices)
+
+</div>
 
 ### Test Sound In/Out
 
@@ -307,6 +368,16 @@ except (OSError, RuntimeError, ValueError) as e:
 ---
 
 ## 🔍 Dépannage
+
+<div align="center">
+
+### 🛠️ Solutions aux problèmes courants
+
+[![❌ Non détecté](https://img.shields.io/badge/❌-Non%20Détecté-red)](#problème--respeaker-non-détecté)
+[![🔉 Mauvaise qualité](https://img.shields.io/badge/🔉-Mauvaise%20Qualité-orange)](#problème--audio-de-mauvaise-qualité)
+[![⏱️ Latence](https://img.shields.io/badge/⏱️-Latence%20Élevée-yellow)](#problème--latence-élevée)
+
+</div>
 
 ### Problème : ReSpeaker non détecté
 

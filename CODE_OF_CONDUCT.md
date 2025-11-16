@@ -1,4 +1,4 @@
-# Code de Conduite
+# 📜 Code de Conduite
 
 ## Notre engagement
 

@@ -208,7 +208,7 @@ RATE_LIMIT_WINDOW = 60     # fenêtre en secondes
 
 ### Vue d'ensemble des environnements
 
-```mermaid
+```mermaid 📊
 graph TB
     DEV[Développement Local<br/>BBIA_DEBUG=true<br/>BBIA_API_HOST=127.0.0.1]
     STAGING[Staging<br/>BBIA_DEBUG=false<br/>BBIA_API_TOKEN=staging]

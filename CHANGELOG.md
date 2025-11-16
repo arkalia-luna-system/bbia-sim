@@ -221,13 +221,13 @@ Cette version marque l'achèvement complet de la conformité au SDK officiel Rea
 ### 🔄 **Migration depuis v1.2.1**
 
 ```bash
-# Mise à jour vers v1.3.0
+# 🚀 Mise à jour vers v1.3.0
 pip install --upgrade bbia-sim==1.3.0
 
-# Vérification conformité SDK
+# ✅ Vérification conformité SDK
 python scripts/conformity/test_conformity_sdk_officiel.py
 
-# Tests de performance
+# ⚡ Tests de performance
 python scripts/bbia_performance_benchmarks.py --benchmark all
 ```
 

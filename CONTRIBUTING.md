@@ -1,4 +1,4 @@
-# Guide de contribution
+# 🤝 Guide de contribution
 
 Merci de vouloir contribuer à BBIA Reachy Mini Wireless !
 

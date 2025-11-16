@@ -4,7 +4,6 @@ Communication via fichiers temporaires.
 """
 
 import time
-import logging
 from pathlib import Path
 
 
@@ -112,12 +111,10 @@ class UnityReachyMiniController:
                 if command == "help":
                     self._show_help()
                 elif command == "status":
-                    logging.info(
-                        (
-                            "Status: Connected"
-                            if self.is_connected
-                            else "Status: Disconnected"
-                        ),
+                    print(
+                        "Status: Connected"
+                        if self.is_connected
+                        else "Status: Disconnected"
                     )
                 elif command.startswith("head "):
                     parts = command.split()[1:]
@@ -126,37 +123,37 @@ class UnityReachyMiniController:
                             x, y, z = map(float, parts)
                             self.move_head(x, y, z)
                         except ValueError:
-                            logging.error(
-                                "❌ Valeurs invalides pour head. Utilisez: head x y z",
+                            print(
+                                "❌ Valeurs invalides pour head. Utilisez: head x y z"
                             )
                     else:
-                        logging.error("❌ Commande head invalide. Utilisez: head x y z")
+                        print("❌ Commande head invalide. Utilisez: head x y z")
                 elif command.startswith("emotion "):
                     emotion = command.split()[1]
                     if self.set_emotion(emotion):
-                        logging.info(f"✅ Émotion '{emotion}' définie")
+                        print(f"✅ Émotion '{emotion}' définie")
                     else:
-                        logging.error(f"❌ Émotion '{emotion}' invalide")
+                        print(f"❌ Émotion '{emotion}' invalide")
                 elif command == "reset":
                     if self.reset_position():
-                        logging.info("✅ Position réinitialisée")
+                        print("✅ Position réinitialisée")
                     else:
-                        logging.error("❌ Erreur lors de la réinitialisation")
+                        print("❌ Erreur lors de la réinitialisation")
                 elif command == "awake":
-                    logging.info("🤖 BBIA se réveille...")
+                    print("🤖 BBIA se réveille...")
                     self.bbia_awake()
-                    logging.info("✅ BBIA est réveillé!")
+                    print("✅ BBIA est réveillé!")
                 else:
-                    logging.error("❌ Commande inconnue. Tapez 'help' pour l'aide.")
+                    print("❌ Commande inconnue. Tapez 'help' pour l'aide.")
                 iteration_count += 1
             except KeyboardInterrupt:
                 break
             except (ValueError, RuntimeError, ConnectionError) as e:
-                logging.error(f"❌ Erreur: {e}")
+                print(f"❌ Erreur: {e}")
                 iteration_count += 1
 
         if iteration_count >= max_iterations:
-            logging.warning("⚠️ Limite d'itérations atteinte, arrêt du mode interactif")
+            print("⚠️ Limite d'itérations atteinte, arrêt du mode interactif")
 
     def _show_help(self) -> None:
         help_text = """
@@ -175,7 +172,7 @@ Exemples:
   emotion happy - Rendre BBIA heureux
   awake         - Séquence de réveil complète
 """
-        logging.info(help_text)
+        print(help_text)
 
 
 def main() -> None:

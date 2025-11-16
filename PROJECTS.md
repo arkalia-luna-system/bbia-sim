@@ -228,21 +228,21 @@ Outils et scripts pour environnement de développement.
 
 ## 📈 Statistiques Globales
 
-### Code
+### 💻 Code
 
 - **Projets actifs** : 10+
 - **Tests automatisés** : 1200+
 - **Documentation** : 300+ fichiers MD
 - **Commits** : Actifs depuis octobre 2024
 
-### Qualité
+### ✅ Qualité
 
 - ✅ CI/CD professionnel (Black, Ruff, MyPy, Bandit)
 - ✅ Tests exhaustifs (unitaires, intégration, E2E)
 - ✅ Documentation complète
 - ✅ Architecture propre (patterns, modularité)
 
-### Stack Complète
+### 🛠️ Stack Complète
 
 - **Backend** : Python (FastAPI, Flask)
 - **Mobile** : Flutter/Dart (iOS + Android)
@@ -255,13 +255,13 @@ Outils et scripts pour environnement de développement.
 
 ## 🎯 Projets Prioritaires pour Portfolio
 
-### Pour Candidatures Développeur IA/Robotique :
+### 🤖 Pour Candidatures Développeur IA/Robotique :
 
 1. **BBIA-SIM** ⭐ (robotique IA, démo hardware)
 2. **Arkalia Aria** (IA santé, mobile)
 3. **Athalia DevOps** (qualité code, CI/CD)
 
-### Pour Candidatures Mobile :
+### 📱 Pour Candidatures Mobile :
 
 1. **Arkalia Aria** (app santé complète)
 2. **Arkalia Quest** (jeu éducatif)

@@ -489,12 +489,16 @@ def lister_voix_disponibles() -> list[Any]:
     result = []
     for _idx, v in enumerate(voices):
         try:
-            _ = (
-                v.languages[0].decode(errors="ignore")
-                if hasattr(v.languages[0], "decode")
-                else str(v.languages[0])
-            )
-        except (AttributeError, TypeError, ValueError):
+            # Gérer le cas où languages est vide ou None
+            if hasattr(v, "languages") and v.languages and len(v.languages) > 0:
+                _ = (
+                    v.languages[0].decode(errors="ignore")
+                    if hasattr(v.languages[0], "decode")
+                    else str(v.languages[0])
+                )
+            else:
+                _ = ""
+        except (AttributeError, TypeError, ValueError, IndexError):
             _ = str(v.languages) if hasattr(v, "languages") and v.languages else ""
         result.append(v)
     return result

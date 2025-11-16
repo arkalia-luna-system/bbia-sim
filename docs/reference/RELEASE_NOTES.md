@@ -153,7 +153,7 @@ Intégration de l'IA légère (Whisper STT, YOLOv8n, MediaPipe), scripts one-cli
 
 ## Architecture de la version 1.1.1
 
-```mermaid
+```mermaid 📊
 graph TB
     subgraph "BBIA Modules"
         EMOTIONS[bbia_emotions.py<br/>8 émotions]

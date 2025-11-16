@@ -1,6 +1,13 @@
-# Guide avancé - BBIA-SIM
+# 🚀 Guide Avancé - BBIA-SIM
+
+<div align="center">
 
 **Date** : Oct / Nov. 2025
+[![Version](https://img.shields.io/badge/version-1.3.2-blue.svg)](https://github.com/arkalia-luna-system/bbia-sim)
+[![Niveau](https://img.shields.io/badge/niveau-Avancé-orange.svg)](docs/guides/)
+[![Temps](https://img.shields.io/badge/temps-15%20min-purple.svg)](#architecture-détaillée)
+
+</div>
 
 > **Liens utiles** : [`docs/reference/INDEX_THEMATIQUE.md`](../reference/INDEX_THEMATIQUE.md) · [`docs/reference/project-status.md`](../reference/project-status.md)
 
@@ -15,10 +22,19 @@
 > pip install -e .
 > ```
 
-## Pour développeurs avancés
+## 🎯 Pour Développeurs Avancés
+
+<div align="center">
 
 **Version :** 1.3.2  
 **Public cible :** développeurs expérimentés souhaitant exploiter les fonctionnalités de BBIA
+
+[![🔧 Backend](https://img.shields.io/badge/🔧-Backend%20Unifié-blue)](#backend-unifié)
+[![🧠 Modules](https://img.shields.io/badge/🧠-Modules%20BBIA-green)](#modules-bbia-avancés)
+[![🚀 API](https://img.shields.io/badge/🚀-API%20Avancée-purple)](#api-avancée)
+[![🧪 Tests](https://img.shields.io/badge/🧪-Tests%20Avancés-orange)](#tests-avancés)
+
+</div>
 
 ---
 
@@ -44,9 +60,18 @@
 
 ---
 
-## Architecture détaillée
+## 🏗️ Architecture Détaillée
 
-### Backend unifié
+### 🔧 Backend Unifié
+
+<div align="center">
+
+### 🌟 Développez une fois, déployez partout !
+
+[![🔄 Unifié](https://img.shields.io/badge/🔄-Simulation%20↔%20Robot-blue)](#flux-backend-unifié)
+[![⚡ Performance](https://img.shields.io/badge/⚡-Performance%20Optimisée-green)](#optimisations-de-performance)
+
+</div>
 
 Le backend unifié permet de développer et tester en simulation, puis de basculer vers le robot physique avec le même code.
 
@@ -105,9 +130,19 @@ flowchart TB
 - Debugging facilité
 - Migration transparente vers robot réel
 
-### Modules BBIA avancés
+### 🧠 Modules BBIA Avancés
 
-#### Architecture Modules BBIA
+#### 🏛️ Architecture Modules BBIA
+
+<div align="center">
+
+### 🤖 12 modules intelligents pour robot avancé
+
+[![🧠 IA](https://img.shields.io/badge/🧠-Intelligence%20Artificielle-purple)](#1-module-émotions)
+[![👁️ Vision](https://img.shields.io/badge/👁️-Vision%20Avancée-blue)](#3-module-vision)
+[![🎤 Audio](https://img.shields.io/badge/🎤-Audio%20Intelligent-green)](#2-module-comportements)
+
+</div>
 
 ```mermaid
 graph LR
@@ -222,15 +257,33 @@ bbia_sim.sim.enable_caching()
 
 ---
 
-## Migration simulation → robot réel
+## 🔄 Migration Simulation → Robot Réel
+
+<div align="center">
+
+### 🚀 Passage transparent du développement à la production
+
+[![📖 Guide](https://img.shields.io/badge/📖-Guide%20Complet-blue)](../development/migration.md)
+[![✅ Validé](https://img.shields.io/badge/✅-100%25%20Conforme-green)](../quality/compliance/CONFORMITE_REACHY_MINI_COMPLETE.md)
+
+</div>
 
 Voir : [MIGRATION_GUIDE.md](../development/migration.md)
 
 ---
 
-## API avancée
+## 🚀 API Avancée
 
-### Conformité SDK officiel
+### ✅ Conformité SDK Officiel
+
+<div align="center">
+
+### 🎯 100% compatible avec le SDK Pollen Robotics
+
+[![🔧 SDK](https://img.shields.io/badge/🔧-SDK%20Officiel-blue)](../quality/compliance/CONFORMITE_REACHY_MINI_COMPLETE.md)
+[![📊 Méthodes](https://img.shields.io/badge/📊-Toutes%20Méthodes-green)](#-toutes-les-méthodes-sdk-officiel-disponibles)
+
+</div>
 
 ```python
 # Toutes les méthodes SDK officiel disponibles

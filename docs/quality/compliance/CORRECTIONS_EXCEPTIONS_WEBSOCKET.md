@@ -165,12 +165,12 @@ for ws in move_listeners:
 
 ```python
 # AVANT
-except Exception as e:
+except (ValueError, RuntimeError, ConnectionError) as e:
     await notify_listeners("move_failed", details=str(e))
     logger.error(f"Erreur dans la tâche de mouvement {uuid}: {e}")  # ❌ Non présent SDK
 
 # APRÈS (conforme SDK)
-except Exception as e:
+except (ValueError, RuntimeError, ConnectionError) as e:
     await notify_listeners("move_failed", details=str(e))  # ✅ Pas de logging
 
 ```

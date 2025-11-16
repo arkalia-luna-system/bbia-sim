@@ -72,7 +72,7 @@
 
 **Dans XML scène** :
 
-```xml
+```xml 📄
 <texture name="mur" type="2d" file="assets/textures/mur.png"/>
 <material name="mat_mur" texture="mur"/>
 <geom type="box" material="mat_mur"/>

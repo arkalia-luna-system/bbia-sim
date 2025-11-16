@@ -5,7 +5,6 @@
 """
 
 import secrets
-import logging
 from datetime import datetime
 from typing import Any
 
@@ -136,13 +135,13 @@ class BBIAEmotions:
         old_data = self.emotions[old_emotion]
         new_data = self.emotions[new_emotion]
 
-        logging.info(
+        print(
             f"🔄 Transition d'émotion : {old_data['color']} {old_emotion} → "
             f"{new_data['color']} {new_emotion}",
         )
-        logging.info(f"📝 {old_data['description']} → {new_data['description']}")
-        logging.info(f"🎭 Intensité : {self.emotion_intensity:.1f}")
-        logging.info(f"⏰ {datetime.now().strftime('%H:%M:%S')}")
+        print(f"📝 {old_data['description']} → {new_data['description']}")
+        print(f"🎭 Intensité : {self.emotion_intensity:.1f}")
+        print(f"⏰ {datetime.now().strftime('%H:%M:%S')}")
 
     def get_current_emotion(self) -> dict[str, Any]:
         """Retourne l'émotion actuelle avec ses détails."""

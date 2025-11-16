@@ -15,7 +15,7 @@
 
 ## 🎯 Guide de Dépannage Rapide
 
-```mermaid
+```mermaid 📊
 flowchart TD
     START{Problème?} --> IA[Modules IA]
     START --> AUDIO[Audio]

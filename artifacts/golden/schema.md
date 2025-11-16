@@ -4,7 +4,7 @@
 
 Chaque ligne = JSON valide avec les champs suivants :
 
-```json
+```json 📋
 {
   "t": 0.123,
   "joint": "yaw_body", 

@@ -6,8 +6,8 @@ Note: Fonctionne en mode simulation (MuJoCo) même sans robot physique.
 Le daemon démarre automatiquement la simulation MuJoCo au démarrage.
 """
 
-import sys
 import logging
+import sys
 from pathlib import Path
 
 # Ajouter src au path pour imports (depuis racine projet)

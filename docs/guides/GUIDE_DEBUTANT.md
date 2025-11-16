@@ -1,6 +1,13 @@
-# Guide débutant - BBIA-SIM
+# 🚀 Guide Débutant - BBIA-SIM
+
+<div align="center">
 
 **Date** : Oct / Nov. 2025
+[![Version](https://img.shields.io/badge/version-1.3.2-blue.svg)](https://github.com/arkalia-luna-system/bbia-sim)
+[![Niveau](https://img.shields.io/badge/niveau-Débutant-green.svg)](docs/guides/)
+[![Temps](https://img.shields.io/badge/temps-5%20min-orange.svg)](#votre-premier-robot-bbia-en-5-minutes)
+
+</div>
 
 > Liens utiles: `docs/reference/INDEX_THEMATIQUE.md` · `docs/reference/project-status.md`
 
@@ -15,7 +22,17 @@
 > pip install -e .
 > ```
 
-## Votre premier robot BBIA en 5 minutes
+## 🎯 Votre Premier Robot BBIA en 5 Minutes
+
+<div align="center">
+
+### 🌟 De zéro à robot intelligent en quelques clics !
+
+[![🚀 Quick Start](https://img.shields.io/badge/🚀-Quick%20Start-green)](#-installation)
+[![🤖 Robot](https://img.shields.io/badge/🤖-Robot%20Intelligent-blue)](#-premier-programme-python)
+[![💬 Chat](https://img.shields.io/badge/💬-Chat%20Intelligent-purple)](#-chat-intelligent-avec-bbia)
+
+</div>
 
 ### Architecture simple
 
@@ -66,6 +83,15 @@ flowchart TD
 
 ### 1. 📦 Installation
 
+<div align="center">
+
+### 🔧 Deux méthodes simples pour démarrer
+
+[![⚡ Automatique](https://img.shields.io/badge/⚡-Automatique-green)](#option-a--script-all-in-one-recommandé-)
+[![🔧 Manuel](https://img.shields.io/badge/🔧-Manuel-blue)](#option-b--installation-manuelle)
+
+</div>
+
 #### Option A : Script All-in-One (Recommandé) ⚡
 
 > **🚀 Installation automatique complète en une commande**
@@ -112,7 +138,16 @@ pip install -e .[dev]
 
 </div>
 
-### 2. 🌐 Accéder au dashboard web
+### 2. 🌐 Accéder au Dashboard Web
+
+<div align="center">
+
+### 🌐 Interface Web Complète en Un Clic
+
+[![🌐 Dashboard](https://img.shields.io/badge/🌐-Dashboard%20Web-blue)](#-lancer-le-dashboard-fastapi--websocket)
+[![📸 Visual](https://img.shields.io/badge/📸-Visual%20Interface-orange)](#-captures-décran-disponibles)
+
+</div>
 
 > **🚀 Interface web complète en un clic**
 
@@ -138,7 +173,16 @@ python src/bbia_sim/dashboard_advanced.py
 
 </div>
 
-### 3. Premier programme Python
+### 3. 🤖 Premier Programme Python
+
+<div align="center">
+
+### 🐍 Votre premier code robot en 10 lignes !
+
+[![🐍 Python](https://img.shields.io/badge/🐍-Python%20Code-green)](#-exemple-complet)
+[![🎯 Action](https://img.shields.io/badge/🎯-Action%20Immédiate-blue)](#-tester-le-code)
+
+</div>
 
 ```python
 from bbia_sim.robot_factory import RobotFactory
@@ -158,7 +202,16 @@ robot.disconnect()
 
 ```
 
-### 4. Tester en simulation 3D
+### 4. 🎮 Tester en Simulation 3D
+
+<div align="center">
+
+### 🎯 Voir votre robot prendre vie en 3D !
+
+[![🎮 3D](https://img.shields.io/badge/🎮-Simulation%203D-purple)](#-démos-principales)
+[![👁️ Visual](https://img.shields.io/badge/👁️-Visualisation-orange)](#-animations-émotions)
+
+</div>
 
 ```bash
 # Voir le robot bouger dans MuJoCo
@@ -176,7 +229,16 @@ mjpython examples/demo_chat_bbia_3d.py
 > `mjpython` est installé automatiquement avec MuJoCo et permet d'afficher la fenêtre 3D.
 > Si `mjpython` n'est pas disponible, utilisez `python` (le viewer peut ne pas s'ouvrir en mode headless).
 
-### 5. 💬 Chat intelligent avec BBIA
+### 5. 💬 Chat Intelligent avec BBIA
+
+<div align="center">
+
+### 🤖 Discutez avec votre robot intelligent !
+
+[![💬 Chat](https://img.shields.io/badge/💬-Chat%20Intelligent-blue)](#-chat-simple-via-terminal)
+[![🧠 IA](https://img.shields.io/badge/🧠-Intelligence%20Artificielle-green)](#-chat-complet-avec-hugging-face)
+
+</div>
 
 Une fois le dashboard lancé ou les modules installés, vous pouvez discuter avec BBIA de plusieurs façons :
 

@@ -746,7 +746,7 @@ class BBIAROS2Node(Node):
                 )
                 self.get_logger().info(f'Comportement {behavior} exécuté')
 
-        except Exception as e:
+        except (ValueError, RuntimeError, ConnectionError) as e:
             self.get_logger().error(f'Erreur: {e}')
 
 def main(args=None):
@@ -790,7 +790,7 @@ export REACHY_ROBOT_IP=192.168.1.100
 
 ### Configuration Docker
 
-```dockerfile
+```dockerfile 🐳
 FROM python:3.11-slim
 
 WORKDIR /app

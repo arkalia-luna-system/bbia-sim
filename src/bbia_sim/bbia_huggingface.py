@@ -2571,7 +2571,9 @@ def main() -> None:
 
     # Informations
     logging.info(f"\n📊 Informations: {hf.get_model_info()}")
-    logging.info(f"\n📝 Historique conversation: {len(hf.conversation_history)} messages")
+    logging.info(
+        f"\n📝 Historique conversation: {len(hf.conversation_history)} messages"
+    )
 
 
 if __name__ == "__main__":

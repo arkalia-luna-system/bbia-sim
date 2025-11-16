@@ -277,7 +277,7 @@ python -m pytest tests/test_bbia_emotions.py --cov=src.bbia_sim.bbia_emotions --
 
 ### pyproject.toml
 
-```toml
+```toml ⚙️
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

@@ -903,21 +903,21 @@ class HideBehavior(BBIABehavior):
         self.priority = 9
 
     def execute(self, context: dict[str, Any]) -> bool:  # noqa: ARG002
-        logging.info("🙈 [BBIA] Séquence 'se cacher'...")
+        print("🙈 [BBIA] Séquence 'se cacher'...")
         logger.info("Début de la séquence 'se cacher'")
 
         # Utiliser émotion "sad" conforme SDK (pitch=-0.1 * intensity)
-        logging.info("🤖 Tête qui s'abaisse lentement...")
+        print("🤖 Tête qui s'abaisse lentement...")
         logger.info("Étape : Tête qui s'abaisse lentement")
         if self.robot_api and hasattr(self.robot_api, "set_emotion"):
             # Émotion sad avec intensité forte = pitch négatif (tête baissée)
             self.robot_api.set_emotion("sad", 0.9)  # Conforme SDK: pitch=-0.09 rad
 
         # Note: Les antennes ne sont pas contrôlées (protégées pour sécurité hardware)
-        logging.info("📡 Antennes qui se replient devant le visage...")
+        print("📡 Antennes qui se replient devant le visage...")
         logger.info("Étape : Antennes (simulation - non contrôlées pour sécurité)")
 
-        logging.info("👁️ Yeux qui se ferment (ou s'éteignent)...")
+        print("👁️ Yeux qui se ferment (ou s'éteignent)...")
         logger.info("Étape : Yeux qui se ferment")
 
         # OPTIMISATION EXPERT: Utiliser goto_target pour mouvement combiné
@@ -961,9 +961,9 @@ class HideBehavior(BBIABehavior):
 
         time.sleep(1.0)
 
-        logging.info("💤 BBIA se cache et devient silencieux.")
+        print("💤 BBIA se cache et devient silencieux.")
         logger.info("Étape : BBIA se cache et devient silencieux")
-        logging.info("(BBIA attend discrètement...)")
+        print("(BBIA attend discrètement...)")
         # AMÉLIORATION INTELLIGENCE: Messages de cache plus variés et expressifs
         hide_messages = [
             "Je me cache... Chut !",
