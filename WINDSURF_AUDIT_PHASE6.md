@@ -4,6 +4,7 @@
 
 - **NE MODIFIE AUCUN FICHIER**
 - **Analyse statique uniquement**
+- **Ouvre les fichiers et lis-les ligne par ligne** (ne pas utiliser grep)
 
 ---
 
@@ -11,16 +12,21 @@
 
 Audit des modules vision, IA et traitement temps réel
 
+**MÉTHODE :** Ouvre chaque fichier, lis-le complètement, analyse ligne par ligne
+
 ---
 
 ## 📋 ACTIONS À EXÉCUTER (3 actions)
 
 ### Action 6.1 : Chercher les modèles Hugging Face
 
-**INSTRUCTION :**
-1. Ouvre `src/bbia_sim/bbia_huggingface.py`
-2. Cherche EXACTEMENT : `from_pretrained(`
-3. Pour chaque occurrence, note : ligne, nom du modèle, version/tag
+**INSTRUCTION SIMPLE :**
+1. **Ouvre** `src/bbia_sim/bbia_huggingface.py`
+2. **Lis** le fichier complètement ligne par ligne
+3. **Pour chaque ligne** qui contient le texte `from_pretrained(` :
+   - Note le numéro de ligne
+   - Copie la ligne complète
+   - Extrais le nom du modèle et la version/tag si visible
 
 **RÉSULTAT ATTENDU :**
 | Ligne | Modèle | Version/Tag | Obsolète ? |
@@ -31,10 +37,13 @@ Audit des modules vision, IA et traitement temps réel
 
 ### Action 6.2 : Analyser la performance vision
 
-**INSTRUCTION :**
-1. Ouvre `src/bbia_sim/bbia_vision.py`
-2. Cherche les boucles de traitement vidéo : `while True` ou `for frame in`
-3. Identifie les latences inacceptables (>100ms)
+**INSTRUCTION SIMPLE :**
+1. **Ouvre** `src/bbia_sim/bbia_vision.py`
+2. **Lis** le fichier complètement ligne par ligne
+3. **Pour chaque ligne** qui contient `while True` ou `for frame in` :
+   - Note le numéro de ligne
+   - **Lis** le corps de la boucle
+   - Identifie si des opérations lourdes sont dans la boucle (modèles IA, traitement image)
 
 **RÉSULTAT ATTENDU :**
 | Fonction | Ligne | Boucle ? | Latence estimée | Problème |
@@ -45,10 +54,13 @@ Audit des modules vision, IA et traitement temps réel
 
 ### Action 6.3 : Vérifier la gestion mémoire Hugging Face
 
-**INSTRUCTION :**
-1. Ouvre `src/bbia_sim/bbia_huggingface.py`
-2. Cherche les fonctions : `unload_model()`, `_cleanup()`
-3. Vérifie si les modèles sont libérés après utilisation
+**INSTRUCTION SIMPLE :**
+1. **Ouvre** `src/bbia_sim/bbia_huggingface.py`
+2. **Lis** le fichier complètement ligne par ligne
+3. **Pour chaque ligne** qui contient `def unload_model(` ou `def _cleanup(` :
+   - Note le numéro de ligne
+   - **Lis** le corps de la fonction
+   - Vérifie si la fonction libère vraiment les modèles (del, gc.collect, etc.)
 
 **RÉSULTAT ATTENDU :**
 | Fonction | Ligne | Libère modèle ? | Fuite mémoire ? |
@@ -66,7 +78,18 @@ Pour chaque action :
 
 ---
 
+## ⚠️ IMPORTANT : MÉTHODE D'ANALYSE
+
+**NE PAS UTILISER grep**
+
+**MÉTHODE CORRECTE :**
+1. Utilise `read_file` pour ouvrir chaque fichier
+2. Lis le fichier complètement
+3. Analyse ligne par ligne dans ta mémoire
+
+---
+
 ## 🚀 COMMENCE MAINTENANT
 
-**Exécute les 3 actions et rapporte les résultats.**
+**Exécute les 3 actions dans l'ordre et rapporte les résultats.**
 

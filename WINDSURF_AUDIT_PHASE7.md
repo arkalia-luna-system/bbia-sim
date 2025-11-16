@@ -4,12 +4,15 @@
 
 - **NE MODIFIE AUCUN FICHIER**
 - **Analyse statique uniquement**
+- **Ouvre les fichiers et lis-les ligne par ligne** (ne pas utiliser grep)
 
 ---
 
 ## 🎯 OBJECTIF
 
 Analyser la communication Zenoh, API REST et WebSocket
+
+**MÉTHODE :** Ouvre chaque fichier, lis-le complètement, analyse ligne par ligne
 
 ---
 
@@ -36,10 +39,14 @@ Analyser la communication Zenoh, API REST et WebSocket
 
 ### Action 7.2 : Vérifier les endpoints REST
 
-**INSTRUCTION :**
-1. Ouvre `src/bbia_sim/daemon/app/routers/state.py`
-2. Cherche les décorateurs : `@app.get(` ou `@router.get(`
-3. Compare avec l'endpoint officiel : `/api/state/full`
+**INSTRUCTION SIMPLE :**
+1. **Ouvre** `src/bbia_sim/daemon/app/routers/state.py`
+2. **Lis** le fichier complètement ligne par ligne
+3. **Pour chaque ligne** qui contient `@app.get(` ou `@router.get(` :
+   - Note le numéro de ligne
+   - Copie la ligne complète (décorateur)
+   - **Lis** la fonction suivante pour voir le chemin de l'endpoint
+   - Compare avec l'endpoint officiel : `/api/state/full`
 
 **RÉSULTAT ATTENDU :**
 | Endpoint | Fichier | Ligne | Conforme officiel ? |
@@ -50,11 +57,13 @@ Analyser la communication Zenoh, API REST et WebSocket
 
 ### Action 7.3 : Chercher les fuites WebSocket
 
-**INSTRUCTION :**
-1. Ouvre `src/bbia_sim/dashboard_advanced.py`
-2. Cherche la classe `BBIAAdvancedWebSocketManager` (lignes ~49-460)
-3. Vérifie les fonctions : `disconnect()`, `_cleanup_inactive_connections()`
-4. Identifie les connexions non fermées
+**INSTRUCTION SIMPLE :**
+1. **Ouvre** `src/bbia_sim/dashboard_advanced.py`
+2. **Lis** les lignes 49 à 460 (classe `BBIAAdvancedWebSocketManager`)
+3. **Pour chaque ligne** qui contient `def disconnect(` ou `def _cleanup_inactive_connections(` :
+   - Note le numéro de ligne
+   - **Lis** le corps de la fonction
+   - Vérifie si la fonction ferme les connexions WebSocket (close(), await websocket.close(), etc.)
 
 **RÉSULTAT ATTENDU :**
 | Fonction | Ligne | Ferme connexion ? | Problème |
@@ -72,7 +81,18 @@ Pour chaque action :
 
 ---
 
+## ⚠️ IMPORTANT : MÉTHODE D'ANALYSE
+
+**NE PAS UTILISER grep**
+
+**MÉTHODE CORRECTE :**
+1. Utilise `read_file` pour ouvrir chaque fichier
+2. Lis le fichier complètement (ou la section demandée)
+3. Analyse ligne par ligne dans ta mémoire
+
+---
+
 ## 🚀 COMMENCE MAINTENANT
 
-**Exécute les 3 actions et rapporte les résultats.**
+**Exécute les 3 actions dans l'ordre et rapporte les résultats.**
 

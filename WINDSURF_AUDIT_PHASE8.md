@@ -4,6 +4,7 @@
 
 - **NE MODIFIE AUCUN FICHIER**
 - **Analyse statique uniquement**
+- **Ouvre les fichiers et lis-les ligne par ligne** (ne pas utiliser grep)
 
 ---
 
@@ -11,16 +12,23 @@
 
 Identifier les optimisations critiques de performance
 
+**MÉTHODE :** Ouvre chaque fichier, lis-le complètement, analyse ligne par ligne
+
 ---
 
 ## 📋 ACTIONS À EXÉCUTER (3 actions)
 
 ### Action 8.1 : Chercher les `deque` vs `list`
 
-**INSTRUCTION :**
-1. Cherche EXACTEMENT : `deque(` dans TOUT le projet
-2. Cherche EXACTEMENT : `= []` (listes vides)
-3. Pour chaque liste utilisée comme buffer, vérifie si c'est un `deque` avec `maxlen`
+**INSTRUCTION SIMPLE :**
+1. **Ouvre** `src/bbia_sim/dashboard_advanced.py`
+2. **Lis** le fichier ligne par ligne
+3. **Pour chaque ligne** qui contient `deque(` :
+   - Note le numéro de ligne et vérifie si `maxlen=` est présent ✅
+4. **Pour chaque ligne** qui contient `= []` (liste vide) :
+   - Note le numéro de ligne
+   - **Lis** le contexte (est-ce un buffer ?)
+   - Si c'est un buffer, devrait être `deque` avec `maxlen`
 
 **EXEMPLE TROUVÉ :**
 Dans `dashboard_advanced.py` :
@@ -37,11 +45,14 @@ metrics_history: deque[dict[str, Any]] = deque(maxlen=self.max_history)  # ✅ B
 
 ### Action 8.2 : Chercher les boucles bloquantes
 
-**INSTRUCTION :**
-1. Cherche EXACTEMENT : `while True` dans TOUT le projet
-2. Pour chaque boucle, vérifie :
-   - Y a-t-il un `await` ou `sleep` ?
-   - Y a-t-il un mécanisme de sortie ?
+**INSTRUCTION SIMPLE :**
+1. **Ouvre** `src/bbia_sim/dashboard_advanced.py`
+2. **Lis** le fichier ligne par ligne
+3. **Pour chaque ligne** qui contient `while True` :
+   - Note le numéro de ligne
+   - **Lis** le corps de la boucle
+   - Vérifie s'il y a un `await` ou `sleep` dans la boucle
+   - Vérifie s'il y a un mécanisme de sortie (break, return, flag)
 
 **RÉSULTAT ATTENDU :**
 | Fichier | Ligne | Code | Bloquant ? | Problème |
@@ -52,10 +63,14 @@ metrics_history: deque[dict[str, Any]] = deque(maxlen=self.max_history)  # ✅ B
 
 ### Action 8.3 : Chercher les `@lru_cache` manquants
 
-**INSTRUCTION :**
-1. Cherche les fonctions pures (pas de side effects)
-2. Vérifie si elles sont décorées avec `@lru_cache` ou `@cache`
-3. Identifie les fonctions qui devraient être cachées
+**INSTRUCTION SIMPLE :**
+1. **Ouvre** `src/bbia_sim/backends/reachy_mini_backend.py`
+2. **Lis** le fichier ligne par ligne
+3. **Pour chaque fonction** (ligne `def `) :
+   - **Lis** le corps de la fonction
+   - Vérifie si la fonction est "pure" (pas de side effects, juste calcul)
+   - Vérifie si elle est décorée avec `@lru_cache` ou `@cache`
+   - Si pure et pas de cache : ❌ Devrait être cachée
 
 **RÉSULTAT ATTENDU :**
 | Fonction | Fichier | Ligne | Devrait être cachée ? |
@@ -73,7 +88,18 @@ Pour chaque action :
 
 ---
 
+## ⚠️ IMPORTANT : MÉTHODE D'ANALYSE
+
+**NE PAS UTILISER grep**
+
+**MÉTHODE CORRECTE :**
+1. Utilise `read_file` pour ouvrir chaque fichier
+2. Lis le fichier complètement
+3. Analyse ligne par ligne dans ta mémoire
+
+---
+
 ## 🚀 COMMENCE MAINTENANT
 
-**Exécute les 3 actions et rapporte les résultats.**
+**Exécute les 3 actions dans l'ordre et rapporte les résultats.**
 

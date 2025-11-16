@@ -4,6 +4,7 @@
 
 - **NE MODIFIE AUCUN FICHIER**
 - **Analyse statique uniquement**
+- **Ouvre les fichiers et lis-les ligne par ligne** (ne pas utiliser grep)
 
 ---
 
@@ -11,19 +12,21 @@
 
 Audit de l'intégration MuJoCo et optimisation de la simulation
 
+**MÉTHODE :** Ouvre chaque fichier, lis-le complètement, analyse ligne par ligne
+
 ---
 
 ## 📋 ACTIONS À EXÉCUTER (3 actions)
 
 ### Action 5.1 : Comparer les modèles XML
 
-**INSTRUCTION :**
-1. Ouvre `src/bbia_sim/sim/models/reachy_mini.xml`
-2. Ouvre `src/bbia_sim/sim/models/reachy_mini_REAL_OFFICIAL.xml`
-3. Compare :
-   - Nombre de joints
-   - Masses des corps
-   - Propriétés des geoms
+**INSTRUCTION SIMPLE :**
+1. **Ouvre** `src/bbia_sim/sim/models/reachy_mini.xml`
+2. **Lis** le fichier complètement
+3. **Compte** le nombre de balises `<joint` (nombre de joints)
+4. **Note** les balises `<mass` (masses des corps)
+5. **Répète** pour `src/bbia_sim/sim/models/reachy_mini_REAL_OFFICIAL.xml`
+6. **Compare** les deux fichiers
 
 **RÉSULTAT ATTENDU :**
 | Propriété | reachy_mini.xml | REAL_OFFICIAL.xml | Différence |
@@ -49,12 +52,16 @@ Audit de l'intégration MuJoCo et optimisation de la simulation
 
 ### Action 5.3 : Vérifier la cohérence sim vs réel
 
-**INSTRUCTION :**
-1. Compare `mujoco_backend.py` vs `reachy_mini_backend.py`
-2. Vérifie si les méthodes ont la même signature :
-   - `goto_target()` : même signature ?
-   - `get_joint_pos()` : même comportement ?
-   - `get_image()` : même format ?
+**INSTRUCTION SIMPLE :**
+1. **Ouvre** `src/bbia_sim/backends/mujoco_backend.py`
+2. **Lis** le fichier ligne par ligne
+3. **Pour chaque fonction** `goto_target`, `get_joint_pos`, `get_image` :
+   - Note la signature complète (paramètres)
+4. **Ouvre** `src/bbia_sim/backends/reachy_mini_backend.py`
+5. **Lis** le fichier ligne par ligne
+6. **Pour chaque fonction** correspondante :
+   - Note la signature complète
+   - **Compare** avec la version mujoco_backend
 
 **RÉSULTAT ATTENDU :**
 | Méthode | mujoco_backend | reachy_mini_backend | Cohérent ? |
@@ -72,7 +79,18 @@ Pour chaque action :
 
 ---
 
+## ⚠️ IMPORTANT : MÉTHODE D'ANALYSE
+
+**NE PAS UTILISER grep**
+
+**MÉTHODE CORRECTE :**
+1. Utilise `read_file` pour ouvrir chaque fichier
+2. Lis le fichier complètement
+3. Analyse ligne par ligne dans ta mémoire
+
+---
+
 ## 🚀 COMMENCE MAINTENANT
 
-**Exécute les 3 actions et rapporte les résultats.**
+**Exécute les 3 actions dans l'ordre et rapporte les résultats.**
 

@@ -4,12 +4,15 @@
 
 - **NE MODIFIE AUCUN FICHIER**
 - **Analyse statique uniquement**
+- **Ouvre les fichiers et lis-les ligne par ligne** (ne pas utiliser grep)
 
 ---
 
 ## 🎯 OBJECTIF
 
 Audit des workflows CI/CD, dépendances et sécurité
+
+**MÉTHODE :** Ouvre chaque fichier, lis-le complètement, analyse ligne par ligne
 
 ---
 
@@ -31,10 +34,14 @@ Audit des workflows CI/CD, dépendances et sécurité
 
 ### Action 10.2 : Chercher les secrets hardcodés
 
-**INSTRUCTION :**
-1. Cherche EXACTEMENT : `password=` dans TOUT le projet
-2. Cherche EXACTEMENT : `token=` dans TOUT le projet
-3. Cherche EXACTEMENT : `api_key=` dans TOUT le projet
+**INSTRUCTION SIMPLE :**
+1. **Ouvre** `src/bbia_sim/backends/reachy_mini_backend.py`
+2. **Lis** le fichier ligne par ligne
+3. **Pour chaque ligne** qui contient `password=` ou `token=` ou `api_key=` :
+   - Note le numéro de ligne
+   - Copie la ligne complète
+   - Vérifie si une valeur est hardcodée (ex: `password="secret"`)
+4. **Répète** pour `src/bbia_sim/daemon/bridge.py`
 
 **RÉSULTAT ATTENDU :**
 | Fichier | Ligne | Code | Problème |
@@ -66,7 +73,18 @@ Pour chaque action :
 
 ---
 
+## ⚠️ IMPORTANT : MÉTHODE D'ANALYSE
+
+**NE PAS UTILISER grep**
+
+**MÉTHODE CORRECTE :**
+1. Utilise `read_file` pour ouvrir chaque fichier
+2. Lis le fichier complètement
+3. Analyse ligne par ligne dans ta mémoire
+
+---
+
 ## 🚀 COMMENCE MAINTENANT
 
-**Exécute les 3 actions et rapporte les résultats.**
+**Exécute les 3 actions dans l'ordre et rapporte les résultats.**
 
