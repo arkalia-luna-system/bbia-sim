@@ -26,6 +26,7 @@ try:
         FASTAPI_AVAILABLE,
         BBIAAdvancedWebSocketManager,
     )
+except (ImportError, AttributeError):
     # FastAPI peut ne pas être disponible en test
     FASTAPI_AVAILABLE = False
     BBIAAdvancedWebSocketManager = None  # type: ignore[assignment,misc]
