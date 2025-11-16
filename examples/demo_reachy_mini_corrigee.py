@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 """
+⚠️ DÉPRÉCIÉ : Utiliser examples/reachy_mini/* (SDK officiel) à la place
+Ce fichier est conservé pour compatibilité mais sera supprimé dans une future version.
+
 🎉 DÉMO REACHY-MINI CORRIGÉE - Utilise les vrais noms de joints
 Démonstration fonctionnelle avec les noms corrects du modèle MuJoCo
 """

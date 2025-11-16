@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# ⚠️ OBSOLÈTE : Démo spécifique, peu utilisée
+# Ce fichier peut être archivé dans une future version
 """
 🎉 SURPRISE 3D BBIA-SIM - Visualisation Spectaculaire avec MuJoCo Viewer
 Démonstration complète du robot Reachy-Mini avec SDK officiel

@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 """
+⚠️ DÉPRÉCIÉ : Utiliser demo_chat_bbia_3d.py à la place
+Ce fichier est conservé pour compatibilité mais sera supprimé dans une future version.
+
 Démonstration SIMPLE du chat BBIA (sans Hugging Face)
 Version qui fonctionne avec la structure de base
 """

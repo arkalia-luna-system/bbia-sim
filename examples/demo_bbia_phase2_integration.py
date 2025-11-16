@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# ⚠️ OBSOLÈTE : Test intégration phase 2, plus utilisé
+# Ce fichier peut être archivé dans une future version
 """
 Exemple d'intégration des modules BBIA Phase 2
 Démonstration des nouvelles fonctionnalités : Hugging Face, Emotion Recognition, Adaptive Behavior
