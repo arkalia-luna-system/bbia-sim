@@ -19,7 +19,7 @@ class AnimationRecorder:
         self.record_path = Path(record_path)
         self.record_path.parent.mkdir(parents=True, exist_ok=True)
         self.records: list[dict[str, Any]] = []
-        self.start_time = None
+        self.start_time: float | None = None
         self.is_recording = False
 
     def start_recording(self):
@@ -31,7 +31,7 @@ class AnimationRecorder:
 
     def record_frame(self, joint_name: str, qpos: float, step: int):
         """Enregistre une frame."""
-        if not self.is_recording:
+        if not self.is_recording or self.start_time is None:
             return
 
         elapsed = time.time() - self.start_time

@@ -210,7 +210,12 @@ def check_test_exists(test_pattern: str) -> bool:
 
 def verify_functionality(name: str, info: dict[str, Any]) -> dict[str, Any]:
     """Vérifie si une fonctionnalité est vraiment implémentée."""
-    results: dict[str, Any] = {"name": name, "code_ok": False, "tests_ok": False, "issues": []}
+    results: dict[str, Any] = {
+        "name": name,
+        "code_ok": False,
+        "tests_ok": False,
+        "issues": [],
+    }
 
     # Vérifier dans le code
     code_ok = False

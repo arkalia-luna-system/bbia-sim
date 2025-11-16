@@ -48,9 +48,9 @@ def analyze_skipped_tests():
         },
     }
 
-    total_skipped = sum(cat["count"] for cat in skipped_categories.values())
+    total_skipped = sum(int(cat["count"]) for cat in skipped_categories.values())
     total_justified = sum(
-        cat["count"] for cat in skipped_categories.values() if cat["justified"]
+        int(cat["count"]) for cat in skipped_categories.values() if cat["justified"]
     )
 
     print("📊 Résumé des tests skippés:")
@@ -63,7 +63,7 @@ def analyze_skipped_tests():
         status = "✅" if info["justified"] else "❌"
         print(f"{status} {category}: {info['count']} tests")
         print(f"   Raison: {info['reason']}")
-        print(f"   Fichiers: {', '.join(info['files'])}")
+        print(f"   Fichiers: {', '.join(str(f) for f in info['files'])}")
         print()
 
     print("🎯 Conclusion:")

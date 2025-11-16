@@ -912,11 +912,15 @@ class OfficialRepoComparator:
         official_backend = (
             self.official_root / "src/reachy_mini/daemon/backend/abstract.py"
         )
-        official_methods = self.extract_method_signatures_ast(official_backend, "Backend")
+        official_methods = self.extract_method_signatures_ast(
+            official_backend, "Backend"
+        )
 
         # Extraire méthodes BackendAdapter BBIA
         bbia_adapter = self.bbia_root / "src/bbia_sim/daemon/app/backend_adapter.py"
-        adapter_methods = self.extract_method_signatures_ast(bbia_adapter, "BackendAdapter")
+        adapter_methods = self.extract_method_signatures_ast(
+            bbia_adapter, "BackendAdapter"
+        )
 
         # Extraire méthodes ReachyMiniBackend BBIA
         bbia_backend = self.bbia_root / "src/bbia_sim/backends/reachy_mini_backend.py"
