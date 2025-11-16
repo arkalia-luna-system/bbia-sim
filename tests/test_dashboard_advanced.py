@@ -94,16 +94,16 @@ class TestDashboardAdvanced:
         """Test structure des métriques."""
         manager = BBIAAdvancedWebSocketManager()
 
-            # Vérifier structure current_metrics
-            assert isinstance(manager.current_metrics, dict)
-            assert "timestamp" in manager.current_metrics
-            assert "robot_connected" in manager.current_metrics
-            assert "current_emotion" in manager.current_metrics
-            assert "emotion_intensity" in manager.current_metrics
-            assert "joint_positions" in manager.current_metrics
-            assert "performance" in manager.current_metrics
-            assert "vision" in manager.current_metrics
-            assert "audio" in manager.current_metrics
+        # Vérifier structure current_metrics
+        assert isinstance(manager.current_metrics, dict)
+        assert "timestamp" in manager.current_metrics
+        assert "robot_connected" in manager.current_metrics
+        assert "current_emotion" in manager.current_metrics
+        assert "emotion_intensity" in manager.current_metrics
+        assert "joint_positions" in manager.current_metrics
+        assert "performance" in manager.current_metrics
+        assert "vision" in manager.current_metrics
+        assert "audio" in manager.current_metrics
 
     @pytest.mark.skipif(
         BBIAAdvancedWebSocketManager is None,
@@ -293,21 +293,22 @@ class TestDashboardAdvanced:
                 pytest.skip(f"Test timeout: {e}")
             pytest.skip(f"Dashboard advanced non disponible: {e}")
 
+    @pytest.mark.skipif(
+        not FASTAPI_AVAILABLE or BBIAAdvancedWebSocketManager is None,
+        reason="Dashboard non disponible",
+    )
     @patch("bbia_sim.dashboard_advanced.FASTAPI_AVAILABLE", True)
     def test_disconnect_websocket(self):
         """Test déconnexion WebSocket."""
-        if BBIAAdvancedWebSocketManager is None:
-
-            pytest.skip("Dashboard non disponible")
-
         manager = BBIAAdvancedWebSocketManager()
 
-            mock_websocket = MagicMock()
-            manager.active_connections.append(mock_websocket)
+        mock_websocket = MagicMock()
+        manager.active_connections.append(mock_websocket)
 
-            manager.disconnect(mock_websocket)
-            assert mock_websocket not in manager.active_connections
-            assert len(manager.active_connections) == 0
+        manager.disconnect(mock_websocket)
+        assert mock_websocket not in manager.active_connections
+        assert len(manager.active_connections) == 0
+
     @patch("bbia_sim.dashboard_advanced.FASTAPI_AVAILABLE", True)
     def test_send_complete_status(self):
         """Test envoi statut complet."""
