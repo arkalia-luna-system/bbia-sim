@@ -350,15 +350,17 @@ def create_face_recognition(
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
 
-    print("🧪 Test module Face Recognition BBIA")
-    print("=" * 40)
+    logging.info("🧪 Test module Face Recognition BBIA")
+    logging.info("=" * 40)
 
     face_rec = create_face_recognition()
     if face_rec:
-        print("✅ Module Face Recognition créé")
-        print(f"   • Base de données: {face_rec.db_path}")
-        print(f"   • Modèle: {face_rec.model_name}")
-        print(f"   • Personnes enregistrées: {len(face_rec.get_registered_persons())}")
+        logging.info("✅ Module Face Recognition créé")
+        logging.info(f"   • Base de données: {face_rec.db_path}")
+        logging.info(f"   • Modèle: {face_rec.model_name}")
+        logging.info(
+            f"   • Personnes enregistrées: {len(face_rec.get_registered_persons())}"
+        )
     else:
-        print("❌ Impossible de créer le module (DeepFace non disponible)")
-        print("   Installer avec: pip install deepface")
+        logging.error("❌ Impossible de créer le module (DeepFace non disponible)")
+        logging.info("   Installer avec: pip install deepface")

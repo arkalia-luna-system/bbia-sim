@@ -47,9 +47,9 @@ bbia = BBIAHuggingFace()
 # Activer LLM conversationnel (peut prendre 1-2 minutes)
 success = bbia.enable_llm_chat()
 if success:
-    print("LLM activé - conversations intelligentes disponibles")
+    logging.info("LLM activé - conversations intelligentes disponibles")
 else:
-    print("LLM non chargé - utilisation réponses enrichies (règles)")
+    logging.warning("LLM non chargé - utilisation réponses enrichies (règles)")
 
 ```
 
@@ -78,11 +78,11 @@ bbia.enable_llm_chat("mistralai/Mistral-7B-Instruct-v0.2")
 
 # Conversation intelligente
 response = bbia.chat("Bonjour, comment ça va ?")
-print(response)  # Réponse naturelle générée par Mistral 7B
+logging.info(response)  # Réponse naturelle générée par Mistral 7B
 
 # Avec contexte (utilise historique)
 response2 = bbia.chat("Tu te rappelles ce que je viens de dire ?", use_context=True)
-print(response2)  # Réponse qui référence la conversation précédente
+logging.info(response2)  # Réponse qui référence la conversation précédente
 
 ```
 
@@ -254,13 +254,13 @@ python -c "
 from bbia_sim.bbia_huggingface import BBIAHuggingFace
 
 bbia = BBIAHuggingFace()
-    print('Chargement LLM...')
+    logging.info('Chargement LLM...')
 if bbia.enable_llm_chat():
-    print('LLM chargé')
+    logging.info('LLM chargé')
     response = bbia.chat('Bonjour, qui es-tu ?')
-    print(f'Réponse: {response}')
+    logging.info(f'Réponse: {response}')
 else:
-    print('LLM non chargé')
+    logging.warning('LLM non chargé')
 "
 
 ```

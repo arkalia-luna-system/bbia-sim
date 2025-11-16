@@ -3,6 +3,7 @@
 Mapping unique des noms/limites joints pour éviter les divergences sim ↔ réel
 """
 
+import logging
 from dataclasses import dataclass
 
 
@@ -197,25 +198,25 @@ def get_joint_info(joint_name: str) -> JointInfo:
 
 if __name__ == "__main__":
     """Test du mapping."""
-    print("🔍 Test du mapping Reachy Mini")
-    print("=" * 50)
+    logging.info("🔍 Test du mapping Reachy Mini")
+    logging.info("=" * 50)
 
     # Test joints valides
-    print("✅ Joints disponibles:")
+    logging.info("✅ Joints disponibles:")
     for joint_name in ReachyMapping.get_all_joints():
         joint_info = ReachyMapping.get_joint_info(joint_name)
-        print(
+        logging.info(
             f"  - {joint_name}: [{joint_info.min_limit:.2f}, {joint_info.max_limit:.2f}] rad",
         )
 
-    print(f"\n🚫 Joints interdits: {len(ReachyMapping.get_forbidden_joints())}")
+    logging.info(f"\n🚫 Joints interdits: {len(ReachyMapping.get_forbidden_joints())}")
     for joint in ReachyMapping.get_forbidden_joints():
-        print(f"  - {joint}")
+        logging.info(f"  - {joint}")
 
-    print(f"\n🎯 Joints recommandés: {ReachyMapping.get_recommended_joints()}")
+    logging.info(f"\n🎯 Joints recommandés: {ReachyMapping.get_recommended_joints()}")
 
     # Test validation
-    print("\n🧪 Test validation:")
+    logging.info("\n🧪 Test validation:")
     test_cases = [
         ("yaw_body", 0.2),  # OK
         ("yaw_body", 0.5),  # Clampé à 0.3
@@ -227,8 +228,8 @@ if __name__ == "__main__":
     for joint, pos in test_cases:
         try:
             is_valid, clamped = ReachyMapping.validate_position(joint, pos)
-            print(f"  {joint}({pos}) → {is_valid}, {clamped:.2f}")
+            logging.info(f"  {joint}({pos}) → {is_valid}, {clamped:.2f}")
         except ValueError as e:
-            print(f"  {joint}({pos}) → ERREUR: {e}")
+            logging.error(f"  {joint}({pos}) → ERREUR: {e}")
 
-    print("\n✅ Mapping Reachy Mini validé !")
+    logging.info("\n✅ Mapping Reachy Mini validé !")

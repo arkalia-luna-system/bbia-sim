@@ -709,7 +709,7 @@ robot.look_at(0.1, 0.2, 0.3)
 
 # Récupérer la télémétrie
 telemetry = robot.get_telemetry()
-print(telemetry)
+logging.info(telemetry)
 
 # Déconnecter
 robot.disconnect()

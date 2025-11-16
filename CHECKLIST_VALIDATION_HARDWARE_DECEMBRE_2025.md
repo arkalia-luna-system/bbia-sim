@@ -33,7 +33,7 @@
 - [ ] **Vérification connexion SDK**
 
   ```bash
-  python -c "from reachy_mini_motor_controller import ReachyMini; robot = ReachyMini(); print(robot.is_connected)"
+  python -c "from reachy_mini_motor_controller import ReachyMini; import logging; robot = ReachyMini(); logging.info(robot.is_connected)"
   ```
 
 - [ ] **Test basique SDK**
@@ -166,7 +166,7 @@
 - [ ] **Test emergency stop**
 
   ```bash
-  python -c "from bbia_sim.robot_factory import RobotFactory; r = RobotFactory.create_backend('reachy_mini', use_sim=False); r.connect(); r.wake_up(); r.emergency_stop(); print('Emergency stop OK')"
+  python -c "from bbia_sim.robot_factory import RobotFactory; import logging; r = RobotFactory.create_backend('reachy_mini', use_sim=False); r.connect(); r.wake_up(); r.emergency_stop(); logging.info('Emergency stop OK')"
   ```
 
 ---

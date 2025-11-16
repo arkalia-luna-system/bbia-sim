@@ -426,16 +426,16 @@ python examples/demo_bbia_phase2_integration.py
 python -m pytest tests/test_bbia_phase2_modules.py -v
 
 # Module Adaptive Behavior (fonctionne sans dépendances ML)
-python -c "from bbia_sim.bbia_adaptive_behavior import BBIAAdaptiveBehavior; ab = BBIAAdaptiveBehavior(); ab.set_context('greeting'); ab.set_emotion_state('happy', 0.8); print(ab.generate_behavior('test'))"
+python -c "from bbia_sim.bbia_adaptive_behavior import BBIAAdaptiveBehavior; import logging; ab = BBIAAdaptiveBehavior(); ab.set_context('greeting'); ab.set_emotion_state('happy', 0.8); logging.info(ab.generate_behavior('test'))"
 
 # Module Hugging Face (nécessite: pip install transformers torch)
-python -c "from bbia_sim.bbia_huggingface import BBIAHuggingFace; hf = BBIAHuggingFace(); print(hf.analyze_sentiment('Je suis heureux!'))"
+python -c "from bbia_sim.bbia_huggingface import BBIAHuggingFace; import logging; hf = BBIAHuggingFace(); logging.info(hf.analyze_sentiment('Je suis heureux!'))"
 
 # Chat intelligent BBIA
-python -c "from bbia_sim.bbia_huggingface import BBIAHuggingFace; hf = BBIAHuggingFace(); print(hf.chat('Bonjour'))"
+python -c "from bbia_sim.bbia_huggingface import BBIAHuggingFace; import logging; hf = BBIAHuggingFace(); logging.info(hf.chat('Bonjour'))"
 
 # Module Emotion Recognition (nécessite: pip install mediapipe transformers)
-python -c "from bbia_sim.bbia_emotion_recognition import BBIAEmotionRecognition; er = BBIAEmotionRecognition(); print(er.analyze_vocal_emotion('Je suis excité!'))"
+python -c "from bbia_sim.bbia_emotion_recognition import BBIAEmotionRecognition; import logging; er = BBIAEmotionRecognition(); logging.info(er.analyze_vocal_emotion('Je suis excité!'))"
 ```
 
 ### ⚙️ Variables d’environnement utiles
@@ -593,7 +593,7 @@ python - <<'PY'
 from bbia_sim.bbia_huggingface import BBIAHuggingFace
 bbia = BBIAHuggingFace()
 ok = bbia.enable_llm_chat()
-print('LLM activé' if ok else 'LLM non chargé (fallback réponses enrichies)')
+logging.info('LLM activé' if ok else 'LLM non chargé (fallback réponses enrichies)')
 PY
 ```
 
@@ -604,7 +604,7 @@ PY
 source venv-vision-py310/bin/activate
 python - <<'PY'
 import mediapipe, cv2
-print('VISION OK')
+logging.info('VISION OK')
 PY
 ```
 

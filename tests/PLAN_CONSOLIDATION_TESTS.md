@@ -243,10 +243,10 @@ def main():
     total_tests_after = sum(count_tests_in_file(f) for f in files_after)
     
     if total_tests_after < total_tests_before:
-        print(f"❌ ERREUR: Perte de {total_tests_before - total_tests_after} tests!")
+        logging.error(f"❌ ERREUR: Perte de {total_tests_before - total_tests_after} tests!")
         sys.exit(1)
     else:
-        print(f"✅ OK: {total_tests_after} tests (avant: {total_tests_before})")
+        logging.info(f"✅ OK: {total_tests_after} tests (avant: {total_tests_before})")
 ```
 
 ## ✅ Checklist de Consolidation

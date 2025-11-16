@@ -35,7 +35,7 @@ Notes:
 - Nettoyage macOS (si erreurs Matplotlib sur fichiers ._*):
   - `find venv-vision-py310/lib/python3.10/site-packages/matplotlib/mpl-data/stylelib -name '._*.mplstyle' -delete`
 - Test:
-  - `python -c "import mediapipe, cv2; print('VISION OK')"`
+  - `python -c "import mediapipe, cv2; import logging; logging.info('VISION OK')"`
 
 Caméra:
 

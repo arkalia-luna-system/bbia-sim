@@ -2540,38 +2540,38 @@ class BBIAHuggingFace:
 def main() -> None:
     """Test du module BBIA Hugging Face."""
     if not HF_AVAILABLE:
-        print("❌ Hugging Face transformers non disponible")
-        print("Installez avec: pip install transformers torch")
+        logging.error("❌ Hugging Face transformers non disponible")
+        logging.info("Installez avec: pip install transformers torch")
         return
 
     # Initialisation
     hf = BBIAHuggingFace()
 
     # Test chargement modèle
-    print("📥 Test chargement modèle BLIP...")
+    logging.info("📥 Test chargement modèle BLIP...")
     success = hf.load_model("Salesforce/blip-image-captioning-base", "vision")
-    print(f"Résultat: {'✅' if success else '❌'}")
+    logging.info(f"Résultat: {'✅' if success else '❌'}")
 
     # Test analyse sentiment
-    print("\n📝 Test analyse sentiment...")
+    logging.info("\n📝 Test analyse sentiment...")
     sentiment_result = hf.analyze_sentiment("Je suis très heureux aujourd'hui!")
-    print(f"Résultat: {sentiment_result}")
+    logging.info(f"Résultat: {sentiment_result}")
 
     # Test analyse émotion
-    print("\n😊 Test analyse émotion...")
+    logging.info("\n😊 Test analyse émotion...")
     emotion_result = hf.analyze_emotion("Je suis excité par ce projet!")
-    print(f"Résultat: {emotion_result}")
+    logging.info(f"Résultat: {emotion_result}")
 
     # Test chat intelligent
-    print("\n💬 Test chat intelligent...")
+    logging.info("\n💬 Test chat intelligent...")
     chat_result1 = hf.chat("Bonjour")
-    print(f"BBIA: {chat_result1}")
+    logging.info(f"BBIA: {chat_result1}")
     chat_result2 = hf.chat("Comment allez-vous ?")
-    print(f"BBIA: {chat_result2}")
+    logging.info(f"BBIA: {chat_result2}")
 
     # Informations
-    print(f"\n📊 Informations: {hf.get_model_info()}")
-    print(f"\n📝 Historique conversation: {len(hf.conversation_history)} messages")
+    logging.info(f"\n📊 Informations: {hf.get_model_info()}")
+    logging.info(f"\n📝 Historique conversation: {len(hf.conversation_history)} messages")
 
 
 if __name__ == "__main__":

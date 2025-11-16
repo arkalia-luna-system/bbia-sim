@@ -78,7 +78,7 @@ cd /Volumes/T7/bbia-reachy-sim && source venv/bin/activate && mjpython examples/
 source venv/bin/activate
 
 # Tester MuJoCo
-python -c "import mujoco; print('✅ MuJoCo installé - Version:', mujoco.__version__)"
+python -c "import mujoco; import logging; logging.info('✅ MuJoCo installé - Version:', mujoco.__version__)"
 ```
 
 ### **2. Vérifier que le script existe** :
@@ -143,7 +143,7 @@ mjpython examples/view_scene_piece.py
 
 ```bash
 # Vérifier la syntaxe XML
-python -c "import mujoco; m = mujoco.MjModel.from_xml_path('src/bbia_sim/sim/scenes/piece_bbia_simple.xml'); print('✅ XML valide')"
+python -c "import mujoco; import logging; m = mujoco.MjModel.from_xml_path('src/bbia_sim/sim/scenes/piece_bbia_simple.xml'); logging.info('✅ XML valide')"
 ```
 
 ---
@@ -176,7 +176,7 @@ cd /Volumes/T7/bbia-reachy-sim
 source venv/bin/activate
 
 # 3. Vérifier MuJoCo
-python -c "import mujoco; print('✅ MuJoCo OK')"
+python -c "import mujoco; import logging; logging.info('✅ MuJoCo OK')"
 
 # 4. Lancer la scène
 python examples/view_scene_piece.py

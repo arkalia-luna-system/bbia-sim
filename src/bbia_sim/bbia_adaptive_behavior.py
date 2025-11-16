@@ -794,31 +794,31 @@ def main() -> None:
     adaptive_behavior = BBIAAdaptiveBehavior()
 
     # Test changement de contexte
-    print("🎭 Test changement de contexte...")
+    logging.info("🎭 Test changement de contexte...")
     adaptive_behavior.set_context("greeting")
     adaptive_behavior.set_emotion_state("happy", 0.8)
 
     # Test génération de comportement
-    print("\n🎭 Test génération comportement...")
+    logging.info("\n🎭 Test génération comportement...")
     behavior = adaptive_behavior.generate_behavior("user_arrival")
-    print(f"Comportement généré: {behavior['name']}")
-    print(f"Description: {behavior['description']}")
-    print(f"Paramètres: {behavior['parameters']}")
+    logging.info(f"Comportement généré: {behavior['name']}")
+    logging.info(f"Description: {behavior['description']}")
+    logging.info(f"Paramètres: {behavior['parameters']}")
 
     # Test comportement proactif
-    print("\n🚀 Test comportement proactif...")
+    logging.info("\n🚀 Test comportement proactif...")
     proactive = adaptive_behavior.get_proactive_behavior()
     if proactive:
-        print(f"Comportement proactif: {proactive['name']}")
+        logging.info(f"Comportement proactif: {proactive['name']}")
     else:
-        print("Aucun comportement proactif généré")
+        logging.info("Aucun comportement proactif généré")
 
     # Test adaptation feedback
-    print("\n🔄 Test adaptation feedback...")
+    logging.info("\n🔄 Test adaptation feedback...")
     adaptive_behavior.adapt_to_feedback(behavior["id"], "positive", 0.8)
 
     # Statistiques
-    print(f"\n📊 Statistiques: {adaptive_behavior.get_behavior_statistics()}")
+    logging.info(f"\n📊 Statistiques: {adaptive_behavior.get_behavior_statistics()}")
 
 
 if __name__ == "__main__":

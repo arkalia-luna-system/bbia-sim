@@ -16,10 +16,10 @@ source .venv/bin/activate  # Si le venv est nommé .venv
 
 ```bash
 # Vérifier que MuJoCo est installé
-python3 -c "import mujoco; print('✅ MuJoCo version:', mujoco.__version__)"
+python3 -c "import mujoco; import logging; logging.info('✅ MuJoCo version:', mujoco.__version__)"
 
 # OU avec mjpython si disponible
-mjpython -c "import mujoco; print('✅ MuJoCo version:', mujoco.__version__)"
+mjpython -c "import mujoco; import logging; logging.info('✅ MuJoCo version:', mujoco.__version__)"
 ```
 
 ## 3. Tester le script (sans lancer - vérification syntaxe)
@@ -71,7 +71,7 @@ import sys
 from pathlib import Path
 sys.path.insert(0, str(Path('src')))
 from bbia_sim.robot_factory import RobotFactory
-print('✅ Tous les imports OK')
+logging.info('✅ Tous les imports OK')
 "
 ```
 

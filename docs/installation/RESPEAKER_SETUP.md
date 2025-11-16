@@ -33,11 +33,11 @@ robot.connect()
 
 # Accéder au microphone ReSpeaker
 if robot.media and robot.media.microphone:
-    print("✅ ReSpeaker détecté")
-    print(f"Canaux disponibles: {robot.media.microphone.channels}")
-    print(f"Sample rate: {robot.media.microphone.sample_rate}")
+    logging.info("✅ ReSpeaker détecté")
+    logging.info(f"Canaux disponibles: {robot.media.microphone.channels}")
+    logging.info(f"Sample rate: {robot.media.microphone.sample_rate}")
 else:
-    print("⚠️ ReSpeaker non disponible (mode simulation)")
+    logging.warning("⚠️ ReSpeaker non disponible (mode simulation)")
 ```
 
 ### 2. Vérification via Script
@@ -60,23 +60,23 @@ def test_respeaker():
     robot = RobotFactory.create_backend("reachy")
     
     if not robot:
-        print("❌ Robot non disponible")
+        logging.error("❌ Robot non disponible")
         return False
     
     connected = robot.connect()
     if not connected:
-        print("⚠️ Robot non connecté (mode simulation)")
+        logging.warning("⚠️ Robot non connecté (mode simulation)")
         return False
     
     # Vérifier microphone
     if robot.media and robot.media.microphone:
         mic = robot.media.microphone
-        print("✅ ReSpeaker détecté")
-        print(f"   Canaux: {getattr(mic, 'channels', 'N/A')}")
-        print(f"   Sample rate: {getattr(mic, 'sample_rate', 'N/A')} Hz")
+        logging.info("✅ ReSpeaker détecté")
+        logging.info(f"   Canaux: {getattr(mic, 'channels', 'N/A')}")
+        logging.info(f"   Sample rate: {getattr(mic, 'sample_rate', 'N/A')} Hz")
         return True
     else:
-        print("❌ ReSpeaker non détecté")
+        logging.error("❌ ReSpeaker non détecté")
         return False
 
 if __name__ == "__main__":
@@ -214,24 +214,24 @@ def test_sound_in():
     robot = RobotFactory.create_backend("reachy")
     
     if not robot or not robot.connect():
-        print("❌ Robot non disponible")
+        logging.error("❌ Robot non disponible")
         return False
     
     if not robot.media or not robot.media.microphone:
-        print("❌ ReSpeaker non disponible")
+        logging.error("❌ ReSpeaker non disponible")
         return False
     
-    print("🎤 Test enregistrement (3 secondes)...")
+    logging.info("🎤 Test enregistrement (3 secondes)...")
     try:
         audio = robot.media.record_audio(duration=3.0, sample_rate=16000)
         if audio:
-            print(f"✅ Enregistrement OK ({len(audio)} échantillons)")
+            logging.info(f"✅ Enregistrement OK ({len(audio)} échantillons)")
             return True
         else:
-            print("❌ Enregistrement vide")
+        logging.error("❌ Enregistrement vide")
             return False
-    except Exception as e:
-        print(f"❌ Erreur enregistrement: {e}")
+    except (OSError, RuntimeError, ValueError) as e:
+        logging.error(f"❌ Erreur enregistrement: {e}")
         return False
 
 def test_sound_out():
@@ -239,14 +239,14 @@ def test_sound_out():
     robot = RobotFactory.create_backend("reachy")
     
     if not robot or not robot.connect():
-        print("❌ Robot non disponible")
+        logging.error("❌ Robot non disponible")
         return False
     
     if not robot.media or not robot.media.speaker:
-        print("❌ Speaker non disponible")
+        logging.error("❌ Speaker non disponible")
         return False
     
-    print("🔊 Test lecture audio...")
+    logging.info("🔊 Test lecture audio...")
     try:
         # Générer tone de test (440 Hz, 1 seconde)
         import numpy as np
@@ -256,22 +256,22 @@ def test_sound_out():
         tone = np.sin(2 * np.pi * 440 * t).astype(np.float32)
         
         robot.media.speaker.play(tone, sample_rate=sample_rate)
-        print("✅ Lecture OK")
+        logging.info("✅ Lecture OK")
         return True
-    except Exception as e:
-        print(f"❌ Erreur lecture: {e}")
+    except (OSError, RuntimeError, ValueError) as e:
+        logging.error(f"❌ Erreur lecture: {e}")
         return False
 
 if __name__ == "__main__":
-    print("🧪 Tests ReSpeaker\n")
+    logging.info("🧪 Tests ReSpeaker\n")
     
-    print("1. Test Sound In (microphone)")
+    logging.info("1. Test Sound In (microphone)")
     test_sound_in()
     
-    print("\n2. Test Sound Out (speaker)")
+    logging.info("\n2. Test Sound Out (speaker)")
     test_sound_out()
     
-    print("\n✅ Tests terminés")
+    logging.info("\n✅ Tests terminés")
 ```
 
 ### Test Détection Devices
@@ -285,23 +285,23 @@ try:
     
     p = pyaudio.PyAudio()
     
-    print("📋 Devices audio disponibles:\n")
+    logging.info("📋 Devices audio disponibles:\n")
     
     for i in range(p.get_device_count()):
         info = p.get_device_info_by_index(i)
         if info.get("maxInputChannels") > 0:
-            print(f"Device {i}: {info.get('name')}")
-            print(f"  Input channels: {info.get('maxInputChannels')}")
-            print(f"  Sample rate: {info.get('defaultSampleRate')} Hz")
-            print()
+            logging.info(f"Device {i}: {info.get('name')}")
+            logging.info(f"  Input channels: {info.get('maxInputChannels')}")
+            logging.info(f"  Sample rate: {info.get('defaultSampleRate')} Hz")
+            logging.info("")
     
     p.terminate()
     
 except ImportError:
-    print("❌ PyAudio non disponible")
-    print("Installer: pip install pyaudio")
-except Exception as e:
-    print(f"❌ Erreur: {e}")
+    logging.error("❌ PyAudio non disponible")
+    logging.error("Installer: pip install pyaudio")
+except (OSError, RuntimeError, ValueError) as e:
+    logging.error(f"❌ Erreur: {e}")
 ```
 
 ---

@@ -121,7 +121,7 @@ Pour détecter manuellement un outil :
 result = hf._detect_tool_with_nlp("tourne la tête à gauche")
 if result:
     tool_name, confidence = result
-    print(f"Outil: {tool_name}, Confiance: {confidence:.2f}")
+    logging.info(f"Outil: {tool_name}, Confiance: {confidence:.2f}")
 
 ```
 
@@ -256,7 +256,7 @@ hf.enable_multimodal_model("smolvlm")
 
 # Décrire image
 description = hf.describe_image(image_path, model_name="smolvlm")
-print(description)
+logging.info(description)
 
 ```
 
@@ -340,7 +340,7 @@ text = whisper.transcribe_streaming(
 
 ```python
 def on_chunk_transcribed(text: str, duration: float):
-    print(f"[{duration:.1f}s] {text}")
+    logging.info(f"[{duration:.1f}s] {text}")
 
 text = whisper.transcribe_streaming(
     callback=on_chunk_transcribed,
@@ -378,8 +378,8 @@ messages = [
 
 for msg in messages:
     response = hf.chat(msg, enable_tools=True)
-    print(f"Utilisateur: {msg}")
-    print(f"BBIA: {response}\n")
+    logging.info(f"Utilisateur: {msg}")
+    logging.info(f"BBIA: {response}\n")
 
 ```
 
@@ -406,7 +406,7 @@ whisper = WhisperSTT(enable_vad=True)
 # Streaming avec VAD automatique
 def on_transcription(text: str, duration: float):
     if text:
-        print(f"Transcription: {text}")
+        logging.info(f"Transcription: {text}")
 
 text = whisper.transcribe_streaming(
     callback=on_transcription,
@@ -428,7 +428,7 @@ hf.enable_multimodal_model("smolvlm")
 
 # Décrire image
 description = hf.describe_image("image.jpg", model_name="smolvlm")
-print(f"Description: {description}")
+logging.info(f"Description: {description}")
 
 ```
 

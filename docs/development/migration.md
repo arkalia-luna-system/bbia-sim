@@ -429,7 +429,7 @@ ZENOH_CONFIG = {
 # Vérifier les limites des joints
 joint_limits = robot.get_joint_limits()
 for joint, limits in joint_limits.items():
-    print(f"{joint}: {limits}")
+    logging.info(f"{joint}: {limits}")
 
 ```
 

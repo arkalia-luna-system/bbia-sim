@@ -429,28 +429,28 @@ def create_face_detector() -> FaceDetector | None:
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
 
-    print("🧪 Test modules Vision BBIA")
-    print("=" * 40)
+    logging.info("🧪 Test modules Vision BBIA")
+    logging.info("=" * 40)
 
     # Test disponibilité
-    print(f"YOLO disponible: {YOLO_AVAILABLE}")
+    logging.info(f"YOLO disponible: {YOLO_AVAILABLE}")
 
     try:
         import mediapipe as mp  # noqa: F401
 
-        print("MediaPipe disponible: True")
+        logging.info("MediaPipe disponible: True")
     except ImportError:
-        print("MediaPipe disponible: False")
+        logging.info("MediaPipe disponible: False")
 
     # Test création détecteurs
     yolo = create_yolo_detector("n")
     if yolo:
-        print("✅ Détecteur YOLO créé")
+        logging.info("✅ Détecteur YOLO créé")
     else:
-        print("❌ Impossible de créer le détecteur YOLO")
+        logging.error("❌ Impossible de créer le détecteur YOLO")
 
     face_detector = create_face_detector()
     if face_detector:
-        print("✅ Détecteur de visages créé")
+        logging.info("✅ Détecteur de visages créé")
     else:
-        print("❌ Impossible de créer le détecteur de visages")
+        logging.error("❌ Impossible de créer le détecteur de visages")
