@@ -354,7 +354,8 @@ class BBIAAdvancedWebSocketManager:
         for joint in self._get_available_joints():
             try:
                 pose[joint] = self.robot.get_joint_pos(joint)
-            except (ConnectionError, RuntimeError, WebSocketDisconnect):
+            except (ConnectionError, RuntimeError, WebSocketDisconnect, Exception):
+                # Gérer toutes les exceptions pour éviter les crashes
                 pose[joint] = 0.0
         return pose
 

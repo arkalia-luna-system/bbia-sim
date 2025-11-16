@@ -81,7 +81,10 @@ class TestDaemonBridge:
     @patch("bbia_sim.daemon.bridge.ReachyMini")
     def test_reachy_mini_import_available(self, mock_reachy):
         """Test que reachy_mini est disponible."""
-        assert REACHY_MINI_AVAILABLE is True
+        # Re-importer pour obtenir la valeur patchée
+        from bbia_sim.daemon import bridge
+
+        assert bridge.REACHY_MINI_AVAILABLE is True
 
     @pytest.mark.skipif(
         not DAEMON_BRIDGE_AVAILABLE,
@@ -180,8 +183,11 @@ class TestDaemonBridge:
         bridge = ZenohBridge()
 
         # Vérifier présence méthodes principales
-        assert hasattr(bridge, "connect") or hasattr(bridge, "connect_zenoh")
-        assert hasattr(bridge, "disconnect") or hasattr(bridge, "disconnect_zenoh")
+        assert hasattr(bridge, "start")
+        assert hasattr(bridge, "stop")
+        assert hasattr(bridge, "send_command")
+        assert hasattr(bridge, "get_current_state")
+        assert hasattr(bridge, "is_connected")
 
     @pytest.mark.skipif(
         not DAEMON_BRIDGE_AVAILABLE or ZenohBridge is None or ZenohConfig is None,
@@ -495,7 +501,7 @@ class TestDaemonBridge:
         bridge = ZenohBridge()
         # _publish_error est async, donc utiliser AsyncMock
         # Utiliser setattr pour éviter l'erreur "Cannot assign to a method"
-        setattr(bridge, "_publish_error", AsyncMock())
+        bridge._publish_error = AsyncMock()
 
         mock_sample = MagicMock()
         large_payload = "x" * (1048577)  # 1MB + 1 byte
@@ -504,7 +510,7 @@ class TestDaemonBridge:
         await bridge._on_command_received(mock_sample)
 
         # _publish_error est un AsyncMock, vérifier qu'il a été appelé
-        publish_error_mock = getattr(bridge, "_publish_error")
+        publish_error_mock = bridge._publish_error
         if hasattr(publish_error_mock, "assert_called_once"):
             publish_error_mock.assert_called_once()  # type: ignore[attr-defined]
 
