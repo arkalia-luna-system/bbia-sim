@@ -26,7 +26,6 @@ try:
         FASTAPI_AVAILABLE,
         BBIAAdvancedWebSocketManager,
     )
-except (ImportError, AttributeError):
     # FastAPI peut ne pas être disponible en test
     FASTAPI_AVAILABLE = False
     BBIAAdvancedWebSocketManager = None  # type: ignore[assignment,misc]
@@ -210,7 +209,6 @@ class TestDashboardAdvanced:
 
             # Exécuter avec timeout pour éviter blocage
             asyncio.run(asyncio.wait_for(test(), timeout=1.0))
-        except Exception as e:
             if "timeout" in str(e).lower():
                 pytest.skip(f"Test timeout (normal si métriques collectées): {e}")
             raise
@@ -265,8 +263,6 @@ class TestDashboardAdvanced:
         assert "microphone_active" in audio
         assert "speaker_active" in audio
         assert "volume_level" in audio
-        except (ImportError, Exception) as e:
-            pytest.skip(f"Dashboard advanced non disponible: {e}")
 
     @patch("bbia_sim.dashboard_advanced.FASTAPI_AVAILABLE", True)
     def test_connect_websocket(self):
@@ -288,7 +284,6 @@ class TestDashboardAdvanced:
                 mock_websocket.accept.assert_called_once()
 
             asyncio.run(asyncio.wait_for(test(), timeout=1.0))
-        except (ImportError, Exception) as e:
             if "timeout" in str(e).lower():
                 pytest.skip(f"Test timeout: {e}")
             pytest.skip(f"Dashboard advanced non disponible: {e}")
@@ -308,9 +303,6 @@ class TestDashboardAdvanced:
             manager.disconnect(mock_websocket)
             assert mock_websocket not in manager.active_connections
             assert len(manager.active_connections) == 0
-        except (ImportError, Exception) as e:
-            pytest.skip(f"Dashboard advanced non disponible: {e}")
-
     @patch("bbia_sim.dashboard_advanced.FASTAPI_AVAILABLE", True)
     def test_send_complete_status(self):
         """Test envoi statut complet."""
@@ -325,7 +317,6 @@ class TestDashboardAdvanced:
                 await manager.send_complete_status()
 
             asyncio.run(asyncio.wait_for(test(), timeout=1.0))
-        except (ImportError, Exception) as e:
             if "timeout" in str(e).lower():
                 pytest.skip(f"Test timeout: {e}")
             pytest.skip(f"Dashboard advanced non disponible: {e}")
@@ -344,7 +335,6 @@ class TestDashboardAdvanced:
                 await manager.send_metrics_update()
 
             asyncio.run(asyncio.wait_for(test(), timeout=1.0))
-        except (ImportError, Exception) as e:
             if "timeout" in str(e).lower():
                 pytest.skip(f"Test timeout: {e}")
             pytest.skip(f"Dashboard advanced non disponible: {e}")
@@ -365,7 +355,6 @@ class TestDashboardAdvanced:
                 await manager.send_log_message("warning", "Test warning")
 
             asyncio.run(asyncio.wait_for(test(), timeout=1.0))
-        except (ImportError, Exception) as e:
             if "timeout" in str(e).lower():
                 pytest.skip(f"Test timeout: {e}")
             pytest.skip(f"Dashboard advanced non disponible: {e}")
@@ -393,9 +382,6 @@ class TestDashboardAdvanced:
             assert manager.current_metrics["vision"]["objects_detected"] == 2
             assert manager.current_metrics["vision"]["faces_detected"] == 1
             assert manager.current_metrics["vision"]["tracking_active"] is True
-        except (ImportError, Exception) as e:
-            pytest.skip(f"Dashboard advanced non disponible: {e}")
-
     @patch("bbia_sim.dashboard_advanced.FASTAPI_AVAILABLE", True)
     def test_update_metrics_with_robot(self):
         """Test mise à jour métriques avec robot."""
@@ -421,9 +407,6 @@ class TestDashboardAdvanced:
             assert manager.current_metrics["performance"]["latency_ms"] == 15.5
             assert manager.current_metrics["performance"]["fps"] == 60.0
             assert "joint_positions" in manager.current_metrics
-        except (ImportError, Exception) as e:
-            pytest.skip(f"Dashboard advanced non disponible: {e}")
-
     @patch("bbia_sim.dashboard_advanced.FASTAPI_AVAILABLE", True)
     @patch("bbia_sim.dashboard_advanced.asyncio.create_task")
     def test_start_metrics_collection(self, mock_create_task):
@@ -438,9 +421,6 @@ class TestDashboardAdvanced:
 
             # Vérifier que create_task a été appelé
             assert mock_create_task.called
-        except (ImportError, Exception) as e:
-            pytest.skip(f"Dashboard advanced non disponible: {e}")
-
     @patch("bbia_sim.dashboard_advanced.FASTAPI_AVAILABLE", True)
     def test_get_available_joints_types(self):
         """Test récupération joints avec différents types."""
@@ -468,9 +448,6 @@ class TestDashboardAdvanced:
             mock_robot.get_available_joints.return_value = "invalid"
             joints = manager._get_available_joints()
             assert joints == []
-        except (ImportError, Exception) as e:
-            pytest.skip(f"Dashboard advanced non disponible: {e}")
-
     @patch("bbia_sim.dashboard_advanced.FASTAPI_AVAILABLE", True)
     def test_get_current_pose_exception(self):
         """Test récupération pose avec exception sur joint."""
@@ -490,9 +467,6 @@ class TestDashboardAdvanced:
             assert isinstance(pose, dict)
             assert "yaw_body" in pose
             assert pose["yaw_body"] == 0.0  # Valeur par défaut en cas d'erreur
-        except (ImportError, Exception) as e:
-            pytest.skip(f"Dashboard advanced non disponible: {e}")
-
     @patch("bbia_sim.dashboard_advanced.FASTAPI_AVAILABLE", True)
     def test_broadcast_with_connections(self):
         """Test broadcast avec connexions actives."""
@@ -517,7 +491,6 @@ class TestDashboardAdvanced:
                 assert mock_websocket2.send_text.called
 
             asyncio.run(asyncio.wait_for(test(), timeout=1.0))
-        except (ImportError, Exception) as e:
             if "timeout" in str(e).lower():
                 pytest.skip(f"Test timeout: {e}")
             pytest.skip(f"Dashboard advanced non disponible: {e}")
@@ -549,7 +522,6 @@ class TestDashboardAdvanced:
                 assert len(manager.active_connections) >= 1
 
             asyncio.run(asyncio.wait_for(test(), timeout=1.0))
-        except (ImportError, Exception) as e:
             if "timeout" in str(e).lower():
                 pytest.skip(f"Test timeout: {e}")
             pytest.skip(f"Dashboard advanced non disponible: {e}")
@@ -563,9 +535,6 @@ class TestDashboardAdvanced:
             app = create_advanced_dashboard_app()
             # Peut être None si FastAPI non disponible, sinon FastAPI app
             assert app is None or hasattr(app, "routes")
-        except (ImportError, Exception) as e:
-            pytest.skip(f"Dashboard advanced non disponible: {e}")
-
     @patch("bbia_sim.dashboard_advanced.FASTAPI_AVAILABLE", True)
     @patch("bbia_sim.dashboard_advanced.RobotFactory")
     def test_handle_advanced_robot_command_emotion(self, mock_factory):
@@ -597,7 +566,6 @@ class TestDashboardAdvanced:
             asyncio.run(asyncio.wait_for(test(), timeout=1.0))
             # Restaurer robot original
             advanced_websocket_manager.robot = original_robot
-        except (ImportError, Exception) as e:
             if "timeout" in str(e).lower():
                 pytest.skip(f"Test timeout: {e}")
             pytest.skip(f"Dashboard advanced non disponible: {e}")
@@ -630,7 +598,6 @@ class TestDashboardAdvanced:
                 assert mock_websocket.send_text.called
 
             asyncio.run(asyncio.wait_for(test(), timeout=1.0))
-        except (ImportError, Exception) as e:
             if "timeout" in str(e).lower():
                 pytest.skip(f"Test timeout: {e}")
             pytest.skip(f"Dashboard advanced non disponible: {e}")
@@ -646,9 +613,6 @@ class TestDashboardAdvanced:
             # Vérifier que uvicorn.run a été appelé (ou non selon disponibilité)
             # Le test vérifie juste que la fonction s'exécute sans erreur
             assert True
-        except (ImportError, Exception) as e:
-            pytest.skip(f"Dashboard advanced non disponible: {e}")
-
     @patch("bbia_sim.dashboard_advanced.FASTAPI_AVAILABLE", True)
     def test_fastapi_routes_status(self):
         """Test route GET /api/status."""
@@ -669,9 +633,6 @@ class TestDashboardAdvanced:
             assert "status" in data
             assert "timestamp" in data
             assert "version" in data
-        except (ImportError, Exception) as e:
-            pytest.skip(f"Dashboard advanced non disponible: {e}")
-
     @patch("bbia_sim.dashboard_advanced.FASTAPI_AVAILABLE", True)
     def test_fastapi_routes_metrics(self):
         """Test route GET /api/metrics."""
@@ -691,9 +652,6 @@ class TestDashboardAdvanced:
             data = response.json()
             assert "current" in data
             assert "history" in data
-        except (ImportError, Exception) as e:
-            pytest.skip(f"Dashboard advanced non disponible: {e}")
-
     @patch("bbia_sim.dashboard_advanced.FASTAPI_AVAILABLE", True)
     def test_fastapi_routes_joints(self):
         """Test route GET /api/joints."""
@@ -713,9 +671,6 @@ class TestDashboardAdvanced:
             data = response.json()
             assert "joints" in data
             assert "current_positions" in data
-        except (ImportError, Exception) as e:
-            pytest.skip(f"Dashboard advanced non disponible: {e}")
-
     @patch("bbia_sim.dashboard_advanced.FASTAPI_AVAILABLE", True)
     def test_fastapi_routes_healthz(self):
         """Test route GET /healthz."""
@@ -735,9 +690,6 @@ class TestDashboardAdvanced:
             data = response.json()
             assert data["status"] == "healthy"
             assert "timestamp" in data
-        except (ImportError, Exception) as e:
-            pytest.skip(f"Dashboard advanced non disponible: {e}")
-
     @patch("bbia_sim.dashboard_advanced.FASTAPI_AVAILABLE", True)
     def test_fastapi_routes_emotion_post(self):
         """Test route POST /api/emotion."""
@@ -770,9 +722,6 @@ class TestDashboardAdvanced:
                 assert "success" in data
             finally:
                 advanced_websocket_manager.robot = original_robot
-        except (ImportError, Exception) as e:
-            pytest.skip(f"Dashboard advanced non disponible: {e}")
-
     @patch("bbia_sim.dashboard_advanced.FASTAPI_AVAILABLE", True)
     def test_fastapi_routes_joint_post(self):
         """Test route POST /api/joint."""
@@ -805,9 +754,6 @@ class TestDashboardAdvanced:
                 assert "success" in data
             finally:
                 advanced_websocket_manager.robot = original_robot
-        except (ImportError, Exception) as e:
-            pytest.skip(f"Dashboard advanced non disponible: {e}")
-
     @patch("bbia_sim.dashboard_advanced.FASTAPI_AVAILABLE", True)
     def test_fastapi_routes_joint_post_error(self):
         """Test route POST /api/joint avec erreur (joint manquant)."""
@@ -825,9 +771,6 @@ class TestDashboardAdvanced:
 
             # Doit retourner erreur 400 si joint manquant
             assert response.status_code == 400
-        except (ImportError, Exception) as e:
-            pytest.skip(f"Dashboard advanced non disponible: {e}")
-
     @patch("bbia_sim.dashboard_advanced.FASTAPI_AVAILABLE", True)
     @patch("bbia_sim.dashboard_advanced.RobotFactory")
     def test_handle_advanced_robot_command_action(self, mock_factory):
@@ -870,7 +813,6 @@ class TestDashboardAdvanced:
             asyncio.run(asyncio.wait_for(test(), timeout=2.0))
             # Restaurer robot original
             advanced_websocket_manager.robot = original_robot
-        except (ImportError, Exception) as e:
             if "timeout" in str(e).lower():
                 pytest.skip(f"Test timeout: {e}")
             pytest.skip(f"Dashboard advanced non disponible: {e}")
@@ -899,7 +841,6 @@ class TestDashboardAdvanced:
 
             asyncio.run(asyncio.wait_for(test(), timeout=1.0))
             advanced_websocket_manager.robot = original_robot
-        except (ImportError, Exception) as e:
             if "timeout" in str(e).lower():
                 pytest.skip(f"Test timeout: {e}")
             pytest.skip(f"Dashboard advanced non disponible: {e}")
@@ -939,7 +880,6 @@ class TestDashboardAdvanced:
 
             asyncio.run(asyncio.wait_for(test(), timeout=2.0))
             advanced_websocket_manager.robot = original_robot
-        except (ImportError, Exception) as e:
             if "timeout" in str(e).lower():
                 pytest.skip(f"Test timeout: {e}")
             pytest.skip(f"Dashboard advanced non disponible: {e}")
@@ -963,7 +903,6 @@ class TestDashboardAdvanced:
                 )
 
             asyncio.run(asyncio.wait_for(test(), timeout=1.0))
-        except (ImportError, Exception) as e:
             if "timeout" in str(e).lower():
                 pytest.skip(f"Test timeout: {e}")
             pytest.skip(f"Dashboard advanced non disponible: {e}")
@@ -1009,7 +948,6 @@ class TestDashboardAdvanced:
 
             asyncio.run(asyncio.wait_for(test(), timeout=2.0))
             advanced_websocket_manager.robot = original_robot
-        except (ImportError, Exception) as e:
             if "timeout" in str(e).lower():
                 pytest.skip(f"Test timeout: {e}")
             pytest.skip(f"Dashboard advanced non disponible: {e}")
@@ -1033,7 +971,6 @@ class TestDashboardAdvanced:
                 )
 
             asyncio.run(asyncio.wait_for(test(), timeout=1.0))
-        except (ImportError, Exception) as e:
             if "timeout" in str(e).lower():
                 pytest.skip(f"Test timeout: {e}")
             pytest.skip(f"Dashboard advanced non disponible: {e}")
@@ -1076,7 +1013,6 @@ class TestDashboardAdvanced:
 
             asyncio.run(asyncio.wait_for(test(), timeout=2.0))
             advanced_websocket_manager.vision = original_vision
-        except (ImportError, Exception) as e:
             if "timeout" in str(e).lower():
                 pytest.skip(f"Test timeout: {e}")
             pytest.skip(f"Dashboard advanced non disponible: {e}")
@@ -1101,7 +1037,6 @@ class TestDashboardAdvanced:
                 )
 
             asyncio.run(asyncio.wait_for(test(), timeout=1.0))
-        except (ImportError, Exception) as e:
             if "timeout" in str(e).lower():
                 pytest.skip(f"Test timeout: {e}")
             pytest.skip(f"Dashboard advanced non disponible: {e}")
@@ -1130,7 +1065,6 @@ class TestDashboardAdvanced:
 
             asyncio.run(asyncio.wait_for(test(), timeout=1.0))
             advanced_websocket_manager.robot = original_robot
-        except (ImportError, Exception) as e:
             if "timeout" in str(e).lower():
                 pytest.skip(f"Test timeout: {e}")
             pytest.skip(f"Dashboard advanced non disponible: {e}")
@@ -1151,7 +1085,6 @@ class TestDashboardAdvanced:
                 )
 
             asyncio.run(asyncio.wait_for(test(), timeout=1.0))
-        except (ImportError, Exception) as e:
             if "timeout" in str(e).lower():
                 pytest.skip(f"Test timeout: {e}")
             pytest.skip(f"Dashboard advanced non disponible: {e}")
@@ -1168,9 +1101,6 @@ class TestTroubleshooting:
             checker = TroubleshootingChecker()
             assert checker.project_root.exists()
             assert isinstance(checker.results, dict)
-        except ImportError:
-            pytest.skip("Module troubleshooting non disponible")
-
     def test_check_python(self):
         """Test vérification Python."""
         try:
@@ -1184,9 +1114,6 @@ class TestTroubleshooting:
             assert "version" in result
             assert "message" in result
             assert result["status"] in ["ok", "warning", "error"]
-        except ImportError:
-            pytest.skip("Module troubleshooting non disponible")
-
     def test_check_dependencies(self):
         """Test vérification dépendances."""
         try:
@@ -1201,9 +1128,6 @@ class TestTroubleshooting:
             assert "missing" in result
             assert isinstance(result["available"], list)
             assert isinstance(result["missing"], list)
-        except ImportError:
-            pytest.skip("Module troubleshooting non disponible")
-
     def test_check_all(self):
         """Test exécution tous les checks."""
         try:
@@ -1229,9 +1153,6 @@ class TestTroubleshooting:
             assert "passed" in summary
             assert "failed" in summary
             assert "score" in summary
-        except ImportError:
-            pytest.skip("Module troubleshooting non disponible")
-
     def test_get_documentation_links(self):
         """Test récupération liens documentation."""
         try:
@@ -1242,9 +1163,5 @@ class TestTroubleshooting:
             assert isinstance(links, dict)
             assert "faq" in links
             assert "guide_avance" in links
-        except ImportError:
-            pytest.skip("Module troubleshooting non disponible")
-
-
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])
