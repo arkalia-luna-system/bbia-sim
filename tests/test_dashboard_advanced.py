@@ -128,11 +128,11 @@ class TestDashboardAdvanced:
         manager = BBIAAdvancedWebSocketManager()
 
             # Mock robot
-            mock_robot = MagicMock()
-            mock_robot.get_available_joints.return_value = [
-                "yaw_body",
-                "stewart_1",
-                "stewart_2",
+        mock_robot = MagicMock()
+        mock_robot.get_available_joints.return_value = [
+            "yaw_body",
+            "stewart_1",
+            "stewart_2",
             ]
             manager.robot = mock_robot
 
@@ -165,10 +165,10 @@ class TestDashboardAdvanced:
         manager = BBIAAdvancedWebSocketManager()
 
             # Mock robot avec joints
-            mock_robot = MagicMock()
-            mock_robot.get_available_joints.return_value = ["yaw_body"]
-            mock_robot.get_joint_pos.return_value = 0.5
-            manager.robot = mock_robot
+        mock_robot = MagicMock()
+        mock_robot.get_available_joints.return_value = ["yaw_body"]
+        mock_robot.get_joint_pos.return_value = 0.5
+        manager.robot = mock_robot
 
             pose = manager._get_current_pose()
 
@@ -186,11 +186,11 @@ class TestDashboardAdvanced:
         manager = BBIAAdvancedWebSocketManager()
 
             # Ajouter plus de métriques que le max (limité pour économiser RAM)
-            test_count = 100  # Limité pour test rapide et moins de RAM
-            for i in range(test_count):
-                manager.metrics_history.append({"data": i})
+        test_count = 100  # Limité pour test rapide et moins de RAM
+        for i in range(test_count):
+            manager.metrics_history.append({"data": i})
                 # Simuler la limite comme dans le code réel
-                if len(manager.metrics_history) > manager.max_history:
+            if len(manager.metrics_history) > manager.max_history:
                     manager.metrics_history.popleft()
 
             # Vérifier que l'historique est limité (on n'a ajouté que 100, donc < max_history)
@@ -208,9 +208,9 @@ class TestDashboardAdvanced:
 
         manager = BBIAAdvancedWebSocketManager()
 
-            async def test():
+        async def test():
                 # Doit fonctionner sans erreur même sans connexions
-                await manager.broadcast("test message")
+            await manager.broadcast("test message")
 
             # Exécuter avec timeout pour éviter blocage
             asyncio.run(asyncio.wait_for(test(), timeout=1.0))
@@ -273,13 +273,13 @@ class TestDashboardAdvanced:
     def test_connect_websocket(self):
         """Test connexion WebSocket."""
         try:
-            import asyncio
+        import asyncio
 
-            from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager
+        from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager
 
-            manager = BBIAAdvancedWebSocketManager()
+        manager = BBIAAdvancedWebSocketManager()
 
-            mock_websocket = MagicMock()
+        mock_websocket = MagicMock()
             mock_websocket.accept = MagicMock(return_value=None)
 
             async def test():
@@ -313,13 +313,13 @@ class TestDashboardAdvanced:
     def test_send_complete_status(self):
         """Test envoi statut complet."""
         try:
-            import asyncio
+        import asyncio
 
-            from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager
+        from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager
 
-            manager = BBIAAdvancedWebSocketManager()
+        manager = BBIAAdvancedWebSocketManager()
 
-            async def test():
+        async def test():
                 await manager.send_complete_status()
 
             asyncio.run(asyncio.wait_for(test(), timeout=1.0))
@@ -331,13 +331,13 @@ class TestDashboardAdvanced:
     def test_send_metrics_update(self):
         """Test envoi mise à jour métriques."""
         try:
-            import asyncio
+        import asyncio
 
-            from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager
+        from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager
 
-            manager = BBIAAdvancedWebSocketManager()
+        manager = BBIAAdvancedWebSocketManager()
 
-            async def test():
+        async def test():
                 await manager.send_metrics_update()
 
             asyncio.run(asyncio.wait_for(test(), timeout=1.0))
@@ -349,13 +349,13 @@ class TestDashboardAdvanced:
     def test_send_log_message(self):
         """Test envoi message log."""
         try:
-            import asyncio
+        import asyncio
 
-            from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager
+        from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager
 
-            manager = BBIAAdvancedWebSocketManager()
+        manager = BBIAAdvancedWebSocketManager()
 
-            async def test():
+        async def test():
                 await manager.send_log_message("info", "Test message")
                 await manager.send_log_message("error", "Test error")
                 await manager.send_log_message("warning", "Test warning")
@@ -370,12 +370,12 @@ class TestDashboardAdvanced:
         """Test mise à jour métriques."""
         if BBIAAdvancedWebSocketManager is None:
 
-            pytest.skip("Dashboard non disponible")
+        pytest.skip("Dashboard non disponible")
 
         manager = BBIAAdvancedWebSocketManager()
 
             # Mock vision pour retourner des objets (deque pour optimisation RAM)
-            from collections import deque
+        from collections import deque
 
             manager.vision.objects_detected = deque(
                 [{"name": "obj1"}, {"name": "obj2"}]
@@ -393,12 +393,12 @@ class TestDashboardAdvanced:
         """Test mise à jour métriques avec robot."""
         if BBIAAdvancedWebSocketManager is None:
 
-            pytest.skip("Dashboard non disponible")
+        pytest.skip("Dashboard non disponible")
 
         manager = BBIAAdvancedWebSocketManager()
 
             # Mock robot avec télémétrie
-            mock_robot = MagicMock()
+        mock_robot = MagicMock()
             mock_robot.get_available_joints.return_value = ["yaw_body"]
             mock_robot.get_joint_pos.return_value = 0.3
             mock_robot.get_telemetry.return_value = {
@@ -419,11 +419,11 @@ class TestDashboardAdvanced:
         """Test démarrage collecte métriques."""
         if BBIAAdvancedWebSocketManager is None:
 
-            pytest.skip("Dashboard non disponible")
+        pytest.skip("Dashboard non disponible")
 
         manager = BBIAAdvancedWebSocketManager()
 
-            manager._start_metrics_collection()
+        manager._start_metrics_collection()
 
             # Vérifier que create_task a été appelé
             assert mock_create_task.called
@@ -432,12 +432,12 @@ class TestDashboardAdvanced:
         """Test récupération joints avec différents types."""
         if BBIAAdvancedWebSocketManager is None:
 
-            pytest.skip("Dashboard non disponible")
+        pytest.skip("Dashboard non disponible")
 
         manager = BBIAAdvancedWebSocketManager()
 
             # Test avec joints int
-            mock_robot = MagicMock()
+        mock_robot = MagicMock()
             mock_robot.get_available_joints.return_value = [1, 2, 3]
             manager.robot = mock_robot
 
@@ -459,12 +459,12 @@ class TestDashboardAdvanced:
         """Test récupération pose avec exception sur joint."""
         if BBIAAdvancedWebSocketManager is None:
 
-            pytest.skip("Dashboard non disponible")
+        pytest.skip("Dashboard non disponible")
 
         manager = BBIAAdvancedWebSocketManager()
 
             # Mock robot qui lève exception sur get_joint_pos
-            mock_robot = MagicMock()
+        mock_robot = MagicMock()
             mock_robot.get_available_joints.return_value = ["yaw_body"]
             mock_robot.get_joint_pos.side_effect = Exception("Joint error")
             manager.robot = mock_robot
@@ -477,13 +477,13 @@ class TestDashboardAdvanced:
     def test_broadcast_with_connections(self):
         """Test broadcast avec connexions actives."""
         try:
-            import asyncio
+        import asyncio
 
-            from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager
+        from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager
 
-            manager = BBIAAdvancedWebSocketManager()
+        manager = BBIAAdvancedWebSocketManager()
 
-            mock_websocket1 = MagicMock()
+        mock_websocket1 = MagicMock()
             mock_websocket1.send_text = MagicMock(return_value=None)
             mock_websocket2 = MagicMock()
             mock_websocket2.send_text = MagicMock(return_value=None)
@@ -505,13 +505,13 @@ class TestDashboardAdvanced:
     def test_broadcast_with_disconnected(self):
         """Test broadcast avec connexions déconnectées."""
         try:
-            import asyncio
+        import asyncio
 
-            from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager
+        from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager
 
-            manager = BBIAAdvancedWebSocketManager()
+        manager = BBIAAdvancedWebSocketManager()
 
-            mock_websocket1 = MagicMock()
+        mock_websocket1 = MagicMock()
             mock_websocket1.send_text = MagicMock(side_effect=Exception("Disconnected"))
             mock_websocket2 = MagicMock()
             mock_websocket2.send_text = MagicMock(return_value=None)
@@ -536,22 +536,22 @@ class TestDashboardAdvanced:
     def test_create_advanced_dashboard_app(self):
         """Test création application dashboard."""
         try:
-            from bbia_sim.dashboard_advanced import create_advanced_dashboard_app
+        from bbia_sim.dashboard_advanced import create_advanced_dashboard_app
 
-            app = create_advanced_dashboard_app()
+        app = create_advanced_dashboard_app()
             # Peut être None si FastAPI non disponible, sinon FastAPI app
-            assert app is None or hasattr(app, "routes")
+        assert app is None or hasattr(app, "routes")
     @patch("bbia_sim.dashboard_advanced.FASTAPI_AVAILABLE", True)
     @patch("bbia_sim.dashboard_advanced.RobotFactory")
     def test_handle_advanced_robot_command_emotion(self, mock_factory):
         """Test commande robot - émotion."""
         try:
-            import asyncio
+        import asyncio
 
-            from bbia_sim.dashboard_advanced import (
-                advanced_websocket_manager,
-                handle_advanced_robot_command,
-            )
+        from bbia_sim.dashboard_advanced import (
+            advanced_websocket_manager,
+            handle_advanced_robot_command,
+        )
 
             mock_robot = MagicMock()
             mock_robot.set_emotion = MagicMock(return_value=True)
@@ -580,12 +580,12 @@ class TestDashboardAdvanced:
     def test_handle_chat_message(self):
         """Test gestion message chat."""
         try:
-            import asyncio
+        import asyncio
 
-            from bbia_sim.dashboard_advanced import (
-                advanced_websocket_manager,
-                handle_chat_message,
-            )
+        from bbia_sim.dashboard_advanced import (
+            advanced_websocket_manager,
+            handle_chat_message,
+        )
 
             mock_websocket = MagicMock()
             mock_websocket.send_text = MagicMock()
@@ -613,23 +613,23 @@ class TestDashboardAdvanced:
     def test_run_advanced_dashboard(self, mock_uvicorn):
         """Test lancement dashboard."""
         try:
-            from bbia_sim.dashboard_advanced import run_advanced_dashboard
+        from bbia_sim.dashboard_advanced import run_advanced_dashboard
 
-            run_advanced_dashboard(host="127.0.0.1", port=8001, backend="mujoco")
+        run_advanced_dashboard(host="127.0.0.1", port=8001, backend="mujoco")
             # Vérifier que uvicorn.run a été appelé (ou non selon disponibilité)
             # Le test vérifie juste que la fonction s'exécute sans erreur
-            assert True
+        assert True
     @patch("bbia_sim.dashboard_advanced.FASTAPI_AVAILABLE", True)
     def test_fastapi_routes_status(self):
         """Test route GET /api/status."""
         try:
-            from fastapi.testclient import TestClient
+        from fastapi.testclient import TestClient
 
-            from bbia_sim.dashboard_advanced import create_advanced_dashboard_app
+        from bbia_sim.dashboard_advanced import create_advanced_dashboard_app
 
-            app = create_advanced_dashboard_app()
-            if app is None:
-                pytest.skip("FastAPI non disponible")
+        app = create_advanced_dashboard_app()
+        if app is None:
+            pytest.skip("FastAPI non disponible")
 
             client = TestClient(app)
             response = client.get("/api/status")
@@ -643,13 +643,13 @@ class TestDashboardAdvanced:
     def test_fastapi_routes_metrics(self):
         """Test route GET /api/metrics."""
         try:
-            from fastapi.testclient import TestClient
+        from fastapi.testclient import TestClient
 
-            from bbia_sim.dashboard_advanced import create_advanced_dashboard_app
+        from bbia_sim.dashboard_advanced import create_advanced_dashboard_app
 
-            app = create_advanced_dashboard_app()
-            if app is None:
-                pytest.skip("FastAPI non disponible")
+        app = create_advanced_dashboard_app()
+        if app is None:
+            pytest.skip("FastAPI non disponible")
 
             client = TestClient(app)
             response = client.get("/api/metrics")
@@ -662,13 +662,13 @@ class TestDashboardAdvanced:
     def test_fastapi_routes_joints(self):
         """Test route GET /api/joints."""
         try:
-            from fastapi.testclient import TestClient
+        from fastapi.testclient import TestClient
 
-            from bbia_sim.dashboard_advanced import create_advanced_dashboard_app
+        from bbia_sim.dashboard_advanced import create_advanced_dashboard_app
 
-            app = create_advanced_dashboard_app()
-            if app is None:
-                pytest.skip("FastAPI non disponible")
+        app = create_advanced_dashboard_app()
+        if app is None:
+            pytest.skip("FastAPI non disponible")
 
             client = TestClient(app)
             response = client.get("/api/joints")
@@ -681,13 +681,13 @@ class TestDashboardAdvanced:
     def test_fastapi_routes_healthz(self):
         """Test route GET /healthz."""
         try:
-            from fastapi.testclient import TestClient
+        from fastapi.testclient import TestClient
 
-            from bbia_sim.dashboard_advanced import create_advanced_dashboard_app
+        from bbia_sim.dashboard_advanced import create_advanced_dashboard_app
 
-            app = create_advanced_dashboard_app()
-            if app is None:
-                pytest.skip("FastAPI non disponible")
+        app = create_advanced_dashboard_app()
+        if app is None:
+            pytest.skip("FastAPI non disponible")
 
             client = TestClient(app)
             response = client.get("/healthz")
@@ -700,12 +700,12 @@ class TestDashboardAdvanced:
     def test_fastapi_routes_emotion_post(self):
         """Test route POST /api/emotion."""
         try:
-            from fastapi.testclient import TestClient
+        from fastapi.testclient import TestClient
 
-            from bbia_sim.dashboard_advanced import (
-                advanced_websocket_manager,
-                create_advanced_dashboard_app,
-            )
+        from bbia_sim.dashboard_advanced import (
+            advanced_websocket_manager,
+            create_advanced_dashboard_app,
+        )
 
             app = create_advanced_dashboard_app()
             if app is None:
@@ -732,12 +732,12 @@ class TestDashboardAdvanced:
     def test_fastapi_routes_joint_post(self):
         """Test route POST /api/joint."""
         try:
-            from fastapi.testclient import TestClient
+        from fastapi.testclient import TestClient
 
-            from bbia_sim.dashboard_advanced import (
-                advanced_websocket_manager,
-                create_advanced_dashboard_app,
-            )
+        from bbia_sim.dashboard_advanced import (
+            advanced_websocket_manager,
+            create_advanced_dashboard_app,
+        )
 
             app = create_advanced_dashboard_app()
             if app is None:
@@ -764,13 +764,13 @@ class TestDashboardAdvanced:
     def test_fastapi_routes_joint_post_error(self):
         """Test route POST /api/joint avec erreur (joint manquant)."""
         try:
-            from fastapi.testclient import TestClient
+        from fastapi.testclient import TestClient
 
-            from bbia_sim.dashboard_advanced import create_advanced_dashboard_app
+        from bbia_sim.dashboard_advanced import create_advanced_dashboard_app
 
-            app = create_advanced_dashboard_app()
-            if app is None:
-                pytest.skip("FastAPI non disponible")
+        app = create_advanced_dashboard_app()
+        if app is None:
+            pytest.skip("FastAPI non disponible")
 
             client = TestClient(app)
             response = client.post("/api/joint", json={"position": 0.3})
@@ -782,12 +782,12 @@ class TestDashboardAdvanced:
     def test_handle_advanced_robot_command_action(self, mock_factory):
         """Test commande robot - action."""
         try:
-            import asyncio
+        import asyncio
 
-            from bbia_sim.dashboard_advanced import (
-                advanced_websocket_manager,
-                handle_advanced_robot_command,
-            )
+        from bbia_sim.dashboard_advanced import (
+            advanced_websocket_manager,
+            handle_advanced_robot_command,
+        )
 
             mock_robot = MagicMock()
             mock_robot.look_at = MagicMock(return_value=True)
@@ -828,12 +828,12 @@ class TestDashboardAdvanced:
     def test_handle_advanced_robot_command_action_no_robot(self, mock_factory):
         """Test commande robot - action sans robot."""
         try:
-            import asyncio
+        import asyncio
 
-            from bbia_sim.dashboard_advanced import (
-                advanced_websocket_manager,
-                handle_advanced_robot_command,
-            )
+        from bbia_sim.dashboard_advanced import (
+            advanced_websocket_manager,
+            handle_advanced_robot_command,
+        )
 
             original_robot = advanced_websocket_manager.robot
             advanced_websocket_manager.robot = None
@@ -856,12 +856,12 @@ class TestDashboardAdvanced:
     def test_handle_advanced_robot_command_behavior(self, mock_factory):
         """Test commande robot - behavior."""
         try:
-            import asyncio
+        import asyncio
 
-            from bbia_sim.dashboard_advanced import (
-                advanced_websocket_manager,
-                handle_advanced_robot_command,
-            )
+        from bbia_sim.dashboard_advanced import (
+            advanced_websocket_manager,
+            handle_advanced_robot_command,
+        )
 
             mock_robot = MagicMock()
             mock_robot.run_behavior = MagicMock(return_value=True)
@@ -894,13 +894,13 @@ class TestDashboardAdvanced:
     def test_handle_advanced_robot_command_behavior_invalid(self):
         """Test commande robot - behavior invalide."""
         try:
-            import asyncio
+        import asyncio
 
-            from bbia_sim.dashboard_advanced import handle_advanced_robot_command
+        from bbia_sim.dashboard_advanced import handle_advanced_robot_command
 
-            async def test():
+        async def test():
                 # Test behavior None
-                await handle_advanced_robot_command(
+            await handle_advanced_robot_command(
                     {"command_type": "behavior", "value": None}
                 )
                 # Test behavior non-string
@@ -918,12 +918,12 @@ class TestDashboardAdvanced:
     def test_handle_advanced_robot_command_joint(self, mock_factory):
         """Test commande robot - joint."""
         try:
-            import asyncio
+        import asyncio
 
-            from bbia_sim.dashboard_advanced import (
-                advanced_websocket_manager,
-                handle_advanced_robot_command,
-            )
+        from bbia_sim.dashboard_advanced import (
+            advanced_websocket_manager,
+            handle_advanced_robot_command,
+        )
 
             mock_robot = MagicMock()
             mock_robot.set_joint_pos = MagicMock(return_value=True)
@@ -962,13 +962,13 @@ class TestDashboardAdvanced:
     def test_handle_advanced_robot_command_joint_no_data(self):
         """Test commande robot - joint sans données."""
         try:
-            import asyncio
+        import asyncio
 
-            from bbia_sim.dashboard_advanced import handle_advanced_robot_command
+        from bbia_sim.dashboard_advanced import handle_advanced_robot_command
 
-            async def test():
+        async def test():
                 # Test joint_data None
-                await handle_advanced_robot_command(
+            await handle_advanced_robot_command(
                     {"command_type": "joint", "value": None}
                 )
                 # Test joint_data vide
@@ -986,12 +986,12 @@ class TestDashboardAdvanced:
     def test_handle_advanced_robot_command_vision(self, mock_factory):
         """Test commande robot - vision."""
         try:
-            import asyncio
+        import asyncio
 
-            from bbia_sim.dashboard_advanced import (
-                advanced_websocket_manager,
-                handle_advanced_robot_command,
-            )
+        from bbia_sim.dashboard_advanced import (
+            advanced_websocket_manager,
+            handle_advanced_robot_command,
+        )
 
             # Mock vision
             mock_vision = MagicMock()
@@ -1028,13 +1028,13 @@ class TestDashboardAdvanced:
     def test_handle_advanced_robot_command_emotion_invalid(self, mock_factory):
         """Test commande robot - émotion invalide."""
         try:
-            import asyncio
+        import asyncio
 
-            from bbia_sim.dashboard_advanced import handle_advanced_robot_command
+        from bbia_sim.dashboard_advanced import handle_advanced_robot_command
 
-            async def test():
+        async def test():
                 # Test émotion None
-                await handle_advanced_robot_command(
+            await handle_advanced_robot_command(
                     {"command_type": "emotion", "value": None}
                 )
                 # Test émotion non-string
@@ -1052,12 +1052,12 @@ class TestDashboardAdvanced:
     def test_handle_advanced_robot_command_emotion_no_robot(self, mock_factory):
         """Test commande robot - émotion sans robot."""
         try:
-            import asyncio
+        import asyncio
 
-            from bbia_sim.dashboard_advanced import (
-                advanced_websocket_manager,
-                handle_advanced_robot_command,
-            )
+        from bbia_sim.dashboard_advanced import (
+            advanced_websocket_manager,
+            handle_advanced_robot_command,
+        )
 
             original_robot = advanced_websocket_manager.robot
             advanced_websocket_manager.robot = None
@@ -1080,13 +1080,13 @@ class TestDashboardAdvanced:
     def test_handle_advanced_robot_command_unknown_type(self, mock_factory):
         """Test commande robot - type inconnu."""
         try:
-            import asyncio
+        import asyncio
 
-            from bbia_sim.dashboard_advanced import handle_advanced_robot_command
+        from bbia_sim.dashboard_advanced import handle_advanced_robot_command
 
-            async def test():
+        async def test():
                 # Test type inconnu (doit juste retourner sans erreur)
-                await handle_advanced_robot_command(
+            await handle_advanced_robot_command(
                     {"command_type": "unknown", "value": "test"}
                 )
 
@@ -1102,34 +1102,34 @@ class TestTroubleshooting:
     def test_troubleshooting_checker_initialization(self):
         """Test initialisation TroubleshootingChecker."""
         try:
-            from bbia_sim.troubleshooting import TroubleshootingChecker
+        from bbia_sim.troubleshooting import TroubleshootingChecker
 
-            checker = TroubleshootingChecker()
-            assert checker.project_root.exists()
-            assert isinstance(checker.results, dict)
+        checker = TroubleshootingChecker()
+        assert checker.project_root.exists()
+        assert isinstance(checker.results, dict)
     def test_check_python(self):
         """Test vérification Python."""
         try:
-            from bbia_sim.troubleshooting import TroubleshootingChecker
+        from bbia_sim.troubleshooting import TroubleshootingChecker
 
-            checker = TroubleshootingChecker()
-            result = checker.check_python()
+        checker = TroubleshootingChecker()
+        result = checker.check_python()
 
-            assert isinstance(result, dict)
-            assert "status" in result
+        assert isinstance(result, dict)
+        assert "status" in result
             assert "version" in result
             assert "message" in result
             assert result["status"] in ["ok", "warning", "error"]
     def test_check_dependencies(self):
         """Test vérification dépendances."""
         try:
-            from bbia_sim.troubleshooting import TroubleshootingChecker
+        from bbia_sim.troubleshooting import TroubleshootingChecker
 
-            checker = TroubleshootingChecker()
-            result = checker.check_dependencies()
+        checker = TroubleshootingChecker()
+        result = checker.check_dependencies()
 
-            assert isinstance(result, dict)
-            assert "status" in result
+        assert isinstance(result, dict)
+        assert "status" in result
             assert "available" in result
             assert "missing" in result
             assert isinstance(result["available"], list)
@@ -1137,13 +1137,13 @@ class TestTroubleshooting:
     def test_check_all(self):
         """Test exécution tous les checks."""
         try:
-            from bbia_sim.troubleshooting import TroubleshootingChecker
+        from bbia_sim.troubleshooting import TroubleshootingChecker
 
-            checker = TroubleshootingChecker()
-            results = checker.check_all()
+        checker = TroubleshootingChecker()
+        results = checker.check_all()
 
-            assert isinstance(results, dict)
-            assert "summary" in results
+        assert isinstance(results, dict)
+        assert "summary" in results
             assert "python" in results
             assert "dependencies" in results
             assert "camera" in results
@@ -1162,12 +1162,12 @@ class TestTroubleshooting:
     def test_get_documentation_links(self):
         """Test récupération liens documentation."""
         try:
-            from bbia_sim.troubleshooting import get_documentation_links
+        from bbia_sim.troubleshooting import get_documentation_links
 
-            links = get_documentation_links()
+        links = get_documentation_links()
 
-            assert isinstance(links, dict)
-            assert "faq" in links
-            assert "guide_avance" in links
+        assert isinstance(links, dict)
+        assert "faq" in links
+        assert "guide_avance" in links
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])
