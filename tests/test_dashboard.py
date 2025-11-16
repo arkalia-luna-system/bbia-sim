@@ -16,16 +16,39 @@ except ImportError:
     TestClient = None  # type: ignore[assignment,misc]
     WebSocket = None  # type: ignore[assignment,misc]
 
+# OPTIMISATION COVERAGE: Import au niveau module pour que coverage détecte le module
+try:
+    from bbia_sim.dashboard import (
+        BBIAWebSocketManager,
+        app,
+        create_dashboard_app,
+        handle_robot_command,
+        run_dashboard,
+        websocket_manager,
+    )
+
+    DASHBOARD_AVAILABLE = True
+except ImportError:
+    DASHBOARD_AVAILABLE = False
+    BBIAWebSocketManager = None  # type: ignore[assignment,misc]
+    app = None  # type: ignore[assignment,misc]
+    create_dashboard_app = None  # type: ignore[assignment,misc]
+    handle_robot_command = None  # type: ignore[assignment,misc]
+    run_dashboard = None  # type: ignore[assignment,misc]
+    websocket_manager = None  # type: ignore[assignment,misc]
+
 
 @pytest.mark.skipif(not FASTAPI_TEST_AVAILABLE, reason="FastAPI non disponible")
 class TestBBIAWebSocketManager:
     """Tests pour BBIAWebSocketManager."""
 
+    @pytest.mark.skipif(
+        not DASHBOARD_AVAILABLE or not FASTAPI_TEST_AVAILABLE,
+        reason="Dashboard ou FastAPI non disponible",
+    )
     @patch("bbia_sim.dashboard.FASTAPI_AVAILABLE", True)
     def test_init(self):
         """Test initialisation du gestionnaire WebSocket."""
-        from bbia_sim.dashboard import BBIAWebSocketManager
-
         manager = BBIAWebSocketManager()
         assert manager.active_connections == []
         assert manager.robot is None

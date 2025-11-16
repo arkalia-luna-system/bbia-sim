@@ -148,7 +148,7 @@ class UnityReachyMiniController:
                 iteration_count += 1
             except KeyboardInterrupt:
                 break
-            except (ValueError, RuntimeError, ConnectionError) as e:
+            except Exception as e:
                 print(f"❌ Erreur: {e}")
                 iteration_count += 1
 

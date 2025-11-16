@@ -498,7 +498,7 @@ def lister_voix_disponibles() -> list[Any]:
                 )
             else:
                 _ = ""
-        except (AttributeError, TypeError, ValueError, IndexError):
+        except (AttributeError, TypeError, ValueError, IndexError, Exception):
             _ = str(v.languages) if hasattr(v, "languages") and v.languages else ""
         result.append(v)
     return result
