@@ -109,29 +109,37 @@ ReachyMini = cast(Any, None)  # Import conditionnel - Acceptable
 
 ---
 
-### Action 3.4 : Chercher les imports inutilisés
+### Action 3.4 : Chercher les imports inutilisés (SIMPLIFIÉE)
 
 **INSTRUCTION SIMPLE :**
 1. **Ouvre** `src/bbia_sim/backends/reachy_mini_backend.py`
-2. **Lis** les lignes 1-30 (section imports)
-3. **Pour chaque import** (lignes `import` ou `from`) :
-   - Note la ligne et l'import complet
-   - **Lis** le reste du fichier
-   - **Cherche** si le nom importé est utilisé dans le fichier
-   - Si jamais utilisé : ❌ Import inutilisé
-4. **Répète** pour `src/bbia_sim/daemon/bridge.py`
+2. **Lis** les lignes 1-30 (section imports uniquement)
+3. **Note** tous les imports trouvés dans un tableau
+4. **Lis** le reste du fichier (lignes 31-715)
+5. **Pour chaque import** noté :
+   - Extrais le nom principal (ex: `ReachyMini` de `from reachy_mini import ReachyMini`)
+   - **Cherche** ce nom dans le reste du fichier (lignes 31-715)
+   - Si le nom apparaît au moins une fois : ✅ Utilisé
+   - Si le nom n'apparaît jamais : ❌ Potentiellement inutilisé
+6. **Répète** pour `src/bbia_sim/daemon/bridge.py` (lignes 1-20 pour imports, 21-388 pour usage)
+
+**ATTENTION :**
+- Ne compte PAS les occurrences dans les commentaires ou docstrings
+- Ne compte PAS les occurrences dans les chaînes de caractères (`"ReachyMini"`)
+- Compte SEULEMENT les utilisations réelles du nom (variables, fonctions, classes)
 
 **EXEMPLE CONCRET :**
 Ligne 15 : `from reachy_mini import ReachyMini`
-- Cherche `ReachyMini` dans le fichier (après la ligne 15)
-- Si trouvé : ✅ Utilisé
-- Si pas trouvé : ❌ Inutilisé
+- Nom à chercher : `ReachyMini`
+- Cherche `ReachyMini` dans les lignes 31-715 (hors commentaires/strings)
+- Si trouvé ligne 204 : `self.robot = ReachyMini(...)` → ✅ Utilisé
+- Si jamais trouvé → ❌ Potentiellement inutilisé
 
 **RÉSULTAT ATTENDU :**
-| Fichier | Ligne | Import | Utilisé ? | Action |
-|---------|-------|--------|-----------|--------|
-| reachy_mini_backend.py | 15 | `from reachy_mini import ReachyMini` | ✅ OUI | Garder |
-| ? | ? | `from x import y` | ❌ NON | Supprimer |
+| Fichier | Ligne | Import | Nom cherché | Utilisé ? | Action |
+|---------|-------|--------|-------------|-----------|--------|
+| reachy_mini_backend.py | 15 | `from reachy_mini import ReachyMini` | ReachyMini | ✅ OUI | Garder |
+| ? | ? | `from x import y` | y | ❌ NON | Vérifier |
 
 ---
 
@@ -179,10 +187,14 @@ Pour chaque action :
 ## 🚀 COMMENCE MAINTENANT
 
 **Exécute les 4 actions dans l'ordre :**
-1. Action 3.1 : Type hints (2 fichiers)
-2. Action 3.2 : Fonctions longues (1 fichier)
-3. Action 3.3 : Usage de Any (2 fichiers)
-4. Action 3.4 : Imports inutilisés (2 fichiers)
+1. Action 3.1 : Type hints (2 fichiers) - **Lis chaque fichier complètement**
+2. Action 3.2 : Fonctions longues (1 fichier) - **Compte les lignes entre chaque `def`**
+3. Action 3.3 : Usage de Any (2 fichiers) - **Cherche le mot "Any" ligne par ligne**
+4. Action 3.4 : Imports inutilisés (2 fichiers) - **Compare imports vs usage dans le fichier**
+
+**IMPORTANT :**
+- Pour l'Action 3.4, si tu n'es pas sûr qu'un import est utilisé, note-le comme "À vérifier" plutôt que "Inutilisé"
+- Il vaut mieux être prudent et ne pas marquer un import comme inutilisé s'il y a un doute
 
 **Rapporte les résultats pour chaque action.**
 
