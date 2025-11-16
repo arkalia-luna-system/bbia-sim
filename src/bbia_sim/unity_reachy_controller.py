@@ -105,7 +105,13 @@ class UnityReachyMiniController:
         iteration_count = 0
         while iteration_count < max_iterations:
             try:
-                command = input("🤖 BBIA > ").strip().lower()
+                try:
+                    command = input("🤖 BBIA > ").strip().lower()
+                except Exception as input_error:
+                    # Gérer les exceptions levées par input() (comme dans les tests)
+                    print(f"❌ Erreur: {input_error}")
+                    iteration_count += 1
+                    continue
                 if command in {"quit", "exit"}:
                     break
                 if command == "help":

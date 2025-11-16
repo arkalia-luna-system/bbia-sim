@@ -491,11 +491,13 @@ def lister_voix_disponibles() -> list[Any]:
         try:
             # Gérer le cas où languages est vide ou None
             if hasattr(v, "languages") and v.languages and len(v.languages) > 0:
-                _ = (
-                    v.languages[0].decode(errors="ignore")
-                    if hasattr(v.languages[0], "decode")
-                    else str(v.languages[0])
-                )
+                try:
+                    if hasattr(v.languages[0], "decode"):
+                        _ = v.languages[0].decode(errors="ignore")
+                    else:
+                        _ = str(v.languages[0])
+                except Exception:
+                    _ = str(v.languages[0]) if v.languages[0] else ""
             else:
                 _ = ""
         except (AttributeError, TypeError, ValueError, IndexError, Exception):

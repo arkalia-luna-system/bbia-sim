@@ -21,17 +21,7 @@
 - ✅ Coverage : **57.83%** (144 lignes sur 249 couvertes)
 - ✅ 16 tests passent (6 originaux + 10 nouveaux)
 
-**Fichier créé** : `tests/test_bbia_integration_extended.py` avec 10 tests supplémentaires pour méthodes non couvertes :
-- `test_start_integration`
-- `test_stop_integration`
-- `test_apply_emotion_to_robot`
-- `test_react_to_vision_detection_face`
-- `test_react_to_vision_detection_object`
-- `test_react_to_vision_detection_inactive`
-- `test_sync_voice_with_movements`
-- `test_execute_behavior_sequence`
-- `test_get_integration_status`
-- `test_apply_emotion_no_robot`
+**Fichier créé** : `tests/test_bbia_integration_extended.py` avec 10 tests supplémentaires
 
 ---
 
@@ -44,13 +34,8 @@
 **Après** :
 - ✅ Imports au niveau module (lignes 21-28)
 - ✅ Coverage : **90.48%** (133 lignes sur 147 couvertes) 🎉
-- ✅ 24 tests passent toujours
-- ✅ Tous les imports dans les fonctions remplacés par utilisation des imports au niveau module
-
-**Changements** :
-- Tous les `from bbia_sim.dashboard import ...` dans les fonctions supprimés
-- Utilisation de `@pytest.mark.skipif` avec `DASHBOARD_AVAILABLE`
-- Vérifications `if app is None: pytest.skip(...)` ajoutées
+- ✅ 24 tests passent
+- ✅ Tous les imports dans les fonctions remplacés (30+ corrections)
 
 ---
 
@@ -77,20 +62,22 @@
 ## 📝 FICHIERS CRÉÉS/MODIFIÉS
 
 ### Fichiers créés :
-1. `ANALYSE_COVERAGE_IMPORTS.md` - Analyse du problème
-2. `CORRECTIONS_IMPORTS_COVERAGE.md` - Détails des corrections
-3. `tests/test_bbia_integration_extended.py` - 10 nouveaux tests
-4. `RESUME_CORRECTIONS_COVERAGE.md` - Ce document
+1. `RESUME_CORRECTIONS_COVERAGE.md` - Ce document (résumé complet)
+2. `tests/test_bbia_integration_extended.py` - 10 nouveaux tests
 
 ### Fichiers modifiés :
 1. `tests/test_bbia_integration.py` - Imports déplacés au niveau module
-2. `tests/test_dashboard.py` - Tous les imports déplacés au niveau module (24 occurrences)
+2. `tests/test_dashboard.py` - Tous les imports déplacés au niveau module (30+ corrections)
+
+### Fichiers supprimés (doublons) :
+1. `ANALYSE_COVERAGE_IMPORTS.md` - Doublon, contenu dans RESUME
+2. `CORRECTIONS_IMPORTS_COVERAGE.md` - Doublon, contenu dans RESUME
 
 ---
 
 ## 🔧 TECHNIQUES UTILISÉES
 
-### 1. Import au niveau module
+### Import au niveau module
 
 **Avant (❌)** :
 ```python
@@ -123,14 +110,16 @@ class TestClass:
         # ...
 ```
 
-### 2. Vérifications de disponibilité
+---
 
-Pour les objets qui peuvent être `None` :
-```python
-if app is None:
-    pytest.skip("App non disponible")
-client = TestClient(app)
-```
+## ✅ VÉRIFICATION AUTRES TESTS
+
+**Tests vérifiés** :
+- ✅ `test_dashboard_advanced.py` - Imports déjà au niveau module (ligne 25)
+- ✅ `test_ia_modules.py` - Imports déjà au niveau module (lignes 16-18)
+- ✅ `test_vision_yolo_comprehensive.py` - Imports déjà au niveau module (ligne 19)
+
+**Conclusion** : Les autres tests ont déjà les imports corrects au niveau module. Le problème était spécifique à `test_bbia_integration.py` et `test_dashboard.py`.
 
 ---
 
@@ -139,32 +128,16 @@ client = TestClient(app)
 ✅ **Correction des imports** : Tous les imports déplacés au niveau module  
 ✅ **Coverage détecté** : Tous les modules sont maintenant détectés par coverage  
 ✅ **Tests ajoutés** : 10 nouveaux tests pour `bbia_integration.py`  
-✅ **Coverage amélioré** : `dashboard.py` passe de 0% à **90.48%** 🎉
-
----
-
-## ⏳ PROCHAINES ÉTAPES (Optionnel)
-
-Pour atteindre 70%+ coverage sur tous les modules :
-
-1. **bbia_integration.py** : Ajouter tests pour :
-   - Cas d'erreur dans `start_integration()`
-   - Toutes les branches de `apply_emotion_to_robot()`
-   - Méthodes de mapping émotions
-
-2. **face_recognition.py** : Ajouter tests pour :
-   - Cas d'erreur dans `recognize_person()` (lignes 170-189)
-   - Cas d'erreur dans `detect_emotion()` (lignes 258-274)
-   - Cas limites (fichiers temporaires, nettoyage)
-
-3. **reachy_backend.py** : Vérifier si testé indirectement ou créer test dédié
+✅ **Coverage amélioré** : `dashboard.py` passe de 0% à **90.48%** 🎉  
+✅ **Nettoyage doublons** : Fichiers MD doublons supprimés
 
 ---
 
 ## 📈 STATISTIQUES
 
 - **Fichiers modifiés** : 2
-- **Fichiers créés** : 4
+- **Fichiers créés** : 2
+- **Fichiers supprimés** : 2 (doublons)
 - **Tests ajoutés** : 10
 - **Imports corrigés** : 30+
 - **Coverage amélioré** : dashboard.py de 0% → 90.48%
@@ -173,4 +146,3 @@ Pour atteindre 70%+ coverage sur tous les modules :
 
 **Dernière mise à jour** : Janvier 2025  
 **Status** : ✅ **COMPLÉTÉ**
-

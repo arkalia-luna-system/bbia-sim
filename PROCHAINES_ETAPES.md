@@ -5,7 +5,7 @@
 
 ---
 
-## ✅ CE QUI A ÉTÉ FAIT (11/11 complétés)
+## ✅ CE QUI A ÉTÉ FAIT (14/14 complétés)
 
 1. ✅ **Nettoyage fichiers orphelins** (33 fichiers `._*.py` supprimés)
 2. ✅ **Optimisations RAM Hugging Face** (déchargement auto après inactivité)
@@ -18,6 +18,9 @@
 9. ✅ **Audit versions dépendances IA** (toutes à jour)
 10. ✅ **Tests de validation** (10 tests créés, tous passent)
 11. ✅ **Documentation optimisations** (complète)
+12. ✅ **Correction imports coverage** (bbia_integration, dashboard, face_recognition)
+13. ✅ **Augmentation coverage modules core** (57.83%, 90.48%, 82.01%)
+14. ✅ **Nettoyage doublons MD** (ANALYSE et CORRECTIONS supprimés)
 
 **Score qualité** : **82 → 89/100** (+7 points) 🎉
 
