@@ -10,7 +10,11 @@ from typing import Any
 import numpy as np
 import numpy.typing as npt
 
-from ..utils.types import DetectionResult
+try:
+    from bbia_sim.utils.types import DetectionResult
+except ImportError:
+    # Fallback pour imports relatifs
+    from ..utils.types import DetectionResult
 
 try:
     import cv2
