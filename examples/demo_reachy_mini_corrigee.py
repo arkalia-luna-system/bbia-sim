@@ -26,12 +26,14 @@ def demo_reachy_mini_corrigee():
     # Créer le robot MuJoCo
     print("\n🔧 Initialisation MuJoCo...")
     robot_mujoco = RobotFactory.create_backend("mujoco")
+    assert robot_mujoco is not None, "Robot MuJoCo ne peut pas être None"
     robot_mujoco.connect()
     print("✅ Robot MuJoCo connecté")
 
     # Créer le robot SDK officiel
     print("\n🔧 Initialisation SDK Officiel...")
     robot_officiel = RobotFactory.create_backend("reachy_mini")
+    assert robot_officiel is not None, "Robot SDK ne peut pas être None"
     robot_officiel.is_connected = True  # Mode simulation
     print("✅ Robot SDK Officiel connecté (simulation)")
 
@@ -255,8 +257,14 @@ def demo_reachy_mini_corrigee():
     print("\n📊 TÉLÉMÉTRIE FINALE")
     print("=" * 30)
 
-    telemetry_mujoco = robot_mujoco.get_telemetry()
-    telemetry_officiel = robot_officiel.get_telemetry()
+    telemetry_mujoco = (
+        robot_mujoco.get_telemetry() if hasattr(robot_mujoco, "get_telemetry") else {}
+    )
+    telemetry_officiel = (
+        robot_officiel.get_telemetry()
+        if hasattr(robot_officiel, "get_telemetry")
+        else {}
+    )
 
     print("MuJoCo:")
     for key, value in telemetry_mujoco.items():

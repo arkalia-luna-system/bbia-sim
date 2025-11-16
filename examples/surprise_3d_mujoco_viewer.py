@@ -39,6 +39,7 @@ def surprise_3d_mujoco_viewer():
 
     # Créer le robot SDK officiel pour comparaison
     robot_officiel = RobotFactory.create_backend("reachy_mini")
+    assert robot_officiel is not None, "Robot SDK ne peut pas être None"
     robot_officiel.is_connected = True  # Mode simulation
 
     mapping = ReachyMapping()

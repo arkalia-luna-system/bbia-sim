@@ -37,7 +37,7 @@ class BBIAFaceFollower:
         self.headers = {"Authorization": f"Bearer {token}"}
         self.client = httpx.AsyncClient(timeout=10.0)
         self.is_running = False
-        self.start_time = None
+        self.start_time: float | None = None
 
     async def check_api_health(self) -> bool:
         """Vérifie que l'API est accessible.
@@ -69,7 +69,7 @@ class BBIAFaceFollower:
             )
             if response.status_code == 200:
                 data = response.json()
-                neck_pos = data["joints"]["neck_yaw"]["position"]
+                neck_pos: float = float(data["joints"]["neck_yaw"]["position"])
                 logger.info(f"📍 Position initiale du cou: {neck_pos:.3f} rad")
                 return neck_pos
             else:
@@ -119,6 +119,8 @@ class BBIAFaceFollower:
             True si un visage est "détecté"
         """
         # Simulation simple : visage détecté toutes les 2 secondes
+        if self.start_time is None:
+            return False
         elapsed = time.time() - self.start_time
         return int(elapsed) % 2 == 0
 
@@ -151,6 +153,8 @@ class BBIAFaceFollower:
 
         try:
             while self.is_running:
+                if self.start_time is None:
+                    break
                 elapsed = time.time() - self.start_time
 
                 if elapsed >= duration:
@@ -197,7 +201,7 @@ class BBIAFaceFollower:
         await self.client.aclose()
 
 
-async def main() -> None:
+async def main() -> int:
     """Point d'entrée principal."""
     parser = argparse.ArgumentParser(
         description="Démo BBIA réagit - Suivi de visage simulé",
@@ -259,5 +263,5 @@ Exemples d'utilisation:
 
 
 if __name__ == "__main__":
-    exit_code = asyncio.run(main())
+    exit_code: int = asyncio.run(main())
     exit(exit_code)

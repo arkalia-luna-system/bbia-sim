@@ -134,7 +134,8 @@ def main() -> None:
 
                     # Positions cibles fixes
                     print("🎯 Positions cibles fixes")
-                    for offset in [[0.02, 0.02], [0.00, 0.02], [0.00, -0.02], [0, 0]]:
+                    offsets: list[list[float]] = [[0.02, 0.02], [0.00, 0.02], [0.00, -0.02], [0, 0]]
+                    for offset in offsets:
                         pose[:3, 3] = [offset[0], offset[1], 0.0]
                         if offset[0] == 0 and offset[1] != 0:
                             yaw = 0.5 if offset[1] > 0 else -0.5

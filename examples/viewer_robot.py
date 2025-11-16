@@ -29,6 +29,7 @@ def viewer_simple():
 
     # Créer robot
     robot = RobotFactory.create_backend("reachy_mini")
+    assert robot is not None, "Robot ne peut pas être None"
     robot.connect()
 
     # Pose pour screenshot
