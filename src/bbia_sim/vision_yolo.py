@@ -196,6 +196,74 @@ class YOLODetector:
             logger.error(f"❌ Erreur détection YOLO: {e}")
             return []
 
+    def detect_objects_batch(
+        self, images: list[npt.NDArray[np.uint8]]
+    ) -> list[list[dict[str, Any]]]:
+        """Détecte les objets dans un batch d'images (OPTIMISATION PERFORMANCE).
+
+        Args:
+            images: Liste d'images numpy array (BGR)
+
+        Returns:
+            Liste de listes de détections (une par image) avec bbox, confiance, classe
+
+        Note:
+            Le batch processing est beaucoup plus efficace que d'appeler detect_objects
+            plusieurs fois, car YOLO peut traiter plusieurs images en parallèle sur GPU.
+        """
+        if not self.is_loaded:
+            if not self.load_model():
+                return [[] for _ in images]
+
+        if not images:
+            return []
+
+        try:
+            if self.model is None:
+                logger.error("❌ Modèle YOLO non chargé")
+                return [[] for _ in images]
+
+            # OPTIMISATION PERFORMANCE: YOLO traite le batch en une seule passe
+            # (beaucoup plus rapide que boucle sur images individuelles)
+            results = self.model(
+                images, conf=self.confidence_threshold, verbose=False
+            )
+
+            all_detections = []
+            for result in results:
+                detections = []
+                boxes = result.boxes
+                if boxes is not None:
+                    for box in boxes:
+                        # Coordonnées bbox
+                        x1, y1, x2, y2 = box.xyxy[0].cpu().numpy()
+
+                        # Confiance et classe
+                        confidence = box.conf[0].cpu().numpy()
+                        class_id = int(box.cls[0].cpu().numpy())
+                        class_name = self.model.names[class_id]
+
+                        detection = {
+                            "bbox": [int(x1), int(y1), int(x2), int(y2)],
+                            "confidence": float(confidence),
+                            "class_id": class_id,
+                            "class_name": class_name,
+                            "center": [int((x1 + x2) / 2), int((y1 + y2) / 2)],
+                            "area": int((x2 - x1) * (y2 - y1)),
+                        }
+                        detections.append(detection)
+                all_detections.append(detections)
+
+            logger.debug(
+                f"🔍 Batch processing: {len(images)} images, "
+                f"{sum(len(d) for d in all_detections)} objets détectés au total"
+            )
+            return all_detections
+
+        except Exception as e:
+            logger.error(f"❌ Erreur détection YOLO batch: {e}")
+            return [[] for _ in images]
+
     def get_best_detection(
         self,
         detections: list[dict[str, Any]],

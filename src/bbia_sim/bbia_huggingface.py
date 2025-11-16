@@ -7,6 +7,8 @@ import logging
 import os
 import re
 import time
+from collections import deque
+from functools import lru_cache
 from typing import TYPE_CHECKING, Any
 
 import numpy as np
@@ -21,11 +23,8 @@ os.environ["TRANSFORMERS_VERBOSITY"] = "error"
 
 logger = logging.getLogger(__name__)
 
-# OPTIMISATION PERFORMANCE: Compiler regex une seule fois
-# (évite recompilation à chaque appel)
-_regex_cache: dict[str, re.Pattern[str]] = {}
-
-
+# OPTIMISATION PERFORMANCE: Utiliser @lru_cache pour regex (plus efficace que cache manuel)
+@lru_cache(maxsize=128)
 def _get_compiled_regex(pattern: str, flags: int = 0) -> re.Pattern[str]:
     """Retourne regex compilée depuis cache (évite recompilation répétée).
 
@@ -36,11 +35,10 @@ def _get_compiled_regex(pattern: str, flags: int = 0) -> re.Pattern[str]:
     Returns:
         Regex compilée (cachée ou nouvellement compilée)
 
+    Note:
+        Utilise @lru_cache pour performance optimale (max 128 patterns en cache).
     """
-    cache_key = f"{pattern}:{flags}"
-    if cache_key not in _regex_cache:
-        _regex_cache[cache_key] = re.compile(pattern, flags)
-    return _regex_cache[cache_key]
+    return re.compile(pattern, flags)
 
 
 # Constantes partagées pour éviter les doublons littéraux
@@ -172,7 +170,9 @@ class BBIAHuggingFace:
         self._start_auto_unload_thread()
 
         # Chat intelligent : Historique et contexte
-        self.conversation_history: list[dict[str, Any]] = []
+        # OPTIMISATION RAM: Utiliser deque avec maxlen pour limiter l'historique
+        max_history_size = 1000  # Limiter à 1000 messages max
+        self.conversation_history: deque[dict[str, Any]] = deque(maxlen=max_history_size)
         self.context: dict[str, Any] = {}
         self.bbia_personality = "friendly_robot"
 
@@ -189,10 +189,14 @@ class BBIAHuggingFace:
 
             saved_history = load_conversation_from_memory()
             if saved_history:
-                self.conversation_history = saved_history
+                # Convertir liste en deque avec maxlen (limite mémoire)
+                max_history_size = 1000
+                self.conversation_history = deque(
+                    saved_history[-max_history_size:], maxlen=max_history_size
+                )
                 logger.info(
                     f"💾 Conversation chargée depuis mémoire "
-                    f"({len(saved_history)} messages)",
+                    f"({len(self.conversation_history)} messages)",
                 )
         except ImportError:
             # Mémoire persistante optionnelle
@@ -214,8 +218,8 @@ class BBIAHuggingFace:
             "chat": {
                 # LLM conversationnel (optionnel, activé si disponible)
                 "mistral": (
-                    "mistralai/Mistral-7B-Instruct-v0.2"
-                ),  # ⭐ Recommandé (14GB RAM)
+                    "mistralai/Mistral-7B-Instruct-v0.3"
+                ),  # ⭐ Recommandé (14GB RAM) - Mis à jour v0.2 → v0.3
                 "llama": "meta-llama/Llama-3-8B-Instruct",  # Alternative (16GB RAM)
                 "phi2": "microsoft/phi-2",  # ⭐ Léger pour RPi 5 (2.7B, ~5GB RAM)
                 "tinyllama": (
@@ -949,7 +953,8 @@ class BBIAHuggingFace:
                         break  # Arrêt demandé
 
                     current_time = time.time()
-                    models_to_unload: list[tuple[str, float]] = []
+                    # OPTIMISATION RAM: deque avec maxlen pour limiter taille
+                    models_to_unload: deque[tuple[str, float]] = deque(maxlen=50)
 
                     # Identifier modèles inactifs > 5 min
                     with self._unload_thread_lock:
@@ -1024,7 +1029,21 @@ class BBIAHuggingFace:
             for key in keys_to_remove:
                 del self.processors[key]
 
-            logger.info(f"🗑️ Modèle {model_name} déchargé")
+            # OPTIMISATION RAM: Libérer la mémoire explicitement
+            import gc
+
+            gc.collect()
+            # Libérer le cache GPU si disponible
+            if HF_AVAILABLE:
+                try:
+                    import torch
+
+                    if torch.cuda.is_available():
+                        torch.cuda.empty_cache()
+                except ImportError:
+                    pass  # torch non disponible, ignorer
+
+            logger.info(f"🗑️ Modèle {model_name} déchargé - Mémoire libérée")
             return True
 
         except Exception as e:
@@ -1213,7 +1232,9 @@ class BBIAHuggingFace:
             # Ajouter contexte si demandé
             if use_context and self.conversation_history:
                 # Derniers 2 échanges pour contexte
-                for entry in self.conversation_history[-2:]:
+                # OPTIMISATION: Convertir deque en list pour slicing (deque ne supporte pas [-2:])
+                recent_history = list(self.conversation_history)[-2:]
+                for entry in recent_history:
                     messages.append({"role": "user", "content": entry["user"]})
                     messages.append({"role": "assistant", "content": entry["bbia"]})
 
@@ -2002,7 +2023,9 @@ class BBIAHuggingFace:
         try:
             recent = []
             if self.conversation_history:
-                for entry in self.conversation_history[-5:]:
+                # OPTIMISATION: Convertir deque en list pour slicing
+                recent_history = list(self.conversation_history)[-5:]
+                for entry in recent_history:
                     bbia = entry.get("bbia", "").strip()
                     if bbia:
                         recent.append(bbia)
@@ -2544,7 +2567,10 @@ class BBIAHuggingFace:
             return None
 
         # Prendre le dernier message utilisateur
-        last_entry = self.conversation_history[-1]
+        # OPTIMISATION: Accéder au dernier élément (deque supporte [-1] mais type checker se plaint)
+        last_entry = list(self.conversation_history)[-1] if self.conversation_history else None
+        if last_entry is None:
+            return None
         user_msg = last_entry.get("user", "")
 
         # Extraire les mots significatifs (exclure articles, prépositions)
@@ -2602,7 +2628,9 @@ class BBIAHuggingFace:
             )
 
         context = "Historique conversation:\n"
-        for entry in self.conversation_history[-3:]:  # Derniers 3 échanges
+        # OPTIMISATION: Convertir deque en list pour slicing
+        recent_history = list(self.conversation_history)[-3:]  # Derniers 3 échanges
+        for entry in recent_history:
             context += f"User: {entry['user']}\n"
             context += f"BBIA: {entry['bbia']}\n"
         return context

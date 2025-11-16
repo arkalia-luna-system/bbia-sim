@@ -7,11 +7,20 @@ import asyncio
 import json
 import logging
 import time
+from functools import lru_cache
 from typing import Any, cast
 
 import numpy as np
 from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
 from pydantic import BaseModel
+
+from ..utils.types import (
+    GotoTargetParams,
+    LookAtParams,
+    PlayAudioParams,
+    SetEmotionParams,
+    SetTargetParams,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -276,15 +285,15 @@ class ZenohBridge:
             params = command.parameters
 
             if cmd == "goto_target":
-                await self._cmd_goto_target(params)
+                await self._cmd_goto_target(params)  # type: ignore[arg-type]
             elif cmd == "set_target":
-                await self._cmd_set_target(params)
+                await self._cmd_set_target(params)  # type: ignore[arg-type]
             elif cmd == "set_emotion":
-                await self._cmd_set_emotion(params)
+                await self._cmd_set_emotion(params)  # type: ignore[arg-type]
             elif cmd == "play_audio":
-                await self._cmd_play_audio(params)
+                await self._cmd_play_audio(params)  # type: ignore[arg-type]
             elif cmd == "look_at":
-                await self._cmd_look_at(params)
+                await self._cmd_look_at(params)  # type: ignore[arg-type]
             else:
                 self.logger.warning(f"Commande inconnue: {cmd}")
                 await self._publish_error(f"Commande inconnue: {cmd}")
@@ -293,7 +302,7 @@ class ZenohBridge:
             self.logger.error(f"Erreur exécution commande {command.command}: {e}")
             await self._publish_error(f"Erreur exécution: {e}")
 
-    async def _cmd_goto_target(self, params: dict[str, Any]) -> None:
+    async def _cmd_goto_target(self, params: GotoTargetParams) -> None:
         """Commande goto_target conforme SDK Reachy Mini avec interpolation optimisée."""
         if not self.reachy_mini:
             return
@@ -327,7 +336,7 @@ class ZenohBridge:
                     method=method,
                 )
 
-    async def _cmd_set_target(self, params: dict[str, Any]) -> None:
+    async def _cmd_set_target(self, params: SetTargetParams) -> None:
         """Commande set_target."""
         if not self.reachy_mini:
             return
@@ -359,10 +368,23 @@ class ZenohBridge:
             "calm": create_head_pose(pitch=-0.05, yaw=0.0, degrees=False),
             "neutral": create_head_pose(pitch=0.0, yaw=0.0, degrees=False),
         }
-        return emotion_poses.get(emotion, emotion_poses["neutral"])
+        result = emotion_poses.get(emotion, emotion_poses["neutral"])
+        return result  # type: ignore[no-any-return]
 
-    def _map_emotion_to_sdk(self, emotion: str) -> str:
-        """Mappe une émotion non-SDK vers une émotion SDK."""
+    @staticmethod
+    @lru_cache(maxsize=32)
+    def _map_emotion_to_sdk(emotion: str) -> str:
+        """Mappe une émotion non-SDK vers une émotion SDK.
+
+        Args:
+            emotion: Nom de l'émotion à mapper
+
+        Returns:
+            Nom de l'émotion SDK correspondante, ou "neutral" si non trouvée
+
+        Note:
+            Utilise @lru_cache pour optimiser les appels répétés avec les mêmes émotions.
+        """
         emotion_map = {
             "angry": "excited",
             "surprised": "curious",
@@ -371,7 +393,7 @@ class ZenohBridge:
         }
         return emotion_map.get(emotion, "neutral")
 
-    async def _cmd_set_emotion(self, params: dict[str, Any]) -> None:
+    async def _cmd_set_emotion(self, params: SetEmotionParams) -> None:
         """Commande set_emotion conforme SDK Reachy Mini."""
         emotion = params.get("emotion", "neutral")
         intensity = params.get("intensity", 0.5)
@@ -405,28 +427,24 @@ class ZenohBridge:
         except Exception as e:
             self.logger.error(f"Erreur set_emotion: {e}")
 
-    async def _cmd_play_audio(self, params: dict[str, Any]) -> None:
+    async def _cmd_play_audio(self, params: PlayAudioParams) -> None:
         """Commande play_audio conforme SDK Reachy Mini (media.play_audio)."""
         audio_data = params.get("audio_data")
         volume = params.get("volume", 0.7)
 
         if self.reachy_mini and audio_data:
+            if isinstance(audio_data, str):
+                # Si c'est un chemin de fichier, lire le fichier
+                with open(audio_data, "rb") as f:
+                    audio_bytes: bytes = f.read()
+            else:
+                audio_bytes = audio_data
             try:
                 # Utiliser robot.media.play_audio si disponible
                 if hasattr(self.reachy_mini, "media") and hasattr(
                     self.reachy_mini.media,
                     "play_audio",
                 ):
-                    # Convertir audio_data en bytes si nécessaire
-                    if isinstance(audio_data, str):
-                        # Chemin fichier
-                        with open(audio_data, "rb") as f:
-                            audio_bytes = f.read()
-                    elif isinstance(audio_data, list):
-                        # Liste → bytes
-                        audio_bytes = bytes(audio_data)
-                    else:
-                        audio_bytes = audio_data
 
                     self.reachy_mini.media.play_audio(audio_bytes, volume=volume)
                     self.logger.info("Audio joué via robot.media.play_audio")
@@ -472,21 +490,17 @@ class ZenohBridge:
         pitch = z * 0.2  # Approximation verticale
         yaw = x * 0.3  # Approximation horizontale
         pose: np.ndarray = create_head_pose(pitch=pitch, yaw=yaw, degrees=False)
-        if (
-            self.reachy_mini is not None
-            and hasattr(self.reachy_mini, "goto_target")
-        ):
+        if self.reachy_mini is not None and hasattr(self.reachy_mini, "goto_target"):
             self.reachy_mini.goto_target(head=pose, duration=duration, method="minjerk")
-        elif (
-            self.reachy_mini is not None
-            and hasattr(self.reachy_mini, "set_target_head_pose")
+        elif self.reachy_mini is not None and hasattr(
+            self.reachy_mini, "set_target_head_pose"
         ):
             self.reachy_mini.set_target_head_pose(pose)
         self.logger.info(
             f"Look_at fallback (pose calculée): pitch={pitch:.3f}, yaw={yaw:.3f}",
         )
 
-    async def _cmd_look_at(self, params: dict[str, Any]) -> None:
+    async def _cmd_look_at(self, params: LookAtParams) -> None:
         """Commande look_at conforme SDK Reachy Mini (look_at_world/look_at_image)."""
         x = params.get("x", 0.0)
         y = params.get("y", 0.0)

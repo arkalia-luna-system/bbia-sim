@@ -7,6 +7,7 @@ import asyncio
 import json
 import logging
 import time
+from collections import deque
 from datetime import datetime
 from typing import Any
 
@@ -59,8 +60,6 @@ class BBIAAdvancedWebSocketManager:
 
         self._robot_init_lock = threading.Lock()
         # OPTIMISATION RAM: Utiliser deque au lieu de liste pour limiter historique
-        from collections import deque
-
         self.max_history = 1000  # Limite historique métriques
         self.metrics_history: deque[dict[str, Any]] = deque(maxlen=self.max_history)
 
@@ -240,7 +239,8 @@ class BBIAAdvancedWebSocketManager:
     def _cleanup_inactive_connections(self) -> None:
         """OPTIMISATION RAM: Nettoie les connexions WebSocket inactives (>5 min)."""
         current_time = time.time()
-        inactive_connections: list[tuple[WebSocket, float]] = []
+        # OPTIMISATION: deque avec maxlen pour éviter accumulation excessive
+        inactive_connections: deque[tuple[WebSocket, float]] = deque(maxlen=100)
 
         for connection, last_activity in list(self._connection_last_activity.items()):
             inactivity = current_time - last_activity
@@ -264,7 +264,8 @@ class BBIAAdvancedWebSocketManager:
         if not self.active_connections:
             return
 
-        disconnected = []
+        # OPTIMISATION: deque avec maxlen pour éviter accumulation excessive
+        disconnected: deque[WebSocket] = deque(maxlen=50)
         current_time = time.time()
         for connection in self.active_connections:
             try:
@@ -272,9 +273,7 @@ class BBIAAdvancedWebSocketManager:
                 # OPTIMISATION RAM: Mettre à jour timestamp activité
                 self._connection_last_activity[connection] = current_time
             except (ConnectionError, RuntimeError, WebSocketDisconnect):
-                disconnected.append(
-                    connection,
-                )
+                disconnected.append(connection)
 
         # Nettoyer les connexions fermées
         for connection in disconnected:

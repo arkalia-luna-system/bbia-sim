@@ -51,7 +51,9 @@ def analyze_skipped_tests():
 
     total_skipped = sum(int(cat.get("count", 0)) for cat in skipped_categories.values())
     total_justified = sum(
-        int(cat.get("count", 0)) for cat in skipped_categories.values() if cat.get("justified", False)
+        int(cat.get("count", 0))
+        for cat in skipped_categories.values()
+        if cat.get("justified", False)
     )
 
     print("📊 Résumé des tests skippés:")

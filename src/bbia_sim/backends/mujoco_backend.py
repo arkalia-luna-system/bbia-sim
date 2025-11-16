@@ -23,6 +23,12 @@ class MuJoCoBackend(RobotAPI):
         self,
         model_path: str = "src/bbia_sim/sim/models/reachy_mini_REAL_OFFICIAL.xml",
     ) -> None:
+        """Initialise le backend MuJoCo.
+
+        Note: Le modèle par défaut est `reachy_mini_REAL_OFFICIAL.xml` (16 joints, complet).
+        Le fichier `reachy_mini.xml` (7 joints, simplifié) existe mais n'est pas utilisé
+        par défaut pour garantir la cohérence avec le robot réel.
+        """
         super().__init__()
         self.model_path = Path(model_path)
         self.model: mujoco.MjModel | None = None
