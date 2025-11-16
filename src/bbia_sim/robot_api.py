@@ -72,6 +72,36 @@ class RobotAPI(ABC):
     def step(self) -> bool:
         """Effectue un pas de simulation."""
 
+    def goto_target(
+        self,
+        head: Any = None,
+        antennas: Any = None,
+        duration: float = 0.5,
+        method: str = "minjerk",
+        body_yaw: float | None = None,
+    ) -> None:
+        """Va vers une cible spécifique avec technique d'interpolation.
+
+        NOTE: Cette méthode est optionnelle dans RobotAPI. Les backends avancés
+        (comme ReachyMiniBackend) l'implémentent avec IK complète. Les backends
+        simples (comme MuJoCoBackend) peuvent avoir une implémentation simplifiée.
+
+        Args:
+            head: Matrice 4x4 ou HeadPose représentant la pose de la tête (ou None)
+            antennas: Angles des antennes en radians [right, left] (ou None)
+            duration: Durée du mouvement en secondes (doit être > 0)
+            method: Technique d'interpolation ("minjerk", "linear", etc.)
+            body_yaw: Angle yaw du corps en radians (None = garder position actuelle)
+
+        Raises:
+            NotImplementedError: Si le backend ne supporte pas goto_target
+            ValueError: Si duration <= 0
+        """
+        raise NotImplementedError(
+            f"{self.__class__.__name__} ne supporte pas goto_target(). "
+            "Utilisez set_joint_pos() pour contrôler les joints individuellement."
+        )
+
     @abstractmethod
     def emergency_stop(self) -> bool:
         """Arrêt d'urgence hardware.
