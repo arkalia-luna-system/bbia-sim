@@ -77,7 +77,7 @@ class BBIAAdvancedWebSocketManager:
         self.emotions = BBIAEmotions()
         # OPTIMISATION RAM: Utiliser singleton BBIAVision si disponible
         try:
-            from ..bbia_vision import (
+            from ..bbia_vision import (  # type: ignore[import-untyped]
                 get_bbia_vision_singleton,  # type: ignore[import-untyped]
             )
 

@@ -11,7 +11,7 @@ from functools import lru_cache
 from typing import Any, cast
 
 import numpy as np
-from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect  # type: ignore[import-untyped]
 from pydantic import BaseModel
 
 from ..utils.types import (

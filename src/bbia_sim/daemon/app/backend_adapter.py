@@ -8,7 +8,7 @@ from typing import Any
 
 import numpy as np
 import numpy.typing as npt
-from fastapi import HTTPException, WebSocket
+from fastapi import HTTPException, WebSocket  # type: ignore[import-untyped]
 
 from ...robot_api import RobotAPI
 from ...robot_factory import RobotFactory
@@ -368,8 +368,8 @@ class BackendAdapter:
             import time
 
             try:
-                from reachy_mini.utils.interpolation import (
-                    time_trajectory,  # type: ignore[import-untyped]
+                from reachy_mini.utils.interpolation import (  # type: ignore[import-untyped]
+                    time_trajectory,
                 )
             except ImportError:
                 # Si time_trajectory non disponible, interpolation linéaire simple

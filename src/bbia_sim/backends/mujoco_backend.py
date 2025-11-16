@@ -8,8 +8,8 @@ import time
 from pathlib import Path
 from typing import Any
 
-import mujoco
-import mujoco.viewer
+import mujoco  # type: ignore[import-untyped]
+import mujoco.viewer  # type: ignore[import-untyped]
 
 from ..robot_api import RobotAPI
 

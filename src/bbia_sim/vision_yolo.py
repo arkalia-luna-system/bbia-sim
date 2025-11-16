@@ -5,13 +5,30 @@ Détection d'objets légère avec YOLOv8n (optionnel)
 
 import logging
 import threading
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import numpy as np
 import numpy.typing as npt
 
-# Import absolu pour éviter les warnings de linting
-from bbia_sim.utils.types import DetectionResult  # type: ignore[import-untyped]
+# Import DetectionResult avec fallback pour compatibilité CI/CD
+if TYPE_CHECKING:
+    from bbia_sim.utils.types import DetectionResult
+else:
+    try:
+        from bbia_sim.utils.types import DetectionResult
+    except ImportError:
+        # Fallback final : utiliser TypedDict inline si l'import absolu échoue
+        from typing import TypedDict
+
+        class DetectionResult(TypedDict, total=False):
+            """Résultat de détection d'objet (YOLO) - définition inline."""
+
+            bbox: list[int]
+            confidence: float
+            class_id: int
+            class_name: str
+            center: list[int]
+            area: int
 
 try:
     import cv2  # type: ignore[import-untyped]
