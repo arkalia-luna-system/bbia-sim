@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """Tests pour le batch processing YOLO."""
 
-import pytest
 import numpy as np
+import pytest
 
 try:
-    from bbia_sim.vision_yolo import YOLODetector, YOLO_AVAILABLE
+    from bbia_sim.vision_yolo import YOLO_AVAILABLE, YOLODetector
 except ImportError:
     YOLO_AVAILABLE = False
     YOLODetector = None
@@ -41,9 +41,7 @@ class TestYOLOBatchProcessing:
             pytest.skip("YOLO modèle non chargé")
 
         # Créer 3 images de test
-        test_images = [
-            np.zeros((480, 640, 3), dtype=np.uint8) for _ in range(3)
-        ]
+        test_images = [np.zeros((480, 640, 3), dtype=np.uint8) for _ in range(3)]
         result = detector.detect_objects_batch(test_images)
 
         assert len(result) == 3
@@ -68,4 +66,3 @@ class TestYOLOBatchProcessing:
                 assert "class_name" in detection
                 assert "center" in detection
                 assert "area" in detection
-

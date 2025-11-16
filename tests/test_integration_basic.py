@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """Tests d'intégration basiques pour BBIA-SIM."""
 
-import pytest
 from bbia_sim.backends.mujoco_backend import MuJoCoBackend
 from bbia_sim.robot_factory import RobotFactory
 
@@ -34,7 +33,6 @@ class TestBasicIntegration:
         # Test set/get joint position
         if joints:
             test_joint = joints[0]
-            original_pos = backend.get_joint_pos(test_joint)
             assert backend.set_joint_pos(test_joint, 0.1) is True
             new_pos = backend.get_joint_pos(test_joint)
             assert new_pos is not None
@@ -62,4 +60,3 @@ class TestBasicIntegration:
         assert status["connected"] is True
 
         backend.disconnect()
-

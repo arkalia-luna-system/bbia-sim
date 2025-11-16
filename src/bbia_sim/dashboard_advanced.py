@@ -12,10 +12,16 @@ from datetime import datetime
 from typing import Any
 
 try:
-    import uvicorn
-    from fastapi import FastAPI, HTTPException, Request, WebSocket, WebSocketDisconnect
-    from fastapi.middleware.cors import CORSMiddleware
-    from fastapi.responses import HTMLResponse
+    import uvicorn  # type: ignore[import-untyped]
+    from fastapi import (  # type: ignore[import-untyped]
+        FastAPI,
+        HTTPException,
+        Request,
+        WebSocket,
+        WebSocketDisconnect,
+    )
+    from fastapi.middleware.cors import CORSMiddleware  # type: ignore[import-untyped]
+    from fastapi.responses import HTMLResponse  # type: ignore[import-untyped]
 
     FASTAPI_AVAILABLE = True
 except ImportError:
@@ -71,7 +77,9 @@ class BBIAAdvancedWebSocketManager:
         self.emotions = BBIAEmotions()
         # OPTIMISATION RAM: Utiliser singleton BBIAVision si disponible
         try:
-            from ..bbia_vision import get_bbia_vision_singleton
+            from ..bbia_vision import (
+                get_bbia_vision_singleton,  # type: ignore[import-untyped]
+            )
 
             self.vision = get_bbia_vision_singleton()
         except (ImportError, AttributeError):
@@ -2982,7 +2990,10 @@ if FASTAPI_AVAILABLE:
         import html
         from pathlib import Path
 
-        from fastapi.responses import FileResponse, HTMLResponse
+        from fastapi.responses import (  # type: ignore[import-untyped]
+            FileResponse,
+            HTMLResponse,
+        )
 
         try:
             # Sécuriser le chemin pour éviter les accès non autorisés
@@ -3076,12 +3087,12 @@ if FASTAPI_AVAILABLE:
     @app.get("/api/camera/stream")
     async def camera_stream():
         """Stream vidéo MJPEG depuis la caméra."""
-        from fastapi.responses import StreamingResponse
+        from fastapi.responses import StreamingResponse  # type: ignore[import-untyped]
 
         async def generate_frames():
             """Générateur async de frames MJPEG avec mécanisme d'arrêt propre."""
             try:
-                import cv2
+                import cv2  # type: ignore[import-untyped]
                 import numpy as np
             except ImportError:
                 logger.warning("OpenCV non disponible pour stream vidéo")

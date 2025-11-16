@@ -10,15 +10,12 @@ from typing import Any
 import numpy as np
 import numpy.typing as npt
 
-try:
-    from bbia_sim.utils.types import DetectionResult
-except ImportError:
-    # Fallback pour imports relatifs
-    from ..utils.types import DetectionResult
+# Import absolu pour éviter les warnings de linting
+from bbia_sim.utils.types import DetectionResult  # type: ignore[import-untyped]
 
 try:
-    import cv2
-    from ultralytics import YOLO
+    import cv2  # type: ignore[import-untyped]
+    from ultralytics import YOLO  # type: ignore[import-untyped]
 
     YOLO_AVAILABLE = True
 except ImportError:
@@ -185,7 +182,7 @@ class YOLODetector:
                         class_id = int(box.cls[0].cpu().numpy())
                         class_name = self.model.names[class_id]
 
-                        detection = {
+                        detection: DetectionResult = {
                             "bbox": [int(x1), int(y1), int(x2), int(y2)],
                             "confidence": float(confidence),
                             "class_id": class_id,
@@ -248,7 +245,7 @@ class YOLODetector:
                         class_id = int(box.cls[0].cpu().numpy())
                         class_name = self.model.names[class_id]
 
-                        detection = {
+                        detection: DetectionResult = {
                             "bbox": [int(x1), int(y1), int(x2), int(y2)],
                             "confidence": float(confidence),
                             "class_id": class_id,
@@ -358,7 +355,7 @@ class FaceDetector:
                 logger.debug("♻️ Réutilisation détecteur MediaPipe depuis cache")
                 self.face_detection = _mediapipe_face_detection_cache
                 try:
-                    import mediapipe as mp
+                    import mediapipe as mp  # type: ignore[import-untyped]
 
                     self.mp_face_detection = mp.solutions.face_detection
                     self.mp_drawing = mp.solutions.drawing_utils
@@ -367,7 +364,7 @@ class FaceDetector:
                 return
 
         try:
-            import mediapipe as mp
+            import mediapipe as mp  # type: ignore[import-untyped]
 
             self.mp_face_detection = mp.solutions.face_detection
             self.mp_drawing = mp.solutions.drawing_utils
@@ -490,7 +487,7 @@ def create_face_detector() -> FaceDetector | None:
 
     """
     try:
-        import mediapipe as mp  # noqa: F401
+        import mediapipe as mp  # type: ignore[import-untyped]  # noqa: F401
 
         return FaceDetector()
     except ImportError:
@@ -509,7 +506,7 @@ if __name__ == "__main__":
     logging.info(f"YOLO disponible: {YOLO_AVAILABLE}")
 
     try:
-        import mediapipe as mp  # noqa: F401
+        import mediapipe as mp  # type: ignore[import-untyped]  # noqa: F401
 
         logging.info("MediaPipe disponible: True")
     except ImportError:

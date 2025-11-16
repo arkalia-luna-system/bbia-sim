@@ -1,15 +1,11 @@
 #!/usr/bin/env python3
 """Tests pour vérifier l'utilisation des TypedDict."""
 
-import pytest
+from bbia_sim.backends.mujoco_backend import MuJoCoBackend
 from bbia_sim.utils.types import (
     ConversationEntry,
     DetectionResult,
-    RobotStatus,
-    TelemetryData,
 )
-from bbia_sim.robot_api import RobotAPI
-from bbia_sim.backends.mujoco_backend import MuJoCoBackend
 
 
 class TestTypedDictUsage:
@@ -55,4 +51,3 @@ class TestTypedDictUsage:
         assert 0.0 <= detection["confidence"] <= 1.0
         assert detection["class_id"] >= 0
         assert isinstance(detection["class_name"], str)
-

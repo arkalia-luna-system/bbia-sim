@@ -194,10 +194,19 @@ class BBIAHuggingFace:
 
             saved_history = load_conversation_from_memory()
             if saved_history:
-                # Convertir liste en deque avec maxlen (limite mémoire)
+                # Convertir liste de dict en ConversationEntry puis en deque avec maxlen
                 max_history_size = 1000
+                conversation_entries: list[ConversationEntry] = [
+                    ConversationEntry(
+                        user=entry.get("user", ""),
+                        bbia=entry.get("bbia", ""),
+                        sentiment=entry.get("sentiment", "neutral"),
+                        timestamp=entry.get("timestamp", ""),
+                    )
+                    for entry in saved_history[-max_history_size:]
+                ]
                 self.conversation_history = deque(
-                    saved_history[-max_history_size:], maxlen=max_history_size
+                    conversation_entries, maxlen=max_history_size
                 )
                 logger.info(
                     f"💾 Conversation chargée depuis mémoire "
@@ -1130,6 +1139,13 @@ class BBIAHuggingFace:
                     logger.debug(f"Lazy loading LLM échoué (fallback enrichi): {e}")
 
             # 3. Générer réponse avec LLM si disponible, sinon réponses enrichies
+            # Convertir SentimentResult en SentimentDict (nécessaire pour les deux branches)
+            sentiment_dict: SentimentDict = {
+                "label": sentiment.get("sentiment", "neutral"),
+                "score": sentiment.get("score", 0.5),
+                "sentiment": sentiment.get("sentiment", "neutral"),
+            }
+
             if self.use_llm_chat and self.chat_model and self.chat_tokenizer:
                 # Utiliser LLM pré-entraîné (Mistral/Llama)
                 bbia_response = self._generate_llm_response(
@@ -1139,12 +1155,9 @@ class BBIAHuggingFace:
                 )
             else:
                 # Fallback vers réponses enrichies (règles + variété)
-                # Convertir SentimentResult en SentimentDict pour _generate_simple_response
-                sentiment_dict: SentimentDict = {
-                    "label": sentiment.get("sentiment", "neutral"),
-                    "score": sentiment.get("score", 0.5),
-                }
-                bbia_response = self._generate_simple_response(user_message, sentiment_dict)
+                bbia_response = self._generate_simple_response(
+                    user_message, sentiment_dict
+                )
 
             # 3. Sauvegarder dans l'historique
             from datetime import datetime
@@ -1167,11 +1180,7 @@ class BBIAHuggingFace:
 
             # 4. Adapter réponse selon personnalité BBIA (si pas LLM)
             if not self.use_llm_chat:
-                # Convertir SentimentResult en SentimentDict
-                sentiment_dict: SentimentDict = {
-                    "label": sentiment.get("sentiment", "neutral"),
-                    "score": sentiment.get("score", 0.5),
-                }
+                # Réutiliser sentiment_dict déjà créé
                 adapted_response = self._adapt_response_to_personality(
                     bbia_response,
                     sentiment_dict,
@@ -1185,7 +1194,17 @@ class BBIAHuggingFace:
 
                 # Sauvegarder toutes les 10 messages pour éviter I/O excessif
                 if len(self.conversation_history) % 10 == 0:
-                    save_conversation_to_memory(list(self.conversation_history))
+                    # Convertir ConversationEntry en dict pour compatibilité
+                    history_dicts: list[dict[str, Any]] = [
+                        {
+                            "user": entry.get("user", ""),
+                            "bbia": entry.get("bbia", ""),
+                            "sentiment": entry.get("sentiment", "neutral"),
+                            "timestamp": entry.get("timestamp", ""),
+                        }
+                        for entry in self.conversation_history
+                    ]
+                    save_conversation_to_memory(history_dicts)
             except ImportError:
                 # Mémoire persistante optionnelle
                 pass
@@ -1323,10 +1342,15 @@ class BBIAHuggingFace:
             logger.warning(f"⚠️  Erreur génération LLM, fallback enrichi: {e}")
             # Fallback vers réponses enrichies
             try:
-                sentiment = self.analyze_sentiment(user_message)
+                sentiment_result = self.analyze_sentiment(user_message)
+                # Convertir SentimentResult en SentimentDict
+                sentiment_dict: SentimentDict = {
+                    "label": sentiment_result.get("sentiment", "neutral"),
+                    "score": sentiment_result.get("score", 0.5),
+                }
             except (ValueError, RuntimeError, KeyError):
-                sentiment = {"sentiment": "NEUTRAL", "score": 0.5}
-            return self._generate_simple_response(user_message, sentiment)
+                sentiment_dict = {"label": "NEUTRAL", "score": 0.5}
+            return self._generate_simple_response(user_message, sentiment_dict)
 
     def _detect_and_execute_tools(self, user_message: str) -> str | None:
         """Détecte et exécute des outils depuis le message utilisateur.
@@ -1602,7 +1626,7 @@ class BBIAHuggingFace:
             # Charger modèle à la demande (gratuit Hugging Face)
             if self._sentence_model is None:
                 try:
-                    from sentence_transformers import (
+                    from sentence_transformers import (  # type: ignore[import-untyped]
                         SentenceTransformer,
                     )
 

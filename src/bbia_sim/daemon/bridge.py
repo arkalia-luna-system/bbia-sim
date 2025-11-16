@@ -26,8 +26,8 @@ logger = logging.getLogger(__name__)
 
 # Import conditionnel Zenoh
 try:
-    import zenoh
-    from zenoh import Config, Session
+    import zenoh  # type: ignore[import-untyped]
+    from zenoh import Config, Session  # type: ignore[import-untyped]
 
     ZENOH_AVAILABLE = True
 except ImportError:
@@ -39,8 +39,8 @@ except ImportError:
 
 # Import conditionnel SDK officiel
 try:
-    from reachy_mini import ReachyMini
-    from reachy_mini.utils import create_head_pose
+    from reachy_mini import ReachyMini  # type: ignore[import-untyped]
+    from reachy_mini.utils import create_head_pose  # type: ignore[import-untyped]
 
     REACHY_MINI_AVAILABLE = True
 except ImportError:
@@ -441,7 +441,12 @@ class ZenohBridge:
                 audio_bytes = audio_data
             else:
                 # Convertir en bytes si nécessaire
-                audio_bytes = bytes(audio_data) if audio_data else b""  # type: ignore[arg-type]
+                if isinstance(audio_data, bytes | bytearray):
+                    audio_bytes = bytes(audio_data)
+                elif isinstance(audio_data, list | tuple):
+                    audio_bytes = bytes(audio_data)  # type: ignore[arg-type]
+                else:
+                    audio_bytes = b""
             try:
                 # Utiliser robot.media.play_audio si disponible
                 if hasattr(self.reachy_mini, "media") and hasattr(

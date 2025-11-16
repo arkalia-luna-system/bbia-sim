@@ -14,8 +14,8 @@ import numpy.typing as npt
 from ..utils.types import JointPositions, TelemetryData
 
 try:
-    from reachy_mini import ReachyMini
-    from reachy_mini.utils import create_head_pose
+    from reachy_mini import ReachyMini  # type: ignore[import-untyped]
+    from reachy_mini.utils import create_head_pose  # type: ignore[import-untyped]
 
     REACHY_MINI_AVAILABLE = True
 except ImportError:
@@ -24,7 +24,7 @@ except ImportError:
     create_head_pose = None
 
 if TYPE_CHECKING:
-    from reachy_mini.utils import HeadPose
+    from reachy_mini.utils import HeadPose  # type: ignore[import-untyped]
 
 from ..robot_api import RobotAPI
 
@@ -1032,7 +1032,7 @@ class ReachyMiniBackend(RobotAPI):
             # (parfait pour animations expressives)
             if isinstance(method, str):
                 try:
-                    from reachy_mini.utils.interpolation import (
+                    from reachy_mini.utils.interpolation import (  # type: ignore[import-untyped]
                         InterpolationTechnique,
                     )
 
@@ -1064,7 +1064,7 @@ class ReachyMiniBackend(RobotAPI):
                         f"({conversion_error}), utilisation de MIN_JERK "
                         f"par défaut (fluide et naturel)",
                     )
-                    from reachy_mini.utils.interpolation import (
+                    from reachy_mini.utils.interpolation import (  # type: ignore[import-untyped]
                         InterpolationTechnique,
                     )
 
@@ -1320,7 +1320,7 @@ class ReachyMiniBackend(RobotAPI):
     ) -> object | None:
         """Crée un objet Move à partir de positions."""
         try:
-            from reachy_mini.motion.move import Move
+            from reachy_mini.motion.move import Move  # type: ignore[import-untyped]
 
             # Créer une classe Move simple pour notre usage
             class SimpleMove(Move):
