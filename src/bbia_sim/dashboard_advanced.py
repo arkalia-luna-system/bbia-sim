@@ -3080,6 +3080,7 @@ if FASTAPI_AVAILABLE:
         from fastapi.responses import StreamingResponse
 
         async def generate_frames():
+            """Générateur async de frames MJPEG avec mécanisme d'arrêt propre."""
             try:
                 import cv2
                 import numpy as np
@@ -3089,58 +3090,69 @@ if FASTAPI_AVAILABLE:
 
             vision = advanced_websocket_manager.vision
             frame_count = 0
-            while True:
-                try:
-                    frame = None
-                    if vision:
-                        try:
-                            # Utiliser la méthode privée _capture_image_from_camera
-                            # qui gère SDK camera et OpenCV
-                            frame = vision._capture_image_from_camera()
-                        except Exception as e:
-                            logger.debug(f"Erreur capture frame: {e}")
 
-                    if frame is None:
-                        # Frame de test avec texte si pas de caméra
-                        frame = np.zeros((480, 640, 3), dtype=np.uint8)
-                        # Ajouter texte "Caméra non disponible"
-                        try:
-                            cv2.putText(
-                                frame,
-                                "Camera not available",
-                                (50, 240),
-                                cv2.FONT_HERSHEY_SIMPLEX,
-                                1,
-                                (255, 255, 255),
-                                2,
-                            )
-                        except (ConnectionError, RuntimeError, WebSocketDisconnect):
-                            pass
+            try:
+                while True:
+                    try:
+                        frame = None
+                        if vision:
+                            try:
+                                # Utiliser la méthode privée _capture_image_from_camera
+                                # qui gère SDK camera et OpenCV
+                                frame = vision._capture_image_from_camera()
+                            except Exception as e:
+                                logger.debug(f"Erreur capture frame: {e}")
 
-                    # Encoder en JPEG
-                    success, buffer = cv2.imencode(
-                        ".jpg", frame, [cv2.IMWRITE_JPEG_QUALITY, 85]
-                    )
-                    if not success:
-                        logger.warning("Échec encodage JPEG")
-                        await asyncio.sleep(0.1)
-                        continue
+                        if frame is None:
+                            # Frame de test avec texte si pas de caméra
+                            frame = np.zeros((480, 640, 3), dtype=np.uint8)
+                            # Ajouter texte "Caméra non disponible"
+                            try:
+                                cv2.putText(
+                                    frame,
+                                    "Camera not available",
+                                    (50, 240),
+                                    cv2.FONT_HERSHEY_SIMPLEX,
+                                    1,
+                                    (255, 255, 255),
+                                    2,
+                                )
+                            except (ConnectionError, RuntimeError, WebSocketDisconnect):
+                                pass
 
-                    frame_bytes = buffer.tobytes()
+                        # Encoder en JPEG
+                        success, buffer = cv2.imencode(
+                            ".jpg", frame, [cv2.IMWRITE_JPEG_QUALITY, 85]
+                        )
+                        if not success:
+                            logger.warning("Échec encodage JPEG")
+                            await asyncio.sleep(0.1)
+                            continue
 
-                    yield (
-                        b"--frame\r\n"
-                        b"Content-Type: image/jpeg\r\n\r\n" + frame_bytes + b"\r\n"
-                    )
+                        frame_bytes = buffer.tobytes()
 
-                    frame_count += 1
-                    if frame_count % 30 == 0:
-                        logger.debug(f"Stream vidéo: {frame_count} frames envoyées")
+                        yield (
+                            b"--frame\r\n"
+                            b"Content-Type: image/jpeg\r\n\r\n" + frame_bytes + b"\r\n"
+                        )
 
-                    await asyncio.sleep(0.033)  # ~30 FPS
-                except Exception as e:
-                    logger.error(f"Erreur stream vidéo: {e}", exc_info=True)
-                    await asyncio.sleep(1)
+                        frame_count += 1
+                        if frame_count % 30 == 0:
+                            logger.debug(f"Stream vidéo: {frame_count} frames envoyées")
+
+                        # ✅ ASYNC : Utilise await asyncio.sleep() (non bloquant)
+                        await asyncio.sleep(0.033)  # ~30 FPS
+                    except asyncio.CancelledError:
+                        # Arrêt propre si le client se déconnecte
+                        logger.debug("Stream vidéo annulé (client déconnecté)")
+                        break
+                    except Exception as e:
+                        logger.error(f"Erreur stream vidéo: {e}", exc_info=True)
+                        await asyncio.sleep(1)
+            except GeneratorExit:
+                # Arrêt propre du générateur
+                logger.debug("Générateur de frames fermé")
+                raise
 
         return StreamingResponse(
             generate_frames(), media_type="multipart/x-mixed-replace; boundary=frame"
