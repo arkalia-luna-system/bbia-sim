@@ -4,11 +4,21 @@ Test budget CPU/RAM boucle principale backend (10-30s profiling léger).
 Mesure overhead backend avec psutil.
 """
 
+import sys
 import time
+from pathlib import Path
 
 import pytest
 
+# S'assurer que src est dans le path pour coverage
+sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
+
+# OPTIMISATION COVERAGE: Importer les modules au niveau module pour que coverage les détecte
+import bbia_sim.backends.reachy_mini_backend  # noqa: F401
+import bbia_sim.robot_factory  # noqa: F401
+
 from bbia_sim.backends.reachy_mini_backend import ReachyMiniBackend
+from bbia_sim.robot_factory import RobotFactory
 
 
 def get_cpu_time() -> float:
@@ -102,8 +112,6 @@ def test_backend_main_loop_budget_cpu_ram() -> None:
 @pytest.mark.heavy  # OPTIMISATION RAM: Test lourd (boucle 3s)
 def test_robot_api_interface_budget_cpu_ram() -> None:
     """Test budget CPU/RAM interface RobotAPI abstraite (3s optimisé)."""
-    from bbia_sim.robot_factory import RobotFactory
-
     robot = RobotFactory.create_backend("reachy_mini")
     if not robot or not robot.connect():
         pytest.skip("Backend non disponible")

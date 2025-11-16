@@ -11,208 +11,239 @@ import pytest
 # Ajouter le chemin src au PYTHONPATH
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from bbia_sim.bbia_adaptive_behavior import BBIAAdaptiveBehavior
-from bbia_sim.bbia_emotion_recognition import BBIAEmotionRecognition
-from bbia_sim.bbia_huggingface import BBIAHuggingFace
+# OPTIMISATION COVERAGE: Importer les modules au niveau module pour que coverage les détecte
+import bbia_sim.bbia_adaptive_behavior  # noqa: F401
+import bbia_sim.bbia_emotion_recognition  # noqa: F401
+import bbia_sim.bbia_huggingface  # noqa: F401
+
+# Importer les classes pour les tests
+try:
+    from bbia_sim.bbia_adaptive_behavior import BBIAAdaptiveBehavior
+    from bbia_sim.bbia_emotion_recognition import BBIAEmotionRecognition
+    from bbia_sim.bbia_huggingface import BBIAHuggingFace
+
+    BBIA_PHASE2_AVAILABLE = True
+except ImportError:
+    BBIA_PHASE2_AVAILABLE = False
+    BBIAAdaptiveBehavior = None  # type: ignore[assignment,misc]
+    BBIAEmotionRecognition = None  # type: ignore[assignment,misc]
+    BBIAHuggingFace = None  # type: ignore[assignment,misc]
 
 
 class TestBBIAHuggingFace:
     """Tests pour le module BBIA Hugging Face."""
 
+    @pytest.mark.skipif(
+        not BBIA_PHASE2_AVAILABLE or BBIAHuggingFace is None,
+        reason="Module bbia_huggingface non disponible",
+    )
     def test_initialization(self):
         """Test l'initialisation du module."""
-        try:
-            hf = BBIAHuggingFace()
-            assert hf.device is not None
-            assert hf.model_configs is not None
-            assert len(hf.model_configs) > 0
-        except ImportError:
-            pytest.skip("Hugging Face transformers non disponible")
+        hf = BBIAHuggingFace()
+        assert hf.device is not None
+        assert hf.model_configs is not None
+        assert len(hf.model_configs) > 0
 
+    @pytest.mark.skipif(
+        not BBIA_PHASE2_AVAILABLE or BBIAHuggingFace is None,
+        reason="Module bbia_huggingface non disponible",
+    )
     def test_device_detection(self):
         """Test la détection automatique du device."""
-        try:
-            hf = BBIAHuggingFace(device="auto")
-            assert hf.device in ["cpu", "cuda", "mps"]
-        except ImportError:
-            pytest.skip("Hugging Face transformers non disponible")
+        hf = BBIAHuggingFace(device="auto")
+        assert hf.device in ["cpu", "cuda", "mps"]
 
+    @pytest.mark.skipif(
+        not BBIA_PHASE2_AVAILABLE or BBIAHuggingFace is None,
+        reason="Module bbia_huggingface non disponible",
+    )
     def test_model_configs(self):
         """Test la configuration des modèles."""
-        try:
-            hf = BBIAHuggingFace()
-            configs = hf.model_configs
+        hf = BBIAHuggingFace()
+        configs = hf.model_configs
 
-            assert "vision" in configs
-            assert "audio" in configs
-            assert "nlp" in configs
-            assert "multimodal" in configs
+        assert "vision" in configs
+        assert "audio" in configs
+        assert "nlp" in configs
+        assert "multimodal" in configs
 
-            # Vérification des modèles recommandés
-            assert "clip" in configs["vision"]
-            assert "blip" in configs["vision"]
-            assert "whisper" in configs["audio"]
-            assert "sentiment" in configs["nlp"]
-            assert "emotion" in configs["nlp"]
-        except ImportError:
-            pytest.skip("Hugging Face transformers non disponible")
+        # Vérification des modèles recommandés
+        assert "clip" in configs["vision"]
+        assert "blip" in configs["vision"]
+        assert "whisper" in configs["audio"]
+        assert "sentiment" in configs["nlp"]
+        assert "emotion" in configs["nlp"]
 
+    @pytest.mark.skipif(
+        not BBIA_PHASE2_AVAILABLE or BBIAHuggingFace is None,
+        reason="Module bbia_huggingface non disponible",
+    )
     def test_get_available_models(self):
         """Test la récupération des modèles disponibles."""
-        try:
-            hf = BBIAHuggingFace()
-            models = hf.get_available_models()
+        hf = BBIAHuggingFace()
+        models = hf.get_available_models()
 
-            assert isinstance(models, dict)
-            assert len(models) > 0
-        except ImportError:
-            pytest.skip("Hugging Face transformers non disponible")
+        assert isinstance(models, dict)
+        assert len(models) > 0
 
+    @pytest.mark.skipif(
+        not BBIA_PHASE2_AVAILABLE or BBIAHuggingFace is None,
+        reason="Module bbia_huggingface non disponible",
+    )
     def test_get_loaded_models(self):
         """Test la récupération des modèles chargés."""
-        try:
-            hf = BBIAHuggingFace()
-            loaded = hf.get_loaded_models()
+        hf = BBIAHuggingFace()
+        loaded = hf.get_loaded_models()
 
-            assert isinstance(loaded, list)
-            assert len(loaded) == 0  # Aucun modèle chargé initialement
-        except ImportError:
-            pytest.skip("Hugging Face transformers non disponible")
+        assert isinstance(loaded, list)
+        assert len(loaded) == 0  # Aucun modèle chargé initialement
 
+    @pytest.mark.skipif(
+        not BBIA_PHASE2_AVAILABLE or BBIAHuggingFace is None,
+        reason="Module bbia_huggingface non disponible",
+    )
     def test_model_info(self):
         """Test les informations sur les modèles."""
-        try:
-            hf = BBIAHuggingFace()
-            info = hf.get_model_info()
+        hf = BBIAHuggingFace()
+        info = hf.get_model_info()
 
-            assert "device" in info
-            assert "loaded_models" in info
-            assert "available_models" in info
-            assert "hf_available" in info
-        except ImportError:
-            pytest.skip("Hugging Face transformers non disponible")
+        assert "device" in info
+        assert "loaded_models" in info
+        assert "available_models" in info
+        assert "hf_available" in info
 
 
 class TestBBIAEmotionRecognition:
     """Tests pour le module BBIA Emotion Recognition."""
 
+    @pytest.mark.skipif(
+        not BBIA_PHASE2_AVAILABLE or BBIAEmotionRecognition is None,
+        reason="Module bbia_emotion_recognition non disponible",
+    )
     def test_initialization(self):
         """Test l'initialisation du module."""
-        try:
-            emotion_rec = BBIAEmotionRecognition()
-            assert emotion_rec.device is not None
-            assert emotion_rec.supported_emotions is not None
-            assert len(emotion_rec.supported_emotions) > 0
-        except ImportError:
-            pytest.skip("Dépendances ML non disponibles")
+        emotion_rec = BBIAEmotionRecognition()
+        assert emotion_rec.device is not None
+        assert emotion_rec.supported_emotions is not None
+        assert len(emotion_rec.supported_emotions) > 0
 
+    @pytest.mark.skipif(
+        not BBIA_PHASE2_AVAILABLE or BBIAEmotionRecognition is None,
+        reason="Module bbia_emotion_recognition non disponible",
+    )
     def test_supported_emotions(self):
         """Test les émotions supportées."""
-        try:
-            emotion_rec = BBIAEmotionRecognition()
-            emotions = emotion_rec.supported_emotions
+        emotion_rec = BBIAEmotionRecognition()
+        emotions = emotion_rec.supported_emotions
 
-            expected_emotions = [
-                "happy",
-                "sad",
-                "angry",
-                "surprised",
-                "fearful",
-                "disgusted",
-                "neutral",
-                "excited",
-                "calm",
-                "confused",
-            ]
+        expected_emotions = [
+            "happy",
+            "sad",
+            "angry",
+            "surprised",
+            "fearful",
+            "disgusted",
+            "neutral",
+            "excited",
+            "calm",
+            "confused",
+        ]
 
-            for emotion in expected_emotions:
-                assert emotion in emotions
-        except ImportError:
-            pytest.skip("Dépendances ML non disponibles")
+        for emotion in expected_emotions:
+            assert emotion in emotions
 
+    @pytest.mark.skipif(
+        not BBIA_PHASE2_AVAILABLE or BBIAEmotionRecognition is None,
+        reason="Module bbia_emotion_recognition non disponible",
+    )
     def test_detection_config(self):
         """Test la configuration de détection."""
-        try:
-            emotion_rec = BBIAEmotionRecognition()
-            config = emotion_rec.detection_config
+        emotion_rec = BBIAEmotionRecognition()
+        config = emotion_rec.detection_config
 
-            assert "face_detection_confidence" in config
-            assert "emotion_confidence_threshold" in config
-            assert "temporal_window_size" in config
-            assert "fusion_weights" in config
+        assert "face_detection_confidence" in config
+        assert "emotion_confidence_threshold" in config
+        assert "temporal_window_size" in config
+        assert "fusion_weights" in config
 
-            # Vérification des valeurs
-            assert 0.0 <= config["face_detection_confidence"] <= 1.0
-            assert 0.0 <= config["emotion_confidence_threshold"] <= 1.0
-            assert config["temporal_window_size"] > 0
-        except ImportError:
-            pytest.skip("Dépendances ML non disponibles")
+        # Vérification des valeurs
+        assert 0.0 <= config["face_detection_confidence"] <= 1.0
+        assert 0.0 <= config["emotion_confidence_threshold"] <= 1.0
+        assert config["temporal_window_size"] > 0
 
+    @pytest.mark.skipif(
+        not BBIA_PHASE2_AVAILABLE or BBIAEmotionRecognition is None,
+        reason="Module bbia_emotion_recognition non disponible",
+    )
     def test_analyze_vocal_emotion(self):
         """Test l'analyse d'émotion vocale."""
-        try:
-            emotion_rec = BBIAEmotionRecognition()
+        emotion_rec = BBIAEmotionRecognition()
 
-            # Test avec texte positif
-            result = emotion_rec.analyze_vocal_emotion("Je suis très heureux!")
-            assert isinstance(result, dict)
+        # Test avec texte positif
+        result = emotion_rec.analyze_vocal_emotion("Je suis très heureux!")
+        assert isinstance(result, dict)
 
-            # Test avec texte négatif
-            result = emotion_rec.analyze_vocal_emotion("Je suis triste et déprimé.")
-            assert isinstance(result, dict)
-        except ImportError:
-            pytest.skip("Dépendances ML non disponibles")
+        # Test avec texte négatif
+        result = emotion_rec.analyze_vocal_emotion("Je suis triste et déprimé.")
+        assert isinstance(result, dict)
 
+    @pytest.mark.skipif(
+        not BBIA_PHASE2_AVAILABLE or BBIAEmotionRecognition is None,
+        reason="Module bbia_emotion_recognition non disponible",
+    )
     def test_fuse_emotions(self):
         """Test la fusion d'émotions."""
-        try:
-            emotion_rec = BBIAEmotionRecognition()
+        emotion_rec = BBIAEmotionRecognition()
 
-            facial_result = {"emotion": "happy", "confidence": 0.8}
+        facial_result = {"emotion": "happy", "confidence": 0.8}
 
-            vocal_result = {"emotion": "excited", "confidence": 0.7}
+        vocal_result = {"emotion": "excited", "confidence": 0.7}
 
-            fused = emotion_rec.fuse_emotions(facial_result, vocal_result)
-            assert isinstance(fused, dict)
-            assert "emotion" in fused
-            assert "confidence" in fused
-        except ImportError:
-            pytest.skip("Dépendances ML non disponibles")
+        fused = emotion_rec.fuse_emotions(facial_result, vocal_result)
+        assert isinstance(fused, dict)
+        assert "emotion" in fused
+        assert "confidence" in fused
 
+    @pytest.mark.skipif(
+        not BBIA_PHASE2_AVAILABLE or BBIAEmotionRecognition is None,
+        reason="Module bbia_emotion_recognition non disponible",
+    )
     def test_emotion_history(self):
         """Test l'historique des émotions."""
-        try:
-            emotion_rec = BBIAEmotionRecognition()
+        emotion_rec = BBIAEmotionRecognition()
 
-            # Ajout d'émotions à l'historique
-            emotion_rec.emotion_history = [
-                {"emotion": "happy", "confidence": 0.8},
-                {"emotion": "excited", "confidence": 0.7},
-                {"emotion": "happy", "confidence": 0.9},
-            ]
+        # Ajout d'émotions à l'historique
+        emotion_rec.emotion_history = [
+            {"emotion": "happy", "confidence": 0.8},
+            {"emotion": "excited", "confidence": 0.7},
+            {"emotion": "happy", "confidence": 0.9},
+        ]
 
-            stats = emotion_rec.get_emotion_statistics()
-            assert isinstance(stats, dict)
-            assert "total_analyses" in stats
-            assert "emotion_distribution" in stats
-        except ImportError:
-            pytest.skip("Dépendances ML non disponibles")
+        stats = emotion_rec.get_emotion_statistics()
+        assert isinstance(stats, dict)
+        assert "total_analyses" in stats
+        assert "emotion_distribution" in stats
 
+    @pytest.mark.skipif(
+        not BBIA_PHASE2_AVAILABLE or BBIAEmotionRecognition is None,
+        reason="Module bbia_emotion_recognition non disponible",
+    )
     def test_reset_history(self):
         """Test la réinitialisation de l'historique."""
-        try:
-            emotion_rec = BBIAEmotionRecognition()
-            emotion_rec.emotion_history = [{"emotion": "happy", "confidence": 0.8}]
+        emotion_rec = BBIAEmotionRecognition()
+        emotion_rec.emotion_history = [{"emotion": "happy", "confidence": 0.8}]
 
-            emotion_rec.reset_history()
-            assert len(emotion_rec.emotion_history) == 0
-        except ImportError:
-            pytest.skip("Dépendances ML non disponibles")
+        emotion_rec.reset_history()
+        assert len(emotion_rec.emotion_history) == 0
 
 
 class TestBBIAAdaptiveBehavior:
     """Tests pour le module BBIA Adaptive Behavior."""
 
+    @pytest.mark.skipif(
+        not BBIA_PHASE2_AVAILABLE or BBIAAdaptiveBehavior is None,
+        reason="Module bbia_adaptive_behavior non disponible",
+    )
     def test_initialization(self):
         """Test l'initialisation du module."""
         adaptive_behavior = BBIAAdaptiveBehavior()

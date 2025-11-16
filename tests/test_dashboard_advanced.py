@@ -45,14 +45,8 @@ class TestDashboardAdvanced:
     @patch("bbia_sim.dashboard_advanced.FASTAPI_AVAILABLE", True)
     def test_fastapi_import_available(self, mock_behavior, mock_emotions, mock_vision):
         """Test que FastAPI est disponible."""
-        try:
-            # Importer après avoir mocké pour éviter initialisation caméra
-            from bbia_sim.dashboard_advanced import FASTAPI_AVAILABLE
-
-            # En mode test, FastAPI peut ne pas être disponible
-            assert isinstance(FASTAPI_AVAILABLE, bool)
-        except ImportError:
-            pytest.skip("Module dashboard_advanced non disponible")
+        # En mode test, FastAPI peut ne pas être disponible
+        assert isinstance(FASTAPI_AVAILABLE, bool)
 
     @patch("bbia_sim.dashboard_advanced.BBIAVision")
     @patch("bbia_sim.dashboard_advanced.BBIAEmotions")
@@ -62,17 +56,16 @@ class TestDashboardAdvanced:
         self, mock_behavior, mock_emotions, mock_vision
     ):
         """Test que FastAPI n'est pas disponible."""
-        from bbia_sim.dashboard_advanced import FASTAPI_AVAILABLE
-
         assert FASTAPI_AVAILABLE is False
 
+    @pytest.mark.skipif(
+        not FASTAPI_AVAILABLE or BBIAAdvancedWebSocketManager is None,
+        reason="Dashboard non disponible",
+    )
     @patch("bbia_sim.dashboard_advanced.FASTAPI_AVAILABLE", True)
     def test_websocket_manager_initialization(self):
         """Test initialisation BBIAAdvancedWebSocketManager."""
-        try:
-            from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager
-
-            manager = BBIAAdvancedWebSocketManager()
+        manager = BBIAAdvancedWebSocketManager()
 
             assert manager.active_connections == []
             assert manager.robot is None
@@ -87,24 +80,15 @@ class TestDashboardAdvanced:
             assert hasattr(manager, "vision")
             assert hasattr(manager, "behavior_manager")
             assert hasattr(manager, "current_metrics")
-        except ImportError:
-            pytest.skip("Module dashboard_advanced non disponible")
-        except Exception as e:
-            if (
-                "FastAPI" in str(e)
-                or "WebSocket" in str(e)
-                or "unexpected keyword" in str(e)
-            ):
-                pytest.skip(f"Dashboard non disponible ou dépendance incompatible: {e}")
-            raise
 
+    @pytest.mark.skipif(
+        not FASTAPI_AVAILABLE or BBIAAdvancedWebSocketManager is None,
+        reason="Dashboard non disponible",
+    )
     @patch("bbia_sim.dashboard_advanced.FASTAPI_AVAILABLE", True)
     def test_websocket_manager_metrics_structure(self):
         """Test structure des métriques."""
-        try:
-            from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager
-
-            manager = BBIAAdvancedWebSocketManager()
+        manager = BBIAAdvancedWebSocketManager()
 
             # Vérifier structure current_metrics
             assert isinstance(manager.current_metrics, dict)
@@ -116,30 +100,28 @@ class TestDashboardAdvanced:
             assert "performance" in manager.current_metrics
             assert "vision" in manager.current_metrics
             assert "audio" in manager.current_metrics
-        except (ImportError, Exception) as e:
-            pytest.skip(f"Dashboard advanced non disponible: {e}")
 
+    @pytest.mark.skipif(
+        BBIAAdvancedWebSocketManager is None,
+        reason="Dashboard non disponible",
+    )
     def test_get_available_joints_no_robot(self):
         """Test récupération joints sans robot."""
-        try:
-            from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager
+        manager = BBIAAdvancedWebSocketManager()
+        joints = manager._get_available_joints()
 
-            manager = BBIAAdvancedWebSocketManager()
-            joints = manager._get_available_joints()
+        # Sans robot connecté, doit retourner liste vide
+        assert isinstance(joints, list)
+        assert len(joints) == 0
 
-            # Sans robot connecté, doit retourner liste vide
-            assert isinstance(joints, list)
-            assert len(joints) == 0
-        except (ImportError, Exception) as e:
-            pytest.skip(f"Dashboard advanced non disponible: {e}")
-
+    @pytest.mark.skipif(
+        not FASTAPI_AVAILABLE or BBIAAdvancedWebSocketManager is None,
+        reason="Dashboard non disponible",
+    )
     @patch("bbia_sim.dashboard_advanced.FASTAPI_AVAILABLE", True)
     def test_get_available_joints_with_robot(self):
         """Test récupération joints avec robot."""
-        try:
-            from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager
-
-            manager = BBIAAdvancedWebSocketManager()
+        manager = BBIAAdvancedWebSocketManager()
 
             # Mock robot
             mock_robot = MagicMock()
@@ -155,30 +137,28 @@ class TestDashboardAdvanced:
             assert isinstance(joints, list)
             assert len(joints) == 3
             assert "yaw_body" in joints
-        except (ImportError, Exception) as e:
-            pytest.skip(f"Dashboard advanced non disponible: {e}")
 
+    @pytest.mark.skipif(
+        BBIAAdvancedWebSocketManager is None,
+        reason="Dashboard non disponible",
+    )
     def test_get_current_pose_no_robot(self):
         """Test récupération pose sans robot."""
-        try:
-            from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager
+        manager = BBIAAdvancedWebSocketManager()
+        pose = manager._get_current_pose()
 
-            manager = BBIAAdvancedWebSocketManager()
-            pose = manager._get_current_pose()
+        # Sans robot, doit retourner dict vide
+        assert isinstance(pose, dict)
+        assert len(pose) == 0
 
-            # Sans robot, doit retourner dict vide
-            assert isinstance(pose, dict)
-            assert len(pose) == 0
-        except (ImportError, Exception) as e:
-            pytest.skip(f"Dashboard advanced non disponible: {e}")
-
+    @pytest.mark.skipif(
+        not FASTAPI_AVAILABLE or BBIAAdvancedWebSocketManager is None,
+        reason="Dashboard non disponible",
+    )
     @patch("bbia_sim.dashboard_advanced.FASTAPI_AVAILABLE", True)
     def test_get_current_pose_with_robot(self):
         """Test récupération pose avec robot."""
-        try:
-            from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager
-
-            manager = BBIAAdvancedWebSocketManager()
+        manager = BBIAAdvancedWebSocketManager()
 
             # Mock robot avec joints
             mock_robot = MagicMock()
@@ -191,16 +171,15 @@ class TestDashboardAdvanced:
             assert isinstance(pose, dict)
             # Pose devrait contenir les positions des joints
             assert len(pose) == 1
-        except (ImportError, Exception) as e:
-            pytest.skip(f"Dashboard advanced non disponible: {e}")
 
+    @pytest.mark.skipif(
+        not FASTAPI_AVAILABLE or BBIAAdvancedWebSocketManager is None,
+        reason="Dashboard non disponible",
+    )
     @patch("bbia_sim.dashboard_advanced.FASTAPI_AVAILABLE", True)
     def test_metrics_history_limit(self):
         """Test limite historique métriques."""
-        try:
-            from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager
-
-            manager = BBIAAdvancedWebSocketManager()
+        manager = BBIAAdvancedWebSocketManager()
 
             # Ajouter plus de métriques que le max (limité pour économiser RAM)
             test_count = 100  # Limité pour test rapide et moins de RAM
@@ -213,18 +192,17 @@ class TestDashboardAdvanced:
             # Vérifier que l'historique est limité (on n'a ajouté que 100, donc < max_history)
             assert len(manager.metrics_history) <= test_count
             assert len(manager.metrics_history) <= manager.max_history
-        except (ImportError, Exception) as e:
-            pytest.skip(f"Dashboard advanced non disponible: {e}")
 
+    @pytest.mark.skipif(
+        not FASTAPI_AVAILABLE or BBIAAdvancedWebSocketManager is None,
+        reason="Dashboard non disponible",
+    )
     @patch("bbia_sim.dashboard_advanced.FASTAPI_AVAILABLE", True)
     def test_broadcast_no_connections(self):
         """Test broadcast sans connexions."""
-        try:
-            import asyncio
+        import asyncio
 
-            from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager
-
-            manager = BBIAAdvancedWebSocketManager()
+        manager = BBIAAdvancedWebSocketManager()
 
             async def test():
                 # Doit fonctionner sans erreur même sans connexions
@@ -232,63 +210,61 @@ class TestDashboardAdvanced:
 
             # Exécuter avec timeout pour éviter blocage
             asyncio.run(asyncio.wait_for(test(), timeout=1.0))
-        except (ImportError, Exception) as e:
+        except Exception as e:
             if "timeout" in str(e).lower():
                 pytest.skip(f"Test timeout (normal si métriques collectées): {e}")
-            pytest.skip(f"Dashboard advanced non disponible: {e}")
+            raise
 
+    @pytest.mark.skipif(
+        BBIAAdvancedWebSocketManager is None,
+        reason="Dashboard non disponible",
+    )
     def test_current_emotion_default(self):
         """Test émotion par défaut."""
-        try:
-            from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager
+        manager = BBIAAdvancedWebSocketManager()
 
-            manager = BBIAAdvancedWebSocketManager()
+        assert manager.current_metrics["current_emotion"] == "neutral"
+        assert manager.current_metrics["emotion_intensity"] == 0.0
 
-            assert manager.current_metrics["current_emotion"] == "neutral"
-            assert manager.current_metrics["emotion_intensity"] == 0.0
-        except (ImportError, Exception) as e:
-            pytest.skip(f"Dashboard advanced non disponible: {e}")
-
+    @pytest.mark.skipif(
+        BBIAAdvancedWebSocketManager is None,
+        reason="Dashboard non disponible",
+    )
     def test_performance_metrics_structure(self):
         """Test structure métriques performance."""
-        try:
-            from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager
+        manager = BBIAAdvancedWebSocketManager()
 
-            manager = BBIAAdvancedWebSocketManager()
+        perf = manager.current_metrics["performance"]
+        assert "latency_ms" in perf
+        assert "fps" in perf
+        assert "cpu_usage" in perf
+        assert "memory_usage" in perf
 
-            perf = manager.current_metrics["performance"]
-            assert "latency_ms" in perf
-            assert "fps" in perf
-            assert "cpu_usage" in perf
-            assert "memory_usage" in perf
-        except (ImportError, Exception) as e:
-            pytest.skip(f"Dashboard advanced non disponible: {e}")
-
+    @pytest.mark.skipif(
+        BBIAAdvancedWebSocketManager is None,
+        reason="Dashboard non disponible",
+    )
     def test_vision_metrics_structure(self):
         """Test structure métriques vision."""
-        try:
-            from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager
+        manager = BBIAAdvancedWebSocketManager()
 
-            manager = BBIAAdvancedWebSocketManager()
+        vision = manager.current_metrics["vision"]
+        assert "objects_detected" in vision
+        assert "faces_detected" in vision
+        assert "tracking_active" in vision
 
-            vision = manager.current_metrics["vision"]
-            assert "objects_detected" in vision
-            assert "faces_detected" in vision
-            assert "tracking_active" in vision
-        except (ImportError, Exception) as e:
-            pytest.skip(f"Dashboard advanced non disponible: {e}")
-
+    @pytest.mark.skipif(
+        BBIAAdvancedWebSocketManager is None,
+        reason="Dashboard non disponible",
+    )
     def test_audio_metrics_structure(self):
         """Test structure métriques audio."""
-        try:
-            from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager
+        manager = BBIAAdvancedWebSocketManager()
 
-            manager = BBIAAdvancedWebSocketManager()
-
-            audio = manager.current_metrics["audio"]
-            assert "microphone_active" in audio
-            assert "speaker_active" in audio
-            assert "volume_level" in audio
+        audio = manager.current_metrics["audio"]
+        assert "microphone_active" in audio
+        assert "speaker_active" in audio
+        assert "volume_level" in audio
         except (ImportError, Exception) as e:
             pytest.skip(f"Dashboard advanced non disponible: {e}")
 
@@ -320,10 +296,11 @@ class TestDashboardAdvanced:
     @patch("bbia_sim.dashboard_advanced.FASTAPI_AVAILABLE", True)
     def test_disconnect_websocket(self):
         """Test déconnexion WebSocket."""
-        try:
-            from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager
+        if BBIAAdvancedWebSocketManager is None:
 
-            manager = BBIAAdvancedWebSocketManager()
+            pytest.skip("Dashboard non disponible")
+
+        manager = BBIAAdvancedWebSocketManager()
 
             mock_websocket = MagicMock()
             manager.active_connections.append(mock_websocket)
@@ -396,10 +373,11 @@ class TestDashboardAdvanced:
     @patch("bbia_sim.dashboard_advanced.FASTAPI_AVAILABLE", True)
     def test_update_metrics(self):
         """Test mise à jour métriques."""
-        try:
-            from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager
+        if BBIAAdvancedWebSocketManager is None:
 
-            manager = BBIAAdvancedWebSocketManager()
+            pytest.skip("Dashboard non disponible")
+
+        manager = BBIAAdvancedWebSocketManager()
 
             # Mock vision pour retourner des objets (deque pour optimisation RAM)
             from collections import deque
@@ -421,10 +399,11 @@ class TestDashboardAdvanced:
     @patch("bbia_sim.dashboard_advanced.FASTAPI_AVAILABLE", True)
     def test_update_metrics_with_robot(self):
         """Test mise à jour métriques avec robot."""
-        try:
-            from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager
+        if BBIAAdvancedWebSocketManager is None:
 
-            manager = BBIAAdvancedWebSocketManager()
+            pytest.skip("Dashboard non disponible")
+
+        manager = BBIAAdvancedWebSocketManager()
 
             # Mock robot avec télémétrie
             mock_robot = MagicMock()
@@ -449,10 +428,11 @@ class TestDashboardAdvanced:
     @patch("bbia_sim.dashboard_advanced.asyncio.create_task")
     def test_start_metrics_collection(self, mock_create_task):
         """Test démarrage collecte métriques."""
-        try:
-            from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager
+        if BBIAAdvancedWebSocketManager is None:
 
-            manager = BBIAAdvancedWebSocketManager()
+            pytest.skip("Dashboard non disponible")
+
+        manager = BBIAAdvancedWebSocketManager()
 
             manager._start_metrics_collection()
 
@@ -464,10 +444,11 @@ class TestDashboardAdvanced:
     @patch("bbia_sim.dashboard_advanced.FASTAPI_AVAILABLE", True)
     def test_get_available_joints_types(self):
         """Test récupération joints avec différents types."""
-        try:
-            from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager
+        if BBIAAdvancedWebSocketManager is None:
 
-            manager = BBIAAdvancedWebSocketManager()
+            pytest.skip("Dashboard non disponible")
+
+        manager = BBIAAdvancedWebSocketManager()
 
             # Test avec joints int
             mock_robot = MagicMock()
@@ -493,10 +474,11 @@ class TestDashboardAdvanced:
     @patch("bbia_sim.dashboard_advanced.FASTAPI_AVAILABLE", True)
     def test_get_current_pose_exception(self):
         """Test récupération pose avec exception sur joint."""
-        try:
-            from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager
+        if BBIAAdvancedWebSocketManager is None:
 
-            manager = BBIAAdvancedWebSocketManager()
+            pytest.skip("Dashboard non disponible")
+
+        manager = BBIAAdvancedWebSocketManager()
 
             # Mock robot qui lève exception sur get_joint_pos
             mock_robot = MagicMock()

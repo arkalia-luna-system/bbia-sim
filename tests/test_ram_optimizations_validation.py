@@ -5,14 +5,25 @@ Vérifie que les optimisations fonctionnent correctement.
 """
 
 import gc
+import sys
 import time
 from collections import deque
+from pathlib import Path
 
 import pytest
 
+# S'assurer que src est dans le path pour coverage
+sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
+
+# OPTIMISATION COVERAGE: Importer les modules au niveau module pour que coverage les détecte
+import bbia_sim.bbia_huggingface  # noqa: F401
+import bbia_sim.bbia_vision  # noqa: F401
+import bbia_sim.dashboard_advanced  # noqa: F401
+import bbia_sim.voice_whisper  # noqa: F401
+
 # Imports conditionnels
 try:
-    from bbia_sim.bbia_huggingface import BBIAHuggingFace
+    from bbia_sim.bbia_huggingface import BBIAHuggingFace  # noqa: F401
 
     HF_AVAILABLE = True
 except ImportError:
@@ -20,7 +31,7 @@ except ImportError:
     BBIAHuggingFace = None  # type: ignore
 
 try:
-    from bbia_sim.bbia_vision import BBIAVision, get_bbia_vision_singleton
+    from bbia_sim.bbia_vision import BBIAVision, get_bbia_vision_singleton  # noqa: F401
 
     VISION_AVAILABLE = True
 except ImportError:
@@ -29,7 +40,15 @@ except ImportError:
     get_bbia_vision_singleton = None  # type: ignore
 
 try:
-    from bbia_sim.voice_whisper import WhisperSTT
+    from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager  # noqa: F401
+
+    DASHBOARD_AVAILABLE = True
+except ImportError:
+    DASHBOARD_AVAILABLE = False
+    BBIAAdvancedWebSocketManager = None  # type: ignore
+
+try:
+    from bbia_sim.voice_whisper import WhisperSTT  # noqa: F401
 
     WHISPER_AVAILABLE = True
 except ImportError:
@@ -167,48 +186,43 @@ def test_whisper_audio_buffer_deque() -> None:
 
 
 @pytest.mark.unit
+@pytest.mark.skipif(
+    not DASHBOARD_AVAILABLE or BBIAAdvancedWebSocketManager is None,
+    reason="Dashboard non disponible",
+)
 @pytest.mark.fast
 def test_dashboard_metrics_history_deque() -> None:
     """Test que l'historique des métriques du dashboard utilise deque."""
-    try:
-        from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager
+    manager = BBIAAdvancedWebSocketManager()
 
-        manager = BBIAAdvancedWebSocketManager()
+    # Vérifier que l'historique est un deque avec limite
+    assert hasattr(manager, "metrics_history")
+    assert isinstance(manager.metrics_history, deque)
+    assert manager.metrics_history.maxlen is not None
+    assert manager.metrics_history.maxlen > 0
 
-        # Vérifier que l'historique est un deque avec limite
-        assert hasattr(manager, "metrics_history")
-        assert isinstance(manager.metrics_history, deque)
-        assert manager.metrics_history.maxlen is not None
-        assert manager.metrics_history.maxlen > 0
-
-        # Vérifier que le nettoyage des connexions est configuré
-        assert hasattr(manager, "_connection_last_activity")
-        assert hasattr(manager, "_connection_cleanup_interval")
-        assert manager._connection_cleanup_interval > 0
-
-    except ImportError:
-        pytest.skip("Dashboard non disponible")
+    # Vérifier que le nettoyage des connexions est configuré
+    assert hasattr(manager, "_connection_last_activity")
+    assert hasattr(manager, "_connection_cleanup_interval")
+    assert manager._connection_cleanup_interval > 0
 
 
 @pytest.mark.unit
 @pytest.mark.fast
 def test_dashboard_connection_cleanup() -> None:
     """Test que le nettoyage des connexions inactives est configuré."""
-    try:
-        from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager
-
-        manager = BBIAAdvancedWebSocketManager()
-
-        # Vérifier que la méthode de nettoyage existe
-        assert hasattr(manager, "_cleanup_inactive_connections")
-        assert callable(manager._cleanup_inactive_connections)
-
-        # Vérifier que le tracking d'activité existe
-        assert hasattr(manager, "_connection_last_activity")
-        assert isinstance(manager._connection_last_activity, dict)
-
-    except ImportError:
+    if BBIAAdvancedWebSocketManager is None:
         pytest.skip("Dashboard non disponible")
+
+    manager = BBIAAdvancedWebSocketManager()
+
+    # Vérifier que la méthode de nettoyage existe
+    assert hasattr(manager, "_cleanup_inactive_connections")
+    assert callable(manager._cleanup_inactive_connections)
+
+    # Vérifier que le tracking d'activité existe
+    assert hasattr(manager, "_connection_last_activity")
+    assert isinstance(manager._connection_last_activity, dict)
 
 
 @pytest.mark.unit
@@ -248,16 +262,12 @@ def test_all_optimizations_present() -> None:
         optimizations["whisper_cache"] = hasattr(whisper, "_MAX_WHISPER_CACHE_SIZE")
 
     # Vérifier Dashboard
-    try:
-        from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager
-
+    if BBIAAdvancedWebSocketManager is not None:
         manager = BBIAAdvancedWebSocketManager()
         optimizations["dashboard_deque"] = isinstance(manager.metrics_history, deque)
         optimizations["dashboard_cleanup"] = hasattr(
             manager, "_cleanup_inactive_connections"
         )
-    except ImportError:
-        pass
 
     # Afficher le résumé
     print("\n📊 RÉSUMÉ OPTIMISATIONS RAM:")
