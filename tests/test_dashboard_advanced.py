@@ -127,20 +127,20 @@ class TestDashboardAdvanced:
         """Test récupération joints avec robot."""
         manager = BBIAAdvancedWebSocketManager()
 
-            # Mock robot
+        # Mock robot
         mock_robot = MagicMock()
         mock_robot.get_available_joints.return_value = [
             "yaw_body",
             "stewart_1",
             "stewart_2",
-            ]
-            manager.robot = mock_robot
+        ]
+        manager.robot = mock_robot
 
-            joints = manager._get_available_joints()
+        joints = manager._get_available_joints()
 
-            assert isinstance(joints, list)
-            assert len(joints) == 3
-            assert "yaw_body" in joints
+        assert isinstance(joints, list)
+        assert len(joints) == 3
+        assert "yaw_body" in joints
 
     @pytest.mark.skipif(
         BBIAAdvancedWebSocketManager is None,
