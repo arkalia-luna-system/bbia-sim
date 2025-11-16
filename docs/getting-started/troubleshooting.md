@@ -406,7 +406,7 @@ export BBIA_DISABLE_SIMULATION=1
 | 💡 **Exemples** | [`../../examples/README.md`](../../examples/README.md) | Exemples d'utilisation |
 | 🔧 **Scripts** | [`../../scripts/README.md`](../../scripts/README.md) | Outils utilitaires |
 | 🎯 **Guide débutant** | [`../guides/GUIDE_DEBUTANT.md`](../guides/GUIDE_DEBUTANT.md) | Démarrage rapide |
-| 🔍 **Diagnostic** | `python scripts/bbia_doctor.py` | Vérification environnement |
+| 🔍 **Diagnostic** | `python scripts/bbia_doctor.py` | Vérification environnement (Zenoh, daemon, WiFi) |
 
 ## 🔗 Liens Utiles
 

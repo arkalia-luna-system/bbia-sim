@@ -375,9 +375,10 @@ curl http://localhost:8000/metrics/prometheus
 #### Diagnostic Environnement
 
 ```bash
-# Diagnostic complet de l'environnement BBIA-SIM
+# Diagnostic complet de l'environnement BBIA-SIM (inclut Zenoh, daemon, WiFi)
 python -m bbia_sim --doctor
-
+# ou
+python scripts/bbia_doctor.py
 ```
 
 **Vérifie** :
@@ -387,6 +388,9 @@ python -m bbia_sim --doctor
 - ✅ MuJoCo disponible
 - ✅ SoundDevice disponible
 - ✅ OpenCV disponible
+- ✅ **Zenoh** (installation + session locale) - Préparation robot
+- ✅ **Daemon** `reachy-mini-daemon` - Préparation robot
+- ✅ **Réseau** (IP locale + ports 8000, 7447) - Préparation WiFi
 - ✅ Network connectivity
 - ✅ File permissions
 

@@ -31,13 +31,13 @@ Ce dossier contient des exemples pratiques pour utiliser BBIA-SIM.
 - **`demo_chat_bbia.py`**, **`demo_chat_simple.py`**, **`demo_chat_with_tools.py`** → Fusionner en `demo_chat_bbia_3d.py`
 - **`demo_reachy_mini_corrigee.py`** → Utiliser `reachy_mini/*` officiels à la place
 
-### ❌ **Examples Obsolètes (À Archiver)**
+### ❌ **Examples Obsolètes (Archivés)**
 
-- `demo_chat_simple.py` → Remplacé par `demo_chat_bbia_3d.py`
-- `demo_chat_with_tools.py` → Fusionner dans version 3D
-- `demo_reachy_mini_corrigee.py` → Utiliser `reachy_mini/` officiels
-- `demo_bbia_phase2_integration.py` → Test intégration, plus utile
-- `surprise_3d_mujoco_viewer.py` → Démo spécifique, peu utilisée
+- `demo_chat_simple.py` → Remplacé par `demo_chat_bbia_3d.py` (marqué déprécié)
+- `demo_chat_with_tools.py` → Fusionner dans version 3D (marqué déprécié)
+- `demo_reachy_mini_corrigee.py` → Utiliser `reachy_mini/` officiels (marqué déprécié)
+- `demo_bbia_phase2_integration.py` → Test intégration, archivé dans `examples/_archived/` ✅
+- `surprise_3d_mujoco_viewer.py` → Démo spécifique, archivé dans `examples/_archived/` ✅
 
 ## 📚 Exemples Reachy Mini (SDK Officiel)
 

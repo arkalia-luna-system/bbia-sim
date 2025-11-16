@@ -10,13 +10,19 @@ Compare TOUS les aspects:
 - Documentation
 - Scripts
 - Helpers
+- Installation SDK et méthodes (fusionné depuis audit_sdk_officiel_nov2025.py)
+- Comparaison profonde signatures backend (fusionné depuis comparaison_profonde_methodes_backend.py)
 
 Usage:
     python scripts/compare_with_official_exhaustive.py
 """
 
+import ast
+import inspect
 import json
 import logging
+import subprocess
+import sys
 from collections import defaultdict
 from dataclasses import asdict, dataclass
 from pathlib import Path
@@ -671,6 +677,341 @@ class OfficialRepoComparator:
 
         return diffs
 
+    def check_sdk_installation(self) -> list[Difference]:
+        """Vérifie l'installation SDK officiel (fusionné depuis audit_sdk_officiel_nov2025.py)."""
+        logger.info("🔍 Vérification installation SDK officiel...")
+        diffs = []
+
+        try:
+            result_pip = subprocess.run(
+                ["pip", "show", "reachy-mini"],
+                check=False,
+                capture_output=True,
+                text=True,
+                timeout=5,
+            )
+            if result_pip.returncode != 0:
+                diffs.append(
+                    Difference(
+                        category="SDK",
+                        file_path="",
+                        line=None,
+                        endpoint=None,
+                        description="SDK reachy-mini non installé",
+                        bbia_value=None,
+                        official_value="reachy-mini",
+                        severity="HIGH",
+                        status="pending",
+                        correction="Installer avec: pip install reachy-mini",
+                        test_file=None,
+                    ),
+                )
+        except Exception as e:
+            logger.debug(f"Erreur vérification SDK: {e}")
+
+        return diffs
+
+    def check_sdk_methods_implementation(self) -> list[Difference]:
+        """Vérifie que toutes les méthodes SDK officiel sont implémentées (fusionné depuis audit_sdk_officiel_nov2025.py)."""
+        logger.info("🔍 Vérification méthodes SDK implémentées...")
+        diffs = []
+
+        # Méthodes officielles selon README
+        official_methods = {
+            "wake_up",
+            "goto_sleep",
+            "look_at_world",
+            "look_at_image",
+            "goto_target",
+            "set_target",
+            "get_current_joint_positions",
+            "set_target_head_pose",
+            "set_target_body_yaw",
+            "get_current_head_pose",
+            "get_present_antenna_joint_positions",
+            "enable_motors",
+            "disable_motors",
+            "enable_gravity_compensation",
+            "disable_gravity_compensation",
+        }
+
+        # Vérifier notre implémentation
+        try:
+            sys.path.insert(0, str(self.bbia_root / "src"))
+            from bbia_sim.backends.reachy_mini_backend import ReachyMiniBackend
+
+            backend_attrs = set(dir(ReachyMiniBackend))
+            missing_methods = official_methods - backend_attrs
+
+            for method in missing_methods:
+                diffs.append(
+                    Difference(
+                        category="SDK",
+                        file_path="src/bbia_sim/backends/reachy_mini_backend.py",
+                        line=None,
+                        endpoint=None,
+                        description=f"Méthode SDK {method} manquante dans ReachyMiniBackend",
+                        bbia_value=None,
+                        official_value=method,
+                        severity="HIGH",
+                        status="pending",
+                        correction=f"Implémenter méthode {method}",
+                        test_file=None,
+                    ),
+                )
+        except ImportError as e:
+            logger.warning(f"Impossible d'importer ReachyMiniBackend: {e}")
+
+        return diffs
+
+    def check_create_head_pose(self) -> list[Difference]:
+        """Vérifie create_head_pose (fusionné depuis audit_sdk_officiel_nov2025.py)."""
+        logger.info("🔍 Vérification create_head_pose...")
+        diffs = []
+
+        try:
+            sys.path.insert(0, str(self.bbia_root / "src"))
+            try:
+                from reachy_mini.utils import create_head_pose
+
+                sig = inspect.signature(create_head_pose)
+                params = list(sig.parameters.keys())
+
+                # Selon README: create_head_pose(z=10, roll=15, degrees=True, mm=True)
+                expected_params = {"z", "roll", "degrees", "mm", "pitch", "yaw"}
+                if not set(params).intersection(expected_params):
+                    diffs.append(
+                        Difference(
+                            category="SDK",
+                            file_path="",
+                            line=None,
+                            endpoint=None,
+                            description="create_head_pose signature peut différer",
+                            bbia_value=str(params),
+                            official_value="z, roll, degrees, mm, pitch, yaw",
+                            severity="MEDIUM",
+                            status="pending",
+                            correction="Vérifier signature create_head_pose",
+                            test_file=None,
+                        ),
+                    )
+            except ImportError:
+                diffs.append(
+                    Difference(
+                        category="SDK",
+                        file_path="",
+                        line=None,
+                        endpoint=None,
+                        description="create_head_pose non disponible",
+                        bbia_value=None,
+                        official_value="create_head_pose",
+                        severity="HIGH",
+                        status="pending",
+                        correction="Installer SDK officiel: pip install reachy-mini",
+                        test_file=None,
+                    ),
+                )
+        except Exception as e:
+            logger.debug(f"Erreur vérification create_head_pose: {e}")
+
+        return diffs
+
+    def check_python_versions(self) -> list[Difference]:
+        """Vérifie versions Python supportées (fusionné depuis audit_sdk_officiel_nov2025.py)."""
+        logger.info("🔍 Vérification versions Python...")
+        diffs = []
+
+        python_version = sys.version_info
+        if not (3.10 <= python_version.minor <= 3.13):
+            diffs.append(
+                Difference(
+                    category="SDK",
+                    file_path="",
+                    line=None,
+                    endpoint=None,
+                    description=f"Python {python_version.major}.{python_version.minor} - officiel supporte 3.10-3.13",
+                    bbia_value=f"{python_version.major}.{python_version.minor}",
+                    official_value="3.10-3.13",
+                    severity="MEDIUM",
+                    status="pending",
+                    correction="Vérifier compatibilité avec version Python",
+                    test_file=None,
+                ),
+            )
+
+        return diffs
+
+    def extract_method_signatures_ast(
+        self,
+        file_path: Path,
+        class_name: str,
+    ) -> dict[str, dict]:
+        """Extrait les signatures des méthodes d'une classe avec AST (fusionné depuis comparaison_profonde_methodes_backend.py)."""
+        if not file_path.exists():
+            return {}
+
+        try:
+            content = file_path.read_text(encoding="utf-8")
+            tree = ast.parse(content)
+
+            methods: dict[str, dict] = {}
+
+            for node in ast.walk(tree):
+                if isinstance(node, ast.ClassDef) and node.name == class_name:
+                    for item in node.body:
+                        if isinstance(item, ast.FunctionDef) or isinstance(
+                            item, ast.AsyncFunctionDef
+                        ):
+                            method_name = item.name
+                            if method_name.startswith("_"):
+                                continue  # Skip private
+
+                            # Extraire signature
+                            params = []
+                            for arg in item.args.args:
+                                if arg.arg == "self":
+                                    continue
+                                param_info = {"name": arg.arg}
+                                if arg.annotation:
+                                    try:
+                                        param_info["type"] = ast.unparse(arg.annotation)
+                                    except Exception:
+                                        param_info["type"] = None
+                                params.append(param_info)
+
+                            # Type de retour
+                            return_type = None
+                            if item.returns:
+                                try:
+                                    return_type = ast.unparse(item.returns)
+                                except Exception:
+                                    return_type = None
+
+                            # Async
+                            is_async = isinstance(item, ast.AsyncFunctionDef)
+
+                            methods[method_name] = {
+                                "params": params,
+                                "return_type": return_type,
+                                "async": is_async,
+                                "docstring": ast.get_docstring(item),
+                            }
+
+            return methods
+
+        except Exception as e:
+            logger.warning(f"Erreur extraction AST {file_path}: {e}")
+            return {}
+
+    def compare_backend_methods_deep(self) -> list[Difference]:
+        """Compare les méthodes backend en profondeur avec AST (fusionné depuis comparaison_profonde_methodes_backend.py)."""
+        logger.info("🔍 Comparaison profonde méthodes backend (AST)...")
+        diffs = []
+
+        # Extraire méthodes officielles
+        official_backend = (
+            self.official_root / "src/reachy_mini/daemon/backend/abstract.py"
+        )
+        official_methods = self.extract_method_signatures_ast(official_backend, "Backend")
+
+        # Extraire méthodes BackendAdapter BBIA
+        bbia_adapter = self.bbia_root / "src/bbia_sim/daemon/app/backend_adapter.py"
+        adapter_methods = self.extract_method_signatures_ast(bbia_adapter, "BackendAdapter")
+
+        # Extraire méthodes ReachyMiniBackend BBIA
+        bbia_backend = self.bbia_root / "src/bbia_sim/backends/reachy_mini_backend.py"
+        backend_methods = self.extract_method_signatures_ast(
+            bbia_backend,
+            "ReachyMiniBackend",
+        )
+
+        # Combiner méthodes BBIA (adapter + backend)
+        all_bbia_methods = {**adapter_methods, **backend_methods}
+
+        # Méthodes critiques du SDK officiel
+        critical_methods = [
+            "goto_target",
+            "play_move",
+            "set_target",
+            "get_present_head_pose",
+            "get_present_antenna_joint_positions",
+            "get_present_body_yaw",
+            "set_target_head_pose",
+            "set_target_antenna_joint_positions",
+            "set_target_body_yaw",
+            "get_motor_control_mode",
+            "set_motor_control_mode",
+            "wake_up",
+            "goto_sleep",
+            "get_urdf",
+        ]
+
+        for method_name in critical_methods:
+            official = official_methods.get(method_name)
+            bbia = all_bbia_methods.get(method_name)
+
+            if not official:
+                continue  # Pas critique
+
+            if not bbia:
+                diffs.append(
+                    Difference(
+                        category="Backend",
+                        file_path="src/bbia_sim/backends/reachy_mini_backend.py",
+                        line=None,
+                        endpoint=None,
+                        description=f"Méthode critique {method_name} manquante dans BBIA",
+                        bbia_value=None,
+                        official_value=method_name,
+                        severity="HIGH",
+                        status="pending",
+                        correction=f"Implémenter méthode {method_name}",
+                        test_file=None,
+                    ),
+                )
+                continue
+
+            # Comparer signatures
+            official_params = {p["name"]: p.get("type") for p in official["params"]}
+            bbia_params = {p["name"]: p.get("type") for p in bbia["params"]}
+
+            if official_params != bbia_params:
+                diffs.append(
+                    Difference(
+                        category="Backend",
+                        file_path="src/bbia_sim/backends/reachy_mini_backend.py",
+                        line=None,
+                        endpoint=None,
+                        description=f"Méthode {method_name}: différences de signature (paramètres)",
+                        bbia_value=str(bbia_params),
+                        official_value=str(official_params),
+                        severity="MEDIUM",
+                        status="pending",
+                        correction=f"Aligner signature de {method_name}",
+                        test_file=None,
+                    ),
+                )
+
+            # Comparer types de retour
+            if official.get("return_type") != bbia.get("return_type"):
+                diffs.append(
+                    Difference(
+                        category="Backend",
+                        file_path="src/bbia_sim/backends/reachy_mini_backend.py",
+                        line=None,
+                        endpoint=None,
+                        description=f"Méthode {method_name}: différences de type de retour",
+                        bbia_value=bbia.get("return_type"),
+                        official_value=official.get("return_type"),
+                        severity="MEDIUM",
+                        status="pending",
+                        correction=f"Aligner type de retour de {method_name}",
+                        test_file=None,
+                    ),
+                )
+
+        return diffs
+
     def run_full_comparison(self) -> ComparisonResult:
         """Exécute la comparaison complète."""
         logger.info("🚀 Démarrage comparaison exhaustive BBIA vs Repo Officiel")
@@ -698,6 +1039,15 @@ class OfficialRepoComparator:
 
         # 7. Assets et fichiers de configuration (amélioration)
         all_diffs.extend(self.compare_assets_and_config())
+
+        # 8. Vérification SDK installation et méthodes (fusionné depuis audit_sdk_officiel_nov2025.py)
+        all_diffs.extend(self.check_sdk_installation())
+        all_diffs.extend(self.check_sdk_methods_implementation())
+        all_diffs.extend(self.check_create_head_pose())
+        all_diffs.extend(self.check_python_versions())
+
+        # 9. Comparaison profonde méthodes backend (fusionné depuis comparaison_profonde_methodes_backend.py)
+        all_diffs.extend(self.compare_backend_methods_deep())
 
         # Résumé
         summary = {

@@ -71,7 +71,7 @@ python scripts/verify_docs_complete.py --fix
 - **`scripts/check_official_alignment.py`** - Alignement MJCF/STL
 - **`scripts/generate_conformity_report_reachy_mini.py`** - Génération rapports conformité
 
-**Note** : Les scripts `audit_sdk_officiel_nov2025.py` et `comparaison_profonde_methodes_backend.py` peuvent être fusionnés dans `compare_with_official_exhaustive.py`.
+**Note** : Les scripts `audit_sdk_officiel_nov2025.py` et `comparaison_profonde_methodes_backend.py` ont été fusionnés dans `compare_with_official_exhaustive.py` (Nov. 2025). ✅
 
 **Fonctionnalités :**
 

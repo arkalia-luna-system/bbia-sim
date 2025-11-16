@@ -87,9 +87,9 @@ Voir `scripts/_archived/README.md`, `scripts/PLAN_CONSOLIDATION_AUDIT_SCRIPTS.md
 ### ✅ **Scripts de Vérification Documentation**
 
 - **`verify_docs_complete.py`** ⭐ - Vérification complète documentation (liens, Mermaid, orthographe, formatage, cohérence code) - **RECOMMANDÉ**
-- **`verify_documentation.py`** - Vérification précision et cohérence (peut fusionner avec `audit_and_improve_md.py`)
+- **`verify_documentation.py`** - Vérification précision, cohérence et amélioration formatage MD (fusionné avec `audit_and_improve_md.py`)
+  - Modes: `--accuracy`, `--consistency`, `--improve`
 - **`audit_and_correct_dates_md.py`** - Audit et correction dates MD (bien consolidé)
-- **`audit_and_improve_md.py`** - Audit et amélioration documentation MD
 
 ### 🎬 **Scripts de Démo (NOUVEAUX)**
 
