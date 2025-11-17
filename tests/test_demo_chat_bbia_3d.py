@@ -145,10 +145,20 @@ class TestDemoChatBBIA3D:
         """Test que l'historique est sauvegardé."""
         bbia = BBIAHuggingFace()
         initial_count = len(bbia.conversation_history)
+        max_history_size = 1000
 
         bbia.chat("Test message")
 
-        assert len(bbia.conversation_history) == initial_count + 1
+        # Si l'historique est déjà plein (1000 messages), il ne peut pas augmenter
+        # Sinon, il doit augmenter de 1
+        if initial_count >= max_history_size:
+            # L'historique est déjà plein, il reste à max_history_size
+            assert len(bbia.conversation_history) == max_history_size
+        else:
+            # L'historique peut augmenter
+            assert len(bbia.conversation_history) == min(
+                initial_count + 1, max_history_size
+            )
 
     @pytest.mark.skipif(
         not BBIA_HUGGINGFACE_AVAILABLE or BBIAHuggingFace is None,

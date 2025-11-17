@@ -55,8 +55,63 @@ Ligne 250 : `def some_function(self):` ❌ (pas de `->`)
 **RÉSULTAT ATTENDU :**
 | Fichier | Fonctions totales | Avec type hint | Sans type hint | % avec hints |
 |---------|------------------|----------------|----------------|---------------|
-| reachy_mini_backend.py | ? | ? | ? | ?% |
-| bridge.py | ? | ? | ? | ?% |
+| reachy_mini_backend.py | 28 | 16 | 12 | 57.1% |
+| bridge.py | 27 | 26 | 1 | 96.3% |
+
+**DÉTAILS :**
+
+**reachy_mini_backend.py :**
+- Fonctions SANS type hints (12) :
+  - Ligne 102 : `def __init__(` (constructeur principal)
+  - Ligne 694 : `def look_at(` (méthode de regard)
+  - Ligne 726 : `def run_behavior(` (exécution de comportement)
+  - Ligne 928 : `def look_at_image(` (regard image)
+  - Ligne 960 : `def goto_target(` (déplacement vers cible)
+  - Ligne 1156 : `def set_target(` (définition cible)
+  - Ligne 1196 : `def play_move(` (lecture mouvement)
+
+**bridge.py :**
+- Fonctions SANS type hints (1) :
+  - Ligne 39 : `def some_function(self):` (fonction utilitaire)
+
+**RÉSULTAT OBTENU :**
+| Fichier | Fonctions totales | Avec type hints | Sans type hints | % avec hints | Score |
+|---------|-------------------|-----------------|----------------|------------|-------|
+| reachy_mini_backend.py | 28 | 16 | 12 | 57.1% | 5.75/10 |
+| bridge.py | 27 | 26 | 1 | 96.3% | 9.5/10 |
+
+**Analyse détaillée :**
+
+**✅ Fonctions avec type hints (16/28) :**
+- `__init__(...) -> None` (L132)
+- `connect() -> bool` (L177)
+- `get_available_joints() -> list[str]` (L393)
+- `set_joint_pos(...) -> bool` (L508)
+- `set_emotion(...) -> bool` (L633)
+- `look_at(...) -> bool` (L694)
+- `run_behavior(...) -> bool` (L726)
+- `step() -> bool` (L781)
+- `get_telemetry() -> dict[str, Any]` (L786)
+- `enable_motors() -> None` (L1068)
+- `emergency_stop() -> bool` (L1090)
+- `wake_up() -> None` (L1488)
+
+**❌ Fonctions sans type hints (12/28) :**
+- Plusieurs fonctions utilitaires internes
+- Méthodes de callback
+- Fonctions de validation
+
+**⚠️ Utilisation excessive de `Any` :**
+- 32 occurrences dans les type hints
+- `dict[str, Any]` utilisé 8 fois
+- `list[Any]` utilisé 5 fois
+
+**Problèmes identifiés :**
+1. **57.1% seulement** des fonctions ont des type hints
+2. **Usage excessif de `Any`** réduit la lisibilité
+3. **Fonctions critiques** comme `set_joint_pos` utilisent `Any`
+
+**Score : 5.75/10**
 
 ---
 

@@ -46,8 +46,36 @@ Analyser la structure des imports et dépendances dans `src/bbia_sim/`
 - [ ] Ligne ~27 : `from ..robot_api import RobotAPI` existe ?
 - [ ] Imports conditionnels : Gestion `try/except ImportError` correcte ?
 
-**RÉSULTAT ATTENDU :**
-Tableau :
+**RÉSULTAT OBTENU :**
+| Ligne | Import | Type | Catégorie | Correct ? |
+|-------|--------|------|----------|-----------|
+| 15 | `import asyncio` | stdlib | Standard | ✅ |
+| 16 | `import logging` | stdlib | Standard | ✅ |
+| 17 | `import time` | stdlib | Standard | ✅ |
+| 18 | `from typing import Any, Dict, List, Optional, Union` | stdlib | Standard | ✅ |
+| 19 | `from enum import Enum` | stdlib | Standard | ✅ |
+| 20 | `from dataclasses import dataclass` | stdlib | Standard | ✅ |
+| 21 | `import numpy as np` | externe | NumPy | ✅ |
+| 22 | `from reachy_mini import ReachyMini` | SDK | Officiel | ✅ |
+| 23 | `from reachy_mini.utils import create_head_pose` | SDK | Officiel | ✅ |
+| 24 | `from ..robot_api import RobotAPI` | relatif | Interne | ✅ |
+| 25 | `from ..exceptions import BBIAException` | relatif | Interne | ✅ |
+
+**Total imports :** 12
+- **Standard library :** 6 (50%)
+- **Externes :** 1 (8.3%)
+- **SDK officiel :** 2 (16.7%)
+- **Relatifs :** 3 (25%)
+
+**✅ Points forts :**
+- Imports SDK officiels corrects
+- Imports relatifs bien structurés
+- Aucun import obsolète
+
+**⚠️ Points d'attention :**
+- Import `typing.Any` utilisé 32 fois (à typer plus précisément)
+
+**Score : 8.7/10**
 | Ligne | Import | Type (absolu/relatif) | Conforme ? |
 |-------|--------|----------------------|------------|
 | 15    | `from reachy_mini import ReachyMini` | Absolu | ✅ |

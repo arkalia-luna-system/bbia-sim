@@ -37,12 +37,26 @@ metrics_history: deque[dict[str, Any]] = deque(maxlen=self.max_history)  # ✅ B
 ```
 
 **RÉSULTAT OBTENU :**
-| Fichier | Ligne | Code | Devrait être deque ? |
-|---------|-------|------|---------------------|
-| dashboard_advanced.py | 65 | `deque(maxlen=...)` | ✅ NON |
-| dashboard_advanced.py | 54 | `active_connections = []` | ❌ NON |
-| dashboard_advanced.py | 243 | `inactive_connections = []` | ❌ OUI |
-| dashboard_advanced.py | 267 | `disconnected = []` | ❌ OUI |
+| Fichier | Ligne | Code | Devrait être deque ? | Impact |
+|---------|-------|------|---------------------|---------|
+| dashboard_advanced.py | 65 | `deque(maxlen=...)` | ✅ NON | ✅ Optimisé |
+| dashboard_advanced.py | 54 | `active_connections = []` | ❌ NON | ⚠️ Moyen |
+| dashboard_advanced.py | 243 | `inactive_connections = []` | ❌ OUI | ❌ Critique |
+| dashboard_advanced.py | 267 | `disconnected = []` | ❌ OUI | ❌ Critique |
+
+**Analyse détaillée :**
+
+**✅ Bonnes pratiques :**
+- `metrics_history` utilise `deque(maxlen=...)` correctement
+- Buffer circulaire pour éviter memory leaks
+
+**❌ Problèmes critiques :**
+1. **`inactive_connections`** : Liste qui peut croître indéfiniment
+2. **`disconnected`** : Liste sans limite de taille
+3. **`video_stream()`** : Boucle infinie sans sortie (ligne 357)
+4. **`get_available_joints`** : Pas de cache `@lru_cache`
+
+**Score : 6.7/10**
 
 **Analyse détaillée :**
 

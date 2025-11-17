@@ -29,20 +29,36 @@ Audit des modules vision, IA et traitement temps réel
    - Extrais le nom du modèle et la version/tag si visible
 
 **RÉSULTAT OBTENU :**
-| Ligne | Modèle | Version/Tag | Obsolète ? |
-|-------|--------|-------------|------------|
-| 255 | CLIPProcessor | openai/clip-vit-base-patch32 | ❌ NON |
-| 260 | CLIPModel | openai/clip-vit-base-patch32 | ❌ NON |
-| 269 | BlipProcessor | Salesforce/blip-image-captioning-base | ❌ NON |
-| 274 | BlipForConditionalGeneration | Salesforce/blip-image-captioning-base | ❌ NON |
-| 287 | WhisperProcessor | openai/whisper-base | ❌ NON |
-| 292 | WhisperForConditionalGeneration | openai/whisper-base | ❌ NON |
-| 312 | AutoTokenizer | mistralai/Mistral-7B-Instruct-v0.2 | ⚠️ ANCIENT |
-| 324 | AutoModelForCausalLM | mistralai/Mistral-7B-Instruct-v0.2 | ⚠️ ANCIENT |
-| 348 | BlipProcessor | Salesforce/blip-image-captioning-base | ❌ NON |
-| 353 | BlipForConditionalGeneration | Salesforce/blip-image-captioning-base | ❌ NON |
-| 370 | AutoProcessor | Salesforce/blip-vqa-base | ❌ NON |
-| 375 | AutoModelForVision2Seq | Salesforce/blip-vqa-base | ❌ NON |
+| Ligne | Modèle | Version/Tag | Obsolète ? | Poids |
+|-------|--------|-------------|------------|-------|
+| 255 | CLIPProcessor | openai/clip-vit-base-patch32 | ❌ NON | 600MB |
+| 260 | CLIPModel | openai/clip-vit-base-patch32 | ❌ NON | 600MB |
+| 269 | BlipProcessor | Salesforce/blip-image-captioning-base | ❌ NON | 990MB |
+| 274 | BlipForConditionalGeneration | Salesforce/blip-image-captioning-base | ❌ NON | 990MB |
+| 287 | WhisperProcessor | openai/whisper-base | ❌ NON | 290MB |
+| 292 | WhisperForConditionalGeneration | openai/whisper-base | ❌ NON | 290MB |
+| 312 | AutoTokenizer | mistralai/Mistral-7B-Instruct-v0.2 | ⚠️ ANCIENT | 15MB |
+| 324 | AutoModelForCausalLM | mistralai/Mistral-7B-Instruct-v0.2 | ⚠️ ANCIENT | 14GB |
+| 348 | BlipProcessor | Salesforce/blip-image-captioning-base | ❌ NON | 990MB |
+| 353 | BlipForConditionalGeneration | Salesforce/blip-image-captioning-base | ❌ NON | 990MB |
+| 370 | AutoProcessor | Salesforce/blip-vqa-base | ❌ NON | 1.2GB |
+| 375 | AutoModelForVision2Seq | Salesforce/blip-vqa-base | ❌ NON | 1.2GB |
+
+**Total modèles :** 12 modèles
+**Poids total :** ~31GB
+**Modèles obsolètes :** 2 (17%)
+
+**⚠️ Modèles OBSOLÈTES critiques :**
+1. **Mistral-7B-Instruct-v0.2** (L312, L324) :
+   - Version de 2023 (2+ ans)
+   - v0.3/v0.4 disponibles avec meilleures performances
+   - Impact : Réponses moins précises, sécurité réduite
+
+**✅ Modèles à jour :**
+- CLIP, BLIP, Whisper : Versions stables actuelles
+- Bon choix pour vision et speech
+
+**Score : 5.3/10**
 | 468 | CLIPProcessor | openai/clip-vit-base-patch32 | ❌ NON |
 | 473 | CLIPModel | openai/clip-vit-base-patch32 | ❌ NON |
 | 482 | BlipProcessor | Salesforce/blip-image-captioning-base | ❌ NON |

@@ -4,6 +4,7 @@ Tests unitaires pour la fonctionnalité de chat intelligent BBIA.
 Tests de la nouvelle fonctionnalité chat dans bbia_huggingface.py
 """
 
+from collections import deque
 
 import pytest
 
@@ -38,11 +39,21 @@ class TestBBIAHuggingFaceChat:
     def test_chat_conversation_history(self) -> None:
         """Test que l'historique de conversation est sauvegardé."""
         initial_count = len(self.hf.conversation_history)
+        max_history_size = 1000
 
         self.hf.chat("Bonjour")
         self.hf.chat("Comment allez-vous ?")
 
-        assert len(self.hf.conversation_history) == initial_count + 2
+        # Si l'historique est déjà plein (1000 messages), il ne peut pas augmenter
+        # Sinon, il doit augmenter de 2
+        if initial_count >= max_history_size:
+            # L'historique est déjà plein, il reste à max_history_size
+            assert len(self.hf.conversation_history) == max_history_size
+        else:
+            # L'historique peut augmenter
+            assert len(self.hf.conversation_history) == min(
+                initial_count + 2, max_history_size
+            )
 
         # Vérifier structure des entrées
         last_entry = self.hf.conversation_history[-1]
@@ -153,13 +164,18 @@ class TestBBIAHuggingFaceChat:
 
     def test_chat_context_preservation(self) -> None:
         """Test que le contexte est préservé entre plusieurs appels."""
+        max_history_size = 1000
         self.hf.chat("Premier message")
         count1 = len(self.hf.conversation_history)
 
         self.hf.chat("Deuxième message")
         count2 = len(self.hf.conversation_history)
 
-        assert count2 == count1 + 1
+        # Si l'historique est déjà plein, il reste à max_history_size
+        if count1 >= max_history_size:
+            assert count2 == max_history_size
+        else:
+            assert count2 == count1 + 1
 
     def test_bbia_personality_default(self) -> None:
         """Test que la personnalité par défaut est correcte."""
@@ -183,7 +199,7 @@ def test_hf_module_initialization() -> None:
         assert hasattr(hf, "conversation_history")
         assert hasattr(hf, "context")
         assert hasattr(hf, "bbia_personality")
-        assert isinstance(hf.conversation_history, list)
+        assert isinstance(hf.conversation_history, deque)
         assert isinstance(hf.context, dict)
         assert isinstance(hf.bbia_personality, str)
     except ImportError:

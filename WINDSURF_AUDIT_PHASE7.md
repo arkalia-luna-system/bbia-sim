@@ -31,13 +31,27 @@ Analyser la communication Zenoh, API REST et WebSocket
 - `session.declare_subscriber(`
 
 **RÉSULTAT OBTENU :**
-| Ligne | Code | Type | Problème |
-|-------|------|------|----------|
-| 127 | `zenoh.open, zenoh_config` | open | ❌ NON |
-| 194 | `session.declare_subscriber` | subscriber | ❌ NON |
-| 200 | `session.declare_publisher` | publisher | ❌ NON |
-| 204 | `session.declare_publisher` | publisher | ❌ NON |
-| 208 | `session.declare_publisher` | publisher | ❌ NON |
+| Ligne | Code | Type | Problème | Sécurité |
+|-------|------|------|----------|----------|
+| 127 | `zenoh.open, zenoh_config` | open | ❌ NON | ⚠️ Timeout |
+| 194 | `session.declare_subscriber` | subscriber | ❌ NON | ✅ Async |
+| 200 | `session.declare_publisher` | publisher | ❌ NON | ✅ Async |
+| 204 | `session.declare_publisher` | publisher | ❌ NON | ✅ Async |
+| 208 | `session.declare_publisher` | publisher | ❌ NON | ✅ Async |
+
+**Analyse détaillée :**
+
+**✅ Points forts :**
+- Utilisation correcte de `asyncio.to_thread` pour éviter blocage
+- Toutes les déclarations sont asynchrones
+- Configuration Zenoh bien passée
+
+**⚠️ Problèmes identifiés :**
+1. **Pas de timeout** sur les déclarations (peut bloquer indéfiniment)
+2. **Pas de gestion d'erreurs** try/except
+3. **WebSocket : AUCUNE FUITE DÉTECTÉE** ✅
+
+**Score : 8.0/10**
 
 **Analyse détaillée :**
 
