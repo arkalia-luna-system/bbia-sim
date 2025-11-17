@@ -76,4 +76,5 @@ artifacts/golden/*_long.jsonl
 
 # Répertoires de paquets (ne doivent jamais être commit)
 **/site-packages/**
-**/lib/python*/site-packages/**
+**/lib/python*/site-packages/**._*
+DS_Store
