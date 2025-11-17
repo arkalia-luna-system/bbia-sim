@@ -198,4 +198,4 @@ Avant d'exporter, vérifiez :
 
 ---
 
-*Guide Procreate - Logo BBIA - Oct / No2025025025025025*
+*Guide Procreate - Logo BBIA - Oct / Nov. 2025*

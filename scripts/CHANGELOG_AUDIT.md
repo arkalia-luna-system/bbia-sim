@@ -1,4 +1,4 @@
-# 📝 Changelog - Audit Scripts (Oct / No2025025025025025)
+# 📝 Changelog - Audit Scripts (Oct / Nov. 2025)
 
 ## ✅ Actions Effectuées
 
@@ -38,4 +38,4 @@
 3. ✅ Aucun script shell n'appelle les scripts archivés
 4. ✅ Tous les MD mis à jour
 
-**Date**: Oct / No2025025025025025
+**Date**: Oct / Nov. 2025

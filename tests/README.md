@@ -130,7 +130,7 @@ tests/
 
 ### 🤖 **Tests Backend Reachy Mini**
 
-**📊 Statistiques (Oct / No2025025025025025)**:
+**📊 Statistiques (Oct / Nov. 2025)**:
 
 - ✅ **118 tests** répartis dans **8 fichiers complémentaires**
 - ✅ **116 tests uniques** (98.3% - très peu de redondance)

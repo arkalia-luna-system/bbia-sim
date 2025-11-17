@@ -1,6 +1,6 @@
 # 🔍 VÉRIFICATION CONTRE REPO OFFICIEL REACHY MINI
 
-**Date :** Janvier 2025  
+**Date :** Oct / Nov. 2025  
 **Repo officiel :** https://github.com/pollen-robotics/reachy_mini  
 **Comparaison :** BBIA-SIM vs SDK officiel
 

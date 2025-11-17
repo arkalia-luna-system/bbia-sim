@@ -1,5 +1,8 @@
 # 🔍 INDEX DES PROMPTS D'AUDIT WINDSURF - BBIA-SIM v2.0
 
+**Date :** Oct / Nov. 2025  
+**Score global :** 8.07/10
+
 ## 🎯 GUIDE D'UTILISATION OPTIMISÉ POUR WINDSURF
 
 **Windsurf utilise la recherche sémantique et l'analyse de code. Ces prompts sont optimisés pour :**
@@ -16,18 +19,18 @@
 
 | Phase | Fichier | Actions | Durée estimée | Priorité |
 |-------|---------|---------|---------------|----------|
-| **1** | [PHASE 1 : Architecture](WINDSURF_AUDIT_PHASE1.md) | 3 actions | 15-20 min | 🔴 Critique |
-| **2** | [PHASE 2 : Compatibilité SDK](WINDSURF_AUDIT_PHASE2.md) | 4 actions | 20-25 min | 🔴 Critique |
-| **2B** | [PHASE 2B : Micro-détails](WINDSURF_AUDIT_PHASE2B.md) | 4 actions | 25-30 min | 🟠 Haute |
-| **3** | [PHASE 3 : Qualité Code](WINDSURF_AUDIT_PHASE3.md) | 4 actions | 30-40 min | 🟠 Haute |
-| **4** | [PHASE 4 : Tests](WINDSURF_AUDIT_PHASE4.md) | 3 actions | 20-25 min | 🟡 Moyenne |
-| **5** | [PHASE 5 : Simulation MuJoCo](WINDSURF_AUDIT_PHASE5.md) | 3 actions | 25-30 min | 🟡 Moyenne |
-| **6** | [PHASE 6 : Vision/IA](WINDSURF_AUDIT_PHASE6.md) | 3 actions | 30-35 min | 🟡 Moyenne |
-| **7** | [PHASE 7 : Communication](WINDSURF_AUDIT_PHASE7.md) | 3 actions | 25-30 min | 🟠 Haute |
-| **8** | [PHASE 8 : Performance](WINDSURF_AUDIT_PHASE8.md) | 3 actions | 30-35 min | 🟠 Haute |
-| **9** | [PHASE 9 : Documentation](WINDSURF_AUDIT_PHASE9.md) | 3 actions | 20-25 min | 🟢 Faible |
-| **10** | [PHASE 10 : CI/CD/Sécurité](WINDSURF_AUDIT_PHASE10.md) | 3 actions | 25-30 min | 🟠 Haute |
-| **11** | [PHASE 11 : Synthèse](WINDSURF_AUDIT_PHASE11.md) | 4 actions | 40-50 min | 🔴 Critique |
+| **1** | [PHASE 1 : Architecture](WINDSURF_AUDIT_PHASE1.md) | 3 actions | 10-15 min | 🔴 Critique |
+| **2** | [PHASE 2 : Compatibilité SDK](WINDSURF_AUDIT_PHASE2.md) | 4 actions | 10-15 min | 🔴 Critique |
+| **2B** | [PHASE 2B : Micro-détails](WINDSURF_AUDIT_PHASE2B.md) | 4 actions | 15-20 min | 🟠 Haute |
+| **3** | [PHASE 3 : Qualité Code](WINDSURF_AUDIT_PHASE3.md) | 4 actions | 15-20 min | 🟠 Haute |
+| **4** | [PHASE 4 : Tests](WINDSURF_AUDIT_PHASE4.md) | 3 actions | 10-15 min | 🟡 Moyenne |
+| **5** | [PHASE 5 : Simulation MuJoCo](WINDSURF_AUDIT_PHASE5.md) | 3 actions | 10-15 min | 🟡 Moyenne |
+| **6** | [PHASE 6 : Vision/IA](WINDSURF_AUDIT_PHASE6.md) | 3 actions | 15-20 min | 🟡 Moyenne |
+| **7** | [PHASE 7 : Communication](WINDSURF_AUDIT_PHASE7.md) | 3 actions | 10-15 min | 🟠 Haute |
+| **8** | [PHASE 8 : Performance](WINDSURF_AUDIT_PHASE8.md) | 3 actions | 15-20 min | 🟠 Haute |
+| **9** | [PHASE 9 : Documentation](WINDSURF_AUDIT_PHASE9.md) | 3 actions | 10-15 min | 🟢 Faible |
+| **10** | [PHASE 10 : CI/CD/Sécurité](WINDSURF_AUDIT_PHASE10.md) | 3 actions | 10-15 min | 🟠 Haute |
+| **11** | [PHASE 11 : Synthèse](WINDSURF_AUDIT_PHASE11.md) | 4 actions | 20-30 min | 🔴 Critique |
 
 ---
 
@@ -65,11 +68,15 @@ Chaque prompt inclut :
 
 ## 🚀 UTILISATION
 
-1. **Commence par la Phase 1**
+1. **Commence par la Phase 1** (WINDSURF_AUDIT_PHASE1.md)
 2. **Copie le contenu du fichier dans Windsurf**
 3. **Exécute les actions dans l'ordre**
-4. **Rapporte les résultats**
-5. **Passe à la phase suivante**
+4. **Focus sur questions sémantiques** (pas de grep)
+5. **Pousse l'analyse plus loin** (impact, causes, solutions)
+6. **Rapporte les résultats**
+7. **Passe à la phase suivante**
+
+**Guide méthodologique :** [WINDSURF_AUDIT_GUIDE_OPTIMIZED.md](WINDSURF_AUDIT_GUIDE_OPTIMIZED.md)
 
 ---
 
