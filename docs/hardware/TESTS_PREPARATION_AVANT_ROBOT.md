@@ -1,6 +1,6 @@
 # 🧪 Tests de Préparation - Avant Arrivée Robot
 
-**Date** : Novembre 2025  
+**Date** : Oct / Nov. 2025  
 **Objectif** : Tester l'environnement local avant l'arrivée du robot Reachy Mini  
 **Durée estimée** : 30-60 minutes
 
@@ -542,7 +542,7 @@ python scripts/demo_bridge_zenoh.py
 
 ---
 
-**Date création :** Novembre 2025  
+**Date création :** Oct / Nov. 2025  
 **Statut :** ✅ Prêt pour tests locaux (sans robot physique)  
-**Dernière mise à jour :** Novembre 2025 (ajout tests Zenoh/daemon/WiFi dans bbia_doctor)
+**Dernière mise à jour :** Oct / Nov. 2025 (ajout tests Zenoh/daemon/WiFi dans bbia_doctor)
 

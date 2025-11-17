@@ -5,14 +5,35 @@ Détection d'objets légère avec YOLOv8n (optionnel)
 
 import logging
 import threading
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import numpy as np
 import numpy.typing as npt
 
+# Import DetectionResult avec fallback pour compatibilité CI/CD
+if TYPE_CHECKING:
+    from bbia_sim.utils.types import DetectionResult
+else:
+    try:
+        from bbia_sim.utils.types import DetectionResult
+    except ImportError:
+        # Fallback final : utiliser TypedDict inline si l'import absolu échoue
+        from typing import TypedDict
+
+        class DetectionResult(TypedDict, total=False):
+            """Résultat de détection d'objet (YOLO) - définition inline."""
+
+            bbox: list[int]
+            confidence: float
+            class_id: int
+            class_name: str
+            center: list[int]
+            area: int
+
+
 try:
-    import cv2
-    from ultralytics import YOLO
+    import cv2  # type: ignore[import-untyped]
+    from ultralytics import YOLO  # type: ignore[import-untyped]
 
     YOLO_AVAILABLE = True
 except ImportError:
@@ -144,14 +165,14 @@ class YOLODetector:
             logger.error(f"❌ Erreur chargement YOLO: {e}")
             return False
 
-    def detect_objects(self, image: npt.NDArray[np.uint8]) -> list[dict[str, Any]]:
+    def detect_objects(self, image: npt.NDArray[np.uint8]) -> list[DetectionResult]:
         """Détecte les objets dans une image.
 
         Args:
             image: Image numpy array (BGR)
 
         Returns:
-            Liste des détections avec bbox, confiance, classe
+            Liste des détections avec bbox, confiance, classe (typée avec DetectionResult)
 
         """
         if not self.is_loaded:
@@ -179,7 +200,7 @@ class YOLODetector:
                         class_id = int(box.cls[0].cpu().numpy())
                         class_name = self.model.names[class_id]
 
-                        detection = {
+                        detection: DetectionResult = {
                             "bbox": [int(x1), int(y1), int(x2), int(y2)],
                             "confidence": float(confidence),
                             "class_id": class_id,
@@ -196,10 +217,77 @@ class YOLODetector:
             logger.error(f"❌ Erreur détection YOLO: {e}")
             return []
 
+    def detect_objects_batch(
+        self, images: list[npt.NDArray[np.uint8]]
+    ) -> list[list[DetectionResult]]:
+        """Détecte les objets dans un batch d'images (OPTIMISATION PERFORMANCE).
+
+        Args:
+            images: Liste d'images numpy array (BGR)
+
+        Returns:
+            Liste de listes de détections (une par image) avec bbox, confiance, classe
+            (typée avec DetectionResult)
+
+        Note:
+            Le batch processing est beaucoup plus efficace que d'appeler detect_objects
+            plusieurs fois, car YOLO peut traiter plusieurs images en parallèle sur GPU.
+        """
+        if not self.is_loaded:
+            if not self.load_model():
+                return [[] for _ in images]
+
+        if not images:
+            return []
+
+        try:
+            if self.model is None:
+                logger.error("❌ Modèle YOLO non chargé")
+                return [[] for _ in images]
+
+            # OPTIMISATION PERFORMANCE: YOLO traite le batch en une seule passe
+            # (beaucoup plus rapide que boucle sur images individuelles)
+            results = self.model(images, conf=self.confidence_threshold, verbose=False)
+
+            all_detections = []
+            for result in results:
+                detections = []
+                boxes = result.boxes
+                if boxes is not None:
+                    for box in boxes:
+                        # Coordonnées bbox
+                        x1, y1, x2, y2 = box.xyxy[0].cpu().numpy()
+
+                        # Confiance et classe
+                        confidence = box.conf[0].cpu().numpy()
+                        class_id = int(box.cls[0].cpu().numpy())
+                        class_name = self.model.names[class_id]
+
+                        detection: DetectionResult = {
+                            "bbox": [int(x1), int(y1), int(x2), int(y2)],
+                            "confidence": float(confidence),
+                            "class_id": class_id,
+                            "class_name": class_name,
+                            "center": [int((x1 + x2) / 2), int((y1 + y2) / 2)],
+                            "area": int((x2 - x1) * (y2 - y1)),
+                        }
+                        detections.append(detection)
+                all_detections.append(detections)
+
+            logger.debug(
+                f"🔍 Batch processing: {len(images)} images, "
+                f"{sum(len(d) for d in all_detections)} objets détectés au total"
+            )
+            return all_detections
+
+        except Exception as e:
+            logger.error(f"❌ Erreur détection YOLO batch: {e}")
+            return [[] for _ in images]
+
     def get_best_detection(
         self,
-        detections: list[dict[str, Any]],
-    ) -> dict[str, Any] | None:
+        detections: list[DetectionResult],
+    ) -> DetectionResult | None:
         """Retourne la meilleure détection selon les critères BBIA.
 
         Args:
@@ -285,7 +373,7 @@ class FaceDetector:
                 logger.debug("♻️ Réutilisation détecteur MediaPipe depuis cache")
                 self.face_detection = _mediapipe_face_detection_cache
                 try:
-                    import mediapipe as mp
+                    import mediapipe as mp  # type: ignore[import-untyped]
 
                     self.mp_face_detection = mp.solutions.face_detection
                     self.mp_drawing = mp.solutions.drawing_utils
@@ -294,7 +382,7 @@ class FaceDetector:
                 return
 
         try:
-            import mediapipe as mp
+            import mediapipe as mp  # type: ignore[import-untyped]
 
             self.mp_face_detection = mp.solutions.face_detection
             self.mp_drawing = mp.solutions.drawing_utils
@@ -417,7 +505,7 @@ def create_face_detector() -> FaceDetector | None:
 
     """
     try:
-        import mediapipe as mp  # noqa: F401
+        import mediapipe as mp  # type: ignore[import-untyped]  # noqa: F401
 
         return FaceDetector()
     except ImportError:
@@ -436,7 +524,7 @@ if __name__ == "__main__":
     logging.info(f"YOLO disponible: {YOLO_AVAILABLE}")
 
     try:
-        import mediapipe as mp  # noqa: F401
+        import mediapipe as mp  # type: ignore[import-untyped]  # noqa: F401
 
         logging.info("MediaPipe disponible: True")
     except ImportError:

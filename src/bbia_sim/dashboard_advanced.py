@@ -7,14 +7,21 @@ import asyncio
 import json
 import logging
 import time
+from collections import deque
 from datetime import datetime
 from typing import Any
 
 try:
-    import uvicorn
-    from fastapi import FastAPI, HTTPException, Request, WebSocket, WebSocketDisconnect
-    from fastapi.middleware.cors import CORSMiddleware
-    from fastapi.responses import HTMLResponse
+    import uvicorn  # type: ignore[import-untyped]
+    from fastapi import (  # type: ignore[import-untyped]
+        FastAPI,
+        HTTPException,
+        Request,
+        WebSocket,
+        WebSocketDisconnect,
+    )
+    from fastapi.middleware.cors import CORSMiddleware  # type: ignore[import-untyped]
+    from fastapi.responses import HTMLResponse  # type: ignore[import-untyped]
 
     FASTAPI_AVAILABLE = True
 except ImportError:
@@ -59,8 +66,6 @@ class BBIAAdvancedWebSocketManager:
 
         self._robot_init_lock = threading.Lock()
         # OPTIMISATION RAM: Utiliser deque au lieu de liste pour limiter historique
-        from collections import deque
-
         self.max_history = 1000  # Limite historique métriques
         self.metrics_history: deque[dict[str, Any]] = deque(maxlen=self.max_history)
 
@@ -72,7 +77,9 @@ class BBIAAdvancedWebSocketManager:
         self.emotions = BBIAEmotions()
         # OPTIMISATION RAM: Utiliser singleton BBIAVision si disponible
         try:
-            from ..bbia_vision import get_bbia_vision_singleton
+            from ..bbia_vision import (  # type: ignore[import-untyped]
+                get_bbia_vision_singleton,  # type: ignore[import-untyped]
+            )
 
             self.vision = get_bbia_vision_singleton()
         except (ImportError, AttributeError):
@@ -240,7 +247,8 @@ class BBIAAdvancedWebSocketManager:
     def _cleanup_inactive_connections(self) -> None:
         """OPTIMISATION RAM: Nettoie les connexions WebSocket inactives (>5 min)."""
         current_time = time.time()
-        inactive_connections: list[tuple[WebSocket, float]] = []
+        # OPTIMISATION: deque avec maxlen pour éviter accumulation excessive
+        inactive_connections: deque[tuple[WebSocket, float]] = deque(maxlen=100)
 
         for connection, last_activity in list(self._connection_last_activity.items()):
             inactivity = current_time - last_activity
@@ -264,7 +272,8 @@ class BBIAAdvancedWebSocketManager:
         if not self.active_connections:
             return
 
-        disconnected = []
+        # OPTIMISATION: deque avec maxlen pour éviter accumulation excessive
+        disconnected: deque[WebSocket] = deque(maxlen=50)
         current_time = time.time()
         for connection in self.active_connections:
             try:
@@ -272,9 +281,7 @@ class BBIAAdvancedWebSocketManager:
                 # OPTIMISATION RAM: Mettre à jour timestamp activité
                 self._connection_last_activity[connection] = current_time
             except (ConnectionError, RuntimeError, WebSocketDisconnect):
-                disconnected.append(
-                    connection,
-                )
+                disconnected.append(connection)
 
         # Nettoyer les connexions fermées
         for connection in disconnected:
@@ -2983,7 +2990,10 @@ if FASTAPI_AVAILABLE:
         import html
         from pathlib import Path
 
-        from fastapi.responses import FileResponse, HTMLResponse
+        from fastapi.responses import (  # type: ignore[import-untyped]
+            FileResponse,
+            HTMLResponse,
+        )
 
         try:
             # Sécuriser le chemin pour éviter les accès non autorisés
@@ -3077,11 +3087,12 @@ if FASTAPI_AVAILABLE:
     @app.get("/api/camera/stream")
     async def camera_stream():
         """Stream vidéo MJPEG depuis la caméra."""
-        from fastapi.responses import StreamingResponse
+        from fastapi.responses import StreamingResponse  # type: ignore[import-untyped]
 
         async def generate_frames():
+            """Générateur async de frames MJPEG avec mécanisme d'arrêt propre."""
             try:
-                import cv2
+                import cv2  # type: ignore[import-untyped]
                 import numpy as np
             except ImportError:
                 logger.warning("OpenCV non disponible pour stream vidéo")
@@ -3089,58 +3100,69 @@ if FASTAPI_AVAILABLE:
 
             vision = advanced_websocket_manager.vision
             frame_count = 0
-            while True:
-                try:
-                    frame = None
-                    if vision:
-                        try:
-                            # Utiliser la méthode privée _capture_image_from_camera
-                            # qui gère SDK camera et OpenCV
-                            frame = vision._capture_image_from_camera()
-                        except Exception as e:
-                            logger.debug(f"Erreur capture frame: {e}")
 
-                    if frame is None:
-                        # Frame de test avec texte si pas de caméra
-                        frame = np.zeros((480, 640, 3), dtype=np.uint8)
-                        # Ajouter texte "Caméra non disponible"
-                        try:
-                            cv2.putText(
-                                frame,
-                                "Camera not available",
-                                (50, 240),
-                                cv2.FONT_HERSHEY_SIMPLEX,
-                                1,
-                                (255, 255, 255),
-                                2,
-                            )
-                        except (ConnectionError, RuntimeError, WebSocketDisconnect):
-                            pass
+            try:
+                while True:
+                    try:
+                        frame = None
+                        if vision:
+                            try:
+                                # Utiliser la méthode privée _capture_image_from_camera
+                                # qui gère SDK camera et OpenCV
+                                frame = vision._capture_image_from_camera()
+                            except Exception as e:
+                                logger.debug(f"Erreur capture frame: {e}")
 
-                    # Encoder en JPEG
-                    success, buffer = cv2.imencode(
-                        ".jpg", frame, [cv2.IMWRITE_JPEG_QUALITY, 85]
-                    )
-                    if not success:
-                        logger.warning("Échec encodage JPEG")
-                        await asyncio.sleep(0.1)
-                        continue
+                        if frame is None:
+                            # Frame de test avec texte si pas de caméra
+                            frame = np.zeros((480, 640, 3), dtype=np.uint8)
+                            # Ajouter texte "Caméra non disponible"
+                            try:
+                                cv2.putText(
+                                    frame,
+                                    "Camera not available",
+                                    (50, 240),
+                                    cv2.FONT_HERSHEY_SIMPLEX,
+                                    1,
+                                    (255, 255, 255),
+                                    2,
+                                )
+                            except (ConnectionError, RuntimeError, WebSocketDisconnect):
+                                pass
 
-                    frame_bytes = buffer.tobytes()
+                        # Encoder en JPEG
+                        success, buffer = cv2.imencode(
+                            ".jpg", frame, [cv2.IMWRITE_JPEG_QUALITY, 85]
+                        )
+                        if not success:
+                            logger.warning("Échec encodage JPEG")
+                            await asyncio.sleep(0.1)
+                            continue
 
-                    yield (
-                        b"--frame\r\n"
-                        b"Content-Type: image/jpeg\r\n\r\n" + frame_bytes + b"\r\n"
-                    )
+                        frame_bytes = buffer.tobytes()
 
-                    frame_count += 1
-                    if frame_count % 30 == 0:
-                        logger.debug(f"Stream vidéo: {frame_count} frames envoyées")
+                        yield (
+                            b"--frame\r\n"
+                            b"Content-Type: image/jpeg\r\n\r\n" + frame_bytes + b"\r\n"
+                        )
 
-                    await asyncio.sleep(0.033)  # ~30 FPS
-                except Exception as e:
-                    logger.error(f"Erreur stream vidéo: {e}", exc_info=True)
-                    await asyncio.sleep(1)
+                        frame_count += 1
+                        if frame_count % 30 == 0:
+                            logger.debug(f"Stream vidéo: {frame_count} frames envoyées")
+
+                        # ✅ ASYNC : Utilise await asyncio.sleep() (non bloquant)
+                        await asyncio.sleep(0.033)  # ~30 FPS
+                    except asyncio.CancelledError:
+                        # Arrêt propre si le client se déconnecte
+                        logger.debug("Stream vidéo annulé (client déconnecté)")
+                        break
+                    except Exception as e:
+                        logger.error(f"Erreur stream vidéo: {e}", exc_info=True)
+                        await asyncio.sleep(1)
+            except GeneratorExit:
+                # Arrêt propre du générateur
+                logger.debug("Générateur de frames fermé")
+                raise
 
         return StreamingResponse(
             generate_frames(), media_type="multipart/x-mixed-replace; boundary=frame"

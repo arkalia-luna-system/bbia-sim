@@ -18,7 +18,7 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - `docs/status.md` mis à jour (note CI audio + mypy=0 sur corrections effectuées).
  - Standardisation environnement: Python 3.11+ requis, CI GitHub Actions mise à jour (`setup-python@v5`).
 
-## [1.3.2] - Oct / No2025025025025025
+## [1.3.2] - Oct / Nov. 2025
 
 ### 🎯 Alignement et release stable
 
@@ -39,7 +39,7 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 - Nettoyage imports et formatage, ajustements mypy/ruff ciblés
 
-## [1.3.1] - Oct / No2025025025025025
+## [1.3.1] - Oct / Nov. 2025
 
 ### 🎯 **RELEASE - AUDIT COMPLET BBIA → REACHY INTEGRATION**
 
@@ -102,7 +102,7 @@ Cette version inclut toutes les corrections et améliorations identifiées lors 
 
 ---
 
-## [1.3.0] - Oct / No2025025025025025
+## [1.3.0] - Oct / Nov. 2025
 
 ### 🎯 **RELEASE MAJEURE - CONFORMITÉ SDK PARFAITE**
 
@@ -239,7 +239,7 @@ python scripts/bbia_performance_benchmarks.py --benchmark all
 
 ---
 
-## [1.2.1] - Oct / No2025025025025025
+## [1.2.1] - Oct / Nov. 2025
 
 ### 🔧 Corrigé
 
@@ -263,7 +263,7 @@ python scripts/bbia_performance_benchmarks.py --benchmark all
 - **Black** : All files formatted ✅
 - **Tests** : 38 passed, 2 skipped ✅
 
-## [1.2.0] - Oct / No2025025025025025
+## [1.2.0] - Oct / Nov. 2025
 
 ### 🚀 Ajouté
 
@@ -305,7 +305,7 @@ python scripts/bbia_performance_benchmarks.py --benchmark all
 
 ---
 
-## [1.1.1] - Oct / No2025025025025025
+## [1.1.1] - Oct / Nov. 2025
 
 ### 🔧 Modifié
 
@@ -320,7 +320,7 @@ python scripts/bbia_performance_benchmarks.py --benchmark all
 
 ---
 
-## [1.1.0] - Oct / No2025025025025025
+## [1.1.0] - Oct / Nov. 2025
 
 ### 🚀 Ajouté
 
@@ -336,7 +336,7 @@ python scripts/bbia_performance_benchmarks.py --benchmark all
 
 ---
 
-## [1.0.0] - Oct / No2025025025025025
+## [1.0.0] - Oct / Nov. 2025
 
 ### 🚀 Première Release
 

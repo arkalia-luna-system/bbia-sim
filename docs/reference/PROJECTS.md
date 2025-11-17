@@ -1,6 +1,6 @@
 # 🚀 Mes Projets GitHub - Portfolio Développeuse IA & Robotique
 
-**Date de mise à jour :** Oct 25 / Nov 25
+**Date de mise à jour :** Oct / Nov. 2025
 
 **Organisation :** [arkalia-luna-system](https://github.com/arkalia-luna-system)
 
@@ -278,5 +278,5 @@ Outils et scripts pour environnement de développement.
 
 ---
 
-**Dernière mise à jour :** Oct 25 / Nov 25
+**Dernière mise à jour :** Oct / Nov. 2025
 **Prochaine action :** Publier projets locaux sur GitHub avec README optimisés

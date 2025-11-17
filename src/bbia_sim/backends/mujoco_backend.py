@@ -8,8 +8,8 @@ import time
 from pathlib import Path
 from typing import Any
 
-import mujoco
-import mujoco.viewer
+import mujoco  # type: ignore[import-untyped]
+import mujoco.viewer  # type: ignore[import-untyped]
 
 from ..robot_api import RobotAPI
 
@@ -23,6 +23,12 @@ class MuJoCoBackend(RobotAPI):
         self,
         model_path: str = "src/bbia_sim/sim/models/reachy_mini_REAL_OFFICIAL.xml",
     ) -> None:
+        """Initialise le backend MuJoCo.
+
+        Note: Le modèle par défaut est `reachy_mini_REAL_OFFICIAL.xml` (16 joints, complet).
+        Le fichier `reachy_mini.xml` (7 joints, simplifié) existe mais n'est pas utilisé
+        par défaut pour garantir la cohérence avec le robot réel.
+        """
         super().__init__()
         self.model_path = Path(model_path)
         self.model: mujoco.MjModel | None = None
@@ -382,6 +388,94 @@ class MuJoCoBackend(RobotAPI):
             f"✅ Émotion {emotion} appliquée (intensité: {intensity}) - joints bougés"
         )
         return True
+
+    def goto_target(
+        self,
+        head: Any = None,
+        antennas: Any = None,
+        duration: float = 0.5,
+        method: str = "minjerk",
+        body_yaw: float | None = None,
+    ) -> None:
+        """Va vers une cible spécifique avec technique d'interpolation (MuJoCo).
+
+        NOTE: Implémentation simplifiée pour MuJoCo. Pour une IK complète,
+        utilisez ReachyMiniBackend qui utilise le SDK officiel.
+
+        Args:
+            head: Matrice 4x4 ou HeadPose représentant la pose de la tête (ou None)
+            antennas: Angles des antennes en radians [right, left] (ou None)
+            duration: Durée du mouvement en secondes (doit être > 0)
+            method: Technique d'interpolation (ignorée en MuJoCo simplifié)
+            body_yaw: Angle yaw du corps en radians (None = garder position actuelle)
+
+        Raises:
+            ValueError: Si duration <= 0
+        """
+        if duration <= 0.0:
+            raise ValueError(
+                "Duration must be positive and non-zero. "
+                "Use set_joint_pos() for immediate position setting."
+            )
+
+        if not self.is_connected:
+            logger.warning("MuJoCo non connecté, goto_target ignoré")
+            return
+
+        try:
+            import numpy as np
+            from scipy.spatial.transform import Rotation as R
+
+            # Appliquer body_yaw si fourni
+            if body_yaw is not None:
+                if "yaw_body" in self.joint_name_to_id:
+                    self.set_joint_pos("yaw_body", float(body_yaw))
+
+            # Traiter head pose si fournie
+            if head is not None:
+                # Convertir en matrice 4x4 si nécessaire
+                if isinstance(head, np.ndarray):
+                    head_matrix = head
+                elif hasattr(head, "matrix"):
+                    head_matrix = head.matrix
+                else:
+                    logger.warning(f"Format head non reconnu: {type(head)}")
+                    head_matrix = None
+
+                if head_matrix is not None and head_matrix.shape == (4, 4):
+                    # Extraire angles Euler de la matrice de rotation
+                    rotation_matrix = head_matrix[:3, :3]
+                    rotation = R.from_matrix(rotation_matrix)
+                    euler = rotation.as_euler("xyz", degrees=False)
+
+                    # Appliquer pitch et yaw aux joints de tête disponibles
+                    available_joints = self.get_available_joints()
+
+                    # Chercher les joints de tête (simplifié)
+                    for joint in available_joints:
+                        joint_lower = joint.lower()
+                        if "pitch" in joint_lower and "head" in joint_lower:
+                            self.set_joint_pos(joint, float(euler[1]))  # pitch
+                        elif "yaw" in joint_lower and "head" in joint_lower:
+                            self.set_joint_pos(joint, float(euler[2]))  # yaw
+
+            # Appliquer antennes si fournies
+            if antennas is not None:
+                if isinstance(antennas, list | tuple) and len(antennas) >= 2:
+                    if "right_antenna" in self.joint_name_to_id:
+                        self.set_joint_pos("right_antenna", float(antennas[0]))
+                    if "left_antenna" in self.joint_name_to_id:
+                        self.set_joint_pos("left_antenna", float(antennas[1]))
+
+            # Faire un step pour appliquer les changements
+            self.step()
+
+            logger.info(
+                f"goto_target exécuté (duration={duration:.2f}s, method={method})"
+            )
+
+        except Exception as e:
+            logger.error(f"Erreur goto_target MuJoCo: {e}")
 
     def get_telemetry(self) -> dict[str, Any]:
         """Retourne les données de télémétrie."""

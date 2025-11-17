@@ -8,10 +8,11 @@ from typing import Any
 
 import numpy as np
 import numpy.typing as npt
-from fastapi import HTTPException, WebSocket
+from fastapi import HTTPException, WebSocket  # type: ignore[import-untyped]
 
 from ...robot_api import RobotAPI
 from ...robot_factory import RobotFactory
+from ...utils.types import RobotStatus
 
 logger = logging.getLogger(__name__)
 
@@ -367,7 +368,9 @@ class BackendAdapter:
             import time
 
             try:
-                from reachy_mini.utils.interpolation import time_trajectory
+                from reachy_mini.utils.interpolation import (  # type: ignore[import-untyped]
+                    time_trajectory,
+                )
             except ImportError:
                 # Si time_trajectory non disponible, interpolation linéaire simple
                 def time_trajectory(t: float, method: str = "linear") -> float:
@@ -545,18 +548,22 @@ class BackendAdapter:
         except Exception as e:
             logger.warning(f"Erreur lors de la fermeture: {e}")
 
-    def get_status(self) -> dict[str, Any]:
+    def get_status(self) -> RobotStatus | dict[str, Any]:
         """Récupère le statut du backend (conforme SDK)."""
         self.connect_if_needed()
 
         if hasattr(self._robot, "get_status"):
-            return self._robot.get_status()
+            status = self._robot.get_status()
+            # Convertir en RobotStatus si nécessaire
+            if isinstance(status, dict):
+                return status  # type: ignore[return-value]
+            return status
 
         # Retourner statut simple
         return {
             "connected": self._connected,
             "backend_type": type(self._robot).__name__,
-        }
+        }  # type: ignore[return-value]
 
     # Méthodes Zenoh/Recording (non-critiques pour simulation, stubs pour conformité)
     def set_joint_positions_publisher(self, publisher: Any) -> None:

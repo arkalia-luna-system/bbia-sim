@@ -37,7 +37,7 @@ mindmap
 - ❌ **`kill_greedy_processes.sh`** → Utiliser `smart_process_cleanup.sh` (archivé dans `_archived/`)
 - ⚠️ **`kill_mujoco_viewers.sh`** → Utiliser `process_manager.py stop` (déprécié mais gardé)
 
-### 🔄 **Scripts d'Audit Consolidés** (Oct 2025v. 20252025 Nov. 2025ct / Nov. 2025)
+### 🔄 **Scripts d'Audit Consolidés** (Oct / Nov. 2025)
 
 Les scripts de comparaison/audit avec le SDK officiel Reachy Mini ont été consolidés :
 
@@ -49,7 +49,7 @@ Les scripts de comparaison/audit avec le SDK officiel Reachy Mini ont été cons
 
 - 8 scripts redondants ou obsolètes (voir `scripts/_archived/comparison_audit/README.md`)
 
-### 📝 **Scripts Documentation Consolidés** (Oct 2025v. 20252025 Nov. 2025ct / Nov. 2025)
+### 📝 **Scripts Documentation Consolidés** (Oct / Nov. 2025)
 
 - ✅ **`audit_and_correct_dates_md.py`** → Script unifié pour audit et correction des dates MD
   - Fusion de : `audit_dates_md.py`, `audit_md_dates.py`, `correct_dates_md.py`, `correct_dates_md_final.py`

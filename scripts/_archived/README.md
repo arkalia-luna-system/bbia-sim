@@ -6,14 +6,14 @@
 
 ### `start_api.py`
 
-- **Date archivé**: Oct / No2025025025025025
+- **Date archivé**: Oct / Nov. 2025
 - **Raison**: Remplacé par `start_public_api.py` (plus complet)
 - **Utilisation**: ❌ Aucune référence dans le codebase
 - **Alternative**: Utiliser `scripts/start_public_api.py`
 
 ### `kill_greedy_processes.sh`
 
-- **Date archivé**: Oct / No2025025025025025
+- **Date archivé**: Oct / Nov. 2025
 - **Raison**: Remplacé par `smart_process_cleanup.sh` (plus intelligent) et `process_manager.py`
 - **Utilisation**: ❌ Aucune référence dans le codebase
 - **Alternative**: Utiliser `scripts/smart_process_cleanup.sh` ou `python scripts/process_manager.py stop`

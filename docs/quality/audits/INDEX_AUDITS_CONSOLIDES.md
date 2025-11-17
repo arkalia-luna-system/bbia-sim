@@ -9,28 +9,49 @@
 
 ### ✅ Audits Complets et à Jour
 
-1. **`TACHES_RESTANTES_NOV2025.md`** ⭐ **ARCHIVÉ** (toutes tâches terminées)
-   - Liste exhaustive des tâches restantes avec statuts
-   - **Toutes les tâches sont terminées** ✅
+1. **`windsurf/WINDSURF_AUDIT_PHASE11.md`** ⭐ **RECOMMANDÉ** (Oct / Nov. 2025)
+   - **Chemin** : `quality/audits/windsurf/WINDSURF_AUDIT_PHASE11.md`
+   - Synthèse complète de l'audit Windsurf (11 phases)
+   - Score global : **8.07/10**
+   - Tableau de bord exécutif, top problèmes, roadmap
+   - Dernière mise à jour : Oct / Nov. 2025
 
-2. **`RESUME_ETAT_ACTUEL_BBIA.md`** ⭐ **RECOMMANDÉ**
+2. **`windsurf/README.md`** ⭐
+   - **Chemin** : `quality/audits/windsurf/README.md`
+   - Guide complet des audits Windsurf (fusionné avec INDEX et GUIDE)
+   - Index complet des 11 phases d'audit
+   - Guide d'utilisation optimisé pour Windsurf
+   - Dernière mise à jour : Oct / Nov. 2025
+
+3. **`COMPATIBILITE_REACHY_MINI_OFFICIEL.md`** ⭐
+   - **Chemin** : `quality/audits/COMPATIBILITE_REACHY_MINI_OFFICIEL.md`
+   - Conformité complète SDK officiel (fusionné avec VERIFICATION_REPO_OFFICIEL et BILAN_COMPLET)
+   - Vérifications rapides, inventaire complet, compatibilité modules IA
+   - Statut global : 98% COMPLET
+   - Dernière mise à jour : Oct / Nov. 2025
+
+4. **`RESUME_ETAT_ACTUEL_BBIA.md`** ⭐
    - État actuel du projet (Oct / Nov. 2025)
    - Liste complète de ce qui est fait vs à faire
    - Mise à jour récente
 
-3. **`CONFORMITE_REACHY_MINI_COMPLETE.md`** (dans `docs/quality/compliance/`)
+5. **`CONFORMITE_REACHY_MINI_COMPLETE.md`** (dans `docs/quality/compliance/`)
    - **Chemin** : `quality/compliance/CONFORMITE_REACHY_MINI_COMPLETE.md`
    - 46 tests de conformité SDK officiel
    - Tous les aspects du SDK Reachy Mini vérifiés
 
-4. **`AUDIT_COVERAGE_IMPORTS.md`** ⭐
-   - Audit coverage et imports
-   - Corrections appliquées pour améliorer le coverage
+6. **`AUDIT_COVERAGE_IMPORTS.md`** ⭐
+   - **Chemin** : `quality/audits/AUDIT_COVERAGE_IMPORTS.md`
+   - Audit coverage complet (fusionné avec ETAT_COVERAGE_ACTUEL et coverage-details)
+   - Problèmes identifiés, corrections appliquées, statistiques par module
    - Dernière mise à jour : Oct / Nov. 2025
 
-5. **`COMPARAISON_DOCUMENTATION_OFFICIELLE.md`** (si existe)
-   - Comparaison avec README officiel Pollen Robotics
-   - Différences identifiées et corrigées
+7. **`COMPARAISON_OFFICIELLE.md`** ⭐
+   - **Chemin** : `quality/audits/COMPARAISON_OFFICIELLE.md`
+   - Comparaison complète : Documentation officielle + App conversationnelle
+   - Fusion de `COMPARAISON_DOCUMENTATION_OFFICIELLE.md` et `COMPARAISON_APP_CONVERSATION_OFFICIELLE.md`
+   - Score global : ~85-90% de parité fonctionnelle
+   - Dernière mise à jour : Oct / Nov. 2025
 
 ---
 
@@ -69,9 +90,39 @@ Les fichiers suivants ont été archivés car redondants ou obsolètes :
 - ✅ `RESUME_SESSION_QUALITE_CODE.md` - Session qualité code terminée (archivé Oct / Nov. 2025)
 - ✅ `PROCHAINES_ETAPES_OPTIONNELLES.md` - Toutes fonctionnalités implémentées (archivé Oct / Nov. 2025)
 
+### Fichiers Fusionnés (Archivés Oct / Nov. 2025)
+
+Les fichiers suivants ont été fusionnés et archivés dans `_archived/` :
+
+- ✅ `windsurf/WINDSURF_AUDIT_INDEX.md` → Fusionné dans `windsurf/README.md`
+- ✅ `windsurf/WINDSURF_AUDIT_GUIDE_OPTIMIZED.md` → Fusionné dans `windsurf/README.md`
+- ✅ `windsurf/VERIFICATION_REPO_OFFICIEL.md` → Fusionné dans `COMPATIBILITE_REACHY_MINI_OFFICIEL.md`
+- ✅ `BILAN_COMPLET_REACHY_MINI_OFFICIEL_VS_BBIA.md` → Fusionné dans `COMPATIBILITE_REACHY_MINI_OFFICIEL.md`
+- ✅ `ETAT_COVERAGE_ACTUEL.md` → Fusionné dans `AUDIT_COVERAGE_IMPORTS.md`
+- ✅ `coverage-details.md` → Fusionné dans `AUDIT_COVERAGE_IMPORTS.md`
+- ✅ `COMPARAISON_DOCUMENTATION_OFFICIELLE.md` → Fusionné dans `COMPARAISON_OFFICIELLE.md`
+- ✅ `COMPARAISON_APP_CONVERSATION_OFFICIELLE.md` → Fusionné dans `COMPARAISON_OFFICIELLE.md`
+
 ---
 
 ## 🔍 Audits Spécialisés
+
+### Audits Windsurf (Oct / Nov. 2025) ⭐ NOUVEAU
+
+- **`windsurf/WINDSURF_AUDIT_PHASE1.md`** - Architecture et imports
+- **`windsurf/WINDSURF_AUDIT_PHASE2.md`** - Compatibilité SDK
+- **`windsurf/WINDSURF_AUDIT_PHASE2B.md`** - Micro-détails critiques
+- **`windsurf/WINDSURF_AUDIT_PHASE3.md`** - Qualité code Python
+- **`windsurf/WINDSURF_AUDIT_PHASE4.md`** - Tests et couverture
+- **`windsurf/WINDSURF_AUDIT_PHASE5.md`** - Simulation MuJoCo
+- **`windsurf/WINDSURF_AUDIT_PHASE6.md`** - Vision/IA
+- **`windsurf/WINDSURF_AUDIT_PHASE7.md`** - Communication (Zenoh, REST, WebSocket)
+- **`windsurf/WINDSURF_AUDIT_PHASE8.md`** - Performance (RAM, CPU)
+- **`windsurf/WINDSURF_AUDIT_PHASE9.md`** - Documentation
+- **`windsurf/WINDSURF_AUDIT_PHASE10.md`** - CI/CD/Sécurité
+- **`windsurf/WINDSURF_AUDIT_PHASE11.md`** - Synthèse finale
+
+**Score global : 8.07/10** (Oct / Nov. 2025)
 
 ### Architecture et Code
 
@@ -82,9 +133,8 @@ Les fichiers suivants ont été archivés car redondants ou obsolètes :
 
 ### Conformité et Compatibilité
 
-- `COMPATIBILITE_REACHY_MINI_OFFICIEL.md` - Compatibilité SDK
-- `COMPARAISON_APP_CONVERSATION_OFFICIELLE.md` - App conversation officielle
-- `COMPARAISON_DOCUMENTATION_OFFICIELLE.md` - Comparaison documentation officielle
+- `COMPATIBILITE_REACHY_MINI_OFFICIEL.md` - Compatibilité SDK (fusionné avec BILAN_COMPLET et VERIFICATION_REPO_OFFICIEL)
+- `COMPARAISON_OFFICIELLE.md` - Comparaison complète (Documentation + App conversationnelle)
 
 ### Documentation
 
@@ -100,3 +150,5 @@ Les fichiers suivants ont été archivés car redondants ou obsolètes :
 ---
 
 **Dernière mise à jour** : Oct / Nov. 2025
+
+**Audit le plus récent** : Windsurf (11 phases) - Score global **8.07/10** (Oct / Nov. 2025)

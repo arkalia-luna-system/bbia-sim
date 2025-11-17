@@ -1,6 +1,6 @@
 # 📋 Plan de Consolidation - Scripts d'Audit/Comparaison
 
-**Date** : Oct / No2025025025025025  
+**Date** : Oct / Nov. 2025  
 **Objectif** : Fusionner/archiver les scripts redondants de comparaison avec Reachy Mini
 
 ---

@@ -7,11 +7,15 @@ import logging
 import os
 import re
 import time
+from collections import deque
+from functools import lru_cache
 from typing import TYPE_CHECKING, Any
 
 import numpy as np
 import numpy.typing as npt
 from PIL import Image
+
+from .utils.types import ConversationEntry, SentimentDict, SentimentResult
 
 if TYPE_CHECKING:
     from .bbia_tools import BBIATools
@@ -21,11 +25,9 @@ os.environ["TRANSFORMERS_VERBOSITY"] = "error"
 
 logger = logging.getLogger(__name__)
 
-# OPTIMISATION PERFORMANCE: Compiler regex une seule fois
-# (évite recompilation à chaque appel)
-_regex_cache: dict[str, re.Pattern[str]] = {}
 
-
+# OPTIMISATION PERFORMANCE: Utiliser @lru_cache pour regex (plus efficace que cache manuel)
+@lru_cache(maxsize=128)
 def _get_compiled_regex(pattern: str, flags: int = 0) -> re.Pattern[str]:
     """Retourne regex compilée depuis cache (évite recompilation répétée).
 
@@ -36,11 +38,10 @@ def _get_compiled_regex(pattern: str, flags: int = 0) -> re.Pattern[str]:
     Returns:
         Regex compilée (cachée ou nouvellement compilée)
 
+    Note:
+        Utilise @lru_cache pour performance optimale (max 128 patterns en cache).
     """
-    cache_key = f"{pattern}:{flags}"
-    if cache_key not in _regex_cache:
-        _regex_cache[cache_key] = re.compile(pattern, flags)
-    return _regex_cache[cache_key]
+    return re.compile(pattern, flags)
 
 
 # Constantes partagées pour éviter les doublons littéraux
@@ -172,7 +173,11 @@ class BBIAHuggingFace:
         self._start_auto_unload_thread()
 
         # Chat intelligent : Historique et contexte
-        self.conversation_history: list[dict[str, Any]] = []
+        # OPTIMISATION RAM: Utiliser deque avec maxlen pour limiter l'historique
+        max_history_size = 1000  # Limiter à 1000 messages max
+        self.conversation_history: deque[ConversationEntry] = deque(
+            maxlen=max_history_size
+        )
         self.context: dict[str, Any] = {}
         self.bbia_personality = "friendly_robot"
 
@@ -189,10 +194,23 @@ class BBIAHuggingFace:
 
             saved_history = load_conversation_from_memory()
             if saved_history:
-                self.conversation_history = saved_history
+                # Convertir liste de dict en ConversationEntry puis en deque avec maxlen
+                max_history_size = 1000
+                conversation_entries: list[ConversationEntry] = [
+                    ConversationEntry(
+                        user=entry.get("user", ""),
+                        bbia=entry.get("bbia", ""),
+                        sentiment=entry.get("sentiment", "neutral"),
+                        timestamp=entry.get("timestamp", ""),
+                    )
+                    for entry in saved_history[-max_history_size:]
+                ]
+                self.conversation_history = deque(
+                    conversation_entries, maxlen=max_history_size
+                )
                 logger.info(
                     f"💾 Conversation chargée depuis mémoire "
-                    f"({len(saved_history)} messages)",
+                    f"({len(self.conversation_history)} messages)",
                 )
         except ImportError:
             # Mémoire persistante optionnelle
@@ -214,8 +232,8 @@ class BBIAHuggingFace:
             "chat": {
                 # LLM conversationnel (optionnel, activé si disponible)
                 "mistral": (
-                    "mistralai/Mistral-7B-Instruct-v0.2"
-                ),  # ⭐ Recommandé (14GB RAM)
+                    "mistralai/Mistral-7B-Instruct-v0.3"
+                ),  # ⭐ Recommandé (14GB RAM) - Mis à jour v0.2 → v0.3
                 "llama": "meta-llama/Llama-3-8B-Instruct",  # Alternative (16GB RAM)
                 "phi2": "microsoft/phi-2",  # ⭐ Léger pour RPi 5 (2.7B, ~5GB RAM)
                 "tinyllama": (
@@ -688,7 +706,7 @@ class BBIAHuggingFace:
         self,
         text: str,
         model_name: str = "cardiffnlp/twitter-roberta-base-sentiment-latest",
-    ) -> dict[str, Any]:
+    ) -> SentimentResult:
         """Analyse le sentiment d'un texte.
 
         Args:
@@ -719,7 +737,9 @@ class BBIAHuggingFace:
             logger.error(f"❌ Erreur analyse sentiment: {e}")
             return {"error": str(e)}
 
-    def analyze_emotion(self, text: str, model_name: str = "emotion") -> dict[str, Any]:
+    def analyze_emotion(
+        self, text: str, model_name: str = "emotion"
+    ) -> SentimentResult:
         """Analyse les émotions dans un texte.
 
         Args:
@@ -949,7 +969,8 @@ class BBIAHuggingFace:
                         break  # Arrêt demandé
 
                     current_time = time.time()
-                    models_to_unload: list[tuple[str, float]] = []
+                    # OPTIMISATION RAM: deque avec maxlen pour limiter taille
+                    models_to_unload: deque[tuple[str, float]] = deque(maxlen=50)
 
                     # Identifier modèles inactifs > 5 min
                     with self._unload_thread_lock:
@@ -1024,7 +1045,21 @@ class BBIAHuggingFace:
             for key in keys_to_remove:
                 del self.processors[key]
 
-            logger.info(f"🗑️ Modèle {model_name} déchargé")
+            # OPTIMISATION RAM: Libérer la mémoire explicitement
+            import gc
+
+            gc.collect()
+            # Libérer le cache GPU si disponible
+            if HF_AVAILABLE:
+                try:
+                    import torch
+
+                    if torch.cuda.is_available():
+                        torch.cuda.empty_cache()
+                except ImportError:
+                    pass  # torch non disponible, ignorer
+
+            logger.info(f"🗑️ Modèle {model_name} déchargé - Mémoire libérée")
             return True
 
         except Exception as e:
@@ -1032,7 +1067,12 @@ class BBIAHuggingFace:
             return False
 
     def get_model_info(self) -> dict[str, Any]:
-        """Retourne les informations sur les modèles chargés."""
+        """Retourne les informations sur les modèles chargés.
+
+        Returns:
+            dict[str, Any]: Dictionnaire contenant les informations sur les modèles,
+                incluant device, loaded_models, available_models, et cache_dir.
+        """
         return {
             "device": self.device,
             "loaded_models": self.get_loaded_models(),
@@ -1099,6 +1139,13 @@ class BBIAHuggingFace:
                     logger.debug(f"Lazy loading LLM échoué (fallback enrichi): {e}")
 
             # 3. Générer réponse avec LLM si disponible, sinon réponses enrichies
+            # Convertir SentimentResult en SentimentDict (nécessaire pour les deux branches)
+            sentiment_dict: SentimentDict = {
+                "label": sentiment.get("sentiment", "neutral"),
+                "score": sentiment.get("score", 0.5),
+                "sentiment": sentiment.get("sentiment", "neutral"),
+            }
+
             if self.use_llm_chat and self.chat_model and self.chat_tokenizer:
                 # Utiliser LLM pré-entraîné (Mistral/Llama)
                 bbia_response = self._generate_llm_response(
@@ -1108,25 +1155,35 @@ class BBIAHuggingFace:
                 )
             else:
                 # Fallback vers réponses enrichies (règles + variété)
-                bbia_response = self._generate_simple_response(user_message, sentiment)
+                bbia_response = self._generate_simple_response(
+                    user_message, sentiment_dict
+                )
 
             # 3. Sauvegarder dans l'historique
             from datetime import datetime
 
+            # Extraire la valeur du sentiment (str) depuis SentimentResult
+            sentiment_str: str = (
+                sentiment.get("sentiment", "neutral")
+                if isinstance(sentiment, dict)
+                else "neutral"
+            )
+
             self.conversation_history.append(
-                {
-                    "user": user_message,
-                    "bbia": bbia_response,
-                    "sentiment": sentiment,
-                    "timestamp": datetime.now().isoformat(),
-                },
+                ConversationEntry(
+                    user=user_message,
+                    bbia=bbia_response,
+                    sentiment=sentiment_str,
+                    timestamp=datetime.now().isoformat(),
+                ),
             )
 
             # 4. Adapter réponse selon personnalité BBIA (si pas LLM)
             if not self.use_llm_chat:
+                # Réutiliser sentiment_dict déjà créé
                 adapted_response = self._adapt_response_to_personality(
                     bbia_response,
-                    sentiment,
+                    sentiment_dict,
                 )
             else:
                 adapted_response = bbia_response  # LLM gère déjà la personnalité
@@ -1137,7 +1194,17 @@ class BBIAHuggingFace:
 
                 # Sauvegarder toutes les 10 messages pour éviter I/O excessif
                 if len(self.conversation_history) % 10 == 0:
-                    save_conversation_to_memory(self.conversation_history)
+                    # Convertir ConversationEntry en dict pour compatibilité
+                    history_dicts: list[dict[str, Any]] = [
+                        {
+                            "user": entry.get("user", ""),
+                            "bbia": entry.get("bbia", ""),
+                            "sentiment": entry.get("sentiment", "neutral"),
+                            "timestamp": entry.get("timestamp", ""),
+                        }
+                        for entry in self.conversation_history
+                    ]
+                    save_conversation_to_memory(history_dicts)
             except ImportError:
                 # Mémoire persistante optionnelle
                 pass
@@ -1213,7 +1280,9 @@ class BBIAHuggingFace:
             # Ajouter contexte si demandé
             if use_context and self.conversation_history:
                 # Derniers 2 échanges pour contexte
-                for entry in self.conversation_history[-2:]:
+                # OPTIMISATION: Convertir deque en list pour slicing (deque ne supporte pas [-2:])
+                recent_history = list(self.conversation_history)[-2:]
+                for entry in recent_history:
                     messages.append({"role": "user", "content": entry["user"]})
                     messages.append({"role": "assistant", "content": entry["bbia"]})
 
@@ -1273,10 +1342,15 @@ class BBIAHuggingFace:
             logger.warning(f"⚠️  Erreur génération LLM, fallback enrichi: {e}")
             # Fallback vers réponses enrichies
             try:
-                sentiment = self.analyze_sentiment(user_message)
+                sentiment_result = self.analyze_sentiment(user_message)
+                # Convertir SentimentResult en SentimentDict
+                sentiment_dict: SentimentDict = {
+                    "label": sentiment_result.get("sentiment", "neutral"),
+                    "score": sentiment_result.get("score", 0.5),
+                }
             except (ValueError, RuntimeError, KeyError):
-                sentiment = {"sentiment": "NEUTRAL", "score": 0.5}
-            return self._generate_simple_response(user_message, sentiment)
+                sentiment_dict = {"label": "NEUTRAL", "score": 0.5}
+            return self._generate_simple_response(user_message, sentiment_dict)
 
     def _detect_and_execute_tools(self, user_message: str) -> str | None:
         """Détecte et exécute des outils depuis le message utilisateur.
@@ -1552,7 +1626,7 @@ class BBIAHuggingFace:
             # Charger modèle à la demande (gratuit Hugging Face)
             if self._sentence_model is None:
                 try:
-                    from sentence_transformers import (
+                    from sentence_transformers import (  # type: ignore[import-untyped]
                         SentenceTransformer,
                     )
 
@@ -2002,7 +2076,9 @@ class BBIAHuggingFace:
         try:
             recent = []
             if self.conversation_history:
-                for entry in self.conversation_history[-5:]:
+                # OPTIMISATION: Convertir deque en list pour slicing
+                recent_history = list(self.conversation_history)[-5:]
+                for entry in recent_history:
                     bbia = entry.get("bbia", "").strip()
                     if bbia:
                         recent.append(bbia)
@@ -2048,7 +2124,7 @@ class BBIAHuggingFace:
         except (ValueError, RuntimeError, TypeError):
             return SAFE_FALLBACK
 
-    def _generate_simple_response(self, message: str, sentiment: dict[str, Any]) -> str:
+    def _generate_simple_response(self, message: str, sentiment: SentimentDict) -> str:
         """Génère réponse intelligente basée sur sentiment, contexte et personnalité.
 
         Args:
@@ -2428,7 +2504,7 @@ class BBIAHuggingFace:
     def _adapt_response_to_personality(
         self,
         response: str,
-        sentiment: dict[str, Any],  # noqa: ARG002
+        sentiment: SentimentDict,  # noqa: ARG002
     ) -> str:
         """Adapte la réponse selon la personnalité BBIA avec nuances expressives.
 
@@ -2544,7 +2620,12 @@ class BBIAHuggingFace:
             return None
 
         # Prendre le dernier message utilisateur
-        last_entry = self.conversation_history[-1]
+        # OPTIMISATION: Accéder au dernier élément (deque supporte [-1] mais type checker se plaint)
+        last_entry = (
+            list(self.conversation_history)[-1] if self.conversation_history else None
+        )
+        if last_entry is None:
+            return None
         user_msg = last_entry.get("user", "")
 
         # Extraire les mots significatifs (exclure articles, prépositions)
@@ -2602,7 +2683,9 @@ class BBIAHuggingFace:
             )
 
         context = "Historique conversation:\n"
-        for entry in self.conversation_history[-3:]:  # Derniers 3 échanges
+        # OPTIMISATION: Convertir deque en list pour slicing
+        recent_history = list(self.conversation_history)[-3:]  # Derniers 3 échanges
+        for entry in recent_history:
             context += f"User: {entry['user']}\n"
             context += f"BBIA: {entry['bbia']}\n"
         return context

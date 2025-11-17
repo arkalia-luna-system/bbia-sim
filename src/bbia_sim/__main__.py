@@ -146,6 +146,11 @@ def run_simulation(args: argparse.Namespace) -> None:
             logger.info("✅ Viewer MuJoCo disponible")
 
     # Détermination du modèle à utiliser
+    # NOTE: Unification des modèles XML
+    # Quand l'utilisateur demande "reachy_mini.xml", on charge automatiquement
+    # "reachy_mini_REAL_OFFICIAL.xml" qui est le modèle complet (16 joints).
+    # Le fichier "reachy_mini.xml" (7 joints simplifié) existe mais n'est pas utilisé
+    # pour garantir la cohérence avec le robot réel.
     if args.scene == "reachy_mini.xml":
         model_path = (
             Path(__file__).parent / "sim" / "models" / "reachy_mini_REAL_OFFICIAL.xml"

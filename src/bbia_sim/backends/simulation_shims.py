@@ -127,7 +127,11 @@ class SimulationCamera:
         return None
 
     def capture(self) -> Any:
-        """Capture une image (alias get_image)."""
+        """Capture une image (alias get_image).
+
+        Returns:
+            None en simulation (à implémenter si nécessaire avec numpy array simulé)
+        """
         return self.get_image()
 
     def read(self) -> tuple[bool, Any]:
@@ -179,6 +183,5 @@ class SimulationSpeaker:
 
         Args:
             file_path: Chemin vers le fichier audio
-
         """
         logger.debug(f"🔊 play_file() simulé ({file_path})")

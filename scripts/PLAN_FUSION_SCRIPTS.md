@@ -1,6 +1,6 @@
 # 📋 Plan de Fusion Scripts - Éliminer Doublons
 
-**Date** : Oct 2025v. 20252025 Nov. 2025ct / Nov. 2025  
+**Date** : Oct / Nov. 2025  
 **Objectif** : Fusionner les scripts redondants sans rien casser
 
 ---
@@ -158,4 +158,4 @@ scripts/
 
 ---
 
-*Plan créé : Oct 2025v. 20252025 Nov. 2025ct / Nov. 2025*
+*Plan créé : Oct / Nov. 2025*

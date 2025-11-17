@@ -671,8 +671,13 @@ class ConversationBehavior(BBIABehavior):
                     logger.info(f"Synthèse vocale (HF + outils LLM) : {response}")
 
                     # Appliquer émotion correspondante au robot si disponible
-                    sentiment = self.hf_chat.analyze_sentiment(texte)
-                    self._apply_sentiment_to_robot(sentiment)
+                    sentiment_result = self.hf_chat.analyze_sentiment(texte)
+                    # Convertir SentimentResult en dict pour compatibilité
+                    sentiment_dict: dict[str, Any] = {
+                        "sentiment": sentiment_result.get("sentiment", "neutral"),
+                        "score": sentiment_result.get("score", 0.5),
+                    }
+                    self._apply_sentiment_to_robot(sentiment_dict)
 
                     return True
                 except Exception as e:
