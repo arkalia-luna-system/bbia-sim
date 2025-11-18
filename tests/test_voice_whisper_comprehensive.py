@@ -1559,7 +1559,9 @@ class TestFactoryFunctions:
 
             # Mock ImportError lors de l'import soundfile
             with patch("bbia_sim.voice_whisper.sf", None):
-                with patch("builtins.__import__", side_effect=ImportError("No soundfile")):
+                with patch(
+                    "builtins.__import__", side_effect=ImportError("No soundfile")
+                ):
                     audio_chunk = np.random.rand(16000).astype(np.float32)
                     result = stt.detect_speech_activity(audio_chunk)
                     # Devrait fallback à True
@@ -1703,7 +1705,9 @@ class TestFactoryFunctions:
     @patch("bbia_sim.voice_whisper.sf")
     @patch("bbia_sim.voice_whisper.whisper")
     @patch.dict(os.environ, {"BBIA_DISABLE_AUDIO": "0"}, clear=False)
-    def test_transcribe_streaming_model_none_error(self, mock_whisper, mock_sf, mock_sd):
+    def test_transcribe_streaming_model_none_error(
+        self, mock_whisper, mock_sf, mock_sd
+    ):
         """Test streaming avec modèle None (couverture lignes 615-616)."""
         with patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True):
             stt = WhisperSTT(model_size="tiny", language="fr")
