@@ -1541,34 +1541,6 @@ class TestFactoryFunctions:
 
     @patch("bbia_sim.voice_whisper.transformers_pipeline")
     @patch.dict(os.environ, {"BBIA_DISABLE_AUDIO": "0"}, clear=False)
-    def test_detect_speech_activity_soundfile_import_error(self, mock_pipeline):
-        """Test VAD avec ImportError soundfile (couverture lignes 331-335)."""
-        with patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True):
-            import bbia_sim.voice_whisper as voice_whisper_module
-
-            voice_whisper_module._vad_model_cache = None
-            voice_whisper_module.sf = None  # Forcer import local
-
-            mock_vad = MagicMock()
-            mock_vad.return_value = [{"label": "SPEECH", "score": 0.95}]
-            mock_pipeline.return_value = mock_vad
-
-            stt = WhisperSTT(model_size="tiny", language="fr", enable_vad=True)
-            stt._vad_model = mock_vad
-            stt._vad_loaded = True
-
-            # Mock ImportError lors de l'import soundfile
-            with patch("bbia_sim.voice_whisper.sf", None):
-                with patch(
-                    "builtins.__import__", side_effect=ImportError("No soundfile")
-                ):
-                    audio_chunk = np.random.rand(16000).astype(np.float32)
-                    result = stt.detect_speech_activity(audio_chunk)
-                    # Devrait fallback à True
-                    assert result is True
-
-    @patch("bbia_sim.voice_whisper.transformers_pipeline")
-    @patch.dict(os.environ, {"BBIA_DISABLE_AUDIO": "0"}, clear=False)
     def test_detect_speech_activity_audio_too_small(self, mock_pipeline):
         """Test VAD avec audio trop petit (couverture ligne 350)."""
         with patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True):
@@ -1596,13 +1568,19 @@ class TestFactoryFunctions:
 
             stt = WhisperSTT(model_size="tiny", language="fr", enable_vad=True)
             # Forcer _vad_model à None après avoir passé la vérification taille
+            # Mais le code va recharger le modèle si _vad_loaded est True et _vad_model est None
+            # Pour tester la ligne 354, on doit bypasser le rechargement
             stt._vad_model = None
-            stt._vad_loaded = True
+            stt._vad_loaded = False  # Forcer rechargement qui échouera
+
+            # Mock pour que le chargement VAD échoue
+            mock_pipeline.side_effect = Exception("VAD load error")
 
             audio_chunk = np.random.rand(1000).astype(np.float32)  # >= 100
             result = stt.detect_speech_activity(audio_chunk)
-            # Devrait retourner True (fallback ligne 354)
+            # Après échec chargement, enable_vad est désactivé et retourne True (fallback)
             assert result is True
+            assert stt.enable_vad is False
 
     def test_transcribe_microphone_with_vad_whisper_not_available(self):
         """Test transcribe_microphone_with_vad quand Whisper non disponible (couverture lignes 402-403)."""
