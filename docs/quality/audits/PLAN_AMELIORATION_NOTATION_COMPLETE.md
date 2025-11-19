@@ -2,9 +2,10 @@
 
 ## Axes de correction et amélioration pour passer de 8.07/10 à 9.0+/10
 
-**Date** : Oct / Nov. 2025
-**Objectif** : Identifier tous les axes d'amélioration pour augmenter la notation
-**Score actuel** : 8.07/10 (audit Windsurf Oct / Nov. 2025)
+**Date** : Oct / Nov. 2025  
+**Dernière mise à jour** : 19 Novembre 2025  
+**Objectif** : Identifier tous les axes d'amélioration pour augmenter la notation  
+**Score actuel** : 8.07/10 (audit Windsurf Oct / Nov. 2025)  
 **Score cible** : 9.0+/10
 
 ---
