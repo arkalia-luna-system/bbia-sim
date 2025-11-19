@@ -68,6 +68,11 @@ dependencies = [
     "matplotlib>=3.7.0",
     # NLP amélioré (optionnel, chargé à la demande)
     "sentence-transformers>=2.2.0",
+    # LLM Conversationnel (Phi-2, TinyLlama)
+    "accelerate>=0.20.0",
+    "sentencepiece>=0.1.99",
+    # bitsandbytes optionnel (quantification 8-bit, peut être installé séparément)
+    # "bitsandbytes>=0.41.0",  # Décommenter si quantification 8-bit souhaitée
 ]
 
 [project.optional-dependencies]
@@ -168,6 +173,7 @@ env = [
 
 # Marqueurs pour tests légers/lourds (fusionné)
 markers = [
+    "benchmark: marks tests as benchmarks (deselect with '-m \"not benchmark\"')",
     "slow: marque les tests lents (peuvent charger modèles lourds) / marks tests as slow (deselect with '-m \"not slow\"')",
     "fast: marque les tests rapides (utilisent mocks uniquement) / marks tests as fast (deselect with '-m \"not fast\"')",
     "model: marque les tests qui chargent de vrais modèles (YOLO, Whisper, HuggingFace)",

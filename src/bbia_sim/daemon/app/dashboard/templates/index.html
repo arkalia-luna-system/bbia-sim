@@ -2,8 +2,17 @@
 
 {% block content %}
 
+<!-- Indicateur FPS -->
+<div class="fixed top-4 right-4 bg-white rounded-lg px-3 py-1 shadow-md border border-gray-200 z-50">
+    <span class="text-sm font-semibold">
+        <span id="fps-display" class="text-green-600">60 FPS</span>
+    </span>
+</div>
+
 <div class="grid gap-4">
     {% include "sections/daemon.html" %}
+    {% include "sections/media.html" %}
+    {% include "sections/quick_actions.html" %}
     {% include "sections/apps.html" %}
     {% include "sections/appstore.html" %}
 </div>
@@ -11,6 +20,10 @@
 
 {% block extra_js %}
 <script src="/static/js/daemon.js"></script>
+<script src="/static/js/media.js"></script>
+<script src="/static/js/waveform.js"></script>
+<script src="/static/js/robot_3d.js"></script>
+<script src="/static/js/fps_display.js"></script>
 <script src="/static/js/apps.js"></script>
 <script src="/static/js/appstore.js"></script>
 <script src="/static/js/move_player.js"></script>

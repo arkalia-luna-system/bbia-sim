@@ -1040,6 +1040,65 @@ class BBIABehaviorManager:
         self.register_behavior(AntennaAnimationBehavior(robot_api=self.robot_api))
         self.register_behavior(HideBehavior(robot_api=self.robot_api))
 
+        # Enregistrer les nouveaux comportements avancés
+        try:
+            from .behaviors import (
+                AlarmClockBehavior,
+                DanceBehavior,
+                EmotionShowBehavior,
+                ExerciseBehavior,
+                FollowFaceBehavior,
+                FollowObjectBehavior,
+                GameBehavior,
+                MeditationBehavior,
+                MusicReactionBehavior,
+                NewsReaderBehavior,
+                PhotoBoothBehavior,
+                StorytellingBehavior,
+                TeachingBehavior,
+                WeatherReportBehavior,
+            )
+            from .behaviors import (
+                ConversationBehavior as NewConversationBehavior,
+            )
+
+            # Comportements améliorés (remplacer ou complémenter les existants)
+            self.register_behavior(
+                FollowFaceBehavior(vision=self.vision, robot_api=self.robot_api),
+            )
+            self.register_behavior(
+                FollowObjectBehavior(vision=self.vision, robot_api=self.robot_api),
+            )
+            self.register_behavior(
+                NewConversationBehavior(robot_api=self.robot_api),
+            )
+
+            # Nouveaux comportements expressifs
+            self.register_behavior(DanceBehavior(robot_api=self.robot_api))
+            self.register_behavior(EmotionShowBehavior(robot_api=self.robot_api))
+            self.register_behavior(
+                PhotoBoothBehavior(vision=self.vision, robot_api=self.robot_api),
+            )
+
+            # Nouveaux comportements interactifs
+            self.register_behavior(StorytellingBehavior(robot_api=self.robot_api))
+            self.register_behavior(TeachingBehavior(robot_api=self.robot_api))
+            self.register_behavior(GameBehavior(robot_api=self.robot_api))
+
+            # Nouveaux comportements utilitaires
+            self.register_behavior(MeditationBehavior(robot_api=self.robot_api))
+            self.register_behavior(ExerciseBehavior(robot_api=self.robot_api))
+            self.register_behavior(AlarmClockBehavior(robot_api=self.robot_api))
+            self.register_behavior(WeatherReportBehavior(robot_api=self.robot_api))
+            self.register_behavior(NewsReaderBehavior(robot_api=self.robot_api))
+            self.register_behavior(MusicReactionBehavior(robot_api=self.robot_api))
+
+            logger.info(
+                "✅ Tous les comportements avancés enregistrés avec succès (15/15)"
+            )
+        except ImportError as e:
+            logger.warning(f"⚠️  Comportements avancés non disponibles: {e}")
+
     def register_behavior(self, behavior: BBIABehavior) -> None:
         """Enregistre un nouveau comportement."""
         self.behaviors[behavior.name] = behavior

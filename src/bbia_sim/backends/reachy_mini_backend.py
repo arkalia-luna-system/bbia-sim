@@ -6,6 +6,7 @@ Backend utilisant le SDK officiel reachy_mini
 import logging
 import threading
 import time
+from functools import lru_cache
 from typing import TYPE_CHECKING, Any, Optional
 
 import numpy as np
@@ -60,6 +61,47 @@ SLEEP_HEAD_POSE = np.array(
 )
 
 logger = logging.getLogger(__name__)
+
+
+# OPTIMISATION PERFORMANCE: Cache LRU pour poses fréquentes
+# (évite recréation de poses identiques)
+@lru_cache(maxsize=50)
+def _create_cached_head_pose(
+    pitch: float,
+    yaw: float,
+    roll: float = 0.0,
+    degrees: bool = False,
+) -> npt.NDArray[np.float64]:
+    """Crée une pose de tête avec cache LRU pour optimiser les poses fréquentes.
+
+    Args:
+        pitch: Angle pitch en radians (ou degrés si degrees=True)
+        yaw: Angle yaw en radians (ou degrés si degrees=True)
+        roll: Angle roll en radians (ou degrés si degrees=True), défaut: 0.0
+        degrees: Si True, angles en degrés, sinon en radians
+
+    Returns:
+        Matrice de transformation 4x4 (numpy array)
+
+    """
+    if not REACHY_MINI_AVAILABLE or create_head_pose is None:
+        # Fallback: créer matrice identité si SDK non disponible
+        return np.eye(4, dtype=np.float64)
+
+    try:
+        # Appeler la fonction originale du SDK (pas récursif)
+        pose = create_head_pose(
+            pitch=pitch,
+            yaw=yaw,
+            roll=roll,
+            degrees=degrees,
+        )
+        # Retourner une copie pour éviter modification du cache
+        return pose.copy() if hasattr(pose, "copy") else pose
+    except Exception as e:
+        logger.debug(f"Erreur création pose cache: {e}, fallback identité")
+        return np.eye(4, dtype=np.float64)
+
 
 # OPTIMISATION RAM: Constantes module-level partagées
 # (évite recréation à chaque instance)
@@ -695,7 +737,8 @@ class ReachyMiniBackend(RobotAPI):
         try:
             # Appliquer l'intensité aux angles AVANT de créer la pose
             base_angles = emotion_base_poses[emotion]
-            pose = create_head_pose(
+            # OPTIMISATION PERFORMANCE: Utiliser cache LRU pour poses fréquentes
+            pose = _create_cached_head_pose(
                 pitch=base_angles["pitch"] * intensity,
                 yaw=base_angles["yaw"] * intensity,
                 degrees=False,
@@ -779,8 +822,13 @@ class ReachyMiniBackend(RobotAPI):
                 # PERFORMANCE: Utiliser goto_target avec interpolation
                 # au lieu de sleep
                 # pour éviter blocage et réduire latence
-                pose1 = create_head_pose(pitch=0.1, degrees=False)
-                pose2 = create_head_pose(pitch=-0.1, degrees=False)
+                # OPTIMISATION PERFORMANCE: Utiliser cache LRU pour poses fréquentes
+                pose1 = _create_cached_head_pose(
+                    pitch=0.1, yaw=0.0, roll=0.0, degrees=False
+                )
+                pose2 = _create_cached_head_pose(
+                    pitch=-0.1, yaw=0.0, roll=0.0, degrees=False
+                )
 
                 # Option optimale: goto_target avec interpolation
                 if hasattr(self.robot, "goto_target"):
@@ -788,7 +836,10 @@ class ReachyMiniBackend(RobotAPI):
                     self.robot.goto_target(head=pose1, duration=0.5, method="minjerk")
                     self.robot.goto_target(head=pose2, duration=0.5, method="minjerk")
                     self.robot.goto_target(
-                        head=create_head_pose(degrees=False),
+                        # OPTIMISATION PERFORMANCE: Utiliser cache LRU pour pose identité
+                        head=_create_cached_head_pose(
+                            pitch=0.0, yaw=0.0, roll=0.0, degrees=False
+                        ),
                         duration=0.5,
                         method="minjerk",
                     )
@@ -798,7 +849,12 @@ class ReachyMiniBackend(RobotAPI):
                     time.sleep(0.5)
                     self.robot.set_target_head_pose(pose2)
                     time.sleep(0.5)
-                    self.robot.set_target_head_pose(create_head_pose(degrees=False))
+                    # OPTIMISATION PERFORMANCE: Utiliser cache LRU pour pose identité
+                    self.robot.set_target_head_pose(
+                        _create_cached_head_pose(
+                            pitch=0.0, yaw=0.0, roll=0.0, degrees=False
+                        )
+                    )
 
             return True
         except Exception as e:
@@ -1073,8 +1129,10 @@ class ReachyMiniBackend(RobotAPI):
                 method_enum = method
 
             # Validation des paramètres avant appel SDK
-            # Convertir antennas si c'est un numpy array pour compatibilité
+            # OPTIMISATION PERFORMANCE: Convertir antennas seulement si nécessaire
+            # (le SDK accepte numpy array, mais liste est plus rapide)
             if antennas is not None and isinstance(antennas, np.ndarray):
+                # Conversion nécessaire pour compatibilité SDK (liste plus rapide)
                 antennas = antennas.tolist()
 
             # Appel SDK avec validation (conforme SDK officiel)

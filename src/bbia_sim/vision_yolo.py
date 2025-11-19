@@ -36,8 +36,11 @@ try:
     from ultralytics import YOLO  # type: ignore[import-untyped]
 
     YOLO_AVAILABLE = True
+    CV2_AVAILABLE = True
 except ImportError:
     YOLO_AVAILABLE = False
+    CV2_AVAILABLE = False
+    cv2 = None  # type: ignore[assignment]
     # Imports non disponibles - le code vérifie YOLO_AVAILABLE avant utilisation
 
 logger = logging.getLogger(__name__)
@@ -185,15 +188,60 @@ class YOLODetector:
                 logger.error("❌ Modèle YOLO non chargé")
                 return []
 
-            results = self.model(image, conf=self.confidence_threshold, verbose=False)
+            # OPTIMISATION PERFORMANCE: Réduire résolution image avant traitement YOLO
+            # (640x480 au lieu de 1280x720) pour réduire latence
+            # YOLO fonctionne bien avec résolution réduite et c'est beaucoup plus rapide
+            original_height, original_width = image.shape[:2]
+            target_width = 640
+            target_height = 480
+
+            # Resize seulement si image plus grande que cible
+            if original_width > target_width or original_height > target_height:
+                # Calculer ratio de resize pour maintenir aspect ratio
+                width_ratio = target_width / original_width
+                height_ratio = target_height / original_height
+                ratio = min(width_ratio, height_ratio)
+
+                new_width = int(original_width * ratio)
+                new_height = int(original_height * ratio)
+
+                # Resize avec cv2 (rapide et optimisé)
+                if CV2_AVAILABLE and cv2 is not None:
+                    resized_image = cv2.resize(
+                        image,
+                        (new_width, new_height),
+                        interpolation=cv2.INTER_LINEAR,
+                    )
+                else:
+                    # Fallback sans cv2 (ne devrait pas arriver si YOLO disponible)
+                    resized_image = image
+                    new_width, new_height = original_width, original_height
+            else:
+                resized_image = image
+                new_width, new_height = original_width, original_height
+
+            results = self.model(
+                resized_image, conf=self.confidence_threshold, verbose=False
+            )
 
             detections = []
+            # Calculer ratio de scale pour convertir bbox de l'image resize vers originale
+            scale_x = original_width / new_width if new_width > 0 else 1.0
+            scale_y = original_height / new_height if new_height > 0 else 1.0
+
             for result in results:
                 boxes = result.boxes
                 if boxes is not None:
                     for box in boxes:
-                        # Coordonnées bbox
+                        # Coordonnées bbox (dans l'image resize)
                         x1, y1, x2, y2 = box.xyxy[0].cpu().numpy()
+
+                        # OPTIMISATION PERFORMANCE: Convertir bbox vers résolution originale
+                        # pour cohérence avec le reste du pipeline
+                        x1_orig = int(x1 * scale_x)
+                        y1_orig = int(y1 * scale_y)
+                        x2_orig = int(x2 * scale_x)
+                        y2_orig = int(y2 * scale_y)
 
                         # Confiance et classe
                         confidence = box.conf[0].cpu().numpy()
@@ -201,12 +249,15 @@ class YOLODetector:
                         class_name = self.model.names[class_id]
 
                         detection: DetectionResult = {
-                            "bbox": [int(x1), int(y1), int(x2), int(y2)],
+                            "bbox": [x1_orig, y1_orig, x2_orig, y2_orig],
                             "confidence": float(confidence),
                             "class_id": class_id,
                             "class_name": class_name,
-                            "center": [int((x1 + x2) / 2), int((y1 + y2) / 2)],
-                            "area": int((x2 - x1) * (y2 - y1)),
+                            "center": [
+                                int((x1_orig + x2_orig) / 2),
+                                int((y1_orig + y2_orig) / 2),
+                            ],
+                            "area": int((x2_orig - x1_orig) * (y2_orig - y1_orig)),
                         }
                         detections.append(detection)
 
@@ -245,18 +296,72 @@ class YOLODetector:
                 logger.error("❌ Modèle YOLO non chargé")
                 return [[] for _ in images]
 
+            # OPTIMISATION PERFORMANCE: Réduire résolution images avant traitement YOLO
+            # (640x480 max) pour réduire latence batch
+            target_width = 640
+            target_height = 480
+            resized_images = []
+            image_scales = []  # Stocker les ratios de scale pour chaque image
+
+            for image in images:
+                original_height, original_width = image.shape[:2]
+
+                # Resize seulement si image plus grande que cible
+                if original_width > target_width or original_height > target_height:
+                    # Calculer ratio de resize pour maintenir aspect ratio
+                    width_ratio = target_width / original_width
+                    height_ratio = target_height / original_height
+                    ratio = min(width_ratio, height_ratio)
+
+                    new_width = int(original_width * ratio)
+                    new_height = int(original_height * ratio)
+
+                    # Resize avec cv2 (rapide et optimisé)
+                    if CV2_AVAILABLE and cv2 is not None:
+                        resized_image = cv2.resize(
+                            image,
+                            (new_width, new_height),
+                            interpolation=cv2.INTER_LINEAR,
+                        )
+                    else:
+                        resized_image = image
+                        new_width, new_height = original_width, original_height
+
+                    scale_x = original_width / new_width if new_width > 0 else 1.0
+                    scale_y = original_height / new_height if new_height > 0 else 1.0
+                else:
+                    resized_image = image
+                    scale_x = 1.0
+                    scale_y = 1.0
+
+                resized_images.append(resized_image)
+                image_scales.append((scale_x, scale_y))
+
             # OPTIMISATION PERFORMANCE: YOLO traite le batch en une seule passe
             # (beaucoup plus rapide que boucle sur images individuelles)
-            results = self.model(images, conf=self.confidence_threshold, verbose=False)
+            results = self.model(
+                resized_images, conf=self.confidence_threshold, verbose=False
+            )
 
             all_detections = []
-            for result in results:
+            for idx, result in enumerate(results):
                 detections = []
                 boxes = result.boxes
+                # Récupérer les ratios de scale pour cette image
+                scale_x, scale_y = (
+                    image_scales[idx] if idx < len(image_scales) else (1.0, 1.0)
+                )
+
                 if boxes is not None:
                     for box in boxes:
-                        # Coordonnées bbox
+                        # Coordonnées bbox (dans l'image resize)
                         x1, y1, x2, y2 = box.xyxy[0].cpu().numpy()
+
+                        # OPTIMISATION PERFORMANCE: Convertir bbox vers résolution originale
+                        x1_orig = int(x1 * scale_x)
+                        y1_orig = int(y1 * scale_y)
+                        x2_orig = int(x2 * scale_x)
+                        y2_orig = int(y2 * scale_y)
 
                         # Confiance et classe
                         confidence = box.conf[0].cpu().numpy()
@@ -264,12 +369,15 @@ class YOLODetector:
                         class_name = self.model.names[class_id]
 
                         detection: DetectionResult = {
-                            "bbox": [int(x1), int(y1), int(x2), int(y2)],
+                            "bbox": [x1_orig, y1_orig, x2_orig, y2_orig],
                             "confidence": float(confidence),
                             "class_id": class_id,
                             "class_name": class_name,
-                            "center": [int((x1 + x2) / 2), int((y1 + y2) / 2)],
-                            "area": int((x2 - x1) * (y2 - y1)),
+                            "center": [
+                                int((x1_orig + x2_orig) / 2),
+                                int((y1_orig + y2_orig) / 2),
+                            ],
+                            "area": int((x2_orig - x1_orig) * (y2_orig - y1_orig)),
                         }
                         detections.append(detection)
                 all_detections.append(detections)

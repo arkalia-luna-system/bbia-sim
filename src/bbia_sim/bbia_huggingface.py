@@ -254,6 +254,26 @@ class BBIAHuggingFace:
         self.chat_tokenizer: Any | None = None
         self.use_llm_chat = False  # Activation optionnelle (lourd)
 
+        # Intégration BBIAChat (LLM conversationnel léger)
+        self.bbia_chat: Any | None = None
+        try:
+            from .bbia_chat import BBIAChat
+
+            # Récupérer robot_api depuis tools si disponible
+            robot_api = None
+            if tools and hasattr(tools, "robot_api"):
+                robot_api = tools.robot_api
+
+            # Initialiser BBIAChat avec robot_api
+            self.bbia_chat = BBIAChat(robot_api=robot_api)
+            logger.info("✅ BBIAChat (LLM conversationnel) initialisé")
+        except ImportError as e:
+            logger.debug(f"BBIAChat non disponible: {e}")
+            self.bbia_chat = None
+        except Exception as e:
+            logger.warning(f"Erreur initialisation BBIAChat: {e}")
+            self.bbia_chat = None
+
         logger.info(f"🤗 BBIA Hugging Face initialisé (device: {self.device})")
         logger.info(f"😊 Personnalité BBIA: {self.bbia_personality}")
 
@@ -1146,13 +1166,19 @@ class BBIAHuggingFace:
                 "sentiment": sentiment.get("sentiment", "neutral"),
             }
 
-            if self.use_llm_chat and self.chat_model and self.chat_tokenizer:
+            # PRIORITÉ 1: Utiliser BBIAChat (LLM léger Phi-2/TinyLlama) si disponible
+            if self.bbia_chat and self.bbia_chat.llm_model:
+                logger.debug("Utilisation BBIAChat (LLM conversationnel léger)")
+                bbia_response = self.bbia_chat.chat(user_message)
+            # PRIORITÉ 2: Utiliser LLM pré-entraîné lourd (Mistral/Llama) si disponible
+            elif self.use_llm_chat and self.chat_model and self.chat_tokenizer:
                 # Utiliser LLM pré-entraîné (Mistral/Llama)
                 bbia_response = self._generate_llm_response(
                     user_message,
                     use_context,
                     enable_tools=enable_tools,
                 )
+            # PRIORITÉ 3: Fallback vers réponses enrichies (règles + variété)
             else:
                 # Fallback vers réponses enrichies (règles + variété)
                 bbia_response = self._generate_simple_response(
@@ -1179,14 +1205,19 @@ class BBIAHuggingFace:
             )
 
             # 4. Adapter réponse selon personnalité BBIA (si pas LLM)
-            if not self.use_llm_chat:
-                # Réutiliser sentiment_dict déjà créé
+            # BBIAChat et LLM lourd gèrent déjà la personnalité
+            if self.bbia_chat and self.bbia_chat.llm_model:
+                # BBIAChat gère déjà la personnalité
+                adapted_response = bbia_response
+            elif self.use_llm_chat and self.chat_model:
+                # LLM lourd gère déjà la personnalité
+                adapted_response = bbia_response
+            else:
+                # Fallback: adapter selon personnalité BBIA
                 adapted_response = self._adapt_response_to_personality(
                     bbia_response,
                     sentiment_dict,
                 )
-            else:
-                adapted_response = bbia_response  # LLM gère déjà la personnalité
 
             # 5. Sauvegarder automatiquement dans mémoire persistante (si disponible)
             try:

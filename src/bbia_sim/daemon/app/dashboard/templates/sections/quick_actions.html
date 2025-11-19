@@ -1,0 +1,97 @@
+<section class="w-full">
+    <div class="app-section">
+        <div class="app-section-title">Quick Actions</div>
+
+        <!-- Grille de 15 boutons emoji -->
+        <div class="grid grid-cols-5 gap-3 mt-4">
+            <button
+                class="quick-action-btn p-4 rounded-lg bg-white border border-gray-200 hover:scale-105 hover:shadow-md transition-all duration-200 text-3xl"
+                data-emotion="happy" title="Heureux">😊</button>
+
+            <button
+                class="quick-action-btn p-4 rounded-lg bg-white border border-gray-200 hover:scale-105 hover:shadow-md transition-all duration-200 text-3xl"
+                data-emotion="sad" title="Triste">😢</button>
+
+            <button
+                class="quick-action-btn p-4 rounded-lg bg-white border border-gray-200 hover:scale-105 hover:shadow-md transition-all duration-200 text-3xl"
+                data-emotion="confused" title="Confus">😕</button>
+
+            <button
+                class="quick-action-btn p-4 rounded-lg bg-white border border-gray-200 hover:scale-105 hover:shadow-md transition-all duration-200 text-3xl"
+                data-emotion="surprised" title="Surpris">😮</button>
+
+            <button
+                class="quick-action-btn p-4 rounded-lg bg-white border border-gray-200 hover:scale-105 hover:shadow-md transition-all duration-200 text-3xl"
+                data-emotion="angry" title="En colère">😠</button>
+
+            <button
+                class="quick-action-btn p-4 rounded-lg bg-white border border-gray-200 hover:scale-105 hover:shadow-md transition-all duration-200 text-3xl"
+                data-emotion="cool" title="Cool">🕶️</button>
+
+            <button
+                class="quick-action-btn p-4 rounded-lg bg-white border border-gray-200 hover:scale-105 hover:shadow-md transition-all duration-200 text-3xl"
+                data-emotion="curious" title="Curieux">🤔</button>
+
+            <button
+                class="quick-action-btn p-4 rounded-lg bg-white border border-gray-200 hover:scale-105 hover:shadow-md transition-all duration-200 text-3xl"
+                data-action="wave" title="Saluer">👋</button>
+
+            <button
+                class="quick-action-btn p-4 rounded-lg bg-white border border-gray-200 hover:scale-105 hover:shadow-md transition-all duration-200 text-3xl"
+                data-action="pray" title="Prier">🙏</button>
+
+            <button
+                class="quick-action-btn p-4 rounded-lg bg-white border border-gray-200 hover:scale-105 hover:shadow-md transition-all duration-200 text-3xl"
+                data-action="sleep" title="Dormir">😴</button>
+
+            <button
+                class="quick-action-btn p-4 rounded-lg bg-white border border-gray-200 hover:scale-105 hover:shadow-md transition-all duration-200 text-3xl"
+                data-emotion="excited" title="Excité">🎉</button>
+
+            <button
+                class="quick-action-btn p-4 rounded-lg bg-white border border-gray-200 hover:scale-105 hover:shadow-md transition-all duration-200 text-3xl"
+                data-action="dance" title="Danser">🎭</button>
+
+            <button
+                class="quick-action-btn p-4 rounded-lg bg-white border border-gray-200 hover:scale-105 hover:shadow-md transition-all duration-200 text-3xl"
+                data-action="art" title="Art">🎨</button>
+
+            <button
+                class="quick-action-btn p-4 rounded-lg bg-white border border-gray-200 hover:scale-105 hover:shadow-md transition-all duration-200 text-3xl"
+                data-action="party" title="Fête">🎪</button>
+
+            <button
+                class="quick-action-btn p-4 rounded-lg bg-white border border-gray-200 hover:scale-105 hover:shadow-md transition-all duration-200 text-3xl"
+                data-action="movie" title="Film">🎬</button>
+        </div>
+    </div>
+</section>
+
+<script>
+    // Gestion des Quick Actions
+    document.addEventListener('DOMContentLoaded', () => {
+        const buttons = document.querySelectorAll('.quick-action-btn');
+
+        buttons.forEach(button => {
+            button.addEventListener('click', async () => {
+                const emotion = button.getAttribute('data-emotion');
+                const action = button.getAttribute('data-action');
+
+                // Animation visuelle
+                button.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    button.style.transform = '';
+                }, 150);
+
+                // Envoyer commande (à implémenter avec WebSocket ou API)
+                if (emotion) {
+                    console.log(`Émotion: ${emotion}`);
+                    // TODO: Envoyer via WebSocket ou API
+                } else if (action) {
+                    console.log(`Action: ${action}`);
+                    // TODO: Envoyer via WebSocket ou API
+                }
+            });
+        });
+    });
+</script>

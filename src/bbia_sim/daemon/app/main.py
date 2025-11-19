@@ -22,6 +22,7 @@ from .routers import (
     daemon,
     ecosystem,
     kinematics,
+    media,
     metrics,
     motion,
     motors,
@@ -246,6 +247,12 @@ app.include_router(
     daemon.router,
     prefix="/api",
 )  # Sans dépendance globale pour dashboard
+
+# Router media SANS auth pour permettre l'accès depuis le dashboard
+# Note: Les endpoints media sont accessibles depuis le dashboard
+app.include_router(
+    media.router
+)  # Préfixe /development/api/media déjà défini dans le router
 
 # Routers AVEC WebSockets (auth via query params en prod)
 # Note: Les WebSockets ne supportent pas HTTPBearer

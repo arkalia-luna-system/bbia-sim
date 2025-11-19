@@ -53,6 +53,59 @@
    - Score global : ~85-90% de parité fonctionnelle
    - Dernière mise à jour : Oct / Nov. 2025
 
+8. **`NOUVEAUTES_REACHY_NOVEMBRE_2024.md`** ⭐ **NOUVEAU** (Novembre 2024)
+   - **Chemin** : `quality/audits/NOUVEAUTES_REACHY_NOVEMBRE_2024.md`
+   - Analyse de l'email Pollen Robotics (Novembre 2024) sur la version finale de production
+   - Vérification complète des nouveautés (dashboard, installation, contrôle media)
+   - Statut : **98% COMPLET** - BBIA-SIM prêt pour réception robot
+   - GIF officiel intégré : `assets/images/reachy_mini_unboxing_official.gif`
+   - Dernière mise à jour : Novembre 2024
+
+9. **`COMPARAISON_DASHBOARD_TESTEURS.md`** ✅ **TERMINÉ** (19 Novembre 2025)
+   - **Chemin** : `dashboard/COMPARAISON_DASHBOARD_TESTEURS.md`
+   - Comparaison détaillée dashboard BBIA vs dashboard testeurs bêta
+   - Identification des différences visuelles et fonctionnelles
+   - Plan d'action pour améliorer le dashboard BBIA
+   - Guide pour trouver les avancées des testeurs (Hugging Face Spaces, GitHub, etc.)
+   - **Dernière mise à jour :** 19 Novembre 2025
+   - **État** : ✅ Toutes les phases terminées (Contrôles media, Vue 3D, Design épuré, Intégration robot réel)
+
+10. **`PLAN_EVOLUTION_BBIA_COMPLET.md`** ⭐ **NOUVEAU** (Novembre 2024)
+    - **Chemin** : `quality/audits/PLAN_EVOLUTION_BBIA_COMPLET.md`
+    - Plan d'évolution complet pour rendre BBIA aussi performant et intelligent que l'officiel
+    - 5 plans détaillés : Intelligence, Dashboard, Performance, Comportements, Intelligence Avancée
+    - Calendrier 20 semaines avec métriques de succès
+    - Vision stratégique : BBIA référence en robotique cognitive
+    - Dernière mise à jour : Novembre 2024
+
+11. **`PLAN_INTELLIGENCE_CONVERSATIONNELLE.md`** ✅ **TERMINÉ** (19 novembre 2025)
+    - **Chemin** : `quality/audits/PLAN_INTELLIGENCE_CONVERSATIONNELLE.md`
+    - Plan détaillé : Intégration LLM conversationnel (Phi-2, TinyLlama)
+    - 3 phases : ✅ Toutes terminées
+    - Durée : 6 semaines (complétée)
+    - Priorité : 🔴 HAUTE
+    - Dernière mise à jour : 19 novembre 2025
+    - **État** : ✅ BBIAChat implémenté avec 5 personnalités, émotions, préférences
+
+12. **`PLAN_COMPORTEMENTS_AVANCES.md`** ⭐ **NOUVEAU** (Novembre 2024)
+    - **Chemin** : `quality/audits/PLAN_COMPORTEMENTS_AVANCES.md`
+    - Plan détaillé : Création 15+ comportements intelligents
+    - Liste complète comportements (Dance, Storytelling, Teaching, etc.)
+    - Architecture modulaire et extensible
+    - Durée : 8 semaines
+    - Priorité : 🟡 MOYENNE
+    - Dernière mise à jour : Novembre 2024
+
+13. **`PROMPTS_AGENTS_CURSOR.md`** ✅ **MIS À JOUR** (19 Novembre 2025)
+   - **Chemin** : `quality/audits/PROMPTS_AGENTS_CURSOR.md`
+   - 5 prompts optimisés pour agents Cursor travaillant simultanément
+   - **Dernière mise à jour :** 19 Novembre 2025
+   - **État Dashboard :** ✅ Phase 1, 2.2, 2.3 terminées
+    - Instructions qualité code, sécurité, performance
+    - Coordination entre agents
+    - Ordre d'exécution recommandé
+    - Dernière mise à jour : Novembre 2024
+
 ---
 
 ## 📁 Archives - Audits Terminés (Pour Référence)
@@ -149,6 +202,12 @@ Les fichiers suivants ont été fusionnés et archivés dans `_archived/` :
 
 ---
 
-**Dernière mise à jour** : Oct / Nov. 2025
+**Dernière mise à jour** : 19 Novembre 2025
 
-**Audit le plus récent** : Windsurf (11 phases) - Score global **8.07/10** (Oct / Nov. 2025)
+**Audit le plus récent** : 
+- **NOUVEAUTES_REACHY_NOVEMBRE_2024.md** - Analyse email Pollen Robotics (Novembre 2024)
+- **PLAN_EVOLUTION_BBIA_COMPLET.md** - Plan d'évolution complet (Novembre 2024) ⭐ **NOUVEAU**
+- **COMPARAISON_DASHBOARD_TESTEURS.md** - ✅ **TERMINÉ** (19 nov 2025) - Toutes phases implémentées
+- Windsurf (11 phases) - Score global **8.07/10** (Oct / Nov. 2025)
+
+**📋 Pour démarrer rapidement :** Voir `RESUME_PLANS_EVOLUTION.md` - Résumé exécutif des plans

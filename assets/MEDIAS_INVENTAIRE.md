@@ -114,6 +114,10 @@
 
 - `robot_3d_final.png` (38K) - Vue 3D finale du robot
 - `robot_animation.gif` - Animation GIF du robot
+- `reachy_mini_unboxing_official.gif` (1.2M) - GIF officiel Reachy Mini sortant de sa boîte (Novembre 2024)
+  - Source : Pollen Robotics (GitHub officiel)
+  - Description : Animation du robot Reachy Mini émergeant de sa boîte d'emballage
+  - Usage : Documentation, présentation, README
 
 ### 🤖 Textures Robot (Procreate)
 

@@ -9,6 +9,7 @@ Reachy Mini Wireless (féminine, française si possible).
 
 import logging
 import os
+import queue
 import sys
 import threading
 import time
@@ -504,6 +505,322 @@ def lister_voix_disponibles() -> list[Any]:
             _ = str(v.languages) if hasattr(v, "languages") and v.languages else ""
         result.append(v)
     return result
+
+
+# OPTIMISATION PERFORMANCE: Threading asynchrone pour transcription audio
+# Utiliser Union pour permettre None comme signal d'arrêt
+
+_transcribe_queue: queue.Queue[dict[str, Any] | None] = queue.Queue(maxsize=5)
+_transcribe_thread: threading.Thread | None = None
+_transcribe_active = False
+_transcribe_lock = threading.Lock()
+_last_transcribe_result: str | None = None
+
+
+def _transcribe_thread_worker() -> None:
+    """Worker thread pour transcriptions asynchrones en arrière-plan."""
+    global _last_transcribe_result
+    logger.debug("🎤 Thread transcription asynchrone démarré")
+
+    while _transcribe_active:
+        try:
+            # Attendre tâche de transcription
+            task = _transcribe_queue.get(timeout=0.5)
+            if task is None:  # Signal d'arrêt
+                break
+
+            audio_data = task["audio_data"]
+            sample_rate = task.get("sample_rate", 16000)
+            model_size = task.get("model_size", "tiny")
+
+            # Transcription synchrone dans le thread
+            result = _transcribe_audio_sync(audio_data, sample_rate, model_size)
+            _last_transcribe_result = result
+
+            _transcribe_queue.task_done()
+        except queue.Empty:
+            continue
+        except Exception as e:
+            logger.error(f"Erreur thread transcription asynchrone: {e}")
+            _transcribe_queue.task_done()
+
+    logger.debug("🎤 Thread transcription asynchrone arrêté")
+
+
+def start_async_transcription() -> bool:
+    """Démarre le thread de transcription asynchrone.
+
+    Returns:
+        True si démarré avec succès, False sinon
+    """
+    global _transcribe_thread, _transcribe_active
+
+    with _transcribe_lock:
+        if _transcribe_active:
+            logger.debug("Transcription asynchrone déjà active")
+            return True
+
+        _transcribe_active = True
+        _transcribe_thread = threading.Thread(
+            target=_transcribe_thread_worker,
+            daemon=True,
+            name="BBIAVoice-TranscribeThread",
+        )
+        _transcribe_thread.start()
+        logger.info("✅ Transcription asynchrone démarrée")
+        return True
+
+
+def stop_async_transcription() -> None:
+    """Arrête le thread de transcription asynchrone."""
+    global _transcribe_thread, _transcribe_active
+
+    with _transcribe_lock:
+        if not _transcribe_active:
+            return
+
+        _transcribe_active = False
+
+        # Envoyer signal d'arrêt
+        try:
+            _transcribe_queue.put_nowait(None)
+        except queue.Full:
+            pass
+
+        if _transcribe_thread and _transcribe_thread.is_alive():
+            _transcribe_thread.join(timeout=2.0)
+            if _transcribe_thread.is_alive():
+                logger.warning(
+                    "Thread transcription asynchrone n'a pas pu être arrêté proprement"
+                )
+
+        logger.info("✅ Transcription asynchrone arrêtée")
+
+
+def transcribe_audio_async(
+    audio_data: Any,
+    sample_rate: int = 16000,
+    model_size: str = "tiny",
+    timeout: float | None = None,
+) -> str | None:
+    """Transcrit audio de manière asynchrone (non-bloquant).
+
+    Args:
+        audio_data: Données audio (numpy array ou bytes)
+        sample_rate: Fréquence d'échantillonnage (défaut: 16000)
+        model_size: Taille du modèle Whisper (défaut: "tiny")
+        timeout: Timeout en secondes (défaut: None = pas de timeout)
+
+    Returns:
+        Texte transcrit ou None si erreur/timeout
+    """
+    global _last_transcribe_result
+
+    # Démarrer thread si nécessaire
+    if not _transcribe_active:
+        start_async_transcription()
+
+    # Si transcription asynchrone active, ajouter à la queue
+    if _transcribe_active:
+        try:
+            task = {
+                "audio_data": audio_data,
+                "sample_rate": sample_rate,
+                "model_size": model_size,
+            }
+            _transcribe_queue.put_nowait(task)
+
+            # Attendre résultat avec timeout
+            if timeout:
+                import time
+
+                start_time = time.time()
+                while time.time() - start_time < timeout:
+                    if _last_transcribe_result is not None:
+                        result = _last_transcribe_result
+                        _last_transcribe_result = None
+                        return result
+                    time.sleep(0.1)
+                return None
+
+            # Pas de timeout, retourner dernier résultat disponible
+            return _last_transcribe_result
+        except queue.Full:
+            logger.warning("Queue transcription pleine, fallback synchrone")
+            # Fallback synchrone
+            return _transcribe_audio_sync(audio_data, sample_rate, model_size)
+
+    # Fallback: transcription synchrone si asynchrone non actif
+    return _transcribe_audio_sync(audio_data, sample_rate, model_size)
+
+
+def _transcribe_audio_sync(
+    audio_data: Any,
+    sample_rate: int = 16000,
+    model_size: str = "tiny",
+) -> str | None:
+    """Version synchrone interne de transcribe_audio (utilisée par thread)."""
+    # Vérifier flag d'environnement pour désactiver audio (CI/headless)
+    if os.environ.get("BBIA_DISABLE_AUDIO", "0") == "1":
+        logging.debug("Audio désactivé (BBIA_DISABLE_AUDIO=1): transcription ignorée")
+        return None
+
+    try:
+        from .voice_whisper import WHISPER_AVAILABLE, WhisperSTT
+
+        if not WHISPER_AVAILABLE:
+            logging.debug("Whisper non disponible pour transcription")
+            return None
+
+        # OPTIMISATION PERFORMANCE: Utiliser WhisperSTT avec cache global
+        # Le cache est géré automatiquement par WhisperSTT
+        stt = WhisperSTT(model_size=model_size, language="fr")
+
+        # Charger le modèle (utilise cache si disponible)
+        if not stt.is_loaded:
+            if not stt.load_model():
+                logging.warning("Impossible de charger le modèle Whisper")
+                return None
+
+        # Convertir audio_data en fichier temporaire si nécessaire
+        import tempfile
+
+        import numpy as np
+
+        # Créer fichier temporaire
+        temp_file = tempfile.NamedTemporaryFile(
+            suffix=".wav",
+            delete=False,
+        )
+        temp_path = temp_file.name
+        temp_file.close()
+
+        try:
+            # Sauvegarder audio_data dans fichier temporaire
+            import soundfile as sf
+
+            if isinstance(audio_data, np.ndarray):
+                sf.write(temp_path, audio_data, sample_rate)
+            elif isinstance(audio_data, bytes):
+                # Convertir bytes en numpy array si nécessaire
+                audio_array = (
+                    np.frombuffer(audio_data, dtype=np.int16).astype(np.float32)
+                    / 32768.0
+                )
+                sf.write(temp_path, audio_array, sample_rate)
+            else:
+                logging.warning(f"Format audio non supporté: {type(audio_data)}")
+                return None
+
+            # Transcrit avec Whisper (utilise cache modèle)
+            result = stt.transcribe_audio(temp_path)
+
+            return str(result) if result is not None else None
+
+        finally:
+            # Nettoyer fichier temporaire
+            try:
+                os.unlink(temp_path)
+            except Exception as cleanup_error:
+                logging.debug(f"Nettoyage fichier Whisper ({cleanup_error})")
+
+    except ImportError:
+        logging.debug("Whisper non disponible (import échoué)")
+        return None
+    except Exception as e:
+        logging.warning(f"Erreur transcription Whisper: {e}")
+        return None
+
+
+# OPTIMISATION PERFORMANCE: Fonction wrapper pour transcription audio avec Whisper
+# Utilise le cache global pour éviter rechargement du modèle
+# NOTE: Pour version asynchrone, utiliser transcribe_audio_async()
+def transcribe_audio(
+    audio_data: Any,
+    sample_rate: int = 16000,
+    model_size: str = "tiny",
+) -> str | None:
+    """Transcrit des données audio en texte avec Whisper (utilise cache).
+
+    Args:
+        audio_data: Données audio (numpy array ou bytes)
+        sample_rate: Fréquence d'échantillonnage (défaut: 16000)
+        model_size: Taille du modèle Whisper ("tiny", "base", etc.) - défaut: "tiny"
+
+    Returns:
+        Texte transcrit ou None si erreur
+
+    """
+    # Vérifier flag d'environnement pour désactiver audio (CI/headless)
+    if os.environ.get("BBIA_DISABLE_AUDIO", "0") == "1":
+        logging.debug("Audio désactivé (BBIA_DISABLE_AUDIO=1): transcription ignorée")
+        return None
+
+    try:
+        from .voice_whisper import WHISPER_AVAILABLE, WhisperSTT
+
+        if not WHISPER_AVAILABLE:
+            logging.debug("Whisper non disponible pour transcription")
+            return None
+
+        # OPTIMISATION PERFORMANCE: Utiliser WhisperSTT avec cache global
+        # Le cache est géré automatiquement par WhisperSTT
+        stt = WhisperSTT(model_size=model_size, language="fr")
+
+        # Charger le modèle (utilise cache si disponible)
+        if not stt.is_loaded:
+            if not stt.load_model():
+                logging.warning("Impossible de charger le modèle Whisper")
+                return None
+
+        # Convertir audio_data en fichier temporaire si nécessaire
+        import tempfile
+
+        import numpy as np
+
+        # Créer fichier temporaire
+        temp_file = tempfile.NamedTemporaryFile(
+            suffix=".wav",
+            delete=False,
+        )
+        temp_path = temp_file.name
+        temp_file.close()
+
+        try:
+            # Sauvegarder audio_data dans fichier temporaire
+            import soundfile as sf
+
+            if isinstance(audio_data, np.ndarray):
+                sf.write(temp_path, audio_data, sample_rate)
+            elif isinstance(audio_data, bytes):
+                # Convertir bytes en numpy array si nécessaire
+                audio_array = (
+                    np.frombuffer(audio_data, dtype=np.int16).astype(np.float32)
+                    / 32768.0
+                )
+                sf.write(temp_path, audio_array, sample_rate)
+            else:
+                logging.warning(f"Format audio non supporté: {type(audio_data)}")
+                return None
+
+            # Transcrit avec Whisper (utilise cache modèle)
+            result = stt.transcribe_audio(temp_path)
+
+            return str(result) if result is not None else None
+
+        finally:
+            # Nettoyer fichier temporaire
+            try:
+                os.unlink(temp_path)
+            except Exception as cleanup_error:
+                logging.debug(f"Nettoyage fichier Whisper ({cleanup_error})")
+
+    except ImportError:
+        logging.debug("Whisper non disponible (import échoué)")
+        return None
+    except Exception as e:
+        logging.warning(f"Erreur transcription Whisper: {e}")
+        return None
 
 
 if __name__ == "__main__":

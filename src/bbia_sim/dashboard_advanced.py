@@ -3514,15 +3514,38 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                 )
             elif vision_action == "scan":
                 try:
-                    # Exécuter le scan de manière asynchrone
-                    objects = await asyncio.to_thread(
-                        advanced_websocket_manager.vision.scan_environment
-                    )
-                    num_objects = len(objects.get("objects", []))
-                    await advanced_websocket_manager.send_log_message(
-                        "info",
-                        f"Scan: {num_objects} objets détectés",
-                    )
+                    # OPTIMISATION PERFORMANCE: Utiliser scan_environment_async si disponible
+                    # (non-bloquant, utilise thread dédié)
+                    if hasattr(
+                        advanced_websocket_manager.vision, "scan_environment_async"
+                    ):
+                        # Démarrer scan asynchrone si pas déjà actif
+                        if not advanced_websocket_manager.vision._async_scan_active:
+                            advanced_websocket_manager.vision.start_async_scanning(
+                                interval=0.1
+                            )
+                        # Obtenir résultat non-bloquant
+                        objects = (
+                            advanced_websocket_manager.vision.scan_environment_async(
+                                timeout=0.5
+                            )
+                        )
+                    else:
+                        # Fallback: exécuter le scan de manière asynchrone via thread
+                        objects = await asyncio.to_thread(
+                            advanced_websocket_manager.vision.scan_environment
+                        )
+                    if objects:
+                        num_objects = len(objects.get("objects", []))
+                        await advanced_websocket_manager.send_log_message(
+                            "info",
+                            f"Scan: {num_objects} objets détectés",
+                        )
+                    else:
+                        await advanced_websocket_manager.send_log_message(
+                            "info",
+                            "Scan: aucun résultat disponible",
+                        )
                 except Exception as e:
                     logger.error(f"Erreur scan environnement: {e}")
                     await advanced_websocket_manager.send_log_message(

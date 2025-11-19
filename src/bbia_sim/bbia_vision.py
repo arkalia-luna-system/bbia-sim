@@ -7,7 +7,9 @@ Reconnaissance d'objets, détection de visages, suivi d'objets.
 import logging
 import math
 import os
+import queue
 import threading
+import time
 from collections import deque
 from collections.abc import Callable
 from datetime import datetime
@@ -148,6 +150,16 @@ class BBIAVision:
         )
         self.tracking_active = False
         self.current_focus: dict[str, Any] | None = None
+
+        # OPTIMISATION PERFORMANCE: Threading asynchrone pour détection objets
+        # (évite blocage lors de scan_environment)
+        self._scan_thread: threading.Thread | None = None
+        self._scan_queue: queue.Queue[dict[str, Any]] = queue.Queue(maxsize=1)
+        self._last_scan_result: dict[str, Any] | None = None
+        self._scan_lock = threading.Lock()
+        self._scan_interval = 0.1  # 100ms entre scans (10 FPS max)
+        self._async_scan_active = False
+        self._should_stop_scan = threading.Event()
 
         # Buffer circulaire pour frames caméra (Issue #16 SDK officiel - éviter overrun)
         # Taille configurable via env var (défaut: 10 frames)
@@ -1199,6 +1211,124 @@ class BBIAVision:
             return self._camera_frame_buffer[-1]
         return None
 
+    def _scan_thread_worker(self) -> None:
+        """Worker thread pour scans asynchrones en arrière-plan."""
+        logger.debug("🔍 Thread scan asynchrone démarré")
+        while not self._should_stop_scan.is_set():
+            try:
+                if self.camera_active:
+                    # Effectuer scan (synchrone dans le thread)
+                    result = self._scan_environment_sync()
+                    with self._scan_lock:
+                        self._last_scan_result = result
+                    # Mettre à jour queue (remplace ancien résultat si queue pleine)
+                    try:
+                        self._scan_queue.put_nowait(result)
+                    except queue.Full:
+                        # Remplacer ancien résultat
+                        try:
+                            self._scan_queue.get_nowait()
+                        except queue.Empty:
+                            pass
+                        self._scan_queue.put_nowait(result)
+                # Attendre intervalle avant prochain scan
+                self._should_stop_scan.wait(self._scan_interval)
+            except Exception as e:
+                logger.error(f"Erreur thread scan asynchrone: {e}")
+                time.sleep(self._scan_interval)
+
+        logger.debug("🔍 Thread scan asynchrone arrêté")
+
+    def start_async_scanning(self, interval: float = 0.1) -> bool:
+        """Démarre le scan asynchrone en arrière-plan.
+
+        Args:
+            interval: Intervalle entre scans en secondes (défaut: 0.1s = 10 FPS)
+
+        Returns:
+            True si démarré avec succès, False sinon
+
+        """
+        if self._async_scan_active:
+            logger.debug("Scan asynchrone déjà actif")
+            return True
+
+        self._scan_interval = max(0.05, interval)  # Min 50ms (20 FPS max)
+        self._should_stop_scan.clear()
+        self._async_scan_active = True
+
+        self._scan_thread = threading.Thread(
+            target=self._scan_thread_worker,
+            daemon=True,
+            name="BBIAVision-ScanThread",
+        )
+        self._scan_thread.start()
+        logger.info(f"✅ Scan asynchrone démarré (intervalle: {self._scan_interval}s)")
+        return True
+
+    def stop_async_scanning(self) -> None:
+        """Arrête le scan asynchrone en arrière-plan."""
+        if not self._async_scan_active:
+            return
+
+        self._should_stop_scan.set()
+        self._async_scan_active = False
+
+        if self._scan_thread and self._scan_thread.is_alive():
+            self._scan_thread.join(timeout=1.0)
+            if self._scan_thread.is_alive():
+                logger.warning(
+                    "Thread scan asynchrone n'a pas pu être arrêté proprement"
+                )
+
+        logger.info("✅ Scan asynchrone arrêté")
+
+    def scan_environment_async(
+        self,
+        timeout: float | None = None,
+    ) -> dict[str, Any] | None:
+        """Scanne l'environnement de manière asynchrone (non-bloquant).
+
+        Args:
+            timeout: Timeout en secondes pour attendre résultat (None = retour immédiat)
+
+        Returns:
+            Résultat du scan ou None si pas disponible
+
+        """
+        # Si scan asynchrone actif, retourner dernier résultat
+        if self._async_scan_active:
+            with self._scan_lock:
+                if self._last_scan_result is not None:
+                    return (
+                        self._last_scan_result.copy()
+                        if isinstance(self._last_scan_result, dict)
+                        else self._last_scan_result
+                    )
+
+            # Attendre nouveau résultat si timeout spécifié
+            if timeout is not None and timeout > 0:
+                try:
+                    result = self._scan_queue.get(timeout=timeout)
+                    with self._scan_lock:
+                        self._last_scan_result = result
+                    return result
+                except queue.Empty:
+                    return None
+
+        # Fallback: scan synchrone si asynchrone non actif
+        return self.scan_environment()
+
+    def _scan_environment_sync(self) -> dict[str, Any]:
+        """Version interne synchrone de scan_environment (utilisée par thread).
+
+        Returns:
+            Résultat du scan
+
+        """
+        # Utiliser la méthode scan_environment existante
+        return self.scan_environment()
+
     def get_vision_stats(self) -> dict[str, Any]:
         """Retourne les statistiques de vision."""
         return {
@@ -1212,6 +1342,8 @@ class BBIAVision:
             "camera_buffer_size": len(self._camera_frame_buffer),
             "camera_buffer_max": self._camera_frame_buffer.maxlen,
             "buffer_overruns": self._buffer_overrun_count,
+            "async_scan_active": self._async_scan_active,
+            "scan_interval": self._scan_interval,
         }
 
 
