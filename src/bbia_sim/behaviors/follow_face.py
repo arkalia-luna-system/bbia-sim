@@ -60,7 +60,7 @@ class FollowFaceBehavior(BBIABehavior):
         self.face_lost_threshold = 3.0  # secondes avant réaction
 
         # Initialiser émotions si disponible
-        if BBIAEmotions:
+        if BBIAEmotions is not None:
             self.emotions = BBIAEmotions()
         else:
             self.emotions = None
@@ -238,7 +238,7 @@ class FollowFaceBehavior(BBIABehavior):
 
     def _react_to_face_lost(self) -> None:
         """Réagit quand le visage est perdu."""
-        if not dire_texte:
+        if dire_texte is None:
             return
 
         reactions = [

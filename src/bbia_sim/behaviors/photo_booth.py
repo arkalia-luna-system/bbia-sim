@@ -194,16 +194,16 @@ class PhotoBoothBehavior(BBIABehavior):
 
     def _countdown(self) -> None:
         """Compte à rebours avant photo."""
-        if not dire_texte:
+        if dire_texte is None:
             return
 
         try:
             for i in range(3, 0, -1):
-                if dire_texte:
+                if dire_texte is not None:
                     dire_texte(str(i), robot_api=self.robot_api)
                 time.sleep(1.0)
 
-            if dire_texte:
+            if dire_texte is not None:
                 dire_texte("Souriez !", robot_api=self.robot_api)
             time.sleep(0.5)
 
@@ -221,13 +221,13 @@ class PhotoBoothBehavior(BBIABehavior):
                 image = self.robot_api.get_image()
                 if image is not None:
                     logger.info("Photo capturée avec succès")
-                    if dire_texte:
+                    if dire_texte is not None:
                         dire_texte("Photo prise !", robot_api=self.robot_api)
                 else:
                     logger.warning("Échec capture photo")
             else:
                 logger.warning("get_image non disponible - simulation capture")
-                if dire_texte:
+                if dire_texte is not None:
                     dire_texte("Photo !", robot_api=self.robot_api)
 
         except Exception as e:

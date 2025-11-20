@@ -96,7 +96,7 @@ class EmotionShowBehavior(BBIABehavior):
         self.priority = 5
 
         # Initialiser émotions si disponible
-        if BBIAEmotions:
+        if BBIAEmotions is not None:
             self.emotions = BBIAEmotions()
         else:
             self.emotions = None
@@ -147,7 +147,7 @@ class EmotionShowBehavior(BBIABehavior):
                 time.sleep(0.5)
 
                 # Explication vocale
-                if dire_texte:
+                if dire_texte is not None:
                     explanation = EMOTION_EXPLANATIONS.get(
                         emotion,
                         f"Maintenant je suis {emotion}.",

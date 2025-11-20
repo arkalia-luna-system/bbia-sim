@@ -283,7 +283,7 @@ class FollowObjectBehavior(BBIABehavior):
             obj: Objet suivi
 
         """
-        if not dire_texte:
+        if dire_texte is None:
             return
 
         obj_name = obj.get("name", "objet")
@@ -300,7 +300,7 @@ class FollowObjectBehavior(BBIABehavior):
 
     def _react_to_object_lost(self) -> None:
         """Réagit quand l'objet est perdu."""
-        if not dire_texte:
+        if dire_texte is None:
             return
 
         if self.current_target:

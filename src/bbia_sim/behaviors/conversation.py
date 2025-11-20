@@ -55,7 +55,11 @@ class ConversationBehavior(BBIABehavior):
         # Tentative d'importation de BBIAHuggingFace avec outils LLM
         self.hf_chat = None
         try:
-            if BBIAHuggingFace and BBIATools and BBIAVision:
+            if (
+                BBIAHuggingFace is not None
+                and BBIATools is not None
+                and BBIAVision is not None
+            ):
                 # Initialiser outils LLM pour function calling
                 vision = BBIAVision(robot_api=robot_api) if robot_api else None
                 tools = BBIATools(robot_api=robot_api, vision=vision)
@@ -157,7 +161,7 @@ class ConversationBehavior(BBIABehavior):
         logger.info("Activation du mode conversation intelligente")
 
         # Message d'accueil
-        if dire_texte:
+        if dire_texte is not None:
             greeting_messages = [
                 "Je vous écoute attentivement.",
                 "Je suis tout ouïe, parlez-moi.",
@@ -169,7 +173,7 @@ class ConversationBehavior(BBIABehavior):
 
         # Reconnaissance vocale
         texte = None
-        if reconnaitre_parole:
+        if reconnaitre_parole is not None:
             texte = reconnaitre_parole(duree=5, robot_api=self.robot_api)
             logger.info(f"Texte reconnu : {texte}")
 
@@ -180,7 +184,7 @@ class ConversationBehavior(BBIABehavior):
             if self.hf_chat:
                 try:
                     response = self.hf_chat.chat(texte, enable_tools=True)
-                    if dire_texte:
+                    if dire_texte is not None:
                         dire_texte(response, robot_api=self.robot_api)
                     logger.info(f"Synthèse vocale (HF) : {response}")
 
@@ -201,7 +205,7 @@ class ConversationBehavior(BBIABehavior):
 
             # Système enrichi (fallback)
             response = self._generate_enriched_response(texte_lower)
-            if dire_texte:
+            if dire_texte is not None:
                 dire_texte(response, robot_api=self.robot_api)
             logger.info(f"Synthèse vocale (enrichi) : {response}")
 
@@ -216,7 +220,7 @@ class ConversationBehavior(BBIABehavior):
 
         else:
             # Aucun texte entendu
-            if dire_texte:
+            if dire_texte is not None:
                 response = self._get_enriched_response("not_heard")
                 dire_texte(response, robot_api=self.robot_api)
             logger.info("Aucun texte reconnu")

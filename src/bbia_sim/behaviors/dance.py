@@ -88,7 +88,7 @@ class DanceBehavior(BBIABehavior):
         logger.info(f"Démarrage danse type '{music_type}' pour {duration}s")
 
         # Message de démarrage
-        if dire_texte:
+        if dire_texte is not None:
             messages = {
                 "happy": "C'est parti pour une danse joyeuse !",
                 "calm": "Je vais danser calmement...",
@@ -105,7 +105,7 @@ class DanceBehavior(BBIABehavior):
 
         try:
             # Détection audio si fichier fourni
-            if audio_file and detecter_son:
+            if audio_file and detecter_son is not None:
                 detecter_son(audio_file)
 
             # Exécuter routine de danse
