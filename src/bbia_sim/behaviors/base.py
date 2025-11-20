@@ -9,6 +9,6 @@ from __future__ import annotations
 
 # Import de BBIABehavior depuis bbia_behavior pour éviter la duplication
 # et assurer la compatibilité avec register_behavior
-from ..bbia_behavior import BBIABehavior
+from bbia_sim.bbia_behavior import BBIABehavior
 
 __all__ = ["BBIABehavior"]

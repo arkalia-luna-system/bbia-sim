@@ -12,11 +12,11 @@ import time
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
-    from ..robot_api import RobotAPI
+    from bbia_sim.robot_api import RobotAPI
 
 try:
-    from ..bbia_audio import detecter_son
-    from ..bbia_voice import dire_texte
+    from bbia_sim.bbia_audio import detecter_son
+    from bbia_sim.bbia_voice import dire_texte
 except ImportError:
     detecter_son = None  # type: ignore[assignment, misc]
     dire_texte = None  # type: ignore[assignment, misc]

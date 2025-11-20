@@ -12,11 +12,11 @@ import time
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
-    from ..bbia_vision import BBIAVision
-    from ..robot_api import RobotAPI
+    from bbia_sim.bbia_vision import BBIAVision
+    from bbia_sim.robot_api import RobotAPI
 
 try:
-    from ..bbia_voice import dire_texte
+    from bbia_sim.bbia_voice import dire_texte
 except ImportError:
     dire_texte = None  # type: ignore[assignment, misc]
 
@@ -147,8 +147,12 @@ class PhotoBoothBehavior(BBIABehavior):
                     center_y = int(bbox.get("center_y", 240))
 
                     if 0 <= center_x <= 640 and 0 <= center_y <= 480:
-                        self.robot_api.look_at_image(center_x, center_y, duration=0.8)
-                        logger.debug(f"Cadrage visage vers ({center_x}, {center_y})")
+                        look_at_image = getattr(self.robot_api, "look_at_image", None)
+                        if look_at_image:
+                            look_at_image(center_x, center_y, duration=0.8)
+                            logger.debug(
+                                f"Cadrage visage vers ({center_x}, {center_y})"
+                            )
 
         except Exception as e:
             logger.warning(f"Erreur cadrage visage: {e}")
@@ -218,13 +222,19 @@ class PhotoBoothBehavior(BBIABehavior):
         try:
             # Utiliser robot.media.camera si disponible
             if hasattr(self.robot_api, "get_image"):
-                image = self.robot_api.get_image()
-                if image is not None:
-                    logger.info("Photo capturée avec succès")
-                    if dire_texte is not None:
-                        dire_texte("Photo prise !", robot_api=self.robot_api)
+                get_image = getattr(self.robot_api, "get_image", None)
+                if get_image:
+                    image = get_image()
+                    if image is not None:
+                        logger.info("Photo capturée avec succès")
+                        if dire_texte is not None:
+                            dire_texte("Photo prise !", robot_api=self.robot_api)
+                    else:
+                        logger.warning("Échec capture photo")
                 else:
-                    logger.warning("Échec capture photo")
+                    logger.warning("get_image non disponible - simulation capture")
+                    if dire_texte is not None:
+                        dire_texte("Photo !", robot_api=self.robot_api)
             else:
                 logger.warning("get_image non disponible - simulation capture")
                 if dire_texte is not None:

@@ -12,13 +12,13 @@ import secrets
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
-    from ..robot_api import RobotAPI
+    from bbia_sim.robot_api import RobotAPI
 
 try:
-    from ..bbia_huggingface import BBIAHuggingFace
-    from ..bbia_tools import BBIATools
-    from ..bbia_vision import BBIAVision
-    from ..bbia_voice import dire_texte, reconnaitre_parole
+    from bbia_sim.bbia_huggingface import BBIAHuggingFace
+    from bbia_sim.bbia_tools import BBIATools
+    from bbia_sim.bbia_vision import BBIAVision
+    from bbia_sim.bbia_voice import dire_texte, reconnaitre_parole
 except ImportError:
     BBIAHuggingFace = None  # type: ignore[assignment, misc]
     BBIATools = None  # type: ignore[assignment, misc]
@@ -26,7 +26,7 @@ except ImportError:
     dire_texte = None  # type: ignore[assignment, misc]
     reconnaitre_parole = None  # type: ignore[assignment, misc]
 
-from .base import BBIABehavior
+from bbia_sim.behaviors.base import BBIABehavior
 
 logger = logging.getLogger("BBIA")
 

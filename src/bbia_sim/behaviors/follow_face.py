@@ -14,17 +14,17 @@ import time
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
-    from ..bbia_vision import BBIAVision
-    from ..robot_api import RobotAPI
+    from bbia_sim.bbia_vision import BBIAVision
+    from bbia_sim.robot_api import RobotAPI
 
 try:
-    from ..bbia_emotions import BBIAEmotions
-    from ..bbia_voice import dire_texte
+    from bbia_sim.bbia_emotions import BBIAEmotions
+    from bbia_sim.bbia_voice import dire_texte
 except ImportError:
     BBIAEmotions = None  # type: ignore[assignment, misc]
     dire_texte = None  # type: ignore[assignment, misc]
 
-from .base import BBIABehavior
+from bbia_sim.behaviors.base import BBIABehavior
 
 logger = logging.getLogger("BBIA")
 
