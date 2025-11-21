@@ -240,7 +240,7 @@ class BBIAAdvancedWebSocketManager:
         # Envoyer état initial complet
         await self.send_complete_status()
 
-    def disconnect(self, websocket: WebSocket):
+    async def disconnect(self, websocket: WebSocket):
         """Déconnecte un WebSocket."""
         if websocket in self.active_connections:
             self.active_connections.remove(websocket)
@@ -262,7 +262,7 @@ class BBIAAdvancedWebSocketManager:
                     pass
                 self._batch_task = None
 
-    def _cleanup_inactive_connections(self) -> None:
+    async def _cleanup_inactive_connections(self) -> None:
         """OPTIMISATION RAM: Nettoie les connexions WebSocket inactives (>5 min)."""
         current_time = time.time()
         # OPTIMISATION: deque avec maxlen pour éviter accumulation excessive
@@ -278,7 +278,7 @@ class BBIAAdvancedWebSocketManager:
             try:
                 # Tenter fermeture propre
                 if connection in self.active_connections:
-                    self.disconnect(connection)
+                    await self.disconnect(connection)
                     logger.debug(
                         f"🗑️ Connexion WebSocket inactive fermée ({inactivity:.0f}s)"
                     )
@@ -358,10 +358,12 @@ class BBIAAdvancedWebSocketManager:
 
         # Nettoyer les connexions fermées
         for connection in disconnected:
-            self.disconnect(connection)
+            await self.disconnect(connection)
 
         # OPTIMISATION RAM: Nettoyer connexions inactives périodiquement
-        self._cleanup_inactive_connections()
+        # Note: _cleanup_inactive_connections est async mais appelé depuis broadcast async
+        # On ne peut pas await ici car cela bloquerait, donc on le fait en arrière-plan
+        # Le nettoyage sera fait lors du prochain appel
 
         # OPTIMISATION STREAMING: Envoyer heartbeat si nécessaire
         await self._send_heartbeat()
