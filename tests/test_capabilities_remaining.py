@@ -509,13 +509,15 @@ class TestSimpleMove:
 
         backend = ReachyMiniBackend()
         backend.connect()
-
-        # Test via create_move_from_positions (SimpleMove est interne)
-        positions = [{"yaw_body": 0.0}, {"yaw_body": 0.5}]
-        _move = backend.create_move_from_positions(positions, duration=1.0)
-        # _move peut être None si reachy_mini n'est pas disponible
-        # C'est normal, on teste juste que la méthode existe
-        assert backend.create_move_from_positions is not None
+        try:
+            # Test via create_move_from_positions (SimpleMove est interne)
+            positions = [{"yaw_body": 0.0}, {"yaw_body": 0.5}]
+            _move = backend.create_move_from_positions(positions, duration=1.0)
+            # _move peut être None si reachy_mini n'est pas disponible
+            # C'est normal, on teste juste que la méthode existe
+            assert backend.create_move_from_positions is not None
+        finally:
+            backend.disconnect()
 
 
 class TestBackendAdapterMethods:
@@ -530,8 +532,9 @@ class TestBackendAdapterMethods:
         if robot_api is None:
             pytest.skip("Backend MuJoCo non disponible")
 
-        adapter = BackendAdapter(robot_api)
-        adapter.connect_if_needed()
+        try:
+            adapter = BackendAdapter(robot_api)
+            adapter.connect_if_needed()
 
         # Test get_present_head_pose
         pose = adapter.get_present_head_pose()
@@ -570,6 +573,9 @@ class TestBackendAdapterMethods:
 
         # Test close
         adapter.close()
+        finally:
+            if robot_api:
+                robot_api.disconnect()
 
 
 class TestBBIAVisionMethods:
