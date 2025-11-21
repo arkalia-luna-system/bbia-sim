@@ -346,7 +346,9 @@ if STATIC_DIR.exists() and TEMPLATES_DIR.exists():
 else:
     logger.warning(
         "Dashboard templates non trouvés. Dashboard non disponible. "
-        f"STATIC_DIR: {STATIC_DIR}, TEMPLATES_DIR: {TEMPLATES_DIR}",
+        "STATIC_DIR: %s, TEMPLATES_DIR: %s",
+        STATIC_DIR,
+        TEMPLATES_DIR,
     )
 
     @app.get("/", response_class=JSONResponse)

@@ -149,11 +149,11 @@ class FollowFaceBehavior(BBIABehavior):
 
                 time.sleep(0.1)  # 10 Hz pour suivi fluide
 
-              logger.info(
-                  "Suivi terminé - Visages détectés: %d, Perdus: %d",
-                  face_detected_count,
-                  face_lost_count,
-              )
+            logger.info(
+                "Suivi terminé - Visages détectés: %d, Perdus: %d",
+                face_detected_count,
+                face_lost_count,
+            )
 
         except KeyboardInterrupt:
             logger.info("Suivi interrompu par l'utilisateur")

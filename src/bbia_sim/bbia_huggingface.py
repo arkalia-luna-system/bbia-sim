@@ -2851,12 +2851,12 @@ def main() -> None:
     # Test chargement modèle
     logging.info("📥 Test chargement modèle BLIP...")
     success = hf.load_model("Salesforce/blip-image-captioning-base", "vision")
-    logging.info(f"Résultat: {'✅' if success else '❌'}")
+    logging.info("Résultat: %s", "✅" if success else "❌")
 
     # Test analyse sentiment
     logging.info("\n📝 Test analyse sentiment...")
     sentiment_result = hf.analyze_sentiment("Je suis très heureux aujourd'hui!")
-    logging.info(f"Résultat: {sentiment_result}")
+    logging.info("Résultat: %s", sentiment_result)
 
     # Test analyse émotion
     logging.info("\n😊 Test analyse émotion...")
