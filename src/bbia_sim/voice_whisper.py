@@ -317,7 +317,9 @@ class WhisperSTT:
                     self._vad_loaded = True
                     logger.info("✅ Modèle VAD chargé")
                 except Exception as e:
-                    logger.warning("⚠️ Impossible de charger VAD, fallback activé: %s", e)
+                    logger.warning(
+                        "⚠️ Impossible de charger VAD, fallback activé: %s", e
+                    )
                     self.enable_vad = False
                     return True  # Fallback: considérer comme parole
 
@@ -438,7 +440,7 @@ class WhisperSTT:
                     logger.debug("🔊 Parole détectée")
                 else:
                     silence_duration += chunk_duration
-                    logger.debug("🔇 Silence: %ss", silence_duration:.1f)
+                    logger.debug("🔇 Silence: %.1fs", silence_duration)
 
                 total_duration += chunk_duration
 
@@ -568,7 +570,9 @@ class WhisperSTT:
                         logger.debug("🔊 Parole détectée")
                     else:
                         consecutive_silence_chunks += 1
-                        logger.debug("🔇 Silence: %s chunks", consecutive_silence_chunks)
+                        logger.debug(
+                            "🔇 Silence: %s chunks", consecutive_silence_chunks
+                        )
                         # Ne pas transcrire si silence prolongé
                         if consecutive_silence_chunks >= max_silence_chunks:
                             should_transcribe = False
