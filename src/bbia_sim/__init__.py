@@ -7,4 +7,4 @@ le robot Reachy Mini avec des capacités d'IA avancées incluant
 la reconnaissance vocale, la vision, les émotions et les comportements.
 """
 
-__version__ = "1.2.0"
+__version__ = "1.3.2"
