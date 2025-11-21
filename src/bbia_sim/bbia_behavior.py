@@ -503,7 +503,7 @@ class VisionTrackingBehavior(BBIABehavior):
                             )
                     else:
                         logger.debug("Pas de bbox disponible pour look_at_image")
-                
+
                 # Méthode 3 (fallback final): émotion curious (regard explorateur)
                 if not tracking_success and hasattr(self.robot_api, "set_emotion"):
                     try:
