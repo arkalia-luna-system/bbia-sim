@@ -188,7 +188,7 @@ class BBIAChat:
         prompt: str,
         max_length: int = 200,
         temperature: float = 0.7,
-        timeout: float = 5.0,
+        timeout: float = 30.0,
     ) -> str:
         """Génère une réponse avec le LLM.
 
@@ -218,19 +218,30 @@ class BBIAChat:
 
             # Génération avec timeout
             start_time = time.time()
-            with torch.no_grad():
-                outputs = self.llm_model.generate(
-                    inputs.input_ids.to(self.llm_model.device),
-                    max_length=max_length,
-                    temperature=temperature,
-                    do_sample=True,
-                    pad_token_id=self.llm_tokenizer.eos_token_id,
-                )
+            try:
+                with torch.no_grad():
+                    outputs = self.llm_model.generate(
+                        inputs.input_ids.to(self.llm_model.device),
+                        max_length=max_length,
+                        temperature=temperature,
+                        do_sample=True,
+                        pad_token_id=self.llm_tokenizer.eos_token_id,
+                    )
 
-            # Vérifier timeout
-            if time.time() - start_time > timeout:
-                logger.warning("Génération LLM dépassée timeout")
-                return "Désolé, la génération prend trop de temps."
+                # Vérifier timeout après génération
+                elapsed_time = time.time() - start_time
+                if elapsed_time > timeout:
+                    logger.warning(
+                        "Génération LLM dépassée timeout (%.2fs > %.2fs)",
+                        elapsed_time,
+                        timeout,
+                    )
+                    return "Désolé, la génération prend trop de temps."
+            except RuntimeError as e:
+                if "out of memory" in str(e).lower():
+                    logger.warning("Mémoire insuffisante pour génération LLM")
+                    return "Désolé, mémoire insuffisante pour générer une réponse."
+                raise
 
             # Décoder réponse
             response: str = str(
