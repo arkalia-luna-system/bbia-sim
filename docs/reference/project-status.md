@@ -5,7 +5,7 @@
 **🎯 Vue d'ensemble de l'état du projet par axe**
 *Fiabilité • Performance • Sécurité • CI/CD • Plus*
 
-**Version** : 1.3.2 • **Date** : Oct / Nov. 2025
+**Version** : 1.3.2 • **Date** : 21 novembre 2025
 **Prêt pour arrivée robot** 🤖
 
 [📚 Navigation rapide](INDEX_THEMATIQUE.md) • [🏠 README](../README.md)
