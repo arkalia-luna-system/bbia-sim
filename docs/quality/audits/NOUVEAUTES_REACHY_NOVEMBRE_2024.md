@@ -386,25 +386,33 @@ D'après les retours de la communauté (125 unités bêta) :
   - ✅ `src/bbia_sim/daemon/app/dashboard/static/js/installation_wizard.js`
 - **Priorité :** ✅ **TERMINÉ** - Assistant interactif disponible au premier lancement
 
-#### 2. Découverte Apps Communauté ⚠️
+#### 2. Découverte Apps Communauté ✅ **IMPLÉMENTÉ** (21 Novembre 2025)
 - **Testeurs ont :** Accès direct aux apps créées par la communauté (125 unités bêta)
-- **BBIA a :** Infrastructure HF Hub complète (router apps, dashboard, WebSocket)
-- **Ce qui manque :**
-  - ⚠️ Liste pré-configurée d'apps créées par les testeurs bêta
-  - ⚠️ Découverte automatique des apps populaires sur HF Spaces
-  - ⚠️ Catégorisation des apps (conversationnelles, mouvements, IA, etc.)
-- **Priorité :** 🟡 **Basse** - Peut être fait après réception du robot
-- **Fichiers concernés :** `src/bbia_sim/daemon/app/routers/apps.py` (à améliorer)
+- **BBIA a :** ✅ **Liste pré-configurée d'apps testeurs bêta + découverte automatique HF Hub**
+- **Fonctionnalités implémentées :**
+  - ✅ Liste pré-configurée d'apps créées par les testeurs bêta (4 apps de référence)
+  - ✅ Découverte automatique des apps populaires sur HF Spaces (recherche "reachy-mini")
+  - ✅ Catégorisation des apps (conversationnelles, mouvements, IA, vision)
+  - ✅ Endpoint `/api/apps/list-community` pour récupérer les apps communauté
+  - ✅ Section "Apps Communauté (Testeurs Bêta)" dans le dashboard
+- **Fichiers modifiés :**
+  - ✅ `src/bbia_sim/daemon/app/routers/apps.py` - Ajout liste testeurs bêta + endpoint communauté
+  - ✅ `src/bbia_sim/daemon/app/dashboard/templates/sections/appstore.html` - Bouton apps communauté
+  - ✅ `src/bbia_sim/daemon/app/dashboard/static/js/appstore.js` - Affichage apps communauté
+- **Priorité :** ✅ **TERMINÉ** - Découverte apps communauté disponible
 
-#### 3. Partage d'Apps BBIA sur HF Hub 🟡
+#### 3. Partage d'Apps BBIA sur HF Hub ✅ **IMPLÉMENTÉ** (21 Novembre 2025)
 - **Testeurs font :** Partage leurs apps sur HF Spaces
-- **BBIA peut :** Créer et partager ses propres apps (infrastructure présente)
-- **Ce qui manque :**
-  - ⚠️ Workflow de création d'apps BBIA pour HF Hub
-  - ⚠️ Documentation pour partager apps BBIA
-  - ⚠️ Templates d'apps BBIA prêts à partager
-- **Priorité :** 🟡 **Optionnel** - Après réception du robot
-- **Fichiers concernés :** Documentation + templates (à créer)
+- **BBIA peut :** ✅ **Workflow complet pour créer et partager apps BBIA sur HF Hub**
+- **Fonctionnalités implémentées :**
+  - ✅ Workflow de création d'apps BBIA pour HF Hub (guide complet)
+  - ✅ Documentation pour partager apps BBIA (`docs/guides/PARTAGE_APPS_BBIA_HF_HUB.md`)
+  - ✅ Templates d'apps BBIA prêts à partager (app.py, requirements.txt, README.md)
+  - ✅ Instructions étape par étape pour créer un Space HF
+  - ✅ Exemples d'apps à partager (conversation, vision, mouvements, IA)
+- **Fichiers créés :**
+  - ✅ `docs/guides/PARTAGE_APPS_BBIA_HF_HUB.md` - Guide complet de partage
+- **Priorité :** ✅ **TERMINÉ** - Workflow et documentation disponibles
 
 ### 🔧 Corrections Qualité Code (En Cours)
 

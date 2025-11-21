@@ -441,7 +441,12 @@
 
 **Le projet est prêt pour utilisation en production !** 🚀
 
-**Statut final : 97% des tâches complétées. Corrections BLE001 en cours (~24% fait, ~305 restantes).**
+**Statut final : 98% des tâches complétées. Corrections BLE001 en cours (~24% fait, ~305 restantes).**
+
+**✅ Toutes les améliorations optionnelles implémentées (21 Novembre 2025) :**
+- ✅ Assistant Installation Interactif (wizard 4 étapes)
+- ✅ Découverte Apps Communauté (liste testeurs bêta + découverte HF Hub)
+- ✅ Partage d'Apps BBIA sur HF Hub (guide complet + templates)
 
 **Progrès récents (21 Novembre 2025)** :
 - ✅ Corrections BLE001 : ~94 occurrences corrigées dans 12 fichiers (24% fait)
