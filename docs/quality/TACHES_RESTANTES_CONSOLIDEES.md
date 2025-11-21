@@ -255,9 +255,9 @@
 - Complexité : 93.3% ✅ (justifiée et réelle)
 - Performance : 88.75% ✅ (optimisations réelles implémentées)
 - Intelligence : 87.5% ✅ (YOLO, Whisper, Transformers intégrés)
-- Qualité code : **~95%** ✅ (TRY400 100% fait, G004 95% fait, lazy loading amélioré)
+- Qualité code : **~82%** ✅ (TRY400 100% fait, G004 95% fait, BLE001 18% fait, lazy loading amélioré)
 
-**Corrections restantes** : Quelques f-strings (contextes complexes) + exceptions génériques (progressif, ~55% fait) - Non-bloquantes
+**Corrections restantes** : Quelques f-strings (contextes complexes) + exceptions génériques (progressif, ~18% fait, ~327 restantes) - Non-bloquantes
 
 **Progrès récents (Décembre 2025)** :
 - ✅ Corrections BLE001 : ~221 occurrences corrigées dans 15 fichiers (55% fait)
@@ -574,7 +574,7 @@ except Exception as e:
 
 **Impact** : Meilleure gestion d'erreurs, débogage facilité
 
-**Priorité** : 🟡 **MOYENNE** - ⏳ **EN COURS** - Correction progressive (~55% fait)
+**Priorité** : 🟡 **MOYENNE** - ⏳ **EN COURS** - Correction progressive (~18% fait, ~72/399 occurrences corrigées)
 
 ---
 
@@ -753,10 +753,11 @@ except Exception as e:
 
 #### 🟡 PRIORITÉ MOYENNE (2-3 jours)
 
-3. **BLE001 - Exceptions génériques** - ~178 occurrences ⏳ **EN COURS** (~55% fait)
+3. **BLE001 - Exceptions génériques** - ~327 occurrences ⏳ **EN COURS** (~18% fait)
    - Action : Spécifier les exceptions (`ValueError`, `AttributeError`, etc.) au lieu de `Exception`
    - Impact : Meilleure gestion d'erreurs, débogage facilité
-   - Progrès : ~221 occurrences corrigées dans 15 fichiers
+   - Progrès : ~72 occurrences corrigées dans 11 fichiers (18% fait, ~327 restantes)
+   - Fichiers prioritaires : `dashboard_advanced.py` (~21 restantes), `reachy_mini_backend.py` (~17 restantes), `bbia_vision.py` (~18 restantes)
 
 4. **Audit doublons** - Vérifier `set_emotion()` et `dire_texte()` dupliqués
    - Action : Analyser si certaines implémentations sont redondantes
