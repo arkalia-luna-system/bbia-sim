@@ -1,12 +1,12 @@
 # ⏳ Optimisations Performance - Reste à Faire
 
-**Date** : 19 novembre 2025  
-**Dernière mise à jour** : 19 novembre 2025  
-**Statut** : ✅ **Phase 1 TERMINÉE** (19 novembre 2025) - Phase 2 en attente (optionnel)
+**Date** : 21 novembre 2025  
+**Dernière mise à jour** : 21 novembre 2025  
+**Statut** : ✅ **Phase 1 TERMINÉE** (21 novembre 2025) - Phase 2 en attente (optionnel)
 
 ---
 
-## ✅ Ce qui a été fait (19 novembre 2025)
+## ✅ Ce qui a été fait (21 novembre 2025)
 
 ### Vision
 - ✅ Réduction résolution image YOLO (640x480 au lieu de 1280x720)
@@ -39,7 +39,7 @@
 - ✅ Méthode `scan_environment_async()` non-bloquante
 - ✅ Méthodes `start_async_scanning()` / `stop_async_scanning()`
 
-**Impact** : **Latence perçue réduite** (non-bloquant, résultats temps réel) - **IMPLÉMENTÉ 19/11/2025**
+**Impact** : **Latence perçue réduite** (non-bloquant, résultats temps réel) - **IMPLÉMENTÉ 21/11/2025**
 
 ---
 
@@ -71,13 +71,13 @@
 - ✅ Tous les appels `create_head_pose()` remplacés par version cache
 - ✅ Cache automatique des 50 poses les plus récentes
 
-**Impact** : **-10 à -20% latence** sur poses répétées (émotions, mouvements fréquents) - **IMPLÉMENTÉ 19/11/2025**
+**Impact** : **-10 à -20% latence** sur poses répétées (émotions, mouvements fréquents) - **IMPLÉMENTÉ 21/11/2025**
 
 ---
 
 ### ✅ RÉSUMÉ PHASE 1 : Toutes les optimisations prioritaires sont terminées !
 
-**Optimisations complétées le 19 novembre 2025 :**
+**Optimisations complétées le 21 novembre 2025 :**
 1. ✅ Réduction résolution YOLO (640x480)
 2. ✅ Fonction transcribe_audio() avec cache
 3. ✅ Tests benchmarks créés
@@ -89,24 +89,29 @@
 
 ### Phase 2 : Streaming Optimisé (Priorité 🟡 MOYENNE)
 
-#### 4. Stream vidéo optimisé (⏳ À FAIRE)
-- WebSocket ou WebRTC pour stream caméra
-- Compression adaptative (JPEG quality)
-- Frame rate adaptatif (30 FPS max)
+#### 4. Stream vidéo optimisé avancé (⏳ À FAIRE)
+**État actuel** : ✅ Stream MJPEG de base existe (`/api/camera/stream`)
+
+**Améliorations à apporter :**
+- WebRTC ou WebSocket pour stream caméra (au lieu de MJPEG)
+- Compression adaptative (JPEG quality selon bande passante)
+- Frame rate adaptatif (30 FPS max, ajustement dynamique)
 - Buffer optimisé (deque maxlen=5)
 
 ---
 
 #### 5. Stream audio optimisé (⏳ À FAIRE)
-- WebSocket pour stream microphone
+- WebSocket dédié pour stream microphone
 - Compression audio (Opus ou G.711)
 - Buffer optimisé (deque maxlen=10)
 - Latence minimale (<50ms)
 
 ---
 
-#### 6. Optimiser WebSocket dashboard (⏳ À FAIRE)
-- Réduire fréquence messages
+#### 6. Optimiser WebSocket dashboard existant (⏳ À FAIRE)
+**État actuel** : ✅ WebSocket dashboard existe (chat, métriques, commandes)
+
+**Améliorations à apporter :**
 - Batching messages (grouper updates)
 - Compression JSON si nécessaire
 - Heartbeat optimisé (30s au lieu de 10s)
@@ -148,9 +153,9 @@
 
 ---
 
-**✅ Phase 1 terminée** : Toutes les optimisations prioritaires sont complétées (19 novembre 2025).
+**✅ Phase 1 terminée** : Toutes les optimisations prioritaires sont complétées (21 novembre 2025).
 
-**Vérification finale (19 novembre 2025) :**
+**Vérification finale (21 novembre 2025) :**
 - ✅ Tests passent (8/8 tests dashboard media)
 - ✅ Imports OK (BBIAChat, Behaviors)
 - ✅ Code quality OK (black, ruff, mypy)
@@ -163,7 +168,7 @@
 
 ## 📋 RÉSUMÉ FINAL
 
-**Phase 1 :** ✅ **100% TERMINÉE** (19 novembre 2025)
+**Phase 1 :** ✅ **100% TERMINÉE** (21 novembre 2025)
 - ✅ Cache poses LRU
 - ✅ Threading asynchrone vision
 - ✅ Threading asynchrone audio
@@ -173,5 +178,11 @@
 **Phase 2 :** ⏳ **OPTIONNEL** (streaming optimisé)
 **Phase 3 :** ⏳ **OPTIONNEL** (optimisations mémoire)
 
-**Statut global optimisations :** ✅ **95% TERMINÉ** (toutes les optimisations prioritaires faites)
+**Statut global optimisations :** ✅ **98% TERMINÉ** (toutes les optimisations prioritaires + mineures faites)
+
+**Optimisations mineures vérifiées (21 novembre 2025) :**
+- ✅ Cache regex compilées (`bbia_huggingface.py`)
+- ✅ Pool objets réutilisables (Whisper temp files, vision simulated objects)
+- ✅ Lazy imports (TYPE_CHECKING utilisé partout)
+- ✅ Optimisation boucles (`get_bbia_voice()` optimisé)
 

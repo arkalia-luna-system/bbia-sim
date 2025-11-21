@@ -158,7 +158,7 @@ L'email mentionne un **nouveau tableau de bord** avec les fonctionnalités suiva
 
 ## 🟡 AMÉLIORATIONS POSSIBLES (Non bloquantes)
 
-### 1. Interface Dashboard pour Contrôle Media ✅ **TERMINÉ** (19 Novembre 2025)
+### 1. Interface Dashboard pour Contrôle Media ✅ **TERMINÉ** (21 Novembre 2025)
 
 **Implémenté :** Contrôles visuels dans le dashboard :
 - ✅ Toggle microphone ON/OFF - **FAIT**

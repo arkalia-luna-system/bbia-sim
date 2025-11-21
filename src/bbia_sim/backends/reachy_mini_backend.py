@@ -536,13 +536,12 @@ class ReachyMiniBackend(RobotAPI):
             # Routing selon le type de joint
             if joint_name == "yaw_body":
                 return self._get_yaw_body_position()
-            elif joint_name in ["left_antenna", "right_antenna"]:
+            if joint_name in ["left_antenna", "right_antenna"]:
                 return self._get_antenna_position(joint_name, antenna_positions)
-            elif joint_name.startswith("stewart_"):
+            if joint_name.startswith("stewart_"):
                 return self._get_stewart_joint_position(joint_name, head_positions)
-            else:
-                logger.warning(f"Joint {joint_name} non trouvé")
-                return 0.0
+            logger.warning(f"Joint {joint_name} non trouvé")
+            return 0.0
 
         except Exception as e:
             logger.error(f"Erreur lecture joint {joint_name}: {e}")
@@ -670,22 +669,21 @@ class ReachyMiniBackend(RobotAPI):
         try:
             if joint_name == "yaw_body":
                 return self._set_yaw_body(position)
-            elif joint_name in ["left_antenna", "right_antenna"]:
+            if joint_name in ["left_antenna", "right_antenna"]:
                 return self._set_antenna_joint(joint_name, position)
-            elif joint_name.startswith("stewart_") or joint_name in [
+            if joint_name.startswith("stewart_") or joint_name in [
                 "stewart_4",
                 "stewart_5",
                 "stewart_6",
             ]:
                 return self._set_stewart_joint(joint_name)
-            else:
-                # Joint inconnu
-                logger.warning(
-                    f"⚠️ Contrôle individuel du joint {joint_name} IMPOSSIBLE "
-                    f"(cinématique inverse requise). Utilisez goto_target() ou "
-                    f"look_at_world() pour un contrôle correct.",
-                )
-                return False
+            # Joint inconnu
+            logger.warning(
+                f"⚠️ Contrôle individuel du joint {joint_name} IMPOSSIBLE "
+                f"(cinématique inverse requise). Utilisez goto_target() ou "
+                f"look_at_world() pour un contrôle correct.",
+            )
+            return False
         except Exception as e:
             logger.error(f"Erreur contrôle joint {joint_name}: {e}")
             return False
@@ -895,18 +893,21 @@ class ReachyMiniBackend(RobotAPI):
             if self.is_connected and self.robot:
                 try:
                     # Essayer d'accéder à robot.io.get_imu() si disponible
-                    if hasattr(self.robot, "io") and self.robot.io:
-                        if hasattr(self.robot.io, "get_imu"):
-                            imu_raw = self.robot.io.get_imu()
-                            # Normaliser format IMU (dict avec acceleration,
-                            # gyroscope, magnetometer)
-                            if isinstance(imu_raw, dict):
-                                imu_data = imu_raw
-                            elif imu_raw is not None:
-                                # Si format différent, essayer de le normaliser
-                                logger.debug(
-                                    f"Format IMU non standard: {type(imu_raw)}",
-                                )
+                    if (
+                        hasattr(self.robot, "io")
+                        and self.robot.io
+                        and hasattr(self.robot.io, "get_imu")
+                    ):
+                        imu_raw = self.robot.io.get_imu()
+                        # Normaliser format IMU (dict avec acceleration,
+                        # gyroscope, magnetometer)
+                        if isinstance(imu_raw, dict):
+                            imu_data = imu_raw
+                        elif imu_raw is not None:
+                            # Si format différent, essayer de le normaliser
+                            logger.debug(
+                                f"Format IMU non standard: {type(imu_raw)}",
+                            )
                 except Exception as imu_err:
                     logger.debug(f"IMU non disponible: {imu_err}")
 

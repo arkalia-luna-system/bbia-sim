@@ -427,9 +427,8 @@ class MuJoCoBackend(RobotAPI):
             from scipy.spatial.transform import Rotation as R
 
             # Appliquer body_yaw si fourni
-            if body_yaw is not None:
-                if "yaw_body" in self.joint_name_to_id:
-                    self.set_joint_pos("yaw_body", float(body_yaw))
+            if body_yaw is not None and "yaw_body" in self.joint_name_to_id:
+                self.set_joint_pos("yaw_body", float(body_yaw))
 
             # Traiter head pose si fournie
             if head is not None:
@@ -460,12 +459,15 @@ class MuJoCoBackend(RobotAPI):
                             self.set_joint_pos(joint, float(euler[2]))  # yaw
 
             # Appliquer antennes si fournies
-            if antennas is not None:
-                if isinstance(antennas, list | tuple) and len(antennas) >= 2:
-                    if "right_antenna" in self.joint_name_to_id:
-                        self.set_joint_pos("right_antenna", float(antennas[0]))
-                    if "left_antenna" in self.joint_name_to_id:
-                        self.set_joint_pos("left_antenna", float(antennas[1]))
+            if (
+                antennas is not None
+                and isinstance(antennas, list | tuple)
+                and len(antennas) >= 2
+            ):
+                if "right_antenna" in self.joint_name_to_id:
+                    self.set_joint_pos("right_antenna", float(antennas[0]))
+                if "left_antenna" in self.joint_name_to_id:
+                    self.set_joint_pos("left_antenna", float(antennas[1]))
 
             # Faire un step pour appliquer les changements
             self.step()

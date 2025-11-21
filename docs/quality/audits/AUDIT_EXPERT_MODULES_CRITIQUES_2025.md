@@ -1,6 +1,6 @@
 # Audit des modules critiques BBIA‑SIM
 
-**Date**: Oct / Nov. 2025
+**Date**: 21 Novembre 2025
 **Objectif**: Analyse experte pointilleuse de tous les modules critiques avec comparaison SDK Reachy-mini officiel
 
 ## Résumé exécutif

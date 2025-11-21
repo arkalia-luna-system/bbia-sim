@@ -12,8 +12,9 @@ from bbia_sim.sim.simulator import MuJoCoSimulator
 logger = logging.getLogger(__name__)
 
 
-def setup_logging(verbose: bool = False) -> None:
-    """Configure le logging.
+def setup_logging(*, verbose: bool = False) -> None:
+    """
+    Configure le logging.
 
     Args:
         verbose: Si True, active le mode verbose
@@ -86,7 +87,7 @@ Exemples d'utilisation:
     args = parser.parse_args()
 
     # Configuration du logging
-    setup_logging(args.verbose)
+    setup_logging(verbose=args.verbose)
 
     try:
         if args.sim:
@@ -106,13 +107,14 @@ Exemples d'utilisation:
     except KeyboardInterrupt:
         logger.info("Arrêt demandé par l'utilisateur")
         sys.exit(0)
-    except Exception as e:
-        logger.error(f"Erreur : {e}")
+    except (ImportError, AttributeError, RuntimeError):
+        logger.exception("Erreur lors de l'exécution")
         sys.exit(1)
 
 
 def run_simulation(args: argparse.Namespace) -> None:
-    """Lance la simulation MuJoCo.
+    """
+    Lance la simulation MuJoCo.
 
     Args:
         args: Arguments de la ligne de commande
@@ -166,20 +168,20 @@ def run_simulation(args: argparse.Namespace) -> None:
     # Initialisation du simulateur
     try:
         simulator = MuJoCoSimulator(str(model_path))
-        logger.info(f"Modèle chargé : {model_path}")
+        logger.info("Modèle chargé : %s", model_path)
 
         # Affichage des articulations disponibles
         joints = simulator.get_available_joints()
-        logger.info(f"Articulations disponibles : {joints}")
+        logger.info("Articulations disponibles : %s", joints)
 
         # Lancement de la simulation
         simulator.launch_simulation(headless=args.headless, duration=args.duration)
 
     except FileNotFoundError as e:
-        logger.error(f"Fichier non trouvé : {e}")
+        logger.exception("Fichier non trouvé : %s", e)
         sys.exit(1)
-    except Exception as e:
-        logger.error(f"Erreur lors du lancement de la simulation : {e}")
+    except (ValueError, RuntimeError, OSError) as e:
+        logger.exception("Erreur lors du lancement de la simulation : %s", e)
         sys.exit(1)
 
 
@@ -192,25 +194,26 @@ def run_awake_sequence() -> None:
 
         start_bbia_sim()
     except ImportError as e:
-        logger.error(f"Impossible d'importer le module de réveil : {e}")
+        logger.exception("Impossible d'importer le module de réveil : %s", e)
         sys.exit(1)
 
 
 def run_voice_synthesis(text: str) -> None:
-    """Lance la synthèse vocale.
+    """
+    Lance la synthèse vocale.
 
     Args:
         text: Texte à synthétiser
 
     """
-    logger.info(f"🗣️ Synthèse vocale : {text}")
+    logger.info("🗣️ Synthèse vocale : %s", text)
 
     try:
         from bbia_sim.bbia_voice import dire_texte
 
         dire_texte(text)
     except ImportError as e:
-        logger.error(f"Impossible d'importer le module vocal : {e}")
+        logger.exception("Impossible d'importer le module vocal : %s", e)
         sys.exit(1)
 
 
@@ -222,9 +225,9 @@ def run_voice_recognition() -> None:
         from bbia_sim.bbia_voice import reconnaitre_parole
 
         text = reconnaitre_parole(duree=5)
-        logger.info(f"Texte reconnu : {text}")
+        logger.info("Texte reconnu : %s", text)
     except ImportError as e:
-        logger.error(f"Impossible d'importer le module vocal : {e}")
+        logger.exception("Impossible d'importer le module vocal : %s", e)
         sys.exit(1)
 
 
@@ -305,16 +308,16 @@ def run_doctor() -> None:
         test_file.write_text("test")
         test_file.unlink()
         checks["File permissions"] = {"status": True, "value": "OK"}
-    except Exception as e:
+    except (OSError, PermissionError) as e:
         checks["File permissions"] = {"status": False, "value": f"Erreur: {e}"}
         all_ok = False
 
     # Afficher résultats
     for check_name, check_info in checks.items():
         status_icon = "✅" if check_info["status"] else "❌"
-        logger.info(f"{status_icon} {check_name}: {check_info['value']}")
+        logger.info("%s %s: %s", status_icon, check_name, check_info["value"])
         if "required" in check_info:
-            logger.info(f"   Requis: {check_info['required']}")
+            logger.info("   Requis: %s", check_info["required"])
 
     logger.info("\n" + "=" * 60)
     if all_ok:

@@ -5,7 +5,7 @@
 **🎯 Validation complète de la conformité SDK officiel**  
 *21 méthodes implémentées • 37 tests passants • 100% conforme*
 
-**Version** : BBIA-SIM v1.3.2 • **Date** : Oct / Nov. 2025  
+**Version** : BBIA-SIM v1.3.2 • **Date** : 21 Novembre 2025  
 **SDK Cible** : `reachy_mini` (Pollen Robotics × Hugging Face)
 
 **État SDK** : Utiliser la **dernière version stable** de `reachy-mini` publiée sur PyPI (mise à jour régulière recommandée)
@@ -39,7 +39,7 @@ Pour des vérifications détaillées par aspect, consultez :
 > Le projet BBIA‑SIM est **conforme** au SDK officiel Reachy Mini (Pollen Robotics).  
 > Des optimisations et corrections ont été appliquées et validées.
 
-### 🔐 Checklist pré‑réception (Oct / Nov. 2025)
+### 🔐 Checklist pré‑réception (21 Novembre 2025)
 
 - **Installer SDK officiel**: `pip install reachy-mini` (PyPI)  
   - **Simulation**: `pip install "reachy-mini[mujoco]"`
@@ -156,8 +156,8 @@ Notes:
 from reachy_mini import ReachyMini
 from reachy_mini.utils import create_head_pose
 from reachy_mini.utils.interpolation import InterpolationTechnique
-# SDK Version: Compatible avec les spécifications d'Oct / Nov. 2025
-# GitHub: https://github.com/pollen-robotics/reachy_mini (disponible depuis Oct / Nov. 2025)
+# SDK Version: Compatible avec les spécifications d'21 Novembre 2025
+# GitHub: https://github.com/pollen-robotics/reachy_mini (disponible depuis 21 Novembre 2025)
 
 ```
 
@@ -770,7 +770,7 @@ python scripts/generate_conformity_report_reachy_mini.py
 
 ```
 
-### 📊 Structure des Tests (Oct / Nov. 2025)
+### 📊 Structure des Tests (21 Novembre 2025)
 
 **Total: 118 tests** répartis dans **8 fichiers complémentaires**
 
@@ -811,13 +811,13 @@ python scripts/generate_conformity_report_reachy_mini.py
 
 ---
 
-## 🔴 AUDIT REST API ENDPOINTS (Oct / Nov. 2025)
+## 🔴 AUDIT REST API ENDPOINTS (21 Novembre 2025)
 
 ### Endpoints REST - Conformité Complète
 
 Comparaison exhaustive avec le repo officiel `pollen-robotics/reachy_mini` (branche `develop`) :
 
-#### ✅ CRITIQUE - IMPLÉMENTÉ (Oct / Nov. 2025)
+#### ✅ CRITIQUE - IMPLÉMENTÉ (21 Novembre 2025)
 
 1. **`/development/api/motors/*`** - Contrôle moteurs ✅
    - `GET /development/api/motors/status` - Statut (enabled/disabled/gravity_compensation) ✅
@@ -837,20 +837,20 @@ Comparaison exhaustive avec le repo officiel `pollen-robotics/reachy_mini` (bran
 4. **`POST /development/api/motion/goto_sleep`** - Séquence veille ✅
    - **Fichier** : `src/bbia_sim/daemon/app/routers/motion.py` ✅
 
-#### ✅ MODÉRÉ - IMPLÉMENTÉ (Oct / Nov. 2025)
+#### ✅ MODÉRÉ - IMPLÉMENTÉ (21 Novembre 2025)
 
 5. **`GET /development/api/state/present_head_pose`** - Pose tête actuelle ✅
 6. **`GET /development/api/state/present_body_yaw`** - Yaw corps actuel ✅
 7. **`GET /development/api/state/present_antenna_joint_positions`** - Positions antennes ✅
 8. **`WebSocket /development/api/state/ws/full`** - Stream état complet ✅
 
-#### ✅ AMÉLIORATIONS IMPLÉMENTÉES (Oct / Nov. 2025)
+#### ✅ AMÉLIORATIONS IMPLÉMENTÉES (21 Novembre 2025)
 
 9. **`POST /development/api/motion/goto_pose`** avec interpolation ✅
    - Paramètres : `duration` et `interpolation` (linear, minjerk, ease, cartoon)
    - Compatible SDK officiel
 
-#### ✅ OPTIONNEL - IMPLÉMENTÉ (Oct / Nov. 2025)
+#### ✅ OPTIONNEL - IMPLÉMENTÉ (21 Novembre 2025)
 
 10. **`/development/api/kinematics/*`** - Router cinématique ✅
     - `GET /development/api/kinematics/info` - Informations cinématique ✅
@@ -886,7 +886,7 @@ Comparaison exhaustive avec le repo officiel `pollen-robotics/reachy_mini` (bran
 
 ## 📋 CHECKLIST FINALE DÉTAILLÉE
 
-Une analyse exhaustive complémentaire a été effectuée (Oct / Nov. 2025) comparant TOUS les endpoints REST, classes, scripts, assets, modèles MuJoCo, guides, helpers et tests d'intégration.
+Une analyse exhaustive complémentaire a été effectuée (21 Novembre 2025) comparant TOUS les endpoints REST, classes, scripts, assets, modèles MuJoCo, guides, helpers et tests d'intégration.
 
 **Document créé** : `docs/quality/compliance/CHECKLIST_FINALE_CONFORMITE.md`
 
@@ -912,7 +912,7 @@ Une analyse exhaustive complémentaire a été effectuée (Oct / Nov. 2025) comp
 - Tests de conformité supplémentaires
 
 **Temps estimé pour 100% conformité** : ~12-15h de travail
-**Status** : ✅ **TOUT IMPLÉMENTÉ** (Oct / Nov. 2025)
+**Status** : ✅ **TOUT IMPLÉMENTÉ** (21 Novembre 2025)
 
 **Conformité finale** : **~96% (25/26 endpoints)** ✅
 
@@ -976,7 +976,7 @@ Votre projet BBIA-SIM est conforme au SDK Reachy Mini officiel au niveau backend
 ---
 
 **Rapport généré automatiquement le** {{ date }}
-**Version BBIA-SIM:** Compatible SDK Reachy Mini Oct / Nov. 2025
+**Version BBIA-SIM:** Compatible SDK Reachy Mini 21 Novembre 2025
 **Statut:** conforme
 
 ---
@@ -1036,7 +1036,7 @@ Une analyse exhaustive de TOUS les modules a été effectuée (voir `docs/ANALYS
 
 - ✅ 15 nouveaux tests experts (`test_expert_robustness_conformity.py`)
 - ✅ Détection perte précision, fuites mémoire, thread-safety, etc.
-- ✅ **46 tests de conformité complets** (Oct / Nov. 2025) vérifiant :
+- ✅ **46 tests de conformité complets** (21 Novembre 2025) vérifiant :
   - Daemon command (`reachy-mini-daemon`)
   - Endpoints API REST officiels (`/`, `/docs`, `/development/api/state/full`)
   - Modules Media détaillés (`robot.media.camera`, `.microphone`, `.speaker`)

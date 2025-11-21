@@ -1,6 +1,6 @@
 # 🔍 GUIDE AUDIT WINDSURF OPTIMISÉ - BBIA-SIM
 
-**Date :** Oct / Nov. 2025  
+**Date :** 21 Novembre 2025  
 **Score global :** 8.07/10
 
 ## 🎯 PRINCIPE

@@ -1,6 +1,6 @@
 # 📊 Analyse Détaillée Coverage - Problèmes Identifiés
 
-**Date** : Oct / Nov. 2025  
+**Date** : 21 Novembre 2025  
 **Objectif** : Identifier pourquoi certains modules ont un coverage faible malgré des tests existants
 
 ---
@@ -9,7 +9,7 @@
 
 ### 1. **Modules non importés dans les tests** ❌
 
-#### `model_optimizer.py` : ✅ **100%** (corrigé - Oct / Nov. 2025)
+#### `model_optimizer.py` : ✅ **100%** (corrigé - 21 Novembre 2025)
 
 **Problème** : Coverage warning : `Module src/bbia_sim/model_optimizer was never imported`
 
@@ -25,7 +25,7 @@
 
 ### 2. **Tests existants mais coverage partiel** ⚠️
 
-#### `__main__.py` : ✅ **~70%+** (corrigé - Oct / Nov. 2025)
+#### `__main__.py` : ✅ **~70%+** (corrigé - 21 Novembre 2025)
 
 **Tests existants** : `tests/test_main.py` (13 tests maintenant)
 
@@ -41,7 +41,7 @@
 
 ---
 
-#### `bbia_awake.py` : ✅ **~80%+** (corrigé - Oct / Nov. 2025)
+#### `bbia_awake.py` : ✅ **~80%+** (corrigé - 21 Novembre 2025)
 
 **Tests existants** : `tests/test_bbia_awake.py` (modifié)
 
@@ -68,7 +68,7 @@
 
 ### 3. **Modules sans tests** ❌
 
-#### `daemon/app/__main__.py` : ✅ **87.50%** (corrigé - Oct / Nov. 2025)
+#### `daemon/app/__main__.py` : ✅ **87.50%** (corrigé - 21 Novembre 2025)
 
 **Problème** : Aucun test
 
@@ -79,7 +79,7 @@
 
 ---
 
-#### `daemon/app/routers/sanity.py` : ✅ **89.19%** (corrigé - Oct / Nov. 2025)
+#### `daemon/app/routers/sanity.py` : ✅ **89.19%** (corrigé - 21 Novembre 2025)
 
 **Problème** : Aucun test
 
@@ -119,16 +119,16 @@
 
 ### Priorité Haute (Modules < 30%)
 
-1. **`model_optimizer.py`** ✅ **TERMINÉ** (39.13% → **100%** - Oct / Nov. 2025)
+1. **`model_optimizer.py`** ✅ **TERMINÉ** (39.13% → **100%** - 21 Novembre 2025)
    - ✅ Créé `tests/test_model_optimizer.py` (9 tests)
    - ✅ Import direct du module
    - ✅ Toutes les fonctions testées
 
-2. **`daemon/app/__main__.py`** ✅ **TERMINÉ** (0% → **87.50%** - Oct / Nov. 2025)
+2. **`daemon/app/__main__.py`** ✅ **TERMINÉ** (0% → **87.50%** - 21 Novembre 2025)
    - ✅ Coverage amélioré via tests et imports directs
    - ✅ 7 lignes sur 8 couvertes
 
-3. **`daemon/app/routers/sanity.py`** ✅ **TERMINÉ** (32.43% → **89.19%** - Oct / Nov. 2025)
+3. **`daemon/app/routers/sanity.py`** ✅ **TERMINÉ** (32.43% → **89.19%** - 21 Novembre 2025)
    - ✅ Créé `tests/test_sanity_router.py` (7 tests)
    - ✅ Routes FastAPI testées avec mocks
 
@@ -174,9 +174,9 @@
 
 ---
 
-**Dernière mise à jour** : Oct / Nov. 2025
+**Dernière mise à jour** : 21 Novembre 2025
 
-## ✅ CORRECTIONS APPLIQUÉES (Oct / Nov. 2025)
+## ✅ CORRECTIONS APPLIQUÉES (21 Novembre 2025)
 
 ### Modules corrigés
 

@@ -380,8 +380,7 @@ class LlamaCppLLM:
                 echo=False,
             )
             # Format standard llama.cpp: {"choices":[{"text":"..."}]}
-            text = str(out.get("choices", [{}])[0].get("text", ""))
-            return text
+            return str(out.get("choices", [{}])[0].get("text", ""))
         except Exception as e:  # pragma: no cover
             logging.getLogger(__name__).warning(f"llama.cpp erreur: {e}")
             return (prompt or "")[:max_tokens]

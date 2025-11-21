@@ -1,7 +1,7 @@
-# ⚡ Optimisations Performance - Oct / Nov. 2025
+# ⚡ Optimisations Performance - 21 Novembre 2025
 
-**Date** : Oct / Nov. 2025
-**Dernière mise à jour** : 19 novembre 2025
+**Date** : 21 Novembre 2025
+**Dernière mise à jour** : 21 novembre 2025
 **Objectif** : Optimisations performance supplémentaires pour Mac
 
 ---
@@ -107,7 +107,7 @@ def _get_compiled_regex(pattern: str, flags: int = 0) -> re.Pattern[str]:
 
 ---
 
-### 5. Réduction Résolution Image YOLO (640x480) - 19 novembre 2025
+### 5. Réduction Résolution Image YOLO (640x480) - 21 novembre 2025
 
 **Fichier** : `src/bbia_sim/vision_yolo.py`
 
@@ -137,7 +137,7 @@ if original_width > 640 or original_height > 480:
 
 ---
 
-### 6. Fonction transcribe_audio() avec Cache Whisper - 19 novembre 2025
+### 6. Fonction transcribe_audio() avec Cache Whisper - 21 novembre 2025
 
 **Fichier** : `src/bbia_sim/bbia_voice.py`
 
@@ -156,7 +156,7 @@ if original_width > 640 or original_height > 480:
 
 ---
 
-### 7. Tests Benchmarks Performance - 19 novembre 2025
+### 7. Tests Benchmarks Performance - 21 novembre 2025
 
 **Fichier** : `tests/benchmarks/test_performance.py`
 
@@ -170,7 +170,7 @@ if original_width > 640 or original_height > 480:
 
 ---
 
-### 8. Cache Poses Fréquentes (LRU) - 19 novembre 2025
+### 8. Cache Poses Fréquentes (LRU) - 21 novembre 2025
 
 **Fichier** : `src/bbia_sim/backends/reachy_mini_backend.py`
 
@@ -197,7 +197,7 @@ def _create_cached_head_pose(pitch, yaw, roll=0.0, degrees=False):
 
 ---
 
-### 9. Threading Asynchrone Vision - 19 novembre 2025
+### 9. Threading Asynchrone Vision - 21 novembre 2025
 
 **Fichier** : `src/bbia_sim/bbia_vision.py`
 
@@ -227,7 +227,7 @@ result = vision.scan_environment_async(timeout=0.5)   # Attendre max 0.5s
 
 ---
 
-### 10. Threading Asynchrone Audio (Déjà Implémenté) - Vérifié 19 novembre 2025
+### 10. Threading Asynchrone Audio (Déjà Implémenté) - Vérifié 21 novembre 2025
 
 **Fichier** : `src/bbia_sim/bbia_voice.py`
 
@@ -284,8 +284,8 @@ Tous les tests passent :
 
 ---
 
-**Date** : Oct / Nov. 2025
-**Dernière mise à jour** : 19 novembre 2025
+**Date** : 21 Novembre 2025
+**Dernière mise à jour** : 21 novembre 2025
 **Statut** : ✅ Optimisations Phase 1 (Vision/Audio) appliquées et testées
 
 ## ⏳ Optimisations En Attente

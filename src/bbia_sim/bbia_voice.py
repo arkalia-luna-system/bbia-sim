@@ -497,11 +497,11 @@ def lister_voix_disponibles() -> list[Any]:
                         _ = v.languages[0].decode(errors="ignore")
                     else:
                         _ = str(v.languages[0])
-                except Exception:
+                except (AttributeError, TypeError, ValueError, UnicodeDecodeError):
                     _ = str(v.languages[0]) if v.languages[0] else ""
             else:
                 _ = ""
-        except (AttributeError, TypeError, ValueError, IndexError, Exception):
+        except (AttributeError, TypeError, ValueError, IndexError):
             _ = str(v.languages) if hasattr(v, "languages") and v.languages else ""
         result.append(v)
     return result

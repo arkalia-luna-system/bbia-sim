@@ -1,6 +1,6 @@
 # 📦 Archives - Fichiers Fusionnés
 
-**Date archivage** : Oct / Nov. 2025  
+**Date archivage** : 21 Novembre 2025  
 **Raison** : Fusion de fichiers redondants pour clarifier la documentation
 
 ---
@@ -57,5 +57,5 @@ Voir `INDEX_AUDITS_CONSOLIDES.md` pour les références aux fichiers finaux.
 
 ---
 
-**Dernière mise à jour** : Oct / Nov. 2025
+**Dernière mise à jour** : 21 Novembre 2025
 

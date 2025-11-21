@@ -235,9 +235,7 @@ class BBIAChat:
                 response = response.replace(prompt, "").strip()
 
             # Sanitizer: retirer code exécutable potentiel
-            response = self._sanitize_response(response)
-
-            return response
+            return self._sanitize_response(response)
 
         except Exception as e:
             logger.error(f"❌ Erreur génération LLM: {e}")

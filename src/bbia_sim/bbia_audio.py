@@ -103,8 +103,7 @@ def _get_robot_media_microphone(
             media = robot_api.media
             # Media est maintenant toujours disponible (shim en simulation)
             if media:
-                result = getattr(media, "microphone", None)
-                return result  # type: ignore[no-any-return]
+                return getattr(media, "microphone", None)  # type: ignore[no-any-return]
         except (AttributeError, ImportError, RuntimeError):
             return None
     return None

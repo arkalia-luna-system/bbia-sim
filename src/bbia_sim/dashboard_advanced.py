@@ -3074,8 +3074,7 @@ if FASTAPI_AVAILABLE:
 </html>
 """
                 return HTMLResponse(content=html_page)
-            else:
-                return FileResponse(full_path)
+            return FileResponse(full_path)
         except HTTPException:
             raise
         except Exception as e:

@@ -1,6 +1,6 @@
 # 🔍 Comparaison : Application Conversation Officielle vs BBIA
 
-**Date** : Oct / Nov. 2025
+**Date** : 21 Novembre 2025
 **Source** : Documentation officielle Reachy Mini Conversation App
 **Version BBIA** : 1.3.2  
 **📚 [État actuel](./RESUME_ETAT_ACTUEL_BBIA.md)** | **🎯 [Prochaines étapes](./PROCHAINES_ETAPES_OPTIONNELLES.md)** | **❓ [FAQ](../getting-started/troubleshooting.md)**
@@ -233,7 +233,7 @@ flowchart TD
 
 ## 🎯 Où en est BBIA ?
 
-### **Score Global** : **~85-90%** ✅ (mis à jour Oct / Nov. 2025 avec toutes améliorations terminées)
+### **Score Global** : **~85-90%** ✅ (mis à jour 21 Novembre 2025 avec toutes améliorations terminées)
 
 ```mermaid
 %%{init: {'theme':'base', 'themeVariables': { 'primaryColor':'#90EE90', 'primaryTextColor':'#000', 'primaryBorderColor':'#7ACC7A', 'lineColor':'#F8B229', 'secondaryColor':'#006100', 'tertiaryColor':'#fff'}}}%%
@@ -334,7 +334,7 @@ pie title Score par Catégorie
 
 ### **Recommandation Globale** :
 
-**BBIA est à ~85-90% de parité fonctionnelle** avec l'app officielle (mis à jour Oct / Nov. 2025).
+**BBIA est à ~85-90% de parité fonctionnelle** avec l'app officielle (mis à jour 21 Novembre 2025).
 
 **Toutes les fonctionnalités prévues sont implémentées** :
 

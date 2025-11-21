@@ -1,6 +1,6 @@
 # AUDIT 3D BBIA - Reachy Mini MuJoCo
 
-**Date** : Oct / Nov. 2025
+**Date** : 21 Novembre 2025
 **Version** : 1.0
 **Statut** : ✅ COMPLET ET FONCTIONNEL
 
