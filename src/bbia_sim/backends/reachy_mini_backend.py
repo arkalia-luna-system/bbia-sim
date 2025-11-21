@@ -538,7 +538,7 @@ class ReachyMiniBackend(RobotAPI):
 
         # Structure inattendue
         logger.warning(
-            "Structure head_positions inattendue " "(len=%d, attendu %d ou %d) pour %s",
+            "Structure head_positions inattendue (len=%d, attendu %d ou %d) pour %s",
             len(head_positions),
             self.STEWART_JOINTS_COUNT,
             self.HEAD_POSITIONS_LEGACY_COUNT,

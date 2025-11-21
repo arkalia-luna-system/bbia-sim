@@ -460,7 +460,6 @@ class ZenohBridge:
                     self.reachy_mini.media,
                     "play_audio",
                 ):
-
                     self.reachy_mini.media.play_audio(audio_bytes, volume=volume)
                     self.logger.info("Audio joué via robot.media.play_audio")
                 else:
@@ -573,7 +572,7 @@ class ZenohBridge:
                     # Stewart joints (indices 0-5)
                     if isinstance(head_positions, list | tuple):
                         for i, val in enumerate(head_positions[:6]):
-                            joints_state[f"stewart_{i+1}"] = float(val)
+                            joints_state[f"stewart_{i + 1}"] = float(val)
                     # Antennes (indices 0-1)
                     if isinstance(antenna_positions, list | tuple):
                         if len(antenna_positions) > 0:

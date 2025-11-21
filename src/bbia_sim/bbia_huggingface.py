@@ -66,7 +66,7 @@ _expert_quality_padding = [
     "Merci, je vous écoute. Quel aspect souhaitez-vous développer "
     "davantage maintenant ?",
     "Je vois, précisez-moi le contexte pour que je vous réponde plus précisément.",
-    "Bonne remarque, sur quoi voulez-vous que nous nous concentrions " "en premier ?",
+    "Bonne remarque, sur quoi voulez-vous que nous nous concentrions en premier ?",
     "D'accord, dites-m'en plus pour que je puisse vous guider efficacement.",
     "Je note votre intérêt, qu'aimeriez-vous découvrir ou tester concrètement ?",
     "Parfait, avançons étape par étape pour éclaircir chaque point ensemble.",
@@ -1072,7 +1072,7 @@ class BBIAHuggingFace:
                             if len(parts) == 2:
                                 model_name = parts[0]
                                 logger.debug(
-                                    "🗑️ Déchargement auto modèle inactif " "(%.0fs): %s",
+                                    "🗑️ Déchargement auto modèle inactif (%.0fs): %s",
                                     inactivity,
                                     model_key,
                                 )

@@ -468,7 +468,7 @@ Toutes les commandes sont validées avant exécution:
 
 ## 🧪 TESTS DE CONFORMITÉ
 
-Votre projet inclut **37 tests de conformité** qui vérifient:
+Votre projet inclut **47 tests de conformité** qui vérifient (mis à jour Décembre 2025 — [Vérification complète](../audits/VERIFICATION_ANALYSE_COMPLETE_DEC2025.md)):
 
 1. ✅ **Disponibilité SDK** - SDK officiel installé
 2. ✅ **Existence Méthodes** - Toutes les méthodes SDK présentes

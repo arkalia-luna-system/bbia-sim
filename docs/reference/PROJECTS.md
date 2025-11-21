@@ -38,15 +38,15 @@ Moteur cognitif Python avec 12 émotions robotiques pour Reachy Mini. Simulation
 **Métriques :**
 
 - ✅ **92 fichiers Python** source (35,988 lignes)
-- ✅ **183 fichiers de tests** (38,935 lignes)
+- ✅ **163 fichiers de tests** (38,935 lignes) — [✅ Vérifié Décembre 2025](docs/quality/audits/VERIFICATION_ANALYSE_COMPLETE_DEC2025.md)
 - ✅ **1,804 fonctions de test** identifiées
-- ✅ **1,362 tests collectés** par pytest (CI GitHub Actions)
+- ✅ **1,743 tests collectés** par pytest (1,805 total, 62 deselected) — [✅ Vérifié Décembre 2025](docs/quality/audits/VERIFICATION_ANALYSE_COMPLETE_DEC2025.md)
 - ✅ **Coverage global** : **68.86%** ([Codecov](https://app.codecov.io/gh/arkalia-luna-system/bbia-sim))
 - ✅ **Coverage modules core** : ~50% (mesure pertinente)
-- ✅ **Conformité SDK** : 100% (21/21 méthodes, 37/37 tests passants)
+- ✅ **Conformité SDK** : 100% (21/21 méthodes, 47/47 tests passants) — [✅ Vérifié Décembre 2025](docs/quality/audits/VERIFICATION_ANALYSE_COMPLETE_DEC2025.md)
 - ✅ **15+ modules BBIA** (émotions, vision, voix, comportements, IA)
-- ✅ **15 comportements intelligents** implémentés
-- ✅ **128+ fichiers documentation** Markdown
+- ✅ **21 comportements intelligents** implémentés (7 de base + 14 avancés) — [✅ Vérifié Décembre 2025](docs/quality/audits/VERIFICATION_ANALYSE_COMPLETE_DEC2025.md)
+- ✅ **219 fichiers documentation** Markdown (dans `docs/`) — [✅ Vérifié Décembre 2025](docs/quality/audits/VERIFICATION_ANALYSE_COMPLETE_DEC2025.md)
 - ✅ **423 commits Git** (depuis octobre 2024)
 - ✅ **CI/CD professionnel** : Black, Ruff, MyPy, Bandit, pip-audit
 - ✅ **Architecture senior** : Factory pattern, ABC, modularité

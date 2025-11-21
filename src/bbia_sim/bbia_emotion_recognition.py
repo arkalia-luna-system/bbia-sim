@@ -21,7 +21,7 @@ try:
 except ImportError:
     CV2_AVAILABLE = False
     logger.warning(
-        "OpenCV (cv2) non disponible. " "Installez avec: pip install opencv-python",
+        "OpenCV (cv2) non disponible. Installez avec: pip install opencv-python",
     )
 
 # OPTIMISATION PERFORMANCE: Cache global pour pipelines transformers

@@ -138,7 +138,7 @@ class NewsReaderBehavior(BBIABehavior):
             emotion = news.get("emotion", "neutral")
 
             # Titre
-            title_text = f"Actualité {i+1}: {title}"
+            title_text = f"Actualité {i + 1}: {title}"
             self._speak_with_movement(
                 title_text,
                 emotion=emotion,

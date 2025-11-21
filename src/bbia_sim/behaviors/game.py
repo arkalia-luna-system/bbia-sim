@@ -127,7 +127,7 @@ class GameBehavior(BBIABehavior):
             gesture = gestures[robot_choice]
 
             # Afficher choix robot
-            choice_text = f"Round {round_num+1}: J'ai choisi {robot_choice} !"
+            choice_text = f"Round {round_num + 1}: J'ai choisi {robot_choice} !"
             self._speak_with_movement(
                 choice_text,
                 emotion="curious",
@@ -158,7 +158,7 @@ class GameBehavior(BBIABehavior):
 
             number = random.randint(1, 10)  # nosec B311
             self._speak_with_movement(
-                f"Round {round_num+1}: Devinez mon nombre !",
+                f"Round {round_num + 1}: Devinez mon nombre !",
                 emotion="curious",
             )
 
@@ -195,7 +195,7 @@ class GameBehavior(BBIABehavior):
 
             # Afficher séquence
             self._speak_with_movement(
-                f"Round {round_num+1}: Regardez bien la séquence !",
+                f"Round {round_num + 1}: Regardez bien la séquence !",
                 emotion="curious",
             )
 

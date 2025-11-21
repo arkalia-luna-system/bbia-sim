@@ -7,7 +7,7 @@
 ### 📊 **Statistiques de Couverture ACTUELLES**
 
 - **Coverage total** : **68.86%** (excellent)
-- **1210 tests collectés** (pytest --collect-only)
+- **1,743 tests collectés** (1,805 total, 62 deselected) — [✅ Vérifié Décembre 2025](../docs/quality/audits/VERIFICATION_ANALYSE_COMPLETE_DEC2025.md)
 - **Tests passent** : Voir résultats pytest récents
 - **Tests skippés** : Tests conditionnels (hardware, CI)
 - **Golden Tests** : 3 traces référence + validation

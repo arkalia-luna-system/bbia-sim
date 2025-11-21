@@ -108,7 +108,7 @@ class ExerciseBehavior(BBIABehavior):
 
             # Rotation droite
             self._speak_with_movement(
-                f"Répétition {i+1}: Tournez la tête à droite",
+                f"Répétition {i + 1}: Tournez la tête à droite",
                 movement={"yaw": 0.3, "pitch": 0.0},
             )
             time.sleep(2.0)
@@ -147,7 +147,7 @@ class ExerciseBehavior(BBIABehavior):
 
             # Tête en haut
             self._speak_with_movement(
-                f"Répétition {i+1}: Regardez vers le haut",
+                f"Répétition {i + 1}: Regardez vers le haut",
                 movement={"yaw": 0.0, "pitch": 0.2},
             )
             time.sleep(2.0)
@@ -186,7 +186,7 @@ class ExerciseBehavior(BBIABehavior):
 
             # Mouvement circulaire (simulé)
             self._speak_with_movement(
-                f"Répétition {i+1}: Rotation complète",
+                f"Répétition {i + 1}: Rotation complète",
                 movement={"yaw": 0.2, "pitch": 0.1},
             )
             time.sleep(1.0)
