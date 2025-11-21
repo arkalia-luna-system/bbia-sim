@@ -1,6 +1,6 @@
 # 🧠 Guide NLP et SmolVLM2 - BBIA
 
-**Date** : Oct / Nov. 2025
+**Date** : 21 novembre 2025
 **Version** : 1.3.2  
 **📚 [FAQ](../getting-started/troubleshooting.md)** | **📊 [État actuel](../quality/audits/RESUME_ETAT_ACTUEL_BBIA.md)** | **🔍 [Comparaison](../quality/audits/COMPARAISON_APP_CONVERSATION_OFFICIELLE.md)**
 
@@ -502,7 +502,7 @@ pip install transformers torch
 
 ---
 
-**Dernière mise à jour** : Oct / Nov. 2025
+**Dernière mise à jour** : 21 novembre 2025
 
 ---
 

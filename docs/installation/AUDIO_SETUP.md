@@ -1,6 +1,6 @@
 # 🎵 Installation Audio pour BBIA-SIM
 
-**Date** : Oct / Nov. 2025
+**Date** : 21 novembre 2025
 
 ## 🏗️ Architecture Audio BBIA
 

@@ -1,6 +1,6 @@
 # 📚 Index - Guides Procreate pour Scènes MuJoCo
 
-**Date** : Oct / Nov. 2025
+**Date** : 21 novembre 2025
 
 > **Navigation rapide** : Tous les guides disponibles
 
@@ -125,4 +125,4 @@
 
 ---
 
-*Index Guides Procreate - BBIA-SIM - Oct / Nov. 2025*
+*Index Guides Procreate - BBIA-SIM - 21 novembre 2025*

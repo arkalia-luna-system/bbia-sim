@@ -1,6 +1,6 @@
 # 🎮 Simulation MuJoCo - Guide d'utilisation
 
-**Date** : Oct / Nov. 2025
+**Date** : 21 novembre 2025
 
 > Compatibilité Python et CI
 >

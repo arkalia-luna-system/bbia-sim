@@ -1,6 +1,6 @@
 # 🤖 Guide Complet Reachy Mini Wireless - Préparation BBIA
 
-**Date** : Oct / Nov. 2025  
+**Date** : 21 novembre 2025  
 **Version** : 1.0
 
 > **Compatibilité Python et CI**
@@ -263,25 +263,25 @@ gantt
     title Plan de Développement BBIA
     dateFormat  YYYY-MM-DD
     section Phase 1: Préparation
-    Documentation complète    :done, doc, Oct / Nov. 2025
-    Environnement dev        :active, env, Oct / Nov. 2025
-    Simulation Unity         :sim, Oct / Nov. 2025
+    Documentation complète    :done, doc, 21 novembre 2025
+    Environnement dev        :active, env, 21 novembre 2025
+    Simulation Unity         :sim, 21 novembre 2025
 
     section Phase 2: Core
-    Configuration robot      :robot, Oct / Nov. 2025
-    Tests mouvements         :move, Oct / Nov. 2025
-    Reconnaissance vocale    :voice, Oct / Nov. 2025
-    Système émotions         :emotions, Oct / Nov. 2025
+    Configuration robot      :robot, 21 novembre 2025
+    Tests mouvements         :move, 21 novembre 2025
+    Reconnaissance vocale    :voice, 21 novembre 2025
+    Système émotions         :emotions, 21 novembre 2025
 
     section Phase 3: Intelligence
-    Hugging Face             :hf, Oct / Nov. 2025
-    Modèles IA               :ai, Oct / Nov. 2025
-    Comportements complexes  :behavior, Oct / Nov. 2025
+    Hugging Face             :hf, 21 novembre 2025
+    Modèles IA               :ai, 21 novembre 2025
+    Comportements complexes  :behavior, 21 novembre 2025
 
     section Phase 4: Optimisation
-    Performance              :perf, Oct / Nov. 2025
-    Nouvelles fonctionnalités :feat, Oct / Nov. 2025
-    Déploiement production   :deploy, Oct / Nov. 2025
+    Performance              :perf, 21 novembre 2025
+    Nouvelles fonctionnalités :feat, 21 novembre 2025
+    Déploiement production   :deploy, 21 novembre 2025
 
 ```
 
@@ -576,5 +576,5 @@ Le **Reachy Mini Wireless** fournit une base solide pour BBIA :
 ---
 
 **Version** : 1.0  
-**Date** : Oct / Nov. 2025  
+**Date** : 21 novembre 2025  
 **Statut** : Guide Reachy Mini Wireless
