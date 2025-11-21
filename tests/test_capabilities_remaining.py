@@ -318,7 +318,7 @@ class TestAIBackends:
         try:
             tts = KokoroTTS()
             assert tts is not None
-        except Exception:
+        except (ImportError, RuntimeError, AttributeError):
             pytest.skip("KokoroTTS non disponible")
 
     def test_neu_tts(self) -> None:
@@ -326,7 +326,7 @@ class TestAIBackends:
         try:
             tts = NeuTTSTTS()
             assert tts is not None
-        except Exception:
+        except (ImportError, RuntimeError, AttributeError):
             pytest.skip("NeuTTS non disponible")
 
     def test_open_voice_tts(self) -> None:
@@ -334,7 +334,7 @@ class TestAIBackends:
         try:
             tts = OpenVoiceTTSTTS()
             assert tts is not None
-        except Exception:
+        except (ImportError, RuntimeError, AttributeError):
             pytest.skip("OpenVoiceTTS non disponible")
 
     def test_llama_cpp_llm(self) -> None:
@@ -342,7 +342,7 @@ class TestAIBackends:
         try:
             llm = LlamaCppLLM()
             assert llm is not None
-        except Exception:
+        except (ImportError, RuntimeError, AttributeError):
             pytest.skip("LlamaCpp non disponible")
 
     def test_local_llm(self) -> None:
@@ -350,7 +350,7 @@ class TestAIBackends:
         try:
             llm = LocalLLM()
             assert llm is not None
-        except Exception:
+        except (ImportError, RuntimeError, AttributeError):
             pytest.skip("LocalLLM non disponible")
 
     def test_speech_to_text(self) -> None:
@@ -358,7 +358,7 @@ class TestAIBackends:
         try:
             stt = SpeechToText()
             assert stt is not None
-        except Exception:
+        except (ImportError, RuntimeError, AttributeError):
             pytest.skip("SpeechToText non disponible")
 
 
