@@ -282,10 +282,12 @@ class ReachyMiniBackend(RobotAPI):
         except (ConnectionError, RuntimeError, AttributeError) as e:
             error_msg = str(e)
             logger.warning(
+                "⚠️  Connexion robot échouée (fallback simulation): %s", error_msg
+            )
         except Exception as e:
             error_msg = str(e)
             logger.warning(
-                "⚠️  Erreur inattendue connexion Reachy-Mini (mode simulation activé): %s",
+                "⚠️  Connexion robot échouée inattendue (fallback simulation): %s",
                 error_msg,
             )
             self._activate_simulation_mode()
@@ -1372,7 +1374,14 @@ class ReachyMiniBackend(RobotAPI):
         try:
             result = self.robot.stop_recording()
             return list(result) if result is not None else []
-        except (AttributeError, RuntimeError, OSError, ConnectionError, ValueError, TypeError) as e:
+        except (
+            AttributeError,
+            RuntimeError,
+            OSError,
+            ConnectionError,
+            ValueError,
+            TypeError,
+        ) as e:
             logger.exception("Erreur stop_recording: %s", e)
             return None
         except Exception as e:
@@ -1405,7 +1414,14 @@ class ReachyMiniBackend(RobotAPI):
             # SDK officiel : play_move = async_to_sync(async_play_move)
             # On utilise directement play_move du SDK
             self.robot.play_move(move, play_frequency, initial_goto_duration)
-        except (ValueError, AttributeError, RuntimeError, OSError, TypeError, KeyError) as e:
+        except (
+            ValueError,
+            AttributeError,
+            RuntimeError,
+            OSError,
+            TypeError,
+            KeyError,
+        ) as e:
             logger.exception("Erreur play_move: %s", e)
         except Exception as e:
             logger.exception("Erreur inattendue play_move: %s", e)
@@ -1423,7 +1439,14 @@ class ReachyMiniBackend(RobotAPI):
 
         try:
             self.robot.async_play_move(move, play_frequency, initial_goto_duration)
-        except (ValueError, AttributeError, RuntimeError, OSError, TypeError, KeyError) as e:
+        except (
+            ValueError,
+            AttributeError,
+            RuntimeError,
+            OSError,
+            TypeError,
+            KeyError,
+        ) as e:
             logger.exception("Erreur async_play_move: %s", e)
         except Exception as e:
             logger.exception("Erreur inattendue async_play_move: %s", e)
@@ -1559,7 +1582,14 @@ class ReachyMiniBackend(RobotAPI):
             if result is not None and len(result) == JOINT_POSITIONS_TUPLE_SIZE:
                 return (list(result[0]), list(result[1]))
             return ([0.0] * 12, [0.0, 0.0])
-        except (AttributeError, RuntimeError, ValueError, OSError, TypeError, IndexError) as e:
+        except (
+            AttributeError,
+            RuntimeError,
+            ValueError,
+            OSError,
+            TypeError,
+            IndexError,
+        ) as e:
             logger.exception("Erreur get_current_joint_positions: %s", e)
             return ([0.0] * 12, [0.0, 0.0])
         except Exception as e:
