@@ -412,7 +412,7 @@ export BBIA_DISABLE_SIMULATION=1
 
 - **GitHub** : [arkalia-luna-system/bbia-sim](https://github.com/arkalia-luna-system/bbia-sim)
 - **Issues** : [Signaler un bug](https://github.com/arkalia-luna-system/bbia-sim/issues)
-- **État du projet** : [`../reference/STATUT_PROJET.md`](../reference/STATUT_PROJET.md) — État opérationnel
+- **État du projet** : [`../reference/project-status.md`](../reference/project-status.md) — État opérationnel et tableau de bord complet
 - **Tableau de bord** : [`../reference/project-status.md`](../reference/project-status.md) — État par axe
 
 ---

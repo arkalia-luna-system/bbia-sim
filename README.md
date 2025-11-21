@@ -90,7 +90,7 @@ BBIA-SIM maintient des standards stricts de qualité:
 - **Sécurité**: Analyse statique avec Bandit
 - **Performance**: Optimisations continues et monitoring
 
-**[🚀 Quick Start](#-démarrage-rapide)** | **[📚 Guide de Démarrage](docs/guides/GUIDE_DEMARRAGE.md)** | **[🔬 Docs Avancé](docs/guides/GUIDE_AVANCE.md)** | **[📋 Projets](docs/reference/PROJECTS.md)** | **[🌐 English README](README_EN.md)** | **[🎬 Vidéos Démo](docs/guides/GUIDE_VIDEOS_DEMONSTRATION.md)** | **[🌍 Guide Communauté](docs/community/GUIDE_COMMUNAUTE.md)**
+**[🚀 Quick Start](#-démarrage-rapide)** | **[📚 Guide de Démarrage](docs/guides/GUIDE_DEMARRAGE.md)** | **[🔬 Docs Avancé](docs/guides/GUIDE_AVANCE.md)** | **[🌐 English README](README_EN.md)** | **[🎬 Vidéos Démo](docs/guides/GUIDE_VIDEOS_DEMONSTRATION.md)** | **[🌍 Guide Communauté](docs/community/GUIDE_COMMUNAUTE.md)**
 
 ---
 
@@ -935,7 +935,6 @@ Le robot Reachy Mini est simulé avec une fidélité élevée aux spécification
 
 ## 📊 Projets & Portfolio
 
-Voir [`PROJECTS.md`](docs/reference/PROJECTS.md) pour la liste complète de mes projets (10+ projets actifs).
 
 ---
 

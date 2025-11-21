@@ -81,7 +81,7 @@ BBIA-SIM maintains strict quality standards:
 - **Security**: Static analysis with Bandit
 - **Performance**: Continuous optimizations and monitoring
 
-**[🚀 Quick Start](#-quick-start)** | **[📚 Getting Started Guide](docs/guides/GUIDE_DEMARRAGE.md)** | **[🔬 Advanced Docs](docs/guides/GUIDE_AVANCE.md)** | **[📋 Projects](docs/reference/PROJECTS.md)**
+**[🚀 Quick Start](#-quick-start)** | **[📚 Getting Started Guide](docs/guides/GUIDE_DEMARRAGE.md)** | **[🔬 Advanced Docs](docs/guides/GUIDE_AVANCE.md)**
 
 ---
 

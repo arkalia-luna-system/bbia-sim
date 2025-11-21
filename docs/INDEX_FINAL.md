@@ -53,7 +53,7 @@
 ### 📊 Chef de Projet
 
 1. [Tableau de Bord Complet](reference/project-status.md) — État par axe (Fiabilité, Performance, etc.)
-2. [Statut Opérationnel](reference/STATUT_PROJET.md) — État système (dashboard, tests, commandes)
+2. [Statut du Projet](reference/project-status.md) — État opérationnel et tableau de bord complet
 3. [Release Notes](reference/RELEASE_NOTES.md) — Notes de version
 4. [Historique](reference/PROJECT_HISTORY.md) — Historique complet
 
@@ -134,7 +134,7 @@
 
 ### 📋 Références
 
-- [Statut du Projet](reference/STATUT_PROJET.md) — État actuel
+- [Statut du Projet](reference/project-status.md) — État opérationnel et tableau de bord complet
 - [Release Notes](reference/RELEASE_NOTES.md) — Notes de version
 - [Historique](reference/PROJECT_HISTORY.md) — Historique complet
 - [Résumé Final](reference/summaries/final-summary.md) — Résumé complet

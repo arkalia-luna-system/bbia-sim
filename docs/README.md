@@ -47,7 +47,7 @@ flowchart TB
 | Document | Description | Public |
 |----------|-------------|--------|
 | **[project-status.md](reference/project-status.md)** | Tableau de bord complet par axe | Tous |
-| **[STATUT_PROJET.md](reference/STATUT_PROJET.md)** | État opérationnel (dashboard, tests) | Développeurs |
+| **[project-status.md](reference/project-status.md)** | État opérationnel et tableau de bord complet | Développeurs |
 
 ---
 

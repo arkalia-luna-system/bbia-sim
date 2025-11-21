@@ -10,37 +10,29 @@
 
 ## 🎯 **Configuration recommandée**
 
-### **Environnement de développement**
+> **💡 Note** : Pour l'installation complète, voir [INSTALLATION.md](../getting-started/INSTALLATION.md).  
+> Pour les métriques du projet, voir [METRICS.md](METRICS.md).
+
+### **Variables d'environnement**
+
+#### **Développement**
 
 ```bash
-# Python 3.11+ requis
-python --version
-
-# Installation des dépendances
-pip install -e .
-
-# Installation en mode développement
-pip install -e .
-
-# Configuration des variables d'environnement
 export BBIA_API_HOST=127.0.0.1
 export BBIA_API_PORT=8000
 export BBIA_LOG_LEVEL=info
 export MUJOCO_GL=egl
-
 ```
 
-### **Environnement de production**
+#### **Production**
 
 ```bash
-# Configuration production
 export BBIA_API_HOST=0.0.0.0
 export BBIA_API_PORT=8000
 export BBIA_LOG_LEVEL=warning
 export BBIA_API_TOKEN=your_secret_token
 export BBIA_RATE_LIMIT=100
 export MUJOCO_GL=egl
-
 ```
 
 ---
@@ -288,18 +280,14 @@ export BBIA_RATE_LIMIT=1000
 
 ## Déploiement
 
+> **Installation** : Voir [INSTALLATION.md](../getting-started/INSTALLATION.md) pour les instructions complètes.
+
 ### Déploiement local
 
 ```bash
-# Installation complète
-git clone https://github.com/arkalia-luna-system/bbia-sim.git
-cd bbia-sim
-pip install -r requirements.txt
-pip install -e .
-
+# Après installation (voir INSTALLATION.md)
 # Démarrage
 python deployment/public_api.py --prod
-
 ```
 
 ### Déploiement Docker
