@@ -1,10 +1,10 @@
-# 📊 Statut Opérationnel BBIA-SIM - Oct / Nov. 2025
+# 📊 Statut Opérationnel BBIA-SIM
 
 > **💡 Note** : Ce fichier décrit l'**état opérationnel** du système (dashboard, tests, commandes).  
 > Pour le **tableau de bord complet par axe** (Fiabilité, Performance, Sécurité, etc.), consultez [project-status.md](project-status.md).
 
 **Version :** 1.3.2  
-**Date :** Oct / Nov. 2025  
+**Date :** 21 novembre 2025  
 **Statut global :** opérationnel et en développement actif
 
 ---
@@ -190,7 +190,7 @@ bandit -r src/
 | Tests locaux | OK | 54 passed |
 | Tests complets | ⏳ | À lancer |
 | Coverage global | ⏳ | À mesurer |
-| Docs mises à jour | OK | Oct / Nov. 2025 |
+| Docs mises à jour | OK | 21 novembre 2025 |
 
 ---
 
@@ -239,4 +239,4 @@ bandit -r src/
 
 Le système est opérationnel et prêt pour le développement.
 
-*Dernière mise à jour : Oct / Nov. 2025*
+*Dernière mise à jour : 21 novembre 2025*

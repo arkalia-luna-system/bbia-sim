@@ -1,6 +1,6 @@
 # Audit IA : Modules Pré-entraînés dans BBIA
 
-**Date** : Oct / Nov. 2025  
+**Date** : 21 novembre 2025  
 **Objectif** : Vérifier quels modèles IA pré-entraînés sont utilisés, où ils sont utilisés, et identifier ce qui manque.
 
 ---
@@ -163,7 +163,7 @@ result = vision.scan_environment()
 - ✅ **Phi-2** (2.7B) - Microsoft, ~5GB RAM - **AJOUTÉ** (ligne 164)
 - ✅ **TinyLlama** (1.1B) - Ultra-léger, ~2GB RAM - **AJOUTÉ** (ligne 165-166)
 
-**Vérification code (Oct / Nov. 2025)** :
+**Vérification code (21 novembre 2025)** :
 
 - ✅ `bbia_huggingface.py` (lignes 164-166) : Configs Phi-2 et TinyLlama ajoutées
 - ✅ `enable_llm_chat("phi2")` et `enable_llm_chat("tinyllama")` fonctionnent
@@ -480,7 +480,7 @@ hf.enable_llm_chat("tinyllama")  # ✅ Fonctionne (~2GB RAM)
 
 ---
 
-**Dernière mise à jour** : Oct / Nov. 2025
+**Dernière mise à jour** : 21 novembre 2025
 
 ---
 

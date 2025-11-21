@@ -20,7 +20,7 @@
 ### 🛡️ Sécurité et fiabilité
 
 - **Limites de sécurité** : clamp automatique à 0.3 rad, joints interdits centralisés
-- **Tests automatisés** : suite validée en CI (800+ tests)
+- **Tests automatisés** : suite validée en CI (1,362 tests collectés, 1,804 fonctions de test)
 - **CI/CD** : pipeline GitHub Actions avec artefacts et validation
 - **Déterminisme** : graine fixée (SEED=42) pour reproductibilité
 

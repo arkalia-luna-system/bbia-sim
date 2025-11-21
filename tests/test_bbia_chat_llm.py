@@ -108,24 +108,22 @@ class TestBBIAChat:
         ) as mock_create:
             # Test look_right
             chat._execute_action({"action": "look_right"})
-            # Vérifier que goto_target a été appelé (si SDK disponible)
-            # Note: peut ne pas être appelé si SDK non disponible, c'est normal
-            try:
-                mock_robot_api.goto_target.assert_called_once()
-            except AssertionError:
-                # SDK non disponible ou import échoué, c'est normal
-                pass
+            # Vérifier que create_head_pose a été appelé et goto_target aussi
+            mock_create.assert_called_once_with(yaw=0.3, pitch=0.0, degrees=False)
+            mock_robot_api.goto_target.assert_called_once_with(
+                head=mock_pose, duration=1.0
+            )
 
-            # Reset mock
+            # Reset mocks
             mock_robot_api.goto_target.reset_mock()
+            mock_create.reset_mock()
 
             # Test look_left
             chat._execute_action({"action": "look_left"})
-            try:
-                mock_robot_api.goto_target.assert_called_once()
-            except AssertionError:
-                # SDK non disponible ou import échoué, c'est normal
-                pass
+            mock_create.assert_called_once_with(yaw=-0.3, pitch=0.0, degrees=False)
+            mock_robot_api.goto_target.assert_called_once_with(
+                head=mock_pose, duration=1.0
+            )
 
     def test_execute_action_no_robot_api(self):
         """Test exécution action sans robot_api."""
