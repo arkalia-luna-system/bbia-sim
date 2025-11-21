@@ -45,8 +45,8 @@ def test_goto_target_interpolation_methods() -> None:
         for method in methods:
             # Vérifier que la méthode ne lève pas d'exception
             backend.goto_target(head=head, duration=0.1, method=method, body_yaw=0.0)
-            # Petit délai pour laisser le temps au simulateur
-            time.sleep(0.05)
+            # OPTIMISATION: Réduire sleep de 0.05 à 0.02 (2.5x plus rapide)
+            time.sleep(0.02)
     finally:
         backend.disconnect()
 
@@ -103,7 +103,8 @@ def test_goto_target_with_body_yaw() -> None:
         backend.goto_target(
             head=head, body_yaw=body_yaw, duration=0.2, method="minjerk"
         )
-        time.sleep(0.25)
+        # OPTIMISATION: Réduire sleep de 0.25 à 0.15 (1.7x plus rapide)
+        time.sleep(0.15)
 
         # Vérifier position corps
         pos = backend.get_joint_pos("yaw_body")

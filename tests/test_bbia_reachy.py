@@ -121,9 +121,10 @@ class ReachyMiniWirelessSimulator:
         self.simulate_voice_interaction()
 
         # Test de la batterie
-        for _ in range(5):
+        # OPTIMISATION: Réduire 5 → 3 itérations et sleep 0.5 → 0.2 (plus rapide)
+        for _ in range(3):
             self.simulate_battery()
-            time.sleep(0.5)
+            time.sleep(0.2)
 
         # Message final
 

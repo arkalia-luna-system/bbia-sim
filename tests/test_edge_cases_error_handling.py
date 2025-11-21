@@ -250,7 +250,16 @@ class TestEdgeCasesBuffers:
 
         # Doit respecter maxlen
         assert len(history) == 100
-        assert history[0]["timestamp"] == 100  # Les 100 premiers ont été supprimés
+        # Vérifier que le premier élément est bien le premier ajouté (pas supprimé car on n'a ajouté que 100 éléments)
+        assert history[0]["timestamp"] == 0
+
+        # Ajouter 50 éléments de plus pour tester la saturation réelle
+        for i in range(100, 150):
+            history.append({"timestamp": i, "value": i * 0.1})
+
+        # Maintenant le premier élément devrait être 50 (les 50 premiers ont été supprimés)
+        assert len(history) == 100
+        assert history[0]["timestamp"] == 50
 
 
 class TestEdgeCasesWebSocket:

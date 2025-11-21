@@ -714,7 +714,7 @@ class VoiceCommandMapper:
         }
 
         logger.info(
-            f"🗣️ Mappeur de commandes initialisé ({len(self.commands)} commandes)",
+            "🗣️ Mappeur de commandes initialisé (%d commandes)", len(self.commands)
         )
 
     def map_command(self, text: str) -> dict[str, Any] | None:

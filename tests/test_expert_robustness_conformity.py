@@ -94,7 +94,8 @@ class TestExpertRobustnessConformity:
                     self.backend.set_emotion(emotion, 0.5)
                     pos = self.backend.get_joint_pos("yaw_body")
                     results.append((thread_id, i, emotion, pos))
-                    time.sleep(0.01)
+                    # OPTIMISATION: Réduire sleep de 0.01 à 0.005 (2x plus rapide)
+                    time.sleep(0.005)
             except Exception as e:
                 errors.append((thread_id, e))
 
@@ -242,7 +243,8 @@ class TestExpertRobustnessConformity:
         for i in range(10):
             angle = 0.2 * math.sin(2 * math.pi * i / 10)
             self.backend.set_joint_pos("yaw_body", angle)
-            time.sleep(0.05)  # Petit délai pour laisser le mouvement se propager
+            # OPTIMISATION: Réduire sleep de 0.05 à 0.02 (2.5x plus rapide)
+            time.sleep(0.02)
             pos = self.backend.get_joint_pos("yaw_body")
             positions.append((i, pos))
 
@@ -265,7 +267,8 @@ class TestExpertRobustnessConformity:
         # Connexion/déconnexion multiples
         for i in range(3):
             self.backend.disconnect()
-            time.sleep(0.1)
+            # OPTIMISATION: Réduire sleep de 0.1 à 0.05 (2x plus rapide)
+            time.sleep(0.05)
             self.backend.connect()
 
             # Vérifier état

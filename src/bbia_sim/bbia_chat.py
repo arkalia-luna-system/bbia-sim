@@ -114,8 +114,9 @@ class BBIAChat:
             },
         }
 
-        # Charger le LLM
-        self._load_llm()
+        # OPTIMISATION RAM: Lazy loading strict - ne pas charger LLM à l'init
+        # Le LLM sera chargé seulement au premier appel de chat()
+        # self._load_llm()  # DÉSACTIVÉ pour lazy loading strict
 
     def _load_llm(self) -> None:
         """Charge le LLM léger (Phi-2 ou TinyLlama avec fallback).
@@ -271,6 +272,14 @@ class BBIAChat:
         Returns:
             Réponse intelligente de BBIA
         """
+        # OPTIMISATION RAM: Lazy loading strict - charger LLM seulement au premier appel
+        if not self.llm_model or not self.llm_tokenizer:
+            logger.info("📥 Chargement LLM à la demande (lazy loading)...")
+            self._load_llm()
+            # Si échec chargement, continuer avec fallback
+            if not self.llm_model or not self.llm_tokenizer:
+                logger.warning("LLM non disponible, utilisation mode fallback")
+
         if not user_message or not user_message.strip():
             return "Je n'ai pas compris votre message. Pouvez-vous reformuler ?"
 

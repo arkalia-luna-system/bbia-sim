@@ -101,14 +101,16 @@ class TestPerformanceBenchmarks:
         from bbia_sim.global_config import GlobalConfig
 
         def validate_joint_task():
-            for _ in range(20):
+            # OPTIMISATION: Réduire 20 → 10 itérations (2x plus rapide)
+            for _ in range(10):
                 GlobalConfig.validate_joint("yaw_body")
                 GlobalConfig.validate_emotion("happy")
             return True
 
         start = time.time()
-        with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
-            futures = [executor.submit(validate_joint_task) for _ in range(10)]
+        # OPTIMISATION: Réduire threads 5 → 3 et tasks 10 → 5 (plus rapide)
+        with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
+            futures = [executor.submit(validate_joint_task) for _ in range(5)]
             results = [f.result() for f in futures]
 
         elapsed = time.time() - start

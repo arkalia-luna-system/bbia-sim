@@ -3290,7 +3290,7 @@ if FASTAPI_AVAILABLE:
                         logger.debug("Stream vidéo annulé (client déconnecté)")
                         break
                     except Exception as e:
-                        logger.error(f"Erreur stream vidéo: {e}", exc_info=True)
+                        logger.exception("Erreur stream vidéo: %s", e)
                         await asyncio.sleep(1)
             except GeneratorExit:
                 # Arrêt propre du générateur
@@ -3329,7 +3329,7 @@ if FASTAPI_AVAILABLE:
             logger.info("🔌 WebSocket déconnecté normalement")
             await advanced_websocket_manager.disconnect(websocket)
         except Exception as e:
-            logger.error(f"❌ Erreur WebSocket: {e}", exc_info=True)
+            logger.exception("❌ Erreur WebSocket: %s", e)
             await advanced_websocket_manager.disconnect(websocket)
 
 
@@ -3435,7 +3435,7 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                             f"❌ Échec émotion: {emotion}",
                         )
                 except Exception as e:
-                    logger.error(f"❌ [CMD] Erreur set_emotion: {e}", exc_info=True)
+                    logger.exception("❌ [CMD] Erreur set_emotion: %s", e)
                     await advanced_websocket_manager.send_log_message(
                         "error",
                         f"❌ Erreur émotion: {e}",
@@ -3803,7 +3803,7 @@ async def handle_chat_message(message_data: dict[str, Any], websocket: WebSocket
             )
 
     except Exception as e:
-        logger.error(f"❌ Erreur chat: {e}", exc_info=True)
+        logger.exception("❌ Erreur chat: %s", e)
         try:
             await advanced_websocket_manager.send_log_message(
                 "error",

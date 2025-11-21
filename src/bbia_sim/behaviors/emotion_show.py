@@ -263,7 +263,7 @@ class EmotionShowBehavior(BBIABehavior):
             logger.info("Démonstration interrompue par l'utilisateur")
             self._cancelled = True
         except Exception as e:
-            logger.error(f"Erreur durant démonstration émotions: {e}", exc_info=True)
+            logger.exception("Erreur durant démonstration émotions: %s", e)
             return False
 
         return True

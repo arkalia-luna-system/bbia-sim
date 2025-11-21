@@ -119,7 +119,9 @@ class TestBackendAdapterQuick:
             # Test toutes les méthodes set_target_*
             adapter.set_target_head_pose(np.eye(4, dtype=np.float64))
             adapter.set_target_body_yaw(0.5)
-            adapter.set_target_head_joint_positions(np.array([0.0] * 7, dtype=np.float64))
+            adapter.set_target_head_joint_positions(
+                np.array([0.0] * 7, dtype=np.float64)
+            )
             adapter.set_target_antenna_joint_positions([0.0, 0.0])
             adapter.set_target_head_joint_current(np.array([0.0] * 7, dtype=np.float64))
 
