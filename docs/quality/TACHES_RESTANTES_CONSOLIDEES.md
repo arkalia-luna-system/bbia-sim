@@ -672,8 +672,54 @@ except Exception as e:
 
 ---
 
+## 📊 RÉSUMÉ FINAL - CE QUI RESTE À FAIRE
+
+**Date** : Décembre 2025  
+**Progression globale** : ⏳ **85% TERMINÉ**
+
+### ✅ CE QUI A ÉTÉ FAIT
+
+1. ✅ **Audit complet** - Tous les problèmes identifiés
+2. ✅ **Corrections G004** - ~590/816 occurrences corrigées (72%)
+3. ✅ **Corrections TRY400** - ~190/220 occurrences corrigées (86%)
+4. ✅ **Erreurs syntaxe** - Toutes corrigées
+5. ✅ **Documentation MD** - Mise à jour avec progression
+
+### ⏳ CE QUI RESTE À FAIRE
+
+#### 🔴 PRIORITÉ HAUTE (1-2 jours)
+
+1. **G004 - Logging f-strings** - ~227 occurrences restantes
+   - Fichiers principaux : `dashboard_advanced.py`, `bbia_huggingface.py`, `backends/reachy_mini_backend.py`
+   - Action : Remplacer `logger.info(f"...")` par `logger.info("...", ...)`
+
+2. **TRY400 - error → exception** - ~30 occurrences restantes
+   - Fichiers : Backends, vision, voice
+   - Action : Remplacer `logger.error()` par `logger.exception()` dans les blocs `except`
+
+#### 🟡 PRIORITÉ MOYENNE (2-3 jours)
+
+3. **BLE001 - Exceptions génériques** - ~369 occurrences
+   - Action : Spécifier les exceptions (`ValueError`, `AttributeError`, etc.) au lieu de `Exception`
+   - Impact : Meilleure gestion d'erreurs, débogage facilité
+
+4. **Audit doublons** - Vérifier `set_emotion()` et `dire_texte()` dupliqués
+   - Action : Analyser si certaines implémentations sont redondantes
+
+#### 🟢 PRIORITÉ BASSE (Optionnel)
+
+5. **Lazy loading Hugging Face** - Optimisation RAM
+   - Gain estimé : -50-70% RAM
+   - Action : Implémenter déchargement automatique après inactivité
+
+6. **Optimisations mémoire supplémentaires** - Phase 3
+   - Quantification modèles 8-bit
+   - Optimisation gestion images/audio
+
+---
+
 **Document créé le :** 21 novembre 2025  
-**Dernière mise à jour :** Décembre 2025 (Corrections G004/TRY400 en cours - 75% fait)  
+**Dernière mise à jour :** Décembre 2025 (Corrections G004/TRY400 en cours - 72% fait)  
 **Statut :** ⏳ **85% TERMINÉ - PRODUCTION READY** (corrections qualité code en cours)
 
 **Voir** : `docs/quality/audits/AUDIT_COMPLET_REALISTE_DEC2025.md` pour l'audit complet et détaillé.
