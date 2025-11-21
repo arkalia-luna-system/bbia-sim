@@ -138,10 +138,10 @@
   - Compression audio (Opus ou G.711)
   - Buffer optimisé (deque maxlen=10)
   - Latence minimale (<50ms)
-- ✅ Optimiser WebSocket dashboard existant
-  - ✅ Batching messages (grouper updates toutes les 100ms)
-  - ✅ Heartbeat optimisé (30s au lieu de 10s)
-  - ✅ Métriques utilisent batching automatique
+- ✅ Optimiser WebSocket dashboard existant - **TERMINÉ 21 novembre 2025**
+  - ✅ Batching messages (grouper updates toutes les 100ms) - **IMPLÉMENTÉ**
+  - ✅ Heartbeat optimisé (30s au lieu de 10s) - **IMPLÉMENTÉ**
+  - ✅ Métriques utilisent batching automatique - **IMPLÉMENTÉ**
 
 **Impact** : Cas d'usage temps réel améliorés ✅ (stream vidéo et WebSocket optimisés)
 
