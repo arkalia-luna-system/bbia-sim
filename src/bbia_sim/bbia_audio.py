@@ -240,7 +240,7 @@ def enregistrer_audio(
                     )
                 logging.info("Enregistrement SDK terminé.")
                 return True
-        except Exception as e:
+        except Exception:
             logging.debug(f"Erreur enregistrement SDK (fallback sounddevice): {e}")
             # Fallback vers sounddevice
 
@@ -301,7 +301,7 @@ def lire_audio(fichier: str, robot_api: Optional["RobotAPI"] = None) -> None:
                     f"SDK standard {DEFAULT_SAMPLE_RATE} Hz. "
                     f"Performance audio peut être dégradée.",
                 )
-        except Exception as e:
+        except Exception:
             # Ignorer toute erreur côté soundfile, fallback plus bas
             logger.debug(
                 f"Impossible de lire métadonnées audio avec soundfile, fallback: {e}"
@@ -335,7 +335,7 @@ def lire_audio(fichier: str, robot_api: Optional["RobotAPI"] = None) -> None:
                     speaker.play(audio_bytes)
                     logging.info("Lecture SDK terminée.")
                     return
-            except Exception as e:
+            except Exception:
                 logging.debug(f"Erreur lecture SDK (fallback sounddevice): {e}")
                 # Fallback vers sounddevice
 
@@ -351,7 +351,7 @@ def lire_audio(fichier: str, robot_api: Optional["RobotAPI"] = None) -> None:
             _sd.play(audio, frequence)
             _sd.wait()
         logging.info(f"Lecture de {fichier} terminée.")
-    except Exception as e:
+    except Exception:
         logging.exception(f"Erreur de lecture audio : {e}")
         raise
 
@@ -378,7 +378,7 @@ def detecter_son(fichier: str, seuil: int = 500) -> bool:
             max_val: float = np.max(np.abs(audio))
             logging.info(f"Amplitude max détectée : {max_val}")
             return max_val > seuil
-    except Exception as e:
+    except Exception:
         logging.exception(f"Erreur de détection de son : {e}")
         return False
 
