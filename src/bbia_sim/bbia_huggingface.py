@@ -273,9 +273,6 @@ class BBIAHuggingFace:
         except (AttributeError, RuntimeError) as e:
             logger.warning("Erreur initialisation BBIAChat: %s", e)
             self.bbia_chat = None
-        except (ImportError, RuntimeError, AttributeError) as e:
-            logger.warning("Erreur initialisation BBIAChat: %s", e)
-            self.bbia_chat = None
         except Exception as e:
             logger.warning("Erreur inattendue initialisation BBIAChat: %s", e)
             self.bbia_chat = None
@@ -437,8 +434,6 @@ class BBIAHuggingFace:
             except (ImportError, RuntimeError, OSError, ValueError) as e:
                 logger.warning("⚠️ Échec chargement SmolVLM2/Moondream2: %s", e)
                 return False
-            except (ImportError, RuntimeError, OSError, ValueError) as e:
-                logger.warning("⚠️ Erreur chargement SmolVLM2/Moondream2: %s", e)
             except Exception as e:
                 logger.warning(
                     "⚠️ Erreur inattendue chargement SmolVLM2/Moondream2: %s", e
@@ -656,7 +651,9 @@ class BBIAHuggingFace:
             logger.exception("❌ Erreur chargement modèle %s: %s", model_name, e)
             return False
         except Exception as e:
-            logger.exception("❌ Erreur inattendue chargement modèle %s: %s", model_name, e)
+            logger.exception(
+                "❌ Erreur inattendue chargement modèle %s: %s", model_name, e
+            )
             return False
 
     def _get_pipeline_name(self, model_name: str) -> str:
@@ -1078,10 +1075,14 @@ class BBIAHuggingFace:
                                     if model_key in self._model_last_used:
                                         del self._model_last_used[model_key]
                         except (AttributeError, RuntimeError, KeyError) as e:
-                            logger.debug("Erreur déchargement auto %s: %s", model_key, e)
+                            logger.debug(
+                                "Erreur déchargement auto %s: %s", model_key, e
+                            )
                         except Exception as e:
                             logger.debug(
-                                "Erreur inattendue déchargement auto %s: %s", model_key, e
+                                "Erreur inattendue déchargement auto %s: %s",
+                                model_key,
+                                e,
                             )
 
                 except Exception as e:
@@ -1152,7 +1153,9 @@ class BBIAHuggingFace:
             logger.exception("❌ Erreur déchargement modèle %s: %s", model_name, e)
             return False
         except Exception as e:
-            logger.exception("❌ Erreur inattendue déchargement modèle %s: %s", model_name, e)
+            logger.exception(
+                "❌ Erreur inattendue déchargement modèle %s: %s", model_name, e
+            )
             return False
 
     def get_model_info(self) -> dict[str, Any]:
@@ -1218,16 +1221,18 @@ class BBIAHuggingFace:
                         "phi2",
                     ) or self.model_configs.get("chat", {}).get("tinyllama")
                     if default_chat_model:
-                          logger.info(
-                              "📥 Chargement LLM à la demande (lazy loading): %s",
-                              default_chat_model,
-                          )
+                        logger.info(
+                            "📥 Chargement LLM à la demande (lazy loading): %s",
+                            default_chat_model,
+                        )
                         if self.load_model(default_chat_model, model_type="chat"):
                             logger.info("✅ LLM chargé avec succès (lazy loading)")
                 except (ImportError, RuntimeError, OSError, ValueError) as e:
                     logger.debug("Lazy loading LLM échoué (fallback enrichi): %s", e)
                 except Exception as e:
-                    logger.debug("Lazy loading LLM échoué inattendu (fallback enrichi): %s", e)
+                    logger.debug(
+                        "Lazy loading LLM échoué inattendu (fallback enrichi): %s", e
+                    )
 
             # 3. Générer réponse avec LLM si disponible, sinon réponses enrichies
             # Convertir SentimentResult en SentimentDict (nécessaire pour les deux branches)
@@ -1469,8 +1474,6 @@ class BBIAHuggingFace:
 
         except (ValueError, RuntimeError, AttributeError, OSError) as e:
             logger.warning("⚠️  Erreur génération LLM, fallback enrichi: %s", e)
-        except Exception as e:
-            logger.warning("⚠️  Erreur inattendue génération LLM, fallback enrichi: %s", e)
             # Fallback vers réponses enrichies
             try:
                 sentiment_result = self.analyze_sentiment(user_message)
@@ -1482,6 +1485,21 @@ class BBIAHuggingFace:
             except (ValueError, RuntimeError, KeyError):
                 sentiment_dict = {"label": "NEUTRAL", "score": 0.5}
             return self._generate_simple_response(user_message, sentiment_dict)
+        except Exception as e:
+            logger.warning(
+                "⚠️  Erreur inattendue génération LLM, fallback enrichi: %s", e
+            )
+            # Fallback vers réponses enrichies
+            try:
+                sentiment_result = self.analyze_sentiment(user_message)
+                # Convertir SentimentResult en SentimentDict
+                sentiment_dict_fallback: SentimentDict = {
+                    "label": sentiment_result.get("sentiment", "neutral"),
+                    "score": sentiment_result.get("score", 0.5),
+                }
+            except (ValueError, RuntimeError, KeyError):
+                sentiment_dict_fallback = {"label": "NEUTRAL", "score": 0.5}
+            return self._generate_simple_response(user_message, sentiment_dict_fallback)
 
     def _detect_and_execute_tools(self, user_message: str) -> str | None:
         """Détecte et exécute des outils depuis le message utilisateur.
@@ -1738,11 +1756,15 @@ class BBIAHuggingFace:
                         return f"⚠️ {error_detail}"
 
                     except (AttributeError, RuntimeError, ValueError, KeyError) as e:
-                        logger.exception("❌ Erreur exécution outil '%s': %s", tool_name, e)
+                        logger.exception(
+                            "❌ Erreur exécution outil '%s': %s", tool_name, e
+                        )
                         return f"❌ Erreur lors de l'exécution: {e}"
                     except Exception as e:
                         logger.exception(
-                            "❌ Erreur inattendue exécution outil '%s': %s", tool_name, e
+                            "❌ Erreur inattendue exécution outil '%s': %s",
+                            tool_name,
+                            e,
                         )
                         return f"❌ Erreur lors de l'exécution: {e}"
 
@@ -1847,7 +1869,9 @@ class BBIAHuggingFace:
             logger.debug("ℹ️ Erreur NLP détection (fallback mots-clés): %s", e)
             return None
         except Exception as e:
-            logger.debug("ℹ️ Erreur inattendue NLP détection (fallback mots-clés): %s", e)
+            logger.debug(
+                "ℹ️ Erreur inattendue NLP détection (fallback mots-clés): %s", e
+            )
             return None
 
     def _execute_detected_tool(
@@ -1993,7 +2017,9 @@ class BBIAHuggingFace:
             logger.exception("❌ Erreur exécution outil '%s': %s", tool_name, e)
             return f"❌ Erreur lors de l'exécution: {e}"
         except Exception as e:
-            logger.exception("❌ Erreur inattendue exécution outil '%s': %s", tool_name, e)
+            logger.exception(
+                "❌ Erreur inattendue exécution outil '%s': %s", tool_name, e
+            )
             return f"❌ Erreur lors de l'exécution: {e}"
 
     def _extract_angle(self, message: str) -> float | None:

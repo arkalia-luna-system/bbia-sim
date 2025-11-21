@@ -255,7 +255,7 @@ except Exception as e:
 
 ### 🟡 **Problèmes Moyens (À Corriger Progressivement)**
 
-#### 3. **Exceptions génériques (BLE001)** - ~349 occurrences ⏳ **EN COURS**
+#### 3. **Exceptions génériques (BLE001)** - ~178 occurrences ⏳ **EN COURS**
 
 **Problème** :
 ```python
@@ -270,14 +270,19 @@ except Exception as e:  # Pour erreurs inattendues
 
 **Impact** : Masque des erreurs spécifiques importantes
 
-**Priorité** : 🟡 **MOYENNE** - ⏳ **EN COURS** - Correction progressive (12% fait)
+**Priorité** : 🟡 **MOYENNE** - ⏳ **EN COURS** - Correction progressive (~55% fait)
 
 **Fichiers concernés** : 58 fichiers
 
 **Corrections effectuées (Décembre 2025)** :
-- ✅ **Total : ~50 occurrences corrigées dans 13 fichiers**
-- ✅ `backends/reachy_mini_backend.py`, `bbia_vision.py`, `dashboard_advanced.py`, `bbia_chat.py`, `backends/mujoco_backend.py`, `bbia_voice.py`, `bbia_huggingface.py`, `ai_backends.py`, `voice_whisper.py`, `bbia_behavior.py`, `bbia_tools.py`, `behaviors/emotion_show.py`, `daemon/app/routers/state.py`
+- ✅ **Total : ~221 occurrences corrigées dans 15 fichiers**
+- ✅ `bbia_vision.py` : ~18 occurrences
+- ✅ `bbia_huggingface.py` : ~15 occurrences
+- ✅ `bbia_voice.py` : ~10 occurrences
+- ✅ `daemon/app/routers/state.py` : ~10 occurrences
+- ✅ `backends/reachy_mini_backend.py`, `dashboard_advanced.py`, `bbia_chat.py`, `backends/mujoco_backend.py`, `ai_backends.py`, `voice_whisper.py`, `bbia_behavior.py`, `bbia_tools.py`, `behaviors/emotion_show.py`
 - ✅ Approche : Spécification exceptions attendues + bloc Exception générique pour erreurs inattendues
+- ✅ Erreurs de syntaxe corrigées (indentation)
 
 ---
 

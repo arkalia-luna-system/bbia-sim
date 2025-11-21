@@ -388,15 +388,15 @@ class ReachyMiniBackend(RobotAPI):
                             self.robot.get_current_joint_positions()
                             self._last_heartbeat = current_time
                         except (AttributeError, RuntimeError, OSError) as e:
-                              logger.warning(
-                                  "Watchdog: robot semble déconnecté: %s. "
-                                  "Activation emergency_stop...",
-                                  e,
-                              )
-                            # Demander l'arrêt du watchdog avant emergency_stop
-                            self._should_stop_watchdog.set()
-                            self.emergency_stop()
-                            break
+                            logger.warning(
+                                "Watchdog: robot semble déconnecté: %s. "
+                                "Activation emergency_stop...",
+                                e,
+                            )
+                        # Demander l'arrêt du watchdog avant emergency_stop
+                        self._should_stop_watchdog.set()
+                        self.emergency_stop()
+                        break
                     else:
                         # Mode simulation: heartbeat automatique
                         self._last_heartbeat = current_time
@@ -406,11 +406,11 @@ class ReachyMiniBackend(RobotAPI):
 
                 # Vérifier timeout heartbeat (sécurité)
                 if current_time - self._last_heartbeat > max_heartbeat_timeout:
-                      logger.warning(
-                          "Watchdog: heartbeat timeout (%ss). "
-                          "Activation emergency_stop...",
-                          max_heartbeat_timeout,
-                      )
+                    logger.warning(
+                        "Watchdog: heartbeat timeout (%ss). "
+                        "Activation emergency_stop...",
+                        max_heartbeat_timeout,
+                    )
                     self._should_stop_watchdog.set()
                     self.emergency_stop()
                     break
@@ -529,8 +529,7 @@ class ReachyMiniBackend(RobotAPI):
 
         # Structure inattendue
         logger.warning(
-            "Structure head_positions inattendue "
-            "(len=%d, attendu %d ou %d) pour %s",
+            "Structure head_positions inattendue " "(len=%d, attendu %d ou %d) pour %s",
             len(head_positions),
             self.STEWART_JOINTS_COUNT,
             self.HEAD_POSITIONS_LEGACY_COUNT,
