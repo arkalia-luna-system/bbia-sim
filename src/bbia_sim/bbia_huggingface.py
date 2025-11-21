@@ -270,8 +270,11 @@ class BBIAHuggingFace:
         except ImportError as e:
             logger.debug("BBIAChat non disponible: %s", e)
             self.bbia_chat = None
-        except Exception as e:
+        except (AttributeError, RuntimeError) as e:
             logger.warning("Erreur initialisation BBIAChat: %s", e)
+            self.bbia_chat = None
+        except Exception as e:
+            logger.warning("Erreur inattendue initialisation BBIAChat: %s", e)
             self.bbia_chat = None
 
         logger.info("🤗 BBIA Hugging Face initialisé (device: %s)", self.device)
@@ -371,11 +374,18 @@ class BBIAHuggingFace:
             logger.info("✅ LLM %s chargé avec succès", model_name)
             self.use_llm_chat = True
             return True
-        except Exception as e:
+        except (ImportError, RuntimeError, OSError, ValueError) as e:
             logger.warning("⚠️  Échec de chargement LLM %s: %s", model_name, e)
             logger.info(
                 """💡 Fallback activé: réponses enrichies (stratégie règles v1)""",
             )
+            return False
+        except Exception as e:
+            logger.warning("⚠️  Erreur inattendue chargement LLM %s: %s", model_name, e)
+            logger.info(
+                """💡 Fallback activé: réponses enrichies (stratégie règles v1)""",
+            )
+            return False
             # Nettoyage défensif pour éviter des états partiels
             self.chat_model = None
             self.chat_tokenizer = None
@@ -421,8 +431,11 @@ class BBIAHuggingFace:
                 self.models[f"{model_name}_model"] = model
                 logger.info("✅ SmolVLM2/Moondream2 chargé: %s", model_name)
                 return True
-            except Exception as e:
+            except (ImportError, RuntimeError, OSError, ValueError) as e:
                 logger.warning("⚠️ Échec chargement SmolVLM2/Moondream2: %s", e)
+                return False
+            except Exception as e:
+                logger.warning("⚠️ Erreur inattendue chargement SmolVLM2/Moondream2: %s", e)
                 return False
         return False
 
@@ -446,9 +459,13 @@ class BBIAHuggingFace:
             # vision/audio/multimodal/chat: si la clé exacte existe
             if isinstance(cfg, dict) and model_name in cfg:
                 return cfg[model_name]
-        except Exception as e:
+        except (KeyError, AttributeError, TypeError) as e:
             logger.debug(
                 "Erreur lors de la résolution du nom de modèle '%s': %s", model_name, e
+            )
+        except Exception as e:
+            logger.debug(
+                "Erreur inattendue résolution nom de modèle '%s': %s", model_name, e
             )
         return model_name
 
@@ -600,8 +617,14 @@ class BBIAHuggingFace:
                     logger.info("✅ LLM %s chargé avec succès", model_name)
                     self.use_llm_chat = True
                     return True
-                except Exception as e:
+                except (ImportError, RuntimeError, OSError, ValueError) as e:
                     logger.warning("⚠️  Échec chargement LLM %s: %s", model_name, e)
+                    logger.info(
+                        """💡 Fallback activé: réponses enrichies """
+                        """(stratégie règles v2)""",
+                    )
+                except Exception as e:
+                    logger.warning("⚠️  Erreur inattendue chargement LLM %s: %s", model_name, e)
                     logger.info(
                         """💡 Fallback activé: réponses enrichies """
                         """(stratégie règles v2)""",

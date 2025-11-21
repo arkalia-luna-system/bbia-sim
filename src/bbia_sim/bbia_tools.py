@@ -316,8 +316,11 @@ class BBIATools:
                 "status": "success",
                 "detail": f"Tête déplacée {direction} (intensité: {intensity:.2f})",
             }
-        except Exception as e:
+        except (AttributeError, RuntimeError, ValueError) as e:
             logger.exception("Erreur move_head: %s", e)
+            return {"status": "error", "detail": str(e)}
+        except Exception as e:
+            logger.exception("Erreur inattendue move_head: %s", e)
             return {"status": "error", "detail": str(e)}
 
     def _execute_camera(self, parameters: dict[str, Any]) -> dict[str, Any]:
@@ -367,8 +370,11 @@ class BBIATools:
                 )
 
             return result
-        except Exception as e:
+        except (AttributeError, RuntimeError, OSError, ValueError) as e:
             logger.exception("Erreur camera: %s", e)
+            return {"status": "error", "detail": str(e)}
+        except Exception as e:
+            logger.exception("Erreur inattendue camera: %s", e)
             return {"status": "error", "detail": str(e)}
 
     def _execute_head_tracking(self, parameters: dict[str, Any]) -> dict[str, Any]:
@@ -406,8 +412,12 @@ class BBIATools:
                 logger.warning(
                     "VisionTrackingBehavior non disponible - suivi basique activé",
                 )
-            except Exception as e:
+            except (AttributeError, RuntimeError) as e:
                 logger.exception("Erreur activation VisionTrackingBehavior: %s", e)
+            except Exception as e:
+                logger.exception(
+                    "Erreur inattendue activation VisionTrackingBehavior: %s", e
+                )
 
         return {
             "status": "success",
@@ -460,8 +470,11 @@ class BBIATools:
             return {"status": "error", "detail": "SDK officiel reachy_mini requis"}
         except ValueError as e:
             return {"status": "error", "detail": f"Mouvement non trouvé: {e}"}
-        except Exception as e:
+        except (AttributeError, RuntimeError) as e:
             logger.exception("Erreur dance: %s", e)
+            return {"status": "error", "detail": str(e)}
+        except Exception as e:
+            logger.exception("Erreur inattendue dance: %s", e)
             return {"status": "error", "detail": str(e)}
 
     def _execute_stop_dance(self, parameters: dict[str, Any]) -> dict[str, Any]:
@@ -494,8 +507,10 @@ class BBIATools:
                     logger.warning(
                         "robot_api.emergency_stop() non disponible - arrêt basique",
                     )
-            except Exception as e:
+            except (AttributeError, RuntimeError) as e:
                 logger.exception("Erreur arrêt danse: %s", e)
+            except Exception as e:
+                logger.exception("Erreur inattendue arrêt danse: %s", e)
 
         logger.info("Danse '%s' arrêtée", dance_name)
 
@@ -527,8 +542,11 @@ class BBIATools:
                 ),
                 "emotion": emotion,
             }
-        except Exception as e:
+        except (AttributeError, RuntimeError, ValueError) as e:
             logger.exception("Erreur play_emotion: %s", e)
+            return {"status": "error", "detail": str(e)}
+        except Exception as e:
+            logger.exception("Erreur inattendue play_emotion: %s", e)
             return {"status": "error", "detail": str(e)}
 
     def _execute_stop_emotion(self, parameters: dict[str, Any]) -> dict[str, Any]:
@@ -542,8 +560,10 @@ class BBIATools:
         try:
             if self.robot_api:
                 self.robot_api.set_emotion("neutral", 0.5)
-        except Exception as e:
+        except (AttributeError, RuntimeError, ValueError) as e:
             logger.warning("Erreur stop_emotion: %s", e)
+        except Exception as e:
+            logger.warning("Erreur inattendue stop_emotion: %s", e)
 
         return {
             "status": "success",

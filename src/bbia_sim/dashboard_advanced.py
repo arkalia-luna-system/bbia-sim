@@ -164,9 +164,14 @@ class BBIAAdvancedWebSocketManager:
                                 "❌ RobotFactory.create_backend('%s') a retourné None",
                                 self.robot_backend,
                             )
-                except Exception as e:
+                except (ValueError, AttributeError, RuntimeError, ImportError) as e:
                     logger.exception("❌ Erreur initialisation robot: %s", e)
                     # En cas d'erreur, le dashboard fonctionne quand même en mode simulation
+                    logger.info(
+                        "ℹ️ Dashboard fonctionne en mode simulation (sans robot réel)"
+                    )
+                except Exception as e:
+                    logger.exception("❌ Erreur inattendue initialisation robot: %s", e)
                     logger.info(
                         "ℹ️ Dashboard fonctionne en mode simulation (sans robot réel)"
                     )
@@ -224,8 +229,11 @@ class BBIAAdvancedWebSocketManager:
                     await self.send_log_message(
                         "error", f"❌ Impossible de créer le robot {self.robot_backend}"
                     )
-            except Exception as e:
+            except (ValueError, AttributeError, RuntimeError, ImportError) as e:
                 logger.exception("❌ Erreur initialisation robot forcée: %s", e)
+                await self.send_log_message("error", f"❌ Erreur robot: {e}")
+            except Exception as e:
+                logger.exception("❌ Erreur inattendue initialisation robot forcée: %s", e)
                 await self.send_log_message("error", f"❌ Erreur robot: {e}")
 
         # Vérifier que le robot est vraiment connecté
@@ -289,8 +297,10 @@ class BBIAAdvancedWebSocketManager:
                     logger.debug(
                         "🗑️ Connexion WebSocket inactive fermée (%.0fs)", inactivity
                     )
-            except Exception as e:
+            except (ConnectionError, RuntimeError, AttributeError) as e:
                 logger.debug("Erreur nettoyage connexion inactive: %s", e)
+            except Exception as e:
+                logger.debug("Erreur inattendue nettoyage connexion inactive: %s", e)
 
     async def _add_to_batch(self, message_data: dict[str, Any]) -> None:
         """OPTIMISATION STREAMING: Ajoute un message au batch pour envoi groupé."""
@@ -474,8 +484,10 @@ class BBIAAdvancedWebSocketManager:
                         try:
                             # Faire un step de simulation pour que le robot bouge
                             self.robot.step()
-                        except Exception as e:
+                        except (AttributeError, RuntimeError) as e:
                             logger.debug("Erreur step robot: %s", e)
+                        except Exception as e:
+                            logger.debug("Erreur inattendue step robot: %s", e)
 
                     # Mettre à jour les métriques
                     self._update_metrics()
@@ -492,9 +504,13 @@ class BBIAAdvancedWebSocketManager:
                 except asyncio.CancelledError:
                     # Tâche annulée, sortir proprement
                     break
-                except Exception as e:
+                except (AttributeError, RuntimeError, ValueError) as e:
                     if not self._stop_metrics:
                         logger.exception("Erreur collecte métriques: %s", e)
+                    await asyncio.sleep(1.0)
+                except Exception as e:
+                    if not self._stop_metrics:
+                        logger.exception("Erreur inattendue collecte métriques: %s", e)
                     await asyncio.sleep(1.0)
 
         # Démarrer la tâche en arrière-plan

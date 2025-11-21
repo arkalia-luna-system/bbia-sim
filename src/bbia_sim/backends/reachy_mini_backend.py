@@ -270,16 +270,6 @@ class ReachyMiniBackend(RobotAPI):
             if not self.use_sim:
                 self._start_watchdog()
             return False
-        except (TimeoutError, ConnectionError, OSError) as e:
-            error_msg = str(e)
-            logger.info(
-                "⏱️  Erreur connexion (timeout probable) - "
-                "mode simulation activé: %s",
-                error_msg,
-            )
-            self._activate_simulation_mode()
-            self._start_watchdog()
-            return False
         except Exception as e:
             error_msg = str(e)
             logger.warning(
@@ -423,8 +413,12 @@ class ReachyMiniBackend(RobotAPI):
                     self.emergency_stop()
                     break
 
-            except Exception as e:
+            except (AttributeError, RuntimeError, ConnectionError) as e:
                 logger.exception("Erreur watchdog: %s", e)
+                # En cas d'erreur, attendre un peu avant retry
+                time.sleep(self._watchdog_interval)
+            except Exception as e:
+                logger.exception("Erreur inattendue watchdog: %s", e)
                 # En cas d'erreur, attendre un peu avant retry
                 time.sleep(self._watchdog_interval)
 

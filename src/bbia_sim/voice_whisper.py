@@ -142,8 +142,11 @@ class WhisperSTT:
             self.is_loaded = True
             return True
 
-        except Exception as e:
+        except (ImportError, RuntimeError, OSError, ValueError) as e:
             logger.exception("❌ Erreur chargement Whisper: %s", e)
+            return False
+        except Exception as e:
+            logger.exception("❌ Erreur inattendue chargement Whisper: %s", e)
             return False
 
     def transcribe_audio(self, audio_path: str) -> str | None:
@@ -193,8 +196,11 @@ class WhisperSTT:
             )
             return text
 
-        except Exception as e:
+        except (RuntimeError, ValueError, OSError, AttributeError) as e:
             logger.exception("❌ Erreur transcription: %s", e)
+            return None
+        except Exception as e:
+            logger.exception("❌ Erreur inattendue transcription: %s", e)
             return None
 
     def transcribe_microphone(self, duration: float = 3.0) -> str | None:

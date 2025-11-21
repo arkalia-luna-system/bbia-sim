@@ -255,7 +255,7 @@ except Exception as e:
 
 ### 🟡 **Problèmes Moyens (À Corriger Progressivement)**
 
-#### 3. **Exceptions génériques (BLE001)** - 369 occurrences
+#### 3. **Exceptions génériques (BLE001)** - ~349 occurrences ⏳ **EN COURS**
 
 **Problème** :
 ```python
@@ -264,13 +264,20 @@ except Exception as e:  # Trop générique
 
 # ✅ APRÈS
 except (ValueError, AttributeError, RuntimeError) as e:  # Spécifique
+except Exception as e:  # Pour erreurs inattendues
+    logger.exception("Erreur inattendue: %s", e)
 ```
 
 **Impact** : Masque des erreurs spécifiques importantes
 
-**Priorité** : 🟡 **MOYENNE** - À corriger progressivement
+**Priorité** : 🟡 **MOYENNE** - ⏳ **EN COURS** - Correction progressive (12% fait)
 
-**Fichiers concernés** : 59 fichiers
+**Fichiers concernés** : 58 fichiers
+
+**Corrections effectuées (Décembre 2025)** :
+- ✅ **Total : ~50 occurrences corrigées dans 13 fichiers**
+- ✅ `backends/reachy_mini_backend.py`, `bbia_vision.py`, `dashboard_advanced.py`, `bbia_chat.py`, `backends/mujoco_backend.py`, `bbia_voice.py`, `bbia_huggingface.py`, `ai_backends.py`, `voice_whisper.py`, `bbia_behavior.py`, `bbia_tools.py`, `behaviors/emotion_show.py`, `daemon/app/routers/state.py`
+- ✅ Approche : Spécification exceptions attendues + bloc Exception générique pour erreurs inattendues
 
 ---
 

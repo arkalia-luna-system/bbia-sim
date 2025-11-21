@@ -239,9 +239,15 @@ class EmotionShowBehavior(BBIABehavior):
                     try:
                         dire_texte(explanation, robot_api=self.robot_api)
                         logger.info("Explication vocale: %s", explanation)
-                    except Exception as e:
+                    except (AttributeError, RuntimeError, ValueError) as e:
                         logger.warning(
                             "Erreur explication vocale pour %s: %s", emotion, e
+                        )
+                    except Exception as e:
+                        logger.warning(
+                            "Erreur inattendue explication vocale pour %s: %s",
+                            emotion,
+                            e,
                         )
 
                 # Maintenir l'émotion selon durée adaptative (pré-charger la durée)
@@ -262,8 +268,11 @@ class EmotionShowBehavior(BBIABehavior):
         except KeyboardInterrupt:
             logger.info("Démonstration interrompue par l'utilisateur")
             self._cancelled = True
-        except Exception as e:
+        except (AttributeError, RuntimeError, ValueError) as e:
             logger.exception("Erreur durant démonstration émotions: %s", e)
+            return False
+        except Exception as e:
+            logger.exception("Erreur inattendue durant démonstration émotions: %s", e)
             return False
 
         return True
@@ -332,8 +341,11 @@ class EmotionShowBehavior(BBIABehavior):
 
             return True
 
-        except Exception as e:
+        except (KeyError, AttributeError, RuntimeError, ValueError) as e:
             logger.warning("Erreur application émotion %s: %s", emotion, e)
+            return False
+        except Exception as e:
+            logger.warning("Erreur inattendue application émotion %s: %s", emotion, e)
             return False
 
     def _apply_expressive_movement(self, emotion: str) -> None:

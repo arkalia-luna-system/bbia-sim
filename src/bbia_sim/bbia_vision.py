@@ -64,9 +64,13 @@ try:
     # Sur macOS, laisser MuJoCo choisir automatiquement (glfw ou egl)
     if sys.platform != "darwin":  # Pas macOS
         _os.environ.setdefault("MUJOCO_GL", "egl")  # Utiliser EGL sur Linux/Windows
-except Exception as e:
+except (OSError, RuntimeError) as e:
     logger.debug(
         "Impossible de configurer variables d'environnement MediaPipe/TensorFlow: %s", e
+    )
+except Exception as e:
+    logger.debug(
+        "Erreur inattendue configuration variables d'environnement: %s", e
     )
 
 # Import conditionnel pour YOLO et MediaPipe
@@ -199,8 +203,10 @@ class BBIAVision:
                         else:
                             self._camera_sdk_available = True
                             logger.info("✅ Caméra SDK disponible: robot.media.camera")
-            except Exception as e:
+            except (AttributeError, RuntimeError) as e:
                 logger.debug("Caméra SDK non disponible (fallback simulation): %s", e)
+            except Exception as e:
+                logger.debug("Erreur inattendue caméra SDK: %s", e)
 
         # Support webcam USB via OpenCV (fallback si pas de SDK)
         self._opencv_camera = None
@@ -246,17 +252,25 @@ class BBIAVision:
                         self._opencv_camera.release()
                     self._opencv_camera = None
                     logger.debug("Webcam OpenCV non disponible (fallback simulation)")
-            except Exception as e:
+            except (OSError, RuntimeError, AttributeError) as e:
                 if self._opencv_camera:
                     try:
                         self._opencv_camera.release()
-                    except Exception as release_error:
+                    except (OSError, RuntimeError) as release_error:
                         logger.debug(
                             "Erreur lors de la libération de la webcam OpenCV: %s",
                             release_error,
                         )
+                    except Exception as release_error:
+                        logger.debug(
+                            "Erreur inattendue libération webcam OpenCV: %s",
+                            release_error,
+                        )
                 self._opencv_camera = None
                 logger.debug("Erreur initialisation webcam OpenCV: %s", e)
+            except Exception as e:
+                self._opencv_camera = None
+                logger.debug("Erreur inattendue initialisation webcam OpenCV: %s", e)
 
         # OPTIMISATION RAM: Lazy loading YOLO/MediaPipe
         # Ne charger que si caméra réelle disponible
@@ -283,8 +297,10 @@ class BBIAVision:
                     logger.info(
                         "✅ Détecteur YOLO initialisé (lazy loading - caméra réelle)",
                     )
-            except Exception as e:
+            except (ImportError, RuntimeError, AttributeError) as e:
                 logger.warning("⚠️ YOLO non disponible: %s", e)
+            except Exception as e:
+                logger.warning("⚠️ Erreur inattendue YOLO: %s", e)
         else:
             logger.debug(
                 "YOLO non chargé (lazy loading - caméra simulation ou non disponible)",

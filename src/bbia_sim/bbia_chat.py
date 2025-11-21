@@ -149,8 +149,11 @@ class BBIAChat:
             logger.info("✅ Phi-2 chargé avec succès")
             return
 
-        except Exception as e:
+        except (ImportError, RuntimeError, OSError, ValueError) as e:
             logger.warning("⚠️ Impossible de charger Phi-2: %s", e)
+            logger.info("Tentative de chargement TinyLlama (fallback)...")
+        except Exception as e:
+            logger.warning("⚠️ Erreur inattendue chargement Phi-2: %s", e)
             logger.info("Tentative de chargement TinyLlama (fallback)...")
 
         # Fallback: TinyLlama (ultra-léger)
@@ -173,8 +176,11 @@ class BBIAChat:
             )
             logger.info("✅ TinyLlama chargé avec succès")
 
-        except Exception as e:
+        except (ImportError, RuntimeError, OSError, ValueError) as e:
             logger.exception("❌ Impossible de charger TinyLlama: %s", e)
+            logger.warning("Mode fallback: réponses basiques (sans LLM)")
+        except Exception as e:
+            logger.exception("❌ Erreur inattendue chargement TinyLlama: %s", e)
             logger.warning("Mode fallback: réponses basiques (sans LLM)")
 
     def generate(

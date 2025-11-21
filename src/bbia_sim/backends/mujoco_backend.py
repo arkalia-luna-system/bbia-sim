@@ -62,8 +62,11 @@ class MuJoCoBackend(RobotAPI):
             logger.info("MuJoCo connecté: %s joints détectés", self.model.njnt)
             return True
 
-        except Exception as e:
+        except (OSError, RuntimeError, ValueError, AttributeError) as e:
             logger.exception("Erreur connexion MuJoCo: %s", e)
+            return False
+        except Exception as e:
+            logger.exception("Erreur inattendue connexion MuJoCo: %s", e)
             return False
 
     def disconnect(self) -> bool:
@@ -79,8 +82,11 @@ class MuJoCoBackend(RobotAPI):
             logger.info("MuJoCo déconnecté")
             return True
 
-        except Exception as e:
+        except (AttributeError, RuntimeError) as e:
             logger.exception("Erreur déconnexion MuJoCo: %s", e)
+            return False
+        except Exception as e:
+            logger.exception("Erreur inattendue déconnexion MuJoCo: %s", e)
             return False
 
     def get_available_joints(self) -> list[str]:

@@ -260,9 +260,13 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
                             if hasattr(speaker, "play"):
                                 speaker.play(audio_bytes)
                                 return
-                except Exception as e:
+                except (AttributeError, RuntimeError, OSError) as e:
                     logger.debug(
                         "Erreur lors de la lecture audio via SDK speaker: %s", e
+                    )
+                except Exception as e:
+                    logger.debug(
+                        "Erreur inattendue lecture audio via SDK speaker: %s", e
                     )
                 try:
                     # Fallback simple: lecture locale sans dépendance forte
@@ -278,15 +282,24 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
                         _sd.play(data, sr)
                         _sd.wait()
                     return
-                except Exception as e:
+                except (OSError, RuntimeError, ImportError) as e:
                     logger.debug(
                         "Erreur lors de la lecture audio locale (fallback sounddevice): %s",
                         e,
                     )
-        except Exception as e:
+                except Exception as e:
+                    logger.debug(
+                        "Erreur inattendue lecture audio locale: %s",
+                        e,
+                    )
+        except (ImportError, RuntimeError, OSError) as e:
             # Fallback vers logique pyttsx3 plus bas
             logger.debug(
                 "Erreur lors de la synthèse vocale avancée, fallback pyttsx3: %s", e
+            )
+        except Exception as e:
+            logger.debug(
+                "Erreur inattendue synthèse vocale avancée, fallback pyttsx3: %s", e
             )
 
     # OPTIMISATION SDK: Utiliser robot.media.* si disponible (toujours disponible via shim)

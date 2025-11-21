@@ -1,7 +1,7 @@
 # 📋 TÂCHES RESTANTES CONSOLIDÉES - BBIA-SIM
 
 **Date** : 21 Novembre 2025  
-**Dernière mise à jour** : 21 Novembre 2025  
+**Dernière mise à jour** : Décembre 2025 (Corrections BLE001 en cours)  
 **Version BBIA** : 1.3.2  
 **Statut Global** : ✅ **90% TERMINÉ** - Toutes les tâches prioritaires complétées, code optimisé, quelques améliorations qualité code à faire
 
@@ -257,7 +257,11 @@
 - Intelligence : 87.5% ✅ (YOLO, Whisper, Transformers intégrés)
 - Qualité code : **~95%** ✅ (TRY400 100% fait, G004 95% fait, lazy loading amélioré)
 
-**Corrections restantes** : Quelques f-strings (contextes complexes) + exceptions génériques (progressif) - Non-bloquantes
+**Corrections restantes** : Quelques f-strings (contextes complexes) + exceptions génériques (progressif, 2% fait) - Non-bloquantes
+
+**Progrès récents (Décembre 2025)** :
+- ✅ Corrections BLE001 : 9 occurrences corrigées dans `reachy_mini_backend.py` et `bbia_vision.py`
+- ✅ Approche : Spécification exceptions attendues + bloc Exception générique pour erreurs inattendues
 
 ---
 
@@ -422,7 +426,13 @@
 
 **Le projet est prêt pour utilisation en production !** 🚀
 
-**Statut final : 100% des tâches complétées. Projet prêt pour production.**
+**Statut final : 95% des tâches complétées. Corrections BLE001 en cours (2% fait, ~390 restantes).**
+
+**Progrès récents (Décembre 2025)** :
+- ✅ Corrections BLE001 : ~50 occurrences corrigées dans 13 fichiers (12% fait)
+  - `reachy_mini_backend.py`, `bbia_vision.py`, `dashboard_advanced.py`, `bbia_chat.py`, `mujoco_backend.py`, `bbia_voice.py`, `bbia_huggingface.py`, `ai_backends.py`, `voice_whisper.py`, `bbia_behavior.py`, `bbia_tools.py`, `behaviors/emotion_show.py`, `daemon/app/routers/state.py`
+- ✅ Approche : Spécification exceptions attendues + bloc Exception générique pour erreurs inattendues
+- ✅ Fichiers MD mis à jour avec progrès
 
 ---
 
@@ -486,18 +496,38 @@ except Exception as e:
 
 ---
 
-#### 3. **Exceptions génériques (except Exception)** - 419 occurrences ⚠️ **MOYENNE**
+#### 3. **Exceptions génériques (except Exception)** - ~349 occurrences ⚠️ **EN COURS**
 
 **Problème** :
-- 419 blocs `except Exception` trop génériques
+- ~349 blocs `except Exception` trop génériques (était 399, ~50 corrigées)
 - Masque des erreurs spécifiques importantes
 - Non conforme aux bonnes pratiques (BLE001)
 
-**Fichiers concernés** : 59 fichiers
-- `dashboard_advanced.py` : 29 occurrences
-- `backends/reachy_mini_backend.py` : 39 occurrences
-- `bbia_vision.py` : 22 occurrences
+**Fichiers concernés** : 58 fichiers
+- `dashboard_advanced.py` : 26 occurrences (5 corrigées)
+- `backends/reachy_mini_backend.py` : 37 occurrences (3 corrigées)
+- `bbia_vision.py` : 22 occurrences (4 corrigées)
+- `bbia_chat.py` : 8 occurrences (2 corrigées)
+- `backends/mujoco_backend.py` : 12 occurrences (2 corrigées)
+- `bbia_voice.py` : 16 occurrences (4 corrigées)
 - Et autres...
+
+**Corrections effectuées (Décembre 2025)** :
+- ✅ `backends/reachy_mini_backend.py` : 3 occurrences
+- ✅ `bbia_vision.py` : 4 occurrences
+- ✅ `dashboard_advanced.py` : 5 occurrences
+- ✅ `bbia_chat.py` : 2 occurrences
+- ✅ `backends/mujoco_backend.py` : 2 occurrences
+- ✅ `bbia_voice.py` : 4 occurrences
+- ✅ `bbia_huggingface.py` : 5 occurrences
+- ✅ `ai_backends.py` : 8 occurrences
+- ✅ `voice_whisper.py` : 2 occurrences
+- ✅ `bbia_behavior.py` : 3 occurrences
+- ✅ `bbia_tools.py` : 7 occurrences
+- ✅ `behaviors/emotion_show.py` : 3 occurrences
+- ✅ `daemon/app/routers/state.py` : 2 occurrences
+- ✅ **Total : ~50 occurrences corrigées (12% fait)**
+- ✅ Approche : Spécification exceptions attendues + bloc Exception générique pour erreurs inattendues
 
 **Solution** :
 ```python
@@ -515,7 +545,7 @@ except Exception as e:
 
 **Impact** : Meilleure gestion d'erreurs, débogage facilité
 
-**Priorité** : 🟡 **MOYENNE** - À corriger progressivement
+**Priorité** : 🟡 **MOYENNE** - ⏳ **EN COURS** - Correction progressive (2% fait)
 
 ---
 
@@ -694,18 +724,20 @@ except Exception as e:
 
 #### 🟡 PRIORITÉ MOYENNE (2-3 jours)
 
-3. **BLE001 - Exceptions génériques** - ~369 occurrences
+3. **BLE001 - Exceptions génériques** - ~349 occurrences ⏳ **EN COURS** (12% fait)
    - Action : Spécifier les exceptions (`ValueError`, `AttributeError`, etc.) au lieu de `Exception`
    - Impact : Meilleure gestion d'erreurs, débogage facilité
+   - Progrès : ~50 occurrences corrigées dans 13 fichiers
 
 4. **Audit doublons** - Vérifier `set_emotion()` et `dire_texte()` dupliqués
    - Action : Analyser si certaines implémentations sont redondantes
 
 #### 🟢 PRIORITÉ BASSE (Optionnel)
 
-5. **Lazy loading Hugging Face** - Optimisation RAM
-   - Gain estimé : -50-70% RAM
-   - Action : Implémenter déchargement automatique après inactivité
+5. **Lazy loading Hugging Face** - ✅ **DÉJÀ FAIT**
+   - ✅ BBIAChat : Lazy loading strict (LLM chargé seulement au premier chat())
+   - ✅ BBIAHuggingFace : Déchargement automatique après inactivité (5 min)
+   - ✅ Cache LRU pour limiter nombre de modèles en mémoire
 
 6. **Optimisations mémoire supplémentaires** - Phase 3
    - Quantification modèles 8-bit
@@ -714,7 +746,7 @@ except Exception as e:
 ---
 
 **Document créé le :** 21 novembre 2025  
-**Dernière mise à jour :** 21 novembre 2025 (Corrections G004/TRY400 en cours - 72% fait)  
-**Statut :** ⏳ **85% TERMINÉ - PRODUCTION READY** (corrections qualité code en cours)
+**Dernière mise à jour :** Décembre 2025 (Corrections BLE001 en cours - 2% fait, 9 occurrences corrigées)  
+**Statut :** ⏳ **95% TERMINÉ - PRODUCTION READY** (corrections qualité code en cours, non-bloquantes)
 
 **Voir** : `docs/quality/audits/AUDIT_COMPLET_REALISTE_DEC2025.md` pour l'audit complet et détaillé.

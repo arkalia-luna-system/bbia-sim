@@ -132,8 +132,10 @@ class WakeUpBehavior(BBIABehavior):
                     dire_texte(wake_message, robot_api=self.robot_api)
                     logger.info("Synthèse vocale : %s", wake_message)
                     return True
-            except Exception as e:
+            except (AttributeError, RuntimeError, ValueError) as e:
                 logger.exception("Erreur wake_up SDK: %s", e)
+            except Exception as e:
+                logger.exception("Erreur inattendue wake_up SDK: %s", e)
 
         # Fallback: Séquence manuelle conforme SDK
         # (utilise create_head_pose et yaw_body)
@@ -184,8 +186,10 @@ class WakeUpBehavior(BBIABehavior):
                     self.robot_api.set_joint_pos("yaw_body", -0.15)
                     time.sleep(0.5)
                     self.robot_api.set_joint_pos("yaw_body", 0.0)
-            except Exception as e:
+            except (AttributeError, RuntimeError, ValueError) as e:
                 logger.warning("Erreur mouvement corps réveil (continuation): %s", e)
+            except Exception as e:
+                logger.warning("Erreur inattendue mouvement corps réveil: %s", e)
 
         time.sleep(1)
 
@@ -267,8 +271,10 @@ class GreetingBehavior(BBIABehavior):
                     time.sleep(0.8)
                     pose_neutral = create_head_pose(pitch=0.0, yaw=0.0, degrees=False)
                     self.robot_api.set_target_head_pose(pose_neutral)
-            except Exception as e:
+            except (AttributeError, RuntimeError, ValueError) as e:
                 logger.warning("Erreur pose tête salutation (fallback): %s", e)
+            except Exception as e:
+                logger.warning("Erreur inattendue pose tête salutation: %s", e)
                 # Fallback final: rotation corps subtile
                 if hasattr(self.robot_api, "set_joint_pos"):
                     try:

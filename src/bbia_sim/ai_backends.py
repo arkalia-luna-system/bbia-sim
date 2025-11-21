@@ -78,11 +78,16 @@ class Pyttsx3TTS:
 
                         self._voice_id = get_bbia_voice(engine)
                         engine.setProperty("voice", self._voice_id)
-                    except Exception as e:
+                    except (AttributeError, RuntimeError, ValueError) as e:
                         # Si get_bbia_voice échoue, utiliser voix par défaut
                         logger.debug(
                             "Impossible de définir voix personnalisée, "
                             "utilisation par défaut: %s",
+                            e,
+                        )
+                    except Exception as e:
+                        logger.debug(
+                            "Erreur inattendue définition voix personnalisée: %s",
                             e,
                         )
 
@@ -122,8 +127,12 @@ class KittenTTSTTS:
         if self._impl is not None:
             try:
                 return self._impl.synthesize_to_wav(text, outfile)
-            except Exception as e:
+            except (RuntimeError, OSError, AttributeError) as e:
                 logger.debug("Échec synthèse avec impl principale, fallback: %s", e)
+            except Exception as e:
+                logger.debug(
+                    "Erreur inattendue synthèse impl principale, fallback: %s", e
+                )
         return self._fallback.synthesize_to_wav(text, outfile)
 
 
@@ -150,8 +159,12 @@ class KokoroTTS:
         if self._impl is not None:
             try:
                 return self._impl.synthesize_to_wav(text, outfile)
-            except Exception as e:
+            except (RuntimeError, OSError, AttributeError) as e:
                 logger.debug("Échec synthèse avec impl principale, fallback: %s", e)
+            except Exception as e:
+                logger.debug(
+                    "Erreur inattendue synthèse impl principale, fallback: %s", e
+                )
         return self._fallback.synthesize_to_wav(text, outfile)
 
 
@@ -178,8 +191,12 @@ class NeuTTSTTS:
         if self._impl is not None:
             try:
                 return self._impl.synthesize_to_wav(text, outfile)
-            except Exception as e:
+            except (RuntimeError, OSError, AttributeError) as e:
                 logger.debug("Échec synthèse avec impl principale, fallback: %s", e)
+            except Exception as e:
+                logger.debug(
+                    "Erreur inattendue synthèse impl principale, fallback: %s", e
+                )
         return self._fallback.synthesize_to_wav(text, outfile)
 
 
@@ -315,8 +332,15 @@ class WhisperSTT:
             self._processor = processor
             self._model = model
             self._ready = True
-        except Exception as e:  # pragma: no cover - environnement sans deps
+        except (
+            ImportError,
+            RuntimeError,
+            OSError,
+        ) as e:  # pragma: no cover - environnement sans deps
             logging.getLogger(__name__).info("Whisper indisponible: %s", e)
+            self._ready = False
+        except Exception as e:  # pragma: no cover - environnement sans deps
+            logging.getLogger(__name__).info("Erreur inattendue Whisper: %s", e)
             self._ready = False
 
     def transcribe_wav(self, infile: str) -> str | None:
@@ -338,8 +362,11 @@ class WhisperSTT:
             )
             text: str = decoded[0] if decoded else ""
             return text
-        except Exception as e:  # pragma: no cover
+        except (RuntimeError, ValueError, AttributeError) as e:  # pragma: no cover
             logging.getLogger(__name__).warning("Whisper STT erreur: %s", e)
+            return ""
+        except Exception as e:  # pragma: no cover
+            logging.getLogger(__name__).warning("Erreur inattendue Whisper STT: %s", e)
             return ""
 
 
@@ -368,8 +395,11 @@ class LlamaCppLLM:
                 # Paramètres prudents par défaut
                 self._model = Llama(model_path=model_path, n_ctx=2048, n_threads=4)
                 self._ready = True
-        except Exception as e:  # pragma: no cover
+        except (ImportError, RuntimeError, OSError) as e:  # pragma: no cover
             logging.getLogger(__name__).info("llama.cpp indisponible: %s", e)
+            self._ready = False
+        except Exception as e:  # pragma: no cover
+            logging.getLogger(__name__).info("Erreur inattendue llama.cpp: %s", e)
             self._ready = False
 
     def generate(self, prompt: str, max_tokens: int = 128) -> str:
@@ -383,8 +413,16 @@ class LlamaCppLLM:
             )
             # Format standard llama.cpp: {"choices":[{"text":"..."}]}
             return str(out.get("choices", [{}])[0].get("text", ""))
-        except Exception as e:  # pragma: no cover
+        except (
+            KeyError,
+            IndexError,
+            AttributeError,
+            RuntimeError,
+        ) as e:  # pragma: no cover
             logging.getLogger(__name__).warning("llama.cpp erreur: %s", e)
+            return (prompt or "")[:max_tokens]
+        except Exception as e:  # pragma: no cover
+            logging.getLogger(__name__).warning("Erreur inattendue llama.cpp: %s", e)
             return (prompt or "")[:max_tokens]
 
 

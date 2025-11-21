@@ -52,9 +52,15 @@ def _read_sdk_telemetry() -> dict[str, Any] | None:
 
         try:
             timeout = float(os.environ.get("BBIA_TELEMETRY_TIMEOUT", "1.0") or 1.0)
-        except Exception as e:
+        except (ValueError, TypeError) as e:
             logger.debug(
                 "Erreur lors de la lecture de BBIA_TELEMETRY_TIMEOUT, utilisation valeur par défaut: %s",
+                e,
+            )
+            timeout = 1.0
+        except Exception as e:
+            logger.debug(
+                "Erreur inattendue lecture BBIA_TELEMETRY_TIMEOUT: %s",
                 e,
             )
             timeout = 1.0
@@ -71,9 +77,13 @@ def _read_sdk_telemetry() -> dict[str, Any] | None:
 
         try:
             backend.connect()
-        except Exception as e:
+        except (ConnectionError, TimeoutError, RuntimeError, AttributeError) as e:
             # Ne pas bloquer si la connexion échoue
             logger.debug("Échec de la connexion au backend pour télémetrie: %s", e)
+            return None
+        except Exception as e:
+            # Ne pas bloquer si la connexion échoue
+            logger.debug("Erreur inattendue connexion backend télémetrie: %s", e)
             return None
 
         try:
