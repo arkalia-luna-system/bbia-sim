@@ -398,7 +398,7 @@ class TestFaceRecognition:
             recognizer = create_face_recognition("test_db", "test_person")
             if recognizer:
                 assert recognizer is not None
-        except Exception:
+        except (ImportError, RuntimeError, AttributeError, ValueError):
             pytest.skip("Face recognition non disponible")
 
 

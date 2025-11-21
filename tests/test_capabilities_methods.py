@@ -89,7 +89,7 @@ class TestBBIAChatInit:
         try:
             chat = BBIAChat()
             assert chat is not None
-        except Exception:
+        except (ImportError, RuntimeError, AttributeError):
             pytest.skip("BBIAChat non disponible")
 
 
@@ -231,19 +231,19 @@ class TestBackendAdapterMethods:
         assert antennas is not None
 
         head_joints = adapter.get_present_head_joint_positions()
-        # Peut être None
-        assert head_joints is not None or True
+        # Peut être None, on vérifie juste que la méthode existe
+        assert head_joints is None or isinstance(head_joints, dict)
 
         passive_joints = adapter.get_present_passive_joint_positions()
-        # Peut être None
-        assert passive_joints is not None or True
+        # Peut être None, on vérifie juste que la méthode existe
+        assert passive_joints is None or isinstance(passive_joints, dict)
 
         status = adapter.get_status()
         assert status is not None
 
         urdf = adapter.get_urdf()
-        # Peut être None
-        assert urdf is not None or True
+        # Peut être None, on vérifie juste que la méthode existe
+        assert urdf is None or isinstance(urdf, str)
 
         adapter.close()
 

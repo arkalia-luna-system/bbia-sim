@@ -649,9 +649,10 @@ class TestFactoryFunctions:
 
                     detector = FaceDetector()
                     # Devrait utiliser le cache
-                    assert (
-                        detector.face_detection is not None or True
-                    )  # Peut être None ou non selon implémentation
+                    # Peut être None ou non selon implémentation
+                    assert detector.face_detection is None or hasattr(
+                        detector.face_detection, "process"
+                    )
                 except ImportError:
                     pytest.skip("MediaPipe non disponible")
 
