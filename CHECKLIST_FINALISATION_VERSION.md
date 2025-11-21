@@ -1,6 +1,7 @@
 # ✅ CHECKLIST FINALISATION VERSION PROFESSIONNELLE
 
 **Date vérification :** 21 Novembre 2025  
+**Dernière mise à jour :** 21 Novembre 2025 (Nettoyage fichiers metadata + vérification qualité complète)  
 **Version cible :** 1.3.2
 
 ---

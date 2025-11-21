@@ -1,6 +1,6 @@
 # 🚀 Mes Projets GitHub - Portfolio Développeuse IA & Robotique
 
-**Date de mise à jour :** Oct / Nov. 2025
+**Date de mise à jour :** 21 novembre 2025
 
 **Organisation :** [arkalia-luna-system](https://github.com/arkalia-luna-system)
 
@@ -37,12 +37,19 @@ Moteur cognitif Python avec 12 émotions robotiques pour Reachy Mini. Simulation
 
 **Métriques :**
 
-- ✅ **1245 tests automatisés** collectés (unitaires, intégration, E2E)
-- ✅ **300+ fichiers documentation** Markdown
+- ✅ **92 fichiers Python** source (35,988 lignes)
+- ✅ **183 fichiers de tests** (38,935 lignes)
+- ✅ **1,804 fonctions de test** identifiées
+- ✅ **1,362 tests collectés** par pytest (CI GitHub Actions)
+- ✅ **Coverage global** : **68.86%** ([Codecov](https://app.codecov.io/gh/arkalia-luna-system/bbia-sim))
+- ✅ **Coverage modules core** : ~50% (mesure pertinente)
+- ✅ **Conformité SDK** : 100% (21/21 méthodes, 37/37 tests passants)
+- ✅ **15+ modules BBIA** (émotions, vision, voix, comportements, IA)
+- ✅ **15 comportements intelligents** implémentés
+- ✅ **128+ fichiers documentation** Markdown
+- ✅ **423 commits Git** (depuis octobre 2024)
 - ✅ **CI/CD professionnel** : Black, Ruff, MyPy, Bandit, pip-audit
 - ✅ **Architecture senior** : Factory pattern, ABC, modularité
-- ✅ **Coverage global** : **68.86%** (excellent)
-- ✅ **Coverage modules core** : ~50% (mesure pertinente)
 - ✅ **Optimisations performance** : Caches globaux (pyttsx3, YOLO, MediaPipe, Whisper, VAD, émotions)
 
 **Highlights :**
