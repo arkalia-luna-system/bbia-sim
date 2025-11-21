@@ -405,24 +405,37 @@ D'après les retours de la communauté (125 unités bêta) :
 
 ### 🔧 Corrections Qualité Code (En Cours)
 
-#### 4. Exceptions Génériques (BLE001) ⚠️ **EN COURS** (18% fait)
-- **Problème :** ~327 blocs `except Exception` trop génériques restants
-- **Progression :** ~72/399 occurrences corrigées (18% fait)
-- **Fichiers prioritaires :**
-  - `dashboard_advanced.py` : ~21 restantes
+#### 4. Exceptions Génériques (BLE001) ⚠️ **EN COURS** (24% fait)
+- **Problème :** ~305 blocs `except Exception` trop génériques restants
+- **Progression :** ~94/399 occurrences corrigées (24% fait)
+- **Fichiers corrigés récemment :**
+  - `dashboard_advanced.py` : ~22 occurrences corrigées (exceptions spécifiques + noqa pour fallbacks)
+  - `backends/reachy_mini_backend.py` : ~20 occurrences corrigées
+  - `bbia_vision.py` : ~4 occurrences corrigées
+  - `bbia_huggingface.py` : ~5 occurrences corrigées
+  - Et autres...
+- **Fichiers prioritaires restants :**
+  - `dashboard_advanced.py` : ~3 restantes (fallbacks avec noqa)
   - `backends/reachy_mini_backend.py` : ~17 restantes
   - `bbia_vision.py` : ~18 restantes
   - `bbia_voice.py` : ~12 restantes
   - `bbia_huggingface.py` : ~11 restantes
   - Et autres...
 - **Priorité :** 🟡 **Moyenne** - Amélioration progressive, non-bloquant
-- **Approche :** Spécification exceptions attendues + bloc Exception générique pour erreurs inattendues
+- **Approche :** Spécification exceptions attendues + bloc Exception générique pour erreurs inattendues (avec noqa si nécessaire)
 
-#### 5. Audit Doublons set_emotion() et dire_texte() ⚠️
+#### 5. Audit Doublons set_emotion() et dire_texte() ✅ **TERMINÉ** (21 Novembre 2025)
 - **Problème :** Fonctions potentiellement dupliquées à identifier
-- **Statut :** ⏳ **À FAIRE**
-- **Priorité :** 🟡 **Moyenne** - Optimisation code
-- **Fichiers concernés :** À identifier
+- **Statut :** ✅ **TERMINÉ** - Audit complet réalisé
+- **Résultats :**
+  - ✅ 8 fichiers avec `set_emotion()` analysés - Tous justifiés (backends, API, dashboard)
+  - ✅ 2 fichiers avec `dire_texte()` analysés - Implémentations différentes (simple vs avancée)
+  - ✅ **Conclusion** : Pas de doublons critiques identifiés
+  - ✅ **Document créé** : `docs/quality/audits/AUDIT_DOUBLONS_SET_EMOTION_DIR_TEXTE.md`
+- **Recommandations :**
+  - 🟡 `bbia_voice_advanced.set_emotion()` devrait utiliser `BBIAEmotions.set_emotion()` en interne
+  - 🟡 Consolider `dire_texte()` : utiliser `dire_texte_advanced()` comme fonction principale
+- **Priorité :** 🟡 **Moyenne** - Amélioration de cohérence, non-bloquant
 
 ### ✅ Conclusion
 
