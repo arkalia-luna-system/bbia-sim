@@ -223,7 +223,7 @@ class BBIAAdaptiveBehavior:
         """
         self.current_emotion = emotion
         self.emotion_intensity = max(0.0, min(1.0, intensity))
-        logger.info("😊 Émotion: %s (intensité: %s)", emotion, self.emotion_intensity:.2f)
+        logger.info("😊 Émotion: %s (intensité: %.2f)", emotion, self.emotion_intensity)
         return True
 
     def generate_behavior(self, trigger: str | None = None) -> dict[str, Any]:
@@ -784,7 +784,9 @@ class BBIAAdaptiveBehavior:
             return False
 
         except Exception as e:
-            logger.exception("❌ Erreur exécution comportement '%s': %s", behavior_name, e)
+            logger.exception(
+                "❌ Erreur exécution comportement '%s': %s", behavior_name, e
+            )
             return False
 
 

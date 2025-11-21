@@ -249,7 +249,7 @@ class MuJoCoSimulator:
 
                 # Application du contrôle
                 self.data.ctrl[actuator_id] = control_force
-                logger.debug("Contrôle appliqué à %s: %s", joint_name, control_force:.3f)
+                logger.debug("Contrôle appliqué à %s: %.3f", joint_name, control_force)
             mujoco.mj_forward(self.model, self.data)
             logger.debug(
                 f"Articulation '{joint_name}' positionnée à {clamped_angle:.3f} rad",

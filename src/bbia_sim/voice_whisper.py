@@ -361,7 +361,7 @@ class WhisperSTT:
 
                 # Seuil de confiance
                 is_speech = bool(label == "SPEECH" and score > 0.5)
-                logger.debug("🔍 VAD: %s (score: %s) → %s", label, score:.2f, is_speech)
+                logger.debug("🔍 VAD: %s (score: %.2f) → %s", label, score, is_speech)
 
                 return is_speech
 

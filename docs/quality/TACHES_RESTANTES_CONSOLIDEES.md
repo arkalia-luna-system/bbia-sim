@@ -433,7 +433,7 @@
 
 ### 🔴 PROBLÈMES CRITIQUES À CORRIGER
 
-#### 1. **Logging avec f-strings (G004)** - 816 occurrences ⚠️ **URGENT**
+#### 1. **Logging avec f-strings (G004)** - ~195 occurrences restantes ⚠️ **EN COURS**
 
 **Problème** :
 - 816 utilisations de f-strings dans les appels de logging (`logger.info(f"...")`)
@@ -463,7 +463,7 @@ logger.info("Erreur: %s", error)
 
 ---
 
-#### 2. **Logging.error au lieu de logging.exception (TRY400)** - 220 occurrences ⚠️ **URGENT**
+#### 2. **Logging.error au lieu de logging.exception (TRY400)** - ~30 occurrences restantes ⚠️ **EN COURS**
 
 **Problème** :
 - 220 utilisations de `logger.error()` dans des blocs `except` au lieu de `logger.exception()`
