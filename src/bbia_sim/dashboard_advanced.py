@@ -603,7 +603,7 @@ app: FastAPI | None
 if FASTAPI_AVAILABLE:
     app = FastAPI(
         title="BBIA Advanced Dashboard",
-        version="1.2.0",
+        version="1.3.2",
         description="Interface de contrôle sophistiquée pour BBIA-SIM",
     )
 

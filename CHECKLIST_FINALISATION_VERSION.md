@@ -12,7 +12,7 @@
 |-----------|--------|---------|
 | **Tests** | ✅ 95% | 1743/1805 tests collectés |
 | **Code Quality** | ✅ 100% | Black, Ruff, MyPy, Bandit OK |
-| **Version** | ⚠️ **INCOHÉRENCE** | pyproject.toml=1.3.2, __init__.py=1.2.0 |
+| **Version** | ✅ 100% | pyproject.toml=1.3.2, __init__.py=1.3.2 (cohérent) |
 | **Documentation** | ✅ 100% | Complète et à jour |
 | **CI/CD** | ✅ 100% | Workflow configuré |
 | **Git** | ✅ 100% | Tags et branches OK |
@@ -21,7 +21,7 @@
 
 ---
 
-## ✅ POINTS RÉALISÉS (19/20)
+## ✅ POINTS RÉALISÉS (20/20)
 
 ### 1. ✅ Tests Complets
 - **Unitaires** : 1743/1805 tests collectés (62 désélectionnés)

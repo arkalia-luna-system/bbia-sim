@@ -238,7 +238,7 @@ Outils et scripts pour environnement de développement.
 ### 💻 Code
 
 - **Projets actifs** : 10+
-- **Tests automatisés** : 1200+
+- **Tests automatisés** : 1,362 tests collectés (1,804 fonctions de test)
 - **Documentation** : 300+ fichiers MD
 - **Commits** : Actifs depuis octobre 2024
 
