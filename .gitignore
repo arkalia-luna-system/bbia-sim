@@ -54,6 +54,10 @@ htmlcov/
 .mypy_cache/
 .ruff_cache/
 
+# Metrics
+metrics/
+arkalia-metrics.yaml
+
 # Autres
 *.swp
 *.bak
