@@ -3323,10 +3323,10 @@ if FASTAPI_AVAILABLE:
 
         except WebSocketDisconnect:
             logger.info("🔌 WebSocket déconnecté normalement")
-            advanced_websocket_manager.disconnect(websocket)
+            await advanced_websocket_manager.disconnect(websocket)
         except Exception as e:
             logger.error(f"❌ Erreur WebSocket: {e}", exc_info=True)
-            advanced_websocket_manager.disconnect(websocket)
+            await advanced_websocket_manager.disconnect(websocket)
 
 
 async def handle_advanced_robot_command(command_data: dict[str, Any]):
