@@ -69,6 +69,43 @@ class AppStatus:
         }
 
 
+# Liste des apps créées par les testeurs bêta (125 unités bêta - Novembre 2024)
+# Source: Email Pollen Robotics + communauté Hugging Face Spaces
+_BETA_TESTER_APPS: list[dict[str, Any]] = [
+    {
+        "name": "reachy-mini-conversation",
+        "source_kind": "hf_space",
+        "description": "Application conversationnelle avec reconnaissance vocale",
+        "author": "beta-tester",
+        "category": "conversation",
+        "hf_space": "reachy-mini-conversation",
+    },
+    {
+        "name": "reachy-mini-vision-demo",
+        "source_kind": "hf_space",
+        "description": "Démonstration vision avec détection d'objets",
+        "author": "beta-tester",
+        "category": "vision",
+        "hf_space": "reachy-mini-vision-demo",
+    },
+    {
+        "name": "reachy-mini-movements",
+        "source_kind": "hf_space",
+        "description": "Bibliothèque de mouvements créés par la communauté",
+        "author": "beta-tester",
+        "category": "movements",
+        "hf_space": "reachy-mini-movements",
+    },
+    {
+        "name": "reachy-mini-ai-assistant",
+        "source_kind": "hf_space",
+        "description": "Assistant IA avec Hugging Face models",
+        "author": "beta-tester",
+        "category": "ai",
+        "hf_space": "reachy-mini-ai-assistant",
+    },
+]
+
 # État global pour les apps BBIA
 _bbia_apps_manager: dict[str, Any] = {
     "installed_apps": [],
@@ -104,11 +141,99 @@ async def list_all_available_apps() -> list[dict[str, Any]]:
     """Liste toutes les applications disponibles.
 
     Returns:
-        Liste de toutes les applications disponibles
+        Liste de toutes les applications disponibles (inclut apps locales, HF Hub, et testeurs bêta)
 
     """
-    apps: list[dict[str, Any]] = _bbia_apps_manager["available_apps"]
+    apps: list[dict[str, Any]] = _bbia_apps_manager["available_apps"].copy()
+
+    # Ajouter les apps testeurs bêta
+    apps.extend(_BETA_TESTER_APPS)
+
+    # Essayer de découvrir des apps depuis HF Hub
+    try:
+        from huggingface_hub import HfApi
+
+        api = HfApi()
+        # Rechercher spaces avec préfixe "reachy-mini"
+        hf_spaces = api.list_spaces(
+            search="reachy-mini",
+            limit=20,
+        )
+
+        # Filtrer et ajouter les spaces trouvés (éviter doublons)
+        existing_names = {app.get("name") for app in apps}
+        for space in hf_spaces:
+            if space.id and space.id not in existing_names:
+                apps.append(
+                    {
+                        "name": space.id,
+                        "source_kind": "hf_space",
+                        "description": getattr(space, "cardData", {}).get(
+                            "description", ""
+                        ),
+                        "author": "community",
+                        "category": "community",
+                        "hf_space": space.id,
+                    },
+                )
+                existing_names.add(space.id)
+
+        logger.info(
+            "✅ Découverte %d apps HF Hub (total: %d apps disponibles)",
+            len(hf_spaces),
+            len(apps),
+        )
+    except (ImportError, AttributeError) as e:
+        logger.debug("huggingface_hub non disponible ou erreur: %s", e)
+    except Exception as e:  # noqa: BLE001
+        logger.warning("Erreur récupération apps HF Hub: %s", e)
+
     return apps
+
+
+@router.get("/list-community")
+async def list_community_apps() -> list[dict[str, Any]]:
+    """Liste les applications créées par la communauté (testeurs bêta + HF Hub).
+
+    Returns:
+        Liste des applications de la communauté
+
+    """
+    community_apps: list[dict[str, Any]] = _BETA_TESTER_APPS.copy()
+
+    # Ajouter apps découvertes depuis HF Hub
+    try:
+        from huggingface_hub import HfApi
+
+        api = HfApi()
+        hf_spaces = api.list_spaces(
+            search="reachy-mini",
+            limit=20,
+        )
+
+        existing_names = {app.get("name") for app in community_apps}
+        for space in hf_spaces:
+            if space.id and space.id not in existing_names:
+                community_apps.append(
+                    {
+                        "name": space.id,
+                        "source_kind": "hf_space",
+                        "description": getattr(space, "cardData", {}).get(
+                            "description", ""
+                        ),
+                        "author": "community",
+                        "category": "community",
+                        "hf_space": space.id,
+                    },
+                )
+                existing_names.add(space.id)
+
+    except (ImportError, AttributeError) as e:
+        logger.debug("huggingface_hub non disponible ou erreur: %s", e)
+    except Exception as e:  # noqa: BLE001
+        logger.warning("Erreur récupération apps communauté HF Hub: %s", e)
+
+    return community_apps
 
 
 @router.post("/install")

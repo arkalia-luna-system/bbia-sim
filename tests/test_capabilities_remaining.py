@@ -383,7 +383,8 @@ class TestPoseDetection:
     def test_create_pose_detector(self) -> None:
         """Test create_pose_detector."""
         detector = create_pose_detector()
-        assert detector is not None
+        # Peut être None si MediaPipe n'est pas disponible
+        assert detector is None or isinstance(detector, BBIAPoseDetection)
 
 
 class TestFaceRecognition:
@@ -497,9 +498,14 @@ class TestBackendAdapterMethods:
 
     def test_backend_adapter_methods(self) -> None:
         """Test méthodes BackendAdapter."""
-        from bbia_sim.daemon.simulation_service import simulation_service
+        from bbia_sim.robot_factory import RobotFactory
 
-        adapter = BackendAdapter(simulation_service.robot_api)
+        # Créer un backend RobotAPI
+        robot_api = RobotFactory.create_backend("mujoco")
+        if robot_api is None:
+            pytest.skip("Backend MuJoCo non disponible")
+
+        adapter = BackendAdapter(robot_api)
         adapter.connect_if_needed()
 
         # Test get_present_head_pose
@@ -520,11 +526,13 @@ class TestBackendAdapterMethods:
 
         # Test get_present_head_joint_positions
         head_joints = adapter.get_present_head_joint_positions()
-        assert head_joints is not None or True  # Peut être None
+        # Peut être None, on vérifie juste que la méthode existe
+        assert head_joints is None or isinstance(head_joints, dict)
 
         # Test get_present_passive_joint_positions
         passive_joints = adapter.get_present_passive_joint_positions()
-        assert passive_joints is not None or True  # Peut être None
+        # Peut être None, on vérifie juste que la méthode existe
+        assert passive_joints is None or isinstance(passive_joints, dict)
 
         # Test get_status
         status = adapter.get_status()
@@ -532,7 +540,8 @@ class TestBackendAdapterMethods:
 
         # Test get_urdf
         urdf = adapter.get_urdf()
-        assert urdf is not None or True  # Peut être None
+        # Peut être None, on vérifie juste que la méthode existe
+        assert urdf is None or isinstance(urdf, str)
 
         # Test close
         adapter.close()

@@ -372,16 +372,19 @@ D'après les retours de la communauté (125 unités bêta) :
 
 ### 🟡 Améliorations Optionnelles (Priorité Basse)
 
-#### 1. Assistant Installation Interactif ⚠️
+#### 1. Assistant Installation Interactif ✅ **IMPLÉMENTÉ** (21 Novembre 2025)
 - **Testeurs ont :** Assistant guidé dans dashboard avec étapes interactives
-- **BBIA a :** Documentation complète + scripts d'installation (`scripts/setup_bbia.sh`, `Makefile`)
-- **Ce qui manque :**
-  - ⚠️ Assistant interactif guidé dans le dashboard
-  - ⚠️ Détection automatique robot au premier lancement
-  - ⚠️ Configuration réseau guidée (wireless)
-  - ⚠️ Test automatique des capteurs au setup
-- **Priorité :** 🟡 **Basse** - La documentation actuelle est suffisante, mais un assistant interactif serait un plus pour les utilisateurs non techniques
-- **Fichiers concernés :** `src/bbia_sim/daemon/app/dashboard/` (à créer)
+- **BBIA a :** ✅ **Assistant interactif implémenté dans le dashboard**
+- **Fonctionnalités implémentées :**
+  - ✅ Assistant interactif guidé dans le dashboard (4 étapes)
+  - ✅ Détection automatique robot au premier lancement
+  - ✅ Configuration réseau guidée (wireless)
+  - ✅ Test automatique des capteurs au setup (caméra, microphone, haut-parleur)
+  - ✅ Installation guidée des applications de base
+- **Fichiers créés :**
+  - ✅ `src/bbia_sim/daemon/app/dashboard/templates/sections/installation_wizard.html`
+  - ✅ `src/bbia_sim/daemon/app/dashboard/static/js/installation_wizard.js`
+- **Priorité :** ✅ **TERMINÉ** - Assistant interactif disponible au premier lancement
 
 #### 2. Découverte Apps Communauté ⚠️
 - **Testeurs ont :** Accès direct aux apps créées par la communauté (125 unités bêta)

@@ -1,0 +1,108 @@
+<!-- Assistant d'Installation Interactif -->
+<section id="installation-wizard" class="hidden grid wizard-section">
+    <div class="wizard-container bg-white rounded-lg shadow-lg p-6">
+        <h2 class="text-2xl font-bold mb-4">🚀 Assistant d'Installation BBIA-SIM</h2>
+        <div id="wizard-steps" class="space-y-4">
+            <!-- Étape 1: Détection Robot -->
+            <div id="step-1" class="wizard-step">
+                <h3 class="text-xl font-semibold mb-2">Étape 1/4 : Détection du Robot</h3>
+                <p class="text-gray-600 mb-4">Recherche d'un robot Reachy Mini connecté...</p>
+                <div id="robot-detection-status" class="flex items-center space-x-2">
+                    <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
+                    <span>Détection en cours...</span>
+                </div>
+                <button id="skip-robot-detection" class="mt-4 px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">
+                    Passer (Mode Simulation)
+                </button>
+            </div>
+
+            <!-- Étape 2: Configuration Réseau -->
+            <div id="step-2" class="wizard-step hidden">
+                <h3 class="text-xl font-semibold mb-2">Étape 2/4 : Configuration Réseau</h3>
+                <p class="text-gray-600 mb-4">Configuration de la connexion réseau (wireless)</p>
+                <div class="space-y-2">
+                    <label class="block">
+                        <span class="text-gray-700">SSID WiFi:</span>
+                        <input type="text" id="wifi-ssid" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" placeholder="Nom du réseau WiFi">
+                    </label>
+                    <label class="block">
+                        <span class="text-gray-700">Mot de passe:</span>
+                        <input type="password" id="wifi-password" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" placeholder="Mot de passe WiFi">
+                    </label>
+                    <button id="test-network" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                        Tester la connexion
+                    </button>
+                </div>
+                <button id="skip-network" class="mt-4 px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">
+                    Passer
+                </button>
+            </div>
+
+            <!-- Étape 3: Test Capteurs -->
+            <div id="step-3" class="wizard-step hidden">
+                <h3 class="text-xl font-semibold mb-2">Étape 3/4 : Test des Capteurs</h3>
+                <p class="text-gray-600 mb-4">Vérification des capteurs du robot</p>
+                <div id="sensor-tests" class="space-y-2">
+                    <div class="flex items-center justify-between p-2 bg-gray-50 rounded">
+                        <span>Caméra</span>
+                        <span id="camera-status" class="text-gray-500">En attente...</span>
+                    </div>
+                    <div class="flex items-center justify-between p-2 bg-gray-50 rounded">
+                        <span>Microphone</span>
+                        <span id="microphone-status" class="text-gray-500">En attente...</span>
+                    </div>
+                    <div class="flex items-center justify-between p-2 bg-gray-50 rounded">
+                        <span>Haut-parleur</span>
+                        <span id="speaker-status" class="text-gray-500">En attente...</span>
+                    </div>
+                </div>
+                <button id="run-sensor-tests" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                    Lancer les tests
+                </button>
+            </div>
+
+            <!-- Étape 4: Installation Apps -->
+            <div id="step-4" class="wizard-step hidden">
+                <h3 class="text-xl font-semibold mb-2">Étape 4/4 : Installation des Applications</h3>
+                <p class="text-gray-600 mb-4">Installation des applications de base</p>
+                <div id="app-installation" class="space-y-2">
+                    <label class="flex items-center">
+                        <input type="checkbox" id="install-vision" class="mr-2" checked>
+                        <span>BBIA Vision (Détection d'objets)</span>
+                    </label>
+                    <label class="flex items-center">
+                        <input type="checkbox" id="install-chat" class="mr-2" checked>
+                        <span>BBIA Chat (Conversation IA)</span>
+                    </label>
+                    <label class="flex items-center">
+                        <input type="checkbox" id="install-emotions" class="mr-2" checked>
+                        <span>BBIA Emotions (Gestion émotions)</span>
+                    </label>
+                </div>
+                <button id="install-apps" class="mt-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
+                    Installer les applications
+                </button>
+            </div>
+
+            <!-- Étape Finale: Terminé -->
+            <div id="step-complete" class="wizard-step hidden">
+                <h3 class="text-xl font-semibold mb-2 text-green-600">✅ Installation Terminée !</h3>
+                <p class="text-gray-600 mb-4">BBIA-SIM est maintenant prêt à être utilisé.</p>
+                <button id="close-wizard" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                    Commencer à utiliser BBIA-SIM
+                </button>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="mt-6 flex justify-between">
+            <button id="wizard-prev" class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 hidden">
+                Précédent
+            </button>
+            <button id="wizard-next" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                Suivant
+            </button>
+        </div>
+    </div>
+</section>
+
