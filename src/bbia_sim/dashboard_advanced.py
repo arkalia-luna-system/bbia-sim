@@ -170,6 +170,17 @@ class BBIAAdvancedWebSocketManager:
                     logger.info(
                         "ℹ️ Dashboard fonctionne en mode simulation (sans robot réel)"
                     )
+                except (
+                    ValueError,
+                    AttributeError,
+                    RuntimeError,
+                    ImportError,
+                    OSError,
+                ) as e:
+                    logger.exception("❌ Erreur initialisation robot: %s", e)
+                    logger.info(
+                        "ℹ️ Dashboard fonctionne en mode simulation (sans robot réel)"
+                    )
                 except Exception as e:
                     logger.exception("❌ Erreur inattendue initialisation robot: %s", e)
                     logger.info(
@@ -299,7 +310,12 @@ class BBIAAdvancedWebSocketManager:
                     logger.debug(
                         "🗑️ Connexion WebSocket inactive fermée (%.0fs)", inactivity
                     )
-            except (ConnectionError, RuntimeError, AttributeError) as e:
+            except (
+                ConnectionError,
+                RuntimeError,
+                AttributeError,
+                WebSocketDisconnect,
+            ) as e:
                 logger.debug("Erreur nettoyage connexion inactive: %s", e)
             except Exception as e:
                 logger.debug("Erreur inattendue nettoyage connexion inactive: %s", e)
@@ -486,7 +502,7 @@ class BBIAAdvancedWebSocketManager:
                         try:
                             # Faire un step de simulation pour que le robot bouge
                             self.robot.step()
-                        except (AttributeError, RuntimeError) as e:
+                        except (AttributeError, RuntimeError, ValueError) as e:
                             logger.debug("Erreur step robot: %s", e)
                         except Exception as e:
                             logger.debug("Erreur inattendue step robot: %s", e)
@@ -2983,8 +2999,11 @@ if FASTAPI_AVAILABLE:
                 return {"success": False, "error": "Failed to set emotion"}
 
             return {"success": False, "error": "Robot not connected"}
-        except Exception as e:
+        except (ValueError, AttributeError, RuntimeError, KeyError) as e:
             logger.exception("Erreur set_emotion: %s", e)
+            return {"success": False, "error": str(e)}
+        except Exception as e:
+            logger.exception("Erreur inattendue set_emotion: %s", e)
             return {"success": False, "error": str(e)}
 
     @app.post("/api/joint")
@@ -3017,8 +3036,11 @@ if FASTAPI_AVAILABLE:
             return {"success": False, "error": "Robot not connected"}
         except HTTPException:
             raise
-        except Exception as e:
+        except (ValueError, AttributeError, RuntimeError, KeyError, IndexError) as e:
             logger.exception("Erreur set_joint_position: %s", e)
+            return {"success": False, "error": str(e)}
+        except Exception as e:
+            logger.exception("Erreur inattendue set_joint_position: %s", e)
             return {"success": False, "error": str(e)}
 
     @app.get("/healthz")
@@ -3039,8 +3061,11 @@ if FASTAPI_AVAILABLE:
         try:
             results = check_all()
             return {"success": True, "results": results}
-        except Exception as e:
+        except (OSError, RuntimeError, AttributeError, ImportError) as e:
             logger.exception("Erreur troubleshooting check: %s", e)
+            return {"success": False, "error": str(e)}
+        except Exception as e:
+            logger.exception("Erreur inattendue troubleshooting check: %s", e)
             return {"success": False, "error": str(e)}
 
     @app.post("/api/troubleshooting/test/camera")
@@ -3049,8 +3074,11 @@ if FASTAPI_AVAILABLE:
         try:
             result = test_camera()
             return {"success": True, "result": result}
-        except Exception as e:
+        except (OSError, RuntimeError, AttributeError, ImportError) as e:
             logger.exception("Erreur test caméra: %s", e)
+            return {"success": False, "error": str(e)}
+        except Exception as e:
+            logger.exception("Erreur inattendue test caméra: %s", e)
             return {"success": False, "error": str(e)}
 
     @app.post("/api/troubleshooting/test/audio")
@@ -3059,8 +3087,11 @@ if FASTAPI_AVAILABLE:
         try:
             result = test_audio()
             return {"success": True, "result": result}
-        except Exception as e:
+        except (OSError, RuntimeError, AttributeError, ImportError) as e:
             logger.exception("Erreur test audio: %s", e)
+            return {"success": False, "error": str(e)}
+        except Exception as e:
+            logger.exception("Erreur inattendue test audio: %s", e)
             return {"success": False, "error": str(e)}
 
     @app.post("/api/troubleshooting/test/network")
@@ -3069,8 +3100,17 @@ if FASTAPI_AVAILABLE:
         try:
             result = test_network_ping(host)
             return {"success": True, "result": result}
-        except Exception as e:
+        except (
+            OSError,
+            RuntimeError,
+            AttributeError,
+            ConnectionError,
+            TimeoutError,
+        ) as e:
             logger.exception("Erreur test réseau: %s", e)
+            return {"success": False, "error": str(e)}
+        except Exception as e:
+            logger.exception("Erreur inattendue test réseau: %s", e)
             return {"success": False, "error": str(e)}
 
     @app.get("/api/troubleshooting/docs")
@@ -3084,8 +3124,11 @@ if FASTAPI_AVAILABLE:
                 name: f"{base_url}?path={path}" for name, path in links.items()
             }
             return {"success": True, "links": links_with_urls}
-        except Exception as e:
+        except (KeyError, AttributeError, RuntimeError) as e:
             logger.exception("Erreur récupération docs: %s", e)
+            return {"success": False, "error": str(e)}
+        except Exception as e:
+            logger.exception("Erreur inattendue récupération docs: %s", e)
             return {"success": False, "error": str(e)}
 
     @app.get("/api/docs/view")
@@ -3232,8 +3275,15 @@ if FASTAPI_AVAILABLE:
                                 # Utiliser la méthode privée _capture_image_from_camera
                                 # qui gère SDK camera et OpenCV
                                 frame = vision._capture_image_from_camera()
-                            except Exception as e:
+                            except (
+                                OSError,
+                                RuntimeError,
+                                AttributeError,
+                                ImportError,
+                            ) as e:
                                 logger.debug("Erreur capture frame: %s", e)
+                            except Exception as e:
+                                logger.debug("Erreur inattendue capture frame: %s", e)
 
                         if frame is None:
                             # Frame de test avec texte si pas de caméra
@@ -3312,8 +3362,16 @@ if FASTAPI_AVAILABLE:
                         # Arrêt propre si le client se déconnecte
                         logger.debug("Stream vidéo annulé (client déconnecté)")
                         break
-                    except Exception as e:
+                    except (
+                        OSError,
+                        RuntimeError,
+                        AttributeError,
+                        ConnectionError,
+                    ) as e:
                         logger.exception("Erreur stream vidéo: %s", e)
+                        await asyncio.sleep(1)
+                    except Exception as e:
+                        logger.exception("Erreur inattendue stream vidéo: %s", e)
                         await asyncio.sleep(1)
             except GeneratorExit:
                 # Arrêt propre du générateur
@@ -3351,8 +3409,11 @@ if FASTAPI_AVAILABLE:
         except WebSocketDisconnect:
             logger.info("🔌 WebSocket déconnecté normalement")
             await advanced_websocket_manager.disconnect(websocket)
-        except Exception as e:
+        except (ConnectionError, RuntimeError, AttributeError) as e:
             logger.exception("❌ Erreur WebSocket: %s", e)
+            await advanced_websocket_manager.disconnect(websocket)
+        except Exception as e:
+            logger.exception("❌ Erreur inattendue WebSocket: %s", e)
             await advanced_websocket_manager.disconnect(websocket)
 
 
@@ -3403,8 +3464,22 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                                 "error",
                                 "❌ Impossible de créer le robot",
                             )
-                    except Exception as e:
+                    except (
+                        ValueError,
+                        AttributeError,
+                        RuntimeError,
+                        ImportError,
+                        OSError,
+                    ) as e:
                         logger.exception("❌ Erreur initialisation robot: %s", e)
+                        await advanced_websocket_manager.send_log_message(
+                            "error",
+                            f"❌ Erreur robot: {e}",
+                        )
+                    except Exception as e:
+                        logger.exception(
+                            "❌ Erreur inattendue initialisation robot: %s", e
+                        )
                         await advanced_websocket_manager.send_log_message(
                             "error",
                             f"❌ Erreur robot: {e}",
@@ -3459,8 +3534,14 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                             "error",
                             f"❌ Échec émotion: {emotion}",
                         )
-                except Exception as e:
+                except (ValueError, AttributeError, RuntimeError, KeyError) as e:
                     logger.exception("❌ [CMD] Erreur set_emotion: %s", e)
+                    await advanced_websocket_manager.send_log_message(
+                        "error",
+                        f"❌ Erreur émotion: {e}",
+                    )
+                except Exception as e:
+                    logger.exception("❌ [CMD] Erreur inattendue set_emotion: %s", e)
                     await advanced_websocket_manager.send_log_message(
                         "error",
                         f"❌ Erreur émotion: {e}",
@@ -3521,8 +3602,11 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                         success = True
                     else:
                         success = False
-                except Exception as e:
+                except (ValueError, AttributeError, RuntimeError, ConnectionError) as e:
                     logger.exception("Erreur exécution action %s: %s", action, e)
+                    success = False
+                except Exception as e:
+                    logger.exception("Erreur inattendue exécution action %s: %s", action, e)
                     success = False
 
             await execute_action()
@@ -3654,8 +3738,14 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                         "error",
                         f"❌ Échec joint {joint}",
                     )
-            except Exception as e:
+            except (ValueError, AttributeError, RuntimeError, IndexError, KeyError) as e:
                 logger.exception("❌ Erreur set_joint_pos: %s", e)
+                await advanced_websocket_manager.send_log_message(
+                    "error",
+                    f"❌ Erreur joint {joint}: {e}",
+                )
+            except Exception as e:
+                logger.exception("❌ Erreur inattendue set_joint_pos: %s", e)
                 await advanced_websocket_manager.send_log_message(
                     "error",
                     f"❌ Erreur joint {joint}: {e}",
@@ -3706,8 +3796,14 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                             "info",
                             "Scan: aucun résultat disponible",
                         )
-                except Exception as e:
+                except (OSError, RuntimeError, AttributeError, ImportError) as e:
                     logger.exception("Erreur scan environnement: %s", e)
+                    await advanced_websocket_manager.send_log_message(
+                        "error",
+                        f"Erreur scan: {e}",
+                    )
+                except Exception as e:
+                    logger.exception("Erreur inattendue scan environnement: %s", e)
                     await advanced_websocket_manager.send_log_message(
                         "error",
                         f"Erreur scan: {e}",
@@ -3724,8 +3820,11 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
         # Envoyer mise à jour du statut
         await advanced_websocket_manager.send_complete_status()
 
-    except Exception as e:
+    except (ValueError, AttributeError, RuntimeError, KeyError, TypeError) as e:
         logger.exception("❌ Erreur commande avancée: %s", e)
+        await advanced_websocket_manager.send_log_message("error", f"Erreur: {e!s}")
+    except Exception as e:
+        logger.exception("❌ Erreur inattendue commande avancée: %s", e)
         await advanced_websocket_manager.send_log_message("error", f"Erreur: {e!s}")
 
 

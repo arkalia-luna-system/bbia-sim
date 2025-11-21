@@ -51,7 +51,7 @@ def fix_fstring_in_line(line: str) -> str | None:
 
     # Construire format string avec %s
     format_string = fstring_content
-    for pattern_match, var_name in vars_found:
+    for pattern_match, _var_name in vars_found:
         format_string = format_string.replace(pattern_match, "%s")
 
     # Construire arguments
@@ -83,22 +83,12 @@ def fix_multiline_fstring(lines: list[str], start_idx: int) -> tuple[int, list[s
     if 'f"' not in full_call and "f'" not in full_call:
         return start_idx + 1, lines
 
-    # Pattern multi-ligne
-    pattern = r'(logger\.(?:debug|info|warning|error|exception|critical))\s*\(\s*f["\']([^"\']+)["\']\s*\)'
-
     # Extraire le contenu f-string (peut être sur plusieurs lignes)
     fstring_match = re.search(r'f["\']([^"\']+)["\']', full_call, re.DOTALL)
     if not fstring_match:
         return start_idx + 1, lines
 
     fstring_content = fstring_match.group(1).strip()
-    logger_call_match = re.search(
-        r"(logger\.(?:debug|info|warning|error|exception|critical))", full_call
-    )
-    if not logger_call_match:
-        return start_idx + 1, lines
-
-    logger_call = logger_call_match.group(1)
 
     # Extraire variables
     vars_found = extract_fstring_vars(fstring_content)
@@ -109,7 +99,7 @@ def fix_multiline_fstring(lines: list[str], start_idx: int) -> tuple[int, list[s
     else:
         # Construire format string
         format_string = fstring_content
-        for pattern_match, var_name in vars_found:
+        for pattern_match, _var_name in vars_found:
             format_string = format_string.replace(pattern_match, "%s")
 
         # Construire arguments
