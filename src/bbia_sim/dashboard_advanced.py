@@ -73,6 +73,14 @@ class BBIAAdvancedWebSocketManager:
         self._connection_last_activity: dict[WebSocket, float] = {}
         self._connection_cleanup_interval = 300.0  # 5 minutes
 
+        # OPTIMISATION STREAMING: Batching messages et heartbeat optimisé
+        self._message_batch: list[dict[str, Any]] = []
+        self._batch_lock = asyncio.Lock()
+        self._batch_interval = 0.1  # 100ms pour batching
+        self._batch_task: asyncio.Task | None = None
+        self._heartbeat_interval = 30.0  # 30 secondes (optimisé depuis 10s)
+        self._last_heartbeat: float = 0.0
+
         # Modules BBIA
         self.emotions = BBIAEmotions()
         # OPTIMISATION RAM: Utiliser singleton BBIAVision si disponible
@@ -178,6 +186,8 @@ class BBIAAdvancedWebSocketManager:
         # Démarrer la collecte de métriques si c'est la première connexion
         if len(self.active_connections) == 1:
             self._start_metrics_collection()
+            # OPTIMISATION STREAMING: Démarrer le processeur de batch
+            await self._start_batch_processor()
 
         # S'assurer que le robot est initialisé - FORCER l'initialisation
         if not self.robot:
@@ -243,6 +253,14 @@ class BBIAAdvancedWebSocketManager:
         # Arrêter la collecte de métriques si plus aucune connexion
         if len(self.active_connections) == 0:
             self._stop_metrics_collection()
+            # OPTIMISATION STREAMING: Arrêter le processeur de batch
+            if self._batch_task and not self._batch_task.done():
+                self._batch_task.cancel()
+                try:
+                    await self._batch_task
+                except asyncio.CancelledError:
+                    pass
+                self._batch_task = None
 
     def _cleanup_inactive_connections(self) -> None:
         """OPTIMISATION RAM: Nettoie les connexions WebSocket inactives (>5 min)."""
@@ -267,10 +285,65 @@ class BBIAAdvancedWebSocketManager:
             except Exception as e:
                 logger.debug(f"Erreur nettoyage connexion inactive: {e}")
 
-    async def broadcast(self, message: str):
+    async def _add_to_batch(self, message_data: dict[str, Any]) -> None:
+        """OPTIMISATION STREAMING: Ajoute un message au batch pour envoi groupé."""
+        async with self._batch_lock:
+            self._message_batch.append(message_data)
+
+    async def _flush_batch(self) -> None:
+        """OPTIMISATION STREAMING: Envoie tous les messages en batch."""
+        async with self._batch_lock:
+            if not self._message_batch or not self.active_connections:
+                return
+
+            # Grouper les messages par type pour compression
+            batched_data = {
+                "type": "batch",
+                "timestamp": datetime.now().isoformat(),
+                "messages": self._message_batch.copy(),
+            }
+            self._message_batch.clear()
+
+        # Envoyer le batch
+        await self.broadcast(json.dumps(batched_data))
+
+    async def _start_batch_processor(self) -> None:
+        """OPTIMISATION STREAMING: Démarre le processeur de batch."""
+        if self._batch_task and not self._batch_task.done():
+            return
+
+        async def batch_loop() -> None:
+            while self.active_connections:
+                await asyncio.sleep(self._batch_interval)
+                await self._flush_batch()
+
+        self._batch_task = asyncio.create_task(batch_loop())
+
+    async def _send_heartbeat(self) -> None:
+        """OPTIMISATION STREAMING: Envoie un heartbeat optimisé (30s)."""
+        current_time = time.time()
+        if current_time - self._last_heartbeat >= self._heartbeat_interval:
+            heartbeat_data = {
+                "type": "heartbeat",
+                "timestamp": datetime.now().isoformat(),
+            }
+            await self.broadcast(json.dumps(heartbeat_data))
+            self._last_heartbeat = current_time
+
+    async def broadcast(self, message: str, use_batch: bool = False):
         """Diffuse un message à toutes les connexions actives."""
         if not self.active_connections:
             return
+
+        # OPTIMISATION STREAMING: Utiliser batching si demandé
+        if use_batch:
+            try:
+                message_data = json.loads(message)
+                await self._add_to_batch(message_data)
+                return
+            except (json.JSONDecodeError, TypeError):
+                # Si pas JSON valide, envoyer directement
+                pass
 
         # OPTIMISATION: deque avec maxlen pour éviter accumulation excessive
         disconnected: deque[WebSocket] = deque(maxlen=50)
@@ -289,6 +362,9 @@ class BBIAAdvancedWebSocketManager:
 
         # OPTIMISATION RAM: Nettoyer connexions inactives périodiquement
         self._cleanup_inactive_connections()
+
+        # OPTIMISATION STREAMING: Envoyer heartbeat si nécessaire
+        await self._send_heartbeat()
 
     async def send_complete_status(self):
         """Envoie le statut complet du système."""
@@ -337,7 +413,8 @@ class BBIAAdvancedWebSocketManager:
             "metrics": self.current_metrics,
         }
 
-        await self.broadcast(json.dumps(metrics_data))
+        # OPTIMISATION STREAMING: Utiliser batching pour métriques
+        await self.broadcast(json.dumps(metrics_data), use_batch=True)
 
     async def send_log_message(self, level: str, message: str):
         """Envoie un message de log."""
@@ -3085,11 +3162,11 @@ if FASTAPI_AVAILABLE:
 
     @app.get("/api/camera/stream")
     async def camera_stream():
-        """Stream vidéo MJPEG depuis la caméra."""
+        """Stream vidéo MJPEG optimisé avec compression adaptative et frame rate adaptatif."""
         from fastapi.responses import StreamingResponse  # type: ignore[import-untyped]
 
         async def generate_frames():
-            """Générateur async de frames MJPEG avec mécanisme d'arrêt propre."""
+            """Générateur async de frames MJPEG optimisé avec compression adaptative."""
             try:
                 import cv2  # type: ignore[import-untyped]
                 import numpy as np
@@ -3100,9 +3177,28 @@ if FASTAPI_AVAILABLE:
             vision = advanced_websocket_manager.vision
             frame_count = 0
 
+            # OPTIMISATION STREAMING: Compression adaptative et frame rate adaptatif
+            jpeg_quality = 85  # Qualité initiale
+            target_fps = 30.0  # FPS cible initial
+            frame_interval = 1.0 / target_fps  # Intervalle entre frames
+            last_frame_time = time.time()
+            frame_times: deque[float] = deque(
+                maxlen=30
+            )  # Buffer pour calculer FPS réel
+
+            # OPTIMISATION STREAMING: Buffer optimisé (deque maxlen=5)
+            frame_buffer: deque[bytes] = deque(maxlen=5)
+
             try:
                 while True:
                     try:
+                        current_time = time.time()
+                        elapsed = current_time - last_frame_time
+
+                        # Frame rate adaptatif : ajuster selon latence
+                        if elapsed < frame_interval:
+                            await asyncio.sleep(frame_interval - elapsed)
+
                         frame = None
                         if vision:
                             try:
@@ -3129,9 +3225,22 @@ if FASTAPI_AVAILABLE:
                             except (ConnectionError, RuntimeError, WebSocketDisconnect):
                                 pass
 
-                        # Encoder en JPEG
+                        # OPTIMISATION STREAMING: Compression adaptative
+                        # Ajuster qualité JPEG selon taille frame précédente
+                        if frame_buffer:
+                            avg_size = sum(len(f) for f in frame_buffer) / len(
+                                frame_buffer
+                            )
+                            # Si frames trop grandes (>100KB), réduire qualité
+                            if avg_size > 100000:
+                                jpeg_quality = max(60, jpeg_quality - 5)
+                            # Si frames petites (<30KB), augmenter qualité
+                            elif avg_size < 30000:
+                                jpeg_quality = min(95, jpeg_quality + 2)
+
+                        # Encoder en JPEG avec qualité adaptative
                         success, buffer = cv2.imencode(
-                            ".jpg", frame, [cv2.IMWRITE_JPEG_QUALITY, 85]
+                            ".jpg", frame, [cv2.IMWRITE_JPEG_QUALITY, jpeg_quality]
                         )
                         if not success:
                             logger.warning("Échec encodage JPEG")
@@ -3139,6 +3248,22 @@ if FASTAPI_AVAILABLE:
                             continue
 
                         frame_bytes = buffer.tobytes()
+                        frame_buffer.append(frame_bytes)
+
+                        # OPTIMISATION STREAMING: Frame rate adaptatif
+                        # Calculer FPS réel et ajuster
+                        frame_times.append(current_time)
+                        if len(frame_times) >= 10:
+                            fps_real = len(frame_times) / (
+                                frame_times[-1] - frame_times[0]
+                            )
+                            # Ajuster target_fps si FPS réel trop bas
+                            if fps_real < target_fps * 0.8:
+                                target_fps = max(15.0, target_fps - 2.0)
+                                frame_interval = 1.0 / target_fps
+                            elif fps_real > target_fps * 1.2:
+                                target_fps = min(30.0, target_fps + 1.0)
+                                frame_interval = 1.0 / target_fps
 
                         yield (
                             b"--frame\r\n"
@@ -3146,11 +3271,14 @@ if FASTAPI_AVAILABLE:
                         )
 
                         frame_count += 1
-                        if frame_count % 30 == 0:
-                            logger.debug(f"Stream vidéo: {frame_count} frames envoyées")
+                        last_frame_time = current_time
 
-                        # ✅ ASYNC : Utilise await asyncio.sleep() (non bloquant)
-                        await asyncio.sleep(0.033)  # ~30 FPS
+                        if frame_count % 30 == 0:
+                            logger.debug(
+                                f"Stream vidéo: {frame_count} frames, "
+                                f"qualité={jpeg_quality}, FPS={target_fps:.1f}"
+                            )
+
                     except asyncio.CancelledError:
                         # Arrêt propre si le client se déconnecte
                         logger.debug("Stream vidéo annulé (client déconnecté)")
