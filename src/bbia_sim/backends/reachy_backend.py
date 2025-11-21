@@ -130,7 +130,7 @@ class ReachyBackend(RobotAPI):
                     elif hasattr(self.robot_sdk, "__exit__"):
                         # Gestion context manager
                         self.robot_sdk.__exit__(None, None, None)
-                except Exception as e:
+                except (AttributeError, RuntimeError, OSError) as e:
                     logger.debug("Erreur fermeture SDK (non bloquant): %s", e)
                 finally:
                     self.robot_sdk = None
@@ -207,7 +207,7 @@ class ReachyBackend(RobotAPI):
                     "Joint %s → %.3f rad (robot réel)", joint_name, clamped_position
                 )
                 return True
-            except Exception as e:
+            except (RuntimeError, OSError, AttributeError) as e:
                 logger.warning(
                     "Erreur envoi commande robot réel: %s - bascule simulation", e
                 )
@@ -249,7 +249,7 @@ class ReachyBackend(RobotAPI):
                                 head_positions[stewart_idx]
                             )
                             return self.simulated_joints[joint_name]
-            except Exception as e:
+            except (AttributeError, RuntimeError, KeyError) as e:
                 logger.debug("Erreur lecture position robot réel: %s", e)
 
         # Fallback: retourner valeur cache (simulation)
@@ -269,7 +269,7 @@ class ReachyBackend(RobotAPI):
                     if hasattr(self.robot_sdk, "get_current_joint_positions"):
                         # Lire positions actuelles pour synchronisation
                         _ = self.robot_sdk.get_current_joint_positions()
-                except Exception as e:
+                except (AttributeError, RuntimeError, OSError) as e:
                     logger.debug("Erreur synchronisation robot réel: %s", e)
 
             # Simulation: attendre un peu pour cohérence timing
@@ -298,7 +298,7 @@ class ReachyBackend(RobotAPI):
                     # Fermer connexion SDK
                     if hasattr(self.robot_sdk, "close"):
                         self.robot_sdk.close()
-                except Exception as e:
+                except (AttributeError, RuntimeError, OSError) as e:
                     logger.warning("Erreur arrêt d'urgence SDK: %s", e)
 
             self.is_connected = False

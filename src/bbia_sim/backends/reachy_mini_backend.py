@@ -101,7 +101,7 @@ def _create_cached_head_pose(
     except (ValueError, RuntimeError, AttributeError, TypeError, OSError) as e:
         logger.debug("Erreur création pose cache: %s, fallback identité", e)
         return np.eye(4, dtype=np.float64)
-    except Exception as e:
+    except (KeyError, IndexError, TypeError) as e:
         logger.debug("Erreur inattendue création pose cache: %s, fallback identité", e)
         return np.eye(4, dtype=np.float64)
 
@@ -279,7 +279,7 @@ class ReachyMiniBackend(RobotAPI):
             self._activate_simulation_mode()
             self._start_watchdog()
             return False
-        except Exception as e:
+        except (RuntimeError, OSError, AttributeError) as e:
             error_msg = str(e)
             logger.warning(
                 "⚠️  Connexion robot échouée inattendue (fallback simulation): %s",
@@ -317,14 +317,14 @@ class ReachyMiniBackend(RobotAPI):
             self._stop_watchdog()
         except (AttributeError, RuntimeError, OSError, ConnectionError) as e:
             logger.debug("Stop watchdog lors déconnexion: %s", e)
-        except Exception as e:
+        except (ValueError, TypeError, KeyError) as e:
             logger.debug("Erreur inattendue stop watchdog: %s", e)
         try:
             if self.robot:
                 self.robot = None
         except (AttributeError, RuntimeError, OSError, ConnectionError) as e:
             logger.debug("Nettoyage robot lors déconnexion: %s", e)
-        except Exception as e:
+        except (ValueError, TypeError, KeyError) as e:
             logger.debug("Erreur inattendue nettoyage robot: %s", e)
         self.is_connected = False
         logger.info("Déconnecté du robot Reachy-Mini")
@@ -449,7 +449,7 @@ class ReachyMiniBackend(RobotAPI):
     def __del__(self) -> None:  # pragma: no cover - best-effort cleanup
         try:
             self._stop_watchdog()
-        except Exception as e:
+        except (AttributeError, RuntimeError, OSError, ValueError, TypeError) as e:
             # Logging silencieux en __del__ pour éviter erreurs lors du
             # garbage collection
             logger.debug("Erreur lors de l'arrêt du watchdog dans __del__: %s", e)
@@ -471,7 +471,7 @@ class ReachyMiniBackend(RobotAPI):
                 body_yaw = self.robot.get_current_body_yaw()
                 if body_yaw is not None:
                     return float(body_yaw)
-        except (AttributeError, Exception) as e:
+        except (AttributeError, RuntimeError, OSError, ValueError) as e:
             logger.debug("get_current_body_yaw non disponible: %s", e)
 
         # Méthode 2: Essayer de lire via l'état interne du robot
@@ -483,7 +483,7 @@ class ReachyMiniBackend(RobotAPI):
                 and hasattr(self.robot.state, "body_yaw")
             ):
                 return float(self.robot.state.body_yaw)
-        except (AttributeError, Exception):
+        except (AttributeError, RuntimeError, OSError, ValueError, TypeError):
             pass
 
         # Méthode 3: Fallback sûr
@@ -957,7 +957,7 @@ class ReachyMiniBackend(RobotAPI):
                             )
                 except (AttributeError, RuntimeError, OSError, ValueError) as imu_err:
                     logger.debug("IMU non disponible: %s", imu_err)
-                except Exception as imu_err:
+                except (ValueError, TypeError, KeyError) as imu_err:
                     logger.debug("Erreur inattendue IMU: %s", imu_err)
 
             telemetry = {

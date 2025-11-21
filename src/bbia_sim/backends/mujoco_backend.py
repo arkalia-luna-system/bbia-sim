@@ -260,12 +260,12 @@ class MuJoCoBackend(RobotAPI):
                 logger.info(
                     "Viewer MuJoCo lancé (fond BBIA gris lunaire → bleu céleste)",
                 )
-            except Exception as e:
+            except (AttributeError, KeyError, ValueError) as e:
                 logger.warning("Impossible de vérifier le skybox BBIA: %s", e)
                 logger.info("Viewer MuJoCo lancé (fond BBIA configuré)")
 
             return True
-        except Exception as e:
+        except (RuntimeError, OSError, AttributeError) as e:
             logger.exception("Erreur lancement viewer: %s", e)
             return False
 
@@ -377,14 +377,14 @@ class MuJoCoBackend(RobotAPI):
             try:
                 self.set_joint_pos(head_joints["pitch"], pose["pitch"])
                 logger.info("Émotion %s: pitch_head = %.3f", emotion, pose["pitch"])
-            except Exception as e:
+            except (ValueError, RuntimeError, AttributeError) as e:
                 logger.debug("Impossible de bouger pitch_head: %s", e)
 
         if head_joints["yaw"]:
             try:
                 self.set_joint_pos(head_joints["yaw"], pose["yaw"])
                 logger.info("Émotion %s: yaw_head = %.3f", emotion, pose["yaw"])
-            except Exception as e:
+            except (ValueError, RuntimeError, AttributeError) as e:
                 logger.debug("Impossible de bouger yaw_head: %s", e)
 
         # Faire un step pour que le changement soit visible
