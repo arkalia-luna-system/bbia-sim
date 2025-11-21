@@ -264,8 +264,8 @@ class BBIAHuggingFace:
         if tools and hasattr(tools, "robot_api"):
             self._bbia_chat_robot_api = tools.robot_api
 
-        logger.info(f"🤗 BBIA Hugging Face initialisé (device: {self.device})")
-        logger.info(f"😊 Personnalité BBIA: {self.bbia_personality}")
+        logger.info("🤗 BBIA Hugging Face initialisé (device: %s)", self.device)
+        logger.info("😊 Personnalité BBIA: %s", self.bbia_personality)
 
     def _get_device(self, device: str) -> str:
         """Détermine le device optimal."""
@@ -295,7 +295,7 @@ class BBIAHuggingFace:
                 "✅ BBIAChat (LLM conversationnel) chargé à la demande (lazy loading)"
             )
         except ImportError as e:
-            logger.debug(f"BBIAChat non disponible: {e}")
+            logger.debug("BBIAChat non disponible: %s", e)
             self.bbia_chat = None
         except (AttributeError, RuntimeError) as e:
             logger.warning(f"Erreur initialisation BBIAChat: {e}")

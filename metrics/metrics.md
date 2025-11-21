@@ -1,0 +1,14 @@
+## 📊 **Métriques du Projet** *(Mise à jour automatique)*
+
+<div align="center">
+
+| **Composant** | **Valeur** | **Statut** | **Vérifié** |
+|:-------------:|:---------:|:----------:|:------------:|
+| **🐍 Fichiers Python** | `27,033 modules` | ![Actif](https://img.shields.io/badge/status-actif-brightgreen) | ✅ **COMPTÉ** |
+| **📝 Lignes de Code** | `11,698,428 lignes` | ![Maintenu](https://img.shields.io/badge/status-maintenu-blue) | ✅ **MESURÉ** |
+| **🧪 Tests** | `2,156 tests` | ![Testé](https://img.shields.io/badge/status-testé-green) | ✅ **COLLECTÉ** |
+| **📚 Documentation** | `1817 fichiers` | ![Complet](https://img.shields.io/badge/status-complet-yellow) | ✅ **ORGANISÉ** |
+
+</div>
+
+*Métriques collectées automatiquement le 2025-11-21T19:24:42.884051 par [Arkalia Metrics Collector](data/metrics.json)*
