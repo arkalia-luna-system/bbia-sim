@@ -225,8 +225,13 @@ last_update: "Décembre 2025"
    - Centraliser toutes les commandes d'installation
    - Référencer depuis autres fichiers
 
-6. **Mettre à jour les références**
+6. **Créer `docs/_config.yml` pour dates/versions**
+   - Centraliser version et date de release
+   - Script pour mettre à jour automatiquement
+
+7. **Mettre à jour les références**
    - Remplacer répétitions par liens vers fichiers centralisés
+   - Utiliser variables pour dates (si possible avec générateur de docs)
 
 ### Phase 3 : Maintenance (Priorité 🟢)
 

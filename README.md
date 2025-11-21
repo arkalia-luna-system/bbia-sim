@@ -69,14 +69,14 @@
 ## 📊 Statistiques
 
 - **Fichiers Python source**: 92 fichiers (35,988 lignes)
-- **Fichiers de tests**: 183 fichiers (38,935 lignes)
+- **Fichiers de tests**: 163 fichiers (38,935 lignes) — [✅ Vérifié Décembre 2025](docs/quality/audits/VERIFICATION_ANALYSE_COMPLETE_DEC2025.md)
 - **Fonctions de test**: 1,804 tests identifiés
-- **Tests collectés**: 1,362 tests (CI GitHub Actions)
+- **Tests collectés**: 1,743 tests (1,805 total, 62 deselected) — [✅ Vérifié Décembre 2025](docs/quality/audits/VERIFICATION_ANALYSE_COMPLETE_DEC2025.md)
 - **Coverage global**: 68.86% ([Codecov](https://app.codecov.io/gh/arkalia-luna-system/bbia-sim))
 - **Coverage modules core**: ~50% (mesure pertinente)
 - **Modules BBIA**: 15+ modules spécialisés
-- **Comportements**: 15 comportements intelligents
-- **Documentation**: 128+ fichiers Markdown
+- **Comportements**: 21 comportements intelligents (7 de base + 14 avancés) — [✅ Vérifié Décembre 2025](docs/quality/audits/VERIFICATION_ANALYSE_COMPLETE_DEC2025.md)
+- **Documentation**: 219 fichiers Markdown (dans `docs/`) — [✅ Vérifié Décembre 2025](docs/quality/audits/VERIFICATION_ANALYSE_COMPLETE_DEC2025.md)
 - **Commits Git**: 423 commits
 
 ## 🏆 Qualité Code
