@@ -471,7 +471,7 @@ Le SDK officiel `RobotBackend` expose:
 
 ### 🔒 Sécurité & Tests
 
-**Tests existants :** `tests/test_reachy_mini_backend*.py` (10 fichiers, 200+ tests)
+**Tests existants :** `tests/test_reachy_mini_backend*.py` (10 fichiers, tests de conformité complets)
 
 **Coverage :**
 

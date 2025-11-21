@@ -38,7 +38,7 @@
 | **Voice** | ✅ Whisper STT | ⚠️ Basique | ✅ **Supérieur** |
 | **Simulation** | ✅ MuJoCo complet | ✅ MuJoCo | ✅ Égal |
 | **RobotAPI Unifié** | ✅ Innovation unique | ❌ Absent | ✅ **Supérieur** |
-| **Tests** | ✅ 800+ tests | ✅ Tests | ✅ Égal |
+| **Tests** | ✅ 1,362 tests collectés | ✅ Tests | ✅ Égal |
 | **Documentation** | ✅ Complète | ✅ Complète | ✅ Égal |
 
 ### ⚠️ Ce qui MANQUE à BBIA (Gaps)

@@ -185,7 +185,7 @@ pytest tests/ --cov=src/bbia_sim --cov-report=html
 
 ```text
 docs/
-├── guides/              # Guides utilisateurs (débutant, avancé)
+├── guides/              # Guides utilisateurs (démarrage, avancé)
 ├── development/   # Guides techniques (migration, testing, etc.)
 ├── development/architecture/       # Architecture détaillée
 ├── quality/audits/              # Audits, comparaisons, bilans
