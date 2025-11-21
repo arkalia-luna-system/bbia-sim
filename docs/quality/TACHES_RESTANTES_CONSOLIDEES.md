@@ -674,7 +674,7 @@ except Exception as e:
 ### ✅ CE QUI A ÉTÉ FAIT
 
 1. ✅ **Audit complet** - Tous les problèmes identifiés
-2. ✅ **Corrections G004** - ~658/816 occurrences corrigées (81%)
+2. ✅ **Corrections G004** - ~150/816 occurrences restantes (~82% fait) - Contextes complexes
 3. ✅ **Corrections TRY400** - **100% TERMINÉ** (220/220)
 4. ✅ **Erreurs syntaxe** - Toutes corrigées
 5. ✅ **Documentation MD** - Mise à jour avec progression
@@ -684,7 +684,7 @@ except Exception as e:
 
 #### 🔴 PRIORITÉ HAUTE (1-2 jours)
 
-1. ✅ **G004 - Logging f-strings** - **100% TERMINÉ**
+1. ⏳ **G004 - Logging f-strings** - ~150 occurrences restantes (contextes complexes)
    - Fichiers principaux : `dashboard_advanced.py`, `bbia_huggingface.py`, `backends/reachy_mini_backend.py`
    - Action : Remplacer `logger.info(f"...")` par `logger.info("...", ...)`
 
