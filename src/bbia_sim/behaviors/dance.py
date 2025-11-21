@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+
 """Comportement de danse synchronisée avec musique pour BBIA.
 
 Détection rythme audio (analyse amplitude), mouvements chorégraphiés,
@@ -21,7 +22,7 @@ except ImportError:
     detecter_son = None  # type: ignore[assignment, misc]
     dire_texte = None  # type: ignore[assignment, misc]
 
-from .base import BBIABehavior
+from bbia_sim.behaviors.base import BBIABehavior
 
 logger = logging.getLogger("BBIA")
 

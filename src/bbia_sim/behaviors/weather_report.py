@@ -102,13 +102,13 @@ class WeatherReportBehavior(BBIABehavior):
         import random
 
         conditions = ["sunny", "rainy", "cloudy", "snowy"]
-        condition = random.choice(conditions)
+        condition = random.choice(conditions)  # nosec B311
 
         return {
             "city": city,
             "condition": condition,
-            "temperature": random.randint(10, 25),
-            "humidity": random.randint(40, 80),
+            "temperature": random.randint(10, 25),  # nosec B311
+            "humidity": random.randint(40, 80),  # nosec B311
         }
 
     def _report_weather(self) -> None:

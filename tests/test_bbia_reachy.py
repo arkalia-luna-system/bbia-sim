@@ -93,11 +93,12 @@ class ReachyMiniWirelessSimulator:
             "La technologie est fascinante",
         ]
 
+        # OPTIMISATION: Réduire sleeps pour accélérer les tests (0.5s → 0.1s, 1s → 0.2s)
         for phrase in random.sample(phrases, 2):
-            time.sleep(0.5)
+            time.sleep(0.1)  # Réduit de 0.5s pour accélérer
             response = f"J'ai compris: {phrase}"
             self.simulate_speaker(response)
-            time.sleep(1)
+            time.sleep(0.2)  # Réduit de 1s pour accélérer
 
     def run_demo(self):
         """Lance la démonstration complète."""
@@ -111,9 +112,10 @@ class ReachyMiniWirelessSimulator:
         # Test des émotions
         emotions = ["neutral", "happy", "curious", "excited", "sad", "angry"]
 
+        # OPTIMISATION: Réduire sleep de 1s → 0.2s pour accélérer les tests
         for emotion in emotions:
             self.change_emotion(emotion)
-            time.sleep(1)
+            time.sleep(0.2)  # Réduit de 1s pour accélérer
 
         # Test d'interaction vocale
         self.simulate_voice_interaction()

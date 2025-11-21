@@ -293,7 +293,7 @@ class WhisperSTT:
                     return
 
             # Charger modèle si pas en cache
-            # nosec B615: révision explicite pour éviter latest flottant
+            # nosec B615: révision spécifiée pour éviter version flottante
             processor = WhisperProcessor.from_pretrained(
                 model_name,
                 revision="main",

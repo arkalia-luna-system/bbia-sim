@@ -188,12 +188,14 @@ class TestBBIAChat:
             original_generate = chat.llm_model.generate
 
             def slow_generate(*args, **kwargs):
-                time.sleep(6)  # Dépasse timeout de 5s
+                # OPTIMISATION: Réduire sleep de 6s → 1.1s (suffisant pour tester timeout, 5.5x plus rapide)
+                time.sleep(1.1)  # Dépasse timeout de 1.0s
                 return original_generate(*args, **kwargs)
 
             chat.llm_model.generate = slow_generate
 
-            response = chat.generate("Test", timeout=5.0)
+            # OPTIMISATION: Ajuster timeout à 1.0s pour correspondre au nouveau sleep
+            response = chat.generate("Test", timeout=1.0)
             # Devrait retourner message timeout ou erreur
             assert isinstance(response, str)
 

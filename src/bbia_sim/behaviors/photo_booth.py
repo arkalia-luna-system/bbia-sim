@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+
 """Comportement de photo booth pour BBIA.
 
 Poses pré-définies, détection visage pour cadrage, compte à rebours,
@@ -20,7 +21,7 @@ try:
 except ImportError:
     dire_texte = None  # type: ignore[assignment, misc]
 
-from .base import BBIABehavior
+from bbia_sim.behaviors.base import BBIABehavior
 
 logger = logging.getLogger("BBIA")
 

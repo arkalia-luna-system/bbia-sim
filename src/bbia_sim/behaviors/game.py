@@ -123,7 +123,7 @@ class GameBehavior(BBIABehavior):
                 break
 
             # Choix robot
-            robot_choice = random.choice(choices)
+            robot_choice = random.choice(choices)  # nosec B311
             gesture = gestures[robot_choice]
 
             # Afficher choix robot
@@ -138,7 +138,7 @@ class GameBehavior(BBIABehavior):
             time.sleep(3.0)
 
             # Simuler résultat (dans version réelle, comparer avec geste utilisateur)
-            user_choice = random.choice(choices)  # Simulation
+            user_choice = random.choice(choices)  # Simulation  # nosec B311
 
             result = self._determine_winner(user_choice, robot_choice)
             self._react_to_result(result, round_num + 1)
@@ -156,7 +156,7 @@ class GameBehavior(BBIABehavior):
             if not self.is_active:
                 break
 
-            number = random.randint(1, 10)
+            number = random.randint(1, 10)  # nosec B311
             self._speak_with_movement(
                 f"Round {round_num+1}: Devinez mon nombre !",
                 emotion="curious",
@@ -166,7 +166,7 @@ class GameBehavior(BBIABehavior):
             time.sleep(3.0)
 
             # Simuler réponse (dans version réelle, utiliser STT)
-            guess = random.randint(1, 10)  # Simulation
+            guess = random.randint(1, 10)  # Simulation  # nosec B311
 
             if guess == number:
                 self._react_to_result("win", round_num + 1)
@@ -189,7 +189,7 @@ class GameBehavior(BBIABehavior):
             # Créer séquence
             sequence_length = round_num + 2
             sequence = [
-                random.choice(["left", "right", "up", "down"])
+                random.choice(["left", "right", "up", "down"])  # nosec B311
                 for _ in range(sequence_length)
             ]
 
@@ -223,7 +223,7 @@ class GameBehavior(BBIABehavior):
             time.sleep(3.0)
 
             # Simuler résultat (dans version réelle, comparer séquence utilisateur)
-            is_correct = random.choice([True, False])  # Simulation
+            is_correct = random.choice([True, False])  # Simulation  # nosec B311
 
             if is_correct:
                 self._react_to_result("win", round_num + 1)
@@ -286,7 +286,7 @@ class GameBehavior(BBIABehavior):
 
         import random
 
-        message = random.choice(messages)
+        message = random.choice(messages)  # nosec B311
         self._speak_with_movement(message, emotion=emotion)
 
     def _show_final_score(self) -> None:

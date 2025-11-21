@@ -261,7 +261,7 @@ class TeachingBehavior(BBIABehavior):
                 f"Pas tout à fait. C'était {correct_answer}.",
             ]
 
-        message = random.choice(messages)
+        message = random.choice(messages)  # nosec B311
         self._speak_with_movement(message, emotion=emotion)
 
     def _show_final_score(self) -> None:

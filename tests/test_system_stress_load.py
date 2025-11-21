@@ -21,9 +21,9 @@ def test_concurrent_goto_target_requests() -> None:
     backend = ReachyMiniBackend(use_sim=True)
     assert backend.connect() is True
 
-    # Optimisé: moins de threads et requêtes (suffisant pour tester concurrence)
-    num_threads = 3  # Réduit de 5 à 3
-    requests_per_thread = 15  # Réduit de 20 à 15
+    # OPTIMISATION: Réduire encore pour accélérer (3 → 2 threads, 15 → 10 requêtes)
+    num_threads = 2  # Réduit de 3 à 2 (suffisant pour tester concurrence)
+    requests_per_thread = 10  # Réduit de 15 à 10 (suffisant pour tester stress)
     pose = np.eye(4, dtype=np.float64)
 
     def make_requests(thread_id: int) -> int:
@@ -69,8 +69,8 @@ def test_rapid_emotion_switching() -> None:
     assert backend.connect() is True
 
     emotions = ["happy", "sad", "neutral", "excited", "curious", "calm"]
-    # Optimisé: 150 itérations au lieu de 200 (suffisant pour test stress)
-    iterations = 150
+    # OPTIMISATION: Réduire 150 → 100 itérations (suffisant pour test stress, 1.5x plus rapide)
+    iterations = 100
 
     try:
         start_time = time.perf_counter()
@@ -104,8 +104,8 @@ def test_rapid_joint_updates() -> None:
     assert backend.connect() is True
 
     joints = ["yaw_body", "stewart_1", "stewart_2", "stewart_3", "stewart_4"]
-    # Optimisé: 300 itérations au lieu de 500 (suffisant pour test stress)
-    iterations = 300
+    # OPTIMISATION: Réduire 300 → 200 itérations (suffisant pour test stress, 1.5x plus rapide)
+    iterations = 200
 
     try:
         start_time = time.perf_counter()

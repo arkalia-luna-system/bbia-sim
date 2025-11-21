@@ -21,12 +21,12 @@ except ImportError:
     BBIAEmotions = None  # type: ignore[assignment, misc]
     dire_texte = None  # type: ignore[assignment, misc]
 
-from .base import BBIABehavior
+from bbia_sim.behaviors.base import BBIABehavior
 
 logger = logging.getLogger("BBIA")
 
-# Liste des 12 émotions BBIA
-BBIA_EMOTIONS = [
+# Liste des 12 émotions BBIA (frozenset pour recherches O(1) et immuable)
+BBIA_EMOTIONS_LIST = [
     "neutral",
     "happy",
     "sad",
@@ -40,6 +40,7 @@ BBIA_EMOTIONS = [
     "nostalgic",
     "proud",
 ]
+BBIA_EMOTIONS = frozenset(BBIA_EMOTIONS_LIST)
 
 # Durées adaptatives selon émotion (en secondes)
 EMOTION_DURATIONS: dict[str, float] = {
@@ -73,6 +74,51 @@ EMOTION_EXPLANATIONS: dict[str, str] = {
     "proud": "Maintenant je suis fier, satisfait.",
 }
 
+# Mapping des émotions BBIA vers émotions SDK avec intensités pré-calculées
+# Format: (sdk_emotion, intensity)
+SDK_EMOTIONS = frozenset({"happy", "sad", "neutral", "excited", "curious", "calm"})
+
+EMOTION_SDK_MAP: dict[str, tuple[str, float]] = {
+    # Émotions directes SDK (intensité 0.8)
+    "happy": ("happy", 0.8),
+    "sad": ("sad", 0.8),
+    "neutral": ("neutral", 0.8),
+    "excited": ("excited", 0.8),
+    "curious": ("curious", 0.8),
+    # Émotions mappées (intensité 0.7)
+    "angry": ("excited", 0.7),
+    "surprised": ("curious", 0.7),
+    "fearful": ("sad", 0.7),
+    "confused": ("curious", 0.7),
+    "determined": ("neutral", 0.7),
+    "nostalgic": ("sad", 0.7),
+    "proud": ("happy", 0.7),
+}
+
+# Mouvements expressifs selon émotion (yaw en radians)
+EXPRESSIVE_MOVEMENTS: dict[str, float] = {
+    "happy": 0.12,
+    "excited": 0.15,
+    "curious": 0.10,
+    "sad": -0.08,
+    "angry": 0.0,
+    "surprised": 0.12,
+    "fearful": -0.10,
+    "confused": 0.05,
+    "determined": 0.0,
+    "nostalgic": -0.05,
+    "proud": 0.10,
+    "neutral": 0.0,
+}
+
+# Constantes pour les durées et transitions
+PRE_VOICE_DELAY = 0.5
+TRANSITION_DELAY = 0.3
+RETURN_TO_NEUTRAL_DELAY = 1.0
+MOVEMENT_DURATION = 0.6
+MOVEMENT_WAIT = 0.7
+SLEEP_CHECK_INTERVAL = 0.1
+
 
 class EmotionShowBehavior(BBIABehavior):
     """Comportement de démonstration des émotions BBIA.
@@ -101,6 +147,11 @@ class EmotionShowBehavior(BBIABehavior):
         else:
             self.emotions = None
 
+        # Cache des capacités du robot pour éviter les appels répétés à hasattr
+        self._has_set_emotion: bool | None = None
+        self._has_goto_target: bool | None = None
+        self._cancelled = False
+
     def can_execute(self, context: dict[str, Any]) -> bool:
         """Vérifie si le comportement peut être exécuté.
 
@@ -112,6 +163,11 @@ class EmotionShowBehavior(BBIABehavior):
 
         """
         return self.robot_api is not None
+
+    def cancel(self) -> None:
+        """Annule l'exécution en cours."""
+        self._cancelled = True
+        logger.info("Annulation de la démonstration demandée")
 
     def execute(self, context: dict[str, Any]) -> bool:
         """Exécute la démonstration des émotions.
@@ -127,85 +183,142 @@ class EmotionShowBehavior(BBIABehavior):
             logger.error("Robot API non disponible")
             return False
 
-        # Liste d'émotions à démontrer (par défaut toutes)
-        emotions_to_show = context.get("emotions_list", BBIA_EMOTIONS)
+        # Réinitialiser le flag d'annulation
+        self._cancelled = False
 
-        logger.info(f"Démarrage démonstration de {len(emotions_to_show)} émotions")
+        # Initialiser le cache des capacités du robot
+        self._has_set_emotion = hasattr(self.robot_api, "set_emotion")
+        self._has_goto_target = hasattr(self.robot_api, "goto_target")
+
+        # Liste d'émotions à démontrer (par défaut toutes)
+        emotions_to_show = context.get("emotions_list", BBIA_EMOTIONS_LIST)
+
+        # Filtrer et valider les émotions en une seule passe (O(n) avec set lookup O(1))
+        valid_emotions = [
+            emotion for emotion in emotions_to_show if emotion in BBIA_EMOTIONS
+        ]
+
+        if not valid_emotions:
+            logger.warning("Aucune émotion valide à démontrer")
+            return False
+
+        # Avertir sur les émotions invalides (optimisé avec set difference)
+        if isinstance(emotions_to_show, list | tuple):
+            invalid_emotions = set(emotions_to_show) - BBIA_EMOTIONS
+            if invalid_emotions:
+                logger.warning(f"Émotions inconnues ignorées: {invalid_emotions}")
+
+        logger.info(f"Démarrage démonstration de {len(valid_emotions)} émotions")
 
         try:
-            for emotion in emotions_to_show:
-                if emotion not in BBIA_EMOTIONS:
-                    logger.warning(f"Émotion inconnue ignorée: {emotion}")
-                    continue
+            for emotion in valid_emotions:
+                # Vérifier si annulation demandée
+                if self._cancelled:
+                    logger.info("Démonstration annulée")
+                    break
 
                 logger.info(f"Affichage émotion: {emotion}")
 
                 # Appliquer l'émotion avec transition fluide
-                self._apply_emotion(emotion)
+                if not self._apply_emotion(emotion):
+                    logger.warning(
+                        f"Échec application émotion {emotion}, passage à la suivante"
+                    )
+                    continue
 
                 # Attendre un peu avant l'explication vocale
-                time.sleep(0.5)
+                if self._sleep_with_cancel(PRE_VOICE_DELAY):
+                    break
 
-                # Explication vocale
+                # Explication vocale (pré-charger l'explication pour éviter lookup répété)
                 if dire_texte is not None:
                     explanation = EMOTION_EXPLANATIONS.get(
                         emotion,
                         f"Maintenant je suis {emotion}.",
                     )
-                    dire_texte(explanation, robot_api=self.robot_api)
-                    logger.info(f"Explication vocale: {explanation}")
+                    try:
+                        dire_texte(explanation, robot_api=self.robot_api)
+                        logger.info(f"Explication vocale: {explanation}")
+                    except Exception as e:
+                        logger.warning(f"Erreur explication vocale pour {emotion}: {e}")
 
-                # Maintenir l'émotion selon durée adaptative
+                # Maintenir l'émotion selon durée adaptative (pré-charger la durée)
                 duration = EMOTION_DURATIONS.get(emotion, 2.5)
-                time.sleep(duration)
+                if self._sleep_with_cancel(duration):
+                    break
 
                 # Transition fluide vers émotion suivante
-                time.sleep(0.3)
+                if self._sleep_with_cancel(TRANSITION_DELAY):
+                    break
 
-            logger.info("Démonstration des émotions terminée")
-
-            # Retour à l'émotion neutre
-            self._apply_emotion("neutral")
-            time.sleep(1.0)
+            if not self._cancelled:
+                logger.info("Démonstration des émotions terminée")
+                # Retour à l'émotion neutre
+                self._apply_emotion("neutral")
+                self._sleep_with_cancel(RETURN_TO_NEUTRAL_DELAY)
 
         except KeyboardInterrupt:
             logger.info("Démonstration interrompue par l'utilisateur")
+            self._cancelled = True
         except Exception as e:
-            logger.error(f"Erreur durant démonstration émotions: {e}")
+            logger.error(f"Erreur durant démonstration émotions: {e}", exc_info=True)
             return False
 
         return True
 
-    def _apply_emotion(self, emotion: str) -> None:
+    def _sleep_with_cancel(self, duration: float) -> bool:
+        """Fait une pause avec vérification d'annulation.
+
+        Args:
+            duration: Durée en secondes
+
+        Returns:
+            True si annulé, False sinon
+
+        """
+        if self._cancelled:
+            return True
+
+        # Pour les durées courtes, sleep direct (moins de overhead)
+        if duration <= SLEEP_CHECK_INTERVAL:
+            time.sleep(duration)
+            return self._cancelled
+
+        # Diviser le sleep en petits intervalles pour permettre l'annulation
+        # Optimisé: calculer le nombre d'intervalles une seule fois
+        num_intervals = max(1, int(duration / SLEEP_CHECK_INTERVAL))
+        interval = duration / num_intervals
+
+        for _ in range(num_intervals):
+            if self._cancelled:
+                return True
+            time.sleep(interval)
+
+        return self._cancelled
+
+    def _apply_emotion(self, emotion: str) -> bool:
         """Applique une émotion avec transition fluide.
 
         Args:
             emotion: Nom de l'émotion à appliquer
 
+        Returns:
+            True si l'émotion a été appliquée avec succès, False sinon
+
         """
-        if not self.robot_api or not hasattr(self.robot_api, "set_emotion"):
-            return
+        if not self.robot_api:
+            return False
+
+        # Utiliser le cache au lieu de hasattr répété
+        if self._has_set_emotion is None:
+            self._has_set_emotion = hasattr(self.robot_api, "set_emotion")
+
+        if not self._has_set_emotion:
+            return False
 
         try:
-            # Mapper vers émotions SDK si nécessaire
-            sdk_emotions = {"happy", "sad", "neutral", "excited", "curious", "calm"}
-
-            if emotion in sdk_emotions:
-                sdk_emotion = emotion
-                intensity = 0.8
-            else:
-                # Mapper les autres émotions BBIA vers SDK
-                emotion_map = {
-                    "angry": "excited",
-                    "surprised": "curious",
-                    "fearful": "sad",
-                    "confused": "curious",
-                    "determined": "neutral",
-                    "nostalgic": "sad",
-                    "proud": "happy",
-                }
-                sdk_emotion = emotion_map.get(emotion, "neutral")
-                intensity = 0.7
+            # Utiliser le mapping pré-calculé (évite les if/else répétés)
+            sdk_emotion, intensity = EMOTION_SDK_MAP.get(emotion, ("neutral", 0.7))
 
             self.robot_api.set_emotion(sdk_emotion, intensity)
             logger.debug(f"Émotion appliquée: {sdk_emotion} (intensité: {intensity})")
@@ -213,8 +326,11 @@ class EmotionShowBehavior(BBIABehavior):
             # Mouvements expressifs selon émotion
             self._apply_expressive_movement(emotion)
 
+            return True
+
         except Exception as e:
             logger.warning(f"Erreur application émotion {emotion}: {e}")
+            return False
 
     def _apply_expressive_movement(self, emotion: str) -> None:
         """Applique un mouvement expressif selon l'émotion.
@@ -226,35 +342,29 @@ class EmotionShowBehavior(BBIABehavior):
         if not self.robot_api:
             return
 
+        # Utiliser le cache au lieu de hasattr répété
+        if self._has_goto_target is None:
+            self._has_goto_target = hasattr(self.robot_api, "goto_target")
+
+        if not self._has_goto_target:
+            return
+
         try:
-            # Mouvements selon émotion (utiliser goto_target pour fluidité)
-            movements: dict[str, float] = {
-                "happy": 0.12,
-                "excited": 0.15,
-                "curious": 0.10,
-                "sad": -0.08,
-                "angry": 0.0,
-                "surprised": 0.12,
-                "fearful": -0.10,
-                "confused": 0.05,
-                "determined": 0.0,
-                "nostalgic": -0.05,
-                "proud": 0.10,
-                "neutral": 0.0,
-            }
+            # Utiliser la constante de classe au lieu de recréer le dict
+            yaw = EXPRESSIVE_MOVEMENTS.get(emotion, 0.0)
 
-            yaw = movements.get(emotion, 0.0)
-
-            if yaw != 0.0 and hasattr(self.robot_api, "goto_target"):
+            if yaw != 0.0:
                 self.robot_api.goto_target(
                     body_yaw=yaw,
-                    duration=0.6,
+                    duration=MOVEMENT_DURATION,
                     method="minjerk",
                 )
-                time.sleep(0.7)
+                # Utiliser sleep avec annulation pour cohérence
+                if self._sleep_with_cancel(MOVEMENT_WAIT):
+                    return
                 self.robot_api.goto_target(
                     body_yaw=0.0,
-                    duration=0.6,
+                    duration=MOVEMENT_DURATION,
                     method="minjerk",
                 )
 

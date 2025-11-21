@@ -1219,6 +1219,33 @@ class BBIAHuggingFace:
                     sentiment_dict,
                 )
 
+            # Vérification spéciale pour les salutations : garantir qu'une salutation
+            # génère toujours une réponse contenant un mot de salutation
+            user_message_lower = user_message.lower()
+            is_greeting = any(
+                word in user_message_lower
+                for word in ["bonjour", "salut", "hello", "hi", "hey", "coucou"]
+            )
+            if is_greeting:
+                response_lower = adapted_response.lower()
+                has_greeting_word = any(
+                    word in response_lower
+                    for word in ["bonjour", "salut", "hello", "hi", "hey", "coucou"]
+                )
+                if not has_greeting_word:
+                    # Le LLM n'a pas généré de salutation, utiliser le fallback enrichi
+                    logger.debug(
+                        "Réponse LLM sans mot de salutation détectée, "
+                        "utilisation du fallback enrichi pour salutation",
+                    )
+                    adapted_response = self._generate_simple_response(
+                        user_message, sentiment_dict
+                    )
+                    adapted_response = self._adapt_response_to_personality(
+                        adapted_response,
+                        sentiment_dict,
+                    )
+
             # 5. Sauvegarder automatiquement dans mémoire persistante (si disponible)
             try:
                 from .bbia_memory import save_conversation_to_memory

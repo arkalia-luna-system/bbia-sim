@@ -257,7 +257,7 @@ class ExerciseBehavior(BBIABehavior):
         ]
         import random
 
-        message = random.choice(messages)
+        message = random.choice(messages)  # nosec B311
         self._speak_with_movement(message, emotion="happy")
 
     def stop(self) -> None:

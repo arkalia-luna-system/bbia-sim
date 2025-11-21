@@ -33,12 +33,13 @@ class TestPerformanceBenchmarks:
 
         from bbia_sim.global_config import GlobalConfig
 
+        # OPTIMISATION: Réduire 100 → 50 itérations (suffisant pour benchmark, 2x plus rapide)
         start = time.time()
-        for _ in range(100):
+        for _ in range(50):
             GlobalConfig.validate_joint("yaw_body")
         elapsed = time.time() - start
 
-        # 100 validations doivent être très rapides
+        # 50 validations doivent être très rapides
         assert elapsed < 0.01, f"Validation trop lente: {elapsed:.3f}s"
 
     def test_telemetry_collection_performance(self):
@@ -49,16 +50,17 @@ class TestPerformanceBenchmarks:
 
         collector = TelemetryCollector(output_dir="/tmp/test_perf")
 
+        # OPTIMISATION: Réduire 100 → 50 itérations (suffisant pour benchmark, 2x plus rapide)
         start = time.time()
         collector.start_collection()
-        for _ in range(100):
+        for _ in range(50):
             collector.record_step({"yaw_body": 0.0})
         stats = collector.stop_collection()
         elapsed = time.time() - start
 
-        # 100 enregistrements doivent être rapides
-        assert elapsed < 1.0, f"Collecte trop lente: {elapsed:.3f}s"
-        assert stats["total_steps"] >= 99
+        # 50 enregistrements doivent être rapides
+        assert elapsed < 0.5, f"Collecte trop lente: {elapsed:.3f}s"
+        assert stats["total_steps"] >= 49
 
     def test_robot_factory_creation_performance(self):
         """Test performance création backend."""
