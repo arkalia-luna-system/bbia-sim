@@ -12,6 +12,7 @@ RUN apt-get update && apt-get install -y \
     portaudio19-dev \
     python3-dev \
     curl \
+    git \
     && rm -rf /var/lib/apt/lists/*
 
 # Créer répertoire de travail
@@ -20,17 +21,10 @@ WORKDIR /app
 # Copier fichiers de dépendances
 COPY pyproject.toml ./
 
-# Installer dépendances Python
+# Installer dépendances Python (dev)
 RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -e ".[test]" && \
+    pip install --no-cache-dir -e ".[dev,test]" && \
     pip install --no-cache-dir pytest-asyncio pytest-timeout
-
-# Copier le code source
-COPY src/ ./src/
-COPY examples/ ./examples/
-
-# Créer répertoires nécessaires
-RUN mkdir -p artifacts logs
 
 # Variables d'environnement
 ENV MUJOCO_GL=disable
@@ -41,5 +35,6 @@ ENV PYTHONPATH=/app/src
 # Exposer les ports
 EXPOSE 8000 8765
 
-# Commande par défaut
-CMD ["uvicorn", "src.bbia_sim.daemon.app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Commande par défaut (sera override par docker-compose)
+CMD ["uvicorn", "src.bbia_sim.daemon.app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+

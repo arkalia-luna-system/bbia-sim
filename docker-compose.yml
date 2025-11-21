@@ -1,39 +1,57 @@
-version: "3.8"
+version: "3.9"
 
 services:
   bbia-sim:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bbia-sim
     ports:
-      - "8000:8000"
-    environment:
-      - BBIA_TOKEN=bbia-secret-key-dev
-      - PYTHONPATH=/app
+      - "8000:8000" # API REST
+      - "8765:8765" # WebSocket
     volumes:
+      - ./src:/app/src
+      - ./examples:/app/examples
+      - ./artifacts:/app/artifacts
       - ./logs:/app/logs
-      - ./src/bbia_sim/sim/assets:/app/src/bbia_sim/sim/assets
-    command:
-      [
-        "python",
-        "-m",
-        "uvicorn",
-        "src.bbia_sim.daemon.app.main:app",
-        "--host",
-        "0.0.0.0",
-        "--port",
-        "8000",
-        "--reload",
-      ]
+    environment:
+      - MUJOCO_GL=disable
+      - DISPLAY=
+      - BBIA_DISABLE_AUDIO=1
+      - BBIA_TOKEN=${BBIA_TOKEN:-bbia-secret-key-dev}
+      - PYTHONPATH=/app/src
+    working_dir: /app
+    command: uvicorn src.bbia_sim.daemon.app.main:app --host 0.0.0.0 --port 8000
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
     restart: unless-stopped
 
-  # Service pour les tests
-  bbia-test:
-    build: .
-    environment:
-      - BBIA_TOKEN=bbia-secret-key-dev
-      - PYTHONPATH=/app
+  bbia-sim-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: bbia-sim-dev
+    ports:
+      - "8000:8000"
+      - "8765:8765"
     volumes:
-      - ./tests:/app/tests
-      - ./src:/app/src
-    command: ["python", "-m", "pytest", "tests/", "-v"]
-    depends_on:
-      - bbia-sim
+      - .:/app
+    environment:
+      - MUJOCO_GL=disable
+      - DISPLAY=
+      - BBIA_DISABLE_AUDIO=1
+      - BBIA_TOKEN=${BBIA_TOKEN:-bbia-secret-key-dev}
+      - PYTHONPATH=/app/src
+    working_dir: /app
+    command: uvicorn src.bbia_sim.daemon.app.main:app --host 0.0.0.0 --port 8000 --reload
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped

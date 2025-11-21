@@ -17,7 +17,7 @@
 python --version
 
 # Installation des dépendances
-pip install -r requirements.txt
+pip install -e .
 
 # Installation en mode développement
 pip install -e .
@@ -51,13 +51,13 @@ export MUJOCO_GL=egl
 
 ```bash
 # Démarrage API avec rechargement automatique
-python deployment/public_api.py --dev
+python -m bbia_sim.daemon.app --reload
 
 # Démarrage avec logs détaillés
-python deployment/public_api.py --dev --log-level debug
+uvicorn src.bbia_sim.daemon.app.main:app --reload --log-level debug
 
 # Démarrage sur port personnalisé
-python deployment/public_api.py --dev --port 3000
+uvicorn src.bbia_sim.daemon.app.main:app --reload --port 3000
 
 ```
 
@@ -65,10 +65,10 @@ python deployment/public_api.py --dev --port 3000
 
 ```bash
 # Démarrage production avec workers multiples
-python deployment/public_api.py --prod --workers 4
+uvicorn src.bbia_sim.daemon.app.main:app --host 0.0.0.0 --port 8000 --workers 4
 
 # Démarrage avec configuration personnalisée
-python deployment/public_api.py --prod --host 0.0.0.0 --port 8000 --workers 2
+uvicorn src.bbia_sim.daemon.app.main:app --host 0.0.0.0 --port 8000 --workers 2
 
 ```
 
@@ -94,10 +94,10 @@ docker run -p 8000:8000 -e BBIA_API_TOKEN=secret bbia-sim
 
 ```bash
 # Tests complets de l'API
-python deployment/public_api.py --check
+pytest tests/ -v
 
 # Tests avec logs détaillés
-python scripts/test_public_api.py --log-level debug
+pytest tests/ -v --log-level debug
 
 # Tests sur URL personnalisée
 python scripts/test_public_api.py --url http://localhost:3000
@@ -338,10 +338,10 @@ gunicorn bbia_sim.daemon.app.main:app -w 4 -k uvicorn.workers.UvicornWorker
 git pull origin main
 
 # Mise à jour des dépendances
-pip install -r requirements.txt --upgrade
+pip install -e . --upgrade
 
 # Redémarrage
-python deployment/public_api.py --prod
+uvicorn src.bbia_sim.daemon.app.main:app --host 0.0.0.0 --port 8000
 
 ```
 
