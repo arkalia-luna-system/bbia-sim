@@ -69,9 +69,7 @@ except (OSError, RuntimeError) as e:
         "Impossible de configurer variables d'environnement MediaPipe/TensorFlow: %s", e
     )
 except Exception as e:
-    logger.debug(
-        "Erreur inattendue configuration variables d'environnement: %s", e
-    )
+    logger.debug("Erreur inattendue configuration variables d'environnement: %s", e)
 
 # Import conditionnel pour YOLO et MediaPipe
 try:

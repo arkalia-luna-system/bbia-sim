@@ -233,7 +233,9 @@ class BBIAAdvancedWebSocketManager:
                 logger.exception("❌ Erreur initialisation robot forcée: %s", e)
                 await self.send_log_message("error", f"❌ Erreur robot: {e}")
             except Exception as e:
-                logger.exception("❌ Erreur inattendue initialisation robot forcée: %s", e)
+                logger.exception(
+                    "❌ Erreur inattendue initialisation robot forcée: %s", e
+                )
                 await self.send_log_message("error", f"❌ Erreur robot: {e}")
 
         # Vérifier que le robot est vraiment connecté

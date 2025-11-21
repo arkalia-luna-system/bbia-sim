@@ -435,7 +435,9 @@ class BBIAHuggingFace:
                 logger.warning("⚠️ Échec chargement SmolVLM2/Moondream2: %s", e)
                 return False
             except Exception as e:
-                logger.warning("⚠️ Erreur inattendue chargement SmolVLM2/Moondream2: %s", e)
+                logger.warning(
+                    "⚠️ Erreur inattendue chargement SmolVLM2/Moondream2: %s", e
+                )
                 return False
         return False
 
@@ -624,7 +626,9 @@ class BBIAHuggingFace:
                         """(stratégie règles v2)""",
                     )
                 except Exception as e:
-                    logger.warning("⚠️  Erreur inattendue chargement LLM %s: %s", model_name, e)
+                    logger.warning(
+                        "⚠️  Erreur inattendue chargement LLM %s: %s", model_name, e
+                    )
                     logger.info(
                         """💡 Fallback activé: réponses enrichies """
                         """(stratégie règles v2)""",
