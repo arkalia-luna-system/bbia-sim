@@ -308,7 +308,7 @@ def lire_audio(fichier: str, robot_api: Optional["RobotAPI"] = None) -> None:
                     info.samplerate,
                     DEFAULT_SAMPLE_RATE,
                 )
-        except (OSError, IOError, AttributeError, RuntimeError):
+        except (OSError, AttributeError, RuntimeError):
             # Ignorer toute erreur côté soundfile, fallback plus bas
             logger.debug("Impossible de lire métadonnées audio avec soundfile")
 

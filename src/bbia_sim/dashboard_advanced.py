@@ -164,12 +164,6 @@ class BBIAAdvancedWebSocketManager:
                                 "❌ RobotFactory.create_backend('%s') a retourné None",
                                 self.robot_backend,
                             )
-                except (ValueError, AttributeError, RuntimeError, ImportError) as e:
-                    logger.exception("❌ Erreur initialisation robot: %s", e)
-                    # En cas d'erreur, le dashboard fonctionne quand même en mode simulation
-                    logger.info(
-                        "ℹ️ Dashboard fonctionne en mode simulation (sans robot réel)"
-                    )
                 except (
                     ValueError,
                     AttributeError,
@@ -178,6 +172,7 @@ class BBIAAdvancedWebSocketManager:
                     OSError,
                 ) as e:
                     logger.exception("❌ Erreur initialisation robot: %s", e)
+                    # En cas d'erreur, le dashboard fonctionne quand même en mode simulation
                     logger.info(
                         "ℹ️ Dashboard fonctionne en mode simulation (sans robot réel)"
                     )

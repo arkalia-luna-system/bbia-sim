@@ -95,7 +95,7 @@ jobs:
       - name: Run unit tests
         run: |
           export PYTHONPATH=src:$PYTHONPATH
-          pytest -v -m "not e2e" --cov=src/bbia_sim --cov-report=xml --cov-report=term-missing --cov-fail-under=0 --timeout=300 --override-ini="addopts="
+          pytest -v -m "not e2e" --cov=src/bbia_sim --cov-report=xml --cov-report=term-missing --cov-fail-under=0 --timeout=300 --maxfail=10 --override-ini="addopts="
 
       - name: Golden tests (headless)
         run: pytest -q tests/test_golden_traces.py --maxfail=1 --disable-warnings

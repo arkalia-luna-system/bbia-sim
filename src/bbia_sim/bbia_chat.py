@@ -598,7 +598,7 @@ class BBIAChat:
 
             logger.debug("✅ Préférences sauvegardées: %s", self.preferences_file)
 
-        except (OSError, IOError, TypeError, ValueError) as e:
+        except (OSError, TypeError, ValueError) as e:
             logger.warning("⚠️ Erreur sauvegarde préférences: %s", e)
 
     def _load_preferences(self) -> None:
@@ -615,7 +615,7 @@ class BBIAChat:
                         self.user_preferences.update(loaded_prefs)
                 logger.debug("✅ Préférences chargées: %s", self.preferences_file)
 
-        except (OSError, IOError, json.JSONDecodeError, KeyError) as e:
+        except (OSError, json.JSONDecodeError, KeyError) as e:
             logger.debug(
                 "Préférences non chargées (normal si première utilisation): %s", e
             )

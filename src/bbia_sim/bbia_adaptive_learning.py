@@ -146,7 +146,7 @@ class BBIAAdaptiveLearning:
                     self.user_preferences = data.get("preferences", {})
                     self.context_patterns = data.get("patterns", {})
                     logger.info("Préférences chargées depuis fichier")
-        except (OSError, IOError, json.JSONDecodeError, KeyError) as e:
+        except (OSError, json.JSONDecodeError, KeyError) as e:
             logger.warning("Impossible de charger préférences: %s", e)
 
     def _save_preferences(self) -> None:
@@ -159,7 +159,7 @@ class BBIAAdaptiveLearning:
             with open(PREFERENCES_FILE, "w", encoding="utf-8") as f:
                 json.dump(data, f, indent=2)
             logger.info("Préférences sauvegardées")
-        except (OSError, IOError, TypeError) as e:
+        except (OSError, TypeError) as e:
             logger.warning("Impossible de sauvegarder préférences: %s", e)
 
     def get_preferences(self) -> dict[str, Any]:

@@ -68,8 +68,6 @@ except (OSError, RuntimeError, ValueError, TypeError) as e:
     logger.debug(
         "Impossible de configurer variables d'environnement MediaPipe/TensorFlow: %s", e
     )
-except (ValueError, TypeError, OSError) as e:
-    logger.debug("Erreur configuration variables d'environnement: %s", e)
 except Exception as e:
     logger.debug("Erreur inattendue configuration variables d'environnement: %s", e)
 
@@ -205,8 +203,6 @@ class BBIAVision:
                             logger.info("✅ Caméra SDK disponible: robot.media.camera")
             except (AttributeError, RuntimeError, OSError) as e:
                 logger.debug("Caméra SDK non disponible (fallback simulation): %s", e)
-            except (AttributeError, RuntimeError, OSError) as e:
-                logger.debug("Erreur caméra SDK: %s", e)
             except Exception as e:
                 logger.debug("Erreur inattendue caméra SDK: %s", e)
 
@@ -263,19 +259,11 @@ class BBIAVision:
                             "Erreur lors de la libération de la webcam OpenCV: %s",
                             release_error,
                         )
-                    except (OSError, RuntimeError) as release_error:
-                        logger.debug(
-                            "Erreur libération webcam OpenCV: %s",
-                            release_error,
-                        )
                     except Exception as release_error:
                         logger.debug(
                             "Erreur inattendue libération webcam OpenCV: %s",
                             release_error,
                         )
-                self._opencv_camera = None
-                logger.debug("Erreur initialisation webcam OpenCV: %s", e)
-            except (OSError, RuntimeError, AttributeError) as e:
                 self._opencv_camera = None
                 logger.debug("Erreur initialisation webcam OpenCV: %s", e)
             except Exception as e:
@@ -309,8 +297,6 @@ class BBIAVision:
                     )
             except (ImportError, RuntimeError, AttributeError) as e:
                 logger.warning("⚠️ YOLO non disponible: %s", e)
-            except (ImportError, RuntimeError, AttributeError) as e:
-                logger.warning("⚠️ Erreur YOLO: %s", e)
             except Exception as e:
                 logger.warning("⚠️ Erreur inattendue YOLO: %s", e)
         else:
@@ -358,8 +344,6 @@ class BBIAVision:
                     logger.debug("✅ Détecteur MediaPipe Face initialisé")
             except (ImportError, RuntimeError, AttributeError) as e:
                 logger.warning("⚠️ MediaPipe non disponible: %s", e)
-            except (ImportError, RuntimeError, AttributeError) as e:
-                logger.warning("⚠️ MediaPipe non disponible: %s", e)
             except Exception as e:
                 logger.warning("⚠️ MediaPipe non disponible (erreur inattendue): %s", e)
 
@@ -394,8 +378,6 @@ class BBIAVision:
                         f"✅ MediaPipe Pose initialisé "
                         f"(complexité: {model_complexity})",
                     )
-            except (ImportError, RuntimeError, AttributeError) as e:
-                logger.warning("⚠️ MediaPipe Pose non disponible: %s", e)
             except (ImportError, RuntimeError, AttributeError) as e:
                 logger.warning("⚠️ MediaPipe Pose non disponible: %s", e)
             except Exception as e:
@@ -470,9 +452,6 @@ class BBIAVision:
                     else:
                         logger.warning("Format d'image non supporté par SDK camera")
                         return None
-                except (ValueError, TypeError, AttributeError) as e:
-                    logger.debug("Erreur conversion image: %s", e)
-                    return None
                 except (ValueError, TypeError, AttributeError) as e:
                     logger.debug("Erreur conversion image: %s", e)
                     return None
@@ -573,8 +552,6 @@ class BBIAVision:
 
         except (AttributeError, RuntimeError, OSError) as e:
             logger.debug("Erreur capture caméra SDK: %s", e)
-        except (AttributeError, RuntimeError, OSError) as e:
-            logger.debug("Erreur capture caméra SDK: %s", e)
         except Exception as e:
             logger.debug(
                 "Erreur inattendue capture caméra SDK (fallback simulation): %s", e
@@ -644,9 +621,6 @@ class BBIAVision:
         except (OSError, RuntimeError, AttributeError) as e:
             logger.debug("Erreur capture webcam OpenCV: %s", e)
             return None
-        except (OSError, RuntimeError, AttributeError) as e:
-            logger.debug("Erreur capture webcam OpenCV: %s", e)
-            return None
         except Exception as e:
             logger.debug("Erreur inattendue capture webcam OpenCV: %s", e)
             return None
@@ -703,8 +677,6 @@ class BBIAVision:
                         },
                     }
                     objects.append(obj)
-            except (AttributeError, RuntimeError, ValueError) as e:
-                logger.warning("Erreur détection YOLO: %s", e)
             except (AttributeError, RuntimeError, ValueError) as e:
                 logger.warning("Erreur détection YOLO: %s", e)
             except Exception as e:
@@ -772,12 +744,6 @@ class BBIAVision:
                                 AttributeError,
                             ) as deepface_error:
                                 logger.debug("DeepFace erreur: %s", deepface_error)
-                            except (
-                                ValueError,
-                                RuntimeError,
-                                AttributeError,
-                            ) as deepface_error:
-                                logger.debug("DeepFace erreur: %s", deepface_error)
                             except Exception as deepface_error:
                                 logger.debug(
                                     "DeepFace erreur inattendue: %s", deepface_error
@@ -815,8 +781,6 @@ class BBIAVision:
                         faces.append(face)
             except (AttributeError, RuntimeError, ValueError) as e:
                 logger.warning("Erreur détection MediaPipe: %s", e)
-            except (AttributeError, RuntimeError, ValueError) as e:
-                logger.warning("Erreur détection MediaPipe: %s", e)
             except Exception as e:
                 logger.warning("Erreur inattendue détection MediaPipe: %s", e)
 
@@ -832,8 +796,6 @@ class BBIAVision:
                             "posture": pose_result["posture"],
                         },
                     )
-            except (AttributeError, RuntimeError, ValueError) as e:
-                logger.debug("Erreur détection pose: %s", e)
             except (AttributeError, RuntimeError, ValueError) as e:
                 logger.debug("Erreur détection pose: %s", e)
             except Exception as e:
@@ -986,8 +948,6 @@ class BBIAVision:
                         objects.append(obj)
                 except (AttributeError, RuntimeError, ValueError) as e:
                     logger.warning("Erreur détection YOLO: %s", e)
-                except (AttributeError, RuntimeError, ValueError) as e:
-                    logger.warning("Erreur détection YOLO: %s", e)
                 except Exception as e:
                     logger.warning("Erreur inattendue détection YOLO: %s", e)
 
@@ -1082,24 +1042,6 @@ class BBIAVision:
                                         "DeepFace erreur (fallback): %s",
                                         deepface_error,
                                     )
-                                except (
-                                    ValueError,
-                                    RuntimeError,
-                                    AttributeError,
-                                ) as deepface_error:
-                                    logger.debug(
-                                        "DeepFace erreur (fallback): %s",
-                                        deepface_error,
-                                    )
-                                except (
-                                    ValueError,
-                                    RuntimeError,
-                                    AttributeError,
-                                ) as deepface_error:
-                                    logger.debug(
-                                        "DeepFace erreur (fallback): %s",
-                                        deepface_error,
-                                    )
                                 except Exception as deepface_error:
                                     logger.debug(
                                         "DeepFace erreur inattendue (fallback): %s",
@@ -1138,8 +1080,6 @@ class BBIAVision:
                             faces.append(face)
                 except (AttributeError, RuntimeError, ValueError) as e:
                     logger.warning("Erreur détection MediaPipe: %s", e)
-                except (AttributeError, RuntimeError, ValueError) as e:
-                    logger.warning("Erreur détection MediaPipe: %s", e)
                 except Exception as e:
                     logger.warning("Erreur inattendue détection MediaPipe: %s", e)
 
@@ -1160,8 +1100,6 @@ class BBIAVision:
                             f"🧍 Posture détectée: {pose_result['posture']}, "
                             f"gestes: {pose_result['gestures']}",
                         )
-                except (AttributeError, RuntimeError, ValueError) as e:
-                    logger.debug("Erreur détection pose: %s", e)
                 except (AttributeError, RuntimeError, ValueError) as e:
                     logger.debug("Erreur détection pose: %s", e)
                 except Exception as e:
@@ -1358,9 +1296,6 @@ class BBIAVision:
                         self._scan_queue.put_nowait(result)
                 # Attendre intervalle avant prochain scan
                 self._should_stop_scan.wait(self._scan_interval)
-            except (RuntimeError, AttributeError, OSError) as e:
-                logger.exception("Erreur thread scan asynchrone: %s", e)
-                time.sleep(self._scan_interval)
             except (RuntimeError, AttributeError, OSError) as e:
                 logger.exception("Erreur thread scan asynchrone: %s", e)
                 time.sleep(self._scan_interval)

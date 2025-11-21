@@ -98,11 +98,16 @@ def _create_cached_head_pose(
         )
         # Retourner une copie pour éviter modification du cache
         return pose.copy() if hasattr(pose, "copy") else pose
-    except (ValueError, RuntimeError, AttributeError, TypeError, OSError) as e:
+    except (
+        ValueError,
+        RuntimeError,
+        AttributeError,
+        TypeError,
+        OSError,
+        KeyError,
+        IndexError,
+    ) as e:
         logger.debug("Erreur création pose cache: %s, fallback identité", e)
-        return np.eye(4, dtype=np.float64)
-    except (KeyError, IndexError, TypeError) as e:
-        logger.debug("Erreur inattendue création pose cache: %s, fallback identité", e)
         return np.eye(4, dtype=np.float64)
 
 
@@ -260,29 +265,18 @@ class ReachyMiniBackend(RobotAPI):
                 self._start_watchdog()
             logger.info("✅ Connecté au robot Reachy-Mini officiel")
             return True
-        except (OSError, TimeoutError, ConnectionError) as e:
-            logger.info(
-                "⏱️  Pas de robot physique détecté (timeout/connexion) - "
-                "mode simulation activé: %s",
-                e,
-            )
-            self._activate_simulation_mode()
-            if not self.use_sim:
-                self._start_watchdog()
-            return False
-        except (ValueError, AttributeError, RuntimeError, ImportError) as e:
+        except (
+            OSError,
+            TimeoutError,
+            ConnectionError,
+            ValueError,
+            AttributeError,
+            RuntimeError,
+            ImportError,
+        ) as e:
             error_msg = str(e)
             logger.warning(
                 "⚠️  Erreur connexion Reachy-Mini (mode simulation activé): %s",
-                error_msg,
-            )
-            self._activate_simulation_mode()
-            self._start_watchdog()
-            return False
-        except (RuntimeError, OSError, AttributeError) as e:
-            error_msg = str(e)
-            logger.warning(
-                "⚠️  Connexion robot échouée inattendue (fallback simulation): %s",
                 error_msg,
             )
             self._activate_simulation_mode()
@@ -955,10 +949,15 @@ class ReachyMiniBackend(RobotAPI):
                             logger.debug(
                                 f"Format IMU non standard: {type(imu_raw)}",
                             )
-                except (AttributeError, RuntimeError, OSError, ValueError) as imu_err:
+                except (
+                    AttributeError,
+                    RuntimeError,
+                    OSError,
+                    ValueError,
+                    TypeError,
+                    KeyError,
+                ) as imu_err:
                     logger.debug("IMU non disponible: %s", imu_err)
-                except (ValueError, TypeError, KeyError) as imu_err:
-                    logger.debug("Erreur inattendue IMU: %s", imu_err)
 
             telemetry = {
                 "step_count": self.step_count,
