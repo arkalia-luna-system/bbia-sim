@@ -57,7 +57,7 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Standardisation environnement: Python 3.11+ requis, CI GitHub Actions mise à jour (`setup-python@v5`).
 - Documentation mise à jour : `NOUVEAUTES_REACHY_NOVEMBRE_2024.md`, `TACHES_RESTANTES_CONSOLIDEES.md`, `AUDIT_COMPLET_REALISTE_DEC2025.md`
 
-## [1.3.2] - Oct / Nov. 2025
+## [1.3.2] - 21 novembre 2025
 
 ### 🎯 Alignement et release stable
 

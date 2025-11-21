@@ -667,7 +667,7 @@ class ZenohBridge:
 
 
 # FastAPI App pour l'intégration
-app = FastAPI(title="BBIA-SIM Zenoh Bridge", version="1.3.0")
+app = FastAPI(title="BBIA-SIM Zenoh Bridge", version="1.3.2")
 
 # Instance globale du bridge
 bridge: ZenohBridge | None = None

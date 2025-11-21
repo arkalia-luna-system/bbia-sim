@@ -1,6 +1,6 @@
 # ❓ FAQ Troubleshooting - Guide Complet
 
-**Date** : Oct / Nov. 2025  
+**Date** : 21 novembre 2025  
 **Compatibilité Python** : 3.11+
 
 > **Voir aussi** : [`docs/reference/INDEX_THEMATIQUE.md`](../reference/INDEX_THEMATIQUE.md) et [`docs/reference/project-status.md`](../reference/project-status.md) (État par axe)
@@ -279,7 +279,7 @@ ROBOT_TIMEOUT = 5.0  # Secondes
 
 ### Authentification WebSocket
 
-**Nouvelle fonctionnalité** (Oct / Nov. 2025) : Auth WebSocket via query params
+**Nouvelle fonctionnalité** (21 novembre 2025) : Auth WebSocket via query params
 
 **En production** :
 
@@ -305,7 +305,7 @@ BBIA_API_TOKEN=your-secret-token
 
 ### Buffer Circulaire Camera Frames
 
-**Nouvelle fonctionnalité** (Oct / Nov. 2025) : Buffer circulaire pour éviter perte de frames
+**Nouvelle fonctionnalité** (21 novembre 2025) : Buffer circulaire pour éviter perte de frames
 
 **Problème résolu** : "Circular buffer overrun" dans SDK officiel
 
@@ -326,7 +326,7 @@ latest_frame = vision.get_latest_frame()  # Récupère frame la plus récente
 
 ### Endpoint Discover Datasets
 
-**Nouvelle fonctionnalité** (Oct / Nov. 2025) : Découverte des datasets Hugging Face Hub
+**Nouvelle fonctionnalité** (21 novembre 2025) : Découverte des datasets Hugging Face Hub
 
 **Utilisation** :
 
@@ -339,7 +339,7 @@ curl http://localhost:8000/development/api/move/recorded-move-datasets/discover
 
 ### Métriques Performance et Health Checks
 
-**Nouveaux endpoints** (Oct / Nov. 2025) :
+**Nouveaux endpoints** (21 novembre 2025) :
 
 #### Health Checks
 
@@ -411,7 +411,7 @@ python scripts/bbia_doctor.py
 
 ---
 
-**Dernière mise à jour** : Oct / Nov. 2025
+**Dernière mise à jour** : 21 novembre 2025
 
 ---
 

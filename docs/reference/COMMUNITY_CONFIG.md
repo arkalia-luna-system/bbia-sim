@@ -4,7 +4,7 @@
 >
 > Voir `docs/reference/project-status.md` → "Communauté" pour les templates d’issues/discussions, roadmap publique et "good first issues".
 
-**Version** : 1.2.0 "Écosystème Ouvert"
+**Version** : 1.3.2 "Écosystème Ouvert"
 **Date** : Oct / Nov. 2025
 **Public** : Communauté Technique
 

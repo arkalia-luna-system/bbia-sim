@@ -3,7 +3,7 @@
 > **⚠️ ATTENTION : Ce guide est destiné aux ASSISTANTS IA, pas aux utilisateurs !**  
 > **👤 Si vous êtes un utilisateur, commencez par :** [Guide de Démarrage](../guides/GUIDE_DEMARRAGE.md)
 
-> **Date de mise à jour :** Oct / Nov. 2025  
+> **Date de mise à jour :** 21 novembre 2025  
 > **Version :** 1.0
 
 ## 📋 Vue d'ensemble
@@ -125,7 +125,7 @@ pytest tests/ --cov=src/bbia_sim --cov-report=html
 
 ### Dates standardisées
 
-- **Date de mise à jour :** Toujours utiliser `Oct / Nov. 2025`
+- **Date de mise à jour :** Toujours utiliser `21 novembre 2025`
 - **Date de création :** Date du premier commit Git (immutable)
 
 ### Formatage Markdown
@@ -326,7 +326,7 @@ docs/
 
 ---
 
-**Dernière mise à jour :** Oct / Nov. 2025
+**Dernière mise à jour :** 21 novembre 2025
 
 ## 🎯 Navigation
 

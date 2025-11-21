@@ -123,7 +123,7 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
 app = FastAPI(
     title="BBIA-SIM API - Écosystème Reachy Mini",
     description="""
-    ## 🚀 API BBIA-SIM v1.2.0 - Écosystème Reachy Mini
+    ## 🚀 API BBIA-SIM v1.3.2 - Écosystème Reachy Mini
 
     **API publique pour le contrôle du robot Reachy Mini avec modules BBIA (Bio-Inspired Artificial Intelligence)**
 

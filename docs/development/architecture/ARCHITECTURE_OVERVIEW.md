@@ -1,6 +1,6 @@
 # 🏗️ BBIA-SIM v1.3.2 - Architecture Overview
 
-**Date** : Oct / Nov. 2025  
+**Date** : 21 novembre 2025  
 **Version** : 1.3.2
 
 > **Liens utiles** : [`docs/reference/INDEX_THEMATIQUE.md`](../reference/INDEX_THEMATIQUE.md) · [`docs/reference/project-status.md`](../reference/project-status.md)

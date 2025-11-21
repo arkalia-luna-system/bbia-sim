@@ -1,6 +1,6 @@
 # 📘 Guide d'Intégration BBIA-SIM - Phase 3
 
-**Date** : Oct / Nov. 2025  
+**Date** : 21 novembre 2025  
 **Version** : 1.3.2
 
 > **Compatibilité Python et CI** :
@@ -955,7 +955,7 @@ Vous avez intégré BBIA-SIM dans votre projet. Bienvenue dans l'écosystème BB
 
 ---
 
-**Dernière mise à jour** : Oct / Nov. 2025
+**Dernière mise à jour** : 21 novembre 2025
 
 ---
 
