@@ -323,7 +323,7 @@ gunicorn bbia_sim.daemon.app.main:app -w 4 -k uvicorn.workers.UvicornWorker
 
 ```bash
 # Mise à jour du code
-git pull origin main
+git pull origin develop
 
 # Mise à jour des dépendances
 pip install -e . --upgrade

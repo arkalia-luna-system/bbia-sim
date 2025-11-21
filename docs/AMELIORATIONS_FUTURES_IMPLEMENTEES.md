@@ -25,7 +25,7 @@
 **Documentation** :
 - ✅ Section ajoutée dans `README.md`
 - ✅ Section ajoutée dans `docs/guides/GUIDE_DEMARRAGE.md`
-- ✅ Liens dans `docs/reference/PROJECTS.md`
+- ✅ Liens dans `README.md` et `docs/reference/`
 
 **Utilisation** :
 ```bash
@@ -124,7 +124,7 @@ curl http://localhost:8000/api/health
    - ✅ Liens vers nouvelles ressources
    - ✅ Métriques mises à jour (1,743 tests, 21 comportements, 47 tests conformité)
 
-2. **docs/reference/PROJECTS.md**
+2. **README.md** et **docs/reference/**
    - ✅ Métriques mises à jour
    - ✅ Liens vers Docker, README_EN, guides vidéos et communauté
 
@@ -217,7 +217,7 @@ curl http://localhost:8000/api/health
 
 ### Documentation
 - [x] README.md mis à jour
-- [x] PROJECTS.md mis à jour
+- [x] README.md mis à jour (liens PROJECTS.md supprimés)
 - [x] GUIDE_DEMARRAGE.md mis à jour
 - [x] VERIFICATION_ANALYSE_COMPLETE_DEC2025.md mis à jour
 
