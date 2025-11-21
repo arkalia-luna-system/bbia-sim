@@ -266,8 +266,8 @@ def enregistrer_audio(
             wf.writeframes(audio.tobytes())
         logging.info("Enregistrement terminé.")
         return True
-    except Exception as e:
-        logging.exception(f"Erreur d'enregistrement audio : {e}")
+    except Exception:
+        logging.exception("Erreur d'enregistrement audio")
         raise
 
 

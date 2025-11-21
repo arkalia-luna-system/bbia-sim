@@ -177,11 +177,11 @@ def run_simulation(args: argparse.Namespace) -> None:
         # Lancement de la simulation
         simulator.launch_simulation(headless=args.headless, duration=args.duration)
 
-    except FileNotFoundError as e:
-        logger.exception("Fichier non trouvé : %s", e)
+    except FileNotFoundError:
+        logger.exception("Fichier non trouvé")
         sys.exit(1)
-    except (ValueError, RuntimeError, OSError) as e:
-        logger.exception("Erreur lors du lancement de la simulation : %s", e)
+    except (ValueError, RuntimeError, OSError):
+        logger.exception("Erreur lors du lancement de la simulation")
         sys.exit(1)
 
 
@@ -193,8 +193,8 @@ def run_awake_sequence() -> None:
         from bbia_sim.bbia_awake import start_bbia_sim
 
         start_bbia_sim()
-    except ImportError as e:
-        logger.exception("Impossible d'importer le module de réveil : %s", e)
+    except ImportError:
+        logger.exception("Impossible d'importer le module de réveil")
         sys.exit(1)
 
 
@@ -212,8 +212,8 @@ def run_voice_synthesis(text: str) -> None:
         from bbia_sim.bbia_voice import dire_texte
 
         dire_texte(text)
-    except ImportError as e:
-        logger.exception("Impossible d'importer le module vocal : %s", e)
+    except ImportError:
+        logger.exception("Impossible d'importer le module vocal")
         sys.exit(1)
 
 
@@ -226,17 +226,17 @@ def run_voice_recognition() -> None:
 
         text = reconnaitre_parole(duree=5)
         logger.info("Texte reconnu : %s", text)
-    except ImportError as e:
-        logger.exception("Impossible d'importer le module vocal : %s", e)
+    except ImportError:
+        logger.exception("Impossible d'importer le module vocal")
         sys.exit(1)
 
 
 def run_doctor() -> None:
     """Lance le diagnostic de l'environnement BBIA-SIM."""
     logger.info("🔍 Diagnostic de l'environnement BBIA-SIM...")
-    logger.info("\n" + "=" * 60)
+    logger.info("\n%s", "=" * 60)
     logger.info("🔍 DIAGNOSTIC BBIA-SIM")
-    logger.info("=" * 60 + "\n")
+    logger.info("%s\n", "=" * 60)
 
     checks = {}
     all_ok = True
@@ -319,12 +319,12 @@ def run_doctor() -> None:
         if "required" in check_info:
             logger.info("   Requis: %s", check_info["required"])
 
-    logger.info("\n" + "=" * 60)
+    logger.info("\n%s", "=" * 60)
     if all_ok:
         logger.info("✅ Tous les checks sont OK !")
     else:
         logger.info("⚠️  Certains checks ont échoué")
-    logger.info("=" * 60 + "\n")
+    logger.info("%s\n", "=" * 60)
 
 
 if __name__ == "__main__":

@@ -104,10 +104,8 @@ class FollowObjectBehavior(BBIABehavior):
         duration = context.get("duration", 30.0)  # 30 secondes par défaut
         target_object_name = context.get("target_object")  # Objet spécifique à suivre
 
-        logger.info(
-            f"Démarrage suivi objet pour {duration}s"
-            + (f" (cible: {target_object_name})" if target_object_name else ""),
-        )
+        target_info = f" (cible: {target_object_name})" if target_object_name else ""
+        logger.info("Démarrage suivi objet pour %ss%s", duration, target_info)
 
         self.is_tracking = True
         start_time = time.time()

@@ -9,7 +9,6 @@ import numpy as np
 
 from bbia_sim.bbia_behavior import BBIABehaviorManager
 from bbia_sim.behaviors import (
-    AntennaAnimationBehavior,
     ConversationBehavior,
     DanceBehavior,
     EmotionShowBehavior,
@@ -17,9 +16,13 @@ from bbia_sim.behaviors import (
     FollowFaceBehavior,
     FollowObjectBehavior,
     GameBehavior,
+    MeditationBehavior,
+)
+from bbia_sim.bbia_behavior import (
+    AntennaAnimationBehavior,
     GreetingBehavior,
     HideBehavior,
-    MeditationBehavior,
+    EmotionalResponseBehavior,
 )
 from bbia_sim.daemon.app.backend_adapter import BackendAdapter
 from bbia_sim.backends.mujoco_backend import MuJoCoBackend
@@ -43,7 +46,11 @@ from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager
 from bbia_sim.dashboard import BBIAWebSocketManager
 from bbia_sim.backends.reachy_mini_backend import SimpleMove
 from bbia_sim.backends.reachy_backend import ReachyBackend
-from bbia_sim.vision_yolo import FaceDetector
+try:
+    from bbia_sim.vision_yolo import FaceDetector
+from bbia_sim.daemon.ws import ConnectionManager
+except ImportError:
+    FaceDetector = None  # type: ignore[assignment, misc]
 
 
 class TestBBIABehaviorManagerAllMethods:
@@ -466,6 +473,11 @@ class TestOtherClasses:
             assert detector is not None
         except Exception:
             pytest.skip("FaceDetector non disponible")
+
+    def test_connection_manager_init(self) -> None:
+        """Test ConnectionManager.__init__."""
+        manager = ConnectionManager()
+        assert manager is not None
 
     def test_mujoco_backend_async_play_move(self) -> None:
         """Test MuJoCoBackend.async_play_move."""
