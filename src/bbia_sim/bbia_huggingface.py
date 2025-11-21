@@ -162,7 +162,9 @@ class BBIAHuggingFace:
         # simultanément (LRU cache)
         self._max_models_in_memory = 4  # Max 3-4 modèles simultanés
         self._model_last_used: dict[str, float] = {}  # Timestamp dernier usage pour LRU
-        self._inactivity_timeout = 300.0  # 5 minutes d'inactivité → déchargement auto
+        self._inactivity_timeout = (
+            120.0  # 2 minutes d'inactivité → déchargement auto (optimisé)
+        )
 
         # OPTIMISATION RAM: Thread pour déchargement automatique après inactivité
         import threading
@@ -254,28 +256,13 @@ class BBIAHuggingFace:
         self.chat_tokenizer: Any | None = None
         self.use_llm_chat = False  # Activation optionnelle (lourd)
 
-        # Intégration BBIAChat (LLM conversationnel léger)
+        # OPTIMISATION RAM: Lazy loading strict BBIAChat - ne pas charger à l'init
+        # BBIAChat sera chargé uniquement au premier appel de chat()
+        # Gain RAM estimé: ~500MB-1GB au démarrage
         self.bbia_chat: Any | None = None
-        try:
-            from .bbia_chat import BBIAChat
-
-            # Récupérer robot_api depuis tools si disponible
-            robot_api = None
-            if tools and hasattr(tools, "robot_api"):
-                robot_api = tools.robot_api
-
-            # Initialiser BBIAChat avec robot_api
-            self.bbia_chat = BBIAChat(robot_api=robot_api)
-            logger.info("✅ BBIAChat (LLM conversationnel) initialisé")
-        except ImportError as e:
-            logger.debug(f"BBIAChat non disponible: {e}")
-            self.bbia_chat = None
-        except (AttributeError, RuntimeError) as e:
-            logger.warning(f"Erreur initialisation BBIAChat: {e}")
-            self.bbia_chat = None
-        except Exception as e:
-            logger.warning(f"Erreur inattendue initialisation BBIAChat: {e}")
-            self.bbia_chat = None
+        self._bbia_chat_robot_api = None  # Stocker robot_api pour lazy loading
+        if tools and hasattr(tools, "robot_api"):
+            self._bbia_chat_robot_api = tools.robot_api
 
         logger.info(f"🤗 BBIA Hugging Face initialisé (device: {self.device})")
         logger.info(f"😊 Personnalité BBIA: {self.bbia_personality}")
@@ -289,6 +276,33 @@ class BBIAHuggingFace:
                 return "mps"  # Apple Silicon
             return "cpu"
         return device
+
+    def _load_bbia_chat_lazy(self) -> None:
+        """OPTIMISATION RAM: Charge BBIAChat uniquement à la demande (lazy loading strict).
+
+        Gain RAM estimé: ~500MB-1GB au démarrage.
+        BBIAChat n'est chargé que lors du premier appel à chat().
+        """
+        if self.bbia_chat is not None:
+            return  # Déjà chargé
+
+        try:
+            from .bbia_chat import BBIAChat
+
+            # Initialiser BBIAChat avec robot_api stocké
+            self.bbia_chat = BBIAChat(robot_api=self._bbia_chat_robot_api)
+            logger.info(
+                "✅ BBIAChat (LLM conversationnel) chargé à la demande (lazy loading)"
+            )
+        except ImportError as e:
+            logger.debug(f"BBIAChat non disponible: {e}")
+            self.bbia_chat = None
+        except (AttributeError, RuntimeError) as e:
+            logger.warning(f"Erreur initialisation BBIAChat: {e}")
+            self.bbia_chat = None
+        except Exception as e:
+            logger.warning(f"Erreur inattendue initialisation BBIAChat: {e}")
+            self.bbia_chat = None
 
     def _load_vision_model(self, model_name: str) -> bool:
         """Charge un modèle de vision (CLIP ou BLIP)."""
@@ -1237,6 +1251,9 @@ class BBIAHuggingFace:
             }
 
             # PRIORITÉ 1: Utiliser BBIAChat (LLM léger Phi-2/TinyLlama) si disponible
+            # OPTIMISATION RAM: Lazy loading strict - charger BBIAChat uniquement si nécessaire
+            if self.bbia_chat is None:
+                self._load_bbia_chat_lazy()
             if self.bbia_chat and self.bbia_chat.llm_model:
                 logger.debug("Utilisation BBIAChat (LLM conversationnel léger)")
                 bbia_response = self.bbia_chat.chat(user_message)
