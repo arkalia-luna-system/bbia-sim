@@ -277,8 +277,8 @@ class ReachyMiniBackend(RobotAPI):
                 )
             else:
                 logger.warning(
-                    f"⚠️  Erreur connexion Reachy-Mini "
-                    f"(mode simulation activé): {error_msg}",
+                    "⚠️  Erreur connexion Reachy-Mini (mode simulation activé): %s",
+                    error_msg,
                 )
             self._activate_simulation_mode()
             self._start_watchdog()

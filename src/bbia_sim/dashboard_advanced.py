@@ -184,7 +184,8 @@ class BBIAAdvancedWebSocketManager:
         # OPTIMISATION RAM: Enregistrer timestamp activité connexion
         self._connection_last_activity[websocket] = time.time()
         logger.info(
-            f"🔌 WebSocket avancé connecté ({len(self.active_connections)} connexions)",
+            "🔌 WebSocket avancé connecté (%d connexions)",
+            len(self.active_connections),
         )
 
         # Démarrer la collecte de métriques si c'est la première connexion
@@ -224,9 +225,7 @@ class BBIAAdvancedWebSocketManager:
                         "error", f"❌ Impossible de créer le robot {self.robot_backend}"
                     )
             except Exception as e:
-                logger.error(
-                    f"❌ Erreur initialisation robot forcée: {e}", exc_info=True
-                )
+                logger.exception("❌ Erreur initialisation robot forcée: %s", e)
                 await self.send_log_message("error", f"❌ Erreur robot: {e}")
 
         # Vérifier que le robot est vraiment connecté
@@ -3284,8 +3283,10 @@ if FASTAPI_AVAILABLE:
 
                         if frame_count % 30 == 0:
                             logger.debug(
-                                f"Stream vidéo: {frame_count} frames, "
-                                f"qualité={jpeg_quality}, FPS={target_fps:.1f}"
+                                "Stream vidéo: %d frames, qualité=%s, FPS=%.1f",
+                                frame_count,
+                                jpeg_quality,
+                                target_fps,
                             )
 
                     except asyncio.CancelledError:

@@ -74,7 +74,7 @@ def _get_cached_voice_id() -> str:
     if _bbia_voice_id_cache is None:
         engine = _get_pyttsx3_engine()
         _bbia_voice_id_cache = get_bbia_voice(engine)
-        logging.debug(f"✅ Voice ID mis en cache: {_bbia_voice_id_cache}")
+        logging.debug("✅ Voice ID mis en cache: %s", _bbia_voice_id_cache)
     return _bbia_voice_id_cache
 
 
@@ -226,7 +226,7 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
     """
     # Vérifier flag d'environnement pour désactiver audio (CI/headless)
     if os.environ.get("BBIA_DISABLE_AUDIO", "0") == "1":
-        logging.debug(f"Audio désactivé (BBIA_DISABLE_AUDIO=1): '{texte}' ignoré")
+        logging.debug("Audio désactivé (BBIA_DISABLE_AUDIO=1): '%s' ignoré", texte)
         return
 
     # Si un backend TTS est explicitement demandé (BBIA_TTS_BACKEND),
@@ -326,7 +326,7 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
                             media.play_audio(sdk_audio_bytes)
                         return
                     except Exception as e:
-                        logging.debug(f"media.play_audio a échoué: {e}")
+                        logging.debug("media.play_audio a échoué: %s", e)
 
                 # Priorité 2: media.speaker.play_file/ play(bytes)
                 speaker = getattr(media, "speaker", None)
@@ -336,7 +336,7 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
                             speaker.play(sdk_audio_bytes)
                             return
                     except Exception as e:
-                        logging.debug(f"speaker.play a échoué: {e}")
+                        logging.debug("speaker.play a échoué: %s", e)
                     try:
                         # Créer un fichier temporaire si play_file est préféré
                         import tempfile as _tempfile
@@ -364,12 +364,12 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
                             )
 
             except Exception as e:
-                logging.debug(f"Erreur synthèse SDK (fallback pyttsx3): {e}")
+                logging.debug("Erreur synthèse SDK (fallback pyttsx3): %s", e)
                 # Fallback pyttsx3
 
     # Fallback: pyttsx3 (compatibilité)
     try:
-        logging.info(f"Synthèse vocale : {texte}")
+        logging.info("Synthèse vocale : %s", texte)
         # ⚡ OPTIMISATION PERFORMANCE: Utiliser moteur en cache (évite 0.8s d'init)
         engine = _get_pyttsx3_engine()
         voice_id = _get_cached_voice_id()
@@ -380,7 +380,7 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
         engine.say(texte)
         engine.runAndWait()
     except Exception as e:
-        logging.exception(f"Erreur de synthèse vocale : {e}")
+        logging.exception("Erreur de synthèse vocale : %s", e)
         raise
 
 
@@ -410,7 +410,8 @@ def reconnaitre_parole(
             # Bénéfice: 4 microphones directionnels avec annulation de bruit automatique
             if hasattr(robot_api.media, "record_audio"):
                 logging.info(
-                    f"🎤 Enregistrement via SDK (4 microphones) ({duree}s) "
+                    "🎤 Enregistrement via SDK (4 microphones) (%ds) ",
+                    duree,
                     f"pour reconnaissance...",
                 )
                 audio_data = robot_api.media.record_audio(
@@ -452,12 +453,13 @@ def reconnaitre_parole(
                 with sr.AudioFile(audio_io) as source:
                     audio = r.record(source)
                     texte = r.recognize_google(audio, language="fr-FR")
-                    logging.info(f"✅ Texte reconnu (SDK 4 microphones) : {texte}")
+                    logging.info("✅ Texte reconnu (SDK 4 microphones) : %s", texte)
                     return str(texte)
         except Exception as e:
-            logging.debug(
-                f"Erreur reconnaissance SDK (fallback speech_recognition): {e}",
-            )
+                logging.debug(
+                    "Erreur reconnaissance SDK (fallback speech_recognition): %s",
+                    e,
+                )
             # Fallback vers speech_recognition
 
     # Fallback: speech_recognition (compatibilité)

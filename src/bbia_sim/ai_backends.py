@@ -339,7 +339,7 @@ class WhisperSTT:
             text: str = decoded[0] if decoded else ""
             return text
         except Exception as e:  # pragma: no cover
-            logging.getLogger(__name__).warning(f"Whisper STT erreur: {e}")
+            logging.getLogger(__name__).warning("Whisper STT erreur: %s", e)
             return ""
 
 
@@ -369,7 +369,7 @@ class LlamaCppLLM:
                 self._model = Llama(model_path=model_path, n_ctx=2048, n_threads=4)
                 self._ready = True
         except Exception as e:  # pragma: no cover
-            logging.getLogger(__name__).info(f"llama.cpp indisponible: {e}")
+            logging.getLogger(__name__).info("llama.cpp indisponible: %s", e)
             self._ready = False
 
     def generate(self, prompt: str, max_tokens: int = 128) -> str:
@@ -384,7 +384,7 @@ class LlamaCppLLM:
             # Format standard llama.cpp: {"choices":[{"text":"..."}]}
             return str(out.get("choices", [{}])[0].get("text", ""))
         except Exception as e:  # pragma: no cover
-            logging.getLogger(__name__).warning(f"llama.cpp erreur: {e}")
+            logging.getLogger(__name__).warning("llama.cpp erreur: %s", e)
             return (prompt or "")[:max_tokens]
 
 

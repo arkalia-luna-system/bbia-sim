@@ -482,17 +482,19 @@ class BBIAHuggingFace:
                 model_key = f"{model_name}_pipeline"
                 if model_key in self.models:
                     logger.debug(
-                        f"♻️ Modèle NLP déjà chargé ({resolved_name}), réutilisation",
+                        "♻️ Modèle NLP déjà chargé (%s), réutilisation",
+                        resolved_name,
                     )
                     return True
             else:
                 # Modèles vision/audio/multimodal stockés avec suffixe "_model"
                 model_key = f"{model_name}_model"
                 if model_key in self.models:
-                    logger.debug(
-                        f"♻️ Modèle {model_type} déjà chargé "
-                        f"({resolved_name}), réutilisation",
-                    )
+                      logger.debug(
+                          "♻️ Modèle %s déjà chargé (%s), réutilisation",
+                          model_type,
+                          resolved_name,
+                      )
                     return True
 
             # OPTIMISATION RAM: Vérifier limite modèles et décharger LRU si nécessaire
