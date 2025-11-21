@@ -23,6 +23,10 @@ jobs:
           sudo rm -rf /usr/local/lib/android
           sudo rm -rf /opt/ghc
           sudo rm -rf /opt/hostedtoolcache/CodeQL
+          sudo rm -rf /usr/local/share/boost
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+          sudo apt-get clean
+          sudo rm -rf /var/lib/apt/lists/*
           df -h
 
       - name: Set up Python
@@ -110,10 +114,11 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -e .[test]
-          pip install pytest-asyncio pytest-timeout
+          pip install --no-cache-dir -e .[test]
+          pip install --no-cache-dir pytest-asyncio pytest-timeout
           # Installation optionnelle de pyaudio si disponible
-          pip install pyaudio || echo "pyaudio non disponible, continuons sans"
+          pip install --no-cache-dir pyaudio || echo "pyaudio non disponible, continuons sans"
+          python -m pip cache purge || true
 
       - name: Clean logs and artifacts before tests
         run: |
@@ -178,6 +183,10 @@ jobs:
           sudo rm -rf /usr/local/lib/android
           sudo rm -rf /opt/ghc
           sudo rm -rf /opt/hostedtoolcache/CodeQL
+          sudo rm -rf /usr/local/share/boost
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+          sudo apt-get clean
+          sudo rm -rf /var/lib/apt/lists/*
           df -h
 
       - name: Set up Python
@@ -189,14 +198,18 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -e .[test]
-          pip install pytest-asyncio pytest-timeout
+          pip install --no-cache-dir -e .[test]
+          pip install --no-cache-dir pytest-asyncio pytest-timeout
           # Installation optionnelle de pyaudio si disponible
-          pip install pyaudio || echo "pyaudio non disponible, continuons sans"
+          pip install --no-cache-dir pyaudio || echo "pyaudio non disponible, continuons sans"
+          python -m pip cache purge || true
 
       - name: Clean logs before tests
         run: |
           rm -rf logs/* artifacts/*.log || true
+          find . -type d -name "__pycache__" -exec rm -r {} + || true
+          find . -type d -name ".pytest_cache" -exec rm -r {} + || true
+          python -m pip cache purge || true
           mkdir -p logs
 
       - name: Start API server
