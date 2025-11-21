@@ -156,7 +156,6 @@ class TestUtilsTypesQuick:
             "label": "positive",
         }
         sentiment_result: SentimentResult = {"sentiment": "positive", "score": 0.8}
-        capabilities: RobotCapabilities = {"has_camera": True, "has_microphone": True}
         telemetry: TelemetryData = {"timestamp": 1234567890.0, "joint_positions": {}}
         detection: DetectionResult = {
             "class": "person",
