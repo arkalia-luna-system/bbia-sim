@@ -37,7 +37,8 @@ Pour des vérifications détaillées par aspect, consultez :
 
 > **✅ Statut global : CONFORME**  
 > Le projet BBIA‑SIM est **conforme** au SDK officiel Reachy Mini (Pollen Robotics).  
-> Des optimisations et corrections ont été appliquées et validées.
+> Des optimisations et corrections ont été appliquées et validées.  
+> **✅ Toutes les améliorations optionnelles implémentées (21 Novembre 2025)** : Assistant Installation, Découverte Apps, Partage Apps.
 
 ### 🔐 Checklist pré‑réception (21 Novembre 2025)
 

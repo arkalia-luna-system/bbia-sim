@@ -55,7 +55,10 @@ if PROMETHEUS_AVAILABLE and REGISTRY:
 
     try:
         request_count = _get_or_create_metric(
-            Counter, "bbia_requests_total", "Total requests", ["method", "endpoint", "status"]
+            Counter,
+            "bbia_requests_total",
+            "Total requests",
+            ["method", "endpoint", "status"],
         )
         request_latency = _get_or_create_metric(
             Histogram,

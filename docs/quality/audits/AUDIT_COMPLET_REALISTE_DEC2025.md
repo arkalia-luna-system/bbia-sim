@@ -446,7 +446,12 @@ Moyenne : 89.85% ≈ 90%
 - Intelligence : 87.5% ✅
 - Qualité code : **~82%** ⚠️ (amélioré : TRY400 100% fait, G004 73% fait, lazy loading amélioré)
 
-**Le projet est réellement avancé et justifie sa complexité. Proche de 100% avec corrections restantes (221 f-strings, 369 exceptions).**
+**Le projet est réellement avancé et justifie sa complexité. Proche de 100% avec corrections restantes (553 f-strings G004, 416 exceptions BLE001, 84 TRY400).**
+
+**✅ Toutes les améliorations optionnelles implémentées (21 Novembre 2025) :**
+- ✅ Assistant Installation Interactif (wizard 4 étapes)
+- ✅ Découverte Apps Communauté (liste testeurs bêta + découverte HF Hub)
+- ✅ Partage d'Apps BBIA sur HF Hub (guide complet + templates)
 
 ---
 

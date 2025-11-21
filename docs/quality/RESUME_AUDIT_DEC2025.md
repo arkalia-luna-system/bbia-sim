@@ -61,7 +61,11 @@
 
 ### Problèmes Moyens
 
-3. **Exceptions génériques (BLE001)** - 369 occurrences
+3. **Exceptions génériques (BLE001)** - 416 occurrences ⚠️ **24% FAIT**
+   - ✅ Corrigé : ~94/399 occurrences (24% fait)
+   - ⚠️ Reste : ~305 occurrences
+   - Impact : Meilleure gestion d'erreurs
+   - Priorité : 🟡 MOYENNE (non-bloquant)
    - Impact : Masque erreurs spécifiques
    - Priorité : 🟡 MOYENNE
 

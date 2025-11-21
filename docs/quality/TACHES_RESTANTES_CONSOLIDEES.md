@@ -779,16 +779,23 @@ except Exception as e:
 4. **Audit doublons** - Vérifier `set_emotion()` et `dire_texte()` dupliqués
    - Action : Analyser si certaines implémentations sont redondantes
 
-#### 🟢 PRIORITÉ BASSE (Optionnel)
+#### ✅ TERMINÉ
 
-5. **Lazy loading Hugging Face** - ✅ **100% TERMINÉ (21 novembre 2025)**
+5. ✅ **Lazy loading Hugging Face** - **100% TERMINÉ (21 novembre 2025)**
    - ✅ BBIAChat : Lazy loading strict (LLM chargé seulement au premier chat())
    - ✅ Timeout déchargement : Réduit de 5 min à 2 min (optimisé)
    - ✅ Méthode `_load_bbia_chat_lazy()` implémentée
    - ✅ BBIAHuggingFace : Déchargement automatique après inactivité (5 min)
    - ✅ Cache LRU pour limiter nombre de modèles en mémoire
 
-6. **Optimisations mémoire supplémentaires** - Phase 3
+6. ✅ **Améliorations Optionnelles** - **100% TERMINÉ (21 novembre 2025)**
+   - ✅ Assistant Installation Interactif (wizard 4 étapes)
+   - ✅ Découverte Apps Communauté (liste testeurs bêta + découverte HF Hub)
+   - ✅ Partage d'Apps BBIA sur HF Hub (guide complet + templates)
+
+#### 🟢 PRIORITÉ BASSE (Optionnel - Post-release)
+
+7. **Optimisations mémoire supplémentaires** - Phase 3
    - Quantification modèles 8-bit
    - Optimisation gestion images/audio
 
