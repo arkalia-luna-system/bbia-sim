@@ -7,16 +7,55 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+### 🚀 Ajouté (21 Novembre 2025)
+
+#### Améliorations Optionnelles - **100% TERMINÉES**
+
+- **Assistant Installation Interactif** : Wizard 4 étapes dans le dashboard
+  - Détection automatique robot au premier lancement
+  - Configuration réseau guidée (wireless)
+  - Test automatique des capteurs (caméra, microphone, haut-parleur)
+  - Installation guidée des applications de base
+  - Fichiers : `installation_wizard.html`, `installation_wizard.js`
+
+- **Découverte Apps Communauté** : Liste testeurs bêta + découverte HF Hub
+  - Liste pré-configurée d'apps créées par les testeurs bêta (125 unités - Nov 2024)
+  - Découverte automatique des apps populaires sur HF Spaces (recherche "reachy-mini")
+  - Endpoint `/api/apps/list-community` pour récupérer les apps communauté
+  - Section dashboard "Apps Communauté (Testeurs Bêta)"
+  - Catégorisation apps (conversationnelles, mouvements, IA, vision)
+  - Fichiers : `apps.py` (liste + endpoint), `appstore.html/js` (affichage)
+
+- **Partage d'Apps BBIA sur HF Hub** : Workflow complet + guide + templates
+  - Guide complet : `docs/guides/PARTAGE_APPS_BBIA_HF_HUB.md`
+  - Templates app.py, requirements.txt, README.md prêts à l'emploi
+  - Instructions étape par étape pour créer un Space HF
+  - Exemples d'apps à partager (conversation, vision, mouvements, IA)
+
+#### Corrections Qualité Code
+
+- **BLE001** : ~94/399 occurrences corrigées (24% fait)
+  - `dashboard_advanced.py` : ~22 occurrences corrigées (exceptions spécifiques + noqa pour fallbacks)
+  - `reachy_mini_backend.py` : ~20 occurrences corrigées
+  - `ai_backends.py` : Corrections exceptions spécifiques
+  - Autres fichiers : ~52 occurrences corrigées
+
+- **Audit Doublons** : `set_emotion()` et `dire_texte()` - TERMINÉ
+  - Pas de doublons critiques identifiés
+  - Document créé : `AUDIT_DOUBLONS_SET_EMOTION_DIR_TEXTE.md`
+
 ### 🔧 Corrigé
 
 - mypy no-redef dans `src/bbia_sim/bbia_voice.py` (`audio_bytes` renommé en `sdk_audio_bytes`) pour éviter la redéfinition dans `dire_texte`.
 - Accès télémétrie SDK durci dans `src/bbia_sim/daemon/app/routers/state.py` (plus d'accès direct `.robot`, usage de `getattr` et typage défensif).
+- Exceptions génériques (BLE001) : Spécification exceptions attendues + noqa pour fallbacks
 
 ### 🧪 Tests & 📚 Docs
 
 - Nouveau test headless `tests/test_voice_speaker_fallback_headless.py` pour vérifier le fallback speaker sans drivers audio.
 - `docs/status.md` mis à jour (note CI audio + mypy=0 sur corrections effectuées).
- - Standardisation environnement: Python 3.11+ requis, CI GitHub Actions mise à jour (`setup-python@v5`).
+- Standardisation environnement: Python 3.11+ requis, CI GitHub Actions mise à jour (`setup-python@v5`).
+- Documentation mise à jour : `NOUVEAUTES_REACHY_NOVEMBRE_2024.md`, `TACHES_RESTANTES_CONSOLIDEES.md`, `AUDIT_COMPLET_REALISTE_DEC2025.md`
 
 ## [1.3.2] - Oct / Nov. 2025
 

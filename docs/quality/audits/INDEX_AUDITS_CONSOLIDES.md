@@ -54,13 +54,14 @@
    - Score global : ~85-90% de parité fonctionnelle
    - Dernière mise à jour : 21 Novembre 2025
 
-8. **`NOUVEAUTES_REACHY_NOVEMBRE_2024.md`** ⭐ **NOUVEAU** (Novembre 2024)
+8. **`NOUVEAUTES_REACHY_NOVEMBRE_2024.md`** ⭐ **MIS À JOUR** (21 Novembre 2025)
    - **Chemin** : `quality/audits/NOUVEAUTES_REACHY_NOVEMBRE_2024.md`
    - Analyse de l'email Pollen Robotics (Novembre 2024) sur la version finale de production
    - Vérification complète des nouveautés (dashboard, installation, contrôle media)
-   - Statut : **98% COMPLET** - BBIA-SIM prêt pour réception robot
+   - ✅ **Toutes les améliorations optionnelles implémentées** (Assistant Installation, Découverte Apps, Partage Apps)
+   - Statut : **99% COMPLET** - BBIA-SIM prêt pour réception robot
    - GIF officiel intégré : `assets/images/reachy_mini_unboxing_official.gif`
-   - Dernière mise à jour : Novembre 2024
+   - Dernière mise à jour : 21 Novembre 2025
 
 9. **`COMPARAISON_DASHBOARD_TESTEURS.md`** ✅ **TERMINÉ** (21 Novembre 2025)
    - **Chemin** : `dashboard/COMPARAISON_DASHBOARD_TESTEURS.md`

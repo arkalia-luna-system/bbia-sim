@@ -18,11 +18,12 @@ from fastapi import APIRouter
 from fastapi.responses import Response
 
 try:
-    from prometheus_client import Counter, Gauge, Histogram, generate_latest
+    from prometheus_client import Counter, Gauge, Histogram, generate_latest, REGISTRY
 
     PROMETHEUS_AVAILABLE = True
 except ImportError:
     PROMETHEUS_AVAILABLE = False
+    REGISTRY = None  # type: ignore[assignment, misc]
 
 from ...simulation_service import simulation_service
 
@@ -40,22 +41,73 @@ except ImportError:
 router = APIRouter(prefix="/metrics", tags=["metrics"])
 
 # Métriques Prometheus (si disponible)
-if PROMETHEUS_AVAILABLE:
-    request_count = Counter(
-        "bbia_requests_total", "Total requests", ["method", "endpoint", "status"]
-    )
-    request_latency = Histogram(
-        "bbia_request_duration_seconds",
-        "Request latency",
-        ["method", "endpoint"],
-        buckets=[0.01, 0.05, 0.1, 0.5, 1.0, 5.0],
-    )
-    cpu_usage = Gauge("bbia_cpu_usage_percent", "CPU usage percentage")
-    memory_usage = Gauge("bbia_memory_usage_bytes", "Memory usage in bytes")
-    simulation_fps = Gauge("bbia_simulation_fps", "Simulation FPS")
-    active_connections = Gauge(
-        "bbia_active_connections", "Active WebSocket connections"
-    )
+# OPTIMISATION: Vérifier si les métriques existent déjà pour éviter les doublons dans les tests
+if PROMETHEUS_AVAILABLE and REGISTRY:
+    # Fonction helper pour créer une métrique seulement si elle n'existe pas
+    def _get_or_create_metric(metric_class, name, *args, **kwargs):
+        """Crée une métrique seulement si elle n'existe pas déjà."""
+        # Chercher si la métrique existe déjà
+        for collector in list(REGISTRY._collector_to_names.keys()):
+            if hasattr(collector, "_name") and collector._name == name:
+                return collector
+        # Créer la métrique si elle n'existe pas
+        return metric_class(name, *args, **kwargs)
+
+    try:
+        request_count = _get_or_create_metric(
+            Counter, "bbia_requests_total", "Total requests", ["method", "endpoint", "status"]
+        )
+        request_latency = _get_or_create_metric(
+            Histogram,
+            "bbia_request_duration_seconds",
+            "Request latency",
+            ["method", "endpoint"],
+            buckets=[0.01, 0.05, 0.1, 0.5, 1.0, 5.0],
+        )
+        cpu_usage = _get_or_create_metric(
+            Gauge, "bbia_cpu_usage_percent", "CPU usage percentage"
+        )
+        memory_usage = _get_or_create_metric(
+            Gauge, "bbia_memory_usage_bytes", "Memory usage in bytes"
+        )
+        simulation_fps = _get_or_create_metric(
+            Gauge, "bbia_simulation_fps", "Simulation FPS"
+        )
+        active_connections = _get_or_create_metric(
+            Gauge, "bbia_active_connections", "Active WebSocket connections"
+        )
+    except (ValueError, KeyError) as e:
+        # Si erreur de duplication, réutiliser les métriques existantes
+        logger.warning(f"Métriques Prometheus déjà enregistrées, réutilisation: {e}")
+        # Récupérer les métriques existantes depuis le registre
+        request_count = None
+        request_latency = None
+        cpu_usage = None
+        memory_usage = None
+        simulation_fps = None
+        active_connections = None
+        for collector in list(REGISTRY._collector_to_names.keys()):
+            if hasattr(collector, "_name"):
+                name = collector._name
+                if name == "bbia_requests_total":
+                    request_count = collector
+                elif name == "bbia_request_duration_seconds":
+                    request_latency = collector
+                elif name == "bbia_cpu_usage_percent":
+                    cpu_usage = collector
+                elif name == "bbia_memory_usage_bytes":
+                    memory_usage = collector
+                elif name == "bbia_simulation_fps":
+                    simulation_fps = collector
+                elif name == "bbia_active_connections":
+                    active_connections = collector
+else:
+    request_count = None
+    request_latency = None
+    cpu_usage = None
+    memory_usage = None
+    simulation_fps = None
+    active_connections = None
 
 # Métriques système en mémoire (fallback si Prometheus non disponible)
 # Historique des latences pour calcul p50/p95/p99 (garder dernières 1000 mesures)
@@ -112,30 +164,33 @@ async def get_prometheus_metrics() -> Response:
 
     # Mettre à jour métriques système
     try:
-        if PSUTIL_AVAILABLE and psutil:
-            process = psutil.Process(os.getpid())
-            cpu_usage.set(process.cpu_percent(interval=0.1))
-            memory_usage.set(process.memory_info().rss)
-        else:
-            cpu_usage.set(0.0)
-            memory_usage.set(0)
+        if cpu_usage and memory_usage:
+            if PSUTIL_AVAILABLE and psutil:
+                process = psutil.Process(os.getpid())
+                cpu_usage.set(process.cpu_percent(interval=0.1))
+                memory_usage.set(process.memory_info().rss)
+            else:
+                cpu_usage.set(0.0)
+                memory_usage.set(0)
 
         # FPS simulation (si disponible)
-        if simulation_service.is_simulation_ready():
-            # Essayer de récupérer FPS depuis le simulateur
-            try:
-                fps = getattr(simulation_service.simulator, "fps", 0.0)
-                simulation_fps.set(fps)
-            except (AttributeError, TypeError, RuntimeError):
+        if simulation_fps:
+            if simulation_service.is_simulation_ready():
+                # Essayer de récupérer FPS depuis le simulateur
+                try:
+                    fps = getattr(simulation_service.simulator, "fps", 0.0)
+                    simulation_fps.set(fps)
+                except (AttributeError, TypeError, RuntimeError):
+                    simulation_fps.set(0.0)
+            else:
                 simulation_fps.set(0.0)
-        else:
-            simulation_fps.set(0.0)
 
         # Connexions actives (récupérées depuis ConnectionManager)
-        if TELEMETRY_MANAGER_AVAILABLE and telemetry_manager:
-            active_connections.set(len(telemetry_manager.active_connections))
-        else:
-            active_connections.set(0)
+        if active_connections:
+            if TELEMETRY_MANAGER_AVAILABLE and telemetry_manager:
+                active_connections.set(len(telemetry_manager.active_connections))
+            else:
+                active_connections.set(0)
 
     except Exception as e:
         logger.warning("Erreur mise à jour métriques: %s", e)
