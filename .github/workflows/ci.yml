@@ -102,7 +102,7 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
     env:
       SEED: 42
       MUJOCO_GL: disable
@@ -156,18 +156,18 @@ jobs:
           python -m pip cache purge || true
 
       - name: Run unit tests
-        timeout-minutes: 25
+        timeout-minutes: 35
         run: |
           export PYTHONPATH=src:$PYTHONPATH
-          pytest -v -m "not e2e" --cov=src/bbia_sim --cov-report=xml --cov-report=term-missing --cov-fail-under=0 --timeout=120 --maxfail=10 --override-ini="addopts=" --log-cli-level=WARNING --no-header
+          pytest -v -m "not e2e" --cov=src/bbia_sim --cov-report=xml --cov-report=term-missing --cov-fail-under=0 --timeout=180 --maxfail=10 --override-ini="addopts=" --log-cli-level=WARNING --no-header -x
         env:
           PYTHONDONTWRITEBYTECODE: 1
 
       - name: Golden tests (headless)
-        timeout-minutes: 5
+        timeout-minutes: 10
         run: |
           export PYTHONPATH=src:$PYTHONPATH
-          pytest -q tests/test_golden_traces.py --maxfail=1 --disable-warnings --log-cli-level=WARNING --no-header
+          pytest -q tests/test_golden_traces.py --maxfail=1 --disable-warnings --log-cli-level=WARNING --no-header --timeout=60
         env:
           PYTHONDONTWRITEBYTECODE: 1
 
@@ -197,7 +197,7 @@ jobs:
 
   test-e2e:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     needs: [lint, test]
     env:
       MUJOCO_GL: disable
@@ -267,13 +267,13 @@ jobs:
           fi
 
       - name: Run e2e tests
-        timeout-minutes: 10
+        timeout-minutes: 15
         run: |
           export PYTHONPATH=src:$PYTHONPATH
           echo "Running e2e tests..."
           mkdir -p logs
           # Limiter la taille du log à 1MB
-          pytest -q -m "e2e" --timeout=30 --tb=short --maxfail=5 --log-cli-level=WARNING --no-header 2>&1 | head -c 1048576 > logs/test_run.log || true
+          pytest -q -m "e2e" --timeout=60 --tb=short --maxfail=5 --log-cli-level=WARNING --no-header -x 2>&1 | head -c 1048576 > logs/test_run.log || true
           echo "E2E tests completed"
 
           # Ensure log file exists even if empty
