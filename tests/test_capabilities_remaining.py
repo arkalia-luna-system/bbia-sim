@@ -6,68 +6,67 @@ Ce fichier complète test_capabilities_completeness.py pour atteindre 100% d'uti
 
 import pytest
 
-# Tests pour les classes et types non utilisés
-from bbia_sim.utils.types import (
-    LookAtParams,
-    PlayAudioParams,
-    SetEmotionParams,
-    SetTargetParams,
-    MovementRecording,
-    MetricsData,
-    ModelInfo,
-    SentimentDict,
-    SentimentResult,
-    TelemetryData,
-    DetectionResult,
-    FaceDetection,
-    RobotStatus,
-    ConversationEntry,
+from bbia_sim.ai_backends import (
+    KokoroTTS,
+    LlamaCppLLM,
+    LocalLLM,
+    NeuTTSTTS,
+    OpenVoiceTTSTTS,
+    SpeechToText,
 )
-from bbia_sim.daemon.models import (
-    JointPosition,
-    Pose,
-    HeadControl,
-    GripperControl,
-    MotionCommand,
-    TelemetryMessage,
-    MoveUUID,
-)
-from bbia_sim.daemon.app.backend_adapter import BackendAdapter
-from bbia_sim.daemon.app.routers.daemon import DaemonStatus
-from bbia_sim.daemon.app.routers.ecosystem import RobotCapabilities
-from bbia_sim.daemon.app.routers.media import CameraToggleRequest, MediaStatusResponse
-from bbia_sim.daemon.app.routers.motors import (
-    MotorStatus,
-    MotorControlMode,
-    SimpleMotorControlMode,
-)
+from bbia_sim.backends.reachy_mini_backend import SimpleMove
 from bbia_sim.backends.simulation_shims import (
+    SimulationCamera,
     SimulationIOModule,
     SimulationMediaModule,
-    SimulationCamera,
     SimulationMicrophone,
     SimulationSpeaker,
 )
-from bbia_sim.ai_backends import (
-    KokoroTTS,
-    NeuTTSTTS,
-    OpenVoiceTTSTTS,
-    LlamaCppLLM,
-    LocalLLM,
-    SpeechToText,
-)
-from bbia_sim.pose_detection import BBIAPoseDetection, create_pose_detector
-from bbia_sim.face_recognition import BBIAPersonRecognition
 from bbia_sim.bbia_idle_animations import (
     BBIABreathingAnimation,
     BBIAPoseTransitionManager,
     BBIAVocalTremor,
     BBIIdleAnimationManager,
 )
-from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager
+from bbia_sim.daemon.app.backend_adapter import BackendAdapter
+from bbia_sim.daemon.app.routers.daemon import DaemonStatus
+from bbia_sim.daemon.app.routers.ecosystem import RobotCapabilities
+from bbia_sim.daemon.app.routers.motors import (
+    MotorControlMode,
+    MotorStatus,
+    SimpleMotorControlMode,
+)
+from bbia_sim.daemon.models import (
+    GripperControl,
+    HeadControl,
+    JointPosition,
+    MotionCommand,
+    MoveUUID,
+    Pose,
+    TelemetryMessage,
+)
 from bbia_sim.dashboard import BBIAWebSocketManager
+from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager
+from bbia_sim.pose_detection import BBIAPoseDetection, create_pose_detector
 from bbia_sim.sim.assets.reachy_official.asset_mapping import AssetMapping
-from bbia_sim.backends.reachy_mini_backend import SimpleMove
+
+# Tests pour les classes et types non utilisés
+from bbia_sim.utils.types import (
+    ConversationEntry,
+    DetectionResult,
+    FaceDetection,
+    LookAtParams,
+    MetricsData,
+    ModelInfo,
+    MovementRecording,
+    PlayAudioParams,
+    RobotStatus,
+    SentimentDict,
+    SentimentResult,
+    SetEmotionParams,
+    SetTargetParams,
+    TelemetryData,
+)
 
 
 class TestUtilsTypes:
@@ -536,8 +535,9 @@ class TestBBIAVisionMethods:
 
     def test_scan_environment_from_image(self) -> None:
         """Test scan_environment_from_image."""
-        from bbia_sim.bbia_vision import BBIAVision
         import numpy as np
+
+        from bbia_sim.bbia_vision import BBIAVision
 
         vision = BBIAVision()
         image = np.zeros((480, 640, 3), dtype=np.uint8)
