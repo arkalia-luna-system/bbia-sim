@@ -85,7 +85,7 @@ class Pyttsx3TTS:
                             "utilisation par défaut: %s",
                             e,
                         )
-                    except Exception as e:
+                    except (ValueError, TypeError, AttributeError) as e:
                         logger.debug(
                             "Erreur inattendue définition voix personnalisée: %s",
                             e,
@@ -129,7 +129,7 @@ class KittenTTSTTS:
                 return self._impl.synthesize_to_wav(text, outfile)
             except (RuntimeError, OSError, AttributeError) as e:
                 logger.debug("Échec synthèse avec impl principale, fallback: %s", e)
-            except Exception as e:
+            except (ValueError, TypeError, KeyError) as e:
                 logger.debug(
                     "Erreur inattendue synthèse impl principale, fallback: %s", e
                 )
@@ -161,7 +161,7 @@ class KokoroTTS:
                 return self._impl.synthesize_to_wav(text, outfile)
             except (RuntimeError, OSError, AttributeError) as e:
                 logger.debug("Échec synthèse avec impl principale, fallback: %s", e)
-            except Exception as e:
+            except (ValueError, TypeError, KeyError) as e:
                 logger.debug(
                     "Erreur inattendue synthèse impl principale, fallback: %s", e
                 )
@@ -193,7 +193,7 @@ class NeuTTSTTS:
                 return self._impl.synthesize_to_wav(text, outfile)
             except (RuntimeError, OSError, AttributeError) as e:
                 logger.debug("Échec synthèse avec impl principale, fallback: %s", e)
-            except Exception as e:
+            except (ValueError, TypeError, KeyError) as e:
                 logger.debug(
                     "Erreur inattendue synthèse impl principale, fallback: %s", e
                 )
