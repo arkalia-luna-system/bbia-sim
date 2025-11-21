@@ -17,7 +17,6 @@ from bbia_sim.utils.types import (
     ModelInfo,
     SentimentDict,
     SentimentResult,
-    RobotCapabilities,
     TelemetryData,
     DetectionResult,
     FaceDetection,
@@ -33,7 +32,9 @@ from bbia_sim.daemon.models import (
     TelemetryMessage,
     MoveUUID,
 )
+from bbia_sim.daemon.app.backend_adapter import BackendAdapter
 from bbia_sim.daemon.app.routers.daemon import DaemonStatus
+from bbia_sim.daemon.app.routers.ecosystem import RobotCapabilities
 from bbia_sim.daemon.app.routers.media import CameraToggleRequest, MediaStatusResponse
 from bbia_sim.daemon.app.routers.motors import (
     MotorStatus,

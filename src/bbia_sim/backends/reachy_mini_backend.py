@@ -260,7 +260,7 @@ class ReachyMiniBackend(RobotAPI):
                 self._start_watchdog()
             logger.info("✅ Connecté au robot Reachy-Mini officiel")
             return True
-        except (TimeoutError, ConnectionError, OSError) as e:
+        except OSError as e:
             logger.info(
                 "⏱️  Pas de robot physique détecté (timeout/connexion) - "
                 "mode simulation activé: %s",
