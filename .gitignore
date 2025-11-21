@@ -78,3 +78,5 @@ artifacts/golden/*_long.jsonl
 **/site-packages/**
 **/lib/python*/site-packages/**._*
 DS_Store
+.coverage.*
+.pytest.lock
