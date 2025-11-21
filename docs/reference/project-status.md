@@ -39,6 +39,106 @@ pip install -e .
 
 ---
 
+## 🖥️ État Opérationnel
+
+> **💡 Note** : Cette section décrit l'état opérationnel actuel du système (dashboard, commandes, tests).  
+> Pour les métriques détaillées, voir [METRICS.md](METRICS.md). Pour l'installation, voir [INSTALLATION.md](../getting-started/INSTALLATION.md).
+
+### Dashboard Web
+
+**URL** : http://localhost:8000  
+**Statut** : Opérationnel
+
+#### Fonctionnalités disponibles
+
+1. **Panel Chat BBIA**
+   - Interface web complète
+   - Handler WebSocket fonctionnel
+   - Mode fallback si Hugging Face absent
+   - Messages temps réel
+
+2. **Contrôles robot**
+   - Émotions (12 disponibles)
+   - Mouvements articulaires
+   - Vision et détection objets
+   - Comportements adaptatifs
+
+3. **Métriques temps réel**
+   - Performance système
+   - État des composants
+   - Latence WebSocket
+   - Statistiques d'utilisation
+
+#### Utilisation
+
+```bash
+# Via navigateur (RECOMMANDÉ)
+# Ouvrir : http://localhost:8000
+# Attendre connexion (indicateur vert)
+# Descendre jusqu'à panel "💬 Chat avec BBIA"
+
+# Via terminal (RECOMMANDÉ)
+mjpython examples/demo_chat_bbia_3d.py
+# ⚠️ Note: demo_chat_simple.py est déprécié
+```
+
+### Commandes Principales
+
+#### Tests et qualité
+
+```bash
+# Tests complets avec coverage
+pytest tests/ --cov=src/bbia_sim --cov-report=html
+
+# Voir le rapport de coverage
+open htmlcov/index.html
+
+# Tests spécifiques
+pytest tests/test_dashboard_advanced.py -v
+pytest tests/test_bbia_*.py -v
+```
+
+#### Démo et utilisation
+
+```bash
+# Dashboard web
+# Ouvrir http://localhost:8000
+
+# Chat 3D (RECOMMANDÉ)
+mjpython examples/demo_chat_bbia_3d.py
+
+# Simulation MuJoCo
+mjpython examples/demo_mujoco_continue.py
+
+# Émotions
+mjpython examples/demo_emotion_ok.py --emotion happy --duration 10
+```
+
+#### Qualité du code
+
+```bash
+# Linting
+ruff check . --fix
+
+# Formatage
+black src/ tests/ examples/ scripts/
+
+# Type checking
+mypy src/
+
+# Sécurité
+bandit -r src/
+```
+
+### Liens Utiles
+
+- Dashboard : http://localhost:8000
+- API Swagger : http://localhost:8000/docs
+- API ReDoc : http://localhost:8000/redoc
+- Coverage HTML : `htmlcov/index.html`
+
+---
+
 ## ✅ État par Axe
 
 > **📊 Analyse complète vérifiée dans le code et la CI**

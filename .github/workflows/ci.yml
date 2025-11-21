@@ -9,6 +9,7 @@ on:
 jobs:
   lint:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     env:
       MUJOCO_GL: disable
       DISPLAY: ""
@@ -16,10 +17,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Clean up disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /opt/hostedtoolcache/CodeQL
+          df -h
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+          cache: "pip"
 
       - name: Install system dependencies
         run: |
@@ -66,6 +76,7 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     env:
       SEED: 42
       MUJOCO_GL: disable
@@ -74,10 +85,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Clean up disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /opt/hostedtoolcache/CodeQL
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+          df -h
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+          cache: "pip"
 
       - name: Install system dependencies
         run: |
@@ -92,14 +113,21 @@ jobs:
           # Installation optionnelle de pyaudio si disponible
           pip install pyaudio || echo "pyaudio non disponible, continuons sans"
 
+      - name: Clean logs and artifacts before tests
+        run: |
+          rm -rf logs/* artifacts/*.log artifacts/*.jsonl artifacts/*.csv || true
+          find . -type d -name "__pycache__" -exec rm -r {} + || true
+          find . -type f -name "*.pyc" -delete || true
+
       - name: Run unit tests
-        timeout-minutes: 60
+        timeout-minutes: 25
         run: |
           export PYTHONPATH=src:$PYTHONPATH
-          pytest -v -m "not e2e" --cov=src/bbia_sim --cov-report=xml --cov-report=term-missing --cov-fail-under=0 --timeout=300 --maxfail=50 --override-ini="addopts="
+          pytest -v -m "not e2e" --cov=src/bbia_sim --cov-report=xml --cov-report=term-missing --cov-fail-under=0 --timeout=120 --maxfail=10 --override-ini="addopts=" --log-cli-level=WARNING --no-header
 
       - name: Golden tests (headless)
-        run: pytest -q tests/test_golden_traces.py --maxfail=1 --disable-warnings
+        timeout-minutes: 5
+        run: pytest -q tests/test_golden_traces.py --maxfail=1 --disable-warnings --log-cli-level=WARNING
 
       - name: Upload coverage
         uses: codecov/codecov-action@v3
@@ -119,6 +147,7 @@ jobs:
 
   test-e2e:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     needs: [lint]
     env:
       MUJOCO_GL: disable
@@ -127,10 +156,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Clean up disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /opt/hostedtoolcache/CodeQL
+          df -h
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+          cache: "pip"
 
       - name: Install dependencies
         run: |
@@ -140,7 +178,13 @@ jobs:
           # Installation optionnelle de pyaudio si disponible
           pip install pyaudio || echo "pyaudio non disponible, continuons sans"
 
+      - name: Clean logs before tests
+        run: |
+          rm -rf logs/* artifacts/*.log || true
+          mkdir -p logs
+
       - name: Start API server
+        timeout-minutes: 2
         run: |
           echo "Starting BBIA-SIM API server..."
           BBIA_TOKEN=bbia-secret-key-dev uvicorn src.bbia_sim.daemon.app.main:app --port 8000 --host 0.0.0.0 &
@@ -148,10 +192,12 @@ jobs:
           echo "API server started"
 
       - name: Run e2e tests
+        timeout-minutes: 10
         run: |
           echo "Running e2e tests..."
           mkdir -p logs
-          pytest -q -m "e2e" --timeout=60 --tb=short > logs/test_run.log 2>&1 || true
+          # Limiter la taille du log à 1MB
+          pytest -q -m "e2e" --timeout=30 --tb=short --maxfail=5 --log-cli-level=WARNING 2>&1 | head -c 1048576 > logs/test_run.log || true
           echo "E2E tests completed"
 
           # Ensure log file exists even if empty
@@ -166,6 +212,7 @@ jobs:
           retention-days: 7
 
       - name: Check e2e test results
+        timeout-minutes: 1
         run: |
           mkdir -p logs
           if [ ! -f logs/test_run.log ]; then
@@ -174,8 +221,8 @@ jobs:
             echo "No e2e tests executed" > logs/test_run.log
           fi
 
-          echo "=== E2E Test Results ==="
-          cat logs/test_run.log
+          echo "=== E2E Test Results (last 50 lines) ==="
+          tail -n 50 logs/test_run.log
           echo "========================="
 
           # Check if tests passed

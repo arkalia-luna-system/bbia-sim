@@ -90,7 +90,7 @@ BBIA-SIM maintient des standards stricts de qualité:
 - **Sécurité**: Analyse statique avec Bandit
 - **Performance**: Optimisations continues et monitoring
 
-**[🚀 Quick Start](#-démarrage-rapide)** | **[📚 Guide de Démarrage](docs/guides/GUIDE_DEMARRAGE.md)** | **[🔬 Docs Avancé](docs/guides/GUIDE_AVANCE.md)** | **[📋 Projets](docs/reference/PROJECTS.md)**
+**[🚀 Quick Start](#-démarrage-rapide)** | **[📚 Guide de Démarrage](docs/guides/GUIDE_DEMARRAGE.md)** | **[🔬 Docs Avancé](docs/guides/GUIDE_AVANCE.md)** | **[📋 Projets](docs/reference/PROJECTS.md)** | **[🌐 English README](README_EN.md)** | **[🎬 Vidéos Démo](docs/guides/GUIDE_VIDEOS_DEMONSTRATION.md)** | **[🌍 Guide Communauté](docs/community/GUIDE_COMMUNAUTE.md)**
 
 ---
 
@@ -120,7 +120,29 @@ Ce projet fournit une simulation fidèle du robot Reachy Mini dans MuJoCo, avec 
 - `--skip-dashboard` : Ne lance pas le dashboard
 - `--help` : Affiche l'aide complète
 
-### Option 2 : Installation Manuelle
+### Option 2 : Docker Compose (Recommandé pour environnement isolé) 🐳
+
+```bash
+# 🐳 Démarrage avec Docker Compose (environnement pré-configuré)
+docker-compose up -d
+
+# ✅ Vérifier que l'API est accessible
+curl http://localhost:8000/api/health
+
+# 📊 Accéder au dashboard
+open http://localhost:8000
+
+# 🛑 Arrêter
+docker-compose down
+```
+
+**Avantages Docker** :
+- ✅ Environnement isolé et reproductible
+- ✅ Pas besoin d'installer dépendances système
+- ✅ Configuration optimale pré-configurée
+- ✅ Mode développement avec hot-reload disponible (`docker-compose -f docker-compose.yml -f docker-compose.dev.yml up`)
+
+### Option 3 : Installation Manuelle
 
 ```bash
 # 🔧 Installation (mode dev recommandé)

@@ -65,6 +65,10 @@ Moteur cognitif Python avec 12 émotions robotiques pour Reachy Mini. Simulation
 - 🌐 **GitHub** : [github.com/arkalia-luna-system/bbia-sim](https://github.com/arkalia-luna-system/bbia-sim)
 - 📖 **Docs** : `docs/` (guides, API, architecture)
 - 🎬 **Démos** : `examples/` (émotions, vision, voix, comportements)
+- 🐳 **Docker** : `docker-compose.yml` (environnement pré-configuré)
+- 🌐 **English** : `README_EN.md` (English README)
+- 🎥 **Vidéos** : [Guide Vidéos Démonstration](docs/guides/GUIDE_VIDEOS_DEMONSTRATION.md)
+- 🌍 **Communauté** : [Guide Communauté](docs/community/GUIDE_COMMUNAUTE.md)
 
 ---
 

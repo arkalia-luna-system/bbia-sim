@@ -54,8 +54,11 @@ graph LR
 flowchart TD
     START[🚀 Démarrage] --> CHOICE{Quelle méthode?}
     
+    CHOICE -->|🐳 Docker| DOCKER[Docker Compose<br/>docker-compose up]
     CHOICE -->|⚡ Automatique| AUTO[Script All-in-One<br/>./scripts/reachy-mini-sim-starter.sh]
     CHOICE -->|🔧 Manuelle| MANUAL[Installation manuelle<br/>pip install -e .]
+    
+    DOCKER --> DASH_DOCKER[🌐 Dashboard auto<br/>http://localhost:8000]
     
     AUTO --> DASH_AUTO[🌐 Dashboard auto<br/>http://localhost:8000]
     MANUAL --> CHOICE2{Méthode d'utilisation?}
@@ -84,14 +87,49 @@ flowchart TD
 
 <div align="center">
 
-### 🔧 Deux méthodes simples pour démarrer
+### 🔧 Trois méthodes simples pour démarrer
 
-[![⚡ Automatique](https://img.shields.io/badge/⚡-Automatique-green)](#option-a--script-all-in-one-recommandé-)
-[![🔧 Manuel](https://img.shields.io/badge/🔧-Manuel-blue)](#option-b--installation-manuelle)
+[![🐳 Docker](https://img.shields.io/badge/🐳-Docker-blue)](#option-a--docker-compose-recommandé-pour-environnement-isolé-)
+[![⚡ Automatique](https://img.shields.io/badge/⚡-Automatique-green)](#option-b--script-all-in-one-)
+[![🔧 Manuel](https://img.shields.io/badge/🔧-Manuel-orange)](#option-c--installation-manuelle)
 
 </div>
 
-#### Option A : Script All-in-One (Recommandé) ⚡
+#### Option A : Docker Compose (Recommandé pour environnement isolé) 🐳
+
+> **🐳 Environnement pré-configuré et isolé**
+
+```bash
+# Cloner le projet
+git clone https://github.com/arkalia-luna-system/bbia-sim.git
+cd bbia-sim
+
+# Démarrer avec Docker Compose
+docker-compose up -d
+
+# Vérifier que l'API fonctionne
+curl http://localhost:8000/api/health
+
+# Accéder au dashboard
+open http://localhost:8000
+
+# Arrêter
+docker-compose down
+```
+
+**Avantages** :
+- ✅ Environnement isolé (pas de conflit de dépendances)
+- ✅ Configuration optimale pré-configurée
+- ✅ Mode développement avec hot-reload disponible (`bbia-sim-dev`)
+- ✅ Healthcheck automatique
+
+**Services disponibles** :
+- `bbia-sim` : Service production
+- `bbia-sim-dev` : Service développement (hot-reload)
+
+Voir aussi : [Docker Compose Documentation](https://docs.docker.com/compose/)
+
+#### Option B : Script All-in-One ⚡
 
 > **🚀 Installation automatique complète en une commande**
 
@@ -116,7 +154,7 @@ cd bbia-sim
 - `--skip-dashboard` : Installation sans lancer le dashboard
 - `--help` : Aide complète
 
-#### Option B : Installation Manuelle
+#### Option C : Installation Manuelle
 
 > **⚡ Installation manuelle en 2 minutes**
 
