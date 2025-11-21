@@ -148,8 +148,8 @@ class MuJoCoBackend(RobotAPI):
     def play_move(
         self,
         move: object,
-        play_frequency: float = 100.0,
-        initial_goto_duration: float = 0.0,
+        play_frequency: float = 100.0,  # noqa: ARG002
+        initial_goto_duration: float = 0.0,  # noqa: ARG002
     ) -> None:
         """Joue un mouvement enregistré depuis un dataset HuggingFace.
 

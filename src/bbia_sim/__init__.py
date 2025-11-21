@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 BBIA-SIM - Simulation et contrôle du robot Reachy Mini avec IA émotionnelle.
 

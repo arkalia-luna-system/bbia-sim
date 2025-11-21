@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """Sélecteurs de backends IA (TTS/STT/LLM) via variables d'environnement.
 
 Compatibles macOS (CPU/MPS). Aucun paquet lourd requis par défaut.
@@ -78,16 +79,11 @@ class Pyttsx3TTS:
 
                         self._voice_id = get_bbia_voice(engine)
                         engine.setProperty("voice", self._voice_id)
-                    except (AttributeError, RuntimeError, ValueError) as e:
+                    except (AttributeError, RuntimeError, ValueError, TypeError) as e:
                         # Si get_bbia_voice échoue, utiliser voix par défaut
                         logger.debug(
                             "Impossible de définir voix personnalisée, "
                             "utilisation par défaut: %s",
-                            e,
-                        )
-                    except (ValueError, TypeError, AttributeError) as e:
-                        logger.debug(
-                            "Erreur inattendue définition voix personnalisée: %s",
                             e,
                         )
 
@@ -131,7 +127,8 @@ class KittenTTSTTS:
                 logger.debug("Échec synthèse avec impl principale, fallback: %s", e)
             except (ValueError, TypeError, KeyError) as e:
                 logger.debug(
-                    "Erreur inattendue synthèse impl principale, fallback: %s", e
+                    "Erreur inattendue synthèse impl principale, fallback: %s",
+                    e,
                 )
         return self._fallback.synthesize_to_wav(text, outfile)
 
@@ -163,7 +160,8 @@ class KokoroTTS:
                 logger.debug("Échec synthèse avec impl principale, fallback: %s", e)
             except (ValueError, TypeError, KeyError) as e:
                 logger.debug(
-                    "Erreur inattendue synthèse impl principale, fallback: %s", e
+                    "Erreur inattendue synthèse impl principale, fallback: %s",
+                    e,
                 )
         return self._fallback.synthesize_to_wav(text, outfile)
 
@@ -195,7 +193,8 @@ class NeuTTSTTS:
                 logger.debug("Échec synthèse avec impl principale, fallback: %s", e)
             except (ValueError, TypeError, KeyError) as e:
                 logger.debug(
-                    "Erreur inattendue synthèse impl principale, fallback: %s", e
+                    "Erreur inattendue synthèse impl principale, fallback: %s",
+                    e,
                 )
         return self._fallback.synthesize_to_wav(text, outfile)
 
@@ -273,7 +272,8 @@ class OpenVoiceTTSTTS:
 class DummySTT:
     """STT neutre de secours: retourne chaîne vide si non dispo."""
 
-    def transcribe_wav(self, infile: str) -> str | None:
+    def transcribe_wav(self, infile: str) -> str | None:  # noqa: ARG002
+        """Transcrit un fichier WAV (retourne chaîne vide pour DummySTT)."""
         return ""
 
 
@@ -362,11 +362,14 @@ class WhisperSTT:
             )
             text: str = decoded[0] if decoded else ""
             return text
-        except (RuntimeError, ValueError, AttributeError) as e:  # pragma: no cover
+        except (
+            RuntimeError,
+            ValueError,
+            AttributeError,
+            TypeError,
+            KeyError,
+        ) as e:  # pragma: no cover
             logging.getLogger(__name__).warning("Whisper STT erreur: %s", e)
-            return ""
-        except (ValueError, TypeError, KeyError) as e:  # pragma: no cover
-            logging.getLogger(__name__).warning("Erreur inattendue Whisper STT: %s", e)
             return ""
 
 
@@ -418,11 +421,9 @@ class LlamaCppLLM:
             IndexError,
             AttributeError,
             RuntimeError,
+            TypeError,
         ) as e:  # pragma: no cover
             logging.getLogger(__name__).warning("llama.cpp erreur: %s", e)
-            return (prompt or "")[:max_tokens]
-        except (ValueError, TypeError, KeyError) as e:  # pragma: no cover
-            logging.getLogger(__name__).warning("Erreur inattendue llama.cpp: %s", e)
             return (prompt or "")[:max_tokens]
 
 

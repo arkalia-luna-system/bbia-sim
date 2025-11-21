@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """Interface en ligne de commande pour BBIA-SIM."""
 
 import argparse
