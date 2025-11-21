@@ -90,7 +90,7 @@ BBIA-SIM maintient des standards stricts de qualité:
 - **Sécurité**: Analyse statique avec Bandit
 - **Performance**: Optimisations continues et monitoring
 
-**[🚀 Quick Start](#-démarrage-rapide)** | **[📚 Docs Débutant](docs/guides/GUIDE_DEMARRAGE.md)** | **[🔬 Docs Avancé](docs/guides/GUIDE_AVANCE.md)** | **[📋 Projets](docs/reference/PROJECTS.md)**
+**[🚀 Quick Start](#-démarrage-rapide)** | **[📚 Guide de Démarrage](docs/guides/GUIDE_DEMARRAGE.md)** | **[🔬 Docs Avancé](docs/guides/GUIDE_AVANCE.md)** | **[📋 Projets](docs/reference/PROJECTS.md)**
 
 ---
 
@@ -554,7 +554,7 @@ La documentation HTML offre :
 
 **Guides principaux :**
 
-- **[Guide Débutant](docs/guides/GUIDE_DEMARRAGE.md)** : Guide pour débuter
+- **[Guide de Démarrage](docs/guides/GUIDE_DEMARRAGE.md)** : Guide pour démarrer
 - **[Guide Avancé](docs/guides/GUIDE_AVANCE.md)** : Guide avancé
 - **[Vertical Slices](docs/quality/audits/VERTICAL_SLICES_ACCOMPLIS.md)** : Documentation des vertical slices
 - **[Index thématique (par profils)](docs/INDEX_FINAL.md)**
