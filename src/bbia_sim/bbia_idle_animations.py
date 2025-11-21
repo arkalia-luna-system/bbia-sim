@@ -239,7 +239,7 @@ class BBIAPoseTransitionManager:
                         elif hasattr(self.robot_api, "set_target_head_pose"):
                             self.robot_api.set_target_head_pose(head_pose)
 
-                        logger.debug("Transition vers pose: %s", pose['name'])
+                        logger.debug("Transition vers pose: %s", pose["name"])
                         last_pose_time = time.time()
 
                     except ImportError:

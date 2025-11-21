@@ -219,7 +219,7 @@ async def toggle_camera(request: CameraToggleRequest) -> dict[str, Any]:
                 except Exception as e:
                     logger.warning("Erreur toggle caméra au robot: %s", e)
 
-        logger.info("Caméra %s", 'activée' if _camera_enabled else 'désactivée')
+        logger.info("Caméra %s", "activée" if _camera_enabled else "désactivée")
         return {"status": "success", "enabled": _camera_enabled}
     except Exception as e:
         logger.exception("Erreur lors du toggle caméra: %s", e)

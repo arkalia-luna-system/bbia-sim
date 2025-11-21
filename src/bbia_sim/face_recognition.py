@@ -93,7 +93,9 @@ class BBIAPersonRecognition:
             return True
 
         except Exception as e:
-            logger.exception("❌ Erreur enregistrement personne '%s': %s", person_name, e)
+            logger.exception(
+                "❌ Erreur enregistrement personne '%s': %s", person_name, e
+            )
             return False
 
     def recognize_person(

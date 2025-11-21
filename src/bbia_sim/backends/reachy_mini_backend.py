@@ -488,14 +488,18 @@ class ReachyMiniBackend(RobotAPI):
         stewart_idx = int(joint_name.split("_")[1]) - 1  # Convertir 1-6 vers 0-5
 
         if stewart_idx < 0 or stewart_idx > self.STEWART_MAX_INDEX:
-            logger.warning("Index stewart invalide: %s pour %s", stewart_idx, joint_name)
+            logger.warning(
+                "Index stewart invalide: %s pour %s", stewart_idx, joint_name
+            )
             return 0.0
 
         # Structure standard: 6 éléments (indices 0-5)
         if len(head_positions) == self.STEWART_JOINTS_COUNT:
             value = float(head_positions[stewart_idx])
             if not (float("-inf") < value < float("inf")):
-                logger.warning("Valeur invalide (NaN/inf) pour %s: %s", joint_name, value)
+                logger.warning(
+                    "Valeur invalide (NaN/inf) pour %s: %s", joint_name, value
+                )
                 return 0.0
             return value
 
@@ -1149,7 +1153,7 @@ class ReachyMiniBackend(RobotAPI):
             # Propager les ValueError de validation
             raise
         except Exception as e:
-            logger.error(f"Erreur goto_target: {e}", exc_info=True)
+            logger.exception("Erreur goto_target: %s", e)
 
     def enable_motors(self) -> None:
         """Active les moteurs."""

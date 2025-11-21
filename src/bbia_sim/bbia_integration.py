@@ -239,7 +239,9 @@ class BBIAIntegration:
             return False
 
         try:
-            logger.info("🎭 Application émotion '%s' (intensité: %s)", emotion, intensity)
+            logger.info(
+                "🎭 Application émotion '%s' (intensité: %s)", emotion, intensity
+            )
 
             # Mettre à jour l'état BBIA
             self.emotions.set_emotion(emotion, intensity)

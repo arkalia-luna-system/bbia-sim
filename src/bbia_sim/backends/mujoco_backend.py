@@ -110,7 +110,7 @@ class MuJoCoBackend(RobotAPI):
         if self.data is not None:
             self.data.qpos[joint_id] = clamped_position
 
-        logger.debug("Joint %s → %s rad", joint_name, clamped_position:.3f)
+        logger.debug("Joint %s → %.3f rad", joint_name, clamped_position)
         return True
 
     def get_joint_pos(self, joint_name: str) -> float | None:
@@ -293,10 +293,10 @@ class MuJoCoBackend(RobotAPI):
             else:
                 self.viewer.cam.lookat[:] = [0, 0, 0.3]
             logger.debug(
-                (
-                    f"Caméra configurée: azimuth={azimuth}, "
-                    f"elevation={elevation}, distance={distance}"
-                ),
+                "Caméra configurée: azimuth=%s, elevation=%s, distance=%s",
+                azimuth,
+                elevation,
+                distance,
             )
             return True
         except Exception as e:
@@ -370,14 +370,14 @@ class MuJoCoBackend(RobotAPI):
         if head_joints["pitch"]:
             try:
                 self.set_joint_pos(head_joints["pitch"], pose["pitch"])
-                logger.info("Émotion %s: pitch_head = %s", emotion, pose['pitch']:.3f)
+                logger.info("Émotion %s: pitch_head = %.3f", emotion, pose["pitch"])
             except Exception as e:
                 logger.debug("Impossible de bouger pitch_head: %s", e)
 
         if head_joints["yaw"]:
             try:
                 self.set_joint_pos(head_joints["yaw"], pose["yaw"])
-                logger.info("Émotion %s: yaw_head = %s", emotion, pose['yaw']:.3f)
+                logger.info("Émotion %s: yaw_head = %.3f", emotion, pose["yaw"])
             except Exception as e:
                 logger.debug("Impossible de bouger yaw_head: %s", e)
 

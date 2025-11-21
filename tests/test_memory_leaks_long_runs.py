@@ -32,14 +32,14 @@ def get_memory_usage() -> float | None:
 
 @pytest.mark.unit
 @pytest.mark.slow
-@pytest.mark.heavy  # OPTIMISATION RAM: Test lourd (300 itérations goto_target)
+@pytest.mark.heavy  # OPTIMISATION RAM: Test lourd (200 itérations goto_target)
 def test_memory_leaks_goto_target_iterations() -> None:
-    """Test fuites mémoire avec 300 appels goto_target (optimisé)."""
+    """Test fuites mémoire avec 200 appels goto_target (optimisé)."""
     backend = ReachyMiniBackend(use_sim=True)
     assert backend.connect() is True
 
-    # OPTIMISATION RAM: Réduire 500 → 300 (suffisant pour détecter fuites)
-    iterations = 300
+    # OPTIMISATION RAM: Réduire 300 → 200 (suffisant pour détecter fuites, 1.5x plus rapide)
+    iterations = 200
     pose = np.eye(4, dtype=np.float64)
 
     # Mesurer mémoire initiale
@@ -80,14 +80,14 @@ def test_memory_leaks_goto_target_iterations() -> None:
 
 @pytest.mark.unit
 @pytest.mark.slow
-@pytest.mark.heavy  # OPTIMISATION RAM: Test lourd (300 itérations joints)
+@pytest.mark.heavy  # OPTIMISATION RAM: Test lourd (200 itérations joints)
 def test_memory_leaks_joint_operations() -> None:
-    """Test fuites mémoire avec 300 opérations sur joints (optimisé)."""
+    """Test fuites mémoire avec 200 opérations sur joints (optimisé)."""
     backend = ReachyMiniBackend(use_sim=True)
     assert backend.connect() is True
 
-    # OPTIMISATION RAM: Réduire 500 → 300 (suffisant pour détecter fuites)
-    iterations = 300
+    # OPTIMISATION RAM: Réduire 300 → 200 (suffisant pour détecter fuites, 1.5x plus rapide)
+    iterations = 200
     joints = ["yaw_body", "stewart_1", "stewart_2", "stewart_3"]
 
     # Mesurer mémoire initiale

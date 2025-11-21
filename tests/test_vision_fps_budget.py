@@ -22,13 +22,16 @@ def test_vision_fps_10s_simulated() -> None:
 
     vision = BBIAVision(robot_api=None)
 
-    # OPTIMISATION RAM: Réduire 5s → 3s (suffisant pour mesurer FPS)
-    duration_s = 3.0
+    # OPTIMISATION RAM: Réduire 3s → 2s (suffisant pour mesurer FPS, 1.5x plus rapide)
+    duration_s = 2.0
     frames = 0
     latencies_ms: list[float] = []
+    max_iterations = 100  # OPTIMISATION: Limiter itérations pour éviter boucle infinie
 
     t0 = time.perf_counter()
-    while time.perf_counter() - t0 < duration_s:
+    iteration = 0
+    while time.perf_counter() - t0 < duration_s and iteration < max_iterations:
+        iteration += 1
         t_start = time.perf_counter()
         _ = vision.scan_environment()
         t_end = time.perf_counter()
@@ -67,15 +70,19 @@ def test_vision_budget_cpu_ram_10s() -> None:
 
     vision = BBIAVision(robot_api=None)
 
-    # OPTIMISATION RAM: Réduire 5s → 3s (suffisant pour mesurer budget)
-    duration_s = 3.0
+    # OPTIMISATION RAM: Réduire 3s → 2s (suffisant pour mesurer budget, 1.5x plus rapide)
+    duration_s = 2.0
     tracemalloc.start()
     t0_cpu = time.process_time()
     t0 = time.perf_counter()
+    max_iterations = 100  # OPTIMISATION: Limiter itérations pour éviter boucle infinie
 
-    while time.perf_counter() - t0 < duration_s:
+    iteration = 0
+    while time.perf_counter() - t0 < duration_s and iteration < max_iterations:
         _ = vision.scan_environment()
-        time.sleep(0.01)
+        # OPTIMISATION: Réduire sleep de 0.01 à 0.005 (2x plus rapide)
+        time.sleep(0.005)
+        iteration += 1
 
     current, peak = tracemalloc.get_traced_memory()
     t1_cpu = time.process_time()

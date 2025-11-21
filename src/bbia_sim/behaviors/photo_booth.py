@@ -96,7 +96,9 @@ class PhotoBoothBehavior(BBIABehavior):
         auto_capture = context.get("auto_capture", True)
         num_photos = context.get("num_photos", 1)
 
-        logger.info("Démarrage photo booth - Pose: %s, Photos: %s", pose_name, num_photos)
+        logger.info(
+            "Démarrage photo booth - Pose: %s, Photos: %s", pose_name, num_photos
+        )
 
         try:
             for photo_num in range(num_photos):
@@ -191,7 +193,7 @@ class PhotoBoothBehavior(BBIABehavior):
                     method="minjerk",
                 )
 
-            logger.debug("Pose '%s' appliquée: %s", pose_name, pose['description'])
+            logger.debug("Pose '%s' appliquée: %s", pose_name, pose["description"])
             time.sleep(0.8)
 
         except Exception as e:

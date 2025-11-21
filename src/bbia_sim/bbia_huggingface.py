@@ -346,7 +346,9 @@ class BBIAHuggingFace:
 
             # isort: on
 
-            logger.info("📥 Chargement LLM %s (peut prendre 1-2 minutes)...", model_name)
+            logger.info(
+                "📥 Chargement LLM %s (peut prendre 1-2 minutes)...", model_name
+            )
             self.chat_tokenizer = AutoTokenizer.from_pretrained(
                 model_name,
                 cache_dir=self.cache_dir,
@@ -1016,7 +1018,9 @@ class BBIAHuggingFace:
                                     if model_key in self._model_last_used:
                                         del self._model_last_used[model_key]
                         except Exception as e:
-                            logger.debug("Erreur déchargement auto %s: %s", model_key, e)
+                            logger.debug(
+                                "Erreur déchargement auto %s: %s", model_key, e
+                            )
 
                 except Exception as e:
                     logger.debug("Erreur boucle déchargement auto: %s", e)
@@ -1661,7 +1665,9 @@ class BBIAHuggingFace:
                         return f"⚠️ {error_detail}"
 
                     except Exception as e:
-                        logger.exception("❌ Erreur exécution outil '%s': %s", tool_name, e)
+                        logger.exception(
+                            "❌ Erreur exécution outil '%s': %s", tool_name, e
+                        )
                         return f"❌ Erreur lors de l'exécution: {e}"
 
         # Aucun outil détecté

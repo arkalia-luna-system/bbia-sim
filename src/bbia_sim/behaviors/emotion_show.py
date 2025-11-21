@@ -240,7 +240,9 @@ class EmotionShowBehavior(BBIABehavior):
                         dire_texte(explanation, robot_api=self.robot_api)
                         logger.info("Explication vocale: %s", explanation)
                     except Exception as e:
-                        logger.warning("Erreur explication vocale pour %s: %s", emotion, e)
+                        logger.warning(
+                            "Erreur explication vocale pour %s: %s", emotion, e
+                        )
 
                 # Maintenir l'émotion selon durée adaptative (pré-charger la durée)
                 duration = EMOTION_DURATIONS.get(emotion, 2.5)
@@ -321,7 +323,9 @@ class EmotionShowBehavior(BBIABehavior):
             sdk_emotion, intensity = EMOTION_SDK_MAP.get(emotion, ("neutral", 0.7))
 
             self.robot_api.set_emotion(sdk_emotion, intensity)
-            logger.debug("Émotion appliquée: %s (intensité: %s)", sdk_emotion, intensity)
+            logger.debug(
+                "Émotion appliquée: %s (intensité: %s)", sdk_emotion, intensity
+            )
 
             # Mouvements expressifs selon émotion
             self._apply_expressive_movement(emotion)

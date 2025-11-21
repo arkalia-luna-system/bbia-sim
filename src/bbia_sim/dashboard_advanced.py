@@ -146,22 +146,26 @@ class BBIAAdvancedWebSocketManager:
                             if connected:
                                 if self.robot_backend == "mujoco":
                                     logger.info(
-                                        f"✅ Robot {self.robot_backend} initialisé (mode simulation)"
+                                        "✅ Robot %s initialisé (mode simulation)",
+                                        self.robot_backend,
                                     )
                                 else:
                                     logger.info(
-                                        f"✅ Robot {self.robot_backend} connecté automatiquement"
+                                        "✅ Robot %s connecté automatiquement",
+                                        self.robot_backend,
                                     )
                             else:
                                 logger.warning(
-                                    f"⚠️ Robot {self.robot_backend} en mode simulation"
+                                    "⚠️ Robot %s en mode simulation",
+                                    self.robot_backend,
                                 )
                         else:
                             logger.error(
-                                f"❌ RobotFactory.create_backend('{self.robot_backend}') a retourné None"
+                                "❌ RobotFactory.create_backend('%s') a retourné None",
+                                self.robot_backend,
                             )
                 except Exception as e:
-                    logger.error(f"❌ Erreur initialisation robot: {e}", exc_info=True)
+                    logger.exception("❌ Erreur initialisation robot: %s", e)
                     # En cas d'erreur, le dashboard fonctionne quand même en mode simulation
                     logger.info(
                         "ℹ️ Dashboard fonctionne en mode simulation (sans robot réel)"
@@ -3309,7 +3313,7 @@ if FASTAPI_AVAILABLE:
                 message = json.loads(data)
 
                 # Traiter commande ou chat
-                logger.info("📨 [WS] Message reçu, type: %s", message.get('type'))
+                logger.info("📨 [WS] Message reçu, type: %s", message.get("type"))
                 if message.get("type") == "command":
                     logger.info("🎯 [WS] Traitement commande")
                     await handle_advanced_robot_command(message)
@@ -3417,7 +3421,9 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                                 pass
 
                     if success:
-                        logger.info("✅ [CMD] Émotion %s appliquée avec succès", emotion)
+                        logger.info(
+                            "✅ [CMD] Émotion %s appliquée avec succès", emotion
+                        )
                         await advanced_websocket_manager.send_log_message(
                             "info",
                             f"✅ Émotion définie: {emotion} (intensité: {intensity})",
@@ -3624,7 +3630,7 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                         f"❌ Échec joint {joint}",
                     )
             except Exception as e:
-                logger.error(f"❌ Erreur set_joint_pos: {e}", exc_info=True)
+                logger.exception("❌ Erreur set_joint_pos: %s", e)
                 await advanced_websocket_manager.send_log_message(
                     "error",
                     f"❌ Erreur joint {joint}: {e}",
@@ -3768,7 +3774,7 @@ async def handle_chat_message(message_data: dict[str, Any], websocket: WebSocket
                 "timestamp": datetime.now().isoformat(),
             }
             logger.info(
-                f"📤 [CHAT] Envoi réponse BBIA ({len(bbia_response)} caractères)"
+                "📤 [CHAT] Envoi réponse BBIA (%d caractères)", len(bbia_response)
             )
             response_json = json.dumps(chat_response_bbia)
             logger.debug("📤 [CHAT] JSON réponse: %s...", response_json[:100])

@@ -492,7 +492,9 @@ class VisionTrackingBehavior(BBIABehavior):
                         try:
                             self.robot_api.set_emotion("curious", 0.6)
                         except Exception as e2:
-                            logger.exception("Erreur même avec fallback émotion: %s", e2)
+                            logger.exception(
+                                "Erreur même avec fallback émotion: %s", e2
+                            )
 
             return True
 
@@ -552,7 +554,9 @@ class ConversationBehavior(BBIABehavior):
                 ),
             )
         except (ImportError, Exception) as e:
-            logger.info("ℹ️  BBIAHuggingFace non disponible - Mode enrichi activé: %s", e)
+            logger.info(
+                "ℹ️  BBIAHuggingFace non disponible - Mode enrichi activé: %s", e
+            )
             self.hf_chat = None
 
         # Système de réponses enrichies (fallback)
