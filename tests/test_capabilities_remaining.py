@@ -14,6 +14,7 @@ from bbia_sim.ai_backends import (
     OpenVoiceTTSTTS,
     SpeechToText,
 )
+
 # SimpleMove est une classe interne dans create_move_from_positions, non exportable
 from bbia_sim.backends.simulation_shims import (
     SimulationCamera,
