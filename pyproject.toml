@@ -150,8 +150,8 @@ addopts = [
     "--strict-markers",
     "--disable-warnings",
     "--import-mode=importlib",
-    # Ne pas arrêter tôt pour que la couverture reflète toute la suite
-    "--maxfail=0",
+    # Arrêter après 50 échecs pour éviter les boucles infinies
+    "--maxfail=50",
     "--durations=10",
     # Couverture standardisée (même chemin que [tool.coverage.run].source)
     "--cov=src/bbia_sim",
