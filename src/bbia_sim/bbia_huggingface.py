@@ -473,7 +473,8 @@ class BBIAHuggingFace:
                 # Modèles chat stockés dans self.chat_model et self.chat_tokenizer
                 if self.chat_model is not None and self.chat_tokenizer is not None:
                     logger.debug(
-                        f"♻️ Modèle chat déjà chargé ({resolved_name}), réutilisation",
+                        "♻️ Modèle chat déjà chargé (%s), réutilisation",
+                        resolved_name,
                     )
                     return True
             elif model_type == "nlp":

@@ -180,7 +180,9 @@ class ReachyBackend(RobotAPI):
                         )
                     else:
                         # Fallback: mise à jour directe si méthode disponible
-                        logger.warning("Méthode goto_target non disponible pour %s", joint_name)
+                        logger.warning(
+                            "Méthode goto_target non disponible pour %s", joint_name
+                        )
                 elif joint_name.startswith("stewart_"):
                     # Joints Stewart platform - utiliser head joint positions
                     # Le SDK attend un tableau de 6 positions pour la tête
@@ -194,7 +196,9 @@ class ReachyBackend(RobotAPI):
                                 head=head_positions, duration=0.1
                             )
                     else:
-                        logger.warning("Méthode goto_target non disponible pour %s", joint_name)
+                        logger.warning(
+                            "Méthode goto_target non disponible pour %s", joint_name
+                        )
 
                 # Mettre à jour cache local pour cohérence
                 self.simulated_joints[joint_name] = clamped_position
@@ -203,14 +207,18 @@ class ReachyBackend(RobotAPI):
                 )
                 return True
             except Exception as e:
-                logger.warning("Erreur envoi commande robot réel: %s - bascule simulation", e)
+                logger.warning(
+                    "Erreur envoi commande robot réel: %s - bascule simulation", e
+                )
                 # Fallback: simulation si erreur
                 self.simulated_joints[joint_name] = clamped_position
                 return True
         else:
             # Mode simulation
             self.simulated_joints[joint_name] = clamped_position
-                logger.debug("Joint %s → %.3f rad (simulation)", joint_name, clamped_position)
+            logger.debug(
+                "Joint %s → %.3f rad (simulation)", joint_name, clamped_position
+            )
             return True
 
     def get_joint_pos(self, joint_name: str) -> float | None:
