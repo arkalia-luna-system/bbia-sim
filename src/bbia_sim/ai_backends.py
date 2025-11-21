@@ -339,7 +339,7 @@ class WhisperSTT:
         ) as e:  # pragma: no cover - environnement sans deps
             logging.getLogger(__name__).info("Whisper indisponible: %s", e)
             self._ready = False
-        except Exception as e:  # pragma: no cover - environnement sans deps
+        except (ValueError, TypeError, AttributeError) as e:  # pragma: no cover
             logging.getLogger(__name__).info("Erreur inattendue Whisper: %s", e)
             self._ready = False
 
@@ -365,7 +365,7 @@ class WhisperSTT:
         except (RuntimeError, ValueError, AttributeError) as e:  # pragma: no cover
             logging.getLogger(__name__).warning("Whisper STT erreur: %s", e)
             return ""
-        except Exception as e:  # pragma: no cover
+        except (ValueError, TypeError, KeyError) as e:  # pragma: no cover
             logging.getLogger(__name__).warning("Erreur inattendue Whisper STT: %s", e)
             return ""
 
@@ -398,7 +398,7 @@ class LlamaCppLLM:
         except (ImportError, RuntimeError, OSError) as e:  # pragma: no cover
             logging.getLogger(__name__).info("llama.cpp indisponible: %s", e)
             self._ready = False
-        except Exception as e:  # pragma: no cover
+        except (ValueError, TypeError, AttributeError) as e:  # pragma: no cover
             logging.getLogger(__name__).info("Erreur inattendue llama.cpp: %s", e)
             self._ready = False
 
@@ -421,7 +421,7 @@ class LlamaCppLLM:
         ) as e:  # pragma: no cover
             logging.getLogger(__name__).warning("llama.cpp erreur: %s", e)
             return (prompt or "")[:max_tokens]
-        except Exception as e:  # pragma: no cover
+        except (ValueError, TypeError, KeyError) as e:  # pragma: no cover
             logging.getLogger(__name__).warning("Erreur inattendue llama.cpp: %s", e)
             return (prompt or "")[:max_tokens]
 
