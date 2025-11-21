@@ -273,6 +273,9 @@ class BBIAHuggingFace:
         except (AttributeError, RuntimeError) as e:
             logger.warning("Erreur initialisation BBIAChat: %s", e)
             self.bbia_chat = None
+        except (ImportError, RuntimeError, AttributeError) as e:
+            logger.warning("Erreur initialisation BBIAChat: %s", e)
+            self.bbia_chat = None
         except Exception as e:
             logger.warning("Erreur inattendue initialisation BBIAChat: %s", e)
             self.bbia_chat = None
@@ -434,6 +437,8 @@ class BBIAHuggingFace:
             except (ImportError, RuntimeError, OSError, ValueError) as e:
                 logger.warning("⚠️ Échec chargement SmolVLM2/Moondream2: %s", e)
                 return False
+            except (ImportError, RuntimeError, OSError, ValueError) as e:
+                logger.warning("⚠️ Erreur chargement SmolVLM2/Moondream2: %s", e)
             except Exception as e:
                 logger.warning(
                     "⚠️ Erreur inattendue chargement SmolVLM2/Moondream2: %s", e
@@ -647,8 +652,11 @@ class BBIAHuggingFace:
 
             return True
 
-        except Exception as e:
+        except (ImportError, RuntimeError, OSError, ValueError, AttributeError) as e:
             logger.exception("❌ Erreur chargement modèle %s: %s", model_name, e)
+            return False
+        except Exception as e:
+            logger.exception("❌ Erreur inattendue chargement modèle %s: %s", model_name, e)
             return False
 
     def _get_pipeline_name(self, model_name: str) -> str:
@@ -750,8 +758,11 @@ class BBIAHuggingFace:
                 "Erreur (describe_image): modèle non supporté — vérifiez le nom choisi"
             )
 
-        except Exception as e:
+        except (ValueError, RuntimeError, AttributeError, OSError) as e:
             logger.exception("❌ Erreur description image: %s", e)
+            return "Erreur (describe_image): échec de génération de description d'image"
+        except Exception as e:
+            logger.exception("❌ Erreur inattendue description image: %s", e)
             return "Erreur (describe_image): échec de génération de description d'image"
 
     def analyze_sentiment(
@@ -785,8 +796,11 @@ class BBIAHuggingFace:
                 "model": model_name,
             }
 
-        except Exception as e:
+        except (ValueError, RuntimeError, AttributeError, KeyError) as e:
             logger.exception("❌ Erreur analyse sentiment: %s", e)
+            return {"error": str(e)}
+        except Exception as e:
+            logger.exception("❌ Erreur inattendue analyse sentiment: %s", e)
             return {"error": str(e)}
 
     def analyze_emotion(
@@ -818,8 +832,11 @@ class BBIAHuggingFace:
                 "model": model_name,
             }
 
-        except Exception as e:
+        except (ValueError, RuntimeError, AttributeError, KeyError) as e:
             logger.exception("❌ Erreur analyse émotion: %s", e)
+            return {"error": str(e)}
+        except Exception as e:
+            logger.exception("❌ Erreur inattendue analyse émotion: %s", e)
             return {"error": str(e)}
 
     def transcribe_audio(self, audio_path: str, model_name: str = "whisper") -> str:
@@ -862,8 +879,11 @@ class BBIAHuggingFace:
 
             return str(transcription)
 
-        except Exception as e:
+        except (OSError, RuntimeError, ValueError, AttributeError) as e:
             logger.exception("❌ Erreur transcription audio: %s", e)
+            return "Erreur (transcribe_audio): problème pendant la transcription audio"
+        except Exception as e:
+            logger.exception("❌ Erreur inattendue transcription audio: %s", e)
             return "Erreur (transcribe_audio): problème pendant la transcription audio"
 
     def answer_question(
@@ -905,8 +925,11 @@ class BBIAHuggingFace:
 
             return str(answer)
 
-        except Exception as e:
+        except (ValueError, RuntimeError, AttributeError, OSError) as e:
             logger.exception("❌ Erreur VQA: %s", e)
+            return "Erreur (answer_question): échec de l'analyse visuelle (VQA)"
+        except Exception as e:
+            logger.exception("❌ Erreur inattendue VQA: %s", e)
             return "Erreur (answer_question): échec de l'analyse visuelle (VQA)"
 
     def get_available_models(self) -> dict[str, list[str]]:
@@ -965,13 +988,17 @@ class BBIAHuggingFace:
         try:
             if hasattr(self, "chat_model") and self.chat_model is not None:
                 del self.chat_model
+        except (AttributeError, RuntimeError) as e:
+            logger.debug("Erreur suppression chat_model: %s", e)
         except Exception as e:
-            logger.debug("Erreur lors de la suppression de chat_model: %s", e)
+            logger.debug("Erreur inattendue suppression chat_model: %s", e)
         try:
             if hasattr(self, "chat_tokenizer") and self.chat_tokenizer is not None:
                 del self.chat_tokenizer
+        except (AttributeError, RuntimeError) as e:
+            logger.debug("Erreur suppression chat_tokenizer: %s", e)
         except Exception as e:
-            logger.debug("Erreur lors de la suppression de chat_tokenizer: %s", e)
+            logger.debug("Erreur inattendue suppression chat_tokenizer: %s", e)
 
         self.chat_model = None
         self.chat_tokenizer = None
@@ -1050,9 +1077,11 @@ class BBIAHuggingFace:
                                 with self._unload_thread_lock:
                                     if model_key in self._model_last_used:
                                         del self._model_last_used[model_key]
+                        except (AttributeError, RuntimeError, KeyError) as e:
+                            logger.debug("Erreur déchargement auto %s: %s", model_key, e)
                         except Exception as e:
                             logger.debug(
-                                "Erreur déchargement auto %s: %s", model_key, e
+                                "Erreur inattendue déchargement auto %s: %s", model_key, e
                             )
 
                 except Exception as e:
@@ -1119,8 +1148,11 @@ class BBIAHuggingFace:
             logger.info("🗑️ Modèle %s déchargé - Mémoire libérée", model_name)
             return True
 
-        except Exception as e:
+        except (AttributeError, RuntimeError, KeyError) as e:
             logger.exception("❌ Erreur déchargement modèle %s: %s", model_name, e)
+            return False
+        except Exception as e:
+            logger.exception("❌ Erreur inattendue déchargement modèle %s: %s", model_name, e)
             return False
 
     def get_model_info(self) -> dict[str, Any]:
@@ -1192,8 +1224,10 @@ class BBIAHuggingFace:
                           )
                         if self.load_model(default_chat_model, model_type="chat"):
                             logger.info("✅ LLM chargé avec succès (lazy loading)")
-                except Exception as e:
+                except (ImportError, RuntimeError, OSError, ValueError) as e:
                     logger.debug("Lazy loading LLM échoué (fallback enrichi): %s", e)
+                except Exception as e:
+                    logger.debug("Lazy loading LLM échoué inattendu (fallback enrichi): %s", e)
 
             # 3. Générer réponse avec LLM si disponible, sinon réponses enrichies
             # Convertir SentimentResult en SentimentDict (nécessaire pour les deux branches)
@@ -1433,8 +1467,10 @@ class BBIAHuggingFace:
                 else self._safe_fallback()
             )
 
-        except Exception as e:
+        except (ValueError, RuntimeError, AttributeError, OSError) as e:
             logger.warning("⚠️  Erreur génération LLM, fallback enrichi: %s", e)
+        except Exception as e:
+            logger.warning("⚠️  Erreur inattendue génération LLM, fallback enrichi: %s", e)
             # Fallback vers réponses enrichies
             try:
                 sentiment_result = self.analyze_sentiment(user_message)
@@ -1701,9 +1737,12 @@ class BBIAHuggingFace:
                         )
                         return f"⚠️ {error_detail}"
 
+                    except (AttributeError, RuntimeError, ValueError, KeyError) as e:
+                        logger.exception("❌ Erreur exécution outil '%s': %s", tool_name, e)
+                        return f"❌ Erreur lors de l'exécution: {e}"
                     except Exception as e:
                         logger.exception(
-                            "❌ Erreur exécution outil '%s': %s", tool_name, e
+                            "❌ Erreur inattendue exécution outil '%s': %s", tool_name, e
                         )
                         return f"❌ Erreur lors de l'exécution: {e}"
 
@@ -1804,8 +1843,11 @@ class BBIAHuggingFace:
 
             return None
 
-        except Exception as e:
+        except (ImportError, RuntimeError, AttributeError, ValueError) as e:
             logger.debug("ℹ️ Erreur NLP détection (fallback mots-clés): %s", e)
+            return None
+        except Exception as e:
+            logger.debug("ℹ️ Erreur inattendue NLP détection (fallback mots-clés): %s", e)
             return None
 
     def _execute_detected_tool(
@@ -1947,8 +1989,11 @@ class BBIAHuggingFace:
             logger.warning("⚠️ Erreur outil '%s': %s", tool_name, error_detail)
             return f"⚠️ {error_detail}"
 
-        except Exception as e:
+        except (AttributeError, RuntimeError, ValueError, KeyError) as e:
             logger.exception("❌ Erreur exécution outil '%s': %s", tool_name, e)
+            return f"❌ Erreur lors de l'exécution: {e}"
+        except Exception as e:
+            logger.exception("❌ Erreur inattendue exécution outil '%s': %s", tool_name, e)
             return f"❌ Erreur lors de l'exécution: {e}"
 
     def _extract_angle(self, message: str) -> float | None:
