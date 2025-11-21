@@ -254,7 +254,8 @@ class BBIAAdvancedWebSocketManager:
         if websocket in self._connection_last_activity:
             del self._connection_last_activity[websocket]
         logger.info(
-            f"🔌 WebSocket avancé déconnecté ({len(self.active_connections)} connexions)",
+            "🔌 WebSocket avancé déconnecté (%d connexions)",
+            len(self.active_connections),
         )
         # Arrêter la collecte de métriques si plus aucune connexion
         if len(self.active_connections) == 0:

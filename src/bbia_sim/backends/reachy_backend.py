@@ -74,11 +74,11 @@ class ReachyBackend(RobotAPI):
             try:
                 from reachy_mini import ReachyMini
 
-                  logger.info(
-                      "Tentative de connexion au robot Reachy Mini: %s:%s",
-                      self.robot_ip,
-                      self.robot_port,
-                  )
+                logger.info(
+                    "Tentative de connexion au robot Reachy Mini: %s:%s",
+                    self.robot_ip,
+                    self.robot_port,
+                )
 
                 # Connexion avec timeout court pour éviter blocage
                 self.robot_sdk = ReachyMini(

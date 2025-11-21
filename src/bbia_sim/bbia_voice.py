@@ -456,11 +456,11 @@ def reconnaitre_parole(
                     logging.info("✅ Texte reconnu (SDK 4 microphones) : %s", texte)
                     return str(texte)
         except Exception as e:
-                logging.debug(
-                    "Erreur reconnaissance SDK (fallback speech_recognition): %s",
-                    e,
-                )
-            # Fallback vers speech_recognition
+            logging.debug(
+                "Erreur reconnaissance SDK (fallback speech_recognition): %s",
+                e,
+            )
+        # Fallback vers speech_recognition
 
     # Fallback: speech_recognition (compatibilité)
     try:
@@ -470,16 +470,16 @@ def reconnaitre_parole(
                 logging.info("Écoute du micro pour la reconnaissance vocale...")
                 audio = r.listen(source, phrase_time_limit=duree)
                 texte = r.recognize_google(audio, language="fr-FR")
-                logging.info(f"Texte reconnu : {texte}")
+                logging.info("Texte reconnu : %s", texte)
                 return str(texte)
             except sr.UnknownValueError:
                 logging.warning("Aucune parole reconnue.")
                 return None
             except Exception as e:
-                logging.exception(f"Erreur de reconnaissance vocale : {e}")
+                logging.exception("Erreur de reconnaissance vocale : %s", e)
                 return None
     except Exception as e:
-        logging.exception(f"Erreur d'accès au microphone : {e}")
+        logging.exception("Erreur d'accès au microphone : %s", e)
         logging.warning(
             "La reconnaissance vocale nécessite pyaudio. "
             "Installez-le avec : pip install pyaudio",

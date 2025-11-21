@@ -98,8 +98,11 @@ def _create_cached_head_pose(
         )
         # Retourner une copie pour éviter modification du cache
         return pose.copy() if hasattr(pose, "copy") else pose
-    except Exception as e:
+    except (ValueError, RuntimeError, AttributeError) as e:
         logger.debug("Erreur création pose cache: %s, fallback identité", e)
+        return np.eye(4, dtype=np.float64)
+    except Exception as e:
+        logger.debug("Erreur inattendue création pose cache: %s, fallback identité", e)
         return np.eye(4, dtype=np.float64)
 
 
@@ -919,8 +922,10 @@ class ReachyMiniBackend(RobotAPI):
                             logger.debug(
                                 f"Format IMU non standard: {type(imu_raw)}",
                             )
-                except Exception as imu_err:
+                except (AttributeError, RuntimeError) as imu_err:
                     logger.debug("IMU non disponible: %s", imu_err)
+                except Exception as imu_err:
+                    logger.debug("Erreur inattendue IMU: %s", imu_err)
 
             telemetry = {
                 "step_count": self.step_count,
