@@ -393,10 +393,10 @@ class ReachyMiniBackend(RobotAPI):
                                 "Activation emergency_stop...",
                                 e,
                             )
-                        # Demander l'arrêt du watchdog avant emergency_stop
-                        self._should_stop_watchdog.set()
-                        self.emergency_stop()
-                        break
+                            # Demander l'arrêt du watchdog avant emergency_stop
+                            self._should_stop_watchdog.set()
+                            self.emergency_stop()
+                            break
                     else:
                         # Mode simulation: heartbeat automatique
                         self._last_heartbeat = current_time
@@ -574,13 +574,14 @@ class ReachyMiniBackend(RobotAPI):
         """Valide les joints Stewart (ne peuvent pas être contrôlés individuellement)."""
         if joint_name.startswith("stewart_"):
             logger.warning(
-                f"⚠️  Tentative de contrôle individuel du joint {joint_name} - "
-                f"Ce joint ne peut PAS être contrôlé individuellement "
-                f"(plateforme Stewart utilise IK).\n"
-                f"   → Utilisez goto_target() ou set_target_head_pose() "
-                f"avec create_head_pose() pour contrôler la tête via la "
-                f"cinématique inverse, ou utilisez look_at_world() pour "
-                f"regarder vers un point.",
+                "⚠️  Tentative de contrôle individuel du joint %s - "
+                "Ce joint ne peut PAS être contrôlé individuellement "
+                "(plateforme Stewart utilise IK).\n"
+                "   → Utilisez goto_target() ou set_target_head_pose() "
+                "avec create_head_pose() pour contrôler la tête via la "
+                "cinématique inverse, ou utilisez look_at_world() pour "
+                "regarder vers un point.",
+                joint_name,
             )
             return False
         return True
@@ -653,10 +654,11 @@ class ReachyMiniBackend(RobotAPI):
         """Gestion joints Stewart (retourne False - IK requise)."""
         if joint_name in ["stewart_4", "stewart_5", "stewart_6"]:
             logger.warning(
-                f"Les joints {joint_name} ne peuvent pas être contrôlés "
-                f"individuellement via l'API SDK car la plateforme Stewart "
-                f"utilise la cinématique inverse. Utilisez goto_target() ou "
-                f"set_target_head_pose() avec une pose complète.",
+                "Les joints %s ne peuvent pas être contrôlés "
+                "individuellement via l'API SDK car la plateforme Stewart "
+                "utilise la cinématique inverse. Utilisez goto_target() ou "
+                "set_target_head_pose() avec une pose complète.",
+                joint_name,
             )
             return False
 
