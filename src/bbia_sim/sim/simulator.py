@@ -103,7 +103,7 @@ class MuJoCoSimulator:
             # Log moins fréquent pour éviter le spam
             if step_count % 10000 == 0:
                 elapsed = time.monotonic() - start_time
-                logger.info("Step %s - Temps écoulé: %ss", step_count, elapsed:.2f)
+                logger.info("Step %s - Temps écoulé: %.2fs", step_count, elapsed)
 
             # OPTIMISATION RAM: Limite obligatoire pour éviter boucles infinies
             if duration is None and step_count > 10000:

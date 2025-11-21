@@ -376,7 +376,7 @@ class BBIATools:
         enabled = parameters.get("enabled", True)
         self.head_tracking_enabled = enabled
 
-        logger.info("Suivi visage: %s", 'activé' if enabled else 'désactivé')
+        logger.info("Suivi visage: %s", "activé" if enabled else "désactivé")
 
         # Intégration VisionTrackingBehavior pour activation réelle
         if enabled and self.vision and self.robot_api:
@@ -554,7 +554,7 @@ class BBIATools:
         """Ne fait rien (inactivité)."""
         duration = parameters.get("duration", 2.0)
 
-        logger.info("Mode inactif pendant %ss", duration:.1f)
+        logger.info("Mode inactif pendant %.1fs", duration)
 
         # Ne rien faire - le robot reste dans sa position actuelle
         return {

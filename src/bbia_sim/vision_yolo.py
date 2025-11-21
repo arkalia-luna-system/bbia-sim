@@ -153,7 +153,7 @@ class YOLODetector:
             model = YOLO(f"yolov8{self.model_size}.pt")
 
             load_time = time_module.time() - start_time
-            logger.info("✅ Modèle YOLO chargé en %ss", load_time:.1f)
+            logger.info("✅ Modèle YOLO chargé en %.1fs", load_time)
 
             # OPTIMISATION RAM: Mettre en cache avec timestamp
             with _yolo_cache_lock:
@@ -459,7 +459,9 @@ class YOLODetector:
                 "bbox": detection["bbox"],
             }
 
-            logger.info("🎯 Détection mappée: %s → %s (%s)", class_name, action, direction)
+            logger.info(
+                "🎯 Détection mappée: %s → %s (%s)", class_name, action, direction
+            )
             return action_data
 
         return None

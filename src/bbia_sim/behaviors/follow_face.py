@@ -231,7 +231,7 @@ class FollowFaceBehavior(BBIABehavior):
                 # Validation coordonnées
                 if -2.0 <= x <= 2.0 and -2.0 <= y <= 2.0 and -1.0 <= z <= 1.0:
                     self.robot_api.look_at_world(x, y, z, duration=0.5)
-                    logger.debug("Suivi visage vers 3D (%s, %s, %s)", x:.2f, y:.2f, z:.2f)
+                    logger.debug("Suivi visage vers 3D (%.2f, %.2f, %.2f)", x, y, z)
 
         except Exception as e:
             logger.warning("Erreur suivi visage: %s", e)

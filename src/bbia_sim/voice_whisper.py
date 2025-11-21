@@ -131,7 +131,7 @@ class WhisperSTT:
             model = whisper.load_model(self.model_size)
 
             load_time = time.time() - start_time
-            logger.info("✅ Modèle Whisper chargé en %ss", load_time:.1f)
+            logger.info("✅ Modèle Whisper chargé en %.1fs", load_time)
 
             # OPTIMISATION RAM: Mettre en cache global avec timestamp
             with _whisper_model_cache_lock:

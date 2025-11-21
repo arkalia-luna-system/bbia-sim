@@ -207,7 +207,7 @@ class BBIAAdaptiveBehavior:
             return False
 
         self.current_context = context
-        logger.info("🎭 Contexte changé: %s (confiance: %s)", context, confidence:.2f)
+        logger.info("🎭 Contexte changé: %s (confiance: %.2f)", context, confidence)
         return True
 
     def set_emotion_state(self, emotion: str, intensity: float = 0.5) -> bool:
