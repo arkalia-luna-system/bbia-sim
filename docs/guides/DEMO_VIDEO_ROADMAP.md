@@ -186,6 +186,6 @@ Une fois les vidéos créées, elles seront intégrées dans :
 ## 🎯 Navigation
 
 **Retour à** : [README Documentation](../README.md)  
-**Voir aussi** : [Guide Débutant](GUIDE_DEMARRAGE.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)
+**Voir aussi** : [Guide de Démarrage](GUIDE_DEMARRAGE.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)
 
 **Contribuer** : Si vous souhaitez contribuer à la création de ces vidéos, contactez les maintainers via GitHub Issues.

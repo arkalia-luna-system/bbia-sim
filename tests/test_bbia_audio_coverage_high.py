@@ -121,13 +121,15 @@ class TestBBIAAudioCoverageHigh(unittest.TestCase):
             def hasattr_side_effect(obj, attr):
                 if obj == mock_robot and attr == "media":
                     return True
-                elif hasattr(obj, "__class__") and obj.__class__.__name__ == "MagicMock":
+                elif (
+                    hasattr(obj, "__class__") and obj.__class__.__name__ == "MagicMock"
+                ):
                     # Pour les autres objets mock, utiliser le comportement par défaut
                     return hasattr(obj, attr)
                 return False
-            
+
             mock_hasattr.side_effect = hasattr_side_effect
-            
+
             mock_sd = MagicMock()
             mock_sd.rec.return_value = np.zeros((16000, 1), dtype="int16")
             mock_get_sd.return_value = mock_sd
@@ -135,7 +137,9 @@ class TestBBIAAudioCoverageHigh(unittest.TestCase):
             mock_wf = MagicMock()
             mock_wave.return_value.__enter__.return_value = mock_wf
 
-            result = bbia_audio.enregistrer_audio(self.test_file, duree=1, robot_api=mock_robot)
+            result = bbia_audio.enregistrer_audio(
+                self.test_file, duree=1, robot_api=mock_robot
+            )
             self.assertTrue(result)
 
     @patch("os.environ.get", return_value="0")

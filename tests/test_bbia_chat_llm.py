@@ -103,7 +103,9 @@ class TestBBIAChat:
         # Mock create_head_pose (importé dans _execute_action depuis reachy_mini.utils)
         # Patcher le module reachy_mini.utils avant l'import dans la fonction
         mock_pose = MagicMock()
-        with patch("reachy_mini.utils.create_head_pose", return_value=mock_pose) as mock_create:
+        with patch(
+            "reachy_mini.utils.create_head_pose", return_value=mock_pose
+        ) as mock_create:
             # Test look_right
             chat._execute_action({"action": "look_right"})
             # Vérifier que goto_target a été appelé (si SDK disponible)

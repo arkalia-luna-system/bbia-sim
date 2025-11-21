@@ -8,7 +8,7 @@
 Bienvenue dans la communauté BBIA-SIM ! Ce guide vous aidera à contribuer efficacement au projet.
 
 > **💡 Nouveau contributeur ?**  
-> Commencez par consulter les [Good First Issues](../getting-started/contributing.md) pour trouver des tâches adaptées aux débutants.
+> Commencez par consulter les [Good First Issues](../getting-started/contributing.md) pour trouver des tâches adaptées aux nouveaux contributeurs.
 
 ---
 
@@ -193,7 +193,7 @@ pytest tests/test_bbia_voice.py -v
 
 ## 📚 Zones de Contribution
 
-### Pour les Débutants 🟢
+### Pour les Nouveaux Contributeurs 🟢
 
 **Bons premiers pas** :
 
