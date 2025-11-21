@@ -4,6 +4,9 @@
 Ce fichier complète test_capabilities_completeness.py pour atteindre 100% d'utilisation.
 """
 
+import os
+import tempfile
+
 import pytest
 
 from bbia_sim.ai_backends import (
@@ -371,9 +374,6 @@ class TestAIBackends:
             assert stt is not None
             # Test que l'implémentation respecte le protocol
             # Utilise un fichier temporaire vide pour tester (retournera None ou "")
-            import tempfile
-            import os
-
             with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as tmp:
                 tmp_path = tmp.name
             try:
