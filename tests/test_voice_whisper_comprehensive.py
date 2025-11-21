@@ -28,6 +28,31 @@ from bbia_sim.voice_whisper import (
 )
 
 
+# OPTIMISATION: Fixtures communes pour réduire la duplication
+@pytest.fixture
+def clear_whisper_cache():
+    """Fixture pour vider le cache Whisper avant chaque test."""
+    import bbia_sim.voice_whisper as voice_whisper_module
+
+    voice_whisper_module._whisper_models_cache.clear()
+    yield
+    voice_whisper_module._whisper_models_cache.clear()
+
+
+@pytest.fixture
+def mock_whisper_model():
+    """Fixture pour créer un mock de modèle Whisper."""
+    mock_model = MagicMock()
+    mock_model.transcribe.return_value = {"text": "test transcription"}
+    return mock_model
+
+
+@pytest.fixture
+def mock_audio_data():
+    """Fixture pour créer des données audio mockées."""
+    return np.random.rand(8000).astype(np.float32)
+
+
 @pytest.mark.unit
 @pytest.mark.fast
 class TestWhisperSTT:
