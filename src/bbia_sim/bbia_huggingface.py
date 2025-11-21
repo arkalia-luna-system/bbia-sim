@@ -448,7 +448,7 @@ class BBIAHuggingFace:
                 return cfg[model_name]
         except Exception as e:
             logger.debug(
-                f"Erreur lors de la résolution du nom de modèle '{model_name}': {e}"
+                "Erreur lors de la résolution du nom de modèle '%s': %s", model_name, e
             )
         return model_name
 
@@ -1009,8 +1009,9 @@ class BBIAHuggingFace:
                             if len(parts) == 2:
                                 model_name = parts[0]
                                 logger.debug(
-                                    f"🗑️ Déchargement auto modèle inactif "
-                                    f"({inactivity:.0f}s): {model_key}"
+                                    "🗑️ Déchargement auto modèle inactif " "(%.0fs): %s",
+                                    inactivity,
+                                    model_key,
                                 )
                                 self.unload_model(model_name)
                                 # Supprimer du tracking
@@ -1441,7 +1442,9 @@ class BBIAHuggingFace:
         if nlp_result:
             tool_name, confidence = nlp_result
             logger.info(
-                f"🔍 NLP détecté outil '{tool_name}' (confiance: {confidence:.2f})",
+                "🔍 NLP détecté outil '%s' (confiance: %.2f)",
+                tool_name,
+                confidence,
             )
             # Exécuter outil détecté par NLP
             return self._execute_detected_tool(tool_name, user_message, message_lower)
@@ -1847,8 +1850,9 @@ class BBIAHuggingFace:
                     # Angle max ~90 degrés → intensité 1.0
                     params["intensity"] = min(extracted_angle / 90.0, 1.0)
                     logger.info(
-                        f"📐 Angle extrait: {extracted_angle}° → "
-                        f"intensité: {params['intensity']:.2f}",
+                        "📐 Angle extrait: %s° → intensité: %.2f",
+                        extracted_angle,
+                        params["intensity"],
                     )
                 else:
                     # Extraire intensité depuis mots-clés
@@ -2637,7 +2641,7 @@ class BBIAHuggingFace:
                     t = self._avoid_recent_duplicates(t)
                 except Exception as e:
                     logger.debug(
-                        f"Erreur lors de l'évitement des doublons récents: {e}"
+                        "Erreur lors de l'évitement des doublons récents: %s", e
                     )
                 return t
 
@@ -2649,7 +2653,7 @@ class BBIAHuggingFace:
                     t2 = self._avoid_recent_duplicates(t2)
                 except Exception as e:
                     logger.debug(
-                        f"Erreur lors de l'évitement des doublons récents (t2): {e}"
+                        "Erreur lors de l'évitement des doublons récents (t2): %s", e
                     )
                 return t2
             last_space = cut.rfind(" ")
@@ -2659,7 +2663,7 @@ class BBIAHuggingFace:
                     t3 = self._avoid_recent_duplicates(t3)
                 except Exception as e:
                     logger.debug(
-                        f"Erreur lors de l'évitement des doublons récents (t3): {e}"
+                        "Erreur lors de l'évitement des doublons récents (t3): %s", e
                     )
                 return t3
             t4 = (t[:max_len] + "...").strip()
@@ -2667,7 +2671,7 @@ class BBIAHuggingFace:
                 t4 = self._avoid_recent_duplicates(t4)
             except Exception as e:
                 logger.debug(
-                    f"Erreur lors de l'évitement des doublons récents (t4): {e}"
+                    "Erreur lors de l'évitement des doublons récents (t4): %s", e
                 )
             return t4
         except (ValueError, RuntimeError, TypeError):

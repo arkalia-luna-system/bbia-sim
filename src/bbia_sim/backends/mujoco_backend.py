@@ -385,7 +385,9 @@ class MuJoCoBackend(RobotAPI):
         self.step()
 
         logger.info(
-            f"✅ Émotion {emotion} appliquée (intensité: {intensity}) - joints bougés"
+            "✅ Émotion %s appliquée (intensité: %s) - joints bougés",
+            emotion,
+            intensity,
         )
         return True
 
@@ -473,7 +475,7 @@ class MuJoCoBackend(RobotAPI):
             self.step()
 
             logger.info(
-                f"goto_target exécuté (duration={duration:.2f}s, method={method})"
+                "goto_target exécuté (duration=%.2fs, method=%s)", duration, method
             )
 
         except Exception as e:

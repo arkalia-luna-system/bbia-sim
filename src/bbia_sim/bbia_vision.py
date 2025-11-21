@@ -252,7 +252,8 @@ class BBIAVision:
                         self._opencv_camera.release()
                     except Exception as release_error:
                         logger.debug(
-                            f"Erreur lors de la libération de la webcam OpenCV: {release_error}"
+                            "Erreur lors de la libération de la webcam OpenCV: %s",
+                            release_error,
                         )
                 self._opencv_camera = None
                 logger.debug("Erreur initialisation webcam OpenCV: %s", e)

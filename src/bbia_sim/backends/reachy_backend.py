@@ -180,9 +180,7 @@ class ReachyBackend(RobotAPI):
                         )
                     else:
                         # Fallback: mise à jour directe si méthode disponible
-                        logger.warning(
-                            f"Méthode goto_target non disponible pour {joint_name}"
-                        )
+                        logger.warning("Méthode goto_target non disponible pour %s", joint_name)
                 elif joint_name.startswith("stewart_"):
                     # Joints Stewart platform - utiliser head joint positions
                     # Le SDK attend un tableau de 6 positions pour la tête
@@ -196,29 +194,23 @@ class ReachyBackend(RobotAPI):
                                 head=head_positions, duration=0.1
                             )
                     else:
-                        logger.warning(
-                            f"Méthode goto_target non disponible pour {joint_name}"
-                        )
+                        logger.warning("Méthode goto_target non disponible pour %s", joint_name)
 
                 # Mettre à jour cache local pour cohérence
                 self.simulated_joints[joint_name] = clamped_position
                 logger.debug(
-                    f"Joint {joint_name} → {clamped_position:.3f} rad (robot réel)"
+                    "Joint %s → %.3f rad (robot réel)", joint_name, clamped_position
                 )
                 return True
             except Exception as e:
-                logger.warning(
-                    f"Erreur envoi commande robot réel: {e} - bascule simulation"
-                )
+                logger.warning("Erreur envoi commande robot réel: %s - bascule simulation", e)
                 # Fallback: simulation si erreur
                 self.simulated_joints[joint_name] = clamped_position
                 return True
         else:
             # Mode simulation
             self.simulated_joints[joint_name] = clamped_position
-            logger.debug(
-                f"Joint {joint_name} → {clamped_position:.3f} rad (simulation)"
-            )
+            logger.debug("Joint %s → %s rad (simulation)", joint_name, clamped_position:.3f)
             return True
 
     def get_joint_pos(self, joint_name: str) -> float | None:

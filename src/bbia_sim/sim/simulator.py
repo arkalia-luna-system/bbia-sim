@@ -122,7 +122,8 @@ class MuJoCoSimulator:
             logger.debug("Modèle MuJoCo déchargé (optimisation RAM)")
         except Exception as e:
             logger.debug(
-                f"Erreur lors du déchargement du modèle MuJoCo (peut être déjà déchargé): {e}"
+                "Erreur lors du déchargement du modèle MuJoCo (peut être déjà déchargé): %s",
+                e,
             )
 
     def _run_graphical_simulation(self, duration: int | float | None) -> None:
@@ -151,7 +152,8 @@ class MuJoCoSimulator:
             logger.debug("Modèle MuJoCo déchargé (optimisation RAM)")
         except Exception as e:
             logger.debug(
-                f"Erreur lors du déchargement du modèle MuJoCo (peut être déjà déchargé): {e}"
+                "Erreur lors du déchargement du modèle MuJoCo (peut être déjà déchargé): %s",
+                e,
             )
 
     def load_scene(self, scene_path: str) -> None:

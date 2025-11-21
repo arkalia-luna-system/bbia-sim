@@ -435,9 +435,9 @@
 
 ### 🔴 PROBLÈMES CRITIQUES À CORRIGER
 
-#### 1. **Logging avec f-strings (G004)** - ✅ **CORRIGÉ** (21 décembre 2025)
+#### 1. **Logging avec f-strings (G004)** - ⏳ **EN COURS** (Décembre 2025)
 
-**Statut** : ✅ **TERMINÉ** - Tous les fichiers principaux corrigés
+**Statut** : ⏳ **~75% TERMINÉ** - ~158 occurrences restantes
 
 **Corrections effectuées** :
 - ✅ `dashboard_advanced.py` : Toutes les occurrences corrigées (f-strings → %s format)

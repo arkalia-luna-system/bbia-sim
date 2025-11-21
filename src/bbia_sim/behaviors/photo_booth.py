@@ -154,7 +154,7 @@ class PhotoBoothBehavior(BBIABehavior):
                         if look_at_image:
                             look_at_image(center_x, center_y, duration=0.8)
                             logger.debug(
-                                f"Cadrage visage vers ({center_x}, {center_y})"
+                                "Cadrage visage vers (%s, %s)", center_x, center_y
                             )
 
         except Exception as e:

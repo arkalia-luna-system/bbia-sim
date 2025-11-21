@@ -660,7 +660,8 @@ class WhisperSTT:
                                 except Exception as e:
                                     # Ignorer erreur suppression fichier temporaire
                                     logger.debug(
-                                        f"Impossible de supprimer fichier temporaire: {e}"
+                                        "Impossible de supprimer fichier temporaire: %s",
+                                        e,
                                     )
 
                 total_duration += chunk_duration

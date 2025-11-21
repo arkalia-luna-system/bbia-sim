@@ -162,11 +162,11 @@ async def set_microphone_volume(request: VolumeRequest) -> dict[str, Any]:
                     elif hasattr(microphone, "volume"):
                         microphone.volume = request.volume
                     logger.debug(
-                        f"Volume microphone appliqué au robot: {request.volume}"
+                        "Volume microphone appliqué au robot: %s", request.volume
                     )
                 except Exception as e:
                     logger.warning(
-                        f"Erreur application volume microphone au robot: {e}"
+                        "Erreur application volume microphone au robot: %s", e
                     )
 
         logger.info("Volume microphone défini à %s", request.volume)
@@ -214,7 +214,8 @@ async def toggle_camera(request: CameraToggleRequest) -> dict[str, Any]:
                         elif hasattr(camera, "enabled"):
                             camera.enabled = False
                     logger.debug(
-                        f"Caméra {'activée' if request.enabled else 'désactivée'} au robot"
+                        "Caméra %s au robot",
+                        "activée" if request.enabled else "désactivée",
                     )
                 except Exception as e:
                     logger.warning("Erreur toggle caméra au robot: %s", e)

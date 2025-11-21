@@ -222,7 +222,7 @@ class EmotionShowBehavior(BBIABehavior):
                 # Appliquer l'émotion avec transition fluide
                 if not self._apply_emotion(emotion):
                     logger.warning(
-                        f"Échec application émotion {emotion}, passage à la suivante"
+                        "Échec application émotion %s, passage à la suivante", emotion
                     )
                     continue
 

@@ -611,5 +611,5 @@ class BBIAChat:
 
         except Exception as e:
             logger.debug(
-                f"Préférences non chargées (normal si première utilisation): {e}"
+                "Préférences non chargées (normal si première utilisation): %s", e
             )

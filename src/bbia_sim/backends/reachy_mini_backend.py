@@ -259,8 +259,9 @@ class ReachyMiniBackend(RobotAPI):
             return True
         except (TimeoutError, ConnectionError, OSError) as e:
             logger.info(
-                f"⏱️  Pas de robot physique détecté (timeout/connexion) - "
-                f"mode simulation activé: {e}",
+                "⏱️  Pas de robot physique détecté (timeout/connexion) - "
+                "mode simulation activé: %s",
+                e,
             )
             self._activate_simulation_mode()
             if not self.use_sim:
@@ -270,8 +271,9 @@ class ReachyMiniBackend(RobotAPI):
             error_msg = str(e)
             if "timeout" in error_msg.lower() or "connection" in error_msg.lower():
                 logger.info(
-                    f"⏱️  Erreur connexion (timeout probable) - "
-                    f"mode simulation activé: {error_msg}",
+                    "⏱️  Erreur connexion (timeout probable) - "
+                    "mode simulation activé: %s",
+                    error_msg,
                 )
             else:
                 logger.warning(
@@ -510,12 +512,12 @@ class ReachyMiniBackend(RobotAPI):
                 value = float(head_positions[head_idx])
                 if not (float("-inf") < value < float("inf")):
                     logger.warning(
-                        f"Valeur invalide (NaN/inf) pour {joint_name}: {value}"
+                        "Valeur invalide (NaN/inf) pour %s: %s", joint_name, value
                     )
                     return 0.0
                 return value
             logger.warning(
-                f"Index head_positions invalide: {head_idx} pour {joint_name}"
+                "Index head_positions invalide: %s pour %s", head_idx, joint_name
             )
             return 0.0
 
@@ -581,9 +583,12 @@ class ReachyMiniBackend(RobotAPI):
             # Vérifier si la position demandée est dans les limites hardware
             if position < min_limit or position > max_limit:
                 logger.warning(
-                    f"Position {position:.4f} rad hors limites hardware "
-                    f"[{min_limit:.4f}, {max_limit:.4f}] pour joint "
-                    f"{joint_name} - clampage appliqué",
+                    "Position %.4f rad hors limites hardware "
+                    "[%.4f, %.4f] pour joint %s - clampage appliqué",
+                    position,
+                    min_limit,
+                    max_limit,
+                    joint_name,
                 )
                 # Clamp dans les limites hardware
                 position = max(min_limit, min(max_limit, position))
@@ -1121,9 +1126,11 @@ class ReachyMiniBackend(RobotAPI):
                         method_enum = InterpolationTechnique(method)
                 except (ValueError, AttributeError) as conversion_error:
                     logger.warning(
-                        f"Technique d'interpolation '{method}' non reconnue "
-                        f"({conversion_error}), utilisation de MIN_JERK "
-                        f"par défaut (fluide et naturel)",
+                        "Technique d'interpolation '%s' non reconnue "
+                        "(%s), utilisation de MIN_JERK "
+                        "par défaut (fluide et naturel)",
+                        method,
+                        conversion_error,
                     )
                     from reachy_mini.utils.interpolation import (  # type: ignore[import-untyped]
                         InterpolationTechnique,

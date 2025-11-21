@@ -209,7 +209,7 @@ class BBIAAdvancedWebSocketManager:
                         )
                     else:
                         logger.warning(
-                            f"⚠️ Robot {self.robot_backend} connect() a retourné False"
+                            "⚠️ Robot %s connect() a retourné False", self.robot_backend
                         )
                         await self.send_log_message(
                             "warning",
@@ -217,7 +217,8 @@ class BBIAAdvancedWebSocketManager:
                         )
                 else:
                     logger.error(
-                        f"❌ RobotFactory.create_backend('{self.robot_backend}') a retourné None"
+                        "❌ RobotFactory.create_backend('%s') a retourné None",
+                        self.robot_backend,
                     )
                     await self.send_log_message(
                         "error", f"❌ Impossible de créer le robot {self.robot_backend}"
@@ -231,7 +232,9 @@ class BBIAAdvancedWebSocketManager:
         # Vérifier que le robot est vraiment connecté
         if self.robot:
             logger.info(
-                f"✅ Robot présent: {type(self.robot).__name__}, is_connected={self.robot.is_connected}"
+                "✅ Robot présent: %s, is_connected=%s",
+                type(self.robot).__name__,
+                self.robot.is_connected,
             )
             if not self.robot.is_connected:
                 logger.warning(
@@ -284,7 +287,7 @@ class BBIAAdvancedWebSocketManager:
                 if connection in self.active_connections:
                     await self.disconnect(connection)
                     logger.debug(
-                        f"🗑️ Connexion WebSocket inactive fermée ({inactivity:.0f}s)"
+                        "🗑️ Connexion WebSocket inactive fermée (%.0fs)", inactivity
                     )
             except Exception as e:
                 logger.debug("Erreur nettoyage connexion inactive: %s", e)
@@ -3322,7 +3325,7 @@ if FASTAPI_AVAILABLE:
                     await handle_chat_message(message, websocket)
                 else:
                     logger.warning(
-                        f"⚠️ [WS] Type de message inconnu: {message.get('type')}"
+                        "⚠️ [WS] Type de message inconnu: %s", message.get("type")
                     )
 
         except WebSocketDisconnect:
@@ -3349,7 +3352,8 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                 if not advanced_websocket_manager.robot:
                     try:
                         logger.info(
-                            f"🔧 Initialisation robot {advanced_websocket_manager.robot_backend} (forcé)..."
+                            "🔧 Initialisation robot %s (forcé)...",
+                            advanced_websocket_manager.robot_backend,
                         )
                         advanced_websocket_manager.robot = RobotFactory.create_backend(
                             advanced_websocket_manager.robot_backend,
@@ -3358,7 +3362,8 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                             connected = advanced_websocket_manager.robot.connect()
                             if connected:
                                 logger.info(
-                                    f"✅ Robot {advanced_websocket_manager.robot_backend} connecté (forcé)"
+                                    "✅ Robot %s connecté (forcé)",
+                                    advanced_websocket_manager.robot_backend,
                                 )
                                 await advanced_websocket_manager.send_log_message(
                                     "info",
@@ -3404,7 +3409,9 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                     raise TypeError(f"Expected emotion to be str, got {type(emotion)}")
                 try:
                     logger.info(
-                        f"🎭 [CMD] Exécution set_emotion: {emotion} (intensité: {intensity})"
+                        "🎭 [CMD] Exécution set_emotion: %s (intensité: %s)",
+                        emotion,
+                        intensity,
                     )
                     success = advanced_websocket_manager.robot.set_emotion(
                         emotion,

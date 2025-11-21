@@ -54,7 +54,8 @@ def _read_sdk_telemetry() -> dict[str, Any] | None:
             timeout = float(os.environ.get("BBIA_TELEMETRY_TIMEOUT", "1.0") or 1.0)
         except Exception as e:
             logger.debug(
-                f"Erreur lors de la lecture de BBIA_TELEMETRY_TIMEOUT, utilisation valeur par défaut: {e}"
+                "Erreur lors de la lecture de BBIA_TELEMETRY_TIMEOUT, utilisation valeur par défaut: %s",
+                e,
             )
             timeout = 1.0
 
@@ -99,7 +100,8 @@ def _read_sdk_telemetry() -> dict[str, Any] | None:
                     battery_level = float(media_mgr.get_battery_level())
                 except Exception as e:
                     logger.debug(
-                        f"Erreur lors de la lecture du niveau de batterie (get_battery_level): {e}"
+                        "Erreur lors de la lecture du niveau de batterie (get_battery_level): %s",
+                        e,
                     )
                     battery_level = None
             elif hasattr(media_mgr, "battery"):
@@ -107,7 +109,8 @@ def _read_sdk_telemetry() -> dict[str, Any] | None:
                     battery_level = float(media_mgr.battery)
                 except Exception as e:
                     logger.debug(
-                        f"Erreur lors de la lecture du niveau de batterie (battery): {e}"
+                        "Erreur lors de la lecture du niveau de batterie (battery): %s",
+                        e,
                     )
                     battery_level = None
 
@@ -144,7 +147,7 @@ def _read_sdk_telemetry() -> dict[str, Any] | None:
                 backend.disconnect()
             except Exception as disconnect_error:
                 logger.debug(
-                    f"Erreur lors de la déconnexion du backend: {disconnect_error}"
+                    "Erreur lors de la déconnexion du backend: %s", disconnect_error
                 )
     except (RuntimeError, AttributeError, TypeError):
         return None
@@ -299,7 +302,7 @@ async def get_battery_level() -> BatteryInfo:
             battery_level = float(sdk["battery"])
         except Exception as e:
             logger.debug(
-                f"Erreur lors de la conversion du niveau de batterie en float: {e}"
+                "Erreur lors de la conversion du niveau de batterie en float: %s", e
             )
     status = (
         "good" if battery_level > 20 else "low" if battery_level > 10 else "critical"
@@ -336,7 +339,7 @@ async def get_temperature() -> dict[str, Any]:
             temperature_c = float(sdk["temperature"])
         except Exception as e:
             logger.debug(
-                f"Erreur lors de la conversion de la température en float: {e}"
+                "Erreur lors de la conversion de la température en float: %s", e
             )
 
     return {

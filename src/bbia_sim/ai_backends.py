@@ -81,8 +81,9 @@ class Pyttsx3TTS:
                     except Exception as e:
                         # Si get_bbia_voice échoue, utiliser voix par défaut
                         logger.debug(
-                            f"Impossible de définir voix personnalisée, "
-                            f"utilisation par défaut: {e}"
+                            "Impossible de définir voix personnalisée, "
+                            "utilisation par défaut: %s",
+                            e,
                         )
 
             # Utiliser la voix sélectionnée si disponible
@@ -284,7 +285,8 @@ class WhisperSTT:
                 if model_name in _whisper_models_cache:
                     logger = logging.getLogger(__name__)
                     logger.debug(
-                        f"♻️ Réutilisation modèle Whisper depuis cache ({model_name})",
+                        "♻️ Réutilisation modèle Whisper depuis cache (%s)",
+                        model_name,
                     )
                     cached = _whisper_models_cache[model_name]
                     self._processor = cached["processor"]
@@ -314,7 +316,7 @@ class WhisperSTT:
             self._model = model
             self._ready = True
         except Exception as e:  # pragma: no cover - environnement sans deps
-            logging.getLogger(__name__).info(f"Whisper indisponible: {e}")
+            logging.getLogger(__name__).info("Whisper indisponible: %s", e)
             self._ready = False
 
     def transcribe_wav(self, infile: str) -> str | None:

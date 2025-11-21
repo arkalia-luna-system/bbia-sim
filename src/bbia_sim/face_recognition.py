@@ -186,7 +186,9 @@ class BBIAPersonRecognition:
                     os.unlink(temp_path)
                 except Exception as cleanup_error:
                     logger.debug(
-                        f"Erreur lors du nettoyage du fichier temporaire {temp_path}: {cleanup_error}"
+                        "Erreur lors du nettoyage du fichier temporaire %s: %s",
+                        temp_path,
+                        cleanup_error,
                     )
 
     def detect_emotion(
@@ -272,7 +274,9 @@ class BBIAPersonRecognition:
                     os.unlink(temp_path)
                 except Exception as cleanup_error:
                     logger.debug(
-                        f"Erreur lors du nettoyage du fichier temporaire {temp_path}: {cleanup_error}"
+                        "Erreur lors du nettoyage du fichier temporaire %s: %s",
+                        temp_path,
+                        cleanup_error,
                     )
 
     def recognize_with_emotion(

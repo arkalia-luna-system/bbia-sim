@@ -262,7 +262,7 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
                                 return
                 except Exception as e:
                     logger.debug(
-                        f"Erreur lors de la lecture audio via SDK speaker: {e}"
+                        "Erreur lors de la lecture audio via SDK speaker: %s", e
                     )
                 try:
                     # Fallback simple: lecture locale sans dépendance forte
@@ -280,12 +280,13 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
                     return
                 except Exception as e:
                     logger.debug(
-                        f"Erreur lors de la lecture audio locale (fallback sounddevice): {e}"
+                        "Erreur lors de la lecture audio locale (fallback sounddevice): %s",
+                        e,
                     )
         except Exception as e:
             # Fallback vers logique pyttsx3 plus bas
             logger.debug(
-                f"Erreur lors de la synthèse vocale avancée, fallback pyttsx3: {e}"
+                "Erreur lors de la synthèse vocale avancée, fallback pyttsx3: %s", e
             )
 
     # OPTIMISATION SDK: Utiliser robot.media.* si disponible (toujours disponible via shim)
@@ -357,7 +358,9 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
                                 os.unlink(tmp_path)
                         except Exception as cleanup_error:
                             logger.debug(
-                                f"Erreur lors du nettoyage du fichier temporaire {tmp_path}: {cleanup_error}"
+                                "Erreur lors du nettoyage du fichier temporaire %s: %s",
+                                tmp_path,
+                                cleanup_error,
                             )
 
             except Exception as e:

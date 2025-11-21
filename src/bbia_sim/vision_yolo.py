@@ -74,7 +74,7 @@ try:
         _os.environ.setdefault("MUJOCO_GL", "egl")  # Utiliser EGL sur Linux/Windows
 except Exception as e:
     logger.debug(
-        f"Impossible de configurer variables d'environnement MediaPipe/TensorFlow: {e}"
+        "Impossible de configurer variables d'environnement MediaPipe/TensorFlow: %s", e
     )
 
 
