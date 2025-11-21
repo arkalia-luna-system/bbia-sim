@@ -44,7 +44,7 @@ try:
     # Sur macOS, laisser MuJoCo choisir automatiquement (glfw ou egl)
     if sys.platform != "darwin":  # Pas macOS
         _os.environ.setdefault("MUJOCO_GL", "egl")  # Utiliser EGL sur Linux/Windows
-except Exception as e:
+except (OSError, KeyError, AttributeError) as e:
     logger.debug(
         "Impossible de configurer variables d'environnement MediaPipe/TensorFlow: %s", e
     )

@@ -245,7 +245,7 @@ def enregistrer_audio(
                     )
                 logging.info("Enregistrement SDK terminé.")
                 return True
-        except Exception:
+        except (AttributeError, RuntimeError, OSError):
             logging.debug("Erreur enregistrement SDK (fallback sounddevice)")
             # Fallback vers sounddevice
 
@@ -308,7 +308,7 @@ def lire_audio(fichier: str, robot_api: Optional["RobotAPI"] = None) -> None:
                     info.samplerate,
                     DEFAULT_SAMPLE_RATE,
                 )
-        except Exception:
+        except (OSError, IOError, AttributeError, RuntimeError):
             # Ignorer toute erreur côté soundfile, fallback plus bas
             logger.debug("Impossible de lire métadonnées audio avec soundfile")
 
@@ -340,7 +340,7 @@ def lire_audio(fichier: str, robot_api: Optional["RobotAPI"] = None) -> None:
                     speaker.play(audio_bytes)
                     logging.info("Lecture SDK terminée.")
                     return
-            except Exception:
+            except (AttributeError, RuntimeError, OSError):
                 logging.debug("Erreur lecture SDK (fallback sounddevice)")
                 # Fallback vers sounddevice
 

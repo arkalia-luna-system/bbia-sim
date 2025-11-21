@@ -188,7 +188,7 @@ class WakeUpBehavior(BBIABehavior):
                     self.robot_api.set_joint_pos("yaw_body", 0.0)
             except (AttributeError, RuntimeError, ValueError) as e:
                 logger.warning("Erreur mouvement corps réveil (continuation): %s", e)
-            except Exception as e:
+            except (TypeError, KeyError, IndexError) as e:
                 logger.warning("Erreur inattendue mouvement corps réveil: %s", e)
 
         time.sleep(1)
@@ -273,7 +273,7 @@ class GreetingBehavior(BBIABehavior):
                     self.robot_api.set_target_head_pose(pose_neutral)
             except (AttributeError, RuntimeError, ValueError) as e:
                 logger.warning("Erreur pose tête salutation (fallback): %s", e)
-            except Exception as e:
+            except (TypeError, KeyError, IndexError) as e:
                 logger.warning("Erreur inattendue pose tête salutation: %s", e)
                 # Fallback final: rotation corps subtile
                 if hasattr(self.robot_api, "set_joint_pos"):
@@ -559,7 +559,7 @@ class ConversationBehavior(BBIABehavior):
                     "Conversation intelligente + function calling activé"
                 ),
             )
-        except (ImportError, Exception) as e:
+        except (ImportError, RuntimeError, AttributeError) as e:
             logger.info(
                 "ℹ️  BBIAHuggingFace non disponible - Mode enrichi activé: %s", e
             )
@@ -690,7 +690,7 @@ class ConversationBehavior(BBIABehavior):
                     self._apply_sentiment_to_robot(sentiment_dict)
 
                     return True
-                except Exception as e:
+                except (ValueError, TypeError, KeyError) as e:
                     logger.warning("Erreur BBIAHuggingFace, fallback enrichi : %s", e)
                     # Fallback vers système enrichi
 
@@ -706,7 +706,7 @@ class ConversationBehavior(BBIABehavior):
                 try:
                     self.robot_api.set_emotion(emotion, 0.6)
                     logger.info("Émotion appliquée au robot : %s", emotion)
-                except Exception as e:
+                except (ValueError, RuntimeError, AttributeError) as e:
                     logger.warning("Erreur application émotion : %s", e)
 
         else:
@@ -812,7 +812,7 @@ class ConversationBehavior(BBIABehavior):
                         f"(intensité: {intensity:.2f})"
                     ),
                 )
-        except Exception as e:
+        except (ValueError, RuntimeError, AttributeError) as e:
             logger.warning("Erreur application sentiment au robot : %s", e)
 
 
@@ -893,7 +893,7 @@ class AntennaAnimationBehavior(BBIABehavior):
                         self.robot_api.set_joint_pos("yaw_body", yaw)
                         time.sleep(0.6)
                         self.robot_api.set_joint_pos("yaw_body", 0.0)
-                except Exception as e:
+                except (ValueError, RuntimeError, AttributeError) as e:
                     logger.warning("Erreur mouvement expressif %s: %s", emotion, e)
 
         logger.info("Animation expressive appliquée pour : %s", emotion)
@@ -971,7 +971,7 @@ class HideBehavior(BBIABehavior):
                             # ici plus fort)
                             pose = create_head_pose(pitch=-0.15, yaw=0.0, degrees=False)
                             self.robot_api.set_target_head_pose(pose)
-            except Exception as e:
+            except (ValueError, RuntimeError, AttributeError) as e:
                 logger.warning("Erreur mouvement hide (continuation): %s", e)
 
         time.sleep(1.0)

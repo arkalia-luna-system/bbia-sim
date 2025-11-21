@@ -300,7 +300,7 @@ class BBIAHuggingFace:
         except (AttributeError, RuntimeError) as e:
             logger.warning(f"Erreur initialisation BBIAChat: {e}")
             self.bbia_chat = None
-        except Exception as e:
+        except (TypeError, KeyError, IndexError) as e:
             logger.warning(f"Erreur inattendue initialisation BBIAChat: {e}")
             self.bbia_chat = None
 
@@ -392,12 +392,12 @@ class BBIAHuggingFace:
             logger.warning(f"⚠️  Échec de chargement LLM {model_name}: {e}")
             logger.info("💡 Fallback activé: réponses enrichies (stratégie règles v1)")
             return False
-        except Exception as e:
+        except (TypeError, KeyError, IndexError) as e:
             logger.warning(f"⚠️  Erreur inattendue chargement LLM {model_name}: {e}")
             logger.info("💡 Fallback activé: réponses enrichies (stratégie règles v1)")
-            return False
             # Nettoyage défensif pour éviter des états partiels
             self.chat_model = None
+            return False
             self.chat_tokenizer = None
             self.use_llm_chat = False
             return False
@@ -444,7 +444,7 @@ class BBIAHuggingFace:
             except (ImportError, RuntimeError, OSError, ValueError) as e:
                 logger.warning(f"⚠️ Échec chargement SmolVLM2/Moondream2: {e}")
                 return False
-            except Exception as e:
+            except (TypeError, KeyError, IndexError) as e:
                 logger.warning(
                     f"⚠️ Erreur inattendue chargement SmolVLM2/Moondream2: {e}"
                 )
