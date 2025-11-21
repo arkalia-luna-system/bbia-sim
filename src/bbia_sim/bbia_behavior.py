@@ -437,7 +437,7 @@ class VisionTrackingBehavior(BBIABehavior):
             # avec gestion d'erreur robuste et fallback gracieux
             if self.robot_api:
                 tracking_success = False
-                
+
                 # Méthode 1 (préférée): look_at_world si position 3D disponible
                 if hasattr(self.robot_api, "look_at_world"):
                     pos = first_object.get("position", {})
@@ -472,15 +472,15 @@ class VisionTrackingBehavior(BBIABehavior):
                                     "tentative avec look_at_image",
                                 )
                         except (ValueError, TypeError, AttributeError) as e:
-                            logger.debug(
-                                "Erreur look_at_world, fallback vers look_at_image: %s", e
-                            )
+                                logger.debug(
+                                    "Erreur look_at_world, fallback vers look_at_image: %s", e
+                                )
                     else:
                         logger.debug(
                             "Pas de position 3D disponible, "
                             "tentative avec look_at_image",
                         )
-                
+
                 # Méthode 2: look_at_image si position 2D disponible (fallback)
                 if not tracking_success and hasattr(self.robot_api, "look_at_image"):
                     bbox = first_object.get("bbox", {})
