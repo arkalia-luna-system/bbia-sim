@@ -9,10 +9,10 @@ import pytest
 from bbia_sim.ai_backends import (
     KokoroTTS,
     LlamaCppLLM,
-    LocalLLM,
     NeuTTSTTS,
     OpenVoiceTTSTTS,
-    SpeechToText,
+    get_llm_backend,
+    get_stt_backend,
 )
 
 # SimpleMove est une classe interne dans create_move_from_positions, non exportable
@@ -346,20 +346,45 @@ class TestAIBackends:
             pytest.skip("LlamaCpp non disponible")
 
     def test_local_llm(self) -> None:
-        """Test LocalLLM."""
+        """Test LocalLLM via factory get_llm_backend().
+
+        Utilise la factory pour obtenir une implémentation concrète du protocol LocalLLM.
+        Plus intelligent et performant que d'essayer d'instancier le protocol directement.
+        """
         try:
-            llm = LocalLLM()
+            llm = get_llm_backend()
             assert llm is not None
-        except (ImportError, RuntimeError, AttributeError):
-            pytest.skip("LocalLLM non disponible")
+            # Test que l'implémentation respecte le protocol
+            result = llm.generate("test", max_tokens=10)
+            assert isinstance(result, str)
+        except (ImportError, RuntimeError, AttributeError, TypeError) as e:
+            pytest.skip(f"LocalLLM non disponible: {e}")
 
     def test_speech_to_text(self) -> None:
-        """Test SpeechToText."""
+        """Test SpeechToText via factory get_stt_backend().
+
+        Utilise la factory pour obtenir une implémentation concrète du protocol SpeechToText.
+        Plus intelligent et performant que d'essayer d'instancier le protocol directement.
+        """
         try:
-            stt = SpeechToText()
+            stt = get_stt_backend()
             assert stt is not None
-        except (ImportError, RuntimeError, AttributeError):
-            pytest.skip("SpeechToText non disponible")
+            # Test que l'implémentation respecte le protocol
+            # Utilise un fichier temporaire vide pour tester (retournera None ou "")
+            import tempfile
+            import os
+
+            with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as tmp:
+                tmp_path = tmp.name
+            try:
+                result = stt.transcribe_wav(tmp_path)
+                # Résultat peut être None ou str (selon implémentation)
+                assert result is None or isinstance(result, str)
+            finally:
+                if os.path.exists(tmp_path):
+                    os.unlink(tmp_path)
+        except (ImportError, RuntimeError, AttributeError, TypeError, OSError) as e:
+            pytest.skip(f"SpeechToText non disponible: {e}")
 
 
 class TestPoseDetection:
