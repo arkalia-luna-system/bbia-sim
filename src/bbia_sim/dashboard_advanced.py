@@ -317,7 +317,7 @@ class BBIAAdvancedWebSocketManager:
                 WebSocketDisconnect,
             ) as e:
                 logger.debug("Erreur nettoyage connexion inactive: %s", e)
-            except Exception as e:
+            except Exception as e:  # noqa: BLE001 - Fallback pour erreurs inattendues
                 logger.debug("Erreur inattendue nettoyage connexion inactive: %s", e)
 
     async def _add_to_batch(self, message_data: dict[str, Any]) -> None:
@@ -482,8 +482,20 @@ class BBIAAdvancedWebSocketManager:
         for joint in self._get_available_joints():
             try:
                 pose[joint] = self.robot.get_joint_pos(joint)
-            except (ConnectionError, RuntimeError, WebSocketDisconnect, Exception):
-                # Gérer toutes les exceptions pour éviter les crashes
+            except (
+                ConnectionError,
+                RuntimeError,
+                WebSocketDisconnect,
+                AttributeError,
+            ) as e:
+                # Gérer exceptions attendues pour éviter les crashes
+                logger.debug("Erreur lecture position joint %s: %s", joint, e)
+                pose[joint] = 0.0
+            except Exception as e:  # noqa: BLE001 - Fallback pour erreurs inattendues
+                # Gérer erreurs inattendues
+                logger.debug(
+                    "Erreur inattendue lecture position joint %s: %s", joint, e
+                )
                 pose[joint] = 0.0
         return pose
 
@@ -504,7 +516,9 @@ class BBIAAdvancedWebSocketManager:
                             self.robot.step()
                         except (AttributeError, RuntimeError, ValueError) as e:
                             logger.debug("Erreur step robot: %s", e)
-                        except Exception as e:
+                        except (
+                            Exception
+                        ) as e:  # noqa: BLE001 - Fallback pour erreurs inattendues
                             logger.debug("Erreur inattendue step robot: %s", e)
 
                     # Mettre à jour les métriques
@@ -526,7 +540,9 @@ class BBIAAdvancedWebSocketManager:
                     if not self._stop_metrics:
                         logger.exception("Erreur collecte métriques: %s", e)
                     await asyncio.sleep(1.0)
-                except Exception as e:
+                except (
+                    Exception
+                ) as e:  # noqa: BLE001 - Fallback pour erreurs inattendues
                     if not self._stop_metrics:
                         logger.exception("Erreur inattendue collecte métriques: %s", e)
                     await asyncio.sleep(1.0)
@@ -3282,7 +3298,9 @@ if FASTAPI_AVAILABLE:
                                 ImportError,
                             ) as e:
                                 logger.debug("Erreur capture frame: %s", e)
-                            except Exception as e:
+                            except (
+                                Exception
+                            ) as e:  # noqa: BLE001 - Fallback pour erreurs inattendues
                                 logger.debug("Erreur inattendue capture frame: %s", e)
 
                         if frame is None:
@@ -3606,7 +3624,9 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                     logger.exception("Erreur exécution action %s: %s", action, e)
                     success = False
                 except Exception as e:
-                    logger.exception("Erreur inattendue exécution action %s: %s", action, e)
+                    logger.exception(
+                        "Erreur inattendue exécution action %s: %s", action, e
+                    )
                     success = False
 
             await execute_action()
@@ -3738,7 +3758,13 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                         "error",
                         f"❌ Échec joint {joint}",
                     )
-            except (ValueError, AttributeError, RuntimeError, IndexError, KeyError) as e:
+            except (
+                ValueError,
+                AttributeError,
+                RuntimeError,
+                IndexError,
+                KeyError,
+            ) as e:
                 logger.exception("❌ Erreur set_joint_pos: %s", e)
                 await advanced_websocket_manager.send_log_message(
                     "error",
