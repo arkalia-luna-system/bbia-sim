@@ -366,3 +366,72 @@ D'après les retours de la communauté (125 unités bêta) :
 
 **Les seules différences sont des améliorations optionnelles** (assistant interactif, découverte apps communauté) qui peuvent être ajoutées après réception du robot.
 
+---
+
+## 📋 RÉCAPITULATIF CE QUI MANQUE ENCORE (21 Novembre 2025)
+
+### 🟡 Améliorations Optionnelles (Priorité Basse)
+
+#### 1. Assistant Installation Interactif ⚠️
+- **Testeurs ont :** Assistant guidé dans dashboard avec étapes interactives
+- **BBIA a :** Documentation complète + scripts d'installation (`scripts/setup_bbia.sh`, `Makefile`)
+- **Ce qui manque :**
+  - ⚠️ Assistant interactif guidé dans le dashboard
+  - ⚠️ Détection automatique robot au premier lancement
+  - ⚠️ Configuration réseau guidée (wireless)
+  - ⚠️ Test automatique des capteurs au setup
+- **Priorité :** 🟡 **Basse** - La documentation actuelle est suffisante, mais un assistant interactif serait un plus pour les utilisateurs non techniques
+- **Fichiers concernés :** `src/bbia_sim/daemon/app/dashboard/` (à créer)
+
+#### 2. Découverte Apps Communauté ⚠️
+- **Testeurs ont :** Accès direct aux apps créées par la communauté (125 unités bêta)
+- **BBIA a :** Infrastructure HF Hub complète (router apps, dashboard, WebSocket)
+- **Ce qui manque :**
+  - ⚠️ Liste pré-configurée d'apps créées par les testeurs bêta
+  - ⚠️ Découverte automatique des apps populaires sur HF Spaces
+  - ⚠️ Catégorisation des apps (conversationnelles, mouvements, IA, etc.)
+- **Priorité :** 🟡 **Basse** - Peut être fait après réception du robot
+- **Fichiers concernés :** `src/bbia_sim/daemon/app/routers/apps.py` (à améliorer)
+
+#### 3. Partage d'Apps BBIA sur HF Hub 🟡
+- **Testeurs font :** Partage leurs apps sur HF Spaces
+- **BBIA peut :** Créer et partager ses propres apps (infrastructure présente)
+- **Ce qui manque :**
+  - ⚠️ Workflow de création d'apps BBIA pour HF Hub
+  - ⚠️ Documentation pour partager apps BBIA
+  - ⚠️ Templates d'apps BBIA prêts à partager
+- **Priorité :** 🟡 **Optionnel** - Après réception du robot
+- **Fichiers concernés :** Documentation + templates (à créer)
+
+### 🔧 Corrections Qualité Code (En Cours)
+
+#### 4. Exceptions Génériques (BLE001) ⚠️ **EN COURS** (18% fait)
+- **Problème :** ~327 blocs `except Exception` trop génériques restants
+- **Progression :** ~72/399 occurrences corrigées (18% fait)
+- **Fichiers prioritaires :**
+  - `dashboard_advanced.py` : ~21 restantes
+  - `backends/reachy_mini_backend.py` : ~17 restantes
+  - `bbia_vision.py` : ~18 restantes
+  - `bbia_voice.py` : ~12 restantes
+  - `bbia_huggingface.py` : ~11 restantes
+  - Et autres...
+- **Priorité :** 🟡 **Moyenne** - Amélioration progressive, non-bloquant
+- **Approche :** Spécification exceptions attendues + bloc Exception générique pour erreurs inattendues
+
+#### 5. Audit Doublons set_emotion() et dire_texte() ⚠️
+- **Problème :** Fonctions potentiellement dupliquées à identifier
+- **Statut :** ⏳ **À FAIRE**
+- **Priorité :** 🟡 **Moyenne** - Optimisation code
+- **Fichiers concernés :** À identifier
+
+### ✅ Conclusion
+
+**BBIA-SIM dispose de TOUTES les fonctionnalités de base** mentionnées dans l'email Pollen Robotics :
+- ✅ Dashboard moderne avec contrôles media
+- ✅ Installation apps depuis HF Hub
+- ✅ Applications conversationnelles, vision, mouvements
+- ✅ Intégration complète SDK officiel
+- ✅ Support robot réel + simulation
+
+**Ce qui manque sont des améliorations optionnelles** qui peuvent être ajoutées après réception du robot ou progressivement pour améliorer la qualité du code.
+
