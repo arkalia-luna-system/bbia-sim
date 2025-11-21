@@ -516,9 +516,7 @@ class BBIAAdvancedWebSocketManager:
                             self.robot.step()
                         except (AttributeError, RuntimeError, ValueError) as e:
                             logger.debug("Erreur step robot: %s", e)
-                        except (
-                            Exception
-                        ) as e:  # noqa: BLE001 - Fallback pour erreurs inattendues
+                        except Exception as e:  # noqa: BLE001
                             logger.debug("Erreur inattendue step robot: %s", e)
 
                     # Mettre à jour les métriques
@@ -3298,9 +3296,7 @@ if FASTAPI_AVAILABLE:
                                 ImportError,
                             ) as e:
                                 logger.debug("Erreur capture frame: %s", e)
-                            except (
-                                Exception
-                            ) as e:  # noqa: BLE001 - Fallback pour erreurs inattendues
+                            except Exception as e:  # noqa: BLE001
                                 logger.debug("Erreur inattendue capture frame: %s", e)
 
                         if frame is None:
