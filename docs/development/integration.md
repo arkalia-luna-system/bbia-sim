@@ -13,7 +13,7 @@
 > pip install -e .
 > ```
 **Public** : développeurs, chercheurs, communauté technique  
-**📚 [Guide débutant](../guides/GUIDE_DEBUTANT.md)** | **🔧 [Guide avancé](../guides/GUIDE_AVANCE.md)** | **🧪 [Guide tests](testing.md)**
+**📚 [Guide de démarrage](../guides/GUIDE_DEMARRAGE.md)** | **🔧 [Guide avancé](../guides/GUIDE_AVANCE.md)** | **🧪 [Guide tests](testing.md)**
 
 ## 📋 Table des Matières
 

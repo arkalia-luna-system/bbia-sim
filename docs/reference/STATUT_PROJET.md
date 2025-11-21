@@ -222,7 +222,7 @@ bandit -r src/
 
 ### Guides disponibles
 
-- **[Guide Débutant](../guides/GUIDE_DEBUTANT.md)** - Pour commencer rapidement
+- **[Guide de Démarrage](../guides/GUIDE_DEMARRAGE.md)** - Pour commencer rapidement
 - **[Guide Avancé](../guides/GUIDE_AVANCE.md)** - Pour développeurs expérimentés
 - **[Guide Chat BBIA](../guides/GUIDE_CHAT_BBIA.md)** - Chat intelligent
 - **[Architecture](../development/architecture/ARCHITECTURE.md)** - Architecture complète

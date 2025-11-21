@@ -264,7 +264,7 @@ docs/
 ### Documentation clé
 
 - `docs/INDEX_FINAL.md` - Index complet documentation
-- `docs/guides/GUIDE_DEBUTANT.md` - Guide débutant
+- `docs/guides/GUIDE_DEMARRAGE.md` - Guide de démarrage
 - `docs/guides/GUIDE_AVANCE.md` - Guide avancé
 - `docs/development/architecture/ARCHITECTURE_OVERVIEW.md` - Vue d'ensemble architecture
 - `docs/quality/audits/RESUME_ETAT_ACTUEL_BBIA.md` - État actuel détaillé
@@ -331,4 +331,4 @@ docs/
 ## 🎯 Navigation
 
 **Retour à** : [README Documentation](../README.md)  
-**Voir aussi** : [Guide Débutant](../guides/GUIDE_DEBUTANT.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)
+**Voir aussi** : [Guide de Démarrage](../guides/GUIDE_DEMARRAGE.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)

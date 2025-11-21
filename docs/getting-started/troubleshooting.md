@@ -405,7 +405,7 @@ export BBIA_DISABLE_SIMULATION=1
 | 🧪 **Tests** | [`../../tests/README.md`](../../tests/README.md) | Guide des tests |
 | 💡 **Exemples** | [`../../examples/README.md`](../../examples/README.md) | Exemples d'utilisation |
 | 🔧 **Scripts** | [`../../scripts/README.md`](../../scripts/README.md) | Outils utilitaires |
-| 🎯 **Guide débutant** | [`../guides/GUIDE_DEBUTANT.md`](../guides/GUIDE_DEBUTANT.md) | Démarrage rapide |
+| 🎯 **Guide de démarrage** | [`../guides/GUIDE_DEMARRAGE.md`](../guides/GUIDE_DEMARRAGE.md) | Démarrage rapide |
 | 🔍 **Diagnostic** | `python scripts/bbia_doctor.py` | Vérification environnement (Zenoh, daemon, WiFi) |
 
 ## 🔗 Liens Utiles
@@ -433,4 +433,4 @@ export BBIA_DISABLE_SIMULATION=1
 ## 🎯 Navigation
 
 **Retour à** : [README Documentation](../README.md)  
-**Voir aussi** : [Guide Débutant](../guides/GUIDE_DEBUTANT.md) • [Troubleshooting Technique](../development/troubleshooting.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)
+**Voir aussi** : [Guide de Démarrage](../guides/GUIDE_DEMARRAGE.md) • [Troubleshooting Technique](../development/troubleshooting.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)

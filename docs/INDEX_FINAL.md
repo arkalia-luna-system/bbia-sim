@@ -15,7 +15,7 @@
 | **Dashboard** | `python src/bbia_sim/dashboard_advanced.py` | Instant | [Guide de Démarrage](guides/GUIDE_DEMARRAGE.md) |
 | **Premier robot** | Voir guide | 5 min | [Guide de Démarrage](guides/GUIDE_DEMARRAGE.md) ⭐ |
 
-**Configuration :** Python 3.11+ requis • **Version** : v1.3.2 • **Date** : Oct / Nov. 2025
+**Configuration :** Python 3.11+ requis • **Version** : v1.3.2 • **Date** : 21 novembre 2025
 
 > **💡 Astuce** : Si vous êtes perdu, consultez d'abord le [Guide de Démarrage](guides/GUIDE_DEMARRAGE.md) qui vous guidera étape par étape.
 
@@ -148,7 +148,7 @@
 
 ## 🆘 Besoin d'Aide ?
 
-1. **Nouveau sur le projet ?** → [Guide Débutant](guides/GUIDE_DEBUTANT.md)
+1. **Nouveau sur le projet ?** → [Guide de Démarrage](guides/GUIDE_DEMARRAGE.md)
 2. **Installer le projet ?** → [Installation Audio](installation/AUDIO_SETUP.md)
 3. **Utiliser le robot ?** → [Guide Reachy Mini](guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md)
 4. **Développer ?** → [Guide Avancé](guides/GUIDE_AVANCE.md)

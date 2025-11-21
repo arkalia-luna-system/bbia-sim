@@ -13,7 +13,7 @@
 Référence officielle: `pollen-robotics/reachy_mini` (GitHub) — voir `README` et instructions d’installation
 ([lien](https://github.com/pollen-robotics/reachy_mini)).
 
-[📚 Guide débutant](../guides/GUIDE_DEBUTANT.md) • [🔍 Audit complet](../quality/audits/INDEX_AUDITS_CONSOLIDES.md)
+[📚 Guide de démarrage](../guides/GUIDE_DEMARRAGE.md) • [🔍 Audit complet](../quality/audits/INDEX_AUDITS_CONSOLIDES.md)
 
 </div>
 
