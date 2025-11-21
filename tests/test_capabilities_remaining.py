@@ -536,43 +536,43 @@ class TestBackendAdapterMethods:
             adapter = BackendAdapter(robot_api)
             adapter.connect_if_needed()
 
-        # Test get_present_head_pose
-        pose = adapter.get_present_head_pose()
-        assert pose is not None
+            # Test get_present_head_pose
+            pose = adapter.get_present_head_pose()
+            assert pose is not None
 
-        # Test get_current_head_pose
-        current_pose = adapter.get_current_head_pose()
-        assert current_pose is not None
+            # Test get_current_head_pose
+            current_pose = adapter.get_current_head_pose()
+            assert current_pose is not None
 
-        # Test get_present_body_yaw
-        yaw = adapter.get_present_body_yaw()
-        assert isinstance(yaw, float)
+            # Test get_present_body_yaw
+            yaw = adapter.get_present_body_yaw()
+            assert isinstance(yaw, float)
 
-        # Test get_present_antenna_joint_positions
-        antennas = adapter.get_present_antenna_joint_positions()
-        assert antennas is not None
+            # Test get_present_antenna_joint_positions
+            antennas = adapter.get_present_antenna_joint_positions()
+            assert antennas is not None
 
-        # Test get_present_head_joint_positions
-        head_joints = adapter.get_present_head_joint_positions()
-        # Peut être None, on vérifie juste que la méthode existe
-        assert head_joints is None or isinstance(head_joints, dict)
+            # Test get_present_head_joint_positions
+            head_joints = adapter.get_present_head_joint_positions()
+            # Peut être None, on vérifie juste que la méthode existe
+            assert head_joints is None or isinstance(head_joints, dict)
 
-        # Test get_present_passive_joint_positions
-        passive_joints = adapter.get_present_passive_joint_positions()
-        # Peut être None, on vérifie juste que la méthode existe
-        assert passive_joints is None or isinstance(passive_joints, dict)
+            # Test get_present_passive_joint_positions
+            passive_joints = adapter.get_present_passive_joint_positions()
+            # Peut être None, on vérifie juste que la méthode existe
+            assert passive_joints is None or isinstance(passive_joints, dict)
 
-        # Test get_status
-        status = adapter.get_status()
-        assert status is not None
+            # Test get_status
+            status = adapter.get_status()
+            assert status is not None
 
-        # Test get_urdf
-        urdf = adapter.get_urdf()
-        # Peut être None, on vérifie juste que la méthode existe
-        assert urdf is None or isinstance(urdf, str)
+            # Test get_urdf
+            urdf = adapter.get_urdf()
+            # Peut être None, on vérifie juste que la méthode existe
+            assert urdf is None or isinstance(urdf, str)
 
-        # Test close
-        adapter.close()
+            # Test close
+            adapter.close()
         finally:
             if robot_api:
                 robot_api.disconnect()
