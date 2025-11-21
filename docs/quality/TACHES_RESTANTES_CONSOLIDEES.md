@@ -249,7 +249,7 @@
 | **Tests** | ✅ **100%** | 22+ tests passent + tests edge cases complets |
 | **Qualité Code** | ⚠️ **82%** | Black/Ruff formatage OK, TRY400 100% fait, G004 73% fait (221 restantes), lazy loading amélioré |
 
-**Progression globale :** ✅ **92% TERMINÉ** (Décembre 2025 - Corrections appliquées, score amélioré)
+**Progression globale :** ✅ **95% TERMINÉ** (Décembre 2025 - Corrections majeures appliquées)
 
 **Détail du score** :
 - Complexité : 93.3% ✅ (justifiée et réelle)

@@ -209,8 +209,8 @@ class BBIAHuggingFace:
                     conversation_entries, maxlen=max_history_size
                 )
                 logger.info(
-                    f"💾 Conversation chargée depuis mémoire "
-                    f"({len(self.conversation_history)} messages)",
+                    "💾 Conversation chargée depuis mémoire (%d messages)",
+                    len(self.conversation_history),
                 )
         except ImportError:
             # Mémoire persistante optionnelle
