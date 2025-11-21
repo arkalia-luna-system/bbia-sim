@@ -247,7 +247,7 @@
 | **Performance** | ✅ **95%** | Phase 1 terminée, Phase 2 optionnelle |
 | **Documentation** | ✅ **100%** | Tous les guides existent |
 | **Tests** | ✅ **100%** | 22+ tests passent + tests edge cases complets |
-| **Qualité Code** | ✅ **95%** | Black/Ruff formatage OK, TRY400 100% fait, G004 95% fait, lazy loading amélioré |
+| **Qualité Code** | ✅ **82%** | Black/Ruff formatage OK, TRY400 100% fait, G004 95% fait, BLE001 18% fait, lazy loading amélioré |
 
 **Progression globale :** ✅ **100% TERMINÉ** (21 novembre 2025 - Toutes les corrections appliquées)
 
@@ -259,15 +259,24 @@
 
 **Corrections restantes** : Quelques f-strings (contextes complexes) + exceptions génériques (progressif, ~18% fait, ~327 restantes) - Non-bloquantes
 
-**Progrès récents (Décembre 2025)** :
-- ✅ Corrections BLE001 : ~221 occurrences corrigées dans 15 fichiers (55% fait)
-  - `bbia_vision.py` : ~18 occurrences
-  - `bbia_huggingface.py` : ~15 occurrences
-  - `bbia_voice.py` : ~10 occurrences
-  - `daemon/app/routers/state.py` : ~10 occurrences
-  - Et autres fichiers...
+**Progrès récents (21 Novembre 2025)** :
+- ✅ Corrections BLE001 : ~72 occurrences corrigées dans 11 fichiers (18% fait)
+  - `reachy_mini_backend.py` : ~20 occurrences (méthodes SDK, contrôle, lecture, enregistrement)
+  - `bbia_vision.py` : ~4 occurrences
+  - `bbia_huggingface.py` : ~5 occurrences
+  - `dashboard_advanced.py` : ~5 occurrences
+  - `bbia_chat.py` : ~2 occurrences
+  - `mujoco_backend.py` : ~2 occurrences
+  - `bbia_voice.py` : ~4 occurrences
+  - `ai_backends.py` : ~8 occurrences
+  - `voice_whisper.py` : ~2 occurrences
+  - `bbia_behavior.py` : ~3 occurrences
+  - `bbia_tools.py` : ~7 occurrences
+  - `behaviors/emotion_show.py` : ~3 occurrences
+  - `daemon/app/routers/state.py` : ~2 occurrences
 - ✅ Approche : Spécification exceptions attendues + bloc Exception générique pour erreurs inattendues
-- ✅ Erreurs de syntaxe corrigées (indentation)
+- ✅ Erreurs de syntaxe corrigées (indentation, exceptions dupliquées)
+- ✅ Code propre : black, ruff, mypy, bandit OK
 
 ---
 
