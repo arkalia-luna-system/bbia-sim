@@ -13,7 +13,7 @@
 ### **Environnement de développement**
 
 ```bash
-# Python 3.9+ requis
+# Python 3.11+ requis
 python --version
 
 # Installation des dépendances

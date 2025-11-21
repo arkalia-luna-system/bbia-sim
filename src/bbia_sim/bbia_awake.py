@@ -75,5 +75,10 @@ def start_bbia_sim() -> None:
     print("BBIA est réveillé.")
 
 
-if __name__ == "__main__":
+def main() -> None:
+    """Entry point CLI pour bbia-sim."""
     start_bbia_sim()
+
+
+if __name__ == "__main__":
+    main()
