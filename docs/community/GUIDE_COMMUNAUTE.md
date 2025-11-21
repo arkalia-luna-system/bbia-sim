@@ -1,6 +1,6 @@
 # 🌐 Guide Communauté BBIA-SIM
 
-**Date** : Décembre 2025  
+**Date** : 21 novembre 2025  
 **Objectif** : Maximiser la visibilité et l'engagement communautaire pour BBIA-SIM
 
 ---

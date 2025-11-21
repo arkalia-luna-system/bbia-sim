@@ -1,6 +1,6 @@
 # 🎬 Guide Vidéos de Démonstration BBIA-SIM
 
-**Date** : Décembre 2025  
+**Date** : 21 novembre 2025  
 **Objectif** : Créer des vidéos courtes (30-60 secondes) pour démontrer chaque comportement et fonctionnalité
 
 ---
@@ -305,6 +305,6 @@
 
 ---
 
-**Date de création** : Décembre 2025  
-**Dernière mise à jour** : Décembre 2025
+**Date de création** : 21 novembre 2025  
+**Dernière mise à jour** : 21 novembre 2025
 
