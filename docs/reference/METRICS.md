@@ -83,9 +83,11 @@
 - Ces métriques sont mises à jour automatiquement depuis la CI/CD
 - Pour les métriques détaillées par module, voir les rapports de coverage HTML
 - Les tests de conformité SDK sont validés à chaque commit
+- **Guide d'utilisation** : Voir [METRICS_COLLECTION.md](../development/METRICS_COLLECTION.md) pour plus de détails
 
 ---
 
 **Source** : [arkalia-metrics-collector](https://github.com/arkalia-luna-system/arkalia-metrics-collector), CI/CD GitHub Actions, Codecov, pytest  
-**Prochaine mise à jour** : Automatique via CI/CD (job `metrics` sur branches develop/main)
+**Prochaine mise à jour** : Automatique via CI/CD (job `metrics` sur branches develop/main)  
+**Collecte manuelle** : `./scripts/collect_metrics.sh` puis `python3 scripts/update_metrics_doc.py`
 
