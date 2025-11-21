@@ -552,8 +552,11 @@ class ReachyMiniBackend(RobotAPI):
             logger.warning("Joint %s non trouvé", joint_name)
             return 0.0
 
-        except Exception as e:
+        except (AttributeError, RuntimeError, IndexError, ValueError) as e:
             logger.exception("Erreur lecture joint %s: %s", joint_name, e)
+            return 0.0
+        except Exception as e:
+            logger.exception("Erreur inattendue lecture joint %s: %s", joint_name, e)
             return 0.0
 
     def _validate_joint_name(self, joint_name: str) -> bool:
@@ -698,8 +701,11 @@ class ReachyMiniBackend(RobotAPI):
                 f"look_at_world() pour un contrôle correct.",
             )
             return False
-        except Exception as e:
+        except (AttributeError, RuntimeError, ValueError, IndexError) as e:
             logger.exception("Erreur contrôle joint %s: %s", joint_name, e)
+            return False
+        except Exception as e:
+            logger.exception("Erreur inattendue contrôle joint %s: %s", joint_name, e)
             return False
 
     def set_emotion(self, emotion: str, intensity: float = 0.5) -> bool:
@@ -760,8 +766,11 @@ class ReachyMiniBackend(RobotAPI):
             self.emotion_intensity = intensity
             return True
 
-        except Exception as e:
+        except (KeyError, AttributeError, RuntimeError, ValueError) as e:
             logger.exception("Erreur émotion %s: %s", emotion, e)
+            return False
+        except Exception as e:
+            logger.exception("Erreur inattendue émotion %s: %s", emotion, e)
             return False
 
     def look_at(

@@ -410,9 +410,9 @@ def reconnaitre_parole(
             # Bénéfice: 4 microphones directionnels avec annulation de bruit automatique
             if hasattr(robot_api.media, "record_audio"):
                 logging.info(
-                    "🎤 Enregistrement via SDK (4 microphones) (%ds) ",
+                    "🎤 Enregistrement via SDK (4 microphones) (%ds) "
+                    "pour reconnaissance...",
                     duree,
-                    f"pour reconnaissance...",
                 )
                 audio_data = robot_api.media.record_audio(
                     duration=duree,

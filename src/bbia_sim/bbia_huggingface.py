@@ -490,11 +490,11 @@ class BBIAHuggingFace:
                 # Modèles vision/audio/multimodal stockés avec suffixe "_model"
                 model_key = f"{model_name}_model"
                 if model_key in self.models:
-                      logger.debug(
-                          "♻️ Modèle %s déjà chargé (%s), réutilisation",
-                          model_type,
-                          resolved_name,
-                      )
+                    logger.debug(
+                        "♻️ Modèle %s déjà chargé (%s), réutilisation",
+                        model_type,
+                        resolved_name,
+                    )
                     return True
 
             # OPTIMISATION RAM: Vérifier limite modèles et décharger LRU si nécessaire
