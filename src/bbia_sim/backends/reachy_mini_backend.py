@@ -279,11 +279,6 @@ class ReachyMiniBackend(RobotAPI):
             self._activate_simulation_mode()
             self._start_watchdog()
             return False
-        except (ConnectionError, RuntimeError, AttributeError) as e:
-            error_msg = str(e)
-            logger.warning(
-                "⚠️  Connexion robot échouée (fallback simulation): %s", error_msg
-            )
         except Exception as e:
             error_msg = str(e)
             logger.warning(
@@ -322,8 +317,6 @@ class ReachyMiniBackend(RobotAPI):
             self._stop_watchdog()
         except (AttributeError, RuntimeError, OSError, ConnectionError) as e:
             logger.debug("Stop watchdog lors déconnexion: %s", e)
-        except (RuntimeError, AttributeError) as e:
-            logger.debug("Erreur stop watchdog: %s", e)
         except Exception as e:
             logger.debug("Erreur inattendue stop watchdog: %s", e)
         try:
@@ -331,8 +324,6 @@ class ReachyMiniBackend(RobotAPI):
                 self.robot = None
         except (AttributeError, RuntimeError, OSError, ConnectionError) as e:
             logger.debug("Nettoyage robot lors déconnexion: %s", e)
-        except (AttributeError, RuntimeError) as e:
-            logger.debug("Erreur nettoyage robot: %s", e)
         except Exception as e:
             logger.debug("Erreur inattendue nettoyage robot: %s", e)
         self.is_connected = False
