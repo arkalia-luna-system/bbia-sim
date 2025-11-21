@@ -374,7 +374,7 @@ rm -rf __pycache__/
 
 ### Environnement de base
 
-- [ ] Python 3.9+ installé
+- [ ] Python 3.11+ installé
 - [ ] Dépendances installées
 - [ ] Variables d'environnement configurées
 - [ ] Permissions de fichiers correctes
