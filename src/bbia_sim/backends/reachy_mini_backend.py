@@ -673,9 +673,10 @@ class ReachyMiniBackend(RobotAPI):
 
         # Autres joints stewart (stewart_1, 2, 3)
         logger.warning(
-            f"⚠️ Contrôle individuel du joint {joint_name} IMPOSSIBLE "
-            f"(cinématique inverse requise). Utilisez goto_target() ou "
-            f"look_at_world() pour un contrôle correct.",
+            "⚠️ Contrôle individuel du joint %s IMPOSSIBLE "
+            "(cinématique inverse requise). Utilisez goto_target() ou "
+            "look_at_world() pour un contrôle correct.",
+            joint_name,
         )
         return False
 
@@ -711,9 +712,10 @@ class ReachyMiniBackend(RobotAPI):
                 return self._set_stewart_joint(joint_name)
             # Joint inconnu
             logger.warning(
-                f"⚠️ Contrôle individuel du joint {joint_name} IMPOSSIBLE "
-                f"(cinématique inverse requise). Utilisez goto_target() ou "
-                f"look_at_world() pour un contrôle correct.",
+                "⚠️ Contrôle individuel du joint %s IMPOSSIBLE "
+                "(cinématique inverse requise). Utilisez goto_target() ou "
+                "look_at_world() pour un contrôle correct.",
+                joint_name,
             )
             return False
         except (AttributeError, RuntimeError, ValueError, IndexError) as e:
@@ -736,7 +738,8 @@ class ReachyMiniBackend(RobotAPI):
         # Validation et clamp de l'intensité [0.0, 1.0] - conforme SDK
         if not 0.0 <= intensity <= 1.0:
             logger.warning(
-                f"Intensité {intensity} hors limites [0.0, 1.0], clamp appliqué",
+                "Intensité %s hors limites [0.0, 1.0], clamp appliqué",
+                intensity,
             )
             intensity = max(0.0, min(1.0, intensity))
 

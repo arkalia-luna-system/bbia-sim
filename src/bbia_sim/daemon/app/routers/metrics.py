@@ -81,7 +81,7 @@ if PROMETHEUS_AVAILABLE and REGISTRY:
         )
     except (ValueError, KeyError) as e:
         # Si erreur de duplication, réutiliser les métriques existantes
-        logger.warning(f"Métriques Prometheus déjà enregistrées, réutilisation: {e}")
+        logger.warning("Métriques Prometheus déjà enregistrées, réutilisation: %s", e)
         # Récupérer les métriques existantes depuis le registre
         request_count = None
         request_latency = None
