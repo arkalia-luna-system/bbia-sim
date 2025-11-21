@@ -210,7 +210,7 @@ class ReachyBackend(RobotAPI):
         else:
             # Mode simulation
             self.simulated_joints[joint_name] = clamped_position
-            logger.debug("Joint %s → %s rad (simulation)", joint_name, clamped_position:.3f)
+                logger.debug("Joint %s → %.3f rad (simulation)", joint_name, clamped_position)
             return True
 
     def get_joint_pos(self, joint_name: str) -> float | None:
