@@ -603,9 +603,11 @@ class ReachyMiniBackend(RobotAPI):
                 position = max(safe_min, min(safe_max, position))
                 if position != old_position:
                     logger.debug(
-                        f"Position {old_position:.4f} rad clampée à "
-                        f"{position:.4f} rad par limite de sécurité "
-                        f"pour joint {joint_name}",
+                        "Position %.4f rad clampée à %.4f rad par limite de sécurité "
+                        "pour joint %s",
+                        old_position,
+                        position,
+                        joint_name,
                     )
         else:
             # Si pas de limite spécifique, utiliser seulement la limite de sécurité
