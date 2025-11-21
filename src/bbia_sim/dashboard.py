@@ -112,7 +112,7 @@ websocket_manager = BBIAWebSocketManager()
 # Application FastAPI
 app: FastAPI | None
 if FASTAPI_AVAILABLE:
-    app = FastAPI(title="BBIA Dashboard", version="1.2.0")
+    app = FastAPI(title="BBIA Dashboard", version="1.3.2")
 else:
     app = None
 
@@ -347,7 +347,7 @@ if FASTAPI_AVAILABLE:
         return {
             "status": "healthy",
             "timestamp": datetime.now().isoformat(),
-            "version": "1.2.0",
+            "version": "1.3.2",
             "robot_connected": websocket_manager.robot is not None,
         }
 

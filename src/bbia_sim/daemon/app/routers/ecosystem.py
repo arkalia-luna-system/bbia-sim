@@ -215,7 +215,7 @@ async def get_api_status() -> APIStatus:
         active_conn = get_active_connections()
 
         return APIStatus(
-            version="1.2.0",
+            version="1.3.2",
             status="running",
             uptime=uptime_formatted,
             robot_connected=robot_connected,

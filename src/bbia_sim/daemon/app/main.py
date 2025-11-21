@@ -161,7 +161,7 @@ app = FastAPI(
     ws://localhost:8000/ws/telemetry
     ```
     """,
-    version="1.2.0",
+    version="1.3.2",
     docs_url="/docs",
     redoc_url="/redoc",
     openapi_url="/openapi.json",
@@ -293,7 +293,7 @@ async def root_api() -> dict[str, Any]:
     """Point d'entrée principal de l'API en JSON."""
     return {
         "message": "BBIA-SIM API - Écosystème Reachy Mini",
-        "version": "1.2.0",
+        "version": "1.3.2",
         "status": "running",
         "description": (
             "API publique pour le contrôle du robot Reachy Mini avec modules BBIA"
@@ -356,7 +356,7 @@ else:
         """Point d'entrée principal de l'API (fallback si dashboard non disponible)."""
         return {
             "message": "BBIA-SIM API - Écosystème Reachy Mini",
-            "version": "1.2.0",
+            "version": "1.3.2",
             "status": "running",
             "description": (
                 "API publique pour le contrôle du robot Reachy Mini avec modules BBIA"
@@ -412,7 +412,7 @@ async def api_info() -> dict[str, Any]:
     """Informations détaillées sur l'API."""
     return {
         "name": "BBIA-SIM API - Écosystème Reachy Mini",
-        "version": "1.2.0",
+        "version": "1.3.2",
         "description": (
             "API publique pour le contrôle du robot Reachy Mini avec modules BBIA"
         ),

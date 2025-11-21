@@ -1,7 +1,7 @@
 # 📘 Guide d'Intégration BBIA-SIM - Phase 3
 
 **Date** : Oct / Nov. 2025  
-**Version** : 1.2.0
+**Version** : 1.3.2
 
 > **Compatibilité Python et CI** :
 > - Python requis : 3.11+

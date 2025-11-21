@@ -1562,7 +1562,7 @@ ADVANCED_DASHBOARD_HTML = """
             <span id="connection-indicator" class="connection-indicator disconnected"></span>
             <span id="connection-text">Déconnecté</span> |
             Backend: <span id="robot-backend">-</span> |
-            Version: 1.2.0
+            Version: 1.3.2
         </div>
     </div>
 
@@ -2955,7 +2955,7 @@ if FASTAPI_AVAILABLE:
         return {
             "status": "healthy",
             "timestamp": datetime.now().isoformat(),
-            "version": "1.2.0",
+            "version": "1.3.2",
             "robot_connected": advanced_websocket_manager.robot is not None,
             "backend": advanced_websocket_manager.robot_backend,
             "active_connections": len(advanced_websocket_manager.active_connections),
@@ -3058,7 +3058,7 @@ if FASTAPI_AVAILABLE:
         return {
             "status": "healthy",
             "timestamp": datetime.now().isoformat(),
-            "version": "1.2.0",
+            "version": "1.3.2",
             "robot_connected": advanced_websocket_manager.robot is not None,
             "active_connections": len(advanced_websocket_manager.active_connections),
         }
