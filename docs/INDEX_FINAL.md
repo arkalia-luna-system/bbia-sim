@@ -11,13 +11,13 @@
 
 | Action | Commande | Temps | Lien |
 |--------|----------|-------|------|
-| **Installation** | `pip install -e .[dev]` | ~2 min | [Guide Débutant](guides/GUIDE_DEBUTANT.md) |
-| **Dashboard** | `python src/bbia_sim/dashboard_advanced.py` | Instant | [Guide Débutant](guides/GUIDE_DEBUTANT.md) |
-| **Premier robot** | Voir guide | 5 min | [Guide Débutant](guides/GUIDE_DEBUTANT.md) ⭐ |
+| **Installation** | `pip install -e .[dev]` | ~2 min | [Guide de Démarrage](guides/GUIDE_DEMARRAGE.md) |
+| **Dashboard** | `python src/bbia_sim/dashboard_advanced.py` | Instant | [Guide de Démarrage](guides/GUIDE_DEMARRAGE.md) |
+| **Premier robot** | Voir guide | 5 min | [Guide de Démarrage](guides/GUIDE_DEMARRAGE.md) ⭐ |
 
 **Configuration :** Python 3.11+ requis • **Version** : v1.3.2 • **Date** : Oct / Nov. 2025
 
-> **💡 Astuce** : Si vous êtes perdu, consultez d'abord le [Guide Débutant](guides/GUIDE_DEBUTANT.md) qui vous guidera étape par étape.
+> **💡 Astuce** : Si vous êtes perdu, consultez d'abord le [Guide de Démarrage](guides/GUIDE_DEMARRAGE.md) qui vous guidera étape par étape.
 
 ---
 
@@ -25,7 +25,7 @@
 
 ### 🟢 Nouveau Utilisateur
 
-1. [Guide Débutant](guides/GUIDE_DEBUTANT.md) — Premiers pas en 5 minutes
+1. [Guide de Démarrage](guides/GUIDE_DEMARRAGE.md) — Premiers pas en 5 minutes
 2. [Installation Audio](installation/AUDIO_SETUP.md) — Configuration audio
 3. [Guide Reachy Mini](guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md) — Utiliser le robot
 
@@ -63,7 +63,7 @@
 
 ### 🚀 Démarrage & Guides
 
-- [Guide Débutant](guides/GUIDE_DEBUTANT.md) — Installation et premiers pas
+- [Guide de Démarrage](guides/GUIDE_DEMARRAGE.md) — Installation et premiers pas
 - [Guide Avancé](guides/GUIDE_AVANCE.md) — Fonctionnalités avancées
 - [Guide Chat BBIA](guides/GUIDE_CHAT_BBIA.md) — Système de chat intelligent
 - [Guide Reachy Mini Wireless](guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md) — Guide complet

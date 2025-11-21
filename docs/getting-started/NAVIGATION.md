@@ -8,7 +8,7 @@
 
 ### Je suis nouveau sur le projet
 
-1. **[Guide Débutant](../guides/GUIDE_DEBUTANT.md)** — Installation et premiers pas (5 min)
+1. **[Guide de Démarrage](../guides/GUIDE_DEMARRAGE.md)** — Installation et premiers pas (5 min)
 2. **[Guide Reachy Mini](../guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md)** — Utiliser le robot
 
 ### Je veux développer

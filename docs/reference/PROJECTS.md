@@ -21,7 +21,7 @@ Développeuse Python autodidacte spécialisée en **IA**, **robotique** et **mob
 **📁 Repository :** [arkalia-luna-system/bbia-sim](https://github.com/arkalia-luna-system/bbia-sim)
 **🏷️ Statut :** ✅ Actif - Version 1.3.2
 **📅 Création :** Octobre 2024
-**🔄 Dernière mise à jour :** Oct / Nov. 2025
+**🔄 Dernière mise à jour :** 21 novembre 2025
 
 **Description :**
 Moteur cognitif Python avec 12 émotions robotiques pour Reachy Mini. Simulation fidèle dans MuJoCo + intégration SDK officiel Pollen Robotics. Backend unifié (simulation + hardware réel).
@@ -62,7 +62,7 @@ Moteur cognitif Python avec 12 émotions robotiques pour Reachy Mini. Simulation
 
 **Liens :**
 
-- 🌐 **GitHub** : https://github.com/arkalia-luna-system/bbia-sim
+- 🌐 **GitHub** : [github.com/arkalia-luna-system/bbia-sim](https://github.com/arkalia-luna-system/bbia-sim)
 - 📖 **Docs** : `docs/` (guides, API, architecture)
 - 🎬 **Démos** : `examples/` (émotions, vision, voix, comportements)
 
@@ -262,13 +262,13 @@ Outils et scripts pour environnement de développement.
 
 ## 🎯 Projets Prioritaires pour Portfolio
 
-### 🤖 Pour Candidatures Développeur IA/Robotique :
+### 🤖 Pour Candidatures Développeur IA/Robotique
 
 1. **BBIA-SIM** ⭐ (robotique IA, démo hardware)
 2. **Arkalia Aria** (IA santé, mobile)
 3. **Athalia DevOps** (qualité code, CI/CD)
 
-### 📱 Pour Candidatures Mobile :
+### 📱 Pour Candidatures Mobile
 
 1. **Arkalia Aria** (app santé complète)
 2. **Arkalia Quest** (jeu éducatif)

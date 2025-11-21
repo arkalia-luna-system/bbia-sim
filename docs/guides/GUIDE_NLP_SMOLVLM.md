@@ -509,4 +509,4 @@ pip install transformers torch
 ## 🎯 Navigation
 
 **Retour à** : [README Documentation](../README.md)  
-**Voir aussi** : [Guide Chat BBIA](GUIDE_CHAT_BBIA.md) • [Guide Débutant](GUIDE_DEBUTANT.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)
+**Voir aussi** : [Guide Chat BBIA](GUIDE_CHAT_BBIA.md) • [Guide Débutant](GUIDE_DEMARRAGE.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)

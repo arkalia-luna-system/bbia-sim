@@ -6,7 +6,7 @@
 
 ## 🎯 Commencez ici !
 
-> **⭐ NOUVEAU ?** Commencez par le **[Guide Débutant](../guides/GUIDE_DEBUTANT.md)** — Installation et premiers pas en 5 minutes
+> **⭐ NOUVEAU ?** Commencez par le **[Guide de Démarrage](../guides/GUIDE_DEMARRAGE.md)** — Installation et premiers pas en 5 minutes
 
 ---
 
@@ -24,7 +24,7 @@ pip install -e .[dev]
 
 ### Premier Robot (5 minutes)
 
-Voir [Guide Débutant](../guides/GUIDE_DEBUTANT.md) pour les premiers pas.
+Voir [Guide de Démarrage](../guides/GUIDE_DEMARRAGE.md) pour les premiers pas.
 
 ---
 
@@ -32,7 +32,7 @@ Voir [Guide Débutant](../guides/GUIDE_DEBUTANT.md) pour les premiers pas.
 
 | Guide | Description | Temps |
 |-------|-------------|-------|
-| **[Guide Débutant](../guides/GUIDE_DEBUTANT.md)** | Installation et premiers pas | 5 min |
+| **[Guide de Démarrage](../guides/GUIDE_DEMARRAGE.md)** | Installation et premiers pas | 5 min |
 | **[Guide de Navigation](NAVIGATION.md)** | Trouver rapidement ce dont vous avez besoin | 2 min |
 | **[FAQ Troubleshooting](troubleshooting.md)** | Questions fréquentes et solutions | 5 min |
 | **[Guide Contribuer](contributing.md)** | Good First Issues pour nouveaux contributeurs | 10 min |
@@ -45,7 +45,7 @@ Voir [Guide Débutant](../guides/GUIDE_DEBUTANT.md) pour les premiers pas.
 
 ### Je suis nouveau
 
-1. **[Guide Débutant](../guides/GUIDE_DEBUTANT.md)** — Installation et premiers pas
+1. **[Guide de Démarrage](../guides/GUIDE_DEMARRAGE.md)** — Installation et premiers pas
 2. **[Guide de Navigation](NAVIGATION.md)** — Trouver ce dont vous avez besoin
 3. **[FAQ Troubleshooting](troubleshooting.md)** — Questions fréquentes
 

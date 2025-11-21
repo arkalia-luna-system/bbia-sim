@@ -202,8 +202,8 @@ python -m pytest tests/test_golden_traces.py -v
 
 # Tests headless
 python -m pytest tests/ -m "not e2e" -v
-
 ```
+
 
 ---
 

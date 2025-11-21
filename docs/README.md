@@ -9,7 +9,7 @@
 
 ## 🚀 Nouveau sur le projet ? Commencez ici !
 
-> **⭐ POINT DE DÉPART RECOMMANDÉ** : Si vous êtes nouveau, commencez par le **[Guide Débutant](guides/GUIDE_DEBUTANT.md)** — Installation et premiers pas en 5 minutes
+> **⭐ POINT DE DÉPART RECOMMANDÉ** : Commencez par le **[Guide de Démarrage](guides/GUIDE_DEMARRAGE.md)** — Installation et premiers pas en 5 minutes
 
 ---
 
@@ -17,7 +17,7 @@
 
 ```mermaid
 flowchart TB
-    START[🚀 Nouveau?] --> DEBUT[📖 Guide Débutant<br/>5 minutes]
+    START[🚀 Nouveau?] --> DEBUT[📖 Guide de Démarrage<br/>5 minutes]
     START --> AVANCE[⚡ Expérimenté?]
 
     DEBUT --> INSTALL[📦 Installation]
@@ -71,7 +71,7 @@ flowchart TB
 
 ### Par Niveau
 
-- 🟢 **[Guide Débutant](guides/GUIDE_DEBUTANT.md)** — Installation et premiers pas en 5 minutes
+- 🟢 **[Guide de Démarrage](guides/GUIDE_DEMARRAGE.md)** — Installation et premiers pas en 5 minutes
 - 🟡 **[Guide Avancé](guides/GUIDE_AVANCE.md)** — Fonctionnalités avancées et architecture
 - 🔴 **[Guides Techniques](development/)** — Intégration, tests, migration
 
@@ -118,6 +118,6 @@ flowchart TB
 
 <div align="center">
 
-**💡 Besoin d'aide ?** Consultez le [Guide Débutant](guides/GUIDE_DEBUTANT.md) ou le [Troubleshooting](getting-started/troubleshooting.md)
+**💡 Besoin d'aide ?** Consultez le [Guide de Démarrage](guides/GUIDE_DEMARRAGE.md) ou le [Troubleshooting](getting-started/troubleshooting.md)
 
 </div>

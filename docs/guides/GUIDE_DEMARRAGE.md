@@ -1,10 +1,9 @@
-# 🚀 Guide Débutant - BBIA-SIM
+# 🚀 Guide de Démarrage - BBIA-SIM
 
 <div align="center">
 
 **Date** : Oct / Nov. 2025
 [![Version](https://img.shields.io/badge/version-1.3.2-blue.svg)](https://github.com/arkalia-luna-system/bbia-sim)
-[![Niveau](https://img.shields.io/badge/niveau-Débutant-green.svg)](docs/guides/)
 [![Temps](https://img.shields.io/badge/temps-5%20min-orange.svg)](#votre-premier-robot-bbia-en-5-minutes)
 
 </div>

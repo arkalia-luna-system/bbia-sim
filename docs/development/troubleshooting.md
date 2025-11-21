@@ -8,7 +8,7 @@
 **📚 [FAQ principale](../getting-started/troubleshooting.md)** | **🔧 [Guide avancé](../guides/GUIDE_AVANCE.md)** | **🧪 [Guide tests](testing.md)**
 
 > **💡 Ce guide est complémentaire à la [FAQ principale](../getting-started/troubleshooting.md)**  
-> - **FAQ principale** : Questions fréquentes pour débutants (installation, MuJoCo, audio basique)  
+> - **FAQ principale** : Questions fréquentes générales (installation, MuJoCo, audio basique)  
 > - **Ce guide** : Problèmes techniques avancés (IA, modules, CI, WebSocket, etc.)
 
 ---

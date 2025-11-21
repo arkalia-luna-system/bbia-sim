@@ -507,5 +507,5 @@ if "heureux" in response.lower():
 ## 🎯 Navigation
 
 **Retour à** : [README Documentation](../README.md)  
-**Voir aussi** : [Guide NLP](GUIDE_NLP_SMOLVLM.md) • [Guide Débutant](GUIDE_DEBUTANT.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)
+**Voir aussi** : [Guide NLP](GUIDE_NLP_SMOLVLM.md) • [Guide Débutant](GUIDE_DEMARRAGE.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)
 

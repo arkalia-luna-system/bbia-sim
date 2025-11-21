@@ -1,7 +1,7 @@
 # 🤖 Guide pour Assistants IA - BBIA-SIM
 
-> **⚠️ ATTENTION : Ce guide est destiné aux ASSISTANTS IA, pas aux humains débutants !**  
-> **👤 Si vous êtes un débutant humain, commencez par :** [Guide Débutant](../guides/GUIDE_DEBUTANT.md)
+> **⚠️ ATTENTION : Ce guide est destiné aux ASSISTANTS IA, pas aux utilisateurs !**  
+> **👤 Si vous êtes un utilisateur, commencez par :** [Guide de Démarrage](../guides/GUIDE_DEMARRAGE.md)
 
 > **Date de mise à jour :** Oct / Nov. 2025  
 > **Version :** 1.0
@@ -11,7 +11,7 @@
 Ce guide est destiné aux **assistants IA** (Claude, GPT, Cursor AI, etc.) pour comprendre rapidement l'état du projet, les scripts disponibles, les conventions, et les tâches à poursuivre.
 
 > **💡 Pour les humains** : Si vous cherchez à apprendre à utiliser BBIA-SIM, consultez plutôt :
-> - 🟢 **[Guide Débutant](../guides/GUIDE_DEBUTANT.md)** - Pour commencer
+> - 🟢 **[Guide de Démarrage](../guides/GUIDE_DEMARRAGE.md)** - Pour commencer
 > - 🟡 **[Guide Avancé](../guides/GUIDE_AVANCE.md)** - Pour développeurs
 > - 📚 **[README Documentation](../README.md)** - Navigation complète
 
