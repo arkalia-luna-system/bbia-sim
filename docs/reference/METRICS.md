@@ -11,14 +11,14 @@
 
 ### Métriques globales
 
-- - - **Tests collectés** : 1805 tests
+- **Tests collectés** : 1,805 tests
 - **Tests sélectionnés en CI** : 1,362 tests
 - **Fonctions de test identifiées** : 1,804
-- - - **Fichiers de tests** : 183 fichiers
+- **Fichiers de tests** : 183 fichiers
 
 ### Coverage
 
-- - - **Coverage global** : **68.86% (estimé)** ([Codecov](https://app.codecov.io/gh/arkalia-luna-system/bbia-sim))
+- **Coverage global** : **68.86%** ([Codecov](https://app.codecov.io/gh/arkalia-luna-system/bbia-sim))
 - **Coverage modules core** : ~50% (mesure pertinente)
 
 ### Coverage par module (modules critiques)
@@ -39,8 +39,8 @@
 
 ## 📁 Code Source
 
-- - - **Fichiers Python source** : 86 fichiers (74,965 lignes)
-- - - **Fichiers de tests** : 183 fichiers
+- **Fichiers Python source** : 86 fichiers (74,965 lignes)
+- **Fichiers de tests** : 183 fichiers
 - **Modules BBIA** : 15+ modules spécialisés
 - **Comportements** : 21 comportements intelligents (7 de base + 14 avancés)
 
