@@ -210,10 +210,12 @@ class AlarmClockBehavior(BBIABehavior):
             )
             self.alarm_time = snooze_datetime.time()
 
-        logger.info(
-            f"Snooze activé ({self.snooze_count}/{self.max_snooze}). "
-            f"Nouveau réveil à {self.alarm_time}"
-        )
+          logger.info(
+              "Snooze activé (%d/%d). Nouveau réveil à %s",
+              self.snooze_count,
+              self.max_snooze,
+              self.alarm_time,
+          )
 
         # Message
         try:

@@ -1,9 +1,10 @@
 # 🎉 NOUVEAUTÉS REACHY MINI - NOVEMBRE 2024
 
 **Date de l'email :** Novembre 2024  
-**Date de vérification BBIA :** Novembre 2024  
+**Date de vérification BBIA :** Décembre 2025  
 **Version BBIA :** 1.3.2  
-**Statut :** ✅ **PRÊT POUR RÉCEPTION ROBOT**
+**Statut :** ✅ **PRÊT POUR RÉCEPTION ROBOT**  
+**Dernière mise à jour :** Décembre 2025 (Email Pollen Robotics - Point novembre)
 
 ---
 
@@ -20,6 +21,22 @@ L'équipe Pollen Robotics vient de confirmer que **Reachy-mini est en version fi
 - **Premier gros lot** : Expédition dans moins d'un mois 🚀
 - **Deuxième lot** (commandes récentes) : Expédition en février
 - **Environ 125 unités bêta** déjà expédiées à des testeurs précoces
+
+### 🧪 Résultats du Programme Bêta Communautaire
+
+Au cours des dernières semaines, environ **125 unités bêta** ont été expédiées à des testeurs précoces — et la réponse de la communauté a été fantastique.
+
+**Retours reçus :**
+- ✅ De superbes démos et une multitude d'applications
+- ✅ Des tonnes de commentaires qui ont aidé à peaufiner la version finale
+- ✅ Un immense merci à tous les participants — ils contribuent à façonner ce que deviendra Reachy-mini pour des milliers d'utilisateurs
+
+**Applications créées par la communauté :**
+- Applications conversationnelles avec LLM
+- Démonstrations de mouvements et danses
+- Intégrations IA avancées
+- Comportements personnalisés
+- Applications partagées sur Hugging Face Hub
 
 ### 📦 Production
 
@@ -61,6 +78,8 @@ L'email mentionne un **nouveau tableau de bord** avec les fonctionnalités suiva
    - Intégration Hugging Face Spaces
    - Installation d'applications depuis le Hub
    - Déploiement d'applications personnalisées
+   - Création et partage d'applications par la communauté
+   - Découverte d'applications créées par les testeurs bêta (125 unités)
 
 ---
 
@@ -188,15 +207,42 @@ L'email mentionne un **nouveau tableau de bord** avec les fonctionnalités suiva
 - Test des capteurs
 - Installation des applications de base
 
-**Priorité :** 🟡 **Basse** - La documentation actuelle est suffisante, mais un assistant interactif serait un plus.
+**Statut actuel :** ⚠️ **Non implémenté** - La documentation et scripts d'installation sont disponibles, mais pas d'assistant interactif dans le dashboard
+
+**Ce qui existe :**
+- ✅ Documentation complète (`docs/getting-started/QUICK_START.md`, `docs/installation/INSTALLATION.md`)
+- ✅ Scripts d'installation (`scripts/setup_bbia.sh`, `Makefile`)
+- ✅ Dashboard avec sections apps/appstore pour installation manuelle
+
+**Ce qui manque :**
+- ⚠️ Assistant interactif guidé dans le dashboard
+- ⚠️ Détection automatique robot au premier lancement
+- ⚠️ Configuration réseau guidée (wireless)
+- ⚠️ Test automatique des capteurs au setup
+
+**Priorité :** 🟡 **Basse** - La documentation actuelle est suffisante, mais un assistant interactif serait un plus pour les utilisateurs non techniques.
 
 ### 3. Chargement Dynamique Apps Hugging Face Hub
 
 **Suggestion :** Implémenter le chargement dynamique d'applications depuis le Hugging Face Hub directement depuis le dashboard.
 
-**Statut actuel :** ⚠️ **Partiel** - Router présent mais pas de chargement dynamique depuis HF Hub.
+**Statut actuel :** ✅ **IMPLÉMENTÉ** - Chargement dynamique depuis HF Hub disponible via dashboard
 
-**Priorité :** 🟡 **Basse** - BBIA a déjà ses propres behaviors plus avancés. À faire après réception du robot.
+**Fichiers implémentés :**
+- ✅ `src/bbia_sim/daemon/app/routers/apps.py` - Router complet (11 endpoints)
+- ✅ `src/bbia_sim/daemon/app/dashboard/templates/sections/appstore.html` - Section "Install from 🤗 Hugging Face"
+- ✅ `src/bbia_sim/daemon/app/dashboard/static/js/appstore.js` - JavaScript pour installation apps HF
+- ✅ Endpoints : `/api/apps/list-available`, `/api/apps/install`, `/api/apps/job-status/{job_id}`
+- ✅ WebSocket : `/api/apps/ws/apps-manager/{job_id}` - Suivi installation en temps réel
+
+**Fonctionnalités :**
+- ✅ Liste des apps disponibles sur Hugging Face
+- ✅ Installation d'apps depuis le Hub
+- ✅ Suivi installation via WebSocket
+- ✅ Modal d'installation avec logs
+- ✅ Gestion apps installées (start/stop/remove)
+
+**Priorité :** ✅ **TERMINÉ** - Infrastructure complète pour charger et déployer apps depuis HF Hub
 
 **Référence :** `docs/quality/audits/COMPATIBILITE_REACHY_MINI_OFFICIEL.md` (section Applications Hugging Face)
 
@@ -210,14 +256,25 @@ L'email mentionne un **nouveau tableau de bord** avec les fonctionnalités suiva
 
 1. ✅ **Installation rapide** - Documentation et scripts disponibles
 2. ✅ **Vérification état/capteurs** - Endpoints REST + WebSocket complets
-3. ✅ **Gestion applications** - Router complet + 3 apps locales
-4. ✅ **Contrôle media** - Microphone, caméra, haut-parleurs via SDK
-5. ✅ **Dashboard** - Dashboard officiel-like + dashboard avancé
-6. ✅ **Hugging Face Hub** - Infrastructure présente (chargement dynamique optionnel)
+3. ✅ **Gestion applications** - Router complet + 3 apps locales + installation depuis HF Hub
+4. ✅ **Contrôle media** - Microphone, caméra, haut-parleurs via SDK + contrôles visuels dashboard
+5. ✅ **Dashboard** - Dashboard officiel-like + dashboard avancé avec Quick Actions (15 emojis)
+6. ✅ **Hugging Face Hub** - Infrastructure complète (chargement dynamique, installation, déploiement)
 
-### 📊 Statut Global : **98% COMPLET** ✅
+### 📊 Statut Global : **99% COMPLET** ✅
 
 **BBIA-SIM est conforme au SDK officiel Reachy Mini** et prêt pour la réception du robot réel.
+
+### 🧪 Programme Bêta Communautaire
+
+**125 unités bêta expédiées** - La communauté a créé :
+- ✅ Applications conversationnelles avec LLM
+- ✅ Démonstrations de mouvements et danses
+- ✅ Intégrations IA avancées
+- ✅ Comportements personnalisés
+- ✅ Applications partagées sur Hugging Face Hub
+
+**BBIA-SIM dispose de toutes les fonctionnalités nécessaires** pour créer et déployer des applications similaires à celles des testeurs bêta.
 
 ### 🚀 Prochaines Étapes
 

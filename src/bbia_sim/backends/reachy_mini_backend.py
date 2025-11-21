@@ -388,10 +388,11 @@ class ReachyMiniBackend(RobotAPI):
                             self.robot.get_current_joint_positions()
                             self._last_heartbeat = current_time
                         except (AttributeError, RuntimeError, OSError) as e:
-                            logger.warning(
-                                f"Watchdog: robot semble déconnecté: {e}. "
-                                f"Activation emergency_stop...",
-                            )
+                              logger.warning(
+                                  "Watchdog: robot semble déconnecté: %s. "
+                                  "Activation emergency_stop...",
+                                  e,
+                              )
                             # Demander l'arrêt du watchdog avant emergency_stop
                             self._should_stop_watchdog.set()
                             self.emergency_stop()
@@ -405,10 +406,11 @@ class ReachyMiniBackend(RobotAPI):
 
                 # Vérifier timeout heartbeat (sécurité)
                 if current_time - self._last_heartbeat > max_heartbeat_timeout:
-                    logger.warning(
-                        f"Watchdog: heartbeat timeout ({max_heartbeat_timeout}s). "
-                        f"Activation emergency_stop...",
-                    )
+                      logger.warning(
+                          "Watchdog: heartbeat timeout (%ss). "
+                          "Activation emergency_stop...",
+                          max_heartbeat_timeout,
+                      )
                     self._should_stop_watchdog.set()
                     self.emergency_stop()
                     break

@@ -1186,10 +1186,10 @@ class BBIAHuggingFace:
                         "phi2",
                     ) or self.model_configs.get("chat", {}).get("tinyllama")
                     if default_chat_model:
-                        logger.info(
-                            f"📥 Chargement LLM à la demande "
-                            f"(lazy loading): {default_chat_model}",
-                        )
+                          logger.info(
+                              "📥 Chargement LLM à la demande (lazy loading): %s",
+                              default_chat_model,
+                          )
                         if self.load_model(default_chat_model, model_type="chat"):
                             logger.info("✅ LLM chargé avec succès (lazy loading)")
                 except Exception as e:
@@ -1695,7 +1695,9 @@ class BBIAHuggingFace:
                             return f"✅ {detail}"
                         error_detail = result.get("detail", "Erreur inconnue")
                         logger.warning(
-                            f"⚠️ Erreur outil '{tool_name}': {error_detail}",
+                            "⚠️ Erreur outil '%s': %s",
+                            tool_name,
+                            error_detail,
                         )
                         return f"⚠️ {error_detail}"
 

@@ -3404,9 +3404,7 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                                 "❌ Impossible de créer le robot",
                             )
                     except Exception as e:
-                        logger.error(
-                            f"❌ Erreur initialisation robot: {e}", exc_info=True
-                        )
+                        logger.exception("❌ Erreur initialisation robot: %s", e)
                         await advanced_websocket_manager.send_log_message(
                             "error",
                             f"❌ Erreur robot: {e}",

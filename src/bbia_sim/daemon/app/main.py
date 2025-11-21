@@ -69,7 +69,8 @@ def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)) 
     if credentials.credentials != settings.api_token:
         # Log sécurisé sans exposer le token
         logger.warning(
-            f"Tentative d'authentification avec token invalide: {settings.mask_token(credentials.credentials)}",
+            "Tentative d'authentification avec token invalide: %s",
+            settings.mask_token(credentials.credentials),
         )
         raise HTTPException(
             status_code=401,
@@ -80,7 +81,8 @@ def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)) 
     # Log de succès en mode debug uniquement
     if settings.log_level.upper() == "DEBUG":
         logger.debug(
-            f"Authentification réussie avec token: {settings.mask_token(credentials.credentials)}",
+            "Authentification réussie avec token: %s",
+            settings.mask_token(credentials.credentials),
         )
 
     return str(credentials.credentials)

@@ -131,7 +131,8 @@ class FollowFaceBehavior(BBIABehavior):
                         self._track_face(face)
 
                         logger.debug(
-                            f"Visage détecté - Distance estimée: {distance_estimate:.2f}m",
+                            "Visage détecté - Distance estimée: %.2fm",
+                            distance_estimate,
                         )
                     else:
                         # Suivre même sans bbox détaillé
@@ -148,10 +149,11 @@ class FollowFaceBehavior(BBIABehavior):
 
                 time.sleep(0.1)  # 10 Hz pour suivi fluide
 
-            logger.info(
-                f"Suivi terminé - Visages détectés: {face_detected_count}, "
-                f"Perdus: {face_lost_count}",
-            )
+              logger.info(
+                  "Suivi terminé - Visages détectés: %d, Perdus: %d",
+                  face_detected_count,
+                  face_lost_count,
+              )
 
         except KeyboardInterrupt:
             logger.info("Suivi interrompu par l'utilisateur")
