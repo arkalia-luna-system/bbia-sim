@@ -274,7 +274,7 @@ except Exception as e:  # Pour erreurs inattendues
 
 **Fichiers concernés** : 58 fichiers
 
-**Corrections effectuées (Décembre 2025)** :
+**Corrections effectuées (Novembre 2025)** :
 - ✅ **Total : ~221 occurrences corrigées dans 15 fichiers**
 - ✅ `bbia_vision.py` : ~18 occurrences
 - ✅ `bbia_huggingface.py` : ~15 occurrences

@@ -27,7 +27,7 @@ def fix_logging_fstring(content: str) -> str:
             fstring_content = match.group(2)
 
             # Extraire les variables {var} de la f-string
-            var_pattern = r'\{([^}]+)\}'
+            var_pattern = r"\{([^}]+)\}"
             vars_found = re.findall(var_pattern, fstring_content)
 
             if vars_found:
@@ -47,7 +47,7 @@ def fix_logging_fstring(content: str) -> str:
                 continue
 
         # Détecter logger.xxx(f"...") sur plusieurs lignes
-        if 'logger.' in line and 'f"' in line:
+        if "logger." in line and 'f"' in line:
             # Chercher la fin de l'appel (peut être sur plusieurs lignes)
             full_call = line
             j = i + 1
@@ -69,7 +69,7 @@ def fix_logging_fstring(content: str) -> str:
                     fstring_content = multiline_match.group(2).strip()
 
                     # Extraire variables
-                    var_pattern = r'\{([^}]+)\}'
+                    var_pattern = r"\{([^}]+)\}"
                     vars_found = re.findall(var_pattern, fstring_content)
 
                     if vars_found:
@@ -128,4 +128,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
