@@ -918,7 +918,9 @@ class BBIAHuggingFace:
         # Résoudre alias vers ID complet si nécessaire
         resolved_name = self._resolve_model_name(model_name, "chat")
         logger.info(
-            f"📥 Activation LLM conversationnel: {model_name} → {resolved_name}",
+            "📥 Activation LLM conversationnel: %s → %s",
+            model_name,
+            resolved_name,
         )
         success = self.load_model(resolved_name, model_type="chat")
         if success:

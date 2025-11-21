@@ -270,19 +270,22 @@ class ReachyMiniBackend(RobotAPI):
             if not self.use_sim:
                 self._start_watchdog()
             return False
+        except (TimeoutError, ConnectionError, OSError) as e:
+            error_msg = str(e)
+            logger.info(
+                "⏱️  Erreur connexion (timeout probable) - "
+                "mode simulation activé: %s",
+                error_msg,
+            )
+            self._activate_simulation_mode()
+            self._start_watchdog()
+            return False
         except Exception as e:
             error_msg = str(e)
-            if "timeout" in error_msg.lower() or "connection" in error_msg.lower():
-                logger.info(
-                    "⏱️  Erreur connexion (timeout probable) - "
-                    "mode simulation activé: %s",
-                    error_msg,
-                )
-            else:
-                logger.warning(
-                    "⚠️  Erreur connexion Reachy-Mini (mode simulation activé): %s",
-                    error_msg,
-                )
+            logger.warning(
+                "⚠️  Erreur connexion Reachy-Mini (mode simulation activé): %s",
+                error_msg,
+            )
             self._activate_simulation_mode()
             self._start_watchdog()
             return False
@@ -313,13 +316,17 @@ class ReachyMiniBackend(RobotAPI):
         # Best-effort: toujours laisser l'instance dans un état sûr
         try:
             self._stop_watchdog()
-        except Exception as e:
+        except (AttributeError, RuntimeError) as e:
             logger.debug("Stop watchdog lors déconnexion: %s", e)
+        except Exception as e:
+            logger.debug("Erreur inattendue stop watchdog: %s", e)
         try:
             if self.robot:
                 self.robot = None
-        except Exception as e:
+        except (AttributeError, RuntimeError) as e:
             logger.debug("Nettoyage robot lors déconnexion: %s", e)
+        except Exception as e:
+            logger.debug("Erreur inattendue nettoyage robot: %s", e)
         self.is_connected = False
         logger.info("Déconnecté du robot Reachy-Mini")
         return True
@@ -953,8 +960,11 @@ class ReachyMiniBackend(RobotAPI):
                 telemetry["imu"] = imu_data
 
             return telemetry  # type: ignore[return-value]
-        except Exception as e:
+        except (AttributeError, RuntimeError, KeyError, TypeError) as e:
             logger.exception("Erreur télémétrie: %s", e)
+            return {}
+        except Exception as e:
+            logger.exception("Erreur inattendue télémétrie: %s", e)
             return {}
 
     # ===== MÉTHODES SDK OFFICIEL SUPPLÉMENTAIRES =====
