@@ -72,7 +72,7 @@ def _read_sdk_telemetry() -> dict[str, Any] | None:
             backend.connect()
         except Exception as e:
             # Ne pas bloquer si la connexion échoue
-            logger.debug(f"Échec de la connexion au backend pour télémetrie: {e}")
+            logger.debug("Échec de la connexion au backend pour télémetrie: %s", e)
             return None
 
         try:
@@ -120,7 +120,7 @@ def _read_sdk_telemetry() -> dict[str, Any] | None:
                 try:
                     temperature = float(media_mgr.get_temperature())
                 except Exception as e:
-                    logger.debug(f"Erreur lors de la lecture de la température: {e}")
+                    logger.debug("Erreur lors de la lecture de la température: %s", e)
                     temperature = None
             if temperature is not None:
                 data["temperature"] = temperature
@@ -133,7 +133,7 @@ def _read_sdk_telemetry() -> dict[str, Any] | None:
                     if hasattr(io_mgr, "get_imu"):
                         imu = io_mgr.get_imu()  # doit renvoyer dict-like
                 except Exception as e:
-                    logger.debug(f"Erreur lors de la lecture de l'IMU: {e}")
+                    logger.debug("Erreur lors de la lecture de l'IMU: %s", e)
                     imu = None
             if imu and isinstance(imu, dict):
                 data["imu"] = imu
@@ -385,7 +385,7 @@ async def start_simulation() -> dict[str, Any]:
             "timestamp": datetime.now().isoformat(),
         }
     except Exception as e:
-        logger.error(f"Erreur lors du démarrage de la simulation : {e}")
+        logger.exception("Erreur lors du démarrage de la simulation : %s", e)
         return {
             "status": "error",
             "message": f"Erreur : {e!s}",
@@ -406,7 +406,7 @@ async def stop_simulation() -> dict[str, Any]:
             "timestamp": datetime.now().isoformat(),
         }
     except Exception as e:
-        logger.error(f"Erreur lors de l'arrêt de la simulation : {e}")
+        logger.exception("Erreur lors de l'arrêt de la simulation : %s", e)
         return {
             "status": "error",
             "message": f"Erreur : {e!s}",
@@ -588,7 +588,7 @@ async def get_sensor_data() -> dict[str, Any]:
         try:
             imu_data = sdk["imu"]
         except Exception as e:
-            logger.debug(f"Erreur lors de la lecture des données IMU: {e}")
+            logger.debug("Erreur lors de la lecture des données IMU: %s", e)
 
     return {
         "camera": {"status": "active", "resolution": "640x480", "fps": 30},

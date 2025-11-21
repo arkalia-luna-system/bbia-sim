@@ -86,7 +86,7 @@ class DanceBehavior(BBIABehavior):
         duration = context.get("duration", 30.0)  # 30 secondes par défaut
         audio_file = context.get("audio_file")  # Fichier audio optionnel
 
-        logger.info(f"Démarrage danse type '{music_type}' pour {duration}s")
+        logger.info("Démarrage danse type '%s' pour %ss", music_type, duration)
 
         # Message de démarrage
         if dire_texte is not None:
@@ -121,12 +121,12 @@ class DanceBehavior(BBIABehavior):
                 beat_count += 1
                 time.sleep(0.5)  # 2 Hz pour mouvements fluides
 
-            logger.info(f"Danse terminée - {beat_count} mouvements exécutés")
+            logger.info("Danse terminée - %s mouvements exécutés", beat_count)
 
         except KeyboardInterrupt:
             logger.info("Danse interrompue par l'utilisateur")
         except Exception as e:
-            logger.error(f"Erreur durant danse: {e}")
+            logger.exception("Erreur durant danse: %s", e)
             return False
         finally:
             self.is_dancing = False
@@ -173,7 +173,7 @@ class DanceBehavior(BBIABehavior):
                     time.sleep(0.5)
 
         except Exception as e:
-            logger.warning(f"Erreur routine danse happy: {e}")
+            logger.warning("Erreur routine danse happy: %s", e)
 
     def _dance_calm(self) -> None:
         """Routine de danse calme."""
@@ -203,7 +203,7 @@ class DanceBehavior(BBIABehavior):
                 )
 
         except Exception as e:
-            logger.warning(f"Erreur routine danse calm: {e}")
+            logger.warning("Erreur routine danse calm: %s", e)
 
     def _dance_energetic(self) -> None:
         """Routine de danse énergique."""
@@ -235,7 +235,7 @@ class DanceBehavior(BBIABehavior):
                 )
 
         except Exception as e:
-            logger.warning(f"Erreur routine danse energetic: {e}")
+            logger.warning("Erreur routine danse energetic: %s", e)
 
     def stop(self) -> None:
         """Arrête la danse."""

@@ -131,7 +131,7 @@ class FollowObjectBehavior(BBIABehavior):
                         self.last_object_time = time.time()
 
                         object_name = selected_object.get("name", "objet")
-                        logger.debug(f"Suivi de: {object_name}")
+                        logger.debug("Suivi de: %s", object_name)
 
                         # Suivre l'objet
                         self._track_object(selected_object)
@@ -173,7 +173,7 @@ class FollowObjectBehavior(BBIABehavior):
         except KeyboardInterrupt:
             logger.info("Suivi interrompu par l'utilisateur")
         except Exception as e:
-            logger.error(f"Erreur durant suivi objet: {e}")
+            logger.exception("Erreur durant suivi objet: %s", e)
         finally:
             self.is_tracking = False
             self.current_target = None
@@ -253,7 +253,7 @@ class FollowObjectBehavior(BBIABehavior):
                 # Validation coordonnées
                 if 0 <= center_x <= 640 and 0 <= center_y <= 480:
                     self.robot_api.look_at_image(center_x, center_y, duration=0.5)
-                    logger.debug(f"Suivi objet vers ({center_x}, {center_y})")
+                    logger.debug("Suivi objet vers (%s, %s)", center_x, center_y)
 
             # Alternative: utiliser position 3D si disponible
             elif obj.get("position") and hasattr(self.robot_api, "look_at_world"):
@@ -265,14 +265,14 @@ class FollowObjectBehavior(BBIABehavior):
                 # Validation coordonnées
                 if -2.0 <= x <= 2.0 and -2.0 <= y <= 2.0 and -1.0 <= z <= 1.0:
                     self.robot_api.look_at_world(x, y, z, duration=0.5)
-                    logger.debug(f"Suivi objet vers 3D ({x:.2f}, {y:.2f}, {z:.2f})")
+                    logger.debug("Suivi objet vers 3D (%s, %s, %s)", x:.2f, y:.2f, z:.2f)
 
             # Appliquer émotion curious pour suivi
             if hasattr(self.robot_api, "set_emotion"):
                 self.robot_api.set_emotion("curious", 0.6)
 
         except Exception as e:
-            logger.warning(f"Erreur suivi objet: {e}")
+            logger.warning("Erreur suivi objet: %s", e)
 
     def _comment_on_object(self, obj: dict[str, Any]) -> None:
         """Commentaire vocal sur l'objet suivi.
@@ -294,7 +294,7 @@ class FollowObjectBehavior(BBIABehavior):
 
         comment = secrets.choice(comments)
         dire_texte(comment, robot_api=self.robot_api)
-        logger.debug(f"Commentaire objet: {comment}")
+        logger.debug("Commentaire objet: %s", comment)
 
     def _react_to_object_lost(self) -> None:
         """Réagit quand l'objet est perdu."""
@@ -317,7 +317,7 @@ class FollowObjectBehavior(BBIABehavior):
 
         reaction = secrets.choice(reactions)
         dire_texte(reaction, robot_api=self.robot_api)
-        logger.info(f"Réaction objet perdu: {reaction}")
+        logger.info("Réaction objet perdu: %s", reaction)
 
         # Émotion curious pour chercher
         if self.robot_api and hasattr(self.robot_api, "set_emotion"):

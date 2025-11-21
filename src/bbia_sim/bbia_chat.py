@@ -149,7 +149,7 @@ class BBIAChat:
             return
 
         except Exception as e:
-            logger.warning(f"⚠️ Impossible de charger Phi-2: {e}")
+            logger.warning("⚠️ Impossible de charger Phi-2: %s", e)
             logger.info("Tentative de chargement TinyLlama (fallback)...")
 
         # Fallback: TinyLlama (ultra-léger)
@@ -173,7 +173,7 @@ class BBIAChat:
             logger.info("✅ TinyLlama chargé avec succès")
 
         except Exception as e:
-            logger.error(f"❌ Impossible de charger TinyLlama: {e}")
+            logger.exception("❌ Impossible de charger TinyLlama: %s", e)
             logger.warning("Mode fallback: réponses basiques (sans LLM)")
 
     def generate(
@@ -238,7 +238,7 @@ class BBIAChat:
             return self._sanitize_response(response)
 
         except Exception as e:
-            logger.error(f"❌ Erreur génération LLM: {e}")
+            logger.exception("❌ Erreur génération LLM: %s", e)
             return "Désolé, une erreur s'est produite lors de la génération."
 
     def _sanitize_response(self, response: str) -> str:
@@ -319,7 +319,7 @@ class BBIAChat:
             return response
 
         except Exception as e:
-            logger.error(f"❌ Erreur chat: {e}")
+            logger.exception("❌ Erreur chat: %s", e)
             return "Je ne comprends pas bien, peux-tu reformuler ?"
 
     def _build_context_prompt(self, user_message: str) -> str:
@@ -438,7 +438,7 @@ class BBIAChat:
                 logger.info("✅ Action exécutée: sleep")
 
         except Exception as e:
-            logger.error(f"❌ Erreur exécution action {action_name}: {e}")
+            logger.exception("❌ Erreur exécution action %s: %s", action_name, e)
 
     def _extract_emotion(self, user_message: str) -> str | None:
         """Extrait émotion du message utilisateur.
@@ -487,12 +487,12 @@ class BBIAChat:
             if hasattr(self.robot_api, "set_emotion"):
                 self.robot_api.set_emotion(emotion, 0.7)
 
-            logger.info(f"✅ Émotion appliquée: {emotion}")
+            logger.info("✅ Émotion appliquée: %s", emotion)
 
         except ImportError:
             logger.warning("BBIAEmotions non disponible - émotion non appliquée")
         except Exception as e:
-            logger.error(f"❌ Erreur application émotion {emotion}: {e}")
+            logger.exception("❌ Erreur application émotion %s: %s", emotion, e)
 
     def set_personality(self, personality: str) -> None:
         """Change la personnalité du chat.
@@ -502,7 +502,7 @@ class BBIAChat:
         """
         if personality in self.PERSONALITIES:
             self.personality = personality
-            logger.info(f"✅ Personnalité changée: {personality}")
+            logger.info("✅ Personnalité changée: %s", personality)
         else:
             logger.warning(
                 f"⚠️ Personnalité invalide: {personality}. "
@@ -535,7 +535,7 @@ class BBIAChat:
         # Sauvegarder préférences
         self._save_preferences()
 
-        logger.info(f"✅ Préférence apprise: {self.user_preferences}")
+        logger.info("✅ Préférence apprise: %s", self.user_preferences)
 
     def _adapt_to_preferences(self, response: str) -> str:
         """Adapte réponse selon préférences utilisateur.
@@ -581,10 +581,10 @@ class BBIAChat:
             with open(self.preferences_file, "w", encoding="utf-8") as f:
                 json.dump(self.user_preferences, f, indent=2, ensure_ascii=False)
 
-            logger.debug(f"✅ Préférences sauvegardées: {self.preferences_file}")
+            logger.debug("✅ Préférences sauvegardées: %s", self.preferences_file)
 
         except Exception as e:
-            logger.warning(f"⚠️ Erreur sauvegarde préférences: {e}")
+            logger.warning("⚠️ Erreur sauvegarde préférences: %s", e)
 
     def _load_preferences(self) -> None:
         """Charge préférences utilisateur depuis fichier JSON."""
@@ -598,7 +598,7 @@ class BBIAChat:
                     # Fusionner avec préférences existantes (ne pas écraser)
                     if isinstance(loaded_prefs, dict):
                         self.user_preferences.update(loaded_prefs)
-                logger.debug(f"✅ Préférences chargées: {self.preferences_file}")
+                logger.debug("✅ Préférences chargées: %s", self.preferences_file)
 
         except Exception as e:
             logger.debug(

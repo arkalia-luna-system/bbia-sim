@@ -29,9 +29,13 @@ def test_runtime_budget_simulation_10s() -> None:
         t0_cpu = time.process_time()
 
         # Boucle légère: step() toutes 50 ms (~20 Hz) pendant 3s (optimisé)
-        while time.perf_counter() - t0_wall < duration_s:
+        # OPTIMISATION: Limiter à 60 itérations max (3s / 0.05s) pour éviter boucle infinie
+        max_iterations = 60
+        iteration = 0
+        while time.perf_counter() - t0_wall < duration_s and iteration < max_iterations:
             backend.step()
             time.sleep(0.05)
+            iteration += 1
 
         current, peak = tracemalloc.get_traced_memory()
         t1_cpu = time.process_time()

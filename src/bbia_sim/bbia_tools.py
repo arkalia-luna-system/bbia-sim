@@ -247,7 +247,7 @@ class BBIATools:
             ValueError: Si l'outil n'existe pas ou paramètres invalides
 
         """
-        logger.info(f"🔧 Exécution outil: {tool_name} avec params: {parameters}")
+        logger.info("🔧 Exécution outil: %s avec params: %s", tool_name, parameters)
 
         if tool_name == "move_head":
             return self._execute_move_head(parameters)
@@ -317,7 +317,7 @@ class BBIATools:
                 "detail": f"Tête déplacée {direction} (intensité: {intensity:.2f})",
             }
         except Exception as e:
-            logger.error(f"Erreur move_head: {e}")
+            logger.exception("Erreur move_head: %s", e)
             return {"status": "error", "detail": str(e)}
 
     def _execute_camera(self, parameters: dict[str, Any]) -> dict[str, Any]:
@@ -368,7 +368,7 @@ class BBIATools:
 
             return result
         except Exception as e:
-            logger.error(f"Erreur camera: {e}")
+            logger.exception("Erreur camera: %s", e)
             return {"status": "error", "detail": str(e)}
 
     def _execute_head_tracking(self, parameters: dict[str, Any]) -> dict[str, Any]:
@@ -376,7 +376,7 @@ class BBIATools:
         enabled = parameters.get("enabled", True)
         self.head_tracking_enabled = enabled
 
-        logger.info(f"Suivi visage: {'activé' if enabled else 'désactivé'}")
+        logger.info("Suivi visage: %s", 'activé' if enabled else 'désactivé')
 
         # Intégration VisionTrackingBehavior pour activation réelle
         if enabled and self.vision and self.robot_api:
@@ -407,7 +407,7 @@ class BBIATools:
                     "VisionTrackingBehavior non disponible - suivi basique activé",
                 )
             except Exception as e:
-                logger.error(f"Erreur activation VisionTrackingBehavior: {e}")
+                logger.exception("Erreur activation VisionTrackingBehavior: %s", e)
 
         return {
             "status": "success",
@@ -461,7 +461,7 @@ class BBIATools:
         except ValueError as e:
             return {"status": "error", "detail": f"Mouvement non trouvé: {e}"}
         except Exception as e:
-            logger.error(f"Erreur dance: {e}")
+            logger.exception("Erreur dance: %s", e)
             return {"status": "error", "detail": str(e)}
 
     def _execute_stop_dance(self, parameters: dict[str, Any]) -> dict[str, Any]:
@@ -489,15 +489,15 @@ class BBIATools:
                                 "(arrêt d'urgence)"
                             ),
                         }
-                    logger.warning(f"emergency_stop() a échoué pour '{dance_name}'")
+                    logger.warning("emergency_stop() a échoué pour '%s'", dance_name)
                 else:
                     logger.warning(
                         "robot_api.emergency_stop() non disponible - arrêt basique",
                     )
             except Exception as e:
-                logger.error(f"Erreur arrêt danse: {e}")
+                logger.exception("Erreur arrêt danse: %s", e)
 
-        logger.info(f"Danse '{dance_name}' arrêtée")
+        logger.info("Danse '%s' arrêtée", dance_name)
 
         return {
             "status": "success",
@@ -528,7 +528,7 @@ class BBIATools:
                 "emotion": emotion,
             }
         except Exception as e:
-            logger.error(f"Erreur play_emotion: {e}")
+            logger.exception("Erreur play_emotion: %s", e)
             return {"status": "error", "detail": str(e)}
 
     def _execute_stop_emotion(self, parameters: dict[str, Any]) -> dict[str, Any]:
@@ -543,7 +543,7 @@ class BBIATools:
             if self.robot_api:
                 self.robot_api.set_emotion("neutral", 0.5)
         except Exception as e:
-            logger.warning(f"Erreur stop_emotion: {e}")
+            logger.warning("Erreur stop_emotion: %s", e)
 
         return {
             "status": "success",
@@ -554,7 +554,7 @@ class BBIATools:
         """Ne fait rien (inactivité)."""
         duration = parameters.get("duration", 2.0)
 
-        logger.info(f"Mode inactif pendant {duration:.1f}s")
+        logger.info("Mode inactif pendant %ss", duration:.1f)
 
         # Ne rien faire - le robot reste dans sa position actuelle
         return {

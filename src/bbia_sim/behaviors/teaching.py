@@ -83,7 +83,7 @@ class TeachingBehavior(BBIABehavior):
         level = context.get("level", "beginner")
 
         if subject not in self.lessons:
-            logger.warning(f"Matière '{subject}' non trouvée")
+            logger.warning("Matière '%s' non trouvée", subject)
             return False
 
         self.is_active = True
@@ -96,7 +96,7 @@ class TeachingBehavior(BBIABehavior):
             lesson_func(level=level)
             return True
         except Exception as e:
-            logger.error(f"Erreur lors de l'enseignement: {e}")
+            logger.exception("Erreur lors de l'enseignement: %s", e)
             return False
         finally:
             self.is_active = False
@@ -237,7 +237,7 @@ class TeachingBehavior(BBIABehavior):
 
             dire_texte(text, robot_api=self.robot_api)
         except ImportError:
-            logger.info(f"[TEACHING] {text}")
+            logger.info("[TEACHING] %s", text)
 
     def _encourage(
         self, emotion: str = "happy", correct_answer: str | None = None

@@ -97,7 +97,7 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
 
             # Vérification de la limite
             if len(self.requests[client_ip]) >= self.requests_per_minute:
-                logger.warning(f"Rate limit dépassé pour {client_ip}")
+                logger.warning("Rate limit dépassé pour %s", client_ip)
                 return Response(
                     content=self.message,
                     status_code=429,

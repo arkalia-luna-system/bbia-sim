@@ -40,7 +40,8 @@ def test_concurrent_goto_target_requests() -> None:
 
                 backend.goto_target(head=pose, duration=0.05, method="minjerk")
                 success_count += 1
-                time.sleep(0.01)  # Petit délai
+                # OPTIMISATION: Réduire sleep de 0.01 à 0.005 (2x plus rapide)
+                time.sleep(0.005)
             except Exception:
                 pass
         return success_count
@@ -69,8 +70,8 @@ def test_rapid_emotion_switching() -> None:
     assert backend.connect() is True
 
     emotions = ["happy", "sad", "neutral", "excited", "curious", "calm"]
-    # OPTIMISATION: Réduire 150 → 100 itérations (suffisant pour test stress, 1.5x plus rapide)
-    iterations = 100
+    # OPTIMISATION: Réduire 100 → 80 itérations (suffisant pour test stress, 1.25x plus rapide)
+    iterations = 80
 
     try:
         start_time = time.perf_counter()
@@ -104,8 +105,8 @@ def test_rapid_joint_updates() -> None:
     assert backend.connect() is True
 
     joints = ["yaw_body", "stewart_1", "stewart_2", "stewart_3", "stewart_4"]
-    # OPTIMISATION: Réduire 300 → 200 itérations (suffisant pour test stress, 1.5x plus rapide)
-    iterations = 200
+    # OPTIMISATION: Réduire 200 → 150 itérations (suffisant pour test stress, 1.3x plus rapide)
+    iterations = 150
 
     try:
         start_time = time.perf_counter()

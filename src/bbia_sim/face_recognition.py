@@ -89,11 +89,11 @@ class BBIAPersonRecognition:
             target_path = person_dir / Path(image_path).name
             shutil.copy2(image_path, target_path)
 
-            logger.info(f"✅ Personne '{person_name}' enregistrée: {target_path}")
+            logger.info("✅ Personne '%s' enregistrée: %s", person_name, target_path)
             return True
 
         except Exception as e:
-            logger.error(f"❌ Erreur enregistrement personne '{person_name}': {e}")
+            logger.exception("❌ Erreur enregistrement personne '%s': %s", person_name, e)
             return False
 
     def recognize_person(
@@ -172,10 +172,10 @@ class BBIAPersonRecognition:
             if "No face detected" in str(e) and not enforce_detection:
                 logger.debug("Aucun visage détecté dans l'image")
                 return None
-            logger.warning(f"Erreur reconnaissance visage: {e}")
+            logger.warning("Erreur reconnaissance visage: %s", e)
             return None
         except Exception as e:
-            logger.error(f"❌ Erreur reconnaissance personne: {e}")
+            logger.exception("❌ Erreur reconnaissance personne: %s", e)
             return None
         finally:
             # Nettoyer fichier temporaire si nécessaire
@@ -259,10 +259,10 @@ class BBIAPersonRecognition:
             if "No face detected" in str(e) and not enforce_detection:
                 logger.debug("Aucun visage détecté pour analyse émotion")
                 return None
-            logger.warning(f"Erreur détection émotion: {e}")
+            logger.warning("Erreur détection émotion: %s", e)
             return None
         except Exception as e:
-            logger.error(f"❌ Erreur détection émotion: {e}")
+            logger.exception("❌ Erreur détection émotion: %s", e)
             return None
         finally:
             if temp_path and os.path.exists(temp_path):

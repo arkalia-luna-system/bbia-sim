@@ -80,7 +80,7 @@ async def start_daemon(
                         robot.wake_up()
                     robot.disconnect()
             except Exception as e:
-                logger.warning(f"Échec wake_up: {e}")
+                logger.warning("Échec wake_up: %s", e)
 
         return {
             "status": "started",
@@ -91,7 +91,7 @@ async def start_daemon(
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f"Erreur lors du démarrage du daemon: {e}")
+        logger.exception("Erreur lors du démarrage du daemon: %s", e)
         raise HTTPException(status_code=500, detail=f"Erreur: {e!s}") from e
 
 
@@ -124,7 +124,7 @@ async def stop_daemon(
                         robot.goto_sleep()
                     robot.disconnect()
             except Exception as e:
-                logger.warning(f"Échec goto_sleep: {e}")
+                logger.warning("Échec goto_sleep: %s", e)
 
         await simulation_service.stop_simulation()
 
@@ -135,7 +135,7 @@ async def stop_daemon(
             "timestamp": datetime.now().isoformat(),
         }
     except Exception as e:
-        logger.error(f"Erreur lors de l'arrêt du daemon: {e}")
+        logger.exception("Erreur lors de l'arrêt du daemon: %s", e)
         raise HTTPException(status_code=500, detail=f"Erreur: {e!s}") from e
 
 
@@ -176,7 +176,7 @@ async def restart_daemon() -> dict[str, Any]:
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f"Erreur lors du redémarrage du daemon: {e}")
+        logger.exception("Erreur lors du redémarrage du daemon: %s", e)
         raise HTTPException(status_code=500, detail=f"Erreur: {e!s}") from e
 
 
@@ -197,7 +197,7 @@ async def get_daemon_status() -> dict[str, Any]:
         )
         return status.dict()
     except Exception as e:
-        logger.error(f"Erreur lors de la récupération du statut: {e}")
+        logger.exception("Erreur lors de la récupération du statut: %s", e)
         return DaemonStatus(
             status="error",
             simulation_running=False,

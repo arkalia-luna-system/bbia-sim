@@ -206,9 +206,9 @@ class EmotionShowBehavior(BBIABehavior):
         if isinstance(emotions_to_show, list | tuple):
             invalid_emotions = set(emotions_to_show) - BBIA_EMOTIONS
             if invalid_emotions:
-                logger.warning(f"Émotions inconnues ignorées: {invalid_emotions}")
+                logger.warning("Émotions inconnues ignorées: %s", invalid_emotions)
 
-        logger.info(f"Démarrage démonstration de {len(valid_emotions)} émotions")
+        logger.info("Démarrage démonstration de %s émotions", len(valid_emotions))
 
         try:
             for emotion in valid_emotions:
@@ -217,7 +217,7 @@ class EmotionShowBehavior(BBIABehavior):
                     logger.info("Démonstration annulée")
                     break
 
-                logger.info(f"Affichage émotion: {emotion}")
+                logger.info("Affichage émotion: %s", emotion)
 
                 # Appliquer l'émotion avec transition fluide
                 if not self._apply_emotion(emotion):
@@ -238,9 +238,9 @@ class EmotionShowBehavior(BBIABehavior):
                     )
                     try:
                         dire_texte(explanation, robot_api=self.robot_api)
-                        logger.info(f"Explication vocale: {explanation}")
+                        logger.info("Explication vocale: %s", explanation)
                     except Exception as e:
-                        logger.warning(f"Erreur explication vocale pour {emotion}: {e}")
+                        logger.warning("Erreur explication vocale pour %s: %s", emotion, e)
 
                 # Maintenir l'émotion selon durée adaptative (pré-charger la durée)
                 duration = EMOTION_DURATIONS.get(emotion, 2.5)
@@ -321,7 +321,7 @@ class EmotionShowBehavior(BBIABehavior):
             sdk_emotion, intensity = EMOTION_SDK_MAP.get(emotion, ("neutral", 0.7))
 
             self.robot_api.set_emotion(sdk_emotion, intensity)
-            logger.debug(f"Émotion appliquée: {sdk_emotion} (intensité: {intensity})")
+            logger.debug("Émotion appliquée: %s (intensité: %s)", sdk_emotion, intensity)
 
             # Mouvements expressifs selon émotion
             self._apply_expressive_movement(emotion)
@@ -329,7 +329,7 @@ class EmotionShowBehavior(BBIABehavior):
             return True
 
         except Exception as e:
-            logger.warning(f"Erreur application émotion {emotion}: {e}")
+            logger.warning("Erreur application émotion %s: %s", emotion, e)
             return False
 
     def _apply_expressive_movement(self, emotion: str) -> None:
@@ -369,4 +369,4 @@ class EmotionShowBehavior(BBIABehavior):
                 )
 
         except Exception as e:
-            logger.warning(f"Erreur mouvement expressif {emotion}: {e}")
+            logger.warning("Erreur mouvement expressif %s: %s", emotion, e)

@@ -91,7 +91,7 @@ class AlarmClockBehavior(BBIABehavior):
             self._wait_for_alarm()
             return True
         except Exception as e:
-            logger.error(f"Erreur lors du réveil: {e}")
+            logger.exception("Erreur lors du réveil: %s", e)
             return False
         finally:
             self.is_active = False
@@ -186,7 +186,7 @@ class AlarmClockBehavior(BBIABehavior):
 
             dire_texte(text, robot_api=self.robot_api)
         except ImportError:
-            logger.info(f"[ALARM] {text}")
+            logger.info("[ALARM] %s", text)
 
     def snooze(self) -> bool:
         """Active le mode snooze.

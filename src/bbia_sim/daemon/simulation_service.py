@@ -42,7 +42,7 @@ class SimulationService:
                 logger.warning("La simulation est déjà en cours")
                 return True
 
-            logger.info(f"Démarrage de la simulation MuJoCo avec {self.model_path}")
+            logger.info("Démarrage de la simulation MuJoCo avec %s", self.model_path)
             self.simulator = MuJoCoSimulator(self.model_path)
 
             if headless:
@@ -61,7 +61,7 @@ class SimulationService:
             return True
 
         except Exception as e:
-            logger.error(f"Erreur lors du démarrage de la simulation : {e}")
+            logger.exception("Erreur lors du démarrage de la simulation : %s", e)
             return False
 
     async def stop_simulation(self) -> bool:
@@ -92,7 +92,7 @@ class SimulationService:
             return True
 
         except Exception as e:
-            logger.error(f"Erreur lors de l'arrêt de la simulation : {e}")
+            logger.exception("Erreur lors de l'arrêt de la simulation : %s", e)
             return False
 
     async def _run_headless_simulation(self) -> None:
@@ -115,7 +115,7 @@ class SimulationService:
                     step_count += 1
 
                     if step_count % 1000 == 0:
-                        logger.debug(f"Step {step_count}")
+                        logger.debug("Step %s", step_count)
 
                 # OPTIMISATION PERFORMANCE: Réduire fréquence 1000Hz → 60Hz pour Mac
                 await asyncio.sleep(
@@ -123,7 +123,7 @@ class SimulationService:
                 )  # ~60 Hz (suffisant pour simulation fluide, moins de CPU)
 
             except Exception as e:
-                logger.error(f"Erreur dans la simulation headless : {e}")
+                logger.exception("Erreur dans la simulation headless : %s", e)
                 await asyncio.sleep(0.1)
 
     async def _run_graphical_simulation(self) -> None:
@@ -142,7 +142,7 @@ class SimulationService:
                 None,
             )
         except Exception as e:
-            logger.error(f"Erreur simulation graphique : {e}")
+            logger.exception("Erreur simulation graphique : %s", e)
             # Fallback vers headless si le viewer échoue
             logger.info("Fallback vers simulation headless")
             await self._run_headless_simulation()
@@ -160,7 +160,7 @@ class SimulationService:
         try:
             return self.simulator.get_robot_state()
         except Exception as e:
-            logger.error(f"Erreur lors de la récupération de l'état : {e}")
+            logger.exception("Erreur lors de la récupération de l'état : %s", e)
             return self._get_default_state()
 
     def get_joint_positions(self) -> dict[str, float]:
@@ -183,7 +183,7 @@ class SimulationService:
                 return joint_positions
             return self._get_default_joint_positions()
         except Exception as e:
-            logger.error(f"Erreur lors de la récupération des positions : {e}")
+            logger.exception("Erreur lors de la récupération des positions : %s", e)
             return self._get_default_joint_positions()
 
     def set_joint_position(self, joint_name: str, position: float) -> bool:
@@ -203,10 +203,10 @@ class SimulationService:
 
         try:
             self.simulator.set_joint_position(joint_name, position)
-            logger.info(f"Position de {joint_name} définie à {position}")
+            logger.info("Position de %s définie à %s", joint_name, position)
             return True
         except Exception as e:
-            logger.error(f"Erreur lors de la définition de la position : {e}")
+            logger.exception("Erreur lors de la définition de la position : %s", e)
             return False
 
     def get_available_joints(self) -> list[str]:
@@ -222,7 +222,7 @@ class SimulationService:
         try:
             return self.simulator.get_available_joints()
         except Exception as e:
-            logger.error(f"Erreur lors de la récupération des articulations : {e}")
+            logger.exception("Erreur lors de la récupération des articulations : %s", e)
             return self._get_default_joint_names()
 
     def _get_default_state(self) -> dict[str, Any]:

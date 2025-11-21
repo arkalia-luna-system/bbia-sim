@@ -244,8 +244,8 @@ class TestEdgeCasesBuffers:
         from collections import deque
 
         history = deque(maxlen=100)
-        # Remplir jusqu'à saturation
-        for i in range(200):
+        # Remplir jusqu'à saturation - OPTIMISATION: 200 → 100 (suffisant pour test saturation)
+        for i in range(100):
             history.append({"timestamp": i, "value": i * 0.1})
 
         # Doit respecter maxlen

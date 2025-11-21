@@ -122,7 +122,7 @@ class KittenTTSTTS:
             try:
                 return self._impl.synthesize_to_wav(text, outfile)
             except Exception as e:
-                logger.debug(f"Échec synthèse avec impl principale, fallback: {e}")
+                logger.debug("Échec synthèse avec impl principale, fallback: %s", e)
         return self._fallback.synthesize_to_wav(text, outfile)
 
 
@@ -150,7 +150,7 @@ class KokoroTTS:
             try:
                 return self._impl.synthesize_to_wav(text, outfile)
             except Exception as e:
-                logger.debug(f"Échec synthèse avec impl principale, fallback: {e}")
+                logger.debug("Échec synthèse avec impl principale, fallback: %s", e)
         return self._fallback.synthesize_to_wav(text, outfile)
 
 
@@ -178,7 +178,7 @@ class NeuTTSTTS:
             try:
                 return self._impl.synthesize_to_wav(text, outfile)
             except Exception as e:
-                logger.debug(f"Échec synthèse avec impl principale, fallback: {e}")
+                logger.debug("Échec synthèse avec impl principale, fallback: %s", e)
         return self._fallback.synthesize_to_wav(text, outfile)
 
 

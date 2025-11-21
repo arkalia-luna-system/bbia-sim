@@ -465,7 +465,7 @@ async def http_exception_handler(request: Request, exc: HTTPException) -> JSONRe
 @app.exception_handler(Exception)
 async def general_exception_handler(request: Request, exc: Exception) -> JSONResponse:
     """Gestionnaire d'erreurs générales."""
-    logger.error(f"Erreur non gérée : {exc}")
+    logger.error("Erreur non gérée : %s", exc)
     return JSONResponse(
         status_code=500,
         content={

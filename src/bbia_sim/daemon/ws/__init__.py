@@ -53,7 +53,7 @@ class ConnectionManager:
         try:
             await websocket.send_text(message)
         except Exception as e:
-            logger.error(f"Erreur d'envoi de message : {e}")
+            logger.exception("Erreur d'envoi de message : %s", e)
             self.disconnect(websocket)
 
     async def broadcast(self, message: str) -> None:
@@ -66,7 +66,7 @@ class ConnectionManager:
             try:
                 await connection.send_text(message)
             except Exception as e:
-                logger.error(f"Erreur de diffusion : {e}")
+                logger.exception("Erreur de diffusion : %s", e)
                 disconnected.append(connection)
 
         # Nettoyage des connexions fermées
@@ -107,7 +107,7 @@ class ConnectionManager:
             except asyncio.CancelledError:
                 break
             except Exception as e:
-                logger.error(f"Erreur dans la boucle de diffusion : {e}")
+                logger.exception("Erreur dans la boucle de diffusion : %s", e)
                 await asyncio.sleep(1)
 
     def _generate_telemetry_data(self) -> dict[str, Any]:
@@ -201,7 +201,7 @@ async def websocket_endpoint(websocket: WebSocket) -> None:
             except json.JSONDecodeError:
                 logger.warning("Message JSON invalide reçu")
             except Exception as e:
-                logger.error(f"Erreur de traitement de message : {e}")
+                logger.exception("Erreur de traitement de message : %s", e)
                 break
 
     except WebSocketDisconnect:

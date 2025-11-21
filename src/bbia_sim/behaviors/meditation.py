@@ -79,7 +79,7 @@ class MeditationBehavior(BBIABehavior):
             self._guide_meditation()
             return True
         except Exception as e:
-            logger.error(f"Erreur lors de la méditation: {e}")
+            logger.exception("Erreur lors de la méditation: %s", e)
             return False
         finally:
             self.is_active = False
@@ -174,7 +174,7 @@ class MeditationBehavior(BBIABehavior):
 
             dire_texte(text, robot_api=self.robot_api)
         except ImportError:
-            logger.info(f"[MEDITATION] {text}")
+            logger.info("[MEDITATION] %s", text)
 
         # Attendre durée phase
         duration = phase.get("duration", 3.0)

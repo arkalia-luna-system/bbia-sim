@@ -131,7 +131,7 @@ class BBIABreathingAnimation:
                 time.sleep(0.05)
 
         except Exception as e:
-            logger.error(f"Erreur boucle respiration: {e}")
+            logger.exception("Erreur boucle respiration: %s", e)
         finally:
             self.is_active = False
 
@@ -239,7 +239,7 @@ class BBIAPoseTransitionManager:
                         elif hasattr(self.robot_api, "set_target_head_pose"):
                             self.robot_api.set_target_head_pose(head_pose)
 
-                        logger.debug(f"Transition vers pose: {pose['name']}")
+                        logger.debug("Transition vers pose: %s", pose['name'])
                         last_pose_time = time.time()
 
                     except ImportError:
@@ -250,7 +250,7 @@ class BBIAPoseTransitionManager:
                 time.sleep(1.0)
 
         except Exception as e:
-            logger.error(f"Erreur boucle transitions poses: {e}")
+            logger.exception("Erreur boucle transitions poses: %s", e)
         finally:
             self.is_active = False
 

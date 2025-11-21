@@ -105,7 +105,7 @@ class SimulationMediaModule:
             Bytes audio (silence simulé)
 
         """
-        logger.debug(f"🎤 record_audio() simulé ({duration}s, {sample_rate}Hz)")
+        logger.debug("🎤 record_audio() simulé (%ss, %sHz)", duration, sample_rate)
         # Retourner silence simulé
         import struct
 
@@ -159,7 +159,7 @@ class SimulationMicrophone:
             Bytes audio (silence simulé)
 
         """
-        logger.debug(f"🎤 record() simulé ({duration}s, {sample_rate}Hz)")
+        logger.debug("🎤 record() simulé (%ss, %sHz)", duration, sample_rate)
         import struct
 
         num_samples = int(duration * sample_rate)
@@ -176,7 +176,7 @@ class SimulationSpeaker:
             audio_bytes: Données audio en bytes
 
         """
-        logger.debug(f"🔊 play() simulé ({len(audio_bytes)} bytes)")
+        logger.debug("🔊 play() simulé (%s bytes)", len(audio_bytes))
 
     def play_file(self, file_path: str) -> None:
         """Joue un fichier audio en simulation.
@@ -184,4 +184,4 @@ class SimulationSpeaker:
         Args:
             file_path: Chemin vers le fichier audio
         """
-        logger.debug(f"🔊 play_file() simulé ({file_path})")
+        logger.debug("🔊 play_file() simulé (%s)", file_path)

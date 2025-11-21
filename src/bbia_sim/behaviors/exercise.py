@@ -81,7 +81,7 @@ class ExerciseBehavior(BBIABehavior):
         self.repetitions = context.get("repetitions", 5)
 
         if exercise_name not in self.exercises:
-            logger.warning(f"Exercice '{exercise_name}' non trouvé")
+            logger.warning("Exercice '%s' non trouvé", exercise_name)
             return False
 
         self.is_active = True
@@ -92,7 +92,7 @@ class ExerciseBehavior(BBIABehavior):
             exercise_func()
             return True
         except Exception as e:
-            logger.error(f"Erreur lors de l'exercice: {e}")
+            logger.exception("Erreur lors de l'exercice: %s", e)
             return False
         finally:
             self.is_active = False
@@ -245,7 +245,7 @@ class ExerciseBehavior(BBIABehavior):
 
             dire_texte(text, robot_api=self.robot_api)
         except ImportError:
-            logger.info(f"[EXERCISE] {text}")
+            logger.info("[EXERCISE] %s", text)
 
     def _encourage(self) -> None:
         """Encourage l'utilisateur."""

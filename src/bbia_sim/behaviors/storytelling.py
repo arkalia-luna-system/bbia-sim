@@ -81,7 +81,7 @@ class StorytellingBehavior(BBIABehavior):
         interactive = context.get("interactive", False)
 
         if story_name not in self.stories:
-            logger.warning(f"Histoire '{story_name}' non trouvée")
+            logger.warning("Histoire '%s' non trouvée", story_name)
             return False
 
         self.is_active = True
@@ -93,7 +93,7 @@ class StorytellingBehavior(BBIABehavior):
             story_func(interactive=interactive)
             return True
         except Exception as e:
-            logger.error(f"Erreur lors de la narration: {e}")
+            logger.exception("Erreur lors de la narration: %s", e)
             return False
         finally:
             self.is_active = False
@@ -253,7 +253,7 @@ class StorytellingBehavior(BBIABehavior):
 
             dire_texte(text, robot_api=self.robot_api)
         except ImportError:
-            logger.info(f"[STORYTELLING] {text}")
+            logger.info("[STORYTELLING] %s", text)
 
         # Pause entre scènes
         time.sleep(1.0)

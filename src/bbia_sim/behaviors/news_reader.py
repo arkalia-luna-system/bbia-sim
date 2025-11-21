@@ -83,7 +83,7 @@ class NewsReaderBehavior(BBIABehavior):
             self._read_news()
             return True
         except Exception as e:
-            logger.error(f"Erreur lors de la lecture d'actualités: {e}")
+            logger.exception("Erreur lors de la lecture d'actualités: %s", e)
             return False
         finally:
             self.is_active = False
@@ -200,7 +200,7 @@ class NewsReaderBehavior(BBIABehavior):
 
             dire_texte(text, robot_api=self.robot_api)
         except ImportError:
-            logger.info(f"[NEWS] {text}")
+            logger.info("[NEWS] %s", text)
 
     def stop(self) -> None:
         """Arrête le comportement news_reader."""

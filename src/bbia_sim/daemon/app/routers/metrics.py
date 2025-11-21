@@ -138,7 +138,7 @@ async def get_prometheus_metrics() -> Response:
             active_connections.set(0)
 
     except Exception as e:
-        logger.warning(f"Erreur mise à jour métriques: {e}")
+        logger.warning("Erreur mise à jour métriques: %s", e)
 
     return Response(content=generate_latest(), media_type="text/plain")
 
@@ -239,7 +239,7 @@ async def readyz() -> dict[str, Any]:
             },
         }
     except Exception as e:
-        logger.error(f"Erreur readiness check: {e}")
+        logger.exception("Erreur readiness check: %s", e)
         return {
             "status": "not_ready",
             "timestamp": time.time(),
@@ -287,7 +287,7 @@ async def health() -> dict[str, Any]:
             "system": system_info,
         }
     except Exception as e:
-        logger.error(f"Erreur health check: {e}")
+        logger.exception("Erreur health check: %s", e)
         return {
             "status": "unhealthy",
             "timestamp": time.time(),

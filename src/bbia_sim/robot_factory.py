@@ -56,11 +56,11 @@ class RobotFactory:
                     media_backend=kwargs.get("media_backend", "default"),
                 )
 
-            logger.error(f"Type de backend non supporté: {backend_type}")
+            logger.error("Type de backend non supporté: %s", backend_type)
             return None
 
         except Exception as e:
-            logger.error(f"Erreur création backend {backend_type}: {e}")
+            logger.exception("Erreur création backend %s: %s", backend_type, e)
             return None
 
     @staticmethod

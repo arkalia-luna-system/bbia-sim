@@ -84,7 +84,7 @@ class WeatherReportBehavior(BBIABehavior):
             self._report_weather()
             return True
         except Exception as e:
-            logger.error(f"Erreur lors du rapport météo: {e}")
+            logger.exception("Erreur lors du rapport météo: %s", e)
             return False
         finally:
             self.is_active = False
@@ -233,7 +233,7 @@ class WeatherReportBehavior(BBIABehavior):
 
             dire_texte(text, robot_api=self.robot_api)
         except ImportError:
-            logger.info(f"[WEATHER] {text}")
+            logger.info("[WEATHER] %s", text)
 
     def stop(self) -> None:
         """Arrête le comportement weather_report."""

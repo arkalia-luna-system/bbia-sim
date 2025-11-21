@@ -94,7 +94,7 @@ async def get_stl_file(filename: str) -> Response:
             content = file.read()
             return Response(content, media_type="model/stl")
     except Exception as e:
-        logger.error(f"Erreur lors de la lecture du fichier STL {filename}: {e}")
+        logger.exception("Erreur lors de la lecture du fichier STL %s: %s", filename, e)
         raise HTTPException(
             status_code=500,
             detail=f"Erreur lors de la lecture du fichier: {e!s}",

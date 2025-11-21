@@ -101,14 +101,14 @@ class ReachyBackend(RobotAPI):
 
             except (TimeoutError, ConnectionError, OSError) as e:
                 # Pas de robot physique - bascule en mode simulation
-                logger.info(f"⏱️  Pas de robot physique détecté - mode simulation: {e}")
+                logger.info("⏱️  Pas de robot physique détecté - mode simulation: %s", e)
                 self.robot_sdk = None
                 self.is_connected = True  # Mode simulation
                 self.start_time = time.time()
                 return True
 
         except Exception as e:
-            logger.error(f"Erreur connexion Reachy: {e}")
+            logger.exception("Erreur connexion Reachy: %s", e)
             # Fallback: mode simulation pour éviter crash
             self.robot_sdk = None
             self.is_connected = True
@@ -130,7 +130,7 @@ class ReachyBackend(RobotAPI):
                         # Gestion context manager
                         self.robot_sdk.__exit__(None, None, None)
                 except Exception as e:
-                    logger.debug(f"Erreur fermeture SDK (non bloquant): {e}")
+                    logger.debug("Erreur fermeture SDK (non bloquant): %s", e)
                 finally:
                     self.robot_sdk = None
 
@@ -139,7 +139,7 @@ class ReachyBackend(RobotAPI):
             return True
 
         except Exception as e:
-            logger.error(f"Erreur déconnexion Reachy: {e}")
+            logger.exception("Erreur déconnexion Reachy: %s", e)
             self.is_connected = False
             self.robot_sdk = None
             return False
@@ -158,7 +158,7 @@ class ReachyBackend(RobotAPI):
             return False
 
         if joint_name not in self.simulated_joints:
-            logger.error(f"Joint introuvable: {joint_name}")
+            logger.error("Joint introuvable: %s", joint_name)
             return False
 
         # Validation et clamp via RobotAPI
@@ -249,7 +249,7 @@ class ReachyBackend(RobotAPI):
                             )
                             return self.simulated_joints[joint_name]
             except Exception as e:
-                logger.debug(f"Erreur lecture position robot réel: {e}")
+                logger.debug("Erreur lecture position robot réel: %s", e)
 
         # Fallback: retourner valeur cache (simulation)
         return self.simulated_joints[joint_name]
@@ -269,14 +269,14 @@ class ReachyBackend(RobotAPI):
                         # Lire positions actuelles pour synchronisation
                         _ = self.robot_sdk.get_current_joint_positions()
                 except Exception as e:
-                    logger.debug(f"Erreur synchronisation robot réel: {e}")
+                    logger.debug("Erreur synchronisation robot réel: %s", e)
 
             # Simulation: attendre un peu pour cohérence timing
             time.sleep(0.01)  # Simuler le temps de traitement
             self.step_count += 1
             return True
         except Exception as e:
-            logger.error(f"Erreur step Reachy: {e}")
+            logger.exception("Erreur step Reachy: %s", e)
             return False
 
     def emergency_stop(self) -> bool:
@@ -298,14 +298,14 @@ class ReachyBackend(RobotAPI):
                     if hasattr(self.robot_sdk, "close"):
                         self.robot_sdk.close()
                 except Exception as e:
-                    logger.warning(f"Erreur arrêt d'urgence SDK: {e}")
+                    logger.warning("Erreur arrêt d'urgence SDK: %s", e)
 
             self.is_connected = False
             self.robot_sdk = None
             logger.critical("🔴 ARRÊT D'URGENCE REACHY ACTIVÉ")
             return True
         except Exception as e:
-            logger.error(f"Erreur emergency_stop: {e}")
+            logger.exception("Erreur emergency_stop: %s", e)
             self.is_connected = False
             self.robot_sdk = None
             return False
@@ -359,17 +359,17 @@ class ReachyBackend(RobotAPI):
                     if hasattr(self.robot_sdk, "play_behavior"):
                         self.robot_sdk.play_behavior(**kwargs)
                 else:
-                    logger.warning(f"Commande non reconnue: {command}")
+                    logger.warning("Commande non reconnue: %s", command)
                     return False
 
-                logger.info(f"Commande Reachy envoyée: {command} {kwargs}")
+                logger.info("Commande Reachy envoyée: %s %s", command, kwargs)
                 return True
             except Exception as e:
-                logger.error(f"Erreur envoi commande robot réel: {e}")
+                logger.exception("Erreur envoi commande robot réel: %s", e)
                 return False
         else:
             # Mode simulation
-            logger.info(f"Commande Reachy (simulation): {command} {kwargs}")
+            logger.info("Commande Reachy (simulation): %s %s", command, kwargs)
             return True
 
     def get_robot_status(self) -> dict[str, Any]:

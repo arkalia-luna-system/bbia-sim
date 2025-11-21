@@ -65,7 +65,7 @@ class BBIAWebSocketManager:
         try:
             await websocket.send_text(message)
         except Exception as e:
-            logger.error(f"❌ Erreur envoi message: {e}")
+            logger.exception("❌ Erreur envoi message: %s", e)
 
     async def broadcast(self, message: str):
         """Diffuse un message à tous les WebSockets connectés."""
@@ -77,7 +77,7 @@ class BBIAWebSocketManager:
             try:
                 await connection.send_text(message)
             except Exception as e:
-                logger.error(f"❌ Erreur broadcast: {e}")
+                logger.exception("❌ Erreur broadcast: %s", e)
                 disconnected.append(connection)
 
         # Nettoyer les connexions fermées
@@ -369,7 +369,7 @@ if FASTAPI_AVAILABLE:
         except WebSocketDisconnect:
             websocket_manager.disconnect(websocket)
         except Exception as e:
-            logger.error(f"❌ Erreur WebSocket: {e}")
+            logger.exception("❌ Erreur WebSocket: %s", e)
             websocket_manager.disconnect(websocket)
 
 
@@ -379,7 +379,7 @@ async def handle_robot_command(command_data: dict[str, Any]):
         command_type = command_data.get("command_type")
         value = command_data.get("value")
 
-        logger.info(f"🎯 Commande reçue: {command_type} = {value}")
+        logger.info("🎯 Commande reçue: %s = %s", command_type, value)
 
         # Initialiser robot si nécessaire
         if not websocket_manager.robot:
@@ -437,7 +437,7 @@ async def handle_robot_command(command_data: dict[str, Any]):
             await websocket_manager.send_status_update()
 
     except Exception as e:
-        logger.error(f"❌ Erreur commande robot: {e}")
+        logger.exception("❌ Erreur commande robot: %s", e)
         await websocket_manager.send_log_message("error", f"Erreur: {e!s}")
 
 
@@ -456,9 +456,9 @@ def run_dashboard(host: str = "127.0.0.1", port: int = 8000, backend: str = "muj
 
     websocket_manager.robot_backend = backend
 
-    logger.info(f"🚀 Lancement dashboard BBIA sur {host}:{port}")
-    logger.info(f"🔗 URL: http://{host}:{port}")
-    logger.info(f"🤖 Backend robot: {backend}")
+    logger.info("🚀 Lancement dashboard BBIA sur %s:%s", host, port)
+    logger.info("🔗 URL: http://%s:%s", host, port)
+    logger.info("🤖 Backend robot: %s", backend)
 
     if app is None:
         logger.error("❌ Application FastAPI non disponible")

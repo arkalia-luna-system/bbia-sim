@@ -133,7 +133,7 @@ class WakeUpBehavior(BBIABehavior):
                     logger.info("Synthèse vocale : %s", wake_message)
                     return True
             except Exception as e:
-                logger.error(f"Erreur wake_up SDK: {e}")
+                logger.exception("Erreur wake_up SDK: %s", e)
 
         # Fallback: Séquence manuelle conforme SDK
         # (utilise create_head_pose et yaw_body)
@@ -185,7 +185,7 @@ class WakeUpBehavior(BBIABehavior):
                     time.sleep(0.5)
                     self.robot_api.set_joint_pos("yaw_body", 0.0)
             except Exception as e:
-                logger.warning(f"Erreur mouvement corps réveil (continuation): {e}")
+                logger.warning("Erreur mouvement corps réveil (continuation): %s", e)
 
         time.sleep(1)
 
@@ -205,7 +205,7 @@ class WakeUpBehavior(BBIABehavior):
         wake_message = secrets.choice(wake_messages)
         # OPTIMISATION SDK: Passer robot_api pour utiliser haut-parleur 5W
         dire_texte(wake_message, robot_api=self.robot_api)
-        logger.info(f"Synthèse vocale : {wake_message}")
+        logger.info("Synthèse vocale : %s", wake_message)
 
         logger.info("Fin de la séquence de réveil BBIA")
         return True
@@ -233,7 +233,7 @@ class GreetingBehavior(BBIABehavior):
 
     def execute(self, context: dict[str, Any]) -> bool:  # noqa: ARG002
         greeting = secrets.choice(self.greetings)
-        logger.info(f"Salutation choisie : {greeting}")
+        logger.info("Salutation choisie : %s", greeting)
 
         # Appliquer émotion "happy" conforme SDK (pitch=0.1 * intensity)
         if self.robot_api and hasattr(self.robot_api, "set_emotion"):
@@ -268,7 +268,7 @@ class GreetingBehavior(BBIABehavior):
                     pose_neutral = create_head_pose(pitch=0.0, yaw=0.0, degrees=False)
                     self.robot_api.set_target_head_pose(pose_neutral)
             except Exception as e:
-                logger.warning(f"Erreur pose tête salutation (fallback): {e}")
+                logger.warning("Erreur pose tête salutation (fallback): %s", e)
                 # Fallback final: rotation corps subtile
                 if hasattr(self.robot_api, "set_joint_pos"):
                     try:
@@ -276,7 +276,7 @@ class GreetingBehavior(BBIABehavior):
                         time.sleep(0.5)
                         self.robot_api.set_joint_pos("yaw_body", 0.0)
                     except Exception as e2:
-                        logger.error(f"Erreur fallback rotation corps: {e2}")
+                        logger.exception("Erreur fallback rotation corps: %s", e2)
         elif self.robot_api and hasattr(self.robot_api, "set_joint_pos"):
             # Fallback: rotation corps subtile si SDK non disponible
             try:
@@ -284,11 +284,11 @@ class GreetingBehavior(BBIABehavior):
                 time.sleep(0.5)
                 self.robot_api.set_joint_pos("yaw_body", 0.0)
             except Exception as e:
-                logger.error(f"Erreur fallback rotation corps: {e}")
+                logger.exception("Erreur fallback rotation corps: %s", e)
 
         # OPTIMISATION SDK: Passer robot_api pour utiliser haut-parleur 5W
         dire_texte(greeting, robot_api=self.robot_api)
-        logger.info(f"Synthèse vocale : {greeting}")
+        logger.info("Synthèse vocale : %s", greeting)
         return True
 
 
@@ -310,10 +310,10 @@ class EmotionalResponseBehavior(BBIABehavior):
 
     def execute(self, context: dict[str, Any]) -> bool:
         stimulus = context.get("stimulus", "")
-        logger.info(f"Stimulus reçu pour réponse émotionnelle : {stimulus}")
+        logger.info("Stimulus reçu pour réponse émotionnelle : %s", stimulus)
         if stimulus:
             emotion = self.emotions.emotional_response(stimulus)
-            logger.info(f"Réponse émotionnelle générée : {emotion}")
+            logger.info("Réponse émotionnelle générée : %s", emotion)
 
             # Appliquer l'émotion au robot via SDK officiel
             sdk_emotion = emotion
@@ -383,7 +383,7 @@ class EmotionalResponseBehavior(BBIABehavior):
                 comment = secrets.choice(comments)
                 # OPTIMISATION SDK: Passer robot_api pour utiliser haut-parleur 5W
                 dire_texte(comment, robot_api=self.robot_api)
-                logger.info(f"Synthèse vocale (émotion) : {comment}")
+                logger.info("Synthèse vocale (émotion) : %s", comment)
 
             return True
         logger.info("Aucun stimulus fourni pour la réponse émotionnelle")
@@ -406,12 +406,12 @@ class VisionTrackingBehavior(BBIABehavior):
         logger.info("Activation du suivi visuel")
 
         result = self.vision.scan_environment()
-        logger.info(f"Résultat du scan environnement : {result}")
+        logger.info("Résultat du scan environnement : %s", result)
 
         if result["objects"]:
             first_object = result["objects"][0]
             object_name = first_object.get("name", "quelque chose")
-            logger.info(f"Suivi de l'objet : {object_name}")
+            logger.info("Suivi de l'objet : %s", object_name)
             self.vision.track_object(first_object["name"])
 
             # AMÉLIORATION INTELLIGENCE: Commentaires vocaux variés lors de détection
@@ -425,7 +425,7 @@ class VisionTrackingBehavior(BBIABehavior):
             comment = secrets.choice(detection_comments)
             # OPTIMISATION SDK: Passer robot_api pour utiliser haut-parleur 5W
             dire_texte(comment, robot_api=self.robot_api)
-            logger.info(f"Synthèse vocale (vision) : {comment}")
+            logger.info("Synthèse vocale (vision) : %s", comment)
 
             # OPTIMISATION EXPERT: Utiliser look_at_world/look_at_image
             # avec gestion d'erreur robuste
@@ -473,7 +473,7 @@ class VisionTrackingBehavior(BBIABehavior):
                             # Validation coordonnées image (éviter hors cadre)
                             if 0 <= u <= 640 and 0 <= v <= 480:
                                 self.robot_api.look_at_image(u, v, duration=1.0)
-                                logger.info(f"Look_at_image vers pixel: ({u}, {v})")
+                                logger.info("Look_at_image vers pixel: (%s, %s)", u, v)
                             else:
                                 logger.warning(
                                     f"Coordonnées image hors limites: ({u}, {v})",
@@ -486,13 +486,13 @@ class VisionTrackingBehavior(BBIABehavior):
                         self.robot_api.set_emotion("curious", 0.6)
                         logger.info("Fallback: émotion curious appliquée")
                 except Exception as e:
-                    logger.error(f"Erreur suivi visuel (fallback émotion): {e}")
+                    logger.exception("Erreur suivi visuel (fallback émotion): %s", e)
                     # Fallback final: émotion curious
                     if hasattr(self.robot_api, "set_emotion"):
                         try:
                             self.robot_api.set_emotion("curious", 0.6)
                         except Exception as e2:
-                            logger.error(f"Erreur même avec fallback émotion: {e2}")
+                            logger.exception("Erreur même avec fallback émotion: %s", e2)
 
             return True
 
@@ -511,7 +511,7 @@ class VisionTrackingBehavior(BBIABehavior):
         comment = secrets.choice(no_object_comments)
         # OPTIMISATION SDK: Passer robot_api pour utiliser haut-parleur 5W
         dire_texte(comment, robot_api=self.robot_api)
-        logger.info(f"Synthèse vocale (vision, aucun objet) : {comment}")
+        logger.info("Synthèse vocale (vision, aucun objet) : %s", comment)
         logger.info("Aucun objet détecté pour le suivi visuel")
         return False
 
@@ -552,7 +552,7 @@ class ConversationBehavior(BBIABehavior):
                 ),
             )
         except (ImportError, Exception) as e:
-            logger.info(f"ℹ️  BBIAHuggingFace non disponible - Mode enrichi activé: {e}")
+            logger.info("ℹ️  BBIAHuggingFace non disponible - Mode enrichi activé: %s", e)
             self.hf_chat = None
 
         # Système de réponses enrichies (fallback)
@@ -649,13 +649,13 @@ class ConversationBehavior(BBIABehavior):
         greeting = secrets.choice(greeting_messages)  # nosec B311
         # OPTIMISATION SDK: Passer robot_api pour utiliser haut-parleur 5W
         dire_texte(greeting, robot_api=self.robot_api)
-        logger.info(f"Synthèse vocale : {greeting}")
+        logger.info("Synthèse vocale : %s", greeting)
 
         # OPTIMISATION SDK: Reconnaissance vocale via robot.media.microphone
         # si disponible
         # Bénéfice: 4 microphones directionnels avec annulation de bruit automatique
         texte = reconnaitre_parole(duree=5, robot_api=self.robot_api)
-        logger.info(f"Texte reconnu : {texte}")
+        logger.info("Texte reconnu : %s", texte)
 
         if texte:
             texte_lower = texte.lower()
@@ -668,7 +668,7 @@ class ConversationBehavior(BBIABehavior):
                     response = self.hf_chat.chat(texte, enable_tools=True)
                     # OPTIMISATION SDK: Passer robot_api pour utiliser haut-parleur 5W
                     dire_texte(response, robot_api=self.robot_api)
-                    logger.info(f"Synthèse vocale (HF + outils LLM) : {response}")
+                    logger.info("Synthèse vocale (HF + outils LLM) : %s", response)
 
                     # Appliquer émotion correspondante au robot si disponible
                     sentiment_result = self.hf_chat.analyze_sentiment(texte)
@@ -681,30 +681,30 @@ class ConversationBehavior(BBIABehavior):
 
                     return True
                 except Exception as e:
-                    logger.warning(f"Erreur BBIAHuggingFace, fallback enrichi : {e}")
+                    logger.warning("Erreur BBIAHuggingFace, fallback enrichi : %s", e)
                     # Fallback vers système enrichi
 
             # Système enrichi (fallback ou si HF non disponible)
             response = self._generate_enriched_response(texte_lower)
             # OPTIMISATION SDK: Passer robot_api pour utiliser haut-parleur 5W
             dire_texte(response, robot_api=self.robot_api)
-            logger.info(f"Synthèse vocale (enrichi) : {response}")
+            logger.info("Synthèse vocale (enrichi) : %s", response)
 
             # Appliquer émotion basique si robot_api disponible
             emotion = self._detect_emotion_from_text(texte_lower)
             if emotion and self.robot_api:
                 try:
                     self.robot_api.set_emotion(emotion, 0.6)
-                    logger.info(f"Émotion appliquée au robot : {emotion}")
+                    logger.info("Émotion appliquée au robot : %s", emotion)
                 except Exception as e:
-                    logger.warning(f"Erreur application émotion : {e}")
+                    logger.warning("Erreur application émotion : %s", e)
 
         else:
             # Aucun texte entendu
             response = self._get_enriched_response("not_heard")
             # OPTIMISATION SDK: Passer robot_api pour utiliser haut-parleur 5W
             dire_texte(response, robot_api=self.robot_api)
-            logger.info(f"Synthèse vocale : {response}")
+            logger.info("Synthèse vocale : %s", response)
 
         return True
 
@@ -803,7 +803,7 @@ class ConversationBehavior(BBIABehavior):
                     ),
                 )
         except Exception as e:
-            logger.warning(f"Erreur application sentiment au robot : {e}")
+            logger.warning("Erreur application sentiment au robot : %s", e)
 
 
 class AntennaAnimationBehavior(BBIABehavior):
@@ -827,7 +827,7 @@ class AntennaAnimationBehavior(BBIABehavior):
 
     def execute(self, context: dict[str, Any]) -> bool:
         emotion = context.get("emotion", "neutral")
-        logger.info(f"Animation expressive pour l'émotion : {emotion}")
+        logger.info("Animation expressive pour l'émotion : %s", emotion)
 
         # Note: Les antennes sont interdites pour sécurité hardware.
         # Utiliser émotions SDK + mouvements tête/corps pour simuler l'expressivité
@@ -884,9 +884,9 @@ class AntennaAnimationBehavior(BBIABehavior):
                         time.sleep(0.6)
                         self.robot_api.set_joint_pos("yaw_body", 0.0)
                 except Exception as e:
-                    logger.warning(f"Erreur mouvement expressif {emotion}: {e}")
+                    logger.warning("Erreur mouvement expressif %s: %s", emotion, e)
 
-        logger.info(f"Animation expressive appliquée pour : {emotion}")
+        logger.info("Animation expressive appliquée pour : %s", emotion)
         time.sleep(1)
         return True
 
@@ -962,7 +962,7 @@ class HideBehavior(BBIABehavior):
                             pose = create_head_pose(pitch=-0.15, yaw=0.0, degrees=False)
                             self.robot_api.set_target_head_pose(pose)
             except Exception as e:
-                logger.warning(f"Erreur mouvement hide (continuation): {e}")
+                logger.warning("Erreur mouvement hide (continuation): %s", e)
 
         time.sleep(1.0)
 
@@ -980,7 +980,7 @@ class HideBehavior(BBIABehavior):
         hide_message = secrets.choice(hide_messages)
         # OPTIMISATION SDK: Passer robot_api pour utiliser haut-parleur 5W
         dire_texte(hide_message, robot_api=self.robot_api)
-        logger.info(f"Synthèse vocale : {hide_message}")
+        logger.info("Synthèse vocale : %s", hide_message)
         time.sleep(1)
         logger.info("Fin de la séquence 'se cacher'")
         return True
@@ -1097,7 +1097,7 @@ class BBIABehaviorManager:
                 "✅ Tous les comportements avancés enregistrés avec succès (15/15)"
             )
         except ImportError as e:
-            logger.warning(f"⚠️  Comportements avancés non disponibles: {e}")
+            logger.warning("⚠️  Comportements avancés non disponibles: %s", e)
 
     def register_behavior(self, behavior: BBIABehavior) -> None:
         """Enregistre un nouveau comportement."""
@@ -1158,7 +1158,7 @@ class BBIABehaviorManager:
                 else:
                     time.sleep(0.1)
             except Exception as e:
-                logger.error(f"Erreur dans le worker de comportements : {e}")
+                logger.exception("Erreur dans le worker de comportements : %s", e)
                 time.sleep(0.1)  # Éviter une boucle infinie en cas d'erreur
 
     def get_available_behaviors(self) -> list[dict[str, Any]]:
@@ -1233,10 +1233,10 @@ class BBIABehaviorManager:
                     f"({len(move) if isinstance(move, list) else 'N/A'} frames)",
                 )
                 return move
-            logger.warning(f"⚠️  Aucun mouvement enregistré pour '{behavior_name}'")
+            logger.warning("⚠️  Aucun mouvement enregistré pour '%s'", behavior_name)
             return None
         except Exception as e:
-            logger.error(
+            logger.exception(
                 f"❌ Erreur enregistrement comportement '{behavior_name}': {e}",
             )
             return None
@@ -1253,7 +1253,7 @@ class BBIABehaviorManager:
 
         """
         if behavior_name not in self.saved_moves:
-            logger.warning(f"⚠️  Aucun mouvement sauvegardé pour '{behavior_name}'")
+            logger.warning("⚠️  Aucun mouvement sauvegardé pour '%s'", behavior_name)
             return False
 
         if not self.robot_api:
@@ -1282,7 +1282,7 @@ class BBIABehaviorManager:
             logger.warning("play_move non disponible dans robot_api")
             return False
         except Exception as e:
-            logger.error(f"❌ Erreur rejouant '{behavior_name}': {e}")
+            logger.exception("❌ Erreur rejouant '%s': %s", behavior_name, e)
             return False
 
     def clear_saved_moves(self) -> None:

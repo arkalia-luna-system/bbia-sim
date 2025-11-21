@@ -95,7 +95,7 @@ class FollowFaceBehavior(BBIABehavior):
             return False
 
         duration = context.get("duration", 30.0)  # 30 secondes par défaut
-        logger.info(f"Démarrage suivi visage pour {duration}s")
+        logger.info("Démarrage suivi visage pour %ss", duration)
 
         self.is_tracking = True
         start_time = time.time()
@@ -156,7 +156,7 @@ class FollowFaceBehavior(BBIABehavior):
         except KeyboardInterrupt:
             logger.info("Suivi interrompu par l'utilisateur")
         except Exception as e:
-            logger.error(f"Erreur durant suivi visage: {e}")
+            logger.exception("Erreur durant suivi visage: %s", e)
         finally:
             self.is_tracking = False
             # Retour à l'émotion neutre
@@ -194,10 +194,10 @@ class FollowFaceBehavior(BBIABehavior):
                 intensity = 0.5
 
             self.robot_api.set_emotion(emotion, intensity)
-            logger.debug(f"Émotion ajustée: {emotion} (intensité: {intensity})")
+            logger.debug("Émotion ajustée: %s (intensité: %s)", emotion, intensity)
 
         except Exception as e:
-            logger.warning(f"Erreur ajustement émotion: {e}")
+            logger.warning("Erreur ajustement émotion: %s", e)
 
     def _track_face(self, face: dict[str, Any]) -> None:
         """Suit un visage détecté.
@@ -219,7 +219,7 @@ class FollowFaceBehavior(BBIABehavior):
                 # Validation coordonnées
                 if 0 <= center_x <= 640 and 0 <= center_y <= 480:
                     self.robot_api.look_at_image(center_x, center_y, duration=0.5)
-                    logger.debug(f"Suivi visage vers ({center_x}, {center_y})")
+                    logger.debug("Suivi visage vers (%s, %s)", center_x, center_y)
 
             # Alternative: utiliser position 3D si disponible
             elif face.get("position") and hasattr(self.robot_api, "look_at_world"):
@@ -231,10 +231,10 @@ class FollowFaceBehavior(BBIABehavior):
                 # Validation coordonnées
                 if -2.0 <= x <= 2.0 and -2.0 <= y <= 2.0 and -1.0 <= z <= 1.0:
                     self.robot_api.look_at_world(x, y, z, duration=0.5)
-                    logger.debug(f"Suivi visage vers 3D ({x:.2f}, {y:.2f}, {z:.2f})")
+                    logger.debug("Suivi visage vers 3D (%s, %s, %s)", x:.2f, y:.2f, z:.2f)
 
         except Exception as e:
-            logger.warning(f"Erreur suivi visage: {e}")
+            logger.warning("Erreur suivi visage: %s", e)
 
     def _react_to_face_lost(self) -> None:
         """Réagit quand le visage est perdu."""
@@ -252,7 +252,7 @@ class FollowFaceBehavior(BBIABehavior):
 
         reaction = secrets.choice(reactions)
         dire_texte(reaction, robot_api=self.robot_api)
-        logger.info(f"Réaction visage perdu: {reaction}")
+        logger.info("Réaction visage perdu: %s", reaction)
 
         # Émotion curious pour chercher
         if self.robot_api and hasattr(self.robot_api, "set_emotion"):

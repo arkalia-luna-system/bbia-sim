@@ -95,7 +95,7 @@ async def goto_pose(
             "timestamp": datetime.now().isoformat(),
         }
     except Exception as e:
-        logger.error(f"Erreur lors du mouvement: {e}")
+        logger.exception("Erreur lors du mouvement: %s", e)
         # Retourner quand même une réponse
         return {
             "status": "error",
@@ -196,7 +196,7 @@ async def control_gripper(side: str, action: str) -> dict[str, Any]:
             detail="Action invalide. Utilisez 'open', 'close' ou 'grip'",
         )
 
-    logger.info(f"Contrôle de la pince {side} : {action}")
+    logger.info("Contrôle de la pince %s : %s", side, action)
 
     return {
         "status": "executing",
@@ -269,7 +269,7 @@ async def wake_up() -> dict[str, Any]:
             "timestamp": datetime.now().isoformat(),
         }
     except Exception as e:
-        logger.error(f"Erreur lors du réveil: {e}")
+        logger.exception("Erreur lors du réveil: %s", e)
         return {
             "status": "error",
             "message": f"Erreur: {e!s}",
@@ -310,7 +310,7 @@ async def goto_sleep() -> dict[str, Any]:
             "timestamp": datetime.now().isoformat(),
         }
     except Exception as e:
-        logger.error(f"Erreur lors de la mise en veille: {e}")
+        logger.exception("Erreur lors de la mise en veille: %s", e)
         return {
             "status": "error",
             "message": f"Erreur: {e!s}",
@@ -346,7 +346,7 @@ async def stop_motion() -> dict[str, Any]:
                     "timestamp": datetime.now().isoformat(),
                 }
     except Exception as e:
-        logger.debug(f"Emergency stop non disponible, fallback standard: {e}")
+        logger.debug("Emergency stop non disponible, fallback standard: %s", e)
 
     # Fallback: arrêt standard (asynchrone, ignorer si déjà arrêté)
     try:
@@ -393,7 +393,7 @@ async def execute_custom_command(command: MotionCommand) -> dict[str, Any]:
         Statut de l'exécution
 
     """
-    logger.info(f"Exécution de la commande personnalisée : {command.command}")
+    logger.info("Exécution de la commande personnalisée : %s", command.command)
 
     # Simulation de l'exécution
     return {

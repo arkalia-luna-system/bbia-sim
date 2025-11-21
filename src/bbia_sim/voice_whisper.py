@@ -125,13 +125,13 @@ class WhisperSTT:
                     )
 
         try:
-            logger.info(f"📥 Chargement modèle Whisper {self.model_size}...")
+            logger.info("📥 Chargement modèle Whisper %s...", self.model_size)
             start_time = time.time()
 
             model = whisper.load_model(self.model_size)
 
             load_time = time.time() - start_time
-            logger.info(f"✅ Modèle Whisper chargé en {load_time:.1f}s")
+            logger.info("✅ Modèle Whisper chargé en %ss", load_time:.1f)
 
             # OPTIMISATION RAM: Mettre en cache global avec timestamp
             with _whisper_model_cache_lock:
@@ -143,7 +143,7 @@ class WhisperSTT:
             return True
 
         except Exception as e:
-            logger.error(f"❌ Erreur chargement Whisper: {e}")
+            logger.exception("❌ Erreur chargement Whisper: %s", e)
             return False
 
     def transcribe_audio(self, audio_path: str) -> str | None:
@@ -168,7 +168,7 @@ class WhisperSTT:
                 return None
 
         try:
-            logger.info(f"🎵 Transcription audio: {audio_path}")
+            logger.info("🎵 Transcription audio: %s", audio_path)
             start_time = time.time()
 
             # Transcription avec Whisper
@@ -194,7 +194,7 @@ class WhisperSTT:
             return text
 
         except Exception as e:
-            logger.error(f"❌ Erreur transcription: {e}")
+            logger.exception("❌ Erreur transcription: %s", e)
             return None
 
     def transcribe_microphone(self, duration: float = 3.0) -> str | None:
@@ -223,7 +223,7 @@ class WhisperSTT:
             import numpy as np
             import soundfile as sf
 
-            logger.info(f"🎤 Enregistrement microphone ({duration}s)...")
+            logger.info("🎤 Enregistrement microphone (%ss)...", duration)
 
             # Enregistrement audio
             sample_rate = 16000  # Whisper recommande 16kHz
@@ -257,15 +257,15 @@ class WhisperSTT:
                     try:
                         temp_file.unlink()
                     except Exception as cleanup_error:
-                        logger.debug(f"Nettoyage fichier Whisper ({cleanup_error})")
+                        logger.debug("Nettoyage fichier Whisper (%s)", cleanup_error)
 
         except ImportError:
-            logger.error(
+            logger.exception(
                 "❌ sounddevice/soundfile requis pour l'enregistrement microphone",
             )
             return None
         except Exception as e:
-            logger.error(f"❌ Erreur enregistrement microphone: {e}")
+            logger.exception("❌ Erreur enregistrement microphone: %s", e)
             return None
 
     def detect_speech_activity(self, audio_chunk: Any) -> bool:
@@ -317,7 +317,7 @@ class WhisperSTT:
                     self._vad_loaded = True
                     logger.info("✅ Modèle VAD chargé")
                 except Exception as e:
-                    logger.warning(f"⚠️ Impossible de charger VAD, fallback activé: {e}")
+                    logger.warning("⚠️ Impossible de charger VAD, fallback activé: %s", e)
                     self.enable_vad = False
                     return True  # Fallback: considérer comme parole
 
@@ -361,7 +361,7 @@ class WhisperSTT:
 
                 # Seuil de confiance
                 is_speech = bool(label == "SPEECH" and score > 0.5)
-                logger.debug(f"🔍 VAD: {label} (score: {score:.2f}) → {is_speech}")
+                logger.debug("🔍 VAD: %s (score: %s) → %s", label, score:.2f, is_speech)
 
                 return is_speech
 
@@ -372,7 +372,7 @@ class WhisperSTT:
             self.enable_vad = False
             return True  # Fallback: considérer comme parole
         except Exception as e:
-            logger.debug(f"ℹ️ Erreur VAD (fallback activé): {e}")
+            logger.debug("ℹ️ Erreur VAD (fallback activé): %s", e)
             return True  # Fallback: considérer comme parole
 
     def transcribe_microphone_with_vad(
@@ -408,7 +408,7 @@ class WhisperSTT:
             import numpy as np
             import soundfile as sf
 
-            logger.info(f"🎤 Enregistrement microphone avec VAD ({duration}s max)...")
+            logger.info("🎤 Enregistrement microphone avec VAD (%ss max)...", duration)
 
             # Enregistrement audio continu avec détection VAD
             sample_rate = 16000
@@ -438,7 +438,7 @@ class WhisperSTT:
                     logger.debug("🔊 Parole détectée")
                 else:
                     silence_duration += chunk_duration
-                    logger.debug(f"🔇 Silence: {silence_duration:.1f}s")
+                    logger.debug("🔇 Silence: %ss", silence_duration:.1f)
 
                 total_duration += chunk_duration
 
@@ -472,15 +472,15 @@ class WhisperSTT:
                     try:
                         temp_file.unlink()
                     except Exception as cleanup_error:
-                        logger.debug(f"Nettoyage fichier Whisper ({cleanup_error})")
+                        logger.debug("Nettoyage fichier Whisper (%s)", cleanup_error)
 
         except ImportError:
-            logger.error(
+            logger.exception(
                 "❌ sounddevice/soundfile requis pour l'enregistrement microphone",
             )
             return None
         except Exception as e:
-            logger.error(f"❌ Erreur enregistrement microphone avec VAD: {e}")
+            logger.exception("❌ Erreur enregistrement microphone avec VAD: %s", e)
             return None
 
     def transcribe_streaming(
@@ -568,7 +568,7 @@ class WhisperSTT:
                         logger.debug("🔊 Parole détectée")
                     else:
                         consecutive_silence_chunks += 1
-                        logger.debug(f"🔇 Silence: {consecutive_silence_chunks} chunks")
+                        logger.debug("🔇 Silence: %s chunks", consecutive_silence_chunks)
                         # Ne pas transcrire si silence prolongé
                         if consecutive_silence_chunks >= max_silence_chunks:
                             should_transcribe = False
@@ -633,14 +633,14 @@ class WhisperSTT:
                         if text and text.lower() not in ["", "you", "thank you"]:
                             all_transcriptions.append(text)
                             last_transcription_time = current_time
-                            logger.debug(f"📝 Chunk transcrit: '{text}'")
+                            logger.debug("📝 Chunk transcrit: '%s'", text)
 
                             # Callback si fourni
                             if callback:
                                 try:
                                     callback(text, total_duration)
                                 except Exception as callback_error:
-                                    logger.debug(f"Erreur callback: {callback_error}")
+                                    logger.debug("Erreur callback: %s", callback_error)
 
                     finally:
                         # OPTIMISATION RAM: Remettre fichier dans pool au lieu
@@ -669,17 +669,17 @@ class WhisperSTT:
             # Concaténer toutes les transcriptions
             final_text = " ".join(all_transcriptions).strip()
             if final_text:
-                logger.info(f"✅ Streaming terminé: '{final_text}'")
+                logger.info("✅ Streaming terminé: '%s'", final_text)
                 return final_text
 
             logger.warning("⚠️ Aucune transcription générée")
             return None
 
         except ImportError:
-            logger.error("❌ sounddevice/soundfile requis pour streaming")
+            logger.exception("❌ sounddevice/soundfile requis pour streaming")
             return None
         except Exception as e:
-            logger.error(f"❌ Erreur streaming: {e}")
+            logger.exception("❌ Erreur streaming: %s", e)
             return None
 
 
@@ -732,16 +732,16 @@ class VoiceCommandMapper:
         # Recherche exacte
         if text_lower in self.commands:
             action = self.commands[text_lower]
-            logger.info(f"🎯 Commande mappée: '{text}' → {action}")
+            logger.info("🎯 Commande mappée: '%s' → %s", text, action)
             return {"action": action, "confidence": 1.0}
 
         # Recherche partielle
         for command, action in self.commands.items():
             if command in text_lower:
-                logger.info(f"🎯 Commande partielle mappée: '{text}' → {action}")
+                logger.info("🎯 Commande partielle mappée: '%s' → %s", text, action)
                 return {"action": action, "confidence": 0.8}
 
-        logger.warning(f"❓ Commande non reconnue: '{text}'")
+        logger.warning("❓ Commande non reconnue: '%s'", text)
         return None
 
 
@@ -774,7 +774,7 @@ if __name__ == "__main__":
     logger.info("=" * 40)
 
     # Test disponibilité
-    logger.info(f"Whisper disponible: {WHISPER_AVAILABLE}")
+    logger.info("Whisper disponible: %s", WHISPER_AVAILABLE)
 
     if WHISPER_AVAILABLE:
         # Test création
@@ -793,7 +793,7 @@ if __name__ == "__main__":
 
             for cmd in test_commands:
                 result = mapper.map_command(cmd)
-                logger.info(f"  '{cmd}' → {result}")
+                logger.info("  '%s' → %s", cmd, result)
         else:
             logger.error("❌ Impossible de créer le module Whisper")
     else:

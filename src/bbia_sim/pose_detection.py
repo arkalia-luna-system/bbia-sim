@@ -73,7 +73,7 @@ class BBIAPoseDetection:
             )
             self.is_initialized = True
         except Exception as e:
-            logger.error(f"❌ Erreur initialisation MediaPipe Pose: {e}")
+            logger.exception("❌ Erreur initialisation MediaPipe Pose: %s", e)
 
     def detect_pose(self, image: npt.NDArray[np.uint8]) -> dict[str, Any] | None:
         """Détecte la posture complète dans une image.
@@ -135,7 +135,7 @@ class BBIAPoseDetection:
             }
 
         except Exception as e:
-            logger.error(f"❌ Erreur détection pose: {e}")
+            logger.exception("❌ Erreur détection pose: %s", e)
             return None
 
     def _detect_gestures(self, landmarks: list[dict[str, Any]]) -> dict[str, bool]:
@@ -195,7 +195,7 @@ class BBIAPoseDetection:
                 gestures["mains_sur_tete"] = True
 
         except (IndexError, KeyError) as e:
-            logger.debug(f"Erreur détection gestes (landmarks incomplets): {e}")
+            logger.debug("Erreur détection gestes (landmarks incomplets): %s", e)
 
         return gestures
 
@@ -235,7 +235,7 @@ class BBIAPoseDetection:
             return "debout"
 
         except (IndexError, KeyError) as e:
-            logger.debug(f"Erreur détection posture (landmarks incomplets): {e}")
+            logger.debug("Erreur détection posture (landmarks incomplets): %s", e)
             return "inconnu"
 
 
@@ -277,8 +277,8 @@ if __name__ == "__main__":
 
     if pose_detector.is_initialized:
         logger.info("✅ Module Pose Detection créé")
-        logger.info(f"   • Initialisé: {pose_detector.is_initialized}")
-        logger.info(f"   • Complexité modèle: {pose_detector.model_complexity}")
+        logger.info("   • Initialisé: %s", pose_detector.is_initialized)
+        logger.info("   • Complexité modèle: %s", pose_detector.model_complexity)
     else:
         logger.info("❌ Impossible de créer le module (MediaPipe non disponible)")
         logger.info("   Installer avec: pip install mediapipe")

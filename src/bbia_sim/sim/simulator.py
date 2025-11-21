@@ -36,7 +36,7 @@ class MuJoCoSimulator:
         """
         self.model_path = Path(model_path)
         if not self.model_path.exists():
-            logger.error(f"Modèle MuJoCo introuvable : {self.model_path}")
+            logger.error("Modèle MuJoCo introuvable : %s", self.model_path)
             raise FileNotFoundError(f"Modèle MuJoCo introuvable : {self.model_path}")
 
         try:
@@ -44,9 +44,9 @@ class MuJoCoSimulator:
             self.data = mujoco.MjData(self.model)
             self.viewer: mujoco.viewer.MjViewer | None = None
             self.target_positions: dict[str, float] = {}  # Positions cibles à maintenir
-            logger.info(f"Simulateur MuJoCo initialisé avec {self.model_path}")
+            logger.info("Simulateur MuJoCo initialisé avec %s", self.model_path)
         except Exception as e:
-            logger.error(f"Erreur lors du chargement du modèle MJCF : {e}")
+            logger.exception("Erreur lors du chargement du modèle MJCF : %s", e)
             raise
 
     def launch_simulation(
@@ -71,7 +71,7 @@ class MuJoCoSimulator:
                 self._run_graphical_simulation(duration)
             except Exception as e:
                 if "mjpython" in str(e) and sys.platform == "darwin":
-                    logger.error(
+                    logger.exception(
                         "❌ Sur macOS, le viewer MuJoCo nécessite mjpython au lieu de python.\n"
                         "💡 Solutions :\n"
                         "  • Utilisez : mjpython -m bbia_sim --sim --verbose\n"
@@ -81,7 +81,7 @@ class MuJoCoSimulator:
                     raise RuntimeError(
                         "Viewer MuJoCo non disponible sur macOS avec python standard",
                     ) from e
-                logger.error(f"Erreur lors du lancement du viewer : {e}")
+                logger.exception("Erreur lors du lancement du viewer : %s", e)
                 raise
 
     def _run_headless_simulation(self, duration: int | float | None) -> None:
@@ -103,7 +103,7 @@ class MuJoCoSimulator:
             # Log moins fréquent pour éviter le spam
             if step_count % 10000 == 0:
                 elapsed = time.monotonic() - start_time
-                logger.info(f"Step {step_count} - Temps écoulé: {elapsed:.2f}s")
+                logger.info("Step %s - Temps écoulé: %ss", step_count, elapsed:.2f)
 
             # OPTIMISATION RAM: Limite obligatoire pour éviter boucles infinies
             if duration is None and step_count > 10000:
@@ -142,7 +142,7 @@ class MuJoCoSimulator:
             step_count += 1
 
         self.viewer.close()
-        logger.info(f"Simulation graphique arrêtée après {step_count} steps")
+        logger.info("Simulation graphique arrêtée après %s steps", step_count)
 
         # OPTIMISATION RAM: Décharger modèle MuJoCo après arrêt pour libérer mémoire
         try:
@@ -168,14 +168,14 @@ class MuJoCoSimulator:
             )
             new_model_path = self.model_path
 
-        logger.info(f"Chargement de la scène/modèle : {new_model_path}")
+        logger.info("Chargement de la scène/modèle : %s", new_model_path)
         try:
             self.model = mujoco.MjModel.from_xml_path(str(new_model_path))
             self.data = mujoco.MjData(self.model)
             if self.viewer:
                 self.viewer.update_model(self.model, self.data)
         except mujoco.FatalError as e:
-            logger.error(f"Erreur lors du chargement de la scène : {e}")
+            logger.exception("Erreur lors du chargement de la scène : %s", e)
             raise
 
     def set_joint_position(self, joint_name: str, angle: float) -> None:
@@ -249,13 +249,13 @@ class MuJoCoSimulator:
 
                 # Application du contrôle
                 self.data.ctrl[actuator_id] = control_force
-                logger.debug(f"Contrôle appliqué à {joint_name}: {control_force:.3f}")
+                logger.debug("Contrôle appliqué à %s: %s", joint_name, control_force:.3f)
             mujoco.mj_forward(self.model, self.data)
             logger.debug(
                 f"Articulation '{joint_name}' positionnée à {clamped_angle:.3f} rad",
             )
         except KeyError:
-            logger.error(f"Articulation '{joint_name}' non trouvée")
+            logger.exception("Articulation '%s' non trouvée", joint_name)
             raise
 
     def get_joint_position(self, joint_name: str) -> float:
@@ -278,7 +278,7 @@ class MuJoCoSimulator:
                 return float(self.target_positions[joint_name])
             return float(self.data.qpos[joint_id])
         except KeyError:
-            logger.error(f"Articulation '{joint_name}' non trouvée")
+            logger.exception("Articulation '%s' non trouvée", joint_name)
             raise
 
     def get_robot_state(self) -> dict[str, Any]:

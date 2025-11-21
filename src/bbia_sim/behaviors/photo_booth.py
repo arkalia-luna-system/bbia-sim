@@ -96,12 +96,12 @@ class PhotoBoothBehavior(BBIABehavior):
         auto_capture = context.get("auto_capture", True)
         num_photos = context.get("num_photos", 1)
 
-        logger.info(f"Démarrage photo booth - Pose: {pose_name}, Photos: {num_photos}")
+        logger.info("Démarrage photo booth - Pose: %s, Photos: %s", pose_name, num_photos)
 
         try:
             for photo_num in range(num_photos):
                 if num_photos > 1:
-                    logger.info(f"Photo {photo_num + 1}/{num_photos}")
+                    logger.info("Photo %s/%s", photo_num + 1, num_photos)
 
                 # Détection visage pour cadrage
                 if self.vision:
@@ -127,7 +127,7 @@ class PhotoBoothBehavior(BBIABehavior):
         except KeyboardInterrupt:
             logger.info("Photo booth interrompu par l'utilisateur")
         except Exception as e:
-            logger.error(f"Erreur durant photo booth: {e}")
+            logger.exception("Erreur durant photo booth: %s", e)
             return False
 
         return True
@@ -156,7 +156,7 @@ class PhotoBoothBehavior(BBIABehavior):
                             )
 
         except Exception as e:
-            logger.warning(f"Erreur cadrage visage: {e}")
+            logger.warning("Erreur cadrage visage: %s", e)
 
     def _take_pose(self, pose_name: str) -> None:
         """Prend une pose pré-définie.
@@ -191,11 +191,11 @@ class PhotoBoothBehavior(BBIABehavior):
                     method="minjerk",
                 )
 
-            logger.debug(f"Pose '{pose_name}' appliquée: {pose['description']}")
+            logger.debug("Pose '%s' appliquée: %s", pose_name, pose['description'])
             time.sleep(0.8)
 
         except Exception as e:
-            logger.warning(f"Erreur prise pose {pose_name}: {e}")
+            logger.warning("Erreur prise pose %s: %s", pose_name, e)
 
     def _countdown(self) -> None:
         """Compte à rebours avant photo."""
@@ -213,7 +213,7 @@ class PhotoBoothBehavior(BBIABehavior):
             time.sleep(0.5)
 
         except Exception as e:
-            logger.warning(f"Erreur compte à rebours: {e}")
+            logger.warning("Erreur compte à rebours: %s", e)
 
     def _capture_photo(self) -> None:
         """Capture une photo."""
@@ -242,4 +242,4 @@ class PhotoBoothBehavior(BBIABehavior):
                     dire_texte("Photo !", robot_api=self.robot_api)
 
         except Exception as e:
-            logger.error(f"Erreur capture photo: {e}")
+            logger.exception("Erreur capture photo: %s", e)

@@ -334,9 +334,11 @@ class TestRobotAPI:
 
         backend = MuJoCoBackend()
         backend.connect()
-        clamped = backend.clamp_joint_position("head_yaw", 2.0)
-        assert -0.3 <= clamped <= 0.3
-        backend.disconnect()
+        try:
+            clamped = backend.clamp_joint_position("head_yaw", 2.0)
+            assert -0.3 <= clamped <= 0.3
+        finally:
+            backend.disconnect()
 
 
 class TestAIBackends:

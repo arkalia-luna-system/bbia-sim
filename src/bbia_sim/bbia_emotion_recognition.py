@@ -126,7 +126,7 @@ class BBIAEmotionRecognition:
         # Historique des émotions pour moyennage temporel
         self.emotion_history: list[dict[str, Any]] = []
 
-        logger.info(f"😊 BBIA Emotion Recognition initialisé (device: {self.device})")
+        logger.info("😊 BBIA Emotion Recognition initialisé (device: %s)", self.device)
 
     def _get_device(self, device: str) -> str:
         """Détermine le device optimal."""
@@ -154,7 +154,7 @@ class BBIAEmotionRecognition:
             return True
 
         except Exception as e:
-            logger.error(f"❌ Erreur initialisation: {e}")
+            logger.exception("❌ Erreur initialisation: %s", e)
             return False
 
     def _load_emotion_models(self) -> None:
@@ -202,7 +202,7 @@ class BBIAEmotionRecognition:
             logger.info("📥 Modèles d'émotion chargés")
 
         except Exception as e:
-            logger.error(f"❌ Erreur chargement modèles émotion: {e}")
+            logger.exception("❌ Erreur chargement modèles émotion: %s", e)
 
     def detect_faces(self, image: np.ndarray | str) -> list[dict[str, Any]]:
         """Détecte les visages dans une image.
@@ -268,7 +268,7 @@ class BBIAEmotionRecognition:
             return faces
 
         except Exception as e:
-            logger.error(f"❌ Erreur détection visages: {e}")
+            logger.exception("❌ Erreur détection visages: %s", e)
             return []
 
     def analyze_facial_emotion(
@@ -322,7 +322,7 @@ class BBIAEmotionRecognition:
             }
 
         except Exception as e:
-            logger.error(f"❌ Erreur analyse émotion faciale: {e}")
+            logger.exception("❌ Erreur analyse émotion faciale: %s", e)
             return {"error": str(e)}
 
     def analyze_vocal_emotion(self, text: str) -> dict[str, Any]:
@@ -377,7 +377,7 @@ class BBIAEmotionRecognition:
             }
 
         except Exception as e:
-            logger.error(f"❌ Erreur analyse émotion vocale: {e}")
+            logger.exception("❌ Erreur analyse émotion vocale: %s", e)
             return {"error": str(e)}
 
     def fuse_emotions(
@@ -436,7 +436,7 @@ class BBIAEmotionRecognition:
             }
 
         except Exception as e:
-            logger.error(f"❌ Erreur fusion émotions: {e}")
+            logger.exception("❌ Erreur fusion émotions: %s", e)
             return {"error": str(e)}
 
     def analyze_emotion_realtime(
@@ -483,7 +483,7 @@ class BBIAEmotionRecognition:
             return final_result
 
         except Exception as e:
-            logger.error(f"❌ Erreur analyse temps réel: {e}")
+            logger.exception("❌ Erreur analyse temps réel: %s", e)
             return {"error": str(e)}
 
     def _update_emotion_history(self, emotion_result: dict[str, Any]) -> None:
@@ -535,7 +535,7 @@ class BBIAEmotionRecognition:
             return current_result
 
         except Exception as e:
-            logger.error(f"❌ Erreur lissage temporel: {e}")
+            logger.exception("❌ Erreur lissage temporel: %s", e)
             return current_result
 
     def get_emotion_statistics(self) -> dict[str, Any]:

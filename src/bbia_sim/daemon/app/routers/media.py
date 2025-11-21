@@ -74,7 +74,7 @@ def _get_robot_media() -> Any | None:
             try:
                 robot.connect()
             except Exception as e:
-                logger.debug(f"Connexion robot échouée (simulation): {e}")
+                logger.debug("Connexion robot échouée (simulation): %s", e)
                 return None
 
         # Récupérer robot.media
@@ -92,7 +92,7 @@ def _get_robot_media() -> Any | None:
         return None
 
     except Exception as e:
-        logger.debug(f"Erreur récupération robot.media (simulation): {e}")
+        logger.debug("Erreur récupération robot.media (simulation): %s", e)
         return None
 
 
@@ -123,14 +123,14 @@ async def set_speaker_volume(request: VolumeRequest) -> dict[str, Any]:
                         speaker.set_volume(request.volume)
                     elif hasattr(speaker, "volume"):
                         speaker.volume = request.volume
-                    logger.debug(f"Volume speaker appliqué au robot: {request.volume}")
+                    logger.debug("Volume speaker appliqué au robot: %s", request.volume)
                 except Exception as e:
-                    logger.warning(f"Erreur application volume speaker au robot: {e}")
+                    logger.warning("Erreur application volume speaker au robot: %s", e)
 
-        logger.info(f"Volume haut-parleur défini à {request.volume}")
+        logger.info("Volume haut-parleur défini à %s", request.volume)
         return {"status": "success", "volume": _speaker_volume}
     except Exception as e:
-        logger.error(f"Erreur lors de la définition du volume: {e}")
+        logger.exception("Erreur lors de la définition du volume: %s", e)
         raise HTTPException(status_code=500, detail=str(e)) from e
 
 
@@ -169,10 +169,10 @@ async def set_microphone_volume(request: VolumeRequest) -> dict[str, Any]:
                         f"Erreur application volume microphone au robot: {e}"
                     )
 
-        logger.info(f"Volume microphone défini à {request.volume}")
+        logger.info("Volume microphone défini à %s", request.volume)
         return {"status": "success", "volume": _microphone_volume}
     except Exception as e:
-        logger.error(f"Erreur lors de la définition du volume: {e}")
+        logger.exception("Erreur lors de la définition du volume: %s", e)
         raise HTTPException(status_code=500, detail=str(e)) from e
 
 
@@ -217,12 +217,12 @@ async def toggle_camera(request: CameraToggleRequest) -> dict[str, Any]:
                         f"Caméra {'activée' if request.enabled else 'désactivée'} au robot"
                     )
                 except Exception as e:
-                    logger.warning(f"Erreur toggle caméra au robot: {e}")
+                    logger.warning("Erreur toggle caméra au robot: %s", e)
 
-        logger.info(f"Caméra {'activée' if _camera_enabled else 'désactivée'}")
+        logger.info("Caméra %s", 'activée' if _camera_enabled else 'désactivée')
         return {"status": "success", "enabled": _camera_enabled}
     except Exception as e:
-        logger.error(f"Erreur lors du toggle caméra: {e}")
+        logger.exception("Erreur lors du toggle caméra: %s", e)
         raise HTTPException(status_code=500, detail=str(e)) from e
 
 
@@ -259,7 +259,7 @@ async def get_media_status() -> MediaStatusResponse:
                     elif hasattr(speaker, "active"):
                         speaker_active = speaker.active
                 except Exception as e:
-                    logger.debug(f"Erreur lecture statut speaker: {e}")
+                    logger.debug("Erreur lecture statut speaker: %s", e)
 
             # Récupérer statut microphone
             microphone = getattr(media, "microphone", None)
@@ -274,7 +274,7 @@ async def get_media_status() -> MediaStatusResponse:
                     elif hasattr(microphone, "active"):
                         microphone_active = microphone.active
                 except Exception as e:
-                    logger.debug(f"Erreur lecture statut microphone: {e}")
+                    logger.debug("Erreur lecture statut microphone: %s", e)
 
             # Récupérer statut camera
             camera = getattr(media, "camera", None)
@@ -285,7 +285,7 @@ async def get_media_status() -> MediaStatusResponse:
                     elif hasattr(camera, "enabled"):
                         camera_enabled = camera.enabled
                 except Exception as e:
-                    logger.debug(f"Erreur lecture statut camera: {e}")
+                    logger.debug("Erreur lecture statut camera: %s", e)
 
         return MediaStatusResponse(
             speaker_volume=speaker_volume,
@@ -295,5 +295,5 @@ async def get_media_status() -> MediaStatusResponse:
             microphone_active=microphone_active,
         )
     except Exception as e:
-        logger.error(f"Erreur lors de la récupération du statut: {e}")
+        logger.exception("Erreur lors de la récupération du statut: %s", e)
         raise HTTPException(status_code=500, detail=str(e)) from e

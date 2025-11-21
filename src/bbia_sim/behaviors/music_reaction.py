@@ -94,7 +94,7 @@ class MusicReactionBehavior(BBIABehavior):
         duration = context.get("duration", 30)  # 30 secondes par défaut
 
         if genre not in self.music_genres:
-            logger.warning(f"Genre musical '{genre}' non trouvé")
+            logger.warning("Genre musical '%s' non trouvé", genre)
             return False
 
         self.is_active = True
@@ -105,7 +105,7 @@ class MusicReactionBehavior(BBIABehavior):
             self._react_to_music(genre, duration)
             return True
         except Exception as e:
-            logger.error(f"Erreur lors de la réaction musicale: {e}")
+            logger.exception("Erreur lors de la réaction musicale: %s", e)
             return False
         finally:
             self.is_active = False
@@ -258,7 +258,7 @@ class MusicReactionBehavior(BBIABehavior):
 
             dire_texte(text, robot_api=self.robot_api)
         except ImportError:
-            logger.info(f"[MUSIC_REACTION] {text}")
+            logger.info("[MUSIC_REACTION] %s", text)
 
     def stop(self) -> None:
         """Arrête le comportement music_reaction."""

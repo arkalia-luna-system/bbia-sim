@@ -29,26 +29,30 @@ from bbia_sim.backends.mujoco_backend import MuJoCoBackend
 class TestBBIABehaviorManagerMethods:
     """Tests pour toutes les méthodes de BBIABehaviorManager."""
 
-    def test_record_behavior(self) -> None:
-        """Test record_behavior."""
+    def test_execute_behavior(self) -> None:
+        """Test execute_behavior."""
         backend = MuJoCoBackend()
         backend.connect()
-        manager = BBIABehaviorManager(robot_api=backend)
-        # Test avec un comportement simple
-        result = manager.record_behavior("wake_up", duration=1.0)
-        # Peut être None si l'enregistrement n'est pas supporté
-        assert result is None or isinstance(result, (list, dict))
-        backend.disconnect()
+        try:
+            manager = BBIABehaviorManager(robot_api=backend)
+            # Test avec un comportement simple
+            result = manager.execute_behavior("wake_up")
+            # Peut être False si le comportement n'existe pas
+            assert isinstance(result, bool)
+        finally:
+            backend.disconnect()
 
-    def test_play_saved_behavior(self) -> None:
-        """Test play_saved_behavior."""
+    def test_get_behavior_stats(self) -> None:
+        """Test get_behavior_stats."""
         backend = MuJoCoBackend()
         backend.connect()
-        manager = BBIABehaviorManager(robot_api=backend)
-        # Test avec un comportement non sauvegardé (doit retourner False)
-        result = manager.play_saved_behavior("nonexistent", use_async=False)
-        assert result is False
-        backend.disconnect()
+        try:
+            manager = BBIABehaviorManager(robot_api=backend)
+            stats = manager.get_behavior_stats()
+            assert isinstance(stats, dict)
+            assert "total_behaviors" in stats
+        finally:
+            backend.disconnect()
 
 
 class TestBBIAEmotionsInit:

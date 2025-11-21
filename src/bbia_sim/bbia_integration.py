@@ -85,7 +85,7 @@ class BBIAIntegration:
         }
 
         logger.info("🎭 BBIA Integration initialisée")
-        logger.info(f"   • Émotions disponibles : {len(self.emotions.emotions)}")
+        logger.info("   • Émotions disponibles : %s", len(self.emotions.emotions))
         logger.info("   • Articulations contrôlables : 16")
         logger.info(
             f"   • Service simulation : {'✅' if self.simulation_service else '❌'}",
@@ -195,13 +195,13 @@ class BBIAIntegration:
             await self.apply_emotion_to_robot("neutral", 0.5)
 
             logger.info("✅ Intégration BBIA démarrée avec succès")
-            logger.info(f"   • Émotion initiale : {self.current_emotion}")
-            logger.info(f"   • Intensité : {self.emotion_intensity}")
+            logger.info("   • Émotion initiale : %s", self.current_emotion)
+            logger.info("   • Intensité : %s", self.emotion_intensity)
 
             return True
 
         except Exception as e:
-            logger.error(f"❌ Erreur démarrage intégration : {e}")
+            logger.exception("❌ Erreur démarrage intégration : %s", e)
             return False
 
     async def stop_integration(self) -> None:
@@ -235,11 +235,11 @@ class BBIAIntegration:
             return False
 
         if emotion not in self.emotion_mappings:
-            logger.error(f"❌ Émotion inconnue : {emotion}")
+            logger.error("❌ Émotion inconnue : %s", emotion)
             return False
 
         try:
-            logger.info(f"🎭 Application émotion '{emotion}' (intensité: {intensity})")
+            logger.info("🎭 Application émotion '%s' (intensité: %s)", emotion, intensity)
 
             # Mettre à jour l'état BBIA
             self.emotions.set_emotion(emotion, intensity)
@@ -365,7 +365,7 @@ class BBIAIntegration:
                                 f"Body yaw ajusté via goto_target (optimisé): {adjusted_yaw:.3f}",
                             )
                         except (ImportError, AttributeError, Exception) as e:
-                            logger.debug(f"goto_target non disponible (fallback): {e}")
+                            logger.debug("goto_target non disponible (fallback): %s", e)
                             # Fallback: application séparée
                             if hasattr(robot_api, "set_joint_pos"):
                                 robot_api.set_joint_pos("yaw_body", adjusted_yaw)
@@ -384,7 +384,7 @@ class BBIAIntegration:
                         )
 
                 if success:
-                    logger.info(f"✅ Émotion '{emotion}' appliquée via SDK officiel")
+                    logger.info("✅ Émotion '%s' appliquée via SDK officiel", emotion)
                     return True
 
             # Fallback: Application manuelle (mode simulation sans SDK)
@@ -467,11 +467,11 @@ class BBIAIntegration:
                 f"yaw={head_yaw:.3f}, body={emotion_mapping.get('yaw_body', 0.0) * intensity:.3f}",
             )
 
-            logger.info(f"✅ Émotion '{emotion}' appliquée au robot")
+            logger.info("✅ Émotion '%s' appliquée au robot", emotion)
             return True
 
         except Exception as e:
-            logger.error(f"❌ Erreur application émotion : {e}")
+            logger.exception("❌ Erreur application émotion : %s", e)
             return False
 
     async def react_to_vision_detection(self, detection_data: dict[str, Any]) -> bool:
@@ -544,7 +544,7 @@ class BBIAIntegration:
                             )  # Ajuster selon la position
                             robot_api.set_joint_pos("yaw_body", head_turn)
                     except Exception as e:
-                        logger.warning(f"Erreur suivi visage SDK (fallback): {e}")
+                        logger.warning("Erreur suivi visage SDK (fallback): %s", e)
                         # Fallback final: méthode originale
                         face_position = face_data.get("position", (0, 0))
                         head_turn = float(face_position[0]) * 0.3
@@ -570,7 +570,7 @@ class BBIAIntegration:
             return False
 
         except Exception as e:
-            logger.error(f"❌ Erreur réaction visuelle : {e}")
+            logger.exception("❌ Erreur réaction visuelle : %s", e)
             return False
 
     async def sync_voice_with_movements(
@@ -592,7 +592,7 @@ class BBIAIntegration:
             return False
 
         try:
-            logger.info(f"🗣️ Synchronisation voix + mouvements : '{text[:30]}...'")
+            logger.info("🗣️ Synchronisation voix + mouvements : '%s...'", text[:30])
 
             # Appliquer l'émotion pendant la parole
             await self.apply_emotion_to_robot(emotion, 0.6)
@@ -621,7 +621,7 @@ class BBIAIntegration:
                                 method="minjerk",
                             )
                         except Exception as e:
-                            logger.debug(f"Erreur goto_target voix (fallback): {e}")
+                            logger.debug("Erreur goto_target voix (fallback): %s", e)
                             # Fallback vers set_joint_pos
                             if hasattr(robot_api, "set_joint_pos"):
                                 robot_api.set_joint_pos("yaw_body", head_movement)
@@ -649,7 +649,7 @@ class BBIAIntegration:
             return True
 
         except Exception as e:
-            logger.error(f"❌ Erreur synchronisation voix : {e}")
+            logger.exception("❌ Erreur synchronisation voix : %s", e)
             return False
 
     async def execute_behavior_sequence(self, behavior_name: str) -> bool:
@@ -666,7 +666,7 @@ class BBIAIntegration:
             return False
 
         try:
-            logger.info(f"🎬 Exécution séquence comportement : {behavior_name}")
+            logger.info("🎬 Exécution séquence comportement : %s", behavior_name)
 
             # Exécuter le comportement BBIA
             self.behavior.add_to_queue(behavior_name)
@@ -687,11 +687,11 @@ class BBIAIntegration:
                 await asyncio.sleep(1.5)
                 await self.apply_emotion_to_robot("neutral", 0.5)
 
-            logger.info(f"✅ Séquence '{behavior_name}' exécutée")
+            logger.info("✅ Séquence '%s' exécutée", behavior_name)
             return True
 
         except Exception as e:
-            logger.error(f"❌ Erreur exécution comportement : {e}")
+            logger.exception("❌ Erreur exécution comportement : %s", e)
             return False
 
     def get_integration_status(self) -> dict[str, Any]:

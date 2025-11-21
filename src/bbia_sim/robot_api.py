@@ -50,7 +50,7 @@ class RobotAPI(ABC):
         """Valide et clamp la position d'un joint."""
         # Vérifier si le joint est interdit
         if joint_name in self.forbidden_joints:
-            logger.error(f"Joint interdit: {joint_name}")
+            logger.error("Joint interdit: %s", joint_name)
             return False, position
 
         # Clamp l'amplitude pour la sécurité
@@ -134,17 +134,17 @@ class RobotAPI(ABC):
             "calm",  # Ajouté pour compatibilité démos
         }
         if emotion not in valid_emotions:
-            logger.error(f"Émotion invalide: {emotion}")
+            logger.error("Émotion invalide: %s", emotion)
             return False
 
         # Validation de l'intensité
         if not 0.0 <= intensity <= 1.0:
-            logger.warning(f"Intensité hors limites, clamp: {intensity}")
+            logger.warning("Intensité hors limites, clamp: %s", intensity)
             intensity = max(0.0, min(1.0, intensity))
 
         self.current_emotion = emotion
         self.emotion_intensity = intensity
-        logger.info(f"Émotion définie: {emotion} (intensité: {intensity})")
+        logger.info("Émotion définie: %s (intensité: %s)", emotion, intensity)
         return True
 
     def look_at(self, target_x: float, target_y: float, target_z: float = 0.0) -> bool:
@@ -180,7 +180,7 @@ class RobotAPI(ABC):
                 )
                 return True
             except Exception as e:
-                logger.warning(f"Erreur look_at_world, fallback générique: {e}")
+                logger.warning("Erreur look_at_world, fallback générique: %s", e)
 
         # Fallback: Mapping cible → angle de rotation (yaw_body) simplifié
         # CORRECTION EXPERTE: Validation coordonnées avant utilisation
@@ -233,10 +233,10 @@ class RobotAPI(ABC):
             "demo",  # Comportement de démonstration
         }
         if behavior_name not in valid_behaviors:
-            logger.error(f"Comportement invalide: {behavior_name}")
+            logger.error("Comportement invalide: %s", behavior_name)
             return False
 
-        logger.info(f"Exécution comportement: {behavior_name} (durée: {duration}s)")
+        logger.info("Exécution comportement: %s (durée: %ss)", behavior_name, duration)
 
         # Implémentation basique - à étendre selon le backend
         if behavior_name == "wake_up":
@@ -253,7 +253,7 @@ class RobotAPI(ABC):
             return self._execute_interaction(duration)
         if behavior_name == "demo":
             return self._execute_demo(duration)
-        logger.warning(f"Comportement {behavior_name} non implémenté")
+        logger.warning("Comportement %s non implémenté", behavior_name)
         return False
 
     def _execute_wake_up(self, duration: float) -> bool:
@@ -374,7 +374,7 @@ class RobotAPI(ABC):
     def clamp_joint_position(self, joint_name: str, position: float) -> float:
         """Clamp une position de joint dans les limites sûres."""
         if joint_name in self.forbidden_joints:
-            logger.warning(f"Joint interdit: {joint_name}")
+            logger.warning("Joint interdit: %s", joint_name)
             return 0.0
 
         # Limites générales

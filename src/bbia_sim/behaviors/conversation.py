@@ -73,7 +73,7 @@ class ConversationBehavior(BBIABehavior):
                     ),
                 )
         except (ImportError, Exception) as e:
-            logger.info(f"ℹ️  BBIAHuggingFace non disponible - Mode enrichi activé: {e}")
+            logger.info("ℹ️  BBIAHuggingFace non disponible - Mode enrichi activé: %s", e)
             self.hf_chat = None
 
         # Système de réponses enrichies (fallback)
@@ -169,13 +169,13 @@ class ConversationBehavior(BBIABehavior):
             ]
             greeting = secrets.choice(greeting_messages)  # nosec B311
             dire_texte(greeting, robot_api=self.robot_api)
-            logger.info(f"Synthèse vocale : {greeting}")
+            logger.info("Synthèse vocale : %s", greeting)
 
         # Reconnaissance vocale
         texte = None
         if reconnaitre_parole is not None:
             texte = reconnaitre_parole(duree=5, robot_api=self.robot_api)
-            logger.info(f"Texte reconnu : {texte}")
+            logger.info("Texte reconnu : %s", texte)
 
         if texte:
             texte_lower = texte.lower()
@@ -186,7 +186,7 @@ class ConversationBehavior(BBIABehavior):
                     response = self.hf_chat.chat(texte, enable_tools=True)
                     if dire_texte is not None:
                         dire_texte(response, robot_api=self.robot_api)
-                    logger.info(f"Synthèse vocale (HF) : {response}")
+                    logger.info("Synthèse vocale (HF) : %s", response)
 
                     # Appliquer émotion correspondante
                     sentiment_result = self.hf_chat.analyze_sentiment(texte)
@@ -201,19 +201,19 @@ class ConversationBehavior(BBIABehavior):
 
                     return True
                 except Exception as e:
-                    logger.warning(f"Erreur BBIAHuggingFace, fallback enrichi : {e}")
+                    logger.warning("Erreur BBIAHuggingFace, fallback enrichi : %s", e)
 
             # Système enrichi (fallback)
             response = self._generate_enriched_response(texte_lower)
             if dire_texte is not None:
                 dire_texte(response, robot_api=self.robot_api)
-            logger.info(f"Synthèse vocale (enrichi) : {response}")
+            logger.info("Synthèse vocale (enrichi) : %s", response)
 
             # Appliquer émotion basique
             emotion = self._detect_emotion_from_text(texte_lower)
             if emotion and hasattr(self.robot_api, "set_emotion"):
                 self.robot_api.set_emotion(emotion, 0.6)
-                logger.info(f"Émotion appliquée : {emotion}")
+                logger.info("Émotion appliquée : %s", emotion)
 
             # Mouvement expressif
             self._expressive_movement("nod")
@@ -278,10 +278,10 @@ class ConversationBehavior(BBIABehavior):
 
             emotion, intensity = emotion_mapping.get(sentiment_label, ("neutral", 0.5))
             self.robot_api.set_emotion(emotion, intensity)
-            logger.info(f"Émotion appliquée via sentiment : {emotion}")
+            logger.info("Émotion appliquée via sentiment : %s", emotion)
 
         except Exception as e:
-            logger.warning(f"Erreur application sentiment : {e}")
+            logger.warning("Erreur application sentiment : %s", e)
 
     def _expressive_movement(self, movement_type: str) -> None:
         """Applique un mouvement expressif.
@@ -317,4 +317,4 @@ class ConversationBehavior(BBIABehavior):
                 )
 
         except Exception as e:
-            logger.warning(f"Erreur mouvement expressif: {e}")
+            logger.warning("Erreur mouvement expressif: %s", e)

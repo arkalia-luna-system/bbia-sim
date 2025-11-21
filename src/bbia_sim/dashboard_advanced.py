@@ -139,7 +139,7 @@ class BBIAAdvancedWebSocketManager:
             with self._robot_init_lock:
                 try:
                     if not self.robot:
-                        logger.info(f"🔧 Initialisation robot {self.robot_backend}...")
+                        logger.info("🔧 Initialisation robot %s...", self.robot_backend)
                         self.robot = RobotFactory.create_backend(self.robot_backend)
                         if self.robot:
                             connected = self.robot.connect()
@@ -199,7 +199,7 @@ class BBIAAdvancedWebSocketManager:
                 if self.robot:
                     connected = self.robot.connect()
                     if connected:
-                        logger.info(f"✅ Robot {self.robot_backend} connecté (forcé)")
+                        logger.info("✅ Robot %s connecté (forcé)", self.robot_backend)
                         await self.send_log_message(
                             "info", f"✅ Robot {self.robot_backend} connecté"
                         )
@@ -283,7 +283,7 @@ class BBIAAdvancedWebSocketManager:
                         f"🗑️ Connexion WebSocket inactive fermée ({inactivity:.0f}s)"
                     )
             except Exception as e:
-                logger.debug(f"Erreur nettoyage connexion inactive: {e}")
+                logger.debug("Erreur nettoyage connexion inactive: %s", e)
 
     async def _add_to_batch(self, message_data: dict[str, Any]) -> None:
         """OPTIMISATION STREAMING: Ajoute un message au batch pour envoi groupé."""
@@ -468,7 +468,7 @@ class BBIAAdvancedWebSocketManager:
                             # Faire un step de simulation pour que le robot bouge
                             self.robot.step()
                         except Exception as e:
-                            logger.debug(f"Erreur step robot: {e}")
+                            logger.debug("Erreur step robot: %s", e)
 
                     # Mettre à jour les métriques
                     self._update_metrics()
@@ -487,7 +487,7 @@ class BBIAAdvancedWebSocketManager:
                     break
                 except Exception as e:
                     if not self._stop_metrics:
-                        logger.error(f"Erreur collecte métriques: {e}")
+                        logger.exception("Erreur collecte métriques: %s", e)
                     await asyncio.sleep(1.0)
 
         # Démarrer la tâche en arrière-plan
@@ -2959,7 +2959,7 @@ if FASTAPI_AVAILABLE:
 
             return {"success": False, "error": "Robot not connected"}
         except Exception as e:
-            logger.error(f"Erreur set_emotion: {e}")
+            logger.exception("Erreur set_emotion: %s", e)
             return {"success": False, "error": str(e)}
 
     @app.post("/api/joint")
@@ -2993,7 +2993,7 @@ if FASTAPI_AVAILABLE:
         except HTTPException:
             raise
         except Exception as e:
-            logger.error(f"Erreur set_joint_position: {e}")
+            logger.exception("Erreur set_joint_position: %s", e)
             return {"success": False, "error": str(e)}
 
     @app.get("/healthz")
@@ -3015,7 +3015,7 @@ if FASTAPI_AVAILABLE:
             results = check_all()
             return {"success": True, "results": results}
         except Exception as e:
-            logger.error(f"Erreur troubleshooting check: {e}")
+            logger.exception("Erreur troubleshooting check: %s", e)
             return {"success": False, "error": str(e)}
 
     @app.post("/api/troubleshooting/test/camera")
@@ -3025,7 +3025,7 @@ if FASTAPI_AVAILABLE:
             result = test_camera()
             return {"success": True, "result": result}
         except Exception as e:
-            logger.error(f"Erreur test caméra: {e}")
+            logger.exception("Erreur test caméra: %s", e)
             return {"success": False, "error": str(e)}
 
     @app.post("/api/troubleshooting/test/audio")
@@ -3035,7 +3035,7 @@ if FASTAPI_AVAILABLE:
             result = test_audio()
             return {"success": True, "result": result}
         except Exception as e:
-            logger.error(f"Erreur test audio: {e}")
+            logger.exception("Erreur test audio: %s", e)
             return {"success": False, "error": str(e)}
 
     @app.post("/api/troubleshooting/test/network")
@@ -3045,7 +3045,7 @@ if FASTAPI_AVAILABLE:
             result = test_network_ping(host)
             return {"success": True, "result": result}
         except Exception as e:
-            logger.error(f"Erreur test réseau: {e}")
+            logger.exception("Erreur test réseau: %s", e)
             return {"success": False, "error": str(e)}
 
     @app.get("/api/troubleshooting/docs")
@@ -3060,7 +3060,7 @@ if FASTAPI_AVAILABLE:
             }
             return {"success": True, "links": links_with_urls}
         except Exception as e:
-            logger.error(f"Erreur récupération docs: {e}")
+            logger.exception("Erreur récupération docs: %s", e)
             return {"success": False, "error": str(e)}
 
     @app.get("/api/docs/view")
@@ -3157,7 +3157,7 @@ if FASTAPI_AVAILABLE:
         except HTTPException:
             raise
         except Exception as e:
-            logger.error(f"Erreur lecture documentation {path}: {e}")
+            logger.exception("Erreur lecture documentation %s: %s", path, e)
             raise HTTPException(
                 status_code=500, detail=f"Erreur lecture fichier: {e}"
             ) from e
@@ -3208,7 +3208,7 @@ if FASTAPI_AVAILABLE:
                                 # qui gère SDK camera et OpenCV
                                 frame = vision._capture_image_from_camera()
                             except Exception as e:
-                                logger.debug(f"Erreur capture frame: {e}")
+                                logger.debug("Erreur capture frame: %s", e)
 
                         if frame is None:
                             # Frame de test avec texte si pas de caméra
@@ -3309,7 +3309,7 @@ if FASTAPI_AVAILABLE:
                 message = json.loads(data)
 
                 # Traiter commande ou chat
-                logger.info(f"📨 [WS] Message reçu, type: {message.get('type')}")
+                logger.info("📨 [WS] Message reçu, type: %s", message.get('type'))
                 if message.get("type") == "command":
                     logger.info("🎯 [WS] Traitement commande")
                     await handle_advanced_robot_command(message)
@@ -3406,7 +3406,7 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                         emotion,
                         intensity,
                     )
-                    logger.info(f"🎭 [CMD] set_emotion retourné: {success}")
+                    logger.info("🎭 [CMD] set_emotion retourné: %s", success)
 
                     # Faire plusieurs steps pour que le changement soit visible
                     if hasattr(advanced_websocket_manager.robot, "step"):
@@ -3417,7 +3417,7 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                                 pass
 
                     if success:
-                        logger.info(f"✅ [CMD] Émotion {emotion} appliquée avec succès")
+                        logger.info("✅ [CMD] Émotion %s appliquée avec succès", emotion)
                         await advanced_websocket_manager.send_log_message(
                             "info",
                             f"✅ Émotion définie: {emotion} (intensité: {intensity})",
@@ -3491,7 +3491,7 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                     else:
                         success = False
                 except Exception as e:
-                    logger.error(f"Erreur exécution action {action}: {e}")
+                    logger.exception("Erreur exécution action %s: %s", action, e)
                     success = False
 
             await execute_action()
@@ -3555,7 +3555,7 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                         except (ConnectionError, RuntimeError, WebSocketDisconnect):
                             pass
             except (ValueError, RuntimeError, KeyError) as e:
-                logger.error(f"Erreur exécution comportement {behavior}: {e}")
+                logger.exception("Erreur exécution comportement %s: %s", behavior, e)
                 success = False
 
             if success:
@@ -3599,9 +3599,9 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
             joint = joint_data.get("joint")
             position = joint_data.get("position", 0.0)
             try:
-                logger.info(f"🔧 Exécution set_joint_pos: {joint} = {position}")
+                logger.info("🔧 Exécution set_joint_pos: %s = %s", joint, position)
                 success = robot.set_joint_pos(joint, position)
-                logger.info(f"🔧 set_joint_pos retourné: {success}")
+                logger.info("🔧 set_joint_pos retourné: %s", success)
 
                 # Faire plusieurs steps pour que le joint bouge vraiment
                 if hasattr(robot, "step"):
@@ -3612,13 +3612,13 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                             pass
 
                 if success:
-                    logger.info(f"✅ Joint {joint} = {position:.2f} appliqué")
+                    logger.info("✅ Joint %s = %.2f appliqué", joint, position)
                     await advanced_websocket_manager.send_log_message(
                         "info",
                         f"✅ Joint {joint} = {position:.2f}",
                     )
                 else:
-                    logger.warning(f"⚠️ set_joint_pos a retourné False pour {joint}")
+                    logger.warning("⚠️ set_joint_pos a retourné False pour %s", joint)
                     await advanced_websocket_manager.send_log_message(
                         "error",
                         f"❌ Échec joint {joint}",
@@ -3676,7 +3676,7 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                             "Scan: aucun résultat disponible",
                         )
                 except Exception as e:
-                    logger.error(f"Erreur scan environnement: {e}")
+                    logger.exception("Erreur scan environnement: %s", e)
                     await advanced_websocket_manager.send_log_message(
                         "error",
                         f"Erreur scan: {e}",
@@ -3694,7 +3694,7 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
         await advanced_websocket_manager.send_complete_status()
 
     except Exception as e:
-        logger.error(f"❌ Erreur commande avancée: {e}")
+        logger.exception("❌ Erreur commande avancée: %s", e)
         await advanced_websocket_manager.send_log_message("error", f"Erreur: {e!s}")
 
 
@@ -3707,9 +3707,9 @@ async def handle_chat_message(message_data: dict[str, Any], websocket: WebSocket
 
     """
     try:
-        logger.info(f"📨 [CHAT] Message reçu: {message_data}")
+        logger.info("📨 [CHAT] Message reçu: %s", message_data)
         user_message = message_data.get("message", "")
-        logger.info(f"📨 [CHAT] Texte extrait: '{user_message}'")
+        logger.info("📨 [CHAT] Texte extrait: '%s'", user_message)
 
         if not user_message:
             logger.warning("Message chat vide reçu")
@@ -3738,10 +3738,10 @@ async def handle_chat_message(message_data: dict[str, Any], websocket: WebSocket
                 advanced_websocket_manager.bbia_hf = BBIAHuggingFace()
                 logger.info("🤗 Module BBIAHuggingFace initialisé pour chat")
             except ImportError as e:
-                logger.warning(f"⚠️ Hugging Face non disponible: {e}")
+                logger.warning("⚠️ Hugging Face non disponible: %s", e)
                 advanced_websocket_manager.bbia_hf = None
             except Exception as e:
-                logger.error(f"❌ Erreur initialisation BBIAHuggingFace: {e}")
+                logger.exception("❌ Erreur initialisation BBIAHuggingFace: %s", e)
                 advanced_websocket_manager.bbia_hf = None
 
         # NE PAS renvoyer le message utilisateur (déjà affiché côté client)
@@ -3753,11 +3753,11 @@ async def handle_chat_message(message_data: dict[str, Any], websocket: WebSocket
             and advanced_websocket_manager.bbia_hf is not None
         ):
             try:
-                logger.info(f"🤖 Génération réponse BBIA pour: {user_message[:50]}...")
+                logger.info("🤖 Génération réponse BBIA pour: %s...", user_message[:50])
                 bbia_response = advanced_websocket_manager.bbia_hf.chat(user_message)
-                logger.info(f"✅ Réponse BBIA générée: {bbia_response[:50]}...")
+                logger.info("✅ Réponse BBIA générée: %s...", bbia_response[:50])
             except Exception as e:
-                logger.error(f"❌ Erreur génération réponse BBIA: {e}")
+                logger.exception("❌ Erreur génération réponse BBIA: %s", e)
                 bbia_response = f"Désolé, une erreur s'est produite lors de la génération de la réponse: {str(e)}"
 
             # Envoyer réponse BBIA
@@ -3771,7 +3771,7 @@ async def handle_chat_message(message_data: dict[str, Any], websocket: WebSocket
                 f"📤 [CHAT] Envoi réponse BBIA ({len(bbia_response)} caractères)"
             )
             response_json = json.dumps(chat_response_bbia)
-            logger.debug(f"📤 [CHAT] JSON réponse: {response_json[:100]}...")
+            logger.debug("📤 [CHAT] JSON réponse: %s...", response_json[:100])
             await websocket.send_text(response_json)
             logger.info("✅ [CHAT] Réponse envoyée avec succès")
 
@@ -3812,7 +3812,7 @@ async def handle_chat_message(message_data: dict[str, Any], websocket: WebSocket
             }
             await websocket.send_text(json.dumps(error_response))
         except Exception as e2:
-            logger.error(f"❌ Erreur lors de l'envoi du message d'erreur: {e2}")
+            logger.exception("❌ Erreur lors de l'envoi du message d'erreur: %s", e2)
 
 
 def run_advanced_dashboard(
@@ -3834,9 +3834,9 @@ def run_advanced_dashboard(
 
     advanced_websocket_manager.robot_backend = backend
 
-    logger.info(f"🚀 Lancement dashboard BBIA avancé sur {host}:{port}")
-    logger.info(f"🔗 URL: http://{host}:{port}")
-    logger.info(f"🤖 Backend robot: {backend}")
+    logger.info("🚀 Lancement dashboard BBIA avancé sur %s:%s", host, port)
+    logger.info("🔗 URL: http://%s:%s", host, port)
+    logger.info("🤖 Backend robot: %s", backend)
     logger.info("📊 Métriques temps réel activées")
     logger.info("🎮 Contrôles avancés disponibles")
 

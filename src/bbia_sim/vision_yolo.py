@@ -126,7 +126,7 @@ class YOLODetector:
 
         with _yolo_cache_lock:
             if cache_key in _yolo_model_cache:
-                logger.debug(f"♻️ Réutilisation modèle YOLO depuis cache ({cache_key})")
+                logger.debug("♻️ Réutilisation modèle YOLO depuis cache (%s)", cache_key)
                 self.model = _yolo_model_cache[cache_key]
                 # OPTIMISATION RAM: Mettre à jour timestamp usage
                 _yolo_model_last_used[cache_key] = time_module.time()
@@ -147,13 +147,13 @@ class YOLODetector:
                     )
 
         try:
-            logger.info(f"📥 Chargement modèle YOLOv8{self.model_size}...")
+            logger.info("📥 Chargement modèle YOLOv8%s...", self.model_size)
             start_time = time_module.time()
 
             model = YOLO(f"yolov8{self.model_size}.pt")
 
             load_time = time_module.time() - start_time
-            logger.info(f"✅ Modèle YOLO chargé en {load_time:.1f}s")
+            logger.info("✅ Modèle YOLO chargé en %ss", load_time:.1f)
 
             # OPTIMISATION RAM: Mettre en cache avec timestamp
             with _yolo_cache_lock:
@@ -165,7 +165,7 @@ class YOLODetector:
             return True
 
         except Exception as e:
-            logger.error(f"❌ Erreur chargement YOLO: {e}")
+            logger.exception("❌ Erreur chargement YOLO: %s", e)
             return False
 
     def detect_objects(self, image: npt.NDArray[np.uint8]) -> list[DetectionResult]:
@@ -261,11 +261,11 @@ class YOLODetector:
                         }
                         detections.append(detection)
 
-            logger.debug(f"🔍 {len(detections)} objets détectés")
+            logger.debug("🔍 %s objets détectés", len(detections))
             return detections
 
         except Exception as e:
-            logger.error(f"❌ Erreur détection YOLO: {e}")
+            logger.exception("❌ Erreur détection YOLO: %s", e)
             return []
 
     def detect_objects_batch(
@@ -389,7 +389,7 @@ class YOLODetector:
             return all_detections
 
         except Exception as e:
-            logger.error(f"❌ Erreur détection YOLO batch: {e}")
+            logger.exception("❌ Erreur détection YOLO batch: %s", e)
             return [[] for _ in images]
 
     def get_best_detection(
@@ -459,7 +459,7 @@ class YOLODetector:
                 "bbox": detection["bbox"],
             }
 
-            logger.info(f"🎯 Détection mappée: {class_name} → {action} ({direction})")
+            logger.info("🎯 Détection mappée: %s → %s (%s)", class_name, action, direction)
             return action_data
 
         return None
@@ -552,11 +552,11 @@ class FaceDetector:
                     }
                     detections.append(face_data)
 
-            logger.debug(f"👤 {len(detections)} visages détectés")
+            logger.debug("👤 %s visages détectés", len(detections))
             return detections
 
         except Exception as e:
-            logger.error(f"❌ Erreur détection visages: {e}")
+            logger.exception("❌ Erreur détection visages: %s", e)
             return []
 
     def get_best_face(self, detections: list[dict[str, Any]]) -> dict[str, Any] | None:

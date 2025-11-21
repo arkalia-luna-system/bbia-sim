@@ -36,7 +36,7 @@ class BBIAMemory:
         self.preferences_file = self.memory_dir / "preferences.json"
         self.learnings_file = self.memory_dir / "learnings.json"
 
-        logger.info(f"💾 BBIAMemory initialisé (dir: {self.memory_dir})")
+        logger.info("💾 BBIAMemory initialisé (dir: %s)", self.memory_dir)
 
     def save_conversation(self, conversation_history: list[dict[str, Any]]) -> bool:
         """Sauvegarde l'historique conversation dans JSON.
@@ -74,7 +74,7 @@ class BBIAMemory:
             )
             return True
         except Exception as e:
-            logger.error(f"❌ Erreur sauvegarde conversation: {e}")
+            logger.exception("❌ Erreur sauvegarde conversation: %s", e)
             return False
 
     def load_conversation(self) -> list[dict[str, Any]]:
@@ -92,14 +92,14 @@ class BBIAMemory:
                 data = json.load(f)
 
             history = data.get("history", [])
-            logger.debug(f"💾 Conversation chargée ({len(history)} messages)")
+            logger.debug("💾 Conversation chargée (%s messages)", len(history))
             return (
                 cast("list[dict[str, Any]]", history)
                 if isinstance(history, list)
                 else []
             )
         except Exception as e:
-            logger.warning(f"⚠️ Erreur chargement conversation: {e}")
+            logger.warning("⚠️ Erreur chargement conversation: %s", e)
             return []
 
     def remember_preference(self, key: str, value: Any) -> bool:
@@ -127,10 +127,10 @@ class BBIAMemory:
             with open(self.preferences_file, "w", encoding="utf-8") as f:
                 json.dump(preferences, f, indent=2, ensure_ascii=False)
 
-            logger.debug(f"💾 Préférence sauvegardée: {key} = {value}")
+            logger.debug("💾 Préférence sauvegardée: %s = %s", key, value)
             return True
         except Exception as e:
-            logger.error(f"❌ Erreur sauvegarde préférence: {e}")
+            logger.exception("❌ Erreur sauvegarde préférence: %s", e)
             return False
 
     def load_preferences(self) -> dict[str, Any]:
@@ -153,7 +153,7 @@ class BBIAMemory:
                 else {}
             )
         except Exception as e:
-            logger.warning(f"⚠️ Erreur chargement préférences: {e}")
+            logger.warning("⚠️ Erreur chargement préférences: %s", e)
             return {}
 
     def get_preference(self, key: str, default: Any = None) -> Any:
@@ -200,10 +200,10 @@ class BBIAMemory:
             with open(self.learnings_file, "w", encoding="utf-8") as f:
                 json.dump(learnings, f, indent=2, ensure_ascii=False)
 
-            logger.debug(f"💾 Apprentissage sauvegardé: {pattern} → {response}")
+            logger.debug("💾 Apprentissage sauvegardé: %s → %s", pattern, response)
             return True
         except Exception as e:
-            logger.error(f"❌ Erreur sauvegarde apprentissage: {e}")
+            logger.exception("❌ Erreur sauvegarde apprentissage: %s", e)
             return False
 
     def load_learnings(self) -> dict[str, Any]:
@@ -224,7 +224,7 @@ class BBIAMemory:
                 cast("dict[str, Any]", learnings) if isinstance(learnings, dict) else {}
             )
         except Exception as e:
-            logger.warning(f"⚠️ Erreur chargement apprentissages: {e}")
+            logger.warning("⚠️ Erreur chargement apprentissages: %s", e)
             return {}
 
     def get_learning(self, pattern: str) -> str | None:
@@ -262,7 +262,7 @@ class BBIAMemory:
             logger.info("💾 Mémoire effacée")
             return True
         except Exception as e:
-            logger.error(f"❌ Erreur effacement mémoire: {e}")
+            logger.exception("❌ Erreur effacement mémoire: %s", e)
             return False
 
 
@@ -308,5 +308,5 @@ if __name__ == "__main__":
     memory = BBIAMemory()
     memory.remember_preference("voix_preferee", "aurelie")
     memory.remember_learning("user_says_salut", "recognize_user")
-    logger.info(f"Préférence voix: {memory.get_preference('voix_preferee')}")
-    logger.info(f"Apprentissage: {memory.get_learning('user_says_salut')}")
+    logger.info("Préférence voix: %s", memory.get_preference('voix_preferee'))
+    logger.info("Apprentissage: %s", memory.get_learning('user_says_salut'))

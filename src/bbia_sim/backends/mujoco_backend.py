@@ -42,7 +42,7 @@ class MuJoCoBackend(RobotAPI):
         """Connecte au simulateur MuJoCo."""
         try:
             if not self.model_path.exists():
-                logger.error(f"Modèle MuJoCo introuvable: {self.model_path}")
+                logger.error("Modèle MuJoCo introuvable: %s", self.model_path)
                 return False
 
             self.model = mujoco.MjModel.from_xml_path(str(self.model_path))
@@ -59,11 +59,11 @@ class MuJoCoBackend(RobotAPI):
 
             self.is_connected = True
             self.start_time = time.time()
-            logger.info(f"MuJoCo connecté: {self.model.njnt} joints détectés")
+            logger.info("MuJoCo connecté: %s joints détectés", self.model.njnt)
             return True
 
         except Exception as e:
-            logger.error(f"Erreur connexion MuJoCo: {e}")
+            logger.exception("Erreur connexion MuJoCo: %s", e)
             return False
 
     def disconnect(self) -> bool:
@@ -80,7 +80,7 @@ class MuJoCoBackend(RobotAPI):
             return True
 
         except Exception as e:
-            logger.error(f"Erreur déconnexion MuJoCo: {e}")
+            logger.exception("Erreur déconnexion MuJoCo: %s", e)
             return False
 
     def get_available_joints(self) -> list[str]:
@@ -97,7 +97,7 @@ class MuJoCoBackend(RobotAPI):
             return False
 
         if joint_name not in self.joint_name_to_id:
-            logger.error(f"Joint introuvable: {joint_name}")
+            logger.error("Joint introuvable: %s", joint_name)
             return False
 
         # Validation et clamp via RobotAPI
@@ -110,7 +110,7 @@ class MuJoCoBackend(RobotAPI):
         if self.data is not None:
             self.data.qpos[joint_id] = clamped_position
 
-        logger.debug(f"Joint {joint_name} → {clamped_position:.3f} rad")
+        logger.debug("Joint %s → %s rad", joint_name, clamped_position:.3f)
         return True
 
     def get_joint_pos(self, joint_name: str) -> float | None:
@@ -136,7 +136,7 @@ class MuJoCoBackend(RobotAPI):
             self.step_count += 1
             return True
         except Exception as e:
-            logger.error(f"Erreur step MuJoCo: {e}")
+            logger.exception("Erreur step MuJoCo: %s", e)
             return False
 
     def play_move(
@@ -193,7 +193,7 @@ class MuJoCoBackend(RobotAPI):
             logger.info("Mouvement simulé joué dans MuJoCo")
 
         except Exception as e:
-            logger.error(f"Erreur play_move MuJoCo: {e}")
+            logger.exception("Erreur play_move MuJoCo: %s", e)
 
     def async_play_move(
         self,
@@ -219,7 +219,7 @@ class MuJoCoBackend(RobotAPI):
             logger.critical("🔴 ARRÊT D'URGENCE SIMULATION ACTIVÉ")
             return True
         except Exception as e:
-            logger.error(f"Erreur emergency_stop: {e}")
+            logger.exception("Erreur emergency_stop: %s", e)
             return False
 
     def launch_viewer(self, passive: bool = True) -> bool:
@@ -248,19 +248,19 @@ class MuJoCoBackend(RobotAPI):
                             i,
                         )
                         if name == "skybox_bbia":
-                            logger.debug(f"Texture skybox_bbia trouvée à l'index {i}")
+                            logger.debug("Texture skybox_bbia trouvée à l'index %s", i)
                             break
 
                 logger.info(
                     "Viewer MuJoCo lancé (fond BBIA gris lunaire → bleu céleste)",
                 )
             except Exception as e:
-                logger.warning(f"Impossible de vérifier le skybox BBIA: {e}")
+                logger.warning("Impossible de vérifier le skybox BBIA: %s", e)
                 logger.info("Viewer MuJoCo lancé (fond BBIA configuré)")
 
             return True
         except Exception as e:
-            logger.error(f"Erreur lancement viewer: {e}")
+            logger.exception("Erreur lancement viewer: %s", e)
             return False
 
     def configure_viewer_camera(
@@ -300,7 +300,7 @@ class MuJoCoBackend(RobotAPI):
             )
             return True
         except Exception as e:
-            logger.error(f"Erreur configuration caméra: {e}")
+            logger.exception("Erreur configuration caméra: %s", e)
             return False
 
     def sync_viewer(self) -> bool:
@@ -312,7 +312,7 @@ class MuJoCoBackend(RobotAPI):
             self.viewer.sync()
             return True
         except Exception as e:
-            logger.error(f"Erreur sync viewer: {e}")
+            logger.exception("Erreur sync viewer: %s", e)
             return False
 
     def is_viewer_running(self) -> bool:
@@ -370,16 +370,16 @@ class MuJoCoBackend(RobotAPI):
         if head_joints["pitch"]:
             try:
                 self.set_joint_pos(head_joints["pitch"], pose["pitch"])
-                logger.info(f"Émotion {emotion}: pitch_head = {pose['pitch']:.3f}")
+                logger.info("Émotion %s: pitch_head = %s", emotion, pose['pitch']:.3f)
             except Exception as e:
-                logger.debug(f"Impossible de bouger pitch_head: {e}")
+                logger.debug("Impossible de bouger pitch_head: %s", e)
 
         if head_joints["yaw"]:
             try:
                 self.set_joint_pos(head_joints["yaw"], pose["yaw"])
-                logger.info(f"Émotion {emotion}: yaw_head = {pose['yaw']:.3f}")
+                logger.info("Émotion %s: yaw_head = %s", emotion, pose['yaw']:.3f)
             except Exception as e:
-                logger.debug(f"Impossible de bouger yaw_head: {e}")
+                logger.debug("Impossible de bouger yaw_head: %s", e)
 
         # Faire un step pour que le changement soit visible
         self.step()
@@ -438,7 +438,7 @@ class MuJoCoBackend(RobotAPI):
                 elif hasattr(head, "matrix"):
                     head_matrix = head.matrix
                 else:
-                    logger.warning(f"Format head non reconnu: {type(head)}")
+                    logger.warning("Format head non reconnu: %s", type(head))
                     head_matrix = None
 
                 if head_matrix is not None and head_matrix.shape == (4, 4):
@@ -477,7 +477,7 @@ class MuJoCoBackend(RobotAPI):
             )
 
         except Exception as e:
-            logger.error(f"Erreur goto_target MuJoCo: {e}")
+            logger.exception("Erreur goto_target MuJoCo: %s", e)
 
     def get_telemetry(self) -> dict[str, Any]:
         """Retourne les données de télémétrie."""

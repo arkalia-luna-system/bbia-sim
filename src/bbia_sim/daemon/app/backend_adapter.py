@@ -107,7 +107,7 @@ class BackendAdapter:
                     if len(arr) == 7:
                         return arr
             except Exception as e:
-                logger.warning(f"Erreur get_present_head_joint_positions: {e}")
+                logger.warning("Erreur get_present_head_joint_positions: %s", e)
 
         return None
 
@@ -152,7 +152,7 @@ class BackendAdapter:
             ):
                 self._robot.robot.enable_gravity_compensation()
         else:
-            logger.debug(f"Mode simulation: moteurs en mode {mode}")
+            logger.debug("Mode simulation: moteurs en mode %s", mode)
 
     async def goto_target(
         self,
@@ -466,7 +466,7 @@ class BackendAdapter:
         elif hasattr(self._robot, "robot") and hasattr(self._robot.robot, "play_sound"):
             self._robot.robot.play_sound(sound_file)
         else:
-            logger.debug(f"play_sound non disponible, fichier: {sound_file}")
+            logger.debug("play_sound non disponible, fichier: %s", sound_file)
 
     def set_automatic_body_yaw(self, body_yaw: float) -> None:
         """Définit le yaw automatique du corps (conforme SDK)."""
@@ -475,7 +475,7 @@ class BackendAdapter:
         if hasattr(self._robot, "set_automatic_body_yaw"):
             self._robot.set_automatic_body_yaw(body_yaw)
         else:
-            logger.debug(f"set_automatic_body_yaw non disponible, yaw: {body_yaw}")
+            logger.debug("set_automatic_body_yaw non disponible, yaw: %s", body_yaw)
 
     def set_target_head_joint_current(self, current: npt.NDArray[np.float64]) -> None:
         """Définit le courant des joints de la tête (conforme SDK)."""
@@ -546,7 +546,7 @@ class BackendAdapter:
                 self._robot.disconnect()
             self._connected = False
         except Exception as e:
-            logger.warning(f"Erreur lors de la fermeture: {e}")
+            logger.warning("Erreur lors de la fermeture: %s", e)
 
     def get_status(self) -> RobotStatus | dict[str, Any]:
         """Récupère le statut du backend (conforme SDK)."""

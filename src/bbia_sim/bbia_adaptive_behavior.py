@@ -203,11 +203,11 @@ class BBIAAdaptiveBehavior:
 
         """
         if context not in self.contexts:
-            logger.warning(f"Contexte inconnu: {context}")
+            logger.warning("Contexte inconnu: %s", context)
             return False
 
         self.current_context = context
-        logger.info(f"🎭 Contexte changé: {context} (confiance: {confidence:.2f})")
+        logger.info("🎭 Contexte changé: %s (confiance: %s)", context, confidence:.2f)
         return True
 
     def set_emotion_state(self, emotion: str, intensity: float = 0.5) -> bool:
@@ -223,7 +223,7 @@ class BBIAAdaptiveBehavior:
         """
         self.current_emotion = emotion
         self.emotion_intensity = max(0.0, min(1.0, intensity))
-        logger.info(f"😊 Émotion: {emotion} (intensité: {self.emotion_intensity:.2f})")
+        logger.info("😊 Émotion: %s (intensité: %s)", emotion, self.emotion_intensity:.2f)
         return True
 
     def generate_behavior(self, trigger: str | None = None) -> dict[str, Any]:
@@ -280,7 +280,7 @@ class BBIAAdaptiveBehavior:
             return behavior
 
         except Exception as e:
-            logger.error(f"❌ Erreur génération comportement: {e}")
+            logger.exception("❌ Erreur génération comportement: %s", e)
             # Retourner un comportement par défaut en cas d'erreur
             return {
                 "name": "look_around",
@@ -479,7 +479,7 @@ class BBIAAdaptiveBehavior:
             return None
 
         except Exception as e:
-            logger.error(f"❌ Erreur comportement proactif: {e}")
+            logger.exception("❌ Erreur comportement proactif: %s", e)
             return None
 
     def adapt_to_feedback(self, behavior_id: str, feedback: str, score: float) -> None:
@@ -530,7 +530,7 @@ class BBIAAdaptiveBehavior:
             )
 
         except Exception as e:
-            logger.error(f"❌ Erreur adaptation feedback: {e}")
+            logger.exception("❌ Erreur adaptation feedback: %s", e)
 
     def get_behavior_statistics(self) -> dict[str, Any]:
         """Retourne les statistiques des comportements."""
@@ -784,7 +784,7 @@ class BBIAAdaptiveBehavior:
             return False
 
         except Exception as e:
-            logger.error(f"❌ Erreur exécution comportement '{behavior_name}': {e}")
+            logger.exception("❌ Erreur exécution comportement '%s': %s", behavior_name, e)
             return False
 
 

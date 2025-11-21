@@ -83,7 +83,7 @@ class GameBehavior(BBIABehavior):
         rounds = context.get("rounds", 3)
 
         if game_name not in self.games:
-            logger.warning(f"Jeu '{game_name}' non trouvé")
+            logger.warning("Jeu '%s' non trouvé", game_name)
             return False
 
         self.is_active = True
@@ -97,7 +97,7 @@ class GameBehavior(BBIABehavior):
             self._show_final_score()
             return True
         except Exception as e:
-            logger.error(f"Erreur lors du jeu: {e}")
+            logger.exception("Erreur lors du jeu: %s", e)
             return False
         finally:
             self.is_active = False
@@ -343,7 +343,7 @@ class GameBehavior(BBIABehavior):
 
             dire_texte(text, robot_api=self.robot_api)
         except ImportError:
-            logger.info(f"[GAME] {text}")
+            logger.info("[GAME] %s", text)
 
     def stop(self) -> None:
         """Arrête le comportement game."""

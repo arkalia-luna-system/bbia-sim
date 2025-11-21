@@ -175,7 +175,7 @@ async def get_robot_capabilities() -> RobotCapabilities:
             simulation_mode=True,
         )
     except Exception as e:
-        logger.error(f"Erreur lors de la récupération des capacités: {e}")
+        logger.exception("Erreur lors de la récupération des capacités: %s", e)
         raise HTTPException(
             status_code=500,
             detail="Erreur lors de la récupération des capacités",
@@ -223,7 +223,7 @@ async def get_api_status() -> APIStatus:
             active_connections=active_conn,
         )
     except Exception as e:
-        logger.error(f"Erreur lors de la récupération du statut: {e}")
+        logger.exception("Erreur lors de la récupération du statut: %s", e)
         raise HTTPException(
             status_code=500,
             detail="Erreur lors de la récupération du statut",
@@ -282,7 +282,7 @@ async def apply_emotion(
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f"Erreur lors de l'application de l'émotion: {e}")
+        logger.exception("Erreur lors de l'application de l'émotion: %s", e)
         raise HTTPException(
             status_code=500,
             detail="Erreur lors de l'application de l'émotion",
@@ -344,7 +344,7 @@ async def execute_behavior(
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f"Erreur lors de l'exécution du comportement: {e}")
+        logger.exception("Erreur lors de l'exécution du comportement: %s", e)
         raise HTTPException(
             status_code=500,
             detail="Erreur lors de l'exécution du comportement",
@@ -392,7 +392,7 @@ async def get_available_emotions() -> dict[str, Any]:
             "timestamp": datetime.now().isoformat(),
         }
     except Exception as e:
-        logger.error(f"Erreur lors de la récupération des émotions: {e}")
+        logger.exception("Erreur lors de la récupération des émotions: %s", e)
         raise HTTPException(
             status_code=500,
             detail="Erreur lors de la récupération des émotions",
@@ -436,7 +436,7 @@ async def get_available_behaviors() -> dict[str, Any]:
             "timestamp": datetime.now().isoformat(),
         }
     except Exception as e:
-        logger.error(f"Erreur lors de la récupération des comportements: {e}")
+        logger.exception("Erreur lors de la récupération des comportements: %s", e)
         raise HTTPException(
             status_code=500,
             detail="Erreur lors de la récupération des comportements",
@@ -485,7 +485,7 @@ async def get_demo_modes() -> dict[str, Any]:
             "timestamp": datetime.now().isoformat(),
         }
     except Exception as e:
-        logger.error(f"Erreur lors de la récupération des modes de démo: {e}")
+        logger.exception("Erreur lors de la récupération des modes de démo: %s", e)
         raise HTTPException(
             status_code=500,
             detail="Erreur lors de la récupération des modes de démo",
@@ -568,7 +568,7 @@ async def start_demo_mode(
                             demo_info["emotion_applied"] = emotion.lower()
                             robot.disconnect()
                 except Exception as e:
-                    logger.warning(f"Émotion non appliquée: {e}")
+                    logger.warning("Émotion non appliquée: %s", e)
                     demo_info["emotion_error"] = str(e)
 
             # Planifier arrêt après durée
@@ -584,7 +584,7 @@ async def start_demo_mode(
 
                             await sim_service.stop_simulation()
                     except Exception as e:
-                        logger.warning(f"Erreur arrêt démo: {e}")
+                        logger.warning("Erreur arrêt démo: %s", e)
 
                 asyncio.create_task(stop_demo_after_duration())
                 demo_info["auto_stop"] = True
@@ -596,7 +596,7 @@ async def start_demo_mode(
         except HTTPException:
             raise
         except Exception as e:
-            logger.error(f"Erreur logique démo: {e}")
+            logger.exception("Erreur logique démo: %s", e)
             demo_info["status"] = "error"
             demo_info["error"] = str(e)
 
@@ -604,7 +604,7 @@ async def start_demo_mode(
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f"Erreur lors du démarrage de la démo: {e}")
+        logger.exception("Erreur lors du démarrage de la démo: %s", e)
         raise HTTPException(
             status_code=500,
             detail="Erreur lors du démarrage de la démo",

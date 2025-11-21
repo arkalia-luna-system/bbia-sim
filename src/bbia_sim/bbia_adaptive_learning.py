@@ -65,7 +65,7 @@ class BBIAAdaptiveLearning:
         # Sauvegarder préférences
         self._save_preferences()
 
-        logger.info(f"Préférence apprise: {self.user_preferences}")
+        logger.info("Préférence apprise: %s", self.user_preferences)
 
     def adapt_behavior(self, context: dict[str, Any]) -> dict[str, Any]:
         """Adapte un comportement selon le contexte et les préférences.
@@ -147,7 +147,7 @@ class BBIAAdaptiveLearning:
                     self.context_patterns = data.get("patterns", {})
                     logger.info("Préférences chargées depuis fichier")
         except Exception as e:
-            logger.warning(f"Impossible de charger préférences: {e}")
+            logger.warning("Impossible de charger préférences: %s", e)
 
     def _save_preferences(self) -> None:
         """Sauvegarde les préférences dans un fichier."""
@@ -160,7 +160,7 @@ class BBIAAdaptiveLearning:
                 json.dump(data, f, indent=2)
             logger.info("Préférences sauvegardées")
         except Exception as e:
-            logger.warning(f"Impossible de sauvegarder préférences: {e}")
+            logger.warning("Impossible de sauvegarder préférences: %s", e)
 
     def get_preferences(self) -> dict[str, Any]:
         """Récupère les préférences utilisateur.

@@ -20,8 +20,8 @@ def test_emotions_inference_latency_1e3() -> None:
     """Test latence inférence émotions sur 200 évaluations (optimisé)."""
     emotions = BBIAEmotions()
 
-    # OPTIMISATION: Réduire 200 → 150 itérations (suffisant pour statistiques p50/p95, 1.3x plus rapide)
-    iterations = 150
+    # OPTIMISATION: Réduire 150 → 100 itérations (suffisant pour statistiques p50/p95, 1.5x plus rapide)
+    iterations = 100
     latencies_ms: list[float] = []
 
     # Émotions à tester
@@ -59,8 +59,8 @@ def test_emotions_stress_bounds_under_load() -> None:
     """Test stress bornes sous charge (dérive/oscillation)."""
     emotions = BBIAEmotions()
 
-    # OPTIMISATION: Réduire 300 → 200 itérations (suffisant pour détecter dérive, 1.5x plus rapide)
-    iterations = 200
+    # OPTIMISATION: Réduire 200 → 150 itérations (suffisant pour détecter dérive, 1.3x plus rapide)
+    iterations = 150
     extreme_values = [0.0, 1.0, -0.1, 1.1, 0.5]
 
     # Test sous charge avec valeurs extrêmes

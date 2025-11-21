@@ -200,7 +200,7 @@ class BBIAVision:
                             self._camera_sdk_available = True
                             logger.info("✅ Caméra SDK disponible: robot.media.camera")
             except Exception as e:
-                logger.debug(f"Caméra SDK non disponible (fallback simulation): {e}")
+                logger.debug("Caméra SDK non disponible (fallback simulation): %s", e)
 
         # Support webcam USB via OpenCV (fallback si pas de SDK)
         self._opencv_camera = None
@@ -214,7 +214,7 @@ class BBIAVision:
                 # Essayer device path si fourni, sinon index
                 if camera_device:
                     self._opencv_camera = cv2.VideoCapture(camera_device)
-                    logger.info(f"🔌 Tentative ouverture webcam: {camera_device}")
+                    logger.info("🔌 Tentative ouverture webcam: %s", camera_device)
                 else:
                     try:
                         camera_index = int(camera_index_str)
@@ -255,7 +255,7 @@ class BBIAVision:
                             f"Erreur lors de la libération de la webcam OpenCV: {release_error}"
                         )
                 self._opencv_camera = None
-                logger.debug(f"Erreur initialisation webcam OpenCV: {e}")
+                logger.debug("Erreur initialisation webcam OpenCV: %s", e)
 
         # OPTIMISATION RAM: Lazy loading YOLO/MediaPipe
         # Ne charger que si caméra réelle disponible
@@ -283,7 +283,7 @@ class BBIAVision:
                         "✅ Détecteur YOLO initialisé (lazy loading - caméra réelle)",
                     )
             except Exception as e:
-                logger.warning(f"⚠️ YOLO non disponible: {e}")
+                logger.warning("⚠️ YOLO non disponible: %s", e)
         else:
             logger.debug(
                 "YOLO non chargé (lazy loading - caméra simulation ou non disponible)",
@@ -328,7 +328,7 @@ class BBIAVision:
                     )
                     logger.debug("✅ Détecteur MediaPipe Face initialisé")
             except Exception as e:
-                logger.warning(f"⚠️ MediaPipe non disponible: {e}")
+                logger.warning("⚠️ MediaPipe non disponible: %s", e)
 
         # Module DeepFace pour reconnaissance visage personnalisée + émotions
         self.face_recognition = None
@@ -342,7 +342,7 @@ class BBIAVision:
                         f"✅ DeepFace initialisé (db: {db_path}, modèle: {model_name})",
                     )
             except Exception as e:
-                logger.debug(f"⚠️ DeepFace non disponible: {e}")
+                logger.debug("⚠️ DeepFace non disponible: %s", e)
 
         # Module MediaPipe Pose pour détection postures/gestes
         self.pose_detector = None
@@ -360,7 +360,7 @@ class BBIAVision:
                         f"(complexité: {model_complexity})",
                     )
             except Exception as e:
-                logger.warning(f"⚠️ MediaPipe Pose non disponible: {e}")
+                logger.warning("⚠️ MediaPipe Pose non disponible: %s", e)
 
     def _capture_image_from_camera(self) -> npt.NDArray[np.uint8] | None:
         """Capture une image depuis robot.media.camera si disponible,
@@ -430,7 +430,7 @@ class BBIAVision:
                         logger.warning("Format d'image non supporté par SDK camera")
                         return None
                 except Exception as e:
-                    logger.debug(f"Erreur conversion image: {e}")
+                    logger.debug("Erreur conversion image: %s", e)
                     return None
 
             # CORRECTION EXPERTE: Validation format image (shape, dtype, channels)
@@ -494,7 +494,7 @@ class BBIAVision:
                     else:
                         image = image.astype(np.uint8)
                 except Exception as e:
-                    logger.debug(f"Erreur conversion dtype: {e}")
+                    logger.debug("Erreur conversion dtype: %s", e)
                     return None
 
             logger.debug("✅ Image capturée depuis robot.media.camera (format validé)")
@@ -525,7 +525,7 @@ class BBIAVision:
             return cast("npt.NDArray[np.uint8]", image)
 
         except Exception as e:
-            logger.debug(f"Erreur capture caméra SDK (fallback simulation): {e}")
+            logger.debug("Erreur capture caméra SDK (fallback simulation): %s", e)
 
         return None
 
@@ -550,7 +550,7 @@ class BBIAVision:
 
             # Validation shape et dtype
             if image.ndim < 2 or image.ndim > 3:
-                logger.warning(f"Format image invalide (ndim={image.ndim})")
+                logger.warning("Format image invalide (ndim=%s)", image.ndim)
                 return None
 
             # Assurer dtype uint8
@@ -564,7 +564,7 @@ class BBIAVision:
                     else:
                         image = image.astype(np.uint8)
                 except Exception as e:
-                    logger.debug(f"Erreur conversion dtype: {e}")
+                    logger.debug("Erreur conversion dtype: %s", e)
                     return None
 
             logger.debug("✅ Image capturée depuis webcam USB OpenCV")
@@ -589,7 +589,7 @@ class BBIAVision:
             return cast("npt.NDArray[np.uint8]", image)
 
         except Exception as e:
-            logger.debug(f"Erreur capture webcam OpenCV: {e}")
+            logger.debug("Erreur capture webcam OpenCV: %s", e)
             return None
 
     def scan_environment_from_image(
@@ -645,7 +645,7 @@ class BBIAVision:
                     }
                     objects.append(obj)
             except Exception as e:
-                logger.warning(f"Erreur détection YOLO: {e}")
+                logger.warning("Erreur détection YOLO: %s", e)
 
         # Détection visages avec MediaPipe + DeepFace
         if self.face_detector:
@@ -704,7 +704,7 @@ class BBIAVision:
                                     detected_emotion = emotion_result["emotion"]
                                     emotion_confidence = emotion_result["confidence"]
                             except Exception as deepface_error:
-                                logger.debug(f"DeepFace erreur: {deepface_error}")
+                                logger.debug("DeepFace erreur: %s", deepface_error)
 
                         # Calculer centre pour cohérence avec objets YOLO
                         bbox_x = int(bbox.xmin * width)
@@ -737,7 +737,7 @@ class BBIAVision:
                         }
                         faces.append(face)
             except Exception as e:
-                logger.warning(f"Erreur détection MediaPipe: {e}")
+                logger.warning("Erreur détection MediaPipe: %s", e)
 
         # Détection postures avec MediaPipe Pose
         if self.pose_detector and self.pose_detector.is_initialized:
@@ -752,7 +752,7 @@ class BBIAVision:
                         },
                     )
             except Exception as e:
-                logger.debug(f"Erreur détection pose: {e}")
+                logger.debug("Erreur détection pose: %s", e)
 
         # OPTIMISATION RAM: Limiter taille historique avec deque
         self.objects_detected = deque(
@@ -900,7 +900,7 @@ class BBIAVision:
                         }
                         objects.append(obj)
                 except Exception as e:
-                    logger.warning(f"Erreur détection YOLO: {e}")
+                    logger.warning("Erreur détection YOLO: %s", e)
 
             # Détection de visages avec MediaPipe
             if self.face_detector:
@@ -1020,7 +1020,7 @@ class BBIAVision:
                             }
                             faces.append(face)
                 except Exception as e:
-                    logger.warning(f"Erreur détection MediaPipe: {e}")
+                    logger.warning("Erreur détection MediaPipe: %s", e)
 
             # Détection de postures avec MediaPipe Pose (optionnel)
             poses = []
@@ -1040,7 +1040,7 @@ class BBIAVision:
                             f"gestes: {pose_result['gestures']}",
                         )
                 except Exception as e:
-                    logger.debug(f"Erreur détection pose: {e}")
+                    logger.debug("Erreur détection pose: %s", e)
 
             if objects or faces or poses:
                 logger.info(
@@ -1234,7 +1234,7 @@ class BBIAVision:
                 # Attendre intervalle avant prochain scan
                 self._should_stop_scan.wait(self._scan_interval)
             except Exception as e:
-                logger.error(f"Erreur thread scan asynchrone: {e}")
+                logger.exception("Erreur thread scan asynchrone: %s", e)
                 time.sleep(self._scan_interval)
 
         logger.debug("🔍 Thread scan asynchrone arrêté")
@@ -1263,7 +1263,7 @@ class BBIAVision:
             name="BBIAVision-ScanThread",
         )
         self._scan_thread.start()
-        logger.info(f"✅ Scan asynchrone démarré (intervalle: {self._scan_interval}s)")
+        logger.info("✅ Scan asynchrone démarré (intervalle: %ss)", self._scan_interval)
         return True
 
     def stop_async_scanning(self) -> None:

@@ -123,7 +123,7 @@ async def install_app(app_info: dict[str, Any]) -> dict[str, str]:
 
     """
     app_name = app_info.get("name", "unknown")
-    logger.info(f"Installation de l'application: {app_name}")
+    logger.info("Installation de l'application: %s", app_name)
 
     # Simulation d'un job ID
     job_id = f"install_{app_name}_{hash(app_name) % 10000}"
@@ -152,7 +152,7 @@ async def remove_app(app_name: str) -> dict[str, str]:
         ID du job en arrière-plan
 
     """
-    logger.info(f"Suppression de l'application: {app_name}")
+    logger.info("Suppression de l'application: %s", app_name)
 
     # Simulation d'un job ID
     job_id = f"remove_{app_name}_{hash(app_name) % 10000}"
@@ -217,7 +217,7 @@ async def ws_apps_manager(websocket: WebSocket, job_id: str) -> None:
             )
             await asyncio.sleep(0.5)
     except WebSocketDisconnect:
-        logger.info(f"Client WebSocket déconnecté pour job {job_id}")
+        logger.info("Client WebSocket déconnecté pour job %s", job_id)
     finally:
         await websocket.close()
 
@@ -252,7 +252,7 @@ async def start_app(app_name: str) -> dict[str, Any]:
     # Démarrer l'app
     _bbia_apps_manager["current_app"] = app_name
 
-    logger.info(f"Démarrage de l'application: {app_name}")
+    logger.info("Démarrage de l'application: %s", app_name)
 
     return AppStatus(name=app_name, status="running", running=True).model_dump()
 
@@ -275,7 +275,7 @@ async def restart_app() -> dict[str, Any]:
             detail="Aucune application en cours d'exécution",
         )
 
-    logger.info(f"Redémarrage de l'application: {current_app}")
+    logger.info("Redémarrage de l'application: %s", current_app)
 
     return AppStatus(name=current_app, status="running", running=True).model_dump()
 
@@ -298,7 +298,7 @@ async def stop_app() -> dict[str, Any] | None:
             detail="Aucune application en cours d'exécution",
         )
 
-    logger.info(f"Arrêt de l'application: {current_app}")
+    logger.info("Arrêt de l'application: %s", current_app)
     _bbia_apps_manager["current_app"] = None
 
     return None
