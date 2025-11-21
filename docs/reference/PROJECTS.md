@@ -58,7 +58,7 @@ Moteur cognitif Python avec 12 émotions robotiques pour Reachy Mini. Simulation
 - 🧠 IA avancée : reconnaissance émotions, NLP, vision
 - 🔄 Backend unifié : même code sim/hardware
 - 📊 Tests exhaustifs + suivi coverage CI
-- 📚 Documentation exceptionnelle (guides débutant/avancé)
+- 📚 Documentation exceptionnelle (guides de démarrage/avancé)
 
 **Liens :**
 

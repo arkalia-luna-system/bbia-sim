@@ -59,4 +59,4 @@ Voir [Guide de Démarrage](../guides/GUIDE_DEMARRAGE.md) pour les premiers pas.
 
 **Retour à la [documentation principale](../README.md)**
 
-**Date** : Oct / Nov. 2025
+**Date** : 21 novembre 2025
