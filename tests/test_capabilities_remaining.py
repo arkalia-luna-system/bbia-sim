@@ -35,7 +35,6 @@ from bbia_sim.daemon.app.routers.ecosystem import RobotCapabilities
 from bbia_sim.daemon.app.routers.motors import (
     MotorControlMode,
     MotorStatus,
-    SimpleMotorControlMode,
 )
 from bbia_sim.daemon.models import (
     GripperControl,
@@ -272,13 +271,8 @@ class TestDaemonRouters:
 
     def test_motor_control_mode(self) -> None:
         """Test MotorControlMode."""
-        mode = MotorControlMode.POSITION
-        assert mode == MotorControlMode.POSITION
-
-    def test_simple_motor_control_mode(self) -> None:
-        """Test SimpleMotorControlMode."""
-        mode = SimpleMotorControlMode.POSITION
-        assert mode == SimpleMotorControlMode.POSITION
+        mode = MotorControlMode.Enabled
+        assert mode == MotorControlMode.Enabled
 
 
 class TestSimulationShims:
