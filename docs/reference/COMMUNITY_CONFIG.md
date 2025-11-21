@@ -92,7 +92,7 @@ pytest tests/ -v
 pytest tests/ -v --log-level debug
 
 # Tests sur URL personnalisée
-python scripts/test_public_api.py --url http://localhost:3000
+pytest tests/ -v --url http://localhost:3000
 
 ```
 
@@ -287,7 +287,7 @@ export BBIA_RATE_LIMIT=1000
 ```bash
 # Après installation (voir INSTALLATION.md)
 # Démarrage
-python deployment/public_api.py --prod
+uvicorn src.bbia_sim.daemon.app.main:app --host 0.0.0.0 --port 8000
 ```
 
 ### Déploiement Docker
