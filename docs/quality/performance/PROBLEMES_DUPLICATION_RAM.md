@@ -198,6 +198,39 @@ def get_simulation_service(model_path: str | None = None) -> "SimulationService"
 
 ---
 
+### 8. ⚠️ Logging handlers - Handlers multiples possibles
+
+**Problème** :
+- `scripts/start_public_api.py` ajoute un FileHandler sans vérifier s'il existe déjà
+- Si script appelé plusieurs fois → plusieurs handlers → logs dupliqués + RAM
+- Impact : ~5-10MB par handler supplémentaire
+
+**Fichier concerné** :
+- `scripts/start_public_api.py` ligne 150
+
+**Solution** :
+- Vérifier si handler existe déjà avant ajout
+- ✅ CORRIGÉ : Ajout vérification `handler_exists` avant `addHandler()`
+
+---
+
+### 9. ⚠️ start_broadcast - Tasks asyncio multiples possibles
+
+**Problème** :
+- `ConnectionManager.start_broadcast()` peut créer plusieurs tasks si appelé rapidement
+- Vérifie `is_broadcasting` mais pas si task existe déjà
+- Impact : ~10-20MB par task supplémentaire + CPU inutile
+
+**Fichiers concernés** :
+- `src/bbia_sim/daemon/ws/telemetry.py` ligne 80
+- `src/bbia_sim/daemon/ws/__init__.py` ligne 76
+
+**Solution** :
+- Vérifier si `broadcast_task` existe déjà et n'est pas terminée avant création
+- ✅ CORRIGÉ : Ajout vérification `if self.broadcast_task is not None and not self.broadcast_task.done()`
+
+---
+
 ## Recommandations
 
 1. **Priorité 1** : Forcer singleton BBIAVision partout ✅ PARTIELLEMENT CORRIGÉ
