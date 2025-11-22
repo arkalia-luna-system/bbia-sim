@@ -69,45 +69,55 @@ def main():
     control_methods = [
         (
             "enable_motors",
-            lambda: backend.enable_motors()
-            if hasattr(backend, "enable_motors")
-            else None,
+            lambda: (
+                backend.enable_motors() if hasattr(backend, "enable_motors") else None
+            ),
         ),  # type: ignore[attr-defined]
         (
             "disable_motors",
-            lambda: backend.disable_motors()
-            if hasattr(backend, "disable_motors")
-            else None,
+            lambda: (
+                backend.disable_motors() if hasattr(backend, "disable_motors") else None
+            ),
         ),  # type: ignore[attr-defined]
         (
             "enable_gravity_compensation",
-            lambda: backend.enable_gravity_compensation()
-            if hasattr(backend, "enable_gravity_compensation")
-            else None,
+            lambda: (
+                backend.enable_gravity_compensation()
+                if hasattr(backend, "enable_gravity_compensation")
+                else None
+            ),
         ),  # type: ignore[attr-defined]
         (
             "disable_gravity_compensation",
-            lambda: backend.disable_gravity_compensation()
-            if hasattr(backend, "disable_gravity_compensation")
-            else None,  # type: ignore[attr-defined]
+            lambda: (
+                backend.disable_gravity_compensation()
+                if hasattr(backend, "disable_gravity_compensation")
+                else None
+            ),  # type: ignore[attr-defined]
         ),
         (
             "set_target_body_yaw",
-            lambda: backend.set_target_body_yaw(0.1)
-            if hasattr(backend, "set_target_body_yaw")
-            else None,
+            lambda: (
+                backend.set_target_body_yaw(0.1)
+                if hasattr(backend, "set_target_body_yaw")
+                else None
+            ),
         ),  # type: ignore[attr-defined]
         (
             "set_target_antenna_joint_positions",
-            lambda: backend.set_target_antenna_joint_positions([0.1, 0.2])
-            if hasattr(backend, "set_target_antenna_joint_positions")
-            else None,  # type: ignore[attr-defined]
+            lambda: (
+                backend.set_target_antenna_joint_positions([0.1, 0.2])
+                if hasattr(backend, "set_target_antenna_joint_positions")
+                else None
+            ),  # type: ignore[attr-defined]
         ),
         (
             "start_recording",
-            lambda: backend.start_recording()
-            if hasattr(backend, "start_recording")
-            else None,
+            lambda: (
+                backend.start_recording()
+                if hasattr(backend, "start_recording")
+                else None
+            ),
         ),  # type: ignore[attr-defined]
         ("wake_up", lambda: backend.wake_up() if hasattr(backend, "wake_up") else None),  # type: ignore[attr-defined]
         (

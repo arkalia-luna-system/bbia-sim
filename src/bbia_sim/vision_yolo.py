@@ -143,7 +143,8 @@ class YOLODetector:
                     del _yolo_model_cache[oldest_key]
                     del _yolo_model_last_used[oldest_key]
                     logger.debug(
-                        f"♻️ Modèle YOLO LRU déchargé: {oldest_key} (optimisation RAM)",
+                        "♻️ Modèle YOLO LRU déchargé: %s (optimisation RAM)",
+                        oldest_key,
                     )
 
         try:
@@ -382,9 +383,11 @@ class YOLODetector:
                         detections.append(detection)
                 all_detections.append(detections)
 
+            total_detections = sum(len(d) for d in all_detections)
             logger.debug(
-                f"🔍 Batch processing: {len(images)} images, "
-                f"{sum(len(d) for d in all_detections)} objets détectés au total"
+                "🔍 Batch processing: %d images, %d objets détectés au total",
+                len(images),
+                total_detections,
             )
             return all_detections
 

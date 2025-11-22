@@ -112,7 +112,9 @@ class MuJoCoSimulator:
 
         actual_duration = time.monotonic() - start_time
         logger.info(
-            f"Simulation headless arrêtée après {step_count} steps ({actual_duration:.2f}s)",
+            "Simulation headless arrêtée après %d steps (%.2fs)",
+            step_count,
+            actual_duration,
         )
 
         # OPTIMISATION RAM: Décharger modèle MuJoCo après arrêt pour libérer mémoire
