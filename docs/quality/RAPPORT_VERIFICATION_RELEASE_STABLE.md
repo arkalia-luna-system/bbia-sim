@@ -264,5 +264,25 @@ git push origin main
 ---
 
 **Date vérification** : 22 novembre 2025  
-**Prochaine étape** : Appliquer les corrections mineures puis merge sur main
+**Dernière mise à jour** : 22 novembre 2025 (améliorations optionnelles terminées)
+
+---
+
+## 📝 AMÉLIORATIONS OPTIONNELLES TERMINÉES
+
+### ✅ Tests améliorés (22 Nov. 2025)
+- `tests/test_demo_additional.py` : Tests complets avec mocks appropriés
+- 10 tests au total (tous passent)
+- Vérification que `main()` existe et est callable
+
+### ✅ Documentation enrichie (22 Nov. 2025)
+- Docstrings détaillées avec exemples d'utilisation pour les 5 nouvelles démos
+- Exemples d'utilisation clairs pour chaque démo
+
+### ✅ Qualité code (22 Nov. 2025)
+- Ruff : imports triés
+- Black : formatage OK
+- Tests : 10/10 passent
+
+**Prochaine étape** : Vérifier CI GitHub Actions puis merge sur main
 

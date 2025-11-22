@@ -24,9 +24,20 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   - API Endpoints : 100% (11/11 endpoints avec démos dédiées)
   - **Total** : 44 exemples (39 existants + 5 nouveaux)
 
-- **Tests associés** : 5 tests créés dans `tests/test_demo_additional.py` (tous passent)
+- **Tests améliorés** : 
+  - `tests/test_demo_additional.py` : 10 tests complets avec mocks appropriés (tous passent)
+  - Vérification que `main()` existe et est callable pour toutes les démos
+  - Tests cohérents avec les autres tests de démos
 
-- **Documentation** : Tous les fichiers markdown mis à jour avec 100% d'exploitation
+- **Documentation enrichie** :
+  - Docstrings détaillées avec exemples d'utilisation pour les 5 nouvelles démos
+  - Exemples d'utilisation clairs pour chaque démo
+  - Tous les fichiers markdown mis à jour avec 100% d'exploitation
+
+- **Qualité code** :
+  - Ruff : imports triés et formatage vérifié
+  - Black : tous les fichiers formatés
+  - Tests : 10/10 passent ✅
 
 ### 🚀 Ajouté (21 Novembre 2025)
 
