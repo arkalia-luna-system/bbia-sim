@@ -1224,7 +1224,7 @@ class BBIAHuggingFace:
             return False
         except Exception as e:
             logger.exception(
-                "❌ Erreur inattendue déchargement modèle %s: %s", model_name, e
+                f"❌ Erreur inattendue déchargement modèle {model_name}: {e}"
             )
             return False
 
@@ -1422,7 +1422,7 @@ class BBIAHuggingFace:
             return self._normalize_response_length(adapted_response)
 
         except Exception as e:
-            logger.exception("❌ Erreur chat: %s", e)
+            logger.exception(f"❌ Erreur chat: {e}")
             return "Je ne comprends pas bien, peux-tu reformuler ?"
 
     def _generate_llm_response(
