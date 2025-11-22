@@ -335,16 +335,12 @@ class SystematicAuditor:
                 test_mark = (
                     "✅"
                     if item.test_result == "PASSED"
-                    else "⏸️"
-                    if item.test_result == "SKIPPED"
-                    else "❌"
+                    else "⏸️" if item.test_result == "SKIPPED" else "❌"
                 )
                 status_mark = (
                     "✅"
                     if item.status == "OK"
-                    else "⚠️"
-                    if item.status == "DIFF"
-                    else "❌"
+                    else "⚠️" if item.status == "DIFF" else "❌"
                 )
 
                 lines.append(
