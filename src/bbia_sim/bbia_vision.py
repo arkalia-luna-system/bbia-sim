@@ -1323,22 +1323,31 @@ class BBIAVision:
             True si démarré avec succès, False sinon
 
         """
-        if self._async_scan_active:
-            logger.debug("Scan asynchrone déjà actif")
+        # OPTIMISATION RAM: Lock pour éviter création threads multiples
+        with self._scan_lock:
+            if self._async_scan_active:
+                logger.debug("Scan asynchrone déjà actif")
+                return True
+
+            # OPTIMISATION RAM: Vérifier si thread existe déjà et est actif
+            if self._scan_thread is not None and self._scan_thread.is_alive():
+                logger.warning("Thread scan déjà actif, réutilisation")
+                return True
+
+            self._scan_interval = max(0.05, interval)  # Min 50ms (20 FPS max)
+            self._should_stop_scan.clear()
+            self._async_scan_active = True
+
+            self._scan_thread = threading.Thread(
+                target=self._scan_thread_worker,
+                daemon=True,
+                name="BBIAVision-ScanThread",
+            )
+            self._scan_thread.start()
+            logger.info(
+                "✅ Scan asynchrone démarré (intervalle: %ss)", self._scan_interval
+            )
             return True
-
-        self._scan_interval = max(0.05, interval)  # Min 50ms (20 FPS max)
-        self._should_stop_scan.clear()
-        self._async_scan_active = True
-
-        self._scan_thread = threading.Thread(
-            target=self._scan_thread_worker,
-            daemon=True,
-            name="BBIAVision-ScanThread",
-        )
-        self._scan_thread.start()
-        logger.info("✅ Scan asynchrone démarré (intervalle: %ss)", self._scan_interval)
-        return True
 
     def stop_async_scanning(self) -> None:
         """Arrête le scan asynchrone en arrière-plan."""
