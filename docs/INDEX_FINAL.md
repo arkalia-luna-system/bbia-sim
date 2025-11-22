@@ -124,7 +124,7 @@
 ### 📊 Analyses & Rapports
 
 - [Analyse Modules Non Prioritaires](quality/audits/modules-non-prioritaires.md) — Analyse modules
-- [Analyse Coverage](quality/audits/coverage-details.md) — Analyse code coverage
+- [Analyse Coverage](quality/audits/_archived/coverage-details.md) — Analyse code coverage (archivé)
 - [Analyse Unity AR](quality/audits/unity-ar.md) — Évaluation Unity AR
 - [Roadmap Dashboard](dashboard/ROADMAP_DASHBOARD.md) — Roadmap UX
 
@@ -132,8 +132,8 @@
 
 - [Corrections Appliquées](quality/corrections/applied.md) — Corrections démos et modules
 - [Améliorations SDK Futures](quality/improvements/sdk-future.md) — Features SDK avancées
-- [Améliorations Intelligence BBIA](quality/improvements/intelligence-bbia.md) — Intelligence conversationnelle
-- [Améliorations Intelligence Contexte](quality/improvements/intelligence-context.md) — Intelligence contextuelle
+- [Améliorations Intelligence BBIA](quality/improvements/_archived/intelligence-bbia.md) — Intelligence conversationnelle (archivé)
+- [Améliorations Intelligence Contexte](quality/improvements/_archived/intelligence-context.md) — Intelligence contextuelle (archivé)
 - [Améliorations Gratuites](quality/improvements/free-improvements.md) — Solutions gratuites
 
 ### 📋 Références
