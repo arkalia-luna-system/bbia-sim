@@ -415,7 +415,7 @@ class BBIATools:
                 logger.warning(
                     "VisionTrackingBehavior non disponible - suivi basique activé",
                 )
-            except (AttributeError, RuntimeError) as e:
+            except (AttributeError, RuntimeError):
                 logger.exception("Erreur activation VisionTrackingBehavior")
             except Exception as e:
                 logger.exception(
@@ -517,9 +517,9 @@ class BBIATools:
                     logger.warning(
                         "robot_api.emergency_stop() non disponible - arrêt basique",
                     )
-            except (AttributeError, RuntimeError) as e:
+            except (AttributeError, RuntimeError):
                 logger.exception("Erreur arrêt danse")
-            except Exception as e:
+            except Exception:
                 logger.exception("Erreur inattendue arrêt danse")
 
         logger.info("Danse '%s' arrêtée", dance_name)

@@ -200,7 +200,7 @@ class BBIAIntegration:
 
             return True
 
-        except Exception as e:
+        except Exception:
             logger.exception("❌ Erreur démarrage intégration ")
             return False
 
@@ -474,7 +474,7 @@ class BBIAIntegration:
             logger.info("✅ Émotion '%s' appliquée au robot", emotion)
             return True
 
-        except Exception as e:
+        except Exception:
             logger.exception("❌ Erreur application émotion ")
             return False
 
@@ -574,7 +574,7 @@ class BBIAIntegration:
 
             return False
 
-        except Exception as e:
+        except Exception:
             logger.exception("❌ Erreur réaction visuelle ")
             return False
 
@@ -653,7 +653,7 @@ class BBIAIntegration:
 
             return True
 
-        except Exception as e:
+        except Exception:
             logger.exception("❌ Erreur synchronisation voix ")
             return False
 
@@ -695,7 +695,7 @@ class BBIAIntegration:
             logger.info("✅ Séquence '%s' exécutée", behavior_name)
             return True
 
-        except Exception as e:
+        except Exception:
             logger.exception("❌ Erreur exécution comportement ")
             return False
 

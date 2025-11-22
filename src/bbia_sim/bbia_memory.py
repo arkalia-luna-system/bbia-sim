@@ -73,7 +73,7 @@ class BBIAMemory:
                 f"💾 Conversation sauvegardée ({len(conversation_history)} messages)",
             )
             return True
-        except Exception as e:
+        except Exception:
             logger.exception("❌ Erreur sauvegarde conversation")
             return False
 
@@ -129,7 +129,7 @@ class BBIAMemory:
 
             logger.debug("💾 Préférence sauvegardée: %s = %s", key, value)
             return True
-        except Exception as e:
+        except Exception:
             logger.exception("❌ Erreur sauvegarde préférence")
             return False
 
@@ -204,7 +204,7 @@ class BBIAMemory:
 
             logger.debug("💾 Apprentissage sauvegardé: %s → %s", pattern, response)
             return True
-        except Exception as e:
+        except Exception:
             logger.exception("❌ Erreur sauvegarde apprentissage")
             return False
 
@@ -263,7 +263,7 @@ class BBIAMemory:
 
             logger.info("💾 Mémoire effacée")
             return True
-        except Exception as e:
+        except Exception:
             logger.exception("❌ Erreur effacement mémoire")
             return False
 
@@ -326,7 +326,7 @@ def append_record(record: dict[str, Any], memory_dir: str = "bbia_memory") -> bo
         conversation = memory.load_conversation()
         conversation.append(record)
         return memory.save_conversation(conversation)
-    except Exception as e:
+    except Exception:
         logger.exception("❌ Erreur append_record")
         return False
 

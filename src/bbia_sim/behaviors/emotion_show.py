@@ -271,10 +271,10 @@ class EmotionShowBehavior(BBIABehavior):
         except KeyboardInterrupt:
             logger.info("Démonstration interrompue par l'utilisateur")
             self._cancelled = True
-        except (AttributeError, RuntimeError, ValueError) as e:
+        except (AttributeError, RuntimeError, ValueError):
             logger.exception("Erreur durant démonstration émotions")
             return False
-        except Exception as e:
+        except Exception:
             logger.exception("Erreur inattendue durant démonstration émotions")
             return False
 

@@ -107,7 +107,7 @@ class MusicReactionBehavior(BBIABehavior):
         try:
             self._react_to_music(genre, duration)
             return True
-        except Exception as e:
+        except Exception:
             logger.exception("Erreur lors de la réaction musicale")
             return False
         finally:

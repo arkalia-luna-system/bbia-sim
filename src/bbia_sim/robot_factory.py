@@ -62,7 +62,7 @@ class RobotFactory:
             logger.error("Type de backend non supporté: %s", backend_type)
             return None
 
-        except Exception as e:
+        except Exception:
             logger.exception("Erreur création backend %s:", backend_type)
             return None
 

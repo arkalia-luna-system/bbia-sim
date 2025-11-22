@@ -146,10 +146,10 @@ class WhisperSTT:
             self.is_loaded = True
             return True
 
-        except (ImportError, RuntimeError, OSError, ValueError) as e:
+        except (ImportError, RuntimeError, OSError, ValueError):
             logger.exception("❌ Erreur chargement Whisper")
             return False
-        except Exception as e:
+        except Exception:
             logger.exception("❌ Erreur inattendue chargement Whisper")
             return False
 
@@ -199,10 +199,10 @@ class WhisperSTT:
             )
             return text
 
-        except (RuntimeError, ValueError, OSError, AttributeError) as e:
+        except (RuntimeError, ValueError, OSError, AttributeError):
             logger.exception("❌ Erreur transcription")
             return None
-        except Exception as e:
+        except Exception:
             logger.exception("❌ Erreur inattendue transcription")
             return None
 
@@ -272,7 +272,7 @@ class WhisperSTT:
                 "❌ sounddevice/soundfile requis pour l'enregistrement microphone",
             )
             return None
-        except Exception as e:
+        except Exception:
             logger.exception("❌ Erreur enregistrement microphone")
             return None
 
@@ -489,7 +489,7 @@ class WhisperSTT:
                 "❌ sounddevice/soundfile requis pour l'enregistrement microphone",
             )
             return None
-        except Exception as e:
+        except Exception:
             logger.exception("❌ Erreur enregistrement microphone avec VAD")
             return None
 
@@ -691,7 +691,7 @@ class WhisperSTT:
         except ImportError:
             logger.exception("❌ sounddevice/soundfile requis pour streaming")
             return None
-        except Exception as e:
+        except Exception:
             logger.exception("❌ Erreur streaming")
             return None
 

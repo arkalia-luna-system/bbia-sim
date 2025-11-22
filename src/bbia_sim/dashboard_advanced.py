@@ -175,13 +175,13 @@ class BBIAAdvancedWebSocketManager:
                     RuntimeError,
                     ImportError,
                     OSError,
-                ) as e:
+                ):
                     logger.exception("❌ Erreur initialisation robot")
                     # En cas d'erreur, le dashboard fonctionne quand même en mode simulation
                     logger.info(
                         "ℹ️ Dashboard fonctionne en mode simulation (sans robot réel)",
                     )
-                except Exception as e:
+                except Exception:
                     logger.exception("❌ Erreur inattendue initialisation robot")
                     logger.info(
                         "ℹ️ Dashboard fonctionne en mode simulation (sans robot réel)",
@@ -546,11 +546,11 @@ class BBIAAdvancedWebSocketManager:
                 except asyncio.CancelledError:
                     # Tâche annulée, sortir proprement
                     break
-                except (AttributeError, RuntimeError, ValueError) as e:
+                except (AttributeError, RuntimeError, ValueError):
                     if not self._stop_metrics:
                         logger.exception("Erreur collecte métriques")
                     await asyncio.sleep(1.0)
-                except Exception as e:
+                except Exception:
                     if not self._stop_metrics:
                         logger.exception("Erreur inattendue collecte métriques")
                     await asyncio.sleep(1.0)
@@ -3412,10 +3412,10 @@ if FASTAPI_AVAILABLE:
                         RuntimeError,
                         AttributeError,
                         ConnectionError,
-                    ) as e:
+                    ):
                         logger.exception("Erreur stream vidéo")
                         await asyncio.sleep(1)
-                    except Exception as e:
+                    except Exception:
                         logger.exception("Erreur inattendue stream vidéo")
                         await asyncio.sleep(1)
             except GeneratorExit:
@@ -3456,10 +3456,10 @@ if FASTAPI_AVAILABLE:
         except WebSocketDisconnect:
             logger.info("🔌 WebSocket déconnecté normalement")
             await advanced_websocket_manager.disconnect(websocket)
-        except (ConnectionError, RuntimeError, AttributeError) as e:
+        except (ConnectionError, RuntimeError, AttributeError):
             logger.exception("❌ Erreur WebSocket")
             await advanced_websocket_manager.disconnect(websocket)
-        except Exception as e:
+        except Exception:
             logger.exception("❌ Erreur inattendue WebSocket")
             await advanced_websocket_manager.disconnect(websocket)
 
@@ -3660,7 +3660,7 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                         success = True
                     else:
                         success = False
-                except (ValueError, AttributeError, RuntimeError, ConnectionError) as e:
+                except (ValueError, AttributeError, RuntimeError, ConnectionError):
                     logger.exception("Erreur exécution action %s:", action)
                     success = False
                 except Exception as e:
@@ -3734,7 +3734,7 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                             ConnectionError, RuntimeError, WebSocketDisconnect
                         ):
                             robot.step()
-            except (ValueError, RuntimeError, KeyError) as e:
+            except (ValueError, RuntimeError, KeyError):
                 logger.exception("Erreur exécution comportement %s:", behavior)
                 success = False
 
@@ -3951,7 +3951,7 @@ async def handle_chat_message(
             except ImportError as e:
                 logger.warning("⚠️ Hugging Face non disponible: %s", e)
                 advanced_websocket_manager.bbia_hf = None
-            except Exception as e:
+            except Exception:
                 logger.exception("❌ Erreur initialisation BBIAHuggingFace")
                 advanced_websocket_manager.bbia_hf = None
 

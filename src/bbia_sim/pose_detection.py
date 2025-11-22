@@ -72,7 +72,7 @@ class BBIAPoseDetection:
                 f"✅ BBIAPoseDetection initialisé (complexité: {model_complexity})",
             )
             self.is_initialized = True
-        except Exception as e:
+        except Exception:
             logger.exception("❌ Erreur initialisation MediaPipe Pose")
 
     def detect_pose(self, image: npt.NDArray[np.uint8]) -> dict[str, Any] | None:
@@ -131,7 +131,7 @@ class BBIAPoseDetection:
                 "num_landmarks": len(landmarks),
             }
 
-        except Exception as e:
+        except Exception:
             logger.exception("❌ Erreur détection pose")
             return None
 

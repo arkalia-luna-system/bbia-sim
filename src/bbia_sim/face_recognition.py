@@ -178,7 +178,7 @@ class BBIAPersonRecognition:
                 return None
             logger.warning("Erreur reconnaissance visage: %s", e)
             return None
-        except Exception as e:
+        except Exception:
             logger.exception("❌ Erreur reconnaissance personne")
             return None
         finally:
@@ -267,7 +267,7 @@ class BBIAPersonRecognition:
                 return None
             logger.warning("Erreur détection émotion: %s", e)
             return None
-        except Exception as e:
+        except Exception:
             logger.exception("❌ Erreur détection émotion")
             return None
         finally:

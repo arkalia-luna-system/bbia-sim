@@ -1319,10 +1319,10 @@ class BBIAVision:
                         self._scan_queue.put_nowait(result)
                 # Attendre intervalle avant prochain scan
                 self._should_stop_scan.wait(self._scan_interval)
-            except (RuntimeError, AttributeError, OSError) as e:
+            except (RuntimeError, AttributeError, OSError):
                 logger.exception("Erreur thread scan asynchrone")
                 time.sleep(self._scan_interval)
-            except Exception as e:
+            except Exception:
                 logger.exception("Erreur inattendue thread scan asynchrone")
                 time.sleep(self._scan_interval)
 

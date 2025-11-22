@@ -158,7 +158,7 @@ class BBIAEmotionRecognition:
             logger.info("✅ BBIA Emotion Recognition initialisé avec succès")
             return True
 
-        except Exception as e:
+        except Exception:
             logger.exception("❌ Erreur initialisation")
             return False
 
@@ -207,7 +207,7 @@ class BBIAEmotionRecognition:
 
             logger.info("📥 Modèles d'émotion chargés")
 
-        except Exception as e:
+        except Exception:
             logger.exception("❌ Erreur chargement modèles émotion")
 
     def detect_faces(self, image: np.ndarray | str) -> list[dict[str, Any]]:
@@ -273,7 +273,7 @@ class BBIAEmotionRecognition:
 
             return faces
 
-        except Exception as e:
+        except Exception:
             logger.exception("❌ Erreur détection visages")
             return []
 
@@ -540,7 +540,7 @@ class BBIAEmotionRecognition:
 
             return current_result
 
-        except Exception as e:
+        except Exception:
             logger.exception("❌ Erreur lissage temporel")
             return current_result
 

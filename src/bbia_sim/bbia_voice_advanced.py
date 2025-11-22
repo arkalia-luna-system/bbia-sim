@@ -116,7 +116,7 @@ class BBIAVoiceAdvanced:
                 self.pyttsx3_engine.setProperty("rate", 170)
                 self.pyttsx3_engine.setProperty("volume", 1.0)
                 logger.info("✅ Fallback pyttsx3 initialisé (avec cache)")
-            except Exception as e:
+            except Exception:
                 logger.exception("❌ Erreur initialisation fallback")
                 self.pyttsx3_engine = None
 
@@ -159,7 +159,7 @@ class BBIAVoiceAdvanced:
                 return self._say_pyttsx3(text, speed, volume)
             logger.error("❌ Aucun moteur TTS disponible")
             return False
-        except Exception as e:
+        except Exception:
             logger.exception("❌ Erreur synthèse vocale")
             return False
 
@@ -227,7 +227,7 @@ class BBIAVoiceAdvanced:
             logger.info("✅ Synthèse vocale terminée")
             return True
 
-        except Exception as e:
+        except Exception:
             logger.exception("❌ Erreur synthèse Coqui")
             # Fallback vers pyttsx3 si erreur
             if self.pyttsx3_engine:
@@ -300,7 +300,7 @@ class BBIAVoiceAdvanced:
             self.pyttsx3_engine.runAndWait()
             logger.info("✅ Synthèse pyttsx3 terminée")
             return True
-        except Exception as e:
+        except Exception:
             logger.exception("❌ Erreur synthèse pyttsx3")
             return False
 

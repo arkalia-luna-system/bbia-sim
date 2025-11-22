@@ -93,7 +93,7 @@ class AlarmClockBehavior(BBIABehavior):
         try:
             self._wait_for_alarm()
             return True
-        except Exception as e:
+        except Exception:
             logger.exception("Erreur lors du réveil")
             return False
         finally:

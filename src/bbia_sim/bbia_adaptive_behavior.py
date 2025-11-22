@@ -283,7 +283,7 @@ class BBIAAdaptiveBehavior:
             )
             return behavior
 
-        except Exception as e:
+        except Exception:
             logger.exception("❌ Erreur génération comportement")
             # Retourner un comportement par défaut en cas d'erreur
             return {
@@ -498,7 +498,7 @@ class BBIAAdaptiveBehavior:
 
             return None
 
-        except Exception as e:
+        except Exception:
             logger.exception("❌ Erreur comportement proactif")
             return None
 
@@ -549,7 +549,7 @@ class BBIAAdaptiveBehavior:
                 f"🔄 Adaptation basée sur retour: {feedback} (score: {score:.2f})",
             )
 
-        except Exception as e:
+        except Exception:
             logger.exception("❌ Erreur adaptation feedback")
 
     def get_behavior_statistics(self) -> dict[str, Any]:

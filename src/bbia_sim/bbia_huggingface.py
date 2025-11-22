@@ -695,7 +695,7 @@ class BBIAHuggingFace:
 
             return True
 
-        except (ImportError, RuntimeError, OSError, ValueError, AttributeError) as e:
+        except (ImportError, RuntimeError, OSError, ValueError, AttributeError):
             logger.exception("❌ Erreur chargement modèle {model_name}:")
             return False
         except Exception as e:
@@ -805,10 +805,10 @@ class BBIAHuggingFace:
                 "Erreur (describe_image): modèle non supporté — vérifiez le nom choisi"
             )
 
-        except (ValueError, RuntimeError, AttributeError, OSError) as e:
+        except (ValueError, RuntimeError, AttributeError, OSError):
             logger.exception("❌ Erreur description image:")
             return "Erreur (describe_image): échec de génération de description d'image"
-        except Exception as e:
+        except Exception:
             logger.exception("❌ Erreur inattendue description image:")
             return "Erreur (describe_image): échec de génération de description d'image"
 
@@ -928,10 +928,10 @@ class BBIAHuggingFace:
 
             return str(transcription)
 
-        except (OSError, RuntimeError, ValueError, AttributeError) as e:
+        except (OSError, RuntimeError, ValueError, AttributeError):
             logger.exception("❌ Erreur transcription audio:")
             return "Erreur (transcribe_audio): problème pendant la transcription audio"
-        except Exception as e:
+        except Exception:
             logger.exception("❌ Erreur inattendue transcription audio:")
             return "Erreur (transcribe_audio): problème pendant la transcription audio"
 
@@ -984,10 +984,10 @@ class BBIAHuggingFace:
 
             return str(answer)
 
-        except (ValueError, RuntimeError, AttributeError, OSError) as e:
+        except (ValueError, RuntimeError, AttributeError, OSError):
             logger.exception("❌ Erreur VQA:")
             return "Erreur (answer_question): échec de l'analyse visuelle (VQA)"
-        except Exception as e:
+        except Exception:
             logger.exception("❌ Erreur inattendue VQA:")
             return "Erreur (answer_question): échec de l'analyse visuelle (VQA)"
 
@@ -1246,7 +1246,7 @@ class BBIAHuggingFace:
             logger.info(f"🗑️ Modèle {model_name} déchargé - Mémoire libérée")
             return True
 
-        except (AttributeError, RuntimeError, KeyError) as e:
+        except (AttributeError, RuntimeError, KeyError):
             logger.exception("❌ Erreur déchargement modèle {model_name}:")
             return False
         except Exception as e:
@@ -1452,7 +1452,7 @@ class BBIAHuggingFace:
             # Normaliser et finaliser (anti-doublons/sentinelles)
             return self._normalize_response_length(adapted_response)
 
-        except Exception as e:
+        except Exception:
             logger.exception("❌ Erreur chat:")
             return "Je ne comprends pas bien, peux-tu reformuler ?"
 

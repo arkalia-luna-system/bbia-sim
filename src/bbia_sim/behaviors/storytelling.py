@@ -95,7 +95,7 @@ class StorytellingBehavior(BBIABehavior):
             story_func = self.stories[story_name]
             story_func(interactive=interactive)
             return True
-        except Exception as e:
+        except Exception:
             logger.exception("Erreur lors de la narration")
             return False
         finally:

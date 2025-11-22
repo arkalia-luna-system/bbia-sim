@@ -170,7 +170,7 @@ class FollowObjectBehavior(BBIABehavior):
 
         except KeyboardInterrupt:
             logger.info("Suivi interrompu par l'utilisateur")
-        except Exception as e:
+        except Exception:
             logger.exception("Erreur durant suivi objet")
         finally:
             self.is_tracking = False

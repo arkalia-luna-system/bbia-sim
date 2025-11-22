@@ -65,7 +65,7 @@ class ConnectionManager:
         for connection in self.active_connections:
             try:
                 await connection.send_text(message)
-            except Exception as e:
+            except Exception:
                 logger.exception("Erreur de diffusion ")
                 disconnected.append(connection)
 
@@ -112,7 +112,7 @@ class ConnectionManager:
 
             except asyncio.CancelledError:
                 break
-            except Exception as e:
+            except Exception:
                 logger.exception("Erreur dans la boucle de diffusion ")
                 await asyncio.sleep(1)
 
@@ -206,7 +206,7 @@ async def websocket_endpoint(websocket: WebSocket) -> None:
                 break
             except json.JSONDecodeError:
                 logger.warning("Message JSON invalide reçu")
-            except Exception as e:
+            except Exception:
                 logger.exception("Erreur de traitement de message ")
                 break
 

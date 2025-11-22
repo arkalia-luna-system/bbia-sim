@@ -86,7 +86,7 @@ class WeatherReportBehavior(BBIABehavior):
         try:
             self._report_weather()
             return True
-        except Exception as e:
+        except Exception:
             logger.exception("Erreur lors du rapport météo")
             return False
         finally:

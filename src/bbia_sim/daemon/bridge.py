@@ -163,7 +163,7 @@ class ZenohBridge:
             self.logger.info("Bridge Zenoh démarré avec succès")
             return True
 
-        except Exception as e:
+        except Exception:
             self.logger.exception("Erreur démarrage bridge Zenoh")
             return False
 
@@ -175,27 +175,27 @@ class ZenohBridge:
         if self.reachy_mini:
             try:
                 self.reachy_mini.close()
-            except Exception as e:
+            except Exception:
                 self.logger.exception("Erreur fermeture Reachy Mini")
 
         # Fermer les subscribers et publishers
         for sub in self.subscribers.values():
             try:
                 await sub.close()
-            except Exception as e:
+            except Exception:
                 self.logger.exception("Erreur fermeture subscriber")
 
         for pub in self.publishers.values():
             try:
                 await pub.close()
-            except Exception as e:
+            except Exception:
                 self.logger.exception("Erreur fermeture publisher")
 
         # Fermer la session Zenoh
         if self.session:
             try:
                 await self.session.close()
-            except Exception as e:
+            except Exception:
                 self.logger.exception("Erreur fermeture session Zenoh")
 
         self.logger.info("Bridge Zenoh arrêté")
@@ -227,7 +227,7 @@ class ZenohBridge:
 
             self.logger.info("Topics Zenoh configurés")
 
-        except Exception as e:
+        except Exception:
             self.logger.exception("Erreur configuration topics Zenoh")
 
     async def _on_command_received(self, sample: Any) -> None:
@@ -436,7 +436,7 @@ class ZenohBridge:
                 if hasattr(self.reachy_mini, "set_emotion"):
                     self.reachy_mini.set_emotion(sdk_emotion, intensity)
                 self.logger.info("Émotion %s mappée vers %s", emotion, sdk_emotion)
-        except Exception as e:
+        except Exception:
             self.logger.exception("Erreur set_emotion")
 
     async def _cmd_play_audio(self, params: PlayAudioParams) -> None:
@@ -468,7 +468,7 @@ class ZenohBridge:
                     self.logger.info("Audio joué via robot.media.play_audio")
                 else:
                     self.logger.warning("robot.media.play_audio non disponible")
-            except Exception as e:
+            except Exception:
                 self.logger.exception("Erreur play_audio")
 
     def _validate_look_at_coordinates(
@@ -550,7 +550,7 @@ class ZenohBridge:
                 self.logger.info("Look_at_image SDK: (%s, %s)", int(x), int(y))
             else:
                 self._look_at_fallback(x, y, z, duration)
-        except Exception as e:
+        except Exception:
             self.logger.exception("Erreur look_at")
 
     async def _state_publisher(self) -> None:
@@ -566,7 +566,7 @@ class ZenohBridge:
                 # Attendre avant la prochaine publication
                 await asyncio.sleep(0.1)  # 10Hz
 
-            except Exception as e:
+            except Exception:
                 self.logger.exception("Erreur publication état")
                 await asyncio.sleep(1.0)
 
@@ -629,7 +629,7 @@ class ZenohBridge:
             # Mettre à jour le timestamp
             self.current_state.timestamp = time.time()
 
-        except Exception as e:
+        except Exception:
             self.logger.exception("Erreur mise à jour état")
 
     async def _publish_state(self) -> None:
@@ -641,7 +641,7 @@ class ZenohBridge:
             state_data: dict[str, Any] = self.current_state.model_dump()
             await self.publishers["state"].put(json.dumps(state_data))
 
-        except Exception as e:
+        except Exception:
             self.logger.exception("Erreur publication état")
 
     async def _publish_error(self, error_message: str) -> None:
@@ -653,7 +653,7 @@ class ZenohBridge:
             error_data = {"error": error_message, "timestamp": time.time()}
             await self.publishers["errors"].put(json.dumps(error_data))
 
-        except Exception as e:
+        except Exception:
             self.logger.exception("Erreur publication erreur")
 
     async def send_command(self, command: RobotCommand) -> bool:
@@ -666,7 +666,7 @@ class ZenohBridge:
             await self.publishers["commands"].put(json.dumps(command_data))
             return True
 
-        except Exception as e:
+        except Exception:
             self.logger.exception("Erreur envoi commande")
             return False
 

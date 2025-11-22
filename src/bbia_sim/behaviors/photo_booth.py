@@ -130,7 +130,7 @@ class PhotoBoothBehavior(BBIABehavior):
 
         except KeyboardInterrupt:
             logger.info("Photo booth interrompu par l'utilisateur")
-        except Exception as e:
+        except Exception:
             logger.exception("Erreur durant photo booth")
             return False
 
@@ -247,5 +247,5 @@ class PhotoBoothBehavior(BBIABehavior):
                 if dire_texte is not None:
                     dire_texte("Photo !", robot_api=self.robot_api)
 
-        except Exception as e:
+        except Exception:
             logger.exception("Erreur capture photo")

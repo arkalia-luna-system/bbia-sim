@@ -568,7 +568,7 @@ def _transcribe_thread_worker() -> None:
             _transcribe_queue.task_done()
         except queue.Empty:
             continue
-        except Exception as e:
+        except Exception:
             logger.exception("Erreur thread transcription asynchrone")
             _transcribe_queue.task_done()
 

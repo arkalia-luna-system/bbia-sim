@@ -99,7 +99,7 @@ class GameBehavior(BBIABehavior):
             game_func(rounds=rounds)
             self._show_final_score()
             return True
-        except Exception as e:
+        except Exception:
             logger.exception("Erreur lors du jeu")
             return False
         finally:

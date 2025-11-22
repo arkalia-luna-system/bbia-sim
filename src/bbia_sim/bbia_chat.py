@@ -200,10 +200,10 @@ class BBIAChat:
             )  # nosec B615 - Modèle stable, revision pinning optionnel
             logger.info("✅ TinyLlama chargé avec succès")
 
-        except (ImportError, RuntimeError, OSError, ValueError) as e:
+        except (ImportError, RuntimeError, OSError, ValueError):
             logger.exception("❌ Impossible de charger TinyLlama")
             logger.warning("Mode fallback: réponses basiques (sans LLM)")
-        except Exception as e:
+        except Exception:
             logger.exception("❌ Erreur inattendue chargement TinyLlama")
             logger.warning("Mode fallback: réponses basiques (sans LLM)")
 
@@ -280,7 +280,7 @@ class BBIAChat:
             # Sanitizer: retirer code exécutable potentiel
             return self._sanitize_response(response)
 
-        except Exception as e:
+        except Exception:
             logger.exception("❌ Erreur génération LLM")
             return "Désolé, une erreur s'est produite lors de la génération."
 
@@ -374,7 +374,7 @@ class BBIAChat:
 
             return response
 
-        except Exception as e:
+        except Exception:
             logger.exception("❌ Erreur chat")
             return "Je ne comprends pas bien, peux-tu reformuler ?"
 
@@ -499,7 +499,7 @@ class BBIAChat:
                         self.robot_api.goto_target(head=pose, duration=2.0)
                 logger.info("✅ Action exécutée: sleep (pose sommeil améliorée)")
 
-        except Exception as e:
+        except Exception:
             logger.exception("❌ Erreur exécution action %s:", action_name)
 
     def _extract_emotion(self, user_message: str) -> str | None:
@@ -555,7 +555,7 @@ class BBIAChat:
 
         except ImportError:
             logger.warning("BBIAEmotions non disponible - émotion non appliquée")
-        except Exception as e:
+        except Exception:
             logger.exception("❌ Erreur application émotion %s:", emotion)
 
     def set_personality(self, personality: str) -> None:

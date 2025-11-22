@@ -64,7 +64,7 @@ class BBIAWebSocketManager:
         """Envoie un message à un WebSocket spécifique."""
         try:
             await websocket.send_text(message)
-        except Exception as e:
+        except Exception:
             logger.exception("❌ Erreur envoi message")
 
     async def broadcast(self, message: str) -> None:
@@ -76,7 +76,7 @@ class BBIAWebSocketManager:
         for connection in self.active_connections:
             try:
                 await connection.send_text(message)
-            except Exception as e:
+            except Exception:
                 logger.exception("❌ Erreur broadcast")
                 disconnected.append(connection)
 
@@ -366,7 +366,7 @@ if FASTAPI_AVAILABLE:
 
         except WebSocketDisconnect:
             websocket_manager.disconnect(websocket)
-        except Exception as e:
+        except Exception:
             logger.exception("❌ Erreur WebSocket")
             websocket_manager.disconnect(websocket)
 

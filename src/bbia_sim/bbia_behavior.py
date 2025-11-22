@@ -132,9 +132,9 @@ class WakeUpBehavior(BBIABehavior):
                     dire_texte(wake_message, robot_api=self.robot_api)
                     logger.info("Synthèse vocale : %s", wake_message)
                     return True
-            except (AttributeError, RuntimeError, ValueError) as e:
+            except (AttributeError, RuntimeError, ValueError):
                 logger.exception("Erreur wake_up SDK")
-            except Exception as e:
+            except Exception:
                 logger.exception("Erreur inattendue wake_up SDK")
 
         # Fallback: Séquence manuelle conforme SDK
@@ -289,7 +289,7 @@ class GreetingBehavior(BBIABehavior):
                 self.robot_api.set_joint_pos("yaw_body", 0.12)
                 time.sleep(0.5)
                 self.robot_api.set_joint_pos("yaw_body", 0.0)
-            except Exception as e:
+            except Exception:
                 logger.exception("Erreur fallback rotation corps")
 
         # OPTIMISATION SDK: Passer robot_api pour utiliser haut-parleur 5W
@@ -1177,7 +1177,7 @@ class BBIABehaviorManager:
                     self.execute_behavior(behavior_name, context)
                 else:
                     time.sleep(0.1)
-            except Exception as e:
+            except Exception:
                 logger.exception("Erreur dans le worker de comportements ")
                 time.sleep(0.1)  # Éviter une boucle infinie en cas d'erreur
 

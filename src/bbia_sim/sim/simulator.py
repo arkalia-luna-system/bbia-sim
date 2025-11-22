@@ -46,7 +46,7 @@ class MuJoCoSimulator:
             self.viewer: mujoco.viewer.MjViewer | None = None
             self.target_positions: dict[str, float] = {}  # Positions cibles à maintenir
             logger.info("Simulateur MuJoCo initialisé avec %s", self.model_path)
-        except Exception as e:
+        except Exception:
             logger.exception("Erreur lors du chargement du modèle MJCF ")
             raise
 
@@ -180,7 +180,7 @@ class MuJoCoSimulator:
             self.data = mujoco.MjData(self.model)
             if self.viewer:
                 self.viewer.update_model(self.model, self.data)
-        except mujoco.FatalError as e:
+        except mujoco.FatalError:
             logger.exception("Erreur lors du chargement de la scène ")
             raise
 

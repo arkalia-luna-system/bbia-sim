@@ -370,7 +370,7 @@ class RobotAPI(ABC):
                 logger.info("✅ Pose sommeil simplifiée définie")
                 return True
             return False
-        except Exception as e:
+        except Exception:
             logger.exception("Erreur set_sleeping_pose")
             return False
 

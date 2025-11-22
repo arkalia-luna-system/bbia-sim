@@ -81,7 +81,7 @@ class MeditationBehavior(BBIABehavior):
         try:
             self._guide_meditation()
             return True
-        except Exception as e:
+        except Exception:
             logger.exception("Erreur lors de la méditation")
             return False
         finally:

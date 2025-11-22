@@ -60,7 +60,7 @@ class SimulationService:
             logger.info("Simulation MuJoCo démarrée avec succès")
             return True
 
-        except Exception as e:
+        except Exception:
             logger.exception("Erreur lors du démarrage de la simulation ")
             return False
 
@@ -128,7 +128,7 @@ class SimulationService:
                     0.016,
                 )  # ~60 Hz (suffisant pour simulation fluide, moins de CPU)
 
-            except Exception as e:
+            except Exception:
                 logger.exception("Erreur dans la simulation headless ")
                 await asyncio.sleep(0.1)
 
@@ -147,7 +147,7 @@ class SimulationService:
                 False,
                 None,
             )
-        except Exception as e:
+        except Exception:
             logger.exception("Erreur simulation graphique ")
             # Fallback vers headless si le viewer échoue
             logger.info("Fallback vers simulation headless")
@@ -188,7 +188,7 @@ class SimulationService:
             if isinstance(joint_positions, dict):
                 return joint_positions
             return self._get_default_joint_positions()
-        except Exception as e:
+        except Exception:
             logger.exception("Erreur lors de la récupération des positions ")
             return self._get_default_joint_positions()
 
@@ -211,7 +211,7 @@ class SimulationService:
             self.simulator.set_joint_position(joint_name, position)
             logger.info("Position de %s définie à %s", joint_name, position)
             return True
-        except Exception as e:
+        except Exception:
             logger.exception("Erreur lors de la définition de la position ")
             return False
 
@@ -227,7 +227,7 @@ class SimulationService:
 
         try:
             return self.simulator.get_available_joints()
-        except Exception as e:
+        except Exception:
             logger.exception("Erreur lors de la récupération des articulations ")
             return self._get_default_joint_names()
 

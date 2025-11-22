@@ -172,7 +172,7 @@ class YOLODetector:
             self.is_loaded = True
             return True
 
-        except Exception as e:
+        except Exception:
             logger.exception("❌ Erreur chargement YOLO")
             return False
 
@@ -273,7 +273,7 @@ class YOLODetector:
             logger.debug("🔍 %s objets détectés", len(detections))
             return detections
 
-        except Exception as e:
+        except Exception:
             logger.exception("❌ Erreur détection YOLO")
             return []
 
@@ -402,7 +402,7 @@ class YOLODetector:
             )
             return all_detections
 
-        except Exception as e:
+        except Exception:
             logger.exception("❌ Erreur détection YOLO batch")
             return [[] for _ in images]
 
@@ -572,7 +572,7 @@ class FaceDetector:
             logger.debug("👤 %s visages détectés", len(detections))
             return detections
 
-        except Exception as e:
+        except Exception:
             logger.exception("❌ Erreur détection visages")
             return []
 
