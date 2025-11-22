@@ -35,7 +35,10 @@ class TestBBIAIntelligenceContext:
     )
     def test_context_reference_detection(self):
         """Test que BBIA détecte les références au contexte précédent."""
-        hf = BBIAHuggingFace()
+        try:
+            hf = BBIAHuggingFace()
+        except ImportError:
+            pytest.skip("Hugging Face transformers non disponible")
 
         # Premier message pour créer un contexte
         response1 = hf.chat("J'aime la robotique")
@@ -59,7 +62,10 @@ class TestBBIAIntelligenceContext:
     )
     def test_generic_responses_variety_improved(self):
         """Test que les réponses génériques ont été améliorées (plus variées)."""
-        hf = BBIAHuggingFace()
+        try:
+            hf = BBIAHuggingFace()
+        except ImportError:
+            pytest.skip("Hugging Face transformers non disponible")
 
         # Test plusieurs messages génériques pour vérifier variété
         test_messages = [
@@ -92,7 +98,10 @@ class TestBBIAIntelligenceContext:
     )
     def test_question_responses_improved(self):
         """Test que les réponses aux questions ont été améliorées."""
-        hf = BBIAHuggingFace()
+        try:
+            hf = BBIAHuggingFace()
+        except ImportError:
+            pytest.skip("Hugging Face transformers non disponible")
 
         # Tester différentes questions
         questions = [
@@ -140,7 +149,10 @@ class TestBBIAIntelligenceContext:
         personalities = ["friendly_robot", "curious", "enthusiastic", "calm"]
 
         for personality in personalities:
-            hf = BBIAHuggingFace()
+            try:
+                hf = BBIAHuggingFace()
+            except ImportError:
+                pytest.skip("Hugging Face transformers non disponible")
             hf.bbia_personality = personality
 
             # Créer un contexte
@@ -159,7 +171,10 @@ class TestBBIAIntelligenceContext:
     )
     def test_generic_responses_length_and_intelligence(self):
         """Test que les réponses génériques sont longues et intelligentes."""
-        hf = BBIAHuggingFace()
+        try:
+            hf = BBIAHuggingFace()
+        except ImportError:
+            pytest.skip("Hugging Face transformers non disponible")
 
         # Messages génériques
         generic_messages = ["C'est bien", "Intéressant", "Je comprends"]
@@ -221,7 +236,10 @@ class TestBBIAIntelligenceContext:
     )
     def test_no_regression_chat_api(self):
         """Test qu'il n'y a pas de régression dans l'API chat."""
-        hf = BBIAHuggingFace()
+        try:
+            hf = BBIAHuggingFace()
+        except ImportError:
+            pytest.skip("Hugging Face transformers non disponible")
 
         # Vérifier que chat() accepte toujours les mêmes paramètres
         response1 = hf.chat("Bonjour")
