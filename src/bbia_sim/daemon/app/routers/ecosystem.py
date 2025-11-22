@@ -232,7 +232,7 @@ async def get_api_status() -> APIStatus:
 
 @router.post("/emotions/apply")
 async def apply_emotion(
-    emotion: Annotated[str, Query(description="Nom de l'émotion à appliquer")] = ...,
+    emotion: Annotated[str, Query(description="Nom de l'émotion à appliquer")],
     intensity: Annotated[
         float, Query(ge=0.0, le=1.0, description="Intensité de l'émotion")
     ] = 0.5,
@@ -293,7 +293,7 @@ async def apply_emotion(
 
 @router.post("/behaviors/execute")
 async def execute_behavior(
-    behavior: Annotated[str, Query(description="Nom du comportement à exécuter")] = ...,
+    behavior: Annotated[str, Query(description="Nom du comportement à exécuter")],
     intensity: Annotated[
         float, Query(ge=0.0, le=2.0, description="Intensité du comportement")
     ] = 1.0,
@@ -491,7 +491,7 @@ async def get_demo_modes() -> dict[str, Any]:
 
 @router.post("/demo/start")
 async def start_demo_mode(
-    mode: Annotated[str, Query(description="Mode de démonstration")] = ...,
+    mode: Annotated[str, Query(description="Mode de démonstration")],
     duration: Annotated[float, Query(gt=0, description="Durée en secondes")] = 30.0,
     emotion: Annotated[str | None, Query(description="Émotion à démontrer")] = None,
 ) -> dict[str, Any]:

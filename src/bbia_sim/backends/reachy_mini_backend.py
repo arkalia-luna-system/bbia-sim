@@ -1082,11 +1082,8 @@ class ReachyMiniBackend(RobotAPI):
         except (AttributeError, RuntimeError, ValueError, OSError, TypeError):
             logger.exception("Erreur get_present_antenna_joint_positions")
             return [0.0, 0.0]
-        except Exception as e:
-            logger.exception(
-                "Erreur inattendue get_present_antenna_joint_positions: %s",
-                e,
-            )
+        except Exception:
+            logger.exception("Erreur inattendue get_present_antenna_joint_positions")
             return [0.0, 0.0]
 
     def set_target_body_yaw(self, body_yaw: float) -> None:
@@ -1119,11 +1116,8 @@ class ReachyMiniBackend(RobotAPI):
             IndexError,
         ):
             logger.exception("Erreur set_target_antenna_joint_positions")
-        except Exception as e:
-            logger.exception(
-                "Erreur inattendue set_target_antenna_joint_positions: %s",
-                e,
-            )
+        except Exception:
+            logger.exception("Erreur inattendue set_target_antenna_joint_positions")
 
     def look_at_image(
         self,

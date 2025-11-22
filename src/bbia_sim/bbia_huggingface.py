@@ -699,11 +699,7 @@ class BBIAHuggingFace:
             logger.exception("❌ Erreur chargement modèle {model_name}:")
             return False
         except Exception as e:
-            logger.exception(
-                "❌ Erreur inattendue chargement modèle %s: %s",
-                model_name,
-                e,
-            )
+            logger.exception("❌ Erreur inattendue chargement modèle %s:", model_name)
             return False
 
     def _get_pipeline_name(self, model_name: str) -> str:
@@ -1249,10 +1245,8 @@ class BBIAHuggingFace:
         except (AttributeError, RuntimeError, KeyError):
             logger.exception("❌ Erreur déchargement modèle {model_name}:")
             return False
-        except Exception as e:
-            logger.exception(
-                f"❌ Erreur inattendue déchargement modèle {model_name}: {e}",
-            )
+        except Exception:
+            logger.exception(f"❌ Erreur inattendue déchargement modèle {model_name}:")
             return False
 
     def get_model_info(self) -> dict[str, Any]:
@@ -1868,18 +1862,10 @@ class BBIAHuggingFace:
                         return f"⚠️ {error_detail}"
 
                     except (AttributeError, RuntimeError, ValueError, KeyError) as e:
-                        logger.exception(
-                            "❌ Erreur exécution outil '%s': %s",
-                            tool_name,
-                            e,
-                        )
+                        logger.exception("❌ Erreur exécution outil '%s':", tool_name)
                         return f"❌ Erreur lors de l'exécution: {e}"
                     except Exception as e:
-                        logger.exception(
-                            "❌ Erreur inattendue exécution outil '%s': %s",
-                            tool_name,
-                            e,
-                        )
+                        logger.exception("❌ Erreur inattendue exécution outil '%s':", tool_name)
                         return f"❌ Erreur lors de l'exécution: {e}"
 
         # Aucun outil détecté
@@ -2132,11 +2118,7 @@ class BBIAHuggingFace:
             logger.exception("❌ Erreur exécution outil '{tool_name}':")
             return f"❌ Erreur lors de l'exécution: {e}"
         except Exception as e:
-            logger.exception(
-                "❌ Erreur inattendue exécution outil '%s': %s",
-                tool_name,
-                e,
-            )
+            logger.exception("❌ Erreur inattendue exécution outil '%s':", tool_name)
             return f"❌ Erreur lors de l'exécution: {e}"
 
     def _extract_angle(self, message: str) -> float | None:
