@@ -472,9 +472,10 @@ class VisionTrackingBehavior(BBIABehavior):
                                     "tentative avec look_at_image",
                                 )
                         except (ValueError, TypeError, AttributeError) as e:
-                                logger.debug(
-                                    "Erreur look_at_world, fallback vers look_at_image: %s", e
-                                )
+                            logger.debug(
+                                "Erreur look_at_world, fallback vers look_at_image: %s",
+                                e,
+                            )
                     else:
                         logger.debug(
                             "Pas de position 3D disponible, "
@@ -498,9 +499,7 @@ class VisionTrackingBehavior(BBIABehavior):
                                     f"Coordonnées image hors limites: ({u}, {v})",
                                 )
                         except (ValueError, TypeError, AttributeError) as e:
-                            logger.debug(
-                                "Erreur look_at_image: %s", e
-                            )
+                            logger.debug("Erreur look_at_image: %s", e)
                     else:
                         logger.debug("Pas de bbox disponible pour look_at_image")
 

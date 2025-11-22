@@ -340,7 +340,7 @@ def lire_audio(fichier: str, robot_api: Optional["RobotAPI"] = None) -> None:
                     speaker.play(audio_bytes)
                     logging.info("Lecture SDK terminée.")
                     return
-            except (AttributeError, RuntimeError, OSError):
+            except Exception:
                 logging.debug("Erreur lecture SDK (fallback sounddevice)")
                 # Fallback vers sounddevice
 
