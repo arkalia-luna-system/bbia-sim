@@ -1,7 +1,7 @@
-# ✅ Checklist Validation Hardware - Oct / Nov. 2025
+# ✅ Checklist Validation Hardware - Décembre 2025
 
 **Objectif :** Valider BBIA-SIM sur robot Reachy Mini physique  
-**Date cible :** Oct / Nov. 2025  
+**Date cible :** Décembre 2025  
 **Durée estimée :** 2-3 semaines à plein temps
 
 ---

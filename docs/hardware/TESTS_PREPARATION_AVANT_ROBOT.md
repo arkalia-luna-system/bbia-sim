@@ -1,6 +1,6 @@
 # 🧪 Tests de Préparation - Avant Arrivée Robot
 
-**Date** : Oct / Nov. 2025  
+**Date** : 22 novembre 2025  
 **Objectif** : Tester l'environnement local avant l'arrivée du robot Reachy Mini  
 **Durée estimée** : 30-60 minutes
 
