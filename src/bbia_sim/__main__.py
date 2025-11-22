@@ -111,7 +111,8 @@ Exemples d'utilisation:
         logger.exception("Erreur lors de l'exécution")
         sys.exit(1)
     except Exception:
-        logger.exception("Erreur inattendue lors de l'exécution")
+        logger.error("Erreur inattendue lors de l'exécution")
+        logger.exception("Détails de l'erreur")
         sys.exit(1)
 
 
