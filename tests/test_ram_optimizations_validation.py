@@ -104,8 +104,8 @@ def test_huggingface_auto_unload_thread() -> None:
         if hf._unload_thread is not None:
             assert hf._unload_thread.is_alive() or not hf._unload_thread.is_alive()
     finally:
-        # Nettoyer le thread après le test
         # Thread partagé géré automatiquement, pas besoin d'arrêt manuel
+        pass
 
 
 @pytest.mark.skipif(not HF_AVAILABLE, reason="Hugging Face non disponible")
