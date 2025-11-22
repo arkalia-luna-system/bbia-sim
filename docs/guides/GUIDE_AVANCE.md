@@ -2,8 +2,8 @@
 
 <div align="center">
 
-**Date** : 21 novembre 2025
-[![Version](https://img.shields.io/badge/version-1.3.2-blue.svg)](https://github.com/arkalia-luna-system/bbia-sim)
+**Date** : 22 novembre 2025
+[![Version](https://img.shields.io/badge/version-1.4.0-blue.svg)](https://github.com/arkalia-luna-system/bbia-sim)
 [![Niveau](https://img.shields.io/badge/niveau-Avancé-orange.svg)](docs/guides/)
 [![Temps](https://img.shields.io/badge/temps-15%20min-purple.svg)](#architecture-détaillée)
 
@@ -26,7 +26,7 @@
 
 <div align="center">
 
-**Version :** 1.3.2  
+**Version :** 1.4.0  
 **Public cible :** développeurs expérimentés souhaitant exploiter les fonctionnalités de BBIA
 
 [![🔧 Backend](https://img.shields.io/badge/🔧-Backend%20Unifié-blue)](#backend-unifié)

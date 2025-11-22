@@ -5,7 +5,7 @@
 **🤖 Conversations naturelles avec votre robot Reachy Mini**
 * IA avancée • Réponses contextuelles • Personnalités multiples*
 
-**Version** : 1.3.2 • **Date** : 21 novembre 2025
+**Version** : 1.4.0 • **Date** : 22 novembre 2025
 
 [📚 FAQ](../getting-started/troubleshooting.md) • [🧠 Guide NLP](../guides/GUIDE_NLP_SMOLVLM.md) • [📊 État actuel](../quality/audits/RESUME_ETAT_ACTUEL_BBIA.md)
 

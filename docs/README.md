@@ -1,6 +1,7 @@
 # 📚 Documentation BBIA-SIM — Navigation Rapide
 
-**Date** : 21 novembre 2025
+**Date** : 22 novembre 2025  
+**Version** : v1.4.0
 
 > **Moteur cognitif Python pour robot Reachy Mini**
 > *Simulation fidèle • IA avancée • SDK 100% conforme*
