@@ -174,8 +174,9 @@ class TestBBIAChat:
 
         # Mocker _load_llm() et generate() pour éviter le chargement réel du modèle LLM
         # qui cause un timeout en CI
-        with patch.object(chat, "_load_llm"), patch.object(
-            chat, "generate", return_value="Réponse simulée"
+        with (
+            patch.object(chat, "_load_llm"),
+            patch.object(chat, "generate", return_value="Réponse simulée"),
         ):
             # Simuler conversation
             chat.chat("Bonjour")

@@ -25,7 +25,9 @@ class TestBehaviorsIntegration:
 
     @patch("bbia_sim.bbia_voice.dire_texte")
     @patch("time.sleep")  # Mock sleep pour éviter timeout
-    def test_multiple_behaviors_sequential(self, mock_sleep, mock_dire_texte, mock_robot):
+    def test_multiple_behaviors_sequential(
+        self, mock_sleep, mock_dire_texte, mock_robot
+    ):
         """Test exécution séquentielle de plusieurs comportements."""
         # Mock dire_texte pour éviter les appels réels qui prennent du temps
         mock_dire_texte.return_value = None

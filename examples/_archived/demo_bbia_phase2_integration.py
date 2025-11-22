@@ -3,7 +3,8 @@
 # Ce fichier peut être archivé dans une future version
 """
 Exemple d'intégration des modules BBIA Phase 2
-Démonstration des nouvelles fonctionnalités : Hugging Face, Emotion Recognition, Adaptive Behavior
+Démonstration des nouvelles fonctionnalités :
+Hugging Face, Emotion Recognition, Adaptive Behavior
 """
 
 import sys
@@ -132,7 +133,8 @@ def demo_adaptive_behavior():
         for i in range(3):
             behavior = adaptive_behavior.generate_behavior(f"user_arrival_{i}")
             print(
-                f"  Comportement {i + 1}: {behavior['name']} - {behavior['description']}"
+                f"  Comportement {i + 1}: {behavior['name']} - "
+                f"{behavior['description']}"
             )
             print(
                 f"    Contexte: {behavior['context']}, Émotion: {behavior['emotion']}"
