@@ -315,6 +315,23 @@ def pytest_configure(config: pytest.Config) -> None:
         try:
             from bbia_sim.bbia_huggingface import BBIAHuggingFace
 
+            # Nettoyer thread partagé BBIAHuggingFace pour éviter fuites entre tests
+            try:
+                with BBIAHuggingFace._shared_unload_thread_lock:
+                    # Arrêter thread partagé si actif
+                    if (
+                        BBIAHuggingFace._shared_unload_thread
+                        and BBIAHuggingFace._shared_unload_thread.is_alive()
+                    ):
+                        BBIAHuggingFace._shared_unload_thread_stop.set()
+                        BBIAHuggingFace._shared_unload_thread.join(timeout=1.0)
+                    # Nettoyer liste instances
+                    BBIAHuggingFace._shared_instances.clear()
+                    BBIAHuggingFace._shared_unload_thread = None
+            except (AttributeError, RuntimeError):
+                # Ignorer si attributs n'existent pas encore
+                pass
+
             if hasattr(BBIAHuggingFace, "_clear_cache"):
                 BBIAHuggingFace._clear_cache()
         except (ImportError, AttributeError):
