@@ -70,7 +70,8 @@ def _get_robot_media() -> Any | None:
             return None
 
         # Connecter si nécessaire
-        if not hasattr(robot, "_connected") or not robot._connected:
+        connected = getattr(robot, "_connected", False)  # noqa: SLF001
+        if not connected:
             try:
                 robot.connect()
             except Exception as e:

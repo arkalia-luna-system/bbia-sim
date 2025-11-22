@@ -79,20 +79,20 @@ def test_huggingface_auto_unload_thread() -> None:
     hf = BBIAHuggingFace()
 
     try:
-    # Vérifier que le thread est initialisé
-    assert hasattr(hf, "_unload_thread")
-    assert hasattr(hf, "_unload_thread_stop")
-    assert hasattr(hf, "_unload_thread_lock")
-    assert hasattr(hf, "_inactivity_timeout")
+        # Vérifier que le thread est initialisé
+        assert hasattr(hf, "_unload_thread")
+        assert hasattr(hf, "_unload_thread_stop")
+        assert hasattr(hf, "_unload_thread_lock")
+        assert hasattr(hf, "_inactivity_timeout")
 
-    # Vérifier que le timeout est défini
-    assert hf._inactivity_timeout > 0
-    assert hf._inactivity_timeout <= 600  # Max 10 minutes
+        # Vérifier que le timeout est défini
+        assert hf._inactivity_timeout > 0
+        assert hf._inactivity_timeout <= 600  # Max 10 minutes
 
-    # Vérifier que le thread est démarré (ou None si pas encore démarré)
-    # Le thread peut être None si pas encore initialisé, c'est OK
-    if hf._unload_thread is not None:
-        assert hf._unload_thread.is_alive() or not hf._unload_thread.is_alive()
+        # Vérifier que le thread est démarré (ou None si pas encore démarré)
+        # Le thread peut être None si pas encore initialisé, c'est OK
+        if hf._unload_thread is not None:
+            assert hf._unload_thread.is_alive() or not hf._unload_thread.is_alive()
     finally:
         # Nettoyer le thread après le test
         try:

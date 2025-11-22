@@ -333,10 +333,11 @@ class BBIATools:
         try:
             # Capture image (utiliser _capture_image_from_camera ou méthode publique)
             image = None
-            if hasattr(self.vision, "_capture_image_from_camera"):
-                image = self.vision._capture_image_from_camera()
-            elif hasattr(self.vision, "capture_image"):
+            # Utiliser méthode publique si disponible, sinon méthode privée avec getattr
+            if hasattr(self.vision, "capture_image"):
                 image = self.vision.capture_image()
+            elif hasattr(self.vision, "_capture_image_from_camera"):
+                image = getattr(self.vision, "_capture_image_from_camera")()  # noqa: SLF001
             else:
                 return {"status": "error", "detail": "Méthode capture non disponible"}
 

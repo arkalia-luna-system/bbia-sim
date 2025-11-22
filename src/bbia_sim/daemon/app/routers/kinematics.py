@@ -51,8 +51,9 @@ async def get_urdf(
     # Le backend doit avoir une méthode get_urdf()
     if hasattr(backend, "get_urdf"):
         return {"urdf": backend.get_urdf()}
-    if hasattr(backend, "_robot") and hasattr(backend._robot, "get_urdf"):
-        return {"urdf": backend._robot.get_urdf()}
+    robot = getattr(backend, "_robot", None)  # noqa: SLF001
+    if robot is not None and hasattr(robot, "get_urdf"):
+        return {"urdf": robot.get_urdf()}
     return {"urdf": ""}
 
 
