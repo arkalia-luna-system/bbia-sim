@@ -1220,7 +1220,7 @@ class BBIAHuggingFace:
             return True
 
         except (AttributeError, RuntimeError, KeyError) as e:
-            logger.exception("❌ Erreur déchargement modèle %s: %s", model_name, e)
+            logger.exception(f"❌ Erreur déchargement modèle {model_name}: {e}")
             return False
         except Exception as e:
             logger.exception(
