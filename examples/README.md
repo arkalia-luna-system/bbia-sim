@@ -4,7 +4,7 @@ Ce dossier contient des exemples pratiques pour utiliser BBIA-SIM.
 
 ## 📊 **Résumé des Examples** (22 Nov. 2025)
 
-- **✅ Examples utiles** : **37 exemples fonctionnels et maintenus** (27 nouveaux créés 22 Nov. 2025)
+- **✅ Examples utiles** : **44 exemples fonctionnels et maintenus** (39 existants + 5 nouveaux créés 22 Nov. 2025)
 - **⚠️ Examples à améliorer** : ~5 exemples à consolider
 - **❌ Examples inutiles** : ~4 exemples à archiver
 - **🚀 Examples prioritaires** : ~10 exemples essentiels
