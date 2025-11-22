@@ -123,6 +123,9 @@ class BBIATouchDetection:
             )
             sd.wait()
             result = audio.flatten()
+            # Type narrowing pour mypy
+            if isinstance(result, np.ndarray):
+                return result.astype(np.float32)
             return np.asarray(result, dtype=np.float32)
         except Exception as e:
             logger.debug("Erreur enregistrement audio pour détection tactile: %s", e)
