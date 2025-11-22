@@ -1059,9 +1059,12 @@ class BBIAHuggingFace:
             """Boucle de déchargement automatique des modèles inactifs."""
             while not self._unload_thread_stop.is_set():
                 try:
-                    # Attendre 60 secondes entre vérifications
-                    if self._unload_thread_stop.wait(60.0):
+                    # Attendre 60 secondes entre vérifications (ou arrêt immédiat si demandé)
+                    # Utiliser un timeout plus court pour vérifier plus souvent l'arrêt
+                    if self._unload_thread_stop.wait(10.0):
                         break  # Arrêt demandé
+                    # Si pas d'arrêt demandé après 10s, continuer la boucle
+                    # (on vérifie toutes les 10s au lieu de 60s pour réactivité)
 
                     current_time = time.time()
                     # OPTIMISATION RAM: deque avec maxlen pour limiter taille
@@ -1120,10 +1123,26 @@ class BBIAHuggingFace:
 
     def _stop_auto_unload_thread(self) -> None:
         """OPTIMISATION RAM: Arrête le thread de déchargement automatique."""
-        if self._unload_thread and self._unload_thread.is_alive():
-            self._unload_thread_stop.set()
-            self._unload_thread.join(timeout=2.0)
-            logger.debug("Thread déchargement auto Hugging Face arrêté")
+        try:
+            if hasattr(self, "_unload_thread") and self._unload_thread and self._unload_thread.is_alive():
+                self._unload_thread_stop.set()
+                # Attendre que le thread se termine (max 2 secondes)
+                self._unload_thread.join(timeout=2.0)
+                if self._unload_thread.is_alive():
+                    logger.warning("Thread déchargement auto Hugging Face n'a pas pu être arrêté dans les temps")
+                else:
+                    logger.debug("Thread déchargement auto Hugging Face arrêté")
+        except (AttributeError, RuntimeError) as e:
+            # Ignorer erreurs si les attributs n'existent pas encore ou sont déjà détruits
+            logger.debug("Erreur arrêt thread déchargement auto: %s", e)
+
+    def __del__(self) -> None:
+        """Nettoyage lors de la destruction de l'instance."""
+        try:
+            self._stop_auto_unload_thread()
+        except (AttributeError, RuntimeError, TypeError):
+            # Ignorer erreurs lors de la destruction (objets déjà détruits ou en cours de destruction)
+            pass
 
     def unload_model(self, model_name: str) -> bool:
         """Décharge un modèle de la mémoire.

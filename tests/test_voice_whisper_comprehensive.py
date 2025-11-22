@@ -10,7 +10,7 @@ from pathlib import Path
 from unittest.mock import MagicMock, patch
 
 import numpy as np
-import pytest
+import pytest  # type: ignore[import-untyped]
 
 # Désactiver audio pour CI
 os.environ["BBIA_DISABLE_AUDIO"] = "1"
