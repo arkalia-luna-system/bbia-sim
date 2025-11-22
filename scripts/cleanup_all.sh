@@ -3,14 +3,30 @@
 # 🧹 Script de nettoyage complet - Fusion de cleanup_project.sh, cleanup_metadata_files.sh et smart_process_cleanup.sh
 # Nettoie les fichiers cache ET libère la RAM en une seule commande
 
-set -e
+# Ne pas arrêter sur erreur (certaines commandes peuvent échouer normalement)
+set +e
 
-# Couleurs pour l'affichage
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-BLUE='\033[0;34m'
-NC='\033[0m' # No Color
+# Vérifier si le terminal supporte les couleurs
+if [ -t 1 ] && command -v tput > /dev/null 2>&1 && [ "$(tput colors)" -ge 8 ]; then
+    USE_COLORS=true
+else
+    USE_COLORS=false
+fi
+
+# Couleurs pour l'affichage (seulement si supportées)
+if [ "$USE_COLORS" = true ]; then
+    RED='\033[0;31m'
+    GREEN='\033[0;32m'
+    YELLOW='\033[1;33m'
+    BLUE='\033[0;34m'
+    NC='\033[0m' # No Color
+else
+    RED=''
+    GREEN=''
+    YELLOW=''
+    BLUE=''
+    NC=''
+fi
 
 # Options par défaut
 CLEAN_CACHE=true
@@ -63,7 +79,7 @@ echo ""
 # ============================================================================
 
 if [ "$CLEAN_CACHE" = true ]; then
-    echo "${BLUE}📁 PHASE 1: Nettoyage des fichiers cache${NC}"
+    echo -e "${BLUE}📁 PHASE 1: Nettoyage des fichiers cache${NC}"
     echo "----------------------------------------"
     
     # 1. Supprimer les fichiers système macOS (métadonnées)
@@ -79,7 +95,7 @@ if [ "$CLEAN_CACHE" = true ]; then
     
     count_after=$(find . -name "._*" -type f ! -path "./venv/*" ! -path "./venv-*/*" ! -path "./dist/*" ! -path "./build/*" 2>/dev/null | wc -l | tr -d ' ')
     if [ "$count_before" -gt 0 ]; then
-        echo "   ✅ ${GREEN}Fichiers métadonnées supprimés: $((count_before - count_after))${NC}"
+        echo -e "   ✅ ${GREEN}Fichiers métadonnées supprimés: $((count_before - count_after))${NC}"
     else
         echo "   ✅ Aucun fichier métadonnées trouvé"
     fi
@@ -138,7 +154,7 @@ if [ "$CLEAN_CACHE" = true ]; then
     fi
     
     echo ""
-    echo "${GREEN}✅ Nettoyage fichiers cache terminé !${NC}"
+    echo -e "${GREEN}✅ Nettoyage fichiers cache terminé !${NC}"
     echo ""
 fi
 
@@ -147,7 +163,7 @@ fi
 # ============================================================================
 
 if [ "$CLEAN_RAM" = true ]; then
-    echo "${BLUE}💾 PHASE 2: Nettoyage de la RAM${NC}"
+    echo -e "${BLUE}💾 PHASE 2: Nettoyage de la RAM${NC}"
     echo "----------------------------------------"
     
     # Fonction pour vérifier si un processus est critique
@@ -172,7 +188,8 @@ if [ "$CLEAN_RAM" = true ]; then
     echo ""
     
     # Identifier les processus gourmands non critiques
-    problematic_count=0
+    # Utiliser un fichier temporaire pour compter les processus (car while est dans un sous-shell)
+    TEMP_FILE=$(mktemp)
     
     ps aux | awk 'NR>1 && ($3 > 15 || $6 > 1000000) {
         cmdline = ""
@@ -187,14 +204,21 @@ if [ "$CLEAN_RAM" = true ]; then
         if (!critical) {
             printf "%s|%s|%.1f|%s\n", $2, $3, $6/1024, cmdline
         }
-    }' | while IFS='|' read -r pid cpu ram cmdline; do
-        if [[ -n "$pid" ]]; then
-            echo "⚠️  PID $pid: ${cpu}% CPU, ${ram}MB RAM"
-            echo "   CMD: ${cmdline:0:80}..."
-            echo ""
-            problematic_count=$((problematic_count + 1))
-        fi
-    done
+    }' > "$TEMP_FILE"
+    
+    problematic_count=$(wc -l < "$TEMP_FILE" | tr -d ' ')
+    
+    if [ "$problematic_count" -gt 0 ]; then
+        while IFS='|' read -r pid cpu ram cmdline; do
+            if [[ -n "$pid" ]]; then
+                echo "⚠️  PID $pid: ${cpu}% CPU, ${ram}MB RAM"
+                echo "   CMD: ${cmdline:0:80}..."
+                echo ""
+            fi
+        done < "$TEMP_FILE"
+    fi
+    
+    rm -f "$TEMP_FILE"
     
     if [ "$problematic_count" -eq 0 ]; then
         echo "✅ Aucun processus problématique trouvé"
@@ -211,7 +235,8 @@ if [ "$CLEAN_RAM" = true ]; then
             echo "🛑 Arrêt des processus problématiques..."
             
             # Arrêter les processus gourmands non critiques
-            killed_count=0
+            # Utiliser un fichier temporaire pour stocker les PIDs
+            TEMP_PIDS=$(mktemp)
             ps aux | awk 'NR>1 && ($3 > 15 || $6 > 1000000) {
                 cmdline = ""
                 for (i=11; i<=NF; i++) cmdline = cmdline " " $i
@@ -225,7 +250,10 @@ if [ "$CLEAN_RAM" = true ]; then
                 if (!critical) {
                     print $2  # PID
                 }
-            }' | while read pid; do
+            }' > "$TEMP_PIDS"
+            
+            killed_count=0
+            while read -r pid; do
                 if [[ -n "$pid" && "$pid" =~ ^[0-9]+$ ]]; then
                     echo "   🛑 Arrêt du processus PID $pid"
                     kill -TERM "$pid" 2>/dev/null || true
@@ -237,10 +265,16 @@ if [ "$CLEAN_RAM" = true ]; then
                     fi
                     killed_count=$((killed_count + 1))
                 fi
-            done
+            done < "$TEMP_PIDS"
+            
+            rm -f "$TEMP_PIDS"
             
             echo ""
-            echo "${GREEN}✅ Processus problématiques arrêtés${NC}"
+            if [ "$killed_count" -gt 0 ]; then
+                echo -e "${GREEN}✅ $killed_count processus problématiques arrêtés${NC}"
+            else
+                echo -e "${GREEN}✅ Aucun processus à arrêter${NC}"
+            fi
         else
             echo "❌ Arrêt annulé"
         fi
@@ -255,7 +289,7 @@ if [ "$CLEAN_RAM" = true ]; then
     }' | head -10
     
     echo ""
-    echo "${GREEN}✅ Nettoyage RAM terminé !${NC}"
+    echo -e "${GREEN}✅ Nettoyage RAM terminé !${NC}"
     echo ""
 fi
 
@@ -265,7 +299,7 @@ fi
 
 echo ""
 echo "======================================"
-echo "${GREEN}🎯 Nettoyage complet terminé !${NC}"
+echo -e "${GREEN}🎯 Nettoyage complet terminé !${NC}"
 echo "======================================"
 echo ""
 echo "💡 Commandes utiles:"
