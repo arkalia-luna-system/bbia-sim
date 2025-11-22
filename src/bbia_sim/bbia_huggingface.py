@@ -4,6 +4,7 @@ Intégration avancée avec Hugging Face Hub pour enrichir les capacités IA de B
 """
 
 import logging
+import operator
 import os
 import re
 import time
@@ -1032,7 +1033,8 @@ class BBIAHuggingFace:
             return
 
         # Trouver modèle avec timestamp le plus ancien
-        oldest_key = min(self._model_last_used.items(), key=lambda x: x[1])[0]
+        # OPTIMISATION: operator.itemgetter plus rapide que lambda
+        oldest_key = min(self._model_last_used.items(), key=operator.itemgetter(1))[0]
 
         # Extraire nom modèle depuis clé (format: "model_name_type")
         parts = oldest_key.rsplit("_", 1)

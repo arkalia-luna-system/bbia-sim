@@ -116,7 +116,9 @@ class WhisperSTT:
                 if _whisper_model_last_used:
                     oldest_key = min(
                         _whisper_model_last_used.items(),
-                        key=lambda x: x[1],
+                        key=operator.itemgetter(
+                            1
+                        ),  # OPTIMISATION: plus rapide que lambda
                     )[0]
                     del _whisper_models_cache[oldest_key]
                     del _whisper_model_last_used[oldest_key]

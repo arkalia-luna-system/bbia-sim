@@ -164,8 +164,10 @@ class BBIAEmotions:
 
     def random_emotion(self) -> str:
         """Change vers une émotion aléatoire."""
-        available_emotions = list(self.emotions.keys())
-        available_emotions.remove(self.current_emotion)  # Éviter la même émotion
+        # OPTIMISATION: Éviter conversion en liste si possible
+        available_emotions = [
+            e for e in self.emotions.keys() if e != self.current_emotion
+        ]
 
         if available_emotions:
             new_emotion = secrets.choice(available_emotions)

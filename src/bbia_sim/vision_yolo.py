@@ -4,6 +4,7 @@ Détection d'objets légère avec YOLOv8n (optionnel)
 """
 
 import logging
+import operator
 import threading
 from typing import TYPE_CHECKING, Any
 
@@ -137,9 +138,10 @@ class YOLODetector:
             if len(_yolo_model_cache) >= _MAX_YOLO_CACHE_SIZE:
                 # Trouver modèle le moins récemment utilisé
                 if _yolo_model_last_used:
-                    oldest_key = min(_yolo_model_last_used.items(), key=lambda x: x[1])[
-                        0
-                    ]
+                    # OPTIMISATION: operator.itemgetter plus rapide que lambda
+                    oldest_key = min(
+                        _yolo_model_last_used.items(), key=operator.itemgetter(1)
+                    )[0]
                     del _yolo_model_cache[oldest_key]
                     del _yolo_model_last_used[oldest_key]
                     logger.debug(
