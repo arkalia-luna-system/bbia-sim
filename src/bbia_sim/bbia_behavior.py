@@ -1418,7 +1418,7 @@ def create_move_from_positions(
                         positions_list, duration
                     )
                     if result is not None:
-                        return result
+                        return result  # type: ignore[no-any-return]
                 except Exception:
                     # Si le backend échoue, continuer avec SimpleMove
                     logger.debug(
