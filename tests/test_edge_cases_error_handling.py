@@ -24,6 +24,11 @@ from bbia_sim.bbia_vision import BBIAVision
 
 BBIA_VISION_AVAILABLE = True
 
+# ReachyMiniBackend peut toujours être importé (fonctionne même sans SDK)
+from bbia_sim.backends.reachy_mini_backend import ReachyMiniBackend
+
+REACHY_MINI_BACKEND_AVAILABLE = True
+
 try:
     from bbia_sim.bbia_audio import BBIAAudio
 
@@ -31,11 +36,6 @@ try:
 except ImportError:
     BBIA_AUDIO_AVAILABLE = False
     BBIAAudio = None
-
-# ReachyMiniBackend peut toujours être importé (fonctionne même sans SDK)
-from bbia_sim.backends.reachy_mini_backend import ReachyMiniBackend
-
-REACHY_MINI_BACKEND_AVAILABLE = True
 
 
 class TestErrorHandlingModels:
