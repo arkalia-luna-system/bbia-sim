@@ -4,12 +4,18 @@ Backend unique pour MuJoCo et Reachy réel
 """
 
 import logging
+import math
+import time
 from abc import ABC, abstractmethod
 from typing import Any
 
 from .utils.types import RobotStatus
 
 logger = logging.getLogger(__name__)
+
+# Constantes pour comportements
+BEHAVIOR_STEP_DELAY = 0.1  # Délai entre étapes (10 Hz)
+BEHAVIOR_STEPS_PER_SECOND = 10  # Fréquence d'exécution des comportements
 
 
 class RobotAPI(ABC):
@@ -258,40 +264,31 @@ class RobotAPI(ABC):
 
     def _execute_wake_up(self, duration: float) -> bool:
         """Exécute le comportement de réveil."""
-        import math
-        import time
-
-        steps = int(duration * 10)  # 10 Hz
+        steps = int(duration * BEHAVIOR_STEPS_PER_SECOND)
         for step in range(steps):
             t = step / steps
             angle = 0.3 * (1 - math.cos(math.pi * t))  # Mouvement de réveil
             self.set_joint_pos("yaw_body", angle)
             self.step()
-            time.sleep(0.1)
+            time.sleep(BEHAVIOR_STEP_DELAY)
 
         return True
 
     def _execute_greeting(self, duration: float) -> bool:
         """Exécute le comportement de salutation."""
-        import math
-        import time
-
-        steps = int(duration * 10)  # 10 Hz
+        steps = int(duration * BEHAVIOR_STEPS_PER_SECOND)
         for step in range(steps):
             t = step / steps
             angle = 0.2 * math.sin(4 * math.pi * t)  # Mouvement de salutation
             self.set_joint_pos("yaw_body", angle)
             self.step()
-            time.sleep(0.1)
+            time.sleep(BEHAVIOR_STEP_DELAY)
 
         return True
 
     def _execute_nod(self, duration: float) -> bool:
         """Exécute un hochement de tête."""
-        import math
-        import time
-
-        steps = int(duration * 10)  # 10 Hz
+        steps = int(duration * BEHAVIOR_STEPS_PER_SECOND)
         for step in range(steps):
             t = step / steps
             # Mouvement de hochement (pitch)
@@ -299,7 +296,7 @@ class RobotAPI(ABC):
             if "pitch_head" in self.get_available_joints():
                 self.set_joint_pos("pitch_head", pitch)
             self.step()
-            time.sleep(0.1)
+            time.sleep(BEHAVIOR_STEP_DELAY)
 
         return True
 
@@ -310,16 +307,14 @@ class RobotAPI(ABC):
             return self.set_sleeping_pose(duration=duration)
 
         # Fallback: méthode simplifiée
-        import time
-
-        steps = int(duration * 10)  # 10 Hz
+        steps = int(duration * BEHAVIOR_STEPS_PER_SECOND)
         for step in range(steps):
             t = step / steps
             # Mouvement lent vers position neutre
             angle = 0.2 * (1 - t)  # Retour progressif à 0
             self.set_joint_pos("yaw_body", angle)
             self.step()
-            time.sleep(0.1)
+            time.sleep(BEHAVIOR_STEP_DELAY)
 
         return True
 
@@ -377,42 +372,33 @@ class RobotAPI(ABC):
 
     def _execute_exploration(self, duration: float) -> bool:
         """Exécute le comportement d'exploration."""
-        import math
-        import time
-
-        steps = int(duration * 10)  # 10 Hz
+        steps = int(duration * BEHAVIOR_STEPS_PER_SECOND)
         for step in range(steps):
             t = step / steps
             # Mouvement d'exploration (balayage)
             angle = 0.3 * math.sin(2 * math.pi * t / 2)  # Balayage lent
             self.set_joint_pos("yaw_body", angle)
             self.step()
-            time.sleep(0.1)
+            time.sleep(BEHAVIOR_STEP_DELAY)
 
         return True
 
     def _execute_interaction(self, duration: float) -> bool:
         """Exécute le comportement d'interaction."""
-        import math
-        import time
-
-        steps = int(duration * 10)  # 10 Hz
+        steps = int(duration * BEHAVIOR_STEPS_PER_SECOND)
         for step in range(steps):
             t = step / steps
             # Mouvement d'interaction (petits mouvements)
             angle = 0.15 * math.sin(6 * math.pi * t)  # Mouvements rapides
             self.set_joint_pos("yaw_body", angle)
             self.step()
-            time.sleep(0.1)
+            time.sleep(BEHAVIOR_STEP_DELAY)
 
         return True
 
     def _execute_demo(self, duration: float) -> bool:
         """Exécute le comportement de démonstration."""
-        import math
-        import time
-
-        steps = int(duration * 10)  # 10 Hz
+        steps = int(duration * BEHAVIOR_STEPS_PER_SECOND)
         for step in range(steps):
             t = step / steps
             # Séquence de démonstration (combinaison de mouvements)
@@ -424,7 +410,7 @@ class RobotAPI(ABC):
                 angle = 0.2 * math.sin(4 * math.pi * t)
             self.set_joint_pos("yaw_body", angle)
             self.step()
-            time.sleep(0.1)
+            time.sleep(BEHAVIOR_STEP_DELAY)
 
         return True
 

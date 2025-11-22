@@ -179,5 +179,30 @@
 
 ---
 
+---
+
+## 📋 ISSUES DIFFICILES - IMPLÉMENTATION COMPLÈTE ✅
+
+**7 issues applicables traitées** - Voir `AUDIT_ISSUES_DIFFICILES.md` pour détails complets
+
+### Améliorations (3 issues) ✅
+- ✅ **Issue #410** : Méthode `set_sleeping_pose()` ajoutée dans `RobotAPI`
+- ✅ **Issue #384** : Guide complet HF chat dans `GUIDE_LLM_CONVERSATION.md`
+- ✅ **Issue #389** : Section troubleshooting reSpeaker ajoutée
+
+### Documentation (4 issues) ✅
+- ✅ **Issue #434** : Documentation RPI cam CSI->USB ajoutée
+- ✅ **Issue #407** : Documentation Windows ajoutée
+- ✅ **Issue #389** : Troubleshooting reSpeaker documenté
+- ✅ **Issue #384** : Guide HF chat amélioré
+
+### Planification (2 issues) ✅
+- ✅ **Issue #183** : Méthode `check_collision()` ajoutée dans `MuJoCoBackend`
+- ✅ **Issue #30** : Méthode `create_robot_registry()` ajoutée dans `RobotFactory`
+
+**Statut** : ✅ **7 issues applicables implémentées/documentées** (22 Novembre 2025)
+
+---
+
 **Dernière mise à jour** : 22 Novembre 2025
 
