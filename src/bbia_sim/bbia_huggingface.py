@@ -185,19 +185,27 @@ class BBIAHuggingFace:
         # Enregistrer cette instance pour le thread partagé
         with BBIAHuggingFace._shared_unload_thread_lock:
             BBIAHuggingFace._shared_instances.append(self)
-            # Démarrer thread partagé si nécessaire
+            # Démarrer thread partagé si nécessaire (double-check pattern pour éviter race condition)
             if (
                 BBIAHuggingFace._shared_unload_thread is None
                 or not BBIAHuggingFace._shared_unload_thread.is_alive()
             ):
-                BBIAHuggingFace._shared_unload_thread_stop.clear()
-                BBIAHuggingFace._shared_unload_thread = threading.Thread(
-                    target=BBIAHuggingFace._shared_auto_unload_loop,
-                    daemon=True,
-                    name="BBIAHF-AutoUnload-Shared",
-                )
-                BBIAHuggingFace._shared_unload_thread.start()
-                logger.debug("✅ Thread partagé déchargement auto Hugging Face démarré")
+                # Double-check: vérifier une deuxième fois dans le lock pour éviter race condition
+                # (si plusieurs instances sont créées simultanément)
+                if (
+                    BBIAHuggingFace._shared_unload_thread is None
+                    or not BBIAHuggingFace._shared_unload_thread.is_alive()
+                ):
+                    BBIAHuggingFace._shared_unload_thread_stop.clear()
+                    BBIAHuggingFace._shared_unload_thread = threading.Thread(
+                        target=BBIAHuggingFace._shared_auto_unload_loop,
+                        daemon=True,
+                        name="BBIAHF-AutoUnload-Shared",
+                    )
+                    BBIAHuggingFace._shared_unload_thread.start()
+                    logger.debug(
+                        "✅ Thread partagé déchargement auto Hugging Face démarré"
+                    )
 
         # Chat intelligent : Historique et contexte
         # OPTIMISATION RAM: Utiliser deque avec maxlen pour limiter l'historique
@@ -1093,11 +1101,15 @@ class BBIAHuggingFace:
                             # Vérifier si l'instance existe encore
                             if not hasattr(instance, "_model_last_used"):
                                 continue
-                            for model_key, last_used in list(
-                                instance._model_last_used.items()
-                            ):
+                            model_last_used = getattr(
+                                instance, "_model_last_used", {}
+                            )  # noqa: SLF001
+                            inactivity_timeout = getattr(
+                                instance, "_inactivity_timeout", 300.0
+                            )  # noqa: SLF001
+                            for model_key, last_used in list(model_last_used.items()):
                                 inactivity = current_time - last_used
-                                if inactivity > instance._inactivity_timeout:
+                                if inactivity > inactivity_timeout:
                                     models_to_unload.append(
                                         (instance, model_key, inactivity)
                                     )
@@ -1122,10 +1134,13 @@ class BBIAHuggingFace:
                             )
                             instance.unload_model(model_name)
                             # Supprimer du tracking
-                            if hasattr(instance, "_model_last_used"):
+                            model_last_used = getattr(
+                                instance, "_model_last_used", None
+                            )  # noqa: SLF001
+                            if model_last_used is not None:
                                 with BBIAHuggingFace._shared_unload_thread_lock:
-                                    if model_key in instance._model_last_used:
-                                        del instance._model_last_used[model_key]
+                                    if model_key in model_last_used:
+                                        del model_last_used[model_key]
                     except (AttributeError, RuntimeError, KeyError) as e:
                         logger.debug("Erreur déchargement auto %s: %s", model_key, e)
                     except Exception as e:
@@ -1141,6 +1156,28 @@ class BBIAHuggingFace:
                     "Erreur inattendue boucle déchargement auto partagée: %s", e
                 )
                 # Continuer même en cas d'erreur
+
+    def __del__(self) -> None:
+        """Nettoyage lors de la destruction de l'instance."""
+        try:
+            # Retirer cette instance de la liste partagée
+            with BBIAHuggingFace._shared_unload_thread_lock:
+                if self in BBIAHuggingFace._shared_instances:
+                    BBIAHuggingFace._shared_instances.remove(self)
+                # Arrêter thread partagé si plus d'instances actives
+                if (
+                    not BBIAHuggingFace._shared_instances
+                    and BBIAHuggingFace._shared_unload_thread
+                    and BBIAHuggingFace._shared_unload_thread.is_alive()
+                ):
+                    BBIAHuggingFace._shared_unload_thread_stop.set()
+                    BBIAHuggingFace._shared_unload_thread.join(timeout=2.0)
+                    logger.debug(
+                        "Thread partagé déchargement auto Hugging Face arrêté (plus d'instances)"
+                    )
+        except (AttributeError, RuntimeError, TypeError):
+            # Ignorer erreurs lors de la destruction
+            pass
 
     def unload_model(self, model_name: str) -> bool:
         """Décharge un modèle de la mémoire.
