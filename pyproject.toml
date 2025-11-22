@@ -258,6 +258,39 @@ ignore = [
     "E501",  # line too long, handled by black
     "B008",  # do not perform function calls in argument defaults
     "C901",  # too complex
+    # Docstring style rules (suggestions de style, non critiques)
+    "D101",  # Missing docstring in public class
+    "D102",  # Missing docstring in public method
+    "D103",  # Missing docstring in public function
+    "D107",  # Missing docstring in __init__
+    "D205",  # 1 blank line required between summary line and description
+    "D212",  # Multi-line docstring summary should start at the first line
+    "D213",  # Multi-line docstring summary should start at the second line
+    "D400",  # First line should end with a period
+    "D401",  # First line should be in imperative mood
+    "D413",  # Missing blank line after last section
+    "D415",  # First line should end with a period, question mark, or exclamation point
+    # Import style rules (lazy loading parfois nécessaire)
+    "PLC0415",  # import should be at the top-level of a file
+    "TID252",  # Prefer absolute imports over relative imports
+    # Try/except style suggestions
+    "TRY300",  # Consider moving this statement to an else block
+    "TRY401",  # Redundant exception object included in logging.exception call
+    # Complexity rules (déjà C901 ignoré)
+    "PLR0911",  # Too many return statements
+    "PLR0912",  # Too many branches
+    "PLR0915",  # Too many statements
+    # Function arguments style
+    "FBT001",  # Boolean-typed positional argument in function definition
+    "FBT002",  # Boolean default positional argument in function definition
+    # Code style
+    "ERA001",  # Found commented-out code
+    "PGH003",  # Use specific rule codes when ignoring type issues
+    "ANN401",  # Dynamically typed expressions (typing.Any) are disallowed
+    "PTH110",  # os.path.exists() should be replaced by Path.exists()
+    "SLF001",  # Private member accessed
+    # Security (peut être nécessaire dans certains cas)
+    "S603",  # subprocess call: check for execution of untrusted input
 ]
 
 [tool.ruff.lint.isort]

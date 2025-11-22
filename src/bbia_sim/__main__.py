@@ -14,8 +14,7 @@ logger = logging.getLogger(__name__)
 
 
 def setup_logging(*, verbose: bool = False) -> None:
-    """
-    Configure le logging.
+    """Configure le logging.
 
     Args:
         verbose: Si True, active le mode verbose
@@ -114,8 +113,7 @@ Exemples d'utilisation:
 
 
 def run_simulation(args: argparse.Namespace) -> None:
-    """
-    Lance la simulation MuJoCo.
+    """Lance la simulation MuJoCo.
 
     Args:
         args: Arguments de la ligne de commande
@@ -200,8 +198,7 @@ def run_awake_sequence() -> None:
 
 
 def run_voice_synthesis(text: str) -> None:
-    """
-    Lance la synthèse vocale.
+    """Lance la synthèse vocale.
 
     Args:
         text: Texte à synthétiser

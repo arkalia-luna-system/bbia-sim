@@ -13,6 +13,7 @@ import os
 import shlex
 import subprocess
 import threading
+from pathlib import Path
 from typing import Any, Protocol
 
 logger = logging.getLogger(__name__)
@@ -26,17 +27,26 @@ _whisper_cache_lock = threading.Lock()
 
 
 class TextToSpeech(Protocol):
+    """Protocole pour la synthèse vocale."""
+
     def synthesize_to_wav(self, text: str, outfile: str) -> bool:  # pragma: no cover
+        """Synthétise du texte en fichier WAV."""
         ...
 
 
 class SpeechToText(Protocol):
+    """Protocole pour la reconnaissance vocale."""
+
     def transcribe_wav(self, infile: str) -> str | None:  # pragma: no cover
+        """Transcrit un fichier WAV en texte."""
         ...
 
 
 class LocalLLM(Protocol):
+    """Protocole pour les modèles de langage locaux."""
+
     def generate(self, prompt: str, max_tokens: int = 128) -> str:  # pragma: no cover
+        """Génère du texte à partir d'un prompt."""
         ...
 
 
@@ -48,11 +58,15 @@ class Pyttsx3TTS:
     """
 
     def __init__(self) -> None:
-        # Lazy-initialization pour éviter erreurs eSpeak en environnements CI
+        """Initialise le backend TTS pyttsx3.
+
+        Lazy-initialization pour éviter erreurs eSpeak en environnements CI.
+        """
         self._engine: Any = None
         self._voice_id: str | None = None  # Cache de la voix sélectionnée
 
     def synthesize_to_wav(self, text: str, outfile: str) -> bool:
+        """Synthétise du texte en fichier WAV."""
         try:
             engine = self._engine
             if engine is None:
@@ -102,6 +116,7 @@ class KittenTTSTTS:
     """Placeholder pour KittenTTS. Utilise pyttsx3 si lib absente."""
 
     def __init__(self) -> None:
+        """Initialise le backend KittenTTS avec fallback pyttsx3."""
         self._fallback = Pyttsx3TTS()
         self._impl: TextToSpeech | None = None
         try:  # pragma: no cover
@@ -134,7 +149,10 @@ class KittenTTSTTS:
 
 
 class KokoroTTS:
+    """Backend TTS Kokoro avec fallback pyttsx3."""
+
     def __init__(self) -> None:
+        """Initialise le backend KokoroTTS avec fallback pyttsx3."""
         self._fallback = Pyttsx3TTS()
         self._impl: TextToSpeech | None = None
         try:  # pragma: no cover
@@ -153,6 +171,7 @@ class KokoroTTS:
             self._impl = None
 
     def synthesize_to_wav(self, text: str, outfile: str) -> bool:
+        """Synthétise du texte en fichier WAV."""
         if self._impl is not None:
             try:
                 return self._impl.synthesize_to_wav(text, outfile)
@@ -167,7 +186,10 @@ class KokoroTTS:
 
 
 class NeuTTSTTS:
+    """Backend TTS NeuTTS avec fallback pyttsx3."""
+
     def __init__(self) -> None:
+        """Initialise le backend NeuTTSTTS avec fallback pyttsx3."""
         self._fallback = Pyttsx3TTS()
         self._impl: TextToSpeech | None = None
         try:  # pragma: no cover
@@ -206,6 +228,7 @@ class CoquiTTSTTS:
     """
 
     def __init__(self) -> None:
+        """Initialise le backend CoquiTTS avec fallback pyttsx3."""
         self._fallback = Pyttsx3TTS()
         self._ready = False
         try:  # pragma: no cover
@@ -218,6 +241,7 @@ class CoquiTTSTTS:
             self._ready = False
 
     def synthesize_to_wav(self, text: str, outfile: str) -> bool:
+        """Synthétise du texte en fichier WAV."""
         if not self._ready or self._coqui_cls is None:
             return self._fallback.synthesize_to_wav(text, outfile)
         try:
@@ -241,9 +265,11 @@ class OpenVoiceTTSTTS:
     """
 
     def __init__(self) -> None:
+        """Initialise le backend OpenVoiceTTS avec fallback pyttsx3."""
         self._fallback = Pyttsx3TTS()
 
     def synthesize_to_wav(self, text: str, outfile: str) -> bool:
+        """Synthétise du texte en fichier WAV."""
         cmd_template = os.environ.get("OPENVOICE_CMD", "").strip()
         if not cmd_template:
             return self._fallback.synthesize_to_wav(text, outfile)
@@ -284,6 +310,7 @@ class WhisperSTT:
     """
 
     def __init__(self) -> None:
+        """Initialise le backend WhisperSTT avec cache global."""
         self._ready = False
         self._model: Any = None
         self._processor: Any = None
@@ -344,6 +371,7 @@ class WhisperSTT:
             self._ready = False
 
     def transcribe_wav(self, infile: str) -> str | None:
+        """Transcrit un fichier WAV en texte."""
         if not self._ready:
             return ""
         try:
@@ -377,6 +405,7 @@ class EchoLLM:
     """LLM local de secours: renvoie l'entrée tronquée (utile tests)."""
 
     def generate(self, prompt: str, max_tokens: int = 128) -> str:
+        """Génère du texte à partir d'un prompt (echo tronqué)."""
         return (prompt or "")[:max_tokens]
 
 
@@ -387,6 +416,7 @@ class LlamaCppLLM:
     """
 
     def __init__(self) -> None:
+        """Initialise le backend LlamaCppLLM avec fallback echo."""
         self._ready = False
         self._model = None
         self._ctx = None
@@ -394,7 +424,7 @@ class LlamaCppLLM:
             from llama_cpp import Llama
 
             model_path = os.environ.get("BBIA_LLAMA_MODEL", "")
-            if model_path and os.path.exists(model_path):
+            if model_path and Path(model_path).exists():
                 # Paramètres prudents par défaut
                 self._model = Llama(model_path=model_path, n_ctx=2048, n_threads=4)
                 self._ready = True
@@ -406,6 +436,7 @@ class LlamaCppLLM:
             self._ready = False
 
     def generate(self, prompt: str, max_tokens: int = 128) -> str:
+        """Génère du texte à partir d'un prompt."""
         if not self._ready or self._model is None:
             return (prompt or "")[:max_tokens]
         try:
@@ -428,6 +459,7 @@ class LlamaCppLLM:
 
 
 def get_tts_backend() -> TextToSpeech:
+    """Sélectionne le backend TTS selon la variable d'environnement BBIA_TTS_BACKEND."""
     name = os.environ.get("BBIA_TTS_BACKEND", "kitten").strip().lower()
     if name in {"kitten", "kittentts"}:
         return KittenTTSTTS()
@@ -446,6 +478,7 @@ def get_tts_backend() -> TextToSpeech:
 
 
 def get_stt_backend() -> SpeechToText:
+    """Sélectionne le backend STT selon la variable d'environnement BBIA_STT_BACKEND."""
     name = os.environ.get("BBIA_STT_BACKEND", "whisper").strip().lower()
     if name == "whisper":
         stt = WhisperSTT()
@@ -456,6 +489,7 @@ def get_stt_backend() -> SpeechToText:
 
 
 def get_llm_backend() -> LocalLLM:
+    """Sélectionne le backend LLM selon la variable d'environnement BBIA_LLM_BACKEND."""
     name = os.environ.get("BBIA_LLM_BACKEND", "llama.cpp").strip().lower()
     if name in {"llama.cpp", "llamacpp", "llama"}:
         llm = LlamaCppLLM()

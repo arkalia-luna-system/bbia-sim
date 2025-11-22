@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-"""MuJoCoBackend - Implémentation MuJoCo de RobotAPI
-Backend pour simulation MuJoCo
+"""MuJoCoBackend - Implémentation MuJoCo de RobotAPI.
+
+Backend pour simulation MuJoCo.
 """
 
 import logging
@@ -21,13 +22,13 @@ class MuJoCoBackend(RobotAPI):
 
     def __init__(
         self,
-        model_path: str = "src/bbia_sim/sim/models/reachy_mini_REAL_OFFICIAL.xml",
+        model_path: str = ("src/bbia_sim/sim/models/reachy_mini_REAL_OFFICIAL.xml"),
     ) -> None:
         """Initialise le backend MuJoCo.
 
-        Note: Le modèle par défaut est `reachy_mini_REAL_OFFICIAL.xml` (16 joints, complet).
-        Le fichier `reachy_mini.xml` (7 joints, simplifié) existe mais n'est pas utilisé
-        par défaut pour garantir la cohérence avec le robot réel.
+        Note: Le modèle par défaut est `reachy_mini_REAL_OFFICIAL.xml`
+        (16 joints, complet). Le fichier `reachy_mini.xml` (7 joints, simplifié)
+        existe mais n'est pas utilisé par défaut pour garantir la cohérence.
         """
         super().__init__()
         self.model_path = Path(model_path)
@@ -60,14 +61,14 @@ class MuJoCoBackend(RobotAPI):
             self.is_connected = True
             self.start_time = time.time()
             logger.info("MuJoCo connecté: %s joints détectés", self.model.njnt)
+        except (OSError, RuntimeError, ValueError, AttributeError):
+            logger.exception("Erreur connexion MuJoCo")
+            return False
+        except Exception:
+            logger.exception("Erreur inattendue connexion MuJoCo")
+            return False
+        else:
             return True
-
-        except (OSError, RuntimeError, ValueError, AttributeError) as e:
-            logger.exception("Erreur connexion MuJoCo: %s", e)
-            return False
-        except Exception as e:
-            logger.exception("Erreur inattendue connexion MuJoCo: %s", e)
-            return False
 
     def disconnect(self) -> bool:
         """Déconnecte du simulateur MuJoCo."""
@@ -80,14 +81,14 @@ class MuJoCoBackend(RobotAPI):
             self.data = None
             self.is_connected = False
             logger.info("MuJoCo déconnecté")
+        except (AttributeError, RuntimeError):
+            logger.exception("Erreur déconnexion MuJoCo")
+            return False
+        except Exception:
+            logger.exception("Erreur inattendue déconnexion MuJoCo")
+            return False
+        else:
             return True
-
-        except (AttributeError, RuntimeError) as e:
-            logger.exception("Erreur déconnexion MuJoCo: %s", e)
-            return False
-        except Exception as e:
-            logger.exception("Erreur inattendue déconnexion MuJoCo: %s", e)
-            return False
 
     def get_available_joints(self) -> list[str]:
         """Retourne la liste des joints disponibles."""
@@ -163,8 +164,10 @@ class MuJoCoBackend(RobotAPI):
 
         Returns:
             Tuple (head_positions, antenna_positions)
-            - head_positions: [yaw_body, stewart_1, stewart_2, stewart_3, stewart_4, stewart_5, stewart_6]
+            - head_positions: [yaw_body, stewart_1, stewart_2, stewart_3,
+              stewart_4, stewart_5, stewart_6]
             - antenna_positions: [right_antenna, left_antenna]
+
         """
         if not self.is_connected or self.data is None:
             return ([0.0] * 7, [0.0, 0.0])
@@ -215,10 +218,11 @@ class MuJoCoBackend(RobotAPI):
         try:
             mujoco.mj_step(self.model, self.data)
             self.step_count += 1
-            return True
-        except Exception as e:
-            logger.exception("Erreur step MuJoCo: %s", e)
+        except Exception:
+            logger.exception("Erreur step MuJoCo")
             return False
+        else:
+            return True
 
     def check_collision(self) -> bool:
         """Vérifie s'il y a collision dans la simulation (Issue #183).
@@ -248,8 +252,8 @@ class MuJoCoBackend(RobotAPI):
                 )
 
             return bool(has_collision)
-        except Exception as e:
-            logger.exception("Erreur check_collision: %s", e)
+        except Exception:
+            logger.exception("Erreur check_collision")
             return False
 
     def play_move(
@@ -305,8 +309,8 @@ class MuJoCoBackend(RobotAPI):
             self.step()
             logger.info("Mouvement simulé joué dans MuJoCo")
 
-        except Exception as e:
-            logger.exception("Erreur play_move MuJoCo: %s", e)
+        except Exception:
+            logger.exception("Erreur play_move MuJoCo")
 
     def async_play_move(
         self,
@@ -330,10 +334,11 @@ class MuJoCoBackend(RobotAPI):
                 self.data.qvel[:] = 0.0
             self.is_connected = False
             logger.critical("🔴 ARRÊT D'URGENCE SIMULATION ACTIVÉ")
-            return True
-        except Exception as e:
-            logger.exception("Erreur emergency_stop: %s", e)
+        except Exception:
+            logger.exception("Erreur emergency_stop")
             return False
+        else:
+            return True
 
     def launch_viewer(self, passive: bool = True) -> bool:
         """Lance le viewer MuJoCo."""
@@ -367,14 +372,15 @@ class MuJoCoBackend(RobotAPI):
                 logger.info(
                     "Viewer MuJoCo lancé (fond BBIA gris lunaire → bleu céleste)",
                 )
-            except (AttributeError, KeyError, ValueError) as e:
-                logger.warning("Impossible de vérifier le skybox BBIA: %s", e)
+            except (AttributeError, KeyError, ValueError):
+                logger.warning("Impossible de vérifier le skybox BBIA")
                 logger.info("Viewer MuJoCo lancé (fond BBIA configuré)")
 
-            return True
-        except (RuntimeError, OSError, AttributeError) as e:
-            logger.exception("Erreur lancement viewer: %s", e)
+        except (RuntimeError, OSError, AttributeError):
+            logger.exception("Erreur lancement viewer")
             return False
+        else:
+            return True
 
     def configure_viewer_camera(
         self,
@@ -411,10 +417,11 @@ class MuJoCoBackend(RobotAPI):
                 elevation,
                 distance,
             )
-            return True
-        except Exception as e:
-            logger.exception("Erreur configuration caméra: %s", e)
+        except Exception:
+            logger.exception("Erreur configuration caméra")
             return False
+        else:
+            return True
 
     def sync_viewer(self) -> bool:
         """Synchronise le viewer."""
@@ -423,10 +430,11 @@ class MuJoCoBackend(RobotAPI):
 
         try:
             self.viewer.sync()
-            return True
-        except Exception as e:
-            logger.exception("Erreur sync viewer: %s", e)
+        except Exception:
+            logger.exception("Erreur sync viewer")
             return False
+        else:
+            return True
 
     def is_viewer_running(self) -> bool:
         """Vérifie si le viewer est actif."""
