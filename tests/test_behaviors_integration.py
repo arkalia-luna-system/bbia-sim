@@ -24,10 +24,13 @@ class TestBehaviorsIntegration:
         return MagicMock()
 
     @patch("bbia_sim.bbia_voice.dire_texte")
-    def test_multiple_behaviors_sequential(self, mock_dire_texte, mock_robot):
+    @patch("time.sleep")  # Mock sleep pour éviter timeout
+    def test_multiple_behaviors_sequential(self, mock_sleep, mock_dire_texte, mock_robot):
         """Test exécution séquentielle de plusieurs comportements."""
         # Mock dire_texte pour éviter les appels réels qui prennent du temps
         mock_dire_texte.return_value = None
+        # Mock sleep pour éviter timeout dans les tests
+        mock_sleep.return_value = None
 
         # Exécuter comportement 1
         behavior1 = EmotionShowBehavior(robot_api=mock_robot)
