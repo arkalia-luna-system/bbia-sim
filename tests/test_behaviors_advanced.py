@@ -173,43 +173,53 @@ class TestAlarmClockBehavior:
         past_minute = (now.minute - 1) % 60
         past_hour = now.hour if past_minute < now.minute else (now.hour - 1) % 24
         alarm_time = dt_time(past_hour, past_minute)
-        
+
         # Créer un mock datetime.now() qui retourne une heure après l'alarme
         def mock_datetime_now():
             real_now = datetime.now()
             # Retourner un datetime avec l'heure après l'alarme (2 minutes après)
             future_minute = (past_minute + 2) % 60
-            future_hour = past_hour if future_minute > past_minute else (past_hour + 1) % 24
-            return datetime.combine(real_now.date(), dt_time(future_hour, future_minute))
-        
+            future_hour = (
+                past_hour if future_minute > past_minute else (past_hour + 1) % 24
+            )
+            return datetime.combine(
+                real_now.date(), dt_time(future_hour, future_minute)
+            )
+
         # Mocker time.sleep pour éviter les attentes réelles
         sleep_calls = []
+
         def mock_sleep(seconds):
             sleep_calls.append(seconds)
             # Limiter le nombre de sleeps pour éviter les boucles infinies
             if len(sleep_calls) > 10:
                 behavior.stop()
-        
-        with patch('bbia_sim.behaviors.alarm_clock.time.sleep', side_effect=mock_sleep), \
-             patch('bbia_sim.behaviors.alarm_clock.datetime') as mock_datetime:
+
+        with (
+            patch("bbia_sim.behaviors.alarm_clock.time.sleep", side_effect=mock_sleep),
+            patch("bbia_sim.behaviors.alarm_clock.datetime") as mock_datetime,
+        ):
             mock_datetime.now = mock_datetime_now
             mock_datetime.combine = datetime.combine
-            
+
             # Arrêter le comportement dans un thread après un court délai
             def stop_behavior():
                 import time as real_time
+
                 real_time.sleep(0.2)
                 behavior.stop()
-            
+
             stop_thread = threading.Thread(target=stop_behavior, daemon=True)
             stop_thread.start()
-            
+
             # Exécuter avec une heure passée pour déclencher immédiatement
-            result = behavior.execute({"hour": alarm_time.hour, "minute": alarm_time.minute})
-            
+            result = behavior.execute(
+                {"hour": alarm_time.hour, "minute": alarm_time.minute}
+            )
+
             # Attendre que le thread d'arrêt se termine
             stop_thread.join(timeout=2.0)
-            
+
             assert behavior.is_active is False
 
 

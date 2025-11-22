@@ -7,6 +7,27 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+### 🚀 Ajouté (22 Novembre 2025)
+
+#### 100% d'Exploitation des Capacités - **TERMINÉ** ✅
+
+- **5 nouvelles démos créées** pour atteindre 100% d'exploitation :
+  - `demo_follow_object.py` - Suivi d'objet avec priorisation intelligente (comportement follow_object)
+  - `demo_sanity.py` - Vérification statut et arrêt d'urgence (endpoints /api/sanity/*)
+  - `demo_memory.py` - Mémoire persistante BBIA (module bbia_memory)
+  - `demo_adaptive_behavior.py` - Comportements adaptatifs contextuels (module bbia_adaptive_behavior)
+  - `demo_awake.py` - Séquence de réveil optimisée (module bbia_awake)
+
+- **Score d'exploitation** : **100%** atteint ✅
+  - Modules BBIA Core : 100% (16/16 modules avec démos dédiées)
+  - Comportements Avancés : 100% (15/15 comportements avec démos dédiées)
+  - API Endpoints : 100% (11/11 endpoints avec démos dédiées)
+  - **Total** : 44 exemples (39 existants + 5 nouveaux)
+
+- **Tests associés** : 5 tests créés dans `tests/test_demo_additional.py` (tous passent)
+
+- **Documentation** : Tous les fichiers markdown mis à jour avec 100% d'exploitation
+
 ### 🚀 Ajouté (21 Novembre 2025)
 
 #### Améliorations Optionnelles - **100% TERMINÉES**

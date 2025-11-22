@@ -11,8 +11,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 from bbia_sim.backends.mujoco_backend import MuJoCoBackend
-from bbia_sim.behaviors.photo_booth import PhotoBoothBehavior
 from bbia_sim.bbia_vision import BBIAVision
+from bbia_sim.behaviors.photo_booth import PhotoBoothBehavior
 
 
 def main() -> int:
