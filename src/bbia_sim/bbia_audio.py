@@ -448,7 +448,7 @@ if __name__ == "__main__":
     fichier = "bbia_demo.wav"
     enregistrer_audio(fichier, duree=3, frequence=16000)
     if detecter_son(fichier, seuil=500):
-        pass
+        logger.info("Son détecté dans %s", fichier)
     else:
-        pass
+        logger.info("Aucun son détecté dans %s", fichier)
     lire_audio(fichier)

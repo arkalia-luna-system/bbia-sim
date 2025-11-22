@@ -12,7 +12,7 @@ Usage:
 
     touch_detector = bbia_touch.BBIATouchDetection()
     if touch_detector.detect_tap():
-        print("Tap détecté!")
+        logger.info("Tap détecté!")
 """
 
 import logging
@@ -299,19 +299,20 @@ if __name__ == "__main__":
     detector = BBIATouchDetection()
 
     if detector.is_enabled():
-        print("✅ Détection tactile activée")
-        print("💡 Tapez sur le robot pour tester...")
-        print("⏹️  Appuyez sur Ctrl+C pour arrêter")
+        logger.info("✅ Détection tactile activée")
+        logger.info("💡 Tapez sur le robot pour tester...")
+        logger.info("⏹️  Appuyez sur Ctrl+C pour arrêter")
 
         try:
             while True:
                 touch = detector.detect_touch()
                 if touch["type"] != TouchType.NONE:
-                    print(
-                        f"👆 Interaction détectée: {touch['type']} "
-                        f"(confiance: {touch['confidence']:.2f})"
+                    logger.info(
+                        "👆 Interaction détectée: %s (confiance: %.2f)",
+                        touch["type"],
+                        touch["confidence"],
                     )
         except KeyboardInterrupt:
-            print("\n✅ Test terminé")
+            logger.info("\n✅ Test terminé")
     else:
-        print("⚠️  Détection tactile désactivée")
+        logger.warning("⚠️  Détection tactile désactivée")

