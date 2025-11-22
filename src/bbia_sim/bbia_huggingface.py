@@ -297,10 +297,10 @@ class BBIAHuggingFace:
         if tools and hasattr(tools, "robot_api"):
             self._bbia_chat_robot_api = tools.robot_api
 
-        logger.info("🤗 BBIA Hugging Face initialisé (device: %s)", self.device)
-        logger.info("😊 Personnalité BBIA: %s", self.bbia_personality)
+        logger.info(f"🤗 BBIA Hugging Face initialisé (device: {self.device})")
+        logger.info(f"😊 Personnalité BBIA: {self.bbia_personality}")
         if self.cache_dir:
-            logger.info("💾 Cache HF Hub: %s", self.cache_dir)
+            logger.info(f"💾 Cache HF Hub: {self.cache_dir}")
 
     def _get_device(self, device: str) -> str:
         """Détermine le device optimal."""
@@ -330,13 +330,13 @@ class BBIAHuggingFace:
                 "✅ BBIAChat (LLM conversationnel) chargé à la demande (lazy loading)"
             )
         except ImportError as e:
-            logger.debug("BBIAChat non disponible: %s", e)
+            logger.debug(f"BBIAChat non disponible: {e}")
             self.bbia_chat = None
         except (AttributeError, RuntimeError) as e:
-            logger.warning("Erreur initialisation BBIAChat: %s", e)
+            logger.warning(f"Erreur initialisation BBIAChat: {e}")
             self.bbia_chat = None
         except (TypeError, KeyError, IndexError) as e:
-            logger.warning("Erreur inattendue initialisation BBIAChat: %s", e)
+            logger.warning(f"Erreur inattendue initialisation BBIAChat: {e}")
             self.bbia_chat = None
 
     def _load_vision_model(self, model_name: str) -> bool:
@@ -424,11 +424,11 @@ class BBIAHuggingFace:
             self.use_llm_chat = True
             return True
         except (ImportError, RuntimeError, OSError, ValueError) as e:
-            logger.warning("⚠️  Échec de chargement LLM %s: %s", model_name, e)
+            logger.warning(f"⚠️  Échec de chargement LLM {model_name}: {e}")
             logger.info("💡 Fallback activé: réponses enrichies (stratégie règles v1)")
             return False
         except (TypeError, KeyError, IndexError) as e:
-            logger.warning("⚠️  Erreur inattendue chargement LLM %s: %s", model_name, e)
+            logger.warning(f"⚠️  Erreur inattendue chargement LLM {model_name}: {e}")
             logger.info("💡 Fallback activé: réponses enrichies (stratégie règles v1)")
             # Nettoyage défensif pour éviter des états partiels
             self.chat_model = None
@@ -474,10 +474,10 @@ class BBIAHuggingFace:
                 ).to(self.device)
                 self.processors[f"{model_name}_processor"] = processor
                 self.models[f"{model_name}_model"] = model
-                logger.info("✅ SmolVLM2/Moondream2 chargé: %s", model_name)
+                logger.info(f"✅ SmolVLM2/Moondream2 chargé: {model_name}")
                 return True
             except (ImportError, RuntimeError, OSError, ValueError) as e:
-                logger.warning("⚠️ Échec chargement SmolVLM2/Moondream2: %s", e)
+                logger.warning(f"⚠️ Échec chargement SmolVLM2/Moondream2: {e}")
                 return False
             except (TypeError, KeyError, IndexError) as e:
                 logger.warning(
@@ -663,7 +663,7 @@ class BBIAHuggingFace:
                     self.use_llm_chat = True
                     return True
                 except (ImportError, RuntimeError, OSError, ValueError) as e:
-                    logger.warning("⚠️  Échec chargement LLM %s: %s", model_name, e)
+                    logger.warning(f"⚠️  Échec chargement LLM {model_name}: {e}")
                     logger.info(
                         "💡 Fallback activé: réponses enrichies (stratégie règles v2)"
                     )
@@ -1030,14 +1030,14 @@ class BBIAHuggingFace:
         except (AttributeError, RuntimeError) as e:
             logger.debug("Erreur suppression chat_model: %s", e)
         except Exception as e:
-            logger.debug("Erreur inattendue suppression chat_model: %s", e)
+            logger.debug(f"Erreur inattendue suppression chat_model: {e}")
         try:
             if hasattr(self, "chat_tokenizer") and self.chat_tokenizer is not None:
                 del self.chat_tokenizer
         except (AttributeError, RuntimeError) as e:
-            logger.debug("Erreur suppression chat_tokenizer: %s", e)
+            logger.debug(f"Erreur suppression chat_tokenizer: {e}")
         except Exception as e:
-            logger.debug("Erreur inattendue suppression chat_tokenizer: %s", e)
+            logger.debug(f"Erreur inattendue suppression chat_tokenizer: {e}")
 
         self.chat_model = None
         self.chat_tokenizer = None
@@ -1150,7 +1150,7 @@ class BBIAHuggingFace:
                             e,
                         )
             except (RuntimeError, AttributeError) as e:
-                logger.debug("Erreur boucle déchargement auto partagée: %s", e)
+                logger.debug(f"Erreur boucle déchargement auto partagée: {e}")
             except Exception as e:
                 logger.debug(
                     "Erreur inattendue boucle déchargement auto partagée: %s", e
@@ -2091,7 +2091,7 @@ class BBIAHuggingFace:
                 logger.info("✅ Outil '%s' exécuté: %s", tool_name, detail)
                 return f"✅ {detail}"
             error_detail = result.get("detail", "Erreur inconnue")
-            logger.warning("⚠️ Erreur outil '%s': %s", tool_name, error_detail)
+            logger.warning(f"⚠️ Erreur outil '{tool_name}': {error_detail}")
             return f"⚠️ {error_detail}"
 
         except (AttributeError, RuntimeError, ValueError, KeyError) as e:
