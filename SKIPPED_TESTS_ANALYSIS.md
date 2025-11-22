@@ -138,11 +138,18 @@
 - **Action requise**: ⚠️ À RÉSOUDRE - problème d'environnement, pas de skip légitime
 - **Tests concernés**: `test_face_detector_creation`, `test_best_face_selection`
 
-#### Tests VocalTremor (audio_level)
+#### Tests VocalTremor (audio_level) ✅ CORRIGÉ
 
 - **Fichiers**: `test_bbia_idle_animations.py`
-- **Raison**: Test `test_update_audio_level` skip - nécessite audio réel
-- **Action requise**: Vérifier si peut être mocké
+- **Problème initial**: Test `test_update_audio_level` skip - nécessite SDK reachy_mini
+- **Action**: ✅ CORRIGÉ - Skip retiré, test optimisé RAM
+- **Optimisations appliquées**:
+  - Suppression du skip inutile (le code gère gracieusement l'ImportError)
+  - Mock minimal avec `spec` pour limiter attributs
+  - Suppression import numpy inutile
+  - Ajout `teardown_method` avec `gc.collect()` pour nettoyer RAM
+  - Test couvre maintenant plusieurs niveaux audio (0.2, 0.8, 0.9)
+- **Résultat**: Test passe maintenant, plus rapide (0.29s vs 0.39s), moins de RAM
 
 ## Recommandations
 
