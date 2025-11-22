@@ -298,25 +298,37 @@ class TestDaemonModels:
         from bbia_sim.daemon.app.routers.ecosystem import BehaviorResponse
 
         response = BehaviorResponse(
-            success=True,
-            message="OK",
             behavior="test_behavior",
             parameters={},
             estimated_duration=1.0,
             timestamp="2025-11-22T00:00:00",
             status="completed",
         )
-        assert response.success is True
+        assert response.behavior == "test_behavior"
+        assert response.status == "completed"
 
     def test_emotion_response(self) -> None:
         """Test EmotionResponse."""
-        response = EmotionResponse(emotion="happy", intensity=0.8)
+        response = EmotionResponse(
+            emotion="happy",
+            intensity=0.8,
+            duration=5.0,
+            joints_affected=["yaw_body"],
+            timestamp="2025-11-22T00:00:00",
+            status="applied",
+        )
         assert response.emotion == "happy"
+        assert response.intensity == 0.8
+        assert response.duration == 5.0
 
     def test_battery_info(self) -> None:
         """Test BatteryInfo."""
-        battery = BatteryInfo(level=80.0, charging=False, estimated_time="2h")
+        battery = BatteryInfo(
+            level=80.0, unit="percent", status="good", estimated_time="2h"
+        )
         assert battery.level == 80.0
+        assert battery.unit == "percent"
+        assert battery.status == "good"
 
     def test_full_state(self) -> None:
         """Test FullState."""
