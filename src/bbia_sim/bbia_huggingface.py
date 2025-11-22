@@ -2885,12 +2885,14 @@ class BBIAHuggingFace:
                 "Conversation avec BBIA (robot Reachy Mini). Soyez amical et curieux."
             )
 
-        # OPTIMISATION: Convertir deque en list pour slicing et utiliser join pour performance
+        # OPTIMISATION: Convertir deque en list pour slicing et utiliser list comprehension
         recent_history = list(self.conversation_history)[-3:]  # Derniers 3 échanges
-        context_lines = ["Historique conversation:"]
-        for entry in recent_history:
-            context_lines.append(f"User: {entry['user']}")
-            context_lines.append(f"BBIA: {entry['bbia']}")
+        # OPTIMISATION: List comprehension plus efficace que append() en boucle
+        context_lines = ["Historique conversation:"] + [
+            line
+            for entry in recent_history
+            for line in [f"User: {entry['user']}", f"BBIA: {entry['bbia']}"]
+        ]
         return "\n".join(context_lines)
 
 
