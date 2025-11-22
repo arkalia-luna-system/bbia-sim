@@ -43,14 +43,15 @@
 - **Action**: Aucune - test spécifique plateforme
 - **Exemples**: `test_cli_help.py`
 
-### 🔧 PEUVENT ÊTRE CORRIGÉS
+### 🔧 CORRIGÉS ✅
 
-#### 1. BBIAChat skip inutile (3 skips, 2 fichiers)
+#### 1. BBIAChat skip inutile (4 skips corrigés, 2 fichiers)
 - **Problème**: BBIAChat peut être initialisé même sans Hugging Face (a un fallback)
-- **Fichiers**: 
-  - `tests/test_capabilities_methods.py:115`
-  - `tests/test_edge_cases_error_handling.py:60, 78, 370`
-- **Action**: ✅ CORRIGER - Retirer le skip, tester avec fallback
+- **Fichiers corrigés**: 
+  - `tests/test_capabilities_methods.py:115` ✅
+  - `tests/test_edge_cases_error_handling.py:60, 78, 362` ✅
+- **Action**: ✅ CORRIGÉ - Skips retirés, tests fonctionnent maintenant avec fallback
+- **Résultat**: 4 tests supplémentaires passent maintenant au lieu de skip
 
 #### 2. Tests qui skipent au lieu de gérer gracieusement (catégorie "other": 346 skips)
 - **Problème**: Beaucoup de tests skipent au runtime au lieu d'utiliser des mocks
