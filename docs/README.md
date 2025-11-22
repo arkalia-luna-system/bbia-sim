@@ -48,7 +48,6 @@ flowchart TB
 | Document | Description | Public |
 |----------|-------------|--------|
 | **[project-status.md](reference/project-status.md)** | Tableau de bord complet par axe | Tous |
-| **[project-status.md](reference/project-status.md)** | État opérationnel et tableau de bord complet | Développeurs |
 
 ---
 
@@ -60,7 +59,7 @@ flowchart TB
 
 | Document | Description | Niveau |
 |----------|-------------|--------|
-| [ARCHITECTURE_OVERVIEW.md](development/architecture/ARCHITECTURE_OVERVIEW.md) | Vue d'ensemble (v1.3.2) | 🟢 Accessible |
+| [ARCHITECTURE_OVERVIEW.md](development/architecture/ARCHITECTURE_OVERVIEW.md) | Vue d'ensemble (v1.4.0) | 🟢 Accessible |
 | [ARCHITECTURE.md](development/architecture/ARCHITECTURE.md) | Guide architecture | 🟡 Intermédiaire |
 | [ARCHITECTURE_DETAILED.md](development/architecture/ARCHITECTURE_DETAILED.md) | Détails techniques | 🔴 Avancé |
 
