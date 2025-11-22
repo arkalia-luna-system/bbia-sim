@@ -4,9 +4,12 @@
 Émotions complexes, expressions faciales, transitions fluides.
 """
 
+import logging
 import secrets
 from datetime import datetime
 from typing import Any
+
+logger = logging.getLogger(__name__)
 
 
 class BBIAEmotions:
