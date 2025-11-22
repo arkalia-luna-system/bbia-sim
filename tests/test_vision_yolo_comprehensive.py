@@ -453,22 +453,22 @@ class TestFaceDetector:
         """OPTIMISATION RAM: Nettoyer mémoire après chaque test."""
         gc.collect()
 
-    @patch("mediapipe.solutions.face_detection.FaceDetection")
-    @patch("mediapipe.solutions.drawing_utils")
-    @patch("mediapipe.solutions.face_detection")
-    def test_init_with_mediapipe(
-        self, mock_face_detection, mock_drawing, mock_fd_class
-    ):
+    def test_init_with_mediapipe(self):
         """Test initialisation avec MediaPipe."""
         try:
             import mediapipe  # noqa: F401
         except ImportError:
             pytest.skip("mediapipe non disponible")
-        mock_fd_instance = MagicMock()
-        mock_fd_class.return_value = mock_fd_instance
+        with (
+            patch("mediapipe.solutions.face_detection.FaceDetection") as mock_fd_class,
+            patch("mediapipe.solutions.drawing_utils") as mock_drawing,
+            patch("mediapipe.solutions.face_detection") as mock_face_detection,
+        ):
+            mock_fd_instance = MagicMock()
+            mock_fd_class.return_value = mock_fd_instance
 
-        detector = FaceDetector()
-        assert detector.face_detection is not None
+            detector = FaceDetector()
+            assert detector.face_detection is not None
 
     @patch("bbia_sim.vision_yolo._mediapipe_face_detection_cache", None)
     @patch("bbia_sim.vision_yolo._mediapipe_cache_lock")
@@ -574,18 +574,18 @@ class TestFactoryFunctions:
         """OPTIMISATION RAM: Nettoyer mémoire après chaque test."""
         gc.collect()
 
-    @patch("bbia_sim.vision_yolo.YOLO_AVAILABLE", True)
     def test_create_yolo_detector_with_yolo(self):
         """Test création détecteur YOLO."""
         try:
             from ultralytics import YOLO  # noqa: F401
         except ImportError:
             pytest.skip("ultralytics non disponible")
-        detector = create_yolo_detector(model_size="n", confidence_threshold=0.3)
-        assert detector is not None
-        assert isinstance(detector, YOLODetector)
-        assert detector.model_size == "n"
-        assert detector.confidence_threshold == 0.3
+        with patch("bbia_sim.vision_yolo.YOLO_AVAILABLE", True):
+            detector = create_yolo_detector(model_size="n", confidence_threshold=0.3)
+            assert detector is not None
+            assert isinstance(detector, YOLODetector)
+            assert detector.model_size == "n"
+            assert detector.confidence_threshold == 0.3
 
     @patch("bbia_sim.vision_yolo.YOLO_AVAILABLE", False)
     def test_create_yolo_detector_without_yolo(self):
