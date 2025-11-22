@@ -125,11 +125,20 @@ class TestHideBehavior(unittest.TestCase):
         log_capture = io.StringIO()
         handler = logging.StreamHandler(log_capture)
         handler.setLevel(logging.INFO)
+        # Format simple pour faciliter la recherche
+        handler.setFormatter(logging.Formatter("%(message)s"))
 
         # Obtenir le logger utilisé par bbia_behavior
         logger = logging.getLogger("BBIA")
+        # Sauvegarder l'état original
+        original_level = logger.level
+        original_handlers = logger.handlers[:]
+        original_propagate = logger.propagate
+        
+        # Ajouter notre handler de test
         logger.addHandler(handler)
         logger.setLevel(logging.INFO)
+        logger.propagate = True  # Permettre la propagation pour capturer les logs
 
         try:
             # Correction : patcher dire_texte dans le namespace du module bbia_behavior
@@ -138,11 +147,16 @@ class TestHideBehavior(unittest.TestCase):
 
             # Vérification de la sortie console (depuis les logs)
             log_output = log_capture.getvalue()
+            # Les logs peuvent contenir le format complet avec timestamp, donc on cherche juste le message
             self.assertIn("🙈 [BBIA] Séquence 'se cacher'...", log_output)
             # Note: certaines étapes peuvent varier selon l'implémentation
             self.assertIn("💤 BBIA se cache et devient silencieux.", log_output)
         finally:
+            # Nettoyer : retirer notre handler et restaurer l'état original
             logger.removeHandler(handler)
+            logger.level = original_level
+            logger.handlers = original_handlers
+            logger.propagate = original_propagate
 
         # Vérification de la synthèse vocale - accepte n'importe quelle variante
         self.assertTrue(mock_dire_texte.called)
