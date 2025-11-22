@@ -23,6 +23,8 @@
 - ✅ **MyPy** : 86 fichiers source, aucune erreur
 - ✅ **Bandit** : Scan sécurité OK
 - ✅ **Tests** : 1792 tests collectés, tous passent
+- ✅ **Logging** : Tous les `print()` remplacés par `logger` (bbia_awake.py, unity_reachy_controller.py)
+- ✅ **Tests corrigés** : Mock `time.sleep` pour éviter timeout
 
 ### Documentation
 - ✅ **67 exemples fonctionnels** (64 + 3 nouveaux)

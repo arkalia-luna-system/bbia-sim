@@ -137,11 +137,13 @@ def demo_adaptive_behavior():
                 f"{behavior['description']}"
             )
             print(
-                f"    Contexte: {behavior['context']}, Émotion: {behavior['emotion']}"
+                f"    Contexte: {behavior['context']}, "
+                f"Émotion: {behavior['emotion']}"
             )
             print(f"    Intensité: {behavior['emotion_intensity']:.2f}")
             print(
-                f"    Paramètres: {behavior['parameters']['duration']:.1f}s, {len(behavior['parameters']['joints'])} joints"
+                f"    Paramètres: {behavior['parameters']['duration']:.1f}s, "
+                f"{len(behavior['parameters']['joints'])} joints"
             )
 
         # Test comportement proactif

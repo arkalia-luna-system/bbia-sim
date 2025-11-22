@@ -42,7 +42,7 @@ Les rapports détaillés des phases précédentes sont disponibles dans la docum
 - Tests améliorés et documentation enrichie
 - Qualité code vérifiée et corrigée
 
-### **v1.3.2 - Oct / Nov. 2025**
+### **v1.3.2 - Octobre / Novembre 2025**
 
 **Alignement branches + release stable**
 
@@ -51,7 +51,7 @@ Les rapports détaillés des phases précédentes sont disponibles dans la docum
 - Tests élargis (watchdog, performance, conformité avancée)
 - Documentation réorganisée et enrichie
 
-### **v1.3.0 - Oct / Nov. 2025**
+### **v1.3.0 - Octobre / Novembre 2025**
 
 **Conformité SDK validée**
 
@@ -61,7 +61,7 @@ Les rapports détaillés des phases précédentes sont disponibles dans la docum
 - Tests: 18/18 passent
 - Performance: latence < 1 ms
 
-### **v1.2.1 - Oct / Nov. 2025**
+### **v1.2.1 - Octobre / Novembre 2025**
 
 **Corrections et qualité**
 
@@ -69,7 +69,7 @@ Les rapports détaillés des phases précédentes sont disponibles dans la docum
 - Formatage code (Black, Ruff)
 - 38 tests passent
 
-### **v1.2.0 - Oct / Nov. 2025**
+### **v1.2.0 - Octobre / Novembre 2025**
 
 **IA légère activée**
 
@@ -78,7 +78,7 @@ Les rapports détaillés des phases précédentes sont disponibles dans la docum
 - Scripts one-click
 - Golden tests
 
-### **v1.1.1 - Oct / Nov. 2025**
+### **v1.1.1 - Octobre / Novembre 2025**
 
 **RobotAPI unifié**
 
@@ -86,7 +86,7 @@ Les rapports détaillés des phases précédentes sont disponibles dans la docum
 - Golden tests
 - CI/CD
 
-### **v1.1.0 - Oct / Nov. 2025**
+### **v1.1.0 - Octobre / Novembre 2025**
 
 **Simulation complète**
 
@@ -94,7 +94,7 @@ Les rapports détaillés des phases précédentes sont disponibles dans la docum
 - Modules BBIA intégrés
 - API REST + WebSocket
 
-### **v1.0.0 - Oct / Nov. 2025**
+### **v1.0.0 - Octobre / Novembre 2025**
 
 **Première release**
 
@@ -106,19 +106,19 @@ Les rapports détaillés des phases précédentes sont disponibles dans la docum
 
 ## 🏆 Jalons Majeurs
 
-### **Conformité SDK** (Oct / Nov. 2025)
+### **Conformité SDK** (Octobre / Novembre 2025)
 
 - Conformité 100% au SDK officiel Reachy-Mini
 - Backend ReachyMiniBackend opérationnel
 - Tests automatisés 18/18
 
-### **IA Intégrée** (Oct / Nov. 2025)
+### **IA Intégrée** (Octobre / Novembre 2025)
 
 - Whisper STT pour reconnaissance vocale
 - YOLOv8n pour vision
 - MediaPipe pour détection visage
 
-### **RobotAPI Unifié** (Oct / Nov. 2025)
+### **RobotAPI Unifié** (Octobre / Novembre 2025)
 
 - Interface abstraite pour tous backends
 - Migration transparente Sim ↔ Robot
