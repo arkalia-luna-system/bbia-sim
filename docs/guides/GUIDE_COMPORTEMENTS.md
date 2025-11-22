@@ -1,7 +1,7 @@
 # 🎭 Guide des Comportements BBIA
 
-**Date** : 19 Novembre 2025  
-**Version BBIA** : 1.3.2  
+**Date** : 22 Novembre 2025  
+**Version BBIA** : 1.4.0  
 **Objectif** : Guide complet pour utiliser et créer des comportements BBIA
 
 ---
