@@ -14,20 +14,20 @@ import pytest
 # OPTIMISATION RAM: Imports légers uniquement au niveau module
 # Imports lourds déplacés dans les fonctions de test (lazy imports)
 from bbia_sim.ai_backends import DummySTT
+from bbia_sim.daemon.app.routers.apps import AppInfo, AppStatus
 from bbia_sim.daemon.app.routers.ecosystem import (
     APIStatus,
     BehaviorResponse,
     EmotionResponse,
 )
-from bbia_sim.daemon.app.routers.apps import AppInfo, AppStatus
-from bbia_sim.daemon.app.routers.state import BatteryInfo
 from bbia_sim.daemon.app.routers.move import GotoModelRequest, InterpolationMode
+from bbia_sim.daemon.app.routers.state import BatteryInfo
 from bbia_sim.utils.types import GotoTargetParams, IMUData
 
 try:
     from bbia_sim.sim.assets.reachy_official.asset_mapping import (
-        get_available_assets,
         get_asset_path,
+        get_available_assets,
         get_official_assets,
     )
 
@@ -42,13 +42,23 @@ except ImportError:
 class TestBBIAAdaptiveLearning:
     """Tests pour BBIAAdaptiveLearning."""
 
+    def teardown_method(self):
+        """OPTIMISATION RAM: Nettoyer mémoire après chaque test."""
+        gc.collect()
+
     def test_init(self) -> None:
         """Test initialisation BBIAAdaptiveLearning."""
+        # OPTIMISATION RAM: Import lazy
+        from bbia_sim.bbia_adaptive_learning import BBIAAdaptiveLearning
+
         learning = BBIAAdaptiveLearning()
         assert learning is not None
 
     def test_learn_preference(self) -> None:
         """Test apprentissage de préférences."""
+        # OPTIMISATION RAM: Import lazy
+        from bbia_sim.bbia_adaptive_learning import BBIAAdaptiveLearning
+
         learning = BBIAAdaptiveLearning()
         learning.learn_preference("rapide", {"context": "voice"})
         # Vérifier que la préférence a été apprise
@@ -57,6 +67,9 @@ class TestBBIAAdaptiveLearning:
 
     def test_remember_interaction(self) -> None:
         """Test mémorisation d'interactions."""
+        # OPTIMISATION RAM: Import lazy
+        from bbia_sim.bbia_adaptive_learning import BBIAAdaptiveLearning
+
         learning = BBIAAdaptiveLearning()
         learning.remember_interaction("greeting", {"user": "user_1"}, "happy")
         # Vérifier que l'interaction a été mémorisée
@@ -64,6 +77,9 @@ class TestBBIAAdaptiveLearning:
 
     def test_adapt_behavior(self) -> None:
         """Test adaptation de comportement."""
+        # OPTIMISATION RAM: Import lazy
+        from bbia_sim.bbia_adaptive_learning import BBIAAdaptiveLearning
+
         learning = BBIAAdaptiveLearning()
         adapted = learning.adapt_behavior({"context": "conversation"})
         assert adapted is not None
@@ -73,13 +89,23 @@ class TestBBIAAdaptiveLearning:
 class TestBBIAAdaptiveBehavior:
     """Tests pour BBIAAdaptiveBehavior."""
 
+    def teardown_method(self):
+        """OPTIMISATION RAM: Nettoyer mémoire après chaque test."""
+        gc.collect()
+
     def test_init(self) -> None:
         """Test initialisation BBIAAdaptiveBehavior."""
+        # OPTIMISATION RAM: Import lazy
+        from bbia_sim.bbia_adaptive_behavior import BBIAAdaptiveBehavior
+
         behavior = BBIAAdaptiveBehavior()
         assert behavior is not None
 
     def test_execute_behavior(self) -> None:
         """Test exécution de comportement adaptatif."""
+        # OPTIMISATION RAM: Import lazy
+        from bbia_sim.bbia_adaptive_behavior import BBIAAdaptiveBehavior
+
         behavior = BBIAAdaptiveBehavior()
         result = behavior.execute_behavior({})
         assert isinstance(result, bool)
@@ -88,11 +114,18 @@ class TestBBIAAdaptiveBehavior:
 class TestBBIAEmotionRecognition:
     """Tests pour BBIAEmotionRecognition."""
 
+    def teardown_method(self):
+        """OPTIMISATION RAM: Nettoyer mémoire après chaque test."""
+        gc.collect()
+
     @pytest.mark.skipif(
         True, reason="Dépendances ML requises (mediapipe, torch, transformers)"
     )
     def test_init(self) -> None:
         """Test initialisation BBIAEmotionRecognition."""
+        # OPTIMISATION RAM: Import lazy (skip si dépendances manquantes)
+        from bbia_sim.bbia_emotion_recognition import BBIAEmotionRecognition
+
         emotion_rec = BBIAEmotionRecognition()
         assert emotion_rec is not None
 
@@ -100,13 +133,23 @@ class TestBBIAEmotionRecognition:
 class TestBBIAMemory:
     """Tests pour BBIAMemory."""
 
+    def teardown_method(self):
+        """OPTIMISATION RAM: Nettoyer mémoire après chaque test."""
+        gc.collect()
+
     def test_init(self) -> None:
         """Test initialisation BBIAMemory."""
+        # OPTIMISATION RAM: Import lazy
+        from bbia_sim.bbia_memory import BBIAMemory
+
         memory = BBIAMemory()
         assert memory is not None
 
     def test_load_learnings(self) -> None:
         """Test chargement des apprentissages."""
+        # OPTIMISATION RAM: Import lazy
+        from bbia_sim.bbia_memory import BBIAMemory
+
         memory = BBIAMemory()
         learnings = memory.load_learnings()
         assert isinstance(learnings, dict)
@@ -115,8 +158,15 @@ class TestBBIAMemory:
 class TestBBIATools:
     """Tests pour BBIATools."""
 
+    def teardown_method(self):
+        """OPTIMISATION RAM: Nettoyer mémoire après chaque test."""
+        gc.collect()
+
     def test_init(self) -> None:
         """Test initialisation BBIATools."""
+        # OPTIMISATION RAM: Import lazy
+        from bbia_sim.bbia_tools import BBIATools
+
         tools = BBIATools()
         assert tools is not None
 
@@ -124,13 +174,23 @@ class TestBBIATools:
 class TestAlarmClockBehavior:
     """Tests pour AlarmClockBehavior."""
 
+    def teardown_method(self):
+        """OPTIMISATION RAM: Nettoyer mémoire après chaque test."""
+        gc.collect()
+
     def test_init(self) -> None:
         """Test initialisation AlarmClockBehavior."""
+        # OPTIMISATION RAM: Import lazy
+        from bbia_sim.behaviors.alarm_clock import AlarmClockBehavior
+
         behavior = AlarmClockBehavior()
         assert behavior is not None
 
     def test_snooze(self) -> None:
         """Test fonction snooze."""
+        # OPTIMISATION RAM: Import lazy
+        from bbia_sim.behaviors.alarm_clock import AlarmClockBehavior
+
         behavior = AlarmClockBehavior()
         # Test que snooze existe et peut être appelé
         assert hasattr(behavior, "snooze")
@@ -139,43 +199,72 @@ class TestAlarmClockBehavior:
 class TestBBIABehaviorManager:
     """Tests pour BBIABehaviorManager."""
 
+    def teardown_method(self):
+        """OPTIMISATION RAM: Nettoyer mémoire après chaque test."""
+        gc.collect()
+
     def test_clear_saved_moves(self) -> None:
         """Test effacement des mouvements sauvegardés."""
+        # OPTIMISATION RAM: Import lazy + déconnexion propre
         from bbia_sim.backends.mujoco_backend import MuJoCoBackend
+        from bbia_sim.bbia_behavior import BBIABehaviorManager
 
         backend = MuJoCoBackend()
-        backend.connect()
-        manager = BBIABehaviorManager(robot_api=backend)
-        manager.clear_saved_moves()
-        backend.disconnect()
+        try:
+            backend.connect()
+            manager = BBIABehaviorManager(robot_api=backend)
+            manager.clear_saved_moves()
+        finally:
+            backend.disconnect()
+            gc.collect()
 
 
 class TestTroubleshooting:
     """Tests pour les fonctions de troubleshooting."""
 
+    def teardown_method(self):
+        """OPTIMISATION RAM: Nettoyer mémoire après chaque test."""
+        gc.collect()
+
     def test_troubleshooting_checker(self) -> None:
         """Test TroubleshootingChecker."""
+        # OPTIMISATION RAM: Import lazy
+        from bbia_sim.troubleshooting import TroubleshootingChecker
+
         checker = TroubleshootingChecker()
         assert checker is not None
 
     def test_check_all(self) -> None:
         """Test check_all."""
+        # OPTIMISATION RAM: Import lazy
+        from bbia_sim.troubleshooting import check_all
+
         result = check_all()
         assert isinstance(result, dict)
 
     def test_test_audio(self) -> None:
         """Test test_audio."""
+        # OPTIMISATION RAM: Import lazy
+        from bbia_sim.troubleshooting import test_audio
+
         result = test_audio()
         assert isinstance(result, dict)
 
     def test_test_camera(self) -> None:
         """Test test_camera."""
+        # OPTIMISATION RAM: Import lazy
+        from bbia_sim.troubleshooting import test_camera
+
         result = test_camera()
         assert isinstance(result, dict)
 
 
 class TestDaemonModels:
     """Tests pour les modèles du daemon."""
+
+    def teardown_method(self):
+        """OPTIMISATION RAM: Nettoyer mémoire après chaque test."""
+        gc.collect()
 
     def test_api_status(self) -> None:
         """Test APIStatus."""
@@ -220,6 +309,9 @@ class TestDaemonModels:
 
     def test_full_state(self) -> None:
         """Test FullState."""
+        # OPTIMISATION RAM: Import lazy
+        from bbia_sim.daemon.models import FullState
+
         state = FullState(
             head_pose=None,
             antennas_position=[0.0, 0.0],
@@ -264,7 +356,10 @@ class TestDaemonModels:
 
     def test_as_any_pose(self) -> None:
         """Test as_any_pose."""
+        # OPTIMISATION RAM: Import lazy
         import numpy as np
+
+        from bbia_sim.daemon.models import as_any_pose
 
         pose_array = np.array([0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0], dtype=np.float64)
         pose = as_any_pose(pose_array, use_matrix=False)
@@ -272,7 +367,10 @@ class TestDaemonModels:
 
     def test_xyzrpy_pose_from_array(self) -> None:
         """Test XYZRPYPose.from_pose_array."""
+        # OPTIMISATION RAM: Import lazy
         import numpy as np
+
+        from bbia_sim.daemon.models import XYZRPYPose
 
         pose_array = np.array([0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0], dtype=np.float64)
         pose = XYZRPYPose.from_pose_array(pose_array)
@@ -280,7 +378,10 @@ class TestDaemonModels:
 
     def test_matrix4x4_pose_from_array(self) -> None:
         """Test Matrix4x4Pose.from_pose_array."""
+        # OPTIMISATION RAM: Import lazy
         import numpy as np
+
+        from bbia_sim.daemon.models import Matrix4x4Pose
 
         pose_array = np.eye(4, dtype=np.float64).flatten()
         pose = Matrix4x4Pose.from_pose_array(pose_array)
@@ -401,8 +502,9 @@ class TestBBIAHuggingFaceMethods:
     def test_describe_image(self) -> None:
         """Test describe_image."""
         try:
-            from bbia_sim.bbia_huggingface import BBIAHuggingFace
             import numpy as np
+
+            from bbia_sim.bbia_huggingface import BBIAHuggingFace
 
             hf = BBIAHuggingFace()
             image = np.zeros((480, 640, 3), dtype=np.uint8)
