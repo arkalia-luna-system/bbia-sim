@@ -359,6 +359,7 @@ def dire_texte_advanced(
     texte: str,
     emotion: str | None = None,
     pitch: float | None = None,
+    speed: float = 1.0,
 ) -> bool:
     """Fonction wrapper pour compatibilité avec dire_texte() existant.
 
@@ -366,6 +367,7 @@ def dire_texte_advanced(
         texte: Texte à synthétiser
         emotion: Émotion BBIA (optionnel)
         pitch: Ajustement pitch (optionnel)
+        speed: Vitesse de lecture (0.5 à 2.0, défaut 1.0)
 
     Returns:
         True si succès
@@ -376,7 +378,7 @@ def dire_texte_advanced(
         globals()["_global_voice_advanced"] = BBIAVoiceAdvanced()
 
     voice_advanced: BBIAVoiceAdvanced = globals()["_global_voice_advanced"]
-    result = voice_advanced.say(texte, emotion=emotion, pitch=pitch)
+    result = voice_advanced.say(texte, emotion=emotion, pitch=pitch, speed=speed)
     return bool(result)
 
 
