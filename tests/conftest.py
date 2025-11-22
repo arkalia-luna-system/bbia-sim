@@ -183,7 +183,6 @@ def force_cleanup_all_resources() -> None:
     try:
         # 1. Nettoyer tous les backends actifs (threads watchdog)
         try:
-            from bbia_sim.backends.reachy_mini_backend import ReachyMiniBackend
 
             # Forcer la déconnexion de tous les backends qui pourraient être actifs
             # Note: On ne peut pas vraiment lister toutes les instances, mais on force
@@ -288,7 +287,7 @@ def pytest_configure(config: pytest.Config) -> None:
     # OPTIMISATION RAM: Nettoyer caches modèles avant tests
     try:
         # Nettoyer cache YOLO
-        from bbia_sim.vision_yolo import _yolo_model_cache, _yolo_cache_lock
+        from bbia_sim.vision_yolo import _yolo_cache_lock, _yolo_model_cache
 
         with _yolo_cache_lock:
             _yolo_model_cache.clear()
@@ -303,8 +302,8 @@ def pytest_configure(config: pytest.Config) -> None:
         # Nettoyer cache Whisper
         try:
             from bbia_sim.voice_whisper import (
-                _whisper_models_cache,
                 _whisper_model_cache_lock,
+                _whisper_models_cache,
             )
 
             with _whisper_model_cache_lock:
@@ -351,7 +350,7 @@ def pytest_unconfigure(config: pytest.Config) -> None:
 
     # OPTIMISATION RAM: Nettoyer caches après tests
     try:
-        from bbia_sim.vision_yolo import _yolo_model_cache, _yolo_cache_lock
+        from bbia_sim.vision_yolo import _yolo_cache_lock, _yolo_model_cache
 
         with _yolo_cache_lock:
             _yolo_model_cache.clear()
@@ -385,7 +384,7 @@ def clear_model_caches_after_test():
 
             # Fermer toutes les boucles qui ne sont plus utilisées
             try:
-                loop = asyncio.get_running_loop()
+                asyncio.get_running_loop()
                 # Ne pas fermer si la boucle est en cours d'utilisation
             except RuntimeError:
                 # Pas de boucle en cours, rien à faire
