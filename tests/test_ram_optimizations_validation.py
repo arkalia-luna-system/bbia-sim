@@ -59,7 +59,12 @@ except ImportError:
 @pytest.mark.fast
 def test_huggingface_lru_cache_limit() -> None:
     """Test que le cache LRU limite le nombre de modèles en mémoire."""
-    hf = BBIAHuggingFace()
+    if BBIAHuggingFace is None:
+        pytest.skip("BBIAHuggingFace non disponible")
+    try:
+        hf = BBIAHuggingFace()
+    except ImportError:
+        pytest.skip("Hugging Face transformers non disponible")
 
     # Vérifier que la limite est définie
     assert hasattr(hf, "_max_models_in_memory")
@@ -76,7 +81,12 @@ def test_huggingface_lru_cache_limit() -> None:
 @pytest.mark.fast
 def test_huggingface_auto_unload_thread() -> None:
     """Test que le thread de déchargement automatique est démarré."""
-    hf = BBIAHuggingFace()
+    if BBIAHuggingFace is None:
+        pytest.skip("BBIAHuggingFace non disponible")
+    try:
+        hf = BBIAHuggingFace()
+    except ImportError:
+        pytest.skip("Hugging Face transformers non disponible")
 
     try:
         # Vérifier que le thread est initialisé
@@ -106,7 +116,12 @@ def test_huggingface_auto_unload_thread() -> None:
 @pytest.mark.fast
 def test_huggingface_update_model_usage() -> None:
     """Test que la mise à jour du timestamp d'usage fonctionne."""
-    hf = BBIAHuggingFace()
+    if BBIAHuggingFace is None:
+        pytest.skip("BBIAHuggingFace non disponible")
+    try:
+        hf = BBIAHuggingFace()
+    except ImportError:
+        pytest.skip("Hugging Face transformers non disponible")
 
     # Simuler usage d'un modèle
     model_key = "test_model_model"
