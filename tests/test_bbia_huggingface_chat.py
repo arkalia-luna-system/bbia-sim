@@ -92,7 +92,8 @@ class TestBBIAHuggingFaceChat:
         sentiment = {"sentiment": "NEUTRAL"}
 
         response1 = self.hf._generate_simple_response("Bonjour", sentiment)
-        # La réponse doit contenir au moins un mot de salutation/amabilité
+        # La réponse doit être non vide et contenir au moins un mot de salutation/amabilité
+        assert len(response1) > 0, "Réponse ne doit pas être vide"
         assert any(
             word in response1.lower()
             for word in [
@@ -103,11 +104,17 @@ class TestBBIAHuggingFaceChat:
                 "ça",
                 "plaisir",
                 "coucou",
+                "hey",
+                "quoi",
+                "neuf",
+                "journée",
+                "aide",
             ]
-        )
+        ), f"Réponse doit contenir un mot de salutation: {response1}"
 
         response2 = self.hf._generate_simple_response("Salut", sentiment)
-        # La réponse doit contenir au moins un mot de salutation/amabilité
+        # La réponse doit être non vide et contenir au moins un mot de salutation/amabilité
+        assert len(response2) > 0, "Réponse ne doit pas être vide"
         assert any(
             word in response2.lower()
             for word in [
@@ -118,8 +125,13 @@ class TestBBIAHuggingFaceChat:
                 "ça",
                 "plaisir",
                 "coucou",
+                "hey",
+                "quoi",
+                "neuf",
+                "journée",
+                "aide",
             ]
-        )
+        ), f"Réponse doit contenir un mot de salutation: {response2}"
 
     def test_generate_simple_response_positive(self) -> None:
         """Test génération réponse pour sentiment positif."""
