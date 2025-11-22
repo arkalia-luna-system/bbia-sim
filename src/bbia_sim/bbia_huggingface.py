@@ -1111,6 +1111,8 @@ class BBIAHuggingFace:
                     # Continuer même en cas d'erreur
 
         with self._unload_thread_lock:
+            # Ne créer qu'un seul thread, même si plusieurs instances existent
+            # Vérifier si un thread existe déjà et est actif
             if self._unload_thread is None or not self._unload_thread.is_alive():
                 self._unload_thread_stop.clear()
                 self._unload_thread = threading.Thread(
@@ -1120,16 +1122,24 @@ class BBIAHuggingFace:
                 )
                 self._unload_thread.start()
                 logger.debug("✅ Thread déchargement auto Hugging Face démarré")
+            else:
+                logger.debug("Thread déchargement auto Hugging Face déjà actif")
 
     def _stop_auto_unload_thread(self) -> None:
         """OPTIMISATION RAM: Arrête le thread de déchargement automatique."""
         try:
-            if hasattr(self, "_unload_thread") and self._unload_thread and self._unload_thread.is_alive():
+            if (
+                hasattr(self, "_unload_thread")
+                and self._unload_thread
+                and self._unload_thread.is_alive()
+            ):
                 self._unload_thread_stop.set()
                 # Attendre que le thread se termine (max 2 secondes)
                 self._unload_thread.join(timeout=2.0)
                 if self._unload_thread.is_alive():
-                    logger.warning("Thread déchargement auto Hugging Face n'a pas pu être arrêté dans les temps")
+                    logger.warning(
+                        "Thread déchargement auto Hugging Face n'a pas pu être arrêté dans les temps"
+                    )
                 else:
                     logger.debug("Thread déchargement auto Hugging Face arrêté")
         except (AttributeError, RuntimeError) as e:
