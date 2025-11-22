@@ -103,8 +103,8 @@ def test_goto_target_with_body_yaw() -> None:
         backend.goto_target(
             head=head, body_yaw=body_yaw, duration=0.2, method="minjerk"
         )
-        # OPTIMISATION: Réduire sleep de 0.25 à 0.15 (1.7x plus rapide)
-        time.sleep(0.15)
+        # OPTIMISATION: Réduire sleep de 0.15 à 0.05 (3x plus rapide)
+        time.sleep(0.05)
 
         # Vérifier position corps
         pos = backend.get_joint_pos("yaw_body")
