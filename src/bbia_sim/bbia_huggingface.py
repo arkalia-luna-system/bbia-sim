@@ -1437,11 +1437,16 @@ class BBIAHuggingFace:
             # Ajouter contexte si demandé
             if use_context and self.conversation_history:
                 # Derniers 2 échanges pour contexte
-                # OPTIMISATION: Convertir deque en list pour slicing (deque ne supporte pas [-2:])
+                # OPTIMISATION: Convertir deque en list pour slicing et utiliser list comprehension
                 recent_history = list(self.conversation_history)[-2:]
-                for entry in recent_history:
-                    messages.append({"role": "user", "content": entry["user"]})
-                    messages.append({"role": "assistant", "content": entry["bbia"]})
+                # OPTIMISATION: List comprehension plus efficace que append() en boucle
+                messages.extend(
+                    [
+                        {"role": "user", "content": entry["user"]},
+                        {"role": "assistant", "content": entry["bbia"]},
+                    ]
+                    for entry in recent_history
+                )
 
             # Ajouter message actuel
             messages.append({"role": "user", "content": user_message})
@@ -2270,14 +2275,16 @@ class BBIAHuggingFace:
         Si duplication détectée, ajoute une légère variante naturelle.
         """
         try:
-            recent = []
+            # OPTIMISATION: List comprehension plus efficace que append() en boucle
             if self.conversation_history:
-                # OPTIMISATION: Convertir deque en list pour slicing
                 recent_history = list(self.conversation_history)[-5:]
-                for entry in recent_history:
-                    bbia = entry.get("bbia", "").strip()
-                    if bbia:
-                        recent.append(bbia)
+                recent = [
+                    entry.get("bbia", "").strip()
+                    for entry in recent_history
+                    if entry.get("bbia", "").strip()
+                ]
+            else:
+                recent = []
             if text and text in recent:
                 import random as _r
 
