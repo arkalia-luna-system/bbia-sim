@@ -8,8 +8,9 @@ import json
 import logging
 import time
 from collections import deque
+from collections.abc import Callable
 from datetime import datetime
-from typing import Any, Callable
+from typing import Any
 
 try:
     import uvicorn  # type: ignore[import-untyped]
