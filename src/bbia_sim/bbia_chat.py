@@ -457,11 +457,15 @@ class BBIAChat:
                 logger.info("✅ Action exécutée: wake_up")
 
             elif action_name == "sleep":
-                # Endormir robot (position basse)
-                pose = create_head_pose(yaw=0.0, pitch=-0.2, degrees=False)
-                if hasattr(self.robot_api, "goto_target"):
-                    self.robot_api.goto_target(head=pose, duration=1.0)
-                logger.info("✅ Action exécutée: sleep")
+                # Endormir robot avec pose sommeil naturelle (Issue #410)
+                if hasattr(self.robot_api, "set_sleeping_pose"):
+                    self.robot_api.set_sleeping_pose(duration=2.0)
+                else:
+                    # Fallback: pose sommeil simplifiée
+                    pose = create_head_pose(yaw=0.0, pitch=-0.25, degrees=False)
+                    if hasattr(self.robot_api, "goto_target"):
+                        self.robot_api.goto_target(head=pose, duration=2.0)
+                logger.info("✅ Action exécutée: sleep (pose sommeil améliorée)")
 
         except Exception as e:
             logger.exception("❌ Erreur exécution action %s: %s", action_name, e)
@@ -545,7 +549,7 @@ class BBIAChat:
         user_lower = user_action.lower()
 
         # Détecter préférences courantes
-        if "court" in user_lower or "bref" in user_lower or "court" in user_lower:
+        if "court" in user_lower or "bref" in user_lower:
             self.user_preferences["response_length"] = "short"
         elif "détaillé" in user_lower or "long" in user_lower:
             self.user_preferences["response_length"] = "long"

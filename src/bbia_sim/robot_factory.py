@@ -96,3 +96,30 @@ class RobotFactory:
         }
 
         return info.get(backend_type.lower(), {})
+
+    @staticmethod
+    def create_robot_registry() -> dict[str, Any]:
+        """Crée un registre pour gestion multi-robots (Issue #30).
+
+        Returns:
+            Dictionnaire avec informations robots disponibles
+
+        Note:
+            Infrastructure pour support multi-robots futur.
+            Utilise BBIA_HOSTNAME et BBIA_PORT pour identification.
+
+        """
+        import os
+
+        from .global_config import GlobalConfig
+
+        robot_id = os.environ.get("BBIA_ROBOT_ID", "default")
+        hostname = GlobalConfig.HOSTNAME
+        port = GlobalConfig.DEFAULT_PORT
+
+        return {
+            "robot_id": robot_id,
+            "hostname": hostname,
+            "port": port,
+            "backends_available": RobotFactory.get_available_backends(),
+        }

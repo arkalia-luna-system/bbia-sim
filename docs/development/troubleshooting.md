@@ -264,6 +264,46 @@ pytest tests/test_backend_budget_cpu_ram.py -v
 - Erreur device: désactiver en CI `BBIA_DISABLE_AUDIO=1`
 - Sample rate: viser 16kHz; ajuster drivers si mismatch
 
+### reSpeaker Troubleshooting (Issue #389)
+
+**Problème** : Erreur USB EHCI controller avec reSpeaker
+
+**Symptômes** :
+- `No output device containing 'respeaker' found`
+- Erreur USB lors de l'initialisation
+- Audio ne fonctionne pas avec reSpeaker
+
+**Solutions** :
+
+1. **Gestion gracieuse automatique** :
+   - BBIA détecte automatiquement si reSpeaker est absent
+   - Fallback automatique vers périphérique par défaut
+   - Pas d'erreur bloquante
+
+2. **Désactiver audio si problème** :
+   ```bash
+   export BBIA_DISABLE_AUDIO=1
+   ```
+
+3. **Workaround USB EHCI** :
+   - Vérifier contrôleur USB : `lsusb` (Linux)
+   - Utiliser port USB 2.0 au lieu de USB 3.0
+   - Vérifier drivers USB : `dmesg | grep usb`
+
+4. **macOS spécifique** :
+   - Vérifier permissions audio : Réglages Système > Confidentialité > Micro
+   - Réinitialiser permissions : `tccutil reset Microphone`
+
+**Code existant** :
+```python
+# src/bbia_sim/bbia_audio.py
+if os.environ.get("BBIA_DISABLE_AUDIO", "0") == "1":
+    logger.debug("Audio désactivé (BBIA_DISABLE_AUDIO=1)")
+    return None
+```
+
+**Documentation** : Voir `docs/installation/RESPEAKER_SETUP.md` pour guide complet
+
 ---
 
 ## 🟣 WebSockets & Réseau

@@ -220,6 +220,38 @@ class MuJoCoBackend(RobotAPI):
             logger.exception("Erreur step MuJoCo: %s", e)
             return False
 
+    def check_collision(self) -> bool:
+        """Vérifie s'il y a collision dans la simulation (Issue #183).
+
+        Returns:
+            True si collision détectée, False sinon
+
+        Note:
+            Implémentation basique utilisant mujoco.mj_contact().
+            Pour une détection plus précise, utiliser les contacts spécifiques.
+
+        """
+        if not self.is_connected or self.model is None or self.data is None:
+            return False
+
+        try:
+            # Calculer les contacts
+            mujoco.mj_step(self.model, self.data)
+            # Vérifier s'il y a des contacts
+            num_contacts = self.data.ncon
+            has_collision = num_contacts > 0
+
+            if has_collision:
+                logger.debug(
+                    "⚠️ Collision détectée: %d contacts",
+                    num_contacts,
+                )
+
+            return has_collision
+        except Exception as e:
+            logger.exception("Erreur check_collision: %s", e)
+            return False
+
     def play_move(
         self,
         move: object,

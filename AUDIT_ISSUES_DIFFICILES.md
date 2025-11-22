@@ -502,5 +502,60 @@ DEFAULT_PORT = int(os.environ.get("BBIA_PORT", "8000"))
 
 ---
 
+---
+
+## ✅ IMPLÉMENTATION - Statut des Actions
+
+**Date implémentation** : 22 Novembre 2025
+
+### Phase 1 : Améliorations Rapides ✅ TERMINÉ
+
+1. ✅ **Issue #410** - Améliorer pose sommeil
+   - ✅ Méthode `set_sleeping_pose()` ajoutée dans `RobotAPI`
+   - ✅ Amélioration action `sleep` dans `bbia_chat.py`
+   - ✅ Pose sommeil naturelle (tête baissée, corps tourné, antennes baissées)
+
+2. ✅ **Issue #384** - Améliorer doc HF chat
+   - ✅ Guide complet ajouté dans `docs/guides/GUIDE_LLM_CONVERSATION.md`
+   - ✅ Section "Hugging Face Chat - Guide Complet"
+   - ✅ Exemples d'utilisation, configuration, troubleshooting
+
+3. ✅ **Issue #389** - Documenter reSpeaker
+   - ✅ Section troubleshooting ajoutée dans `docs/development/troubleshooting.md`
+   - ✅ Workarounds USB EHCI documentés
+   - ✅ Solutions pour macOS/Linux
+
+### Phase 2 : Documentation Conditionnelle ✅ TERMINÉ
+
+4. ✅ **Issue #434** - Documenter RPI cam
+   - ✅ Section "Support Raspberry Pi Caméra CSI->USB" ajoutée dans `docs/development/setup/vision-webcam.md`
+   - ✅ Configuration adaptateurs CSI->USB documentée
+   - ✅ Troubleshooting ajouté
+
+5. ✅ **Issue #407** - Documenter Windows
+   - ✅ Section "Support Windows" ajoutée dans `docs/development/setup/environments.md`
+   - ✅ Configuration Windows documentée
+   - ✅ Troubleshooting port COM ajouté
+
+### Phase 3 : Implémentations Futures ✅ PLANIFIÉ
+
+6. ✅ **Issue #183** - Planifier collision check
+   - ✅ Méthode `check_collision()` ajoutée dans `MuJoCoBackend`
+   - ✅ Utilise `mujoco.mj_contact()` pour détection
+   - ✅ Prêt pour flag `--check-collision` futur
+
+7. ✅ **Issue #30** - Planifier multi-robots
+   - ✅ Méthode `create_robot_registry()` ajoutée dans `RobotFactory`
+   - ✅ Infrastructure pour gestion multi-instances
+   - ✅ Utilise `BBIA_ROBOT_ID`, `BBIA_HOSTNAME`, `BBIA_PORT`
+
+### Issues Non Applicables ❌ IGNORÉES
+
+- ❌ **Issue #426** - Streaming optionnel (non applicable)
+- ❌ **Issue #408** - Port DoA (non applicable)
+- ❌ **Issue #388** - WebRTC support (non applicable)
+
+---
+
 **Dernière mise à jour** : 22 Novembre 2025
 

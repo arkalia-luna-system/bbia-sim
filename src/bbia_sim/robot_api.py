@@ -305,6 +305,11 @@ class RobotAPI(ABC):
 
     def _execute_goto_sleep(self, duration: float) -> bool:
         """Exécute le comportement d'endormissement."""
+        # Utiliser set_sleeping_pose si disponible (Issue #410)
+        if hasattr(self, "set_sleeping_pose"):
+            return self.set_sleeping_pose(duration=duration)
+
+        # Fallback: méthode simplifiée
         import time
 
         steps = int(duration * 10)  # 10 Hz
@@ -317,6 +322,58 @@ class RobotAPI(ABC):
             time.sleep(0.1)
 
         return True
+
+    def set_sleeping_pose(self, duration: float = 2.0) -> bool:
+        """Définit une pose de sommeil naturelle (Issue #410).
+
+        Args:
+            duration: Durée de la transition en secondes
+
+        Returns:
+            True si la pose a été définie avec succès
+
+        """
+        try:
+            # Pose sommeil naturelle : tête baissée, corps légèrement tourné, antennes baissées
+            from reachy_mini.utils import create_head_pose
+
+            # Tête baissée (pitch négatif)
+            head_pose = create_head_pose(yaw=0.0, pitch=-0.25, degrees=False)
+
+            # Antennes baissées pour pose sommeil
+            antennas = [-0.2, 0.2]  # Antennes légèrement baissées
+
+            # Corps légèrement tourné pour pose plus naturelle
+            body_yaw = -0.1  # Légère rotation gauche
+
+            if hasattr(self, "goto_target"):
+                self.goto_target(
+                    head=head_pose,
+                    antennas=antennas,
+                    body_yaw=body_yaw,
+                    duration=duration,
+                    method="minjerk",
+                )
+                logger.info("✅ Pose sommeil définie (Issue #410)")
+                return True
+
+            # Fallback: utiliser set_joint_pos si goto_target non disponible
+            if hasattr(self, "set_joint_pos"):
+                self.set_joint_pos("yaw_body", body_yaw)
+                logger.info("✅ Pose sommeil partielle définie (corps uniquement)")
+                return True
+
+            return False
+        except ImportError:
+            # SDK non disponible, utiliser méthode simplifiée
+            if hasattr(self, "set_joint_pos"):
+                self.set_joint_pos("yaw_body", -0.1)
+                logger.info("✅ Pose sommeil simplifiée définie")
+                return True
+            return False
+        except Exception as e:
+            logger.exception("Erreur set_sleeping_pose: %s", e)
+            return False
 
     def _execute_exploration(self, duration: float) -> bool:
         """Exécute le comportement d'exploration."""
