@@ -84,10 +84,14 @@ class TestBBIAAudioExtended:
             patch("os.environ.get", side_effect=mock_env_get),
             patch("bbia_sim.bbia_audio._get_robot_media_microphone", return_value=None),
             patch("bbia_sim.bbia_audio.sd.rec") as mock_rec,
+            patch("sounddevice.query_devices") as mock_query_devices,
         ):
+            # Simuler erreur lors de l'enregistrement
             mock_rec.side_effect = Exception("Audio error")
+            # Simuler erreur lors du fallback (query_devices)
+            mock_query_devices.side_effect = Exception("Error querying device -1")
 
-            with pytest.raises(Exception, match="Audio error"):
+            with pytest.raises(RuntimeError, match="Impossible d'enregistrer audio"):
                 enregistrer_audio("test.wav", duree=3, frequence=16000)
 
     def test_enregistrer_audio_custom_parameters(self):
