@@ -299,7 +299,7 @@ class OpenVoiceTTSTTS:
                 resolved = shutil.which(cmd_args[0])
                 if resolved:
                     cmd_args[0] = resolved
-            subprocess.check_call(  # noqa: S603 - cmd_args parsé via shlex, validé et sécurisé (pas de shell=True)
+            subprocess.check_call(  # nosec B603 - cmd_args parsé via shlex, validé et sécurisé (pas de shell=True)
                 cmd_args,
                 shell=False,
             )

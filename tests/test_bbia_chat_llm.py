@@ -172,9 +172,11 @@ class TestBBIAChat:
         """Test gestion contexte conversation."""
         chat = BBIAChat()
 
-        # Mocker la méthode generate pour éviter le chargement réel du modèle LLM
+        # Mocker _load_llm() et generate() pour éviter le chargement réel du modèle LLM
         # qui cause un timeout en CI
-        with patch.object(chat, "generate", return_value="Réponse simulée"):
+        with patch.object(chat, "_load_llm"), patch.object(
+            chat, "generate", return_value="Réponse simulée"
+        ):
             # Simuler conversation
             chat.chat("Bonjour")
             assert len(chat.context) == 1
