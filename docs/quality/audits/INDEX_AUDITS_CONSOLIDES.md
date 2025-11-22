@@ -240,6 +240,13 @@ Les fichiers suivants ont été fusionnés et archivés dans `_archived/` :
    - Plan d'action pour améliorations futures
    - Statut : Projet en excellent état ✅
 
+6. **ETAT_ISSUES_REACHY_OFFICIEL_22NOV2025.md** ⭐ **NOUVEAU** (22 Novembre 2025)
+   - État complet des issues Reachy Mini officiel vs BBIA-SIM
+   - Résumé : 19 issues sur 20 applicables traitées (95%)
+   - Détails complets par catégorie (faciles, difficiles, résolues)
+   - Statistiques finales et prochaines étapes
+   - Statut : BBIA-SIM très avancé par rapport à Reachy officiel ✅
+
 ---
 
 **Dernière mise à jour** : 22 Novembre 2025

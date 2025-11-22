@@ -260,12 +260,16 @@ def test_all_optimizations_present() -> None:
     }
 
     # Vérifier Hugging Face
-    if HF_AVAILABLE:
-        hf = BBIAHuggingFace()
-        optimizations["huggingface_lru"] = hasattr(hf, "_max_models_in_memory")
-        optimizations["huggingface_auto_unload"] = hasattr(
-            hf, "_unload_thread"
-        ) and hasattr(hf, "_inactivity_timeout")
+    if HF_AVAILABLE and BBIAHuggingFace is not None:
+        try:
+            hf = BBIAHuggingFace()
+            optimizations["huggingface_lru"] = hasattr(hf, "_max_models_in_memory")
+            optimizations["huggingface_auto_unload"] = hasattr(
+                hf, "_unload_thread"
+            ) and hasattr(hf, "_inactivity_timeout")
+        except ImportError:
+            # Hugging Face non disponible à l'exécution
+            pass
 
     # Vérifier Vision
     if VISION_AVAILABLE:
