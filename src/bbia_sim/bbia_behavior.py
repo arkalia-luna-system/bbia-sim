@@ -1323,6 +1323,24 @@ class BBIABehaviorManager:
         logger.info("🗑️  Tous les mouvements enregistrés ont été effacés")
 
 
+# Instance globale pour les fonctions standalone
+_global_manager: BBIABehaviorManager | None = None
+
+
+def _get_global_manager() -> BBIABehaviorManager:
+    """Obtient ou crée l'instance globale du gestionnaire de comportements."""
+    global _global_manager
+    if _global_manager is None:
+        _global_manager = BBIABehaviorManager()
+    return _global_manager
+
+
+def clear_saved_moves() -> None:
+    """Fonction standalone pour effacer tous les mouvements enregistrés."""
+    manager = _get_global_manager()
+    manager.clear_saved_moves()
+
+
 def main() -> None:
     """Test du module BBIA Behavior Manager."""
     # Créer l'instance

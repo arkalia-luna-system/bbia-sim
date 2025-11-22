@@ -1,5 +1,6 @@
 """Tests pour bbia_idle_animations.py - Animations idle."""
 
+import gc
 import os
 import sys
 import time
@@ -109,9 +110,11 @@ class TestBBIAVocalTremor:
 
     @pytest.fixture
     def mock_robot_api(self):
-        """Mock RobotAPI."""
-        robot = MagicMock()
+        """Mock RobotAPI (optimisé RAM)."""
+        # OPTIMISATION RAM: Mock minimal au lieu de MagicMock complet
+        robot = MagicMock(spec=["set_target_head_pose", "is_connected"])
         robot.set_target_head_pose = MagicMock()
+        robot.is_connected = True
         return robot
 
     @pytest.fixture
@@ -119,26 +122,33 @@ class TestBBIAVocalTremor:
         """Créer instance BBIAVocalTremor."""
         return BBIAVocalTremor(robot_api=mock_robot_api)
 
+    def teardown_method(self):
+        """OPTIMISATION RAM: Nettoyer après chaque test."""
+        gc.collect()
+
     def test_init(self, vocal_tremor):
         """Test initialisation."""
         assert vocal_tremor.robot_api is not None
         assert vocal_tremor.is_active is False
 
     def test_update_audio_level(self, vocal_tremor):
-        """Test mise à jour niveau audio."""
+        """Test mise à jour niveau audio (optimisé RAM)."""
+        # OPTIMISATION RAM: Test minimal sans import SDK lourd
         vocal_tremor.start()
 
-        # Mock create_head_pose même si SDK non disponible (le code gère gracieusement)
-        with patch(
-            "bbia_sim.bbia_idle_animations.create_head_pose", create=True
-        ) as mock_pose:
-            mock_pose.return_value = MagicMock()
+        # OPTIMISATION RAM: Mock simple - le code gère gracieusement l'ImportError
+        # On teste juste que last_audio_level est mis à jour correctement
+        # Pas besoin de mock create_head_pose car le code gère l'ImportError avec pass
+        vocal_tremor.update_audio_level(0.8)
+        assert vocal_tremor.last_audio_level == 0.8
 
-            vocal_tremor.update_audio_level(0.8)
-            assert vocal_tremor.last_audio_level == 0.8
+        # Test avec niveau audio inférieur au seuil (0.3)
+        vocal_tremor.update_audio_level(0.2)
+        assert vocal_tremor.last_audio_level == 0.2
 
-            # Le mock peut ne pas être appelé si SDK non disponible
-            # Mais la structure est correcte et le test passe quand même
+        # Test avec niveau audio élevé
+        vocal_tremor.update_audio_level(0.9)
+        assert vocal_tremor.last_audio_level == 0.9
 
 
 class TestBBIIdleAnimationManager:
