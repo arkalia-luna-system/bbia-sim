@@ -749,7 +749,7 @@ class ReachyMiniBackend(RobotAPI):
             self.current_emotion = emotion
             self.emotion_intensity = intensity
             logger.info(
-                f"Émotion simulée (sans SDK): {emotion} (intensité: {intensity})",
+                "Émotion simulée (sans SDK): %s (intensité: %s)", emotion, intensity
             )
             return True
 
@@ -803,8 +803,11 @@ class ReachyMiniBackend(RobotAPI):
         if not self.is_connected or not self.robot:
             # Mode simulation : toujours OK
             logger.info(
-                f"Look_at simulé: ({target_x}, {target_y}, {target_z}, "
-                f"duration={duration})",
+                "Look_at simulé: (%s, %s, %s, duration=%s)",
+                target_x,
+                target_y,
+                target_z,
+                duration,
             )
             return True
 
@@ -950,7 +953,7 @@ class ReachyMiniBackend(RobotAPI):
                         elif imu_raw is not None:
                             # Si format différent, essayer de le normaliser
                             logger.debug(
-                                f"Format IMU non standard: {type(imu_raw)}",
+                                "Format IMU non standard: %s", type(imu_raw)
                             )
                 except (
                     AttributeError,

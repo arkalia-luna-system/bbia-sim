@@ -91,7 +91,9 @@ class SimulationMediaModule:
 
         """
         logger.debug(
-            f"🔊 play_audio() simulé ({len(audio_bytes)} bytes, volume={volume})",
+            "🔊 play_audio() simulé (%s bytes, volume=%s)",
+            len(audio_bytes),
+            volume,
         )
 
     def record_audio(self, duration: float = 3.0, sample_rate: int = 16000) -> bytes:

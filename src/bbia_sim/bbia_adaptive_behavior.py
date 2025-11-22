@@ -272,10 +272,9 @@ class BBIAAdaptiveBehavior:
             self._update_preferences(behavior)
 
             logger.info(
-                (
-                    f"🎭 Comportement généré: {behavior_name} "
-                    f"pour contexte {self.current_context}"
-                ),
+                "🎭 Comportement généré: %s pour contexte %s",
+                behavior_name,
+                self.current_context,
             )
             return behavior
 
