@@ -62,12 +62,14 @@ class TestWhisperSTT:
         """OPTIMISATION RAM: Décharger modèles Whisper après chaque test."""
         try:
             import bbia_sim.voice_whisper as voice_whisper_module
+
             with voice_whisper_module._whisper_model_cache_lock:
                 voice_whisper_module._whisper_models_cache.clear()
                 voice_whisper_module._whisper_model_last_used.clear()
         except (AttributeError, ImportError):
             pass
         import gc
+
         gc.collect()
 
     def test_init_without_whisper(self):

@@ -67,6 +67,7 @@ class TestBBIAVision:
         try:
             # Vider cache YOLO
             import bbia_sim.vision_yolo as vision_yolo_module
+
             with vision_yolo_module._yolo_cache_lock:
                 vision_yolo_module._yolo_model_cache.clear()
         except (AttributeError, ImportError):

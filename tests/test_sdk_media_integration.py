@@ -51,9 +51,20 @@ class TestSDKMediaIntegration:
             pytest.skip("BBIAVision non disponible")
 
         # Test sans robot_api (mode simulation)
-        vision_no_api = BBIAVision()
+        # OPTIMISATION RAM: Utiliser robot_api=None explicitement pour éviter chargement modèles
+        vision_no_api = BBIAVision(robot_api=None)
         assert vision_no_api.robot_api is None
         print("✅ BBIAVision fonctionne sans robot_api (simulation)")
+
+        # OPTIMISATION RAM: Nettoyer après test
+        import gc
+
+        try:
+            if hasattr(vision_no_api, "yolo_detector") and vision_no_api.yolo_detector:
+                vision_no_api.yolo_detector.model = None
+        except (AttributeError, TypeError):
+            pass
+        gc.collect()
 
         # Test avec robot_api mock
         mock_robot_api = MagicMock()

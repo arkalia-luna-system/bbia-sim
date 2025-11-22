@@ -154,7 +154,8 @@ def test_vision_singleton() -> None:
 @pytest.mark.fast
 def test_vision_deque_history() -> None:
     """Test que l'historique des détections utilise deque avec limite."""
-    vision = BBIAVision()
+    # OPTIMISATION RAM: Utiliser robot_api=None pour éviter chargement modèles
+    vision = BBIAVision(robot_api=None)
 
     # Vérifier que les attributs sont des deque
     assert hasattr(vision, "objects_detected")
@@ -273,7 +274,8 @@ def test_all_optimizations_present() -> None:
 
     # Vérifier Vision
     if VISION_AVAILABLE:
-        vision = BBIAVision()
+        # OPTIMISATION RAM: Utiliser robot_api=None pour éviter chargement modèles
+        vision = BBIAVision(robot_api=None)
         optimizations["vision_deque"] = isinstance(
             vision.objects_detected, deque | list
         )

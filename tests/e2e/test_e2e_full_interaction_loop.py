@@ -43,17 +43,18 @@ class TestE2EFullInteractionLoop:
         """OPTIMISATION RAM: Décharger modèles après chaque test."""
         try:
             # Décharger détecteurs YOLO si chargés
-            if hasattr(self.vision, 'yolo_detector') and self.vision.yolo_detector:
+            if hasattr(self.vision, "yolo_detector") and self.vision.yolo_detector:
                 self.vision.yolo_detector.model = None
                 self.vision.yolo_detector.is_loaded = False
             # Décharger détecteurs MediaPipe si chargés
-            if hasattr(self.vision, 'face_detector') and self.vision.face_detector:
+            if hasattr(self.vision, "face_detector") and self.vision.face_detector:
                 self.vision.face_detector.face_detection = None
         except (AttributeError, TypeError):
             pass
         # Vider cache YOLO
         try:
             import bbia_sim.vision_yolo as vision_yolo_module
+
             with vision_yolo_module._yolo_cache_lock:
                 vision_yolo_module._yolo_model_cache.clear()
         except (AttributeError, ImportError):

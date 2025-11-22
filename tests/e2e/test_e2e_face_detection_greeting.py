@@ -3,6 +3,7 @@
 Test E2E: Scénario utilisateur - BBIA détecte visage → suit → salue
 """
 
+import gc
 import os
 from collections import deque
 from unittest.mock import MagicMock
@@ -15,6 +16,7 @@ from bbia_sim.bbia_vision import BBIAVision
 
 @pytest.mark.e2e
 @pytest.mark.slow
+@pytest.mark.heavy  # OPTIMISATION RAM: Test lourd (intégration complète avec vision)
 class TestE2EFaceDetectionGreeting:
     """Tests E2E scénario: détection visage → suivi → salutation."""
 
@@ -26,8 +28,30 @@ class TestE2EFaceDetectionGreeting:
         self.mock_robot.get_joint_pos.return_value = 0.0
         self.mock_robot.step.return_value = True
 
-        # Vision avec mock
-        self.vision = BBIAVision(robot_api=self.mock_robot)
+        # OPTIMISATION RAM: Utiliser robot_api=None pour éviter chargement modèles lourds
+        self.vision = BBIAVision(robot_api=None)
+
+    def teardown_method(self):
+        """OPTIMISATION RAM: Décharger modèles après chaque test."""
+        try:
+            # Décharger détecteurs YOLO si chargés
+            if hasattr(self.vision, "yolo_detector") and self.vision.yolo_detector:
+                self.vision.yolo_detector.model = None
+                self.vision.yolo_detector.is_loaded = False
+            # Décharger détecteurs MediaPipe si chargés
+            if hasattr(self.vision, "face_detector") and self.vision.face_detector:
+                self.vision.face_detector.face_detection = None
+        except (AttributeError, TypeError):
+            pass
+        # Vider cache YOLO
+        try:
+            import bbia_sim.vision_yolo as vision_yolo_module
+
+            with vision_yolo_module._yolo_cache_lock:
+                vision_yolo_module._yolo_model_cache.clear()
+        except (AttributeError, ImportError):
+            pass
+        gc.collect()
         # Mock faces détectées
         self.vision.faces_detected = deque(
             [  # type: ignore[assignment]

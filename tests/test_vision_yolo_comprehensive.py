@@ -36,6 +36,7 @@ class TestYOLODetector:
         # OPTIMISATION RAM: Vider le cache YOLO pour libérer la mémoire
         try:
             import bbia_sim.vision_yolo as vision_yolo_module
+
             with vision_yolo_module._yolo_cache_lock:
                 vision_yolo_module._yolo_model_cache.clear()
                 vision_yolo_module._yolo_model_last_used.clear()
@@ -110,6 +111,7 @@ class TestYOLODetector:
         with patch("bbia_sim.vision_yolo.YOLO_AVAILABLE", True):
             # Vider cache avant test pour forcer chargement
             import bbia_sim.vision_yolo as vision_yolo_module
+
             importlib.reload(vision_yolo_module)
 
             vision_yolo_module._yolo_model_cache.clear()
@@ -136,16 +138,16 @@ class TestYOLODetector:
         mock_box = MagicMock()
         # Simplifier le mock pour éviter problèmes d'indexation
         mock_box.xyxy = MagicMock()
-        mock_box.xyxy.__getitem__.return_value.cpu.return_value.numpy.return_value = np.array(
-            [10.0, 20.0, 100.0, 120.0]
+        mock_box.xyxy.__getitem__.return_value.cpu.return_value.numpy.return_value = (
+            np.array([10.0, 20.0, 100.0, 120.0])
         )
         mock_box.conf = MagicMock()
-        mock_box.conf.__getitem__.return_value.cpu.return_value.numpy.return_value = np.array(
-            0.8
+        mock_box.conf.__getitem__.return_value.cpu.return_value.numpy.return_value = (
+            np.array(0.8)
         )
         mock_box.cls = MagicMock()
-        mock_box.cls.__getitem__.return_value.cpu.return_value.numpy.return_value = np.array(
-            0
+        mock_box.cls.__getitem__.return_value.cpu.return_value.numpy.return_value = (
+            np.array(0)
         )
 
         mock_result = MagicMock()
@@ -167,6 +169,7 @@ class TestYOLODetector:
         with patch("bbia_sim.vision_yolo.YOLO_AVAILABLE", True):
             # Vider cache avant test
             import bbia_sim.vision_yolo as vision_yolo_module
+
             importlib.reload(vision_yolo_module)
 
             vision_yolo_module._yolo_model_cache.clear()
@@ -206,6 +209,7 @@ class TestYOLODetector:
 
         with patch("bbia_sim.vision_yolo.YOLO_AVAILABLE", True):
             import bbia_sim.vision_yolo as vision_yolo_module
+
             importlib.reload(vision_yolo_module)
 
             vision_yolo_module._yolo_model_cache.clear()
@@ -352,6 +356,7 @@ class TestYOLODetector:
 
         with patch("bbia_sim.vision_yolo.YOLO_AVAILABLE", True):
             import bbia_sim.vision_yolo as vision_yolo_module
+
             importlib.reload(vision_yolo_module)
 
             vision_yolo_module._yolo_model_cache.clear()
@@ -456,6 +461,7 @@ class TestFaceDetector:
         # OPTIMISATION RAM: Vider le cache YOLO pour libérer la mémoire
         try:
             import bbia_sim.vision_yolo as vision_yolo_module
+
             with vision_yolo_module._yolo_cache_lock:
                 vision_yolo_module._yolo_model_cache.clear()
                 vision_yolo_module._yolo_model_last_used.clear()
@@ -585,6 +591,7 @@ class TestFactoryFunctions:
         # OPTIMISATION RAM: Vider le cache YOLO pour libérer la mémoire
         try:
             import bbia_sim.vision_yolo as vision_yolo_module
+
             with vision_yolo_module._yolo_cache_lock:
                 vision_yolo_module._yolo_model_cache.clear()
                 vision_yolo_module._yolo_model_last_used.clear()
@@ -609,6 +616,7 @@ class TestFactoryFunctions:
 
         with patch("bbia_sim.vision_yolo.YOLO_AVAILABLE", True):
             import bbia_sim.vision_yolo as vision_yolo_module
+
             importlib.reload(vision_yolo_module)
 
             detector = create_yolo_detector(model_size="n", confidence_threshold=0.3)

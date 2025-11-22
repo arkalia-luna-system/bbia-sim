@@ -70,15 +70,37 @@ class TestBBIAVisionMethods:
 
     def test_start_async_scanning(self) -> None:
         """Test start_async_scanning."""
-        vision = BBIAVision()
+        import gc
+
+        # OPTIMISATION RAM: Utiliser robot_api=None pour éviter chargement modèles
+        vision = BBIAVision(robot_api=None)
         vision.start_async_scanning()
         vision.stop_async_scanning()
 
+        # OPTIMISATION RAM: Nettoyer après test
+        try:
+            if hasattr(vision, "yolo_detector") and vision.yolo_detector:
+                vision.yolo_detector.model = None
+        except (AttributeError, TypeError):
+            pass
+        gc.collect()
+
     def test_stop_async_scanning(self) -> None:
         """Test stop_async_scanning."""
-        vision = BBIAVision()
+        import gc
+
+        # OPTIMISATION RAM: Utiliser robot_api=None pour éviter chargement modèles
+        vision = BBIAVision(robot_api=None)
         vision.start_async_scanning()
         vision.stop_async_scanning()
+
+        # OPTIMISATION RAM: Nettoyer après test
+        try:
+            if hasattr(vision, "yolo_detector") and vision.yolo_detector:
+                vision.yolo_detector.model = None
+        except (AttributeError, TypeError):
+            pass
+        gc.collect()
 
 
 class TestBBIAChatInit:

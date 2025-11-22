@@ -22,13 +22,15 @@ def test_vision_fps_10s_simulated() -> None:
         pytest.skip("Vision désactivée par BBIA_DISABLE_VISION=1")
 
     vision = BBIAVision(robot_api=None)
-    
+
     try:
         # OPTIMISATION RAM: Réduire 3s → 2s (suffisant pour mesurer FPS, 1.5x plus rapide)
         duration_s = 2.0
         frames = 0
         latencies_ms: list[float] = []
-        max_iterations = 100  # OPTIMISATION: Limiter itérations pour éviter boucle infinie
+        max_iterations = (
+            100  # OPTIMISATION: Limiter itérations pour éviter boucle infinie
+        )
 
         t0 = time.perf_counter()
         iteration = 0
@@ -63,17 +65,18 @@ def test_vision_fps_10s_simulated() -> None:
         # OPTIMISATION RAM: Nettoyer modèles vision après le test
         try:
             # Décharger détecteurs YOLO si chargés
-            if hasattr(vision, 'yolo_detector') and vision.yolo_detector:
+            if hasattr(vision, "yolo_detector") and vision.yolo_detector:
                 vision.yolo_detector.model = None
                 vision.yolo_detector.is_loaded = False
             # Décharger détecteurs MediaPipe si chargés
-            if hasattr(vision, 'face_detector') and vision.face_detector:
+            if hasattr(vision, "face_detector") and vision.face_detector:
                 vision.face_detector.face_detection = None
         except (AttributeError, TypeError):
             pass
         # Vider cache YOLO
         try:
             import bbia_sim.vision_yolo as vision_yolo_module
+
             with vision_yolo_module._yolo_cache_lock:
                 vision_yolo_module._yolo_model_cache.clear()
         except (AttributeError, ImportError):
@@ -91,14 +94,16 @@ def test_vision_budget_cpu_ram_10s() -> None:
     import tracemalloc
 
     vision = BBIAVision(robot_api=None)
-    
+
     try:
         # OPTIMISATION RAM: Réduire 3s → 2s (suffisant pour mesurer budget, 1.5x plus rapide)
         duration_s = 2.0
         tracemalloc.start()
         t0_cpu = time.process_time()
         t0 = time.perf_counter()
-        max_iterations = 100  # OPTIMISATION: Limiter itérations pour éviter boucle infinie
+        max_iterations = (
+            100  # OPTIMISATION: Limiter itérations pour éviter boucle infinie
+        )
 
         iteration = 0
         while time.perf_counter() - t0 < duration_s and iteration < max_iterations:
@@ -122,17 +127,18 @@ def test_vision_budget_cpu_ram_10s() -> None:
         # OPTIMISATION RAM: Nettoyer modèles vision après le test
         try:
             # Décharger détecteurs YOLO si chargés
-            if hasattr(vision, 'yolo_detector') and vision.yolo_detector:
+            if hasattr(vision, "yolo_detector") and vision.yolo_detector:
                 vision.yolo_detector.model = None
                 vision.yolo_detector.is_loaded = False
             # Décharger détecteurs MediaPipe si chargés
-            if hasattr(vision, 'face_detector') and vision.face_detector:
+            if hasattr(vision, "face_detector") and vision.face_detector:
                 vision.face_detector.face_detection = None
         except (AttributeError, TypeError):
             pass
         # Vider cache YOLO
         try:
             import bbia_sim.vision_yolo as vision_yolo_module
+
             with vision_yolo_module._yolo_cache_lock:
                 vision_yolo_module._yolo_model_cache.clear()
         except (AttributeError, ImportError):

@@ -583,23 +583,46 @@ class TestBBIAVisionMethods:
 
     def test_scan_environment_async(self) -> None:
         """Test scan_environment_async."""
+        import gc
+
         from bbia_sim.bbia_vision import BBIAVision
 
-        vision = BBIAVision()
+        # OPTIMISATION RAM: Utiliser robot_api=None pour éviter chargement modèles
+        vision = BBIAVision(robot_api=None)
         vision.start_async_scanning()
         vision.scan_environment_async()
         vision.stop_async_scanning()
 
+        # OPTIMISATION RAM: Nettoyer après test
+        try:
+            if hasattr(vision, "yolo_detector") and vision.yolo_detector:
+                vision.yolo_detector.model = None
+        except (AttributeError, TypeError):
+            pass
+        gc.collect()
+
     def test_scan_environment_from_image(self) -> None:
         """Test scan_environment_from_image."""
+        import gc
+
         import numpy as np
 
         from bbia_sim.bbia_vision import BBIAVision
 
-        vision = BBIAVision()
-        image = np.zeros((480, 640, 3), dtype=np.uint8)
+        # OPTIMISATION RAM: Utiliser robot_api=None et image réduite
+        vision = BBIAVision(robot_api=None)
+        # OPTIMISATION RAM: Image réduite (320x240 au lieu de 640x480)
+        image = np.zeros((240, 320, 3), dtype=np.uint8)
         result = vision.scan_environment_from_image(image)
         assert result is not None
+
+        # OPTIMISATION RAM: Nettoyer après test
+        try:
+            if hasattr(vision, "yolo_detector") and vision.yolo_detector:
+                vision.yolo_detector.model = None
+        except (AttributeError, TypeError):
+            pass
+        gc.collect()
 
 
 class TestBBIAVoiceAdvanced:

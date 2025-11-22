@@ -63,16 +63,16 @@ class TestBehaviorsIntegration:
         mock_sleep.return_value = None
 
         behavior = ExerciseBehavior(robot_api=mock_robot)
-        
+
         # Mock time.time pour contrôler le temps écoulé
         mock_time_values = [100.0, 100.5, 101.5]  # 0s, 0.5s, 1.5s
         time_index = [0]
-        
+
         def mock_time():
             idx = time_index[0]
             time_index[0] = min(idx + 1, len(mock_time_values) - 1)
             return mock_time_values[idx]
-        
+
         with patch("time.time", side_effect=mock_time):
             # Exécuter avec beaucoup de répétitions (simulation timeout)
             behavior.execute({"exercise": "head_rotation", "repetitions": 1000})
