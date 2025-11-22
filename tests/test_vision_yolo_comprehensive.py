@@ -169,7 +169,6 @@ class TestYOLODetector:
             import bbia_sim.vision_yolo as vision_yolo_module
 
             vision_yolo_module._yolo_model_cache.clear()
-            mock_yolo_class = MagicMock()
             vision_yolo_module.YOLO.return_value = mock_model
             vision_yolo_module.YOLO = mock_yolo_class
 
@@ -206,7 +205,6 @@ class TestYOLODetector:
             import bbia_sim.vision_yolo as vision_yolo_module
 
             vision_yolo_module._yolo_model_cache.clear()
-            mock_yolo_class = MagicMock()
             vision_yolo_module.YOLO.return_value = mock_model
             vision_yolo_module.YOLO = mock_yolo_class
 
@@ -354,7 +352,6 @@ class TestYOLODetector:
             import bbia_sim.vision_yolo as vision_yolo_module
 
             vision_yolo_module._yolo_model_cache.clear()
-            mock_yolo_class = MagicMock()
             vision_yolo_module.YOLO.return_value = mock_model
 
             detector = YOLODetector(model_size="n", confidence_threshold=0.25)
@@ -417,7 +414,6 @@ class TestYOLODetector:
             import bbia_sim.vision_yolo as vision_yolo_module
 
             vision_yolo_module._yolo_model_cache.clear()
-            mock_yolo_class = MagicMock()
             vision_yolo_module.YOLO.return_value = mock_model
 
             detector = YOLODetector(model_size="n", confidence_threshold=0.25)
@@ -600,6 +596,10 @@ class TestFactoryFunctions:
     @patch("mediapipe.solutions.face_detection")
     def test_create_face_detector_with_mediapipe(self, mock_face_detection):
         """Test création détecteur visages avec MediaPipe."""
+        try:
+            import mediapipe  # noqa: F401
+        except ImportError:
+            pytest.skip("mediapipe non disponible")
         mock_face_detection.FaceDetection = MagicMock(return_value=MagicMock())
         detector = create_face_detector()
         assert detector is not None
@@ -630,7 +630,6 @@ class TestFactoryFunctions:
             import bbia_sim.vision_yolo as vision_yolo_module
 
             vision_yolo_module._yolo_model_cache.clear()
-            mock_yolo_class = MagicMock()
             vision_yolo_module.YOLO.side_effect = [mock_model_n, mock_model_s]
 
             # Charger modèle "n"
@@ -669,7 +668,6 @@ class TestFactoryFunctions:
             import bbia_sim.vision_yolo as vision_yolo_module
 
             vision_yolo_module._yolo_model_cache.clear()
-            mock_yolo_class = MagicMock()
             vision_yolo_module.YOLO.return_value = mock_model
 
             detector = YOLODetector(model_size="n")
@@ -848,7 +846,6 @@ class TestFactoryFunctions:
             import bbia_sim.vision_yolo as vision_yolo_module
 
             vision_yolo_module._yolo_model_cache.clear()
-            mock_yolo_class = MagicMock()
             vision_yolo_module.YOLO.assert_not_called()
 
     def test_detect_objects_batch_success(self):
@@ -888,7 +885,6 @@ class TestFactoryFunctions:
             import bbia_sim.vision_yolo as vision_yolo_module
 
             vision_yolo_module._yolo_model_cache.clear()
-            mock_yolo_class = MagicMock()
             vision_yolo_module.YOLO.return_value = mock_model
 
             detector = YOLODetector(model_size="n", confidence_threshold=0.25)
@@ -949,7 +945,6 @@ class TestFactoryFunctions:
             import bbia_sim.vision_yolo as vision_yolo_module
 
             vision_yolo_module._yolo_model_cache.clear()
-            mock_yolo_class = MagicMock()
             vision_yolo_module.YOLO.return_value = mock_model
 
             detector = YOLODetector(model_size="n", confidence_threshold=0.25)
