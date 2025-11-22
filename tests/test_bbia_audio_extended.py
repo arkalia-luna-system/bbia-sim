@@ -38,6 +38,7 @@ class TestBBIAAudioExtended:
                     "BBIA_DISABLE_AUDIO": "0",  # Désactiver BBIA_DISABLE_AUDIO
                     "BBIA_MAX_AUDIO_BUFFER_DURATION": "180",  # Valeur par défaut
                 }
+                # Retourner la valeur de l'environnement si elle existe, sinon la valeur par défaut
                 return env_values.get(key, default if default is not None else "")
 
             with (
@@ -54,7 +55,10 @@ class TestBBIAAudioExtended:
                 mock_audio_data = np.array([1000, 2000, 3000], dtype=np.int16)
                 mock_rec.return_value = mock_audio_data
 
-                enregistrer_audio(temp_path, duree=3, frequence=16000)
+                # Passer explicitement max_buffer_duration pour éviter les problèmes de mock
+                enregistrer_audio(
+                    temp_path, duree=3, frequence=16000, max_buffer_duration=180
+                )
 
                 mock_rec.assert_called_once_with(
                     int(3 * 16000), samplerate=16000, channels=1, dtype="int16"
@@ -114,7 +118,10 @@ class TestBBIAAudioExtended:
                 mock_audio_data = np.array([1000, 2000], dtype=np.int16)
                 mock_rec.return_value = mock_audio_data
 
-                enregistrer_audio(temp_path, duree=5, frequence=22050)
+                # Passer explicitement max_buffer_duration pour éviter les problèmes de mock
+                enregistrer_audio(
+                    temp_path, duree=5, frequence=22050, max_buffer_duration=180
+                )
 
                 mock_rec.assert_called_once_with(
                     int(5 * 22050), samplerate=22050, channels=1, dtype="int16"
