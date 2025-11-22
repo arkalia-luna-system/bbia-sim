@@ -1,6 +1,6 @@
 # Simulation BBIA complète - tous les modes
 
-**Date** : 21 novembre 2025
+**Date** : 22 novembre 2025
 
 > Compatibilité Python et CI
 >

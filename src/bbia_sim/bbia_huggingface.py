@@ -690,7 +690,7 @@ class BBIAHuggingFace:
             return True
 
         except (ImportError, RuntimeError, OSError, ValueError, AttributeError) as e:
-            logger.exception("❌ Erreur chargement modèle %s: %s", model_name, e)
+            logger.exception(f"❌ Erreur chargement modèle {model_name}: {e}")
             return False
         except Exception as e:
             logger.exception(
@@ -798,10 +798,10 @@ class BBIAHuggingFace:
             )
 
         except (ValueError, RuntimeError, AttributeError, OSError) as e:
-            logger.exception("❌ Erreur description image: %s", e)
+            logger.exception(f"❌ Erreur description image: {e}")
             return "Erreur (describe_image): échec de génération de description d'image"
         except Exception as e:
-            logger.exception("❌ Erreur inattendue description image: %s", e)
+            logger.exception(f"❌ Erreur inattendue description image: {e}")
             return "Erreur (describe_image): échec de génération de description d'image"
 
     def analyze_sentiment(
@@ -836,10 +836,10 @@ class BBIAHuggingFace:
             }
 
         except (ValueError, RuntimeError, AttributeError, KeyError) as e:
-            logger.exception("❌ Erreur analyse sentiment: %s", e)
+            logger.exception(f"❌ Erreur analyse sentiment: {e}")
             return {"error": str(e)}
         except Exception as e:
-            logger.exception("❌ Erreur inattendue analyse sentiment: %s", e)
+            logger.exception(f"❌ Erreur inattendue analyse sentiment: {e}")
             return {"error": str(e)}
 
     def analyze_emotion(
@@ -872,10 +872,10 @@ class BBIAHuggingFace:
             }
 
         except (ValueError, RuntimeError, AttributeError, KeyError) as e:
-            logger.exception("❌ Erreur analyse émotion: %s", e)
+            logger.exception(f"❌ Erreur analyse émotion: {e}")
             return {"error": str(e)}
         except Exception as e:
-            logger.exception("❌ Erreur inattendue analyse émotion: %s", e)
+            logger.exception(f"❌ Erreur inattendue analyse émotion: {e}")
             return {"error": str(e)}
 
     def transcribe_audio(self, audio_path: str, model_name: str = "whisper") -> str:
@@ -919,10 +919,10 @@ class BBIAHuggingFace:
             return str(transcription)
 
         except (OSError, RuntimeError, ValueError, AttributeError) as e:
-            logger.exception("❌ Erreur transcription audio: %s", e)
+            logger.exception(f"❌ Erreur transcription audio: {e}")
             return "Erreur (transcribe_audio): problème pendant la transcription audio"
         except Exception as e:
-            logger.exception("❌ Erreur inattendue transcription audio: %s", e)
+            logger.exception(f"❌ Erreur inattendue transcription audio: {e}")
             return "Erreur (transcribe_audio): problème pendant la transcription audio"
 
     def answer_question(
@@ -965,10 +965,10 @@ class BBIAHuggingFace:
             return str(answer)
 
         except (ValueError, RuntimeError, AttributeError, OSError) as e:
-            logger.exception("❌ Erreur VQA: %s", e)
+            logger.exception(f"❌ Erreur VQA: {e}")
             return "Erreur (answer_question): échec de l'analyse visuelle (VQA)"
         except Exception as e:
-            logger.exception("❌ Erreur inattendue VQA: %s", e)
+            logger.exception(f"❌ Erreur inattendue VQA: {e}")
             return "Erreur (answer_question): échec de l'analyse visuelle (VQA)"
 
     def get_available_models(self) -> dict[str, list[str]]:
@@ -1142,12 +1142,10 @@ class BBIAHuggingFace:
                                     if model_key in model_last_used:
                                         del model_last_used[model_key]
                     except (AttributeError, RuntimeError, KeyError) as e:
-                        logger.debug("Erreur déchargement auto %s: %s", model_key, e)
+                        logger.debug(f"Erreur déchargement auto {model_key}: {e}")
                     except Exception as e:
                         logger.debug(
-                            "Erreur inattendue déchargement auto %s: %s",
-                            model_key,
-                            e,
+                            f"Erreur inattendue déchargement auto {model_key}: {e}"
                         )
             except (RuntimeError, AttributeError) as e:
                 logger.debug(f"Erreur boucle déchargement auto partagée: {e}")
