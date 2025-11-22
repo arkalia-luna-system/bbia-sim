@@ -137,6 +137,14 @@ class BBIAVision:
             robot_api: Interface RobotAPI (optionnel) pour accès robot.media.camera
 
         """
+        # OPTIMISATION RAM: Avertir si instance créée directement au lieu d'utiliser singleton
+        global _bbia_vision_singleton
+        if _bbia_vision_singleton is not None and _bbia_vision_singleton is not self:
+            logger.warning(
+                "⚠️ Instance BBIAVision créée directement. "
+                "Utilisez get_bbia_vision_singleton() pour éviter duplication RAM."
+            )
+
         self.robot_api = robot_api
         self.camera_active = True
         self.vision_quality = "HD"
