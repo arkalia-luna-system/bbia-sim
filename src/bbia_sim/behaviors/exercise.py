@@ -94,8 +94,8 @@ class ExerciseBehavior(BBIABehavior):
             exercise_func = self.exercises[exercise_name]
             exercise_func()
             return True
-        except Exception as e:
-            logger.exception("Erreur lors de l'exercice: %s", e)
+        except Exception:
+            logger.exception("Erreur lors de l'exercice")
             return False
         finally:
             self.is_active = False

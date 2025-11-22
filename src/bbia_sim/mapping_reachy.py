@@ -231,7 +231,7 @@ if __name__ == "__main__":
         try:
             is_valid, clamped = ReachyMapping.validate_position(joint, pos)
             logging.info(f"  {joint}({pos}) → {is_valid}, {clamped:.2f}")
-        except ValueError as e:
-            logging.exception(f"  {joint}({pos}) → ERREUR: {e}")
+        except ValueError:
+            logging.exception(f"  {joint}({pos}) → ERREUR")
 
     logging.info("\n✅ Mapping Reachy Mini validé !")

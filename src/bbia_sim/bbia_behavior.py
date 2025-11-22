@@ -16,6 +16,7 @@ import time
 from pathlib import Path
 from queue import Queue
 from typing import TYPE_CHECKING, Any
+from uuid import UUID, uuid4
 
 if TYPE_CHECKING:
     from .robot_api import RobotAPI
@@ -281,8 +282,8 @@ class GreetingBehavior(BBIABehavior):
                         self.robot_api.set_joint_pos("yaw_body", 0.12)
                         time.sleep(0.5)
                         self.robot_api.set_joint_pos("yaw_body", 0.0)
-                    except Exception as e2:
-                        logger.exception("Erreur fallback rotation corps: %s", e2)
+                    except Exception:
+                        logger.exception("Erreur fallback rotation corps")
         elif self.robot_api and hasattr(self.robot_api, "set_joint_pos"):
             # Fallback: rotation corps subtile si SDK non disponible
             try:
@@ -1255,9 +1256,9 @@ class BBIABehaviorManager:
                 return move
             logger.warning("⚠️  Aucun mouvement enregistré pour '%s'", behavior_name)
             return None
-        except Exception as e:
+        except Exception:
             logger.exception(
-                f"❌ Erreur enregistrement comportement '{behavior_name}': {e}",
+                f"❌ Erreur enregistrement comportement '{behavior_name}':"
             )
             return None
 
@@ -1313,8 +1314,8 @@ class BBIABehaviorManager:
                 return True
             logger.warning("play_move non disponible dans robot_api")
             return False
-        except Exception as e:
-            logger.exception("❌ Erreur rejouant '%s': %s", behavior_name, e)
+        except Exception:
+            logger.exception("❌ Erreur rejouant '%s':", behavior_name)
             return False
 
     def clear_saved_moves(self) -> None:
@@ -1339,6 +1340,117 @@ def clear_saved_moves() -> None:
     """Fonction standalone pour effacer tous les mouvements enregistrés."""
     manager = _get_global_manager()
     manager.clear_saved_moves()
+
+
+def create_move_from_positions(
+    positions: dict[str, float] | list[dict[str, float]],
+    duration: float = 1.0,
+) -> object | None:
+    """Crée un objet Move à partir de positions.
+
+    Args:
+        positions: Dict de positions de joints ou liste de dicts
+        duration: Durée du mouvement en secondes
+
+    Returns:
+        Objet Move ou None si erreur
+    """
+    try:
+        from .robot_factory import RobotFactory
+        from .utils.types import JointPositions
+
+        # Créer un backend pour utiliser create_move_from_positions
+        backend = RobotFactory.create_backend("reachy_mini")
+        if not backend:
+            backend = RobotFactory.create_backend("mujoco")
+        if not backend:
+            logger.warning("Aucun backend disponible pour create_move_from_positions")
+            return None
+
+        # Convertir dict unique en liste si nécessaire
+        if isinstance(positions, dict):
+            positions_list: list[JointPositions] = [positions]
+        else:
+            positions_list = positions
+
+        # Utiliser la méthode du backend si disponible
+        if hasattr(backend, "create_move_from_positions"):
+            result = backend.create_move_from_positions(positions_list, duration)
+            return result  # type: ignore[no-any-return]
+
+        # Fallback: créer un Move simple
+        try:
+            from reachy_mini.motion.move import Move  # type: ignore[import-untyped]
+
+            class SimpleMove(Move):
+                def __init__(
+                    self,
+                    positions: list[JointPositions],
+                    duration: float,
+                ) -> None:
+                    self._positions = positions
+                    self._duration = duration
+
+                def duration(self) -> float:
+                    return float(self._duration)
+
+                def evaluate(self, t: float) -> JointPositions:
+                    if not self._positions or t <= 0:
+                        return self._positions[0] if self._positions else {}
+                    if t >= 1:
+                        return self._positions[-1] if self._positions else {}
+
+                    idx = int(t * (len(self._positions) - 1))
+                    if idx >= len(self._positions) - 1:
+                        return dict(self._positions[-1]) if self._positions else {}
+
+                    pos1: JointPositions = self._positions[idx]
+                    pos2: JointPositions = self._positions[idx + 1]
+
+                    result: JointPositions = {}
+                    for key in pos1:
+                        if key in pos2:
+                            result[key] = pos1[key] + (pos2[key] - pos1[key]) * (
+                                t * (len(self._positions) - 1) - idx
+                            )
+                        else:
+                            result[key] = pos1[key]
+                    return result
+
+            return SimpleMove(positions_list, duration)
+        except ImportError:
+            logger.warning("reachy_mini non disponible, impossible de créer Move")
+            return None
+
+    except Exception:
+        logger.exception("Erreur création Move depuis positions")
+        return None
+
+
+def create_move_task(
+    positions: dict[str, float] | list[dict[str, float]],
+    duration: float = 1.0,
+) -> UUID | None:
+    """Crée une tâche de mouvement avec UUID.
+
+    Args:
+        positions: Dict de positions de joints ou liste de dicts
+        duration: Durée du mouvement en secondes
+
+    Returns:
+        UUID de la tâche ou None si erreur
+    """
+    try:
+        # Créer le move d'abord
+        move = create_move_from_positions(positions, duration)
+        if move is None:
+            return None
+
+        # Retourner un UUID pour la tâche
+        return uuid4()
+    except Exception:
+        logger.exception("Erreur création tâche mouvement")
+        return None
 
 
 def main() -> None:

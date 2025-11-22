@@ -91,8 +91,8 @@ class SimulationService:
             logger.info("Simulation MuJoCo arrêtée avec succès")
             return True
 
-        except Exception as e:
-            logger.exception("Erreur lors de l'arrêt de la simulation : %s", e)
+        except Exception:
+            logger.exception("Erreur lors de l'arrêt de la simulation")
             return False
 
     async def _run_headless_simulation(self) -> None:
@@ -165,8 +165,8 @@ class SimulationService:
 
         try:
             return self.simulator.get_robot_state()
-        except Exception as e:
-            logger.exception("Erreur lors de la récupération de l'état : %s", e)
+        except Exception:
+            logger.exception("Erreur lors de la récupération de l'état")
             return self._get_default_state()
 
     def get_joint_positions(self) -> dict[str, float]:

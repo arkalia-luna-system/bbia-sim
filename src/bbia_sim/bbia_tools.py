@@ -417,11 +417,8 @@ class BBIATools:
                 )
             except (AttributeError, RuntimeError):
                 logger.exception("Erreur activation VisionTrackingBehavior")
-            except Exception as e:
-                logger.exception(
-                    "Erreur inattendue activation VisionTrackingBehavior: %s",
-                    e,
-                )
+            except Exception:
+                logger.exception("Erreur inattendue activation VisionTrackingBehavior")
 
         return {
             "status": "success",

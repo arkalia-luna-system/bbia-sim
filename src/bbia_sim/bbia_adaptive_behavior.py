@@ -803,12 +803,8 @@ class BBIAAdaptiveBehavior:
             )
             return False
 
-        except Exception as e:
-            logger.exception(
-                "❌ Erreur exécution comportement '%s': %s",
-                behavior_name,
-                e,
-            )
+        except Exception:
+            logger.exception("❌ Erreur exécution comportement '%s':", behavior_name)
             return False
 
 

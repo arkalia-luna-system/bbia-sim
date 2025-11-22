@@ -306,11 +306,7 @@ class ZenohBridge:
                 await self._publish_error(f"Commande inconnue: {cmd}")
 
         except Exception as e:
-            self.logger.exception(
-                "Erreur exécution commande %s: %s",
-                command.command,
-                e,
-            )
+            self.logger.exception("Erreur exécution commande %s:", command.command)
             await self._publish_error(f"Erreur exécution: {e}")
 
     async def _cmd_goto_target(self, params: GotoTargetParams) -> None:

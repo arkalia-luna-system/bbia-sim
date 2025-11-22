@@ -56,8 +56,8 @@ class ConnectionManager:
         """Envoie un message à une connexion spécifique."""
         try:
             await websocket.send_text(message)
-        except Exception as e:
-            logger.exception("Erreur d'envoi de message : %s", e)
+        except Exception:
+            logger.exception("Erreur d'envoi de message")
             self.disconnect(websocket)
 
     async def broadcast(self, message: str) -> None:

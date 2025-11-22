@@ -396,8 +396,8 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
         # Pitch non supporté nativement par pyttsx3, dépend du moteur
         engine.say(texte)
         engine.runAndWait()
-    except Exception as e:
-        logging.exception("Erreur de synthèse vocale : %s", e)
+    except Exception:
+        logging.exception("Erreur de synthèse vocale")
         raise
 
 
@@ -492,11 +492,11 @@ def reconnaitre_parole(
             except sr.UnknownValueError:
                 logging.warning("Aucune parole reconnue.")
                 return None
-            except Exception as e:
-                logging.exception("Erreur de reconnaissance vocale : %s", e)
+            except Exception:
+                logging.exception("Erreur de reconnaissance vocale")
                 return None
-    except Exception as e:
-        logging.exception("Erreur d'accès au microphone : %s", e)
+    except Exception:
+        logging.exception("Erreur d'accès au microphone")
         logging.warning(
             "La reconnaissance vocale nécessite pyaudio. "
             "Installez-le avec : pip install pyaudio",

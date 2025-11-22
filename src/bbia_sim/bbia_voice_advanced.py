@@ -403,8 +403,8 @@ def dire_texte(texte: str) -> bool:
 
             dire_texte_old(texte)  # Retourne None, mais exécution = succès
             return True
-        except Exception as e:
-            logging.exception(f"❌ Erreur synthèse vocale (tous moteurs): {e}")
+        except Exception:
+            logging.exception("❌ Erreur synthèse vocale (tous moteurs)")
             return False
 
 

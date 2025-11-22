@@ -423,7 +423,7 @@ async def stop_simulation() -> dict[str, Any]:
             "timestamp": datetime.now().isoformat(),
         }
     except Exception as e:
-        logger.exception("Erreur lors de l'arrêt de la simulation : %s", e)
+        logger.exception("Erreur lors de l'arrêt de la simulation")
         return {
             "status": "error",
             "message": f"Erreur : {e!s}",

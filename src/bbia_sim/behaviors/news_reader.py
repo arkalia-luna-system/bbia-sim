@@ -85,8 +85,8 @@ class NewsReaderBehavior(BBIABehavior):
         try:
             self._read_news()
             return True
-        except Exception as e:
-            logger.exception("Erreur lors de la lecture d'actualités: %s", e)
+        except Exception:
+            logger.exception("Erreur lors de la lecture d'actualités")
             return False
         finally:
             self.is_active = False

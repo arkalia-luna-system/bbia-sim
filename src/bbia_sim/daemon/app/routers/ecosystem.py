@@ -284,7 +284,7 @@ async def apply_emotion(
     except HTTPException:
         raise
     except Exception as e:
-        logger.exception("Erreur lors de l'application de l'émotion: %s", e)
+        logger.exception("Erreur lors de l'application de l'émotion")
         raise HTTPException(
             status_code=500,
             detail="Erreur lors de l'application de l'émotion",
@@ -341,7 +341,7 @@ async def execute_behavior(
     except HTTPException:
         raise
     except Exception as e:
-        logger.exception("Erreur lors de l'exécution du comportement: %s", e)
+        logger.exception("Erreur lors de l'exécution du comportement")
         raise HTTPException(
             status_code=500,
             detail="Erreur lors de l'exécution du comportement",

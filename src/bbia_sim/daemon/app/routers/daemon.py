@@ -139,7 +139,7 @@ async def stop_daemon(
             "timestamp": datetime.now().isoformat(),
         }
     except Exception as e:
-        logger.exception("Erreur lors de l'arrêt du daemon: %s", e)
+        logger.exception("Erreur lors de l'arrêt du daemon")
         raise HTTPException(status_code=500, detail=f"Erreur: {e!s}") from e
 
 

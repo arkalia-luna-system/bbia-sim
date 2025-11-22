@@ -98,8 +98,8 @@ class TeachingBehavior(BBIABehavior):
             lesson_func = self.lessons[subject]
             lesson_func(level=level)
             return True
-        except Exception as e:
-            logger.exception("Erreur lors de l'enseignement: %s", e)
+        except Exception:
+            logger.exception("Erreur lors de l'enseignement")
             return False
         finally:
             self.is_active = False
