@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[![Version](https://img.shields.io/badge/version-1.3.2-blue.svg)](https://github.com/arkalia-luna-system/bbia-sim)
+[![Version](https://img.shields.io/badge/version-1.4.0-blue.svg)](https://github.com/arkalia-luna-system/bbia-sim)
 [![Python](https://img.shields.io/badge/python-3.11%2B-blue.svg)](https://python.org)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![CI Status](https://github.com/arkalia-luna-system/bbia-sim/actions/workflows/ci.yml/badge.svg)](https://github.com/arkalia-luna-system/bbia-sim/actions/workflows/ci.yml)
@@ -95,7 +95,7 @@ BBIA-SIM maintient des standards stricts de qualité:
 
 ---
 
-Version 1.3.2 – Alignement complet branches, tests élargis (perf/watchdog), doc enrichie, release stable.
+Version 1.4.0 – 100% d'exploitation des capacités, 44 exemples fonctionnels, tests améliorés, documentation enrichie.
 
 **🎉 Mise à jour 22 Novembre 2025** : **100% d'exploitation des capacités** ✅
 - ✅ 44 exemples totaux (39 existants + 5 nouveaux créés pour atteindre 100%)
@@ -283,7 +283,7 @@ python scripts/bbia_doctor.py
 
 ## 🎯 Vue d'ensemble
 
-BBIA-SIM v1.3.2 simule le robot Reachy Mini avec un haut niveau de fidélité :
+BBIA-SIM v1.4.0 simule le robot Reachy Mini avec un haut niveau de fidélité :
 
 - 12 émotions robotiques BBIA (6 émotions SDK officiel + 6 émotions étendues)
 - Conformité au SDK officiel Pollen Robotics

@@ -258,7 +258,7 @@ python -m pytest tests/ -m "not e2e" -v
 **Retour à** : [README Documentation](../README.md)  
 **Voir aussi** : [Index Thématique](../reference/INDEX_THEMATIQUE.md)
 
-**Version** : 1.3.2
+**Version** : 1.4.0
 **Date** : 22 novembre 2025
 **Statut** : Production Ready • **100% d'exploitation des capacités** ✅
 **Licence** : MIT
