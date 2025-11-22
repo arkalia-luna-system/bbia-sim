@@ -182,12 +182,29 @@ def get_simulation_service(model_path: str | None = None) -> "SimulationService"
 
 ---
 
+### 7. ⚠️ _start_metrics_collection - Tasks asyncio multiples possibles
+
+**Problème** :
+- `BBIAAdvancedWebSocketManager._start_metrics_collection()` peut créer plusieurs tasks asyncio si appelé rapidement
+- Chaque task consomme ~10-20MB RAM et fait des collectes en parallèle
+- Impact : ~20MB par task supplémentaire + CPU inutile
+
+**Fichier concerné** :
+- `src/bbia_sim/dashboard_advanced.py` ligne 500
+
+**Solution** :
+- Vérifier si `_metrics_task` existe déjà et est actif avant de créer nouveau
+- ✅ CORRIGÉ : Ajout vérification `if self._metrics_task is not None and not self._metrics_task.done()`
+
+---
+
 ## Recommandations
 
-1. **Priorité 1** : Forcer singleton BBIAVision partout
+1. **Priorité 1** : Forcer singleton BBIAVision partout ✅ PARTIELLEMENT CORRIGÉ
 2. **Priorité 2** : Implémenter singleton BBIAHuggingFace
-3. **Priorité 3** : Ajouter locks pour éviter threads multiples
+3. **Priorité 3** : Ajouter locks pour éviter threads multiples ✅ PARTIELLEMENT CORRIGÉ
 4. **Priorité 4** : Singleton pour SimulationService et BBIIdleAnimationManager
+5. **Priorité 5** : Vérifier tasks asyncio avant création ✅ CORRIGÉ
 
 ---
 

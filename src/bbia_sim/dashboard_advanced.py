@@ -499,6 +499,11 @@ class BBIAAdvancedWebSocketManager:
 
     def _start_metrics_collection(self):
         """Démarre la collecte automatique de métriques."""
+        # OPTIMISATION RAM: Vérifier si task existe déjà et est active
+        if self._metrics_task is not None and not self._metrics_task.done():
+            logger.debug("Collecte métriques déjà active")
+            return
+
         # Arrêter la collecte précédente si elle existe
         self._stop_metrics_collection()
 
