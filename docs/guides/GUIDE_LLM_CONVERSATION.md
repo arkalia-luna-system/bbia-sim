@@ -312,7 +312,109 @@ chat.chat("Raconte-moi une blague")
 
 ---
 
+---
+
+## 🤗 Hugging Face Chat - Guide Complet (Issue #384)
+
+### Introduction
+
+BBIA intègre **Hugging Face Chat** via le module `BBIAHuggingFace` pour des conversations intelligentes avec LLM. Ce guide explique comment utiliser cette fonctionnalité.
+
+### Activation du Chat HF
+
+```python
+from bbia_sim.bbia_huggingface import BBIAHuggingFace
+
+# Créer instance
+hf = BBIAHuggingFace()
+
+# Activer LLM conversationnel (optionnel, lourd)
+hf.enable_llm_chat(model_name="phi2")  # ou "mistral", "llama", "tinyllama"
+
+# Chat simple
+response = hf.chat("Bonjour, comment allez-vous ?")
+print(response["response"])
+
+# Chat avec outils (function calling)
+response = hf.chat("Tourne la tête à droite", enable_tools=True)
+```
+
+### Modèles Disponibles
+
+| Modèle | Taille | RAM Requise | Recommandation |
+|--------|--------|-------------|----------------|
+| **phi2** | 2.7B | ~5GB | ✅ Recommandé pour RPi 5 |
+| **tinyllama** | 1.1B | ~2GB | ✅ Ultra-léger |
+| **mistral** | 7B | ~14GB | ❌ Trop lourd pour RPi |
+| **llama** | 8B | ~16GB | ❌ Trop lourd pour RPi |
+
+### Configuration
+
+```python
+# Utiliser modèle léger par défaut
+os.environ["BBIA_HF_CHAT_MODEL"] = "phi2"
+
+# Désactiver LLM pour économiser mémoire
+hf.disable_llm_chat()
+
+# Réactiver
+hf.enable_llm_chat("phi2")
+```
+
+### Utilisation Avancée
+
+```python
+# Chat avec contexte
+response = hf.chat(
+    "Qu'est-ce que j'ai dit avant ?",
+    use_context=True  # Utilise historique conversation
+)
+
+# Analyser sentiment
+sentiment = hf.analyze_sentiment("Je suis très heureux !")
+print(sentiment["sentiment"])  # "positive"
+
+# Historique conversation
+history = hf.get_conversation_history(limit=10)
+for entry in history:
+    print(f"{entry['role']}: {entry['content']}")
+```
+
+### Intégration avec Robot
+
+```python
+from bbia_sim.bbia_huggingface import BBIAHuggingFace
+from bbia_sim.bbia_tools import BBIATools
+
+# Créer outils robot
+tools = BBIATools(robot_api=robot_api, hf_chat=hf)
+
+# Chat avec actions robot automatiques
+response = hf.chat("Regarde à droite", enable_tools=True)
+# Le robot tourne automatiquement la tête !
+```
+
+### Troubleshooting
+
+**Problème** : Modèle ne charge pas  
+**Solution** : Vérifier RAM disponible, utiliser modèle plus léger
+
+**Problème** : Latence élevée  
+**Solution** : Utiliser `tinyllama` ou désactiver LLM (`disable_llm_chat()`)
+
+**Problème** : Modèle non trouvé  
+**Solution** : Vérifier connexion internet, modèles téléchargés automatiquement
+
+### Références
+
+- Module : `src/bbia_sim/bbia_huggingface.py`
+- Méthode principale : `enable_llm_chat()`, `chat()`, `disable_llm_chat()`
+- Exemples : `examples/demo_chat_bbia_3d.py`
+
+---
+
 **Document créé le :** 19 Novembre 2025  
+**Dernière mise à jour :** 22 Novembre 2025 (Issue #384)  
 **Version BBIA :** 1.3.2  
 **Auteur :** Arkalia Luna System
 

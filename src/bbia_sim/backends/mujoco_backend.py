@@ -238,8 +238,8 @@ class MuJoCoBackend(RobotAPI):
             # Calculer les contacts
             mujoco.mj_step(self.model, self.data)
             # Vérifier s'il y a des contacts
-            num_contacts = self.data.ncon
-            has_collision = num_contacts > 0
+            num_contacts: int = int(self.data.ncon)
+            has_collision: bool = num_contacts > 0
 
             if has_collision:
                 logger.debug(
@@ -247,7 +247,7 @@ class MuJoCoBackend(RobotAPI):
                     num_contacts,
                 )
 
-            return has_collision
+            return bool(has_collision)
         except Exception as e:
             logger.exception("Erreur check_collision: %s", e)
             return False
