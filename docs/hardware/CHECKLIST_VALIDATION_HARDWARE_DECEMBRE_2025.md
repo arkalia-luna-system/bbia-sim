@@ -334,7 +334,7 @@
 
 1. Vérifier batterie/alimentation
 2. Redémarrer robot
-3. Augmenter timeout tests (`--timeout=60`)
+3. Timeout tests configuré (`--timeout=60` dans pyproject.toml et CI)
 4. Vérifier connexion réseau
 
 ### Latence élevée

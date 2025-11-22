@@ -127,6 +127,7 @@ class BBIAAdaptiveLearning:
         """Détecte des patterns dans l'historique des comportements."""
         # Analyser historique pour détecter patterns
         # Exemple : si utilisateur préfère toujours comportements rapides le matin
+        # OPTIMISATION: Éviter double lookup avec variable temporaire
         morning_behaviors = [
             b
             for b in self.behavior_history

@@ -190,10 +190,12 @@ class BBIAMemory:
             learnings = self.load_learnings()
 
             # Ajouter/modifier apprentissage
+            # OPTIMISATION: Éviter double lookup avec variable temporaire
+            pattern_data = learnings.get(pattern, {})
             learnings[pattern] = {
                 "response": response,
                 "last_updated": datetime.now().isoformat(),
-                "count": learnings.get(pattern, {}).get("count", 0) + 1,
+                "count": pattern_data.get("count", 0) + 1,
             }
 
             # Sauvegarder

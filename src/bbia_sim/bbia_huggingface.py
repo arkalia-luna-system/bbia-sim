@@ -1235,9 +1235,11 @@ class BBIAHuggingFace:
                 # Essayer de charger LLM automatiquement si disponible (lazy loading)
                 try:
                     # Utiliser modèle léger par défaut (phi2 ou tinyllama)
-                    default_chat_model = self.model_configs.get("chat", {}).get(
-                        "phi2",
-                    ) or self.model_configs.get("chat", {}).get("tinyllama")
+                    # OPTIMISATION: Éviter double lookup avec variable temporaire
+                    chat_config = self.model_configs.get("chat", {})
+                    default_chat_model = chat_config.get("phi2") or chat_config.get(
+                        "tinyllama"
+                    )
                     if default_chat_model:
                         logger.info(
                             "📥 Chargement LLM à la demande (lazy loading): %s",

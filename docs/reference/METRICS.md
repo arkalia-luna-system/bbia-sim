@@ -2,7 +2,7 @@
 
 > **Source de vérité centralisée pour toutes les métriques du projet**
 
-**Dernière mise à jour** : 21 novembre 2025  
+**Dernière mise à jour** : 22 November 2025
 **Source** : [arkalia-metrics-collector](https://github.com/arkalia-luna-system/arkalia-metrics-collector) + CI/CD GitHub Actions + Codecov
 
 ---
@@ -11,14 +11,14 @@
 
 ### Métriques globales
 
-- **Tests collectés** : 1,805 tests
+- - **Tests collectés** : 1861 tests
 - **Tests sélectionnés en CI** : 1,362 tests
 - **Fonctions de test identifiées** : 1,804
-- **Fichiers de tests** : 183 fichiers
+- - **Fichiers de tests** : 183 fichiers
 
 ### Coverage
 
-- **Coverage global** : **68.86%** ([Codecov](https://app.codecov.io/gh/arkalia-luna-system/bbia-sim))
+- - **Coverage global** : **68.86% (estimé)** ([Codecov](https://app.codecov.io/gh/arkalia-luna-system/bbia-sim))
 - **Coverage modules core** : ~50% (mesure pertinente)
 
 ### Coverage par module (modules critiques)
@@ -39,8 +39,8 @@
 
 ## 📁 Code Source
 
-- **Fichiers Python source** : 86 fichiers (74,965 lignes)
-- **Fichiers de tests** : 183 fichiers
+- - **Fichiers Python source** : 86 fichiers (74,965 lignes)
+- - **Fichiers de tests** : 183 fichiers
 - **Modules BBIA** : 15+ modules spécialisés
 - **Comportements** : 21 comportements intelligents (7 de base + 14 avancés)
 

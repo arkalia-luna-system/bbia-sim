@@ -159,7 +159,7 @@ jobs:
         timeout-minutes: 35
         run: |
           export PYTHONPATH=src:$PYTHONPATH
-          pytest -v -m "not e2e and not slow" --cov=src/bbia_sim --cov-report=xml --cov-report=term-missing --cov-fail-under=0 --timeout=180 --maxfail=10 --override-ini="addopts=" --log-cli-level=WARNING --no-header -x
+          pytest -v -m "not e2e and not slow" --cov=src/bbia_sim --cov-report=xml --cov-report=term-missing --cov-fail-under=0 --timeout=60 --maxfail=10 --override-ini="addopts=" --log-cli-level=WARNING --no-header -x
         env:
           PYTHONDONTWRITEBYTECODE: 1
 

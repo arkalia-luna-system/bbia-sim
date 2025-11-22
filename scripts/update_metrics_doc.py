@@ -2,6 +2,7 @@
 """Script pour mettre à jour docs/reference/METRICS.md depuis les métriques collectées."""
 
 import json
+import re
 from datetime import datetime
 from pathlib import Path
 
@@ -66,9 +67,7 @@ def update_metrics_doc():
             # Compter les lignes avec "test session starts" ou "collected"
             for line in result.stdout.split("\n"):
                 if "test session starts" in line or "collected" in line:
-                    # Extraire le nombre de tests
-                    import re
-
+                    # Extraire le nombre de tests (re déjà importé en haut du fichier)
                     match = re.search(r"(\d+)\s+test", line)
                     if match:
                         tests_count = int(match.group(1))

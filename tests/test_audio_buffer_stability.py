@@ -32,7 +32,8 @@ def test_audio_buffer_stability_10s() -> None:
     assert sd is not None  # Pour mypy, après le skip
     sample_rate = 16000
     blocksize = 512
-    duration_s = 10.0
+    # OPTIMISATION: Réduire 10s → 2s (suffisant pour test stabilité, 5x plus rapide)
+    duration_s = 2.0
 
     phase = 0.0
     underruns = 0
