@@ -57,9 +57,9 @@
 ### 📊 Chef de Projet
 
 1. [Tableau de Bord Complet](reference/project-status.md) — État par axe (Fiabilité, Performance, etc.)
-2. [Statut du Projet](reference/project-status.md) — État opérationnel et tableau de bord complet
-3. [Release Notes](reference/RELEASE_NOTES.md) — Notes de version
-4. [Historique](reference/PROJECT_HISTORY.md) — Historique complet
+2. [Release Notes](reference/RELEASE_NOTES.md) — Notes de version
+3. [Historique](reference/PROJECT_HISTORY.md) — Historique complet
+4. [Métriques](reference/METRICS.md) — Métriques du projet
 
 ---
 
