@@ -4,6 +4,7 @@
 Tests ciblés pour améliorer la couverture de code.
 """
 
+import gc
 from collections import deque
 from datetime import datetime
 from typing import Any
@@ -17,7 +18,29 @@ class TestBBIAVisionExtended:
 
     def setup_method(self):
         """Configuration avant chaque test."""
-        self.vision = BBIAVision()
+        # OPTIMISATION RAM: Utiliser robot_api=None pour éviter chargement modèles lourds
+        self.vision = BBIAVision(robot_api=None)
+
+    def teardown_method(self):
+        """OPTIMISATION RAM: Décharger modèles vision après chaque test."""
+        try:
+            # Décharger détecteurs YOLO si chargés
+            if hasattr(self.vision, 'yolo_detector') and self.vision.yolo_detector:
+                self.vision.yolo_detector.model = None
+                self.vision.yolo_detector.is_loaded = False
+            # Décharger détecteurs MediaPipe si chargés
+            if hasattr(self.vision, 'face_detector') and self.vision.face_detector:
+                self.vision.face_detector.face_detection = None
+        except (AttributeError, TypeError):
+            pass
+        # Vider cache YOLO
+        try:
+            import bbia_sim.vision_yolo as vision_yolo_module
+            with vision_yolo_module._yolo_cache_lock:
+                vision_yolo_module._yolo_model_cache.clear()
+        except (AttributeError, ImportError):
+            pass
+        gc.collect()
 
     def test_init_defaults(self):
         """Test initialisation avec valeurs par défaut."""
@@ -503,9 +526,18 @@ class TestBBIAVisionExtended:
 
         # Test avec taille personnalisée
         os.environ["BBIA_CAMERA_BUFFER_SIZE"] = "5"
-        vision = BBIAVision()
+        # OPTIMISATION RAM: Utiliser robot_api=None pour éviter chargement modèles
+        vision = BBIAVision(robot_api=None)
         assert vision._camera_frame_buffer.maxlen == 5
         print("✅ Buffer taille configurable fonctionne")
+        
+        # OPTIMISATION RAM: Nettoyer après ce test
+        try:
+            if hasattr(vision, 'yolo_detector') and vision.yolo_detector:
+                vision.yolo_detector.model = None
+        except (AttributeError, TypeError):
+            pass
+        gc.collect()
 
         # Nettoyer env var
         del os.environ["BBIA_CAMERA_BUFFER_SIZE"]

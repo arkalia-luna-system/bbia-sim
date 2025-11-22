@@ -32,7 +32,15 @@ class TestYOLODetector:
     """Tests pour YOLODetector."""
 
     def teardown_method(self):
-        """OPTIMISATION RAM: Nettoyer mémoire après chaque test."""
+        """OPTIMISATION RAM: Décharger modèles et nettoyer mémoire après chaque test."""
+        # OPTIMISATION RAM: Vider le cache YOLO pour libérer la mémoire
+        try:
+            import bbia_sim.vision_yolo as vision_yolo_module
+            with vision_yolo_module._yolo_cache_lock:
+                vision_yolo_module._yolo_model_cache.clear()
+                vision_yolo_module._yolo_model_last_used.clear()
+        except (AttributeError, ImportError):
+            pass
         gc.collect()
 
     def test_init_without_yolo(self):
@@ -450,7 +458,15 @@ class TestFaceDetector:
     """Tests pour FaceDetector."""
 
     def teardown_method(self):
-        """OPTIMISATION RAM: Nettoyer mémoire après chaque test."""
+        """OPTIMISATION RAM: Décharger modèles et nettoyer mémoire après chaque test."""
+        # OPTIMISATION RAM: Vider le cache YOLO pour libérer la mémoire
+        try:
+            import bbia_sim.vision_yolo as vision_yolo_module
+            with vision_yolo_module._yolo_cache_lock:
+                vision_yolo_module._yolo_model_cache.clear()
+                vision_yolo_module._yolo_model_last_used.clear()
+        except (AttributeError, ImportError):
+            pass
         gc.collect()
 
     def test_init_with_mediapipe(self):
@@ -571,7 +587,15 @@ class TestFactoryFunctions:
     """Tests pour fonctions factory."""
 
     def teardown_method(self):
-        """OPTIMISATION RAM: Nettoyer mémoire après chaque test."""
+        """OPTIMISATION RAM: Décharger modèles et nettoyer mémoire après chaque test."""
+        # OPTIMISATION RAM: Vider le cache YOLO pour libérer la mémoire
+        try:
+            import bbia_sim.vision_yolo as vision_yolo_module
+            with vision_yolo_module._yolo_cache_lock:
+                vision_yolo_module._yolo_model_cache.clear()
+                vision_yolo_module._yolo_model_last_used.clear()
+        except (AttributeError, ImportError):
+            pass
         gc.collect()
 
     def test_create_yolo_detector_with_yolo(self):
