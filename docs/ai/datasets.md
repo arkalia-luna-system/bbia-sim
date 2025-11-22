@@ -1,6 +1,6 @@
 # 🗂️ Datasets & Golden Images
 
-**Date** : 21 novembre 2025  
+**Date** : 22 novembre 2025  
 **Version** : 1.0
 
 > **Voir aussi** : [`docs/reference/INDEX_THEMATIQUE.md`](../reference/INDEX_THEMATIQUE.md) et [`docs/reference/project-status.md`](../reference/project-status.md)

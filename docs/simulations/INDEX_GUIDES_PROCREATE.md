@@ -1,6 +1,6 @@
 # 📚 Index - Guides Procreate pour Scènes MuJoCo
 
-**Date** : 21 novembre 2025
+**Date** : 22 novembre 2025
 
 > **Navigation rapide** : Tous les guides disponibles
 
