@@ -172,18 +172,21 @@ class TestBBIAChat:
         """Test gestion contexte conversation."""
         chat = BBIAChat()
 
-        # Simuler conversation
-        chat.chat("Bonjour")
-        assert len(chat.context) == 1
+        # Mocker la méthode generate pour éviter le chargement réel du modèle LLM
+        # qui cause un timeout en CI
+        with patch.object(chat, "generate", return_value="Réponse simulée"):
+            # Simuler conversation
+            chat.chat("Bonjour")
+            assert len(chat.context) == 1
 
-        chat.chat("Comment vas-tu ?")
-        assert len(chat.context) == 2
+            chat.chat("Comment vas-tu ?")
+            assert len(chat.context) == 2
 
-        # Vérifier structure contexte
-        entry = chat.context[-1]
-        assert "user" in entry
-        assert "assistant" in entry
-        assert "timestamp" in entry
+            # Vérifier structure contexte
+            entry = chat.context[-1]
+            assert "user" in entry
+            assert "assistant" in entry
+            assert "timestamp" in entry
 
     @pytest.mark.skipif(not HF_AVAILABLE, reason="Hugging Face non disponible")
     def test_generate_with_llm(self):
