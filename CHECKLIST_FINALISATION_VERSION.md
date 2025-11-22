@@ -144,9 +144,9 @@
 
 **Fichiers concernés** :
 - `src/bbia_sim/__init__.py` : `__version__ = "1.4.0"` ✅
-- `pyproject.toml` : `version = "1.3.2"` ✅
-- `README.md` : `1.3.2` ✅
-- Tag Git : `v1.3.2` ✅
+- `pyproject.toml` : `version = "1.4.0"` ✅
+- `README.md` : `1.4.0` ✅
+- Tag Git : `v1.4.0` (à créer)
 
 **Statut** : ✅ **COHÉRENT** - Toutes les versions alignées
 
@@ -155,7 +155,7 @@
 ## 📋 ACTIONS RECOMMANDÉES
 
 ### Priorité ✅ TERMINÉ
-1. ✅ **Version __init__.py corrigée** : `1.3.2` (cohérent avec pyproject.toml)
+1. ✅ **Version __init__.py corrigée** : `1.4.0` (cohérent avec pyproject.toml)
 
 ### Priorité 🟢 BASSE (Optionnel)
 2. Augmenter coverage tests (68.86% → 70%+)
