@@ -50,6 +50,11 @@ class BBIAAdaptiveBehavior:
 
         # Contexte et états
         self.contexts = {
+            "neutral": {
+                "priority": 0.5,
+                "duration": 5.0,
+                "emotions": ["neutral", "calm"],
+            },
             "greeting": {
                 "priority": 0.9,
                 "duration": 3.0,
@@ -403,9 +408,13 @@ class BBIAAdaptiveBehavior:
         params["intensity"] = max(0.0, min(1.0, base_intensity + intensity_variation))
 
         # Timing basé sur le contexte
-        self.contexts[self.current_context]
-        params["timing"]["start_delay"] = random.uniform(0.0, 0.5)  # nosec B311
-        params["timing"]["end_delay"] = random.uniform(0.0, 0.3)  # nosec B311
+        context_config = self.contexts.get(
+            self.current_context, self.contexts.get("neutral", {})
+        )
+        duration_value = context_config.get("duration", 5.0)
+        context_duration = float(duration_value) if isinstance(duration_value, (int, float)) else 5.0
+        params["timing"]["start_delay"] = random.uniform(0.0, min(0.5, context_duration * 0.1))  # nosec B311
+        params["timing"]["end_delay"] = random.uniform(0.0, min(0.3, context_duration * 0.05))  # nosec B311
 
         # Variations pour chaque joint
         for joint in params["joints"]:

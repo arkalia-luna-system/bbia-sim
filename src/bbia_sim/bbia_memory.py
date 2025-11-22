@@ -303,6 +303,35 @@ def save_conversation_to_memory(
     return memory.save_conversation(conversation_history)
 
 
+def append_record(record: dict[str, Any], memory_dir: str = "bbia_memory") -> bool:
+    """Ajoute un enregistrement à la mémoire (utilitaire pour compatibilité).
+
+    Args:
+        record: Dictionnaire contenant les données à enregistrer
+        memory_dir: Répertoire mémoire
+
+    Returns:
+        True si enregistrement réussi
+
+    """
+    try:
+        memory = BBIAMemory(memory_dir=memory_dir)
+        # Enregistrer comme préférence si contient une clé 'key'
+        if "key" in record and "value" in record:
+            return memory.remember_preference(record["key"], record["value"])
+        # Sinon, enregistrer comme apprentissage si contient 'pattern' et 'response'
+        elif "pattern" in record and "response" in record:
+            return memory.remember_learning(record["pattern"], record["response"])
+        # Sinon, essayer d'ajouter à la conversation
+        else:
+            conversation = memory.load_conversation()
+            conversation.append(record)
+            return memory.save_conversation(conversation)
+    except Exception as e:
+        logger.exception("❌ Erreur append_record: %s", e)
+        return False
+
+
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
 

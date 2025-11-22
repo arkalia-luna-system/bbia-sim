@@ -140,10 +140,19 @@ class BBIAVision:
         # OPTIMISATION RAM: Avertir si instance créée directement au lieu d'utiliser singleton
         global _bbia_vision_singleton
         if _bbia_vision_singleton is not None and _bbia_vision_singleton is not self:
-            logger.warning(
-                "⚠️ Instance BBIAVision créée directement. "
-                "Utilisez get_bbia_vision_singleton() pour éviter duplication RAM."
-            )
+            # Utiliser debug au lieu de warning pour réduire le bruit dans les tests
+            # Le warning reste utile en production mais trop verbeux en tests
+            import sys
+            if "pytest" in sys.modules or "unittest" in sys.modules:
+                logger.debug(
+                    "⚠️ Instance BBIAVision créée directement. "
+                    "Utilisez get_bbia_vision_singleton() pour éviter duplication RAM."
+                )
+            else:
+                logger.warning(
+                    "⚠️ Instance BBIAVision créée directement. "
+                    "Utilisez get_bbia_vision_singleton() pour éviter duplication RAM."
+                )
 
         self.robot_api = robot_api
         self.camera_active = True

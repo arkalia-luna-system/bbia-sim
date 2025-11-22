@@ -955,6 +955,14 @@ class BBIAHuggingFace:
             if processor_key not in self.processors or model_key not in self.models:
                 self.load_model(model_name, "multimodal")
 
+            # Vérifier que les clés existent après le chargement
+            if processor_key not in self.processors:
+                logger.error(f"❌ Processeur {processor_key} non disponible après chargement")
+                return "Erreur (answer_question): processeur non disponible"
+            if model_key not in self.models:
+                logger.error(f"❌ Modèle {model_key} non disponible après chargement")
+                return "Erreur (answer_question): modèle non disponible"
+
             processor = self.processors[processor_key]
             model = self.models[model_key]
 

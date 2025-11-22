@@ -32,7 +32,7 @@ REACHY_MINI_BACKEND_AVAILABLE = True
 # BBIAAudio n'existe pas comme classe (le module expose des fonctions)
 # Les tests qui utilisent BBIAAudio doivent être adaptés
 BBIA_AUDIO_AVAILABLE = False
-BBIAAudio = None
+BBIAAudio: type | None = None
 
 
 class TestErrorHandlingModels:
@@ -155,7 +155,7 @@ class TestErrorHandlingFiles:
         """Test que BBIAAudio gère les fichiers audio corrompus."""
         if not BBIA_AUDIO_AVAILABLE:
             pytest.skip("BBIAAudio non disponible")
-
+        assert BBIAAudio is not None, "BBIAAudio doit être disponible"
         audio = BBIAAudio(robot_api=None)
         # Créer fichier corrompu
         with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as f:
@@ -185,7 +185,7 @@ class TestErrorHandlingFiles:
         """Test que BBIAAudio gère les fichiers inexistants."""
         if not BBIA_AUDIO_AVAILABLE:
             pytest.skip("BBIAAudio non disponible")
-
+        assert BBIAAudio is not None, "BBIAAudio doit être disponible"
         audio = BBIAAudio(robot_api=None)
         # Fichier inexistant
         nonexistent_file = os.path.join(
@@ -206,7 +206,7 @@ class TestEdgeCasesBuffers:
         """Test gestion buffer audio plein."""
         if not BBIA_AUDIO_AVAILABLE:
             pytest.skip("BBIAAudio non disponible")
-
+        assert BBIAAudio is not None, "BBIAAudio doit être disponible"
         audio = BBIAAudio(robot_api=None)
         # Simuler buffer plein (si applicable)
         # Le test vérifie que le système ne crashe pas
