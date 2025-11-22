@@ -378,7 +378,7 @@
 
 ## ✅ ACTIONS COMPLÉTÉES - 22 NOVEMBRE 2025
 
-### 📝 Exemples Créés (22 nouveaux exemples)
+### 📝 Exemples Créés (27 nouveaux exemples au total)
 
 #### Comportements Avancés (12 exemples) ✅ **TERMINÉ**
 
