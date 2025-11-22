@@ -113,7 +113,6 @@ class TestBBIAPersonality:
                 try:
                     if hasattr(hf, "unload_models"):
                         hf.unload_models()
-                    hf._stop_auto_unload_thread()
                 except (AttributeError, RuntimeError):
                     pass
                 gc.collect()
@@ -161,7 +160,6 @@ class TestBBIAPersonality:
                 try:
                     if hasattr(hf, "unload_models"):
                         hf.unload_models()
-                    hf._stop_auto_unload_thread()
                 except (AttributeError, RuntimeError):
                     pass
                 gc.collect()

@@ -36,7 +36,6 @@ class TestBBIAHuggingFaceChat:
                 # OPTIMISATION RAM: Décharger modèles après chaque test
                 if hasattr(self.hf, "unload_models"):
                     self.hf.unload_models()
-                self.hf._stop_auto_unload_thread()
             except (AttributeError, RuntimeError):
                 pass
         # OPTIMISATION RAM: Force garbage collection

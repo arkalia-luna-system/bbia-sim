@@ -36,7 +36,6 @@ class TestBBIAIntelligenceContext:
             if hasattr(self, "hf") and self.hf is not None:
                 if hasattr(self.hf, "unload_models"):
                     self.hf.unload_models()
-                self.hf._stop_auto_unload_thread()
         except (AttributeError, RuntimeError):
             pass
         gc.collect()
@@ -145,7 +144,9 @@ class TestBBIAIntelligenceContext:
             for question in questions:
                 response = self.hf.chat(question)
                 assert isinstance(response, str)
-                assert len(response) > 15, "Réponses questions doivent être substantielles"
+                assert (
+                    len(response) > 15
+                ), "Réponses questions doivent être substantielles"
                 # Vérifier que c'est une réponse intelligente (contient mots indicateurs)
                 has_intelligent_indicator = any(
                     word in response.lower()
@@ -277,7 +278,9 @@ class TestBBIAIntelligenceContext:
                     word in response.lower() for word in intelligent_words
                 )
 
-                assert has_intelligence, f"Réponse doit être intelligente: {response[:100]}"
+                assert (
+                    has_intelligence
+                ), f"Réponse doit être intelligente: {response[:100]}"
 
                 print(
                     f"✅ Message générique '{msg}' → Réponse intelligente ({len(response)} chars)"
