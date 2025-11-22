@@ -10,6 +10,7 @@ import fcntl
 import gc
 import os
 import signal
+import subprocess
 import sys
 import threading
 import time
@@ -375,6 +376,52 @@ def pytest_unconfigure(config: pytest.Config) -> None:
         pass
 
 
+def run_cleanup_scripts() -> None:
+    """
+    Exécute les scripts de nettoyage après les tests.
+    Nettoie les fichiers cache, métadonnées macOS, et processus gourmands.
+
+    Peut être désactivé via la variable d'environnement BBIA_DISABLE_AUTO_CLEANUP=1
+    """
+    # Vérifier si le nettoyage automatique est désactivé
+    if os.environ.get("BBIA_DISABLE_AUTO_CLEANUP", "0") == "1":
+        return
+
+    try:
+        # Chemin vers le script de nettoyage
+        project_root = Path(__file__).parent.parent
+        cleanup_script = project_root / "scripts" / "cleanup_all.sh"
+
+        if not cleanup_script.exists():
+            print(f"⚠️  Script de nettoyage non trouvé: {cleanup_script}")
+            return
+
+        # Exécuter le script de nettoyage en mode non-interactif (cache uniquement)
+        # Ne pas nettoyer la RAM automatiquement (peut être dangereux)
+        print("\n🧹 Exécution du nettoyage automatique après les tests...")
+        try:
+            result = subprocess.run(
+                [str(cleanup_script), "--cache-only", "--yes"],
+                cwd=str(project_root),
+                capture_output=True,
+                text=True,
+                timeout=60,  # Timeout de 60 secondes max
+            )
+            if result.returncode == 0:
+                print("✅ Nettoyage automatique terminé avec succès")
+            else:
+                print(f"⚠️  Nettoyage terminé avec code {result.returncode}")
+                if result.stderr:
+                    print(f"   Erreur: {result.stderr[:200]}")
+        except subprocess.TimeoutExpired:
+            print("⚠️  Nettoyage timeout (ignoré)")
+        except Exception as e:
+            print(f"⚠️  Erreur lors du nettoyage (non bloquant): {e}")
+    except Exception as e:
+        # Ignorer toutes les erreurs pour ne pas bloquer la fin de pytest
+        print(f"⚠️  Erreur nettoyage scripts (non bloquant): {e}")
+
+
 @pytest.hookimpl(trylast=True)
 def pytest_sessionfinish(session: pytest.Session, exitstatus: int) -> None:
     """
@@ -382,6 +429,9 @@ def pytest_sessionfinish(session: pytest.Session, exitstatus: int) -> None:
     Force le nettoyage de toutes les ressources pour éviter que pytest reste bloqué.
     """
     force_cleanup_all_resources()
+
+    # Exécuter les scripts de nettoyage après les tests
+    run_cleanup_scripts()
 
 
 @pytest.fixture(autouse=True)
