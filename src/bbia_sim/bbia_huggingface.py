@@ -2093,7 +2093,7 @@ class BBIAHuggingFace:
             return f"⚠️ {error_detail}"
 
         except (AttributeError, RuntimeError, ValueError, KeyError) as e:
-            logger.exception("❌ Erreur exécution outil '%s': %s", tool_name, e)
+            logger.exception(f"❌ Erreur exécution outil '{tool_name}': {e}")
             return f"❌ Erreur lors de l'exécution: {e}"
         except Exception as e:
             logger.exception(
