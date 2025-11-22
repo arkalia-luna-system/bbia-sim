@@ -1,7 +1,7 @@
 # 📡 Contrats REST & WebSocket
 
-**Date** : 21 novembre 2025  
-**Version** : 1.0  
+**Date** : 22 novembre 2025  
+**Version** : 1.4.0  
 **Compatibilité Python** : 3.11+
 
 > **Liens utiles** : [`docs/reference/INDEX_THEMATIQUE.md`](../reference/INDEX_THEMATIQUE.md), [`docs/reference/project-status.md`](../reference/project-status.md)
@@ -62,7 +62,7 @@ sequenceDiagram
     participant Auth as Auth Middleware
     participant Robot as RobotAPI
     
-    Client->>API: GET /development/api/motion/status
+    Client->>API: GET /api/motion/status
     API->>Auth: Vérifier Bearer Token
     Auth-->>API: ✅ Token Valide
     
@@ -145,7 +145,7 @@ curl -s http://localhost:8000/openapi.json | head -n 20
 
 ---
 
-**Dernière mise à jour** : 21 novembre 2025
+**Dernière mise à jour** : 22 novembre 2025
 
 ---
 

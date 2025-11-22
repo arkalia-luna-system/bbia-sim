@@ -1440,13 +1440,10 @@ class BBIAHuggingFace:
                 # OPTIMISATION: Convertir deque en list pour slicing et utiliser list comprehension
                 recent_history = list(self.conversation_history)[-2:]
                 # OPTIMISATION: List comprehension plus efficace que append() en boucle
-                messages.extend(
-                    [
-                        {"role": "user", "content": entry["user"]},
-                        {"role": "assistant", "content": entry["bbia"]},
-                    ]
-                    for entry in recent_history
-                )
+                # Note: extend() avec list flatten pour éviter erreur type mypy
+                for entry in recent_history:
+                    messages.append({"role": "user", "content": entry["user"]})
+                    messages.append({"role": "assistant", "content": entry["bbia"]})
 
             # Ajouter message actuel
             messages.append({"role": "user", "content": user_message})
