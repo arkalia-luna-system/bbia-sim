@@ -375,9 +375,14 @@ class TestDaemonModels:
 
         from bbia_sim.daemon.models import XYZRPYPose
 
-        pose_array = np.array([0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0], dtype=np.float64)
+        # Créer matrice 4x4 (forme attendue par from_pose_array)
+        pose_array = np.eye(4, dtype=np.float64)
+        pose_array[:3, 3] = [0.0, 0.0, 0.0]  # Position xyz
         pose = XYZRPYPose.from_pose_array(pose_array)
         assert pose is not None
+        assert pose.x == 0.0
+        assert pose.y == 0.0
+        assert pose.z == 0.0
 
     def test_matrix4x4_pose_from_array(self) -> None:
         """Test Matrix4x4Pose.from_pose_array."""
