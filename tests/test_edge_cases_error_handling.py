@@ -8,7 +8,7 @@ import os
 import sys
 import tempfile
 from pathlib import Path
-from unittest.mock import MagicMock, Mock, patch
+from unittest.mock import Mock, patch
 
 import pytest
 
@@ -16,13 +16,8 @@ import pytest
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 # Imports conditionnels
-try:
-    from bbia_sim.bbia_chat import BBIAChat
-
-    BBIAChat_AVAILABLE = True
-except ImportError:
-    BBIAChat_AVAILABLE = False
-    BBIAChat = None
+# BBIAChat peut toujours être importé (fonctionne même sans Hugging Face)
+from bbia_sim.bbia_chat import BBIAChat
 
 try:
     from bbia_sim.bbia_vision import BBIAVision
@@ -56,9 +51,7 @@ class TestErrorHandlingModels:
     @pytest.mark.fast
     def test_bbia_chat_huggingface_unavailable(self):
         """Test que BBIAChat gère gracieusement l'absence de Hugging Face."""
-        if not BBIAChat_AVAILABLE:
-            pytest.skip("BBIAChat non disponible")
-
+        # BBIAChat peut toujours être initialisé (fallback activé)
         # Simuler absence de transformers
         with patch.dict("sys.modules", {"transformers": None, "torch": None}):
             # Doit initialiser sans crasher
@@ -74,9 +67,7 @@ class TestErrorHandlingModels:
     @pytest.mark.fast
     def test_bbia_chat_model_loading_failure(self):
         """Test que BBIAChat gère l'échec de chargement du modèle."""
-        if not BBIAChat_AVAILABLE:
-            pytest.skip("BBIAChat non disponible")
-
+        # BBIAChat peut toujours être initialisé (fallback activé)
         # Simuler échec de chargement en patchant _load_llm
         with patch.object(BBIAChat, "_load_llm", return_value=(None, None)):
             chat = BBIAChat(robot_api=None)
@@ -245,7 +236,7 @@ class TestEdgeCasesBuffers:
         # Simuler historique métriques très grand
         from collections import deque
 
-        history = deque(maxlen=100)
+        history: deque[dict[str, int | float]] = deque(maxlen=100)
         # Remplir jusqu'à saturation - OPTIMISATION: 200 → 100 (suffisant pour test saturation)
         for i in range(100):
             history.append({"timestamp": i, "value": i * 0.1})
@@ -272,8 +263,9 @@ class TestEdgeCasesWebSocket:
     def test_websocket_multiple_connections(self):
         """Test gestion connexions WebSocket multiples."""
         try:
-            from bbia_sim.daemon.ws.telemetry import ConnectionManager
             from fastapi import WebSocket
+
+            from bbia_sim.daemon.ws.telemetry import ConnectionManager
 
             manager = ConnectionManager()
             # Vérifier que le manager peut gérer plusieurs connexions
@@ -316,8 +308,9 @@ class TestEdgeCasesWebSocket:
     def test_websocket_connection_timeout(self):
         """Test gestion timeout connexion WebSocket."""
         try:
-            from bbia_sim.daemon.ws.telemetry import ConnectionManager
             from fastapi import WebSocket
+
+            from bbia_sim.daemon.ws.telemetry import ConnectionManager
 
             manager = ConnectionManager()
             # Vérifier que le manager gère les limites de connexions
@@ -325,7 +318,7 @@ class TestEdgeCasesWebSocket:
 
             # Simuler connexions jusqu'à la limite
             mock_connections = []
-            for i in range(10):
+            for _i in range(10):
                 mock_ws = Mock(spec=WebSocket)
 
                 async def mock_accept():
@@ -366,9 +359,7 @@ class TestEdgeCasesModels:
     @pytest.mark.fast
     def test_model_inactive_timeout(self):
         """Test gestion modèles inactifs > timeout."""
-        if not BBIAChat_AVAILABLE:
-            pytest.skip("BBIAChat non disponible")
-
+        # BBIAChat peut toujours être initialisé (fallback activé)
         chat = BBIAChat(robot_api=None)
         # Simuler modèle inactif (timeout)
         # Le système doit gérer gracieusement
