@@ -4,6 +4,8 @@ Tests de performance pour BBIA-SIM
 Benchmarks pour mesurer latence et performance
 """
 
+import tempfile
+
 import pytest
 
 
@@ -48,7 +50,7 @@ class TestPerformanceBenchmarks:
 
         from bbia_sim.telemetry import TelemetryCollector
 
-        collector = TelemetryCollector(output_dir="/tmp/test_perf")
+        collector = TelemetryCollector(output_dir=tempfile.mkdtemp())
 
         # OPTIMISATION: Réduire 100 → 50 itérations (suffisant pour benchmark, 2x plus rapide)
         start = time.time()

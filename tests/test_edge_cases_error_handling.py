@@ -214,7 +214,7 @@ class TestErrorHandlingFiles:
 
         audio = BBIAAudio(robot_api=None)
         # Fichier inexistant
-        nonexistent_file = "/tmp/nonexistent_audio_file_12345.wav"
+        nonexistent_file = os.path.join(tempfile.gettempdir(), "nonexistent_audio_file_12345.wav")
 
         # Doit gérer gracieusement
         result = audio.play_audio(nonexistent_file)

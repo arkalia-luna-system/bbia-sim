@@ -976,7 +976,7 @@ class TestFactoryFunctions:
                 stt.is_loaded = True
 
                 # Pré-remplir pool
-                temp_file1 = Path("/tmp/test1.wav")
+                temp_file1 = Path(tempfile.gettempdir()) / "test1.wav"
                 stt._temp_file_pool = [temp_file1]
                 stt._max_temp_files = 3
 
@@ -1539,9 +1539,10 @@ class TestFactoryFunctions:
             stt.is_loaded = True
 
             # Pré-remplir pool au maximum
-            temp_file1 = Path("/tmp/test1.wav")
-            temp_file2 = Path("/tmp/test2.wav")
-            temp_file3 = Path("/tmp/test3.wav")
+            temp_dir = Path(tempfile.gettempdir())
+            temp_file1 = temp_dir / "test1.wav"
+            temp_file2 = temp_dir / "test2.wav"
+            temp_file3 = temp_dir / "test3.wav"
             stt._temp_file_pool = [temp_file1, temp_file2, temp_file3]
             stt._max_temp_files = 3  # Pool plein
 
