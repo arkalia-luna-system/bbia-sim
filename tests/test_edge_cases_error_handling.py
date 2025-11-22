@@ -29,13 +29,10 @@ from bbia_sim.backends.reachy_mini_backend import ReachyMiniBackend
 
 REACHY_MINI_BACKEND_AVAILABLE = True
 
-try:
-    from bbia_sim.bbia_audio import BBIAAudio
-
-    BBIA_AUDIO_AVAILABLE = True
-except ImportError:
-    BBIA_AUDIO_AVAILABLE = False
-    BBIAAudio = None
+# BBIAAudio n'existe pas comme classe (le module expose des fonctions)
+# Les tests qui utilisent BBIAAudio doivent être adaptés
+BBIA_AUDIO_AVAILABLE = False
+BBIAAudio = None
 
 
 class TestErrorHandlingModels:
