@@ -1282,17 +1282,29 @@ class BBIABehaviorManager:
         try:
             move = self.saved_moves[behavior_name]
 
+            # Issue #344: Améliorer enchaînement fluide des mouvements
+            # Utiliser initial_goto_duration > 0 pour transition fluide depuis position actuelle
+            initial_goto_duration = 0.5  # Transition de 0.5s pour enchaînement fluide
+
             # OPTIMISATION PERFORMANCE: Utiliser async_play_move si disponible
             # (non bloquant)
             if use_async and hasattr(self.robot_api, "async_play_move"):
-                self.robot_api.async_play_move(move, play_frequency=100.0)
+                self.robot_api.async_play_move(
+                    move,
+                    play_frequency=100.0,
+                    initial_goto_duration=initial_goto_duration,
+                )
                 logger.info(
                     f"▶️  Rejoué '{behavior_name}' (async, non bloquant) - "
                     f"{len(move) if isinstance(move, list) else 'N/A'} frames",
                 )
                 return True
             if hasattr(self.robot_api, "play_move"):
-                self.robot_api.play_move(move, play_frequency=100.0)
+                self.robot_api.play_move(
+                    move,
+                    play_frequency=100.0,
+                    initial_goto_duration=initial_goto_duration,
+                )
                 logger.info(
                     f"▶️  Rejoué '{behavior_name}' (sync, bloquant) - "
                     f"{len(move) if isinstance(move, list) else 'N/A'} frames",

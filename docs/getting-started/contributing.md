@@ -7,23 +7,24 @@
 
 ## 📋 Liste des Issues Suggérées
 
-### 1. ⚠️ Améliorer Coverage `bbia_audio.py` - **À VÉRIFIER**
+### 1. ⚠️ Améliorer Coverage `bbia_audio.py` - **Issue #4** - **OUVERTE**
 
-**Priorité** : ⚠️ À clarifier  
-**Difficulté** : -  
-**Temps estimé** : -
+**Priorité** : ⚠️ Basse (clarification ajoutée)  
+**Difficulté** : Moyenne  
+**Temps estimé** : 3-4 heures
 
 **Description** :
 
-- ⚠️ **Issue GitHub #4** : La fonction `_capture_audio_chunk()` mentionnée dans l'issue **n'existe pas** dans le code actuel
+- ⚠️ **Issue GitHub #4** : ✅ **CLARIFICATION AJOUTÉE** (Décembre 2025)
+- ⚠️ La fonction `_capture_audio_chunk()` mentionnée dans l'issue **n'existe pas** dans le code actuel
 - ✅ Coverage actuel : **87.76%** (excellent ✅)
 - Tests existants : `test_bbia_audio_coverage_high.py`, `test_bbia_audio_improved.py`
 
-**Statut** : ⚠️ **À VÉRIFIER** - Fonction mentionnée absente, issue potentiellement obsolète
+**Statut** : ⚠️ **OUVERTE** - Issue gardée ouverte car l'objectif d'améliorer la couverture reste valide
 
-**Action recommandée** :
-- Vérifier si la fonction existe ailleurs ou a été renommée
-- Mettre à jour l'issue GitHub pour refléter l'état actuel du code
+**Décision** : Issue gardée ouverte car l'objectif d'améliorer la couverture reste valide, même si la fonction spécifique n'existe pas. L'issue peut servir de guide pour futurs contributeurs souhaitant améliorer les tests de gestion d'erreurs, sécurité, et environnement.
+
+**Tests manquants identifiés** : gestion d'erreurs, sécurité, environnement
 
 **Ressources** :
 

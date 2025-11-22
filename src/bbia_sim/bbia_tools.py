@@ -445,17 +445,23 @@ class BBIATools:
             recorded_moves = RecordedMoves(dataset)
             move = recorded_moves.get(move_name)
 
+            # Issue #344: Améliorer enchaînement fluide des danses
+            # Utiliser initial_goto_duration > 0 pour transition fluide depuis position actuelle
+            initial_goto_duration = 0.5  # Transition de 0.5s pour enchaînement fluide
+
             # Jouer le mouvement
             if hasattr(self.robot_api, "play_move"):
                 self.robot_api.play_move(
                     move,
                     play_frequency=100.0,
-                    initial_goto_duration=0.0,
+                    initial_goto_duration=initial_goto_duration,
                 )
             elif hasattr(self.robot_api, "async_play_move"):
                 import asyncio
 
-                asyncio.create_task(self.robot_api.async_play_move(move, 100.0, 0.0))
+                asyncio.create_task(
+                    self.robot_api.async_play_move(move, 100.0, initial_goto_duration)
+                )
             else:
                 return {"status": "error", "detail": "play_move non disponible"}
 
