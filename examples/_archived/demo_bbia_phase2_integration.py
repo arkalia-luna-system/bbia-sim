@@ -132,7 +132,7 @@ def demo_adaptive_behavior():
         for i in range(3):
             behavior = adaptive_behavior.generate_behavior(f"user_arrival_{i}")
             print(
-                f"  Comportement {i+1}: {behavior['name']} - {behavior['description']}"
+                f"  Comportement {i + 1}: {behavior['name']} - {behavior['description']}"
             )
             print(
                 f"    Contexte: {behavior['context']}, Émotion: {behavior['emotion']}"

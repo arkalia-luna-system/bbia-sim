@@ -24,7 +24,7 @@ async def receive_state(uri: str, count: int = 5) -> int:
 
             for i in range(count):
                 message = await websocket.recv()
-                print(f"Message {i+1}/{count}:")
+                print(f"Message {i + 1}/{count}:")
                 print(f"   {message[:200]}...")  # Afficher les 200 premiers caractères
                 print()
 

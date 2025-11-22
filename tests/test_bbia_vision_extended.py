@@ -304,6 +304,73 @@ class TestBBIAVisionExtended:
         # Vérifier que c'est un format ISO valide
         datetime.fromisoformat(timestamp)
 
+    def test_bbox_structure_valid(self):
+        """Test structure complète des bbox retournés par scan_environment() (Issue #7)."""
+        result = self.vision.scan_environment()
+
+        # Vérifier bbox pour les objets qui en ont (YOLO détectés)
+        # Note: En mode simulation, les objets n'ont pas de bbox
+        # Seuls les objets détectés par YOLO ont un bbox
+        objects_with_bbox = [obj for obj in result["objects"] if "bbox" in obj]
+
+        # Si des objets ont un bbox, vérifier la structure
+        if len(objects_with_bbox) > 0:
+            for obj in objects_with_bbox:
+                bbox = obj["bbox"]
+
+                # Vérifier les 6 champs requis
+                assert "x" in bbox, "bbox doit avoir 'x'"
+                assert "y" in bbox, "bbox doit avoir 'y'"
+                assert "width" in bbox, "bbox doit avoir 'width'"
+                assert "height" in bbox, "bbox doit avoir 'height'"
+                assert "center_x" in bbox, "bbox doit avoir 'center_x'"
+                assert "center_y" in bbox, "bbox doit avoir 'center_y'"
+
+                # Vérifier types corrects (int)
+                assert isinstance(bbox["x"], int), "x doit être int"
+                assert isinstance(bbox["y"], int), "y doit être int"
+                assert isinstance(bbox["width"], int), "width doit être int"
+                assert isinstance(bbox["height"], int), "height doit être int"
+                assert isinstance(bbox["center_x"], int), "center_x doit être int"
+                assert isinstance(bbox["center_y"], int), "center_y doit être int"
+
+        # Vérifier bbox pour les visages qui en ont (MediaPipe détectés)
+        faces_with_bbox = [face for face in result["faces"] if "bbox" in face]
+        if len(faces_with_bbox) > 0:
+            for face in faces_with_bbox:
+                bbox = face["bbox"]
+
+                # Même vérification que pour les objets
+                assert all(
+                    key in bbox
+                    for key in ["x", "y", "width", "height", "center_x", "center_y"]
+                ), "bbox visage doit avoir tous les champs requis"
+                assert all(
+                    isinstance(bbox[key], int)
+                    for key in ["x", "y", "width", "height", "center_x", "center_y"]
+                ), "Tous les champs bbox visage doivent être int"
+
+        # Test supplémentaire : vérifier que si YOLO est chargé et détecte, les bbox sont présents
+        # Ce test vérifie la structure quand elle existe, ce qui est l'objectif de l'issue #7
+
+    def test_bbox_edge_cases(self):
+        """Test valeurs limites bbox (Issue #7)."""
+        result = self.vision.scan_environment()
+
+        # Vérifier que les bbox sont valides (pas de valeurs négatives incohérentes)
+        for obj in result["objects"]:
+            if "bbox" in obj:
+                bbox = obj["bbox"]
+                # Les valeurs peuvent être négatives si hors image, mais width/height doivent être >= 0
+                assert bbox["width"] >= 0, "width ne peut pas être négatif"
+                assert bbox["height"] >= 0, "height ne peut pas être négatif"
+
+        for face in result["faces"]:
+            if "bbox" in face:
+                bbox = face["bbox"]
+                assert bbox["width"] >= 0, "width visage ne peut pas être négatif"
+                assert bbox["height"] >= 0, "height visage ne peut pas être négatif"
+
     @patch("builtins.print")
     def test_track_object_case_sensitive(self, mock_print):
         """Test suivi d'objet sensible à la casse."""

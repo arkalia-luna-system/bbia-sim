@@ -160,9 +160,7 @@ class Matrix4x4Pose(BaseModel):
             float,
             float,
             float,
-        ] = tuple(
-            flattened_list
-        )  # type: ignore[assignment]
+        ] = tuple(flattened_list)  # type: ignore[assignment]
         return cls(m=m)
 
     def to_pose_array(self) -> npt.NDArray[np.float64]:

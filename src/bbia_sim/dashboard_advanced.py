@@ -533,9 +533,7 @@ class BBIAAdvancedWebSocketManager:
                     if not self._stop_metrics:
                         logger.exception("Erreur collecte métriques: %s", e)
                     await asyncio.sleep(1.0)
-                except (
-                    Exception
-                ) as e:  # noqa: BLE001 - Fallback pour erreurs inattendues
+                except Exception as e:  # noqa: BLE001 - Fallback pour erreurs inattendues
                     if not self._stop_metrics:
                         logger.exception("Erreur inattendue collecte métriques: %s", e)
                     await asyncio.sleep(1.0)
@@ -588,9 +586,9 @@ class BBIAAdvancedWebSocketManager:
         )
         self.current_metrics["vision"]["tracking_active"] = self.vision.tracking_active
 
-        self.current_metrics["audio"][
-            "microphone_active"
-        ] = False  # Pas encore implémenté
+        self.current_metrics["audio"]["microphone_active"] = (
+            False  # Pas encore implémenté
+        )
         self.current_metrics["audio"]["speaker_active"] = False  # Pas encore implémenté
         self.current_metrics["audio"]["volume_level"] = 0.0
 

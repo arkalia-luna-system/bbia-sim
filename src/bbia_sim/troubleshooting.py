@@ -139,7 +139,9 @@ class TroubleshootingChecker:
         status = (
             "ok"
             if not missing
-            else "warning" if len(missing) < len(dependencies) else "error"
+            else "warning"
+            if len(missing) < len(dependencies)
+            else "error"
         )
 
         return {

@@ -425,18 +425,24 @@ class ExhaustiveAuditor:
                 test_mark = (
                     "✅"
                     if item.test_result == "PASSED"
-                    else "⏸️" if item.test_result == "SKIPPED" else "❌"
+                    else "⏸️"
+                    if item.test_result == "SKIPPED"
+                    else "❌"
                 )
                 qa_mark = "✅" if item.qa_ok else "❌"
                 status_icon = (
                     "✅"
                     if item.status == "OK"
-                    else "⚠️" if item.status == "DIFF" else "❌"
+                    else "⚠️"
+                    if item.status == "DIFF"
+                    else "❌"
                 )
                 severity_icon = (
                     "🟢"
                     if item.severity == "STRICT"
-                    else "🟡" if item.severity == "COMPATIBLE" else "🔴"
+                    else "🟡"
+                    if item.severity == "COMPATIBLE"
+                    else "🔴"
                 )
 
                 lines.append(

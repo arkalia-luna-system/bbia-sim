@@ -224,7 +224,7 @@ def main():
     print(f"   • Comportement : {args.behavior}")
     print(f"   • Phases : {scenario.total_phases}")
     for i, phase in enumerate(scenario.current_scenario):
-        print(f"     {i+1}. {phase['phase']} ({phase['duration']}s)")
+        print(f"     {i + 1}. {phase['phase']} ({phase['duration']}s)")
     print(f"   • Joint : {args.joint}")
     print(f"   • Durée totale : {args.duration}s")
     print(f"   • Intensité : {args.intensity}")

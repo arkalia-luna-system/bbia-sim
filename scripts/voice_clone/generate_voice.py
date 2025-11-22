@@ -8,6 +8,7 @@ Usage:
   # avec référence (ta voix):
   python scripts/voice_clone/generate_voice.py --ref assets/voice/ref.wav --text "Bonjour" --mode douce --out assets/voice/ta_voix.wav
 """
+
 import argparse
 import datetime
 import os
@@ -346,7 +347,7 @@ def main() -> None:
     if args.say_voice:
         os.environ["BBIA_SAY_VOICE"] = args.say_voice
     _log_event(
-        f"Synthèse demandée mode={args.mode} out={args.out} model={args.model or os.environ.get('BBIA_COQUI_MODEL')} lang={args.lang or os.environ.get('BBIA_COQUI_LANG','fr-fr')} say_voice={os.environ.get('BBIA_SAY_VOICE')}",
+        f"Synthèse demandée mode={args.mode} out={args.out} model={args.model or os.environ.get('BBIA_COQUI_MODEL')} lang={args.lang or os.environ.get('BBIA_COQUI_LANG', 'fr-fr')} say_voice={os.environ.get('BBIA_SAY_VOICE')}",
     )
 
     ok = synthesize_with_coqui(

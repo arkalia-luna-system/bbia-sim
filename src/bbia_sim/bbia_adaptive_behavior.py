@@ -516,9 +516,9 @@ class BBIAAdaptiveBehavior:
 
             # Mise à jour des préférences
             if behavior_name in self.user_preferences["preferred_behaviors"]:
-                self.user_preferences["preferred_behaviors"][
-                    behavior_name
-                ] += adjustment
+                self.user_preferences["preferred_behaviors"][behavior_name] += (
+                    adjustment
+                )
                 self.user_preferences["preferred_behaviors"][behavior_name] = max(
                     0.0,
                     self.user_preferences["preferred_behaviors"][behavior_name],
