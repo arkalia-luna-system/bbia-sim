@@ -396,9 +396,11 @@ class TestDaemonModels:
 
         from bbia_sim.daemon.models import Matrix4x4Pose
 
-        pose_array = np.eye(4, dtype=np.float64).flatten()
+        # Créer matrice 4x4 (forme attendue par from_pose_array)
+        pose_array = np.eye(4, dtype=np.float64)
         pose = Matrix4x4Pose.from_pose_array(pose_array)
         assert pose is not None
+        assert len(pose.m) == 16
 
 
 class TestBackendAdapter:
@@ -412,18 +414,30 @@ class TestBackendAdapter:
         """Test initialisation BackendAdapter."""
         # OPTIMISATION RAM: Import lazy
         from bbia_sim.daemon.app.backend_adapter import BackendAdapter
-        from bbia_sim.daemon.simulation_service import simulation_service
+        from bbia_sim.robot_factory import RobotFactory
 
-        adapter = BackendAdapter(simulation_service.robot_api)
+        # Créer un robot via RobotFactory ou laisser BackendAdapter le créer
+        robot = RobotFactory.create_backend("mujoco")
+        if robot is None:
+            # Si mujoco n'est pas disponible, créer BackendAdapter sans paramètre
+            adapter = BackendAdapter()
+        else:
+            adapter = BackendAdapter(robot)
         assert adapter is not None
 
     def test_connect_if_needed(self) -> None:
         """Test connect_if_needed."""
         # OPTIMISATION RAM: Import lazy
         from bbia_sim.daemon.app.backend_adapter import BackendAdapter
-        from bbia_sim.daemon.simulation_service import simulation_service
+        from bbia_sim.robot_factory import RobotFactory
 
-        adapter = BackendAdapter(simulation_service.robot_api)
+        # Créer un robot via RobotFactory ou laisser BackendAdapter le créer
+        robot = RobotFactory.create_backend("mujoco")
+        if robot is None:
+            # Si mujoco n'est pas disponible, créer BackendAdapter sans paramètre
+            adapter = BackendAdapter()
+        else:
+            adapter = BackendAdapter(robot)
         adapter.connect_if_needed()
         assert adapter._connected is True
 
