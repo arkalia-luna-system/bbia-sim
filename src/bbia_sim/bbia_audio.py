@@ -1,5 +1,4 @@
-"""
-Module bbia_audio.py.
+"""Module bbia_audio.py.
 
 Gestion de l'audio pour BBIA : enregistrement, lecture, détection de son.
 Utilise robot.media.microphone si disponible (SDK Reachy Mini - 4 microphones),
@@ -18,8 +17,7 @@ logger = logging.getLogger(__name__)
 
 
 class _SoundDeviceShim:
-    """
-    Shim minimal pour permettre le patch dans les tests (sd.rec/play/wait).
+    """Shim minimal pour permettre le patch dans les tests (sd.rec/play/wait).
 
     Les méthodes lèvent RuntimeError si utilisées sans patch effectif.
     """
@@ -29,21 +27,24 @@ class _SoundDeviceShim:
         *args: Any,  # noqa: ARG002, ANN401
         **kwargs: Any,  # noqa: ARG002, ANN401
     ) -> Any:  # noqa: ANN401 - garde-fou pour module optionnel
-        raise RuntimeError("sounddevice indisponible: sd.rec non opérationnel")
+        msg = "sounddevice indisponible: sd.rec non opérationnel"
+        raise RuntimeError(msg)
 
     def wait(
         self,
         *args: Any,  # noqa: ARG002, ANN401
         **kwargs: Any,  # noqa: ARG002, ANN401
     ) -> None:
-        raise RuntimeError("sounddevice indisponible: sd.wait non opérationnel")
+        msg = "sounddevice indisponible: sd.wait non opérationnel"
+        raise RuntimeError(msg)
 
     def play(
         self,
         *args: Any,  # noqa: ARG002, ANN401
         **kwargs: Any,  # noqa: ARG002, ANN401
     ) -> None:
-        raise RuntimeError("sounddevice indisponible: sd.play non opérationnel")
+        msg = "sounddevice indisponible: sd.play non opérationnel"
+        raise RuntimeError(msg)
 
 
 sd: Any = _SoundDeviceShim()  # toujours patchable dans les tests
@@ -92,8 +93,7 @@ except (
 def _get_robot_media_microphone(
     robot_api: Optional["RobotAPI"] = None,
 ) -> object | None:
-    """
-    Récupère robot.media.microphone si disponible.
+    """Récupère robot.media.microphone si disponible.
 
     Args:
         robot_api: Interface RobotAPI (optionnel)
@@ -119,8 +119,7 @@ _cwd_cache: str | None = None
 
 
 def _is_safe_path(path: str) -> bool:
-    """
-    Validation simple de chemin pour éviter le path traversal.
+    """Validation simple de chemin pour éviter le path traversal.
 
     Autorise:
     - chemins relatifs sans ".."
@@ -166,8 +165,7 @@ def enregistrer_audio(
     robot_api: Optional["RobotAPI"] = None,
     max_buffer_duration: int | None = None,
 ) -> bool:
-    """
-    Enregistre un fichier audio (WAV) depuis le micro.
+    """Enregistre un fichier audio (WAV) depuis le micro.
 
     Vérifie flag BBIA_DISABLE_AUDIO et valide paramètres avant enregistrement.
 
@@ -193,7 +191,7 @@ def enregistrer_audio(
     # Issue #436: Limiter durée buffer pour éviter OOM
     if max_buffer_duration is None:
         max_buffer_duration = int(
-            os.environ.get("BBIA_MAX_AUDIO_BUFFER_DURATION", "180")
+            os.environ.get("BBIA_MAX_AUDIO_BUFFER_DURATION", "180"),
         )  # 3 min par défaut
 
     if duree > max_buffer_duration:
@@ -207,7 +205,8 @@ def enregistrer_audio(
 
     # Sécurité: valider chemin de sortie
     if not _is_safe_path(fichier):
-        raise ValueError("Chemin de sortie non autorisé (path traversal)")
+        msg = "Chemin de sortie non autorisé (path traversal)"
+        raise ValueError(msg)
 
     # OPTIMISATION SDK: Utiliser robot.media.microphone si disponible
     # (toujours disponible via shim)
@@ -274,8 +273,9 @@ def enregistrer_audio(
         logging.info("Enregistrement audio (%ss) dans %s...", duree, fichier)
         _sd = _get_sd()
         if _sd is None:
+            msg = "sounddevice indisponible (BBIA_DISABLE_AUDIO conseillé en CI)"
             raise RuntimeError(
-                "sounddevice indisponible (BBIA_DISABLE_AUDIO conseillé en CI)",
+                msg,
             )
 
         # Issue #329: Gestion gracieuse canaux audio invalides
@@ -314,8 +314,9 @@ def enregistrer_audio(
                     "❌ Échec enregistrement audio même avec fallback: %s",
                     fallback_error,
                 )
+                msg = f"Impossible d'enregistrer audio: {fallback_error}"
                 raise RuntimeError(
-                    f"Impossible d'enregistrer audio: {fallback_error}"
+                    msg,
                 ) from fallback_error
 
         _sd.wait()
@@ -332,8 +333,7 @@ def enregistrer_audio(
 
 
 def lire_audio(fichier: str, robot_api: Optional["RobotAPI"] = None) -> None:
-    """
-    Joue un fichier audio WAV.
+    """Joue un fichier audio WAV.
 
     Utilise robot.media.speaker si disponible (haut-parleur 5W optimisé),
     sinon utilise sounddevice pour compatibilité.
@@ -350,7 +350,8 @@ def lire_audio(fichier: str, robot_api: Optional["RobotAPI"] = None) -> None:
 
     # Sécurité: valider chemin d'entrée
     if not _is_safe_path(fichier):
-        raise ValueError("Chemin d'entrée non autorisé (path traversal)")
+        msg = "Chemin d'entrée non autorisé (path traversal)"
+        raise ValueError(msg)
 
     # Validation format et sample rate SDK (si soundfile dispo)
     if soundfile is not None:
@@ -407,7 +408,8 @@ def lire_audio(fichier: str, robot_api: Optional["RobotAPI"] = None) -> None:
             audio = np.frombuffer(frames, dtype="int16")
             _sd = _get_sd()
             if _sd is None:
-                raise RuntimeError("sounddevice indisponible (lecture audio)")
+                msg = "sounddevice indisponible (lecture audio)"
+                raise RuntimeError(msg)
             _sd.play(audio, frequence)
             _sd.wait()
         logging.info("Lecture de %s terminée.", fichier)
@@ -417,8 +419,7 @@ def lire_audio(fichier: str, robot_api: Optional["RobotAPI"] = None) -> None:
 
 
 def detecter_son(fichier: str, seuil: int = 500) -> bool:
-    """
-    Détecte si un fichier audio contient du son.
+    """Détecte si un fichier audio contient du son.
 
     Args:
         fichier: Chemin du fichier audio

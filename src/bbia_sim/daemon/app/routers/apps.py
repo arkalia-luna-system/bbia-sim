@@ -19,7 +19,7 @@ class AppInfo:
         source_kind: str = "huggingface",
         installed: bool = False,
         status: str = "stopped",
-    ):
+    ) -> None:
         """Initialise les informations d'une app.
 
         Args:
@@ -47,7 +47,9 @@ class AppInfo:
 class AppStatus:
     """Statut d'une application."""
 
-    def __init__(self, name: str, status: str = "stopped", running: bool = False):
+    def __init__(
+        self, name: str, status: str = "stopped", running: bool = False
+    ) -> None:
         """Initialise le statut d'une app.
 
         Args:
@@ -169,7 +171,8 @@ async def list_all_available_apps() -> list[dict[str, Any]]:
                         "name": space.id,
                         "source_kind": "hf_space",
                         "description": getattr(space, "cardData", {}).get(
-                            "description", ""
+                            "description",
+                            "",
                         ),
                         "author": "community",
                         "category": "community",
@@ -219,7 +222,8 @@ async def list_community_apps() -> list[dict[str, Any]]:
                         "name": space.id,
                         "source_kind": "hf_space",
                         "description": getattr(space, "cardData", {}).get(
-                            "description", ""
+                            "description",
+                            "",
                         ),
                         "author": "community",
                         "category": "community",

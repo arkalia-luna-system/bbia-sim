@@ -39,7 +39,7 @@ class BBIAPoseDetection:
         min_detection_confidence: float = 0.5,
         min_tracking_confidence: float = 0.5,
         model_complexity: int = 1,
-    ):
+    ) -> None:
         """Initialise le module de détection de pose.
 
         Args:
@@ -73,7 +73,7 @@ class BBIAPoseDetection:
             )
             self.is_initialized = True
         except Exception as e:
-            logger.exception("❌ Erreur initialisation MediaPipe Pose: %s", e)
+            logger.exception("❌ Erreur initialisation MediaPipe Pose")
 
     def detect_pose(self, image: npt.NDArray[np.uint8]) -> dict[str, Any] | None:
         """Détecte la posture complète dans une image.
@@ -95,10 +95,7 @@ class BBIAPoseDetection:
                 # Vérifier si BGR (OpenCV) ou RGB
                 import cv2
 
-                if cv2:
-                    image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-                else:
-                    image_rgb = image
+                image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB) if cv2 else image
             else:
                 image_rgb = image
 
@@ -135,7 +132,7 @@ class BBIAPoseDetection:
             }
 
         except Exception as e:
-            logger.exception("❌ Erreur détection pose: %s", e)
+            logger.exception("❌ Erreur détection pose")
             return None
 
     def _detect_gestures(self, landmarks: list[dict[str, Any]]) -> dict[str, bool]:

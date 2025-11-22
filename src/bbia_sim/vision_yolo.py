@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """bbia_vision_yolo.py - Module YOLOv8n pour BBIA
-Détection d'objets légère avec YOLOv8n (optionnel)
+Détection d'objets légère avec YOLOv8n (optionnel).
 """
 
 import logging
@@ -62,7 +62,8 @@ try:
 
     _os.environ.setdefault("GLOG_minloglevel", "2")
     _os.environ.setdefault(
-        "TF_CPP_MIN_LOG_LEVEL", "3"
+        "TF_CPP_MIN_LOG_LEVEL",
+        "3",
     )  # 0=INFO,1=WARNING,2=ERROR,3=FATAL
     _os.environ.setdefault("MEDIAPIPE_DISABLE_GPU", "1")
     # Supprimer les logs TensorFlow Lite
@@ -75,14 +76,17 @@ try:
         _os.environ.setdefault("MUJOCO_GL", "egl")  # Utiliser EGL sur Linux/Windows
 except Exception as e:
     logger.debug(
-        "Impossible de configurer variables d'environnement MediaPipe/TensorFlow: %s", e
+        "Impossible de configurer variables d'environnement MediaPipe/TensorFlow: %s",
+        e,
     )
 
 
 class YOLODetector:
     """Module de détection d'objets utilisant YOLOv8n."""
 
-    def __init__(self, model_size: str = "n", confidence_threshold: float = 0.25):
+    def __init__(
+        self, model_size: str = "n", confidence_threshold: float = 0.25
+    ) -> None:
         """Initialise le détecteur YOLO.
 
         Args:
@@ -140,7 +144,8 @@ class YOLODetector:
                 if _yolo_model_last_used:
                     # OPTIMISATION: operator.itemgetter plus rapide que lambda
                     oldest_key = min(
-                        _yolo_model_last_used.items(), key=operator.itemgetter(1)
+                        _yolo_model_last_used.items(),
+                        key=operator.itemgetter(1),
                     )[0]
                     del _yolo_model_cache[oldest_key]
                     del _yolo_model_last_used[oldest_key]
@@ -168,7 +173,7 @@ class YOLODetector:
             return True
 
         except Exception as e:
-            logger.exception("❌ Erreur chargement YOLO: %s", e)
+            logger.exception("❌ Erreur chargement YOLO")
             return False
 
     def detect_objects(self, image: npt.NDArray[np.uint8]) -> list[DetectionResult]:
@@ -181,9 +186,8 @@ class YOLODetector:
             Liste des détections avec bbox, confiance, classe (typée avec DetectionResult)
 
         """
-        if not self.is_loaded:
-            if not self.load_model():
-                return []
+        if not self.is_loaded and not self.load_model():
+            return []
 
         try:
             # Détection YOLO
@@ -224,7 +228,9 @@ class YOLODetector:
                 new_width, new_height = original_width, original_height
 
             results = self.model(
-                resized_image, conf=self.confidence_threshold, verbose=False
+                resized_image,
+                conf=self.confidence_threshold,
+                verbose=False,
             )
 
             detections = []
@@ -268,11 +274,12 @@ class YOLODetector:
             return detections
 
         except Exception as e:
-            logger.exception("❌ Erreur détection YOLO: %s", e)
+            logger.exception("❌ Erreur détection YOLO")
             return []
 
     def detect_objects_batch(
-        self, images: list[npt.NDArray[np.uint8]]
+        self,
+        images: list[npt.NDArray[np.uint8]],
     ) -> list[list[DetectionResult]]:
         """Détecte les objets dans un batch d'images (OPTIMISATION PERFORMANCE).
 
@@ -286,10 +293,10 @@ class YOLODetector:
         Note:
             Le batch processing est beaucoup plus efficace que d'appeler detect_objects
             plusieurs fois, car YOLO peut traiter plusieurs images en parallèle sur GPU.
+
         """
-        if not self.is_loaded:
-            if not self.load_model():
-                return [[] for _ in images]
+        if not self.is_loaded and not self.load_model():
+            return [[] for _ in images]
 
         if not images:
             return []
@@ -343,7 +350,9 @@ class YOLODetector:
             # OPTIMISATION PERFORMANCE: YOLO traite le batch en une seule passe
             # (beaucoup plus rapide que boucle sur images individuelles)
             results = self.model(
-                resized_images, conf=self.confidence_threshold, verbose=False
+                resized_images,
+                conf=self.confidence_threshold,
+                verbose=False,
             )
 
             all_detections = []
@@ -394,7 +403,7 @@ class YOLODetector:
             return all_detections
 
         except Exception as e:
-            logger.exception("❌ Erreur détection YOLO batch: %s", e)
+            logger.exception("❌ Erreur détection YOLO batch")
             return [[] for _ in images]
 
     def get_best_detection(
@@ -422,13 +431,11 @@ class YOLODetector:
             return None
 
         # Priorité: confiance + taille
-        best_detection = max(
+        return max(
             relevant_detections,
             key=lambda d: d["confidence"]
             * (1 + d["area"] / 100000),  # Bonus pour grande taille
         )
-
-        return best_detection
 
     def map_detection_to_action(
         self,
@@ -465,7 +472,10 @@ class YOLODetector:
             }
 
             logger.info(
-                "🎯 Détection mappée: %s → %s (%s)", class_name, action, direction
+                "🎯 Détection mappée: %s → %s (%s)",
+                class_name,
+                action,
+                direction,
             )
             return action_data
 
@@ -563,7 +573,7 @@ class FaceDetector:
             return detections
 
         except Exception as e:
-            logger.exception("❌ Erreur détection visages: %s", e)
+            logger.exception("❌ Erreur détection visages")
             return []
 
     def get_best_face(self, detections: list[dict[str, Any]]) -> dict[str, Any] | None:
@@ -580,12 +590,10 @@ class FaceDetector:
             return None
 
         # Priorité: confiance + taille
-        best_face = max(
+        return max(
             detections,
             key=lambda d: d["confidence"] * (1 + d["area"] / 50000),
         )
-
-        return best_face
 
 
 def create_yolo_detector(

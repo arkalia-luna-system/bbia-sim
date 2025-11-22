@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Configuration globale pour déterminisme et sécurité
-SEED global, limites sûres, failsafe
+SEED global, limites sûres, failsafe.
 """
 
 import logging

@@ -37,7 +37,8 @@ class MuJoCoSimulator:
         self.model_path = Path(model_path)
         if not self.model_path.exists():
             logger.error("Modèle MuJoCo introuvable : %s", self.model_path)
-            raise FileNotFoundError(f"Modèle MuJoCo introuvable : {self.model_path}")
+            msg = f"Modèle MuJoCo introuvable : {self.model_path}"
+            raise FileNotFoundError(msg)
 
         try:
             self.model = mujoco.MjModel.from_xml_path(str(self.model_path))
@@ -46,13 +47,13 @@ class MuJoCoSimulator:
             self.target_positions: dict[str, float] = {}  # Positions cibles à maintenir
             logger.info("Simulateur MuJoCo initialisé avec %s", self.model_path)
         except Exception as e:
-            logger.exception("Erreur lors du chargement du modèle MJCF : %s", e)
+            logger.exception("Erreur lors du chargement du modèle MJCF ")
             raise
 
     def launch_simulation(
         self,
         headless: bool = False,
-        duration: int | float | None = None,
+        duration: float | None = None,
     ) -> None:
         """Lance la simulation MuJoCo.
 
@@ -78,13 +79,14 @@ class MuJoCoSimulator:
                         "  • Ou utilisez : python -m bbia_sim --sim --headless\n"
                         "  • Ou installez mjpython : pip install mujoco-python-viewer",
                     )
+                    msg = "Viewer MuJoCo non disponible sur macOS avec python standard"
                     raise RuntimeError(
-                        "Viewer MuJoCo non disponible sur macOS avec python standard",
+                        msg,
                     ) from e
-                logger.exception("Erreur lors du lancement du viewer : %s", e)
+                logger.exception("Erreur lors du lancement du viewer ")
                 raise
 
-    def _run_headless_simulation(self, duration: int | float | None) -> None:
+    def _run_headless_simulation(self, duration: float | None) -> None:
         """Exécute la simulation en mode headless."""
         logger.info("Simulation headless démarrée")
         start_time = time.monotonic()  # Utiliser monotonic pour éviter la dérive
@@ -128,7 +130,7 @@ class MuJoCoSimulator:
                 e,
             )
 
-    def _run_graphical_simulation(self, duration: int | float | None) -> None:
+    def _run_graphical_simulation(self, duration: float | None) -> None:
         """Exécute la simulation avec l'interface graphique."""
         if self.viewer is None:
             logger.error("Le viewer n'est pas initialisé pour la simulation graphique.")
@@ -179,7 +181,7 @@ class MuJoCoSimulator:
             if self.viewer:
                 self.viewer.update_model(self.model, self.data)
         except mujoco.FatalError as e:
-            logger.exception("Erreur lors du chargement de la scène : %s", e)
+            logger.exception("Erreur lors du chargement de la scène ")
             raise
 
     def set_joint_position(self, joint_name: str, angle: float) -> None:

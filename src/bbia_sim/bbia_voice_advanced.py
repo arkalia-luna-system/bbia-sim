@@ -117,7 +117,7 @@ class BBIAVoiceAdvanced:
                 self.pyttsx3_engine.setProperty("volume", 1.0)
                 logger.info("✅ Fallback pyttsx3 initialisé (avec cache)")
             except Exception as e:
-                logger.exception("❌ Erreur initialisation fallback: %s", e)
+                logger.exception("❌ Erreur initialisation fallback")
                 self.pyttsx3_engine = None
 
     def say(
@@ -160,7 +160,7 @@ class BBIAVoiceAdvanced:
             logger.error("❌ Aucun moteur TTS disponible")
             return False
         except Exception as e:
-            logger.exception("❌ Erreur synthèse vocale: %s", e)
+            logger.exception("❌ Erreur synthèse vocale")
             return False
 
     def _say_coqui(
@@ -210,7 +210,8 @@ class BBIAVoiceAdvanced:
             # Note: Certains modèles Coqui TTS supportent directement pitch/emotion
             # dans tts_to_file. Si non supporté, utiliser paramètres de base.
             if self.tts is None:
-                raise ValueError("Coqui TTS non initialisé")
+                msg = "Coqui TTS non initialisé"
+                raise ValueError(msg)
             # Type narrowing: mypy comprend maintenant que self.tts n'est pas None
             self.tts.tts_to_file(
                 text=text,
@@ -227,7 +228,7 @@ class BBIAVoiceAdvanced:
             return True
 
         except Exception as e:
-            logger.exception("❌ Erreur synthèse Coqui: %s", e)
+            logger.exception("❌ Erreur synthèse Coqui")
             # Fallback vers pyttsx3 si erreur
             if self.pyttsx3_engine:
                 logger.info("🔄 Fallback vers pyttsx3")
@@ -300,7 +301,7 @@ class BBIAVoiceAdvanced:
             logger.info("✅ Synthèse pyttsx3 terminée")
             return True
         except Exception as e:
-            logger.exception("❌ Erreur synthèse pyttsx3: %s", e)
+            logger.exception("❌ Erreur synthèse pyttsx3")
             return False
 
     def set_emotion(self, emotion: str) -> None:
@@ -338,10 +339,7 @@ class BBIAVoiceAdvanced:
 
         # Ajuster pitch selon intensité
         pitch_raw = emotion_config.get("pitch", 0.0)
-        if isinstance(pitch_raw, int | float):
-            base_pitch = float(pitch_raw)
-        else:
-            base_pitch = 0.0
+        base_pitch = float(pitch_raw) if isinstance(pitch_raw, int | float) else 0.0
         adjusted_pitch: float = base_pitch * intensity
 
         return self.say(

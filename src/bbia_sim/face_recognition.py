@@ -37,7 +37,7 @@ class BBIAPersonRecognition:
     et de détecter leurs émotions.
     """
 
-    def __init__(self, db_path: str = "faces_db", model_name: str = "VGG-Face"):
+    def __init__(self, db_path: str = "faces_db", model_name: str = "VGG-Face") -> None:
         """Initialise le module de reconnaissance faciale.
 
         Args:
@@ -94,7 +94,9 @@ class BBIAPersonRecognition:
 
         except Exception as e:
             logger.exception(
-                "❌ Erreur enregistrement personne '%s': %s", person_name, e
+                "❌ Erreur enregistrement personne '%s': %s",
+                person_name,
+                e,
             )
             return False
 
@@ -177,7 +179,7 @@ class BBIAPersonRecognition:
             logger.warning("Erreur reconnaissance visage: %s", e)
             return None
         except Exception as e:
-            logger.exception("❌ Erreur reconnaissance personne: %s", e)
+            logger.exception("❌ Erreur reconnaissance personne")
             return None
         finally:
             # Nettoyer fichier temporaire si nécessaire
@@ -266,7 +268,7 @@ class BBIAPersonRecognition:
             logger.warning("Erreur détection émotion: %s", e)
             return None
         except Exception as e:
-            logger.exception("❌ Erreur détection émotion: %s", e)
+            logger.exception("❌ Erreur détection émotion")
             return None
         finally:
             if temp_path and Path(temp_path).exists():
@@ -365,7 +367,7 @@ if __name__ == "__main__":
         logging.info(f"   • Base de données: {face_rec.db_path}")
         logging.info(f"   • Modèle: {face_rec.model_name}")
         logging.info(
-            f"   • Personnes enregistrées: {len(face_rec.get_registered_persons())}"
+            f"   • Personnes enregistrées: {len(face_rec.get_registered_persons())}",
         )
     else:
         logging.error("❌ Impossible de créer le module (DeepFace non disponible)")

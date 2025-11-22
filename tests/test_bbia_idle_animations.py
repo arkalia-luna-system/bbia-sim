@@ -126,20 +126,19 @@ class TestBBIAVocalTremor:
 
     def test_update_audio_level(self, vocal_tremor):
         """Test mise à jour niveau audio."""
-        try:
-            import reachy_mini.utils  # noqa: F401
-        except ImportError:
-            pytest.skip("reachy_mini non disponible")
         vocal_tremor.start()
 
-        with patch("reachy_mini.utils.create_head_pose") as mock_pose:
+        # Mock create_head_pose même si SDK non disponible (le code gère gracieusement)
+        with patch(
+            "bbia_sim.bbia_idle_animations.create_head_pose", create=True
+        ) as mock_pose:
             mock_pose.return_value = MagicMock()
 
             vocal_tremor.update_audio_level(0.8)
             assert vocal_tremor.last_audio_level == 0.8
 
             # Le mock peut ne pas être appelé si SDK non disponible
-            # Mais la structure est correcte
+            # Mais la structure est correcte et le test passe quand même
 
 
 class TestBBIIdleAnimationManager:

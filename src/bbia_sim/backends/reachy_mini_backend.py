@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """ReachyMiniBackend - Implémentation SDK officiel Reachy-Mini
-Backend utilisant le SDK officiel reachy_mini
+Backend utilisant le SDK officiel reachy_mini.
 """
 
 import logging
@@ -13,7 +13,7 @@ from typing import TYPE_CHECKING, Any, Optional
 import numpy as np
 import numpy.typing as npt
 
-from ..utils.types import JointPositions, TelemetryData
+from bbia_sim.utils.types import JointPositions, TelemetryData
 
 try:
     from reachy_mini import ReachyMini  # type: ignore[import-untyped]
@@ -28,7 +28,7 @@ except ImportError:
 if TYPE_CHECKING:
     from reachy_mini.utils import HeadPose  # type: ignore[import-untyped]
 
-from ..robot_api import RobotAPI
+from bbia_sim.robot_api import RobotAPI
 
 # Constantes Stewart platform (alignées SDK officiel)
 STEWART_JOINTS_COUNT = 6  # 6 joints stewart (stewart_1 à stewart_6)
@@ -216,7 +216,7 @@ class ReachyMiniBackend(RobotAPI):
         # Note: Antennes maintenant animables avec limites sûres (-0.3 à 0.3 rad)
         # Garder dans forbidden_joints si on veut les bloquer par défaut (optionnel)
         # Initialiser depuis GlobalConfig pour cohérence
-        from ..global_config import GlobalConfig
+        from bbia_sim.global_config import GlobalConfig
 
         self.forbidden_joints: set[str] = set(GlobalConfig.FORBIDDEN_JOINTS)
         # Optionnel: ajouter "left_antenna" ou "right_antenna" pour bloquer
@@ -240,6 +240,7 @@ class ReachyMiniBackend(RobotAPI):
 
         Args:
             reason: Raison de l'activation du mode simulation (pour logging)
+
         """
         self.robot = None
         self.is_connected = True  # Mode simulation
@@ -253,6 +254,7 @@ class ReachyMiniBackend(RobotAPI):
 
         Returns:
             True si connexion réussie, False sinon
+
         """
         try:
             self.robot = ReachyMini(
@@ -430,12 +432,12 @@ class ReachyMiniBackend(RobotAPI):
                 ConnectionError,
                 OSError,
                 TimeoutError,
-            ) as e:
-                logger.exception("Erreur watchdog: %s", e)
+            ):
+                logger.exception("Erreur watchdog")
                 # En cas d'erreur, attendre un peu avant retry
                 time.sleep(self._watchdog_interval)
-            except Exception as e:
-                logger.exception("Erreur inattendue watchdog: %s", e)
+            except Exception:
+                logger.exception("Erreur inattendue watchdog")
                 # En cas d'erreur, attendre un peu avant retry
                 time.sleep(self._watchdog_interval)
 
@@ -494,7 +496,9 @@ class ReachyMiniBackend(RobotAPI):
         return 0.0
 
     def _get_antenna_position(
-        self, joint_name: str, antenna_positions: list[float]
+        self,
+        joint_name: str,
+        antenna_positions: list[float],
     ) -> float:
         """Récupère la position d'une antenne."""
         antenna_idx = 0 if joint_name == "left_antenna" else 1
@@ -505,14 +509,18 @@ class ReachyMiniBackend(RobotAPI):
         )
 
     def _get_stewart_joint_position(
-        self, joint_name: str, head_positions: list[float]
+        self,
+        joint_name: str,
+        head_positions: list[float],
     ) -> float:
         """Récupère la position d'un joint Stewart."""
         stewart_idx = int(joint_name.split("_")[1]) - 1  # Convertir 1-6 vers 0-5
 
         if stewart_idx < 0 or stewart_idx > self.STEWART_MAX_INDEX:
             logger.warning(
-                "Index stewart invalide: %s pour %s", stewart_idx, joint_name
+                "Index stewart invalide: %s pour %s",
+                stewart_idx,
+                joint_name,
             )
             return 0.0
 
@@ -521,7 +529,9 @@ class ReachyMiniBackend(RobotAPI):
             value = float(head_positions[stewart_idx])
             if not (float("-inf") < value < float("inf")):
                 logger.warning(
-                    "Valeur invalide (NaN/inf) pour %s: %s", joint_name, value
+                    "Valeur invalide (NaN/inf) pour %s: %s",
+                    joint_name,
+                    value,
                 )
                 return 0.0
             return value
@@ -533,12 +543,16 @@ class ReachyMiniBackend(RobotAPI):
                 value = float(head_positions[head_idx])
                 if not (float("-inf") < value < float("inf")):
                     logger.warning(
-                        "Valeur invalide (NaN/inf) pour %s: %s", joint_name, value
+                        "Valeur invalide (NaN/inf) pour %s: %s",
+                        joint_name,
+                        value,
                     )
                     return 0.0
                 return value
             logger.warning(
-                "Index head_positions invalide: %s pour %s", head_idx, joint_name
+                "Index head_positions invalide: %s pour %s",
+                head_idx,
+                joint_name,
             )
             return 0.0
 
@@ -571,11 +585,11 @@ class ReachyMiniBackend(RobotAPI):
             logger.warning("Joint %s non trouvé", joint_name)
             return 0.0
 
-        except (AttributeError, RuntimeError, IndexError, ValueError) as e:
-            logger.exception("Erreur lecture joint %s: %s", joint_name, e)
+        except (AttributeError, RuntimeError, IndexError, ValueError):
+            logger.exception("Erreur lecture joint %s", joint_name)
             return 0.0
-        except Exception as e:
-            logger.exception("Erreur inattendue lecture joint %s: %s", joint_name, e)
+        except Exception:
+            logger.exception("Erreur inattendue lecture joint %s", joint_name)
             return 0.0
 
     def _validate_joint_name(self, joint_name: str) -> bool:
@@ -725,10 +739,10 @@ class ReachyMiniBackend(RobotAPI):
             )
             return False
         except (AttributeError, RuntimeError, ValueError, IndexError) as e:
-            logger.exception("Erreur contrôle joint %s: %s", joint_name, e)
+            logger.exception("Erreur contrôle joint %s:", joint_name)
             return False
         except Exception as e:
-            logger.exception("Erreur inattendue contrôle joint %s: %s", joint_name, e)
+            logger.exception("Erreur inattendue contrôle joint %s:", joint_name)
             return False
 
     def set_emotion(self, emotion: str, intensity: float = 0.5) -> bool:
@@ -755,7 +769,9 @@ class ReachyMiniBackend(RobotAPI):
             self.current_emotion = emotion
             self.emotion_intensity = intensity
             logger.info(
-                "Émotion simulée (sans SDK): %s (intensité: %s)", emotion, intensity
+                "Émotion simulée (sans SDK): %s (intensité: %s)",
+                emotion,
+                intensity,
             )
             return True
 
@@ -791,10 +807,10 @@ class ReachyMiniBackend(RobotAPI):
             return True
 
         except (KeyError, AttributeError, RuntimeError, ValueError) as e:
-            logger.exception("Erreur émotion %s: %s", emotion, e)
+            logger.exception("Erreur émotion %s:", emotion)
             return False
         except Exception as e:
-            logger.exception("Erreur inattendue émotion %s: %s", emotion, e)
+            logger.exception("Erreur inattendue émotion %s:", emotion)
             return False
 
     def look_at(
@@ -829,7 +845,7 @@ class ReachyMiniBackend(RobotAPI):
             )
             return True
         except Exception as e:
-            logger.exception("Erreur look_at: %s", e)
+            logger.exception("Erreur look_at")
             return False
 
     def run_behavior(
@@ -847,6 +863,7 @@ class ReachyMiniBackend(RobotAPI):
 
         Returns:
             True si le comportement a été exécuté avec succès, False sinon
+
         """
         # Vérifier si le comportement est valide
         valid_behaviors = ["wake_up", "goto_sleep", "nod"]
@@ -872,10 +889,16 @@ class ReachyMiniBackend(RobotAPI):
                 # pour éviter blocage et réduire latence
                 # OPTIMISATION PERFORMANCE: Utiliser cache LRU pour poses fréquentes
                 pose1 = _create_cached_head_pose(
-                    pitch=0.1, yaw=0.0, roll=0.0, degrees=False
+                    pitch=0.1,
+                    yaw=0.0,
+                    roll=0.0,
+                    degrees=False,
                 )
                 pose2 = _create_cached_head_pose(
-                    pitch=-0.1, yaw=0.0, roll=0.0, degrees=False
+                    pitch=-0.1,
+                    yaw=0.0,
+                    roll=0.0,
+                    degrees=False,
                 )
 
                 # Option optimale: goto_target avec interpolation
@@ -886,7 +909,10 @@ class ReachyMiniBackend(RobotAPI):
                     self.robot.goto_target(
                         # OPTIMISATION PERFORMANCE: Utiliser cache LRU pour pose identité
                         head=_create_cached_head_pose(
-                            pitch=0.0, yaw=0.0, roll=0.0, degrees=False
+                            pitch=0.0,
+                            yaw=0.0,
+                            roll=0.0,
+                            degrees=False,
                         ),
                         duration=0.5,
                         method="minjerk",
@@ -900,16 +926,19 @@ class ReachyMiniBackend(RobotAPI):
                     # OPTIMISATION PERFORMANCE: Utiliser cache LRU pour pose identité
                     self.robot.set_target_head_pose(
                         _create_cached_head_pose(
-                            pitch=0.0, yaw=0.0, roll=0.0, degrees=False
-                        )
+                            pitch=0.0,
+                            yaw=0.0,
+                            roll=0.0,
+                            degrees=False,
+                        ),
                     )
 
             return True
         except (ValueError, AttributeError, RuntimeError, KeyError, TypeError) as e:
-            logger.exception("Erreur comportement %s: %s", behavior_name, e)
+            logger.exception("Erreur comportement %s:", behavior_name)
             return False
         except Exception as e:
-            logger.exception("Erreur inattendue comportement %s: %s", behavior_name, e)
+            logger.exception("Erreur inattendue comportement %s:", behavior_name)
             return False
 
     def step(self) -> bool:
@@ -987,10 +1016,10 @@ class ReachyMiniBackend(RobotAPI):
 
             return telemetry  # type: ignore[return-value]
         except (AttributeError, RuntimeError, KeyError, TypeError) as e:
-            logger.exception("Erreur télémétrie: %s", e)
+            logger.exception("Erreur télémétrie")
             return {}
         except Exception as e:
-            logger.exception("Erreur inattendue télémétrie: %s", e)
+            logger.exception("Erreur inattendue télémétrie")
             return {}
 
     # ===== MÉTHODES SDK OFFICIEL SUPPLÉMENTAIRES =====
@@ -1008,10 +1037,10 @@ class ReachyMiniBackend(RobotAPI):
                 else np.eye(4, dtype=np.float64)
             )
         except (AttributeError, RuntimeError, ValueError, OSError, TypeError) as e:
-            logger.exception("Erreur get_current_head_pose: %s", e)
+            logger.exception("Erreur get_current_head_pose")
             return np.eye(4, dtype=np.float64)
         except Exception as e:
-            logger.exception("Erreur inattendue get_current_head_pose: %s", e)
+            logger.exception("Erreur inattendue get_current_head_pose")
             return np.eye(4, dtype=np.float64)
 
     def get_current_body_yaw(self) -> float:
@@ -1036,10 +1065,10 @@ class ReachyMiniBackend(RobotAPI):
             )
             return 0.0
         except (AttributeError, RuntimeError, ValueError, OSError, TypeError) as e:
-            logger.exception("Erreur get_current_body_yaw: %s", e)
+            logger.exception("Erreur get_current_body_yaw")
             return 0.0
         except Exception as e:
-            logger.exception("Erreur inattendue get_current_body_yaw: %s", e)
+            logger.exception("Erreur inattendue get_current_body_yaw")
             return 0.0
 
     def get_present_antenna_joint_positions(self) -> list[float]:
@@ -1051,11 +1080,12 @@ class ReachyMiniBackend(RobotAPI):
             result = self.robot.get_present_antenna_joint_positions()
             return list(result) if result is not None else [0.0, 0.0]
         except (AttributeError, RuntimeError, ValueError, OSError, TypeError) as e:
-            logger.exception("Erreur get_present_antenna_joint_positions: %s", e)
+            logger.exception("Erreur get_present_antenna_joint_positions")
             return [0.0, 0.0]
         except Exception as e:
             logger.exception(
-                "Erreur inattendue get_present_antenna_joint_positions: %s", e
+                "Erreur inattendue get_present_antenna_joint_positions: %s",
+                e,
             )
             return [0.0, 0.0]
 
@@ -1068,9 +1098,9 @@ class ReachyMiniBackend(RobotAPI):
         try:
             self.robot.set_target_body_yaw(body_yaw)
         except (ValueError, AttributeError, RuntimeError, OSError, TypeError) as e:
-            logger.exception("Erreur set_target_body_yaw: %s", e)
+            logger.exception("Erreur set_target_body_yaw")
         except Exception as e:
-            logger.exception("Erreur inattendue set_target_body_yaw: %s", e)
+            logger.exception("Erreur inattendue set_target_body_yaw")
 
     def set_target_antenna_joint_positions(self, antennas: list[float]) -> None:
         """Définit les positions cibles des antennes."""
@@ -1088,10 +1118,11 @@ class ReachyMiniBackend(RobotAPI):
             TypeError,
             IndexError,
         ) as e:
-            logger.exception("Erreur set_target_antenna_joint_positions: %s", e)
+            logger.exception("Erreur set_target_antenna_joint_positions")
         except Exception as e:
             logger.exception(
-                "Erreur inattendue set_target_antenna_joint_positions: %s", e
+                "Erreur inattendue set_target_antenna_joint_positions: %s",
+                e,
             )
 
     def look_at_image(
@@ -1130,10 +1161,10 @@ class ReachyMiniBackend(RobotAPI):
             TypeError,
             IndexError,
         ) as e:
-            logger.exception("Erreur look_at_image: %s", e)
+            logger.exception("Erreur look_at_image")
             return np.eye(4, dtype=np.float64)
         except Exception as e:
-            logger.exception("Erreur inattendue look_at_image: %s", e)
+            logger.exception("Erreur inattendue look_at_image")
             return np.eye(4, dtype=np.float64)
 
     def goto_target(
@@ -1160,11 +1191,12 @@ class ReachyMiniBackend(RobotAPI):
         # Validation stricte: duration doit être positive et non-nulle (conforme SDK)
         duration_float = float(duration)
         if duration_float <= 0.0:
+            msg = (
+                "Duration must be positive and non-zero. "
+                "Use set_target() for immediate position setting."
+            )
             raise ValueError(
-                (
-                    "Duration must be positive and non-zero. "
-                    "Use set_target() for immediate position setting."
-                ),
+                (msg),
             )
 
         if not self.is_connected or not self.robot:
@@ -1246,7 +1278,7 @@ class ReachyMiniBackend(RobotAPI):
             # Propager les ValueError de validation
             raise
         except Exception as e:
-            logger.exception("Erreur goto_target: %s", e)
+            logger.exception("Erreur goto_target")
 
     def enable_motors(self) -> None:
         """Active les moteurs.
@@ -1265,15 +1297,15 @@ class ReachyMiniBackend(RobotAPI):
                     # Essayer de définir explicitement le mode position
                     self.robot.set_operating_mode("position")
                     logger.debug(
-                        "✅ Mode position controlled défini après enable_motors"
+                        "✅ Mode position controlled défini après enable_motors",
                     )
                 except (AttributeError, ValueError, TypeError):
                     # Si set_operating_mode n'existe pas, c'est OK (SDK gère automatiquement)
                     logger.debug(
-                        "set_operating_mode non disponible (SDK gère automatiquement)"
+                        "set_operating_mode non disponible (SDK gère automatiquement)",
                     )
         except Exception as e:
-            logger.exception("Erreur enable_motors: %s", e)
+            logger.exception("Erreur enable_motors")
 
     def disable_motors(self) -> None:
         """Désactive les moteurs."""
@@ -1284,7 +1316,7 @@ class ReachyMiniBackend(RobotAPI):
         try:
             self.robot.disable_motors()
         except Exception as e:
-            logger.exception("Erreur disable_motors: %s", e)
+            logger.exception("Erreur disable_motors")
 
     def emergency_stop(self) -> bool:
         """Arrêt d'urgence via SDK officiel.
@@ -1312,7 +1344,7 @@ class ReachyMiniBackend(RobotAPI):
             logger.critical("🔴 ARRÊT D'URGENCE ACTIVÉ")
             return True
         except Exception as e:
-            logger.exception("Erreur emergency_stop: %s", e)
+            logger.exception("Erreur emergency_stop")
             # S'assurer d'un état sûr même en cas d'erreur
             self.is_connected = False
             return False
@@ -1326,7 +1358,7 @@ class ReachyMiniBackend(RobotAPI):
         try:
             self.robot.enable_gravity_compensation()
         except Exception as e:
-            logger.exception("Erreur enable_gravity_compensation: %s", e)
+            logger.exception("Erreur enable_gravity_compensation")
 
     def disable_gravity_compensation(self) -> None:
         """Désactive la compensation de gravité."""
@@ -1337,7 +1369,7 @@ class ReachyMiniBackend(RobotAPI):
         try:
             self.robot.disable_gravity_compensation()
         except Exception as e:
-            logger.exception("Erreur disable_gravity_compensation: %s", e)
+            logger.exception("Erreur disable_gravity_compensation")
 
     # ===== MÉTHODES SDK OFFICIEL SUPPLÉMENTAIRES AVANCÉES =====
 
@@ -1350,7 +1382,7 @@ class ReachyMiniBackend(RobotAPI):
         try:
             self.robot.set_automatic_body_yaw(body_yaw)
         except Exception as e:
-            logger.exception("Erreur set_automatic_body_yaw: %s", e)
+            logger.exception("Erreur set_automatic_body_yaw")
 
     def set_target(
         self,
@@ -1366,7 +1398,7 @@ class ReachyMiniBackend(RobotAPI):
         try:
             self.robot.set_target(head=head, antennas=antennas, body_yaw=body_yaw)
         except Exception as e:
-            logger.exception("Erreur set_target: %s", e)
+            logger.exception("Erreur set_target")
 
     def start_recording(self) -> None:
         """Commence l'enregistrement des mouvements."""
@@ -1377,9 +1409,9 @@ class ReachyMiniBackend(RobotAPI):
         try:
             self.robot.start_recording()
         except (AttributeError, RuntimeError, OSError, ConnectionError) as e:
-            logger.exception("Erreur start_recording: %s", e)
+            logger.exception("Erreur start_recording")
         except Exception as e:
-            logger.exception("Erreur inattendue start_recording: %s", e)
+            logger.exception("Erreur inattendue start_recording")
 
     def stop_recording(self) -> list[JointPositions] | None:
         """Arrête l'enregistrement et retourne les données."""
@@ -1398,10 +1430,10 @@ class ReachyMiniBackend(RobotAPI):
             ValueError,
             TypeError,
         ) as e:
-            logger.exception("Erreur stop_recording: %s", e)
+            logger.exception("Erreur stop_recording")
             return None
         except Exception as e:
-            logger.exception("Erreur inattendue stop_recording: %s", e)
+            logger.exception("Erreur inattendue stop_recording")
             return None
 
     def play_move(
@@ -1438,9 +1470,9 @@ class ReachyMiniBackend(RobotAPI):
             TypeError,
             KeyError,
         ) as e:
-            logger.exception("Erreur play_move: %s", e)
+            logger.exception("Erreur play_move")
         except Exception as e:
-            logger.exception("Erreur inattendue play_move: %s", e)
+            logger.exception("Erreur inattendue play_move")
 
     def async_play_move(
         self,
@@ -1463,9 +1495,9 @@ class ReachyMiniBackend(RobotAPI):
             TypeError,
             KeyError,
         ) as e:
-            logger.exception("Erreur async_play_move: %s", e)
+            logger.exception("Erreur async_play_move")
         except Exception as e:
-            logger.exception("Erreur inattendue async_play_move: %s", e)
+            logger.exception("Erreur inattendue async_play_move")
 
     # ===== SUPPORT MODULES IO ET MEDIA =====
 
@@ -1566,7 +1598,7 @@ class ReachyMiniBackend(RobotAPI):
             return SimpleMove(positions, duration)
 
         except Exception as e:
-            logger.exception("Erreur création Move: %s", e)
+            logger.exception("Erreur création Move")
             return None
 
     def record_movement(self, duration: float = 5.0) -> list[JointPositions] | None:
@@ -1606,10 +1638,10 @@ class ReachyMiniBackend(RobotAPI):
             TypeError,
             IndexError,
         ) as e:
-            logger.exception("Erreur get_current_joint_positions: %s", e)
+            logger.exception("Erreur get_current_joint_positions")
             return ([0.0] * 12, [0.0, 0.0])
         except Exception as e:
-            logger.exception("Erreur inattendue get_current_joint_positions: %s", e)
+            logger.exception("Erreur inattendue get_current_joint_positions")
             return ([0.0] * 12, [0.0, 0.0])
 
     def set_target_head_pose(self, pose: "HeadPose") -> None:
@@ -1621,9 +1653,9 @@ class ReachyMiniBackend(RobotAPI):
         try:
             self.robot.set_target_head_pose(pose)
         except (ValueError, AttributeError, RuntimeError, OSError, TypeError) as e:
-            logger.exception("Erreur set_target_head_pose: %s", e)
+            logger.exception("Erreur set_target_head_pose")
         except Exception as e:
-            logger.exception("Erreur inattendue set_target_head_pose: %s", e)
+            logger.exception("Erreur inattendue set_target_head_pose")
 
     def look_at_world(
         self,
@@ -1721,7 +1753,7 @@ class ReachyMiniBackend(RobotAPI):
                 pose[2, 2] = cos_pitch
                 return pose
         except Exception as e:
-            logger.exception("Erreur look_at_world: %s", e)
+            logger.exception("Erreur look_at_world")
             return None
         # Si aucune condition précédente n'a retourné, retourner None par sécurité
         return None
@@ -1735,7 +1767,7 @@ class ReachyMiniBackend(RobotAPI):
         try:
             self.robot.wake_up()
         except Exception as e:
-            logger.exception("Erreur wake_up: %s", e)
+            logger.exception("Erreur wake_up")
 
     def goto_sleep(self) -> None:
         """Alias SDK officiel pour run_behavior('goto_sleep')."""
@@ -1746,4 +1778,4 @@ class ReachyMiniBackend(RobotAPI):
         try:
             self.robot.goto_sleep()
         except Exception as e:
-            logger.exception("Erreur goto_sleep: %s", e)
+            logger.exception("Erreur goto_sleep")

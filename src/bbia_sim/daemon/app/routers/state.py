@@ -4,19 +4,19 @@ import asyncio
 import logging
 import os
 from datetime import datetime, timezone
-from typing import Any, cast
+from typing import Annotated, Any, cast
 
 from fastapi import APIRouter, Depends, WebSocket, WebSocketDisconnect
 from pydantic import BaseModel
 
-from ....robot_factory import RobotFactory
-from ...models import FullState, as_any_pose
-from ...simulation_service import simulation_service
-from ..backend_adapter import (
+from bbia_sim.daemon.app.backend_adapter import (
     BackendAdapter,
     get_backend_adapter,
     ws_get_backend_adapter,
 )
+from bbia_sim.daemon.models import FullState, as_any_pose
+from bbia_sim.daemon.simulation_service import simulation_service
+from bbia_sim.robot_factory import RobotFactory
 
 logger = logging.getLogger(__name__)
 
@@ -157,7 +157,8 @@ def _read_sdk_telemetry() -> dict[str, Any] | None:
                 backend.disconnect()
             except Exception as disconnect_error:
                 logger.debug(
-                    "Erreur lors de la déconnexion du backend: %s", disconnect_error
+                    "Erreur lors de la déconnexion du backend: %s",
+                    disconnect_error,
                 )
     except (RuntimeError, AttributeError, TypeError):
         return None
@@ -220,8 +221,9 @@ async def get_full_state(
     if with_target_head_pose:
         target_pose = backend.target_head_pose
         if target_pose is None:
+            msg = "target_head_pose is None but with_target_head_pose is True"
             raise ValueError(
-                "target_head_pose is None but with_target_head_pose is True"
+                msg,
             )
         result["target_head_pose"] = as_any_pose(target_pose, use_pose_matrix)
     if with_head_joints:
@@ -292,7 +294,7 @@ async def get_position() -> dict[str, Any]:
     }
 
 
-@router.get("/battery", response_model=BatteryInfo)
+@router.get("/battery")
 async def get_battery_level() -> BatteryInfo:
     """Récupère le niveau de batterie.
 
@@ -312,7 +314,8 @@ async def get_battery_level() -> BatteryInfo:
             battery_level = float(sdk["battery"])
         except Exception as e:
             logger.debug(
-                "Erreur lors de la conversion du niveau de batterie en float: %s", e
+                "Erreur lors de la conversion du niveau de batterie en float: %s",
+                e,
             )
     status = (
         "good" if battery_level > 20 else "low" if battery_level > 10 else "critical"
@@ -349,7 +352,8 @@ async def get_temperature() -> dict[str, Any]:
             temperature_c = float(sdk["temperature"])
         except Exception as e:
             logger.debug(
-                "Erreur lors de la conversion de la température en float: %s", e
+                "Erreur lors de la conversion de la température en float: %s",
+                e,
             )
 
     return {
@@ -398,7 +402,7 @@ async def start_simulation() -> dict[str, Any]:
             "timestamp": datetime.now().isoformat(),
         }
     except Exception as e:
-        logger.exception("Erreur lors du démarrage de la simulation : %s", e)
+        logger.exception("Erreur lors du démarrage de la simulation ")
         return {
             "status": "error",
             "message": f"Erreur : {e!s}",
@@ -473,7 +477,7 @@ async def get_present_head_pose(
 
 @router.get("/present_body_yaw")
 async def get_present_body_yaw(
-    backend: BackendAdapter = Depends(get_backend_adapter),
+    backend: Annotated[BackendAdapter, Depends(get_backend_adapter)],
 ) -> dict[str, Any]:
     """Récupère le yaw actuel du corps (en radians) - conforme SDK.
 
@@ -490,7 +494,7 @@ async def get_present_body_yaw(
 
 @router.get("/present_antenna_joint_positions")
 async def get_present_antenna_joint_positions(
-    backend: BackendAdapter = Depends(get_backend_adapter),
+    backend: Annotated[BackendAdapter, Depends(get_backend_adapter)],
 ) -> dict[str, Any]:
     """Récupère les positions actuelles des antennes (en radians) - conforme SDK.
 
@@ -503,7 +507,8 @@ async def get_present_antenna_joint_positions(
     """
     pos = backend.get_present_antenna_joint_positions()
     if len(pos) != 2:
-        raise ValueError(f"Expected 2 antenna positions, got {len(pos)}")
+        msg = f"Expected 2 antenna positions, got {len(pos)}"
+        raise ValueError(msg)
     # Retourner dans format attendu par tests (antennas ou left/right)
     return {
         "antennas": [float(pos[0]), float(pos[1])],
@@ -547,7 +552,7 @@ async def ws_full_state(
 
     """
     # Auth WebSocket via query param (optionnel en dev)
-    from ...config import settings
+    from bbia_sim.daemon.config import settings
 
     if token and settings.environment.lower() == "prod":
         if token != settings.api_token:

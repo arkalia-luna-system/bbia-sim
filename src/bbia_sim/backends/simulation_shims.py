@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Shims de simulation pour robot.io et robot.media
-Garantit que ces modules sont toujours disponibles, même en simulation
+Garantit que ces modules sont toujours disponibles, même en simulation.
 """
 
 import logging
@@ -133,6 +133,7 @@ class SimulationCamera:
 
         Returns:
             None en simulation (à implémenter si nécessaire avec numpy array simulé)
+
         """
         return self.get_image()
 
@@ -185,5 +186,6 @@ class SimulationSpeaker:
 
         Args:
             file_path: Chemin vers le fichier audio
+
         """
         logger.debug("🔊 play_file() simulé (%s)", file_path)

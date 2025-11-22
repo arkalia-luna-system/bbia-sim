@@ -13,7 +13,7 @@ from typing import TYPE_CHECKING, Any
 from .base import BBIABehavior
 
 if TYPE_CHECKING:
-    from ..robot_api import RobotAPI
+    from bbia_sim.robot_api import RobotAPI
 
 logger = logging.getLogger(__name__)
 
@@ -35,6 +35,7 @@ class MeditationBehavior(BBIABehavior):
 
         Args:
             robot_api: Interface robotique pour contrôler le robot
+
         """
         super().__init__(
             name="meditation",
@@ -52,6 +53,7 @@ class MeditationBehavior(BBIABehavior):
 
         Returns:
             True si le comportement peut être exécuté
+
         """
         if not self.robot_api:
             logger.warning("MeditationBehavior: robot_api non disponible")
@@ -67,6 +69,7 @@ class MeditationBehavior(BBIABehavior):
 
         Returns:
             True si l'exécution a réussi
+
         """
         if not self.robot_api:
             return False
@@ -79,7 +82,7 @@ class MeditationBehavior(BBIABehavior):
             self._guide_meditation()
             return True
         except Exception as e:
-            logger.exception("Erreur lors de la méditation: %s", e)
+            logger.exception("Erreur lors de la méditation")
             return False
         finally:
             self.is_active = False
@@ -143,13 +146,14 @@ class MeditationBehavior(BBIABehavior):
 
         Args:
             phase: Dictionnaire avec 'text', 'emotion', 'movement', 'duration'
+
         """
         if not self.robot_api:
             return
 
         # Appliquer émotion calme
         try:
-            from ..bbia_emotions import BBIAEmotions
+            from bbia_sim.bbia_emotions import BBIAEmotions
 
             emotions_module = BBIAEmotions()
             emotions_module.set_emotion(phase.get("emotion", "calm"), intensity=0.4)
@@ -170,7 +174,7 @@ class MeditationBehavior(BBIABehavior):
         # Parler avec voix calme
         text = phase.get("text", "")
         try:
-            from ..bbia_voice import dire_texte
+            from bbia_sim.bbia_voice import dire_texte
 
             dire_texte(text, robot_api=self.robot_api)
         except ImportError:

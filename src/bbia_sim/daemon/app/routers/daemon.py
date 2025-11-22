@@ -2,11 +2,11 @@
 
 import logging
 from datetime import datetime
-from typing import Any
+from typing import Annotated, Any
 
 from fastapi import APIRouter, HTTPException, Query
 
-from ...simulation_service import simulation_service
+from bbia_sim.daemon.simulation_service import simulation_service
 
 logger = logging.getLogger(__name__)
 
@@ -38,7 +38,9 @@ class DaemonStatus:
 
 @router.post("/start")
 async def start_daemon(
-    wake_up: bool = Query(False, description="Réveiller le robot au démarrage"),
+    wake_up: Annotated[
+        bool, Query(description="Réveiller le robot au démarrage")
+    ] = False,
 ) -> dict[str, Any]:
     """Démarre le daemon et la simulation.
 
@@ -70,7 +72,7 @@ async def start_daemon(
         # Si wake_up demandé, utiliser comportement wake_up
         if wake_up:
             try:
-                from ....robot_factory import RobotFactory
+                from bbia_sim.robot_factory import RobotFactory
 
                 robot = RobotFactory.create_backend("mujoco")
                 if robot:
@@ -91,13 +93,15 @@ async def start_daemon(
     except HTTPException:
         raise
     except Exception as e:
-        logger.exception("Erreur lors du démarrage du daemon: %s", e)
+        logger.exception("Erreur lors du démarrage du daemon")
         raise HTTPException(status_code=500, detail=f"Erreur: {e!s}") from e
 
 
 @router.post("/stop")
 async def stop_daemon(
-    goto_sleep: bool = Query(False, description="Mettre le robot en veille à l'arrêt"),
+    goto_sleep: Annotated[
+        bool, Query(description="Mettre le robot en veille à l'arrêt")
+    ] = False,
 ) -> dict[str, Any]:
     """Arrête le daemon et la simulation.
 
@@ -114,7 +118,7 @@ async def stop_daemon(
     try:
         if goto_sleep:
             try:
-                from ....robot_factory import RobotFactory
+                from bbia_sim.robot_factory import RobotFactory
 
                 robot = RobotFactory.create_backend("mujoco")
                 if robot:
@@ -176,7 +180,7 @@ async def restart_daemon() -> dict[str, Any]:
     except HTTPException:
         raise
     except Exception as e:
-        logger.exception("Erreur lors du redémarrage du daemon: %s", e)
+        logger.exception("Erreur lors du redémarrage du daemon")
         raise HTTPException(status_code=500, detail=f"Erreur: {e!s}") from e
 
 
@@ -197,7 +201,7 @@ async def get_daemon_status() -> dict[str, Any]:
         )
         return status.dict()
     except Exception as e:
-        logger.exception("Erreur lors de la récupération du statut: %s", e)
+        logger.exception("Erreur lors de la récupération du statut")
         return DaemonStatus(
             status="error",
             simulation_running=False,

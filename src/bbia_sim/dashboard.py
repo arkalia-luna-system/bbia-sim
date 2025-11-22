@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """bbia_dashboard.py - Dashboard web minimal pour BBIA
-Interface web simple avec FastAPI + WebSocket pour contrôler le robot
+Interface web simple avec FastAPI + WebSocket pour contrôler le robot.
 """
 
 import asyncio
@@ -41,7 +41,7 @@ class BBIAWebSocketManager:
         self.robot: Any | None = None
         self.robot_backend = "mujoco"
 
-    async def connect(self, websocket: WebSocket):
+    async def connect(self, websocket: WebSocket) -> None:
         """Accepte une nouvelle connexion WebSocket."""
         await websocket.accept()
         self.active_connections.append(websocket)
@@ -52,7 +52,7 @@ class BBIAWebSocketManager:
         # Envoyer état initial
         await self.send_status_update()
 
-    def disconnect(self, websocket: WebSocket):
+    def disconnect(self, websocket: WebSocket) -> None:
         """Déconnecte un WebSocket."""
         if websocket in self.active_connections:
             self.active_connections.remove(websocket)
@@ -60,14 +60,14 @@ class BBIAWebSocketManager:
             f"🔌 WebSocket déconnecté ({len(self.active_connections)} connexions)",
         )
 
-    async def send_personal_message(self, message: str, websocket: WebSocket):
+    async def send_personal_message(self, message: str, websocket: WebSocket) -> None:
         """Envoie un message à un WebSocket spécifique."""
         try:
             await websocket.send_text(message)
         except Exception as e:
-            logger.exception("❌ Erreur envoi message: %s", e)
+            logger.exception("❌ Erreur envoi message")
 
-    async def broadcast(self, message: str):
+    async def broadcast(self, message: str) -> None:
         """Diffuse un message à tous les WebSockets connectés."""
         if not self.active_connections:
             return
@@ -77,14 +77,14 @@ class BBIAWebSocketManager:
             try:
                 await connection.send_text(message)
             except Exception as e:
-                logger.exception("❌ Erreur broadcast: %s", e)
+                logger.exception("❌ Erreur broadcast")
                 disconnected.append(connection)
 
         # Nettoyer les connexions fermées
         for connection in disconnected:
             self.disconnect(connection)
 
-    async def send_status_update(self):
+    async def send_status_update(self) -> None:
         """Envoie une mise à jour de statut."""
         status = {
             "type": "status",
@@ -95,7 +95,7 @@ class BBIAWebSocketManager:
         }
         await self.broadcast(json.dumps(status))
 
-    async def send_log_message(self, level: str, message: str):
+    async def send_log_message(self, level: str, message: str) -> None:
         """Envoie un message de log."""
         log_data = {
             "type": "log",
@@ -111,10 +111,7 @@ websocket_manager = BBIAWebSocketManager()
 
 # Application FastAPI
 app: FastAPI | None
-if FASTAPI_AVAILABLE:
-    app = FastAPI(title="BBIA Dashboard", version="1.3.2")
-else:
-    app = None
+app = FastAPI(title="BBIA Dashboard", version="1.3.2") if FASTAPI_AVAILABLE else None
 
 
 def create_dashboard_app() -> FastAPI | None:
@@ -334,7 +331,8 @@ DASHBOARD_HTML = """
 # Routes FastAPI
 if FASTAPI_AVAILABLE:
     if app is None:
-        raise RuntimeError("FastAPI app is None but FASTAPI_AVAILABLE is True")
+        msg = "FastAPI app is None but FASTAPI_AVAILABLE is True"
+        raise RuntimeError(msg)
 
     @app.get("/", response_class=HTMLResponse)
     async def dashboard():
@@ -352,7 +350,7 @@ if FASTAPI_AVAILABLE:
         }
 
     @app.websocket("/ws")
-    async def websocket_endpoint(websocket: WebSocket):
+    async def websocket_endpoint(websocket: WebSocket) -> None:
         """Endpoint WebSocket pour communication temps réel."""
         await websocket_manager.connect(websocket)
 
@@ -369,11 +367,11 @@ if FASTAPI_AVAILABLE:
         except WebSocketDisconnect:
             websocket_manager.disconnect(websocket)
         except Exception as e:
-            logger.exception("❌ Erreur WebSocket: %s", e)
+            logger.exception("❌ Erreur WebSocket")
             websocket_manager.disconnect(websocket)
 
 
-async def handle_robot_command(command_data: dict[str, Any]):
+async def handle_robot_command(command_data: dict[str, Any]) -> None:
     """Traite une commande robot reçue via WebSocket."""
     try:
         command_type = command_data.get("command_type")
@@ -437,11 +435,13 @@ async def handle_robot_command(command_data: dict[str, Any]):
             await websocket_manager.send_status_update()
 
     except Exception as e:
-        logger.exception("❌ Erreur commande robot: %s", e)
+        logger.exception("❌ Erreur commande robot")
         await websocket_manager.send_log_message("error", f"Erreur: {e!s}")
 
 
-def run_dashboard(host: str = "127.0.0.1", port: int = 8000, backend: str = "mujoco"):
+def run_dashboard(
+    host: str = "127.0.0.1", port: int = 8000, backend: str = "mujoco"
+) -> None:
     """Lance le dashboard BBIA.
 
     Args:

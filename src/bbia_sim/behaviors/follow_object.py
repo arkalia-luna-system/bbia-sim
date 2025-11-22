@@ -140,21 +140,9 @@ class FollowObjectBehavior(BBIABehavior):
                         if objects_detected_count % 50 == 0:  # ~5 secondes à 10 Hz
                             self._comment_on_object(selected_object)
 
-                    else:
-                        # Aucun objet sélectionnable
-                        if self.current_target:
-                            # Objet perdu
-                            if self.last_object_time:
-                                time_since_last = time.time() - self.last_object_time
-                                if time_since_last > self.object_lost_threshold:
-                                    objects_lost_count += 1
-                                    self._react_to_object_lost()
-                                    self.current_target = None
-                                    self.last_object_time = None
-
-                else:
-                    # Aucun objet détecté
-                    if self.current_target:
+                    # Aucun objet sélectionnable
+                    elif self.current_target:
+                        # Objet perdu
                         if self.last_object_time:
                             time_since_last = time.time() - self.last_object_time
                             if time_since_last > self.object_lost_threshold:
@@ -162,6 +150,16 @@ class FollowObjectBehavior(BBIABehavior):
                                 self._react_to_object_lost()
                                 self.current_target = None
                                 self.last_object_time = None
+
+                # Aucun objet détecté
+                elif self.current_target:
+                    if self.last_object_time:
+                        time_since_last = time.time() - self.last_object_time
+                        if time_since_last > self.object_lost_threshold:
+                            objects_lost_count += 1
+                            self._react_to_object_lost()
+                            self.current_target = None
+                            self.last_object_time = None
 
                 time.sleep(0.1)  # 10 Hz pour suivi fluide
 
@@ -173,7 +171,7 @@ class FollowObjectBehavior(BBIABehavior):
         except KeyboardInterrupt:
             logger.info("Suivi interrompu par l'utilisateur")
         except Exception as e:
-            logger.exception("Erreur durant suivi objet: %s", e)
+            logger.exception("Erreur durant suivi objet")
         finally:
             self.is_tracking = False
             self.current_target = None
@@ -214,7 +212,8 @@ class FollowObjectBehavior(BBIABehavior):
         for obj in objects:
             obj_name = obj.get("name", "default").lower()
             priority = self.OBJECT_PRIORITIES.get(
-                obj_name, self.OBJECT_PRIORITIES["default"]
+                obj_name,
+                self.OBJECT_PRIORITIES["default"],
             )
 
             # Si même priorité, prendre le plus proche (plus grand bbox)
@@ -222,7 +221,8 @@ class FollowObjectBehavior(BBIABehavior):
                 bbox_current = obj.get("bbox", {})
                 bbox_best = best_object.get("bbox", {})
                 size_current = bbox_current.get("width", 0) * bbox_current.get(
-                    "height", 0
+                    "height",
+                    0,
                 )
                 size_best = bbox_best.get("width", 0) * bbox_best.get("height", 0)
                 if size_current > size_best:

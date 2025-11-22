@@ -104,48 +104,42 @@
   - **Action**: ✅ CORRIGÉ - Niveau de log réduit à DEBUG en mode test
   - **Résultat**: Logs de test plus propres
 
-#### 2. Tests qui skipent au lieu de gérer gracieusement (catégorie "other": ~346 skips)
+#### 2. Tests qui skipent au lieu de gérer gracieusement (catégorie "other": 346 skips)
 
 - **Problème**: Beaucoup de tests skipent au runtime au lieu d'utiliser des mocks
 - **Action**: ⚠️ À VÉRIFIER au cas par cas
 - **Exemples**: Tests qui skipent pour des modules qui devraient être disponibles
 
-### 📊 Statistiques des Tests Skippés
-
-- **Total de skips trouvés**: ~554 occurrences dans 76 fichiers
-- **Fichiers les plus concernés**:
-  - `test_dashboard_advanced.py`: 74 skips (dépendances optionnelles)
-  - `test_dashboard.py`: 42 skips (dépendances optionnelles)
-  - `test_bbia_phase2_modules.py`: 37 skips (Hugging Face, ML)
-  - `test_daemon_bridge.py`: 34 skips (zenoh, dépendances optionnelles)
-  - `test_sdk_dependencies.py`: 16 skips (SDK Reachy optionnel)
-  - `test_ram_optimizations_validation.py`: 16 skips (optimisations RAM)
-
 ### 📝 Justifications Détaillées par Catégorie
 
 #### Tests Hardware (SKIP_HARDWARE_TESTS=1 par défaut)
+
 - **Fichiers**: `test_reachy_mini_backend.py`, `test_audio_latency_e2e.py`, `test_camera_sdk_latency_real.py`
 - **Raison**: Nécessitent robot physique ou périphériques audio réels
 - **Action requise**: Aucune - tests hardware doivent rester skippés par défaut
 - **Activation**: Définir `SKIP_HARDWARE_TESTS=0` pour activer
 
 #### Tests Audio (BBIA_DISABLE_AUDIO=1)
+
 - **Fichiers**: `test_audio_buffer_stability.py`, `test_audio_latency_e2e_loopback.py`
 - **Raison**: Nécessitent périphériques audio réels ou loopback hardware
 - **Action requise**: Aucune - fonctionnalité de désactivation intentionnelle
 
 #### Tests Vision (BBIA_DISABLE_VISION=1)
+
 - **Fichiers**: `test_vision_fps_budget.py`, `test_vision_yolo_extended.py`
 - **Raison**: Nécessitent webcam ou désactivation intentionnelle
 - **Action requise**: Aucune - fonctionnalité de désactivation intentionnelle
 
 #### Tests MediaPipe (problèmes matplotlib)
+
 - **Fichiers**: `test_ia_modules.py`
 - **Raison**: MediaPipe a des problèmes avec matplotlib dans certains environnements
 - **Action requise**: ⚠️ À RÉSOUDRE - problème d'environnement, pas de skip légitime
 - **Tests concernés**: `test_face_detector_creation`, `test_best_face_selection`
 
 #### Tests VocalTremor (audio_level)
+
 - **Fichiers**: `test_bbia_idle_animations.py`
 - **Raison**: Test `test_update_audio_level` skip - nécessite audio réel
 - **Action requise**: Vérifier si peut être mocké
@@ -153,24 +147,29 @@
 ## Recommandations
 
 ### ✅ Priorité 1: CORRIGÉ - BBIAChat
+
 BBIAChat fonctionne sans Hugging Face, donc les tests ne devraient pas skip.
 **Status**: ✅ Corrigé - 4 tests supplémentaires passent maintenant
 
 ### ✅ Priorité 2: CORRIGÉ - Erreurs de tests
+
 - ImportError append_record: ✅ Corrigé
 - KeyError 'neutral': ✅ Corrigé
 - KeyError 'blip_vqa_processor': ✅ Corrigé
 - Warnings répétitifs: ✅ Corrigé
 
 ### ⚠️ Priorité 3: À VÉRIFIER - Tests MediaPipe
+
 - **Problème**: Tests skipent à cause de problèmes matplotlib avec MediaPipe
 - **Action**: Vérifier si problème peut être résolu ou si skip est justifié
 - **Fichiers**: `test_ia_modules.py::TestFaceDetector`
 
 ### 📋 Priorité 4: Documenter les skips légitimes
+
 - **Action**: Ajouter des commentaires explicatifs pour les skips qui doivent rester
 - **Fichiers**: Tous les fichiers avec skips hardware/dépendances optionnelles
 
 ### 🔍 Priorité 5: Analyser les skips "other"
+
 - **Action**: Analyser les ~346 skips dans la catégorie "other" pour voir s'il y a des patterns récurrents à corriger
 - **Méthode**: Vérifier au cas par cas si des mocks peuvent remplacer les skips

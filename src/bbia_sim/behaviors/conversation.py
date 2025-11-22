@@ -74,7 +74,8 @@ class ConversationBehavior(BBIABehavior):
                 )
         except (ImportError, Exception) as e:
             logger.info(
-                "ℹ️  BBIAHuggingFace non disponible - Mode enrichi activé: %s", e
+                "ℹ️  BBIAHuggingFace non disponible - Mode enrichi activé: %s",
+                e,
             )
             self.hf_chat = None
 

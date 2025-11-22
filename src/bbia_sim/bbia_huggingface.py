@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """BBIA Hugging Face Integration - Module d'intégration des modèles pré-entraînés
-Intégration avancée avec Hugging Face Hub pour enrichir les capacités IA de BBIA-SIM
+Intégration avancée avec Hugging Face Hub pour enrichir les capacités IA de BBIA-SIM.
 """
 
 import logging
@@ -42,6 +42,7 @@ def _get_compiled_regex(pattern: str, flags: int = 0) -> re.Pattern[str]:
 
     Note:
         Utilise @lru_cache pour performance optimale (max 128 patterns en cache).
+
     """
     return re.compile(pattern, flags)
 
@@ -158,15 +159,19 @@ class BBIAHuggingFace:
 
         """
         if not HF_AVAILABLE:
-            raise ImportError(
+            msg = (
                 "Hugging Face transformers requis. "
-                "Installez avec: pip install transformers torch",
+                "Installez avec: pip install transformers torch"
+            )
+            raise ImportError(
+                msg,
             )
 
         self.device = self._get_device(device)
         # Issue #310: Améliorer intégration HF Hub avec cache local
         self.cache_dir = cache_dir or os.environ.get(
-            "HF_HOME", os.path.expanduser("~/.cache/huggingface")
+            "HF_HOME",
+            os.path.expanduser("~/.cache/huggingface"),
         )
         # Créer répertoire cache si nécessaire
         if self.cache_dir:
@@ -204,14 +209,14 @@ class BBIAHuggingFace:
                     )
                     BBIAHuggingFace._shared_unload_thread.start()
                     logger.debug(
-                        "✅ Thread partagé déchargement auto Hugging Face démarré"
+                        "✅ Thread partagé déchargement auto Hugging Face démarré",
                     )
 
         # Chat intelligent : Historique et contexte
         # OPTIMISATION RAM: Utiliser deque avec maxlen pour limiter l'historique
         max_history_size = 1000  # Limiter à 1000 messages max
         self.conversation_history: deque[ConversationEntry] = deque(
-            maxlen=max_history_size
+            maxlen=max_history_size,
         )
         self.context: dict[str, Any] = {}
         self.bbia_personality = "friendly_robot"
@@ -241,7 +246,8 @@ class BBIAHuggingFace:
                     for entry in saved_history[-max_history_size:]
                 ]
                 self.conversation_history = deque(
-                    conversation_entries, maxlen=max_history_size
+                    conversation_entries,
+                    maxlen=max_history_size,
                 )
                 logger.info(
                     "💾 Conversation chargée depuis mémoire (%d messages)",
@@ -327,7 +333,7 @@ class BBIAHuggingFace:
             # Initialiser BBIAChat avec robot_api stocké
             self.bbia_chat = BBIAChat(robot_api=self._bbia_chat_robot_api)
             logger.info(
-                "✅ BBIAChat (LLM conversationnel) chargé à la demande (lazy loading)"
+                "✅ BBIAChat (LLM conversationnel) chargé à la demande (lazy loading)",
             )
         except ImportError as e:
             logger.debug(f"BBIAChat non disponible: {e}")
@@ -399,7 +405,8 @@ class BBIAHuggingFace:
             # isort: on
 
             logger.info(
-                "📥 Chargement LLM %s (peut prendre 1-2 minutes)...", model_name
+                "📥 Chargement LLM %s (peut prendre 1-2 minutes)...",
+                model_name,
             )
             self.chat_tokenizer = AutoTokenizer.from_pretrained(
                 model_name,
@@ -481,7 +488,7 @@ class BBIAHuggingFace:
                 return False
             except (TypeError, KeyError, IndexError) as e:
                 logger.warning(
-                    f"⚠️ Erreur inattendue chargement SmolVLM2/Moondream2: {e}"
+                    f"⚠️ Erreur inattendue chargement SmolVLM2/Moondream2: {e}",
                 )
                 return False
         return False
@@ -500,9 +507,8 @@ class BBIAHuggingFace:
         try:
             cfg = self.model_configs.get(model_type, {})
             # nlp: autoriser les alias comme 'emotion' ou 'sentiment'
-            if model_type == "nlp":
-                if model_name in cfg:
-                    return cfg[model_name]
+            if model_type == "nlp" and model_name in cfg:
+                return cfg[model_name]
             # vision/audio/multimodal/chat: si la clé exacte existe
             if isinstance(cfg, dict) and model_name in cfg:
                 return cfg[model_name]
@@ -510,7 +516,7 @@ class BBIAHuggingFace:
             logger.debug(f"Erreur résolution nom de modèle '{model_name}': {e}")
         except Exception as e:
             logger.debug(
-                f"Erreur inattendue résolution nom de modèle '{model_name}': {e}"
+                f"Erreur inattendue résolution nom de modèle '{model_name}': {e}",
             )
         return model_name
 
@@ -665,11 +671,11 @@ class BBIAHuggingFace:
                 except (ImportError, RuntimeError, OSError, ValueError) as e:
                     logger.warning(f"⚠️  Échec chargement LLM {model_name}: {e}")
                     logger.info(
-                        "💡 Fallback activé: réponses enrichies (stratégie règles v2)"
+                        "💡 Fallback activé: réponses enrichies (stratégie règles v2)",
                     )
                 except Exception as e:
                     logger.warning(
-                        f"⚠️  Erreur inattendue chargement LLM {model_name}: {e}"
+                        f"⚠️  Erreur inattendue chargement LLM {model_name}: {e}",
                     )
                     logger.info(
                         """💡 Fallback activé: réponses enrichies """
@@ -690,11 +696,13 @@ class BBIAHuggingFace:
             return True
 
         except (ImportError, RuntimeError, OSError, ValueError, AttributeError) as e:
-            logger.exception(f"❌ Erreur chargement modèle {model_name}: {e}")
+            logger.exception("❌ Erreur chargement modèle {model_name}:")
             return False
         except Exception as e:
             logger.exception(
-                "❌ Erreur inattendue chargement modèle %s: %s", model_name, e
+                "❌ Erreur inattendue chargement modèle %s: %s",
+                model_name,
+                e,
             )
             return False
 
@@ -798,10 +806,10 @@ class BBIAHuggingFace:
             )
 
         except (ValueError, RuntimeError, AttributeError, OSError) as e:
-            logger.exception(f"❌ Erreur description image: {e}")
+            logger.exception("❌ Erreur description image:")
             return "Erreur (describe_image): échec de génération de description d'image"
         except Exception as e:
-            logger.exception(f"❌ Erreur inattendue description image: {e}")
+            logger.exception("❌ Erreur inattendue description image:")
             return "Erreur (describe_image): échec de génération de description d'image"
 
     def analyze_sentiment(
@@ -836,14 +844,16 @@ class BBIAHuggingFace:
             }
 
         except (ValueError, RuntimeError, AttributeError, KeyError) as e:
-            logger.exception(f"❌ Erreur analyse sentiment: {e}")
+            logger.exception("❌ Erreur analyse sentiment:")
             return {"error": str(e)}
         except Exception as e:
-            logger.exception(f"❌ Erreur inattendue analyse sentiment: {e}")
+            logger.exception("❌ Erreur inattendue analyse sentiment:")
             return {"error": str(e)}
 
     def analyze_emotion(
-        self, text: str, model_name: str = "emotion"
+        self,
+        text: str,
+        model_name: str = "emotion",
     ) -> SentimentResult:
         """Analyse les émotions dans un texte.
 
@@ -872,10 +882,10 @@ class BBIAHuggingFace:
             }
 
         except (ValueError, RuntimeError, AttributeError, KeyError) as e:
-            logger.exception(f"❌ Erreur analyse émotion: {e}")
+            logger.exception("❌ Erreur analyse émotion:")
             return {"error": str(e)}
         except Exception as e:
-            logger.exception(f"❌ Erreur inattendue analyse émotion: {e}")
+            logger.exception("❌ Erreur inattendue analyse émotion:")
             return {"error": str(e)}
 
     def transcribe_audio(self, audio_path: str, model_name: str = "whisper") -> str:
@@ -919,10 +929,10 @@ class BBIAHuggingFace:
             return str(transcription)
 
         except (OSError, RuntimeError, ValueError, AttributeError) as e:
-            logger.exception(f"❌ Erreur transcription audio: {e}")
+            logger.exception("❌ Erreur transcription audio:")
             return "Erreur (transcribe_audio): problème pendant la transcription audio"
         except Exception as e:
-            logger.exception(f"❌ Erreur inattendue transcription audio: {e}")
+            logger.exception("❌ Erreur inattendue transcription audio:")
             return "Erreur (transcribe_audio): problème pendant la transcription audio"
 
     def answer_question(
@@ -958,7 +968,7 @@ class BBIAHuggingFace:
             # Vérifier que les clés existent après le chargement
             if processor_key not in self.processors:
                 logger.error(
-                    f"❌ Processeur {processor_key} non disponible après chargement"
+                    f"❌ Processeur {processor_key} non disponible après chargement",
                 )
                 return "Erreur (answer_question): processeur non disponible"
             if model_key not in self.models:
@@ -975,10 +985,10 @@ class BBIAHuggingFace:
             return str(answer)
 
         except (ValueError, RuntimeError, AttributeError, OSError) as e:
-            logger.exception(f"❌ Erreur VQA: {e}")
+            logger.exception("❌ Erreur VQA:")
             return "Erreur (answer_question): échec de l'analyse visuelle (VQA)"
         except Exception as e:
-            logger.exception(f"❌ Erreur inattendue VQA: {e}")
+            logger.exception("❌ Erreur inattendue VQA:")
             return "Erreur (answer_question): échec de l'analyse visuelle (VQA)"
 
     def get_available_models(self) -> dict[str, list[str]]:
@@ -1099,7 +1109,7 @@ class BBIAHuggingFace:
                 current_time = time.time()
                 # OPTIMISATION RAM: deque avec maxlen pour limiter taille
                 models_to_unload: deque[tuple[BBIAHuggingFace, str, float]] = deque(
-                    maxlen=50
+                    maxlen=50,
                 )
 
                 # Identifier modèles inactifs pour toutes les instances actives
@@ -1112,16 +1122,20 @@ class BBIAHuggingFace:
                             if not hasattr(instance, "_model_last_used"):
                                 continue
                             model_last_used = getattr(
-                                instance, "_model_last_used", {}
-                            )  # noqa: SLF001
+                                instance,
+                                "_model_last_used",
+                                {},
+                            )
                             inactivity_timeout = getattr(
-                                instance, "_inactivity_timeout", 300.0
-                            )  # noqa: SLF001
+                                instance,
+                                "_inactivity_timeout",
+                                300.0,
+                            )
                             for model_key, last_used in list(model_last_used.items()):
                                 inactivity = current_time - last_used
                                 if inactivity > inactivity_timeout:
                                     models_to_unload.append(
-                                        (instance, model_key, inactivity)
+                                        (instance, model_key, inactivity),
                                     )
                         except (AttributeError, RuntimeError):
                             # Instance détruite, continuer
@@ -1145,8 +1159,10 @@ class BBIAHuggingFace:
                             instance.unload_model(model_name)
                             # Supprimer du tracking
                             model_last_used = getattr(
-                                instance, "_model_last_used", None
-                            )  # noqa: SLF001
+                                instance,
+                                "_model_last_used",
+                                None,
+                            )
                             if model_last_used is not None:
                                 with BBIAHuggingFace._shared_unload_thread_lock:
                                     if model_key in model_last_used:
@@ -1155,13 +1171,14 @@ class BBIAHuggingFace:
                         logger.debug(f"Erreur déchargement auto {model_key}: {e}")
                     except Exception as e:
                         logger.debug(
-                            f"Erreur inattendue déchargement auto {model_key}: {e}"
+                            f"Erreur inattendue déchargement auto {model_key}: {e}",
                         )
             except (RuntimeError, AttributeError) as e:
                 logger.debug(f"Erreur boucle déchargement auto partagée: {e}")
             except Exception as e:
                 logger.debug(
-                    "Erreur inattendue boucle déchargement auto partagée: %s", e
+                    "Erreur inattendue boucle déchargement auto partagée: %s",
+                    e,
                 )
                 # Continuer même en cas d'erreur
 
@@ -1181,7 +1198,7 @@ class BBIAHuggingFace:
                     BBIAHuggingFace._shared_unload_thread_stop.set()
                     BBIAHuggingFace._shared_unload_thread.join(timeout=2.0)
                     logger.debug(
-                        "Thread partagé déchargement auto Hugging Face arrêté (plus d'instances)"
+                        "Thread partagé déchargement auto Hugging Face arrêté (plus d'instances)",
                     )
         except (AttributeError, RuntimeError, TypeError):
             # Ignorer erreurs lors de la destruction
@@ -1230,11 +1247,11 @@ class BBIAHuggingFace:
             return True
 
         except (AttributeError, RuntimeError, KeyError) as e:
-            logger.exception(f"❌ Erreur déchargement modèle {model_name}: {e}")
+            logger.exception("❌ Erreur déchargement modèle {model_name}:")
             return False
         except Exception as e:
             logger.exception(
-                f"❌ Erreur inattendue déchargement modèle {model_name}: {e}"
+                f"❌ Erreur inattendue déchargement modèle {model_name}: {e}",
             )
             return False
 
@@ -1244,6 +1261,7 @@ class BBIAHuggingFace:
         Returns:
             dict[str, Any]: Dictionnaire contenant les informations sur les modèles,
                 incluant device, loaded_models, available_models, et cache_dir.
+
         """
         return {
             "device": self.device,
@@ -1300,7 +1318,7 @@ class BBIAHuggingFace:
                     # OPTIMISATION: Éviter double lookup avec variable temporaire
                     chat_config = self.model_configs.get("chat", {})
                     default_chat_model = chat_config.get("phi2") or chat_config.get(
-                        "tinyllama"
+                        "tinyllama",
                     )
                     if default_chat_model:
                         logger.info(
@@ -1313,7 +1331,8 @@ class BBIAHuggingFace:
                     logger.debug(f"Lazy loading LLM échoué (fallback enrichi): {e}")
                 except Exception as e:
                     logger.debug(
-                        "Lazy loading LLM échoué inattendu (fallback enrichi): %s", e
+                        "Lazy loading LLM échoué inattendu (fallback enrichi): %s",
+                        e,
                     )
 
             # 3. Générer réponse avec LLM si disponible, sinon réponses enrichies
@@ -1343,7 +1362,8 @@ class BBIAHuggingFace:
             else:
                 # Fallback vers réponses enrichies (règles + variété)
                 bbia_response = self._generate_simple_response(
-                    user_message, sentiment_dict
+                    user_message,
+                    sentiment_dict,
                 )
 
             # 3. Sauvegarder dans l'historique
@@ -1400,7 +1420,8 @@ class BBIAHuggingFace:
                         "utilisation du fallback enrichi pour salutation",
                     )
                     adapted_response = self._generate_simple_response(
-                        user_message, sentiment_dict
+                        user_message,
+                        sentiment_dict,
                     )
                     adapted_response = self._adapt_response_to_personality(
                         adapted_response,
@@ -1432,7 +1453,7 @@ class BBIAHuggingFace:
             return self._normalize_response_length(adapted_response)
 
         except Exception as e:
-            logger.exception(f"❌ Erreur chat: {e}")
+            logger.exception("❌ Erreur chat:")
             return "Je ne comprends pas bien, peux-tu reformuler ?"
 
     def _generate_llm_response(
@@ -1453,7 +1474,8 @@ class BBIAHuggingFace:
         """
         try:
             if not self.chat_model or not self.chat_tokenizer:
-                raise ValueError("LLM non chargé")
+                msg = "LLM non chargé"
+                raise ValueError(msg)
 
             # Construire prompt avec personnalité BBIA enrichie
             # AMÉLIORATION INTELLIGENCE: Prompt détaillé pour réponses naturelles
@@ -1501,7 +1523,7 @@ class BBIAHuggingFace:
                 # Derniers 2 échanges pour contexte
                 # OPTIMISATION: Convertir deque en list pour slicing et utiliser list comprehension
                 recent_history: list[ConversationEntry] = list(
-                    self.conversation_history
+                    self.conversation_history,
                 )[-2:]
                 # OPTIMISATION: List comprehension plus efficace que append() en boucle
                 # Note: extend() avec list flatten pour éviter erreur type mypy
@@ -1576,7 +1598,8 @@ class BBIAHuggingFace:
             return self._generate_simple_response(user_message, sentiment_dict)
         except Exception as e:
             logger.warning(
-                "⚠️  Erreur inattendue génération LLM, fallback enrichi: %s", e
+                "⚠️  Erreur inattendue génération LLM, fallback enrichi: %s",
+                e,
             )
             # Fallback vers réponses enrichies
             try:
@@ -1846,7 +1869,9 @@ class BBIAHuggingFace:
 
                     except (AttributeError, RuntimeError, ValueError, KeyError) as e:
                         logger.exception(
-                            "❌ Erreur exécution outil '%s': %s", tool_name, e
+                            "❌ Erreur exécution outil '%s': %s",
+                            tool_name,
+                            e,
                         )
                         return f"❌ Erreur lors de l'exécution: {e}"
                     except Exception as e:
@@ -1959,7 +1984,8 @@ class BBIAHuggingFace:
             return None
         except Exception as e:
             logger.debug(
-                "ℹ️ Erreur inattendue NLP détection (fallback mots-clés): %s", e
+                "ℹ️ Erreur inattendue NLP détection (fallback mots-clés): %s",
+                e,
             )
             return None
 
@@ -2103,11 +2129,13 @@ class BBIAHuggingFace:
             return f"⚠️ {error_detail}"
 
         except (AttributeError, RuntimeError, ValueError, KeyError) as e:
-            logger.exception(f"❌ Erreur exécution outil '{tool_name}': {e}")
+            logger.exception("❌ Erreur exécution outil '{tool_name}':")
             return f"❌ Erreur lors de l'exécution: {e}"
         except Exception as e:
             logger.exception(
-                "❌ Erreur inattendue exécution outil '%s': %s", tool_name, e
+                "❌ Erreur inattendue exécution outil '%s': %s",
+                tool_name,
+                e,
             )
             return f"❌ Erreur lors de l'exécution: {e}"
 
@@ -2132,8 +2160,7 @@ class BBIAHuggingFace:
             message_lower,
         )
         if match_deg:
-            angle_deg = float(match_deg.group(1))
-            return angle_deg
+            return float(match_deg.group(1))
 
         # Pattern 2: "X radians" ou "pi/X radians" (OPTIMISATION: regex compilée)
         pattern_rad = r"(?:(\d+(?:\.\d+)?)|pi\s*/\s*(\d+(?:\.\d+)?))\s*(?:radians?)"
@@ -2326,9 +2353,7 @@ class BBIAHuggingFace:
                 ).strip()
 
         # 8) Éviter répétitions récentes dans l'historique
-        result = self._avoid_recent_duplicates(result)
-
-        return result
+        return self._avoid_recent_duplicates(result)
 
     def _avoid_recent_duplicates(self, text: str) -> str:
         """Évite les duplications exactes avec les dernières réponses BBIA.
@@ -2837,7 +2862,8 @@ class BBIAHuggingFace:
                     t = self._avoid_recent_duplicates(t)
                 except Exception as e:
                     logger.debug(
-                        "Erreur lors de l'évitement des doublons récents: %s", e
+                        "Erreur lors de l'évitement des doublons récents: %s",
+                        e,
                     )
                 return t
 
@@ -2849,7 +2875,8 @@ class BBIAHuggingFace:
                     t2 = self._avoid_recent_duplicates(t2)
                 except Exception as e:
                     logger.debug(
-                        "Erreur lors de l'évitement des doublons récents (t2): %s", e
+                        "Erreur lors de l'évitement des doublons récents (t2): %s",
+                        e,
                     )
                 return t2
             last_space = cut.rfind(" ")
@@ -2859,7 +2886,8 @@ class BBIAHuggingFace:
                     t3 = self._avoid_recent_duplicates(t3)
                 except Exception as e:
                     logger.debug(
-                        "Erreur lors de l'évitement des doublons récents (t3): %s", e
+                        "Erreur lors de l'évitement des doublons récents (t3): %s",
+                        e,
                     )
                 return t3
             t4 = (t[:max_len] + "...").strip()
@@ -2867,7 +2895,8 @@ class BBIAHuggingFace:
                 t4 = self._avoid_recent_duplicates(t4)
             except Exception as e:
                 logger.debug(
-                    "Erreur lors de l'évitement des doublons récents (t4): %s", e
+                    "Erreur lors de l'évitement des doublons récents (t4): %s",
+                    e,
                 )
             return t4
         except (ValueError, RuntimeError, TypeError):
@@ -2992,7 +3021,7 @@ def main() -> None:
     # Informations
     logging.info(f"\n📊 Informations: {hf.get_model_info()}")
     logging.info(
-        f"\n📝 Historique conversation: {len(hf.conversation_history)} messages"
+        f"\n📝 Historique conversation: {len(hf.conversation_history)} messages",
     )
 
 

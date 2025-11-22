@@ -10,7 +10,7 @@ from typing import Any
 
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 
-from ..simulation_service import simulation_service
+from bbia_sim.daemon.simulation_service import simulation_service
 
 logger = logging.getLogger(__name__)
 
@@ -70,7 +70,7 @@ class ConnectionManager:
             try:
                 await connection.send_text(message)
             except Exception as e:
-                logger.exception("Erreur de diffusion : %s", e)
+                logger.exception("Erreur de diffusion ")
                 disconnected.append(connection)
 
         # Nettoyage des connexions fermées
@@ -117,7 +117,7 @@ class ConnectionManager:
             except asyncio.CancelledError:
                 break
             except Exception as e:
-                logger.exception("Erreur dans la boucle de diffusion : %s", e)
+                logger.exception("Erreur dans la boucle de diffusion ")
                 await asyncio.sleep(1)
 
     def _generate_telemetry_data(self) -> dict[str, Any]:
@@ -261,7 +261,7 @@ async def websocket_endpoint(websocket: WebSocket) -> None:
             except json.JSONDecodeError:
                 logger.warning("Message JSON invalide reçu")
             except Exception as e:
-                logger.exception("Erreur de traitement de message : %s", e)
+                logger.exception("Erreur de traitement de message ")
                 break
 
     except WebSocketDisconnect:

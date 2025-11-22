@@ -10,9 +10,9 @@ import numpy as np
 import numpy.typing as npt
 from fastapi import HTTPException, WebSocket  # type: ignore[import-untyped]
 
-from ...robot_api import RobotAPI
-from ...robot_factory import RobotFactory
-from ...utils.types import RobotStatus
+from bbia_sim.robot_api import RobotAPI
+from bbia_sim.robot_factory import RobotFactory
+from bbia_sim.utils.types import RobotStatus
 
 logger = logging.getLogger(__name__)
 
@@ -121,8 +121,7 @@ class BackendAdapter:
         self.connect_if_needed()
 
         if hasattr(self._robot, "get_motor_control_mode"):
-            mode = self._robot.get_motor_control_mode()
-            return mode
+            return self._robot.get_motor_control_mode()
 
         # Créer un mock MotorControlMode simple
         class SimpleMotorControlMode:
@@ -316,8 +315,9 @@ class BackendAdapter:
 
         """
         if duration <= 0.0:
+            msg = "Duration must be positive and non-zero. Use set_target() for immediate position setting."
             raise ValueError(
-                "Duration must be positive and non-zero. Use set_target() for immediate position setting.",
+                msg,
             )
 
         self.connect_if_needed()
@@ -404,7 +404,9 @@ class BackendAdapter:
             # Si play_move est async dans le SDK
             if hasattr(self._robot.play_move, "__await__"):
                 await self._robot.play_move(
-                    move, play_frequency=100.0, initial_goto_duration=0.0
+                    move,
+                    play_frequency=100.0,
+                    initial_goto_duration=0.0,
                 )
             else:
                 # Si sync, exécuter dans thread
@@ -512,8 +514,9 @@ class BackendAdapter:
         ):
             joints = self._robot.robot.head_kinematics.ik(pose, body_yaw=body_yaw)
             if joints is None or np.any(np.isnan(joints)):
+                msg = "WARNING: Collision detected or head pose not achievable!"
                 raise ValueError(
-                    "WARNING: Collision detected or head pose not achievable!",
+                    msg,
                 )
             # Conforme SDK: mettre à jour directement target_head_joint_positions
             self.target_head_joint_positions = joints

@@ -25,13 +25,13 @@ except ImportError:
     PROMETHEUS_AVAILABLE = False
     REGISTRY = None  # type: ignore[assignment, misc]
 
-from ...simulation_service import simulation_service
+from bbia_sim.daemon.simulation_service import simulation_service
 
 logger = logging.getLogger(__name__)
 
 # Import ConnectionManager pour métriques connexions actives
 try:
-    from ...ws.telemetry import manager as telemetry_manager
+    from bbia_sim.daemon.ws.telemetry import manager as telemetry_manager
 
     TELEMETRY_MANAGER_AVAILABLE = True
 except ImportError:
@@ -48,10 +48,12 @@ if PROMETHEUS_AVAILABLE and REGISTRY:
         """Crée une métrique seulement si elle n'existe pas déjà."""
         # Chercher si la métrique existe déjà
         collector_to_names = getattr(
-            REGISTRY, "_collector_to_names", {}
-        )  # noqa: SLF001
+            REGISTRY,
+            "_collector_to_names",
+            {},
+        )
         for collector in list(collector_to_names.keys()):
-            collector_name = getattr(collector, "_name", None)  # noqa: SLF001
+            collector_name = getattr(collector, "_name", None)
             if collector_name == name:
                 return collector
         # Créer la métrique si elle n'existe pas
@@ -72,16 +74,24 @@ if PROMETHEUS_AVAILABLE and REGISTRY:
             buckets=[0.01, 0.05, 0.1, 0.5, 1.0, 5.0],
         )
         cpu_usage = _get_or_create_metric(
-            Gauge, "bbia_cpu_usage_percent", "CPU usage percentage"
+            Gauge,
+            "bbia_cpu_usage_percent",
+            "CPU usage percentage",
         )
         memory_usage = _get_or_create_metric(
-            Gauge, "bbia_memory_usage_bytes", "Memory usage in bytes"
+            Gauge,
+            "bbia_memory_usage_bytes",
+            "Memory usage in bytes",
         )
         simulation_fps = _get_or_create_metric(
-            Gauge, "bbia_simulation_fps", "Simulation FPS"
+            Gauge,
+            "bbia_simulation_fps",
+            "Simulation FPS",
         )
         active_connections = _get_or_create_metric(
-            Gauge, "bbia_active_connections", "Active WebSocket connections"
+            Gauge,
+            "bbia_active_connections",
+            "Active WebSocket connections",
         )
     except (ValueError, KeyError) as e:
         # Si erreur de duplication, réutiliser les métriques existantes
@@ -94,10 +104,12 @@ if PROMETHEUS_AVAILABLE and REGISTRY:
         simulation_fps = None
         active_connections = None
         collector_to_names = getattr(
-            REGISTRY, "_collector_to_names", {}
-        )  # noqa: SLF001
+            REGISTRY,
+            "_collector_to_names",
+            {},
+        )
         for collector in list(collector_to_names.keys()):
-            name = getattr(collector, "_name", None)  # noqa: SLF001
+            name = getattr(collector, "_name", None)
             if name is not None:
                 if name == "bbia_requests_total":
                     request_count = collector
@@ -214,6 +226,7 @@ async def get_performance_metrics() -> dict[str, Any]:
 
     Returns:
         Métriques de performance avec percentiles
+
     """
     # Calculer percentiles depuis historique
     percentiles = _calculate_percentiles(_latency_history)
@@ -304,7 +317,7 @@ async def readyz() -> dict[str, Any]:
             },
         }
     except Exception as e:
-        logger.exception("Erreur readiness check: %s", e)
+        logger.exception("Erreur readiness check")
         return {
             "status": "not_ready",
             "timestamp": time.time(),
@@ -352,7 +365,7 @@ async def health() -> dict[str, Any]:
             "system": system_info,
         }
     except Exception as e:
-        logger.exception("Erreur health check: %s", e)
+        logger.exception("Erreur health check")
         return {
             "status": "unhealthy",
             "timestamp": time.time(),

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """bbia_voice_whisper.py - Module Whisper STT pour BBIA
-Intégration Speech-to-Text avec OpenAI Whisper (optionnel)
+Intégration Speech-to-Text avec OpenAI Whisper (optionnel).
 """
 
 import logging
@@ -10,9 +10,10 @@ import threading
 import time
 from collections import deque
 from pathlib import Path
-from typing import Any, cast
+from typing import TYPE_CHECKING, Any, cast
 
-import numpy.typing as npt
+if TYPE_CHECKING:
+    import numpy.typing as npt
 
 # Déclarer whisper comme Any dès le début pour éviter conflit de types
 whisper: Any
@@ -66,7 +67,7 @@ class WhisperSTT:
         model_size: str = "tiny",
         language: str = "fr",
         enable_vad: bool = True,
-    ):
+    ) -> None:
         """Initialise le module Whisper STT.
 
         Args:
@@ -118,7 +119,7 @@ class WhisperSTT:
                     oldest_key = min(
                         _whisper_model_last_used.items(),
                         key=operator.itemgetter(
-                            1
+                            1,
                         ),  # OPTIMISATION: plus rapide que lambda
                     )[0]
                     del _whisper_models_cache[oldest_key]
@@ -146,10 +147,10 @@ class WhisperSTT:
             return True
 
         except (ImportError, RuntimeError, OSError, ValueError) as e:
-            logger.exception("❌ Erreur chargement Whisper: %s", e)
+            logger.exception("❌ Erreur chargement Whisper")
             return False
         except Exception as e:
-            logger.exception("❌ Erreur inattendue chargement Whisper: %s", e)
+            logger.exception("❌ Erreur inattendue chargement Whisper")
             return False
 
     def transcribe_audio(self, audio_path: str) -> str | None:
@@ -168,10 +169,9 @@ class WhisperSTT:
             return None
 
         # Charger le modèle si nécessaire
-        if not self.is_loaded:
-            if not self.load_model():
-                logger.error("❌ Impossible de charger le modèle Whisper")
-                return None
+        if not self.is_loaded and not self.load_model():
+            logger.error("❌ Impossible de charger le modèle Whisper")
+            return None
 
         try:
             logger.info("🎵 Transcription audio: %s", audio_path)
@@ -200,10 +200,10 @@ class WhisperSTT:
             return text
 
         except (RuntimeError, ValueError, OSError, AttributeError) as e:
-            logger.exception("❌ Erreur transcription: %s", e)
+            logger.exception("❌ Erreur transcription")
             return None
         except Exception as e:
-            logger.exception("❌ Erreur inattendue transcription: %s", e)
+            logger.exception("❌ Erreur inattendue transcription")
             return None
 
     def transcribe_microphone(self, duration: float = 3.0) -> str | None:
@@ -258,8 +258,7 @@ class WhisperSTT:
                 sf.write(temp_file, audio_data, sample_rate)
 
                 # Transcription
-                result = self.transcribe_audio(str(temp_file))
-                return result
+                return self.transcribe_audio(str(temp_file))
             finally:
                 # OPTIMISATION: Nettoyage garanti même en cas d'erreur
                 if temp_file.exists():
@@ -274,7 +273,7 @@ class WhisperSTT:
             )
             return None
         except Exception as e:
-            logger.exception("❌ Erreur enregistrement microphone: %s", e)
+            logger.exception("❌ Erreur enregistrement microphone")
             return None
 
     def detect_speech_activity(self, audio_chunk: Any) -> bool:
@@ -327,7 +326,8 @@ class WhisperSTT:
                     logger.info("✅ Modèle VAD chargé")
                 except Exception as e:
                     logger.warning(
-                        "⚠️ Impossible de charger VAD, fallback activé: %s", e
+                        "⚠️ Impossible de charger VAD, fallback activé: %s",
+                        e,
                     )
                     self.enable_vad = False
                     return True  # Fallback: considérer comme parole
@@ -475,8 +475,7 @@ class WhisperSTT:
                 sf.write(temp_file, audio_data, sample_rate)
 
                 # Transcription
-                result = self.transcribe_audio(str(temp_file))
-                return result
+                return self.transcribe_audio(str(temp_file))
             finally:
                 # Nettoyage
                 if temp_file.exists():
@@ -491,7 +490,7 @@ class WhisperSTT:
             )
             return None
         except Exception as e:
-            logger.exception("❌ Erreur enregistrement microphone avec VAD: %s", e)
+            logger.exception("❌ Erreur enregistrement microphone avec VAD")
             return None
 
     def transcribe_streaming(
@@ -526,10 +525,9 @@ class WhisperSTT:
             return None
 
         # Charger modèle si nécessaire
-        if not self.is_loaded:
-            if not self.load_model():
-                logger.error("❌ Impossible de charger le modèle Whisper")
-                return None
+        if not self.is_loaded and not self.load_model():
+            logger.error("❌ Impossible de charger le modèle Whisper")
+            return None
 
         try:
             import tempfile
@@ -549,7 +547,7 @@ class WhisperSTT:
             # OPTIMISATION RAM: Limiter taille buffer avec deque
             buffer_max_chunks = 10  # Max 10 chunks (limite sécurité)
             audio_buffer: deque[npt.NDArray[np.float32]] = deque(
-                maxlen=buffer_max_chunks
+                maxlen=buffer_max_chunks,
             )
 
             # OPTIMISATION PERFORMANCE: Throttling transcription pour éviter surcharge CPU/GPU
@@ -580,7 +578,8 @@ class WhisperSTT:
                     else:
                         consecutive_silence_chunks += 1
                         logger.debug(
-                            "🔇 Silence: %s chunks", consecutive_silence_chunks
+                            "🔇 Silence: %s chunks",
+                            consecutive_silence_chunks,
                         )
                         # Ne pas transcrire si silence prolongé
                         if consecutive_silence_chunks >= max_silence_chunks:
@@ -693,7 +692,7 @@ class WhisperSTT:
             logger.exception("❌ sounddevice/soundfile requis pour streaming")
             return None
         except Exception as e:
-            logger.exception("❌ Erreur streaming: %s", e)
+            logger.exception("❌ Erreur streaming")
             return None
 
 
@@ -724,7 +723,8 @@ class VoiceCommandMapper:
         }
 
         logger.info(
-            "🗣️ Mappeur de commandes initialisé (%d commandes)", len(self.commands)
+            "🗣️ Mappeur de commandes initialisé (%d commandes)",
+            len(self.commands),
         )
 
     def map_command(self, text: str) -> dict[str, Any] | None:

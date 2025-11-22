@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """BBIA Advanced Dashboard - Interface de contrôle sophistiquée
-Dashboard web avancé avec métriques temps réel, visualisation 3D, et contrôle complet
+Dashboard web avancé avec métriques temps réel, visualisation 3D, et contrôle complet.
 """
 
 import asyncio
@@ -8,9 +8,8 @@ import json
 import logging
 import time
 from collections import deque
-from collections.abc import Callable
 from datetime import datetime
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 try:
     import uvicorn  # type: ignore[import-untyped]
@@ -39,6 +38,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 # BBIAVoice n'existe pas encore - utiliser les fonctions directement
+import contextlib
+
 from bbia_sim.bbia_behavior import BBIABehaviorManager
 from bbia_sim.bbia_emotions import BBIAEmotions
 from bbia_sim.bbia_vision import BBIAVision
@@ -50,6 +51,9 @@ from bbia_sim.troubleshooting import (
     test_camera,
     test_network_ping,
 )
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 logger = logging.getLogger(__name__)
 
@@ -133,10 +137,10 @@ class BBIAAdvancedWebSocketManager:
         # Initialiser le robot automatiquement au démarrage
         self._initialize_robot_async()
 
-    def _initialize_robot_async(self):
+    def _initialize_robot_async(self) -> None:
         """Initialise le robot de manière asynchrone."""
 
-        def init_robot():
+        def init_robot() -> None:
             with self._robot_init_lock:
                 try:
                     if not self.robot:
@@ -172,15 +176,15 @@ class BBIAAdvancedWebSocketManager:
                     ImportError,
                     OSError,
                 ) as e:
-                    logger.exception("❌ Erreur initialisation robot: %s", e)
+                    logger.exception("❌ Erreur initialisation robot")
                     # En cas d'erreur, le dashboard fonctionne quand même en mode simulation
                     logger.info(
-                        "ℹ️ Dashboard fonctionne en mode simulation (sans robot réel)"
+                        "ℹ️ Dashboard fonctionne en mode simulation (sans robot réel)",
                     )
                 except Exception as e:
-                    logger.exception("❌ Erreur inattendue initialisation robot: %s", e)
+                    logger.exception("❌ Erreur inattendue initialisation robot")
                     logger.info(
-                        "ℹ️ Dashboard fonctionne en mode simulation (sans robot réel)"
+                        "ℹ️ Dashboard fonctionne en mode simulation (sans robot réel)",
                     )
 
         # Démarrer dans un thread pour ne pas bloquer
@@ -189,7 +193,7 @@ class BBIAAdvancedWebSocketManager:
         thread = threading.Thread(target=init_robot, daemon=True)
         thread.start()
 
-    async def connect(self, websocket: WebSocket):
+    async def connect(self, websocket: WebSocket) -> None:
         """Accepte une nouvelle connexion WebSocket."""
         await websocket.accept()
         self.active_connections.append(websocket)
@@ -209,7 +213,7 @@ class BBIAAdvancedWebSocketManager:
         # S'assurer que le robot est initialisé - FORCER l'initialisation
         if not self.robot:
             logger.warning(
-                "⚠️ Robot non initialisé lors de la connexion WebSocket - initialisation forcée"
+                "⚠️ Robot non initialisé lors de la connexion WebSocket - initialisation forcée",
             )
             try:
                 self.robot = RobotFactory.create_backend(self.robot_backend)
@@ -218,11 +222,13 @@ class BBIAAdvancedWebSocketManager:
                     if connected:
                         logger.info("✅ Robot %s connecté (forcé)", self.robot_backend)
                         await self.send_log_message(
-                            "info", f"✅ Robot {self.robot_backend} connecté"
+                            "info",
+                            f"✅ Robot {self.robot_backend} connecté",
                         )
                     else:
                         logger.warning(
-                            "⚠️ Robot %s connect() a retourné False", self.robot_backend
+                            "⚠️ Robot %s connect() a retourné False",
+                            self.robot_backend,
                         )
                         await self.send_log_message(
                             "warning",
@@ -234,14 +240,16 @@ class BBIAAdvancedWebSocketManager:
                         self.robot_backend,
                     )
                     await self.send_log_message(
-                        "error", f"❌ Impossible de créer le robot {self.robot_backend}"
+                        "error",
+                        f"❌ Impossible de créer le robot {self.robot_backend}",
                     )
             except (ValueError, AttributeError, RuntimeError, ImportError) as e:
-                logger.exception("❌ Erreur initialisation robot forcée: %s", e)
+                logger.exception("❌ Erreur initialisation robot forcée")
                 await self.send_log_message("error", f"❌ Erreur robot: {e}")
             except Exception as e:
                 logger.exception(
-                    "❌ Erreur inattendue initialisation robot forcée: %s", e
+                    "❌ Erreur inattendue initialisation robot forcée: %s",
+                    e,
                 )
                 await self.send_log_message("error", f"❌ Erreur robot: {e}")
 
@@ -254,7 +262,7 @@ class BBIAAdvancedWebSocketManager:
             )
             if not self.robot.is_connected:
                 logger.warning(
-                    "⚠️ Robot présent mais is_connected=False - reconnexion..."
+                    "⚠️ Robot présent mais is_connected=False - reconnexion...",
                 )
                 self.robot.connect()
         else:
@@ -263,7 +271,7 @@ class BBIAAdvancedWebSocketManager:
         # Envoyer état initial complet
         await self.send_complete_status()
 
-    async def disconnect(self, websocket: WebSocket):
+    async def disconnect(self, websocket: WebSocket) -> None:
         """Déconnecte un WebSocket."""
         if websocket in self.active_connections:
             self.active_connections.remove(websocket)
@@ -282,10 +290,8 @@ class BBIAAdvancedWebSocketManager:
             # OPTIMISATION STREAMING: Arrêter le processeur de batch
             if self._batch_task and not self._batch_task.done():
                 self._batch_task.cancel()
-                try:
+                with contextlib.suppress(asyncio.CancelledError):
                     await self._batch_task
-                except asyncio.CancelledError:
-                    pass
                 self._batch_task = None
 
     async def _cleanup_inactive_connections(self) -> None:
@@ -306,7 +312,8 @@ class BBIAAdvancedWebSocketManager:
                 if connection in self.active_connections:
                     await self.disconnect(connection)
                     logger.debug(
-                        "🗑️ Connexion WebSocket inactive fermée (%.0fs)", inactivity
+                        "🗑️ Connexion WebSocket inactive fermée (%.0fs)",
+                        inactivity,
                     )
             except (
                 ConnectionError,
@@ -363,7 +370,7 @@ class BBIAAdvancedWebSocketManager:
             await self.broadcast(json.dumps(heartbeat_data))
             self._last_heartbeat = current_time
 
-    async def broadcast(self, message: str, use_batch: bool = False):
+    async def broadcast(self, message: str, use_batch: bool = False) -> None:
         """Diffuse un message à toutes les connexions actives."""
         if not self.active_connections:
             return
@@ -401,7 +408,7 @@ class BBIAAdvancedWebSocketManager:
         # OPTIMISATION STREAMING: Envoyer heartbeat si nécessaire
         await self._send_heartbeat()
 
-    async def send_complete_status(self):
+    async def send_complete_status(self) -> None:
         """Envoie le statut complet du système."""
         status_data = {
             "type": "complete_status",
@@ -440,7 +447,7 @@ class BBIAAdvancedWebSocketManager:
 
         await self.broadcast(json.dumps(status_data))
 
-    async def send_metrics_update(self):
+    async def send_metrics_update(self) -> None:
         """Envoie une mise à jour des métriques."""
         metrics_data = {
             "type": "metrics_update",
@@ -451,7 +458,7 @@ class BBIAAdvancedWebSocketManager:
         # OPTIMISATION STREAMING: Utiliser batching pour métriques
         await self.broadcast(json.dumps(metrics_data), use_batch=True)
 
-    async def send_log_message(self, level: str, message: str):
+    async def send_log_message(self, level: str, message: str) -> None:
         """Envoie un message de log."""
         log_data = {
             "type": "log",
@@ -492,12 +499,14 @@ class BBIAAdvancedWebSocketManager:
             except Exception as e:  # noqa: BLE001 - Fallback pour erreurs inattendues
                 # Gérer erreurs inattendues
                 logger.debug(
-                    "Erreur inattendue lecture position joint %s: %s", joint, e
+                    "Erreur inattendue lecture position joint %s: %s",
+                    joint,
+                    e,
                 )
                 pose[joint] = 0.0
         return pose
 
-    def _start_metrics_collection(self):
+    def _start_metrics_collection(self) -> None:
         """Démarre la collecte automatique de métriques."""
         # OPTIMISATION RAM: Vérifier si task existe déjà et est active
         if self._metrics_task is not None and not self._metrics_task.done():
@@ -509,7 +518,7 @@ class BBIAAdvancedWebSocketManager:
 
         self._stop_metrics = False
 
-        async def collect_metrics():
+        async def collect_metrics() -> None:
             while not self._stop_metrics:
                 try:
                     # FAIRE AVANCER LA SIMULATION MuJoCo si robot connecté
@@ -539,13 +548,11 @@ class BBIAAdvancedWebSocketManager:
                     break
                 except (AttributeError, RuntimeError, ValueError) as e:
                     if not self._stop_metrics:
-                        logger.exception("Erreur collecte métriques: %s", e)
+                        logger.exception("Erreur collecte métriques")
                     await asyncio.sleep(1.0)
-                except (
-                    Exception
-                ) as e:  # noqa: BLE001 - Fallback pour erreurs inattendues
+                except Exception as e:
                     if not self._stop_metrics:
-                        logger.exception("Erreur inattendue collecte métriques: %s", e)
+                        logger.exception("Erreur inattendue collecte métriques")
                     await asyncio.sleep(1.0)
 
         # Démarrer la tâche en arrière-plan
@@ -558,14 +565,14 @@ class BBIAAdvancedWebSocketManager:
             asyncio.set_event_loop(loop)
             self._metrics_task = loop.create_task(collect_metrics())
 
-    def _stop_metrics_collection(self):
+    def _stop_metrics_collection(self) -> None:
         """Arrête la collecte de métriques."""
         self._stop_metrics = True
         if self._metrics_task and not self._metrics_task.done():
             self._metrics_task.cancel()
             self._metrics_task = None
 
-    def _update_metrics(self):
+    def _update_metrics(self) -> None:
         """Met à jour les métriques actuelles."""
         current_time = time.time()
 
@@ -2945,7 +2952,8 @@ ADVANCED_DASHBOARD_HTML = """
 # Routes FastAPI avancées
 if FASTAPI_AVAILABLE:
     if app is None:
-        raise RuntimeError("FastAPI app is None but FASTAPI_AVAILABLE is True")
+        msg = "FastAPI app is None but FASTAPI_AVAILABLE is True"
+        raise RuntimeError(msg)
 
     @app.get("/", response_class=HTMLResponse)
     async def advanced_dashboard():
@@ -3021,10 +3029,10 @@ if FASTAPI_AVAILABLE:
 
             return {"success": False, "error": "Robot not connected"}
         except (ValueError, AttributeError, RuntimeError, KeyError) as e:
-            logger.exception("Erreur set_emotion: %s", e)
+            logger.exception("Erreur set_emotion")
             return {"success": False, "error": str(e)}
         except Exception as e:
-            logger.exception("Erreur inattendue set_emotion: %s", e)
+            logger.exception("Erreur inattendue set_emotion")
             return {"success": False, "error": str(e)}
 
     @app.post("/api/joint")
@@ -3040,7 +3048,8 @@ if FASTAPI_AVAILABLE:
 
             if advanced_websocket_manager.robot:
                 success = advanced_websocket_manager.robot.set_joint_pos(
-                    joint, position
+                    joint,
+                    position,
                 )
                 if success:
                     await advanced_websocket_manager.send_log_message(
@@ -3058,10 +3067,10 @@ if FASTAPI_AVAILABLE:
         except HTTPException:
             raise
         except (ValueError, AttributeError, RuntimeError, KeyError, IndexError) as e:
-            logger.exception("Erreur set_joint_position: %s", e)
+            logger.exception("Erreur set_joint_position")
             return {"success": False, "error": str(e)}
         except Exception as e:
-            logger.exception("Erreur inattendue set_joint_position: %s", e)
+            logger.exception("Erreur inattendue set_joint_position")
             return {"success": False, "error": str(e)}
 
     @app.get("/healthz")
@@ -3083,10 +3092,10 @@ if FASTAPI_AVAILABLE:
             results = check_all()
             return {"success": True, "results": results}
         except (OSError, RuntimeError, AttributeError, ImportError) as e:
-            logger.exception("Erreur troubleshooting check: %s", e)
+            logger.exception("Erreur troubleshooting check")
             return {"success": False, "error": str(e)}
         except Exception as e:
-            logger.exception("Erreur inattendue troubleshooting check: %s", e)
+            logger.exception("Erreur inattendue troubleshooting check")
             return {"success": False, "error": str(e)}
 
     @app.post("/api/troubleshooting/test/camera")
@@ -3096,10 +3105,10 @@ if FASTAPI_AVAILABLE:
             result = test_camera()
             return {"success": True, "result": result}
         except (OSError, RuntimeError, AttributeError, ImportError) as e:
-            logger.exception("Erreur test caméra: %s", e)
+            logger.exception("Erreur test caméra")
             return {"success": False, "error": str(e)}
         except Exception as e:
-            logger.exception("Erreur inattendue test caméra: %s", e)
+            logger.exception("Erreur inattendue test caméra")
             return {"success": False, "error": str(e)}
 
     @app.post("/api/troubleshooting/test/audio")
@@ -3109,10 +3118,10 @@ if FASTAPI_AVAILABLE:
             result = test_audio()
             return {"success": True, "result": result}
         except (OSError, RuntimeError, AttributeError, ImportError) as e:
-            logger.exception("Erreur test audio: %s", e)
+            logger.exception("Erreur test audio")
             return {"success": False, "error": str(e)}
         except Exception as e:
-            logger.exception("Erreur inattendue test audio: %s", e)
+            logger.exception("Erreur inattendue test audio")
             return {"success": False, "error": str(e)}
 
     @app.post("/api/troubleshooting/test/network")
@@ -3128,10 +3137,10 @@ if FASTAPI_AVAILABLE:
             ConnectionError,
             TimeoutError,
         ) as e:
-            logger.exception("Erreur test réseau: %s", e)
+            logger.exception("Erreur test réseau")
             return {"success": False, "error": str(e)}
         except Exception as e:
-            logger.exception("Erreur inattendue test réseau: %s", e)
+            logger.exception("Erreur inattendue test réseau")
             return {"success": False, "error": str(e)}
 
     @app.get("/api/troubleshooting/docs")
@@ -3146,10 +3155,10 @@ if FASTAPI_AVAILABLE:
             }
             return {"success": True, "links": links_with_urls}
         except (KeyError, AttributeError, RuntimeError) as e:
-            logger.exception("Erreur récupération docs: %s", e)
+            logger.exception("Erreur récupération docs")
             return {"success": False, "error": str(e)}
         except Exception as e:
-            logger.exception("Erreur inattendue récupération docs: %s", e)
+            logger.exception("Erreur inattendue récupération docs")
             return {"success": False, "error": str(e)}
 
     @app.get("/api/docs/view")
@@ -3175,7 +3184,7 @@ if FASTAPI_AVAILABLE:
 
             # Vérifier que le fichier existe et est dans le dossier docs
             if not full_path.exists() or not str(full_path).startswith(
-                str(project_root / "docs")
+                str(project_root / "docs"),
             ):
                 raise HTTPException(status_code=404, detail="Fichier non trouvé")
 
@@ -3246,9 +3255,10 @@ if FASTAPI_AVAILABLE:
         except HTTPException:
             raise
         except Exception as e:
-            logger.exception("Erreur lecture documentation %s: %s", path, e)
+            logger.exception("Erreur lecture documentation %s:", path)
             raise HTTPException(
-                status_code=500, detail=f"Erreur lecture fichier: {e}"
+                status_code=500,
+                detail=f"Erreur lecture fichier: {e}",
             ) from e
 
     @app.get("/api/camera/stream")
@@ -3274,7 +3284,7 @@ if FASTAPI_AVAILABLE:
             frame_interval = 1.0 / target_fps  # Intervalle entre frames
             last_frame_time = time.time()
             frame_times: deque[float] = deque(
-                maxlen=30
+                maxlen=30,
             )  # Buffer pour calculer FPS réel
 
             # OPTIMISATION STREAMING: Buffer optimisé (deque maxlen=5)
@@ -3296,8 +3306,10 @@ if FASTAPI_AVAILABLE:
                                 # Utiliser la méthode privée _capture_image_from_camera
                                 # qui gère SDK camera et OpenCV
                                 capture_func = getattr(
-                                    vision, "_capture_image_from_camera", None
-                                )  # noqa: SLF001
+                                    vision,
+                                    "_capture_image_from_camera",
+                                    None,
+                                )
                                 if capture_func is not None:
                                     frame = capture_func()
                                 else:
@@ -3320,7 +3332,9 @@ if FASTAPI_AVAILABLE:
                             # Frame de test avec texte si pas de caméra
                             frame = np.zeros((480, 640, 3), dtype=np.uint8)
                             # Ajouter texte "Caméra non disponible"
-                            try:
+                            with contextlib.suppress(
+                                ConnectionError, RuntimeError, WebSocketDisconnect
+                            ):
                                 cv2.putText(
                                     frame,
                                     "Camera not available",
@@ -3330,14 +3344,12 @@ if FASTAPI_AVAILABLE:
                                     (255, 255, 255),
                                     2,
                                 )
-                            except (ConnectionError, RuntimeError, WebSocketDisconnect):
-                                pass
 
                         # OPTIMISATION STREAMING: Compression adaptative
                         # Ajuster qualité JPEG selon taille frame précédente
                         if frame_buffer:
                             avg_size = sum(len(f) for f in frame_buffer) / len(
-                                frame_buffer
+                                frame_buffer,
                             )
                             # Si frames trop grandes (>100KB), réduire qualité
                             if avg_size > 100000:
@@ -3348,7 +3360,9 @@ if FASTAPI_AVAILABLE:
 
                         # Encoder en JPEG avec qualité adaptative
                         success, buffer = cv2.imencode(
-                            ".jpg", frame, [cv2.IMWRITE_JPEG_QUALITY, jpeg_quality]
+                            ".jpg",
+                            frame,
+                            [cv2.IMWRITE_JPEG_QUALITY, jpeg_quality],
                         )
                         if not success:
                             logger.warning("Échec encodage JPEG")
@@ -3399,10 +3413,10 @@ if FASTAPI_AVAILABLE:
                         AttributeError,
                         ConnectionError,
                     ) as e:
-                        logger.exception("Erreur stream vidéo: %s", e)
+                        logger.exception("Erreur stream vidéo")
                         await asyncio.sleep(1)
                     except Exception as e:
-                        logger.exception("Erreur inattendue stream vidéo: %s", e)
+                        logger.exception("Erreur inattendue stream vidéo")
                         await asyncio.sleep(1)
             except GeneratorExit:
                 # Arrêt propre du générateur
@@ -3410,11 +3424,12 @@ if FASTAPI_AVAILABLE:
                 raise
 
         return StreamingResponse(
-            generate_frames(), media_type="multipart/x-mixed-replace; boundary=frame"
+            generate_frames(),
+            media_type="multipart/x-mixed-replace; boundary=frame",
         )
 
     @app.websocket("/ws")
-    async def websocket_endpoint(websocket: WebSocket):
+    async def websocket_endpoint(websocket: WebSocket) -> None:
         """Endpoint WebSocket pour communication temps réel."""
         await advanced_websocket_manager.connect(websocket)
 
@@ -3434,17 +3449,18 @@ if FASTAPI_AVAILABLE:
                     await handle_chat_message(message, websocket)
                 else:
                     logger.warning(
-                        "⚠️ [WS] Type de message inconnu: %s", message.get("type")
+                        "⚠️ [WS] Type de message inconnu: %s",
+                        message.get("type"),
                     )
 
         except WebSocketDisconnect:
             logger.info("🔌 WebSocket déconnecté normalement")
             await advanced_websocket_manager.disconnect(websocket)
         except (ConnectionError, RuntimeError, AttributeError) as e:
-            logger.exception("❌ Erreur WebSocket: %s", e)
+            logger.exception("❌ Erreur WebSocket")
             await advanced_websocket_manager.disconnect(websocket)
         except Exception as e:
-            logger.exception("❌ Erreur inattendue WebSocket: %s", e)
+            logger.exception("❌ Erreur inattendue WebSocket")
             await advanced_websocket_manager.disconnect(websocket)
 
 
@@ -3457,11 +3473,13 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
         if not advanced_websocket_manager.robot:
             # Initialiser le robot si nécessaire avec lock
             logger.warning(
-                "⚠️ Robot non initialisé lors de la commande - initialisation forcée"
+                "⚠️ Robot non initialisé lors de la commande - initialisation forcée",
             )
             robot_init_lock = getattr(
-                advanced_websocket_manager, "_robot_init_lock", None
-            )  # noqa: SLF001
+                advanced_websocket_manager,
+                "_robot_init_lock",
+                None,
+            )
             if robot_init_lock is None:
                 return {"error": "Robot not initialized"}
             with robot_init_lock:
@@ -3494,7 +3512,7 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                                 )
                         else:
                             logger.error(
-                                "❌ RobotFactory.create_backend a retourné None"
+                                "❌ RobotFactory.create_backend a retourné None",
                             )
                             await advanced_websocket_manager.send_log_message(
                                 "error",
@@ -3507,14 +3525,15 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                         ImportError,
                         OSError,
                     ) as e:
-                        logger.exception("❌ Erreur initialisation robot: %s", e)
+                        logger.exception("❌ Erreur initialisation robot")
                         await advanced_websocket_manager.send_log_message(
                             "error",
                             f"❌ Erreur robot: {e}",
                         )
                     except Exception as e:
                         logger.exception(
-                            "❌ Erreur inattendue initialisation robot: %s", e
+                            "❌ Erreur inattendue initialisation robot: %s",
+                            e,
                         )
                         await advanced_websocket_manager.send_log_message(
                             "error",
@@ -3529,13 +3548,14 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                     "error",
                     "Émotion invalide",
                 )
-                return
+                return None
 
             intensity = 0.8  # Intensité par défaut
             if advanced_websocket_manager.robot:
                 # Type narrowing après vérification isinstance
                 if not isinstance(emotion, str):
-                    raise TypeError(f"Expected emotion to be str, got {type(emotion)}")
+                    msg = f"Expected emotion to be str, got {type(emotion)}"
+                    raise TypeError(msg)
                 try:
                     logger.info(
                         "🎭 [CMD] Exécution set_emotion: %s (intensité: %s)",
@@ -3551,14 +3571,15 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                     # Faire plusieurs steps pour que le changement soit visible
                     if hasattr(advanced_websocket_manager.robot, "step"):
                         for _ in range(5):
-                            try:
+                            with contextlib.suppress(
+                                ConnectionError, RuntimeError, WebSocketDisconnect
+                            ):
                                 advanced_websocket_manager.robot.step()
-                            except (ConnectionError, RuntimeError, WebSocketDisconnect):
-                                pass
 
                     if success:
                         logger.info(
-                            "✅ [CMD] Émotion %s appliquée avec succès", emotion
+                            "✅ [CMD] Émotion %s appliquée avec succès",
+                            emotion,
                         )
                         await advanced_websocket_manager.send_log_message(
                             "info",
@@ -3571,13 +3592,13 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                             f"❌ Échec émotion: {emotion}",
                         )
                 except (ValueError, AttributeError, RuntimeError, KeyError) as e:
-                    logger.exception("❌ [CMD] Erreur set_emotion: %s", e)
+                    logger.exception("❌ [CMD] Erreur set_emotion")
                     await advanced_websocket_manager.send_log_message(
                         "error",
                         f"❌ Erreur émotion: {e}",
                     )
                 except Exception as e:
-                    logger.exception("❌ [CMD] Erreur inattendue set_emotion: %s", e)
+                    logger.exception("❌ [CMD] Erreur inattendue set_emotion")
                     await advanced_websocket_manager.send_log_message(
                         "error",
                         f"❌ Erreur émotion: {e}",
@@ -3597,18 +3618,19 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                     "error",
                     "Robot non connecté",
                 )
-                return
+                return None
 
             # Type narrowing après vérification robot
             if advanced_websocket_manager.robot is None:
-                raise RuntimeError("Robot is None after check")
+                msg = "Robot is None after check"
+                raise RuntimeError(msg)
             robot = advanced_websocket_manager.robot
 
             # Initialiser success avant la fonction async
             success = False
 
             # Exécuter les actions de manière asynchrone pour ne pas bloquer
-            async def execute_action():
+            async def execute_action() -> None:
                 nonlocal success
                 try:
                     if action == "look_at":
@@ -3630,20 +3652,22 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                         # Arrêter tous les mouvements en cours
                         # Remettre tous les joints à leur position neutre
                         for joint in robot.get_available_joints():
-                            try:
+                            with contextlib.suppress(
+                                ConnectionError, RuntimeError, WebSocketDisconnect
+                            ):
                                 robot.set_joint_pos(joint, 0.0)
-                            except (ConnectionError, RuntimeError, WebSocketDisconnect):
-                                pass
                         robot.step()
                         success = True
                     else:
                         success = False
                 except (ValueError, AttributeError, RuntimeError, ConnectionError) as e:
-                    logger.exception("Erreur exécution action %s: %s", action, e)
+                    logger.exception("Erreur exécution action %s:", action)
                     success = False
                 except Exception as e:
                     logger.exception(
-                        "Erreur inattendue exécution action %s: %s", action, e
+                        "Erreur inattendue exécution action %s: %s",
+                        action,
+                        e,
                     )
                     success = False
 
@@ -3651,13 +3675,14 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
 
             # Faire plusieurs steps pour que l'action soit visible
             if advanced_websocket_manager.robot and hasattr(
-                advanced_websocket_manager.robot, "step"
+                advanced_websocket_manager.robot,
+                "step",
             ):
                 for _ in range(10):  # 10 steps pour que l'action soit visible
-                    try:
+                    with contextlib.suppress(
+                        ConnectionError, RuntimeError, WebSocketDisconnect
+                    ):
                         advanced_websocket_manager.robot.step()
-                    except (ConnectionError, RuntimeError, WebSocketDisconnect):
-                        pass
 
             if success:
                 await advanced_websocket_manager.send_log_message(
@@ -3678,7 +3703,7 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                     "error",
                     "Comportement invalide",
                 )
-                return
+                return None
 
             if not advanced_websocket_manager.robot:
                 # Mode simulation - comportement simulé
@@ -3686,13 +3711,15 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                     "info",
                     f"Comportement simulé: {behavior} (mode simulation MuJoCo)",
                 )
-                return
+                return None
 
             # Type narrowing après vérifications
             if not isinstance(behavior, str):
-                raise TypeError(f"Expected behavior to be str, got {type(behavior)}")
+                msg = f"Expected behavior to be str, got {type(behavior)}"
+                raise TypeError(msg)
             if advanced_websocket_manager.robot is None:
-                raise RuntimeError("Robot is None after check")
+                msg = "Robot is None after check"
+                raise RuntimeError(msg)
             robot = advanced_websocket_manager.robot
 
             # Exécuter le comportement de manière asynchrone
@@ -3701,14 +3728,14 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                 # Faire plusieurs steps pour que le comportement soit visible
                 if hasattr(robot, "step"):
                     for _ in range(
-                        50
+                        50,
                     ):  # 50 steps pour que le comportement soit visible
-                        try:
+                        with contextlib.suppress(
+                            ConnectionError, RuntimeError, WebSocketDisconnect
+                        ):
                             robot.step()
-                        except (ConnectionError, RuntimeError, WebSocketDisconnect):
-                            pass
             except (ValueError, RuntimeError, KeyError) as e:
-                logger.exception("Erreur exécution comportement %s: %s", behavior, e)
+                logger.exception("Erreur exécution comportement %s:", behavior)
                 success = False
 
             if success:
@@ -3730,7 +3757,7 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                     "error",
                     "Données joint manquantes",
                 )
-                return
+                return None
 
             if not advanced_websocket_manager.robot:
                 # Mode simulation - joint simulé
@@ -3740,13 +3767,15 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                     "info",
                     f"Joint simulé: {joint} = {position} (mode simulation MuJoCo)",
                 )
-                return
+                return None
 
             # Type narrowing après vérifications
             if joint_data is None:
-                raise ValueError("joint_data is None after check")
+                msg = "joint_data is None after check"
+                raise ValueError(msg)
             if advanced_websocket_manager.robot is None:
-                raise RuntimeError("Robot is None after check")
+                msg = "Robot is None after check"
+                raise RuntimeError(msg)
             robot = advanced_websocket_manager.robot
 
             joint = joint_data.get("joint")
@@ -3759,10 +3788,10 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                 # Faire plusieurs steps pour que le joint bouge vraiment
                 if hasattr(robot, "step"):
                     for _ in range(5):
-                        try:
+                        with contextlib.suppress(
+                            ConnectionError, RuntimeError, WebSocketDisconnect
+                        ):
                             robot.step()
-                        except (ConnectionError, RuntimeError, WebSocketDisconnect):
-                            pass
 
                 if success:
                     logger.info("✅ Joint %s = %.2f appliqué", joint, position)
@@ -3783,13 +3812,13 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                 IndexError,
                 KeyError,
             ) as e:
-                logger.exception("❌ Erreur set_joint_pos: %s", e)
+                logger.exception("❌ Erreur set_joint_pos")
                 await advanced_websocket_manager.send_log_message(
                     "error",
                     f"❌ Erreur joint {joint}: {e}",
                 )
             except Exception as e:
-                logger.exception("❌ Erreur inattendue set_joint_pos: %s", e)
+                logger.exception("❌ Erreur inattendue set_joint_pos")
                 await advanced_websocket_manager.send_log_message(
                     "error",
                     f"❌ Erreur joint {joint}: {e}",
@@ -3811,28 +3840,29 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                     # OPTIMISATION PERFORMANCE: Utiliser scan_environment_async si disponible
                     # (non-bloquant, utilise thread dédié)
                     if hasattr(
-                        advanced_websocket_manager.vision, "scan_environment_async"
+                        advanced_websocket_manager.vision,
+                        "scan_environment_async",
                     ):
                         # Démarrer scan asynchrone si pas déjà actif
                         async_scan_active = getattr(
                             advanced_websocket_manager.vision,
                             "_async_scan_active",
                             False,
-                        )  # noqa: SLF001
+                        )
                         if not async_scan_active:
                             advanced_websocket_manager.vision.start_async_scanning(
-                                interval=0.1
+                                interval=0.1,
                             )
                         # Obtenir résultat non-bloquant
                         objects = (
                             advanced_websocket_manager.vision.scan_environment_async(
-                                timeout=0.5
+                                timeout=0.5,
                             )
                         )
                     else:
                         # Fallback: exécuter le scan de manière asynchrone via thread
                         objects = await asyncio.to_thread(
-                            advanced_websocket_manager.vision.scan_environment
+                            advanced_websocket_manager.vision.scan_environment,
                         )
                     if objects:
                         num_objects = len(objects.get("objects", []))
@@ -3846,13 +3876,13 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                             "Scan: aucun résultat disponible",
                         )
                 except (OSError, RuntimeError, AttributeError, ImportError) as e:
-                    logger.exception("Erreur scan environnement: %s", e)
+                    logger.exception("Erreur scan environnement")
                     await advanced_websocket_manager.send_log_message(
                         "error",
                         f"Erreur scan: {e}",
                     )
                 except Exception as e:
-                    logger.exception("Erreur inattendue scan environnement: %s", e)
+                    logger.exception("Erreur inattendue scan environnement")
                     await advanced_websocket_manager.send_log_message(
                         "error",
                         f"Erreur scan: {e}",
@@ -3870,14 +3900,16 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
         await advanced_websocket_manager.send_complete_status()
 
     except (ValueError, AttributeError, RuntimeError, KeyError, TypeError) as e:
-        logger.exception("❌ Erreur commande avancée: %s", e)
+        logger.exception("❌ Erreur commande avancée")
         await advanced_websocket_manager.send_log_message("error", f"Erreur: {e!s}")
     except Exception as e:
-        logger.exception("❌ Erreur inattendue commande avancée: %s", e)
+        logger.exception("❌ Erreur inattendue commande avancée")
         await advanced_websocket_manager.send_log_message("error", f"Erreur: {e!s}")
 
 
-async def handle_chat_message(message_data: dict[str, Any], websocket: WebSocket):
+async def handle_chat_message(
+    message_data: dict[str, Any], websocket: WebSocket
+) -> None:
     """Traite un message chat reçu via WebSocket.
 
     Args:
@@ -3920,7 +3952,7 @@ async def handle_chat_message(message_data: dict[str, Any], websocket: WebSocket
                 logger.warning("⚠️ Hugging Face non disponible: %s", e)
                 advanced_websocket_manager.bbia_hf = None
             except Exception as e:
-                logger.exception("❌ Erreur initialisation BBIAHuggingFace: %s", e)
+                logger.exception("❌ Erreur initialisation BBIAHuggingFace")
                 advanced_websocket_manager.bbia_hf = None
 
         # NE PAS renvoyer le message utilisateur (déjà affiché côté client)
@@ -3936,8 +3968,8 @@ async def handle_chat_message(message_data: dict[str, Any], websocket: WebSocket
                 bbia_response = advanced_websocket_manager.bbia_hf.chat(user_message)
                 logger.info("✅ Réponse BBIA générée: %s...", bbia_response[:50])
             except Exception as e:
-                logger.exception("❌ Erreur génération réponse BBIA: %s", e)
-                bbia_response = f"Désolé, une erreur s'est produite lors de la génération de la réponse: {str(e)}"
+                logger.exception("❌ Erreur génération réponse BBIA")
+                bbia_response = f"Désolé, une erreur s'est produite lors de la génération de la réponse: {e!s}"
 
             # Envoyer réponse BBIA
             chat_response_bbia = {
@@ -3947,7 +3979,8 @@ async def handle_chat_message(message_data: dict[str, Any], websocket: WebSocket
                 "timestamp": datetime.now().isoformat(),
             }
             logger.info(
-                "📤 [CHAT] Envoi réponse BBIA (%d caractères)", len(bbia_response)
+                "📤 [CHAT] Envoi réponse BBIA (%d caractères)",
+                len(bbia_response),
             )
             response_json = json.dumps(chat_response_bbia)
             logger.debug("📤 [CHAT] JSON réponse: %s...", response_json[:100])
@@ -3976,7 +4009,7 @@ async def handle_chat_message(message_data: dict[str, Any], websocket: WebSocket
             )
 
     except Exception as e:
-        logger.exception("❌ Erreur chat: %s", e)
+        logger.exception("❌ Erreur chat")
         try:
             await advanced_websocket_manager.send_log_message(
                 "error",
@@ -3986,7 +4019,7 @@ async def handle_chat_message(message_data: dict[str, Any], websocket: WebSocket
             error_response = {
                 "type": "chat_response",
                 "sender": "bbia",
-                "message": f"Désolé, une erreur s'est produite: {str(e)}",
+                "message": f"Désolé, une erreur s'est produite: {e!s}",
                 "timestamp": datetime.now().isoformat(),
             }
             await websocket.send_text(json.dumps(error_response))
@@ -3998,7 +4031,7 @@ def run_advanced_dashboard(
     host: str = "127.0.0.1",
     port: int = 8000,
     backend: str = "mujoco",
-):
+) -> None:
     """Lance le dashboard BBIA avancé.
 
     Args:

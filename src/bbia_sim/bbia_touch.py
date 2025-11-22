@@ -19,12 +19,9 @@ import logging
 import os
 from collections import deque
 from enum import Enum
-from typing import TYPE_CHECKING, Any
+from typing import Any
 
 import numpy as np
-
-if TYPE_CHECKING:
-    pass
 
 logger = logging.getLogger(__name__)
 
@@ -72,6 +69,7 @@ class BBIATouchDetection:
             buffer_duration: Durée du buffer d'analyse (secondes)
             tap_threshold: Seuil pour détecter un tap (amplitude normalisée)
             caress_threshold: Seuil pour détecter une caresse (amplitude normalisée)
+
         """
         # Initialiser attributs même si désactivé (pour tests)
         self.sample_rate = sample_rate
@@ -83,7 +81,7 @@ class BBIATouchDetection:
 
         if not SOUNDDEVICE_AVAILABLE:
             logger.warning(
-                "⚠️  Détection tactile désactivée (sounddevice non disponible)"
+                "⚠️  Détection tactile désactivée (sounddevice non disponible)",
             )
             self.enabled = False
             return
@@ -98,7 +96,7 @@ class BBIATouchDetection:
 
         logger.info(
             "✅ BBIATouchDetection initialisé "
-            f"(sample_rate={sample_rate}, buffer={buffer_duration}s)"
+            f"(sample_rate={sample_rate}, buffer={buffer_duration}s)",
         )
 
     def _record_audio_chunk(self, duration: float = 0.1) -> np.ndarray | None:
@@ -109,6 +107,7 @@ class BBIATouchDetection:
 
         Returns:
             Array audio ou None si erreur
+
         """
         if not self.enabled or not SOUNDDEVICE_AVAILABLE:
             return None
@@ -125,7 +124,8 @@ class BBIATouchDetection:
             result = audio.flatten()
             # Type narrowing pour mypy - flatten() retourne toujours ndarray
             result_array: np.ndarray[np.float32, Any] = np.asarray(
-                result, dtype=np.float32
+                result,
+                dtype=np.float32,
             )
             return result_array
         except Exception as e:
@@ -140,6 +140,7 @@ class BBIATouchDetection:
 
         Returns:
             Dictionnaire avec type d'interaction et métriques
+
         """
         # Correction: utiliser size pour arrays numpy (évite erreur "truth value ambiguous")
         if audio.size == 0:
@@ -204,6 +205,7 @@ class BBIATouchDetection:
 
         Returns:
             True si tap détecté, False sinon
+
         """
         if not self.enabled:
             return False
@@ -224,6 +226,7 @@ class BBIATouchDetection:
 
         Returns:
             True si caresse détectée, False sinon
+
         """
         if not self.enabled:
             return False
@@ -246,6 +249,7 @@ class BBIATouchDetection:
 
         Returns:
             Dictionnaire avec type d'interaction et métriques détaillées
+
         """
         if not self.enabled:
             return {
@@ -271,6 +275,7 @@ class BBIATouchDetection:
 
         Returns:
             True si activée, False sinon
+
         """
         return self.enabled
 
@@ -287,6 +292,7 @@ def create_touch_detector(
 
     Returns:
         Instance BBIATouchDetection
+
     """
     return BBIATouchDetection(
         sample_rate=sample_rate,

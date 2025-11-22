@@ -133,9 +133,9 @@ class WakeUpBehavior(BBIABehavior):
                     logger.info("Synthèse vocale : %s", wake_message)
                     return True
             except (AttributeError, RuntimeError, ValueError) as e:
-                logger.exception("Erreur wake_up SDK: %s", e)
+                logger.exception("Erreur wake_up SDK")
             except Exception as e:
-                logger.exception("Erreur inattendue wake_up SDK: %s", e)
+                logger.exception("Erreur inattendue wake_up SDK")
 
         # Fallback: Séquence manuelle conforme SDK
         # (utilise create_head_pose et yaw_body)
@@ -290,7 +290,7 @@ class GreetingBehavior(BBIABehavior):
                 time.sleep(0.5)
                 self.robot_api.set_joint_pos("yaw_body", 0.0)
             except Exception as e:
-                logger.exception("Erreur fallback rotation corps: %s", e)
+                logger.exception("Erreur fallback rotation corps")
 
         # OPTIMISATION SDK: Passer robot_api pour utiliser haut-parleur 5W
         dire_texte(greeting, robot_api=self.robot_api)
@@ -570,7 +570,8 @@ class ConversationBehavior(BBIABehavior):
             )
         except (ImportError, RuntimeError, AttributeError) as e:
             logger.info(
-                "ℹ️  BBIAHuggingFace non disponible - Mode enrichi activé: %s", e
+                "ℹ️  BBIAHuggingFace non disponible - Mode enrichi activé: %s",
+                e,
             )
             self.hf_chat = None
 
@@ -1113,7 +1114,7 @@ class BBIABehaviorManager:
             self.register_behavior(MusicReactionBehavior(robot_api=self.robot_api))
 
             logger.info(
-                "✅ Tous les comportements avancés enregistrés avec succès (15/15)"
+                "✅ Tous les comportements avancés enregistrés avec succès (15/15)",
             )
         except ImportError as e:
             logger.warning("⚠️  Comportements avancés non disponibles: %s", e)
@@ -1177,7 +1178,7 @@ class BBIABehaviorManager:
                 else:
                     time.sleep(0.1)
             except Exception as e:
-                logger.exception("Erreur dans le worker de comportements : %s", e)
+                logger.exception("Erreur dans le worker de comportements ")
                 time.sleep(0.1)  # Éviter une boucle infinie en cas d'erreur
 
     def get_available_behaviors(self) -> list[dict[str, Any]]:

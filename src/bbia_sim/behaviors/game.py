@@ -14,7 +14,7 @@ from typing import TYPE_CHECKING, Any
 from .base import BBIABehavior
 
 if TYPE_CHECKING:
-    from ..robot_api import RobotAPI
+    from bbia_sim.robot_api import RobotAPI
 
 logger = logging.getLogger(__name__)
 
@@ -36,6 +36,7 @@ class GameBehavior(BBIABehavior):
 
         Args:
             robot_api: Interface robotique pour contrôler le robot
+
         """
         super().__init__(
             name="game",
@@ -59,6 +60,7 @@ class GameBehavior(BBIABehavior):
 
         Returns:
             True si le comportement peut être exécuté
+
         """
         if not self.robot_api:
             logger.warning("GameBehavior: robot_api non disponible")
@@ -75,6 +77,7 @@ class GameBehavior(BBIABehavior):
 
         Returns:
             True si l'exécution a réussi
+
         """
         if not self.robot_api:
             return False
@@ -97,7 +100,7 @@ class GameBehavior(BBIABehavior):
             self._show_final_score()
             return True
         except Exception as e:
-            logger.exception("Erreur lors du jeu: %s", e)
+            logger.exception("Erreur lors du jeu")
             return False
         finally:
             self.is_active = False
@@ -107,6 +110,7 @@ class GameBehavior(BBIABehavior):
 
         Args:
             rounds: Nombre de rounds
+
         """
         intro = "Jouons à pierre-papier-ciseaux ! Choisissez votre geste."
         self._speak_with_movement(intro, emotion="excited")
@@ -148,6 +152,7 @@ class GameBehavior(BBIABehavior):
 
         Args:
             rounds: Nombre de rounds
+
         """
         intro = "Jouons à devine le nombre ! Je pense à un nombre entre 1 et 10."
         self._speak_with_movement(intro, emotion="excited")
@@ -178,6 +183,7 @@ class GameBehavior(BBIABehavior):
 
         Args:
             rounds: Nombre de rounds
+
         """
         intro = "Jouons à un jeu de mémoire ! Je vais vous montrer une séquence."
         self._speak_with_movement(intro, emotion="excited")
@@ -239,6 +245,7 @@ class GameBehavior(BBIABehavior):
 
         Returns:
             'win', 'lose', ou 'tie'
+
         """
         if user == robot:
             return "tie"
@@ -259,6 +266,7 @@ class GameBehavior(BBIABehavior):
         Args:
             result: 'win', 'lose', ou 'tie'
             round_num: Numéro du round
+
         """
         if result == "win":
             self.user_score += 1
@@ -315,13 +323,14 @@ class GameBehavior(BBIABehavior):
             text: Texte à dire
             emotion: Émotion à exprimer
             movement: Mouvement tête (yaw, pitch)
+
         """
         if not self.robot_api:
             return
 
         # Appliquer émotion
         try:
-            from ..bbia_emotions import BBIAEmotions
+            from bbia_sim.bbia_emotions import BBIAEmotions
 
             emotions_module = BBIAEmotions()
             emotions_module.set_emotion(emotion, intensity=0.7)
@@ -339,7 +348,7 @@ class GameBehavior(BBIABehavior):
 
         # Parler
         try:
-            from ..bbia_voice import dire_texte
+            from bbia_sim.bbia_voice import dire_texte
 
             dire_texte(text, robot_api=self.robot_api)
         except ImportError:

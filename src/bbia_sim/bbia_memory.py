@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Module mémoire persistante BBIA - Sauvegarde conversation et préférences
-Permet à BBIA de se souvenir entre les sessions
+Permet à BBIA de se souvenir entre les sessions.
 """
 
 import json
@@ -21,7 +21,7 @@ class BBIAMemory:
     - Apprentissages (patterns détectés)
     """
 
-    def __init__(self, memory_dir: str = "bbia_memory"):
+    def __init__(self, memory_dir: str = "bbia_memory") -> None:
         """Initialise le module mémoire.
 
         Args:
@@ -74,7 +74,7 @@ class BBIAMemory:
             )
             return True
         except Exception as e:
-            logger.exception("❌ Erreur sauvegarde conversation: %s", e)
+            logger.exception("❌ Erreur sauvegarde conversation")
             return False
 
     def load_conversation(self) -> list[dict[str, Any]]:
@@ -130,7 +130,7 @@ class BBIAMemory:
             logger.debug("💾 Préférence sauvegardée: %s = %s", key, value)
             return True
         except Exception as e:
-            logger.exception("❌ Erreur sauvegarde préférence: %s", e)
+            logger.exception("❌ Erreur sauvegarde préférence")
             return False
 
     def load_preferences(self) -> dict[str, Any]:
@@ -205,7 +205,7 @@ class BBIAMemory:
             logger.debug("💾 Apprentissage sauvegardé: %s → %s", pattern, response)
             return True
         except Exception as e:
-            logger.exception("❌ Erreur sauvegarde apprentissage: %s", e)
+            logger.exception("❌ Erreur sauvegarde apprentissage")
             return False
 
     def load_learnings(self) -> dict[str, Any]:
@@ -264,7 +264,7 @@ class BBIAMemory:
             logger.info("💾 Mémoire effacée")
             return True
         except Exception as e:
-            logger.exception("❌ Erreur effacement mémoire: %s", e)
+            logger.exception("❌ Erreur effacement mémoire")
             return False
 
 
@@ -320,15 +320,14 @@ def append_record(record: dict[str, Any], memory_dir: str = "bbia_memory") -> bo
         if "key" in record and "value" in record:
             return memory.remember_preference(record["key"], record["value"])
         # Sinon, enregistrer comme apprentissage si contient 'pattern' et 'response'
-        elif "pattern" in record and "response" in record:
+        if "pattern" in record and "response" in record:
             return memory.remember_learning(record["pattern"], record["response"])
         # Sinon, essayer d'ajouter à la conversation
-        else:
-            conversation = memory.load_conversation()
-            conversation.append(record)
-            return memory.save_conversation(conversation)
+        conversation = memory.load_conversation()
+        conversation.append(record)
+        return memory.save_conversation(conversation)
     except Exception as e:
-        logger.exception("❌ Erreur append_record: %s", e)
+        logger.exception("❌ Erreur append_record")
         return False
 
 

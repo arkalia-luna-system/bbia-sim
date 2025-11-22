@@ -11,7 +11,7 @@ from typing import Any
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 
-from ....robot_factory import RobotFactory
+from bbia_sim.robot_factory import RobotFactory
 
 logger = logging.getLogger(__name__)
 
@@ -29,7 +29,8 @@ class CameraToggleRequest(BaseModel):
     """Requête pour activer/désactiver la caméra."""
 
     enabled: bool = Field(
-        ..., description="Activer (True) ou désactiver (False) la caméra"
+        ...,
+        description="Activer (True) ou désactiver (False) la caméra",
     )
 
 
@@ -70,7 +71,7 @@ def _get_robot_media() -> Any | None:
             return None
 
         # Connecter si nécessaire
-        connected = getattr(robot, "_connected", False)  # noqa: SLF001
+        connected = getattr(robot, "_connected", False)
         if not connected:
             try:
                 robot.connect()
@@ -97,7 +98,7 @@ def _get_robot_media() -> Any | None:
         return None
 
 
-@router.post("/speaker/volume", response_model=dict[str, Any])
+@router.post("/speaker/volume")
 async def set_speaker_volume(request: VolumeRequest) -> dict[str, Any]:
     """Définit le volume du haut-parleur.
 
@@ -109,6 +110,7 @@ async def set_speaker_volume(request: VolumeRequest) -> dict[str, Any]:
 
     Raises:
         HTTPException: Si erreur lors de la mise à jour
+
     """
     try:
         global _speaker_volume
@@ -131,11 +133,11 @@ async def set_speaker_volume(request: VolumeRequest) -> dict[str, Any]:
         logger.info("Volume haut-parleur défini à %s", request.volume)
         return {"status": "success", "volume": _speaker_volume}
     except Exception as e:
-        logger.exception("Erreur lors de la définition du volume: %s", e)
+        logger.exception("Erreur lors de la définition du volume")
         raise HTTPException(status_code=500, detail=str(e)) from e
 
 
-@router.post("/microphone/volume", response_model=dict[str, Any])
+@router.post("/microphone/volume")
 async def set_microphone_volume(request: VolumeRequest) -> dict[str, Any]:
     """Définit le volume du microphone.
 
@@ -147,6 +149,7 @@ async def set_microphone_volume(request: VolumeRequest) -> dict[str, Any]:
 
     Raises:
         HTTPException: Si erreur lors de la mise à jour
+
     """
     try:
         global _microphone_volume
@@ -163,21 +166,23 @@ async def set_microphone_volume(request: VolumeRequest) -> dict[str, Any]:
                     elif hasattr(microphone, "volume"):
                         microphone.volume = request.volume
                     logger.debug(
-                        "Volume microphone appliqué au robot: %s", request.volume
+                        "Volume microphone appliqué au robot: %s",
+                        request.volume,
                     )
                 except Exception as e:
                     logger.warning(
-                        "Erreur application volume microphone au robot: %s", e
+                        "Erreur application volume microphone au robot: %s",
+                        e,
                     )
 
         logger.info("Volume microphone défini à %s", request.volume)
         return {"status": "success", "volume": _microphone_volume}
     except Exception as e:
-        logger.exception("Erreur lors de la définition du volume: %s", e)
+        logger.exception("Erreur lors de la définition du volume")
         raise HTTPException(status_code=500, detail=str(e)) from e
 
 
-@router.post("/camera/toggle", response_model=dict[str, Any])
+@router.post("/camera/toggle")
 async def toggle_camera(request: CameraToggleRequest) -> dict[str, Any]:
     """Active ou désactive la caméra.
 
@@ -189,6 +194,7 @@ async def toggle_camera(request: CameraToggleRequest) -> dict[str, Any]:
 
     Raises:
         HTTPException: Si erreur lors de la mise à jour
+
     """
     try:
         global _camera_enabled
@@ -207,13 +213,12 @@ async def toggle_camera(request: CameraToggleRequest) -> dict[str, Any]:
                             camera.enable()
                         elif hasattr(camera, "enabled"):
                             camera.enabled = True
-                    else:
-                        if hasattr(camera, "stop"):
-                            camera.stop()
-                        elif hasattr(camera, "disable"):
-                            camera.disable()
-                        elif hasattr(camera, "enabled"):
-                            camera.enabled = False
+                    elif hasattr(camera, "stop"):
+                        camera.stop()
+                    elif hasattr(camera, "disable"):
+                        camera.disable()
+                    elif hasattr(camera, "enabled"):
+                        camera.enabled = False
                     logger.debug(
                         "Caméra %s au robot",
                         "activée" if request.enabled else "désactivée",
@@ -224,11 +229,11 @@ async def toggle_camera(request: CameraToggleRequest) -> dict[str, Any]:
         logger.info("Caméra %s", "activée" if _camera_enabled else "désactivée")
         return {"status": "success", "enabled": _camera_enabled}
     except Exception as e:
-        logger.exception("Erreur lors du toggle caméra: %s", e)
+        logger.exception("Erreur lors du toggle caméra")
         raise HTTPException(status_code=500, detail=str(e)) from e
 
 
-@router.get("/status", response_model=MediaStatusResponse)
+@router.get("/status")
 async def get_media_status() -> MediaStatusResponse:
     """Récupère le statut actuel des contrôles media.
 
@@ -237,6 +242,7 @@ async def get_media_status() -> MediaStatusResponse:
 
     Raises:
         HTTPException: Si erreur lors de la récupération
+
     """
     try:
         # Récupérer statut réel du robot si disponible
@@ -297,5 +303,5 @@ async def get_media_status() -> MediaStatusResponse:
             microphone_active=microphone_active,
         )
     except Exception as e:
-        logger.exception("Erreur lors de la récupération du statut: %s", e)
+        logger.exception("Erreur lors de la récupération du statut")
         raise HTTPException(status_code=500, detail=str(e)) from e

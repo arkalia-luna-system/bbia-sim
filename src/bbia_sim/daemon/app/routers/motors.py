@@ -1,11 +1,12 @@
 """Router pour les endpoints de contrôle des moteurs (conforme SDK officiel)."""
 
 from enum import Enum
+from typing import Annotated
 
 from fastapi import APIRouter, Depends
 from pydantic import BaseModel
 
-from ..backend_adapter import BackendAdapter, get_backend_adapter
+from bbia_sim.daemon.app.backend_adapter import BackendAdapter, get_backend_adapter
 
 router = APIRouter(prefix="/motors")
 
@@ -29,7 +30,7 @@ class MotorStatus(BaseModel):
 
 @router.get("/status")
 async def get_motor_status(
-    backend: BackendAdapter = Depends(get_backend_adapter),
+    backend: Annotated[BackendAdapter, Depends(get_backend_adapter)],
 ) -> MotorStatus:
     """Récupère le statut actuel des moteurs (conforme SDK)."""
     mode_obj = backend.get_motor_control_mode()
@@ -46,7 +47,7 @@ async def get_motor_status(
 @router.post("/set_mode/{mode}")
 async def set_motor_mode(
     mode: MotorControlMode,
-    backend: BackendAdapter = Depends(get_backend_adapter),
+    backend: Annotated[BackendAdapter, Depends(get_backend_adapter)],
 ) -> dict[str, str]:
     """Définit le mode de contrôle des moteurs (conforme SDK)."""
     backend.set_motor_control_mode(mode)

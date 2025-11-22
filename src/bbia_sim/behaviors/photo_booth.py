@@ -97,7 +97,9 @@ class PhotoBoothBehavior(BBIABehavior):
         num_photos = context.get("num_photos", 1)
 
         logger.info(
-            "Démarrage photo booth - Pose: %s, Photos: %s", pose_name, num_photos
+            "Démarrage photo booth - Pose: %s, Photos: %s",
+            pose_name,
+            num_photos,
         )
 
         try:
@@ -129,7 +131,7 @@ class PhotoBoothBehavior(BBIABehavior):
         except KeyboardInterrupt:
             logger.info("Photo booth interrompu par l'utilisateur")
         except Exception as e:
-            logger.exception("Erreur durant photo booth: %s", e)
+            logger.exception("Erreur durant photo booth")
             return False
 
         return True
@@ -154,7 +156,9 @@ class PhotoBoothBehavior(BBIABehavior):
                         if look_at_image:
                             look_at_image(center_x, center_y, duration=0.8)
                             logger.debug(
-                                "Cadrage visage vers (%s, %s)", center_x, center_y
+                                "Cadrage visage vers (%s, %s)",
+                                center_x,
+                                center_y,
                             )
 
         except Exception as e:
@@ -244,4 +248,4 @@ class PhotoBoothBehavior(BBIABehavior):
                     dire_texte("Photo !", robot_api=self.robot_api)
 
         except Exception as e:
-            logger.exception("Erreur capture photo: %s", e)
+            logger.exception("Erreur capture photo")

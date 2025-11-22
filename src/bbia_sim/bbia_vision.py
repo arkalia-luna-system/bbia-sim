@@ -19,6 +19,8 @@ if TYPE_CHECKING:
     from .face_recognition import BBIAPersonRecognition
     from .pose_detection import BBIAPoseDetection
 
+import contextlib
+
 import numpy as np
 import numpy.typing as npt
 
@@ -55,7 +57,8 @@ try:
 
     _os.environ.setdefault("GLOG_minloglevel", "2")  # 0=INFO,1=WARNING,2=ERROR
     _os.environ.setdefault(
-        "TF_CPP_MIN_LOG_LEVEL", "3"
+        "TF_CPP_MIN_LOG_LEVEL",
+        "3",
     )  # 0=INFO,1=WARNING,2=ERROR,3=FATAL
     _os.environ.setdefault("MEDIAPIPE_DISABLE_GPU", "1")  # éviter logs GPU inutiles
     # Supprimer les logs TensorFlow Lite
@@ -66,7 +69,8 @@ try:
         _os.environ.setdefault("MUJOCO_GL", "egl")  # Utiliser EGL sur Linux/Windows
 except (OSError, RuntimeError, ValueError, TypeError) as e:
     logger.debug(
-        "Impossible de configurer variables d'environnement MediaPipe/TensorFlow: %s", e
+        "Impossible de configurer variables d'environnement MediaPipe/TensorFlow: %s",
+        e,
     )
 except Exception as e:
     logger.debug("Erreur inattendue configuration variables d'environnement: %s", e)
@@ -147,12 +151,12 @@ class BBIAVision:
             if "pytest" in sys.modules or "unittest" in sys.modules:
                 logger.debug(
                     "⚠️ Instance BBIAVision créée directement. "
-                    "Utilisez get_bbia_vision_singleton() pour éviter duplication RAM."
+                    "Utilisez get_bbia_vision_singleton() pour éviter duplication RAM.",
                 )
             else:
                 logger.warning(
                     "⚠️ Instance BBIAVision créée directement. "
-                    "Utilisez get_bbia_vision_singleton() pour éviter duplication RAM."
+                    "Utilisez get_bbia_vision_singleton() pour éviter duplication RAM.",
                 )
 
         self.robot_api = robot_api
@@ -400,7 +404,8 @@ class BBIAVision:
                 logger.warning("⚠️ MediaPipe Pose non disponible: %s", e)
             except Exception as e:
                 logger.warning(
-                    "⚠️ MediaPipe Pose non disponible (erreur inattendue): %s", e
+                    "⚠️ MediaPipe Pose non disponible (erreur inattendue): %s",
+                    e,
                 )
 
     def _capture_image_from_camera(self) -> npt.NDArray[np.uint8] | None:
@@ -530,7 +535,7 @@ class BBIAVision:
             if image.dtype != np.uint8:
                 try:
                     # Normaliser si float [0,1] → [0,255]
-                    if image.dtype == np.float32 or image.dtype == np.float64:
+                    if image.dtype in (np.float32, np.float64):
                         if image.max() <= 1.0:
                             image = (image * 255).astype(np.uint8)
                         else:
@@ -572,7 +577,8 @@ class BBIAVision:
             logger.debug("Erreur capture caméra SDK: %s", e)
         except Exception as e:
             logger.debug(
-                "Erreur inattendue capture caméra SDK (fallback simulation): %s", e
+                "Erreur inattendue capture caméra SDK (fallback simulation): %s",
+                e,
             )
 
         return None
@@ -764,7 +770,8 @@ class BBIAVision:
                                 logger.debug("DeepFace erreur: %s", deepface_error)
                             except Exception as deepface_error:
                                 logger.debug(
-                                    "DeepFace erreur inattendue: %s", deepface_error
+                                    "DeepFace erreur inattendue: %s",
+                                    deepface_error,
                                 )
 
                         # Calculer centre pour cohérence avec objets YOLO
@@ -1024,10 +1031,10 @@ class BBIAVision:
                                     )
                                     if person_result is not None:
                                         recognized_name = str(
-                                            person_result.get("name", recognized_name)
+                                            person_result.get("name", recognized_name),
                                         )
                                         confidence_value = float(
-                                            person_result.get("confidence", 0.0)
+                                            person_result.get("confidence", 0.0),
                                         )
                                         logger.debug(
                                             "👤 Personne reconnue: %s (conf: %.2f)",
@@ -1275,8 +1282,7 @@ class BBIAVision:
         """Calcule la distance d'un objet."""
         # Simulation simple basée sur la position
         x, y = object_position
-        distance = math.sqrt(x**2 + y**2)
-        return distance
+        return math.sqrt(x**2 + y**2)
 
     def get_latest_frame(self) -> npt.NDArray[np.uint8] | None:
         """Récupère la frame la plus récente du buffer circulaire.
@@ -1287,6 +1293,7 @@ class BBIAVision:
 
         Returns:
             Dernière frame capturée ou None si buffer vide
+
         """
         if self._camera_frame_buffer:
             return self._camera_frame_buffer[-1]
@@ -1307,18 +1314,16 @@ class BBIAVision:
                         self._scan_queue.put_nowait(result)
                     except queue.Full:
                         # Remplacer ancien résultat
-                        try:
+                        with contextlib.suppress(queue.Empty):
                             self._scan_queue.get_nowait()
-                        except queue.Empty:
-                            pass
                         self._scan_queue.put_nowait(result)
                 # Attendre intervalle avant prochain scan
                 self._should_stop_scan.wait(self._scan_interval)
             except (RuntimeError, AttributeError, OSError) as e:
-                logger.exception("Erreur thread scan asynchrone: %s", e)
+                logger.exception("Erreur thread scan asynchrone")
                 time.sleep(self._scan_interval)
             except Exception as e:
-                logger.exception("Erreur inattendue thread scan asynchrone: %s", e)
+                logger.exception("Erreur inattendue thread scan asynchrone")
                 time.sleep(self._scan_interval)
 
         logger.debug("🔍 Thread scan asynchrone arrêté")
@@ -1355,7 +1360,8 @@ class BBIAVision:
             )
             self._scan_thread.start()
             logger.info(
-                "✅ Scan asynchrone démarré (intervalle: %ss)", self._scan_interval
+                "✅ Scan asynchrone démarré (intervalle: %ss)",
+                self._scan_interval,
             )
             return True
 
@@ -1371,7 +1377,7 @@ class BBIAVision:
             self._scan_thread.join(timeout=1.0)
             if self._scan_thread.is_alive():
                 logger.warning(
-                    "Thread scan asynchrone n'a pas pu être arrêté proprement"
+                    "Thread scan asynchrone n'a pas pu être arrêté proprement",
                 )
 
         logger.info("✅ Scan asynchrone arrêté")

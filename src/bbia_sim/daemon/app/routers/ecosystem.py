@@ -4,14 +4,14 @@ import asyncio
 import logging
 import time
 from datetime import datetime
-from typing import Any
+from typing import Annotated, Any
 
 from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel, Field
 
-from ....bbia_behavior import BBIABehaviorManager
-from ....bbia_emotions import BBIAEmotions
-from ....robot_factory import RobotFactory
+from bbia_sim.bbia_behavior import BBIABehaviorManager
+from bbia_sim.bbia_emotions import BBIAEmotions
+from bbia_sim.robot_factory import RobotFactory
 
 logger = logging.getLogger(__name__)
 
@@ -42,7 +42,7 @@ def format_uptime(seconds: float) -> str:
 
 # OPTIMISATION RAM: Import module-level au lieu de dynamique (évite imports répétés)
 try:
-    from ...ws.telemetry import manager as _telemetry_manager_import
+    from bbia_sim.daemon.ws.telemetry import manager as _telemetry_manager_import
 except ImportError:
     _telemetry_manager_import = None  # type: ignore[assignment]
 
@@ -150,7 +150,7 @@ class APIStatus(BaseModel):
     active_connections: int = Field(..., description="Connexions WebSocket actives")
 
 
-@router.get("/capabilities", response_model=RobotCapabilities)
+@router.get("/capabilities")
 async def get_robot_capabilities() -> RobotCapabilities:
     """Récupère les capacités du robot Reachy Mini.
 
@@ -175,14 +175,14 @@ async def get_robot_capabilities() -> RobotCapabilities:
             simulation_mode=True,
         )
     except Exception as e:
-        logger.exception("Erreur lors de la récupération des capacités: %s", e)
+        logger.exception("Erreur lors de la récupération des capacités")
         raise HTTPException(
             status_code=500,
             detail="Erreur lors de la récupération des capacités",
         ) from e
 
 
-@router.get("/status", response_model=APIStatus)
+@router.get("/status")
 async def get_api_status() -> APIStatus:
     """Récupère le statut de l'API BBIA-SIM.
 
@@ -223,19 +223,21 @@ async def get_api_status() -> APIStatus:
             active_connections=active_conn,
         )
     except Exception as e:
-        logger.exception("Erreur lors de la récupération du statut: %s", e)
+        logger.exception("Erreur lors de la récupération du statut")
         raise HTTPException(
             status_code=500,
             detail="Erreur lors de la récupération du statut",
         ) from e
 
 
-@router.post("/emotions/apply", response_model=EmotionResponse)
+@router.post("/emotions/apply")
 async def apply_emotion(
-    emotion: str = Query(..., description="Nom de l'émotion à appliquer"),
-    intensity: float = Query(0.5, ge=0.0, le=1.0, description="Intensité de l'émotion"),
-    duration: float = Query(5.0, gt=0, description="Durée en secondes"),
-    joint: str | None = Query(None, description="Joint spécifique à animer"),
+    emotion: Annotated[str, Query(description="Nom de l'émotion à appliquer")] = ...,
+    intensity: Annotated[
+        float, Query(ge=0.0, le=1.0, description="Intensité de l'émotion")
+    ] = 0.5,
+    duration: Annotated[float, Query(gt=0, description="Durée en secondes")] = 5.0,
+    joint: Annotated[str | None, Query(description="Joint spécifique à animer")] = None,
 ) -> EmotionResponse:
     """Applique une émotion BBIA au robot.
 
@@ -289,20 +291,15 @@ async def apply_emotion(
         ) from e
 
 
-@router.post("/behaviors/execute", response_model=BehaviorResponse)
+@router.post("/behaviors/execute")
 async def execute_behavior(
-    behavior: str = Query(..., description="Nom du comportement à exécuter"),
-    intensity: float = Query(
-        1.0,
-        ge=0.0,
-        le=2.0,
-        description="Intensité du comportement",
-    ),
-    duration: float | None = Query(
-        None,
-        gt=0,
-        description="Durée personnalisée en secondes",
-    ),
+    behavior: Annotated[str, Query(description="Nom du comportement à exécuter")] = ...,
+    intensity: Annotated[
+        float, Query(ge=0.0, le=2.0, description="Intensité du comportement")
+    ] = 1.0,
+    duration: Annotated[
+        float | None, Query(gt=0, description="Durée personnalisée en secondes")
+    ] = None,
 ) -> BehaviorResponse:
     """Exécute un comportement BBIA.
 
@@ -392,7 +389,7 @@ async def get_available_emotions() -> dict[str, Any]:
             "timestamp": datetime.now().isoformat(),
         }
     except Exception as e:
-        logger.exception("Erreur lors de la récupération des émotions: %s", e)
+        logger.exception("Erreur lors de la récupération des émotions")
         raise HTTPException(
             status_code=500,
             detail="Erreur lors de la récupération des émotions",
@@ -436,7 +433,7 @@ async def get_available_behaviors() -> dict[str, Any]:
             "timestamp": datetime.now().isoformat(),
         }
     except Exception as e:
-        logger.exception("Erreur lors de la récupération des comportements: %s", e)
+        logger.exception("Erreur lors de la récupération des comportements")
         raise HTTPException(
             status_code=500,
             detail="Erreur lors de la récupération des comportements",
@@ -485,7 +482,7 @@ async def get_demo_modes() -> dict[str, Any]:
             "timestamp": datetime.now().isoformat(),
         }
     except Exception as e:
-        logger.exception("Erreur lors de la récupération des modes de démo: %s", e)
+        logger.exception("Erreur lors de la récupération des modes de démo")
         raise HTTPException(
             status_code=500,
             detail="Erreur lors de la récupération des modes de démo",
@@ -494,9 +491,9 @@ async def get_demo_modes() -> dict[str, Any]:
 
 @router.post("/demo/start")
 async def start_demo_mode(
-    mode: str = Query(..., description="Mode de démonstration"),
-    duration: float = Query(30.0, gt=0, description="Durée en secondes"),
-    emotion: str | None = Query(None, description="Émotion à démontrer"),
+    mode: Annotated[str, Query(description="Mode de démonstration")] = ...,
+    duration: Annotated[float, Query(gt=0, description="Durée en secondes")] = 30.0,
+    emotion: Annotated[str | None, Query(description="Émotion à démontrer")] = None,
 ) -> dict[str, Any]:
     """Démarre un mode de démonstration.
 
@@ -533,7 +530,7 @@ async def start_demo_mode(
         try:
             # Démarrer simulation si nécessaire
             if mode in ["simulation", "mixed"]:
-                from ...simulation_service import simulation_service
+                from bbia_sim.daemon.simulation_service import simulation_service
 
                 if not simulation_service.is_simulation_ready():
                     success = await simulation_service.start_simulation(headless=True)
@@ -547,7 +544,7 @@ async def start_demo_mode(
             # Appliquer émotion si demandée
             if emotion:
                 try:
-                    from ....bbia_emotions import BBIAEmotions
+                    from bbia_sim.bbia_emotions import BBIAEmotions
 
                     emotions_module = BBIAEmotions()
                     # Valider émotion - utiliser toutes les émotions disponibles
@@ -578,7 +575,7 @@ async def start_demo_mode(
                     await asyncio.sleep(duration)
                     try:
                         if mode in ["simulation", "mixed"]:
-                            from ...simulation_service import (
+                            from bbia_sim.daemon.simulation_service import (
                                 simulation_service as sim_service,
                             )
 
@@ -596,7 +593,7 @@ async def start_demo_mode(
         except HTTPException:
             raise
         except Exception as e:
-            logger.exception("Erreur logique démo: %s", e)
+            logger.exception("Erreur logique démo")
             demo_info["status"] = "error"
             demo_info["error"] = str(e)
 
@@ -604,7 +601,7 @@ async def start_demo_mode(
     except HTTPException:
         raise
     except Exception as e:
-        logger.exception("Erreur lors du démarrage de la démo: %s", e)
+        logger.exception("Erreur lors du démarrage de la démo")
         raise HTTPException(
             status_code=500,
             detail="Erreur lors du démarrage de la démo",

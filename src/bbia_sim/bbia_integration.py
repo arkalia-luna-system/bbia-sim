@@ -201,7 +201,7 @@ class BBIAIntegration:
             return True
 
         except Exception as e:
-            logger.exception("❌ Erreur démarrage intégration : %s", e)
+            logger.exception("❌ Erreur démarrage intégration ")
             return False
 
     async def stop_integration(self) -> None:
@@ -240,7 +240,9 @@ class BBIAIntegration:
 
         try:
             logger.info(
-                "🎭 Application émotion '%s' (intensité: %s)", emotion, intensity
+                "🎭 Application émotion '%s' (intensité: %s)",
+                emotion,
+                intensity,
             )
 
             # Mettre à jour l'état BBIA
@@ -473,7 +475,7 @@ class BBIAIntegration:
             return True
 
         except Exception as e:
-            logger.exception("❌ Erreur application émotion : %s", e)
+            logger.exception("❌ Erreur application émotion ")
             return False
 
     async def react_to_vision_detection(self, detection_data: dict[str, Any]) -> bool:
@@ -526,7 +528,8 @@ class BBIAIntegration:
                                     f"Look_at_world vers visage: ({x:.2f}, {y:.2f}, {z:.2f})",
                                 )
                             else:
-                                raise ValueError("Position 3D hors limites")
+                                msg = "Position 3D hors limites"
+                                raise ValueError(msg)
                         # Méthode 2: look_at_image si coordonnées image disponibles
                         elif hasattr(robot_api, "look_at_image"):
                             bbox = face_data.get("bbox", {})
@@ -572,7 +575,7 @@ class BBIAIntegration:
             return False
 
         except Exception as e:
-            logger.exception("❌ Erreur réaction visuelle : %s", e)
+            logger.exception("❌ Erreur réaction visuelle ")
             return False
 
     async def sync_voice_with_movements(
@@ -651,7 +654,7 @@ class BBIAIntegration:
             return True
 
         except Exception as e:
-            logger.exception("❌ Erreur synchronisation voix : %s", e)
+            logger.exception("❌ Erreur synchronisation voix ")
             return False
 
     async def execute_behavior_sequence(self, behavior_name: str) -> bool:
@@ -693,7 +696,7 @@ class BBIAIntegration:
             return True
 
         except Exception as e:
-            logger.exception("❌ Erreur exécution comportement : %s", e)
+            logger.exception("❌ Erreur exécution comportement ")
             return False
 
     def get_integration_status(self) -> dict[str, Any]:
@@ -729,6 +732,7 @@ async def create_bbia_integration(model_path: str | None = None) -> BBIAIntegrat
     success = await integration.start_integration()
 
     if not success:
-        raise RuntimeError("Impossible de démarrer l'intégration BBIA")
+        msg = "Impossible de démarrer l'intégration BBIA"
+        raise RuntimeError(msg)
 
     return integration

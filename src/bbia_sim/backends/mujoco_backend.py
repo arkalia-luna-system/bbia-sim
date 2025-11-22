@@ -12,7 +12,7 @@ from typing import Any
 import mujoco  # type: ignore[import-untyped]
 import mujoco.viewer  # type: ignore[import-untyped]
 
-from ..robot_api import RobotAPI
+from bbia_sim.robot_api import RobotAPI
 
 # Types pour goto_target
 try:
@@ -540,11 +540,15 @@ class MuJoCoBackend(RobotAPI):
 
         Raises:
             ValueError: Si duration <= 0
+
         """
         if duration <= 0.0:
-            raise ValueError(
+            msg = (
                 "Duration must be positive and non-zero. "
                 "Use set_joint_pos() for immediate position setting."
+            )
+            raise ValueError(
+                msg,
             )
 
         if not self.is_connected:
@@ -602,11 +606,13 @@ class MuJoCoBackend(RobotAPI):
             self.step()
 
             logger.info(
-                "goto_target exécuté (duration=%.2fs, method=%s)", duration, method
+                "goto_target exécuté (duration=%.2fs, method=%s)",
+                duration,
+                method,
             )
 
-        except Exception as e:
-            logger.exception("Erreur goto_target MuJoCo: %s", e)
+        except Exception:
+            logger.exception("Erreur goto_target MuJoCo")
 
     def get_telemetry(self) -> dict[str, Any]:
         """Retourne les données de télémétrie."""

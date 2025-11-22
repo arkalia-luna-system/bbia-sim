@@ -51,6 +51,7 @@ class TroubleshootingChecker:
 
         Returns:
             Dictionnaire avec résultats de tous les checks
+
         """
         self.results = {
             "python": self.check_python(),
@@ -86,6 +87,7 @@ class TroubleshootingChecker:
 
         Returns:
             Résultat du check Python
+
         """
         try:
             version = sys.version_info
@@ -118,6 +120,7 @@ class TroubleshootingChecker:
 
         Returns:
             Résultat du check dépendances
+
         """
         dependencies = {
             "numpy": "numpy",
@@ -159,6 +162,7 @@ class TroubleshootingChecker:
 
         Returns:
             Résultat du check caméra
+
         """
         checks = []
 
@@ -206,6 +210,7 @@ class TroubleshootingChecker:
 
         Returns:
             Résultat du check audio
+
         """
         if os.environ.get("BBIA_DISABLE_AUDIO") == "1":
             return {
@@ -251,6 +256,7 @@ class TroubleshootingChecker:
 
         Returns:
             Résultat du check réseau
+
         """
         checks = []
 
@@ -290,6 +296,7 @@ class TroubleshootingChecker:
 
         Returns:
             Résultat du check MuJoCo
+
         """
         if not MUJOCO_AVAILABLE:
             return {
@@ -318,6 +325,7 @@ class TroubleshootingChecker:
 
         Returns:
             Résultat du check ports
+
         """
         ports_to_check = [8000, 8080]
         available_ports = []
@@ -357,6 +365,7 @@ class TroubleshootingChecker:
 
         Returns:
             Résultat du check permissions
+
         """
         checks = []
 
@@ -393,6 +402,7 @@ class TroubleshootingChecker:
 
         Returns:
             Résultat du test caméra
+
         """
         if not CV2_AVAILABLE:
             return {
@@ -440,6 +450,7 @@ class TroubleshootingChecker:
 
         Returns:
             Résultat du test audio
+
         """
         if os.environ.get("BBIA_DISABLE_AUDIO") == "1":
             return {
@@ -483,7 +494,7 @@ class TroubleshootingChecker:
                                     "input": info.get("maxInputChannels", 0),
                                     "output": info.get("maxOutputChannels", 0),
                                 },
-                            }
+                            },
                         )
                 except (ValueError, TypeError, RuntimeError):
                     pass
@@ -511,6 +522,7 @@ class TroubleshootingChecker:
 
         Returns:
             Résultat du test ping
+
         """
         try:
             # Test connexion TCP simple
@@ -543,6 +555,7 @@ class TroubleshootingChecker:
 
         Returns:
             Dictionnaire avec liens documentation
+
         """
         return {
             "faq": "docs/getting-started/troubleshooting.md",
@@ -562,6 +575,7 @@ def check_all() -> dict[str, Any]:
 
     Returns:
         Résultats de tous les checks
+
     """
     return _checker.check_all()
 
@@ -571,6 +585,7 @@ def test_camera() -> dict[str, Any]:
 
     Returns:
         Résultat du test caméra
+
     """
     return _checker.test_camera()
 
@@ -580,6 +595,7 @@ def test_audio() -> dict[str, Any]:
 
     Returns:
         Résultat du test audio
+
     """
     return _checker.test_audio()
 
@@ -592,6 +608,7 @@ def test_network_ping(host: str = "8.8.8.8") -> dict[str, Any]:
 
     Returns:
         Résultat du test réseau
+
     """
     return _checker.test_network_ping(host)
 
@@ -601,5 +618,6 @@ def get_documentation_links() -> dict[str, str]:
 
     Returns:
         Liens vers documentation
+
     """
     return _checker.get_documentation_links()

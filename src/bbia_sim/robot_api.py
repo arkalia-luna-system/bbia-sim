@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """RobotAPI - Interface unifiée Sim/Robot
-Backend unique pour MuJoCo et Reachy réel
+Backend unique pour MuJoCo et Reachy réel.
 """
 
 import logging
@@ -104,10 +104,14 @@ class RobotAPI(ABC):
         Raises:
             NotImplementedError: Si le backend ne supporte pas goto_target
             ValueError: Si duration <= 0
+
         """
-        raise NotImplementedError(
+        msg = (
             f"{self.__class__.__name__} ne supporte pas goto_target(). "
             "Utilisez set_joint_pos() pour contrôler les joints individuellement."
+        )
+        raise NotImplementedError(
+            msg,
         )
 
     @abstractmethod
@@ -367,7 +371,7 @@ class RobotAPI(ABC):
                 return True
             return False
         except Exception as e:
-            logger.exception("Erreur set_sleeping_pose: %s", e)
+            logger.exception("Erreur set_sleeping_pose")
             return False
 
     def _execute_exploration(self, duration: float) -> bool:
@@ -438,6 +442,7 @@ class RobotAPI(ABC):
 
         Returns:
             RobotStatus: Dictionnaire typé contenant le statut du robot
+
         """
         return {
             "connected": self.is_connected,
@@ -473,4 +478,5 @@ def __getattr__(name: str) -> Any:
         from .robot_factory import RobotFactory
 
         return RobotFactory
-    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+    msg = f"module {__name__!r} has no attribute {name!r}"
+    raise AttributeError(msg)

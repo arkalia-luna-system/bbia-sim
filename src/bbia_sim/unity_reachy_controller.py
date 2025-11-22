@@ -110,9 +110,9 @@ class UnityReachyMiniController:
             try:
                 try:
                     command = input("🤖 BBIA > ").strip().lower()
-                except Exception as input_error:
+                except Exception:
                     # Gérer les exceptions levées par input() (comme dans les tests)
-                    logger.error(f"❌ Erreur: {input_error}")
+                    logger.exception("❌ Erreur")
                     iteration_count += 1
                     continue
                 if command in {"quit", "exit"}:
@@ -121,9 +121,11 @@ class UnityReachyMiniController:
                     self._show_help()
                 elif command == "status":
                     logger.info(
-                        "Status: Connected"
-                        if self.is_connected
-                        else "Status: Disconnected"
+                        (
+                            "Status: Connected"
+                            if self.is_connected
+                            else "Status: Disconnected"
+                        ),
                     )
                 elif command.startswith("head "):
                     parts = command.split()[1:]
@@ -132,8 +134,8 @@ class UnityReachyMiniController:
                             x, y, z = map(float, parts)
                             self.move_head(x, y, z)
                         except ValueError:
-                            logger.error(
-                                "❌ Valeurs invalides pour head. Utilisez: head x y z"
+                            logger.exception(
+                                "❌ Valeurs invalides pour head. Utilisez: head x y z",
                             )
                     else:
                         logger.error("❌ Commande head invalide. Utilisez: head x y z")
@@ -157,8 +159,8 @@ class UnityReachyMiniController:
                 iteration_count += 1
             except KeyboardInterrupt:
                 break
-            except Exception as e:
-                logger.error(f"❌ Erreur: {e}")
+            except Exception:
+                logger.exception("❌ Erreur")
                 iteration_count += 1
 
         if iteration_count >= max_iterations:

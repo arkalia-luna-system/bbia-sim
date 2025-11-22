@@ -7,6 +7,7 @@ Voix : sélection automatique de la voix la plus proche de
 Reachy Mini Wireless (féminine, française si possible).
 """
 
+import contextlib
 import logging
 import os
 import queue
@@ -205,11 +206,14 @@ def get_bbia_voice(engine: Any) -> str:
             return value
 
     # 10. Sinon, message d'aide
-    raise RuntimeError(
+    msg = (
         "Aucune voix française féminine n'est installée sur ce Mac. "
         "Va dans Préférences Système > Accessibilité > Parole > "
         "Voix du système et installe une voix française féminine "
-        "(ex: Aurélie Enhanced, Amélie).",
+        "(ex: Aurélie Enhanced, Amélie)."
+    )
+    raise RuntimeError(
+        msg,
     )
 
 
@@ -263,19 +267,20 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
                                 return
                 except (AttributeError, RuntimeError, OSError, TypeError) as e:
                     logger.debug(
-                        "Erreur lors de la lecture audio via SDK speaker: %s", e
+                        "Erreur lors de la lecture audio via SDK speaker: %s",
+                        e,
                     )
                 try:
                     # Fallback simple: lecture locale sans dépendance forte
                     import wave as _wave
 
-                    import numpy as _np
+                    import numpy as np
                     import sounddevice as _sd
 
                     with _wave.open(wav_path, "rb") as wf:
                         sr = wf.getframerate()
                         frames = wf.readframes(wf.getnframes())
-                        data = _np.frombuffer(frames, dtype=_np.int16)
+                        data = np.frombuffer(frames, dtype=np.int16)
                         _sd.play(data, sr)
                         _sd.wait()
                     return
@@ -292,11 +297,13 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
         except (ImportError, RuntimeError, OSError) as e:
             # Fallback vers logique pyttsx3 plus bas
             logger.debug(
-                "Erreur lors de la synthèse vocale avancée, fallback pyttsx3: %s", e
+                "Erreur lors de la synthèse vocale avancée, fallback pyttsx3: %s",
+                e,
             )
         except Exception as e:
             logger.debug(
-                "Erreur inattendue synthèse vocale avancée, fallback pyttsx3: %s", e
+                "Erreur inattendue synthèse vocale avancée, fallback pyttsx3: %s",
+                e,
             )
 
     # OPTIMISATION SDK: Utiliser robot.media.* si disponible (toujours disponible via shim)
@@ -444,11 +451,11 @@ def reconnaitre_parole(
                     else:
                         # Gérer numpy.ndarray ou autres types
                         try:
-                            import numpy as np_module
+                            import numpy as np
 
-                            if isinstance(audio_data, np_module.ndarray):
+                            if isinstance(audio_data, np.ndarray):
                                 wf.writeframes(
-                                    (audio_data.astype(np_module.int16)).tobytes(),
+                                    (audio_data.astype(np.int16)).tobytes(),
                                 )
                             else:
                                 wf.writeframes(bytes(audio_data))
@@ -562,7 +569,7 @@ def _transcribe_thread_worker() -> None:
         except queue.Empty:
             continue
         except Exception as e:
-            logger.exception("Erreur thread transcription asynchrone: %s", e)
+            logger.exception("Erreur thread transcription asynchrone")
             _transcribe_queue.task_done()
 
     logger.debug("🎤 Thread transcription asynchrone arrêté")
@@ -573,6 +580,7 @@ def start_async_transcription() -> bool:
 
     Returns:
         True si démarré avec succès, False sinon
+
     """
     global _transcribe_thread, _transcribe_active
 
@@ -603,16 +611,14 @@ def stop_async_transcription() -> None:
         _transcribe_active = False
 
         # Envoyer signal d'arrêt
-        try:
+        with contextlib.suppress(queue.Full):
             _transcribe_queue.put_nowait(None)
-        except queue.Full:
-            pass
 
         if _transcribe_thread and _transcribe_thread.is_alive():
             _transcribe_thread.join(timeout=2.0)
             if _transcribe_thread.is_alive():
                 logger.warning(
-                    "Thread transcription asynchrone n'a pas pu être arrêté proprement"
+                    "Thread transcription asynchrone n'a pas pu être arrêté proprement",
                 )
 
         logger.info("✅ Transcription asynchrone arrêtée")
@@ -634,6 +640,7 @@ def transcribe_audio_async(
 
     Returns:
         Texte transcrit ou None si erreur/timeout
+
     """
     global _last_transcribe_result
 
@@ -698,10 +705,9 @@ def _transcribe_audio_sync(
         stt = WhisperSTT(model_size=model_size, language="fr")
 
         # Charger le modèle (utilise cache si disponible)
-        if not stt.is_loaded:
-            if not stt.load_model():
-                logging.warning("Impossible de charger le modèle Whisper")
-                return None
+        if not stt.is_loaded and not stt.load_model():
+            logging.warning("Impossible de charger le modèle Whisper")
+            return None
 
         # Convertir audio_data en fichier temporaire si nécessaire
         import tempfile
@@ -789,10 +795,9 @@ def transcribe_audio(
         stt = WhisperSTT(model_size=model_size, language="fr")
 
         # Charger le modèle (utilise cache si disponible)
-        if not stt.is_loaded:
-            if not stt.load_model():
-                logging.warning("Impossible de charger le modèle Whisper")
-                return None
+        if not stt.is_loaded and not stt.load_model():
+            logging.warning("Impossible de charger le modèle Whisper")
+            return None
 
         # Convertir audio_data en fichier temporaire si nécessaire
         import tempfile

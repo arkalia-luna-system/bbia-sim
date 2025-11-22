@@ -131,7 +131,7 @@ class BBIABreathingAnimation:
                 time.sleep(0.05)
 
         except Exception as e:
-            logger.exception("Erreur boucle respiration: %s", e)
+            logger.exception("Erreur boucle respiration")
         finally:
             self.is_active = False
 
@@ -250,7 +250,7 @@ class BBIAPoseTransitionManager:
                 time.sleep(1.0)
 
         except Exception as e:
-            logger.exception("Erreur boucle transitions poses: %s", e)
+            logger.exception("Erreur boucle transitions poses")
         finally:
             self.is_active = False
 

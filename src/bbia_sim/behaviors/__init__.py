@@ -32,20 +32,20 @@ from .teaching import TeachingBehavior
 from .weather_report import WeatherReportBehavior
 
 __all__ = [
+    "AlarmClockBehavior",
     "BBIABehavior",
     "ConversationBehavior",
-    "FollowFaceBehavior",
-    "FollowObjectBehavior",
     "DanceBehavior",
     "EmotionShowBehavior",
+    "ExerciseBehavior",
+    "FollowFaceBehavior",
+    "FollowObjectBehavior",
+    "GameBehavior",
+    "MeditationBehavior",
+    "MusicReactionBehavior",
+    "NewsReaderBehavior",
     "PhotoBoothBehavior",
     "StorytellingBehavior",
     "TeachingBehavior",
-    "MeditationBehavior",
-    "ExerciseBehavior",
-    "MusicReactionBehavior",
-    "AlarmClockBehavior",
     "WeatherReportBehavior",
-    "NewsReaderBehavior",
-    "GameBehavior",
 ]

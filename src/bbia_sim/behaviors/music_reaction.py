@@ -13,7 +13,7 @@ from typing import TYPE_CHECKING, Any
 from .base import BBIABehavior
 
 if TYPE_CHECKING:
-    from ..robot_api import RobotAPI
+    from bbia_sim.robot_api import RobotAPI
 
 logger = logging.getLogger(__name__)
 
@@ -35,6 +35,7 @@ class MusicReactionBehavior(BBIABehavior):
 
         Args:
             robot_api: Interface robotique pour contrôler le robot
+
         """
         super().__init__(
             name="music_reaction",
@@ -70,6 +71,7 @@ class MusicReactionBehavior(BBIABehavior):
 
         Returns:
             True si le comportement peut être exécuté
+
         """
         if not self.robot_api:
             logger.warning("MusicReactionBehavior: robot_api non disponible")
@@ -86,6 +88,7 @@ class MusicReactionBehavior(BBIABehavior):
 
         Returns:
             True si l'exécution a réussi
+
         """
         if not self.robot_api:
             return False
@@ -105,7 +108,7 @@ class MusicReactionBehavior(BBIABehavior):
             self._react_to_music(genre, duration)
             return True
         except Exception as e:
-            logger.exception("Erreur lors de la réaction musicale: %s", e)
+            logger.exception("Erreur lors de la réaction musicale")
             return False
         finally:
             self.is_active = False
@@ -117,6 +120,7 @@ class MusicReactionBehavior(BBIABehavior):
         Args:
             genre: Genre musical
             duration: Durée en secondes
+
         """
         genre_info = self.music_genres[genre]
         emotion = genre_info["emotion"]
@@ -125,7 +129,7 @@ class MusicReactionBehavior(BBIABehavior):
 
         # Appliquer émotion selon genre
         try:
-            from ..bbia_emotions import BBIAEmotions
+            from bbia_sim.bbia_emotions import BBIAEmotions
 
             emotions_module = BBIAEmotions()
             emotions_module.set_emotion(emotion, intensity=0.7)
@@ -161,6 +165,7 @@ class MusicReactionBehavior(BBIABehavior):
 
         Args:
             count: Compteur de mouvement
+
         """
         if (
             not self.robot_api
@@ -190,6 +195,7 @@ class MusicReactionBehavior(BBIABehavior):
 
         Args:
             count: Compteur de mouvement
+
         """
         if (
             not self.robot_api
@@ -219,6 +225,7 @@ class MusicReactionBehavior(BBIABehavior):
 
         Args:
             count: Compteur de mouvement
+
         """
         if (
             not self.robot_api
@@ -249,12 +256,13 @@ class MusicReactionBehavior(BBIABehavior):
         Args:
             text: Texte à dire
             emotion: Émotion à exprimer
+
         """
         if not self.robot_api:
             return
 
         try:
-            from ..bbia_voice import dire_texte
+            from bbia_sim.bbia_voice import dire_texte
 
             dire_texte(text, robot_api=self.robot_api)
         except ImportError:

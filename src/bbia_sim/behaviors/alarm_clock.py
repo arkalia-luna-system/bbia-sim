@@ -15,7 +15,7 @@ from typing import TYPE_CHECKING, Any
 from .base import BBIABehavior
 
 if TYPE_CHECKING:
-    from ..robot_api import RobotAPI
+    from bbia_sim.robot_api import RobotAPI
 
 logger = logging.getLogger(__name__)
 
@@ -37,6 +37,7 @@ class AlarmClockBehavior(BBIABehavior):
 
         Args:
             robot_api: Interface robotique pour contrôler le robot
+
         """
         super().__init__(
             name="alarm_clock",
@@ -57,6 +58,7 @@ class AlarmClockBehavior(BBIABehavior):
 
         Returns:
             True si le comportement peut être exécuté
+
         """
         if not self.robot_api:
             logger.warning("AlarmClockBehavior: robot_api non disponible")
@@ -74,6 +76,7 @@ class AlarmClockBehavior(BBIABehavior):
 
         Returns:
             True si l'exécution a réussi
+
         """
         if not self.robot_api:
             return False
@@ -91,7 +94,7 @@ class AlarmClockBehavior(BBIABehavior):
             self._wait_for_alarm()
             return True
         except Exception as e:
-            logger.exception("Erreur lors du réveil: %s", e)
+            logger.exception("Erreur lors du réveil")
             return False
         finally:
             self.is_active = False
@@ -153,13 +156,14 @@ class AlarmClockBehavior(BBIABehavior):
 
         Args:
             phase: Dictionnaire avec 'text', 'emotion', 'movement', 'intensity'
+
         """
         if not self.robot_api:
             return
 
         # Appliquer émotion
         try:
-            from ..bbia_emotions import BBIAEmotions
+            from bbia_sim.bbia_emotions import BBIAEmotions
 
             emotions_module = BBIAEmotions()
             emotions_module.set_emotion(
@@ -182,7 +186,7 @@ class AlarmClockBehavior(BBIABehavior):
         # Parler
         text = phase.get("text", "")
         try:
-            from ..bbia_voice import dire_texte
+            from bbia_sim.bbia_voice import dire_texte
 
             dire_texte(text, robot_api=self.robot_api)
         except ImportError:
@@ -193,6 +197,7 @@ class AlarmClockBehavior(BBIABehavior):
 
         Returns:
             True si snooze activé, False si max atteint
+
         """
         if self.snooze_count >= self.max_snooze:
             logger.warning("Nombre maximum de snooze atteint")
@@ -206,7 +211,7 @@ class AlarmClockBehavior(BBIABehavior):
             # Ajouter minutes de snooze
             alarm_datetime = datetime.combine(datetime.now().date(), self.alarm_time)
             snooze_datetime = alarm_datetime.replace(
-                minute=alarm_datetime.minute + self.snooze_minutes
+                minute=alarm_datetime.minute + self.snooze_minutes,
             )
             self.alarm_time = snooze_datetime.time()
 
@@ -219,7 +224,7 @@ class AlarmClockBehavior(BBIABehavior):
 
         # Message
         try:
-            from ..bbia_voice import dire_texte
+            from bbia_sim.bbia_voice import dire_texte
 
             dire_texte(
                 f"D'accord, je vous réveillerai dans {self.snooze_minutes} minutes.",

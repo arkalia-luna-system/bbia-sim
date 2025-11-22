@@ -121,7 +121,8 @@ class FollowFaceBehavior(BBIABehavior):
                         # Estimation distance basée sur taille (plus grand = plus proche)
                         face_size = width * height
                         distance_estimate = max(
-                            0.3, min(2.0, 2.0 - (face_size / 50000))
+                            0.3,
+                            min(2.0, 2.0 - (face_size / 50000)),
                         )
 
                         # Ajuster émotion selon distance
@@ -138,14 +139,13 @@ class FollowFaceBehavior(BBIABehavior):
                         # Suivre même sans bbox détaillé
                         self._track_face(face)
 
-                else:
-                    # Aucun visage détecté
-                    if self.last_face_time:
-                        time_since_last = time.time() - self.last_face_time
-                        if time_since_last > self.face_lost_threshold:
-                            face_lost_count += 1
-                            self._react_to_face_lost()
-                            self.last_face_time = None
+                # Aucun visage détecté
+                elif self.last_face_time:
+                    time_since_last = time.time() - self.last_face_time
+                    if time_since_last > self.face_lost_threshold:
+                        face_lost_count += 1
+                        self._react_to_face_lost()
+                        self.last_face_time = None
 
                 time.sleep(0.1)  # 10 Hz pour suivi fluide
 
@@ -158,7 +158,7 @@ class FollowFaceBehavior(BBIABehavior):
         except KeyboardInterrupt:
             logger.info("Suivi interrompu par l'utilisateur")
         except Exception as e:
-            logger.exception("Erreur durant suivi visage: %s", e)
+            logger.exception("Erreur durant suivi visage")
         finally:
             self.is_tracking = False
             # Retour à l'émotion neutre

@@ -289,8 +289,9 @@ class OpenVoiceTTSTTS:
             # Validation supplémentaire: vérifier que le premier argument
             # est un chemin valide
             if not cmd_args or not isinstance(cmd_args[0], str):
+                msg = "Commande invalide: premier argument doit être une chaîne"
                 raise ValueError(
-                    "Commande invalide: premier argument doit être une chaîne"
+                    msg,
                 )
             # Vérifier que le chemin n'est pas relatif dangereux
             if cmd_args[0].startswith("/") or ".." in cmd_args[0]:
@@ -499,7 +500,7 @@ def get_stt_backend() -> SpeechToText:
         stt = WhisperSTT()
         # Si whisper indisponible, fallback silencieux
         # Utiliser méthode publique si disponible, sinon accès direct nécessaire
-        return stt if getattr(stt, "_ready", False) else DummySTT()  # noqa: SLF001
+        return stt if getattr(stt, "_ready", False) else DummySTT()
     # Parakeet etc. à brancher plus tard; fallback sûr
     return DummySTT()
 
@@ -510,7 +511,7 @@ def get_llm_backend() -> LocalLLM:
     if name in {"llama.cpp", "llamacpp", "llama"}:
         llm = LlamaCppLLM()
         # Utiliser méthode publique si disponible, sinon accès direct nécessaire
-        return llm if getattr(llm, "_ready", False) else EchoLLM()  # noqa: SLF001
+        return llm if getattr(llm, "_ready", False) else EchoLLM()
     return EchoLLM()
 
 

@@ -26,6 +26,7 @@ def _get_compiled_regex(pattern: str, flags: int = 0) -> re.Pattern[str]:
 
     Returns:
         Regex compilée (cachée ou nouvellement compilée)
+
     """
     return re.compile(pattern, flags)
 
@@ -43,7 +44,7 @@ except ImportError:
     HF_AVAILABLE = False
     logger.warning(
         "Dépendances Hugging Face non disponibles. "
-        "Installez avec: pip install transformers torch accelerate"
+        "Installez avec: pip install transformers torch accelerate",
     )
 
 
@@ -60,6 +61,7 @@ class BBIAChat:
         context: Historique conversation (deque, max 10 messages)
         personality: Personnalité actuelle (friendly, professional, etc.)
         user_preferences: Préférences utilisateur apprises
+
     """
 
     # Constantes pour limites de longueur
@@ -71,6 +73,7 @@ class BBIAChat:
 
         Args:
             robot_api: Interface robotique pour exécuter actions (optionnel)
+
         """
         self.robot_api = robot_api
         self.llm_model: Any | None = None
@@ -198,10 +201,10 @@ class BBIAChat:
             logger.info("✅ TinyLlama chargé avec succès")
 
         except (ImportError, RuntimeError, OSError, ValueError) as e:
-            logger.exception("❌ Impossible de charger TinyLlama: %s", e)
+            logger.exception("❌ Impossible de charger TinyLlama")
             logger.warning("Mode fallback: réponses basiques (sans LLM)")
         except Exception as e:
-            logger.exception("❌ Erreur inattendue chargement TinyLlama: %s", e)
+            logger.exception("❌ Erreur inattendue chargement TinyLlama")
             logger.warning("Mode fallback: réponses basiques (sans LLM)")
 
     def generate(
@@ -221,6 +224,7 @@ class BBIAChat:
 
         Returns:
             Réponse générée par le LLM, ou message d'erreur si échec
+
         """
         if not self.llm_model or not self.llm_tokenizer:
             return "Désolé, le modèle LLM n'est pas disponible."
@@ -266,7 +270,7 @@ class BBIAChat:
 
             # Décoder réponse
             response: str = str(
-                self.llm_tokenizer.decode(outputs[0], skip_special_tokens=True)
+                self.llm_tokenizer.decode(outputs[0], skip_special_tokens=True),
             )
 
             # Nettoyer réponse (retirer prompt si présent)
@@ -277,7 +281,7 @@ class BBIAChat:
             return self._sanitize_response(response)
 
         except Exception as e:
-            logger.exception("❌ Erreur génération LLM: %s", e)
+            logger.exception("❌ Erreur génération LLM")
             return "Désolé, une erreur s'est produite lors de la génération."
 
     def _sanitize_response(self, response: str) -> str:
@@ -290,6 +294,7 @@ class BBIAChat:
 
         Returns:
             Réponse nettoyée et sécurisée
+
         """
         # Retirer blocs de code (```...```) - OPTIMISATION: regex compilée
         code_block_pattern = _get_compiled_regex(r"```[\s\S]*?```")
@@ -312,6 +317,7 @@ class BBIAChat:
 
         Returns:
             Réponse intelligente de BBIA
+
         """
         # OPTIMISATION RAM: Lazy loading strict - charger LLM seulement au premier appel
         if not self.llm_model or not self.llm_tokenizer:
@@ -363,13 +369,13 @@ class BBIAChat:
                     "user": user_message,
                     "assistant": response,
                     "timestamp": time.time(),
-                }
+                },
             )
 
             return response
 
         except Exception as e:
-            logger.exception("❌ Erreur chat: %s", e)
+            logger.exception("❌ Erreur chat")
             return "Je ne comprends pas bien, peux-tu reformuler ?"
 
     def _build_context_prompt(self, user_message: str) -> str:
@@ -380,10 +386,12 @@ class BBIAChat:
 
         Returns:
             Prompt complet avec contexte
+
         """
         # Prompt système avec personnalité
         personality_config = self.PERSONALITIES.get(
-            self.personality, self.PERSONALITIES["friendly"]
+            self.personality,
+            self.PERSONALITIES["friendly"],
         )
         system_prompt = f"{personality_config['system_prompt']}\n\n"
 
@@ -395,9 +403,7 @@ class BBIAChat:
                 context_text += f"BBIA: {entry.get('assistant', '')}\n\n"
 
         # Message actuel
-        prompt = f"{system_prompt}{context_text}Utilisateur: {user_message}\nBBIA: "
-
-        return prompt
+        return f"{system_prompt}{context_text}Utilisateur: {user_message}\nBBIA: "
 
     def _detect_action(self, user_message: str) -> dict[str, Any] | None:
         """Détecte action robot dans message utilisateur.
@@ -407,6 +413,7 @@ class BBIAChat:
 
         Returns:
             Dictionnaire avec action détectée, ou None
+
         """
         # Patterns de détection (regex)
         patterns = {
@@ -429,6 +436,7 @@ class BBIAChat:
 
         Args:
             action: Dictionnaire avec action à exécuter
+
         """
         if not self.robot_api:
             logger.debug("robot_api non disponible - action non exécutée")
@@ -492,7 +500,7 @@ class BBIAChat:
                 logger.info("✅ Action exécutée: sleep (pose sommeil améliorée)")
 
         except Exception as e:
-            logger.exception("❌ Erreur exécution action %s: %s", action_name, e)
+            logger.exception("❌ Erreur exécution action %s:", action_name)
 
     def _extract_emotion(self, user_message: str) -> str | None:
         """Extrait émotion du message utilisateur.
@@ -502,6 +510,7 @@ class BBIAChat:
 
         Returns:
             Nom de l'émotion détectée, ou None
+
         """
         emotion_keywords = {
             "happy": ["content", "heureux", "joyeux", "sourire", "super", "génial"],
@@ -526,6 +535,7 @@ class BBIAChat:
 
         Args:
             emotion: Nom de l'émotion à appliquer
+
         """
         if not self.robot_api:
             logger.debug("robot_api non disponible - émotion non appliquée")
@@ -546,13 +556,14 @@ class BBIAChat:
         except ImportError:
             logger.warning("BBIAEmotions non disponible - émotion non appliquée")
         except Exception as e:
-            logger.exception("❌ Erreur application émotion %s: %s", emotion, e)
+            logger.exception("❌ Erreur application émotion %s:", emotion)
 
     def set_personality(self, personality: str) -> None:
         """Change la personnalité du chat.
 
         Args:
             personality: Nom de la personnalité (friendly, professional, playful, calm, enthusiastic)
+
         """
         if personality in self.PERSONALITIES:
             self.personality = personality
@@ -560,7 +571,7 @@ class BBIAChat:
         else:
             logger.warning(
                 f"⚠️ Personnalité invalide: {personality}. "
-                f"Personnalités disponibles: {list(self.PERSONALITIES.keys())}"
+                f"Personnalités disponibles: {list(self.PERSONALITIES.keys())}",
             )
 
     def learn_preference(self, user_action: str, context: dict[str, Any]) -> None:
@@ -569,6 +580,7 @@ class BBIAChat:
         Args:
             user_action: Action ou préférence exprimée par l'utilisateur
             context: Contexte de la préférence
+
         """
         user_lower = user_action.lower()
 
@@ -599,6 +611,7 @@ class BBIAChat:
 
         Returns:
             Réponse adaptée selon préférences
+
         """
         # Adapter longueur
         if self.user_preferences.get("response_length") == "short":
@@ -656,5 +669,6 @@ class BBIAChat:
 
         except (OSError, json.JSONDecodeError, KeyError) as e:
             logger.debug(
-                "Préférences non chargées (normal si première utilisation): %s", e
+                "Préférences non chargées (normal si première utilisation): %s",
+                e,
             )

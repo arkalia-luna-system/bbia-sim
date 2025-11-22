@@ -222,7 +222,8 @@ class EmotionShowBehavior(BBIABehavior):
                 # Appliquer l'émotion avec transition fluide
                 if not self._apply_emotion(emotion):
                     logger.warning(
-                        "Échec application émotion %s, passage à la suivante", emotion
+                        "Échec application émotion %s, passage à la suivante",
+                        emotion,
                     )
                     continue
 
@@ -241,7 +242,9 @@ class EmotionShowBehavior(BBIABehavior):
                         logger.info("Explication vocale: %s", explanation)
                     except (AttributeError, RuntimeError, ValueError) as e:
                         logger.warning(
-                            "Erreur explication vocale pour %s: %s", emotion, e
+                            "Erreur explication vocale pour %s: %s",
+                            emotion,
+                            e,
                         )
                     except Exception as e:
                         logger.warning(
@@ -269,10 +272,10 @@ class EmotionShowBehavior(BBIABehavior):
             logger.info("Démonstration interrompue par l'utilisateur")
             self._cancelled = True
         except (AttributeError, RuntimeError, ValueError) as e:
-            logger.exception("Erreur durant démonstration émotions: %s", e)
+            logger.exception("Erreur durant démonstration émotions")
             return False
         except Exception as e:
-            logger.exception("Erreur inattendue durant démonstration émotions: %s", e)
+            logger.exception("Erreur inattendue durant démonstration émotions")
             return False
 
         return True
@@ -333,7 +336,9 @@ class EmotionShowBehavior(BBIABehavior):
 
             self.robot_api.set_emotion(sdk_emotion, intensity)
             logger.debug(
-                "Émotion appliquée: %s (intensité: %s)", sdk_emotion, intensity
+                "Émotion appliquée: %s (intensité: %s)",
+                sdk_emotion,
+                intensity,
             )
 
             # Mouvements expressifs selon émotion

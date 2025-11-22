@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """BBIA Awake - Séquence de réveil optimisée pour Reachy Mini
-Conforme au SDK officiel avec intelligence et variété
+Conforme au SDK officiel avec intelligence et variété.
 """
 
 import logging

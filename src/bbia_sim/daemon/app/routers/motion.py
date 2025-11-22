@@ -3,13 +3,13 @@
 import logging
 from datetime import datetime
 from enum import Enum
-from typing import Any
+from typing import Annotated, Any
 
 from fastapi import APIRouter, HTTPException, Query
 
-from ....sim.joints import clamp_joint_angle, validate_joint_name
-from ...models import HeadControl, JointPosition, MotionCommand, Pose
-from ...simulation_service import simulation_service
+from bbia_sim.daemon.models import HeadControl, JointPosition, MotionCommand, Pose
+from bbia_sim.daemon.simulation_service import simulation_service
+from bbia_sim.sim.joints import clamp_joint_angle, validate_joint_name
 
 logger = logging.getLogger(__name__)
 
@@ -31,11 +31,12 @@ class InterpolationMode(str, Enum):
 @router.post("/goto_pose")
 async def goto_pose(
     pose: Pose,
-    duration: float = Query(2.5, gt=0, description="Durée du mouvement en secondes"),
-    interpolation: InterpolationMode = Query(
-        InterpolationMode.MINJERK,
-        description="Mode d'interpolation",
-    ),
+    duration: Annotated[
+        float, Query(gt=0, description="Durée du mouvement en secondes")
+    ] = 2.5,
+    interpolation: Annotated[
+        InterpolationMode, Query(description="Mode d'interpolation")
+    ] = InterpolationMode.MINJERK,
 ) -> dict[str, Any]:
     """Déplace le robot vers une position spécifique avec interpolation.
 
@@ -54,7 +55,7 @@ async def goto_pose(
     )
 
     try:
-        from ....robot_factory import RobotFactory
+        from bbia_sim.robot_factory import RobotFactory
 
         robot = RobotFactory.create_backend("mujoco")
         if robot:
@@ -95,7 +96,7 @@ async def goto_pose(
             "timestamp": datetime.now().isoformat(),
         }
     except Exception as e:
-        logger.exception("Erreur lors du mouvement: %s", e)
+        logger.exception("Erreur lors du mouvement")
         # Retourner quand même une réponse
         return {
             "status": "error",
@@ -248,7 +249,7 @@ async def wake_up() -> dict[str, Any]:
     """
     logger.info("Réveil du robot")
     try:
-        from ....robot_factory import RobotFactory
+        from bbia_sim.robot_factory import RobotFactory
 
         robot = RobotFactory.create_backend("mujoco")
         if robot:
@@ -257,7 +258,7 @@ async def wake_up() -> dict[str, Any]:
                 robot.wake_up()
             else:
                 # Fallback: utiliser comportement wake_up
-                from ....bbia_behavior import BBIABehaviorManager
+                from bbia_sim.bbia_behavior import BBIABehaviorManager
 
                 behavior_manager = BBIABehaviorManager(robot_api=robot)
                 behavior_manager.execute_behavior("wake_up")
@@ -269,7 +270,7 @@ async def wake_up() -> dict[str, Any]:
             "timestamp": datetime.now().isoformat(),
         }
     except Exception as e:
-        logger.exception("Erreur lors du réveil: %s", e)
+        logger.exception("Erreur lors du réveil")
         return {
             "status": "error",
             "message": f"Erreur: {e!s}",
@@ -287,7 +288,7 @@ async def goto_sleep() -> dict[str, Any]:
     """
     logger.info("Mise en veille du robot")
     try:
-        from ....robot_factory import RobotFactory
+        from bbia_sim.robot_factory import RobotFactory
 
         robot = RobotFactory.create_backend("mujoco")
         if robot:
@@ -296,7 +297,7 @@ async def goto_sleep() -> dict[str, Any]:
                 robot.goto_sleep()
             else:
                 # Fallback: utiliser comportement goto_sleep si disponible
-                from ....bbia_behavior import BBIABehaviorManager
+                from bbia_sim.bbia_behavior import BBIABehaviorManager
 
                 behavior_manager = BBIABehaviorManager(robot_api=robot)
                 # Si comportement goto_sleep existe
@@ -310,7 +311,7 @@ async def goto_sleep() -> dict[str, Any]:
             "timestamp": datetime.now().isoformat(),
         }
     except Exception as e:
-        logger.exception("Erreur lors de la mise en veille: %s", e)
+        logger.exception("Erreur lors de la mise en veille")
         return {
             "status": "error",
             "message": f"Erreur: {e!s}",
@@ -332,7 +333,7 @@ async def stop_motion() -> dict[str, Any]:
 
     # Essayer d'utiliser emergency_stop() si disponible
     try:
-        from ....robot_factory import RobotFactory
+        from bbia_sim.robot_factory import RobotFactory
 
         # Essayer d'obtenir le robot actif
         robot = RobotFactory.create_backend("mujoco")
@@ -354,7 +355,8 @@ async def stop_motion() -> dict[str, Any]:
         await simulation_service.stop_simulation()
     except Exception as e:
         logger.debug(
-            "Erreur lors de l'arrêt de la simulation (peut être déjà arrêtée): %s", e
+            "Erreur lors de l'arrêt de la simulation (peut être déjà arrêtée): %s",
+            e,
         )
 
     return {

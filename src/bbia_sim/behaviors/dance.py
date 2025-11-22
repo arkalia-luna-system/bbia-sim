@@ -126,7 +126,7 @@ class DanceBehavior(BBIABehavior):
         except KeyboardInterrupt:
             logger.info("Danse interrompue par l'utilisateur")
         except Exception as e:
-            logger.exception("Erreur durant danse: %s", e)
+            logger.exception("Erreur durant danse")
             return False
         finally:
             self.is_dancing = False

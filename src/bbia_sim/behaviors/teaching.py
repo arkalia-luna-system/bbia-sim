@@ -14,7 +14,7 @@ from typing import TYPE_CHECKING, Any
 from .base import BBIABehavior
 
 if TYPE_CHECKING:
-    from ..robot_api import RobotAPI
+    from bbia_sim.robot_api import RobotAPI
 
 logger = logging.getLogger(__name__)
 
@@ -36,6 +36,7 @@ class TeachingBehavior(BBIABehavior):
 
         Args:
             robot_api: Interface robotique pour contrôler le robot
+
         """
         super().__init__(
             name="teaching",
@@ -59,6 +60,7 @@ class TeachingBehavior(BBIABehavior):
 
         Returns:
             True si le comportement peut être exécuté
+
         """
         if not self.robot_api:
             logger.warning("TeachingBehavior: robot_api non disponible")
@@ -75,6 +77,7 @@ class TeachingBehavior(BBIABehavior):
 
         Returns:
             True si l'exécution a réussi
+
         """
         if not self.robot_api:
             return False
@@ -107,6 +110,7 @@ class TeachingBehavior(BBIABehavior):
 
         Args:
             level: Niveau de difficulté
+
         """
         if level == "beginner":
             questions = [
@@ -127,6 +131,7 @@ class TeachingBehavior(BBIABehavior):
 
         Args:
             level: Niveau de difficulté
+
         """
         questions = [
             {
@@ -146,6 +151,7 @@ class TeachingBehavior(BBIABehavior):
 
         Args:
             level: Niveau de difficulté
+
         """
         questions = [
             {"question": "Quelle est la capitale de la France ?", "answer": "paris"},
@@ -158,13 +164,16 @@ class TeachingBehavior(BBIABehavior):
         self._teach_with_questions(questions, subject="geographie")
 
     def _teach_with_questions(
-        self, questions: list[dict[str, str]], subject: str
+        self,
+        questions: list[dict[str, str]],
+        subject: str,
     ) -> None:
         """Enseigne avec questions/réponses.
 
         Args:
             questions: Liste de questions avec réponses
             subject: Matière enseignée
+
         """
         # Introduction
         intro_text = f"Bonjour ! Aujourd'hui, nous allons apprendre le {subject}."
@@ -180,7 +189,9 @@ class TeachingBehavior(BBIABehavior):
 
             # Poser question avec mouvement
             self._speak_with_movement(
-                question, emotion="curious", movement={"yaw": 0.2, "pitch": 0.1}
+                question,
+                emotion="curious",
+                movement={"yaw": 0.2, "pitch": 0.1},
             )
 
             # Attendre réponse (simulation - dans version réelle, utiliser STT)
@@ -209,13 +220,14 @@ class TeachingBehavior(BBIABehavior):
             text: Texte à dire
             emotion: Émotion à exprimer
             movement: Mouvement tête (yaw, pitch)
+
         """
         if not self.robot_api:
             return
 
         # Appliquer émotion
         try:
-            from ..bbia_emotions import BBIAEmotions
+            from bbia_sim.bbia_emotions import BBIAEmotions
 
             emotions_module = BBIAEmotions()
             emotions_module.set_emotion(emotion, intensity=0.6)
@@ -233,20 +245,23 @@ class TeachingBehavior(BBIABehavior):
 
         # Parler
         try:
-            from ..bbia_voice import dire_texte
+            from bbia_sim.bbia_voice import dire_texte
 
             dire_texte(text, robot_api=self.robot_api)
         except ImportError:
             logger.info("[TEACHING] %s", text)
 
     def _encourage(
-        self, emotion: str = "happy", correct_answer: str | None = None
+        self,
+        emotion: str = "happy",
+        correct_answer: str | None = None,
     ) -> None:
         """Encourage l'utilisateur selon performance.
 
         Args:
             emotion: Émotion à exprimer
             correct_answer: Réponse correcte si erreur
+
         """
         if emotion == "happy":
             messages = [

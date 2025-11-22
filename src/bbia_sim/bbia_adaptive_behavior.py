@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """BBIA Adaptive Behavior - Module de comportements adaptatifs contextuels
-Génération de comportements dynamiques basés sur le contexte et l'état émotionnel
+Génération de comportements dynamiques basés sur le contexte et l'état émotionnel.
 """
 
 import logging
@@ -284,7 +284,7 @@ class BBIAAdaptiveBehavior:
             return behavior
 
         except Exception as e:
-            logger.exception("❌ Erreur génération comportement: %s", e)
+            logger.exception("❌ Erreur génération comportement")
             # Retourner un comportement par défaut en cas d'erreur
             return {
                 "name": "look_around",
@@ -409,17 +409,20 @@ class BBIAAdaptiveBehavior:
 
         # Timing basé sur le contexte
         context_config = self.contexts.get(
-            self.current_context, self.contexts.get("neutral", {})
+            self.current_context,
+            self.contexts.get("neutral", {}),
         )
         duration_value = context_config.get("duration", 5.0)
         context_duration = (
             float(duration_value) if isinstance(duration_value, int | float) else 5.0
         )
         params["timing"]["start_delay"] = random.uniform(
-            0.0, min(0.5, context_duration * 0.1)
+            0.0,
+            min(0.5, context_duration * 0.1),
         )  # nosec B311
         params["timing"]["end_delay"] = random.uniform(
-            0.0, min(0.3, context_duration * 0.05)
+            0.0,
+            min(0.3, context_duration * 0.05),
         )  # nosec B311
 
         # Variations pour chaque joint
@@ -496,7 +499,7 @@ class BBIAAdaptiveBehavior:
             return None
 
         except Exception as e:
-            logger.exception("❌ Erreur comportement proactif: %s", e)
+            logger.exception("❌ Erreur comportement proactif")
             return None
 
     def adapt_to_feedback(self, behavior_id: str, feedback: str, score: float) -> None:
@@ -547,7 +550,7 @@ class BBIAAdaptiveBehavior:
             )
 
         except Exception as e:
-            logger.exception("❌ Erreur adaptation feedback: %s", e)
+            logger.exception("❌ Erreur adaptation feedback")
 
     def get_behavior_statistics(self) -> dict[str, Any]:
         """Retourne les statistiques des comportements."""
@@ -802,7 +805,9 @@ class BBIAAdaptiveBehavior:
 
         except Exception as e:
             logger.exception(
-                "❌ Erreur exécution comportement '%s': %s", behavior_name, e
+                "❌ Erreur exécution comportement '%s': %s",
+                behavior_name,
+                e,
             )
             return False
 

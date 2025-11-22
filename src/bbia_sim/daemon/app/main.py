@@ -13,10 +13,11 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
-from ..config import settings
-from ..middleware import RateLimitMiddleware, SecurityMiddleware
-from ..simulation_service import simulation_service
-from ..ws import telemetry
+from bbia_sim.daemon.config import settings
+from bbia_sim.daemon.middleware import RateLimitMiddleware, SecurityMiddleware
+from bbia_sim.daemon.simulation_service import simulation_service
+from bbia_sim.daemon.ws import telemetry
+
 from .routers import (
     apps,
     daemon,
@@ -115,7 +116,7 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     # Issue #402: Arrêt propre même si dashboard ouvert
     # Fermer toutes les connexions WebSocket actives
     try:
-        from ..ws import telemetry
+        from bbia_sim.daemon.ws import telemetry
 
         if hasattr(telemetry, "manager") and telemetry.manager:
             await telemetry.manager.stop_broadcast()
@@ -124,10 +125,11 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
         logger.warning("⚠️ Erreur arrêt WebSocket telemetry: %s", e)
 
     try:
-        from ...dashboard_advanced import advanced_websocket_manager
+        from bbia_sim.dashboard_advanced import advanced_websocket_manager
 
         if advanced_websocket_manager and hasattr(
-            advanced_websocket_manager, "active_connections"
+            advanced_websocket_manager,
+            "active_connections",
         ):
             # Fermer toutes les connexions actives
             for ws in list(advanced_websocket_manager.active_connections):
@@ -282,7 +284,7 @@ app.include_router(
 # Router media SANS auth pour permettre l'accès depuis le dashboard
 # Note: Les endpoints media sont accessibles depuis le dashboard
 app.include_router(
-    media.router
+    media.router,
 )  # Préfixe /development/api/media déjà défini dans le router
 
 # Routers AVEC WebSockets (auth via query params en prod)

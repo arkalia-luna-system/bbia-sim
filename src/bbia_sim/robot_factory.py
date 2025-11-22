@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
-"""RobotFactory - Factory pour créer les backends RobotAPI"""
+"""RobotFactory - Factory pour créer les backends RobotAPI."""
 
 import logging
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from .backends.mujoco_backend import MuJoCoBackend
 from .backends.reachy_backend import ReachyBackend
 from .backends.reachy_mini_backend import ReachyMiniBackend
-from .robot_api import RobotAPI
+
+if TYPE_CHECKING:
+    from .robot_api import RobotAPI
 
 logger = logging.getLogger(__name__)
 
@@ -17,7 +19,8 @@ class RobotFactory:
 
     @staticmethod
     def create_backend(
-        backend_type: str = "mujoco", **kwargs: Any
+        backend_type: str = "mujoco",
+        **kwargs: Any,
     ) -> "RobotAPI | None":
         """Crée un backend RobotAPI.
 
@@ -60,7 +63,7 @@ class RobotFactory:
             return None
 
         except Exception as e:
-            logger.exception("Erreur création backend %s: %s", backend_type, e)
+            logger.exception("Erreur création backend %s:", backend_type)
             return None
 
     @staticmethod

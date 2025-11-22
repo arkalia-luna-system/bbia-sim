@@ -35,6 +35,7 @@ class BBIAAdaptiveLearning:
 
         Args:
             robot_api: Interface robotique (optionnel)
+
         """
         self.robot_api = robot_api
         self.user_preferences: dict[str, Any] = {}
@@ -50,6 +51,7 @@ class BBIAAdaptiveLearning:
         Args:
             user_action: Action de l'utilisateur (ex: "court", "rapide")
             context: Contexte de l'action (ex: {"response_length": "short"})
+
         """
         # Analyser action pour extraire préférence
         if "court" in user_action.lower() or "short" in user_action.lower():
@@ -75,6 +77,7 @@ class BBIAAdaptiveLearning:
 
         Returns:
             Dictionnaire avec adaptations à appliquer
+
         """
         adaptations: dict[str, Any] = {}
 
@@ -98,7 +101,10 @@ class BBIAAdaptiveLearning:
         return adaptations
 
     def remember_interaction(
-        self, behavior: str, context: dict[str, Any], result: str
+        self,
+        behavior: str,
+        context: dict[str, Any],
+        result: str,
     ) -> None:
         """Mémorise une interaction pour apprentissage futur.
 
@@ -106,6 +112,7 @@ class BBIAAdaptiveLearning:
             behavior: Nom du comportement exécuté
             context: Contexte de l'interaction
             result: Résultat (success, failure, etc.)
+
         """
         interaction = {
             "behavior": behavior,
@@ -168,6 +175,7 @@ class BBIAAdaptiveLearning:
 
         Returns:
             Dictionnaire avec préférences
+
         """
         return self.user_preferences.copy()
 
@@ -176,5 +184,6 @@ class BBIAAdaptiveLearning:
 
         Returns:
             Dictionnaire avec patterns
+
         """
         return self.context_patterns.copy()
