@@ -3,30 +3,17 @@
 
 Ce fichier de test vise à utiliser toutes les capacités publiques
 non encore testées pour atteindre 100% d'utilisation.
+
+OPTIMISATION RAM: Imports lazy pour éviter chargement modules lourds.
 """
+
+import gc
 
 import pytest
 
-from bbia_sim.bbia_adaptive_learning import BBIAAdaptiveLearning
-from bbia_sim.bbia_adaptive_behavior import BBIAAdaptiveBehavior
-from bbia_sim.bbia_emotion_recognition import BBIAEmotionRecognition
-from bbia_sim.bbia_memory import BBIAMemory
-from bbia_sim.bbia_tools import BBIATools
-from bbia_sim.behaviors.alarm_clock import AlarmClockBehavior
-from bbia_sim.bbia_behavior import BBIABehaviorManager
-from bbia_sim.troubleshooting import (
-    TroubleshootingChecker,
-    check_all,
-    test_audio,
-    test_camera,
-)
-from bbia_sim.daemon.models import (
-    FullState,
-    FullBodyTarget,
-    as_any_pose,
-    XYZRPYPose,
-    Matrix4x4Pose,
-)
+# OPTIMISATION RAM: Imports légers uniquement au niveau module
+# Imports lourds déplacés dans les fonctions de test (lazy imports)
+from bbia_sim.ai_backends import DummySTT
 from bbia_sim.daemon.app.routers.ecosystem import (
     APIStatus,
     BehaviorResponse,
@@ -36,17 +23,6 @@ from bbia_sim.daemon.app.routers.apps import AppInfo, AppStatus
 from bbia_sim.daemon.app.routers.state import BatteryInfo
 from bbia_sim.daemon.app.routers.move import GotoModelRequest, InterpolationMode
 from bbia_sim.utils.types import GotoTargetParams, IMUData
-from bbia_sim.daemon.app.backend_adapter import BackendAdapter, get_backend_adapter
-from bbia_sim.daemon.app.routers.move import get_backend_dependency
-from bbia_sim.robot_api import RobotAPI
-from bbia_sim.ai_backends import (
-    CoquiTTSTTS,
-    DummySTT,
-    get_tts_backend,
-    get_stt_backend,
-    get_llm_backend,
-    select_backends,
-)
 
 try:
     from bbia_sim.sim.assets.reachy_official.asset_mapping import (
@@ -74,10 +50,10 @@ class TestBBIAAdaptiveLearning:
     def test_learn_preference(self) -> None:
         """Test apprentissage de préférences."""
         learning = BBIAAdaptiveLearning()
-        learning.learn_preference("voice_speed", {"preference": "fast"})
-        assert "response_speed" in learning.user_preferences or "voice_speed" in str(
-            learning.user_preferences
-        )
+        learning.learn_preference("rapide", {"context": "voice"})
+        # Vérifier que la préférence a été apprise
+        assert "response_speed" in learning.user_preferences
+        assert learning.user_preferences["response_speed"] == "fast"
 
     def test_remember_interaction(self) -> None:
         """Test mémorisation d'interactions."""
