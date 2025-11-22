@@ -95,24 +95,24 @@ class TestYOLODetector:
 
     def test_load_model_failure(self):
         """Test chargement modèle échoué."""
-        try:
-            from ultralytics import YOLO  # noqa: F401
-        except ImportError:
-            pytest.skip("ultralytics non disponible")
+        import importlib
+        import sys
+
+        # Créer un mock YOLO qui lève une exception
+        mock_yolo_class = MagicMock()
+        mock_yolo_class.side_effect = Exception("Erreur chargement")
+
+        # Créer un module ultralytics mocké
+        mock_ultralytics = MagicMock()
+        mock_ultralytics.YOLO = mock_yolo_class
+        sys.modules["ultralytics"] = mock_ultralytics
+
         with patch("bbia_sim.vision_yolo.YOLO_AVAILABLE", True):
             # Vider cache avant test pour forcer chargement
             import bbia_sim.vision_yolo as vision_yolo_module
+            importlib.reload(vision_yolo_module)
 
             vision_yolo_module._yolo_model_cache.clear()
-
-            # Créer un mock YOLO qui lève une exception
-            mock_yolo_class = MagicMock()
-            import bbia_sim.vision_yolo as vision_yolo_module
-
-            vision_yolo_module._yolo_model_cache.clear()
-            mock_yolo_class = MagicMock()
-            mock_yolo_class.side_effect = Exception("Erreur chargement")
-            vision_yolo_module.YOLO = mock_yolo_class
 
             detector = YOLODetector(model_size="n", confidence_threshold=0.25)
             result = detector.load_model()
@@ -189,23 +189,26 @@ class TestYOLODetector:
 
     def test_detect_objects_with_auto_load(self):
         """Test détection avec chargement automatique (couverture lignes 114-116)."""
-        try:
-            from ultralytics import YOLO  # noqa: F401
-        except ImportError:
-            pytest.skip("ultralytics non disponible")
+        import importlib
+        import sys
+
+        mock_model = MagicMock()
+        mock_model.return_value = []
+
+        # Créer un mock YOLO et l'ajouter à sys.modules pour que l'import fonctionne
+        mock_yolo_class = MagicMock()
+        mock_yolo_class.return_value = mock_model
+
+        # Créer un module ultralytics mocké
+        mock_ultralytics = MagicMock()
+        mock_ultralytics.YOLO = mock_yolo_class
+        sys.modules["ultralytics"] = mock_ultralytics
+
         with patch("bbia_sim.vision_yolo.YOLO_AVAILABLE", True):
             import bbia_sim.vision_yolo as vision_yolo_module
+            importlib.reload(vision_yolo_module)
 
             vision_yolo_module._yolo_model_cache.clear()
-
-            mock_model = MagicMock()
-            mock_model.return_value = []
-            mock_yolo_class = MagicMock()
-            import bbia_sim.vision_yolo as vision_yolo_module
-
-            vision_yolo_module._yolo_model_cache.clear()
-            vision_yolo_module.YOLO.return_value = mock_model
-            vision_yolo_module.YOLO = mock_yolo_class
 
             detector = YOLODetector(model_size="n", confidence_threshold=0.25)
             assert detector.is_loaded is False
@@ -219,10 +222,6 @@ class TestYOLODetector:
 
     def test_detect_objects_model_none(self):
         """Test détection avec modèle None (couverture ligne 130)."""
-        try:
-            from ultralytics import YOLO  # noqa: F401
-        except ImportError:
-            pytest.skip("ultralytics non disponible")
         with patch("bbia_sim.vision_yolo.YOLO_AVAILABLE", True):
             detector = YOLODetector(model_size="n", confidence_threshold=0.25)
             detector.is_loaded = True  # Force is_loaded mais model = None
@@ -332,26 +331,30 @@ class TestYOLODetector:
 
     def test_detect_objects_boxes_none(self):
         """Test détection avec boxes is None (couverture ligne 143)."""
-        try:
-            from ultralytics import YOLO  # noqa: F401
-        except ImportError:
-            pytest.skip("ultralytics non disponible")
+        import importlib
+        import sys
+
+        mock_result = MagicMock()
+        mock_result.boxes = None  # Cas boxes is None
+
+        mock_model = MagicMock()
+        mock_model.return_value = [mock_result]
+        mock_model.names = {}
+
+        # Créer un mock YOLO et l'ajouter à sys.modules pour que l'import fonctionne
+        mock_yolo_class = MagicMock()
+        mock_yolo_class.return_value = mock_model
+
+        # Créer un module ultralytics mocké
+        mock_ultralytics = MagicMock()
+        mock_ultralytics.YOLO = mock_yolo_class
+        sys.modules["ultralytics"] = mock_ultralytics
+
         with patch("bbia_sim.vision_yolo.YOLO_AVAILABLE", True):
             import bbia_sim.vision_yolo as vision_yolo_module
+            importlib.reload(vision_yolo_module)
 
             vision_yolo_module._yolo_model_cache.clear()
-
-            mock_result = MagicMock()
-            mock_result.boxes = None  # Cas boxes is None
-
-            mock_model = MagicMock()
-            mock_model.return_value = [mock_result]
-            mock_model.names = {}
-
-            import bbia_sim.vision_yolo as vision_yolo_module
-
-            vision_yolo_module._yolo_model_cache.clear()
-            vision_yolo_module.YOLO.return_value = mock_model
 
             detector = YOLODetector(model_size="n", confidence_threshold=0.25)
             detector.model = mock_model
@@ -591,11 +594,23 @@ class TestFactoryFunctions:
 
     def test_create_yolo_detector_with_yolo(self):
         """Test création détecteur YOLO."""
-        try:
-            from ultralytics import YOLO  # noqa: F401
-        except ImportError:
-            pytest.skip("ultralytics non disponible")
+        import importlib
+        import sys
+
+        # Créer un mock YOLO et l'ajouter à sys.modules pour que l'import fonctionne
+        mock_yolo_class = MagicMock()
+        mock_model = MagicMock()
+        mock_yolo_class.return_value = mock_model
+
+        # Créer un module ultralytics mocké
+        mock_ultralytics = MagicMock()
+        mock_ultralytics.YOLO = mock_yolo_class
+        sys.modules["ultralytics"] = mock_ultralytics
+
         with patch("bbia_sim.vision_yolo.YOLO_AVAILABLE", True):
+            import bbia_sim.vision_yolo as vision_yolo_module
+            importlib.reload(vision_yolo_module)
+
             detector = create_yolo_detector(model_size="n", confidence_threshold=0.3)
             assert detector is not None
             # Vérifier que c'est bien une instance de YOLODetector (peut être importé différemment)
