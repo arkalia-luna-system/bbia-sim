@@ -1,6 +1,6 @@
 # ✅ RÉSUMÉ IMPLÉMENTATION - Issues Reachy Mini Officiel
 
-**Date** : Décembre 2025  
+**Date** : 22 Novembre 2025  
 **Statut** : 4 issues implémentées sur 13
 
 ---
@@ -163,5 +163,5 @@
 
 ---
 
-**Dernière mise à jour** : Décembre 2025
+**Dernière mise à jour** : 22 Novembre 2025
 

@@ -1,6 +1,6 @@
 # 🔍 ANALYSE COMPARATIVE - Issues Reachy Mini Officiel vs BBIA-SIM
 
-**Date** : Décembre 2025  
+**Date** : 22 Novembre 2025  
 **Source** : pollen-robotics/reachy_mini (33 issues ouvertes)  
 **Objectif** : Identifier les issues déjà résolues, faciles à implémenter, ou bénéfiques pour BBIA-SIM
 
@@ -592,5 +592,5 @@
 
 ---
 
-**Dernière mise à jour** : Décembre 2025
+**Dernière mise à jour** : 22 Novembre 2025
 

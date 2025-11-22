@@ -1,6 +1,6 @@
 # 🚀 IMPLÉMENTATION - Issues Reachy Mini Officiel
 
-**Date** : Décembre 2025  
+**Date** : 22 Novembre 2025  
 **Statut** : En cours d'implémentation
 
 ---
@@ -218,5 +218,26 @@ Implémenter détection tap/caress via audio.
 - [x] Créer `tests/test_bbia_touch.py`
 - [x] Tests passent
 
-**Dernière mise à jour** : Décembre 2025
+---
+
+## ✅ Issue #269 - Tests répétabilité mouvements
+
+**Priorité** : 🟡 Moyenne  
+**Difficulté** : 🟡 **MOYENNE** (6-8h)  
+**Statut** : ✅ **TERMINÉ**
+
+### Problème :
+Tests répétabilité et précision mouvements manquants.
+
+### Solution :
+Ajouter tests répétabilité avec références.
+
+### Actions :
+- [x] Créer `tests/test_motion_repeatability.py`
+- [x] Implémenter 5 tests répétabilité/précision
+- [x] Gestion gracieuse MuJoCo (step() après set_joint_pos)
+- [x] Vérification valeurs None
+- [x] Tests passent
+
+**Dernière mise à jour** : 22 Novembre 2025
 
