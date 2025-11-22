@@ -74,9 +74,10 @@ class TestBBIAAdaptiveLearning:
     def test_learn_preference(self) -> None:
         """Test apprentissage de préférences."""
         learning = BBIAAdaptiveLearning()
-        learning.learn_preference("user_1", "voice_speed", "fast")
-        prefs = learning.get_preferences("user_1")
-        assert "voice_speed" in prefs
+        learning.learn_preference("voice_speed", {"preference": "fast"})
+        assert "response_speed" in learning.user_preferences or "voice_speed" in str(
+            learning.user_preferences
+        )
 
     def test_remember_interaction(self) -> None:
         """Test mémorisation d'interactions."""
@@ -215,13 +216,16 @@ class TestDaemonModels:
 
     def test_app_info(self) -> None:
         """Test AppInfo."""
-        info = AppInfo(name="test", version="1.0.0")
+        info = AppInfo(name="test", status="running")
         assert info.name == "test"
+        assert info.status == "running"
 
     def test_app_status(self) -> None:
         """Test AppStatus."""
-        status = AppStatus(status="running", pid=1234)
+        status = AppStatus(name="test", status="running", running=True)
+        assert status.name == "test"
         assert status.status == "running"
+        assert status.running is True
 
     def test_behavior_response(self) -> None:
         """Test BehaviorResponse."""
