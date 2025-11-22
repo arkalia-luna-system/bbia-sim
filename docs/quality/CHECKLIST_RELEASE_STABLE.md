@@ -2,7 +2,7 @@
 
 **Date création** : 22 novembre 2025  
 **Objectif** : Vérification complète avant merge sur `main` et release stable  
-**Version cible** : v1.3.2 (ou supérieure)
+**Version cible** : v1.4.0
 
 ---
 

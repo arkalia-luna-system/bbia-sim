@@ -7,7 +7,62 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
-### 🚀 Ajouté (22 Novembre 2025)
+## [1.4.0] - 22 novembre 2025
+
+### 🎯 **RELEASE - 100% D'EXPLOITATION DES CAPACITÉS** ✅
+
+Cette version marque l'atteinte de **100% d'exploitation** de toutes les capacités du projet BBIA-SIM, avec 44 exemples fonctionnels couvrant tous les modules, comportements et endpoints API.
+
+### 🚀 **Ajouté**
+
+#### **100% d'Exploitation des Capacités - TERMINÉ** ✅
+
+- **5 nouvelles démos créées** pour atteindre 100% d'exploitation :
+  - `demo_follow_object.py` - Suivi d'objet avec priorisation intelligente (comportement follow_object)
+  - `demo_sanity.py` - Vérification statut et arrêt d'urgence (endpoints /api/sanity/*)
+  - `demo_memory.py` - Mémoire persistante BBIA (module bbia_memory)
+  - `demo_adaptive_behavior.py` - Comportements adaptatifs contextuels (module bbia_adaptive_behavior)
+  - `demo_awake.py` - Séquence de réveil optimisée (module bbia_awake)
+
+- **Score d'exploitation** : **100%** atteint ✅
+  - Modules BBIA Core : 100% (16/16 modules avec démos dédiées)
+  - Comportements Avancés : 100% (15/15 comportements avec démos dédiées)
+  - API Endpoints : 100% (11/11 endpoints avec démos dédiées)
+  - **Total** : 44 exemples (39 existants + 5 nouveaux)
+
+#### **Tests et Qualité**
+
+- **Tests améliorés** : 
+  - `tests/test_demo_additional.py` : 10 tests complets avec mocks appropriés (tous passent)
+  - Vérification que `main()` existe et est callable pour toutes les démos
+  - Tests cohérents avec les autres tests de démos
+
+- **Documentation enrichie** :
+  - Docstrings détaillées avec exemples d'utilisation pour les 5 nouvelles démos
+  - Exemples d'utilisation clairs pour chaque démo
+  - Checklist complète de release (`CHECKLIST_RELEASE_STABLE.md`)
+  - Rapport de vérification détaillé (`RAPPORT_VERIFICATION_RELEASE_STABLE.md`)
+
+- **Qualité code** :
+  - Black : formatage corrigé (`tests/test_behaviors_advanced.py`)
+  - Ruff : 17 erreurs corrigées automatiquement (imports, whitespace)
+  - Tous les fichiers formatés et vérifiés
+
+### 🔧 **Modifié**
+
+- **CHANGELOG.md** : Entrées complètes pour v1.4.0
+- **Documentation** : Tous les fichiers markdown mis à jour avec 100% d'exploitation
+- **Tests** : Amélioration des tests pour les nouvelles démos
+
+### 🐛 **Corrigé**
+
+- Formatage Black : `tests/test_behaviors_advanced.py` reformaté
+- Ruff : 17 erreurs corrigées (imports non triés, whitespace)
+- Qualité code : Tous les fichiers vérifiés et corrigés
+
+---
+
+### 🚀 Ajouté (22 Novembre 2025 - Préparation v1.4.0)
 
 #### 100% d'Exploitation des Capacités - **TERMINÉ** ✅
 
