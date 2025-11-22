@@ -79,16 +79,19 @@
 
 ---
 
-#### 4. Exemples d'Utilisation - Nouvelles Fonctionnalités
-**Statut** : ✅ Bon (64 exemples existants)
+#### 4. Exemples d'Utilisation - Nouvelles Fonctionnalités ✅ **TERMINÉ**
+**Statut** : ✅ **100% TERMINÉ** (22 Novembre 2025)
 
-**Nouvelles fonctionnalités à documenter** :
-- `set_sleeping_pose()` (Issue #410)
-- `check_collision()` (Issue #183)
-- `create_robot_registry()` (Issue #30)
-- Détection tactile (`bbia_touch.py`)
+**Nouvelles fonctionnalités documentées** :
+- ✅ `set_sleeping_pose()` (Issue #410) → `demo_sleeping_pose.py`
+- ✅ `check_collision()` (Issue #183) → `demo_collision_detection.py`
+- ✅ `create_robot_registry()` (Issue #30) → `demo_robot_registry.py`
+- ✅ Détection tactile (`bbia_touch.py`) → `demo_touch_detection.py` (déjà existant)
 
-**Action** : Créer exemples pour nouvelles fonctionnalités
+**Corrections appliquées** :
+- ✅ 3 nouveaux exemples créés
+- ✅ README.md mis à jour avec nouveaux exemples
+- ✅ Tous les exemples testés et fonctionnels
 
 ---
 
