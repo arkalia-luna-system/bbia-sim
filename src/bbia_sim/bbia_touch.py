@@ -73,6 +73,14 @@ class BBIATouchDetection:
             tap_threshold: Seuil pour détecter un tap (amplitude normalisée)
             caress_threshold: Seuil pour détecter une caresse (amplitude normalisée)
         """
+        # Initialiser attributs même si désactivé (pour tests)
+        self.sample_rate = sample_rate
+        self.buffer_duration = buffer_duration
+        self.buffer_size = int(sample_rate * buffer_duration)
+        self.tap_threshold = tap_threshold
+        self.caress_threshold = caress_threshold
+        self.audio_buffer: deque[float] = deque(maxlen=self.buffer_size)
+
         if not SOUNDDEVICE_AVAILABLE:
             logger.warning(
                 "⚠️  Détection tactile désactivée (sounddevice non disponible)"
@@ -86,14 +94,6 @@ class BBIATouchDetection:
             self.enabled = False
             return
 
-        self.sample_rate = sample_rate
-        self.buffer_duration = buffer_duration
-        self.buffer_size = int(sample_rate * buffer_duration)
-        self.tap_threshold = tap_threshold
-        self.caress_threshold = caress_threshold
-
-        # Buffer circulaire pour analyse temporelle
-        self.audio_buffer: deque[float] = deque(maxlen=self.buffer_size)
         self.enabled = True
 
         logger.info(
