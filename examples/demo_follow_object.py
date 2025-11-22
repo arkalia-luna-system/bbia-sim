@@ -2,6 +2,22 @@
 """Démo FollowObjectBehavior - Suivi d'objet avec priorisation intelligente.
 
 Démonstration du comportement de suivi d'objet avec détection YOLO.
+
+Ce script démontre :
+- Suivi automatique d'objets détectés par YOLO
+- Priorisation intelligente (personne > objet)
+- Réactions quand un objet est perdu
+- Utilisation de BBIAVision pour la détection
+
+Exemples d'utilisation :
+    # Suivi automatique (priorisation)
+    python examples/demo_follow_object.py
+
+    # Suivi d'un objet spécifique
+    python examples/demo_follow_object.py --target-object person
+
+    # Mode headless (sans viewer)
+    python examples/demo_follow_object.py --headless --duration 5.0
 """
 
 import argparse

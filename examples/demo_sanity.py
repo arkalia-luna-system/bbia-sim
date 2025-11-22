@@ -3,6 +3,21 @@
 
 Démonstration des endpoints /api/sanity/* pour vérifier le statut
 et déclencher l'arrêt d'urgence.
+
+Ce script démontre :
+- Vérification du statut système (/api/sanity/status)
+- Arrêt d'urgence (/api/sanity/emergency_stop)
+- Utilisation de l'API REST pour monitoring
+
+Exemples d'utilisation :
+    # Vérifier le statut
+    python examples/demo_sanity.py --action status
+
+    # Déclencher arrêt d'urgence
+    python examples/demo_sanity.py --action emergency_stop
+
+    # Utiliser une URL personnalisée
+    python examples/demo_sanity.py --action status --url http://localhost:8080
 """
 
 import argparse

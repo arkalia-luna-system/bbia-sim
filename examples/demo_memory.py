@@ -3,6 +3,24 @@
 
 Démonstration du module mémoire pour sauvegarder et charger
 l'historique conversation, les préférences et les apprentissages.
+
+Ce script démontre :
+- Sauvegarde de conversation, préférences et apprentissages
+- Chargement de données mémoire
+- Scénario complet de démonstration
+
+Exemples d'utilisation :
+    # Scénario complet de démonstration
+    python examples/demo_memory.py --action demo
+
+    # Sauvegarder des données exemple
+    python examples/demo_memory.py --action save
+
+    # Charger des données sauvegardées
+    python examples/demo_memory.py --action load
+
+    # Utiliser un répertoire personnalisé
+    python examples/demo_memory.py --action demo --memory-dir /tmp/bbia_memory
 """
 
 import argparse

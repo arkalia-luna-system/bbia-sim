@@ -3,6 +3,21 @@
 
 Démonstration du module de comportements adaptatifs qui génère
 des comportements dynamiques basés sur le contexte et l'émotion.
+
+Ce script démontre :
+- Génération de comportements adaptatifs selon le contexte
+- Application d'émotions pour personnaliser les comportements
+- Exécution dynamique de comportements générés
+
+Exemples d'utilisation :
+    # Comportement par défaut (greeting + happy)
+    python examples/demo_adaptive_behavior.py
+
+    # Contexte conversationnel avec émotion curieuse
+    python examples/demo_adaptive_behavior.py --context conversation --emotion curious
+
+    # Mode headless avec durée personnalisée
+    python examples/demo_adaptive_behavior.py --headless --duration 10.0
 """
 
 import argparse

@@ -2,6 +2,18 @@
 """Démo BBIA Awake - Séquence de réveil optimisée.
 
 Démonstration de la séquence de réveil BBIA avec intelligence et variété.
+
+Ce script démontre :
+- Séquence de réveil optimisée avec messages variés
+- Initialisation propre du système BBIA
+- Messages expressifs et contextuels
+
+Exemples d'utilisation :
+    # Séquence de réveil standard
+    python examples/demo_awake.py
+
+    # Mode verbose pour plus de détails
+    python examples/demo_awake.py --verbose
 """
 
 import argparse
