@@ -38,4 +38,4 @@ BBIA-SIM est un moteur cognitif Python pour robot Reachy Mini avec :
 
 ---
 
-**Dernière mise à jour** : 21 novembre 2025
+**Dernière mise à jour** : 22 novembre 2025

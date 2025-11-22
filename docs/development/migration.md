@@ -450,7 +450,7 @@ Le projet BBIA-SIM est prêt pour le robot réel.
 
 ---
 
-**Dernière mise à jour** : 21 novembre 2025
+**Dernière mise à jour** : 22 novembre 2025
 
 ---
 
