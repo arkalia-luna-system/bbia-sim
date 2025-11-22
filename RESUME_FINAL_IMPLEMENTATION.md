@@ -10,8 +10,9 @@
 **Total issues analysées** : 33 issues ouvertes  
 **Issues déjà résolues dans BBIA** : 8 issues  
 **Issues implémentées** : ✅ **12 issues**  
-**Issues en attente** : 0 issues  
-**Issues non applicables** : 1 issue (WebRTC)
+**Issues en attente** : 0 issues applicables  
+**Issues difficiles auditées** : ✅ **10 issues analysées** (voir `AUDIT_ISSUES_DIFFICILES.md`)  
+**Issues non applicables** : 3 issues (WebRTC, DoA, Streaming)
 
 **Taux de réussite** : ✅ **100% des issues applicables implémentées** 🎉
 
@@ -131,6 +132,22 @@
 - ✅ Push réussi sur GitHub
 
 **BBIA-SIM est maintenant encore plus robuste et conforme aux meilleures pratiques du projet Reachy Mini officiel !**
+
+---
+
+---
+
+## 📋 ISSUES DIFFICILES - AUDIT COMPLET
+
+**10 issues difficiles analysées** - Voir `AUDIT_ISSUES_DIFFICILES.md` pour détails complets
+
+### Résumé audit :
+- ✅ **3 issues** à améliorer : #410 (pose sommeil), #384 (doc HF chat), #389 (doc reSpeaker)
+- 📝 **4 issues** à documenter : #434 (RPI cam), #407 (Windows), #389, #384
+- 📝 **2 issues** à planifier : #183 (collision check), #30 (multi-robots)
+- ❌ **3 issues** non applicables : #426, #408, #388
+
+**Temps estimé** : 23-38h pour issues applicables
 
 ---
 

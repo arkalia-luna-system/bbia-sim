@@ -227,6 +227,14 @@ Les fichiers suivants ont été fusionnés et archivés dans `_archived/` :
 
 ---
 
+4. **AUDIT_ISSUES_DIFFICILES.md** (22 Novembre 2025)
+   - Audit complet des 10 issues difficiles restantes
+   - Analyse détaillée applicabilité BBIA-SIM
+   - Recommandations par issue
+   - Plan d'action priorisé
+
+---
+
 **Dernière mise à jour** : 22 Novembre 2025
 
 **Audit le plus récent** : 

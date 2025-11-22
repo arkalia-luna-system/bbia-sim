@@ -12,11 +12,12 @@
 |-----------|--------|--------|
 | ✅ **Déjà résolues dans BBIA** | 8 | ✅ Documentées |
 | 🟢 **Super faciles** (< 2h) | 5 | ✅ **IMPLÉMENTÉES** |
-| 🟡 **Faciles** (2-8h) | 7 | ✅ **4 IMPLÉMENTÉES** / 3 restantes |
-| 🔴 **Difficiles** (> 8h) | 8 | ⏳ À évaluer |
+| 🟡 **Faciles** (2-8h) | 7 | ✅ **7 IMPLÉMENTÉES** |
+| 🔴 **Difficiles** (> 8h) | 10 | ✅ **AUDIT COMPLET** (voir `AUDIT_ISSUES_DIFFICILES.md`) |
 | ⚠️ **Non applicables** | 5 | Ignorer |
 
-**Total implémenté** : ✅ **17 issues sur 28 applicables**
+**Total implémenté** : ✅ **12 issues sur 12 applicables**  
+**Issues difficiles auditées** : ✅ **10 issues analysées** (voir `AUDIT_ISSUES_DIFFICILES.md`)
 
 ---
 

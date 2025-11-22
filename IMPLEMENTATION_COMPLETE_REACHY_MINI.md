@@ -163,5 +163,21 @@
 
 ---
 
+---
+
+## 📋 ISSUES DIFFICILES - AUDIT COMPLET
+
+**10 issues difficiles analysées** - Voir `AUDIT_ISSUES_DIFFICILES.md` pour détails complets
+
+### Résumé audit :
+- ✅ **3 issues** à améliorer : #410 (pose sommeil), #384 (doc HF chat), #389 (doc reSpeaker)
+- 📝 **4 issues** à documenter : #434 (RPI cam), #407 (Windows), #389, #384
+- 📝 **2 issues** à planifier : #183 (collision check), #30 (multi-robots)
+- ❌ **3 issues** non applicables : #426, #408, #388
+
+**Temps estimé** : 23-38h pour issues applicables
+
+---
+
 **Dernière mise à jour** : 22 Novembre 2025
 
