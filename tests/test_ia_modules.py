@@ -548,22 +548,21 @@ class TestYOLODetector:
 class TestFaceDetector:
     """Tests pour le module détection de visages."""
 
-    @pytest.mark.skip(
-        reason="MediaPipe a des problèmes matplotlib dans l'environnement"
-    )
     def test_face_detector_creation(self):
-        """Test création FaceDetector."""
+        """Test création FaceDetector (optimisé - fonctionne sans MediaPipe)."""
+        # OPTIMISATION: Le code gère gracieusement l'ImportError, donc on peut tester
         detector = FaceDetector()
         # Le détecteur peut être None si MediaPipe non disponible
         assert detector.mp_face_detection is None or hasattr(
             detector.mp_face_detection, "FaceDetection"
         )
+        # Vérifier que l'objet est créé même sans MediaPipe
+        assert detector is not None
+        assert hasattr(detector, "face_detection")
 
-    @pytest.mark.skip(
-        reason="MediaPipe a des problèmes matplotlib dans l'environnement"
-    )
     def test_best_face_selection(self):
-        """Test sélection meilleur visage."""
+        """Test sélection meilleur visage (optimisé - fonctionne sans MediaPipe)."""
+        # OPTIMISATION: Test fonctionne même sans MediaPipe (teste juste la logique)
         detector = FaceDetector()
 
         # Mock détections
@@ -574,8 +573,13 @@ class TestFaceDetector:
         ]
 
         best_face = detector.get_best_face(detections)
+        # Formule: confidence * (1 + area / 50000)
+        # 0.7 * (1 + 10000/50000) = 0.7 * 1.2 = 0.84
+        # 0.9 * (1 + 5000/50000) = 0.9 * 1.1 = 0.99 (meilleur)
+        # 0.6 * (1 + 15000/50000) = 0.6 * 1.3 = 0.78
         assert best_face is not None
-        # Devrait choisir celui avec meilleur score combiné
+        assert best_face["confidence"] == 0.9
+        assert best_face["area"] == 5000
 
 
 class TestDashboard:

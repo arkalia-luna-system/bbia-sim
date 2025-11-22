@@ -165,11 +165,15 @@ BBIAChat fonctionne sans Hugging Face, donc les tests ne devraient pas skip.
 - KeyError 'blip_vqa_processor': ✅ Corrigé
 - Warnings répétitifs: ✅ Corrigé
 
-### ⚠️ Priorité 3: À VÉRIFIER - Tests MediaPipe
+### ✅ Priorité 3: CORRIGÉ - Tests MediaPipe
 
 - **Problème**: Tests skipent à cause de problèmes matplotlib avec MediaPipe
-- **Action**: Vérifier si problème peut être résolu ou si skip est justifié
+- **Action**: ✅ CORRIGÉ - Skips retirés, tests fonctionnent sans MediaPipe
 - **Fichiers**: `test_ia_modules.py::TestFaceDetector`
+- **Corrections**:
+  - `test_face_detector_creation`: Skip retiré, test fonctionne même sans MediaPipe
+  - `test_best_face_selection`: Skip retiré, test de la logique de sélection corrigé
+- **Résultat**: 2 tests supplémentaires passent maintenant au lieu de skip
 
 ### 📋 Priorité 4: Documenter les skips légitimes
 
