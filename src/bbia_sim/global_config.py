@@ -40,6 +40,10 @@ class GlobalConfig:
     # Joints sûrs recommandés
     SAFE_JOINTS = {"yaw_body"}
 
+    # Configuration réseau (Issue #382: Multi-robots support)
+    HOSTNAME = os.environ.get("BBIA_HOSTNAME", "bbia-reachy-mini")
+    DEFAULT_PORT = int(os.environ.get("BBIA_PORT", "8000"))
+
     # Émotions valides
     VALID_EMOTIONS = {
         "neutral",

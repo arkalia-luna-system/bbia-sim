@@ -132,6 +132,81 @@ class MuJoCoBackend(RobotAPI):
             return float(self.data.qpos[joint_id])
         return None
 
+    def get_current_body_yaw(self) -> float:
+        """Récupère la rotation actuelle du corps (body yaw).
+
+        Conforme SDK: get_current_* retourne état actuel.
+        Issue #430: Ajouté pour cohérence avec ReachyMiniBackend.
+        """
+        if not self.is_connected:
+            return 0.0
+
+        if "yaw_body" in self.joint_name_to_id:
+            joint_id = self.joint_name_to_id["yaw_body"]
+            if self.data is not None:
+                return float(self.data.qpos[joint_id])
+
+        return 0.0
+
+    def get_present_body_yaw(self) -> float:
+        """Récupère la rotation présente du corps (body yaw).
+
+        Conforme SDK: get_present_* est alias de get_current_* pour MuJoCo.
+        Issue #430: Ajouté pour cohérence avec ReachyMiniBackend.
+        """
+        return self.get_current_body_yaw()
+
+    def get_current_joint_positions(self) -> tuple[list[float], list[float]]:
+        """Récupère les positions actuelles des joints (tête et antennes).
+
+        Issue #430: Ajouté pour cohérence avec ReachyMiniBackend.
+
+        Returns:
+            Tuple (head_positions, antenna_positions)
+            - head_positions: [yaw_body, stewart_1, stewart_2, stewart_3, stewart_4, stewart_5, stewart_6]
+            - antenna_positions: [right_antenna, left_antenna]
+        """
+        if not self.is_connected or self.data is None:
+            return ([0.0] * 7, [0.0, 0.0])
+
+        head_joints = [
+            "yaw_body",
+            "stewart_1",
+            "stewart_2",
+            "stewart_3",
+            "stewart_4",
+            "stewart_5",
+            "stewart_6",
+        ]
+        antenna_joints = ["right_antenna", "left_antenna"]
+
+        head_positions = []
+        for joint_name in head_joints:
+            if joint_name in self.joint_name_to_id:
+                joint_id = self.joint_name_to_id[joint_name]
+                head_positions.append(float(self.data.qpos[joint_id]))
+            else:
+                head_positions.append(0.0)
+
+        antenna_positions = []
+        for joint_name in antenna_joints:
+            if joint_name in self.joint_name_to_id:
+                joint_id = self.joint_name_to_id[joint_name]
+                antenna_positions.append(float(self.data.qpos[joint_id]))
+            else:
+                antenna_positions.append(0.0)
+
+        return (head_positions, antenna_positions)
+
+    def get_present_antenna_joint_positions(self) -> list[float]:
+        """Récupère les positions présentes des antennes.
+
+        Conforme SDK: get_present_* est alias de get_current_* pour MuJoCo.
+        Issue #430: Ajouté pour cohérence avec ReachyMiniBackend.
+        """
+        _, antenna_positions = self.get_current_joint_positions()
+        return antenna_positions
+
     def step(self) -> bool:
         """Effectue un pas de simulation."""
         if not self.is_connected:

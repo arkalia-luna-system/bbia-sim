@@ -112,11 +112,38 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     # Arrêt
     logger.info("🛑 Arrêt de l'API BBIA-SIM")
 
+    # Issue #402: Arrêt propre même si dashboard ouvert
+    # Fermer toutes les connexions WebSocket actives
+    try:
+        from ..ws import telemetry
+
+        if hasattr(telemetry, "manager") and telemetry.manager:
+            await telemetry.manager.stop_broadcast()
+            logger.info("✅ WebSocket telemetry arrêté")
+    except Exception as e:
+        logger.warning("⚠️ Erreur arrêt WebSocket telemetry: %s", e)
+
+    try:
+        from ...dashboard_advanced import websocket_manager
+
+        if websocket_manager and hasattr(websocket_manager, "active_connections"):
+            # Fermer toutes les connexions actives
+            for ws in list(websocket_manager.active_connections):
+                try:
+                    await ws.close()
+                except Exception as e:
+                    logger.debug("Erreur fermeture WebSocket: %s", e)
+            websocket_manager.active_connections.clear()
+            logger.info("✅ WebSocket dashboard arrêté")
+    except Exception as e:
+        logger.warning("⚠️ Erreur arrêt WebSocket dashboard: %s", e)
+
     # Arrêt de la simulation
     if app_state["simulator"]:
         await simulation_service.stop_simulation()
         app_state["simulator"] = None
         app_state["is_running"] = False
+        logger.info("✅ Simulation arrêtée")
 
 
 # Création de l'application FastAPI

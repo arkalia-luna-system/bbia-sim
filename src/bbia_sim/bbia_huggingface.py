@@ -155,7 +155,13 @@ class BBIAHuggingFace:
             )
 
         self.device = self._get_device(device)
-        self.cache_dir = cache_dir
+        # Issue #310: Améliorer intégration HF Hub avec cache local
+        self.cache_dir = cache_dir or os.environ.get(
+            "HF_HOME", os.path.expanduser("~/.cache/huggingface")
+        )
+        # Créer répertoire cache si nécessaire
+        if self.cache_dir:
+            os.makedirs(self.cache_dir, exist_ok=True)
         self.models: dict[str, Any] = {}
         self.processors: dict[str, Any] = {}
         # OPTIMISATION RAM: Limiter nombre de modèles en mémoire
@@ -266,6 +272,8 @@ class BBIAHuggingFace:
 
         logger.info("🤗 BBIA Hugging Face initialisé (device: %s)", self.device)
         logger.info("😊 Personnalité BBIA: %s", self.bbia_personality)
+        if self.cache_dir:
+            logger.info("💾 Cache HF Hub: %s", self.cache_dir)
 
     def _get_device(self, device: str) -> str:
         """Détermine le device optimal."""
@@ -564,16 +572,20 @@ class BBIAHuggingFace:
 
             elif model_type == "audio":
                 if "whisper" in model_name.lower():
-                    whisper_processor: Any = WhisperProcessor.from_pretrained(  # nosec B615
-                        resolved_name,
-                        cache_dir=self.cache_dir,
-                        revision="main",
+                    whisper_processor: Any = (
+                        WhisperProcessor.from_pretrained(  # nosec B615
+                            resolved_name,
+                            cache_dir=self.cache_dir,
+                            revision="main",
+                        )
                     )
-                    model = WhisperForConditionalGeneration.from_pretrained(  # nosec B615
-                        resolved_name,
-                        cache_dir=self.cache_dir,
-                        revision="main",
-                    ).to(self.device)
+                    model = (
+                        WhisperForConditionalGeneration.from_pretrained(  # nosec B615
+                            resolved_name,
+                            cache_dir=self.cache_dir,
+                            revision="main",
+                        ).to(self.device)
+                    )
                     self.processors[f"{model_name}_processor"] = whisper_processor
                     self.models[f"{model_name}_model"] = model
 
@@ -607,14 +619,16 @@ class BBIAHuggingFace:
                     ):
                         self.chat_tokenizer.pad_token = self.chat_tokenizer.eos_token
 
-                    chat_model_load: Any = AutoModelForCausalLM.from_pretrained(  # nosec B615
-                        model_name,
-                        cache_dir=self.cache_dir,
-                        revision="main",
-                        device_map="auto",  # Auto-détecte MPS/CPU/CUDA
-                        torch_dtype=(
-                            torch.float16 if self.device != "cpu" else torch.float32
-                        ),
+                    chat_model_load: Any = (
+                        AutoModelForCausalLM.from_pretrained(  # nosec B615
+                            model_name,
+                            cache_dir=self.cache_dir,
+                            revision="main",
+                            device_map="auto",  # Auto-détecte MPS/CPU/CUDA
+                            torch_dtype=(
+                                torch.float16 if self.device != "cpu" else torch.float32
+                            ),
+                        )
                     )
                     self.chat_model = chat_model_load
 
@@ -2573,7 +2587,8 @@ class BBIAHuggingFace:
             has_reference = any(ref in message_lower for ref in reference_words)
 
             if (
-                has_reference or random.random() < 0.4  # nosec B311 - Variété réponse non-crypto
+                has_reference
+                or random.random() < 0.4  # nosec B311 - Variété réponse non-crypto
             ):  # 40% de chance si référence, sinon 30%
                 context_responses = {
                     "friendly_robot": [
@@ -3078,10 +3093,7 @@ def _normalize_response_sets() -> None:
             out.append(t)
         return out
 
-    global \
-        _expert_quality_padding, \
-        _EXPERT_TEST_PADDING_RESPONSES, \
-        _EXPERT_TEST_CANONICAL_RESPONSES
+    global _expert_quality_padding, _EXPERT_TEST_PADDING_RESPONSES, _EXPERT_TEST_CANONICAL_RESPONSES
     _expert_quality_padding = _unique(_expert_quality_padding)
     _EXPERT_TEST_PADDING_RESPONSES = _unique(_EXPERT_TEST_PADDING_RESPONSES)
     _EXPERT_TEST_CANONICAL_RESPONSES = _unique(_EXPERT_TEST_CANONICAL_RESPONSES)

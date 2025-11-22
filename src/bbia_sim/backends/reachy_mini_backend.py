@@ -1243,13 +1243,29 @@ class ReachyMiniBackend(RobotAPI):
             logger.exception("Erreur goto_target: %s", e)
 
     def enable_motors(self) -> None:
-        """Active les moteurs."""
+        """Active les moteurs.
+
+        Issue #323: S'assure que enable_motors définit le mode position controlled.
+        """
         if not self.is_connected or not self.robot:
             logger.info("Mode simulation: enable_motors")
             return
 
         try:
             self.robot.enable_motors()
+            # Issue #323: S'assurer que le mode est position controlled après enable
+            if hasattr(self.robot, "set_operating_mode"):
+                try:
+                    # Essayer de définir explicitement le mode position
+                    self.robot.set_operating_mode("position")
+                    logger.debug(
+                        "✅ Mode position controlled défini après enable_motors"
+                    )
+                except (AttributeError, ValueError, TypeError):
+                    # Si set_operating_mode n'existe pas, c'est OK (SDK gère automatiquement)
+                    logger.debug(
+                        "set_operating_mode non disponible (SDK gère automatiquement)"
+                    )
         except Exception as e:
             logger.exception("Erreur enable_motors: %s", e)
 

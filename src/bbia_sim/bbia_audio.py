@@ -164,6 +164,7 @@ def enregistrer_audio(
     duree: int = 3,
     frequence: int = DEFAULT_SAMPLE_RATE,
     robot_api: Optional["RobotAPI"] = None,
+    max_buffer_duration: int | None = None,
 ) -> bool:
     """
     Enregistre un fichier audio (WAV) depuis le micro.
@@ -173,17 +174,36 @@ def enregistrer_audio(
     Utilise robot.media.microphone (4 microphones SDK) si disponible,
     sinon utilise sounddevice pour compatibilité.
 
+    Issue #436: Limite taille buffer pour éviter OOM sur Raspberry Pi.
+    Par défaut, limite à 3 minutes si max_buffer_duration non spécifié.
+
     Args:
         fichier: Chemin du fichier de sortie
         duree: Durée d'enregistrement en secondes
         frequence: Fréquence d'échantillonnage
         robot_api: Interface RobotAPI (optionnel) pour accès robot.media.microphone
+        max_buffer_duration: Durée max buffer en secondes (défaut: 180s = 3 min)
 
     """
     # Vérifier flag d'environnement pour désactiver audio (CI/headless)
     if os.environ.get("BBIA_DISABLE_AUDIO", "0") == "1":
         logging.debug("Audio désactivé (BBIA_DISABLE_AUDIO=1): enregistrement ignoré")
         return False
+
+    # Issue #436: Limiter durée buffer pour éviter OOM
+    if max_buffer_duration is None:
+        max_buffer_duration = int(
+            os.environ.get("BBIA_MAX_AUDIO_BUFFER_DURATION", "180")
+        )  # 3 min par défaut
+
+    if duree > max_buffer_duration:
+        logging.warning(
+            "⚠️ Durée d'enregistrement (%ds) dépasse limite buffer (%ds). "
+            "Limitation appliquée pour éviter OOM.",
+            duree,
+            max_buffer_duration,
+        )
+        duree = max_buffer_duration
 
     # Sécurité: valider chemin de sortie
     if not _is_safe_path(fichier):
@@ -257,12 +277,47 @@ def enregistrer_audio(
             raise RuntimeError(
                 "sounddevice indisponible (BBIA_DISABLE_AUDIO conseillé en CI)",
             )
-        audio = _sd.rec(
-            int(duree * frequence),
-            samplerate=frequence,
-            channels=1,
-            dtype="int16",
-        )
+
+        # Issue #329: Gestion gracieuse canaux audio invalides
+        try:
+            # Essayer avec 1 canal (mono)
+            audio = _sd.rec(
+                int(duree * frequence),
+                samplerate=frequence,
+                channels=1,
+                dtype="int16",
+            )
+        except Exception as channel_error:
+            # Si erreur canaux, essayer de détecter le nombre de canaux disponibles
+            logging.warning(
+                "⚠️ Erreur canaux audio (Issue #329): %s. "
+                "Tentative avec configuration par défaut...",
+                channel_error,
+            )
+            try:
+                # Essayer avec configuration par défaut
+                import sounddevice as sd_module
+
+                default_device = sd_module.default.device
+                device_info = sd_module.query_devices(default_device[0])
+                channels = device_info.get("max_input_channels", 1)
+                logging.info("📊 Canaux disponibles détectés: %d", channels)
+
+                audio = _sd.rec(
+                    int(duree * frequence),
+                    samplerate=frequence,
+                    channels=min(channels, 1),  # Limiter à mono pour compatibilité
+                    dtype="int16",
+                )
+            except Exception as fallback_error:
+                logging.error(
+                    "❌ Échec enregistrement audio même avec fallback: %s",
+                    fallback_error,
+                )
+                raise RuntimeError(
+                    f"Impossible d'enregistrer audio: {fallback_error}"
+                ) from fallback_error
+
         _sd.wait()
         with wave.open(fichier, "wb") as wf:
             wf.setnchannels(1)
