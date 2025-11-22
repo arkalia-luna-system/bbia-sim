@@ -118,7 +118,7 @@ def acquire_lock(recursion_level: int = 0) -> bool:
                             # Lock expiré (processus probablement mort)
                             print(
                                 f"⚠️  Lock expiré (>{LOCK_TIMEOUT}s). "
-                                f"Processus {pid} pourrait être mort. "
+                                f"Processus {pid_int} pourrait être mort. "
                                 f"Suppression du lock..."
                             )
                             os.remove(LOCK_FILE)
@@ -127,12 +127,12 @@ def acquire_lock(recursion_level: int = 0) -> bool:
                         else:
                             print(
                                 f"❌ Tests déjà en cours d'exécution !\n"
-                                f"   Processus PID: {pid}\n"
+                                f"   Processus PID: {pid_int}\n"
                                 f"   Lock acquis il y a: {elapsed:.1f}s\n"
                                 f"   Fichier lock: {LOCK_FILE}\n\n"
                                 f"💡 Solutions:\n"
                                 f"   1. Attendre la fin de l'autre processus\n"
-                                f"   2. Vérifier: ps aux | grep {pid}\n"
+                                f"   2. Vérifier: ps aux | grep {pid_int}\n"
                                 f"   3. Si processus mort: rm {LOCK_FILE}\n"
                                 f"   4. Timeout automatique après {LOCK_TIMEOUT}s\n"
                             )
@@ -140,7 +140,7 @@ def acquire_lock(recursion_level: int = 0) -> bool:
                     except ProcessLookupError:
                         # Processus n'existe plus, lock orphelin
                         print(
-                            f"⚠️  Lock orphelin détecté (processus {pid} n'existe plus). "
+                            f"⚠️  Lock orphelin détecté (processus {pid_int} n'existe plus). "
                             f"Suppression..."
                         )
                         os.remove(LOCK_FILE)
