@@ -420,7 +420,7 @@ class BBIAHuggingFace:
                 device_map="auto",
                 torch_dtype=(torch.float16 if self.device != "cpu" else torch.float32),
             )
-            logger.info("✅ LLM %s chargé avec succès", model_name)
+            logger.info(f"✅ LLM {model_name} chargé avec succès")
             self.use_llm_chat = True
             return True
         except (ImportError, RuntimeError, OSError, ValueError) as e:
@@ -461,7 +461,7 @@ class BBIAHuggingFace:
                     AutoProcessor,
                 )
 
-                logger.info("📥 Chargement SmolVLM2/Moondream2: %s", model_name)
+                logger.info(f"📥 Chargement SmolVLM2/Moondream2: {model_name}")
                 processor: Any = AutoProcessor.from_pretrained(  # nosec B615
                     model_name,
                     cache_dir=self.cache_dir,
@@ -507,7 +507,7 @@ class BBIAHuggingFace:
             if isinstance(cfg, dict) and model_name in cfg:
                 return cfg[model_name]
         except (KeyError, AttributeError, TypeError, ValueError) as e:
-            logger.debug("Erreur résolution nom de modèle '%s': %s", model_name, e)
+            logger.debug(f"Erreur résolution nom de modèle '{model_name}': {e}")
         except Exception as e:
             logger.debug(
                 f"Erreur inattendue résolution nom de modèle '{model_name}': {e}"
@@ -563,7 +563,7 @@ class BBIAHuggingFace:
             if len(self.models) >= self._max_models_in_memory:
                 self._unload_lru_model()
 
-            logger.info("📥 Chargement modèle %s (%s)", resolved_name, model_type)
+            logger.info(f"📥 Chargement modèle {resolved_name} ({model_type})")
 
             # OPTIMISATION RAM: Enregistrer timestamp usage modèle
             current_time = time.time()
@@ -632,7 +632,7 @@ class BBIAHuggingFace:
 
                     # isort: on
 
-                    logger.info("📥 Chargement LLM (long) %s...", model_name)
+                    logger.info(f"📥 Chargement LLM (long) {model_name}...")
                     self.chat_tokenizer = AutoTokenizer.from_pretrained(
                         model_name,
                         cache_dir=self.cache_dir,
@@ -659,7 +659,7 @@ class BBIAHuggingFace:
                     )
                     self.chat_model = chat_model_load
 
-                    logger.info("✅ LLM %s chargé avec succès", model_name)
+                    logger.info(f"✅ LLM {model_name} chargé avec succès")
                     self.use_llm_chat = True
                     return True
                 except (ImportError, RuntimeError, OSError, ValueError) as e:
@@ -681,7 +681,7 @@ class BBIAHuggingFace:
             elif model_type == "multimodal":
                 return self._load_multimodal_model(resolved_name)
 
-            logger.info("✅ Modèle %s chargé avec succès", resolved_name)
+            logger.info(f"✅ Modèle {resolved_name} chargé avec succès")
 
             # OPTIMISATION RAM: Enregistrer timestamp usage modèle
             model_key = f"{model_name}_{model_type}"
@@ -1028,7 +1028,7 @@ class BBIAHuggingFace:
             if hasattr(self, "chat_model") and self.chat_model is not None:
                 del self.chat_model
         except (AttributeError, RuntimeError) as e:
-            logger.debug("Erreur suppression chat_model: %s", e)
+            logger.debug(f"Erreur suppression chat_model: {e}")
         except Exception as e:
             logger.debug(f"Erreur inattendue suppression chat_model: {e}")
         try:
@@ -1071,7 +1071,7 @@ class BBIAHuggingFace:
             # Supprimer du tracking
             if oldest_key in self._model_last_used:
                 del self._model_last_used[oldest_key]
-            logger.debug("♻️ Modèle LRU déchargé (optimisation RAM): %s", oldest_key)
+            logger.debug(f"♻️ Modèle LRU déchargé (optimisation RAM): {oldest_key}")
 
     def _update_model_usage(self, model_key: str) -> None:
         """OPTIMISATION RAM: Met à jour timestamp d'usage d'un modèle."""
@@ -1218,7 +1218,7 @@ class BBIAHuggingFace:
                 except ImportError:
                     pass  # torch non disponible, ignorer
 
-            logger.info("🗑️ Modèle %s déchargé - Mémoire libérée", model_name)
+            logger.info(f"🗑️ Modèle {model_name} déchargé - Mémoire libérée")
             return True
 
         except (AttributeError, RuntimeError, KeyError) as e:
@@ -1302,7 +1302,7 @@ class BBIAHuggingFace:
                         if self.load_model(default_chat_model, model_type="chat"):
                             logger.info("✅ LLM chargé avec succès (lazy loading)")
                 except (ImportError, RuntimeError, OSError, ValueError) as e:
-                    logger.debug("Lazy loading LLM échoué (fallback enrichi): %s", e)
+                    logger.debug(f"Lazy loading LLM échoué (fallback enrichi): {e}")
                 except Exception as e:
                     logger.debug(
                         "Lazy loading LLM échoué inattendu (fallback enrichi): %s", e
@@ -1546,7 +1546,7 @@ class BBIAHuggingFace:
             # Post-traitement anti-bavardage et coupe propre
             cleaned = self._postprocess_llm_output(generated_text, user_message)
 
-            logger.info("🤖 LLM réponse générée: %s...", cleaned[:100])
+            logger.info(f"🤖 LLM réponse générée: {cleaned[:100]}...")
             return (
                 self._normalize_response_length(cleaned)
                 if cleaned
@@ -1554,7 +1554,7 @@ class BBIAHuggingFace:
             )
 
         except (ValueError, RuntimeError, AttributeError, OSError) as e:
-            logger.warning("⚠️  Erreur génération LLM, fallback enrichi: %s", e)
+            logger.warning(f"⚠️  Erreur génération LLM, fallback enrichi: {e}")
             # Fallback vers réponses enrichies
             try:
                 sentiment_result = self.analyze_sentiment(user_message)
@@ -1826,7 +1826,7 @@ class BBIAHuggingFace:
                         # Retourner résultat textuel
                         if result.get("status") == "success":
                             detail = result.get("detail", "Action exécutée")
-                            logger.info("✅ Outil '%s' exécuté: %s", tool_name, detail)
+                            logger.info(f"✅ Outil '{tool_name}' exécuté: {detail}")
                             return f"✅ {detail}"
                         error_detail = result.get("detail", "Erreur inconnue")
                         logger.warning(
@@ -1947,7 +1947,7 @@ class BBIAHuggingFace:
             return None
 
         except (ImportError, RuntimeError, AttributeError, ValueError) as e:
-            logger.debug("ℹ️ Erreur NLP détection (fallback mots-clés): %s", e)
+            logger.debug(f"ℹ️ Erreur NLP détection (fallback mots-clés): {e}")
             return None
         except Exception as e:
             logger.debug(
@@ -2088,7 +2088,7 @@ class BBIAHuggingFace:
             # Retourner résultat textuel
             if result.get("status") == "success":
                 detail = result.get("detail", "Action exécutée")
-                logger.info("✅ Outil '%s' exécuté: %s", tool_name, detail)
+                logger.info(f"✅ Outil '{tool_name}' exécuté: {detail}")
                 return f"✅ {detail}"
             error_detail = result.get("detail", "Erreur inconnue")
             logger.warning(f"⚠️ Erreur outil '{tool_name}': {error_detail}")
