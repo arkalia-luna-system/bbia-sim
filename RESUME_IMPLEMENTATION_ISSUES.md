@@ -88,38 +88,12 @@
 
 ---
 
-## ✅ ACTIONS EFFECTUÉES SUR GITHUB
-
-### Pour les Issues #6, #7, #8 (FERMÉES) :
-
-1. ✅ **Commentaires ajoutés** sur chaque issue avec :
-   - ✅ Confirmation que les tests sont implémentés
-   - 📝 Liste des tests ajoutés
-   - 📁 Références aux fichiers modifiés
-
-2. ✅ **Issues fermées** comme "terminées" :
-   - ✅ Issue #8 : Tests Mapping Commandes Vocales Avancés - **FERMÉE**
-   - ✅ Issue #7 : Tests Vision Structure Bbox - **FERMÉE**
-   - ✅ Issue #6 : Améliorer Tests bbia_emotions.py - **FERMÉE**
-
-### Pour l'Issue #4 (OUVERTE) :
-
-1. ✅ **Commentaire de clarification ajouté** expliquant :
-   - ⚠️ La fonction `_capture_audio_chunk()` n'existe pas dans le code actuel
-   - ✅ Les fonctions existantes sont déjà bien testées (`enregistrer_audio()`, `detecter_son()`)
-   - ✅ Coverage actuel : ~87.76% (excellent mais améliorable)
-   - 📋 Tests manquants identifiés : gestion d'erreurs, sécurité, environnement
-
-2. ✅ **Décision** : Issue gardée ouverte car l'objectif d'améliorer la couverture reste valide, même si la fonction spécifique n'existe pas. L'issue peut servir de guide pour futurs contributeurs.
-
----
-
----
-
 ## 📝 NOTE HISTORIQUE
 
 Ce fichier remplace `RESUME_ACTIONS_ISSUES.md` qui contenait les actions initiales.
 Toutes les informations ont été consolidées ici.
+
+> **📋 Pour les actions GitHub détaillées** (commentaires ajoutés, issues fermées), voir `ACTIONS_GITHUB_ISSUES.md`
 
 **Dernière mise à jour** : Décembre 2025
 

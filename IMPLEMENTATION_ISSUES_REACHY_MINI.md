@@ -192,10 +192,31 @@ Vérifier cohérence modes dans backend.
 | #329 | ✅ **TERMINÉ** | 🟡 Moyenne | 2-3h |
 | #323 | ✅ **TERMINÉ** | 🟡 Moyenne | 3-4h |
 
-**Total implémenté** : ✅ **8 issues sur 9 applicables**  
-**Temps total** : ~12-15h
+**Total implémenté** : ✅ **11 issues sur 11 applicables**  
+**Temps total** : ~18-23h
 
 ---
+
+---
+
+## ✅ Issue #251 - Détection tactile
+
+**Priorité** : 🟡 Moyenne  
+**Difficulté** : 🟡 **MOYENNE** (6-8h)  
+**Statut** : ✅ **TERMINÉ**
+
+### Problème :
+Détection tactile acoustique non officiellement supportée.
+
+### Solution :
+Implémenter détection tap/caress via audio.
+
+### Actions :
+- [x] Créer `src/bbia_sim/bbia_touch.py`
+- [x] Implémenter détection tap, caress, pat via analyse audio
+- [x] Créer `examples/demo_touch_detection.py`
+- [x] Créer `tests/test_bbia_touch.py`
+- [x] Tests passent
 
 **Dernière mise à jour** : Décembre 2025
 
