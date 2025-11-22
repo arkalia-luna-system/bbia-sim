@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Test du module BBIA Behavior Manager."""
 
-import contextlib
 import io
+import logging
 import os
 import sys
 import unittest
@@ -121,16 +121,28 @@ class TestHideBehavior(unittest.TestCase):
     def test_hide_sequence_stdout_and_voice(self):
         """Test avancé : vérifie la séquence console et la synthèse vocale pour 'se cacher'."""
         behavior = HideBehavior()
-        output = io.StringIO()
-        # Correction : patcher dire_texte dans le namespace du module bbia_behavior
-        with patch("bbia_sim.bbia_behavior.dire_texte") as mock_dire_texte:
-            with contextlib.redirect_stdout(output):
+        # Capturer les logs au lieu de stdout (les messages sont loggés, pas printés)
+        log_capture = io.StringIO()
+        handler = logging.StreamHandler(log_capture)
+        handler.setLevel(logging.INFO)
+
+        # Obtenir le logger utilisé par bbia_behavior
+        logger = logging.getLogger("BBIA")
+        logger.addHandler(handler)
+        logger.setLevel(logging.INFO)
+
+        try:
+            # Correction : patcher dire_texte dans le namespace du module bbia_behavior
+            with patch("bbia_sim.bbia_behavior.dire_texte") as mock_dire_texte:
                 result = behavior.execute({})
-        # Vérification de la sortie console
-        out = output.getvalue()
-        self.assertIn("🙈 [BBIA] Séquence 'se cacher'...", out)
-        # Note: certaines étapes peuvent varier selon l'implémentation
-        self.assertIn("💤 BBIA se cache et devient silencieux.", out)
+
+            # Vérification de la sortie console (depuis les logs)
+            log_output = log_capture.getvalue()
+            self.assertIn("🙈 [BBIA] Séquence 'se cacher'...", log_output)
+            # Note: certaines étapes peuvent varier selon l'implémentation
+            self.assertIn("💤 BBIA se cache et devient silencieux.", log_output)
+        finally:
+            logger.removeHandler(handler)
 
         # Vérification de la synthèse vocale - accepte n'importe quelle variante
         self.assertTrue(mock_dire_texte.called)
