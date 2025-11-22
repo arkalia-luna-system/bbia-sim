@@ -1,6 +1,7 @@
 """Router pour la gestion des applications HuggingFace."""
 
 import logging
+import time
 from typing import Any
 
 from fastapi import APIRouter, HTTPException, WebSocket
@@ -445,3 +446,37 @@ async def current_app_status() -> dict[str, Any] | None:
     if current_app:
         return AppStatus(name=current_app, status="running", running=True).model_dump()
     return None
+
+
+# Fonctions utilitaires pour compatibilité avec les tests
+def format_uptime(seconds: float) -> str:
+    """Formate le temps en format HH:MM:SS.
+
+    Args:
+        seconds: Nombre de secondes
+
+    Returns:
+        Chaîne formatée HH:MM:SS
+    """
+    hours = int(seconds // 3600)
+    minutes = int((seconds % 3600) // 60)
+    secs = int(seconds % 60)
+    return f"{hours:02d}:{minutes:02d}:{secs:02d}"
+
+
+# État global pour le temps de démarrage des apps
+_app_start_times: dict[str, float] = {}
+
+
+def get_app_start_time(app_name: str) -> float:
+    """Récupère le temps de démarrage d'une application.
+
+    Args:
+        app_name: Nom de l'application
+
+    Returns:
+        Timestamp de démarrage ou temps actuel si première fois
+    """
+    if app_name not in _app_start_times:
+        _app_start_times[app_name] = time.time()
+    return _app_start_times[app_name]
