@@ -4,6 +4,7 @@ Tests pour vérifier les améliorations d'intelligence de BBIA.
 Vérifie que les améliorations fonctionnent sans régression.
 """
 
+import gc
 import sys
 from pathlib import Path
 
@@ -74,8 +75,12 @@ class TestBBIAIntelligenceImprovements:
             has_intelligent_responses
         ), "Les réponses par défaut doivent être plus intelligentes avec questions"
 
+    @pytest.mark.slow  # OPTIMISATION RAM: Test peut charger modèles lourds
+    @pytest.mark.heavy  # OPTIMISATION RAM: Test lourd (charge modèles LLM)
+    @pytest.mark.model  # Test qui charge de vrais modèles (HuggingFace)
     def test_huggingface_response_quality(self):
         """Test que BBIAHuggingFace génère des réponses de qualité."""
+        hf = None
         try:
             hf = BBIAHuggingFace()
             # Test avec un message simple
@@ -85,6 +90,16 @@ class TestBBIAIntelligenceImprovements:
             assert len(response) < 200, "La réponse ne doit pas être trop longue"
         except ImportError:
             pytest.skip("Hugging Face non disponible")
+        finally:
+            # OPTIMISATION RAM: Décharger modèle après test
+            if hf is not None:
+                try:
+                    if hasattr(hf, "unload_models"):
+                        hf.unload_models()
+                    hf._stop_auto_unload_thread()
+                except (AttributeError, RuntimeError):
+                    pass
+                gc.collect()
 
     def test_conversation_uses_huggingface_if_available(self):
         """Test que ConversationBehavior utilise HuggingFace si disponible."""

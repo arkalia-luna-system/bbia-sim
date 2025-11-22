@@ -348,6 +348,9 @@ class TestDaemonModels:
 
     def test_full_body_target(self) -> None:
         """Test FullBodyTarget."""
+        # OPTIMISATION RAM: Import lazy
+        from bbia_sim.daemon.models import FullBodyTarget
+
         target = FullBodyTarget(
             target_head_pose=None,
             target_antennas=(0.0, 0.0),
@@ -391,8 +394,14 @@ class TestDaemonModels:
 class TestBackendAdapter:
     """Tests pour BackendAdapter."""
 
+    def teardown_method(self):
+        """OPTIMISATION RAM: Nettoyer mémoire après chaque test."""
+        gc.collect()
+
     def test_backend_adapter_init(self) -> None:
         """Test initialisation BackendAdapter."""
+        # OPTIMISATION RAM: Import lazy
+        from bbia_sim.daemon.app.backend_adapter import BackendAdapter
         from bbia_sim.daemon.simulation_service import simulation_service
 
         adapter = BackendAdapter(simulation_service.robot_api)
@@ -400,6 +409,8 @@ class TestBackendAdapter:
 
     def test_connect_if_needed(self) -> None:
         """Test connect_if_needed."""
+        # OPTIMISATION RAM: Import lazy
+        from bbia_sim.daemon.app.backend_adapter import BackendAdapter
         from bbia_sim.daemon.simulation_service import simulation_service
 
         adapter = BackendAdapter(simulation_service.robot_api)
@@ -408,11 +419,17 @@ class TestBackendAdapter:
 
     def test_get_backend_adapter(self) -> None:
         """Test get_backend_adapter."""
+        # OPTIMISATION RAM: Import lazy
+        from bbia_sim.daemon.app.backend_adapter import get_backend_adapter
+
         adapter = get_backend_adapter()
         assert adapter is not None
 
     def test_get_backend_dependency(self) -> None:
         """Test get_backend_dependency."""
+        # OPTIMISATION RAM: Import lazy
+        from bbia_sim.daemon.app.routers.move import get_backend_dependency
+
         # Cette fonction est utilisée dans FastAPI, on teste juste qu'elle existe
         assert get_backend_dependency is not None
 
@@ -420,25 +437,38 @@ class TestBackendAdapter:
 class TestRobotAPI:
     """Tests pour RobotAPI."""
 
+    def teardown_method(self):
+        """OPTIMISATION RAM: Nettoyer mémoire après chaque test."""
+        gc.collect()
+
     def test_clamp_joint_position(self) -> None:
         """Test clamp_joint_position."""
+        # OPTIMISATION RAM: Import lazy + déconnexion propre
         from bbia_sim.backends.mujoco_backend import MuJoCoBackend
 
         backend = MuJoCoBackend()
-        backend.connect()
         try:
+            backend.connect()
             clamped = backend.clamp_joint_position("head_yaw", 2.0)
             assert -0.3 <= clamped <= 0.3
         finally:
             backend.disconnect()
+            gc.collect()
 
 
 class TestAIBackends:
     """Tests pour les backends IA."""
 
+    def teardown_method(self):
+        """OPTIMISATION RAM: Nettoyer mémoire après chaque test."""
+        gc.collect()
+
     def test_coqui_tts_init(self) -> None:
         """Test initialisation CoquiTTSTTS."""
+        # OPTIMISATION RAM: Import lazy
         try:
+            from bbia_sim.ai_backends import CoquiTTSTTS
+
             tts = CoquiTTSTTS()
             assert tts is not None
         except Exception:
@@ -451,6 +481,9 @@ class TestAIBackends:
 
     def test_get_tts_backend(self) -> None:
         """Test fonction get_tts_backend."""
+        # OPTIMISATION RAM: Import lazy
+        from bbia_sim.ai_backends import get_tts_backend
+
         backend = get_tts_backend()
         assert backend is not None
 
@@ -460,9 +493,17 @@ class TestAIBackends:
     )
     def test_get_available_assets(self) -> None:
         """Test obtention assets disponibles."""
-        if get_available_assets:
-            assets = get_available_assets()
-            assert isinstance(assets, dict)
+        # OPTIMISATION RAM: Import lazy
+        try:
+            from bbia_sim.sim.assets.reachy_official.asset_mapping import (
+                get_available_assets,
+            )
+
+            if get_available_assets:
+                assets = get_available_assets()
+                assert isinstance(assets, dict)
+        except ImportError:
+            pytest.skip("asset_mapping non disponible")
 
     @pytest.mark.skipif(
         not ASSET_MAPPING_AVAILABLE,
@@ -470,9 +511,17 @@ class TestAIBackends:
     )
     def test_get_asset_path(self) -> None:
         """Test obtention chemin asset."""
-        if get_asset_path:
-            path = get_asset_path("torso")
-            assert isinstance(path, str)
+        # OPTIMISATION RAM: Import lazy
+        try:
+            from bbia_sim.sim.assets.reachy_official.asset_mapping import (
+                get_asset_path,
+            )
+
+            if get_asset_path:
+                path = get_asset_path("torso")
+                assert isinstance(path, str)
+        except ImportError:
+            pytest.skip("asset_mapping non disponible")
 
     @pytest.mark.skipif(
         not ASSET_MAPPING_AVAILABLE,
@@ -480,9 +529,17 @@ class TestAIBackends:
     )
     def test_get_official_assets(self) -> None:
         """Test obtention assets officiels."""
-        if get_official_assets:
-            assets = get_official_assets()
-            assert isinstance(assets, dict)
+        # OPTIMISATION RAM: Import lazy
+        try:
+            from bbia_sim.sim.assets.reachy_official.asset_mapping import (
+                get_official_assets,
+            )
+
+            if get_official_assets:
+                assets = get_official_assets()
+                assert isinstance(assets, dict)
+        except ImportError:
+            pytest.skip("asset_mapping non disponible")
 
 
 class TestBBIAHuggingFaceMethods:
