@@ -391,6 +391,23 @@ def clear_model_caches_after_test():
     OPTIMISATION RAM: Libère mémoire après chaque test.
     """
     yield
+    # Nettoyer thread partagé BBIAHuggingFace après chaque test
+    try:
+        from bbia_sim.bbia_huggingface import BBIAHuggingFace
+
+        with BBIAHuggingFace._shared_unload_thread_lock:
+            # Arrêter thread partagé si actif et plus d'instances
+            if (
+                not BBIAHuggingFace._shared_instances
+                and BBIAHuggingFace._shared_unload_thread
+                and BBIAHuggingFace._shared_unload_thread.is_alive()
+            ):
+                BBIAHuggingFace._shared_unload_thread_stop.set()
+                BBIAHuggingFace._shared_unload_thread.join(timeout=0.5)
+    except (ImportError, AttributeError, RuntimeError):
+        # Ignorer si module non disponible ou erreurs
+        pass
+
     # Nettoyer après chaque test
     try:
         gc.collect()  # Force garbage collection
