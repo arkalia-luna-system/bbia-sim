@@ -5,7 +5,7 @@
 **💡 Réponses rapides aux questions les plus courantes**  
 *Trouvez rapidement la solution à votre problème*
 
-**Version** : 1.3.2 • **Date** : 21 novembre 2025
+**Version** : 1.4.0 • **Date** : 22 novembre 2025
 
 [![📚 Documentation](https://img.shields.io/badge/📚-Documentation-blue)](../README.md) • [![🐛 Issue](https://img.shields.io/badge/🐛-Signaler%20un%20problème-red)](https://github.com/arkalia-luna-system/bbia-sim/issues)
 
@@ -426,7 +426,7 @@ export BBIA_DISABLE_SIMULATION=1
 
 ---
 
-**Dernière mise à jour** : 21 novembre 2025
+**Dernière mise à jour** : 22 novembre 2025
 
 ---
 

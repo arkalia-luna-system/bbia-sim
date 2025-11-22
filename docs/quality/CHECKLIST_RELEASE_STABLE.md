@@ -33,7 +33,7 @@
 - [ ] **Guides** : Guides principaux à jour (GUIDE_DEMARRAGE.md, GUIDE_AVANCE.md)
 
 #### 4. Git et Versioning
-- [ ] **Tags créés** : Tag version créé et pushé (`git tag v1.3.2 && git push --tags`)
+- [ ] **Tags créés** : Tag version créé et pushé (`git tag v1.4.0 && git push --tags`)
 - [ ] **Branch develop** : Tous les commits mergés, tests passent
 - [ ] **Commits propres** : Messages clairs, pas de commits WIP/TODO
 - [ ] **Pas de fichiers sensibles** : Vérifier `.env`, secrets, tokens

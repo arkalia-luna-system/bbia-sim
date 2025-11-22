@@ -50,13 +50,13 @@
   - ✅ `CHANGELOG.md` existe
   - ✅ `docs/reference/RELEASE_NOTES.md` existe
   - ✅ `examples/README.md` existe et complet (44 exemples)
-- **Action requise** : Vérifier que CHANGELOG.md contient les entrées pour v1.3.2
+- **Action requise** : Vérifier que CHANGELOG.md contient les entrées pour v1.4.0
 
 ### ✅ 7. Git et Versioning
 - **Statut** : ✅ **OK**
 - **Détails** :
   - ✅ Working directory propre
-  - ✅ Tags créés : v1.3.2 (15 tags au total)
+  - ✅ Tags créés : v1.4.0 (15 tags au total)
   - ✅ Commits propres : Messages clairs
   - ✅ Pas de fichiers sensibles détectés
 - **Commits sur develop non mergés** : 10 commits prêts pour merge
@@ -65,7 +65,7 @@
 - **Statut** : ✅ **OK**
 - **Détails** :
   - ✅ `requirements.txt` existe
-  - ✅ `pyproject.toml` configuré (version 1.3.2)
+  - ✅ `pyproject.toml` configuré (version 1.4.0)
   - ✅ Dépendances pinées si nécessaire
   - ⚠️ `pip-audit` non disponible (vérification manuelle recommandée)
 
@@ -123,7 +123,7 @@
   - ✅ Architecture documentée
   - ✅ API Reference complète
   - ✅ Troubleshooting à jour
-  - ⚠️ Vérifier CHANGELOG.md pour v1.3.2
+  - ⚠️ Vérifier CHANGELOG.md pour v1.4.0
 
 ### 16. Exemples et Démos
 - **Statut** : ✅ **EXCELLENT**
@@ -156,7 +156,7 @@
    ```
 
 3. **Vérifier CHANGELOG.md** :
-   - Ajouter entrées pour v1.3.2 si manquantes
+   - Ajouter entrées pour v1.4.0 si manquantes
    - Documenter les 5 nouvelles démos créées
 
 4. **Vérifier CI GitHub Actions** :
@@ -194,11 +194,11 @@
 
 - [ ] **Corrections Black appliquées** : `black tests/test_behaviors_advanced.py`
 - [ ] **Corrections Ruff appliquées** : `ruff check --fix .`
-- [ ] **CHANGELOG.md mis à jour** : Entrées pour v1.3.2
+- [ ] **CHANGELOG.md mis à jour** : Entrées pour v1.4.0
 - [ ] **CI GitHub Actions vert** : Tous les workflows passent
 - [ ] **Tests passent** : `pytest tests/ -v` (aucun FAIL)
 - [ ] **Git propre** : Tous les changements commités
-- [ ] **Tag vérifié** : Tag v1.3.2 existe et pointe vers le bon commit
+- [ ] **Tag vérifié** : Tag v1.4.0 existe et pointe vers le bon commit
 - [ ] **Release notes** : Documentées dans `docs/reference/RELEASE_NOTES.md`
 
 ### Après merge sur main
@@ -225,7 +225,7 @@
 ### Points à corriger ⚠️
 - ⚠️ 1 fichier à reformater (Black)
 - ⚠️ 17 erreurs Ruff (fixables automatiquement)
-- ⚠️ Vérifier CHANGELOG.md pour v1.3.2
+- ⚠️ Vérifier CHANGELOG.md pour v1.4.0
 
 ### Temps estimé pour corrections
 - **Black** : 30 secondes
