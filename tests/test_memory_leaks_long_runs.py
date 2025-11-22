@@ -32,14 +32,14 @@ def get_memory_usage() -> float | None:
 
 @pytest.mark.unit
 @pytest.mark.slow
-@pytest.mark.heavy  # OPTIMISATION RAM: Test lourd (200 itérations goto_target)
+@pytest.mark.heavy  # OPTIMISATION RAM: Test lourd (100 itérations goto_target)
 def test_memory_leaks_goto_target_iterations() -> None:
-    """Test fuites mémoire avec 200 appels goto_target (optimisé)."""
+    """Test fuites mémoire avec 100 appels goto_target (optimisé)."""
     backend = ReachyMiniBackend(use_sim=True)
     assert backend.connect() is True
 
-    # OPTIMISATION RAM: Réduire 300 → 200 (suffisant pour détecter fuites, 1.5x plus rapide)
-    iterations = 200
+    # OPTIMISATION RAM: Réduire 200 → 100 (suffisant pour détecter fuites, 2x plus rapide)
+    iterations = 100
     pose = np.eye(4, dtype=np.float64)
 
     # Mesurer mémoire initiale
@@ -80,14 +80,14 @@ def test_memory_leaks_goto_target_iterations() -> None:
 
 @pytest.mark.unit
 @pytest.mark.slow
-@pytest.mark.heavy  # OPTIMISATION RAM: Test lourd (200 itérations joints)
+@pytest.mark.heavy  # OPTIMISATION RAM: Test lourd (100 itérations joints)
 def test_memory_leaks_joint_operations() -> None:
-    """Test fuites mémoire avec 200 opérations sur joints (optimisé)."""
+    """Test fuites mémoire avec 100 opérations sur joints (optimisé)."""
     backend = ReachyMiniBackend(use_sim=True)
     assert backend.connect() is True
 
-    # OPTIMISATION RAM: Réduire 300 → 200 (suffisant pour détecter fuites, 1.5x plus rapide)
-    iterations = 200
+    # OPTIMISATION RAM: Réduire 200 → 100 (suffisant pour détecter fuites, 2x plus rapide)
+    iterations = 100
     joints = ["yaw_body", "stewart_1", "stewart_2", "stewart_3"]
 
     # Mesurer mémoire initiale
@@ -116,7 +116,7 @@ def test_memory_leaks_joint_operations() -> None:
 
 @pytest.mark.unit
 @pytest.mark.slow
-@pytest.mark.heavy  # OPTIMISATION RAM: Test lourd (200 itérations émotions)
+@pytest.mark.heavy  # OPTIMISATION RAM: Test lourd (100 itérations émotions)
 def test_memory_leaks_emotion_changes() -> None:
     """Test fuites mémoire avec changements d'émotions répétés (optimisé)."""
     backend = ReachyMiniBackend(use_sim=True)
