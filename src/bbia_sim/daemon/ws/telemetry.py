@@ -79,7 +79,13 @@ class ConnectionManager:
 
     async def start_broadcast(self) -> None:
         """Démarre la diffusion automatique de télémétrie."""
+        # OPTIMISATION RAM: Vérifier si task existe déjà et est active
         if self.is_broadcasting:
+            return
+
+        # OPTIMISATION RAM: Vérifier si task existe déjà et n'est pas terminée
+        if self.broadcast_task is not None and not self.broadcast_task.done():
+            logger.debug("Broadcast task déjà active")
             return
 
         self.is_broadcasting = True
