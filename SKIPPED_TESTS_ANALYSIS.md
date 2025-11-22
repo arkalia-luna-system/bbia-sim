@@ -60,6 +60,13 @@
 - **Action**: ✅ CORRIGÉ - Skips retirés, tests fonctionnent maintenant
 - **Résultat**: 2 tests supplémentaires passent maintenant au lieu de skip
 
+#### 3. ReachyMiniBackend skip inutile (2 skips corrigés, 1 fichier)
+- **Problème**: ReachyMiniBackend peut être initialisé même sans SDK (fallback activé)
+- **Fichiers corrigés**: 
+  - `tests/test_edge_cases_error_handling.py:124, 145` ✅
+- **Action**: ✅ CORRIGÉ - Skips retirés, tests fonctionnent maintenant
+- **Résultat**: 2 tests supplémentaires passent maintenant au lieu de skip
+
 #### 2. Tests qui skipent au lieu de gérer gracieusement (catégorie "other": 346 skips)
 - **Problème**: Beaucoup de tests skipent au runtime au lieu d'utiliser des mocks
 - **Action**: ⚠️ À VÉRIFIER au cas par cas
