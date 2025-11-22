@@ -85,4 +85,4 @@ docs/
 
 ---
 
-**Date** : 21 novembre 2025
+**Date** : 22 novembre 2025

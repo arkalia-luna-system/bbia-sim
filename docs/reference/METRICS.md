@@ -73,8 +73,8 @@
 
 ## 🔄 Version
 
-- **Version actuelle** : 1.3.2
-- **Date release** : 21 novembre 2025
+- **Version actuelle** : 1.4.0
+- **Date release** : 22 novembre 2025
 
 ---
 
