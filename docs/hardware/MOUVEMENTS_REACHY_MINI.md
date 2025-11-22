@@ -1,6 +1,6 @@
 # Mouvements Reachy Mini - analyse et améliorations
 
-**Date:** Oct / Nov. 2025
+**Date:** 22 novembre 2025
 **Statut:** améliorations appliquées
 
 ## État actuel des joints
@@ -61,7 +61,7 @@ D'après l'analyse du modèle officiel `reachy_mini_REAL_OFFICIAL.xml` :
 **Documentation de référence:**
 
 - GitHub: https://github.com/pollen-robotics/reachy_mini
-- SDK disponible depuis Oct / Nov. 2025
+- SDK disponible depuis novembre 2025
 - ~125 unités en beta test
 - ~3000 unités prévues avant Noël
 
