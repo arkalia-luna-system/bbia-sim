@@ -140,7 +140,10 @@ class TestBBIAEmotionRecognition:
     )
     def test_initialization(self):
         """Test l'initialisation du module."""
-        emotion_rec = BBIAEmotionRecognition()
+        try:
+            emotion_rec = BBIAEmotionRecognition()
+        except ImportError:
+            pytest.skip("Dépendances ML non disponibles")
         assert emotion_rec.device is not None
         assert emotion_rec.supported_emotions is not None
         assert len(emotion_rec.supported_emotions) > 0
@@ -151,7 +154,10 @@ class TestBBIAEmotionRecognition:
     )
     def test_supported_emotions(self):
         """Test les émotions supportées."""
-        emotion_rec = BBIAEmotionRecognition()
+        try:
+            emotion_rec = BBIAEmotionRecognition()
+        except ImportError:
+            pytest.skip("Dépendances ML non disponibles")
         emotions = emotion_rec.supported_emotions
 
         expected_emotions = [
@@ -176,7 +182,10 @@ class TestBBIAEmotionRecognition:
     )
     def test_detection_config(self):
         """Test la configuration de détection."""
-        emotion_rec = BBIAEmotionRecognition()
+        try:
+            emotion_rec = BBIAEmotionRecognition()
+        except ImportError:
+            pytest.skip("Dépendances ML non disponibles")
         config = emotion_rec.detection_config
 
         assert "face_detection_confidence" in config
@@ -195,7 +204,10 @@ class TestBBIAEmotionRecognition:
     )
     def test_analyze_vocal_emotion(self):
         """Test l'analyse d'émotion vocale."""
-        emotion_rec = BBIAEmotionRecognition()
+        try:
+            emotion_rec = BBIAEmotionRecognition()
+        except ImportError:
+            pytest.skip("Dépendances ML non disponibles")
 
         # Test avec texte positif
         result = emotion_rec.analyze_vocal_emotion("Je suis très heureux!")
@@ -211,7 +223,10 @@ class TestBBIAEmotionRecognition:
     )
     def test_fuse_emotions(self):
         """Test la fusion d'émotions."""
-        emotion_rec = BBIAEmotionRecognition()
+        try:
+            emotion_rec = BBIAEmotionRecognition()
+        except ImportError:
+            pytest.skip("Dépendances ML non disponibles")
 
         facial_result = {"emotion": "happy", "confidence": 0.8}
 
@@ -228,7 +243,10 @@ class TestBBIAEmotionRecognition:
     )
     def test_emotion_history(self):
         """Test l'historique des émotions."""
-        emotion_rec = BBIAEmotionRecognition()
+        try:
+            emotion_rec = BBIAEmotionRecognition()
+        except ImportError:
+            pytest.skip("Dépendances ML non disponibles")
 
         # Ajout d'émotions à l'historique
         emotion_rec.emotion_history = [
@@ -248,7 +266,10 @@ class TestBBIAEmotionRecognition:
     )
     def test_reset_history(self):
         """Test la réinitialisation de l'historique."""
-        emotion_rec = BBIAEmotionRecognition()
+        try:
+            emotion_rec = BBIAEmotionRecognition()
+        except ImportError:
+            pytest.skip("Dépendances ML non disponibles")
         emotion_rec.emotion_history = [{"emotion": "happy", "confidence": 0.8}]
 
         emotion_rec.reset_history()
@@ -264,7 +285,10 @@ class TestBBIAAdaptiveBehavior:
     )
     def test_initialization(self):
         """Test l'initialisation du module."""
-        adaptive_behavior = BBIAAdaptiveBehavior()
+        try:
+            adaptive_behavior = BBIAAdaptiveBehavior()
+        except ImportError:
+            pytest.skip("Dépendances ML non disponibles")
 
         assert adaptive_behavior.current_context == "neutral"
         assert adaptive_behavior.current_emotion == "neutral"
@@ -274,7 +298,10 @@ class TestBBIAAdaptiveBehavior:
 
     def test_contexts(self):
         """Test les contextes disponibles."""
-        adaptive_behavior = BBIAAdaptiveBehavior()
+        try:
+            adaptive_behavior = BBIAAdaptiveBehavior()
+        except ImportError:
+            pytest.skip("Dépendances ML non disponibles")
         contexts = adaptive_behavior.contexts
 
         expected_contexts = [
@@ -295,7 +322,10 @@ class TestBBIAAdaptiveBehavior:
 
     def test_behaviors(self):
         """Test les comportements disponibles."""
-        adaptive_behavior = BBIAAdaptiveBehavior()
+        try:
+            adaptive_behavior = BBIAAdaptiveBehavior()
+        except ImportError:
+            pytest.skip("Dépendances ML non disponibles")
         behaviors = adaptive_behavior.behaviors
 
         expected_behaviors = [
@@ -319,7 +349,10 @@ class TestBBIAAdaptiveBehavior:
 
     def test_set_context(self):
         """Test le changement de contexte."""
-        adaptive_behavior = BBIAAdaptiveBehavior()
+        try:
+            adaptive_behavior = BBIAAdaptiveBehavior()
+        except ImportError:
+            pytest.skip("Dépendances ML non disponibles")
 
         # Test contexte valide
         result = adaptive_behavior.set_context("greeting", 0.9)
@@ -332,7 +365,10 @@ class TestBBIAAdaptiveBehavior:
 
     def test_set_emotion_state(self):
         """Test le changement d'état émotionnel."""
-        adaptive_behavior = BBIAAdaptiveBehavior()
+        try:
+            adaptive_behavior = BBIAAdaptiveBehavior()
+        except ImportError:
+            pytest.skip("Dépendances ML non disponibles")
 
         # Test émotion valide
         result = adaptive_behavior.set_emotion_state("happy", 0.8)
@@ -349,7 +385,10 @@ class TestBBIAAdaptiveBehavior:
 
     def test_generate_behavior(self):
         """Test la génération de comportement."""
-        adaptive_behavior = BBIAAdaptiveBehavior()
+        try:
+            adaptive_behavior = BBIAAdaptiveBehavior()
+        except ImportError:
+            pytest.skip("Dépendances ML non disponibles")
 
         # Configuration d'un contexte et émotion
         adaptive_behavior.set_context("greeting")
@@ -369,7 +408,10 @@ class TestBBIAAdaptiveBehavior:
 
     def test_get_suitable_behaviors(self):
         """Test la sélection de comportements adaptés."""
-        adaptive_behavior = BBIAAdaptiveBehavior()
+        try:
+            adaptive_behavior = BBIAAdaptiveBehavior()
+        except ImportError:
+            pytest.skip("Dépendances ML non disponibles")
 
         # Test avec émotion happy
         adaptive_behavior.set_emotion_state("happy", 0.8)
@@ -390,7 +432,10 @@ class TestBBIAAdaptiveBehavior:
 
     def test_user_preferences(self):
         """Test les préférences utilisateur."""
-        adaptive_behavior = BBIAAdaptiveBehavior()
+        try:
+            adaptive_behavior = BBIAAdaptiveBehavior()
+        except ImportError:
+            pytest.skip("Dépendances ML non disponibles")
 
         # Génération de plusieurs comportements
         adaptive_behavior.set_context("playful")
@@ -406,7 +451,10 @@ class TestBBIAAdaptiveBehavior:
 
     def test_adapt_to_feedback(self):
         """Test l'adaptation basée sur les retours."""
-        adaptive_behavior = BBIAAdaptiveBehavior()
+        try:
+            adaptive_behavior = BBIAAdaptiveBehavior()
+        except ImportError:
+            pytest.skip("Dépendances ML non disponibles")
 
         # Génération d'un comportement
         behavior = adaptive_behavior.generate_behavior("test")
@@ -423,7 +471,10 @@ class TestBBIAAdaptiveBehavior:
 
     def test_behavior_statistics(self):
         """Test les statistiques de comportement."""
-        adaptive_behavior = BBIAAdaptiveBehavior()
+        try:
+            adaptive_behavior = BBIAAdaptiveBehavior()
+        except ImportError:
+            pytest.skip("Dépendances ML non disponibles")
 
         # Génération de plusieurs comportements
         for context in ["greeting", "conversation", "playful"]:
