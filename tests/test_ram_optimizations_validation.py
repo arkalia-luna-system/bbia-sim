@@ -80,20 +80,27 @@ def test_huggingface_auto_unload_thread() -> None:
     """Test que le thread de déchargement automatique est démarré."""
     hf = BBIAHuggingFace()
 
-    # Vérifier que le thread est initialisé
-    assert hasattr(hf, "_unload_thread")
-    assert hasattr(hf, "_unload_thread_stop")
-    assert hasattr(hf, "_unload_thread_lock")
-    assert hasattr(hf, "_inactivity_timeout")
+    try:
+        # Vérifier que le thread est initialisé
+        assert hasattr(hf, "_unload_thread")
+        assert hasattr(hf, "_unload_thread_stop")
+        assert hasattr(hf, "_unload_thread_lock")
+        assert hasattr(hf, "_inactivity_timeout")
 
-    # Vérifier que le timeout est défini
-    assert hf._inactivity_timeout > 0
-    assert hf._inactivity_timeout <= 600  # Max 10 minutes
+        # Vérifier que le timeout est défini
+        assert hf._inactivity_timeout > 0
+        assert hf._inactivity_timeout <= 600  # Max 10 minutes
 
-    # Vérifier que le thread est démarré (ou None si pas encore démarré)
-    # Le thread peut être None si pas encore initialisé, c'est OK
-    if hf._unload_thread is not None:
-        assert hf._unload_thread.is_alive() or not hf._unload_thread.is_alive()
+        # Vérifier que le thread est démarré (ou None si pas encore démarré)
+        # Le thread peut être None si pas encore initialisé, c'est OK
+        if hf._unload_thread is not None:
+            assert hf._unload_thread.is_alive() or not hf._unload_thread.is_alive()
+    finally:
+        # Nettoyer le thread après le test
+        try:
+            hf._stop_auto_unload_thread()
+        except (AttributeError, RuntimeError):
+            pass
 
 
 @pytest.mark.skipif(not HF_AVAILABLE, reason="Hugging Face non disponible")

@@ -28,6 +28,14 @@ class TestBBIAHuggingFaceChat:
         except ImportError:
             pytest.skip("Hugging Face transformers non disponible")
 
+    def teardown_method(self) -> None:
+        """Nettoie après chaque test."""
+        if hasattr(self, "hf") and self.hf is not None:
+            try:
+                self.hf._stop_auto_unload_thread()
+            except (AttributeError, RuntimeError):
+                pass
+
     @pytest.mark.slow  # OPTIMISATION RAM: Test peut charger modèles lourds
     @pytest.mark.heavy  # OPTIMISATION RAM: Test lourd (charge modèles LLM)
     @pytest.mark.model  # Test qui charge de vrais modèles (HuggingFace)
