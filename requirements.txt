@@ -11,6 +11,7 @@ websockets
 pydantic
 pydantic-settings
 python-multipart
+httpx>=0.25.0
 
 # === PHASE 2 DEPENDENCIES ===
 # Hugging Face Integration

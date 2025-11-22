@@ -19,7 +19,14 @@ import bbia_sim.bbia_huggingface  # noqa: F401
 try:
     from bbia_sim.bbia_huggingface import BBIAHuggingFace
 
-    BBIA_HUGGINGFACE_AVAILABLE = True
+    # Tester si on peut instancier (vérifie HF_AVAILABLE)
+    try:
+        _test_instance = BBIAHuggingFace()
+        BBIA_HUGGINGFACE_AVAILABLE = True
+        del _test_instance
+    except ImportError:
+        BBIA_HUGGINGFACE_AVAILABLE = False
+        BBIAHuggingFace = None  # type: ignore[assignment,misc]
 except ImportError:
     BBIA_HUGGINGFACE_AVAILABLE = False
     BBIAHuggingFace = None  # type: ignore[assignment,misc]
@@ -34,6 +41,8 @@ class TestDemoChatBBIA3D:
     )
     def test_chat_initialization(self):
         """Test que le chat peut s'initialiser."""
+        if not BBIA_HUGGINGFACE_AVAILABLE or BBIAHuggingFace is None:
+            pytest.skip("Hugging Face transformers non disponible")
         bbia = BBIAHuggingFace()
         assert hasattr(bbia, "bbia_personality")
         assert hasattr(bbia, "conversation_history")
@@ -44,6 +53,8 @@ class TestDemoChatBBIA3D:
     )
     def test_chat_method(self):
         """Test que la méthode chat fonctionne."""
+        if not BBIA_HUGGINGFACE_AVAILABLE or BBIAHuggingFace is None:
+            pytest.skip("Hugging Face transformers non disponible")
         bbia = BBIAHuggingFace()
         response = bbia.chat("Bonjour")
         assert isinstance(response, str)
@@ -143,6 +154,8 @@ class TestDemoChatBBIA3D:
     )
     def test_conversation_history(self):
         """Test que l'historique est sauvegardé."""
+        if not BBIA_HUGGINGFACE_AVAILABLE or BBIAHuggingFace is None:
+            pytest.skip("Hugging Face transformers non disponible")
         bbia = BBIAHuggingFace()
         initial_count = len(bbia.conversation_history)
         max_history_size = 1000
@@ -166,6 +179,8 @@ class TestDemoChatBBIA3D:
     )
     def test_bbia_personality(self):
         """Test que la personnalité BBIA fonctionne."""
+        if not BBIA_HUGGINGFACE_AVAILABLE or BBIAHuggingFace is None:
+            pytest.skip("Hugging Face transformers non disponible")
         bbia = BBIAHuggingFace()
         assert bbia.bbia_personality in [
             "friendly_robot",
