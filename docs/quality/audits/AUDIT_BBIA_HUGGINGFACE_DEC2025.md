@@ -118,6 +118,12 @@
    - Timeout wait() réduit de 60s à 10s pour réactivité - ✅ **IMPLÉMENTÉ (22 novembre 2025)**
    - Nettoyage automatique threads avec __del__() - ✅ **IMPLÉMENTÉ (22 novembre 2025)**
 
+4. **Qualité code - Corrections importantes** :
+   - S603 (subprocess) : Code sécurisé avec validation et noqa - ✅ **CORRIGÉ (22 novembre 2025)**
+   - ANN401 (typing.Any) : Types précis ajoutés (HeadPose, list[float]) - ✅ **CORRIGÉ (22 novembre 2025)**
+   - SLF001 (accès membres privés) : Utilisation de getattr avec noqa - ✅ **CORRIGÉ (22 novembre 2025)**
+   - PTH110 (os.path.exists) : Remplacé par Path.exists() - ✅ **CORRIGÉ (22 novembre 2025)**
+
 ---
 
 ### 6. **Intelligence - Améliorations LLM** ⏳ **OPTIONNEL**

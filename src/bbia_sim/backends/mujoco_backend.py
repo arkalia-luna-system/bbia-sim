@@ -14,6 +14,12 @@ import mujoco.viewer  # type: ignore[import-untyped]
 
 from ..robot_api import RobotAPI
 
+# Types pour goto_target
+try:
+    from reachy_mini.utils.interpolation import HeadPose  # type: ignore[import-untyped]
+except ImportError:
+    HeadPose = Any  # type: ignore[misc,assignment]
+
 logger = logging.getLogger(__name__)
 
 
@@ -514,8 +520,8 @@ class MuJoCoBackend(RobotAPI):
 
     def goto_target(
         self,
-        head: Any = None,
-        antennas: Any = None,
+        head: HeadPose | list[float] | None = None,  # type: ignore[type-arg]
+        antennas: list[float] | None = None,
         duration: float = 0.5,
         method: str = "minjerk",
         body_yaw: float | None = None,

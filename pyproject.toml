@@ -259,7 +259,6 @@ ignore = [
     "B008",  # do not perform function calls in argument defaults
     "C901",  # too complex
     # Docstring style rules (suggestions de style, non critiques)
-    "D101",  # Missing docstring in public class
     "D102",  # Missing docstring in public method
     "D103",  # Missing docstring in public function
     "D107",  # Missing docstring in __init__
@@ -284,13 +283,12 @@ ignore = [
     "FBT001",  # Boolean-typed positional argument in function definition
     "FBT002",  # Boolean default positional argument in function definition
     # Code style
-    "ERA001",  # Found commented-out code
+    "ERA001",  # Found commented-out code (commentaires explicatifs utiles)
     "PGH003",  # Use specific rule codes when ignoring type issues
-    "ANN401",  # Dynamically typed expressions (typing.Any) are disallowed
-    "PTH110",  # os.path.exists() should be replaced by Path.exists()
-    "SLF001",  # Private member accessed
-    # Security (peut être nécessaire dans certains cas)
-    "S603",  # subprocess call: check for execution of untrusted input
+    # ANN401 retiré : principales occurrences corrigées (typing.Any → types précis)
+    # SLF001 retiré : principales occurrences corrigées (getattr avec noqa pour cas nécessaires)
+    # S603 retiré : code sécurisé avec validation et noqa pour cas nécessaires
+    # PTH110 retiré : toutes les occurrences corrigées (os.path.exists() → Path.exists())
 ]
 
 [tool.ruff.lint.isort]

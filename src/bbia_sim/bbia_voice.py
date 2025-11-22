@@ -14,6 +14,7 @@ import sys
 import threading
 import time
 import unicodedata
+from pathlib import Path
 from typing import Any
 
 import pyttsx3
@@ -260,13 +261,9 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
                             if hasattr(speaker, "play"):
                                 speaker.play(audio_bytes)
                                 return
-                except (AttributeError, RuntimeError, OSError) as e:
+                except (AttributeError, RuntimeError, OSError, TypeError) as e:
                     logger.debug(
                         "Erreur lors de la lecture audio via SDK speaker: %s", e
-                    )
-                except Exception as e:
-                    logger.debug(
-                        "Erreur inattendue lecture audio via SDK speaker: %s", e
                     )
                 try:
                     # Fallback simple: lecture locale sans dépendance forte
@@ -367,9 +364,9 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
                             return
                     finally:
                         try:
-                            if tmp_path and os.path.exists(tmp_path):
-                                os.unlink(tmp_path)
-                        except Exception as cleanup_error:
+                            if tmp_path and Path(tmp_path).exists():
+                                Path(tmp_path).unlink()
+                        except (OSError, PermissionError) as cleanup_error:
                             logger.debug(
                                 "Erreur lors du nettoyage du fichier temporaire %s: %s",
                                 tmp_path,

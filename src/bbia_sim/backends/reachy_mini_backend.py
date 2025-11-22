@@ -6,6 +6,7 @@ Backend utilisant le SDK officiel reachy_mini
 import logging
 import threading
 import time
+import types
 from functools import lru_cache
 from typing import TYPE_CHECKING, Any, Optional
 
@@ -225,7 +226,12 @@ class ReachyMiniBackend(RobotAPI):
         self.connect()
         return self
 
-    def __exit__(self, exc_type: Any, exc_value: Any, traceback: Any) -> None:
+    def __exit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc_value: BaseException | None,
+        traceback: types.TracebackType | None,
+    ) -> None:
         """Context manager exit point (conforme SDK officiel)."""
         self.disconnect()
 

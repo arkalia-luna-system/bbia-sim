@@ -143,8 +143,8 @@ class BBIAPersonRecognition:
             )
 
             # Nettoyer fichier temporaire
-            if temp_path and os.path.exists(temp_path):
-                os.unlink(temp_path)
+            if temp_path and Path(temp_path).exists():
+                Path(temp_path).unlink()
 
             # Traiter résultats
             if df is not None and len(df) > 0:
@@ -181,9 +181,9 @@ class BBIAPersonRecognition:
             return None
         finally:
             # Nettoyer fichier temporaire si nécessaire
-            if temp_path and os.path.exists(temp_path):
+            if temp_path and Path(temp_path).exists():
                 try:
-                    os.unlink(temp_path)
+                    Path(temp_path).unlink()
                 except Exception as cleanup_error:
                     logger.debug(
                         "Erreur lors du nettoyage du fichier temporaire %s: %s",
@@ -235,8 +235,8 @@ class BBIAPersonRecognition:
             )
 
             # Nettoyer fichier temporaire
-            if temp_path and os.path.exists(temp_path):
-                os.unlink(temp_path)
+            if temp_path and Path(temp_path).exists():
+                Path(temp_path).unlink()
 
             # Traiter résultats (peut être liste ou dict selon version DeepFace)
             if isinstance(result, list):
@@ -269,9 +269,9 @@ class BBIAPersonRecognition:
             logger.exception("❌ Erreur détection émotion: %s", e)
             return None
         finally:
-            if temp_path and os.path.exists(temp_path):
+            if temp_path and Path(temp_path).exists():
                 try:
-                    os.unlink(temp_path)
+                    Path(temp_path).unlink()
                 except Exception as cleanup_error:
                     logger.debug(
                         "Erreur lors du nettoyage du fichier temporaire %s: %s",

@@ -624,12 +624,12 @@ class BBIAChat:
         """Sauvegarde préférences utilisateur dans fichier JSON."""
         try:
             import json
-            import os
+            from pathlib import Path
 
             # Créer répertoire si nécessaire
-            prefs_dir = os.path.dirname(self.preferences_file)
-            if prefs_dir and not os.path.exists(prefs_dir):
-                os.makedirs(prefs_dir, exist_ok=True)
+            prefs_dir = Path(self.preferences_file).parent
+            if prefs_dir and not prefs_dir.exists():
+                prefs_dir.mkdir(parents=True, exist_ok=True)
 
             # Sauvegarder
             with open(self.preferences_file, "w", encoding="utf-8") as f:
@@ -644,9 +644,9 @@ class BBIAChat:
         """Charge préférences utilisateur depuis fichier JSON."""
         try:
             import json
-            import os
+            from pathlib import Path
 
-            if os.path.exists(self.preferences_file):
+            if Path(self.preferences_file).exists():
                 with open(self.preferences_file, encoding="utf-8") as f:
                     loaded_prefs = json.load(f)
                     # Fusionner avec préférences existantes (ne pas écraser)
