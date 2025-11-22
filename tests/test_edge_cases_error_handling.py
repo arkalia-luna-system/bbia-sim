@@ -32,13 +32,10 @@ except ImportError:
     BBIA_AUDIO_AVAILABLE = False
     BBIAAudio = None
 
-try:
-    from bbia_sim.backends.reachy_mini_backend import ReachyMiniBackend
+# ReachyMiniBackend peut toujours être importé (fonctionne même sans SDK)
+from bbia_sim.backends.reachy_mini_backend import ReachyMiniBackend
 
-    REACHY_MINI_BACKEND_AVAILABLE = True
-except ImportError:
-    REACHY_MINI_BACKEND_AVAILABLE = False
-    ReachyMiniBackend = None
+REACHY_MINI_BACKEND_AVAILABLE = True
 
 
 class TestErrorHandlingModels:
@@ -120,9 +117,7 @@ class TestErrorHandlingRobot:
     @pytest.mark.fast
     def test_backend_robot_disconnected(self):
         """Test que le backend gère gracieusement la déconnexion."""
-        if not REACHY_MINI_BACKEND_AVAILABLE:
-            pytest.skip("ReachyMiniBackend non disponible")
-
+        # ReachyMiniBackend peut toujours être initialisé (fonctionne même sans SDK)
         backend = ReachyMiniBackend()
         backend.connect()
         backend.disconnect()
@@ -141,9 +136,7 @@ class TestErrorHandlingRobot:
     @pytest.mark.fast
     def test_backend_robot_none(self):
         """Test que le backend gère robot_api=None."""
-        if not REACHY_MINI_BACKEND_AVAILABLE:
-            pytest.skip("ReachyMiniBackend non disponible")
-
+        # ReachyMiniBackend peut toujours être initialisé (fonctionne même sans SDK)
         backend = ReachyMiniBackend()
         backend.robot = None  # Simuler robot None
 
