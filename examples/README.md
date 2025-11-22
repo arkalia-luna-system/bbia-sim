@@ -460,6 +460,50 @@ python examples/demo_awake.py
 
 **Résultat attendu** : Séquence de réveil avec messages variés
 
+### `demo_touch_detection.py` - Détection tactile (Issue #251)
+
+Démonstration de la détection d'interactions tactiles via analyse audio (tap, caress, pat).
+
+```bash
+python examples/demo_touch_detection.py
+```
+
+**Résultat attendu** : Détection tactile en temps réel (tap/caress/pat)
+
+### `demo_sleeping_pose.py` - Pose de sommeil améliorée (Issue #410)
+
+Démonstration de la pose de sommeil naturelle avec `set_sleeping_pose()`.
+
+```bash
+python examples/demo_sleeping_pose.py
+```
+
+**Résultat attendu** : Robot en position de sommeil naturelle
+
+### `demo_collision_detection.py` - Détection collision (Issue #183)
+
+Démonstration de la détection de collision dans la simulation MuJoCo.
+
+```bash
+python examples/demo_collision_detection.py
+```
+
+**Résultat attendu** : Vérification collision en simulation
+
+**Note** : Disponible uniquement en simulation MuJoCo.
+
+### `demo_robot_registry.py` - Registre multi-robots (Issue #30)
+
+Démonstration du registre multi-robots pour gestion future de plusieurs robots.
+
+```bash
+python examples/demo_robot_registry.py
+```
+
+**Résultat attendu** : Informations registre robots et backends disponibles
+
+**Note** : Infrastructure pour support multi-robots futur.
+
 ---
 
 ## 🔧 **Nouveaux Exemples - Endpoints API Complémentaires** (22 Nov. 2025)
