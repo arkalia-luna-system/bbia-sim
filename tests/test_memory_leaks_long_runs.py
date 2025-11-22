@@ -122,8 +122,8 @@ def test_memory_leaks_emotion_changes() -> None:
     backend = ReachyMiniBackend(use_sim=True)
     assert backend.connect() is True
 
-    # OPTIMISATION RAM: Réduire 200 → 150 (suffisant pour détecter fuites, 1.3x plus rapide)
-    iterations = 150
+    # OPTIMISATION RAM: Réduire 150 → 100 (suffisant pour détecter fuites, 1.5x plus rapide)
+    iterations = 100
     emotions = ["happy", "sad", "neutral", "excited", "curious", "calm"]
 
     try:

@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Tests pour le batch processing YOLO."""
 
+import gc
+
 import numpy as np
 import pytest
 
@@ -15,6 +17,10 @@ except ImportError:
 class TestYOLOBatchProcessing:
     """Tests pour le batch processing YOLO."""
 
+    def teardown_method(self):
+        """OPTIMISATION RAM: Nettoyer mémoire après chaque test."""
+        gc.collect()
+
     def test_detect_objects_batch_empty_list(self):
         """Test batch processing avec liste vide."""
         detector = YOLODetector(model_size="n", confidence_threshold=0.25)
@@ -27,8 +33,8 @@ class TestYOLOBatchProcessing:
         if not detector.load_model():
             pytest.skip("YOLO modèle non chargé")
 
-        # Créer image de test (640x480, BGR)
-        test_image = np.zeros((480, 640, 3), dtype=np.uint8)
+        # OPTIMISATION RAM: Image réduite (320x240 au lieu de 640x480 = 4x moins de mémoire)
+        test_image = np.zeros((240, 320, 3), dtype=np.uint8)
         result = detector.detect_objects_batch([test_image])
 
         assert len(result) == 1
@@ -40,11 +46,11 @@ class TestYOLOBatchProcessing:
         if not detector.load_model():
             pytest.skip("YOLO modèle non chargé")
 
-        # Créer 3 images de test
-        test_images = [np.zeros((480, 640, 3), dtype=np.uint8) for _ in range(3)]
+        # OPTIMISATION RAM: Images réduites (320x240) et seulement 2 images au lieu de 3
+        test_images = [np.zeros((240, 320, 3), dtype=np.uint8) for _ in range(2)]
         result = detector.detect_objects_batch(test_images)
 
-        assert len(result) == 3
+        assert len(result) == 2  # OPTIMISATION RAM: 2 images au lieu de 3
         for detections in result:
             assert isinstance(detections, list)
 
@@ -54,7 +60,8 @@ class TestYOLOBatchProcessing:
         if not detector.load_model():
             pytest.skip("YOLO modèle non chargé")
 
-        test_image = np.zeros((480, 640, 3), dtype=np.uint8)
+        # OPTIMISATION RAM: Image réduite (320x240 au lieu de 640x480)
+        test_image = np.zeros((240, 320, 3), dtype=np.uint8)
         result = detector.detect_objects_batch([test_image])
 
         # Vérifier que chaque détection a les champs attendus

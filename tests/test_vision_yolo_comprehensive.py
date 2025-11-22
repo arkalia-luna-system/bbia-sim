@@ -3,6 +3,7 @@
 Tests complets pour vision_yolo.py - Amélioration coverage 49% → 70%+
 """
 
+import gc
 import sys
 from pathlib import Path
 from unittest.mock import MagicMock, patch
@@ -29,6 +30,10 @@ from bbia_sim.vision_yolo import (
 @pytest.mark.fast
 class TestYOLODetector:
     """Tests pour YOLODetector."""
+
+    def teardown_method(self):
+        """OPTIMISATION RAM: Nettoyer mémoire après chaque test."""
+        gc.collect()
 
     def test_init_without_yolo(self):
         """Test initialisation sans YOLO disponible."""
@@ -98,7 +103,7 @@ class TestYOLODetector:
 
             vision_yolo_module._yolo_model_cache.clear()
             mock_yolo_class = MagicMock()
-            vision_yolo_module.YOLO.side_effect = Exception("Erreur chargement")
+            mock_yolo_class.side_effect = Exception("Erreur chargement")
             vision_yolo_module.YOLO = mock_yolo_class
 
             detector = YOLODetector(model_size="n", confidence_threshold=0.25)
@@ -172,8 +177,8 @@ class TestYOLODetector:
             detector.model = mock_model
             detector.is_loaded = True
 
-            # Image mock
-            image: npt.NDArray[np.uint8] = np.zeros((480, 640, 3), dtype=np.uint8)
+            # OPTIMISATION RAM: Image mock réduite (320x240 au lieu de 640x480 = 4x moins de mémoire)
+            image: npt.NDArray[np.uint8] = np.zeros((240, 320, 3), dtype=np.uint8)
             detections = detector.detect_objects(image)
 
             # Vérifier structure
@@ -208,7 +213,8 @@ class TestYOLODetector:
             detector = YOLODetector(model_size="n", confidence_threshold=0.25)
             assert detector.is_loaded is False
 
-            image: npt.NDArray[np.uint8] = np.zeros((480, 640, 3), dtype=np.uint8)
+            # OPTIMISATION RAM: Image mock réduite (320x240 au lieu de 640x480)
+            image: npt.NDArray[np.uint8] = np.zeros((240, 320, 3), dtype=np.uint8)
             detections = detector.detect_objects(image)
 
             assert isinstance(detections, list)
@@ -225,7 +231,8 @@ class TestYOLODetector:
             detector.is_loaded = True  # Force is_loaded mais model = None
             detector.model = None
 
-            image: npt.NDArray[np.uint8] = np.zeros((480, 640, 3), dtype=np.uint8)
+            # OPTIMISATION RAM: Image mock réduite (320x240 au lieu de 640x480)
+            image: npt.NDArray[np.uint8] = np.zeros((240, 320, 3), dtype=np.uint8)
             detections = detector.detect_objects(image)
 
             assert detections == []
@@ -240,7 +247,8 @@ class TestYOLODetector:
             detector.model = mock_model
             detector.is_loaded = True
 
-            image: npt.NDArray[np.uint8] = np.zeros((480, 640, 3), dtype=np.uint8)
+            # OPTIMISATION RAM: Image mock réduite (320x240 au lieu de 640x480)
+            image: npt.NDArray[np.uint8] = np.zeros((240, 320, 3), dtype=np.uint8)
             detections = detector.detect_objects(image)
 
             assert detections == []
@@ -327,6 +335,10 @@ class TestYOLODetector:
 
     def test_detect_objects_boxes_none(self):
         """Test détection avec boxes is None (couverture ligne 143)."""
+        try:
+            from ultralytics import YOLO  # noqa: F401
+        except ImportError:
+            pytest.skip("ultralytics non disponible")
         with patch("bbia_sim.vision_yolo.YOLO_AVAILABLE", True):
             import bbia_sim.vision_yolo as vision_yolo_module
 
@@ -349,7 +361,8 @@ class TestYOLODetector:
             detector.model = mock_model
             detector.is_loaded = True
 
-            image: npt.NDArray[np.uint8] = np.zeros((480, 640, 3), dtype=np.uint8)
+            # OPTIMISATION RAM: Image mock réduite (320x240 au lieu de 640x480)
+            image: npt.NDArray[np.uint8] = np.zeros((240, 320, 3), dtype=np.uint8)
             detections = detector.detect_objects(image)
 
             assert detections == []
@@ -411,7 +424,8 @@ class TestYOLODetector:
             detector.model = mock_model
             detector.is_loaded = True
 
-            image: npt.NDArray[np.uint8] = np.zeros((480, 640, 3), dtype=np.uint8)
+            # OPTIMISATION RAM: Image mock réduite (320x240 au lieu de 640x480)
+            image: npt.NDArray[np.uint8] = np.zeros((240, 320, 3), dtype=np.uint8)
             detections = detector.detect_objects(image)
 
             assert isinstance(detections, list)
@@ -439,6 +453,10 @@ class TestYOLODetector:
 class TestFaceDetector:
     """Tests pour FaceDetector."""
 
+    def teardown_method(self):
+        """OPTIMISATION RAM: Nettoyer mémoire après chaque test."""
+        gc.collect()
+
     @patch("mediapipe.solutions.face_detection.FaceDetection")
     @patch("mediapipe.solutions.drawing_utils")
     @patch("mediapipe.solutions.face_detection")
@@ -446,6 +464,10 @@ class TestFaceDetector:
         self, mock_face_detection, mock_drawing, mock_fd_class
     ):
         """Test initialisation avec MediaPipe."""
+        try:
+            import mediapipe  # noqa: F401
+        except ImportError:
+            pytest.skip("mediapipe non disponible")
         mock_fd_instance = MagicMock()
         mock_fd_class.return_value = mock_fd_instance
 
@@ -492,7 +514,8 @@ class TestFaceDetector:
         detector = FaceDetector()
         detector.face_detection = mock_face_detection
 
-        image: npt.NDArray[np.uint8] = np.zeros((480, 640, 3), dtype=np.uint8)
+        # OPTIMISATION RAM: Image mock réduite (320x240 au lieu de 640x480)
+        image: npt.NDArray[np.uint8] = np.zeros((240, 320, 3), dtype=np.uint8)
         faces = detector.detect_faces(image)
 
         assert len(faces) == 1
@@ -509,7 +532,8 @@ class TestFaceDetector:
         detector = FaceDetector()
         detector.face_detection = mock_face_detection
 
-        image: npt.NDArray[np.uint8] = np.zeros((480, 640, 3), dtype=np.uint8)
+        # OPTIMISATION RAM: Image mock réduite (320x240 au lieu de 640x480)
+        image: npt.NDArray[np.uint8] = np.zeros((240, 320, 3), dtype=np.uint8)
         faces = detector.detect_faces(image)
 
         assert faces == []
@@ -519,7 +543,8 @@ class TestFaceDetector:
         detector = FaceDetector()
         detector.face_detection = None
 
-        image: npt.NDArray[np.uint8] = np.zeros((480, 640, 3), dtype=np.uint8)
+        # OPTIMISATION RAM: Image mock réduite (320x240 au lieu de 640x480)
+        image: npt.NDArray[np.uint8] = np.zeros((240, 320, 3), dtype=np.uint8)
         faces = detector.detect_faces(image)
         assert faces == []
 
@@ -549,9 +574,17 @@ class TestFaceDetector:
 class TestFactoryFunctions:
     """Tests pour fonctions factory."""
 
+    def teardown_method(self):
+        """OPTIMISATION RAM: Nettoyer mémoire après chaque test."""
+        gc.collect()
+
     @patch("bbia_sim.vision_yolo.YOLO_AVAILABLE", True)
     def test_create_yolo_detector_with_yolo(self):
         """Test création détecteur YOLO."""
+        try:
+            from ultralytics import YOLO  # noqa: F401
+        except ImportError:
+            pytest.skip("ultralytics non disponible")
         detector = create_yolo_detector(model_size="n", confidence_threshold=0.3)
         assert detector is not None
         assert isinstance(detector, YOLODetector)
@@ -643,7 +676,8 @@ class TestFactoryFunctions:
             detector.model = mock_model
             detector.is_loaded = True
 
-            image: npt.NDArray[np.uint8] = np.zeros((480, 640, 3), dtype=np.uint8)
+            # OPTIMISATION RAM: Image mock réduite (320x240 au lieu de 640x480)
+            image: npt.NDArray[np.uint8] = np.zeros((240, 320, 3), dtype=np.uint8)
             detections = detector.detect_objects(image)
 
             assert detections == []
@@ -663,7 +697,8 @@ class TestFactoryFunctions:
         detector = FaceDetector()
         detector.face_detection = mock_face_detection
 
-        image: npt.NDArray[np.uint8] = np.zeros((480, 640, 3), dtype=np.uint8)
+        # OPTIMISATION RAM: Image mock réduite (320x240 au lieu de 640x480)
+        image: npt.NDArray[np.uint8] = np.zeros((240, 320, 3), dtype=np.uint8)
         faces = detector.detect_faces(image)
 
         assert faces == []
@@ -860,9 +895,10 @@ class TestFactoryFunctions:
             detector.model = mock_model
             detector.is_loaded = True
 
+            # OPTIMISATION RAM: Images réduites (320x240 au lieu de 640x480) et seulement 2 images
             images: list[npt.NDArray[np.uint8]] = [
-                np.zeros((480, 640, 3), dtype=np.uint8),
-                np.zeros((480, 640, 3), dtype=np.uint8),
+                np.zeros((240, 320, 3), dtype=np.uint8),
+                np.zeros((240, 320, 3), dtype=np.uint8),
             ]
             detections = detector.detect_objects_batch(images)
 
@@ -885,8 +921,9 @@ class TestFactoryFunctions:
             detector.is_loaded = True
             detector.model = None
 
+            # OPTIMISATION RAM: Image réduite (320x240 au lieu de 640x480)
             images: list[npt.NDArray[np.uint8]] = [
-                np.zeros((480, 640, 3), dtype=np.uint8)
+                np.zeros((240, 320, 3), dtype=np.uint8)
             ]
             detections = detector.detect_objects_batch(images)
             assert detections == [[]]
@@ -919,8 +956,9 @@ class TestFactoryFunctions:
             detector.model = mock_model
             detector.is_loaded = True
 
+            # OPTIMISATION RAM: Image réduite (320x240 au lieu de 640x480)
             images: list[npt.NDArray[np.uint8]] = [
-                np.zeros((480, 640, 3), dtype=np.uint8)
+                np.zeros((240, 320, 3), dtype=np.uint8)
             ]
             detections = detector.detect_objects_batch(images)
             assert detections == [[]]

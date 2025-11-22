@@ -4,6 +4,7 @@ Tests unitaires pour la fonctionnalité de chat intelligent BBIA.
 Tests de la nouvelle fonctionnalité chat dans bbia_huggingface.py
 """
 
+import gc
 from collections import deque
 
 import pytest
@@ -29,12 +30,17 @@ class TestBBIAHuggingFaceChat:
             pytest.skip("Hugging Face transformers non disponible")
 
     def teardown_method(self) -> None:
-        """Nettoie après chaque test."""
+        """OPTIMISATION RAM: Nettoie après chaque test et décharge modèles."""
         if hasattr(self, "hf") and self.hf is not None:
             try:
+                # OPTIMISATION RAM: Décharger modèles après chaque test
+                if hasattr(self.hf, "unload_models"):
+                    self.hf.unload_models()
                 self.hf._stop_auto_unload_thread()
             except (AttributeError, RuntimeError):
                 pass
+        # OPTIMISATION RAM: Force garbage collection
+        gc.collect()
 
     @pytest.mark.slow  # OPTIMISATION RAM: Test peut charger modèles lourds
     @pytest.mark.heavy  # OPTIMISATION RAM: Test lourd (charge modèles LLM)
