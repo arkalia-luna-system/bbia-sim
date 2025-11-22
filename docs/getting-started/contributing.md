@@ -7,22 +7,27 @@
 
 ## 📋 Liste des Issues Suggérées
 
-### 1. ✅ ~~Améliorer Coverage `bbia_audio.py`~~ - **DÉJÀ EXCELLENT**
+### 1. ⚠️ Améliorer Coverage `bbia_audio.py` - **À VÉRIFIER**
 
-**Priorité** : ✅ Complété  
+**Priorité** : ⚠️ À clarifier  
 **Difficulté** : -  
 **Temps estimé** : -
 
 **Description** :
 
+- ⚠️ **Issue GitHub #4** : La fonction `_capture_audio_chunk()` mentionnée dans l'issue **n'existe pas** dans le code actuel
 - ✅ Coverage actuel : **87.76%** (excellent ✅)
-- Coverage déjà très bon, objectif 70%+ largement dépassé
 - Tests existants : `test_bbia_audio_coverage_high.py`, `test_bbia_audio_improved.py`
 
-**Statut** : ✅ **MODULE BIEN TESTÉ** - Pas d'action nécessaire pour ce module
+**Statut** : ⚠️ **À VÉRIFIER** - Fonction mentionnée absente, issue potentiellement obsolète
+
+**Action recommandée** :
+- Vérifier si la fonction existe ailleurs ou a été renommée
+- Mettre à jour l'issue GitHub pour refléter l'état actuel du code
 
 **Ressources** :
 
+- 📊 **Analyse détaillée** : Voir `docs/quality/audits/ANALYSE_ISSUES_GITHUB.md`
 - Voir `tests/test_voice_whisper_comprehensive.py` comme exemple
 - Documentation : `docs/development/testing.md`
 
@@ -56,39 +61,50 @@
 
 ---
 
-### 3. 🎨 Améliorer Tests `bbia_emotions.py` (Optionnel)
+### 3. 🎨 Améliorer Tests `bbia_emotions.py` - **Issue #6**
 
-**Priorité** : Basse (coverage déjà bon)  
+**Priorité** : Moyenne  
 **Difficulté** : Facile-Moyenne  
 **Temps estimé** : 3-4 heures
 
 **Description** :
 
 - ✅ Coverage actuel : **81.71%** (déjà excellent ✅)
-- Améliorations optionnelles possibles :
-  - Transitions émotions complexes (si non couvertes)
-  - Historique émotions
-  - Validation intensités limites (edge cases)
+- **Issue GitHub #6** : Tests de transitions complexes manquants :
+  - ❌ Séquences rapides (happy → sad → excited en < 1 seconde)
+  - ❌ Transitions avec durées différentes
+  - ❌ Tests de stress (10+ transitions successives)
+  - ❌ Transitions avec intensités extrêmes (0.0 → 1.0 → 0.0)
 
 **Fichiers concernés** :
 
 - `src/bbia_sim/bbia_emotions.py`
-- `tests/test_bbia_emotions.py` (améliorer si besoin)
+- `tests/test_bbia_emotions.py` (améliorer)
 
-**Note** : Coverage déjà très bon (81.71%), amélioration optionnelle uniquement si nécessaire pour atteindre 90%+
+**Étapes** :
+
+1. Analyser coverage actuel
+2. Identifier branches non testées
+3. Créer tests transition émotions complexes
+4. Tester cas limites (intensité 0, 1, négative, >1)
+
+**Ressources** :
+
+- 📊 **Analyse détaillée** : Voir `docs/quality/audits/ANALYSE_ISSUES_GITHUB.md`
 
 ---
 
-### 4. 🔍 Ajouter Tests Vision Structure Bbox
+### 4. 🔍 Ajouter Tests Vision Structure Bbox - **Issue #7**
 
-**Priorité** : Faible  
+**Priorité** : Moyenne  
 **Difficulté** : Très Facile  
 **Temps estimé** : 1-2 heures
 
 **Description** :
 
-- Vérifier structure bbox retournées par vision
-- Tests validation format données
+- **Issue GitHub #7** : Vérifier structure bbox retournées par vision
+- ✅ Le code crée bien des bbox avec les 6 champs requis
+- ❌ Test spécifique manquant pour valider la structure complète
 
 **Fichiers concernés** :
 
@@ -98,24 +114,30 @@
 
 1. Ajouter test `test_bbox_structure_valid()` dans `test_bbia_vision_extended.py`
 2. Vérifier champs requis : `x`, `y`, `width`, `height`, `center_x`, `center_y`
-3. Vérifier types corrects (int)
-4. Tester valeurs limites (bbox hors image)
+3. Vérifier types corrects (int) pour tous les champs bbox
+4. Tester valeurs limites (bbox hors image, coordonnées négatives)
+
+**Ressources** :
+
+- 📊 **Analyse détaillée** : Voir `docs/quality/audits/ANALYSE_ISSUES_GITHUB.md`
 
 ---
 
-### 5. 🗣️ Tests Mapping Commandes Vocales Avancés
+### 5. 🗣️ Tests Mapping Commandes Vocales Avancés - **Issue #8**
 
-**Priorité** : Moyenne  
+**Priorité** : 🔴 **Haute**  
 **Difficulté** : Facile  
 **Temps estimé** : 2 heures
 
 **Description** :
 
-- Étendre tests `VoiceCommandMapper`
-- Tester :
-  - Commandes avec ponctuation
-  - Commandes multi-mots
-  - Variations linguistiques (verlan, abréviations)
+- **Issue GitHub #8** : Étendre tests `VoiceCommandMapper`
+- ✅ Tests basiques existent
+- ❌ Tests avancés manquants :
+  - Commandes avec ponctuation (`"salue!"`, `"regarde."`, `"arrête?"`)
+  - Commandes multi-mots avec apostrophes (`"regarde moi s'il te plaît"`)
+  - Variations linguistiques (`"slt"` → `"greet"`, abréviations)
+  - Commandes partielles dans phrases longues
 
 **Fichiers concernés** :
 
@@ -124,9 +146,13 @@
 **Étapes** :
 
 1. Ajouter tests dans `TestVoiceCommandMapper`
-2. Tester commandes : "salue!", "regarde moi s'il te plaît"
+2. Tester commandes : `"salue!"`, `"regarde moi s'il te plaît"`
 3. Tester commandes partielles complexes
 4. Documenter commandes supportées
+
+**Ressources** :
+
+- 📊 **Analyse détaillée** : Voir `docs/quality/audits/ANALYSE_ISSUES_GITHUB.md`
 
 ---
 
@@ -363,7 +389,21 @@ assignees: []
 
 ---
 
+## 📊 Analyse Technique Détaillée
+
+Pour une analyse technique complète de l'état actuel des issues GitHub (vérification code, tests existants, recommandations détaillées), consultez :
+
+**→ [Analyse Complète Issues GitHub](../../quality/audits/ANALYSE_ISSUES_GITHUB.md)**
+
+Cette analyse inclut :
+- ✅ Vérification de l'existence des fonctions mentionnées dans les issues
+- ✅ État actuel des tests existants
+- ✅ Détails techniques sur ce qui manque
+- ✅ Recommandations prioritaires
+
+---
+
 ## 🎯 Navigation
 
 **Retour à** : [README Documentation](../README.md)  
-**Voir aussi** : [Guide Contribution Complet](../community/CONTRIBUTION_GUIDE.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)
+**Voir aussi** : [Guide Contribution Complet](../community/CONTRIBUTION_GUIDE.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md) • [Analyse Issues GitHub](../../quality/audits/ANALYSE_ISSUES_GITHUB.md)

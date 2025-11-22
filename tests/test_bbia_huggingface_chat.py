@@ -28,6 +28,9 @@ class TestBBIAHuggingFaceChat:
         except ImportError:
             pytest.skip("Hugging Face transformers non disponible")
 
+    @pytest.mark.slow  # OPTIMISATION RAM: Test peut charger modèles lourds
+    @pytest.mark.heavy  # OPTIMISATION RAM: Test lourd (charge modèles LLM)
+    @pytest.mark.model  # Test qui charge de vrais modèles (HuggingFace)
     def test_chat_simple_greeting(self) -> None:
         """Test chat avec salutation simple."""
         response = self.hf.chat("Bonjour")
@@ -36,6 +39,9 @@ class TestBBIAHuggingFaceChat:
         assert len(response) > 0
         assert any(word in response.lower() for word in ["bonjour", "hello", "salut"])
 
+    @pytest.mark.slow  # OPTIMISATION RAM: Test peut charger modèles lourds
+    @pytest.mark.heavy  # OPTIMISATION RAM: Test lourd (charge modèles LLM)
+    @pytest.mark.model  # Test qui charge de vrais modèles (HuggingFace)
     def test_chat_conversation_history(self) -> None:
         """Test que l'historique de conversation est sauvegardé."""
         initial_count = len(self.hf.conversation_history)
@@ -62,6 +68,9 @@ class TestBBIAHuggingFaceChat:
         assert "sentiment" in last_entry
         assert "timestamp" in last_entry
 
+    @pytest.mark.slow  # OPTIMISATION RAM: Test peut charger modèles lourds
+    @pytest.mark.heavy  # OPTIMISATION RAM: Test lourd (charge modèles LLM)
+    @pytest.mark.model  # Test qui charge de vrais modèles (HuggingFace)
     def test_chat_with_empty_message(self) -> None:
         """Test chat avec message vide."""
         response = self.hf.chat("")
@@ -69,6 +78,9 @@ class TestBBIAHuggingFaceChat:
         assert isinstance(response, str)
         assert len(response) > 0
 
+    @pytest.mark.slow  # OPTIMISATION RAM: Test peut charger modèles lourds
+    @pytest.mark.heavy  # OPTIMISATION RAM: Test lourd (charge modèles LLM)
+    @pytest.mark.model  # Test qui charge de vrais modèles (HuggingFace)
     def test_chat_error_handling(self) -> None:
         """Test gestion des erreurs dans chat."""
         # Test avec message normal
@@ -150,6 +162,9 @@ class TestBBIAHuggingFaceChat:
         assert len(context) > 0
         assert "bbia" in context.lower() or "robot" in context.lower()
 
+    @pytest.mark.slow  # OPTIMISATION RAM: Test peut charger modèles lourds
+    @pytest.mark.heavy  # OPTIMISATION RAM: Test lourd (charge modèles LLM)
+    @pytest.mark.model  # Test qui charge de vrais modèles (HuggingFace)
     def test_build_context_string_with_history(self) -> None:
         """Test construction contexte avec historique."""
         # Ajouter quelques messages
@@ -162,6 +177,9 @@ class TestBBIAHuggingFaceChat:
         assert isinstance(context, str)
         assert "historique" in context.lower() or "user" in context.lower()
 
+    @pytest.mark.slow  # OPTIMISATION RAM: Test peut charger modèles lourds
+    @pytest.mark.heavy  # OPTIMISATION RAM: Test lourd (charge modèles LLM)
+    @pytest.mark.model  # Test qui charge de vrais modèles (HuggingFace)
     def test_chat_context_preservation(self) -> None:
         """Test que le contexte est préservé entre plusieurs appels."""
         max_history_size = 1000
@@ -181,6 +199,9 @@ class TestBBIAHuggingFaceChat:
         """Test que la personnalité par défaut est correcte."""
         assert self.hf.bbia_personality == "friendly_robot"
 
+    @pytest.mark.slow  # OPTIMISATION RAM: Test peut charger modèles lourds
+    @pytest.mark.heavy  # OPTIMISATION RAM: Test lourd (charge modèles LLM)
+    @pytest.mark.model  # Test qui charge de vrais modèles (HuggingFace)
     def test_chat_fallback_on_error(self) -> None:
         """Test que le fallback fonctionne en cas d'erreur."""
         # Forcer une erreur en définissant un modèle invalide
