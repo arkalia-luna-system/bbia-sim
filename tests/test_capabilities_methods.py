@@ -108,11 +108,11 @@ class TestBBIAChatInit:
 
     def test_chat_init(self) -> None:
         """Test initialisation BBIAChat."""
-        try:
-            chat = BBIAChat()
-            assert chat is not None
-        except (ImportError, RuntimeError, AttributeError):
-            pytest.skip("BBIAChat non disponible")
+        # BBIAChat peut être initialisé même sans Hugging Face (fallback activé)
+        chat = BBIAChat()
+        assert chat is not None
+        assert hasattr(chat, "personality")
+        assert hasattr(chat, "context")
 
 
 class TestBBIAMemoryInit:
