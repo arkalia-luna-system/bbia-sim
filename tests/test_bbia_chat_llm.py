@@ -251,14 +251,16 @@ class TestBBIAChat:
         mock_reachy_mini.utils = mock_reachy_mini_utils
 
         # Patcher sys.modules pour que l'import fonctionne
-        with patch.dict(
-            sys.modules,
-            {
-                "reachy_mini": mock_reachy_mini,
-                "reachy_mini.utils": mock_reachy_mini_utils,
-            },
-        ), patch.object(chat, "_load_llm"), patch.object(
-            chat, "generate", return_value="Réponse simulée"
+        with (
+            patch.dict(
+                sys.modules,
+                {
+                    "reachy_mini": mock_reachy_mini,
+                    "reachy_mini.utils": mock_reachy_mini_utils,
+                },
+            ),
+            patch.object(chat, "_load_llm"),
+            patch.object(chat, "generate", return_value="Réponse simulée"),
         ):
             # Message avec action
             response = chat.chat("Tourne la tête à droite")
