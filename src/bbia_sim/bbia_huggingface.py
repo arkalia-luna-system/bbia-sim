@@ -1438,7 +1438,9 @@ class BBIAHuggingFace:
             if use_context and self.conversation_history:
                 # Derniers 2 échanges pour contexte
                 # OPTIMISATION: Convertir deque en list pour slicing et utiliser list comprehension
-                recent_history = list(self.conversation_history)[-2:]
+                recent_history: list[ConversationEntry] = list(
+                    self.conversation_history
+                )[-2:]
                 # OPTIMISATION: List comprehension plus efficace que append() en boucle
                 # Note: extend() avec list flatten pour éviter erreur type mypy
                 for entry in recent_history:

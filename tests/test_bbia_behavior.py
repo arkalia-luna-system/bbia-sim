@@ -134,7 +134,7 @@ class TestHideBehavior(unittest.TestCase):
         original_level = logger.level
         original_handlers = logger.handlers[:]
         original_propagate = logger.propagate
-        
+
         # Ajouter notre handler de test
         logger.addHandler(handler)
         logger.setLevel(logging.INFO)
