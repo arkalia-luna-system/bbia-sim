@@ -4,6 +4,7 @@ Intégration Speech-to-Text avec OpenAI Whisper (optionnel)
 """
 
 import logging
+import operator
 import os
 import threading
 import time
