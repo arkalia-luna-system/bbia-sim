@@ -6,24 +6,24 @@ Ce fichier complète les autres fichiers de test pour atteindre 100% d'utilisati
 
 import pytest
 
-from bbia_sim.bbia_behavior import BBIABehaviorManager
-from bbia_sim.bbia_emotions import BBIAEmotions
-from bbia_sim.bbia_vision import BBIAVision
-from bbia_sim.bbia_chat import BBIAChat
-from bbia_sim.bbia_memory import BBIAMemory
-from bbia_sim.bbia_adaptive_learning import BBIAAdaptiveLearning
+from bbia_sim.backends.mujoco_backend import MuJoCoBackend
 from bbia_sim.bbia_adaptive_behavior import BBIAAdaptiveBehavior
+from bbia_sim.bbia_adaptive_learning import BBIAAdaptiveLearning
+from bbia_sim.bbia_behavior import BBIABehaviorManager
+from bbia_sim.bbia_chat import BBIAChat
 from bbia_sim.bbia_emotion_recognition import BBIAEmotionRecognition
+from bbia_sim.bbia_emotions import BBIAEmotions
 from bbia_sim.bbia_idle_animations import (
-    BBIIdleAnimationManager,
     BBIABreathingAnimation,
     BBIAPoseTransitionManager,
     BBIAVocalTremor,
+    BBIIdleAnimationManager,
 )
+from bbia_sim.bbia_memory import BBIAMemory
+from bbia_sim.bbia_vision import BBIAVision
 from bbia_sim.behaviors.alarm_clock import AlarmClockBehavior
-from bbia_sim.daemon.app.routers.apps import AppInfo, AppStatus
 from bbia_sim.daemon.app.backend_adapter import BackendAdapter
-from bbia_sim.backends.mujoco_backend import MuJoCoBackend
+from bbia_sim.daemon.app.routers.apps import AppInfo, AppStatus
 
 
 class TestBBIABehaviorManagerMethods:
@@ -325,10 +325,13 @@ class TestBBIAHuggingFaceMethods:
     def test_answer_question(self) -> None:
         """Test answer_question."""
         try:
+            import numpy as np
+
             from bbia_sim.bbia_huggingface import BBIAHuggingFace
 
             hf = BBIAHuggingFace()
-            answer = hf.answer_question("Qu'est-ce que BBIA?")
+            image = np.zeros((480, 640, 3), dtype=np.uint8)
+            answer = hf.answer_question(image, "Qu'est-ce que BBIA?")
             assert isinstance(answer, str)
         except ImportError:
             pytest.skip("Hugging Face non disponible")
@@ -336,8 +339,9 @@ class TestBBIAHuggingFaceMethods:
     def test_describe_image(self) -> None:
         """Test describe_image."""
         try:
-            from bbia_sim.bbia_huggingface import BBIAHuggingFace
             import numpy as np
+
+            from bbia_sim.bbia_huggingface import BBIAHuggingFace
 
             hf = BBIAHuggingFace()
             image = np.zeros((480, 640, 3), dtype=np.uint8)

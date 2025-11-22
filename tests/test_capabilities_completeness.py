@@ -17,7 +17,6 @@ from bbia_sim.ai_backends import DummySTT
 from bbia_sim.daemon.app.routers.apps import AppInfo, AppStatus
 from bbia_sim.daemon.app.routers.ecosystem import (
     APIStatus,
-    BehaviorResponse,
     EmotionResponse,
 )
 from bbia_sim.daemon.app.routers.move import GotoModelRequest, InterpolationMode
@@ -599,10 +598,13 @@ class TestBBIAHuggingFaceMethods:
     def test_answer_question(self) -> None:
         """Test answer_question."""
         try:
+            import numpy as np
+
             from bbia_sim.bbia_huggingface import BBIAHuggingFace
 
             hf = BBIAHuggingFace()
-            answer = hf.answer_question("Qu'est-ce que BBIA?")
+            image = np.zeros((480, 640, 3), dtype=np.uint8)
+            answer = hf.answer_question(image, "Qu'est-ce que BBIA?")
             assert isinstance(answer, str)
         except ImportError:
             pytest.skip("Hugging Face non disponible")
