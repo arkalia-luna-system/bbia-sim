@@ -698,7 +698,7 @@ class BBIAHuggingFace:
         except (ImportError, RuntimeError, OSError, ValueError, AttributeError):
             logger.exception("❌ Erreur chargement modèle {model_name}:")
             return False
-        except Exception as e:
+        except Exception:
             logger.exception("❌ Erreur inattendue chargement modèle %s:", model_name)
             return False
 
@@ -1865,7 +1865,9 @@ class BBIAHuggingFace:
                         logger.exception("❌ Erreur exécution outil '%s':", tool_name)
                         return f"❌ Erreur lors de l'exécution: {e}"
                     except Exception as e:
-                        logger.exception("❌ Erreur inattendue exécution outil '%s':", tool_name)
+                        logger.exception(
+                            "❌ Erreur inattendue exécution outil '%s':", tool_name
+                        )
                         return f"❌ Erreur lors de l'exécution: {e}"
 
         # Aucun outil détecté

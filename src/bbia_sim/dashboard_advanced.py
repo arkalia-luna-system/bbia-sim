@@ -247,10 +247,7 @@ class BBIAAdvancedWebSocketManager:
                 logger.exception("❌ Erreur initialisation robot forcée")
                 await self.send_log_message("error", f"❌ Erreur robot: {e}")
             except Exception as e:
-                logger.exception(
-                    "❌ Erreur inattendue initialisation robot forcée: %s",
-                    e,
-                )
+                logger.exception("❌ Erreur inattendue initialisation robot forcée")
                 await self.send_log_message("error", f"❌ Erreur robot: {e}")
 
         # Vérifier que le robot est vraiment connecté
@@ -3531,10 +3528,7 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                             f"❌ Erreur robot: {e}",
                         )
                     except Exception as e:
-                        logger.exception(
-                            "❌ Erreur inattendue initialisation robot: %s",
-                            e,
-                        )
+                        logger.exception("❌ Erreur inattendue initialisation robot")
                         await advanced_websocket_manager.send_log_message(
                             "error",
                             f"❌ Erreur robot: {e}",
@@ -3663,12 +3657,8 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                 except (ValueError, AttributeError, RuntimeError, ConnectionError):
                     logger.exception("Erreur exécution action %s:", action)
                     success = False
-                except Exception as e:
-                    logger.exception(
-                        "Erreur inattendue exécution action %s: %s",
-                        action,
-                        e,
-                    )
+                except Exception:
+                    logger.exception("Erreur inattendue exécution action %s:", action)
                     success = False
 
             await execute_action()
@@ -4023,8 +4013,8 @@ async def handle_chat_message(
                 "timestamp": datetime.now().isoformat(),
             }
             await websocket.send_text(json.dumps(error_response))
-        except Exception as e2:
-            logger.exception("❌ Erreur lors de l'envoi du message d'erreur: %s", e2)
+        except Exception:
+            logger.exception("❌ Erreur lors de l'envoi du message d'erreur")
 
 
 def run_advanced_dashboard(
