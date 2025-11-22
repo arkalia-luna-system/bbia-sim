@@ -5,9 +5,10 @@ Tests des interactions entre comportements, gestion des ressources,
 timeout, et arrêt propre.
 """
 
-import pytest
 import time
 from unittest.mock import MagicMock, patch
+
+import pytest
 
 from bbia_sim.behaviors.emotion_show import EmotionShowBehavior
 from bbia_sim.behaviors.exercise import ExerciseBehavior
@@ -22,15 +23,11 @@ class TestBehaviorsIntegration:
         """Crée un mock robot pour les tests."""
         return MagicMock()
 
-    @patch("bbia_sim.behaviors.exercise.dire_texte")
-    @patch("bbia_sim.behaviors.emotion_show.dire_texte")
-    def test_multiple_behaviors_sequential(
-        self, mock_dire_emotion, mock_dire_exercise, mock_robot
-    ):
+    @patch("bbia_sim.bbia_voice.dire_texte")
+    def test_multiple_behaviors_sequential(self, mock_dire_texte, mock_robot):
         """Test exécution séquentielle de plusieurs comportements."""
         # Mock dire_texte pour éviter les appels réels qui prennent du temps
-        mock_dire_emotion.return_value = None
-        mock_dire_exercise.return_value = None
+        mock_dire_texte.return_value = None
 
         # Exécuter comportement 1
         behavior1 = EmotionShowBehavior(robot_api=mock_robot)
@@ -54,8 +51,12 @@ class TestBehaviorsIntegration:
         behavior.stop()
         assert behavior.is_active is False
 
-    def test_behavior_timeout(self, mock_robot):
+    @patch("time.sleep")
+    def test_behavior_timeout(self, mock_sleep, mock_robot):
         """Test timeout d'un comportement (max 5 minutes)."""
+        # Mock time.sleep pour accélérer le test et éviter timeout
+        mock_sleep.return_value = None
+
         behavior = ExerciseBehavior(robot_api=mock_robot)
         start_time = time.time()
 
@@ -65,8 +66,8 @@ class TestBehaviorsIntegration:
         elapsed = time.time() - start_time
         # Vérifier que comportement se termine (pas de boucle infinie)
         assert behavior.is_active is False
-        # Vérifier qu'il ne prend pas trop de temps (max 30s pour test)
-        assert elapsed < 30.0
+        # Vérifier qu'il ne prend pas trop de temps (max 5s avec mock)
+        assert elapsed < 5.0
 
     def test_behavior_resource_cleanup(self, mock_robot):
         """Test nettoyage ressources après arrêt."""
