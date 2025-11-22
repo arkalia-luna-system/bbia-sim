@@ -957,7 +957,9 @@ class BBIAHuggingFace:
 
             # Vérifier que les clés existent après le chargement
             if processor_key not in self.processors:
-                logger.error(f"❌ Processeur {processor_key} non disponible après chargement")
+                logger.error(
+                    f"❌ Processeur {processor_key} non disponible après chargement"
+                )
                 return "Erreur (answer_question): processeur non disponible"
             if model_key not in self.models:
                 logger.error(f"❌ Modèle {model_key} non disponible après chargement")

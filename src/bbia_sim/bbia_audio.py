@@ -310,7 +310,7 @@ def enregistrer_audio(
                     dtype="int16",
                 )
             except Exception as fallback_error:
-                logging.error(
+                logging.exception(
                     "❌ Échec enregistrement audio même avec fallback: %s",
                     fallback_error,
                 )

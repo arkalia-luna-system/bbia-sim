@@ -143,6 +143,7 @@ class BBIAVision:
             # Utiliser debug au lieu de warning pour réduire le bruit dans les tests
             # Le warning reste utile en production mais trop verbeux en tests
             import sys
+
             if "pytest" in sys.modules or "unittest" in sys.modules:
                 logger.debug(
                     "⚠️ Instance BBIAVision créée directement. "
