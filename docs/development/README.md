@@ -1,6 +1,6 @@
 # 💻 Development - Documentation BBIA-SIM
 
-**Date** : 21 novembre 2025  
+**Date** : 22 novembre 2025  
 **Objectif** : Documentation pour développeurs et contributeurs
 
 ---
@@ -9,7 +9,7 @@
 
 ### Architecture
 
-- **[Architecture Overview](architecture/ARCHITECTURE_OVERVIEW.md)** - Vue d'ensemble (v1.3.2)
+- **[Architecture Overview](architecture/ARCHITECTURE_OVERVIEW.md)** - Vue d'ensemble (v1.4.0)
 - **[Architecture Detailed](architecture/ARCHITECTURE_DETAILED.md)** - Détails techniques
 - **[Architecture Guide](architecture/ARCHITECTURE.md)** - Guide complet
 

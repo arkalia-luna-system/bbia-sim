@@ -1,6 +1,6 @@
 # ❓ FAQ Troubleshooting - Guide Complet
 
-**Date** : 21 novembre 2025  
+**Date** : 22 novembre 2025  
 **Compatibilité Python** : 3.11+
 
 > **Voir aussi** : [`docs/reference/INDEX_THEMATIQUE.md`](../reference/INDEX_THEMATIQUE.md) et [`docs/reference/project-status.md`](../reference/project-status.md) (État par axe)
@@ -451,7 +451,7 @@ python scripts/bbia_doctor.py
 
 ---
 
-**Dernière mise à jour** : 21 novembre 2025
+**Dernière mise à jour** : 22 novembre 2025
 
 ---
 

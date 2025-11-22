@@ -1,7 +1,7 @@
 # 🏗️ BBIA-SIM - Guide d'Architecture Détaillé
 
-**Date** : 21 novembre 2025  
-**Version** : 1.3.2
+**Date** : 22 novembre 2025  
+**Version** : 1.4.0
 
 > **Liens utiles** : [`docs/reference/INDEX_THEMATIQUE.md`](../reference/INDEX_THEMATIQUE.md) · [`docs/reference/project-status.md`](../reference/project-status.md)
 

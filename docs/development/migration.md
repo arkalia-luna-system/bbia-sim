@@ -1,6 +1,6 @@
 # 🔄 Guide de Migration BBIA-SIM : Simulation → Robot Reachy Mini Réel
 
-**Date** : 21 novembre 2025  
+**Date** : 22 novembre 2025  
 **Version** : 1.0
 
 ## Vue d'ensemble
