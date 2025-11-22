@@ -302,6 +302,32 @@ echo "======================================"
 echo -e "${GREEN}🎯 Nettoyage complet terminé !${NC}"
 echo "======================================"
 echo ""
+
+# Afficher un résumé de ce qui a été nettoyé
+if [ "$CLEAN_CACHE" = true ]; then
+    echo -e "${BLUE}📊 Résumé du nettoyage cache:${NC}"
+    
+    # Compter les fichiers restants pour montrer l'état actuel
+    remaining_pycache=$(find . -type d -name "__pycache__" 2>/dev/null | wc -l | tr -d ' ')
+    remaining_pyc=$(find . -name "*.pyc" 2>/dev/null | wc -l | tr -d ' ')
+    remaining_metadata=$(find . -name "._*" -type f ! -path "./venv/*" ! -path "./venv-*/*" ! -path "./dist/*" ! -path "./build/*" 2>/dev/null | wc -l | tr -d ' ')
+    
+    echo "   • Caches Python restants: ${remaining_pycache} dossiers __pycache__, ${remaining_pyc} fichiers .pyc"
+    echo "   • Métadonnées macOS restantes: ${remaining_metadata} fichiers"
+    
+    # Vérifier les caches
+    [ -d ".mypy_cache" ] && echo "   • Cache mypy: présent" || echo "   • Cache mypy: nettoyé ✅"
+    [ -d ".pytest_cache" ] && echo "   • Cache pytest: présent" || echo "   • Cache pytest: nettoyé ✅"
+    [ -d ".ruff_cache" ] && echo "   • Cache ruff: présent" || echo "   • Cache ruff: nettoyé ✅"
+    echo ""
+fi
+
+if [ "$CLEAN_RAM" = true ]; then
+    echo -e "${BLUE}📊 Résumé du nettoyage RAM:${NC}"
+    # Le résumé RAM est déjà affiché dans la section RAM
+    echo ""
+fi
+
 echo "💡 Commandes utiles:"
 echo "   - Nettoyer uniquement cache:  ./scripts/cleanup_all.sh --cache-only"
 echo "   - Nettoyer uniquement RAM:    ./scripts/cleanup_all.sh --ram-only"

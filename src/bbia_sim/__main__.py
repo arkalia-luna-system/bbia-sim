@@ -110,6 +110,9 @@ Exemples d'utilisation:
     except (ImportError, AttributeError, RuntimeError):
         logger.exception("Erreur lors de l'exécution")
         sys.exit(1)
+    except Exception:
+        logger.exception("Erreur inattendue lors de l'exécution")
+        sys.exit(1)
 
 
 def run_simulation(args: argparse.Namespace) -> None:
