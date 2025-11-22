@@ -31,10 +31,20 @@ class TestBBIAAudioExtended:
             temp_path = temp_file.name
 
         try:
+
+            def mock_env_get(key: str, default: str = None) -> str:
+                """Mock os.environ.get qui retourne des valeurs spécifiques selon la clé."""
+                env_values = {
+                    "BBIA_DISABLE_AUDIO": "0",  # Désactiver BBIA_DISABLE_AUDIO
+                    "BBIA_MAX_AUDIO_BUFFER_DURATION": "180",  # Valeur par défaut
+                }
+                return env_values.get(key, default if default is not None else "")
+
             with (
+                patch("os.environ.get", side_effect=mock_env_get),
                 patch(
-                    "os.environ.get", return_value="0"
-                ),  # Désactiver BBIA_DISABLE_AUDIO
+                    "bbia_sim.bbia_audio._get_robot_media_microphone", return_value=None
+                ),
                 patch("bbia_sim.bbia_audio.sd.rec") as mock_rec,
                 patch("bbia_sim.bbia_audio.sd.wait"),
                 patch("builtins.open", mock_open()),
@@ -57,8 +67,18 @@ class TestBBIAAudioExtended:
 
     def test_enregistrer_audio_error(self):
         """Test erreur d'enregistrement audio."""
+
+        def mock_env_get(key: str, default: str = None) -> str:
+            """Mock os.environ.get qui retourne des valeurs spécifiques selon la clé."""
+            env_values = {
+                "BBIA_DISABLE_AUDIO": "0",
+                "BBIA_MAX_AUDIO_BUFFER_DURATION": "180",
+            }
+            return env_values.get(key, default if default is not None else "")
+
         with (
-            patch("os.environ.get", return_value="0"),  # Désactiver BBIA_DISABLE_AUDIO
+            patch("os.environ.get", side_effect=mock_env_get),
+            patch("bbia_sim.bbia_audio._get_robot_media_microphone", return_value=None),
             patch("bbia_sim.bbia_audio.sd.rec") as mock_rec,
         ):
             mock_rec.side_effect = Exception("Audio error")
@@ -72,10 +92,20 @@ class TestBBIAAudioExtended:
             temp_path = temp_file.name
 
         try:
+
+            def mock_env_get(key: str, default: str = None) -> str:
+                """Mock os.environ.get qui retourne des valeurs spécifiques selon la clé."""
+                env_values = {
+                    "BBIA_DISABLE_AUDIO": "0",
+                    "BBIA_MAX_AUDIO_BUFFER_DURATION": "180",
+                }
+                return env_values.get(key, default if default is not None else "")
+
             with (
+                patch("os.environ.get", side_effect=mock_env_get),
                 patch(
-                    "os.environ.get", return_value="0"
-                ),  # Désactiver BBIA_DISABLE_AUDIO
+                    "bbia_sim.bbia_audio._get_robot_media_microphone", return_value=None
+                ),
                 patch("bbia_sim.bbia_audio.sd.rec") as mock_rec,
                 patch("bbia_sim.bbia_audio.sd.wait"),
                 patch("builtins.open", mock_open()),
