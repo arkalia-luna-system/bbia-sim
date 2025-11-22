@@ -1356,16 +1356,7 @@ def create_move_from_positions(
         Objet Move ou None si erreur
     """
     try:
-        from .robot_factory import RobotFactory
         from .utils.types import JointPositions
-
-        # Créer un backend pour utiliser create_move_from_positions
-        backend = RobotFactory.create_backend("reachy_mini")
-        if not backend:
-            backend = RobotFactory.create_backend("mujoco")
-        if not backend:
-            logger.warning("Aucun backend disponible pour create_move_from_positions")
-            return None
 
         # Convertir dict unique en liste si nécessaire
         if isinstance(positions, dict):
@@ -1373,54 +1364,72 @@ def create_move_from_positions(
         else:
             positions_list = positions
 
-        # Utiliser la méthode du backend si disponible
-        if hasattr(backend, "create_move_from_positions"):
-            result = backend.create_move_from_positions(positions_list, duration)
-            return result  # type: ignore[no-any-return]
+        # Classe Move simple standalone (ne dépend pas de reachy_mini)
+        class SimpleMove:
+            """Classe Move simple pour créer des mouvements sans dépendance reachy_mini."""
 
-        # Fallback: créer un Move simple
+            def __init__(
+                self,
+                positions: list[JointPositions],
+                duration: float,
+            ) -> None:
+                self._positions = positions
+                self._duration = duration
+
+            def duration(self) -> float:
+                """Retourne la durée du mouvement."""
+                return float(self._duration)
+
+            def evaluate(self, t: float) -> JointPositions:
+                """Évalue la position à un temps t (0.0 à 1.0)."""
+                if not self._positions or t <= 0:
+                    return self._positions[0] if self._positions else {}
+                if t >= 1:
+                    return self._positions[-1] if self._positions else {}
+
+                idx = int(t * (len(self._positions) - 1))
+                if idx >= len(self._positions) - 1:
+                    return dict(self._positions[-1]) if self._positions else {}
+
+                pos1: JointPositions = self._positions[idx]
+                pos2: JointPositions = self._positions[idx + 1]
+
+                result: JointPositions = {}
+                for key in pos1:
+                    if key in pos2:
+                        result[key] = pos1[key] + (pos2[key] - pos1[key]) * (
+                            t * (len(self._positions) - 1) - idx
+                        )
+                    else:
+                        result[key] = pos1[key]
+                return result
+
+        # Essayer d'utiliser le backend si disponible (pour compatibilité SDK)
         try:
-            from reachy_mini.motion.move import Move  # type: ignore[import-untyped]
+            from .robot_factory import RobotFactory
 
-            class SimpleMove(Move):
-                def __init__(
-                    self,
-                    positions: list[JointPositions],
-                    duration: float,
-                ) -> None:
-                    self._positions = positions
-                    self._duration = duration
+            backend = RobotFactory.create_backend("reachy_mini")
+            if not backend:
+                backend = RobotFactory.create_backend("mujoco")
 
-                def duration(self) -> float:
-                    return float(self._duration)
+            if backend and hasattr(backend, "create_move_from_positions"):
+                try:
+                    result = backend.create_move_from_positions(
+                        positions_list, duration
+                    )
+                    if result is not None:
+                        return result
+                except Exception:
+                    # Si le backend échoue, continuer avec SimpleMove
+                    logger.debug(
+                        "Backend create_move_from_positions échoué, utilisation SimpleMove",
+                    )
+        except Exception:
+            # Si RobotFactory échoue, continuer avec SimpleMove
+            logger.debug("RobotFactory non disponible, utilisation SimpleMove")
 
-                def evaluate(self, t: float) -> JointPositions:
-                    if not self._positions or t <= 0:
-                        return self._positions[0] if self._positions else {}
-                    if t >= 1:
-                        return self._positions[-1] if self._positions else {}
-
-                    idx = int(t * (len(self._positions) - 1))
-                    if idx >= len(self._positions) - 1:
-                        return dict(self._positions[-1]) if self._positions else {}
-
-                    pos1: JointPositions = self._positions[idx]
-                    pos2: JointPositions = self._positions[idx + 1]
-
-                    result: JointPositions = {}
-                    for key in pos1:
-                        if key in pos2:
-                            result[key] = pos1[key] + (pos2[key] - pos1[key]) * (
-                                t * (len(self._positions) - 1) - idx
-                            )
-                        else:
-                            result[key] = pos1[key]
-                    return result
-
-            return SimpleMove(positions_list, duration)
-        except ImportError:
-            logger.warning("reachy_mini non disponible, impossible de créer Move")
-            return None
+        # Toujours retourner un SimpleMove (fonctionne même sans reachy_mini)
+        return SimpleMove(positions_list, duration)  # type: ignore[no-any-return]
 
     except Exception:
         logger.exception("Erreur création Move depuis positions")
