@@ -108,7 +108,9 @@ class SimulationService:
                 # Simulation d'un step MuJoCo
                 if self.simulator:
                     # Note: mj_step est synchrone, on l'exécute dans un thread
-                    step_simulation = getattr(self.simulator, "_step_simulation", None)  # noqa: SLF001
+                    step_simulation = getattr(
+                        self.simulator, "_step_simulation", None
+                    )  # noqa: SLF001
                     if step_simulation is not None:
                         await asyncio.get_event_loop().run_in_executor(
                             None,

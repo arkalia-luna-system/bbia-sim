@@ -47,7 +47,9 @@ if PROMETHEUS_AVAILABLE and REGISTRY:
     def _get_or_create_metric(metric_class, name, *args, **kwargs):
         """Crée une métrique seulement si elle n'existe pas déjà."""
         # Chercher si la métrique existe déjà
-        collector_to_names = getattr(REGISTRY, "_collector_to_names", {})  # noqa: SLF001
+        collector_to_names = getattr(
+            REGISTRY, "_collector_to_names", {}
+        )  # noqa: SLF001
         for collector in list(collector_to_names.keys()):
             collector_name = getattr(collector, "_name", None)  # noqa: SLF001
             if collector_name == name:
@@ -91,7 +93,9 @@ if PROMETHEUS_AVAILABLE and REGISTRY:
         memory_usage = None
         simulation_fps = None
         active_connections = None
-        collector_to_names = getattr(REGISTRY, "_collector_to_names", {})  # noqa: SLF001
+        collector_to_names = getattr(
+            REGISTRY, "_collector_to_names", {}
+        )  # noqa: SLF001
         for collector in list(collector_to_names.keys()):
             name = getattr(collector, "_name", None)  # noqa: SLF001
             if name is not None:

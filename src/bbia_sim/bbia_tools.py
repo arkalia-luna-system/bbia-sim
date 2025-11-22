@@ -337,7 +337,8 @@ class BBIATools:
             if hasattr(self.vision, "capture_image"):
                 image = self.vision.capture_image()
             elif hasattr(self.vision, "_capture_image_from_camera"):
-                image = getattr(self.vision, "_capture_image_from_camera")()  # noqa: SLF001
+                # OPTIMISATION: Accès direct plus efficace que getattr avec constante
+                image = self.vision._capture_image_from_camera()  # noqa: SLF001
             else:
                 return {"status": "error", "detail": "Méthode capture non disponible"}
 

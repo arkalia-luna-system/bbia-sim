@@ -9,7 +9,7 @@ import logging
 import time
 from collections import deque
 from datetime import datetime
-from typing import Any
+from typing import Any, Callable
 
 try:
     import uvicorn  # type: ignore[import-untyped]
@@ -2978,7 +2978,10 @@ if FASTAPI_AVAILABLE:
     async def get_joints():
         """API endpoint pour récupérer les joints disponibles."""
         if advanced_websocket_manager.robot:
-            get_current_pose = getattr(advanced_websocket_manager, "_get_current_pose", lambda: {})  # noqa: SLF001
+            # OPTIMISATION: Accès direct plus efficace que getattr avec constante
+            get_current_pose: Callable[[], dict[str, float]] = (
+                advanced_websocket_manager._get_current_pose  # noqa: SLF001
+            )
             return {
                 "joints": advanced_websocket_manager.robot.get_available_joints(),
                 "current_positions": get_current_pose(),
@@ -3286,11 +3289,17 @@ if FASTAPI_AVAILABLE:
                             try:
                                 # Utiliser la méthode privée _capture_image_from_camera
                                 # qui gère SDK camera et OpenCV
-                                capture_func = getattr(vision, "_capture_image_from_camera", None)  # noqa: SLF001
+                                capture_func = getattr(
+                                    vision, "_capture_image_from_camera", None
+                                )  # noqa: SLF001
                                 if capture_func is not None:
                                     frame = capture_func()
                                 else:
-                                    frame = vision.capture_image() if hasattr(vision, "capture_image") else None
+                                    frame = (
+                                        vision.capture_image()
+                                        if hasattr(vision, "capture_image")
+                                        else None
+                                    )
                             except (
                                 OSError,
                                 RuntimeError,
@@ -3444,7 +3453,9 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
             logger.warning(
                 "⚠️ Robot non initialisé lors de la commande - initialisation forcée"
             )
-            robot_init_lock = getattr(advanced_websocket_manager, "_robot_init_lock", None)  # noqa: SLF001
+            robot_init_lock = getattr(
+                advanced_websocket_manager, "_robot_init_lock", None
+            )  # noqa: SLF001
             if robot_init_lock is None:
                 return {"error": "Robot not initialized"}
             with robot_init_lock:
@@ -3797,7 +3808,11 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                         advanced_websocket_manager.vision, "scan_environment_async"
                     ):
                         # Démarrer scan asynchrone si pas déjà actif
-                        async_scan_active = getattr(advanced_websocket_manager.vision, "_async_scan_active", False)  # noqa: SLF001
+                        async_scan_active = getattr(
+                            advanced_websocket_manager.vision,
+                            "_async_scan_active",
+                            False,
+                        )  # noqa: SLF001
                         if not async_scan_active:
                             advanced_websocket_manager.vision.start_async_scanning(
                                 interval=0.1
