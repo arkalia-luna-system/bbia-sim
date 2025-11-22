@@ -101,26 +101,43 @@ class TestBBIAChat:
         chat = BBIAChat(robot_api=mock_robot_api)
 
         # Mock create_head_pose (importé dans _execute_action depuis reachy_mini.utils)
-        # Patcher le module reachy_mini.utils avant l'import dans la fonction
+        # Créer un mock du module reachy_mini.utils pour éviter ImportError
         mock_pose = MagicMock()
-        with patch(
-            "reachy_mini.utils.create_head_pose", return_value=mock_pose
-        ) as mock_create:
+        mock_create_head_pose = MagicMock(return_value=mock_pose)
+
+        # Créer un mock du module reachy_mini et de son sous-module utils
+        mock_reachy_mini = MagicMock()
+        mock_reachy_mini_utils = MagicMock()
+        mock_reachy_mini_utils.create_head_pose = mock_create_head_pose
+        mock_reachy_mini.utils = mock_reachy_mini_utils
+
+        # Patcher sys.modules pour que l'import fonctionne
+        with patch.dict(
+            sys.modules,
+            {
+                "reachy_mini": mock_reachy_mini,
+                "reachy_mini.utils": mock_reachy_mini_utils,
+            },
+        ):
             # Test look_right
             chat._execute_action({"action": "look_right"})
             # Vérifier que create_head_pose a été appelé et goto_target aussi
-            mock_create.assert_called_once_with(yaw=0.3, pitch=0.0, degrees=False)
+            mock_create_head_pose.assert_called_once_with(
+                yaw=0.3, pitch=0.0, degrees=False
+            )
             mock_robot_api.goto_target.assert_called_once_with(
                 head=mock_pose, duration=1.0
             )
 
             # Reset mocks
             mock_robot_api.goto_target.reset_mock()
-            mock_create.reset_mock()
+            mock_create_head_pose.reset_mock()
 
             # Test look_left
             chat._execute_action({"action": "look_left"})
-            mock_create.assert_called_once_with(yaw=-0.3, pitch=0.0, degrees=False)
+            mock_create_head_pose.assert_called_once_with(
+                yaw=-0.3, pitch=0.0, degrees=False
+            )
             mock_robot_api.goto_target.assert_called_once_with(
                 head=mock_pose, duration=1.0
             )
