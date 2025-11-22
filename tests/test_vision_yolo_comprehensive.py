@@ -477,8 +477,8 @@ class TestFaceDetector:
             pytest.skip("mediapipe non disponible")
         with (
             patch("mediapipe.solutions.face_detection.FaceDetection") as mock_fd_class,
-            patch("mediapipe.solutions.drawing_utils") as mock_drawing,
-            patch("mediapipe.solutions.face_detection") as mock_face_detection,
+            patch("mediapipe.solutions.drawing_utils"),
+            patch("mediapipe.solutions.face_detection"),
         ):
             mock_fd_instance = MagicMock()
             mock_fd_class.return_value = mock_fd_instance
