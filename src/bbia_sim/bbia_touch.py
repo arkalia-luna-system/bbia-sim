@@ -141,8 +141,9 @@ class BBIATouchDetection:
         Returns:
             Dictionnaire avec type d'interaction et métriques
         """
-        if not audio:  # OPTIMISATION: vérification de vérité plus efficace que len()
-            return {"type": TouchType.NONE, "confidence": 0.0}
+        # Correction: utiliser size pour arrays numpy (évite erreur "truth value ambiguous")
+        if audio.size == 0:
+            return {"type": TouchType.NONE, "confidence": 0.0, "max_amplitude": 0.0}
 
         # Normaliser l'audio
         audio_normalized = audio / (np.max(np.abs(audio)) + 1e-10)
