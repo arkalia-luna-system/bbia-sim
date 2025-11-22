@@ -90,7 +90,7 @@ if __name__ == "__main__":
 **Template `requirements.txt` :**
 
 ```
-bbia-sim>=1.3.0
+bbia-sim>=1.4.0
 gradio>=4.0.0
 ```
 
@@ -243,5 +243,5 @@ Une fois votre app partagée sur HF Hub, elle sera automatiquement découverte p
 ---
 
 **Document créé le :** 21 novembre 2025  
-**Dernière mise à jour :** 21 novembre 2025
+**Dernière mise à jour :** 22 novembre 2025
 

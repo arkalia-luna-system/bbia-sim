@@ -1,7 +1,7 @@
 # 🧠 Guide LLM Conversationnel BBIA
 
 **Date** : 19 Novembre 2025  
-**Version BBIA** : 1.3.2  
+**Version BBIA** : 1.4.0  
 **Objectif** : Guide complet pour utiliser l'intelligence conversationnelle de BBIA
 
 ---
