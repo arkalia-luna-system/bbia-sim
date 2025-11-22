@@ -78,6 +78,32 @@
 - **Action**: ✅ CORRIGÉ - Skips retirés, tests fonctionnent maintenant
 - **Résultat**: 2 tests supplémentaires passent maintenant au lieu de skip
 
+#### 4. Erreurs corrigées dans les tests (Nov 2025)
+
+- **Proreur ImportError append_record**:
+  - **Fichier**: `tests/test_capabilities_completeness.py::TestAdditionalCapabilities::test_append_record`
+  - **Problème**: Fonction `append_record` manquante dans `bbia_memory.py`
+  - **Action**: ✅ CORRIGÉ - Fonction `append_record` ajoutée dans `bbia_memory.py`
+  - **Résultat**: Test passe maintenant
+
+- **Erreur KeyError 'neutral' dans BBIAAdaptiveBehavior**:
+  - **Fichier**: `src/bbia_sim/bbia_adaptive_behavior.py`
+  - **Problème**: Contexte "neutral" manquant dans `self.contexts`, causant KeyError ligne 406
+  - **Action**: ✅ CORRIGÉ - Contexte "neutral" ajouté et vérification d'existence améliorée
+  - **Résultat**: Plus d'erreur KeyError lors de la génération de comportements
+
+- **Erreur KeyError 'blip_vqa_processor' dans BBIAHuggingFace**:
+  - **Fichier**: `src/bbia_sim/bbia_huggingface.py`
+  - **Problème**: Processeur non disponible après `load_model` sans vérification
+  - **Action**: ✅ CORRIGÉ - Vérifications ajoutées après chargement du modèle
+  - **Résultat**: Gestion d'erreur améliorée avec messages explicites
+
+- **Warnings répétitifs BBIAVision**:
+  - **Fichier**: `src/bbia_sim/bbia_vision.py`
+  - **Problème**: Warnings répétitifs dans les tests sur l'utilisation directe de BBIAVision
+  - **Action**: ✅ CORRIGÉ - Niveau de log réduit à DEBUG en mode test
+  - **Résultat**: Logs de test plus propres
+
 #### 2. Tests qui skipent au lieu de gérer gracieusement (catégorie "other": 346 skips)
 
 - **Problème**: Beaucoup de tests skipent au runtime au lieu d'utiliser des mocks
