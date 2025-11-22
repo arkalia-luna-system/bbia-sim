@@ -19,13 +19,10 @@ sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 # BBIAChat peut toujours être importé (fonctionne même sans Hugging Face)
 from bbia_sim.bbia_chat import BBIAChat
 
-try:
-    from bbia_sim.bbia_vision import BBIAVision
+# BBIAVision peut toujours être importé (fonctionne même sans dépendances optionnelles)
+from bbia_sim.bbia_vision import BBIAVision
 
-    BBIA_VISION_AVAILABLE = True
-except ImportError:
-    BBIA_VISION_AVAILABLE = False
-    BBIAVision = None
+BBIA_VISION_AVAILABLE = True
 
 try:
     from bbia_sim.bbia_audio import BBIAAudio
@@ -84,9 +81,7 @@ class TestErrorHandlingCamera:
     @pytest.mark.fast
     def test_vision_camera_unavailable(self):
         """Test que BBIAVision gère gracieusement l'absence de caméra."""
-        if not BBIA_VISION_AVAILABLE:
-            pytest.skip("BBIAVision non disponible")
-
+        # BBIAVision peut toujours être initialisé (fonctionne même sans dépendances optionnelles)
         vision = BBIAVision(robot_api=None)
         # Simuler caméra indisponible
         with patch.object(vision, "_capture_image_from_camera", return_value=None):
@@ -100,9 +95,7 @@ class TestErrorHandlingCamera:
     @pytest.mark.fast
     def test_vision_camera_error(self):
         """Test que BBIAVision gère les erreurs de caméra."""
-        if not BBIA_VISION_AVAILABLE:
-            pytest.skip("BBIAVision non disponible")
-
+        # BBIAVision peut toujours être initialisé (fonctionne même sans dépendances optionnelles)
         vision = BBIAVision(robot_api=None)
         # Simuler erreur caméra
         with patch.object(
