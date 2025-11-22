@@ -39,7 +39,10 @@ class TestBBIAHuggingFace:
     )
     def test_initialization(self):
         """Test l'initialisation du module."""
-        hf = BBIAHuggingFace()
+        try:
+            hf = BBIAHuggingFace()
+        except ImportError:
+            pytest.skip("Hugging Face transformers non disponible")
         assert hf.device is not None
         assert hf.model_configs is not None
         assert len(hf.model_configs) > 0
@@ -50,7 +53,10 @@ class TestBBIAHuggingFace:
     )
     def test_device_detection(self):
         """Test la détection automatique du device."""
-        hf = BBIAHuggingFace(device="auto")
+        try:
+            hf = BBIAHuggingFace(device="auto")
+        except ImportError:
+            pytest.skip("Hugging Face transformers non disponible")
         assert hf.device in ["cpu", "cuda", "mps"]
 
     @pytest.mark.skipif(
@@ -59,7 +65,10 @@ class TestBBIAHuggingFace:
     )
     def test_model_configs(self):
         """Test la configuration des modèles."""
-        hf = BBIAHuggingFace()
+        try:
+            hf = BBIAHuggingFace()
+        except ImportError:
+            pytest.skip("Hugging Face transformers non disponible")
         configs = hf.model_configs
 
         assert "vision" in configs
@@ -80,7 +89,10 @@ class TestBBIAHuggingFace:
     )
     def test_get_available_models(self):
         """Test la récupération des modèles disponibles."""
-        hf = BBIAHuggingFace()
+        try:
+            hf = BBIAHuggingFace()
+        except ImportError:
+            pytest.skip("Hugging Face transformers non disponible")
         models = hf.get_available_models()
 
         assert isinstance(models, dict)
@@ -92,7 +104,10 @@ class TestBBIAHuggingFace:
     )
     def test_get_loaded_models(self):
         """Test la récupération des modèles chargés."""
-        hf = BBIAHuggingFace()
+        try:
+            hf = BBIAHuggingFace()
+        except ImportError:
+            pytest.skip("Hugging Face transformers non disponible")
         loaded = hf.get_loaded_models()
 
         assert isinstance(loaded, list)
@@ -104,7 +119,10 @@ class TestBBIAHuggingFace:
     )
     def test_model_info(self):
         """Test les informations sur les modèles."""
-        hf = BBIAHuggingFace()
+        try:
+            hf = BBIAHuggingFace()
+        except ImportError:
+            pytest.skip("Hugging Face transformers non disponible")
         info = hf.get_model_info()
 
         assert "device" in info
@@ -364,7 +382,7 @@ class TestBBIAAdaptiveBehavior:
         for behavior_name in suitable:
             behavior_config = adaptive_behavior.behaviors[behavior_name]
             emotions = behavior_config.get("emotions", [])
-            if isinstance(emotions, (list, tuple, str)):
+            if isinstance(emotions, list | tuple | str):
                 emotions_str = (
                     str(emotions) if not isinstance(emotions, str) else emotions
                 )
