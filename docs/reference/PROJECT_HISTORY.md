@@ -124,7 +124,7 @@ Les rapports détaillés des phases précédentes sont disponibles dans la docum
 - Migration transparente Sim ↔ Robot
 - Tests de conformité automatisés
 
-### **Simulation 3D** (Oct / Nov. 2025)
+### **Simulation 3D** (Octobre / Novembre 2025)
 
 - Modèle MuJoCo officiel
 - Viewer 3D interactif
@@ -161,7 +161,7 @@ Les rapports détaillés des phases précédentes sont disponibles dans la docum
 
 ## 🎯 Prochaines Étapes
 
-1. **Test Robot Physique** (Oct / Nov. 2025)
+1. **Test Robot Physique** (Octobre / Novembre 2025)
 2. **Validation Matérielle** (60s dry-run)
 3. **Démo Professionnelle** (Robot réel)
 4. **v1.4.0** - Production ready
