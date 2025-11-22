@@ -1405,6 +1405,7 @@ def create_move_from_positions(
                 return result
 
         # Essayer d'utiliser le backend si disponible (pour compatibilité SDK)
+        # Note: En CI, reachy_mini peut ne pas être disponible, donc on catch toutes les exceptions
         try:
             from .robot_factory import RobotFactory
 
@@ -1419,14 +1420,27 @@ def create_move_from_positions(
                     )
                     if result is not None:
                         return result  # type: ignore[no-any-return]
-                except Exception:
-                    # Si le backend échoue, continuer avec SimpleMove
+                except (ImportError, ModuleNotFoundError) as e:
+                    # Si reachy_mini n'est pas disponible, utiliser SimpleMove
                     logger.debug(
-                        "Backend create_move_from_positions échoué, utilisation SimpleMove",
+                        "Backend create_move_from_positions échoué (import): %s, utilisation SimpleMove",
+                        e,
                     )
-        except Exception:
-            # Si RobotFactory échoue, continuer avec SimpleMove
-            logger.debug("RobotFactory non disponible, utilisation SimpleMove")
+                except Exception as e:
+                    # Si le backend échoue pour une autre raison, continuer avec SimpleMove
+                    logger.debug(
+                        "Backend create_move_from_positions échoué: %s, utilisation SimpleMove",
+                        e,
+                    )
+        except (ImportError, ModuleNotFoundError) as e:
+            # Si RobotFactory ou imports échouent, continuer avec SimpleMove
+            logger.debug(
+                "RobotFactory/imports non disponibles: %s, utilisation SimpleMove",
+                e,
+            )
+        except Exception as e:
+            # Si RobotFactory échoue pour une autre raison, continuer avec SimpleMove
+            logger.debug("RobotFactory non disponible: %s, utilisation SimpleMove", e)
 
         # Toujours retourner un SimpleMove (fonctionne même sans reachy_mini)
         return SimpleMove(positions_list, duration)  # type: ignore[no-any-return]
