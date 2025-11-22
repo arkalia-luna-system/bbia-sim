@@ -243,5 +243,6 @@ Une fois votre app partagée sur HF Hub, elle sera automatiquement découverte p
 ---
 
 **Document créé le :** 21 novembre 2025  
+**Dernière mise à jour :** 22 novembre 2025  
 **Dernière mise à jour :** 22 novembre 2025
 

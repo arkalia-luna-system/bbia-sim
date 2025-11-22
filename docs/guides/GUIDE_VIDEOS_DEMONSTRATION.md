@@ -306,5 +306,5 @@
 ---
 
 **Date de création** : 21 novembre 2025  
-**Dernière mise à jour** : 21 novembre 2025
+**Dernière mise à jour** : 22 novembre 2025
 
