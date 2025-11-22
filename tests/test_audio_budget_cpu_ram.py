@@ -86,8 +86,8 @@ def test_audio_pipeline_budget_cpu_ram() -> None:
             )
             iteration = 0
             while time.perf_counter() - t0 < duration_s and iteration < max_iterations:
-                # OPTIMISATION: Réduire sleep de 0.1 à 0.05 (2x plus rapide)
-                time.sleep(0.05)
+                # OPTIMISATION: Réduire sleep de 0.05 à 0.01 (5x plus rapide)
+                time.sleep(0.01)
                 iteration += 1
 
         # Mesurer après

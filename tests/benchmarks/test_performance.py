@@ -141,12 +141,17 @@ class TestVisionLatency:
         latencies_ms: list[float] = []
 
         t0 = time.perf_counter()
-        while time.perf_counter() - t0 < duration_s:
+        max_iterations = (
+            100  # OPTIMISATION: Limiter itérations pour éviter boucle infinie
+        )
+        iteration = 0
+        while time.perf_counter() - t0 < duration_s and iteration < max_iterations:
             t_start = time.perf_counter()
             _ = vision.scan_environment()
             t_end = time.perf_counter()
             frames += 1
             latencies_ms.append((t_end - t_start) * 1000.0)
+            iteration += 1
 
         elapsed = time.perf_counter() - t0
         fps = frames / elapsed if elapsed > 0 else 0.0

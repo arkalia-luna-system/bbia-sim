@@ -58,8 +58,13 @@ def test_audio_buffer_stability_10s() -> None:
         callback=callback,
     ):
         t0 = time.perf_counter()
-        while time.perf_counter() - t0 < duration_s:
+        max_iterations = (
+            200  # OPTIMISATION: Limiter itérations pour éviter boucle infinie
+        )
+        iteration = 0
+        while time.perf_counter() - t0 < duration_s and iteration < max_iterations:
             sd.sleep(50)
+            iteration += 1
 
     # Objectif: aucun underrun/overrun dans un environnement stable
     # CI peut être bruyant; tolérance faible

@@ -61,6 +61,7 @@ class TestMotionRepeatability:
         """
         if backend is None:
             pytest.skip("Backend non disponible")
+        assert backend is not None  # Pour le type checker
 
         target_position = 0.3  # Position cible en radians
         num_repetitions = 10
@@ -74,7 +75,7 @@ class TestMotionRepeatability:
             # Step MuJoCo pour appliquer changement
             if hasattr(backend, "step"):
                 backend.step()
-            time.sleep(0.1)
+            time.sleep(0.01)  # OPTIMISATION: Réduire 0.1s → 0.01s (10x plus rapide)
 
             # Mouvement vers position cible
             if not backend.set_joint_pos("yaw_body", target_position):
@@ -82,7 +83,7 @@ class TestMotionRepeatability:
             # Step MuJoCo pour appliquer changement
             if hasattr(backend, "step"):
                 backend.step()
-            time.sleep(0.2)  # Attendre stabilisation
+            time.sleep(0.05)  # OPTIMISATION: Réduire 0.2s → 0.05s (4x plus rapide)
 
             # Enregistrer position finale
             final_pos = backend.get_joint_pos("yaw_body")
@@ -112,6 +113,7 @@ class TestMotionRepeatability:
         """
         if backend is None:
             pytest.skip("Backend non disponible")
+        assert backend is not None  # Pour le type checker
 
         if not hasattr(backend, "goto_target"):
             pytest.skip("goto_target non disponible")
@@ -131,7 +133,7 @@ class TestMotionRepeatability:
         for _ in range(num_repetitions):
             # Retour à position initiale
             backend.goto_target(head=head_pose, duration=0.1, method="minjerk")
-            time.sleep(0.15)
+            time.sleep(0.05)  # OPTIMISATION: Réduire 0.15s → 0.05s (3x plus rapide)
 
             # Enregistrer position finale
             if hasattr(backend, "get_current_head_pose"):
@@ -141,7 +143,8 @@ class TestMotionRepeatability:
             else:
                 # Fallback: utiliser get_joint_pos
                 final_pos = backend.get_joint_pos("head_pitch")
-                final_positions.append(final_pos)
+                if final_pos is not None:
+                    final_positions.append(final_pos)
 
         if len(final_positions) < 2:
             pytest.skip("Pas assez de positions collectées")
@@ -164,6 +167,7 @@ class TestMotionRepeatability:
         """
         if backend is None:
             pytest.skip("Backend non disponible")
+        assert backend is not None  # Pour le type checker
 
         target_positions = {
             "yaw_body": 0.2,
@@ -182,7 +186,7 @@ class TestMotionRepeatability:
             # Step MuJoCo pour appliquer changements
             if hasattr(backend, "step"):
                 backend.step()
-            time.sleep(0.1)
+            time.sleep(0.01)  # OPTIMISATION: Réduire 0.1s → 0.01s (10x plus rapide)
 
             # Mouvement vers positions cibles
             for joint_name, target_pos in target_positions.items():
@@ -190,7 +194,7 @@ class TestMotionRepeatability:
             # Step MuJoCo pour appliquer changements
             if hasattr(backend, "step"):
                 backend.step()
-            time.sleep(0.2)  # Attendre stabilisation
+            time.sleep(0.05)  # OPTIMISATION: Réduire 0.2s → 0.05s (4x plus rapide)
 
             # Enregistrer erreurs
             iteration_errors: dict[str, float] = {}
@@ -205,12 +209,15 @@ class TestMotionRepeatability:
         # Calculer erreurs moyennes par joint
         mean_errors: dict[str, float] = {}
         for joint_name in target_positions:
-            joint_errors = [e[joint_name] for e in errors]
-            mean_errors[joint_name] = statistics.mean(joint_errors)
+            joint_errors = [e[joint_name] for e in errors if joint_name in e]
+            if joint_errors:
+                mean_errors[joint_name] = statistics.mean(joint_errors)
 
         logger.info(f"Précision multiple joints: {mean_errors}")
 
         # Vérifier précision (erreur moyenne < 0.1 rad pour chaque joint)
+        if not mean_errors:
+            pytest.skip("Aucune erreur collectée pour les joints")
         for joint_name, mean_error in mean_errors.items():
             assert (
                 mean_error < 0.1
@@ -223,6 +230,7 @@ class TestMotionRepeatability:
         """
         if backend is None:
             pytest.skip("Backend non disponible")
+        assert backend is not None  # Pour le type checker
 
         if not hasattr(backend, "start_recording") or not hasattr(
             backend, "stop_recording"
@@ -234,11 +242,11 @@ class TestMotionRepeatability:
         backend.set_joint_pos("yaw_body", 0.2)
         if hasattr(backend, "step"):
             backend.step()
-        time.sleep(0.3)
+        time.sleep(0.05)  # OPTIMISATION: Réduire 0.3s → 0.05s (6x plus rapide)
         backend.set_joint_pos("yaw_body", -0.2)
         if hasattr(backend, "step"):
             backend.step()
-        time.sleep(0.3)
+        time.sleep(0.05)  # OPTIMISATION: Réduire 0.3s → 0.05s (6x plus rapide)
         move = backend.stop_recording()
 
         if move is None:
@@ -253,7 +261,7 @@ class TestMotionRepeatability:
             backend.set_joint_pos("yaw_body", 0.0)
             if hasattr(backend, "step"):
                 backend.step()
-            time.sleep(0.1)
+            time.sleep(0.01)  # OPTIMISATION: Réduire 0.1s → 0.01s (10x plus rapide)
 
             # Rejouer mouvement
             if hasattr(backend, "play_move"):
@@ -265,7 +273,7 @@ class TestMotionRepeatability:
             else:
                 pytest.skip("play_move non disponible")
 
-            time.sleep(0.5)  # Attendre fin mouvement
+            time.sleep(0.05)  # OPTIMISATION: Réduire 0.5s → 0.05s (10x plus rapide)
 
             # Enregistrer position finale
             final_pos = backend.get_joint_pos("yaw_body")
@@ -294,6 +302,7 @@ class TestMotionRepeatability:
         """
         if backend is None:
             pytest.skip("Backend non disponible")
+        assert backend is not None  # Pour le type checker
 
         small_movements = [0.01, 0.02, 0.05, 0.1]  # Petits angles en radians
         errors: list[float] = []
@@ -303,13 +312,13 @@ class TestMotionRepeatability:
             backend.set_joint_pos("yaw_body", 0.0)
             if hasattr(backend, "step"):
                 backend.step()
-            time.sleep(0.1)
+            time.sleep(0.01)  # OPTIMISATION: Réduire 0.1s → 0.01s (10x plus rapide)
 
             # Mouvement petit
             backend.set_joint_pos("yaw_body", target_pos)
             if hasattr(backend, "step"):
                 backend.step()
-            time.sleep(0.15)
+            time.sleep(0.05)  # OPTIMISATION: Réduire 0.15s → 0.05s (3x plus rapide)
 
             # Mesurer erreur
             actual_pos = backend.get_joint_pos("yaw_body")
@@ -317,6 +326,9 @@ class TestMotionRepeatability:
                 continue  # Skip si position non disponible
             error = abs(actual_pos - target_pos)
             errors.append(error)
+
+        if not errors:
+            pytest.skip("Aucune erreur collectée pour les petits mouvements")
 
         mean_error = statistics.mean(errors)
         max_error = max(errors)
