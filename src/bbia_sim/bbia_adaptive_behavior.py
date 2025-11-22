@@ -358,9 +358,12 @@ class BBIAAdaptiveBehavior:
             if self.emotion_intensity > 0.7:
                 if behavior_name in ["dance", "celebrate", "nod"]:
                     weight += 0.3
-            elif self.emotion_intensity < 0.3:
-                if behavior_name in ["stretch", "hide", "focus"]:
-                    weight += 0.3
+            elif self.emotion_intensity < 0.3 and behavior_name in [
+                "stretch",
+                "hide",
+                "focus",
+            ]:
+                weight += 0.3
 
             weights.append(weight)
 
