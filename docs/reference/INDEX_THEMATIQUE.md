@@ -35,7 +35,7 @@
 - Audit IA modules pré-entraînés: `docs/ai/modules.md`
 - Intelligence LLM: `docs/ai/llm.md`
 - Analyse voix: `docs/ai/voice.md`
-- Améliorations IA: `docs/quality/improvements/intelligence-bbia.md`, `docs/quality/improvements/intelligence-context.md`
+- Améliorations IA: `docs/quality/improvements/_archived/intelligence-bbia.md`, `docs/quality/improvements/_archived/intelligence-context.md`
 
 ## Dashboard / UX
 
