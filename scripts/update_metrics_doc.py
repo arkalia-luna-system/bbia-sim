@@ -18,6 +18,7 @@ def extract_coverage_from_xml():
 
     try:
         import xml.etree.ElementTree as ET
+
         tree = ET.parse(COVERAGE_XML)
         root = tree.getroot()
 
@@ -54,11 +55,12 @@ def update_metrics_doc():
     tests_count = 0
     try:
         import subprocess
+
         result = subprocess.run(
             ["pytest", "--collect-only", "-q"],
             capture_output=True,
             text=True,
-            timeout=30
+            timeout=30,
         )
         if result.returncode == 0:
             # Compter les lignes avec "test session starts" ou "collected"
@@ -66,6 +68,7 @@ def update_metrics_doc():
                 if "test session starts" in line or "collected" in line:
                     # Extraire le nombre de tests
                     import re
+
                     match = re.search(r"(\d+)\s+test", line)
                     if match:
                         tests_count = int(match.group(1))
@@ -90,10 +93,22 @@ def update_metrics_doc():
     # Remplacer les sections avec les nouvelles métriques
     replacements = [
         (r"\*\*Dernière mise à jour\*\* : .*", f"**Dernière mise à jour** : {today}"),
-        (r"\*\*Tests collectés\*\* : .*", f"- **Tests collectés** : {tests_count} tests"),
-        (r"\*\*Fichiers de tests\*\* : .*", f"- **Fichiers de tests** : {test_files} fichiers"),
-        (r"\*\*Fichiers Python source\*\* : .*", f"- **Fichiers Python source** : {core_files} fichiers ({total_lines:,} lignes)"),
-        (r"\*\*Coverage global\*\* : .*", f"- **Coverage global** : **{coverage_str}** ([Codecov](https://app.codecov.io/gh/arkalia-luna-system/bbia-sim))"),
+        (
+            r"\*\*Tests collectés\*\* : .*",
+            f"- **Tests collectés** : {tests_count} tests",
+        ),
+        (
+            r"\*\*Fichiers de tests\*\* : .*",
+            f"- **Fichiers de tests** : {test_files} fichiers",
+        ),
+        (
+            r"\*\*Fichiers Python source\*\* : .*",
+            f"- **Fichiers Python source** : {core_files} fichiers ({total_lines:,} lignes)",
+        ),
+        (
+            r"\*\*Coverage global\*\* : .*",
+            f"- **Coverage global** : **{coverage_str}** ([Codecov](https://app.codecov.io/gh/arkalia-luna-system/bbia-sim))",
+        ),
     ]
 
     for pattern, replacement in replacements:
@@ -102,7 +117,9 @@ def update_metrics_doc():
     # Écrire le fichier mis à jour
     METRICS_DOC.write_text(content, encoding="utf-8")
     print(f"✅ {METRICS_DOC} mis à jour avec les métriques collectées")
-    print(f"   📊 Fichiers Python: {core_files} (source) + {test_files} (tests) = {total_files} total")
+    print(
+        f"   📊 Fichiers Python: {core_files} (source) + {test_files} (tests) = {total_files} total"
+    )
     print(f"   🧪 Tests: {tests_count}")
     print(f"   📈 Coverage: {coverage_str}")
 
@@ -112,4 +129,3 @@ def update_metrics_doc():
 if __name__ == "__main__":
     success = update_metrics_doc()
     exit(0 if success else 1)
-
