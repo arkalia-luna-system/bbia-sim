@@ -25,7 +25,7 @@ from bbia_sim.bbia_vision import BBIAVision
 BBIA_VISION_AVAILABLE = True
 
 # ReachyMiniBackend peut toujours être importé (fonctionne même sans SDK)
-from bbia_sim.backends.reachy_mini_backend import ReachyMiniBackend
+from bbia_sim.backends.reachy_mini_backend import ReachyMiniBackend  # noqa: E402
 
 REACHY_MINI_BACKEND_AVAILABLE = True
 
