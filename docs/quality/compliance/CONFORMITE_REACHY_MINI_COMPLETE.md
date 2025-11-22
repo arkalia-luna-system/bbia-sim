@@ -157,7 +157,7 @@ Notes:
 from reachy_mini import ReachyMini
 from reachy_mini.utils import create_head_pose
 from reachy_mini.utils.interpolation import InterpolationTechnique
-# SDK Version: Compatible avec les spécifications d'21 Novembre 2025
+# SDK Version: Compatible avec les spécifications du 22 Novembre 2025
 # GitHub: https://github.com/pollen-robotics/reachy_mini (disponible depuis 21 Novembre 2025)
 
 ```
@@ -977,7 +977,7 @@ Votre projet BBIA-SIM est conforme au SDK Reachy Mini officiel au niveau backend
 ---
 
 **Rapport généré automatiquement le** {{ date }}
-**Version BBIA-SIM:** Compatible SDK Reachy Mini 21 Novembre 2025
+**Version BBIA-SIM:** Compatible SDK Reachy Mini 22 Novembre 2025
 **Statut:** conforme
 
 ---
