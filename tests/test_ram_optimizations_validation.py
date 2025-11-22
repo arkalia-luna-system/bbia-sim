@@ -4,9 +4,7 @@ Tests de validation des optimisations RAM appliquées.
 Vérifie que les optimisations fonctionnent correctement.
 """
 
-import gc
 import sys
-import time
 from collections import deque
 from pathlib import Path
 
@@ -148,8 +146,8 @@ def test_vision_deque_history() -> None:
     assert hasattr(vision, "faces_detected")
 
     # Vérifier le type (peut être deque ou list selon implémentation)
-    assert isinstance(vision.objects_detected, (deque, list))
-    assert isinstance(vision.faces_detected, (deque, list))
+    assert isinstance(vision.objects_detected, deque | list)
+    assert isinstance(vision.faces_detected, deque | list)
 
     # Si c'est un deque, vérifier qu'il a une limite
     if isinstance(vision.objects_detected, deque):
@@ -258,7 +256,7 @@ def test_all_optimizations_present() -> None:
     if VISION_AVAILABLE:
         vision = BBIAVision()
         optimizations["vision_deque"] = isinstance(
-            vision.objects_detected, (deque, list)
+            vision.objects_detected, deque | list
         )
         if get_bbia_vision_singleton is not None:
             optimizations["vision_singleton"] = True
