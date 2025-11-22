@@ -1,7 +1,7 @@
 # 🚀 Déployer l'API publique sur Render.com
 
-**Date** : Oct / Nov. 2025  
-**Version** : 1.0
+**Date** : 22 novembre 2025  
+**Version** : 1.4.0
 
 Ce guide explique comment publier rapidement l'API publique BBIA-SIM sur Render.com à partir de ce dépôt.
 

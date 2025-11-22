@@ -1,6 +1,6 @@
 # 🌐 Guide Communauté BBIA-SIM
 
-**Date** : 21 novembre 2025  
+**Date** : 22 novembre 2025  
 **Objectif** : Maximiser la visibilité et l'engagement communautaire pour BBIA-SIM
 
 ---
@@ -346,6 +346,6 @@ Good for learning advanced Python!
 
 ---
 
-**Date de création** : Décembre 2025  
-**Dernière mise à jour** : Décembre 2025
+**Date de création** : 22 novembre 2025  
+**Dernière mise à jour** : 22 novembre 2025
 

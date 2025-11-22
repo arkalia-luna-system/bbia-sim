@@ -1,7 +1,7 @@
 # 🔄 Pipeline CI/CD
 
-**Date** : Oct / Nov. 2025  
-**Version** : 1.0  
+**Date** : 22 novembre 2025  
+**Version** : 1.4.0  
 **Compatibilité Python** : 3.11+ (prévoir matrice 3.12)
 
 > **Voir aussi** : [`docs/reference/INDEX_THEMATIQUE.md`](../reference/INDEX_THEMATIQUE.md) et [`docs/reference/project-status.md`](../reference/project-status.md)
