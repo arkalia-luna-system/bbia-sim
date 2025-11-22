@@ -7,7 +7,7 @@ timeout, et arrêt propre.
 
 import pytest
 import time
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
 
 from bbia_sim.behaviors.emotion_show import EmotionShowBehavior
 from bbia_sim.behaviors.exercise import ExerciseBehavior
@@ -22,8 +22,16 @@ class TestBehaviorsIntegration:
         """Crée un mock robot pour les tests."""
         return MagicMock()
 
-    def test_multiple_behaviors_sequential(self, mock_robot):
+    @patch("bbia_sim.behaviors.exercise.dire_texte")
+    @patch("bbia_sim.behaviors.emotion_show.dire_texte")
+    def test_multiple_behaviors_sequential(
+        self, mock_dire_emotion, mock_dire_exercise, mock_robot
+    ):
         """Test exécution séquentielle de plusieurs comportements."""
+        # Mock dire_texte pour éviter les appels réels qui prennent du temps
+        mock_dire_emotion.return_value = None
+        mock_dire_exercise.return_value = None
+
         # Exécuter comportement 1
         behavior1 = EmotionShowBehavior(robot_api=mock_robot)
         behavior1.execute({})
