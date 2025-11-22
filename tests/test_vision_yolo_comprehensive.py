@@ -49,8 +49,7 @@ class TestYOLODetector:
             assert detector.model is None
             assert detector.is_loaded is False
 
-    @patch("bbia_sim.vision_yolo.YOLO")
-    def test_load_model_success(self, mock_yolo_class):
+    def test_load_model_success(self):
         """Test chargement modèle réussi."""
         with patch("bbia_sim.vision_yolo.YOLO_AVAILABLE", True):
             # Vider cache avant test pour forcer chargement
@@ -58,8 +57,11 @@ class TestYOLODetector:
 
             vision_yolo_module._yolo_model_cache.clear()
 
+            # Créer un mock YOLO et l'ajouter au module
+            mock_yolo_class = MagicMock()
             mock_model = MagicMock()
             mock_yolo_class.return_value = mock_model
+            vision_yolo_module.YOLO = mock_yolo_class
 
             detector = YOLODetector(model_size="n", confidence_threshold=0.25)
             result = detector.load_model()
@@ -69,8 +71,7 @@ class TestYOLODetector:
             assert detector.model == mock_model
             mock_yolo_class.assert_called_once_with("yolov8n.pt")
 
-    @patch("bbia_sim.vision_yolo.YOLO")
-    def test_load_model_failure(self, mock_yolo_class):
+    def test_load_model_failure(self):
         """Test chargement modèle échoué."""
         with patch("bbia_sim.vision_yolo.YOLO_AVAILABLE", True):
             # Vider cache avant test pour forcer chargement
@@ -78,8 +79,10 @@ class TestYOLODetector:
 
             vision_yolo_module._yolo_model_cache.clear()
 
-            # Mock exception lors du chargement
+            # Créer un mock YOLO qui lève une exception
+            mock_yolo_class = MagicMock()
             mock_yolo_class.side_effect = Exception("Erreur chargement")
+            vision_yolo_module.YOLO = mock_yolo_class
 
             detector = YOLODetector(model_size="n", confidence_threshold=0.25)
             result = detector.load_model()
@@ -94,8 +97,7 @@ class TestYOLODetector:
             result = detector.load_model()
             assert result is False
 
-    @patch("bbia_sim.vision_yolo.YOLO")
-    def test_detect_objects_success(self, mock_yolo_class):
+    def test_detect_objects_success(self):
         """Test détection objets réussie."""
         with patch("bbia_sim.vision_yolo.YOLO_AVAILABLE", True):
             # Vider cache avant test
@@ -126,7 +128,10 @@ class TestYOLODetector:
             mock_model.return_value = [mock_result]
             mock_model.names = {0: "person"}
 
+            # Ajouter YOLO mock au module
+            mock_yolo_class = MagicMock()
             mock_yolo_class.return_value = mock_model
+            vision_yolo_module.YOLO = mock_yolo_class
 
             detector = YOLODetector(model_size="n", confidence_threshold=0.25)
             detector.model = mock_model
@@ -144,13 +149,17 @@ class TestYOLODetector:
                 assert "confidence" in detections[0]
                 assert "class_name" in detections[0]
 
-    @patch("bbia_sim.vision_yolo.YOLO")
-    def test_detect_objects_with_auto_load(self, mock_yolo_class):
+    def test_detect_objects_with_auto_load(self):
         """Test détection avec chargement automatique (couverture lignes 114-116)."""
         with patch("bbia_sim.vision_yolo.YOLO_AVAILABLE", True):
+            import bbia_sim.vision_yolo as vision_yolo_module
+            vision_yolo_module._yolo_model_cache.clear()
+
             mock_model = MagicMock()
             mock_model.return_value = []
+            mock_yolo_class = MagicMock()
             mock_yolo_class.return_value = mock_model
+            vision_yolo_module.YOLO = mock_yolo_class
 
             detector = YOLODetector(model_size="n", confidence_threshold=0.25)
             assert detector.is_loaded is False
@@ -161,7 +170,7 @@ class TestYOLODetector:
             assert isinstance(detections, list)
             assert detector.is_loaded is True
 
-    @patch("bbia_sim.vision_yolo.YOLO")
+    @patch("ultralytics.YOLO")
     def test_detect_objects_model_none(self, mock_yolo_class):
         """Test détection avec modèle None (couverture ligne 130)."""
         with patch("bbia_sim.vision_yolo.YOLO_AVAILABLE", True):
@@ -174,7 +183,7 @@ class TestYOLODetector:
 
             assert detections == []
 
-    @patch("bbia_sim.vision_yolo.YOLO")
+    @patch("ultralytics.YOLO")
     def test_detect_objects_exception(self, mock_yolo_class):
         """Test gestion exception détection (couverture lignes 166-168)."""
         with patch("bbia_sim.vision_yolo.YOLO_AVAILABLE", True):
@@ -271,7 +280,7 @@ class TestYOLODetector:
         assert action is not None
         assert action["direction"] == "right"
 
-    @patch("bbia_sim.vision_yolo.YOLO")
+    @patch("ultralytics.YOLO")
     def test_detect_objects_boxes_none(self, mock_yolo_class):
         """Test détection avec boxes is None (couverture ligne 143)."""
         with patch("bbia_sim.vision_yolo.YOLO_AVAILABLE", True):
@@ -297,7 +306,7 @@ class TestYOLODetector:
 
             assert detections == []
 
-    @patch("bbia_sim.vision_yolo.YOLO")
+    @patch("ultralytics.YOLO")
     def test_detect_objects_multiple_results(self, mock_yolo_class):
         """Test détection avec plusieurs résultats (couverture boucle for result)."""
         with patch("bbia_sim.vision_yolo.YOLO_AVAILABLE", True):
@@ -520,7 +529,7 @@ class TestFactoryFunctions:
         detector = create_face_detector()
         assert detector is None
 
-    @patch("bbia_sim.vision_yolo.YOLO")
+    @patch("ultralytics.YOLO")
     def test_load_model_cache_lru_eviction(self, mock_yolo_class):
         """Test éviction LRU du cache YOLO (couverture lignes 103-113)."""
         with patch("bbia_sim.vision_yolo.YOLO_AVAILABLE", True):
@@ -558,7 +567,7 @@ class TestFactoryFunctions:
             # Cache devrait toujours avoir max 2 modèles
             assert len(vision_yolo_module._yolo_model_cache) <= 2
 
-    @patch("bbia_sim.vision_yolo.YOLO")
+    @patch("ultralytics.YOLO")
     def test_detect_objects_empty_results(self, mock_yolo_class):
         """Test détection avec résultats vides (couverture ligne 160)."""
         with patch("bbia_sim.vision_yolo.YOLO_AVAILABLE", True):
@@ -690,7 +699,7 @@ class TestFactoryFunctions:
         # Devrait choisir la première (meilleur score)
         assert best["confidence"] == 0.7
 
-    @patch("bbia_sim.vision_yolo.YOLO")
+    @patch("ultralytics.YOLO")
     def test_detect_objects_load_model_fails(self, mock_yolo_class):
         """Test détection quand load_model() retourne False (couverture ligne 147)."""
         with patch("bbia_sim.vision_yolo.YOLO_AVAILABLE", True):
@@ -719,7 +728,7 @@ class TestFactoryFunctions:
 
         assert True  # Si on arrive ici, le module a chargé
 
-    @patch("bbia_sim.vision_yolo.YOLO")
+    @patch("ultralytics.YOLO")
     def test_load_model_cache_hit(self, mock_yolo_class):
         """Test chargement modèle depuis cache (couverture lignes 93-98)."""
         with patch("bbia_sim.vision_yolo.YOLO_AVAILABLE", True):
@@ -748,7 +757,7 @@ class TestFactoryFunctions:
             # YOLO ne devrait pas avoir été appelé car on utilise le cache
             mock_yolo_class.assert_not_called()
 
-    @patch("bbia_sim.vision_yolo.YOLO")
+    @patch("ultralytics.YOLO")
     def test_detect_objects_batch_success(self, mock_yolo_class):
         """Test détection batch réussie (couverture lignes 236-285)."""
         with patch("bbia_sim.vision_yolo.YOLO_AVAILABLE", True):
@@ -798,7 +807,7 @@ class TestFactoryFunctions:
             assert isinstance(detections, list)
             assert len(detections) == 2
 
-    @patch("bbia_sim.vision_yolo.YOLO")
+    @patch("ultralytics.YOLO")
     def test_detect_objects_batch_empty_images(self, mock_yolo_class):
         """Test détection batch avec liste vide (couverture ligne 240-241)."""
         with patch("bbia_sim.vision_yolo.YOLO_AVAILABLE", True):
@@ -808,7 +817,7 @@ class TestFactoryFunctions:
             detections = detector.detect_objects_batch([])
             assert detections == []
 
-    @patch("bbia_sim.vision_yolo.YOLO")
+    @patch("ultralytics.YOLO")
     def test_detect_objects_batch_model_none(self, mock_yolo_class):
         """Test détection batch avec modèle None (couverture lignes 244-246)."""
         with patch("bbia_sim.vision_yolo.YOLO_AVAILABLE", True):
@@ -822,7 +831,7 @@ class TestFactoryFunctions:
             detections = detector.detect_objects_batch(images)
             assert detections == [[]]
 
-    @patch("bbia_sim.vision_yolo.YOLO")
+    @patch("ultralytics.YOLO")
     def test_detect_objects_batch_load_fails(self, mock_yolo_class):
         """Test détection batch quand load_model échoue (couverture lignes 236-238)."""
         with patch("bbia_sim.vision_yolo.YOLO_AVAILABLE", True):
@@ -836,7 +845,7 @@ class TestFactoryFunctions:
                 detections = detector.detect_objects_batch(images)
                 assert detections == [[]]
 
-    @patch("bbia_sim.vision_yolo.YOLO")
+    @patch("ultralytics.YOLO")
     def test_detect_objects_batch_exception(self, mock_yolo_class):
         """Test gestion exception détection batch (couverture lignes 283-285)."""
         with patch("bbia_sim.vision_yolo.YOLO_AVAILABLE", True):
