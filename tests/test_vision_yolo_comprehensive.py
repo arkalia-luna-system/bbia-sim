@@ -51,21 +51,26 @@ class TestYOLODetector:
 
     def test_load_model_success(self):
         """Test chargement modèle réussi."""
+        import sys
+        import importlib
+
+        # Créer un mock YOLO et l'ajouter à sys.modules pour que l'import fonctionne
+        mock_yolo_class = MagicMock()
+        mock_model = MagicMock()
+        mock_yolo_class.return_value = mock_model
+
+        # Créer un module ultralytics mocké
+        mock_ultralytics = MagicMock()
+        mock_ultralytics.YOLO = mock_yolo_class
+        sys.modules["ultralytics"] = mock_ultralytics
+
         with patch("bbia_sim.vision_yolo.YOLO_AVAILABLE", True):
             # Vider cache avant test pour forcer chargement
             import bbia_sim.vision_yolo as vision_yolo_module
 
-            vision_yolo_module._yolo_model_cache.clear()
-
-            # Créer un mock YOLO et l'ajouter au module
-            mock_yolo_class = MagicMock()
-            mock_model = MagicMock()
-            import bbia_sim.vision_yolo as vision_yolo_module
+            importlib.reload(vision_yolo_module)
 
             vision_yolo_module._yolo_model_cache.clear()
-            mock_yolo_class = MagicMock()
-            vision_yolo_module.YOLO.return_value = mock_model
-            vision_yolo_module.YOLO = mock_yolo_class
 
             detector = YOLODetector(model_size="n", confidence_threshold=0.25)
             result = detector.load_model()
@@ -73,10 +78,14 @@ class TestYOLODetector:
             assert result is True
             assert detector.is_loaded is True
             assert detector.model == mock_model
-            vision_yolo_module.YOLO.assert_called_once_with("yolov8n.pt")
+            mock_yolo_class.assert_called_once_with("yolov8n.pt")
 
     def test_load_model_failure(self):
         """Test chargement modèle échoué."""
+        try:
+            from ultralytics import YOLO  # noqa: F401
+        except ImportError:
+            pytest.skip("ultralytics non disponible")
         with patch("bbia_sim.vision_yolo.YOLO_AVAILABLE", True):
             # Vider cache avant test pour forcer chargement
             import bbia_sim.vision_yolo as vision_yolo_module
