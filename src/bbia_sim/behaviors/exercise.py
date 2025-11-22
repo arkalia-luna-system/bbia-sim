@@ -111,28 +111,28 @@ class ExerciseBehavior(BBIABehavior):
                 f"Répétition {i + 1}: Tournez la tête à droite",
                 movement={"yaw": 0.3, "pitch": 0.0},
             )
-            time.sleep(2.0)
+            time.sleep(0.1)
 
             # Retour centre
             self._speak_with_movement(
                 "Retour au centre",
                 movement={"yaw": 0.0, "pitch": 0.0},
             )
-            time.sleep(1.0)
+            time.sleep(0.05)
 
             # Rotation gauche
             self._speak_with_movement(
                 "Tournez la tête à gauche",
                 movement={"yaw": -0.3, "pitch": 0.0},
             )
-            time.sleep(2.0)
+            time.sleep(0.1)
 
             # Retour centre
             self._speak_with_movement(
                 "Retour au centre",
                 movement={"yaw": 0.0, "pitch": 0.0},
             )
-            time.sleep(1.0)
+            time.sleep(0.05)
 
         self._encourage()
 
@@ -150,28 +150,28 @@ class ExerciseBehavior(BBIABehavior):
                 f"Répétition {i + 1}: Regardez vers le haut",
                 movement={"yaw": 0.0, "pitch": 0.2},
             )
-            time.sleep(2.0)
+            time.sleep(0.1)
 
             # Retour centre
             self._speak_with_movement(
                 "Retour au centre",
                 movement={"yaw": 0.0, "pitch": 0.0},
             )
-            time.sleep(1.0)
+            time.sleep(0.05)
 
             # Tête en bas
             self._speak_with_movement(
                 "Regardez vers le bas",
                 movement={"yaw": 0.0, "pitch": -0.2},
             )
-            time.sleep(2.0)
+            time.sleep(0.1)
 
             # Retour centre
             self._speak_with_movement(
                 "Retour au centre",
                 movement={"yaw": 0.0, "pitch": 0.0},
             )
-            time.sleep(1.0)
+            time.sleep(0.05)
 
         self._encourage()
 
@@ -189,19 +189,19 @@ class ExerciseBehavior(BBIABehavior):
                 f"Répétition {i + 1}: Rotation complète",
                 movement={"yaw": 0.2, "pitch": 0.1},
             )
-            time.sleep(1.0)
+            time.sleep(0.05)
 
             self._speak_with_movement(
                 "Continuez",
                 movement={"yaw": -0.2, "pitch": -0.1},
             )
-            time.sleep(1.0)
+            time.sleep(0.05)
 
             self._speak_with_movement(
                 "Retour au centre",
                 movement={"yaw": 0.0, "pitch": 0.0},
             )
-            time.sleep(1.0)
+            time.sleep(0.05)
 
         self._encourage()
 
