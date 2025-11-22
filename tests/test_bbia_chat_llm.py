@@ -234,9 +234,24 @@ class TestBBIAChat:
         chat = BBIAChat(robot_api=mock_robot_api)
 
         # Mock create_head_pose pour éviter ImportError
-        # Patcher le module reachy_mini.utils avant l'import dans la fonction
+        # Créer un mock du module reachy_mini.utils pour éviter ImportError
         mock_pose = MagicMock()
-        with patch("reachy_mini.utils.create_head_pose", return_value=mock_pose):
+        mock_create_head_pose = MagicMock(return_value=mock_pose)
+
+        # Créer un mock du module reachy_mini et de son sous-module utils
+        mock_reachy_mini = MagicMock()
+        mock_reachy_mini_utils = MagicMock()
+        mock_reachy_mini_utils.create_head_pose = mock_create_head_pose
+        mock_reachy_mini.utils = mock_reachy_mini_utils
+
+        # Patcher sys.modules pour que l'import fonctionne
+        with patch.dict(
+            sys.modules,
+            {
+                "reachy_mini": mock_reachy_mini,
+                "reachy_mini.utils": mock_reachy_mini_utils,
+            },
+        ):
             # Message avec action
             response = chat.chat("Tourne la tête à droite")
             # Vérifier que la réponse est générée
