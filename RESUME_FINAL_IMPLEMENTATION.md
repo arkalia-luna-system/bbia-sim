@@ -137,17 +137,26 @@
 
 ---
 
-## 📋 ISSUES DIFFICILES - AUDIT COMPLET
+## 📋 ISSUES DIFFICILES - AUDIT COMPLET ✅ TERMINÉ
 
 **10 issues difficiles analysées** - Voir `AUDIT_ISSUES_DIFFICILES.md` pour détails complets
 
 ### Résumé audit :
-- ✅ **3 issues** à améliorer : #410 (pose sommeil), #384 (doc HF chat), #389 (doc reSpeaker)
-- 📝 **4 issues** à documenter : #434 (RPI cam), #407 (Windows), #389, #384
-- 📝 **2 issues** à planifier : #183 (collision check), #30 (multi-robots)
+- ✅ **3 issues** améliorées : #410 (pose sommeil), #384 (doc HF chat), #389 (doc reSpeaker)
+- ✅ **4 issues** documentées : #434 (RPI cam), #407 (Windows), #389, #384
+- ✅ **2 issues** planifiées : #183 (collision check), #30 (multi-robots)
 - ❌ **3 issues** non applicables : #426, #408, #388
 
-**Temps estimé** : 23-38h pour issues applicables
+**Statut** : ✅ **7 issues applicables implémentées/documentées** (22 Novembre 2025)
+
+### Détails implémentation :
+- ✅ **Issue #410** : Méthode `set_sleeping_pose()` ajoutée dans `RobotAPI`
+- ✅ **Issue #384** : Guide complet HF chat dans `GUIDE_LLM_CONVERSATION.md`
+- ✅ **Issue #389** : Section troubleshooting reSpeaker ajoutée
+- ✅ **Issue #434** : Documentation RPI cam CSI->USB ajoutée
+- ✅ **Issue #407** : Documentation Windows ajoutée
+- ✅ **Issue #183** : Méthode `check_collision()` ajoutée dans `MuJoCoBackend`
+- ✅ **Issue #30** : Méthode `create_robot_registry()` ajoutée dans `RobotFactory`
 
 ---
 
