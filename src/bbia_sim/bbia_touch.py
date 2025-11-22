@@ -141,7 +141,7 @@ class BBIATouchDetection:
         Returns:
             Dictionnaire avec type d'interaction et métriques
         """
-        if len(audio) == 0:
+        if not audio:  # OPTIMISATION: vérification de vérité plus efficace que len()
             return {"type": TouchType.NONE, "confidence": 0.0}
 
         # Normaliser l'audio

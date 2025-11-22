@@ -264,7 +264,9 @@ async def websocket_endpoint(websocket: WebSocket) -> None:
         manager.disconnect(websocket)
 
         # Arrêt de la diffusion si plus de connexions
-        if len(manager.active_connections) == 0:
+        if (
+            not manager.active_connections
+        ):  # OPTIMISATION: vérification de vérité plus efficace
             await manager.stop_broadcast()
 
 

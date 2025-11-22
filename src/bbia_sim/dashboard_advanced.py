@@ -274,7 +274,9 @@ class BBIAAdvancedWebSocketManager:
             len(self.active_connections),
         )
         # Arrêter la collecte de métriques si plus aucune connexion
-        if len(self.active_connections) == 0:
+        if (
+            not self.active_connections
+        ):  # OPTIMISATION: vérification de vérité plus efficace
             self._stop_metrics_collection()
             # OPTIMISATION STREAMING: Arrêter le processeur de batch
             if self._batch_task and not self._batch_task.done():
