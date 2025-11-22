@@ -199,9 +199,9 @@ class ConnectionManager:
         template["sensors"]["temperature"] = round(25.0 + cos_val * 4.0, 1)
         template["sensors"]["cpu_usage"] = round(20.0 + sin_val * 20.0, 1)
         template["sensors"]["memory_usage"] = round(50.0 + cos_val * 20.0, 1)
-        template["status"]["simulation_ready"] = (
-            simulation_service.is_simulation_ready()
-        )
+        template["status"][
+            "simulation_ready"
+        ] = simulation_service.is_simulation_ready()
 
         # Retourner copie pour éviter mutations simultanées
         import copy

@@ -124,16 +124,18 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
         logger.warning("⚠️ Erreur arrêt WebSocket telemetry: %s", e)
 
     try:
-        from ...dashboard_advanced import websocket_manager
+        from ...dashboard_advanced import advanced_websocket_manager
 
-        if websocket_manager and hasattr(websocket_manager, "active_connections"):
+        if advanced_websocket_manager and hasattr(
+            advanced_websocket_manager, "active_connections"
+        ):
             # Fermer toutes les connexions actives
-            for ws in list(websocket_manager.active_connections):
+            for ws in list(advanced_websocket_manager.active_connections):
                 try:
                     await ws.close()
                 except Exception as e:
                     logger.debug("Erreur fermeture WebSocket: %s", e)
-            websocket_manager.active_connections.clear()
+            advanced_websocket_manager.active_connections.clear()
             logger.info("✅ WebSocket dashboard arrêté")
     except Exception as e:
         logger.warning("⚠️ Erreur arrêt WebSocket dashboard: %s", e)

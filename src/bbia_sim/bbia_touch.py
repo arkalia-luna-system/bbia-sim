@@ -232,7 +232,9 @@ class BBIATouchDetection:
             return False
 
         analysis = self._analyze_audio_pattern(audio)
-        is_caress = analysis["type"] == TouchType.CARESS and analysis["confidence"] > 0.4
+        is_caress = (
+            analysis["type"] == TouchType.CARESS and analysis["confidence"] > 0.4
+        )
         return bool(is_caress)
 
     def detect_touch(self, duration: float = 0.2) -> dict[str, Any]:

@@ -19,9 +19,9 @@ logger = logging.getLogger(__name__)
 
 # OPTIMISATION PERFORMANCE: Cache global pour modèles Whisper
 # (évite chargements répétés)
-_whisper_models_cache: dict[
-    str, dict[str, Any]
-] = {}  # model_name -> {processor, model}
+_whisper_models_cache: dict[str, dict[str, Any]] = (
+    {}
+)  # model_name -> {processor, model}
 _whisper_cache_lock = threading.Lock()
 
 
