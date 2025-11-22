@@ -294,7 +294,18 @@ class TestDaemonModels:
 
     def test_behavior_response(self) -> None:
         """Test BehaviorResponse."""
-        response = BehaviorResponse(success=True, message="OK")
+        # OPTIMISATION RAM: Import lazy + tous les champs requis
+        from bbia_sim.daemon.app.routers.ecosystem import BehaviorResponse
+
+        response = BehaviorResponse(
+            success=True,
+            message="OK",
+            behavior="test_behavior",
+            parameters={},
+            estimated_duration=1.0,
+            timestamp="2025-11-22T00:00:00",
+            status="completed",
+        )
         assert response.success is True
 
     def test_emotion_response(self) -> None:
@@ -375,7 +386,7 @@ class TestDaemonModels:
 
     def test_xyzrpy_pose_from_array(self) -> None:
         """Test XYZRPYPose.from_pose_array."""
-        # OPTIMISATION RAM: Import lazy
+        # OPTIMISATION RAM: Import lazy uniquement dans le test
         import numpy as np
 
         from bbia_sim.daemon.models import XYZRPYPose
@@ -388,10 +399,12 @@ class TestDaemonModels:
         assert pose.x == 0.0
         assert pose.y == 0.0
         assert pose.z == 0.0
+        # OPTIMISATION RAM: Nettoyer références
+        del pose_array, pose
 
     def test_matrix4x4_pose_from_array(self) -> None:
         """Test Matrix4x4Pose.from_pose_array."""
-        # OPTIMISATION RAM: Import lazy
+        # OPTIMISATION RAM: Import lazy uniquement dans le test
         import numpy as np
 
         from bbia_sim.daemon.models import Matrix4x4Pose
@@ -401,6 +414,8 @@ class TestDaemonModels:
         pose = Matrix4x4Pose.from_pose_array(pose_array)
         assert pose is not None
         assert len(pose.m) == 16
+        # OPTIMISATION RAM: Nettoyer références
+        del pose_array, pose
 
 
 class TestBackendAdapter:
