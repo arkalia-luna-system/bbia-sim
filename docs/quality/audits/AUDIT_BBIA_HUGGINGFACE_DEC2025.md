@@ -115,6 +115,8 @@
 3. **Threading optimisé** :
    - Thread déchargement auto - ✅ **DÉJÀ FAIT**
    - Vérifier que thread est bien daemon - ✅ **DÉJÀ FAIT**
+   - Timeout wait() réduit de 60s à 10s pour réactivité - ✅ **IMPLÉMENTÉ (22 novembre 2025)**
+   - Nettoyage automatique threads avec __del__() - ✅ **IMPLÉMENTÉ (22 novembre 2025)**
 
 ---
 
@@ -154,6 +156,11 @@
 - ✅ **Lazy loading strict BBIAChat** : Implémenté (gain ~500MB-1GB)
 - ✅ **Timeout déchargement** : Réduit à 2 minutes (optimisé)
 - ✅ **Black, Ruff, MyPy, Bandit** : 0 erreur
+
+### Améliorations supplémentaires (22 novembre 2025)
+- ✅ **Timeout thread wait()** : Réduit de 60s à 10s pour arrêt plus réactif
+- ✅ **Nettoyage automatique threads** : Méthode __del__() pour éviter accumulation
+- ✅ **Nettoyage dans tests** : teardown_method() ajouté pour tests critiques
 
 ---
 
