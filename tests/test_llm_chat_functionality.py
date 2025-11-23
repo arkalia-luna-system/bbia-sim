@@ -16,6 +16,7 @@ except ImportError:
     BBIAHuggingFace = None  # type: ignore
 
 
+@pytest.mark.slow  # OPTIMISATION: Classe initialise BBIAHuggingFace (peut déclencher lazy loading)
 class TestLLMChatFunctionality:
     """Tests pour les fonctionnalités LLM conversationnel."""
 
