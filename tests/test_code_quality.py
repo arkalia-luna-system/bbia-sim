@@ -38,6 +38,7 @@ class TestCodeQuality:
             "bbia_vision.py",  # Imports TYPE_CHECKING + runtime (pratique normale)
             "vision_yolo.py",  # Imports conditionnels multiples
             "__main__.py",  # Imports conditionnels dans fonctions (pratique normale CLI)
+            "face_recognition.py",  # Imports conditionnels cv2 dans fonctions (pratique normale)
         }
 
         for file_path in python_files:

@@ -119,7 +119,14 @@ class BBIAPersonRecognition:
             # Si numpy array, sauvegarder temporairement
             temp_path = None
             if isinstance(image_path, np.ndarray):
-                import cv2
+                # cv2 importé conditionnellement si nécessaire
+                try:
+                    import cv2  # noqa: PLC0415
+                except ImportError:
+                    cv2 = None  # type: ignore[assignment]
+                
+                if cv2 is None:
+                    raise ImportError("cv2 (OpenCV) requis pour traiter les images numpy")
 
                 # Utiliser tempfile pour créer un fichier temporaire sécurisé
                 fd, temp_path = tempfile.mkstemp(
@@ -212,7 +219,14 @@ class BBIAPersonRecognition:
             # Si numpy array, sauvegarder temporairement
             temp_path = None
             if isinstance(image_path, np.ndarray):
-                import cv2
+                # cv2 importé conditionnellement si nécessaire
+                try:
+                    import cv2  # noqa: PLC0415
+                except ImportError:
+                    cv2 = None  # type: ignore[assignment]
+                
+                if cv2 is None:
+                    raise ImportError("cv2 (OpenCV) requis pour traiter les images numpy")
 
                 # Utiliser tempfile pour créer un fichier temporaire sécurisé
                 fd, temp_path = tempfile.mkstemp(

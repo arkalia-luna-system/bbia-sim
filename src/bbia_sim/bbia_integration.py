@@ -314,14 +314,14 @@ class BBIAIntegration:
                     "get_current_head_pose",
                 ):
                     try:
-                        from reachy_mini.utils import create_head_pose
-
-                        # Créer pose tête avec angles de l'émotion
-                        pose = create_head_pose(
-                            pitch=head_pitch,
-                            yaw=head_yaw,
-                            degrees=False,
-                        )
+                        # create_head_pose déjà importé au niveau module
+                        if REACHY_MINI_UTILS_AVAILABLE and create_head_pose:
+                            # Créer pose tête avec angles de l'émotion
+                            pose = create_head_pose(
+                                pitch=head_pitch,
+                                yaw=head_yaw,
+                                degrees=False,
+                            )
 
                         # Duration adaptative selon l'intensité (plus lente = plus expressive)
                         transition_duration = 0.5 + (
@@ -410,13 +410,13 @@ class BBIAIntegration:
                 and self.simulation_service.robot_api
             ):
                 try:
-                    from reachy_mini.utils import create_head_pose
-
-                    pose = create_head_pose(
-                        pitch=head_pitch,
-                        yaw=head_yaw,
-                        degrees=False,
-                    )
+                    # create_head_pose déjà importé au niveau module
+                    if REACHY_MINI_UTILS_AVAILABLE and create_head_pose:
+                        pose = create_head_pose(
+                            pitch=head_pitch,
+                            yaw=head_yaw,
+                            degrees=False,
+                        )
 
                     # Méthode 1 (préférée): goto_target avec interpolation fluide
                     if hasattr(self.simulation_service.robot_api, "goto_target"):
