@@ -653,9 +653,14 @@ class TestIAPerformance:
 
     def test_whisper_latency_target(self):
         """Test latence Whisper < 800ms."""
-        # Mock latence rapide
+        # Mock latence rapide avec générateur infini pour éviter StopIteration
+        # Le logger Python appelle aussi time.time(), donc on doit fournir plusieurs valeurs
+        import itertools
+        
         with patch("bbia_sim.voice_whisper.time.time") as mock_time:
-            mock_time.side_effect = [0, 0.5]  # 500ms
+            # Générer des valeurs: 0, 0.5, puis 0.5 pour les appels du logger
+            time_values = itertools.chain([0, 0.5], itertools.repeat(0.5))
+            mock_time.side_effect = time_values
 
             mapper = VoiceCommandMapper()
             start_time = mock_time()
