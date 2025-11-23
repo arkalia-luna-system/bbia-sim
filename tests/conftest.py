@@ -38,7 +38,7 @@ _lock_fd: int | None = None
 class ExpectedErrorFilter(logging.Filter):
     """
     Filtre de logging pour réduire le bruit des erreurs attendues dans les tests.
-    
+
     Les erreurs suivantes sont attendues et peuvent être réduites au niveau WARNING :
     - ModuleNotFoundError pour dépendances optionnelles (reachy_mini, etc.)
     - RuntimeError pour eSpeak non installé
@@ -68,7 +68,7 @@ class ExpectedErrorFilter(logging.Filter):
     def filter(self, record: logging.LogRecord) -> bool:
         """
         Filtre les messages d'erreur attendus.
-        
+
         Returns:
             True si le message doit être affiché, False sinon.
         """
@@ -78,7 +78,7 @@ class ExpectedErrorFilter(logging.Filter):
 
         # Obtenir le message complet
         message = record.getMessage()
-        
+
         # Vérifier les patterns simples
         for pattern in self.EXPECTED_ERROR_PATTERNS:
             if pattern in message:
