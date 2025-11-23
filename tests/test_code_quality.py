@@ -52,11 +52,8 @@ class TestCodeQuality:
             if file_path.name.startswith("._"):  # Fichiers macOS cachés
                 continue
             # Vérifier si le fichier doit être ignoré (par nom ou chemin relatif)
-            if file_path.name in ignored_files:
-                continue
-            # Vérifier aussi par chemin relatif depuis src/bbia_sim
             rel_path = str(file_path.relative_to(src_dir))
-            if rel_path in ignored_files:
+            if file_path.name in ignored_files or rel_path in ignored_files:
                 continue
 
             try:
