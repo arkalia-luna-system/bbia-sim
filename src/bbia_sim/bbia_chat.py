@@ -5,11 +5,13 @@ Intégration de modèles LLM légers (Phi-2, TinyLlama) pour remplacer
 le système de règles basiques par un véritable assistant conversationnel.
 """
 
+import json
 import logging
 import re
 import time
 from collections import deque
 from functools import lru_cache
+from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
 logger = logging.getLogger(__name__)
@@ -638,9 +640,6 @@ class BBIAChat:
     def _save_preferences(self) -> None:
         """Sauvegarde préférences utilisateur dans fichier JSON."""
         try:
-            import json
-            from pathlib import Path
-
             # Créer répertoire si nécessaire
             prefs_dir = Path(self.preferences_file).parent
             if prefs_dir and not prefs_dir.exists():
@@ -658,9 +657,6 @@ class BBIAChat:
     def _load_preferences(self) -> None:
         """Charge préférences utilisateur depuis fichier JSON."""
         try:
-            import json
-            from pathlib import Path
-
             if Path(self.preferences_file).exists():
                 with open(self.preferences_file, encoding="utf-8") as f:
                     loaded_prefs = json.load(f)

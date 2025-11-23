@@ -1073,6 +1073,7 @@ class BBIABehaviorManager:
         try:
             from .behaviors import (
                 AlarmClockBehavior,
+                ConversationBehavior as NewConversationBehavior,
                 DanceBehavior,
                 EmotionShowBehavior,
                 ExerciseBehavior,
@@ -1086,9 +1087,6 @@ class BBIABehaviorManager:
                 StorytellingBehavior,
                 TeachingBehavior,
                 WeatherReportBehavior,
-            )
-            from .behaviors import (
-                ConversationBehavior as NewConversationBehavior,
             )
 
             # Comportements améliorés (remplacer ou complémenter les existants)

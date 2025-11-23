@@ -8,18 +8,31 @@ Reachy Mini Wireless (féminine, française si possible).
 """
 
 import contextlib
+import io
 import logging
 import os
 import queue
 import sys
+import tempfile
 import threading
 import time
 import unicodedata
+import wave
 from pathlib import Path
 from typing import Any
 
+import numpy as np
 import pyttsx3
 import speech_recognition as sr
+
+# Import conditionnel soundfile (optionnel)
+try:
+    import soundfile as sf
+
+    SOUNDFILE_AVAILABLE = True
+except ImportError:
+    SOUNDFILE_AVAILABLE = False
+    sf = None  # type: ignore[assignment]
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -28,6 +41,13 @@ try:
     from .ai_backends import get_tts_backend
 except ImportError:  # pragma: no cover - non critique si absent
     get_tts_backend = None  # type: ignore[assignment]
+
+# Import conditionnel voice_whisper (une seule fois)
+try:
+    from .voice_whisper import WHISPER_AVAILABLE, WhisperSTT
+except ImportError:
+    WHISPER_AVAILABLE = False
+    WhisperSTT = None  # type: ignore[assignment,misc]
 
 # Liste des voix féminines douces/enfantines à privilégier sur macOS
 # (ordre de préférence)
@@ -239,8 +259,6 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
     tts_backend_name = os.environ.get("BBIA_TTS_BACKEND")
     if tts_backend_name and get_tts_backend is not None:
         try:
-            import tempfile
-
             backend = get_tts_backend()
             with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as tmp:
                 wav_path = tmp.name
@@ -272,12 +290,9 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
                     )
                 try:
                     # Fallback simple: lecture locale sans dépendance forte
-                    import wave as _wave
-
-                    import numpy as np
                     import sounddevice as _sd
 
-                    with _wave.open(wav_path, "rb") as wf:
+                    with wave.open(wav_path, "rb") as wf:
                         sr = wf.getframerate()
                         frames = wf.readframes(wf.getnframes())
                         data = np.frombuffer(frames, dtype=np.int16)
@@ -314,18 +329,18 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
         if media:
             try:
                 # Générer un court WAV en mémoire (silence 100ms) pour garantir un flux audio
-                import io as _io
                 import struct as _struct
-                import wave as _wave
+
+                # io et wave déjà importés globalement
 
                 sr = 16000
                 num_samples = int(0.1 * sr)
                 silence = b"".join(_struct.pack("<h", 0) for _ in range(num_samples))
 
                 sdk_audio_bytes: bytes
-                wav_buf = _io.BytesIO()
+                wav_buf = io.BytesIO()
                 try:
-                    with _wave.open(wav_buf, "wb") as wf:
+                    with wave.open(wav_buf, "wb") as wf:
                         wf.setnchannels(1)
                         wf.setsampwidth(2)
                         wf.setframerate(sr)
@@ -356,10 +371,8 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
                         logging.debug("speaker.play a échoué: %s", e)
                     try:
                         # Créer un fichier temporaire si play_file est préféré
-                        import tempfile as _tempfile
-
                         tmp_path = None
-                        with _tempfile.NamedTemporaryFile(
+                        with tempfile.NamedTemporaryFile(
                             suffix=".wav",
                             delete=False,
                         ) as tmp:
@@ -437,9 +450,6 @@ def reconnaitre_parole(
                 )
 
                 # Convertir audio_data en format pour speech_recognition
-                import io
-                import wave
-
                 # Créer fichier WAV temporaire en mémoire
                 audio_io = io.BytesIO()
                 with wave.open(audio_io, "wb") as wf:
@@ -451,8 +461,6 @@ def reconnaitre_parole(
                     else:
                         # Gérer numpy.ndarray ou autres types
                         try:
-                            import numpy as np
-
                             if isinstance(audio_data, np.ndarray):
                                 wf.writeframes(
                                     (audio_data.astype(np.int16)).tobytes(),
@@ -660,7 +668,6 @@ def transcribe_audio_async(
 
             # Attendre résultat avec timeout
             if timeout:
-                import time
 
                 start_time = time.time()
                 while time.time() - start_time < timeout:
@@ -694,8 +701,6 @@ def _transcribe_audio_sync(
         return None
 
     try:
-        from .voice_whisper import WHISPER_AVAILABLE, WhisperSTT
-
         if not WHISPER_AVAILABLE:
             logging.debug("Whisper non disponible pour transcription")
             return None
@@ -710,10 +715,6 @@ def _transcribe_audio_sync(
             return None
 
         # Convertir audio_data en fichier temporaire si nécessaire
-        import tempfile
-
-        import numpy as np
-
         # Créer fichier temporaire
         temp_file = tempfile.NamedTemporaryFile(
             suffix=".wav",
@@ -724,7 +725,8 @@ def _transcribe_audio_sync(
 
         try:
             # Sauvegarder audio_data dans fichier temporaire
-            import soundfile as sf
+            if not SOUNDFILE_AVAILABLE:
+                raise ImportError("soundfile non disponible")
 
             if isinstance(audio_data, np.ndarray):
                 sf.write(temp_path, audio_data, sample_rate)
@@ -784,8 +786,6 @@ def transcribe_audio(
         return None
 
     try:
-        from .voice_whisper import WHISPER_AVAILABLE, WhisperSTT
-
         if not WHISPER_AVAILABLE:
             logging.debug("Whisper non disponible pour transcription")
             return None
@@ -800,10 +800,6 @@ def transcribe_audio(
             return None
 
         # Convertir audio_data en fichier temporaire si nécessaire
-        import tempfile
-
-        import numpy as np
-
         # Créer fichier temporaire
         temp_file = tempfile.NamedTemporaryFile(
             suffix=".wav",
@@ -814,7 +810,8 @@ def transcribe_audio(
 
         try:
             # Sauvegarder audio_data dans fichier temporaire
-            import soundfile as sf
+            if not SOUNDFILE_AVAILABLE:
+                raise ImportError("soundfile non disponible")
 
             if isinstance(audio_data, np.ndarray):
                 sf.write(temp_path, audio_data, sample_rate)

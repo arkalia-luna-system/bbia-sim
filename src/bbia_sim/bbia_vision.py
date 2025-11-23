@@ -8,6 +8,7 @@ import logging
 import math
 import os
 import queue
+import sys
 import threading
 import time
 from collections import deque
@@ -52,21 +53,18 @@ def get_bbia_vision_singleton(robot_api: Any | None = None) -> "BBIAVision":
 
 # Réduction du bruit de logs TensorFlow/MediaPipe (avant tout import MediaPipe)
 try:
-    import os as _os
-    import sys
-
-    _os.environ.setdefault("GLOG_minloglevel", "2")  # 0=INFO,1=WARNING,2=ERROR
-    _os.environ.setdefault(
+    os.environ.setdefault("GLOG_minloglevel", "2")  # 0=INFO,1=WARNING,2=ERROR
+    os.environ.setdefault(
         "TF_CPP_MIN_LOG_LEVEL",
         "3",
     )  # 0=INFO,1=WARNING,2=ERROR,3=FATAL
-    _os.environ.setdefault("MEDIAPIPE_DISABLE_GPU", "1")  # éviter logs GPU inutiles
+    os.environ.setdefault("MEDIAPIPE_DISABLE_GPU", "1")  # éviter logs GPU inutiles
     # Supprimer les logs TensorFlow Lite
-    _os.environ.setdefault("TFLITE_LOG_VERBOSITY", "0")  # 0=ERROR, 1=WARNING, 2=INFO
+    os.environ.setdefault("TFLITE_LOG_VERBOSITY", "0")  # 0=ERROR, 1=WARNING, 2=INFO
     # Supprimer les logs OpenGL (ne pas définir MUJOCO_GL sur macOS, utilise la valeur par défaut)
     # Sur macOS, laisser MuJoCo choisir automatiquement (glfw ou egl)
     if sys.platform != "darwin":  # Pas macOS
-        _os.environ.setdefault("MUJOCO_GL", "egl")  # Utiliser EGL sur Linux/Windows
+        os.environ.setdefault("MUJOCO_GL", "egl")  # Utiliser EGL sur Linux/Windows
 except (OSError, RuntimeError, ValueError, TypeError) as e:
     logger.debug(
         "Impossible de configurer variables d'environnement MediaPipe/TensorFlow: %s",
@@ -117,6 +115,7 @@ except ImportError:
     pass  # create_pose_detector reste None
 
 # Import conditionnel cv2 pour conversions couleur
+CV2_AVAILABLE = False
 try:
     import cv2
 
@@ -146,8 +145,6 @@ class BBIAVision:
         if _bbia_vision_singleton is not None and _bbia_vision_singleton is not self:
             # Utiliser debug au lieu de warning pour réduire le bruit dans les tests
             # Le warning reste utile en production mais trop verbeux en tests
-            import sys
-
             if "pytest" in sys.modules or "unittest" in sys.modules:
                 logger.debug(
                     "⚠️ Instance BBIAVision créée directement. "
@@ -709,101 +706,106 @@ class BBIAVision:
         # Détection visages avec MediaPipe + DeepFace
         if self.face_detector:
             try:
-                import cv2
+                if CV2_AVAILABLE:
+                    image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+                    results = self.face_detector.process(image_rgb)
 
-                image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-                results = self.face_detector.process(image_rgb)
+                    if results.detections:
+                        height, width = image.shape[:2]
+                        for detection in results.detections:
+                            bbox = detection.location_data.relative_bounding_box
 
-                if results.detections:
-                    height, width = image.shape[:2]
-                    for detection in results.detections:
-                        bbox = detection.location_data.relative_bounding_box
+                            # Extraire ROI pour DeepFace
+                            face_roi = None
+                            if (
+                                self.face_recognition
+                                and self.face_recognition.is_initialized
+                            ):
+                                x = int(bbox.xmin * width)
+                                y = int(bbox.ymin * height)
+                                w = int(bbox.width * width)
+                                h = int(bbox.height * height)
+                                margin = 20
+                                x = max(0, x - margin)
+                                y = max(0, y - margin)
+                                w = min(width - x, w + 2 * margin)
+                                h = min(height - y, h + 2 * margin)
+                                face_roi = image[y : y + h, x : x + w]
 
-                        # Extraire ROI pour DeepFace
-                        face_roi = None
-                        if (
-                            self.face_recognition
-                            and self.face_recognition.is_initialized
-                        ):
-                            x = int(bbox.xmin * width)
-                            y = int(bbox.ymin * height)
-                            w = int(bbox.width * width)
-                            h = int(bbox.height * height)
-                            margin = 20
-                            x = max(0, x - margin)
-                            y = max(0, y - margin)
-                            w = min(width - x, w + 2 * margin)
-                            h = min(height - y, h + 2 * margin)
-                            face_roi = image[y : y + h, x : x + w]
+                            # Détection DeepFace
+                            recognized_name = "humain"
+                            detected_emotion = "neutral"
+                            emotion_confidence = 0.0
 
-                        # Détection DeepFace
-                        recognized_name = "humain"
-                        detected_emotion = "neutral"
-                        emotion_confidence = 0.0
+                            if (
+                                face_roi is not None
+                                and face_roi.size > 0
+                                and self.face_recognition is not None
+                                and self.face_recognition.is_initialized
+                            ):
+                                try:
+                                    person_result = (
+                                        self.face_recognition.recognize_person(
+                                            face_roi,
+                                            enforce_detection=False,
+                                        )
+                                    )
+                                    if person_result:
+                                        recognized_name = person_result["name"]
 
-                        if (
-                            face_roi is not None
-                            and face_roi.size > 0
-                            and self.face_recognition is not None
-                            and self.face_recognition.is_initialized
-                        ):
-                            try:
-                                person_result = self.face_recognition.recognize_person(
-                                    face_roi,
-                                    enforce_detection=False,
-                                )
-                                if person_result:
-                                    recognized_name = person_result["name"]
+                                    emotion_result = (
+                                        self.face_recognition.detect_emotion(
+                                            face_roi,
+                                            enforce_detection=False,
+                                        )
+                                    )
+                                    if emotion_result:
+                                        detected_emotion = emotion_result["emotion"]
+                                        emotion_confidence = emotion_result[
+                                            "confidence"
+                                        ]
+                                except (
+                                    ValueError,
+                                    RuntimeError,
+                                    AttributeError,
+                                ) as deepface_error:
+                                    logger.debug("DeepFace erreur: %s", deepface_error)
+                                except Exception as deepface_error:
+                                    logger.debug(
+                                        "DeepFace erreur inattendue: %s",
+                                        deepface_error,
+                                    )
 
-                                emotion_result = self.face_recognition.detect_emotion(
-                                    face_roi,
-                                    enforce_detection=False,
-                                )
-                                if emotion_result:
-                                    detected_emotion = emotion_result["emotion"]
-                                    emotion_confidence = emotion_result["confidence"]
-                            except (
-                                ValueError,
-                                RuntimeError,
-                                AttributeError,
-                            ) as deepface_error:
-                                logger.debug("DeepFace erreur: %s", deepface_error)
-                            except Exception as deepface_error:
-                                logger.debug(
-                                    "DeepFace erreur inattendue: %s",
-                                    deepface_error,
-                                )
+                            # Calculer centre pour cohérence avec objets YOLO
+                            bbox_x = int(bbox.xmin * width)
+                            bbox_y = int(bbox.ymin * height)
+                            bbox_w = int(bbox.width * width)
+                            bbox_h = int(bbox.height * height)
+                            center_x = bbox_x + bbox_w / 2
+                            center_y = bbox_y + bbox_h / 2
 
-                        # Calculer centre pour cohérence avec objets YOLO
-                        bbox_x = int(bbox.xmin * width)
-                        bbox_y = int(bbox.ymin * height)
-                        bbox_w = int(bbox.width * width)
-                        bbox_h = int(bbox.height * height)
-                        center_x = bbox_x + bbox_w / 2
-                        center_y = bbox_y + bbox_h / 2
-
-                        face = {
-                            "name": recognized_name,
-                            "distance": 1.5,
-                            "confidence": (
-                                detection.score[0] if detection.score else 0.8
-                            ),
-                            "emotion": detected_emotion,
-                            "emotion_confidence": emotion_confidence,
-                            "position": (
-                                bbox.xmin + bbox.width / 2,
-                                bbox.ymin + bbox.height / 2,
-                            ),
-                            "bbox": {
-                                "x": bbox_x,
-                                "y": bbox_y,
-                                "width": bbox_w,
-                                "height": bbox_h,
-                                "center_x": int(center_x),
-                                "center_y": int(center_y),
-                            },
-                        }
-                        faces.append(face)
+                            face = {
+                                "name": recognized_name,
+                                "distance": 1.5,
+                                "confidence": (
+                                    detection.score[0] if detection.score else 0.8
+                                ),
+                                "emotion": detected_emotion,
+                                "emotion_confidence": emotion_confidence,
+                                "position": (
+                                    bbox.xmin + bbox.width / 2,
+                                    bbox.ymin + bbox.height / 2,
+                                ),
+                                "bbox": {
+                                    "x": bbox_x,
+                                    "y": bbox_y,
+                                    "width": bbox_w,
+                                    "height": bbox_h,
+                                    "center_x": int(center_x),
+                                    "center_y": int(center_y),
+                                },
+                            }
+                            faces.append(face)
             except (AttributeError, RuntimeError, ValueError) as e:
                 logger.warning("Erreur détection MediaPipe: %s", e)
             except Exception as e:
@@ -979,11 +981,10 @@ class BBIAVision:
             # Détection de visages avec MediaPipe
             if self.face_detector:
                 try:
-                    import cv2
-
-                    # MediaPipe nécessite RGB
-                    image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-                    results = self.face_detector.process(image_rgb)
+                    if CV2_AVAILABLE:
+                        # MediaPipe nécessite RGB
+                        image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+                        results = self.face_detector.process(image_rgb)
 
                     if results.detections:
                         height, width = image.shape[:2]

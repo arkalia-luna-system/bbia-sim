@@ -12,6 +12,15 @@ import numpy as np
 import numpy.typing as npt
 
 # Import DetectionResult avec fallback pour compatibilité CI/CD
+# Import conditionnel mediapipe (une seule fois en haut)
+try:
+    import mediapipe as mp  # type: ignore[import-untyped]
+
+    MEDIAPIPE_AVAILABLE = True
+except ImportError:
+    MEDIAPIPE_AVAILABLE = False
+    mp = None  # type: ignore[assignment]
+
 if TYPE_CHECKING:
     from bbia_sim.utils.types import DetectionResult
 else:
@@ -497,18 +506,12 @@ class FaceDetector:
             if _mediapipe_face_detection_cache is not None:
                 logger.debug("♻️ Réutilisation détecteur MediaPipe depuis cache")
                 self.face_detection = _mediapipe_face_detection_cache
-                try:
-                    import mediapipe as mp  # type: ignore[import-untyped]
-
+                if MEDIAPIPE_AVAILABLE and mp is not None:
                     self.mp_face_detection = mp.solutions.face_detection
                     self.mp_drawing = mp.solutions.drawing_utils
-                except ImportError:
-                    pass
                 return
 
-        try:
-            import mediapipe as mp  # type: ignore[import-untyped]
-
+        if MEDIAPIPE_AVAILABLE and mp is not None:
             self.mp_face_detection = mp.solutions.face_detection
             self.mp_drawing = mp.solutions.drawing_utils
             face_detection = self.mp_face_detection.FaceDetection(
@@ -627,11 +630,9 @@ def create_face_detector() -> FaceDetector | None:
         Instance FaceDetector ou None si non disponible
 
     """
-    try:
-        import mediapipe as mp  # type: ignore[import-untyped]  # noqa: F401
-
+    if MEDIAPIPE_AVAILABLE:
         return FaceDetector()
-    except ImportError:
+    else:
         logger.warning("⚠️ MediaPipe non disponible")
         return None
 
@@ -646,11 +647,9 @@ if __name__ == "__main__":
     # Test disponibilité
     logging.info(f"YOLO disponible: {YOLO_AVAILABLE}")
 
-    try:
-        import mediapipe as mp  # type: ignore[import-untyped]  # noqa: F401
-
+    if MEDIAPIPE_AVAILABLE:
         logging.info("MediaPipe disponible: True")
-    except ImportError:
+    else:
         logging.info("MediaPipe disponible: False")
 
     # Test création détecteurs

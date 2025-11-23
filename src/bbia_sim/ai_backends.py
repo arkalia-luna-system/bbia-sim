@@ -73,7 +73,11 @@ class Pyttsx3TTS:
                 # OPTIMISATION PERFORMANCE: Utiliser cache global
                 # au lieu de pyttsx3.init() direct
                 try:
-                    from .bbia_voice import _get_cached_voice_id, _get_pyttsx3_engine
+                    from .bbia_voice import (
+                        _get_cached_voice_id,
+                        _get_pyttsx3_engine,
+                        get_bbia_voice,
+                    )
 
                     engine = (
                         _get_pyttsx3_engine()
@@ -89,8 +93,7 @@ class Pyttsx3TTS:
 
                     # Sélectionner la meilleure voix féminine française
                     try:
-                        from .bbia_voice import get_bbia_voice
-
+                        # get_bbia_voice déjà importé ci-dessus
                         self._voice_id = get_bbia_voice(engine)
                         engine.setProperty("voice", self._voice_id)
                     except (AttributeError, RuntimeError, ValueError, TypeError) as e:
