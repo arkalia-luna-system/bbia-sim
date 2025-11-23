@@ -165,8 +165,10 @@ class TestBBIAChat:
     def test_chat_empty_message(self):
         """Test chat avec message vide."""
         chat = BBIAChat()
-        response = chat.chat("")
-        assert "compris" in response.lower() or "reformuler" in response.lower()
+        # Mocker _load_llm pour éviter lazy loading en CI
+        with patch.object(chat, "_load_llm"):
+            response = chat.chat("")
+            assert "compris" in response.lower() or "reformuler" in response.lower()
 
     def test_chat_context_management(self):
         """Test gestion contexte conversation."""
