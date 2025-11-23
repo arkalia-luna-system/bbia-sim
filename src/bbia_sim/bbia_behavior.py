@@ -1285,7 +1285,8 @@ class BBIABehaviorManager:
             move = self.saved_moves[behavior_name]
 
             # Issue #344: Améliorer enchaînement fluide des mouvements
-            # Utiliser initial_goto_duration > 0 pour transition fluide depuis position actuelle
+            # Utiliser initial_goto_duration > 0 pour transition fluide
+            # depuis position actuelle
             initial_goto_duration = 0.5  # Transition de 0.5s pour enchaînement fluide
 
             # OPTIMISATION PERFORMANCE: Utiliser async_play_move si disponible
@@ -1366,7 +1367,9 @@ def create_move_from_positions(
 
         # Classe Move simple standalone (ne dépend pas de reachy_mini)
         class SimpleMove:
-            """Classe Move simple pour créer des mouvements sans dépendance reachy_mini."""
+            """Classe Move simple pour créer des mouvements sans dépendance
+            reachy_mini.
+            """
 
             def __init__(
                 self,
@@ -1405,7 +1408,8 @@ def create_move_from_positions(
                 return result
 
         # Essayer d'utiliser le backend si disponible (pour compatibilité SDK)
-        # Note: En CI, reachy_mini peut ne pas être disponible, donc on catch toutes les exceptions
+        # Note: En CI, reachy_mini peut ne pas être disponible,
+        # donc on catch toutes les exceptions
         try:
             from .robot_factory import RobotFactory
 
@@ -1423,13 +1427,16 @@ def create_move_from_positions(
                 except (ImportError, ModuleNotFoundError) as e:
                     # Si reachy_mini n'est pas disponible, utiliser SimpleMove
                     logger.debug(
-                        "Backend create_move_from_positions échoué (import): %s, utilisation SimpleMove",
+                        "Backend create_move_from_positions échoué (import): "
+                        "%s, utilisation SimpleMove",
                         e,
                     )
                 except Exception as e:
-                    # Si le backend échoue pour une autre raison, continuer avec SimpleMove
+                    # Si le backend échoue pour une autre raison,
+                    # continuer avec SimpleMove
                     logger.debug(
-                        "Backend create_move_from_positions échoué: %s, utilisation SimpleMove",
+                        "Backend create_move_from_positions échoué: "
+                        "%s, utilisation SimpleMove",
                         e,
                     )
         except (ImportError, ModuleNotFoundError) as e:

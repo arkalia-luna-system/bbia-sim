@@ -459,7 +459,8 @@ class ReachyMiniBackend(RobotAPI):
     def get_available_joints(self) -> list[str]:
         """Retourne la liste des joints disponibles.
 
-        Note: OPTIMISATION - Utilise un cache car le résultat ne change pas après l'initialisation.
+        Note: OPTIMISATION - Utilise un cache car le résultat ne change pas
+        après l'initialisation.
         """
         if self._cached_available_joints is None:
             self._cached_available_joints = list(self.joint_mapping.keys())
@@ -600,7 +601,9 @@ class ReachyMiniBackend(RobotAPI):
         return True
 
     def _validate_stewart_joint(self, joint_name: str) -> bool:
-        """Valide les joints Stewart (ne peuvent pas être contrôlés individuellement)."""
+        """Valide les joints Stewart (ne peuvent pas être contrôlés
+        individuellement).
+        """
         if joint_name.startswith("stewart_"):
             logger.warning(
                 "⚠️  Tentative de contrôle individuel du joint %s - "
@@ -857,9 +860,11 @@ class ReachyMiniBackend(RobotAPI):
         """Exécute un comportement.
 
         Args:
-            behavior_name: Nom du comportement à exécuter ("wake_up", "goto_sleep", "nod")
+            behavior_name: Nom du comportement à exécuter
+                ("wake_up", "goto_sleep", "nod")
             duration: Durée du comportement en secondes
-            **kwargs: Arguments supplémentaires pour le comportement (non utilisés actuellement)
+            **kwargs: Arguments supplémentaires pour le comportement
+                (non utilisés actuellement)
 
         Returns:
             True si le comportement a été exécuté avec succès, False sinon
@@ -907,7 +912,8 @@ class ReachyMiniBackend(RobotAPI):
                     self.robot.goto_target(head=pose1, duration=0.5, method="minjerk")
                     self.robot.goto_target(head=pose2, duration=0.5, method="minjerk")
                     self.robot.goto_target(
-                        # OPTIMISATION PERFORMANCE: Utiliser cache LRU pour pose identité
+                        # OPTIMISATION PERFORMANCE: Utiliser cache LRU
+                        # pour pose identité
                         head=_create_cached_head_pose(
                             pitch=0.0,
                             yaw=0.0,
@@ -1294,7 +1300,8 @@ class ReachyMiniBackend(RobotAPI):
                         "✅ Mode position controlled défini après enable_motors",
                     )
                 except (AttributeError, ValueError, TypeError):
-                    # Si set_operating_mode n'existe pas, c'est OK (SDK gère automatiquement)
+                    # Si set_operating_mode n'existe pas, c'est OK
+                    # (SDK gère automatiquement)
                     logger.debug(
                         "set_operating_mode non disponible (SDK gère automatiquement)",
                     )
