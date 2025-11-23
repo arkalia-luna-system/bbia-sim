@@ -189,6 +189,18 @@ python scripts/verify_tests_consolidation.py
 
 ## Commandes de tests
 
+### Tests avec visibilité maximale (debug)
+
+```bash
+# Script dédié pour identifier les tests lents
+./scripts/test_verbose.sh
+
+# Voir tous les tests sauf e2e
+./scripts/test_verbose.sh "not e2e"
+```
+
+Le script affiche la progression en temps réel et liste les tests les plus lents.
+
 ### Tests complets
 
 ```bash

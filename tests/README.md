@@ -46,6 +46,10 @@
 ### 🚀 **Lancer les Tests**
 
 ```bash
+# Tests avec visibilité maximale (recommandé pour debug)
+# Affiche la progression en temps réel et identifie les tests lents
+./scripts/test_verbose.sh
+
 # Tests complets avec coverage (recommandé)
 python -m pytest tests/ --cov=src --cov-report=term-missing --cov-report=html
 
@@ -71,6 +75,27 @@ python -m pytest tests/test_robot_api_limits.py -v
 # Tests Vertical Slices
 python -m pytest tests/test_vertical_slices.py -v
 ```
+
+### 🔍 **Tests avec Visibilité Maximale**
+
+Pour identifier les tests lents et voir la progression en temps réel :
+
+```bash
+# Script dédié avec toutes les options de visibilité
+./scripts/test_verbose.sh
+
+# Voir tous les tests sauf e2e
+./scripts/test_verbose.sh "not e2e"
+
+# Voir seulement les tests rapides
+./scripts/test_verbose.sh "fast"
+```
+
+Le script affiche :
+- ✅ Chaque test en temps réel (`-vv`)
+- ✅ Les 30 tests les plus lents à la fin (`--durations=30`)
+- ✅ Variables locales en cas d'erreur (`--showlocals`)
+- ✅ Logs INFO en temps réel (`--log-cli-level=INFO`)
 
 ### 🧪 **Tests Spécialisés**
 

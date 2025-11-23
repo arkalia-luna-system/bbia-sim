@@ -925,6 +925,9 @@ pytest -q --disable-warnings \
 ### Commandes de Tests
 
 ```bash
+# Tests avec visibilité maximale (identifie les tests lents)
+./scripts/test_verbose.sh
+
 # Tests MuJoCo existants
 python -m pytest tests/test_simulation_integration.py -v
 

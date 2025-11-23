@@ -144,7 +144,7 @@ minversion = "6.0"
 # OPTIMISATION RAM: Par défaut, exclure tests lents/lourds/hardware sauf si demandé explicitement
 addopts = [
     "-m", "not e2e and not slow and not heavy and not hardware",  # Skip e2e + webcam/hardware
-    "--verbose",
+    "-vv",  # Double verbose pour voir chaque test en temps réel
     "--tb=short",
     "-ra",
     "--strict-markers",
@@ -152,7 +152,8 @@ addopts = [
     "--import-mode=importlib",
     # Arrêter après 50 échecs pour éviter les boucles infinies
     "--maxfail=50",
-    "--durations=10",
+    "--durations=20",  # Afficher les 20 tests les plus lents pour identifier les goulots d'étranglement
+    "--showlocals",  # Afficher les variables locales en cas d'erreur pour faciliter le debug
     # Couverture standardisée (même chemin que [tool.coverage.run].source)
     "--cov=src/bbia_sim",
     "--cov-report=term-missing",

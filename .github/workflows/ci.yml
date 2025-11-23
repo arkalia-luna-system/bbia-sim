@@ -159,7 +159,7 @@ jobs:
         timeout-minutes: 35
         run: |
           export PYTHONPATH=src:$PYTHONPATH
-          pytest -v -m "not e2e and not slow" --cov=src/bbia_sim --cov-report=xml --cov-report=term-missing --cov-fail-under=0 --timeout=60 --maxfail=10 --log-cli-level=WARNING --no-header -x
+          pytest -vv -m "not e2e and not slow" --cov=src/bbia_sim --cov-report=xml --cov-report=term-missing --cov-fail-under=0 --timeout=60 --maxfail=10 --log-cli-level=INFO --durations=20 --tb=short --showlocals -x
         env:
           PYTHONDONTWRITEBYTECODE: 1
 
@@ -167,7 +167,7 @@ jobs:
         timeout-minutes: 10
         run: |
           export PYTHONPATH=src:$PYTHONPATH
-          pytest -q tests/test_golden_traces.py --maxfail=1 --disable-warnings --log-cli-level=WARNING --no-header --timeout=60
+          pytest -vv tests/test_golden_traces.py --maxfail=1 --disable-warnings --log-cli-level=INFO --durations=10 --tb=short --timeout=60
         env:
           PYTHONDONTWRITEBYTECODE: 1
 
@@ -273,8 +273,8 @@ jobs:
           export PYTHONPATH=src:$PYTHONPATH
           echo "Running e2e tests..."
           mkdir -p logs
-          # Limiter la taille du log à 1MB
-          pytest -q -m "e2e" --timeout=60 --tb=short --maxfail=5 --log-cli-level=WARNING --no-header -x 2>&1 | head -c 1048576 > logs/test_run.log || true
+          # Limiter la taille du log à 1MB mais avec plus de verbosité
+          pytest -vv -m "e2e" --timeout=60 --tb=short --maxfail=5 --log-cli-level=INFO --durations=10 --showlocals -x 2>&1 | head -c 1048576 > logs/test_run.log || true
           echo "E2E tests completed"
 
           # Ensure log file exists even if empty
