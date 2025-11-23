@@ -223,7 +223,7 @@ def run_voice_recognition() -> None:
     logger.info("👂 Activation de la reconnaissance vocale")
 
     try:
-        from bbia_sim.bbia_voice import dire_texte, reconnaitre_parole
+        from bbia_sim.bbia_voice import reconnaitre_parole
 
         text = reconnaitre_parole(duree=5)
         logger.info("Texte reconnu : %s", text)
