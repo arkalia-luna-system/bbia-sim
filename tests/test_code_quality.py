@@ -43,6 +43,7 @@ class TestCodeQuality:
             "simulation_shims.py",  # Imports conditionnels struct dans fonctions
             "bbia_voice_advanced.py",  # Imports conditionnels dans fonctions
             "bridge.py",  # Imports conditionnels zenoh dans fonctions (daemon)
+            "models.py",  # Imports conditionnels scipy dans méthodes (daemon)
         }
 
         for file_path in python_files:
