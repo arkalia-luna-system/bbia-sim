@@ -41,7 +41,8 @@ try:
     _os.environ.setdefault("MEDIAPIPE_DISABLE_GPU", "1")
     # Supprimer les logs TensorFlow Lite
     _os.environ.setdefault("TFLITE_LOG_VERBOSITY", "0")  # 0=ERROR, 1=WARNING, 2=INFO
-    # Supprimer les logs OpenGL (ne pas définir MUJOCO_GL sur macOS, utilise la valeur par défaut)
+    # Supprimer les logs OpenGL (ne pas définir MUJOCO_GL sur macOS,
+    # utilise la valeur par défaut)
     # Sur macOS, laisser MuJoCo choisir automatiquement (glfw ou egl)
     if sys.platform != "darwin":  # Pas macOS
         _os.environ.setdefault("MUJOCO_GL", "egl")  # Utiliser EGL sur Linux/Windows
