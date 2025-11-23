@@ -58,10 +58,10 @@ class TestCodeQuality:
                     # Fallback pour fichiers non-UTF8 ou avec problèmes
                     with open(file_path, encoding="latin-1", errors="replace") as f:
                         content = f.read()
-                
+
                 # Nettoyer bytes null si présents
                 content = content.replace("\x00", "")
-                
+
                 tree = ast.parse(content, filename=str(file_path))
 
                 imports = []
@@ -158,7 +158,7 @@ class TestCodeQuality:
                 except (UnicodeDecodeError, ValueError):
                     with open(file_path, encoding="latin-1", errors="replace") as f:
                         content = f.read()
-                
+
                 if "create_head_pose" in content:
                     uses_sdk = True
                     break
