@@ -103,9 +103,11 @@ class BBIAVoiceAdvanced:
             logger.info("🔄 Utilisation fallback pyttsx3")
             try:
                 # OPTIMISATION PERFORMANCE: Utiliser cache global au lieu de pyttsx3.init() direct
+                # dire_texte importé ci-dessous (ligne ~404)
                 from .bbia_voice import (
                     _get_cached_voice_id,
                     _get_pyttsx3_engine,
+                    dire_texte as dire_texte_old,
                 )
 
                 self.pyttsx3_engine = (
@@ -401,8 +403,7 @@ def dire_texte(texte: str) -> bool:
     except (ImportError, RuntimeError, ValueError):
         # Fallback vers pyttsx3 original
         try:
-            from .bbia_voice import dire_texte as dire_texte_old
-
+            # dire_texte_old déjà importé ci-dessus
             dire_texte_old(texte)  # Retourne None, mais exécution = succès
             return True
         except Exception:
