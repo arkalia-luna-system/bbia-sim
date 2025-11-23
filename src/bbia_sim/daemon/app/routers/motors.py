@@ -52,3 +52,25 @@ async def set_motor_mode(
     """Définit le mode de contrôle des moteurs (conforme SDK)."""
     backend.set_motor_control_mode(mode)
     return {"status": f"motors changed to {mode} mode"}
+
+
+def get_motor_control_mode(joint_name: str) -> MotorControlMode:
+    """
+    Récupère le mode de contrôle moteur pour un joint spécifique.
+
+    Args:
+        joint_name: Nom du joint (actuellement ignoré, retourne le mode global)
+
+    Returns:
+        Mode de contrôle moteur
+    """
+    backend = BackendAdapter()
+    mode_obj = backend.get_motor_control_mode()
+    # Convertir en string (support objet avec .value ou string directe)
+    mode_str = mode_obj.value if hasattr(mode_obj, "value") else str(mode_obj)
+
+    # S'assurer que le mode est dans l'enum MotorControlMode
+    if mode_str not in ["enabled", "disabled", "gravity_compensation"]:
+        mode_str = "enabled"  # Valeur par défaut
+
+    return MotorControlMode(mode_str)
