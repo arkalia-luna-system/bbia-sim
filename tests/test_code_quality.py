@@ -45,6 +45,7 @@ class TestCodeQuality:
             "bridge.py",  # Imports conditionnels zenoh dans fonctions (daemon)
             "models.py",  # Imports conditionnels scipy dans méthodes (daemon)
             "main.py",  # Imports conditionnels dans fonctions (daemon/app)
+            "backend_adapter.py",  # Imports conditionnels asyncio dans fonctions (daemon/app)
         }
 
         for file_path in python_files:
