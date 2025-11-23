@@ -296,7 +296,9 @@ def enregistrer_audio(
             )
             try:
                 # Essayer avec configuration par défaut
-                import sounddevice as sd_module
+                sd_module = _get_sd()
+                if sd_module is None:
+                    raise ImportError("sounddevice non disponible")
 
                 default_device = sd_module.default.device
                 device_info = sd_module.query_devices(default_device[0])

@@ -1,18 +1,7 @@
 {
-  "last_updated": "2025-11-22T18:40:58.648910",
+  "last_updated": "2025-11-23T08:35:33.700539",
   "conversation_count": 1000,
   "history": [
-    {
-      "user": "Message test 6",
-      "bbia": "C'est excellent ! Votre bonne humeur est contagieuse ! Comment aimeriez-vous explorer cette dynamique positive ?",
-      "sentiment": {
-        "text": "Message test 6",
-        "sentiment": "neutral",
-        "score": 0.8885126709938049,
-        "model": "cardiffnlp/twitter-roberta-base-sentiment-latest"
-      },
-      "timestamp": "2025-11-03T23:33:17.289220"
-    },
     {
       "user": "Message test 7",
       "bbia": "C'est excellent ! Votre bonne humeur est contagieuse ! Comment aimeriez-vous explorer cette dynamique positive ?  Dis-m'en un peu plus, s'il te plaît.",
@@ -10941,6 +10930,9 @@
       "bbia": "Salut ! Qu'est-ce qui vous amène aujourd'hui ?",
       "sentiment": "neutral",
       "timestamp": "2025-11-20T11:52:48.932775"
+    },
+    {
+      "test": "data"
     },
     {
       "test": "data"
