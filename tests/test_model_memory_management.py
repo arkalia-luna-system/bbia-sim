@@ -55,7 +55,8 @@ def test_model_unloading_after_inactivity() -> None:
 
 @pytest.mark.skipif(not HF_AVAILABLE, reason="Hugging Face non disponible")
 @pytest.mark.unit
-@pytest.mark.fast
+@pytest.mark.slow  # OPTIMISATION: Test charge modèle LLM lourd
+@pytest.mark.heavy  # OPTIMISATION RAM: Test lourd, skip par défaut
 def test_model_cache_efficiency() -> None:
     """Test que le cache des modèles fonctionne."""
     try:
