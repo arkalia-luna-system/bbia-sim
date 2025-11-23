@@ -36,6 +36,7 @@ class TestLLMChatFunctionality:
         if hasattr(self, "hf") and self.hf.use_llm_chat:
             self.hf.disable_llm_chat()
 
+    @pytest.mark.slow  # OPTIMISATION: Test lent (charge modèle LLM lourd)
     def test_enable_llm_chat_returns_bool(self) -> None:
         """Test que enable_llm_chat retourne un booléen."""
         if not HF_AVAILABLE:
@@ -45,6 +46,7 @@ class TestLLMChatFunctionality:
         result = self.hf.enable_llm_chat("mistralai/Mistral-7B-Instruct-v0.2")
         assert isinstance(result, bool)
 
+    @pytest.mark.slow  # OPTIMISATION: Test lent (charge modèle LLM lourd)
     def test_disable_llm_chat_cleans_up(self) -> None:
         """Test que disable_llm_chat libère correctement les ressources."""
         if not HF_AVAILABLE:
@@ -121,6 +123,7 @@ class TestLLMChatFunctionality:
         # Vérifier que l'historique est sauvegardé
         assert len(self.hf.conversation_history) > 0
 
+    @pytest.mark.slow  # OPTIMISATION: Test lent (charge modèle LLM lourd)
     def test_load_model_chat_type(self) -> None:
         """Test que load_model accepte model_type='chat'."""
         if not HF_AVAILABLE:
