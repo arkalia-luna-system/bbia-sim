@@ -219,7 +219,7 @@ class TestEdgeCasesBuffers:
         # Simuler historique métriques très grand
         from collections import deque
 
-        history: deque[dict[str, int | float]] = deque(maxlen=100)
+        history: deque[dict[str, int | float]] = deque(maxlen=20)
         # Remplir jusqu'à saturation - OPTIMISATION: 100 → 20 (suffisant pour test saturation, 5x plus rapide)
         for i in range(20):
             history.append({"timestamp": i, "value": i * 0.1})
