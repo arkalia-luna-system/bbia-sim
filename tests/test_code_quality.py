@@ -76,8 +76,14 @@ class TestCodeQuality:
 
                 imports = []
                 # Ignorer les imports dans TYPE_CHECKING (pratique normale)
+                # Ignorer aussi les imports dans les fonctions/méthodes (imports conditionnels)
                 in_type_checking = False
-                for node in ast.walk(tree):
+                in_function = False
+                
+                def visit_node(node):
+                    """Visite récursive des nœuds AST."""
+                    nonlocal in_type_checking, in_function
+                    
                     # Détecter blocs TYPE_CHECKING
                     if isinstance(node, ast.If):
                         if (
@@ -85,19 +91,44 @@ class TestCodeQuality:
                             and node.test.id == "TYPE_CHECKING"
                         ):
                             in_type_checking = True
-                            continue
-                    elif isinstance(node, ast.Import) or isinstance(
-                        node, ast.ImportFrom
-                    ):
-                        # Ignorer imports dans TYPE_CHECKING
-                        if in_type_checking:
-                            continue
+                            for child in ast.iter_child_nodes(node):
+                                visit_node(child)
+                            in_type_checking = False
+                            return
+                    
+                    # Détecter fonctions et méthodes (ignorer imports à l'intérieur)
+                    if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                        in_function = True
+                        for child in ast.iter_child_nodes(node):
+                            visit_node(child)
+                        in_function = False
+                        return
+                    
+                    # Détecter classes (mais pas leurs méthodes)
+                    if isinstance(node, ast.ClassDef):
+                        for child in ast.iter_child_nodes(node):
+                            visit_node(child)
+                        return
+                    
+                    # Collecter imports seulement au niveau module (pas dans fonctions)
+                    if isinstance(node, ast.Import) or isinstance(node, ast.ImportFrom):
+                        # Ignorer imports dans TYPE_CHECKING ou dans fonctions
+                        if in_type_checking or in_function:
+                            return
                         if isinstance(node, ast.Import):
                             for alias in node.names:
                                 imports.append(alias.name)
                         elif isinstance(node, ast.ImportFrom):
                             if node.module:
                                 imports.append(node.module)
+                        return
+                    
+                    # Visiter les enfants pour les autres types de nœuds
+                    for child in ast.iter_child_nodes(node):
+                        visit_node(child)
+                
+                # Visiter l'arbre depuis la racine
+                visit_node(tree)
 
                 # Vérifier doublons
                 assert len(imports) == len(

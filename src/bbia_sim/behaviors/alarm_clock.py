@@ -8,8 +8,7 @@ et mode snooze.
 
 import logging
 import time
-from datetime import datetime
-from datetime import time as dt_time
+from datetime import datetime, time as dt_time
 from typing import TYPE_CHECKING, Any
 
 from .base import BBIABehavior
