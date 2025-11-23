@@ -339,7 +339,7 @@ class TestEdgeCasesModels:
     """Tests de cas limites pour modèles inactifs."""
 
     @pytest.mark.unit
-    @pytest.mark.fast
+    @pytest.mark.slow
     def test_model_inactive_timeout(self):
         """Test gestion modèles inactifs > timeout."""
         # BBIAChat peut toujours être initialisé (fallback activé)
