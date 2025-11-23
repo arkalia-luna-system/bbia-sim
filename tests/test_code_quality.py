@@ -42,6 +42,7 @@ class TestCodeQuality:
             "face_recognition.py",  # Imports conditionnels cv2 dans fonctions (pratique normale)
             "simulation_shims.py",  # Imports conditionnels struct dans fonctions
             "bbia_voice_advanced.py",  # Imports conditionnels dans fonctions
+            "bridge.py",  # Imports conditionnels zenoh dans fonctions (daemon)
         }
 
         for file_path in python_files:
