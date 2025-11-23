@@ -40,7 +40,8 @@ class TestCodeQuality:
             "vision_yolo.py",  # Imports conditionnels multiples
             "__main__.py",  # Imports conditionnels dans fonctions (pratique normale CLI)
             "face_recognition.py",  # Imports conditionnels cv2 dans fonctions (pratique normale)
-            "backends/simulation_shims.py",  # Imports conditionnels struct
+            "simulation_shims.py",  # Imports conditionnels struct dans fonctions
+            "bbia_voice_advanced.py",  # Imports conditionnels dans fonctions
         }
 
         for file_path in python_files:
