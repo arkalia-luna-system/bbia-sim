@@ -23,10 +23,11 @@ if TYPE_CHECKING:
 
 try:
     from .bbia_emotions import BBIAEmotions
-    from .bbia_vision import BBIAVision
+    from .bbia_vision import BBIAVision, get_bbia_vision_singleton
     from .bbia_voice import dire_texte, reconnaitre_parole
 except ImportError:
     # Pour les tests directs
+    get_bbia_vision_singleton = None  # type: ignore[assignment,misc]
     pass
 
 # Import SDK officiel pour create_head_pose (optionnel)
@@ -555,7 +556,8 @@ class ConversationBehavior(BBIABehavior):
         try:
             from .bbia_huggingface import BBIAHuggingFace
             from .bbia_tools import BBIATools
-            from .bbia_vision import BBIAVision
+
+            # BBIAVision déjà importé globalement (ligne 26)
 
             # Initialiser outils LLM pour function calling
             vision = BBIAVision(robot_api=robot_api) if robot_api else None
@@ -1036,10 +1038,12 @@ class BBIABehaviorManager:
         # Initialiser les modules BBIA
         self.emotions = BBIAEmotions()
         # OPTIMISATION RAM: Utiliser singleton BBIAVision si disponible
+        # get_bbia_vision_singleton déjà importé globalement (ligne 26)
         try:
-            from .bbia_vision import get_bbia_vision_singleton
-
-            self.vision = get_bbia_vision_singleton(robot_api)
+            if get_bbia_vision_singleton is not None:
+                self.vision = get_bbia_vision_singleton(robot_api)
+            else:
+                raise ImportError("get_bbia_vision_singleton non disponible")
         except (ImportError, AttributeError):
             # Fallback si singleton non disponible
             self.vision = BBIAVision(robot_api=robot_api)
