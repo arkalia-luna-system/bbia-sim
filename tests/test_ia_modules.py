@@ -656,7 +656,7 @@ class TestIAPerformance:
         # Mock latence rapide avec compteur pour éviter StopIteration
         # Le logger Python appelle aussi time.time(), donc on doit fournir plusieurs valeurs
         call_count = [0]  # Utiliser une liste pour la mutabilité dans la closure
-        
+
         def time_mock():
             """Mock time qui retourne 0, puis 0.5, puis toujours 0.5."""
             if call_count[0] == 0:
@@ -668,8 +668,10 @@ class TestIAPerformance:
             else:
                 # Pour tous les appels suivants (logger, etc.), retourner 0.5
                 return 0.5
-        
-        with patch("bbia_sim.voice_whisper.time.time", side_effect=time_mock) as mock_time:
+
+        with patch(
+            "bbia_sim.voice_whisper.time.time", side_effect=time_mock
+        ) as mock_time:
             mapper = VoiceCommandMapper()
             start_time = mock_time()
 
