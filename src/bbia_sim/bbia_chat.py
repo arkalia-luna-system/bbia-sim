@@ -629,7 +629,8 @@ class BBIAChat:
             response = response.replace("salut", "bonjour")
             response = response.replace("ça", "cela")
         elif self.user_preferences.get("tone") == "casual":
-            # Ton décontracté déjà géré par personnalité (pas de modification nécessaire)
+            # Ton décontracté déjà géré par personnalité
+            # (pas de modification nécessaire)
             pass
 
         return response
