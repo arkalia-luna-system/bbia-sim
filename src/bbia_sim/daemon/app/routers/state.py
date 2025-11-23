@@ -614,3 +614,37 @@ async def get_sensor_data() -> dict[str, Any]:
         "imu": imu_data,
         "timestamp": datetime.now().isoformat(),
     }
+
+
+def get_imu() -> dict[str, Any]:
+    """Récupère les données de l'IMU.
+
+    Returns:
+        Données de l'IMU (accélération, gyroscope, magnétomètre)
+    """
+    logger.info("Récupération des données de l'IMU")
+
+    imu_data = {
+        "acceleration": {"x": 0.0, "y": 0.0, "z": 9.81},
+        "gyroscope": {"x": 0.0, "y": 0.0, "z": 0.0},
+        "magnetometer": {"x": 0.0, "y": 0.0, "z": 0.0},
+    }
+
+    sdk = _read_sdk_telemetry()
+    if sdk and "imu" in sdk and isinstance(sdk["imu"], dict):
+        try:
+            imu_data = sdk["imu"]
+        except Exception as e:
+            logger.debug("Erreur lors de la lecture des données IMU: %s", e)
+
+    return imu_data
+
+
+@router.get("/imu")
+async def get_imu_endpoint() -> dict[str, Any]:
+    """Endpoint HTTP pour récupérer les données de l'IMU.
+
+    Returns:
+        Données de l'IMU (accélération, gyroscope, magnétomètre)
+    """
+    return get_imu()
