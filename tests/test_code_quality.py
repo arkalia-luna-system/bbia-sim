@@ -34,11 +34,13 @@ class TestCodeQuality:
         python_files = list(src_dir.rglob("*.py"))
 
         # Fichiers à ignorer (imports conditionnels TYPE_CHECKING acceptés)
+        # Imports conditionnels dans fonctions/méthodes sont une pratique normale
         ignored_files = {
             "bbia_vision.py",  # Imports TYPE_CHECKING + runtime (pratique normale)
             "vision_yolo.py",  # Imports conditionnels multiples
             "__main__.py",  # Imports conditionnels dans fonctions (pratique normale CLI)
             "face_recognition.py",  # Imports conditionnels cv2 dans fonctions (pratique normale)
+            "backends/simulation_shims.py",  # Imports conditionnels struct
         }
 
         for file_path in python_files:
