@@ -8,7 +8,9 @@ OPTIMISATION RAM: Force utilisation de mocks pour modèles lourds.
 import atexit
 import fcntl
 import gc
+import logging
 import os
+import re
 import signal
 import subprocess
 import sys
@@ -16,7 +18,7 @@ import threading
 import time
 from pathlib import Path
 
-import pytest
+import pytest  # type: ignore[import-untyped]
 
 # OPTIMISATION RAM: Forcer mode mock pour tests (évite chargement modèles lourds)
 os.environ.setdefault("BBIA_DISABLE_AUDIO", "1")
@@ -31,6 +33,82 @@ _MAX_RECURSION = 3  # Protection contre récursion infinie
 # Stocker le file descriptor du lock globalement pour pouvoir le libérer
 # même en cas d'interruption ou de blocage
 _lock_fd: int | None = None
+
+
+class ExpectedErrorFilter(logging.Filter):
+    """
+    Filtre de logging pour réduire le bruit des erreurs attendues dans les tests.
+    
+    Les erreurs suivantes sont attendues et peuvent être réduites au niveau WARNING :
+    - ModuleNotFoundError pour dépendances optionnelles (reachy_mini, etc.)
+    - RuntimeError pour eSpeak non installé
+    - Erreurs de reconnaissance vocale dans les tests de gestion d'erreurs
+    - Erreurs de synthèse vocale dans les tests de gestion d'erreurs
+    - Erreurs de processeurs de modèles non disponibles
+    """
+
+    # Patterns d'erreur attendus (chaînes simples pour recherche rapide)
+    EXPECTED_ERROR_PATTERNS = [
+        "ModuleNotFoundError: No module named 'reachy_mini'",
+        "RuntimeError: This means you probably do not have eSpeak",
+        "Erreur de reconnaissance vocale",
+        "Erreur de synthèse vocale",
+        "Aucun moteur TTS disponible",
+        "Erreur initialisation fallback",
+        "Erreur création Move",
+    ]
+
+    # Patterns regex pour correspondances plus flexibles
+    EXPECTED_ERROR_REGEX = [
+        re.compile(r"Processeur.*non disponible", re.IGNORECASE),
+        re.compile(r"ModuleNotFoundError.*reachy", re.IGNORECASE),
+        re.compile(r"eSpeak.*not.*installed", re.IGNORECASE),
+    ]
+
+    def filter(self, record: logging.LogRecord) -> bool:
+        """
+        Filtre les messages d'erreur attendus.
+        
+        Returns:
+            True si le message doit être affiché, False sinon.
+        """
+        # Si ce n'est pas un message ERROR, ne pas filtrer
+        if record.levelno < logging.ERROR:
+            return True
+
+        # Obtenir le message complet
+        message = record.getMessage()
+        
+        # Vérifier les patterns simples
+        for pattern in self.EXPECTED_ERROR_PATTERNS:
+            if pattern in message:
+                record.levelno = logging.WARNING
+                record.levelname = "WARNING"
+                return True
+
+        # Vérifier les patterns regex
+        for regex_pattern in self.EXPECTED_ERROR_REGEX:
+            if regex_pattern.search(message):
+                record.levelno = logging.WARNING
+                record.levelname = "WARNING"
+                return True
+
+        # Vérifier aussi dans les exceptions capturées
+        if record.exc_info and record.exc_info[1]:
+            exc_message = str(record.exc_info[1])
+            for pattern in self.EXPECTED_ERROR_PATTERNS:
+                if pattern in exc_message:
+                    record.levelno = logging.WARNING
+                    record.levelname = "WARNING"
+                    return True
+            for regex_pattern in self.EXPECTED_ERROR_REGEX:
+                if regex_pattern.search(exc_message):
+                    record.levelno = logging.WARNING
+                    record.levelname = "WARNING"
+                    return True
+
+        # Garder toutes les autres erreurs
+        return True
 
 
 def acquire_lock(recursion_level: int = 0) -> bool:
@@ -284,6 +362,23 @@ def pytest_configure(config: pytest.Config) -> None:
         sys.exit(1)
 
     print("✅ Verrou d'exécution acquis. Tests sécurisés.\n")
+
+    # Configurer le filtre de logging pour réduire le bruit des erreurs attendues
+    # Appliquer le filtre aux loggers principaux du projet
+    expected_error_filter = ExpectedErrorFilter()
+    logger_names = [
+        "bbia_sim",
+        "bbia_sim.bbia_voice",
+        "bbia_sim.bbia_voice_advanced",
+        "bbia_sim.bbia_huggingface",
+        "bbia_sim.backends.reachy_mini_backend",
+        "root",
+    ]
+    for logger_name in logger_names:
+        logger = logging.getLogger(logger_name)
+        # Ajouter le filtre uniquement s'il n'est pas déjà présent
+        if not any(isinstance(f, ExpectedErrorFilter) for f in logger.filters):
+            logger.addFilter(expected_error_filter)
 
     # OPTIMISATION RAM: Nettoyer caches modèles avant tests
     try:
