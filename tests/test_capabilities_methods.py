@@ -201,23 +201,23 @@ class TestAppInfoAppStatus:
 
     def test_app_info_init(self) -> None:
         """Test initialisation AppInfo."""
-        info = AppInfo(name="test", version="1.0.0")
+        info = AppInfo(name="test")
         assert info.name == "test"
 
     def test_app_info_model_dump(self) -> None:
         """Test AppInfo.model_dump."""
-        info = AppInfo(name="test", version="1.0.0")
+        info = AppInfo(name="test")
         dumped = info.model_dump()
         assert "name" in dumped
 
     def test_app_status_init(self) -> None:
         """Test initialisation AppStatus."""
-        status = AppStatus(status="running", pid=1234)
+        status = AppStatus(name="test", status="running")
         assert status.status == "running"
 
     def test_app_status_model_dump(self) -> None:
         """Test AppStatus.model_dump."""
-        status = AppStatus(status="running", pid=1234)
+        status = AppStatus(name="test", status="running")
         dumped = status.model_dump()
         assert "status" in dumped
 
@@ -227,16 +227,36 @@ class TestBackendAdapterMethods:
 
     def test_backend_adapter_init(self) -> None:
         """Test initialisation BackendAdapter."""
-        from bbia_sim.daemon.simulation_service import simulation_service
+        from bbia_sim.robot_factory import RobotFactory
 
-        adapter = BackendAdapter(simulation_service.robot_api)
-        assert adapter is not None
+        # Créer un backend pour le test
+        backend = RobotFactory.create_backend("mujoco")
+        if backend:
+            backend.connect()
+            try:
+                adapter = BackendAdapter(backend)
+                assert adapter is not None
+            finally:
+                backend.disconnect()
+        else:
+            # Si pas de backend disponible, créer un adaptateur sans backend
+            adapter = BackendAdapter()
+            assert adapter is not None
 
     def test_all_backend_adapter_methods(self) -> None:
         """Test toutes les méthodes BackendAdapter."""
-        from bbia_sim.daemon.simulation_service import simulation_service
+        from bbia_sim.robot_factory import RobotFactory
 
-        adapter = BackendAdapter(simulation_service.robot_api)
+        # Créer un backend pour le test
+        backend = RobotFactory.create_backend("mujoco")
+        if backend:
+            backend.connect()
+            try:
+                adapter = BackendAdapter(backend)
+            finally:
+                backend.disconnect()
+        else:
+            adapter = BackendAdapter()
         adapter.connect_if_needed()
 
         # Tester toutes les méthodes get_present_*

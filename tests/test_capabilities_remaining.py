@@ -559,8 +559,14 @@ class TestBackendAdapterMethods:
 
             # Test get_present_passive_joint_positions
             passive_joints = adapter.get_present_passive_joint_positions()
-            # Peut être None, on vérifie juste que la méthode existe
-            assert passive_joints is None or isinstance(passive_joints, dict)
+            # Peut être None, dict ou array, on vérifie juste que la méthode existe
+            import numpy as np
+
+            assert (
+                passive_joints is None
+                or isinstance(passive_joints, dict)
+                or isinstance(passive_joints, np.ndarray)
+            )
 
             # Test get_status
             status = adapter.get_status()

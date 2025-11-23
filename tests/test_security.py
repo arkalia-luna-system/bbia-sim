@@ -62,7 +62,7 @@ class TestSecurityRateLimiting:
         """Test que rate limiting est activé en production."""
         # En mode développement, rate limiting peut être désactivé
         # Ce test vérifie juste que le middleware existe
-        from bbia_sim.middleware import RateLimitMiddleware
+        from bbia_sim.daemon.middleware import RateLimitMiddleware
 
         assert RateLimitMiddleware is not None
 

@@ -180,10 +180,12 @@ class TestUnityReachyMiniController:
             controller = UnityReachyMiniController()
             # Mock input pour retourner 'help' puis 'quit' pour éviter la boucle infinie
             with patch("builtins.input", side_effect=["help", "quit"]):
-                with patch("builtins.print") as mock_print:
+                with patch(
+                    "bbia_sim.unity_reachy_controller.logger.info"
+                ) as mock_logger:
                     controller.interactive_mode()
-            # Vérifier que l'aide a été affichée
-            mock_print.assert_called()
+            # Vérifier que l'aide a été affichée via logger
+            mock_logger.assert_called()
 
     def test_interactive_mode_quit_command(self):
         """Test commande quit dans le mode interactif."""
@@ -247,10 +249,12 @@ class TestUnityReachyMiniController:
         with tempfile.TemporaryDirectory() as _:
             controller = UnityReachyMiniController()
             with patch("builtins.input", side_effect=["unknown_command", "quit"]):
-                with patch("builtins.print") as mock_print:
+                with patch(
+                    "bbia_sim.unity_reachy_controller.logger.error"
+                ) as mock_logger:
                     controller.interactive_mode()
-            # Vérifier qu'un message d'erreur a été affiché
-            mock_print.assert_called_with(
+            # Vérifier qu'un message d'erreur a été affiché via logger
+            mock_logger.assert_called_with(
                 "❌ Commande inconnue. Tapez 'help' pour l'aide."
             )
 
@@ -272,20 +276,22 @@ class TestUnityReachyMiniController:
             with patch(
                 "builtins.input", side_effect=["help", Exception("Test error"), "quit"]
             ):
-                with patch("builtins.print") as mock_print:
+                with patch(
+                    "bbia_sim.unity_reachy_controller.logger.exception"
+                ) as mock_logger:
                     controller.interactive_mode()
-            # Vérifier qu'un message d'erreur a été affiché
-            mock_print.assert_called_with("❌ Erreur: Test error")
+            # Vérifier qu'un message d'erreur a été affiché via logger.exception
+            mock_logger.assert_called_with("❌ Erreur")
 
     def test_show_help(self):
         """Test affichage de l'aide."""
         with tempfile.TemporaryDirectory() as _:
             controller = UnityReachyMiniController()
-            with patch("builtins.print") as mock_print:
+            with patch("bbia_sim.unity_reachy_controller.logger.info") as mock_logger:
                 controller._show_help()
-            # Vérifier que l'aide a été affichée
-            mock_print.assert_called_once()
-            help_text = mock_print.call_args[0][0]
+            # Vérifier que l'aide a été affichée via logger
+            mock_logger.assert_called_once()
+            help_text = mock_logger.call_args[0][0]
             assert "Commandes BBIA disponibles" in help_text
             assert "status" in help_text
             assert "awake" in help_text

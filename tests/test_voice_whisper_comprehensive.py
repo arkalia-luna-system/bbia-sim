@@ -249,14 +249,24 @@ class TestWhisperSTT:
             assert result is True
 
     @patch("bbia_sim.voice_whisper.transformers_pipeline")
-    def test_detect_speech_activity_silence(self, mock_pipeline):
+    @patch("bbia_sim.voice_whisper.sf")
+    @patch.dict(os.environ, {"BBIA_DISABLE_AUDIO": "0"}, clear=False)
+    def test_detect_speech_activity_silence(self, mock_sf, mock_pipeline):
         """Test détection VAD - silence."""
         with patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True):
+            import bbia_sim.voice_whisper as voice_whisper_module
+
+            # Vider cache pour forcer chargement
+            voice_whisper_module._vad_model_cache = None
+
             mock_vad = MagicMock()
             mock_vad.return_value = [{"label": "NO_SPEECH", "score": 0.95}]
             mock_pipeline.return_value = mock_vad
 
             stt = WhisperSTT(model_size="tiny", language="fr", enable_vad=True)
+            # Forcer le chargement du modèle VAD mocké
+            stt._vad_model = mock_vad
+            stt._vad_loaded = True
 
             audio_chunk = np.random.rand(16000).astype(np.float32)
             result = stt.detect_speech_activity(audio_chunk)
@@ -273,6 +283,7 @@ class TestWhisperSTT:
 
             assert result is True  # Si VAD désactivé, toujours True
 
+    @patch.dict(os.environ, {"BBIA_DISABLE_AUDIO": "1"}, clear=False)
     def test_detect_speech_activity_audio_disabled(self):
         """Test VAD avec audio désactivé (couverture lignes 258-259)."""
         with patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True):

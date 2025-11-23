@@ -54,7 +54,7 @@ async def set_motor_mode(
     return {"status": f"motors changed to {mode} mode"}
 
 
-def get_motor_control_mode(joint_name: str) -> MotorControlMode:
+def get_motor_control_mode(joint_name: str) -> MotorControlMode:  # noqa: ARG001
     """
     Récupère le mode de contrôle moteur pour un joint spécifique.
 
@@ -64,6 +64,7 @@ def get_motor_control_mode(joint_name: str) -> MotorControlMode:
     Returns:
         Mode de contrôle moteur
     """
+    # Note: get_backend_adapter nécessite un contexte FastAPI, donc on crée un adaptateur directement
     backend = BackendAdapter()
     mode_obj = backend.get_motor_control_mode()
     # Convertir en string (support objet avec .value ou string directe)
