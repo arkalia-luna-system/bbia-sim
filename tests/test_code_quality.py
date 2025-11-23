@@ -44,6 +44,7 @@ class TestCodeQuality:
             "bbia_voice_advanced.py",  # Imports conditionnels dans fonctions
             "bridge.py",  # Imports conditionnels zenoh dans fonctions (daemon)
             "models.py",  # Imports conditionnels scipy dans méthodes (daemon)
+            "main.py",  # Imports conditionnels dans fonctions (daemon/app)
         }
 
         for file_path in python_files:

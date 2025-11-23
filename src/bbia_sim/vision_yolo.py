@@ -511,21 +511,21 @@ class FaceDetector:
                     self.mp_drawing = mp.solutions.drawing_utils
                 return
 
-        if MEDIAPIPE_AVAILABLE and mp is not None:
-            self.mp_face_detection = mp.solutions.face_detection
-            self.mp_drawing = mp.solutions.drawing_utils
-            face_detection = self.mp_face_detection.FaceDetection(
-                model_selection=0,  # 0 pour visages proches, 1 pour distants
-                min_detection_confidence=0.5,
-            )
+        try:
+            if MEDIAPIPE_AVAILABLE and mp is not None:
+                self.mp_face_detection = mp.solutions.face_detection
+                self.mp_drawing = mp.solutions.drawing_utils
+                face_detection = self.mp_face_detection.FaceDetection(
+                    model_selection=0,  # 0 pour visages proches, 1 pour distants
+                    min_detection_confidence=0.5,
+                )
 
-            # Mettre en cache global
-            with _mediapipe_cache_lock:
-                _mediapipe_face_detection_cache = face_detection
+                # Mettre en cache global
+                with _mediapipe_cache_lock:
+                    _mediapipe_face_detection_cache = face_detection
 
-            self.face_detection = face_detection
-            logger.debug("👤 Détecteur de visages MediaPipe initialisé")
-
+                self.face_detection = face_detection
+                logger.debug("👤 Détecteur de visages MediaPipe initialisé")
         except ImportError:
             logger.warning("⚠️ MediaPipe non disponible")
 

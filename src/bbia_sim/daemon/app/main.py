@@ -115,9 +115,8 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
 
     # Issue #402: Arrêt propre même si dashboard ouvert
     # Fermer toutes les connexions WebSocket actives
+    # telemetry déjà importé au niveau module
     try:
-        from bbia_sim.daemon.ws import telemetry
-
         if hasattr(telemetry, "manager") and telemetry.manager:
             await telemetry.manager.stop_broadcast()
             logger.info("✅ WebSocket telemetry arrêté")
