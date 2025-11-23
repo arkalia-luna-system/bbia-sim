@@ -46,9 +46,14 @@ class TestCodeQuality:
         for file_path in python_files:
             if "__pycache__" in str(file_path):
                 continue
+            if file_path.name.startswith("._"):  # Fichiers macOS cachés
+                continue
+            # Vérifier si le fichier doit être ignoré (par nom ou chemin relatif)
             if file_path.name in ignored_files:
                 continue
-            if file_path.name.startswith("._"):  # Fichiers macOS cachés
+            # Vérifier aussi par chemin relatif depuis src/bbia_sim
+            rel_path = str(file_path.relative_to(src_dir))
+            if rel_path in ignored_files:
                 continue
 
             try:
