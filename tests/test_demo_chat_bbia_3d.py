@@ -153,6 +153,7 @@ class TestDemoChatBBIA3D:
         not BBIA_HUGGINGFACE_AVAILABLE or BBIAHuggingFace is None,
         reason="Module bbia_huggingface non disponible",
     )
+    @pytest.mark.slow
     def test_conversation_history(self):
         """Test que l'historique est sauvegardé."""
         if not BBIA_HUGGINGFACE_AVAILABLE or BBIAHuggingFace is None:
