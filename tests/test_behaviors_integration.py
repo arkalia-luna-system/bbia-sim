@@ -5,7 +5,6 @@ Tests des interactions entre comportements, gestion des ressources,
 timeout, et arrêt propre.
 """
 
-import time
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -56,6 +55,7 @@ class TestBehaviorsIntegration:
         behavior.stop()
         assert behavior.is_active is False
 
+    @pytest.mark.slow
     @patch("time.sleep")
     def test_behavior_timeout(self, mock_sleep, mock_robot):
         """Test timeout d'un comportement (max 5 minutes)."""

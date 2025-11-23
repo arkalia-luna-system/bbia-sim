@@ -51,6 +51,7 @@ class TestDemoChatBBIA3D:
         not BBIA_HUGGINGFACE_AVAILABLE or BBIAHuggingFace is None,
         reason="Module bbia_huggingface non disponible",
     )
+    @pytest.mark.slow
     def test_chat_method(self):
         """Test que la méthode chat fonctionne."""
         if not BBIA_HUGGINGFACE_AVAILABLE or BBIAHuggingFace is None:
