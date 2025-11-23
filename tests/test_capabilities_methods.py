@@ -273,8 +273,10 @@ class TestBackendAdapterMethods:
         assert antennas is not None
 
         head_joints = adapter.get_present_head_joint_positions()
-        # Peut être None, on vérifie juste que la méthode existe
-        assert head_joints is None or isinstance(head_joints, dict)
+        # Peut être None ou numpy.ndarray, on vérifie juste que la méthode existe
+        import numpy as np
+
+        assert head_joints is None or isinstance(head_joints, np.ndarray)
 
         passive_joints = adapter.get_present_passive_joint_positions()
         # Peut être None, on vérifie juste que la méthode existe
