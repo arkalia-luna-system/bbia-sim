@@ -29,6 +29,15 @@ except ImportError:
     DeepFace = None
     logger.debug("DeepFace non disponible. Installer avec: pip install deepface")
 
+# Import conditionnel cv2 (une seule fois en haut)
+CV2_AVAILABLE = False
+try:
+    import cv2  # noqa: PLC0415
+
+    CV2_AVAILABLE = True
+except ImportError:
+    cv2 = None  # type: ignore[assignment]
+
 
 class BBIAPersonRecognition:
     """Module de reconnaissance faciale personnalisée avec DeepFace.
@@ -119,14 +128,14 @@ class BBIAPersonRecognition:
             # Si numpy array, sauvegarder temporairement
             temp_path = None
             if isinstance(image_path, np.ndarray):
-                # cv2 importé conditionnellement si nécessaire
-                try:
-                    import cv2  # noqa: PLC0415
-                except ImportError:
-                    cv2 = None  # type: ignore[assignment]
-                
+                # cv2 déjà importé globalement
+                if not CV2_AVAILABLE or cv2 is None:
+                    return None
+
                 if cv2 is None:
-                    raise ImportError("cv2 (OpenCV) requis pour traiter les images numpy")
+                    raise ImportError(
+                        "cv2 (OpenCV) requis pour traiter les images numpy"
+                    )
 
                 # Utiliser tempfile pour créer un fichier temporaire sécurisé
                 fd, temp_path = tempfile.mkstemp(
@@ -219,14 +228,14 @@ class BBIAPersonRecognition:
             # Si numpy array, sauvegarder temporairement
             temp_path = None
             if isinstance(image_path, np.ndarray):
-                # cv2 importé conditionnellement si nécessaire
-                try:
-                    import cv2  # noqa: PLC0415
-                except ImportError:
-                    cv2 = None  # type: ignore[assignment]
-                
+                # cv2 déjà importé globalement
+                if not CV2_AVAILABLE or cv2 is None:
+                    return None
+
                 if cv2 is None:
-                    raise ImportError("cv2 (OpenCV) requis pour traiter les images numpy")
+                    raise ImportError(
+                        "cv2 (OpenCV) requis pour traiter les images numpy"
+                    )
 
                 # Utiliser tempfile pour créer un fichier temporaire sécurisé
                 fd, temp_path = tempfile.mkstemp(
