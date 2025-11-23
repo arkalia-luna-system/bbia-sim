@@ -60,6 +60,7 @@ class TestLLMChatFunctionality:
         assert self.hf.chat_model is None
         assert self.hf.chat_tokenizer is None
 
+    @pytest.mark.slow  # OPTIMISATION: Test peut déclencher lazy loading LLM
     def test_chat_fallback_when_llm_not_loaded(self) -> None:
         """Test que chat utilise fallback enrichi si LLM non chargé."""
         if not HF_AVAILABLE:
@@ -110,6 +111,7 @@ class TestLLMChatFunctionality:
 
         assert self.hf.use_llm_chat is False
 
+    @pytest.mark.slow  # OPTIMISATION: Test peut déclencher lazy loading LLM
     def test_chat_method_handles_llm_fallback(self) -> None:
         """Test que la méthode chat gère correctement le fallback LLM."""
         if not HF_AVAILABLE:
