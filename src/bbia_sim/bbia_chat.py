@@ -562,7 +562,8 @@ class BBIAChat:
         """Change la personnalité du chat.
 
         Args:
-            personality: Nom de la personnalité (friendly, professional, playful, calm, enthusiastic)
+            personality: Nom de la personnalité
+                (friendly, professional, playful, calm, enthusiastic)
 
         """
         if personality in self.PERSONALITIES:
