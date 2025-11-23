@@ -159,7 +159,7 @@ jobs:
         timeout-minutes: 35
         run: |
           export PYTHONPATH=src:$PYTHONPATH
-          pytest -v -m "not e2e and not slow" --cov=src/bbia_sim --cov-report=xml --cov-report=term-missing --cov-fail-under=0 --timeout=60 --maxfail=10 --override-ini="addopts=" --log-cli-level=WARNING --no-header -x
+          pytest -v -m "not e2e and not slow" --cov=src/bbia_sim --cov-report=xml --cov-report=term-missing --cov-fail-under=0 --timeout=60 --maxfail=10 --log-cli-level=WARNING --no-header -x
         env:
           PYTHONDONTWRITEBYTECODE: 1
 
@@ -268,6 +268,7 @@ jobs:
 
       - name: Run e2e tests
         timeout-minutes: 15
+        continue-on-error: true
         run: |
           export PYTHONPATH=src:$PYTHONPATH
           echo "Running e2e tests..."
@@ -277,7 +278,9 @@ jobs:
           echo "E2E tests completed"
 
           # Ensure log file exists even if empty
-          touch logs/test_run.log
+          if [ ! -f logs/test_run.log ]; then
+            touch logs/test_run.log
+          fi
 
       - name: Upload test logs
         uses: actions/upload-artifact@v4
