@@ -131,8 +131,12 @@ class WakeUpBehavior(BBIABehavior):
                     ]
                     wake_message = secrets.choice(wake_messages)
                     # OPTIMISATION SDK: Passer robot_api pour utiliser haut-parleur 5W
-                    dire_texte(wake_message, robot_api=self.robot_api)
-                    logger.info("Synthèse vocale : %s", wake_message)
+                    try:
+                        dire_texte(wake_message, robot_api=self.robot_api)
+                        logger.info("Synthèse vocale : %s", wake_message)
+                    except (RuntimeError, Exception) as e:
+                        # Erreur TTS attendue (eSpeak non disponible en CI)
+                        logger.warning("Synthèse vocale non disponible: %s", e)
                     return True
             except (AttributeError, RuntimeError, ValueError):
                 logger.exception("Erreur wake_up SDK")
@@ -1069,6 +1073,7 @@ class BBIABehaviorManager:
         try:
             from .behaviors import (
                 AlarmClockBehavior,
+                ConversationBehavior as NewConversationBehavior,
                 DanceBehavior,
                 EmotionShowBehavior,
                 ExerciseBehavior,
@@ -1082,9 +1087,6 @@ class BBIABehaviorManager:
                 StorytellingBehavior,
                 TeachingBehavior,
                 WeatherReportBehavior,
-            )
-            from .behaviors import (
-                ConversationBehavior as NewConversationBehavior,
             )
 
             # Comportements améliorés (remplacer ou complémenter les existants)
