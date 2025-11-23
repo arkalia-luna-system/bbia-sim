@@ -89,20 +89,23 @@ def test_huggingface_auto_unload_thread() -> None:
         pytest.skip("Hugging Face transformers non disponible")
 
     try:
-        # Vérifier que le thread est initialisé
-        assert hasattr(hf, "_unload_thread")
-        assert hasattr(hf, "_unload_thread_stop")
-        assert hasattr(hf, "_unload_thread_lock")
+        # Vérifier que le thread partagé (variable de classe) est initialisé
+        assert hasattr(BBIAHuggingFace, "_shared_unload_thread")
+        assert hasattr(BBIAHuggingFace, "_shared_unload_thread_stop")
+        assert hasattr(BBIAHuggingFace, "_shared_unload_thread_lock")
         assert hasattr(hf, "_inactivity_timeout")
 
         # Vérifier que le timeout est défini
         assert hf._inactivity_timeout > 0
         assert hf._inactivity_timeout <= 600  # Max 10 minutes
 
-        # Vérifier que le thread est démarré (ou None si pas encore démarré)
+        # Vérifier que le thread partagé existe (peut être None si pas encore démarré)
         # Le thread peut être None si pas encore initialisé, c'est OK
-        if hf._unload_thread is not None:
-            assert hf._unload_thread.is_alive() or not hf._unload_thread.is_alive()
+        if BBIAHuggingFace._shared_unload_thread is not None:
+            assert (
+                BBIAHuggingFace._shared_unload_thread.is_alive()
+                or not BBIAHuggingFace._shared_unload_thread.is_alive()
+            )
     finally:
         # Thread partagé géré automatiquement, pas besoin d'arrêt manuel
         pass
@@ -263,7 +266,7 @@ def test_all_optimizations_present() -> None:
             hf = BBIAHuggingFace()
             optimizations["huggingface_lru"] = hasattr(hf, "_max_models_in_memory")
             optimizations["huggingface_auto_unload"] = hasattr(
-                hf, "_unload_thread"
+                BBIAHuggingFace, "_shared_unload_thread"
             ) and hasattr(hf, "_inactivity_timeout")
         except ImportError:
             # Hugging Face non disponible à l'exécution
