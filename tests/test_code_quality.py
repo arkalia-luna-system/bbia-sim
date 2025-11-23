@@ -79,11 +79,11 @@ class TestCodeQuality:
                 # Ignorer aussi les imports dans les fonctions/méthodes (imports conditionnels)
                 in_type_checking = False
                 in_function = False
-                
+
                 def visit_node(node):
                     """Visite récursive des nœuds AST."""
                     nonlocal in_type_checking, in_function
-                    
+
                     # Détecter blocs TYPE_CHECKING
                     if isinstance(node, ast.If):
                         if (
@@ -95,7 +95,7 @@ class TestCodeQuality:
                                 visit_node(child)
                             in_type_checking = False
                             return
-                    
+
                     # Détecter fonctions et méthodes (ignorer imports à l'intérieur)
                     if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
                         in_function = True
@@ -103,13 +103,13 @@ class TestCodeQuality:
                             visit_node(child)
                         in_function = False
                         return
-                    
+
                     # Détecter classes (mais pas leurs méthodes)
                     if isinstance(node, ast.ClassDef):
                         for child in ast.iter_child_nodes(node):
                             visit_node(child)
                         return
-                    
+
                     # Collecter imports seulement au niveau module (pas dans fonctions)
                     if isinstance(node, ast.Import) or isinstance(node, ast.ImportFrom):
                         # Ignorer imports dans TYPE_CHECKING ou dans fonctions
@@ -120,17 +120,30 @@ class TestCodeQuality:
                                 imports.append(alias.name)
                         elif isinstance(node, ast.ImportFrom):
                             if node.module:
-                                imports.append(node.module)
+                                # Pour les imports "from X import Y", créer un identifiant unique
+                                # qui combine le module et les noms importés pour détecter les vrais doublons
+                                module_name = node.module
+                                imported_names = [
+                                    alias.name if alias.asname is None else alias.asname
+                                    for alias in node.names
+                                ]
+                                # Créer un identifiant unique par import statement
+                                # Plusieurs imports du même module sont OK s'ils importent des choses différentes
+                                import_key = (
+                                    f"{module_name}:{','.join(sorted(imported_names))}"
+                                )
+                                imports.append(import_key)
                         return
-                    
+
                     # Visiter les enfants pour les autres types de nœuds
                     for child in ast.iter_child_nodes(node):
                         visit_node(child)
-                
+
                 # Visiter l'arbre depuis la racine
                 visit_node(tree)
 
-                # Vérifier doublons
+                # Vérifier doublons (même module + mêmes noms importés)
+                # Note: On permet plusieurs imports du même module s'ils importent des choses différentes
                 assert len(imports) == len(
                     set(imports)
                 ), f"Imports en double dans {file_path}"
