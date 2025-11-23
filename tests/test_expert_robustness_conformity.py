@@ -20,7 +20,6 @@ sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 # OPTIMISATION COVERAGE: Importer les modules au niveau module pour que coverage les détecte
 import bbia_sim.backends.reachy_mini_backend  # noqa: F401
 import bbia_sim.bbia_huggingface  # noqa: F401
-
 from bbia_sim.backends.reachy_mini_backend import ReachyMiniBackend
 
 # Importer BBIAHuggingFace pour les tests
@@ -430,6 +429,7 @@ class TestExpertRobustnessConformity:
         ), "Aucune méthode play media disponible"
         print("✅ Ordre fallback médias vérifié")
 
+    @pytest.mark.slow
     def test_expert_15_conversation_history_memory_limit(self):
         """Test expert: L'historique conversation ne doit pas croître indéfiniment."""
         print("\n🧪 EXPERT TEST 15: Limite Mémoire Historique Conversation")
