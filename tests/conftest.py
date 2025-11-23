@@ -500,7 +500,7 @@ def run_cleanup_scripts() -> None:
                 cwd=str(project_root),
                 capture_output=True,
                 text=True,
-                timeout=60,  # Timeout de 60 secondes max
+                timeout=30,  # Timeout de 30 secondes max (optimisé)
             )
             if result.returncode == 0:
                 print("✅ Nettoyage automatique terminé avec succès")
