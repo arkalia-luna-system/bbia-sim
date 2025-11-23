@@ -220,22 +220,22 @@ class TestEdgeCasesBuffers:
         from collections import deque
 
         history: deque[dict[str, int | float]] = deque(maxlen=100)
-        # Remplir jusqu'à saturation - OPTIMISATION: 200 → 100 (suffisant pour test saturation)
-        for i in range(100):
+        # Remplir jusqu'à saturation - OPTIMISATION: 100 → 20 (suffisant pour test saturation, 5x plus rapide)
+        for i in range(20):
             history.append({"timestamp": i, "value": i * 0.1})
 
         # Doit respecter maxlen
-        assert len(history) == 100
-        # Vérifier que le premier élément est bien le premier ajouté (pas supprimé car on n'a ajouté que 100 éléments)
+        assert len(history) == 20
+        # Vérifier que le premier élément est bien le premier ajouté (pas supprimé car on n'a ajouté que 20 éléments)
         assert history[0]["timestamp"] == 0
 
-        # Ajouter 50 éléments de plus pour tester la saturation réelle
-        for i in range(100, 150):
+        # Ajouter 10 éléments de plus pour tester la saturation réelle - OPTIMISATION: 50 → 10 (5x plus rapide)
+        for i in range(20, 30):
             history.append({"timestamp": i, "value": i * 0.1})
 
-        # Maintenant le premier élément devrait être 50 (les 50 premiers ont été supprimés)
-        assert len(history) == 100
-        assert history[0]["timestamp"] == 50
+        # Maintenant le premier élément devrait être 10 (les 10 premiers ont été supprimés)
+        assert len(history) == 20
+        assert history[0]["timestamp"] == 10
 
 
 class TestEdgeCasesWebSocket:

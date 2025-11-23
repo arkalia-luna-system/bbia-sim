@@ -161,8 +161,8 @@ addopts = [
     "--cov-report=html:htmlcov",
     # "--cov-append",  # DÉSACTIVÉ : peut causer des problèmes de terminaison pytest
     "--cov-fail-under=0",
-    # Timeout global pour éviter les tests qui bouclent (60s = 1 minute, suffisant pour tests optimisés)
-    "--timeout=60",
+    # Timeout global pour éviter les tests qui bouclent (30s = suffisant pour tests optimisés, 2x plus rapide)
+    "--timeout=30",
     "--timeout-method=thread",
 ]
 
