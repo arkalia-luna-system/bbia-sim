@@ -341,15 +341,16 @@ class TestDashboardAdvanced:
         not FASTAPI_AVAILABLE or BBIAAdvancedWebSocketManager is None,
         reason="Dashboard non disponible",
     )
+    @pytest.mark.asyncio
     @patch("bbia_sim.dashboard_advanced.FASTAPI_AVAILABLE", True)
-    def test_disconnect_websocket(self):
+    async def test_disconnect_websocket(self):
         """Test déconnexion WebSocket."""
         manager = BBIAAdvancedWebSocketManager()
 
         mock_websocket = MagicMock()
         manager.active_connections.append(mock_websocket)
 
-        manager.disconnect(mock_websocket)
+        await manager.disconnect(mock_websocket)
         assert mock_websocket not in manager.active_connections
         assert len(manager.active_connections) == 0
 
