@@ -682,10 +682,8 @@ class TestFactoryFunctions:
         # Vérifier le module
         assert type(detector).__module__ == "bbia_sim.vision_yolo"
 
-    @patch(
-        "builtins.__import__", side_effect=ImportError("No module named 'mediapipe'")
-    )
-    def test_create_face_detector_without_mediapipe(self, mock_import):
+    @patch("bbia_sim.vision_yolo.MEDIAPIPE_AVAILABLE", False)
+    def test_create_face_detector_without_mediapipe(self):
         """Test création sans MediaPipe."""
         detector = create_face_detector()
         assert detector is None
