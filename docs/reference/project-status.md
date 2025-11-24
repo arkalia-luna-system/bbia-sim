@@ -5,12 +5,19 @@
 **🎯 Vue d'ensemble de l'état du projet par axe**
 *Fiabilité • Performance • Sécurité • CI/CD • Plus*
 
-**Version** : 1.4.0 • **Date** : 22 novembre 2025
+**Version** : 1.4.0 • **Date** : 24 novembre 2025
 **Prêt pour arrivée robot** 🤖
 
 **🎉 Mise à jour 22 Novembre 2025** : **100% d'exploitation des capacités** ✅
 - ✅ 44 exemples disponibles (39 existants + 5 nouveaux créés 22 Nov. 2025)
 - ✅ Tous les comportements, endpoints et modules ont des exemples dédiés
+
+**🎉 Mise à jour 24 Novembre 2025** : **Améliorations Phase 1 Quick Wins terminées** ✅
+- ✅ Python 3.12 dans CI (matrice lint)
+- ✅ Pre-commit hooks améliorés (gitleaks, check-json, check-toml)
+- ✅ Scan secrets automatisé (gitleaks dans CI)
+- ✅ Métriques Prometheus complétées (watchdog, robot_connected, latence p50/p95/p99)
+- ✅ ffmpeg ajouté dans dépendances CI
 
 [📚 Navigation rapide](INDEX_THEMATIQUE.md) • [🏠 README](../README.md)
 
@@ -34,8 +41,8 @@ pip install -e .
 
 | Élément | Configuration | Statut |
 |:-------:|:-------------:|:------:|
-| **Python** | 3.11+ | ✅ Requis |
-| **CI/CD** | `.github/workflows/ci.yml` | ✅ GitHub Actions |
+| **Python** | 3.11+ (3.12 testé) | ✅ Requis |
+| **CI/CD** | `.github/workflows/ci.yml` | ✅ GitHub Actions (Python 3.11 + 3.12) |
 | **SDK Référence** | `pollen-robotics/reachy_mini` v1.0.0 | ✅ Branch develop |
 | **SDK local** | `reachy_mini==1.0.0rc5` (pré‑release) → recomm. `1.0.0` | 🔄 Mise à jour conseillée ([lien](https://github.com/pollen-robotics/reachy_mini)) |
 

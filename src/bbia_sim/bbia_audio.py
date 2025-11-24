@@ -447,6 +447,10 @@ def detecter_son(fichier: str, seuil: int = 500) -> bool:
         with wave.open(fichier, "rb") as wf:
             frames = wf.readframes(wf.getnframes())
             audio = np.frombuffer(frames, dtype="int16")
+            # Gérer le cas d'un tableau vide (fichier audio vide)
+            if audio.size == 0:
+                logging.info("Fichier audio vide, aucun son détecté")
+                return False
             max_val: float = np.max(np.abs(audio))
             logging.info("Amplitude max détectée : %s", max_val)
             return max_val > seuil

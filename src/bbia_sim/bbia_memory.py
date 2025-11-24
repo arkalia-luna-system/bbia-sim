@@ -99,7 +99,9 @@ class BBIAMemory:
                 else []
             )
         except Exception as e:
-            logger.warning("⚠️ Erreur chargement conversation: %s", e)
+            # Utiliser debug au lieu de warning pour réduire bruit dans tests
+            # Le comportement (retour liste vide) est déjà validé par les tests
+            logger.debug("Erreur chargement conversation: %s", e)
             return []
 
     def remember_preference(self, key: str, value: Any) -> bool:
@@ -153,7 +155,8 @@ class BBIAMemory:
                 else {}
             )
         except Exception as e:
-            logger.warning("⚠️ Erreur chargement préférences: %s", e)
+            # Utiliser debug au lieu de warning pour réduire bruit dans tests
+            logger.debug("Erreur chargement préférences: %s", e)
             return {}
 
     def get_preference(self, key: str, default: Any = None) -> Any:
@@ -226,7 +229,8 @@ class BBIAMemory:
                 cast("dict[str, Any]", learnings) if isinstance(learnings, dict) else {}
             )
         except Exception as e:
-            logger.warning("⚠️ Erreur chargement apprentissages: %s", e)
+            # Utiliser debug au lieu de warning pour réduire bruit dans tests
+            logger.debug("Erreur chargement apprentissages: %s", e)
             return {}
 
     def get_learning(self, pattern: str) -> str | None:

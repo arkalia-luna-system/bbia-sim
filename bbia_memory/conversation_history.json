@@ -1,18 +1,7 @@
 {
-  "last_updated": "2025-11-24T11:43:35.078957",
+  "last_updated": "2025-11-24T20:17:14.314128",
   "conversation_count": 1000,
   "history": [
-    {
-      "user": "Message 1",
-      "bbia": "Super nouvelle ! Continuez comme ça, vous allez très bien ! Racontez-moi ce qui vous motive, j'aimerais comprendre.",
-      "sentiment": {
-        "text": "Message 1",
-        "sentiment": "neutral",
-        "score": 0.8012408018112183,
-        "model": "cardiffnlp/twitter-roberta-base-sentiment-latest"
-      },
-      "timestamp": "2025-11-03T23:47:19.960760"
-    },
     {
       "user": "Message 2",
       "bbia": "Super nouvelle ! Continuez comme ça, vous allez très bien ! Racontez-moi ce qui vous motive, j'aimerais comprendre.",
@@ -10886,6 +10875,9 @@
       "bbia": "Salut ! Qu'est-ce qui vous amène aujourd'hui ?",
       "sentiment": "neutral",
       "timestamp": "2025-11-20T11:52:48.932775"
+    },
+    {
+      "test": "data"
     },
     {
       "test": "data"

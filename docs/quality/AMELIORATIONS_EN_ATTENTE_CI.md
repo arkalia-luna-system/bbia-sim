@@ -1,7 +1,37 @@
 # 🚀 Améliorations en Attente CI
 
-**Date :** Janvier 2025  
+**Date :** 24 novembre 2025  
 **Objectif :** Identifier et préparer les améliorations possibles pendant l'attente de la CI
+
+---
+
+## 🎉 Améliorations Phase 1 - Terminées (24 Nov. 2025)
+
+### ✅ Quick Wins Implémentés
+
+1. **Python 3.12 dans CI** ✅
+   - Matrice ajoutée dans job `lint` (3.11 + 3.12)
+   - Détection précoce problèmes compatibilité
+
+2. **Pre-commit hooks améliorés** ✅
+   - Gitleaks ajouté (scan secrets)
+   - `check-json`, `check-toml` ajoutés
+   - Versions mises à jour
+
+3. **Scan secrets automatisé** ✅
+   - Gitleaks intégré dans CI
+   - Installation automatique si absent
+   - Continue-on-error pour ne pas bloquer
+
+4. **Métriques Prometheus complétées** ✅
+   - `bbia_watchdog_heartbeat_age_seconds`
+   - `bbia_robot_connected`
+   - `bbia_latency_p50_ms`, `bbia_latency_p95_ms`, `bbia_latency_p99_ms`
+
+5. **Dépendances système** ✅
+   - `ffmpeg` ajouté dans tous les jobs CI
+
+---
 
 ---
 

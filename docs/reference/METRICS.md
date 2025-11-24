@@ -2,8 +2,25 @@
 
 > **Source de vérité centralisée pour toutes les métriques du projet**
 
-**Dernière mise à jour** : 22 November 2025
+**Dernière mise à jour** : 24 novembre 2025
 **Source** : [arkalia-metrics-collector](https://github.com/arkalia-luna-system/arkalia-metrics-collector) + CI/CD GitHub Actions + Codecov
+
+---
+
+## 🎉 Améliorations Phase 1 - Terminées (24 Nov. 2025)
+
+### ✅ Métriques Prometheus Complétées
+
+Les métriques Prometheus ont été complétées avec de nouvelles métriques :
+- ✅ `bbia_watchdog_heartbeat_age_seconds` - âge heartbeat watchdog
+- ✅ `bbia_robot_connected` - statut connexion robot (1/0)
+- ✅ `bbia_latency_p50_ms`, `bbia_latency_p95_ms`, `bbia_latency_p99_ms` - latence percentiles
+
+**Endpoint** : `GET /metrics/prometheus`
+
+Voir `docs/observabilite/OBSERVABILITE.md` pour plus de détails.
+
+---
 
 ---
 
