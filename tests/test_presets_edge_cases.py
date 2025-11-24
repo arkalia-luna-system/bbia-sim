@@ -199,7 +199,8 @@ class TestPresetsEdgeCases:
             mock_robot.set_emotion = MagicMock(return_value=True)
             mock_factory.create_backend.return_value = mock_robot
 
-            # L'application doit gérer l'erreur et continuer avec les autres émotions
-            result = await apply_preset("invalid_intensity")
-            # Vérifier que le résultat contient des erreurs ou qu'aucune émotion n'a été appliquée
-            assert "errors" in result or result.get("applied_count", 0) == 0
+            # L'application doit lever une HTTPException 500 car aucune émotion valide
+            with pytest.raises(HTTPException) as exc_info:
+                await apply_preset("invalid_intensity")
+            assert exc_info.value.status_code == 500
+            assert "Aucune émotion appliquée" in str(exc_info.value.detail)
