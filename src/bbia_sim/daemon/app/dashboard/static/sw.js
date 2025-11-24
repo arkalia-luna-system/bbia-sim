@@ -17,6 +17,7 @@ const STATIC_FILES = [
   '/static/js/apps.js',
   '/static/js/appstore.js',
   '/static/js/move_player.js',
+  '/static/js/pwa_install.js',
   '/static/images/background-blurred.svg',
   '/static/manifest.json'
 ];
@@ -24,7 +25,7 @@ const STATIC_FILES = [
 // Installation du Service Worker
 self.addEventListener('install', (event) => {
   console.log('[SW] Installation du Service Worker');
-  
+
   event.waitUntil(
     caches.open(STATIC_CACHE).then((cache) => {
       console.log('[SW] Mise en cache des fichiers statiques');
@@ -35,7 +36,7 @@ self.addEventListener('install', (event) => {
       });
     })
   );
-  
+
   // Forcer l'activation immédiate
   self.skipWaiting();
 });
@@ -43,7 +44,7 @@ self.addEventListener('install', (event) => {
 // Activation du Service Worker
 self.addEventListener('activate', (event) => {
   console.log('[SW] Activation du Service Worker');
-  
+
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
@@ -57,7 +58,7 @@ self.addEventListener('activate', (event) => {
       );
     })
   );
-  
+
   // Prendre le contrôle immédiatement
   return self.clients.claim();
 });
@@ -66,17 +67,17 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
-  
+
   // Ignorer les requêtes non-GET
   if (request.method !== 'GET') {
     return;
   }
-  
+
   // WebSocket: pas de cache
   if (url.protocol === 'ws:' || url.protocol === 'wss:') {
     return;
   }
-  
+
   // API REST: Network First avec cache fallback
   if (url.pathname.startsWith('/api/')) {
     event.respondWith(
@@ -110,14 +111,14 @@ self.addEventListener('fetch', (event) => {
     );
     return;
   }
-  
+
   // Fichiers statiques: Cache First
   event.respondWith(
     caches.match(request).then((cachedResponse) => {
       if (cachedResponse) {
         return cachedResponse;
       }
-      
+
       // Si pas en cache, récupérer du réseau
       return fetch(request).then((response) => {
         // Mettre en cache seulement les réponses réussies
@@ -138,7 +139,7 @@ self.addEventListener('message', (event) => {
   if (event.data && event.data.type === 'SKIP_WAITING') {
     self.skipWaiting();
   }
-  
+
   if (event.data && event.data.type === 'CLEAR_CACHE') {
     event.waitUntil(
       caches.keys().then((cacheNames) => {

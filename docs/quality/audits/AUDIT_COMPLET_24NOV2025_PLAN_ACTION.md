@@ -279,16 +279,16 @@
 - [ ] ⚠️ Tester installation Android/iOS - **À TESTER** (nécessite appareils)
 
 #### Documentation
-- [ ] Créer guide mobile app
-- [ ] Documenter architecture mobile
-- [ ] Créer exemples code mobile
-- [ ] Préparer screenshots Play Console
-- [ ] Documenter déploiement Play Store
+- [x] ✅ Créer guide mobile app - **FAIT** (dans `integration.md` section "Intégration Applications Mobiles")
+- [x] ✅ Documenter architecture mobile - **FAIT** (PWA vs React Native vs Natif dans `integration.md`)
+- [x] ✅ Créer exemples code mobile - **FAIT** (JavaScript, Kotlin, Swift dans `integration.md`)
+- [ ] ⚠️ Préparer screenshots Play Console - **À FAIRE** (nécessite app installée)
+- [x] ✅ Documenter déploiement Play Store - **FAIT** (dans `integration.md` et `ROADMAP_DASHBOARD.md`)
 
 #### UX Dashboard
-- [ ] Améliorer feedback visuel
-- [ ] Optimiser tactile mobile
-- [ ] Ajouter guide installation PWA
+- [x] ✅ Améliorer feedback visuel - **FAIT** (toasts dans `pwa_install.js`)
+- [x] ✅ Optimiser tactile mobile - **FAIT** (CSS min-height 44px, responsive)
+- [x] ✅ Ajouter guide installation PWA - **FAIT** (instructions iOS/Android dans `pwa_install.js` + docs)
 
 ---
 
