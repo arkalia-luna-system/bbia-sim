@@ -559,10 +559,15 @@ def _transcribe_thread_worker() -> None:
     logger.debug("🎤 Thread transcription asynchrone démarré")
 
     while _transcribe_active:
+        task = None
+        task_retrieved = False
         try:
             # Attendre tâche de transcription
             task = _transcribe_queue.get(timeout=0.5)
+            task_retrieved = True  # Marquer que la tâche a été récupérée
+
             if task is None:  # Signal d'arrêt
+                _transcribe_queue.task_done()
                 break
 
             audio_data = task["audio_data"]
@@ -578,7 +583,14 @@ def _transcribe_thread_worker() -> None:
             continue
         except Exception:
             logger.exception("Erreur thread transcription asynchrone")
-            _transcribe_queue.task_done()
+            # Appeler task_done() seulement si la tâche a été récupérée
+            # et qu'on ne l'a pas déjà appelé
+            if task_retrieved and task is not None:
+                try:
+                    _transcribe_queue.task_done()
+                except ValueError:
+                    # task_done() déjà appelé (cas normal)
+                    pass
 
     logger.debug("🎤 Thread transcription asynchrone arrêté")
 

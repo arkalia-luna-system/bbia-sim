@@ -586,6 +586,11 @@ class TestBBIAVoiceCoverageRemaining(unittest.TestCase):
 
     def test_start_async_transcription(self) -> None:
         """Test start_async_transcription."""
+        # S'assurer que la transcription est arrêtée avant de commencer
+        if bbia_voice._transcribe_active:
+            bbia_voice.stop_async_transcription()
+            time.sleep(0.2)  # Laisser le thread se terminer
+
         result = bbia_voice.start_async_transcription()
         self.assertTrue(result)
         self.assertTrue(bbia_voice._transcribe_active)
@@ -596,15 +601,22 @@ class TestBBIAVoiceCoverageRemaining(unittest.TestCase):
 
         # Nettoyer
         bbia_voice.stop_async_transcription()
+        time.sleep(0.2)  # Laisser le thread se terminer
 
     def test_stop_async_transcription(self) -> None:
         """Test stop_async_transcription."""
+        # S'assurer que la transcription est arrêtée avant de commencer
+        if bbia_voice._transcribe_active:
+            bbia_voice.stop_async_transcription()
+            time.sleep(0.2)
+
         # Démarrer d'abord
         bbia_voice.start_async_transcription()
-        time.sleep(0.1)  # Laisser le thread démarrer
+        time.sleep(0.2)  # Laisser le thread démarrer
 
         # Arrêter
         bbia_voice.stop_async_transcription()
+        time.sleep(0.2)  # Laisser le thread se terminer
         self.assertFalse(bbia_voice._transcribe_active)
 
         # Arrêter quand déjà arrêté (ne devrait rien faire)
@@ -613,10 +625,15 @@ class TestBBIAVoiceCoverageRemaining(unittest.TestCase):
     @patch("bbia_sim.bbia_voice.transcribe_audio")
     def test_transcribe_audio_async_timeout(self, mock_transcribe) -> None:
         """Test transcribe_audio_async avec timeout."""
+        # S'assurer que la transcription est arrêtée avant de commencer
+        if bbia_voice._transcribe_active:
+            bbia_voice.stop_async_transcription()
+            time.sleep(0.2)
+
         mock_transcribe.return_value = None  # Simule une transcription lente
 
         bbia_voice.start_async_transcription()
-        time.sleep(0.1)
+        time.sleep(0.2)  # Laisser le thread démarrer
 
         # Tester avec timeout court
         result = bbia_voice.transcribe_audio_async(
@@ -626,6 +643,7 @@ class TestBBIAVoiceCoverageRemaining(unittest.TestCase):
         self.assertIsNone(result)
 
         bbia_voice.stop_async_transcription()
+        time.sleep(0.2)  # Laisser le thread se terminer
 
     # ========== Tests pour transcribe_audio (Whisper) ==========
 
