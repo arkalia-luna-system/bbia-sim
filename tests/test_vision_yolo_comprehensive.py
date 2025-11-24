@@ -496,9 +496,7 @@ class TestFaceDetector:
         # Sauvegarder l'état actuel du cache
         original_cache = _mediapipe_face_detection_cache
 
-        # Nettoyer le cache
-        import bbia_sim.vision_yolo
-
+        # Nettoyer le cache (module déjà importé au niveau du fichier)
         with mock_lock:
             bbia_sim.vision_yolo._mediapipe_face_detection_cache = None
 
