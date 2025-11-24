@@ -31,27 +31,6 @@ class TestE2EFaceDetectionGreeting:
         # OPTIMISATION RAM: Utiliser robot_api=None pour éviter chargement modèles lourds
         self.vision = BBIAVision(robot_api=None)
 
-    def teardown_method(self):
-        """OPTIMISATION RAM: Décharger modèles après chaque test."""
-        try:
-            # Décharger détecteurs YOLO si chargés
-            if hasattr(self.vision, "yolo_detector") and self.vision.yolo_detector:
-                self.vision.yolo_detector.model = None
-                self.vision.yolo_detector.is_loaded = False
-            # Décharger détecteurs MediaPipe si chargés
-            if hasattr(self.vision, "face_detector") and self.vision.face_detector:
-                self.vision.face_detector.face_detection = None
-        except (AttributeError, TypeError):
-            pass
-        # Vider cache YOLO
-        try:
-            import bbia_sim.vision_yolo as vision_yolo_module
-
-            with vision_yolo_module._yolo_cache_lock:
-                vision_yolo_module._yolo_model_cache.clear()
-        except (AttributeError, ImportError):
-            pass
-        gc.collect()
         # Mock faces détectées
         self.vision.faces_detected = deque(
             [  # type: ignore[assignment]
@@ -67,6 +46,28 @@ class TestE2EFaceDetectionGreeting:
 
         # Behavior manager
         self.behavior = BBIABehaviorManager(robot_api=self.mock_robot)
+
+    def teardown_method(self):
+        """OPTIMISATION RAM: Décharger modèles après chaque test."""
+        try:
+            # Décharger détecteurs YOLO si chargés
+            if hasattr(self, "vision") and hasattr(self.vision, "yolo_detector") and self.vision.yolo_detector:
+                self.vision.yolo_detector.model = None
+                self.vision.yolo_detector.is_loaded = False
+            # Décharger détecteurs MediaPipe si chargés
+            if hasattr(self, "vision") and hasattr(self.vision, "face_detector") and self.vision.face_detector:
+                self.vision.face_detector.face_detection = None
+        except (AttributeError, TypeError):
+            pass
+        # Vider cache YOLO
+        try:
+            import bbia_sim.vision_yolo as vision_yolo_module
+
+            with vision_yolo_module._yolo_cache_lock:
+                vision_yolo_module._yolo_model_cache.clear()
+        except (AttributeError, ImportError):
+            pass
+        gc.collect()
 
     def test_bbia_detects_face_and_greets(self):
         """Scénario: BBIA détecte visage → suit → salue avec comportement."""
