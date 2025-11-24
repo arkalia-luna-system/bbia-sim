@@ -441,7 +441,7 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
         engine.say(texte)
         engine.runAndWait()
     except Exception:
-        logging.exception("Erreur de synthèse vocale")
+        logging.warning("Erreur de synthèse vocale", exc_info=True)
         raise
 
 
@@ -531,11 +531,13 @@ def reconnaitre_parole(
             except sr.UnknownValueError:
                 logging.warning("Aucune parole reconnue.")
                 return None
-            except Exception:
-                logging.warning("Erreur de reconnaissance vocale", exc_info=True)
+            except Exception as e:
+                # Utiliser error au lieu de warning avec exc_info pour éviter traces complètes dans tests
+                logging.error("Erreur de reconnaissance vocale: %s", e)
                 return None
-    except Exception:
-        logging.warning("Erreur d'accès au microphone", exc_info=True)
+    except Exception as e:
+        # Utiliser error au lieu de warning avec exc_info pour éviter traces complètes dans tests
+        logging.error("Erreur d'accès au microphone: %s", e)
         logging.warning(
             "La reconnaissance vocale nécessite pyaudio. "
             "Installez-le avec : pip install pyaudio",
