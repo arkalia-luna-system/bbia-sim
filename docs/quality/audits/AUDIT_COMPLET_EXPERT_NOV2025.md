@@ -816,22 +816,22 @@
 ### Phase 1 : Quick Wins (1-2 semaines)
 **Impact** : 🔴 Élevé | **Effort** : Faible
 
-1. ✅ Pre-commit hooks (1h)
-2. ✅ Scan secrets automatisé (1-2h)
-3. ✅ Python 3.12 dans CI (1h)
-4. ✅ Métriques Prometheus complètes (4-6h)
-5. ✅ Logs structurés JSON (2-3h)
+1. ✅ Pre-commit hooks (1h) - **TERMINÉ** (24 Nov. 2025)
+2. ✅ Scan secrets automatisé (1-2h) - **TERMINÉ** (24 Nov. 2025)
+3. ✅ Python 3.12 dans CI (1h) - **TERMINÉ** (24 Nov. 2025)
+4. ✅ Métriques Prometheus complètes (4-6h) - **TERMINÉ** (24 Nov. 2025)
+5. ⏳ Logs structurés JSON (2-3h) - **OPTIONNEL** (priorité moyenne, peut être fait plus tard)
 
 **Total** : 9-13h
 
 ### Phase 2 : Améliorations Moyennes (2-4 semaines)
 **Impact** : 🟡 Moyen | **Effort** : Moyen
 
-1. ✅ Cache LRU LLM (2-3h)
-2. ✅ Semgrep (1-2h)
-3. ✅ Documentation API automatique (2-3h)
-4. ✅ Tests performance CI (3-4h)
-5. ✅ Coverage par module (2-3h)
+1. ✅ Cache LRU LLM (2-3h) - **DÉJÀ IMPLÉMENTÉ** (cache LRU pour modèles YOLO, Whisper, HuggingFace)
+2. ⏳ Semgrep (1-2h) - **OPTIONNEL** (gitleaks déjà en place)
+3. ⏳ Documentation API automatique (2-3h) - **OPTIONNEL** (FastAPI génère déjà OpenAPI)
+4. ⏳ Tests performance CI (3-4h) - **OPTIONNEL** (peut être fait plus tard)
+5. ⏳ Coverage par module (2-3h) - **OPTIONNEL** (coverage global déjà excellent)
 
 **Total** : 10-15h
 
