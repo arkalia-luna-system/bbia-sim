@@ -51,11 +51,19 @@ class TestE2EFaceDetectionGreeting:
         """OPTIMISATION RAM: Décharger modèles après chaque test."""
         try:
             # Décharger détecteurs YOLO si chargés
-            if hasattr(self, "vision") and hasattr(self.vision, "yolo_detector") and self.vision.yolo_detector:
+            if (
+                hasattr(self, "vision")
+                and hasattr(self.vision, "yolo_detector")
+                and self.vision.yolo_detector
+            ):
                 self.vision.yolo_detector.model = None
                 self.vision.yolo_detector.is_loaded = False
             # Décharger détecteurs MediaPipe si chargés
-            if hasattr(self, "vision") and hasattr(self.vision, "face_detector") and self.vision.face_detector:
+            if (
+                hasattr(self, "vision")
+                and hasattr(self.vision, "face_detector")
+                and self.vision.face_detector
+            ):
                 self.vision.face_detector.face_detection = None
         except (AttributeError, TypeError):
             pass
@@ -131,7 +139,7 @@ class TestE2EFaceDetectionGreeting:
         assert status["current_focus"] is not None
 
         # 4. Activer greeting
-        setattr(self.behavior, "execute_behavior", MagicMock(return_value=True))  # type: ignore[method-assign]
+        self.behavior.execute_behavior = MagicMock(return_value=True)  # type: ignore[method-assign]
         greeting_success = self.behavior.execute_behavior(
             "greeting", {"target": "face"}
         )
@@ -160,7 +168,7 @@ class TestE2EFaceDetectionGreeting:
 
             if track_success:
                 # 4. Activer greeting
-                setattr(self.behavior, "execute_behavior", MagicMock(return_value=True))  # type: ignore[method-assign]
+                self.behavior.execute_behavior = MagicMock(return_value=True)  # type: ignore[method-assign]
                 greeting_result = self.behavior.execute_behavior("greeting", {})
 
                 # 5. Vérifier état final
