@@ -104,6 +104,19 @@ if [ "$CLEAN_CACHE" = true ]; then
     echo "🗑️  Suppression des fichiers temporaires..."
     rm -f reachy_commands.txt reachy_response.txt 2>/dev/null || true
     rm -f *.tmp *.log 2>/dev/null || true
+    
+    # Nettoyer les logs dans le dossier log/ (sauf fichiers JSON importants)
+    if [ -d "log" ]; then
+        log_count=$(find log/ -name "*.log" -o -name "*.txt" -o -name "*.err" -o -name "*.out" 2>/dev/null | wc -l | tr -d ' ')
+        if [ "$log_count" -gt 0 ]; then
+            find log/ -name "*.log" -delete 2>/dev/null || true
+            find log/ -name "*.txt" -delete 2>/dev/null || true
+            find log/ -name "*.err" -delete 2>/dev/null || true
+            find log/ -name "*.out" -delete 2>/dev/null || true
+            # Garder les fichiers JSON (rapports bandit, etc.)
+            echo "   ✅ ${log_count} fichiers log supprimés dans log/"
+        fi
+    fi
     echo "   ✅ Fichiers temporaires supprimés"
     
     # 3. Nettoyer les caches Python
@@ -138,11 +151,23 @@ if [ "$CLEAN_CACHE" = true ]; then
         echo "   ✅ Cache ruff supprimé"
     fi
     
-    # 7. Vérifier la structure de documentation
+    # 7. Nettoyer les caches de couverture (coverage)
+    echo "📊 Nettoyage des caches de couverture..."
+    if [ -d "htmlcov" ]; then
+        rm -rf htmlcov 2>/dev/null || true
+        echo "   ✅ Cache htmlcov supprimé"
+    fi
+    if [ -f ".coverage" ]; then
+        rm -f .coverage 2>/dev/null || true
+        echo "   ✅ Fichier .coverage supprimé"
+    fi
+    # Garder coverage.xml (peut être utile pour CI/CD)
+    
+    # 8. Vérifier la structure de documentation
     echo "📚 Vérification de la structure de documentation..."
     mkdir -p docs/semaines docs/rapports docs/archives 2>/dev/null || true
     
-    # 8. Déplacer les fichiers de documentation mal placés
+    # 9. Déplacer les fichiers de documentation mal placés
     echo "📋 Organisation de la documentation..."
     if ls 📋_SEMAINE_*_*.md 1> /dev/null 2>&1; then
         mv 📋_SEMAINE_*_*.md docs/semaines/ 2>/dev/null || true
@@ -311,14 +336,18 @@ if [ "$CLEAN_CACHE" = true ]; then
     remaining_pycache=$(find . -type d -name "__pycache__" 2>/dev/null | wc -l | tr -d ' ')
     remaining_pyc=$(find . -name "*.pyc" 2>/dev/null | wc -l | tr -d ' ')
     remaining_metadata=$(find . -name "._*" -type f ! -path "./venv/*" ! -path "./venv-*/*" ! -path "./dist/*" ! -path "./build/*" 2>/dev/null | wc -l | tr -d ' ')
+    remaining_logs=$(find log/ -name "*.log" -o -name "*.txt" -o -name "*.err" -o -name "*.out" 2>/dev/null | wc -l | tr -d ' ' 2>/dev/null || echo "0")
     
     echo "   • Caches Python restants: ${remaining_pycache} dossiers __pycache__, ${remaining_pyc} fichiers .pyc"
     echo "   • Métadonnées macOS restantes: ${remaining_metadata} fichiers"
+    echo "   • Logs restants dans log/: ${remaining_logs} fichiers"
     
     # Vérifier les caches
     [ -d ".mypy_cache" ] && echo "   • Cache mypy: présent" || echo "   • Cache mypy: nettoyé ✅"
     [ -d ".pytest_cache" ] && echo "   • Cache pytest: présent" || echo "   • Cache pytest: nettoyé ✅"
     [ -d ".ruff_cache" ] && echo "   • Cache ruff: présent" || echo "   • Cache ruff: nettoyé ✅"
+    [ -d "htmlcov" ] && echo "   • Cache htmlcov: présent" || echo "   • Cache htmlcov: nettoyé ✅"
+    [ -f ".coverage" ] && echo "   • Fichier .coverage: présent" || echo "   • Fichier .coverage: nettoyé ✅"
     echo ""
 fi
 
