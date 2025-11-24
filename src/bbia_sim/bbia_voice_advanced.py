@@ -309,6 +309,9 @@ class BBIAVoiceAdvanced:
 
     def _say_pyttsx3(self, text: str, speed: float, volume: float) -> bool:
         """Synthétise avec pyttsx3 (fallback)."""
+        if self.pyttsx3_engine is None:
+            logger.warning("⚠️ pyttsx3 non disponible (audio désactivé)")
+            return False
         try:
             logger.info("🎤 Synthèse pyttsx3: '%s...'", text[:50])
             self.pyttsx3_engine.setProperty("rate", int(170 * speed))

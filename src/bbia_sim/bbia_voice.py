@@ -105,8 +105,15 @@ def _get_cached_voice_id() -> str:
     global _bbia_voice_id_cache
     if _bbia_voice_id_cache is None:
         engine = _get_pyttsx3_engine()
-        _bbia_voice_id_cache = get_bbia_voice(engine)
-        logging.debug("✅ Voice ID mis en cache: %s", _bbia_voice_id_cache)
+        if engine is None:
+            # Audio désactivé ou eSpeak non disponible
+            logging.warning("⚠️ pyttsx3 non disponible, utilisation voix par défaut")
+            _bbia_voice_id_cache = (
+                "com.apple.speech.voice.Amelie.fr-FR"  # Fallback macOS
+            )
+        else:
+            _bbia_voice_id_cache = get_bbia_voice(engine)
+            logging.debug("✅ Voice ID mis en cache: %s", _bbia_voice_id_cache)
     return _bbia_voice_id_cache
 
 
@@ -122,6 +129,9 @@ def get_bbia_voice(engine: Any) -> str:
 
     Si aucune voix féminine française n'est trouvée, lève une erreur explicite.
     """
+    if engine is None:
+        # Fallback si engine non disponible
+        return "com.apple.speech.voice.Amelie.fr-FR"
     voices = engine.getProperty("voices")
 
     def normalize(s: str) -> str:

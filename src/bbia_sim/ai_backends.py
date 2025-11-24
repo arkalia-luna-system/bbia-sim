@@ -82,6 +82,10 @@ class Pyttsx3TTS:
                     engine = (
                         _get_pyttsx3_engine()
                     )  # Utilise cache global (0ms après premier appel)
+                    if engine is None:
+                        raise RuntimeError(
+                            "pyttsx3 non disponible (audio désactivé ou eSpeak manquant)"
+                        )
                     self._engine = engine
                     self._voice_id = _get_cached_voice_id()  # Utilise cache voice ID
                 except ImportError:
