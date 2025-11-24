@@ -69,58 +69,61 @@
 
 ### 🟡 PRIORITÉ MOYENNE (Optionnel)
 
-#### 1. **Tests WebSocket Reconnexion** ⏱️ **1-2h**
+#### 1. ✅ **Tests WebSocket Reconnexion** ⏱️ **1-2h** - **TERMINÉ**
 
 **Pourquoi** : Robustesse maximale
 
 **Actions** :
 
-- [ ] Test reconnexion automatique après déconnexion
-- [ ] Test gestion perte réseau temporaire
-- [ ] Test queue messages pendant déconnexion
-- [ ] Test heartbeat/ping pour détecter déconnexions
+- [x] Test reconnexion automatique après déconnexion
+- [x] Test gestion perte réseau temporaire
+- [x] Test queue messages pendant déconnexion
+- [x] Test heartbeat/ping pour détecter déconnexions
+- [x] Test limite connexions, gestion erreurs broadcast
 
-**Fichiers à créer** :
+**Fichiers créés** :
 
-- `tests/test_websocket_reconnection.py` (nouveau)
+- `tests/test_websocket_reconnection.py` ✅ (11 tests)
 
 **Impact** : ✅ **Robustesse améliorée**
 
 ---
 
-#### 2. **Tests Dashboard Connexion Lente** ⏱️ **1-2h**
+#### 2. ✅ **Tests Dashboard Connexion Lente** ⏱️ **1-2h** - **TERMINÉ**
 
 **Pourquoi** : Tester en conditions réelles (réseau lent)
 
 **Actions** :
 
-- [ ] Simuler latence réseau (Chrome DevTools)
-- [ ] Tester chargement progressif
-- [ ] Tester timeout/retry
-- [ ] Tester affichage "Chargement..." pendant latence
+- [x] Simuler latence réseau
+- [x] Tester chargement progressif
+- [x] Tester timeout/retry
+- [x] Tester requêtes concurrentes
+- [x] Tester connexion intermittente
 
-**Fichiers à créer** :
+**Fichiers créés** :
 
-- `tests/test_dashboard_slow_connection.py` (nouveau)
+- `tests/test_dashboard_slow_connection.py` ✅ (10 tests)
 
 **Impact** : ✅ **Robustesse améliorée**
 
 ---
 
-#### 3. **Tests PWA Cache Corrompu** ⏱️ **1h**
+#### 3. ✅ **Tests PWA Cache Corrompu** ⏱️ **1h** - **TERMINÉ**
 
 **Pourquoi** : Gérer cas edge Service Worker
 
 **Actions** :
 
-- [ ] Test cache corrompu (supprimer entrées manuellement)
-- [ ] Test version Service Worker incompatible
-- [ ] Test récupération après erreur cache
-- [ ] Test nettoyage cache automatique
+- [x] Test cache corrompu (détection)
+- [x] Test version Service Worker incompatible
+- [x] Test récupération après erreur cache
+- [x] Test nettoyage cache automatique
+- [x] Test quota storage, validation cache
 
-**Fichiers à créer** :
+**Fichiers créés** :
 
-- `tests/test_pwa_cache_corruption.py` (nouveau)
+- `tests/test_pwa_cache_corruption.py` ✅ (11 tests)
 
 **Impact** : ✅ **Robustesse améliorée**
 
