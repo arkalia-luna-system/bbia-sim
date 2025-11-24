@@ -59,6 +59,25 @@ _MAX_WHISPER_CACHE_SIZE = (
 )
 
 
+def _check_audio_device_available() -> bool:
+    """Vérifie si un périphérique audio est disponible.
+
+    Returns:
+        True si périphérique audio disponible, False sinon
+    """
+    if sd is None:
+        return False
+
+    try:
+        # Vérifier si des périphériques d'entrée sont disponibles
+        devices = sd.query_devices()
+        input_devices = [d for d in devices if d.get("max_input_channels", 0) > 0]
+        return len(input_devices) > 0
+    except Exception:
+        # PortAudioError ou autre erreur - pas de périphérique disponible
+        return False
+
+
 class WhisperSTT:
     """Module Speech-to-Text utilisant OpenAI Whisper."""
 
@@ -146,11 +165,11 @@ class WhisperSTT:
             self.is_loaded = True
             return True
 
-        except (ImportError, RuntimeError, OSError, ValueError):
-            logger.exception("❌ Erreur chargement Whisper")
+        except (ImportError, RuntimeError, OSError, ValueError) as e:
+            logger.error("❌ Erreur chargement Whisper: %s", e)
             return False
-        except Exception:
-            logger.exception("❌ Erreur inattendue chargement Whisper")
+        except Exception as e:
+            logger.error("❌ Erreur inattendue chargement Whisper: %s", e)
             return False
 
     def transcribe_audio(self, audio_path: str) -> str | None:
@@ -199,11 +218,11 @@ class WhisperSTT:
             )
             return text
 
-        except (RuntimeError, ValueError, OSError, AttributeError):
-            logger.exception("❌ Erreur transcription")
+        except (RuntimeError, ValueError, OSError, AttributeError) as e:
+            logger.error("❌ Erreur transcription: %s", e)
             return None
-        except Exception:
-            logger.exception("❌ Erreur inattendue transcription")
+        except Exception as e:
+            logger.error("❌ Erreur inattendue transcription: %s", e)
             return None
 
     def transcribe_microphone(self, duration: float = 3.0) -> str | None:
@@ -226,6 +245,13 @@ class WhisperSTT:
         # Vérification globale de disponibilité
         if not WHISPER_AVAILABLE:
             logger.error("❌ Whisper non disponible")
+            return None
+
+        # Vérifier disponibilité périphérique audio
+        if not _check_audio_device_available():
+            logger.warning(
+                "⚠️ Aucun périphérique audio disponible - skip enregistrement",
+            )
             return None
 
         try:
@@ -267,13 +293,21 @@ class WhisperSTT:
                     except Exception as cleanup_error:
                         logger.debug("Nettoyage fichier Whisper (%s)", cleanup_error)
 
-        except ImportError:
-            logger.exception(
-                "❌ sounddevice/soundfile requis pour l'enregistrement microphone",
+        except ImportError as e:
+            logger.error(
+                "❌ sounddevice/soundfile requis pour l'enregistrement microphone: %s",
+                e,
             )
             return None
-        except Exception:
-            logger.exception("❌ Erreur enregistrement microphone")
+        except Exception as e:
+            # Gérer spécifiquement PortAudioError (périphérique indisponible)
+            error_name = type(e).__name__
+            if "PortAudio" in error_name or "PortAudioError" in str(e):
+                logger.warning(
+                    "⚠️ Périphérique audio indisponible (CI/headless) - skip enregistrement",
+                )
+                return None
+            logger.error("❌ Erreur enregistrement microphone: %s", e)
             return None
 
     def detect_speech_activity(self, audio_chunk: Any) -> bool:
@@ -413,6 +447,13 @@ class WhisperSTT:
             logger.error("❌ Whisper non disponible")
             return None
 
+        # Vérifier disponibilité périphérique audio
+        if not _check_audio_device_available():
+            logger.warning(
+                "⚠️ Aucun périphérique audio disponible - skip enregistrement",
+            )
+            return None
+
         try:
             import tempfile
 
@@ -484,13 +525,21 @@ class WhisperSTT:
                     except Exception as cleanup_error:
                         logger.debug("Nettoyage fichier Whisper (%s)", cleanup_error)
 
-        except ImportError:
-            logger.exception(
-                "❌ sounddevice/soundfile requis pour l'enregistrement microphone",
+        except ImportError as e:
+            logger.error(
+                "❌ sounddevice/soundfile requis pour l'enregistrement microphone: %s",
+                e,
             )
             return None
-        except Exception:
-            logger.exception("❌ Erreur enregistrement microphone avec VAD")
+        except Exception as e:
+            # Gérer spécifiquement PortAudioError (périphérique indisponible)
+            error_name = type(e).__name__
+            if "PortAudio" in error_name or "PortAudioError" in str(e):
+                logger.warning(
+                    "⚠️ Périphérique audio indisponible (CI/headless) - skip enregistrement",
+                )
+                return None
+            logger.error("❌ Erreur enregistrement microphone avec VAD: %s", e)
             return None
 
     def transcribe_streaming(
@@ -522,6 +571,13 @@ class WhisperSTT:
         # Vérification globale de disponibilité
         if not WHISPER_AVAILABLE:
             logger.error("❌ Whisper non disponible")
+            return None
+
+        # Vérifier disponibilité périphérique audio
+        if not _check_audio_device_available():
+            logger.warning(
+                "⚠️ Aucun périphérique audio disponible - skip streaming",
+            )
             return None
 
         # Charger modèle si nécessaire
@@ -688,11 +744,18 @@ class WhisperSTT:
             logger.warning("⚠️ Aucune transcription générée")
             return None
 
-        except ImportError:
-            logger.exception("❌ sounddevice/soundfile requis pour streaming")
+        except ImportError as e:
+            logger.error("❌ sounddevice/soundfile requis pour streaming: %s", e)
             return None
-        except Exception:
-            logger.exception("❌ Erreur streaming")
+        except Exception as e:
+            # Gérer spécifiquement PortAudioError (périphérique indisponible)
+            error_name = type(e).__name__
+            if "PortAudio" in error_name or "PortAudioError" in str(e):
+                logger.warning(
+                    "⚠️ Périphérique audio indisponible (CI/headless) - skip streaming",
+                )
+                return None
+            logger.error("❌ Erreur streaming: %s", e)
             return None
 
 

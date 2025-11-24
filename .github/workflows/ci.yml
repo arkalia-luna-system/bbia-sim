@@ -541,7 +541,9 @@ jobs:
       - name: Install dependencies (minimal)
         run: |
           python -m pip install --upgrade pip
-          pip install --no-cache-dir git+https://github.com/arkalia-luna-system/arkalia-metrics-collector.git
+          # Workaround: installer avec --no-build-isolation pour contourner l'erreur de classifier de licence déprécié
+          pip install --no-cache-dir --no-build-isolation git+https://github.com/arkalia-luna-system/arkalia-metrics-collector.git || \
+          pip install --no-cache-dir --no-build-isolation --no-deps git+https://github.com/arkalia-luna-system/arkalia-metrics-collector.git
           pip install --no-cache-dir defusedxml
 
       - name: Collect metrics

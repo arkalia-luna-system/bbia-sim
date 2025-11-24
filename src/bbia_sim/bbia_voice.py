@@ -700,7 +700,6 @@ def transcribe_audio_async(
 
             # Attendre résultat avec timeout
             if timeout:
-
                 start_time = time.time()
                 while time.time() - start_time < timeout:
                     if _last_transcribe_result is not None:
