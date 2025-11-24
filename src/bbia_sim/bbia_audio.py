@@ -194,6 +194,11 @@ def enregistrer_audio(
             os.environ.get("BBIA_MAX_AUDIO_BUFFER_DURATION", "180"),
         )  # 3 min par défaut
 
+    # Validation: s'assurer que max_buffer_duration est au moins 1 seconde
+    # pour éviter les warnings inutiles dans les tests
+    if max_buffer_duration <= 0:
+        max_buffer_duration = 180  # Valeur par défaut si valeur invalide
+
     if duree > max_buffer_duration:
         logging.warning(
             "⚠️ Durée d'enregistrement (%ds) dépasse limite buffer (%ds). "

@@ -271,7 +271,9 @@ class RobotAPI(ABC):
         steps = int(duration * BEHAVIOR_STEPS_PER_SECOND)
         for step in range(steps):
             t = step / steps
-            angle = 0.3 * (1 - math.cos(math.pi * t))  # Mouvement de réveil
+            # Amplitude réduite à 0.15 pour respecter la limite safe_amplitude_limit (0.3 rad)
+            # max(angle) = 0.15 * (1 - (-1)) = 0.3 rad
+            angle = 0.15 * (1 - math.cos(math.pi * t))  # Mouvement de réveil
             self.set_joint_pos("yaw_body", angle)
             self.step()
             time.sleep(BEHAVIOR_STEP_DELAY)
@@ -409,7 +411,8 @@ class RobotAPI(ABC):
             if t < 0.33:
                 angle = 0.2 * math.sin(4 * math.pi * t)
             elif t < 0.66:
-                angle = 0.3 * (1 - math.cos(math.pi * (t - 0.33) * 3))
+                # Amplitude réduite à 0.15 pour respecter la limite safe_amplitude_limit (0.3 rad)
+                angle = 0.15 * (1 - math.cos(math.pi * (t - 0.33) * 3))
             else:
                 angle = 0.2 * math.sin(4 * math.pi * t)
             self.set_joint_pos("yaw_body", angle)

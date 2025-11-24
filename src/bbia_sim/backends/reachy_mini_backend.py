@@ -678,7 +678,7 @@ class ReachyMiniBackend(RobotAPI):
                 return True
         else:
             # Mode simulation
-            logger.info("Mode simulation: antenne %s = %s", joint_name, position)
+            logger.debug("Mode simulation: antenne %s = %s", joint_name, position)
             return True
         return False
 
@@ -715,7 +715,7 @@ class ReachyMiniBackend(RobotAPI):
 
         # Mode simulation si robot non connecté
         if not self.robot or not self.is_connected:
-            logger.info("Mode simulation: joint %s = %s", joint_name, position)
+            logger.debug("Mode simulation: joint %s = %s", joint_name, position)
             return True
 
         # Clamping sécurisé multi-niveaux
@@ -1095,7 +1095,7 @@ class ReachyMiniBackend(RobotAPI):
     def set_target_body_yaw(self, body_yaw: float) -> None:
         """Définit la rotation cible du corps."""
         if not self.is_connected or not self.robot:
-            logger.info("Mode simulation: body_yaw = %s", body_yaw)
+            logger.debug("Mode simulation: body_yaw = %s", body_yaw)
             return
 
         try:
@@ -1108,7 +1108,7 @@ class ReachyMiniBackend(RobotAPI):
     def set_target_antenna_joint_positions(self, antennas: list[float]) -> None:
         """Définit les positions cibles des antennes."""
         if not self.is_connected or not self.robot:
-            logger.info("Mode simulation: antennas = %s", antennas)
+            logger.debug("Mode simulation: antennas = %s", antennas)
             return
 
         try:
@@ -1134,7 +1134,7 @@ class ReachyMiniBackend(RobotAPI):
     ) -> npt.NDArray[np.float64]:
         """Fait regarder le robot vers un point dans l'image."""
         if not self.is_connected or not self.robot:
-            logger.info("Mode simulation: look_at_image(%s, %s)", u, v)
+            logger.debug("Mode simulation: look_at_image(%s, %s)", u, v)
             return np.eye(4, dtype=np.float64)
 
         try:
@@ -1200,7 +1200,7 @@ class ReachyMiniBackend(RobotAPI):
             )
 
         if not self.is_connected or not self.robot:
-            logger.info("Mode simulation: goto_target")
+            logger.debug("Mode simulation: goto_target")
             return
 
         try:
@@ -1286,7 +1286,7 @@ class ReachyMiniBackend(RobotAPI):
         Issue #323: S'assure que enable_motors définit le mode position controlled.
         """
         if not self.is_connected or not self.robot:
-            logger.info("Mode simulation: enable_motors")
+            logger.debug("Mode simulation: enable_motors")
             return
 
         try:
@@ -1311,7 +1311,7 @@ class ReachyMiniBackend(RobotAPI):
     def disable_motors(self) -> None:
         """Désactive les moteurs."""
         if not self.is_connected or not self.robot:
-            logger.info("Mode simulation: disable_motors")
+            logger.debug("Mode simulation: disable_motors")
             return
 
         try:
@@ -1353,7 +1353,7 @@ class ReachyMiniBackend(RobotAPI):
     def enable_gravity_compensation(self) -> None:
         """Active la compensation de gravité."""
         if not self.is_connected or not self.robot:
-            logger.info("Mode simulation: enable_gravity_compensation")
+            logger.debug("Mode simulation: enable_gravity_compensation")
             return
 
         try:
@@ -1364,7 +1364,7 @@ class ReachyMiniBackend(RobotAPI):
     def disable_gravity_compensation(self) -> None:
         """Désactive la compensation de gravité."""
         if not self.is_connected or not self.robot:
-            logger.info("Mode simulation: disable_gravity_compensation")
+            logger.debug("Mode simulation: disable_gravity_compensation")
             return
 
         try:
@@ -1377,7 +1377,7 @@ class ReachyMiniBackend(RobotAPI):
     def set_automatic_body_yaw(self, body_yaw: float) -> None:
         """Définit la rotation automatique du corps."""
         if not self.is_connected or not self.robot:
-            logger.info("Mode simulation: set_automatic_body_yaw = %s", body_yaw)
+            logger.debug("Mode simulation: set_automatic_body_yaw = %s", body_yaw)
             return
 
         try:
@@ -1393,7 +1393,7 @@ class ReachyMiniBackend(RobotAPI):
     ) -> None:
         """Définit une cible complète (tête + antennes + corps)."""
         if not self.is_connected or not self.robot:
-            logger.info("Mode simulation: set_target")
+            logger.debug("Mode simulation: set_target")
             return
 
         try:
@@ -1404,7 +1404,7 @@ class ReachyMiniBackend(RobotAPI):
     def start_recording(self) -> None:
         """Commence l'enregistrement des mouvements."""
         if not self.is_connected or not self.robot:
-            logger.info("Mode simulation: start_recording")
+            logger.debug("Mode simulation: start_recording")
             return
 
         try:
@@ -1417,7 +1417,7 @@ class ReachyMiniBackend(RobotAPI):
     def stop_recording(self) -> list[JointPositions] | None:
         """Arrête l'enregistrement et retourne les données."""
         if not self.is_connected or not self.robot:
-            logger.info("Mode simulation: stop_recording")
+            logger.debug("Mode simulation: stop_recording")
             return []  # Mode simulation
 
         try:
@@ -1456,7 +1456,7 @@ class ReachyMiniBackend(RobotAPI):
 
         """
         if not self.is_connected or not self.robot:
-            logger.info("Mode simulation: play_move")
+            logger.debug("Mode simulation: play_move")
             return
 
         try:
@@ -1483,7 +1483,7 @@ class ReachyMiniBackend(RobotAPI):
     ) -> None:
         """Joue un mouvement enregistré de manière asynchrone."""
         if not self.is_connected or not self.robot:
-            logger.info("Mode simulation: async_play_move")
+            logger.debug("Mode simulation: async_play_move")
             return
 
         try:
@@ -1648,7 +1648,7 @@ class ReachyMiniBackend(RobotAPI):
     def set_target_head_pose(self, pose: "HeadPose") -> None:
         """Alias SDK officiel pour set_joint_pos avec pose."""
         if not self.is_connected or not self.robot:
-            logger.info("Mode simulation: set_target_head_pose")
+            logger.debug("Mode simulation: set_target_head_pose")
             return
 
         try:
@@ -1673,7 +1673,7 @@ class ReachyMiniBackend(RobotAPI):
 
         """
         if not self.is_connected or not self.robot:
-            logger.info("Mode simulation: look_at_world(%s, %s, %s)", x, y, z)
+            logger.debug("Mode simulation: look_at_world(%s, %s, %s)", x, y, z)
             # Calculer une pose 4x4 approximative depuis les coordonnées
             import numpy as np
 
@@ -1762,7 +1762,7 @@ class ReachyMiniBackend(RobotAPI):
     def wake_up(self) -> None:
         """Alias SDK officiel pour run_behavior('wake_up')."""
         if not self.is_connected or not self.robot:
-            logger.info("Mode simulation: wake_up")
+            logger.debug("Mode simulation: wake_up")
             return
 
         try:
@@ -1773,7 +1773,7 @@ class ReachyMiniBackend(RobotAPI):
     def goto_sleep(self) -> None:
         """Alias SDK officiel pour run_behavior('goto_sleep')."""
         if not self.is_connected or not self.robot:
-            logger.info("Mode simulation: goto_sleep")
+            logger.debug("Mode simulation: goto_sleep")
             return
 
         try:

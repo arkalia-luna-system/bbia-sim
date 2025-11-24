@@ -184,6 +184,54 @@ class MuJoCoSimulator:
             logger.exception("Erreur lors du chargement de la scène ")
             raise
 
+    def _get_valid_joint_names(self) -> list[str]:
+        """Récupère la liste des noms de joints valides depuis le modèle.
+
+        Returns:
+            Liste des noms de joints valides
+        """
+        valid_joints = []
+        try:
+            for i in range(self.model.njnt):
+                joint_name_mj = mujoco.mj_id2name(
+                    self.model,
+                    mujoco.mjtObj.mjOBJ_JOINT,
+                    i,
+                )
+                if joint_name_mj:
+                    valid_joints.append(joint_name_mj)
+        except Exception:
+            # Si on ne peut pas récupérer la liste, retourner liste vide
+            pass
+        return valid_joints
+
+    def _handle_invalid_joint_error(self, joint_name: str, error: KeyError) -> None:
+        """Gère l'erreur d'articulation invalide avec message informatif.
+
+        Args:
+            joint_name: Nom de l'articulation invalide
+            error: L'exception KeyError originale
+
+        Raises:
+            KeyError: Avec un message amélioré contenant la liste des joints valides
+        """
+        valid_joints = self._get_valid_joint_names()
+
+        # Créer un message d'erreur informatif
+        if valid_joints:
+            valid_list = ", ".join(f"'{j}'" for j in sorted(valid_joints))
+            error_msg = (
+                f"Articulation '{joint_name}' non trouvée. "
+                f"Articulations valides: [{valid_list}]"
+            )
+        else:
+            # Fallback si on ne peut pas récupérer la liste
+            error_msg = f"Articulation '{joint_name}' non trouvée"
+
+        logger.error(error_msg)
+        # Relancer avec le message amélioré
+        raise KeyError(error_msg) from error
+
     def set_joint_position(self, joint_name: str, angle: float) -> None:
         """Définit la position d'une articulation avec validation et clamp.
 
@@ -260,9 +308,8 @@ class MuJoCoSimulator:
             logger.debug(
                 f"Articulation '{joint_name}' positionnée à {clamped_angle:.3f} rad",
             )
-        except KeyError:
-            logger.exception("Articulation '%s' non trouvée", joint_name)
-            raise
+        except KeyError as e:
+            self._handle_invalid_joint_error(joint_name, e)
 
     def get_joint_position(self, joint_name: str) -> float:
         """Retourne la position actuelle d'une articulation.
@@ -283,9 +330,8 @@ class MuJoCoSimulator:
             if joint_name in self.target_positions:
                 return float(self.target_positions[joint_name])
             return float(self.data.qpos[joint_id])
-        except KeyError:
-            logger.exception("Articulation '%s' non trouvée", joint_name)
-            raise
+        except KeyError as e:
+            self._handle_invalid_joint_error(joint_name, e)
 
     def get_robot_state(self) -> dict[str, Any]:
         """Retourne l'état complet du robot.
