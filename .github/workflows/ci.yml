@@ -157,12 +157,14 @@ jobs:
   test:
     runs-on: ubuntu-latest
     timeout-minutes: 45
-    # OPTIMISATION CI: Cache pip amélioré
     env:
       SEED: 42
       MUJOCO_GL: disable
       DISPLAY: ""
       BBIA_DISABLE_AUDIO: "1"
+      BBIA_FORCE_MOCK_MODELS: "1"
+      BBIA_DISABLE_VISION_MODELS: "1"
+      PYTHONDONTWRITEBYTECODE: 1
     steps:
       - uses: actions/checkout@v4
 
