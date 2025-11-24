@@ -1,29 +1,7 @@
 {
-  "last_updated": "2025-11-24T20:33:18.545791",
+  "last_updated": "2025-11-24T20:50:35.110576",
   "conversation_count": 1000,
   "history": [
-    {
-      "user": "Message 3",
-      "bbia": "C'est vraiment formidable ! Je suis content que vous vous sentiez bien. Pourquoi cela vous rend-il heureux aujourd'hui ?",
-      "sentiment": {
-        "text": "Message 3",
-        "sentiment": "neutral",
-        "score": 0.8010593056678772,
-        "model": "cardiffnlp/twitter-roberta-base-sentiment-latest"
-      },
-      "timestamp": "2025-11-03T23:47:20.883685"
-    },
-    {
-      "user": "Message 4",
-      "bbia": "C'est excellent ! Votre bonne humeur est contagieuse ! Comment aimeriez-vous explorer cette dynamique positive ?",
-      "sentiment": {
-        "text": "Message 4",
-        "sentiment": "neutral",
-        "score": 0.759249746799469,
-        "model": "cardiffnlp/twitter-roberta-base-sentiment-latest"
-      },
-      "timestamp": "2025-11-03T23:47:21.316938"
-    },
     {
       "user": "Message 5",
       "bbia": "Super nouvelle ! Continuez comme ça, vous allez très bien ! Racontez-moi ce qui vous motive, j'aimerais comprendre.",
@@ -10864,6 +10842,12 @@
       "bbia": "Salut ! Qu'est-ce qui vous amène aujourd'hui ?",
       "sentiment": "neutral",
       "timestamp": "2025-11-20T11:52:48.932775"
+    },
+    {
+      "test": "data"
+    },
+    {
+      "test": "data"
     },
     {
       "test": "data"

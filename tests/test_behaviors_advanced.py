@@ -175,16 +175,18 @@ class TestAlarmClockBehavior:
         alarm_time = dt_time(past_hour, past_minute)
 
         # Créer un mock datetime.now() qui retourne une heure après l'alarme
+        # Le code appelle datetime.now().time(), donc on doit retourner un datetime
+        # dont .time() retourne une heure >= alarm_time
+        future_minute = (past_minute + 2) % 60
+        future_hour = (
+            past_hour if future_minute > past_minute else (past_hour + 1) % 24
+        )
+        future_time = dt_time(future_hour, future_minute)
+
         def mock_datetime_now():
             real_now = datetime.now()
-            # Retourner un datetime avec l'heure après l'alarme (2 minutes après)
-            future_minute = (past_minute + 2) % 60
-            future_hour = (
-                past_hour if future_minute > past_minute else (past_hour + 1) % 24
-            )
-            return datetime.combine(
-                real_now.date(), dt_time(future_hour, future_minute)
-            )
+            # Retourner un datetime avec l'heure après l'alarme
+            return datetime.combine(real_now.date(), future_time)
 
         # Mocker time.sleep pour éviter les attentes réelles
         sleep_calls = []
