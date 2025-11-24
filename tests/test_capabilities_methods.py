@@ -301,11 +301,28 @@ class TestBackendAdapterMethods:
 class TestBBIAVoiceAdvancedMethods:
     """Tests pour les méthodes BBIAVoiceAdvanced."""
 
+    @pytest.mark.audio
     def test_voice_advanced_methods(self) -> None:
         """Test toutes les méthodes BBIAVoiceAdvanced."""
+        from unittest.mock import MagicMock, patch
+
         from bbia_sim.bbia_voice_advanced import BBIAVoiceAdvanced
 
-        voice = BBIAVoiceAdvanced()
+        # Mock pyttsx3 pour éviter erreurs espeak en CI
+        with (
+            patch("bbia_sim.bbia_voice._get_pyttsx3_engine") as mock_engine,
+            patch(
+                "bbia_sim.bbia_voice._get_cached_voice_id", return_value="test_voice"
+            ),
+            patch("os.environ.get", return_value="0"),
+        ):
+            mock_engine_instance = MagicMock()
+            mock_engine_instance.setProperty.return_value = None
+            mock_engine_instance.say.return_value = None
+            mock_engine_instance.runAndWait.return_value = None
+            mock_engine.return_value = mock_engine_instance
+
+            voice = BBIAVoiceAdvanced()
 
         # Test is_coqui_available
         available = voice.is_coqui_available()
