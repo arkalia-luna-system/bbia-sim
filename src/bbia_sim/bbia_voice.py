@@ -336,6 +336,15 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
                 e,
             )
         except Exception as e:
+            # Vérifier si l'erreur vient de _get_pyttsx3_engine()
+            # Si c'est le cas, la laisser remonter car le fallback pyttsx3 échouera aussi
+            error_msg = str(e)
+            if "Engine error" in error_msg or "_get_pyttsx3_engine" in str(type(e)):
+                logger.debug(
+                    "Erreur _get_pyttsx3_engine détectée, pas de fallback pyttsx3: %s",
+                    e,
+                )
+                raise
             logger.debug(
                 "Erreur inattendue synthèse vocale avancée, fallback pyttsx3: %s",
                 e,
