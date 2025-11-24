@@ -147,6 +147,7 @@ class TestSimulatorCoverage(unittest.TestCase):
         # Vérifier que le simulateur a été créé
         self.assertIsNotNone(simulator.model)
 
+    @pytest.mark.slow  # OPTIMISATION: Marquer comme slow car utilise mocks complexes
     @patch("bbia_sim.sim.simulator.mujoco.MjModel")
     @patch("bbia_sim.sim.simulator.mujoco.MjData")
     @patch("bbia_sim.sim.simulator.Path.exists")
