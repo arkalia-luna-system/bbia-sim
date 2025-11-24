@@ -524,7 +524,7 @@ def reconnaitre_parole(
                 logging.exception("Erreur de reconnaissance vocale")
                 return None
     except Exception:
-        logging.exception("Erreur d'accès au microphone")
+        logging.warning("Erreur d'accès au microphone", exc_info=True)
         logging.warning(
             "La reconnaissance vocale nécessite pyaudio. "
             "Installez-le avec : pip install pyaudio",
