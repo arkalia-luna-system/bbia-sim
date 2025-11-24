@@ -5,11 +5,12 @@ Intégration de modèles LLM légers (Phi-2, TinyLlama) pour remplacer
 le système de règles basiques par un véritable assistant conversationnel.
 """
 
+import hashlib
 import json
 import logging
 import re
 import time
-from collections import deque
+from collections import OrderedDict, deque
 from functools import lru_cache
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
@@ -31,6 +32,183 @@ def _get_compiled_regex(pattern: str, flags: int = 0) -> re.Pattern[str]:
 
     """
     return re.compile(pattern, flags)
+
+
+# OPTIMISATION PERFORMANCE: Cache LRU pour réponses LLM fréquentes
+class LLMResponseCache:
+    """Cache LRU avec TTL pour réponses LLM.
+
+    Optimise les performances en évitant de régénérer des réponses identiques.
+    Utilise un cache LRU (Least Recently Used) avec expiration temporelle.
+
+    Attributes:
+        max_size: Taille maximale du cache (nombre d'entrées)
+        ttl_seconds: Durée de vie des entrées en secondes (Time To Live)
+        hits: Nombre de hits (réponses trouvées dans le cache)
+        misses: Nombre de misses (réponses non trouvées)
+    """
+
+    def __init__(self, max_size: int = 100, ttl_seconds: float = 3600.0) -> None:
+        """Initialise le cache LRU.
+
+        Args:
+            max_size: Nombre maximum d'entrées dans le cache (défaut: 100)
+            ttl_seconds: Durée de vie des entrées en secondes (défaut: 1h)
+        """
+        self.max_size = max_size
+        self.ttl_seconds = ttl_seconds
+        self._cache: OrderedDict[str, tuple[str, float]] = OrderedDict()
+        self.hits = 0
+        self.misses = 0
+
+    def _normalize_prompt(self, prompt: str) -> str:
+        """Normalise un prompt pour créer une clé de cache stable.
+
+        Args:
+            prompt: Prompt original
+
+        Returns:
+            Prompt normalisé (minuscules, espaces normalisés)
+        """
+        # Normaliser: minuscules, espaces multiples → espace unique
+        normalized = re.sub(r"\s+", " ", prompt.lower().strip())
+        return normalized
+
+    def _get_cache_key(self, prompt: str, max_length: int, temperature: float) -> str:
+        """Génère une clé de cache unique pour un prompt et paramètres.
+
+        Args:
+            prompt: Prompt utilisateur
+            max_length: Longueur maximale de réponse
+            temperature: Température de génération
+
+        Returns:
+            Clé de cache (hash SHA256)
+        """
+        normalized = self._normalize_prompt(prompt)
+        # Inclure paramètres dans la clé pour éviter collisions
+        key_data = f"{normalized}|{max_length}|{temperature:.2f}"
+        return hashlib.sha256(key_data.encode()).hexdigest()
+
+    def get(
+        self, prompt: str, max_length: int = 200, temperature: float = 0.7
+    ) -> str | None:
+        """Récupère une réponse depuis le cache si disponible et valide.
+
+        Args:
+            prompt: Prompt utilisateur
+            max_length: Longueur maximale de réponse
+            temperature: Température de génération
+
+        Returns:
+            Réponse en cache si disponible et valide, None sinon
+        """
+        cache_key = self._get_cache_key(prompt, max_length, temperature)
+        current_time = time.time()
+
+        if cache_key in self._cache:
+            response, timestamp = self._cache[cache_key]
+
+            # Vérifier expiration TTL
+            if current_time - timestamp < self.ttl_seconds:
+                # Déplacer en fin (LRU: most recently used)
+                self._cache.move_to_end(cache_key)
+                self.hits += 1
+                logger.debug("♻️ Cache hit pour prompt: %s...", prompt[:50])
+                return response
+            # Expiré, supprimer
+            del self._cache[cache_key]
+
+        self.misses += 1
+        return None
+
+    def put(
+        self,
+        prompt: str,
+        response: str,
+        max_length: int = 200,
+        temperature: float = 0.7,
+    ) -> None:
+        """Ajoute une réponse au cache.
+
+        Args:
+            prompt: Prompt utilisateur
+            response: Réponse générée
+            max_length: Longueur maximale de réponse
+            temperature: Température de génération
+        """
+        cache_key = self._get_cache_key(prompt, max_length, temperature)
+        current_time = time.time()
+
+        # Supprimer entrées expirées si cache plein
+        if len(self._cache) >= self.max_size:
+            # Supprimer entrées expirées d'abord
+            expired_keys = [
+                key
+                for key, (_, timestamp) in self._cache.items()
+                if current_time - timestamp >= self.ttl_seconds
+            ]
+            for key in expired_keys:
+                del self._cache[key]
+
+            # Si toujours plein, supprimer LRU (première entrée)
+            if len(self._cache) >= self.max_size:
+                self._cache.popitem(last=False)  # Supprimer oldest (LRU)
+
+        # Ajouter nouvelle entrée
+        self._cache[cache_key] = (response, current_time)
+        logger.debug("💾 Réponse mise en cache: %s...", prompt[:50])
+
+    def get_stats(self) -> dict[str, Any]:
+        """Retourne les statistiques du cache.
+
+        Returns:
+            Dictionnaire avec hits, misses, hit_rate, size
+        """
+        total = self.hits + self.misses
+        hit_rate = (self.hits / total * 100) if total > 0 else 0.0
+
+        return {
+            "hits": self.hits,
+            "misses": self.misses,
+            "hit_rate": round(hit_rate, 2),
+            "size": len(self._cache),
+            "max_size": self.max_size,
+            "ttl_seconds": self.ttl_seconds,
+        }
+
+    def clear(self) -> None:
+        """Vide le cache."""
+        self._cache.clear()
+        self.hits = 0
+        self.misses = 0
+        logger.debug("🗑️ Cache LLM vidé")
+
+
+# Cache global partagé pour toutes les instances BBIAChat
+_global_llm_cache: LLMResponseCache | None = None
+
+
+def _get_global_llm_cache() -> LLMResponseCache:
+    """Retourne le cache global LLM (créé à la demande).
+
+    Returns:
+        Instance du cache global LLM
+    """
+    global _global_llm_cache
+    if _global_llm_cache is None:
+        # Configuration via variables d'environnement
+        import os
+
+        max_size = int(os.environ.get("BBIA_LLM_CACHE_SIZE", "100"))
+        ttl_seconds = float(os.environ.get("BBIA_LLM_CACHE_TTL", "3600.0"))
+        _global_llm_cache = LLMResponseCache(max_size=max_size, ttl_seconds=ttl_seconds)
+        logger.info(
+            "💾 Cache LLM initialisé (max_size=%d, ttl=%.0fs)",
+            max_size,
+            ttl_seconds,
+        )
+    return _global_llm_cache
 
 
 if TYPE_CHECKING:
@@ -216,7 +394,7 @@ class BBIAChat:
         temperature: float = 0.7,
         timeout: float = 30.0,
     ) -> str:
-        """Génère une réponse avec le LLM.
+        """Génère une réponse avec le LLM (avec cache LRU).
 
         Args:
             prompt: Prompt utilisateur
@@ -230,6 +408,15 @@ class BBIAChat:
         """
         if not self.llm_model or not self.llm_tokenizer:
             return "Désolé, le modèle LLM n'est pas disponible."
+
+        # OPTIMISATION PERFORMANCE: Vérifier cache LRU avant génération
+        llm_cache = _get_global_llm_cache()
+        cached_response = llm_cache.get(
+            prompt, max_length=max_length, temperature=temperature
+        )
+        if cached_response is not None:
+            logger.debug("♻️ Réponse LLM récupérée depuis cache")
+            return cached_response
 
         try:
             # Valider longueur prompt (max 2000 tokens)
@@ -280,7 +467,17 @@ class BBIAChat:
                 response = response.replace(prompt, "").strip()
 
             # Sanitizer: retirer code exécutable potentiel
-            return self._sanitize_response(response)
+            sanitized_response = self._sanitize_response(response)
+
+            # OPTIMISATION PERFORMANCE: Mettre en cache la réponse générée
+            llm_cache.put(
+                prompt,
+                sanitized_response,
+                max_length=max_length,
+                temperature=temperature,
+            )
+
+            return sanitized_response
 
         except Exception:
             logger.exception("❌ Erreur génération LLM")
@@ -379,6 +576,14 @@ class BBIAChat:
         except Exception:
             logger.exception("❌ Erreur chat")
             return "Je ne comprends pas bien, peux-tu reformuler ?"
+
+    def get_cache_stats(self) -> dict[str, Any]:
+        """Retourne les statistiques du cache LLM.
+
+        Returns:
+            Dictionnaire avec hits, misses, hit_rate, size, etc.
+        """
+        return _get_global_llm_cache().get_stats()
 
     def _build_context_prompt(self, user_message: str) -> str:
         """Construit prompt avec contexte historique et personnalité.

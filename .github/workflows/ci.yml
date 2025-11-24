@@ -97,6 +97,41 @@ jobs:
           # Nettoyer le fichier temporaire
           rm -f audit-results.json || true
 
+      - name: Security scan with semgrep
+        run: |
+          # Installer semgrep si non disponible
+          if ! command -v semgrep &> /dev/null; then
+            pip install --no-cache-dir semgrep
+          fi
+          # Scan avec règles par défaut (non-bloquant)
+          semgrep --config=auto --json --output=artifacts/semgrep-results.json src/ || true
+          # Afficher résumé
+          if [ -f artifacts/semgrep-results.json ]; then
+            echo "📊 Résultats semgrep:"
+            cat artifacts/semgrep-results.json | python -m json.tool | head -50 || true
+          fi
+        continue-on-error: true
+
+      - name: Generate SBOM (CycloneDX)
+        run: |
+          # Installer cyclonedx-bom si non disponible
+          pip install --no-cache-dir cyclonedx-bom || pip install --no-cache-dir cyclonedx-py
+          # Générer SBOM
+          cyclonedx-py -o artifacts/sbom.json -i src/ || \
+          cyclonedx-bom -o artifacts/sbom.json || \
+          echo "SBOM generation failed (non-blocking)"
+        continue-on-error: true
+
+      - name: Upload security artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: security-artifacts
+          path: |
+            artifacts/semgrep-results.json
+            artifacts/sbom.json
+          retention-days: 30
+
       - name: Scan secrets with gitleaks
         continue-on-error: true
         run: |
@@ -122,6 +157,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    # OPTIMISATION CI: Cache pip amélioré
     env:
       SEED: 42
       MUJOCO_GL: disable
@@ -178,7 +214,12 @@ jobs:
         timeout-minutes: 45
         run: |
           export PYTHONPATH=src:$PYTHONPATH
-          pytest -vv -m "not e2e and not slow" --cov=src/bbia_sim --cov-report=xml --cov-report=term-missing --cov-fail-under=0 --timeout=30 --maxfail=10 --log-cli-level=INFO --durations=20 --tb=short --showlocals -x
+          # OPTIMISATION CI: Parallélisation avec pytest-xdist si disponible
+          if python -c "import xdist" 2>/dev/null; then
+            pytest -vv -m "not e2e and not slow" --cov=src/bbia_sim --cov-report=xml --cov-report=term-missing --cov-fail-under=0 --timeout=30 --maxfail=10 --log-cli-level=INFO --durations=20 --tb=short --showlocals -n auto
+          else
+            pytest -vv -m "not e2e and not slow" --cov=src/bbia_sim --cov-report=xml --cov-report=term-missing --cov-fail-under=0 --timeout=30 --maxfail=10 --log-cli-level=INFO --durations=20 --tb=short --showlocals -x
+          fi
         env:
           PYTHONDONTWRITEBYTECODE: 1
 
@@ -510,6 +551,14 @@ jobs:
           mkdir -p artifacts
           # Script accepte --jsonl ou --output pour fichier de sortie
           python scripts/bbia_performance_benchmarks.py --jsonl artifacts/benchmarks.jsonl 2>&1 || python scripts/bbia_performance_benchmarks.py --output artifacts/benchmarks.jsonl 2>&1 || echo "Benchmarks failed (non-blocking)"
+        continue-on-error: true
+
+      - name: Run Performance Profiling with Baseline
+        run: |
+          export PYTHONPATH=src:$PYTHONPATH
+          mkdir -p artifacts
+          # Profiling automatique avec validation baseline
+          python scripts/performance_profiling.py || echo "Profiling failed (non-blocking)"
         continue-on-error: true
 
       - name: Clean up after benchmarks
