@@ -123,8 +123,8 @@
 - [x] ✅ Ajouter bouton "Installer PWA" visible - **FAIT** (`pwa_install.js` avec bouton flottant)
 - [x] ✅ Améliorer feedback visuel (toasts, notifications) - **FAIT** (toasts dans `pwa_install.js`)
 - [x] ✅ Optimiser responsive mobile (tactile) - **FAIT** (CSS min-height 44px, media queries)
-- [ ] ⚠️ Ajouter dark mode - **OPTIONNEL** (peut attendre)
-- [ ] ⚠️ Améliorer graphiques temps réel (légendes, zoom) - **OPTIONNEL** (peut attendre)
+- [x] ✅ Ajouter dark mode - **FAIT** (`dark_mode.js` + variables CSS, toggle, persistance)
+- [x] ✅ Améliorer graphiques temps réel (légendes, zoom, export) - **FAIT** (chartjs-plugin-zoom, export CSV/JSON)
 
 **Impact** : ✅ **UX améliorée**
 

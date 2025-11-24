@@ -3,28 +3,44 @@
         <div class="app-section-title">Télémétrie Temps Réel</div>
 
         <div class="mt-4">
+            <!-- Contrôles graphiques -->
+            <div class="flex flex-wrap gap-2 mb-4">
+                <button id="export-csv-btn"
+                    class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+                    📥 Export CSV
+                </button>
+                <button id="export-json-btn"
+                    class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors">
+                    📥 Export JSON
+                </button>
+                <button id="reset-zoom-btn"
+                    class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors">
+                    🔍 Reset Zoom
+                </button>
+            </div>
+
             <!-- Canvas pour graphiques Chart.js -->
-            <div class="bg-white rounded-lg p-4 border border-gray-200">
+            <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
                 <canvas id="telemetry-chart" class="w-full" style="max-height: 400px;"></canvas>
             </div>
 
             <!-- Métriques en temps réel -->
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
-                <div class="bg-gray-50 rounded-lg p-3 border border-gray-200">
-                    <div class="text-sm text-gray-600">Latence</div>
-                    <div id="latency-value" class="text-2xl font-bold text-gray-800">0 ms</div>
+                <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-3 border border-gray-200 dark:border-gray-600">
+                    <div class="text-sm text-gray-600 dark:text-gray-300">Latence</div>
+                    <div id="latency-value" class="text-2xl font-bold text-gray-800 dark:text-gray-100">0 ms</div>
                 </div>
-                <div class="bg-gray-50 rounded-lg p-3 border border-gray-200">
-                    <div class="text-sm text-gray-600">FPS</div>
-                    <div id="fps-value" class="text-2xl font-bold text-green-600">60</div>
+                <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-3 border border-gray-200 dark:border-gray-600">
+                    <div class="text-sm text-gray-600 dark:text-gray-300">FPS</div>
+                    <div id="fps-value" class="text-2xl font-bold text-green-600 dark:text-green-400">60</div>
                 </div>
-                <div class="bg-gray-50 rounded-lg p-3 border border-gray-200">
-                    <div class="text-sm text-gray-600">CPU</div>
-                    <div id="cpu-value" class="text-2xl font-bold text-blue-600">0%</div>
+                <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-3 border border-gray-200 dark:border-gray-600">
+                    <div class="text-sm text-gray-600 dark:text-gray-300">CPU</div>
+                    <div id="cpu-value" class="text-2xl font-bold text-blue-600 dark:text-blue-400">0%</div>
                 </div>
-                <div class="bg-gray-50 rounded-lg p-3 border border-gray-200">
-                    <div class="text-sm text-gray-600">RAM</div>
-                    <div id="ram-value" class="text-2xl font-bold text-purple-600">0%</div>
+                <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-3 border border-gray-200 dark:border-gray-600">
+                    <div class="text-sm text-gray-600 dark:text-gray-300">RAM</div>
+                    <div id="ram-value" class="text-2xl font-bold text-purple-600 dark:text-purple-400">0%</div>
                 </div>
             </div>
         </div>
@@ -32,6 +48,7 @@
 </section>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
 <script>
     // Gestion des graphiques de télémétrie
     (function () {
@@ -143,16 +160,75 @@
                     },
                     plugins: {
                         legend: {
+                            display: true,
+                            position: 'top',
                             labels: {
-                                color: '#4D4D4D',
+                                color: function (context) {
+                                    return window.matchMedia('(prefers-color-scheme: dark)').matches
+                                        ? '#E5E7EB' : '#4D4D4D';
+                                },
                                 font: {
-                                    weight: '500'
-                                }
+                                    weight: '500',
+                                    size: 12
+                                },
+                                usePointStyle: true,
+                                padding: 15
                             }
                         },
                         tooltip: {
                             mode: 'index',
-                            intersect: false
+                            intersect: false,
+                            backgroundColor: function (context) {
+                                return window.matchMedia('(prefers-color-scheme: dark)').matches
+                                    ? 'rgba(31, 41, 55, 0.95)' : 'rgba(255, 255, 255, 0.95)';
+                            },
+                            titleColor: function (context) {
+                                return window.matchMedia('(prefers-color-scheme: dark)').matches
+                                    ? '#E5E7EB' : '#1F2937';
+                            },
+                            bodyColor: function (context) {
+                                return window.matchMedia('(prefers-color-scheme: dark)').matches
+                                    ? '#D1D5DB' : '#4B5563';
+                            },
+                            borderColor: function (context) {
+                                return window.matchMedia('(prefers-color-scheme: dark)').matches
+                                    ? '#4B5563' : '#E5E7EB';
+                            },
+                            borderWidth: 1,
+                            padding: 12,
+                            callbacks: {
+                                label: function (context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        label += context.parsed.y.toFixed(2);
+                                        if (label.includes('ms')) {
+                                            label += ' ms';
+                                        } else if (label.includes('%')) {
+                                            label += ' %';
+                                        }
+                                    }
+                                    return label;
+                                }
+                            }
+                        },
+                        zoom: {
+                            zoom: {
+                                wheel: {
+                                    enabled: true,
+                                    speed: 0.1
+                                },
+                                pinch: {
+                                    enabled: true
+                                },
+                                mode: 'xy'
+                            },
+                            pan: {
+                                enabled: true,
+                                mode: 'xy'
+                            }
                         }
                     }
                 }
@@ -251,6 +327,115 @@
             initChart();
             connectWebSocket();
         }
+
+        // Export CSV
+        function exportCSV() {
+            const headers = ['Timestamp', 'Latence (ms)', 'FPS', 'CPU (%)', 'RAM (%)'];
+            const rows = [headers.join(',')];
+
+            for (let i = 0; i < chartData.labels.length; i++) {
+                const row = [
+                    chartData.labels[i],
+                    chartData.latency[i] || 0,
+                    chartData.fps[i] || 0,
+                    chartData.cpu[i] || 0,
+                    chartData.memory[i] || 0
+                ];
+                rows.push(row.join(','));
+            }
+
+            const csv = rows.join('\n');
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `telemetry_${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+
+        // Export JSON
+        function exportJSON() {
+            const data = {
+                timestamp: new Date().toISOString(),
+                metrics: []
+            };
+
+            for (let i = 0; i < chartData.labels.length; i++) {
+                data.metrics.push({
+                    timestamp: chartData.labels[i],
+                    latency_ms: chartData.latency[i] || 0,
+                    fps: chartData.fps[i] || 0,
+                    cpu_percent: chartData.cpu[i] || 0,
+                    ram_percent: chartData.memory[i] || 0
+                });
+            }
+
+            const json = JSON.stringify(data, null, 2);
+            const blob = new Blob([json], { type: 'application/json' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `telemetry_${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+
+        // Reset zoom
+        function resetZoom() {
+            if (telemetryChart) {
+                telemetryChart.resetZoom();
+            }
+        }
+
+        // Écouter changements dark mode
+        function updateChartColors() {
+            if (!telemetryChart) return;
+            const isDark = document.documentElement.classList.contains('dark') ||
+                window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+            const textColor = isDark ? '#E5E7EB' : '#4D4D4D';
+            const gridColor = isDark ? 'rgba(229, 231, 235, 0.1)' : 'rgba(77, 77, 77, 0.1)';
+
+            telemetryChart.options.scales.x.ticks.color = textColor;
+            telemetryChart.options.scales.x.grid.color = gridColor;
+            telemetryChart.options.scales.y.ticks.color = textColor;
+            telemetryChart.options.scales.y.grid.color = gridColor;
+            telemetryChart.options.scales.y1.ticks.color = textColor;
+
+            if (telemetryChart.options.plugins.legend) {
+                telemetryChart.options.plugins.legend.labels.color = textColor;
+            }
+
+            telemetryChart.update('none');
+        }
+
+        // Attacher événements
+        document.addEventListener('DOMContentLoaded', function () {
+            const exportCsvBtn = document.getElementById('export-csv-btn');
+            const exportJsonBtn = document.getElementById('export-json-btn');
+            const resetZoomBtn = document.getElementById('reset-zoom-btn');
+
+            if (exportCsvBtn) {
+                exportCsvBtn.addEventListener('click', exportCSV);
+            }
+            if (exportJsonBtn) {
+                exportJsonBtn.addEventListener('click', exportJSON);
+            }
+            if (resetZoomBtn) {
+                resetZoomBtn.addEventListener('click', resetZoom);
+            }
+
+            // Observer changements dark mode
+            const darkModeObserver = new MutationObserver(updateChartColors);
+            darkModeObserver.observe(document.documentElement, {
+                attributes: true,
+                attributeFilter: ['class']
+            });
+
+            // Écouter media query dark mode
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateChartColors);
+        });
 
         // Nettoyer à la fermeture
         window.addEventListener('beforeunload', function () {

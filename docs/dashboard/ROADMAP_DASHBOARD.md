@@ -479,8 +479,17 @@ headers: {
 
 ### Phase 2: UI - ✅ **100% TERMINÉ**
 - ✅ Graphiques Temps Réel - **TERMINÉ** (`sections/telemetry_charts.html` avec Chart.js)
+  - ✅ Légendes améliorées, zoom/pan interactif (chartjs-plugin-zoom)
+  - ✅ Tooltips avec valeurs précises
+  - ✅ Export CSV/JSON
+  - ✅ Support dark mode
 - ✅ Sliders Émotions avec Intensité - **TERMINÉ** (`sections/emotions.html`)
 - ✅ Presets Exportables - **TERMINÉ** (API `/api/presets`)
+- ✅ Dark Mode - **TERMINÉ** (`dark_mode.js` + variables CSS)
+  - ✅ Toggle dark mode (bouton flottant)
+  - ✅ Persistance localStorage
+  - ✅ Support prefers-color-scheme
+  - ✅ Adaptation couleurs graphiques
 
 ### Phase 3: Advanced - ✅ **100% TERMINÉ**
 - ✅ Mode Démo Read-only - **TERMINÉ** (`sections/demo_mode.html`)
@@ -505,10 +514,12 @@ headers: {
 - ✅ `src/bbia_sim/daemon/app/dashboard/templates/sections/emotions.html` - Sliders émotions avec intensité
 - ✅ `src/bbia_sim/daemon/app/routers/presets.py` - API presets (GET, POST, DELETE, apply)
 - ✅ `tests/test_presets_edge_cases.py` - Tests edge cases presets (14 tests)
-- ✅ Mise à jour `templates/base.html` (lien manifest + enregistrement SW + meta mobile)
+- ✅ Mise à jour `templates/base.html` (lien manifest + enregistrement SW + meta mobile + dark_mode.js)
 - ✅ Mise à jour `templates/index.html` (sections + script pwa_install.js)
-- ✅ Mise à jour `static/style.css` (responsive mobile, boutons tactiles)
+- ✅ Mise à jour `static/style.css` (responsive mobile, boutons tactiles, variables dark mode)
 - ✅ Mise à jour `routers/motion.py` (endpoint `POST /api/motion/emotion` avec body JSON)
+- ✅ `src/bbia_sim/daemon/app/dashboard/static/js/dark_mode.js` - Gestion dark mode (nouveau)
+- ✅ Mise à jour `sections/telemetry_charts.html` (zoom, export, dark mode)
 
 ### Endpoints API Ajoutés
 - `POST /api/motion/emotion` - Définir émotion avec intensité
