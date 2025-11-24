@@ -652,12 +652,25 @@ class TestFactoryFunctions:
 
     def test_create_face_detector_with_mediapipe(self):
         """Test création détecteur visages avec MediaPipe."""
-        try:
-            import mediapipe  # noqa: F401
-        except ImportError:
-            pytest.skip("mediapipe non disponible")
-        with patch("mediapipe.solutions.face_detection") as mock_face_detection:
-            mock_face_detection.FaceDetection = MagicMock(return_value=MagicMock())
+        # Nettoyer le cache MediaPipe avant le test
+        import bbia_sim.vision_yolo as vision_yolo_module
+
+        with vision_yolo_module._mediapipe_cache_lock:
+            vision_yolo_module._mediapipe_face_detection_cache = None
+        gc.collect()
+
+        # Mock mediapipe même s'il n'est pas installé
+        mock_mediapipe = MagicMock()
+        mock_face_detection_class = MagicMock(return_value=MagicMock())
+        mock_mediapipe.solutions.face_detection.FaceDetection = (
+            mock_face_detection_class
+        )
+
+        with (
+            patch("bbia_sim.vision_yolo.MEDIAPIPE_AVAILABLE", True),
+            patch("bbia_sim.vision_yolo.mp", mock_mediapipe),
+            patch("bbia_sim.vision_yolo.mediapipe", mock_mediapipe, create=True),
+        ):
             detector = create_face_detector()
         assert detector is not None
         assert isinstance(detector, FaceDetector)

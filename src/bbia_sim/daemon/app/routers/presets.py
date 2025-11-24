@@ -72,7 +72,9 @@ async def get_preset(preset_name: str) -> dict[str, Any]:
 
     preset_file = PRESETS_DIR / f"{preset_name}.json"
     if not preset_file.exists():
-        raise HTTPException(status_code=404, detail=f"Preset '{preset_name}' introuvable")
+        raise HTTPException(
+            status_code=404, detail=f"Preset '{preset_name}' introuvable"
+        )
 
     try:
         with open(preset_file, encoding="utf-8") as f:
@@ -146,7 +148,9 @@ async def apply_preset(preset_name: str) -> dict[str, Any]:
 
     preset_file = PRESETS_DIR / f"{preset_name}.json"
     if not preset_file.exists():
-        raise HTTPException(status_code=404, detail=f"Preset '{preset_name}' introuvable")
+        raise HTTPException(
+            status_code=404, detail=f"Preset '{preset_name}' introuvable"
+        )
 
     try:
         with open(preset_file, encoding="utf-8") as f:
@@ -162,7 +166,9 @@ async def apply_preset(preset_name: str) -> dict[str, Any]:
 
             robot = RobotFactory.create_backend("mujoco")
             if not robot:
-                raise HTTPException(status_code=500, detail="Impossible de créer le backend robot")
+                raise HTTPException(
+                    status_code=500, detail="Impossible de créer le backend robot"
+                )
 
             robot.connect()
             applied_count = 0
@@ -192,10 +198,12 @@ async def apply_preset(preset_name: str) -> dict[str, Any]:
             if applied_count == 0 and errors:
                 raise HTTPException(
                     status_code=500,
-                    detail=f"Aucune émotion appliquée. Erreurs: {', '.join(errors)}"
+                    detail=f"Aucune émotion appliquée. Erreurs: {', '.join(errors)}",
                 )
 
-            logger.info(f"✅ Preset '{preset_name}' appliqué: {applied_count}/{len(emotions)} émotions")
+            logger.info(
+                f"✅ Preset '{preset_name}' appliqué: {applied_count}/{len(emotions)} émotions"
+            )
             return {
                 "success": True,
                 "message": f"Preset '{preset_name}' appliqué avec succès",
@@ -208,7 +216,9 @@ async def apply_preset(preset_name: str) -> dict[str, Any]:
             raise
         except Exception as e:
             logger.exception(f"Erreur application preset {preset_name}")
-            raise HTTPException(status_code=500, detail=f"Erreur application: {e!s}") from e
+            raise HTTPException(
+                status_code=500, detail=f"Erreur application: {e!s}"
+            ) from e
     except (OSError, json.JSONDecodeError) as e:
         logger.exception(f"Erreur lecture preset {preset_name}")
         raise HTTPException(status_code=500, detail=f"Erreur lecture: {e!s}") from e
@@ -230,7 +240,9 @@ async def delete_preset(preset_name: str) -> dict[str, Any]:
 
     preset_file = PRESETS_DIR / f"{preset_name}.json"
     if not preset_file.exists():
-        raise HTTPException(status_code=404, detail=f"Preset '{preset_name}' introuvable")
+        raise HTTPException(
+            status_code=404, detail=f"Preset '{preset_name}' introuvable"
+        )
 
     try:
         preset_file.unlink()
@@ -242,4 +254,3 @@ async def delete_preset(preset_name: str) -> dict[str, Any]:
     except OSError as e:
         logger.exception(f"Erreur suppression preset {preset_name}")
         raise HTTPException(status_code=500, detail=f"Erreur suppression: {e!s}") from e
-

@@ -351,7 +351,9 @@ class BBIAVision:
                             )
                         elif _mediapipe_face_detection_cache is not None:
                             # Si cache existe mais MediaPipe n'est plus disponible, nettoyer
-                            logger.debug("🧹 Nettoyage cache MediaPipe (non disponible)")
+                            logger.debug(
+                                "🧹 Nettoyage cache MediaPipe (non disponible)"
+                            )
                             _mediapipe_face_detection_cache = None
                             self.face_detector = None
                         else:
