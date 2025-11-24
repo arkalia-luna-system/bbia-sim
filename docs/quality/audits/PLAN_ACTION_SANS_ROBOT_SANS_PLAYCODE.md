@@ -234,10 +234,10 @@
 - Visible immédiatement
 - Pas de dépendances externes
 
-**Priorité #2** : **Tests Robustesse** ⭐⭐
+**Priorité #2** : ✅ **TERMINÉ** - Tests Robustesse ⭐⭐
 
 - Important pour production
-- Peut attendre si temps limité
+- 32 tests implémentés (WebSocket, Dashboard, PWA)
 
 **Priorité #3** : **Nettoyage + Optimisations** ⭐
 
