@@ -93,6 +93,31 @@ if PROMETHEUS_AVAILABLE and REGISTRY:
             "bbia_active_connections",
             "Active WebSocket connections",
         )
+        watchdog_heartbeat_age = _get_or_create_metric(
+            Gauge,
+            "bbia_watchdog_heartbeat_age_seconds",
+            "Watchdog heartbeat age in seconds",
+        )
+        robot_connected = _get_or_create_metric(
+            Gauge,
+            "bbia_robot_connected",
+            "Robot connection status (1=connected, 0=disconnected)",
+        )
+        latency_p50 = _get_or_create_metric(
+            Gauge,
+            "bbia_latency_p50_ms",
+            "Request latency p50 percentile in milliseconds",
+        )
+        latency_p95 = _get_or_create_metric(
+            Gauge,
+            "bbia_latency_p95_ms",
+            "Request latency p95 percentile in milliseconds",
+        )
+        latency_p99 = _get_or_create_metric(
+            Gauge,
+            "bbia_latency_p99_ms",
+            "Request latency p99 percentile in milliseconds",
+        )
     except (ValueError, KeyError) as e:
         # Si erreur de duplication, réutiliser les métriques existantes
         logger.warning("Métriques Prometheus déjà enregistrées, réutilisation: %s", e)
@@ -103,6 +128,11 @@ if PROMETHEUS_AVAILABLE and REGISTRY:
         memory_usage = None
         simulation_fps = None
         active_connections = None
+        watchdog_heartbeat_age = None
+        robot_connected = None
+        latency_p50 = None
+        latency_p95 = None
+        latency_p99 = None
         collector_to_names = getattr(
             REGISTRY,
             "_collector_to_names",
@@ -123,6 +153,16 @@ if PROMETHEUS_AVAILABLE and REGISTRY:
                     simulation_fps = collector
                 elif name == "bbia_active_connections":
                     active_connections = collector
+                elif name == "bbia_watchdog_heartbeat_age_seconds":
+                    watchdog_heartbeat_age = collector
+                elif name == "bbia_robot_connected":
+                    robot_connected = collector
+                elif name == "bbia_latency_p50_ms":
+                    latency_p50 = collector
+                elif name == "bbia_latency_p95_ms":
+                    latency_p95 = collector
+                elif name == "bbia_latency_p99_ms":
+                    latency_p99 = collector
 else:
     request_count = None
     request_latency = None
@@ -130,6 +170,11 @@ else:
     memory_usage = None
     simulation_fps = None
     active_connections = None
+    watchdog_heartbeat_age = None
+    robot_connected = None
+    latency_p50 = None
+    latency_p95 = None
+    latency_p99 = None
 
 # Métriques système en mémoire (fallback si Prometheus non disponible)
 # Historique des latences pour calcul p50/p95/p99 (garder dernières 1000 mesures)
@@ -213,6 +258,45 @@ async def get_prometheus_metrics() -> Response:
                 active_connections.set(len(telemetry_manager.active_connections))
             else:
                 active_connections.set(0)
+
+        # Métriques watchdog et robot (si disponible)
+        if watchdog_heartbeat_age or robot_connected:
+            try:
+                from bbia_sim.backends.reachy_mini_backend import ReachyMiniBackend
+
+                # Récupérer le backend actif depuis simulation_service
+                if simulation_service.is_simulation_ready():
+                    backend = getattr(simulation_service, "backend", None)
+                    if isinstance(backend, ReachyMiniBackend):
+                        # Watchdog heartbeat age
+                        if watchdog_heartbeat_age:
+                            if backend.is_connected and hasattr(
+                                backend, "_last_heartbeat"
+                            ):
+                                age = time.time() - backend._last_heartbeat
+                                watchdog_heartbeat_age.set(age)
+                            else:
+                                watchdog_heartbeat_age.set(0.0)
+
+                        # Robot connected status
+                        if robot_connected:
+                            robot_connected.set(1.0 if backend.is_connected else 0.0)
+            except (ImportError, AttributeError, TypeError):
+                # Backend non disponible ou erreur
+                if watchdog_heartbeat_age:
+                    watchdog_heartbeat_age.set(0.0)
+                if robot_connected:
+                    robot_connected.set(0.0)
+
+        # Métriques latence percentiles (p50/p95/p99)
+        if latency_p50 or latency_p95 or latency_p99:
+            percentiles = _calculate_percentiles(_latency_history)
+            if latency_p50:
+                latency_p50.set(percentiles["p50"])
+            if latency_p95:
+                latency_p95.set(percentiles["p95"])
+            if latency_p99:
+                latency_p99.set(percentiles["p99"])
 
     except Exception as e:
         logger.warning("Erreur mise à jour métriques: %s", e)
