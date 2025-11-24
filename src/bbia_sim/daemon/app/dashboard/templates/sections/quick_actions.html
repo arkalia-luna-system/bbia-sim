@@ -83,13 +83,76 @@
                     button.style.transform = '';
                 }, 150);
 
-                // Envoyer commande (à implémenter avec WebSocket ou API)
-                if (emotion) {
-                    console.log(`Émotion: ${emotion}`);
-                    // TODO: Envoyer via WebSocket ou API
-                } else if (action) {
-                    console.log(`Action: ${action}`);
-                    // TODO: Envoyer via WebSocket ou API
+                // Envoyer commande via API REST
+                try {
+                    if (emotion) {
+                        console.log(`Émotion: ${emotion}`);
+                        const response = await fetch('/api/motion/emotion', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                emotion: emotion,
+                                intensity: 0.8, // Intensité par défaut pour quick actions
+                            }),
+                        });
+                        if (response.ok) {
+                            const data = await response.json();
+                            console.log('✅ Émotion définie:', data);
+                            // Feedback visuel
+                            button.style.backgroundColor = '#4CAF50';
+                            setTimeout(() => {
+                                button.style.backgroundColor = '';
+                            }, 500);
+                        } else {
+                            console.error('❌ Erreur définition émotion:', response.statusText);
+                            button.style.backgroundColor = '#F44336';
+                            setTimeout(() => {
+                                button.style.backgroundColor = '';
+                            }, 500);
+                        }
+                    } else if (action) {
+                        console.log(`Action: ${action}`);
+                        // Mapper les actions aux comportements BBIA
+                        const behaviorMap = {
+                            wave: 'greeting',
+                            pray: 'pray',
+                            sleep: 'sleep',
+                            dance: 'dance',
+                            art: 'art',
+                            party: 'party',
+                            movie: 'movie',
+                        };
+                        const behavior = behaviorMap[action] || action;
+                        const response = await fetch(
+                            `/api/ecosystem/behaviors/execute?behavior=${behavior}&intensity=1.0`,
+                            {
+                                method: 'POST',
+                            },
+                        );
+                        if (response.ok) {
+                            const data = await response.json();
+                            console.log('✅ Comportement exécuté:', data);
+                            // Feedback visuel
+                            button.style.backgroundColor = '#4CAF50';
+                            setTimeout(() => {
+                                button.style.backgroundColor = '';
+                            }, 500);
+                        } else {
+                            console.error('❌ Erreur exécution comportement:', response.statusText);
+                            button.style.backgroundColor = '#F44336';
+                            setTimeout(() => {
+                                button.style.backgroundColor = '';
+                            }, 500);
+                        }
+                    }
+                } catch (error) {
+                    console.error('❌ Erreur lors de l\'envoi de la commande:', error);
+                    button.style.backgroundColor = '#F44336';
+                    setTimeout(() => {
+                        button.style.backgroundColor = '';
+                    }, 500);
                 }
             });
         });
