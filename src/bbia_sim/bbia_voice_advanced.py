@@ -114,16 +114,27 @@ class BBIAVoiceAdvanced:
                     _get_pyttsx3_engine,
                 )
 
-                self.pyttsx3_engine = (
+                engine = (
                     _get_pyttsx3_engine()
                 )  # Utilise cache global (0ms après premier appel)
+                if engine is None:
+                    logger.warning(
+                        "⚠️ pyttsx3 non disponible (audio désactivé ou eSpeak manquant)"
+                    )
+                    self.pyttsx3_engine = None
+                    return
+                self.pyttsx3_engine = engine
                 self.pyttsx3_voice_id = _get_cached_voice_id()  # Utilise cache voice ID
                 self.pyttsx3_engine.setProperty("voice", self.pyttsx3_voice_id)
                 self.pyttsx3_engine.setProperty("rate", 170)
                 self.pyttsx3_engine.setProperty("volume", 1.0)
                 logger.info("✅ Fallback pyttsx3 initialisé (avec cache)")
             except Exception:
-                logger.exception("❌ Erreur initialisation fallback")
+                # Ne pas logger l'exception complète en CI (trop verbeux)
+                if os.environ.get("BBIA_DISABLE_AUDIO", "0") == "1":
+                    logger.warning("⚠️ Erreur initialisation fallback (audio désactivé)")
+                else:
+                    logger.exception("❌ Erreur initialisation fallback")
                 self.pyttsx3_engine = None
 
     def say(

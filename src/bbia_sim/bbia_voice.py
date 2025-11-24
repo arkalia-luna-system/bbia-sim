@@ -78,8 +78,18 @@ def _get_pyttsx3_engine() -> Any:
         with _pyttsx3_lock:
             # Double check après lock (thread-safe)
             if _pyttsx3_engine_cache is None:
-                _pyttsx3_engine_cache = pyttsx3.init()
-                logging.debug("✅ Moteur pyttsx3 initialisé (cache créé)")
+                # Vérifier si audio est désactivé (CI, tests)
+                if os.environ.get("BBIA_DISABLE_AUDIO", "0") == "1":
+                    logging.debug("⚠️ Audio désactivé, pyttsx3 non initialisé")
+                    return None
+                try:
+                    _pyttsx3_engine_cache = pyttsx3.init()
+                    logging.debug("✅ Moteur pyttsx3 initialisé (cache créé)")
+                except (RuntimeError, OSError) as e:
+                    # eSpeak non installé ou autre erreur système
+                    logging.warning(f"⚠️ pyttsx3 non disponible: {e}")
+                    _pyttsx3_engine_cache = None
+                    return None
     return _pyttsx3_engine_cache
 
 

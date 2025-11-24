@@ -152,6 +152,8 @@ addopts = [
     "--import-mode=importlib",
     # Arrêter après 50 échecs pour éviter les boucles infinies
     "--maxfail=50",
+    # Ne pas relancer automatiquement les tests (éviter boucles)
+    "--no-header",
     "--durations=20",  # Afficher les 20 tests les plus lents pour identifier les goulots d'étranglement
     "--showlocals",  # Afficher les variables locales en cas d'erreur pour faciliter le debug
     # Couverture standardisée (même chemin que [tool.coverage.run].source)
@@ -170,6 +172,8 @@ env = [
     "MUJOCO_GL=disable",
     "DISPLAY=",
     "BBIA_DISABLE_AUDIO=1",
+    "BBIA_FORCE_MOCK_MODELS=1",
+    "BBIA_DISABLE_VISION_MODELS=1",
 ]
 
 # Marqueurs pour tests légers/lourds (fusionné)
