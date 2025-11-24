@@ -115,10 +115,10 @@
 **Impact** : +0.4 point
 
 #### B. Sécurité robot ⏱️ **2-3h**
-- [ ] Documenter procédures d'urgence
-- [ ] Ajouter tests de sécurité robot (stress tests)
-- [ ] Créer checklist sécurité avant déploiement
-- [ ] Ajouter tests de limites mécaniques
+- [x] ✅ Documenter procédures d'urgence - **TERMINÉ** (dans SECURITY.md, 24 Nov. 2025)
+- [ ] Ajouter tests de sécurité robot (stress tests) (optionnel)
+- [x] ✅ Créer checklist sécurité avant déploiement - **TERMINÉ** (dans SECURITY.md)
+- [ ] Ajouter tests de limites mécaniques (optionnel)
 
 **Impact** : +0.3 point
 
@@ -140,8 +140,8 @@
 
 #### A. Pre-commit hooks complets ⏱️ **1h**
 - [x] ✅ Pre-commit hooks améliorés (gitleaks, check-json, check-toml) - **TERMINÉ**
-- [ ] Configurer CI pour rejeter les PRs avec erreurs de formatage
-- [ ] Ajouter hook pour vérifier coverage minimum
+- [x] ✅ Configurer CI pour rejeter les PRs avec erreurs de formatage - **TERMINÉ** (24 Nov. 2025)
+- [x] ✅ Ajouter hook pour vérifier coverage minimum - **TERMINÉ** (hook local ajouté, désactivé par défaut)
 
 **Impact** : +0.2 point
 
@@ -186,10 +186,10 @@
 **Impact** : +0.3 point
 
 #### B. Gestion dépendances ⏱️ **2-3h**
-- [ ] Automatiser mise à jour dépendances (Dependabot)
-- [ ] Ajouter scan vulnérabilités (pip-audit, safety)
-- [ ] Documenter politique de mise à jour
-- [ ] Créer guide de style pour contributeurs
+- [x] ✅ Automatiser mise à jour dépendances (Dependabot) - **TERMINÉ** (24 Nov. 2025)
+- [x] ✅ Ajouter scan vulnérabilités (pip-audit, safety) - **DÉJÀ EN CI** (pip-audit)
+- [ ] Documenter politique de mise à jour (optionnel)
+- [ ] Créer guide de style pour contributeurs (optionnel)
 
 **Impact** : +0.4 point
 

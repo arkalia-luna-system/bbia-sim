@@ -123,6 +123,8 @@ BBIA-SIM prend la sécurité au sérieux. Nous apprécions les efforts de la com
 
 ### Emergency Stop
 
+#### Via Python
+
 ```python
 from bbia_sim import RobotAPI
 
@@ -130,12 +132,84 @@ robot = RobotAPI()
 robot.emergency_stop()  # Arrêt immédiat
 ```
 
-### Via API
+#### Via API REST
 
 ```bash
 curl -X POST http://localhost:8000/api/motors/emergency_stop \
   -H "Authorization: Bearer YOUR_TOKEN"
 ```
+
+#### Via Dashboard
+
+1. Ouvrir le dashboard : http://localhost:8000
+2. Cliquer sur le bouton **Emergency Stop** (rouge)
+3. Vérifier que le robot s'arrête immédiatement
+
+### Procédures d'Urgence Robot
+
+#### 1. Robot en mouvement incontrôlé
+
+**Actions immédiates** :
+1. Appuyer sur **Emergency Stop** (bouton physique si disponible)
+2. Utiliser `robot.emergency_stop()` via API
+3. Débrancher l'alimentation si nécessaire
+4. Vérifier que tous les moteurs sont arrêtés
+
+**Vérifications** :
+- Tous les joints à position zéro
+- Watchdog actif (timeout 2s)
+- Aucun mouvement résiduel
+
+#### 2. Surchauffe ou température élevée
+
+**Actions immédiates** :
+1. Arrêter tous les mouvements
+2. Vérifier température via `/api/state/battery`
+3. Si température > 60°C : arrêt complet
+4. Attendre refroidissement avant redémarrage
+
+**Prévention** :
+- Surveiller température en continu
+- Limiter durée mouvements intenses
+- Vérifier ventilation
+
+#### 3. Perte de connexion réseau
+
+**Actions immédiates** :
+1. Vérifier connexion réseau
+2. Vérifier que le robot est toujours sous contrôle
+3. Si perte de contrôle : emergency stop
+4. Redémarrer connexion après vérification
+
+**Prévention** :
+- Utiliser watchdog (timeout 2s)
+- Surveiller latence réseau
+- Configurer reconnexion automatique
+
+#### 4. Erreur logicielle critique
+
+**Actions immédiates** :
+1. Emergency stop
+2. Vérifier logs (`log/bbia.log`)
+3. Identifier l'erreur
+4. Redémarrer si nécessaire
+
+**Prévention** :
+- Tests réguliers
+- Monitoring continu
+- Logs structurés
+
+### Checklist Post-Urgence
+
+Après un incident d'urgence :
+
+- [ ] Robot arrêté et sécurisé
+- [ ] Logs sauvegardés
+- [ ] Cause identifiée
+- [ ] Correctif appliqué (si nécessaire)
+- [ ] Tests de validation effectués
+- [ ] Documentation mise à jour
+- [ ] Équipe informée
 
 ---
 
