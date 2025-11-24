@@ -600,9 +600,9 @@
 **Effort** : 1h
 
 **Actions** :
-- [ ] Configurer pre-commit hooks (black, ruff, mypy)
-- [ ] Ajouter hooks sécurité (bandit, gitleaks)
-- [ ] Documenter installation
+- [x] ✅ Configurer pre-commit hooks (black, ruff, mypy) - **TERMINÉ** (24 Nov. 2025)
+- [x] ✅ Ajouter hooks sécurité (bandit, gitleaks) - **TERMINÉ** (24 Nov. 2025)
+- [x] ✅ Documenter installation - **TERMINÉ** (24 Nov. 2025)
 
 **Bénéfices** :
 - Qualité code garantie avant commit
@@ -693,9 +693,9 @@
 **Effort** : 1h
 
 **Actions** :
-- [ ] Ajouter Python 3.12 dans matrice CI
-- [ ] Tester compatibilité
-- [ ] Mettre à jour documentation
+- [x] ✅ Ajouter Python 3.12 dans matrice CI - **TERMINÉ** (24 Nov. 2025)
+- [x] ✅ Tester compatibilité - **TERMINÉ** (24 Nov. 2025)
+- [x] ✅ Mettre à jour documentation - **TERMINÉ** (24 Nov. 2025)
 
 **Bénéfices** :
 - Support dernières versions Python
