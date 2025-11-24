@@ -552,7 +552,8 @@ class TestFaceDetector:
         assert "confidence" in faces[0]
 
     @patch("bbia_sim.vision_yolo.cv2")
-    def test_detect_faces_exception(self, mock_cv2):
+    @patch("bbia_sim.vision_yolo.logger")
+    def test_detect_faces_exception(self, mock_logger, mock_cv2):
         """Test gestion exception détection visages (couverture lignes 331-333)."""
         mock_cv2.cvtColor.side_effect = Exception("Erreur conversion")
         mock_cv2.COLOR_BGR2RGB = 4
@@ -566,6 +567,8 @@ class TestFaceDetector:
         faces = detector.detect_faces(image)
 
         assert faces == []
+        # Vérifier que l'erreur a été loggée
+        mock_logger.exception.assert_called_once()
 
     def test_detect_faces_no_detector(self):
         """Test détection sans détecteur."""
@@ -1011,23 +1014,26 @@ class TestFactoryFunctions:
     def test_detect_objects_batch_exception(self):
         """Test gestion exception détection batch (couverture lignes 283-285)."""
         with patch("bbia_sim.vision_yolo.YOLO_AVAILABLE", True):
-            mock_model = MagicMock()
-            mock_model.side_effect = Exception("Erreur batch")
-            import bbia_sim.vision_yolo as vision_yolo_module
+            with patch("bbia_sim.vision_yolo.logger") as mock_logger:
+                mock_model = MagicMock()
+                mock_model.side_effect = Exception("Erreur batch")
+                import bbia_sim.vision_yolo as vision_yolo_module
 
-            vision_yolo_module._yolo_model_cache.clear()
-            vision_yolo_module.YOLO.return_value = mock_model
+                vision_yolo_module._yolo_model_cache.clear()
+                vision_yolo_module.YOLO.return_value = mock_model
 
-            detector = YOLODetector(model_size="n", confidence_threshold=0.25)
-            detector.model = mock_model
-            detector.is_loaded = True
+                detector = YOLODetector(model_size="n", confidence_threshold=0.25)
+                detector.model = mock_model
+                detector.is_loaded = True
 
-            # OPTIMISATION RAM: Image réduite (320x240 au lieu de 640x480)
-            images: list[npt.NDArray[np.uint8]] = [
-                np.zeros((240, 320, 3), dtype=np.uint8)
-            ]
-            detections = detector.detect_objects_batch(images)
-            assert detections == [[]]
+                # OPTIMISATION RAM: Image réduite (320x240 au lieu de 640x480)
+                images: list[npt.NDArray[np.uint8]] = [
+                    np.zeros((240, 320, 3), dtype=np.uint8)
+                ]
+                detections = detector.detect_objects_batch(images)
+                assert detections == [[]]
+                # Vérifier que l'erreur a été loggée
+                mock_logger.exception.assert_called_once()
 
     def test_import_fallback_detection_result(self):
         """Test import fallback DetectionResult (couverture lignes 19-31)."""
