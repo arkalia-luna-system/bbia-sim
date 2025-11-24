@@ -21,9 +21,9 @@
 
 **Recommandations prioritaires** :
 1. ✅ Observabilité (métriques Prometheus) - **TERMINÉ** (24 Nov. 2025)
-2. ✅ Sécurité (scan secrets) - **TERMINÉ** (24 Nov. 2025)
+2. ✅ Sécurité (scan secrets, SECURITY.md, CORS strict) - **TERMINÉ** (24 Nov. 2025)
 3. ✅ CI/CD (pre-commit, Python 3.12) - **TERMINÉ** (24 Nov. 2025)
-4. ⏳ Performance (cache LRU) - Optionnel (2-3h)
+4. ⏳ Performance (cache LRU réponses LLM) - Optionnel (2-3h)
 5. ⏳ Multi-robots (scalabilité) - Optionnel (8-12h)
 
 **Statut** : ✅ **Projet d'excellence technique, prêt pour production**

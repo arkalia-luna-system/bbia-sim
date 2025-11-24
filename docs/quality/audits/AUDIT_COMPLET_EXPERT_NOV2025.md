@@ -274,10 +274,10 @@
 **Score** : 9.0/10 ✅
 
 **Recommandations** :
-- [ ] Ajouter semgrep en CI
+- [ ] Ajouter semgrep en CI (optionnel - gitleaks déjà en place)
 - [x] ✅ Ajouter gitleaks/trufflehog (scan secrets) - **TERMINÉ** (24 Nov. 2025)
-- [ ] Ajouter SBOM (CycloneDX)
-- [ ] Créer politique de sécurité (SECURITY.md)
+- [ ] Ajouter SBOM (CycloneDX) (optionnel)
+- [x] ✅ Créer politique de sécurité (SECURITY.md) - **TERMINÉ** (24 Nov. 2025)
 
 #### 6.2 Sécurité Robot
 - [x] ✅ Emergency stop implémenté
@@ -298,10 +298,10 @@
 - [x] ✅ Authentification (à vérifier)
 
 **Recommandations** :
-- [ ] Activer CORS strict
-- [ ] Ajouter rate limiting (si non présent)
-- [ ] Ajouter authentification basique (si nécessaire)
-- [ ] Documenter sécurité API
+- [x] ✅ Activer CORS strict - **TERMINÉ** (24 Nov. 2025)
+- [x] ✅ Ajouter rate limiting (si non présent) - **DÉJÀ IMPLÉMENTÉ** (RateLimitMiddleware)
+- [x] ✅ Ajouter authentification basique (si nécessaire) - **DÉJÀ IMPLÉMENTÉ** (HTTPBearer)
+- [x] ✅ Documenter sécurité API - **TERMINÉ** (dans SECURITY.md)
 
 ---
 
