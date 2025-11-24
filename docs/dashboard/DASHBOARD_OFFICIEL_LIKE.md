@@ -59,25 +59,59 @@ src/bbia_sim/daemon/app/dashboard/
 - ✅ Statut backend affiché (Up and ready, Waking up, etc.)
 - ✅ Lecteur de mouvements enregistrés intégré
 
-### 2. **Section Apps**
+### 2. **Section Mode Démo** (Nouveau - 24 Nov 2025)
+
+- ✅ Toggle pour activer/désactiver le mode read-only
+- ✅ Désactivation automatique de tous les contrôles en mode démo
+- ✅ Persistance dans localStorage
+- ✅ Message d'information quand mode démo actif
+
+### 3. **Section Télémétrie Temps Réel** (Nouveau - 24 Nov 2025)
+
+- ✅ Graphiques Chart.js pour latence, FPS, CPU, RAM
+- ✅ Métriques affichées en temps réel
+- ✅ Connexion WebSocket `/ws/telemetry` automatique
+- ✅ Mise à jour fluide avec limite de 30 points de données
+
+### 4. **Section Apps**
 
 - ✅ Liste des applications installées
 - ✅ Toggle pour démarrer/arrêter chaque app
 - ✅ Bouton suppression d'app
 
-### 3. **Section App Store**
+### 5. **Section App Store**
 
 - ✅ Liste des apps disponibles sur Hugging Face
 - ✅ Bouton "Install" pour chaque app
 - ✅ Modal d'installation avec logs
 - ✅ WebSocket pour suivi installation en temps réel
 
-### 4. **Lecteur de Mouvements**
+### 6. **Section Émotions avec Intensité** (Nouveau - 24 Nov 2025)
+
+- ✅ Sliders pour 6 émotions (happy, sad, excited, angry, surprised, neutral)
+- ✅ Intensité ajustable 0-100%
+- ✅ Mise à jour en temps réel avec debounce
+- ✅ API endpoint `/api/motion/emotion`
+
+### 7. **Section Presets** (Nouveau - 24 Nov 2025)
+
+- ✅ Export/Import de presets d'émotions en JSON
+- ✅ API complète `/api/presets` (GET, POST, DELETE, apply)
+- ✅ Stockage dans `~/.bbia_sim/presets/`
+
+### 8. **Lecteur de Mouvements**
 
 - ✅ Sélection dataset (Dances/Emotions)
 - ✅ Liste des mouvements disponibles
 - ✅ Boutons Play/Stop
 - ✅ WebSocket pour statut en temps réel
+
+### 9. **PWA Support** (Nouveau - 24 Nov 2025)
+
+- ✅ Manifest.json pour installation PWA
+- ✅ Service Worker avec cache offline
+- ✅ Icônes 192x192 et 512x512
+- ✅ Installation native sur mobile/desktop
 
 ---
 

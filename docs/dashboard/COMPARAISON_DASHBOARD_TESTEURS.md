@@ -78,6 +78,11 @@ D'après les captures d'écran de l'email Pollen Robotics (Novembre 2024) :
 - ✅ Templates Jinja2 modulaires
 - ✅ Tailwind CSS (même framework)
 - ✅ Sections : daemon, apps, appstore, move_player
+- ✅ **Graphiques temps réel** avec Chart.js (24 Nov 2025)
+- ✅ **Sliders émotions avec intensité** (24 Nov 2025)
+- ✅ **Mode démo read-only** (24 Nov 2025)
+- ✅ **Presets exportables** JSON (24 Nov 2025)
+- ✅ **PWA support** complet (24 Nov 2025)
 - ✅ JavaScript identique à l'officiel
 
 #### **Points à Améliorer :**

@@ -21,6 +21,13 @@ Le `dashboard_advanced.py` est un dashboard amélioré qui offre :
 - ✅ **Panneau troubleshooting interactif** (détection automatique + tests)
 - ✅ **Interface Web** moderne avec FastAPI
 
+**Note** : Le dashboard principal (`src/bbia_sim/daemon/app/dashboard/`) inclut maintenant aussi :
+- ✅ **Graphiques temps réel** avec Chart.js (24 Nov 2025)
+- ✅ **Sliders émotions avec intensité** (24 Nov 2025)
+- ✅ **Mode démo read-only** (24 Nov 2025)
+- ✅ **Presets exportables** (24 Nov 2025)
+- ✅ **PWA support** avec manifest + service worker (24 Nov 2025)
+
 ### 📸 Captures d'écran
 
 Des captures d'écran du dashboard sont disponibles dans `assets/images/` :

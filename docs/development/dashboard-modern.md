@@ -17,6 +17,11 @@ Le dashboard moderne BBIA offre une interface épurée et moderne pour contrôle
 - ✅ **Quick Actions** : 15 boutons emoji pour actions rapides
 - ✅ **FPS Display** : Indicateur de performance en temps réel
 - ✅ **Design Épuré** : Fond blanc avec image floutée
+- ✅ **Graphiques Temps Réel** : Chart.js pour latence, FPS, CPU, RAM (24 Nov 2025)
+- ✅ **Sliders Émotions** : Contrôle intensité émotions 0-100% (24 Nov 2025)
+- ✅ **Mode Démo Read-only** : Toggle pour désactiver tous les contrôles (24 Nov 2025)
+- ✅ **Presets Exportables** : Export/Import JSON des configurations émotions (24 Nov 2025)
+- ✅ **PWA Support** : Installation native avec manifest + service worker (24 Nov 2025)
 
 ---
 

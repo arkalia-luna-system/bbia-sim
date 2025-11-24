@@ -1,0 +1,262 @@
+<section class="w-full">
+    <div class="app-section">
+        <div class="app-section-title">Télémétrie Temps Réel</div>
+
+        <div class="mt-4">
+            <!-- Canvas pour graphiques Chart.js -->
+            <div class="bg-white rounded-lg p-4 border border-gray-200">
+                <canvas id="telemetry-chart" class="w-full" style="max-height: 400px;"></canvas>
+            </div>
+
+            <!-- Métriques en temps réel -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
+                <div class="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                    <div class="text-sm text-gray-600">Latence</div>
+                    <div id="latency-value" class="text-2xl font-bold text-gray-800">0 ms</div>
+                </div>
+                <div class="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                    <div class="text-sm text-gray-600">FPS</div>
+                    <div id="fps-value" class="text-2xl font-bold text-green-600">60</div>
+                </div>
+                <div class="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                    <div class="text-sm text-gray-600">CPU</div>
+                    <div id="cpu-value" class="text-2xl font-bold text-blue-600">0%</div>
+                </div>
+                <div class="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                    <div class="text-sm text-gray-600">RAM</div>
+                    <div id="ram-value" class="text-2xl font-bold text-purple-600">0%</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+    // Gestion des graphiques de télémétrie
+    (function () {
+        let telemetryChart = null;
+        let ws = null;
+        const maxDataPoints = 30;
+        const chartData = {
+            labels: [],
+            latency: [],
+            fps: [],
+            cpu: [],
+            memory: []
+        };
+
+        // Initialiser le graphique
+        function initChart() {
+            const canvas = document.getElementById('telemetry-chart');
+            if (!canvas) {
+                console.warn('⚠️ Canvas telemetry-chart non trouvé');
+                return;
+            }
+
+            const ctx = canvas.getContext('2d');
+            telemetryChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: chartData.labels,
+                    datasets: [
+                        {
+                            label: 'Latence (ms)',
+                            data: chartData.latency,
+                            borderColor: '#4D4D4D',
+                            backgroundColor: 'rgba(77, 77, 77, 0.1)',
+                            tension: 0.4,
+                            fill: true,
+                            yAxisID: 'y'
+                        },
+                        {
+                            label: 'FPS',
+                            data: chartData.fps,
+                            borderColor: '#008181',
+                            backgroundColor: 'rgba(0, 129, 129, 0.1)',
+                            tension: 0.4,
+                            fill: true,
+                            yAxisID: 'y'
+                        },
+                        {
+                            label: 'CPU (%)',
+                            data: chartData.cpu,
+                            borderColor: '#3B82F6',
+                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            tension: 0.4,
+                            fill: true,
+                            yAxisID: 'y1'
+                        },
+                        {
+                            label: 'RAM (%)',
+                            data: chartData.memory,
+                            borderColor: '#8B5CF6',
+                            backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                            tension: 0.4,
+                            fill: true,
+                            yAxisID: 'y1'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                color: 'rgba(77, 77, 77, 0.1)'
+                            },
+                            ticks: {
+                                color: '#4D4D4D',
+                                maxTicksLimit: 10
+                            }
+                        },
+                        y: {
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(77, 77, 77, 0.1)'
+                            },
+                            ticks: {
+                                color: '#4D4D4D'
+                            }
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            beginAtZero: true,
+                            max: 100,
+                            grid: {
+                                drawOnChartArea: false
+                            },
+                            ticks: {
+                                color: '#4D4D4D'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#4D4D4D',
+                                font: {
+                                    weight: '500'
+                                }
+                            }
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false
+                        }
+                    }
+                }
+            });
+        }
+
+        // Connecter au WebSocket
+        function connectWebSocket() {
+            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsUrl = `${protocol}//${window.location.host}/ws/telemetry`;
+
+            ws = new WebSocket(wsUrl);
+
+            ws.onopen = function () {
+                console.log('✅ WebSocket télémétrie connecté');
+            };
+
+            ws.onmessage = function (event) {
+                try {
+                    const data = JSON.parse(event.data);
+                    updateChart(data);
+                } catch (error) {
+                    console.error('❌ Erreur parsing données télémétrie:', error);
+                }
+            };
+
+            ws.onclose = function () {
+                console.log('⚠️ WebSocket télémétrie fermé, reconnexion dans 3s...');
+                setTimeout(connectWebSocket, 3000);
+            };
+
+            ws.onerror = function (error) {
+                console.error('❌ Erreur WebSocket télémétrie:', error);
+            };
+        }
+
+        // Mettre à jour le graphique avec nouvelles données
+        function updateChart(data) {
+            if (!telemetryChart) return;
+
+            const now = new Date().toLocaleTimeString();
+            const metrics = data.metrics || {};
+            const performance = metrics.performance || {};
+
+            // Ajouter nouvelles données
+            chartData.labels.push(now);
+            chartData.latency.push(performance.latency_ms || 0);
+            chartData.fps.push(performance.fps || 60);
+            chartData.cpu.push(performance.cpu_usage || 0);
+            chartData.memory.push(performance.memory_usage || 0);
+
+            // Limiter à maxDataPoints
+            if (chartData.labels.length > maxDataPoints) {
+                chartData.labels.shift();
+                chartData.latency.shift();
+                chartData.fps.shift();
+                chartData.cpu.shift();
+                chartData.memory.shift();
+            }
+
+            // Mettre à jour le graphique
+            telemetryChart.update('none'); // Pas d'animation pour performance
+
+            // Mettre à jour les valeurs affichées
+            updateMetrics(performance);
+        }
+
+        // Mettre à jour les métriques affichées
+        function updateMetrics(performance) {
+            const latencyEl = document.getElementById('latency-value');
+            const fpsEl = document.getElementById('fps-value');
+            const cpuEl = document.getElementById('cpu-value');
+            const ramEl = document.getElementById('ram-value');
+
+            if (latencyEl) {
+                latencyEl.textContent = Math.round(performance.latency_ms || 0) + ' ms';
+            }
+            if (fpsEl) {
+                fpsEl.textContent = Math.round(performance.fps || 60);
+            }
+            if (cpuEl) {
+                cpuEl.textContent = Math.round(performance.cpu_usage || 0) + '%';
+            }
+            if (ramEl) {
+                ramEl.textContent = Math.round(performance.memory_usage || 0) + '%';
+            }
+        }
+
+        // Initialiser quand le DOM est prêt
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function () {
+                initChart();
+                connectWebSocket();
+            });
+        } else {
+            initChart();
+            connectWebSocket();
+        }
+
+        // Nettoyer à la fermeture
+        window.addEventListener('beforeunload', function () {
+            if (ws) {
+                ws.close();
+            }
+        });
+    })();
+</script>

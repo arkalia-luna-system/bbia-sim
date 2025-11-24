@@ -6,6 +6,7 @@ from enum import Enum
 from typing import Annotated, Any
 
 from fastapi import APIRouter, HTTPException, Query
+from pydantic import BaseModel
 
 from bbia_sim.daemon.models import HeadControl, JointPosition, MotionCommand, Pose
 from bbia_sim.daemon.simulation_service import simulation_service
@@ -319,22 +320,33 @@ async def goto_sleep() -> dict[str, Any]:
         }
 
 
+class EmotionRequest(BaseModel):
+    """Modèle pour une requête d'émotion."""
+
+    emotion: str
+    intensity: float = 0.5
+
+
 @router.post("/emotion")
-async def set_emotion(
-    emotion: Annotated[str, Query(description="Nom de l'émotion")],
-    intensity: Annotated[
-        float, Query(ge=0.0, le=1.0, description="Intensité (0.0-1.0)")
-    ] = 0.5,
-) -> dict[str, Any]:
+async def set_emotion(emotion_request: EmotionRequest) -> dict[str, Any]:
     """Définit une émotion avec intensité.
 
     Args:
-        emotion: Nom de l'émotion (happy, sad, excited, etc.)
-        intensity: Intensité de l'émotion (0.0-1.0)
+        emotion_request: Requête contenant l'émotion et l'intensité
 
     Returns:
         Confirmation de définition de l'émotion
     """
+    emotion = emotion_request.emotion
+    intensity = emotion_request.intensity
+
+    # Valider l'intensité
+    if not 0.0 <= intensity <= 1.0:
+        return {
+            "status": "error",
+            "message": f"Intensité invalide: {intensity} (doit être entre 0.0 et 1.0)",
+            "timestamp": datetime.now().isoformat(),
+        }
     logger.info(f"Définition émotion: {emotion} avec intensité {intensity}")
 
     try:
