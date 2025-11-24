@@ -615,7 +615,7 @@ class TestVoiceCommandMapper:
         mapper = VoiceCommandMapper()
 
         # Test avec espace dans commande
-        result = mapper.map_command("bon jour")
+        _ = mapper.map_command("bon jour")
         # "bonjour" n'est pas dans "bon jour", mais "bonjour" existe comme commande exacte
         # Le test vérifie que la recherche partielle fonctionne
         result2 = mapper.map_command("bonjour")
