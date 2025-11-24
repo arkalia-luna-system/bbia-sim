@@ -317,7 +317,11 @@ def enregistrer_audio(
                     dtype="int16",
                 )
             except Exception as fallback_error:
-                logging.exception("❌ Échec enregistrement audio même avec fallback")
+                # Utiliser error au lieu de exception pour éviter traces complètes dans tests
+                logging.error(
+                    "❌ Échec enregistrement audio même avec fallback: %s",
+                    fallback_error,
+                )
                 msg = f"Impossible d'enregistrer audio: {fallback_error}"
                 raise RuntimeError(
                     msg,
@@ -331,8 +335,10 @@ def enregistrer_audio(
             wf.writeframes(audio.tobytes())
         logging.info("Enregistrement terminé.")
         return True
-    except Exception:
-        logging.exception("Erreur d'enregistrement audio")
+    except Exception as e:
+        # Utiliser error au lieu de exception pour éviter traces complètes dans tests
+        # La trace complète est déjà dans l'exception chainée si nécessaire
+        logging.error("Erreur d'enregistrement audio: %s", e)
         raise
 
 
