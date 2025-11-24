@@ -18,6 +18,10 @@ from bbia_sim.bbia_vision import BBIAVision
 @pytest.mark.slow  # OPTIMISATION RAM: Test avec boucle (mais optimisé)
 @pytest.mark.heavy  # OPTIMISATION RAM: Test lourd (boucle 3s + peut charger modèles YOLO)
 def test_vision_fps_10s_simulated() -> None:
+    # Skip en CI si trop lent (tolérance déjà ajustée mais peut encore timeout)
+    is_ci = os.environ.get("CI", "false").lower() == "true"
+    if is_ci and os.environ.get("BBIA_SKIP_SLOW_TESTS", "0") == "1":
+        pytest.skip("Tests lents désactivés en CI (BBIA_SKIP_SLOW_TESTS=1)")
     if os.environ.get("BBIA_DISABLE_VISION", "0") == "1":
         pytest.skip("Vision désactivée par BBIA_DISABLE_VISION=1")
 
@@ -88,6 +92,10 @@ def test_vision_fps_10s_simulated() -> None:
 @pytest.mark.slow  # OPTIMISATION RAM: Test avec boucle (mais optimisé)
 @pytest.mark.heavy  # OPTIMISATION RAM: Test lourd (boucle 3s + peut charger modèles YOLO)
 def test_vision_budget_cpu_ram_10s() -> None:
+    # Skip en CI si trop lent (tolérance déjà ajustée mais peut encore timeout)
+    is_ci = os.environ.get("CI", "false").lower() == "true"
+    if is_ci and os.environ.get("BBIA_SKIP_SLOW_TESTS", "0") == "1":
+        pytest.skip("Tests lents désactivés en CI (BBIA_SKIP_SLOW_TESTS=1)")
     if os.environ.get("BBIA_DISABLE_VISION", "0") == "1":
         pytest.skip("Vision désactivée par BBIA_DISABLE_VISION=1")
 

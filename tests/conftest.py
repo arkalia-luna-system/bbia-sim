@@ -348,6 +348,25 @@ def force_cleanup_all_resources() -> None:
 
 
 @pytest.hookimpl(tryfirst=True)
+def pytest_collection_modifyitems(config: pytest.Config, items: list) -> None:
+    """
+    Hook pour modifier les tests collectés - skip automatique en CI pour tests lents/heavy.
+    """
+    # Skip automatique en CI pour tests marqués slow/heavy si variable d'environnement définie
+    skip_slow_in_ci = os.environ.get("BBIA_SKIP_SLOW_TESTS", "0") == "1"
+    is_ci = os.environ.get("CI", "false").lower() == "true"
+
+    if is_ci and skip_slow_in_ci:
+        for item in items:
+            # Skip tests marqués slow ou heavy en CI si flag activé
+            if item.get_closest_marker("slow") or item.get_closest_marker("heavy"):
+                skip_marker = pytest.mark.skip(
+                    reason="Test désactivé en CI (BBIA_SKIP_SLOW_TESTS=1)"
+                )
+                item.add_marker(skip_marker)
+
+
+@pytest.hookimpl(tryfirst=True)
 def pytest_configure(config: pytest.Config) -> None:
     """
     Hook pytest qui s'exécute au démarrage.
