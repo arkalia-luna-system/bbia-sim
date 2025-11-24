@@ -521,7 +521,7 @@ def reconnaitre_parole(
                 logging.warning("Aucune parole reconnue.")
                 return None
             except Exception:
-                logging.exception("Erreur de reconnaissance vocale")
+                logging.warning("Erreur de reconnaissance vocale", exc_info=True)
                 return None
     except Exception:
         logging.warning("Erreur d'accès au microphone", exc_info=True)

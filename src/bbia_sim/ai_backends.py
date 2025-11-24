@@ -107,6 +107,10 @@ class Pyttsx3TTS:
                             "utilisation par défaut: %s",
                             e,
                         )
+                except Exception:
+                    # Si _get_pyttsx3_engine() lève une exception autre que ImportError,
+                    # la laisser remonter pour être gérée par le bloc except externe
+                    raise
 
             # Utiliser la voix sélectionnée si disponible
             if self._voice_id:
@@ -115,7 +119,7 @@ class Pyttsx3TTS:
             engine.save_to_file(text, outfile)
             engine.runAndWait()
             return True
-        except (RuntimeError, OSError, ValueError):
+        except (RuntimeError, OSError, ValueError, Exception):
             return False
 
 

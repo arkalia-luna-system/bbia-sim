@@ -152,6 +152,21 @@
    - Identification fonctionnalités manquantes vs supérieures
    - **Dernière mise à jour :** Décembre 2025
 
+17. **`CONTRIBUTEURS_TESTEURS_BETA_REACHY_MINI.md`** ⭐⭐ **NOUVEAU** (Décembre 2025)
+   - **Chemin** : `quality/audits/CONTRIBUTEURS_TESTEURS_BETA_REACHY_MINI.md`
+   - Documentation complète des 19 contributeurs et testeurs bêta officiels
+   - Analyse contributions par contributeur
+   - Comparaison avec BBIA (communauté, testeurs)
+   - Recommandations pour développer communauté BBIA
+   - **Dernière mise à jour :** Décembre 2025
+
+18. **`RESUME_AUDIT_REACHY_MINI_OFFICIEL_DEC2025.md`** ⭐ **NOUVEAU** (Décembre 2025)
+   - **Chemin** : `quality/audits/RESUME_AUDIT_REACHY_MINI_OFFICIEL_DEC2025.md`
+   - Résumé exécutif de l'audit complet
+   - Points forts BBIA, points à améliorer
+   - Recommandations prioritaires
+   - **Dernière mise à jour :** Décembre 2025
+
 ---
 
 ## 📁 Archives - Audits Terminés (Pour Référence)
