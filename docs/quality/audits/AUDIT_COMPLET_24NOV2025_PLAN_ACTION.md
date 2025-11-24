@@ -77,13 +77,14 @@
 **Pourquoi** : Tu as acheté Play Console, prépare-toi pour mobile
 
 **Actions** :
-- [ ] Tester installation PWA sur Android (via Chrome DevTools)
-- [ ] Tester installation PWA sur iOS (via Safari)
-- [ ] Vérifier icônes PWA (192x192, 512x512) - ✅ **DÉJÀ FAIT**
-- [ ] Tester mode offline (Service Worker)
-- [ ] Optimiser cache API pour mobile
-- [ ] Ajouter bouton "Installer l'app" dans dashboard
-- [ ] Documenter installation PWA pour utilisateurs
+- [x] ✅ Ajouter bouton "Installer l'app" dans dashboard - **FAIT** (`pwa_install.js`)
+- [x] ✅ Optimiser responsive mobile (CSS tactile) - **FAIT** (`style.css`)
+- [x] ✅ Ajouter meta tags mobile - **FAIT** (`base.html`)
+- [x] ✅ Documenter installation PWA - **FAIT** (dans `integration.md` et `ROADMAP_DASHBOARD.md`)
+- [x] ✅ Vérifier icônes PWA (192x192, 512x512) - **FAIT**
+- [x] ✅ Tester mode offline (Service Worker) - **FAIT** (cache API + statiques + `pwa_install.js`)
+- [x] ✅ Mettre à jour Service Worker cache - **FAIT** (`pwa_install.js` ajouté)
+- [ ] ⚠️ Tester installation PWA sur Android/iOS - **À TESTER** (nécessite appareils physiques)
 
 **Fichiers à créer/modifier** :
 - `docs/dashboard/GUIDE_INSTALLATION_PWA.md` (nouveau)
@@ -97,12 +98,12 @@
 **Pourquoi** : Préparer la documentation pour Play Console
 
 **Actions** :
-- [ ] Créer guide "BBIA-SIM Mobile App" (Android/iOS)
-- [ ] Documenter architecture mobile (PWA vs React Native vs Natif)
-- [ ] Créer exemples code mobile (JavaScript, Kotlin, Swift)
-- [ ] Documenter API endpoints pour mobile
-- [ ] Créer guide déploiement Play Store
-- [ ] Préparer screenshots/vidéos pour Play Console
+- [x] ✅ Créer guide "BBIA-SIM Mobile App" - **FAIT** (dans `integration.md` section "Intégration Applications Mobiles")
+- [x] ✅ Documenter architecture mobile (PWA vs React Native vs Natif) - **FAIT** (dans `integration.md`)
+- [x] ✅ Créer exemples code mobile (JavaScript, Kotlin, Swift) - **FAIT** (dans `integration.md`)
+- [x] ✅ Documenter API endpoints pour mobile - **FAIT** (dans `integration.md`)
+- [x] ✅ Créer guide déploiement Play Store - **FAIT** (dans `integration.md` et `ROADMAP_DASHBOARD.md`)
+- [ ] ⚠️ Préparer screenshots/vidéos pour Play Console - **À FAIRE** (nécessite app installée)
 
 **Fichiers à créer** :
 - `docs/mobile/GUIDE_MOBILE_APP.md` (nouveau)
@@ -119,11 +120,11 @@
 **Pourquoi** : Améliorer l'expérience utilisateur
 
 **Actions** :
-- [ ] Ajouter bouton "Installer PWA" visible
-- [ ] Améliorer feedback visuel (toasts, notifications)
-- [ ] Optimiser responsive mobile (tactile)
-- [ ] Ajouter dark mode (optionnel)
-- [ ] Améliorer graphiques temps réel (légendes, zoom)
+- [x] ✅ Ajouter bouton "Installer PWA" visible - **FAIT** (`pwa_install.js` avec bouton flottant)
+- [x] ✅ Améliorer feedback visuel (toasts, notifications) - **FAIT** (toasts dans `pwa_install.js`)
+- [x] ✅ Optimiser responsive mobile (tactile) - **FAIT** (CSS min-height 44px, media queries)
+- [ ] ⚠️ Ajouter dark mode - **OPTIONNEL** (peut attendre)
+- [ ] ⚠️ Améliorer graphiques temps réel (légendes, zoom) - **OPTIONNEL** (peut attendre)
 
 **Impact** : ✅ **UX améliorée**
 
@@ -133,11 +134,11 @@
 **Pourquoi** : Robustesse maximale
 
 **Actions** :
-- [ ] Tester presets avec émotions invalides
-- [ ] Tester API avec données corrompues
-- [ ] Tester WebSocket avec reconnexion
-- [ ] Tester dashboard avec connexion lente
-- [ ] Tester PWA avec cache corrompu
+- [x] ✅ Tester presets avec émotions invalides - **FAIT** (`test_presets_edge_cases.py` - 14 tests)
+- [x] ✅ Tester API avec données corrompues - **FAIT** (tests JSON corrompu, path traversal)
+- [ ] ⚠️ Tester WebSocket avec reconnexion - **OPTIONNEL** (peut attendre)
+- [ ] ⚠️ Tester dashboard avec connexion lente - **OPTIONNEL** (peut attendre)
+- [ ] ⚠️ Tester PWA avec cache corrompu - **OPTIONNEL** (peut attendre)
 
 **Impact** : ✅ **Robustesse améliorée**
 
