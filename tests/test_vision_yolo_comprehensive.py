@@ -490,8 +490,19 @@ class TestFaceDetector:
     @patch("bbia_sim.vision_yolo._mediapipe_cache_lock")
     def test_init_without_mediapipe(self, mock_lock):
         """Test initialisation sans MediaPipe (optimisé pour éviter blocage)."""
-        # Patch direct de l'import mediapipe pour éviter blocage
+        # Nettoyer le cache avant le test pour éviter réutilisation d'instance précédente
+        from bbia_sim.vision_yolo import _mediapipe_face_detection_cache
 
+        # Sauvegarder l'état actuel du cache
+        original_cache = _mediapipe_face_detection_cache
+
+        # Nettoyer le cache
+        import bbia_sim.vision_yolo
+
+        with mock_lock:
+            bbia_sim.vision_yolo._mediapipe_face_detection_cache = None
+
+        # Patch direct de l'import mediapipe pour éviter blocage
         original_import = __import__
 
         def mock_import(name, *args, **kwargs):
@@ -499,10 +510,18 @@ class TestFaceDetector:
                 raise ImportError("No module named 'mediapipe'")
             return original_import(name, *args, **kwargs)
 
-        with patch("builtins.__import__", side_effect=mock_import):
-            detector = FaceDetector()
-            # Vérifier que face_detection est None ou non initialisé
-            assert detector.face_detection is None
+        try:
+            with patch("builtins.__import__", side_effect=mock_import):
+                # Forcer MEDIAPIPE_AVAILABLE à False pour ce test
+                with patch("bbia_sim.vision_yolo.MEDIAPIPE_AVAILABLE", False):
+                    with patch("bbia_sim.vision_yolo.mp", None):
+                        detector = FaceDetector()
+                        # Vérifier que face_detection est None ou non initialisé
+                        assert detector.face_detection is None
+        finally:
+            # Restaurer le cache original
+            with mock_lock:
+                bbia_sim.vision_yolo._mediapipe_face_detection_cache = original_cache
 
     @patch("bbia_sim.vision_yolo.cv2")
     def test_detect_faces_success(self, mock_cv2):

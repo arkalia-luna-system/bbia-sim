@@ -501,15 +501,23 @@ class FaceDetector:
         self.face_detection: Any | None = None
 
         # OPTIMISATION PERFORMANCE: Réutiliser instance MediaPipe depuis cache global
+        # IMPORTANT: Vérifier que MediaPipe est disponible avant de réutiliser le cache
         global _mediapipe_face_detection_cache
         with _mediapipe_cache_lock:
-            if _mediapipe_face_detection_cache is not None:
+            if (
+                _mediapipe_face_detection_cache is not None
+                and MEDIAPIPE_AVAILABLE
+                and mp is not None
+            ):
                 logger.debug("♻️ Réutilisation détecteur MediaPipe depuis cache")
                 self.face_detection = _mediapipe_face_detection_cache
-                if MEDIAPIPE_AVAILABLE and mp is not None:
-                    self.mp_face_detection = mp.solutions.face_detection
-                    self.mp_drawing = mp.solutions.drawing_utils
+                self.mp_face_detection = mp.solutions.face_detection
+                self.mp_drawing = mp.solutions.drawing_utils
                 return
+            # Si cache existe mais MediaPipe n'est plus disponible, nettoyer le cache
+            elif _mediapipe_face_detection_cache is not None:
+                logger.debug("🧹 Nettoyage cache MediaPipe (non disponible)")
+                _mediapipe_face_detection_cache = None
 
         try:
             if MEDIAPIPE_AVAILABLE and mp is not None:

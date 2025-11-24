@@ -335,7 +335,12 @@ class BBIAVision:
                     )
 
                     with _mediapipe_cache_lock:
-                        if _mediapipe_face_detection_cache is not None:
+                        # IMPORTANT: Vérifier que MediaPipe est disponible avant de réutiliser le cache
+                        if (
+                            _mediapipe_face_detection_cache is not None
+                            and MEDIAPIPE_AVAILABLE
+                            and mp is not None
+                        ):
                             logger.debug(
                                 "♻️ Réutilisation détecteur MediaPipe depuis cache "
                                 "(bbia_vision)",
@@ -344,6 +349,11 @@ class BBIAVision:
                             logger.debug(
                                 "✅ Détecteur MediaPipe Face initialisé (cache)",
                             )
+                        elif _mediapipe_face_detection_cache is not None:
+                            # Si cache existe mais MediaPipe n'est plus disponible, nettoyer
+                            logger.debug("🧹 Nettoyage cache MediaPipe (non disponible)")
+                            _mediapipe_face_detection_cache = None
+                            self.face_detector = None
                         else:
                             # Créer nouvelle instance et mettre en cache
                             self.face_detector = (
