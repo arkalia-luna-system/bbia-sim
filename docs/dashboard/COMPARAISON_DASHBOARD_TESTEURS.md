@@ -78,11 +78,21 @@ D'après les captures d'écran de l'email Pollen Robotics (Novembre 2024) :
 - ✅ Templates Jinja2 modulaires
 - ✅ Tailwind CSS (même framework)
 - ✅ Sections : daemon, apps, appstore, move_player
-- ✅ **Graphiques temps réel** avec Chart.js (24 Nov 2025)
-- ✅ **Sliders émotions avec intensité** (24 Nov 2025)
-- ✅ **Mode démo read-only** (24 Nov 2025)
-- ✅ **Presets exportables** JSON (24 Nov 2025)
-- ✅ **PWA support** complet (24 Nov 2025)
+- ✅ **Graphiques temps réel** avec Chart.js (`sections/telemetry_charts.html`) (24 Nov 2025)
+- ✅ **Sliders émotions avec intensité** (`sections/emotions.html`) (24 Nov 2025)
+- ✅ **Mode démo read-only** (`sections/demo_mode.html`) (24 Nov 2025)
+- ✅ **Presets exportables** JSON (API `/api/presets` via `routers/presets.py`) (24 Nov 2025)
+- ✅ **PWA support** complet (`static/manifest.json`, `static/sw.js`, icônes) (24 Nov 2025)
+
+#### **Fichiers Créés (24 Nov 2025) :**
+- ✅ `templates/sections/telemetry_charts.html` - Graphiques Chart.js temps réel
+- ✅ `templates/sections/demo_mode.html` - Mode démo read-only avec toggle
+- ✅ `templates/sections/emotions.html` - Sliders émotions 6 émotions
+- ✅ `static/manifest.json` - Manifest PWA
+- ✅ `static/sw.js` - Service Worker avec cache offline
+- ✅ `static/images/icon-192.png` - Icône PWA 192x192
+- ✅ `static/images/icon-512.png` - Icône PWA 512x512
+- ✅ `routers/presets.py` - API complète presets (GET, POST, DELETE, apply)
 - ✅ JavaScript identique à l'officiel
 
 #### **Points à Améliorer :**

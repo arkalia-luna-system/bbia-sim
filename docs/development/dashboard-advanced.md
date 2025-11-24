@@ -22,11 +22,21 @@ Le `dashboard_advanced.py` est un dashboard amélioré qui offre :
 - ✅ **Interface Web** moderne avec FastAPI
 
 **Note** : Le dashboard principal (`src/bbia_sim/daemon/app/dashboard/`) inclut maintenant aussi :
-- ✅ **Graphiques temps réel** avec Chart.js (24 Nov 2025)
-- ✅ **Sliders émotions avec intensité** (24 Nov 2025)
-- ✅ **Mode démo read-only** (24 Nov 2025)
-- ✅ **Presets exportables** (24 Nov 2025)
-- ✅ **PWA support** avec manifest + service worker (24 Nov 2025)
+- ✅ **Graphiques temps réel** avec Chart.js (`sections/telemetry_charts.html`) (24 Nov 2025)
+- ✅ **Sliders émotions avec intensité** (`sections/emotions.html`) (24 Nov 2025)
+- ✅ **Mode démo read-only** (`sections/demo_mode.html`) (24 Nov 2025)
+- ✅ **Presets exportables** (API `/api/presets` via `routers/presets.py`) (24 Nov 2025)
+- ✅ **PWA support** avec manifest + service worker (`static/manifest.json`, `static/sw.js`, icônes) (24 Nov 2025)
+
+### Fichiers Créés Dashboard Principal (24 Nov 2025)
+- ✅ `templates/sections/telemetry_charts.html` - Graphiques Chart.js
+- ✅ `templates/sections/demo_mode.html` - Mode démo read-only
+- ✅ `templates/sections/emotions.html` - Sliders émotions
+- ✅ `static/manifest.json` - Manifest PWA
+- ✅ `static/sw.js` - Service Worker
+- ✅ `static/images/icon-192.png` - Icône PWA 192x192
+- ✅ `static/images/icon-512.png` - Icône PWA 512x512
+- ✅ `routers/presets.py` - API presets
 
 ### 📸 Captures d'écran
 
