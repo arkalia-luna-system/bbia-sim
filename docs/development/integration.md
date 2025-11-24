@@ -951,15 +951,253 @@ asyncio.run(validate_integration())
 
 ---
 
+## 📱 Intégration Applications Mobiles (24 Novembre 2025)
+
+### 🎯 Vue d'Ensemble
+
+BBIA-SIM expose une **API REST complète** et des **WebSockets temps réel** qui permettent de créer des applications mobiles (Android, iOS) ou des Progressive Web Apps (PWA) pour contrôler le robot Reachy Mini.
+
+### ✅ Ce qui est Déjà Disponible
+
+**API REST Complète :**
+- ✅ Endpoints `/api/*` documentés (Swagger UI : `/docs`)
+- ✅ Authentification Bearer Token
+- ✅ CORS configuré (support mobile)
+- ✅ Rate limiting (production)
+- ✅ Validation des données (Pydantic)
+
+**WebSocket Temps Réel :**
+- ✅ `/ws/telemetry` : Télémétrie 100Hz
+- ✅ `/ws/full` : État complet robot
+- ✅ `/ws/updates` : Mises à jour mouvements
+- ✅ Support query params pour auth
+
+**Dashboard Web :**
+- ✅ Interface web moderne (`/`)
+- ✅ App Store intégré (Hugging Face Hub)
+- ✅ Contrôles media (volume, caméra)
+- ✅ Vue 3D robot (Three.js)
+
+### 📱 Options de Développement Mobile
+
+#### **1. Progressive Web App (PWA) - ⭐ RECOMMANDÉ**
+
+**Avantages :**
+- ✅ Fonctionne sur Android, iOS, Desktop
+- ✅ Pas de stores (déploiement direct)
+- ✅ Installation native (icône écran d'accueil)
+- ✅ Mode offline possible
+- ✅ Mises à jour instantanées
+- ✅ Coût zéro
+
+**Implémentation :**
+
+```html
+<!-- manifest.json (à créer) -->
+{
+  "name": "BBIA Robot Control",
+  "short_name": "BBIA",
+  "start_url": "/",
+  "display": "standalone",
+  "icons": [
+    {"src": "/static/icon-192.png", "sizes": "192x192"},
+    {"src": "/static/icon-512.png", "sizes": "512x512"}
+  ]
+}
+```
+
+**Service Worker** (pour offline) :
+```javascript
+// sw.js
+self.addEventListener('fetch', (event) => {
+  // Cache API calls
+  // Queue WebSocket messages
+});
+```
+
+**Temps de développement :** 1-2 semaines
+
+#### **2. React Native - ⭐⭐ Court Terme**
+
+**Avantages :**
+- ✅ Codebase unique (Android + iOS)
+- ✅ Écosystème riche
+- ✅ Performance native
+- ✅ Distribution stores
+
+**Stack recommandée :**
+- React Native
+- React Query (API state)
+- WebSocket client
+- React Navigation
+
+**Exemple client API :**
+```typescript
+// api/client.ts
+import axios from 'axios';
+
+const API_BASE = 'http://192.168.1.100:8000';
+
+export const bbiaAPI = {
+  getState: () => axios.get(`${API_BASE}/api/state`),
+  setEmotion: (emotion: string, intensity: number) =>
+    axios.post(`${API_BASE}/api/ecosystem/emotions/apply`, {
+      emotion, intensity, duration: 5.0
+    }),
+};
+```
+
+**Temps de développement :** 1-2 mois
+
+#### **3. Applications Natives**
+
+**Android (Kotlin) :**
+- Jetpack Compose (UI moderne)
+- Retrofit (HTTP client)
+- OkHttp WebSocket
+- Kotlin Coroutines
+
+**iOS (Swift) :**
+- SwiftUI (UI moderne)
+- URLSession (HTTP client)
+- WebSocketKit
+- Combine (reactive)
+
+**Temps de développement :** 2-3 mois par plateforme
+
+### 🔌 Intégration API depuis Mobile
+
+#### **Configuration Base URL**
+
+```javascript
+// Configuration dynamique selon environnement
+const API_BASE = __DEV__ 
+  ? 'http://localhost:8000'           // Dev local
+  : 'http://192.168.1.100:8000';      // Robot sur réseau local
+```
+
+#### **Authentification**
+
+```javascript
+// Headers avec Bearer Token
+const headers = {
+  'Authorization': `Bearer ${apiToken}`,
+  'Content-Type': 'application/json'
+};
+```
+
+#### **Exemple Client REST**
+
+```javascript
+// Client API simple
+class BBIAClient {
+  constructor(baseURL, token) {
+    this.baseURL = baseURL;
+    this.token = token;
+  }
+
+  async getState() {
+    const response = await fetch(`${this.baseURL}/api/state`, {
+      headers: {
+        'Authorization': `Bearer ${this.token}`
+      }
+    });
+    return response.json();
+  }
+
+  async setEmotion(emotion, intensity = 0.7) {
+    const response = await fetch(
+      `${this.baseURL}/api/ecosystem/emotions/apply?emotion=${emotion}&intensity=${intensity}&duration=5.0`,
+      {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${this.token}`
+        }
+      }
+    );
+    return response.json();
+  }
+}
+```
+
+#### **Exemple Client WebSocket**
+
+```javascript
+// WebSocket télémétrie
+class BBIAWebSocket {
+  constructor(baseURL, token) {
+    this.ws = null;
+    this.baseURL = baseURL;
+    this.token = token;
+  }
+
+  connect(onMessage) {
+    const wsURL = `ws://${this.baseURL.replace('http://', '')}/ws/telemetry?token=${this.token}`;
+    this.ws = new WebSocket(wsURL);
+
+    this.ws.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      onMessage(data);
+    };
+
+    this.ws.onerror = (error) => {
+      console.error('WebSocket error:', error);
+    };
+  }
+
+  disconnect() {
+    if (this.ws) {
+      this.ws.close();
+    }
+  }
+}
+```
+
+### 📊 Comparaison Solutions
+
+| Solution | Temps | Coût | Performance | Distribution | Recommandation |
+|----------|-------|------|-------------|--------------|----------------|
+| **PWA** | 1-2 sem | Gratuit | ⭐⭐⭐ | Direct | ⭐⭐⭐ **PRIORITÉ** |
+| **React Native** | 1-2 mois | Gratuit | ⭐⭐⭐⭐ | Stores | ⭐⭐ Court terme |
+| **Android Natif** | 2-3 mois | Gratuit | ⭐⭐⭐⭐⭐ | Play Store | ⭐ Si besoin |
+| **iOS Natif** | 2-3 mois | 99€/an | ⭐⭐⭐⭐⭐ | App Store | ⭐ Si besoin |
+
+### 🎯 Plan d'Action Recommandé
+
+1. **Phase 1 : PWA (Immédiat)** ⭐⭐⭐
+   - Créer `manifest.json`
+   - Service Worker pour offline
+   - Icônes mobile
+   - Tester installation Android/iOS
+
+2. **Phase 2 : React Native (Court terme)** ⭐⭐
+   - Setup projet React Native
+   - Client API + WebSocket
+   - UI dashboard mobile
+   - Tests Android + iOS
+
+3. **Phase 3 : Apps Natives (Si besoin)** ⭐
+   - Évaluer besoins spécifiques
+   - Développer selon plateforme
+
+### 📚 Ressources
+
+- **PWA Guide** : [`docs/dashboard/ROADMAP_DASHBOARD.md`](../dashboard/ROADMAP_DASHBOARD.md) → Section Apps Mobiles
+- **API Documentation** : `http://localhost:8000/docs` (Swagger UI)
+- **WebSocket Docs** : [`docs/development/api/CONTRATS_REST_WS.md`](api/CONTRATS_REST_WS.md)
+
+---
+
 Vous avez intégré BBIA-SIM dans votre projet. Bienvenue dans l'écosystème BBIA-SIM.
 
 ---
 
-**Dernière mise à jour** : 22 novembre 2025
+**Dernière mise à jour** : 24 novembre 2025  
+**Expert Review** : Sections apps mobiles et PWA ajoutées
 
 ---
 
 ## 🎯 Navigation
 
 **Retour à** : [README Documentation](../README.md)  
-**Voir aussi** : [Guide Avancé](../guides/GUIDE_AVANCE.md) • [Architecture](../development/architecture/ARCHITECTURE_OVERVIEW.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)
+**Voir aussi** : [Guide Avancé](../guides/GUIDE_AVANCE.md) • [Architecture](../development/architecture/ARCHITECTURE_OVERVIEW.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md) • [Roadmap Dashboard](../dashboard/ROADMAP_DASHBOARD.md)
