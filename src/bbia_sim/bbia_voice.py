@@ -536,9 +536,10 @@ def reconnaitre_parole(
                 logging.error("Erreur de reconnaissance vocale: %s", e)
                 return None
     except Exception as e:
-        # Utiliser error au lieu de warning avec exc_info pour éviter traces complètes dans tests
-        logging.error("Erreur d'accès au microphone: %s", e)
-        logging.warning(
+        # Utiliser debug au lieu de error/warning pour réduire bruit dans tests
+        # Le comportement (retour None) est déjà validé par les tests
+        logging.debug("Erreur d'accès au microphone: %s", e)
+        logging.debug(
             "La reconnaissance vocale nécessite pyaudio. "
             "Installez-le avec : pip install pyaudio",
         )
