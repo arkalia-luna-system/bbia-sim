@@ -89,7 +89,7 @@
 **Score** : 9.5/10 ✅
 
 **Recommandations** :
-- [ ] Ajouter pre-commit hooks (black, ruff, mypy)
+- [x] ✅ Ajouter pre-commit hooks (black, ruff, mypy) - **TERMINÉ** (24 Nov. 2025)
 - [ ] Configurer CI pour rejeter les PRs avec erreurs de formatage
 
 #### 2.2 Type Hints
@@ -275,7 +275,7 @@
 
 **Recommandations** :
 - [ ] Ajouter semgrep en CI
-- [ ] Ajouter gitleaks/trufflehog (scan secrets)
+- [x] ✅ Ajouter gitleaks/trufflehog (scan secrets) - **TERMINÉ** (24 Nov. 2025)
 - [ ] Ajouter SBOM (CycloneDX)
 - [ ] Créer politique de sécurité (SECURITY.md)
 
@@ -318,7 +318,7 @@
 **Score** : 9.0/10 ✅
 
 **Recommandations** :
-- [ ] Ajouter Python 3.12 dans matrice
+- [x] ✅ Ajouter Python 3.12 dans matrice - **TERMINÉ** (24 Nov. 2025)
 - [ ] Ajouter pre-commit hooks
 - [ ] Ajouter sharding tests (si durée > 10min)
 - [ ] Ajouter tests de performance en CI (baseline)
