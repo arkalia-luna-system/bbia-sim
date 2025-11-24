@@ -1020,7 +1020,6 @@ class TestFactoryFunctions:
                 import bbia_sim.vision_yolo as vision_yolo_module
 
                 vision_yolo_module._yolo_model_cache.clear()
-                vision_yolo_module.YOLO.return_value = mock_model
 
                 detector = YOLODetector(model_size="n", confidence_threshold=0.25)
                 detector.model = mock_model

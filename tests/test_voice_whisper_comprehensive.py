@@ -365,6 +365,7 @@ class TestWhisperSTT:
 
             assert result is True  # Fallback
 
+    @patch.dict(os.environ, {"BBIA_DISABLE_AUDIO": "1"}, clear=False)
     def test_transcribe_microphone_with_vad_disabled_audio(self):
         """Test transcription microphone avec VAD et audio désactivé."""
         with patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True):
@@ -376,6 +377,7 @@ class TestWhisperSTT:
     @patch("bbia_sim.voice_whisper.sd")
     @patch("bbia_sim.voice_whisper.sf")
     @patch("bbia_sim.voice_whisper.whisper")
+    @patch.dict(os.environ, {"BBIA_DISABLE_AUDIO": "1"}, clear=False)
     def test_transcribe_streaming_disabled_audio(self, mock_whisper, mock_sf, mock_sd):
         """Test streaming avec audio désactivé (couverture lignes 478-480)."""
         with patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True):
