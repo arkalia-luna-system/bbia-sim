@@ -136,9 +136,9 @@
 **Actions** :
 - [x] ✅ Tester presets avec émotions invalides - **FAIT** (`test_presets_edge_cases.py` - 14 tests)
 - [x] ✅ Tester API avec données corrompues - **FAIT** (tests JSON corrompu, path traversal)
-- [ ] ⚠️ Tester WebSocket avec reconnexion - **OPTIONNEL** (peut attendre)
-- [ ] ⚠️ Tester dashboard avec connexion lente - **OPTIONNEL** (peut attendre)
-- [ ] ⚠️ Tester PWA avec cache corrompu - **OPTIONNEL** (peut attendre)
+- [x] ✅ Tester WebSocket avec reconnexion - **FAIT** (`test_websocket_reconnection.py` - 11 tests)
+- [x] ✅ Tester dashboard avec connexion lente - **FAIT** (`test_dashboard_slow_connection.py` - 10 tests)
+- [x] ✅ Tester PWA avec cache corrompu - **FAIT** (`test_pwa_cache_corruption.py` - 11 tests)
 
 **Impact** : ✅ **Robustesse améliorée**
 

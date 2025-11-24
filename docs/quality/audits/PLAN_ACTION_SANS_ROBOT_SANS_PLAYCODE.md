@@ -255,13 +255,15 @@
 - [x] Améliorer graphiques temps réel (légendes, zoom, tooltips, export)
 - [x] Ajouter dark mode (toggle, persistance, accessibilité)
 
-### À Faire (Optionnel)
+### ✅ Terminé (24 Nov 2025)
 
 #### Tests Robustesse
 
-- [ ] Tests WebSocket reconnexion
-- [ ] Tests dashboard connexion lente
-- [ ] Tests PWA cache corrompu
+- [x] Tests WebSocket reconnexion (11 tests)
+- [x] Tests dashboard connexion lente (10 tests)
+- [x] Tests PWA cache corrompu (11 tests)
+
+**Total** : 32 nouveaux tests de robustesse ✅
 
 #### Code Quality
 
@@ -293,5 +295,7 @@
 ---
 
 **Dernière mise à jour** : 24 Novembre 2025  
-**Statut** : ✅ **Priorités hautes terminées** - Graphiques + Dark Mode implémentés  
-**Prochaines étapes** : Tests robustesse (optionnel)
+**Statut** : ✅ **Priorités hautes et moyennes terminées**  
+- ✅ Graphiques + Dark Mode implémentés  
+- ✅ Tests robustesse (32 tests) implémentés  
+**Prochaines étapes** : Nettoyage TODO + Optimisations (optionnel)
