@@ -82,7 +82,12 @@ const robot3d = {
 
     /**
      * Crée un placeholder robot (géométrie simple)
-     * TODO: Charger modèle STL réel
+     *
+     * Note: Fonctionnalité future - Chargement modèle STL réel
+     * Le modèle STL du robot Reachy Mini pourra être chargé depuis
+     * les assets du projet pour une visualisation 3D précise.
+     * Actuellement, un placeholder géométrique simple est utilisé
+     * pour des raisons de performance et de simplicité.
      */
     createRobotPlaceholder: function () {
         // Groupe pour le robot

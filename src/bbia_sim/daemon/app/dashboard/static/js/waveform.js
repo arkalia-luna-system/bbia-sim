@@ -83,8 +83,11 @@ const waveform = {
         this.microphoneAnalyser.fftSize = 256;
         this.microphoneAnalyser.smoothingTimeConstant = 0.8;
 
-        // TODO: Connecter aux vraies sources audio via WebSocket ou MediaStream
-        // Pour l'instant, on simule avec des données
+        // Note: Fonctionnalité future - Connexion sources audio réelles
+        // Les sources audio pourront être connectées via:
+        // - WebSocket pour streaming audio depuis le serveur
+        // - MediaStream API pour accès direct au microphone
+        // Pour l'instant, on simule avec des données pour la démonstration
     },
 
     /**
