@@ -25,7 +25,7 @@ class EmotionPreset(BaseModel):
     description: str | None = None
 
 
-@router.get("/presets")
+@router.get("/")
 async def list_presets() -> dict[str, Any]:
     """Liste tous les presets disponibles.
 
@@ -56,7 +56,7 @@ async def list_presets() -> dict[str, Any]:
         raise HTTPException(status_code=500, detail=f"Erreur: {e!s}") from e
 
 
-@router.get("/presets/{preset_name}")
+@router.get("/{preset_name}")
 async def get_preset(preset_name: str) -> dict[str, Any]:
     """Récupère un preset spécifique.
 
@@ -83,7 +83,7 @@ async def get_preset(preset_name: str) -> dict[str, Any]:
         raise HTTPException(status_code=500, detail=f"Erreur lecture: {e!s}") from e
 
 
-@router.post("/presets")
+@router.post("/")
 async def create_preset(preset: EmotionPreset) -> dict[str, Any]:
     """Crée ou met à jour un preset.
 
@@ -130,7 +130,7 @@ async def create_preset(preset: EmotionPreset) -> dict[str, Any]:
         raise HTTPException(status_code=500, detail=f"Erreur écriture: {e!s}") from e
 
 
-@router.post("/presets/{preset_name}/apply")
+@router.post("/{preset_name}/apply")
 async def apply_preset(preset_name: str) -> dict[str, Any]:
     """Applique un preset (définit toutes les émotions).
 
@@ -214,7 +214,7 @@ async def apply_preset(preset_name: str) -> dict[str, Any]:
         raise HTTPException(status_code=500, detail=f"Erreur lecture: {e!s}") from e
 
 
-@router.delete("/presets/{preset_name}")
+@router.delete("/{preset_name}")
 async def delete_preset(preset_name: str) -> dict[str, Any]:
     """Supprime un preset.
 
