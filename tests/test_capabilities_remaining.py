@@ -636,36 +636,101 @@ class TestBBIAVisionMethods:
 class TestBBIAVoiceAdvanced:
     """Tests pour BBIAVoiceAdvanced."""
 
+    @pytest.mark.audio
     def test_is_coqui_available(self) -> None:
         """Test is_coqui_available."""
+        from unittest.mock import MagicMock, patch
+
         from bbia_sim.bbia_voice_advanced import BBIAVoiceAdvanced
 
-        voice = BBIAVoiceAdvanced()
-        available = voice.is_coqui_available()
-        assert isinstance(available, bool)
+        # Mock pyttsx3 pour éviter erreurs espeak en CI
+        with (
+            patch("bbia_sim.bbia_voice._get_pyttsx3_engine") as mock_engine,
+            patch(
+                "bbia_sim.bbia_voice._get_cached_voice_id", return_value="test_voice"
+            ),
+            patch("os.environ.get", return_value="0"),
+        ):
+            mock_engine_instance = MagicMock()
+            mock_engine_instance.setProperty.return_value = None
+            mock_engine.return_value = mock_engine_instance
 
+            voice = BBIAVoiceAdvanced()
+            available = voice.is_coqui_available()
+            assert isinstance(available, bool)
+
+    @pytest.mark.audio
     def test_say(self) -> None:
         """Test say."""
+        from unittest.mock import MagicMock, patch
+
         from bbia_sim.bbia_voice_advanced import BBIAVoiceAdvanced
 
-        voice = BBIAVoiceAdvanced()
-        result = voice.say("Test")
-        assert isinstance(result, bool)
+        # Mock pyttsx3 pour éviter erreurs espeak en CI
+        with (
+            patch("bbia_sim.bbia_voice._get_pyttsx3_engine") as mock_engine,
+            patch(
+                "bbia_sim.bbia_voice._get_cached_voice_id", return_value="test_voice"
+            ),
+            patch("os.environ.get", return_value="0"),
+        ):
+            mock_engine_instance = MagicMock()
+            mock_engine_instance.setProperty.return_value = None
+            mock_engine_instance.say.return_value = None
+            mock_engine_instance.runAndWait.return_value = None
+            mock_engine.return_value = mock_engine_instance
 
+            voice = BBIAVoiceAdvanced()
+            result = voice.say("Test")
+            assert isinstance(result, bool)
+
+    @pytest.mark.audio
     def test_say_with_emotion(self) -> None:
         """Test say_with_emotion."""
+        from unittest.mock import MagicMock, patch
+
         from bbia_sim.bbia_voice_advanced import BBIAVoiceAdvanced
 
-        voice = BBIAVoiceAdvanced()
-        result = voice.say_with_emotion("Test", "happy")
-        assert isinstance(result, bool)
+        # Mock pyttsx3 pour éviter erreurs espeak en CI
+        with (
+            patch("bbia_sim.bbia_voice._get_pyttsx3_engine") as mock_engine,
+            patch(
+                "bbia_sim.bbia_voice._get_cached_voice_id", return_value="test_voice"
+            ),
+            patch("os.environ.get", return_value="0"),
+        ):
+            mock_engine_instance = MagicMock()
+            mock_engine_instance.setProperty.return_value = None
+            mock_engine_instance.say.return_value = None
+            mock_engine_instance.runAndWait.return_value = None
+            mock_engine.return_value = mock_engine_instance
 
+            voice = BBIAVoiceAdvanced()
+            result = voice.say_with_emotion("Test", "happy")
+            assert isinstance(result, bool)
+
+    @pytest.mark.audio
     def test_set_emotion(self) -> None:
         """Test set_emotion."""
+        from unittest.mock import MagicMock, patch
+
         from bbia_sim.bbia_voice_advanced import BBIAVoiceAdvanced
 
-        voice = BBIAVoiceAdvanced()
-        voice.set_emotion("happy")
+        # Mock pyttsx3 pour éviter erreurs espeak en CI
+        with (
+            patch("bbia_sim.bbia_voice._get_pyttsx3_engine") as mock_engine,
+            patch(
+                "bbia_sim.bbia_voice._get_cached_voice_id", return_value="test_voice"
+            ),
+            patch("os.environ.get", return_value="0"),
+        ):
+            mock_engine_instance = MagicMock()
+            mock_engine_instance.setProperty.return_value = None
+            mock_engine.return_value = mock_engine_instance
+
+            voice = BBIAVoiceAdvanced()
+            voice.set_emotion("happy")
+            assert voice.current_emotion == "happy"
 
 
 class TestTroubleshootingFunctions:
