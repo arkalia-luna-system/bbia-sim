@@ -104,14 +104,17 @@ sequenceDiagram
 
 ```
 
-## Métriques Prometheus (proposé)
+## Métriques Prometheus ✅ **IMPLÉMENTÉ** (24 Nov. 2025)
 
-- Exposition: `GET /metrics`
-- Métriques recommandées:
-  - bbia_request_latency_seconds (histogram)
-  - bbia_ws_clients_gauge
-  - bbia_cpu_usage_percent, bbia_memory_usage_percent
-  - bbia_watchdog_heartbeat_age_seconds
+- Exposition: `GET /metrics/prometheus` ✅
+- Métriques disponibles:
+  - ✅ bbia_request_latency_seconds (histogram)
+  - ✅ bbia_ws_clients_gauge (active_connections)
+  - ✅ bbia_cpu_usage_percent, bbia_memory_usage_bytes
+  - ✅ bbia_watchdog_heartbeat_age_seconds - **NOUVEAU**
+  - ✅ bbia_robot_connected - **NOUVEAU**
+  - ✅ bbia_latency_p50_ms, bbia_latency_p95_ms, bbia_latency_p99_ms - **NOUVEAU**
+  - ✅ bbia_simulation_fps
 
 ### Métriques Disponibles
 

@@ -338,8 +338,10 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
         except Exception as e:
             # Vérifier si l'erreur vient de _get_pyttsx3_engine()
             # Si c'est le cas, la laisser remonter car le fallback pyttsx3 échouera aussi
-            error_msg = str(e)
-            if "Engine error" in error_msg or "_get_pyttsx3_engine" in str(type(e)):
+            import traceback
+
+            tb_str = "".join(traceback.format_exception(type(e), e, e.__traceback__))
+            if "_get_pyttsx3_engine" in tb_str:
                 logger.debug(
                     "Erreur _get_pyttsx3_engine détectée, pas de fallback pyttsx3: %s",
                     e,

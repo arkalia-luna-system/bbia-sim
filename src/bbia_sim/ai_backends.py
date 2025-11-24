@@ -119,7 +119,16 @@ class Pyttsx3TTS:
             engine.save_to_file(text, outfile)
             engine.runAndWait()
             return True
-        except (RuntimeError, OSError, ValueError, Exception):
+        except (RuntimeError, OSError, ValueError):
+            return False
+        except Exception as e:
+            # Si l'exception vient de _get_pyttsx3_engine(), la laisser remonter
+            # car le fallback pyttsx3 échouera aussi
+            import traceback
+
+            tb_str = "".join(traceback.format_exception(type(e), e, e.__traceback__))
+            if "_get_pyttsx3_engine" in tb_str:
+                raise
             return False
 
 

@@ -467,13 +467,13 @@
 **Effort** : 4-6h
 
 **Actions** :
-- [ ] Exposer toutes les métriques via `/metrics/prometheus`
-  - Latence opérations (p50, p95, p99)
-  - CPU/RAM usage
-  - FPS vision
-  - Latence LLM
-  - Erreurs par type
-  - Watchdog heartbeats
+- [x] ✅ Exposer toutes les métriques via `/metrics/prometheus` - **TERMINÉ** (24 Nov. 2025)
+  - ✅ Latence opérations (p50, p95, p99) - **IMPLÉMENTÉ**
+  - ✅ CPU/RAM usage - **DÉJÀ PRÉSENT**
+  - ✅ FPS vision - **DÉJÀ PRÉSENT**
+  - ⏳ Latence LLM - Optionnel
+  - ⏳ Erreurs par type - Optionnel
+  - ✅ Watchdog heartbeats - **IMPLÉMENTÉ**
 - [ ] Créer dashboard Grafana (optionnel)
 - [ ] Ajouter alertes (latence > seuil, erreurs > seuil)
 
