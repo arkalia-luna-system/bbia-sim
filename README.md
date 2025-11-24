@@ -86,10 +86,10 @@ BBIA-SIM maintient des standards stricts de qualité:
 
 - **Tests de couverture**: 80% minimum
 - **Linting**: black, ruff, mypy, bandit
-- **Python**: 3.11+
-- **CI/CD**: GitHub Actions avec vérifications automatiques
-- **Sécurité**: Analyse statique avec Bandit
-- **Performance**: Optimisations continues et monitoring
+- **Python**: 3.11+ (3.12 testé dans CI) ✅
+- **CI/CD**: GitHub Actions avec vérifications automatiques (Python 3.11 + 3.12, gitleaks) ✅
+- **Sécurité**: Analyse statique avec Bandit + scan secrets (gitleaks) ✅
+- **Performance**: Optimisations continues et monitoring (métriques Prometheus complétées) ✅
 
 **[🚀 Quick Start](#-démarrage-rapide)** | **[📚 Guide de Démarrage](docs/guides/GUIDE_DEMARRAGE.md)** | **[🔬 Docs Avancé](docs/guides/GUIDE_AVANCE.md)** | **[🌐 English README](README_EN.md)** | **[🎬 Vidéos Démo](docs/guides/GUIDE_VIDEOS_DEMONSTRATION.md)** | **[🌍 Guide Communauté](docs/community/GUIDE_COMMUNAUTE.md)**
 
@@ -241,6 +241,15 @@ curl http://localhost:8000/metrics/readyz
 
 # Health détaillé
 curl http://localhost:8000/metrics/health
+
+# Métriques Prometheus ✅ **Complétées** (24 Nov. 2025)
+
+**Nouvelles métriques disponibles** :
+- ✅ `bbia_watchdog_heartbeat_age_seconds` - âge heartbeat watchdog
+- ✅ `bbia_robot_connected` - statut connexion robot (1/0)
+- ✅ `bbia_latency_p50_ms`, `bbia_latency_p95_ms`, `bbia_latency_p99_ms` - latence percentiles
+
+Voir `docs/observabilite/OBSERVABILITE.md` pour plus de détails.
 
 # Métriques Prometheus
 curl http://localhost:8000/metrics/prometheus

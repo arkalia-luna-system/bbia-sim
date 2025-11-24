@@ -440,8 +440,9 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
         # Pitch non supporté nativement par pyttsx3, dépend du moteur
         engine.say(texte)
         engine.runAndWait()
-    except Exception:
-        logging.warning("Erreur de synthèse vocale", exc_info=True)
+    except Exception as e:
+        # Utiliser error au lieu de warning avec exc_info pour éviter traces complètes dans tests
+        logging.error("Erreur de synthèse vocale: %s", e)
         raise
 
 
@@ -532,8 +533,8 @@ def reconnaitre_parole(
                 logging.warning("Aucune parole reconnue.")
                 return None
             except Exception as e:
-                # Utiliser error au lieu de warning avec exc_info pour éviter traces complètes dans tests
-                logging.error("Erreur de reconnaissance vocale: %s", e)
+                # Utiliser debug au lieu de error pour réduire bruit dans tests
+                logging.debug("Erreur de reconnaissance vocale: %s", e)
                 return None
     except Exception as e:
         # Utiliser debug au lieu de error/warning pour réduire bruit dans tests
