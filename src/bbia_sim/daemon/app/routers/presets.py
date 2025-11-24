@@ -36,7 +36,7 @@ async def list_presets() -> dict[str, Any]:
         presets = []
         for preset_file in PRESETS_DIR.glob("*.json"):
             try:
-                with open(preset_file, "r", encoding="utf-8") as f:
+                with open(preset_file, encoding="utf-8") as f:
                     data = json.load(f)
                     presets.append(
                         {
@@ -46,14 +46,14 @@ async def list_presets() -> dict[str, Any]:
                             "emotions": data.get("emotions", {}),
                         }
                     )
-            except (json.JSONDecodeError, IOError) as e:
+            except (OSError, json.JSONDecodeError) as e:
                 logger.warning(f"Erreur lecture preset {preset_file}: {e}")
                 continue
 
         return {"presets": presets, "count": len(presets)}
     except Exception as e:
         logger.exception("Erreur lors de la liste des presets")
-        raise HTTPException(status_code=500, detail=f"Erreur: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Erreur: {e!s}") from e
 
 
 @router.get("/presets/{preset_name}")
@@ -71,11 +71,11 @@ async def get_preset(preset_name: str) -> dict[str, Any]:
         raise HTTPException(status_code=404, detail=f"Preset '{preset_name}' introuvable")
 
     try:
-        with open(preset_file, "r", encoding="utf-8") as f:
+        with open(preset_file, encoding="utf-8") as f:
             return json.load(f)
-    except (json.JSONDecodeError, IOError) as e:
+    except (OSError, json.JSONDecodeError) as e:
         logger.exception(f"Erreur lecture preset {preset_name}")
-        raise HTTPException(status_code=500, detail=f"Erreur lecture: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Erreur lecture: {e!s}") from e
 
 
 @router.post("/presets")
@@ -116,9 +116,9 @@ async def create_preset(preset: EmotionPreset) -> dict[str, Any]:
             "message": f"Preset '{preset.name}' créé avec succès",
             "filename": preset_file.name,
         }
-    except IOError as e:
+    except OSError as e:
         logger.exception(f"Erreur création preset {preset.name}")
-        raise HTTPException(status_code=500, detail=f"Erreur écriture: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Erreur écriture: {e!s}") from e
 
 
 @router.post("/presets/{preset_name}/apply")
@@ -136,7 +136,7 @@ async def apply_preset(preset_name: str) -> dict[str, Any]:
         raise HTTPException(status_code=404, detail=f"Preset '{preset_name}' introuvable")
 
     try:
-        with open(preset_file, "r", encoding="utf-8") as f:
+        with open(preset_file, encoding="utf-8") as f:
             preset_data = json.load(f)
 
         emotions = preset_data.get("emotions", {})
@@ -163,10 +163,10 @@ async def apply_preset(preset_name: str) -> dict[str, Any]:
             }
         except Exception as e:
             logger.exception(f"Erreur application preset {preset_name}")
-            raise HTTPException(status_code=500, detail=f"Erreur application: {e!s}")
-    except (json.JSONDecodeError, IOError) as e:
+            raise HTTPException(status_code=500, detail=f"Erreur application: {e!s}") from e
+    except (OSError, json.JSONDecodeError) as e:
         logger.exception(f"Erreur lecture preset {preset_name}")
-        raise HTTPException(status_code=500, detail=f"Erreur lecture: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Erreur lecture: {e!s}") from e
 
 
 @router.delete("/presets/{preset_name}")
@@ -190,7 +190,7 @@ async def delete_preset(preset_name: str) -> dict[str, Any]:
             "success": True,
             "message": f"Preset '{preset_name}' supprimé avec succès",
         }
-    except IOError as e:
+    except OSError as e:
         logger.exception(f"Erreur suppression preset {preset_name}")
-        raise HTTPException(status_code=500, detail=f"Erreur suppression: {e!s}")
+        raise HTTPException(status_code=500, detail=f"Erreur suppression: {e!s}") from e
 

@@ -487,16 +487,17 @@ headers: {
 - ✅ Icônes (192x192, 512x512) - **TERMINÉ**
 
 ### Fichiers Créés (24 Nov 2025)
-- `src/bbia_sim/daemon/app/dashboard/static/manifest.json` - Manifest PWA
-- `src/bbia_sim/daemon/app/dashboard/static/sw.js` - Service Worker
-- `src/bbia_sim/daemon/app/dashboard/static/images/icon-192.png` - Icône PWA 192x192
-- `src/bbia_sim/daemon/app/dashboard/static/images/icon-512.png` - Icône PWA 512x512
-- `src/bbia_sim/daemon/app/dashboard/templates/sections/emotions.html` - Sliders émotions
-- `src/bbia_sim/daemon/app/dashboard/templates/sections/telemetry_charts.html` - Graphiques temps réel
-- `src/bbia_sim/daemon/app/dashboard/templates/sections/demo_mode.html` - Mode démo read-only
-- `src/bbia_sim/daemon/app/routers/presets.py` - API presets
-- Mise à jour `templates/base.html` (lien manifest + enregistrement SW)
-- Mise à jour `templates/index.html` (sections emotions, telemetry_charts, demo_mode)
+- ✅ `src/bbia_sim/daemon/app/dashboard/static/manifest.json` - Manifest PWA
+- ✅ `src/bbia_sim/daemon/app/dashboard/static/sw.js` - Service Worker
+- ✅ `src/bbia_sim/daemon/app/dashboard/static/images/icon-192.png` - Icône PWA 192x192
+- ✅ `src/bbia_sim/daemon/app/dashboard/static/images/icon-512.png` - Icône PWA 512x512
+- ✅ `src/bbia_sim/daemon/app/dashboard/templates/sections/telemetry_charts.html` - Graphiques temps réel Chart.js
+- ✅ `src/bbia_sim/daemon/app/dashboard/templates/sections/demo_mode.html` - Mode démo read-only
+- ✅ `src/bbia_sim/daemon/app/dashboard/templates/sections/emotions.html` - Sliders émotions avec intensité
+- ✅ `src/bbia_sim/daemon/app/routers/presets.py` - API presets (GET, POST, DELETE, apply)
+- ✅ Mise à jour `templates/base.html` (lien manifest + enregistrement SW)
+- ✅ Mise à jour `templates/index.html` (sections telemetry_charts, demo_mode, emotions)
+- ✅ Mise à jour `routers/motion.py` (endpoint `POST /api/motion/emotion` avec body JSON)
 
 ### Endpoints API Ajoutés
 - `POST /api/motion/emotion` - Définir émotion avec intensité

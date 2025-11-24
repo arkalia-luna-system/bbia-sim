@@ -231,4 +231,35 @@ python -c "from bbia_sim.daemon.app.main import app; import logging; logging.inf
 ✅ **Structure identique à l'officiel**
 ✅ **Design conforme**
 ✅ **Intégration complète dans main.py**
+✅ **Extensions ajoutées (24 Nov 2025)** :
+- Graphiques temps réel (Chart.js)
+- Mode démo read-only
+- Sliders émotions avec intensité
+- Presets exportables
+- PWA support complet
 ⚠️ **Assets SVG optionnels (peuvent être ajoutés plus tard)**
+
+## 📁 Fichiers Créés/Modifiés
+
+### Templates Sections
+- ✅ `sections/daemon.html` - Contrôle daemon
+- ✅ `sections/apps.html` - Applications installées
+- ✅ `sections/appstore.html` - Hugging Face App Store
+- ✅ `sections/move_player.html` - Lecteur mouvements
+- ✅ `sections/media.html` - Contrôles media
+- ✅ `sections/quick_actions.html` - Actions rapides
+- ✅ `sections/installation_wizard.html` - Assistant installation
+- ✅ `sections/telemetry_charts.html` - Graphiques temps réel (24 Nov 2025)
+- ✅ `sections/demo_mode.html` - Mode démo read-only (24 Nov 2025)
+- ✅ `sections/emotions.html` - Sliders émotions (24 Nov 2025)
+
+### Static Files
+- ✅ `static/manifest.json` - Manifest PWA (24 Nov 2025)
+- ✅ `static/sw.js` - Service Worker (24 Nov 2025)
+- ✅ `static/images/icon-192.png` - Icône PWA 192x192 (24 Nov 2025)
+- ✅ `static/images/icon-512.png` - Icône PWA 512x512 (24 Nov 2025)
+- ✅ `static/style.css` - Styles Tailwind
+- ✅ `static/js/*.js` - Scripts JavaScript
+
+### API Routers
+- ✅ `routers/presets.py` - API presets (24 Nov 2025)
