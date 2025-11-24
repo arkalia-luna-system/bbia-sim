@@ -220,7 +220,8 @@ class BBIAPoseDetection:
             genou_droit = landmarks[26]
 
             # Distance moyenne hanche-cheville (debout) vs hanche-genou (assis)
-            # Simplification : si genoux très bas par rapport aux hanches = probablement assis
+            # Simplification : si genoux très bas par rapport aux hanches
+            # = probablement assis
             avg_hanche_y = (hanche_gauche["y"] + hanche_droite["y"]) / 2
             avg_genou_y = (genou_gauche["y"] + genou_droit["y"]) / 2
 

@@ -317,7 +317,8 @@ def enregistrer_audio(
                     dtype="int16",
                 )
             except Exception as fallback_error:
-                # Utiliser error au lieu de exception pour éviter traces complètes dans tests
+                # Utiliser error au lieu de exception pour éviter
+                # traces complètes dans tests
                 logging.error(
                     "❌ Échec enregistrement audio même avec fallback: %s",
                     fallback_error,

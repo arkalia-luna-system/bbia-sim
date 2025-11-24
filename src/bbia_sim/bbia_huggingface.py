@@ -28,7 +28,8 @@ os.environ["TRANSFORMERS_VERBOSITY"] = "error"
 logger = logging.getLogger(__name__)
 
 
-# OPTIMISATION PERFORMANCE: Utiliser @lru_cache pour regex (plus efficace que cache manuel)
+# OPTIMISATION PERFORMANCE: Utiliser @lru_cache pour regex
+# (plus efficace que cache manuel)
 @lru_cache(maxsize=128)
 def _get_compiled_regex(pattern: str, flags: int = 0) -> re.Pattern[str]:
     """Retourne regex compilée depuis cache (évite recompilation répétée).
@@ -190,12 +191,14 @@ class BBIAHuggingFace:
         # Enregistrer cette instance pour le thread partagé
         with BBIAHuggingFace._shared_unload_thread_lock:
             BBIAHuggingFace._shared_instances.append(self)
-            # Démarrer thread partagé si nécessaire (double-check pattern pour éviter race condition)
+            # Démarrer thread partagé si nécessaire
+            # (double-check pattern pour éviter race condition)
             if (
                 BBIAHuggingFace._shared_unload_thread is None
                 or not BBIAHuggingFace._shared_unload_thread.is_alive()
             ):
-                # Double-check: vérifier une deuxième fois dans le lock pour éviter race condition
+                # Double-check: vérifier une deuxième fois dans le lock
+                # pour éviter race condition
                 # (si plusieurs instances sont créées simultanément)
                 if (
                     BBIAHuggingFace._shared_unload_thread is None

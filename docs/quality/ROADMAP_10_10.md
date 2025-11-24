@@ -107,10 +107,10 @@
 **Actions prioritaires** :
 
 #### A. Scan sécurité avancé ⏱️ **2-3h**
-- [ ] Ajouter semgrep en CI
-- [ ] Ajouter SBOM (CycloneDX)
-- [ ] Créer politique de sécurité (SECURITY.md)
-- [ ] Documenter processus de divulgation de vulnérabilités
+- [x] ✅ Créer politique de sécurité (SECURITY.md) - **TERMINÉ** (24 Nov. 2025)
+- [ ] Ajouter semgrep en CI (optionnel - gitleaks déjà en place)
+- [ ] Ajouter SBOM (CycloneDX) (optionnel)
+- [x] ✅ Documenter processus de divulgation de vulnérabilités - **TERMINÉ** (dans SECURITY.md)
 
 **Impact** : +0.4 point
 
@@ -123,10 +123,10 @@
 **Impact** : +0.3 point
 
 #### C. Sécurité API ⏱️ **1-2h**
-- [ ] Activer CORS strict (vérifier configuration)
-- [ ] Ajouter rate limiting (si non présent)
-- [ ] Ajouter authentification basique (si nécessaire)
-- [ ] Documenter sécurité API
+- [x] ✅ Activer CORS strict (vérifier configuration) - **TERMINÉ** (24 Nov. 2025)
+- [x] ✅ Ajouter rate limiting (si non présent) - **DÉJÀ IMPLÉMENTÉ** (RateLimitMiddleware)
+- [x] ✅ Ajouter authentification basique (si nécessaire) - **DÉJÀ IMPLÉMENTÉ** (HTTPBearer)
+- [x] ✅ Documenter sécurité API - **TERMINÉ** (dans SECURITY.md)
 
 **Impact** : +0.3 point
 

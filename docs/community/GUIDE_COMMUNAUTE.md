@@ -347,5 +347,25 @@ Good for learning advanced Python!
 ---
 
 **Date de création** : 22 novembre 2025  
-**Dernière mise à jour** : 22 novembre 2025
+**Dernière mise à jour** : Décembre 2025
+
+---
+
+## 📚 Guides Complémentaires
+
+### Pour Contribuer
+
+- **[Guide Contributeurs Complet](GUIDE_CONTRIBUTEURS_COMPLET.md)** : Guide détaillé pour contribuer
+- **[Guide Contribution](CONTRIBUTION_GUIDE.md)** : Processus de contribution
+- **[Code de Conduite](../../CODE_OF_CONDUCT.md)** : Standards de comportement
+
+### Pour Partager
+
+- **[Guide Hugging Face Spaces](GUIDE_HUGGINGFACE_SPACES.md)** : Créer et publier des applications
+- **[Innovations BBIA](INNOVATIONS_BBIA.md)** : Documentation des innovations majeures
+
+### Pour Comprendre
+
+- **[Audit Stratégique Valeur](../../quality/audits/AUDIT_STRATEGIQUE_VALEUR_DEC2025.md)** : Analyse valeur et recommandations
+- **[Ce qui Manque](../../quality/audits/CE_QUI_MANQUE_DANS_BBIA_DEC2025.md)** : Analyse fonctionnalités manquantes
 

@@ -8,7 +8,7 @@ import logging
 import sys
 import time
 from pathlib import Path
-from typing import Any
+from typing import Any, NoReturn
 
 import mujoco
 import mujoco.viewer
@@ -205,7 +205,7 @@ class MuJoCoSimulator:
             pass
         return valid_joints
 
-    def _handle_invalid_joint_error(self, joint_name: str, error: KeyError) -> None:
+    def _handle_invalid_joint_error(self, joint_name: str, error: KeyError) -> NoReturn:
         """Gère l'erreur d'articulation invalide avec message informatif.
 
         Args:

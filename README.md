@@ -91,7 +91,7 @@ BBIA-SIM maintient des standards stricts de qualité:
 - **Sécurité**: Analyse statique avec Bandit + scan secrets (gitleaks) ✅
 - **Performance**: Optimisations continues et monitoring (métriques Prometheus complétées) ✅
 
-**[🚀 Quick Start](#-démarrage-rapide)** | **[📚 Guide de Démarrage](docs/guides/GUIDE_DEMARRAGE.md)** | **[🔬 Docs Avancé](docs/guides/GUIDE_AVANCE.md)** | **[🌐 English README](README_EN.md)** | **[🎬 Vidéos Démo](docs/guides/GUIDE_VIDEOS_DEMONSTRATION.md)** | **[🌍 Guide Communauté](docs/community/GUIDE_COMMUNAUTE.md)**
+**[🚀 Quick Start](#-démarrage-rapide)** | **[📚 Guide de Démarrage](docs/guides/GUIDE_DEMARRAGE.md)** | **[🔬 Docs Avancé](docs/guides/GUIDE_AVANCE.md)** | **[🌐 English README](README_EN.md)** | **[🎬 Vidéos Démo](docs/guides/GUIDE_VIDEOS_DEMONSTRATION.md)** | **[🌍 Guide Communauté](docs/community/GUIDE_COMMUNAUTE.md)** | **[🤝 Contribuer](docs/community/GUIDE_CONTRIBUTEURS_COMPLET.md)** | **[🚀 Innovations](docs/community/INNOVATIONS_BBIA.md)**
 
 ---
 
