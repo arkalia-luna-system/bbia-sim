@@ -4,6 +4,7 @@ import json
 from unittest.mock import MagicMock, patch
 
 import pytest
+from fastapi import HTTPException
 
 from bbia_sim.daemon.app.routers.presets import (
     EmotionPreset,
