@@ -324,20 +324,21 @@ class TestBBIAVoiceAdvancedMethods:
 
             voice = BBIAVoiceAdvanced()
 
-        # Test is_coqui_available
-        available = voice.is_coqui_available()
-        assert isinstance(available, bool)
+            # Test is_coqui_available
+            available = voice.is_coqui_available()
+            assert isinstance(available, bool)
 
-        # Test say
-        result = voice.say("Test")
-        assert isinstance(result, bool)
+            # Test say
+            result = voice.say("Test")
+            assert isinstance(result, bool)
 
-        # Test say_with_emotion
-        result = voice.say_with_emotion("Test", "happy")
-        assert isinstance(result, bool)
+            # Test say_with_emotion
+            result = voice.say_with_emotion("Test", "happy")
+            assert isinstance(result, bool)
 
-        # Test set_emotion
-        voice.set_emotion("happy")
+            # Test set_emotion
+            voice.set_emotion("happy")
+            assert voice.current_emotion == "happy"
 
 
 class TestTroubleshootingCheckerMethods:
