@@ -317,14 +317,19 @@ BBIAiOS/
 1. ✅ Créer `manifest.json` dans `dashboard/static/` - **FAIT**
 2. ✅ Créer Service Worker (`sw.js`) - **FAIT**
 3. ✅ Ajouter icônes (192x192, 512x512) - **FAIT** (icônes créées)
-4. ⚠️ Tester installation sur Android/iOS - **À TESTER**
-5. ✅ Implémenter cache offline - **FAIT** (service worker avec stratégie cache-first/network-first)
+4. ✅ Ajouter bouton "Installer PWA" - **FAIT** (`pwa_install.js` + bouton flottant)
+5. ✅ Optimiser responsive mobile - **FAIT** (CSS tactile, min-height 44px)
+6. ⚠️ Tester installation sur Android/iOS - **À TESTER** (nécessite appareils physiques)
+7. ✅ Implémenter cache offline - **FAIT** (service worker avec stratégie cache-first/network-first)
 
 **Fichiers créés :**
 - ✅ `src/bbia_sim/daemon/app/dashboard/static/manifest.json`
 - ✅ `src/bbia_sim/daemon/app/dashboard/static/sw.js`
+- ✅ `src/bbia_sim/daemon/app/dashboard/static/js/pwa_install.js` - **CRÉÉ** (gestion installation PWA)
 - ✅ `src/bbia_sim/daemon/app/dashboard/static/images/icon-192.png` - **CRÉÉ**
 - ✅ `src/bbia_sim/daemon/app/dashboard/static/images/icon-512.png` - **CRÉÉ**
+- ✅ Mise à jour `templates/base.html` (meta mobile-web-app, apple-mobile-web-app)
+- ✅ Mise à jour `static/style.css` (responsive mobile, boutons tactiles)
 
 **Avantages immédiats :**
 - ✅ App "native" sans développement mobile
@@ -485,18 +490,24 @@ headers: {
 - ✅ Manifest PWA (`manifest.json`)
 - ✅ Service Worker (`sw.js`)
 - ✅ Icônes (192x192, 512x512) - **TERMINÉ**
+- ✅ Bouton "Installer PWA" (`pwa_install.js`) - **TERMINÉ**
+- ✅ Responsive mobile optimisé (CSS tactile) - **TERMINÉ**
+- ✅ Meta tags mobile (apple-mobile-web-app) - **TERMINÉ**
 
 ### Fichiers Créés (24 Nov 2025)
 - ✅ `src/bbia_sim/daemon/app/dashboard/static/manifest.json` - Manifest PWA
 - ✅ `src/bbia_sim/daemon/app/dashboard/static/sw.js` - Service Worker
+- ✅ `src/bbia_sim/daemon/app/dashboard/static/js/pwa_install.js` - Gestion installation PWA
 - ✅ `src/bbia_sim/daemon/app/dashboard/static/images/icon-192.png` - Icône PWA 192x192
 - ✅ `src/bbia_sim/daemon/app/dashboard/static/images/icon-512.png` - Icône PWA 512x512
 - ✅ `src/bbia_sim/daemon/app/dashboard/templates/sections/telemetry_charts.html` - Graphiques temps réel Chart.js
 - ✅ `src/bbia_sim/daemon/app/dashboard/templates/sections/demo_mode.html` - Mode démo read-only
 - ✅ `src/bbia_sim/daemon/app/dashboard/templates/sections/emotions.html` - Sliders émotions avec intensité
 - ✅ `src/bbia_sim/daemon/app/routers/presets.py` - API presets (GET, POST, DELETE, apply)
-- ✅ Mise à jour `templates/base.html` (lien manifest + enregistrement SW)
-- ✅ Mise à jour `templates/index.html` (sections telemetry_charts, demo_mode, emotions)
+- ✅ `tests/test_presets_edge_cases.py` - Tests edge cases presets (14 tests)
+- ✅ Mise à jour `templates/base.html` (lien manifest + enregistrement SW + meta mobile)
+- ✅ Mise à jour `templates/index.html` (sections + script pwa_install.js)
+- ✅ Mise à jour `static/style.css` (responsive mobile, boutons tactiles)
 - ✅ Mise à jour `routers/motion.py` (endpoint `POST /api/motion/emotion` avec body JSON)
 
 ### Endpoints API Ajoutés

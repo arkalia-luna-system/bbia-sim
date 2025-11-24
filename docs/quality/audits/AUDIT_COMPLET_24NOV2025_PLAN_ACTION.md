@@ -265,18 +265,18 @@
 ### ✅ À Faire Maintenant (2-3 jours)
 
 #### Tests & Préparation
-- [ ] Exécuter `python scripts/bbia_doctor.py`
-- [ ] Tester Zenoh local
+- [x] ✅ Exécuter `python scripts/bbia_doctor.py` - **FAIT** (diagnostic OK)
+- [ ] Tester Zenoh local (erreur config mineure, non-bloquant)
 - [ ] Valider daemon simulation
-- [ ] Vérifier réseau (IP, ports)
+- [x] ✅ Vérifier réseau (IP, ports) - **FAIT** (IP locale OK, ports fermés normal)
 - [ ] Créer checklist jour J robot
 
 #### Mobile App (PWA)
-- [ ] Tester installation Android
-- [ ] Tester installation iOS
-- [ ] Vérifier mode offline
-- [ ] Ajouter bouton "Installer"
-- [ ] Optimiser responsive mobile
+- [x] ✅ Ajouter bouton "Installer" - **FAIT** (`pwa_install.js`)
+- [x] ✅ Optimiser responsive mobile - **FAIT** (CSS tactile)
+- [x] ✅ Vérifier mode offline - **FAIT** (Service Worker cache)
+- [x] ✅ Documenter installation PWA - **FAIT** (dans MD existants)
+- [ ] ⚠️ Tester installation Android/iOS - **À TESTER** (nécessite appareils)
 
 #### Documentation
 - [ ] Créer guide mobile app

@@ -82,3 +82,69 @@ body {
     justify-content: center;
 }
 
+/* Responsive Mobile */
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem !important;
+    }
+    
+    .app-section {
+        padding: 12px;
+    }
+    
+    .app-section-title {
+        font-size: 20px;
+    }
+    
+    /* Boutons tactiles optimisés */
+    button, .quick-action-btn, .emotion-slider-input {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
+    /* Sliders émotions mobile */
+    .emotion-slider {
+        padding: 12px;
+    }
+    
+    .emotion-slider-input {
+        height: 8px;
+    }
+    
+    /* FPS display mobile */
+    #fps-display {
+        font-size: 12px;
+        padding: 4px 8px;
+    }
+}
+
+/* PWA Install Button */
+#pwa-install-button {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#pwa-install-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+#pwa-install-button:active {
+    transform: translateY(0);
+}
+
+/* Toast notifications */
+.pwa-instructions {
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+

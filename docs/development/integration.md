@@ -980,7 +980,7 @@ BBIA-SIM expose une **API REST complète** et des **WebSockets temps réel** qui
 
 ### 📱 Options de Développement Mobile
 
-#### **1. Progressive Web App (PWA) - ⭐ RECOMMANDÉ**
+#### **1. Progressive Web App (PWA) - ⭐ RECOMMANDÉ** ✅ **IMPLÉMENTÉ (24 Nov 2025)**
 
 **Avantages :**
 - ✅ Fonctionne sur Android, iOS, Desktop
@@ -990,10 +990,32 @@ BBIA-SIM expose une **API REST complète** et des **WebSockets temps réel** qui
 - ✅ Mises à jour instantanées
 - ✅ Coût zéro
 
-**Implémentation :**
+**Implémentation :** ✅ **TERMINÉ (24 Nov 2025)**
+
+**Fichiers créés :**
+- ✅ `manifest.json` - Manifest PWA complet
+- ✅ `sw.js` - Service Worker avec cache offline
+- ✅ `pwa_install.js` - Gestion installation PWA (bouton flottant + instructions)
+- ✅ Icônes 192x192 et 512x512
+- ✅ Responsive mobile optimisé (CSS tactile, min-height 44px)
+- ✅ Meta tags mobile (apple-mobile-web-app, mobile-web-app-capable)
+
+**Installation :**
+1. Ouvrir le dashboard : `http://localhost:8000`
+2. Cliquer sur le bouton "📱 Installer l'app" (en bas à droite, apparaît automatiquement)
+3. Suivre les instructions selon votre appareil :
+   - **Android** : Menu ⋮ → "Ajouter à l'écran d'accueil"
+   - **iOS** : Bouton Partager 📤 → "Sur l'écran d'accueil"
+   - **Desktop** : Icône ➕ dans la barre d'adresse (Chrome/Edge)
+
+**Fonctionnalités PWA :**
+- ✅ Mode offline (cache API + fichiers statiques)
+- ✅ Installation native (icône écran d'accueil)
+- ✅ Mises à jour automatiques (Service Worker)
+- ✅ Responsive mobile optimisé (tactile)
 
 ```html
-<!-- manifest.json (à créer) -->
+<!-- manifest.json (déjà créé) -->
 {
   "name": "BBIA Robot Control",
   "short_name": "BBIA",
