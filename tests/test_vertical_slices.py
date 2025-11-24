@@ -89,6 +89,7 @@ class TestVerticalSlices:
                     "--headless",
                     "--joint",
                     "yaw_body",
+                    "--no-sound",  # Désactiver audio pour éviter threads audio
                 ],
                 capture_output=True,
                 text=True,
