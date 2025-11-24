@@ -319,6 +319,57 @@ async def goto_sleep() -> dict[str, Any]:
         }
 
 
+@router.post("/emotion")
+async def set_emotion(
+    emotion: Annotated[str, Query(description="Nom de l'émotion")],
+    intensity: Annotated[
+        float, Query(ge=0.0, le=1.0, description="Intensité (0.0-1.0)")
+    ] = 0.5,
+) -> dict[str, Any]:
+    """Définit une émotion avec intensité.
+
+    Args:
+        emotion: Nom de l'émotion (happy, sad, excited, etc.)
+        intensity: Intensité de l'émotion (0.0-1.0)
+
+    Returns:
+        Confirmation de définition de l'émotion
+    """
+    logger.info(f"Définition émotion: {emotion} avec intensité {intensity}")
+
+    try:
+        from bbia_sim.robot_factory import RobotFactory
+
+        robot = RobotFactory.create_backend("mujoco")
+        if robot:
+            robot.connect()
+            if hasattr(robot, "set_emotion"):
+                success = robot.set_emotion(emotion, intensity)
+                if success:
+                    robot.disconnect()
+                    return {
+                        "status": "success",
+                        "emotion": emotion,
+                        "intensity": intensity,
+                        "message": f"Émotion '{emotion}' définie avec intensité {intensity}",
+                        "timestamp": datetime.now().isoformat(),
+                    }
+            robot.disconnect()
+
+        return {
+            "status": "error",
+            "message": "Impossible de définir l'émotion",
+            "timestamp": datetime.now().isoformat(),
+        }
+    except Exception as e:
+        logger.exception("Erreur lors de la définition de l'émotion")
+        return {
+            "status": "error",
+            "message": f"Erreur: {e!s}",
+            "timestamp": datetime.now().isoformat(),
+        }
+
+
 @router.post("/stop")
 async def stop_motion() -> dict[str, Any]:
     """Arrête tous les mouvements (arrêt d'urgence si disponible).

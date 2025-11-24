@@ -28,6 +28,7 @@ from .routers import (
     motion,
     motors,
     move,
+    presets,
     state,
 )
 
@@ -314,6 +315,11 @@ app.include_router(
 )
 app.include_router(telemetry.router, prefix="/ws", tags=["telemetry"])
 app.include_router(metrics.router, tags=["metrics"])  # /metrics/*, /healthz, /readyz
+app.include_router(
+    presets.router,
+    prefix="/api/presets",
+    tags=["presets"],
+)  # /api/presets/*
 
 
 # Endpoint JSON racine pour les tests et API clients

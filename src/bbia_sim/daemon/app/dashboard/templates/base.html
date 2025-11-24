@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Reachy Mini dashboard{% endblock %}</title>
+    <link rel="manifest" href="/static/manifest.json">
+    <meta name="theme-color" content="#6366f1">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
     <link rel="stylesheet" href="/static/style.css">
@@ -20,6 +22,21 @@
     <div class="container py-8 px-4 sm:px-8 md:px-8 lg:px-8 xl:px-8 mx-auto w-full md:w-2/3">
         {% block content %}{% endblock %}
     </div>
+
+    <script>
+        // Enregistrer Service Worker pour PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/static/sw.js')
+                    .then((registration) => {
+                        console.log('✅ Service Worker enregistré:', registration.scope);
+                    })
+                    .catch((error) => {
+                        console.warn('⚠️ Erreur enregistrement Service Worker:', error);
+                    });
+            });
+        }
+    </script>
 </body>
 
 </html>
