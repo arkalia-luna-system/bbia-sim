@@ -18,6 +18,7 @@ logger = logging.getLogger(__name__)
 # Vérifier si transformers est disponible
 try:
     import transformers  # noqa: F401
+
     TRANSFORMERS_AVAILABLE = True
 except ImportError:
     TRANSFORMERS_AVAILABLE = False
@@ -80,18 +81,37 @@ class TestVAD(unittest.TestCase):
     @patch("transformers.pipeline")
     def test_vad_detection_silence(self, mock_pipeline: MagicMock) -> None:
         """Test détection VAD - silence."""
-        # Mock pipeline VAD
-        mock_vad = MagicMock()
-        mock_vad.return_value = [{"label": "NO_SPEECH", "score": 0.95}]
-        mock_pipeline.return_value = mock_vad
-
         import numpy as np
 
+        # Mock pipeline VAD - l'instance retournée doit être appelable comme fonction
+        mock_vad_instance = MagicMock()
+        # Configurer pour que l'appel du mock (comme fonction) retourne le résultat
+        mock_vad_instance.return_value = [{"label": "NO_SPEECH", "score": 0.95}]
+        # Configurer le mock pour qu'il soit appelable
+        mock_vad_instance.side_effect = lambda *args, **kwargs: [
+            {"label": "NO_SPEECH", "score": 0.95}
+        ]
+        mock_pipeline.return_value = mock_vad_instance
+
+        # Forcer le chargement du modèle VAD dans whisper AVANT d'appeler detect_speech_activity
+        # Note: detect_speech_activity charge le modèle si nécessaire, mais on force ici
+        self.whisper._vad_model = mock_vad_instance
+        self.whisper._vad_loaded = True
+
+        # Simuler chunk audio
         audio_chunk = np.random.rand(16000).astype(np.float32)
 
-        result = self.whisper.detect_speech_activity(audio_chunk)
+        # Détecter silence - le mock doit être appelé et retourner NO_SPEECH
+        # Patch également l'environnement pour ne pas retourner False immédiatement
+        import os
 
-        self.assertFalse(result, "Silence devrait être détecté")
+        original_env = os.environ.get("BBIA_DISABLE_AUDIO", "0")
+        try:
+            os.environ["BBIA_DISABLE_AUDIO"] = "0"
+            result = self.whisper.detect_speech_activity(audio_chunk)
+            self.assertFalse(result, "Silence devrait être détecté")
+        finally:
+            os.environ["BBIA_DISABLE_AUDIO"] = original_env
 
     def test_vad_disabled(self) -> None:
         """Test VAD désactivé."""
