@@ -27,9 +27,9 @@
 **Pourquoi** : Code propre, documentation claire
 
 **Actions** :
-- [ ] Documenter TODO `robot_3d.js` (charger modèle STL réel)
-- [ ] Documenter TODO `waveform.js` (connecter sources audio WebSocket)
-- [ ] Vérifier autres TODO dans codebase
+- [x] Documenter TODO `robot_3d.js` (charger modèle STL réel) ✅
+- [x] Documenter TODO `waveform.js` (connecter sources audio WebSocket) ✅
+- [x] Vérifier autres TODO dans codebase ✅
 
 **Fichiers à modifier** :
 - `src/bbia_sim/daemon/app/dashboard/static/js/robot_3d.js` (commentaire TODO)

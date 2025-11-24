@@ -267,8 +267,8 @@
 
 #### Code Quality
 
-- [ ] Nettoyer TODO dans codebase
-- [ ] Documenter TODO futurs
+- [x] Nettoyer TODO dans codebase ✅
+- [x] Documenter TODO futurs ✅
 
 #### Optimisations (Optionnel)
 
