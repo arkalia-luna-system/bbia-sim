@@ -15,6 +15,13 @@ os.environ["BBIA_DISABLE_AUDIO"] = "1"
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+# Vérifier si transformers est disponible
+try:
+    import transformers  # noqa: F401
+    TRANSFORMERS_AVAILABLE = True
+except ImportError:
+    TRANSFORMERS_AVAILABLE = False
+
 
 class TestVAD(unittest.TestCase):
     """Tests pour détection d'activité vocale (VAD)."""
@@ -33,6 +40,7 @@ class TestVAD(unittest.TestCase):
         self.assertTrue(self.whisper.enable_vad)
         self.assertFalse(self.whisper._vad_loaded)
 
+    @unittest.skipIf(not TRANSFORMERS_AVAILABLE, "transformers non disponible")
     @patch("transformers.pipeline")
     def test_vad_detection_speech(self, mock_pipeline: MagicMock) -> None:
         """Test détection VAD - parole."""
@@ -68,6 +76,7 @@ class TestVAD(unittest.TestCase):
         finally:
             os.environ["BBIA_DISABLE_AUDIO"] = original_env
 
+    @unittest.skipIf(not TRANSFORMERS_AVAILABLE, "transformers non disponible")
     @patch("transformers.pipeline")
     def test_vad_detection_silence(self, mock_pipeline: MagicMock) -> None:
         """Test détection VAD - silence."""
