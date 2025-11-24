@@ -6,6 +6,8 @@ Tests basiques sans dépendances complexes.
 import unittest
 from unittest.mock import MagicMock, patch
 
+import pytest
+
 from bbia_sim.daemon.config import Settings
 from bbia_sim.daemon.models import (
     GripperControl,
@@ -119,45 +121,56 @@ class TestJointsCoverage(unittest.TestCase):
 class TestSimulatorCoverage(unittest.TestCase):
     """Tests pour améliorer la coverage de simulator.py."""
 
-    @patch("src.bbia_sim.sim.simulator.mujoco")
-    def test_simulator_creation(self, mock_mujoco):
-        """Test création du simulateur avec mock."""
-        from src.bbia_sim.sim.simulator import MuJoCoSimulator
+    @patch("bbia_sim.sim.simulator.mujoco.MjModel")
+    @patch("bbia_sim.sim.simulator.mujoco.MjData")
+    @patch("bbia_sim.sim.simulator.Path.exists")
+    def test_simulator_creation(self, mock_exists, mock_mjdata, mock_mjmodel):
+        """Test création du simulateur avec mock (optimisé, pas de chargement XML réel)."""
+        from bbia_sim.sim.simulator import MuJoCoSimulator
+
+        # Mock que le fichier existe
+        mock_exists.return_value = True
 
         # Mock MuJoCo
         mock_model = MagicMock()
         mock_model.njnt = 16
         mock_model.nbody = 19
         mock_model.ngeom = 161
-        mock_mujoco.mj_loadXML.return_value = mock_model
-        mock_mujoco.mj_makeData.return_value = MagicMock()
+        mock_mjmodel.from_xml_path.return_value = mock_model
+        mock_mjdata.return_value = MagicMock()
 
-        # Utiliser le vrai modèle
+        # Utiliser un chemin minimal (ne sera pas réellement chargé grâce au mock)
         simulator = MuJoCoSimulator(
             "src/bbia_sim/sim/models/reachy_mini_REAL_OFFICIAL.xml"
         )
         self.assertIsNotNone(simulator)
-        # Vérifier que le simulateur a été créé (le mock peut retourner différentes valeurs)
+        # Vérifier que le simulateur a été créé
         self.assertIsNotNone(simulator.model)
 
-    @patch("src.bbia_sim.sim.simulator.mujoco")
-    def test_get_available_joints(self, mock_mujoco):
-        """Test récupération des joints disponibles."""
-        from src.bbia_sim.sim.simulator import MuJoCoSimulator
+    @patch("bbia_sim.sim.simulator.mujoco.MjModel")
+    @patch("bbia_sim.sim.simulator.mujoco.MjData")
+    @patch("bbia_sim.sim.simulator.Path.exists")
+    def test_get_available_joints(self, mock_exists, mock_mjdata, mock_mjmodel):
+        """Test récupération des joints disponibles (optimisé, pas de chargement XML réel)."""
+        from bbia_sim.sim.simulator import MuJoCoSimulator
 
-        # Mock MuJoCo
+        # Mock que le fichier existe
+        mock_exists.return_value = True
+
+        # Mock MuJoCo avec joints
         mock_model = MagicMock()
         mock_model.njnt = 3
-        mock_model.joint = MagicMock()
-        mock_model.joint.side_effect = [
-            MagicMock(name="joint1"),
-            MagicMock(name="joint2"),
-            MagicMock(name="joint3"),
-        ]
-        mock_mujoco.mj_loadXML.return_value = mock_model
-        mock_mujoco.mj_makeData.return_value = MagicMock()
+        mock_joint1 = MagicMock()
+        mock_joint1.name = "joint1"
+        mock_joint2 = MagicMock()
+        mock_joint2.name = "joint2"
+        mock_joint3 = MagicMock()
+        mock_joint3.name = "joint3"
+        mock_model.jnt = [mock_joint1, mock_joint2, mock_joint3]
+        mock_mjmodel.from_xml_path.return_value = mock_model
+        mock_mjdata.return_value = MagicMock()
 
-        # Utiliser le vrai modèle
+        # Utiliser un chemin minimal (ne sera pas réellement chargé grâce au mock)
         simulator = MuJoCoSimulator(
             "src/bbia_sim/sim/models/reachy_mini_REAL_OFFICIAL.xml"
         )

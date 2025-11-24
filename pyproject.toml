@@ -384,11 +384,13 @@ omit = [
     "*/htmlcov/*",
     "*/site-packages/*",
     "*/lib/python*/site-packages/*",
+    "*/__main__.py",  # Exclure les fichiers __main__
 ]
 branch = true
 relative_files = true
 data_file = ".coverage"
 parallel = false  # DÉSACTIVÉ : peut causer des problèmes de terminaison pytest
+concurrency = ["thread"]  # Support threading pour éviter les conflits
 
 [tool.coverage.report]
 exclude_lines = [
