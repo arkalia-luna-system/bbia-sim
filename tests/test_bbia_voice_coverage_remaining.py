@@ -54,9 +54,14 @@ class TestBBIAVoiceCoverageRemaining(unittest.TestCase):
         # Arrêter transcription asynchrone si active
         if bbia_voice._transcribe_active:
             bbia_voice.stop_async_transcription()
+            time.sleep(0.2)  # Laisser le thread se terminer proprement
         # Nettoyer les caches
         bbia_voice._pyttsx3_engine_cache = None
         bbia_voice._bbia_voice_id_cache = None
+        # Réinitialiser la queue pour éviter les erreurs task_done()
+        import queue
+
+        bbia_voice._transcribe_queue = queue.Queue(maxsize=5)
 
     # ========== Tests pour get_bbia_voice - Branches non couvertes ==========
 
