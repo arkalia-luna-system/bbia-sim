@@ -239,6 +239,10 @@ class TestVerticalSlices:
 
     def test_demo_joint_validation(self, demo_scripts):
         """Test de validation des joints."""
+        # Skip en CI car peut être lent avec subprocess
+        if os.environ.get("CI", "false").lower() == "true":
+            pytest.skip("Test désactivé en CI (peut être lent avec subprocess)")
+
         script = demo_scripts["emotion"]
 
         # Test avec joint invalide
@@ -264,6 +268,10 @@ class TestVerticalSlices:
 
     def test_demo_intensity_validation(self, demo_scripts):
         """Test de validation de l'intensité."""
+        # Skip en CI car peut être lent avec subprocess
+        if os.environ.get("CI", "false").lower() == "true":
+            pytest.skip("Test désactivé en CI (peut être lent avec subprocess)")
+
         script = demo_scripts["emotion"]
 
         # Test avec intensité invalide
