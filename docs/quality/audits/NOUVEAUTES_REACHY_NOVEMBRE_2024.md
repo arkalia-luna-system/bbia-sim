@@ -1,10 +1,10 @@
 # 🎉 NOUVEAUTÉS REACHY MINI - NOVEMBRE 2024
 
 **Date de l'email :** Novembre 2024  
-**Date de vérification BBIA :** Décembre 2025  
+**Date de vérification BBIA :** 26 Novembre 2025  
 **Version BBIA :** 1.3.2  
 **Statut :** ✅ **PRÊT POUR RÉCEPTION ROBOT**  
-**Dernière mise à jour :** Décembre 2025 (Email Pollen Robotics - Point novembre)
+**Dernière mise à jour :** 26 Novembre 2025 (Email Pollen Robotics - Point novembre)
 
 ---
 
@@ -305,7 +305,7 @@ Le prochain point de contrôle est prévu **fin décembre 2024**, avec :
 ---
 
 **Document créé le :** Novembre 2024  
-**Dernière mise à jour :** Décembre 2025 (Email Pollen Robotics - Point novembre)  
+**Dernière mise à jour :** 26 Novembre 2025 (Email Pollen Robotics - Point novembre)  
 **Version BBIA :** 1.3.2  
 **Auteur :** Arkalia Luna System
 

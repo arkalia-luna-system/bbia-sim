@@ -1,6 +1,6 @@
 # 📡 Contrats REST & WebSocket
 
-**Date** : 22 novembre 2025  
+**Date** : 26 Novembre 2025  
 **Version** : 1.4.0  
 **Compatibilité Python** : 3.11+
 
@@ -145,7 +145,7 @@ curl -s http://localhost:8000/openapi.json | head -n 20
 
 ---
 
-**Dernière mise à jour** : 22 novembre 2025
+**Dernière mise à jour** : 26 Novembre 2025
 
 ---
 

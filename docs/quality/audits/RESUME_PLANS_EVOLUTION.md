@@ -142,7 +142,7 @@
 
 ### Performance
 
-**Date mise à jour : 21 novembre 2025**
+**Date mise à jour : 21 Novembre 2025**
 
 | Métrique | Actuel | Objectif | Statut |
 |----------|--------|----------|--------|

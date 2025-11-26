@@ -7,7 +7,7 @@
 ### 📊 **Statistiques de Couverture ACTUELLES**
 
 - **Coverage total** : **68.86%** (excellent)
-- **1,743 tests collectés** (1,805 total, 62 deselected) — [✅ Vérifié Décembre 2025](../docs/quality/audits/VERIFICATION_ANALYSE_COMPLETE_DEC2025.md)
+- **1,743 tests collectés** (1,805 total, 62 deselected) — [✅ Vérifié 26 Novembre 2025](../docs/quality/audits/VERIFICATION_ANALYSE_COMPLETE_26NOV2025.md)
 - **Tests passent** : Voir résultats pytest récents
 - **Tests skippés** : Tests conditionnels (hardware, CI)
 - **Golden Tests** : 3 traces référence + validation
@@ -155,7 +155,7 @@ tests/
 
 ### 🤖 **Tests Backend Reachy Mini**
 
-**📊 Statistiques (21 novembre 2025)**:
+**📊 Statistiques (21 Novembre 2025)**:
 
 - ✅ **118 tests** répartis dans **8 fichiers complémentaires**
 - ✅ **116 tests uniques** (98.3% - très peu de redondance)
@@ -424,10 +424,10 @@ pytest --cov=src/bbia_sim --cov-report=term-missing
 **BBIA-SIM** - Tests et Qualité 🧪✨
 
 **Version** : 2.0  
-**Date** : Décembre 2025  
+**Date** : 26 Novembre 2025  
 **Tests** : ✅ **1,362 tests collectés** (1,804 fonctions de test identifiées, CI GitHub Actions)  
 **Couverture** : ✅ **68.86%** (excellent)  
 **Couverture modules critiques** : ✅ **99.45%** vision_yolo, **92.52%** voice_whisper, **76.71%** dashboard_advanced  
 **Qualité** : ✅ Black/Ruff/MyPy compliant
 
-**Dernière mise à jour** : Décembre 2025 - Coverage modules critiques amélioré, auth WebSocket ajoutée
+**Dernière mise à jour** : 26 Novembre 2025 - Coverage modules critiques amélioré, auth WebSocket ajoutée

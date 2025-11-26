@@ -241,4 +241,4 @@ pip install mujoco
 
 ---
 
-**Dernière mise à jour** : 22 Novembre 2025
+**Dernière mise à jour** : 26 Novembre 2025

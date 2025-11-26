@@ -1,6 +1,6 @@
 # 📊 ÉTAT COMPLET - Issues Reachy Mini Officiel vs BBIA-SIM
 
-**Date** : 22 Novembre 2025  
+**Date** : 26 Novembre 2025  
 **Source** : pollen-robotics/reachy_mini (33 issues ouvertes)  
 **Statut global** : ✅ **19 issues sur 20 applicables traitées** (95%)
 
@@ -229,5 +229,5 @@
 
 ---
 
-**Dernière mise à jour** : 22 Novembre 2025
+**Dernière mise à jour** : 26 Novembre 2025
 

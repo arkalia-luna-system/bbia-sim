@@ -2,7 +2,7 @@
 
 <div align="center">
 
-**Date** : 22 novembre 2025
+**Date** : 26 Novembre 2025
 [![Version](https://img.shields.io/badge/version-1.4.0-blue.svg)](https://github.com/arkalia-luna-system/bbia-sim)
 [![Niveau](https://img.shields.io/badge/niveau-Avancé-orange.svg)](docs/guides/)
 [![Temps](https://img.shields.io/badge/temps-15%20min-purple.svg)](#architecture-détaillée)

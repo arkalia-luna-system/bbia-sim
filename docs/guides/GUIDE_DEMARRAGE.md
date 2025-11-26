@@ -2,7 +2,7 @@
 
 <div align="center">
 
-**Date** : 22 novembre 2025
+**Date** : 26 Novembre 2025
 [![Version](https://img.shields.io/badge/version-1.4.0-blue.svg)](https://github.com/arkalia-luna-system/bbia-sim)
 [![Temps](https://img.shields.io/badge/temps-5%20min-orange.svg)](#votre-premier-robot-bbia-en-5-minutes)
 

@@ -98,7 +98,7 @@
 
 ### Fichiers Mis à Jour
 - `SKIPPED_TESTS_ANALYSIS.md`: Documentation complète des corrections
-- `RESUME_CORRECTIONS_TESTS_NOV2025.md`: Ce fichier
+- `RESUME_CORRECTIONS_TESTS_26NOV2025.md`: Ce fichier
 
 ### Commits
 1. `fix: Correction des erreurs de tests et amélioration de la gestion d'erreurs`

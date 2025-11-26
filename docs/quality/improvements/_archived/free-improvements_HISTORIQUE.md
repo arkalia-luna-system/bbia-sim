@@ -3,7 +3,7 @@
 **Date** : 21 Novembre 2025
 **Objectif** : Identifier ce qui peut être amélioré avec des solutions 100% gratuites
 **Contrainte** : Aucun service payant (pas d'OpenAI Realtime API, pas de gpt-realtime payant)
-**📊 [État actuel](./RESUME_ETAT_ACTUEL_BBIA.md)** | **📋 [Tâches restantes](./TACHES_RESTANTES_NOV2025.md)**
+**📊 [État actuel](./RESUME_ETAT_ACTUEL_BBIA.md)** | **📋 [Tâches restantes](./TACHES_RESTANTES_26NOV2025.md)**
 
 ---
 

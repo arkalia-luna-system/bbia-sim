@@ -1,6 +1,6 @@
 # 👥 CONTRIBUTEURS ET TESTEURS BÊTA - Reachy Mini Officiel
 
-**Date** : Décembre 2025  
+**Date** : 26 Novembre 2025  
 **Source** : [pollen-robotics/reachy_mini](https://github.com/pollen-robotics/reachy_mini)  
 **Objectif** : Documenter les 19 contributeurs et testeurs bêta du projet officiel
 
@@ -510,5 +510,5 @@
 
 ---
 
-**Dernière mise à jour** : Décembre 2025
+**Dernière mise à jour** : 26 Novembre 2025
 

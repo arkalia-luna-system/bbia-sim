@@ -29,7 +29,7 @@
 
 ### 3. Scripts Consolidés (Nov. 2025)
 
-#### `audit_sdk_officiel_nov2025.py` → Fusionné dans `compare_with_official_exhaustive.py`
+#### `audit_sdk_officiel_26NOV2025.py` → Fusionné dans `compare_with_official_exhaustive.py`
 - **Raison**: Redondant avec fonctionnalités de comparaison exhaustive
 - **Fonctionnalités fusionnées**: Vérification installation SDK, méthodes SDK, create_head_pose, versions Python
 - **Statut**: ✅ Archivé dans `_archived/comparison_audit/`
@@ -95,7 +95,7 @@
 ### Scripts Fusionnés
 
 1. ✅ `compare_with_official_exhaustive.py` - Script principal consolidé
-   - Intègre `audit_sdk_officiel_nov2025.py`
+   - Intègre `audit_sdk_officiel_26NOV2025.py`
    - Intègre `comparaison_profonde_methodes_backend.py`
    - Aucune erreur de compilation ou lint
 

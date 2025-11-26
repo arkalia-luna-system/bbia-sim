@@ -1,6 +1,6 @@
 # 🔍 AUDIT DOUBLONS set_emotion() et dire_texte()
 
-**Date audit** : 21 novembre 2025  
+**Date audit** : 21 Novembre 2025  
 **Objectif** : Identifier les redondances et doublons dans les implémentations de `set_emotion()` et `dire_texte()`
 
 ---
@@ -115,6 +115,6 @@
 
 ---
 
-**Document créé le :** 21 novembre 2025  
-**Dernière mise à jour :** 21 novembre 2025
+**Document créé le :** 21 Novembre 2025  
+**Dernière mise à jour :** 21 Novembre 2025
 

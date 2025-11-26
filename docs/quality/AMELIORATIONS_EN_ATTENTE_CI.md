@@ -1,6 +1,6 @@
 # 🚀 Améliorations en Attente CI
 
-**Date :** 24 novembre 2025  
+**Date :** 24 Novembre 2025  
 **Objectif :** Identifier et préparer les améliorations possibles pendant l'attente de la CI
 
 ---

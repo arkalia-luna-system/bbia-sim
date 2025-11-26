@@ -1,6 +1,6 @@
 # 🔍 AUDIT VÉRIFICATION FONCTIONNALITÉS BBIAChat - 21 Novembre 2025
 
-**Date audit :** 21 novembre 2025  
+**Date audit :** 21 Novembre 2025  
 **Module vérifié :** `src/bbia_sim/bbia_chat.py`  
 **Documentation de référence :** `docs/quality/audits/PLAN_INTELLIGENCE_CONVERSATIONNELLE.md`
 
@@ -226,7 +226,7 @@ L'implémentation de `BBIAChat` est **très complète** et correspond fidèlemen
 
 ---
 
-**Document créé le :** 21 novembre 2025  
+**Document créé le :** 21 Novembre 2025  
 **Auteur :** Audit Automatique  
 **Statut :** ✅ Validation complète
 

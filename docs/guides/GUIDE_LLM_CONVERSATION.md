@@ -1,6 +1,6 @@
 # 🧠 Guide LLM Conversationnel BBIA
 
-**Date** : 22 novembre 2025  
+**Date** : 26 Novembre 2025  
 **Version BBIA** : 1.4.0  
 **Objectif** : Guide complet pour utiliser l'intelligence conversationnelle de BBIA
 
@@ -414,7 +414,7 @@ response = hf.chat("Regarde à droite", enable_tools=True)
 ---
 
 **Document créé le :** 19 Novembre 2025  
-**Dernière mise à jour :** 22 Novembre 2025 (Issue #384)  
+**Dernière mise à jour :** 26 Novembre 2025 (Issue #384)  
 **Version BBIA :** 1.3.2  
 **Auteur :** Arkalia Luna System
 

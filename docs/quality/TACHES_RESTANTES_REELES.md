@@ -1,6 +1,6 @@
 # 📋 TÂCHES RÉELLEMENT RESTANTES - 24 Novembre 2025
 
-**Date** : 24 novembre 2025  
+**Date** : 24 Novembre 2025  
 **Score actuel** : 9.8/10 ⭐⭐⭐⭐⭐  
 **Objectif** : Atteindre 10/10
 
@@ -127,5 +127,5 @@
 
 ---
 
-**Dernière mise à jour** : 24 novembre 2025
+**Dernière mise à jour** : 24 Novembre 2025
 

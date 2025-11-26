@@ -5,7 +5,7 @@
 **🎯 Validation complète de la conformité SDK officiel**  
 *21 méthodes implémentées • 37 tests passants • 100% conforme*
 
-**Version** : BBIA-SIM v1.4.0 • **Date** : 22 Novembre 2025  
+**Version** : BBIA-SIM v1.4.0 • **Date** : 26 Novembre 2025  
 **SDK Cible** : `reachy_mini` (Pollen Robotics × Hugging Face)
 
 **État SDK** : Utiliser la **dernière version stable** de `reachy-mini` publiée sur PyPI (mise à jour régulière recommandée)
@@ -38,9 +38,9 @@ Pour des vérifications détaillées par aspect, consultez :
 > **✅ Statut global : CONFORME**  
 > Le projet BBIA‑SIM est **conforme** au SDK officiel Reachy Mini (Pollen Robotics).  
 > Des optimisations et corrections ont été appliquées et validées.  
-> **✅ Toutes les améliorations optionnelles implémentées (22 Novembre 2025)** : Assistant Installation, Découverte Apps, Partage Apps.
+> **✅ Toutes les améliorations optionnelles implémentées (26 Novembre 2025)** : Assistant Installation, Découverte Apps, Partage Apps.
 
-### 🔐 Checklist pré‑réception (22 Novembre 2025)
+### 🔐 Checklist pré‑réception (26 Novembre 2025)
 
 - **Installer SDK officiel**: `pip install reachy-mini` (PyPI)  
   - **Simulation**: `pip install "reachy-mini[mujoco]"`
@@ -157,8 +157,8 @@ Notes:
 from reachy_mini import ReachyMini
 from reachy_mini.utils import create_head_pose
 from reachy_mini.utils.interpolation import InterpolationTechnique
-# SDK Version: Compatible avec les spécifications du 22 Novembre 2025
-# GitHub: https://github.com/pollen-robotics/reachy_mini (disponible depuis 22 Novembre 2025)
+# SDK Version: Compatible avec les spécifications du 26 Novembre 2025
+# GitHub: https://github.com/pollen-robotics/reachy_mini (disponible depuis 26 Novembre 2025)
 
 ```
 
@@ -468,7 +468,7 @@ Toutes les commandes sont validées avant exécution:
 
 ## 🧪 TESTS DE CONFORMITÉ
 
-Votre projet inclut **47 tests de conformité** qui vérifient (mis à jour Décembre 2025 — [Vérification complète](../audits/VERIFICATION_ANALYSE_COMPLETE_DEC2025.md)):
+Votre projet inclut **47 tests de conformité** qui vérifient (mis à jour 26 Novembre 2025 — [Vérification complète](../audits/VERIFICATION_ANALYSE_COMPLETE_26NOV2025.md)):
 
 1. ✅ **Disponibilité SDK** - SDK officiel installé
 2. ✅ **Existence Méthodes** - Toutes les méthodes SDK présentes
@@ -977,7 +977,7 @@ Votre projet BBIA-SIM est conforme au SDK Reachy Mini officiel au niveau backend
 ---
 
 **Rapport généré automatiquement le** {{ date }}
-**Version BBIA-SIM:** Compatible SDK Reachy Mini 22 Novembre 2025
+**Version BBIA-SIM:** Compatible SDK Reachy Mini 26 Novembre 2025
 **Statut:** conforme
 
 ---

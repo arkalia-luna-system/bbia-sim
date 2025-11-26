@@ -2,7 +2,7 @@
 
 > **Guide d'utilisation de arkalia-metrics-collector pour BBIA-SIM**
 
-**Dernière mise à jour** : 24 novembre 2025
+**Dernière mise à jour** : 24 Novembre 2025
 
 ---
 

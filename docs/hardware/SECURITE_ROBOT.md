@@ -1,6 +1,6 @@
 # 🔒 Sécurité Robot - Guide Complet
 
-**Date** : 22 novembre 2025  
+**Date** : 26 Novembre 2025  
 **Version** : 1.4.0
 
 > Voir aussi : [`docs/reference/INDEX_THEMATIQUE.md`](../reference/INDEX_THEMATIQUE.md) et [`docs/reference/project-status.md`](../reference/project-status.md)
@@ -43,4 +43,4 @@
 
 ---
 
-**Dernière mise à jour** : 22 novembre 2025
+**Dernière mise à jour** : 26 Novembre 2025

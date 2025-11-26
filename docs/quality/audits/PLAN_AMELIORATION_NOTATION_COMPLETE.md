@@ -84,7 +84,7 @@ Voir **[Améliorations Gratuites](../improvements/free-improvements.md)** et **[
 
 ### 5. Tests E2E Complets - Scénarios Utilisateur
 
-**Statut** : ✅ **TERMINÉ** (Décembre 2025)
+**Statut** : ✅ **TERMINÉ** (26 Novembre 2025)
 
 **Actions** :
 - ✅ Scénarios utilisateur complets (9 fichiers de tests E2E dans `tests/e2e/`)
@@ -107,7 +107,7 @@ Voir **[Améliorations Gratuites](../improvements/free-improvements.md)** et **[
 
 ### 6. Performance Benchmarking Automatisé
 
-**Statut** : ✅ **TERMINÉ** (Décembre 2025)
+**Statut** : ✅ **TERMINÉ** (26 Novembre 2025)
 
 **Actions** :
 - ✅ CI/CD benchmarking (job `benchmark` dans `.github/workflows/ci.yml`)
@@ -145,7 +145,7 @@ Voir **[Améliorations Gratuites](../improvements/free-improvements.md)** et **[
 
 ### 9. Documentation API - Reference Complète
 
-**Statut** : ✅ **TERMINÉ** (Décembre 2025)
+**Statut** : ✅ **TERMINÉ** (26 Novembre 2025)
 
 **Actions** :
 - ✅ OpenAPI/Swagger automatique (FastAPI génère automatiquement)

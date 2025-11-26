@@ -471,7 +471,7 @@ Optimiser les performances de BBIA pour atteindre ou dépasser les performances 
 
 PHASE 1 : Optimisation Latence (Semaine 1-2)
 
-**Date mise à jour : 21 novembre 2025**
+**Date mise à jour : 21 Novembre 2025**
 
 1. ✅ **TERMINÉ** - Optimiser latence vision (objectif : <50ms, actuel ~100ms)
    - ✅ Cache modèle YOLO (déjà présent, vérifié)

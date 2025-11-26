@@ -1,6 +1,6 @@
 # 🏗️ BBIA-SIM - Guide d'Architecture Détaillé
 
-**Date** : 22 novembre 2025  
+**Date** : 26 Novembre 2025  
 **Version** : 1.4.0
 
 > **Liens utiles** : [`docs/reference/INDEX_THEMATIQUE.md`](../reference/INDEX_THEMATIQUE.md) · [`docs/reference/project-status.md`](../reference/project-status.md)
@@ -708,5 +708,5 @@ Cette architecture permet à BBIA-SIM d'être une **référence technique** pour
 **Retour à** : [README Documentation](../README.md)  
 **Voir aussi** : [Architecture Vue d'Ensemble](ARCHITECTURE_OVERVIEW.md) • [Guide Architecture](ARCHITECTURE.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)
 
-*Dernière mise à jour : 22 novembre 2025*
+*Dernière mise à jour : 26 Novembre 2025*
 *Version : 1.4.0 – 100% d'exploitation des capacités*

@@ -1,6 +1,6 @@
 # ✅ Résumé - Intégration arkalia-metrics-collector
 
-**Date** : 21 novembre 2025  
+**Date** : 21 Novembre 2025  
 **Objectif** : Automatiser la collecte et la mise à jour des métriques BBIA-SIM
 
 ---
@@ -47,7 +47,7 @@
 
 ## 📊 Métriques collectées
 
-### Actuelles (21 novembre 2025)
+### Actuelles (21 Novembre 2025)
 
 - **Fichiers Python source** : 86 fichiers (74,965 lignes)
 - **Fichiers de tests** : 183 fichiers

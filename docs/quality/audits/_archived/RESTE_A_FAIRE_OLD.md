@@ -225,9 +225,9 @@
 | **Performance** | ✅ **95%** | Vision + audio threading fait, cache poses LRU fait |
 | **Documentation** | ✅ **100%** | Tous les guides existent (LLM, Comportements, Dashboard) |
 
-**Progression globale :** ✅ **97% TERMINÉ** (21 novembre 2025) - Cache poses LRU fait
+**Progression globale :** ✅ **97% TERMINÉ** (21 Novembre 2025) - Cache poses LRU fait
 
-**Dernière vérification :** 21 novembre 2025 - Tous les tests passent, code conforme (black, ruff, mypy)
+**Dernière vérification :** 21 Novembre 2025 - Tous les tests passent, code conforme (black, ruff, mypy)
 
 ---
 
@@ -256,7 +256,7 @@
 
 **Améliorations optionnelles restantes :** ~3-4 jours de travail (modèle STL 3D, streaming optimisé - non bloquant)
 
-**Dernière vérification complète :** 21 novembre 2025
+**Dernière vérification complète :** 21 Novembre 2025
 - ✅ Tous les tests passent
 - ✅ Code formaté (black, ruff)
 - ✅ Aucune erreur critique

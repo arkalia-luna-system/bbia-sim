@@ -2,7 +2,7 @@
 
 > **Guide centralisé d'installation - Source de vérité unique**
 
-**Dernière mise à jour** : 22 novembre 2025
+**Dernière mise à jour** : 26 Novembre 2025
 
 ---
 

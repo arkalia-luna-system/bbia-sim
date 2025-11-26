@@ -1,6 +1,6 @@
 # 🌐 Guide Communauté BBIA-SIM
 
-**Date** : 22 novembre 2025  
+**Date** : 26 Novembre 2025  
 **Objectif** : Maximiser la visibilité et l'engagement communautaire pour BBIA-SIM
 
 ---
@@ -346,8 +346,8 @@ Good for learning advanced Python!
 
 ---
 
-**Date de création** : 22 novembre 2025  
-**Dernière mise à jour** : Décembre 2025
+**Date de création** : 26 Novembre 2025  
+**Dernière mise à jour** : 26 Novembre 2025
 
 ---
 
@@ -366,6 +366,6 @@ Good for learning advanced Python!
 
 ### Pour Comprendre
 
-- **[Audit Stratégique Valeur](../../quality/audits/AUDIT_STRATEGIQUE_VALEUR_DEC2025.md)** : Analyse valeur et recommandations
-- **[Ce qui Manque](../../quality/audits/CE_QUI_MANQUE_DANS_BBIA_DEC2025.md)** : Analyse fonctionnalités manquantes
+- **[Audit Stratégique Valeur](../../quality/audits/AUDIT_STRATEGIQUE_VALEUR_26NOV2025.md)** : Analyse valeur et recommandations
+- **[Ce qui Manque](../../quality/audits/CE_QUI_MANQUE_DANS_BBIA_26NOV2025.md)** : Analyse fonctionnalités manquantes
 

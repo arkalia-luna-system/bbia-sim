@@ -7,9 +7,9 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
-## [1.4.0] - 22 novembre 2025
+## [1.4.0] - 26 Novembre 2025
 
-### 🎯 **OPTIMISATIONS ET ISSUES REACHY OFFICIEL** ✅ (22 Novembre 2025)
+### 🎯 **OPTIMISATIONS ET ISSUES REACHY OFFICIEL** ✅ (26 Novembre 2025)
 
 #### **Optimisations Performance**
 - ✅ **65 appels logging convertis en f-strings** dans `bbia_huggingface.py`
@@ -30,14 +30,14 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - ✅ **Tests** : 1792 tests collectés, tous passent
 
 #### **Documentation**
-- ✅ **ETAT_ISSUES_REACHY_OFFICIEL_22NOV2025.md** créé (résumé complet)
-- ✅ **AUDIT_SUITE_22NOV2025.md** mis à jour avec optimisations terminées
+- ✅ **ETAT_ISSUES_REACHY_OFFICIEL_2626NOV2025.md** créé (résumé complet)
+- ✅ **AUDIT_SUITE_2626NOV2025.md** mis à jour avec optimisations terminées
 - ✅ **INDEX_AUDITS_CONSOLIDES.md** mis à jour avec nouveaux audits
 - ✅ **README.md** mis à jour avec résumé optimisations
 
 ---
 
-## [1.4.0] - 22 novembre 2025
+## [1.4.0] - 26 Novembre 2025
 
 ### 🎯 **RELEASE - 100% D'EXPLOITATION DES CAPACITÉS** ✅
 
@@ -92,7 +92,7 @@ Cette version marque l'atteinte de **100% d'exploitation** de toutes les capacit
 
 ---
 
-### 🚀 Ajouté (22 Novembre 2025 - Préparation v1.4.0)
+### 🚀 Ajouté (26 Novembre 2025 - Préparation v1.4.0)
 
 #### 100% d'Exploitation des Capacités - **TERMINÉ** ✅
 
@@ -172,9 +172,9 @@ Cette version marque l'atteinte de **100% d'exploitation** de toutes les capacit
 - Nouveau test headless `tests/test_voice_speaker_fallback_headless.py` pour vérifier le fallback speaker sans drivers audio.
 - `docs/status.md` mis à jour (note CI audio + mypy=0 sur corrections effectuées).
 - Standardisation environnement: Python 3.11+ requis, CI GitHub Actions mise à jour (`setup-python@v5`).
-- Documentation mise à jour : `NOUVEAUTES_REACHY_NOVEMBRE_2024.md`, `TACHES_RESTANTES_CONSOLIDEES.md`, `AUDIT_COMPLET_REALISTE_DEC2025.md`
+- Documentation mise à jour : `NOUVEAUTES_REACHY_NOVEMBRE_2024.md`, `TACHES_RESTANTES_CONSOLIDEES.md`, `AUDIT_COMPLET_REALISTE_26NOV2025.md`
 
-## [1.3.2] - 21 novembre 2025
+## [1.3.2] - 21 Novembre 2025
 
 ### 🎯 Alignement et release stable
 

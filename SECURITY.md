@@ -1,6 +1,6 @@
 # 🔒 Politique de Sécurité BBIA-SIM
 
-**Date** : 24 novembre 2025  
+**Date** : 24 Novembre 2025  
 **Version** : 1.0
 
 ---
@@ -227,5 +227,5 @@ Aucune vulnérabilité signalée à ce jour.
 
 ---
 
-**Dernière mise à jour** : 24 novembre 2025
+**Dernière mise à jour** : 24 Novembre 2025
 

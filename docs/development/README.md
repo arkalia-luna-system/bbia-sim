@@ -1,6 +1,6 @@
 # 💻 Development - Documentation BBIA-SIM
 
-**Date** : 22 novembre 2025  
+**Date** : 26 Novembre 2025  
 **Objectif** : Documentation pour développeurs et contributeurs
 
 ---

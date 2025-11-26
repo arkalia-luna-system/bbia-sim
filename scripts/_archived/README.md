@@ -20,7 +20,7 @@
 
 ### Scripts Consolidés (Nov. 2025)
 
-#### `audit_sdk_officiel_nov2025.py` → `scripts/_archived/comparison_audit/`
+#### `audit_sdk_officiel_26NOV2025.py` → `scripts/_archived/comparison_audit/`
 - **Date archivé**: Nov. 2025
 - **Raison**: Fusionné dans `compare_with_official_exhaustive.py`
 - **Alternative**: Utiliser `scripts/compare_with_official_exhaustive.py`
