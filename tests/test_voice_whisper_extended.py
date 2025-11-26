@@ -18,9 +18,9 @@ import bbia_sim.voice_whisper  # noqa: F401
 
 # Importer les fonctions pour les tests
 try:
-    from bbia_sim.voice_whisper import (  # noqa: F401
-        recognize_speech,
-        transcribe_audio,
+    from bbia_sim.voice_whisper import (  # type: ignore[attr-defined]  # noqa: F401
+        recognize_speech,  # type: ignore[attr-defined]
+        transcribe_audio,  # type: ignore[attr-defined]
     )
 except (ImportError, AttributeError):
     recognize_speech = None  # type: ignore[assignment,misc]

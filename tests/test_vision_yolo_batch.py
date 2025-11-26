@@ -10,7 +10,7 @@ try:
     from bbia_sim.vision_yolo import YOLO_AVAILABLE, YOLODetector
 except ImportError:
     YOLO_AVAILABLE = False
-    YOLODetector = None
+    YOLODetector = None  # type: ignore[assignment,misc]
 
 
 @pytest.mark.skipif(not YOLO_AVAILABLE, reason="YOLO non disponible")

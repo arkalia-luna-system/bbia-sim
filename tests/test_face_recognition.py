@@ -275,11 +275,17 @@ class TestBBIAPersonRecognition:
             rec.is_initialized = True
 
             # Mock les méthodes
-            rec.recognize_person = Mock(
-                return_value={"name": "Alice", "confidence": 0.8, "distance": 0.2}
+            setattr(
+                rec,
+                "recognize_person",
+                Mock(
+                    return_value={"name": "Alice", "confidence": 0.8, "distance": 0.2}
+                ),
             )
-            rec.detect_emotion = Mock(
-                return_value={"emotion": "happy", "confidence": 0.9}
+            setattr(
+                rec,
+                "detect_emotion",
+                Mock(return_value={"emotion": "happy", "confidence": 0.9}),
             )
 
             result = rec.recognize_with_emotion("test.jpg")
@@ -296,7 +302,7 @@ class TestBBIAPersonRecognition:
             rec.is_initialized = True
 
             # Mock recognize_person retourne None
-            rec.recognize_person = Mock(return_value=None)
+            setattr(rec, "recognize_person", Mock(return_value=None))
 
             result = rec.recognize_with_emotion("test.jpg")
             assert result is None

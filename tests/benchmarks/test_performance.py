@@ -30,9 +30,9 @@ except ImportError:
     BBIAVision = None  # type: ignore[assignment,misc]
 
 try:
-    from bbia_sim.bbia_audio import BBIAAudio
+    from bbia_sim.bbia_audio import BBIAAudio  # type: ignore[attr-defined]
 except ImportError:
-    BBIAAudio = None  # type: ignore[assignment,misc]
+    BBIAAudio = None  # type: ignore[assignment,misc,attr-defined]
 
 try:
     from bbia_sim.bbia_voice import transcribe_audio

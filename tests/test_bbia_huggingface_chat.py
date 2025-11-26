@@ -12,11 +12,13 @@ import pytest
 # Import conditionnel pour éviter erreurs si HF indisponible
 try:
     from bbia_sim.bbia_huggingface import BBIAHuggingFace
+    from bbia_sim.utils.types import SentimentDict
 
     HF_AVAILABLE = True
 except ImportError:
     HF_AVAILABLE = False
     BBIAHuggingFace = None  # type: ignore
+    SentimentDict = None  # type: ignore
 
 
 @pytest.mark.slow  # OPTIMISATION: Classe initialise BBIAHuggingFace (peut déclencher lazy loading)
@@ -103,7 +105,11 @@ class TestBBIAHuggingFaceChat:
 
     def test_generate_simple_response_salutations(self) -> None:
         """Test génération réponse simple pour salutations."""
-        sentiment = {"sentiment": "NEUTRAL"}
+        sentiment: SentimentDict = {
+            "sentiment": "NEUTRAL",
+            "score": 0.5,
+            "label": "NEUTRAL",
+        }
 
         response1 = self.hf._generate_simple_response("Bonjour", sentiment)
         # La réponse doit être non vide et contenir au moins un mot de salutation/amabilité
@@ -149,7 +155,11 @@ class TestBBIAHuggingFaceChat:
 
     def test_generate_simple_response_positive(self) -> None:
         """Test génération réponse pour sentiment positif."""
-        sentiment = {"sentiment": "POSITIVE"}
+        sentiment: SentimentDict = {
+            "sentiment": "POSITIVE",
+            "score": 0.8,
+            "label": "POSITIVE",
+        }
 
         response = self.hf._generate_simple_response("Je suis content", sentiment)
         assert len(response) > 0
@@ -170,7 +180,11 @@ class TestBBIAHuggingFaceChat:
 
     def test_adapt_response_to_personality(self) -> None:
         """Test adaptation réponse selon personnalité."""
-        sentiment = {"sentiment": "NEUTRAL"}
+        sentiment: SentimentDict = {
+            "sentiment": "NEUTRAL",
+            "score": 0.5,
+            "label": "NEUTRAL",
+        }
 
         response = self.hf._adapt_response_to_personality("Test", sentiment)
         assert "🤖" in response or "💬" in response

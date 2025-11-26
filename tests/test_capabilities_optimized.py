@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 """Tests optimisés pour toutes les capacités restantes - Version légère et performante."""
 
-import pytest
+from typing import Any
+
 import numpy as np
+import pytest
 
 from bbia_sim.bbia_behavior import (
     BBIABehaviorManager,
@@ -152,27 +154,34 @@ class TestUtilsTypesQuick:
     def test_all_types(self) -> None:
         """Test tous les types en une fois."""
         # Test tous les types TypedDict
-        look_at: LookAtParams = {"target_x": 0.5, "target_y": 0.3, "target_z": 0.2}
+        look_at: LookAtParams = {"x": 0.5, "y": 0.3, "z": 0.2, "duration": 1.0}
         play_audio: PlayAudioParams = {"file_path": "test.wav", "volume": 0.8}
         set_emotion: SetEmotionParams = {"emotion": "happy", "intensity": 0.7}
         set_target: SetTargetParams = {"head": [0.0] * 7, "antennas": [0.0, 0.0]}
-        movement: MovementRecording = {"name": "test", "positions": {}, "duration": 1.0}
-        metrics: MetricsData = {"cpu_usage": 50.0, "memory_usage": 60.0}
-        model_info: ModelInfo = {"name": "test", "version": "1.0.0"}
+        movement: MovementRecording = {"positions": [{}], "duration": 1.0}
+        metrics: MetricsData = {"cpu_percent": 50.0, "memory_percent": 60.0}
+        model_info: ModelInfo = {"name": "test", "loaded": True}
         sentiment_dict: SentimentDict = {
             "sentiment": "positive",
             "score": 0.8,
             "label": "positive",
         }
         sentiment_result: SentimentResult = {"sentiment": "positive", "score": 0.8}
-        telemetry: TelemetryData = {"timestamp": 1234567890.0, "joint_positions": {}}
+        telemetry: TelemetryData = {"step_count": 100, "current_joint_positions": {}}
         detection: DetectionResult = {
-            "class": "person",
+            "class_name": "person",
             "confidence": 0.9,
             "bbox": [0, 0, 100, 100],
+            "class_id": 0,
+            "center": [50, 50],
+            "area": 10000,
         }
-        face: FaceDetection = {"bbox": [0, 0, 100, 100], "landmarks": [[10, 10]]}
-        robot_status: RobotStatus = {"is_connected": True, "battery_level": 80.0}
+        face: FaceDetection = {
+            "bbox": {"x": 0, "y": 0, "width": 100, "height": 100},
+            "name": "test",
+            "confidence": 0.9,
+        }
+        robot_status: RobotStatus = {"connected": True, "current_emotion": "happy"}
         conversation: ConversationEntry = {
             "user": "Bonjour",
             "bbia": "Salut",
@@ -180,19 +189,19 @@ class TestUtilsTypesQuick:
         }
 
         # Vérification que tous les types sont valides
-        assert look_at["target_x"] == 0.5
+        assert look_at["x"] == 0.5
         assert play_audio["file_path"] == "test.wav"
         assert set_emotion["emotion"] == "happy"
-        assert len(set_target["head"]) == 7
-        assert movement["name"] == "test"
-        assert metrics["cpu_usage"] == 50.0
+        assert set_target["head"] is not None and len(set_target["head"]) == 7
+        assert len(movement["positions"]) == 1
+        assert metrics["cpu_percent"] == 50.0
         assert model_info["name"] == "test"
         assert sentiment_dict["sentiment"] == "positive"
         assert sentiment_result["sentiment"] == "positive"
-        assert telemetry["timestamp"] == 1234567890.0
-        assert detection["class"] == "person"
-        assert len(face["bbox"]) == 4
-        assert robot_status["is_connected"] is True
+        assert telemetry["step_count"] == 100
+        assert detection["class_name"] == "person"
+        assert face["bbox"]["x"] == 0
+        assert robot_status["connected"] is True
         assert conversation["user"] == "Bonjour"
 
 
@@ -246,41 +255,42 @@ class TestAIBackendsQuick:
         )
 
         # Test tous les backends (skip si non disponibles)
-        backends = []
+        backends: list[Any] = []
         try:
             backends.append(CoquiTTSTTS())
         except Exception:
             pass
         try:
-            backends.append(KokoroTTS())
+            backends.append(KokoroTTS())  # type: ignore[arg-type]
         except Exception:
             pass
         try:
-            backends.append(LlamaCppLLM())
+            backends.append(LlamaCppLLM())  # type: ignore[arg-type]
         except Exception:
             pass
         try:
-            backends.append(LocalLLM())
+            # LocalLLM est un protocol, ne peut pas être instancié
+            pass
         except Exception:
             pass
         try:
-            backends.append(NeuTTSTTS())
+            backends.append(NeuTTSTTS())  # type: ignore[arg-type]
         except Exception:
             pass
         try:
-            backends.append(OpenVoiceTTSTTS())
+            backends.append(OpenVoiceTTSTTS())  # type: ignore[arg-type]
         except Exception:
             pass
         try:
-            backends.append(DummySTT())
+            backends.append(DummySTT())  # type: ignore[arg-type]
         except Exception:
             pass
         try:
-            backends.append(WhisperSTT())
+            backends.append(WhisperSTT())  # type: ignore[arg-type]
         except Exception:
             pass
         try:
-            backends.append(KittenTTSTTS())
+            backends.append(KittenTTSTTS())  # type: ignore[arg-type]
         except Exception:
             pass
 

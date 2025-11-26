@@ -7,6 +7,7 @@ cache corrompu, version incompatible, récupération après erreur.
 
 import json
 from pathlib import Path
+from typing import Any
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -119,8 +120,10 @@ class TestPWACacheCorruption:
         ]
 
         # Valider entrées
-        valid_entries = [
-            entry for entry in cache_entries if entry.get("hash") and entry["valid"]
+        valid_entries: list[dict[str, Any]] = [
+            entry
+            for entry in cache_entries
+            if isinstance(entry, dict) and entry.get("hash") and entry.get("valid")
         ]
 
         assert len(valid_entries) == 2

@@ -124,7 +124,7 @@ class TestBBIAAudioCoverageRemaining(unittest.TestCase):
                 raise AttributeError("No attribute 'media'")
 
         mock_robot = MockRobotWithError()
-        result = bbia_audio._get_robot_media_microphone(mock_robot)
+        result = bbia_audio._get_robot_media_microphone(mock_robot)  # type: ignore[arg-type]
         self.assertIsNone(result)
 
     def test_get_robot_media_microphone_with_import_error(self) -> None:

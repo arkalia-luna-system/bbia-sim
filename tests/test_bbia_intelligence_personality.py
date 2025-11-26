@@ -133,8 +133,13 @@ class TestBBIAPersonality:
             robotic_words = ["unit", "system", "processing", "execute", "command"]
 
             # OPTIMISATION RAM: Réduire de 3 à 1 test case (suffisant pour tester)
+            from bbia_sim.utils.types import SentimentDict
+
             test_cases = [
-                ("bonjour", {"sentiment": "POSITIVE", "score": 0.7}),
+                (
+                    "bonjour",
+                    SentimentDict(sentiment="POSITIVE", score=0.7, label="POSITIVE"),
+                ),
             ]
 
             for message, sentiment in test_cases:

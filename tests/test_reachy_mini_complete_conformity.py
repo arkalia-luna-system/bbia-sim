@@ -166,13 +166,13 @@ class TestReachyMiniCompleteConformity:
         """Test conformité goto_target."""
         assert self.backend is not None  # Type narrowing pour mypy
         # Test goto_target avec différents paramètres (SDK officiel retourne None)
-        result = self.backend.goto_target()  # type: ignore[attr-defined]
+        result = self.backend.goto_target()  # type: ignore[attr-defined,func-returns-value]
         assert result is None
 
-        result = self.backend.goto_target(body_yaw=0.1)  # type: ignore[attr-defined]
+        result = self.backend.goto_target(body_yaw=0.1)  # type: ignore[attr-defined,func-returns-value]
         assert result is None
 
-        result = self.backend.goto_target(antennas=[0.1, 0.2])  # type: ignore[attr-defined]
+        result = self.backend.goto_target(antennas=[0.1, 0.2])  # type: ignore[attr-defined,func-returns-value]
         assert result is None
 
     def test_telemetry_conformity(self):

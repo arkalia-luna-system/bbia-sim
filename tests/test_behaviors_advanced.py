@@ -178,9 +178,7 @@ class TestAlarmClockBehavior:
         # Le code appelle datetime.now().time(), donc on doit retourner un datetime
         # dont .time() retourne une heure >= alarm_time
         future_minute = (past_minute + 2) % 60
-        future_hour = (
-            past_hour if future_minute > past_minute else (past_hour + 1) % 24
-        )
+        future_hour = past_hour if future_minute > past_minute else (past_hour + 1) % 24
         future_time = dt_time(future_hour, future_minute)
 
         def mock_datetime_now():

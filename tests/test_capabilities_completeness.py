@@ -33,9 +33,9 @@ try:
     ASSET_MAPPING_AVAILABLE = True
 except ImportError:
     ASSET_MAPPING_AVAILABLE = False
-    get_available_assets = None
-    get_asset_path = None
-    get_official_assets = None
+    get_available_assets = None  # type: ignore[assignment]
+    get_asset_path = None  # type: ignore[assignment]
+    get_official_assets = None  # type: ignore[assignment]
 
 
 class TestBBIAAdaptiveLearning:
@@ -365,8 +365,12 @@ class TestDaemonModels:
 
     def test_imu_data(self) -> None:
         """Test IMUData."""
-        imu: IMUData = {"accel": [0.0, 0.0, 0.0], "gyro": [0.0, 0.0, 0.0]}
-        assert imu["accel"] == [0.0, 0.0, 0.0]
+        imu: IMUData = {
+            "acceleration": {"x": 0.0, "y": 0.0, "z": 0.0},
+            "gyroscope": {"x": 0.0, "y": 0.0, "z": 0.0},
+            "magnetometer": {"x": 0.0, "y": 0.0, "z": 0.0},
+        }
+        assert imu["acceleration"]["x"] == 0.0
 
     def test_full_body_target(self) -> None:
         """Test FullBodyTarget."""
@@ -549,7 +553,7 @@ class TestAIBackends:
                 get_available_assets,
             )
 
-            if get_available_assets:
+            if get_available_assets is not None:
                 assets = get_available_assets()
                 assert isinstance(assets, dict)
         except ImportError:
@@ -567,7 +571,7 @@ class TestAIBackends:
                 get_asset_path,
             )
 
-            if get_asset_path:
+            if get_asset_path is not None:
                 path = get_asset_path("torso")
                 assert isinstance(path, str)
         except ImportError:
@@ -585,7 +589,7 @@ class TestAIBackends:
                 get_official_assets,
             )
 
-            if get_official_assets:
+            if get_official_assets is not None:
                 assets = get_official_assets()
                 assert isinstance(assets, dict)
         except ImportError:

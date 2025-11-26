@@ -18,6 +18,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 # Importer le module complet au niveau du fichier pour que coverage le détecte
 # IMPORTANT: Import direct (pas dans try/except) pour que coverage le détecte
 import bbia_sim.vision_yolo  # noqa: F401
+from bbia_sim.utils.types import DetectionResult
 from bbia_sim.vision_yolo import (
     FaceDetector,
     YOLODetector,
@@ -256,10 +257,31 @@ class TestYOLODetector:
     def test_get_best_detection_with_relevant(self):
         """Test get_best_detection avec détections pertinentes."""
         detector = YOLODetector(model_size="n", confidence_threshold=0.25)
-        detections = [
-            {"class_name": "person", "confidence": 0.9, "area": 50000},
-            {"class_name": "book", "confidence": 0.7, "area": 30000},
-            {"class_name": "unknown", "confidence": 0.8, "area": 40000},
+        detections: list[DetectionResult] = [
+            {
+                "class_name": "person",
+                "confidence": 0.9,
+                "area": 50000,
+                "bbox": [0, 0, 100, 100],
+                "class_id": 0,
+                "center": [50, 50],
+            },
+            {
+                "class_name": "book",
+                "confidence": 0.7,
+                "area": 30000,
+                "bbox": [0, 0, 100, 100],
+                "class_id": 0,
+                "center": [50, 50],
+            },
+            {
+                "class_name": "unknown",
+                "confidence": 0.8,
+                "area": 40000,
+                "bbox": [0, 0, 100, 100],
+                "class_id": 0,
+                "center": [50, 50],
+            },
         ]
 
         best = detector.get_best_detection(detections)
@@ -275,8 +297,15 @@ class TestYOLODetector:
     def test_get_best_detection_no_relevant(self):
         """Test get_best_detection sans détections pertinentes."""
         detector = YOLODetector(model_size="n", confidence_threshold=0.25)
-        detections = [
-            {"class_name": "unknown", "confidence": 0.8, "area": 40000},
+        detections: list[DetectionResult] = [
+            {
+                "class_name": "unknown",
+                "confidence": 0.8,
+                "area": 40000,
+                "bbox": [0, 0, 100, 100],
+                "class_id": 0,
+                "center": [50, 50],
+            },
         ]
         result = detector.get_best_detection(detections)
         assert result is None
@@ -436,13 +465,23 @@ class TestYOLODetector:
     def test_get_best_detection_multiple_areas(self):
         """Test get_best_detection avec plusieurs détections (priorité taille)."""
         detector = YOLODetector(model_size="n", confidence_threshold=0.25)
-        detections = [
+        detections: list[DetectionResult] = [
             {
                 "class_name": "person",
                 "confidence": 0.7,
                 "area": 100000,
+                "bbox": [0, 0, 100, 100],
+                "class_id": 0,
+                "center": [50, 50],
             },  # Grande taille
-            {"class_name": "person", "confidence": 0.9, "area": 30000},  # Petite taille
+            {
+                "class_name": "person",
+                "confidence": 0.9,
+                "area": 30000,
+                "bbox": [0, 0, 100, 100],
+                "class_id": 0,
+                "center": [50, 50],
+            },  # Petite taille
         ]
 
         best = detector.get_best_detection(detections)
@@ -836,16 +875,22 @@ class TestFactoryFunctions:
     def test_get_best_detection_priority_scoring(self):
         """Test priorité scoring avec différentes tailles."""
         detector = YOLODetector(model_size="n")
-        detections = [
+        detections: list[DetectionResult] = [
             {
                 "class_name": "person",
                 "confidence": 0.8,
                 "area": 50000,
+                "bbox": [0, 0, 100, 100],
+                "class_id": 0,
+                "center": [50, 50],
             },  # Score: 0.8 * (1 + 0.5) = 1.2
             {
                 "class_name": "person",
                 "confidence": 0.9,
                 "area": 20000,
+                "bbox": [0, 0, 100, 100],
+                "class_id": 0,
+                "center": [50, 50],
             },  # Score: 0.9 * (1 + 0.2) = 1.08
         ]
 

@@ -78,11 +78,12 @@ class TestUtilsTypes:
     def test_look_at_params(self) -> None:
         """Test LookAtParams."""
         params: LookAtParams = {
-            "target_x": 0.5,
-            "target_y": 0.3,
-            "target_z": 0.2,
+            "x": 0.5,
+            "y": 0.3,
+            "z": 0.2,
+            "duration": 1.0,
         }
-        assert params["target_x"] == 0.5
+        assert params["x"] == 0.5
 
     def test_play_audio_params(self) -> None:
         """Test PlayAudioParams."""
@@ -111,25 +112,24 @@ class TestUtilsTypes:
     def test_movement_recording(self) -> None:
         """Test MovementRecording."""
         recording: MovementRecording = {
-            "name": "test_move",
-            "positions": {"head_yaw": 0.0},
+            "positions": [{"head_yaw": 0.0}],
             "duration": 1.0,
         }
-        assert recording["name"] == "test_move"
+        assert len(recording["positions"]) == 1
 
     def test_metrics_data(self) -> None:
         """Test MetricsData."""
         metrics: MetricsData = {
-            "cpu_usage": 50.0,
-            "memory_usage": 60.0,
+            "cpu_percent": 50.0,
+            "memory_percent": 60.0,
         }
-        assert metrics["cpu_usage"] == 50.0
+        assert metrics["cpu_percent"] == 50.0
 
     def test_model_info(self) -> None:
         """Test ModelInfo."""
         info: ModelInfo = {
             "name": "test_model",
-            "version": "1.0.0",
+            "loaded": True,
         }
         assert info["name"] == "test_model"
 
@@ -152,45 +152,54 @@ class TestUtilsTypes:
 
     def test_robot_capabilities(self) -> None:
         """Test RobotCapabilities."""
-        caps: RobotCapabilities = {
+        # RobotCapabilities est un TypedDict défini dans daemon/app/routers/ecosystem
+        # Utiliser un cast pour éviter l'erreur de type
+        from typing import cast
+
+        caps_dict = {
             "has_camera": True,
             "has_microphone": True,
             "has_speaker": True,
         }
+        caps = cast(RobotCapabilities, caps_dict)
         assert caps["has_camera"] is True
 
     def test_telemetry_data(self) -> None:
         """Test TelemetryData."""
         data: TelemetryData = {
-            "timestamp": 1234567890.0,
-            "joint_positions": {"head_yaw": 0.0},
+            "step_count": 100,
+            "current_joint_positions": {"head_yaw": 0.0},
         }
-        assert data["timestamp"] == 1234567890.0
+        assert data["step_count"] == 100
 
     def test_detection_result(self) -> None:
         """Test DetectionResult."""
         result: DetectionResult = {
-            "class": "person",
+            "class_name": "person",
             "confidence": 0.9,
             "bbox": [0, 0, 100, 100],
+            "class_id": 0,
+            "center": [50, 50],
+            "area": 10000,
         }
-        assert result["class"] == "person"
+        assert result["class_name"] == "person"
 
     def test_face_detection(self) -> None:
         """Test FaceDetection."""
         detection: FaceDetection = {
-            "bbox": [0, 0, 100, 100],
-            "landmarks": [[10, 10], [20, 20]],
+            "bbox": {"x": 0, "y": 0, "width": 100, "height": 100},
+            "name": "test",
+            "confidence": 0.9,
         }
-        assert detection["bbox"] == [0, 0, 100, 100]
+        assert detection["bbox"]["x"] == 0
 
     def test_robot_status(self) -> None:
         """Test RobotStatus."""
         status: RobotStatus = {
-            "is_connected": True,
-            "battery_level": 80.0,
+            "connected": True,
+            "current_emotion": "happy",
         }
-        assert status["is_connected"] is True
+        assert status["connected"] is True
 
     def test_conversation_entry(self) -> None:
         """Test ConversationEntry."""
