@@ -1680,8 +1680,11 @@ class TestFactoryFunctions:
     @patch("bbia_sim.voice_whisper.sd")
     @patch("bbia_sim.voice_whisper.sf")
     @patch("bbia_sim.voice_whisper.whisper")
+    @patch("bbia_sim.voice_whisper._check_audio_device_available", return_value=True)
     @patch.dict(os.environ, {"BBIA_DISABLE_AUDIO": "0"}, clear=False)
-    def test_transcribe_microphone_cleanup_error(self, mock_whisper, mock_sf, mock_sd):
+    def test_transcribe_microphone_cleanup_error(
+        self, mock_check_audio, mock_whisper, mock_sf, mock_sd
+    ):
         """Test transcribe_microphone avec erreur cleanup (couverture lignes 259-260)."""
         with patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True):
             import bbia_sim.voice_whisper as voice_whisper_module
@@ -1696,16 +1699,20 @@ class TestFactoryFunctions:
             mock_sd.rec.return_value = mock_audio
             mock_sd.wait.return_value = None
 
+            # Mock sf.write pour créer le fichier temporaire
+            mock_sf.write = MagicMock()
+
             stt = WhisperSTT(model_size="tiny", language="fr")
             stt.model = mock_model  # type: ignore[assignment]
             stt.is_loaded = True
 
-            # Mock cleanup error
-            with patch("pathlib.Path.unlink", side_effect=Exception("Cleanup error")):
-                with patch.object(stt, "transcribe_audio", return_value="bonjour"):
-                    result = stt.transcribe_microphone(duration=0.1)
-                    # Devrait quand même retourner résultat malgré erreur cleanup
-                    assert result == "bonjour"
+            # Mock cleanup error - Path.unlink doit être mocké sur l'instance Path créée
+            with patch.object(Path, "unlink", side_effect=Exception("Cleanup error")):
+                with patch.object(Path, "exists", return_value=True):
+                    with patch.object(stt, "transcribe_audio", return_value="bonjour"):
+                        result = stt.transcribe_microphone(duration=0.1)
+                        # Devrait quand même retourner résultat malgré erreur cleanup
+                        assert result == "bonjour"
 
     @patch("bbia_sim.voice_whisper.transformers_pipeline")
     @patch.dict(os.environ, {"BBIA_DISABLE_AUDIO": "0"}, clear=False)
