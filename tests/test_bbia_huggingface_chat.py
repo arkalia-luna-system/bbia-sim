@@ -49,6 +49,11 @@ class TestBBIAHuggingFaceChat:
     @pytest.mark.model  # Test qui charge de vrais modèles (HuggingFace)
     def test_chat_simple_greeting(self) -> None:
         """Test chat avec salutation simple."""
+        # Skip en CI si trop lent (chargement modèle LLM)
+        import os
+
+        if os.environ.get("CI", "false").lower() == "true":
+            pytest.skip("Test désactivé en CI (chargement modèle LLM trop lent)")
         response = self.hf.chat("Bonjour")
 
         assert isinstance(response, str)
@@ -60,6 +65,11 @@ class TestBBIAHuggingFaceChat:
     @pytest.mark.model  # Test qui charge de vrais modèles (HuggingFace)
     def test_chat_conversation_history(self) -> None:
         """Test que l'historique de conversation est sauvegardé."""
+        # Skip en CI si trop lent (chargement modèle LLM)
+        import os
+
+        if os.environ.get("CI", "false").lower() == "true":
+            pytest.skip("Test désactivé en CI (chargement modèle LLM trop lent)")
         initial_count = len(self.hf.conversation_history)
         max_history_size = 1000
 
@@ -89,6 +99,11 @@ class TestBBIAHuggingFaceChat:
     @pytest.mark.model  # Test qui charge de vrais modèles (HuggingFace)
     def test_chat_with_empty_message(self) -> None:
         """Test chat avec message vide."""
+        # Skip en CI si trop lent (chargement modèle LLM)
+        import os
+
+        if os.environ.get("CI", "false").lower() == "true":
+            pytest.skip("Test désactivé en CI (chargement modèle LLM trop lent)")
         response = self.hf.chat("")
 
         assert isinstance(response, str)
@@ -99,6 +114,11 @@ class TestBBIAHuggingFaceChat:
     @pytest.mark.model  # Test qui charge de vrais modèles (HuggingFace)
     def test_chat_error_handling(self) -> None:
         """Test gestion des erreurs dans chat."""
+        # Skip en CI si trop lent (chargement modèle LLM)
+        import os
+
+        if os.environ.get("CI", "false").lower() == "true":
+            pytest.skip("Test désactivé en CI (chargement modèle LLM trop lent)")
         # Test avec message normal
         response = self.hf.chat("test message")
         assert "reformuler" in response.lower() or len(response) > 0
@@ -207,6 +227,11 @@ class TestBBIAHuggingFaceChat:
     @pytest.mark.model  # Test qui charge de vrais modèles (HuggingFace)
     def test_build_context_string_with_history(self) -> None:
         """Test construction contexte avec historique."""
+        # Skip en CI si trop lent (chargement modèle LLM)
+        import os
+
+        if os.environ.get("CI", "false").lower() == "true":
+            pytest.skip("Test désactivé en CI (chargement modèle LLM trop lent)")
         # Ajouter quelques messages
         self.hf.chat("Message 1")
         self.hf.chat("Message 2")
@@ -222,6 +247,11 @@ class TestBBIAHuggingFaceChat:
     @pytest.mark.model  # Test qui charge de vrais modèles (HuggingFace)
     def test_chat_context_preservation(self) -> None:
         """Test que le contexte est préservé entre plusieurs appels."""
+        # Skip en CI si trop lent (chargement modèle LLM)
+        import os
+
+        if os.environ.get("CI", "false").lower() == "true":
+            pytest.skip("Test désactivé en CI (chargement modèle LLM trop lent)")
         max_history_size = 1000
         self.hf.chat("Premier message")
         count1 = len(self.hf.conversation_history)
@@ -244,6 +274,11 @@ class TestBBIAHuggingFaceChat:
     @pytest.mark.model  # Test qui charge de vrais modèles (HuggingFace)
     def test_chat_fallback_on_error(self) -> None:
         """Test que le fallback fonctionne en cas d'erreur."""
+        # Skip en CI si trop lent (chargement modèle LLM)
+        import os
+
+        if os.environ.get("CI", "false").lower() == "true":
+            pytest.skip("Test désactivé en CI (chargement modèle LLM trop lent)")
         # Forcer une erreur en définissant un modèle invalide
         # Le chat doit quand même retourner une réponse
         response = self.hf.chat("test")

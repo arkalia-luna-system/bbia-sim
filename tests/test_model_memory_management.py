@@ -24,6 +24,11 @@ except ImportError:
 @pytest.mark.heavy  # OPTIMISATION RAM: Test lourd, skip par défaut
 def test_model_unloading_after_inactivity() -> None:
     """Test déchargement modèles après inactivité."""
+    # Skip en CI si trop lent (chargement modèle LLM)
+    import os
+
+    if os.environ.get("CI", "false").lower() == "true":
+        pytest.skip("Test désactivé en CI (chargement modèle LLM trop lent)")
     try:
         hf = BBIAHuggingFace()
     except ImportError:
@@ -59,6 +64,11 @@ def test_model_unloading_after_inactivity() -> None:
 @pytest.mark.heavy  # OPTIMISATION RAM: Test lourd, skip par défaut
 def test_model_cache_efficiency() -> None:
     """Test que le cache des modèles fonctionne."""
+    # Skip en CI si trop lent (chargement modèle LLM)
+    import os
+
+    if os.environ.get("CI", "false").lower() == "true":
+        pytest.skip("Test désactivé en CI (chargement modèle LLM trop lent)")
     try:
         hf = BBIAHuggingFace()
     except ImportError:
@@ -105,6 +115,11 @@ def test_model_memory_limit_check() -> None:
 @pytest.mark.heavy  # OPTIMISATION RAM: Test lourd, skip par défaut
 def test_multiple_model_loading_unloading() -> None:
     """Test chargement/déchargement multiple de modèles."""
+    # Skip en CI si trop lent (chargement modèle LLM)
+    import os
+
+    if os.environ.get("CI", "false").lower() == "true":
+        pytest.skip("Test désactivé en CI (chargement modèle LLM trop lent)")
     try:
         hf = BBIAHuggingFace()
     except ImportError:

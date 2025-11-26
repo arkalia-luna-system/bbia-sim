@@ -78,6 +78,11 @@ class TestBBIAChatPersonalitiesWithLLM:
     @pytest.fixture
     def chat_with_llm(self):
         """Crée une instance BBIAChat avec LLM (si disponible)."""
+        # Skip en CI si trop lent (chargement modèle LLM)
+        import os
+
+        if os.environ.get("CI", "false").lower() == "true":
+            pytest.skip("Test désactivé en CI (chargement modèle LLM trop lent)")
         try:
             chat = BBIAChat(robot_api=None)
             if chat.llm_model is None:

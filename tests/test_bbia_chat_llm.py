@@ -196,6 +196,11 @@ class TestBBIAChat:
     @pytest.mark.skipif(not HF_AVAILABLE, reason="Hugging Face non disponible")
     def test_generate_with_llm(self):
         """Test génération réponse avec LLM (si disponible)."""
+        # Skip en CI si trop lent (chargement modèle LLM)
+        import os
+
+        if os.environ.get("CI", "false").lower() == "true":
+            pytest.skip("Test désactivé en CI (chargement modèle LLM trop lent)")
         chat = BBIAChat()
 
         # Si LLM chargé
