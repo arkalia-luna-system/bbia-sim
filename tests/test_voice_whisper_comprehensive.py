@@ -737,9 +737,11 @@ class TestFactoryFunctions:
     def test_detect_speech_activity_unsupported_format(self, mock_pipeline):
         """Test VAD avec format audio non supporté (couverture ligne 338)."""
         with patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True):
-            stt = WhisperSTT(model_size="tiny", language="fr", enable_vad=True)
-            # Passer un type non supporté
-            result = stt.detect_speech_activity(12345)  # Type int non supporté
+            # Réduire les warnings pour ce test
+            with patch("bbia_sim.voice_whisper.logger.warning"):
+                stt = WhisperSTT(model_size="tiny", language="fr", enable_vad=True)
+                # Passer un type non supporté
+                result = stt.detect_speech_activity(12345)  # Type int non supporté
             assert result is True  # Fallback
 
     @patch("bbia_sim.voice_whisper.whisper")
@@ -754,23 +756,25 @@ class TestFactoryFunctions:
             mock_model.transcribe.return_value = {"text": "test"}
             mock_whisper.load_model.return_value = mock_model
 
-            stt = WhisperSTT(model_size="tiny", language="auto")
-            stt.model = mock_model  # type: ignore[assignment]
-            stt.is_loaded = True
+            # Réduire les warnings pour ce test
+            with patch("bbia_sim.voice_whisper.logger.warning"):
+                stt = WhisperSTT(model_size="tiny", language="auto")
+                stt.model = mock_model  # type: ignore[assignment]
+                stt.is_loaded = True
 
-            with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as f:
-                temp_path = f.name
-                f.write(b"fake audio data")
+                with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as f:
+                    temp_path = f.name
+                    f.write(b"fake audio data")
 
-            try:
-                result = stt.transcribe_audio(temp_path)
-                assert result == "test"
-                # Vérifier que transcribe a été appelé avec language=None (auto)
-                mock_model.transcribe.assert_called_once()
-                call_kwargs = mock_model.transcribe.call_args[1]
-                assert call_kwargs.get("language") is None
-            finally:
-                Path(temp_path).unlink(missing_ok=True)
+                try:
+                    result = stt.transcribe_audio(temp_path)
+                    assert result == "test"
+                    # Vérifier que transcribe a été appelé avec language=None (auto)
+                    mock_model.transcribe.assert_called_once()
+                    call_kwargs = mock_model.transcribe.call_args[1]
+                    assert call_kwargs.get("language") is None
+                finally:
+                    Path(temp_path).unlink(missing_ok=True)
 
     @patch("bbia_sim.voice_whisper.transformers_pipeline")
     @patch.dict(os.environ, {"BBIA_DISABLE_AUDIO": "0"}, clear=False)
@@ -795,7 +799,10 @@ class TestFactoryFunctions:
     @patch("bbia_sim.voice_whisper.whisper")
     @patch("bbia_sim.voice_whisper.sd")
     @patch("bbia_sim.voice_whisper.sf")
-    def test_transcribe_streaming_with_callback(self, mock_sf, mock_sd, mock_whisper):
+    @patch("bbia_sim.voice_whisper.time")
+    def test_transcribe_streaming_with_callback(
+        self, mock_time, mock_sf, mock_sd, mock_whisper
+    ):
         """Test streaming avec callback (couverture lignes 629-633)."""
         with patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True):
             original_value = os.environ.get("BBIA_DISABLE_AUDIO", "0")
@@ -814,6 +821,29 @@ class TestFactoryFunctions:
                 mock_audio = np.random.rand(8000).astype(np.float32)
                 mock_sd.rec.return_value = mock_audio
                 mock_sd.wait.return_value = None
+                # Mock query_devices pour _check_audio_device_available
+                mock_sd.query_devices.return_value = [
+                    {"max_input_channels": 1, "max_output_channels": 2}
+                ]
+
+                # Mock time.time() pour contrôler le temps
+                # Le code nécessite time_since_last_transcription >= transcription_interval (0.2s)
+                # et len(audio_buffer) >= 2 (au moins 2 chunks)
+                # Simuler le temps qui passe pour satisfaire ces conditions
+                time_values = [
+                    0.0,
+                    0.0,
+                    0.5,
+                    0.5,
+                ]  # Temps initial, premier chunk, deuxième chunk, transcription
+                time_index = [0]
+
+                def mock_time_time():
+                    idx = time_index[0]
+                    time_index[0] = min(idx + 1, len(time_values) - 1)
+                    return time_values[idx]
+
+                mock_time.time.side_effect = mock_time_time
 
                 callback_called = []
 
@@ -825,11 +855,16 @@ class TestFactoryFunctions:
                 stt.is_loaded = True
                 stt.enable_vad = False  # Désactiver VAD pour simplifier
 
-                # Mock transcribe_audio pour éviter I/O fichier
-                with patch.object(stt, "transcribe_audio", return_value="test chunk"):
-                    result = stt.transcribe_streaming(
-                        callback=test_callback, max_duration=0.6, chunk_duration=0.3
-                    )
+                # Mock sf.write() pour éviter I/O fichier
+                mock_sf.write.return_value = None
+                # Le code utilise self.model.transcribe() directement, pas transcribe_audio()
+                # Donc pas besoin de mocker transcribe_audio
+                result = stt.transcribe_streaming(
+                    callback=test_callback,
+                    max_duration=2.0,
+                    chunk_duration=0.3,
+                    transcription_interval=0.2,  # Réduire pour permettre transcription dans le test
+                )
 
                 # Callback devrait être appelé
                 assert len(callback_called) > 0 or result is not None
@@ -1155,8 +1190,11 @@ class TestFactoryFunctions:
     @patch("bbia_sim.voice_whisper.sd")
     @patch("bbia_sim.voice_whisper.sf")
     @patch("bbia_sim.voice_whisper.whisper")
+    @patch("bbia_sim.voice_whisper._check_audio_device_available", return_value=True)
     @patch.dict(os.environ, {"BBIA_DISABLE_AUDIO": "0"}, clear=False)
-    def test_transcribe_microphone_success(self, mock_whisper, mock_sf, mock_sd):
+    def test_transcribe_microphone_success(
+        self, mock_check_audio, mock_whisper, mock_sf, mock_sd
+    ):
         """Test transcription microphone réussie (couverture lignes 235-259)."""
         with patch("bbia_sim.voice_whisper.WHISPER_AVAILABLE", True):
             import bbia_sim.voice_whisper as voice_whisper_module
