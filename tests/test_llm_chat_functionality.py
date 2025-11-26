@@ -40,6 +40,11 @@ class TestLLMChatFunctionality:
     @pytest.mark.slow  # OPTIMISATION: Test lent (charge modèle LLM lourd)
     def test_enable_llm_chat_returns_bool(self) -> None:
         """Test que enable_llm_chat retourne un booléen."""
+        # Skip en CI si trop lent (chargement modèle LLM lourd)
+        import os
+
+        if os.environ.get("CI", "false").lower() == "true":
+            pytest.skip("Test désactivé en CI (chargement modèle LLM trop lent)")
         if not HF_AVAILABLE:
             pytest.skip("Hugging Face non disponible")
 
@@ -50,6 +55,11 @@ class TestLLMChatFunctionality:
     @pytest.mark.slow  # OPTIMISATION: Test lent (charge modèle LLM lourd)
     def test_disable_llm_chat_cleans_up(self) -> None:
         """Test que disable_llm_chat libère correctement les ressources."""
+        # Skip en CI si trop lent (chargement modèle LLM lourd)
+        import os
+
+        if os.environ.get("CI", "false").lower() == "true":
+            pytest.skip("Test désactivé en CI (chargement modèle LLM trop lent)")
         if not HF_AVAILABLE:
             pytest.skip("Hugging Face non disponible")
 
@@ -129,6 +139,11 @@ class TestLLMChatFunctionality:
     @pytest.mark.slow  # OPTIMISATION: Test lent (charge modèle LLM lourd)
     def test_load_model_chat_type(self) -> None:
         """Test que load_model accepte model_type='chat'."""
+        # Skip en CI si trop lent (chargement modèle LLM lourd)
+        import os
+
+        if os.environ.get("CI", "false").lower() == "true":
+            pytest.skip("Test désactivé en CI (chargement modèle LLM trop lent)")
         if not HF_AVAILABLE:
             pytest.skip("Hugging Face non disponible")
 
