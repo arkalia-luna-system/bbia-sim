@@ -37,6 +37,11 @@ def get_memory_usage() -> float | None:
 @pytest.mark.heavy  # OPTIMISATION RAM: Test lourd (charge modèles LLM)
 def test_huggingface_llm_generation_latency() -> None:
     """Test latence génération LLM 150 tokens p50/p95."""
+    # Skip en CI si trop lent (chargement modèle LLM lourd)
+    import os
+
+    if os.environ.get("CI", "false").lower() == "true":
+        pytest.skip("Test désactivé en CI (chargement modèle LLM trop lent)")
     try:
         hf = BBIAHuggingFace()
     except ImportError:
@@ -98,6 +103,11 @@ def test_huggingface_llm_generation_latency() -> None:
 @pytest.mark.heavy  # OPTIMISATION RAM: Test lourd (mesure mémoire peak)
 def test_huggingface_memory_peak_loading() -> None:
     """Test mémoire pic lors du chargement modèle."""
+    # Skip en CI si trop lent (chargement modèle LLM lourd)
+    import os
+
+    if os.environ.get("CI", "false").lower() == "true":
+        pytest.skip("Test désactivé en CI (chargement modèle LLM trop lent)")
     try:
         hf = BBIAHuggingFace()
     except ImportError:
