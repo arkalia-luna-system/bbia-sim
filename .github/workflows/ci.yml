@@ -126,11 +126,12 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: security-artifacts
+          name: security-artifacts-${{ matrix.python-version }}
           path: |
             artifacts/semgrep-results.json
             artifacts/sbom.json
           retention-days: 30
+          if-no-files-found: ignore
 
       - name: Scan secrets with gitleaks
         continue-on-error: true
@@ -256,6 +257,7 @@ jobs:
           path: |
             artifacts/**/*.jsonl
             artifacts/**/*.csv
+          if-no-files-found: ignore
 
   test-e2e:
     runs-on: ubuntu-latest
@@ -351,6 +353,7 @@ jobs:
           name: e2e-test-logs
           path: logs/test_run.log
           retention-days: 7
+          if-no-files-found: ignore
 
       - name: Clean up after e2e tests
         if: always()
@@ -576,6 +579,7 @@ jobs:
           name: benchmark-results
           path: artifacts/benchmarks.jsonl
           retention-days: 7
+          if-no-files-found: ignore
 
   metrics:
     runs-on: ubuntu-latest

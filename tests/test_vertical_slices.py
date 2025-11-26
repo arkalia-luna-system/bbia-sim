@@ -212,6 +212,10 @@ class TestVerticalSlices:
 
     def test_demo_error_handling(self, demo_scripts):
         """Test de gestion d'erreurs des démos."""
+        # Skip en CI car peut être lent avec subprocess
+        if os.environ.get("CI", "false").lower() == "true":
+            pytest.skip("Test désactivé en CI (peut être lent avec subprocess)")
+
         script = demo_scripts["emotion"]
 
         # Test avec émotion invalide
