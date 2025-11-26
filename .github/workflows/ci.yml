@@ -721,10 +721,13 @@ jobs:
           find . -type d -name "__pycache__" -exec rm -r {} + || true
           python -m pip cache purge || true
 
-      - name: Commit and push metrics update
+      - name: Commit metrics update (no push - requires manual review)
         if: github.ref == 'refs/heads/develop'
         run: |
+          # Note: Push automatique désactivé pour éviter erreurs de permission
+          # Les métriques sont sauvegardées dans les artifacts et peuvent être commitées manuellement si nécessaire
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add docs/reference/METRICS.md metrics/*.json metrics/*.md 2>/dev/null || true
-          git diff --staged --quiet || (git commit -m "chore: update metrics from arkalia-metrics-collector [skip ci]" && git push)
+          # Ne pas push automatiquement - les métriques sont dans les artifacts
+          echo "✅ Métriques mises à jour (disponibles dans artifacts)"
