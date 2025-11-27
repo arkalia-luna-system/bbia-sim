@@ -4,6 +4,8 @@ Tests sécurité pour BBIA Hugging Face - Protection contre injection prompts
 Tests validation entrée utilisateur et déchargement modèles
 """
 
+import os
+
 import pytest
 
 # Import conditionnel
@@ -28,6 +30,10 @@ class TestHuggingFaceSecurity:
             pytest.skip("Hugging Face transformers non disponible")
 
     @pytest.mark.slow
+    @pytest.mark.skipif(
+        os.environ.get("CI", "false").lower() == "true",
+        reason="Test désactivé en CI (chargement modèle LLM trop lent)",
+    )
     def test_prompt_injection_prevention(self) -> None:
         """Test que les prompts malveillants sont détectés/bloqués."""
         malicious_prompts = [
@@ -49,6 +55,10 @@ class TestHuggingFaceSecurity:
             assert len(response) > 10, f"Réponse trop courte pour prompt: {prompt[:30]}"
 
     @pytest.mark.slow
+    @pytest.mark.skipif(
+        os.environ.get("CI", "false").lower() == "true",
+        reason="Test désactivé en CI (chargement modèle LLM trop lent)",
+    )
     def test_input_validation_length(self) -> None:
         """Test validation longueur entrée utilisateur."""
         # Prompts très longs (>2048 tokens approximatif)

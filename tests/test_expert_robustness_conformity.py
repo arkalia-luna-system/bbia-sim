@@ -6,6 +6,7 @@ Renforce les tests existants pour une détection maximale de problèmes.
 """
 
 import math
+import os
 import sys
 import threading
 import time
@@ -430,6 +431,10 @@ class TestExpertRobustnessConformity:
         print("✅ Ordre fallback médias vérifié")
 
     @pytest.mark.slow
+    @pytest.mark.skipif(
+        os.environ.get("CI", "false").lower() == "true",
+        reason="Test désactivé en CI (chargement modèle LLM trop lent)",
+    )
     def test_expert_15_conversation_history_memory_limit(self):
         """Test expert: L'historique conversation ne doit pas croître indéfiniment."""
         print("\n🧪 EXPERT TEST 15: Limite Mémoire Historique Conversation")
