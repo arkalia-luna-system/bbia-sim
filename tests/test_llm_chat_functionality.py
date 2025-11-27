@@ -4,6 +4,8 @@ Tests pour les nouvelles fonctionnalités LLM conversationnel de BBIA.
 Valide enable_llm_chat, disable_llm_chat, et _generate_llm_response.
 """
 
+import os
+
 import pytest
 
 # Import conditionnel pour éviter erreurs si HF indisponible
@@ -78,8 +80,6 @@ class TestLLMChatFunctionality:
     )
     def test_chat_fallback_when_llm_not_loaded(self) -> None:
         """Test que chat utilise fallback enrichi si LLM non chargé."""
-        import os
-
         if not HF_AVAILABLE:
             pytest.skip("Hugging Face non disponible")
 
@@ -135,8 +135,6 @@ class TestLLMChatFunctionality:
     )
     def test_chat_method_handles_llm_fallback(self) -> None:
         """Test que la méthode chat gère correctement le fallback LLM."""
-        import os
-
         if not HF_AVAILABLE:
             pytest.skip("Hugging Face non disponible")
 
