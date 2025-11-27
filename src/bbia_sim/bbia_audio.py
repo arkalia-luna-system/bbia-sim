@@ -304,11 +304,11 @@ def enregistrer_audio(
                     channel_error,
                 )
             else:
-            logging.warning(
-                "⚠️ Erreur canaux audio (Issue #329): %s. "
-                "Tentative avec configuration par défaut...",
-                channel_error,
-            )
+                logging.warning(
+                    "⚠️ Erreur canaux audio (Issue #329): %s. "
+                    "Tentative avec configuration par défaut...",
+                    channel_error,
+                )
             try:
                 # Essayer avec configuration par défaut
                 sd_module = _get_sd()
@@ -336,10 +336,10 @@ def enregistrer_audio(
                         fallback_error,
                     )
                 else:
-                logging.error(
-                    "❌ Échec enregistrement audio même avec fallback: %s",
-                    fallback_error,
-                )
+                    logging.error(
+                        "❌ Échec enregistrement audio même avec fallback: %s",
+                        fallback_error,
+                    )
                 msg = f"Impossible d'enregistrer audio: {fallback_error}"
                 raise RuntimeError(
                     msg,
@@ -360,7 +360,7 @@ def enregistrer_audio(
         if os.environ.get("CI", "false").lower() == "true":
             logging.debug("Erreur d'enregistrement audio: %s", e)
         else:
-        logging.error("Erreur d'enregistrement audio: %s", e)
+            logging.error("Erreur d'enregistrement audio: %s", e)
         raise
 
 
@@ -399,12 +399,12 @@ def lire_audio(fichier: str, robot_api: Optional["RobotAPI"] = None) -> None:
                         DEFAULT_SAMPLE_RATE,
                     )
                 else:
-                logging.warning(
-                    "⚠️  Sample rate %s Hz != SDK standard %s Hz. "
-                    "Performance audio peut être dégradée.",
-                    info.samplerate,
-                    DEFAULT_SAMPLE_RATE,
-                )
+                    logging.warning(
+                        "⚠️  Sample rate %s Hz != SDK standard %s Hz. "
+                        "Performance audio peut être dégradée.",
+                        info.samplerate,
+                        DEFAULT_SAMPLE_RATE,
+                    )
         except (OSError, AttributeError, RuntimeError):
             # Ignorer toute erreur côté soundfile, fallback plus bas
             logger.debug("Impossible de lire métadonnées audio avec soundfile")
@@ -461,7 +461,7 @@ def lire_audio(fichier: str, robot_api: Optional["RobotAPI"] = None) -> None:
         if os.environ.get("CI", "false").lower() == "true":
             logging.debug("Erreur de lecture audio: %s", e)
         else:
-        logging.exception("Erreur de lecture audio")
+            logging.exception("Erreur de lecture audio")
         raise
 
 
