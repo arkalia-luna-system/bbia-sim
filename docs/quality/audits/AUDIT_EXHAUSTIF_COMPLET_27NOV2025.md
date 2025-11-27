@@ -39,15 +39,20 @@
 
 #### 1.1 WebRTC Streaming ⚠️ (OPTIONNEL)
 
-**Statut** : ❌ Absent  
+**Statut** : ❌ Absent (WebSocket + MJPEG utilisés à la place)  
 **Impact** : 🟡 Moyen  
 **Priorité** : 🟢 Basse  
 **Gratuit** : ✅ Oui (WebRTC open source)
 
 **Détails** :
 - **Pollen** : WebRTC pour streaming audio/vidéo
-- **BBIA** : WebSocket (<10ms latence)
-- **Gap** : WebRTC meilleur pour streaming temps réel
+- **BBIA** : WebSocket (<10ms latence) + MJPEG streaming vidéo (`/api/camera/stream`)
+- **Gap** : WebRTC meilleur pour streaming temps réel, mais WebSocket + MJPEG suffisent
+
+**État actuel** :
+- ✅ WebSocket : Communication temps réel (<10ms latence)
+- ✅ MJPEG Streaming : `/api/camera/stream` (compression adaptative, frame rate adaptatif)
+- ❌ WebRTC : Absent (non nécessaire car WebSocket + MJPEG fonctionnent bien)
 
 **Solution GRATUITE** :
 - Utiliser `aiortc` (Python WebRTC gratuit)
@@ -61,7 +66,8 @@
 4. Tests performance
 
 **Temps estimé** : 12-16h  
-**Valeur ajoutée** : +2 points technique
+**Valeur ajoutée** : +2 points technique  
+**Note** : WebRTC est optionnel car WebSocket + MJPEG suffisent pour les besoins actuels
 
 ---
 
@@ -95,23 +101,28 @@
 
 #### 1.3 File d'Attente Mouvements Multicouche ⚠️ (AMÉLIORATION)
 
-**Statut** : ⚠️ Basique  
+**Statut** : ⚠️ Basique (queue simple présente, pas de priorités multicouche)  
 **Impact** : 🟡 Moyen  
 **Priorité** : 🟡 Moyenne  
 **Gratuit** : ✅ Oui (code pur)
 
 **Détails** :
 - **Pollen** : File d'attente multicouche (danses, émotions, poses, respiration)
-- **BBIA** : File d'attente simple
-- **Gap** : Mouvements complexes simultanés
+- **BBIA** : File d'attente simple (`behavior_queue` dans `BBIABehaviorManager`)
+- **Gap** : Système de priorités multicouche manquant (urgent, normal, background)
+
+**État actuel** :
+- ✅ Queue simple présente : `BBIABehaviorManager.behavior_queue` (Queue maxsize=50)
+- ❌ Pas de système de priorités (3 niveaux)
+- ❌ Pas de gestion conflits mouvements simultanés
 
 **Solution GRATUITE** :
-- Implémenter système de priorités
+- Implémenter système de priorités sur queue existante
 - Couches : urgent, normal, background
 - Pas besoin de service payant
 
 **Plan d'implémentation** :
-1. Créer `bbia_motion_queue.py`
+1. Améliorer `BBIABehaviorManager.behavior_queue` avec priorités
 2. Système de priorités (3 niveaux)
 3. Gestion conflits mouvements
 4. Tests mouvements simultanés
@@ -123,26 +134,36 @@
 
 #### 1.4 Support Multi-Robots Complet ⚠️ (INFRASTRUCTURE)
 
-**Statut** : ⚠️ Partiel (infrastructure présente)  
+**Statut** : ⚠️ Partiel (infrastructure basique présente)  
 **Impact** : 🟡 Moyen  
 **Priorité** : 🟡 Moyenne  
 **Gratuit** : ✅ Oui (code pur)
 
 **Détails** :
 - **Pollen** : Support multi-robots complet
-- **BBIA** : Infrastructure présente (`RobotRegistry`), non complète
-- **Gap** : Gestion plusieurs robots simultanés
+- **BBIA** : Infrastructure basique présente (`RobotFactory.create_robot_registry()`), non complète
+- **Gap** : Gestion plusieurs robots simultanés, API `/robots/list` manquante
+
+**État actuel** :
+- ✅ `RobotFactory.create_robot_registry()` : Crée registre basique (robot_id, hostname, port)
+- ✅ Support `BBIA_ROBOT_ID`, `BBIA_HOSTNAME`, `BBIA_PORT` (variables d'environnement)
+- ✅ Exemple : `examples/demo_robot_registry.py`
+- ❌ Pas d'API `/robots/list` pour lister robots disponibles
+- ❌ Pas de gestion centralisée multi-instances
+- ❌ Communication réseau multi-robots non complète
 
 **Solution GRATUITE** :
-- Compléter `RobotRegistry`
-- Gestion IDs robots
+- Compléter `RobotRegistry` avec gestion centralisée
+- Ajouter API `/robots/list`
+- Gestion IDs uniques
 - Communication réseau (Zenoh déjà présent)
 
 **Plan d'implémentation** :
-1. Compléter `RobotRegistry`
-2. Gestion IDs uniques
-3. Tests multi-robots
-4. Documentation
+1. Créer `src/bbia_sim/robot_registry.py` (gestion centralisée)
+2. Ajouter endpoint API `/robots/list` dans `daemon/app/routers/robots.py`
+3. Gestion IDs uniques
+4. Tests multi-robots
+5. Documentation
 
 **Temps estimé** : 8-12h  
 **Valeur ajoutée** : +1 point technique

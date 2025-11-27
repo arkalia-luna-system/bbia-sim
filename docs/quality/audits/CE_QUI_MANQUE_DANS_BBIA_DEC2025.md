@@ -94,19 +94,20 @@
 **BBIA** : ❌ Absent (Whisper STT + LLM local utilisé)
 
 **Détails** :
-- **Officiel** : OpenAI Realtime API (fastrtcp streaming)
-- **BBIA** : Whisper STT + LLM local (offline)
-- **Impact** : 🟡 Moyen (Whisper suffit mais moins performant)
-- **Priorité** : 🟢 Basse (optionnel, nécessite API key payante)
+- **Officiel** : OpenAI Realtime API (fastrtcp streaming) - **PAYANT**
+- **BBIA** : Whisper STT + LLM local (offline) - **GRATUIT**
+- **Impact** : 🟡 Moyen (Whisper suffit, équivalent fonctionnel)
+- **Priorité** : 🟢 Basse (NON NÉCESSAIRE - BBIA a déjà une solution gratuite équivalente)
 
-**Pourquoi manquant** :
-- Nécessite API key OpenAI (payant)
-- Whisper STT gratuit fonctionne bien
-- Préférence pour solutions offline
+**Pourquoi manquant (et pourquoi c'est bien)** :
+- ❌ OpenAI Realtime API nécessite API key **PAYANTE**
+- ✅ Whisper STT **GRATUIT** fonctionne très bien et est équivalent
+- ✅ Préférence pour solutions **offline et gratuites**
+- ✅ BBIA n'a **PAS BESOIN** de cette fonctionnalité payante
 
 **Recommandation** :
-- ✅ **Ignorer** (Whisper suffit, solution offline préférée)
-- ⚠️ **Implémenter** si besoin latence ultra-faible
+- ✅ **IGNORER COMPLÈTEMENT** (Whisper gratuit suffit, solution offline préférée)
+- ❌ **NE JAMAIS IMPLÉMENTER** (détruirait le positionnement "100% gratuit")
 
 **Temps estimé** : 4-6h si nécessaire
 
@@ -217,7 +218,7 @@
 - ✅ **Whisper streaming** : Présent
 
 **Manque** :
-- OpenAI Realtime API (optionnel, payant)
+- OpenAI Realtime API (optionnel, **PAYANT** - **NON NÉCESSAIRE** car BBIA a Whisper gratuit équivalent)
 
 **Impact** : 🟡 Moyen (Whisper suffit mais moins performant)
 
