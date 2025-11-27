@@ -326,8 +326,6 @@ def enregistrer_audio(
                 )
             except Exception as fallback_error:
                 # Log en debug en CI (erreurs attendues sans périphériques audio)
-                import os
-
                 if os.environ.get("CI", "false").lower() == "true":
                     logging.debug(
                         "Échec enregistrement audio même avec fallback: %s",
@@ -353,8 +351,6 @@ def enregistrer_audio(
         return True
     except Exception as e:
         # Log en debug en CI (erreurs attendues sans périphériques audio)
-        import os
-
         if os.environ.get("CI", "false").lower() == "true":
             logging.debug("Erreur d'enregistrement audio: %s", e)
         else:
@@ -454,8 +450,6 @@ def lire_audio(fichier: str, robot_api: Optional["RobotAPI"] = None) -> None:
         logging.info("Lecture de %s terminée.", fichier)
     except Exception as e:
         # Log en debug en CI (erreurs attendues dans les tests avec mocks)
-        import os
-
         if os.environ.get("CI", "false").lower() == "true":
             logging.debug("Erreur de lecture audio: %s", e)
         else:
