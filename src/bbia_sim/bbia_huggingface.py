@@ -737,7 +737,9 @@ class BBIAHuggingFace:
                     e,
                 )
             else:
-                logger.exception("❌ Erreur inattendue chargement modèle %s:", model_name)
+                logger.exception(
+                    "❌ Erreur inattendue chargement modèle %s:", model_name
+                )
             return False
 
     def _get_pipeline_name(self, model_name: str) -> str:
