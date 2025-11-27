@@ -966,12 +966,30 @@ class BBIAHuggingFace:
 
             # Vérifier que les clés existent après le chargement
             if processor_key not in self.processors:
-                logger.error(
-                    f"❌ Processeur {processor_key} non disponible après chargement",
-                )
+                # Log en debug en CI (erreur attendue si dépendance optionnelle manquante)
+                import os
+
+                if os.environ.get("CI", "false").lower() == "true":
+                    logger.debug(
+                        f"Processeur {processor_key} non disponible (dépendance optionnelle)",
+                    )
+                else:
+                    logger.error(
+                        f"❌ Processeur {processor_key} non disponible après chargement",
+                    )
                 return "Erreur (answer_question): processeur non disponible"
             if model_key not in self.models:
-                logger.error(f"❌ Modèle {model_key} non disponible après chargement")
+                # Log en debug en CI (erreur attendue si dépendance optionnelle manquante)
+                import os
+
+                if os.environ.get("CI", "false").lower() == "true":
+                    logger.debug(
+                        f"Modèle {model_key} non disponible (dépendance optionnelle)"
+                    )
+                else:
+                    logger.error(
+                        f"❌ Modèle {model_key} non disponible après chargement"
+                    )
                 return "Erreur (answer_question): modèle non disponible"
 
             processor = self.processors[processor_key]

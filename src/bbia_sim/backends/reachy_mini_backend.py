@@ -1599,7 +1599,13 @@ class ReachyMiniBackend(RobotAPI):
             return SimpleMove(positions, duration)
 
         except Exception:
-            logger.exception("Erreur création Move")
+            # Log en debug en CI (erreur attendue si reachy_mini non installé)
+            import os
+
+            if os.environ.get("CI", "false").lower() == "true":
+                logger.debug("Erreur création Move (reachy_mini non disponible en CI)")
+            else:
+                logger.exception("Erreur création Move")
             return None
 
     def record_movement(self, duration: float = 5.0) -> list[JointPositions] | None:
