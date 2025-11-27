@@ -198,11 +198,12 @@ class TestMuJoCoSimulator:
             # Le code lève RuntimeError avec le message original quand ce n'est pas macOS
             mock_mujoco.viewer.launch_passive.side_effect = RuntimeError("Other error")
 
-            # S'assurer que l'exception est levée immédiatement (pas de timeout)
+            # Mock CI=False et DISPLAY pour forcer le mode graphique
             with patch("bbia_sim.sim.simulator.sys.platform", "linux"):
-                # Le code doit lever l'exception directement (pas de message spécifique, juste l'erreur originale)
-                with pytest.raises(RuntimeError):
-                    simulator.launch_simulation(headless=False)
+                with patch.dict("os.environ", {"CI": "false", "DISPLAY": ":0"}):
+                    # Le code doit lever l'exception directement (pas de message spécifique, juste l'erreur originale)
+                    with pytest.raises(RuntimeError):
+                        simulator.launch_simulation(headless=False)
 
         finally:
             os.unlink(temp_model)
