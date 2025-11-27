@@ -482,7 +482,13 @@ def run_dashboard(
 
     """
     if not FASTAPI_AVAILABLE:
-        logger.error("❌ FastAPI non disponible")
+        # Log en debug en CI (erreur attendue dans les tests)
+        import os
+
+        if os.environ.get("CI", "false").lower() == "true":
+            logger.debug("FastAPI non disponible")
+        else:
+            logger.error("❌ FastAPI non disponible")
         return
 
     websocket_manager.robot_backend = backend
