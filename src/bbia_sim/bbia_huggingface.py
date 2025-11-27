@@ -837,6 +837,9 @@ class BBIAHuggingFace:
             # Tronquer le texte si nécessaire (limite ~500 tokens pour RoBERTa)
             # Utiliser le tokenizer du pipeline pour tronquer correctement
             max_tokens = 512  # Limite RoBERTa
+            max_chars = 2000  # Fallback: ~500 tokens pour la plupart des modèles
+            text_truncated = text
+
             try:
                 # Récupérer le tokenizer du pipeline
                 tokenizer = pipeline.tokenizer
@@ -850,18 +853,16 @@ class BBIAHuggingFace:
                     )
                     text_truncated = tokenizer.decode(tokens, skip_special_tokens=True)
                 else:
-                    # Fallback: tronquer par caractères (~2000 chars = ~500 tokens)
-                    max_chars = 2000
+                    # Fallback: tronquer par caractères
                     text_truncated = text[:max_chars] if len(text) > max_chars else text
             except (AttributeError, TypeError):
                 # Fallback: tronquer par caractères si tokenizer non accessible
-                max_chars = 2000
                 text_truncated = text[:max_chars] if len(text) > max_chars else text
 
             result: Any = pipeline(text_truncated)
 
             return {
-                "text": text_truncated if len(text) > max_chars else text,
+                "text": text_truncated,
                 "sentiment": str(result[0]["label"]),
                 "score": float(result[0]["score"]),
                 "model": model_name,
