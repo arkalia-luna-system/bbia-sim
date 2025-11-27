@@ -113,7 +113,13 @@ def _get_cached_voice_id() -> str:
         engine = _get_pyttsx3_engine()
         if engine is None:
             # Audio désactivé ou eSpeak non disponible
-            logging.warning("⚠️ pyttsx3 non disponible, utilisation voix par défaut")
+            # Log en debug en CI (warning attendu sans eSpeak)
+            import os
+
+            if os.environ.get("CI", "false").lower() == "true":
+                logging.debug("pyttsx3 non disponible, utilisation voix par défaut")
+            else:
+                logging.warning("⚠️ pyttsx3 non disponible, utilisation voix par défaut")
             _bbia_voice_id_cache = (
                 "com.apple.speech.voice.Amelie.fr-FR"  # Fallback macOS
             )
@@ -440,7 +446,13 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
         # ⚡ OPTIMISATION PERFORMANCE: Utiliser moteur en cache (évite 0.8s d'init)
         engine = _get_pyttsx3_engine()
         if engine is None:
-            logging.warning("⚠️ pyttsx3 non disponible, synthèse vocale ignorée")
+            # Log en debug en CI (warning attendu sans eSpeak)
+            import os
+
+            if os.environ.get("CI", "false").lower() == "true":
+                logging.debug("pyttsx3 non disponible, synthèse vocale ignorée")
+            else:
+                logging.warning("⚠️ pyttsx3 non disponible, synthèse vocale ignorée")
             return
         voice_id = _get_cached_voice_id()
         # Vérification supplémentaire pour éviter AttributeError si engine est None
