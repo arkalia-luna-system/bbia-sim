@@ -159,11 +159,13 @@ class TestMuJoCoSimulator:
                 "mjpython required"
             )
 
+            # Mock CI=False et DISPLAY pour forcer le mode graphique
             with patch("bbia_sim.sim.simulator.sys.platform", "darwin"):
-                with pytest.raises(
-                    RuntimeError, match="Viewer MuJoCo non disponible sur macOS"
-                ):
-                    simulator.launch_simulation(headless=False)
+                with patch.dict("os.environ", {"CI": "false", "DISPLAY": ":0"}):
+                    with pytest.raises(
+                        RuntimeError, match="Viewer MuJoCo non disponible sur macOS"
+                    ):
+                        simulator.launch_simulation(headless=False)
 
         finally:
             os.unlink(temp_model)
