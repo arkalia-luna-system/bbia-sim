@@ -676,10 +676,30 @@ class BBIAHuggingFace:
                     logger.info(
                         "💡 Fallback activé: réponses enrichies (stratégie règles v2)",
                     )
-                except Exception as e:
+                    self.use_llm_chat = False
+                    return False
+                except KeyboardInterrupt:
                     logger.warning(
-                        f"⚠️  Erreur inattendue chargement LLM {model_name}: {e}",
+                        "⚠️  Chargement LLM %s interrompu (KeyboardInterrupt)",
+                        model_name,
                     )
+                    self.use_llm_chat = False
+                    return False
+                except Exception as e:
+                    # Gérer les erreurs de cancellation (ex: "The operation was canceled")
+                    error_msg = str(e).lower()
+                    if "cancel" in error_msg or "interrupt" in error_msg:
+                        logger.warning(
+                            "⚠️  Chargement LLM %s annulé: %s",
+                            model_name,
+                            e,
+                        )
+                    else:
+                        logger.warning(
+                            "⚠️  Erreur inattendue chargement LLM %s: %s",
+                            model_name,
+                            e,
+                        )
                     logger.info(
                         """💡 Fallback activé: réponses enrichies """
                         """(stratégie règles v2)""",
@@ -699,10 +719,25 @@ class BBIAHuggingFace:
             return True
 
         except (ImportError, RuntimeError, OSError, ValueError, AttributeError):
-            logger.exception("❌ Erreur chargement modèle {model_name}:")
+            logger.exception("❌ Erreur chargement modèle %s:", model_name)
             return False
-        except Exception:
-            logger.exception("❌ Erreur inattendue chargement modèle %s:", model_name)
+        except KeyboardInterrupt:
+            logger.warning(
+                "⚠️  Chargement modèle %s interrompu (KeyboardInterrupt)",
+                model_name,
+            )
+            return False
+        except Exception as e:
+            # Gérer les erreurs de cancellation (ex: "The operation was canceled")
+            error_msg = str(e).lower()
+            if "cancel" in error_msg or "interrupt" in error_msg:
+                logger.warning(
+                    "⚠️  Chargement modèle %s annulé: %s",
+                    model_name,
+                    e,
+                )
+            else:
+                logger.exception("❌ Erreur inattendue chargement modèle %s:", model_name)
             return False
 
     def _get_pipeline_name(self, model_name: str) -> str:
@@ -1373,12 +1408,24 @@ class BBIAHuggingFace:
                         if self.load_model(default_chat_model, model_type="chat"):
                             logger.info("✅ LLM chargé avec succès (lazy loading)")
                 except (ImportError, RuntimeError, OSError, ValueError) as e:
-                    logger.debug(f"Lazy loading LLM échoué (fallback enrichi): {e}")
-                except Exception as e:
+                    logger.debug("Lazy loading LLM échoué (fallback enrichi): %s", e)
+                except KeyboardInterrupt:
                     logger.debug(
-                        "Lazy loading LLM échoué inattendu (fallback enrichi): %s",
-                        e,
+                        "Lazy loading LLM interrompu (KeyboardInterrupt, fallback enrichi)",
                     )
+                except Exception as e:
+                    # Gérer les erreurs de cancellation (ex: "The operation was canceled")
+                    error_msg = str(e).lower()
+                    if "cancel" in error_msg or "interrupt" in error_msg:
+                        logger.debug(
+                            "Lazy loading LLM annulé (fallback enrichi): %s",
+                            e,
+                        )
+                    else:
+                        logger.debug(
+                            "Lazy loading LLM échoué inattendu (fallback enrichi): %s",
+                            e,
+                        )
 
             # 3. Générer réponse avec LLM si disponible, sinon réponses enrichies
             # Convertir SentimentResult en SentimentDict (nécessaire pour les deux branches)
