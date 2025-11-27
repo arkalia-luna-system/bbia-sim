@@ -799,10 +799,19 @@ class BBIAChat:
             self.personality = personality
             logger.info("✅ Personnalité changée: %s", personality)
         else:
-            logger.warning(
-                f"⚠️ Personnalité invalide: {personality}. "
-                f"Personnalités disponibles: {list(self.PERSONALITIES.keys())}",
-            )
+            # Log en debug en CI (warning attendu dans les tests)
+            import os
+
+            if os.environ.get("CI", "false").lower() == "true":
+                logger.debug(
+                    f"Personnalité invalide: {personality}. "
+                    f"Personnalités disponibles: {list(self.PERSONALITIES.keys())}",
+                )
+            else:
+                logger.warning(
+                    f"⚠️ Personnalité invalide: {personality}. "
+                    f"Personnalités disponibles: {list(self.PERSONALITIES.keys())}",
+                )
 
     def learn_preference(self, user_action: str, context: dict[str, Any]) -> None:
         """Apprend préférence utilisateur.
