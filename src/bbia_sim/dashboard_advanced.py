@@ -422,7 +422,7 @@ class BBIAAdvancedWebSocketManager:
             return f"<{obj.__class__.__name__}>"
 
         # Types JSON natifs
-        if obj is None or isinstance(obj, (bool, int, float, str)):
+        if obj is None or isinstance(obj, bool | int | float | str):
             return obj
 
         # Dictionnaires
@@ -430,7 +430,7 @@ class BBIAAdvancedWebSocketManager:
             return {str(k): self._sanitize_for_json(v) for k, v in obj.items()}
 
         # Listes et tuples
-        if isinstance(obj, (list, tuple)):
+        if isinstance(obj, list | tuple):
             return [self._sanitize_for_json(item) for item in obj]
 
         # Datetime et autres types avec isoformat

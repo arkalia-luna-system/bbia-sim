@@ -742,7 +742,7 @@ class TestFactoryFunctions:
                 stt = WhisperSTT(model_size="tiny", language="fr", enable_vad=True)
                 # Passer un type non supporté
                 result = stt.detect_speech_activity(12345)  # Type int non supporté
-            assert result is True  # Fallback
+                assert result is True  # Fallback
 
     @patch("bbia_sim.voice_whisper.whisper")
     def test_transcribe_audio_language_auto(self, mock_whisper):
@@ -762,19 +762,19 @@ class TestFactoryFunctions:
                 stt.model = mock_model  # type: ignore[assignment]
                 stt.is_loaded = True
 
-                with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as f:
-                    temp_path = f.name
-                    f.write(b"fake audio data")
+            with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as f:
+                temp_path = f.name
+                f.write(b"fake audio data")
 
-                try:
-                    result = stt.transcribe_audio(temp_path)
-                    assert result == "test"
-                    # Vérifier que transcribe a été appelé avec language=None (auto)
-                    mock_model.transcribe.assert_called_once()
-                    call_kwargs = mock_model.transcribe.call_args[1]
-                    assert call_kwargs.get("language") is None
-                finally:
-                    Path(temp_path).unlink(missing_ok=True)
+            try:
+                result = stt.transcribe_audio(temp_path)
+                assert result == "test"
+                # Vérifier que transcribe a été appelé avec language=None (auto)
+                mock_model.transcribe.assert_called_once()
+                call_kwargs = mock_model.transcribe.call_args[1]
+                assert call_kwargs.get("language") is None
+            finally:
+                Path(temp_path).unlink(missing_ok=True)
 
     @patch("bbia_sim.voice_whisper.transformers_pipeline")
     @patch.dict(os.environ, {"BBIA_DISABLE_AUDIO": "0"}, clear=False)

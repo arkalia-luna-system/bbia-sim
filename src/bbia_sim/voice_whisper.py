@@ -429,10 +429,10 @@ class WhisperSTT:
                 except Exception as e:
                     # Autres erreurs - logger en warning seulement si pas en CI
                     if os.environ.get("CI", "false").lower() != "true":
-                    logger.warning(
-                        "⚠️ Impossible de charger VAD, fallback activé: %s",
-                        e,
-                    )
+                        logger.warning(
+                            "⚠️ Impossible de charger VAD, fallback activé: %s",
+                            e,
+                        )
                     else:
                         logger.debug(
                             "⚠️ Impossible de charger VAD (CI), fallback activé: %s",
@@ -915,7 +915,7 @@ class VoiceCommandMapper:
         import os
 
         if os.environ.get("CI", "false").lower() != "true":
-        logger.warning("❓ Commande non reconnue: '%s'", text)
+            logger.warning("❓ Commande non reconnue: '%s'", text)
         return None
 
 
