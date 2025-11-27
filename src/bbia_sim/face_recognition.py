@@ -84,7 +84,11 @@ class BBIAPersonRecognition:
 
         """
         if not self.is_initialized:
-            logger.warning("⚠️ DeepFace non disponible, enregistrement impossible")
+            # Pas de log en CI (dépendance optionnelle manquante)
+            import os
+
+            if os.environ.get("CI", "false").lower() != "true":
+                logger.warning("⚠️ DeepFace non disponible, enregistrement impossible")
             return False
 
         try:
@@ -101,8 +105,14 @@ class BBIAPersonRecognition:
             logger.info("✅ Personne '%s' enregistrée: %s", person_name, target_path)
             return True
 
-        except Exception:
-            logger.exception("❌ Erreur enregistrement personne '%s':", person_name)
+        except Exception as e:
+            # Log en debug en CI pour erreurs attendues dans les tests
+            import os
+
+            if os.environ.get("CI", "false").lower() == "true":
+                logger.debug("Erreur enregistrement personne '%s': %s", person_name, e)
+            else:
+                logger.exception("❌ Erreur enregistrement personne '%s':", person_name)
             return False
 
     def recognize_person(

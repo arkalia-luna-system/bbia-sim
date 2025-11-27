@@ -818,7 +818,11 @@ class VoiceCommandMapper:
                 logger.info("🎯 Commande partielle mappée: '%s' → %s", text, action)
                 return {"action": action, "confidence": 0.8}
 
-        logger.warning("❓ Commande non reconnue: '%s'", text)
+        # Pas de log en CI (commande non reconnue attendue dans les tests)
+        import os
+
+        if os.environ.get("CI", "false").lower() != "true":
+            logger.warning("❓ Commande non reconnue: '%s'", text)
         return None
 
 
