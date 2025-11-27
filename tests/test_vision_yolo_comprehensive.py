@@ -1061,15 +1061,17 @@ class TestFactoryFunctions:
         with patch("bbia_sim.vision_yolo.YOLO_AVAILABLE", True):
             with patch("bbia_sim.vision_yolo.logger") as mock_logger:
                 with patch.dict("os.environ", {"CI": "false"}):
-                    mock_model = MagicMock()
-                    mock_model.side_effect = Exception("Erreur batch")
                     import bbia_sim.vision_yolo as vision_yolo_module
 
                     vision_yolo_module._yolo_model_cache.clear()
 
                     detector = YOLODetector(model_size="n", confidence_threshold=0.25)
-                    detector.model = mock_model
                     detector.is_loaded = True
+
+                    # Mock le modèle pour lever une exception lors de l'appel
+                    mock_model = MagicMock()
+                    mock_model.side_effect = Exception("Erreur batch")
+                    detector.model = mock_model
 
                     # OPTIMISATION RAM: Image réduite (320x240 au lieu de 640x480)
                     images: list[npt.NDArray[np.uint8]] = [
@@ -1080,6 +1082,8 @@ class TestFactoryFunctions:
                     # Vérifier que l'erreur a été loggée (warning en non-CI, debug en CI)
                     # En non-CI, on utilise logger.warning
                     mock_logger.warning.assert_called_once()
+                    # Vérifier que le modèle a été appelé
+                    mock_model.assert_called_once()
 
     def test_import_fallback_detection_result(self):
         """Test import fallback DetectionResult (couverture lignes 19-31)."""
