@@ -295,8 +295,6 @@ def enregistrer_audio(
         except Exception as channel_error:
             # Si erreur canaux, essayer de détecter le nombre de canaux disponibles
             # Log en debug en CI (erreurs attendues sans périphériques audio)
-            import os
-
             if os.environ.get("CI", "false").lower() == "true":
                 logging.debug(
                     "Erreur canaux audio (Issue #329): %s. "
