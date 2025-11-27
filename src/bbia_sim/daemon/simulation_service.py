@@ -136,8 +136,6 @@ class SimulationService:
 
             except Exception as e:
                 # Log en debug en CI (erreurs attendues dans les tests avec mocks)
-                import os
-
                 if os.environ.get("CI", "false").lower() == "true":
                     logger.debug("Erreur dans la simulation headless: %s", e)
                 else:
