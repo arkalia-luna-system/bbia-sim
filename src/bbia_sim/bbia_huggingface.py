@@ -852,15 +852,11 @@ class BBIAHuggingFace:
                 else:
                     # Fallback: tronquer par caractères (~2000 chars = ~500 tokens)
                     max_chars = 2000
-                    text_truncated = (
-                        text[:max_chars] if len(text) > max_chars else text
-                    )
+                    text_truncated = text[:max_chars] if len(text) > max_chars else text
             except (AttributeError, TypeError):
                 # Fallback: tronquer par caractères si tokenizer non accessible
                 max_chars = 2000
-                text_truncated = (
-                    text[:max_chars] if len(text) > max_chars else text
-                )
+                text_truncated = text[:max_chars] if len(text) > max_chars else text
 
             result: Any = pipeline(text_truncated)
 
