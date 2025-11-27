@@ -136,7 +136,15 @@ class ZenohBridge:
                 raise RuntimeError(msg)
             zenoh_config = Config()
             zenoh_config.insert_json5("mode", f'"{self.config.mode}"')
-            zenoh_config.insert_json5("connect", json.dumps(self.config.connect))
+            # Format connect comme tableau JSON5 pour Zenoh
+            # Zenoh attend un tableau d'endpoints, pas une chaîne JSON
+            if self.config.connect:
+                connect_array = (
+                    "["
+                    + ", ".join(f'"{endpoint}"' for endpoint in self.config.connect)
+                    + "]"
+                )
+                zenoh_config.insert_json5("connect", connect_array)
 
             # Créer la session Zenoh (zenoh.open() est synchrone, utiliser to_thread)
             self.session = await asyncio.to_thread(zenoh.open, zenoh_config)
@@ -192,11 +200,14 @@ class ZenohBridge:
                 self.logger.exception("Erreur fermeture publisher")
 
         # Fermer la session Zenoh
-        if self.session:
+        if self.session is not None:
             try:
-                await self.session.close()
+                # zenoh.Session.close() est synchrone, utiliser to_thread
+                await asyncio.to_thread(self.session.close)
             except Exception:
                 self.logger.exception("Erreur fermeture session Zenoh")
+            finally:
+                self.session = None
 
         self.logger.info("Bridge Zenoh arrêté")
 
