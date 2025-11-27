@@ -3,6 +3,7 @@
 import asyncio
 import contextlib
 import logging
+import os
 from typing import Any
 
 from bbia_sim.sim.simulator import MuJoCoSimulator
@@ -62,8 +63,6 @@ class SimulationService:
 
         except Exception as e:
             # Utiliser logger.debug en CI pour éviter bruit dans tests
-            import os
-
             is_ci = os.environ.get("CI", "false").lower() == "true"
             if is_ci:
                 logger.debug("Erreur lors du démarrage de la simulation: %s", e)
@@ -181,8 +180,6 @@ class SimulationService:
         except Exception as e:
             # Utiliser error au lieu de exception pour éviter traces complètes dans tests
             # (logger.exception() affiche toujours la trace complète)
-            import os
-
             if os.environ.get("CI", "false").lower() == "true":
                 # En CI/tests, utiliser debug pour réduire le bruit
                 logger.debug("Erreur lors de la récupération de l'état: %s", e)
