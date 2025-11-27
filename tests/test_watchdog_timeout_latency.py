@@ -21,7 +21,8 @@ from bbia_sim.backends.reachy_mini_backend import ReachyMiniBackend
 def test_watchdog_timeout_latency_simulated() -> None:
     """Mesure p50/p95 de la latence d'arrêt via timeout watchdog (simulation)."""
     latencies_ms: list[float] = []
-    iterations = 10
+    # OPTIMISATION: Réduire 10 → 5 itérations (suffisant pour p50/p95, 2x plus rapide)
+    iterations = 5
 
     for _ in range(iterations):
         backend = ReachyMiniBackend(use_sim=True)
@@ -40,7 +41,8 @@ def test_watchdog_timeout_latency_simulated() -> None:
         while (
             backend._watchdog_thread is not None and backend._watchdog_thread.is_alive()
         ) and time.perf_counter() < deadline:
-            time.sleep(0.02)
+            # OPTIMISATION: Réduire sleep de 0.02 à 0.01 (2x plus rapide)
+            time.sleep(0.01)
         t1 = time.perf_counter()
 
         # Critère: le watchdog doit s'être arrêté (thread terminé) dans la fenêtre

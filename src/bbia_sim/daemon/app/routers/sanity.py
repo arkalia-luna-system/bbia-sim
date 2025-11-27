@@ -6,8 +6,8 @@ from typing import Any
 
 from fastapi import APIRouter
 
-from ....backends.reachy_mini_backend import ReachyMiniBackend
-from ...simulation_service import simulation_service
+from bbia_sim.backends.reachy_mini_backend import ReachyMiniBackend
+from bbia_sim.daemon.simulation_service import simulation_service
 
 router = APIRouter(prefix="/api/sanity", tags=["sanity"])
 

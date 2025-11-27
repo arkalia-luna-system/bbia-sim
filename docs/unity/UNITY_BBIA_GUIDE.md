@@ -1,6 +1,6 @@
 # 🎮 Guide Unity + BBIA - Reachy Mini Wireless
 
-**Date** : Oct / Nov. 2025
+**Date** : 21 Novembre 2025
 
 ## Configuration vérifiée
 
@@ -189,7 +189,7 @@ python3 src/bbia_sim/test_unity_connection.py
 
 - [Guide complet Reachy](../guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md)
 - [Résumé projet](../reference/summaries/final-summary.md)
-- [Démarrage rapide](../guides/GUIDE_DEBUTANT.md)
+- [Guide de Démarrage](../guides/GUIDE_DEMARRAGE.md)
 
 ### Liens officiels
 

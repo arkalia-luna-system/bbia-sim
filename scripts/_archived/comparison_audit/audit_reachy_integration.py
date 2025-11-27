@@ -360,8 +360,8 @@ def generate_synthesis_md(results: list[dict]) -> None:
 ## 📊 RÉSUMÉ GLOBAL
 
 {len(results)} modules audités:
-- 🔴 **Critiques**: {len([r for r in results if r['module'] in [m['name'] for m in CRITICAL_MODULES]])}
-- 🟡 **Moyens**: {len([r for r in results if r['module'] in [m['name'] for m in MEDIUM_MODULES]])}
+- 🔴 **Critiques**: {len([r for r in results if r["module"] in [m["name"] for m in CRITICAL_MODULES]])}
+- 🟡 **Moyens**: {len([r for r in results if r["module"] in [m["name"] for m in MEDIUM_MODULES]])}
 
 ---
 
@@ -384,18 +384,18 @@ def generate_synthesis_md(results: list[dict]) -> None:
             1 for i in result["issues"] if i.get("severity") == "medium"
         )
         content += f"""
-### {idx}. {result['module']}
+### {idx}. {result["module"]}
 
-**Score**: Conformité {result['score']['conformity']}/10 | Sécurité {result['score']['safety_tests']}/10 | Performance {result['score']['performance']}/10 | Docs {result['score']['docs']}/10
+**Score**: Conformité {result["score"]["conformity"]}/10 | Sécurité {result["score"]["safety_tests"]}/10 | Performance {result["score"]["performance"]}/10 | Docs {result["score"]["docs"]}/10
 
 **Issues**: 🔴 {issues_high} high | 🟡 {issues_medium} medium
 
 **Estimation**: {max(2, issues_high * 2 + issues_medium)} heures
 
-**Recommandation**: {result['recommendation']}
+**Recommandation**: {result["recommendation"]}
 
 **Fichiers audités**:
-{chr(10).join(f"- `{f}`" for f in result['files_checked'])}
+{chr(10).join(f"- `{f}`" for f in result["files_checked"])}
 
 """
 

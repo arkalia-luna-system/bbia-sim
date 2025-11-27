@@ -1,6 +1,6 @@
 # AUDIT 3D BBIA - Reachy Mini MuJoCo
 
-**Date** : Oct / Nov. 2025
+**Date** : 21 Novembre 2025
 **Version** : 1.0
 **Statut** : ✅ COMPLET ET FONCTIONNEL
 
@@ -139,8 +139,8 @@ source venv/bin/activate
 
 # Vérifier les dépendances
 
-python -c "import mujoco; print('MuJoCo:', mujoco.__version__)"
-python -c "import glfw; print('GLFW:', glfw.__version__)"
+python -c "import mujoco; import logging; logging.info('MuJoCo:', mujoco.__version__)"
+python -c "import glfw; import logging; logging.info('GLFW:', glfw.__version__)"
 
 ```text
 

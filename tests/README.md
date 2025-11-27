@@ -7,18 +7,18 @@
 ### 📊 **Statistiques de Couverture ACTUELLES**
 
 - **Coverage total** : **68.86%** (excellent)
-- **1210 tests collectés** (pytest --collect-only)
+- **1,743 tests collectés** (1,805 total, 62 deselected) — [✅ Vérifié 26 Novembre 2025](../docs/quality/audits/VERIFICATION_ANALYSE_COMPLETE_26NOV2025.md)
 - **Tests passent** : Voir résultats pytest récents
 - **Tests skippés** : Tests conditionnels (hardware, CI)
 - **Golden Tests** : 3 traces référence + validation
 
 ### 📊 **Détail par Module**
 
-- **bbia_audio.py** : **87.76%** ✅
+- **bbia_audio.py** : **98.47%** ✅ (amélioré Janvier 2025)
 - **bbia_behavior.py** : **72.50%** ✅
 - **bbia_emotions.py** : **81.71%** ✅
 - **bbia_vision.py** : **88.52%** ✅
-- **bbia_voice.py** : **61.96%** ✅
+- **bbia_voice.py** : **~65-70%** ✅ (amélioré Janvier 2025)
 - **daemon/config.py** : **100%** ✅
 - **daemon/models.py** : **95.35%** ✅
 - **daemon/middleware.py** : **91.30%** ✅
@@ -46,6 +46,10 @@
 ### 🚀 **Lancer les Tests**
 
 ```bash
+# Tests avec visibilité maximale (recommandé pour debug)
+# Affiche la progression en temps réel et identifie les tests lents
+./scripts/test_verbose.sh
+
 # Tests complets avec coverage (recommandé)
 python -m pytest tests/ --cov=src --cov-report=term-missing --cov-report=html
 
@@ -71,6 +75,27 @@ python -m pytest tests/test_robot_api_limits.py -v
 # Tests Vertical Slices
 python -m pytest tests/test_vertical_slices.py -v
 ```
+
+### 🔍 **Tests avec Visibilité Maximale**
+
+Pour identifier les tests lents et voir la progression en temps réel :
+
+```bash
+# Script dédié avec toutes les options de visibilité
+./scripts/test_verbose.sh
+
+# Voir tous les tests sauf e2e
+./scripts/test_verbose.sh "not e2e"
+
+# Voir seulement les tests rapides
+./scripts/test_verbose.sh "fast"
+```
+
+Le script affiche :
+- ✅ Chaque test en temps réel (`-vv`)
+- ✅ Les 30 tests les plus lents à la fin (`--durations=30`)
+- ✅ Variables locales en cas d'erreur (`--showlocals`)
+- ✅ Logs INFO en temps réel (`--log-cli-level=INFO`)
 
 ### 🧪 **Tests Spécialisés**
 
@@ -130,7 +155,7 @@ tests/
 
 ### 🤖 **Tests Backend Reachy Mini**
 
-**📊 Statistiques (Oct / No2025025025025025)**:
+**📊 Statistiques (21 Novembre 2025)**:
 
 - ✅ **118 tests** répartis dans **8 fichiers complémentaires**
 - ✅ **116 tests uniques** (98.3% - très peu de redondance)
@@ -399,10 +424,10 @@ pytest --cov=src/bbia_sim --cov-report=term-missing
 **BBIA-SIM** - Tests et Qualité 🧪✨
 
 **Version** : 2.0  
-**Date** : Décembre 2025  
-**Tests** : ✅ **1245+ tests collectés** (pytest --collect-only)  
+**Date** : 26 Novembre 2025  
+**Tests** : ✅ **1,362 tests collectés** (1,804 fonctions de test identifiées, CI GitHub Actions)  
 **Couverture** : ✅ **68.86%** (excellent)  
 **Couverture modules critiques** : ✅ **99.45%** vision_yolo, **92.52%** voice_whisper, **76.71%** dashboard_advanced  
 **Qualité** : ✅ Black/Ruff/MyPy compliant
 
-**Dernière mise à jour** : Décembre 2025 - Coverage modules critiques amélioré, auth WebSocket ajoutée
+**Dernière mise à jour** : 26 Novembre 2025 - Coverage modules critiques amélioré, auth WebSocket ajoutée

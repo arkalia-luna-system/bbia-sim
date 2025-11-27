@@ -33,7 +33,7 @@ source venv/bin/activate
 pip install TTS playsound
 
 # Vérifier installation
-python -c "from TTS.api import TTS; print('✅ Coqui TTS installé')"
+python -c "from TTS.api import TTS; import logging; logging.info('✅ Coqui TTS installé')"
 
 ```
 
@@ -219,7 +219,7 @@ python -m bbia_sim.bbia_voice_advanced
 from TTS.api import TTS
 
 # Lister tous les modèles disponibles
-print(TTS.list_models())
+logging.info(TTS.list_models())
 
 ```
 
@@ -281,15 +281,15 @@ def main():
 
     # Vérifier disponibilité
     if not voice.is_coqui_available():
-        print("⚠️  Coqui TTS non disponible, utilisation fallback")
+        logging.warning("⚠️  Coqui TTS non disponible, utilisation fallback")
         return
 
-    print("✅ Coqui TTS disponible")
+    logging.info("✅ Coqui TTS disponible")
 
     # Test émotions
     emotions = ["happy", "sad", "excited", "calm"]
     for emotion in emotions:
-        print(f"\n🎭 Test émotion: {emotion}")
+        logging.info(f"\n🎭 Test émotion: {emotion}")
         voice.say_with_emotion(
             f"Je ressens l'émotion {emotion}",
             emotion=emotion,
@@ -297,15 +297,15 @@ def main():
         )
 
     # Test contrôle pitch
-    print("\n🎵 Test contrôle pitch:")
+    logging.info("\n🎵 Test contrôle pitch:")
     for pitch in [-0.3, 0.0, 0.3]:
-        print(f"  Pitch: {pitch}")
+        logging.info(f"  Pitch: {pitch}")
         voice.say(
             f"Voix avec pitch {pitch}",
             pitch=pitch
         )
 
-    print("\n✅ Tests terminés !")
+    logging.info("\n✅ Tests terminés !")
 
 if __name__ == "__main__":
     main()

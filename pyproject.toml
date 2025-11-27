@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "bbia-sim"
-version = "1.3.2"
+version = "1.4.0"
 description = "BBIA - Moteur cognitif Python pour robot Reachy Mini Wireless avec Backend Unifié RobotAPI + IA Légère (Whisper + YOLOv8n + MediaPipe) + SDK Officiel Reachy-Mini"
 readme = "README.md"
 license = "MIT"
@@ -68,6 +68,11 @@ dependencies = [
     "matplotlib>=3.7.0",
     # NLP amélioré (optionnel, chargé à la demande)
     "sentence-transformers>=2.2.0",
+    # LLM Conversationnel (Phi-2, TinyLlama)
+    "accelerate>=0.20.0",
+    "sentencepiece>=0.1.99",
+    # bitsandbytes optionnel (quantification 8-bit, peut être installé séparément)
+    # "bitsandbytes>=0.41.0",  # Décommenter si quantification 8-bit souhaitée
 ]
 
 [project.optional-dependencies]
@@ -139,35 +144,41 @@ minversion = "6.0"
 # OPTIMISATION RAM: Par défaut, exclure tests lents/lourds/hardware sauf si demandé explicitement
 addopts = [
     "-m", "not e2e and not slow and not heavy and not hardware",  # Skip e2e + webcam/hardware
-    "--verbose",
+    "-vv",  # Double verbose pour voir chaque test en temps réel
     "--tb=short",
     "-ra",
     "--strict-markers",
     "--disable-warnings",
     "--import-mode=importlib",
-    # Ne pas arrêter tôt pour que la couverture reflète toute la suite
-    "--maxfail=0",
-    "--durations=10",
+    # Arrêter après 50 échecs pour éviter les boucles infinies
+    "--maxfail=50",
+    "--durations=20",  # Afficher les 20 tests les plus lents pour identifier les goulots d'étranglement
+    "--showlocals",  # Afficher les variables locales en cas d'erreur pour faciliter le debug
     # Couverture standardisée (même chemin que [tool.coverage.run].source)
     "--cov=src/bbia_sim",
     "--cov-report=term-missing",
     "--cov-report=xml:coverage.xml",
     "--cov-report=html:htmlcov",
-    "--cov-append",
+    # "--cov-append",  # DÉSACTIVÉ : peut causer des problèmes de terminaison pytest
     "--cov-fail-under=0",
-    # Timeout global pour éviter les tests qui bouclent (300s = 5 minutes)
-    "--timeout=300",
-    "--timeout-method=thread",
+    # Timeout global pour éviter les tests qui bouclent (30s = suffisant pour tests optimisés, 2x plus rapide)
+    # La méthode 'signal' est plus fiable mais nécessite SIGALRM (disponible sur Linux/macOS)
+    # La méthode 'thread' fonctionne partout mais peut être moins efficace
+        "--timeout=60",  # Augmenté pour tests lents (chargement modèles HF)
+    "--timeout-method=signal",  # Utiliser signal sur macOS/Linux (plus fiable que thread)
 ]
 
 env = [
     "MUJOCO_GL=disable",
     "DISPLAY=",
     "BBIA_DISABLE_AUDIO=1",
+    "BBIA_FORCE_MOCK_MODELS=1",
+    "BBIA_DISABLE_VISION_MODELS=1",
 ]
 
 # Marqueurs pour tests légers/lourds (fusionné)
 markers = [
+    "benchmark: marks tests as benchmarks (deselect with '-m \"not benchmark\"')",
     "slow: marque les tests lents (peuvent charger modèles lourds) / marks tests as slow (deselect with '-m \"not slow\"')",
     "fast: marque les tests rapides (utilisent mocks uniquement) / marks tests as fast (deselect with '-m \"not fast\"')",
     "model: marque les tests qui chargent de vrais modèles (YOLO, Whisper, HuggingFace)",
@@ -213,7 +224,8 @@ extend-exclude = '''
   | lib/python.*/site-packages
 )/
 '''
-preview = true
+# Mode preview désactivé pour compatibilité CI/CD
+preview = false
 
 [tool.ruff]
 target-version = "py311"
@@ -251,6 +263,37 @@ ignore = [
     "E501",  # line too long, handled by black
     "B008",  # do not perform function calls in argument defaults
     "C901",  # too complex
+    # Docstring style rules (suggestions de style, non critiques)
+    "D102",  # Missing docstring in public method
+    "D103",  # Missing docstring in public function
+    "D107",  # Missing docstring in __init__
+    "D205",  # 1 blank line required between summary line and description
+    "D212",  # Multi-line docstring summary should start at the first line
+    "D213",  # Multi-line docstring summary should start at the second line
+    "D400",  # First line should end with a period
+    "D401",  # First line should be in imperative mood
+    "D413",  # Missing blank line after last section
+    "D415",  # First line should end with a period, question mark, or exclamation point
+    # Import style rules (lazy loading parfois nécessaire)
+    "PLC0415",  # import should be at the top-level of a file
+    "TID252",  # Prefer absolute imports over relative imports
+    # Try/except style suggestions
+    "TRY300",  # Consider moving this statement to an else block
+    "TRY401",  # Redundant exception object included in logging.exception call
+    # Complexity rules (déjà C901 ignoré)
+    "PLR0911",  # Too many return statements
+    "PLR0912",  # Too many branches
+    "PLR0915",  # Too many statements
+    # Function arguments style
+    "FBT001",  # Boolean-typed positional argument in function definition
+    "FBT002",  # Boolean default positional argument in function definition
+    # Code style
+    "ERA001",  # Found commented-out code (commentaires explicatifs utiles)
+    "PGH003",  # Use specific rule codes when ignoring type issues
+    # ANN401 retiré : principales occurrences corrigées (typing.Any → types précis)
+    # SLF001 retiré : principales occurrences corrigées (getattr avec noqa pour cas nécessaires)
+    # S603 retiré : code sécurisé avec validation et noqa pour cas nécessaires
+    # PTH110 retiré : toutes les occurrences corrigées (os.path.exists() → Path.exists())
 ]
 
 [tool.ruff.lint.isort]
@@ -345,11 +388,13 @@ omit = [
     "*/htmlcov/*",
     "*/site-packages/*",
     "*/lib/python*/site-packages/*",
+    "*/__main__.py",  # Exclure les fichiers __main__
 ]
 branch = true
 relative_files = true
 data_file = ".coverage"
-parallel = true
+parallel = false  # DÉSACTIVÉ : peut causer des problèmes de terminaison pytest
+concurrency = ["thread"]  # Support threading pour éviter les conflits
 
 [tool.coverage.report]
 exclude_lines = [

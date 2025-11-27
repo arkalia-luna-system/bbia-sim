@@ -1,6 +1,6 @@
 # ❓ FAQ Troubleshooting - Guide Complet
 
-**Date** : Oct / Nov. 2025  
+**Date** : 26 Novembre 2025  
 **Compatibilité Python** : 3.11+
 
 > **Voir aussi** : [`docs/reference/INDEX_THEMATIQUE.md`](../reference/INDEX_THEMATIQUE.md) et [`docs/reference/project-status.md`](../reference/project-status.md) (État par axe)
@@ -8,14 +8,14 @@
 **📚 [FAQ principale](../getting-started/troubleshooting.md)** | **🔧 [Guide avancé](../guides/GUIDE_AVANCE.md)** | **🧪 [Guide tests](testing.md)**
 
 > **💡 Ce guide est complémentaire à la [FAQ principale](../getting-started/troubleshooting.md)**  
-> - **FAQ principale** : Questions fréquentes pour débutants (installation, MuJoCo, audio basique)  
+> - **FAQ principale** : Questions fréquentes générales (installation, MuJoCo, audio basique)  
 > - **Ce guide** : Problèmes techniques avancés (IA, modules, CI, WebSocket, etc.)
 
 ---
 
 ## 🎯 Guide de Dépannage Rapide
 
-```mermaid
+```mermaid 📊
 flowchart TD
     START{Problème?} --> IA[Modules IA]
     START --> AUDIO[Audio]
@@ -264,6 +264,46 @@ pytest tests/test_backend_budget_cpu_ram.py -v
 - Erreur device: désactiver en CI `BBIA_DISABLE_AUDIO=1`
 - Sample rate: viser 16kHz; ajuster drivers si mismatch
 
+### reSpeaker Troubleshooting (Issue #389)
+
+**Problème** : Erreur USB EHCI controller avec reSpeaker
+
+**Symptômes** :
+- `No output device containing 'respeaker' found`
+- Erreur USB lors de l'initialisation
+- Audio ne fonctionne pas avec reSpeaker
+
+**Solutions** :
+
+1. **Gestion gracieuse automatique** :
+   - BBIA détecte automatiquement si reSpeaker est absent
+   - Fallback automatique vers périphérique par défaut
+   - Pas d'erreur bloquante
+
+2. **Désactiver audio si problème** :
+   ```bash
+   export BBIA_DISABLE_AUDIO=1
+   ```
+
+3. **Workaround USB EHCI** :
+   - Vérifier contrôleur USB : `lsusb` (Linux)
+   - Utiliser port USB 2.0 au lieu de USB 3.0
+   - Vérifier drivers USB : `dmesg | grep usb`
+
+4. **macOS spécifique** :
+   - Vérifier permissions audio : Réglages Système > Confidentialité > Micro
+   - Réinitialiser permissions : `tccutil reset Microphone`
+
+**Code existant** :
+```python
+# src/bbia_sim/bbia_audio.py
+if os.environ.get("BBIA_DISABLE_AUDIO", "0") == "1":
+    logger.debug("Audio désactivé (BBIA_DISABLE_AUDIO=1)")
+    return None
+```
+
+**Documentation** : Voir `docs/installation/RESPEAKER_SETUP.md` pour guide complet
+
 ---
 
 ## 🟣 WebSockets & Réseau
@@ -279,7 +319,7 @@ ROBOT_TIMEOUT = 5.0  # Secondes
 
 ### Authentification WebSocket
 
-**Nouvelle fonctionnalité** (Oct / Nov. 2025) : Auth WebSocket via query params
+**Nouvelle fonctionnalité** (26 Novembre 2025) : Auth WebSocket via query params
 
 **En production** :
 
@@ -305,7 +345,7 @@ BBIA_API_TOKEN=your-secret-token
 
 ### Buffer Circulaire Camera Frames
 
-**Nouvelle fonctionnalité** (Oct / Nov. 2025) : Buffer circulaire pour éviter perte de frames
+**Nouvelle fonctionnalité** (26 Novembre 2025) : Buffer circulaire pour éviter perte de frames
 
 **Problème résolu** : "Circular buffer overrun" dans SDK officiel
 
@@ -326,7 +366,7 @@ latest_frame = vision.get_latest_frame()  # Récupère frame la plus récente
 
 ### Endpoint Discover Datasets
 
-**Nouvelle fonctionnalité** (Oct / Nov. 2025) : Découverte des datasets Hugging Face Hub
+**Nouvelle fonctionnalité** (26 Novembre 2025) : Découverte des datasets Hugging Face Hub
 
 **Utilisation** :
 
@@ -339,7 +379,7 @@ curl http://localhost:8000/development/api/move/recorded-move-datasets/discover
 
 ### Métriques Performance et Health Checks
 
-**Nouveaux endpoints** (Oct / Nov. 2025) :
+**Nouveaux endpoints** (26 Novembre 2025) :
 
 #### Health Checks
 
@@ -375,9 +415,10 @@ curl http://localhost:8000/metrics/prometheus
 #### Diagnostic Environnement
 
 ```bash
-# Diagnostic complet de l'environnement BBIA-SIM
+# Diagnostic complet de l'environnement BBIA-SIM (inclut Zenoh, daemon, WiFi)
 python -m bbia_sim --doctor
-
+# ou
+python scripts/bbia_doctor.py
 ```
 
 **Vérifie** :
@@ -387,6 +428,9 @@ python -m bbia_sim --doctor
 - ✅ MuJoCo disponible
 - ✅ SoundDevice disponible
 - ✅ OpenCV disponible
+- ✅ **Zenoh** (installation + session locale) - Préparation robot
+- ✅ **Daemon** `reachy-mini-daemon` - Préparation robot
+- ✅ **Réseau** (IP locale + ports 8000, 7447) - Préparation WiFi
 - ✅ Network connectivity
 - ✅ File permissions
 
@@ -407,7 +451,7 @@ python -m bbia_sim --doctor
 
 ---
 
-**Dernière mise à jour** : Oct / Nov. 2025
+**Dernière mise à jour** : 26 Novembre 2025
 
 ---
 

@@ -1,6 +1,6 @@
 # Simulation BBIA complète - tous les modes
 
-**Date** : Oct / Nov. 2025
+**Date** : 26 Novembre 2025
 
 > Compatibilité Python et CI
 >
@@ -155,12 +155,13 @@ cd reachy_repos/reachy-dashboard
 ```bash
 python3 -c "
 import pollen_vision
-print('pollen-vision disponible')
-print('Fonctionnalités :')
-print('  • Reconnaissance d\'objets')
-print('  • Détection de visages')
-print('  • Analyse d\'expressions')
-print('  • Suivi de mouvements')
+import logging
+logging.info('pollen-vision disponible')
+logging.info('Fonctionnalités :')
+logging.info('  • Reconnaissance d\'objets')
+logging.info('  • Détection de visages')
+logging.info('  • Analyse d\'expressions')
+logging.info('  • Suivi de mouvements')
 "
 
 ```
@@ -240,7 +241,7 @@ cd reachy_repos/reachy-dashboard
 
 ```bash
 # 1. Tester pollen-vision
-python3 -c "import pollen_vision; print('Vision OK')"
+python3 -c "import pollen_vision; import logging; logging.info('Vision OK')"
 
 # 2. Explorer les tutoriels
 cd reachy_repos/reachy2-tutorials
@@ -262,7 +263,7 @@ ls -la
 🤖============================================================🤖
 🌟 BBIA - Brain-Based Interactive Agent
 🤖 Robot: Reachy Mini Wireless
-📅 Date: Oct / Nov. 2025
+📅 Date: 26 Novembre 2025
 💻 Système: darwin
 🤖============================================================🤖
 
@@ -399,7 +400,7 @@ pip list | grep -i reachy
 pip list | grep -i pollen
 
 # Tester pollen-vision
-python3 -c "import pollen_vision; print('✅ Vision OK')"
+python3 -c "import pollen_vision; import logging; logging.info('✅ Vision OK')"
 
 ```
 

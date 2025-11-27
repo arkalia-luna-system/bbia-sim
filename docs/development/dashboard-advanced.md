@@ -1,6 +1,6 @@
 # 📊 Guide Dashboard Advanced - BBIA-SIM
 
-**Date** : Oct / Nov. 2025  
+**Date** : 21 Novembre 2025  
 **Version** : 1.0  
 **Compatibilité Python** : 3.11+
 
@@ -18,7 +18,36 @@ Le `dashboard_advanced.py` est un dashboard amélioré qui offre :
 - ✅ **Métriques audio** (latence, buffer, underruns)
 - ✅ **Contrôle robot** (emotions, mouvements)
 - ✅ **Chat interactif** avec IA
+- ✅ **Panneau troubleshooting interactif** (détection automatique + tests)
 - ✅ **Interface Web** moderne avec FastAPI
+
+**Note** : Le dashboard principal (`src/bbia_sim/daemon/app/dashboard/`) inclut maintenant aussi :
+- ✅ **Graphiques temps réel** avec Chart.js (`sections/telemetry_charts.html`) (24 Nov 2025)
+- ✅ **Sliders émotions avec intensité** (`sections/emotions.html`) (24 Nov 2025)
+- ✅ **Mode démo read-only** (`sections/demo_mode.html`) (24 Nov 2025)
+- ✅ **Presets exportables** (API `/api/presets` via `routers/presets.py`) (24 Nov 2025)
+- ✅ **PWA support** avec manifest + service worker (`static/manifest.json`, `static/sw.js`, icônes) (24 Nov 2025)
+
+### Fichiers Créés Dashboard Principal (24 Nov 2025)
+- ✅ `templates/sections/telemetry_charts.html` - Graphiques Chart.js
+- ✅ `templates/sections/demo_mode.html` - Mode démo read-only
+- ✅ `templates/sections/emotions.html` - Sliders émotions
+- ✅ `static/manifest.json` - Manifest PWA
+- ✅ `static/sw.js` - Service Worker
+- ✅ `static/images/icon-192.png` - Icône PWA 192x192
+- ✅ `static/images/icon-512.png` - Icône PWA 512x512
+- ✅ `routers/presets.py` - API presets
+
+### 📸 Captures d'écran
+
+Des captures d'écran du dashboard sont disponibles dans `assets/images/` :
+
+- `Capture d'écran 2025-11-13 à 14.14.20.png` - Vue initiale avec sliders joints
+- `Capture d'écran 2025-11-13 à 14.14.27.png` - Vue complète avec indicateurs de statut
+- `Capture d'écran 2025-11-13 à 14.14.51.png` - Métriques détaillées et graphiques
+- `Capture d'écran 2025-11-13 à 14.14.59.png` - Vue complète avec tous les panneaux
+
+**Voir** : [`assets/MEDIAS_INVENTAIRE.md`](../../assets/MEDIAS_INVENTAIRE.md) pour l'inventaire complet.
 
 ---
 
@@ -46,7 +75,7 @@ python src/bbia_sim/dashboard_advanced.py
 
 ```
 
-Le dashboard sera accessible sur : **http://localhost:8080**
+Le dashboard sera accessible sur : <http://localhost:8080>
 
 ---
 
@@ -217,7 +246,7 @@ BBIA_LOG_LEVEL=INFO
 
 ## 🎨 Interface Web
 
-**Interface moderne** accessible sur `http://localhost:8080` :
+**Interface moderne** accessible sur <http://localhost:8080> :
 
 - **Dashboard principal** : Vue d'ensemble métriques
 - **Contrôle robot** : Panel commandes (emotions, mouvements)
@@ -253,13 +282,51 @@ BBIA_LOG_LEVEL=INFO
 
 ## 🐛 Dépannage
 
+### Panneau Troubleshooting Interactif
+
+**Nouveau** : Le dashboard inclut maintenant un panneau troubleshooting interactif !
+
+**Utilisation** :
+
+1. Ouvrir le dashboard : <http://localhost:8080>
+2. Descendre jusqu'au panneau "🔧 Troubleshooting"
+3. Cliquer sur "🔍 Vérifier Tout" pour un diagnostic complet
+4. Utiliser les boutons "Test" pour vérifier individuellement :
+   - 📷 Test Caméra
+   - 🔊 Test Audio
+   - 🌐 Test Réseau
+
+**Fonctionnalités** :
+
+- ✅ Détection automatique de problèmes (Python, dépendances, caméra, audio, réseau, MuJoCo, ports, permissions)
+- ✅ Score global de santé système
+- ✅ Solutions suggérées pour chaque problème
+- ✅ Liens automatiques vers documentation
+- ✅ Tests interactifs par composant
+
+**API Endpoints** :
+
+```bash
+# Vérification complète
+curl <http://localhost:8080/api/troubleshooting/check>
+
+# Tests individuels
+curl -X POST <http://localhost:8080/api/troubleshooting/test/camera>
+curl -X POST <http://localhost:8080/api/troubleshooting/test/audio>
+curl -X POST <http://localhost:8080/api/troubleshooting/test/network>
+
+# Documentation
+curl <http://localhost:8080/api/troubleshooting/docs>
+```
+
 ### WebSocket ne se connecte pas
 
 **Vérifier** :
 
-1. Port 8080 disponible
-2. Firewall ne bloque pas
-3. Logs serveur pour erreurs
+1. Utiliser le panneau troubleshooting (voir ci-dessus)
+2. Port 8080 disponible
+3. Firewall ne bloque pas
+4. Logs serveur pour erreurs
 
 ```bash
 # Vérifier port
@@ -274,9 +341,10 @@ python -m bbia_sim.dashboard_advanced
 
 **Vérifier** :
 
-1. Robot connecté (`backend.connect()`)
-2. WebSocket connecté
-3. Métriques activées dans code
+1. Utiliser le panneau troubleshooting pour diagnostic
+2. Robot connecté (`backend.connect()`)
+3. WebSocket connecté
+4. Métriques activées dans code
 
 ### Chat IA ne répond pas
 
@@ -300,16 +368,16 @@ python -m bbia_sim.dashboard_advanced
 **BBIA-SIM** - Dashboard Advanced 📊✨
 
 **Version** : 1.0  
-**Date** : Oct / Nov. 2025  
+**Date** : 21 Novembre 2025  
 **Coverage** : **76.71%** ✅ (47 tests)
 
 ---
 
-**Dernière mise à jour** : Oct / Nov. 2025
+**Dernière mise à jour** : 21 Novembre 2025
 
 ---
 
 ## 🎯 Navigation
 
 **Retour à** : [README Documentation](../README.md)  
-**Voir aussi** : [Guide Débutant](../guides/GUIDE_DEBUTANT.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)
+**Voir aussi** : [Guide de Démarrage](../guides/GUIDE_DEMARRAGE.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)

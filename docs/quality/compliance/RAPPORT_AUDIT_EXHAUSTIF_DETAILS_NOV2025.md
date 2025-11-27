@@ -1,6 +1,6 @@
-# Rapport d'Audit Exhaustif - Détails Subtils Oct / Nov. 2025
+# Rapport d'Audit Exhaustif - Détails Subtils 21 Novembre 2025
 
-**Date**: Oct / Nov. 2025
+**Date**: 21 Novembre 2025
 **Objectif**: Vérifier et corriger tous les détails subtils entre BBIA-SIM et SDK Reachy Mini officiel
 
 ---
@@ -343,7 +343,7 @@ self.ik_required = False
 
 1. `docs/quality/compliance/CORRECTIONS_BACKEND_ADAPTER.md`
 2. `docs/quality/compliance/CORRECTIONS_ROUTERS_PREFIXES.md`
-3. `docs/quality/compliance/RAPPORT_AUDIT_EXHAUSTIF_DETAILS_NOV2025.md` (ce document)
+3. `docs/quality/compliance/RAPPORT_AUDIT_EXHAUSTIF_DETAILS_26NOV2025.md` (ce document)
 4. `scripts/audit_methodes_backend.py`
 
 ---
@@ -367,5 +367,5 @@ self.ik_required = False
 
 ---
 
-**Date de finalisation**: Oct / Nov. 2025
+**Date de finalisation**: 21 Novembre 2025
 **Statut**: ✅ **CONFORME**

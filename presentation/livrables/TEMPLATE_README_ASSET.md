@@ -123,7 +123,7 @@
 
 **CSS** :
 
-```css
+```css 🎨
 .bbia-logo {
     max-width: 200px;
     height: auto;

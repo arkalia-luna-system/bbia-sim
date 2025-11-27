@@ -4,26 +4,26 @@ import asyncio
 import logging
 import os
 from datetime import datetime, timezone
-from typing import Any, cast
+from typing import Annotated, Any, cast
 
 from fastapi import APIRouter, Depends, WebSocket, WebSocketDisconnect
 from pydantic import BaseModel
 
-from ....robot_factory import RobotFactory
-from ...models import FullState, as_any_pose
-from ...simulation_service import simulation_service
-from ..backend_adapter import (
+from bbia_sim.daemon.app.backend_adapter import (
     BackendAdapter,
     get_backend_adapter,
     ws_get_backend_adapter,
 )
+from bbia_sim.daemon.models import FullState, as_any_pose
+from bbia_sim.daemon.simulation_service import simulation_service
+from bbia_sim.robot_factory import RobotFactory
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/state")
 
 
-class RobotState(BaseModel):  # type: ignore[misc]
+class RobotState(BaseModel):
     """Modèle pour l'état du robot."""
 
     position: dict[str, float]
@@ -52,9 +52,16 @@ def _read_sdk_telemetry() -> dict[str, Any] | None:
 
         try:
             timeout = float(os.environ.get("BBIA_TELEMETRY_TIMEOUT", "1.0") or 1.0)
+        except (ValueError, TypeError) as e:
+            logger.debug(
+                "Erreur lors de la lecture de BBIA_TELEMETRY_TIMEOUT, utilisation valeur par défaut: %s",
+                e,
+            )
+            timeout = 1.0
         except Exception as e:
             logger.debug(
-                f"Erreur lors de la lecture de BBIA_TELEMETRY_TIMEOUT, utilisation valeur par défaut: {e}"
+                "Erreur inattendue lecture BBIA_TELEMETRY_TIMEOUT: %s",
+                e,
             )
             timeout = 1.0
 
@@ -70,9 +77,13 @@ def _read_sdk_telemetry() -> dict[str, Any] | None:
 
         try:
             backend.connect()
+        except (ConnectionError, TimeoutError, RuntimeError, AttributeError) as e:
+            # Ne pas bloquer si la connexion échoue
+            logger.debug("Échec de la connexion au backend pour télémetrie: %s", e)
+            return None
         except Exception as e:
             # Ne pas bloquer si la connexion échoue
-            logger.debug(f"Échec de la connexion au backend pour télémetrie: {e}")
+            logger.debug("Erreur inattendue connexion backend télémetrie: %s", e)
             return None
 
         try:
@@ -99,7 +110,8 @@ def _read_sdk_telemetry() -> dict[str, Any] | None:
                     battery_level = float(media_mgr.get_battery_level())
                 except Exception as e:
                     logger.debug(
-                        f"Erreur lors de la lecture du niveau de batterie (get_battery_level): {e}"
+                        "Erreur lors de la lecture du niveau de batterie (get_battery_level): %s",
+                        e,
                     )
                     battery_level = None
             elif hasattr(media_mgr, "battery"):
@@ -107,7 +119,8 @@ def _read_sdk_telemetry() -> dict[str, Any] | None:
                     battery_level = float(media_mgr.battery)
                 except Exception as e:
                     logger.debug(
-                        f"Erreur lors de la lecture du niveau de batterie (battery): {e}"
+                        "Erreur lors de la lecture du niveau de batterie (battery): %s",
+                        e,
                     )
                     battery_level = None
 
@@ -120,7 +133,7 @@ def _read_sdk_telemetry() -> dict[str, Any] | None:
                 try:
                     temperature = float(media_mgr.get_temperature())
                 except Exception as e:
-                    logger.debug(f"Erreur lors de la lecture de la température: {e}")
+                    logger.debug("Erreur lors de la lecture de la température: %s", e)
                     temperature = None
             if temperature is not None:
                 data["temperature"] = temperature
@@ -133,7 +146,7 @@ def _read_sdk_telemetry() -> dict[str, Any] | None:
                     if hasattr(io_mgr, "get_imu"):
                         imu = io_mgr.get_imu()  # doit renvoyer dict-like
                 except Exception as e:
-                    logger.debug(f"Erreur lors de la lecture de l'IMU: {e}")
+                    logger.debug("Erreur lors de la lecture de l'IMU: %s", e)
                     imu = None
             if imu and isinstance(imu, dict):
                 data["imu"] = imu
@@ -144,13 +157,14 @@ def _read_sdk_telemetry() -> dict[str, Any] | None:
                 backend.disconnect()
             except Exception as disconnect_error:
                 logger.debug(
-                    f"Erreur lors de la déconnexion du backend: {disconnect_error}"
+                    "Erreur lors de la déconnexion du backend: %s",
+                    disconnect_error,
                 )
-    except Exception:
+    except (RuntimeError, AttributeError, TypeError):
         return None
 
 
-class BatteryInfo(BaseModel):  # type: ignore[misc]
+class BatteryInfo(BaseModel):
     """Modèle pour les informations de batterie."""
 
     level: float
@@ -159,7 +173,7 @@ class BatteryInfo(BaseModel):  # type: ignore[misc]
     estimated_time: str
 
 
-@router.get("/full")  # type: ignore[misc]
+@router.get("/full")
 async def get_full_state(
     with_control_mode: bool = True,
     with_head_pose: bool = True,
@@ -207,8 +221,9 @@ async def get_full_state(
     if with_target_head_pose:
         target_pose = backend.target_head_pose
         if target_pose is None:
+            msg = "target_head_pose is None but with_target_head_pose is True"
             raise ValueError(
-                "target_head_pose is None but with_target_head_pose is True"
+                msg,
             )
         result["target_head_pose"] = as_any_pose(target_pose, use_pose_matrix)
     if with_head_joints:
@@ -262,7 +277,7 @@ async def get_full_state(
     return cast("FullState", FullState.model_validate(result))
 
 
-@router.get("/position")  # type: ignore[misc]
+@router.get("/position")
 async def get_position() -> dict[str, Any]:
     """Récupère la position actuelle du robot.
 
@@ -279,7 +294,7 @@ async def get_position() -> dict[str, Any]:
     }
 
 
-@router.get("/battery", response_model=BatteryInfo)  # type: ignore[misc]
+@router.get("/battery")
 async def get_battery_level() -> BatteryInfo:
     """Récupère le niveau de batterie.
 
@@ -299,7 +314,8 @@ async def get_battery_level() -> BatteryInfo:
             battery_level = float(sdk["battery"])
         except Exception as e:
             logger.debug(
-                f"Erreur lors de la conversion du niveau de batterie en float: {e}"
+                "Erreur lors de la conversion du niveau de batterie en float: %s",
+                e,
             )
     status = (
         "good" if battery_level > 20 else "low" if battery_level > 10 else "critical"
@@ -316,7 +332,7 @@ async def get_battery_level() -> BatteryInfo:
     )
 
 
-@router.get("/temperature")  # type: ignore[misc]
+@router.get("/temperature")
 async def get_temperature() -> dict[str, Any]:
     """Récupère la température du robot.
 
@@ -336,7 +352,8 @@ async def get_temperature() -> dict[str, Any]:
             temperature_c = float(sdk["temperature"])
         except Exception as e:
             logger.debug(
-                f"Erreur lors de la conversion de la température en float: {e}"
+                "Erreur lors de la conversion de la température en float: %s",
+                e,
             )
 
     return {
@@ -347,7 +364,7 @@ async def get_temperature() -> dict[str, Any]:
     }
 
 
-@router.get("/status")  # type: ignore[misc]
+@router.get("/status")
 async def get_status() -> dict[str, Any]:
     """Récupère le statut général du robot.
 
@@ -366,7 +383,7 @@ async def get_status() -> dict[str, Any]:
     }
 
 
-@router.post("/simulation/start")  # type: ignore[misc]
+@router.post("/simulation/start")
 async def start_simulation() -> dict[str, Any]:
     """Démarre la simulation MuJoCo."""
     logger.info("Démarrage de la simulation MuJoCo")
@@ -385,7 +402,7 @@ async def start_simulation() -> dict[str, Any]:
             "timestamp": datetime.now().isoformat(),
         }
     except Exception as e:
-        logger.error(f"Erreur lors du démarrage de la simulation : {e}")
+        logger.exception("Erreur lors du démarrage de la simulation ")
         return {
             "status": "error",
             "message": f"Erreur : {e!s}",
@@ -393,7 +410,7 @@ async def start_simulation() -> dict[str, Any]:
         }
 
 
-@router.post("/simulation/stop")  # type: ignore[misc]
+@router.post("/simulation/stop")
 async def stop_simulation() -> dict[str, Any]:
     """Arrête la simulation MuJoCo."""
     logger.info("Arrêt de la simulation MuJoCo")
@@ -406,7 +423,7 @@ async def stop_simulation() -> dict[str, Any]:
             "timestamp": datetime.now().isoformat(),
         }
     except Exception as e:
-        logger.error(f"Erreur lors de l'arrêt de la simulation : {e}")
+        logger.exception("Erreur lors de l'arrêt de la simulation")
         return {
             "status": "error",
             "message": f"Erreur : {e!s}",
@@ -414,7 +431,7 @@ async def stop_simulation() -> dict[str, Any]:
         }
 
 
-@router.get("/joints")  # type: ignore[misc]
+@router.get("/joints")
 async def get_joint_states() -> dict[str, Any]:
     logger.info("Récupération de l'état des articulations")
 
@@ -433,7 +450,7 @@ async def get_joint_states() -> dict[str, Any]:
     return {"joints": joints, "timestamp": datetime.now().isoformat()}
 
 
-@router.get("/present_head_pose")  # type: ignore[misc]
+@router.get("/present_head_pose")
 async def get_present_head_pose(
     use_pose_matrix: bool = False,
     backend: BackendAdapter = Depends(get_backend_adapter),
@@ -458,9 +475,9 @@ async def get_present_head_pose(
     }
 
 
-@router.get("/present_body_yaw")  # type: ignore[misc]
+@router.get("/present_body_yaw")
 async def get_present_body_yaw(
-    backend: BackendAdapter = Depends(get_backend_adapter),
+    backend: Annotated[BackendAdapter, Depends(get_backend_adapter)],
 ) -> dict[str, Any]:
     """Récupère le yaw actuel du corps (en radians) - conforme SDK.
 
@@ -475,9 +492,9 @@ async def get_present_body_yaw(
     return {"body_yaw": float(yaw), "unit": "radians"}
 
 
-@router.get("/present_antenna_joint_positions")  # type: ignore[misc]
+@router.get("/present_antenna_joint_positions")
 async def get_present_antenna_joint_positions(
-    backend: BackendAdapter = Depends(get_backend_adapter),
+    backend: Annotated[BackendAdapter, Depends(get_backend_adapter)],
 ) -> dict[str, Any]:
     """Récupère les positions actuelles des antennes (en radians) - conforme SDK.
 
@@ -490,7 +507,8 @@ async def get_present_antenna_joint_positions(
     """
     pos = backend.get_present_antenna_joint_positions()
     if len(pos) != 2:
-        raise ValueError(f"Expected 2 antenna positions, got {len(pos)}")
+        msg = f"Expected 2 antenna positions, got {len(pos)}"
+        raise ValueError(msg)
     # Retourner dans format attendu par tests (antennas ou left/right)
     return {
         "antennas": [float(pos[0]), float(pos[1])],
@@ -499,7 +517,7 @@ async def get_present_antenna_joint_positions(
     }
 
 
-@router.websocket("/ws/full")  # type: ignore[misc]
+@router.websocket("/ws/full")
 async def ws_full_state(
     websocket: WebSocket,
     frequency: float = 10.0,
@@ -534,7 +552,7 @@ async def ws_full_state(
 
     """
     # Auth WebSocket via query param (optionnel en dev)
-    from ...config import settings
+    from bbia_sim.daemon.config import settings
 
     if token and settings.environment.lower() == "prod":
         if token != settings.api_token:
@@ -567,7 +585,7 @@ async def ws_full_state(
         pass
 
 
-@router.get("/sensors")  # type: ignore[misc]
+@router.get("/sensors")
 async def get_sensor_data() -> dict[str, Any]:
     """Récupère les données des capteurs.
 
@@ -588,7 +606,7 @@ async def get_sensor_data() -> dict[str, Any]:
         try:
             imu_data = sdk["imu"]
         except Exception as e:
-            logger.debug(f"Erreur lors de la lecture des données IMU: {e}")
+            logger.debug("Erreur lors de la lecture des données IMU: %s", e)
 
     return {
         "camera": {"status": "active", "resolution": "640x480", "fps": 30},
@@ -596,3 +614,37 @@ async def get_sensor_data() -> dict[str, Any]:
         "imu": imu_data,
         "timestamp": datetime.now().isoformat(),
     }
+
+
+def get_imu() -> dict[str, Any]:
+    """Récupère les données de l'IMU.
+
+    Returns:
+        Données de l'IMU (accélération, gyroscope, magnétomètre)
+    """
+    logger.info("Récupération des données de l'IMU")
+
+    imu_data = {
+        "acceleration": {"x": 0.0, "y": 0.0, "z": 9.81},
+        "gyroscope": {"x": 0.0, "y": 0.0, "z": 0.0},
+        "magnetometer": {"x": 0.0, "y": 0.0, "z": 0.0},
+    }
+
+    sdk = _read_sdk_telemetry()
+    if sdk and "imu" in sdk and isinstance(sdk["imu"], dict):
+        try:
+            imu_data = sdk["imu"]
+        except Exception as e:
+            logger.debug("Erreur lors de la lecture des données IMU: %s", e)
+
+    return imu_data
+
+
+@router.get("/imu")
+async def get_imu_endpoint() -> dict[str, Any]:
+    """Endpoint HTTP pour récupérer les données de l'IMU.
+
+    Returns:
+        Données de l'IMU (accélération, gyroscope, magnétomètre)
+    """
+    return get_imu()

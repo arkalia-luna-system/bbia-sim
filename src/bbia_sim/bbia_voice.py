@@ -7,24 +7,47 @@ Voix : sélection automatique de la voix la plus proche de
 Reachy Mini Wireless (féminine, française si possible).
 """
 
+import contextlib
+import io
 import logging
 import os
+import queue
 import sys
+import tempfile
 import threading
 import time
 import unicodedata
+import wave
+from pathlib import Path
 from typing import Any
 
+import numpy as np
 import pyttsx3
 import speech_recognition as sr
+
+# Import conditionnel soundfile (optionnel)
+try:
+    import soundfile as sf
+
+    SOUNDFILE_AVAILABLE = True
+except ImportError:
+    SOUNDFILE_AVAILABLE = False
+    sf = None  # type: ignore[assignment]
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 try:
     # Sélecteurs IA optionnels (TTS local type KittenTTS)
     from .ai_backends import get_tts_backend
-except Exception:  # pragma: no cover - non critique si absent
+except ImportError:  # pragma: no cover - non critique si absent
     get_tts_backend = None  # type: ignore[assignment]
+
+# Import conditionnel voice_whisper (une seule fois)
+try:
+    from .voice_whisper import WHISPER_AVAILABLE, WhisperSTT
+except ImportError:
+    WHISPER_AVAILABLE = False
+    WhisperSTT = None  # type: ignore[assignment,misc]
 
 # Liste des voix féminines douces/enfantines à privilégier sur macOS
 # (ordre de préférence)
@@ -55,8 +78,22 @@ def _get_pyttsx3_engine() -> Any:
         with _pyttsx3_lock:
             # Double check après lock (thread-safe)
             if _pyttsx3_engine_cache is None:
-                _pyttsx3_engine_cache = pyttsx3.init()
-                logging.debug("✅ Moteur pyttsx3 initialisé (cache créé)")
+                # Vérifier si audio est désactivé (CI, tests)
+                if os.environ.get("BBIA_DISABLE_AUDIO", "0") == "1":
+                    logging.debug("⚠️ Audio désactivé, pyttsx3 non initialisé")
+                    return None
+                try:
+                    _pyttsx3_engine_cache = pyttsx3.init()
+                    logging.debug("✅ Moteur pyttsx3 initialisé (cache créé)")
+                except (RuntimeError, OSError) as e:
+                    # eSpeak non installé ou autre erreur système
+                    # Log en debug en CI (warning attendu sans eSpeak)
+                    if os.environ.get("CI", "false").lower() == "true":
+                        logging.debug(f"pyttsx3 non disponible: {e}")
+                    else:
+                        logging.warning(f"⚠️ pyttsx3 non disponible: {e}")
+                    _pyttsx3_engine_cache = None
+                    return None
     return _pyttsx3_engine_cache
 
 
@@ -72,8 +109,19 @@ def _get_cached_voice_id() -> str:
     global _bbia_voice_id_cache
     if _bbia_voice_id_cache is None:
         engine = _get_pyttsx3_engine()
-        _bbia_voice_id_cache = get_bbia_voice(engine)
-        logging.debug(f"✅ Voice ID mis en cache: {_bbia_voice_id_cache}")
+        if engine is None:
+            # Audio désactivé ou eSpeak non disponible
+            # Log en debug en CI (warning attendu sans eSpeak)
+            if os.environ.get("CI", "false").lower() == "true":
+                logging.debug("pyttsx3 non disponible, utilisation voix par défaut")
+            else:
+                logging.warning("⚠️ pyttsx3 non disponible, utilisation voix par défaut")
+            _bbia_voice_id_cache = (
+                "com.apple.speech.voice.Amelie.fr-FR"  # Fallback macOS
+            )
+        else:
+            _bbia_voice_id_cache = get_bbia_voice(engine)
+            logging.debug("✅ Voice ID mis en cache: %s", _bbia_voice_id_cache)
     return _bbia_voice_id_cache
 
 
@@ -89,6 +137,9 @@ def get_bbia_voice(engine: Any) -> str:
 
     Si aucune voix féminine française n'est trouvée, lève une erreur explicite.
     """
+    if engine is None:
+        # Fallback si engine non disponible
+        return "com.apple.speech.voice.Amelie.fr-FR"
     voices = engine.getProperty("voices")
 
     def normalize(s: str) -> str:
@@ -203,11 +254,14 @@ def get_bbia_voice(engine: Any) -> str:
             return value
 
     # 10. Sinon, message d'aide
-    raise RuntimeError(
+    msg = (
         "Aucune voix française féminine n'est installée sur ce Mac. "
         "Va dans Préférences Système > Accessibilité > Parole > "
         "Voix du système et installe une voix française féminine "
-        "(ex: Aurélie Enhanced, Amélie).",
+        "(ex: Aurélie Enhanced, Amélie)."
+    )
+    raise RuntimeError(
+        msg,
     )
 
 
@@ -225,7 +279,7 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
     """
     # Vérifier flag d'environnement pour désactiver audio (CI/headless)
     if os.environ.get("BBIA_DISABLE_AUDIO", "0") == "1":
-        logging.debug(f"Audio désactivé (BBIA_DISABLE_AUDIO=1): '{texte}' ignoré")
+        logging.debug("Audio désactivé (BBIA_DISABLE_AUDIO=1): '%s' ignoré", texte)
         return
 
     # Si un backend TTS est explicitement demandé (BBIA_TTS_BACKEND),
@@ -233,8 +287,6 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
     tts_backend_name = os.environ.get("BBIA_TTS_BACKEND")
     if tts_backend_name and get_tts_backend is not None:
         try:
-            import tempfile
-
             backend = get_tts_backend()
             with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as tmp:
                 wav_path = tmp.name
@@ -259,32 +311,53 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
                             if hasattr(speaker, "play"):
                                 speaker.play(audio_bytes)
                                 return
-                except Exception as e:
+                except (AttributeError, RuntimeError, OSError, TypeError) as e:
                     logger.debug(
-                        f"Erreur lors de la lecture audio via SDK speaker: {e}"
+                        "Erreur lors de la lecture audio via SDK speaker: %s",
+                        e,
                     )
                 try:
                     # Fallback simple: lecture locale sans dépendance forte
-                    import wave as _wave
-
-                    import numpy as _np
                     import sounddevice as _sd
 
-                    with _wave.open(wav_path, "rb") as wf:
+                    with wave.open(wav_path, "rb") as wf:
                         sr = wf.getframerate()
                         frames = wf.readframes(wf.getnframes())
-                        data = _np.frombuffer(frames, dtype=_np.int16)
+                        data = np.frombuffer(frames, dtype=np.int16)
                         _sd.play(data, sr)
                         _sd.wait()
                     return
+                except (OSError, RuntimeError, ImportError) as e:
+                    logger.debug(
+                        "Erreur lors de la lecture audio locale (fallback sounddevice): %s",
+                        e,
+                    )
                 except Exception as e:
                     logger.debug(
-                        f"Erreur lors de la lecture audio locale (fallback sounddevice): {e}"
+                        "Erreur inattendue lecture audio locale: %s",
+                        e,
                     )
-        except Exception as e:
+        except (ImportError, RuntimeError, OSError) as e:
             # Fallback vers logique pyttsx3 plus bas
             logger.debug(
-                f"Erreur lors de la synthèse vocale avancée, fallback pyttsx3: {e}"
+                "Erreur lors de la synthèse vocale avancée, fallback pyttsx3: %s",
+                e,
+            )
+        except Exception as e:
+            # Vérifier si l'erreur vient de _get_pyttsx3_engine()
+            # Si c'est le cas, la laisser remonter car le fallback pyttsx3 échouera aussi
+            import traceback
+
+            tb_str = "".join(traceback.format_exception(type(e), e, e.__traceback__))
+            if "_get_pyttsx3_engine" in tb_str:
+                logger.debug(
+                    "Erreur _get_pyttsx3_engine détectée, pas de fallback pyttsx3: %s",
+                    e,
+                )
+                raise
+            logger.debug(
+                "Erreur inattendue synthèse vocale avancée, fallback pyttsx3: %s",
+                e,
             )
 
     # OPTIMISATION SDK: Utiliser robot.media.* si disponible (toujours disponible via shim)
@@ -295,24 +368,24 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
         if media:
             try:
                 # Générer un court WAV en mémoire (silence 100ms) pour garantir un flux audio
-                import io as _io
                 import struct as _struct
-                import wave as _wave
+
+                # io et wave déjà importés globalement
 
                 sr = 16000
                 num_samples = int(0.1 * sr)
                 silence = b"".join(_struct.pack("<h", 0) for _ in range(num_samples))
 
                 sdk_audio_bytes: bytes
-                wav_buf = _io.BytesIO()
+                wav_buf = io.BytesIO()
                 try:
-                    with _wave.open(wav_buf, "wb") as wf:
+                    with wave.open(wav_buf, "wb") as wf:
                         wf.setnchannels(1)
                         wf.setsampwidth(2)
                         wf.setframerate(sr)
                         wf.writeframes(silence)
                     sdk_audio_bytes = wav_buf.getvalue()
-                except Exception:
+                except (ValueError, RuntimeError, TypeError):
                     sdk_audio_bytes = b""  # Fallback si création WAV échoue
 
                 # Priorité 1: media.play_audio(bytes[, volume])
@@ -324,7 +397,7 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
                             media.play_audio(sdk_audio_bytes)
                         return
                     except Exception as e:
-                        logging.debug(f"media.play_audio a échoué: {e}")
+                        logging.debug("media.play_audio a échoué: %s", e)
 
                 # Priorité 2: media.speaker.play_file/ play(bytes)
                 speaker = getattr(media, "speaker", None)
@@ -334,13 +407,11 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
                             speaker.play(sdk_audio_bytes)
                             return
                     except Exception as e:
-                        logging.debug(f"speaker.play a échoué: {e}")
+                        logging.debug("speaker.play a échoué: %s", e)
                     try:
                         # Créer un fichier temporaire si play_file est préféré
-                        import tempfile as _tempfile
-
                         tmp_path = None
-                        with _tempfile.NamedTemporaryFile(
+                        with tempfile.NamedTemporaryFile(
                             suffix=".wav",
                             delete=False,
                         ) as tmp:
@@ -352,23 +423,38 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
                             return
                     finally:
                         try:
-                            if tmp_path and os.path.exists(tmp_path):
-                                os.unlink(tmp_path)
-                        except Exception as cleanup_error:
+                            if tmp_path and Path(tmp_path).exists():
+                                Path(tmp_path).unlink()
+                        except (OSError, PermissionError) as cleanup_error:
                             logger.debug(
-                                f"Erreur lors du nettoyage du fichier temporaire {tmp_path}: {cleanup_error}"
+                                "Erreur lors du nettoyage du fichier temporaire %s: %s",
+                                tmp_path,
+                                cleanup_error,
                             )
 
             except Exception as e:
-                logging.debug(f"Erreur synthèse SDK (fallback pyttsx3): {e}")
+                logging.debug("Erreur synthèse SDK (fallback pyttsx3): %s", e)
                 # Fallback pyttsx3
 
     # Fallback: pyttsx3 (compatibilité)
     try:
-        logging.info(f"Synthèse vocale : {texte}")
+        logging.info("Synthèse vocale : %s", texte)
         # ⚡ OPTIMISATION PERFORMANCE: Utiliser moteur en cache (évite 0.8s d'init)
         engine = _get_pyttsx3_engine()
+        if engine is None:
+            # Log en debug en CI (warning attendu sans eSpeak)
+            if os.environ.get("CI", "false").lower() == "true":
+                logging.debug("pyttsx3 non disponible, synthèse vocale ignorée")
+            else:
+                logging.warning("⚠️ pyttsx3 non disponible, synthèse vocale ignorée")
+            return
         voice_id = _get_cached_voice_id()
+        # Vérification supplémentaire pour éviter AttributeError si engine est None
+        if engine is None:
+            logging.warning(
+                "⚠️ pyttsx3 non disponible après récupération voice_id, synthèse vocale ignorée"
+            )
+            return
         engine.setProperty("voice", voice_id)
         engine.setProperty("rate", 170)  # Vitesse normale
         engine.setProperty("volume", 1.0)
@@ -376,7 +462,8 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
         engine.say(texte)
         engine.runAndWait()
     except Exception as e:
-        logging.exception(f"Erreur de synthèse vocale : {e}")
+        # Utiliser error au lieu de warning avec exc_info pour éviter traces complètes dans tests
+        logging.error("Erreur de synthèse vocale: %s", e)
         raise
 
 
@@ -406,8 +493,9 @@ def reconnaitre_parole(
             # Bénéfice: 4 microphones directionnels avec annulation de bruit automatique
             if hasattr(robot_api.media, "record_audio"):
                 logging.info(
-                    f"🎤 Enregistrement via SDK (4 microphones) ({duree}s) "
-                    f"pour reconnaissance...",
+                    "🎤 Enregistrement via SDK (4 microphones) (%ds) "
+                    "pour reconnaissance...",
+                    duree,
                 )
                 audio_data = robot_api.media.record_audio(
                     duration=duree,
@@ -415,9 +503,6 @@ def reconnaitre_parole(
                 )
 
                 # Convertir audio_data en format pour speech_recognition
-                import io
-                import wave
-
                 # Créer fichier WAV temporaire en mémoire
                 audio_io = io.BytesIO()
                 with wave.open(audio_io, "wb") as wf:
@@ -429,11 +514,9 @@ def reconnaitre_parole(
                     else:
                         # Gérer numpy.ndarray ou autres types
                         try:
-                            import numpy as np_module
-
-                            if isinstance(audio_data, np_module.ndarray):
+                            if isinstance(audio_data, np.ndarray):
                                 wf.writeframes(
-                                    (audio_data.astype(np_module.int16)).tobytes(),
+                                    (audio_data.astype(np.int16)).tobytes(),
                                 )
                             else:
                                 wf.writeframes(bytes(audio_data))
@@ -448,13 +531,14 @@ def reconnaitre_parole(
                 with sr.AudioFile(audio_io) as source:
                     audio = r.record(source)
                     texte = r.recognize_google(audio, language="fr-FR")
-                    logging.info(f"✅ Texte reconnu (SDK 4 microphones) : {texte}")
+                    logging.info("✅ Texte reconnu (SDK 4 microphones) : %s", texte)
                     return str(texte)
         except Exception as e:
             logging.debug(
-                f"Erreur reconnaissance SDK (fallback speech_recognition): {e}",
+                "Erreur reconnaissance SDK (fallback speech_recognition): %s",
+                e,
             )
-            # Fallback vers speech_recognition
+        # Fallback vers speech_recognition
 
     # Fallback: speech_recognition (compatibilité)
     try:
@@ -464,17 +548,20 @@ def reconnaitre_parole(
                 logging.info("Écoute du micro pour la reconnaissance vocale...")
                 audio = r.listen(source, phrase_time_limit=duree)
                 texte = r.recognize_google(audio, language="fr-FR")
-                logging.info(f"Texte reconnu : {texte}")
+                logging.info("Texte reconnu : %s", texte)
                 return str(texte)
             except sr.UnknownValueError:
                 logging.warning("Aucune parole reconnue.")
                 return None
             except Exception as e:
-                logging.exception(f"Erreur de reconnaissance vocale : {e}")
+                # Utiliser debug au lieu de error pour réduire bruit dans tests
+                logging.debug("Erreur de reconnaissance vocale: %s", e)
                 return None
     except Exception as e:
-        logging.exception(f"Erreur d'accès au microphone : {e}")
-        logging.warning(
+        # Utiliser debug au lieu de error/warning pour réduire bruit dans tests
+        # Le comportement (retour None) est déjà validé par les tests
+        logging.debug("Erreur d'accès au microphone: %s", e)
+        logging.debug(
             "La reconnaissance vocale nécessite pyaudio. "
             "Installez-le avec : pip install pyaudio",
         )
@@ -485,19 +572,348 @@ def lister_voix_disponibles() -> list[Any]:
     """Retourne la liste des voix TTS disponibles avec leurs propriétés."""
     # ⚡ OPTIMISATION PERFORMANCE: Utiliser cache au lieu de pyttsx3.init()
     engine = _get_pyttsx3_engine()
+    if engine is None:
+        logging.warning("⚠️ pyttsx3 non disponible, aucune voix listée")
+        return []
     voices = engine.getProperty("voices")
     result = []
     for _idx, v in enumerate(voices):
         try:
-            _ = (
-                v.languages[0].decode(errors="ignore")
-                if hasattr(v.languages[0], "decode")
-                else str(v.languages[0])
-            )
-        except Exception:
+            # Gérer le cas où languages est vide ou None
+            if hasattr(v, "languages") and v.languages and len(v.languages) > 0:
+                try:
+                    if hasattr(v.languages[0], "decode"):
+                        _ = v.languages[0].decode(errors="ignore")
+                    else:
+                        _ = str(v.languages[0])
+                except (
+                    AttributeError,
+                    TypeError,
+                    ValueError,
+                    UnicodeDecodeError,
+                    Exception,
+                ):
+                    _ = str(v.languages[0]) if v.languages[0] else ""
+            else:
+                _ = ""
+        except (AttributeError, TypeError, ValueError, IndexError, Exception):
             _ = str(v.languages) if hasattr(v, "languages") and v.languages else ""
         result.append(v)
     return result
+
+
+# OPTIMISATION PERFORMANCE: Threading asynchrone pour transcription audio
+# Utiliser Union pour permettre None comme signal d'arrêt
+
+_transcribe_queue: queue.Queue[dict[str, Any] | None] = queue.Queue(maxsize=5)
+_transcribe_thread: threading.Thread | None = None
+_transcribe_active = False
+_transcribe_lock = threading.Lock()
+_last_transcribe_result: str | None = None
+
+
+def _transcribe_thread_worker() -> None:
+    """Worker thread pour transcriptions asynchrones en arrière-plan."""
+    global _last_transcribe_result
+    logger.debug("🎤 Thread transcription asynchrone démarré")
+
+    while _transcribe_active:
+        task = None
+        task_retrieved = False
+        task_done_called = False
+        try:
+            # Attendre tâche de transcription
+            task = _transcribe_queue.get(timeout=0.5)
+            task_retrieved = True  # Marquer que la tâche a été récupérée
+
+            if task is None:  # Signal d'arrêt
+                _transcribe_queue.task_done()
+                task_done_called = True
+                break
+
+            audio_data = task["audio_data"]
+            sample_rate = task.get("sample_rate", 16000)
+            model_size = task.get("model_size", "tiny")
+
+            # Transcription synchrone dans le thread
+            result = _transcribe_audio_sync(audio_data, sample_rate, model_size)
+            _last_transcribe_result = result
+
+            _transcribe_queue.task_done()
+            task_done_called = True
+        except queue.Empty:
+            continue
+        except Exception as e:
+            # Utiliser error au lieu de exception pour éviter traces complètes dans tests
+            logger.error("Erreur thread transcription asynchrone: %s", e)
+            # Appeler task_done() seulement si la tâche a été récupérée
+            # et qu'on ne l'a pas déjà appelé
+            if task_retrieved and task is not None and not task_done_called:
+                _transcribe_queue.task_done()
+
+    logger.debug("🎤 Thread transcription asynchrone arrêté")
+
+
+def start_async_transcription() -> bool:
+    """Démarre le thread de transcription asynchrone.
+
+    Returns:
+        True si démarré avec succès, False sinon
+
+    """
+    global _transcribe_thread, _transcribe_active
+
+    with _transcribe_lock:
+        if _transcribe_active:
+            logger.debug("Transcription asynchrone déjà active")
+            return True
+
+        _transcribe_active = True
+        _transcribe_thread = threading.Thread(
+            target=_transcribe_thread_worker,
+            daemon=True,
+            name="BBIAVoice-TranscribeThread",
+        )
+        _transcribe_thread.start()
+        logger.info("✅ Transcription asynchrone démarrée")
+        return True
+
+
+def stop_async_transcription() -> None:
+    """Arrête le thread de transcription asynchrone."""
+    global _transcribe_thread, _transcribe_active
+
+    with _transcribe_lock:
+        if not _transcribe_active:
+            return
+
+        _transcribe_active = False
+
+        # Envoyer signal d'arrêt
+        with contextlib.suppress(queue.Full):
+            _transcribe_queue.put_nowait(None)
+
+        if _transcribe_thread and _transcribe_thread.is_alive():
+            _transcribe_thread.join(timeout=2.0)
+            if _transcribe_thread.is_alive():
+                logger.warning(
+                    "Thread transcription asynchrone n'a pas pu être arrêté proprement",
+                )
+
+        logger.info("✅ Transcription asynchrone arrêtée")
+
+
+def transcribe_audio_async(
+    audio_data: Any,
+    sample_rate: int = 16000,
+    model_size: str = "tiny",
+    timeout: float | None = None,
+) -> str | None:
+    """Transcrit audio de manière asynchrone (non-bloquant).
+
+    Args:
+        audio_data: Données audio (numpy array ou bytes)
+        sample_rate: Fréquence d'échantillonnage (défaut: 16000)
+        model_size: Taille du modèle Whisper (défaut: "tiny")
+        timeout: Timeout en secondes (défaut: None = pas de timeout)
+
+    Returns:
+        Texte transcrit ou None si erreur/timeout
+
+    """
+    global _last_transcribe_result
+
+    # Démarrer thread si nécessaire
+    if not _transcribe_active:
+        start_async_transcription()
+
+    # Si transcription asynchrone active, ajouter à la queue
+    if _transcribe_active:
+        try:
+            task = {
+                "audio_data": audio_data,
+                "sample_rate": sample_rate,
+                "model_size": model_size,
+            }
+            _transcribe_queue.put_nowait(task)
+
+            # Attendre résultat avec timeout
+            if timeout:
+                start_time = time.time()
+                while time.time() - start_time < timeout:
+                    if _last_transcribe_result is not None:
+                        result = _last_transcribe_result
+                        _last_transcribe_result = None
+                        return result
+                    time.sleep(0.1)
+                return None
+
+            # Pas de timeout, retourner dernier résultat disponible
+            return _last_transcribe_result
+        except queue.Full:
+            logger.warning("Queue transcription pleine, fallback synchrone")
+            # Fallback synchrone
+            return _transcribe_audio_sync(audio_data, sample_rate, model_size)
+
+    # Fallback: transcription synchrone si asynchrone non actif
+    return _transcribe_audio_sync(audio_data, sample_rate, model_size)
+
+
+def _transcribe_audio_sync(
+    audio_data: Any,
+    sample_rate: int = 16000,
+    model_size: str = "tiny",
+) -> str | None:
+    """Version synchrone interne de transcribe_audio (utilisée par thread)."""
+    # Vérifier flag d'environnement pour désactiver audio (CI/headless)
+    if os.environ.get("BBIA_DISABLE_AUDIO", "0") == "1":
+        logging.debug("Audio désactivé (BBIA_DISABLE_AUDIO=1): transcription ignorée")
+        return None
+
+    try:
+        if not WHISPER_AVAILABLE:
+            logging.debug("Whisper non disponible pour transcription")
+            return None
+
+        # OPTIMISATION PERFORMANCE: Utiliser WhisperSTT avec cache global
+        # Le cache est géré automatiquement par WhisperSTT
+        stt = WhisperSTT(model_size=model_size, language="fr")
+
+        # Charger le modèle (utilise cache si disponible)
+        if not stt.is_loaded and not stt.load_model():
+            logging.warning("Impossible de charger le modèle Whisper")
+            return None
+
+        # Convertir audio_data en fichier temporaire si nécessaire
+        # Créer fichier temporaire
+        temp_file = tempfile.NamedTemporaryFile(
+            suffix=".wav",
+            delete=False,
+        )
+        temp_path = temp_file.name
+        temp_file.close()
+
+        try:
+            # Sauvegarder audio_data dans fichier temporaire
+            if not SOUNDFILE_AVAILABLE:
+                raise ImportError("soundfile non disponible")
+
+            if isinstance(audio_data, np.ndarray):
+                sf.write(temp_path, audio_data, sample_rate)
+            elif isinstance(audio_data, bytes):
+                # Convertir bytes en numpy array si nécessaire
+                audio_array = (
+                    np.frombuffer(audio_data, dtype=np.int16).astype(np.float32)
+                    / 32768.0
+                )
+                sf.write(temp_path, audio_array, sample_rate)
+            else:
+                logging.warning(f"Format audio non supporté: {type(audio_data)}")
+                return None
+
+            # Transcrit avec Whisper (utilise cache modèle)
+            result = stt.transcribe_audio(temp_path)
+
+            return str(result) if result is not None else None
+
+        finally:
+            # Nettoyer fichier temporaire
+            try:
+                os.unlink(temp_path)
+            except Exception as cleanup_error:
+                logging.debug(f"Nettoyage fichier Whisper ({cleanup_error})")
+
+    except ImportError:
+        logging.debug("Whisper non disponible (import échoué)")
+        return None
+    except Exception as e:
+        logging.warning(f"Erreur transcription Whisper: {e}")
+        return None
+
+
+# OPTIMISATION PERFORMANCE: Fonction wrapper pour transcription audio avec Whisper
+# Utilise le cache global pour éviter rechargement du modèle
+# NOTE: Pour version asynchrone, utiliser transcribe_audio_async()
+def transcribe_audio(
+    audio_data: Any,
+    sample_rate: int = 16000,
+    model_size: str = "tiny",
+) -> str | None:
+    """Transcrit des données audio en texte avec Whisper (utilise cache).
+
+    Args:
+        audio_data: Données audio (numpy array ou bytes)
+        sample_rate: Fréquence d'échantillonnage (défaut: 16000)
+        model_size: Taille du modèle Whisper ("tiny", "base", etc.) - défaut: "tiny"
+
+    Returns:
+        Texte transcrit ou None si erreur
+
+    """
+    # Vérifier flag d'environnement pour désactiver audio (CI/headless)
+    if os.environ.get("BBIA_DISABLE_AUDIO", "0") == "1":
+        logging.debug("Audio désactivé (BBIA_DISABLE_AUDIO=1): transcription ignorée")
+        return None
+
+    try:
+        if not WHISPER_AVAILABLE:
+            logging.debug("Whisper non disponible pour transcription")
+            return None
+
+        # OPTIMISATION PERFORMANCE: Utiliser WhisperSTT avec cache global
+        # Le cache est géré automatiquement par WhisperSTT
+        stt = WhisperSTT(model_size=model_size, language="fr")
+
+        # Charger le modèle (utilise cache si disponible)
+        if not stt.is_loaded and not stt.load_model():
+            logging.warning("Impossible de charger le modèle Whisper")
+            return None
+
+        # Convertir audio_data en fichier temporaire si nécessaire
+        # Créer fichier temporaire
+        temp_file = tempfile.NamedTemporaryFile(
+            suffix=".wav",
+            delete=False,
+        )
+        temp_path = temp_file.name
+        temp_file.close()
+
+        try:
+            # Sauvegarder audio_data dans fichier temporaire
+            if not SOUNDFILE_AVAILABLE:
+                raise ImportError("soundfile non disponible")
+
+            if isinstance(audio_data, np.ndarray):
+                sf.write(temp_path, audio_data, sample_rate)
+            elif isinstance(audio_data, bytes):
+                # Convertir bytes en numpy array si nécessaire
+                audio_array = (
+                    np.frombuffer(audio_data, dtype=np.int16).astype(np.float32)
+                    / 32768.0
+                )
+                sf.write(temp_path, audio_array, sample_rate)
+            else:
+                logging.warning(f"Format audio non supporté: {type(audio_data)}")
+                return None
+
+            # Transcrit avec Whisper (utilise cache modèle)
+            result = stt.transcribe_audio(temp_path)
+
+            return str(result) if result is not None else None
+
+        finally:
+            # Nettoyer fichier temporaire
+            try:
+                os.unlink(temp_path)
+            except Exception as cleanup_error:
+                logging.debug(f"Nettoyage fichier Whisper ({cleanup_error})")
+
+    except ImportError:
+        logging.debug("Whisper non disponible (import échoué)")
+        return None
+    except Exception as e:
+        logging.warning(f"Erreur transcription Whisper: {e}")
+        return None
 
 
 if __name__ == "__main__":
@@ -507,6 +923,9 @@ if __name__ == "__main__":
         if len(sys.argv) > 2 and sys.argv[2] == "demo":
             # ⚡ OPTIMISATION PERFORMANCE: Utiliser cache au lieu de pyttsx3.init()
             engine = _get_pyttsx3_engine()
+            if engine is None:
+                logging.warning("⚠️ pyttsx3 non disponible, démo impossible")
+                sys.exit(1)
             voices = engine.getProperty("voices")
             for v in voices:
                 engine.setProperty("voice", v.id)
@@ -518,6 +937,9 @@ if __name__ == "__main__":
 
     # ⚡ OPTIMISATION PERFORMANCE: Utiliser cache au lieu de pyttsx3.init()
     engine = _get_pyttsx3_engine()
+    if engine is None:
+        logging.warning("⚠️ pyttsx3 non disponible, démo impossible")
+        sys.exit(1)
     voice_id = _get_cached_voice_id()
     engine.setProperty("voice", voice_id)
     engine.setProperty("rate", 170)

@@ -1,10 +1,10 @@
 # 🎵 Installation Audio pour BBIA-SIM
 
-**Date** : Oct / Nov. 2025
+**Date** : 21 Novembre 2025
 
 ## 🏗️ Architecture Audio BBIA
 
-```mermaid
+```mermaid 📊
 graph TB
     subgraph "Hardware Audio"
         MICROPHONE[Microphone<br/>Entrée audio]
@@ -57,7 +57,7 @@ graph TB
 > pip install -e .[audio]
 > ```
 
-```mermaid
+```mermaid 📊
 flowchart TD
     START[Début installation] --> OS{Système d'exploitation ?}
 
@@ -81,7 +81,7 @@ flowchart TD
 
 ## 📊 Comparaison des Options d'Installation
 
-```mermaid
+```mermaid 📊
 pie title Options d'Installation Audio
     "Installation standard" : 30
     "Installation avec audio" : 50
@@ -115,7 +115,11 @@ pip install pyaudio
 ## 🎯 Navigation
 
 **Retour à** : [README Documentation](../README.md)  
-**Voir aussi** : [Guide Débutant](../guides/GUIDE_DEBUTANT.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)
+**Voir aussi** :
+
+- [Guide ReSpeaker](RESPEAKER_SETUP.md) - Configuration ReSpeaker 4 microphones
+- [Guide de Démarrage](../guides/GUIDE_DEMARRAGE.md)
+- [Index Thématique](../reference/INDEX_THEMATIQUE.md)
 
 ---
 

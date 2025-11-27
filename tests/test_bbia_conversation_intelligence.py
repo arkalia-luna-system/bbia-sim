@@ -180,7 +180,8 @@ class TestBBIAConversationIntelligence:
         from bbia_sim.bbia_behavior import VisionTrackingBehavior
         from bbia_sim.bbia_vision import BBIAVision
 
-        vision = BBIAVision()
+        # OPTIMISATION RAM: Utiliser robot_api=None pour éviter chargement modèles
+        vision = BBIAVision(robot_api=None)
         behavior = VisionTrackingBehavior(vision, robot_api=None)
 
         # Tester exécution (avec objets détectés)
@@ -201,10 +202,11 @@ class TestBBIAConversationIntelligence:
 
         # Vérifier que toutes les méthodes existent
         emotions = BBIAEmotions()
-        vision = BBIAVision()
+        # OPTIMISATION RAM: Utiliser robot_api=None pour éviter chargement modèles
+        vision = BBIAVision(robot_api=None)
 
         emotional_behavior = EmotionalResponseBehavior(emotions)
-        vision_behavior = VisionTrackingBehavior(vision)
+        vision_behavior = VisionTrackingBehavior(vision, robot_api=None)
 
         # Vérifier APIs
         assert hasattr(emotional_behavior, "execute")

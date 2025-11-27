@@ -1,7 +1,7 @@
 # Logo BBIA - Documentation
 
 > **Asset** : Logo vectoriel BBIA (dessin client avec Procreate)  
-> **Version** : 2.0 | **Date** : Décembre 2025 | **Statut** : 🚧 **En cours de création**
+> **Version** : 2.0 | **Date** : Oct / Nov. 2025 | **Statut** : ⏳ **En attente création client**
 
 ---
 
@@ -10,31 +10,25 @@
 | Propriété | Valeur |
 |-----------|--------|
 | **Version** | 2.0 |
-| **Date création** | Décembre 2025 |
+| **Date création** | En cours |
 | **Auteur** | Client (Procreate sur iPad Pro) |
-| **Statut** | 🚧 **En cours - Modèle 3D préparé** |
+| **Statut** | ⏳ **En attente dessin client** |
 | **Priorité** | 🔥 Haute - MVP Graphique |
 
 ---
 
 ## 🎯 Direction Actuelle
 
-**Client dessine le logo lui-même** avec Procreate sur iPad Pro en utilisant un modèle 3D de référence du robot Reachy Mini.
+**Client dessine le logo lui-même** avec Procreate sur iPad Pro.
 
 **Workflow** :
 
-1. ✅ **Modèle 3D assemblé créé** (Décembre 2025)
-   - Scripts Blender pour assembler le robot
-   - Positions exactes depuis XML officiel
-   - Format USDZ compatible Procreate
-   - Voir `ASSEMBLAGE_ROBOT_3D.md` pour détails
-
-2. 🚧 Client dessine le logo avec le modèle 3D comme référence (Procreate)
-3. ⏳ Export PNG haute résolution (4096x4096px recommandé)
-4. ⏳ Conversion automatique PNG → SVG
-5. ⏳ Génération automatique de toutes les versions (favicons, monochrome, PNG)
-6. ⏳ Documentation complète créée
-7. ⏳ Prêt à utiliser partout dans BBIA
+1. Client dessine le logo exactement comme voulu (Procreate)
+2. Export PNG haute résolution (4096x4096px recommandé)
+3. Conversion automatique PNG → SVG (je m'en occupe)
+4. Génération automatique de toutes les versions (favicons, monochrome, PNG)
+5. Documentation complète créée
+6. Prêt à utiliser partout dans BBIA
 
 ---
 
@@ -119,9 +113,9 @@ Avant d'exporter votre dessin Procreate, vérifiez :
 
 | Version | Date | Modifications | Statut |
 |---------|------|--------------|--------|
-| 1.0 | Oct / No2025025025025025 | Version initiale stylisée | ❌ **Rejetée - Pas fidèle** |
-| 1.1 | Oct / No2025025025025025 | Logos Reachy fidèles créés | ❌ **Temporaires - À remplacer** |
-| 2.0 | Oct / No2025025025025025 | Client dessine avec Procreate | ⏳ **En attente création client** |
+| 1.0 | Oct / Nov. 2025 | Version initiale stylisée | ❌ **Rejetée - Pas fidèle** |
+| 1.1 | Oct / Nov. 2025 | Logos Reachy fidèles créés | ❌ **Temporaires - À remplacer** |
+| 2.0 | Oct / Nov. 2025 | Client dessine avec Procreate | ⏳ **En attente création client** |
 
 ---
 
@@ -131,4 +125,4 @@ Avant d'exporter votre dessin Procreate, vérifiez :
 
 ---
 
-*Documentation Logo BBIA - Version 2.0 - Workflow Procreate - Oct / No2025025025025025*
+*Documentation Logo BBIA - Version 2.0 - Workflow Procreate - Oct / Nov. 2025*

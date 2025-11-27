@@ -49,10 +49,10 @@ def get_frame_from_backend(backend, vision_source="cv2"):
         # Utiliser vision BBIA ou OpenCV
         if vision_source == "cv2":
             # Utiliser webcam OpenCV directement
-            cap = getattr(click, "_cap", None)
+            cap = getattr(click, "_cap", None)  # type: ignore[attr-defined]
             if cap is None:
                 cap = cv2.VideoCapture(0)
-                click._cap = cap
+                click._cap = cap  # type: ignore[attr-defined]
             ret, frame = cap.read()
             if ret:
                 return frame

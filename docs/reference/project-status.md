@@ -2,11 +2,22 @@
 
 <div align="center">
 
-**🎯 Vue d'ensemble de l'état du projet par axe**  
+**🎯 Vue d'ensemble de l'état du projet par axe**
 *Fiabilité • Performance • Sécurité • CI/CD • Plus*
 
-**Version** : 1.3.2 • **Date** : Oct / Nov. 2025  
+**Version** : 1.4.0 • **Date** : 24 Novembre 2025
 **Prêt pour arrivée robot** 🤖
+
+**🎉 Mise à jour 26 Novembre 2025** : **100% d'exploitation des capacités** ✅
+- ✅ 44 exemples disponibles (39 existants + 5 nouveaux créés 22 Nov. 2025)
+- ✅ Tous les comportements, endpoints et modules ont des exemples dédiés
+
+**🎉 Mise à jour 24 Novembre 2025** : **Améliorations Phase 1 Quick Wins terminées** ✅
+- ✅ Python 3.12 dans CI (matrice lint)
+- ✅ Pre-commit hooks améliorés (gitleaks, check-json, check-toml)
+- ✅ Scan secrets automatisé (gitleaks dans CI)
+- ✅ Métriques Prometheus complétées (watchdog, robot_connected, latence p50/p95/p99)
+- ✅ ffmpeg ajouté dans dépendances CI
 
 [📚 Navigation rapide](INDEX_THEMATIQUE.md) • [🏠 README](../README.md)
 
@@ -30,12 +41,112 @@ pip install -e .
 
 | Élément | Configuration | Statut |
 |:-------:|:-------------:|:------:|
-| **Python** | 3.11+ | ✅ Requis |
-| **CI/CD** | `.github/workflows/ci.yml` | ✅ GitHub Actions |
+| **Python** | 3.11+ (3.12 testé) | ✅ Requis |
+| **CI/CD** | `.github/workflows/ci.yml` | ✅ GitHub Actions (Python 3.11 + 3.12) |
 | **SDK Référence** | `pollen-robotics/reachy_mini` v1.0.0 | ✅ Branch develop |
 | **SDK local** | `reachy_mini==1.0.0rc5` (pré‑release) → recomm. `1.0.0` | 🔄 Mise à jour conseillée ([lien](https://github.com/pollen-robotics/reachy_mini)) |
 
 </div>
+
+---
+
+## 🖥️ État Opérationnel
+
+> **💡 Note** : Cette section décrit l'état opérationnel actuel du système (dashboard, commandes, tests).  
+> Pour les métriques détaillées, voir [METRICS.md](METRICS.md). Pour l'installation, voir [INSTALLATION.md](../getting-started/INSTALLATION.md).
+
+### Dashboard Web
+
+**URL** : http://localhost:8000  
+**Statut** : Opérationnel
+
+#### Fonctionnalités disponibles
+
+1. **Panel Chat BBIA**
+   - Interface web complète
+   - Handler WebSocket fonctionnel
+   - Mode fallback si Hugging Face absent
+   - Messages temps réel
+
+2. **Contrôles robot**
+   - Émotions (12 disponibles)
+   - Mouvements articulaires
+   - Vision et détection objets
+   - Comportements adaptatifs
+
+3. **Métriques temps réel**
+   - Performance système
+   - État des composants
+   - Latence WebSocket
+   - Statistiques d'utilisation
+
+#### Utilisation
+
+```bash
+# Via navigateur (RECOMMANDÉ)
+# Ouvrir : http://localhost:8000
+# Attendre connexion (indicateur vert)
+# Descendre jusqu'à panel "💬 Chat avec BBIA"
+
+# Via terminal (RECOMMANDÉ)
+mjpython examples/demo_chat_bbia_3d.py
+# ⚠️ Note: demo_chat_simple.py est déprécié
+```
+
+### Commandes Principales
+
+#### Tests et qualité
+
+```bash
+# Tests complets avec coverage
+pytest tests/ --cov=src/bbia_sim --cov-report=html
+
+# Voir le rapport de coverage
+open htmlcov/index.html
+
+# Tests spécifiques
+pytest tests/test_dashboard_advanced.py -v
+pytest tests/test_bbia_*.py -v
+```
+
+#### Démo et utilisation
+
+```bash
+# Dashboard web
+# Ouvrir http://localhost:8000
+
+# Chat 3D (RECOMMANDÉ)
+mjpython examples/demo_chat_bbia_3d.py
+
+# Simulation MuJoCo
+mjpython examples/demo_mujoco_continue.py
+
+# Émotions
+mjpython examples/demo_emotion_ok.py --emotion happy --duration 10
+```
+
+#### Qualité du code
+
+```bash
+# Linting
+ruff check . --fix
+
+# Formatage
+black src/ tests/ examples/ scripts/
+
+# Type checking
+mypy src/
+
+# Sécurité
+bandit -r src/
+```
+
+### Liens Utiles
+
+- Dashboard : http://localhost:8000
+- API Swagger : http://localhost:8000/docs
+- API ReDoc : http://localhost:8000/redoc
+- Coverage HTML : `htmlcov/index.html`
 
 ---
 
@@ -163,10 +274,10 @@ pip install -e .
 
 - `/tmp/reachy_ref/src/reachy_mini/apps/sources/hf_space.py`
 
-**Type :** Extension BBIA (non core SDK)  
+**Type :** Extension BBIA (non core SDK)
 **Statut :** Module BBIA original - intégration Hugging Face pour IA conversationnelle
 
-Le SDK officiel Reachy Mini expose une intégration Hugging Face Spaces via `hf_space.py` pour lister les apps disponibles. Le module `bbia_huggingface.py` est une **extension BBIA** enrichissant les capacités IA avec :
+Le SDK officiel Reachy Mini expose une intégration Hugging Face Spaces via `hf_space.py` pour lister les apps disponibles. **Note** : Le chargement dynamique des apps HF Hub n'est pas implémenté dans BBIA (apps en dur). **Recommandation** : Ne pas implémenter maintenant, attendre réception robot pour tester et décider si nécessaire. Le module `bbia_huggingface.py` est une **extension BBIA** enrichissant les capacités IA avec :
 
 - Vision : CLIP, BLIP
 - Audio : Whisper STT
@@ -193,10 +304,10 @@ Le SDK officiel Reachy Mini expose une intégration Hugging Face Spaces via `hf_
 6. ✅ **Formatage automatique** → Black appliqué (246 lignes modifiées)
 7. ✅ **Bandit B110/B101/B108** → Tous corrigés (Oct / Nov. 2025) : 0 erreurs (try/except pass → logging, assert → validations explicites, /tmp hardcodé → tempfile)
 
-**Bandit B615 :** Unsafe Hugging Face download  
+**Bandit B615 :** Unsafe Hugging Face download
 
-- **Justification :** Utilisation explicite `revision="main"` dans tous les appels `from_pretrained()`  
-- **Risque accepté :** Mise à jour automatique des modèles (comportement souhaité)  
+- **Justification :** Utilisation explicite `revision="main"` dans tous les appels `from_pretrained()`
+- **Risque accepté :** Mise à jour automatique des modèles (comportement souhaité)
 - **Status :** 2 findings Medium (tolérés, justifiés)
 
 ### 🔒 Sécurité & Tests
@@ -240,7 +351,7 @@ Le SDK officiel Reachy Mini expose une intégration Hugging Face Spaces via `hf_
 
 ### 📚 Documentation
 
-**Docstrings :** ✅ Présentes et claires  
+**Docstrings :** ✅ Présentes et claires
 **Type hints :** ✅ Complets (`Union`, `Optional`, `npt.NDArray`)
 
 **Commandes de repro :**
@@ -293,7 +404,7 @@ bandit -r src/bbia_sim/bbia_huggingface.py -ll
 - `/tmp/reachy_ref/src/reachy_mini/media/media_manager.py`
 - `/tmp/reachy_ref/src/reachy_mini/media/audio_base.py`
 
-**Type :** Intégration SDK Media API  
+**Type :** Intégration SDK Media API
 **Statut :** ✅ Conforme SDK - Utilise `robot.media.microphone` et `robot.media.speaker`
 
 Le SDK Reachy Mini expose une API médias via `MediaManager`:
@@ -324,9 +435,9 @@ Le SDK Reachy Mini expose une API médias via `MediaManager`:
 
 1. ✅ 1 ligne > 100 chars (ligne 181) → Corrigée
 
-**Bandit B110 :** Exception catch générique  
+**Bandit B110 :** Exception catch générique
 
-- **Justification :** Nettoyage PortAudio (`_cleanup_sounddevice`) - comportement souhaité ignorer erreurs de terminaison  
+- **Justification :** Nettoyage PortAudio (`_cleanup_sounddevice`) - comportement souhaité ignorer erreurs de terminaison
 - **Risque accepté :** Fonction de cleanup, erreurs non critiques
 
 ### 🔒 Sécurité & Tests
@@ -368,13 +479,13 @@ Le SDK Reachy Mini expose une API médias via `MediaManager`:
 **Recommandations performance :**
 
 - [x] ✅ **Actuel** : Captures périodiques fonctionnent parfaitement
-- [ ] ⚠️ Streaming audio temps réel via `robot.io.get_audio_stream()` (optionnel, refactor nécessaire pour bénéfice marginal)
+- [ ] ⚠️ Streaming audio temps réel via `robot.io.get_audio_stream()` (optionnel, refactor nécessaire pour bénéfice marginal) - **Recommandation** : Ne pas implémenter maintenant, attendre réception robot pour tester et décider si nécessaire
 - [ ] Cache validation sample rate (éviter re-lire fichier)
 - [ ] Batch détection son (fichiers multiples)
 
 ### 📚 Documentation
 
-**Docstrings :** ✅ Présentes et claires  
+**Docstrings :** ✅ Présentes et claires
 **Type hints :** ✅ Complets (`Optional`, `RobotAPI`)
 
 **Commandes de repro :**
@@ -411,14 +522,14 @@ bandit -r src/bbia_sim/bbia_audio.py -ll
 
 ### 📋 Référence Reachy Mini
 
-**Références précises @84c40c31**  
+**Références précises @84c40c31**
 
-- Backend: `/tmp/reachy_ref/src/reachy_mini/daemon/backend/hardware/backend.py`  
-- URDF: `/tmp/reachy_ref/src/reachy_mini/descriptions/reachy_mini/urdf/robot.urdf`  
-- Fréquence boucle: `control_loop_frequency = 50.0` Hz (backend.py)  
+- Backend: `/tmp/reachy_ref/src/reachy_mini/daemon/backend/hardware/backend.py`
+- URDF: `/tmp/reachy_ref/src/reachy_mini/descriptions/reachy_mini/urdf/robot.urdf`
+- Fréquence boucle: `control_loop_frequency = 50.0` Hz (backend.py)
 - Watchdog/arrêt: `multiprocessing.Event` via `should_stop` + `last_alive` (backend.py)
 
-**Type :** Backend critique - Contrôleurs moteurs, watchdog, safety  
+**Type :** Backend critique - Contrôleurs moteurs, watchdog, safety
 **Statut :** ✅ Conformité améliorée - Validation duration corrigée, magic numbers extraits
 
 Le SDK officiel `RobotBackend` expose:
@@ -471,7 +582,7 @@ Le SDK officiel `RobotBackend` expose:
 
 ### 🔒 Sécurité & Tests
 
-**Tests existants :** `tests/test_reachy_mini_backend*.py` (10 fichiers, 200+ tests)
+**Tests existants :** `tests/test_reachy_mini_backend*.py` (10 fichiers, tests de conformité complets)
 
 **Coverage :**
 
@@ -530,7 +641,7 @@ Le SDK officiel `RobotBackend` expose:
 
 ### 📚 Documentation
 
-**Docstrings :** ✅ Présentes (méthodes SDK documentées)  
+**Docstrings :** ✅ Présentes (méthodes SDK documentées)
 **Type hints :** ⚠️ Partiels (mypy strict révèle 11 erreurs)
 
 **Commandes de repro :**
@@ -599,7 +710,7 @@ bandit -r src/bbia_sim/backends/reachy_mini_backend.py -ll
 - `/tmp/reachy_ref/src/reachy_mini/media/media_manager.py`
 - `/tmp/reachy_ref/src/reachy_mini/media/audio_base.py`
 
-**Type :** Intégration SDK Media API (TTS/STT)  
+**Type :** Intégration SDK Media API (TTS/STT)
 **Statut :** ✅ Conforme SDK - Cache pyttsx3 optimisé, intégration `robot.media.speaker`/`microphone`
 
 Le SDK Reachy Mini expose une API médias via `MediaManager`:
@@ -631,9 +742,9 @@ Le SDK Reachy Mini expose une API médias via `MediaManager`:
 1. ✅ 11 `type: ignore` inutilisés → Supprimés (mypy strict passe)
 2. ✅ `# noqa: B110` invalide → Corrigé en `# nosec B110` (ruff + bandit)
 
-**Bandit B110 :** Exception catch générique (nettoyage fichiers temporaires)  
+**Bandit B110 :** Exception catch générique (nettoyage fichiers temporaires)
 
-- **Justification :** Nettoyage fichier temp après synthèse vocale - erreurs non critiques  
+- **Justification :** Nettoyage fichier temp après synthèse vocale - erreurs non critiques
 - **Risque accepté :** Fonction de cleanup, comportement souhaité
 
 ### 🔒 Sécurité & Tests
@@ -674,13 +785,13 @@ Le SDK Reachy Mini expose une API médias via `MediaManager`:
 **Recommandations performance :**
 
 - [x] ✅ **Actuel** : Synthèse vocale via `robot.media.speaker` fonctionne parfaitement
-- [ ] ⚠️ Streaming audio temps réel via `robot.io.get_audio_stream()` (optionnel, refactor nécessaire)
+- [ ] ⚠️ Streaming audio temps réel via `robot.io.get_audio_stream()` (optionnel, refactor nécessaire) - **Recommandation** : Ne pas implémenter maintenant, attendre réception robot pour tester et décider si nécessaire
 - [ ] Pool threads pour conversions numpy/bytes multiples
 - [ ] Cache réponses TTS fréquentes (LRU)
 
 ### 📚 Documentation
 
-**Docstrings :** ✅ Présentes (résumé, args, returns)  
+**Docstrings :** ✅ Présentes (résumé, args, returns)
 **Type hints :** ✅ Complets (`Optional`, `Any`, `str | None`)
 
 **Commandes de repro :**
@@ -823,10 +934,10 @@ Points clés:
 
 ## 📊 Résumé Audit Actuel
 
-**Modules audités :** 10/45+  
-**Référence Reachy Mini :** `84c40c31ff898da4004584c09c6a1844b27425a3` (branch `develop`)  
-**Patches appliqués :** 8 corrections (3 `reachy_mini_backend.py`, 1 `bbia_voice.py`, 1 `robot_api.py`, 2 `bbia_vision.py`, 1 `ai_backends.py`)  
-**Tests corrigés :** 1 (`test_strict_parameter_validation` passe)  
+**Modules audités :** 10/45+
+**Référence Reachy Mini :** `84c40c31ff898da4004584c09c6a1844b27425a3` (branch `develop`)
+**Patches appliqués :** 8 corrections (3 `reachy_mini_backend.py`, 1 `bbia_voice.py`, 1 `robot_api.py`, 2 `bbia_vision.py`, 1 `ai_backends.py`)
+**Tests corrigés :** 1 (`test_strict_parameter_validation` passe)
 **JSONL généré :** `artifacts/audit_reachy_modules.jsonl`
 **Type-check** : mypy = 0 error (bbia_voice no-redef corrigé; accès SDK typés dans state)
 
@@ -890,8 +1001,8 @@ pytest -q -m "not e2e" -k "<module_name> or unit or fast"
 
 ## 🛠️ Backlog vérif & perfs
 
-**Conventions** : [x] vérifié, [ ] à faire  
-**Référence Reachy** : `pollen-robotics/reachy_mini` @ `84c40c31ff898da4004584c09c6a1844b27425a3` (branch `develop`)  
+**Conventions** : [x] vérifié, [ ] à faire
+**Référence Reachy** : `pollen-robotics/reachy_mini` @ `84c40c31ff898da4004584c09c6a1844b27425a3` (branch `develop`)
 **Dernière mise à jour** : Oct / Nov. 2025
 
 ### 📊 État synthétique des vérifications
@@ -913,7 +1024,7 @@ pytest -q -m "not e2e" -k "<module_name> or unit or fast"
 
 ### 📋 Référence Reachy Mini
 
-**Type :** Sélection des backends IA (politiques de fallback)  
+**Type :** Sélection des backends IA (politiques de fallback)
 **Statut :** ✅ Logique consolidée et sûre (priorités explicites, environnement CI respecté)
 
 ### ✅ Conformité Code Qualité
@@ -928,7 +1039,7 @@ pytest -q -m "not e2e" -k "<module_name> or unit or fast"
 
 ### 🔒 Sécurité & Tests
 
-**Tests existants :** `tests/test_ai_backends_selection.py`  
+**Tests existants :** `tests/test_ai_backends_selection.py`
 **Couverture :**
 
 - Respect des variables d’environnement (désactivation en CI)
@@ -1202,13 +1313,13 @@ Chaque benchmark génère une entrée JSONL avec métriques p50/p95 :
 
 ### 📋 Référence Reachy Mini
 
-**Références précises @84c40c31**  
+**Références précises @84c40c31**
 
-- Abstraction Backend: `/tmp/reachy_ref/src/reachy_mini/daemon/backend/abstract.py`  
-- Backend réel: `/tmp/reachy_ref/src/reachy_mini/daemon/backend/hardware/backend.py`  
+- Abstraction Backend: `/tmp/reachy_ref/src/reachy_mini/daemon/backend/abstract.py`
+- Backend réel: `/tmp/reachy_ref/src/reachy_mini/daemon/backend/hardware/backend.py`
 - URDF: `/tmp/reachy_ref/src/reachy_mini/descriptions/reachy_mini/urdf/robot.urdf`
 
-**Type :** Interface unifiée abstraite BBIA  
+**Type :** Interface unifiée abstraite BBIA
 **Statut :** ✅ Conforme (API, unités en radians, clamp sécurité). Pas de ROS2/QoS attendu ici (géré côté SDK/daemon).
 
 Le fichier `robot_api.py` définit une API abstraite (connect/disconnect, set/get joint, step, emergency_stop, behaviors) avec des garde-fous de sécurité (`safe_amplitude_limit = 0.3` rad, joints interdits antennes/passive). Côté SDK, les équivalents se trouvent dans `Backend`/`RobotBackend` (async goto_target, publishers zenoh, statuts, modes moteurs). L’API BBIA est unifiée et synchrone; la conformité porte sur les unités, les bornes et la sémantique des appels.
@@ -1257,7 +1368,7 @@ Le fichier `robot_api.py` définit une API abstraite (connect/disconnect, set/ge
 
 ### 📚 Documentation
 
-- Docstrings présentes et minimalistes  
+- Docstrings présentes et minimalistes
 - Méthodes clairement séparées entre API abstraite et comportements d’exemple
 
 ### 🎯 Score & Recommandation
@@ -1304,7 +1415,7 @@ Notes:
 ### 🧠 Architecture IA déportée (Wireless)
 
 - Flux recommandé (aligné Discord): Robot (RPi/carte dédiée) ⇄ WiFi ⇄ PC IA (STT/TTS/LLM) ⇄ Robot.
-- Déjà supporté ici: séparation backend robot, modules IA (voix, HF, émotions) et tests de latence audio. 
+- Déjà supporté ici: séparation backend robot, modules IA (voix, HF, émotions) et tests de latence audio.
 - Backends IA locaux possibles (non installés par défaut):
   - TTS: KittenTTS (léger), alternatives plus lourdes Kokoro/NeuTTS
   - STT: Whisper/Parakeet

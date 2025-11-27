@@ -5,6 +5,7 @@ Valide que tous les skips sont justifiés et documente les raisons
 
 import subprocess  # nosec B404
 import sys
+from typing import Any
 
 
 def analyze_skipped_tests():
@@ -13,7 +14,7 @@ def analyze_skipped_tests():
     print("=" * 50)
 
     # Catégories de tests skippés avec justifications
-    skipped_categories = {
+    skipped_categories: dict[str, dict[str, Any]] = {
         "Hugging Face / ML": {
             "files": ["test_bbia_phase2_modules.py", "test_ia_modules.py"],
             "reason": (
@@ -48,9 +49,11 @@ def analyze_skipped_tests():
         },
     }
 
-    total_skipped = sum(cat["count"] for cat in skipped_categories.values())
+    total_skipped = sum(int(cat.get("count", 0)) for cat in skipped_categories.values())
     total_justified = sum(
-        cat["count"] for cat in skipped_categories.values() if cat["justified"]
+        int(cat.get("count", 0))
+        for cat in skipped_categories.values()
+        if cat.get("justified", False)
     )
 
     print("📊 Résumé des tests skippés:")
@@ -60,10 +63,13 @@ def analyze_skipped_tests():
     print()
 
     for category, info in skipped_categories.items():
-        status = "✅" if info["justified"] else "❌"
-        print(f"{status} {category}: {info['count']} tests")
-        print(f"   Raison: {info['reason']}")
-        print(f"   Fichiers: {', '.join(info['files'])}")
+        status = "✅" if info.get("justified", False) else "❌"
+        count = info.get("count", 0)
+        reason = info.get("reason", "Non spécifié")
+        files = info.get("files", [])
+        print(f"{status} {category}: {count} tests")
+        print(f"   Raison: {reason}")
+        print(f"   Fichiers: {', '.join(str(f) for f in files)}")
         print()
 
     print("🎯 Conclusion:")

@@ -137,7 +137,7 @@ presentation/
 **Preview** : `tests/preview_[asset].html`
 
 **Intégration** :
-```html
+```html 🌐
 
 <!-- Exemple code HTML/CSS -->
 <img src="logo_bbia_complet.svg" alt="BBIA Logo">

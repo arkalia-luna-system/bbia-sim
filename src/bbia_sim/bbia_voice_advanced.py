@@ -36,6 +36,12 @@ import importlib.util
 
 PYTTSX3_AVAILABLE = importlib.util.find_spec("pyttsx3") is not None
 
+# Import dire_texte original pour fallback
+try:
+    from .bbia_voice import dire_texte as dire_texte_old
+except ImportError:
+    dire_texte_old = None  # type: ignore[assignment]
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
@@ -70,6 +76,8 @@ class BBIAVoiceAdvanced:
         self.tts: Any | None = None
         self.current_emotion = "neutral"
         self.robot_api = robot_api
+        self.pyttsx3_engine: Any | None = None
+        self.pyttsx3_voice_id: str | None = None
 
         # Mapping émotions BBIA → émotions Coqui TTS
         self.emotion_map: dict[str, dict[str, Any]] = {
@@ -89,7 +97,7 @@ class BBIAVoiceAdvanced:
 
         if self.use_coqui:
             try:
-                logger.info(f"🎤 Initialisation Coqui TTS avec modèle: {model_name}")
+                logger.info("🎤 Initialisation Coqui TTS avec modèle: %s", model_name)
                 self.tts = TTS(model_name)
                 logger.info("✅ Coqui TTS initialisé avec succès")
             except Exception as e:
@@ -108,16 +116,45 @@ class BBIAVoiceAdvanced:
                     _get_pyttsx3_engine,
                 )
 
-                self.pyttsx3_engine = (
+                engine = (
                     _get_pyttsx3_engine()
                 )  # Utilise cache global (0ms après premier appel)
+                if engine is None:
+                    # Log en debug en CI (warning attendu sans eSpeak)
+                    if os.environ.get("CI", "false").lower() == "true":
+                        logger.debug(
+                            "pyttsx3 non disponible (audio désactivé ou eSpeak manquant)"
+                        )
+                    else:
+                        logger.warning(
+                            "⚠️ pyttsx3 non disponible (audio désactivé ou eSpeak manquant)"
+                        )
+                    self.pyttsx3_engine = None
+                    self.pyttsx3_voice_id = None
+                    return
+                self.pyttsx3_engine = engine
                 self.pyttsx3_voice_id = _get_cached_voice_id()  # Utilise cache voice ID
-                self.pyttsx3_engine.setProperty("voice", self.pyttsx3_voice_id)
-                self.pyttsx3_engine.setProperty("rate", 170)
-                self.pyttsx3_engine.setProperty("volume", 1.0)
-                logger.info("✅ Fallback pyttsx3 initialisé (avec cache)")
-            except Exception as e:
-                logger.error(f"❌ Erreur initialisation fallback: {e}")
+                # Vérifier que engine n'est pas None avant d'appeler setProperty
+                if (
+                    self.pyttsx3_engine is not None
+                    and self.pyttsx3_voice_id is not None
+                ):
+                    self.pyttsx3_engine.setProperty("voice", self.pyttsx3_voice_id)
+                    self.pyttsx3_engine.setProperty("rate", 170)
+                    self.pyttsx3_engine.setProperty("volume", 1.0)
+                    logger.info("✅ Fallback pyttsx3 initialisé (avec cache)")
+                else:
+                    logger.warning(
+                        "⚠️ Impossible d'initialiser pyttsx3 (engine ou voice_id manquant)"
+                    )
+                    self.pyttsx3_engine = None
+                    self.pyttsx3_voice_id = None
+            except Exception:
+                # Ne pas logger l'exception complète en CI (trop verbeux)
+                if os.environ.get("BBIA_DISABLE_AUDIO", "0") == "1":
+                    logger.warning("⚠️ Erreur initialisation fallback (audio désactivé)")
+                else:
+                    logger.exception("❌ Erreur initialisation fallback")
                 self.pyttsx3_engine = None
 
     def say(
@@ -143,7 +180,7 @@ class BBIAVoiceAdvanced:
         """
         # Vérifier flag d'environnement pour désactiver audio (CI/headless)
         if os.environ.get("BBIA_DISABLE_AUDIO", "0") == "1":
-            logger.debug(f"Audio désactivé (BBIA_DISABLE_AUDIO=1): '{text}' ignoré")
+            logger.debug("Audio désactivé (BBIA_DISABLE_AUDIO=1): '%s' ignoré", text)
             return (
                 True  # Retourner True car c'est un succès (ignoré intentionnellement)
             )
@@ -157,10 +194,14 @@ class BBIAVoiceAdvanced:
                 return self._say_coqui(text, emotion, pitch, speed, volume)
             if self.pyttsx3_engine:
                 return self._say_pyttsx3(text, speed, volume)
-            logger.error("❌ Aucun moteur TTS disponible")
+            # Log en debug en CI (erreur attendue sans moteur TTS)
+            if os.environ.get("CI", "false").lower() == "true":
+                logger.debug("Aucun moteur TTS disponible")
+            else:
+                logger.error("❌ Aucun moteur TTS disponible")
             return False
-        except Exception as e:
-            logger.error(f"❌ Erreur synthèse vocale: {e}")
+        except Exception:
+            logger.exception("❌ Erreur synthèse vocale")
             return False
 
     def _say_coqui(
@@ -210,7 +251,8 @@ class BBIAVoiceAdvanced:
             # Note: Certains modèles Coqui TTS supportent directement pitch/emotion
             # dans tts_to_file. Si non supporté, utiliser paramètres de base.
             if self.tts is None:
-                raise ValueError("Coqui TTS non initialisé")
+                msg = "Coqui TTS non initialisé"
+                raise ValueError(msg)
             # Type narrowing: mypy comprend maintenant que self.tts n'est pas None
             self.tts.tts_to_file(
                 text=text,
@@ -226,8 +268,8 @@ class BBIAVoiceAdvanced:
             logger.info("✅ Synthèse vocale terminée")
             return True
 
-        except Exception as e:
-            logger.error(f"❌ Erreur synthèse Coqui: {e}")
+        except Exception:
+            logger.exception("❌ Erreur synthèse Coqui")
             # Fallback vers pyttsx3 si erreur
             if self.pyttsx3_engine:
                 logger.info("🔄 Fallback vers pyttsx3")
@@ -239,7 +281,7 @@ class BBIAVoiceAdvanced:
                 try:
                     audio_file.unlink()
                 except Exception as cleanup_error:
-                    logger.debug(f"Nettoyage fichier temporaire ({cleanup_error})")
+                    logger.debug("Nettoyage fichier temporaire (%s)", cleanup_error)
 
     def _play_audio_file(self, audio_path: Path, volume: float) -> None:
         """Joue un fichier audio via le SDK si possible, sinon localement.
@@ -262,7 +304,7 @@ class BBIAVoiceAdvanced:
                         logger.info("🔊 Lecture via robot.media.play_audio")
                         return
                 except Exception as e:
-                    logger.debug(f"media.play_audio indisponible: {e}")
+                    logger.debug("media.play_audio indisponible: %s", e)
 
                 # Essayer media.speaker
                 try:
@@ -278,10 +320,10 @@ class BBIAVoiceAdvanced:
                             logger.info("🔊 Lecture via robot.media.speaker.play")
                             return
                 except Exception as e:
-                    logger.debug(f"media.speaker indisponible: {e}")
+                    logger.debug("media.speaker indisponible: %s", e)
 
         except Exception as e:
-            logger.debug(f"Intégration média non disponible: {e}")
+            logger.debug("Intégration média non disponible: %s", e)
 
         # Fallback local
         if playsound is not None:
@@ -291,16 +333,19 @@ class BBIAVoiceAdvanced:
 
     def _say_pyttsx3(self, text: str, speed: float, volume: float) -> bool:
         """Synthétise avec pyttsx3 (fallback)."""
+        if self.pyttsx3_engine is None:
+            logger.warning("⚠️ pyttsx3 non disponible (audio désactivé)")
+            return False
         try:
-            logger.info(f"🎤 Synthèse pyttsx3: '{text[:50]}...'")
+            logger.info("🎤 Synthèse pyttsx3: '%s...'", text[:50])
             self.pyttsx3_engine.setProperty("rate", int(170 * speed))
             self.pyttsx3_engine.setProperty("volume", volume)
             self.pyttsx3_engine.say(text)
             self.pyttsx3_engine.runAndWait()
             logger.info("✅ Synthèse pyttsx3 terminée")
             return True
-        except Exception as e:
-            logger.error(f"❌ Erreur synthèse pyttsx3: {e}")
+        except Exception:
+            logger.exception("❌ Erreur synthèse pyttsx3")
             return False
 
     def set_emotion(self, emotion: str) -> None:
@@ -312,9 +357,9 @@ class BBIAVoiceAdvanced:
         """
         if emotion in self.emotion_map:
             self.current_emotion = emotion
-            logger.info(f"🎭 Émotion vocale définie: {emotion}")
+            logger.info("🎭 Émotion vocale définie: %s", emotion)
         else:
-            logger.warning(f"⚠️  Émotion inconnue: {emotion}, utilisation 'neutral'")
+            logger.warning("⚠️  Émotion inconnue: %s, utilisation 'neutral'", emotion)
             self.current_emotion = "neutral"
 
     def say_with_emotion(
@@ -338,10 +383,7 @@ class BBIAVoiceAdvanced:
 
         # Ajuster pitch selon intensité
         pitch_raw = emotion_config.get("pitch", 0.0)
-        if isinstance(pitch_raw, int | float):
-            base_pitch = float(pitch_raw)
-        else:
-            base_pitch = 0.0
+        base_pitch = float(pitch_raw) if isinstance(pitch_raw, int | float) else 0.0
         adjusted_pitch: float = base_pitch * intensity
 
         return self.say(
@@ -361,6 +403,7 @@ def dire_texte_advanced(
     texte: str,
     emotion: str | None = None,
     pitch: float | None = None,
+    speed: float = 1.0,
 ) -> bool:
     """Fonction wrapper pour compatibilité avec dire_texte() existant.
 
@@ -368,6 +411,7 @@ def dire_texte_advanced(
         texte: Texte à synthétiser
         emotion: Émotion BBIA (optionnel)
         pitch: Ajustement pitch (optionnel)
+        speed: Vitesse de lecture (0.5 à 2.0, défaut 1.0)
 
     Returns:
         True si succès
@@ -378,7 +422,7 @@ def dire_texte_advanced(
         globals()["_global_voice_advanced"] = BBIAVoiceAdvanced()
 
     voice_advanced: BBIAVoiceAdvanced = globals()["_global_voice_advanced"]
-    result = voice_advanced.say(texte, emotion=emotion, pitch=pitch)
+    result = voice_advanced.say(texte, emotion=emotion, pitch=pitch, speed=speed)
     return bool(result)
 
 
@@ -398,51 +442,51 @@ def dire_texte(texte: str) -> bool:
     # Essayer Coqui TTS d'abord
     try:
         return dire_texte_advanced(texte)
-    except Exception:
+    except (ImportError, RuntimeError, ValueError):
         # Fallback vers pyttsx3 original
         try:
-            from .bbia_voice import dire_texte as dire_texte_old
-
-            dire_texte_old(texte)  # Retourne None, mais exécution = succès
-            return True
-        except Exception as e:
-            logging.exception(f"❌ Erreur synthèse vocale (tous moteurs): {e}")
+            if dire_texte_old is not None:
+                dire_texte_old(texte)  # Retourne None, mais exécution = succès
+                return True
+            return False
+        except Exception:
+            logging.exception("❌ Erreur synthèse vocale (tous moteurs)")
             return False
 
 
 if __name__ == "__main__":
     """Test du module de synthèse vocale avancée."""
 
-    print("🎤 Test BBIA Voice Advanced")
-    print("=" * 50)
+    logging.info("🎤 Test BBIA Voice Advanced")
+    logging.info("=" * 50)
 
     # Tester Coqui TTS
     if COQUI_TTS_AVAILABLE:
-        print("✅ Coqui TTS disponible")
+        logging.info("✅ Coqui TTS disponible")
         voice = BBIAVoiceAdvanced()
 
         if voice.is_coqui_available():
-            print("\n🧪 Test synthèse avec émotion:")
+            logging.info("\n🧪 Test synthèse avec émotion:")
             voice.say_with_emotion(
                 "Bonjour, je suis BBIA avec une voix contrôlable !",
                 "happy",
                 intensity=0.8,
             )
 
-            print("\n🧪 Test synthèse avec pitch personnalisé:")
+            logging.info("\n🧪 Test synthèse avec pitch personnalisé:")
             voice.say(
                 "Je peux maintenant contrôler le pitch sur macOS !",
                 emotion="excited",
                 pitch=0.3,
             )
         else:
-            print("⚠️  Coqui TTS non initialisé, utilisation fallback")
+            logging.warning("⚠️  Coqui TTS non initialisé, utilisation fallback")
     else:
-        print("❌ Coqui TTS non disponible")
-        print("💡 Installez avec: pip install TTS playsound")
+        logging.error("❌ Coqui TTS non disponible")
+        logging.info("💡 Installez avec: pip install TTS playsound")
 
     # Tester fallback
     if PYTTSX3_AVAILABLE:
-        print("\n✅ Fallback pyttsx3 disponible")
+        logging.info("\n✅ Fallback pyttsx3 disponible")
     else:
-        print("\n❌ Fallback pyttsx3 non disponible")
+        logging.error("\n❌ Fallback pyttsx3 non disponible")

@@ -89,13 +89,30 @@ class TestBBIAEmotionsExtended:
         assert self.emotions.emotion_history[1]["intensity"] == 0.6
         assert self.emotions.emotion_history[1]["previous"] == "happy"
 
-    @patch("builtins.print")
-    def test_display_emotion_transition(self, mock_print):
+    def test_display_emotion_transition(self):
         """Test affichage de transition d'émotion."""
-        self.emotions._display_emotion_transition("neutral", "happy")
+        # Capturer les logs au lieu de mock print (la fonction utilise logger.info)
+        import io
+        import logging
 
-        # Vérifier que print a été appelé plusieurs fois
-        assert mock_print.call_count >= 4
+        log_capture = io.StringIO()
+        handler = logging.StreamHandler(log_capture)
+        handler.setLevel(logging.INFO)
+
+        # Obtenir le logger utilisé par bbia_emotions
+        logger = logging.getLogger("bbia_sim.bbia_emotions")
+        logger.addHandler(handler)
+        logger.setLevel(logging.INFO)
+
+        try:
+            self.emotions._display_emotion_transition("neutral", "happy")
+
+            # Vérifier que les logs contiennent les messages attendus
+            log_output = log_capture.getvalue()
+            assert "Transition d'émotion" in log_output
+            assert "neutral" in log_output or "happy" in log_output
+        finally:
+            logger.removeHandler(handler)
 
     def test_get_current_emotion(self):
         """Test récupération de l'émotion actuelle."""

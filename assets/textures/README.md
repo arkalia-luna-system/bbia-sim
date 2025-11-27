@@ -24,9 +24,13 @@
 
 ### **Textures Décoratives** (optionnel)
 
-4. **`tableau.png`** - Tableau/Poster mural
-5. **`plante.png`** - Plante décorative
-6. **`fenetre.png`** - Fenêtre/vue extérieure
+4. **`robot_reachy_mini.png`** - Image du robot Reachy Mini stylisé (créé avec Procreate)
+   - Taille : 944x712px
+   - Usage : Texture décorative, poster robot sur mur
+   - Fond transparent
+5. **`tableau.png`** - Tableau/Poster mural
+6. **`plante.png`** - Plante décorative
+7. **`fenetre.png`** - Fenêtre/vue extérieure
 
 ---
 
@@ -68,7 +72,7 @@
 
 **Dans XML scène** :
 
-```xml
+```xml 📄
 <texture name="mur" type="2d" file="assets/textures/mur.png"/>
 <material name="mat_mur" texture="mur"/>
 <geom type="box" material="mat_mur"/>

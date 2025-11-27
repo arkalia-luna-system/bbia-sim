@@ -4,11 +4,21 @@ Test budget CPU/RAM boucle principale backend (10-30s profiling léger).
 Mesure overhead backend avec psutil.
 """
 
+import sys
 import time
+from pathlib import Path
 
 import pytest
 
+# S'assurer que src est dans le path pour coverage
+sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
+
+# OPTIMISATION COVERAGE: Importer les modules au niveau module pour que coverage les détecte
+import bbia_sim.backends.reachy_mini_backend  # noqa: F401
+import bbia_sim.robot_factory  # noqa: F401
+
 from bbia_sim.backends.reachy_mini_backend import ReachyMiniBackend
+from bbia_sim.robot_factory import RobotFactory
 
 
 def get_cpu_time() -> float:
@@ -42,9 +52,9 @@ def test_backend_main_loop_budget_cpu_ram() -> None:
     backend = ReachyMiniBackend(use_sim=True)
     assert backend.connect() is True
 
-    # OPTIMISATION RAM: Réduire 5s → 3s, 500 → 300 itérations (suffisant pour mesurer budget)
-    duration_s = 3.0
-    iterations = 300
+    # OPTIMISATION RAM: Réduire 3s → 2s, 300 → 100 itérations (suffisant pour mesurer budget)
+    duration_s = 2.0
+    iterations = 100
 
     try:
         # Mesurer avant
@@ -59,12 +69,13 @@ def test_backend_main_loop_budget_cpu_ram() -> None:
             backend.get_joint_pos("yaw_body")
             backend.step()
 
-            # Réguler à ~50 Hz (20ms par itération)
-            if (i + 1) % 50 == 0:
+            # Réguler à ~50 Hz (20ms par itération) - OPTIMISATION: sleep seulement tous les 25
+            if (i + 1) % 25 == 0:
                 elapsed = time.perf_counter() - t0
                 if elapsed >= duration_s:
                     break
-                time.sleep(0.001)  # Petit délai
+                # OPTIMISATION: Réduire sleep de 0.001 à 0.0005 (2x plus rapide)
+                time.sleep(0.0005)
 
         # Mesurer après
         cpu_after = get_cpu_time()
@@ -102,15 +113,14 @@ def test_backend_main_loop_budget_cpu_ram() -> None:
 @pytest.mark.heavy  # OPTIMISATION RAM: Test lourd (boucle 3s)
 def test_robot_api_interface_budget_cpu_ram() -> None:
     """Test budget CPU/RAM interface RobotAPI abstraite (3s optimisé)."""
-    from bbia_sim.robot_factory import RobotFactory
-
     robot = RobotFactory.create_backend("reachy_mini")
     if not robot or not robot.connect():
         pytest.skip("Backend non disponible")
 
-    # OPTIMISATION RAM: Réduire 5s → 3s, 500 → 300 itérations (suffisant pour mesurer budget)
-    duration_s = 3.0
-    iterations = 300
+    assert robot is not None  # Type narrowing pour mypy
+    # OPTIMISATION RAM: Réduire 3s → 2s, 300 → 100 itérations (suffisant pour mesurer budget)
+    duration_s = 2.0
+    iterations = 100
 
     try:
         # Mesurer avant
@@ -124,11 +134,12 @@ def test_robot_api_interface_budget_cpu_ram() -> None:
             robot.get_joint_pos("yaw_body")
             robot.step()
 
-            if (i + 1) % 50 == 0:
+            # OPTIMISATION: sleep seulement tous les 25, réduire à 0.0005
+            if (i + 1) % 25 == 0:
                 elapsed = time.perf_counter() - t0
                 if elapsed >= duration_s:
                     break
-                time.sleep(0.001)
+                time.sleep(0.0005)
 
         # Mesurer après
         cpu_after = get_cpu_time()

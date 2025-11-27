@@ -1,14 +1,14 @@
 # 🤝 Guide de Contribution - BBIA-SIM
 
-**Date** : Oct / Nov. 2025  
-**Version** : 1.0
+**Date** : 26 Novembre 2025  
+**Version** : 1.4.0
 
 > **Voir aussi** : [`docs/reference/INDEX_THEMATIQUE.md`](../reference/INDEX_THEMATIQUE.md) et [`docs/reference/project-status.md`](../reference/project-status.md)
 
 Bienvenue dans la communauté BBIA-SIM ! Ce guide vous aidera à contribuer efficacement au projet.
 
 > **💡 Nouveau contributeur ?**  
-> Commencez par consulter les [Good First Issues](../getting-started/contributing.md) pour trouver des tâches adaptées aux débutants.
+> Commencez par consulter les [Good First Issues](../getting-started/contributing.md) pour trouver des tâches adaptées aux nouveaux contributeurs.
 
 ---
 
@@ -193,7 +193,7 @@ pytest tests/test_bbia_voice.py -v
 
 ## 📚 Zones de Contribution
 
-### Pour les Débutants 🟢
+### Pour les Nouveaux Contributeurs 🟢
 
 **Bons premiers pas** :
 
@@ -355,7 +355,7 @@ open htmlcov/index.html
 
 ### Documentation
 
-- **Guide Débutant** : `docs/guides/GUIDE_DEBUTANT.md`
+- **Guide de Démarrage** : `docs/guides/GUIDE_DEMARRAGE.md`
 - **Guide Avancé** : `docs/guides/GUIDE_AVANCE.md`
 - **Architecture** : `docs/development/architecture/ARCHITECTURE_DETAILED.md`
 - **Conformité SDK** : `docs/quality/compliance/CONFORMITE_REACHY_MINI_COMPLETE.md`

@@ -56,9 +56,23 @@ def test_track_untrack_object() -> None:
 #!/usr/bin/env python3
 """Tests pour le module BBIA Vision."""
 
+import gc
+
 
 class TestBBIAVision:
     """Tests pour BBIAVision."""
+
+    def teardown_method(self):
+        """OPTIMISATION RAM: Décharger modèles vision après chaque test."""
+        try:
+            # Vider cache YOLO
+            import bbia_sim.vision_yolo as vision_yolo_module
+
+            with vision_yolo_module._yolo_cache_lock:
+                vision_yolo_module._yolo_model_cache.clear()
+        except (AttributeError, ImportError):
+            pass
+        gc.collect()
 
     @pytest.mark.fast  # OPTIMISATION RAM: Test rapide avec robot_api=None (simulation)
     def test_vision_creation(self):
@@ -79,11 +93,14 @@ class TestBBIAVision:
         )  # OPTIMISATION RAM: Pas de chargement caméra
 
         specs = vision.specs
+        assert specs is not None
         assert specs["camera"] == "Grand angle"
         # Resolution a été clarifiée avec simulation/réel
-        assert "1280x720" in specs["resolution"] or "HD" in specs["resolution"]
+        resolution = str(specs["resolution"]) if specs["resolution"] is not None else ""
+        assert "1280x720" in resolution or "HD" in resolution
         # FOV a été clarifié avec simulation/réel
-        assert "80°" in specs["fov"] or "120°" in specs["fov"]
+        fov = str(specs["fov"]) if specs["fov"] is not None else ""
+        assert "80°" in fov or "120°" in fov
         assert specs["focus"] == "Auto"
 
     @pytest.mark.fast
@@ -123,6 +140,7 @@ class TestBBIAVision:
         # Test état initial
         assert vision.current_focus is None
 
-        # Test changement de focus
-        vision.current_focus = "test_object"
-        assert vision.current_focus == "test_object"
+        # Test changement de focus (current_focus est un dict, pas un str)
+        test_object = {"name": "test_object", "position": (0.5, 0.5)}
+        vision.current_focus = test_object
+        assert vision.current_focus == test_object

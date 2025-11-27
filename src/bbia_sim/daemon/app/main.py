@@ -13,19 +13,22 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
-from ..config import settings
-from ..middleware import RateLimitMiddleware, SecurityMiddleware
-from ..simulation_service import simulation_service
-from ..ws import telemetry
+from bbia_sim.daemon.config import settings
+from bbia_sim.daemon.middleware import RateLimitMiddleware, SecurityMiddleware
+from bbia_sim.daemon.simulation_service import simulation_service
+from bbia_sim.daemon.ws import telemetry
+
 from .routers import (
     apps,
     daemon,
     ecosystem,
     kinematics,
+    media,
     metrics,
     motion,
     motors,
     move,
+    presets,
     state,
 )
 
@@ -68,7 +71,8 @@ def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)) 
     if credentials.credentials != settings.api_token:
         # Log sécurisé sans exposer le token
         logger.warning(
-            f"Tentative d'authentification avec token invalide: {settings.mask_token(credentials.credentials)}",
+            "Tentative d'authentification avec token invalide: %s",
+            settings.mask_token(credentials.credentials),
         )
         raise HTTPException(
             status_code=401,
@@ -79,7 +83,8 @@ def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)) 
     # Log de succès en mode debug uniquement
     if settings.log_level.upper() == "DEBUG":
         logger.debug(
-            f"Authentification réussie avec token: {settings.mask_token(credentials.credentials)}",
+            "Authentification réussie avec token: %s",
+            settings.mask_token(credentials.credentials),
         )
 
     return str(credentials.credentials)
@@ -109,18 +114,47 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     # Arrêt
     logger.info("🛑 Arrêt de l'API BBIA-SIM")
 
+    # Issue #402: Arrêt propre même si dashboard ouvert
+    # Fermer toutes les connexions WebSocket actives
+    # telemetry déjà importé au niveau module
+    try:
+        if hasattr(telemetry, "manager") and telemetry.manager:
+            await telemetry.manager.stop_broadcast()
+            logger.info("✅ WebSocket telemetry arrêté")
+    except Exception as e:
+        logger.warning("⚠️ Erreur arrêt WebSocket telemetry: %s", e)
+
+    try:
+        from bbia_sim.dashboard_advanced import advanced_websocket_manager
+
+        if advanced_websocket_manager and hasattr(
+            advanced_websocket_manager,
+            "active_connections",
+        ):
+            # Fermer toutes les connexions actives
+            for ws in list(advanced_websocket_manager.active_connections):
+                try:
+                    await ws.close()
+                except Exception as e:
+                    logger.debug("Erreur fermeture WebSocket: %s", e)
+            advanced_websocket_manager.active_connections.clear()
+            logger.info("✅ WebSocket dashboard arrêté")
+    except Exception as e:
+        logger.warning("⚠️ Erreur arrêt WebSocket dashboard: %s", e)
+
     # Arrêt de la simulation
     if app_state["simulator"]:
         await simulation_service.stop_simulation()
         app_state["simulator"] = None
         app_state["is_running"] = False
+        logger.info("✅ Simulation arrêtée")
 
 
 # Création de l'application FastAPI
 app = FastAPI(
     title="BBIA-SIM API - Écosystème Reachy Mini",
     description="""
-    ## 🚀 API BBIA-SIM v1.2.0 - Écosystème Reachy Mini
+    ## 🚀 API BBIA-SIM v1.3.2 - Écosystème Reachy Mini
 
     **API publique pour le contrôle du robot Reachy Mini avec modules BBIA (Bio-Inspired Artificial Intelligence)**
 
@@ -158,7 +192,7 @@ app = FastAPI(
     ws://localhost:8000/ws/telemetry
     ```
     """,
-    version="1.2.0",
+    version="1.3.2",
     docs_url="/docs",
     redoc_url="/redoc",
     openapi_url="/openapi.json",
@@ -247,6 +281,12 @@ app.include_router(
     prefix="/api",
 )  # Sans dépendance globale pour dashboard
 
+# Router media SANS auth pour permettre l'accès depuis le dashboard
+# Note: Les endpoints media sont accessibles depuis le dashboard
+app.include_router(
+    media.router,
+)  # Préfixe /development/api/media déjà défini dans le router
+
 # Routers AVEC WebSockets (auth via query params en prod)
 # Note: Les WebSockets ne supportent pas HTTPBearer
 # Les endpoints HTTP dans ces routers auront l'auth désactivée pour éviter conflits
@@ -275,6 +315,11 @@ app.include_router(
 )
 app.include_router(telemetry.router, prefix="/ws", tags=["telemetry"])
 app.include_router(metrics.router, tags=["metrics"])  # /metrics/*, /healthz, /readyz
+app.include_router(
+    presets.router,
+    prefix="/api/presets",
+    tags=["presets"],
+)  # /api/presets/*
 
 
 # Endpoint JSON racine pour les tests et API clients
@@ -284,7 +329,7 @@ async def root_api() -> dict[str, Any]:
     """Point d'entrée principal de l'API en JSON."""
     return {
         "message": "BBIA-SIM API - Écosystème Reachy Mini",
-        "version": "1.2.0",
+        "version": "1.3.2",
         "status": "running",
         "description": (
             "API publique pour le contrôle du robot Reachy Mini avec modules BBIA"
@@ -337,7 +382,9 @@ if STATIC_DIR.exists() and TEMPLATES_DIR.exists():
 else:
     logger.warning(
         "Dashboard templates non trouvés. Dashboard non disponible. "
-        f"STATIC_DIR: {STATIC_DIR}, TEMPLATES_DIR: {TEMPLATES_DIR}",
+        "STATIC_DIR: %s, TEMPLATES_DIR: %s",
+        STATIC_DIR,
+        TEMPLATES_DIR,
     )
 
     @app.get("/", response_class=JSONResponse)
@@ -345,7 +392,7 @@ else:
         """Point d'entrée principal de l'API (fallback si dashboard non disponible)."""
         return {
             "message": "BBIA-SIM API - Écosystème Reachy Mini",
-            "version": "1.2.0",
+            "version": "1.3.2",
             "status": "running",
             "description": (
                 "API publique pour le contrôle du robot Reachy Mini avec modules BBIA"
@@ -401,7 +448,7 @@ async def api_info() -> dict[str, Any]:
     """Informations détaillées sur l'API."""
     return {
         "name": "BBIA-SIM API - Écosystème Reachy Mini",
-        "version": "1.2.0",
+        "version": "1.3.2",
         "description": (
             "API publique pour le contrôle du robot Reachy Mini avec modules BBIA"
         ),
@@ -458,7 +505,7 @@ async def http_exception_handler(request: Request, exc: HTTPException) -> JSONRe
 @app.exception_handler(Exception)
 async def general_exception_handler(request: Request, exc: Exception) -> JSONResponse:
     """Gestionnaire d'erreurs générales."""
-    logger.error(f"Erreur non gérée : {exc}")
+    logger.error("Erreur non gérée : %s", exc)
     return JSONResponse(
         status_code=500,
         content={

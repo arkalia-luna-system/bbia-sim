@@ -1,0 +1,348 @@
+#!/usr/bin/env python3
+"""Tests optimisés pour toutes les capacités restantes - Version légère et performante."""
+
+from typing import Any
+
+import numpy as np
+import pytest
+
+from bbia_sim.bbia_behavior import (
+    BBIABehaviorManager,
+    AntennaAnimationBehavior,
+    GreetingBehavior,
+    HideBehavior,
+    EmotionalResponseBehavior,
+)
+from bbia_sim.behaviors import (
+    ConversationBehavior,
+    DanceBehavior,
+    EmotionShowBehavior,
+    ExerciseBehavior,
+    FollowFaceBehavior,
+    FollowObjectBehavior,
+    GameBehavior,
+    MeditationBehavior,
+)
+from bbia_sim.daemon.app.backend_adapter import BackendAdapter
+from bbia_sim.backends.mujoco_backend import MuJoCoBackend
+from bbia_sim.daemon.app.routers.daemon import DaemonStatus
+from bbia_sim.daemon.models import MotionCommand, MoveUUID, Matrix4x4Pose
+from bbia_sim.daemon.ws import ConnectionManager
+from bbia_sim.utils.types import (
+    LookAtParams,
+    PlayAudioParams,
+    SetEmotionParams,
+    SetTargetParams,
+    MovementRecording,
+    MetricsData,
+    ModelInfo,
+    SentimentDict,
+    SentimentResult,
+    TelemetryData,
+    DetectionResult,
+    FaceDetection,
+    RobotStatus,
+    ConversationEntry,
+)
+
+
+class TestQuickBehaviors:
+    """Tests rapides pour tous les comportements."""
+
+    def test_all_behaviors_init(self) -> None:
+        """Test initialisation de tous les comportements."""
+        backend = MuJoCoBackend()
+        backend.connect()
+        try:
+            # Test tous les comportements en une fois
+            behaviors = [
+                AntennaAnimationBehavior(robot_api=backend),
+                GreetingBehavior(robot_api=backend),
+                HideBehavior(robot_api=backend),
+                ConversationBehavior(robot_api=backend),
+                DanceBehavior(robot_api=backend),
+                EmotionShowBehavior(robot_api=backend),
+                ExerciseBehavior(robot_api=backend),
+                GameBehavior(robot_api=backend),
+                MeditationBehavior(robot_api=backend),
+            ]
+
+            assert all(b is not None for b in behaviors)
+        finally:
+            backend.disconnect()
+
+    def test_emotion_show_cancel(self) -> None:
+        """Test EmotionShowBehavior.cancel."""
+        backend = MuJoCoBackend()
+        backend.connect()
+        try:
+            behavior = EmotionShowBehavior(robot_api=backend)
+            behavior.cancel()
+        finally:
+            backend.disconnect()
+
+
+class TestBBIABehaviorManagerQuick:
+    """Tests rapides pour BBIABehaviorManager."""
+
+    def test_all_manager_methods(self) -> None:
+        """Test toutes les méthodes du manager en une fois."""
+        backend = MuJoCoBackend()
+        backend.connect()
+        try:
+            manager = BBIABehaviorManager(robot_api=backend)
+
+            # Test toutes les méthodes
+            manager.register_behavior(GreetingBehavior(robot_api=backend))
+            manager.add_to_queue("greeting", {})
+            manager.start_behavior_worker()
+            behaviors = manager.get_available_behaviors()
+            stats = manager.get_behavior_stats()
+            manager.stop_behavior_worker()
+
+            assert isinstance(behaviors, list)
+            assert "total_behaviors" in stats
+        finally:
+            backend.disconnect()
+
+
+class TestBackendAdapterQuick:
+    """Tests rapides pour BackendAdapter."""
+
+    def test_all_adapter_methods(self) -> None:
+        """Test toutes les méthodes BackendAdapter en une fois."""
+        backend = MuJoCoBackend()
+        backend.connect()
+        adapter = None
+        try:
+            adapter = BackendAdapter(backend)
+            adapter.connect_if_needed()
+
+            # Test toutes les méthodes set_target_*
+            adapter.set_target_head_pose(np.eye(4, dtype=np.float64))
+            adapter.set_target_body_yaw(0.5)
+            adapter.set_target_head_joint_positions(
+                np.array([0.0] * 7, dtype=np.float64)
+            )
+            adapter.set_target_antenna_joint_positions([0.0, 0.0])
+            adapter.set_target_head_joint_current(np.array([0.0] * 7, dtype=np.float64))
+
+            # Test autres méthodes
+            adapter.set_automatic_body_yaw(0.5)
+            adapter.update_head_kinematics_model()
+            adapter.update_target_head_joints_from_ik()
+            adapter.play_sound("test.wav")
+            adapter.wrapped_run()
+
+            # Test publishers
+            adapter.set_pose_publisher(None)
+            adapter.set_joint_positions_publisher(None)
+            adapter.set_recording_publisher(None)
+
+            # Test recording
+            adapter.start_recording()
+            adapter.stop_recording()
+        finally:
+            if adapter:
+                adapter.close()
+            backend.disconnect()
+
+
+class TestUtilsTypesQuick:
+    """Tests rapides pour tous les types utilitaires."""
+
+    def test_all_types(self) -> None:
+        """Test tous les types en une fois."""
+        # Test tous les types TypedDict
+        look_at: LookAtParams = {"x": 0.5, "y": 0.3, "z": 0.2, "duration": 1.0}
+        play_audio: PlayAudioParams = {"file_path": "test.wav", "volume": 0.8}
+        set_emotion: SetEmotionParams = {"emotion": "happy", "intensity": 0.7}
+        set_target: SetTargetParams = {"head": [0.0] * 7, "antennas": [0.0, 0.0]}
+        movement: MovementRecording = {"positions": [{}], "duration": 1.0}
+        metrics: MetricsData = {"cpu_percent": 50.0, "memory_percent": 60.0}
+        model_info: ModelInfo = {"name": "test", "loaded": True}
+        sentiment_dict: SentimentDict = {
+            "sentiment": "positive",
+            "score": 0.8,
+            "label": "positive",
+        }
+        sentiment_result: SentimentResult = {"sentiment": "positive", "score": 0.8}
+        telemetry: TelemetryData = {"step_count": 100, "current_joint_positions": {}}
+        detection: DetectionResult = {
+            "class_name": "person",
+            "confidence": 0.9,
+            "bbox": [0, 0, 100, 100],
+            "class_id": 0,
+            "center": [50, 50],
+            "area": 10000,
+        }
+        face: FaceDetection = {
+            "bbox": {"x": 0, "y": 0, "width": 100, "height": 100},
+            "name": "test",
+            "confidence": 0.9,
+        }
+        robot_status: RobotStatus = {"connected": True, "current_emotion": "happy"}
+        conversation: ConversationEntry = {
+            "user": "Bonjour",
+            "bbia": "Salut",
+            "timestamp": "2025-11-21",
+        }
+
+        # Vérification que tous les types sont valides
+        assert look_at["x"] == 0.5
+        assert play_audio["file_path"] == "test.wav"
+        assert set_emotion["emotion"] == "happy"
+        assert set_target["head"] is not None and len(set_target["head"]) == 7
+        assert len(movement["positions"]) == 1
+        assert metrics["cpu_percent"] == 50.0
+        assert model_info["name"] == "test"
+        assert sentiment_dict["sentiment"] == "positive"
+        assert sentiment_result["sentiment"] == "positive"
+        assert telemetry["step_count"] == 100
+        assert detection["class_name"] == "person"
+        assert face["bbox"]["x"] == 0
+        assert robot_status["connected"] is True
+        assert conversation["user"] == "Bonjour"
+
+
+class TestDaemonModelsQuick:
+    """Tests rapides pour les modèles daemon."""
+
+    def test_all_models(self) -> None:
+        """Test tous les modèles en une fois."""
+        from uuid import uuid4
+
+        # Test tous les modèles
+        motion = MotionCommand(command="move", parameters={"speed": 0.5})
+        move_uuid = MoveUUID(uuid=uuid4())
+        matrix_pose = Matrix4x4Pose(m=tuple(np.eye(4).flatten()))
+        status = DaemonStatus(status="running", simulation_running=True)
+
+        # Test méthodes
+        pose_array = matrix_pose.to_pose_array()
+
+        assert motion.command == "move"
+        assert move_uuid.uuid is not None
+        assert pose_array.shape == (4, 4)
+        assert status.status == "running"
+
+
+class TestConnectionManager:
+    """Tests pour ConnectionManager."""
+
+    def test_connection_manager_init(self) -> None:
+        """Test ConnectionManager."""
+        manager = ConnectionManager()
+        assert manager is not None
+        assert len(manager.active_connections) == 0
+
+
+class TestAIBackendsQuick:
+    """Tests rapides pour tous les backends IA."""
+
+    def test_all_backends_init(self) -> None:
+        """Test initialisation de tous les backends IA."""
+        from bbia_sim.ai_backends import (
+            CoquiTTSTTS,
+            KokoroTTS,
+            LlamaCppLLM,
+            LocalLLM,
+            NeuTTSTTS,
+            OpenVoiceTTSTTS,
+            DummySTT,
+            WhisperSTT,
+            KittenTTSTTS,
+        )
+
+        # Test tous les backends (skip si non disponibles)
+        backends: list[Any] = []
+        try:
+            backends.append(CoquiTTSTTS())
+        except Exception:
+            pass
+        try:
+            backends.append(KokoroTTS())  # type: ignore[arg-type]
+        except Exception:
+            pass
+        try:
+            backends.append(LlamaCppLLM())  # type: ignore[arg-type]
+        except Exception:
+            pass
+        try:
+            # LocalLLM est un protocol, ne peut pas être instancié
+            pass
+        except Exception:
+            pass
+        try:
+            backends.append(NeuTTSTTS())  # type: ignore[arg-type]
+        except Exception:
+            pass
+        try:
+            backends.append(OpenVoiceTTSTTS())  # type: ignore[arg-type]
+        except Exception:
+            pass
+        try:
+            backends.append(DummySTT())  # type: ignore[arg-type]
+        except Exception:
+            pass
+        try:
+            backends.append(WhisperSTT())  # type: ignore[arg-type]
+        except Exception:
+            pass
+        try:
+            backends.append(KittenTTSTTS())  # type: ignore[arg-type]
+        except Exception:
+            pass
+
+        # Au moins DummySTT devrait fonctionner
+        assert len(backends) > 0
+
+
+class TestOtherClassesQuick:
+    """Tests rapides pour autres classes."""
+
+    def test_all_other_classes(self) -> None:
+        """Test toutes les autres classes en une fois."""
+        from bbia_sim.pose_detection import BBIAPoseDetection, create_pose_detector
+        from bbia_sim.dashboard_advanced import BBIAAdvancedWebSocketManager
+        from bbia_sim.dashboard import BBIAWebSocketManager
+        from bbia_sim.backends.simulation_shims import (
+            SimulationIOModule,
+            SimulationMediaModule,
+        )
+
+        # Test toutes les classes
+        pose_detector = BBIAPoseDetection()
+        try:
+            pose_detector2 = create_pose_detector()
+        except Exception:
+            pose_detector2 = None
+        ws_manager = BBIAAdvancedWebSocketManager()
+        ws_manager2 = BBIAWebSocketManager()
+        io_module = SimulationIOModule()
+        media_module = SimulationMediaModule()
+
+        # Vérification que les classes principales sont bien initialisées
+        assert pose_detector is not None
+        assert ws_manager is not None
+        assert ws_manager2 is not None
+        assert io_module is not None
+        assert media_module is not None
+
+
+class TestMuJoCoBackendMethods:
+    """Tests pour méthodes MuJoCoBackend."""
+
+    def test_async_play_move(self) -> None:
+        """Test async_play_move."""
+        backend = MuJoCoBackend()
+        backend.connect()
+        try:
+            move = [{"head_yaw": 0.0}]
+            backend.async_play_move(move, play_frequency=100.0)
+        finally:
+            backend.disconnect()
+
+
+if __name__ == "__main__":
+    pytest.main([__file__, "-v"])

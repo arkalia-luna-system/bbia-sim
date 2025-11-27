@@ -1,6 +1,6 @@
 # 📚 Index - Guides Procreate pour Scènes MuJoCo
 
-**Date** : Oct / Nov. 2025
+**Date** : 26 Novembre 2025
 
 > **Navigation rapide** : Tous les guides disponibles
 
@@ -106,12 +106,13 @@
 
 - ✅ Utiliser modèle 3D MuJoCo (recommandé)
 - ✅ Texture robot optionnelle (pour décor)
+  - **Fichier existant** : `assets/textures/robot_reachy_mini.png` (944x712px, créé avec Procreate)
 
 ---
 
 ## 🔗 Autres Ressources
 
-- **Commandes Venv** : `/COMMANDES_VENV_SCENE.md`
+- **Commandes Venv** : `/docs/development/setup/COMMANDES_VENV_SCENE.md`
 - **README Scènes** : `src/bbia_sim/sim/scenes/README_SCENES.md`
 - **Guide Simulation** : `MUJOCO_SIMULATION_GUIDE.md`
 
@@ -124,4 +125,4 @@
 
 ---
 
-*Index Guides Procreate - BBIA-SIM - Oct / Nov. 2025*
+*Index Guides Procreate - BBIA-SIM - 26 Novembre 2025*

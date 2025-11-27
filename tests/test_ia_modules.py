@@ -30,13 +30,18 @@ class TestWhisperSTT:
         mapper = VoiceCommandMapper()
 
         # Test commandes françaises
-        assert mapper.map_command("salue")["action"] == "greet"
-        assert mapper.map_command("regarde-moi")["action"] == "look_at"
-        assert mapper.map_command("sois content")["action"] == "happy"
+        result1 = mapper.map_command("salue")
+        assert result1 is not None and result1["action"] == "greet"
+        result2 = mapper.map_command("regarde-moi")
+        assert result2 is not None and result2["action"] == "look_at"
+        result3 = mapper.map_command("sois content")
+        assert result3 is not None and result3["action"] == "happy"
 
         # Test commandes anglaises
-        assert mapper.map_command("hello")["action"] == "greet"
-        assert mapper.map_command("look at me")["action"] == "look_at"
+        result4 = mapper.map_command("hello")
+        assert result4 is not None and result4["action"] == "greet"
+        result5 = mapper.map_command("look at me")
+        assert result5 is not None and result5["action"] == "look_at"
 
         # Test commande non reconnue
         assert mapper.map_command("commande inconnue") is None
@@ -138,7 +143,7 @@ class TestWhisperSTT:
         mock_whisper_module.load_model.return_value = mock_model
 
         stt = WhisperSTT(model_size="tiny", language="fr")
-        stt.model = mock_model
+        stt.model = mock_model  # type: ignore[assignment]
         stt.is_loaded = True
 
         result = stt.transcribe_audio("test.wav")
@@ -152,7 +157,7 @@ class TestWhisperSTT:
         stt = WhisperSTT(model_size="tiny", language="fr")
         stt.is_loaded = False
         # Mock load_model pour retourner False
-        stt.load_model = MagicMock(return_value=False)
+        setattr(stt, "load_model", MagicMock(return_value=False))  # type: ignore[method-assign]
 
         result = stt.transcribe_audio("test.wav")
         assert result is None
@@ -166,7 +171,7 @@ class TestWhisperSTT:
         mock_whisper_module.load_model.return_value = mock_model
 
         stt = WhisperSTT(model_size="tiny", language="fr")
-        stt.model = mock_model
+        stt.model = mock_model  # type: ignore[assignment]
         stt.is_loaded = True
 
         result = stt.transcribe_audio("test.wav")
@@ -194,7 +199,7 @@ class TestWhisperSTT:
         mock_model.transcribe.return_value = {"text": "Hello"}
 
         stt = WhisperSTT(model_size="tiny", language="auto")
-        stt.model = mock_model
+        stt.model = mock_model  # type: ignore[assignment]
         stt.is_loaded = True
 
         result = stt.transcribe_audio("test.wav")
@@ -258,7 +263,7 @@ class TestWhisperSTT:
         """Test transcription streaming avec modèle non chargé."""
         stt = WhisperSTT(model_size="tiny", language="fr")
         stt.is_loaded = False
-        stt.load_model = MagicMock(return_value=False)
+        setattr(stt, "load_model", MagicMock(return_value=False))  # type: ignore[method-assign]
         result = stt.transcribe_streaming()
         assert result is None
 
@@ -269,7 +274,7 @@ class TestWhisperSTT:
         """Test transcription streaming avec ImportError."""
         mock_sd.rec.side_effect = ImportError("sounddevice not available")
         stt = WhisperSTT(model_size="tiny", language="fr")
-        stt.model = MagicMock()
+        stt.model = MagicMock()  # type: ignore[assignment]
         stt.is_loaded = True
         result = stt.transcribe_streaming()
         assert result is None
@@ -543,22 +548,21 @@ class TestYOLODetector:
 class TestFaceDetector:
     """Tests pour le module détection de visages."""
 
-    @pytest.mark.skip(
-        reason="MediaPipe a des problèmes matplotlib dans l'environnement"
-    )
     def test_face_detector_creation(self):
-        """Test création FaceDetector."""
+        """Test création FaceDetector (optimisé - fonctionne sans MediaPipe)."""
+        # OPTIMISATION: Le code gère gracieusement l'ImportError, donc on peut tester
         detector = FaceDetector()
         # Le détecteur peut être None si MediaPipe non disponible
         assert detector.mp_face_detection is None or hasattr(
             detector.mp_face_detection, "FaceDetection"
         )
+        # Vérifier que l'objet est créé même sans MediaPipe
+        assert detector is not None
+        assert hasattr(detector, "face_detection")
 
-    @pytest.mark.skip(
-        reason="MediaPipe a des problèmes matplotlib dans l'environnement"
-    )
     def test_best_face_selection(self):
-        """Test sélection meilleur visage."""
+        """Test sélection meilleur visage (optimisé - fonctionne sans MediaPipe)."""
+        # OPTIMISATION: Test fonctionne même sans MediaPipe (teste juste la logique)
         detector = FaceDetector()
 
         # Mock détections
@@ -569,8 +573,13 @@ class TestFaceDetector:
         ]
 
         best_face = detector.get_best_face(detections)
+        # Formule: confidence * (1 + area / 50000)
+        # 0.7 * (1 + 10000/50000) = 0.7 * 1.2 = 0.84
+        # 0.9 * (1 + 5000/50000) = 0.9 * 1.1 = 0.99 (meilleur)
+        # 0.6 * (1 + 15000/50000) = 0.6 * 1.3 = 0.78
         assert best_face is not None
-        # Devrait choisir celui avec meilleur score combiné
+        assert best_face["confidence"] == 0.9
+        assert best_face["area"] == 5000
 
 
 class TestDashboard:
@@ -644,10 +653,25 @@ class TestIAPerformance:
 
     def test_whisper_latency_target(self):
         """Test latence Whisper < 800ms."""
-        # Mock latence rapide
-        with patch("bbia_sim.voice_whisper.time.time") as mock_time:
-            mock_time.side_effect = [0, 0.5]  # 500ms
+        # Mock latence rapide avec compteur pour éviter StopIteration
+        # Le logger Python appelle aussi time.time(), donc on doit fournir plusieurs valeurs
+        call_count = [0]  # Utiliser une liste pour la mutabilité dans la closure
 
+        def time_mock():
+            """Mock time qui retourne 0, puis 0.5, puis toujours 0.5."""
+            if call_count[0] == 0:
+                call_count[0] += 1
+                return 0.0
+            elif call_count[0] == 1:
+                call_count[0] += 1
+                return 0.5
+            else:
+                # Pour tous les appels suivants (logger, etc.), retourner 0.5
+                return 0.5
+
+        with patch(
+            "bbia_sim.voice_whisper.time.time", side_effect=time_mock
+        ) as mock_time:
             mapper = VoiceCommandMapper()
             start_time = mock_time()
 

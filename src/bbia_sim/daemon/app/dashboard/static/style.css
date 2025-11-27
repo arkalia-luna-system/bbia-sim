@@ -82,3 +82,128 @@ body {
     justify-content: center;
 }
 
+/* Responsive Mobile */
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem !important;
+    }
+
+    .app-section {
+        padding: 12px;
+    }
+
+    .app-section-title {
+        font-size: 20px;
+    }
+
+    /* Boutons tactiles optimisés */
+    button,
+    .quick-action-btn,
+    .emotion-slider-input {
+        min-height: 44px;
+        min-width: 44px;
+    }
+
+    /* Sliders émotions mobile */
+    .emotion-slider {
+        padding: 12px;
+    }
+
+    .emotion-slider-input {
+        height: 8px;
+    }
+
+    /* FPS display mobile */
+    #fps-display {
+        font-size: 12px;
+        padding: 4px 8px;
+    }
+}
+
+/* PWA Install Button */
+#pwa-install-button {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#pwa-install-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+#pwa-install-button:active {
+    transform: translateY(0);
+}
+
+/* Toast notifications */
+.pwa-instructions {
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Dark Mode Variables */
+:root {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f9fafb;
+    --text-primary: #1f2937;
+    --text-secondary: #6b7280;
+    --border-color: #e5e7eb;
+    --card-bg: #ffffff;
+}
+
+.dark {
+    --bg-primary: #111827;
+    --bg-secondary: #1f2937;
+    --text-primary: #f9fafb;
+    --text-secondary: #d1d5db;
+    --border-color: #374151;
+    --card-bg: #1f2937;
+}
+
+/* Dark Mode Styles */
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.app-section {
+    background: var(--card-bg);
+    border-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+.app-section-title {
+    color: var(--text-primary);
+}
+
+.daemon-status-title {
+    color: var(--text-primary);
+}
+
+.daemon-status-collapse {
+    color: var(--text-secondary);
+}
+
+.hf-app-title {
+    color: var(--text-primary);
+}
+
+.hf-app-description {
+    color: var(--text-secondary);
+}
+
+/* Dark mode pour graphiques Chart.js */
+.dark canvas {
+    filter: brightness(0.9);
+}

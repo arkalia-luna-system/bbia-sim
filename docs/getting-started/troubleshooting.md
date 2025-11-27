@@ -5,9 +5,9 @@
 **💡 Réponses rapides aux questions les plus courantes**  
 *Trouvez rapidement la solution à votre problème*
 
-**Version** : 1.3.2 • **Date** : Oct / Nov. 2025
+**Version** : 1.4.0 • **Date** : 26 Novembre 2025
 
-[📚 Documentation complète](../README.md) • [🐛 Signaler un problème](https://github.com/arkalia-luna-system/bbia-sim/issues)
+[![📚 Documentation](https://img.shields.io/badge/📚-Documentation-blue)](../README.md) • [![🐛 Issue](https://img.shields.io/badge/🐛-Signaler%20un%20problème-red)](https://github.com/arkalia-luna-system/bbia-sim/issues)
 
 </div>
 
@@ -19,6 +19,7 @@
 
 | Catégorie | Questions | ⏱️ Temps |
 |:---------:|:---------:|:--------:|
+| [🔧 Troubleshooting Interactif](#-troubleshooting-interactif-dashboard) | Panneau dashboard | 1 min |
 | [🔧 Installation](#-installation) | Dépendances, setup | 2 min |
 | [🎮 MuJoCo](#-mujoco) | Simulation 3D | 3 min |
 | [🔊 Audio](#-portaudioaudio) | PortAudio, TTS/STT | 5 min |
@@ -31,15 +32,80 @@
 
 ---
 
+## 🔧 Troubleshooting Interactif (Dashboard)
+
+> **⚡ NOUVEAU** : Panneau troubleshooting interactif dans le dashboard !
+
+### Utilisation Rapide
+
+1. **Lancer le dashboard** :
+   ```bash
+   python -m bbia_sim.dashboard_advanced --port 8080
+   ```
+
+2. **Ouvrir dans le navigateur** : http://localhost:8080
+
+3. **Accéder au panneau Troubleshooting** :
+   - Descendre jusqu'au panneau "🔧 Troubleshooting"
+   - Cliquer sur "🔍 Vérifier Tout" pour un diagnostic complet
+
+> **📸 Captures d'écran** : 4 captures du dashboard sont disponibles dans `assets/images/` (Nov 2025) - Voir [`assets/MEDIAS_INVENTAIRE.md`](../../assets/MEDIAS_INVENTAIRE.md) pour l'inventaire complet.
+
+### Fonctionnalités
+
+- ✅ **Vérification automatique** : Python, dépendances, caméra, audio, réseau, MuJoCo, ports, permissions
+- ✅ **Tests interactifs** : Boutons "Test" pour vérifier individuellement chaque composant
+- ✅ **Solutions suggérées** : Chaque problème affiche une solution avec commandes
+- ✅ **Score global** : Pourcentage de santé système (ex: 87.5%)
+- ✅ **Liens documentation** : Accès direct aux guides de dépannage
+
+### Tests Disponibles
+
+- **📷 Test Caméra** : Vérifie disponibilité et fonctionnement caméra
+- **🔊 Test Audio** : Vérifie périphériques audio et PyAudio
+- **🌐 Test Réseau** : Vérifie connectivité internet et ports
+
+### Exemple de Résultat
+
+```
+📊 Résumé
+Score: 87.5% (7/8 checks OK)
+
+🐍 Python
+✅ Python 3.11.9 ✅
+
+📦 Dependencies
+✅ Toutes dépendances installées (4/4)
+
+📷 Camera
+✅ Caméra disponible (opencv)
+
+🔊 Audio
+⚠️ Audio non disponible
+💡 Fix: macOS: brew install portaudio
+```
+
+---
+
+---
+
 ## 🔄 Flux de Dépannage Rapide
 
 ```mermaid
 flowchart TD
-    START{Problème rencontré?} --> INSTALL[Installation]
+    START{Problème rencontré?} --> DASH[Dashboard Troubleshooting]
+    START --> INSTALL[Installation]
     START --> MUJOCO[MuJoCo]
     START --> AUDIO[Audio]
     START --> MODELS[Modèles IA]
     START --> PERF[Performance]
+    
+    DASH --> DASH_CHECK[Ouvrir http://localhost:8080<br/>Panneau Troubleshooting]
+    DASH_CHECK --> DASH_TEST[Cliquer "Vérifier Tout"]
+    DASH_TEST --> DASH_OK{OK?}
+    DASH_OK -->|Oui| END_DASH[✅ Résolu]
+    DASH_OK -->|Non| DASH_FIX[Suivre solutions suggérées]
+    DASH_FIX --> END_DASH
     
     INSTALL --> CHECK[python scripts/bbia_doctor.py]
     CHECK --> INSTALL_OK{OK?}
@@ -339,14 +405,14 @@ export BBIA_DISABLE_SIMULATION=1
 | 🧪 **Tests** | [`../../tests/README.md`](../../tests/README.md) | Guide des tests |
 | 💡 **Exemples** | [`../../examples/README.md`](../../examples/README.md) | Exemples d'utilisation |
 | 🔧 **Scripts** | [`../../scripts/README.md`](../../scripts/README.md) | Outils utilitaires |
-| 🎯 **Guide débutant** | [`../guides/GUIDE_DEBUTANT.md`](../guides/GUIDE_DEBUTANT.md) | Démarrage rapide |
-| 🔍 **Diagnostic** | `python scripts/bbia_doctor.py` | Vérification environnement |
+| 🎯 **Guide de démarrage** | [`../guides/GUIDE_DEMARRAGE.md`](../guides/GUIDE_DEMARRAGE.md) | Démarrage rapide |
+| 🔍 **Diagnostic** | `python scripts/bbia_doctor.py` | Vérification environnement (Zenoh, daemon, WiFi) |
 
 ## 🔗 Liens Utiles
 
 - **GitHub** : [arkalia-luna-system/bbia-sim](https://github.com/arkalia-luna-system/bbia-sim)
 - **Issues** : [Signaler un bug](https://github.com/arkalia-luna-system/bbia-sim/issues)
-- **État du projet** : [`../reference/STATUT_PROJET.md`](../reference/STATUT_PROJET.md) — État opérationnel
+- **État du projet** : [`../reference/project-status.md`](../reference/project-status.md) — État opérationnel et tableau de bord complet
 - **Tableau de bord** : [`../reference/project-status.md`](../reference/project-status.md) — État par axe
 
 ---
@@ -360,11 +426,11 @@ export BBIA_DISABLE_SIMULATION=1
 
 ---
 
-**Dernière mise à jour** : Oct / Nov. 2025
+**Dernière mise à jour** : 26 Novembre 2025
 
 ---
 
 ## 🎯 Navigation
 
 **Retour à** : [README Documentation](../README.md)  
-**Voir aussi** : [Guide Débutant](../guides/GUIDE_DEBUTANT.md) • [Troubleshooting Technique](../development/troubleshooting.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)
+**Voir aussi** : [Guide de Démarrage](../guides/GUIDE_DEMARRAGE.md) • [Troubleshooting Technique](../development/troubleshooting.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)

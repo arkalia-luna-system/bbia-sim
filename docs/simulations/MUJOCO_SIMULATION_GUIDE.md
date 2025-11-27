@@ -1,6 +1,6 @@
 # 🎮 Simulation MuJoCo - Guide d'utilisation
 
-**Date** : Oct / Nov. 2025
+**Date** : 21 Novembre 2025
 
 > Compatibilité Python et CI
 >
@@ -151,7 +151,7 @@ simulator.launch_simulation()
 ```python
 # Obtenir l'état du robot
 state = simulator.get_robot_state()
-print(f"Positions articulations : {state['joint_positions']}")
+logging.info(f"Positions articulations : {state['joint_positions']}")
 
 # Définir des positions
 import numpy as np
@@ -209,7 +209,7 @@ Les scènes utilisent le format MJCF (MuJoCo XML). Exemple minimal :
 
    ```bash
    # Vérifier l'installation
-   python -c "import mujoco; print(mujoco.__version__)"
+   python -c "import mujoco; import logging; logging.info(mujoco.__version__)"
 
    ```
 

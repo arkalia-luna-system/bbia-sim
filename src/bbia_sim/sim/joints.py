@@ -83,7 +83,8 @@ def get_joint_limits(joint_name: str) -> tuple[float, float]:
 
     """
     if not validate_joint_name(joint_name):
-        raise ValueError(f"Joint '{joint_name}' non valide")
+        msg = f"Joint '{joint_name}' non valide"
+        raise ValueError(msg)
 
     return VALID_JOINTS[joint_name]
 
@@ -120,7 +121,8 @@ def get_joint_info(joint_name: str) -> dict[str, Any]:
 
     """
     if not validate_joint_name(joint_name):
-        raise ValueError(f"Joint '{joint_name}' non valide")
+        msg = f"Joint '{joint_name}' non valide"
+        raise ValueError(msg)
 
     min_limit, max_limit = get_joint_limits(joint_name)
 

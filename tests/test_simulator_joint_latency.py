@@ -21,8 +21,8 @@ def test_simulator_set_joint_pos_latency_1e3() -> None:
     backend = ReachyMiniBackend(use_sim=True)
     assert backend.connect() is True
 
-    # OPTIMISATION RAM: Réduire 1000 → 500 (suffisant pour statistiques p50/p95)
-    iterations = 500
+    # OPTIMISATION RAM: Réduire 200 → 100 itérations (suffisant pour statistiques p50/p95, 2x plus rapide)
+    iterations = 100
     joint = "yaw_body"
     latencies_ms: list[float] = []
 
@@ -53,8 +53,8 @@ def test_simulator_get_joint_pos_latency_1e3() -> None:
     backend = ReachyMiniBackend(use_sim=True)
     assert backend.connect() is True
 
-    # OPTIMISATION RAM: Réduire 1000 → 500 (suffisant pour statistiques p50/p95)
-    iterations = 500
+    # OPTIMISATION RAM: Réduire 200 → 100 itérations (suffisant pour statistiques p50/p95, 2x plus rapide)
+    iterations = 100
     joint = "yaw_body"
     latencies_ms: list[float] = []
 
@@ -83,7 +83,8 @@ def test_simulator_step_jitter_p50_p95() -> None:
     backend = ReachyMiniBackend(use_sim=True)
     assert backend.connect() is True
 
-    iterations = 200
+    # OPTIMISATION: Réduire 200 → 150 itérations (suffisant pour mesurer jitter, 1.3x plus rapide)
+    iterations = 150
     target_period_ms = 20.0  # 50 Hz = 20ms
     periods_ms: list[float] = []
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """BBIA Adaptive Behavior - Module de comportements adaptatifs contextuels
-Génération de comportements dynamiques basés sur le contexte et l'état émotionnel
+Génération de comportements dynamiques basés sur le contexte et l'état émotionnel.
 """
 
 import logging
@@ -50,6 +50,11 @@ class BBIAAdaptiveBehavior:
 
         # Contexte et états
         self.contexts = {
+            "neutral": {
+                "priority": 0.5,
+                "duration": 5.0,
+                "emotions": ["neutral", "calm"],
+            },
             "greeting": {
                 "priority": 0.9,
                 "duration": 3.0,
@@ -203,11 +208,11 @@ class BBIAAdaptiveBehavior:
 
         """
         if context not in self.contexts:
-            logger.warning(f"Contexte inconnu: {context}")
+            logger.warning("Contexte inconnu: %s", context)
             return False
 
         self.current_context = context
-        logger.info(f"🎭 Contexte changé: {context} (confiance: {confidence:.2f})")
+        logger.info("🎭 Contexte changé: %s (confiance: %.2f)", context, confidence)
         return True
 
     def set_emotion_state(self, emotion: str, intensity: float = 0.5) -> bool:
@@ -223,7 +228,7 @@ class BBIAAdaptiveBehavior:
         """
         self.current_emotion = emotion
         self.emotion_intensity = max(0.0, min(1.0, intensity))
-        logger.info(f"😊 Émotion: {emotion} (intensité: {self.emotion_intensity:.2f})")
+        logger.info("😊 Émotion: %s (intensité: %.2f)", emotion, self.emotion_intensity)
         return True
 
     def generate_behavior(self, trigger: str | None = None) -> dict[str, Any]:
@@ -272,15 +277,14 @@ class BBIAAdaptiveBehavior:
             self._update_preferences(behavior)
 
             logger.info(
-                (
-                    f"🎭 Comportement généré: {behavior_name} "
-                    f"pour contexte {self.current_context}"
-                ),
+                "🎭 Comportement généré: %s pour contexte %s",
+                behavior_name,
+                self.current_context,
             )
             return behavior
 
-        except Exception as e:
-            logger.error(f"❌ Erreur génération comportement: {e}")
+        except Exception:
+            logger.exception("❌ Erreur génération comportement")
             # Retourner un comportement par défaut en cas d'erreur
             return {
                 "name": "look_around",
@@ -359,9 +363,12 @@ class BBIAAdaptiveBehavior:
             if self.emotion_intensity > 0.7:
                 if behavior_name in ["dance", "celebrate", "nod"]:
                     weight += 0.3
-            elif self.emotion_intensity < 0.3:
-                if behavior_name in ["stretch", "hide", "focus"]:
-                    weight += 0.3
+            elif self.emotion_intensity < 0.3 and behavior_name in [
+                "stretch",
+                "hide",
+                "focus",
+            ]:
+                weight += 0.3
 
             weights.append(weight)
 
@@ -401,9 +408,22 @@ class BBIAAdaptiveBehavior:
         params["intensity"] = max(0.0, min(1.0, base_intensity + intensity_variation))
 
         # Timing basé sur le contexte
-        self.contexts[self.current_context]
-        params["timing"]["start_delay"] = random.uniform(0.0, 0.5)  # nosec B311
-        params["timing"]["end_delay"] = random.uniform(0.0, 0.3)  # nosec B311
+        context_config = self.contexts.get(
+            self.current_context,
+            self.contexts.get("neutral", {}),
+        )
+        duration_value = context_config.get("duration", 5.0)
+        context_duration = (
+            float(duration_value) if isinstance(duration_value, int | float) else 5.0
+        )
+        params["timing"]["start_delay"] = random.uniform(
+            0.0,
+            min(0.5, context_duration * 0.1),
+        )  # nosec B311
+        params["timing"]["end_delay"] = random.uniform(
+            0.0,
+            min(0.3, context_duration * 0.05),
+        )  # nosec B311
 
         # Variations pour chaque joint
         for joint in params["joints"]:
@@ -478,8 +498,8 @@ class BBIAAdaptiveBehavior:
 
             return None
 
-        except Exception as e:
-            logger.error(f"❌ Erreur comportement proactif: {e}")
+        except Exception:
+            logger.exception("❌ Erreur comportement proactif")
             return None
 
     def adapt_to_feedback(self, behavior_id: str, feedback: str, score: float) -> None:
@@ -529,8 +549,8 @@ class BBIAAdaptiveBehavior:
                 f"🔄 Adaptation basée sur retour: {feedback} (score: {score:.2f})",
             )
 
-        except Exception as e:
-            logger.error(f"❌ Erreur adaptation feedback: {e}")
+        except Exception:
+            logger.exception("❌ Erreur adaptation feedback")
 
     def get_behavior_statistics(self) -> dict[str, Any]:
         """Retourne les statistiques des comportements."""
@@ -596,7 +616,13 @@ class BBIAAdaptiveBehavior:
         """
         robot_api = robot_api or self.robot_api
         if not robot_api:
-            logger.warning("⚠️ robot_api non disponible - comportement non exécuté")
+            # Log en debug en CI (warning attendu dans les tests)
+            import os
+
+            if os.environ.get("CI", "false").lower() == "true":
+                logger.debug("robot_api non disponible - comportement non exécuté")
+            else:
+                logger.warning("⚠️ robot_api non disponible - comportement non exécuté")
             return False
 
         try:
@@ -783,8 +809,8 @@ class BBIAAdaptiveBehavior:
             )
             return False
 
-        except Exception as e:
-            logger.error(f"❌ Erreur exécution comportement '{behavior_name}': {e}")
+        except Exception:
+            logger.exception("❌ Erreur exécution comportement '%s':", behavior_name)
             return False
 
 
@@ -794,31 +820,31 @@ def main() -> None:
     adaptive_behavior = BBIAAdaptiveBehavior()
 
     # Test changement de contexte
-    print("🎭 Test changement de contexte...")
+    logging.info("🎭 Test changement de contexte...")
     adaptive_behavior.set_context("greeting")
     adaptive_behavior.set_emotion_state("happy", 0.8)
 
     # Test génération de comportement
-    print("\n🎭 Test génération comportement...")
+    logging.info("\n🎭 Test génération comportement...")
     behavior = adaptive_behavior.generate_behavior("user_arrival")
-    print(f"Comportement généré: {behavior['name']}")
-    print(f"Description: {behavior['description']}")
-    print(f"Paramètres: {behavior['parameters']}")
+    logging.info(f"Comportement généré: {behavior['name']}")
+    logging.info(f"Description: {behavior['description']}")
+    logging.info(f"Paramètres: {behavior['parameters']}")
 
     # Test comportement proactif
-    print("\n🚀 Test comportement proactif...")
+    logging.info("\n🚀 Test comportement proactif...")
     proactive = adaptive_behavior.get_proactive_behavior()
     if proactive:
-        print(f"Comportement proactif: {proactive['name']}")
+        logging.info(f"Comportement proactif: {proactive['name']}")
     else:
-        print("Aucun comportement proactif généré")
+        logging.info("Aucun comportement proactif généré")
 
     # Test adaptation feedback
-    print("\n🔄 Test adaptation feedback...")
+    logging.info("\n🔄 Test adaptation feedback...")
     adaptive_behavior.adapt_to_feedback(behavior["id"], "positive", 0.8)
 
     # Statistiques
-    print(f"\n📊 Statistiques: {adaptive_behavior.get_behavior_statistics()}")
+    logging.info(f"\n📊 Statistiques: {adaptive_behavior.get_behavior_statistics()}")
 
 
 if __name__ == "__main__":

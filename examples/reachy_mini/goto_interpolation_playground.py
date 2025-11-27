@@ -31,17 +31,17 @@ if not USE_SDK:
     from bbia_sim.backends.reachy_mini_backend import ReachyMiniBackend
 
     # Pour BBIA, utiliser les constantes d'interpolation si disponibles
-    try:
-        from reachy_mini.utils.interpolation import InterpolationTechnique
-    except ImportError:
+    if InterpolationTechnique is None:
         # Fallback: définir manuellement
         from enum import Enum
 
-        class InterpolationTechnique(Enum):
+        class InterpolationTechniqueLocal(Enum):  # Renommé pour éviter conflit
             LINEAR = "linear"
             MIN_JERK = "minjerk"
             EASE_IN_OUT = "ease"
             CARTOON = "cartoon"
+
+        InterpolationTechnique = InterpolationTechniqueLocal  # type: ignore[assignment]
 
 
 def main() -> None:
@@ -74,7 +74,7 @@ def main() -> None:
                             duration=1.0,
                             method=method,
                         )
-                        print(f"  ✅ Mouvement {i+1}/3 vers droite")
+                        print(f"  ✅ Mouvement {i + 1}/3 vers droite")
 
                         pose = create_head_pose(
                             x=0.0, y=-0.03, z=0, roll=-5, yaw=10, degrees=True
@@ -85,7 +85,7 @@ def main() -> None:
                             duration=1.0,
                             method=method,
                         )
-                        print(f"  ✅ Mouvement {i+1}/3 vers gauche")
+                        print(f"  ✅ Mouvement {i + 1}/3 vers gauche")
 
                     # Retour position neutre
                     pose = create_head_pose(x=0, y=0, z=0, yaw=0)

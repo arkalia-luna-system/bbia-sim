@@ -6,19 +6,21 @@
 
 ### 📹 **Vidéos de Démonstration**
 
-- **3 nouvelles vidéos MuJoCo** (Oct / No2025025025025025) : Captures d'écran de la simulation 3D
-  - `Enregistrement de l'écran Oct / No2025025025025025 à 17.00.52.mov` (2.7 MB)
-  - `Enregistrement de l'écran Oct / No2025025025025025 à 17.01.27.mov` (3.4 MB)
-  - `Enregistrement de l'écran Oct / No2025025025025025 à 17.01.56.mov` (3.1 MB)
+- **3 nouvelles vidéos MuJoCo** (Oct / Nov. 2025) : Captures d'écran de la simulation 3D
+  - `Enregistrement de l'écran Oct / Nov. 2025 à 17.00.52.mov` (2.7 MB)
+  - `Enregistrement de l'écran Oct / Nov. 2025 à 17.01.27.mov` (3.4 MB)
+  - `Enregistrement de l'écran Oct / Nov. 2025 à 17.01.56.mov` (3.1 MB)
 - **Source** : Toutes enregistrées depuis `examples/demo_mujoco_continue.py` (robot en mouvement continu)
 - **Inventaire complet** : Voir [`MEDIAS_INVENTAIRE.md`](./MEDIAS_INVENTAIRE.md)
 
 ### 🖼️ **Images**
 
 - **Référence visuelle déplacée** : Voir `docs/reachy/REACHY_MINI_REFERENCE.md` - Référence visuelle du robot Reachy Mini
-- **10 nouvelles captures d'écran** (Oct / No2025025025025025) : Séquence de captures montrant le robot en mouvement
-- **5 captures d'écran** (Oct / No2025025025025025) : Captures de référence antérieures
+- **10 nouvelles captures d'écran** (Oct / Nov. 2025) : Séquence de captures montrant le robot en mouvement
+- **5 captures d'écran** (Oct / Nov. 2025) : Captures de référence antérieures
+- **4 captures d'écran dashboard** (Nov 2025) : Captures du dashboard BBIA Advanced Dashboard montrant l'interface complète avec métriques, contrôles, vision et chat
 - **Images finales** : `robot_3d_final.png`, `robot_animation.gif`
+- **Texture robot Procreate** : `textures/robot_reachy_mini.png` (créé avec Procreate, 944x712px)
 - **Inventaire complet** : Voir [`MEDIAS_INVENTAIRE.md`](./MEDIAS_INVENTAIRE.md)
 
 ---
@@ -162,13 +164,14 @@ assets/
 ├── 📖 README.md                      # Ce fichier
 ├── 📹 MEDIAS_INVENTAIRE.md           # Inventaire complet vidéos/images
 ├── 🎬 videos/                        # Vidéos de démonstration
-│   ├── Enregistrement de l'écran Oct / No2025025025025025 à 17.00.52.mov
-│   ├── Enregistrement de l'écran Oct / No2025025025025025 à 17.01.27.mov
-│   ├── Enregistrement de l'écran Oct / No2025025025025025 à 17.01.56.mov
+│   ├── Enregistrement de l'écran Oct / Nov. 2025 à 17.00.52.mov
+│   ├── Enregistrement de l'écran Oct / Nov. 2025 à 17.01.27.mov
+│   ├── Enregistrement de l'écran Oct / Nov. 2025 à 17.01.56.mov
 │   └── (traces JSONL de démos)
 ├── 🖼️ images/                        # Captures d'écran et images
-│   ├── Capture d'écran Oct / No2025025025025025 à 16.48.XX.png (série)
-│   ├── Capture d'écran Oct / No2025025025025025 à 16.49.XX.png (série)
+│   ├── Capture d'écran Oct / Nov. 2025 à 16.48.XX.png (série)
+│   ├── Capture d'écran Oct / Nov. 2025 à 16.49.XX.png (série)
+│   ├── Capture d'écran 2025-11-13 à 14.14.XX.png (série dashboard - 4 captures)
 │   ├── robot_3d_final.png
 │   └── robot_animation.gif
 └── 🎨 textures/                      # Textures Procreate pour MuJoCo

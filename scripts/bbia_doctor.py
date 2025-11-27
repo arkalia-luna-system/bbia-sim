@@ -27,6 +27,8 @@ def check_dependencies() -> dict[str, bool]:
         "fastapi",
         "mediapipe",
         "ultralytics",
+        "zenoh",  # Pour communication robot
+        "reachy_mini",  # SDK officiel Reachy Mini
     ]
 
     for dep in dependencies:
@@ -80,6 +82,91 @@ def check_configuration() -> dict[str, Any]:
     return results
 
 
+def check_zenoh() -> dict[str, Any]:
+    """Vérifie connexion Zenoh locale."""
+    results: dict[str, Any] = {}
+    try:
+        import zenoh
+
+        results["zenoh_imported"] = True
+        results["zenoh_version"] = getattr(zenoh, "__version__", "inconnue")
+
+        # Tester création session locale
+        try:
+            from zenoh import Config
+
+            config = Config()
+            config.insert_json5("mode", '"client"')
+            config.insert_json5("connect", '["tcp://localhost:7447"]')
+            session = zenoh.open(config)
+            session.close()
+            results["zenoh_session"] = True
+        except Exception as e:
+            results["zenoh_session"] = False
+            results["zenoh_error"] = str(e)
+    except ImportError:
+        results["zenoh_imported"] = False
+        results["zenoh_session"] = False
+
+    return results
+
+
+def check_daemon() -> dict[str, Any]:
+    """Vérifie daemon reachy-mini-daemon."""
+    results: dict[str, Any] = {}
+    import subprocess
+
+    try:
+        # Vérifier si la commande existe
+        result = subprocess.run(
+            ["which", "reachy-mini-daemon"], capture_output=True, text=True, timeout=2
+        )
+        results["daemon_installed"] = result.returncode == 0
+        if result.returncode == 0:
+            results["daemon_path"] = result.stdout.strip()
+        else:
+            results["daemon_path"] = "non trouvé"
+    except Exception as e:
+        results["daemon_installed"] = False
+        results["daemon_error"] = str(e)
+
+    return results
+
+
+def check_network_preparation() -> dict[str, Any]:
+    """Vérifie préparation réseau (WiFi)."""
+    results: dict[str, Any] = {}
+    import socket
+
+    try:
+        # Récupérer IP locale
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(("8.8.8.8", 80))
+        ip = s.getsockname()[0]
+        s.close()
+        results["local_ip"] = ip
+        results["network_ok"] = True
+    except Exception as e:
+        results["local_ip"] = "inconnue"
+        results["network_ok"] = False
+        results["network_error"] = str(e)
+
+    # Vérifier ports (si daemon tourne)
+    ports_to_check = {8000: "API Daemon", 7447: "Zenoh"}
+    results["ports"] = {}
+    for port, name in ports_to_check.items():
+        try:
+            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            sock.settimeout(0.5)
+            result = sock.connect_ex(("localhost", port))
+            sock.close()
+            results["ports"][port] = {"name": name, "open": result == 0}
+        except Exception:
+            results["ports"][port] = {"name": name, "open": False}
+
+    return results
+
+
 def generate_report() -> str:
     """Génère rapport diagnostic complet."""
     report_lines: list[str] = []
@@ -117,6 +204,52 @@ def generate_report() -> str:
     for key, value in config.items():
         status = "✅" if value else "❌"
         report_lines.append(f"  {status} {key}")
+    report_lines.append("")
+
+    # Zenoh (préparation robot)
+    report_lines.append("🔌 ZENOH (Communication Robot):")
+    zenoh_check = check_zenoh()
+    if zenoh_check.get("zenoh_imported"):
+        report_lines.append(
+            f"  ✅ Zenoh installé: {zenoh_check.get('zenoh_version', 'inconnue')}"
+        )
+        if zenoh_check.get("zenoh_session"):
+            report_lines.append("  ✅ Session Zenoh locale OK")
+        else:
+            report_lines.append(
+                f"  ⚠️  Session Zenoh: {zenoh_check.get('zenoh_error', 'erreur')}"
+            )
+    else:
+        report_lines.append("  ❌ Zenoh non installé (pip install eclipse-zenoh)")
+    report_lines.append("")
+
+    # Daemon (préparation robot)
+    report_lines.append("🟣 DAEMON (Reachy Mini):")
+    daemon_check = check_daemon()
+    if daemon_check.get("daemon_installed"):
+        report_lines.append(
+            f"  ✅ Daemon installé: {daemon_check.get('daemon_path', 'inconnu')}"
+        )
+    else:
+        report_lines.append("  ⚠️  Daemon non trouvé (pip install reachy-mini)")
+    report_lines.append("")
+
+    # Réseau (préparation WiFi)
+    report_lines.append("📡 RÉSEAU (Préparation WiFi):")
+    network_check = check_network_preparation()
+    if network_check.get("network_ok"):
+        report_lines.append(
+            f"  ✅ IP locale: {network_check.get('local_ip', 'inconnue')}"
+        )
+    else:
+        report_lines.append("  ⚠️  IP locale non déterminable")
+
+    report_lines.append("  Ports:")
+    for port, info in network_check.get("ports", {}).items():
+        status = "✅" if info.get("open") else "⚠️ "
+        report_lines.append(
+            f"    {status} Port {port} ({info.get('name')}): {'OUVERT' if info.get('open') else 'FERMÉ (normal si daemon non lancé)'}"
+        )
     report_lines.append("")
 
     # Recommandations

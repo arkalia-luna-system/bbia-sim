@@ -1,6 +1,6 @@
 # 📋 CHECKLIST FINALE - CONFORMITÉ REACHY MINI
 
-**Date** : Oct / Nov. 2025
+**Date** : 21 Novembre 2025
 **Version BBIA** : future branch
 **Version SDK Officiel** : develop branch (pollen-robotics/reachy_mini)
 
@@ -14,7 +14,7 @@
 
 **Statut Global** : ✅ **Prêt pour robot réel**
 
-**Dernière mise à jour** : Oct / Nov. 2025 (audit complet appliqué)
+**Dernière mise à jour** : 21 Novembre 2025 (audit complet appliqué)
 
 ---
 
@@ -204,7 +204,7 @@ async def list_recorded_move_dataset(dataset_name: str) -> list[str]:
     try:
         moves = RecordedMoves(dataset_name)
         return moves.list_moves()
-    except Exception as e:
+    except (ValueError, RuntimeError, ConnectionError) as e:
         raise HTTPException(status_code=404, detail=str(e))
 
 ```

@@ -159,5 +159,6 @@ def test_main_exception(mock_logger, mock_setup, mock_awake):
 
     with patch("bbia_sim.__main__.sys.exit") as mock_exit:
         __main__.main()
-        mock_logger.error.assert_called()
+        # Le code utilise logger.exception() pour les exceptions
+        mock_logger.exception.assert_called()
         mock_exit.assert_called_with(1)

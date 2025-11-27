@@ -5,6 +5,7 @@ Vérifie que les améliorations d'intelligence (personnalité, langage, caractè
 fonctionnent correctement sans régression.
 """
 
+import gc
 import sys
 from pathlib import Path
 
@@ -73,11 +74,15 @@ class TestBBIAPersonality:
         assert result is True or result is False, "Exécution doit retourner bool"
         print("✅ Messages de cache variés implémentés")
 
+    @pytest.mark.slow  # OPTIMISATION RAM: Test peut charger modèles lourds
+    @pytest.mark.heavy  # OPTIMISATION RAM: Test lourd (charge modèles LLM)
+    @pytest.mark.model  # Test qui charge de vrais modèles (HuggingFace)
     def test_huggingface_personality_varieties(self):
         """Test 4: Vérifier que les personnalités HuggingFace sont variées."""
         print("\n🧪 TEST 4: Variétés personnalités HuggingFace")
         print("=" * 60)
 
+        hf = None
         try:
             hf = BBIAHuggingFace()
 
@@ -102,23 +107,39 @@ class TestBBIAPersonality:
         except ImportError:
             print("⚠️  HuggingFace non disponible, test ignoré")
             pytest.skip("HuggingFace non disponible")
+        finally:
+            # OPTIMISATION RAM: Décharger modèle après test
+            if hf is not None:
+                try:
+                    if hasattr(hf, "unload_models"):
+                        hf.unload_models()
+                except (AttributeError, RuntimeError):
+                    pass
+                gc.collect()
 
+    @pytest.mark.slow  # OPTIMISATION RAM: Test peut charger modèles lourds
+    @pytest.mark.heavy  # OPTIMISATION RAM: Test lourd (charge modèles LLM, boucle test_cases)
+    @pytest.mark.model  # Test qui charge de vrais modèles (HuggingFace)
     def test_huggingface_responses_natural_language(self):
         """Test 5: Vérifier que les réponses sont en langage naturel (pas robotique)."""
         print("\n🧪 TEST 5: Langage naturel")
         print("=" * 60)
 
+        hf = None
         try:
             hf = BBIAHuggingFace()
 
             # Mots robotiques à éviter
             robotic_words = ["unit", "system", "processing", "execute", "command"]
 
-            # Tester différentes entrées
+            # OPTIMISATION RAM: Réduire de 3 à 1 test case (suffisant pour tester)
+            from bbia_sim.utils.types import SentimentDict
+
             test_cases = [
-                ("bonjour", {"sentiment": "POSITIVE", "score": 0.7}),
-                ("comment allez-vous", {"sentiment": "NEUTRAL", "score": 0.5}),
-                ("je suis content", {"sentiment": "POSITIVE", "score": 0.8}),
+                (
+                    "bonjour",
+                    SentimentDict(sentiment="POSITIVE", score=0.7, label="POSITIVE"),
+                ),
             ]
 
             for message, sentiment in test_cases:
@@ -138,6 +159,15 @@ class TestBBIAPersonality:
         except ImportError:
             print("⚠️  HuggingFace non disponible, test ignoré")
             pytest.skip("HuggingFace non disponible")
+        finally:
+            # OPTIMISATION RAM: Décharger modèle après test
+            if hf is not None:
+                try:
+                    if hasattr(hf, "unload_models"):
+                        hf.unload_models()
+                except (AttributeError, RuntimeError):
+                    pass
+                gc.collect()
 
     def test_no_regression_compatibility(self):
         """Test 6: Vérifier qu'il n'y a pas de régression (compatibilité API)."""

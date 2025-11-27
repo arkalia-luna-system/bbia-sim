@@ -8,10 +8,11 @@ from typing import Any
 
 import numpy as np
 import numpy.typing as npt
-from fastapi import HTTPException, WebSocket
+from fastapi import HTTPException, WebSocket  # type: ignore[import-untyped]
 
-from ...robot_api import RobotAPI
-from ...robot_factory import RobotFactory
+from bbia_sim.robot_api import RobotAPI
+from bbia_sim.robot_factory import RobotFactory
+from bbia_sim.utils.types import RobotStatus
 
 logger = logging.getLogger(__name__)
 
@@ -106,7 +107,7 @@ class BackendAdapter:
                     if len(arr) == 7:
                         return arr
             except Exception as e:
-                logger.warning(f"Erreur get_present_head_joint_positions: {e}")
+                logger.warning("Erreur get_present_head_joint_positions: %s", e)
 
         return None
 
@@ -120,8 +121,7 @@ class BackendAdapter:
         self.connect_if_needed()
 
         if hasattr(self._robot, "get_motor_control_mode"):
-            mode = self._robot.get_motor_control_mode()
-            return mode
+            return self._robot.get_motor_control_mode()
 
         # Créer un mock MotorControlMode simple
         class SimpleMotorControlMode:
@@ -151,7 +151,7 @@ class BackendAdapter:
             ):
                 self._robot.robot.enable_gravity_compensation()
         else:
-            logger.debug(f"Mode simulation: moteurs en mode {mode}")
+            logger.debug("Mode simulation: moteurs en mode %s", mode)
 
     async def goto_target(
         self,
@@ -238,8 +238,16 @@ class BackendAdapter:
 
         if hasattr(self._robot, "set_target_head_joint_positions"):
             self._robot.set_target_head_joint_positions(positions)
+        elif hasattr(self._robot, "goto_target"):
+            # Fallback: utiliser goto_target avec positions de joints converties en pose
+            # Note: goto_target attend une pose (matrice 4x4), pas des positions de joints
+            # Pour l'instant, on ignore ce fallback car la conversion est complexe
+            logger.debug(
+                "set_target_head_joint_positions: goto_target disponible mais "
+                "conversion positions→pose non implémentée dans fallback"
+            )
         elif hasattr(self._robot, "set_joint_pos"):
-            # Fallback: définir chaque joint individuellement
+            # Fallback: définir chaque joint individuellement (sauf stewart)
             if positions is not None and len(positions) >= 7:
                 joint_names = [
                     "yaw_body",
@@ -252,7 +260,15 @@ class BackendAdapter:
                 ]
                 for i, joint_name in enumerate(joint_names):
                     if i < len(positions):
-                        self._robot.set_joint_pos(joint_name, float(positions[i]))
+                        # Ne pas appeler set_joint_pos sur les joints stewart
+                        # (ils nécessitent IK et génèrent des warnings)
+                        if not joint_name.startswith("stewart_"):
+                            self._robot.set_joint_pos(joint_name, float(positions[i]))
+                        else:
+                            logger.debug(
+                                "Ignoré set_joint_pos sur %s (nécessite IK via goto_target)",
+                                joint_name,
+                            )
 
     def set_target_antenna_joint_positions(
         self,
@@ -315,8 +331,9 @@ class BackendAdapter:
 
         """
         if duration <= 0.0:
+            msg = "Duration must be positive and non-zero. Use set_target() for immediate position setting."
             raise ValueError(
-                "Duration must be positive and non-zero. Use set_target() for immediate position setting.",
+                msg,
             )
 
         self.connect_if_needed()
@@ -367,7 +384,9 @@ class BackendAdapter:
             import time
 
             try:
-                from reachy_mini.utils.interpolation import time_trajectory
+                from reachy_mini.utils.interpolation import (  # type: ignore[import-untyped]
+                    time_trajectory,
+                )
             except ImportError:
                 # Si time_trajectory non disponible, interpolation linéaire simple
                 def time_trajectory(t: float, method: str = "linear") -> float:
@@ -401,7 +420,9 @@ class BackendAdapter:
             # Si play_move est async dans le SDK
             if hasattr(self._robot.play_move, "__await__"):
                 await self._robot.play_move(
-                    move, play_frequency=100.0, initial_goto_duration=0.0
+                    move,
+                    play_frequency=100.0,
+                    initial_goto_duration=0.0,
                 )
             else:
                 # Si sync, exécuter dans thread
@@ -463,7 +484,7 @@ class BackendAdapter:
         elif hasattr(self._robot, "robot") and hasattr(self._robot.robot, "play_sound"):
             self._robot.robot.play_sound(sound_file)
         else:
-            logger.debug(f"play_sound non disponible, fichier: {sound_file}")
+            logger.debug("play_sound non disponible, fichier: %s", sound_file)
 
     def set_automatic_body_yaw(self, body_yaw: float) -> None:
         """Définit le yaw automatique du corps (conforme SDK)."""
@@ -472,7 +493,7 @@ class BackendAdapter:
         if hasattr(self._robot, "set_automatic_body_yaw"):
             self._robot.set_automatic_body_yaw(body_yaw)
         else:
-            logger.debug(f"set_automatic_body_yaw non disponible, yaw: {body_yaw}")
+            logger.debug("set_automatic_body_yaw non disponible, yaw: %s", body_yaw)
 
     def set_target_head_joint_current(self, current: npt.NDArray[np.float64]) -> None:
         """Définit le courant des joints de la tête (conforme SDK)."""
@@ -509,8 +530,9 @@ class BackendAdapter:
         ):
             joints = self._robot.robot.head_kinematics.ik(pose, body_yaw=body_yaw)
             if joints is None or np.any(np.isnan(joints)):
+                msg = "WARNING: Collision detected or head pose not achievable!"
                 raise ValueError(
-                    "WARNING: Collision detected or head pose not achievable!",
+                    msg,
                 )
             # Conforme SDK: mettre à jour directement target_head_joint_positions
             self.target_head_joint_positions = joints
@@ -543,20 +565,24 @@ class BackendAdapter:
                 self._robot.disconnect()
             self._connected = False
         except Exception as e:
-            logger.warning(f"Erreur lors de la fermeture: {e}")
+            logger.warning("Erreur lors de la fermeture: %s", e)
 
-    def get_status(self) -> dict[str, Any]:
+    def get_status(self) -> RobotStatus | dict[str, Any]:
         """Récupère le statut du backend (conforme SDK)."""
         self.connect_if_needed()
 
         if hasattr(self._robot, "get_status"):
-            return self._robot.get_status()
+            status = self._robot.get_status()
+            # Convertir en RobotStatus si nécessaire
+            if isinstance(status, dict):
+                return status  # type: ignore[return-value]
+            return status
 
         # Retourner statut simple
         return {
             "connected": self._connected,
             "backend_type": type(self._robot).__name__,
-        }
+        }  # type: ignore[return-value]
 
     # Méthodes Zenoh/Recording (non-critiques pour simulation, stubs pour conformité)
     def set_joint_positions_publisher(self, publisher: Any) -> None:

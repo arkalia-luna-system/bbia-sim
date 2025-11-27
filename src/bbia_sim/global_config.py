@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Configuration globale pour déterminisme et sécurité
-SEED global, limites sûres, failsafe
+SEED global, limites sûres, failsafe.
 """
 
 import logging
@@ -40,6 +40,10 @@ class GlobalConfig:
     # Joints sûrs recommandés
     SAFE_JOINTS = {"yaw_body"}
 
+    # Configuration réseau (Issue #382: Multi-robots support)
+    HOSTNAME = os.environ.get("BBIA_HOSTNAME", "bbia-reachy-mini")
+    DEFAULT_PORT = int(os.environ.get("BBIA_PORT", "8000"))
+
     # Émotions valides
     VALID_EMOTIONS = {
         "neutral",
@@ -74,13 +78,13 @@ class GlobalConfig:
     def initialize_seed(cls) -> None:
         """Initialise le seed global."""
         random.seed(cls.GLOBAL_SEED)
-        logger.info(f"Seed global initialisé: {cls.GLOBAL_SEED}")
+        logger.info("Seed global initialisé: %s", cls.GLOBAL_SEED)
 
     @classmethod
     def validate_joint(cls, joint_name: str) -> bool:
         """Valide qu'un joint est autorisé."""
         if joint_name in cls.FORBIDDEN_JOINTS:
-            logger.warning(f"Joint interdit: {joint_name}")
+            logger.warning("Joint interdit: %s", joint_name)
             return False
         return True
 
@@ -92,14 +96,14 @@ class GlobalConfig:
             min(cls.SAFE_AMPLITUDE_LIMIT, amplitude),
         )
         if clamped != amplitude:
-            logger.warning(f"Amplitude clampée: {amplitude} → {clamped}")
+            logger.warning("Amplitude clampée: %s → %s", amplitude, clamped)
         return clamped
 
     @classmethod
     def validate_emotion(cls, emotion: str) -> bool:
         """Valide qu'une émotion est supportée."""
         if emotion not in cls.VALID_EMOTIONS:
-            logger.error(f"Émotion invalide: {emotion}")
+            logger.error("Émotion invalide: %s", emotion)
             return False
         return True
 
@@ -107,7 +111,7 @@ class GlobalConfig:
     def validate_behavior(cls, behavior: str) -> bool:
         """Valide qu'un comportement est supporté."""
         if behavior not in cls.VALID_BEHAVIORS:
-            logger.error(f"Comportement invalide: {behavior}")
+            logger.error("Comportement invalide: %s", behavior)
             return False
         return True
 

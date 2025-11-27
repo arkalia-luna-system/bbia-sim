@@ -3,8 +3,11 @@
 Communication via fichiers temporaires.
 """
 
+import logging
 import time
 from pathlib import Path
+
+logger = logging.getLogger(__name__)
 
 
 class UnityReachyMiniController:
@@ -33,7 +36,7 @@ class UnityReachyMiniController:
             if not self.response_file.exists():
                 self.response_file.write_text("")
             self.is_connected = True
-        except Exception:
+        except OSError:
             self.is_connected = False
 
     def _send_command(self, command: str) -> bool:
@@ -42,7 +45,7 @@ class UnityReachyMiniController:
         try:
             self.command_file.write_text(command)
             return True
-        except Exception:
+        except OSError:
             return False
 
     def _wait_for_response(self, timeout: float = 1.0) -> str:
@@ -58,7 +61,7 @@ class UnityReachyMiniController:
             except OSError:  # nosec B110
                 # Erreur de lecture de fichier - ignorer et continuer
                 pass
-            except Exception:  # nosec B110
+            except (RuntimeError, ValueError, TypeError):  # nosec B110
                 # Autres erreurs inattendues - ignorer et continuer
                 pass
             time.sleep(0.01)  # Réduit de 0.1s à 0.01s pour les tests
@@ -105,13 +108,19 @@ class UnityReachyMiniController:
         iteration_count = 0
         while iteration_count < max_iterations:
             try:
-                command = input("🤖 BBIA > ").strip().lower()
+                try:
+                    command = input("🤖 BBIA > ").strip().lower()
+                except Exception:
+                    # Gérer les exceptions levées par input() (comme dans les tests)
+                    logger.exception("❌ Erreur")
+                    iteration_count += 1
+                    continue
                 if command in {"quit", "exit"}:
                     break
                 if command == "help":
                     self._show_help()
                 elif command == "status":
-                    print(
+                    logger.info(
                         (
                             "Status: Connected"
                             if self.is_connected
@@ -125,37 +134,37 @@ class UnityReachyMiniController:
                             x, y, z = map(float, parts)
                             self.move_head(x, y, z)
                         except ValueError:
-                            print(
+                            logger.exception(
                                 "❌ Valeurs invalides pour head. Utilisez: head x y z",
                             )
                     else:
-                        print("❌ Commande head invalide. Utilisez: head x y z")
+                        logger.error("❌ Commande head invalide. Utilisez: head x y z")
                 elif command.startswith("emotion "):
                     emotion = command.split()[1]
                     if self.set_emotion(emotion):
-                        print(f"✅ Émotion '{emotion}' définie")
+                        logger.info(f"✅ Émotion '{emotion}' définie")
                     else:
-                        print(f"❌ Émotion '{emotion}' invalide")
+                        logger.error(f"❌ Émotion '{emotion}' invalide")
                 elif command == "reset":
                     if self.reset_position():
-                        print("✅ Position réinitialisée")
+                        logger.info("✅ Position réinitialisée")
                     else:
-                        print("❌ Erreur lors de la réinitialisation")
+                        logger.error("❌ Erreur lors de la réinitialisation")
                 elif command == "awake":
-                    print("🤖 BBIA se réveille...")
+                    logger.info("🤖 BBIA se réveille...")
                     self.bbia_awake()
-                    print("✅ BBIA est réveillé!")
+                    logger.info("✅ BBIA est réveillé!")
                 else:
-                    print("❌ Commande inconnue. Tapez 'help' pour l'aide.")
+                    logger.error("❌ Commande inconnue. Tapez 'help' pour l'aide.")
                 iteration_count += 1
             except KeyboardInterrupt:
                 break
-            except Exception as e:
-                print(f"❌ Erreur: {e}")
+            except Exception:
+                logger.exception("❌ Erreur")
                 iteration_count += 1
 
         if iteration_count >= max_iterations:
-            print("⚠️ Limite d'itérations atteinte, arrêt du mode interactif")
+            logger.warning("⚠️ Limite d'itérations atteinte, arrêt du mode interactif")
 
     def _show_help(self) -> None:
         help_text = """
@@ -174,7 +183,7 @@ Exemples:
   emotion happy - Rendre BBIA heureux
   awake         - Séquence de réveil complète
 """
-        print(help_text)
+        logger.info(help_text)
 
 
 def main() -> None:

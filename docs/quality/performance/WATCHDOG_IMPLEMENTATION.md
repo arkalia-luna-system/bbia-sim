@@ -1,6 +1,6 @@
 # Implémentation du watchdog de monitoring temps réel
 
-**Date**: Oct / Nov. 2025
+**Date**: 21 Novembre 2025
 **Statut**: complété et validé
 
 ---

@@ -1,0 +1,447 @@
+<section class="w-full">
+    <div class="app-section">
+        <div class="app-section-title">Télémétrie Temps Réel</div>
+
+        <div class="mt-4">
+            <!-- Contrôles graphiques -->
+            <div class="flex flex-wrap gap-2 mb-4">
+                <button id="export-csv-btn"
+                    class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+                    📥 Export CSV
+                </button>
+                <button id="export-json-btn"
+                    class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors">
+                    📥 Export JSON
+                </button>
+                <button id="reset-zoom-btn"
+                    class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors">
+                    🔍 Reset Zoom
+                </button>
+            </div>
+
+            <!-- Canvas pour graphiques Chart.js -->
+            <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
+                <canvas id="telemetry-chart" class="w-full" style="max-height: 400px;"></canvas>
+            </div>
+
+            <!-- Métriques en temps réel -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
+                <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-3 border border-gray-200 dark:border-gray-600">
+                    <div class="text-sm text-gray-600 dark:text-gray-300">Latence</div>
+                    <div id="latency-value" class="text-2xl font-bold text-gray-800 dark:text-gray-100">0 ms</div>
+                </div>
+                <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-3 border border-gray-200 dark:border-gray-600">
+                    <div class="text-sm text-gray-600 dark:text-gray-300">FPS</div>
+                    <div id="fps-value" class="text-2xl font-bold text-green-600 dark:text-green-400">60</div>
+                </div>
+                <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-3 border border-gray-200 dark:border-gray-600">
+                    <div class="text-sm text-gray-600 dark:text-gray-300">CPU</div>
+                    <div id="cpu-value" class="text-2xl font-bold text-blue-600 dark:text-blue-400">0%</div>
+                </div>
+                <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-3 border border-gray-200 dark:border-gray-600">
+                    <div class="text-sm text-gray-600 dark:text-gray-300">RAM</div>
+                    <div id="ram-value" class="text-2xl font-bold text-purple-600 dark:text-purple-400">0%</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
+<script>
+    // Gestion des graphiques de télémétrie
+    (function () {
+        let telemetryChart = null;
+        let ws = null;
+        const maxDataPoints = 30;
+        const chartData = {
+            labels: [],
+            latency: [],
+            fps: [],
+            cpu: [],
+            memory: []
+        };
+
+        // Initialiser le graphique
+        function initChart() {
+            const canvas = document.getElementById('telemetry-chart');
+            if (!canvas) {
+                console.warn('⚠️ Canvas telemetry-chart non trouvé');
+                return;
+            }
+
+            const ctx = canvas.getContext('2d');
+            telemetryChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: chartData.labels,
+                    datasets: [
+                        {
+                            label: 'Latence (ms)',
+                            data: chartData.latency,
+                            borderColor: '#4D4D4D',
+                            backgroundColor: 'rgba(77, 77, 77, 0.1)',
+                            tension: 0.4,
+                            fill: true,
+                            yAxisID: 'y'
+                        },
+                        {
+                            label: 'FPS',
+                            data: chartData.fps,
+                            borderColor: '#008181',
+                            backgroundColor: 'rgba(0, 129, 129, 0.1)',
+                            tension: 0.4,
+                            fill: true,
+                            yAxisID: 'y'
+                        },
+                        {
+                            label: 'CPU (%)',
+                            data: chartData.cpu,
+                            borderColor: '#3B82F6',
+                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            tension: 0.4,
+                            fill: true,
+                            yAxisID: 'y1'
+                        },
+                        {
+                            label: 'RAM (%)',
+                            data: chartData.memory,
+                            borderColor: '#8B5CF6',
+                            backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                            tension: 0.4,
+                            fill: true,
+                            yAxisID: 'y1'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                color: 'rgba(77, 77, 77, 0.1)'
+                            },
+                            ticks: {
+                                color: '#4D4D4D',
+                                maxTicksLimit: 10
+                            }
+                        },
+                        y: {
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(77, 77, 77, 0.1)'
+                            },
+                            ticks: {
+                                color: '#4D4D4D'
+                            }
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            beginAtZero: true,
+                            max: 100,
+                            grid: {
+                                drawOnChartArea: false
+                            },
+                            ticks: {
+                                color: '#4D4D4D'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                color: function (context) {
+                                    return window.matchMedia('(prefers-color-scheme: dark)').matches
+                                        ? '#E5E7EB' : '#4D4D4D';
+                                },
+                                font: {
+                                    weight: '500',
+                                    size: 12
+                                },
+                                usePointStyle: true,
+                                padding: 15
+                            }
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            backgroundColor: function (context) {
+                                return window.matchMedia('(prefers-color-scheme: dark)').matches
+                                    ? 'rgba(31, 41, 55, 0.95)' : 'rgba(255, 255, 255, 0.95)';
+                            },
+                            titleColor: function (context) {
+                                return window.matchMedia('(prefers-color-scheme: dark)').matches
+                                    ? '#E5E7EB' : '#1F2937';
+                            },
+                            bodyColor: function (context) {
+                                return window.matchMedia('(prefers-color-scheme: dark)').matches
+                                    ? '#D1D5DB' : '#4B5563';
+                            },
+                            borderColor: function (context) {
+                                return window.matchMedia('(prefers-color-scheme: dark)').matches
+                                    ? '#4B5563' : '#E5E7EB';
+                            },
+                            borderWidth: 1,
+                            padding: 12,
+                            callbacks: {
+                                label: function (context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        label += context.parsed.y.toFixed(2);
+                                        if (label.includes('ms')) {
+                                            label += ' ms';
+                                        } else if (label.includes('%')) {
+                                            label += ' %';
+                                        }
+                                    }
+                                    return label;
+                                }
+                            }
+                        },
+                        zoom: {
+                            zoom: {
+                                wheel: {
+                                    enabled: true,
+                                    speed: 0.1
+                                },
+                                pinch: {
+                                    enabled: true
+                                },
+                                mode: 'xy'
+                            },
+                            pan: {
+                                enabled: true,
+                                mode: 'xy'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Connecter au WebSocket
+        function connectWebSocket() {
+            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsUrl = `${protocol}//${window.location.host}/ws/telemetry`;
+
+            ws = new WebSocket(wsUrl);
+
+            ws.onopen = function () {
+                console.log('✅ WebSocket télémétrie connecté');
+            };
+
+            ws.onmessage = function (event) {
+                try {
+                    const data = JSON.parse(event.data);
+                    updateChart(data);
+                } catch (error) {
+                    console.error('❌ Erreur parsing données télémétrie:', error);
+                }
+            };
+
+            ws.onclose = function () {
+                console.log('⚠️ WebSocket télémétrie fermé, reconnexion dans 3s...');
+                setTimeout(connectWebSocket, 3000);
+            };
+
+            ws.onerror = function (error) {
+                console.error('❌ Erreur WebSocket télémétrie:', error);
+            };
+        }
+
+        // Mettre à jour le graphique avec nouvelles données
+        function updateChart(data) {
+            if (!telemetryChart) return;
+
+            const now = new Date().toLocaleTimeString();
+            const metrics = data.metrics || {};
+            const performance = metrics.performance || {};
+
+            // Ajouter nouvelles données
+            chartData.labels.push(now);
+            chartData.latency.push(performance.latency_ms || 0);
+            chartData.fps.push(performance.fps || 60);
+            chartData.cpu.push(performance.cpu_usage || 0);
+            chartData.memory.push(performance.memory_usage || 0);
+
+            // Limiter à maxDataPoints
+            if (chartData.labels.length > maxDataPoints) {
+                chartData.labels.shift();
+                chartData.latency.shift();
+                chartData.fps.shift();
+                chartData.cpu.shift();
+                chartData.memory.shift();
+            }
+
+            // Mettre à jour le graphique
+            telemetryChart.update('none'); // Pas d'animation pour performance
+
+            // Mettre à jour les valeurs affichées
+            updateMetrics(performance);
+        }
+
+        // Mettre à jour les métriques affichées
+        function updateMetrics(performance) {
+            const latencyEl = document.getElementById('latency-value');
+            const fpsEl = document.getElementById('fps-value');
+            const cpuEl = document.getElementById('cpu-value');
+            const ramEl = document.getElementById('ram-value');
+
+            if (latencyEl) {
+                latencyEl.textContent = Math.round(performance.latency_ms || 0) + ' ms';
+            }
+            if (fpsEl) {
+                fpsEl.textContent = Math.round(performance.fps || 60);
+            }
+            if (cpuEl) {
+                cpuEl.textContent = Math.round(performance.cpu_usage || 0) + '%';
+            }
+            if (ramEl) {
+                ramEl.textContent = Math.round(performance.memory_usage || 0) + '%';
+            }
+        }
+
+        // Initialiser quand le DOM est prêt
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function () {
+                initChart();
+                connectWebSocket();
+            });
+        } else {
+            initChart();
+            connectWebSocket();
+        }
+
+        // Export CSV
+        function exportCSV() {
+            const headers = ['Timestamp', 'Latence (ms)', 'FPS', 'CPU (%)', 'RAM (%)'];
+            const rows = [headers.join(',')];
+
+            for (let i = 0; i < chartData.labels.length; i++) {
+                const row = [
+                    chartData.labels[i],
+                    chartData.latency[i] || 0,
+                    chartData.fps[i] || 0,
+                    chartData.cpu[i] || 0,
+                    chartData.memory[i] || 0
+                ];
+                rows.push(row.join(','));
+            }
+
+            const csv = rows.join('\n');
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `telemetry_${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+
+        // Export JSON
+        function exportJSON() {
+            const data = {
+                timestamp: new Date().toISOString(),
+                metrics: []
+            };
+
+            for (let i = 0; i < chartData.labels.length; i++) {
+                data.metrics.push({
+                    timestamp: chartData.labels[i],
+                    latency_ms: chartData.latency[i] || 0,
+                    fps: chartData.fps[i] || 0,
+                    cpu_percent: chartData.cpu[i] || 0,
+                    ram_percent: chartData.memory[i] || 0
+                });
+            }
+
+            const json = JSON.stringify(data, null, 2);
+            const blob = new Blob([json], { type: 'application/json' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `telemetry_${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+
+        // Reset zoom
+        function resetZoom() {
+            if (telemetryChart) {
+                telemetryChart.resetZoom();
+            }
+        }
+
+        // Écouter changements dark mode
+        function updateChartColors() {
+            if (!telemetryChart) return;
+            const isDark = document.documentElement.classList.contains('dark') ||
+                window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+            const textColor = isDark ? '#E5E7EB' : '#4D4D4D';
+            const gridColor = isDark ? 'rgba(229, 231, 235, 0.1)' : 'rgba(77, 77, 77, 0.1)';
+
+            telemetryChart.options.scales.x.ticks.color = textColor;
+            telemetryChart.options.scales.x.grid.color = gridColor;
+            telemetryChart.options.scales.y.ticks.color = textColor;
+            telemetryChart.options.scales.y.grid.color = gridColor;
+            telemetryChart.options.scales.y1.ticks.color = textColor;
+
+            if (telemetryChart.options.plugins.legend) {
+                telemetryChart.options.plugins.legend.labels.color = textColor;
+            }
+
+            telemetryChart.update('none');
+        }
+
+        // Attacher événements
+        document.addEventListener('DOMContentLoaded', function () {
+            const exportCsvBtn = document.getElementById('export-csv-btn');
+            const exportJsonBtn = document.getElementById('export-json-btn');
+            const resetZoomBtn = document.getElementById('reset-zoom-btn');
+
+            if (exportCsvBtn) {
+                exportCsvBtn.addEventListener('click', exportCSV);
+            }
+            if (exportJsonBtn) {
+                exportJsonBtn.addEventListener('click', exportJSON);
+            }
+            if (resetZoomBtn) {
+                resetZoomBtn.addEventListener('click', resetZoom);
+            }
+
+            // Observer changements dark mode
+            const darkModeObserver = new MutationObserver(updateChartColors);
+            darkModeObserver.observe(document.documentElement, {
+                attributes: true,
+                attributeFilter: ['class']
+            });
+
+            // Écouter media query dark mode
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateChartColors);
+        });
+
+        // Nettoyer à la fermeture
+        window.addEventListener('beforeunload', function () {
+            if (ws) {
+                ws.close();
+            }
+        });
+    })();
+</script>

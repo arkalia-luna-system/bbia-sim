@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
-"""RobotFactory - Factory pour créer les backends RobotAPI"""
+"""RobotFactory - Factory pour créer les backends RobotAPI."""
 
 import logging
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from .backends.mujoco_backend import MuJoCoBackend
 from .backends.reachy_backend import ReachyBackend
 from .backends.reachy_mini_backend import ReachyMiniBackend
-from .robot_api import RobotAPI
+
+if TYPE_CHECKING:
+    from .robot_api import RobotAPI
 
 logger = logging.getLogger(__name__)
 
@@ -17,7 +19,8 @@ class RobotFactory:
 
     @staticmethod
     def create_backend(
-        backend_type: str = "mujoco", **kwargs: Any
+        backend_type: str = "mujoco",
+        **kwargs: Any,
     ) -> "RobotAPI | None":
         """Crée un backend RobotAPI.
 
@@ -56,11 +59,11 @@ class RobotFactory:
                     media_backend=kwargs.get("media_backend", "default"),
                 )
 
-            logger.error(f"Type de backend non supporté: {backend_type}")
+            logger.error("Type de backend non supporté: %s", backend_type)
             return None
 
-        except Exception as e:
-            logger.error(f"Erreur création backend {backend_type}: {e}")
+        except Exception:
+            logger.exception("Erreur création backend %s:", backend_type)
             return None
 
     @staticmethod
@@ -96,3 +99,30 @@ class RobotFactory:
         }
 
         return info.get(backend_type.lower(), {})
+
+    @staticmethod
+    def create_robot_registry() -> dict[str, Any]:
+        """Crée un registre pour gestion multi-robots (Issue #30).
+
+        Returns:
+            Dictionnaire avec informations robots disponibles
+
+        Note:
+            Infrastructure pour support multi-robots futur.
+            Utilise BBIA_HOSTNAME et BBIA_PORT pour identification.
+
+        """
+        import os
+
+        from .global_config import GlobalConfig
+
+        robot_id = os.environ.get("BBIA_ROBOT_ID", "default")
+        hostname = GlobalConfig.HOSTNAME
+        port = GlobalConfig.DEFAULT_PORT
+
+        return {
+            "robot_id": robot_id,
+            "hostname": hostname,
+            "port": port,
+            "backends_available": RobotFactory.get_available_backends(),
+        }

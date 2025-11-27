@@ -37,7 +37,7 @@ class TestE2EWakeUpSequence:
         assert self.emotions is not None
 
         # 2. Activer comportement wake_up
-        self.behavior.execute_behavior = MagicMock(return_value=True)
+        setattr(self.behavior, "execute_behavior", MagicMock(return_value=True))  # type: ignore[method-assign]
         wake_up_result = self.behavior.execute_behavior("wake_up", {})
         assert wake_up_result is True
 
@@ -63,7 +63,7 @@ class TestE2EWakeUpSequence:
         assert initial_emotion is not None
 
         # 2. Réveil via comportement
-        self.behavior.execute_behavior = MagicMock(return_value=True)
+        setattr(self.behavior, "execute_behavior", MagicMock(return_value=True))  # type: ignore[method-assign]
         result = self.behavior.execute_behavior("wake_up", {"duration": 2.0})
         assert result is True
 
@@ -80,7 +80,7 @@ class TestE2EWakeUpSequence:
     def test_bbia_wake_up_to_greeting_flow(self):
         """Flux: réveil → greeting après détection utilisateur."""
         # 1. Réveil initial
-        self.behavior.execute_behavior = MagicMock(return_value=True)
+        setattr(self.behavior, "execute_behavior", MagicMock(return_value=True))  # type: ignore[method-assign]
         wake_up_result = self.behavior.execute_behavior("wake_up", {})
         assert wake_up_result is True
 

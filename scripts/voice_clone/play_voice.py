@@ -6,6 +6,7 @@ Usage:
   # lister périphériques: --list-devices
   # forcer output index: --output 1
 """
+
 import argparse
 import os
 

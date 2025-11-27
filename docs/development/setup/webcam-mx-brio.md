@@ -21,7 +21,7 @@
 source venv-vision-py310/bin/activate
 
 # Vérifier que OpenCV est installé
-python -c "import cv2; print(f'✅ OpenCV version: {cv2.__version__}')"
+python -c "import cv2; import logging; logging.info(f'✅ OpenCV version: {cv2.__version__}')"
 
 ```
 
@@ -172,9 +172,9 @@ vision = BBIAVision()
 # Scanner l'environnement (utilise automatiquement la webcam)
 result = vision.scan_environment()
 
-print(f"Objets détectés: {result.get('objects')}")
-print(f"Visages détectés: {result.get('faces')}")
-print(f"Postures détectées: {result.get('poses')}")
+logging.info(f"Objets détectés: {result.get('objects')}")
+logging.info(f"Visages détectés: {result.get('faces')}")
+logging.info(f"Postures détectées: {result.get('poses')}")
 
 ```
 

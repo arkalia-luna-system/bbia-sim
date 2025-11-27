@@ -141,8 +141,45 @@ const hfAppsStore = {
             hfAppsStore.refreshAppList();
             installedApps.refreshAppList();
         };
+    }    fetchCommunityApps: async () => {
+        const res = await fetch('/api/apps/list-community');
+        const appsData = await res.json();
+        return appsData;
+    },
+
+    displayCommunityApps: async () => {
+        const appsData = await hfAppsStore.fetchCommunityApps();
+        const communityListEl = document.getElementById('community-apps-list');
+        const communitySection = document.getElementById('community-apps-section');
+
+        if (!communityListEl || !communitySection) return;
+
+        communitySection.classList.remove('hidden');
+        communityListEl.innerHTML = '';
+
+        if (!appsData || appsData.length === 0) {
+            communityListEl.innerHTML = '<li>Aucune app communauté trouvée.</li>';
+            return;
+        }
+
+        appsData.forEach(app => {
+            const li = document.createElement('li');
+            li.className = 'app-list-item';
+            li.appendChild(hfAppsStore.createAppElement(app, false));
+            communityListEl.appendChild(li);
+        });
     },
 };
+
+// Événement pour afficher les apps communauté
+document.addEventListener('DOMContentLoaded', () => {
+    const showCommunityBtn = document.getElementById('show-community-apps');
+    if (showCommunityBtn) {
+        showCommunityBtn.addEventListener('click', () => {
+            hfAppsStore.displayCommunityApps();
+        });
+    }
+});
 
 
 window.addEventListener('load', async () => {

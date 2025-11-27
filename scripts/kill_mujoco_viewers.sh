@@ -1,4 +1,6 @@
 #!/bin/bash
+# ⚠️ DÉPRÉCIÉ : Utiliser smart_process_cleanup.sh à la place
+# Ce script est conservé pour compatibilité mais sera supprimé dans une future version
 # Script pour forcer la fermeture de tous les viewers MuJoCo bloqués
 #
 # ⚠️  DÉPRÉCIÉ: Ce script est déprécié mais conservé pour compatibilité.

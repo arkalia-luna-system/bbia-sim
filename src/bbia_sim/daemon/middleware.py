@@ -13,7 +13,7 @@ from .config import settings
 logger = logging.getLogger(__name__)
 
 
-class SecurityMiddleware(BaseHTTPMiddleware):  # type: ignore[misc]
+class SecurityMiddleware(BaseHTTPMiddleware):
     """Middleware pour appliquer les headers de sécurité."""
 
     def __init__(self, app: Any, max_json_size: int | None = None) -> None:
@@ -21,7 +21,9 @@ class SecurityMiddleware(BaseHTTPMiddleware):  # type: ignore[misc]
         self.max_json_size = max_json_size
 
     async def dispatch(
-        self, request: Request, call_next: Callable[[Request], Any]
+        self,
+        request: Request,
+        call_next: Callable[[Request], Any],
     ) -> Response:
         """Applique les headers de sécurité et limite la taille des requêtes."""
         # Vérification de la taille de la requête
@@ -59,7 +61,7 @@ class SecurityMiddleware(BaseHTTPMiddleware):  # type: ignore[misc]
         return response
 
 
-class RateLimitMiddleware(BaseHTTPMiddleware):  # type: ignore[misc]
+class RateLimitMiddleware(BaseHTTPMiddleware):
     """Middleware simple de rate limiting en mémoire."""
 
     def __init__(
@@ -78,7 +80,9 @@ class RateLimitMiddleware(BaseHTTPMiddleware):  # type: ignore[misc]
         self.requests: dict[str, list[float]] = {}
 
     async def dispatch(
-        self, request: Request, call_next: Callable[[Request], Any]
+        self,
+        request: Request,
+        call_next: Callable[[Request], Any],
     ) -> Response:
         """Applique le rate limiting basique."""
         if settings.is_production() or self.force_enable:
@@ -97,7 +101,7 @@ class RateLimitMiddleware(BaseHTTPMiddleware):  # type: ignore[misc]
 
             # Vérification de la limite
             if len(self.requests[client_ip]) >= self.requests_per_minute:
-                logger.warning(f"Rate limit dépassé pour {client_ip}")
+                logger.warning("Rate limit dépassé pour %s", client_ip)
                 return Response(
                     content=self.message,
                     status_code=429,

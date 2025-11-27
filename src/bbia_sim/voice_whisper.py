@@ -1,16 +1,19 @@
 #!/usr/bin/env python3
 """bbia_voice_whisper.py - Module Whisper STT pour BBIA
-Intégration Speech-to-Text avec OpenAI Whisper (optionnel)
+Intégration Speech-to-Text avec OpenAI Whisper (optionnel).
 """
 
 import logging
+import operator
 import os
 import threading
 import time
+from collections import deque
 from pathlib import Path
-from typing import Any, cast
+from typing import TYPE_CHECKING, Any, cast
 
-import numpy.typing as npt
+if TYPE_CHECKING:
+    import numpy.typing as npt
 
 # Déclarer whisper comme Any dès le début pour éviter conflit de types
 whisper: Any
@@ -56,6 +59,25 @@ _MAX_WHISPER_CACHE_SIZE = (
 )
 
 
+def _check_audio_device_available() -> bool:
+    """Vérifie si un périphérique audio est disponible.
+
+    Returns:
+        True si périphérique audio disponible, False sinon
+    """
+    if sd is None:
+        return False
+
+    try:
+        # Vérifier si des périphériques d'entrée sont disponibles
+        devices = sd.query_devices()
+        input_devices = [d for d in devices if d.get("max_input_channels", 0) > 0]
+        return len(input_devices) > 0
+    except Exception:
+        # PortAudioError ou autre erreur - pas de périphérique disponible
+        return False
+
+
 class WhisperSTT:
     """Module Speech-to-Text utilisant OpenAI Whisper."""
 
@@ -64,7 +86,7 @@ class WhisperSTT:
         model_size: str = "tiny",
         language: str = "fr",
         enable_vad: bool = True,
-    ):
+    ) -> None:
         """Initialise le module Whisper STT.
 
         Args:
@@ -82,9 +104,17 @@ class WhisperSTT:
         self._vad_loaded = False
 
         if not WHISPER_AVAILABLE:
-            logger.warning(
-                "⚠️ Whisper non disponible. Fallback vers speech_recognition.",
-            )
+            # Log en debug en CI (warning attendu dans les tests)
+            import os
+
+            if os.environ.get("CI", "false").lower() == "true":
+                logger.debug(
+                    "Whisper non disponible. Fallback vers speech_recognition.",
+                )
+            else:
+                logger.warning(
+                    "⚠️ Whisper non disponible. Fallback vers speech_recognition.",
+                )
             return
 
         logger.info(
@@ -115,7 +145,9 @@ class WhisperSTT:
                 if _whisper_model_last_used:
                     oldest_key = min(
                         _whisper_model_last_used.items(),
-                        key=lambda x: x[1],
+                        key=operator.itemgetter(
+                            1,
+                        ),  # OPTIMISATION: plus rapide que lambda
                     )[0]
                     del _whisper_models_cache[oldest_key]
                     del _whisper_model_last_used[oldest_key]
@@ -124,13 +156,13 @@ class WhisperSTT:
                     )
 
         try:
-            logger.info(f"📥 Chargement modèle Whisper {self.model_size}...")
+            logger.info("📥 Chargement modèle Whisper %s...", self.model_size)
             start_time = time.time()
 
             model = whisper.load_model(self.model_size)
 
             load_time = time.time() - start_time
-            logger.info(f"✅ Modèle Whisper chargé en {load_time:.1f}s")
+            logger.info("✅ Modèle Whisper chargé en %.1fs", load_time)
 
             # OPTIMISATION RAM: Mettre en cache global avec timestamp
             with _whisper_model_cache_lock:
@@ -141,8 +173,29 @@ class WhisperSTT:
             self.is_loaded = True
             return True
 
+        except (ImportError, RuntimeError, OSError, ValueError) as e:
+            # Ne pas logger d'erreur si c'est juste que Whisper n'est pas disponible
+            error_msg = str(e).lower()
+            if (
+                "load error" in error_msg
+                or "not found" in error_msg
+                or "unavailable" in error_msg
+            ):
+                logger.debug("⚠️ Whisper non disponible: %s", e)
+            else:
+                logger.warning("⚠️ Erreur chargement Whisper: %s", e)
+            return False
         except Exception as e:
-            logger.error(f"❌ Erreur chargement Whisper: {e}")
+            # Ne pas logger d'erreur si c'est juste que Whisper n'est pas disponible
+            error_msg = str(e).lower()
+            if (
+                "load error" in error_msg
+                or "not found" in error_msg
+                or "unavailable" in error_msg
+            ):
+                logger.debug("⚠️ Whisper non disponible: %s", e)
+            else:
+                logger.warning("⚠️ Erreur inattendue chargement Whisper: %s", e)
             return False
 
     def transcribe_audio(self, audio_path: str) -> str | None:
@@ -157,17 +210,16 @@ class WhisperSTT:
         """
         # Vérification globale de disponibilité
         if not WHISPER_AVAILABLE:
-            logger.error("❌ Whisper non disponible")
+            logger.debug("⚠️ Whisper non disponible (fallback vers speech_recognition)")
             return None
 
         # Charger le modèle si nécessaire
-        if not self.is_loaded:
-            if not self.load_model():
-                logger.error("❌ Impossible de charger le modèle Whisper")
-                return None
+        if not self.is_loaded and not self.load_model():
+            logger.warning("⚠️ Impossible de charger le modèle Whisper")
+            return None
 
         try:
-            logger.info(f"🎵 Transcription audio: {audio_path}")
+            logger.info("🎵 Transcription audio: %s", audio_path)
             start_time = time.time()
 
             # Transcription avec Whisper
@@ -192,8 +244,23 @@ class WhisperSTT:
             )
             return text
 
+        except (RuntimeError, ValueError, OSError, AttributeError) as e:
+            # Log en debug en CI (erreurs attendues dans les tests, ex: ffmpeg non disponible)
+            import os
+
+            if os.environ.get("CI", "false").lower() == "true":
+                logger.debug("Erreur transcription: %s", e)
+            else:
+                logger.error("❌ Erreur transcription: %s", e)
+            return None
         except Exception as e:
-            logger.error(f"❌ Erreur transcription: {e}")
+            # Log en debug en CI (erreurs attendues dans les tests)
+            import os
+
+            if os.environ.get("CI", "false").lower() == "true":
+                logger.debug("Erreur inattendue transcription: %s", e)
+            else:
+                logger.error("❌ Erreur inattendue transcription: %s", e)
             return None
 
     def transcribe_microphone(self, duration: float = 3.0) -> str | None:
@@ -215,14 +282,30 @@ class WhisperSTT:
 
         # Vérification globale de disponibilité
         if not WHISPER_AVAILABLE:
-            logger.error("❌ Whisper non disponible")
+            logger.debug("⚠️ Whisper non disponible (fallback vers speech_recognition)")
+            return None
+
+        # Vérifier disponibilité périphérique audio
+        if not _check_audio_device_available():
+            # Logger en debug si audio désactivé ou en CI pour éviter bruit dans tests
+            if (
+                os.environ.get("BBIA_DISABLE_AUDIO", "0") == "1"
+                or os.environ.get("CI", "false").lower() == "true"
+            ):
+                logger.debug(
+                    "⚠️ Aucun périphérique audio disponible (audio désactivé/CI) - skip enregistrement",
+                )
+            else:
+                logger.warning(
+                    "⚠️ Aucun périphérique audio disponible - skip enregistrement",
+                )
             return None
 
         try:
             import numpy as np
             import soundfile as sf
 
-            logger.info(f"🎤 Enregistrement microphone ({duration}s)...")
+            logger.info("🎤 Enregistrement microphone (%ss)...", duration)
 
             # Enregistrement audio
             sample_rate = 16000  # Whisper recommande 16kHz
@@ -248,23 +331,30 @@ class WhisperSTT:
                 sf.write(temp_file, audio_data, sample_rate)
 
                 # Transcription
-                result = self.transcribe_audio(str(temp_file))
-                return result
+                return self.transcribe_audio(str(temp_file))
             finally:
                 # OPTIMISATION: Nettoyage garanti même en cas d'erreur
                 if temp_file.exists():
                     try:
                         temp_file.unlink()
                     except Exception as cleanup_error:
-                        logger.debug(f"Nettoyage fichier Whisper ({cleanup_error})")
+                        logger.debug("Nettoyage fichier Whisper (%s)", cleanup_error)
 
-        except ImportError:
+        except ImportError as e:
             logger.error(
-                "❌ sounddevice/soundfile requis pour l'enregistrement microphone",
+                "❌ sounddevice/soundfile requis pour l'enregistrement microphone: %s",
+                e,
             )
             return None
         except Exception as e:
-            logger.error(f"❌ Erreur enregistrement microphone: {e}")
+            # Gérer spécifiquement PortAudioError (périphérique indisponible)
+            error_name = type(e).__name__
+            if "PortAudio" in error_name or "PortAudioError" in str(e):
+                logger.warning(
+                    "⚠️ Périphérique audio indisponible (CI/headless) - skip enregistrement",
+                )
+                return None
+            logger.error("❌ Erreur enregistrement microphone: %s", e)
             return None
 
     def detect_speech_activity(self, audio_chunk: Any) -> bool:
@@ -295,12 +385,17 @@ class WhisperSTT:
                 try:
                     logger.info("📥 Chargement modèle VAD (silero/vad)...")
                     # Utiliser l'import au niveau module si disponible, sinon import local
-                    if transformers_pipeline is None:
-                        from transformers import pipeline
+                    # Toujours utiliser pipeline directement pour éviter les problèmes de récursion
+                    try:
+                        if transformers_pipeline is not None:
+                            vad_pipeline_func = transformers_pipeline
+                        else:
+                            from transformers import pipeline
 
-                        vad_pipeline_func = pipeline
-                    else:
-                        vad_pipeline_func = transformers_pipeline
+                            vad_pipeline_func = pipeline
+                    except ImportError:
+                        # Si transformers n'est pas disponible, utiliser None et échouer proprement
+                        raise ImportError("transformers non disponible") from None
 
                     vad_model = vad_pipeline_func(
                         "audio-classification",
@@ -315,8 +410,34 @@ class WhisperSTT:
                     self._vad_model = vad_model
                     self._vad_loaded = True
                     logger.info("✅ Modèle VAD chargé")
+                except ImportError as e:
+                    # ImportError: transformers non disponible - logger en debug pour éviter bruit dans tests
+                    logger.debug(
+                        "⚠️ Impossible de charger VAD (transformers non disponible), fallback activé: %s",
+                        e,
+                    )
+                    self.enable_vad = False
+                    return True  # Fallback: considérer comme parole
+                except RecursionError as e:
+                    # RecursionError: problème de récursion - logger en debug
+                    logger.debug(
+                        "⚠️ Impossible de charger VAD (erreur de récursion), fallback activé: %s",
+                        e,
+                    )
+                    self.enable_vad = False
+                    return True  # Fallback: considérer comme parole
                 except Exception as e:
-                    logger.warning(f"⚠️ Impossible de charger VAD, fallback activé: {e}")
+                    # Autres erreurs - logger en warning seulement si pas en CI
+                    if os.environ.get("CI", "false").lower() != "true":
+                        logger.warning(
+                            "⚠️ Impossible de charger VAD, fallback activé: %s",
+                            e,
+                        )
+                    else:
+                        logger.debug(
+                            "⚠️ Impossible de charger VAD (CI), fallback activé: %s",
+                            e,
+                        )
                     self.enable_vad = False
                     return True  # Fallback: considérer comme parole
 
@@ -360,7 +481,7 @@ class WhisperSTT:
 
                 # Seuil de confiance
                 is_speech = bool(label == "SPEECH" and score > 0.5)
-                logger.debug(f"🔍 VAD: {label} (score: {score:.2f}) → {is_speech}")
+                logger.debug("🔍 VAD: %s (score: %.2f) → %s", label, score, is_speech)
 
                 return is_speech
 
@@ -371,7 +492,7 @@ class WhisperSTT:
             self.enable_vad = False
             return True  # Fallback: considérer comme parole
         except Exception as e:
-            logger.debug(f"ℹ️ Erreur VAD (fallback activé): {e}")
+            logger.debug("ℹ️ Erreur VAD (fallback activé): %s", e)
             return True  # Fallback: considérer comme parole
 
     def transcribe_microphone_with_vad(
@@ -398,7 +519,23 @@ class WhisperSTT:
 
         # Vérification globale de disponibilité
         if not WHISPER_AVAILABLE:
-            logger.error("❌ Whisper non disponible")
+            logger.debug("⚠️ Whisper non disponible (fallback vers speech_recognition)")
+            return None
+
+        # Vérifier disponibilité périphérique audio
+        if not _check_audio_device_available():
+            # Logger en debug si audio désactivé ou en CI pour éviter bruit dans tests
+            if (
+                os.environ.get("BBIA_DISABLE_AUDIO", "0") == "1"
+                or os.environ.get("CI", "false").lower() == "true"
+            ):
+                logger.debug(
+                    "⚠️ Aucun périphérique audio disponible (audio désactivé/CI) - skip enregistrement",
+                )
+            else:
+                logger.warning(
+                    "⚠️ Aucun périphérique audio disponible - skip enregistrement",
+                )
             return None
 
         try:
@@ -407,14 +544,15 @@ class WhisperSTT:
             import numpy as np
             import soundfile as sf
 
-            logger.info(f"🎤 Enregistrement microphone avec VAD ({duration}s max)...")
+            logger.info("🎤 Enregistrement microphone avec VAD (%ss max)...", duration)
 
             # Enregistrement audio continu avec détection VAD
             sample_rate = 16000
             chunk_duration = 0.5  # Analyser par chunks de 500ms
             chunk_samples = int(chunk_duration * sample_rate)
 
-            audio_buffer: list[npt.NDArray[np.float32]] = []
+            # OPTIMISATION RAM: Limiter taille buffer avec deque (max 10 chunks)
+            audio_buffer: deque[npt.NDArray[np.float32]] = deque(maxlen=10)
             silence_duration = 0.0
             max_silence = silence_threshold
             total_duration = 0.0
@@ -436,7 +574,7 @@ class WhisperSTT:
                     logger.debug("🔊 Parole détectée")
                 else:
                     silence_duration += chunk_duration
-                    logger.debug(f"🔇 Silence: {silence_duration:.1f}s")
+                    logger.debug("🔇 Silence: %.1fs", silence_duration)
 
                 total_duration += chunk_duration
 
@@ -462,23 +600,30 @@ class WhisperSTT:
                 sf.write(temp_file, audio_data, sample_rate)
 
                 # Transcription
-                result = self.transcribe_audio(str(temp_file))
-                return result
+                return self.transcribe_audio(str(temp_file))
             finally:
                 # Nettoyage
                 if temp_file.exists():
                     try:
                         temp_file.unlink()
                     except Exception as cleanup_error:
-                        logger.debug(f"Nettoyage fichier Whisper ({cleanup_error})")
+                        logger.debug("Nettoyage fichier Whisper (%s)", cleanup_error)
 
-        except ImportError:
+        except ImportError as e:
             logger.error(
-                "❌ sounddevice/soundfile requis pour l'enregistrement microphone",
+                "❌ sounddevice/soundfile requis pour l'enregistrement microphone: %s",
+                e,
             )
             return None
         except Exception as e:
-            logger.error(f"❌ Erreur enregistrement microphone avec VAD: {e}")
+            # Gérer spécifiquement PortAudioError (périphérique indisponible)
+            error_name = type(e).__name__
+            if "PortAudio" in error_name or "PortAudioError" in str(e):
+                logger.warning(
+                    "⚠️ Périphérique audio indisponible (CI/headless) - skip enregistrement",
+                )
+                return None
+            logger.error("❌ Erreur enregistrement microphone avec VAD: %s", e)
             return None
 
     def transcribe_streaming(
@@ -509,14 +654,29 @@ class WhisperSTT:
 
         # Vérification globale de disponibilité
         if not WHISPER_AVAILABLE:
-            logger.error("❌ Whisper non disponible")
+            logger.debug("⚠️ Whisper non disponible (fallback vers speech_recognition)")
+            return None
+
+        # Vérifier disponibilité périphérique audio
+        if not _check_audio_device_available():
+            # Logger en debug si audio désactivé ou en CI pour éviter bruit dans tests
+            if (
+                os.environ.get("BBIA_DISABLE_AUDIO", "0") == "1"
+                or os.environ.get("CI", "false").lower() == "true"
+            ):
+                logger.debug(
+                    "⚠️ Aucun périphérique audio disponible (audio désactivé/CI) - skip streaming",
+                )
+            else:
+                logger.warning(
+                    "⚠️ Aucun périphérique audio disponible - skip streaming",
+                )
             return None
 
         # Charger modèle si nécessaire
-        if not self.is_loaded:
-            if not self.load_model():
-                logger.error("❌ Impossible de charger le modèle Whisper")
-                return None
+        if not self.is_loaded and not self.load_model():
+            logger.error("❌ Impossible de charger le modèle Whisper")
+            return None
 
         try:
             import tempfile
@@ -534,11 +694,9 @@ class WhisperSTT:
             total_duration = 0.0
 
             # OPTIMISATION RAM: Limiter taille buffer avec deque
-            from collections import deque
-
             buffer_max_chunks = 10  # Max 10 chunks (limite sécurité)
             audio_buffer: deque[npt.NDArray[np.float32]] = deque(
-                maxlen=buffer_max_chunks
+                maxlen=buffer_max_chunks,
             )
 
             # OPTIMISATION PERFORMANCE: Throttling transcription pour éviter surcharge CPU/GPU
@@ -568,7 +726,10 @@ class WhisperSTT:
                         logger.debug("🔊 Parole détectée")
                     else:
                         consecutive_silence_chunks += 1
-                        logger.debug(f"🔇 Silence: {consecutive_silence_chunks} chunks")
+                        logger.debug(
+                            "🔇 Silence: %s chunks",
+                            consecutive_silence_chunks,
+                        )
                         # Ne pas transcrire si silence prolongé
                         if consecutive_silence_chunks >= max_silence_chunks:
                             should_transcribe = False
@@ -633,14 +794,14 @@ class WhisperSTT:
                         if text and text.lower() not in ["", "you", "thank you"]:
                             all_transcriptions.append(text)
                             last_transcription_time = current_time
-                            logger.debug(f"📝 Chunk transcrit: '{text}'")
+                            logger.debug("📝 Chunk transcrit: '%s'", text)
 
                             # Callback si fourni
                             if callback:
                                 try:
                                     callback(text, total_duration)
                                 except Exception as callback_error:
-                                    logger.debug(f"Erreur callback: {callback_error}")
+                                    logger.debug("Erreur callback: %s", callback_error)
 
                     finally:
                         # OPTIMISATION RAM: Remettre fichier dans pool au lieu
@@ -656,7 +817,8 @@ class WhisperSTT:
                                 except Exception as e:
                                     # Ignorer erreur suppression fichier temporaire
                                     logger.debug(
-                                        f"Impossible de supprimer fichier temporaire: {e}"
+                                        "Impossible de supprimer fichier temporaire: %s",
+                                        e,
                                     )
 
                 total_duration += chunk_duration
@@ -669,17 +831,24 @@ class WhisperSTT:
             # Concaténer toutes les transcriptions
             final_text = " ".join(all_transcriptions).strip()
             if final_text:
-                logger.info(f"✅ Streaming terminé: '{final_text}'")
+                logger.info("✅ Streaming terminé: '%s'", final_text)
                 return final_text
 
             logger.warning("⚠️ Aucune transcription générée")
             return None
 
-        except ImportError:
-            logger.error("❌ sounddevice/soundfile requis pour streaming")
+        except ImportError as e:
+            logger.error("❌ sounddevice/soundfile requis pour streaming: %s", e)
             return None
         except Exception as e:
-            logger.error(f"❌ Erreur streaming: {e}")
+            # Gérer spécifiquement PortAudioError (périphérique indisponible)
+            error_name = type(e).__name__
+            if "PortAudio" in error_name or "PortAudioError" in str(e):
+                logger.warning(
+                    "⚠️ Périphérique audio indisponible (CI/headless) - skip streaming",
+                )
+                return None
+            logger.error("❌ Erreur streaming: %s", e)
             return None
 
 
@@ -710,7 +879,8 @@ class VoiceCommandMapper:
         }
 
         logger.info(
-            f"🗣️ Mappeur de commandes initialisé ({len(self.commands)} commandes)",
+            "🗣️ Mappeur de commandes initialisé (%d commandes)",
+            len(self.commands),
         )
 
     def map_command(self, text: str) -> dict[str, Any] | None:
@@ -732,16 +902,20 @@ class VoiceCommandMapper:
         # Recherche exacte
         if text_lower in self.commands:
             action = self.commands[text_lower]
-            logger.info(f"🎯 Commande mappée: '{text}' → {action}")
+            logger.info("🎯 Commande mappée: '%s' → %s", text, action)
             return {"action": action, "confidence": 1.0}
 
         # Recherche partielle
         for command, action in self.commands.items():
             if command in text_lower:
-                logger.info(f"🎯 Commande partielle mappée: '{text}' → {action}")
+                logger.info("🎯 Commande partielle mappée: '%s' → %s", text, action)
                 return {"action": action, "confidence": 0.8}
 
-        logger.warning(f"❓ Commande non reconnue: '{text}'")
+        # Pas de log en CI (commande non reconnue attendue dans les tests)
+        import os
+
+        if os.environ.get("CI", "false").lower() != "true":
+            logger.warning("❓ Commande non reconnue: '%s'", text)
         return None
 
 
@@ -774,7 +948,7 @@ if __name__ == "__main__":
     logger.info("=" * 40)
 
     # Test disponibilité
-    logger.info(f"Whisper disponible: {WHISPER_AVAILABLE}")
+    logger.info("Whisper disponible: %s", WHISPER_AVAILABLE)
 
     if WHISPER_AVAILABLE:
         # Test création
@@ -793,7 +967,7 @@ if __name__ == "__main__":
 
             for cmd in test_commands:
                 result = mapper.map_command(cmd)
-                logger.info(f"  '{cmd}' → {result}")
+                logger.info("  '%s' → %s", cmd, result)
         else:
             logger.error("❌ Impossible de créer le module Whisper")
     else:

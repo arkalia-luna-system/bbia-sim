@@ -1,7 +1,7 @@
 # 📚 Structure des Tests Reachy Mini
 
 > Documentation des fichiers de tests pour le backend Reachy Mini  
-> Généré automatiquement après analyse (Oct / No2025025025025025)
+> Généré automatiquement après analyse (21 Novembre 2025)
 
 ## 📊 Vue d'Ensemble
 
@@ -222,5 +222,5 @@ Chaque fichier a un rôle spécifique et des tests uniques essentiels pour maint
 
 ---
 
-**📅 Dernière mise à jour**: Oct / No2025025025025025  
+**📅 Dernière mise à jour**: 21 Novembre 2025  
 **🔧 Script d'analyse**: `scripts/verify_tests_consolidation.py`

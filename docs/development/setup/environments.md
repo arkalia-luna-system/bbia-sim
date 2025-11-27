@@ -16,7 +16,7 @@
 - Commandes utiles:
   - Activer: `source venv/bin/activate`
   - Démarrer dashboard: `python src/bbia_sim/dashboard_advanced.py --port 8000`
-  - Démo 3D (macOS): `./LANCE_DEMO_3D.sh` (utilise `mjpython`)
+  - Démo 3D (macOS): `./examples/LANCE_DEMO_3D.sh` (utilise `mjpython`)
 
 Notes:
 
@@ -35,7 +35,7 @@ Notes:
 - Nettoyage macOS (si erreurs Matplotlib sur fichiers ._*):
   - `find venv-vision-py310/lib/python3.10/site-packages/matplotlib/mpl-data/stylelib -name '._*.mplstyle' -delete`
 - Test:
-  - `python -c "import mediapipe, cv2; print('VISION OK')"`
+  - `python -c "import mediapipe, cv2; import logging; logging.info('VISION OK')"`
 
 Caméra:
 
@@ -82,7 +82,7 @@ Caméra:
 
 - Simulation 3D (profil A):
   - `source venv/bin/activate`
-  - `./LANCE_DEMO_3D.sh` (macOS: ouvre le viewer via `mjpython`)
+  - `./examples/LANCE_DEMO_3D.sh` (macOS: ouvre le viewer via `mjpython`)
 - Vision seule (profil B):
   - `source venv-vision-py310/bin/activate`
   - Script vision/abonnements/analyses (selon besoins)
@@ -192,4 +192,53 @@ bbia.enable_llm_chat()  # Télécharge/charge le LLM (internet requis au premier
 
 ---
 
-**Dernière mise à jour** : Oct / Nov. 2025
+---
+
+## 🪟 Support Windows (Issue #407)
+
+### Configuration Windows
+
+BBIA fonctionne sur Windows avec quelques considérations :
+
+**Installation** :
+
+```bash
+# Installer dépendances
+pip install -e .
+
+# MuJoCo peut nécessiter configuration spéciale sur Windows
+pip install mujoco
+```
+
+**Audio** :
+
+- PortAudio : Installer depuis [PortAudio](http://www.portaudio.com/)
+- Ou désactiver audio : `set BBIA_DISABLE_AUDIO=1`
+
+**Caméra** :
+
+- Support OpenCV standard
+- Utiliser `BBIA_CAMERA_INDEX=0` pour première webcam
+
+**Robot Réel** :
+
+- Vérifier port COM : `COM5`, `COM3`, etc.
+- Configuration dans `ReachyMiniBackend` :
+  ```python
+  robot = ReachyMiniBackend(
+      localhost_only=False,  # Permettre connexion réseau
+      timeout=5.0,  # Timeout augmenté pour Windows
+  )
+  ```
+
+**Troubleshooting** :
+
+- **Erreur port COM** : Vérifier port USB dans Gestionnaire de périphériques
+- **Timeout connexion** : Augmenter `timeout` dans `ReachyMiniBackend`
+- **MuJoCo** : Utiliser mode headless si problèmes affichage
+
+**Note** : BBIA est principalement testé sur macOS/Linux. Support Windows partiel.
+
+---
+
+**Dernière mise à jour** : 26 Novembre 2025

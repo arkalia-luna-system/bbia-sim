@@ -1,7 +1,7 @@
 # 🧪 Guide des Tests et de la Couverture - BBIA Reachy Mini
 
-**Date** : Oct / Nov. 2025  
-**Version** : 1.0
+**Date** : 26 Novembre 2025  
+**Version** : 1.4.0
 
 > **Référence état global** : Voir [`docs/reference/project-status.md`](../reference/project-status.md) → "État par axe" (Qualité/Performance/CI) pour l'état actuel et les axes futurs.
 
@@ -142,7 +142,7 @@ graph LR
 
 ```
 
-### 🤖 Tests Backend Reachy Mini (Oct / Nov. 2025)
+### 🤖 Tests Backend Reachy Mini (26 Novembre 2025)
 
 **📊 Statistiques**:
 
@@ -188,6 +188,18 @@ python scripts/verify_tests_consolidation.py
 ```text
 
 ## Commandes de tests
+
+### Tests avec visibilité maximale (debug)
+
+```bash
+# Script dédié pour identifier les tests lents
+./scripts/test_verbose.sh
+
+# Voir tous les tests sauf e2e
+./scripts/test_verbose.sh "not e2e"
+```
+
+Le script affiche la progression en temps réel et liste les tests les plus lents.
 
 ### Tests complets
 
@@ -277,7 +289,7 @@ python -m pytest tests/test_bbia_emotions.py --cov=src.bbia_sim.bbia_emotions --
 
 ### pyproject.toml
 
-```toml
+```toml ⚙️
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -414,4 +426,4 @@ python -m pytest tests/test_config.py --cov=src --cov-report=term-missing
 
 ---
 
-**Dernière mise à jour** : Oct / Nov. 2025
+**Dernière mise à jour** : 26 Novembre 2025

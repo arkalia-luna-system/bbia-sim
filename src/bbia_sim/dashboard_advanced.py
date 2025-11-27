@@ -1,20 +1,27 @@
 #!/usr/bin/env python3
 """BBIA Advanced Dashboard - Interface de contrôle sophistiquée
-Dashboard web avancé avec métriques temps réel, visualisation 3D, et contrôle complet
+Dashboard web avancé avec métriques temps réel, visualisation 3D, et contrôle complet.
 """
 
 import asyncio
 import json
 import logging
 import time
+from collections import deque
 from datetime import datetime
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 try:
-    import uvicorn
-    from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
-    from fastapi.middleware.cors import CORSMiddleware
-    from fastapi.responses import HTMLResponse
+    import uvicorn  # type: ignore[import-untyped]
+    from fastapi import (  # type: ignore[import-untyped]
+        FastAPI,
+        HTTPException,
+        Request,
+        WebSocket,
+        WebSocketDisconnect,
+    )
+    from fastapi.middleware.cors import CORSMiddleware  # type: ignore[import-untyped]
+    from fastapi.responses import HTMLResponse  # type: ignore[import-untyped]
 
     FASTAPI_AVAILABLE = True
 except ImportError:
@@ -22,6 +29,7 @@ except ImportError:
     # Types fallback pour mypy
     FastAPI = Any  # type: ignore[assignment,misc]
     WebSocket = Any  # type: ignore[assignment,misc]
+    Request = Any  # type: ignore[assignment,misc]
 
 # Ajouter le chemin src pour les imports
 import sys
@@ -30,10 +38,22 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 # BBIAVoice n'existe pas encore - utiliser les fonctions directement
+import contextlib
+
 from bbia_sim.bbia_behavior import BBIABehaviorManager
 from bbia_sim.bbia_emotions import BBIAEmotions
 from bbia_sim.bbia_vision import BBIAVision
 from bbia_sim.robot_factory import RobotFactory
+from bbia_sim.troubleshooting import (
+    check_all,
+    get_documentation_links,
+    test_audio,
+    test_camera,
+    test_network_ping,
+)
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 logger = logging.getLogger(__name__)
 
@@ -46,17 +66,33 @@ class BBIAAdvancedWebSocketManager:
         self.active_connections: list[WebSocket] = []
         self.robot: Any | None = None
         self.robot_backend = "mujoco"
-        # OPTIMISATION RAM: Utiliser deque au lieu de liste pour limiter historique
-        from collections import deque
+        # Lock pour éviter les race conditions lors de l'initialisation du robot
+        import threading
 
+        self._robot_init_lock = threading.Lock()
+        # OPTIMISATION RAM: Utiliser deque au lieu de liste pour limiter historique
         self.max_history = 1000  # Limite historique métriques
         self.metrics_history: deque[dict[str, Any]] = deque(maxlen=self.max_history)
+
+        # OPTIMISATION RAM: Nettoyage connexions WebSocket inactives (>5 min)
+        self._connection_last_activity: dict[WebSocket, float] = {}
+        self._connection_cleanup_interval = 300.0  # 5 minutes
+
+        # OPTIMISATION STREAMING: Batching messages et heartbeat optimisé
+        self._message_batch: list[dict[str, Any]] = []
+        self._batch_lock = asyncio.Lock()
+        self._batch_interval = 0.1  # 100ms pour batching
+        self._batch_task: asyncio.Task | None = None
+        self._heartbeat_interval = 30.0  # 30 secondes (optimisé depuis 10s)
+        self._last_heartbeat: float = 0.0
 
         # Modules BBIA
         self.emotions = BBIAEmotions()
         # OPTIMISATION RAM: Utiliser singleton BBIAVision si disponible
         try:
-            from ..bbia_vision import get_bbia_vision_singleton
+            from ..bbia_vision import (  # type: ignore[import-untyped]
+                get_bbia_vision_singleton,  # type: ignore[import-untyped]
+            )
 
             self.vision = get_bbia_vision_singleton()
         except (ImportError, AttributeError):
@@ -94,48 +130,326 @@ class BBIAAdvancedWebSocketManager:
         # Démarrer la collecte de métriques
         # self._start_metrics_collection()  # Démarré lors de la première connexion WebSocket
 
-    async def connect(self, websocket: WebSocket):
+        # Flag pour arrêter la collecte de métriques (pour tests)
+        self._stop_metrics = False
+        self._metrics_task: asyncio.Task | None = None
+
+        # Initialiser le robot automatiquement au démarrage
+        self._initialize_robot_async()
+
+    def _initialize_robot_async(self) -> None:
+        """Initialise le robot de manière asynchrone."""
+
+        def init_robot() -> None:
+            with self._robot_init_lock:
+                try:
+                    if not self.robot:
+                        logger.info("🔧 Initialisation robot %s...", self.robot_backend)
+                        self.robot = RobotFactory.create_backend(self.robot_backend)
+                        if self.robot:
+                            connected = self.robot.connect()
+                            if connected:
+                                if self.robot_backend == "mujoco":
+                                    logger.info(
+                                        "✅ Robot %s initialisé (mode simulation)",
+                                        self.robot_backend,
+                                    )
+                                else:
+                                    logger.info(
+                                        "✅ Robot %s connecté automatiquement",
+                                        self.robot_backend,
+                                    )
+                            else:
+                                logger.warning(
+                                    "⚠️ Robot %s en mode simulation",
+                                    self.robot_backend,
+                                )
+                        else:
+                            logger.error(
+                                "❌ RobotFactory.create_backend('%s') a retourné None",
+                                self.robot_backend,
+                            )
+                except (
+                    ValueError,
+                    AttributeError,
+                    RuntimeError,
+                    ImportError,
+                    OSError,
+                ):
+                    logger.exception("❌ Erreur initialisation robot")
+                    # En cas d'erreur, le dashboard fonctionne quand même en mode simulation
+                    logger.info(
+                        "ℹ️ Dashboard fonctionne en mode simulation (sans robot réel)",
+                    )
+                except Exception:
+                    logger.exception("❌ Erreur inattendue initialisation robot")
+                    logger.info(
+                        "ℹ️ Dashboard fonctionne en mode simulation (sans robot réel)",
+                    )
+
+        # Démarrer dans un thread pour ne pas bloquer
+        import threading
+
+        thread = threading.Thread(target=init_robot, daemon=True)
+        thread.start()
+
+    async def connect(self, websocket: WebSocket) -> None:
         """Accepte une nouvelle connexion WebSocket."""
         await websocket.accept()
         self.active_connections.append(websocket)
+        # OPTIMISATION RAM: Enregistrer timestamp activité connexion
+        self._connection_last_activity[websocket] = time.time()
         logger.info(
-            f"🔌 WebSocket avancé connecté ({len(self.active_connections)} connexions)",
+            "🔌 WebSocket avancé connecté (%d connexions)",
+            len(self.active_connections),
         )
 
         # Démarrer la collecte de métriques si c'est la première connexion
         if len(self.active_connections) == 1:
             self._start_metrics_collection()
+            # OPTIMISATION STREAMING: Démarrer le processeur de batch
+            await self._start_batch_processor()
+
+        # S'assurer que le robot est initialisé - FORCER l'initialisation
+        if not self.robot:
+            logger.warning(
+                "⚠️ Robot non initialisé lors de la connexion WebSocket - initialisation forcée",
+            )
+            try:
+                self.robot = RobotFactory.create_backend(self.robot_backend)
+                if self.robot:
+                    connected = self.robot.connect()
+                    if connected:
+                        logger.info("✅ Robot %s connecté (forcé)", self.robot_backend)
+                        await self.send_log_message(
+                            "info",
+                            f"✅ Robot {self.robot_backend} connecté",
+                        )
+                    else:
+                        logger.warning(
+                            "⚠️ Robot %s connect() a retourné False",
+                            self.robot_backend,
+                        )
+                        await self.send_log_message(
+                            "warning",
+                            f"⚠️ Robot {self.robot_backend} en mode simulation",
+                        )
+                else:
+                    logger.error(
+                        "❌ RobotFactory.create_backend('%s') a retourné None",
+                        self.robot_backend,
+                    )
+                    await self.send_log_message(
+                        "error",
+                        f"❌ Impossible de créer le robot {self.robot_backend}",
+                    )
+            except (ValueError, AttributeError, RuntimeError, ImportError) as e:
+                logger.exception("❌ Erreur initialisation robot forcée")
+                await self.send_log_message("error", f"❌ Erreur robot: {e}")
+            except Exception as e:
+                logger.exception("❌ Erreur inattendue initialisation robot forcée")
+                await self.send_log_message("error", f"❌ Erreur robot: {e}")
+
+        # Vérifier que le robot est vraiment connecté
+        if self.robot:
+            logger.info(
+                "✅ Robot présent: %s, is_connected=%s",
+                type(self.robot).__name__,
+                self.robot.is_connected,
+            )
+            if not self.robot.is_connected:
+                logger.warning(
+                    "⚠️ Robot présent mais is_connected=False - reconnexion...",
+                )
+                self.robot.connect()
+        else:
+            logger.error("❌ Robot est None après vérification")
 
         # Envoyer état initial complet
         await self.send_complete_status()
 
-    def disconnect(self, websocket: WebSocket):
+    async def disconnect(self, websocket: WebSocket) -> None:
         """Déconnecte un WebSocket."""
         if websocket in self.active_connections:
             self.active_connections.remove(websocket)
+        # OPTIMISATION RAM: Supprimer du tracking activité
+        if websocket in self._connection_last_activity:
+            del self._connection_last_activity[websocket]
         logger.info(
-            f"🔌 WebSocket avancé déconnecté ({len(self.active_connections)} connexions)",
+            "🔌 WebSocket avancé déconnecté (%d connexions)",
+            len(self.active_connections),
         )
+        # Arrêter la collecte de métriques si plus aucune connexion
+        if (
+            not self.active_connections
+        ):  # OPTIMISATION: vérification de vérité plus efficace
+            self._stop_metrics_collection()
+            # OPTIMISATION STREAMING: Arrêter le processeur de batch
+            if self._batch_task and not self._batch_task.done():
+                self._batch_task.cancel()
+                with contextlib.suppress(asyncio.CancelledError):
+                    await self._batch_task
+                self._batch_task = None
 
-    async def broadcast(self, message: str):
+    async def _cleanup_inactive_connections(self) -> None:
+        """OPTIMISATION RAM: Nettoie les connexions WebSocket inactives (>5 min)."""
+        current_time = time.time()
+        # OPTIMISATION: deque avec maxlen pour éviter accumulation excessive
+        inactive_connections: deque[tuple[WebSocket, float]] = deque(maxlen=100)
+
+        for connection, last_activity in list(self._connection_last_activity.items()):
+            inactivity = current_time - last_activity
+            if inactivity > self._connection_cleanup_interval:
+                inactive_connections.append((connection, inactivity))
+
+        # Fermer connexions inactives
+        for connection, inactivity in inactive_connections:
+            try:
+                # Tenter fermeture propre
+                if connection in self.active_connections:
+                    await self.disconnect(connection)
+                    logger.debug(
+                        "🗑️ Connexion WebSocket inactive fermée (%.0fs)",
+                        inactivity,
+                    )
+            except (
+                ConnectionError,
+                RuntimeError,
+                AttributeError,
+                WebSocketDisconnect,
+            ) as e:
+                logger.debug("Erreur nettoyage connexion inactive: %s", e)
+            except Exception as e:  # noqa: BLE001 - Fallback pour erreurs inattendues
+                logger.debug("Erreur inattendue nettoyage connexion inactive: %s", e)
+
+    async def _add_to_batch(self, message_data: dict[str, Any]) -> None:
+        """OPTIMISATION STREAMING: Ajoute un message au batch pour envoi groupé."""
+        async with self._batch_lock:
+            self._message_batch.append(message_data)
+
+    async def _flush_batch(self) -> None:
+        """OPTIMISATION STREAMING: Envoie tous les messages en batch."""
+        async with self._batch_lock:
+            if not self._message_batch or not self.active_connections:
+                return
+
+            # Grouper les messages par type pour compression
+            batched_data = {
+                "type": "batch",
+                "timestamp": datetime.now().isoformat(),
+                "messages": self._message_batch.copy(),
+            }
+            self._message_batch.clear()
+
+        # Envoyer le batch
+        await self.broadcast(json.dumps(batched_data))
+
+    async def _start_batch_processor(self) -> None:
+        """OPTIMISATION STREAMING: Démarre le processeur de batch."""
+        if self._batch_task and not self._batch_task.done():
+            return
+
+        async def batch_loop() -> None:
+            while self.active_connections:
+                await asyncio.sleep(self._batch_interval)
+                await self._flush_batch()
+
+        self._batch_task = asyncio.create_task(batch_loop())
+
+    async def _send_heartbeat(self) -> None:
+        """OPTIMISATION STREAMING: Envoie un heartbeat optimisé (30s)."""
+        current_time = time.time()
+        if current_time - self._last_heartbeat >= self._heartbeat_interval:
+            heartbeat_data = {
+                "type": "heartbeat",
+                "timestamp": datetime.now().isoformat(),
+            }
+            await self.broadcast(json.dumps(heartbeat_data))
+            self._last_heartbeat = current_time
+
+    async def broadcast(self, message: str, use_batch: bool = False) -> None:
         """Diffuse un message à toutes les connexions actives."""
         if not self.active_connections:
             return
 
-        disconnected = []
+        # OPTIMISATION STREAMING: Utiliser batching si demandé
+        if use_batch:
+            try:
+                message_data = json.loads(message)
+                await self._add_to_batch(message_data)
+                return
+            except (json.JSONDecodeError, TypeError):
+                # Si pas JSON valide, envoyer directement
+                pass
+
+        # OPTIMISATION: deque avec maxlen pour éviter accumulation excessive
+        disconnected: deque[WebSocket] = deque(maxlen=50)
+        current_time = time.time()
         for connection in self.active_connections:
             try:
                 await connection.send_text(message)
-            except Exception:
-                disconnected.append(
-                    connection,
-                )
+                # OPTIMISATION RAM: Mettre à jour timestamp activité
+                self._connection_last_activity[connection] = current_time
+            except (ConnectionError, RuntimeError, WebSocketDisconnect):
+                disconnected.append(connection)
 
         # Nettoyer les connexions fermées
         for connection in disconnected:
-            self.disconnect(connection)
+            await self.disconnect(connection)
 
-    async def send_complete_status(self):
+        # OPTIMISATION RAM: Nettoyer connexions inactives périodiquement
+        # Note: _cleanup_inactive_connections est async mais appelé depuis broadcast async
+        # On ne peut pas await ici car cela bloquerait, donc on le fait en arrière-plan
+        # Le nettoyage sera fait lors du prochain appel
+
+        # OPTIMISATION STREAMING: Envoyer heartbeat si nécessaire
+        await self._send_heartbeat()
+
+    def _sanitize_for_json(self, obj: Any) -> Any:
+        """Nettoie les données pour la sérialisation JSON.
+
+        Convertit les objets non sérialisables (MagicMock, etc.) en valeurs sérialisables.
+
+        Args:
+            obj: Objet à nettoyer
+
+        Returns:
+            Objet nettoyé et sérialisable en JSON
+        """
+        # Détecter MagicMock et autres objets de mock
+        if hasattr(obj, "__class__") and "Mock" in obj.__class__.__name__:
+            # Retourner une représentation string pour les mocks
+            return f"<{obj.__class__.__name__}>"
+
+        # Types JSON natifs
+        if obj is None or isinstance(obj, bool | int | float | str):
+            return obj
+
+        # Dictionnaires
+        if isinstance(obj, dict):
+            return {str(k): self._sanitize_for_json(v) for k, v in obj.items()}
+
+        # Listes et tuples
+        if isinstance(obj, list | tuple):
+            return [self._sanitize_for_json(item) for item in obj]
+
+        # Datetime et autres types avec isoformat
+        if hasattr(obj, "isoformat"):
+            try:
+                return obj.isoformat()
+            except Exception:
+                return str(obj)
+
+        # Autres objets - essayer de convertir en string
+        try:
+            # Essayer de sérialiser directement (pour les types JSON valides)
+            json.dumps(obj)
+            return obj
+        except (TypeError, ValueError):
+            # Si échec, retourner une représentation string
+            return str(obj)
+
+    async def send_complete_status(self) -> None:
         """Envoie le statut complet du système."""
         status_data = {
             "type": "complete_status",
@@ -172,9 +486,11 @@ class BBIAAdvancedWebSocketManager:
             "history": list(self.metrics_history)[-50:],  # 50 dernières métriques
         }
 
-        await self.broadcast(json.dumps(status_data))
+        # Nettoyer les données avant sérialisation JSON
+        sanitized_data = self._sanitize_for_json(status_data)
+        await self.broadcast(json.dumps(sanitized_data))
 
-    async def send_metrics_update(self):
+    async def send_metrics_update(self) -> None:
         """Envoie une mise à jour des métriques."""
         metrics_data = {
             "type": "metrics_update",
@@ -182,9 +498,12 @@ class BBIAAdvancedWebSocketManager:
             "metrics": self.current_metrics,
         }
 
-        await self.broadcast(json.dumps(metrics_data))
+        # Nettoyer les données avant sérialisation JSON
+        sanitized_data = self._sanitize_for_json(metrics_data)
+        # OPTIMISATION STREAMING: Utiliser batching pour métriques
+        await self.broadcast(json.dumps(sanitized_data), use_batch=True)
 
-    async def send_log_message(self, level: str, message: str):
+    async def send_log_message(self, level: str, message: str) -> None:
         """Envoie un message de log."""
         log_data = {
             "type": "log",
@@ -213,16 +532,50 @@ class BBIAAdvancedWebSocketManager:
         for joint in self._get_available_joints():
             try:
                 pose[joint] = self.robot.get_joint_pos(joint)
-            except Exception:
+            except (
+                ConnectionError,
+                RuntimeError,
+                WebSocketDisconnect,
+                AttributeError,
+            ) as e:
+                # Gérer exceptions attendues pour éviter les crashes
+                logger.debug("Erreur lecture position joint %s: %s", joint, e)
+                pose[joint] = 0.0
+            except Exception as e:  # noqa: BLE001 - Fallback pour erreurs inattendues
+                # Gérer erreurs inattendues
+                logger.debug(
+                    "Erreur inattendue lecture position joint %s: %s",
+                    joint,
+                    e,
+                )
                 pose[joint] = 0.0
         return pose
 
-    def _start_metrics_collection(self):
+    def _start_metrics_collection(self) -> None:
         """Démarre la collecte automatique de métriques."""
+        # OPTIMISATION RAM: Vérifier si task existe déjà et est active
+        if self._metrics_task is not None and not self._metrics_task.done():
+            logger.debug("Collecte métriques déjà active")
+            return
 
-        async def collect_metrics():
-            while True:
+        # Arrêter la collecte précédente si elle existe
+        self._stop_metrics_collection()
+
+        self._stop_metrics = False
+
+        async def collect_metrics() -> None:
+            while not self._stop_metrics:
                 try:
+                    # FAIRE AVANCER LA SIMULATION MuJoCo si robot connecté
+                    if self.robot and hasattr(self.robot, "step"):
+                        try:
+                            # Faire un step de simulation pour que le robot bouge
+                            self.robot.step()
+                        except (AttributeError, RuntimeError, ValueError) as e:
+                            logger.debug("Erreur step robot: %s", e)
+                        except Exception as e:  # noqa: BLE001
+                            logger.debug("Erreur inattendue step robot: %s", e)
+
                     # Mettre à jour les métriques
                     self._update_metrics()
 
@@ -235,14 +588,36 @@ class BBIAAdvancedWebSocketManager:
                     # Attendre 100ms avant prochaine collecte
                     await asyncio.sleep(0.1)
 
-                except Exception as e:
-                    logger.error(f"Erreur collecte métriques: {e}")
+                except asyncio.CancelledError:
+                    # Tâche annulée, sortir proprement
+                    break
+                except (AttributeError, RuntimeError, ValueError):
+                    if not self._stop_metrics:
+                        logger.exception("Erreur collecte métriques")
+                    await asyncio.sleep(1.0)
+                except Exception:
+                    if not self._stop_metrics:
+                        logger.exception("Erreur inattendue collecte métriques")
                     await asyncio.sleep(1.0)
 
         # Démarrer la tâche en arrière-plan
-        asyncio.create_task(collect_metrics())
+        try:
+            # Essayer d'utiliser asyncio.create_task() si une boucle est en cours
+            self._metrics_task = asyncio.create_task(collect_metrics())
+        except RuntimeError:
+            # Pas de boucle en cours, créer une nouvelle
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            self._metrics_task = loop.create_task(collect_metrics())
 
-    def _update_metrics(self):
+    def _stop_metrics_collection(self) -> None:
+        """Arrête la collecte de métriques."""
+        self._stop_metrics = True
+        if self._metrics_task and not self._metrics_task.done():
+            self._metrics_task.cancel()
+            self._metrics_task = None
+
+    def _update_metrics(self) -> None:
         """Met à jour les métriques actuelles."""
         current_time = time.time()
 
@@ -288,7 +663,7 @@ app: FastAPI | None
 if FASTAPI_AVAILABLE:
     app = FastAPI(
         title="BBIA Advanced Dashboard",
-        version="1.2.0",
+        version="1.3.2",
         description="Interface de contrôle sophistiquée pour BBIA-SIM",
     )
 
@@ -329,32 +704,84 @@ ADVANCED_DASHBOARD_HTML = """
             box-sizing: border-box;
         }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            min-height: 100vh;
-            overflow-x: hidden;
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
         }
 
+        *::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        *::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        *::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+        }
+
+        *::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
+            color: #4D4D4D;
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Animation d'entrée */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .panel {
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        .panel:nth-child(1) { animation-delay: 0.1s; }
+        .panel:nth-child(2) { animation-delay: 0.2s; }
+        .panel:nth-child(3) { animation-delay: 0.3s; }
+        .panel:nth-child(4) { animation-delay: 0.4s; }
+
         .header {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 20px;
+            background: #ffffff;
+            padding: 25px;
             text-align: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            border-bottom: 2px solid #4D4D4D;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(77, 77, 77, 0.1);
         }
 
         .header h1 {
-            font-size: 2.5em;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            color: #4D4D4D;
             margin-bottom: 10px;
+            font-weight: 700;
+            font-size: 2.2em;
         }
 
         .header .subtitle {
-            font-size: 1.2em;
-            opacity: 0.8;
+            color: #4D4D4D;
+            font-size: 0.95em;
+            font-weight: 500;
+            text-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
         }
+
 
         .main-container {
             display: grid;
@@ -367,18 +794,29 @@ ADVANCED_DASHBOARD_HTML = """
         }
 
         .panel {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
+            background: #ffffff;
+            border-radius: 8px;
             padding: 25px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid #E6E6E6;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(77, 77, 77, 0.08);
+        }
+
+        .panel:hover {
+            box-shadow: 0 4px 12px rgba(77, 77, 77, 0.12);
+            transform: translateY(-2px);
+            border-color: #4D4D4D;
         }
 
         .panel h3 {
             margin-bottom: 20px;
-            font-size: 1.4em;
-            text-align: center;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            font-size: 1.3em;
+            text-align: left;
+            color: #4D4D4D;
+            font-weight: 600;
+            border-bottom: 2px solid #4D4D4D;
+            padding-bottom: 10px;
+            margin-top: 0;
         }
 
         .status-panel {
@@ -389,34 +827,65 @@ ADVANCED_DASHBOARD_HTML = """
         }
 
         .status-item {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            border-radius: 10px;
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
             text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid #E6E6E6;
+        }
+
+        .status-item:hover {
+            background: #ffffff;
+            border-color: #4D4D4D;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(77, 77, 77, 0.15);
         }
 
         .status-value {
             font-size: 2em;
             font-weight: bold;
             margin-bottom: 5px;
+            transition: transform 0.2s ease;
+            color: #4D4D4D;
+        }
+
+        .status-value.updating {
+            animation: pulse-value 0.5s ease;
+        }
+
+        @keyframes pulse-value {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
         }
 
         .status-label {
             font-size: 0.9em;
-            opacity: 0.8;
+            color: #4D4D4D;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.85em;
         }
 
         .connection-indicator {
             display: inline-block;
-            width: 12px;
-            height: 12px;
+            width: 14px;
+            height: 14px;
             border-radius: 50%;
             margin-right: 10px;
             animation: pulse 2s infinite;
+            box-shadow: 0 0 8px currentColor;
         }
 
-        .connected { background: #4CAF50; }
-        .disconnected { background: #F44336; }
+        .connected {
+            background: #10b981;
+            color: #10b981;
+        }
+        .disconnected {
+            background: #ef4444;
+            color: #ef4444;
+        }
 
         @keyframes pulse {
             0% { opacity: 1; }
@@ -432,37 +901,121 @@ ADVANCED_DASHBOARD_HTML = """
         }
 
         .control-button {
-            padding: 15px 10px;
-            border: none;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
+            padding: 12px 20px;
+            border: 1px solid #4D4D4D;
+            border-radius: 6px;
+            background: #ffffff;
+            color: #4D4D4D;
             font-size: 14px;
+            font-weight: 500;
             cursor: pointer;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(5px);
+            transition: all 0.2s ease;
             text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(77, 77, 77, 0.1);
+        }
+
+        .control-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .control-button:active::before {
+            width: 300px;
+            height: 300px;
         }
 
         .control-button:hover {
-            background: rgba(255, 255, 255, 0.3);
+            background: #4D4D4D;
+            color: #ffffff;
+            border-color: #4D4D4D;
             transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(77, 77, 77, 0.25);
         }
 
         .control-button:active {
-            transform: translateY(0);
+            transform: translateY(-1px) scale(0.98);
+        }
+
+        .control-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .control-button.loading {
+            pointer-events: none;
+            position: relative;
+        }
+
+        .control-button.loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 16px;
+            height: 16px;
+            margin: -8px 0 0 -8px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Loading spinner standalone */
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(77, 77, 77, 0.2);
+            border-top-color: #4D4D4D;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            vertical-align: middle;
+            margin-right: 8px;
         }
 
         .emotion-button {
-            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            border-color: rgba(77, 77, 77, 0.3);
+            color: #4D4D4D;
+        }
+
+        .emotion-button:hover {
+            background: linear-gradient(135deg, #4D4D4D 0%, #4D4D4D 100%);
+            color: #ffffff;
         }
 
         .action-button {
-            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+            border-color: rgba(77, 77, 77, 0.3);
+            color: #4D4D4D;
+        }
+
+        .action-button:hover {
+            background: linear-gradient(135deg, #4D4D4D 0%, #4D4D4D 100%);
+            color: #ffffff;
         }
 
         .behavior-button {
-            background: linear-gradient(45deg, #a8edea, #fed6e3);
+            border-color: rgba(77, 77, 77, 0.3);
+            color: #4D4D4D;
+        }
+
+        .behavior-button:hover {
+            background: linear-gradient(135deg, #4D4D4D 0%, #4D4D4D 100%);
+            color: #ffffff;
         }
 
         .chart-container {
@@ -479,15 +1032,27 @@ ADVANCED_DASHBOARD_HTML = """
         }
 
         .joint-control {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            border-radius: 10px;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            padding: 18px;
+            border-radius: 12px;
+            border: 2px solid rgba(77, 77, 77, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .joint-control:hover {
+            border-color: rgba(77, 77, 77, 0.4);
+            box-shadow: 0 4px 12px rgba(77, 77, 77, 0.15);
+            transform: translateY(-2px);
         }
 
         .joint-name {
-            font-weight: bold;
+            font-weight: 600;
             margin-bottom: 10px;
             text-align: center;
+            color: #4D4D4D;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .joint-slider {
@@ -498,30 +1063,60 @@ ADVANCED_DASHBOARD_HTML = """
         .joint-value {
             text-align: center;
             font-size: 0.9em;
-            opacity: 0.8;
+            color: #4D4D4D;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .joint-value.updating {
+            color: #4D4D4D;
+            font-weight: bold;
+            transform: scale(1.1);
         }
 
         .logs-container {
             height: 400px;
             overflow-y: auto;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 10px;
-            padding: 15px;
-            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            border: 2px solid rgba(77, 77, 77, 0.15);
+            border-radius: 12px;
+            padding: 18px;
+            font-family: "SF Mono", "Monaco", "Inconsolata", "Fira Code", "Courier New", monospace;
             font-size: 13px;
         }
 
         .log-entry {
-            margin-bottom: 8px;
-            padding: 5px;
-            border-radius: 5px;
-            background: rgba(255, 255, 255, 0.05);
+            margin-bottom: 10px;
+            padding: 10px 14px;
+            border-radius: 8px;
+            background: #ffffff;
+            border-left: 4px solid #e0e0e0;
+            color: #4D4D4D;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         }
 
-        .log-info { color: #4CAF50; }
-        .log-warning { color: #FF9800; }
-        .log-error { color: #F44336; }
-        .log-debug { color: #2196F3; }
+        .log-entry:hover {
+            transform: translateX(4px);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .log-info {
+            border-left-color: #10b981;
+            background: linear-gradient(90deg, rgba(16, 185, 129, 0.05) 0%, #ffffff 100%);
+        }
+        .log-warning {
+            border-left-color: #f59e0b;
+            background: linear-gradient(90deg, rgba(245, 158, 11, 0.05) 0%, #ffffff 100%);
+        }
+        .log-error {
+            border-left-color: #ef4444;
+            background: linear-gradient(90deg, rgba(239, 68, 68, 0.05) 0%, #ffffff 100%);
+        }
+        .log-debug {
+            border-left-color: #4D4D4D;
+            background: linear-gradient(90deg, rgba(77, 77, 77, 0.05) 0%, #ffffff 100%);
+        }
 
         .metrics-grid {
             display: grid;
@@ -531,21 +1126,33 @@ ADVANCED_DASHBOARD_HTML = """
         }
 
         .metric-item {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            border-radius: 10px;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            padding: 18px;
+            border-radius: 12px;
             text-align: center;
+            border: 2px solid rgba(77, 77, 77, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .metric-item:hover {
+            border-color: rgba(77, 77, 77, 0.4);
+            box-shadow: 0 4px 12px rgba(77, 77, 77, 0.15);
+            transform: translateY(-2px);
         }
 
         .metric-value {
             font-size: 1.5em;
             font-weight: bold;
             margin-bottom: 5px;
+            color: #4D4D4D;
         }
 
         .metric-label {
-            font-size: 0.8em;
-            opacity: 0.8;
+            font-size: 0.85em;
+            color: #4D4D4D;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .vision-panel {
@@ -555,21 +1162,277 @@ ADVANCED_DASHBOARD_HTML = """
         }
 
         .vision-item {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            border-radius: 10px;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            padding: 18px;
+            border-radius: 12px;
             text-align: center;
+            border: 2px solid rgba(77, 77, 77, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .vision-item:hover {
+            border-color: rgba(77, 77, 77, 0.4);
+            box-shadow: 0 4px 12px rgba(77, 77, 77, 0.15);
+            transform: translateY(-2px);
         }
 
         .vision-count {
             font-size: 2em;
             font-weight: bold;
             margin-bottom: 5px;
+            color: #4D4D4D;
         }
 
         .vision-label {
+            font-size: 0.85em;
+            color: #4D4D4D;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Styles Troubleshooting */
+        .troubleshooting-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .troubleshooting-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .troubleshooting-results {
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            border: 2px solid rgba(102, 126, 234, 0.15);
+            border-radius: 12px;
+            padding: 18px;
+            max-height: 300px;
+            overflow-y: auto;
             font-size: 0.9em;
-            opacity: 0.8;
+        }
+
+        .troubleshooting-placeholder {
+            text-align: center;
+            opacity: 0.6;
+            font-style: italic;
+            padding: 40px 20px;
+        }
+
+        .troubleshooting-placeholder::before {
+            content: '🔍';
+            display: block;
+            font-size: 3em;
+            margin-bottom: 10px;
+            opacity: 0.5;
+        }
+
+        /* Toast notifications */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            animation: slideInRight 0.3s ease-out;
+            max-width: 300px;
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .toast.success {
+            border-left: 4px solid #4CAF50;
+        }
+
+        .toast.error {
+            border-left: 4px solid #F44336;
+        }
+
+        .toast.warning {
+            border-left: 4px solid #FF9800;
+        }
+
+        .toast.info {
+            border-left: 4px solid #2196F3;
+        }
+
+        /* Empty states */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            opacity: 0.7;
+        }
+
+        .empty-state::before {
+            content: '📭';
+            display: block;
+            font-size: 4em;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+
+        /* Tooltip */
+        [data-tooltip] {
+            position: relative;
+            cursor: help;
+        }
+
+        [data-tooltip]:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            white-space: nowrap;
+            z-index: 1000;
+            margin-bottom: 5px;
+            animation: fadeInUp 0.2s ease-out;
+        }
+
+        [data-tooltip]:hover::before {
+            content: '';
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 5px solid transparent;
+            border-top-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-container {
+                grid-template-columns: 1fr;
+                padding: 10px;
+                gap: 15px;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .controls-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .status-panel {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        /* Focus visible pour accessibilité */
+        button:focus-visible,
+        input:focus-visible {
+            outline: 2px solid #4D4D4D;
+            outline-offset: 2px;
+        }
+
+        /* Skeleton loading */
+        .skeleton {
+            background: linear-gradient(90deg, rgba(255,255,255,0.1) 25%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0.1) 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s ease-in-out infinite;
+            border-radius: 4px;
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .troubleshooting-item {
+            margin-bottom: 12px;
+            padding: 14px;
+            border-radius: 10px;
+            background: #ffffff;
+            border: 2px solid rgba(102, 126, 234, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .troubleshooting-item:hover {
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+            transform: translateX(4px);
+        }
+
+        .troubleshooting-item.ok {
+            border-left: 3px solid #4CAF50;
+        }
+
+        .troubleshooting-item.warning {
+            border-left: 3px solid #FF9800;
+        }
+
+        .troubleshooting-item.error {
+            border-left: 3px solid #F44336;
+        }
+
+        .troubleshooting-item h4 {
+            margin: 0 0 5px 0;
+            font-size: 1em;
+        }
+
+        .troubleshooting-item p {
+            margin: 5px 0;
+            font-size: 0.9em;
+        }
+
+        .troubleshooting-fix {
+            margin-top: 8px;
+            padding: 10px;
+            background: #f5f5f5;
+            border-left: 3px solid #4D4D4D;
+            border-radius: 4px;
+            font-family: "Courier New", monospace;
+            font-size: 0.85em;
+            color: #4D4D4D;
+        }
+
+        .troubleshooting-docs {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f5f5f5;
+            border: 1px solid #E6E6E6;
+            border-radius: 8px;
+        }
+
+        .troubleshooting-docs h4 {
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        .troubleshooting-docs a {
+            color: #4D4D4D;
+            text-decoration: none;
+            display: block;
+            padding: 5px 0;
+            transition: color 0.2s ease;
+        }
+
+        .troubleshooting-docs a:hover {
+            color: #008181;
+            text-decoration: underline;
         }
 
         @media (max-width: 1200px) {
@@ -586,38 +1449,62 @@ ADVANCED_DASHBOARD_HTML = """
         }
 
         .chat-messages {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 10px;
-            padding: 15px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            border: 2px solid rgba(102, 126, 234, 0.15);
+            border-radius: 12px;
+            padding: 18px;
             overflow-y: auto;
             flex: 1;
             margin-bottom: 15px;
-            font-family: 'Courier New', monospace;
-            font-size: 13px;
+            font-family: 'Segoe UI', sans-serif;
+            font-size: 14px;
         }
 
         .chat-message {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 10px;
+            padding: 12px 15px;
             border-radius: 8px;
             margin-bottom: 10px;
+            transition: all 0.3s ease;
+            word-wrap: break-word;
+        }
+
+        .chat-message:hover {
+            box-shadow: 0 2px 8px rgba(77, 77, 77, 0.1);
+            transform: translateY(-1px);
         }
 
         .chat-message.chat-user {
-            background: rgba(78, 205, 196, 0.3);
+            background: linear-gradient(135deg, #4D4D4D 0%, #4D4D4D 100%);
+            color: #ffffff;
+            border-left: 4px solid #4D4D4D;
             text-align: right;
+            margin-left: 20%;
+            box-shadow: 0 2px 8px rgba(77, 77, 77, 0.2);
         }
 
         .chat-message.chat-bbia {
-            background: rgba(255, 107, 107, 0.3);
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            color: #4D4D4D;
+            border-left: 4px solid #4D4D4D;
             text-align: left;
+            margin-right: 20%;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
         }
 
         .chat-author {
-            font-weight: bold;
+            font-weight: 700;
             font-size: 11px;
-            opacity: 0.7;
-            margin-bottom: 5px;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .chat-message.chat-user .chat-author {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .chat-message.chat-bbia .chat-author {
+            color: #4D4D4D;
         }
 
         .chat-text {
@@ -631,27 +1518,111 @@ ADVANCED_DASHBOARD_HTML = """
 
         .chat-input-group input {
             flex: 1;
-            padding: 12px;
-            border: none;
+            padding: 14px 18px;
+            border: 2px solid rgba(102, 126, 234, 0.2);
             border-radius: 10px;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
+            background: #ffffff;
+            color: #2c3e50;
             font-size: 14px;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .chat-input-group input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.15);
         }
 
         .chat-input-group input::placeholder {
-            color: rgba(255, 255, 255, 0.5);
+            color: #999;
+        }
+
+        /* Toast Notifications - Style professionnel inspiré de Reachy Mini */
+        .toast {
+            position: relative;
+            padding: 16px 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            min-width: 300px;
+            max-width: 400px;
+            font-size: 14px;
+            font-weight: 500;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            pointer-events: auto;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .toast.success {
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.95), rgba(56, 142, 60, 0.95));
+            color: white;
+        }
+
+        .toast.error {
+            background: linear-gradient(135deg, rgba(244, 67, 54, 0.95), rgba(198, 40, 40, 0.95));
+            color: white;
+        }
+
+        .toast.warning {
+            background: linear-gradient(135deg, rgba(255, 152, 0, 0.95), rgba(245, 124, 0, 0.95));
+            color: white;
+        }
+
+        .toast.info {
+            background: linear-gradient(135deg, rgba(33, 150, 243, 0.95), rgba(25, 118, 210, 0.95));
+            color: white;
+        }
+
+        /* Amélioration du statut robot avec animations */
+        .robot-status-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .robot-status-container::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(0, 204, 204, 0.2);
+            animation: pulse-ring 2s ease-out infinite;
+        }
+
+        @keyframes pulse-ring {
+            0% {
+                transform: translate(-50%, -50%) scale(0.8);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1.4);
+                opacity: 0;
+            }
+        }
+
+        /* Amélioration de l'accessibilité */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
         }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1>🤖 BBIA Advanced Dashboard</h1>
+        <h1>BBIA Advanced Dashboard</h1>
         <div class="subtitle">
             <span id="connection-indicator" class="connection-indicator disconnected"></span>
             <span id="connection-text">Déconnecté</span> |
             Backend: <span id="robot-backend">-</span> |
-            Version: 1.2.0
+            Version: 1.3.2
         </div>
     </div>
 
@@ -686,37 +1657,37 @@ ADVANCED_DASHBOARD_HTML = """
 
         <!-- Panel de contrôle -->
         <div class="panel">
-            <h3>🎮 Contrôles</h3>
+            <h3>Contrôles</h3>
 
             <div class="controls-grid">
-                <button class="control-button emotion-button" onclick="setEmotion('happy')">😊 Heureux</button>
-                <button class="control-button emotion-button" onclick="setEmotion('sad')">😢 Triste</button>
-                <button class="control-button emotion-button" onclick="setEmotion('excited')">🤩 Excité</button>
-                <button class="control-button emotion-button" onclick="setEmotion('angry')">😠 Colère</button>
-                <button class="control-button emotion-button" onclick="setEmotion('neutral')">😐 Neutre</button>
-                <button class="control-button emotion-button" onclick="setEmotion('curious')">🤔 Curieux</button>
+                <button class="control-button emotion-button" onclick="setEmotion('happy', this)">Heureux</button>
+                <button class="control-button emotion-button" onclick="setEmotion('sad', this)">Triste</button>
+                <button class="control-button emotion-button" onclick="setEmotion('excited', this)">Excité</button>
+                <button class="control-button emotion-button" onclick="setEmotion('angry', this)">Colère</button>
+                <button class="control-button emotion-button" onclick="setEmotion('neutral', this)">Neutre</button>
+                <button class="control-button emotion-button" onclick="setEmotion('curious', this)">Curieux</button>
             </div>
 
             <div class="controls-grid">
-                <button class="control-button action-button" onclick="sendAction('look_at')">👀 Regarder</button>
-                <button class="control-button action-button" onclick="sendAction('greet')">👋 Saluer</button>
-                <button class="control-button action-button" onclick="sendAction('wake_up')">🌅 Réveil</button>
-                <button class="control-button action-button" onclick="sendAction('sleep')">😴 Dormir</button>
-                <button class="control-button action-button" onclick="sendAction('nod')">👍 Hocher</button>
-                <button class="control-button action-button" onclick="sendAction('stop')">⏹️ Arrêter</button>
+                <button class="control-button action-button" onclick="sendAction('look_at', this)">Regarder</button>
+                <button class="control-button action-button" onclick="sendAction('greet', this)">Saluer</button>
+                <button class="control-button action-button" onclick="sendAction('wake_up', this)">Réveil</button>
+                <button class="control-button action-button" onclick="sendAction('sleep', this)">Dormir</button>
+                <button class="control-button action-button" onclick="sendAction('nod', this)">Hocher</button>
+                <button class="control-button action-button" onclick="sendAction('stop', this)">Arrêter</button>
             </div>
 
             <div class="controls-grid">
-                <button class="control-button behavior-button" onclick="runBehavior('greeting')">👋 Salutation</button>
-                <button class="control-button behavior-button" onclick="runBehavior('exploration')">🔍 Exploration</button>
-                <button class="control-button behavior-button" onclick="runBehavior('interaction')">💬 Interaction</button>
-                <button class="control-button behavior-button" onclick="runBehavior('demo')">🎪 Démo</button>
+                <button class="control-button behavior-button" onclick="runBehavior('greeting', this)">Salutation</button>
+                <button class="control-button behavior-button" onclick="runBehavior('exploration', this)">Exploration</button>
+                <button class="control-button behavior-button" onclick="runBehavior('interaction', this)">Interaction</button>
+                <button class="control-button behavior-button" onclick="runBehavior('demo', this)">Démo</button>
             </div>
         </div>
 
         <!-- Panel de métriques -->
         <div class="panel">
-            <h3>📊 Métriques Temps Réel</h3>
+            <h3>Métriques Temps Réel</h3>
             <div class="chart-container">
                 <canvas id="metricsChart"></canvas>
             </div>
@@ -742,7 +1713,7 @@ ADVANCED_DASHBOARD_HTML = """
 
         <!-- Panel de contrôle des joints -->
         <div class="panel">
-            <h3>🔧 Contrôle des Joints</h3>
+            <h3>Contrôle des Joints</h3>
             <div class="joint-controls" id="joint-controls">
                 <!-- Les contrôles de joints seront générés dynamiquement -->
             </div>
@@ -750,7 +1721,10 @@ ADVANCED_DASHBOARD_HTML = """
 
         <!-- Panel de vision -->
         <div class="panel">
-            <h3>👁️ Vision</h3>
+            <h3>Vision</h3>
+            <div style="margin-bottom: 20px;">
+                <video id="camera-stream" autoplay style="width: 100%; max-width: 640px; border-radius: 8px; border: 2px solid #4D4D4D; background: #000;"></video>
+            </div>
             <div class="vision-panel">
                 <div class="vision-item">
                     <div class="vision-count" id="objects-count">0</div>
@@ -762,28 +1736,51 @@ ADVANCED_DASHBOARD_HTML = """
                 </div>
             </div>
             <div class="controls-grid">
-                <button class="control-button" onclick="toggleVision()">👁️ Basculer Vision</button>
-                <button class="control-button" onclick="scanEnvironment()">🔍 Scanner</button>
-                <button class="control-button" onclick="trackObject()">🎯 Suivre Objet</button>
+                <button class="control-button" onclick="toggleVision()">Basculer Vision</button>
+                <button class="control-button" onclick="scanEnvironment()">Scanner</button>
+                <button class="control-button" onclick="trackObject()">Suivre Objet</button>
             </div>
         </div>
 
         <!-- Panel Chat BBIA -->
         <div class="panel">
-            <h3>💬 Chat avec BBIA</h3>
+            <h3>Chat avec BBIA</h3>
             <div class="chat-container">
                 <div class="chat-messages" id="chat-messages"></div>
                 <div class="chat-input-group">
                     <input type="text" id="chat-input" placeholder="Tapez votre message..."
-                           onkeypress="if(event.key==='Enter') sendChatMessage()">
-                    <button class="control-button" onclick="sendChatMessage()">Envoyer</button>
+                           aria-label="Message chat BBIA"
+                           data-tooltip="Appuyez sur Entrée pour envoyer">
+                    <button class="control-button" id="chat-send-button" onclick="sendChatMessage()"
+                            aria-label="Envoyer message"
+                            data-tooltip="Envoyer le message">Envoyer</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Panel Troubleshooting -->
+        <div class="panel">
+            <h3>Troubleshooting</h3>
+            <div class="troubleshooting-panel">
+                <div class="troubleshooting-actions">
+                    <button class="control-button" onclick="runAllChecks(this)">🔍 Vérifier Tout</button>
+                    <button class="control-button" onclick="testCamera(this)">📷 Test Caméra</button>
+                    <button class="control-button" onclick="testAudio(this)">🔊 Test Audio</button>
+                    <button class="control-button" onclick="testNetwork(this)">🌐 Test Réseau</button>
+                </div>
+                <div class="troubleshooting-results" id="troubleshooting-results">
+                    <p class="troubleshooting-placeholder">Cliquez sur "Vérifier Tout" pour commencer</p>
+                </div>
+                <div class="troubleshooting-docs" id="troubleshooting-docs" style="display: none;">
+                    <h4>📚 Documentation</h4>
+                    <div id="troubleshooting-docs-links"></div>
                 </div>
             </div>
         </div>
 
         <!-- Panel de logs -->
         <div class="panel" style="grid-column: 1 / -1;">
-            <h3>📝 Logs Temps Réel</h3>
+            <h3>Logs Temps Réel</h3>
             <div class="logs-container" id="logs-container">
                 <!-- Les logs seront ajoutés dynamiquement -->
             </div>
@@ -791,54 +1788,360 @@ ADVANCED_DASHBOARD_HTML = """
     </div>
 
     <script>
-        // Variables globales
-        let ws = null;
-        let reconnectInterval = null;
-        let metricsChart = null;
-        let metricsData = {
-            labels: [],
-            latency: [],
-            fps: [],
-            cpu: [],
-            memory: []
+        // Variables globales - Architecture modulaire inspirée de Reachy Mini
+        const dashboard = {
+            ws: null,
+            reconnectInterval: null,
+            metricsChart: null,
+            metricsData: {
+                labels: [],
+                latency: [],
+                fps: [],
+                cpu: [],
+                memory: []
+            },
+            currentStatus: {
+                robot: { connected: false, backend: '-' },
+                emotion: 'neutral',
+                joints: [],
+                vision: { objects: 0, faces: 0 }
+            },
+            lastMetricsUpdate: 0,
+            METRICS_UPDATE_INTERVAL: 100,
+            statusPollInterval: null,
+            isPolling: false,
+            videoErrorLogged: false,
+            lastWSErrorLog: 0,
+            lastCommandErrorLog: 0,
+            lastChatErrorLog: 0
         };
 
         // Initialisation
         document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Initialisation dashboard...');
             initializeChart();
             connect();
+            startStatusPolling();
+            startVideoStream();
+
+            // Ajouter event listener pour Enter sur input chat
+            const chatInput = document.getElementById('chat-input');
+            if (chatInput) {
+                chatInput.addEventListener('keypress', function(event) {
+                    if (event.key === 'Enter' || event.keyCode === 13) {
+                        event.preventDefault();
+                        sendChatMessage();
+                    }
+                });
+                console.log('✅ Event listener Enter ajouté au chat input');
+            } else {
+                console.error('❌ Input chat non trouvé à l\\'initialisation');
+            }
+
+            // Les fonctions sont maintenant assignées directement après leur définition
+            // Plus besoin de setTimeout car elles sont définies avant d'être utilisées
+            console.log('✅ Initialisation terminée - Toutes les fonctions sont globales');
+
+            // Vérifier que sendChatMessage est accessible
+            if (typeof window.sendChatMessage === 'function') {
+                console.log('✅ sendChatMessage est accessible globalement');
+            } else {
+                console.error('❌ sendChatMessage n\\'est pas accessible globalement');
+            }
+
+            // Ajouter un event listener au bouton d'envoi comme backup
+            const sendButton = document.getElementById('chat-send-button');
+            if (sendButton) {
+                sendButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    console.log('🔵 Bouton cliqué - Appel sendChatMessage');
+                    if (typeof window.sendChatMessage === 'function') {
+                        window.sendChatMessage();
+                    } else {
+                        console.error('❌ sendChatMessage n\\'est pas une fonction');
+                        showToast('❌ Erreur: fonction d\\'envoi non disponible', 'error', 3000);
+                    }
+                });
+                console.log('✅ Event listener ajouté au bouton d\\'envoi');
+            } else {
+                console.warn('⚠️ Bouton d\\'envoi non trouvé');
+            }
         });
 
-        // Connexion WebSocket
+        // Stream vidéo caméra
+        function startVideoStream() {
+            const video = document.getElementById('camera-stream');
+            if (!video) {
+                console.warn('❌ Élément video non trouvé');
+                return;
+            }
+
+            console.log('📹 Démarrage stream vidéo...');
+
+            // Utiliser endpoint MJPEG - gestion d'erreur silencieuse
+            video.src = '/api/camera/stream';
+            video.onloadstart = function() {
+                console.log('✅ Stream vidéo démarré');
+            };
+            video.onerror = function(e) {
+                // Erreur silencieuse - la caméra peut ne pas être disponible
+                // Ne pas logger l'erreur pour éviter le bruit dans la console
+                video.style.display = 'none';
+                // Log uniquement une fois au démarrage
+                if (!dashboard.videoErrorLogged) {
+                    console.debug('⚠️ Stream vidéo non disponible (caméra peut être absente)');
+                    dashboard.videoErrorLogged = true;
+                }
+                // Empêcher la propagation de l'erreur dans la console
+                return false;
+            };
+            video.onloadeddata = function() {
+                console.log('✅ Première frame vidéo chargée');
+                video.style.display = 'block';
+            };
+        }
+
+        // Connexion WebSocket - Gestion robuste comme Reachy Mini
         function connect() {
             const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
             const wsUrl = `${protocol}//${window.location.host}/ws`;
 
-            ws = new WebSocket(wsUrl);
+            try {
+                dashboard.ws = new WebSocket(wsUrl);
 
-            ws.onopen = function(event) {
-                console.log('WebSocket connecté');
-                updateConnectionStatus(true);
-                clearInterval(reconnectInterval);
-                addLog('info', 'Connexion WebSocket établie');
-            };
+                dashboard.ws.onopen = function(event) {
+                    console.log('✅ WebSocket connecté');
+                    updateConnectionStatus(true);
+                    if (dashboard.reconnectInterval) {
+                        clearInterval(dashboard.reconnectInterval);
+                        dashboard.reconnectInterval = null;
+                    }
+                    addLog('info', 'Connexion WebSocket établie');
+                    showToast('✅ Connecté au serveur', 'success', 2000);
+                    // Message de bienvenue dans le chat
+                    if (typeof addChatMessage === 'function') {
+                        addChatMessage("bbia", "Bonjour ! Je suis BBIA. Comment puis-je vous aider aujourd'hui ?");
+                    }
+                };
 
-            ws.onmessage = function(event) {
-                const data = JSON.parse(event.data);
-                handleMessage(data);
-            };
+                dashboard.ws.onmessage = function(event) {
+                    try {
+                        console.log('📥 [WS] Message reçu:', event.data);
+                        const data = JSON.parse(event.data);
+                        console.log('📥 [WS] Message parsé:', data);
+                        handleMessage(data);
+                    } catch (error) {
+                        console.error('❌ [WS] Erreur parsing:', error, 'Data:', event.data);
+                        addLog('error', `Erreur parsing: ${error.message}`);
+                    }
+                };
 
-            ws.onclose = function(event) {
-                console.log('WebSocket fermé');
+                dashboard.ws.onclose = function(event) {
+                    console.log('⚠️ WebSocket fermé', event.code, event.reason);
+                    updateConnectionStatus(false);
+                    addLog('warning', `Connexion fermée (code: ${event.code})`);
+
+                    // Reconnexion automatique avec backoff exponentiel
+                    if (!dashboard.reconnectInterval) {
+                        let delay = 3000; // Démarrer à 3 secondes
+                        const maxDelay = 30000; // Max 30 secondes
+                        let reconnectAttempts = 0;
+                        const MAX_RECONNECT_ATTEMPTS = 20; // Arrêter après 20 tentatives
+
+                        const reconnect = () => {
+                            if (dashboard.ws && dashboard.ws.readyState === WebSocket.OPEN) {
+                                reconnectAttempts = 0;
+                                delay = 3000; // Réinitialiser le délai
+                                if (dashboard.reconnectInterval) {
+                                    clearInterval(dashboard.reconnectInterval);
+                                    dashboard.reconnectInterval = null;
+                                }
+                                return;
+                            }
+
+                            reconnectAttempts++;
+
+                            // Arrêter après trop de tentatives
+                            if (reconnectAttempts >= MAX_RECONNECT_ATTEMPTS) {
+                                if (dashboard.reconnectInterval) {
+                                    clearInterval(dashboard.reconnectInterval);
+                                    dashboard.reconnectInterval = null;
+                                }
+                                console.debug('⚠️ Trop de tentatives de reconnexion WebSocket - arrêt temporaire');
+                                // Réessayer après 30 secondes
+                                setTimeout(() => {
+                                    reconnectAttempts = 0;
+                                    delay = 3000;
+                                    if (!dashboard.reconnectInterval) {
+                                        dashboard.reconnectInterval = setInterval(reconnect, delay);
+                                    }
+                                }, 30000);
+                                return;
+                            }
+
+                            // Logger seulement toutes les 5 tentatives
+                            if (reconnectAttempts === 1 || reconnectAttempts % 5 === 0) {
+                                console.debug(`🔄 Tentative de reconnexion ${reconnectAttempts}/${MAX_RECONNECT_ATTEMPTS}...`);
+                            }
+
+                            setTimeout(() => {
+                                if (dashboard.ws && dashboard.ws.readyState !== WebSocket.OPEN) {
+                                    connect();
+                                }
+                                delay = Math.min(delay * 1.5, maxDelay);
+                            }, delay);
+                        };
+                        dashboard.reconnectInterval = setInterval(reconnect, delay);
+                    }
+                };
+
+                dashboard.ws.onerror = function(error) {
+                    // Erreur silencieuse - ne pas logger l'objet Event complet
+                    // Logger seulement une fois toutes les 5 secondes
+                    const now = Date.now();
+                    if (!dashboard.lastWSErrorLog || (now - dashboard.lastWSErrorLog) >= 5000) {
+                        console.debug('⚠️ Erreur WebSocket (serveur peut être arrêté)');
+                        dashboard.lastWSErrorLog = now;
+                    }
+                    updateConnectionStatus(false);
+                    // Ne pas afficher de toast à chaque erreur pour éviter le spam
+                    // Empêcher la propagation de l'erreur dans la console
+                    return false;
+                };
+            } catch (error) {
+                // Erreur silencieuse
+                console.debug('⚠️ Erreur création WebSocket (serveur peut être arrêté)');
                 updateConnectionStatus(false);
-                addLog('error', 'Connexion WebSocket fermée');
-                reconnectInterval = setInterval(connect, 3000);
+            }
+        }
+
+        // Polling de statut régulier avec backoff exponentiel
+        let pollingErrorCount = 0;
+        let lastPollingErrorLog = 0;
+        let pollingInterval = 500; // Intervalle initial
+        const POLLING_ERROR_LOG_INTERVAL = 10000; // Logger seulement toutes les 10 secondes
+        const MAX_CONSECUTIVE_ERRORS = 10; // Arrêter après 10 erreurs consécutives
+        const MAX_POLLING_INTERVAL = 30000; // Max 30 secondes entre les tentatives
+
+        async function startStatusPolling() {
+            if (dashboard.isPolling) return;
+            dashboard.isPolling = true;
+
+            const pollStatus = async () => {
+                try {
+                    // Utiliser un timeout manuel pour compatibilité
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 2000);
+
+                    const response = await fetch('/api/status', {
+                        signal: controller.signal
+                    }).catch(() => null); // Intercepter toutes les erreurs silencieusement
+
+                    clearTimeout(timeoutId);
+
+                    if (response && response.ok) {
+                        const data = await response.json();
+                        updateStatusFromAPI(data);
+                        // Reset en cas de succès
+                        if (pollingErrorCount > 0) {
+                            pollingErrorCount = 0;
+                            pollingInterval = 500; // Réinitialiser l'intervalle
+                            console.debug('✅ Connexion serveur rétablie');
+                            // Redémarrer le polling à l'intervalle normal
+                            if (dashboard.statusPollInterval) {
+                                clearInterval(dashboard.statusPollInterval);
+                            }
+                            dashboard.statusPollInterval = setInterval(pollStatus, pollingInterval);
+                        }
+                    } else {
+                        // Erreur HTTP ou pas de réponse
+                        pollingErrorCount++;
+                        handlePollingError();
+                    }
+                } catch (error) {
+                    // Erreur silencieuse - ne pas propager
+                    pollingErrorCount++;
+                    handlePollingError();
+                }
             };
 
-            ws.onerror = function(error) {
-                console.error('Erreur WebSocket:', error);
-                addLog('error', 'Erreur WebSocket');
-            };
+            function handlePollingError() {
+                // Arrêter le polling après trop d'erreurs
+                if (pollingErrorCount >= MAX_CONSECUTIVE_ERRORS) {
+                    if (dashboard.statusPollInterval) {
+                        clearInterval(dashboard.statusPollInterval);
+                        dashboard.statusPollInterval = null;
+                    }
+                    const now = Date.now();
+                    if ((now - lastPollingErrorLog) >= POLLING_ERROR_LOG_INTERVAL) {
+                        console.debug('⚠️ Serveur non disponible - polling suspendu. Reconnexion automatique...');
+                        lastPollingErrorLog = now;
+                    }
+                    // Réessayer après un délai plus long
+                    setTimeout(() => {
+                        pollingErrorCount = 0;
+                        pollingInterval = 500;
+                        if (!dashboard.statusPollInterval) {
+                            dashboard.statusPollInterval = setInterval(pollStatus, pollingInterval);
+                        }
+                    }, 10000); // Réessayer après 10 secondes
+                    return;
+                }
+
+                // Augmenter l'intervalle avec backoff exponentiel
+                pollingInterval = Math.min(pollingInterval * 1.5, MAX_POLLING_INTERVAL);
+
+                // Redémarrer le polling avec le nouvel intervalle
+                if (dashboard.statusPollInterval) {
+                    clearInterval(dashboard.statusPollInterval);
+                }
+                dashboard.statusPollInterval = setInterval(pollStatus, pollingInterval);
+
+                // Logger seulement toutes les 10 secondes
+                const now = Date.now();
+                if (pollingErrorCount === 1 || (now - lastPollingErrorLog) >= POLLING_ERROR_LOG_INTERVAL) {
+                    console.debug(`⚠️ Serveur non disponible (${pollingErrorCount} erreurs, intervalle: ${Math.round(pollingInterval)}ms)`);
+                    lastPollingErrorLog = now;
+                }
+            }
+
+            // Polling initial
+            await pollStatus();
+
+            // Polling régulier avec intervalle adaptatif
+            dashboard.statusPollInterval = setInterval(pollStatus, pollingInterval);
+        }
+
+        function updateStatusFromAPI(data) {
+            // Mettre à jour le statut seulement si changé (comme Reachy Mini)
+            const previousState = JSON.stringify(dashboard.currentStatus);
+
+            if (data.robot_connected !== undefined) {
+                dashboard.currentStatus.robot.connected = data.robot_connected;
+            }
+            if (data.backend) {
+                dashboard.currentStatus.robot.backend = data.backend;
+            }
+            if (data.metrics) {
+                updateMetrics(data.metrics);
+            }
+
+            const currentState = JSON.stringify(dashboard.currentStatus);
+            if (previousState !== currentState) {
+                updateUIFromStatus();
+            }
+        }
+
+        function updateUIFromStatus() {
+            // Mise à jour UI seulement si nécessaire
+            const robotStatusEl = document.getElementById('robot-status');
+            if (robotStatusEl) {
+                robotStatusEl.textContent = dashboard.currentStatus.robot.connected ? '✅' : '❌';
+            }
+            const backendEl = document.getElementById('robot-backend');
+            if (backendEl) {
+                backendEl.textContent = dashboard.currentStatus.robot.backend || '-';
+            }
         }
 
         // Gestion des messages
@@ -854,88 +2157,142 @@ ADVANCED_DASHBOARD_HTML = """
                     addLog(data.level, data.message);
                     break;
                 case 'chat_response':
-                    // Réponse chat de BBIA ou confirmation message user
-                    addChatMessage(data.sender, data.message);
+                    // Réponse chat de BBIA
+                    console.log('💬 [CHAT] Réponse reçue:', data);
+                    if (data.sender && data.message) {
+                        console.log(`✅ [CHAT] Ajout message ${data.sender}`);
+                        addChatMessage(data.sender, data.message);
+                        addLog('info', `Réponse ${data.sender} reçue`);
+                    } else {
+                        console.warn('⚠️ [CHAT] Données incomplètes:', data);
+                        addChatMessage('bbia', 'Désolé, je n\\'ai pas pu traiter votre message correctement.');
+                    }
                     break;
             }
         }
 
         // Mise à jour du statut complet
         function updateCompleteStatus(data) {
+            if (!data) return;
+
             // Statut robot
-            document.getElementById('robot-status').textContent =
-                data.robot.connected ? '✅' : '❌';
-            document.getElementById('robot-backend').textContent =
-                data.robot.backend || '-';
+            const robotStatusEl = document.getElementById('robot-status');
+            if (robotStatusEl && data.robot) {
+                robotStatusEl.textContent = data.robot.connected ? '✅' : '❌';
+            }
+            const backendEl = document.getElementById('robot-backend');
+            if (backendEl && data.robot) {
+                backendEl.textContent = data.robot.backend || '-';
+            }
 
             // Statut émotion
-            document.getElementById('emotion-status').textContent =
-                getEmotionEmoji(data.bbia_modules.emotions.current);
+            const emotionStatusEl = document.getElementById('emotion-status');
+            if (emotionStatusEl && data.bbia_modules && data.bbia_modules.emotions) {
+                emotionStatusEl.textContent = getEmotionEmoji(data.bbia_modules.emotions.current);
+            }
 
             // Joints disponibles
-            updateJointControls(data.robot.joints);
+            if (data.robot && data.robot.joints) {
+                updateJointControls(data.robot.joints);
+            }
 
             // Vision
-            document.getElementById('objects-count').textContent =
-                data.bbia_modules.vision.objects;
-            document.getElementById('faces-count').textContent =
-                data.bbia_modules.vision.faces;
+            const objectsCountEl = document.getElementById('objects-count');
+            if (objectsCountEl && data.bbia_modules && data.bbia_modules.vision) {
+                objectsCountEl.textContent = data.bbia_modules.vision.objects || 0;
+            }
+            const facesCountEl = document.getElementById('faces-count');
+            if (facesCountEl && data.bbia_modules && data.bbia_modules.vision) {
+                facesCountEl.textContent = data.bbia_modules.vision.faces || 0;
+            }
         }
 
-        // Mise à jour des métriques
+        // Mise à jour des métriques (optimisée avec throttling) - Style Reachy Mini
         function updateMetrics(metrics) {
-            // Statut temps réel
-            document.getElementById('latency-status').textContent =
-                Math.round(metrics.performance.latency_ms) + 'ms';
-            document.getElementById('fps-status').textContent =
-                Math.round(metrics.performance.fps);
-            document.getElementById('objects-status').textContent =
-                metrics.vision.objects_detected;
-            document.getElementById('faces-status').textContent =
-                metrics.vision.faces_detected;
+            if (!metrics) return;
 
-            // Métriques détaillées
-            document.getElementById('cpu-metric').textContent =
-                Math.round(metrics.performance.cpu_usage) + '%';
-            document.getElementById('memory-metric').textContent =
-                Math.round(metrics.performance.memory_usage) + '%';
-            document.getElementById('volume-metric').textContent =
-                Math.round(metrics.audio.volume_level * 100) + '%';
-            document.getElementById('intensity-metric').textContent =
-                Math.round(metrics.emotion_intensity * 100) + '%';
+            const now = Date.now();
+            if (now - dashboard.lastMetricsUpdate < dashboard.METRICS_UPDATE_INTERVAL) {
+                return; // Skip si trop tôt
+            }
+            dashboard.lastMetricsUpdate = now;
 
-            // Mise à jour du graphique
-            updateChart(metrics);
+            // Utiliser requestAnimationFrame pour des mises à jour fluides
+            requestAnimationFrame(() => {
+                // Statut temps réel avec animation
+                if (metrics.performance) {
+                    updateValueWithAnimation('latency-status', Math.round(metrics.performance.latency_ms || 0) + 'ms');
+                    updateValueWithAnimation('fps-status', Math.round(metrics.performance.fps || 0));
+                    updateValueWithAnimation('cpu-metric', Math.round(metrics.performance.cpu_usage || 0) + '%');
+                    updateValueWithAnimation('memory-metric', Math.round(metrics.performance.memory_usage || 0) + '%');
+                }
+
+                if (metrics.vision) {
+                    updateValueWithAnimation('objects-status', metrics.vision.objects_detected || 0);
+                    updateValueWithAnimation('faces-status', metrics.vision.faces_detected || 0);
+                }
+
+                if (metrics.audio) {
+                    updateValueWithAnimation('volume-metric', Math.round((metrics.audio.volume_level || 0) * 100) + '%');
+                }
+
+                if (metrics.emotion_intensity !== undefined) {
+                    updateValueWithAnimation('intensity-metric', Math.round(metrics.emotion_intensity * 100) + '%');
+                }
+
+                // Mise à jour du graphique
+                updateChart(metrics);
+            });
+        }
+
+        // Fonction helper pour mettre à jour avec animation
+        function updateValueWithAnimation(elementId, newValue) {
+            const element = document.getElementById(elementId);
+            if (!element) return;
+
+            if (element.textContent !== String(newValue)) {
+                element.classList.add('updating');
+                element.textContent = newValue;
+                setTimeout(() => {
+                    element.classList.remove('updating');
+                }, 500);
+            }
         }
 
         // Initialisation du graphique
         function initializeChart() {
-            const ctx = document.getElementById('metricsChart').getContext('2d');
-            metricsChart = new Chart(ctx, {
+            const canvas = document.getElementById('metricsChart');
+            if (!canvas) return;
+
+            const ctx = canvas.getContext('2d');
+            dashboard.metricsChart = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: metricsData.labels,
+                    labels: dashboard.metricsData.labels,
                     datasets: [
                         {
                             label: 'Latence (ms)',
-                            data: metricsData.latency,
-                            borderColor: '#ff6b6b',
-                            backgroundColor: 'rgba(255, 107, 107, 0.1)',
-                            tension: 0.4
+                            data: dashboard.metricsData.latency,
+                            borderColor: '#4D4D4D',
+                            backgroundColor: 'rgba(77, 77, 77, 0.1)',
+                            tension: 0.4,
+                            fill: true
                         },
                         {
                             label: 'FPS',
-                            data: metricsData.fps,
-                            borderColor: '#4ecdc4',
-                            backgroundColor: 'rgba(78, 205, 196, 0.1)',
-                            tension: 0.4
+                            data: dashboard.metricsData.fps,
+                            borderColor: '#008181',
+                            backgroundColor: 'rgba(0, 129, 129, 0.1)',
+                            tension: 0.4,
+                            fill: true
                         },
                         {
                             label: 'CPU (%)',
-                            data: metricsData.cpu,
-                            borderColor: '#ffa726',
-                            backgroundColor: 'rgba(255, 167, 38, 0.1)',
-                            tension: 0.4
+                            data: dashboard.metricsData.cpu,
+                            borderColor: '#4D4D4D',
+                            backgroundColor: 'rgba(77, 77, 77, 0.15)',
+                            tension: 0.4,
+                            fill: true
                         }
                     ]
                 },
@@ -946,25 +2303,28 @@ ADVANCED_DASHBOARD_HTML = """
                         y: {
                             beginAtZero: true,
                             grid: {
-                                color: 'rgba(255, 255, 255, 0.1)'
+                                color: 'rgba(77, 77, 77, 0.1)'
                             },
                             ticks: {
-                                color: 'white'
+                                color: '#4D4D4D'
                             }
                         },
                         x: {
                             grid: {
-                                color: 'rgba(255, 255, 255, 0.1)'
+                                color: 'rgba(77, 77, 77, 0.1)'
                             },
                             ticks: {
-                                color: 'white'
+                                color: '#4D4D4D'
                             }
                         }
                     },
                     plugins: {
                         legend: {
                             labels: {
-                                color: 'white'
+                                color: '#4D4D4D',
+                                font: {
+                                    weight: '500'
+                                }
                             }
                         }
                     }
@@ -972,96 +2332,156 @@ ADVANCED_DASHBOARD_HTML = """
             });
         }
 
-        // Mise à jour du graphique
+        // Mise à jour du graphique (optimisée) - Style professionnel
         function updateChart(metrics) {
+            if (!dashboard.metricsChart || !metrics || !metrics.performance) return;
+
             const now = new Date().toLocaleTimeString();
 
             // Ajouter nouvelles données
-            metricsData.labels.push(now);
-            metricsData.latency.push(metrics.performance.latency_ms);
-            metricsData.fps.push(metrics.performance.fps);
-            metricsData.cpu.push(metrics.performance.cpu_usage);
-            metricsData.memory.push(metrics.performance.memory_usage);
+            dashboard.metricsData.labels.push(now);
+            dashboard.metricsData.latency.push(metrics.performance.latency_ms || 0);
+            dashboard.metricsData.fps.push(metrics.performance.fps || 0);
+            dashboard.metricsData.cpu.push(metrics.performance.cpu_usage || 0);
+            dashboard.metricsData.memory.push(metrics.performance.memory_usage || 0);
 
-            // Limiter à 20 points
-            if (metricsData.labels.length > 20) {
-                metricsData.labels.shift();
-                metricsData.latency.shift();
-                metricsData.fps.shift();
-                metricsData.cpu.shift();
-                metricsData.memory.shift();
+            // Limiter à 30 points pour plus de données
+            const maxPoints = 30;
+            if (dashboard.metricsData.labels.length > maxPoints) {
+                dashboard.metricsData.labels.shift();
+                dashboard.metricsData.latency.shift();
+                dashboard.metricsData.fps.shift();
+                dashboard.metricsData.cpu.shift();
+                dashboard.metricsData.memory.shift();
             }
 
-            // Mettre à jour le graphique
-            metricsChart.update('none');
+            // Mettre à jour le graphique avec animation fluide
+            dashboard.metricsChart.update({
+                duration: 0, // Pas d'animation pour performance
+                lazy: true
+            });
         }
 
         // Mise à jour des contrôles de joints
         function updateJointControls(joints) {
             const container = document.getElementById('joint-controls');
+            if (!container) return;
+
             container.innerHTML = '';
+
+            if (!joints || joints.length === 0) {
+                container.innerHTML = '<p style="text-align: center; opacity: 0.7;">Aucun joint disponible</p>';
+                return;
+            }
 
             joints.forEach(joint => {
                 const control = document.createElement('div');
                 control.className = 'joint-control';
+                // Échapper les caractères spéciaux pour éviter les injections XSS
+                const safeJoint = String(joint).replace(/[<>"']/g, '');
                 control.innerHTML = `
-                    <div class="joint-name">${joint}</div>
-                    <input type="range" class="joint-slider" id="slider-${joint}"
+                    <div class="joint-name">${safeJoint}</div>
+                    <input type="range" class="joint-slider" id="slider-${safeJoint}"
                            min="-3.14" max="3.14" step="0.01" value="0"
-                           onchange="setJointPosition('${joint}', this.value)">
-                    <div class="joint-value" id="value-${joint}">0.00</div>
+                           onchange="setJointPosition('${safeJoint}', this.value)">
+                    <div class="joint-value" id="value-${safeJoint}">0.00</div>
                 `;
                 container.appendChild(control);
             });
         }
 
-        // Fonctions de contrôle
-        function setEmotion(emotion) {
+        // Fonctions de contrôle avec feedback visuel
+        function setEmotion(emotion, buttonElement) {
+            const button = buttonElement || (window.event && window.event.target) || document.querySelector(`button[onclick*="setEmotion('${emotion}')"]`);
+            if (button) {
+                button.classList.add('loading');
+                setTimeout(() => button.classList.remove('loading'), 500);
+            }
             sendCommand('emotion', emotion);
             addLog('info', `Émotion définie: ${emotion}`);
         }
+        window.setEmotion = setEmotion;
 
-        function sendAction(action) {
+        function sendAction(action, buttonElement) {
+            const button = buttonElement || (window.event && window.event.target) || document.querySelector(`button[onclick*="sendAction('${action}')"]`);
+            if (button) {
+                button.classList.add('loading');
+                setTimeout(() => button.classList.remove('loading'), 500);
+            }
             sendCommand('action', action);
             addLog('info', `Action envoyée: ${action}`);
         }
+        window.sendAction = sendAction;
 
-        function runBehavior(behavior) {
+        function runBehavior(behavior, buttonElement) {
+            const button = buttonElement || (window.event && window.event.target) || document.querySelector(`button[onclick*="runBehavior('${behavior}')"]`);
+            if (button) {
+                button.classList.add('loading');
+                setTimeout(() => button.classList.remove('loading'), 1000);
+            }
             sendCommand('behavior', behavior);
             addLog('info', `Comportement lancé: ${behavior}`);
         }
+        window.runBehavior = runBehavior;
+
+        // Debouncing pour les sliders de joints
+        let jointUpdateTimeouts = {};
 
         function setJointPosition(joint, position) {
-            sendCommand('joint', { joint: joint, position: parseFloat(position) });
-            document.getElementById(`value-${joint}`).textContent = parseFloat(position).toFixed(2);
+            const numPosition = parseFloat(position);
+            if (isNaN(numPosition)) {
+                addLog('error', `Position invalide pour joint ${joint}: ${position}`);
+                return;
+            }
+
+            // Mise à jour immédiate de l'affichage
+            const valueElement = document.getElementById(`value-${joint}`);
+            if (valueElement) {
+                valueElement.textContent = numPosition.toFixed(2);
+                valueElement.classList.add('updating');
+                setTimeout(() => valueElement.classList.remove('updating'), 300);
+            }
+
+            // Debounce: envoyer la commande après 100ms d'inactivité
+            if (jointUpdateTimeouts[joint]) {
+                clearTimeout(jointUpdateTimeouts[joint]);
+            }
+
+            jointUpdateTimeouts[joint] = setTimeout(() => {
+                sendCommand('joint', { joint: joint, position: numPosition });
+                delete jointUpdateTimeouts[joint];
+            }, 100);
         }
+        window.setJointPosition = setJointPosition;
 
         function toggleVision() {
             sendCommand('vision', 'toggle');
             addLog('info', 'Vision basculée');
         }
+        window.toggleVision = toggleVision;
 
         function scanEnvironment() {
             sendCommand('vision', 'scan');
             addLog('info', 'Scan environnement lancé');
         }
+        window.scanEnvironment = scanEnvironment;
 
         function trackObject() {
             sendCommand('vision', 'track');
             addLog('info', 'Suivi objet activé');
         }
+        window.trackObject = trackObject;
 
         // Fonctions utilitaires
         function updateConnectionStatus(connected) {
             const indicator = document.getElementById('connection-indicator');
             const text = document.getElementById('connection-text');
 
-            if (connected) {
-                indicator.className = 'connection-indicator connected';
-                text.textContent = 'Connecté';
-            } else {
-                indicator.className = 'connection-indicator disconnected';
-                text.textContent = 'Déconnecté';
+            if (indicator) {
+                indicator.className = 'connection-indicator ' + (connected ? 'connected' : 'disconnected');
+            }
+            if (text) {
+                text.textContent = connected ? 'Connecté' : 'Déconnecté';
             }
         }
 
@@ -1081,67 +2501,491 @@ ADVANCED_DASHBOARD_HTML = """
 
         function addLog(level, message) {
             const container = document.getElementById('logs-container');
+            if (!container) return;
+
             const entry = document.createElement('div');
             entry.className = `log-entry log-${level}`;
+            entry.style.opacity = '0';
+            entry.style.transform = 'translateY(-10px)';
             entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
             container.appendChild(entry);
-            container.scrollTop = container.scrollHeight;
 
-            // Limiter à 100 entrées
-            while (container.children.length > 100) {
-                container.removeChild(container.firstChild);
+            // Animation d'apparition
+            requestAnimationFrame(() => {
+                entry.style.transition = 'all 0.3s ease';
+                entry.style.opacity = '1';
+                entry.style.transform = 'translateY(0)';
+            });
+
+            // Scroll fluide
+            container.scrollTo({
+                top: container.scrollHeight,
+                behavior: 'smooth'
+            });
+
+            // Limiter à 100 entrées (optimisé)
+            if (container.children.length > 100) {
+                const toRemove = container.children.length - 100;
+                for (let i = 0; i < toRemove; i++) {
+                    container.removeChild(container.firstChild);
+                }
             }
+        }
+
+        // Toast notifications - Système professionnel inspiré de Reachy Mini
+        const toastQueue = [];
+        let toastContainer = null;
+
+        function initToastContainer() {
+            if (!toastContainer) {
+                toastContainer = document.createElement('div');
+                toastContainer.id = 'toast-container';
+                toastContainer.style.cssText = 'position: fixed; top: 20px; right: 20px; z-index: 10000; display: flex; flex-direction: column; gap: 10px; pointer-events: none;';
+                document.body.appendChild(toastContainer);
+            }
+        }
+
+        function showToast(message, type = 'info', duration = 3000) {
+            initToastContainer();
+
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateX(120%)';
+            toastContainer.appendChild(toast);
+
+            // Animation d'entrée
+            requestAnimationFrame(() => {
+                toast.style.opacity = '1';
+                toast.style.transform = 'translateX(0)';
+            });
+
+            // Auto-dismiss
+            const timeout = setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(120%)';
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        toast.parentNode.removeChild(toast);
+                    }
+                }, 300);
+            }, duration);
+
+            // Permettre de fermer manuellement
+            toast.style.cursor = 'pointer';
+            toast.addEventListener('click', () => {
+                clearTimeout(timeout);
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(120%)';
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        toast.parentNode.removeChild(toast);
+                    }
+                }, 300);
+            });
         }
 
         function sendCommand(type, value) {
-            if (ws && ws.readyState === WebSocket.OPEN) {
-                const command = {
-                    type: 'command',
-                    command_type: type,
-                    value: value,
-                    timestamp: new Date().toISOString()
-                };
-                ws.send(JSON.stringify(command));
+            if (dashboard.ws && dashboard.ws.readyState === WebSocket.OPEN) {
+                try {
+                    const command = {
+                        type: 'command',
+                        command_type: type,
+                        value: value,
+                        timestamp: new Date().toISOString()
+                    };
+                    console.log('Envoi commande:', command);
+                    dashboard.ws.send(JSON.stringify(command));
+                    showToast(`✅ Commande ${type} envoyée`, 'success', 2000);
+                } catch (error) {
+                    console.error('Erreur envoi commande:', error);
+                    addLog('error', `Erreur envoi commande: ${error.message}`);
+                    showToast(`❌ Erreur: ${error.message}`, 'error', 4000);
+                }
             } else {
-                addLog('error', 'WebSocket non connecté');
+                // Logger seulement une fois toutes les 5 secondes pour éviter le spam
+                const now = Date.now();
+                if (!dashboard.lastCommandErrorLog || (now - dashboard.lastCommandErrorLog) >= 5000) {
+                    console.debug('⚠️ WebSocket non connecté (serveur peut être arrêté)');
+                    dashboard.lastCommandErrorLog = now;
+                }
+                // Ne pas afficher de toast pour éviter le spam
+                if (!dashboard.reconnectInterval) {
+                    connect();
+                }
             }
         }
+        window.sendCommand = sendCommand;
 
-        // Fonctions Chat BBIA
+        // Fonctions Chat BBIA - Version simplifiée et robuste
         function sendChatMessage() {
+            console.log('🔵 [CHAT] sendChatMessage appelé');
+
+            // Récupérer l'input
             const input = document.getElementById('chat-input');
-            if (!input) return;
+            if (!input) {
+                console.error('❌ [CHAT] Input chat non trouvé');
+                alert('Erreur: champ de saisie introuvable');
+                return;
+            }
+
             const message = input.value.trim();
-            if (message && ws && ws.readyState === WebSocket.OPEN) {
-                const command = {
+            if (!message) {
+                console.warn('⚠️ [CHAT] Message vide');
+                return;
+            }
+
+            console.log('📤 [CHAT] Message:', message);
+            console.log('🔌 [CHAT] WebSocket existe?', !!dashboard.ws);
+            console.log('🔌 [CHAT] WebSocket state:', dashboard.ws ? dashboard.ws.readyState : 'null');
+
+            // Vérifier WebSocket
+            if (!dashboard.ws) {
+                // Logger seulement une fois toutes les 5 secondes
+                const now = Date.now();
+                if (!dashboard.lastChatErrorLog || (now - dashboard.lastChatErrorLog) >= 5000) {
+                    console.debug('⚠️ [CHAT] WebSocket non initialisé (serveur peut être arrêté)');
+                    dashboard.lastChatErrorLog = now;
+                }
+                connect();
+                // Réessayer après 1 seconde
+                setTimeout(() => {
+                    if (dashboard.ws && dashboard.ws.readyState === WebSocket.OPEN) {
+                        sendChatMessage();
+                    }
+                }, 1000);
+                return;
+            }
+
+            // Vérifier état WebSocket
+            if (dashboard.ws.readyState !== WebSocket.OPEN) {
+                // Logger seulement une fois toutes les 5 secondes
+                const now = Date.now();
+                if (!dashboard.lastChatErrorLog || (now - dashboard.lastChatErrorLog) >= 5000) {
+                    console.debug('⚠️ [CHAT] WebSocket pas ouvert (serveur peut être arrêté)');
+                    dashboard.lastChatErrorLog = now;
+                }
+                connect();
+                setTimeout(() => {
+                    if (dashboard.ws && dashboard.ws.readyState === WebSocket.OPEN) {
+                        sendChatMessage();
+                    }
+                }, 1000);
+                return;
+            }
+
+            // Envoyer le message
+            try {
+                const chatMessage = {
                     type: 'chat',
                     message: message,
                     timestamp: new Date().toISOString()
                 };
-                ws.send(JSON.stringify(command));
+
+                console.log('📨 [CHAT] Envoi:', JSON.stringify(chatMessage));
+                dashboard.ws.send(JSON.stringify(chatMessage));
+                console.log('✅ [CHAT] Message envoyé avec succès');
+
+                // Afficher immédiatement le message utilisateur
                 addChatMessage('user', message);
+
+                // Vider l'input
                 input.value = '';
-            } else {
-                addLog('warning', 'Impossible d\'envoyer le message');
+                input.focus();
+
+                addLog('info', `Message envoyé: ${message.substring(0, 30)}...`);
+
+            } catch (error) {
+                console.error('❌ [CHAT] Erreur:', error);
+                alert('Erreur envoi: ' + error.message);
+                addLog('error', `Erreur: ${error.message}`);
             }
         }
 
+        // Rendre la fonction accessible globalement
+        window.sendChatMessage = sendChatMessage;
+        console.log('✅ Fonction sendChatMessage rendue globale');
+
         function addChatMessage(sender, message) {
+            console.log('addChatMessage appelé:', sender, message);
             const container = document.getElementById('chat-messages');
-            if (!container) return;
+            if (!container) {
+                console.error('Container chat-messages non trouvé');
+                return;
+            }
 
             const entry = document.createElement('div');
             entry.className = `chat-message chat-${sender}`;
+            entry.style.opacity = '0';
+            entry.style.transform = sender === 'user' ? 'translateX(20px)' : 'translateX(-20px)';
+
+            // Échapper HTML pour éviter XSS
+            const safeMessage = String(message).replace(/[<>]/g, function(match) {
+                return match === '<' ? '&lt;' : '&gt;';
+            });
             entry.innerHTML = `
                 <div class="chat-author">${sender === 'user' ? 'Vous' : 'BBIA'}</div>
-                <div class="chat-text">${message}</div>
+                <div class="chat-text">${safeMessage}</div>
             `;
             container.appendChild(entry);
-            container.scrollTop = container.scrollHeight;
+
+            // Animation d'apparition
+            requestAnimationFrame(() => {
+                entry.style.transition = 'all 0.3s ease';
+                entry.style.opacity = '1';
+                entry.style.transform = 'translateX(0)';
+            });
+
+            // Scroll fluide
+            container.scrollTo({
+                top: container.scrollHeight,
+                behavior: 'smooth'
+            });
 
             // Limiter à 50 messages
-            while (container.children.length > 50) {
-                container.removeChild(container.firstChild);
+            if (container.children.length > 50) {
+                const toRemove = container.children.length - 50;
+                for (let i = 0; i < toRemove; i++) {
+                    container.removeChild(container.firstChild);
+                }
+            }
+        }
+
+        // Rendre la fonction accessible globalement
+        window.addChatMessage = addChatMessage;
+
+        // Fonctions Troubleshooting avec feedback visuel
+        async function runAllChecks(buttonElement) {
+            const resultsDiv = document.getElementById('troubleshooting-results');
+            if (!resultsDiv) return;
+            const button = buttonElement || (window.event && window.event.target);
+
+            if (button) {
+                button.disabled = true;
+                button.classList.add('loading');
+            }
+
+            resultsDiv.innerHTML = '<p style="text-align: center;"><span class="loading-spinner"></span> 🔍 Vérification en cours...</p>';
+
+            try {
+                const response = await fetch('/api/troubleshooting/check');
+                const data = await response.json();
+
+                if (data.success) {
+                    displayTroubleshootingResults(data.results);
+                    loadDocumentationLinks();
+                } else {
+                    resultsDiv.innerHTML = `<p class="troubleshooting-item error">❌ Erreur: ${data.error || 'Erreur inconnue'}</p>`;
+                }
+            } catch (error) {
+                resultsDiv.innerHTML = `<p class="troubleshooting-item error">❌ Erreur réseau: ${error.message}</p>`;
+            } finally {
+                if (button) {
+                    button.disabled = false;
+                    button.classList.remove('loading');
+                }
+            }
+        }
+        window.runAllChecks = runAllChecks;
+
+        async function testCamera(buttonElement) {
+            const resultsDiv = document.getElementById('troubleshooting-results');
+            if (!resultsDiv) return;
+            const button = buttonElement || (window.event && window.event.target);
+
+            if (button) {
+                button.disabled = true;
+                button.classList.add('loading');
+            }
+
+            resultsDiv.innerHTML = '<p style="text-align: center;"><span class="loading-spinner"></span> 📷 Test caméra en cours...</p>';
+
+            try {
+                const response = await fetch('/api/troubleshooting/test/camera', { method: 'POST' });
+                const data = await response.json();
+
+                if (data.success) {
+                    const result = data.result;
+                    const statusClass = result.status === 'ok' ? 'ok' : result.status === 'warning' ? 'warning' : 'error';
+                    let html = `<div class="troubleshooting-item ${statusClass}">`;
+                    html += `<h4>📷 Caméra</h4>`;
+                    html += `<p>${result.message}</p>`;
+                    if (result.fix) {
+                        html += `<div class="troubleshooting-fix">💡 Fix: ${result.fix}</div>`;
+                    }
+                    if (result.frame_size) {
+                        html += `<p>Taille: ${result.frame_size}</p>`;
+                    }
+                    html += `</div>`;
+                    resultsDiv.innerHTML = html;
+                } else {
+                    resultsDiv.innerHTML = `<p class="troubleshooting-item error">❌ Erreur: ${data.error || 'Erreur inconnue'}</p>`;
+                }
+            } catch (error) {
+                resultsDiv.innerHTML = `<p class="troubleshooting-item error">❌ Erreur réseau: ${error.message}</p>`;
+            } finally {
+                if (button) {
+                    button.disabled = false;
+                    button.classList.remove('loading');
+                }
+            }
+        }
+        window.testCamera = testCamera;
+
+        async function testAudio(buttonElement) {
+            const resultsDiv = document.getElementById('troubleshooting-results');
+            if (!resultsDiv) return;
+            const button = buttonElement || (window.event && window.event.target);
+
+            if (button) {
+                button.disabled = true;
+                button.classList.add('loading');
+            }
+
+            resultsDiv.innerHTML = '<p style="text-align: center;"><span class="loading-spinner"></span> 🔊 Test audio en cours...</p>';
+
+            try {
+                const response = await fetch('/api/troubleshooting/test/audio', { method: 'POST' });
+                const data = await response.json();
+
+                if (data.success) {
+                    const result = data.result;
+                    const statusClass = result.status === 'ok' ? 'ok' : result.status === 'warning' ? 'warning' : 'error';
+                    let html = `<div class="troubleshooting-item ${statusClass}">`;
+                    html += `<h4>🔊 Audio</h4>`;
+                    html += `<p>${result.message}</p>`;
+                    if (result.fix) {
+                        html += `<div class="troubleshooting-fix">💡 Fix: ${result.fix}</div>`;
+                    }
+                    if (result.devices && result.devices.length > 0) {
+                        html += `<p>Devices disponibles: ${result.devices.length}</p>`;
+                    }
+                    html += `</div>`;
+                    resultsDiv.innerHTML = html;
+                } else {
+                    resultsDiv.innerHTML = `<p class="troubleshooting-item error">❌ Erreur: ${data.error || 'Erreur inconnue'}</p>`;
+                }
+            } catch (error) {
+                resultsDiv.innerHTML = `<p class="troubleshooting-item error">❌ Erreur réseau: ${error.message}</p>`;
+            } finally {
+                if (button) {
+                    button.disabled = false;
+                    button.classList.remove('loading');
+                }
+            }
+        }
+        window.testAudio = testAudio;
+
+        async function testNetwork(buttonElement) {
+            const resultsDiv = document.getElementById('troubleshooting-results');
+            if (!resultsDiv) return;
+            const button = buttonElement || (window.event && window.event.target);
+
+            if (button) {
+                button.disabled = true;
+                button.classList.add('loading');
+            }
+
+            resultsDiv.innerHTML = '<p style="text-align: center;"><span class="loading-spinner"></span> 🌐 Test réseau en cours...</p>';
+
+            try {
+                const response = await fetch('/api/troubleshooting/test/network?host=8.8.8.8', { method: 'POST' });
+                const data = await response.json();
+
+                if (data.success) {
+                    const result = data.result;
+                    const statusClass = result.status === 'ok' ? 'ok' : 'error';
+                    let html = `<div class="troubleshooting-item ${statusClass}">`;
+                    html += `<h4>🌐 Réseau</h4>`;
+                    html += `<p>${result.message}</p>`;
+                    if (result.fix) {
+                        html += `<div class="troubleshooting-fix">💡 Fix: ${result.fix}</div>`;
+                    }
+                    html += `</div>`;
+                    resultsDiv.innerHTML = html;
+                } else {
+                    resultsDiv.innerHTML = `<p class="troubleshooting-item error">❌ Erreur: ${data.error || 'Erreur inconnue'}</p>`;
+                }
+            } catch (error) {
+                resultsDiv.innerHTML = `<p class="troubleshooting-item error">❌ Erreur réseau: ${error.message}</p>`;
+            } finally {
+                if (button) {
+                    button.disabled = false;
+                    button.classList.remove('loading');
+                }
+            }
+        }
+        window.testNetwork = testNetwork;
+
+        function displayTroubleshootingResults(results) {
+            const resultsDiv = document.getElementById('troubleshooting-results');
+            if (!resultsDiv || !results) return;
+            let html = '';
+
+            // Résumé
+            if (results.summary) {
+                const summary = results.summary;
+                html += `<div class="troubleshooting-item ${summary.score >= 80 ? 'ok' : summary.score >= 50 ? 'warning' : 'error'}">`;
+                html += `<h4>📊 Résumé</h4>`;
+                html += `<p>Score: ${summary.score}% (${summary.passed}/${summary.total} checks OK)</p>`;
+                html += `</div>`;
+            }
+
+            // Checks individuels
+            const checks = ['python', 'dependencies', 'camera', 'audio', 'network', 'mujoco', 'ports', 'permissions'];
+            for (const checkName of checks) {
+                if (results[checkName]) {
+                    const check = results[checkName];
+                    const statusClass = check.status === 'ok' ? 'ok' : check.status === 'warning' ? 'warning' : 'error';
+                    html += `<div class="troubleshooting-item ${statusClass}">`;
+                    html += `<h4>${getCheckIcon(checkName)} ${checkName.charAt(0).toUpperCase() + checkName.slice(1)}</h4>`;
+                    html += `<p>${check.message || check.status}</p>`;
+                    if (check.fix) {
+                        html += `<div class="troubleshooting-fix">💡 Fix: ${check.fix}</div>`;
+                    }
+                    html += `</div>`;
+                }
+            }
+
+            resultsDiv.innerHTML = html;
+        }
+
+        function getCheckIcon(checkName) {
+            const icons = {
+                'python': '🐍',
+                'dependencies': '📦',
+                'camera': '📷',
+                'audio': '🔊',
+                'network': '🌐',
+                'mujoco': '🎮',
+                'ports': '🔌',
+                'permissions': '🔐',
+            };
+            return icons[checkName] || '✓';
+        }
+
+        async function loadDocumentationLinks() {
+            try {
+                const response = await fetch('/api/troubleshooting/docs');
+                const data = await response.json();
+
+                if (data.success && data.links) {
+                    const docsDiv = document.getElementById('troubleshooting-docs');
+                    const linksDiv = document.getElementById('troubleshooting-docs-links');
+                    let html = '';
+
+                    for (const [name, path] of Object.entries(data.links)) {
+                        // path est maintenant une URL complète depuis l'API
+                        const displayName = name.replace(/_/g, ' ').replace(/\\b\\w/g, (l) => l.toUpperCase());
+                        html += `<a href="${path}" target="_blank">📄 ${displayName}</a>`;
+                    }
+
+                    linksDiv.innerHTML = html;
+                    docsDiv.style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Erreur chargement docs:', error);
             }
         }
     </script>
@@ -1153,12 +2997,18 @@ ADVANCED_DASHBOARD_HTML = """
 # Routes FastAPI avancées
 if FASTAPI_AVAILABLE:
     if app is None:
-        raise RuntimeError("FastAPI app is None but FASTAPI_AVAILABLE is True")
+        msg = "FastAPI app is None but FASTAPI_AVAILABLE is True"
+        raise RuntimeError(msg)
 
     @app.get("/", response_class=HTMLResponse)
     async def advanced_dashboard():
         """Page principale du dashboard avancé."""
         return ADVANCED_DASHBOARD_HTML
+
+    @app.get("/.well-known/appspecific/com.chrome.devtools.json")
+    async def chrome_devtools_config():
+        """Endpoint pour Chrome DevTools - évite les 404 dans les logs."""
+        return {}  # Retourne un JSON vide pour Chrome DevTools
 
     @app.get("/api/status")
     async def get_status():
@@ -1166,7 +3016,7 @@ if FASTAPI_AVAILABLE:
         return {
             "status": "healthy",
             "timestamp": datetime.now().isoformat(),
-            "version": "1.2.0",
+            "version": "1.3.2",
             "robot_connected": advanced_websocket_manager.robot is not None,
             "backend": advanced_websocket_manager.robot_backend,
             "active_connections": len(advanced_websocket_manager.active_connections),
@@ -1187,61 +3037,86 @@ if FASTAPI_AVAILABLE:
     async def get_joints():
         """API endpoint pour récupérer les joints disponibles."""
         if advanced_websocket_manager.robot:
+            # OPTIMISATION: Accès direct plus efficace que getattr avec constante
+            get_current_pose: Callable[[], dict[str, float]] = (
+                advanced_websocket_manager._get_current_pose  # noqa: SLF001
+            )
             return {
                 "joints": advanced_websocket_manager.robot.get_available_joints(),
-                "current_positions": advanced_websocket_manager._get_current_pose(),
+                "current_positions": get_current_pose(),
             }
         return {"joints": [], "current_positions": {}}
 
     @app.post("/api/emotion")
-    async def set_emotion(emotion_data: dict):
+    async def set_emotion(request: Request):
         """API endpoint pour définir une émotion."""
-        emotion = emotion_data.get("emotion", "neutral")
-        intensity = emotion_data.get("intensity", 0.5)
+        try:
+            emotion_data = await request.json()
+            emotion = emotion_data.get("emotion", "neutral")
+            intensity = emotion_data.get("intensity", 0.5)
 
-        if advanced_websocket_manager.robot:
-            success = await advanced_websocket_manager.robot.set_emotion(
-                emotion,
-                intensity,
-            )
-            if success:
-                await advanced_websocket_manager.send_log_message(
-                    "info",
-                    f"Émotion définie: {emotion} (intensité: {intensity})",
+            if advanced_websocket_manager.robot:
+                success = advanced_websocket_manager.robot.set_emotion(
+                    emotion,
+                    intensity,
                 )
-                return {"success": True, "emotion": emotion, "intensity": intensity}
-            await advanced_websocket_manager.send_log_message(
-                "error",
-                f"Échec définition émotion: {emotion}",
-            )
-            return {"success": False, "error": "Failed to set emotion"}
+                if success:
+                    await advanced_websocket_manager.send_log_message(
+                        "info",
+                        f"Émotion définie: {emotion} (intensité: {intensity})",
+                    )
+                    return {"success": True, "emotion": emotion, "intensity": intensity}
+                await advanced_websocket_manager.send_log_message(
+                    "error",
+                    f"Échec définition émotion: {emotion}",
+                )
+                return {"success": False, "error": "Failed to set emotion"}
 
-        return {"success": False, "error": "Robot not connected"}
+            return {"success": False, "error": "Robot not connected"}
+        except (ValueError, AttributeError, RuntimeError, KeyError) as e:
+            logger.exception("Erreur set_emotion")
+            return {"success": False, "error": str(e)}
+        except Exception as e:
+            logger.exception("Erreur inattendue set_emotion")
+            return {"success": False, "error": str(e)}
 
     @app.post("/api/joint")
-    async def set_joint_position(joint_data: dict):
+    async def set_joint_position(request: Request):
         """API endpoint pour définir la position d'un joint."""
-        joint = joint_data.get("joint")
-        position = joint_data.get("position", 0.0)
+        try:
+            joint_data = await request.json()
+            joint = joint_data.get("joint")
+            position = joint_data.get("position", 0.0)
 
-        if not joint:
-            raise HTTPException(status_code=400, detail="Joint name required")
+            if not joint:
+                raise HTTPException(status_code=400, detail="Joint name required")
 
-        if advanced_websocket_manager.robot:
-            success = advanced_websocket_manager.robot.set_joint_pos(joint, position)
-            if success:
-                await advanced_websocket_manager.send_log_message(
-                    "info",
-                    f"Joint {joint} = {position}",
+            if advanced_websocket_manager.robot:
+                success = advanced_websocket_manager.robot.set_joint_pos(
+                    joint,
+                    position,
                 )
-                return {"success": True, "joint": joint, "position": position}
-            await advanced_websocket_manager.send_log_message(
-                "error",
-                f"Échec contrôle joint {joint}",
-            )
-            return {"success": False, "error": "Failed to set joint position"}
+                if success:
+                    await advanced_websocket_manager.send_log_message(
+                        "info",
+                        f"Joint {joint} = {position}",
+                    )
+                    return {"success": True, "joint": joint, "position": position}
+                await advanced_websocket_manager.send_log_message(
+                    "error",
+                    f"Échec contrôle joint {joint}",
+                )
+                return {"success": False, "error": "Failed to set joint position"}
 
-        return {"success": False, "error": "Robot not connected"}
+            return {"success": False, "error": "Robot not connected"}
+        except HTTPException:
+            raise
+        except (ValueError, AttributeError, RuntimeError, KeyError, IndexError) as e:
+            logger.exception("Erreur set_joint_position")
+            return {"success": False, "error": str(e)}
+        except Exception as e:
+            logger.exception("Erreur inattendue set_joint_position")
+            return {"success": False, "error": str(e)}
 
     @app.get("/healthz")
     async def health_check():
@@ -1249,13 +3124,357 @@ if FASTAPI_AVAILABLE:
         return {
             "status": "healthy",
             "timestamp": datetime.now().isoformat(),
-            "version": "1.2.0",
+            "version": "1.3.2",
             "robot_connected": advanced_websocket_manager.robot is not None,
             "active_connections": len(advanced_websocket_manager.active_connections),
         }
 
+    # Endpoints Troubleshooting
+    @app.get("/api/troubleshooting/check")
+    async def troubleshooting_check():
+        """Exécute tous les checks de troubleshooting."""
+        try:
+            results = check_all()
+            return {"success": True, "results": results}
+        except (OSError, RuntimeError, AttributeError, ImportError) as e:
+            logger.exception("Erreur troubleshooting check")
+            return {"success": False, "error": str(e)}
+        except Exception as e:
+            logger.exception("Erreur inattendue troubleshooting check")
+            return {"success": False, "error": str(e)}
+
+    @app.post("/api/troubleshooting/test/camera")
+    async def troubleshooting_test_camera():
+        """Test interactif de la caméra."""
+        try:
+            result = test_camera()
+            return {"success": True, "result": result}
+        except (OSError, RuntimeError, AttributeError, ImportError) as e:
+            logger.exception("Erreur test caméra")
+            return {"success": False, "error": str(e)}
+        except Exception as e:
+            logger.exception("Erreur inattendue test caméra")
+            return {"success": False, "error": str(e)}
+
+    @app.post("/api/troubleshooting/test/audio")
+    async def troubleshooting_test_audio():
+        """Test interactif de l'audio."""
+        try:
+            result = test_audio()
+            return {"success": True, "result": result}
+        except (OSError, RuntimeError, AttributeError, ImportError) as e:
+            logger.exception("Erreur test audio")
+            return {"success": False, "error": str(e)}
+        except Exception as e:
+            logger.exception("Erreur inattendue test audio")
+            return {"success": False, "error": str(e)}
+
+    @app.post("/api/troubleshooting/test/network")
+    async def troubleshooting_test_network(host: str = "8.8.8.8"):
+        """Test interactif du réseau."""
+        try:
+            result = test_network_ping(host)
+            return {"success": True, "result": result}
+        except (
+            OSError,
+            RuntimeError,
+            AttributeError,
+            ConnectionError,
+            TimeoutError,
+        ) as e:
+            logger.exception("Erreur test réseau")
+            return {"success": False, "error": str(e)}
+        except Exception as e:
+            logger.exception("Erreur inattendue test réseau")
+            return {"success": False, "error": str(e)}
+
+    @app.get("/api/troubleshooting/docs")
+    async def troubleshooting_docs():
+        """Retourne les liens vers la documentation."""
+        try:
+            links = get_documentation_links()
+            # Convertir les chemins relatifs en URLs absolues
+            base_url = "/api/docs/view"
+            links_with_urls = {
+                name: f"{base_url}?path={path}" for name, path in links.items()
+            }
+            return {"success": True, "links": links_with_urls}
+        except (KeyError, AttributeError, RuntimeError) as e:
+            logger.exception("Erreur récupération docs")
+            return {"success": False, "error": str(e)}
+        except Exception as e:
+            logger.exception("Erreur inattendue récupération docs")
+            return {"success": False, "error": str(e)}
+
+    @app.get("/api/docs/view")
+    async def view_documentation(path: str):
+        """Affiche un fichier de documentation en HTML formaté."""
+        import html
+        from pathlib import Path
+
+        from fastapi.responses import (  # type: ignore[import-untyped]
+            FileResponse,
+            HTMLResponse,
+        )
+
+        try:
+            # Sécuriser le chemin pour éviter les accès non autorisés
+            doc_path = Path(path)
+            if ".." in str(doc_path) or doc_path.is_absolute():
+                raise HTTPException(status_code=400, detail="Chemin invalide")
+
+            # Construire le chemin complet depuis la racine du projet
+            project_root = Path(__file__).parent.parent.parent
+            full_path = project_root / doc_path
+
+            # Vérifier que le fichier existe et est dans le dossier docs
+            if not full_path.exists() or not str(full_path).startswith(
+                str(project_root / "docs"),
+            ):
+                raise HTTPException(status_code=404, detail="Fichier non trouvé")
+
+            # Si c'est un fichier markdown, convertir en HTML
+            if full_path.suffix == ".md":
+                content = full_path.read_text(encoding="utf-8")
+                # Échapper le HTML et convertir les retours à la ligne en <br>
+                content_html = html.escape(content).replace("\n", "<br>\n")
+                # Créer une page HTML simple avec le contenu
+                html_page = f"""
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation - {doc_path.name}</title>
+    <style>
+        body {{
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            color: #4D4D4D;
+            background: #f5f7fa;
+        }}
+        pre {{
+            background: #ffffff;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #E6E6E6;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+        }}
+        code {{
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+        }}
+        h1, h2, h3 {{
+            color: #4D4D4D;
+            border-bottom: 2px solid #4D4D4D;
+            padding-bottom: 10px;
+        }}
+        a {{
+            color: #008181;
+            text-decoration: none;
+        }}
+        a:hover {{
+            text-decoration: underline;
+        }}
+    </style>
+</head>
+<body>
+    <h1>📚 {doc_path.name}</h1>
+    <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+        <pre style="white-space: pre-wrap; font-family: inherit;">{content_html}</pre>
+    </div>
+    <p style="margin-top: 20px; text-align: center;">
+        <a href="/">← Retour au dashboard</a>
+    </p>
+</body>
+</html>
+"""
+                return HTMLResponse(content=html_page)
+            return FileResponse(full_path)
+        except HTTPException:
+            raise
+        except Exception as e:
+            logger.exception("Erreur lecture documentation %s:", path)
+            raise HTTPException(
+                status_code=500,
+                detail=f"Erreur lecture fichier: {e}",
+            ) from e
+
+    @app.get("/api/camera/stream")
+    async def camera_stream():
+        """Stream vidéo MJPEG optimisé avec compression adaptative et frame rate adaptatif."""
+        from fastapi.responses import StreamingResponse  # type: ignore[import-untyped]
+
+        async def generate_frames():
+            """Générateur async de frames MJPEG optimisé avec compression adaptative."""
+            try:
+                import cv2  # type: ignore[import-untyped]
+                import numpy as np
+            except ImportError:
+                logger.warning("OpenCV non disponible pour stream vidéo")
+                return
+
+            vision = advanced_websocket_manager.vision
+            frame_count = 0
+
+            # OPTIMISATION STREAMING: Compression adaptative et frame rate adaptatif
+            jpeg_quality = 85  # Qualité initiale
+            target_fps = 30.0  # FPS cible initial
+            frame_interval = 1.0 / target_fps  # Intervalle entre frames
+            last_frame_time = time.time()
+            frame_times: deque[float] = deque(
+                maxlen=30,
+            )  # Buffer pour calculer FPS réel
+
+            # OPTIMISATION STREAMING: Buffer optimisé (deque maxlen=5)
+            frame_buffer: deque[bytes] = deque(maxlen=5)
+
+            try:
+                while True:
+                    try:
+                        current_time = time.time()
+                        elapsed = current_time - last_frame_time
+
+                        # Frame rate adaptatif : ajuster selon latence
+                        if elapsed < frame_interval:
+                            await asyncio.sleep(frame_interval - elapsed)
+
+                        frame = None
+                        if vision:
+                            try:
+                                # Utiliser la méthode privée _capture_image_from_camera
+                                # qui gère SDK camera et OpenCV
+                                capture_func = getattr(
+                                    vision,
+                                    "_capture_image_from_camera",
+                                    None,
+                                )
+                                if capture_func is not None:
+                                    frame = capture_func()
+                                else:
+                                    frame = (
+                                        vision.capture_image()
+                                        if hasattr(vision, "capture_image")
+                                        else None
+                                    )
+                            except (
+                                OSError,
+                                RuntimeError,
+                                AttributeError,
+                                ImportError,
+                            ) as e:
+                                logger.debug("Erreur capture frame: %s", e)
+                            except Exception as e:  # noqa: BLE001
+                                logger.debug("Erreur inattendue capture frame: %s", e)
+
+                        if frame is None:
+                            # Frame de test avec texte si pas de caméra
+                            frame = np.zeros((480, 640, 3), dtype=np.uint8)
+                            # Ajouter texte "Caméra non disponible"
+                            with contextlib.suppress(
+                                ConnectionError, RuntimeError, WebSocketDisconnect
+                            ):
+                                cv2.putText(
+                                    frame,
+                                    "Camera not available",
+                                    (50, 240),
+                                    cv2.FONT_HERSHEY_SIMPLEX,
+                                    1,
+                                    (255, 255, 255),
+                                    2,
+                                )
+
+                        # OPTIMISATION STREAMING: Compression adaptative
+                        # Ajuster qualité JPEG selon taille frame précédente
+                        if frame_buffer:
+                            avg_size = sum(len(f) for f in frame_buffer) / len(
+                                frame_buffer,
+                            )
+                            # Si frames trop grandes (>100KB), réduire qualité
+                            if avg_size > 100000:
+                                jpeg_quality = max(60, jpeg_quality - 5)
+                            # Si frames petites (<30KB), augmenter qualité
+                            elif avg_size < 30000:
+                                jpeg_quality = min(95, jpeg_quality + 2)
+
+                        # Encoder en JPEG avec qualité adaptative
+                        success, buffer = cv2.imencode(
+                            ".jpg",
+                            frame,
+                            [cv2.IMWRITE_JPEG_QUALITY, jpeg_quality],
+                        )
+                        if not success:
+                            logger.warning("Échec encodage JPEG")
+                            await asyncio.sleep(0.1)
+                            continue
+
+                        frame_bytes = buffer.tobytes()
+                        frame_buffer.append(frame_bytes)
+
+                        # OPTIMISATION STREAMING: Frame rate adaptatif
+                        # Calculer FPS réel et ajuster
+                        frame_times.append(current_time)
+                        if len(frame_times) >= 10:
+                            fps_real = len(frame_times) / (
+                                frame_times[-1] - frame_times[0]
+                            )
+                            # Ajuster target_fps si FPS réel trop bas
+                            if fps_real < target_fps * 0.8:
+                                target_fps = max(15.0, target_fps - 2.0)
+                                frame_interval = 1.0 / target_fps
+                            elif fps_real > target_fps * 1.2:
+                                target_fps = min(30.0, target_fps + 1.0)
+                                frame_interval = 1.0 / target_fps
+
+                        yield (
+                            b"--frame\r\n"
+                            b"Content-Type: image/jpeg\r\n\r\n" + frame_bytes + b"\r\n"
+                        )
+
+                        frame_count += 1
+                        last_frame_time = current_time
+
+                        if frame_count % 30 == 0:
+                            logger.debug(
+                                "Stream vidéo: %d frames, qualité=%s, FPS=%.1f",
+                                frame_count,
+                                jpeg_quality,
+                                target_fps,
+                            )
+
+                    except asyncio.CancelledError:
+                        # Arrêt propre si le client se déconnecte
+                        logger.debug("Stream vidéo annulé (client déconnecté)")
+                        break
+                    except (
+                        OSError,
+                        RuntimeError,
+                        AttributeError,
+                        ConnectionError,
+                    ):
+                        logger.exception("Erreur stream vidéo")
+                        await asyncio.sleep(1)
+                    except Exception:
+                        logger.exception("Erreur inattendue stream vidéo")
+                        await asyncio.sleep(1)
+            except GeneratorExit:
+                # Arrêt propre du générateur
+                logger.debug("Générateur de frames fermé")
+                raise
+
+        return StreamingResponse(
+            generate_frames(),
+            media_type="multipart/x-mixed-replace; boundary=frame",
+        )
+
     @app.websocket("/ws")
-    async def websocket_endpoint(websocket: WebSocket):
+    async def websocket_endpoint(websocket: WebSocket) -> None:
         """Endpoint WebSocket pour communication temps réel."""
         await advanced_websocket_manager.connect(websocket)
 
@@ -1266,16 +3485,28 @@ if FASTAPI_AVAILABLE:
                 message = json.loads(data)
 
                 # Traiter commande ou chat
+                logger.info("📨 [WS] Message reçu, type: %s", message.get("type"))
                 if message.get("type") == "command":
+                    logger.info("🎯 [WS] Traitement commande")
                     await handle_advanced_robot_command(message)
                 elif message.get("type") == "chat":
+                    logger.info("💬 [WS] Traitement chat")
                     await handle_chat_message(message, websocket)
+                else:
+                    logger.warning(
+                        "⚠️ [WS] Type de message inconnu: %s",
+                        message.get("type"),
+                    )
 
         except WebSocketDisconnect:
-            advanced_websocket_manager.disconnect(websocket)
-        except Exception as e:
-            logger.error(f"❌ Erreur WebSocket avancé: {e}")
-            advanced_websocket_manager.disconnect(websocket)
+            logger.info("🔌 WebSocket déconnecté normalement")
+            await advanced_websocket_manager.disconnect(websocket)
+        except (ConnectionError, RuntimeError, AttributeError):
+            logger.exception("❌ Erreur WebSocket")
+            await advanced_websocket_manager.disconnect(websocket)
+        except Exception:
+            logger.exception("❌ Erreur inattendue WebSocket")
+            await advanced_websocket_manager.disconnect(websocket)
 
 
 async def handle_advanced_robot_command(command_data: dict[str, Any]):
@@ -1285,22 +3516,110 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
         value = command_data.get("value")
 
         if not advanced_websocket_manager.robot:
-            # Initialiser le robot si nécessaire
-            advanced_websocket_manager.robot = RobotFactory.create_backend(
-                advanced_websocket_manager.robot_backend,
+            # Initialiser le robot si nécessaire avec lock
+            # Log en debug en CI (warning attendu dans les tests)
+            import os
+
+            if os.environ.get("CI", "false").lower() == "true":
+                logger.debug(
+                    "Robot non initialisé lors de la commande - initialisation forcée",
+                )
+            else:
+                logger.warning(
+                    "⚠️ Robot non initialisé lors de la commande - initialisation forcée",
+                )
+            robot_init_lock = getattr(
+                advanced_websocket_manager,
+                "_robot_init_lock",
+                None,
             )
-            if advanced_websocket_manager.robot:
-                connected = advanced_websocket_manager.robot.connect()
-                if connected:
-                    await advanced_websocket_manager.send_log_message(
-                        "info",
-                        f"Robot {advanced_websocket_manager.robot_backend} connecté",
-                    )
-                else:
-                    await advanced_websocket_manager.send_log_message(
-                        "warning",
-                        f"Robot {advanced_websocket_manager.robot_backend} en mode simulation",
-                    )
+            if robot_init_lock is None:
+                return {"error": "Robot not initialized"}
+            with robot_init_lock:
+                # Double-check pattern
+                if not advanced_websocket_manager.robot:
+                    try:
+                        logger.info(
+                            "🔧 Initialisation robot %s (forcé)...",
+                            advanced_websocket_manager.robot_backend,
+                        )
+                        advanced_websocket_manager.robot = RobotFactory.create_backend(
+                            advanced_websocket_manager.robot_backend,
+                        )
+
+                        # Fallback: essayer mujoco si le backend demandé échoue
+                        if not advanced_websocket_manager.robot:
+                            if advanced_websocket_manager.robot_backend != "mujoco":
+                                logger.warning(
+                                    "⚠️ Backend %s non disponible, tentative avec mujoco...",
+                                    advanced_websocket_manager.robot_backend,
+                                )
+                                advanced_websocket_manager.robot = (
+                                    RobotFactory.create_backend(
+                                        "mujoco",
+                                    )
+                                )
+                                if advanced_websocket_manager.robot:
+                                    advanced_websocket_manager.robot_backend = "mujoco"
+                                    logger.info("✅ Fallback mujoco réussi")
+
+                        if advanced_websocket_manager.robot:
+                            connected = advanced_websocket_manager.robot.connect()
+                            if connected:
+                                logger.info(
+                                    "✅ Robot %s connecté (forcé)",
+                                    advanced_websocket_manager.robot_backend,
+                                )
+                                await advanced_websocket_manager.send_log_message(
+                                    "info",
+                                    f"✅ Robot {advanced_websocket_manager.robot_backend} connecté",
+                                )
+                            else:
+                                # Log en debug en CI (warning attendu dans les tests)
+                                import os
+
+                                if os.environ.get("CI", "false").lower() == "true":
+                                    logger.debug("Robot connect() a retourné False")
+                                else:
+                                    logger.warning("⚠️ Robot connect() a retourné False")
+                                await advanced_websocket_manager.send_log_message(
+                                    "warning",
+                                    f"⚠️ Robot {advanced_websocket_manager.robot_backend} en mode simulation",
+                                )
+                        else:
+                            # Log en debug en CI (erreur attendue dans les tests)
+                            import os
+
+                            if os.environ.get("CI", "false").lower() == "true":
+                                logger.debug(
+                                    "RobotFactory.create_backend a retourné None pour tous les backends",
+                                )
+                            else:
+                                logger.error(
+                                    "❌ RobotFactory.create_backend a retourné None pour tous les backends",
+                                )
+                            await advanced_websocket_manager.send_log_message(
+                                "error",
+                                "❌ Impossible de créer le robot (tous les backends ont échoué)",
+                            )
+                    except (
+                        ValueError,
+                        AttributeError,
+                        RuntimeError,
+                        ImportError,
+                        OSError,
+                    ) as e:
+                        logger.exception("❌ Erreur initialisation robot")
+                        await advanced_websocket_manager.send_log_message(
+                            "error",
+                            f"❌ Erreur robot: {e}",
+                        )
+                    except Exception as e:
+                        logger.exception("❌ Erreur inattendue initialisation robot")
+                        await advanced_websocket_manager.send_log_message(
+                            "error",
+                            f"❌ Erreur robot: {e}",
+                        )
 
         if command_type == "emotion":
             # Définir émotion
@@ -1310,31 +3629,66 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                     "error",
                     "Émotion invalide",
                 )
-                return
+                return None
 
             intensity = 0.8  # Intensité par défaut
             if advanced_websocket_manager.robot:
                 # Type narrowing après vérification isinstance
                 if not isinstance(emotion, str):
-                    raise TypeError(f"Expected emotion to be str, got {type(emotion)}")
-                success = advanced_websocket_manager.robot.set_emotion(
-                    emotion,
-                    intensity,
-                )
-                if success:
-                    await advanced_websocket_manager.send_log_message(
-                        "info",
-                        f"Émotion définie: {emotion}",
+                    msg = f"Expected emotion to be str, got {type(emotion)}"
+                    raise TypeError(msg)
+                try:
+                    logger.info(
+                        "🎭 [CMD] Exécution set_emotion: %s (intensité: %s)",
+                        emotion,
+                        intensity,
                     )
-                else:
+                    success = advanced_websocket_manager.robot.set_emotion(
+                        emotion,
+                        intensity,
+                    )
+                    logger.info("🎭 [CMD] set_emotion retourné: %s", success)
+
+                    # Faire plusieurs steps pour que le changement soit visible
+                    if hasattr(advanced_websocket_manager.robot, "step"):
+                        for _ in range(5):
+                            with contextlib.suppress(
+                                ConnectionError, RuntimeError, WebSocketDisconnect
+                            ):
+                                advanced_websocket_manager.robot.step()
+
+                    if success:
+                        logger.info(
+                            "✅ [CMD] Émotion %s appliquée avec succès",
+                            emotion,
+                        )
+                        await advanced_websocket_manager.send_log_message(
+                            "info",
+                            f"✅ Émotion définie: {emotion} (intensité: {intensity})",
+                        )
+                    else:
+                        logger.warning("⚠️ [CMD] set_emotion a retourné False")
+                        await advanced_websocket_manager.send_log_message(
+                            "error",
+                            f"❌ Échec émotion: {emotion}",
+                        )
+                except (ValueError, AttributeError, RuntimeError, KeyError) as e:
+                    logger.exception("❌ [CMD] Erreur set_emotion")
                     await advanced_websocket_manager.send_log_message(
                         "error",
-                        f"Échec émotion: {emotion}",
+                        f"❌ Erreur émotion: {e}",
+                    )
+                except Exception as e:
+                    logger.exception("❌ [CMD] Erreur inattendue set_emotion")
+                    await advanced_websocket_manager.send_log_message(
+                        "error",
+                        f"❌ Erreur émotion: {e}",
                     )
             else:
+                # Mode simulation - émotion simulée
                 await advanced_websocket_manager.send_log_message(
-                    "error",
-                    "Robot non connecté",
+                    "info",
+                    f"ℹ️ Émotion simulée: {emotion} (robot non initialisé)",
                 )
 
         elif command_type == "action":
@@ -1345,37 +3699,77 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                     "error",
                     "Robot non connecté",
                 )
-                return
+                return None
 
             # Type narrowing après vérification robot
             if advanced_websocket_manager.robot is None:
-                raise RuntimeError("Robot is None after check")
+                msg = "Robot is None after check"
+                raise RuntimeError(msg)
             robot = advanced_websocket_manager.robot
 
-            if action == "look_at":
-                success = robot.look_at(0.5, 0.0, 0.0)
-            elif action == "greet":
-                success = robot.run_behavior("greeting", 3.0)
-            elif action == "wake_up":
-                success = robot.run_behavior("wake_up", 2.0)
-            elif action == "sleep":
-                success = robot.run_behavior("goto_sleep", 2.0)
-            elif action == "nod":
-                success = robot.run_behavior("nod", 1.0)
-            elif action == "stop":
-                success = True  # Arrêt immédiat
-            else:
-                success = False
+            # Initialiser success avant la fonction async
+            success = False
+
+            # Exécuter les actions de manière asynchrone pour ne pas bloquer
+            async def execute_action() -> None:
+                nonlocal success
+                try:
+                    if action == "look_at":
+                        success = robot.look_at(0.5, 0.0, 0.0)
+                    elif action == "greet":
+                        # Exécuter en arrière-plan
+                        await asyncio.to_thread(robot.run_behavior, "greeting", 3.0)
+                        success = True
+                    elif action == "wake_up":
+                        await asyncio.to_thread(robot.run_behavior, "wake_up", 2.0)
+                        success = True
+                    elif action == "sleep":
+                        await asyncio.to_thread(robot.run_behavior, "goto_sleep", 2.0)
+                        success = True
+                    elif action == "nod":
+                        await asyncio.to_thread(robot.run_behavior, "nod", 1.0)
+                        success = True
+                    elif action == "stop":
+                        # Arrêter tous les mouvements en cours
+                        # Remettre tous les joints à leur position neutre
+                        for joint in robot.get_available_joints():
+                            with contextlib.suppress(
+                                ConnectionError, RuntimeError, WebSocketDisconnect
+                            ):
+                                robot.set_joint_pos(joint, 0.0)
+                        robot.step()
+                        success = True
+                    else:
+                        success = False
+                except (ValueError, AttributeError, RuntimeError, ConnectionError):
+                    logger.exception("Erreur exécution action %s:", action)
+                    success = False
+                except Exception:
+                    logger.exception("Erreur inattendue exécution action %s:", action)
+                    success = False
+
+            await execute_action()
+
+            # Faire plusieurs steps pour que l'action soit visible
+            if advanced_websocket_manager.robot and hasattr(
+                advanced_websocket_manager.robot,
+                "step",
+            ):
+                for _ in range(10):  # 10 steps pour que l'action soit visible
+                    with contextlib.suppress(
+                        ConnectionError, RuntimeError, WebSocketDisconnect
+                    ):
+                        advanced_websocket_manager.robot.step()
 
             if success:
                 await advanced_websocket_manager.send_log_message(
                     "info",
-                    f"Action exécutée: {action}",
+                    f"✅ Action exécutée: {action}",
                 )
             else:
                 await advanced_websocket_manager.send_log_message(
                     "error",
-                    f"Échec action: {action}",
+                    f"❌ Échec action: {action}",
                 )
 
         elif command_type == "behavior":
@@ -1386,32 +3780,50 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                     "error",
                     "Comportement invalide",
                 )
-                return
+                return None
 
             if not advanced_websocket_manager.robot:
+                # Mode simulation - comportement simulé
                 await advanced_websocket_manager.send_log_message(
-                    "error",
-                    "Robot non connecté",
+                    "info",
+                    f"Comportement simulé: {behavior} (mode simulation MuJoCo)",
                 )
-                return
+                return None
 
             # Type narrowing après vérifications
             if not isinstance(behavior, str):
-                raise TypeError(f"Expected behavior to be str, got {type(behavior)}")
+                msg = f"Expected behavior to be str, got {type(behavior)}"
+                raise TypeError(msg)
             if advanced_websocket_manager.robot is None:
-                raise RuntimeError("Robot is None after check")
+                msg = "Robot is None after check"
+                raise RuntimeError(msg)
             robot = advanced_websocket_manager.robot
 
-            success = robot.run_behavior(behavior, 5.0)
+            # Exécuter le comportement de manière asynchrone
+            try:
+                success = await asyncio.to_thread(robot.run_behavior, behavior, 5.0)
+                # Faire plusieurs steps pour que le comportement soit visible
+                if hasattr(robot, "step"):
+                    for _ in range(
+                        50,
+                    ):  # 50 steps pour que le comportement soit visible
+                        with contextlib.suppress(
+                            ConnectionError, RuntimeError, WebSocketDisconnect
+                        ):
+                            robot.step()
+            except (ValueError, RuntimeError, KeyError):
+                logger.exception("Erreur exécution comportement %s:", behavior)
+                success = False
+
             if success:
                 await advanced_websocket_manager.send_log_message(
                     "info",
-                    f"Comportement lancé: {behavior}",
+                    f"✅ Comportement lancé: {behavior}",
                 )
             else:
                 await advanced_websocket_manager.send_log_message(
                     "error",
-                    f"Échec comportement: {behavior}",
+                    f"❌ Échec comportement: {behavior}",
                 )
 
         elif command_type == "joint":
@@ -1422,34 +3834,79 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                     "error",
                     "Données joint manquantes",
                 )
-                return
+                return None
 
             if not advanced_websocket_manager.robot:
+                # Mode simulation - joint simulé
+                joint = joint_data.get("joint")
+                position = joint_data.get("position", 0.0)
                 await advanced_websocket_manager.send_log_message(
-                    "error",
-                    "Robot non connecté",
+                    "info",
+                    f"Joint simulé: {joint} = {position} (mode simulation MuJoCo)",
                 )
-                return
+                return None
 
             # Type narrowing après vérifications
             if joint_data is None:
-                raise ValueError("joint_data is None after check")
+                msg = "joint_data is None after check"
+                raise ValueError(msg)
             if advanced_websocket_manager.robot is None:
-                raise RuntimeError("Robot is None after check")
+                msg = "Robot is None after check"
+                raise RuntimeError(msg)
             robot = advanced_websocket_manager.robot
 
             joint = joint_data.get("joint")
             position = joint_data.get("position", 0.0)
-            success = robot.set_joint_pos(joint, position)
-            if success:
-                await advanced_websocket_manager.send_log_message(
-                    "info",
-                    f"Joint {joint} = {position}",
-                )
-            else:
+            try:
+                logger.info("🔧 Exécution set_joint_pos: %s = %s", joint, position)
+                success = robot.set_joint_pos(joint, position)
+                logger.info("🔧 set_joint_pos retourné: %s", success)
+
+                # Faire plusieurs steps pour que le joint bouge vraiment
+                if hasattr(robot, "step"):
+                    for _ in range(5):
+                        with contextlib.suppress(
+                            ConnectionError, RuntimeError, WebSocketDisconnect
+                        ):
+                            robot.step()
+
+                if success:
+                    logger.info("✅ Joint %s = %.2f appliqué", joint, position)
+                    await advanced_websocket_manager.send_log_message(
+                        "info",
+                        f"✅ Joint {joint} = {position:.2f}",
+                    )
+                else:
+                    # Log en debug en CI (warning attendu dans les tests avec joints invalides)
+                    import os
+
+                    if os.environ.get("CI", "false").lower() == "true":
+                        logger.debug("set_joint_pos a retourné False pour %s", joint)
+                    else:
+                        logger.warning(
+                            "⚠️ set_joint_pos a retourné False pour %s", joint
+                        )
+                    await advanced_websocket_manager.send_log_message(
+                        "error",
+                        f"❌ Échec joint {joint}",
+                    )
+            except (
+                ValueError,
+                AttributeError,
+                RuntimeError,
+                IndexError,
+                KeyError,
+            ) as e:
+                logger.exception("❌ Erreur set_joint_pos")
                 await advanced_websocket_manager.send_log_message(
                     "error",
-                    f"Échec joint {joint}",
+                    f"❌ Erreur joint {joint}: {e}",
+                )
+            except Exception as e:
+                logger.exception("❌ Erreur inattendue set_joint_pos")
+                await advanced_websocket_manager.send_log_message(
+                    "error",
+                    f"❌ Erreur joint {joint}: {e}",
                 )
 
         elif command_type == "vision":
@@ -1464,11 +3921,57 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                     f"Vision: {'activée' if advanced_websocket_manager.vision.camera_active else 'désactivée'}",
                 )
             elif vision_action == "scan":
-                objects = advanced_websocket_manager.vision.scan_environment()
-                await advanced_websocket_manager.send_log_message(
-                    "info",
-                    f"Scan: {len(objects.get('objects', []))} objets détectés",
-                )
+                try:
+                    # OPTIMISATION PERFORMANCE: Utiliser scan_environment_async si disponible
+                    # (non-bloquant, utilise thread dédié)
+                    if hasattr(
+                        advanced_websocket_manager.vision,
+                        "scan_environment_async",
+                    ):
+                        # Démarrer scan asynchrone si pas déjà actif
+                        async_scan_active = getattr(
+                            advanced_websocket_manager.vision,
+                            "_async_scan_active",
+                            False,
+                        )
+                        if not async_scan_active:
+                            advanced_websocket_manager.vision.start_async_scanning(
+                                interval=0.1,
+                            )
+                        # Obtenir résultat non-bloquant
+                        objects = (
+                            advanced_websocket_manager.vision.scan_environment_async(
+                                timeout=0.5,
+                            )
+                        )
+                    else:
+                        # Fallback: exécuter le scan de manière asynchrone via thread
+                        objects = await asyncio.to_thread(
+                            advanced_websocket_manager.vision.scan_environment,
+                        )
+                    if objects:
+                        num_objects = len(objects.get("objects", []))
+                        await advanced_websocket_manager.send_log_message(
+                            "info",
+                            f"Scan: {num_objects} objets détectés",
+                        )
+                    else:
+                        await advanced_websocket_manager.send_log_message(
+                            "info",
+                            "Scan: aucun résultat disponible",
+                        )
+                except (OSError, RuntimeError, AttributeError, ImportError) as e:
+                    logger.exception("Erreur scan environnement")
+                    await advanced_websocket_manager.send_log_message(
+                        "error",
+                        f"Erreur scan: {e}",
+                    )
+                except Exception as e:
+                    logger.exception("Erreur inattendue scan environnement")
+                    await advanced_websocket_manager.send_log_message(
+                        "error",
+                        f"Erreur scan: {e}",
+                    )
             elif vision_action == "track":
                 advanced_websocket_manager.vision.tracking_active = (
                     not advanced_websocket_manager.vision.tracking_active
@@ -1481,12 +3984,17 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
         # Envoyer mise à jour du statut
         await advanced_websocket_manager.send_complete_status()
 
+    except (ValueError, AttributeError, RuntimeError, KeyError, TypeError) as e:
+        logger.exception("❌ Erreur commande avancée")
+        await advanced_websocket_manager.send_log_message("error", f"Erreur: {e!s}")
     except Exception as e:
-        logger.error(f"❌ Erreur commande avancée: {e}")
+        logger.exception("❌ Erreur inattendue commande avancée")
         await advanced_websocket_manager.send_log_message("error", f"Erreur: {e!s}")
 
 
-async def handle_chat_message(message_data: dict[str, Any], websocket: WebSocket):
+async def handle_chat_message(
+    message_data: dict[str, Any], websocket: WebSocket
+) -> None:
     """Traite un message chat reçu via WebSocket.
 
     Args:
@@ -1495,42 +4003,58 @@ async def handle_chat_message(message_data: dict[str, Any], websocket: WebSocket
 
     """
     try:
+        logger.info("📨 [CHAT] Message reçu: %s", message_data)
         user_message = message_data.get("message", "")
-        timestamp = message_data.get("timestamp", "")
+        logger.info("📨 [CHAT] Texte extrait: '%s'", user_message)
 
         if not user_message:
+            logger.warning("Message chat vide reçu")
             await advanced_websocket_manager.send_log_message(
                 "error",
                 "Message chat vide",
             )
+            # Envoyer quand même une réponse d'erreur
+            error_response = {
+                "type": "chat_response",
+                "sender": "bbia",
+                "message": "Désolé, votre message est vide. Pouvez-vous réessayer ?",
+                "timestamp": datetime.now().isoformat(),
+            }
+            await websocket.send_text(json.dumps(error_response))
             return
 
         # Importer BBIAHuggingFace et initialiser une seule fois
-        if not hasattr(advanced_websocket_manager, "bbia_hf"):
+        if (
+            not hasattr(advanced_websocket_manager, "bbia_hf")
+            or advanced_websocket_manager.bbia_hf is None
+        ):
             try:
                 from bbia_sim.bbia_huggingface import BBIAHuggingFace
 
                 advanced_websocket_manager.bbia_hf = BBIAHuggingFace()
                 logger.info("🤗 Module BBIAHuggingFace initialisé pour chat")
-            except ImportError:
-                logger.warning("⚠️ Hugging Face non disponible, chat limité")
+            except ImportError as e:
+                logger.warning("⚠️ Hugging Face non disponible: %s", e)
+                advanced_websocket_manager.bbia_hf = None
+            except Exception:
+                logger.exception("❌ Erreur initialisation BBIAHuggingFace")
                 advanced_websocket_manager.bbia_hf = None
 
-        # Envoyer message utilisateur
-        chat_response = {
-            "type": "chat_response",
-            "sender": "user",
-            "message": user_message,
-            "timestamp": timestamp,
-        }
-        await websocket.send_text(json.dumps(chat_response))
+        # NE PAS renvoyer le message utilisateur (déjà affiché côté client)
+        # Générer directement la réponse BBIA
 
         # Générer réponse BBIA
         if (
             hasattr(advanced_websocket_manager, "bbia_hf")
-            and advanced_websocket_manager.bbia_hf
+            and advanced_websocket_manager.bbia_hf is not None
         ):
-            bbia_response = advanced_websocket_manager.bbia_hf.chat(user_message)
+            try:
+                logger.info("🤖 Génération réponse BBIA pour: %s...", user_message[:50])
+                bbia_response = advanced_websocket_manager.bbia_hf.chat(user_message)
+                logger.info("✅ Réponse BBIA générée: %s...", bbia_response[:50])
+            except Exception as e:
+                logger.exception("❌ Erreur génération réponse BBIA")
+                bbia_response = f"Désolé, une erreur s'est produite lors de la génération de la réponse: {e!s}"
 
             # Envoyer réponse BBIA
             chat_response_bbia = {
@@ -1539,36 +4063,60 @@ async def handle_chat_message(message_data: dict[str, Any], websocket: WebSocket
                 "message": bbia_response,
                 "timestamp": datetime.now().isoformat(),
             }
-            await websocket.send_text(json.dumps(chat_response_bbia))
+            logger.info(
+                "📤 [CHAT] Envoi réponse BBIA (%d caractères)",
+                len(bbia_response),
+            )
+            response_json = json.dumps(chat_response_bbia)
+            logger.debug("📤 [CHAT] JSON réponse: %s...", response_json[:100])
+            await websocket.send_text(response_json)
+            logger.info("✅ [CHAT] Réponse envoyée avec succès")
 
             await advanced_websocket_manager.send_log_message(
                 "info",
-                f"Chat: {len(user_message)} caractères → réponse BBIA",
+                f"Chat: {len(user_message)} caractères → réponse BBIA ({len(bbia_response)} caractères)",
             )
         else:
             # Réponse fallback si HF indisponible
-            fallback_response = f"Je comprends: {user_message}. Hugging Face non disponible pour réponse intelligente."
+            fallback_response = f"Bonjour ! J'ai bien reçu votre message : '{user_message}'. Le module Hugging Face n'est pas disponible actuellement, mais je peux toujours interagir avec vous via les commandes du dashboard."
             chat_response_bbia = {
                 "type": "chat_response",
                 "sender": "bbia",
                 "message": fallback_response,
                 "timestamp": datetime.now().isoformat(),
             }
+            logger.info("📤 [CHAT] Envoi réponse fallback")
             await websocket.send_text(json.dumps(chat_response_bbia))
+            logger.info("✅ [CHAT] Réponse fallback envoyée")
+            await advanced_websocket_manager.send_log_message(
+                "info",
+                f"Chat fallback: {len(user_message)} caractères",
+            )
 
     except Exception as e:
-        logger.error(f"❌ Erreur chat: {e}")
-        await advanced_websocket_manager.send_log_message(
-            "error",
-            f"Erreur chat: {e!s}",
-        )
+        logger.exception("❌ Erreur chat")
+        try:
+            await advanced_websocket_manager.send_log_message(
+                "error",
+                f"Erreur chat: {e!s}",
+            )
+            # Envoyer une réponse d'erreur au client
+            error_response = {
+                "type": "chat_response",
+                "sender": "bbia",
+                "message": f"Désolé, une erreur s'est produite: {e!s}",
+                "timestamp": datetime.now().isoformat(),
+            }
+            await websocket.send_text(json.dumps(error_response))
+        except Exception:
+            logger.exception("❌ Erreur lors de l'envoi du message d'erreur")
 
 
 def run_advanced_dashboard(
     host: str = "127.0.0.1",
     port: int = 8000,
     backend: str = "mujoco",
-):
+) -> None:
     """Lance le dashboard BBIA avancé.
 
     Args:
@@ -1583,9 +4131,9 @@ def run_advanced_dashboard(
 
     advanced_websocket_manager.robot_backend = backend
 
-    logger.info(f"🚀 Lancement dashboard BBIA avancé sur {host}:{port}")
-    logger.info(f"🔗 URL: http://{host}:{port}")
-    logger.info(f"🤖 Backend robot: {backend}")
+    logger.info("🚀 Lancement dashboard BBIA avancé sur %s:%s", host, port)
+    logger.info("🔗 URL: http://%s:%s", host, port)
+    logger.info("🤖 Backend robot: %s", backend)
     logger.info("📊 Métriques temps réel activées")
     logger.info("🎮 Contrôles avancés disponibles")
 

@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """Sélecteurs de backends IA (TTS/STT/LLM) via variables d'environnement.
 
 Compatibles macOS (CPU/MPS). Aucun paquet lourd requis par défaut.
@@ -12,6 +13,7 @@ import os
 import shlex
 import subprocess
 import threading
+from pathlib import Path
 from typing import Any, Protocol
 
 logger = logging.getLogger(__name__)
@@ -25,17 +27,26 @@ _whisper_cache_lock = threading.Lock()
 
 
 class TextToSpeech(Protocol):
+    """Protocole pour la synthèse vocale."""
+
     def synthesize_to_wav(self, text: str, outfile: str) -> bool:  # pragma: no cover
+        """Synthétise du texte en fichier WAV."""
         ...
 
 
 class SpeechToText(Protocol):
+    """Protocole pour la reconnaissance vocale."""
+
     def transcribe_wav(self, infile: str) -> str | None:  # pragma: no cover
+        """Transcrit un fichier WAV en texte."""
         ...
 
 
 class LocalLLM(Protocol):
+    """Protocole pour les modèles de langage locaux."""
+
     def generate(self, prompt: str, max_tokens: int = 128) -> str:  # pragma: no cover
+        """Génère du texte à partir d'un prompt."""
         ...
 
 
@@ -47,22 +58,35 @@ class Pyttsx3TTS:
     """
 
     def __init__(self) -> None:
-        # Lazy-initialization pour éviter erreurs eSpeak en environnements CI
+        """Initialise le backend TTS pyttsx3.
+
+        Lazy-initialization pour éviter erreurs eSpeak en environnements CI.
+        """
         self._engine: Any = None
         self._voice_id: str | None = None  # Cache de la voix sélectionnée
 
     def synthesize_to_wav(self, text: str, outfile: str) -> bool:
+        """Synthétise du texte en fichier WAV."""
         try:
             engine = self._engine
             if engine is None:
                 # OPTIMISATION PERFORMANCE: Utiliser cache global
                 # au lieu de pyttsx3.init() direct
                 try:
-                    from .bbia_voice import _get_cached_voice_id, _get_pyttsx3_engine
+                    from .bbia_voice import (
+                        _get_cached_voice_id,
+                        _get_pyttsx3_engine,
+                        get_bbia_voice,
+                    )
 
                     engine = (
                         _get_pyttsx3_engine()
                     )  # Utilise cache global (0ms après premier appel)
+                    if engine is None:
+                        raise RuntimeError(
+                            "pyttsx3 non disponible "
+                            "(audio désactivé ou eSpeak manquant)"
+                        )
                     self._engine = engine
                     self._voice_id = _get_cached_voice_id()  # Utilise cache voice ID
                 except ImportError:
@@ -70,29 +94,50 @@ class Pyttsx3TTS:
                     import pyttsx3  # lazy import
 
                     engine = pyttsx3.init()
+                    if engine is None:
+                        raise RuntimeError(
+                            "pyttsx3.init() a retourné None "
+                            "(audio désactivé ou eSpeak manquant)"
+                        ) from None
                     self._engine = engine
 
                     # Sélectionner la meilleure voix féminine française
                     try:
-                        from .bbia_voice import get_bbia_voice
-
+                        # get_bbia_voice déjà importé ci-dessus
                         self._voice_id = get_bbia_voice(engine)
-                        engine.setProperty("voice", self._voice_id)
-                    except Exception as e:
+                        if engine is not None:
+                            engine.setProperty("voice", self._voice_id)
+                    except (AttributeError, RuntimeError, ValueError, TypeError) as e:
                         # Si get_bbia_voice échoue, utiliser voix par défaut
                         logger.debug(
-                            f"Impossible de définir voix personnalisée, "
-                            f"utilisation par défaut: {e}"
+                            "Impossible de définir voix personnalisée, "
+                            "utilisation par défaut: %s",
+                            e,
                         )
+                except Exception:
+                    # Si _get_pyttsx3_engine() lève une exception autre que ImportError,
+                    # la laisser remonter pour être gérée par le bloc except externe
+                    raise
 
             # Utiliser la voix sélectionnée si disponible
+            if engine is None:
+                raise RuntimeError("Moteur pyttsx3 non disponible")
             if self._voice_id:
                 engine.setProperty("voice", self._voice_id)
 
             engine.save_to_file(text, outfile)
             engine.runAndWait()
             return True
-        except Exception:
+        except (RuntimeError, OSError, ValueError):
+            return False
+        except Exception as e:
+            # Si l'exception vient de _get_pyttsx3_engine(), la laisser remonter
+            # car le fallback pyttsx3 échouera aussi
+            import traceback
+
+            tb_str = "".join(traceback.format_exception(type(e), e, e.__traceback__))
+            if "_get_pyttsx3_engine" in tb_str:
+                raise
             return False
 
 
@@ -100,6 +145,7 @@ class KittenTTSTTS:
     """Placeholder pour KittenTTS. Utilise pyttsx3 si lib absente."""
 
     def __init__(self) -> None:
+        """Initialise le backend KittenTTS avec fallback pyttsx3."""
         self._fallback = Pyttsx3TTS()
         self._impl: TextToSpeech | None = None
         try:  # pragma: no cover
@@ -114,20 +160,28 @@ class KittenTTSTTS:
                     return True
 
             self._impl = _KittenImpl()
-        except Exception:
+        except (ImportError, RuntimeError, AttributeError):
             self._impl = None
 
     def synthesize_to_wav(self, text: str, outfile: str) -> bool:
         if self._impl is not None:
             try:
                 return self._impl.synthesize_to_wav(text, outfile)
-            except Exception as e:
-                logger.debug(f"Échec synthèse avec impl principale, fallback: {e}")
+            except (RuntimeError, OSError, AttributeError) as e:
+                logger.debug("Échec synthèse avec impl principale, fallback: %s", e)
+            except (ValueError, TypeError, KeyError) as e:
+                logger.debug(
+                    "Erreur inattendue synthèse impl principale, fallback: %s",
+                    e,
+                )
         return self._fallback.synthesize_to_wav(text, outfile)
 
 
 class KokoroTTS:
+    """Backend TTS Kokoro avec fallback pyttsx3."""
+
     def __init__(self) -> None:
+        """Initialise le backend KokoroTTS avec fallback pyttsx3."""
         self._fallback = Pyttsx3TTS()
         self._impl: TextToSpeech | None = None
         try:  # pragma: no cover
@@ -142,20 +196,29 @@ class KokoroTTS:
                     return True
 
             self._impl = _KokoroImpl()
-        except Exception:
+        except (ImportError, RuntimeError, AttributeError):
             self._impl = None
 
     def synthesize_to_wav(self, text: str, outfile: str) -> bool:
+        """Synthétise du texte en fichier WAV."""
         if self._impl is not None:
             try:
                 return self._impl.synthesize_to_wav(text, outfile)
-            except Exception as e:
-                logger.debug(f"Échec synthèse avec impl principale, fallback: {e}")
+            except (RuntimeError, OSError, AttributeError) as e:
+                logger.debug("Échec synthèse avec impl principale, fallback: %s", e)
+            except (ValueError, TypeError, KeyError) as e:
+                logger.debug(
+                    "Erreur inattendue synthèse impl principale, fallback: %s",
+                    e,
+                )
         return self._fallback.synthesize_to_wav(text, outfile)
 
 
 class NeuTTSTTS:
+    """Backend TTS NeuTTS avec fallback pyttsx3."""
+
     def __init__(self) -> None:
+        """Initialise le backend NeuTTSTTS avec fallback pyttsx3."""
         self._fallback = Pyttsx3TTS()
         self._impl: TextToSpeech | None = None
         try:  # pragma: no cover
@@ -170,15 +233,20 @@ class NeuTTSTTS:
                     return True
 
             self._impl = _NeuImpl()
-        except Exception:
+        except (ImportError, RuntimeError, AttributeError):
             self._impl = None
 
     def synthesize_to_wav(self, text: str, outfile: str) -> bool:
         if self._impl is not None:
             try:
                 return self._impl.synthesize_to_wav(text, outfile)
-            except Exception as e:
-                logger.debug(f"Échec synthèse avec impl principale, fallback: {e}")
+            except (RuntimeError, OSError, AttributeError) as e:
+                logger.debug("Échec synthèse avec impl principale, fallback: %s", e)
+            except (ValueError, TypeError, KeyError) as e:
+                logger.debug(
+                    "Erreur inattendue synthèse impl principale, fallback: %s",
+                    e,
+                )
         return self._fallback.synthesize_to_wav(text, outfile)
 
 
@@ -189,6 +257,7 @@ class CoquiTTSTTS:
     """
 
     def __init__(self) -> None:
+        """Initialise le backend CoquiTTS avec fallback pyttsx3."""
         self._fallback = Pyttsx3TTS()
         self._ready = False
         try:  # pragma: no cover
@@ -196,11 +265,12 @@ class CoquiTTSTTS:
 
             self._coqui_cls = _COQUI_TTS  # store class
             self._ready = True
-        except Exception:
+        except (ImportError, RuntimeError, AttributeError):
             self._coqui_cls = None
             self._ready = False
 
     def synthesize_to_wav(self, text: str, outfile: str) -> bool:
+        """Synthétise du texte en fichier WAV."""
         if not self._ready or self._coqui_cls is None:
             return self._fallback.synthesize_to_wav(text, outfile)
         try:
@@ -209,7 +279,7 @@ class CoquiTTSTTS:
             tts = self._coqui_cls(model_name)
             tts.tts_to_file(text=text, file_path=outfile)
             return True
-        except Exception:
+        except (RuntimeError, OSError, ValueError):
             return self._fallback.synthesize_to_wav(text, outfile)
 
 
@@ -224,9 +294,11 @@ class OpenVoiceTTSTTS:
     """
 
     def __init__(self) -> None:
+        """Initialise le backend OpenVoiceTTS avec fallback pyttsx3."""
         self._fallback = Pyttsx3TTS()
 
     def synthesize_to_wav(self, text: str, outfile: str) -> bool:
+        """Synthétise du texte en fichier WAV."""
         cmd_template = os.environ.get("OPENVOICE_CMD", "").strip()
         if not cmd_template:
             return self._fallback.synthesize_to_wav(text, outfile)
@@ -243,19 +315,36 @@ class OpenVoiceTTSTTS:
             cmd_args = shlex.split(cmd_str)
 
             # Exécuter sans shell pour éviter l'injection de commandes
-            subprocess.check_call(
+            # Validation supplémentaire: vérifier que le premier argument
+            # est un chemin valide
+            if not cmd_args or not isinstance(cmd_args[0], str):
+                msg = "Commande invalide: premier argument doit être une chaîne"
+                raise ValueError(
+                    msg,
+                )
+            # Vérifier que le chemin n'est pas relatif dangereux
+            if cmd_args[0].startswith("/") or ".." in cmd_args[0]:
+                # Chemin absolu ou relatif avec .. - valider avec
+                # shutil.which si possible
+                import shutil
+
+                resolved = shutil.which(cmd_args[0])
+                if resolved:
+                    cmd_args[0] = resolved
+            subprocess.check_call(  # nosec B603 - cmd_args parsé via shlex, validé et sécurisé (pas de shell=True)
                 cmd_args,
                 shell=False,
-            )  # nosec B603 - cmd_args parsé via shlex
+            )
             return True
-        except Exception:
+        except (RuntimeError, OSError, ValueError):
             return self._fallback.synthesize_to_wav(text, outfile)
 
 
 class DummySTT:
     """STT neutre de secours: retourne chaîne vide si non dispo."""
 
-    def transcribe_wav(self, infile: str) -> str | None:
+    def transcribe_wav(self, infile: str) -> str | None:  # noqa: ARG002
+        """Transcrit un fichier WAV (retourne chaîne vide pour DummySTT)."""
         return ""
 
 
@@ -266,6 +355,7 @@ class WhisperSTT:
     """
 
     def __init__(self) -> None:
+        """Initialise le backend WhisperSTT avec cache global."""
         self._ready = False
         self._model: Any = None
         self._processor: Any = None
@@ -284,7 +374,8 @@ class WhisperSTT:
                 if model_name in _whisper_models_cache:
                     logger = logging.getLogger(__name__)
                     logger.debug(
-                        f"♻️ Réutilisation modèle Whisper depuis cache ({model_name})",
+                        "♻️ Réutilisation modèle Whisper depuis cache (%s)",
+                        model_name,
                     )
                     cached = _whisper_models_cache[model_name]
                     self._processor = cached["processor"]
@@ -293,7 +384,7 @@ class WhisperSTT:
                     return
 
             # Charger modèle si pas en cache
-            # nosec B615: révision explicite pour éviter latest flottant
+            # nosec B615: révision spécifiée pour éviter version flottante
             processor = WhisperProcessor.from_pretrained(
                 model_name,
                 revision="main",
@@ -313,11 +404,19 @@ class WhisperSTT:
             self._processor = processor
             self._model = model
             self._ready = True
-        except Exception as e:  # pragma: no cover - environnement sans deps
-            logging.getLogger(__name__).info(f"Whisper indisponible: {e}")
+        except (
+            ImportError,
+            RuntimeError,
+            OSError,
+        ) as e:  # pragma: no cover - environnement sans deps
+            logging.getLogger(__name__).info("Whisper indisponible: %s", e)
+            self._ready = False
+        except (ValueError, TypeError, AttributeError) as e:  # pragma: no cover
+            logging.getLogger(__name__).info("Erreur inattendue Whisper: %s", e)
             self._ready = False
 
     def transcribe_wav(self, infile: str) -> str | None:
+        """Transcrit un fichier WAV en texte."""
         if not self._ready:
             return ""
         try:
@@ -336,8 +435,14 @@ class WhisperSTT:
             )
             text: str = decoded[0] if decoded else ""
             return text
-        except Exception as e:  # pragma: no cover
-            logging.getLogger(__name__).warning(f"Whisper STT erreur: {e}")
+        except (
+            RuntimeError,
+            ValueError,
+            AttributeError,
+            TypeError,
+            KeyError,
+        ) as e:  # pragma: no cover
+            logging.getLogger(__name__).warning("Whisper STT erreur: %s", e)
             return ""
 
 
@@ -345,6 +450,7 @@ class EchoLLM:
     """LLM local de secours: renvoie l'entrée tronquée (utile tests)."""
 
     def generate(self, prompt: str, max_tokens: int = 128) -> str:
+        """Génère du texte à partir d'un prompt (echo tronqué)."""
         return (prompt or "")[:max_tokens]
 
 
@@ -355,6 +461,7 @@ class LlamaCppLLM:
     """
 
     def __init__(self) -> None:
+        """Initialise le backend LlamaCppLLM avec fallback echo."""
         self._ready = False
         self._model = None
         self._ctx = None
@@ -362,15 +469,19 @@ class LlamaCppLLM:
             from llama_cpp import Llama
 
             model_path = os.environ.get("BBIA_LLAMA_MODEL", "")
-            if model_path and os.path.exists(model_path):
+            if model_path and Path(model_path).exists():
                 # Paramètres prudents par défaut
                 self._model = Llama(model_path=model_path, n_ctx=2048, n_threads=4)
                 self._ready = True
-        except Exception as e:  # pragma: no cover
-            logging.getLogger(__name__).info(f"llama.cpp indisponible: {e}")
+        except (ImportError, RuntimeError, OSError) as e:  # pragma: no cover
+            logging.getLogger(__name__).info("llama.cpp indisponible: %s", e)
+            self._ready = False
+        except (ValueError, TypeError, AttributeError) as e:  # pragma: no cover
+            logging.getLogger(__name__).info("Erreur inattendue llama.cpp: %s", e)
             self._ready = False
 
     def generate(self, prompt: str, max_tokens: int = 128) -> str:
+        """Génère du texte à partir d'un prompt."""
         if not self._ready or self._model is None:
             return (prompt or "")[:max_tokens]
         try:
@@ -380,14 +491,20 @@ class LlamaCppLLM:
                 echo=False,
             )
             # Format standard llama.cpp: {"choices":[{"text":"..."}]}
-            text = str(out.get("choices", [{}])[0].get("text", ""))
-            return text
-        except Exception as e:  # pragma: no cover
-            logging.getLogger(__name__).warning(f"llama.cpp erreur: {e}")
+            return str(out.get("choices", [{}])[0].get("text", ""))
+        except (
+            KeyError,
+            IndexError,
+            AttributeError,
+            RuntimeError,
+            TypeError,
+        ) as e:  # pragma: no cover
+            logging.getLogger(__name__).warning("llama.cpp erreur: %s", e)
             return (prompt or "")[:max_tokens]
 
 
 def get_tts_backend() -> TextToSpeech:
+    """Sélectionne le backend TTS selon la variable d'environnement BBIA_TTS_BACKEND."""
     name = os.environ.get("BBIA_TTS_BACKEND", "kitten").strip().lower()
     if name in {"kitten", "kittentts"}:
         return KittenTTSTTS()
@@ -406,20 +523,24 @@ def get_tts_backend() -> TextToSpeech:
 
 
 def get_stt_backend() -> SpeechToText:
+    """Sélectionne le backend STT selon la variable d'environnement BBIA_STT_BACKEND."""
     name = os.environ.get("BBIA_STT_BACKEND", "whisper").strip().lower()
     if name == "whisper":
         stt = WhisperSTT()
         # Si whisper indisponible, fallback silencieux
-        return stt if stt._ready else DummySTT()
+        # Utiliser méthode publique si disponible, sinon accès direct nécessaire
+        return stt if getattr(stt, "_ready", False) else DummySTT()
     # Parakeet etc. à brancher plus tard; fallback sûr
     return DummySTT()
 
 
 def get_llm_backend() -> LocalLLM:
+    """Sélectionne le backend LLM selon la variable d'environnement BBIA_LLM_BACKEND."""
     name = os.environ.get("BBIA_LLM_BACKEND", "llama.cpp").strip().lower()
     if name in {"llama.cpp", "llamacpp", "llama"}:
         llm = LlamaCppLLM()
-        return llm if llm._ready else EchoLLM()
+        # Utiliser méthode publique si disponible, sinon accès direct nécessaire
+        return llm if getattr(llm, "_ready", False) else EchoLLM()
     return EchoLLM()
 
 

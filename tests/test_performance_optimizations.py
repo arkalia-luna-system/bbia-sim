@@ -13,6 +13,15 @@ import pytest
 # Ajouter le chemin src au PYTHONPATH
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
+# OPTIMISATION COVERAGE: Importer le module au niveau module pour que coverage le détecte
+import bbia_sim.backends.reachy_mini_backend  # noqa: F401
+
+# Importer les classes pour les tests
+try:
+    from bbia_sim.backends.reachy_mini_backend import ReachyMiniBackend  # noqa: F401
+except (ImportError, AttributeError):
+    ReachyMiniBackend = None  # type: ignore[assignment,misc]
+
 
 class TestPerformanceOptimizations:
     """Tests pour détecter les optimisations de performance manquantes."""
@@ -22,7 +31,8 @@ class TestPerformanceOptimizations:
         print("\n🧪 TEST: Disponibilité async_play_move")
         print("=" * 60)
 
-        from bbia_sim.backends.reachy_mini_backend import ReachyMiniBackend
+        if ReachyMiniBackend is None:
+            pytest.skip("ReachyMiniBackend non disponible")
 
         backend = ReachyMiniBackend()
         assert hasattr(
@@ -41,7 +51,8 @@ class TestPerformanceOptimizations:
         print("\n🧪 TEST: Disponibilité méthodes recording/replay")
         print("=" * 60)
 
-        from bbia_sim.backends.reachy_mini_backend import ReachyMiniBackend
+        if ReachyMiniBackend is None:
+            pytest.skip("ReachyMiniBackend non disponible")
 
         backend = ReachyMiniBackend()
         recording_methods = [
@@ -62,7 +73,8 @@ class TestPerformanceOptimizations:
         print("\n🧪 TEST: Disponibilité propriétés media/io SDK")
         print("=" * 60)
 
-        from bbia_sim.backends.reachy_mini_backend import ReachyMiniBackend
+        if ReachyMiniBackend is None:
+            pytest.skip("ReachyMiniBackend non disponible")
 
         backend = ReachyMiniBackend()
         backend.connect()
@@ -81,13 +93,16 @@ class TestPerformanceOptimizations:
 
         backend.disconnect()
 
+    @pytest.mark.skipif(
+        ReachyMiniBackend is None,
+        reason="ReachyMiniBackend non disponible",
+    )
     def test_goto_target_has_interpolation_methods(self):
         """Test: goto_target doit supporter plusieurs méthodes d'interpolation."""
         print("\n🧪 TEST: Méthodes d'interpolation goto_target")
         print("=" * 60)
 
-        from bbia_sim.backends.reachy_mini_backend import ReachyMiniBackend
-
+        # ReachyMiniBackend est déjà importé au niveau module
         backend = ReachyMiniBackend()
         backend.connect()
 
@@ -117,6 +132,10 @@ class TestPerformanceOptimizations:
 
         backend.disconnect()
 
+    @pytest.mark.skipif(
+        ReachyMiniBackend is None,
+        reason="ReachyMiniBackend non disponible",
+    )
     def test_look_at_world_has_perform_movement_parameter(self):
         """Test: look_at_world doit accepter perform_movement (optimisation SDK)."""
         print("\n🧪 TEST: Paramètre perform_movement dans look_at_world")
@@ -124,8 +143,7 @@ class TestPerformanceOptimizations:
 
         import inspect
 
-        from bbia_sim.backends.reachy_mini_backend import ReachyMiniBackend
-
+        # ReachyMiniBackend est déjà importé au niveau module
         backend = ReachyMiniBackend()
 
         if hasattr(backend, "look_at_world"):
@@ -152,12 +170,14 @@ class TestPerformanceOptimizations:
                 except Exception as e:
                     print(f"⚠️  Erreur test look_at_world: {e}")
 
+    @pytest.mark.skipif(
+        ReachyMiniBackend is None,
+        reason="ReachyMiniBackend non disponible",
+    )
     def test_combined_movements_via_goto_target(self):
         """Test: goto_target doit permettre mouvements combinés tête+corps (optimal)."""
         print("\n🧪 TEST: Mouvements combinés via goto_target")
         print("=" * 60)
-
-        from bbia_sim.backends.reachy_mini_backend import ReachyMiniBackend
 
         backend = ReachyMiniBackend()
         backend.connect()
@@ -203,13 +223,16 @@ class TestPerformanceOptimizations:
             else:
                 print("⚠️  goto_target non trouvé dans bbia_behavior.py")
 
+    @pytest.mark.skipif(
+        ReachyMiniBackend is None,
+        reason="ReachyMiniBackend non disponible",
+    )
     def test_emotion_applies_adaptive_duration(self):
         """Test: Les émotions doivent utiliser duration adaptative selon intensité."""
         print("\n🧪 TEST: Duration adaptative pour émotions")
         print("=" * 60)
 
-        from bbia_sim.backends.reachy_mini_backend import ReachyMiniBackend
-
+        # ReachyMiniBackend est déjà importé au niveau module
         backend = ReachyMiniBackend()
         backend.connect()
 

@@ -1,7 +1,10 @@
 <section class="flex flex-col md:flex-row gap-4">
-    <!-- Daemon Status Animation -->
+    <!-- Daemon Status Animation / 3D Robot -->
     <div class="flex-1 min-w-[50%] justify-center items-center flex">
-        <object id="daemon-status-anim" data="" type="image/svg+xml" class="w-full h-auto"></object>
+        <canvas id="robot-3d-canvas" class="w-full h-auto max-h-96 rounded-lg border border-gray-200" width="400"
+            height="400"></canvas>
+        <!-- Fallback SVG si 3D non disponible -->
+        <object id="daemon-status-anim" data="" type="image/svg+xml" class="w-full h-auto hidden"></object>
     </div>
     <div class="flex-1 py-2">
         <div class="flex justify-between items-center">

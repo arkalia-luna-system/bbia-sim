@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Shims de simulation pour robot.io et robot.media
-Garantit que ces modules sont toujours disponibles, même en simulation
+Garantit que ces modules sont toujours disponibles, même en simulation.
 """
 
 import logging
@@ -91,7 +91,9 @@ class SimulationMediaModule:
 
         """
         logger.debug(
-            f"🔊 play_audio() simulé ({len(audio_bytes)} bytes, volume={volume})",
+            "🔊 play_audio() simulé (%s bytes, volume=%s)",
+            len(audio_bytes),
+            volume,
         )
 
     def record_audio(self, duration: float = 3.0, sample_rate: int = 16000) -> bytes:
@@ -105,7 +107,7 @@ class SimulationMediaModule:
             Bytes audio (silence simulé)
 
         """
-        logger.debug(f"🎤 record_audio() simulé ({duration}s, {sample_rate}Hz)")
+        logger.debug("🎤 record_audio() simulé (%ss, %sHz)", duration, sample_rate)
         # Retourner silence simulé
         import struct
 
@@ -127,7 +129,12 @@ class SimulationCamera:
         return None
 
     def capture(self) -> Any:
-        """Capture une image (alias get_image)."""
+        """Capture une image (alias get_image).
+
+        Returns:
+            None en simulation (à implémenter si nécessaire avec numpy array simulé)
+
+        """
         return self.get_image()
 
     def read(self) -> tuple[bool, Any]:
@@ -155,7 +162,7 @@ class SimulationMicrophone:
             Bytes audio (silence simulé)
 
         """
-        logger.debug(f"🎤 record() simulé ({duration}s, {sample_rate}Hz)")
+        logger.debug("🎤 record() simulé (%ss, %sHz)", duration, sample_rate)
         import struct
 
         num_samples = int(duration * sample_rate)
@@ -172,7 +179,7 @@ class SimulationSpeaker:
             audio_bytes: Données audio en bytes
 
         """
-        logger.debug(f"🔊 play() simulé ({len(audio_bytes)} bytes)")
+        logger.debug("🔊 play() simulé (%s bytes)", len(audio_bytes))
 
     def play_file(self, file_path: str) -> None:
         """Joue un fichier audio en simulation.
@@ -181,4 +188,4 @@ class SimulationSpeaker:
             file_path: Chemin vers le fichier audio
 
         """
-        logger.debug(f"🔊 play_file() simulé ({file_path})")
+        logger.debug("🔊 play_file() simulé (%s)", file_path)

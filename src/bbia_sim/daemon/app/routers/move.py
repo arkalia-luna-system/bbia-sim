@@ -12,7 +12,7 @@ import asyncio
 import logging
 from collections.abc import Coroutine
 from enum import Enum
-from typing import Any
+from typing import Annotated, Any
 from uuid import UUID, uuid4
 
 import numpy as np
@@ -25,12 +25,14 @@ try:
 except ImportError:
     RecordedMoves = None
 
-from ...models import AnyPose, FullBodyTarget, MoveUUID
-from ..backend_adapter import (
+import contextlib
+
+from bbia_sim.daemon.app.backend_adapter import (
     BackendAdapter,
     get_backend_adapter,
     ws_get_backend_adapter,
 )
+from bbia_sim.daemon.models import AnyPose, FullBodyTarget, MoveUUID
 
 logger = logging.getLogger(__name__)
 
@@ -135,18 +137,17 @@ def create_move_task(coro: Coroutine[Any, Any, None]) -> MoveUUID:
 async def stop_move_task(uuid: UUID) -> dict[str, str]:
     """Arrête une tâche de mouvement en cours."""
     if uuid not in move_tasks:
-        raise KeyError(f"Running move with UUID {uuid} not found")
+        msg = f"Running move with UUID {uuid} not found"
+        raise KeyError(msg)
 
     task = move_tasks.pop(uuid, None)
     if task is None:
-        raise RuntimeError(f"Task for UUID {uuid} was None after pop operation")
+        msg = f"Task for UUID {uuid} was None after pop operation"
+        raise RuntimeError(msg)
 
-    if task:
-        if task.cancel():
-            try:
-                await task
-            except asyncio.CancelledError:
-                pass
+    if task and task.cancel():
+        with contextlib.suppress(asyncio.CancelledError):
+            await task
 
     return {"message": f"Stopped move with UUID: {uuid}"}
 
@@ -160,7 +161,7 @@ async def get_running_moves() -> list[MoveUUID]:
 @router.post("/goto")
 async def goto(
     goto_req: GotoModelRequest,
-    backend: BackendAdapter = Depends(get_backend_adapter),
+    backend: Annotated[BackendAdapter, Depends(get_backend_adapter)],
 ) -> MoveUUID:
     """Demande un mouvement vers une cible spécifique (conforme SDK)."""
     # Conforme SDK officiel: ne pas passer interpolation/method à goto_target
@@ -176,7 +177,7 @@ async def goto(
 
 @router.post("/play/wake_up")
 async def play_wake_up(
-    backend: BackendAdapter = Depends(get_backend_adapter),
+    backend: Annotated[BackendAdapter, Depends(get_backend_adapter)],
 ) -> MoveUUID:
     """Demande au robot de se réveiller (conforme SDK)."""
     return create_move_task(backend.wake_up())
@@ -184,7 +185,7 @@ async def play_wake_up(
 
 @router.post("/play/goto_sleep")
 async def play_goto_sleep(
-    backend: BackendAdapter = Depends(get_backend_adapter),
+    backend: Annotated[BackendAdapter, Depends(get_backend_adapter)],
 ) -> MoveUUID:
     """Demande au robot de se mettre en veille (conforme SDK)."""
     return create_move_task(backend.goto_sleep())
@@ -200,6 +201,7 @@ async def discover_recorded_move_datasets() -> list[str]:
 
     Returns:
         Liste de noms de datasets disponibles (format: "org/repo-name")
+
     """
     # Datasets connus hardcodés (toujours inclus pour compatibilité)
     known_datasets = [
@@ -269,7 +271,7 @@ async def list_recorded_move_dataset(dataset_name: str) -> list[str]:
 async def play_recorded_move_dataset(
     dataset_name: str,
     move_name: str,
-    backend: BackendAdapter = Depends(get_backend_adapter),
+    backend: Annotated[BackendAdapter, Depends(get_backend_adapter)],
 ) -> MoveUUID:
     """Demande au robot de jouer un mouvement enregistré depuis un dataset (conforme SDK officiel)."""
     if RecordedMoves is None:
@@ -313,7 +315,7 @@ async def ws_move_updates(websocket: WebSocket) -> None:
 @router.post("/set_target")
 async def set_target(
     target: FullBodyTarget,
-    backend: BackendAdapter = Depends(get_backend_adapter),
+    backend: Annotated[BackendAdapter, Depends(get_backend_adapter)],
 ) -> dict[str, str]:
     """Définit un target directement (sans mouvement) - conforme SDK."""
     # Conforme SDK officiel: utiliser to_pose_array() directement

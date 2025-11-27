@@ -5,7 +5,7 @@
 **🤖 Conversations naturelles avec votre robot Reachy Mini**
 * IA avancée • Réponses contextuelles • Personnalités multiples*
 
-**Version** : 1.3.2 • **Date** : Oct / Nov. 2025
+**Version** : 1.4.0 • **Date** : 26 Novembre 2025
 
 [📚 FAQ](../getting-started/troubleshooting.md) • [🧠 Guide NLP](../guides/GUIDE_NLP_SMOLVLM.md) • [📊 État actuel](../quality/audits/RESUME_ETAT_ACTUEL_BBIA.md)
 
@@ -107,7 +107,7 @@ bbia = BBIAHuggingFace()
 
 # Chat simple
 response = bbia.chat("Bonjour")
-print(response) # 🤖 Bonjour ! Comment allez-vous ? Je suis BBIA, votre robot compagnon.
+logging.info(response) # 🤖 Bonjour ! Comment allez-vous ? Je suis BBIA, votre robot compagnon.
 
 ```
 
@@ -142,7 +142,7 @@ BBIA peut adopter différentes personnalités qui influencent ses réponses et s
 
 ```python
 bbia.bbia_personality = "friendly_robot"
-print(bbia.chat("Salut")) # 🤖 Salut ! Comment allez-vous ?
+logging.info(bbia.chat("Salut")) # 🤖 Salut ! Comment allez-vous ?
 
 ```
 
@@ -153,7 +153,7 @@ print(bbia.chat("Salut")) # 🤖 Salut ! Comment allez-vous ?
 
 ```python
 bbia.bbia_personality = "curious"
-print(bbia.chat("Comment ça va ?")) # 🤔 Comment ça va ?
+logging.info(bbia.chat("Comment ça va ?")) # 🤔 Comment ça va ?
 
 ```
 
@@ -164,7 +164,7 @@ print(bbia.chat("Comment ça va ?")) # 🤔 Comment ça va ?
 
 ```python
 bbia.bbia_personality = "enthusiastic"
-print(bbia.chat("Super projet !")) # 🎉 Super projet !
+logging.info(bbia.chat("Super projet !")) # 🎉 Super projet !
 
 ```
 
@@ -175,7 +175,7 @@ print(bbia.chat("Super projet !")) # 🎉 Super projet !
 
 ```python
 bbia.bbia_personality = "calm"
-print(bbia.chat("Je suis stressé")) # 😌 Respirez, tout va bien...
+logging.info(bbia.chat("Je suis stressé")) # 😌 Respirez, tout va bien...
 
 ```
 
@@ -222,7 +222,7 @@ bbia.chat("Je suis très content aujourd'hui")
         "user": "Message utilisateur",
         "bbia": "Réponse BBIA",
         "sentiment": {"sentiment": "POSITIVE", "score": 0.95},
-        "timestamp": "Oct / Nov. 2025"
+        "timestamp": "26 Novembre 2025"
     },
     ...
 ]
@@ -234,10 +234,10 @@ bbia.chat("Je suis très content aujourd'hui")
 ```python
 # Voir historique
 for entry in bbia.conversation_history:
-    print(f"User: {entry['user']}")
-    print(f"BBIA: {entry['bbia']}")
-    print(f"Sentiment: {entry['sentiment']['sentiment']}")
-    print()
+    logging.info(f"User: {entry['user']}")
+    logging.info(f"BBIA: {entry['bbia']}")
+    logging.info(f"Sentiment: {entry['sentiment']['sentiment']}")
+    logging.info("")
 
 ```
 
@@ -253,9 +253,9 @@ from bbia_sim.bbia_huggingface import BBIAHuggingFace
 bbia = BBIAHuggingFace()
 
 # Conversation
-print(bbia.chat("Bonjour"))           # 🤖 Bonjour ! ...
-print(bbia.chat("Comment allez-vous ?")) # 🤖 Ça va bien...
-print(bbia.chat("Au revoir"))         # 🤖 Au revoir ! À bientôt !
+logging.info(bbia.chat("Bonjour"))           # 🤖 Bonjour ! ...
+logging.info(bbia.chat("Comment allez-vous ?")) # 🤖 Ça va bien...
+logging.info(bbia.chat("Au revoir"))         # 🤖 Au revoir ! À bientôt !
 
 ```
 
@@ -276,12 +276,12 @@ bbia.chat("Je suis triste")
 ```python
 # Enthousiaste
 bbia.bbia_personality = "enthusiastic"
-print(bbia.chat("Salut !"))
+logging.info(bbia.chat("Salut !"))
 # 🎉 Salut ! C'est génial de te voir !
 
 # Curieux
 bbia.bbia_personality = "curious"
-print(bbia.chat("Je travaille sur un projet"))
+logging.info(bbia.chat("Je travaille sur un projet"))
 # 🤔 C'est intéressant ! Dis-moi en plus sur ton projet...
 
 ```
@@ -420,12 +420,13 @@ pip install transformers torch
 
 ## Exemples complets
 
-Voir `examples/demo_chat_bbia.py` pour un exemple complet :
+Voir `examples/demo_chat_bbia_3d.py` ⭐ (RECOMMANDÉ) pour un exemple complet :
 
 ```bash
-python examples/demo_chat_bbia.py
-
+mjpython examples/demo_chat_bbia_3d.py
 ```
+
+⚠️ **Note** : `demo_chat_bbia.py` est déprécié, utiliser `demo_chat_bbia_3d.py` à la place.
 
 ---
 
@@ -496,7 +497,8 @@ if "heureux" in response.lower():
 ## Voir aussi
 
 - Documentation API : docstrings dans `bbia_huggingface.py`
-- Exemples : `examples/demo_chat_bbia.py`
+- Exemples : `examples/demo_chat_bbia_3d.py` ⭐ (RECOMMANDÉ - version consolidée)
+  - Note : `demo_chat_bbia.py`, `demo_chat_simple.py` et `demo_chat_with_tools.py` sont dépréciés
 - Tests : `tests/test_bbia_huggingface_chat.py`
 - Dashboard : `src/bbia_sim/dashboard_advanced.py`
 
@@ -505,5 +507,5 @@ if "heureux" in response.lower():
 ## 🎯 Navigation
 
 **Retour à** : [README Documentation](../README.md)  
-**Voir aussi** : [Guide NLP](GUIDE_NLP_SMOLVLM.md) • [Guide Débutant](GUIDE_DEBUTANT.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)
+**Voir aussi** : [Guide NLP](GUIDE_NLP_SMOLVLM.md) • [Guide de Démarrage](GUIDE_DEMARRAGE.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)
 

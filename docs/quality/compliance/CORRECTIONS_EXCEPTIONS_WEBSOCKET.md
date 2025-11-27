@@ -1,6 +1,6 @@
 # Corrections Gestion Exceptions et WebSocket - Conformité SDK
 
-**Date**: Oct / Nov. 2025
+**Date**: 21 Novembre 2025
 **Fichiers modifiés**:
 
 - `src/bbia_sim/daemon/app/routers/move.py`
@@ -165,12 +165,12 @@ for ws in move_listeners:
 
 ```python
 # AVANT
-except Exception as e:
+except (ValueError, RuntimeError, ConnectionError) as e:
     await notify_listeners("move_failed", details=str(e))
     logger.error(f"Erreur dans la tâche de mouvement {uuid}: {e}")  # ❌ Non présent SDK
 
 # APRÈS (conforme SDK)
-except Exception as e:
+except (ValueError, RuntimeError, ConnectionError) as e:
     await notify_listeners("move_failed", details=str(e))  # ✅ Pas de logging
 
 ```

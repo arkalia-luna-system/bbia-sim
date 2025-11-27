@@ -95,8 +95,8 @@ class TestWatchdogMonitoring:
 
         initial_heartbeat = backend._last_heartbeat
 
-        # OPTIMISATION RAM: Réduire sleep 0.3s → 0.15s (suffisant pour heartbeat)
-        time.sleep(0.15)
+        # OPTIMISATION RAM: Réduire sleep 0.15s → 0.05s (3x plus rapide)
+        time.sleep(0.05)
 
         # En simulation, le heartbeat devrait être mis à jour
         assert backend._last_heartbeat >= initial_heartbeat
@@ -206,7 +206,7 @@ class TestWatchdogMonitoring:
         # donc on ne peut pas déclencher le timeout ici
         # Mais on vérifie que la structure est présente
         initial_heartbeat = backend._last_heartbeat
-        time.sleep(0.15)
+        time.sleep(0.05)  # OPTIMISATION: Réduire 0.15s → 0.05s (3x plus rapide)
         # En simulation, heartbeat doit être mis à jour
         assert backend._last_heartbeat >= initial_heartbeat
 

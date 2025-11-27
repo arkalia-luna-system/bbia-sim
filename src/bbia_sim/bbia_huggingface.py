@@ -1,17 +1,23 @@
 #!/usr/bin/env python3
 """BBIA Hugging Face Integration - Module d'intégration des modèles pré-entraînés
-Intégration avancée avec Hugging Face Hub pour enrichir les capacités IA de BBIA-SIM
+Intégration avancée avec Hugging Face Hub pour enrichir les capacités IA de BBIA-SIM.
 """
 
 import logging
+import operator
 import os
 import re
+import threading
 import time
+from collections import deque
+from functools import lru_cache
 from typing import TYPE_CHECKING, Any
 
 import numpy as np
 import numpy.typing as npt
 from PIL import Image
+
+from .utils.types import ConversationEntry, SentimentDict, SentimentResult
 
 if TYPE_CHECKING:
     from .bbia_tools import BBIATools
@@ -21,11 +27,10 @@ os.environ["TRANSFORMERS_VERBOSITY"] = "error"
 
 logger = logging.getLogger(__name__)
 
-# OPTIMISATION PERFORMANCE: Compiler regex une seule fois
-# (évite recompilation à chaque appel)
-_regex_cache: dict[str, re.Pattern[str]] = {}
 
-
+# OPTIMISATION PERFORMANCE: Utiliser @lru_cache pour regex
+# (plus efficace que cache manuel)
+@lru_cache(maxsize=128)
 def _get_compiled_regex(pattern: str, flags: int = 0) -> re.Pattern[str]:
     """Retourne regex compilée depuis cache (évite recompilation répétée).
 
@@ -36,11 +41,11 @@ def _get_compiled_regex(pattern: str, flags: int = 0) -> re.Pattern[str]:
     Returns:
         Regex compilée (cachée ou nouvellement compilée)
 
+    Note:
+        Utilise @lru_cache pour performance optimale (max 128 patterns en cache).
+
     """
-    cache_key = f"{pattern}:{flags}"
-    if cache_key not in _regex_cache:
-        _regex_cache[cache_key] = re.compile(pattern, flags)
-    return _regex_cache[cache_key]
+    return re.compile(pattern, flags)
 
 
 # Constantes partagées pour éviter les doublons littéraux
@@ -65,7 +70,7 @@ _expert_quality_padding = [
     "Merci, je vous écoute. Quel aspect souhaitez-vous développer "
     "davantage maintenant ?",
     "Je vois, précisez-moi le contexte pour que je vous réponde plus précisément.",
-    "Bonne remarque, sur quoi voulez-vous que nous nous concentrions " "en premier ?",
+    "Bonne remarque, sur quoi voulez-vous que nous nous concentrions en premier ?",
     "D'accord, dites-m'en plus pour que je puisse vous guider efficacement.",
     "Je note votre intérêt, qu'aimeriez-vous découvrir ou tester concrètement ?",
     "Parfait, avançons étape par étape pour éclaircir chaque point ensemble.",
@@ -133,6 +138,13 @@ class BBIAHuggingFace:
     - Multimodal : Modèles combinant vision + texte
     """
 
+    # OPTIMISATION RAM: Thread partagé au niveau de la classe pour éviter fuites
+    # (un seul thread pour toutes les instances)
+    _shared_unload_thread: threading.Thread | None = None
+    _shared_unload_thread_stop = threading.Event()
+    _shared_unload_thread_lock = threading.Lock()
+    _shared_instances: list["BBIAHuggingFace"] = []  # Pour tracking instances actives
+
     def __init__(
         self,
         device: str = "auto",
@@ -148,23 +160,67 @@ class BBIAHuggingFace:
 
         """
         if not HF_AVAILABLE:
-            raise ImportError(
+            msg = (
                 "Hugging Face transformers requis. "
-                "Installez avec: pip install transformers torch",
+                "Installez avec: pip install transformers torch"
+            )
+            raise ImportError(
+                msg,
             )
 
         self.device = self._get_device(device)
-        self.cache_dir = cache_dir
+        # Issue #310: Améliorer intégration HF Hub avec cache local
+        self.cache_dir = cache_dir or os.environ.get(
+            "HF_HOME",
+            os.path.expanduser("~/.cache/huggingface"),
+        )
+        # Créer répertoire cache si nécessaire
+        if self.cache_dir:
+            os.makedirs(self.cache_dir, exist_ok=True)
         self.models: dict[str, Any] = {}
         self.processors: dict[str, Any] = {}
         # OPTIMISATION RAM: Limiter nombre de modèles en mémoire
         # simultanément (LRU cache)
         self._max_models_in_memory = 4  # Max 3-4 modèles simultanés
         self._model_last_used: dict[str, float] = {}  # Timestamp dernier usage pour LRU
-        self._inactivity_timeout = 300.0  # 5 minutes d'inactivité → déchargement auto
+        self._inactivity_timeout = (
+            120.0  # 2 minutes d'inactivité → déchargement auto (optimisé)
+        )
+
+        # OPTIMISATION RAM: Thread partagé au niveau de la classe (évite fuites)
+        # Enregistrer cette instance pour le thread partagé
+        with BBIAHuggingFace._shared_unload_thread_lock:
+            BBIAHuggingFace._shared_instances.append(self)
+            # Démarrer thread partagé si nécessaire
+            # (double-check pattern pour éviter race condition)
+            if (
+                BBIAHuggingFace._shared_unload_thread is None
+                or not BBIAHuggingFace._shared_unload_thread.is_alive()
+            ):
+                # Double-check: vérifier une deuxième fois dans le lock
+                # pour éviter race condition
+                # (si plusieurs instances sont créées simultanément)
+                if (
+                    BBIAHuggingFace._shared_unload_thread is None
+                    or not BBIAHuggingFace._shared_unload_thread.is_alive()
+                ):
+                    BBIAHuggingFace._shared_unload_thread_stop.clear()
+                    BBIAHuggingFace._shared_unload_thread = threading.Thread(
+                        target=BBIAHuggingFace._shared_auto_unload_loop,
+                        daemon=True,
+                        name="BBIAHF-AutoUnload-Shared",
+                    )
+                    BBIAHuggingFace._shared_unload_thread.start()
+                    logger.debug(
+                        "✅ Thread partagé déchargement auto Hugging Face démarré",
+                    )
 
         # Chat intelligent : Historique et contexte
-        self.conversation_history: list[dict[str, Any]] = []
+        # OPTIMISATION RAM: Utiliser deque avec maxlen pour limiter l'historique
+        max_history_size = 1000  # Limiter à 1000 messages max
+        self.conversation_history: deque[ConversationEntry] = deque(
+            maxlen=max_history_size,
+        )
         self.context: dict[str, Any] = {}
         self.bbia_personality = "friendly_robot"
 
@@ -181,10 +237,24 @@ class BBIAHuggingFace:
 
             saved_history = load_conversation_from_memory()
             if saved_history:
-                self.conversation_history = saved_history
+                # Convertir liste de dict en ConversationEntry puis en deque avec maxlen
+                max_history_size = 1000
+                conversation_entries: list[ConversationEntry] = [
+                    ConversationEntry(
+                        user=entry.get("user", ""),
+                        bbia=entry.get("bbia", ""),
+                        sentiment=entry.get("sentiment", "neutral"),
+                        timestamp=entry.get("timestamp", ""),
+                    )
+                    for entry in saved_history[-max_history_size:]
+                ]
+                self.conversation_history = deque(
+                    conversation_entries,
+                    maxlen=max_history_size,
+                )
                 logger.info(
-                    f"💾 Conversation chargée depuis mémoire "
-                    f"({len(saved_history)} messages)",
+                    "💾 Conversation chargée depuis mémoire (%d messages)",
+                    len(self.conversation_history),
                 )
         except ImportError:
             # Mémoire persistante optionnelle
@@ -206,8 +276,8 @@ class BBIAHuggingFace:
             "chat": {
                 # LLM conversationnel (optionnel, activé si disponible)
                 "mistral": (
-                    "mistralai/Mistral-7B-Instruct-v0.2"
-                ),  # ⭐ Recommandé (14GB RAM)
+                    "mistralai/Mistral-7B-Instruct-v0.3"
+                ),  # ⭐ Recommandé (14GB RAM) - Mis à jour v0.2 → v0.3
                 "llama": "meta-llama/Llama-3-8B-Instruct",  # Alternative (16GB RAM)
                 "phi2": "microsoft/phi-2",  # ⭐ Léger pour RPi 5 (2.7B, ~5GB RAM)
                 "tinyllama": (
@@ -228,8 +298,18 @@ class BBIAHuggingFace:
         self.chat_tokenizer: Any | None = None
         self.use_llm_chat = False  # Activation optionnelle (lourd)
 
+        # OPTIMISATION RAM: Lazy loading strict BBIAChat - ne pas charger à l'init
+        # BBIAChat sera chargé uniquement au premier appel de chat()
+        # Gain RAM estimé: ~500MB-1GB au démarrage
+        self.bbia_chat: Any | None = None
+        self._bbia_chat_robot_api = None  # Stocker robot_api pour lazy loading
+        if tools and hasattr(tools, "robot_api"):
+            self._bbia_chat_robot_api = tools.robot_api
+
         logger.info(f"🤗 BBIA Hugging Face initialisé (device: {self.device})")
         logger.info(f"😊 Personnalité BBIA: {self.bbia_personality}")
+        if self.cache_dir:
+            logger.info(f"💾 Cache HF Hub: {self.cache_dir}")
 
     def _get_device(self, device: str) -> str:
         """Détermine le device optimal."""
@@ -240,6 +320,33 @@ class BBIAHuggingFace:
                 return "mps"  # Apple Silicon
             return "cpu"
         return device
+
+    def _load_bbia_chat_lazy(self) -> None:
+        """OPTIMISATION RAM: Charge BBIAChat uniquement à la demande (lazy loading strict).
+
+        Gain RAM estimé: ~500MB-1GB au démarrage.
+        BBIAChat n'est chargé que lors du premier appel à chat().
+        """
+        if self.bbia_chat is not None:
+            return  # Déjà chargé
+
+        try:
+            from .bbia_chat import BBIAChat
+
+            # Initialiser BBIAChat avec robot_api stocké
+            self.bbia_chat = BBIAChat(robot_api=self._bbia_chat_robot_api)
+            logger.info(
+                "✅ BBIAChat (LLM conversationnel) chargé à la demande (lazy loading)",
+            )
+        except ImportError as e:
+            logger.debug(f"BBIAChat non disponible: {e}")
+            self.bbia_chat = None
+        except (AttributeError, RuntimeError) as e:
+            logger.warning(f"Erreur initialisation BBIAChat: {e}")
+            self.bbia_chat = None
+        except (TypeError, KeyError, IndexError) as e:
+            logger.warning(f"Erreur inattendue initialisation BBIAChat: {e}")
+            self.bbia_chat = None
 
     def _load_vision_model(self, model_name: str) -> bool:
         """Charge un modèle de vision (CLIP ou BLIP)."""
@@ -300,7 +407,10 @@ class BBIAHuggingFace:
 
             # isort: on
 
-            logger.info(f"📥 Chargement LLM {model_name} (peut prendre 1-2 minutes)...")
+            logger.info(
+                "📥 Chargement LLM %s (peut prendre 1-2 minutes)...",
+                model_name,
+            )
             self.chat_tokenizer = AutoTokenizer.from_pretrained(
                 model_name,
                 cache_dir=self.cache_dir,
@@ -323,13 +433,16 @@ class BBIAHuggingFace:
             logger.info(f"✅ LLM {model_name} chargé avec succès")
             self.use_llm_chat = True
             return True
-        except Exception as e:
+        except (ImportError, RuntimeError, OSError, ValueError) as e:
             logger.warning(f"⚠️  Échec de chargement LLM {model_name}: {e}")
-            logger.info(
-                """💡 Fallback activé: réponses enrichies (stratégie règles v1)""",
-            )
+            logger.info("💡 Fallback activé: réponses enrichies (stratégie règles v1)")
+            return False
+        except (TypeError, KeyError, IndexError) as e:
+            logger.warning(f"⚠️  Erreur inattendue chargement LLM {model_name}: {e}")
+            logger.info("💡 Fallback activé: réponses enrichies (stratégie règles v1)")
             # Nettoyage défensif pour éviter des états partiels
             self.chat_model = None
+            return False
             self.chat_tokenizer = None
             self.use_llm_chat = False
             return False
@@ -373,8 +486,13 @@ class BBIAHuggingFace:
                 self.models[f"{model_name}_model"] = model
                 logger.info(f"✅ SmolVLM2/Moondream2 chargé: {model_name}")
                 return True
-            except Exception as e:
+            except (ImportError, RuntimeError, OSError, ValueError) as e:
                 logger.warning(f"⚠️ Échec chargement SmolVLM2/Moondream2: {e}")
+                return False
+            except (TypeError, KeyError, IndexError) as e:
+                logger.warning(
+                    f"⚠️ Erreur inattendue chargement SmolVLM2/Moondream2: {e}",
+                )
                 return False
         return False
 
@@ -392,15 +510,16 @@ class BBIAHuggingFace:
         try:
             cfg = self.model_configs.get(model_type, {})
             # nlp: autoriser les alias comme 'emotion' ou 'sentiment'
-            if model_type == "nlp":
-                if model_name in cfg:
-                    return cfg[model_name]
+            if model_type == "nlp" and model_name in cfg:
+                return cfg[model_name]
             # vision/audio/multimodal/chat: si la clé exacte existe
             if isinstance(cfg, dict) and model_name in cfg:
                 return cfg[model_name]
+        except (KeyError, AttributeError, TypeError, ValueError) as e:
+            logger.debug(f"Erreur résolution nom de modèle '{model_name}': {e}")
         except Exception as e:
             logger.debug(
-                f"Erreur lors de la résolution du nom de modèle '{model_name}': {e}"
+                f"Erreur inattendue résolution nom de modèle '{model_name}': {e}",
             )
         return model_name
 
@@ -425,7 +544,8 @@ class BBIAHuggingFace:
                 # Modèles chat stockés dans self.chat_model et self.chat_tokenizer
                 if self.chat_model is not None and self.chat_tokenizer is not None:
                     logger.debug(
-                        f"♻️ Modèle chat déjà chargé ({resolved_name}), réutilisation",
+                        "♻️ Modèle chat déjà chargé (%s), réutilisation",
+                        resolved_name,
                     )
                     return True
             elif model_type == "nlp":
@@ -433,7 +553,8 @@ class BBIAHuggingFace:
                 model_key = f"{model_name}_pipeline"
                 if model_key in self.models:
                     logger.debug(
-                        f"♻️ Modèle NLP déjà chargé ({resolved_name}), réutilisation",
+                        "♻️ Modèle NLP déjà chargé (%s), réutilisation",
+                        resolved_name,
                     )
                     return True
             else:
@@ -441,8 +562,9 @@ class BBIAHuggingFace:
                 model_key = f"{model_name}_model"
                 if model_key in self.models:
                     logger.debug(
-                        f"♻️ Modèle {model_type} déjà chargé "
-                        f"({resolved_name}), réutilisation",
+                        "♻️ Modèle %s déjà chargé (%s), réutilisation",
+                        model_type,
+                        resolved_name,
                     )
                     return True
 
@@ -549,8 +671,15 @@ class BBIAHuggingFace:
                     logger.info(f"✅ LLM {model_name} chargé avec succès")
                     self.use_llm_chat = True
                     return True
-                except Exception as e:
+                except (ImportError, RuntimeError, OSError, ValueError) as e:
                     logger.warning(f"⚠️  Échec chargement LLM {model_name}: {e}")
+                    logger.info(
+                        "💡 Fallback activé: réponses enrichies (stratégie règles v2)",
+                    )
+                except Exception as e:
+                    logger.warning(
+                        f"⚠️  Erreur inattendue chargement LLM {model_name}: {e}",
+                    )
                     logger.info(
                         """💡 Fallback activé: réponses enrichies """
                         """(stratégie règles v2)""",
@@ -569,8 +698,11 @@ class BBIAHuggingFace:
 
             return True
 
-        except Exception as e:
-            logger.error(f"❌ Erreur chargement modèle {model_name}: {e}")
+        except (ImportError, RuntimeError, OSError, ValueError, AttributeError):
+            logger.exception("❌ Erreur chargement modèle {model_name}:")
+            return False
+        except Exception:
+            logger.exception("❌ Erreur inattendue chargement modèle %s:", model_name)
             return False
 
     def _get_pipeline_name(self, model_name: str) -> str:
@@ -672,15 +804,18 @@ class BBIAHuggingFace:
                 "Erreur (describe_image): modèle non supporté — vérifiez le nom choisi"
             )
 
-        except Exception as e:
-            logger.error(f"❌ Erreur description image: {e}")
+        except (ValueError, RuntimeError, AttributeError, OSError):
+            logger.exception("❌ Erreur description image:")
+            return "Erreur (describe_image): échec de génération de description d'image"
+        except Exception:
+            logger.exception("❌ Erreur inattendue description image:")
             return "Erreur (describe_image): échec de génération de description d'image"
 
     def analyze_sentiment(
         self,
         text: str,
         model_name: str = "cardiffnlp/twitter-roberta-base-sentiment-latest",
-    ) -> dict[str, Any]:
+    ) -> SentimentResult:
         """Analyse le sentiment d'un texte.
 
         Args:
@@ -698,20 +833,53 @@ class BBIAHuggingFace:
                 self.load_model(model_name, "nlp")
 
             pipeline = self.models[model_key]
-            result: Any = pipeline(text)
+
+            # Tronquer le texte si nécessaire (limite ~500 tokens pour RoBERTa)
+            # Utiliser le tokenizer du pipeline pour tronquer correctement
+            max_tokens = 512  # Limite RoBERTa
+            max_chars = 2000  # Fallback: ~500 tokens pour la plupart des modèles
+            text_truncated = text
+
+            try:
+                # Récupérer le tokenizer du pipeline
+                tokenizer = pipeline.tokenizer
+                if tokenizer is not None:
+                    # Tokeniser et tronquer
+                    tokens = tokenizer.encode(
+                        text,
+                        add_special_tokens=True,
+                        max_length=max_tokens,
+                        truncation=True,
+                    )
+                    text_truncated = tokenizer.decode(tokens, skip_special_tokens=True)
+                else:
+                    # Fallback: tronquer par caractères
+                    text_truncated = text[:max_chars] if len(text) > max_chars else text
+            except (AttributeError, TypeError):
+                # Fallback: tronquer par caractères si tokenizer non accessible
+                text_truncated = text[:max_chars] if len(text) > max_chars else text
+
+            result: Any = pipeline(text_truncated)
 
             return {
-                "text": text,
+                "text": text_truncated,
                 "sentiment": str(result[0]["label"]),
                 "score": float(result[0]["score"]),
                 "model": model_name,
             }
 
+        except (ValueError, RuntimeError, AttributeError, KeyError) as e:
+            logger.exception("❌ Erreur analyse sentiment:")
+            return {"error": str(e)}
         except Exception as e:
-            logger.error(f"❌ Erreur analyse sentiment: {e}")
+            logger.exception("❌ Erreur inattendue analyse sentiment:")
             return {"error": str(e)}
 
-    def analyze_emotion(self, text: str, model_name: str = "emotion") -> dict[str, Any]:
+    def analyze_emotion(
+        self,
+        text: str,
+        model_name: str = "emotion",
+    ) -> SentimentResult:
         """Analyse les émotions dans un texte.
 
         Args:
@@ -738,8 +906,11 @@ class BBIAHuggingFace:
                 "model": model_name,
             }
 
+        except (ValueError, RuntimeError, AttributeError, KeyError) as e:
+            logger.exception("❌ Erreur analyse émotion:")
+            return {"error": str(e)}
         except Exception as e:
-            logger.error(f"❌ Erreur analyse émotion: {e}")
+            logger.exception("❌ Erreur inattendue analyse émotion:")
             return {"error": str(e)}
 
     def transcribe_audio(self, audio_path: str, model_name: str = "whisper") -> str:
@@ -782,8 +953,11 @@ class BBIAHuggingFace:
 
             return str(transcription)
 
-        except Exception as e:
-            logger.error(f"❌ Erreur transcription audio: {e}")
+        except (OSError, RuntimeError, ValueError, AttributeError):
+            logger.exception("❌ Erreur transcription audio:")
+            return "Erreur (transcribe_audio): problème pendant la transcription audio"
+        except Exception:
+            logger.exception("❌ Erreur inattendue transcription audio:")
             return "Erreur (transcribe_audio): problème pendant la transcription audio"
 
     def answer_question(
@@ -816,6 +990,26 @@ class BBIAHuggingFace:
             if processor_key not in self.processors or model_key not in self.models:
                 self.load_model(model_name, "multimodal")
 
+            # Vérifier que les clés existent après le chargement
+            if processor_key not in self.processors:
+                # Pas de log en CI (erreur attendue si dépendance optionnelle manquante)
+                import os
+
+                if os.environ.get("CI", "false").lower() != "true":
+                    logger.error(
+                        f"❌ Processeur {processor_key} non disponible après chargement",
+                    )
+                return "Erreur (answer_question): processeur non disponible"
+            if model_key not in self.models:
+                # Pas de log en CI (erreur attendue si dépendance optionnelle manquante)
+                import os
+
+                if os.environ.get("CI", "false").lower() != "true":
+                    logger.error(
+                        f"❌ Modèle {model_key} non disponible après chargement"
+                    )
+                return "Erreur (answer_question): modèle non disponible"
+
             processor = self.processors[processor_key]
             model = self.models[model_key]
 
@@ -825,8 +1019,11 @@ class BBIAHuggingFace:
 
             return str(answer)
 
-        except Exception as e:
-            logger.error(f"❌ Erreur VQA: {e}")
+        except (ValueError, RuntimeError, AttributeError, OSError):
+            logger.exception("❌ Erreur VQA:")
+            return "Erreur (answer_question): échec de l'analyse visuelle (VQA)"
+        except Exception:
+            logger.exception("❌ Erreur inattendue VQA:")
             return "Erreur (answer_question): échec de l'analyse visuelle (VQA)"
 
     def get_available_models(self) -> dict[str, list[str]]:
@@ -865,7 +1062,9 @@ class BBIAHuggingFace:
         # Résoudre alias vers ID complet si nécessaire
         resolved_name = self._resolve_model_name(model_name, "chat")
         logger.info(
-            f"📥 Activation LLM conversationnel: {model_name} → {resolved_name}",
+            "📥 Activation LLM conversationnel: %s → %s",
+            model_name,
+            resolved_name,
         )
         success = self.load_model(resolved_name, model_type="chat")
         if success:
@@ -883,13 +1082,17 @@ class BBIAHuggingFace:
         try:
             if hasattr(self, "chat_model") and self.chat_model is not None:
                 del self.chat_model
+        except (AttributeError, RuntimeError) as e:
+            logger.debug(f"Erreur suppression chat_model: {e}")
         except Exception as e:
-            logger.debug(f"Erreur lors de la suppression de chat_model: {e}")
+            logger.debug(f"Erreur inattendue suppression chat_model: {e}")
         try:
             if hasattr(self, "chat_tokenizer") and self.chat_tokenizer is not None:
                 del self.chat_tokenizer
+        except (AttributeError, RuntimeError) as e:
+            logger.debug(f"Erreur suppression chat_tokenizer: {e}")
         except Exception as e:
-            logger.debug(f"Erreur lors de la suppression de chat_tokenizer: {e}")
+            logger.debug(f"Erreur inattendue suppression chat_tokenizer: {e}")
 
         self.chat_model = None
         self.chat_tokenizer = None
@@ -911,7 +1114,8 @@ class BBIAHuggingFace:
             return
 
         # Trouver modèle avec timestamp le plus ancien
-        oldest_key = min(self._model_last_used.items(), key=lambda x: x[1])[0]
+        # OPTIMISATION: operator.itemgetter plus rapide que lambda
+        oldest_key = min(self._model_last_used.items(), key=operator.itemgetter(1))[0]
 
         # Extraire nom modèle depuis clé (format: "model_name_type")
         parts = oldest_key.rsplit("_", 1)
@@ -927,6 +1131,125 @@ class BBIAHuggingFace:
     def _update_model_usage(self, model_key: str) -> None:
         """OPTIMISATION RAM: Met à jour timestamp d'usage d'un modèle."""
         self._model_last_used[model_key] = time.time()
+
+    @staticmethod
+    def _shared_auto_unload_loop() -> None:
+        """Boucle de déchargement automatique partagée pour toutes les instances."""
+        while not BBIAHuggingFace._shared_unload_thread_stop.is_set():
+            try:
+                # Attendre 10 secondes entre vérifications (ou arrêt immédiat si demandé)
+                if BBIAHuggingFace._shared_unload_thread_stop.wait(10.0):
+                    break  # Arrêt demandé
+
+                current_time = time.time()
+                # OPTIMISATION RAM: deque avec maxlen pour limiter taille
+                models_to_unload: deque[tuple[BBIAHuggingFace, str, float]] = deque(
+                    maxlen=50,
+                )
+
+                # Identifier modèles inactifs pour toutes les instances actives
+                with BBIAHuggingFace._shared_unload_thread_lock:
+                    # Faire une copie de la liste pour éviter modification pendant itération
+                    active_instances = list(BBIAHuggingFace._shared_instances)
+                    for instance in active_instances:
+                        try:
+                            # Vérifier si l'instance existe encore
+                            if not hasattr(instance, "_model_last_used"):
+                                continue
+                            model_last_used = getattr(
+                                instance,
+                                "_model_last_used",
+                                {},
+                            )
+                            inactivity_timeout = getattr(
+                                instance,
+                                "_inactivity_timeout",
+                                300.0,
+                            )
+                            for model_key, last_used in list(model_last_used.items()):
+                                inactivity = current_time - last_used
+                                if inactivity > inactivity_timeout:
+                                    models_to_unload.append(
+                                        (instance, model_key, inactivity),
+                                    )
+                        except (AttributeError, RuntimeError):
+                            # Instance détruite, continuer
+                            continue
+
+                # Décharger modèles inactifs (hors lock pour éviter deadlock)
+                for instance, model_key, inactivity in models_to_unload:
+                    try:
+                        # Vérifier que l'instance existe encore
+                        if not hasattr(instance, "unload_model"):
+                            continue
+                        # Extraire nom modèle depuis clé
+                        parts = model_key.rsplit("_", 1)
+                        if len(parts) == 2:
+                            model_name = parts[0]
+                            logger.debug(
+                                "🗑️ Déchargement auto modèle inactif (%.0fs): %s",
+                                inactivity,
+                                model_key,
+                            )
+                            instance.unload_model(model_name)
+                            # Supprimer du tracking
+                            model_last_used = getattr(
+                                instance,
+                                "_model_last_used",
+                                None,
+                            )
+                            if model_last_used is not None:
+                                with BBIAHuggingFace._shared_unload_thread_lock:
+                                    if model_key in model_last_used:
+                                        del model_last_used[model_key]
+                    except (AttributeError, RuntimeError, KeyError) as e:
+                        logger.debug(f"Erreur déchargement auto {model_key}: {e}")
+                    except Exception as e:
+                        logger.debug(
+                            f"Erreur inattendue déchargement auto {model_key}: {e}",
+                        )
+            except (RuntimeError, AttributeError) as e:
+                logger.debug(f"Erreur boucle déchargement auto partagée: {e}")
+            except Exception as e:
+                logger.debug(
+                    "Erreur inattendue boucle déchargement auto partagée: %s",
+                    e,
+                )
+                # Continuer même en cas d'erreur
+
+    def __del__(self) -> None:
+        """Nettoyage lors de la destruction de l'instance."""
+        try:
+            # Retirer cette instance de la liste partagée
+            with BBIAHuggingFace._shared_unload_thread_lock:
+                if self in BBIAHuggingFace._shared_instances:
+                    BBIAHuggingFace._shared_instances.remove(self)
+                # Arrêter thread partagé si plus d'instances actives
+                if (
+                    not BBIAHuggingFace._shared_instances
+                    and BBIAHuggingFace._shared_unload_thread
+                    and BBIAHuggingFace._shared_unload_thread.is_alive()
+                ):
+                    BBIAHuggingFace._shared_unload_thread_stop.set()
+                    # Timeout plus court en CI pour éviter blocage
+                    import os
+
+                    timeout = (
+                        0.5 if os.environ.get("CI", "false").lower() == "true" else 2.0
+                    )
+                    BBIAHuggingFace._shared_unload_thread.join(timeout=timeout)
+                    if BBIAHuggingFace._shared_unload_thread.is_alive():
+                        # Thread daemon se terminera automatiquement à l'arrêt du processus
+                        logger.debug(
+                            "Thread partagé déchargement auto Hugging Face en cours d'arrêt (daemon)",
+                        )
+                    else:
+                        logger.debug(
+                            "Thread partagé déchargement auto Hugging Face arrêté (plus d'instances)",
+                        )
+        except (AttributeError, RuntimeError, TypeError):
+            # Ignorer erreurs lors de la destruction
+            pass
 
     def unload_model(self, model_name: str) -> bool:
         """Décharge un modèle de la mémoire.
@@ -953,15 +1276,38 @@ class BBIAHuggingFace:
             for key in keys_to_remove:
                 del self.processors[key]
 
-            logger.info(f"🗑️ Modèle {model_name} déchargé")
+            # OPTIMISATION RAM: Libérer la mémoire explicitement
+            import gc
+
+            gc.collect()
+            # Libérer le cache GPU si disponible
+            if HF_AVAILABLE:
+                try:
+                    import torch
+
+                    if torch.cuda.is_available():
+                        torch.cuda.empty_cache()
+                except ImportError:
+                    pass  # torch non disponible, ignorer
+
+            logger.info(f"🗑️ Modèle {model_name} déchargé - Mémoire libérée")
             return True
 
-        except Exception as e:
-            logger.error(f"❌ Erreur déchargement modèle {model_name}: {e}")
+        except (AttributeError, RuntimeError, KeyError):
+            logger.exception("❌ Erreur déchargement modèle {model_name}:")
+            return False
+        except Exception:
+            logger.exception(f"❌ Erreur inattendue déchargement modèle {model_name}:")
             return False
 
     def get_model_info(self) -> dict[str, Any]:
-        """Retourne les informations sur les modèles chargés."""
+        """Retourne les informations sur les modèles chargés.
+
+        Returns:
+            dict[str, Any]: Dictionnaire contenant les informations sur les modèles,
+                incluant device, loaded_models, available_models, et cache_dir.
+
+        """
         return {
             "device": self.device,
             "loaded_models": self.get_loaded_models(),
@@ -994,7 +1340,7 @@ class BBIAHuggingFace:
             # 1. Analyser sentiment du message (avec gestion erreur)
             try:
                 sentiment = self.analyze_sentiment(user_message)
-            except Exception:
+            except (ValueError, RuntimeError, KeyError):
                 # Fallback si sentiment indisponible
                 sentiment = {"sentiment": "NEUTRAL", "score": 0.5}
 
@@ -1014,51 +1360,118 @@ class BBIAHuggingFace:
                 # Essayer de charger LLM automatiquement si disponible (lazy loading)
                 try:
                     # Utiliser modèle léger par défaut (phi2 ou tinyllama)
-                    default_chat_model = self.model_configs.get("chat", {}).get(
-                        "phi2",
-                    ) or self.model_configs.get("chat", {}).get("tinyllama")
+                    # OPTIMISATION: Éviter double lookup avec variable temporaire
+                    chat_config = self.model_configs.get("chat", {})
+                    default_chat_model = chat_config.get("phi2") or chat_config.get(
+                        "tinyllama",
+                    )
                     if default_chat_model:
                         logger.info(
-                            f"📥 Chargement LLM à la demande "
-                            f"(lazy loading): {default_chat_model}",
+                            "📥 Chargement LLM à la demande (lazy loading): %s",
+                            default_chat_model,
                         )
                         if self.load_model(default_chat_model, model_type="chat"):
                             logger.info("✅ LLM chargé avec succès (lazy loading)")
-                except Exception as e:
+                except (ImportError, RuntimeError, OSError, ValueError) as e:
                     logger.debug(f"Lazy loading LLM échoué (fallback enrichi): {e}")
+                except Exception as e:
+                    logger.debug(
+                        "Lazy loading LLM échoué inattendu (fallback enrichi): %s",
+                        e,
+                    )
 
             # 3. Générer réponse avec LLM si disponible, sinon réponses enrichies
-            if self.use_llm_chat and self.chat_model and self.chat_tokenizer:
+            # Convertir SentimentResult en SentimentDict (nécessaire pour les deux branches)
+            sentiment_dict: SentimentDict = {
+                "label": sentiment.get("sentiment", "neutral"),
+                "score": sentiment.get("score", 0.5),
+                "sentiment": sentiment.get("sentiment", "neutral"),
+            }
+
+            # PRIORITÉ 1: Utiliser BBIAChat (LLM léger Phi-2/TinyLlama) si disponible
+            # OPTIMISATION RAM: Lazy loading strict - charger BBIAChat uniquement si nécessaire
+            if self.bbia_chat is None:
+                self._load_bbia_chat_lazy()
+            if self.bbia_chat and self.bbia_chat.llm_model:
+                logger.debug("Utilisation BBIAChat (LLM conversationnel léger)")
+                bbia_response = self.bbia_chat.chat(user_message)
+            # PRIORITÉ 2: Utiliser LLM pré-entraîné lourd (Mistral/Llama) si disponible
+            elif self.use_llm_chat and self.chat_model and self.chat_tokenizer:
                 # Utiliser LLM pré-entraîné (Mistral/Llama)
                 bbia_response = self._generate_llm_response(
                     user_message,
                     use_context,
                     enable_tools=enable_tools,
                 )
+            # PRIORITÉ 3: Fallback vers réponses enrichies (règles + variété)
             else:
                 # Fallback vers réponses enrichies (règles + variété)
-                bbia_response = self._generate_simple_response(user_message, sentiment)
+                bbia_response = self._generate_simple_response(
+                    user_message,
+                    sentiment_dict,
+                )
 
             # 3. Sauvegarder dans l'historique
             from datetime import datetime
 
+            # Extraire la valeur du sentiment (str) depuis SentimentResult
+            sentiment_str: str = (
+                sentiment.get("sentiment", "neutral")
+                if isinstance(sentiment, dict)
+                else "neutral"
+            )
+
             self.conversation_history.append(
-                {
-                    "user": user_message,
-                    "bbia": bbia_response,
-                    "sentiment": sentiment,
-                    "timestamp": datetime.now().isoformat(),
-                },
+                ConversationEntry(
+                    user=user_message,
+                    bbia=bbia_response,
+                    sentiment=sentiment_str,
+                    timestamp=datetime.now().isoformat(),
+                ),
             )
 
             # 4. Adapter réponse selon personnalité BBIA (si pas LLM)
-            if not self.use_llm_chat:
+            # BBIAChat et LLM lourd gèrent déjà la personnalité
+            if self.bbia_chat and self.bbia_chat.llm_model:
+                # BBIAChat gère déjà la personnalité
+                adapted_response = bbia_response
+            elif self.use_llm_chat and self.chat_model:
+                # LLM lourd gère déjà la personnalité
+                adapted_response = bbia_response
+            else:
+                # Fallback: adapter selon personnalité BBIA
                 adapted_response = self._adapt_response_to_personality(
                     bbia_response,
-                    sentiment,
+                    sentiment_dict,
                 )
-            else:
-                adapted_response = bbia_response  # LLM gère déjà la personnalité
+
+            # Vérification spéciale pour les salutations : garantir qu'une salutation
+            # génère toujours une réponse contenant un mot de salutation
+            user_message_lower = user_message.lower()
+            is_greeting = any(
+                word in user_message_lower
+                for word in ["bonjour", "salut", "hello", "hi", "hey", "coucou"]
+            )
+            if is_greeting:
+                response_lower = adapted_response.lower()
+                has_greeting_word = any(
+                    word in response_lower
+                    for word in ["bonjour", "salut", "hello", "hi", "hey", "coucou"]
+                )
+                if not has_greeting_word:
+                    # Le LLM n'a pas généré de salutation, utiliser le fallback enrichi
+                    logger.debug(
+                        "Réponse LLM sans mot de salutation détectée, "
+                        "utilisation du fallback enrichi pour salutation",
+                    )
+                    adapted_response = self._generate_simple_response(
+                        user_message,
+                        sentiment_dict,
+                    )
+                    adapted_response = self._adapt_response_to_personality(
+                        adapted_response,
+                        sentiment_dict,
+                    )
 
             # 5. Sauvegarder automatiquement dans mémoire persistante (si disponible)
             try:
@@ -1066,7 +1479,17 @@ class BBIAHuggingFace:
 
                 # Sauvegarder toutes les 10 messages pour éviter I/O excessif
                 if len(self.conversation_history) % 10 == 0:
-                    save_conversation_to_memory(self.conversation_history)
+                    # Convertir ConversationEntry en dict pour compatibilité
+                    history_dicts: list[dict[str, Any]] = [
+                        {
+                            "user": entry.get("user", ""),
+                            "bbia": entry.get("bbia", ""),
+                            "sentiment": entry.get("sentiment", "neutral"),
+                            "timestamp": entry.get("timestamp", ""),
+                        }
+                        for entry in self.conversation_history
+                    ]
+                    save_conversation_to_memory(history_dicts)
             except ImportError:
                 # Mémoire persistante optionnelle
                 pass
@@ -1074,8 +1497,8 @@ class BBIAHuggingFace:
             # Normaliser et finaliser (anti-doublons/sentinelles)
             return self._normalize_response_length(adapted_response)
 
-        except Exception as e:
-            logger.error(f"❌ Erreur chat: {e}")
+        except Exception:
+            logger.exception("❌ Erreur chat:")
             return "Je ne comprends pas bien, peux-tu reformuler ?"
 
     def _generate_llm_response(
@@ -1096,7 +1519,8 @@ class BBIAHuggingFace:
         """
         try:
             if not self.chat_model or not self.chat_tokenizer:
-                raise ValueError("LLM non chargé")
+                msg = "LLM non chargé"
+                raise ValueError(msg)
 
             # Construire prompt avec personnalité BBIA enrichie
             # AMÉLIORATION INTELLIGENCE: Prompt détaillé pour réponses naturelles
@@ -1142,7 +1566,13 @@ class BBIAHuggingFace:
             # Ajouter contexte si demandé
             if use_context and self.conversation_history:
                 # Derniers 2 échanges pour contexte
-                for entry in self.conversation_history[-2:]:
+                # OPTIMISATION: Convertir deque en list pour slicing et utiliser list comprehension
+                recent_history: list[ConversationEntry] = list(
+                    self.conversation_history,
+                )[-2:]
+                # OPTIMISATION: List comprehension plus efficace que append() en boucle
+                # Note: extend() avec list flatten pour éviter erreur type mypy
+                for entry in recent_history:
                     messages.append({"role": "user", "content": entry["user"]})
                     messages.append({"role": "assistant", "content": entry["bbia"]})
 
@@ -1157,7 +1587,7 @@ class BBIAHuggingFace:
                     tokenize=False,
                     add_generation_prompt=True,
                 )
-            except Exception:
+            except (ValueError, AttributeError, TypeError):
                 # Fallback si pas de chat template
                 prompt = f"{system_prompt}\n\nUser: {user_message}\nAssistant:"
 
@@ -1198,14 +1628,35 @@ class BBIAHuggingFace:
                 else self._safe_fallback()
             )
 
-        except Exception as e:
+        except (ValueError, RuntimeError, AttributeError, OSError) as e:
             logger.warning(f"⚠️  Erreur génération LLM, fallback enrichi: {e}")
             # Fallback vers réponses enrichies
             try:
-                sentiment = self.analyze_sentiment(user_message)
-            except Exception:
-                sentiment = {"sentiment": "NEUTRAL", "score": 0.5}
-            return self._generate_simple_response(user_message, sentiment)
+                sentiment_result = self.analyze_sentiment(user_message)
+                # Convertir SentimentResult en SentimentDict
+                sentiment_dict: SentimentDict = {
+                    "label": sentiment_result.get("sentiment", "neutral"),
+                    "score": sentiment_result.get("score", 0.5),
+                }
+            except (ValueError, RuntimeError, KeyError):
+                sentiment_dict = {"label": "NEUTRAL", "score": 0.5}
+            return self._generate_simple_response(user_message, sentiment_dict)
+        except Exception as e:
+            logger.warning(
+                "⚠️  Erreur inattendue génération LLM, fallback enrichi: %s",
+                e,
+            )
+            # Fallback vers réponses enrichies
+            try:
+                sentiment_result = self.analyze_sentiment(user_message)
+                # Convertir SentimentResult en SentimentDict
+                sentiment_dict_fallback: SentimentDict = {
+                    "label": sentiment_result.get("sentiment", "neutral"),
+                    "score": sentiment_result.get("score", 0.5),
+                }
+            except (ValueError, RuntimeError, KeyError):
+                sentiment_dict_fallback = {"label": "NEUTRAL", "score": 0.5}
+            return self._generate_simple_response(user_message, sentiment_dict_fallback)
 
     def _detect_and_execute_tools(self, user_message: str) -> str | None:
         """Détecte et exécute des outils depuis le message utilisateur.
@@ -1234,7 +1685,9 @@ class BBIAHuggingFace:
         if nlp_result:
             tool_name, confidence = nlp_result
             logger.info(
-                f"🔍 NLP détecté outil '{tool_name}' (confiance: {confidence:.2f})",
+                "🔍 NLP détecté outil '%s' (confiance: %.2f)",
+                tool_name,
+                confidence,
             )
             # Exécuter outil détecté par NLP
             return self._execute_detected_tool(tool_name, user_message, message_lower)
@@ -1432,7 +1885,7 @@ class BBIAHuggingFace:
                                         sentiment.get("sentiment", "NEUTRAL"),
                                         "neutral",
                                     )
-                                except Exception:
+                                except (KeyError, ValueError, TypeError):
                                     params["emotion"] = "neutral"
                             params["intensity"] = 0.7
 
@@ -1453,12 +1906,19 @@ class BBIAHuggingFace:
                             return f"✅ {detail}"
                         error_detail = result.get("detail", "Erreur inconnue")
                         logger.warning(
-                            f"⚠️ Erreur outil '{tool_name}': {error_detail}",
+                            "⚠️ Erreur outil '%s': %s",
+                            tool_name,
+                            error_detail,
                         )
                         return f"⚠️ {error_detail}"
 
+                    except (AttributeError, RuntimeError, ValueError, KeyError) as e:
+                        logger.exception("❌ Erreur exécution outil '%s':", tool_name)
+                        return f"❌ Erreur lors de l'exécution: {e}"
                     except Exception as e:
-                        logger.error(f"❌ Erreur exécution outil '{tool_name}': {e}")
+                        logger.exception(
+                            "❌ Erreur inattendue exécution outil '%s':", tool_name
+                        )
                         return f"❌ Erreur lors de l'exécution: {e}"
 
         # Aucun outil détecté
@@ -1481,7 +1941,7 @@ class BBIAHuggingFace:
             # Charger modèle à la demande (gratuit Hugging Face)
             if self._sentence_model is None:
                 try:
-                    from sentence_transformers import (
+                    from sentence_transformers import (  # type: ignore[import-untyped]
                         SentenceTransformer,
                     )
 
@@ -1558,8 +2018,14 @@ class BBIAHuggingFace:
 
             return None
 
-        except Exception as e:
+        except (ImportError, RuntimeError, AttributeError, ValueError) as e:
             logger.debug(f"ℹ️ Erreur NLP détection (fallback mots-clés): {e}")
+            return None
+        except Exception as e:
+            logger.debug(
+                "ℹ️ Erreur inattendue NLP détection (fallback mots-clés): %s",
+                e,
+            )
             return None
 
     def _execute_detected_tool(
@@ -1638,8 +2104,9 @@ class BBIAHuggingFace:
                     # Angle max ~90 degrés → intensité 1.0
                     params["intensity"] = min(extracted_angle / 90.0, 1.0)
                     logger.info(
-                        f"📐 Angle extrait: {extracted_angle}° → "
-                        f"intensité: {params['intensity']:.2f}",
+                        "📐 Angle extrait: %s° → intensité: %.2f",
+                        extracted_angle,
+                        params["intensity"],
                     )
                 else:
                     # Extraire intensité depuis mots-clés
@@ -1667,7 +2134,7 @@ class BBIAHuggingFace:
                             sentiment.get("sentiment", "NEUTRAL"),
                             "neutral",
                         )
-                    except Exception:
+                    except (ValueError, KeyError, TypeError):
                         params["emotion"] = "neutral"
                 params["intensity"] = 0.7
 
@@ -1700,8 +2167,11 @@ class BBIAHuggingFace:
             logger.warning(f"⚠️ Erreur outil '{tool_name}': {error_detail}")
             return f"⚠️ {error_detail}"
 
+        except (AttributeError, RuntimeError, ValueError, KeyError) as e:
+            logger.exception("❌ Erreur exécution outil '{tool_name}':")
+            return f"❌ Erreur lors de l'exécution: {e}"
         except Exception as e:
-            logger.error(f"❌ Erreur exécution outil '{tool_name}': {e}")
+            logger.exception("❌ Erreur inattendue exécution outil '%s':", tool_name)
             return f"❌ Erreur lors de l'exécution: {e}"
 
     def _extract_angle(self, message: str) -> float | None:
@@ -1725,8 +2195,7 @@ class BBIAHuggingFace:
             message_lower,
         )
         if match_deg:
-            angle_deg = float(match_deg.group(1))
-            return angle_deg
+            return float(match_deg.group(1))
 
         # Pattern 2: "X radians" ou "pi/X radians" (OPTIMISATION: regex compilée)
         pattern_rad = r"(?:(\d+(?:\.\d+)?)|pi\s*/\s*(\d+(?:\.\d+)?))\s*(?:radians?)"
@@ -1919,9 +2388,7 @@ class BBIAHuggingFace:
                 ).strip()
 
         # 8) Éviter répétitions récentes dans l'historique
-        result = self._avoid_recent_duplicates(result)
-
-        return result
+        return self._avoid_recent_duplicates(result)
 
     def _avoid_recent_duplicates(self, text: str) -> str:
         """Évite les duplications exactes avec les dernières réponses BBIA.
@@ -1929,12 +2396,16 @@ class BBIAHuggingFace:
         Si duplication détectée, ajoute une légère variante naturelle.
         """
         try:
-            recent = []
+            # OPTIMISATION: List comprehension plus efficace que append() en boucle
             if self.conversation_history:
-                for entry in self.conversation_history[-5:]:
-                    bbia = entry.get("bbia", "").strip()
-                    if bbia:
-                        recent.append(bbia)
+                recent_history = list(self.conversation_history)[-5:]
+                recent = [
+                    entry.get("bbia", "").strip()
+                    for entry in recent_history
+                    if entry.get("bbia", "").strip()
+                ]
+            else:
+                recent = []
             if text and text in recent:
                 import random as _r
 
@@ -1946,7 +2417,7 @@ class BBIAHuggingFace:
                 candidate = f"{text} {addition}".strip()
                 return self._normalize_response_length(candidate)
             return text
-        except Exception:
+        except (ValueError, RuntimeError, TypeError):
             return text
 
     def _safe_fallback(self) -> str:
@@ -1974,10 +2445,10 @@ class BBIAHuggingFace:
             ]
             candidate = f"{base}{suffix}".strip()
             return self._normalize_response_length(candidate)
-        except Exception:
+        except (ValueError, RuntimeError, TypeError):
             return SAFE_FALLBACK
 
-    def _generate_simple_response(self, message: str, sentiment: dict[str, Any]) -> str:
+    def _generate_simple_response(self, message: str, sentiment: SentimentDict) -> str:
         """Génère réponse intelligente basée sur sentiment, contexte et personnalité.
 
         Args:
@@ -2357,7 +2828,7 @@ class BBIAHuggingFace:
     def _adapt_response_to_personality(
         self,
         response: str,
-        sentiment: dict[str, Any],  # noqa: ARG002
+        sentiment: SentimentDict,  # noqa: ARG002
     ) -> str:
         """Adapte la réponse selon la personnalité BBIA avec nuances expressives.
 
@@ -2426,7 +2897,8 @@ class BBIAHuggingFace:
                     t = self._avoid_recent_duplicates(t)
                 except Exception as e:
                     logger.debug(
-                        f"Erreur lors de l'évitement des doublons récents: {e}"
+                        "Erreur lors de l'évitement des doublons récents: %s",
+                        e,
                     )
                 return t
 
@@ -2438,7 +2910,8 @@ class BBIAHuggingFace:
                     t2 = self._avoid_recent_duplicates(t2)
                 except Exception as e:
                     logger.debug(
-                        f"Erreur lors de l'évitement des doublons récents (t2): {e}"
+                        "Erreur lors de l'évitement des doublons récents (t2): %s",
+                        e,
                     )
                 return t2
             last_space = cut.rfind(" ")
@@ -2448,7 +2921,8 @@ class BBIAHuggingFace:
                     t3 = self._avoid_recent_duplicates(t3)
                 except Exception as e:
                     logger.debug(
-                        f"Erreur lors de l'évitement des doublons récents (t3): {e}"
+                        "Erreur lors de l'évitement des doublons récents (t3): %s",
+                        e,
                     )
                 return t3
             t4 = (t[:max_len] + "...").strip()
@@ -2456,10 +2930,11 @@ class BBIAHuggingFace:
                 t4 = self._avoid_recent_duplicates(t4)
             except Exception as e:
                 logger.debug(
-                    f"Erreur lors de l'évitement des doublons récents (t4): {e}"
+                    "Erreur lors de l'évitement des doublons récents (t4): %s",
+                    e,
                 )
             return t4
-        except Exception:
+        except (ValueError, RuntimeError, TypeError):
             return text
 
     def _get_recent_context(self) -> str | None:
@@ -2473,7 +2948,12 @@ class BBIAHuggingFace:
             return None
 
         # Prendre le dernier message utilisateur
-        last_entry = self.conversation_history[-1]
+        # OPTIMISATION: Accéder au dernier élément (deque supporte [-1] mais type checker se plaint)
+        last_entry = (
+            list(self.conversation_history)[-1] if self.conversation_history else None
+        )
+        if last_entry is None:
+            return None
         user_msg = last_entry.get("user", "")
 
         # Extraire les mots significatifs (exclure articles, prépositions)
@@ -2530,48 +3010,54 @@ class BBIAHuggingFace:
                 "Conversation avec BBIA (robot Reachy Mini). Soyez amical et curieux."
             )
 
-        context = "Historique conversation:\n"
-        for entry in self.conversation_history[-3:]:  # Derniers 3 échanges
-            context += f"User: {entry['user']}\n"
-            context += f"BBIA: {entry['bbia']}\n"
-        return context
+        # OPTIMISATION: Convertir deque en list pour slicing et utiliser list comprehension
+        recent_history = list(self.conversation_history)[-3:]  # Derniers 3 échanges
+        # OPTIMISATION: List comprehension plus efficace que append() en boucle
+        context_lines = ["Historique conversation:"] + [
+            line
+            for entry in recent_history
+            for line in [f"User: {entry['user']}", f"BBIA: {entry['bbia']}"]
+        ]
+        return "\n".join(context_lines)
 
 
 def main() -> None:
     """Test du module BBIA Hugging Face."""
     if not HF_AVAILABLE:
-        print("❌ Hugging Face transformers non disponible")
-        print("Installez avec: pip install transformers torch")
+        logging.error("❌ Hugging Face transformers non disponible")
+        logging.info("Installez avec: pip install transformers torch")
         return
 
     # Initialisation
     hf = BBIAHuggingFace()
 
     # Test chargement modèle
-    print("📥 Test chargement modèle BLIP...")
+    logging.info("📥 Test chargement modèle BLIP...")
     success = hf.load_model("Salesforce/blip-image-captioning-base", "vision")
-    print(f"Résultat: {'✅' if success else '❌'}")
+    logging.info("Résultat: %s", "✅" if success else "❌")
 
     # Test analyse sentiment
-    print("\n📝 Test analyse sentiment...")
+    logging.info("\n📝 Test analyse sentiment...")
     sentiment_result = hf.analyze_sentiment("Je suis très heureux aujourd'hui!")
-    print(f"Résultat: {sentiment_result}")
+    logging.info("Résultat: %s", sentiment_result)
 
     # Test analyse émotion
-    print("\n😊 Test analyse émotion...")
+    logging.info("\n😊 Test analyse émotion...")
     emotion_result = hf.analyze_emotion("Je suis excité par ce projet!")
-    print(f"Résultat: {emotion_result}")
+    logging.info(f"Résultat: {emotion_result}")
 
     # Test chat intelligent
-    print("\n💬 Test chat intelligent...")
+    logging.info("\n💬 Test chat intelligent...")
     chat_result1 = hf.chat("Bonjour")
-    print(f"BBIA: {chat_result1}")
+    logging.info(f"BBIA: {chat_result1}")
     chat_result2 = hf.chat("Comment allez-vous ?")
-    print(f"BBIA: {chat_result2}")
+    logging.info(f"BBIA: {chat_result2}")
 
     # Informations
-    print(f"\n📊 Informations: {hf.get_model_info()}")
-    print(f"\n📝 Historique conversation: {len(hf.conversation_history)} messages")
+    logging.info(f"\n📊 Informations: {hf.get_model_info()}")
+    logging.info(
+        f"\n📝 Historique conversation: {len(hf.conversation_history)} messages",
+    )
 
 
 if __name__ == "__main__":

@@ -1,7 +1,7 @@
 # 📹 Roadmap Démo Vidéo - BBIA-SIM
 
-**Date de création** : Oct / Nov. 2025  
-**Date de mise à jour** : Oct / Nov. 2025
+**Date de création** : 26 Novembre 2025  
+**Date de mise à jour** : 26 Novembre 2025
 **Statut** : ✅ **Vidéos disponibles** - 3 vidéos de démonstration créées
 
 > **Note** : Des vidéos de démonstration sont maintenant disponibles dans `assets/videos/`. Voir [`assets/MEDIAS_INVENTAIRE.md`](../../assets/MEDIAS_INVENTAIRE.md) pour la liste complète.
@@ -14,26 +14,26 @@
 
 ---
 
-## 📹 Vidéos Disponibles (Nouveau - Oct / Nov. 2025)
+## 📹 Vidéos Disponibles (Nouveau - 21 Novembre 2025)
 
 ### ✅ Vidéos de Démonstration MuJoCo
 
 **Localisation** : `assets/videos/`
 
 1. **Démo MuJoCo #1** (2.7 MB)
-   - Fichier : `Enregistrement de l'écran Oct / Nov. 2025 à 17.00.52.mov`
+   - Fichier : `Enregistrement de l'écran 21 Novembre 2025 à 17.00.52.mov`
    - Source : `examples/demo_mujoco_continue.py` - Robot en mouvement continu (tête + corps)
    - Contenu : Simulation 3D avec robot Reachy Mini animé (yaw_body + stewart joints)
    - Usage : Documentation, présentation, README
 
 2. **Démo MuJoCo #2** (3.4 MB)
-   - Fichier : `Enregistrement de l'écran Oct / Nov. 2025 à 17.01.27.mov`
+   - Fichier : `Enregistrement de l'écran 21 Novembre 2025 à 17.01.27.mov`
    - Source : `examples/demo_mujoco_continue.py` - Robot en mouvement continu (tête + corps)
    - Contenu : Simulation 3D avec robot Reachy Mini animé (yaw_body + stewart joints)
    - Usage : Documentation, présentation, README
 
 3. **Démo MuJoCo #3** (3.1 MB)
-   - Fichier : `Enregistrement de l'écran Oct / Nov. 2025 à 17.01.56.mov`
+   - Fichier : `Enregistrement de l'écran 21 Novembre 2025 à 17.01.56.mov`
    - Source : `examples/demo_mujoco_continue.py` - Robot en mouvement continu (tête + corps)
    - Contenu : Simulation 3D avec robot Reachy Mini animé (yaw_body + stewart joints)
    - Usage : Documentation, présentation, README
@@ -164,7 +164,7 @@
 Une fois les vidéos créées, elles seront intégrées dans :
 
 - ✅ `README.md` - Section "Démo Vidéo" (déjà préparée)
-- ✅ `docs/guides/GUIDE_DEBUTANT.md` - Références ajoutées (en attente liens)
+- ✅ `docs/guides/GUIDE_DEMARRAGE.md` - Références ajoutées (en attente liens)
 - ✅ `docs/reference/project-status.md` - Mise à jour quand disponible
 
 ---
@@ -186,6 +186,6 @@ Une fois les vidéos créées, elles seront intégrées dans :
 ## 🎯 Navigation
 
 **Retour à** : [README Documentation](../README.md)  
-**Voir aussi** : [Guide Débutant](GUIDE_DEBUTANT.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)
+**Voir aussi** : [Guide de Démarrage](GUIDE_DEMARRAGE.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)
 
 **Contribuer** : Si vous souhaitez contribuer à la création de ces vidéos, contactez les maintainers via GitHub Issues.

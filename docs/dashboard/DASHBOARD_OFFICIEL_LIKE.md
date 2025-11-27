@@ -1,7 +1,7 @@
 # 🎨 Dashboard Officiel-Like - Documentation
 
-**Date** : Oct / Nov. 2025  
-**Version** : 1.0  
+**Date** : 26 Novembre 2025  
+**Version** : 1.4.0  
 **Conformité** : Identique au dashboard officiel `pollen-robotics/reachy_mini`
 
 ---
@@ -59,25 +59,59 @@ src/bbia_sim/daemon/app/dashboard/
 - ✅ Statut backend affiché (Up and ready, Waking up, etc.)
 - ✅ Lecteur de mouvements enregistrés intégré
 
-### 2. **Section Apps**
+### 2. **Section Mode Démo** (Nouveau - 24 Nov 2025)
+
+- ✅ Toggle pour activer/désactiver le mode read-only
+- ✅ Désactivation automatique de tous les contrôles en mode démo
+- ✅ Persistance dans localStorage
+- ✅ Message d'information quand mode démo actif
+
+### 3. **Section Télémétrie Temps Réel** (Nouveau - 24 Nov 2025)
+
+- ✅ Graphiques Chart.js pour latence, FPS, CPU, RAM
+- ✅ Métriques affichées en temps réel
+- ✅ Connexion WebSocket `/ws/telemetry` automatique
+- ✅ Mise à jour fluide avec limite de 30 points de données
+
+### 4. **Section Apps**
 
 - ✅ Liste des applications installées
 - ✅ Toggle pour démarrer/arrêter chaque app
 - ✅ Bouton suppression d'app
 
-### 3. **Section App Store**
+### 5. **Section App Store**
 
 - ✅ Liste des apps disponibles sur Hugging Face
 - ✅ Bouton "Install" pour chaque app
 - ✅ Modal d'installation avec logs
 - ✅ WebSocket pour suivi installation en temps réel
 
-### 4. **Lecteur de Mouvements**
+### 6. **Section Émotions avec Intensité** (Nouveau - 24 Nov 2025)
+
+- ✅ Sliders pour 6 émotions (happy, sad, excited, angry, surprised, neutral)
+- ✅ Intensité ajustable 0-100%
+- ✅ Mise à jour en temps réel avec debounce
+- ✅ API endpoint `/api/motion/emotion`
+
+### 7. **Section Presets** (Nouveau - 24 Nov 2025)
+
+- ✅ Export/Import de presets d'émotions en JSON
+- ✅ API complète `/api/presets` (GET, POST, DELETE, apply)
+- ✅ Stockage dans `~/.bbia_sim/presets/`
+
+### 8. **Lecteur de Mouvements**
 
 - ✅ Sélection dataset (Dances/Emotions)
 - ✅ Liste des mouvements disponibles
 - ✅ Boutons Play/Stop
 - ✅ WebSocket pour statut en temps réel
+
+### 9. **PWA Support** (Nouveau - 24 Nov 2025)
+
+- ✅ Manifest.json pour installation PWA
+- ✅ Service Worker avec cache offline
+- ✅ Icônes 192x192 et 512x512
+- ✅ Installation native sur mobile/desktop
 
 ---
 
@@ -175,7 +209,7 @@ ls src/bbia_sim/daemon/app/dashboard/static/
 ls src/bbia_sim/daemon/app/dashboard/static/js/
 
 # 4. Vérifier intégration
-python -c "from bbia_sim.daemon.app.main import app; print('✅ OK')"
+python -c "from bbia_sim.daemon.app.main import app; import logging; logging.info('✅ OK')"
 
 ```
 
@@ -186,6 +220,8 @@ python -c "from bbia_sim.daemon.app.main import app; print('✅ OK')"
 - **SDK Officiel** : <https://github.com/pollen-robotics/reachy_mini>
 - **Documentation BBIA** : `docs/quality/compliance/CONFORMITE_REACHY_MINI_COMPLETE.md`
 - **Comparaison** : `docs/quality/audits/COMPARAISON_DOCUMENTATION_OFFICIELLE.md`
+- **Dashboard avancé** : [`docs/development/dashboard-advanced.md`](../development/dashboard-advanced.md) - Dashboard BBIA avec métriques temps réel, chat et vision
+- **Captures d'écran** : 4 captures du dashboard avancé disponibles dans `assets/images/` (Nov 2025) - Voir [`assets/MEDIAS_INVENTAIRE.md`](../../assets/MEDIAS_INVENTAIRE.md)
 
 ---
 
@@ -195,4 +231,35 @@ python -c "from bbia_sim.daemon.app.main import app; print('✅ OK')"
 ✅ **Structure identique à l'officiel**
 ✅ **Design conforme**
 ✅ **Intégration complète dans main.py**
+✅ **Extensions ajoutées (24 Nov 2025)** :
+- Graphiques temps réel (Chart.js)
+- Mode démo read-only
+- Sliders émotions avec intensité
+- Presets exportables
+- PWA support complet
 ⚠️ **Assets SVG optionnels (peuvent être ajoutés plus tard)**
+
+## 📁 Fichiers Créés/Modifiés
+
+### Templates Sections
+- ✅ `sections/daemon.html` - Contrôle daemon
+- ✅ `sections/apps.html` - Applications installées
+- ✅ `sections/appstore.html` - Hugging Face App Store
+- ✅ `sections/move_player.html` - Lecteur mouvements
+- ✅ `sections/media.html` - Contrôles media
+- ✅ `sections/quick_actions.html` - Actions rapides
+- ✅ `sections/installation_wizard.html` - Assistant installation
+- ✅ `sections/telemetry_charts.html` - Graphiques temps réel (24 Nov 2025)
+- ✅ `sections/demo_mode.html` - Mode démo read-only (24 Nov 2025)
+- ✅ `sections/emotions.html` - Sliders émotions (24 Nov 2025)
+
+### Static Files
+- ✅ `static/manifest.json` - Manifest PWA (24 Nov 2025)
+- ✅ `static/sw.js` - Service Worker (24 Nov 2025)
+- ✅ `static/images/icon-192.png` - Icône PWA 192x192 (24 Nov 2025)
+- ✅ `static/images/icon-512.png` - Icône PWA 512x512 (24 Nov 2025)
+- ✅ `static/style.css` - Styles Tailwind
+- ✅ `static/js/*.js` - Scripts JavaScript
+
+### API Routers
+- ✅ `routers/presets.py` - API presets (24 Nov 2025)

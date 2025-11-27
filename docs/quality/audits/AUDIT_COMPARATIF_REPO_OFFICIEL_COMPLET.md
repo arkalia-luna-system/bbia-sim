@@ -1,9 +1,9 @@
 # 🔍 AUDIT COMPARATIF COMPLET - Repo Officiel Reachy-Mini vs BBIA
 
-**Date** : Oct / Nov. 2025
+**Date** : 21 Novembre 2025
 **Repo Officiel** : [pollen-robotics/reachy_mini](https://github.com/pollen-robotics/reachy_mini)
 **Version BBIA** : 1.3.2
-**Objectif** : Audit exhaustif comparant chaque aspect du repo officiel avec BBIA pour identifier micro-fautes et incohérences avant réception du robot (Oct / Nov. 2025)
+**Objectif** : Audit exhaustif comparant chaque aspect du repo officiel avec BBIA pour identifier micro-fautes et incohérences avant réception du robot (21 Novembre 2025)
 
 ---
 
@@ -17,9 +17,9 @@
 - ✅ Limites articulations extraites exactement du XML
 - ✅ Dépendances SDK officiel présentes dans `pyproject.toml`
 - ✅ Antennes correctement bloquées (`forbidden_joints`) - conforme XML officiel
-- ✅ Documentation mise à jour (Oct / Nov. 2025)
+- ✅ Documentation mise à jour (21 Novembre 2025)
 
-### ✅ Corrections Appliquées (Oct / Nov. 2025)
+### ✅ Corrections Appliquées (21 Novembre 2025)
 
 - ✅ **Antennes** : Documentation corrigée - toutes mentions "antennes animées" → "antennes bloquées (sécurité hardware)"
 - ✅ **Scripts** : `quick_start.sh` corrigé pour mentionner antennes bloquées
@@ -29,9 +29,9 @@
 ### ⚠️ Points à Vérifier/Corriger (Actions Futures)
 
 - ⚠️ **Version SDK** : Vérifier version exacte utilisée dans repo officiel
-- ⚠️ **Software Release** : Vérifier version SDK disponible sur GitHub (email Oct / Nov. 2025 mentionne première version)
+- ⚠️ **Software Release** : Vérifier version SDK disponible sur GitHub (email 21 Novembre 2025 mentionne première version)
 - ⚠️ **Configuration caméra** : Vérifier paramètres exacts (résolution, FOV) vs repo officiel
-- ⚠️ **Beta Shipments** : 125 unités en Oct / Nov. 2025 - vérifier retours communauté pour ajustements
+- ⚠️ **Beta Shipments** : 125 unités en 21 Novembre 2025 - vérifier retours communauté pour ajustements
 
 ---
 
@@ -50,7 +50,7 @@ Poids : 1.5kg
 
 **Source** : `docs/hardware/reachy-mini/REACHY_MINI_REFERENCE.md` ligne 100
 
-#### ⚠️ Repo Officiel (Email Oct / Nov. 2025)
+#### ⚠️ Repo Officiel (Email 21 Novembre 2025)
 
 - **Hauteur** : 28 cm (actif) / 23 cm (veille) ✅ **CONFORME**
 - **Largeur** : 16 cm ✅ **CONFORME**
@@ -353,7 +353,7 @@ self.joint_limits = {
 
 ```xml
 <site group="3" name="camera_optical"
-  pos="-0.0321159 -0.05047 0.00257878" 
+  pos="-0.0321159 -0.05047 0.00257878"
   quat="0.44884 0.458499 0.740682 -0.199279"/>
 
 ```
@@ -379,7 +379,7 @@ self.joint_limits = {
 
 **Source** : `docs/hardware/reachy-mini/REACHY_MINI_REFERENCE.md` ligne 82
 
-#### ⚠️ Email Officiel (Oct / Nov. 2025)
+#### ⚠️ Email Officiel (21 Novembre 2025)
 
 - **Wireless** : "4 microphones avec traitement en réseau" ✅
 - **Lite** : "2 microphones" ✅
@@ -421,7 +421,7 @@ self.joint_limits = {
 
 #### ⚠️ À Vérifier
 
-- Informations à jour avec dernières specs (Oct / Nov. 2025)
+- Informations à jour avec dernières specs (21 Novembre 2025)
 - Erreurs typographiques
 - Commandes SDK exactes
 
@@ -441,7 +441,7 @@ self.joint_limits = {
 
 #### ⚠️ À Améliorer
 
-- Tests avec robot physique (Oct / Nov. 2025)
+- Tests avec robot physique (21 Novembre 2025)
 - Tests performance latence
 - Tests edge cases (timeouts, disconnections)
 
@@ -522,7 +522,7 @@ self.joint_limits = {
 
 ## 8. ✅ CHECKLIST ACTIONS
 
-### Actions Immédiates (Avant Oct / Nov. 2025)
+### Actions Immédiates (Avant 21 Novembre 2025)
 
 - [ ] **1. Vérifier version SDK officielle**
   - Comparer `requirements.txt` du repo officiel
@@ -552,7 +552,7 @@ self.joint_limits = {
 
 ---
 
-### Actions Moyen Terme (Oct / Nov. 2025 - Robot Physique)
+### Actions Moyen Terme (21 Novembre 2025 - Robot Physique)
 
 - [ ] **6. Tests robot physique**
   - Tests conformité SDK sur robot réel
@@ -602,7 +602,7 @@ self.joint_limits = {
 1. **Version SDK** : Pinner version exacte
 2. **Tests coverage** : Augmenter coverage `reachy_mini_backend.py`
 3. **Documentation caméra** : Spécifier résolution exacte
-4. **Validation physique** : Tester sur robot réel (Oct / Nov. 2025)
+4. **Validation physique** : Tester sur robot réel (21 Novembre 2025)
 
 ### 🎯 Priorités
 
@@ -615,13 +615,13 @@ self.joint_limits = {
 
 ---
 
-## 11. 📧 INFORMATIONS EMAIL OFFICIEL (Oct / Nov. 2025)
+## 11. 📧 INFORMATIONS EMAIL OFFICIEL (21 Novembre 2025)
 
 ### Nouveautés Communiquées
 
 #### 🚀 Beta Shipments
 
-- **125 unités** expédiées en Oct / Nov. 2025
+- **125 unités** expédiées en 21 Novembre 2025
 - **Programme** : Community Beta Program
 - **Objectif** : Recueillir feedback avant rollout plus large
 - **Sélection** : Testeurs sélectionnés pour capacité feedback régulier et constructif
@@ -629,7 +629,7 @@ self.joint_limits = {
 #### 📦 Shipments Restants
 
 - **~3,000 unités** prévues avant Noël (Lite + Wireless)
-- **Calendrier** : Livraisons supplémentaires Oct / Nov. 2025
+- **Calendrier** : Livraisons supplémentaires 21 Novembre 2025
 - **Qualité** : Équipe sur site avec fabricant pour qualité, tests, documentation
 
 #### 💻 Software Release
@@ -641,7 +641,7 @@ self.joint_limits = {
 
 #### 📅 Prochaines Mises à Jour
 
-- **Prochaine email** : Mi-Oct / Nov. 2025
+- **Prochaine email** : Mi-21 Novembre 2025
 - **Contenu attendu** : Progrès production + software releases
 
 #### ✨ Actualité Bonus
@@ -657,7 +657,7 @@ self.joint_limits = {
 
 ---
 
-## 12. ✅ ACTIONS CORRECTIVES APPLIQUÉES (Oct / Nov. 2025)
+## 12. ✅ ACTIONS CORRECTIVES APPLIQUÉES (21 Novembre 2025)
 
 ### Corrections Documentation
 
@@ -679,7 +679,7 @@ self.joint_limits = {
 
 ---
 
-**Document créé le Oct / Nov. 2025**
-**Dernière mise à jour** : Oct / Nov. 2025 (Corrections appliquées)
-**Basé sur** : Email Pollen Robotics Oct / Nov. 2025, Repo officiel GitHub, Code BBIA v1.3.2
-**Prochaine mise à jour** : Après réception robot physique (Oct / Nov. 2025)
+**Document créé le 21 Novembre 2025**
+**Dernière mise à jour** : 21 Novembre 2025 (Corrections appliquées)
+**Basé sur** : Email Pollen Robotics 21 Novembre 2025, Repo officiel GitHub, Code BBIA v1.3.2
+**Prochaine mise à jour** : Après réception robot physique (21 Novembre 2025)

@@ -1,6 +1,6 @@
 # Audit des modules critiques BBIA‑SIM
 
-**Date**: Oct / Nov. 2025
+**Date**: 21 Novembre 2025
 **Objectif**: Analyse experte pointilleuse de tous les modules critiques avec comparaison SDK Reachy-mini officiel
 
 ## Résumé exécutif
@@ -110,7 +110,7 @@ description="Plateforme Stewart - joint tête 1 (⚠️ Nécessite IK via goto_t
 
 ## Corrections appliquées
 
-### Correction 1: `surprise_3d_mujoco_viewer.py`
+### Correction 1: `surprise_3d_mujoco_viewer.py` ⚠️ (OBSOLÈTE)
 
 - ❌ **AVANT**: `set_joint_pos("stewart_1")` - Violation SDK
 - ✅ **APRÈS**: `goto_target(head=pose)` avec `create_head_pose()` - Conforme SDK

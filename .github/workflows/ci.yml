@@ -9,6 +9,10 @@ on:
 jobs:
   lint:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12"]
     env:
       MUJOCO_GL: disable
       DISPLAY: ""
@@ -16,37 +20,64 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python
+      - name: Clean up disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /opt/hostedtoolcache/CodeQL
+          sudo rm -rf /usr/local/share/boost
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+          sudo apt-get clean
+          sudo rm -rf /var/lib/apt/lists/*
+          df -h
+
+      - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: ${{ matrix.python-version }}
+          cache: "pip"
 
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libgl1-mesa-dri libglib2.0-0 libsm6 libxext6 libxrender-dev libgomp1 libglu1-mesa portaudio19-dev python3-dev
+          sudo apt-get install -y libgl1-mesa-dri libglib2.0-0 libsm6 libxext6 libxrender-dev libgomp1 libglu1-mesa portaudio19-dev python3-dev ffmpeg
+          sudo apt-get clean
+          sudo rm -rf /var/lib/apt/lists/*
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -e .[dev]
-          pip install pytest-timeout
+          pip install --no-cache-dir -e .[dev]
+          pip install --no-cache-dir pytest-timeout
           # Installation optionnelle de pyaudio si disponible
-          pip install pyaudio || echo "pyaudio non disponible, continuons sans"
+          pip install --no-cache-dir pyaudio || echo "pyaudio non disponible, continuons sans"
+          # Nettoyer après installation
+          python -m pip cache purge || true
 
       - name: Lint with ruff
         run: ruff check src/ tests/
+        env:
+          PYTHONDONTWRITEBYTECODE: 1
 
       - name: Format with black
         run: black --check src/ tests/
+        env:
+          PYTHONDONTWRITEBYTECODE: 1
+        # Rejeter les PRs avec erreurs de formatage
+        continue-on-error: false
 
       - name: Type check with mypy
         run: mypy src/
+        env:
+          PYTHONDONTWRITEBYTECODE: 1
 
       - name: Security check with Bandit
         run: |
           echo "Running Bandit with .bandit configuration"
           bandit -r src/ -c .bandit -x ".*|._*|*.pyc" -q
+        env:
+          PYTHONDONTWRITEBYTECODE: 1
 
       - name: Dependency audit with pip-audit
         run: |
@@ -63,42 +94,153 @@ jobs:
             echo "⚠️ HIGH vulnerabilities found (non-blocking):"
             pip-audit --desc | grep -A 5 "HIGH"
           fi
+          # Nettoyer le fichier temporaire
+          rm -f audit-results.json || true
+
+      - name: Security scan with semgrep
+        run: |
+          # Installer semgrep si non disponible
+          if ! command -v semgrep &> /dev/null; then
+            pip install --no-cache-dir semgrep
+          fi
+          # Scan avec règles par défaut (non-bloquant)
+          semgrep --config=auto --json --output=artifacts/semgrep-results.json src/ || true
+          # Afficher résumé
+          if [ -f artifacts/semgrep-results.json ]; then
+            echo "📊 Résultats semgrep:"
+            cat artifacts/semgrep-results.json | python -m json.tool | head -50 || true
+          fi
+        continue-on-error: true
+
+      - name: Generate SBOM (CycloneDX)
+        run: |
+          # Installer cyclonedx-bom si non disponible
+          pip install --no-cache-dir cyclonedx-bom || pip install --no-cache-dir cyclonedx-py
+          # Générer SBOM
+          cyclonedx-py -o artifacts/sbom.json -i src/ || \
+          cyclonedx-bom -o artifacts/sbom.json || \
+          echo "SBOM generation failed (non-blocking)"
+        continue-on-error: true
+
+      - name: Upload security artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: security-artifacts-${{ matrix.python-version }}
+          path: |
+            artifacts/semgrep-results.json
+            artifacts/sbom.json
+          retention-days: 30
+          if-no-files-found: ignore
+
+      - name: Scan secrets with gitleaks
+        continue-on-error: true
+        run: |
+          # Installer gitleaks si disponible
+          if command -v gitleaks &> /dev/null; then
+            gitleaks detect --source . --verbose --no-banner || true
+          else
+            echo "⚠️ gitleaks non disponible, installation..."
+            wget -q https://github.com/gitleaks/gitleaks/releases/download/v8.18.0/gitleaks_8.18.0_linux_x64.tar.gz -O /tmp/gitleaks.tar.gz
+            tar -xzf /tmp/gitleaks.tar.gz -C /tmp
+            /tmp/gitleaks detect --source . --verbose --no-banner || true
+            rm -f /tmp/gitleaks.tar.gz /tmp/gitleaks
+          fi
+
+      - name: Clean up after lint
+        if: always()
+        run: |
+          find . -type d -name "__pycache__" -exec rm -r {} + || true
+          find . -type d -name ".mypy_cache" -exec rm -r {} + || true
+          find . -type d -name ".ruff_cache" -exec rm -r {} + || true
+          python -m pip cache purge || true
 
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 45
     env:
       SEED: 42
       MUJOCO_GL: disable
       DISPLAY: ""
       BBIA_DISABLE_AUDIO: "1"
+      BBIA_FORCE_MOCK_MODELS: "1"
+      BBIA_DISABLE_VISION_MODELS: "1"
+      PYTHONDONTWRITEBYTECODE: 1
     steps:
       - uses: actions/checkout@v4
+
+      - name: Clean up disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /opt/hostedtoolcache/CodeQL
+          sudo rm -rf /usr/local/share/boost
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+          sudo apt-get clean
+          sudo rm -rf /var/lib/apt/lists/*
+          df -h
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+          cache: "pip"
 
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libgl1-mesa-dri libglib2.0-0 libsm6 libxext6 libxrender-dev libgomp1 libglu1-mesa portaudio19-dev python3-dev
+          sudo apt-get install -y libgl1-mesa-dri libglib2.0-0 libsm6 libxext6 libxrender-dev libgomp1 libglu1-mesa portaudio19-dev python3-dev ffmpeg
+          sudo apt-get clean
+          sudo rm -rf /var/lib/apt/lists/*
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -e .[test]
-          pip install pytest-asyncio pytest-timeout
+          pip install --no-cache-dir -e .[test]
+          pip install --no-cache-dir pytest-asyncio pytest-timeout
           # Installation optionnelle de pyaudio si disponible
-          pip install pyaudio || echo "pyaudio non disponible, continuons sans"
+          pip install --no-cache-dir pyaudio || echo "pyaudio non disponible, continuons sans"
+          python -m pip cache purge || true
+
+      - name: Clean logs and artifacts before tests
+        run: |
+          rm -rf logs/* artifacts/*.log artifacts/*.jsonl artifacts/*.csv || true
+          find . -type d -name "__pycache__" -exec rm -r {} + || true
+          find . -type f -name "*.pyc" -delete || true
+          find . -type d -name ".pytest_cache" -exec rm -r {} + || true
+          find . -type d -name ".mypy_cache" -exec rm -r {} + || true
+          find . -type d -name ".ruff_cache" -exec rm -r {} + || true
+          python -m pip cache purge || true
 
       - name: Run unit tests
+        timeout-minutes: 45
         run: |
           export PYTHONPATH=src:$PYTHONPATH
-          pytest -v -m "not e2e" --cov=src/bbia_sim --cov-report=xml --cov-report=term-missing --cov-fail-under=0 --timeout=300 --override-ini="addopts="
+          # OPTIMISATION CI: Parallélisation avec pytest-xdist si disponible
+          if python -c "import xdist" 2>/dev/null; then
+            pytest -vv -m "not e2e and not slow" --cov=src/bbia_sim --cov-report=xml --cov-report=term-missing --cov-fail-under=0 --timeout=30 --maxfail=10 --log-cli-level=INFO --durations=20 --tb=short --showlocals -n auto
+          else
+            pytest -vv -m "not e2e and not slow" --cov=src/bbia_sim --cov-report=xml --cov-report=term-missing --cov-fail-under=0 --timeout=30 --maxfail=10 --log-cli-level=INFO --durations=20 --tb=short --showlocals -x
+          fi
+        env:
+          PYTHONDONTWRITEBYTECODE: 1
 
       - name: Golden tests (headless)
-        run: pytest -q tests/test_golden_traces.py --maxfail=1 --disable-warnings
+        timeout-minutes: 10
+        run: |
+          export PYTHONPATH=src:$PYTHONPATH
+          pytest -vv tests/test_golden_traces.py --maxfail=1 --disable-warnings --log-cli-level=INFO --durations=10 --tb=short --timeout=60
+        env:
+          PYTHONDONTWRITEBYTECODE: 1
+
+      - name: Clean up before upload
+        if: always()
+        run: |
+          find . -type d -name "__pycache__" -exec rm -r {} + || true
+          find . -type d -name ".pytest_cache" -exec rm -r {} + || true
+          rm -rf htmlcov/ || true
+          python -m pip cache purge || true
 
       - name: Upload coverage
         uses: codecov/codecov-action@v3
@@ -115,46 +257,93 @@ jobs:
           path: |
             artifacts/**/*.jsonl
             artifacts/**/*.csv
+          if-no-files-found: ignore
 
   test-e2e:
     runs-on: ubuntu-latest
-    needs: [lint]
+    timeout-minutes: 20
+    needs: [lint, test]
     env:
       MUJOCO_GL: disable
       DISPLAY: ""
       BBIA_DISABLE_AUDIO: "1"
+      PYTHONDONTWRITEBYTECODE: 1
+      SEED: 42
     steps:
       - uses: actions/checkout@v4
+
+      - name: Clean up disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /opt/hostedtoolcache/CodeQL
+          sudo rm -rf /usr/local/share/boost
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+          sudo apt-get clean
+          sudo rm -rf /var/lib/apt/lists/*
+          df -h
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+          cache: "pip"
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgl1-mesa-dri libglib2.0-0 libsm6 libxext6 libxrender-dev libgomp1 libglu1-mesa portaudio19-dev python3-dev ffmpeg
+          sudo apt-get clean
+          sudo rm -rf /var/lib/apt/lists/*
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -e .[test]
-          pip install pytest-asyncio pytest-timeout
+          pip install --no-cache-dir -e .[test]
+          pip install --no-cache-dir pytest-asyncio pytest-timeout
           # Installation optionnelle de pyaudio si disponible
-          pip install pyaudio || echo "pyaudio non disponible, continuons sans"
+          pip install --no-cache-dir pyaudio || echo "pyaudio non disponible, continuons sans"
+          python -m pip cache purge || true
+
+      - name: Clean logs before tests
+        run: |
+          rm -rf logs/* artifacts/*.log || true
+          find . -type d -name "__pycache__" -exec rm -r {} + || true
+          find . -type d -name ".pytest_cache" -exec rm -r {} + || true
+          python -m pip cache purge || true
+          mkdir -p logs
 
       - name: Start API server
+        timeout-minutes: 2
         run: |
           echo "Starting BBIA-SIM API server..."
+          export PYTHONPATH=src:$PYTHONPATH
           BBIA_TOKEN=bbia-secret-key-dev uvicorn src.bbia_sim.daemon.app.main:app --port 8000 --host 0.0.0.0 &
+          SERVER_PID=$!
           sleep 5
-          echo "API server started"
+          # Vérifier que le serveur est bien démarré
+          if ps -p $SERVER_PID > /dev/null; then
+            echo "✅ API server started (PID: $SERVER_PID)"
+          else
+            echo "❌ API server failed to start"
+            exit 1
+          fi
 
       - name: Run e2e tests
+        timeout-minutes: 15
         run: |
+          export PYTHONPATH=src:$PYTHONPATH
           echo "Running e2e tests..."
           mkdir -p logs
-          pytest -q -m "e2e" --timeout=60 --tb=short > logs/test_run.log 2>&1 || true
+          # Limiter la taille du log à 1MB mais avec plus de verbosité
+          pytest -vv -m "e2e" --timeout=60 --tb=short --maxfail=5 --log-cli-level=INFO --durations=10 --showlocals -x 2>&1 | head -c 1048576 > logs/test_run.log || true
           echo "E2E tests completed"
 
           # Ensure log file exists even if empty
-          touch logs/test_run.log
+          if [ ! -f logs/test_run.log ]; then
+            touch logs/test_run.log
+          fi
 
       - name: Upload test logs
         uses: actions/upload-artifact@v4
@@ -163,8 +352,19 @@ jobs:
           name: e2e-test-logs
           path: logs/test_run.log
           retention-days: 7
+          if-no-files-found: ignore
+
+      - name: Clean up after e2e tests
+        if: always()
+        run: |
+          # Arrêter le serveur API si encore en cours
+          pkill -f "uvicorn.*daemon.app.main" || true
+          find . -type d -name "__pycache__" -exec rm -r {} + || true
+          find . -type d -name ".pytest_cache" -exec rm -r {} + || true
+          python -m pip cache purge || true
 
       - name: Check e2e test results
+        timeout-minutes: 1
         run: |
           mkdir -p logs
           if [ ! -f logs/test_run.log ]; then
@@ -173,8 +373,8 @@ jobs:
             echo "No e2e tests executed" > logs/test_run.log
           fi
 
-          echo "=== E2E Test Results ==="
-          cat logs/test_run.log
+          echo "=== E2E Test Results (last 50 lines) ==="
+          tail -n 50 logs/test_run.log
           echo "========================="
 
           # Check if tests passed
@@ -187,24 +387,134 @@ jobs:
             echo "⚠️ No test results found in log, assuming tests passed"
           fi
 
-  examples:
+  test-slow:
     runs-on: ubuntu-latest
     needs: [lint, test]
+    timeout-minutes: 30
+    env:
+      MUJOCO_GL: disable
+      DISPLAY: ""
+      BBIA_DISABLE_AUDIO: "1"
+      BBIA_FORCE_MOCK_MODELS: "1"
+      BBIA_DISABLE_VISION_MODELS: "1"
+      PYTHONDONTWRITEBYTECODE: 1
     steps:
       - uses: actions/checkout@v4
+
+      - name: Clean up disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /opt/hostedtoolcache/CodeQL
+          sudo rm -rf /usr/local/share/boost
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+          sudo apt-get clean
+          sudo rm -rf /var/lib/apt/lists/*
+          df -h
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+          cache: "pip"
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgl1-mesa-dri libglib2.0-0 libsm6 libxext6 libxrender-dev libgomp1 libglu1-mesa portaudio19-dev python3-dev ffmpeg
+          sudo apt-get clean
+          sudo rm -rf /var/lib/apt/lists/*
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -e ".[dev]"
+          pip install --no-cache-dir -e .[test]
+          pip install --no-cache-dir pytest-asyncio pytest-timeout
+          # Installation optionnelle de pyaudio si disponible
+          pip install --no-cache-dir pyaudio || echo "pyaudio non disponible, continuons sans"
+          python -m pip cache purge || true
+
+      - name: Clean logs and artifacts before tests
+        run: |
+          rm -rf logs/* artifacts/*.log artifacts/*.jsonl artifacts/*.csv || true
+          find . -type d -name "__pycache__" -exec rm -r {} + || true
+          find . -type f -name "*.pyc" -delete || true
+          find . -type d -name ".pytest_cache" -exec rm -r {} + || true
+          find . -type d -name ".mypy_cache" -exec rm -r {} + || true
+          find . -type d -name ".ruff_cache" -exec rm -r {} + || true
+          python -m pip cache purge || true
+
+      - name: Run slow tests
+        timeout-minutes: 25
+        run: |
+          export PYTHONPATH=src:$PYTHONPATH
+          # Tests slow avec timeout plus long (60s par test)
+          pytest -vv -m "slow and not e2e" --cov=src/bbia_sim --cov-report=xml --cov-report=term-missing --cov-fail-under=0 --timeout=60 --maxfail=5 --log-cli-level=INFO --durations=20 --tb=short --showlocals
+        env:
+          PYTHONDONTWRITEBYTECODE: 1
+
+      - name: Clean up before upload
+        if: always()
+        run: |
+          find . -type d -name "__pycache__" -exec rm -r {} + || true
+          find . -type d -name ".pytest_cache" -exec rm -r {} + || true
+          rm -rf htmlcov/ || true
+          python -m pip cache purge || true
+
+      - name: Upload coverage (slow tests)
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./coverage.xml
+          flags: slow-tests
+          name: codecov-slow-tests
+
+  examples:
+    runs-on: ubuntu-latest
+    needs: [lint, test]
+    timeout-minutes: 10
+    env:
+      MUJOCO_GL: disable
+      DISPLAY: ""
+      BBIA_DISABLE_AUDIO: "1"
+      PYTHONDONTWRITEBYTECODE: 1
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Clean up disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /opt/hostedtoolcache/CodeQL
+          sudo rm -rf /usr/local/share/boost
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+          sudo apt-get clean
+          sudo rm -rf /var/lib/apt/lists/*
+          df -h
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgl1-mesa-dri libglib2.0-0 libsm6 libxext6 libxrender-dev libgomp1 libglu1-mesa portaudio19-dev python3-dev ffmpeg
+          sudo apt-get clean
+          sudo rm -rf /var/lib/apt/lists/*
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install --no-cache-dir -e ".[dev]"
+          python -m pip cache purge || true
 
       - name: Test examples
         run: |
+          export PYTHONPATH=src:$PYTHONPATH
           echo "Testing hello_sim.py..."
           python examples/hello_sim.py --duration 1
 
@@ -219,55 +529,129 @@ jobs:
 
           echo "✅ All examples executed successfully"
 
+      - name: Clean up after examples
+        if: always()
+        run: |
+          find . -type d -name "__pycache__" -exec rm -r {} + || true
+          python -m pip cache purge || true
+
   build:
     runs-on: ubuntu-latest
-    needs: [lint, test, test-e2e]
+    needs: [lint, test, test-e2e, test-slow]
+    timeout-minutes: 10
+    env:
+      PYTHONDONTWRITEBYTECODE: 1
     steps:
       - uses: actions/checkout@v4
+
+      - name: Clean up disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /opt/hostedtoolcache/CodeQL
+          sudo rm -rf /usr/local/share/boost
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+          sudo apt-get clean
+          sudo rm -rf /var/lib/apt/lists/*
+          df -h
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+          cache: "pip"
+
+      - name: Install system dependencies (minimal for build)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential python3-dev
+          sudo apt-get clean
+          sudo rm -rf /var/lib/apt/lists/*
 
       - name: Install build dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install build wheel
+          pip install --no-cache-dir build wheel
+          python -m pip cache purge || true
 
       - name: Build package
         run: python -m build
 
       - name: Check package
-        run: pip install dist/*.whl
+        run: pip install --no-cache-dir dist/*.whl
+
+      - name: Clean up after build
+        if: always()
+        run: |
+          rm -rf build/ dist/*.tar.gz || true
+          python -m pip cache purge || true
 
   benchmark:
     runs-on: ubuntu-latest
     needs: [lint, test]
+    timeout-minutes: 20
     env:
       MUJOCO_GL: disable
       DISPLAY: ""
       BBIA_DISABLE_AUDIO: "1"
+      PYTHONDONTWRITEBYTECODE: 1
     steps:
       - uses: actions/checkout@v4
+
+      - name: Clean up disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /opt/hostedtoolcache/CodeQL
+          sudo rm -rf /usr/local/share/boost
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+          sudo apt-get clean
+          sudo rm -rf /var/lib/apt/lists/*
+          df -h
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+          cache: "pip"
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgl1-mesa-dri libglib2.0-0 libsm6 libxext6 libxrender-dev libgomp1 libglu1-mesa portaudio19-dev python3-dev ffmpeg
+          sudo apt-get clean
+          sudo rm -rf /var/lib/apt/lists/*
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -e .[test]
-          pip install pytest-timeout
+          pip install --no-cache-dir -e .[test]
+          pip install --no-cache-dir pytest-timeout
+          python -m pip cache purge || true
 
       - name: Run Performance Benchmarks
         run: |
+          export PYTHONPATH=src:$PYTHONPATH
           mkdir -p artifacts
           # Script accepte --jsonl ou --output pour fichier de sortie
           python scripts/bbia_performance_benchmarks.py --jsonl artifacts/benchmarks.jsonl 2>&1 || python scripts/bbia_performance_benchmarks.py --output artifacts/benchmarks.jsonl 2>&1 || echo "Benchmarks failed (non-blocking)"
         continue-on-error: true
+
+      - name: Run Performance Profiling with Baseline
+        run: |
+          export PYTHONPATH=src:$PYTHONPATH
+          mkdir -p artifacts
+          # Profiling automatique avec validation baseline
+          python scripts/performance_profiling.py || echo "Profiling failed (non-blocking)"
+        continue-on-error: true
+
+      - name: Clean up after benchmarks
+        if: always()
+        run: |
+          find . -type d -name "__pycache__" -exec rm -r {} + || true
+          python -m pip cache purge || true
 
       - name: Upload benchmark results
         if: always()
@@ -276,3 +660,74 @@ jobs:
           name: benchmark-results
           path: artifacts/benchmarks.jsonl
           retention-days: 7
+          if-no-files-found: ignore
+
+  metrics:
+    runs-on: ubuntu-latest
+    needs: [test]
+    if: github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main'
+    timeout-minutes: 10
+    env:
+      PYTHONDONTWRITEBYTECODE: 1
+      MUJOCO_GL: disable
+      DISPLAY: ""
+      BBIA_DISABLE_AUDIO: "1"
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Clean up disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /opt/hostedtoolcache/CodeQL
+          sudo rm -rf /usr/local/share/boost
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+          sudo apt-get clean
+          sudo rm -rf /var/lib/apt/lists/*
+          df -h
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install dependencies (minimal)
+        run: |
+          python -m pip install --upgrade pip
+          # Installer flit_core pour résoudre l'erreur BackendUnavailable
+          pip install --no-cache-dir flit_core build
+          # Workaround: installer avec --no-build-isolation pour contourner l'erreur de classifier de licence déprécié
+          pip install --no-cache-dir --no-build-isolation git+https://github.com/arkalia-luna-system/arkalia-metrics-collector.git || \
+          pip install --no-cache-dir --no-build-isolation --no-deps git+https://github.com/arkalia-luna-system/arkalia-metrics-collector.git
+          pip install --no-cache-dir defusedxml
+
+      - name: Collect metrics
+        run: |
+          export PYTHONPATH=src:$PYTHONPATH
+          chmod +x scripts/collect_metrics.sh
+          ./scripts/collect_metrics.sh
+
+      - name: Update METRICS.md
+        run: |
+          export PYTHONPATH=src:$PYTHONPATH
+          python3 scripts/update_metrics_doc.py
+
+      - name: Clean up after metrics
+        if: always()
+        run: |
+          rm -rf metrics/*.html metrics/*.csv metrics/*.yaml metrics/._* || true
+          find . -type d -name "__pycache__" -exec rm -r {} + || true
+          python -m pip cache purge || true
+
+      - name: Commit metrics update (no push - requires manual review)
+        if: github.ref == 'refs/heads/develop'
+        run: |
+          # Note: Push automatique désactivé pour éviter erreurs de permission
+          # Les métriques sont sauvegardées dans les artifacts et peuvent être commitées manuellement si nécessaire
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add docs/reference/METRICS.md metrics/*.json metrics/*.md 2>/dev/null || true
+          # Ne pas push automatiquement - les métriques sont dans les artifacts
+          echo "✅ Métriques mises à jour (disponibles dans artifacts)"

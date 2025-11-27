@@ -1,8 +1,8 @@
 # 🎨 Guide - Importer Images dans MuJoCo
 
-**Date** : Oct / Nov. 2025
+**Date** : 21 Novembre 2025
 
-> **Question** : Peut-on importer des images créées (ex: pièce avec audit) dans MuJoCo pour les scènes 3D ?  
+> **Question** : Peut-on importer des images créées (ex: pièce avec audit) dans MuJoCo pour les scènes 3D ?
 > **Réponse** : ✅ **OUI, C'EST POSSIBLE ET RELATIVEMENT SIMPLE !**
 
 ---
@@ -17,7 +17,7 @@
 - ✅ **Skybox** : Image d'environnement 360° (déjà utilisé dans le projet)
 - ✅ **Tout décor visuel** : Plus facile que coder en 3D
 
-**Avantage** : **Beaucoup plus simple** que de tout modéliser en 3D !  
+**Avantage** : **Beaucoup plus simple** que de tout modéliser en 3D !
 Vous dessinez vos textures → MuJoCo les applique automatiquement.
 
 ---
@@ -46,28 +46,28 @@ Vous dessinez vos textures → MuJoCo les applique automatiquement.
 ```xml
 <mujoco model="piece_avec_images">
   <compiler angle="radian"/>
-  
+
   <asset>
     <!-- VOS IMAGES (placez dans assets/textures/) -->
     <texture name="mur_texture" type="2d" file="assets/textures/mur_procreate.png"/>
     <texture name="sol_texture" type="2d" file="assets/textures/sol_procreate.png"/>
     <texture name="plafond_texture" type="2d" file="assets/textures/plafond_procreate.png"/>
-    
+
     <!-- Matériaux utilisant vos textures -->
     <material name="mat_mur" texture="mur_texture"/>
     <material name="mat_sol" texture="sol_texture"/>
     <material name="mat_plafond" texture="plafond_texture"/>
   </asset>
-  
+
   <worldbody>
     <!-- Sol avec votre texture -->
     <geom name="sol" type="plane" size="2 2 0.1" material="mat_sol"/>
-    
+
     <!-- Murs avec vos textures -->
     <body name="mur_fond" pos="0 0 1">
       <geom type="box" size="0.1 2 1" material="mat_mur"/>
     </body>
-    
+
     <!-- Robot Reachy au centre -->
     <include file="reachy_mini_REAL_OFFICIAL.xml"/>
   </worldbody>
@@ -137,27 +137,27 @@ bbia-reachy-sim/
 ```xml
 <mujoco model="piece_bbia">
   <compiler angle="radian" meshdir="../../assets/reachy_official"/>
-  
+
   <asset>
     <!-- Vos textures Procreate -->
     <texture name="texture_mur" type="2d" file="../../../assets/textures/mur.png"/>
     <texture name="texture_sol" type="2d" file="../../../assets/textures/sol.png"/>
     <texture name="texture_plafond" type="2d" file="../../../assets/textures/plafond.png"/>
-    
+
     <!-- Matériaux -->
     <material name="mat_mur" texture="texture_mur"/>
     <material name="mat_sol" texture="texture_sol"/>
     <material name="mat_plafond" texture="texture_plafond"/>
-    
+
     <!-- Skybox BBIA (déjà existant) -->
-    <texture name="skybox_bbia" type="skybox" builtin="gradient" 
+    <texture name="skybox_bbia" type="skybox" builtin="gradient"
              rgb1="0.92 0.92 0.93" rgb2="0.53 0.74 0.98"/>
   </asset>
-  
+
   <worldbody>
     <!-- Sol avec votre texture -->
     <geom name="sol" type="plane" size="3 3 0.1" material="mat_sol" pos="0 0 0"/>
-    
+
     <!-- Murs (4 murs de la pièce) -->
     <body name="mur_fond" pos="0 2 1">
       <geom type="box" size="0.1 3 1.5" material="mat_mur"/>
@@ -168,17 +168,17 @@ bbia-reachy-sim/
     <body name="mur_droite" pos="2 0 1">
       <geom type="box" size="0.1 3 1.5" material="mat_mur"/>
     </body>
-    
+
     <!-- Plafond -->
     <body name="plafond" pos="0 0 2.5">
       <geom type="box" size="3 3 0.1" material="mat_plafond"/>
     </body>
-    
+
     <!-- Bureau (existant) -->
     <body name="bureau_bbia" pos="0 0 0.16">
       <geom name="tabletop" type="box" size="0.4 0.3 0.01" pos="0 0 0.16" rgba="1.0 1.0 1.0 1.0"/>
     </body>
-    
+
     <!-- Robot Reachy Mini -->
     <include file="../models/reachy_mini_REAL_OFFICIAL.xml"/>
   </worldbody>
@@ -387,9 +387,9 @@ sim.launch_simulation()
 
 ## 🎯 Navigation
 
-**Retour à** : [README Documentation](../README.md)  
+**Retour à** : [README Documentation](../README.md)
 **Voir aussi** : [Guide MuJoCo](MUJOCO_SIMULATION_GUIDE.md) • [Index Simulations](../simulations/INDEX_GUIDES_PROCREATE.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)
 
 ---
 
-*Guide Import Images MuJoCo - BBIA-SIM - Oct / Nov. 2025*
+*Guide Import Images MuJoCo - BBIA-SIM - 21 Novembre 2025*

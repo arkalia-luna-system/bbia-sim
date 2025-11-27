@@ -1,6 +1,6 @@
 # BBIA-SIM v1.3.0 - Innovation Technique en Robotique Cognitive
 
-> **Statut** : ✅ **Présentation active** | **Version** : 1.3.0-pre-release | **Date** : Oct / No2025025025025025  
+> **Statut** : ✅ **Présentation active** | **Version** : 1.3.2 | **Date** : Oct / Nov. 2025  
 > **Auteur** : Arkalia Luna System  
 > **Type** : Présentation technique projet BBIA-SIM
 
@@ -177,9 +177,9 @@ Modules BBIA ←→ Interface ←→ SDK Officiel
 | Propriété | Valeur |
 |-----------|--------|
 | **Statut** | ✅ Présentation active |
-| **Version** | 1.3.0-pre-release |
-| **Date de création** | Oct / No2025025025025025 |
-| **Dernière mise à jour** | Oct / No2025025025025025 |
+| **Version** | 1.3.2 |
+| **Date de création** | Oct / Nov. 2025 |
+| **Dernière mise à jour** | Oct / Nov. 2025 |
 | **Auteur** | Arkalia Luna System |
 | **Type** | Présentation technique |
 | **Nombre de slides** | 10 |

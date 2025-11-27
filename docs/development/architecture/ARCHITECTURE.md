@@ -1,7 +1,7 @@
 # 🏗️ Architecture BBIA-SIM - Guide Complet
 
-**Date** : Oct / Nov. 2025
-**Version** : 1.3.2
+**Date** : 26 Novembre 2025
+**Version** : 1.4.0
 
 ---
 
@@ -13,14 +13,9 @@
 
 ### 🎯 Par où commencer ?
 
-1. **🟢 Débutant ?** → **[Architecture Vue d'Ensemble](ARCHITECTURE_OVERVIEW.md)** - Vue générale accessible
+1. **🟢 Nouveau ?** → **[Architecture Vue d'Ensemble](ARCHITECTURE_OVERVIEW.md)** - Vue générale accessible
 2. **🟡 Intermédiaire ?** → **[Architecture Vue d'Ensemble](ARCHITECTURE_OVERVIEW.md)** - Détails techniques
 3. **🔴 Expert ?** → **[Architecture Détaillée](ARCHITECTURE_DETAILED.md)** - Détails techniques approfondis
-
-### 📚 Documents disponibles
-
-- **[Architecture Vue d'Ensemble](ARCHITECTURE_OVERVIEW.md)** - Commencez ici pour une vue générale (🟢 Débutant)
-- **[Architecture Détaillée](ARCHITECTURE_DETAILED.md)** - Détails techniques approfondis (🔴 Avancé)
 
 ---
 
@@ -37,23 +32,10 @@ BBIA-SIM est un moteur cognitif Python pour robot Reachy Mini avec :
 
 ## 📚 Références
 
-Pour plus de détails, consultez :
-
-- [Architecture Vue d'Ensemble](ARCHITECTURE_OVERVIEW.md) - Vue générale
-- [Architecture Détaillée](ARCHITECTURE_DETAILED.md) - Détails techniques
-- [Conformité SDK](../quality/compliance/CONFORMITE_REACHY_MINI_COMPLETE.md) - Conformité complète
+- **[Architecture Vue d'Ensemble](ARCHITECTURE_OVERVIEW.md)** - Vue générale (🟢 Accessible)
+- **[Architecture Détaillée](ARCHITECTURE_DETAILED.md)** - Détails techniques (🔴 Avancé)
+- **[Conformité SDK](../quality/compliance/CONFORMITE_REACHY_MINI_COMPLETE.md)** - Conformité complète
 
 ---
 
-**Note** : Ce fichier sert de point d'entrée. Pour les détails, voir `ARCHITECTURE_OVERVIEW.md` et `ARCHITECTURE_DETAILED.md`.
-
----
-
-**Dernière mise à jour** : Oct / Nov. 2025
-
----
-
-## 🎯 Navigation
-
-**Retour à** : [README Documentation](../README.md)  
-**Voir aussi** : [Architecture Vue d'Ensemble](ARCHITECTURE_OVERVIEW.md) • [Architecture Détaillée](ARCHITECTURE_DETAILED.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)
+**Dernière mise à jour** : 26 Novembre 2025

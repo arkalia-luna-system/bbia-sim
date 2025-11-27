@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 """BBIA Awake - Séquence de réveil optimisée pour Reachy Mini
-Conforme au SDK officiel avec intelligence et variété
+Conforme au SDK officiel avec intelligence et variété.
 """
 
+import logging
 import secrets
 import time
+
+logger = logging.getLogger(__name__)
 
 
 def start_bbia_sim() -> None:
@@ -46,7 +49,7 @@ def start_bbia_sim() -> None:
     selected_sequence = secrets.choice(wake_sequences)
 
     for step in selected_sequence:
-        print(step)
+        logger.info(step)
         time.sleep(1)
 
     # AMÉLIORATION INTELLIGENCE: Messages de première pensée variés
@@ -60,7 +63,7 @@ def start_bbia_sim() -> None:
     ]
 
     first_thought = secrets.choice(first_thoughts)
-    print(f"Première pensée : '{first_thought}'")
+    logger.info(f"Première pensée : '{first_thought}'")
     time.sleep(1)
 
     # Message final varié
@@ -70,10 +73,15 @@ def start_bbia_sim() -> None:
         "Éveil complet, je suis réveillé et tous les systèmes sont prêts",
         "Réveil terminé, je suis réveillé et prêt pour vous",
     ]
-    print(secrets.choice(completion_messages))
+    logger.info(secrets.choice(completion_messages))
     # LIGNE GARANTIE POUR LES TESTS: toujours contenir le motif "réveillé"
-    print("BBIA est réveillé.")
+    logger.info("BBIA est réveillé.")
+
+
+def main() -> None:
+    """Entry point CLI pour bbia-sim."""
+    start_bbia_sim()
 
 
 if __name__ == "__main__":
-    start_bbia_sim()
+    main()

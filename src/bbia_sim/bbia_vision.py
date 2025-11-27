@@ -7,7 +7,10 @@ Reconnaissance d'objets, détection de visages, suivi d'objets.
 import logging
 import math
 import os
+import queue
+import sys
 import threading
+import time
 from collections import deque
 from collections.abc import Callable
 from datetime import datetime
@@ -16,6 +19,8 @@ from typing import TYPE_CHECKING, Any, cast
 if TYPE_CHECKING:
     from .face_recognition import BBIAPersonRecognition
     from .pose_detection import BBIAPoseDetection
+
+import contextlib
 
 import numpy as np
 import numpy.typing as npt
@@ -48,15 +53,32 @@ def get_bbia_vision_singleton(robot_api: Any | None = None) -> "BBIAVision":
 
 # Réduction du bruit de logs TensorFlow/MediaPipe (avant tout import MediaPipe)
 try:
-    import os as _os
+    os.environ.setdefault("GLOG_minloglevel", "2")  # 0=INFO,1=WARNING,2=ERROR
+    os.environ.setdefault(
+        "TF_CPP_MIN_LOG_LEVEL",
+        "3",
+    )  # 0=INFO,1=WARNING,2=ERROR,3=FATAL
+    os.environ.setdefault("MEDIAPIPE_DISABLE_GPU", "1")  # éviter logs GPU inutiles
+    # Supprimer les logs TensorFlow Lite
+    os.environ.setdefault("TFLITE_LOG_VERBOSITY", "0")  # 0=ERROR, 1=WARNING, 2=INFO
+    # Supprimer les warnings MediaPipe/TensorFlow en CI
+    if os.environ.get("CI", "false").lower() == "true":
+        # Rediriger stderr pour MediaPipe en CI (warnings normaux mais bruyants)
+        import warnings
 
-    _os.environ.setdefault("GLOG_minloglevel", "2")  # 0=INFO,1=WARNING,2=ERROR
-    _os.environ.setdefault("TF_CPP_MIN_LOG_LEVEL", "2")  # 1=WARNING,2=ERROR
-    _os.environ.setdefault("MEDIAPIPE_DISABLE_GPU", "1")  # éviter logs GPU inutiles
-except Exception as e:
+        warnings.filterwarnings("ignore", category=UserWarning, module="mediapipe")
+        warnings.filterwarnings("ignore", category=UserWarning, module="tensorflow")
+    # Supprimer les logs OpenGL (ne pas définir MUJOCO_GL sur macOS, utilise la valeur par défaut)
+    # Sur macOS, laisser MuJoCo choisir automatiquement (glfw ou egl)
+    if sys.platform != "darwin":  # Pas macOS
+        os.environ.setdefault("MUJOCO_GL", "egl")  # Utiliser EGL sur Linux/Windows
+except (OSError, RuntimeError, ValueError, TypeError) as e:
     logger.debug(
-        f"Impossible de configurer variables d'environnement MediaPipe/TensorFlow: {e}"
+        "Impossible de configurer variables d'environnement MediaPipe/TensorFlow: %s",
+        e,
     )
+except Exception as e:
+    logger.debug("Erreur inattendue configuration variables d'environnement: %s", e)
 
 # Import conditionnel pour YOLO et MediaPipe
 try:
@@ -100,6 +122,7 @@ except ImportError:
     pass  # create_pose_detector reste None
 
 # Import conditionnel cv2 pour conversions couleur
+CV2_AVAILABLE = False
 try:
     import cv2
 
@@ -124,6 +147,22 @@ class BBIAVision:
             robot_api: Interface RobotAPI (optionnel) pour accès robot.media.camera
 
         """
+        # OPTIMISATION RAM: Avertir si instance créée directement au lieu d'utiliser singleton
+        global _bbia_vision_singleton
+        if _bbia_vision_singleton is not None and _bbia_vision_singleton is not self:
+            # Utiliser debug au lieu de warning pour réduire le bruit dans les tests
+            # Le warning reste utile en production mais trop verbeux en tests
+            if "pytest" in sys.modules or "unittest" in sys.modules:
+                logger.debug(
+                    "⚠️ Instance BBIAVision créée directement. "
+                    "Utilisez get_bbia_vision_singleton() pour éviter duplication RAM.",
+                )
+            else:
+                logger.warning(
+                    "⚠️ Instance BBIAVision créée directement. "
+                    "Utilisez get_bbia_vision_singleton() pour éviter duplication RAM.",
+                )
+
         self.robot_api = robot_api
         self.camera_active = True
         self.vision_quality = "HD"
@@ -139,6 +178,16 @@ class BBIAVision:
         )
         self.tracking_active = False
         self.current_focus: dict[str, Any] | None = None
+
+        # OPTIMISATION PERFORMANCE: Threading asynchrone pour détection objets
+        # (évite blocage lors de scan_environment)
+        self._scan_thread: threading.Thread | None = None
+        self._scan_queue: queue.Queue[dict[str, Any]] = queue.Queue(maxsize=1)
+        self._last_scan_result: dict[str, Any] | None = None
+        self._scan_lock = threading.Lock()
+        self._scan_interval = 0.1  # 100ms entre scans (10 FPS max)
+        self._async_scan_active = False
+        self._should_stop_scan = threading.Event()
 
         # Buffer circulaire pour frames caméra (Issue #16 SDK officiel - éviter overrun)
         # Taille configurable via env var (défaut: 10 frames)
@@ -178,8 +227,10 @@ class BBIAVision:
                         else:
                             self._camera_sdk_available = True
                             logger.info("✅ Caméra SDK disponible: robot.media.camera")
+            except (AttributeError, RuntimeError, OSError) as e:
+                logger.debug("Caméra SDK non disponible (fallback simulation): %s", e)
             except Exception as e:
-                logger.debug(f"Caméra SDK non disponible (fallback simulation): {e}")
+                logger.debug("Erreur inattendue caméra SDK: %s", e)
 
         # Support webcam USB via OpenCV (fallback si pas de SDK)
         self._opencv_camera = None
@@ -193,7 +244,7 @@ class BBIAVision:
                 # Essayer device path si fourni, sinon index
                 if camera_device:
                     self._opencv_camera = cv2.VideoCapture(camera_device)
-                    logger.info(f"🔌 Tentative ouverture webcam: {camera_device}")
+                    logger.info("🔌 Tentative ouverture webcam: %s", camera_device)
                 else:
                     try:
                         camera_index = int(camera_index_str)
@@ -225,16 +276,25 @@ class BBIAVision:
                         self._opencv_camera.release()
                     self._opencv_camera = None
                     logger.debug("Webcam OpenCV non disponible (fallback simulation)")
-            except Exception as e:
+            except (OSError, RuntimeError, AttributeError) as e:
                 if self._opencv_camera:
                     try:
                         self._opencv_camera.release()
+                    except (OSError, RuntimeError) as release_error:
+                        logger.debug(
+                            "Erreur lors de la libération de la webcam OpenCV: %s",
+                            release_error,
+                        )
                     except Exception as release_error:
                         logger.debug(
-                            f"Erreur lors de la libération de la webcam OpenCV: {release_error}"
+                            "Erreur inattendue libération webcam OpenCV: %s",
+                            release_error,
                         )
                 self._opencv_camera = None
-                logger.debug(f"Erreur initialisation webcam OpenCV: {e}")
+                logger.debug("Erreur initialisation webcam OpenCV: %s", e)
+            except Exception as e:
+                self._opencv_camera = None
+                logger.debug("Erreur inattendue initialisation webcam OpenCV: %s", e)
 
         # OPTIMISATION RAM: Lazy loading YOLO/MediaPipe
         # Ne charger que si caméra réelle disponible
@@ -261,8 +321,10 @@ class BBIAVision:
                     logger.info(
                         "✅ Détecteur YOLO initialisé (lazy loading - caméra réelle)",
                     )
+            except (ImportError, RuntimeError, AttributeError) as e:
+                logger.warning("⚠️ YOLO non disponible: %s", e)
             except Exception as e:
-                logger.warning(f"⚠️ YOLO non disponible: {e}")
+                logger.warning("⚠️ Erreur inattendue YOLO: %s", e)
         else:
             logger.debug(
                 "YOLO non chargé (lazy loading - caméra simulation ou non disponible)",
@@ -280,15 +342,27 @@ class BBIAVision:
                     )
 
                     with _mediapipe_cache_lock:
-                        if _mediapipe_face_detection_cache is not None:
+                        # IMPORTANT: Vérifier que MediaPipe est disponible avant de réutiliser le cache
+                        if (
+                            _mediapipe_face_detection_cache is not None
+                            and MEDIAPIPE_AVAILABLE
+                            and mp is not None
+                        ):
                             logger.debug(
                                 "♻️ Réutilisation détecteur MediaPipe depuis cache "
                                 "(bbia_vision)",
                             )
                             self.face_detector = _mediapipe_face_detection_cache
-                            logger.info(
+                            logger.debug(
                                 "✅ Détecteur MediaPipe Face initialisé (cache)",
                             )
+                        elif _mediapipe_face_detection_cache is not None:
+                            # Si cache existe mais MediaPipe n'est plus disponible, nettoyer
+                            logger.debug(
+                                "🧹 Nettoyage cache MediaPipe (non disponible)"
+                            )
+                            _mediapipe_face_detection_cache = None
+                            self.face_detector = None
                         else:
                             # Créer nouvelle instance et mettre en cache
                             self.face_detector = (
@@ -298,16 +372,18 @@ class BBIAVision:
                                 )
                             )
                             _mediapipe_face_detection_cache = self.face_detector
-                            logger.info("✅ Détecteur MediaPipe Face initialisé")
+                            logger.debug("✅ Détecteur MediaPipe Face initialisé")
                 except ImportError:
                     # Fallback si import cache échoue
                     self.face_detector = mp.solutions.face_detection.FaceDetection(
                         model_selection=0,
                         min_detection_confidence=0.5,
                     )
-                    logger.info("✅ Détecteur MediaPipe Face initialisé")
+                    logger.debug("✅ Détecteur MediaPipe Face initialisé")
+            except (ImportError, RuntimeError, AttributeError) as e:
+                logger.warning("⚠️ MediaPipe non disponible: %s", e)
             except Exception as e:
-                logger.warning(f"⚠️ MediaPipe non disponible: {e}")
+                logger.warning("⚠️ MediaPipe non disponible (erreur inattendue): %s", e)
 
         # Module DeepFace pour reconnaissance visage personnalisée + émotions
         self.face_recognition = None
@@ -320,8 +396,10 @@ class BBIAVision:
                     logger.info(
                         f"✅ DeepFace initialisé (db: {db_path}, modèle: {model_name})",
                     )
+            except (ImportError, RuntimeError, AttributeError) as e:
+                logger.debug("⚠️ DeepFace non disponible: %s", e)
             except Exception as e:
-                logger.warning(f"⚠️ DeepFace non disponible: {e}")
+                logger.debug("⚠️ DeepFace non disponible (erreur inattendue): %s", e)
 
         # Module MediaPipe Pose pour détection postures/gestes
         self.pose_detector = None
@@ -338,8 +416,13 @@ class BBIAVision:
                         f"✅ MediaPipe Pose initialisé "
                         f"(complexité: {model_complexity})",
                     )
+            except (ImportError, RuntimeError, AttributeError) as e:
+                logger.warning("⚠️ MediaPipe Pose non disponible: %s", e)
             except Exception as e:
-                logger.warning(f"⚠️ MediaPipe Pose non disponible: {e}")
+                logger.warning(
+                    "⚠️ MediaPipe Pose non disponible (erreur inattendue): %s",
+                    e,
+                )
 
     def _capture_image_from_camera(self) -> npt.NDArray[np.uint8] | None:
         """Capture une image depuis robot.media.camera si disponible,
@@ -408,8 +491,11 @@ class BBIAVision:
                     else:
                         logger.warning("Format d'image non supporté par SDK camera")
                         return None
+                except (ValueError, TypeError, AttributeError) as e:
+                    logger.debug("Erreur conversion image: %s", e)
+                    return None
                 except Exception as e:
-                    logger.debug(f"Erreur conversion image: {e}")
+                    logger.debug("Erreur inattendue conversion image: %s", e)
                     return None
 
             # CORRECTION EXPERTE: Validation format image (shape, dtype, channels)
@@ -465,7 +551,7 @@ class BBIAVision:
             if image.dtype != np.uint8:
                 try:
                     # Normaliser si float [0,1] → [0,255]
-                    if image.dtype == np.float32 or image.dtype == np.float64:
+                    if image.dtype in (np.float32, np.float64):
                         if image.max() <= 1.0:
                             image = (image * 255).astype(np.uint8)
                         else:
@@ -473,7 +559,7 @@ class BBIAVision:
                     else:
                         image = image.astype(np.uint8)
                 except Exception as e:
-                    logger.debug(f"Erreur conversion dtype: {e}")
+                    logger.debug("Erreur conversion dtype: %s", e)
                     return None
 
             logger.debug("✅ Image capturée depuis robot.media.camera (format validé)")
@@ -503,8 +589,13 @@ class BBIAVision:
             # après toutes les validations
             return cast("npt.NDArray[np.uint8]", image)
 
+        except (AttributeError, RuntimeError, OSError) as e:
+            logger.debug("Erreur capture caméra SDK: %s", e)
         except Exception as e:
-            logger.debug(f"Erreur capture caméra SDK (fallback simulation): {e}")
+            logger.debug(
+                "Erreur inattendue capture caméra SDK (fallback simulation): %s",
+                e,
+            )
 
         return None
 
@@ -529,7 +620,7 @@ class BBIAVision:
 
             # Validation shape et dtype
             if image.ndim < 2 or image.ndim > 3:
-                logger.warning(f"Format image invalide (ndim={image.ndim})")
+                logger.warning("Format image invalide (ndim=%s)", image.ndim)
                 return None
 
             # Assurer dtype uint8
@@ -543,7 +634,7 @@ class BBIAVision:
                     else:
                         image = image.astype(np.uint8)
                 except Exception as e:
-                    logger.debug(f"Erreur conversion dtype: {e}")
+                    logger.debug("Erreur conversion dtype: %s", e)
                     return None
 
             logger.debug("✅ Image capturée depuis webcam USB OpenCV")
@@ -567,8 +658,11 @@ class BBIAVision:
 
             return cast("npt.NDArray[np.uint8]", image)
 
+        except (OSError, RuntimeError, AttributeError) as e:
+            logger.debug("Erreur capture webcam OpenCV: %s", e)
+            return None
         except Exception as e:
-            logger.debug(f"Erreur capture webcam OpenCV: {e}")
+            logger.debug("Erreur inattendue capture webcam OpenCV: %s", e)
             return None
 
     def scan_environment_from_image(
@@ -623,100 +717,118 @@ class BBIAVision:
                         },
                     }
                     objects.append(obj)
+            except (AttributeError, RuntimeError, ValueError) as e:
+                logger.warning("Erreur détection YOLO: %s", e)
             except Exception as e:
-                logger.warning(f"Erreur détection YOLO: {e}")
+                logger.warning("Erreur inattendue détection YOLO: %s", e)
 
         # Détection visages avec MediaPipe + DeepFace
         if self.face_detector:
             try:
-                import cv2
+                if CV2_AVAILABLE:
+                    image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+                    results = self.face_detector.process(image_rgb)
 
-                image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-                results = self.face_detector.process(image_rgb)
+                    if results.detections:
+                        height, width = image.shape[:2]
+                        for detection in results.detections:
+                            bbox = detection.location_data.relative_bounding_box
 
-                if results.detections:
-                    height, width = image.shape[:2]
-                    for detection in results.detections:
-                        bbox = detection.location_data.relative_bounding_box
+                            # Extraire ROI pour DeepFace
+                            face_roi = None
+                            if (
+                                self.face_recognition
+                                and self.face_recognition.is_initialized
+                            ):
+                                x = int(bbox.xmin * width)
+                                y = int(bbox.ymin * height)
+                                w = int(bbox.width * width)
+                                h = int(bbox.height * height)
+                                margin = 20
+                                x = max(0, x - margin)
+                                y = max(0, y - margin)
+                                w = min(width - x, w + 2 * margin)
+                                h = min(height - y, h + 2 * margin)
+                                face_roi = image[y : y + h, x : x + w]
 
-                        # Extraire ROI pour DeepFace
-                        face_roi = None
-                        if (
-                            self.face_recognition
-                            and self.face_recognition.is_initialized
-                        ):
-                            x = int(bbox.xmin * width)
-                            y = int(bbox.ymin * height)
-                            w = int(bbox.width * width)
-                            h = int(bbox.height * height)
-                            margin = 20
-                            x = max(0, x - margin)
-                            y = max(0, y - margin)
-                            w = min(width - x, w + 2 * margin)
-                            h = min(height - y, h + 2 * margin)
-                            face_roi = image[y : y + h, x : x + w]
+                            # Détection DeepFace
+                            recognized_name = "humain"
+                            detected_emotion = "neutral"
+                            emotion_confidence = 0.0
 
-                        # Détection DeepFace
-                        recognized_name = "humain"
-                        detected_emotion = "neutral"
-                        emotion_confidence = 0.0
+                            if (
+                                face_roi is not None
+                                and face_roi.size > 0
+                                and self.face_recognition is not None
+                                and self.face_recognition.is_initialized
+                            ):
+                                try:
+                                    person_result = (
+                                        self.face_recognition.recognize_person(
+                                            face_roi,
+                                            enforce_detection=False,
+                                        )
+                                    )
+                                    if person_result:
+                                        recognized_name = person_result["name"]
 
-                        if (
-                            face_roi is not None
-                            and face_roi.size > 0
-                            and self.face_recognition is not None
-                            and self.face_recognition.is_initialized
-                        ):
-                            try:
-                                person_result = self.face_recognition.recognize_person(
-                                    face_roi,
-                                    enforce_detection=False,
-                                )
-                                if person_result:
-                                    recognized_name = person_result["name"]
+                                    emotion_result = (
+                                        self.face_recognition.detect_emotion(
+                                            face_roi,
+                                            enforce_detection=False,
+                                        )
+                                    )
+                                    if emotion_result:
+                                        detected_emotion = emotion_result["emotion"]
+                                        emotion_confidence = emotion_result[
+                                            "confidence"
+                                        ]
+                                except (
+                                    ValueError,
+                                    RuntimeError,
+                                    AttributeError,
+                                ) as deepface_error:
+                                    logger.debug("DeepFace erreur: %s", deepface_error)
+                                except Exception as deepface_error:
+                                    logger.debug(
+                                        "DeepFace erreur inattendue: %s",
+                                        deepface_error,
+                                    )
 
-                                emotion_result = self.face_recognition.detect_emotion(
-                                    face_roi,
-                                    enforce_detection=False,
-                                )
-                                if emotion_result:
-                                    detected_emotion = emotion_result["emotion"]
-                                    emotion_confidence = emotion_result["confidence"]
-                            except Exception as deepface_error:
-                                logger.debug(f"DeepFace erreur: {deepface_error}")
+                            # Calculer centre pour cohérence avec objets YOLO
+                            bbox_x = int(bbox.xmin * width)
+                            bbox_y = int(bbox.ymin * height)
+                            bbox_w = int(bbox.width * width)
+                            bbox_h = int(bbox.height * height)
+                            center_x = bbox_x + bbox_w / 2
+                            center_y = bbox_y + bbox_h / 2
 
-                        # Calculer centre pour cohérence avec objets YOLO
-                        bbox_x = int(bbox.xmin * width)
-                        bbox_y = int(bbox.ymin * height)
-                        bbox_w = int(bbox.width * width)
-                        bbox_h = int(bbox.height * height)
-                        center_x = bbox_x + bbox_w / 2
-                        center_y = bbox_y + bbox_h / 2
-
-                        face = {
-                            "name": recognized_name,
-                            "distance": 1.5,
-                            "confidence": (
-                                detection.score[0] if detection.score else 0.8
-                            ),
-                            "emotion": detected_emotion,
-                            "emotion_confidence": emotion_confidence,
-                            "position": (
-                                bbox.xmin + bbox.width / 2,
-                                bbox.ymin + bbox.height / 2,
-                            ),
-                            "bbox": {
-                                "x": bbox_x,
-                                "y": bbox_y,
-                                "width": bbox_w,
-                                "height": bbox_h,
-                                "center_x": int(center_x),
-                                "center_y": int(center_y),
-                            },
-                        }
-                        faces.append(face)
+                            face = {
+                                "name": recognized_name,
+                                "distance": 1.5,
+                                "confidence": (
+                                    detection.score[0] if detection.score else 0.8
+                                ),
+                                "emotion": detected_emotion,
+                                "emotion_confidence": emotion_confidence,
+                                "position": (
+                                    bbox.xmin + bbox.width / 2,
+                                    bbox.ymin + bbox.height / 2,
+                                ),
+                                "bbox": {
+                                    "x": bbox_x,
+                                    "y": bbox_y,
+                                    "width": bbox_w,
+                                    "height": bbox_h,
+                                    "center_x": int(center_x),
+                                    "center_y": int(center_y),
+                                },
+                            }
+                            faces.append(face)
+            except (AttributeError, RuntimeError, ValueError) as e:
+                logger.warning("Erreur détection MediaPipe: %s", e)
             except Exception as e:
-                logger.warning(f"Erreur détection MediaPipe: {e}")
+                logger.warning("Erreur inattendue détection MediaPipe: %s", e)
 
         # Détection postures avec MediaPipe Pose
         if self.pose_detector and self.pose_detector.is_initialized:
@@ -730,8 +842,10 @@ class BBIAVision:
                             "posture": pose_result["posture"],
                         },
                     )
+            except (AttributeError, RuntimeError, ValueError) as e:
+                logger.debug("Erreur détection pose: %s", e)
             except Exception as e:
-                logger.debug(f"Erreur détection pose: {e}")
+                logger.debug("Erreur inattendue détection pose: %s", e)
 
         # OPTIMISATION RAM: Limiter taille historique avec deque
         self.objects_detected = deque(
@@ -878,17 +992,18 @@ class BBIAVision:
                             },
                         }
                         objects.append(obj)
+                except (AttributeError, RuntimeError, ValueError) as e:
+                    logger.warning("Erreur détection YOLO: %s", e)
                 except Exception as e:
-                    logger.warning(f"Erreur détection YOLO: {e}")
+                    logger.warning("Erreur inattendue détection YOLO: %s", e)
 
             # Détection de visages avec MediaPipe
             if self.face_detector:
                 try:
-                    import cv2
-
-                    # MediaPipe nécessite RGB
-                    image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-                    results = self.face_detector.process(image_rgb)
+                    if CV2_AVAILABLE:
+                        # MediaPipe nécessite RGB
+                        image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+                        results = self.face_detector.process(image_rgb)
 
                     if results.detections:
                         height, width = image.shape[:2]
@@ -936,10 +1051,10 @@ class BBIAVision:
                                     )
                                     if person_result is not None:
                                         recognized_name = str(
-                                            person_result.get("name", recognized_name)
+                                            person_result.get("name", recognized_name),
                                         )
                                         confidence_value = float(
-                                            person_result.get("confidence", 0.0)
+                                            person_result.get("confidence", 0.0),
                                         )
                                         logger.debug(
                                             "👤 Personne reconnue: %s (conf: %.2f)",
@@ -963,9 +1078,19 @@ class BBIAVision:
                                             f"😊 Émotion détectée: {detected_emotion} "
                                             f"(confiance: {emotion_confidence:.2f})",
                                         )
+                                except (
+                                    ValueError,
+                                    RuntimeError,
+                                    AttributeError,
+                                ) as deepface_error:
+                                    logger.debug(
+                                        "DeepFace erreur (fallback): %s",
+                                        deepface_error,
+                                    )
                                 except Exception as deepface_error:
                                     logger.debug(
-                                        f"DeepFace erreur (fallback): {deepface_error}",
+                                        "DeepFace erreur inattendue (fallback): %s",
+                                        deepface_error,
                                     )
 
                             # Calculer centre pour cohérence avec objets YOLO
@@ -998,8 +1123,10 @@ class BBIAVision:
                                 },
                             }
                             faces.append(face)
+                except (AttributeError, RuntimeError, ValueError) as e:
+                    logger.warning("Erreur détection MediaPipe: %s", e)
                 except Exception as e:
-                    logger.warning(f"Erreur détection MediaPipe: {e}")
+                    logger.warning("Erreur inattendue détection MediaPipe: %s", e)
 
             # Détection de postures avec MediaPipe Pose (optionnel)
             poses = []
@@ -1018,8 +1145,10 @@ class BBIAVision:
                             f"🧍 Posture détectée: {pose_result['posture']}, "
                             f"gestes: {pose_result['gestures']}",
                         )
+                except (AttributeError, RuntimeError, ValueError) as e:
+                    logger.debug("Erreur détection pose: %s", e)
                 except Exception as e:
-                    logger.debug(f"Erreur détection pose: {e}")
+                    logger.debug("Erreur inattendue détection pose: %s", e)
 
             if objects or faces or poses:
                 logger.info(
@@ -1173,8 +1302,7 @@ class BBIAVision:
         """Calcule la distance d'un objet."""
         # Simulation simple basée sur la position
         x, y = object_position
-        distance = math.sqrt(x**2 + y**2)
-        return distance
+        return math.sqrt(x**2 + y**2)
 
     def get_latest_frame(self) -> npt.NDArray[np.uint8] | None:
         """Récupère la frame la plus récente du buffer circulaire.
@@ -1185,10 +1313,140 @@ class BBIAVision:
 
         Returns:
             Dernière frame capturée ou None si buffer vide
+
         """
         if self._camera_frame_buffer:
             return self._camera_frame_buffer[-1]
         return None
+
+    def _scan_thread_worker(self) -> None:
+        """Worker thread pour scans asynchrones en arrière-plan."""
+        logger.debug("🔍 Thread scan asynchrone démarré")
+        while not self._should_stop_scan.is_set():
+            try:
+                if self.camera_active:
+                    # Effectuer scan (synchrone dans le thread)
+                    result = self._scan_environment_sync()
+                    with self._scan_lock:
+                        self._last_scan_result = result
+                    # Mettre à jour queue (remplace ancien résultat si queue pleine)
+                    try:
+                        self._scan_queue.put_nowait(result)
+                    except queue.Full:
+                        # Remplacer ancien résultat
+                        with contextlib.suppress(queue.Empty):
+                            self._scan_queue.get_nowait()
+                        self._scan_queue.put_nowait(result)
+                # Attendre intervalle avant prochain scan
+                self._should_stop_scan.wait(self._scan_interval)
+            except (RuntimeError, AttributeError, OSError):
+                logger.exception("Erreur thread scan asynchrone")
+                time.sleep(self._scan_interval)
+            except Exception:
+                logger.exception("Erreur inattendue thread scan asynchrone")
+                time.sleep(self._scan_interval)
+
+        logger.debug("🔍 Thread scan asynchrone arrêté")
+
+    def start_async_scanning(self, interval: float = 0.1) -> bool:
+        """Démarre le scan asynchrone en arrière-plan.
+
+        Args:
+            interval: Intervalle entre scans en secondes (défaut: 0.1s = 10 FPS)
+
+        Returns:
+            True si démarré avec succès, False sinon
+
+        """
+        # OPTIMISATION RAM: Lock pour éviter création threads multiples
+        with self._scan_lock:
+            if self._async_scan_active:
+                logger.debug("Scan asynchrone déjà actif")
+                return True
+
+            # OPTIMISATION RAM: Vérifier si thread existe déjà et est actif
+            if self._scan_thread is not None and self._scan_thread.is_alive():
+                logger.warning("Thread scan déjà actif, réutilisation")
+                return True
+
+            self._scan_interval = max(0.05, interval)  # Min 50ms (20 FPS max)
+            self._should_stop_scan.clear()
+            self._async_scan_active = True
+
+            self._scan_thread = threading.Thread(
+                target=self._scan_thread_worker,
+                daemon=True,
+                name="BBIAVision-ScanThread",
+            )
+            self._scan_thread.start()
+            logger.info(
+                "✅ Scan asynchrone démarré (intervalle: %ss)",
+                self._scan_interval,
+            )
+            return True
+
+    def stop_async_scanning(self) -> None:
+        """Arrête le scan asynchrone en arrière-plan."""
+        if not self._async_scan_active:
+            return
+
+        self._should_stop_scan.set()
+        self._async_scan_active = False
+
+        if self._scan_thread and self._scan_thread.is_alive():
+            self._scan_thread.join(timeout=1.0)
+            if self._scan_thread.is_alive():
+                logger.warning(
+                    "Thread scan asynchrone n'a pas pu être arrêté proprement",
+                )
+
+        logger.info("✅ Scan asynchrone arrêté")
+
+    def scan_environment_async(
+        self,
+        timeout: float | None = None,
+    ) -> dict[str, Any] | None:
+        """Scanne l'environnement de manière asynchrone (non-bloquant).
+
+        Args:
+            timeout: Timeout en secondes pour attendre résultat (None = retour immédiat)
+
+        Returns:
+            Résultat du scan ou None si pas disponible
+
+        """
+        # Si scan asynchrone actif, retourner dernier résultat
+        if self._async_scan_active:
+            with self._scan_lock:
+                if self._last_scan_result is not None:
+                    return (
+                        self._last_scan_result.copy()
+                        if isinstance(self._last_scan_result, dict)
+                        else self._last_scan_result
+                    )
+
+            # Attendre nouveau résultat si timeout spécifié
+            if timeout is not None and timeout > 0:
+                try:
+                    result = self._scan_queue.get(timeout=timeout)
+                    with self._scan_lock:
+                        self._last_scan_result = result
+                    return result
+                except queue.Empty:
+                    return None
+
+        # Fallback: scan synchrone si asynchrone non actif
+        return self.scan_environment()
+
+    def _scan_environment_sync(self) -> dict[str, Any]:
+        """Version interne synchrone de scan_environment (utilisée par thread).
+
+        Returns:
+            Résultat du scan
+
+        """
+        # Utiliser la méthode scan_environment existante
+        return self.scan_environment()
 
     def get_vision_stats(self) -> dict[str, Any]:
         """Retourne les statistiques de vision."""
@@ -1203,6 +1461,8 @@ class BBIAVision:
             "camera_buffer_size": len(self._camera_frame_buffer),
             "camera_buffer_max": self._camera_frame_buffer.maxlen,
             "buffer_overruns": self._buffer_overrun_count,
+            "async_scan_active": self._async_scan_active,
+            "scan_interval": self._scan_interval,
         }
 
 

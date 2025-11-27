@@ -4,7 +4,7 @@
 >
 > Voir `docs/reference/project-status.md` → "État par axe" pour prioriser les améliorations (API/SDK, perf, sécurité, CI/CD).
 
-**Date :** Oct / Nov. 2025  
+**Date :** 21 Novembre 2025
 **Référence SDK :** <https://github.com/pollen-robotics/reachy_mini>
 
 ---
@@ -17,7 +17,7 @@ Documenter les features avancées du SDK Reachy Mini qui sont **disponibles** da
 
 ## 📊 **FEATURES SDK DISPONIBLES**
 
-### **1. Module Media SDK** ✅ **DÉJÀ INTÉGRÉ** (Oct / Nov. 2025)
+### **1. Module Media SDK** ✅ **DÉJÀ INTÉGRÉ** (21 Novembre 2025)
 
 **Status :** ✅ **FAIT** - Intégré dans tous les modules concernés avec fallbacks gracieux
 
@@ -53,7 +53,7 @@ robot.media.record_audio()  # ✅ Utilisé dans bbia_audio.py
 
 ---
 
-### **2. Module IO SDK** ⚠️ Non Utilisé (à prioriser dès réception robot)
+### **2. Module IO SDK** ⚠️ Non Utilisé (à évaluer après réception robot)
 
 **Status :** Disponible dans `ReachyMiniBackend.io` mais NON UTILISÉ
 
@@ -72,15 +72,47 @@ robot.io.set_leds()            # Contrôle LEDs (si disponibles)
 - Audio streaming pour reconnaissance vocale temps réel
 - Feedback visuel via LEDs
 
-**Plan d'action (optionnel, non critique) :**
+#### 📋 Recommandation Détaillée : Ne PAS implémenter maintenant
+
+**Pourquoi ne pas le faire maintenant ?**
+
+1. **Vous n'avez pas encore le robot** : Impossible de tester les performances réelles avec le vrai hardware. Les streams peuvent être plus lents que prévu, ou nécessiter des ajustements spécifiques au hardware.
+
+2. **Le système actuel fonctionne déjà** :
+   - `robot.media.camera.get_image()` + captures périodiques = **stable et performant**
+   - Le code actuel est testé et fonctionne bien en simulation
+   - Pas besoin d'ajouter de la complexité avant d'avoir testé
+
+3. **Complexité vs bénéfice** :
+   - **Complexité** : Refactor significatif de `BBIAVision` et `bbia_audio`, gestion threads, gestion mémoire
+   - **Bénéfice** : Gain de latence minime (quelques millisecondes) vs complexité ajoutée
+   - **Risque** : Introduire des bugs, rendre le code plus complexe à maintenir
+
+4. **Principe "Ne réparez pas ce qui n'est pas cassé"** : Votre système fonctionne. Mieux vaut tester d'abord avec le robot, identifier les vrais besoins, puis optimiser si nécessaire.
+
+**Quand est-ce que ça devient utile ?**
+
+- ✅ Quand vous avez besoin de suivre des objets en mouvement rapide (ex: balle qui bouge)
+- ✅ Quand la latence devient critique pour vos cas d'usage (ex: interaction temps réel)
+- ✅ Quand les captures périodiques ne suffisent pas (ex: perte d'objets entre captures)
+
+**Plan d'action recommandé :**
+
+1. **Maintenant (avant robot)** : Ne rien changer, vérifier que tout fonctionne en simulation
+2. **Quand vous recevez le robot** : Tester avec le système actuel (`robot.media.camera.get_image()`), mesurer les performances réelles
+3. **Après les tests** : Si besoin identifié (latence trop élevée, perte d'objets) → envisager streams IO
+
+**Plan d'action technique (si décidé après tests) :**
 
 - [ ] ⚠️ Activer `robot.io.get_camera_stream()` dans `BBIAVision` (nécessiterait refactor significatif)
 - [ ] ⚠️ Activer `robot.io.get_audio_stream()` dans `bbia_audio` (nécessiterait refactor significatif)
 - **Note** : Code actuel (`robot.media.camera.get_image()` + captures périodiques) fonctionne parfaitement. Streams seraient optimisation future pour bénéfice marginal.
 
+**Conclusion** : Les streams IO sont une **optimisation optionnelle**, pas un besoin critique. **Mieux vaut attendre d'avoir le robot pour tester et décider si c'est vraiment nécessaire.**
+
 ---
 
-### **3. Techniques d'Interpolation Avancées** ✅ **DÉJÀ IMPLÉMENTÉ** (Oct / Nov. 2025)
+### **3. Techniques d'Interpolation Avancées** ✅ **DÉJÀ IMPLÉMENTÉ** (21 Novembre 2025)
 
 **Status :** ✅ **FAIT** - Mapping émotion → interpolation adaptative implémenté dans `bbia_integration.py`
 
@@ -122,7 +154,7 @@ emotion_interpolation_map = {
 
 ---
 
-### **4. Enregistrement/Replay Avancé** ✅ **DÉJÀ IMPLÉMENTÉ** (Oct / Nov. 2025)
+### **4. Enregistrement/Replay Avancé** ✅ **DÉJÀ IMPLÉMENTÉ** (21 Novembre 2025)
 
 **Status :** ✅ **FAIT** - Implémenté dans `bbia_behavior.py` et `reachy_mini_backend.py`
 
@@ -164,7 +196,7 @@ class BBIABehaviorManager:
 
 ---
 
-## ✅ **STATUT D'IMPLÉMENTATION** (Oct / Nov. 2025)
+## ✅ **STATUT D'IMPLÉMENTATION** (21 Novembre 2025)
 
 ### **Phase 1 : Intégration Media SDK** ✅ **COMPLÉTÉE**
 

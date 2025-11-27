@@ -1,6 +1,6 @@
 # 📹 Inventaire des Médias BBIA-SIM
 
-**Date de mise à jour** : Oct / No2025025025025025  
+**Date de mise à jour** : Oct / Nov. 2025  
 **Statut** : ✅ Actif - Médias disponibles pour documentation et présentation
 
 ---
@@ -11,9 +11,9 @@
 
 #### **Vidéo 1 : Démo MuJoCo - 17:00:52**
 
-- **Fichier** : `assets/videos/Enregistrement de l'écran Oct / No2025025025025025 à 17.00.52.mov`
+- **Fichier** : `assets/videos/Enregistrement de l'écran Oct / Nov. 2025 à 17.00.52.mov`
 - **Taille** : 2.7 MB
-- **Date** : Oct / No2025025025025025
+- **Date** : Oct / Nov. 2025
 - **Source** : `examples/demo_mujoco_continue.py` - Robot qui bouge en continu (tête + corps)
 - **Description** : Capture vidéo de la simulation MuJoCo montrant le robot Reachy Mini en mouvement continu
 - **Contenu** : Robot animé (yaw_body + stewart joints), viewer MuJoCo ouvert
@@ -21,9 +21,9 @@
 
 #### **Vidéo 2 : Démo MuJoCo - 17:01:27**
 
-- **Fichier** : `assets/videos/Enregistrement de l'écran Oct / No2025025025025025 à 17.01.27.mov`
+- **Fichier** : `assets/videos/Enregistrement de l'écran Oct / Nov. 2025 à 17.01.27.mov`
 - **Taille** : 3.4 MB
-- **Date** : Oct / No2025025025025025
+- **Date** : Oct / Nov. 2025
 - **Source** : `examples/demo_mujoco_continue.py` - Robot qui bouge en continu (tête + corps)
 - **Description** : Capture vidéo de la simulation MuJoCo montrant le robot Reachy Mini en mouvement continu
 - **Contenu** : Robot animé (yaw_body + stewart joints), viewer MuJoCo ouvert
@@ -31,9 +31,9 @@
 
 #### **Vidéo 3 : Démo MuJoCo - 17:01:56**
 
-- **Fichier** : `assets/videos/Enregistrement de l'écran Oct / No2025025025025025 à 17.01.56.mov`
+- **Fichier** : `assets/videos/Enregistrement de l'écran Oct / Nov. 2025 à 17.01.56.mov`
 - **Taille** : 3.1 MB
-- **Date** : Oct / No2025025025025025
+- **Date** : Oct / Nov. 2025
 - **Source** : `examples/demo_mujoco_continue.py` - Robot qui bouge en continu (tête + corps)
 - **Description** : Capture vidéo de la simulation MuJoCo montrant le robot Reachy Mini en mouvement continu
 - **Contenu** : Robot animé (yaw_body + stewart joints), viewer MuJoCo ouvert
@@ -50,42 +50,81 @@
 
 ## 📸 Captures d'Écran
 
-### 🎯 Captures Récentes (Oct / No2025025025025025)
+### 🎯 Captures Récentes (Oct / Nov. 2025)
 
 #### **Série de captures - 16:48**
 
-- **Capture 1** : `assets/images/Capture d'écran Oct / No2025025025025025 à 16.48.20.png`
-- **Capture 2** : `assets/images/Capture d'écran Oct / No2025025025025025 à 16.48.29.png`
-- **Capture 3** : `assets/images/Capture d'écran Oct / No2025025025025025 à 16.48.37.png`
-- **Capture 4** : `assets/images/Capture d'écran Oct / No2025025025025025 à 16.48.47.png`
-- **Capture 5** : `assets/images/Capture d'écran Oct / No2025025025025025 à 16.48.56.png`
+- **Capture 1** : `assets/images/Capture d'écran Oct / Nov. 2025 à 16.48.20.png`
+- **Capture 2** : `assets/images/Capture d'écran Oct / Nov. 2025 à 16.48.29.png`
+- **Capture 3** : `assets/images/Capture d'écran Oct / Nov. 2025 à 16.48.37.png`
+- **Capture 4** : `assets/images/Capture d'écran Oct / Nov. 2025 à 16.48.47.png`
+- **Capture 5** : `assets/images/Capture d'écran Oct / Nov. 2025 à 16.48.56.png`
 - **Description** : Séquence de captures montrant le robot Reachy Mini dans MuJoCo
 - **Contenu probable** : Différentes poses, mouvements, ou angles de vue du robot
 - **Usage** : Documentation, présentation visuelle, guides
 
 #### **Série de captures - 16:49**
 
-- **Capture 6** : `assets/images/Capture d'écran Oct / No2025025025025025 à 16.49.04.png`
-- **Capture 7** : `assets/images/Capture d'écran Oct / No2025025025025025 à 16.49.11.png` (61K)
-- **Capture 8** : `assets/images/Capture d'écran Oct / No2025025025025025 à 16.49.19.png` (77K)
-- **Capture 9** : `assets/images/Capture d'écran Oct / No2025025025025025 à 16.49.25.png` (68K)
-- **Capture 10** : `assets/images/Capture d'écran Oct / No2025025025025025 à 16.49.32.png` (84K)
+- **Capture 6** : `assets/images/Capture d'écran Oct / Nov. 2025 à 16.49.04.png`
+- **Capture 7** : `assets/images/Capture d'écran Oct / Nov. 2025 à 16.49.11.png` (61K)
+- **Capture 8** : `assets/images/Capture d'écran Oct / Nov. 2025 à 16.49.19.png` (77K)
+- **Capture 9** : `assets/images/Capture d'écran Oct / Nov. 2025 à 16.49.25.png` (68K)
+- **Capture 10** : `assets/images/Capture d'écran Oct / Nov. 2025 à 16.49.32.png` (84K)
 - **Description** : Suite de captures montrant différentes vues ou animations
 - **Contenu probable** : Mouvements robot, émotions, interactions
 - **Usage** : Documentation, présentation visuelle, guides
 
-### 📅 Captures Anciennes (Oct / No2025025025025025)
+### 📅 Captures Anciennes (Oct / Nov. 2025)
 
-- `Capture d'écran Oct / No2025025025025025 à 17.40.37.png` (38K)
-- `Capture d'écran Oct / No2025025025025025 à 17.40.44.png` (36K)
-- `Capture d'écran Oct / No2025025025025025 à 17.40.52.png` (31K)
-- `Capture d'écran Oct / No2025025025025025 à 17.41.09.png` (35K)
-- `Capture d'écran Oct / No2025025025025025 à 17.41.26.png` (40K)
+- `Capture d'écran Oct / Nov. 2025 à 17.40.37.png` (38K)
+- `Capture d'écran Oct / Nov. 2025 à 17.40.44.png` (36K)
+- `Capture d'écran Oct / Nov. 2025 à 17.40.52.png` (31K)
+- `Capture d'écran Oct / Nov. 2025 à 17.41.09.png` (35K)
+- `Capture d'écran Oct / Nov. 2025 à 17.41.26.png` (40K)
+
+### 🖥️ Captures Dashboard BBIA (Nov 2025)
+
+#### **Série de captures dashboard - 14:14**
+
+- **Capture Dashboard 1** : `assets/images/Capture d'écran 2025-11-13 à 14.14.20.png` (1.0K)
+  - Vue initiale du dashboard avec sliders joints (PASSIVE_6, PASSIVE_7, RIGHT_ANTENNA, LEFT_ANTENNA)
+  - Panneau Chat avec BBIA, section Troubleshooting, et logs temps réel
+  - Statut : Connecté | Backend: mujoco | Version: 1.2.0
+
+- **Capture Dashboard 2** : `assets/images/Capture d'écran 2025-11-13 à 14.14.27.png` (340K)
+  - Vue complète du dashboard avec 6 indicateurs de statut (ROBOT, ÉMOTION, LATENCE, FPS, OBJETS, VISAGES)
+  - 4 panneaux principaux : Contrôles, Métriques Temps Réel, Contrôle des Joints, Vision
+  - Graphique de métriques temps réel affiché
+
+- **Capture Dashboard 3** : `assets/images/Capture d'écran 2025-11-13 à 14.14.51.png` (424K)
+  - Vue détaillée des métriques avec graphique (Latence, FPS, CPU)
+  - Métriques système affichées (CPU: 0%, Mémoire: 0%, Volume: 0%, Intensité: 50%)
+  - Contrôles des joints avec sliders pour YAW_BODY, STEWART_1-6, PASSIVE_1-5
+
+- **Capture Dashboard 4** : `assets/images/Capture d'écran 2025-11-13 à 14.14.59.png` (574K)
+  - Vue complète du dashboard avec tous les panneaux visibles
+  - Panneau Vision avec compteurs (5 objets détectés, 2 visages détectés)
+  - Boutons de contrôle vision (Basculer Vision, Scanner, Suivre Objet)
+
+- **Description** : Captures d'écran du dashboard BBIA Advanced Dashboard montrant l'interface complète
+- **Contenu** : Interface de contrôle avec métriques temps réel, contrôles joints, vision, chat, et troubleshooting
+- **Usage** : Documentation dashboard, README, guides utilisateur
 
 ### 🎨 Images Finales
 
 - `robot_3d_final.png` (38K) - Vue 3D finale du robot
 - `robot_animation.gif` - Animation GIF du robot
+- `reachy_mini_unboxing_official.gif` (1.2M) - GIF officiel Reachy Mini sortant de sa boîte (Novembre 2024)
+  - Source : Pollen Robotics (GitHub officiel)
+  - Description : Animation du robot Reachy Mini émergeant de sa boîte d'emballage
+  - Usage : Documentation, présentation, README
+
+### 🤖 Textures Robot (Procreate)
+
+- `textures/robot_reachy_mini.png` (36K, 944x712px) - Robot Reachy Mini stylisé créé avec Procreate
+  - Fond transparent
+  - Style épuré et minimaliste
+  - Utilisable comme texture décorative dans MuJoCo
 
 ---
 

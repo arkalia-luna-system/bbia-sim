@@ -1,7 +1,7 @@
 # 🏗️ BBIA-SIM - Guide d'Architecture Détaillé
 
-**Date** : Oct / Nov. 2025  
-**Version** : 1.3.2
+**Date** : 26 Novembre 2025  
+**Version** : 1.4.0
 
 > **Liens utiles** : [`docs/reference/INDEX_THEMATIQUE.md`](../reference/INDEX_THEMATIQUE.md) · [`docs/reference/project-status.md`](../reference/project-status.md)
 
@@ -386,7 +386,7 @@ tests/
 
 ### **CI/CD Pipeline**
 
-```yaml
+```yaml ⚙️
 
 # .github/workflows/ci.yml
 
@@ -708,5 +708,5 @@ Cette architecture permet à BBIA-SIM d'être une **référence technique** pour
 **Retour à** : [README Documentation](../README.md)  
 **Voir aussi** : [Architecture Vue d'Ensemble](ARCHITECTURE_OVERVIEW.md) • [Guide Architecture](ARCHITECTURE.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)
 
-*Dernière mise à jour : Oct / Nov. 2025*
-*Version : 1.3.2 – Alignement et release stable*
+*Dernière mise à jour : 26 Novembre 2025*
+*Version : 1.4.0 – 100% d'exploitation des capacités*

@@ -1,6 +1,6 @@
 # 🤖 Conseils Procreate - Image du Robot dans la Scène
 
-**Date** : Oct / Nov. 2025
+**Date** : 21 Novembre 2025
 
 > **Guide spécifique** : Comment intégrer visuellement le robot Reachy Mini dans vos textures
 
@@ -8,7 +8,7 @@
 
 ## 🎯 Approche : Texture OU Objet 3D ?
 
-### **Option 1 : Robot en Texture (Image 2D)** 
+### **Option 1 : Robot en Texture (Image 2D)**
 
 **Quand utiliser** :
 
@@ -68,18 +68,19 @@
 **Étape 3 : Export**
 
 - PNG transparent
-- Placer dans `assets/textures/poster_robot.png`
+- Placer dans `assets/textures/robot_reachy_mini.png` (ou `poster_robot.png`)
 
 **Étape 4 : Intégration XML**
 
 ```xml
-<texture name="poster_robot" type="2d" file="../../../assets/textures/poster_robot.png"/>
-<material name="mat_poster" texture="poster_robot"/>
+<texture name="robot_poster" type="2d" file="../../../assets/textures/robot_reachy_mini.png"/>
+<material name="mat_robot_poster" texture="robot_poster"/>
 <body name="tableau_mur" pos="0 1.8 1.2">
-  <geom type="box" size="0.01 0.5 0.5" material="mat_poster"/>
+  <geom type="box" size="0.01 0.5 0.5" material="mat_robot_poster"/>
 </body>
-
 ```
+
+**Note** : Le fichier `robot_reachy_mini.png` existe déjà dans `assets/textures/` (créé avec Procreate, 944x712px).
 
 ---
 
@@ -161,8 +162,10 @@
 - [ ] Silhouette reconnaissable (corps ovoïde, tête rectangulaire, yeux, antennes)
 - [ ] Couleurs BBIA cohérentes
 - [ ] Export PNG transparent
-- [ ] Placé dans `assets/textures/poster_robot.png`
+- [ ] Placé dans `assets/textures/robot_reachy_mini.png` (ou `poster_robot.png`)
 - [ ] Intégré dans XML comme géométrie plane
+
+**Note** : ✅ Le fichier `robot_reachy_mini.png` existe déjà (944x712px, créé avec Procreate).
 
 ---
 
@@ -187,9 +190,9 @@
 
 ## 🎯 Navigation
 
-**Retour à** : [README Documentation](../README.md)  
+**Retour à** : [README Documentation](../README.md)
 **Voir aussi** : [Guide Procreate Complet](GUIDE_PROCREATE_SCENE_COMPLET.md) • [Index Simulations](INDEX_GUIDES_PROCREATE.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)
 
 ---
 
-*Conseils Robot - BBIA-SIM - Oct / Nov. 2025*
+*Conseils Robot - BBIA-SIM - 21 Novembre 2025*

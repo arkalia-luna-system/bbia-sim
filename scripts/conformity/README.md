@@ -55,4 +55,4 @@ Ces tests vérifient que BBIA-SIM respecte :
 ---
 
 **Version**: 1.0  
-**Date**: Oct / No2025025025025025
+**Date**: Oct / Nov. 2025

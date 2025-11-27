@@ -120,4 +120,4 @@ Si robot total = 280mm hauteur :
 
 ---
 
-*Mesures extraites le Oct / No2025025025025025 depuis reachy_mini_REAL_OFFICIAL.xml*
+*Mesures extraites le Oct / Nov. 2025 depuis reachy_mini_REAL_OFFICIAL.xml*

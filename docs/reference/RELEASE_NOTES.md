@@ -1,6 +1,34 @@
 # Notes de version - BBIA-SIM
 
-**Date** : Oct / Nov. 2025
+**Date** : 26 Novembre 2025
+
+## Version 1.4.0 - 100% d'exploitation des capacités
+
+### Résumé
+
+Cette version marque l'atteinte de **100% d'exploitation** de toutes les capacités du projet BBIA-SIM, avec 44 exemples fonctionnels couvrant tous les modules, comportements et endpoints API.
+
+### Points principaux
+
+- **100% d'exploitation** : Tous les modules, comportements et endpoints ont des exemples dédiés
+- **5 nouvelles démos** : `demo_follow_object.py`, `demo_sanity.py`, `demo_memory.py`, `demo_adaptive_behavior.py`, `demo_awake.py`
+- **Tests améliorés** : Nouveaux tests pour les démos additionnelles
+- **Documentation enrichie** : Docstrings complètes et exemples d'utilisation
+- **Qualité code** : Corrections formatage et vérifications qualité
+
+### Nouvelles fonctionnalités
+
+- **Démos complémentaires** : 5 nouvelles démos pour compléter la couverture
+- **Tests additionnels** : `tests/test_demo_additional.py` avec 10 tests complets
+- **Documentation** : Guides de release et rapports de vérification
+
+### Qualité et CI
+
+- Tests : Tous les tests passent
+- Formatage : Black et Ruff vérifiés
+- Documentation : Complète et à jour
+
+---
 
 > Compatibilité Python et CI
 >
@@ -153,7 +181,7 @@ Intégration de l'IA légère (Whisper STT, YOLOv8n, MediaPipe), scripts one-cli
 
 ## Architecture de la version 1.1.1
 
-```mermaid
+```mermaid 📊
 graph TB
     subgraph "BBIA Modules"
         EMOTIONS[bbia_emotions.py<br/>8 émotions]
@@ -293,4 +321,4 @@ python scripts/record_trace.py --emotion happy --duration 5
 
 ---
 
-*Dernière mise à jour : Oct / Nov. 2025*
+*Dernière mise à jour : 26 Novembre 2025*

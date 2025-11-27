@@ -105,7 +105,7 @@ def main():
     # 2.1. Lancer le viewer MuJoCo si nécessaire
     if args.backend == "mujoco" and not args.headless:
         print("🖥️ Lancement du viewer MuJoCo...")
-        if robot.launch_viewer(passive=True):
+        if hasattr(robot, "launch_viewer") and robot.launch_viewer(passive=True):
             # Configurer la caméra à 180° (face optimal) immédiatement
             if hasattr(robot, "viewer") and robot.viewer is not None:
                 robot.viewer.cam.azimuth = 180.0
@@ -166,7 +166,7 @@ def main():
             robot.step()
 
             # Synchroniser avec le viewer si MuJoCo
-            if args.backend == "mujoco":
+            if args.backend == "mujoco" and hasattr(robot, "sync_viewer"):
                 robot.sync_viewer()
 
             # Enregistrer la frame si demandé
@@ -208,8 +208,9 @@ def main():
         if hasattr(robot, "viewer") and robot.viewer is not None:
             print("\n⏸️  Viewer ouvert - fermez la fenêtre pour quitter...")
             try:
-                while robot.is_viewer_running():
-                    robot.sync_viewer()
+                while hasattr(robot, "is_viewer_running") and robot.is_viewer_running():
+                    if hasattr(robot, "sync_viewer"):
+                        robot.sync_viewer()
                     time.sleep(0.05)  # Petit délai pour éviter de surcharger le CPU
             except KeyboardInterrupt:
                 print("\n⚠️  Interruption utilisateur")

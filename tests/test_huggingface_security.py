@@ -27,6 +27,7 @@ class TestHuggingFaceSecurity:
         except ImportError:
             pytest.skip("Hugging Face transformers non disponible")
 
+    @pytest.mark.slow
     def test_prompt_injection_prevention(self) -> None:
         """Test que les prompts malveillants sont détectés/bloqués."""
         malicious_prompts = [
@@ -47,6 +48,7 @@ class TestHuggingFaceSecurity:
             # (fallback devrait générer une réponse normale)
             assert len(response) > 10, f"Réponse trop courte pour prompt: {prompt[:30]}"
 
+    @pytest.mark.slow
     def test_input_validation_length(self) -> None:
         """Test validation longueur entrée utilisateur."""
         # Prompts très longs (>2048 tokens approximatif)
@@ -57,6 +59,7 @@ class TestHuggingFaceSecurity:
         # Le système devrait gérer (tronquer) sans crash
         assert len(response) > 0
 
+    @pytest.mark.slow
     def test_input_validation_special_chars(self) -> None:
         """Test validation caractères spéciaux dangereux."""
         special_char_prompts = [
@@ -72,6 +75,7 @@ class TestHuggingFaceSecurity:
             assert isinstance(response, str)
             assert len(response) > 0
 
+    @pytest.mark.slow
     def test_input_validation_empty(self) -> None:
         """Test validation message vide."""
         response = self.hf.chat("")
@@ -79,6 +83,7 @@ class TestHuggingFaceSecurity:
         # Devrait retourner une réponse par défaut
         assert len(response) > 0
 
+    @pytest.mark.slow
     def test_input_validation_unicode(self) -> None:
         """Test validation caractères Unicode/émojis."""
         unicode_prompts = [
@@ -109,6 +114,7 @@ class TestHuggingFaceSecurity:
             self.hf.chat_tokenizer, object
         )
 
+    @pytest.mark.slow
     def test_input_validation_none(self) -> None:
         """Test validation entrée None."""
         # Vérifier que chat() gère None correctement
@@ -121,6 +127,7 @@ class TestHuggingFaceSecurity:
             # Exception attendue si None non géré
             assert True, "None rejeté correctement"
 
+    @pytest.mark.slow
     def test_rate_limiting_potential(self) -> None:
         """Test que le système peut gérer plusieurs requêtes successives."""
         # Envoyer plusieurs messages rapidement
@@ -129,6 +136,7 @@ class TestHuggingFaceSecurity:
             assert isinstance(response, str)
             assert len(response) > 0
 
+    @pytest.mark.slow
     def test_memory_cleanup(self) -> None:
         """Test que l'historique conversation peut être nettoyé."""
         # Ajouter quelques messages

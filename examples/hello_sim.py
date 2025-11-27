@@ -40,39 +40,90 @@ def main():
 
     # Test get_current_joint_positions
     print("   - get_current_joint_positions()...")
-    head_pos, antenna_pos = backend.get_current_joint_positions()
-    print(f"     ✅ Head positions: {len(head_pos)} éléments")
-    print(f"     ✅ Antenna positions: {len(antenna_pos)} éléments")
+    if hasattr(backend, "get_current_joint_positions"):
+        head_pos, antenna_pos = backend.get_current_joint_positions()  # type: ignore[attr-defined]
+        print(f"     ✅ Head positions: {len(head_pos)} éléments")
+        print(f"     ✅ Antenna positions: {len(antenna_pos)} éléments")
+    else:
+        print("     ⚠️  Méthode non disponible")
 
     # Test get_current_head_pose
     print("   - get_current_head_pose()...")
-    head_pose = backend.get_current_head_pose()
-    print(f"     ✅ Head pose shape: {head_pose.shape}")
+    if hasattr(backend, "get_current_head_pose"):
+        head_pose = backend.get_current_head_pose()  # type: ignore[attr-defined]
+        print(f"     ✅ Head pose shape: {head_pose.shape}")
+    else:
+        print("     ⚠️  Méthode non disponible")
 
     # Test get_present_antenna_joint_positions
     print("   - get_present_antenna_joint_positions()...")
-    antenna_positions = backend.get_present_antenna_joint_positions()
-    print(f"     ✅ Antenna positions: {antenna_positions}")
+    if hasattr(backend, "get_present_antenna_joint_positions"):
+        antenna_positions = backend.get_present_antenna_joint_positions()  # type: ignore[attr-defined]
+        print(f"     ✅ Antenna positions: {antenna_positions}")
+    else:
+        print("     ⚠️  Méthode non disponible")
 
     # Test des méthodes de contrôle (retournent None)
     print("\n4. Test des méthodes de contrôle...")
 
     control_methods = [
-        ("enable_motors", lambda: backend.enable_motors()),
-        ("disable_motors", lambda: backend.disable_motors()),
-        ("enable_gravity_compensation", lambda: backend.enable_gravity_compensation()),
+        (
+            "enable_motors",
+            lambda: (
+                backend.enable_motors() if hasattr(backend, "enable_motors") else None
+            ),
+        ),  # type: ignore[attr-defined]
+        (
+            "disable_motors",
+            lambda: (
+                backend.disable_motors() if hasattr(backend, "disable_motors") else None
+            ),
+        ),  # type: ignore[attr-defined]
+        (
+            "enable_gravity_compensation",
+            lambda: (
+                backend.enable_gravity_compensation()
+                if hasattr(backend, "enable_gravity_compensation")
+                else None
+            ),
+        ),  # type: ignore[attr-defined]
         (
             "disable_gravity_compensation",
-            lambda: backend.disable_gravity_compensation(),
+            lambda: (
+                backend.disable_gravity_compensation()
+                if hasattr(backend, "disable_gravity_compensation")
+                else None
+            ),  # type: ignore[attr-defined]
         ),
-        ("set_target_body_yaw", lambda: backend.set_target_body_yaw(0.1)),
+        (
+            "set_target_body_yaw",
+            lambda: (
+                backend.set_target_body_yaw(0.1)
+                if hasattr(backend, "set_target_body_yaw")
+                else None
+            ),
+        ),  # type: ignore[attr-defined]
         (
             "set_target_antenna_joint_positions",
-            lambda: backend.set_target_antenna_joint_positions([0.1, 0.2]),
+            lambda: (
+                backend.set_target_antenna_joint_positions([0.1, 0.2])
+                if hasattr(backend, "set_target_antenna_joint_positions")
+                else None
+            ),  # type: ignore[attr-defined]
         ),
-        ("start_recording", lambda: backend.start_recording()),
-        ("wake_up", lambda: backend.wake_up()),
-        ("goto_sleep", lambda: backend.goto_sleep()),
+        (
+            "start_recording",
+            lambda: (
+                backend.start_recording()
+                if hasattr(backend, "start_recording")
+                else None
+            ),
+        ),  # type: ignore[attr-defined]
+        ("wake_up", lambda: backend.wake_up() if hasattr(backend, "wake_up") else None),  # type: ignore[attr-defined]
+        (
+            "goto_sleep",
+            lambda: backend.goto_sleep() if hasattr(backend, "goto_sleep") else None,
+        ),  # type: ignore[attr-defined]
     ]
 
     for method_name, method_call in control_methods:
@@ -90,22 +141,31 @@ def main():
 
     try:
         # Test look_at_world
-        pose = backend.look_at_world(0.1, 0.2, 0.3)
-        print(f"   - look_at_world(): ✅ Pose shape: {pose.shape}")
+        if hasattr(backend, "look_at_world"):
+            pose = backend.look_at_world(0.1, 0.2, 0.3)  # type: ignore[attr-defined]
+            print(f"   - look_at_world(): ✅ Pose shape: {pose.shape}")
+        else:
+            print("   - look_at_world(): ⚠️  Méthode non disponible")
     except Exception as e:
         print(f"   - look_at_world(): ❌ Erreur: {e}")
 
     try:
         # Test look_at_image
-        pose = backend.look_at_image(100, 200)
-        print(f"   - look_at_image(): ✅ Pose shape: {pose.shape}")
+        if hasattr(backend, "look_at_image"):
+            pose = backend.look_at_image(100, 200)  # type: ignore[attr-defined]
+            print(f"   - look_at_image(): ✅ Pose shape: {pose.shape}")
+        else:
+            print("   - look_at_image(): ⚠️  Méthode non disponible")
     except Exception as e:
         print(f"   - look_at_image(): ❌ Erreur: {e}")
 
     try:
         # Test goto_target
-        backend.goto_target(body_yaw=0.1)
-        print("   - goto_target(): ✅")
+        if hasattr(backend, "goto_target"):
+            backend.goto_target(body_yaw=0.1)  # type: ignore[attr-defined]
+            print("   - goto_target(): ✅")
+        else:
+            print("   - goto_target(): ⚠️  Méthode non disponible")
     except Exception as e:
         print(f"   - goto_target(): ❌ Erreur: {e}")
 
@@ -137,10 +197,13 @@ def main():
     print("\n8. Test de la télémétrie...")
 
     try:
-        telemetry = backend.get_telemetry()
-        print(f"   - get_telemetry(): ✅ {len(telemetry)} métriques")
-        for key, value in telemetry.items():
-            print(f"     {key}: {value}")
+        if hasattr(backend, "get_telemetry"):
+            telemetry = backend.get_telemetry()  # type: ignore[attr-defined]
+            print(f"   - get_telemetry(): ✅ {len(telemetry)} métriques")
+            for key, value in telemetry.items():
+                print(f"     {key}: {value}")
+        else:
+            print("   - get_telemetry(): ⚠️  Méthode non disponible")
     except Exception as e:
         print(f"   - get_telemetry(): ❌ Erreur: {e}")
 

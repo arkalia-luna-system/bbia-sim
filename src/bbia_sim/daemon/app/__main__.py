@@ -6,6 +6,7 @@ Note: Fonctionne en mode simulation (MuJoCo) même sans robot physique.
 Le daemon démarre automatiquement la simulation MuJoCo au démarrage.
 """
 
+import logging
 import sys
 from pathlib import Path
 
@@ -21,10 +22,10 @@ import uvicorn  # noqa: E402
 from bbia_sim.daemon.app.main import app  # noqa: E402
 
 if __name__ == "__main__":
-    print("🚀 Démarrage du daemon BBIA-SIM (mode simulation)")
-    print("📍 Dashboard: http://127.0.0.1:8000/")
-    print("📚 API Docs: http://127.0.0.1:8000/docs")
-    print("💡 Note: Mode simulation activé (robot physique non requis)")
+    logging.info("🚀 Démarrage du daemon BBIA-SIM (mode simulation)")
+    logging.info("📍 Dashboard: http://127.0.0.1:8000/")
+    logging.info("📚 API Docs: http://127.0.0.1:8000/docs")
+    logging.info("💡 Note: Mode simulation activé (robot physique non requis)")
 
     # Importer directement l'app (pas de string) pour éviter problèmes reload
     uvicorn.run(
