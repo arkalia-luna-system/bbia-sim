@@ -168,7 +168,11 @@ class WhisperSTT:
         except (ImportError, RuntimeError, OSError, ValueError) as e:
             # Ne pas logger d'erreur si c'est juste que Whisper n'est pas disponible
             error_msg = str(e).lower()
-            if "load error" in error_msg or "not found" in error_msg or "unavailable" in error_msg:
+            if (
+                "load error" in error_msg
+                or "not found" in error_msg
+                or "unavailable" in error_msg
+            ):
                 logger.debug("⚠️ Whisper non disponible: %s", e)
             else:
                 logger.warning("⚠️ Erreur chargement Whisper: %s", e)
@@ -176,7 +180,11 @@ class WhisperSTT:
         except Exception as e:
             # Ne pas logger d'erreur si c'est juste que Whisper n'est pas disponible
             error_msg = str(e).lower()
-            if "load error" in error_msg or "not found" in error_msg or "unavailable" in error_msg:
+            if (
+                "load error" in error_msg
+                or "not found" in error_msg
+                or "unavailable" in error_msg
+            ):
                 logger.debug("⚠️ Whisper non disponible: %s", e)
             else:
                 logger.warning("⚠️ Erreur inattendue chargement Whisper: %s", e)
@@ -260,7 +268,10 @@ class WhisperSTT:
         # Vérifier disponibilité périphérique audio
         if not _check_audio_device_available():
             # Logger en debug si audio désactivé ou en CI pour éviter bruit dans tests
-            if os.environ.get("BBIA_DISABLE_AUDIO", "0") == "1" or os.environ.get("CI", "false").lower() == "true":
+            if (
+                os.environ.get("BBIA_DISABLE_AUDIO", "0") == "1"
+                or os.environ.get("CI", "false").lower() == "true"
+            ):
                 logger.debug(
                     "⚠️ Aucun périphérique audio disponible (audio désactivé/CI) - skip enregistrement",
                 )
@@ -494,7 +505,10 @@ class WhisperSTT:
         # Vérifier disponibilité périphérique audio
         if not _check_audio_device_available():
             # Logger en debug si audio désactivé ou en CI pour éviter bruit dans tests
-            if os.environ.get("BBIA_DISABLE_AUDIO", "0") == "1" or os.environ.get("CI", "false").lower() == "true":
+            if (
+                os.environ.get("BBIA_DISABLE_AUDIO", "0") == "1"
+                or os.environ.get("CI", "false").lower() == "true"
+            ):
                 logger.debug(
                     "⚠️ Aucun périphérique audio disponible (audio désactivé/CI) - skip enregistrement",
                 )
@@ -626,7 +640,10 @@ class WhisperSTT:
         # Vérifier disponibilité périphérique audio
         if not _check_audio_device_available():
             # Logger en debug si audio désactivé ou en CI pour éviter bruit dans tests
-            if os.environ.get("BBIA_DISABLE_AUDIO", "0") == "1" or os.environ.get("CI", "false").lower() == "true":
+            if (
+                os.environ.get("BBIA_DISABLE_AUDIO", "0") == "1"
+                or os.environ.get("CI", "false").lower() == "true"
+            ):
                 logger.debug(
                     "⚠️ Aucun périphérique audio disponible (audio désactivé/CI) - skip streaming",
                 )

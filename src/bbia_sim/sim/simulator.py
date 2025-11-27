@@ -64,6 +64,7 @@ class MuJoCoSimulator:
         """
         # Détecter automatiquement si on est dans un environnement headless
         import os
+
         is_ci = os.environ.get("CI", "false").lower() == "true"
         has_display = os.environ.get("DISPLAY") is not None or sys.platform == "win32"
 
@@ -94,7 +95,8 @@ class MuJoCoSimulator:
                     or "x11" in error_str
                     or "no screen" in error_str
                     or "headless" in error_str
-                    or "mjpython" in error_str  # Erreur mjpython (viewer non disponible)
+                    or "mjpython"
+                    in error_str  # Erreur mjpython (viewer non disponible)
                 )
 
                 if is_display_error or is_ci:

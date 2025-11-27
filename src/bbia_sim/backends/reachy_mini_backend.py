@@ -1615,7 +1615,10 @@ class ReachyMiniBackend(RobotAPI):
             # Log en debug en CI/tests (erreur attendue si reachy_mini non installé)
             import os
 
-            if os.environ.get("CI", "false").lower() == "true" or os.environ.get("BBIA_DISABLE_AUDIO", "0") == "1":
+            if (
+                os.environ.get("CI", "false").lower() == "true"
+                or os.environ.get("BBIA_DISABLE_AUDIO", "0") == "1"
+            ):
                 logger.debug("Erreur création Move (reachy_mini non disponible): %s", e)
             else:
                 logger.warning("Erreur création Move: %s", e)

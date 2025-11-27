@@ -439,7 +439,9 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
         voice_id = _get_cached_voice_id()
         # Vérification supplémentaire pour éviter AttributeError si engine est None
         if engine is None:
-            logging.warning("⚠️ pyttsx3 non disponible après récupération voice_id, synthèse vocale ignorée")
+            logging.warning(
+                "⚠️ pyttsx3 non disponible après récupération voice_id, synthèse vocale ignorée"
+            )
             return
         engine.setProperty("voice", voice_id)
         engine.setProperty("rate", 170)  # Vitesse normale

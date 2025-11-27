@@ -215,6 +215,7 @@ class YOLODetector:
             if self.model is None:
                 # Logger en debug si en CI pour éviter bruit dans tests
                 import os
+
                 is_ci = os.environ.get("CI", "false").lower() == "true"
                 if is_ci:
                     logger.debug("⚠️ Modèle YOLO non chargé")
@@ -303,6 +304,7 @@ class YOLODetector:
         except Exception as e:
             # Logger en debug si en CI pour éviter bruit dans tests
             import os
+
             is_ci = os.environ.get("CI", "false").lower() == "true"
             if is_ci:
                 logger.debug("⚠️ Erreur détection YOLO: %s", e)
@@ -338,6 +340,7 @@ class YOLODetector:
             if self.model is None:
                 # Logger en debug si en CI pour éviter bruit dans tests
                 import os
+
                 is_ci = os.environ.get("CI", "false").lower() == "true"
                 if is_ci:
                     logger.debug("⚠️ Modèle YOLO non chargé")
@@ -444,6 +447,7 @@ class YOLODetector:
         except Exception as e:
             # Logger en debug si en CI pour éviter bruit dans tests
             import os
+
             is_ci = os.environ.get("CI", "false").lower() == "true"
             if is_ci:
                 logger.debug("⚠️ Erreur détection YOLO batch: %s", e)

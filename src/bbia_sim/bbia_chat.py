@@ -353,7 +353,13 @@ class BBIAChat:
             logger.info("✅ Phi-2 chargé avec succès")
             return
 
-        except (ImportError, ModuleNotFoundError, RuntimeError, OSError, ValueError) as e:
+        except (
+            ImportError,
+            ModuleNotFoundError,
+            RuntimeError,
+            OSError,
+            ValueError,
+        ) as e:
             logger.warning("⚠️ Impossible de charger Phi-2: %s", e)
             logger.info("Tentative de chargement TinyLlama (fallback)...")
         except (TypeError, KeyError, AttributeError) as e:
@@ -384,7 +390,13 @@ class BBIAChat:
             )  # nosec B615 - Modèle stable, revision pinning optionnel
             logger.info("✅ TinyLlama chargé avec succès")
 
-        except (ImportError, ModuleNotFoundError, RuntimeError, OSError, ValueError) as e:
+        except (
+            ImportError,
+            ModuleNotFoundError,
+            RuntimeError,
+            OSError,
+            ValueError,
+        ) as e:
             logger.warning("❌ Impossible de charger TinyLlama: %s", e)
             logger.warning("Mode fallback: réponses basiques (sans LLM)")
             # Réinitialiser les attributs pour éviter les états incohérents

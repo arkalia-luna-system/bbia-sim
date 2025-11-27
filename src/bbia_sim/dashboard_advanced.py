@@ -3546,8 +3546,10 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                                     "⚠️ Backend %s non disponible, tentative avec mujoco...",
                                     advanced_websocket_manager.robot_backend,
                                 )
-                                advanced_websocket_manager.robot = RobotFactory.create_backend(
-                                    "mujoco",
+                                advanced_websocket_manager.robot = (
+                                    RobotFactory.create_backend(
+                                        "mujoco",
+                                    )
                                 )
                                 if advanced_websocket_manager.robot:
                                     advanced_websocket_manager.robot_backend = "mujoco"

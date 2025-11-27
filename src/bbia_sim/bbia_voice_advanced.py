@@ -129,13 +129,18 @@ class BBIAVoiceAdvanced:
                 self.pyttsx3_engine = engine
                 self.pyttsx3_voice_id = _get_cached_voice_id()  # Utilise cache voice ID
                 # Vérifier que engine n'est pas None avant d'appeler setProperty
-                if self.pyttsx3_engine is not None and self.pyttsx3_voice_id is not None:
+                if (
+                    self.pyttsx3_engine is not None
+                    and self.pyttsx3_voice_id is not None
+                ):
                     self.pyttsx3_engine.setProperty("voice", self.pyttsx3_voice_id)
                     self.pyttsx3_engine.setProperty("rate", 170)
                     self.pyttsx3_engine.setProperty("volume", 1.0)
                     logger.info("✅ Fallback pyttsx3 initialisé (avec cache)")
                 else:
-                    logger.warning("⚠️ Impossible d'initialiser pyttsx3 (engine ou voice_id manquant)")
+                    logger.warning(
+                        "⚠️ Impossible d'initialiser pyttsx3 (engine ou voice_id manquant)"
+                    )
                     self.pyttsx3_engine = None
                     self.pyttsx3_voice_id = None
             except Exception:
