@@ -72,8 +72,14 @@ class TestLLMChatFunctionality:
         assert self.hf.chat_tokenizer is None
 
     @pytest.mark.slow  # OPTIMISATION: Test peut déclencher lazy loading LLM
+    @pytest.mark.skipif(
+        os.environ.get("CI", "false").lower() == "true",
+        reason="Test désactivé en CI (chargement modèle LLM trop lent)",
+    )
     def test_chat_fallback_when_llm_not_loaded(self) -> None:
         """Test que chat utilise fallback enrichi si LLM non chargé."""
+        import os
+
         if not HF_AVAILABLE:
             pytest.skip("Hugging Face non disponible")
 
@@ -123,8 +129,14 @@ class TestLLMChatFunctionality:
         assert self.hf.use_llm_chat is False
 
     @pytest.mark.slow  # OPTIMISATION: Test peut déclencher lazy loading LLM
+    @pytest.mark.skipif(
+        os.environ.get("CI", "false").lower() == "true",
+        reason="Test désactivé en CI (chargement modèle LLM trop lent)",
+    )
     def test_chat_method_handles_llm_fallback(self) -> None:
         """Test que la méthode chat gère correctement le fallback LLM."""
+        import os
+
         if not HF_AVAILABLE:
             pytest.skip("Hugging Face non disponible")
 

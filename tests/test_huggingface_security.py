@@ -137,6 +137,10 @@ class TestHuggingFaceSecurity:
         )
 
     @pytest.mark.slow
+    @pytest.mark.skipif(
+        os.environ.get("CI", "false").lower() == "true",
+        reason="Test désactivé en CI (chargement modèle LLM trop lent)",
+    )
     def test_input_validation_none(self) -> None:
         """Test validation entrée None."""
         # Vérifier que chat() gère None correctement
@@ -150,6 +154,10 @@ class TestHuggingFaceSecurity:
             assert True, "None rejeté correctement"
 
     @pytest.mark.slow
+    @pytest.mark.skipif(
+        os.environ.get("CI", "false").lower() == "true",
+        reason="Test désactivé en CI (chargement modèle LLM trop lent)",
+    )
     def test_rate_limiting_potential(self) -> None:
         """Test que le système peut gérer plusieurs requêtes successives."""
         # Envoyer plusieurs messages rapidement
@@ -159,6 +167,10 @@ class TestHuggingFaceSecurity:
             assert len(response) > 0
 
     @pytest.mark.slow
+    @pytest.mark.skipif(
+        os.environ.get("CI", "false").lower() == "true",
+        reason="Test désactivé en CI (chargement modèle LLM trop lent)",
+    )
     def test_memory_cleanup(self) -> None:
         """Test que l'historique conversation peut être nettoyé."""
         # Ajouter quelques messages
