@@ -360,14 +360,35 @@ class BBIAChat:
             OSError,
             ValueError,
         ) as e:
-            logger.warning("⚠️ Impossible de charger Phi-2: %s", e)
+            error_msg = str(e)
+            # Détecter les erreurs d'import de modules de configuration (dépendances manquantes)
+            if "Could not import module" in error_msg or "PhiConfig" in error_msg:
+                logger.debug(
+                    "⚠️ Impossible de charger Phi-2 (dépendances manquantes): %s", e
+                )
+            else:
+                logger.warning("⚠️ Impossible de charger Phi-2: %s", e)
             logger.info("Tentative de chargement TinyLlama (fallback)...")
         except (TypeError, KeyError, AttributeError) as e:
-            logger.warning("⚠️ Erreur inattendue chargement Phi-2: %s", e)
+            error_msg = str(e)
+            if "Could not import module" in error_msg or "PhiConfig" in error_msg:
+                logger.debug(
+                    "⚠️ Erreur inattendue chargement Phi-2 (dépendances manquantes): %s",
+                    e,
+                )
+            else:
+                logger.warning("⚠️ Erreur inattendue chargement Phi-2: %s", e)
             logger.info("Tentative de chargement TinyLlama (fallback)...")
         except Exception as e:
             # Capturer toutes les autres exceptions (y compris ModuleNotFoundError imbriquées)
-            logger.warning("⚠️ Erreur inattendue chargement Phi-2: %s", e)
+            error_msg = str(e)
+            if "Could not import module" in error_msg or "PhiConfig" in error_msg:
+                logger.debug(
+                    "⚠️ Erreur inattendue chargement Phi-2 (dépendances manquantes): %s",
+                    e,
+                )
+            else:
+                logger.warning("⚠️ Erreur inattendue chargement Phi-2: %s", e)
             logger.info("Tentative de chargement TinyLlama (fallback)...")
 
         # Fallback: TinyLlama (ultra-léger)
@@ -397,14 +418,30 @@ class BBIAChat:
             OSError,
             ValueError,
         ) as e:
-            logger.warning("❌ Impossible de charger TinyLlama: %s", e)
-            logger.warning("Mode fallback: réponses basiques (sans LLM)")
+            error_msg = str(e)
+            # Détecter les erreurs d'import de modules de configuration (dépendances manquantes)
+            if "Could not import module" in error_msg or "LlamaConfig" in error_msg:
+                logger.debug(
+                    "❌ Impossible de charger TinyLlama (dépendances manquantes): %s", e
+                )
+                logger.info("Mode fallback: réponses basiques (sans LLM)")
+            else:
+                logger.warning("❌ Impossible de charger TinyLlama: %s", e)
+                logger.warning("Mode fallback: réponses basiques (sans LLM)")
             # Réinitialiser les attributs pour éviter les états incohérents
             self.llm_model = None
             self.llm_tokenizer = None
         except Exception as e:
-            logger.warning("❌ Erreur inattendue chargement TinyLlama: %s", e)
-            logger.warning("Mode fallback: réponses basiques (sans LLM)")
+            error_msg = str(e)
+            if "Could not import module" in error_msg or "LlamaConfig" in error_msg:
+                logger.debug(
+                    "❌ Erreur inattendue chargement TinyLlama (dépendances manquantes): %s",
+                    e,
+                )
+                logger.info("Mode fallback: réponses basiques (sans LLM)")
+            else:
+                logger.warning("❌ Erreur inattendue chargement TinyLlama: %s", e)
+                logger.warning("Mode fallback: réponses basiques (sans LLM)")
             # Réinitialiser les attributs pour éviter les états incohérents
             self.llm_model = None
             self.llm_tokenizer = None
@@ -546,7 +583,7 @@ class BBIAChat:
             self._load_llm()
             # Si échec chargement, continuer avec fallback
             if not self.llm_model or not self.llm_tokenizer:
-                logger.warning("LLM non disponible, utilisation mode fallback")
+                logger.debug("LLM non disponible, utilisation mode fallback")
 
         if not user_message or not user_message.strip():
             return "Je n'ai pas compris votre message. Pouvez-vous reformuler ?"
