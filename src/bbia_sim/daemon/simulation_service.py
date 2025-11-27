@@ -211,8 +211,14 @@ class SimulationService:
             self.simulator.set_joint_position(joint_name, position)
             logger.info("Position de %s définie à %s", joint_name, position)
             return True
-        except Exception:
-            logger.exception("Erreur lors de la définition de la position ")
+        except Exception as e:
+            # Log en debug en CI (erreurs attendues dans les tests avec mocks)
+            import os
+
+            if os.environ.get("CI", "false").lower() == "true":
+                logger.debug("Erreur lors de la définition de la position: %s", e)
+            else:
+                logger.exception("Erreur lors de la définition de la position ")
             return False
 
     def get_available_joints(self) -> list[str]:
@@ -227,8 +233,14 @@ class SimulationService:
 
         try:
             return self.simulator.get_available_joints()
-        except Exception:
-            logger.exception("Erreur lors de la récupération des articulations ")
+        except Exception as e:
+            # Log en debug en CI (erreurs attendues dans les tests avec mocks)
+            import os
+
+            if os.environ.get("CI", "false").lower() == "true":
+                logger.debug("Erreur lors de la récupération des articulations: %s", e)
+            else:
+                logger.exception("Erreur lors de la récupération des articulations ")
             return self._get_default_joint_names()
 
     def _get_default_state(self) -> dict[str, Any]:
