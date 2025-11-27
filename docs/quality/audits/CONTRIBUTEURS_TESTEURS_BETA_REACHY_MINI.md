@@ -1,7 +1,8 @@
 # 👥 CONTRIBUTEURS ET TESTEURS BÊTA - Reachy Mini Officiel
 
-**Date** : 26 Novembre 2025  
+**Date** : 27 Novembre 2025 (Mise à jour)  
 **Source** : [pollen-robotics/reachy_mini](https://github.com/pollen-robotics/reachy_mini)  
+**Version SDK** : v1.1.1 (Latest - Nov 25, 2025)  
 **Objectif** : Documenter les 19 contributeurs et testeurs bêta du projet officiel
 
 ---
@@ -9,6 +10,9 @@
 ## 📊 RÉSUMÉ EXÉCUTIF
 
 **Total contributeurs** : 19 contributeurs identifiés  
+**Période analysée** : 11 mai 2025 au 23 novembre 2025  
+**Commits totaux** : 1,566 commits  
+**Branche principale** : `develop`  
 **Testeurs bêta** : Communauté active (Hugging Face Spaces, GitHub)  
 **Statut BBIA** : En développement (1 développeur principal)
 
@@ -19,8 +23,12 @@
 ### Contributeurs Principaux (Core Developers)
 
 #### 1. @pierre-rouanet
-**Rôle** : Core developer  
+**Rôle** : Core Developer Principal  
 **Contributions** :
+- **467 commits** (29.8% du total)
+- **33,909 ++** (ajouts)
+- **29,321 --** (suppressions)
+- **Pic d'activité** : 47 commits/semaine max
 - Architecture principale du SDK
 - Développement daemon
 - Intégration SDK officiel
@@ -31,17 +39,25 @@
 - Architecture daemon FastAPI
 - Intégration MuJoCo
 - Backends USB et wireless
+- Architecture Zenoh pour communication
+
+**GitHub** : [@pierre-rouanet](https://github.com/pierre-rouanet)
 
 **Comparaison BBIA** :
 - ✅ BBIA utilise le SDK développé par @pierre-rouanet
 - ✅ Architecture daemon similaire (FastAPI)
 - ✅ Backends compatibles
+- ✅ Communication Zenoh intégrée
 
 ---
 
 #### 2. @apirrone
-**Rôle** : Core developer  
+**Rôle** : Core Developer (Simulation)  
 **Contributions** :
+- **278 commits** (17.8% du total)
+- **57,029 ++** (ajouts)
+- **43,590 --** (suppressions)
+- **Pic d'activité** : 32 commits/semaine max
 - Simulation MuJoCo
 - Modèles 3D
 - Intégration physique
@@ -52,17 +68,25 @@
 - Modèles 3D officiels
 - Intégration physique réaliste
 - Scènes (empty, minimal)
+- Optimisations performance simulation
+
+**GitHub** : [@apirrone](https://github.com/apirrone)
 
 **Comparaison BBIA** :
 - ✅ BBIA utilise modèles 3D officiels
 - ✅ Simulation MuJoCo complète
 - ✅ Scènes compatibles
+- ✅ Optimisations appliquées
 
 ---
 
 #### 3. @FabienDanieau
-**Rôle** : Core developer  
+**Rôle** : Core Developer (Dashboard & API)  
 **Contributions** :
+- **171 commits** (10.9% du total)
+- **10,632 ++** (ajouts)
+- **2,806 --** (suppressions)
+- **Pic d'activité** : 29 commits/semaine max
 - Dashboard web
 - API REST
 - Interface utilisateur
@@ -73,17 +97,25 @@
 - Endpoints API REST
 - Interface web simple
 - Communication WebSocket
+- Intégration Hugging Face Spaces
+
+**GitHub** : [@FabienDanieau](https://github.com/FabienDanieau)
 
 **Comparaison BBIA** :
 - ✅ BBIA a 4 dashboards (supérieur)
 - ✅ API REST conforme + étendue
 - ✅ WebSocket avancé temps réel
+- ✅ Intégration HF Spaces prête
 
 ---
 
 #### 4. @RemiFabre
-**Rôle** : Core developer  
+**Rôle** : Core Developer (Tests & CI/CD)  
 **Contributions** :
+- **118 commits** (7.5% du total)
+- **16,079 ++** (ajouts)
+- **14,937 --** (suppressions)
+- **Pic d'activité** : 34 commits/semaine max
 - Tests automatisés
 - CI/CD
 - Qualité code
@@ -94,17 +126,25 @@
 - Pipeline CI/CD GitHub Actions
 - Qualité code (black, ruff, mypy)
 - Validation conformité
+- Pre-commit hooks
+
+**GitHub** : [@RemiFabre](https://github.com/RemiFabre)
 
 **Comparaison BBIA** :
 - ✅ BBIA : 1,743 tests (supérieur)
 - ✅ CI/CD complet
 - ✅ Qualité code excellente
+- ✅ Pre-commit configuré
 
 ---
 
 #### 5. @askuric
-**Rôle** : Contributor  
+**Rôle** : Contributor (Documentation)  
 **Contributions** :
+- **104 commits** (6.6% du total)
+- **9,249 ++** (ajouts)
+- **5,081 --** (suppressions)
+- **Pic d'activité** : 16 commits/semaine max
 - Documentation
 - Exemples
 - Guides utilisateur
@@ -115,11 +155,15 @@
 - Exemples de base
 - Documentation API
 - Démonstrations
+- Tutoriels
+
+**GitHub** : [@askuric](https://github.com/askuric)
 
 **Comparaison BBIA** :
 - ✅ BBIA : 219 fichiers MD (supérieur)
 - ✅ 67 exemples (supérieur)
 - ✅ Guides détaillés
+- ✅ Documentation exhaustive
 
 ---
 
@@ -127,7 +171,8 @@
 
 #### 6. @cdussieux
 **Rôle** : Contributor (Hardware)  
-**Contributions** :
+**Contributions** : 3 commits (6 ++, 5 --)  
+**Travail** :
 - Support hardware
 - Communication USB
 - Détection périphériques
@@ -139,6 +184,8 @@
 - Communication hardware
 - Résolution problèmes USB
 
+**GitHub** : [@cdussieux](https://github.com/cdussieux)
+
 **Comparaison BBIA** :
 - ✅ BBIA : Support USB via backend
 - ✅ Détection automatique périphériques
@@ -148,7 +195,8 @@
 
 #### 7. @alozowski
 **Rôle** : Contributor (Vision)  
-**Contributions** :
+**Contributions** : 16 commits (1,344 ++, 349 --)  
+**Travail** :
 - Intégration caméra
 - Vision par ordinateur
 - Détection objets
@@ -160,6 +208,8 @@
 - Détection objets simples
 - Traitement image
 
+**GitHub** : [@alozowski](https://github.com/alozowski)
+
 **Comparaison BBIA** :
 - ✅ BBIA : YOLO + MediaPipe + SmolVLM2 (supérieur)
 - ✅ Vision avancée
@@ -169,7 +219,8 @@
 
 #### 8. @oxkitsune
 **Rôle** : Contributor (Audio)  
-**Contributions** :
+**Contributions** : 10 commits (524 ++, 576 --)  
+**Travail** :
 - Support audio
 - Microphone array
 - Enregistrement audio
@@ -181,6 +232,8 @@
 - Traitement audio basique
 - Support reSpeaker
 
+**GitHub** : [@oxkitsune](https://github.com/oxkitsune)
+
 **Comparaison BBIA** :
 - ✅ BBIA : Audio avancé (Whisper STT)
 - ✅ Gestion gracieuse reSpeaker
@@ -190,7 +243,8 @@
 
 #### 9. @tfrere
 **Rôle** : Contributor (Wireless)  
-**Contributions** :
+**Contributions** : 9 commits (217 ++, 123 --)  
+**Travail** :
 - Support wireless
 - Communication réseau
 - Wi-Fi
@@ -202,6 +256,8 @@
 - Configuration Wi-Fi
 - Support Raspberry Pi
 
+**GitHub** : [@tfrere](https://github.com/tfrere)
+
 **Comparaison BBIA** :
 - ✅ BBIA : Support wireless via backend
 - ✅ Communication réseau
@@ -211,7 +267,8 @@
 
 #### 10. @haixuanTao
 **Rôle** : Contributor (IA)  
-**Contributions** :
+**Contributions** : 6 commits (32 ++, 19 --)  
+**Travail** :
 - Intégration IA
 - LLM conversationnel
 - NLP
@@ -223,6 +280,8 @@
 - NLP simple
 - IA optionnelle
 
+**GitHub** : [@haixuanTao](https://github.com/haixuanTao)
+
 **Comparaison BBIA** :
 - ✅ BBIA : IA avancée (15+ modules)
 - ✅ LLM intégré complet
@@ -232,7 +291,8 @@
 
 #### 11. @AnneCharlotte-pollen
 **Rôle** : Contributor (Documentation)  
-**Contributions** :
+**Contributions** : 4 commits (11 ++, 3 --)  
+**Travail** :
 - Documentation utilisateur
 - Guides
 - Tutoriels
@@ -244,6 +304,8 @@
 - Tutoriels
 - Support communauté
 
+**GitHub** : [@AnneCharlotte-pollen](https://github.com/AnneCharlotte-pollen)
+
 **Comparaison BBIA** :
 - ✅ BBIA : 219 fichiers MD (supérieur)
 - ✅ Guides exhaustifs
@@ -253,7 +315,8 @@
 
 #### 12. @CarolinePascal
 **Rôle** : Contributor (Qualité)  
-**Contributions** :
+**Contributions** : 5 commits (108 ++, 60 --)  
+**Travail** :
 - Tests qualité
 - Validation
 - Assurance qualité
@@ -265,6 +328,8 @@
 - Assurance qualité
 - Tests utilisateur
 
+**GitHub** : [@CarolinePascal](https://github.com/CarolinePascal)
+
 **Comparaison BBIA** :
 - ✅ BBIA : 1,743 tests (supérieur)
 - ✅ Coverage 68.86%
@@ -274,7 +339,8 @@
 
 #### 13. @matthieu-lapeyre
 **Rôle** : Contributor (Performance)  
-**Contributions** :
+**Contributions** : 3 commits (174 ++, 32 --)  
+**Travail** :
 - Optimisations performance
 - Réduction latence
 - Optimisation mémoire
@@ -286,6 +352,8 @@
 - Optimisation mémoire
 - Performance système
 
+**GitHub** : [@matthieu-lapeyre](https://github.com/matthieu-lapeyre)
+
 **Comparaison BBIA** :
 - ✅ BBIA : Optimisations appliquées
 - ✅ Latence minimale
@@ -295,7 +363,8 @@
 
 #### 14. @andimarafioti
 **Rôle** : Contributor (Exemples)  
-**Contributions** :
+**Contributions** : 3 commits (11 ++, 5 --)  
+**Travail** :
 - Exemples d'utilisation
 - Démonstrations
 - Cas d'usage
@@ -307,6 +376,8 @@
 - Cas d'usage simples
 - Tutoriels
 
+**GitHub** : [@andimarafioti](https://github.com/andimarafioti)
+
 **Comparaison BBIA** :
 - ✅ BBIA : 67 exemples (supérieur)
 - ✅ Démonstrations complètes
@@ -314,7 +385,14 @@
 
 ---
 
-#### 15-19. Autres Contributeurs (5 contributeurs)
+#### 15-19. Contributeurs Occasionnels
+
+**15. @iizukak** - 2 commits (7 ++, 1 --)  
+**16. @Gregwar** - 2 commits (153 ++, 1 --)  
+**17. @Copilote** - 1 commit (1 ++, 1 --)  
+**18. @OriNachum** - 1 commit (5 ++, 4 --)  
+**19. @Augustin-Crampette** - 1 commit (4 ++, 0 --)
+
 **Rôle** : Contributors  
 **Contributions** :
 - Bugs fixes
@@ -510,5 +588,7 @@
 
 ---
 
-**Dernière mise à jour** : 26 Novembre 2025
+**Dernière mise à jour** : 27 Novembre 2025  
+**Version SDK** : v1.1.1 (Latest - Nov 25, 2025)  
+**Voir aussi** : [MISE_A_JOUR_REACHY_MINI_NOVEMBRE_2025.md](MISE_A_JOUR_REACHY_MINI_NOVEMBRE_2025.md)
 
