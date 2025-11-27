@@ -3877,7 +3877,15 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                         f"✅ Joint {joint} = {position:.2f}",
                     )
                 else:
-                    logger.warning("⚠️ set_joint_pos a retourné False pour %s", joint)
+                    # Log en debug en CI (warning attendu dans les tests avec joints invalides)
+                    import os
+
+                    if os.environ.get("CI", "false").lower() == "true":
+                        logger.debug("set_joint_pos a retourné False pour %s", joint)
+                    else:
+                        logger.warning(
+                            "⚠️ set_joint_pos a retourné False pour %s", joint
+                        )
                     await advanced_websocket_manager.send_log_message(
                         "error",
                         f"❌ Échec joint {joint}",
