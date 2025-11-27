@@ -1205,10 +1205,22 @@ class BBIAHuggingFace:
                     and BBIAHuggingFace._shared_unload_thread.is_alive()
                 ):
                     BBIAHuggingFace._shared_unload_thread_stop.set()
-                    BBIAHuggingFace._shared_unload_thread.join(timeout=2.0)
-                    logger.debug(
-                        "Thread partagé déchargement auto Hugging Face arrêté (plus d'instances)",
+                    # Timeout plus court en CI pour éviter blocage
+                    import os
+
+                    timeout = (
+                        0.5 if os.environ.get("CI", "false").lower() == "true" else 2.0
                     )
+                    BBIAHuggingFace._shared_unload_thread.join(timeout=timeout)
+                    if BBIAHuggingFace._shared_unload_thread.is_alive():
+                        # Thread daemon se terminera automatiquement à l'arrêt du processus
+                        logger.debug(
+                            "Thread partagé déchargement auto Hugging Face en cours d'arrêt (daemon)",
+                        )
+                    else:
+                        logger.debug(
+                            "Thread partagé déchargement auto Hugging Face arrêté (plus d'instances)",
+                        )
         except (AttributeError, RuntimeError, TypeError):
             # Ignorer erreurs lors de la destruction
             pass
