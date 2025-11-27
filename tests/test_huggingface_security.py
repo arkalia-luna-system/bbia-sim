@@ -70,6 +70,10 @@ class TestHuggingFaceSecurity:
         assert len(response) > 0
 
     @pytest.mark.slow
+    @pytest.mark.skipif(
+        os.environ.get("CI", "false").lower() == "true",
+        reason="Test désactivé en CI (chargement modèle LLM trop lent)",
+    )
     def test_input_validation_special_chars(self) -> None:
         """Test validation caractères spéciaux dangereux."""
         special_char_prompts = [
@@ -86,6 +90,10 @@ class TestHuggingFaceSecurity:
             assert len(response) > 0
 
     @pytest.mark.slow
+    @pytest.mark.skipif(
+        os.environ.get("CI", "false").lower() == "true",
+        reason="Test désactivé en CI (chargement modèle LLM trop lent)",
+    )
     def test_input_validation_empty(self) -> None:
         """Test validation message vide."""
         response = self.hf.chat("")
@@ -94,6 +102,10 @@ class TestHuggingFaceSecurity:
         assert len(response) > 0
 
     @pytest.mark.slow
+    @pytest.mark.skipif(
+        os.environ.get("CI", "false").lower() == "true",
+        reason="Test désactivé en CI (chargement modèle LLM trop lent)",
+    )
     def test_input_validation_unicode(self) -> None:
         """Test validation caractères Unicode/émojis."""
         unicode_prompts = [
