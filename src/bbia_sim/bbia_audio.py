@@ -294,11 +294,21 @@ def enregistrer_audio(
             )
         except Exception as channel_error:
             # Si erreur canaux, essayer de détecter le nombre de canaux disponibles
-            logging.warning(
-                "⚠️ Erreur canaux audio (Issue #329): %s. "
-                "Tentative avec configuration par défaut...",
-                channel_error,
-            )
+            # Log en debug en CI (erreurs attendues sans périphériques audio)
+            import os
+
+            if os.environ.get("CI", "false").lower() == "true":
+                logging.debug(
+                    "Erreur canaux audio (Issue #329): %s. "
+                    "Tentative avec configuration par défaut...",
+                    channel_error,
+                )
+            else:
+                logging.warning(
+                    "⚠️ Erreur canaux audio (Issue #329): %s. "
+                    "Tentative avec configuration par défaut...",
+                    channel_error,
+                )
             try:
                 # Essayer avec configuration par défaut
                 sd_module = _get_sd()
@@ -317,12 +327,19 @@ def enregistrer_audio(
                     dtype="int16",
                 )
             except Exception as fallback_error:
-                # Utiliser error au lieu de exception pour éviter
-                # traces complètes dans tests
-                logging.error(
-                    "❌ Échec enregistrement audio même avec fallback: %s",
-                    fallback_error,
-                )
+                # Log en debug en CI (erreurs attendues sans périphériques audio)
+                import os
+
+                if os.environ.get("CI", "false").lower() == "true":
+                    logging.debug(
+                        "Échec enregistrement audio même avec fallback: %s",
+                        fallback_error,
+                    )
+                else:
+                    logging.error(
+                        "❌ Échec enregistrement audio même avec fallback: %s",
+                        fallback_error,
+                    )
                 msg = f"Impossible d'enregistrer audio: {fallback_error}"
                 raise RuntimeError(
                     msg,
@@ -337,9 +354,13 @@ def enregistrer_audio(
         logging.info("Enregistrement terminé.")
         return True
     except Exception as e:
-        # Utiliser error au lieu de exception pour éviter traces complètes dans tests
-        # La trace complète est déjà dans l'exception chainée si nécessaire
-        logging.error("Erreur d'enregistrement audio: %s", e)
+        # Log en debug en CI (erreurs attendues sans périphériques audio)
+        import os
+
+        if os.environ.get("CI", "false").lower() == "true":
+            logging.debug("Erreur d'enregistrement audio: %s", e)
+        else:
+            logging.error("Erreur d'enregistrement audio: %s", e)
         raise
 
 
@@ -369,12 +390,21 @@ def lire_audio(fichier: str, robot_api: Optional["RobotAPI"] = None) -> None:
         try:
             info = soundfile.info(fichier)
             if info.samplerate != DEFAULT_SAMPLE_RATE:
-                logging.warning(
-                    "⚠️  Sample rate %s Hz != SDK standard %s Hz. "
-                    "Performance audio peut être dégradée.",
-                    info.samplerate,
-                    DEFAULT_SAMPLE_RATE,
-                )
+                # Log en debug en CI (warning attendu)
+                if os.environ.get("CI", "false").lower() == "true":
+                    logging.debug(
+                        "Sample rate %s Hz != SDK standard %s Hz. "
+                        "Performance audio peut être dégradée.",
+                        info.samplerate,
+                        DEFAULT_SAMPLE_RATE,
+                    )
+                else:
+                    logging.warning(
+                        "⚠️  Sample rate %s Hz != SDK standard %s Hz. "
+                        "Performance audio peut être dégradée.",
+                        info.samplerate,
+                        DEFAULT_SAMPLE_RATE,
+                    )
         except (OSError, AttributeError, RuntimeError):
             # Ignorer toute erreur côté soundfile, fallback plus bas
             logger.debug("Impossible de lire métadonnées audio avec soundfile")
