@@ -8,7 +8,7 @@
 
 ---
 
-## 🚀 Nouveau sur le projet ? Commencez ici !
+## 🚀 Nouveau sur le projet ? Commencez ici
 
 > **⭐ POINT DE DÉPART RECOMMANDÉ** : Commencez par le **[Guide de Démarrage](guides/GUIDE_DEMARRAGE.md)** — Installation et premiers pas en 5 minutes
 
@@ -116,8 +116,17 @@ flowchart TB
 
 ---
 
-<div align="center">
+## 📋 Organisation de la Documentation
+
+La documentation a été réorganisée le **27 Novembre 2025** :
+
+- ✅ **Structure clarifiée** : Tous les dossiers principaux ont un README
+- ✅ **Fichiers obsolètes archivés** : Voir `quality/audits/archives/`
+- ✅ **Doublons supprimés** : Fichiers redondants fusionnés ou archivés
+- ✅ **Dossiers vides supprimés** : `rapports/`, `semaines/`
+
+---
 
 **💡 Besoin d'aide ?** Consultez le [Guide de Démarrage](guides/GUIDE_DEMARRAGE.md) ou le [Troubleshooting](getting-started/troubleshooting.md)
 
-</div>
+**Dernière mise à jour** : 27 Novembre 2025

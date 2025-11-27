@@ -187,7 +187,20 @@ export BBIA_TELEMETRY_TIMEOUT=1.0
 
 ---
 
+## 📋 Organisation de la Documentation
+
+La documentation a été réorganisée le **27 Novembre 2025** pour une meilleure navigation :
+
+- ✅ **Dossiers vides supprimés** : `rapports/`, `semaines/`
+- ✅ **Fichiers obsolètes archivés** : Voir `quality/audits/archives/`
+- ✅ **Doublons fusionnés** : Style guides, tâches restantes
+- ✅ **README créés** : Tous les dossiers principaux ont maintenant un README
+
+---
+
 ## 🎯 Navigation
 
 **Retour à** : [README Documentation](README.md)  
 **Voir aussi** : [Index Thématique](reference/INDEX_THEMATIQUE.md)
+
+**Dernière mise à jour** : 27 Novembre 2025

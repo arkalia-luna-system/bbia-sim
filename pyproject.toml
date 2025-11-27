@@ -164,7 +164,7 @@ addopts = [
     # Timeout global pour éviter les tests qui bouclent (30s = suffisant pour tests optimisés, 2x plus rapide)
     # La méthode 'signal' est plus fiable mais nécessite SIGALRM (disponible sur Linux/macOS)
     # La méthode 'thread' fonctionne partout mais peut être moins efficace
-    "--timeout=30",
+        "--timeout=60",  # Augmenté pour tests lents (chargement modèles HF)
     "--timeout-method=signal",  # Utiliser signal sur macOS/Linux (plus fiable que thread)
 ]
 

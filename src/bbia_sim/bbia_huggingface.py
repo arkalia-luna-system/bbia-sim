@@ -833,10 +833,39 @@ class BBIAHuggingFace:
                 self.load_model(model_name, "nlp")
 
             pipeline = self.models[model_key]
-            result: Any = pipeline(text)
+
+            # Tronquer le texte si nécessaire (limite ~500 tokens pour RoBERTa)
+            # Utiliser le tokenizer du pipeline pour tronquer correctement
+            max_tokens = 512  # Limite RoBERTa
+            try:
+                # Récupérer le tokenizer du pipeline
+                tokenizer = pipeline.tokenizer
+                if tokenizer is not None:
+                    # Tokeniser et tronquer
+                    tokens = tokenizer.encode(
+                        text,
+                        add_special_tokens=True,
+                        max_length=max_tokens,
+                        truncation=True,
+                    )
+                    text_truncated = tokenizer.decode(tokens, skip_special_tokens=True)
+                else:
+                    # Fallback: tronquer par caractères (~2000 chars = ~500 tokens)
+                    max_chars = 2000
+                    text_truncated = (
+                        text[:max_chars] if len(text) > max_chars else text
+                    )
+            except (AttributeError, TypeError):
+                # Fallback: tronquer par caractères si tokenizer non accessible
+                max_chars = 2000
+                text_truncated = (
+                    text[:max_chars] if len(text) > max_chars else text
+                )
+
+            result: Any = pipeline(text_truncated)
 
             return {
-                "text": text,
+                "text": text_truncated if len(text) > max_chars else text,
                 "sentiment": str(result[0]["label"]),
                 "score": float(result[0]["score"]),
                 "model": model_name,
