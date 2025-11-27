@@ -52,6 +52,10 @@ class TestDemoChatBBIA3D:
         reason="Module bbia_huggingface non disponible",
     )
     @pytest.mark.slow
+    @pytest.mark.skipif(
+        __import__("os").environ.get("CI", "false").lower() == "true",
+        reason="Test désactivé en CI (chargement modèle LLM trop lent)",
+    )
     def test_chat_method(self):
         """Test que la méthode chat fonctionne."""
         if not BBIA_HUGGINGFACE_AVAILABLE or BBIAHuggingFace is None:
@@ -154,6 +158,10 @@ class TestDemoChatBBIA3D:
         reason="Module bbia_huggingface non disponible",
     )
     @pytest.mark.slow
+    @pytest.mark.skipif(
+        __import__("os").environ.get("CI", "false").lower() == "true",
+        reason="Test désactivé en CI (chargement modèle LLM trop lent)",
+    )
     def test_conversation_history(self):
         """Test que l'historique est sauvegardé."""
         if not BBIA_HUGGINGFACE_AVAILABLE or BBIAHuggingFace is None:

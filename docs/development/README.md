@@ -1,47 +1,33 @@
-# 💻 Development - Documentation BBIA-SIM
+# 🔧 Développement BBIA-SIM
 
-**Date** : 26 Novembre 2025  
-**Objectif** : Documentation pour développeurs et contributeurs
+Ce dossier contient toute la documentation technique pour le développement de BBIA-SIM.
 
----
+## 📁 Structure
 
-## 📚 Documentation Technique
+### 📂 Sous-dossiers
 
-### Architecture
+- **`api/`** - Contrats et documentation API (REST, WebSocket)
+- **`architecture/`** - Documentation architecture système
+- **`setup/`** - Guides de configuration et installation des dépendances
 
-- **[Architecture Overview](architecture/ARCHITECTURE_OVERVIEW.md)** - Vue d'ensemble (v1.4.0)
-- **[Architecture Detailed](architecture/ARCHITECTURE_DETAILED.md)** - Détails techniques
-- **[Architecture Guide](architecture/ARCHITECTURE.md)** - Guide complet
+### 📄 Fichiers principaux
 
-### API
+- **`README.md`** - Ce fichier
+- **`testing.md`** - Guide des tests
+- **`troubleshooting.md`** - Guide de dépannage
+- **`integration.md`** - Guide d'intégration
+- **`migration.md`** - Guide de migration
+- **`METRICS_COLLECTION.md`** - Collection de métriques
+- **`assistant-ia-guide.md`** - Guide pour utiliser l'assistant IA
+- **`dashboard-advanced.md`** - Guide du dashboard avancé
+- **`switch-sim-robot.md`** - Guide pour basculer entre simulation et robot réel
 
-- **[REST/WebSocket Contracts](api/CONTRATS_REST_WS.md)** - Contrats API
+## 📚 Navigation
 
-### Guides Techniques
-
-- **[Integration Guide](integration.md)** - Guide d'intégration
-- **[Testing Guide](testing.md)** - Guide de tests complet
-- **[Migration Guide](migration.md)** - Guide de migration
-- **[Troubleshooting](troubleshooting.md)** - FAQ technique
-- **[Switch Sim → Robot](switch-sim-robot.md)** - Basculer entre simulation et robot réel
-- **[Dashboard Advanced](dashboard-advanced.md)** - Guide dashboard avancé
-
-### Configuration & Setup
-
-- **[Environment Profiles](setup/environments.md)** - Profils venv (vision, voice, etc.)
-- **[DeepFace Setup](setup/deepface.md)** - Installation DeepFace
-- **[Webcam MX Brio](setup/webcam-mx-brio.md)** - Guide webcam Logitech
-- **[Vision Webcam Audit](setup/vision-webcam.md)** - Audit support webcam USB
-- **[Migration Coqui TTS](setup/coqui-tts.md)** - Migration vers Coqui TTS
-- **[Voix Personnalisée OpenVoice](setup/openvoice.md)** - Pipeline voix personnalisée
-
-### Pour Assistants IA
-
-- **[Assistant IA Guide](assistant-ia-guide.md)** - Scripts, conventions, workflow
+- **Démarrage** : [`../getting-started/`](../getting-started/)
+- **Guides** : [`../guides/`](../guides/)
+- **Référence** : [`../reference/`](../reference/)
 
 ---
 
-## 🎯 Navigation
-
-**Retour à** : [README Documentation](../README.md)  
-**Voir aussi** : [`docs/reference/INDEX_THEMATIQUE.md`](../reference/INDEX_THEMATIQUE.md)
+**Dernière mise à jour** : 27 Novembre 2025

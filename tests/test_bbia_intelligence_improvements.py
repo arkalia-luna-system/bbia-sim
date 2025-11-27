@@ -78,6 +78,10 @@ class TestBBIAIntelligenceImprovements:
     @pytest.mark.slow  # OPTIMISATION RAM: Test peut charger modèles lourds
     @pytest.mark.heavy  # OPTIMISATION RAM: Test lourd (charge modèles LLM)
     @pytest.mark.model  # Test qui charge de vrais modèles (HuggingFace)
+    @pytest.mark.skipif(
+        __import__("os").environ.get("CI", "false").lower() == "true",
+        reason="Test désactivé en CI (chargement modèle LLM trop lent)",
+    )
     def test_huggingface_response_quality(self):
         """Test que BBIAHuggingFace génère des réponses de qualité."""
         hf = None

@@ -68,4 +68,17 @@
 
 </div>
 
+## 📁 Structure des Sous-dossiers
+
+- **`audits/`** - Audits complets et analyses (voir [INDEX_AUDITS_CONSOLIDES.md](audits/INDEX_AUDITS_CONSOLIDES.md))
+- **`compliance/`** - Conformité SDK et checklists
+- **`performance/`** - Optimisations et analyses de performance
+- **`improvements/`** - Améliorations et évolutions
+- **`corrections/`** - Corrections appliquées
+- **`validation/`** - Validation et rapports qualité
+
+---
+
+**Dernière mise à jour** : 27 Novembre 2025
+
 **Retour à la [documentation principale](../README.md)**
