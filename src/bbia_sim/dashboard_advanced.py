@@ -531,7 +531,12 @@ class BBIAAdvancedWebSocketManager:
         pose = {}
         for joint in self._get_available_joints():
             try:
-                pose[joint] = self.robot.get_joint_pos(joint)
+                position = self.robot.get_joint_pos(joint)
+                # Gérer le cas où get_joint_pos retourne None
+                if position is None:
+                    pose[joint] = 0.0
+                else:
+                    pose[joint] = float(position)
             except (
                 ConnectionError,
                 RuntimeError,
