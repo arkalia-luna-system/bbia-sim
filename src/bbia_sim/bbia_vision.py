@@ -61,6 +61,13 @@ try:
     os.environ.setdefault("MEDIAPIPE_DISABLE_GPU", "1")  # éviter logs GPU inutiles
     # Supprimer les logs TensorFlow Lite
     os.environ.setdefault("TFLITE_LOG_VERBOSITY", "0")  # 0=ERROR, 1=WARNING, 2=INFO
+    # Supprimer les warnings MediaPipe/TensorFlow en CI
+    if os.environ.get("CI", "false").lower() == "true":
+        # Rediriger stderr pour MediaPipe en CI (warnings normaux mais bruyants)
+        import warnings
+
+        warnings.filterwarnings("ignore", category=UserWarning, module="mediapipe")
+        warnings.filterwarnings("ignore", category=UserWarning, module="tensorflow")
     # Supprimer les logs OpenGL (ne pas définir MUJOCO_GL sur macOS, utilise la valeur par défaut)
     # Sur macOS, laisser MuJoCo choisir automatiquement (glfw ou egl)
     if sys.platform != "darwin":  # Pas macOS
