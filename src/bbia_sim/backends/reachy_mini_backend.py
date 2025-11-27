@@ -605,16 +605,20 @@ class ReachyMiniBackend(RobotAPI):
         individuellement).
         """
         if joint_name.startswith("stewart_"):
-            logger.warning(
-                "⚠️  Tentative de contrôle individuel du joint %s - "
-                "Ce joint ne peut PAS être contrôlé individuellement "
-                "(plateforme Stewart utilise IK).\n"
-                "   → Utilisez goto_target() ou set_target_head_pose() "
-                "avec create_head_pose() pour contrôler la tête via la "
-                "cinématique inverse, ou utilisez look_at_world() pour "
-                "regarder vers un point.",
-                joint_name,
-            )
+            # Pas de log en CI (warning attendu dans les tests)
+            import os
+
+            if os.environ.get("CI", "false").lower() != "true":
+                logger.warning(
+                    "⚠️  Tentative de contrôle individuel du joint %s - "
+                    "Ce joint ne peut PAS être contrôlé individuellement "
+                    "(plateforme Stewart utilise IK).\n"
+                    "   → Utilisez goto_target() ou set_target_head_pose() "
+                    "avec create_head_pose() pour contrôler la tête via la "
+                    "cinématique inverse, ou utilisez look_at_world() pour "
+                    "regarder vers un point.",
+                    joint_name,
+                )
             return False
         return True
 
