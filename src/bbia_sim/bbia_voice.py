@@ -112,8 +112,6 @@ def _get_cached_voice_id() -> str:
         if engine is None:
             # Audio désactivé ou eSpeak non disponible
             # Log en debug en CI (warning attendu sans eSpeak)
-            import os
-
             if os.environ.get("CI", "false").lower() == "true":
                 logging.debug("pyttsx3 non disponible, utilisation voix par défaut")
             else:
@@ -445,8 +443,6 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
         engine = _get_pyttsx3_engine()
         if engine is None:
             # Log en debug en CI (warning attendu sans eSpeak)
-            import os
-
             if os.environ.get("CI", "false").lower() == "true":
                 logging.debug("pyttsx3 non disponible, synthèse vocale ignorée")
             else:
