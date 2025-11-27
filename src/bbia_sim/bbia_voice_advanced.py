@@ -120,9 +120,15 @@ class BBIAVoiceAdvanced:
                     _get_pyttsx3_engine()
                 )  # Utilise cache global (0ms après premier appel)
                 if engine is None:
-                    logger.warning(
-                        "⚠️ pyttsx3 non disponible (audio désactivé ou eSpeak manquant)"
-                    )
+                    # Log en debug en CI (warning attendu sans eSpeak)
+                    if os.environ.get("CI", "false").lower() == "true":
+                        logger.debug(
+                            "pyttsx3 non disponible (audio désactivé ou eSpeak manquant)"
+                        )
+                    else:
+                        logger.warning(
+                            "⚠️ pyttsx3 non disponible (audio désactivé ou eSpeak manquant)"
+                        )
                     self.pyttsx3_engine = None
                     self.pyttsx3_voice_id = None
                     return
@@ -188,7 +194,11 @@ class BBIAVoiceAdvanced:
                 return self._say_coqui(text, emotion, pitch, speed, volume)
             if self.pyttsx3_engine:
                 return self._say_pyttsx3(text, speed, volume)
-            logger.error("❌ Aucun moteur TTS disponible")
+            # Log en debug en CI (erreur attendue sans moteur TTS)
+            if os.environ.get("CI", "false").lower() == "true":
+                logger.debug("Aucun moteur TTS disponible")
+            else:
+                logger.error("❌ Aucun moteur TTS disponible")
             return False
         except Exception:
             logger.exception("❌ Erreur synthèse vocale")

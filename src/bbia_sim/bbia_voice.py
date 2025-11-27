@@ -87,7 +87,13 @@ def _get_pyttsx3_engine() -> Any:
                     logging.debug("✅ Moteur pyttsx3 initialisé (cache créé)")
                 except (RuntimeError, OSError) as e:
                     # eSpeak non installé ou autre erreur système
-                    logging.warning(f"⚠️ pyttsx3 non disponible: {e}")
+                    # Log en debug en CI (warning attendu sans eSpeak)
+                    import os
+
+                    if os.environ.get("CI", "false").lower() == "true":
+                        logging.debug(f"pyttsx3 non disponible: {e}")
+                    else:
+                        logging.warning(f"⚠️ pyttsx3 non disponible: {e}")
                     _pyttsx3_engine_cache = None
                     return None
     return _pyttsx3_engine_cache
