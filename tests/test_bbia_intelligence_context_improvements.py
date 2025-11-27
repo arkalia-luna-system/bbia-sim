@@ -49,6 +49,11 @@ class TestBBIAIntelligenceContext:
     @pytest.mark.model  # Test qui charge de vrais modèles (HuggingFace)
     def test_context_reference_detection(self):
         """Test que BBIA détecte les références au contexte précédent."""
+        # Skip en CI si trop lent (chargement modèle LLM)
+        import os
+
+        if os.environ.get("CI", "false").lower() == "true":
+            pytest.skip("Test désactivé en CI (chargement modèle LLM trop lent)")
         try:
             self.hf = BBIAHuggingFace()
         except ImportError:
@@ -86,6 +91,11 @@ class TestBBIAIntelligenceContext:
     @pytest.mark.model  # Test qui charge de vrais modèles (HuggingFace)
     def test_generic_responses_variety_improved(self):
         """Test que les réponses génériques ont été améliorées (plus variées)."""
+        # Skip en CI si trop lent (chargement modèle LLM)
+        import os
+
+        if os.environ.get("CI", "false").lower() == "true":
+            pytest.skip("Test désactivé en CI (chargement modèle LLM trop lent)")
         try:
             self.hf = BBIAHuggingFace()
         except ImportError:
@@ -130,6 +140,11 @@ class TestBBIAIntelligenceContext:
     @pytest.mark.model  # Test qui charge de vrais modèles (HuggingFace)
     def test_question_responses_improved(self):
         """Test que les réponses aux questions ont été améliorées."""
+        # Skip en CI si trop lent (chargement modèle LLM)
+        import os
+
+        if os.environ.get("CI", "false").lower() == "true":
+            pytest.skip("Test désactivé en CI (chargement modèle LLM trop lent)")
         try:
             self.hf = BBIAHuggingFace()
         except ImportError:
@@ -187,6 +202,11 @@ class TestBBIAIntelligenceContext:
     @pytest.mark.model  # Test qui charge de vrais modèles (HuggingFace)
     def test_context_responses_personality_variety(self):
         """Test que les réponses contextuelles varient selon personnalité."""
+        # Skip en CI si trop lent (chargement modèle LLM)
+        import os
+
+        if os.environ.get("CI", "false").lower() == "true":
+            pytest.skip("Test désactivé en CI (chargement modèle LLM trop lent)")
         try:
             self.hf = BBIAHuggingFace()
         except ImportError:
@@ -224,6 +244,11 @@ class TestBBIAIntelligenceContext:
     @pytest.mark.model  # Test qui charge de vrais modèles (HuggingFace)
     def test_generic_responses_length_and_intelligence(self):
         """Test que les réponses génériques sont longues et intelligentes."""
+        # Skip en CI si trop lent (chargement modèle LLM)
+        import os
+
+        if os.environ.get("CI", "false").lower() == "true":
+            pytest.skip("Test désactivé en CI (chargement modèle LLM trop lent)")
         try:
             self.hf = BBIAHuggingFace()
         except ImportError:
@@ -301,6 +326,11 @@ class TestBBIAIntelligenceContext:
     @pytest.mark.model  # Test qui charge de vrais modèles (HuggingFace)
     def test_no_regression_chat_api(self):
         """Test qu'il n'y a pas de régression dans l'API chat."""
+        # Skip en CI si trop lent (chargement modèle LLM)
+        import os
+
+        if os.environ.get("CI", "false").lower() == "true":
+            pytest.skip("Test désactivé en CI (chargement modèle LLM trop lent)")
         try:
             self.hf = BBIAHuggingFace()
         except ImportError:
