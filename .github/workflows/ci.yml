@@ -18,7 +18,7 @@ jobs:
       DISPLAY: ""
       BBIA_DISABLE_AUDIO: "1"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Clean up disk space
         run: |
@@ -167,7 +167,7 @@ jobs:
       BBIA_DISABLE_VISION_MODELS: "1"
       PYTHONDONTWRITEBYTECODE: 1
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Clean up disk space
         run: |
@@ -270,7 +270,7 @@ jobs:
       PYTHONDONTWRITEBYTECODE: 1
       SEED: 42
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Clean up disk space
         run: |
@@ -399,7 +399,7 @@ jobs:
       BBIA_DISABLE_VISION_MODELS: "1"
       PYTHONDONTWRITEBYTECODE: 1
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Clean up disk space
         run: |
@@ -479,7 +479,7 @@ jobs:
       BBIA_DISABLE_AUDIO: "1"
       PYTHONDONTWRITEBYTECODE: 1
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Clean up disk space
         run: |
@@ -542,7 +542,7 @@ jobs:
     env:
       PYTHONDONTWRITEBYTECODE: 1
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Clean up disk space
         run: |
@@ -597,7 +597,7 @@ jobs:
       BBIA_DISABLE_AUDIO: "1"
       PYTHONDONTWRITEBYTECODE: 1
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Clean up disk space
         run: |
@@ -673,7 +673,7 @@ jobs:
       DISPLAY: ""
       BBIA_DISABLE_AUDIO: "1"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Clean up disk space
         run: |
