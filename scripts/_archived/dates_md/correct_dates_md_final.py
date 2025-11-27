@@ -61,7 +61,7 @@ def correct_dates_in_content(content: str, file_path: Path) -> tuple[str, list[s
                     flags=re.IGNORECASE,
                 )
                 if line != original_line:
-                    changes.append(f"L{i+1}: {line[:60]}...")
+                    changes.append(f"L{i + 1}: {line[:60]}...")
 
         # Corriger années incorrectes (2024 → 2025) sauf si contexte création
         if not is_creation_date_context(line):
@@ -73,7 +73,7 @@ def correct_dates_in_content(content: str, file_path: Path) -> tuple[str, list[s
             ):
                 line = re.sub(r"\b2024\b", "2025", line)
                 if line != original_line:
-                    changes.append(f"L{i+1}: {line[:60]}...")
+                    changes.append(f"L{i + 1}: {line[:60]}...")
 
             # Corriger dates mois + année
             # "octobre 2024" → "octobre 2025" (sauf si contexte création)
@@ -85,7 +85,7 @@ def correct_dates_in_content(content: str, file_path: Path) -> tuple[str, list[s
                     flags=re.IGNORECASE,
                 )
                 if line != original_line:
-                    changes.append(f"L{i+1}: {line[:60]}...")
+                    changes.append(f"L{i + 1}: {line[:60]}...")
 
         # Pour fichiers récents, mettre format "Oct 25 / Nov 25"
         if is_recent:
@@ -106,7 +106,7 @@ def correct_dates_in_content(content: str, file_path: Path) -> tuple[str, list[s
                         count=1,
                     )
                     if line != original_line:
-                        changes.append(f"L{i+1}: {line[:60]}...")
+                        changes.append(f"L{i + 1}: {line[:60]}...")
 
         lines[i] = line
 

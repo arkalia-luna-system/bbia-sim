@@ -3,7 +3,8 @@
 # Ce fichier peut être archivé dans une future version
 """
 Exemple d'intégration des modules BBIA Phase 2
-Démonstration des nouvelles fonctionnalités : Hugging Face, Emotion Recognition, Adaptive Behavior
+Démonstration des nouvelles fonctionnalités :
+Hugging Face, Emotion Recognition, Adaptive Behavior
 """
 
 import sys
@@ -132,14 +133,17 @@ def demo_adaptive_behavior():
         for i in range(3):
             behavior = adaptive_behavior.generate_behavior(f"user_arrival_{i}")
             print(
-                f"  Comportement {i+1}: {behavior['name']} - {behavior['description']}"
+                f"  Comportement {i + 1}: {behavior['name']} - "
+                f"{behavior['description']}"
             )
             print(
-                f"    Contexte: {behavior['context']}, Émotion: {behavior['emotion']}"
+                f"    Contexte: {behavior['context']}, "
+                f"Émotion: {behavior['emotion']}"
             )
             print(f"    Intensité: {behavior['emotion_intensity']:.2f}")
             print(
-                f"    Paramètres: {behavior['parameters']['duration']:.1f}s, {len(behavior['parameters']['joints'])} joints"
+                f"    Paramètres: {behavior['parameters']['duration']:.1f}s, "
+                f"{len(behavior['parameters']['joints'])} joints"
             )
 
         # Test comportement proactif
@@ -147,7 +151,8 @@ def demo_adaptive_behavior():
         proactive = adaptive_behavior.get_proactive_behavior()
         if proactive:
             print(
-                f"Comportement proactif: {proactive['name']} - {proactive['description']}"
+                f"Comportement proactif: {proactive['name']} - "
+                f"{proactive['description']}"
             )
         else:
             print("Aucun comportement proactif généré")
@@ -249,13 +254,15 @@ def demo_integrated_workflow():
         if robot:
             # Simulation d'exécution
             print(
-                f"   Exécution: {behavior['name']} pendant {behavior['parameters']['duration']:.1f}s"
+                f"   Exécution: {behavior['name']} pendant "
+                f"{behavior['parameters']['duration']:.1f}s"
             )
 
             # Application de l'émotion au robot
             robot.set_emotion(detected_emotion, emotion_intensity)
             print(
-                f"   Émotion appliquée: {detected_emotion} (intensité: {emotion_intensity:.2f})"
+                f"   Émotion appliquée: {detected_emotion} "
+                f"(intensité: {emotion_intensity:.2f})"
             )
 
             # Simulation de mouvement
@@ -263,7 +270,8 @@ def demo_integrated_workflow():
                 if joint in robot.get_available_joints():
                     # Mouvement simulé
                     print(
-                        f"   Mouvement joint {joint}: amplitude {behavior['parameters']['intensity']:.2f}"
+                        f"   Mouvement joint {joint}: amplitude "
+                        f"{behavior['parameters']['intensity']:.2f}"
                     )
 
         # Étape 5: Apprentissage
@@ -286,7 +294,8 @@ def main():
     """Point d'entrée principal."""
     print("🚀 === DÉMONSTRATION BBIA PHASE 2 MODULES ===")
     print(
-        "Nouvelles fonctionnalités: Hugging Face, Emotion Recognition, Adaptive Behavior"
+        "Nouvelles fonctionnalités: Hugging Face, Emotion Recognition, "
+        "Adaptive Behavior"
     )
     print("=" * 80)
 

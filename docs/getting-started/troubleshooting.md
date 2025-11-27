@@ -5,7 +5,7 @@
 **💡 Réponses rapides aux questions les plus courantes**  
 *Trouvez rapidement la solution à votre problème*
 
-**Version** : 1.3.2 • **Date** : Oct / Nov. 2025
+**Version** : 1.4.0 • **Date** : 26 Novembre 2025
 
 [![📚 Documentation](https://img.shields.io/badge/📚-Documentation-blue)](../README.md) • [![🐛 Issue](https://img.shields.io/badge/🐛-Signaler%20un%20problème-red)](https://github.com/arkalia-luna-system/bbia-sim/issues)
 
@@ -405,14 +405,14 @@ export BBIA_DISABLE_SIMULATION=1
 | 🧪 **Tests** | [`../../tests/README.md`](../../tests/README.md) | Guide des tests |
 | 💡 **Exemples** | [`../../examples/README.md`](../../examples/README.md) | Exemples d'utilisation |
 | 🔧 **Scripts** | [`../../scripts/README.md`](../../scripts/README.md) | Outils utilitaires |
-| 🎯 **Guide débutant** | [`../guides/GUIDE_DEBUTANT.md`](../guides/GUIDE_DEBUTANT.md) | Démarrage rapide |
+| 🎯 **Guide de démarrage** | [`../guides/GUIDE_DEMARRAGE.md`](../guides/GUIDE_DEMARRAGE.md) | Démarrage rapide |
 | 🔍 **Diagnostic** | `python scripts/bbia_doctor.py` | Vérification environnement (Zenoh, daemon, WiFi) |
 
 ## 🔗 Liens Utiles
 
 - **GitHub** : [arkalia-luna-system/bbia-sim](https://github.com/arkalia-luna-system/bbia-sim)
 - **Issues** : [Signaler un bug](https://github.com/arkalia-luna-system/bbia-sim/issues)
-- **État du projet** : [`../reference/STATUT_PROJET.md`](../reference/STATUT_PROJET.md) — État opérationnel
+- **État du projet** : [`../reference/project-status.md`](../reference/project-status.md) — État opérationnel et tableau de bord complet
 - **Tableau de bord** : [`../reference/project-status.md`](../reference/project-status.md) — État par axe
 
 ---
@@ -426,11 +426,11 @@ export BBIA_DISABLE_SIMULATION=1
 
 ---
 
-**Dernière mise à jour** : Oct / Nov. 2025
+**Dernière mise à jour** : 26 Novembre 2025
 
 ---
 
 ## 🎯 Navigation
 
 **Retour à** : [README Documentation](../README.md)  
-**Voir aussi** : [Guide Débutant](../guides/GUIDE_DEBUTANT.md) • [Troubleshooting Technique](../development/troubleshooting.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)
+**Voir aussi** : [Guide de Démarrage](../guides/GUIDE_DEMARRAGE.md) • [Troubleshooting Technique](../development/troubleshooting.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)

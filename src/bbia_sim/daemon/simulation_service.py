@@ -3,9 +3,10 @@
 import asyncio
 import contextlib
 import logging
+import os
 from typing import Any
 
-from ..sim.simulator import MuJoCoSimulator
+from bbia_sim.sim.simulator import MuJoCoSimulator
 
 logger = logging.getLogger(__name__)
 
@@ -13,7 +14,7 @@ logger = logging.getLogger(__name__)
 class SimulationService:
     """Service de gestion de la simulation MuJoCo."""
 
-    def __init__(self, model_path: str | None = None):
+    def __init__(self, model_path: str | None = None) -> None:
         """Initialise le service de simulation.
 
         Args:
@@ -42,7 +43,7 @@ class SimulationService:
                 logger.warning("La simulation est déjà en cours")
                 return True
 
-            logger.info(f"Démarrage de la simulation MuJoCo avec {self.model_path}")
+            logger.info("Démarrage de la simulation MuJoCo avec %s", self.model_path)
             self.simulator = MuJoCoSimulator(self.model_path)
 
             if headless:
@@ -61,7 +62,12 @@ class SimulationService:
             return True
 
         except Exception as e:
-            logger.error(f"Erreur lors du démarrage de la simulation : {e}")
+            # Utiliser logger.debug en CI pour éviter bruit dans tests
+            is_ci = os.environ.get("CI", "false").lower() == "true"
+            if is_ci:
+                logger.debug("Erreur lors du démarrage de la simulation: %s", e)
+            else:
+                logger.exception("Erreur lors du démarrage de la simulation ")
             return False
 
     async def stop_simulation(self) -> bool:
@@ -91,8 +97,8 @@ class SimulationService:
             logger.info("Simulation MuJoCo arrêtée avec succès")
             return True
 
-        except Exception as e:
-            logger.error(f"Erreur lors de l'arrêt de la simulation : {e}")
+        except Exception:
+            logger.exception("Erreur lors de l'arrêt de la simulation")
             return False
 
     async def _run_headless_simulation(self) -> None:
@@ -108,14 +114,20 @@ class SimulationService:
                 # Simulation d'un step MuJoCo
                 if self.simulator:
                     # Note: mj_step est synchrone, on l'exécute dans un thread
-                    await asyncio.get_event_loop().run_in_executor(
+                    step_simulation = getattr(
+                        self.simulator,
+                        "_step_simulation",
                         None,
-                        self.simulator._step_simulation,
                     )
+                    if step_simulation is not None:
+                        await asyncio.get_event_loop().run_in_executor(
+                            None,
+                            step_simulation,
+                        )
                     step_count += 1
 
                     if step_count % 1000 == 0:
-                        logger.debug(f"Step {step_count}")
+                        logger.debug("Step %s", step_count)
 
                 # OPTIMISATION PERFORMANCE: Réduire fréquence 1000Hz → 60Hz pour Mac
                 await asyncio.sleep(
@@ -123,7 +135,11 @@ class SimulationService:
                 )  # ~60 Hz (suffisant pour simulation fluide, moins de CPU)
 
             except Exception as e:
-                logger.error(f"Erreur dans la simulation headless : {e}")
+                # Log en debug en CI (erreurs attendues dans les tests avec mocks)
+                if os.environ.get("CI", "false").lower() == "true":
+                    logger.debug("Erreur dans la simulation headless: %s", e)
+                else:
+                    logger.exception("Erreur dans la simulation headless ")
                 await asyncio.sleep(0.1)
 
     async def _run_graphical_simulation(self) -> None:
@@ -141,8 +157,8 @@ class SimulationService:
                 False,
                 None,
             )
-        except Exception as e:
-            logger.error(f"Erreur simulation graphique : {e}")
+        except Exception:
+            logger.exception("Erreur simulation graphique ")
             # Fallback vers headless si le viewer échoue
             logger.info("Fallback vers simulation headless")
             await self._run_headless_simulation()
@@ -158,9 +174,16 @@ class SimulationService:
             return self._get_default_state()
 
         try:
-            return self.simulator.get_robot_state()
+            return self.simulator.get_robot_state()  # type: ignore[no-any-return]
         except Exception as e:
-            logger.error(f"Erreur lors de la récupération de l'état : {e}")
+            # Utiliser error au lieu de exception pour éviter traces complètes dans tests
+            # (logger.exception() affiche toujours la trace complète)
+            if os.environ.get("CI", "false").lower() == "true":
+                # En CI/tests, utiliser debug pour réduire le bruit
+                logger.debug("Erreur lors de la récupération de l'état: %s", e)
+            else:
+                # En production, utiliser error avec le message d'erreur
+                logger.error("Erreur lors de la récupération de l'état: %s", e)
             return self._get_default_state()
 
     def get_joint_positions(self) -> dict[str, float]:
@@ -183,7 +206,13 @@ class SimulationService:
                 return joint_positions
             return self._get_default_joint_positions()
         except Exception as e:
-            logger.error(f"Erreur lors de la récupération des positions : {e}")
+            # Utiliser error au lieu de exception pour éviter traces complètes dans tests
+            if os.environ.get("CI", "false").lower() == "true":
+                # En CI/tests, utiliser debug pour réduire le bruit
+                logger.debug("Erreur lors de la récupération des positions: %s", e)
+            else:
+                # En production, utiliser error avec le message d'erreur
+                logger.error("Erreur lors de la récupération des positions: %s", e)
             return self._get_default_joint_positions()
 
     def set_joint_position(self, joint_name: str, position: float) -> bool:
@@ -203,10 +232,14 @@ class SimulationService:
 
         try:
             self.simulator.set_joint_position(joint_name, position)
-            logger.info(f"Position de {joint_name} définie à {position}")
+            logger.info("Position de %s définie à %s", joint_name, position)
             return True
         except Exception as e:
-            logger.error(f"Erreur lors de la définition de la position : {e}")
+            # Log en debug en CI (erreurs attendues dans les tests avec mocks)
+            if os.environ.get("CI", "false").lower() == "true":
+                logger.debug("Erreur lors de la définition de la position: %s", e)
+            else:
+                logger.exception("Erreur lors de la définition de la position ")
             return False
 
     def get_available_joints(self) -> list[str]:
@@ -220,9 +253,13 @@ class SimulationService:
             return self._get_default_joint_names()
 
         try:
-            return self.simulator.get_available_joints()
+            return self.simulator.get_available_joints()  # type: ignore[no-any-return]
         except Exception as e:
-            logger.error(f"Erreur lors de la récupération des articulations : {e}")
+            # Log en debug en CI (erreurs attendues dans les tests avec mocks)
+            if os.environ.get("CI", "false").lower() == "true":
+                logger.debug("Erreur lors de la récupération des articulations: %s", e)
+            else:
+                logger.exception("Erreur lors de la récupération des articulations ")
             return self._get_default_joint_names()
 
     def _get_default_state(self) -> dict[str, Any]:

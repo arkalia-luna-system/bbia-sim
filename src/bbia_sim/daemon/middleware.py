@@ -21,7 +21,9 @@ class SecurityMiddleware(BaseHTTPMiddleware):
         self.max_json_size = max_json_size
 
     async def dispatch(
-        self, request: Request, call_next: Callable[[Request], Any]
+        self,
+        request: Request,
+        call_next: Callable[[Request], Any],
     ) -> Response:
         """Applique les headers de sécurité et limite la taille des requêtes."""
         # Vérification de la taille de la requête
@@ -78,7 +80,9 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
         self.requests: dict[str, list[float]] = {}
 
     async def dispatch(
-        self, request: Request, call_next: Callable[[Request], Any]
+        self,
+        request: Request,
+        call_next: Callable[[Request], Any],
     ) -> Response:
         """Applique le rate limiting basique."""
         if settings.is_production() or self.force_enable:
@@ -97,7 +101,7 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
 
             # Vérification de la limite
             if len(self.requests[client_ip]) >= self.requests_per_minute:
-                logger.warning(f"Rate limit dépassé pour {client_ip}")
+                logger.warning("Rate limit dépassé pour %s", client_ip)
                 return Response(
                     content=self.message,
                     status_code=429,

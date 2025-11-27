@@ -2,8 +2,8 @@
 
 <div align="center">
 
-**Date** : Oct / Nov. 2025
-[![Version](https://img.shields.io/badge/version-1.3.2-blue.svg)](https://github.com/arkalia-luna-system/bbia-sim)
+**Date** : 26 Novembre 2025
+[![Version](https://img.shields.io/badge/version-1.4.0-blue.svg)](https://github.com/arkalia-luna-system/bbia-sim)
 [![Niveau](https://img.shields.io/badge/niveau-Avancé-orange.svg)](docs/guides/)
 [![Temps](https://img.shields.io/badge/temps-15%20min-purple.svg)](#architecture-détaillée)
 
@@ -26,7 +26,7 @@
 
 <div align="center">
 
-**Version :** 1.3.2  
+**Version :** 1.4.0  
 **Public cible :** développeurs expérimentés souhaitant exploiter les fonctionnalités de BBIA
 
 [![🔧 Backend](https://img.shields.io/badge/🔧-Backend%20Unifié-blue)](#backend-unifié)
@@ -40,22 +40,26 @@
 
 ## 📋 Table des Matières
 
-- [Guide avancé - BBIA-SIM](#guide-avancé---bbia-sim)
-  - [Pour développeurs avancés](#pour-développeurs-avancés)
+- [🚀 Guide Avancé - BBIA-SIM](#-guide-avancé---bbia-sim)
+  - [🎯 Pour Développeurs Avancés](#-pour-développeurs-avancés)
   - [📋 Table des Matières](#-table-des-matières)
-  - [Architecture détaillée](#architecture-détaillée)
-    - [Backend unifié](#backend-unifié)
+  - [🏗️ Architecture Détaillée](#️-architecture-détaillée)
+    - [🔧 Backend Unifié](#-backend-unifié)
+    - [🌟 Développez une fois, déployez partout !](#-développez-une-fois-déployez-partout-)
       - [Flux Backend Unifié](#flux-backend-unifié)
-    - [Modules BBIA avancés](#modules-bbia-avancés)
-      - [Architecture Modules BBIA](#architecture-modules-bbia)
+    - [🧠 Modules BBIA Avancés](#-modules-bbia-avancés)
+      - [🏛️ Architecture Modules BBIA](#️-architecture-modules-bbia)
+    - [🤖 12 modules intelligents pour robot avancé](#-12-modules-intelligents-pour-robot-avancé)
       - [1. Module Émotions](#1-module-émotions)
       - [2. Module Comportements](#2-module-comportements)
       - [3. Module Vision](#3-module-vision)
     - [Tests avancés](#tests-avancés)
     - [Optimisations de performance](#optimisations-de-performance)
-  - [Migration simulation → robot réel](#migration-simulation--robot-réel)
-  - [API avancée](#api-avancée)
-    - [Conformité SDK officiel](#conformité-sdk-officiel)
+  - [🔄 Migration Simulation → Robot Réel](#-migration-simulation--robot-réel)
+    - [🚀 Passage transparent du développement à la production](#-passage-transparent-du-développement-à-la-production)
+  - [🚀 API Avancée](#-api-avancée)
+    - [✅ Conformité SDK Officiel](#-conformité-sdk-officiel)
+    - [🎯 100% compatible avec le SDK Pollen Robotics](#-100-compatible-avec-le-sdk-pollen-robotics)
   - [🎯 Navigation](#-navigation)
 
 ---
@@ -307,4 +311,4 @@ Voir : [Conformité SDK Complète](../quality/compliance/CONFORMITE_REACHY_MINI_
 ## 🎯 Navigation
 
 **Retour à** : [README Documentation](../README.md)  
-**Voir aussi** : [Guide Débutant](GUIDE_DEBUTANT.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)
+**Voir aussi** : [Guide de Démarrage](GUIDE_DEMARRAGE.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)

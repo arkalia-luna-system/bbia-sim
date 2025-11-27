@@ -157,10 +157,11 @@ class TestRateLimitMiddleware:
         response = client.get("/")
         assert response.status_code == 429
 
-        # Attendre la fin de la fenêtre
+        # NOTE: Ce test nécessite un délai réel car le middleware utilise time.time()
+        # pour suivre les fenêtres de rate limit. Réduire ce délai casserait le test.
         import time
 
-        time.sleep(1.1)
+        time.sleep(1.1)  # Attendre la fin de la fenêtre (window_seconds=1)
 
         # Nouvelle requête (devrait passer)
         response = client.get("/")

@@ -39,7 +39,7 @@ class BBIAPoseDetection:
         min_detection_confidence: float = 0.5,
         min_tracking_confidence: float = 0.5,
         model_complexity: int = 1,
-    ):
+    ) -> None:
         """Initialise le module de détection de pose.
 
         Args:
@@ -72,8 +72,8 @@ class BBIAPoseDetection:
                 f"✅ BBIAPoseDetection initialisé (complexité: {model_complexity})",
             )
             self.is_initialized = True
-        except Exception as e:
-            logger.error(f"❌ Erreur initialisation MediaPipe Pose: {e}")
+        except Exception:
+            logger.exception("❌ Erreur initialisation MediaPipe Pose")
 
     def detect_pose(self, image: npt.NDArray[np.uint8]) -> dict[str, Any] | None:
         """Détecte la posture complète dans une image.
@@ -95,10 +95,7 @@ class BBIAPoseDetection:
                 # Vérifier si BGR (OpenCV) ou RGB
                 import cv2
 
-                if cv2:
-                    image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-                else:
-                    image_rgb = image
+                image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB) if cv2 else image
             else:
                 image_rgb = image
 
@@ -134,8 +131,8 @@ class BBIAPoseDetection:
                 "num_landmarks": len(landmarks),
             }
 
-        except Exception as e:
-            logger.error(f"❌ Erreur détection pose: {e}")
+        except Exception:
+            logger.exception("❌ Erreur détection pose")
             return None
 
     def _detect_gestures(self, landmarks: list[dict[str, Any]]) -> dict[str, bool]:
@@ -195,7 +192,7 @@ class BBIAPoseDetection:
                 gestures["mains_sur_tete"] = True
 
         except (IndexError, KeyError) as e:
-            logger.debug(f"Erreur détection gestes (landmarks incomplets): {e}")
+            logger.debug("Erreur détection gestes (landmarks incomplets): %s", e)
 
         return gestures
 
@@ -223,7 +220,8 @@ class BBIAPoseDetection:
             genou_droit = landmarks[26]
 
             # Distance moyenne hanche-cheville (debout) vs hanche-genou (assis)
-            # Simplification : si genoux très bas par rapport aux hanches = probablement assis
+            # Simplification : si genoux très bas par rapport aux hanches
+            # = probablement assis
             avg_hanche_y = (hanche_gauche["y"] + hanche_droite["y"]) / 2
             avg_genou_y = (genou_gauche["y"] + genou_droit["y"]) / 2
 
@@ -235,7 +233,7 @@ class BBIAPoseDetection:
             return "debout"
 
         except (IndexError, KeyError) as e:
-            logger.debug(f"Erreur détection posture (landmarks incomplets): {e}")
+            logger.debug("Erreur détection posture (landmarks incomplets): %s", e)
             return "inconnu"
 
 
@@ -277,8 +275,8 @@ if __name__ == "__main__":
 
     if pose_detector.is_initialized:
         logger.info("✅ Module Pose Detection créé")
-        logger.info(f"   • Initialisé: {pose_detector.is_initialized}")
-        logger.info(f"   • Complexité modèle: {pose_detector.model_complexity}")
+        logger.info("   • Initialisé: %s", pose_detector.is_initialized)
+        logger.info("   • Complexité modèle: %s", pose_detector.model_complexity)
     else:
         logger.info("❌ Impossible de créer le module (MediaPipe non disponible)")
         logger.info("   Installer avec: pip install mediapipe")

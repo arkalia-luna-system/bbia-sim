@@ -1,0 +1,144 @@
+<section class="w-full">
+    <div class="app-section">
+        <div class="app-section-title">Émotions avec Intensité</div>
+
+        <div class="mt-4 space-y-4">
+            <!-- Slider pour chaque émotion -->
+            <div class="emotion-slider p-4 bg-gray-50 rounded-lg" data-emotion="happy">
+                <div class="flex items-center justify-between mb-2">
+                    <div class="flex items-center gap-2">
+                        <span class="text-2xl">😊</span>
+                        <span class="font-semibold">Heureux</span>
+                    </div>
+                    <span class="emotion-intensity-value text-sm text-gray-600">50%</span>
+                </div>
+                <input type="range"
+                    class="emotion-slider-input w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                    min="0" max="100" value="50" data-emotion="happy" />
+            </div>
+
+            <div class="emotion-slider p-4 bg-gray-50 rounded-lg" data-emotion="sad">
+                <div class="flex items-center justify-between mb-2">
+                    <div class="flex items-center gap-2">
+                        <span class="text-2xl">😢</span>
+                        <span class="font-semibold">Triste</span>
+                    </div>
+                    <span class="emotion-intensity-value text-sm text-gray-600">0%</span>
+                </div>
+                <input type="range"
+                    class="emotion-slider-input w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                    min="0" max="100" value="0" data-emotion="sad" />
+            </div>
+
+            <div class="emotion-slider p-4 bg-gray-50 rounded-lg" data-emotion="excited">
+                <div class="flex items-center justify-between mb-2">
+                    <div class="flex items-center gap-2">
+                        <span class="text-2xl">🤩</span>
+                        <span class="font-semibold">Excité</span>
+                    </div>
+                    <span class="emotion-intensity-value text-sm text-gray-600">0%</span>
+                </div>
+                <input type="range"
+                    class="emotion-slider-input w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                    min="0" max="100" value="0" data-emotion="excited" />
+            </div>
+
+            <div class="emotion-slider p-4 bg-gray-50 rounded-lg" data-emotion="angry">
+                <div class="flex items-center justify-between mb-2">
+                    <div class="flex items-center gap-2">
+                        <span class="text-2xl">😠</span>
+                        <span class="font-semibold">En colère</span>
+                    </div>
+                    <span class="emotion-intensity-value text-sm text-gray-600">0%</span>
+                </div>
+                <input type="range"
+                    class="emotion-slider-input w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                    min="0" max="100" value="0" data-emotion="angry" />
+            </div>
+
+            <div class="emotion-slider p-4 bg-gray-50 rounded-lg" data-emotion="surprised">
+                <div class="flex items-center justify-between mb-2">
+                    <div class="flex items-center gap-2">
+                        <span class="text-2xl">😮</span>
+                        <span class="font-semibold">Surpris</span>
+                    </div>
+                    <span class="emotion-intensity-value text-sm text-gray-600">0%</span>
+                </div>
+                <input type="range"
+                    class="emotion-slider-input w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                    min="0" max="100" value="0" data-emotion="surprised" />
+            </div>
+
+            <div class="emotion-slider p-4 bg-gray-50 rounded-lg" data-emotion="neutral">
+                <div class="flex items-center justify-between mb-2">
+                    <div class="flex items-center gap-2">
+                        <span class="text-2xl">😐</span>
+                        <span class="font-semibold">Neutre</span>
+                    </div>
+                    <span class="emotion-intensity-value text-sm text-gray-600">0%</span>
+                </div>
+                <input type="range"
+                    class="emotion-slider-input w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                    min="0" max="100" value="0" data-emotion="neutral" />
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    // Gestion des sliders d'émotions
+    document.addEventListener('DOMContentLoaded', () => {
+        const sliders = document.querySelectorAll('.emotion-slider-input');
+
+        // Debounce pour éviter trop de requêtes
+        let updateTimeout = null;
+
+        sliders.forEach(slider => {
+            slider.addEventListener('input', (e) => {
+                const emotion = e.target.getAttribute('data-emotion');
+                const intensity = parseInt(e.target.value);
+                const intensityPercent = intensity + '%';
+
+                // Mettre à jour l'affichage immédiatement
+                const sliderContainer = e.target.closest('.emotion-slider');
+                const valueSpan = sliderContainer.querySelector('.emotion-intensity-value');
+                if (valueSpan) {
+                    valueSpan.textContent = intensityPercent;
+                }
+
+                // Debounce: envoyer après 300ms d'inactivité
+                clearTimeout(updateTimeout);
+                updateTimeout = setTimeout(() => {
+                    setEmotionWithIntensity(emotion, intensity / 100);
+                }, 300);
+            });
+        });
+    });
+
+    // Fonction pour définir une émotion avec intensité
+    async function setEmotionWithIntensity(emotion, intensity) {
+        try {
+            const response = await fetch('/api/motion/emotion', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    emotion: emotion,
+                    intensity: intensity
+                })
+            });
+
+            if (response.ok) {
+                console.log(`✅ Émotion ${emotion} définie avec intensité ${intensity}`);
+            } else {
+                console.error(`❌ Erreur définition émotion: ${response.statusText}`);
+            }
+        } catch (error) {
+            console.error('❌ Erreur réseau:', error);
+        }
+    }
+
+    // Rendre la fonction accessible globalement
+    window.setEmotionWithIntensity = setEmotionWithIntensity;
+</script>

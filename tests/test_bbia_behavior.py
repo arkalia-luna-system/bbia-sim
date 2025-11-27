@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Test du module BBIA Behavior Manager."""
 
-import contextlib
 import io
+import logging
 import os
 import sys
 import unittest
@@ -121,16 +121,42 @@ class TestHideBehavior(unittest.TestCase):
     def test_hide_sequence_stdout_and_voice(self):
         """Test avancé : vérifie la séquence console et la synthèse vocale pour 'se cacher'."""
         behavior = HideBehavior()
-        output = io.StringIO()
-        # Correction : patcher dire_texte dans le namespace du module bbia_behavior
-        with patch("bbia_sim.bbia_behavior.dire_texte") as mock_dire_texte:
-            with contextlib.redirect_stdout(output):
+        # Capturer les logs au lieu de stdout (les messages sont loggés, pas printés)
+        log_capture = io.StringIO()
+        handler = logging.StreamHandler(log_capture)
+        handler.setLevel(logging.INFO)
+        # Format simple pour faciliter la recherche
+        handler.setFormatter(logging.Formatter("%(message)s"))
+
+        # Obtenir le logger utilisé par bbia_behavior
+        logger = logging.getLogger("BBIA")
+        # Sauvegarder l'état original
+        original_level = logger.level
+        original_handlers = logger.handlers[:]
+        original_propagate = logger.propagate
+
+        # Ajouter notre handler de test
+        logger.addHandler(handler)
+        logger.setLevel(logging.INFO)
+        logger.propagate = True  # Permettre la propagation pour capturer les logs
+
+        try:
+            # Correction : patcher dire_texte dans le namespace du module bbia_behavior
+            with patch("bbia_sim.bbia_behavior.dire_texte") as mock_dire_texte:
                 result = behavior.execute({})
-        # Vérification de la sortie console
-        out = output.getvalue()
-        self.assertIn("🙈 [BBIA] Séquence 'se cacher'...", out)
-        # Note: certaines étapes peuvent varier selon l'implémentation
-        self.assertIn("💤 BBIA se cache et devient silencieux.", out)
+
+            # Vérification de la sortie console (depuis les logs)
+            log_output = log_capture.getvalue()
+            # Les logs peuvent contenir le format complet avec timestamp, donc on cherche juste le message
+            self.assertIn("🙈 [BBIA] Séquence 'se cacher'...", log_output)
+            # Note: certaines étapes peuvent varier selon l'implémentation
+            self.assertIn("💤 BBIA se cache et devient silencieux.", log_output)
+        finally:
+            # Nettoyer : retirer notre handler et restaurer l'état original
+            logger.removeHandler(handler)
+            logger.level = original_level
+            logger.handlers = original_handlers
+            logger.propagate = original_propagate
 
         # Vérification de la synthèse vocale - accepte n'importe quelle variante
         self.assertTrue(mock_dire_texte.called)

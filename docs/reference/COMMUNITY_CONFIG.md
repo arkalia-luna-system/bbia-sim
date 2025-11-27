@@ -4,43 +4,35 @@
 >
 > Voir `docs/reference/project-status.md` → "Communauté" pour les templates d’issues/discussions, roadmap publique et "good first issues".
 
-**Version** : 1.2.0 "Écosystème Ouvert"
-**Date** : Oct / Nov. 2025
+**Version** : 1.4.0 "100% d'Exploitation"
+**Date** : 26 Novembre 2025
 **Public** : Communauté Technique
 
 ## 🎯 **Configuration recommandée**
 
-### **Environnement de développement**
+> **💡 Note** : Pour l'installation complète, voir [INSTALLATION.md](../getting-started/INSTALLATION.md).  
+> Pour les métriques du projet, voir [METRICS.md](METRICS.md).
+
+### **Variables d'environnement**
+
+#### **Développement**
 
 ```bash
-# Python 3.9+ requis
-python --version
-
-# Installation des dépendances
-pip install -r requirements.txt
-
-# Installation en mode développement
-pip install -e .
-
-# Configuration des variables d'environnement
 export BBIA_API_HOST=127.0.0.1
 export BBIA_API_PORT=8000
 export BBIA_LOG_LEVEL=info
 export MUJOCO_GL=egl
-
 ```
 
-### **Environnement de production**
+#### **Production**
 
 ```bash
-# Configuration production
 export BBIA_API_HOST=0.0.0.0
 export BBIA_API_PORT=8000
 export BBIA_LOG_LEVEL=warning
 export BBIA_API_TOKEN=your_secret_token
 export BBIA_RATE_LIMIT=100
 export MUJOCO_GL=egl
-
 ```
 
 ---
@@ -51,13 +43,13 @@ export MUJOCO_GL=egl
 
 ```bash
 # Démarrage API avec rechargement automatique
-python deployment/public_api.py --dev
+python -m bbia_sim.daemon.app --reload
 
 # Démarrage avec logs détaillés
-python deployment/public_api.py --dev --log-level debug
+uvicorn src.bbia_sim.daemon.app.main:app --reload --log-level debug
 
 # Démarrage sur port personnalisé
-python deployment/public_api.py --dev --port 3000
+uvicorn src.bbia_sim.daemon.app.main:app --reload --port 3000
 
 ```
 
@@ -65,10 +57,10 @@ python deployment/public_api.py --dev --port 3000
 
 ```bash
 # Démarrage production avec workers multiples
-python deployment/public_api.py --prod --workers 4
+uvicorn src.bbia_sim.daemon.app.main:app --host 0.0.0.0 --port 8000 --workers 4
 
 # Démarrage avec configuration personnalisée
-python deployment/public_api.py --prod --host 0.0.0.0 --port 8000 --workers 2
+uvicorn src.bbia_sim.daemon.app.main:app --host 0.0.0.0 --port 8000 --workers 2
 
 ```
 
@@ -94,13 +86,13 @@ docker run -p 8000:8000 -e BBIA_API_TOKEN=secret bbia-sim
 
 ```bash
 # Tests complets de l'API
-python deployment/public_api.py --check
+pytest tests/ -v
 
 # Tests avec logs détaillés
-python scripts/test_public_api.py --log-level debug
+pytest tests/ -v --log-level debug
 
 # Tests sur URL personnalisée
-python scripts/test_public_api.py --url http://localhost:3000
+pytest tests/ -v --url http://localhost:3000
 
 ```
 
@@ -288,18 +280,14 @@ export BBIA_RATE_LIMIT=1000
 
 ## Déploiement
 
+> **Installation** : Voir [INSTALLATION.md](../getting-started/INSTALLATION.md) pour les instructions complètes.
+
 ### Déploiement local
 
 ```bash
-# Installation complète
-git clone https://github.com/arkalia-luna-system/bbia-sim.git
-cd bbia-sim
-pip install -r requirements.txt
-pip install -e .
-
+# Après installation (voir INSTALLATION.md)
 # Démarrage
-python deployment/public_api.py --prod
-
+uvicorn src.bbia_sim.daemon.app.main:app --host 0.0.0.0 --port 8000
 ```
 
 ### Déploiement Docker
@@ -335,13 +323,13 @@ gunicorn bbia_sim.daemon.app.main:app -w 4 -k uvicorn.workers.UvicornWorker
 
 ```bash
 # Mise à jour du code
-git pull origin main
+git pull origin develop
 
 # Mise à jour des dépendances
-pip install -r requirements.txt --upgrade
+pip install -e . --upgrade
 
 # Redémarrage
-python deployment/public_api.py --prod
+uvicorn src.bbia_sim.daemon.app.main:app --host 0.0.0.0 --port 8000
 
 ```
 
@@ -374,7 +362,7 @@ rm -rf __pycache__/
 
 ### Environnement de base
 
-- [ ] Python 3.9+ installé
+- [ ] Python 3.11+ installé
 - [ ] Dépendances installées
 - [ ] Variables d'environnement configurées
 - [ ] Permissions de fichiers correctes

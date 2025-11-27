@@ -31,10 +31,21 @@ class TestBBIAAudioExtended:
             temp_path = temp_file.name
 
         try:
+
+            def mock_env_get(key: str, default: str = None) -> str:
+                """Mock os.environ.get qui retourne des valeurs spécifiques selon la clé."""
+                env_values = {
+                    "BBIA_DISABLE_AUDIO": "0",  # Désactiver BBIA_DISABLE_AUDIO
+                    "BBIA_MAX_AUDIO_BUFFER_DURATION": "180",  # Valeur par défaut
+                }
+                # Retourner la valeur de l'environnement si elle existe, sinon la valeur par défaut
+                return env_values.get(key, default if default is not None else "")
+
             with (
+                patch("os.environ.get", side_effect=mock_env_get),
                 patch(
-                    "os.environ.get", return_value="0"
-                ),  # Désactiver BBIA_DISABLE_AUDIO
+                    "bbia_sim.bbia_audio._get_robot_media_microphone", return_value=None
+                ),
                 patch("bbia_sim.bbia_audio.sd.rec") as mock_rec,
                 patch("bbia_sim.bbia_audio.sd.wait"),
                 patch("builtins.open", mock_open()),
@@ -44,7 +55,10 @@ class TestBBIAAudioExtended:
                 mock_audio_data = np.array([1000, 2000, 3000], dtype=np.int16)
                 mock_rec.return_value = mock_audio_data
 
-                enregistrer_audio(temp_path, duree=3, frequence=16000)
+                # Passer explicitement max_buffer_duration pour éviter les problèmes de mock
+                enregistrer_audio(
+                    temp_path, duree=3, frequence=16000, max_buffer_duration=180
+                )
 
                 mock_rec.assert_called_once_with(
                     int(3 * 16000), samplerate=16000, channels=1, dtype="int16"
@@ -57,13 +71,27 @@ class TestBBIAAudioExtended:
 
     def test_enregistrer_audio_error(self):
         """Test erreur d'enregistrement audio."""
-        with (
-            patch("os.environ.get", return_value="0"),  # Désactiver BBIA_DISABLE_AUDIO
-            patch("bbia_sim.bbia_audio.sd.rec") as mock_rec,
-        ):
-            mock_rec.side_effect = Exception("Audio error")
 
-            with pytest.raises(Exception, match="Audio error"):
+        def mock_env_get(key: str, default: str = None) -> str:
+            """Mock os.environ.get qui retourne des valeurs spécifiques selon la clé."""
+            env_values = {
+                "BBIA_DISABLE_AUDIO": "0",
+                "BBIA_MAX_AUDIO_BUFFER_DURATION": "180",
+            }
+            return env_values.get(key, default if default is not None else "")
+
+        with (
+            patch("os.environ.get", side_effect=mock_env_get),
+            patch("bbia_sim.bbia_audio._get_robot_media_microphone", return_value=None),
+            patch("bbia_sim.bbia_audio.sd.rec") as mock_rec,
+            patch("sounddevice.query_devices") as mock_query_devices,
+        ):
+            # Simuler erreur lors de l'enregistrement
+            mock_rec.side_effect = Exception("Audio error")
+            # Simuler erreur lors du fallback (query_devices)
+            mock_query_devices.side_effect = Exception("Error querying device -1")
+
+            with pytest.raises(RuntimeError, match="Impossible d'enregistrer audio"):
                 enregistrer_audio("test.wav", duree=3, frequence=16000)
 
     def test_enregistrer_audio_custom_parameters(self):
@@ -72,10 +100,20 @@ class TestBBIAAudioExtended:
             temp_path = temp_file.name
 
         try:
+
+            def mock_env_get(key: str, default: str = None) -> str:
+                """Mock os.environ.get qui retourne des valeurs spécifiques selon la clé."""
+                env_values = {
+                    "BBIA_DISABLE_AUDIO": "0",
+                    "BBIA_MAX_AUDIO_BUFFER_DURATION": "180",
+                }
+                return env_values.get(key, default if default is not None else "")
+
             with (
+                patch("os.environ.get", side_effect=mock_env_get),
                 patch(
-                    "os.environ.get", return_value="0"
-                ),  # Désactiver BBIA_DISABLE_AUDIO
+                    "bbia_sim.bbia_audio._get_robot_media_microphone", return_value=None
+                ),
                 patch("bbia_sim.bbia_audio.sd.rec") as mock_rec,
                 patch("bbia_sim.bbia_audio.sd.wait"),
                 patch("builtins.open", mock_open()),
@@ -84,7 +122,10 @@ class TestBBIAAudioExtended:
                 mock_audio_data = np.array([1000, 2000], dtype=np.int16)
                 mock_rec.return_value = mock_audio_data
 
-                enregistrer_audio(temp_path, duree=5, frequence=22050)
+                # Passer explicitement max_buffer_duration pour éviter les problèmes de mock
+                enregistrer_audio(
+                    temp_path, duree=5, frequence=22050, max_buffer_duration=180
+                )
 
                 mock_rec.assert_called_once_with(
                     int(5 * 22050), samplerate=22050, channels=1, dtype="int16"

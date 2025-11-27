@@ -1,6 +1,6 @@
 # 🔍 INDEX DES PROMPTS D'AUDIT WINDSURF - BBIA-SIM v2.0
 
-**Date :** Oct / Nov. 2025  
+**Date :** 21 Novembre 2025  
 **Score global :** 8.07/10
 
 ## 🎯 GUIDE D'UTILISATION OPTIMISÉ POUR WINDSURF

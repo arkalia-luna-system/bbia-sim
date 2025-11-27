@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """BBIA Emotion Recognition - Module de reconnaissance des émotions humaines
-Détection et analyse des émotions faciales et vocales en temps réel
+Détection et analyse des émotions faciales et vocales en temps réel.
 """
 
 import logging
@@ -21,7 +21,7 @@ try:
 except ImportError:
     CV2_AVAILABLE = False
     logger.warning(
-        "OpenCV (cv2) non disponible. " "Installez avec: pip install opencv-python",
+        "OpenCV (cv2) non disponible. Installez avec: pip install opencv-python",
     )
 
 # OPTIMISATION PERFORMANCE: Cache global pour pipelines transformers
@@ -35,18 +35,21 @@ try:
 
     _os.environ.setdefault("GLOG_minloglevel", "2")
     _os.environ.setdefault(
-        "TF_CPP_MIN_LOG_LEVEL", "3"
+        "TF_CPP_MIN_LOG_LEVEL",
+        "3",
     )  # 0=INFO,1=WARNING,2=ERROR,3=FATAL
     _os.environ.setdefault("MEDIAPIPE_DISABLE_GPU", "1")
     # Supprimer les logs TensorFlow Lite
     _os.environ.setdefault("TFLITE_LOG_VERBOSITY", "0")  # 0=ERROR, 1=WARNING, 2=INFO
-    # Supprimer les logs OpenGL (ne pas définir MUJOCO_GL sur macOS, utilise la valeur par défaut)
+    # Supprimer les logs OpenGL (ne pas définir MUJOCO_GL sur macOS,
+    # utilise la valeur par défaut)
     # Sur macOS, laisser MuJoCo choisir automatiquement (glfw ou egl)
     if sys.platform != "darwin":  # Pas macOS
         _os.environ.setdefault("MUJOCO_GL", "egl")  # Utiliser EGL sur Linux/Windows
-except Exception as e:
+except (OSError, KeyError, AttributeError) as e:
     logger.debug(
-        f"Impossible de configurer variables d'environnement MediaPipe/TensorFlow: {e}"
+        "Impossible de configurer variables d'environnement MediaPipe/TensorFlow: %s",
+        e,
     )
 
 # Import conditionnel des dépendances ML
@@ -82,9 +85,12 @@ class BBIAEmotionRecognition:
 
         """
         if not ML_AVAILABLE:
-            raise ImportError(
+            msg = (
                 "Dépendances ML requises. "
-                "Installez avec: pip install mediapipe torch transformers",
+                "Installez avec: pip install mediapipe torch transformers"
+            )
+            raise ImportError(
+                msg,
             )
 
         self.device = self._get_device(device)
@@ -126,7 +132,7 @@ class BBIAEmotionRecognition:
         # Historique des émotions pour moyennage temporel
         self.emotion_history: list[dict[str, Any]] = []
 
-        logger.info(f"😊 BBIA Emotion Recognition initialisé (device: {self.device})")
+        logger.info("😊 BBIA Emotion Recognition initialisé (device: %s)", self.device)
 
     def _get_device(self, device: str) -> str:
         """Détermine le device optimal."""
@@ -153,13 +159,14 @@ class BBIAEmotionRecognition:
             logger.info("✅ BBIA Emotion Recognition initialisé avec succès")
             return True
 
-        except Exception as e:
-            logger.error(f"❌ Erreur initialisation: {e}")
+        except Exception:
+            logger.exception("❌ Erreur initialisation")
             return False
 
     def _load_emotion_models(self) -> None:
         """Charge les modèles de reconnaissance d'émotion (utilise cache
-        global si disponible)."""
+        global si disponible).
+        """
         # OPTIMISATION PERFORMANCE: Utiliser cache global pour éviter
         # chargements répétés
         global _emotion_pipelines_cache
@@ -201,8 +208,8 @@ class BBIAEmotionRecognition:
 
             logger.info("📥 Modèles d'émotion chargés")
 
-        except Exception as e:
-            logger.error(f"❌ Erreur chargement modèles émotion: {e}")
+        except Exception:
+            logger.exception("❌ Erreur chargement modèles émotion")
 
     def detect_faces(self, image: np.ndarray | str) -> list[dict[str, Any]]:
         """Détecte les visages dans une image.
@@ -267,8 +274,8 @@ class BBIAEmotionRecognition:
 
             return faces
 
-        except Exception as e:
-            logger.error(f"❌ Erreur détection visages: {e}")
+        except Exception:
+            logger.exception("❌ Erreur détection visages")
             return []
 
     def analyze_facial_emotion(
@@ -322,7 +329,7 @@ class BBIAEmotionRecognition:
             }
 
         except Exception as e:
-            logger.error(f"❌ Erreur analyse émotion faciale: {e}")
+            logger.exception("❌ Erreur analyse émotion faciale")
             return {"error": str(e)}
 
     def analyze_vocal_emotion(self, text: str) -> dict[str, Any]:
@@ -377,7 +384,7 @@ class BBIAEmotionRecognition:
             }
 
         except Exception as e:
-            logger.error(f"❌ Erreur analyse émotion vocale: {e}")
+            logger.exception("❌ Erreur analyse émotion vocale")
             return {"error": str(e)}
 
     def fuse_emotions(
@@ -436,7 +443,7 @@ class BBIAEmotionRecognition:
             }
 
         except Exception as e:
-            logger.error(f"❌ Erreur fusion émotions: {e}")
+            logger.exception("❌ Erreur fusion émotions")
             return {"error": str(e)}
 
     def analyze_emotion_realtime(
@@ -483,7 +490,7 @@ class BBIAEmotionRecognition:
             return final_result
 
         except Exception as e:
-            logger.error(f"❌ Erreur analyse temps réel: {e}")
+            logger.exception("❌ Erreur analyse temps réel")
             return {"error": str(e)}
 
     def _update_emotion_history(self, emotion_result: dict[str, Any]) -> None:
@@ -534,8 +541,8 @@ class BBIAEmotionRecognition:
 
             return current_result
 
-        except Exception as e:
-            logger.error(f"❌ Erreur lissage temporel: {e}")
+        except Exception:
+            logger.exception("❌ Erreur lissage temporel")
             return current_result
 
     def get_emotion_statistics(self) -> dict[str, Any]:

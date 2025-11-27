@@ -29,6 +29,15 @@ except ImportError:
     DeepFace = None
     logger.debug("DeepFace non disponible. Installer avec: pip install deepface")
 
+# Import conditionnel cv2 (une seule fois en haut)
+CV2_AVAILABLE = False
+try:
+    import cv2  # noqa: PLC0415
+
+    CV2_AVAILABLE = True
+except ImportError:
+    cv2 = None  # type: ignore[assignment]
+
 
 class BBIAPersonRecognition:
     """Module de reconnaissance faciale personnalisée avec DeepFace.
@@ -37,7 +46,7 @@ class BBIAPersonRecognition:
     et de détecter leurs émotions.
     """
 
-    def __init__(self, db_path: str = "faces_db", model_name: str = "VGG-Face"):
+    def __init__(self, db_path: str = "faces_db", model_name: str = "VGG-Face") -> None:
         """Initialise le module de reconnaissance faciale.
 
         Args:
@@ -75,7 +84,11 @@ class BBIAPersonRecognition:
 
         """
         if not self.is_initialized:
-            logger.warning("⚠️ DeepFace non disponible, enregistrement impossible")
+            # Pas de log en CI (dépendance optionnelle manquante)
+            import os
+
+            if os.environ.get("CI", "false").lower() != "true":
+                logger.warning("⚠️ DeepFace non disponible, enregistrement impossible")
             return False
 
         try:
@@ -89,11 +102,17 @@ class BBIAPersonRecognition:
             target_path = person_dir / Path(image_path).name
             shutil.copy2(image_path, target_path)
 
-            logger.info(f"✅ Personne '{person_name}' enregistrée: {target_path}")
+            logger.info("✅ Personne '%s' enregistrée: %s", person_name, target_path)
             return True
 
         except Exception as e:
-            logger.error(f"❌ Erreur enregistrement personne '{person_name}': {e}")
+            # Log en debug en CI pour erreurs attendues dans les tests
+            import os
+
+            if os.environ.get("CI", "false").lower() == "true":
+                logger.debug("Erreur enregistrement personne '%s': %s", person_name, e)
+            else:
+                logger.exception("❌ Erreur enregistrement personne '%s':", person_name)
             return False
 
     def recognize_person(
@@ -119,7 +138,14 @@ class BBIAPersonRecognition:
             # Si numpy array, sauvegarder temporairement
             temp_path = None
             if isinstance(image_path, np.ndarray):
-                import cv2
+                # cv2 déjà importé globalement
+                if not CV2_AVAILABLE or cv2 is None:
+                    return None
+
+                if cv2 is None:
+                    raise ImportError(
+                        "cv2 (OpenCV) requis pour traiter les images numpy"
+                    )
 
                 # Utiliser tempfile pour créer un fichier temporaire sécurisé
                 fd, temp_path = tempfile.mkstemp(
@@ -141,8 +167,8 @@ class BBIAPersonRecognition:
             )
 
             # Nettoyer fichier temporaire
-            if temp_path and os.path.exists(temp_path):
-                os.unlink(temp_path)
+            if temp_path and Path(temp_path).exists():
+                Path(temp_path).unlink()
 
             # Traiter résultats
             if df is not None and len(df) > 0:
@@ -172,19 +198,21 @@ class BBIAPersonRecognition:
             if "No face detected" in str(e) and not enforce_detection:
                 logger.debug("Aucun visage détecté dans l'image")
                 return None
-            logger.warning(f"Erreur reconnaissance visage: {e}")
+            logger.warning("Erreur reconnaissance visage: %s", e)
             return None
-        except Exception as e:
-            logger.error(f"❌ Erreur reconnaissance personne: {e}")
+        except Exception:
+            logger.exception("❌ Erreur reconnaissance personne")
             return None
         finally:
             # Nettoyer fichier temporaire si nécessaire
-            if temp_path and os.path.exists(temp_path):
+            if temp_path and Path(temp_path).exists():
                 try:
-                    os.unlink(temp_path)
+                    Path(temp_path).unlink()
                 except Exception as cleanup_error:
                     logger.debug(
-                        f"Erreur lors du nettoyage du fichier temporaire {temp_path}: {cleanup_error}"
+                        "Erreur lors du nettoyage du fichier temporaire %s: %s",
+                        temp_path,
+                        cleanup_error,
                     )
 
     def detect_emotion(
@@ -210,7 +238,14 @@ class BBIAPersonRecognition:
             # Si numpy array, sauvegarder temporairement
             temp_path = None
             if isinstance(image_path, np.ndarray):
-                import cv2
+                # cv2 déjà importé globalement
+                if not CV2_AVAILABLE or cv2 is None:
+                    return None
+
+                if cv2 is None:
+                    raise ImportError(
+                        "cv2 (OpenCV) requis pour traiter les images numpy"
+                    )
 
                 # Utiliser tempfile pour créer un fichier temporaire sécurisé
                 fd, temp_path = tempfile.mkstemp(
@@ -231,8 +266,8 @@ class BBIAPersonRecognition:
             )
 
             # Nettoyer fichier temporaire
-            if temp_path and os.path.exists(temp_path):
-                os.unlink(temp_path)
+            if temp_path and Path(temp_path).exists():
+                Path(temp_path).unlink()
 
             # Traiter résultats (peut être liste ou dict selon version DeepFace)
             if isinstance(result, list):
@@ -259,18 +294,20 @@ class BBIAPersonRecognition:
             if "No face detected" in str(e) and not enforce_detection:
                 logger.debug("Aucun visage détecté pour analyse émotion")
                 return None
-            logger.warning(f"Erreur détection émotion: {e}")
+            logger.warning("Erreur détection émotion: %s", e)
             return None
-        except Exception as e:
-            logger.error(f"❌ Erreur détection émotion: {e}")
+        except Exception:
+            logger.exception("❌ Erreur détection émotion")
             return None
         finally:
-            if temp_path and os.path.exists(temp_path):
+            if temp_path and Path(temp_path).exists():
                 try:
-                    os.unlink(temp_path)
+                    Path(temp_path).unlink()
                 except Exception as cleanup_error:
                     logger.debug(
-                        f"Erreur lors du nettoyage du fichier temporaire {temp_path}: {cleanup_error}"
+                        "Erreur lors du nettoyage du fichier temporaire %s: %s",
+                        temp_path,
+                        cleanup_error,
                     )
 
     def recognize_with_emotion(
@@ -359,7 +396,7 @@ if __name__ == "__main__":
         logging.info(f"   • Base de données: {face_rec.db_path}")
         logging.info(f"   • Modèle: {face_rec.model_name}")
         logging.info(
-            f"   • Personnes enregistrées: {len(face_rec.get_registered_persons())}"
+            f"   • Personnes enregistrées: {len(face_rec.get_registered_persons())}",
         )
     else:
         logging.error("❌ Impossible de créer le module (DeepFace non disponible)")

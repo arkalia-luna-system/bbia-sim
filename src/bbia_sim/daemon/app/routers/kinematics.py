@@ -2,11 +2,11 @@
 
 import logging
 from pathlib import Path
-from typing import Any
+from typing import Annotated, Any
 
 from fastapi import APIRouter, Depends, HTTPException, Response
 
-from ..backend_adapter import BackendAdapter, get_backend_adapter
+from bbia_sim.daemon.app.backend_adapter import BackendAdapter, get_backend_adapter
 
 logger = logging.getLogger(__name__)
 
@@ -25,7 +25,7 @@ STL_ASSETS_DIR = (
 
 @router.get("/info")
 async def get_kinematics_info(
-    backend: BackendAdapter = Depends(get_backend_adapter),
+    backend: Annotated[BackendAdapter, Depends(get_backend_adapter)],
 ) -> dict[str, Any]:
     """Récupère les informations sur la cinématique du robot (conforme SDK)."""
     # Le backend doit exposer kinematics_engine et check_collision
@@ -45,14 +45,15 @@ async def get_kinematics_info(
 
 @router.get("/urdf")
 async def get_urdf(
-    backend: BackendAdapter = Depends(get_backend_adapter),
+    backend: Annotated[BackendAdapter, Depends(get_backend_adapter)],
 ) -> dict[str, str]:
     """Récupère la représentation URDF du robot (conforme SDK)."""
     # Le backend doit avoir une méthode get_urdf()
     if hasattr(backend, "get_urdf"):
         return {"urdf": backend.get_urdf()}
-    if hasattr(backend, "_robot") and hasattr(backend._robot, "get_urdf"):
-        return {"urdf": backend._robot.get_urdf()}
+    robot = getattr(backend, "_robot", None)
+    if robot is not None and hasattr(robot, "get_urdf"):
+        return {"urdf": robot.get_urdf()}
     return {"urdf": ""}
 
 
@@ -94,7 +95,7 @@ async def get_stl_file(filename: str) -> Response:
             content = file.read()
             return Response(content, media_type="model/stl")
     except Exception as e:
-        logger.error(f"Erreur lors de la lecture du fichier STL {filename}: {e}")
+        logger.exception("Erreur lors de la lecture du fichier STL %s:", filename)
         raise HTTPException(
             status_code=500,
             detail=f"Erreur lors de la lecture du fichier: {e!s}",

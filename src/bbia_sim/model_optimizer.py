@@ -30,13 +30,13 @@ def get_cached_model(
 
     """
     if model_key in _model_cache:
-        logger.debug(f"📦 Modèle '{model_key}' chargé depuis cache")
+        logger.debug("📦 Modèle '%s' chargé depuis cache", model_key)
         return _model_cache[model_key]
 
-    logger.info(f"📥 Chargement modèle '{model_key}'...")
+    logger.info("📥 Chargement modèle '%s'...", model_key)
     model = loader_func(*args, **kwargs)
     _model_cache[model_key] = model
-    logger.info(f"✅ Modèle '{model_key}' chargé et mis en cache")
+    logger.info("✅ Modèle '%s' chargé et mis en cache", model_key)
     return model
 
 

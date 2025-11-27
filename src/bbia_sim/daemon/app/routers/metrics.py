@@ -18,19 +18,20 @@ from fastapi import APIRouter
 from fastapi.responses import Response
 
 try:
-    from prometheus_client import Counter, Gauge, Histogram, generate_latest
+    from prometheus_client import REGISTRY, Counter, Gauge, Histogram, generate_latest
 
     PROMETHEUS_AVAILABLE = True
 except ImportError:
     PROMETHEUS_AVAILABLE = False
+    REGISTRY = None  # type: ignore[assignment, misc]
 
-from ...simulation_service import simulation_service
+from bbia_sim.daemon.simulation_service import simulation_service
 
 logger = logging.getLogger(__name__)
 
 # Import ConnectionManager pour métriques connexions actives
 try:
-    from ...ws.telemetry import manager as telemetry_manager
+    from bbia_sim.daemon.ws.telemetry import manager as telemetry_manager
 
     TELEMETRY_MANAGER_AVAILABLE = True
 except ImportError:
@@ -40,22 +41,140 @@ except ImportError:
 router = APIRouter(prefix="/metrics", tags=["metrics"])
 
 # Métriques Prometheus (si disponible)
-if PROMETHEUS_AVAILABLE:
-    request_count = Counter(
-        "bbia_requests_total", "Total requests", ["method", "endpoint", "status"]
-    )
-    request_latency = Histogram(
-        "bbia_request_duration_seconds",
-        "Request latency",
-        ["method", "endpoint"],
-        buckets=[0.01, 0.05, 0.1, 0.5, 1.0, 5.0],
-    )
-    cpu_usage = Gauge("bbia_cpu_usage_percent", "CPU usage percentage")
-    memory_usage = Gauge("bbia_memory_usage_bytes", "Memory usage in bytes")
-    simulation_fps = Gauge("bbia_simulation_fps", "Simulation FPS")
-    active_connections = Gauge(
-        "bbia_active_connections", "Active WebSocket connections"
-    )
+# OPTIMISATION: Vérifier si les métriques existent déjà pour éviter les doublons dans les tests
+if PROMETHEUS_AVAILABLE and REGISTRY:
+    # Fonction helper pour créer une métrique seulement si elle n'existe pas
+    def _get_or_create_metric(metric_class, name, *args, **kwargs):
+        """Crée une métrique seulement si elle n'existe pas déjà."""
+        # Chercher si la métrique existe déjà
+        collector_to_names = getattr(
+            REGISTRY,
+            "_collector_to_names",
+            {},
+        )
+        for collector in list(collector_to_names.keys()):
+            collector_name = getattr(collector, "_name", None)
+            if collector_name == name:
+                return collector
+        # Créer la métrique si elle n'existe pas
+        return metric_class(name, *args, **kwargs)
+
+    try:
+        request_count = _get_or_create_metric(
+            Counter,
+            "bbia_requests_total",
+            "Total requests",
+            ["method", "endpoint", "status"],
+        )
+        request_latency = _get_or_create_metric(
+            Histogram,
+            "bbia_request_duration_seconds",
+            "Request latency",
+            ["method", "endpoint"],
+            buckets=[0.01, 0.05, 0.1, 0.5, 1.0, 5.0],
+        )
+        cpu_usage = _get_or_create_metric(
+            Gauge,
+            "bbia_cpu_usage_percent",
+            "CPU usage percentage",
+        )
+        memory_usage = _get_or_create_metric(
+            Gauge,
+            "bbia_memory_usage_bytes",
+            "Memory usage in bytes",
+        )
+        simulation_fps = _get_or_create_metric(
+            Gauge,
+            "bbia_simulation_fps",
+            "Simulation FPS",
+        )
+        active_connections = _get_or_create_metric(
+            Gauge,
+            "bbia_active_connections",
+            "Active WebSocket connections",
+        )
+        watchdog_heartbeat_age = _get_or_create_metric(
+            Gauge,
+            "bbia_watchdog_heartbeat_age_seconds",
+            "Watchdog heartbeat age in seconds",
+        )
+        robot_connected = _get_or_create_metric(
+            Gauge,
+            "bbia_robot_connected",
+            "Robot connection status (1=connected, 0=disconnected)",
+        )
+        latency_p50 = _get_or_create_metric(
+            Gauge,
+            "bbia_latency_p50_ms",
+            "Request latency p50 percentile in milliseconds",
+        )
+        latency_p95 = _get_or_create_metric(
+            Gauge,
+            "bbia_latency_p95_ms",
+            "Request latency p95 percentile in milliseconds",
+        )
+        latency_p99 = _get_or_create_metric(
+            Gauge,
+            "bbia_latency_p99_ms",
+            "Request latency p99 percentile in milliseconds",
+        )
+    except (ValueError, KeyError) as e:
+        # Si erreur de duplication, réutiliser les métriques existantes
+        logger.warning("Métriques Prometheus déjà enregistrées, réutilisation: %s", e)
+        # Récupérer les métriques existantes depuis le registre
+        request_count = None
+        request_latency = None
+        cpu_usage = None
+        memory_usage = None
+        simulation_fps = None
+        active_connections = None
+        watchdog_heartbeat_age = None
+        robot_connected = None
+        latency_p50 = None
+        latency_p95 = None
+        latency_p99 = None
+        collector_to_names = getattr(
+            REGISTRY,
+            "_collector_to_names",
+            {},
+        )
+        for collector in list(collector_to_names.keys()):
+            name = getattr(collector, "_name", None)
+            if name is not None:
+                if name == "bbia_requests_total":
+                    request_count = collector
+                elif name == "bbia_request_duration_seconds":
+                    request_latency = collector
+                elif name == "bbia_cpu_usage_percent":
+                    cpu_usage = collector
+                elif name == "bbia_memory_usage_bytes":
+                    memory_usage = collector
+                elif name == "bbia_simulation_fps":
+                    simulation_fps = collector
+                elif name == "bbia_active_connections":
+                    active_connections = collector
+                elif name == "bbia_watchdog_heartbeat_age_seconds":
+                    watchdog_heartbeat_age = collector
+                elif name == "bbia_robot_connected":
+                    robot_connected = collector
+                elif name == "bbia_latency_p50_ms":
+                    latency_p50 = collector
+                elif name == "bbia_latency_p95_ms":
+                    latency_p95 = collector
+                elif name == "bbia_latency_p99_ms":
+                    latency_p99 = collector
+else:
+    request_count = None
+    request_latency = None
+    cpu_usage = None
+    memory_usage = None
+    simulation_fps = None
+    active_connections = None
+    watchdog_heartbeat_age = None
+    robot_connected = None
+    latency_p50 = None
+    latency_p95 = None
+    latency_p99 = None
 
 # Métriques système en mémoire (fallback si Prometheus non disponible)
 # Historique des latences pour calcul p50/p95/p99 (garder dernières 1000 mesures)
@@ -112,33 +231,75 @@ async def get_prometheus_metrics() -> Response:
 
     # Mettre à jour métriques système
     try:
-        if PSUTIL_AVAILABLE and psutil:
-            process = psutil.Process(os.getpid())
-            cpu_usage.set(process.cpu_percent(interval=0.1))
-            memory_usage.set(process.memory_info().rss)
-        else:
-            cpu_usage.set(0.0)
-            memory_usage.set(0)
+        if cpu_usage and memory_usage:
+            if PSUTIL_AVAILABLE and psutil:
+                process = psutil.Process(os.getpid())
+                cpu_usage.set(process.cpu_percent(interval=0.1))
+                memory_usage.set(process.memory_info().rss)
+            else:
+                cpu_usage.set(0.0)
+                memory_usage.set(0)
 
         # FPS simulation (si disponible)
-        if simulation_service.is_simulation_ready():
-            # Essayer de récupérer FPS depuis le simulateur
-            try:
-                fps = getattr(simulation_service.simulator, "fps", 0.0)
-                simulation_fps.set(fps)
-            except (AttributeError, TypeError, RuntimeError):
+        if simulation_fps:
+            if simulation_service.is_simulation_ready():
+                # Essayer de récupérer FPS depuis le simulateur
+                try:
+                    fps = getattr(simulation_service.simulator, "fps", 0.0)
+                    simulation_fps.set(fps)
+                except (AttributeError, TypeError, RuntimeError):
+                    simulation_fps.set(0.0)
+            else:
                 simulation_fps.set(0.0)
-        else:
-            simulation_fps.set(0.0)
 
         # Connexions actives (récupérées depuis ConnectionManager)
-        if TELEMETRY_MANAGER_AVAILABLE and telemetry_manager:
-            active_connections.set(len(telemetry_manager.active_connections))
-        else:
-            active_connections.set(0)
+        if active_connections:
+            if TELEMETRY_MANAGER_AVAILABLE and telemetry_manager:
+                active_connections.set(len(telemetry_manager.active_connections))
+            else:
+                active_connections.set(0)
+
+        # Métriques watchdog et robot (si disponible)
+        if watchdog_heartbeat_age or robot_connected:
+            try:
+                from bbia_sim.backends.reachy_mini_backend import ReachyMiniBackend
+
+                # Récupérer le backend actif depuis simulation_service
+                if simulation_service.is_simulation_ready():
+                    backend = getattr(simulation_service, "backend", None)
+                    if isinstance(backend, ReachyMiniBackend):
+                        # Watchdog heartbeat age
+                        if watchdog_heartbeat_age:
+                            if backend.is_connected and hasattr(
+                                backend, "_last_heartbeat"
+                            ):
+                                age = time.time() - backend._last_heartbeat
+                                watchdog_heartbeat_age.set(age)
+                            else:
+                                watchdog_heartbeat_age.set(0.0)
+
+                        # Robot connected status
+                        if robot_connected:
+                            robot_connected.set(1.0 if backend.is_connected else 0.0)
+            except (ImportError, AttributeError, TypeError):
+                # Backend non disponible ou erreur
+                if watchdog_heartbeat_age:
+                    watchdog_heartbeat_age.set(0.0)
+                if robot_connected:
+                    robot_connected.set(0.0)
+
+        # Métriques latence percentiles (p50/p95/p99)
+        if latency_p50 or latency_p95 or latency_p99:
+            percentiles = _calculate_percentiles(_latency_history)
+            if latency_p50:
+                latency_p50.set(percentiles["p50"])
+            if latency_p95:
+                latency_p95.set(percentiles["p95"])
+            if latency_p99:
+                latency_p99.set(percentiles["p99"])
 
     except Exception as e:
-        logger.warning(f"Erreur mise à jour métriques: {e}")
+        logger.warning("Erreur mise à jour métriques: %s", e)
 
     return Response(content=generate_latest(), media_type="text/plain")
 
@@ -149,6 +310,7 @@ async def get_performance_metrics() -> dict[str, Any]:
 
     Returns:
         Métriques de performance avec percentiles
+
     """
     # Calculer percentiles depuis historique
     percentiles = _calculate_percentiles(_latency_history)
@@ -239,7 +401,7 @@ async def readyz() -> dict[str, Any]:
             },
         }
     except Exception as e:
-        logger.error(f"Erreur readiness check: {e}")
+        logger.exception("Erreur readiness check")
         return {
             "status": "not_ready",
             "timestamp": time.time(),
@@ -287,7 +449,7 @@ async def health() -> dict[str, Any]:
             "system": system_info,
         }
     except Exception as e:
-        logger.error(f"Erreur health check: {e}")
+        logger.exception("Erreur health check")
         return {
             "status": "unhealthy",
             "timestamp": time.time(),

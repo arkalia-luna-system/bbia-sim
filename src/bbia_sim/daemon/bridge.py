@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Bridge Zenoh/FastAPI pour BBIA-SIM
-Permet l'intégration entre l'architecture FastAPI de BBIA-SIM et le daemon Zenoh de Reachy Mini
+Permet l'intégration entre l'architecture FastAPI de BBIA-SIM et le daemon Zenoh de Reachy Mini.
 """
 
 import asyncio
@@ -19,7 +19,7 @@ from fastapi import (  # type: ignore[import-untyped]
 )
 from pydantic import BaseModel
 
-from ..utils.types import (
+from bbia_sim.utils.types import (
     GotoTargetParams,
     LookAtParams,
     PlayAudioParams,
@@ -50,8 +50,8 @@ try:
     REACHY_MINI_AVAILABLE = True
 except ImportError:
     REACHY_MINI_AVAILABLE = False
-    ReachyMini = cast(Any, None)
-    create_head_pose = cast(Any, None)
+    ReachyMini = cast("Any", None)
+    create_head_pose = cast("Any", None)
 
 
 class ZenohConfig(BaseModel):
@@ -132,10 +132,20 @@ class ZenohBridge:
         try:
             # Configuration Zenoh
             if zenoh is None:
-                raise RuntimeError("Zenoh non disponible")
+                msg = "Zenoh non disponible"
+                raise RuntimeError(msg)
             zenoh_config = Config()
             zenoh_config.insert_json5("mode", f'"{self.config.mode}"')
-            zenoh_config.insert_json5("connect", json.dumps(self.config.connect))
+            # Format connect comme tableau JSON5 pour Zenoh
+            # Zenoh attend un tableau d'endpoints, seulement en mode client
+            if self.config.mode == "client" and self.config.connect:
+                # Construire le tableau JSON5 correctement
+                connect_array = (
+                    "["
+                    + ", ".join(f'"{endpoint}"' for endpoint in self.config.connect)
+                    + "]"
+                )
+                zenoh_config.insert_json5("connect", connect_array)
 
             # Créer la session Zenoh (zenoh.open() est synchrone, utiliser to_thread)
             self.session = await asyncio.to_thread(zenoh.open, zenoh_config)
@@ -144,7 +154,8 @@ class ZenohBridge:
             # Initialiser Reachy Mini
             if REACHY_MINI_AVAILABLE:
                 if ReachyMini is None:
-                    raise RuntimeError("ReachyMini non disponible")
+                    msg = "ReachyMini non disponible"
+                    raise RuntimeError(msg)
                 self.reachy_mini = ReachyMini()
                 self.logger.info("Reachy Mini initialisé")
             else:
@@ -161,8 +172,8 @@ class ZenohBridge:
             self.logger.info("Bridge Zenoh démarré avec succès")
             return True
 
-        except Exception as e:
-            self.logger.error(f"Erreur démarrage bridge Zenoh: {e}")
+        except Exception:
+            self.logger.exception("Erreur démarrage bridge Zenoh")
             return False
 
     async def stop(self) -> None:
@@ -173,28 +184,31 @@ class ZenohBridge:
         if self.reachy_mini:
             try:
                 self.reachy_mini.close()
-            except Exception as e:
-                self.logger.error(f"Erreur fermeture Reachy Mini: {e}")
+            except Exception:
+                self.logger.exception("Erreur fermeture Reachy Mini")
 
         # Fermer les subscribers et publishers
         for sub in self.subscribers.values():
             try:
                 await sub.close()
-            except Exception as e:
-                self.logger.error(f"Erreur fermeture subscriber: {e}")
+            except Exception:
+                self.logger.exception("Erreur fermeture subscriber")
 
         for pub in self.publishers.values():
             try:
                 await pub.close()
-            except Exception as e:
-                self.logger.error(f"Erreur fermeture publisher: {e}")
+            except Exception:
+                self.logger.exception("Erreur fermeture publisher")
 
         # Fermer la session Zenoh
-        if self.session:
+        if self.session is not None:
             try:
-                await self.session.close()
-            except Exception as e:
-                self.logger.error(f"Erreur fermeture session Zenoh: {e}")
+                # zenoh.Session.close() est synchrone, utiliser to_thread
+                await asyncio.to_thread(self.session.close)
+            except Exception:
+                self.logger.exception("Erreur fermeture session Zenoh")
+            finally:
+                self.session = None
 
         self.logger.info("Bridge Zenoh arrêté")
 
@@ -225,8 +239,8 @@ class ZenohBridge:
 
             self.logger.info("Topics Zenoh configurés")
 
-        except Exception as e:
-            self.logger.error(f"Erreur configuration topics Zenoh: {e}")
+        except Exception:
+            self.logger.exception("Erreur configuration topics Zenoh")
 
     async def _on_command_received(self, sample: Any) -> None:
         """Traite les commandes reçues via Zenoh."""
@@ -234,7 +248,7 @@ class ZenohBridge:
             # Validation JSON sécurité: max size pour éviter DoS
             payload = sample.payload.decode()
             if len(payload) > 1048576:  # 1MB max
-                self.logger.warning(f"Payload trop volumineux: {len(payload)} bytes")
+                self.logger.warning("Payload trop volumineux: %s bytes", len(payload))
                 await self._publish_error("Commande rejetée: payload trop volumineux")
                 return
 
@@ -248,7 +262,7 @@ class ZenohBridge:
                     "token",
                     "credential",
                 }
-                if any(k.lower() in forbidden_keys for k in command_data.keys()):
+                if any(k.lower() in forbidden_keys for k in command_data):
                     self.logger.warning(
                         "Tentative d'envoi de secret détectée dans commande",
                     )
@@ -261,10 +275,16 @@ class ZenohBridge:
             await self.command_queue.put(command)
 
         except json.JSONDecodeError as e:
-            self.logger.error(f"Erreur décodage JSON: {e}")
+            self.logger.exception("Erreur décodage JSON")
             await self._publish_error(f"Erreur format JSON: {e}")
         except Exception as e:
-            self.logger.error(f"Erreur traitement commande Zenoh: {e}")
+            # Log en debug en CI (erreurs attendues dans les tests avec mocks)
+            import os
+
+            if os.environ.get("CI", "false").lower() == "true":
+                self.logger.debug("Erreur traitement commande Zenoh: %s", e)
+            else:
+                self.logger.exception("Erreur traitement commande Zenoh")
             await self._publish_error(f"Erreur commande: {e}")
 
     async def _command_processor(self) -> None:
@@ -280,7 +300,7 @@ class ZenohBridge:
             except TimeoutError:
                 continue
             except Exception as e:
-                self.logger.error(f"Erreur traitement commande: {e}")
+                self.logger.exception("Erreur traitement commande")
                 await self._publish_error(f"Erreur traitement: {e}")
 
     async def _execute_command(self, command: RobotCommand) -> None:
@@ -300,11 +320,11 @@ class ZenohBridge:
             elif cmd == "look_at":
                 await self._cmd_look_at(params)  # type: ignore[arg-type]
             else:
-                self.logger.warning(f"Commande inconnue: {cmd}")
+                self.logger.warning("Commande inconnue: %s", cmd)
                 await self._publish_error(f"Commande inconnue: {cmd}")
 
         except Exception as e:
-            self.logger.error(f"Erreur exécution commande {command.command}: {e}")
+            self.logger.exception("Erreur exécution commande %s:", command.command)
             await self._publish_error(f"Erreur exécution: {e}")
 
     async def _cmd_goto_target(self, params: GotoTargetParams) -> None:
@@ -361,6 +381,7 @@ class ZenohBridge:
         Returns:
             Matrice 4x4 numpy représentant la pose de tête, ou None si create_head_pose
             n'est pas disponible.
+
         """
         if not create_head_pose:
             return None
@@ -373,8 +394,7 @@ class ZenohBridge:
             "calm": create_head_pose(pitch=-0.05, yaw=0.0, degrees=False),
             "neutral": create_head_pose(pitch=0.0, yaw=0.0, degrees=False),
         }
-        result = emotion_poses.get(emotion, emotion_poses["neutral"])
-        return result  # type: ignore[no-any-return]
+        return emotion_poses.get(emotion, emotion_poses["neutral"])
 
     @staticmethod
     @lru_cache(maxsize=32)
@@ -389,6 +409,7 @@ class ZenohBridge:
 
         Note:
             Utilise @lru_cache pour optimiser les appels répétés avec les mêmes émotions.
+
         """
         emotion_map = {
             "angry": "excited",
@@ -428,9 +449,9 @@ class ZenohBridge:
                 sdk_emotion = ZenohBridge._map_emotion_to_sdk(emotion)
                 if hasattr(self.reachy_mini, "set_emotion"):
                     self.reachy_mini.set_emotion(sdk_emotion, intensity)
-                self.logger.info(f"Émotion {emotion} mappée vers {sdk_emotion}")
-        except Exception as e:
-            self.logger.error(f"Erreur set_emotion: {e}")
+                self.logger.info("Émotion %s mappée vers %s", emotion, sdk_emotion)
+        except Exception:
+            self.logger.exception("Erreur set_emotion")
 
     async def _cmd_play_audio(self, params: PlayAudioParams) -> None:
         """Commande play_audio conforme SDK Reachy Mini (media.play_audio)."""
@@ -444,30 +465,31 @@ class ZenohBridge:
                     audio_bytes: bytes = f.read()
             elif isinstance(audio_data, bytes):
                 audio_bytes = audio_data
+            # Convertir en bytes si nécessaire
+            elif isinstance(audio_data, bytes | bytearray):
+                audio_bytes = bytes(audio_data)
+            elif isinstance(audio_data, list | tuple):
+                audio_bytes = bytes(audio_data)  # type: ignore[arg-type]
             else:
-                # Convertir en bytes si nécessaire
-                if isinstance(audio_data, bytes | bytearray):
-                    audio_bytes = bytes(audio_data)
-                elif isinstance(audio_data, list | tuple):
-                    audio_bytes = bytes(audio_data)  # type: ignore[arg-type]
-                else:
-                    audio_bytes = b""
+                audio_bytes = b""
             try:
                 # Utiliser robot.media.play_audio si disponible
                 if hasattr(self.reachy_mini, "media") and hasattr(
                     self.reachy_mini.media,
                     "play_audio",
                 ):
-
                     self.reachy_mini.media.play_audio(audio_bytes, volume=volume)
                     self.logger.info("Audio joué via robot.media.play_audio")
                 else:
                     self.logger.warning("robot.media.play_audio non disponible")
-            except Exception as e:
-                self.logger.error(f"Erreur play_audio: {e}")
+            except Exception:
+                self.logger.exception("Erreur play_audio")
 
     def _validate_look_at_coordinates(
-        self, x: float, y: float, z: float
+        self,
+        x: float,
+        y: float,
+        z: float,
     ) -> tuple[float, float, float]:
         """Valide et clamp les coordonnées look_at selon limites SDK.
 
@@ -478,6 +500,7 @@ class ZenohBridge:
 
         Returns:
             Tuple (x, y, z) avec valeurs clampées dans les limites SDK.
+
         """
         if abs(x) > 2.0 or abs(y) > 2.0 or z < 0.0 or z > 1.5:
             self.logger.warning(
@@ -496,6 +519,7 @@ class ZenohBridge:
             y: Coordonnée Y (mètres)
             z: Coordonnée Z (mètres)
             duration: Durée du mouvement (secondes)
+
         """
         if not create_head_pose:
             return
@@ -506,7 +530,8 @@ class ZenohBridge:
         if self.reachy_mini is not None and hasattr(self.reachy_mini, "goto_target"):
             self.reachy_mini.goto_target(head=pose, duration=duration, method="minjerk")
         elif self.reachy_mini is not None and hasattr(
-            self.reachy_mini, "set_target_head_pose"
+            self.reachy_mini,
+            "set_target_head_pose",
         ):
             self.reachy_mini.set_target_head_pose(pose)
         self.logger.info(
@@ -527,16 +552,20 @@ class ZenohBridge:
             if hasattr(self.reachy_mini, "look_at_world"):
                 x, y, z = self._validate_look_at_coordinates(x, y, z)
                 self.reachy_mini.look_at_world(
-                    x, y, z, duration=duration, perform_movement=True
+                    x,
+                    y,
+                    z,
+                    duration=duration,
+                    perform_movement=True,
                 )
-                self.logger.info(f"Look_at_world SDK: ({x}, {y}, {z})")
+                self.logger.info("Look_at_world SDK: (%s, %s, %s)", x, y, z)
             elif hasattr(self.reachy_mini, "look_at_image"):
                 self.reachy_mini.look_at_image(int(x), int(y))
-                self.logger.info(f"Look_at_image SDK: ({int(x)}, {int(y)})")
+                self.logger.info("Look_at_image SDK: (%s, %s)", int(x), int(y))
             else:
                 self._look_at_fallback(x, y, z, duration)
-        except Exception as e:
-            self.logger.error(f"Erreur look_at: {e}")
+        except Exception:
+            self.logger.exception("Erreur look_at")
 
     async def _state_publisher(self) -> None:
         """Publie l'état du robot périodiquement."""
@@ -551,8 +580,8 @@ class ZenohBridge:
                 # Attendre avant la prochaine publication
                 await asyncio.sleep(0.1)  # 10Hz
 
-            except Exception as e:
-                self.logger.error(f"Erreur publication état: {e}")
+            except Exception:
+                self.logger.exception("Erreur publication état")
                 await asyncio.sleep(1.0)
 
     async def _update_robot_state(self) -> None:
@@ -571,7 +600,7 @@ class ZenohBridge:
                     # Stewart joints (indices 0-5)
                     if isinstance(head_positions, list | tuple):
                         for i, val in enumerate(head_positions[:6]):
-                            joints_state[f"stewart_{i+1}"] = float(val)
+                            joints_state[f"stewart_{i + 1}"] = float(val)
                     # Antennes (indices 0-1)
                     if isinstance(antenna_positions, list | tuple):
                         if len(antenna_positions) > 0:
@@ -590,7 +619,7 @@ class ZenohBridge:
                     if yaw is not None:
                         joints_state["yaw_body"] = float(yaw)
             except Exception as e:
-                logger.debug(f"Erreur lors de la lecture du yaw_body: {e}")
+                logger.debug("Erreur lors de la lecture du yaw_body: %s", e)
 
             self.current_state.joints = joints_state
 
@@ -607,15 +636,15 @@ class ZenohBridge:
                     if imu_data is not None:
                         sensors_state["imu"] = imu_data
             except Exception as err:
-                self.logger.warning(f"Lecture capteurs indisponible: {err}")
+                self.logger.warning("Lecture capteurs indisponible: %s", err)
 
             self.current_state.sensors = sensors_state
 
             # Mettre à jour le timestamp
             self.current_state.timestamp = time.time()
 
-        except Exception as e:
-            self.logger.error(f"Erreur mise à jour état: {e}")
+        except Exception:
+            self.logger.exception("Erreur mise à jour état")
 
     async def _publish_state(self) -> None:
         """Publie l'état du robot."""
@@ -626,8 +655,8 @@ class ZenohBridge:
             state_data: dict[str, Any] = self.current_state.model_dump()
             await self.publishers["state"].put(json.dumps(state_data))
 
-        except Exception as e:
-            self.logger.error(f"Erreur publication état: {e}")
+        except Exception:
+            self.logger.exception("Erreur publication état")
 
     async def _publish_error(self, error_message: str) -> None:
         """Publie une erreur."""
@@ -638,8 +667,8 @@ class ZenohBridge:
             error_data = {"error": error_message, "timestamp": time.time()}
             await self.publishers["errors"].put(json.dumps(error_data))
 
-        except Exception as e:
-            self.logger.error(f"Erreur publication erreur: {e}")
+        except Exception:
+            self.logger.exception("Erreur publication erreur")
 
     async def send_command(self, command: RobotCommand) -> bool:
         """Envoie une commande via Zenoh."""
@@ -651,8 +680,8 @@ class ZenohBridge:
             await self.publishers["commands"].put(json.dumps(command_data))
             return True
 
-        except Exception as e:
-            self.logger.error(f"Erreur envoi commande: {e}")
+        except Exception:
+            self.logger.exception("Erreur envoi commande")
             return False
 
     def get_current_state(self) -> RobotState:
@@ -665,7 +694,7 @@ class ZenohBridge:
 
 
 # FastAPI App pour l'intégration
-app = FastAPI(title="BBIA-SIM Zenoh Bridge", version="1.3.0")
+app = FastAPI(title="BBIA-SIM Zenoh Bridge", version="1.3.2")
 
 # Instance globale du bridge
 bridge: ZenohBridge | None = None

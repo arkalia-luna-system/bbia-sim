@@ -11,13 +11,17 @@
 
 | Action | Commande | Temps | Lien |
 |--------|----------|-------|------|
-| **Installation** | `pip install -e .[dev]` | ~2 min | [Guide Débutant](guides/GUIDE_DEBUTANT.md) |
-| **Dashboard** | `python src/bbia_sim/dashboard_advanced.py` | Instant | [Guide Débutant](guides/GUIDE_DEBUTANT.md) |
-| **Premier robot** | Voir guide | 5 min | [Guide Débutant](guides/GUIDE_DEBUTANT.md) ⭐ |
+| **Installation** | `pip install -e .[dev]` | ~2 min | [Guide de Démarrage](guides/GUIDE_DEMARRAGE.md) |
+| **Dashboard** | `python src/bbia_sim/dashboard_advanced.py` | Instant | [Guide de Démarrage](guides/GUIDE_DEMARRAGE.md) |
+| **Premier robot** | Voir guide | 5 min | [Guide de Démarrage](guides/GUIDE_DEMARRAGE.md) ⭐ |
 
-**Configuration :** Python 3.11+ requis • **Version** : v1.3.2 • **Date** : Oct / Nov. 2025
+**Configuration :** Python 3.11+ requis • **Version** : v1.4.0 • **Date** : 26 Novembre 2025
 
-> **💡 Astuce** : Si vous êtes perdu, consultez d'abord le [Guide Débutant](guides/GUIDE_DEBUTANT.md) qui vous guidera étape par étape.
+**🎉 Mise à jour 26 Novembre 2025** : **100% d'exploitation des capacités** ✅
+- ✅ 44 exemples disponibles (39 existants + 5 nouveaux créés 22 Nov. 2025)
+- ✅ Tous les comportements, endpoints et modules ont des exemples dédiés
+
+> **💡 Astuce** : Si vous êtes perdu, consultez d'abord le [Guide de Démarrage](guides/GUIDE_DEMARRAGE.md) qui vous guidera étape par étape.
 
 ---
 
@@ -25,7 +29,7 @@
 
 ### 🟢 Nouveau Utilisateur
 
-1. [Guide Débutant](guides/GUIDE_DEBUTANT.md) — Premiers pas en 5 minutes
+1. [Guide de Démarrage](guides/GUIDE_DEMARRAGE.md) — Premiers pas en 5 minutes
 2. [Installation Audio](installation/AUDIO_SETUP.md) — Configuration audio
 3. [Guide Reachy Mini](guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md) — Utiliser le robot
 
@@ -53,9 +57,9 @@
 ### 📊 Chef de Projet
 
 1. [Tableau de Bord Complet](reference/project-status.md) — État par axe (Fiabilité, Performance, etc.)
-2. [Statut Opérationnel](reference/STATUT_PROJET.md) — État système (dashboard, tests, commandes)
-3. [Release Notes](reference/RELEASE_NOTES.md) — Notes de version
-4. [Historique](reference/PROJECT_HISTORY.md) — Historique complet
+2. [Release Notes](reference/RELEASE_NOTES.md) — Notes de version
+3. [Historique](reference/PROJECT_HISTORY.md) — Historique complet
+4. [Métriques](reference/METRICS.md) — Métriques du projet
 
 ---
 
@@ -63,7 +67,7 @@
 
 ### 🚀 Démarrage & Guides
 
-- [Guide Débutant](guides/GUIDE_DEBUTANT.md) — Installation et premiers pas
+- [Guide de Démarrage](guides/GUIDE_DEMARRAGE.md) — Installation et premiers pas
 - [Guide Avancé](guides/GUIDE_AVANCE.md) — Fonctionnalités avancées
 - [Guide Chat BBIA](guides/GUIDE_CHAT_BBIA.md) — Système de chat intelligent
 - [Guide Reachy Mini Wireless](guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md) — Guide complet
@@ -120,7 +124,7 @@
 ### 📊 Analyses & Rapports
 
 - [Analyse Modules Non Prioritaires](quality/audits/modules-non-prioritaires.md) — Analyse modules
-- [Analyse Coverage](quality/audits/coverage-details.md) — Analyse code coverage
+- [Analyse Coverage](quality/audits/_archived/coverage-details.md) — Analyse code coverage (archivé)
 - [Analyse Unity AR](quality/audits/unity-ar.md) — Évaluation Unity AR
 - [Roadmap Dashboard](dashboard/ROADMAP_DASHBOARD.md) — Roadmap UX
 
@@ -128,13 +132,13 @@
 
 - [Corrections Appliquées](quality/corrections/applied.md) — Corrections démos et modules
 - [Améliorations SDK Futures](quality/improvements/sdk-future.md) — Features SDK avancées
-- [Améliorations Intelligence BBIA](quality/improvements/intelligence-bbia.md) — Intelligence conversationnelle
-- [Améliorations Intelligence Contexte](quality/improvements/intelligence-context.md) — Intelligence contextuelle
+- [Améliorations Intelligence BBIA](quality/improvements/_archived/intelligence-bbia.md) — Intelligence conversationnelle (archivé)
+- [Améliorations Intelligence Contexte](quality/improvements/_archived/intelligence-context.md) — Intelligence contextuelle (archivé)
 - [Améliorations Gratuites](quality/improvements/free-improvements.md) — Solutions gratuites
 
 ### 📋 Références
 
-- [Statut du Projet](reference/STATUT_PROJET.md) — État actuel
+- [Statut du Projet](reference/project-status.md) — État opérationnel et tableau de bord complet
 - [Release Notes](reference/RELEASE_NOTES.md) — Notes de version
 - [Historique](reference/PROJECT_HISTORY.md) — Historique complet
 - [Résumé Final](reference/summaries/final-summary.md) — Résumé complet
@@ -148,7 +152,7 @@
 
 ## 🆘 Besoin d'Aide ?
 
-1. **Nouveau sur le projet ?** → [Guide Débutant](guides/GUIDE_DEBUTANT.md)
+1. **Nouveau sur le projet ?** → [Guide de Démarrage](guides/GUIDE_DEMARRAGE.md)
 2. **Installer le projet ?** → [Installation Audio](installation/AUDIO_SETUP.md)
 3. **Utiliser le robot ?** → [Guide Reachy Mini](guides/REACHY_MINI_WIRELESS_COMPLETE_GUIDE.md)
 4. **Développer ?** → [Guide Avancé](guides/GUIDE_AVANCE.md)
@@ -183,7 +187,20 @@ export BBIA_TELEMETRY_TIMEOUT=1.0
 
 ---
 
+## 📋 Organisation de la Documentation
+
+La documentation a été réorganisée le **27 Novembre 2025** pour une meilleure navigation :
+
+- ✅ **Dossiers vides supprimés** : `rapports/`, `semaines/`
+- ✅ **Fichiers obsolètes archivés** : Voir `quality/audits/archives/`
+- ✅ **Doublons fusionnés** : Style guides, tâches restantes
+- ✅ **README créés** : Tous les dossiers principaux ont maintenant un README
+
+---
+
 ## 🎯 Navigation
 
 **Retour à** : [README Documentation](README.md)  
 **Voir aussi** : [Index Thématique](reference/INDEX_THEMATIQUE.md)
+
+**Dernière mise à jour** : 27 Novembre 2025

@@ -11,7 +11,7 @@
 - **[VALIDATION_FINALE_QUALITE_2025.md](VALIDATION_FINALE_QUALITE_2025.md)** ⭐ **RECOMMANDÉ**
   - Rapports de validation complets
   - Tests, couverture, qualité code
-  - Date : Oct / Nov. 2025
+  - Date : 21 Novembre 2025
 
 ---
 

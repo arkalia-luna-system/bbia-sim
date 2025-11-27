@@ -1,11 +1,6 @@
-# Dockerfile pour BBIA-SIM
 FROM python:3.11-slim
 
-# Variables d'environnement
-ENV PYTHONUNBUFFERED=1
-ENV PYTHONDONTWRITEBYTECODE=1
-
-# Installation des dépendances système
+# Installer dépendances système
 RUN apt-get update && apt-get install -y \
     libgl1-mesa-dri \
     libglib2.0-0 \
@@ -16,27 +11,35 @@ RUN apt-get update && apt-get install -y \
     libglu1-mesa \
     portaudio19-dev \
     python3-dev \
+    curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Définir le répertoire de travail
+# Créer répertoire de travail
 WORKDIR /app
 
-# Copier les fichiers de dépendances
-COPY requirements.txt pyproject.toml ./
+# Copier fichiers de dépendances
+COPY pyproject.toml ./
 
-# Installer les dépendances Python
-RUN pip install --no-cache-dir -r requirements.txt
+# Installer dépendances Python
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -e ".[test]" && \
+    pip install --no-cache-dir pytest-asyncio pytest-timeout
 
 # Copier le code source
 COPY src/ ./src/
-COPY scripts/ ./scripts/
 COPY examples/ ./examples/
 
-# Créer le répertoire logs
-RUN mkdir -p logs
+# Créer répertoires nécessaires
+RUN mkdir -p artifacts logs
 
-# Exposer le port de l'API
-EXPOSE 8000
+# Variables d'environnement
+ENV MUJOCO_GL=disable
+ENV DISPLAY=
+ENV BBIA_DISABLE_AUDIO=1
+ENV PYTHONPATH=/app/src
+
+# Exposer les ports
+EXPOSE 8000 8765
 
 # Commande par défaut
-CMD ["python", "-m", "uvicorn", "src.bbia_sim.daemon.app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "src.bbia_sim.daemon.app.main:app", "--host", "0.0.0.0", "--port", "8000"]

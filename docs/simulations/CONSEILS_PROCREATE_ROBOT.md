@@ -1,6 +1,6 @@
 # 🤖 Conseils Procreate - Image du Robot dans la Scène
 
-**Date** : Oct / Nov. 2025
+**Date** : 21 Novembre 2025
 
 > **Guide spécifique** : Comment intégrer visuellement le robot Reachy Mini dans vos textures
 
@@ -195,4 +195,4 @@
 
 ---
 
-*Conseils Robot - BBIA-SIM - Oct / Nov. 2025*
+*Conseils Robot - BBIA-SIM - 21 Novembre 2025*

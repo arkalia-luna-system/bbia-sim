@@ -1,0 +1,76 @@
+#!/usr/bin/env python3
+"""Démo MeditationBehavior - Guide méditation avec mouvements lents.
+
+Démonstration du comportement meditation avec guidage vocal.
+"""
+
+import argparse
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
+
+from bbia_sim.backends.mujoco_backend import MuJoCoBackend
+from bbia_sim.behaviors.meditation import MeditationBehavior
+
+
+def main() -> int:
+    """Fonction principale."""
+    parser = argparse.ArgumentParser(description="Démo MeditationBehavior")
+    parser.add_argument("--duration", type=int, default=5, help="Durée en minutes")
+    parser.add_argument("--headless", action="store_true", help="Mode headless")
+    parser.add_argument(
+        "--backend",
+        default="mujoco",
+        choices=["mujoco", "reachy_mini"],
+        help="Backend à utiliser",
+    )
+
+    args = parser.parse_args()
+
+    print("🧘 Démo MeditationBehavior - Guide méditation")
+    print(f"   • Durée : {args.duration} minutes")
+    print(f"   • Backend : {args.backend}")
+
+    # Créer backend
+    if args.backend == "mujoco":
+        backend = MuJoCoBackend()
+    else:
+        from bbia_sim.backends.reachy_mini_backend import ReachyMiniBackend
+
+        backend = ReachyMiniBackend()
+
+    try:
+        backend.connect()
+        print("✅ Backend connecté")
+
+        # Créer comportement
+        meditation = MeditationBehavior(robot_api=backend)
+        print("✅ MeditationBehavior créé")
+
+        # Exécuter meditation
+        context = {"duration": args.duration}
+        print(f"\n🚀 Démarrage séance de méditation ({args.duration} min)...")
+        success = meditation.execute(context)
+
+        if success:
+            print("✅ Séance de méditation terminée avec succès")
+            return 0
+        print("❌ Erreur durant la séance")
+        return 1
+
+    except KeyboardInterrupt:
+        print("\n⚠️  Interrompu par l'utilisateur")
+        return 0
+    except Exception as e:
+        print(f"❌ Erreur : {e}")
+        import traceback
+
+        traceback.print_exc()
+        return 1
+    finally:
+        backend.disconnect()
+
+
+if __name__ == "__main__":
+    exit(main())

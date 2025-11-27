@@ -56,9 +56,23 @@ def test_track_untrack_object() -> None:
 #!/usr/bin/env python3
 """Tests pour le module BBIA Vision."""
 
+import gc
+
 
 class TestBBIAVision:
     """Tests pour BBIAVision."""
+
+    def teardown_method(self):
+        """OPTIMISATION RAM: Décharger modèles vision après chaque test."""
+        try:
+            # Vider cache YOLO
+            import bbia_sim.vision_yolo as vision_yolo_module
+
+            with vision_yolo_module._yolo_cache_lock:
+                vision_yolo_module._yolo_model_cache.clear()
+        except (AttributeError, ImportError):
+            pass
+        gc.collect()
 
     @pytest.mark.fast  # OPTIMISATION RAM: Test rapide avec robot_api=None (simulation)
     def test_vision_creation(self):

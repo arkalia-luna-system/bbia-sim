@@ -229,7 +229,7 @@ def main():
     total = len(tests)
 
     for test_name, test_func in tests:
-        print(f"\n{'='*20} {test_name} {'='*20}")
+        print(f"\n{'=' * 20} {test_name} {'=' * 20}")
         try:
             if test_func():
                 passed += 1
@@ -239,9 +239,9 @@ def main():
         except Exception as e:
             print(f"❌ {test_name}: ERREUR - {e}")
 
-    print(f"\n{'='*60}")
+    print(f"\n{'=' * 60}")
     print("📊 RÉSULTATS FINAUX")
-    print(f"Tests passés: {passed}/{total} ({passed/total:.1%})")
+    print(f"Tests passés: {passed}/{total} ({passed / total:.1%})")
 
     if passed == total:
         print("🎉 CONFORMITÉ 100% AVEC LE SDK OFFICIEL !")

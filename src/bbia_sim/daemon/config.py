@@ -16,7 +16,7 @@ class Settings(BaseSettings):
     # API Configuration
     api_title: str = "BBIA-SIM API - Écosystème Reachy Mini"
     api_description: str = "API REST et WebSocket pour le contrôle du robot Reachy Mini"
-    api_version: str = "1.2.0"
+    api_version: str = "1.3.2"
     api_host: str = "0.0.0.0"  # nosec B104
     api_port: int = 8000
     api_reload: bool = True
@@ -59,9 +59,17 @@ class Settings(BaseSettings):
                 pass  # python-dotenv pas installé, pas grave
 
     def get_cors_origins(self) -> list[str]:
-        """Retourne les origines CORS autorisées selon l'environnement."""
-        if self.environment == "prod":
+        """Retourne les origines CORS autorisées selon l'environnement.
+
+        En production, CORS strict : uniquement les origines spécifiées.
+        En développement, permissif pour faciliter le développement.
+
+        Returns:
+            Liste des origines CORS autorisées
+        """
+        if self.is_production():
             # En prod, utiliser les origines spécifiées ou rejeter tout
+            # CORS strict en production : aucune origine par défaut si "*"
             if self.cors_origins == ["*"]:
                 return []  # Aucune origine autorisée par défaut en prod
             return self.cors_origins

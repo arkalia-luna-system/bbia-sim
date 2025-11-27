@@ -26,7 +26,7 @@ Ce rapport synthétise les audits existants :
 
 - **[INDEX_AUDITS_CONSOLIDES.md](docs/quality/audits/INDEX_AUDITS_CONSOLIDES.md)** - Index complet des audits
 - **[CONFORMITE_REACHY_MINI_COMPLETE.md](docs/quality/compliance/CONFORMITE_REACHY_MINI_COMPLETE.md)** - Conformité SDK
-- **[AUDIT_COMPLET_RAM_FICHIERS_OPTIMISATION_NOV2025.md](docs/quality/audits/AUDIT_COMPLET_RAM_FICHIERS_OPTIMISATION_NOV2025.md)** - Optimisations RAM
+- **[AUDIT_COMPLET_RAM_FICHIERS_OPTIMISATION_26NOV2025.md](docs/quality/audits/AUDIT_COMPLET_RAM_FICHIERS_OPTIMISATION_26NOV2025.md)** - Optimisations RAM
 - **[ANALYSE_PERFORMANCE_PROBLEMES_2025.md](docs/quality/performance/ANALYSE_PERFORMANCE_PROBLEMES_2025.md)** - Performance
 - **[AUDIT_EXHAUSTIF_DETAILS.md](docs/quality/audits/AUDIT_EXHAUSTIF_DETAILS.md)** - Détails exhaustifs
 - **[AUDIT_TACHES_RESTANTES_COMPLET.md](AUDIT_TACHES_RESTANTES_COMPLET.md)** - Tâches restantes
@@ -163,7 +163,7 @@ echo "._*" >> .gitignore
    - `bbia_huggingface.py` : 2-8 GB RAM (modèles LLM)
    - `bbia_vision.py` : YOLO + MediaPipe chargés même si non utilisés
    - `voice_whisper.py` : Cache Whisper sans limite
-   - **Référence** : `docs/quality/audits/AUDIT_COMPLET_RAM_FICHIERS_OPTIMISATION_NOV2025.md`
+   - **Référence** : `docs/quality/audits/AUDIT_COMPLET_RAM_FICHIERS_OPTIMISATION_26NOV2025.md`
 
 2. **Imports inutilisés potentiels** 🟡
    - À vérifier avec `ruff check --select F401`
@@ -197,7 +197,7 @@ echo "._*" >> .gitignore
 
 ### 📝 Actions Concrètes
 
-**Fichiers prioritaires** (voir `AUDIT_COMPLET_RAM_FICHIERS_OPTIMISATION_NOV2025.md`) :
+**Fichiers prioritaires** (voir `AUDIT_COMPLET_RAM_FICHIERS_OPTIMISATION_26NOV2025.md`) :
 1. `src/bbia_sim/bbia_huggingface.py` (gain 50-70% RAM)
 2. `src/bbia_sim/bbia_vision.py` (gain 40-50% RAM)
 3. `src/bbia_sim/vision_yolo.py` (gain 30-40% RAM)
@@ -206,7 +206,7 @@ echo "._*" >> .gitignore
 
 **Références** :
 - `docs/quality/performance/ANALYSE_PERFORMANCE_PROBLEMES_2025.md` (problèmes corrigés)
-- `docs/quality/audits/AUDIT_COMPLET_RAM_FICHIERS_OPTIMISATION_NOV2025.md` (plan d'optimisation)
+- `docs/quality/audits/AUDIT_COMPLET_RAM_FICHIERS_OPTIMISATION_26NOV2025.md` (plan d'optimisation)
 
 ---
 
@@ -364,7 +364,7 @@ echo "._*" >> .gitignore
 
 **Références** :
 - `docs/ai/modules.md` (modules IA)
-- `docs/quality/audits/AUDIT_COMPLET_RAM_FICHIERS_OPTIMISATION_NOV2025.md` (optimisations)
+- `docs/quality/audits/AUDIT_COMPLET_RAM_FICHIERS_OPTIMISATION_26NOV2025.md` (optimisations)
 
 ---
 

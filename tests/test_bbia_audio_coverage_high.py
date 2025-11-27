@@ -105,13 +105,31 @@ class TestBBIAAudioCoverageHigh(unittest.TestCase):
         self, mock_get_mic: MagicMock, mock_env: MagicMock
     ) -> None:
         """Test fallback SDK vers sounddevice en cas d'erreur."""
-        mock_get_mic.return_value = MagicMock()
-        mock_get_mic.return_value.record = MagicMock(side_effect=Exception("SDK error"))
+        mock_robot = MagicMock()
+        # robot_api.media.record_audio n'existe pas (hasattr retourne False)
+        # microphone_sdk.record lève une exception
+        mock_mic = MagicMock()
+        mock_mic.record = MagicMock(side_effect=Exception("SDK error"))
+        mock_get_mic.return_value = mock_mic
 
         with (
             patch("bbia_sim.bbia_audio._get_sd") as mock_get_sd,
             patch("bbia_sim.bbia_audio.wave.open") as mock_wave,
+            patch("bbia_sim.bbia_audio.hasattr") as mock_hasattr,
         ):
+            # Simuler hasattr pour que record_audio n'existe pas
+            def hasattr_side_effect(obj, attr):
+                if obj == mock_robot and attr == "media":
+                    return True
+                elif (
+                    hasattr(obj, "__class__") and obj.__class__.__name__ == "MagicMock"
+                ):
+                    # Pour les autres objets mock, utiliser le comportement par défaut
+                    return hasattr(obj, attr)
+                return False
+
+            mock_hasattr.side_effect = hasattr_side_effect
+
             mock_sd = MagicMock()
             mock_sd.rec.return_value = np.zeros((16000, 1), dtype="int16")
             mock_get_sd.return_value = mock_sd
@@ -119,7 +137,9 @@ class TestBBIAAudioCoverageHigh(unittest.TestCase):
             mock_wf = MagicMock()
             mock_wave.return_value.__enter__.return_value = mock_wf
 
-            result = bbia_audio.enregistrer_audio(self.test_file, duree=1)
+            result = bbia_audio.enregistrer_audio(
+                self.test_file, duree=1, robot_api=mock_robot
+            )
             self.assertTrue(result)
 
     @patch("os.environ.get", return_value="0")
@@ -163,6 +183,7 @@ class TestBBIAAudioCoverageHigh(unittest.TestCase):
     def test_lire_audio_sdk_error_fallback(self, mock_env: MagicMock) -> None:
         """Test fallback SDK vers sounddevice en cas d'erreur."""
         mock_robot = MagicMock()
+        mock_robot.media = MagicMock()
         mock_robot.media.play_audio = MagicMock(side_effect=Exception("SDK error"))
         mock_robot.media.speaker = None
 
@@ -188,6 +209,7 @@ class TestBBIAAudioCoverageHigh(unittest.TestCase):
             mock_wave.return_value.__enter__.return_value = mock_wf
 
             bbia_audio.lire_audio(self.test_file, robot_api=mock_robot)
+            # Vérifier que sounddevice a été utilisé en fallback
             mock_sd.play.assert_called_once()
 
     def test_get_sd_with_import_error(self) -> None:

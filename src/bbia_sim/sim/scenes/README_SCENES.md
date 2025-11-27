@@ -93,4 +93,4 @@ Ajustez dans `examples/view_scene_piece.py` :
 
 ---
 
-*Documentation Scènes - BBIA-SIM - Oct / Nov. 2025*
+*Documentation Scènes - BBIA-SIM - 21 Novembre 2025*

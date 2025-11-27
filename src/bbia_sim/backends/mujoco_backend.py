@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-"""MuJoCoBackend - Implémentation MuJoCo de RobotAPI
-Backend pour simulation MuJoCo
+"""MuJoCoBackend - Implémentation MuJoCo de RobotAPI.
+
+Backend pour simulation MuJoCo.
 """
 
 import logging
@@ -11,7 +12,13 @@ from typing import Any
 import mujoco  # type: ignore[import-untyped]
 import mujoco.viewer  # type: ignore[import-untyped]
 
-from ..robot_api import RobotAPI
+from bbia_sim.robot_api import RobotAPI
+
+# Types pour goto_target
+try:
+    from reachy_mini.utils.interpolation import HeadPose  # type: ignore[import-untyped]
+except ImportError:
+    HeadPose = Any  # type: ignore[misc,assignment]
 
 logger = logging.getLogger(__name__)
 
@@ -21,13 +28,13 @@ class MuJoCoBackend(RobotAPI):
 
     def __init__(
         self,
-        model_path: str = "src/bbia_sim/sim/models/reachy_mini_REAL_OFFICIAL.xml",
+        model_path: str = ("src/bbia_sim/sim/models/reachy_mini_REAL_OFFICIAL.xml"),
     ) -> None:
         """Initialise le backend MuJoCo.
 
-        Note: Le modèle par défaut est `reachy_mini_REAL_OFFICIAL.xml` (16 joints, complet).
-        Le fichier `reachy_mini.xml` (7 joints, simplifié) existe mais n'est pas utilisé
-        par défaut pour garantir la cohérence avec le robot réel.
+        Note: Le modèle par défaut est `reachy_mini_REAL_OFFICIAL.xml`
+        (16 joints, complet). Le fichier `reachy_mini.xml` (7 joints, simplifié)
+        existe mais n'est pas utilisé par défaut pour garantir la cohérence.
         """
         super().__init__()
         self.model_path = Path(model_path)
@@ -42,7 +49,7 @@ class MuJoCoBackend(RobotAPI):
         """Connecte au simulateur MuJoCo."""
         try:
             if not self.model_path.exists():
-                logger.error(f"Modèle MuJoCo introuvable: {self.model_path}")
+                logger.error("Modèle MuJoCo introuvable: %s", self.model_path)
                 return False
 
             self.model = mujoco.MjModel.from_xml_path(str(self.model_path))
@@ -59,12 +66,15 @@ class MuJoCoBackend(RobotAPI):
 
             self.is_connected = True
             self.start_time = time.time()
-            logger.info(f"MuJoCo connecté: {self.model.njnt} joints détectés")
-            return True
-
-        except Exception as e:
-            logger.error(f"Erreur connexion MuJoCo: {e}")
+            logger.info("MuJoCo connecté: %s joints détectés", self.model.njnt)
+        except (OSError, RuntimeError, ValueError, AttributeError):
+            logger.exception("Erreur connexion MuJoCo")
             return False
+        except Exception:
+            logger.exception("Erreur inattendue connexion MuJoCo")
+            return False
+        else:
+            return True
 
     def disconnect(self) -> bool:
         """Déconnecte du simulateur MuJoCo."""
@@ -77,11 +87,14 @@ class MuJoCoBackend(RobotAPI):
             self.data = None
             self.is_connected = False
             logger.info("MuJoCo déconnecté")
-            return True
-
-        except Exception as e:
-            logger.error(f"Erreur déconnexion MuJoCo: {e}")
+        except (AttributeError, RuntimeError):
+            logger.exception("Erreur déconnexion MuJoCo")
             return False
+        except Exception:
+            logger.exception("Erreur inattendue déconnexion MuJoCo")
+            return False
+        else:
+            return True
 
     def get_available_joints(self) -> list[str]:
         """Retourne la liste des joints disponibles."""
@@ -97,7 +110,7 @@ class MuJoCoBackend(RobotAPI):
             return False
 
         if joint_name not in self.joint_name_to_id:
-            logger.error(f"Joint introuvable: {joint_name}")
+            logger.error("Joint introuvable: %s", joint_name)
             return False
 
         # Validation et clamp via RobotAPI
@@ -110,7 +123,7 @@ class MuJoCoBackend(RobotAPI):
         if self.data is not None:
             self.data.qpos[joint_id] = clamped_position
 
-        logger.debug(f"Joint {joint_name} → {clamped_position:.3f} rad")
+        logger.debug("Joint %s → %.3f rad", joint_name, clamped_position)
         return True
 
     def get_joint_pos(self, joint_name: str) -> float | None:
@@ -126,6 +139,83 @@ class MuJoCoBackend(RobotAPI):
             return float(self.data.qpos[joint_id])
         return None
 
+    def get_current_body_yaw(self) -> float:
+        """Récupère la rotation actuelle du corps (body yaw).
+
+        Conforme SDK: get_current_* retourne état actuel.
+        Issue #430: Ajouté pour cohérence avec ReachyMiniBackend.
+        """
+        if not self.is_connected:
+            return 0.0
+
+        if "yaw_body" in self.joint_name_to_id:
+            joint_id = self.joint_name_to_id["yaw_body"]
+            if self.data is not None:
+                return float(self.data.qpos[joint_id])
+
+        return 0.0
+
+    def get_present_body_yaw(self) -> float:
+        """Récupère la rotation présente du corps (body yaw).
+
+        Conforme SDK: get_present_* est alias de get_current_* pour MuJoCo.
+        Issue #430: Ajouté pour cohérence avec ReachyMiniBackend.
+        """
+        return self.get_current_body_yaw()
+
+    def get_current_joint_positions(self) -> tuple[list[float], list[float]]:
+        """Récupère les positions actuelles des joints (tête et antennes).
+
+        Issue #430: Ajouté pour cohérence avec ReachyMiniBackend.
+
+        Returns:
+            Tuple (head_positions, antenna_positions)
+            - head_positions: [yaw_body, stewart_1, stewart_2, stewart_3,
+              stewart_4, stewart_5, stewart_6]
+            - antenna_positions: [right_antenna, left_antenna]
+
+        """
+        if not self.is_connected or self.data is None:
+            return ([0.0] * 7, [0.0, 0.0])
+
+        head_joints = [
+            "yaw_body",
+            "stewart_1",
+            "stewart_2",
+            "stewart_3",
+            "stewart_4",
+            "stewart_5",
+            "stewart_6",
+        ]
+        antenna_joints = ["right_antenna", "left_antenna"]
+
+        head_positions = []
+        for joint_name in head_joints:
+            if joint_name in self.joint_name_to_id:
+                joint_id = self.joint_name_to_id[joint_name]
+                head_positions.append(float(self.data.qpos[joint_id]))
+            else:
+                head_positions.append(0.0)
+
+        antenna_positions = []
+        for joint_name in antenna_joints:
+            if joint_name in self.joint_name_to_id:
+                joint_id = self.joint_name_to_id[joint_name]
+                antenna_positions.append(float(self.data.qpos[joint_id]))
+            else:
+                antenna_positions.append(0.0)
+
+        return (head_positions, antenna_positions)
+
+    def get_present_antenna_joint_positions(self) -> list[float]:
+        """Récupère les positions présentes des antennes.
+
+        Conforme SDK: get_present_* est alias de get_current_* pour MuJoCo.
+        Issue #430: Ajouté pour cohérence avec ReachyMiniBackend.
+        """
+        _, antenna_positions = self.get_current_joint_positions()
+        return antenna_positions
+
     def step(self) -> bool:
         """Effectue un pas de simulation."""
         if not self.is_connected:
@@ -134,16 +224,49 @@ class MuJoCoBackend(RobotAPI):
         try:
             mujoco.mj_step(self.model, self.data)
             self.step_count += 1
+        except Exception:
+            logger.exception("Erreur step MuJoCo")
+            return False
+        else:
             return True
-        except Exception as e:
-            logger.error(f"Erreur step MuJoCo: {e}")
+
+    def check_collision(self) -> bool:
+        """Vérifie s'il y a collision dans la simulation (Issue #183).
+
+        Returns:
+            True si collision détectée, False sinon
+
+        Note:
+            Implémentation basique utilisant mujoco.mj_contact().
+            Pour une détection plus précise, utiliser les contacts spécifiques.
+
+        """
+        if not self.is_connected or self.model is None or self.data is None:
+            return False
+
+        try:
+            # Calculer les contacts
+            mujoco.mj_step(self.model, self.data)
+            # Vérifier s'il y a des contacts
+            num_contacts: int = int(self.data.ncon)
+            has_collision: bool = num_contacts > 0
+
+            if has_collision:
+                logger.debug(
+                    "⚠️ Collision détectée: %d contacts",
+                    num_contacts,
+                )
+
+            return bool(has_collision)
+        except Exception:
+            logger.exception("Erreur check_collision")
             return False
 
     def play_move(
         self,
         move: object,
-        play_frequency: float = 100.0,
-        initial_goto_duration: float = 0.0,
+        play_frequency: float = 100.0,  # noqa: ARG002
+        initial_goto_duration: float = 0.0,  # noqa: ARG002
     ) -> None:
         """Joue un mouvement enregistré depuis un dataset HuggingFace.
 
@@ -192,8 +315,8 @@ class MuJoCoBackend(RobotAPI):
             self.step()
             logger.info("Mouvement simulé joué dans MuJoCo")
 
-        except Exception as e:
-            logger.error(f"Erreur play_move MuJoCo: {e}")
+        except Exception:
+            logger.exception("Erreur play_move MuJoCo")
 
     def async_play_move(
         self,
@@ -217,10 +340,11 @@ class MuJoCoBackend(RobotAPI):
                 self.data.qvel[:] = 0.0
             self.is_connected = False
             logger.critical("🔴 ARRÊT D'URGENCE SIMULATION ACTIVÉ")
-            return True
-        except Exception as e:
-            logger.error(f"Erreur emergency_stop: {e}")
+        except Exception:
+            logger.exception("Erreur emergency_stop")
             return False
+        else:
+            return True
 
     def launch_viewer(self, passive: bool = True) -> bool:
         """Lance le viewer MuJoCo."""
@@ -248,20 +372,21 @@ class MuJoCoBackend(RobotAPI):
                             i,
                         )
                         if name == "skybox_bbia":
-                            logger.debug(f"Texture skybox_bbia trouvée à l'index {i}")
+                            logger.debug("Texture skybox_bbia trouvée à l'index %s", i)
                             break
 
                 logger.info(
                     "Viewer MuJoCo lancé (fond BBIA gris lunaire → bleu céleste)",
                 )
-            except Exception as e:
-                logger.warning(f"Impossible de vérifier le skybox BBIA: {e}")
+            except (AttributeError, KeyError, ValueError):
+                logger.warning("Impossible de vérifier le skybox BBIA")
                 logger.info("Viewer MuJoCo lancé (fond BBIA configuré)")
 
-            return True
-        except Exception as e:
-            logger.error(f"Erreur lancement viewer: {e}")
+        except (RuntimeError, OSError, AttributeError):
+            logger.exception("Erreur lancement viewer")
             return False
+        else:
+            return True
 
     def configure_viewer_camera(
         self,
@@ -293,15 +418,16 @@ class MuJoCoBackend(RobotAPI):
             else:
                 self.viewer.cam.lookat[:] = [0, 0, 0.3]
             logger.debug(
-                (
-                    f"Caméra configurée: azimuth={azimuth}, "
-                    f"elevation={elevation}, distance={distance}"
-                ),
+                "Caméra configurée: azimuth=%s, elevation=%s, distance=%s",
+                azimuth,
+                elevation,
+                distance,
             )
-            return True
-        except Exception as e:
-            logger.error(f"Erreur configuration caméra: {e}")
+        except Exception:
+            logger.exception("Erreur configuration caméra")
             return False
+        else:
+            return True
 
     def sync_viewer(self) -> bool:
         """Synchronise le viewer."""
@@ -310,10 +436,11 @@ class MuJoCoBackend(RobotAPI):
 
         try:
             self.viewer.sync()
-            return True
-        except Exception as e:
-            logger.error(f"Erreur sync viewer: {e}")
+        except Exception:
+            logger.exception("Erreur sync viewer")
             return False
+        else:
+            return True
 
     def is_viewer_running(self) -> bool:
         """Vérifie si le viewer est actif."""
@@ -370,29 +497,31 @@ class MuJoCoBackend(RobotAPI):
         if head_joints["pitch"]:
             try:
                 self.set_joint_pos(head_joints["pitch"], pose["pitch"])
-                logger.info(f"Émotion {emotion}: pitch_head = {pose['pitch']:.3f}")
-            except Exception as e:
-                logger.debug(f"Impossible de bouger pitch_head: {e}")
+                logger.info("Émotion %s: pitch_head = %.3f", emotion, pose["pitch"])
+            except (ValueError, RuntimeError, AttributeError) as e:
+                logger.debug("Impossible de bouger pitch_head: %s", e)
 
         if head_joints["yaw"]:
             try:
                 self.set_joint_pos(head_joints["yaw"], pose["yaw"])
-                logger.info(f"Émotion {emotion}: yaw_head = {pose['yaw']:.3f}")
-            except Exception as e:
-                logger.debug(f"Impossible de bouger yaw_head: {e}")
+                logger.info("Émotion %s: yaw_head = %.3f", emotion, pose["yaw"])
+            except (ValueError, RuntimeError, AttributeError) as e:
+                logger.debug("Impossible de bouger yaw_head: %s", e)
 
         # Faire un step pour que le changement soit visible
         self.step()
 
         logger.info(
-            f"✅ Émotion {emotion} appliquée (intensité: {intensity}) - joints bougés"
+            "✅ Émotion %s appliquée (intensité: %s) - joints bougés",
+            emotion,
+            intensity,
         )
         return True
 
     def goto_target(
         self,
-        head: Any = None,
-        antennas: Any = None,
+        head: HeadPose | list[float] | None = None,  # type: ignore[type-arg]
+        antennas: list[float] | None = None,
         duration: float = 0.5,
         method: str = "minjerk",
         body_yaw: float | None = None,
@@ -411,11 +540,15 @@ class MuJoCoBackend(RobotAPI):
 
         Raises:
             ValueError: Si duration <= 0
+
         """
         if duration <= 0.0:
-            raise ValueError(
+            msg = (
                 "Duration must be positive and non-zero. "
                 "Use set_joint_pos() for immediate position setting."
+            )
+            raise ValueError(
+                msg,
             )
 
         if not self.is_connected:
@@ -427,9 +560,8 @@ class MuJoCoBackend(RobotAPI):
             from scipy.spatial.transform import Rotation as R
 
             # Appliquer body_yaw si fourni
-            if body_yaw is not None:
-                if "yaw_body" in self.joint_name_to_id:
-                    self.set_joint_pos("yaw_body", float(body_yaw))
+            if body_yaw is not None and "yaw_body" in self.joint_name_to_id:
+                self.set_joint_pos("yaw_body", float(body_yaw))
 
             # Traiter head pose si fournie
             if head is not None:
@@ -439,7 +571,7 @@ class MuJoCoBackend(RobotAPI):
                 elif hasattr(head, "matrix"):
                     head_matrix = head.matrix
                 else:
-                    logger.warning(f"Format head non reconnu: {type(head)}")
+                    logger.warning("Format head non reconnu: %s", type(head))
                     head_matrix = None
 
                 if head_matrix is not None and head_matrix.shape == (4, 4):
@@ -460,22 +592,27 @@ class MuJoCoBackend(RobotAPI):
                             self.set_joint_pos(joint, float(euler[2]))  # yaw
 
             # Appliquer antennes si fournies
-            if antennas is not None:
-                if isinstance(antennas, list | tuple) and len(antennas) >= 2:
-                    if "right_antenna" in self.joint_name_to_id:
-                        self.set_joint_pos("right_antenna", float(antennas[0]))
-                    if "left_antenna" in self.joint_name_to_id:
-                        self.set_joint_pos("left_antenna", float(antennas[1]))
+            if (
+                antennas is not None
+                and isinstance(antennas, list | tuple)
+                and len(antennas) >= 2
+            ):
+                if "right_antenna" in self.joint_name_to_id:
+                    self.set_joint_pos("right_antenna", float(antennas[0]))
+                if "left_antenna" in self.joint_name_to_id:
+                    self.set_joint_pos("left_antenna", float(antennas[1]))
 
             # Faire un step pour appliquer les changements
             self.step()
 
             logger.info(
-                f"goto_target exécuté (duration={duration:.2f}s, method={method})"
+                "goto_target exécuté (duration=%.2fs, method=%s)",
+                duration,
+                method,
             )
 
-        except Exception as e:
-            logger.error(f"Erreur goto_target MuJoCo: {e}")
+        except Exception:
+            logger.exception("Erreur goto_target MuJoCo")
 
     def get_telemetry(self) -> dict[str, Any]:
         """Retourne les données de télémétrie."""

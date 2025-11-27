@@ -8,14 +8,17 @@ OPTIMISATION RAM: Force utilisation de mocks pour modèles lourds.
 import atexit
 import fcntl
 import gc
+import logging
 import os
+import re
 import signal
+import subprocess
 import sys
 import threading
 import time
 from pathlib import Path
 
-import pytest
+import pytest  # type: ignore[import-untyped]
 
 # OPTIMISATION RAM: Forcer mode mock pour tests (évite chargement modèles lourds)
 os.environ.setdefault("BBIA_DISABLE_AUDIO", "1")
@@ -30,6 +33,82 @@ _MAX_RECURSION = 3  # Protection contre récursion infinie
 # Stocker le file descriptor du lock globalement pour pouvoir le libérer
 # même en cas d'interruption ou de blocage
 _lock_fd: int | None = None
+
+
+class ExpectedErrorFilter(logging.Filter):
+    """
+    Filtre de logging pour réduire le bruit des erreurs attendues dans les tests.
+
+    Les erreurs suivantes sont attendues et peuvent être réduites au niveau WARNING :
+    - ModuleNotFoundError pour dépendances optionnelles (reachy_mini, etc.)
+    - RuntimeError pour eSpeak non installé
+    - Erreurs de reconnaissance vocale dans les tests de gestion d'erreurs
+    - Erreurs de synthèse vocale dans les tests de gestion d'erreurs
+    - Erreurs de processeurs de modèles non disponibles
+    """
+
+    # Patterns d'erreur attendus (chaînes simples pour recherche rapide)
+    EXPECTED_ERROR_PATTERNS = [
+        "ModuleNotFoundError: No module named 'reachy_mini'",
+        "RuntimeError: This means you probably do not have eSpeak",
+        "Erreur de reconnaissance vocale",
+        "Erreur de synthèse vocale",
+        "Aucun moteur TTS disponible",
+        "Erreur initialisation fallback",
+        "Erreur création Move",
+    ]
+
+    # Patterns regex pour correspondances plus flexibles
+    EXPECTED_ERROR_REGEX = [
+        re.compile(r"Processeur.*non disponible", re.IGNORECASE),
+        re.compile(r"ModuleNotFoundError.*reachy", re.IGNORECASE),
+        re.compile(r"eSpeak.*not.*installed", re.IGNORECASE),
+    ]
+
+    def filter(self, record: logging.LogRecord) -> bool:
+        """
+        Filtre les messages d'erreur attendus.
+
+        Returns:
+            True si le message doit être affiché, False sinon.
+        """
+        # Si ce n'est pas un message ERROR, ne pas filtrer
+        if record.levelno < logging.ERROR:
+            return True
+
+        # Obtenir le message complet
+        message = record.getMessage()
+
+        # Vérifier les patterns simples
+        for pattern in self.EXPECTED_ERROR_PATTERNS:
+            if pattern in message:
+                record.levelno = logging.WARNING
+                record.levelname = "WARNING"
+                return True
+
+        # Vérifier les patterns regex
+        for regex_pattern in self.EXPECTED_ERROR_REGEX:
+            if regex_pattern.search(message):
+                record.levelno = logging.WARNING
+                record.levelname = "WARNING"
+                return True
+
+        # Vérifier aussi dans les exceptions capturées
+        if record.exc_info and record.exc_info[1]:
+            exc_message = str(record.exc_info[1])
+            for pattern in self.EXPECTED_ERROR_PATTERNS:
+                if pattern in exc_message:
+                    record.levelno = logging.WARNING
+                    record.levelname = "WARNING"
+                    return True
+            for regex_pattern in self.EXPECTED_ERROR_REGEX:
+                if regex_pattern.search(exc_message):
+                    record.levelno = logging.WARNING
+                    record.levelname = "WARNING"
+                    return True
+
+        # Garder toutes les autres erreurs
+        return True
 
 
 def acquire_lock(recursion_level: int = 0) -> bool:
@@ -118,7 +197,7 @@ def acquire_lock(recursion_level: int = 0) -> bool:
                             # Lock expiré (processus probablement mort)
                             print(
                                 f"⚠️  Lock expiré (>{LOCK_TIMEOUT}s). "
-                                f"Processus {pid} pourrait être mort. "
+                                f"Processus {pid_int} pourrait être mort. "
                                 f"Suppression du lock..."
                             )
                             os.remove(LOCK_FILE)
@@ -127,12 +206,12 @@ def acquire_lock(recursion_level: int = 0) -> bool:
                         else:
                             print(
                                 f"❌ Tests déjà en cours d'exécution !\n"
-                                f"   Processus PID: {pid}\n"
+                                f"   Processus PID: {pid_int}\n"
                                 f"   Lock acquis il y a: {elapsed:.1f}s\n"
                                 f"   Fichier lock: {LOCK_FILE}\n\n"
                                 f"💡 Solutions:\n"
                                 f"   1. Attendre la fin de l'autre processus\n"
-                                f"   2. Vérifier: ps aux | grep {pid}\n"
+                                f"   2. Vérifier: ps aux | grep {pid_int}\n"
                                 f"   3. Si processus mort: rm {LOCK_FILE}\n"
                                 f"   4. Timeout automatique après {LOCK_TIMEOUT}s\n"
                             )
@@ -140,7 +219,7 @@ def acquire_lock(recursion_level: int = 0) -> bool:
                     except ProcessLookupError:
                         # Processus n'existe plus, lock orphelin
                         print(
-                            f"⚠️  Lock orphelin détecté (processus {pid} n'existe plus). "
+                            f"⚠️  Lock orphelin détecté (processus {pid_int} n'existe plus). "
                             f"Suppression..."
                         )
                         os.remove(LOCK_FILE)
@@ -183,7 +262,6 @@ def force_cleanup_all_resources() -> None:
     try:
         # 1. Nettoyer tous les backends actifs (threads watchdog)
         try:
-            from bbia_sim.backends.reachy_mini_backend import ReachyMiniBackend
 
             # Forcer la déconnexion de tous les backends qui pourraient être actifs
             # Note: On ne peut pas vraiment lister toutes les instances, mais on force
@@ -270,6 +348,25 @@ def force_cleanup_all_resources() -> None:
 
 
 @pytest.hookimpl(tryfirst=True)
+def pytest_collection_modifyitems(config: pytest.Config, items: list) -> None:
+    """
+    Hook pour modifier les tests collectés - skip automatique en CI pour tests lents/heavy.
+    """
+    # Skip automatique en CI pour tests marqués slow/heavy si variable d'environnement définie
+    skip_slow_in_ci = os.environ.get("BBIA_SKIP_SLOW_TESTS", "0") == "1"
+    is_ci = os.environ.get("CI", "false").lower() == "true"
+
+    if is_ci and skip_slow_in_ci:
+        for item in items:
+            # Skip tests marqués slow ou heavy en CI si flag activé
+            if item.get_closest_marker("slow") or item.get_closest_marker("heavy"):
+                skip_marker = pytest.mark.skip(
+                    reason="Test désactivé en CI (BBIA_SKIP_SLOW_TESTS=1)"
+                )
+                item.add_marker(skip_marker)
+
+
+@pytest.hookimpl(tryfirst=True)
 def pytest_configure(config: pytest.Config) -> None:
     """
     Hook pytest qui s'exécute au démarrage.
@@ -285,10 +382,27 @@ def pytest_configure(config: pytest.Config) -> None:
 
     print("✅ Verrou d'exécution acquis. Tests sécurisés.\n")
 
+    # Configurer le filtre de logging pour réduire le bruit des erreurs attendues
+    # Appliquer le filtre aux loggers principaux du projet
+    expected_error_filter = ExpectedErrorFilter()
+    logger_names = [
+        "bbia_sim",
+        "bbia_sim.bbia_voice",
+        "bbia_sim.bbia_voice_advanced",
+        "bbia_sim.bbia_huggingface",
+        "bbia_sim.backends.reachy_mini_backend",
+        "root",
+    ]
+    for logger_name in logger_names:
+        logger = logging.getLogger(logger_name)
+        # Ajouter le filtre uniquement s'il n'est pas déjà présent
+        if not any(isinstance(f, ExpectedErrorFilter) for f in logger.filters):
+            logger.addFilter(expected_error_filter)
+
     # OPTIMISATION RAM: Nettoyer caches modèles avant tests
     try:
         # Nettoyer cache YOLO
-        from bbia_sim.vision_yolo import _yolo_model_cache, _yolo_cache_lock
+        from bbia_sim.vision_yolo import _yolo_cache_lock, _yolo_model_cache
 
         with _yolo_cache_lock:
             _yolo_model_cache.clear()
@@ -303,8 +417,8 @@ def pytest_configure(config: pytest.Config) -> None:
         # Nettoyer cache Whisper
         try:
             from bbia_sim.voice_whisper import (
-                _whisper_models_cache,
                 _whisper_model_cache_lock,
+                _whisper_models_cache,
             )
 
             with _whisper_model_cache_lock:
@@ -315,6 +429,23 @@ def pytest_configure(config: pytest.Config) -> None:
         # Nettoyer cache HuggingFace
         try:
             from bbia_sim.bbia_huggingface import BBIAHuggingFace
+
+            # Nettoyer thread partagé BBIAHuggingFace pour éviter fuites entre tests
+            try:
+                with BBIAHuggingFace._shared_unload_thread_lock:
+                    # Arrêter thread partagé si actif
+                    if (
+                        BBIAHuggingFace._shared_unload_thread
+                        and BBIAHuggingFace._shared_unload_thread.is_alive()
+                    ):
+                        BBIAHuggingFace._shared_unload_thread_stop.set()
+                        BBIAHuggingFace._shared_unload_thread.join(timeout=1.0)
+                    # Nettoyer liste instances
+                    BBIAHuggingFace._shared_instances.clear()
+                    BBIAHuggingFace._shared_unload_thread = None
+            except (AttributeError, RuntimeError):
+                # Ignorer si attributs n'existent pas encore
+                pass
 
             if hasattr(BBIAHuggingFace, "_clear_cache"):
                 BBIAHuggingFace._clear_cache()
@@ -351,12 +482,66 @@ def pytest_unconfigure(config: pytest.Config) -> None:
 
     # OPTIMISATION RAM: Nettoyer caches après tests
     try:
-        from bbia_sim.vision_yolo import _yolo_model_cache, _yolo_cache_lock
+        from bbia_sim.vision_yolo import _yolo_cache_lock, _yolo_model_cache
 
         with _yolo_cache_lock:
             _yolo_model_cache.clear()
     except Exception:
         pass
+
+
+def run_cleanup_scripts() -> None:
+    """
+    Exécute les scripts de nettoyage après les tests.
+    Nettoie les fichiers cache, métadonnées macOS, et processus gourmands.
+
+    Peut être désactivé via la variable d'environnement BBIA_DISABLE_AUTO_CLEANUP=1
+    """
+    # Vérifier si le nettoyage automatique est désactivé
+    if os.environ.get("BBIA_DISABLE_AUTO_CLEANUP", "0") == "1":
+        return
+
+    try:
+        # Chemin vers le script de nettoyage
+        project_root = Path(__file__).parent.parent
+        cleanup_script = project_root / "scripts" / "cleanup_all.sh"
+
+        if not cleanup_script.exists():
+            print(f"⚠️  Script de nettoyage non trouvé: {cleanup_script}")
+            return
+
+        # S'assurer que le script a les permissions d'exécution
+        try:
+            os.chmod(cleanup_script, 0o755)
+        except Exception:
+            # Ignorer si chmod échoue (peut être normal en CI)
+            pass
+
+        # Exécuter le script de nettoyage en mode non-interactif (cache uniquement)
+        # Ne pas nettoyer la RAM automatiquement (peut être dangereux)
+        print("\n🧹 Exécution du nettoyage automatique après les tests...")
+        try:
+            # Utiliser bash explicitement pour éviter les problèmes de permissions
+            result = subprocess.run(
+                ["bash", str(cleanup_script), "--cache-only", "--yes"],
+                cwd=str(project_root),
+                capture_output=True,
+                text=True,
+                timeout=30,  # Timeout de 30 secondes max (optimisé)
+            )
+            if result.returncode == 0:
+                print("✅ Nettoyage automatique terminé avec succès")
+            else:
+                print(f"⚠️  Nettoyage terminé avec code {result.returncode}")
+                if result.stderr:
+                    print(f"   Erreur: {result.stderr[:200]}")
+        except subprocess.TimeoutExpired:
+            print("⚠️  Nettoyage timeout (ignoré)")
+        except Exception as e:
+            print(f"⚠️  Erreur lors du nettoyage (non bloquant): {e}")
+    except Exception as e:
+        # Ignorer toutes les erreurs pour ne pas bloquer la fin de pytest
+        print(f"⚠️  Erreur nettoyage scripts (non bloquant): {e}")
 
 
 @pytest.hookimpl(trylast=True)
@@ -367,6 +552,9 @@ def pytest_sessionfinish(session: pytest.Session, exitstatus: int) -> None:
     """
     force_cleanup_all_resources()
 
+    # Exécuter les scripts de nettoyage après les tests
+    run_cleanup_scripts()
+
 
 @pytest.fixture(autouse=True)
 def clear_model_caches_after_test():
@@ -375,6 +563,23 @@ def clear_model_caches_after_test():
     OPTIMISATION RAM: Libère mémoire après chaque test.
     """
     yield
+    # Nettoyer thread partagé BBIAHuggingFace après chaque test
+    try:
+        from bbia_sim.bbia_huggingface import BBIAHuggingFace
+
+        with BBIAHuggingFace._shared_unload_thread_lock:
+            # Arrêter thread partagé si actif et plus d'instances
+            if (
+                not BBIAHuggingFace._shared_instances
+                and BBIAHuggingFace._shared_unload_thread
+                and BBIAHuggingFace._shared_unload_thread.is_alive()
+            ):
+                BBIAHuggingFace._shared_unload_thread_stop.set()
+                BBIAHuggingFace._shared_unload_thread.join(timeout=0.5)
+    except (ImportError, AttributeError, RuntimeError):
+        # Ignorer si module non disponible ou erreurs
+        pass
+
     # Nettoyer après chaque test
     try:
         gc.collect()  # Force garbage collection
@@ -385,7 +590,7 @@ def clear_model_caches_after_test():
 
             # Fermer toutes les boucles qui ne sont plus utilisées
             try:
-                loop = asyncio.get_running_loop()
+                asyncio.get_running_loop()
                 # Ne pas fermer si la boucle est en cours d'utilisation
             except RuntimeError:
                 # Pas de boucle en cours, rien à faire

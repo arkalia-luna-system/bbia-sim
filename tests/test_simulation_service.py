@@ -447,7 +447,9 @@ class TestSimulationService:
             assert service.is_running is True
 
             # OPTIMISATION RAM: Réduire le temps d'attente mais assez pour que l'exception se produise
-            await asyncio.sleep(0.15)  # Laisser le temps à l'exception de se produire
+            await asyncio.sleep(
+                0.05
+            )  # OPTIMISATION: Réduire 0.15s → 0.05s (3x plus rapide)
 
             # Le service devrait toujours être en cours d'exécution malgré l'exception
             # (car la boucle gère les exceptions et continue avec un sleep)
@@ -455,7 +457,9 @@ class TestSimulationService:
 
             # Nettoyer rapidement pour libérer RAM
             await service.stop_simulation()
-            await asyncio.sleep(0.05)  # Attendre que le nettoyage se termine
+            await asyncio.sleep(
+                0.01
+            )  # OPTIMISATION: Réduire 0.05s → 0.01s (5x plus rapide)
 
         finally:
             # Nettoyer le fichier temporaire

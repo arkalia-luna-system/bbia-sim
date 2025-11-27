@@ -44,7 +44,6 @@ def viewer_simple():
 
     # Essayer avec mujoco.viewer direct
     try:
-
         # Créer une fonction d'animation
         def animate():
             step = 0

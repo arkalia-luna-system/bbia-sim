@@ -143,11 +143,22 @@ Endpoints disponibles :
         logger.info("🔇 Audio matériel désactivé (BBIA_DISABLE_AUDIO=1)")
 
     # Ajout d'un handler fichier simple pour le démarrage
+    # OPTIMISATION RAM: Vérifier si handler existe déjà pour éviter duplication
     try:
-        fh = logging.FileHandler(log_dir / "public_api_start.log")
-        fh.setLevel(getattr(logging, args.log_level.upper(), logging.INFO))
-        fh.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(message)s"))
-        logging.getLogger().addHandler(fh)
+        root_logger = logging.getLogger()
+        # Vérifier si un FileHandler pour ce fichier existe déjà
+        handler_exists = any(
+            isinstance(h, logging.FileHandler)
+            and h.baseFilename == str(log_dir / "public_api_start.log")
+            for h in root_logger.handlers
+        )
+        if not handler_exists:
+            fh = logging.FileHandler(log_dir / "public_api_start.log")
+            fh.setLevel(getattr(logging, args.log_level.upper(), logging.INFO))
+            fh.setFormatter(
+                logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+            )
+            root_logger.addHandler(fh)
     except Exception:
         pass
 

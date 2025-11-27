@@ -52,8 +52,8 @@ class ConnectionManager:
         """Envoie un message à une connexion spécifique."""
         try:
             await websocket.send_text(message)
-        except Exception as e:
-            logger.error(f"Erreur d'envoi de message : {e}")
+        except Exception:
+            logger.exception("Erreur d'envoi de message")
             self.disconnect(websocket)
 
     async def broadcast(self, message: str) -> None:
@@ -65,8 +65,8 @@ class ConnectionManager:
         for connection in self.active_connections:
             try:
                 await connection.send_text(message)
-            except Exception as e:
-                logger.error(f"Erreur de diffusion : {e}")
+            except Exception:
+                logger.exception("Erreur de diffusion ")
                 disconnected.append(connection)
 
         # Nettoyage des connexions fermées
@@ -75,7 +75,13 @@ class ConnectionManager:
 
     async def start_broadcast(self) -> None:
         """Démarre la diffusion automatique de télémétrie."""
+        # OPTIMISATION RAM: Vérifier si task existe déjà et est active
         if self.is_broadcasting:
+            return
+
+        # OPTIMISATION RAM: Vérifier si task existe déjà et n'est pas terminée
+        if self.broadcast_task is not None and not self.broadcast_task.done():
+            logger.debug("Broadcast task déjà active")
             return
 
         self.is_broadcasting = True
@@ -106,8 +112,8 @@ class ConnectionManager:
 
             except asyncio.CancelledError:
                 break
-            except Exception as e:
-                logger.error(f"Erreur dans la boucle de diffusion : {e}")
+            except Exception:
+                logger.exception("Erreur dans la boucle de diffusion ")
                 await asyncio.sleep(1)
 
     def _generate_telemetry_data(self) -> dict[str, Any]:
@@ -200,8 +206,8 @@ async def websocket_endpoint(websocket: WebSocket) -> None:
                 break
             except json.JSONDecodeError:
                 logger.warning("Message JSON invalide reçu")
-            except Exception as e:
-                logger.error(f"Erreur de traitement de message : {e}")
+            except Exception:
+                logger.exception("Erreur de traitement de message ")
                 break
 
     except WebSocketDisconnect:
@@ -210,7 +216,9 @@ async def websocket_endpoint(websocket: WebSocket) -> None:
         manager.disconnect(websocket)
 
         # Arrêt de la diffusion si plus de connexions
-        if len(manager.active_connections) == 0:
+        if (
+            not manager.active_connections
+        ):  # OPTIMISATION: vérification de vérité plus efficace
             await manager.stop_broadcast()
 
 

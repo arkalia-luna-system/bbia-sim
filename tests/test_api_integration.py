@@ -11,6 +11,32 @@ from fastapi.testclient import TestClient
 # Ajouter le répertoire src au PYTHONPATH
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
+# OPTIMISATION: Nettoyer les métriques Prometheus avant les tests pour éviter les doublons
+try:
+    from prometheus_client import REGISTRY
+
+    # Nettoyer le registre Prometheus avant les tests
+    def _cleanup_prometheus():
+        """Nettoie le registre Prometheus pour éviter les doublons."""
+        # Supprimer les métriques BBIA si elles existent déjà
+        collectors_to_remove = []
+        for collector in list(REGISTRY._collector_to_names.keys()):
+            if (
+                hasattr(collector, "_name")
+                and collector._name
+                and "bbia_" in collector._name
+            ):
+                collectors_to_remove.append(collector)
+        for collector in collectors_to_remove:
+            try:
+                REGISTRY.unregister(collector)
+            except (KeyError, ValueError):
+                pass  # Ignorer si déjà supprimé
+
+    _cleanup_prometheus()
+except ImportError:
+    pass  # Prometheus non disponible, pas de nettoyage nécessaire
+
 from bbia_sim.daemon.app.main import app
 from bbia_sim.daemon.config import settings
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Télémétrie minimale pour BBIA
 Compteur steps/s, temps moyen step, drift max
-Export .csv dans artifacts/
+Export .csv dans artifacts/.
 """
 
 import csv
@@ -72,7 +72,7 @@ class TelemetryCollector:
         # Drift max (variation des positions)
         max_drift = 0.0
         if len(self.joint_positions) > 1:
-            for joint in self.joint_positions[0].keys():
+            for joint in self.joint_positions[0]:
                 if joint not in ["timestamp", "elapsed"]:
                     positions = [pos[joint] for pos in self.joint_positions]
                     max_drift = max(max_drift, max(positions) - min(positions))

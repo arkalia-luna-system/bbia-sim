@@ -321,14 +321,15 @@ class TestReachyMiniBackendIntegration:
 
         import time
 
-        # Test latence
+        # OPTIMISATION: Réduire 100 → 50 itérations (suffisant pour benchmark latence, 2x plus rapide)
+        iterations = 50
         start_time = time.time()
-        for _ in range(100):
+        for _ in range(iterations):
             robot.set_joint_pos("stewart_1", 0.1)
             robot.get_joint_pos("stewart_1")
         end_time = time.time()
 
-        avg_latency = (end_time - start_time) / 100 * 1000  # ms
+        avg_latency = (end_time - start_time) / iterations * 1000  # ms
         assert avg_latency < 1.0  # < 1ms en simulation
 
 

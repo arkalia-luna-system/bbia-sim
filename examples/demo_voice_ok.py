@@ -8,6 +8,7 @@ Personnalité : futuriste doux, poétique, accessible, "friendly" mais inspiré 
 """
 
 import argparse
+import gc
 import math
 import sys
 import time
@@ -268,6 +269,47 @@ def main():
     print("\n🎉 Démo voix → action terminée avec succès !")
     print(f"   • Commande '{args.command}' → Action '{action['action']}'")
     print(f"   • Joint '{args.joint}' → Animation fluide")
+
+    # Nettoyage explicite des ressources pour éviter que le subprocess reste bloqué
+    try:
+        # Nettoyer les threads HuggingFace si initialisés
+        try:
+            from bbia_sim.bbia_huggingface import BBIAHuggingFace
+
+            with BBIAHuggingFace._shared_unload_thread_lock:
+                # Arrêter thread partagé si actif
+                if (
+                    BBIAHuggingFace._shared_unload_thread
+                    and BBIAHuggingFace._shared_unload_thread.is_alive()
+                ):
+                    BBIAHuggingFace._shared_unload_thread_stop.set()
+                    BBIAHuggingFace._shared_unload_thread.join(timeout=0.5)
+        except (ImportError, AttributeError, RuntimeError):
+            pass
+
+        # Nettoyer les threads d'animation idle si initialisés
+        # Les managers doivent être arrêtés explicitement, mais on ne peut pas
+        # les lister facilement. On force juste le garbage collection.
+        try:
+            # Import silencieux pour vérifier disponibilité
+            import importlib.util
+
+            spec = importlib.util.find_spec("bbia_sim.bbia_idle_animations")
+            if spec is not None:
+                # Module disponible mais pas besoin d'importer
+                pass
+        except Exception:
+            pass
+
+        # Forcer garbage collection pour libérer les ressources
+        gc.collect()
+
+        # Attendre un peu pour que les threads daemon se terminent
+        time.sleep(0.1)
+
+    except Exception:
+        # Ignorer les erreurs de nettoyage pour ne pas masquer les erreurs principales
+        pass
 
     return 0
 

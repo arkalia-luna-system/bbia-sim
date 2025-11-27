@@ -1,0 +1,114 @@
+<section class="w-full">
+    <div class="app-section">
+        <div class="app-section-title">Mode Démo</div>
+
+        <div class="mt-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+            <div class="flex items-center justify-between mb-4">
+                <div>
+                    <div class="font-semibold text-lg">Mode Read-Only</div>
+                    <div class="text-sm text-gray-600 mt-1">
+                        En mode démo, toutes les actions sont désactivées. Vous pouvez seulement observer.
+                    </div>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" id="demo-mode-toggle" class="sr-only peer"
+                        onchange="toggleDemoMode(this.checked)" />
+                    <div
+                        class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-gray-100 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-400">
+                    </div>
+                    <span id="demo-mode-label" class="ml-3 text-sm font-medium text-gray-700">OFF</span>
+                </label>
+            </div>
+
+            <div id="demo-mode-info"
+                class="hidden mt-3 p-3 bg-blue-50 border border-blue-200 rounded text-sm text-blue-800">
+                <strong>ℹ️ Mode Démo Actif</strong>
+                <p class="mt-1">Tous les contrôles sont désactivés. Vous êtes en mode observation uniquement.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    // Gestion du mode démo
+    let demoModeActive = false;
+
+    function toggleDemoMode(enabled) {
+        demoModeActive = enabled;
+        const label = document.getElementById('demo-mode-label');
+        const info = document.getElementById('demo-mode-info');
+
+        if (label) {
+            label.textContent = enabled ? 'ON' : 'OFF';
+        }
+
+        if (info) {
+            info.classList.toggle('hidden', !enabled);
+        }
+
+        // Désactiver/activer tous les contrôles
+        disableAllControls(enabled);
+
+        // Sauvegarder dans localStorage
+        localStorage.setItem('bbia_demo_mode', enabled ? 'true' : 'false');
+
+        console.log(`Mode démo: ${enabled ? 'ACTIVÉ' : 'DÉSACTIVÉ'}`);
+    }
+
+    function disableAllControls(disabled) {
+        // Désactiver tous les boutons d'action
+        const actionButtons = document.querySelectorAll('button[data-emotion], button[data-action], .quick-action-btn, .emotion-slider-input');
+        actionButtons.forEach(btn => {
+            if (disabled) {
+                btn.setAttribute('disabled', 'disabled');
+                btn.style.opacity = '0.5';
+                btn.style.cursor = 'not-allowed';
+            } else {
+                btn.removeAttribute('disabled');
+                btn.style.opacity = '1';
+                btn.style.cursor = 'pointer';
+            }
+        });
+
+        // Désactiver les sliders
+        const sliders = document.querySelectorAll('input[type="range"]');
+        sliders.forEach(slider => {
+            if (disabled && !slider.id.includes('demo-mode')) {
+                slider.setAttribute('disabled', 'disabled');
+                slider.style.opacity = '0.5';
+            } else if (!disabled) {
+                slider.removeAttribute('disabled');
+                slider.style.opacity = '1';
+            }
+        });
+    }
+
+    // Restaurer l'état au chargement
+    document.addEventListener('DOMContentLoaded', function () {
+        const saved = localStorage.getItem('bbia_demo_mode');
+        if (saved === 'true') {
+            const toggle = document.getElementById('demo-mode-toggle');
+            if (toggle) {
+                toggle.checked = true;
+                toggleDemoMode(true);
+            }
+        }
+    });
+
+    // Intercepter les clics sur les boutons en mode démo
+    document.addEventListener('click', function (e) {
+        if (demoModeActive) {
+            const target = e.target;
+            if (target.matches('button[data-emotion], button[data-action], .quick-action-btn') &&
+                !target.id.includes('demo-mode')) {
+                e.preventDefault();
+                e.stopPropagation();
+                alert('⚠️ Mode démo actif - Les actions sont désactivées');
+                return false;
+            }
+        }
+    }, true);
+
+    // Rendre la fonction accessible globalement
+    window.toggleDemoMode = toggleDemoMode;
+</script>

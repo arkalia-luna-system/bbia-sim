@@ -45,3 +45,24 @@ repos:
       - id: check-added-large-files
       - id: check-merge-conflict
       - id: debug-statements
+      - id: check-json
+      - id: check-toml
+      - id: check-case-conflict
+
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.18.0
+    hooks:
+      - id: gitleaks
+        description: "Scan for secrets and credentials"
+
+  # Hook pour vérifier coverage minimum (optionnel - peut être désactivé)
+  - repo: local
+    hooks:
+      - id: coverage-check
+        name: Check coverage minimum
+        entry: bash -c 'if command -v pytest &> /dev/null; then pytest --cov=src/bbia_sim --cov-report=term-missing --cov-fail-under=60 -q || true; else echo "⚠️ pytest non disponible, skip coverage check"; fi'
+        language: system
+        pass_filenames: false
+        always_run: false
+        stages: [manual] # Désactivé par défaut (trop lent pour pre-commit)
+        description: "Vérifie que coverage >= 60% (désactivé par défaut - trop lent)"

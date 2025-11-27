@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Module mémoire persistante BBIA - Sauvegarde conversation et préférences
-Permet à BBIA de se souvenir entre les sessions
+Permet à BBIA de se souvenir entre les sessions.
 """
 
 import json
@@ -21,7 +21,7 @@ class BBIAMemory:
     - Apprentissages (patterns détectés)
     """
 
-    def __init__(self, memory_dir: str = "bbia_memory"):
+    def __init__(self, memory_dir: str = "bbia_memory") -> None:
         """Initialise le module mémoire.
 
         Args:
@@ -36,7 +36,7 @@ class BBIAMemory:
         self.preferences_file = self.memory_dir / "preferences.json"
         self.learnings_file = self.memory_dir / "learnings.json"
 
-        logger.info(f"💾 BBIAMemory initialisé (dir: {self.memory_dir})")
+        logger.info("💾 BBIAMemory initialisé (dir: %s)", self.memory_dir)
 
     def save_conversation(self, conversation_history: list[dict[str, Any]]) -> bool:
         """Sauvegarde l'historique conversation dans JSON.
@@ -73,8 +73,8 @@ class BBIAMemory:
                 f"💾 Conversation sauvegardée ({len(conversation_history)} messages)",
             )
             return True
-        except Exception as e:
-            logger.error(f"❌ Erreur sauvegarde conversation: {e}")
+        except Exception:
+            logger.exception("❌ Erreur sauvegarde conversation")
             return False
 
     def load_conversation(self) -> list[dict[str, Any]]:
@@ -92,14 +92,16 @@ class BBIAMemory:
                 data = json.load(f)
 
             history = data.get("history", [])
-            logger.debug(f"💾 Conversation chargée ({len(history)} messages)")
+            logger.debug("💾 Conversation chargée (%s messages)", len(history))
             return (
                 cast("list[dict[str, Any]]", history)
                 if isinstance(history, list)
                 else []
             )
         except Exception as e:
-            logger.warning(f"⚠️ Erreur chargement conversation: {e}")
+            # Utiliser debug au lieu de warning pour réduire bruit dans tests
+            # Le comportement (retour liste vide) est déjà validé par les tests
+            logger.debug("Erreur chargement conversation: %s", e)
             return []
 
     def remember_preference(self, key: str, value: Any) -> bool:
@@ -127,10 +129,10 @@ class BBIAMemory:
             with open(self.preferences_file, "w", encoding="utf-8") as f:
                 json.dump(preferences, f, indent=2, ensure_ascii=False)
 
-            logger.debug(f"💾 Préférence sauvegardée: {key} = {value}")
+            logger.debug("💾 Préférence sauvegardée: %s = %s", key, value)
             return True
-        except Exception as e:
-            logger.error(f"❌ Erreur sauvegarde préférence: {e}")
+        except Exception:
+            logger.exception("❌ Erreur sauvegarde préférence")
             return False
 
     def load_preferences(self) -> dict[str, Any]:
@@ -153,7 +155,8 @@ class BBIAMemory:
                 else {}
             )
         except Exception as e:
-            logger.warning(f"⚠️ Erreur chargement préférences: {e}")
+            # Utiliser debug au lieu de warning pour réduire bruit dans tests
+            logger.debug("Erreur chargement préférences: %s", e)
             return {}
 
     def get_preference(self, key: str, default: Any = None) -> Any:
@@ -190,20 +193,22 @@ class BBIAMemory:
             learnings = self.load_learnings()
 
             # Ajouter/modifier apprentissage
+            # OPTIMISATION: Éviter double lookup avec variable temporaire
+            pattern_data = learnings.get(pattern, {})
             learnings[pattern] = {
                 "response": response,
                 "last_updated": datetime.now().isoformat(),
-                "count": learnings.get(pattern, {}).get("count", 0) + 1,
+                "count": pattern_data.get("count", 0) + 1,
             }
 
             # Sauvegarder
             with open(self.learnings_file, "w", encoding="utf-8") as f:
                 json.dump(learnings, f, indent=2, ensure_ascii=False)
 
-            logger.debug(f"💾 Apprentissage sauvegardé: {pattern} → {response}")
+            logger.debug("💾 Apprentissage sauvegardé: %s → %s", pattern, response)
             return True
-        except Exception as e:
-            logger.error(f"❌ Erreur sauvegarde apprentissage: {e}")
+        except Exception:
+            logger.exception("❌ Erreur sauvegarde apprentissage")
             return False
 
     def load_learnings(self) -> dict[str, Any]:
@@ -224,7 +229,8 @@ class BBIAMemory:
                 cast("dict[str, Any]", learnings) if isinstance(learnings, dict) else {}
             )
         except Exception as e:
-            logger.warning(f"⚠️ Erreur chargement apprentissages: {e}")
+            # Utiliser debug au lieu de warning pour réduire bruit dans tests
+            logger.debug("Erreur chargement apprentissages: %s", e)
             return {}
 
     def get_learning(self, pattern: str) -> str | None:
@@ -261,8 +267,8 @@ class BBIAMemory:
 
             logger.info("💾 Mémoire effacée")
             return True
-        except Exception as e:
-            logger.error(f"❌ Erreur effacement mémoire: {e}")
+        except Exception:
+            logger.exception("❌ Erreur effacement mémoire")
             return False
 
 
@@ -301,6 +307,34 @@ def save_conversation_to_memory(
     return memory.save_conversation(conversation_history)
 
 
+def append_record(record: dict[str, Any], memory_dir: str = "bbia_memory") -> bool:
+    """Ajoute un enregistrement à la mémoire (utilitaire pour compatibilité).
+
+    Args:
+        record: Dictionnaire contenant les données à enregistrer
+        memory_dir: Répertoire mémoire
+
+    Returns:
+        True si enregistrement réussi
+
+    """
+    try:
+        memory = BBIAMemory(memory_dir=memory_dir)
+        # Enregistrer comme préférence si contient une clé 'key'
+        if "key" in record and "value" in record:
+            return memory.remember_preference(record["key"], record["value"])
+        # Sinon, enregistrer comme apprentissage si contient 'pattern' et 'response'
+        if "pattern" in record and "response" in record:
+            return memory.remember_learning(record["pattern"], record["response"])
+        # Sinon, essayer d'ajouter à la conversation
+        conversation = memory.load_conversation()
+        conversation.append(record)
+        return memory.save_conversation(conversation)
+    except Exception:
+        logger.exception("❌ Erreur append_record")
+        return False
+
+
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
 
@@ -308,5 +342,5 @@ if __name__ == "__main__":
     memory = BBIAMemory()
     memory.remember_preference("voix_preferee", "aurelie")
     memory.remember_learning("user_says_salut", "recognize_user")
-    logger.info(f"Préférence voix: {memory.get_preference('voix_preferee')}")
-    logger.info(f"Apprentissage: {memory.get_learning('user_says_salut')}")
+    logger.info("Préférence voix: %s", memory.get_preference("voix_preferee"))
+    logger.info("Apprentissage: %s", memory.get_learning("user_says_salut"))

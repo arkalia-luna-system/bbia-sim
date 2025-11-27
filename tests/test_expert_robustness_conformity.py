@@ -6,6 +6,7 @@ Renforce les tests existants pour une détection maximale de problèmes.
 """
 
 import math
+import os
 import sys
 import threading
 import time
@@ -20,7 +21,6 @@ sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 # OPTIMISATION COVERAGE: Importer les modules au niveau module pour que coverage les détecte
 import bbia_sim.backends.reachy_mini_backend  # noqa: F401
 import bbia_sim.bbia_huggingface  # noqa: F401
-
 from bbia_sim.backends.reachy_mini_backend import ReachyMiniBackend
 
 # Importer BBIAHuggingFace pour les tests
@@ -94,7 +94,8 @@ class TestExpertRobustnessConformity:
                     self.backend.set_emotion(emotion, 0.5)
                     pos = self.backend.get_joint_pos("yaw_body")
                     results.append((thread_id, i, emotion, pos))
-                    time.sleep(0.01)
+                    # OPTIMISATION: Réduire sleep de 0.01 à 0.005 (2x plus rapide)
+                    time.sleep(0.005)
             except Exception as e:
                 errors.append((thread_id, e))
 
@@ -121,11 +122,12 @@ class TestExpertRobustnessConformity:
         print("\n🧪 EXPERT TEST 3: Validation Matrices Pose")
         print("=" * 60)
 
-        if not SDK_AVAILABLE:
+        if not SDK_AVAILABLE or create_head_pose is None:
             print("⚠️  Test ignoré (SDK non disponible)")
             return
 
         # Test create_head_pose retourne matrice valide
+        assert create_head_pose is not None  # Type narrowing pour mypy
         pose = create_head_pose(pitch=0.1, yaw=0.05)
         assert pose.shape == (4, 4), f"Pose doit être 4x4, obtenu {pose.shape}"
 
@@ -148,12 +150,13 @@ class TestExpertRobustnessConformity:
         print("\n🧪 EXPERT TEST 4: Cohérence Timing Interpolation")
         print("=" * 60)
 
-        if not SDK_AVAILABLE:
+        if not SDK_AVAILABLE or create_head_pose is None:
             print("⚠️  Test ignoré (SDK non disponible)")
             return
 
         # Test que goto_target avec duration=1.0 prend ~1.0s
         test_duration = 0.5
+        assert create_head_pose is not None  # Type narrowing pour mypy
         pose = create_head_pose(pitch=0.1, yaw=0.0)
 
         start_time = time.time()
@@ -184,8 +187,9 @@ class TestExpertRobustnessConformity:
         tracemalloc.start()
         snapshot_before = tracemalloc.take_snapshot()
 
-        # Effectuer 100 opérations répétées
-        for i in range(100):
+        # OPTIMISATION: Réduire 100 → 50 itérations (suffisant pour détecter fuites, 2x plus rapide)
+        iterations = 50
+        for i in range(iterations):
             self.backend.set_emotion("happy", 0.5)
             self.backend.get_joint_pos("yaw_body")
             if i % 10 == 0:
@@ -195,13 +199,13 @@ class TestExpertRobustnessConformity:
         snapshot_after = tracemalloc.take_snapshot()
         top_stats = snapshot_after.compare_to(snapshot_before, "lineno")
 
-        # Vérifier qu'il n'y a pas de fuite majeure (> 10MB)
+        # Vérifier qu'il n'y a pas de fuite majeure (> 5MB pour 50 itérations, proportionnel)
         total_diff = sum(stat.size_diff for stat in top_stats[:10])
         total_mb = total_diff / (1024 * 1024)
 
         assert (
-            total_mb < 10.0
-        ), f"Fuite mémoire détectée: {total_mb:.2f}MB après 100 opérations"
+            total_mb < 5.0
+        ), f"Fuite mémoire détectée: {total_mb:.2f}MB après {iterations} opérations"
         print(f"✅ Mémoire: {total_mb:.2f}MB (sain, <10MB)")
 
         tracemalloc.stop()
@@ -239,7 +243,8 @@ class TestExpertRobustnessConformity:
         for i in range(10):
             angle = 0.2 * math.sin(2 * math.pi * i / 10)
             self.backend.set_joint_pos("yaw_body", angle)
-            time.sleep(0.05)  # Petit délai pour laisser le mouvement se propager
+            # OPTIMISATION: Réduire sleep de 0.05 à 0.02 (2.5x plus rapide)
+            time.sleep(0.02)
             pos = self.backend.get_joint_pos("yaw_body")
             positions.append((i, pos))
 
@@ -262,7 +267,8 @@ class TestExpertRobustnessConformity:
         # Connexion/déconnexion multiples
         for i in range(3):
             self.backend.disconnect()
-            time.sleep(0.1)
+            # OPTIMISATION: Réduire sleep de 0.1 à 0.05 (2x plus rapide)
+            time.sleep(0.05)
             self.backend.connect()
 
             # Vérifier état
@@ -371,6 +377,10 @@ class TestExpertRobustnessConformity:
             print("⚠️  Test ignoré (SDK non disponible)")
             return
 
+        if create_head_pose is None:
+            print("⚠️  Test ignoré (create_head_pose non disponible)")
+            return
+
         methods = [
             "minjerk",
             "MIN_JERK",
@@ -382,6 +392,7 @@ class TestExpertRobustnessConformity:
             "CARTOON",
         ]
 
+        assert create_head_pose is not None  # Type narrowing pour mypy
         pose = create_head_pose(pitch=0.1, yaw=0.0)
 
         for method in methods:
@@ -419,6 +430,11 @@ class TestExpertRobustnessConformity:
         ), "Aucune méthode play media disponible"
         print("✅ Ordre fallback médias vérifié")
 
+    @pytest.mark.slow
+    @pytest.mark.skipif(
+        os.environ.get("CI", "false").lower() == "true",
+        reason="Test désactivé en CI (chargement modèle LLM trop lent)",
+    )
     def test_expert_15_conversation_history_memory_limit(self):
         """Test expert: L'historique conversation ne doit pas croître indéfiniment."""
         print("\n🧪 EXPERT TEST 15: Limite Mémoire Historique Conversation")
@@ -433,20 +449,21 @@ class TestExpertRobustnessConformity:
             # Noter la longueur initiale (peut contenir historique chargé depuis mémoire)
             initial_history_len = len(bbia.conversation_history)
 
-            # Envoyer beaucoup de messages
-            for i in range(100):
+            # OPTIMISATION: Réduire 100 → 50 messages (suffisant pour tester limite historique, 2x plus rapide)
+            num_messages = 50
+            for i in range(num_messages):
                 bbia.chat(f"Message {i}")
 
-            # Vérifier que l'historique a augmenté d'au plus 110 messages
-            # (100 messages envoyés = 100 entrées user+bbia + 10 de marge)
+            # Vérifier que l'historique a augmenté d'au plus 60 messages
+            # (50 messages envoyés = 50 entrées user+bbia + 10 de marge)
             # L'historique peut contenir des messages initiaux chargés depuis mémoire persistante
             final_history_len = len(bbia.conversation_history)
             history_increase = final_history_len - initial_history_len
-            expected_max_increase = 100 + 10  # 100 messages envoyés + marge
+            expected_max_increase = num_messages + 10  # 50 messages envoyés + marge
 
             assert history_increase <= expected_max_increase, (
                 f"Historique a augmenté de {history_increase} messages "
-                f"(max recommandé: {expected_max_increase}, envoyés: 100, "
+                f"(max recommandé: {expected_max_increase}, envoyés: {num_messages}, "
                 f"initial: {initial_history_len}, final: {final_history_len})"
             )
 

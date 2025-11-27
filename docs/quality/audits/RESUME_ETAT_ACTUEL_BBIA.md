@@ -1,6 +1,6 @@
 # 📊 Résumé État Actuel BBIA
 
-**Date** : Oct / Nov. 2025
+**Date** : 21 Novembre 2025
 **Parité avec App Officielle** : **~85-90%** (vs Reachy Mini Conversation App)
 **📚 [Comparaison détaillée](./COMPARAISON_APP_CONVERSATION_OFFICIELLE.md)** | **🎯 [Prochaines étapes](./PROCHAINES_ETAPES_OPTIONNELLES.md)**
 
@@ -10,11 +10,13 @@
 
 ```mermaid
 pie title Parité Fonctionnelle avec App Officielle
-    "Implémenté (Gratuit)" : 85
-    "Optionnel (Payant)" : 10
+    "Implémenté (Gratuit BBIA)" : 85
+    "App Officielle utilise (Payant)" : 10
     "Non critique" : 5
 
 ```
+
+**Note** : Les 10% "App Officielle utilise (Payant)" correspondent aux fonctionnalités payantes de l'app officielle (OpenAI Realtime API, GPT-Realtime Vision) que BBIA remplace par des solutions **100% gratuites** (Whisper, SmolVLM2). BBIA n'a **PAS BESOIN** de ces services payants.
 
 ---
 
@@ -162,4 +164,4 @@ graph TB
 
 ---
 
-**Dernière mise à jour** : Oct / Nov. 2025
+**Dernière mise à jour** : 21 Novembre 2025

@@ -1,0 +1,58 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Python
+__pycache__
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info
+dist
+build
+*.egg
+.venv
+venv
+venv-*
+
+# Testing
+.pytest_cache
+.coverage
+htmlcov
+.tox
+coverage.xml
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# Documentation
+docs/_build
+site
+
+# Logs
+logs
+*.log
+
+# Artifacts
+artifacts
+*.jsonl
+*.csv
+
+# OS
+.DS_Store
+Thumbs.db
+
+# MuJoCo
+.mujoco
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+

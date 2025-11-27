@@ -1,6 +1,6 @@
-# ✅ AUDIT COVERAGE IMPORTS - COMPLET - Oct / Nov. 2025
+# ✅ AUDIT COVERAGE IMPORTS - COMPLET - 21 Novembre 2025
 
-**Date :** Oct / Nov. 2025  
+**Date :** 21 Novembre 2025  
 **Objectif :** Identifier et corriger les problèmes de coverage, analyser l'état actuel, et proposer des améliorations
 
 ---
@@ -47,7 +47,7 @@
 - **Après :** Import direct au niveau module
 - **Résultat :** Coverage détecté
 
-**`model_optimizer.py`** ✅ **100%** (corrigé - Oct / Nov. 2025)
+**`model_optimizer.py`** ✅ **100%** (corrigé - 21 Novembre 2025)
 - **Problème :** Coverage warning : `Module src/bbia_sim/model_optimizer was never imported`
 - **Solution :** Créé `tests/test_model_optimizer.py` avec import direct du module
 - **Résultat :** Coverage : **100%** (9 tests, toutes les fonctions testées)
@@ -56,24 +56,24 @@
 
 ### 2. **Tests existants mais coverage partiel** ⚠️ → ✅ CORRIGÉ
 
-**`__main__.py`** ✅ **~70%+** (corrigé - Oct / Nov. 2025)
+**`__main__.py`** ✅ **~70%+** (corrigé - 21 Novembre 2025)
 - **Avant :** 22.50% coverage
 - **Solution :** Amélioré `tests/test_main.py` (13 tests maintenant)
 - **Ajouté :** Tests pour fonction `main()` avec mocks argparse, toutes les options CLI, gestion erreurs
 - **Résultat :** Coverage amélioré de 22.50% → **~70%+**
 
-**`bbia_awake.py`** ✅ **~80%+** (corrigé - Oct / Nov. 2025)
+**`bbia_awake.py`** ✅ **~80%+** (corrigé - 21 Novembre 2025)
 - **Avant :** 20% coverage
 - **Solution :** Modifié tests pour importer directement le module (pas subprocess)
 - **Ajouté :** Tests unitaires avec mocks (print, time.sleep)
 - **Résultat :** Coverage amélioré de 20% → **~80%+**
 
-**`daemon/app/__main__.py`** ✅ **87.50%** (corrigé - Oct / Nov. 2025)
+**`daemon/app/__main__.py`** ✅ **87.50%** (corrigé - 21 Novembre 2025)
 - **Problème :** Aucun test
 - **Solution :** Coverage amélioré via tests existants et imports directs
 - **Résultat :** Coverage : **87.50%** (7 lignes sur 8 couvertes)
 
-**`daemon/app/routers/sanity.py`** ✅ **89.19%** (corrigé - Oct / Nov. 2025)
+**`daemon/app/routers/sanity.py`** ✅ **89.19%** (corrigé - 21 Novembre 2025)
 - **Problème :** Aucun test
 - **Solution :** Créé `tests/test_sanity_router.py` avec 7 tests complets
 - **Résultat :** Coverage : **89.19%** (33 lignes sur 37 couvertes)
@@ -127,7 +127,7 @@
 
 ---
 
-## ✅ CORRECTIONS APPLIQUÉES (Oct / Nov. 2025)
+## ✅ CORRECTIONS APPLIQUÉES (21 Novembre 2025)
 
 ### Modules corrigés
 - ✅ `model_optimizer.py` : **100%** coverage (9 tests créés)
@@ -223,4 +223,4 @@ Les modules sont maintenant correctement importés au niveau module, permettant 
 
 ---
 
-**Dernière mise à jour :** Oct / Nov. 2025
+**Dernière mise à jour :** 21 Novembre 2025

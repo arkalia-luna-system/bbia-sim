@@ -5,8 +5,19 @@
 **🎯 Vue d'ensemble de l'état du projet par axe**
 *Fiabilité • Performance • Sécurité • CI/CD • Plus*
 
-**Version** : 1.3.2 • **Date** : Oct / Nov. 2025
+**Version** : 1.4.0 • **Date** : 24 Novembre 2025
 **Prêt pour arrivée robot** 🤖
+
+**🎉 Mise à jour 26 Novembre 2025** : **100% d'exploitation des capacités** ✅
+- ✅ 44 exemples disponibles (39 existants + 5 nouveaux créés 22 Nov. 2025)
+- ✅ Tous les comportements, endpoints et modules ont des exemples dédiés
+
+**🎉 Mise à jour 24 Novembre 2025** : **Améliorations Phase 1 Quick Wins terminées** ✅
+- ✅ Python 3.12 dans CI (matrice lint)
+- ✅ Pre-commit hooks améliorés (gitleaks, check-json, check-toml)
+- ✅ Scan secrets automatisé (gitleaks dans CI)
+- ✅ Métriques Prometheus complétées (watchdog, robot_connected, latence p50/p95/p99)
+- ✅ ffmpeg ajouté dans dépendances CI
 
 [📚 Navigation rapide](INDEX_THEMATIQUE.md) • [🏠 README](../README.md)
 
@@ -30,12 +41,112 @@ pip install -e .
 
 | Élément | Configuration | Statut |
 |:-------:|:-------------:|:------:|
-| **Python** | 3.11+ | ✅ Requis |
-| **CI/CD** | `.github/workflows/ci.yml` | ✅ GitHub Actions |
+| **Python** | 3.11+ (3.12 testé) | ✅ Requis |
+| **CI/CD** | `.github/workflows/ci.yml` | ✅ GitHub Actions (Python 3.11 + 3.12) |
 | **SDK Référence** | `pollen-robotics/reachy_mini` v1.0.0 | ✅ Branch develop |
 | **SDK local** | `reachy_mini==1.0.0rc5` (pré‑release) → recomm. `1.0.0` | 🔄 Mise à jour conseillée ([lien](https://github.com/pollen-robotics/reachy_mini)) |
 
 </div>
+
+---
+
+## 🖥️ État Opérationnel
+
+> **💡 Note** : Cette section décrit l'état opérationnel actuel du système (dashboard, commandes, tests).  
+> Pour les métriques détaillées, voir [METRICS.md](METRICS.md). Pour l'installation, voir [INSTALLATION.md](../getting-started/INSTALLATION.md).
+
+### Dashboard Web
+
+**URL** : http://localhost:8000  
+**Statut** : Opérationnel
+
+#### Fonctionnalités disponibles
+
+1. **Panel Chat BBIA**
+   - Interface web complète
+   - Handler WebSocket fonctionnel
+   - Mode fallback si Hugging Face absent
+   - Messages temps réel
+
+2. **Contrôles robot**
+   - Émotions (12 disponibles)
+   - Mouvements articulaires
+   - Vision et détection objets
+   - Comportements adaptatifs
+
+3. **Métriques temps réel**
+   - Performance système
+   - État des composants
+   - Latence WebSocket
+   - Statistiques d'utilisation
+
+#### Utilisation
+
+```bash
+# Via navigateur (RECOMMANDÉ)
+# Ouvrir : http://localhost:8000
+# Attendre connexion (indicateur vert)
+# Descendre jusqu'à panel "💬 Chat avec BBIA"
+
+# Via terminal (RECOMMANDÉ)
+mjpython examples/demo_chat_bbia_3d.py
+# ⚠️ Note: demo_chat_simple.py est déprécié
+```
+
+### Commandes Principales
+
+#### Tests et qualité
+
+```bash
+# Tests complets avec coverage
+pytest tests/ --cov=src/bbia_sim --cov-report=html
+
+# Voir le rapport de coverage
+open htmlcov/index.html
+
+# Tests spécifiques
+pytest tests/test_dashboard_advanced.py -v
+pytest tests/test_bbia_*.py -v
+```
+
+#### Démo et utilisation
+
+```bash
+# Dashboard web
+# Ouvrir http://localhost:8000
+
+# Chat 3D (RECOMMANDÉ)
+mjpython examples/demo_chat_bbia_3d.py
+
+# Simulation MuJoCo
+mjpython examples/demo_mujoco_continue.py
+
+# Émotions
+mjpython examples/demo_emotion_ok.py --emotion happy --duration 10
+```
+
+#### Qualité du code
+
+```bash
+# Linting
+ruff check . --fix
+
+# Formatage
+black src/ tests/ examples/ scripts/
+
+# Type checking
+mypy src/
+
+# Sécurité
+bandit -r src/
+```
+
+### Liens Utiles
+
+- Dashboard : http://localhost:8000
+- API Swagger : http://localhost:8000/docs
+- API ReDoc : http://localhost:8000/redoc
+- Coverage HTML : `htmlcov/index.html`
 
 ---
 
@@ -471,7 +582,7 @@ Le SDK officiel `RobotBackend` expose:
 
 ### 🔒 Sécurité & Tests
 
-**Tests existants :** `tests/test_reachy_mini_backend*.py` (10 fichiers, 200+ tests)
+**Tests existants :** `tests/test_reachy_mini_backend*.py` (10 fichiers, tests de conformité complets)
 
 **Coverage :**
 

@@ -4,9 +4,12 @@
 Émotions complexes, expressions faciales, transitions fluides.
 """
 
+import logging
 import secrets
 from datetime import datetime
 from typing import Any
+
+logger = logging.getLogger(__name__)
 
 
 class BBIAEmotions:
@@ -135,13 +138,13 @@ class BBIAEmotions:
         old_data = self.emotions[old_emotion]
         new_data = self.emotions[new_emotion]
 
-        print(
+        logger.info(
             f"🔄 Transition d'émotion : {old_data['color']} {old_emotion} → "
             f"{new_data['color']} {new_emotion}",
         )
-        print(f"📝 {old_data['description']} → {new_data['description']}")
-        print(f"🎭 Intensité : {self.emotion_intensity:.1f}")
-        print(f"⏰ {datetime.now().strftime('%H:%M:%S')}")
+        logger.info(f"📝 {old_data['description']} → {new_data['description']}")
+        logger.info(f"🎭 Intensité : {self.emotion_intensity:.1f}")
+        logger.info(f"⏰ {datetime.now().strftime('%H:%M:%S')}")
 
     def get_current_emotion(self) -> dict[str, Any]:
         """Retourne l'émotion actuelle avec ses détails."""
@@ -161,8 +164,8 @@ class BBIAEmotions:
 
     def random_emotion(self) -> str:
         """Change vers une émotion aléatoire."""
-        available_emotions = list(self.emotions.keys())
-        available_emotions.remove(self.current_emotion)  # Éviter la même émotion
+        # OPTIMISATION: Éviter conversion en liste si possible
+        available_emotions = [e for e in self.emotions if e != self.current_emotion]
 
         if available_emotions:
             new_emotion = secrets.choice(available_emotions)

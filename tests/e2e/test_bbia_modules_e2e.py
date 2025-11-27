@@ -63,7 +63,8 @@ class TestBBIAModules:
 
     def test_bbia_vision_module(self):
         """Test : Module BBIA Vision."""
-        vision = BBIAVision()
+        # OPTIMISATION RAM: Utiliser robot_api=None pour éviter chargement modèles
+        vision = BBIAVision(robot_api=None)
 
         # Test création
         assert vision.camera_active
@@ -165,5 +166,16 @@ class TestBBIAModules:
         assert emotions.current_emotion == "happy"
 
         # Test BBIA Vision simple
-        vision = BBIAVision()
+        # OPTIMISATION RAM: Utiliser robot_api=None pour éviter chargement modèles
+        vision = BBIAVision(robot_api=None)
         assert vision.camera_active is True
+
+        # OPTIMISATION RAM: Nettoyer après test
+        import gc
+
+        try:
+            if hasattr(vision, "yolo_detector") and vision.yolo_detector:
+                vision.yolo_detector.model = None
+        except (AttributeError, TypeError):
+            pass
+        gc.collect()

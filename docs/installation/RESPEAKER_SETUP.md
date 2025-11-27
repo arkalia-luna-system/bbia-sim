@@ -2,7 +2,7 @@
 
 <div align="center">
 
-**Date** : Oct / Nov. 2025  
+**Date** : 21 Novembre 2025  
 **Hardware** : ReSpeaker 4 microphones directionnels (Reachy Mini)
 
 [![🎤 Audio](https://img.shields.io/badge/🎤-Audio%20Hardware-blue.svg)](#-vue-densemble)
@@ -440,5 +440,5 @@ except (OSError, RuntimeError, ValueError) as e:
 
 ---
 
-**Dernière mise à jour** : Oct / Nov. 2025
+**Dernière mise à jour** : 21 Novembre 2025
 

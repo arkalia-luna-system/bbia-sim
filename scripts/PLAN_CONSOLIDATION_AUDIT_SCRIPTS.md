@@ -108,7 +108,7 @@ scripts/
 
 ### 1. Fusionner dans `compare_with_official_exhaustive.py`
 
-- [x] Intégrer logique de `audit_sdk_officiel_nov2025.py` ✅
+- [x] Intégrer logique de `audit_sdk_officiel_26NOV2025.py` ✅
 - [x] Intégrer logique de `comparaison_profonde_methodes_backend.py` ✅
 - [ ] Intégrer vérifications de `audit_exhaustif_details.py` (déjà dans _archived)
 - [x] Tester le script fusionné ✅
@@ -116,7 +116,7 @@ scripts/
 
 ### 2. Archiver scripts obsolètes
 
-- [x] Déplacer `audit_sdk_officiel_nov2025.py` → `_archived/comparison_audit/` ✅
+- [x] Déplacer `audit_sdk_officiel_26NOV2025.py` → `_archived/comparison_audit/` ✅
 - [x] Déplacer `comparaison_profonde_methodes_backend.py` → `_archived/comparison_audit/` ✅
 - [x] Déplacer `audit_and_improve_md.py` → `_archived/` ✅
 - [x] Déplacer `audit_systematique_exhaustif.py` → `_archived/` ✅ (déjà fait)
@@ -135,7 +135,7 @@ scripts/
 
 ### ✅ Actions Effectuées
 
-1. ✅ `audit_sdk_officiel_nov2025.py` → Fusionné dans `compare_with_official_exhaustive.py`
+1. ✅ `audit_sdk_officiel_26NOV2025.py` → Fusionné dans `compare_with_official_exhaustive.py`
 2. ✅ `comparaison_profonde_methodes_backend.py` → Fusionné dans `compare_with_official_exhaustive.py`
 3. ✅ `audit_and_improve_md.py` → Fusionné dans `verify_documentation.py`
 4. ✅ Scripts archivés dans `_archived/comparison_audit/` et `_archived/`

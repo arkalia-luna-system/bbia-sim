@@ -548,22 +548,21 @@ class TestYOLODetector:
 class TestFaceDetector:
     """Tests pour le module détection de visages."""
 
-    @pytest.mark.skip(
-        reason="MediaPipe a des problèmes matplotlib dans l'environnement"
-    )
     def test_face_detector_creation(self):
-        """Test création FaceDetector."""
+        """Test création FaceDetector (optimisé - fonctionne sans MediaPipe)."""
+        # OPTIMISATION: Le code gère gracieusement l'ImportError, donc on peut tester
         detector = FaceDetector()
         # Le détecteur peut être None si MediaPipe non disponible
         assert detector.mp_face_detection is None or hasattr(
             detector.mp_face_detection, "FaceDetection"
         )
+        # Vérifier que l'objet est créé même sans MediaPipe
+        assert detector is not None
+        assert hasattr(detector, "face_detection")
 
-    @pytest.mark.skip(
-        reason="MediaPipe a des problèmes matplotlib dans l'environnement"
-    )
     def test_best_face_selection(self):
-        """Test sélection meilleur visage."""
+        """Test sélection meilleur visage (optimisé - fonctionne sans MediaPipe)."""
+        # OPTIMISATION: Test fonctionne même sans MediaPipe (teste juste la logique)
         detector = FaceDetector()
 
         # Mock détections
@@ -574,8 +573,13 @@ class TestFaceDetector:
         ]
 
         best_face = detector.get_best_face(detections)
+        # Formule: confidence * (1 + area / 50000)
+        # 0.7 * (1 + 10000/50000) = 0.7 * 1.2 = 0.84
+        # 0.9 * (1 + 5000/50000) = 0.9 * 1.1 = 0.99 (meilleur)
+        # 0.6 * (1 + 15000/50000) = 0.6 * 1.3 = 0.78
         assert best_face is not None
-        # Devrait choisir celui avec meilleur score combiné
+        assert best_face["confidence"] == 0.9
+        assert best_face["area"] == 5000
 
 
 class TestDashboard:
@@ -649,10 +653,25 @@ class TestIAPerformance:
 
     def test_whisper_latency_target(self):
         """Test latence Whisper < 800ms."""
-        # Mock latence rapide
-        with patch("bbia_sim.voice_whisper.time.time") as mock_time:
-            mock_time.side_effect = [0, 0.5]  # 500ms
+        # Mock latence rapide avec compteur pour éviter StopIteration
+        # Le logger Python appelle aussi time.time(), donc on doit fournir plusieurs valeurs
+        call_count = [0]  # Utiliser une liste pour la mutabilité dans la closure
 
+        def time_mock():
+            """Mock time qui retourne 0, puis 0.5, puis toujours 0.5."""
+            if call_count[0] == 0:
+                call_count[0] += 1
+                return 0.0
+            elif call_count[0] == 1:
+                call_count[0] += 1
+                return 0.5
+            else:
+                # Pour tous les appels suivants (logger, etc.), retourner 0.5
+                return 0.5
+
+        with patch(
+            "bbia_sim.voice_whisper.time.time", side_effect=time_mock
+        ) as mock_time:
             mapper = VoiceCommandMapper()
             start_time = mock_time()
 

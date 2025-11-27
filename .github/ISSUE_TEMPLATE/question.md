@@ -21,7 +21,7 @@ assignees: ''
 ## 📚 Documentation Consultée
 
 <!-- Quels documents avez-vous déjà consultés ? -->
-- [ ] `docs/guides/GUIDE_DEBUTANT.md`
+- [ ] `docs/guides/GUIDE_DEMARRAGE.md`
 - [ ] `docs/guides/GUIDE_AVANCE.md`
 - [ ] `docs/README.md`
 - [ ] `docs/status.md`

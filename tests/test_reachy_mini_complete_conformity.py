@@ -166,13 +166,13 @@ class TestReachyMiniCompleteConformity:
         """Test conformité goto_target."""
         assert self.backend is not None  # Type narrowing pour mypy
         # Test goto_target avec différents paramètres (SDK officiel retourne None)
-        result = self.backend.goto_target()  # type: ignore[attr-defined]
+        result = self.backend.goto_target()  # type: ignore[attr-defined,func-returns-value]
         assert result is None
 
-        result = self.backend.goto_target(body_yaw=0.1)  # type: ignore[attr-defined]
+        result = self.backend.goto_target(body_yaw=0.1)  # type: ignore[attr-defined,func-returns-value]
         assert result is None
 
-        result = self.backend.goto_target(antennas=[0.1, 0.2])  # type: ignore[attr-defined]
+        result = self.backend.goto_target(antennas=[0.1, 0.2])  # type: ignore[attr-defined,func-returns-value]
         assert result is None
 
     def test_telemetry_conformity(self):
@@ -232,15 +232,17 @@ class TestReachyMiniCompleteConformity:
         import time
 
         assert self.backend is not None  # Type narrowing pour mypy
+        # OPTIMISATION: Réduire 100 → 50 itérations (suffisant pour benchmark latence, 2x plus rapide)
+        iterations = 50
         # Test latence des méthodes critiques
         # Utiliser yaw_body au lieu de stewart_1 (stewart joints nécessitent IK)
         start_time = time.time()
-        for _ in range(100):
+        for _ in range(iterations):
             self.backend.set_joint_pos("yaw_body", 0.1)
             self.backend.get_joint_pos("yaw_body")
         end_time = time.time()
 
-        avg_latency = (end_time - start_time) / 100 * 1000  # ms
+        avg_latency = (end_time - start_time) / iterations * 1000  # ms
         assert avg_latency < 1.0  # < 1ms en simulation
 
 

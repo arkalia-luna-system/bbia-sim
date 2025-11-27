@@ -126,7 +126,7 @@ class ReachyMiniMock(RobotAPI):
 
         return True
 
-    def goto_target(
+    def goto_target(  # type: ignore[override]
         self,
         head: np.ndarray | None = None,
         duration: float = 1.0,

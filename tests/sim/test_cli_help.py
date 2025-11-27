@@ -17,6 +17,7 @@ class TestCLIHelp:
             capture_output=True,
             text=True,
             cwd=os.getcwd(),
+            timeout=10,
         )
 
         assert result.returncode == 0, f"CLI help failed: {result.stderr}"
@@ -44,6 +45,7 @@ class TestCLIHelp:
             capture_output=True,
             text=True,
             cwd=os.getcwd(),
+            timeout=30,
         )
 
         # Le message macOS devrait être présent dans stderr ou stdout
@@ -76,6 +78,7 @@ class TestCLIHelp:
             capture_output=True,
             text=True,
             cwd=os.getcwd(),
+            timeout=30,
         )
 
         # Le mode headless devrait fonctionner même sans viewer
@@ -92,6 +95,7 @@ class TestCLIHelp:
             capture_output=True,
             text=True,
             cwd=os.getcwd(),
+            timeout=10,
         )
 
         assert result.returncode == 0, f"Version command failed: {result.stderr}"

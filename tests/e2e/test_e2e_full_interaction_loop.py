@@ -4,6 +4,7 @@ Test E2E: Scénario complet - détection → écoute → réponse → mouvement
 Intégration complète tous modules BBIA
 """
 
+import gc
 import os
 from unittest.mock import MagicMock, patch
 
@@ -18,6 +19,7 @@ from bbia_sim.bbia_vision import BBIAVision
 
 @pytest.mark.e2e
 @pytest.mark.slow
+@pytest.mark.heavy  # OPTIMISATION RAM: Test lourd (intégration complète avec vision)
 class TestE2EFullInteractionLoop:
     """Tests E2E scénario complet: tous modules intégrés."""
 
@@ -31,10 +33,33 @@ class TestE2EFullInteractionLoop:
         self.mock_robot.set_emotion.return_value = True
 
         # Modules BBIA
-        self.vision = BBIAVision(robot_api=self.mock_robot)
+        # OPTIMISATION RAM: Utiliser robot_api=None pour éviter chargement modèles lourds en mode E2E
+        self.vision = BBIAVision(robot_api=None)
         # Voice: utiliser fonctions directement (bbia_voice n'a pas de classe)
         self.emotions = BBIAEmotions()
         self.behavior = BBIABehaviorManager(robot_api=self.mock_robot)
+
+    def teardown_method(self):
+        """OPTIMISATION RAM: Décharger modèles après chaque test."""
+        try:
+            # Décharger détecteurs YOLO si chargés
+            if hasattr(self.vision, "yolo_detector") and self.vision.yolo_detector:
+                self.vision.yolo_detector.model = None
+                self.vision.yolo_detector.is_loaded = False
+            # Décharger détecteurs MediaPipe si chargés
+            if hasattr(self.vision, "face_detector") and self.vision.face_detector:
+                self.vision.face_detector.face_detection = None
+        except (AttributeError, TypeError):
+            pass
+        # Vider cache YOLO
+        try:
+            import bbia_sim.vision_yolo as vision_yolo_module
+
+            with vision_yolo_module._yolo_cache_lock:
+                vision_yolo_module._yolo_model_cache.clear()
+        except (AttributeError, ImportError):
+            pass
+        gc.collect()
 
     @patch("bbia_sim.bbia_huggingface.BBIAHuggingFace")
     def test_bbia_full_interaction(self, mock_hf_class):

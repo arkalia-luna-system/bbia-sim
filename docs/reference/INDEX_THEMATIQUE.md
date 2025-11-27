@@ -1,9 +1,9 @@
 # Index thématique (par profils)
 
-## Débutant
+## Premiers Pas
 
-- **Point d'entrée** : `docs/README.md` — Navigation rapide avec lien vers Guide Débutant
-- **Guide Débutant** : `docs/guides/GUIDE_DEBUTANT.md` — Installation et premiers pas (5 min)
+- **Point d'entrée** : `docs/README.md` — Navigation rapide avec lien vers Guide de Démarrage
+- **Guide de Démarrage** : `docs/guides/GUIDE_DEMARRAGE.md` — Installation et premiers pas (5 min)
 - **Navigation** : `docs/getting-started/NAVIGATION.md` — Guide simple pour trouver ce dont vous avez besoin
 - **Simulation 3D** : `docs/simulations/MUJOCO_SIMULATION_GUIDE.md`
 
@@ -35,7 +35,7 @@
 - Audit IA modules pré-entraînés: `docs/ai/modules.md`
 - Intelligence LLM: `docs/ai/llm.md`
 - Analyse voix: `docs/ai/voice.md`
-- Améliorations IA: `docs/quality/improvements/intelligence-bbia.md`, `docs/quality/improvements/intelligence-context.md`
+- Améliorations IA: `docs/quality/improvements/_archived/intelligence-bbia.md`, `docs/quality/improvements/_archived/intelligence-context.md`
 
 ## Dashboard / UX
 

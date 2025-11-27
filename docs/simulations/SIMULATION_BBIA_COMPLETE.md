@@ -1,6 +1,6 @@
 # Simulation BBIA complète - tous les modes
 
-**Date** : Oct / Nov. 2025
+**Date** : 26 Novembre 2025
 
 > Compatibilité Python et CI
 >
@@ -263,7 +263,7 @@ ls -la
 🤖============================================================🤖
 🌟 BBIA - Brain-Based Interactive Agent
 🤖 Robot: Reachy Mini Wireless
-📅 Date: Oct / Nov. 2025
+📅 Date: 26 Novembre 2025
 💻 Système: darwin
 🤖============================================================🤖
 

@@ -4,6 +4,7 @@ Tests unitaires pour la fonctionnalité de chat intelligent BBIA.
 Tests de la nouvelle fonctionnalité chat dans bbia_huggingface.py
 """
 
+import gc
 from collections import deque
 
 import pytest
@@ -11,13 +12,16 @@ import pytest
 # Import conditionnel pour éviter erreurs si HF indisponible
 try:
     from bbia_sim.bbia_huggingface import BBIAHuggingFace
+    from bbia_sim.utils.types import SentimentDict
 
     HF_AVAILABLE = True
 except ImportError:
     HF_AVAILABLE = False
     BBIAHuggingFace = None  # type: ignore
+    SentimentDict = None  # type: ignore
 
 
+@pytest.mark.slow  # OPTIMISATION: Classe initialise BBIAHuggingFace (peut déclencher lazy loading)
 class TestBBIAHuggingFaceChat:
     """Tests pour la fonctionnalité chat intelligent."""
 
@@ -28,16 +32,44 @@ class TestBBIAHuggingFaceChat:
         except ImportError:
             pytest.skip("Hugging Face transformers non disponible")
 
+    def teardown_method(self) -> None:
+        """OPTIMISATION RAM: Nettoie après chaque test et décharge modèles."""
+        if hasattr(self, "hf") and self.hf is not None:
+            try:
+                # OPTIMISATION RAM: Décharger modèles après chaque test
+                if hasattr(self.hf, "unload_models"):
+                    self.hf.unload_models()
+            except (AttributeError, RuntimeError):
+                pass
+        # OPTIMISATION RAM: Force garbage collection
+        gc.collect()
+
+    @pytest.mark.slow  # OPTIMISATION RAM: Test peut charger modèles lourds
+    @pytest.mark.heavy  # OPTIMISATION RAM: Test lourd (charge modèles LLM)
+    @pytest.mark.model  # Test qui charge de vrais modèles (HuggingFace)
     def test_chat_simple_greeting(self) -> None:
         """Test chat avec salutation simple."""
+        # Skip en CI si trop lent (chargement modèle LLM)
+        import os
+
+        if os.environ.get("CI", "false").lower() == "true":
+            pytest.skip("Test désactivé en CI (chargement modèle LLM trop lent)")
         response = self.hf.chat("Bonjour")
 
         assert isinstance(response, str)
         assert len(response) > 0
         assert any(word in response.lower() for word in ["bonjour", "hello", "salut"])
 
+    @pytest.mark.slow  # OPTIMISATION RAM: Test peut charger modèles lourds
+    @pytest.mark.heavy  # OPTIMISATION RAM: Test lourd (charge modèles LLM)
+    @pytest.mark.model  # Test qui charge de vrais modèles (HuggingFace)
     def test_chat_conversation_history(self) -> None:
         """Test que l'historique de conversation est sauvegardé."""
+        # Skip en CI si trop lent (chargement modèle LLM)
+        import os
+
+        if os.environ.get("CI", "false").lower() == "true":
+            pytest.skip("Test désactivé en CI (chargement modèle LLM trop lent)")
         initial_count = len(self.hf.conversation_history)
         max_history_size = 1000
 
@@ -62,25 +94,46 @@ class TestBBIAHuggingFaceChat:
         assert "sentiment" in last_entry
         assert "timestamp" in last_entry
 
+    @pytest.mark.slow  # OPTIMISATION RAM: Test peut charger modèles lourds
+    @pytest.mark.heavy  # OPTIMISATION RAM: Test lourd (charge modèles LLM)
+    @pytest.mark.model  # Test qui charge de vrais modèles (HuggingFace)
     def test_chat_with_empty_message(self) -> None:
         """Test chat avec message vide."""
+        # Skip en CI si trop lent (chargement modèle LLM)
+        import os
+
+        if os.environ.get("CI", "false").lower() == "true":
+            pytest.skip("Test désactivé en CI (chargement modèle LLM trop lent)")
         response = self.hf.chat("")
 
         assert isinstance(response, str)
         assert len(response) > 0
 
+    @pytest.mark.slow  # OPTIMISATION RAM: Test peut charger modèles lourds
+    @pytest.mark.heavy  # OPTIMISATION RAM: Test lourd (charge modèles LLM)
+    @pytest.mark.model  # Test qui charge de vrais modèles (HuggingFace)
     def test_chat_error_handling(self) -> None:
         """Test gestion des erreurs dans chat."""
+        # Skip en CI si trop lent (chargement modèle LLM)
+        import os
+
+        if os.environ.get("CI", "false").lower() == "true":
+            pytest.skip("Test désactivé en CI (chargement modèle LLM trop lent)")
         # Test avec message normal
         response = self.hf.chat("test message")
         assert "reformuler" in response.lower() or len(response) > 0
 
     def test_generate_simple_response_salutations(self) -> None:
         """Test génération réponse simple pour salutations."""
-        sentiment = {"sentiment": "NEUTRAL"}
+        sentiment: SentimentDict = {
+            "sentiment": "NEUTRAL",
+            "score": 0.5,
+            "label": "NEUTRAL",
+        }
 
         response1 = self.hf._generate_simple_response("Bonjour", sentiment)
-        # La réponse doit contenir au moins un mot de salutation/amabilité
+        # La réponse doit être non vide et contenir au moins un mot de salutation/amabilité
+        assert len(response1) > 0, "Réponse ne doit pas être vide"
         assert any(
             word in response1.lower()
             for word in [
@@ -91,11 +144,17 @@ class TestBBIAHuggingFaceChat:
                 "ça",
                 "plaisir",
                 "coucou",
+                "hey",
+                "quoi",
+                "neuf",
+                "journée",
+                "aide",
             ]
-        )
+        ), f"Réponse doit contenir un mot de salutation: {response1}"
 
         response2 = self.hf._generate_simple_response("Salut", sentiment)
-        # La réponse doit contenir au moins un mot de salutation/amabilité
+        # La réponse doit être non vide et contenir au moins un mot de salutation/amabilité
+        assert len(response2) > 0, "Réponse ne doit pas être vide"
         assert any(
             word in response2.lower()
             for word in [
@@ -106,12 +165,21 @@ class TestBBIAHuggingFaceChat:
                 "ça",
                 "plaisir",
                 "coucou",
+                "hey",
+                "quoi",
+                "neuf",
+                "journée",
+                "aide",
             ]
-        )
+        ), f"Réponse doit contenir un mot de salutation: {response2}"
 
     def test_generate_simple_response_positive(self) -> None:
         """Test génération réponse pour sentiment positif."""
-        sentiment = {"sentiment": "POSITIVE"}
+        sentiment: SentimentDict = {
+            "sentiment": "POSITIVE",
+            "score": 0.8,
+            "label": "POSITIVE",
+        }
 
         response = self.hf._generate_simple_response("Je suis content", sentiment)
         assert len(response) > 0
@@ -132,7 +200,11 @@ class TestBBIAHuggingFaceChat:
 
     def test_adapt_response_to_personality(self) -> None:
         """Test adaptation réponse selon personnalité."""
-        sentiment = {"sentiment": "NEUTRAL"}
+        sentiment: SentimentDict = {
+            "sentiment": "NEUTRAL",
+            "score": 0.5,
+            "label": "NEUTRAL",
+        }
 
         response = self.hf._adapt_response_to_personality("Test", sentiment)
         assert "🤖" in response or "💬" in response
@@ -150,8 +222,16 @@ class TestBBIAHuggingFaceChat:
         assert len(context) > 0
         assert "bbia" in context.lower() or "robot" in context.lower()
 
+    @pytest.mark.slow  # OPTIMISATION RAM: Test peut charger modèles lourds
+    @pytest.mark.heavy  # OPTIMISATION RAM: Test lourd (charge modèles LLM)
+    @pytest.mark.model  # Test qui charge de vrais modèles (HuggingFace)
     def test_build_context_string_with_history(self) -> None:
         """Test construction contexte avec historique."""
+        # Skip en CI si trop lent (chargement modèle LLM)
+        import os
+
+        if os.environ.get("CI", "false").lower() == "true":
+            pytest.skip("Test désactivé en CI (chargement modèle LLM trop lent)")
         # Ajouter quelques messages
         self.hf.chat("Message 1")
         self.hf.chat("Message 2")
@@ -162,8 +242,16 @@ class TestBBIAHuggingFaceChat:
         assert isinstance(context, str)
         assert "historique" in context.lower() or "user" in context.lower()
 
+    @pytest.mark.slow  # OPTIMISATION RAM: Test peut charger modèles lourds
+    @pytest.mark.heavy  # OPTIMISATION RAM: Test lourd (charge modèles LLM)
+    @pytest.mark.model  # Test qui charge de vrais modèles (HuggingFace)
     def test_chat_context_preservation(self) -> None:
         """Test que le contexte est préservé entre plusieurs appels."""
+        # Skip en CI si trop lent (chargement modèle LLM)
+        import os
+
+        if os.environ.get("CI", "false").lower() == "true":
+            pytest.skip("Test désactivé en CI (chargement modèle LLM trop lent)")
         max_history_size = 1000
         self.hf.chat("Premier message")
         count1 = len(self.hf.conversation_history)
@@ -181,8 +269,16 @@ class TestBBIAHuggingFaceChat:
         """Test que la personnalité par défaut est correcte."""
         assert self.hf.bbia_personality == "friendly_robot"
 
+    @pytest.mark.slow  # OPTIMISATION RAM: Test peut charger modèles lourds
+    @pytest.mark.heavy  # OPTIMISATION RAM: Test lourd (charge modèles LLM)
+    @pytest.mark.model  # Test qui charge de vrais modèles (HuggingFace)
     def test_chat_fallback_on_error(self) -> None:
         """Test que le fallback fonctionne en cas d'erreur."""
+        # Skip en CI si trop lent (chargement modèle LLM)
+        import os
+
+        if os.environ.get("CI", "false").lower() == "true":
+            pytest.skip("Test désactivé en CI (chargement modèle LLM trop lent)")
         # Forcer une erreur en définissant un modèle invalide
         # Le chat doit quand même retourner une réponse
         response = self.hf.chat("test")

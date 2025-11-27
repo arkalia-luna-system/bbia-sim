@@ -19,10 +19,11 @@ class JointPosition(BaseModel):
     @classmethod
     def validate_joint_name(cls, v: str) -> str:
         """Valide le nom de l'articulation."""
-        from ..sim.joints import validate_joint_name
+        from bbia_sim.sim.joints import validate_joint_name
 
         if not validate_joint_name(v):
-            raise ValueError(f"Articulation '{v}' non autorisée")
+            msg = f"Articulation '{v}' non autorisée"
+            raise ValueError(msg)
         return v
 
 
@@ -62,7 +63,8 @@ class MotionCommand(BaseModel):
     def validate_parameters(cls, v: dict[str, Any]) -> dict[str, Any]:
         """Valide les paramètres de la commande."""
         if len(v) > 10:
-            raise ValueError("Trop de paramètres (max 10)")
+            msg = "Trop de paramètres (max 10)"
+            raise ValueError(msg)
         return v
 
 
@@ -77,7 +79,8 @@ class TelemetryMessage(BaseModel):
     def validate_data(cls, v: dict[str, Any]) -> dict[str, Any]:
         """Valide les données de télémétrie."""
         if len(v) > 50:
-            raise ValueError("Trop de données (max 50 champs)")
+            msg = "Trop de données (max 50 champs)"
+            raise ValueError(msg)
         return v
 
 
@@ -98,7 +101,8 @@ class XYZRPYPose(BaseModel):
         from scipy.spatial.transform import Rotation as R
 
         if arr.shape != (4, 4):
-            raise ValueError(f"Array must be of shape (4, 4), got {arr.shape}")
+            msg = f"Array must be of shape (4, 4), got {arr.shape}"
+            raise ValueError(msg)
         x, y, z = arr[0, 3], arr[1, 3], arr[2, 3]
         roll, pitch, yaw = R.from_matrix(arr[:3, :3]).as_euler("xyz")
         return cls(x=x, y=y, z=z, roll=roll, pitch=pitch, yaw=yaw)
@@ -140,7 +144,8 @@ class Matrix4x4Pose(BaseModel):
     def from_pose_array(cls, arr: npt.NDArray[np.float64]) -> "Matrix4x4Pose":
         """Crée une pose Matrix4x4Pose depuis un array numpy 4x4 (conforme SDK)."""
         if arr.shape != (4, 4):
-            raise ValueError(f"Array must be of shape (4, 4), got {arr.shape}")
+            msg = f"Array must be of shape (4, 4), got {arr.shape}"
+            raise ValueError(msg)
         flattened_list: list[float] = arr.flatten().tolist()
         # Type ignore nécessaire: tuple() retourne tuple[float, ...] mais on sait qu'il y a 16 éléments
         m: tuple[
@@ -161,7 +166,7 @@ class Matrix4x4Pose(BaseModel):
             float,
             float,
         ] = tuple(
-            flattened_list
+            flattened_list,
         )  # type: ignore[assignment]
         return cls(m=m)
 
@@ -220,10 +225,12 @@ class MoveUUID(BaseModel):
                 return UUID(v)
             except ValueError as e:
                 # Lever ValueError pour que FastAPI retourne 400 au lieu de 422
-                raise ValueError(f"UUID invalide: {v}") from e
+                msg = f"UUID invalide: {v}"
+                raise ValueError(msg) from e
         if isinstance(v, UUID):
             return v
-        raise ValueError(f"UUID invalide: {v}")
+        msg = f"UUID invalide: {v}"
+        raise ValueError(msg)
 
 
 class FullState(BaseModel):

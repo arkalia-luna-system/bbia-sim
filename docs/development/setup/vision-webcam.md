@@ -192,4 +192,43 @@ Tout est déjà implémenté ! Tu peux maintenant :
 
 ---
 
-**Dernière mise à jour** : Oct / Nov. 2025
+---
+
+## 📷 Support Raspberry Pi Caméra CSI->USB (Issue #434)
+
+### Adaptateurs CSI->USB
+
+BBIA supporte les caméras Raspberry Pi via adaptateurs CSI->USB grâce à OpenCV.
+
+**Configuration** :
+
+```bash
+# Utiliser adaptateur CSI->USB
+export BBIA_CAMERA_INDEX=0  # Généralement 0 pour adaptateur CSI->USB
+export BBIA_CAMERA_DEVICE=/dev/video0  # Linux spécifique
+```
+
+**Test** :
+
+```bash
+# Test simple
+python scripts/test_webcam_simple.py
+
+# Test vision complète
+python scripts/test_vision_webcam.py
+```
+
+**Notes** :
+- OpenCV détecte automatiquement les adaptateurs CSI->USB
+- Pas de configuration spéciale nécessaire
+- Compatible avec toutes les caméras UVC standard
+
+**Troubleshooting** :
+
+- **Caméra non détectée** : Vérifier `lsusb` (Linux) ou permissions macOS
+- **Erreur device** : Essayer `BBIA_CAMERA_INDEX=1` ou `BBIA_CAMERA_INDEX=2`
+- **Permissions** : macOS demande automatiquement permission au premier lancement
+
+---
+
+**Dernière mise à jour** : 26 Novembre 2025

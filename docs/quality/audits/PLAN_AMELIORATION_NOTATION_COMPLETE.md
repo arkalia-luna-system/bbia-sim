@@ -2,9 +2,10 @@
 
 ## Axes de correction et amélioration pour passer de 8.07/10 à 9.0+/10
 
-**Date** : Oct / Nov. 2025
-**Objectif** : Identifier tous les axes d'amélioration pour augmenter la notation
-**Score actuel** : 8.07/10 (audit Windsurf Oct / Nov. 2025)
+**Date** : 21 Novembre 2025  
+**Dernière mise à jour** : 21 Novembre 2025 (vérification état réel code)  
+**Objectif** : Identifier tous les axes d'amélioration pour augmenter la notation  
+**Score actuel** : 8.07/10 (audit Windsurf 21 Novembre 2025)  
 **Score cible** : 9.0+/10
 
 ---
@@ -28,7 +29,7 @@ Voir **[Améliorations Gratuites](../improvements/free-improvements.md)** et **[
 
 ### 1. Tests Robot Physique - Validation Hardware
 
-**Statut** : ⏳ En attente (robot physique requis - Oct / Nov. 2025)
+**Statut** : ⏳ En attente (robot physique requis - Novembre 2025)
 
 **Actions** :
 - Tests conditionnels avec variable d'environnement
@@ -36,7 +37,7 @@ Voir **[Améliorations Gratuites](../improvements/free-improvements.md)** et **[
 
 **Impact** : +2.0 points (validation production hardware complète)
 
-**Timing** : Oct / Nov. 2025 (arrivée robot)
+**Timing** : Novembre 2025 (arrivée robot)
 
 ---
 
@@ -83,23 +84,36 @@ Voir **[Améliorations Gratuites](../improvements/free-improvements.md)** et **[
 
 ### 5. Tests E2E Complets - Scénarios Utilisateur
 
-**Statut** : ⏳ En cours
+**Statut** : ✅ **TERMINÉ** (26 Novembre 2025)
 
 **Actions** :
-- Scénarios utilisateur complets
-- Tests automatisés
+- ✅ Scénarios utilisateur complets (9 fichiers de tests E2E dans `tests/e2e/`)
+- ✅ Tests automatisés (marqueur `@pytest.mark.e2e`)
+- ✅ Tests couvrent : interaction complète, voice, wake up, face detection, websocket, motion roundtrip
 
 **Impact** : +0.5 point (validation scénarios réels)
+
+**Fichiers** :
+- `tests/e2e/test_e2e_full_interaction_loop.py`
+- `tests/e2e/test_e2e_voice_interaction.py`
+- `tests/e2e/test_e2e_wake_up_sequence.py`
+- `tests/e2e/test_e2e_face_detection_greeting.py`
+- `tests/e2e/test_bbia_modules_e2e.py`
+- `tests/e2e/test_websocket_telemetry_e2e.py`
+- `tests/e2e/test_motion_roundtrip.py`
+- `tests/e2e/test_api_simu_roundtrip.py`
 
 ---
 
 ### 6. Performance Benchmarking Automatisé
 
-**Statut** : ⏳ À faire
+**Statut** : ✅ **TERMINÉ** (26 Novembre 2025)
 
 **Actions** :
-- CI/CD benchmarking
-- Tracking historique performance
+- ✅ CI/CD benchmarking (job `benchmark` dans `.github/workflows/ci.yml`)
+- ✅ Script `scripts/bbia_performance_benchmarks.py` créé
+- ✅ Tracking historique performance (artifacts `artifacts/benchmarks.jsonl`)
+- ✅ Tests de performance (`tests/test_performance_benchmarks.py`)
 
 **Impact** : +0.3 point (monitoring performance)
 
@@ -131,10 +145,14 @@ Voir **[Améliorations Gratuites](../improvements/free-improvements.md)** et **[
 
 ### 9. Documentation API - Reference Complète
 
-**Statut** : ⏳ À faire
+**Statut** : ✅ **TERMINÉ** (26 Novembre 2025)
 
 **Actions** :
-- OpenAPI/Swagger automatique
+- ✅ OpenAPI/Swagger automatique (FastAPI génère automatiquement)
+- ✅ Swagger UI disponible sur `/docs`
+- ✅ ReDoc disponible sur `/redoc`
+- ✅ OpenAPI JSON disponible sur `/openapi.json`
+- ✅ Documentation complète dans `src/bbia_sim/daemon/app/main.py`
 
 **Impact** : +0.3 point (API plus accessible)
 
@@ -175,10 +193,10 @@ Voir **[Améliorations Gratuites](../improvements/free-improvements.md)** et **[
 | Coverage 70%+ | 🔴 Critique | +1.0 | ⏳ En cours (68.86%) |
 | Communauté issues | 🟠 Haute | +0.7 | ⏳ À faire |
 | Vidéos démos | 🟡 Moyenne | +0.7 | ⏳ En attente robot |
-| Tests E2E | 🟠 Haute | +0.5 | ⏳ En cours |
-| Benchmarking | 🟠 Haute | +0.3 | ⏳ À faire |
+| Tests E2E | 🟠 Haute | +0.5 | ✅ **TERMINÉ** |
+| Benchmarking | 🟠 Haute | +0.3 | ✅ **TERMINÉ** |
 | Sécurité tests | 🟡 Moyenne | +0.3 | ⏳ À faire |
-| OpenAPI | 🟡 Moyenne | +0.3 | ⏳ À faire |
+| OpenAPI | 🟡 Moyenne | +0.3 | ✅ **TERMINÉ** |
 | PyPI | 🟢 Basse | +0.2 | ⏳ À faire |
 
 ---
@@ -192,4 +210,4 @@ Voir **[Améliorations Gratuites](../improvements/free-improvements.md)** et **[
 
 ---
 
-**Dernière mise à jour** : Oct / Nov. 2025
+**Dernière mise à jour** : 21 Novembre 2025 (vérification état réel code)

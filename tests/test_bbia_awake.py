@@ -21,31 +21,31 @@ def test_start_bbia_sim_function_exists():
     assert callable(start_bbia_sim)
 
 
-@patch("bbia_sim.bbia_awake.print")
+@patch("bbia_sim.bbia_awake.logger")
 @patch("bbia_sim.bbia_awake.time.sleep")
-def test_start_bbia_sim_execution(mock_sleep, mock_print):
+def test_start_bbia_sim_execution(mock_sleep, mock_logger):
     """Test exécution de start_bbia_sim avec mocks."""
     start_bbia_sim()
 
-    # Vérifier que print a été appelé plusieurs fois (séquence de réveil)
-    assert mock_print.call_count >= 3  # Au moins 3 messages
+    # Vérifier que logger.info a été appelé plusieurs fois (séquence de réveil)
+    assert mock_logger.info.call_count >= 3  # Au moins 3 messages
 
     # Vérifier que sleep a été appelé
     assert mock_sleep.call_count >= 1
 
     # Vérifier que le dernier message contient "réveillé"
-    last_call = mock_print.call_args_list[-1]
+    last_call = mock_logger.info.call_args_list[-1]
     assert "réveillé" in str(last_call).lower() or "BBIA" in str(last_call)
 
 
-@patch("bbia_sim.bbia_awake.print")
+@patch("bbia_sim.bbia_awake.logger")
 @patch("bbia_sim.bbia_awake.time.sleep")
-def test_start_bbia_sim_contains_patterns(mock_sleep, mock_print):
+def test_start_bbia_sim_contains_patterns(mock_sleep, mock_logger):
     """Test que la séquence contient les patterns essentiels."""
     start_bbia_sim()
 
-    # Récupérer tous les messages imprimés
-    all_messages = " ".join(str(call) for call in mock_print.call_args_list)
+    # Récupérer tous les messages loggés
+    all_messages = " ".join(str(call) for call in mock_logger.info.call_args_list)
 
     # Patterns essentiels (au moins un doit être présent)
     essential_patterns = ["Lumière", "Mouvements", "Première pensée", "réveillé"]
@@ -59,7 +59,7 @@ def test_start_bbia_sim_contains_patterns(mock_sleep, mock_print):
 
 def test_start_bbia_sim_no_errors():
     """Test que start_bbia_sim s'exécute sans erreur."""
-    with patch("bbia_sim.bbia_awake.print"), patch("bbia_sim.bbia_awake.time.sleep"):
+    with patch("bbia_sim.bbia_awake.logger"), patch("bbia_sim.bbia_awake.time.sleep"):
         try:
             start_bbia_sim()
         except Exception as e:

@@ -34,8 +34,11 @@ mindmap
 ## ⚠️ **Scripts Dépréciés**
 
 - ❌ **`start_api.py`** → Utiliser `start_public_api.py` (archivé dans `_archived/`)
-- ❌ **`kill_greedy_processes.sh`** → Utiliser `smart_process_cleanup.sh` (archivé dans `_archived/`)
+- ❌ **`kill_greedy_processes.sh`** → Utiliser `cleanup_all.sh --ram-only` (archivé dans `_archived/`)
 - ⚠️ **`kill_mujoco_viewers.sh`** → Utiliser `process_manager.py stop` (déprécié mais gardé)
+- ⚠️ **`cleanup_project.sh`** → Utiliser `cleanup_all.sh` (script fusionné)
+- ⚠️ **`cleanup_metadata_files.sh`** → Utiliser `cleanup_all.sh` (script fusionné)
+- ⚠️ **`smart_process_cleanup.sh`** → Utiliser `cleanup_all.sh --ram-only` (script fusionné)
 
 ### 🔄 **Scripts d'Audit Consolidés** (Oct / Nov. 2025)
 
@@ -95,6 +98,28 @@ Voir `scripts/_archived/README.md`, `scripts/PLAN_CONSOLIDATION_AUDIT_SCRIPTS.md
 
 - **`record_demo.sh`** - Enregistrement démo complète ✅
 - **`plot_trace.py`** - Génération rapports d'analyse ✅
+
+### 🧹 **Scripts de Nettoyage (FUSIONNÉS)**
+
+- **`cleanup_all.sh`** ⭐ - Script fusionné de nettoyage complet (RECOMMANDÉ)
+  - Fusionne : `cleanup_project.sh`, `cleanup_metadata_files.sh`, `smart_process_cleanup.sh`
+  - Nettoie fichiers cache (Python, mypy, pytest, ruff) ET libère la RAM
+  - Usage :
+    ```bash
+    # Nettoyer uniquement les fichiers cache (par défaut)
+    ./scripts/cleanup_all.sh
+    
+    # Nettoyer uniquement la RAM
+    ./scripts/cleanup_all.sh --ram-only
+    
+    # Nettoyer tout automatiquement (sans confirmation)
+    ./scripts/cleanup_all.sh --yes
+    ```
+  - Options : `--cache-only`, `--ram-only`, `--yes/-y`, `--help/-h`
+
+- **`cleanup_project.sh`** - Nettoyage fichiers cache uniquement (déprécié, utiliser `cleanup_all.sh`)
+- **`cleanup_metadata_files.sh`** - Nettoyage métadonnées macOS uniquement (déprécié, utiliser `cleanup_all.sh`)
+- **`smart_process_cleanup.sh`** - Nettoyage RAM uniquement (déprécié, utiliser `cleanup_all.sh --ram-only`)
 
 ---
 

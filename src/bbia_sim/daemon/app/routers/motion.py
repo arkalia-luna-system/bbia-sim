@@ -3,13 +3,14 @@
 import logging
 from datetime import datetime
 from enum import Enum
-from typing import Any
+from typing import Annotated, Any
 
 from fastapi import APIRouter, HTTPException, Query
+from pydantic import BaseModel
 
-from ....sim.joints import clamp_joint_angle, validate_joint_name
-from ...models import HeadControl, JointPosition, MotionCommand, Pose
-from ...simulation_service import simulation_service
+from bbia_sim.daemon.models import HeadControl, JointPosition, MotionCommand, Pose
+from bbia_sim.daemon.simulation_service import simulation_service
+from bbia_sim.sim.joints import clamp_joint_angle, validate_joint_name
 
 logger = logging.getLogger(__name__)
 
@@ -31,11 +32,12 @@ class InterpolationMode(str, Enum):
 @router.post("/goto_pose")
 async def goto_pose(
     pose: Pose,
-    duration: float = Query(2.5, gt=0, description="Durée du mouvement en secondes"),
-    interpolation: InterpolationMode = Query(
-        InterpolationMode.MINJERK,
-        description="Mode d'interpolation",
-    ),
+    duration: Annotated[
+        float, Query(gt=0, description="Durée du mouvement en secondes")
+    ] = 2.5,
+    interpolation: Annotated[
+        InterpolationMode, Query(description="Mode d'interpolation")
+    ] = InterpolationMode.MINJERK,
 ) -> dict[str, Any]:
     """Déplace le robot vers une position spécifique avec interpolation.
 
@@ -54,7 +56,7 @@ async def goto_pose(
     )
 
     try:
-        from ....robot_factory import RobotFactory
+        from bbia_sim.robot_factory import RobotFactory
 
         robot = RobotFactory.create_backend("mujoco")
         if robot:
@@ -95,7 +97,7 @@ async def goto_pose(
             "timestamp": datetime.now().isoformat(),
         }
     except Exception as e:
-        logger.error(f"Erreur lors du mouvement: {e}")
+        logger.exception("Erreur lors du mouvement")
         # Retourner quand même une réponse
         return {
             "status": "error",
@@ -196,7 +198,7 @@ async def control_gripper(side: str, action: str) -> dict[str, Any]:
             detail="Action invalide. Utilisez 'open', 'close' ou 'grip'",
         )
 
-    logger.info(f"Contrôle de la pince {side} : {action}")
+    logger.info("Contrôle de la pince %s : %s", side, action)
 
     return {
         "status": "executing",
@@ -248,7 +250,7 @@ async def wake_up() -> dict[str, Any]:
     """
     logger.info("Réveil du robot")
     try:
-        from ....robot_factory import RobotFactory
+        from bbia_sim.robot_factory import RobotFactory
 
         robot = RobotFactory.create_backend("mujoco")
         if robot:
@@ -257,7 +259,7 @@ async def wake_up() -> dict[str, Any]:
                 robot.wake_up()
             else:
                 # Fallback: utiliser comportement wake_up
-                from ....bbia_behavior import BBIABehaviorManager
+                from bbia_sim.bbia_behavior import BBIABehaviorManager
 
                 behavior_manager = BBIABehaviorManager(robot_api=robot)
                 behavior_manager.execute_behavior("wake_up")
@@ -269,7 +271,7 @@ async def wake_up() -> dict[str, Any]:
             "timestamp": datetime.now().isoformat(),
         }
     except Exception as e:
-        logger.error(f"Erreur lors du réveil: {e}")
+        logger.exception("Erreur lors du réveil")
         return {
             "status": "error",
             "message": f"Erreur: {e!s}",
@@ -287,7 +289,7 @@ async def goto_sleep() -> dict[str, Any]:
     """
     logger.info("Mise en veille du robot")
     try:
-        from ....robot_factory import RobotFactory
+        from bbia_sim.robot_factory import RobotFactory
 
         robot = RobotFactory.create_backend("mujoco")
         if robot:
@@ -296,7 +298,7 @@ async def goto_sleep() -> dict[str, Any]:
                 robot.goto_sleep()
             else:
                 # Fallback: utiliser comportement goto_sleep si disponible
-                from ....bbia_behavior import BBIABehaviorManager
+                from bbia_sim.bbia_behavior import BBIABehaviorManager
 
                 behavior_manager = BBIABehaviorManager(robot_api=robot)
                 # Si comportement goto_sleep existe
@@ -310,7 +312,69 @@ async def goto_sleep() -> dict[str, Any]:
             "timestamp": datetime.now().isoformat(),
         }
     except Exception as e:
-        logger.error(f"Erreur lors de la mise en veille: {e}")
+        logger.exception("Erreur lors de la mise en veille")
+        return {
+            "status": "error",
+            "message": f"Erreur: {e!s}",
+            "timestamp": datetime.now().isoformat(),
+        }
+
+
+class EmotionRequest(BaseModel):
+    """Modèle pour une requête d'émotion."""
+
+    emotion: str
+    intensity: float = 0.5
+
+
+@router.post("/emotion")
+async def set_emotion(emotion_request: EmotionRequest) -> dict[str, Any]:
+    """Définit une émotion avec intensité.
+
+    Args:
+        emotion_request: Requête contenant l'émotion et l'intensité
+
+    Returns:
+        Confirmation de définition de l'émotion
+    """
+    emotion = emotion_request.emotion
+    intensity = emotion_request.intensity
+
+    # Valider l'intensité
+    if not 0.0 <= intensity <= 1.0:
+        return {
+            "status": "error",
+            "message": f"Intensité invalide: {intensity} (doit être entre 0.0 et 1.0)",
+            "timestamp": datetime.now().isoformat(),
+        }
+    logger.info(f"Définition émotion: {emotion} avec intensité {intensity}")
+
+    try:
+        from bbia_sim.robot_factory import RobotFactory
+
+        robot = RobotFactory.create_backend("mujoco")
+        if robot:
+            robot.connect()
+            if hasattr(robot, "set_emotion"):
+                success = robot.set_emotion(emotion, intensity)
+                if success:
+                    robot.disconnect()
+                    return {
+                        "status": "success",
+                        "emotion": emotion,
+                        "intensity": intensity,
+                        "message": f"Émotion '{emotion}' définie avec intensité {intensity}",
+                        "timestamp": datetime.now().isoformat(),
+                    }
+            robot.disconnect()
+
+        return {
+            "status": "error",
+            "message": "Impossible de définir l'émotion",
+            "timestamp": datetime.now().isoformat(),
+        }
+    except Exception as e:
+        logger.exception("Erreur lors de la définition de l'émotion")
         return {
             "status": "error",
             "message": f"Erreur: {e!s}",
@@ -332,7 +396,7 @@ async def stop_motion() -> dict[str, Any]:
 
     # Essayer d'utiliser emergency_stop() si disponible
     try:
-        from ....robot_factory import RobotFactory
+        from bbia_sim.robot_factory import RobotFactory
 
         # Essayer d'obtenir le robot actif
         robot = RobotFactory.create_backend("mujoco")
@@ -346,7 +410,7 @@ async def stop_motion() -> dict[str, Any]:
                     "timestamp": datetime.now().isoformat(),
                 }
     except Exception as e:
-        logger.debug(f"Emergency stop non disponible, fallback standard: {e}")
+        logger.debug("Emergency stop non disponible, fallback standard: %s", e)
 
     # Fallback: arrêt standard (asynchrone, ignorer si déjà arrêté)
     try:
@@ -354,7 +418,8 @@ async def stop_motion() -> dict[str, Any]:
         await simulation_service.stop_simulation()
     except Exception as e:
         logger.debug(
-            f"Erreur lors de l'arrêt de la simulation (peut être déjà arrêtée): {e}"
+            "Erreur lors de l'arrêt de la simulation (peut être déjà arrêtée): %s",
+            e,
         )
 
     return {
@@ -393,7 +458,7 @@ async def execute_custom_command(command: MotionCommand) -> dict[str, Any]:
         Statut de l'exécution
 
     """
-    logger.info(f"Exécution de la commande personnalisée : {command.command}")
+    logger.info("Exécution de la commande personnalisée : %s", command.command)
 
     # Simulation de l'exécution
     return {

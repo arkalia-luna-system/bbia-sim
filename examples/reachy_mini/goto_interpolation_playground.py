@@ -74,7 +74,7 @@ def main() -> None:
                             duration=1.0,
                             method=method,
                         )
-                        print(f"  ✅ Mouvement {i+1}/3 vers droite")
+                        print(f"  ✅ Mouvement {i + 1}/3 vers droite")
 
                         pose = create_head_pose(
                             x=0.0, y=-0.03, z=0, roll=-5, yaw=10, degrees=True
@@ -85,7 +85,7 @@ def main() -> None:
                             duration=1.0,
                             method=method,
                         )
-                        print(f"  ✅ Mouvement {i+1}/3 vers gauche")
+                        print(f"  ✅ Mouvement {i + 1}/3 vers gauche")
 
                     # Retour position neutre
                     pose = create_head_pose(x=0, y=0, z=0, yaw=0)

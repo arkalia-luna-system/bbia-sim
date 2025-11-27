@@ -1,15 +1,16 @@
 # 📚 Documentation BBIA-SIM — Navigation Rapide
 
-**Date** : Oct / Nov. 2025
+**Date** : 26 Novembre 2025  
+**Version** : v1.4.0
 
 > **Moteur cognitif Python pour robot Reachy Mini**
 > *Simulation fidèle • IA avancée • SDK 100% conforme*
 
 ---
 
-## 🚀 Nouveau sur le projet ? Commencez ici !
+## 🚀 Nouveau sur le projet ? Commencez ici
 
-> **⭐ POINT DE DÉPART RECOMMANDÉ** : Si vous êtes nouveau, commencez par le **[Guide Débutant](guides/GUIDE_DEBUTANT.md)** — Installation et premiers pas en 5 minutes
+> **⭐ POINT DE DÉPART RECOMMANDÉ** : Commencez par le **[Guide de Démarrage](guides/GUIDE_DEMARRAGE.md)** — Installation et premiers pas en 5 minutes
 
 ---
 
@@ -17,7 +18,7 @@
 
 ```mermaid
 flowchart TB
-    START[🚀 Nouveau?] --> DEBUT[📖 Guide Débutant<br/>5 minutes]
+    START[🚀 Nouveau?] --> DEBUT[📖 Guide de Démarrage<br/>5 minutes]
     START --> AVANCE[⚡ Expérimenté?]
 
     DEBUT --> INSTALL[📦 Installation]
@@ -47,7 +48,6 @@ flowchart TB
 | Document | Description | Public |
 |----------|-------------|--------|
 | **[project-status.md](reference/project-status.md)** | Tableau de bord complet par axe | Tous |
-| **[STATUT_PROJET.md](reference/STATUT_PROJET.md)** | État opérationnel (dashboard, tests) | Développeurs |
 
 ---
 
@@ -59,7 +59,7 @@ flowchart TB
 
 | Document | Description | Niveau |
 |----------|-------------|--------|
-| [ARCHITECTURE_OVERVIEW.md](development/architecture/ARCHITECTURE_OVERVIEW.md) | Vue d'ensemble (v1.3.2) | 🟢 Débutant |
+| [ARCHITECTURE_OVERVIEW.md](development/architecture/ARCHITECTURE_OVERVIEW.md) | Vue d'ensemble (v1.4.0) | 🟢 Accessible |
 | [ARCHITECTURE.md](development/architecture/ARCHITECTURE.md) | Guide architecture | 🟡 Intermédiaire |
 | [ARCHITECTURE_DETAILED.md](development/architecture/ARCHITECTURE_DETAILED.md) | Détails techniques | 🔴 Avancé |
 
@@ -71,7 +71,7 @@ flowchart TB
 
 ### Par Niveau
 
-- 🟢 **[Guide Débutant](guides/GUIDE_DEBUTANT.md)** — Installation et premiers pas en 5 minutes
+- 🟢 **[Guide de Démarrage](guides/GUIDE_DEMARRAGE.md)** — Installation et premiers pas en 5 minutes
 - 🟡 **[Guide Avancé](guides/GUIDE_AVANCE.md)** — Fonctionnalités avancées et architecture
 - 🔴 **[Guides Techniques](development/)** — Intégration, tests, migration
 
@@ -116,8 +116,17 @@ flowchart TB
 
 ---
 
-<div align="center">
+## 📋 Organisation de la Documentation
 
-**💡 Besoin d'aide ?** Consultez le [Guide Débutant](guides/GUIDE_DEBUTANT.md) ou le [Troubleshooting](getting-started/troubleshooting.md)
+La documentation a été réorganisée le **27 Novembre 2025** :
 
-</div>
+- ✅ **Structure clarifiée** : Tous les dossiers principaux ont un README
+- ✅ **Fichiers obsolètes archivés** : Voir `quality/audits/archives/`
+- ✅ **Doublons supprimés** : Fichiers redondants fusionnés ou archivés
+- ✅ **Dossiers vides supprimés** : `rapports/`, `semaines/`
+
+---
+
+**💡 Besoin d'aide ?** Consultez le [Guide de Démarrage](guides/GUIDE_DEMARRAGE.md) ou le [Troubleshooting](getting-started/troubleshooting.md)
+
+**Dernière mise à jour** : 27 Novembre 2025

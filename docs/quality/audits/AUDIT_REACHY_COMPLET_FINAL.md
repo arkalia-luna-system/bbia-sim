@@ -4,7 +4,7 @@
 >
 > Voir `docs/reference/project-status.md` → "État par axe" pour l’état actuel et les améliorations planifiées.
 
-**Date**: Oct / Nov. 2025
+**Date**: 21 Novembre 2025
 **Référentiel Reachy**: pollen-robotics/reachy_mini
 **Commit utilisé**: 84c40c3 (Merge pull request #349)
 **Auditeur**: Expert Robotique & IA Émotionnelle
@@ -57,7 +57,7 @@ Modules critiques: 5 | Modules moyens: 2
    - ✅ Joints passifs (`passive_1-7`) protégés
    - ✅ `emergency_stop()` explicite dans RobotAPI - **FAIT** (ligne 87 dans `robot_api.py`)
 
-**Corrections appliquées (Oct / Nov. 2025)** :
+**Corrections appliquées (21 Novembre 2025)** :
 
 1. ✅ Méthode `emergency_stop()` ajoutée dans RobotAPI abstraite (ligne 87)
 2. ✅ Watchdog thread implémenté dans `ReachyMiniBackend` (lignes 277-320)
@@ -119,7 +119,7 @@ def emergency_stop(self) -> bool:
    - ⚠️ Sample rate non vérifié: SDK attend 16kHz, vérifier `sounddevice` config
    - ⚠️ Buffer size non optimisé: SDK utilise buffers hardware, BBIA utilise `soundfile` par défaut
 
-**Corrections appliquées (Oct / Nov. 2025)** :
+**Corrections appliquées (21 Novembre 2025)** :
 
 1. ✅ Sample rate aligné SDK (16kHz par défaut) - **FAIT** (ligne 65 dans `bbia_audio.py`)
 2. ✅ Utilisation `robot.media.play_audio()` et `robot.media.record_audio()` si disponible
@@ -342,4 +342,4 @@ python scripts/audit_reachy_integration.py
 
 **Généré par**: Script audit automatisé
 **Version**: 1.0
-**Date**: Oct / Nov. 2025
+**Date**: 21 Novembre 2025

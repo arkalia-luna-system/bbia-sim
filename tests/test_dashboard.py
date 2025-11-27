@@ -95,6 +95,8 @@ class TestBBIAWebSocketManager:
         """Test envoi message personnel."""
         manager = BBIAWebSocketManager()
         mock_websocket = AsyncMock(spec=WebSocket)
+        # Ajouter le websocket aux connexions actives (requis pour send_personal_message)
+        manager.active_connections.append(mock_websocket)
 
         await manager.send_personal_message("test message", mock_websocket)
         mock_websocket.send_text.assert_called_once_with("test message")

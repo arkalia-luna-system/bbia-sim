@@ -1,7 +1,8 @@
 # Intelligence conversationnelle LLM - guide complet
 
-**Date :** Oct / Nov. 2025
-**Objectif :** ajouter LLM pré-entraîné (Mistral 7B) pour conversations intelligentes
+**Date :** 26 Novembre 2025  
+**Dernière mise à jour :** 26 Novembre 2025  
+**Objectif :** LLM conversationnel léger (Phi-2/TinyLlama) pour conversations intelligentes
 
 ---
 
@@ -9,8 +10,8 @@
 
 Remplacer les réponses basées sur règles par un LLM conversationnel qui comprend le contexte et génère des réponses naturelles.
 
-**Avant :** Règles + sentiment analysis (limité)
-**Après :** Mistral 7B Instruct (conversations naturelles avec contexte)
+**Avant :** Règles + sentiment analysis (limité)  
+**Après :** BBIAChat avec Phi-2/TinyLlama (conversations naturelles avec contexte, personnalités, émotions)
 
 ---
 
@@ -22,8 +23,8 @@ Remplacer les réponses basées sur règles par un LLM conversationnel qui compr
 # Activer venv
 source venv/bin/activate
 
-# Installer dépendances LLM
-pip install transformers accelerate torch
+# Installer dépendances LLM (déjà dans pyproject.toml)
+pip install transformers accelerate sentencepiece torch
 
 # Optionnel : optimisations Apple Silicon
 # (accélération automatique via MPS si disponible)
@@ -34,24 +35,29 @@ pip install transformers accelerate torch
 
 ## Utilisation
 
-### Activation du LLM (optionnel)
+### BBIAChat (Recommandé - LLM léger)
 
-Le LLM est **désactivé par défaut** (pour éviter consommation mémoire inutile). Activer uniquement si nécessaire :
+**BBIAChat** est maintenant intégré automatiquement dans `BBIAHuggingFace` :
 
 ```python
 from bbia_sim.bbia_huggingface import BBIAHuggingFace
 
-# Initialiser BBIA
+# Initialiser BBIA (BBIAChat chargé automatiquement)
 bbia = BBIAHuggingFace()
 
-# Activer LLM conversationnel (peut prendre 1-2 minutes)
-success = bbia.enable_llm_chat()
-if success:
-    logging.info("LLM activé - conversations intelligentes disponibles")
-else:
-    logging.warning("LLM non chargé - utilisation réponses enrichies (règles)")
+# Conversation intelligente (utilise Phi-2 ou TinyLlama automatiquement)
+response = bbia.chat("Bonjour, comment ça va ?")
+# → Utilise BBIAChat avec LLM léger si disponible
 
 ```
+
+**Avantages BBIAChat :**
+- ✅ LLM léger (Phi-2 ~5GB, TinyLlama ~2GB) - Compatible RPi 5
+- ✅ 5 personnalités (friendly, professional, playful, calm, enthusiastic)
+- ✅ Détection et exécution d'actions robot
+- ✅ Intégration émotions BBIA
+- ✅ Apprentissage préférences utilisateur
+- ✅ Historique conversationnel (10 messages)
 
 ### Utilisation automatique
 
@@ -98,28 +104,37 @@ bbia.disable_llm_chat()
 
 ## Personnalités BBIA
 
-Le LLM adapte ses réponses selon la personnalité BBIA :
+BBIAChat supporte 5 personnalités distinctes :
 
 ```python
+from bbia_sim.bbia_chat import BBIAChat
+
+chat = BBIAChat()
+
 # Personnalité amicale (défaut)
-bbia.bbia_personality = "friendly_robot"
-response = bbia.chat("Salut !")
-# → Réponse chaleureuse et professionnelle
+chat.set_personality("friendly")
+response = chat.chat("Salut !")
+# → Réponse chaleureuse et empathique
 
-# Personnalité curieuse
-bbia.bbia_personality = "curious"
-response = bbia.chat("Salut !")
-# → Réponse avec questions et curiosité
+# Personnalité professionnelle
+chat.set_personality("professional")
+response = chat.chat("Salut !")
+# → Réponse formelle et précise
 
-# Personnalité enthousiaste
-bbia.bbia_personality = "enthusiastic"
-response = bbia.chat("Salut !")
-# → Réponse énergique et positive
+# Personnalité joueuse
+chat.set_personality("playful")
+response = chat.chat("Salut !")
+# → Réponse décontractée et humoristique
 
 # Personnalité calme
-bbia.bbia_personality = "calm"
-response = bbia.chat("Salut !")
+chat.set_personality("calm")
+response = chat.chat("Salut !")
 # → Réponse sereine et apaisante
+
+# Personnalité enthousiaste
+chat.set_personality("enthusiastic")
+response = chat.chat("Salut !")
+# → Réponse énergique et positive
 
 ```
 
@@ -159,19 +174,26 @@ Avantages LLM :
 
 ## Configuration
 
-### Modèles disponibles
+### Modèles disponibles dans BBIAChat
 
-1. **Mistral 7B Instruct** (recommandé)
+1. **Phi-2 2.7B** (recommandé - BBIAChat)
+   - Qualité : excellente
+   - Français : très bon
+   - Taille : ~5GB RAM (compatible RPi 5)
+   - Support MPS/CUDA : oui
+   - Vitesse : ~1-2 secondes/réponse
+
+2. **TinyLlama 1.1B** (fallback - BBIAChat)
+   - Qualité : bonne
+   - Français : bon
+   - Taille : ~2GB RAM (ultra-léger)
+   - Support MPS/CUDA : oui
+   - Vitesse : <1 seconde/réponse
+
+3. **Mistral 7B Instruct** (optionnel - BBIAHuggingFace)
    - Qualité : excellente
    - Français : très bon
    - Taille : ~14GB RAM
-   - Support MPS : oui (Apple Silicon)
-   - Vitesse : ~1-3 secondes/réponse
-
-2. **Llama 3 8B Instruct** (alternative)
-   - Qualité : excellente
-   - Français : bon
-   - Taille : ~16GB RAM
    - Support MPS : oui
    - Vitesse : ~1-3 secondes/réponse
 
@@ -325,7 +347,7 @@ response = bbia.chat("Bonjour")
 
 ---
 
-Status : phase 2 complétée - LLM conversationnel disponible
+**Status :** ✅ **TERMINÉ** (19 Novembre 2025) - BBIAChat avec Phi-2/TinyLlama, 5 personnalités, émotions, préférences
 
 ---
 

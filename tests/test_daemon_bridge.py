@@ -503,7 +503,7 @@ class TestDaemonBridge:
         bridge = ZenohBridge()
         # _publish_error est async, donc utiliser AsyncMock
         # Utiliser setattr pour éviter l'erreur "Cannot assign to a method"
-        bridge._publish_error = AsyncMock()
+        setattr(bridge, "_publish_error", AsyncMock())
 
         mock_sample = MagicMock()
         large_payload = "x" * (1048577)  # 1MB + 1 byte

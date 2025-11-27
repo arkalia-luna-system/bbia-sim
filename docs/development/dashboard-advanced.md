@@ -1,6 +1,6 @@
 # 📊 Guide Dashboard Advanced - BBIA-SIM
 
-**Date** : Oct / Nov. 2025  
+**Date** : 21 Novembre 2025  
 **Version** : 1.0  
 **Compatibilité Python** : 3.11+
 
@@ -20,6 +20,23 @@ Le `dashboard_advanced.py` est un dashboard amélioré qui offre :
 - ✅ **Chat interactif** avec IA
 - ✅ **Panneau troubleshooting interactif** (détection automatique + tests)
 - ✅ **Interface Web** moderne avec FastAPI
+
+**Note** : Le dashboard principal (`src/bbia_sim/daemon/app/dashboard/`) inclut maintenant aussi :
+- ✅ **Graphiques temps réel** avec Chart.js (`sections/telemetry_charts.html`) (24 Nov 2025)
+- ✅ **Sliders émotions avec intensité** (`sections/emotions.html`) (24 Nov 2025)
+- ✅ **Mode démo read-only** (`sections/demo_mode.html`) (24 Nov 2025)
+- ✅ **Presets exportables** (API `/api/presets` via `routers/presets.py`) (24 Nov 2025)
+- ✅ **PWA support** avec manifest + service worker (`static/manifest.json`, `static/sw.js`, icônes) (24 Nov 2025)
+
+### Fichiers Créés Dashboard Principal (24 Nov 2025)
+- ✅ `templates/sections/telemetry_charts.html` - Graphiques Chart.js
+- ✅ `templates/sections/demo_mode.html` - Mode démo read-only
+- ✅ `templates/sections/emotions.html` - Sliders émotions
+- ✅ `static/manifest.json` - Manifest PWA
+- ✅ `static/sw.js` - Service Worker
+- ✅ `static/images/icon-192.png` - Icône PWA 192x192
+- ✅ `static/images/icon-512.png` - Icône PWA 512x512
+- ✅ `routers/presets.py` - API presets
 
 ### 📸 Captures d'écran
 
@@ -351,16 +368,16 @@ python -m bbia_sim.dashboard_advanced
 **BBIA-SIM** - Dashboard Advanced 📊✨
 
 **Version** : 1.0  
-**Date** : Oct / Nov. 2025  
+**Date** : 21 Novembre 2025  
 **Coverage** : **76.71%** ✅ (47 tests)
 
 ---
 
-**Dernière mise à jour** : Oct / Nov. 2025
+**Dernière mise à jour** : 21 Novembre 2025
 
 ---
 
 ## 🎯 Navigation
 
 **Retour à** : [README Documentation](../README.md)  
-**Voir aussi** : [Guide Débutant](../guides/GUIDE_DEBUTANT.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)
+**Voir aussi** : [Guide de Démarrage](../guides/GUIDE_DEMARRAGE.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)

@@ -243,7 +243,7 @@ code_here()
 ## 🔗 Liens
 
 ```markdown
-[Guide Débutant](../guides/GUIDE_DEBUTANT.md) (exemple)
+[Guide de Démarrage](../guides/GUIDE_DEMARRAGE.md) (exemple)
 [Texte externe](https://example.com)
 
 ```

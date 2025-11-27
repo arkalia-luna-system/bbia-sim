@@ -1,6 +1,6 @@
 # 🤖 BBIA - Moteur Cognitif pour Robot Reachy Mini
 
-**Date** : Oct / Nov. 2025
+**Date** : 26 Novembre 2025
 
 ## 📋 Résumé exécutif
 
@@ -20,7 +20,7 @@
 ### 🛡️ Sécurité et fiabilité
 
 - **Limites de sécurité** : clamp automatique à 0.3 rad, joints interdits centralisés
-- **Tests automatisés** : suite validée en CI (800+ tests)
+- **Tests automatisés** : suite validée en CI (1,362 tests collectés, 1,804 fonctions de test)
 - **CI/CD** : pipeline GitHub Actions avec artefacts et validation
 - **Déterminisme** : graine fixée (SEED=42) pour reproductibilité
 
@@ -36,11 +36,19 @@
 
 | Métrique | Valeur | Statut |
 |----------|--------|--------|
-| **Tests** | 800+ (CI) | ✅ OK |
-| **Couverture** | Validée en CI | ✅ OK |
-| **Modules BBIA** | 7 modules | ✅ OK |
-| **Backends** | MuJoCo + Reachy mock | ✅ OK |
-| **Golden traces** | 3 références | ✅ OK |
+| **Fichiers Python source** | 92 fichiers | ✅ OK |
+| **Lignes de code source** | 35,988 lignes | ✅ OK |
+| **Fichiers de tests** | 183 fichiers | ✅ OK |
+| **Fonctions de test** | 1,804 tests | ✅ OK |
+| **Tests collectés** | 1,362 tests (CI) | ✅ OK |
+| **Coverage global** | 68.86% | ✅ OK |
+| **Coverage modules core** | ~50% | ✅ OK |
+| **Conformité SDK** | 100% (21/21 méthodes) | ✅ OK |
+| **Modules BBIA** | 15+ modules | ✅ OK |
+| **Comportements** | 15 comportements | ✅ OK |
+| **Exemples** | 44 fichiers | ✅ **100% exploitation** |
+| **Commits Git** | 423 commits | ✅ OK |
+| **Documentation** | 128+ fichiers MD | ✅ OK |
 
 ---
 
@@ -55,16 +63,32 @@
 
 ### 🔧 Composants principaux
 
-- **`RobotAPI`** : Interface abstraite unifiée
-- **`MuJoCoBackend`** : Implémentation simulation MuJoCo
-- **`ReachyBackend`** : Implémentation robot réel (mock)
+- **`RobotAPI`** : Interface abstraite unifiée (simulation ↔ robot réel)
+- **`MuJoCoBackend`** : Implémentation simulation MuJoCo (512 lignes)
+- **`ReachyMiniBackend`** : Implémentation robot réel SDK officiel (1,724 lignes)
 - **`mapping_reachy.py`** : Source de vérité joints/limites
 - **`hardware_dry_run.py`** : Validation matériel avec artefacts
+
+### 🧠 Modules BBIA (15+ modules)
+
+- **BBIAEmotions** : 12 émotions robotiques (6 SDK + 6 étendues)
+- **BBIAVision** : Vision par ordinateur (YOLOv8n, MediaPipe, DeepFace)
+- **BBIAVoice** : Reconnaissance et synthèse vocale (Whisper, pyttsx3)
+- **BBIAHuggingFace** : LLM conversationnel (Transformers, Phi-2, TinyLlama)
+- **BBIABehavior** : 15 comportements intelligents
+- **BBIAAdaptiveBehavior** : Apprentissage contextuel
+- **BBIAEmotionRecognition** : Reconnaissance émotions
+- **BBIAMemory** : Mémoire contextuelle
+- **BBIATools** : Outils LLM pour actions robot
 
 ### 🧪 Système de tests
 
 - **Tests Unitaires** : Validation composants individuels
 - **Tests d'Intégration** : Validation vertical slices
+- **Tests E2E** : Tests end-to-end complets
+- **Tests de Conformité SDK** : 37 tests validant 21/21 méthodes SDK
+- **Tests de Performance** : Benchmarks latence (p50/p95)
+- **Tests de Sécurité** : Validation entrées utilisateur, injection
 - **Golden Tests** : Validation non-régression avec traces
 - **Tests Hardware** : Validation latence et limites sécurité
 
@@ -179,8 +203,8 @@ python -m pytest tests/test_golden_traces.py -v
 
 # Tests headless
 python -m pytest tests/ -m "not e2e" -v
-
 ```
+
 
 ---
 
@@ -234,7 +258,7 @@ python -m pytest tests/ -m "not e2e" -v
 **Retour à** : [README Documentation](../README.md)  
 **Voir aussi** : [Index Thématique](../reference/INDEX_THEMATIQUE.md)
 
-**Version** : 1.3.2
-**Date** : Oct / Nov. 2025
-**Statut** : Production Ready
+**Version** : 1.4.0
+**Date** : 26 Novembre 2025
+**Statut** : Production Ready • **100% d'exploitation des capacités** ✅
 **Licence** : MIT

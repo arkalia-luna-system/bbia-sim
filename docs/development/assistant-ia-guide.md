@@ -1,17 +1,17 @@
 # 🤖 Guide pour Assistants IA - BBIA-SIM
 
-> **⚠️ ATTENTION : Ce guide est destiné aux ASSISTANTS IA, pas aux humains débutants !**  
-> **👤 Si vous êtes un débutant humain, commencez par :** [Guide Débutant](../guides/GUIDE_DEBUTANT.md)
+> **⚠️ ATTENTION : Ce guide est destiné aux ASSISTANTS IA, pas aux utilisateurs !**  
+> **👤 Si vous êtes un utilisateur, commencez par :** [Guide de Démarrage](../guides/GUIDE_DEMARRAGE.md)
 
-> **Date de mise à jour :** Oct / Nov. 2025  
-> **Version :** 1.0
+> **Date de mise à jour :** 26 Novembre 2025  
+> **Version :** 1.4.0
 
 ## 📋 Vue d'ensemble
 
 Ce guide est destiné aux **assistants IA** (Claude, GPT, Cursor AI, etc.) pour comprendre rapidement l'état du projet, les scripts disponibles, les conventions, et les tâches à poursuivre.
 
 > **💡 Pour les humains** : Si vous cherchez à apprendre à utiliser BBIA-SIM, consultez plutôt :
-> - 🟢 **[Guide Débutant](../guides/GUIDE_DEBUTANT.md)** - Pour commencer
+> - 🟢 **[Guide de Démarrage](../guides/GUIDE_DEMARRAGE.md)** - Pour commencer
 > - 🟡 **[Guide Avancé](../guides/GUIDE_AVANCE.md)** - Pour développeurs
 > - 📚 **[README Documentation](../README.md)** - Navigation complète
 
@@ -21,7 +21,7 @@ Ce guide est destiné aux **assistants IA** (Claude, GPT, Cursor AI, etc.) pour 
 
 ### ✅ Statut général
 
-- **Version :** 1.3.2
+- **Version :** 1.4.0
 - **Documentation :** **131 fichiers MD** dans `docs/` (après nettoyage)
 - **Tests :** **1362 tests sélectionnés** (1418 collectés, 56 deselected)
 - **Coverage :** **68.86%** global (excellent)
@@ -71,7 +71,7 @@ python scripts/verify_docs_complete.py --fix
 - **`scripts/check_official_alignment.py`** - Alignement MJCF/STL
 - **`scripts/generate_conformity_report_reachy_mini.py`** - Génération rapports conformité
 
-**Note** : Les scripts `audit_sdk_officiel_nov2025.py` et `comparaison_profonde_methodes_backend.py` ont été fusionnés dans `compare_with_official_exhaustive.py` (Nov. 2025). ✅
+**Note** : Les scripts `audit_sdk_officiel_26NOV2025.py` et `comparaison_profonde_methodes_backend.py` ont été fusionnés dans `compare_with_official_exhaustive.py` (Nov. 2025). ✅
 
 **Fonctionnalités :**
 
@@ -125,7 +125,7 @@ pytest tests/ --cov=src/bbia_sim --cov-report=html
 
 ### Dates standardisées
 
-- **Date de mise à jour :** Toujours utiliser `Oct / Nov. 2025`
+- **Date de mise à jour :** Toujours utiliser `21 Novembre 2025`
 - **Date de création :** Date du premier commit Git (immutable)
 
 ### Formatage Markdown
@@ -185,7 +185,7 @@ pytest tests/ --cov=src/bbia_sim --cov-report=html
 
 ```text
 docs/
-├── guides/              # Guides utilisateurs (débutant, avancé)
+├── guides/              # Guides utilisateurs (démarrage, avancé)
 ├── development/   # Guides techniques (migration, testing, etc.)
 ├── development/architecture/       # Architecture détaillée
 ├── quality/audits/              # Audits, comparaisons, bilans
@@ -217,7 +217,7 @@ docs/
 ### Fichiers critiques
 
 1. `README.md` - Point d'entrée principal
-2. `docs/reference/PROJECTS.md` - Portfolio projets
+2. `README.md` - Documentation principale du projet
 3. `docs/INDEX_FINAL.md` - Index documentation
 4. `docs/getting-started/troubleshooting.md` - Questions fréquentes
 
@@ -264,7 +264,7 @@ docs/
 ### Documentation clé
 
 - `docs/INDEX_FINAL.md` - Index complet documentation
-- `docs/guides/GUIDE_DEBUTANT.md` - Guide débutant
+- `docs/guides/GUIDE_DEMARRAGE.md` - Guide de démarrage
 - `docs/guides/GUIDE_AVANCE.md` - Guide avancé
 - `docs/development/architecture/ARCHITECTURE_OVERVIEW.md` - Vue d'ensemble architecture
 - `docs/quality/audits/RESUME_ETAT_ACTUEL_BBIA.md` - État actuel détaillé
@@ -326,9 +326,9 @@ docs/
 
 ---
 
-**Dernière mise à jour :** Oct / Nov. 2025
+**Dernière mise à jour :** 21 Novembre 2025
 
 ## 🎯 Navigation
 
 **Retour à** : [README Documentation](../README.md)  
-**Voir aussi** : [Guide Débutant](../guides/GUIDE_DEBUTANT.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)
+**Voir aussi** : [Guide de Démarrage](../guides/GUIDE_DEMARRAGE.md) • [Index Thématique](../reference/INDEX_THEMATIQUE.md)

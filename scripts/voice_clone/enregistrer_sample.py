@@ -4,6 +4,7 @@ Usage:
   source venv-voice-clone/bin/activate  # venv dédié si besoin
   python scripts/voice_clone/enregistrer_sample.py --out assets/voice/ref.wav --dur 30
 """
+
 import argparse
 
 import sounddevice as sd

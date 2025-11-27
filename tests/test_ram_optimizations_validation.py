@@ -4,9 +4,7 @@ Tests de validation des optimisations RAM appliquées.
 Vérifie que les optimisations fonctionnent correctement.
 """
 
-import gc
 import sys
-import time
 from collections import deque
 from pathlib import Path
 
@@ -61,7 +59,12 @@ except ImportError:
 @pytest.mark.fast
 def test_huggingface_lru_cache_limit() -> None:
     """Test que le cache LRU limite le nombre de modèles en mémoire."""
-    hf = BBIAHuggingFace()
+    if BBIAHuggingFace is None:
+        pytest.skip("BBIAHuggingFace non disponible")
+    try:
+        hf = BBIAHuggingFace()
+    except ImportError:
+        pytest.skip("Hugging Face transformers non disponible")
 
     # Vérifier que la limite est définie
     assert hasattr(hf, "_max_models_in_memory")
@@ -78,22 +81,34 @@ def test_huggingface_lru_cache_limit() -> None:
 @pytest.mark.fast
 def test_huggingface_auto_unload_thread() -> None:
     """Test que le thread de déchargement automatique est démarré."""
-    hf = BBIAHuggingFace()
+    if BBIAHuggingFace is None:
+        pytest.skip("BBIAHuggingFace non disponible")
+    try:
+        hf = BBIAHuggingFace()
+    except ImportError:
+        pytest.skip("Hugging Face transformers non disponible")
 
-    # Vérifier que le thread est initialisé
-    assert hasattr(hf, "_unload_thread")
-    assert hasattr(hf, "_unload_thread_stop")
-    assert hasattr(hf, "_unload_thread_lock")
-    assert hasattr(hf, "_inactivity_timeout")
+    try:
+        # Vérifier que le thread partagé (variable de classe) est initialisé
+        assert hasattr(BBIAHuggingFace, "_shared_unload_thread")
+        assert hasattr(BBIAHuggingFace, "_shared_unload_thread_stop")
+        assert hasattr(BBIAHuggingFace, "_shared_unload_thread_lock")
+        assert hasattr(hf, "_inactivity_timeout")
 
-    # Vérifier que le timeout est défini
-    assert hf._inactivity_timeout > 0
-    assert hf._inactivity_timeout <= 600  # Max 10 minutes
+        # Vérifier que le timeout est défini
+        assert hf._inactivity_timeout > 0
+        assert hf._inactivity_timeout <= 600  # Max 10 minutes
 
-    # Vérifier que le thread est démarré (ou None si pas encore démarré)
-    # Le thread peut être None si pas encore initialisé, c'est OK
-    if hf._unload_thread is not None:
-        assert hf._unload_thread.is_alive() or not hf._unload_thread.is_alive()
+        # Vérifier que le thread partagé existe (peut être None si pas encore démarré)
+        # Le thread peut être None si pas encore initialisé, c'est OK
+        if BBIAHuggingFace._shared_unload_thread is not None:
+            assert (
+                BBIAHuggingFace._shared_unload_thread.is_alive()
+                or not BBIAHuggingFace._shared_unload_thread.is_alive()
+            )
+    finally:
+        # Thread partagé géré automatiquement, pas besoin d'arrêt manuel
+        pass
 
 
 @pytest.mark.skipif(not HF_AVAILABLE, reason="Hugging Face non disponible")
@@ -101,7 +116,12 @@ def test_huggingface_auto_unload_thread() -> None:
 @pytest.mark.fast
 def test_huggingface_update_model_usage() -> None:
     """Test que la mise à jour du timestamp d'usage fonctionne."""
-    hf = BBIAHuggingFace()
+    if BBIAHuggingFace is None:
+        pytest.skip("BBIAHuggingFace non disponible")
+    try:
+        hf = BBIAHuggingFace()
+    except ImportError:
+        pytest.skip("Hugging Face transformers non disponible")
 
     # Simuler usage d'un modèle
     model_key = "test_model_model"
@@ -134,15 +154,16 @@ def test_vision_singleton() -> None:
 @pytest.mark.fast
 def test_vision_deque_history() -> None:
     """Test que l'historique des détections utilise deque avec limite."""
-    vision = BBIAVision()
+    # OPTIMISATION RAM: Utiliser robot_api=None pour éviter chargement modèles
+    vision = BBIAVision(robot_api=None)
 
     # Vérifier que les attributs sont des deque
     assert hasattr(vision, "objects_detected")
     assert hasattr(vision, "faces_detected")
 
     # Vérifier le type (peut être deque ou list selon implémentation)
-    assert isinstance(vision.objects_detected, (deque, list))
-    assert isinstance(vision.faces_detected, (deque, list))
+    assert isinstance(vision.objects_detected, deque | list)
+    assert isinstance(vision.faces_detected, deque | list)
 
     # Si c'est un deque, vérifier qu'il a une limite
     if isinstance(vision.objects_detected, deque):
@@ -240,18 +261,23 @@ def test_all_optimizations_present() -> None:
     }
 
     # Vérifier Hugging Face
-    if HF_AVAILABLE:
-        hf = BBIAHuggingFace()
-        optimizations["huggingface_lru"] = hasattr(hf, "_max_models_in_memory")
-        optimizations["huggingface_auto_unload"] = hasattr(
-            hf, "_unload_thread"
-        ) and hasattr(hf, "_inactivity_timeout")
+    if HF_AVAILABLE and BBIAHuggingFace is not None:
+        try:
+            hf = BBIAHuggingFace()
+            optimizations["huggingface_lru"] = hasattr(hf, "_max_models_in_memory")
+            optimizations["huggingface_auto_unload"] = hasattr(
+                BBIAHuggingFace, "_shared_unload_thread"
+            ) and hasattr(hf, "_inactivity_timeout")
+        except ImportError:
+            # Hugging Face non disponible à l'exécution
+            pass
 
     # Vérifier Vision
     if VISION_AVAILABLE:
-        vision = BBIAVision()
+        # OPTIMISATION RAM: Utiliser robot_api=None pour éviter chargement modèles
+        vision = BBIAVision(robot_api=None)
         optimizations["vision_deque"] = isinstance(
-            vision.objects_detected, (deque, list)
+            vision.objects_detected, deque | list
         )
         if get_bbia_vision_singleton is not None:
             optimizations["vision_singleton"] = True

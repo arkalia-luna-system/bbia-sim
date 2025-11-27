@@ -1,7 +1,7 @@
-# ✅ Checklist Validation Hardware - Oct / Nov. 2025
+# ✅ Checklist Validation Hardware - 26 Novembre 2025
 
 **Objectif :** Valider BBIA-SIM sur robot Reachy Mini physique  
-**Date cible :** Oct / Nov. 2025  
+**Date cible :** 26 Novembre 2025  
 **Durée estimée :** 2-3 semaines à plein temps
 
 ---
@@ -334,7 +334,7 @@
 
 1. Vérifier batterie/alimentation
 2. Redémarrer robot
-3. Augmenter timeout tests (`--timeout=60`)
+3. Timeout tests configuré (`--timeout=60` dans pyproject.toml et CI)
 4. Vérifier connexion réseau
 
 ### Latence élevée

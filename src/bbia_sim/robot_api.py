@@ -1,15 +1,21 @@
 #!/usr/bin/env python3
 """RobotAPI - Interface unifiée Sim/Robot
-Backend unique pour MuJoCo et Reachy réel
+Backend unique pour MuJoCo et Reachy réel.
 """
 
 import logging
+import math
+import time
 from abc import ABC, abstractmethod
 from typing import Any
 
 from .utils.types import RobotStatus
 
 logger = logging.getLogger(__name__)
+
+# Constantes pour comportements
+BEHAVIOR_STEP_DELAY = 0.1  # Délai entre étapes (10 Hz)
+BEHAVIOR_STEPS_PER_SECOND = 10  # Fréquence d'exécution des comportements
 
 
 class RobotAPI(ABC):
@@ -50,7 +56,7 @@ class RobotAPI(ABC):
         """Valide et clamp la position d'un joint."""
         # Vérifier si le joint est interdit
         if joint_name in self.forbidden_joints:
-            logger.error(f"Joint interdit: {joint_name}")
+            logger.error("Joint interdit: %s", joint_name)
             return False, position
 
         # Clamp l'amplitude pour la sécurité
@@ -98,10 +104,14 @@ class RobotAPI(ABC):
         Raises:
             NotImplementedError: Si le backend ne supporte pas goto_target
             ValueError: Si duration <= 0
+
         """
-        raise NotImplementedError(
+        msg = (
             f"{self.__class__.__name__} ne supporte pas goto_target(). "
             "Utilisez set_joint_pos() pour contrôler les joints individuellement."
+        )
+        raise NotImplementedError(
+            msg,
         )
 
     @abstractmethod
@@ -134,17 +144,17 @@ class RobotAPI(ABC):
             "calm",  # Ajouté pour compatibilité démos
         }
         if emotion not in valid_emotions:
-            logger.error(f"Émotion invalide: {emotion}")
+            logger.error("Émotion invalide: %s", emotion)
             return False
 
         # Validation de l'intensité
         if not 0.0 <= intensity <= 1.0:
-            logger.warning(f"Intensité hors limites, clamp: {intensity}")
+            logger.warning("Intensité hors limites, clamp: %s", intensity)
             intensity = max(0.0, min(1.0, intensity))
 
         self.current_emotion = emotion
         self.emotion_intensity = intensity
-        logger.info(f"Émotion définie: {emotion} (intensité: {intensity})")
+        logger.info("Émotion définie: %s (intensité: %s)", emotion, intensity)
         return True
 
     def look_at(self, target_x: float, target_y: float, target_z: float = 0.0) -> bool:
@@ -180,7 +190,7 @@ class RobotAPI(ABC):
                 )
                 return True
             except Exception as e:
-                logger.warning(f"Erreur look_at_world, fallback générique: {e}")
+                logger.warning("Erreur look_at_world, fallback générique: %s", e)
 
         # Fallback: Mapping cible → angle de rotation (yaw_body) simplifié
         # CORRECTION EXPERTE: Validation coordonnées avant utilisation
@@ -233,10 +243,10 @@ class RobotAPI(ABC):
             "demo",  # Comportement de démonstration
         }
         if behavior_name not in valid_behaviors:
-            logger.error(f"Comportement invalide: {behavior_name}")
+            logger.error("Comportement invalide: %s", behavior_name)
             return False
 
-        logger.info(f"Exécution comportement: {behavior_name} (durée: {duration}s)")
+        logger.info("Exécution comportement: %s (durée: %ss)", behavior_name, duration)
 
         # Implémentation basique - à étendre selon le backend
         if behavior_name == "wake_up":
@@ -253,45 +263,38 @@ class RobotAPI(ABC):
             return self._execute_interaction(duration)
         if behavior_name == "demo":
             return self._execute_demo(duration)
-        logger.warning(f"Comportement {behavior_name} non implémenté")
+        logger.warning("Comportement %s non implémenté", behavior_name)
         return False
 
     def _execute_wake_up(self, duration: float) -> bool:
         """Exécute le comportement de réveil."""
-        import math
-        import time
-
-        steps = int(duration * 10)  # 10 Hz
+        steps = int(duration * BEHAVIOR_STEPS_PER_SECOND)
         for step in range(steps):
             t = step / steps
-            angle = 0.3 * (1 - math.cos(math.pi * t))  # Mouvement de réveil
+            # Amplitude réduite à 0.15 pour respecter la limite safe_amplitude_limit (0.3 rad)
+            # max(angle) = 0.15 * (1 - (-1)) = 0.3 rad
+            angle = 0.15 * (1 - math.cos(math.pi * t))  # Mouvement de réveil
             self.set_joint_pos("yaw_body", angle)
             self.step()
-            time.sleep(0.1)
+            time.sleep(BEHAVIOR_STEP_DELAY)
 
         return True
 
     def _execute_greeting(self, duration: float) -> bool:
         """Exécute le comportement de salutation."""
-        import math
-        import time
-
-        steps = int(duration * 10)  # 10 Hz
+        steps = int(duration * BEHAVIOR_STEPS_PER_SECOND)
         for step in range(steps):
             t = step / steps
             angle = 0.2 * math.sin(4 * math.pi * t)  # Mouvement de salutation
             self.set_joint_pos("yaw_body", angle)
             self.step()
-            time.sleep(0.1)
+            time.sleep(BEHAVIOR_STEP_DELAY)
 
         return True
 
     def _execute_nod(self, duration: float) -> bool:
         """Exécute un hochement de tête."""
-        import math
-        import time
-
-        steps = int(duration * 10)  # 10 Hz
+        steps = int(duration * BEHAVIOR_STEPS_PER_SECOND)
         for step in range(steps):
             t = step / steps
             # Mouvement de hochement (pitch)
@@ -299,82 +302,129 @@ class RobotAPI(ABC):
             if "pitch_head" in self.get_available_joints():
                 self.set_joint_pos("pitch_head", pitch)
             self.step()
-            time.sleep(0.1)
+            time.sleep(BEHAVIOR_STEP_DELAY)
 
         return True
 
     def _execute_goto_sleep(self, duration: float) -> bool:
         """Exécute le comportement d'endormissement."""
-        import time
+        # Utiliser set_sleeping_pose si disponible (Issue #410)
+        if hasattr(self, "set_sleeping_pose"):
+            return self.set_sleeping_pose(duration=duration)
 
-        steps = int(duration * 10)  # 10 Hz
+        # Fallback: méthode simplifiée
+        steps = int(duration * BEHAVIOR_STEPS_PER_SECOND)
         for step in range(steps):
             t = step / steps
             # Mouvement lent vers position neutre
             angle = 0.2 * (1 - t)  # Retour progressif à 0
             self.set_joint_pos("yaw_body", angle)
             self.step()
-            time.sleep(0.1)
+            time.sleep(BEHAVIOR_STEP_DELAY)
 
         return True
 
+    def set_sleeping_pose(self, duration: float = 2.0) -> bool:
+        """Définit une pose de sommeil naturelle (Issue #410).
+
+        Args:
+            duration: Durée de la transition en secondes
+
+        Returns:
+            True si la pose a été définie avec succès
+
+        """
+        try:
+            # Pose sommeil naturelle : tête baissée, corps légèrement tourné, antennes baissées
+            from reachy_mini.utils import create_head_pose
+
+            # Tête baissée (pitch négatif)
+            head_pose = create_head_pose(yaw=0.0, pitch=-0.25, degrees=False)
+
+            # Antennes baissées pour pose sommeil
+            antennas = [-0.2, 0.2]  # Antennes légèrement baissées
+
+            # Corps légèrement tourné pour pose plus naturelle
+            body_yaw = -0.1  # Légère rotation gauche
+
+            if hasattr(self, "goto_target"):
+                self.goto_target(
+                    head=head_pose,
+                    antennas=antennas,
+                    body_yaw=body_yaw,
+                    duration=duration,
+                    method="minjerk",
+                )
+                logger.info("✅ Pose sommeil définie (Issue #410)")
+                return True
+
+            # Fallback: utiliser set_joint_pos si goto_target non disponible
+            if hasattr(self, "set_joint_pos"):
+                self.set_joint_pos("yaw_body", body_yaw)
+                logger.info("✅ Pose sommeil partielle définie (corps uniquement)")
+                return True
+
+            return False
+        except ImportError:
+            # SDK non disponible, utiliser méthode simplifiée
+            if hasattr(self, "set_joint_pos"):
+                self.set_joint_pos("yaw_body", -0.1)
+                logger.info("✅ Pose sommeil simplifiée définie")
+                return True
+            return False
+        except Exception:
+            logger.exception("Erreur set_sleeping_pose")
+            return False
+
     def _execute_exploration(self, duration: float) -> bool:
         """Exécute le comportement d'exploration."""
-        import math
-        import time
-
-        steps = int(duration * 10)  # 10 Hz
+        steps = int(duration * BEHAVIOR_STEPS_PER_SECOND)
         for step in range(steps):
             t = step / steps
             # Mouvement d'exploration (balayage)
             angle = 0.3 * math.sin(2 * math.pi * t / 2)  # Balayage lent
             self.set_joint_pos("yaw_body", angle)
             self.step()
-            time.sleep(0.1)
+            time.sleep(BEHAVIOR_STEP_DELAY)
 
         return True
 
     def _execute_interaction(self, duration: float) -> bool:
         """Exécute le comportement d'interaction."""
-        import math
-        import time
-
-        steps = int(duration * 10)  # 10 Hz
+        steps = int(duration * BEHAVIOR_STEPS_PER_SECOND)
         for step in range(steps):
             t = step / steps
             # Mouvement d'interaction (petits mouvements)
             angle = 0.15 * math.sin(6 * math.pi * t)  # Mouvements rapides
             self.set_joint_pos("yaw_body", angle)
             self.step()
-            time.sleep(0.1)
+            time.sleep(BEHAVIOR_STEP_DELAY)
 
         return True
 
     def _execute_demo(self, duration: float) -> bool:
         """Exécute le comportement de démonstration."""
-        import math
-        import time
-
-        steps = int(duration * 10)  # 10 Hz
+        steps = int(duration * BEHAVIOR_STEPS_PER_SECOND)
         for step in range(steps):
             t = step / steps
             # Séquence de démonstration (combinaison de mouvements)
             if t < 0.33:
                 angle = 0.2 * math.sin(4 * math.pi * t)
             elif t < 0.66:
-                angle = 0.3 * (1 - math.cos(math.pi * (t - 0.33) * 3))
+                # Amplitude réduite à 0.15 pour respecter la limite safe_amplitude_limit (0.3 rad)
+                angle = 0.15 * (1 - math.cos(math.pi * (t - 0.33) * 3))
             else:
                 angle = 0.2 * math.sin(4 * math.pi * t)
             self.set_joint_pos("yaw_body", angle)
             self.step()
-            time.sleep(0.1)
+            time.sleep(BEHAVIOR_STEP_DELAY)
 
         return True
 
     def clamp_joint_position(self, joint_name: str, position: float) -> float:
         """Clamp une position de joint dans les limites sûres."""
         if joint_name in self.forbidden_joints:
-            logger.warning(f"Joint interdit: {joint_name}")
+            logger.warning("Joint interdit: %s", joint_name)
             return 0.0
 
         # Limites générales
@@ -395,6 +445,7 @@ class RobotAPI(ABC):
 
         Returns:
             RobotStatus: Dictionnaire typé contenant le statut du robot
+
         """
         return {
             "connected": self.is_connected,
@@ -430,4 +481,5 @@ def __getattr__(name: str) -> Any:
         from .robot_factory import RobotFactory
 
         return RobotFactory
-    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+    msg = f"module {__name__!r} has no attribute {name!r}"
+    raise AttributeError(msg)

@@ -247,7 +247,7 @@ class BBIATools:
             ValueError: Si l'outil n'existe pas ou paramètres invalides
 
         """
-        logger.info(f"🔧 Exécution outil: {tool_name} avec params: {parameters}")
+        logger.info("🔧 Exécution outil: %s avec params: %s", tool_name, parameters)
 
         if tool_name == "move_head":
             return self._execute_move_head(parameters)
@@ -265,7 +265,8 @@ class BBIATools:
             return self._execute_stop_emotion(parameters)
         if tool_name == "do_nothing":
             return self._execute_do_nothing(parameters)
-        raise ValueError(f"Outil inconnu: {tool_name}")
+        msg = f"Outil inconnu: {tool_name}"
+        raise ValueError(msg)
 
     def _execute_move_head(self, parameters: dict[str, Any]) -> dict[str, Any]:
         """Exécute le mouvement de tête."""
@@ -316,8 +317,11 @@ class BBIATools:
                 "status": "success",
                 "detail": f"Tête déplacée {direction} (intensité: {intensity:.2f})",
             }
+        except (AttributeError, RuntimeError, ValueError) as e:
+            logger.exception("Erreur move_head")
+            return {"status": "error", "detail": str(e)}
         except Exception as e:
-            logger.error(f"Erreur move_head: {e}")
+            logger.exception("Erreur inattendue move_head")
             return {"status": "error", "detail": str(e)}
 
     def _execute_camera(self, parameters: dict[str, Any]) -> dict[str, Any]:
@@ -330,10 +334,12 @@ class BBIATools:
         try:
             # Capture image (utiliser _capture_image_from_camera ou méthode publique)
             image = None
-            if hasattr(self.vision, "_capture_image_from_camera"):
-                image = self.vision._capture_image_from_camera()
-            elif hasattr(self.vision, "capture_image"):
+            # Utiliser méthode publique si disponible, sinon méthode privée avec getattr
+            if hasattr(self.vision, "capture_image"):
                 image = self.vision.capture_image()
+            elif hasattr(self.vision, "_capture_image_from_camera"):
+                # OPTIMISATION: Accès direct plus efficace que getattr avec constante
+                image = self.vision._capture_image_from_camera()  # noqa: SLF001
             else:
                 return {"status": "error", "detail": "Méthode capture non disponible"}
 
@@ -367,8 +373,11 @@ class BBIATools:
                 )
 
             return result
+        except (AttributeError, RuntimeError, OSError, ValueError) as e:
+            logger.exception("Erreur camera")
+            return {"status": "error", "detail": str(e)}
         except Exception as e:
-            logger.error(f"Erreur camera: {e}")
+            logger.exception("Erreur inattendue camera")
             return {"status": "error", "detail": str(e)}
 
     def _execute_head_tracking(self, parameters: dict[str, Any]) -> dict[str, Any]:
@@ -376,7 +385,7 @@ class BBIATools:
         enabled = parameters.get("enabled", True)
         self.head_tracking_enabled = enabled
 
-        logger.info(f"Suivi visage: {'activé' if enabled else 'désactivé'}")
+        logger.info("Suivi visage: %s", "activé" if enabled else "désactivé")
 
         # Intégration VisionTrackingBehavior pour activation réelle
         if enabled and self.vision and self.robot_api:
@@ -406,8 +415,10 @@ class BBIATools:
                 logger.warning(
                     "VisionTrackingBehavior non disponible - suivi basique activé",
                 )
-            except Exception as e:
-                logger.error(f"Erreur activation VisionTrackingBehavior: {e}")
+            except (AttributeError, RuntimeError):
+                logger.exception("Erreur activation VisionTrackingBehavior")
+            except Exception:
+                logger.exception("Erreur inattendue activation VisionTrackingBehavior")
 
         return {
             "status": "success",
@@ -435,17 +446,23 @@ class BBIATools:
             recorded_moves = RecordedMoves(dataset)
             move = recorded_moves.get(move_name)
 
+            # Issue #344: Améliorer enchaînement fluide des danses
+            # Utiliser initial_goto_duration > 0 pour transition fluide depuis position actuelle
+            initial_goto_duration = 0.5  # Transition de 0.5s pour enchaînement fluide
+
             # Jouer le mouvement
             if hasattr(self.robot_api, "play_move"):
                 self.robot_api.play_move(
                     move,
                     play_frequency=100.0,
-                    initial_goto_duration=0.0,
+                    initial_goto_duration=initial_goto_duration,
                 )
             elif hasattr(self.robot_api, "async_play_move"):
                 import asyncio
 
-                asyncio.create_task(self.robot_api.async_play_move(move, 100.0, 0.0))
+                asyncio.create_task(
+                    self.robot_api.async_play_move(move, 100.0, initial_goto_duration),
+                )
             else:
                 return {"status": "error", "detail": "play_move non disponible"}
 
@@ -460,8 +477,11 @@ class BBIATools:
             return {"status": "error", "detail": "SDK officiel reachy_mini requis"}
         except ValueError as e:
             return {"status": "error", "detail": f"Mouvement non trouvé: {e}"}
+        except (AttributeError, RuntimeError) as e:
+            logger.exception("Erreur dance")
+            return {"status": "error", "detail": str(e)}
         except Exception as e:
-            logger.error(f"Erreur dance: {e}")
+            logger.exception("Erreur inattendue dance")
             return {"status": "error", "detail": str(e)}
 
     def _execute_stop_dance(self, parameters: dict[str, Any]) -> dict[str, Any]:
@@ -489,15 +509,17 @@ class BBIATools:
                                 "(arrêt d'urgence)"
                             ),
                         }
-                    logger.warning(f"emergency_stop() a échoué pour '{dance_name}'")
+                    logger.warning("emergency_stop() a échoué pour '%s'", dance_name)
                 else:
                     logger.warning(
                         "robot_api.emergency_stop() non disponible - arrêt basique",
                     )
-            except Exception as e:
-                logger.error(f"Erreur arrêt danse: {e}")
+            except (AttributeError, RuntimeError):
+                logger.exception("Erreur arrêt danse")
+            except Exception:
+                logger.exception("Erreur inattendue arrêt danse")
 
-        logger.info(f"Danse '{dance_name}' arrêtée")
+        logger.info("Danse '%s' arrêtée", dance_name)
 
         return {
             "status": "success",
@@ -527,8 +549,11 @@ class BBIATools:
                 ),
                 "emotion": emotion,
             }
+        except (AttributeError, RuntimeError, ValueError) as e:
+            logger.exception("Erreur play_emotion")
+            return {"status": "error", "detail": str(e)}
         except Exception as e:
-            logger.error(f"Erreur play_emotion: {e}")
+            logger.exception("Erreur inattendue play_emotion")
             return {"status": "error", "detail": str(e)}
 
     def _execute_stop_emotion(self, parameters: dict[str, Any]) -> dict[str, Any]:
@@ -542,8 +567,10 @@ class BBIATools:
         try:
             if self.robot_api:
                 self.robot_api.set_emotion("neutral", 0.5)
+        except (AttributeError, RuntimeError, ValueError) as e:
+            logger.warning("Erreur stop_emotion: %s", e)
         except Exception as e:
-            logger.warning(f"Erreur stop_emotion: {e}")
+            logger.warning("Erreur inattendue stop_emotion: %s", e)
 
         return {
             "status": "success",
@@ -554,7 +581,7 @@ class BBIATools:
         """Ne fait rien (inactivité)."""
         duration = parameters.get("duration", 2.0)
 
-        logger.info(f"Mode inactif pendant {duration:.1f}s")
+        logger.info("Mode inactif pendant %.1fs", duration)
 
         # Ne rien faire - le robot reste dans sa position actuelle
         return {

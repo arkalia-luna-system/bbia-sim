@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """mapping_reachy.py - Source de vérité pour les joints Reachy Mini
-Mapping unique des noms/limites joints pour éviter les divergences sim ↔ réel
+Mapping unique des noms/limites joints pour éviter les divergences sim ↔ réel.
 """
 
 import logging
@@ -115,10 +115,12 @@ class ReachyMapping:
     def get_joint_info(cls, joint_name: str) -> JointInfo:
         """Récupère les informations d'un joint."""
         if joint_name in cls.FORBIDDEN_JOINTS:
-            raise ValueError(f"Joint interdit: {joint_name}")
+            msg = f"Joint interdit: {joint_name}"
+            raise ValueError(msg)
 
         if joint_name not in cls.JOINTS:
-            raise ValueError(f"Joint inconnu: {joint_name}")
+            msg = f"Joint inconnu: {joint_name}"
+            raise ValueError(msg)
 
         return cls.JOINTS[joint_name]
 
@@ -229,7 +231,7 @@ if __name__ == "__main__":
         try:
             is_valid, clamped = ReachyMapping.validate_position(joint, pos)
             logging.info(f"  {joint}({pos}) → {is_valid}, {clamped:.2f}")
-        except ValueError as e:
-            logging.error(f"  {joint}({pos}) → ERREUR: {e}")
+        except ValueError:
+            logging.exception(f"  {joint}({pos}) → ERREUR")
 
     logging.info("\n✅ Mapping Reachy Mini validé !")

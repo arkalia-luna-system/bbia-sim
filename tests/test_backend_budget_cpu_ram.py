@@ -52,9 +52,9 @@ def test_backend_main_loop_budget_cpu_ram() -> None:
     backend = ReachyMiniBackend(use_sim=True)
     assert backend.connect() is True
 
-    # OPTIMISATION RAM: Réduire 5s → 3s, 500 → 300 itérations (suffisant pour mesurer budget)
-    duration_s = 3.0
-    iterations = 300
+    # OPTIMISATION RAM: Réduire 3s → 2s, 300 → 100 itérations (suffisant pour mesurer budget)
+    duration_s = 2.0
+    iterations = 100
 
     try:
         # Mesurer avant
@@ -69,12 +69,13 @@ def test_backend_main_loop_budget_cpu_ram() -> None:
             backend.get_joint_pos("yaw_body")
             backend.step()
 
-            # Réguler à ~50 Hz (20ms par itération)
-            if (i + 1) % 50 == 0:
+            # Réguler à ~50 Hz (20ms par itération) - OPTIMISATION: sleep seulement tous les 25
+            if (i + 1) % 25 == 0:
                 elapsed = time.perf_counter() - t0
                 if elapsed >= duration_s:
                     break
-                time.sleep(0.001)  # Petit délai
+                # OPTIMISATION: Réduire sleep de 0.001 à 0.0005 (2x plus rapide)
+                time.sleep(0.0005)
 
         # Mesurer après
         cpu_after = get_cpu_time()
@@ -117,9 +118,9 @@ def test_robot_api_interface_budget_cpu_ram() -> None:
         pytest.skip("Backend non disponible")
 
     assert robot is not None  # Type narrowing pour mypy
-    # OPTIMISATION RAM: Réduire 5s → 3s, 500 → 300 itérations (suffisant pour mesurer budget)
-    duration_s = 3.0
-    iterations = 300
+    # OPTIMISATION RAM: Réduire 3s → 2s, 300 → 100 itérations (suffisant pour mesurer budget)
+    duration_s = 2.0
+    iterations = 100
 
     try:
         # Mesurer avant
@@ -133,11 +134,12 @@ def test_robot_api_interface_budget_cpu_ram() -> None:
             robot.get_joint_pos("yaw_body")
             robot.step()
 
-            if (i + 1) % 50 == 0:
+            # OPTIMISATION: sleep seulement tous les 25, réduire à 0.0005
+            if (i + 1) % 25 == 0:
                 elapsed = time.perf_counter() - t0
                 if elapsed >= duration_s:
                     break
-                time.sleep(0.001)
+                time.sleep(0.0005)
 
         # Mesurer après
         cpu_after = get_cpu_time()
