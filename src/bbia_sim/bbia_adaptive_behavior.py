@@ -616,7 +616,13 @@ class BBIAAdaptiveBehavior:
         """
         robot_api = robot_api or self.robot_api
         if not robot_api:
-            logger.warning("⚠️ robot_api non disponible - comportement non exécuté")
+            # Log en debug en CI (warning attendu dans les tests)
+            import os
+
+            if os.environ.get("CI", "false").lower() == "true":
+                logger.debug("robot_api non disponible - comportement non exécuté")
+            else:
+                logger.warning("⚠️ robot_api non disponible - comportement non exécuté")
             return False
 
         try:
