@@ -238,8 +238,6 @@ class SimulationService:
             return True
         except Exception as e:
             # Log en debug en CI (erreurs attendues dans les tests avec mocks)
-            import os
-
             if os.environ.get("CI", "false").lower() == "true":
                 logger.debug("Erreur lors de la définition de la position: %s", e)
             else:
@@ -260,8 +258,6 @@ class SimulationService:
             return self.simulator.get_available_joints()  # type: ignore[no-any-return]
         except Exception as e:
             # Log en debug en CI (erreurs attendues dans les tests avec mocks)
-            import os
-
             if os.environ.get("CI", "false").lower() == "true":
                 logger.debug("Erreur lors de la récupération des articulations: %s", e)
             else:
