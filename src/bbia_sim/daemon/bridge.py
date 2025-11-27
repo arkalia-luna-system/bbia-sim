@@ -278,7 +278,13 @@ class ZenohBridge:
             self.logger.exception("Erreur décodage JSON")
             await self._publish_error(f"Erreur format JSON: {e}")
         except Exception as e:
-            self.logger.exception("Erreur traitement commande Zenoh")
+            # Log en debug en CI (erreurs attendues dans les tests avec mocks)
+            import os
+
+            if os.environ.get("CI", "false").lower() == "true":
+                self.logger.debug("Erreur traitement commande Zenoh: %s", e)
+            else:
+                self.logger.exception("Erreur traitement commande Zenoh")
             await self._publish_error(f"Erreur commande: {e}")
 
     async def _command_processor(self) -> None:

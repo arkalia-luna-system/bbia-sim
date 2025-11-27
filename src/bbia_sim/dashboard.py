@@ -95,8 +95,14 @@ class BBIAWebSocketManager:
                 # Connexion fermée ou erreur de connexion
                 logger.debug("WebSocket déconnecté lors du broadcast: %s", e)
                 disconnected.append(connection)
-            except Exception:
-                logger.exception("❌ Erreur broadcast")
+            except Exception as e:
+                # Log en debug en CI (erreurs attendues dans les tests avec mocks)
+                import os
+
+                if os.environ.get("CI", "false").lower() == "true":
+                    logger.debug("Erreur broadcast: %s", e)
+                else:
+                    logger.exception("❌ Erreur broadcast")
                 disconnected.append(connection)
 
         # Nettoyer les connexions fermées
@@ -136,7 +142,13 @@ app = FastAPI(title="BBIA Dashboard", version="1.3.2") if FASTAPI_AVAILABLE else
 def create_dashboard_app() -> FastAPI | None:
     """Crée l'application dashboard FastAPI."""
     if not FASTAPI_AVAILABLE:
-        logger.error("❌ FastAPI non disponible")
+        # Log en debug en CI (erreur attendue dans les tests)
+        import os
+
+        if os.environ.get("CI", "false").lower() == "true":
+            logger.debug("FastAPI non disponible")
+        else:
+            logger.error("❌ FastAPI non disponible")
         return None
 
     return app
@@ -480,7 +492,13 @@ def run_dashboard(
     logger.info("🤖 Backend robot: %s", backend)
 
     if app is None:
-        logger.error("❌ Application FastAPI non disponible")
+        # Log en debug en CI (erreur attendue dans les tests)
+        import os
+
+        if os.environ.get("CI", "false").lower() == "true":
+            logger.debug("Application FastAPI non disponible")
+        else:
+            logger.error("❌ Application FastAPI non disponible")
         return
     uvicorn.run(app, host=host, port=port, log_level="info")
 
