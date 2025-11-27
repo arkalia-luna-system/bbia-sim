@@ -605,20 +605,29 @@ class ReachyMiniBackend(RobotAPI):
         individuellement).
         """
         if joint_name.startswith("stewart_"):
-            # Pas de log en CI (warning attendu dans les tests)
-            import os
+            # Cache pour ne logger le warning qu'une seule fois par joint
+            if not hasattr(self, "_stewart_warnings_logged"):
+                self._stewart_warnings_logged: set[str] = set()
 
-            if os.environ.get("CI", "false").lower() != "true":
-                logger.warning(
-                    "⚠️  Tentative de contrôle individuel du joint %s - "
-                    "Ce joint ne peut PAS être contrôlé individuellement "
-                    "(plateforme Stewart utilise IK).\n"
-                    "   → Utilisez goto_target() ou set_target_head_pose() "
-                    "avec create_head_pose() pour contrôler la tête via la "
-                    "cinématique inverse, ou utilisez look_at_world() pour "
-                    "regarder vers un point.",
-                    joint_name,
-                )
+            # Logger le warning seulement la première fois pour ce joint
+            if joint_name not in self._stewart_warnings_logged:
+                # Pas de log en CI (warning attendu dans les tests)
+                import os
+
+                if os.environ.get("CI", "false").lower() != "true":
+                    logger.warning(
+                        "⚠️  Tentative de contrôle individuel du joint %s - "
+                        "Ce joint ne peut PAS être contrôlé individuellement "
+                        "(plateforme Stewart utilise IK).\n"
+                        "   → Utilisez goto_target() ou set_target_head_pose() "
+                        "avec create_head_pose() pour contrôler la tête via la "
+                        "cinématique inverse, ou utilisez look_at_world() pour "
+                        "regarder vers un point.\n"
+                        "   (Ce warning ne sera affiché qu'une seule fois par joint)",
+                        joint_name,
+                    )
+                # Marquer ce joint comme déjà loggé
+                self._stewart_warnings_logged.add(joint_name)
             return False
         return True
 
@@ -1602,14 +1611,14 @@ class ReachyMiniBackend(RobotAPI):
 
             return SimpleMove(positions, duration)
 
-        except Exception:
-            # Log en debug en CI (erreur attendue si reachy_mini non installé)
+        except Exception as e:
+            # Log en debug en CI/tests (erreur attendue si reachy_mini non installé)
             import os
 
-            if os.environ.get("CI", "false").lower() == "true":
-                logger.debug("Erreur création Move (reachy_mini non disponible en CI)")
+            if os.environ.get("CI", "false").lower() == "true" or os.environ.get("BBIA_DISABLE_AUDIO", "0") == "1":
+                logger.debug("Erreur création Move (reachy_mini non disponible): %s", e)
             else:
-                logger.exception("Erreur création Move")
+                logger.warning("Erreur création Move: %s", e)
             return None
 
     def record_movement(self, duration: float = 5.0) -> list[JointPositions] | None:

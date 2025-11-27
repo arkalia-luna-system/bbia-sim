@@ -8,7 +8,7 @@ Tests du dashboard WebSocket avancé BBIA
 # Coverage ne détecte que les imports au niveau module, pas ceux dans les tests
 import sys
 from pathlib import Path
-from unittest.mock import MagicMock, patch
+from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest  # type: ignore[import-untyped]
 
@@ -533,9 +533,9 @@ class TestDashboardAdvanced:
             manager = BBIAAdvancedWebSocketManager()
 
             mock_websocket1 = MagicMock()
-            mock_websocket1.send_text = MagicMock(return_value=None)
+            mock_websocket1.send_text = AsyncMock(return_value=None)
             mock_websocket2 = MagicMock()
-            mock_websocket2.send_text = MagicMock(return_value=None)
+            mock_websocket2.send_text = AsyncMock(return_value=None)
 
             manager.active_connections = [mock_websocket1, mock_websocket2]
 
@@ -562,9 +562,9 @@ class TestDashboardAdvanced:
             manager = BBIAAdvancedWebSocketManager()
 
             mock_websocket1 = MagicMock()
-            mock_websocket1.send_text = MagicMock(side_effect=Exception("Disconnected"))
+            mock_websocket1.send_text = AsyncMock(side_effect=Exception("Disconnected"))
             mock_websocket2 = MagicMock()
-            mock_websocket2.send_text = MagicMock(return_value=None)
+            mock_websocket2.send_text = AsyncMock(return_value=None)
 
             # Réinitialiser active_connections avant test (fixture peut modifier)
             manager.active_connections = [mock_websocket1, mock_websocket2]
@@ -643,7 +643,7 @@ class TestDashboardAdvanced:
             )
 
             mock_websocket = MagicMock()
-            mock_websocket.send_text = MagicMock()
+            mock_websocket.send_text = AsyncMock()
 
             # Mock BBIAHuggingFace si disponible
             mock_hf = MagicMock()

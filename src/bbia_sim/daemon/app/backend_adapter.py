@@ -238,8 +238,16 @@ class BackendAdapter:
 
         if hasattr(self._robot, "set_target_head_joint_positions"):
             self._robot.set_target_head_joint_positions(positions)
+        elif hasattr(self._robot, "goto_target"):
+            # Fallback: utiliser goto_target avec positions de joints converties en pose
+            # Note: goto_target attend une pose (matrice 4x4), pas des positions de joints
+            # Pour l'instant, on ignore ce fallback car la conversion est complexe
+            logger.debug(
+                "set_target_head_joint_positions: goto_target disponible mais "
+                "conversion positions→pose non implémentée dans fallback"
+            )
         elif hasattr(self._robot, "set_joint_pos"):
-            # Fallback: définir chaque joint individuellement
+            # Fallback: définir chaque joint individuellement (sauf stewart)
             if positions is not None and len(positions) >= 7:
                 joint_names = [
                     "yaw_body",
@@ -252,7 +260,15 @@ class BackendAdapter:
                 ]
                 for i, joint_name in enumerate(joint_names):
                     if i < len(positions):
-                        self._robot.set_joint_pos(joint_name, float(positions[i]))
+                        # Ne pas appeler set_joint_pos sur les joints stewart
+                        # (ils nécessitent IK et génèrent des warnings)
+                        if not joint_name.startswith("stewart_"):
+                            self._robot.set_joint_pos(joint_name, float(positions[i]))
+                        else:
+                            logger.debug(
+                                "Ignoré set_joint_pos sur %s (nécessite IK via goto_target)",
+                                joint_name,
+                            )
 
     def set_target_antenna_joint_positions(
         self,

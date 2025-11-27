@@ -62,6 +62,22 @@ class MuJoCoSimulator:
             duration: Durée de simulation en secondes (None = infinie)
 
         """
+        # Détecter automatiquement si on est dans un environnement headless
+        import os
+        is_ci = os.environ.get("CI", "false").lower() == "true"
+        has_display = os.environ.get("DISPLAY") is not None or sys.platform == "win32"
+
+        # Forcer headless si on est en CI ou si pas d'affichage disponible
+        if is_ci or not has_display:
+            if not headless:
+                logger.debug(
+                    "⚠️ Environnement headless détecté (CI=%s, DISPLAY=%s), "
+                    "basculement automatique en mode headless",
+                    is_ci,
+                    os.environ.get("DISPLAY", "non défini"),
+                )
+            headless = True
+
         if headless:
             logger.info("Mode headless activé")
             self._run_headless_simulation(duration)
@@ -71,20 +87,49 @@ class MuJoCoSimulator:
                 self.viewer = mujoco.viewer.launch_passive(self.model, self.data)
                 self._run_graphical_simulation(duration)
             except Exception as e:
-                if "mjpython" in str(e) and sys.platform == "darwin":
-                    logger.exception(
-                        "❌ Sur macOS, le viewer MuJoCo nécessite mjpython au lieu de python.\n"
-                        "💡 Solutions :\n"
-                        "  • Utilisez : mjpython -m bbia_sim --sim --verbose\n"
-                        "  • Ou utilisez : python -m bbia_sim --sim --headless\n"
-                        "  • Ou installez mjpython : pip install mujoco-python-viewer",
+                # Détecter si c'est une erreur liée à l'affichage (headless/CI)
+                error_str = str(e).lower()
+                is_display_error = (
+                    "display" in error_str
+                    or "x11" in error_str
+                    or "no screen" in error_str
+                    or "headless" in error_str
+                    or "mjpython" in error_str  # Erreur mjpython (viewer non disponible)
+                )
+
+                if is_display_error or is_ci:
+                    # Basculement automatique en mode headless si erreur d'affichage
+                    logger.warning(
+                        "⚠️ Viewer MuJoCo non disponible (environnement headless/CI), "
+                        "basculement automatique en mode headless: %s",
+                        e,
                     )
+                    self._run_headless_simulation(duration)
+                elif "mjpython" in str(e) and sys.platform == "darwin":
+                    if is_ci:
+                        logger.warning(
+                            "❌ Sur macOS, le viewer MuJoCo nécessite mjpython au lieu de python.",
+                        )
+                    else:
+                        logger.exception(
+                            "❌ Sur macOS, le viewer MuJoCo nécessite mjpython au lieu de python.\n"
+                            "💡 Solutions :\n"
+                            "  • Utilisez : mjpython -m bbia_sim --sim --verbose\n"
+                            "  • Ou utilisez : python -m bbia_sim --sim --headless\n"
+                            "  • Ou installez mjpython : pip install mujoco-python-viewer",
+                        )
                     msg = "Viewer MuJoCo non disponible sur macOS avec python standard"
                     raise RuntimeError(
                         msg,
                     ) from e
-                logger.exception("Erreur lors du lancement du viewer ")
-                raise
+                else:
+                    # Autre erreur - logger et relancer
+                    # Utiliser logger.debug en CI pour éviter bruit dans tests
+                    if is_ci:
+                        logger.debug("Erreur lors du lancement du viewer: %s", e)
+                    else:
+                        logger.exception("Erreur lors du lancement du viewer ")
+                    raise
 
     def _run_headless_simulation(self, duration: float | None) -> None:
         """Exécute la simulation en mode headless."""

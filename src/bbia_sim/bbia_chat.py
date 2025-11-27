@@ -353,10 +353,14 @@ class BBIAChat:
             logger.info("✅ Phi-2 chargé avec succès")
             return
 
-        except (ImportError, RuntimeError, OSError, ValueError) as e:
+        except (ImportError, ModuleNotFoundError, RuntimeError, OSError, ValueError) as e:
             logger.warning("⚠️ Impossible de charger Phi-2: %s", e)
             logger.info("Tentative de chargement TinyLlama (fallback)...")
         except (TypeError, KeyError, AttributeError) as e:
+            logger.warning("⚠️ Erreur inattendue chargement Phi-2: %s", e)
+            logger.info("Tentative de chargement TinyLlama (fallback)...")
+        except Exception as e:
+            # Capturer toutes les autres exceptions (y compris ModuleNotFoundError imbriquées)
             logger.warning("⚠️ Erreur inattendue chargement Phi-2: %s", e)
             logger.info("Tentative de chargement TinyLlama (fallback)...")
 
@@ -380,12 +384,18 @@ class BBIAChat:
             )  # nosec B615 - Modèle stable, revision pinning optionnel
             logger.info("✅ TinyLlama chargé avec succès")
 
-        except (ImportError, RuntimeError, OSError, ValueError):
-            logger.exception("❌ Impossible de charger TinyLlama")
+        except (ImportError, ModuleNotFoundError, RuntimeError, OSError, ValueError) as e:
+            logger.warning("❌ Impossible de charger TinyLlama: %s", e)
             logger.warning("Mode fallback: réponses basiques (sans LLM)")
-        except Exception:
-            logger.exception("❌ Erreur inattendue chargement TinyLlama")
+            # Réinitialiser les attributs pour éviter les états incohérents
+            self.llm_model = None
+            self.llm_tokenizer = None
+        except Exception as e:
+            logger.warning("❌ Erreur inattendue chargement TinyLlama: %s", e)
             logger.warning("Mode fallback: réponses basiques (sans LLM)")
+            # Réinitialiser les attributs pour éviter les états incohérents
+            self.llm_model = None
+            self.llm_tokenizer = None
 
     def generate(
         self,

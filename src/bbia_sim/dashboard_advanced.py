@@ -405,6 +405,50 @@ class BBIAAdvancedWebSocketManager:
         # OPTIMISATION STREAMING: Envoyer heartbeat si nécessaire
         await self._send_heartbeat()
 
+    def _sanitize_for_json(self, obj: Any) -> Any:
+        """Nettoie les données pour la sérialisation JSON.
+
+        Convertit les objets non sérialisables (MagicMock, etc.) en valeurs sérialisables.
+
+        Args:
+            obj: Objet à nettoyer
+
+        Returns:
+            Objet nettoyé et sérialisable en JSON
+        """
+        # Détecter MagicMock et autres objets de mock
+        if hasattr(obj, "__class__") and "Mock" in obj.__class__.__name__:
+            # Retourner une représentation string pour les mocks
+            return f"<{obj.__class__.__name__}>"
+
+        # Types JSON natifs
+        if obj is None or isinstance(obj, (bool, int, float, str)):
+            return obj
+
+        # Dictionnaires
+        if isinstance(obj, dict):
+            return {str(k): self._sanitize_for_json(v) for k, v in obj.items()}
+
+        # Listes et tuples
+        if isinstance(obj, (list, tuple)):
+            return [self._sanitize_for_json(item) for item in obj]
+
+        # Datetime et autres types avec isoformat
+        if hasattr(obj, "isoformat"):
+            try:
+                return obj.isoformat()
+            except Exception:
+                return str(obj)
+
+        # Autres objets - essayer de convertir en string
+        try:
+            # Essayer de sérialiser directement (pour les types JSON valides)
+            json.dumps(obj)
+            return obj
+        except (TypeError, ValueError):
+            # Si échec, retourner une représentation string
+            return str(obj)
+
     async def send_complete_status(self) -> None:
         """Envoie le statut complet du système."""
         status_data = {
@@ -442,7 +486,9 @@ class BBIAAdvancedWebSocketManager:
             "history": list(self.metrics_history)[-50:],  # 50 dernières métriques
         }
 
-        await self.broadcast(json.dumps(status_data))
+        # Nettoyer les données avant sérialisation JSON
+        sanitized_data = self._sanitize_for_json(status_data)
+        await self.broadcast(json.dumps(sanitized_data))
 
     async def send_metrics_update(self) -> None:
         """Envoie une mise à jour des métriques."""
@@ -452,8 +498,10 @@ class BBIAAdvancedWebSocketManager:
             "metrics": self.current_metrics,
         }
 
+        # Nettoyer les données avant sérialisation JSON
+        sanitized_data = self._sanitize_for_json(metrics_data)
         # OPTIMISATION STREAMING: Utiliser batching pour métriques
-        await self.broadcast(json.dumps(metrics_data), use_batch=True)
+        await self.broadcast(json.dumps(sanitized_data), use_batch=True)
 
     async def send_log_message(self, level: str, message: str) -> None:
         """Envoie un message de log."""
@@ -3490,6 +3538,21 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                         advanced_websocket_manager.robot = RobotFactory.create_backend(
                             advanced_websocket_manager.robot_backend,
                         )
+
+                        # Fallback: essayer mujoco si le backend demandé échoue
+                        if not advanced_websocket_manager.robot:
+                            if advanced_websocket_manager.robot_backend != "mujoco":
+                                logger.warning(
+                                    "⚠️ Backend %s non disponible, tentative avec mujoco...",
+                                    advanced_websocket_manager.robot_backend,
+                                )
+                                advanced_websocket_manager.robot = RobotFactory.create_backend(
+                                    "mujoco",
+                                )
+                                if advanced_websocket_manager.robot:
+                                    advanced_websocket_manager.robot_backend = "mujoco"
+                                    logger.info("✅ Fallback mujoco réussi")
+
                         if advanced_websocket_manager.robot:
                             connected = advanced_websocket_manager.robot.connect()
                             if connected:
@@ -3509,11 +3572,11 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                                 )
                         else:
                             logger.error(
-                                "❌ RobotFactory.create_backend a retourné None",
+                                "❌ RobotFactory.create_backend a retourné None pour tous les backends",
                             )
                             await advanced_websocket_manager.send_log_message(
                                 "error",
-                                "❌ Impossible de créer le robot",
+                                "❌ Impossible de créer le robot (tous les backends ont échoué)",
                             )
                     except (
                         ValueError,

@@ -94,13 +94,19 @@ class Pyttsx3TTS:
                     import pyttsx3  # lazy import
 
                     engine = pyttsx3.init()
+                    if engine is None:
+                        raise RuntimeError(
+                            "pyttsx3.init() a retourné None "
+                            "(audio désactivé ou eSpeak manquant)"
+                        ) from None
                     self._engine = engine
 
                     # Sélectionner la meilleure voix féminine française
                     try:
                         # get_bbia_voice déjà importé ci-dessus
                         self._voice_id = get_bbia_voice(engine)
-                        engine.setProperty("voice", self._voice_id)
+                        if engine is not None:
+                            engine.setProperty("voice", self._voice_id)
                     except (AttributeError, RuntimeError, ValueError, TypeError) as e:
                         # Si get_bbia_voice échoue, utiliser voix par défaut
                         logger.debug(
@@ -114,6 +120,8 @@ class Pyttsx3TTS:
                     raise
 
             # Utiliser la voix sélectionnée si disponible
+            if engine is None:
+                raise RuntimeError("Moteur pyttsx3 non disponible")
             if self._voice_id:
                 engine.setProperty("voice", self._voice_id)
 

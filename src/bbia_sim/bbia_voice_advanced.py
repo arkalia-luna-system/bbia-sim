@@ -76,6 +76,8 @@ class BBIAVoiceAdvanced:
         self.tts: Any | None = None
         self.current_emotion = "neutral"
         self.robot_api = robot_api
+        self.pyttsx3_engine: Any | None = None
+        self.pyttsx3_voice_id: str | None = None
 
         # Mapping émotions BBIA → émotions Coqui TTS
         self.emotion_map: dict[str, dict[str, Any]] = {
@@ -122,13 +124,20 @@ class BBIAVoiceAdvanced:
                         "⚠️ pyttsx3 non disponible (audio désactivé ou eSpeak manquant)"
                     )
                     self.pyttsx3_engine = None
+                    self.pyttsx3_voice_id = None
                     return
                 self.pyttsx3_engine = engine
                 self.pyttsx3_voice_id = _get_cached_voice_id()  # Utilise cache voice ID
-                self.pyttsx3_engine.setProperty("voice", self.pyttsx3_voice_id)
-                self.pyttsx3_engine.setProperty("rate", 170)
-                self.pyttsx3_engine.setProperty("volume", 1.0)
-                logger.info("✅ Fallback pyttsx3 initialisé (avec cache)")
+                # Vérifier que engine n'est pas None avant d'appeler setProperty
+                if self.pyttsx3_engine is not None and self.pyttsx3_voice_id is not None:
+                    self.pyttsx3_engine.setProperty("voice", self.pyttsx3_voice_id)
+                    self.pyttsx3_engine.setProperty("rate", 170)
+                    self.pyttsx3_engine.setProperty("volume", 1.0)
+                    logger.info("✅ Fallback pyttsx3 initialisé (avec cache)")
+                else:
+                    logger.warning("⚠️ Impossible d'initialiser pyttsx3 (engine ou voice_id manquant)")
+                    self.pyttsx3_engine = None
+                    self.pyttsx3_voice_id = None
             except Exception:
                 # Ne pas logger l'exception complète en CI (trop verbeux)
                 if os.environ.get("BBIA_DISABLE_AUDIO", "0") == "1":

@@ -63,9 +63,18 @@ class BBIAWebSocketManager:
     async def send_personal_message(self, message: str, websocket: WebSocket) -> None:
         """Envoie un message à un WebSocket spécifique."""
         try:
+            # Vérifier que le WebSocket est toujours dans la liste des connexions actives
+            if websocket not in self.active_connections:
+                return
             await websocket.send_text(message)
+        except (WebSocketDisconnect, ConnectionError, RuntimeError) as e:
+            # Connexion fermée ou erreur de connexion
+            logger.debug("WebSocket déconnecté lors de l'envoi: %s", e)
+            self.disconnect(websocket)
         except Exception:
             logger.exception("❌ Erreur envoi message")
+            # Retirer la connexion en cas d'erreur
+            self.disconnect(websocket)
 
     async def broadcast(self, message: str) -> None:
         """Diffuse un message à tous les WebSockets connectés."""
@@ -73,9 +82,19 @@ class BBIAWebSocketManager:
             return
 
         disconnected = []
-        for connection in self.active_connections:
+        # Créer une copie de la liste pour éviter les problèmes de modification pendant l'itération
+        connections_to_check = list(self.active_connections)
+
+        for connection in connections_to_check:
             try:
+                # Vérifier que la connexion est toujours active
+                if connection not in self.active_connections:
+                    continue
                 await connection.send_text(message)
+            except (WebSocketDisconnect, ConnectionError, RuntimeError) as e:
+                # Connexion fermée ou erreur de connexion
+                logger.debug("WebSocket déconnecté lors du broadcast: %s", e)
+                disconnected.append(connection)
             except Exception:
                 logger.exception("❌ Erreur broadcast")
                 disconnected.append(connection)

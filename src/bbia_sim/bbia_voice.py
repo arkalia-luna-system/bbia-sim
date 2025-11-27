@@ -433,7 +433,14 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
         logging.info("Synthèse vocale : %s", texte)
         # ⚡ OPTIMISATION PERFORMANCE: Utiliser moteur en cache (évite 0.8s d'init)
         engine = _get_pyttsx3_engine()
+        if engine is None:
+            logging.warning("⚠️ pyttsx3 non disponible, synthèse vocale ignorée")
+            return
         voice_id = _get_cached_voice_id()
+        # Vérification supplémentaire pour éviter AttributeError si engine est None
+        if engine is None:
+            logging.warning("⚠️ pyttsx3 non disponible après récupération voice_id, synthèse vocale ignorée")
+            return
         engine.setProperty("voice", voice_id)
         engine.setProperty("rate", 170)  # Vitesse normale
         engine.setProperty("volume", 1.0)
@@ -551,6 +558,9 @@ def lister_voix_disponibles() -> list[Any]:
     """Retourne la liste des voix TTS disponibles avec leurs propriétés."""
     # ⚡ OPTIMISATION PERFORMANCE: Utiliser cache au lieu de pyttsx3.init()
     engine = _get_pyttsx3_engine()
+    if engine is None:
+        logging.warning("⚠️ pyttsx3 non disponible, aucune voix listée")
+        return []
     voices = engine.getProperty("voices")
     result = []
     for _idx, v in enumerate(voices):
@@ -899,6 +909,9 @@ if __name__ == "__main__":
         if len(sys.argv) > 2 and sys.argv[2] == "demo":
             # ⚡ OPTIMISATION PERFORMANCE: Utiliser cache au lieu de pyttsx3.init()
             engine = _get_pyttsx3_engine()
+            if engine is None:
+                logging.warning("⚠️ pyttsx3 non disponible, démo impossible")
+                sys.exit(1)
             voices = engine.getProperty("voices")
             for v in voices:
                 engine.setProperty("voice", v.id)
@@ -910,6 +923,9 @@ if __name__ == "__main__":
 
     # ⚡ OPTIMISATION PERFORMANCE: Utiliser cache au lieu de pyttsx3.init()
     engine = _get_pyttsx3_engine()
+    if engine is None:
+        logging.warning("⚠️ pyttsx3 non disponible, démo impossible")
+        sys.exit(1)
     voice_id = _get_cached_voice_id()
     engine.setProperty("voice", voice_id)
     engine.setProperty("rate", 170)

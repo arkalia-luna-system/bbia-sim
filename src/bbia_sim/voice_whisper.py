@@ -166,10 +166,20 @@ class WhisperSTT:
             return True
 
         except (ImportError, RuntimeError, OSError, ValueError) as e:
-            logger.error("❌ Erreur chargement Whisper: %s", e)
+            # Ne pas logger d'erreur si c'est juste que Whisper n'est pas disponible
+            error_msg = str(e).lower()
+            if "load error" in error_msg or "not found" in error_msg or "unavailable" in error_msg:
+                logger.debug("⚠️ Whisper non disponible: %s", e)
+            else:
+                logger.warning("⚠️ Erreur chargement Whisper: %s", e)
             return False
         except Exception as e:
-            logger.error("❌ Erreur inattendue chargement Whisper: %s", e)
+            # Ne pas logger d'erreur si c'est juste que Whisper n'est pas disponible
+            error_msg = str(e).lower()
+            if "load error" in error_msg or "not found" in error_msg or "unavailable" in error_msg:
+                logger.debug("⚠️ Whisper non disponible: %s", e)
+            else:
+                logger.warning("⚠️ Erreur inattendue chargement Whisper: %s", e)
             return False
 
     def transcribe_audio(self, audio_path: str) -> str | None:
@@ -184,12 +194,12 @@ class WhisperSTT:
         """
         # Vérification globale de disponibilité
         if not WHISPER_AVAILABLE:
-            logger.error("❌ Whisper non disponible")
+            logger.debug("⚠️ Whisper non disponible (fallback vers speech_recognition)")
             return None
 
         # Charger le modèle si nécessaire
         if not self.is_loaded and not self.load_model():
-            logger.error("❌ Impossible de charger le modèle Whisper")
+            logger.warning("⚠️ Impossible de charger le modèle Whisper")
             return None
 
         try:
@@ -244,14 +254,20 @@ class WhisperSTT:
 
         # Vérification globale de disponibilité
         if not WHISPER_AVAILABLE:
-            logger.error("❌ Whisper non disponible")
+            logger.debug("⚠️ Whisper non disponible (fallback vers speech_recognition)")
             return None
 
         # Vérifier disponibilité périphérique audio
         if not _check_audio_device_available():
-            logger.warning(
-                "⚠️ Aucun périphérique audio disponible - skip enregistrement",
-            )
+            # Logger en debug si audio désactivé ou en CI pour éviter bruit dans tests
+            if os.environ.get("BBIA_DISABLE_AUDIO", "0") == "1" or os.environ.get("CI", "false").lower() == "true":
+                logger.debug(
+                    "⚠️ Aucun périphérique audio disponible (audio désactivé/CI) - skip enregistrement",
+                )
+            else:
+                logger.warning(
+                    "⚠️ Aucun périphérique audio disponible - skip enregistrement",
+                )
             return None
 
         try:
@@ -338,12 +354,17 @@ class WhisperSTT:
                 try:
                     logger.info("📥 Chargement modèle VAD (silero/vad)...")
                     # Utiliser l'import au niveau module si disponible, sinon import local
-                    if transformers_pipeline is None:
-                        from transformers import pipeline
+                    # Toujours utiliser pipeline directement pour éviter les problèmes de récursion
+                    try:
+                        if transformers_pipeline is not None:
+                            vad_pipeline_func = transformers_pipeline
+                        else:
+                            from transformers import pipeline
 
-                        vad_pipeline_func = pipeline
-                    else:
-                        vad_pipeline_func = transformers_pipeline
+                            vad_pipeline_func = pipeline
+                    except ImportError:
+                        # Si transformers n'est pas disponible, utiliser None et échouer proprement
+                        raise ImportError("transformers non disponible") from None
 
                     vad_model = vad_pipeline_func(
                         "audio-classification",
@@ -358,11 +379,34 @@ class WhisperSTT:
                     self._vad_model = vad_model
                     self._vad_loaded = True
                     logger.info("✅ Modèle VAD chargé")
-                except Exception as e:
-                    logger.warning(
-                        "⚠️ Impossible de charger VAD, fallback activé: %s",
+                except ImportError as e:
+                    # ImportError: transformers non disponible - logger en debug pour éviter bruit dans tests
+                    logger.debug(
+                        "⚠️ Impossible de charger VAD (transformers non disponible), fallback activé: %s",
                         e,
                     )
+                    self.enable_vad = False
+                    return True  # Fallback: considérer comme parole
+                except RecursionError as e:
+                    # RecursionError: problème de récursion - logger en debug
+                    logger.debug(
+                        "⚠️ Impossible de charger VAD (erreur de récursion), fallback activé: %s",
+                        e,
+                    )
+                    self.enable_vad = False
+                    return True  # Fallback: considérer comme parole
+                except Exception as e:
+                    # Autres erreurs - logger en warning seulement si pas en CI
+                    if os.environ.get("CI", "false").lower() != "true":
+                        logger.warning(
+                            "⚠️ Impossible de charger VAD, fallback activé: %s",
+                            e,
+                        )
+                    else:
+                        logger.debug(
+                            "⚠️ Impossible de charger VAD (CI), fallback activé: %s",
+                            e,
+                        )
                     self.enable_vad = False
                     return True  # Fallback: considérer comme parole
 
@@ -444,14 +488,20 @@ class WhisperSTT:
 
         # Vérification globale de disponibilité
         if not WHISPER_AVAILABLE:
-            logger.error("❌ Whisper non disponible")
+            logger.debug("⚠️ Whisper non disponible (fallback vers speech_recognition)")
             return None
 
         # Vérifier disponibilité périphérique audio
         if not _check_audio_device_available():
-            logger.warning(
-                "⚠️ Aucun périphérique audio disponible - skip enregistrement",
-            )
+            # Logger en debug si audio désactivé ou en CI pour éviter bruit dans tests
+            if os.environ.get("BBIA_DISABLE_AUDIO", "0") == "1" or os.environ.get("CI", "false").lower() == "true":
+                logger.debug(
+                    "⚠️ Aucun périphérique audio disponible (audio désactivé/CI) - skip enregistrement",
+                )
+            else:
+                logger.warning(
+                    "⚠️ Aucun périphérique audio disponible - skip enregistrement",
+                )
             return None
 
         try:
@@ -570,14 +620,20 @@ class WhisperSTT:
 
         # Vérification globale de disponibilité
         if not WHISPER_AVAILABLE:
-            logger.error("❌ Whisper non disponible")
+            logger.debug("⚠️ Whisper non disponible (fallback vers speech_recognition)")
             return None
 
         # Vérifier disponibilité périphérique audio
         if not _check_audio_device_available():
-            logger.warning(
-                "⚠️ Aucun périphérique audio disponible - skip streaming",
-            )
+            # Logger en debug si audio désactivé ou en CI pour éviter bruit dans tests
+            if os.environ.get("BBIA_DISABLE_AUDIO", "0") == "1" or os.environ.get("CI", "false").lower() == "true":
+                logger.debug(
+                    "⚠️ Aucun périphérique audio disponible (audio désactivé/CI) - skip streaming",
+                )
+            else:
+                logger.warning(
+                    "⚠️ Aucun périphérique audio disponible - skip streaming",
+                )
             return None
 
         # Charger modèle si nécessaire
