@@ -174,7 +174,7 @@ class SimulationService:
             return self._get_default_state()
 
         try:
-            return self.simulator.get_robot_state()
+            return self.simulator.get_robot_state()  # type: ignore[no-any-return]
         except Exception as e:
             # Utiliser error au lieu de exception pour éviter traces complètes dans tests
             # (logger.exception() affiche toujours la trace complète)
@@ -257,7 +257,7 @@ class SimulationService:
             return self._get_default_joint_names()
 
         try:
-            return self.simulator.get_available_joints()
+            return self.simulator.get_available_joints()  # type: ignore[no-any-return]
         except Exception as e:
             # Log en debug en CI (erreurs attendues dans les tests avec mocks)
             import os
