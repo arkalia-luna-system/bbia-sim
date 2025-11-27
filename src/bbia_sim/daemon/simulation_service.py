@@ -60,8 +60,15 @@ class SimulationService:
             logger.info("Simulation MuJoCo démarrée avec succès")
             return True
 
-        except Exception:
-            logger.exception("Erreur lors du démarrage de la simulation ")
+        except Exception as e:
+            # Utiliser logger.debug en CI pour éviter bruit dans tests
+            import os
+
+            is_ci = os.environ.get("CI", "false").lower() == "true"
+            if is_ci:
+                logger.debug("Erreur lors du démarrage de la simulation: %s", e)
+            else:
+                logger.exception("Erreur lors du démarrage de la simulation ")
             return False
 
     async def stop_simulation(self) -> bool:
@@ -128,8 +135,14 @@ class SimulationService:
                     0.016,
                 )  # ~60 Hz (suffisant pour simulation fluide, moins de CPU)
 
-            except Exception:
-                logger.exception("Erreur dans la simulation headless ")
+            except Exception as e:
+                # Log en debug en CI (erreurs attendues dans les tests avec mocks)
+                import os
+
+                if os.environ.get("CI", "false").lower() == "true":
+                    logger.debug("Erreur dans la simulation headless: %s", e)
+                else:
+                    logger.exception("Erreur dans la simulation headless ")
                 await asyncio.sleep(0.1)
 
     async def _run_graphical_simulation(self) -> None:
@@ -165,8 +178,17 @@ class SimulationService:
 
         try:
             return self.simulator.get_robot_state()
-        except Exception:
-            logger.exception("Erreur lors de la récupération de l'état")
+        except Exception as e:
+            # Utiliser error au lieu de exception pour éviter traces complètes dans tests
+            # (logger.exception() affiche toujours la trace complète)
+            import os
+
+            if os.environ.get("CI", "false").lower() == "true":
+                # En CI/tests, utiliser debug pour réduire le bruit
+                logger.debug("Erreur lors de la récupération de l'état: %s", e)
+            else:
+                # En production, utiliser error avec le message d'erreur
+                logger.error("Erreur lors de la récupération de l'état: %s", e)
             return self._get_default_state()
 
     def get_joint_positions(self) -> dict[str, float]:
@@ -188,8 +210,16 @@ class SimulationService:
             if isinstance(joint_positions, dict):
                 return joint_positions
             return self._get_default_joint_positions()
-        except Exception:
-            logger.exception("Erreur lors de la récupération des positions ")
+        except Exception as e:
+            # Utiliser error au lieu de exception pour éviter traces complètes dans tests
+            import os
+
+            if os.environ.get("CI", "false").lower() == "true":
+                # En CI/tests, utiliser debug pour réduire le bruit
+                logger.debug("Erreur lors de la récupération des positions: %s", e)
+            else:
+                # En production, utiliser error avec le message d'erreur
+                logger.error("Erreur lors de la récupération des positions: %s", e)
             return self._get_default_joint_positions()
 
     def set_joint_position(self, joint_name: str, position: float) -> bool:

@@ -46,8 +46,14 @@ class MuJoCoSimulator:
             self.viewer: mujoco.viewer.MjViewer | None = None
             self.target_positions: dict[str, float] = {}  # Positions cibles à maintenir
             logger.info("Simulateur MuJoCo initialisé avec %s", self.model_path)
-        except Exception:
-            logger.exception("Erreur lors du chargement du modèle MJCF ")
+        except Exception as e:
+            # Log en debug en CI (erreurs attendues dans les tests avec mocks)
+            import os
+
+            if os.environ.get("CI", "false").lower() == "true":
+                logger.debug("Erreur lors du chargement du modèle MJCF: %s", e)
+            else:
+                logger.exception("Erreur lors du chargement du modèle MJCF ")
             raise
 
     def launch_simulation(
@@ -88,26 +94,8 @@ class MuJoCoSimulator:
                 self.viewer = mujoco.viewer.launch_passive(self.model, self.data)
                 self._run_graphical_simulation(duration)
             except Exception as e:
-                # Détecter si c'est une erreur liée à l'affichage (headless/CI)
-                error_str = str(e).lower()
-                is_display_error = (
-                    "display" in error_str
-                    or "x11" in error_str
-                    or "no screen" in error_str
-                    or "headless" in error_str
-                    or "mjpython"
-                    in error_str  # Erreur mjpython (viewer non disponible)
-                )
-
-                if is_display_error or is_ci:
-                    # Basculement automatique en mode headless si erreur d'affichage
-                    logger.warning(
-                        "⚠️ Viewer MuJoCo non disponible (environnement headless/CI), "
-                        "basculement automatique en mode headless: %s",
-                        e,
-                    )
-                    self._run_headless_simulation(duration)
-                elif "mjpython" in str(e) and sys.platform == "darwin":
+                # Vérifier d'abord le cas spécifique macOS/mjpython (doit être avant is_display_error)
+                if "mjpython" in str(e) and sys.platform == "darwin":
                     if is_ci:
                         logger.warning(
                             "❌ Sur macOS, le viewer MuJoCo nécessite mjpython au lieu de python.",
@@ -124,6 +112,25 @@ class MuJoCoSimulator:
                     raise RuntimeError(
                         msg,
                     ) from e
+
+                # Détecter si c'est une erreur liée à l'affichage (headless/CI)
+                # Note: "mjpython" n'est plus ici car géré ci-dessus pour macOS
+                error_str = str(e).lower()
+                is_display_error = (
+                    "display" in error_str
+                    or "x11" in error_str
+                    or "no screen" in error_str
+                    or "headless" in error_str
+                )
+
+                if is_display_error or is_ci:
+                    # Basculement automatique en mode headless si erreur d'affichage
+                    logger.warning(
+                        "⚠️ Viewer MuJoCo non disponible (environnement headless/CI), "
+                        "basculement automatique en mode headless: %s",
+                        e,
+                    )
+                    self._run_headless_simulation(duration)
                 else:
                     # Autre erreur - logger et relancer
                     # Utiliser logger.debug en CI pour éviter bruit dans tests
@@ -155,7 +162,8 @@ class MuJoCoSimulator:
                 logger.info("Step %s - Temps écoulé: %.2fs", step_count, elapsed)
 
             # OPTIMISATION RAM: Limite obligatoire pour éviter boucles infinies
-            if duration is None and step_count > 10000:
+            # S'arrêter à exactement 10000 steps (>= au lieu de > pour éviter 10001)
+            if duration is None and step_count >= 10000:
                 logger.warning("Limite de 10000 steps atteinte en mode headless")
                 break
 
