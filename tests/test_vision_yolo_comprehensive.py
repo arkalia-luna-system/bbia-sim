@@ -1060,24 +1060,26 @@ class TestFactoryFunctions:
         """Test gestion exception détection batch (couverture lignes 283-285)."""
         with patch("bbia_sim.vision_yolo.YOLO_AVAILABLE", True):
             with patch("bbia_sim.vision_yolo.logger") as mock_logger:
-                mock_model = MagicMock()
-                mock_model.side_effect = Exception("Erreur batch")
-                import bbia_sim.vision_yolo as vision_yolo_module
+                with patch.dict("os.environ", {"CI": "false"}):
+                    mock_model = MagicMock()
+                    mock_model.side_effect = Exception("Erreur batch")
+                    import bbia_sim.vision_yolo as vision_yolo_module
 
-                vision_yolo_module._yolo_model_cache.clear()
+                    vision_yolo_module._yolo_model_cache.clear()
 
-                detector = YOLODetector(model_size="n", confidence_threshold=0.25)
-                detector.model = mock_model
-                detector.is_loaded = True
+                    detector = YOLODetector(model_size="n", confidence_threshold=0.25)
+                    detector.model = mock_model
+                    detector.is_loaded = True
 
-                # OPTIMISATION RAM: Image réduite (320x240 au lieu de 640x480)
-                images: list[npt.NDArray[np.uint8]] = [
-                    np.zeros((240, 320, 3), dtype=np.uint8)
-                ]
-                detections = detector.detect_objects_batch(images)
-                assert detections == [[]]
-                # Vérifier que l'erreur a été loggée
-                mock_logger.exception.assert_called_once()
+                    # OPTIMISATION RAM: Image réduite (320x240 au lieu de 640x480)
+                    images: list[npt.NDArray[np.uint8]] = [
+                        np.zeros((240, 320, 3), dtype=np.uint8)
+                    ]
+                    detections = detector.detect_objects_batch(images)
+                    assert detections == [[]]
+                    # Vérifier que l'erreur a été loggée (warning en non-CI, debug en CI)
+                    # En non-CI, on utilise logger.warning
+                    mock_logger.warning.assert_called_once()
 
     def test_import_fallback_detection_result(self):
         """Test import fallback DetectionResult (couverture lignes 19-31)."""
