@@ -137,8 +137,9 @@ class ZenohBridge:
             zenoh_config = Config()
             zenoh_config.insert_json5("mode", f'"{self.config.mode}"')
             # Format connect comme tableau JSON5 pour Zenoh
-            # Zenoh attend un tableau d'endpoints, pas une chaîne JSON
-            if self.config.connect:
+            # Zenoh attend un tableau d'endpoints, seulement en mode client
+            if self.config.mode == "client" and self.config.connect:
+                # Construire le tableau JSON5 correctement
                 connect_array = (
                     "["
                     + ", ".join(f'"{endpoint}"' for endpoint in self.config.connect)
