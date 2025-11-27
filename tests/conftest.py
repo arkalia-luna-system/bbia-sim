@@ -510,12 +510,20 @@ def run_cleanup_scripts() -> None:
             print(f"⚠️  Script de nettoyage non trouvé: {cleanup_script}")
             return
 
+        # S'assurer que le script a les permissions d'exécution
+        try:
+            os.chmod(cleanup_script, 0o755)
+        except Exception:
+            # Ignorer si chmod échoue (peut être normal en CI)
+            pass
+
         # Exécuter le script de nettoyage en mode non-interactif (cache uniquement)
         # Ne pas nettoyer la RAM automatiquement (peut être dangereux)
         print("\n🧹 Exécution du nettoyage automatique après les tests...")
         try:
+            # Utiliser bash explicitement pour éviter les problèmes de permissions
             result = subprocess.run(
-                [str(cleanup_script), "--cache-only", "--yes"],
+                ["bash", str(cleanup_script), "--cache-only", "--yes"],
                 cwd=str(project_root),
                 capture_output=True,
                 text=True,
