@@ -5,6 +5,7 @@ Ce module implémente la classe MuJoCoSimulator qui gère la simulation
 """
 
 import logging
+import os
 import sys
 import time
 from pathlib import Path
