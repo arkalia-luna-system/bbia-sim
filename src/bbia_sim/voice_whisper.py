@@ -104,9 +104,17 @@ class WhisperSTT:
         self._vad_loaded = False
 
         if not WHISPER_AVAILABLE:
-            logger.warning(
-                "⚠️ Whisper non disponible. Fallback vers speech_recognition.",
-            )
+            # Log en debug en CI (warning attendu dans les tests)
+            import os
+
+            if os.environ.get("CI", "false").lower() == "true":
+                logger.debug(
+                    "Whisper non disponible. Fallback vers speech_recognition.",
+                )
+            else:
+                logger.warning(
+                    "⚠️ Whisper non disponible. Fallback vers speech_recognition.",
+                )
             return
 
         logger.info(
@@ -237,10 +245,22 @@ class WhisperSTT:
             return text
 
         except (RuntimeError, ValueError, OSError, AttributeError) as e:
-            logger.error("❌ Erreur transcription: %s", e)
+            # Log en debug en CI (erreurs attendues dans les tests, ex: ffmpeg non disponible)
+            import os
+
+            if os.environ.get("CI", "false").lower() == "true":
+                logger.debug("Erreur transcription: %s", e)
+            else:
+                logger.error("❌ Erreur transcription: %s", e)
             return None
         except Exception as e:
-            logger.error("❌ Erreur inattendue transcription: %s", e)
+            # Log en debug en CI (erreurs attendues dans les tests)
+            import os
+
+            if os.environ.get("CI", "false").lower() == "true":
+                logger.debug("Erreur inattendue transcription: %s", e)
+            else:
+                logger.error("❌ Erreur inattendue transcription: %s", e)
             return None
 
     def transcribe_microphone(self, duration: float = 3.0) -> str | None:
