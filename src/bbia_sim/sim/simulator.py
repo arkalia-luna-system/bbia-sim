@@ -48,8 +48,6 @@ class MuJoCoSimulator:
             logger.info("Simulateur MuJoCo initialisé avec %s", self.model_path)
         except Exception as e:
             # Log en debug en CI (erreurs attendues dans les tests avec mocks)
-            import os
-
             if os.environ.get("CI", "false").lower() == "true":
                 logger.debug("Erreur lors du chargement du modèle MJCF: %s", e)
             else:
