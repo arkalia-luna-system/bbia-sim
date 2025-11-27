@@ -454,8 +454,14 @@ def lire_audio(fichier: str, robot_api: Optional["RobotAPI"] = None) -> None:
             _sd.play(audio, frequence)
             _sd.wait()
         logging.info("Lecture de %s terminée.", fichier)
-    except Exception:
-        logging.exception("Erreur de lecture audio")
+    except Exception as e:
+        # Log en debug en CI (erreurs attendues dans les tests avec mocks)
+        import os
+
+        if os.environ.get("CI", "false").lower() == "true":
+            logging.debug("Erreur de lecture audio: %s", e)
+        else:
+            logging.exception("Erreur de lecture audio")
         raise
 
 
