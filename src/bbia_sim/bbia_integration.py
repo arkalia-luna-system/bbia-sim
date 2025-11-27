@@ -231,7 +231,13 @@ class BBIAIntegration:
 
         """
         if not self.is_active:
-            logger.warning("⚠️ Intégration BBIA non active")
+            # Log en debug en CI (warning attendu dans les tests)
+            import os
+
+            if os.environ.get("CI", "false").lower() == "true":
+                logger.debug("Intégration BBIA non active")
+            else:
+                logger.warning("⚠️ Intégration BBIA non active")
             return False
 
         if emotion not in self.emotion_mappings:
