@@ -207,8 +207,6 @@ class SimulationService:
             return self._get_default_joint_positions()
         except Exception as e:
             # Utiliser error au lieu de exception pour éviter traces complètes dans tests
-            import os
-
             if os.environ.get("CI", "false").lower() == "true":
                 # En CI/tests, utiliser debug pour réduire le bruit
                 logger.debug("Erreur lors de la récupération des positions: %s", e)
