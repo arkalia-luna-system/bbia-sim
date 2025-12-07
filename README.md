@@ -44,32 +44,6 @@
 
 </div>
 
-## 🎮 Découvrir BBIA en Action
-
-<div align="center">
-
-### 🤖 Interface Live Interactive
-
-**Vivez l'expérience BBIA** : Interface interactive avec animations temps réel, contrôles d'émotions et visualisation du robot
-
-> 🚀 **Accès direct** : [`http://localhost:8000/bbia-interface`](http://localhost:8000/bbia-interface)  
-> 💡 *Lancez d'abord* : `python -m uvicorn bbia_sim.daemon.app.main:app --host 127.0.0.1 --port 8000`
-
-**Fonctionnalités** :
-- 🎭 **6 modes d'émotion** : Neutre, Joyeux, Curieux, Écoute, Veille, Erreur
-- ✨ **Animations fluides** : Respiration automatique, clignement des yeux
-- 🎨 **HUD Cyber-HUD** : Interface graphique rotative style futuriste
-- 🎮 **Contrôle interactif** : Changez l'émotion de BBIA en temps réel
-- 🗣️ **Interface vocale** : BBIA communique avec vous
-
-<div align="center">
-
-<img src="assets/logos/bbia/identity/bbia-speaking-512.svg" alt="BBIA Speaking" width="200" height="auto">
-
-</div>
-
-</div>
-
 ---
 
 ## 📋 **EN 30 SECONDES**
@@ -80,7 +54,6 @@
 
 **12 émotions robotiques** (6 SDK officiel + 6 étendues) • **Simulation 3D fidèle** • **IA avancée**
 
-**🎮 [Interface Live Interactive →](http://localhost:8000/bbia-interface)** *(Lancez le dashboard d'abord)*  
 **🎨 [Voir tous les logos BBIA →](http://localhost:8000/test-logos)** *(Lancez le dashboard d'abord)*
 
 </div>
@@ -143,16 +116,9 @@ BBIA utilise une stack IA lourde pour permettre des interactions naturelles et u
 - 🎨 **2 styles visuels** : Clean (apaisant) et Wireframe (énergique) selon le contexte
 - 🎯 **Assets d'interface** : HUD Cyber-HUD, icônes, bannières pour une expérience cohérente
 
-**Utilisation** : Les logos sont intégrés dans le dashboard et disponibles pour personnaliser l'interface selon l'émotion de BBIA.  
+**Note** : Les logos sont un **gadget visuel** pour l'identité de BBIA. La **simulation principale** utilise MuJoCo (voir section "Voir le robot en 3D").  
 **🎨 [Voir tous les logos →](http://localhost:8000/test-logos)** *(Lancez le dashboard d'abord)*  
 **Documentation** : [`assets/logos/bbia/README.md`](assets/logos/bbia/README.md)
-
-<div align="center">
-
-<img src="assets/logos/bbia/identity/bbia-app_icon-512.svg" alt="BBIA App Icon" width="150" height="auto" style="margin: 20px;">
-<img src="assets/logos/bbia/identity/bbia-speaking-512.svg" alt="BBIA Speaking" width="150" height="auto" style="margin: 20px;">
-
-</div>
 
 ## 🏆 Qualité Code
 
@@ -505,7 +471,9 @@ sequenceDiagram
 
 ## 🚀 Démarrage Rapide
 
-### Voir le robot en 3D
+### Voir le robot en 3D (Simulation MuJoCo)
+
+**BBIA-SIM simule le robot Reachy Mini avec une fidélité élevée** dans MuJoCo. Voici comment démarrer :
 
 ```bash
 # 🎯 Démos principales
@@ -520,6 +488,26 @@ mjpython examples/demo_emotion_ok.py --emotion happy --duration 10 --joint yaw_b
 python examples/reachy_mini/minimal_demo.py
 # ⚠️ Note: surprise_3d_mujoco_viewer.py et demo_reachy_mini_corrigee.py sont obsolètes
 ```
+
+### 🎮 Interface Live Interactive (Bonus)
+
+**Note** : Cette interface est un **gadget visuel** pour explorer l'identité de BBIA. La **vraie simulation** se fait avec MuJoCo (voir ci-dessus).
+
+> 🚀 **Accès direct** : [`http://localhost:8000/bbia-interface`](http://localhost:8000/bbia-interface)  
+> 💡 *Lancez d'abord* : `python -m uvicorn bbia_sim.daemon.app.main:app --host 127.0.0.1 --port 8000`
+
+**Fonctionnalités** :
+- 🎭 **6 modes d'émotion** : Neutre, Joyeux, Curieux, Écoute, Veille, Erreur
+- ✨ **Animations fluides** : Respiration automatique, clignement des yeux
+- 🎨 **HUD Cyber-HUD** : Interface graphique rotative style futuriste
+- 🎮 **Contrôle interactif** : Changez l'émotion de BBIA en temps réel
+- 🗣️ **Interface vocale** : BBIA communique avec vous
+
+<div align="center">
+
+<img src="assets/logos/bbia/identity/bbia-speaking-512.svg" alt="BBIA Speaking" width="200" height="auto">
+
+</div>
 
 ### ⚠️ Règles de sécurité
 
