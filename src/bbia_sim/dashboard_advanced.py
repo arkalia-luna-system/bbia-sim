@@ -181,8 +181,17 @@ class BBIAAdvancedWebSocketManager:
                     logger.info(
                         "ℹ️ Dashboard fonctionne en mode simulation (sans robot réel)",
                     )
-                except Exception:
-                    logger.exception("❌ Erreur inattendue initialisation robot")
+                except (TypeError, KeyError, IndexError) as e:
+                    logger.exception(
+                        "❌ Erreur initialisation robot (type/key/index): %s", e
+                    )
+                    logger.info(
+                        "ℹ️ Dashboard fonctionne en mode simulation (sans robot réel)",
+                    )
+                except (
+                    Exception
+                ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
+                    logger.exception("❌ Erreur inattendue initialisation robot: %s", e)
                     logger.info(
                         "ℹ️ Dashboard fonctionne en mode simulation (sans robot réel)",
                     )
@@ -3146,8 +3155,13 @@ if FASTAPI_AVAILABLE:
         except (OSError, RuntimeError, AttributeError, ImportError) as e:
             logger.exception("Erreur troubleshooting check")
             return {"success": False, "error": str(e)}
-        except Exception as e:
-            logger.exception("Erreur inattendue troubleshooting check")
+        except (TypeError, KeyError, IndexError) as e:
+            logger.exception("Erreur troubleshooting check (type/key/index): %s", e)
+            return {"success": False, "error": str(e)}
+        except (
+            Exception
+        ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
+            logger.exception("Erreur inattendue troubleshooting check: %s", e)
             return {"success": False, "error": str(e)}
 
     @app.post("/api/troubleshooting/test/camera")
@@ -3159,8 +3173,13 @@ if FASTAPI_AVAILABLE:
         except (OSError, RuntimeError, AttributeError, ImportError) as e:
             logger.exception("Erreur test caméra")
             return {"success": False, "error": str(e)}
-        except Exception as e:
-            logger.exception("Erreur inattendue test caméra")
+        except (TypeError, KeyError, IndexError) as e:
+            logger.exception("Erreur test caméra (type/key/index): %s", e)
+            return {"success": False, "error": str(e)}
+        except (
+            Exception
+        ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
+            logger.exception("Erreur inattendue test caméra: %s", e)
             return {"success": False, "error": str(e)}
 
     @app.post("/api/troubleshooting/test/audio")
@@ -3172,8 +3191,13 @@ if FASTAPI_AVAILABLE:
         except (OSError, RuntimeError, AttributeError, ImportError) as e:
             logger.exception("Erreur test audio")
             return {"success": False, "error": str(e)}
-        except Exception as e:
-            logger.exception("Erreur inattendue test audio")
+        except (TypeError, KeyError, IndexError) as e:
+            logger.exception("Erreur test audio (type/key/index): %s", e)
+            return {"success": False, "error": str(e)}
+        except (
+            Exception
+        ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
+            logger.exception("Erreur inattendue test audio: %s", e)
             return {"success": False, "error": str(e)}
 
     @app.post("/api/troubleshooting/test/network")
@@ -3306,8 +3330,18 @@ if FASTAPI_AVAILABLE:
             return FileResponse(full_path)
         except HTTPException:
             raise
-        except Exception as e:
-            logger.exception("Erreur lecture documentation %s:", path)
+        except (OSError, RuntimeError, AttributeError) as e:
+            logger.exception(
+                "Erreur lecture documentation %s (os/runtime/attr): %s", path, e
+            )
+            raise HTTPException(
+                status_code=500,
+                detail=f"Erreur lecture fichier: {e}",
+            ) from e
+        except (
+            Exception
+        ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
+            logger.exception("Erreur lecture documentation %s: %s", path, e)
             raise HTTPException(
                 status_code=500,
                 detail=f"Erreur lecture fichier: {e}",
@@ -3377,7 +3411,11 @@ if FASTAPI_AVAILABLE:
                                 ImportError,
                             ) as e:
                                 logger.debug("Erreur capture frame: %s", e)
-                            except Exception as e:  # noqa: BLE001
+                            except (TypeError, IndexError) as e:
+                                logger.debug("Erreur capture frame (type/index): %s", e)
+                            except (
+                                Exception
+                            ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
                                 logger.debug("Erreur inattendue capture frame: %s", e)
 
                         if frame is None:
@@ -3467,8 +3505,13 @@ if FASTAPI_AVAILABLE:
                     ):
                         logger.exception("Erreur stream vidéo")
                         await asyncio.sleep(1)
-                    except Exception:
-                        logger.exception("Erreur inattendue stream vidéo")
+                    except (TypeError, IndexError) as e:
+                        logger.exception("Erreur stream vidéo (type/index): %s", e)
+                        await asyncio.sleep(1)
+                    except (
+                        Exception
+                    ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
+                        logger.exception("Erreur inattendue stream vidéo: %s", e)
                         await asyncio.sleep(1)
             except GeneratorExit:
                 # Arrêt propre du générateur
