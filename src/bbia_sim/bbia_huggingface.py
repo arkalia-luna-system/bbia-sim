@@ -852,7 +852,7 @@ class BBIAHuggingFace:
         except (ValueError, RuntimeError, AttributeError, OSError):
             logger.exception("❌ Erreur description image:")
             return "Erreur (describe_image): échec de génération de description d'image"
-        except (TypeError, IndexError, OSError) as e:
+        except (TypeError, IndexError) as e:
             logger.exception("❌ Erreur description image (type/index/os): %s", e)
             return "Erreur (describe_image): échec de génération de description d'image"
         except (
@@ -1016,7 +1016,7 @@ class BBIAHuggingFace:
         except (OSError, RuntimeError, ValueError, AttributeError):
             logger.exception("❌ Erreur transcription audio:")
             return "Erreur (transcribe_audio): problème pendant la transcription audio"
-        except (TypeError, IndexError, OSError) as e:
+        except (TypeError, IndexError) as e:
             logger.exception("❌ Erreur transcription audio (type/index/os): %s", e)
             return "Erreur (transcribe_audio): problème pendant la transcription audio"
         except (
@@ -1087,7 +1087,7 @@ class BBIAHuggingFace:
         except (ValueError, RuntimeError, AttributeError, OSError):
             logger.exception("❌ Erreur VQA:")
             return "Erreur (answer_question): échec de l'analyse visuelle (VQA)"
-        except (TypeError, IndexError, OSError) as e:
+        except (TypeError, IndexError) as e:
             logger.exception("❌ Erreur VQA (type/index/os): %s", e)
             return "Erreur (answer_question): échec de l'analyse visuelle (VQA)"
         except (
