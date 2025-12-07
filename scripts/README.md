@@ -182,7 +182,7 @@ python scripts/hardware_dry_run.py --joint yaw_body --duration 5
 ✅ Joint interdit correctement rejeté
 ⏱️ Latence moyenne: 0.0ms
 ✅ Latence cible atteinte (<40ms)
-🎉 Hardware dry run réussi !
+Hardware dry run réussi.
 ```
 
 #### **Scripts de Démo**
