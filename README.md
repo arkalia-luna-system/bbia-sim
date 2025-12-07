@@ -38,6 +38,14 @@
 
 ---
 
+<div align="center">
+
+<img src="assets/logos/bbia/logos/bbia-horizontal-clean-serenity-512.svg" alt="BBIA" width="400" height="auto">
+
+</div>
+
+---
+
 ## 📋 **EN 30 SECONDES**
 
 <div align="center">
@@ -46,7 +54,9 @@
 
 **12 émotions robotiques** (6 SDK officiel + 6 étendues) • **Simulation 3D fidèle** • **IA avancée**
 
-![BBIA-SIM Reachy Mini Robot](./assets/images/robot_animation.gif)
+**🎨 [Voir tous les logos BBIA →](http://localhost:8000/test-logos)** *(Lancez le dashboard d'abord)*
+
+</div>
 
 </div>
 
@@ -66,6 +76,22 @@
 
 </div>
 
+## 🧠 Stack IA : Pourquoi ces Dépendances ?
+
+BBIA utilise une stack IA lourde pour permettre des interactions naturelles et une perception avancée. Voici pourquoi chaque dépendance majeure est nécessaire :
+
+| Dépendance | Rôle | Poids approximatif | Justification |
+|------------|------|-------------------|---------------|
+| **PyTorch** (`torch>=2.0.0`) | Backend pour modèles deep learning (transformers, YOLO) | ~2 GB | Framework de base pour tous les modèles IA (LLM, vision, NLP) |
+| **transformers** (`>=4.30.0`) | Modèles HuggingFace (sentiment, LLM conversationnel, reconnaissance émotions) | ~500 MB | Bibliothèque standard pour modèles pré-entraînés (Phi-2, Mistral, RoBERTa) |
+| **MediaPipe** (`>=0.10.0`) | Détection visages, pose humaine, landmarks en temps réel | ~50 MB | Détection pose 33 points, visages, gestes (bras levés, debout/assis) |
+| **ultralytics (YOLO)** (`>=8.0.0`) | Détection objets temps réel (personnes, objets, mains) | ~100 MB | Détection objets COCO dataset, tracking temps réel |
+| **openai-whisper** (`>=20231117`) | Reconnaissance vocale (Speech-to-Text) multilingue | ~3 GB | Transcription audio → texte, support multilingue |
+
+**Note importante** : Les dépendances IA sont **facultatives** si tu veux juste tester la simulation sans reconnaissance. Voir [`docs/development/setup/environments.md`](docs/development/setup/environments.md) pour des setups allégés.
+
+**Total approximatif** : ~6 GB (principalement PyTorch + Whisper). C'est normal pour un projet IA robotique avec vision, audio et LLM.
+
 ## 📊 Statistiques
 
 - **Fichiers Python source**: 92 fichiers (35,988 lignes)
@@ -79,6 +105,20 @@
 - **Exemples**: **44 exemples** (39 existants + 5 nouveaux créés 22 Nov. 2025) — [✅ 100% exploitation capacités](docs/quality/audits/AUDIT_EXPLOITATION_100_PERCENT_2626NOV2025.md)
 - **Documentation**: 219 fichiers Markdown (dans `docs/`) — [✅ Vérifié 26 Novembre 2025](docs/quality/audits/VERIFICATION_ANALYSE_COMPLETE_26NOV2025.md)
 - **Commits Git**: 423 commits
+- **Identité visuelle**: 10 variantes émotionnelles, 3 formats de logos, interface live interactive — [✅ Complète 7 Décembre 2025](assets/logos/bbia/README.md)
+
+## 🎨 Identité Visuelle BBIA
+
+**BBIA dispose d'une identité visuelle complète** adaptée à ses différentes émotions et contextes d'utilisation :
+
+- 🎭 **10 variantes émotionnelles** : Chaque émotion de BBIA a son propre style visuel (Serenity, Power, Mystery, Awakening, Creative, Rainy, Stormy, Explosive, Sunny, Snowy)
+- 📐 **3 formats de logos** : Horizontal, vertical et symbole seul pour tous les usages
+- 🎨 **2 styles visuels** : Clean (apaisant) et Wireframe (énergique) selon le contexte
+- 🎯 **Assets d'interface** : HUD Cyber-HUD, icônes, bannières pour une expérience cohérente
+
+**Note** : Les logos sont un **gadget visuel** pour l'identité de BBIA. La **simulation principale** utilise MuJoCo (voir section "Voir le robot en 3D").  
+**🎨 [Voir tous les logos →](http://localhost:8000/test-logos)** *(Lancez le dashboard d'abord)*  
+**Documentation** : [`assets/logos/bbia/README.md`](assets/logos/bbia/README.md)
 
 ## 🏆 Qualité Code
 
@@ -431,7 +471,9 @@ sequenceDiagram
 
 ## 🚀 Démarrage Rapide
 
-### Voir le robot en 3D
+### Voir le robot en 3D (Simulation MuJoCo)
+
+**BBIA-SIM simule le robot Reachy Mini avec une fidélité élevée** dans MuJoCo. Voici comment démarrer :
 
 ```bash
 # 🎯 Démos principales
@@ -446,6 +488,26 @@ mjpython examples/demo_emotion_ok.py --emotion happy --duration 10 --joint yaw_b
 python examples/reachy_mini/minimal_demo.py
 # ⚠️ Note: surprise_3d_mujoco_viewer.py et demo_reachy_mini_corrigee.py sont obsolètes
 ```
+
+### 🎮 Interface Live Interactive (Bonus)
+
+**Note** : Cette interface est un **gadget visuel** pour explorer l'identité de BBIA. La **vraie simulation** se fait avec MuJoCo (voir ci-dessus).
+
+> 🚀 **Accès direct** : [`http://localhost:8000/bbia-interface`](http://localhost:8000/bbia-interface)  
+> 💡 *Lancez d'abord* : `python -m uvicorn bbia_sim.daemon.app.main:app --host 127.0.0.1 --port 8000`
+
+**Fonctionnalités** :
+- 🎭 **6 modes d'émotion** : Neutre, Joyeux, Curieux, Écoute, Veille, Erreur
+- ✨ **Animations fluides** : Respiration automatique, clignement des yeux
+- 🎨 **HUD Cyber-HUD** : Interface graphique rotative style futuriste
+- 🎮 **Contrôle interactif** : Changez l'émotion de BBIA en temps réel
+- 🗣️ **Interface vocale** : BBIA communique avec vous
+
+<div align="center">
+
+<img src="assets/logos/bbia/identity/bbia-speaking-512.svg" alt="BBIA Speaking" width="200" height="auto">
+
+</div>
 
 ### ⚠️ Règles de sécurité
 
@@ -961,7 +1023,14 @@ Le robot Reachy Mini est simulé avec une fidélité élevée aux spécification
 
 ## 📊 Projets & Portfolio
 
+---
+
+<div align="center">
+
+<img src="assets/logos/bbia/identity/bbia-speaking-512.svg" alt="BBIA Speaking" width="300" height="auto">
+
+</div>
 
 ---
 
-*Dernière mise à jour : Oct / Nov. 2025*
+*Dernière mise à jour : 7 Décembre 2025*

@@ -63,7 +63,7 @@ def start_bbia_sim() -> None:
     ]
 
     first_thought = secrets.choice(first_thoughts)
-    logger.info(f"Première pensée : '{first_thought}'")
+    logger.info("Première pensée : '%s'", first_thought)
     time.sleep(1)
 
     # Message final varié

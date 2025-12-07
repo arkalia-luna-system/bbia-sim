@@ -72,8 +72,8 @@ class BBIAPoseDetection:
                 f"✅ BBIAPoseDetection initialisé (complexité: {model_complexity})",
             )
             self.is_initialized = True
-        except Exception:
-            logger.exception("❌ Erreur initialisation MediaPipe Pose")
+        except Exception as e:  # noqa: BLE001 - Erreur initialisation MediaPipe Pose
+            logger.error("❌ Erreur initialisation MediaPipe Pose (critique): %s", e)
 
     def detect_pose(self, image: npt.NDArray[np.uint8]) -> dict[str, Any] | None:
         """Détecte la posture complète dans une image.
@@ -131,8 +131,8 @@ class BBIAPoseDetection:
                 "num_landmarks": len(landmarks),
             }
 
-        except Exception:
-            logger.exception("❌ Erreur détection pose")
+        except Exception as e:  # noqa: BLE001 - Erreur détection pose
+            logger.error("❌ Erreur détection pose (critique): %s", e)
             return None
 
     def _detect_gestures(self, landmarks: list[dict[str, Any]]) -> dict[str, bool]:

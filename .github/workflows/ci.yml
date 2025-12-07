@@ -332,13 +332,18 @@ jobs:
 
       - name: Run e2e tests
         timeout-minutes: 15
+        shell: bash
         run: |
           export PYTHONPATH=src:$PYTHONPATH
           echo "Running e2e tests..."
           mkdir -p logs
-          # Limiter la taille du log à 1MB mais avec plus de verbosité
-          pytest -vv -m "e2e" --timeout=60 --tb=short --maxfail=5 --log-cli-level=INFO --durations=10 --showlocals -x 2>&1 | head -c 1048576 > logs/test_run.log || true
-          echo "E2E tests completed"
+          # Exécuter pytest et capturer le code de sortie
+          set +e
+          pytest -vv -m "e2e" --timeout=60 --tb=short --maxfail=5 --log-cli-level=INFO --durations=10 --showlocals -x 2>&1 | head -c 1048576 > logs/test_run.log
+          PYTEST_EXIT_CODE=${PIPESTATUS[0]}
+          set -e
+          echo "E2E tests completed (exit code: $PYTEST_EXIT_CODE)"
+          echo "PYTEST_EXIT_CODE=$PYTEST_EXIT_CODE" >> $GITHUB_ENV
 
           # Ensure log file exists even if empty
           if [ ! -f logs/test_run.log ]; then
@@ -365,6 +370,7 @@ jobs:
 
       - name: Check e2e test results
         timeout-minutes: 1
+        shell: bash
         run: |
           mkdir -p logs
           if [ ! -f logs/test_run.log ]; then
@@ -377,14 +383,32 @@ jobs:
           tail -n 50 logs/test_run.log
           echo "========================="
 
-          # Check if tests passed
-          if grep -qi "FAILED" logs/test_run.log || grep -qi "ERROR" logs/test_run.log; then
-            echo "❌ Some e2e tests failed"
+          # Vérifier d'abord le code de sortie de pytest
+          if [ "$PYTEST_EXIT_CODE" != "0" ] && [ -n "$PYTEST_EXIT_CODE" ]; then
+            echo "❌ pytest exited with code $PYTEST_EXIT_CODE"
             exit 1
-          elif grep -qi "passed\|PASSED" logs/test_run.log || grep -qi "test.*passed" logs/test_run.log; then
+          fi
+
+          # Vérifier aussi dans les logs (fallback)
+          if grep -qiE "FAILED|ERROR|failed|error" logs/test_run.log && ! grep -qiE "passed.*failed|failed.*passed" logs/test_run.log; then
+            # Vérifier qu'il y a bien des tests qui ont échoué (pas juste le mot dans un message)
+            if grep -qiE "FAILED.*test|test.*FAILED|failed.*test|test.*failed" logs/test_run.log; then
+              echo "❌ Some e2e tests failed (detected in log)"
+              exit 1
+            fi
+          fi
+
+          # Vérifier qu'il y a des résultats de tests
+          if grep -qiE "passed|PASSED|test.*passed" logs/test_run.log; then
             echo "✅ All e2e tests passed"
           else
-            echo "⚠️ No test results found in log, assuming tests passed"
+            echo "⚠️ No test results found in log, checking exit code..."
+            if [ "$PYTEST_EXIT_CODE" = "0" ] || [ -z "$PYTEST_EXIT_CODE" ]; then
+              echo "✅ Assuming tests passed (pytest exit code was 0)"
+            else
+              echo "❌ Tests may have failed (no clear results in log)"
+              exit 1
+            fi
           fi
 
   test-slow:

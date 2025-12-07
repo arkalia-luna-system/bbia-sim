@@ -108,10 +108,11 @@ class TroubleshootingChecker:
                     else None
                 ),
             }
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001 - Erreur vérification Python
+            error_msg = f"Erreur vérification Python: {e}"
             return {
                 "status": "error",
-                "message": f"Erreur vérification Python: {e}",
+                "message": error_msg,
                 "fix": "Vérifier installation Python",
             }
 

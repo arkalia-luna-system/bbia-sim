@@ -332,9 +332,16 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
                         "Erreur lors de la lecture audio locale (fallback sounddevice): %s",
                         e,
                     )
-                except Exception as e:
+                except (TypeError, IndexError, KeyError) as e:
                     logger.debug(
-                        "Erreur inattendue lecture audio locale: %s",
+                        "Erreur lecture audio locale (type/index/key): %s",
+                        e,
+                    )
+                except (
+                    Exception
+                ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
+                    logger.debug(
+                        "Erreur inattendue lecture audio locale (fallback normal): %s",
                         e,
                     )
         except (ImportError, RuntimeError, OSError) as e:
@@ -343,7 +350,7 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
                 "Erreur lors de la synthèse vocale avancée, fallback pyttsx3: %s",
                 e,
             )
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001 - Erreur synthèse vocale fallback
             # Vérifier si l'erreur vient de _get_pyttsx3_engine()
             # Si c'est le cas, la laisser remonter car le fallback pyttsx3 échouera aussi
             import traceback
@@ -396,8 +403,16 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
                         except TypeError:
                             media.play_audio(sdk_audio_bytes)
                         return
-                    except Exception as e:
-                        logging.debug("media.play_audio a échoué: %s", e)
+                    except (TypeError, IndexError, KeyError, OSError) as e:
+                        logging.debug(
+                            "media.play_audio a échoué (type/index/key/os): %s", e
+                        )
+                    except (
+                        Exception
+                    ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
+                        logging.debug(
+                            "media.play_audio a échoué (fallback normal): %s", e
+                        )
 
                 # Priorité 2: media.speaker.play_file/ play(bytes)
                 speaker = getattr(media, "speaker", None)
@@ -406,8 +421,14 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
                         if hasattr(speaker, "play"):
                             speaker.play(sdk_audio_bytes)
                             return
-                    except Exception as e:
-                        logging.debug("speaker.play a échoué: %s", e)
+                    except (TypeError, IndexError, KeyError, OSError) as e:
+                        logging.debug(
+                            "speaker.play a échoué (type/index/key/os): %s", e
+                        )
+                    except (
+                        Exception
+                    ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
+                        logging.debug("speaker.play a échoué (fallback normal): %s", e)
                     try:
                         # Créer un fichier temporaire si play_file est préféré
                         tmp_path = None
@@ -432,7 +453,12 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
                                 cleanup_error,
                             )
 
-            except Exception as e:
+            except (TypeError, ValueError, AttributeError) as e:
+                logging.debug("Erreur synthèse SDK (type/value/attr): %s", e)
+                # Fallback pyttsx3
+            except (
+                Exception
+            ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
                 logging.debug("Erreur synthèse SDK (fallback pyttsx3): %s", e)
                 # Fallback pyttsx3
 
@@ -461,7 +487,12 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
         # Pitch non supporté nativement par pyttsx3, dépend du moteur
         engine.say(texte)
         engine.runAndWait()
-    except Exception as e:
+    except (RuntimeError, AttributeError, OSError) as e:
+        # Utiliser error au lieu de warning avec exc_info pour éviter traces complètes dans tests
+        logging.error("Erreur de synthèse vocale (runtime/attr/os): %s", e)
+    except (
+        Exception
+    ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
         # Utiliser error au lieu de warning avec exc_info pour éviter traces complètes dans tests
         logging.error("Erreur de synthèse vocale: %s", e)
         raise
@@ -533,7 +564,14 @@ def reconnaitre_parole(
                     texte = r.recognize_google(audio, language="fr-FR")
                     logging.info("✅ Texte reconnu (SDK 4 microphones) : %s", texte)
                     return str(texte)
-        except Exception as e:
+        except (RuntimeError, AttributeError, OSError) as e:
+            logging.debug(
+                "Erreur reconnaissance SDK (runtime/attr/os): %s",
+                e,
+            )
+        except (
+            Exception
+        ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
             logging.debug(
                 "Erreur reconnaissance SDK (fallback speech_recognition): %s",
                 e,
@@ -553,7 +591,14 @@ def reconnaitre_parole(
             except sr.UnknownValueError:
                 logging.warning("Aucune parole reconnue.")
                 return None
-            except Exception as e:
+            except (RuntimeError, AttributeError, OSError) as e:
+                # Utiliser debug au lieu de error pour réduire bruit dans tests
+                logging.debug(
+                    "Erreur de reconnaissance vocale (runtime/attr/os): %s", e
+                )
+            except (
+                Exception
+            ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
                 # Utiliser debug au lieu de error pour réduire bruit dans tests
                 logging.debug("Erreur de reconnaissance vocale: %s", e)
                 return None
@@ -643,7 +688,14 @@ def _transcribe_thread_worker() -> None:
             task_done_called = True
         except queue.Empty:
             continue
-        except Exception as e:
+        except (RuntimeError, AttributeError, OSError) as e:
+            # Utiliser error au lieu de exception pour éviter traces complètes dans tests
+            logger.error(
+                "Erreur thread transcription asynchrone (runtime/attr/os): %s", e
+            )
+        except (
+            Exception
+        ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
             # Utiliser error au lieu de exception pour éviter traces complètes dans tests
             logger.error("Erreur thread transcription asynchrone: %s", e)
             # Appeler task_done() seulement si la tâche a été récupérée
@@ -820,8 +872,16 @@ def _transcribe_audio_sync(
             # Nettoyer fichier temporaire
             try:
                 os.unlink(temp_path)
-            except Exception as cleanup_error:
-                logging.debug(f"Nettoyage fichier Whisper ({cleanup_error})")
+            except (OSError, PermissionError) as cleanup_error:
+                logging.debug(
+                    "Nettoyage fichier Whisper (os/permission): %s", cleanup_error
+                )
+            except (
+                Exception
+            ) as cleanup_error:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
+                logging.debug(
+                    "Nettoyage fichier Whisper (erreur inattendue): %s", cleanup_error
+                )
 
     except ImportError:
         logging.debug("Whisper non disponible (import échoué)")
@@ -905,8 +965,16 @@ def transcribe_audio(
             # Nettoyer fichier temporaire
             try:
                 os.unlink(temp_path)
-            except Exception as cleanup_error:
-                logging.debug(f"Nettoyage fichier Whisper ({cleanup_error})")
+            except (OSError, PermissionError) as cleanup_error:
+                logging.debug(
+                    "Nettoyage fichier Whisper (os/permission): %s", cleanup_error
+                )
+            except (
+                Exception
+            ) as cleanup_error:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
+                logging.debug(
+                    "Nettoyage fichier Whisper (erreur inattendue): %s", cleanup_error
+                )
 
     except ImportError:
         logging.debug("Whisper non disponible (import échoué)")

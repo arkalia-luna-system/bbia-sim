@@ -110,9 +110,9 @@ class UnityReachyMiniController:
             try:
                 try:
                     command = input("🤖 BBIA > ").strip().lower()
-                except Exception:
+                except Exception as e:  # noqa: BLE001 - Erreur input()
                     # Gérer les exceptions levées par input() (comme dans les tests)
-                    logger.exception("❌ Erreur")
+                    logger.debug("Erreur input() (fallback normal): %s", e)
                     iteration_count += 1
                     continue
                 if command in {"quit", "exit"}:
@@ -142,9 +142,9 @@ class UnityReachyMiniController:
                 elif command.startswith("emotion "):
                     emotion = command.split()[1]
                     if self.set_emotion(emotion):
-                        logger.info(f"✅ Émotion '{emotion}' définie")
+                        logger.info("✅ Émotion '%s' définie", emotion)
                     else:
-                        logger.error(f"❌ Émotion '{emotion}' invalide")
+                        logger.error("❌ Émotion '%s' invalide", emotion)
                 elif command == "reset":
                     if self.reset_position():
                         logger.info("✅ Position réinitialisée")
@@ -159,8 +159,8 @@ class UnityReachyMiniController:
                 iteration_count += 1
             except KeyboardInterrupt:
                 break
-            except Exception:
-                logger.exception("❌ Erreur")
+            except Exception as e:  # noqa: BLE001 - Erreur commande
+                logger.exception("❌ Erreur commande (critique): %s", e)
                 iteration_count += 1
 
         if iteration_count >= max_iterations:

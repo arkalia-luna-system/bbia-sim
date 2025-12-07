@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Logos BBIA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .logo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .logo-item {
+            border: 1px solid #ddd;
+            padding: 15px;
+            text-align: center;
+            border-radius: 8px;
+            background: white;
+        }
+
+        .logo-item img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        .logo-item .name {
+            font-size: 12px;
+            color: #666;
+            word-break: break-all;
+        }
+
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100">
+    <div class="container mx-auto py-8">
+        <h1 class="text-3xl font-bold mb-6 text-center">🎨 Test Tous les Logos BBIA</h1>
+
+        <div class="bg-blue-100 p-4 mb-6 rounded">
+            <h2 class="font-bold mb-2">Chemins testés :</h2>
+            <ul class="list-disc list-inside text-sm">
+                <li>/static/logos/logos/bbia-horizontal-clean-serenity-512.svg</li>
+                <li>/static/logos/identity/bbia-app_icon-512.svg</li>
+            </ul>
+        </div>
+
+        <h2 class="text-2xl font-bold mb-4">📐 Logos Horizontaux (Clean)</h2>
+        <div class="logo-grid">
+            <div class="logo-item">
+                <img src="/static/logos/logos/bbia-horizontal-clean-serenity-512.svg" alt="Serenity"
+                    onerror="this.parentElement.innerHTML='<span class=error>❌ Erreur chargement</span><br>Serenity'">
+                <div class="name">serenity</div>
+            </div>
+            <div class="logo-item">
+                <img src="/static/logos/logos/bbia-horizontal-clean-awakening-512.svg" alt="Awakening"
+                    onerror="this.parentElement.innerHTML='<span class=error>❌ Erreur chargement</span><br>Awakening'">
+                <div class="name">awakening</div>
+            </div>
+            <div class="logo-item">
+                <img src="/static/logos/logos/bbia-horizontal-clean-rainy-512.svg" alt="Rainy"
+                    onerror="this.parentElement.innerHTML='<span class=error>❌ Erreur chargement</span><br>Rainy'">
+                <div class="name">rainy</div>
+            </div>
+            <div class="logo-item">
+                <img src="/static/logos/logos/bbia-horizontal-clean-sunny-512.svg" alt="Sunny"
+                    onerror="this.parentElement.innerHTML='<span class=error>❌ Erreur chargement</span><br>Sunny'">
+                <div class="name">sunny</div>
+            </div>
+            <div class="logo-item">
+                <img src="/static/logos/logos/bbia-horizontal-clean-snowy-512.svg" alt="Snowy"
+                    onerror="this.parentElement.innerHTML='<span class=error>❌ Erreur chargement</span><br>Snowy'">
+                <div class="name">snowy</div>
+            </div>
+        </div>
+
+        <h2 class="text-2xl font-bold mb-4 mt-8">⚡ Logos Horizontaux (Wireframe)</h2>
+        <div class="logo-grid">
+            <div class="logo-item">
+                <img src="/static/logos/logos/bbia-horizontal-wireframe-power-512.svg" alt="Power"
+                    onerror="this.parentElement.innerHTML='<span class=error>❌ Erreur chargement</span><br>Power'">
+                <div class="name">power</div>
+            </div>
+            <div class="logo-item">
+                <img src="/static/logos/logos/bbia-horizontal-wireframe-mystery-512.svg" alt="Mystery"
+                    onerror="this.parentElement.innerHTML='<span class=error>❌ Erreur chargement</span><br>Mystery'">
+                <div class="name">mystery</div>
+            </div>
+            <div class="logo-item">
+                <img src="/static/logos/logos/bbia-horizontal-wireframe-creative-512.svg" alt="Creative"
+                    onerror="this.parentElement.innerHTML='<span class=error>❌ Erreur chargement</span><br>Creative'">
+                <div class="name">creative</div>
+            </div>
+            <div class="logo-item">
+                <img src="/static/logos/logos/bbia-horizontal-wireframe-stormy-512.svg" alt="Stormy"
+                    onerror="this.parentElement.innerHTML='<span class=error>❌ Erreur chargement</span><br>Stormy'">
+                <div class="name">stormy</div>
+            </div>
+            <div class="logo-item">
+                <img src="/static/logos/logos/bbia-horizontal-wireframe-explosive-512.svg" alt="Explosive"
+                    onerror="this.parentElement.innerHTML='<span class=error>❌ Erreur chargement</span><br>Explosive'">
+                <div class="name">explosive</div>
+            </div>
+        </div>
+
+        <h2 class="text-2xl font-bold mb-4 mt-8">🎯 Assets d'Identité</h2>
+        <div class="logo-grid">
+            <div class="logo-item">
+                <img src="/static/logos/identity/bbia-app_icon-512.svg" alt="App Icon"
+                    onerror="this.parentElement.innerHTML='<span class=error>❌ Erreur chargement</span><br>App Icon'">
+                <div class="name">app_icon</div>
+            </div>
+            <div class="logo-item">
+                <img src="/static/logos/identity/bbia-hud-512.svg" alt="HUD"
+                    onerror="this.parentElement.innerHTML='<span class=error>❌ Erreur chargement</span><br>HUD'">
+                <div class="name">hud</div>
+            </div>
+            <div class="logo-item">
+                <img src="/static/logos/identity/bbia-speaking-512.svg" alt="Speaking"
+                    onerror="this.parentElement.innerHTML='<span class=error>❌ Erreur chargement</span><br>Speaking'">
+                <div class="name">speaking</div>
+            </div>
+            <div class="logo-item">
+                <img src="/static/logos/identity/bbia-github_banner-512.svg" alt="GitHub Banner"
+                    onerror="this.parentElement.innerHTML='<span class=error>❌ Erreur chargement</span><br>GitHub Banner'">
+                <div class="name">github_banner</div>
+            </div>
+        </div>
+
+        <div class="mt-8 p-4 bg-yellow-100 rounded">
+            <h3 class="font-bold mb-2">🔍 Diagnostic :</h3>
+            <p class="text-sm">Si vous voyez "❌ Erreur chargement", le fichier n'est pas accessible via le serveur web.
+            </p>
+            <p class="text-sm mt-2">Vérifiez que le lien symbolique fonctionne et que FastAPI sert bien les fichiers
+                statiques.</p>
+        </div>
+    </div>
+</body>
+
+</html>

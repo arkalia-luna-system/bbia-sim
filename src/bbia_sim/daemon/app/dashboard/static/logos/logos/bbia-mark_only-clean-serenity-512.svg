@@ -1,0 +1,55 @@
+<ns0:svg xmlns:ns0="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 500 500">
+  
+  
+  
+  <ns0:g id="bbia-bot">
+    
+    <ns0:path id="body-shell" d="M150 280 C 150 280, 140 450, 250 450 C 360 450, 350 280, 350 280 L 150 280 Z" fill="#F0F0F0" stroke="#E0E0E0" stroke-width="2" />
+    
+    
+    <ns0:rect id="neck-joint" x="235" y="250" width="30" height="40" fill="#999" />
+
+    
+    <ns0:g id="head-group" transform="rotate(-15 250 250)">
+      
+      <ns0:g id="antennas" stroke="#555" stroke-width="3">
+        <ns0:line id="antenna-left" x1="200" y1="150" x2="180" y2="80" />
+        <ns0:circle id="antenna-left-signal" cx="180" cy="80" r="4" fill="#0066FF" stroke="none"><animate attributeName="r" values="4;6;4" dur="1.5s" repeatCount="indefinite" /></ns0:circle>
+        <ns0:path id="antenna-left-base" d="M200 150 L 200 130" stroke-width="6" stroke="#AAA" /> 
+
+        <ns0:line id="antenna-right" x1="300" y1="150" x2="320" y2="80" />
+        <ns0:circle id="antenna-right-signal" cx="320" cy="80" r="4" fill="#0066FF" stroke="none"><animate attributeName="r" values="4;6;4" dur="1.5s" begin="0.3s" repeatCount="indefinite" /></ns0:circle>
+        <ns0:path id="antenna-right-base" d="M300 150 L 300 130" stroke-width="6" stroke="#AAA" />
+      </ns0:g>
+
+      
+      <ns0:rect id="head-case" x="150" y="150" width="200" height="120" rx="30" fill="#FFFFFF" stroke="#DDD" stroke-width="2" />
+
+      
+      <ns0:g id="face-interface">
+        
+        <ns0:line id="face-separator" x1="210" y1="210" x2="290" y2="210" stroke="#111" stroke-width="8" />
+        
+        
+        <ns0:g id="eye-left">
+          <ns0:circle id="eye-left-outer" cx="210" cy="210" r="28" fill="#111" />
+          <ns0:circle id="pupil-left" cx="210" cy="210" r="12" fill="#3399FF"><animate attributeName="opacity" values="0.48999999999999994;0.7;0.48999999999999994" dur="2.0s" repeatCount="indefinite" /></ns0:circle>
+          <ns0:circle id="eye-left-highlight" cx="215" cy="205" r="5" fill="white" opacity="0.6" />
+        </ns0:g>
+
+        
+        <ns0:g id="eye-right">
+          <ns0:circle id="eye-right-outer" cx="290" cy="210" r="28" fill="#111" />
+          <ns0:circle id="pupil-right" cx="290" cy="210" r="12" fill="#3399FF"><animate attributeName="opacity" values="0.48999999999999994;0.7;0.48999999999999994" dur="2.0s" repeatCount="indefinite" /></ns0:circle>
+          <ns0:circle id="eye-right-highlight" cx="295" cy="205" r="5" fill="white" opacity="0.6" />
+        </ns0:g>
+      </ns0:g>
+    <animateTransform attributeName="transform" type="rotate" values="-15 250 250;-5 250 250;-25 250 250;-15 250 250" dur="3.0s" repeatCount="indefinite" /></ns0:g>
+  </ns0:g>
+  
+  
+  <ns0:g id="logo-text" transform="translate(250, 480)">
+    <ns0:text id="text-bbia" y="-35" text-anchor="middle" font-family="Arial, sans-serif" font-weight="900" font-size="50" fill="#222" letter-spacing="2">BBIA</ns0:text>
+    <ns0:text id="text-arkalia" y="0" text-anchor="middle" font-family="Courier New, monospace" font-weight="bold" font-size="24" fill="#666">Arkalia-Luna</ns0:text>
+  </ns0:g>
+</ns0:svg>

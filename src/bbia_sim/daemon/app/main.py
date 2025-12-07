@@ -371,13 +371,23 @@ STATIC_DIR = Path(__file__).parent / "dashboard" / "static"
 TEMPLATES_DIR = Path(__file__).parent / "dashboard" / "templates"
 
 if STATIC_DIR.exists() and TEMPLATES_DIR.exists():
-    app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
+    app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
     templates = Jinja2Templates(directory=str(TEMPLATES_DIR))
 
     @app.get("/", response_class=HTMLResponse)
     async def dashboard(request: Request) -> HTMLResponse:
         """Render the dashboard (conforme SDK officiel)."""
         return templates.TemplateResponse("index.html", {"request": request})
+
+    @app.get("/test-logos", response_class=HTMLResponse)
+    async def test_logos(request: Request) -> HTMLResponse:
+        """Page de test pour voir tous les logos BBIA."""
+        return templates.TemplateResponse("test_logos.html", {"request": request})
+
+    @app.get("/bbia-interface", response_class=HTMLResponse)
+    async def bbia_interface(request: Request) -> HTMLResponse:
+        """Interface live BBIA avec animations et contrôles."""
+        return templates.TemplateResponse("bbia_interface.html", {"request": request})
 
 else:
     logger.warning(

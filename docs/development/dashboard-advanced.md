@@ -1,7 +1,7 @@
 # 📊 Guide Dashboard Advanced - BBIA-SIM
 
-**Date** : 21 Novembre 2025  
-**Version** : 1.0  
+**Date** : 7 Décembre 2025  
+**Version** : 1.1  
 **Compatibilité Python** : 3.11+
 
 > **Dashboard avancé** avec monitoring temps réel, WebSocket, métriques performance et contrôle robot
@@ -20,6 +20,7 @@ Le `dashboard_advanced.py` est un dashboard amélioré qui offre :
 - ✅ **Chat interactif** avec IA
 - ✅ **Panneau troubleshooting interactif** (détection automatique + tests)
 - ✅ **Interface Web** moderne avec FastAPI
+- ✅ **Logos BBIA intégrés** : Favicon et logo dans le header (7 Déc 2025)
 
 **Note** : Le dashboard principal (`src/bbia_sim/daemon/app/dashboard/`) inclut maintenant aussi :
 - ✅ **Graphiques temps réel** avec Chart.js (`sections/telemetry_charts.html`) (24 Nov 2025)
