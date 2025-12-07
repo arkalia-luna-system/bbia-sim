@@ -48,7 +48,16 @@
    - Logo BBIA dans le header (en haut à gauche)
    - Favicon BBIA dans l'onglet
 
-2. **Page Test Logos** :
+2. **Interface Live BBIA** ⭐ **IMPORTANT** :
+   ```
+   http://localhost:8000/bbia-interface
+   ```
+   - Interface interactive avec animations
+   - Contrôles d'émotions (Neutre, Joyeux, Curieux, Écoute, Veille, Erreur)
+   - Animations CSS (respiration, clignement)
+   - HUD graphique rotatif
+
+3. **Page Test Logos** :
    ```
    http://localhost:8000/test-logos
    ```
@@ -56,7 +65,7 @@
    - Diagnostic visuel
    - Erreurs visibles si problème
 
-3. **Accès Direct Logo** :
+4. **Accès Direct Logo** :
    ```
    http://localhost:8000/static/logos/logos/bbia-horizontal-clean-serenity-512.svg
    http://localhost:8000/static/logos/identity/bbia-app_icon-512.svg

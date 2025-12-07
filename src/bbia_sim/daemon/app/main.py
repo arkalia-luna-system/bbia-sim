@@ -384,6 +384,11 @@ if STATIC_DIR.exists() and TEMPLATES_DIR.exists():
         """Page de test pour voir tous les logos BBIA."""
         return templates.TemplateResponse("test_logos.html", {"request": request})
 
+    @app.get("/bbia-interface", response_class=HTMLResponse)
+    async def bbia_interface(request: Request) -> HTMLResponse:
+        """Interface live BBIA avec animations et contrôles."""
+        return templates.TemplateResponse("bbia_interface.html", {"request": request})
+
 else:
     logger.warning(
         "Dashboard templates non trouvés. Dashboard non disponible. "

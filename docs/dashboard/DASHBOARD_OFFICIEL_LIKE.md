@@ -261,6 +261,7 @@ python -c "from bbia_sim.daemon.app.main import app; import logging; logging.inf
 - ✅ `static/style.css` - Styles Tailwind
 - ✅ `static/js/*.js` - Scripts JavaScript
 - ✅ `static/logos/` - Logos BBIA professionnels (30 logos + 4 assets identity) (7 Déc 2025)
+- ✅ `templates/bbia_interface.html` - Interface live BBIA avec animations (7 Déc 2025)
 
 ### API Routers
 - ✅ `routers/presets.py` - API presets (24 Nov 2025)

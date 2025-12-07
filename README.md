@@ -46,7 +46,15 @@
 
 **12 émotions robotiques** (6 SDK officiel + 6 étendues) • **Simulation 3D fidèle** • **IA avancée**
 
-![BBIA-SIM Reachy Mini Robot](./assets/images/robot_animation.gif)
+<div align="center">
+
+<img src="assets/logos/bbia/logos/bbia-horizontal-clean-serenity-512.svg" alt="BBIA Logo" width="300" height="auto">
+
+<img src="assets/logos/bbia/logos/bbia-mark_only-clean-serenity-512.svg" alt="BBIA Mark" width="150" height="auto" style="margin: 0 20px;">
+
+<img src="assets/logos/bbia/identity/bbia-hud-512.svg" alt="BBIA HUD" width="150" height="auto">
+
+</div>
 
 </div>
 

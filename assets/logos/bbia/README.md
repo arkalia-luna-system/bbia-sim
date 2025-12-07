@@ -164,6 +164,19 @@ Les logos sont générés depuis le projet centralisé :
 - **Build** : `python build.py` dans le projet logo
 - **Copie** : Copier `dist/logos/` et `dist/identity/` vers `assets/logos/bbia/`
 
+## 🎮 Interface Live BBIA
+
+Une **interface interactive** est disponible pour tester les animations BBIA :
+
+- **URL** : `http://localhost:8000/bbia-interface`
+- **Fonctionnalités** :
+  - Animations CSS (respiration, clignement des yeux)
+  - Contrôles d'émotions (Neutre, Joyeux, Curieux, Écoute, Veille, Erreur)
+  - HUD graphique rotatif
+  - Contrôle JavaScript : `bbia.setMood('happy')`
+
+**Source** : `/Volumes/T7/logo/arkalia-luna-logo/dist/bbia_interface.html`
+
 ---
 
 ## 📚 Documentation Complète
