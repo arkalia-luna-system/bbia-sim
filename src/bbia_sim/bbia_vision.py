@@ -507,7 +507,12 @@ class BBIAVision:
                 except (ValueError, TypeError, AttributeError) as e:
                     logger.debug("Erreur conversion image: %s", e)
                     return None
-                except Exception as e:
+                except (TypeError, IndexError, KeyError) as e:
+                    logger.debug("Erreur conversion image (type/index/key): %s", e)
+                    return None
+                except (
+                    Exception
+                ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
                     logger.debug("Erreur inattendue conversion image: %s", e)
                     return None
 
@@ -604,7 +609,11 @@ class BBIAVision:
 
         except (AttributeError, RuntimeError, OSError) as e:
             logger.debug("Erreur capture caméra SDK: %s", e)
-        except Exception as e:
+        except (TypeError, IndexError, KeyError) as e:
+            logger.debug("Erreur capture caméra SDK (type/index/key): %s", e)
+        except (
+            Exception
+        ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
             logger.debug(
                 "Erreur inattendue capture caméra SDK (fallback simulation): %s",
                 e,
@@ -674,7 +683,12 @@ class BBIAVision:
         except (OSError, RuntimeError, AttributeError) as e:
             logger.debug("Erreur capture webcam OpenCV: %s", e)
             return None
-        except Exception as e:
+        except (TypeError, IndexError, KeyError) as e:
+            logger.debug("Erreur capture webcam OpenCV (type/index/key): %s", e)
+            return None
+        except (
+            Exception
+        ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
             logger.debug("Erreur inattendue capture webcam OpenCV: %s", e)
             return None
 
@@ -732,7 +746,11 @@ class BBIAVision:
                     objects.append(obj)
             except (AttributeError, RuntimeError, ValueError) as e:
                 logger.warning("Erreur détection YOLO: %s", e)
-            except Exception as e:
+            except (TypeError, IndexError, OSError) as e:
+                logger.warning("Erreur détection YOLO (type/index/os): %s", e)
+            except (
+                Exception
+            ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
                 logger.warning("Erreur inattendue détection YOLO: %s", e)
 
         # Détection visages avec MediaPipe + DeepFace
@@ -802,7 +820,18 @@ class BBIAVision:
                                     AttributeError,
                                 ) as deepface_error:
                                     logger.debug("DeepFace erreur: %s", deepface_error)
-                                except Exception as deepface_error:
+                                except (
+                                    TypeError,
+                                    IndexError,
+                                    KeyError,
+                                ) as deepface_error:
+                                    logger.debug(
+                                        "DeepFace erreur (type/index/key): %s",
+                                        deepface_error,
+                                    )
+                                except (
+                                    Exception
+                                ) as deepface_error:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
                                     logger.debug(
                                         "DeepFace erreur inattendue: %s",
                                         deepface_error,
@@ -840,7 +869,11 @@ class BBIAVision:
                             faces.append(face)
             except (AttributeError, RuntimeError, ValueError) as e:
                 logger.warning("Erreur détection MediaPipe: %s", e)
-            except Exception as e:
+            except (TypeError, IndexError, OSError) as e:
+                logger.warning("Erreur détection MediaPipe (type/index/os): %s", e)
+            except (
+                Exception
+            ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
                 logger.warning("Erreur inattendue détection MediaPipe: %s", e)
 
         # Détection postures avec MediaPipe Pose
@@ -857,7 +890,11 @@ class BBIAVision:
                     )
             except (AttributeError, RuntimeError, ValueError) as e:
                 logger.debug("Erreur détection pose: %s", e)
-            except Exception as e:
+            except (TypeError, IndexError, OSError) as e:
+                logger.debug("Erreur détection pose (type/index/os): %s", e)
+            except (
+                Exception
+            ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
                 logger.debug("Erreur inattendue détection pose: %s", e)
 
         # OPTIMISATION RAM: Limiter taille historique avec deque
@@ -1007,7 +1044,11 @@ class BBIAVision:
                         objects.append(obj)
                 except (AttributeError, RuntimeError, ValueError) as e:
                     logger.warning("Erreur détection YOLO: %s", e)
-                except Exception as e:
+                except (TypeError, IndexError, OSError) as e:
+                    logger.warning("Erreur détection YOLO (type/index/os): %s", e)
+                except (
+                    Exception
+                ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
                     logger.warning("Erreur inattendue détection YOLO: %s", e)
 
             # Détection de visages avec MediaPipe
@@ -1100,7 +1141,18 @@ class BBIAVision:
                                         "DeepFace erreur (fallback): %s",
                                         deepface_error,
                                     )
-                                except Exception as deepface_error:
+                                except (
+                                    TypeError,
+                                    IndexError,
+                                    KeyError,
+                                ) as deepface_error:
+                                    logger.debug(
+                                        "DeepFace erreur (type/index/key): %s",
+                                        deepface_error,
+                                    )
+                                except (
+                                    Exception
+                                ) as deepface_error:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
                                     logger.debug(
                                         "DeepFace erreur inattendue (fallback): %s",
                                         deepface_error,
@@ -1138,7 +1190,11 @@ class BBIAVision:
                             faces.append(face)
                 except (AttributeError, RuntimeError, ValueError) as e:
                     logger.warning("Erreur détection MediaPipe: %s", e)
-                except Exception as e:
+                except (TypeError, IndexError, OSError) as e:
+                    logger.warning("Erreur détection MediaPipe (type/index/os): %s", e)
+                except (
+                    Exception
+                ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
                     logger.warning("Erreur inattendue détection MediaPipe: %s", e)
 
             # Détection de postures avec MediaPipe Pose (optionnel)
@@ -1160,7 +1216,11 @@ class BBIAVision:
                         )
                 except (AttributeError, RuntimeError, ValueError) as e:
                     logger.debug("Erreur détection pose: %s", e)
-                except Exception as e:
+                except (TypeError, IndexError, OSError) as e:
+                    logger.debug("Erreur détection pose (type/index/os): %s", e)
+                except (
+                    Exception
+                ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
                     logger.debug("Erreur inattendue détection pose: %s", e)
 
             if objects or faces or poses:
@@ -1352,11 +1412,18 @@ class BBIAVision:
                         self._scan_queue.put_nowait(result)
                 # Attendre intervalle avant prochain scan
                 self._should_stop_scan.wait(self._scan_interval)
-            except (RuntimeError, AttributeError, OSError):
-                logger.exception("Erreur thread scan asynchrone")
+            except (RuntimeError, AttributeError, OSError) as e:
+                logger.exception("Erreur thread scan asynchrone: %s", e)
                 time.sleep(self._scan_interval)
-            except Exception:
-                logger.exception("Erreur inattendue thread scan asynchrone")
+            except (TypeError, IndexError, KeyError) as e:
+                logger.exception(
+                    "Erreur thread scan asynchrone (type/index/key): %s", e
+                )
+                time.sleep(self._scan_interval)
+            except (
+                Exception
+            ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
+                logger.exception("Erreur inattendue thread scan asynchrone: %s", e)
                 time.sleep(self._scan_interval)
 
         logger.debug("🔍 Thread scan asynchrone arrêté")

@@ -1165,7 +1165,11 @@ class BBIAHuggingFace:
                 del self.chat_tokenizer
         except (AttributeError, RuntimeError) as e:
             logger.debug("Erreur suppression chat_tokenizer: %s", e)
-        except Exception as e:
+        except (TypeError, KeyError, OSError) as e:
+            logger.debug("Erreur suppression chat_tokenizer (type/key/os): %s", e)
+        except (
+            Exception
+        ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
             logger.debug("Erreur inattendue suppression chat_tokenizer: %s", e)
 
         self.chat_model = None
@@ -1294,7 +1298,14 @@ class BBIAHuggingFace:
                         )
             except (RuntimeError, AttributeError) as e:
                 logger.debug("Erreur boucle déchargement auto partagée: %s", e)
-            except Exception as e:
+            except (TypeError, IndexError, KeyError, OSError) as e:
+                logger.debug(
+                    "Erreur boucle déchargement auto partagée (type/index/key/os): %s",
+                    e,
+                )
+            except (
+                Exception
+            ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
                 logger.debug(
                     "Erreur inattendue boucle déchargement auto partagée: %s",
                     e,
@@ -1602,8 +1613,13 @@ class BBIAHuggingFace:
             # Normaliser et finaliser (anti-doublons/sentinelles)
             return self._normalize_response_length(adapted_response)
 
-        except Exception:
-            logger.exception("❌ Erreur chat:")
+        except (TypeError, IndexError, KeyError, OSError) as e:
+            logger.exception("❌ Erreur chat (type/index/key/os): %s", e)
+            return "Je ne comprends pas bien, peux-tu reformuler ?"
+        except (
+            Exception
+        ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
+            logger.exception("❌ Erreur inattendue chat: %s", e)
             return "Je ne comprends pas bien, peux-tu reformuler ?"
 
     def _generate_llm_response(
@@ -3046,7 +3062,14 @@ class BBIAHuggingFace:
                 # Anti-duplication récente
                 try:
                     t = self._avoid_recent_duplicates(t)
-                except Exception as e:
+                except (TypeError, IndexError, KeyError) as e:
+                    logger.debug(
+                        "Erreur évitement doublons récents (type/index/key): %s",
+                        e,
+                    )
+                except (
+                    Exception
+                ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
                     logger.debug(
                         "Erreur lors de l'évitement des doublons récents: %s",
                         e,
@@ -3059,7 +3082,14 @@ class BBIAHuggingFace:
                 t2 = cut[: last_stop + 1].strip()
                 try:
                     t2 = self._avoid_recent_duplicates(t2)
-                except Exception as e:
+                except (TypeError, IndexError, KeyError) as e:
+                    logger.debug(
+                        "Erreur évitement doublons récents t2 (type/index/key): %s",
+                        e,
+                    )
+                except (
+                    Exception
+                ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
                     logger.debug(
                         "Erreur lors de l'évitement des doublons récents (t2): %s",
                         e,
@@ -3070,7 +3100,14 @@ class BBIAHuggingFace:
                 t3 = (cut[:last_space] + "...").strip()
                 try:
                     t3 = self._avoid_recent_duplicates(t3)
-                except Exception as e:
+                except (TypeError, IndexError, KeyError) as e:
+                    logger.debug(
+                        "Erreur évitement doublons récents t3 (type/index/key): %s",
+                        e,
+                    )
+                except (
+                    Exception
+                ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
                     logger.debug(
                         "Erreur lors de l'évitement des doublons récents (t3): %s",
                         e,
@@ -3079,7 +3116,14 @@ class BBIAHuggingFace:
             t4 = (t[:max_len] + "...").strip()
             try:
                 t4 = self._avoid_recent_duplicates(t4)
-            except Exception as e:
+            except (TypeError, IndexError, KeyError) as e:
+                logger.debug(
+                    "Erreur évitement doublons récents t4 (type/index/key): %s",
+                    e,
+                )
+            except (
+                Exception
+            ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
                 logger.debug(
                     "Erreur lors de l'évitement des doublons récents (t4): %s",
                     e,
