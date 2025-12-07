@@ -2,7 +2,7 @@
 ## Plan d'Action Immédiat (2-3 jours)
 
 **Date audit** : 24 Novembre 2025  
-**Contexte** : En attente robot physique + réponse Play Console (2-3 jours)  
+**Contexte** : En attente robot physique  
 **Objectif** : Maximiser la valeur du projet pendant l'attente
 
 ---
@@ -74,7 +74,7 @@
 ---
 
 #### 2. **Optimisation Mobile App (PWA)** ⏱️ **3-4h**
-**Pourquoi** : Tu as acheté Play Console, prépare-toi pour mobile
+**Pourquoi** : Préparer l'app pour mobile
 
 **Actions** :
 - [x] ✅ Ajouter bouton "Installer l'app" dans dashboard - **FAIT** (`pwa_install.js`)
@@ -95,7 +95,7 @@
 ---
 
 #### 3. **Documentation Mobile App** ⏱️ **2-3h**
-**Pourquoi** : Préparer la documentation pour Play Console
+**Pourquoi** : Préparer la documentation mobile
 
 **Actions** :
 - [x] ✅ Créer guide "BBIA-SIM Mobile App" - **FAIT** (dans `integration.md` section "Intégration Applications Mobiles")
@@ -103,7 +103,7 @@
 - [x] ✅ Créer exemples code mobile (JavaScript, Kotlin, Swift) - **FAIT** (dans `integration.md`)
 - [x] ✅ Documenter API endpoints pour mobile - **FAIT** (dans `integration.md`)
 - [x] ✅ Créer guide déploiement Play Store - **FAIT** (dans `integration.md` et `ROADMAP_DASHBOARD.md`)
-- [ ] ⚠️ Préparer screenshots/vidéos pour Play Console - **À FAIRE** (nécessite app installée)
+- [ ] ⚠️ Préparer screenshots/vidéos pour distribution mobile - **À FAIRE** (nécessite app installée)
 
 **Fichiers à créer** :
 - `docs/mobile/GUIDE_MOBILE_APP.md` (nouveau)
@@ -233,14 +233,14 @@
 ---
 
 #### **Phase 2 : Mobile App (PRIORITÉ #2)** ⭐⭐
-**Pourquoi** : Tu as acheté Play Console, prépare-toi
+**Pourquoi** : Préparer l'app pour mobile
 
 **Actions immédiates** :
 1. Tester PWA sur Android/iOS
 2. Optimiser pour mobile (responsive, tactile)
 3. Créer documentation mobile complète
-4. Préparer screenshots pour Play Console
-5. Documenter déploiement Play Store
+4. Préparer screenshots pour distribution mobile
+5. Documenter déploiement mobile (PWA ou stores)
 
 **Temps** : 3-4h  
 **Impact** : ✅ **PWA prête** pour distribution
@@ -283,7 +283,7 @@
 - [x] ✅ Créer guide mobile app - **FAIT** (dans `integration.md` section "Intégration Applications Mobiles")
 - [x] ✅ Documenter architecture mobile - **FAIT** (PWA vs React Native vs Natif dans `integration.md`)
 - [x] ✅ Créer exemples code mobile - **FAIT** (JavaScript, Kotlin, Swift dans `integration.md`)
-- [ ] ⚠️ Préparer screenshots Play Console - **À FAIRE** (nécessite app installée)
+- [ ] ⚠️ Préparer screenshots pour distribution mobile - **À FAIRE** (nécessite app installée)
 - [x] ✅ Documenter déploiement Play Store - **FAIT** (dans `integration.md` et `ROADMAP_DASHBOARD.md`)
 
 #### UX Dashboard
@@ -319,7 +319,7 @@
 2. ✅ **PWA mobile** (priorité #2)
 3. ✅ **Documentation mobile** (priorité #3)
 
-**Le reste peut attendre** le retour de Play Console et l'arrivée du robot.
+**Le reste peut attendre** l'arrivée du robot.
 
 ---
 

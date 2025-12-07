@@ -1,7 +1,7 @@
 # 🎯 Plan d'Action - Sans Robot Physique et Sans Play Code
 
 **Date** : 24 Novembre 2025  
-**Contexte** : En attente robot physique + réponse Play Console  
+**Contexte** : En attente robot physique  
 **Objectif** : Maximiser la valeur du projet pendant l'attente
 
 ---
