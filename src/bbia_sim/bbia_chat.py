@@ -322,6 +322,41 @@ class BBIAChat:
         # Le LLM sera chargé seulement au premier appel de chat()
         # self._load_llm()  # DÉSACTIVÉ pour lazy loading strict
 
+    def _handle_llm_load_error(
+        self,
+        error: Exception,
+        model_name: str,
+        config_key: str,
+        is_fallback: bool = False,
+    ) -> None:
+        """Helper pour gérer les erreurs de chargement LLM de manière cohérente.
+
+        Args:
+            error: Exception levée
+            model_name: Nom du modèle (ex: "Phi-2", "TinyLlama")
+            config_key: Clé de configuration à détecter (ex: "PhiConfig", "LlamaConfig")
+            is_fallback: Si True, c'est le fallback (TinyLlama), donc réinitialiser les attributs
+        """
+        error_msg = str(error)
+        # Détecter les erreurs d'import de modules de configuration (dépendances manquantes)
+        if "Could not import module" in error_msg or config_key in error_msg:
+            logger.debug(
+                f"⚠️ Impossible de charger {model_name} (dépendances manquantes): {error}"
+            )
+            if is_fallback:
+                logger.info("Mode fallback: réponses basiques (sans LLM)")
+        else:
+            logger.warning(f"⚠️ Impossible de charger {model_name}: {error}")
+            if is_fallback:
+                logger.warning("Mode fallback: réponses basiques (sans LLM)")
+
+        if is_fallback:
+            # Réinitialiser les attributs pour éviter les états incohérents
+            self.llm_model = None
+            self.llm_tokenizer = None
+        else:
+            logger.info("Tentative de chargement TinyLlama (fallback)...")
+
     def _load_llm(self) -> None:
         """Charge le LLM léger (Phi-2 ou TinyLlama avec fallback).
 
@@ -359,37 +394,13 @@ class BBIAChat:
             RuntimeError,
             OSError,
             ValueError,
+            TypeError,
+            KeyError,
+            AttributeError,
         ) as e:
-            error_msg = str(e)
-            # Détecter les erreurs d'import de modules de configuration (dépendances manquantes)
-            if "Could not import module" in error_msg or "PhiConfig" in error_msg:
-                logger.debug(
-                    "⚠️ Impossible de charger Phi-2 (dépendances manquantes): %s", e
-                )
-            else:
-                logger.warning("⚠️ Impossible de charger Phi-2: %s", e)
-            logger.info("Tentative de chargement TinyLlama (fallback)...")
-        except (TypeError, KeyError, AttributeError) as e:
-            error_msg = str(e)
-            if "Could not import module" in error_msg or "PhiConfig" in error_msg:
-                logger.debug(
-                    "⚠️ Erreur inattendue chargement Phi-2 (dépendances manquantes): %s",
-                    e,
-                )
-            else:
-                logger.warning("⚠️ Erreur inattendue chargement Phi-2: %s", e)
-            logger.info("Tentative de chargement TinyLlama (fallback)...")
-        except Exception as e:
-            # Capturer toutes les autres exceptions (y compris ModuleNotFoundError imbriquées)
-            error_msg = str(e)
-            if "Could not import module" in error_msg or "PhiConfig" in error_msg:
-                logger.debug(
-                    "⚠️ Erreur inattendue chargement Phi-2 (dépendances manquantes): %s",
-                    e,
-                )
-            else:
-                logger.warning("⚠️ Erreur inattendue chargement Phi-2: %s", e)
-            logger.info("Tentative de chargement TinyLlama (fallback)...")
+            self._handle_llm_load_error(e, "Phi-2", "PhiConfig", is_fallback=False)
+        except Exception as e:  # noqa: BLE001 - Capturer toutes les autres exceptions
+            self._handle_llm_load_error(e, "Phi-2", "PhiConfig", is_fallback=False)
 
         # Fallback: TinyLlama (ultra-léger)
         try:
@@ -418,30 +429,9 @@ class BBIAChat:
             OSError,
             ValueError,
         ) as e:
-            error_msg = str(e)
-            # Détecter les erreurs d'import de modules de configuration (dépendances manquantes)
-            if "Could not import module" in error_msg or "LlamaConfig" in error_msg:
-                logger.debug(
-                    "❌ Impossible de charger TinyLlama (dépendances manquantes): %s", e
-                )
-                logger.info("Mode fallback: réponses basiques (sans LLM)")
-            else:
-                logger.warning("❌ Impossible de charger TinyLlama: %s", e)
-                logger.warning("Mode fallback: réponses basiques (sans LLM)")
-            # Réinitialiser les attributs pour éviter les états incohérents
-            self.llm_model = None
-            self.llm_tokenizer = None
-        except Exception as e:
-            error_msg = str(e)
-            if "Could not import module" in error_msg or "LlamaConfig" in error_msg:
-                logger.debug(
-                    "❌ Erreur inattendue chargement TinyLlama (dépendances manquantes): %s",
-                    e,
-                )
-                logger.info("Mode fallback: réponses basiques (sans LLM)")
-            else:
-                logger.warning("❌ Erreur inattendue chargement TinyLlama: %s", e)
-                logger.warning("Mode fallback: réponses basiques (sans LLM)")
+            self._handle_llm_load_error(e, "TinyLlama", "LlamaConfig", is_fallback=True)
+        except Exception as e:  # noqa: BLE001 - Capturer toutes les autres exceptions
+            self._handle_llm_load_error(e, "TinyLlama", "LlamaConfig", is_fallback=True)
             # Réinitialiser les attributs pour éviter les états incohérents
             self.llm_model = None
             self.llm_tokenizer = None

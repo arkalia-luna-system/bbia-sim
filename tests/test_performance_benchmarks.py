@@ -20,6 +20,7 @@ class TestPerformanceBenchmarks:
         start = time.time()
         # Import réel pour mesurer la performance
         import logging  # Module standard, rapide
+
         elapsed = time.time() - start
 
         # Les imports doivent être rapides (< 0.1s)

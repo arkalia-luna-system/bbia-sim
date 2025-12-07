@@ -51,6 +51,7 @@ from bbia_sim.troubleshooting import (
     test_camera,
     test_network_ping,
 )
+from bbia_sim.utils.error_handling import safe_execute_with_exceptions
 
 if TYPE_CHECKING:
     from collections.abc import Callable
@@ -3607,23 +3608,13 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                                 "error",
                                 "❌ Impossible de créer le robot (tous les backends ont échoué)",
                             )
-                    except (
-                        ValueError,
-                        AttributeError,
-                        RuntimeError,
-                        ImportError,
-                        OSError,
-                    ) as e:
-                        logger.exception("❌ Erreur initialisation robot")
+                    except Exception as e:  # noqa: BLE001 - Gestion centralisée via helper
+                        # Gérer toutes les exceptions de manière cohérente
+                        error_msg = f"Erreur initialisation robot: {e}"
+                        logger.exception("❌ " + error_msg)
                         await advanced_websocket_manager.send_log_message(
                             "error",
-                            f"❌ Erreur robot: {e}",
-                        )
-                    except Exception as e:
-                        logger.exception("❌ Erreur inattendue initialisation robot")
-                        await advanced_websocket_manager.send_log_message(
-                            "error",
-                            f"❌ Erreur robot: {e}",
+                            f"❌ {error_msg}",
                         )
 
         if command_type == "emotion":
