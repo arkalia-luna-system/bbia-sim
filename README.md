@@ -38,6 +38,12 @@
 
 ---
 
+<div align="center">
+
+<img src="assets/logos/bbia/logos/bbia-horizontal-clean-serenity-512.svg" alt="BBIA" width="400" height="auto">
+
+</div>
+
 ## 🎮 Découvrir BBIA en Action
 
 <div align="center">
@@ -54,6 +60,13 @@
 - ✨ **Animations fluides** : Respiration automatique, clignement des yeux
 - 🎨 **HUD Cyber-HUD** : Interface graphique rotative style futuriste
 - 🎮 **Contrôle interactif** : Changez l'émotion de BBIA en temps réel
+- 🗣️ **Interface vocale** : BBIA communique avec vous
+
+<div align="center">
+
+<img src="assets/logos/bbia/identity/bbia-speaking-512.svg" alt="BBIA Speaking" width="200" height="auto">
+
+</div>
 
 </div>
 
@@ -66,16 +79,6 @@
 ### 🎯 BBIA-SIM : Moteur Cognitif Python pour Reachy Mini
 
 **12 émotions robotiques** (6 SDK officiel + 6 étendues) • **Simulation 3D fidèle** • **IA avancée**
-
-<div align="center">
-
-<img src="assets/logos/bbia/logos/bbia-horizontal-clean-serenity-512.svg" alt="BBIA Logo" width="300" height="auto">
-
-<img src="assets/logos/bbia/logos/bbia-mark_only-clean-serenity-512.svg" alt="BBIA Mark" width="150" height="auto" style="margin: 0 20px;">
-
-<img src="assets/logos/bbia/identity/bbia-hud-512.svg" alt="BBIA HUD" width="150" height="auto">
-
-</div>
 
 **🎮 [Interface Live Interactive →](http://localhost:8000/bbia-interface)** *(Lancez le dashboard d'abord)*  
 **🎨 [Voir tous les logos BBIA →](http://localhost:8000/test-logos)** *(Lancez le dashboard d'abord)*
@@ -143,6 +146,13 @@ BBIA utilise une stack IA lourde pour permettre des interactions naturelles et u
 **Utilisation** : Les logos sont intégrés dans le dashboard et disponibles pour personnaliser l'interface selon l'émotion de BBIA.  
 **🎨 [Voir tous les logos →](http://localhost:8000/test-logos)** *(Lancez le dashboard d'abord)*  
 **Documentation** : [`assets/logos/bbia/README.md`](assets/logos/bbia/README.md)
+
+<div align="center">
+
+<img src="assets/logos/bbia/identity/bbia-app_icon-512.svg" alt="BBIA App Icon" width="150" height="auto" style="margin: 20px;">
+<img src="assets/logos/bbia/identity/bbia-speaking-512.svg" alt="BBIA Speaking" width="150" height="auto" style="margin: 20px;">
+
+</div>
 
 ## 🏆 Qualité Code
 
@@ -1025,7 +1035,14 @@ Le robot Reachy Mini est simulé avec une fidélité élevée aux spécification
 
 ## 📊 Projets & Portfolio
 
+---
+
+<div align="center">
+
+<img src="assets/logos/bbia/identity/bbia-speaking-512.svg" alt="BBIA Speaking" width="300" height="auto">
+
+</div>
 
 ---
 
-*Dernière mise à jour : Oct / Nov. 2025*
+*Dernière mise à jour : 7 Décembre 2025*
