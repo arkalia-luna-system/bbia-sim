@@ -225,7 +225,7 @@ python -c "from bbia_sim.daemon.app.main import app; import logging; logging.inf
 
 ---
 
-## 🎉 Statut
+## Statut
 
 ✅ **Dashboard créé et fonctionnel**
 ✅ **Structure identique à l'officiel**
