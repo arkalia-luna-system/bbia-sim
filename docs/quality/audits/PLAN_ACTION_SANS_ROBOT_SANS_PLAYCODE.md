@@ -1,9 +1,7 @@
 # 🎯 Plan d'Action - Sans Robot Physique et Sans Play Code
 
 **Date** : 24 Novembre 2025  
-**Dernière mise à jour** : 7 Décembre 2025  
 **Contexte** : En attente robot physique + réponse Play Console  
-**Statut Play Console (7 Déc 2025)** : Catégorie changée de "Santé" à "Productivité" - En attente examen Google (jusqu'à 7 jours)  
 **Objectif** : Maximiser la valeur du projet pendant l'attente
 
 ---
