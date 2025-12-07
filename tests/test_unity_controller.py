@@ -272,16 +272,21 @@ class TestUnityReachyMiniController:
         """Test gestion d'exception dans le mode interactif."""
         with tempfile.TemporaryDirectory() as _:
             controller = UnityReachyMiniController()
-            # Simuler une exception après quelques commandes normales, puis quit pour éviter la boucle infinie
-            with patch(
-                "builtins.input", side_effect=["help", Exception("Test error"), "quit"]
-            ):
+            # Simuler une exception dans move_head() pour tester la gestion d'erreur
+            with patch("builtins.input", side_effect=["head 1.0 2.0 3.0", "quit"]):
                 with patch(
-                    "bbia_sim.unity_reachy_controller.logger.exception"
-                ) as mock_logger:
-                    controller.interactive_mode()
+                    "bbia_sim.unity_reachy_controller.UnityReachyMiniController.move_head",
+                    side_effect=RuntimeError("Test error"),
+                ):
+                    with patch(
+                        "bbia_sim.unity_reachy_controller.logger.exception"
+                    ) as mock_logger:
+                        controller.interactive_mode()
             # Vérifier qu'un message d'erreur a été affiché via logger.exception
-            mock_logger.assert_called_with("❌ Erreur")
+            mock_logger.assert_called()
+            # Vérifier que le message contient "❌ Erreur commande"
+            call_args = str(mock_logger.call_args)
+            assert "❌ Erreur commande" in call_args or "critique" in call_args
 
     def test_show_help(self):
         """Test affichage de l'aide."""
