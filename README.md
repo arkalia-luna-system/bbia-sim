@@ -1,4 +1,4 @@
-# <img src="assets/logos/bbia/identity/bbia-speaking-512.svg" alt="BBIA" width="96" height="96" style="vertical-align: middle; margin-bottom: 0.2em;"> BBIA Reachy Mini Simulation
+# <img src="assets/logos/bbia/identity/bbia-speaking-512.svg" alt="BBIA" width="96" height="96" style="vertical-align: text-bottom; transform: translateY(0.3em);"> BBIA Reachy Mini Simulation
 
 <div align="center">
 
