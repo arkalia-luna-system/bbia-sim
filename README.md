@@ -66,7 +66,7 @@
 
 | 🎯 **Caractéristique** | 📊 **Détails** |
 |:---:|:---|
-| ✅ **SDK Officiel** | 100% conforme Pollen Robotics |
+| ✅ **SDK Officiel** | Conforme Pollen Robotics |
 | 🔄 **Backend Unifié** | Simulation ↔ Robot réel |
 | 🧪 **Tests Automatisés** | 1362 tests (unitaires + E2E) |
 | 📚 **Documentation** | 128 fichiers Markdown |
@@ -547,7 +547,7 @@ python scripts/demo_public_api.py
 # Backend MuJoCo (simulation)
 python -c "from bbia_sim.robot_factory import RobotFactory; robot = RobotFactory.create_backend('mujoco')"
 
-# Backend Reachy-Mini SDK Officiel (100% conforme)
+# Backend Reachy-Mini SDK Officiel (conforme)
 python -c "from bbia_sim.robot_factory import RobotFactory; robot = RobotFactory.create_backend('reachy_mini')"
 
 # Backend Reachy Mock (ancien)
