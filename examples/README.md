@@ -8,7 +8,7 @@ Ce dossier contient des exemples pratiques pour utiliser BBIA-SIM.
 - **⚠️ Examples à améliorer** : ~5 exemples à consolider
 - **❌ Examples inutiles** : ~4 exemples à archiver
 - **🚀 Examples prioritaires** : ~10 exemples essentiels
-- **📈 Exploitation capacités** : **100%** ✅ (tous les comportements, endpoints et modules ont maintenant des exemples)
+- **📈 Exploitation capacités** : Complète (tous les comportements, endpoints et modules ont des exemples)
 
 ### 🎯 **Examples Prioritaires**
 
@@ -56,15 +56,15 @@ Les exemples dans `reachy_mini/` sont adaptés du repo officiel `pollen-robotics
 
 ## Scripts disponibles
 
-### `hello_sim.py` - Test Conformité Parfaite SDK Officiel
+### `hello_sim.py` - Test Conformité SDK Officiel
 
-Test complet de la conformité parfaite avec le SDK officiel Reachy-Mini.
+Test complet de la conformité avec le SDK officiel Reachy-Mini.
 
 ```bash
 python examples/hello_sim.py
 ```
 
-**Résultat attendu** : Test de toutes les méthodes SDK officiel, conformité 100% parfaite
+**Résultat attendu** : Test de toutes les méthodes SDK officiel, conformité validée
 
 ### `demo_mujoco_continue.py` - Simulation MuJoCo Continue ⭐ **Source des vidéos**
 

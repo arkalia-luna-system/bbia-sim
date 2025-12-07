@@ -324,7 +324,7 @@ ls -la
 🔋 Test de la batterie:
 🔋 Batterie: 100% → 93%
 
-🎉 Simulation terminée !
+Simulation terminée.
 
 ```
 

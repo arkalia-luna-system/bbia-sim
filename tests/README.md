@@ -6,7 +6,7 @@
 
 ### 📊 **Statistiques de Couverture ACTUELLES**
 
-- **Coverage total** : **68.86%** (excellent)
+- **Coverage total** : **68.86%**
 - **1,743 tests collectés** (1,805 total, 62 deselected) — [✅ Vérifié 26 Novembre 2025](../docs/quality/audits/VERIFICATION_ANALYSE_COMPLETE_26NOV2025.md)
 - **Tests passent** : Voir résultats pytest récents
 - **Tests skippés** : Tests conditionnels (hardware, CI)
@@ -27,7 +27,7 @@
 - **sim/simulator.py** : **90.00%** ✅
 - **unity_reachy_controller.py** : **81.20%** ✅
 
-### 📊 **Modules Critiques (Coverage Excellent)**
+### 📊 **Modules Critiques (Coverage Élevé)**
 
 - **vision_yolo.py** : **99.45%** ✅ (42 tests) - Objectif 50%+ largement dépassé
 - **voice_whisper.py** : **92.52%** ✅ (66 tests) - Objectif 50%+ largement dépassé
