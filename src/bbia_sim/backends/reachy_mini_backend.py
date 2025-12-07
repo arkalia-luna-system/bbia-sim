@@ -840,11 +840,16 @@ class ReachyMiniBackend(RobotAPI):
             self.emotion_intensity = intensity
             return True
 
-        except (KeyError, AttributeError, RuntimeError, ValueError):
-            logger.exception("Erreur émotion %s:", emotion)
+        except (KeyError, AttributeError, RuntimeError, ValueError) as e:
+            logger.exception("Erreur émotion %s: %s", emotion, e)
             return False
-        except Exception:
-            logger.exception("Erreur inattendue émotion %s:", emotion)
+        except (TypeError, IndexError, OSError) as e:
+            logger.exception("Erreur émotion %s (type/index/os): %s", emotion, e)
+            return False
+        except (
+            Exception
+        ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
+            logger.exception("Erreur inattendue émotion %s: %s", emotion, e)
             return False
 
     def look_at(
@@ -878,8 +883,13 @@ class ReachyMiniBackend(RobotAPI):
                 perform_movement,
             )
             return True
-        except Exception:
-            logger.exception("Erreur look_at")
+        except (TypeError, IndexError, KeyError) as e:
+            logger.exception("Erreur look_at (type/index/key): %s", e)
+            return False
+        except (
+            Exception
+        ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
+            logger.exception("Erreur inattendue look_at: %s", e)
             return False
 
     def run_behavior(
@@ -971,11 +981,16 @@ class ReachyMiniBackend(RobotAPI):
                     )
 
             return True
-        except (ValueError, AttributeError, RuntimeError, KeyError, TypeError):
-            logger.exception("Erreur comportement %s:", behavior_name)
+        except (ValueError, AttributeError, RuntimeError, KeyError, TypeError) as e:
+            logger.exception("Erreur comportement %s: %s", behavior_name, e)
             return False
-        except Exception:
-            logger.exception("Erreur inattendue comportement %s:", behavior_name)
+        except (IndexError, OSError) as e:
+            logger.exception("Erreur comportement %s (index/os): %s", behavior_name, e)
+            return False
+        except (
+            Exception
+        ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
+            logger.exception("Erreur inattendue comportement %s: %s", behavior_name, e)
             return False
 
     def step(self) -> bool:
@@ -1052,11 +1067,16 @@ class ReachyMiniBackend(RobotAPI):
                 telemetry["imu"] = imu_data
 
             return telemetry  # type: ignore[return-value]
-        except (AttributeError, RuntimeError, KeyError, TypeError):
-            logger.exception("Erreur télémétrie")
+        except (AttributeError, RuntimeError, KeyError, TypeError) as e:
+            logger.exception("Erreur télémétrie: %s", e)
             return {}
-        except Exception:
-            logger.exception("Erreur inattendue télémétrie")
+        except (IndexError, OSError, ValueError) as e:
+            logger.exception("Erreur télémétrie (index/os/value): %s", e)
+            return {}
+        except (
+            Exception
+        ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
+            logger.exception("Erreur inattendue télémétrie: %s", e)
             return {}
 
     # ===== MÉTHODES SDK OFFICIEL SUPPLÉMENTAIRES =====
@@ -1073,11 +1093,16 @@ class ReachyMiniBackend(RobotAPI):
                 if result is not None
                 else np.eye(4, dtype=np.float64)
             )
-        except (AttributeError, RuntimeError, ValueError, OSError, TypeError):
-            logger.exception("Erreur get_current_head_pose")
+        except (AttributeError, RuntimeError, ValueError, OSError, TypeError) as e:
+            logger.exception("Erreur get_current_head_pose: %s", e)
             return np.eye(4, dtype=np.float64)
-        except Exception:
-            logger.exception("Erreur inattendue get_current_head_pose")
+        except (IndexError, KeyError) as e:
+            logger.exception("Erreur get_current_head_pose (index/key): %s", e)
+            return np.eye(4, dtype=np.float64)
+        except (
+            Exception
+        ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
+            logger.exception("Erreur inattendue get_current_head_pose: %s", e)
             return np.eye(4, dtype=np.float64)
 
     def get_current_body_yaw(self) -> float:
@@ -1101,11 +1126,16 @@ class ReachyMiniBackend(RobotAPI):
                 "utilisation valeur par défaut",
             )
             return 0.0
-        except (AttributeError, RuntimeError, ValueError, OSError, TypeError):
-            logger.exception("Erreur get_current_body_yaw")
+        except (AttributeError, RuntimeError, ValueError, OSError, TypeError) as e:
+            logger.exception("Erreur get_current_body_yaw: %s", e)
             return 0.0
-        except Exception:
-            logger.exception("Erreur inattendue get_current_body_yaw")
+        except (IndexError, KeyError) as e:
+            logger.exception("Erreur get_current_body_yaw (index/key): %s", e)
+            return 0.0
+        except (
+            Exception
+        ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
+            logger.exception("Erreur inattendue get_current_body_yaw: %s", e)
             return 0.0
 
     def get_present_antenna_joint_positions(self) -> list[float]:
@@ -1131,10 +1161,14 @@ class ReachyMiniBackend(RobotAPI):
 
         try:
             self.robot.set_target_body_yaw(body_yaw)
-        except (ValueError, AttributeError, RuntimeError, OSError, TypeError):
-            logger.exception("Erreur set_target_body_yaw")
-        except Exception:
-            logger.exception("Erreur inattendue set_target_body_yaw")
+        except (ValueError, AttributeError, RuntimeError, OSError, TypeError) as e:
+            logger.exception("Erreur set_target_body_yaw: %s", e)
+        except (IndexError, KeyError) as e:
+            logger.exception("Erreur set_target_body_yaw (index/key): %s", e)
+        except (
+            Exception
+        ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
+            logger.exception("Erreur inattendue set_target_body_yaw: %s", e)
 
     def set_target_antenna_joint_positions(self, antennas: list[float]) -> None:
         """Définit les positions cibles des antennes."""
@@ -1151,10 +1185,16 @@ class ReachyMiniBackend(RobotAPI):
             OSError,
             TypeError,
             IndexError,
-        ):
-            logger.exception("Erreur set_target_antenna_joint_positions")
-        except Exception:
-            logger.exception("Erreur inattendue set_target_antenna_joint_positions")
+        ) as e:
+            logger.exception("Erreur set_target_antenna_joint_positions: %s", e)
+        except KeyError as e:
+            logger.exception("Erreur set_target_antenna_joint_positions (key): %s", e)
+        except (
+            Exception
+        ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
+            logger.exception(
+                "Erreur inattendue set_target_antenna_joint_positions: %s", e
+            )
 
     def look_at_image(
         self,
@@ -1194,8 +1234,13 @@ class ReachyMiniBackend(RobotAPI):
         ):
             logger.exception("Erreur look_at_image")
             return np.eye(4, dtype=np.float64)
-        except Exception:
-            logger.exception("Erreur inattendue look_at_image")
+        except KeyError as e:
+            logger.exception("Erreur look_at_image (key): %s", e)
+            return np.eye(4, dtype=np.float64)
+        except (
+            Exception
+        ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
+            logger.exception("Erreur inattendue look_at_image: %s", e)
             return np.eye(4, dtype=np.float64)
 
     def goto_target(
