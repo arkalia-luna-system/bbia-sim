@@ -599,7 +599,55 @@ except Exception as e:
 
 **Impact** : Meilleure gestion d'erreurs, débogage facilité
 
-**Priorité** : 🟡 **MOYENNE** - ⏳ **EN COURS** - Correction progressive (~18% fait, ~72/399 occurrences corrigées)
+**Priorité** : 🟡 **MOYENNE** - ⏳ **EN COURS** - Correction progressive (~55% fait, ~221/399 occurrences corrigées)
+
+---
+
+### ✅ Factorisation Patterns Try/Except (En cours)
+
+**Statut** : Module centralisé créé, factorisation progressive
+
+**Fichiers créés** :
+- ✅ `src/bbia_sim/utils/error_handling.py` : Module centralisé avec fonctions `safe_execute()`, `safe_import()`, `safe_execute_with_exceptions()`
+
+**Fonctions disponibles** :
+- `safe_execute(func, fallback, logger, error_msg, critical, reraise)` : Exécute une fonction avec gestion d'erreurs centralisée
+- `safe_import(module_name, logger)` : Importe un module avec gestion d'erreurs
+- `safe_execute_with_exceptions(func, expected_exceptions, ...)` : Exécute en gérant spécifiquement certaines exceptions
+
+**Progression** :
+- ✅ Module centralisé créé (7 Décembre 2025)
+- ⚠️ Factorisation de `bbia_vision.py` : À faire (49 blocs try/except identifiés)
+- 🔜 Factorisation des routers daemon : À faire (212 blocs dans 13 fichiers)
+
+**Justification** :
+Les patterns try/except étaient répétés ~383 fois dans le code (375 sans noqa). La factorisation permet :
+1. Gestion cohérente des erreurs (logging uniforme)
+2. Moins de duplication (DRY principle)
+3. Facilite le debugging (point central pour ajouter métriques/alerting)
+4. Améliore la maintenabilité (changement de stratégie en un seul endroit)
+
+**Exemple d'utilisation** :
+```python
+# Avant
+try:
+    os.environ.setdefault("KEY", "value")
+except (OSError, RuntimeError) as e:
+    logger.debug(f"Erreur: {e}")
+
+# Après
+from bbia_sim.utils.error_handling import safe_execute
+
+safe_execute(
+    lambda: os.environ.setdefault("KEY", "value"),
+    fallback=None,
+    logger=logger,
+    error_msg="Impossible de configurer variable d'environnement",
+    critical=False
+)
+```
+
+**Priorité** : 🟡 **MOYENNE** - ⏳ **EN COURS** - Module créé, factorisation progressive à faire
 
 ---
 

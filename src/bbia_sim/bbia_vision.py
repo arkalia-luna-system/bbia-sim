@@ -16,6 +16,9 @@ from collections.abc import Callable
 from datetime import datetime
 from typing import TYPE_CHECKING, Any, cast
 
+# Note: Module error_handling disponible pour factorisation future
+# from .utils.error_handling import safe_execute
+
 if TYPE_CHECKING:
     from .face_recognition import BBIAPersonRecognition
     from .pose_detection import BBIAPoseDetection
@@ -77,7 +80,7 @@ except (OSError, RuntimeError, ValueError, TypeError) as e:
         "Impossible de configurer variables d'environnement MediaPipe/TensorFlow: %s",
         e,
     )
-except Exception as e:
+except Exception as e:  # noqa: BLE001 - Fallback pour erreurs inattendues
     logger.debug("Erreur inattendue configuration variables d'environnement: %s", e)
 
 # Import conditionnel pour YOLO et MediaPipe
@@ -229,7 +232,7 @@ class BBIAVision:
                             logger.info("✅ Caméra SDK disponible: robot.media.camera")
             except (AttributeError, RuntimeError, OSError) as e:
                 logger.debug("Caméra SDK non disponible (fallback simulation): %s", e)
-            except Exception as e:
+            except Exception as e:  # noqa: BLE001 - Fallback pour erreurs inattendues
                 logger.debug("Erreur inattendue caméra SDK: %s", e)
 
         # Support webcam USB via OpenCV (fallback si pas de SDK)
@@ -292,7 +295,7 @@ class BBIAVision:
                         )
                 self._opencv_camera = None
                 logger.debug("Erreur initialisation webcam OpenCV: %s", e)
-            except Exception as e:
+            except Exception as e:  # noqa: BLE001 - Fallback pour erreurs inattendues
                 self._opencv_camera = None
                 logger.debug("Erreur inattendue initialisation webcam OpenCV: %s", e)
 

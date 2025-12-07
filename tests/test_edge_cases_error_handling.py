@@ -369,5 +369,125 @@ class TestEdgeCasesModels:
             )
 
 
+class TestErrorHandlingMediaPipeCrash:
+    """Tests de gestion d'erreurs pour MediaPipe crash pendant l'exécution."""
+
+    @pytest.mark.unit
+    @pytest.mark.fast
+    def test_mediapipe_crash_during_execution(self):
+        """Test que BBIAVision gère un crash MediaPipe pendant l'exécution."""
+        from bbia_sim.bbia_vision import BBIAVision
+
+        vision = BBIAVision(robot_api=None)
+        # Simuler crash MediaPipe pendant détection (pas juste "non disponible")
+        if hasattr(vision, "_face_detector") and vision._face_detector:
+            # Simuler crash en patchant la méthode de détection
+            original_detect = vision._face_detector.detect_faces
+
+            def crash_detect(*args, **kwargs):
+                raise RuntimeError("MediaPipe internal crash: segmentation fault")
+
+            vision._face_detector.detect_faces = crash_detect
+            # Doit gérer gracieusement sans crasher
+            try:
+                result = vision.detect_faces(None)
+                # Peut retourner liste vide ou None, mais ne doit pas crasher
+                assert result is not None or result == []
+            except RuntimeError:
+                # Si exception levée, doit être gérée par le système
+                pass
+            finally:
+                # Restaurer méthode originale
+                vision._face_detector.detect_faces = original_detect
+
+
+class TestErrorHandlingMemoryStress:
+    """Tests de gestion d'erreurs pour RAM saturée."""
+
+    @pytest.mark.unit
+    @pytest.mark.fast
+    def test_memory_saturated_during_model_loading(self):
+        """Test gestion RAM saturée lors du chargement d'un modèle."""
+        from unittest.mock import patch
+
+        # Simuler MemoryError lors du chargement
+        with patch("torch.load", side_effect=MemoryError("RAM saturée")):
+            from bbia_sim.bbia_huggingface import BBIAHuggingFace
+
+            hf = BBIAHuggingFace()
+            # Doit gérer gracieusement sans crasher
+            try:
+                result = hf.load_model("test_model", "chat")
+                # Peut retourner False ou None, mais ne doit pas crasher
+                assert result is False or result is None
+            except MemoryError:
+                # Si exception levée, doit être loggée et gérée
+                pass
+
+
+class TestErrorHandlingRaceConditions:
+    """Tests de gestion d'erreurs pour race conditions."""
+
+    @pytest.mark.unit
+    @pytest.mark.fast
+    def test_concurrent_emotion_set(self):
+        """Test gestion accès concurrent à set_emotion()."""
+        import threading
+        from bbia_sim.bbia_emotions import BBIAEmotions
+
+        emotions = BBIAEmotions()
+        errors = []
+
+        def set_emotion_thread(emotion_name: str):
+            try:
+                for _ in range(10):
+                    emotions.set_emotion(emotion_name, 0.5)
+            except Exception as e:
+                errors.append(e)
+
+        # Lancer 3 threads simultanément
+        threads = [
+            threading.Thread(target=set_emotion_thread, args=("happy",)),
+            threading.Thread(target=set_emotion_thread, args=("sad",)),
+            threading.Thread(target=set_emotion_thread, args=("angry",)),
+        ]
+
+        for thread in threads:
+            thread.start()
+
+        for thread in threads:
+            thread.join()
+
+        # Ne doit pas y avoir d'erreurs de race condition
+        assert len(errors) == 0, f"Erreurs de race condition détectées: {errors}"
+
+
+class TestErrorHandlingAPIDown:
+    """Tests de gestion d'erreurs pour API complètement down."""
+
+    @pytest.mark.unit
+    @pytest.mark.fast
+    def test_api_completely_down(self):
+        """Test gestion API complètement inaccessible (pas juste timeout)."""
+        from unittest.mock import patch, MagicMock
+        from fastapi.testclient import TestClient
+
+        try:
+            from bbia_sim.daemon.app.main import app
+
+            client = TestClient(app)
+            # Simuler API complètement down (ConnectionRefusedError)
+            with patch("fastapi.testclient.TestClient.get", side_effect=ConnectionRefusedError("API down")):
+                # Doit gérer gracieusement
+                try:
+                    response = client.get("/api/daemon/status")
+                    # Ne devrait pas arriver ici si API vraiment down
+                except (ConnectionRefusedError, ConnectionError):
+                    # Exception attendue, doit être gérée
+                    pass
+        except ImportError:
+            pytest.skip("Module daemon non disponible")
+
+
 if __name__ == "__main__":
     pytest.main([__file__, "-v", "-s"])

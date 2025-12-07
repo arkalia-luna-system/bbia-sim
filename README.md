@@ -66,6 +66,22 @@
 
 </div>
 
+## 🧠 Stack IA : Pourquoi ces Dépendances ?
+
+BBIA utilise une stack IA lourde pour permettre des interactions naturelles et une perception avancée. Voici pourquoi chaque dépendance majeure est nécessaire :
+
+| Dépendance | Rôle | Poids approximatif | Justification |
+|------------|------|-------------------|---------------|
+| **PyTorch** (`torch>=2.0.0`) | Backend pour modèles deep learning (transformers, YOLO) | ~2 GB | Framework de base pour tous les modèles IA (LLM, vision, NLP) |
+| **transformers** (`>=4.30.0`) | Modèles HuggingFace (sentiment, LLM conversationnel, reconnaissance émotions) | ~500 MB | Bibliothèque standard pour modèles pré-entraînés (Phi-2, Mistral, RoBERTa) |
+| **MediaPipe** (`>=0.10.0`) | Détection visages, pose humaine, landmarks en temps réel | ~50 MB | Détection pose 33 points, visages, gestes (bras levés, debout/assis) |
+| **ultralytics (YOLO)** (`>=8.0.0`) | Détection objets temps réel (personnes, objets, mains) | ~100 MB | Détection objets COCO dataset, tracking temps réel |
+| **openai-whisper** (`>=20231117`) | Reconnaissance vocale (Speech-to-Text) multilingue | ~3 GB | Transcription audio → texte, support multilingue |
+
+**Note importante** : Les dépendances IA sont **facultatives** si tu veux juste tester la simulation sans reconnaissance. Voir [`docs/development/setup/environments.md`](docs/development/setup/environments.md) pour des setups allégés.
+
+**Total approximatif** : ~6 GB (principalement PyTorch + Whisper). C'est normal pour un projet IA robotique avec vision, audio et LLM.
+
 ## 📊 Statistiques
 
 - **Fichiers Python source**: 92 fichiers (35,988 lignes)
