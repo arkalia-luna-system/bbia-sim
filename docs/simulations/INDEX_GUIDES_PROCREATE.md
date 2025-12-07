@@ -84,7 +84,7 @@
 
 ### **Structure Calques (Par Texture)** :
 
-- **5 calques** = Équilibre parfait
+- **5 calques** = Équilibre optimal
   1. Base (100%)
   2. Texture (40%, Overlay)
   3. Ombres (25%, Multiply)

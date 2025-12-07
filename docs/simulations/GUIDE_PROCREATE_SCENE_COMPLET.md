@@ -430,7 +430,7 @@ python examples/view_scene_piece.py src/bbia_sim/sim/scenes/ma_scene_procreate.x
 4. **Calque "Lumières"** (20% opacité, Screen) : Lumières au centre
 5. **Calque "Détails"** (15% opacité, Normal) : Imperfections subtiles
 
-**Total** : 5 calques par texture = **Équilibre parfait qualité/temps**
+**Total** : 5 calques par texture = **Équilibre optimal qualité/temps**
 
 ---
 

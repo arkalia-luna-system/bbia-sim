@@ -26,7 +26,7 @@
 4. **Lumières** (20%, Screen) : Lumières centre
 5. **Détails** (15%, Normal) : Imperfections
 
-**Total par texture** : 5 calques = Équilibre parfait
+**Total par texture** : 5 calques = Équilibre optimal
 
 ---
 
