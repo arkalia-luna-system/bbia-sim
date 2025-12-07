@@ -332,9 +332,9 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
                         "Erreur lors de la lecture audio locale (fallback sounddevice): %s",
                         e,
                     )
-                except Exception as e:
+                except Exception as e:  # noqa: BLE001 - Erreur inattendue lecture audio
                     logger.debug(
-                        "Erreur inattendue lecture audio locale: %s",
+                        "Erreur inattendue lecture audio locale (fallback normal): %s",
                         e,
                     )
         except (ImportError, RuntimeError, OSError) as e:
@@ -343,7 +343,7 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
                 "Erreur lors de la synthèse vocale avancée, fallback pyttsx3: %s",
                 e,
             )
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001 - Erreur synthèse vocale fallback
             # Vérifier si l'erreur vient de _get_pyttsx3_engine()
             # Si c'est le cas, la laisser remonter car le fallback pyttsx3 échouera aussi
             import traceback
@@ -396,8 +396,10 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
                         except TypeError:
                             media.play_audio(sdk_audio_bytes)
                         return
-                    except Exception as e:
-                        logging.debug("media.play_audio a échoué: %s", e)
+                    except Exception as e:  # noqa: BLE001 - Erreur media.play_audio
+                        logging.debug(
+                            "media.play_audio a échoué (fallback normal): %s", e
+                        )
 
                 # Priorité 2: media.speaker.play_file/ play(bytes)
                 speaker = getattr(media, "speaker", None)
@@ -406,8 +408,8 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
                         if hasattr(speaker, "play"):
                             speaker.play(sdk_audio_bytes)
                             return
-                    except Exception as e:
-                        logging.debug("speaker.play a échoué: %s", e)
+                    except Exception as e:  # noqa: BLE001 - Erreur speaker.play
+                        logging.debug("speaker.play a échoué (fallback normal): %s", e)
                     try:
                         # Créer un fichier temporaire si play_file est préféré
                         tmp_path = None

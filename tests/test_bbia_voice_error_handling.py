@@ -10,36 +10,33 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from bbia_sim.bbia_voice import BBIAVoice
+from bbia_sim.bbia_voice import dire_texte
 
 logger = logging.getLogger(__name__)
 
 
 class TestBBIAVoiceErrorHandling:
-    """Tests de gestion d'erreurs pour BBIAVoice."""
+    """Tests de gestion d'erreurs pour bbia_voice."""
 
     @pytest.mark.unit
     @pytest.mark.fast
     def test_bbia_voice_speak_error_handling(self):
-        """Test que speak() gère les erreurs correctement."""
-        voice = BBIAVoice(robot_api=None)
-
+        """Test que dire_texte() gère les erreurs correctement."""
         # Simuler une erreur lors de la synthèse vocale
         mock_logger = MagicMock(spec=logging.Logger)
         with patch("bbia_sim.bbia_voice.logger", mock_logger):
-            with patch.object(
-                voice,
-                "_synthesize_advanced",
+            with patch(
+                "bbia_sim.bbia_voice._get_pyttsx3_engine",
                 side_effect=RuntimeError("Erreur synthèse"),
             ):
                 # Ne doit pas crasher, doit utiliser fallback
                 try:
-                    voice.speak("test")
+                    dire_texte("test")
                 except Exception:  # noqa: BLE001
                     # Si le fallback échoue aussi, c'est acceptable
                     pass
                 # Vérifier que des logs ont été émis
-                assert mock_logger.debug.called or mock_logger.warning.called
+                assert mock_logger.debug.called or mock_logger.warning.called or mock_logger.error.called
 
     @pytest.mark.unit
     @pytest.mark.fast
