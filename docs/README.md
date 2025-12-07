@@ -4,7 +4,7 @@
 **Version** : v1.4.0
 
 > **Moteur cognitif Python pour robot Reachy Mini**
-> *Simulation fidèle • IA avancée • SDK 100% conforme*
+> *Simulation fidèle • IA avancée • SDK conforme*
 
 ---
 
