@@ -2,7 +2,9 @@
 ## Plan d'Action Immédiat (2-3 jours)
 
 **Date audit** : 24 Novembre 2025  
+**Dernière mise à jour** : 7 Décembre 2025  
 **Contexte** : En attente robot physique + réponse Play Console (2-3 jours)  
+**Statut Play Console (7 Déc 2025)** : Catégorie changée de "Santé" à "Productivité" - En attente examen Google (jusqu'à 7 jours)  
 **Objectif** : Maximiser la valeur du projet pendant l'attente
 
 ---
@@ -321,6 +323,8 @@
 
 **Le reste peut attendre** le retour de Play Console et l'arrivée du robot.
 
+**Mise à jour 7 Déc 2025** : Catégorie app changée de "Santé" à "Productivité" dans Play Console pour résoudre les rejets PlayStation requirement. En attente examen Google.
+
 ---
 
 ## 📚 RESSOURCES UTILES
@@ -347,7 +351,8 @@ python scripts/test_preparation_robot.py
 
 ---
 
-**Dernière mise à jour** : 24 Novembre 2025  
+**Dernière mise à jour** : 7 Décembre 2025  
 **Statut** : ✅ **Projet excellent** - Prêt pour robot et mobile  
-**Prochaines étapes** : Tests préparation + PWA mobile
+**Statut Play Console** : Catégorie changée "Santé" → "Productivité" - En attente examen Google  
+**Prochaines étapes** : Attente examen Google Play Console (jusqu'à 7 jours) + Tests préparation robot
 
