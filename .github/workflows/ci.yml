@@ -332,6 +332,7 @@ jobs:
 
       - name: Run e2e tests
         timeout-minutes: 15
+        shell: bash
         run: |
           export PYTHONPATH=src:$PYTHONPATH
           echo "Running e2e tests..."
@@ -369,6 +370,7 @@ jobs:
 
       - name: Check e2e test results
         timeout-minutes: 1
+        shell: bash
         run: |
           mkdir -p logs
           if [ ! -f logs/test_run.log ]; then
