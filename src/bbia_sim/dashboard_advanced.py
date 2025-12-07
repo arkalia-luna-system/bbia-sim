@@ -51,7 +51,6 @@ from bbia_sim.troubleshooting import (
     test_camera,
     test_network_ping,
 )
-from bbia_sim.utils.error_handling import safe_execute_with_exceptions
 
 if TYPE_CHECKING:
     from collections.abc import Callable
@@ -3608,7 +3607,9 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                                 "error",
                                 "❌ Impossible de créer le robot (tous les backends ont échoué)",
                             )
-                    except Exception as e:  # noqa: BLE001 - Gestion centralisée via helper
+                    except (
+                        Exception
+                    ) as e:  # noqa: BLE001 - Gestion centralisée via helper
                         # Gérer toutes les exceptions de manière cohérente
                         error_msg = f"Erreur initialisation robot: {e}"
                         logger.exception("❌ " + error_msg)

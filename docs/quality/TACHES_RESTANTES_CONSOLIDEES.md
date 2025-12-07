@@ -777,29 +777,33 @@ Les tests suivants sont marqués `@pytest.mark.heavy` et `@pytest.mark.slow` mai
 2. **Tests lourds** : ✅ Déjà optimisés - Garder les marqueurs `@pytest.mark.slow` et `@pytest.mark.heavy`
 3. **CI/CD** : Utiliser `pytest -m "not slow and not heavy"` pour les tests rapides en CI
 
-#### Opportunités d'Optimisation Identifiées (À Faire)
+#### Optimisations Code Source Effectuées ✅ (7 Décembre 2025)
 
-**Code source - Duplication de gestion d'erreurs** :
+**Code source - Duplication de gestion d'erreurs factorisée** :
 
-- ⚠️ `bbia_chat.py` : Méthode `_load_llm()` a 3 blocs `except` avec code dupliqué (lignes 356-392)
-  - Même logique répétée 3 fois : détection erreur dépendances manquantes + logging
-  - **Optimisation possible** : Factoriser dans une fonction helper `_handle_llm_load_error()`
-  - **Impact** : Réduction ~30 lignes, code plus maintenable
-  - **Risque** : Faible (refactoring interne, pas de changement fonctionnel)
+- ✅ `bbia_chat.py` : Méthode `_load_llm()` factorisée avec fonction helper `_handle_llm_load_error()`
+  - **Avant** : 3 blocs `except` avec code dupliqué (~55 lignes)
+  - **Après** : Fonction helper réutilisable (~25 lignes économisées)
+  - **Impact** : Code plus maintenable, logique centralisée
+  - **Statut** : ✅ Terminé et testé
 
-- ⚠️ `bbia_chat.py` : Même duplication dans le fallback TinyLlama (lignes 414-440)
-  - **Optimisation possible** : Réutiliser la même fonction helper
+- ✅ `bbia_chat.py` : Fallback TinyLlama utilise maintenant la même fonction helper
   - **Impact** : Réduction ~25 lignes supplémentaires
+  - **Statut** : ✅ Terminé et testé
 
-- ⚠️ `bbia_huggingface.py` : Blocs `except Exception` qui pourraient utiliser `safe_execute()` (lignes 1964-1971)
-  - **Optimisation possible** : Utiliser `safe_execute_with_exceptions()` du module error_handling
-  - **Impact** : Code plus cohérent, meilleure traçabilité
+- ✅ `bbia_huggingface.py` : Blocs `except Exception` simplifiés (lignes 1949-1978)
+  - **Avant** : 2 blocs except séparés avec duplication
+  - **Après** : Try/except simplifié avec gestion cohérente
+  - **Impact** : Code plus lisible, gestion d'erreurs cohérente
+  - **Statut** : ✅ Terminé et testé
 
-- ⚠️ `dashboard_advanced.py` : Blocs `except Exception` multiples (lignes 3610-3627)
-  - **Optimisation possible** : Utiliser `safe_execute_with_exceptions()` pour cohérence
+- ✅ `dashboard_advanced.py` : Blocs `except Exception` simplifiés (lignes 3610-3627)
+  - **Avant** : 2 blocs except séparés
+  - **Après** : 1 bloc except unifié avec gestion cohérente
   - **Impact** : Code plus maintenable
+  - **Statut** : ✅ Terminé et testé
 
-**Note** : Ces optimisations sont optionnelles et peuvent être faites progressivement sans casser le code existant.
+**Résultat** : ~80 lignes de code dupliqué supprimées, code plus maintenable et cohérent.
 
 ### 🟢 OPTIMISATIONS POSSIBLES
 

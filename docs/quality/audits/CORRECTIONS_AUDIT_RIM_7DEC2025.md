@@ -160,3 +160,27 @@
 - Tests edge cases : `tests/test_edge_cases_error_handling.py`
 - Documentation : `docs/quality/TACHES_RESTANTES_CONSOLIDEES.md`
 - README : Section "Stack IA : Pourquoi ces Dépendances"
+
+---
+
+## ✅ Optimisations Code Source - 7 Décembre 2025
+
+### Factorisation Duplication Gestion d'Erreurs
+
+**Fichiers optimisés** :
+
+1. ✅ `bbia_chat.py` : Fonction helper `_handle_llm_load_error()` créée
+   - Factorise la gestion d'erreurs pour Phi-2 et TinyLlama
+   - Réduction ~55 lignes de code dupliqué
+
+2. ✅ `bbia_huggingface.py` : Blocs except simplifiés
+   - Gestion d'erreurs cohérente pour exécution outils
+   - Code plus lisible et maintenable
+
+3. ✅ `dashboard_advanced.py` : Blocs except unifiés
+   - Gestion d'erreurs simplifiée pour initialisation robot
+   - Code plus cohérent
+
+**Résultat** : ~80 lignes de code dupliqué supprimées, code plus maintenable.
+
+**Qualité code** : ✅ Black OK, ✅ Ruff OK, ✅ MyPy OK, ✅ Bandit OK

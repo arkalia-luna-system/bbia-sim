@@ -528,8 +528,8 @@ class BBIAChat:
 
             return sanitized_response
 
-        except Exception:
-            logger.exception("❌ Erreur génération LLM")
+        except Exception as e:  # noqa: BLE001 - Erreur génération LLM
+            logger.error("❌ Erreur génération LLM (critique): %s", e)
             return "Désolé, une erreur s'est produite lors de la génération."
 
     def _sanitize_response(self, response: str) -> str:
@@ -622,8 +622,8 @@ class BBIAChat:
 
             return response
 
-        except Exception:
-            logger.exception("❌ Erreur chat")
+        except Exception as e:  # noqa: BLE001 - Erreur chat
+            logger.error("❌ Erreur chat (critique): %s", e)
             return "Je ne comprends pas bien, peux-tu reformuler ?"
 
     def get_cache_stats(self) -> dict[str, Any]:
@@ -755,8 +755,8 @@ class BBIAChat:
                         self.robot_api.goto_target(head=pose, duration=2.0)
                 logger.info("✅ Action exécutée: sleep (pose sommeil améliorée)")
 
-        except Exception:
-            logger.exception("❌ Erreur exécution action %s:", action_name)
+        except Exception as e:  # noqa: BLE001 - Erreur exécution action
+            logger.error("❌ Erreur exécution action %s (critique): %s", action_name, e)
 
     def _extract_emotion(self, user_message: str) -> str | None:
         """Extrait émotion du message utilisateur.
@@ -811,8 +811,8 @@ class BBIAChat:
 
         except ImportError:
             logger.warning("BBIAEmotions non disponible - émotion non appliquée")
-        except Exception:
-            logger.exception("❌ Erreur application émotion %s:", emotion)
+        except Exception as e:  # noqa: BLE001 - Erreur application émotion
+            logger.error("❌ Erreur application émotion %s (critique): %s", emotion, e)
 
     def set_personality(self, personality: str) -> None:
         """Change la personnalité du chat.

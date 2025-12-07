@@ -17,7 +17,6 @@ import numpy as np
 import numpy.typing as npt
 from PIL import Image
 
-from .utils.error_handling import safe_execute_with_exceptions
 from .utils.types import ConversationEntry, SentimentDict, SentimentResult
 
 if TYPE_CHECKING:
@@ -1947,19 +1946,31 @@ class BBIAHuggingFace:
                             )
 
                         # Exécuter outil avec gestion d'erreurs centralisée
-                        result = safe_execute_with_exceptions(
-                            lambda: self.tools.execute_tool(tool_name, params),
-                            expected_exceptions=(
-                                AttributeError,
-                                RuntimeError,
-                                ValueError,
-                                KeyError,
-                            ),
-                            fallback={"status": "error", "detail": "Erreur lors de l'exécution"},
-                            logger_instance=logger,
-                            error_msg=f"Erreur exécution outil '{tool_name}'",
-                            critical=True,
-                        )
+                        try:
+                            result = self.tools.execute_tool(tool_name, params)
+                        except (
+                            AttributeError,
+                            RuntimeError,
+                            ValueError,
+                            KeyError,
+                        ) as e:
+                            logger.exception(
+                                f"❌ Erreur exécution outil '{tool_name}': {e}"
+                            )
+                            result = {
+                                "status": "error",
+                                "detail": f"Erreur lors de l'exécution: {e}",
+                            }
+                        except (
+                            Exception
+                        ) as e:  # noqa: BLE001 - Gestion des exceptions non prévues
+                            logger.exception(
+                                f"❌ Erreur inattendue exécution outil '{tool_name}': {e}"
+                            )
+                            result = {
+                                "status": "error",
+                                "detail": f"Erreur lors de l'exécution: {e}",
+                            }
 
                         if result is None:
                             return f"❌ Erreur lors de l'exécution de l'outil '{tool_name}'"
@@ -1976,6 +1987,13 @@ class BBIAHuggingFace:
                             error_detail,
                         )
                         return f"⚠️ {error_detail}"
+                    except (
+                        Exception
+                    ) as e:  # noqa: BLE001 - Gestion des exceptions non prévues
+                        logger.exception(
+                            f"❌ Erreur inattendue exécution outil '{tool_name}'"
+                        )
+                        return f"❌ Erreur lors de l'exécution: {e}"
 
         # Aucun outil détecté
         return None
