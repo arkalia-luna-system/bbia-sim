@@ -371,7 +371,7 @@ STATIC_DIR = Path(__file__).parent / "dashboard" / "static"
 TEMPLATES_DIR = Path(__file__).parent / "dashboard" / "templates"
 
 if STATIC_DIR.exists() and TEMPLATES_DIR.exists():
-    app.mount("/static", StaticFiles(directory=str(STATIC_DIR), follow_symlinks=True), name="static")
+    app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
     templates = Jinja2Templates(directory=str(TEMPLATES_DIR))
 
     @app.get("/", response_class=HTMLResponse)

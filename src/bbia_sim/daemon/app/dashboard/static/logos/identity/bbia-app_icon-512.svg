@@ -1,0 +1,17 @@
+<ns0:svg xmlns:ns0="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <ns0:rect width="512" height="512" rx="100" fill="#3B82F6" /> 
+  <ns0:g transform="translate(56, 100) scale(1.1) rotate(-10 200 150)">
+    <ns0:rect x="100" y="100" width="300" height="180" rx="40" fill="white" />
+    
+    <ns0:circle cx="190" cy="190" r="45" fill="#111" />
+    <ns0:circle cx="190" cy="180" r="15" fill="white" opacity="0.6" />
+    
+    <ns0:circle cx="310" cy="190" r="45" fill="#111" />
+    <ns0:circle cx="310" cy="180" r="15" fill="white" opacity="0.6" />
+    
+    <ns0:line x1="235" y1="190" x2="265" y2="190" stroke="#111" stroke-width="12" />
+    
+    <ns0:line x1="150" y1="100" x2="120" y2="20" stroke="#DDD" stroke-width="8" stroke-linecap="round" />
+    <ns0:line x1="350" y1="100" x2="380" y2="20" stroke="#DDD" stroke-width="8" stroke-linecap="round" />
+  </ns0:g>
+</ns0:svg>

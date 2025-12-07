@@ -1,0 +1,23 @@
+<ns0:svg xmlns:ns0="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 500 500">
+  <ns0:style>
+    /* Animation de pulsation */
+    @keyframes speaking {
+      0% { r: 15; fill: #00FFFF; }
+      50% { r: 25; fill: #0088FF; }
+      100% { r: 15; fill: #00FFFF; }
+    }
+    .voice-active {
+      animation: speaking 0.8s infinite ease-in-out;
+    }
+  </ns0:style>
+  <ns0:g transform="rotate(-5 250 250)">
+    <ns0:rect x="150" y="150" width="200" height="120" rx="30" fill="white" stroke="#333" stroke-width="5" />
+    <ns0:circle cx="210" cy="210" r="30" fill="#111" />
+    <ns0:circle cx="290" cy="210" r="30" fill="#111" />
+    
+    <ns0:circle class="voice-active" cx="210" cy="210" r="15" fill="#00FFFF" />
+    <ns0:circle class="voice-active" cx="290" cy="210" r="15" fill="#00FFFF" style="animation-delay: 0.1s" />
+  </ns0:g>
+  
+  <ns0:path d="M180 350 Q 250 400 320 350" stroke="#333" stroke-width="5" fill="none" stroke-linecap="round" />
+</ns0:svg>
