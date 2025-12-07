@@ -102,7 +102,7 @@
 - [x] ✅ Documenter architecture mobile (PWA vs React Native vs Natif) - **FAIT** (dans `integration.md`)
 - [x] ✅ Créer exemples code mobile (JavaScript, Kotlin, Swift) - **FAIT** (dans `integration.md`)
 - [x] ✅ Documenter API endpoints pour mobile - **FAIT** (dans `integration.md`)
-- [x] ✅ Créer guide déploiement Play Store - **FAIT** (dans `integration.md` et `ROADMAP_DASHBOARD.md`)
+- [x] ✅ Créer guide déploiement mobile (PWA/stores) - **FAIT** (dans `integration.md` et `ROADMAP_DASHBOARD.md`)
 - [ ] ⚠️ Préparer screenshots/vidéos pour distribution mobile - **À FAIRE** (nécessite app installée)
 
 **Fichiers à créer** :
@@ -284,7 +284,7 @@
 - [x] ✅ Documenter architecture mobile - **FAIT** (PWA vs React Native vs Natif dans `integration.md`)
 - [x] ✅ Créer exemples code mobile - **FAIT** (JavaScript, Kotlin, Swift dans `integration.md`)
 - [ ] ⚠️ Préparer screenshots pour distribution mobile - **À FAIRE** (nécessite app installée)
-- [x] ✅ Documenter déploiement Play Store - **FAIT** (dans `integration.md` et `ROADMAP_DASHBOARD.md`)
+- [x] ✅ Documenter déploiement mobile (PWA/stores) - **FAIT** (dans `integration.md` et `ROADMAP_DASHBOARD.md`)
 
 #### UX Dashboard
 - [x] ✅ Améliorer feedback visuel - **FAIT** (toasts dans `pwa_install.js`)
