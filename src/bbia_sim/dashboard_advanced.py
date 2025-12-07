@@ -260,7 +260,9 @@ class BBIAAdvancedWebSocketManager:
                     "❌ Erreur initialisation robot forcée (type/index/key): %s", e
                 )
                 await self.send_log_message("error", f"❌ Erreur robot: {e}")
-            except Exception as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
+            except (
+                Exception
+            ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
                 logger.error(
                     "❌ Erreur inattendue initialisation robot forcée (critique): %s", e
                 )
@@ -336,8 +338,12 @@ class BBIAAdvancedWebSocketManager:
             ) as e:
                 logger.debug("Erreur nettoyage connexion inactive: %s", e)
             except (TypeError, IndexError, KeyError) as e:
-                logger.debug("Erreur nettoyage connexion inactive (type/index/key): %s", e)
-            except Exception as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
+                logger.debug(
+                    "Erreur nettoyage connexion inactive (type/index/key): %s", e
+                )
+            except (
+                Exception
+            ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
                 logger.debug("Erreur inattendue nettoyage connexion inactive: %s", e)
 
     async def _add_to_batch(self, message_data: dict[str, Any]) -> None:
@@ -458,7 +464,9 @@ class BBIAAdvancedWebSocketManager:
             except (AttributeError, TypeError, ValueError) as e:
                 logger.debug("Erreur conversion isoformat (attr/type/value): %s", e)
                 return str(obj)
-            except Exception as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
+            except (
+                Exception
+            ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
                 logger.debug("Erreur inattendue conversion isoformat: %s", e)
                 return str(obj)
 
@@ -575,7 +583,9 @@ class BBIAAdvancedWebSocketManager:
                     e,
                 )
                 pose[joint] = 0.0
-            except Exception as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
+            except (
+                Exception
+            ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
                 # Gérer erreurs inattendues
                 logger.debug(
                     "Erreur inattendue lecture position joint %s: %s",
@@ -609,7 +619,9 @@ class BBIAAdvancedWebSocketManager:
                             logger.debug("Erreur step robot: %s", e)
                         except (TypeError, IndexError, KeyError) as e:
                             logger.debug("Erreur step robot (type/index/key): %s", e)
-                        except Exception as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
+                        except (
+                            Exception
+                        ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
                             logger.debug("Erreur inattendue step robot: %s", e)
 
                     # Mettre à jour les métriques
@@ -633,9 +645,13 @@ class BBIAAdvancedWebSocketManager:
                     await asyncio.sleep(1.0)
                 except (TypeError, IndexError, KeyError) as e:
                     if not self._stop_metrics:
-                        logger.exception("Erreur collecte métriques (type/index/key): %s", e)
+                        logger.exception(
+                            "Erreur collecte métriques (type/index/key): %s", e
+                        )
                     await asyncio.sleep(1.0)
-                except Exception as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
+                except (
+                    Exception
+                ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
                     if not self._stop_metrics:
                         logger.exception("Erreur inattendue collecte métriques: %s", e)
                     await asyncio.sleep(1.0)
@@ -3116,10 +3132,12 @@ if FASTAPI_AVAILABLE:
         except (ValueError, AttributeError, RuntimeError, KeyError) as e:
             logger.exception("Erreur set_emotion")
             return {"success": False, "error": str(e)}
-        except (TypeError, IndexError, KeyError) as e:
-            logger.exception("Erreur set_emotion (type/index/key): %s", e)
+        except (TypeError, IndexError) as e:
+            logger.exception("Erreur set_emotion (type/index): %s", e)
             return {"success": False, "error": str(e)}
-        except Exception as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
+        except (
+            Exception
+        ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
             logger.exception("Erreur inattendue set_emotion: %s", e)
             return {"success": False, "error": str(e)}
 
@@ -3157,10 +3175,12 @@ if FASTAPI_AVAILABLE:
         except (ValueError, AttributeError, RuntimeError, KeyError, IndexError) as e:
             logger.exception("Erreur set_joint_position")
             return {"success": False, "error": str(e)}
-        except (TypeError, IndexError, KeyError) as e:
-            logger.exception("Erreur set_joint_position (type/index/key): %s", e)
+        except TypeError as e:
+            logger.exception("Erreur set_joint_position (type): %s", e)
             return {"success": False, "error": str(e)}
-        except Exception as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
+        except (
+            Exception
+        ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
             logger.exception("Erreur inattendue set_joint_position: %s", e)
             return {"success": False, "error": str(e)}
 
@@ -3248,7 +3268,9 @@ if FASTAPI_AVAILABLE:
         except (TypeError, IndexError, KeyError) as e:
             logger.exception("Erreur test réseau (type/index/key): %s", e)
             return {"success": False, "error": str(e)}
-        except Exception as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
+        except (
+            Exception
+        ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
             logger.exception("Erreur inattendue test réseau: %s", e)
             return {"success": False, "error": str(e)}
 
@@ -3266,10 +3288,12 @@ if FASTAPI_AVAILABLE:
         except (KeyError, AttributeError, RuntimeError) as e:
             logger.exception("Erreur récupération docs")
             return {"success": False, "error": str(e)}
-        except (TypeError, IndexError, KeyError) as e:
-            logger.exception("Erreur récupération docs (type/index/key): %s", e)
+        except (TypeError, IndexError) as e:
+            logger.exception("Erreur récupération docs (type/index): %s", e)
             return {"success": False, "error": str(e)}
-        except Exception as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
+        except (
+            Exception
+        ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
             logger.exception("Erreur inattendue récupération docs: %s", e)
             return {"success": False, "error": str(e)}
 
@@ -3593,7 +3617,9 @@ if FASTAPI_AVAILABLE:
         except (TypeError, IndexError, KeyError) as e:
             logger.exception("❌ Erreur WebSocket (type/index/key): %s", e)
             await advanced_websocket_manager.disconnect(websocket)
-        except Exception as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
+        except (
+            Exception
+        ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
             logger.exception("❌ Erreur inattendue WebSocket: %s", e)
             await advanced_websocket_manager.disconnect(websocket)
 
@@ -3759,13 +3785,9 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                         "error",
                         f"❌ Erreur émotion: {e}",
                     )
-                except Exception as e:
-                    logger.exception("❌ [CMD] Erreur set_emotion (type/index/key): %s", e)
-                    await advanced_websocket_manager.send_log_message(
-                        "error",
-                        f"❌ Erreur émotion: {e}",
-                    )
-                except Exception as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
+                except (
+                    Exception
+                ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
                     logger.exception("❌ [CMD] Erreur inattendue set_emotion: %s", e)
                     await advanced_websocket_manager.send_log_message(
                         "error",
@@ -3989,13 +4011,9 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                     "error",
                     f"❌ Erreur joint {joint}: {e}",
                 )
-            except Exception as e:
-                logger.exception("❌ Erreur set_joint_pos (type/index/key): %s", e)
-                await advanced_websocket_manager.send_log_message(
-                    "error",
-                    f"❌ Erreur joint {joint}: {e}",
-                )
-            except Exception as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
+            except (
+                Exception
+            ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
                 logger.exception("❌ Erreur inattendue set_joint_pos: %s", e)
                 await advanced_websocket_manager.send_log_message(
                     "error",
@@ -4080,10 +4098,12 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
     except (ValueError, AttributeError, RuntimeError, KeyError, TypeError) as e:
         logger.exception("❌ Erreur commande avancée")
         await advanced_websocket_manager.send_log_message("error", f"Erreur: {e!s}")
-    except (TypeError, IndexError, KeyError) as e:
-        logger.exception("❌ Erreur commande avancée (type/index/key): %s", e)
+    except IndexError as e:
+        logger.exception("❌ Erreur commande avancée (index): %s", e)
         await advanced_websocket_manager.send_log_message("error", f"Erreur: {e!s}")
-    except Exception as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
+    except (
+        Exception
+    ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
         logger.exception("❌ Erreur inattendue commande avancée: %s", e)
         await advanced_websocket_manager.send_log_message("error", f"Erreur: {e!s}")
 
@@ -4133,9 +4153,13 @@ async def handle_chat_message(
                 logger.warning("⚠️ Hugging Face non disponible: %s", e)
                 advanced_websocket_manager.bbia_hf = None
             except (TypeError, IndexError, KeyError) as e:
-                logger.exception("❌ Erreur initialisation BBIAHuggingFace (type/index/key): %s", e)
+                logger.exception(
+                    "❌ Erreur initialisation BBIAHuggingFace (type/index/key): %s", e
+                )
                 advanced_websocket_manager.bbia_hf = None
-            except Exception as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
+            except (
+                Exception
+            ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
                 logger.exception("❌ Erreur initialisation BBIAHuggingFace: %s", e)
                 advanced_websocket_manager.bbia_hf = None
 
@@ -4152,9 +4176,13 @@ async def handle_chat_message(
                 bbia_response = advanced_websocket_manager.bbia_hf.chat(user_message)
                 logger.info("✅ Réponse BBIA générée: %s...", bbia_response[:50])
             except (TypeError, IndexError, KeyError, OSError) as e:
-                logger.exception("❌ Erreur génération réponse BBIA (type/index/key/os): %s", e)
+                logger.exception(
+                    "❌ Erreur génération réponse BBIA (type/index/key/os): %s", e
+                )
                 bbia_response = f"Désolé, une erreur s'est produite lors de la génération de la réponse: {e!s}"
-            except Exception as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
+            except (
+                Exception
+            ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
                 logger.exception("❌ Erreur génération réponse BBIA: %s", e)
                 bbia_response = f"Désolé, une erreur s'est produite lors de la génération de la réponse: {e!s}"
 
@@ -4202,7 +4230,13 @@ async def handle_chat_message(
                 "error",
                 f"Erreur chat: {e!s}",
             )
-    except Exception as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
+        except (
+            Exception
+        ) as inner_e:  # noqa: BLE001 - Fallback pour erreurs d'envoi de log
+            logger.exception("❌ Erreur envoi log: %s", inner_e)
+    except (
+        Exception
+    ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
         logger.exception("❌ Erreur chat: %s", e)
         try:
             await advanced_websocket_manager.send_log_message(
@@ -4218,8 +4252,12 @@ async def handle_chat_message(
             }
             await websocket.send_text(json.dumps(error_response))
         except (TypeError, IndexError, KeyError, OSError) as e:
-            logger.exception("❌ Erreur envoi message d'erreur (type/index/key/os): %s", e)
-        except Exception as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
+            logger.exception(
+                "❌ Erreur envoi message d'erreur (type/index/key/os): %s", e
+            )
+        except (
+            Exception
+        ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
             logger.exception("❌ Erreur lors de l'envoi du message d'erreur: %s", e)
 
 

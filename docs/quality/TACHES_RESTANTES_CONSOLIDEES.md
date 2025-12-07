@@ -915,7 +915,7 @@ Les tests suivants sont marqués `@pytest.mark.heavy` et `@pytest.mark.slow` mai
    - Impact : Meilleure gestion d'erreurs, débogage facilité
    - Progrès : ~179 occurrences corrigées dans 21 fichiers (38% fait, ~220 restantes)
    - Fichiers prioritaires : `dashboard_advanced.py` (~5 restantes), `reachy_mini_backend.py` (~20 restantes), autres fichiers (~195 restantes)
-   - **Dernière mise à jour** : 7 Décembre 2025 - `dashboard_advanced.py` amélioré (19 occurrences)
+   - **Dernière mise à jour** : 7 Décembre 2025 - `dashboard_advanced.py` corrigé (erreur syntaxe lignes 4200/4205, duplications B025 corrigées)
 
 4. **Audit doublons** - Vérifier `set_emotion()` et `dire_texte()` dupliqués
    - Action : Analyser si certaines implémentations sont redondantes
