@@ -791,19 +791,19 @@ Les tests suivants sont marqués `@pytest.mark.heavy` et `@pytest.mark.slow` mai
   - **Impact** : Réduction ~25 lignes supplémentaires
   - **Statut** : ✅ Terminé et testé
 
-- ✅ `bbia_huggingface.py` : Blocs `except Exception` simplifiés (lignes 1949-1978)
-  - **Avant** : 2 blocs except séparés avec duplication
-  - **Après** : Try/except simplifié avec gestion cohérente
-  - **Impact** : Code plus lisible, gestion d'erreurs cohérente
+- ✅ `bbia_huggingface.py` : Blocs `except Exception` simplifiés + logs améliorés (lignes 1949-1978)
+  - **Avant** : 2 blocs except séparés avec duplication, `logger.exception()`
+  - **Après** : Try/except simplifié avec gestion cohérente, `logger.error()` avec "(critique)"
+  - **Impact** : Code plus lisible, gestion d'erreurs cohérente, logs cohérents
   - **Statut** : ✅ Terminé et testé
 
-- ✅ `dashboard_advanced.py` : Blocs `except Exception` simplifiés (lignes 3610-3627)
-  - **Avant** : 2 blocs except séparés
-  - **Après** : 1 bloc except unifié avec gestion cohérente
-  - **Impact** : Code plus maintenable
+- ✅ `dashboard_advanced.py` : Blocs `except Exception` simplifiés + logs améliorés (lignes 246-251, 3610-3619)
+  - **Avant** : 2 blocs except séparés, `logger.exception()`
+  - **Après** : Blocs except unifiés avec gestion cohérente, `logger.error()` avec "(critique)"
+  - **Impact** : Code plus maintenable, logs cohérents
   - **Statut** : ✅ Terminé et testé
 
-**Résultat** : ~80 lignes de code dupliqué supprimées, code plus maintenable et cohérent.
+**Résultat** : ~80 lignes de code dupliqué supprimées, logs cohérents (ERROR au lieu de exception), code plus maintenable.
 
 ### 🟢 OPTIMISATIONS POSSIBLES
 
