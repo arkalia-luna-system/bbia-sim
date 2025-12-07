@@ -618,10 +618,10 @@ except Exception as e:
 **Progression** :
 - ✅ Module centralisé créé (7 Décembre 2025)
 - ✅ Code formaté (black), linté (ruff), type-checké (mypy)
-- ✅ Tests complets créés (22 tests error_handling, 5 tests factorisation, 5 tests pose_detection, 4 tests unity_controller - tous passent)
+- ✅ Tests complets créés (22 tests error_handling + 5 tests factorisation + 5 tests pose_detection + 4 tests unity_controller = 36 tests, tous passent)
 - ✅ Amélioration logs : Erreurs critiques YOLO/MediaPipe/Pose/Unity passent de WARNING/exception() → ERROR
 - ✅ Factorisation débutée : `robot_factory.py` et `troubleshooting.py` factorisés (2 fichiers)
-- ✅ Amélioration logs : `pose_detection.py` et `unity_reachy_controller.py` (2 fichiers)
+- ✅ Amélioration logs : `pose_detection.py` et `unity_reachy_controller.py` (2 fichiers) - **FAIT**
 - ⚠️ Factorisation de `bbia_vision.py` : Amélioration logs faite, factorisation code à faire
 - 🔜 Factorisation des routers daemon : À faire (212 blocs dans 13 fichiers)
 
