@@ -517,9 +517,17 @@ class BBIAHuggingFace:
                 return cfg[model_name]
         except (KeyError, AttributeError, TypeError, ValueError) as e:
             logger.debug("Erreur résolution nom de modèle '%s': %s", model_name, e)
-        except Exception as e:
+        except (IndexError, OSError) as e:
             logger.debug(
-                f"Erreur inattendue résolution nom de modèle '{model_name}': {e}",
+                "Erreur résolution nom de modèle '%s' (index/os): %s", model_name, e
+            )
+        except (
+            Exception
+        ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
+            logger.debug(
+                "Erreur inattendue résolution nom de modèle '%s': %s",
+                model_name,
+                e,
             )
         return model_name
 
@@ -844,8 +852,13 @@ class BBIAHuggingFace:
         except (ValueError, RuntimeError, AttributeError, OSError):
             logger.exception("❌ Erreur description image:")
             return "Erreur (describe_image): échec de génération de description d'image"
-        except Exception:
-            logger.exception("❌ Erreur inattendue description image:")
+        except (TypeError, IndexError, OSError) as e:
+            logger.exception("❌ Erreur description image (type/index/os): %s", e)
+            return "Erreur (describe_image): échec de génération de description d'image"
+        except (
+            Exception
+        ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
+            logger.exception("❌ Erreur inattendue description image: %s", e)
             return "Erreur (describe_image): échec de génération de description d'image"
 
     def analyze_sentiment(
@@ -908,8 +921,13 @@ class BBIAHuggingFace:
         except (ValueError, RuntimeError, AttributeError, KeyError) as e:
             logger.exception("❌ Erreur analyse sentiment:")
             return {"error": str(e)}
-        except Exception as e:
-            logger.exception("❌ Erreur inattendue analyse sentiment:")
+        except (TypeError, IndexError, OSError) as e:
+            logger.exception("❌ Erreur analyse sentiment (type/index/os): %s", e)
+            return {"error": str(e)}
+        except (
+            Exception
+        ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
+            logger.exception("❌ Erreur inattendue analyse sentiment: %s", e)
             return {"error": str(e)}
 
     def analyze_emotion(
@@ -946,8 +964,13 @@ class BBIAHuggingFace:
         except (ValueError, RuntimeError, AttributeError, KeyError) as e:
             logger.exception("❌ Erreur analyse émotion:")
             return {"error": str(e)}
-        except Exception as e:
-            logger.exception("❌ Erreur inattendue analyse émotion:")
+        except (TypeError, IndexError, OSError) as e:
+            logger.exception("❌ Erreur analyse émotion (type/index/os): %s", e)
+            return {"error": str(e)}
+        except (
+            Exception
+        ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
+            logger.exception("❌ Erreur inattendue analyse émotion: %s", e)
             return {"error": str(e)}
 
     def transcribe_audio(self, audio_path: str, model_name: str = "whisper") -> str:
@@ -993,8 +1016,13 @@ class BBIAHuggingFace:
         except (OSError, RuntimeError, ValueError, AttributeError):
             logger.exception("❌ Erreur transcription audio:")
             return "Erreur (transcribe_audio): problème pendant la transcription audio"
-        except Exception:
-            logger.exception("❌ Erreur inattendue transcription audio:")
+        except (TypeError, IndexError, OSError) as e:
+            logger.exception("❌ Erreur transcription audio (type/index/os): %s", e)
+            return "Erreur (transcribe_audio): problème pendant la transcription audio"
+        except (
+            Exception
+        ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
+            logger.exception("❌ Erreur inattendue transcription audio: %s", e)
             return "Erreur (transcribe_audio): problème pendant la transcription audio"
 
     def answer_question(
@@ -1059,8 +1087,13 @@ class BBIAHuggingFace:
         except (ValueError, RuntimeError, AttributeError, OSError):
             logger.exception("❌ Erreur VQA:")
             return "Erreur (answer_question): échec de l'analyse visuelle (VQA)"
-        except Exception:
-            logger.exception("❌ Erreur inattendue VQA:")
+        except (TypeError, IndexError, OSError) as e:
+            logger.exception("❌ Erreur VQA (type/index/os): %s", e)
+            return "Erreur (answer_question): échec de l'analyse visuelle (VQA)"
+        except (
+            Exception
+        ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
+            logger.exception("❌ Erreur inattendue VQA: %s", e)
             return "Erreur (answer_question): échec de l'analyse visuelle (VQA)"
 
     def get_available_models(self) -> dict[str, list[str]]:
@@ -1121,7 +1154,11 @@ class BBIAHuggingFace:
                 del self.chat_model
         except (AttributeError, RuntimeError) as e:
             logger.debug("Erreur suppression chat_model: %s", e)
-        except Exception as e:
+        except (TypeError, KeyError, OSError) as e:
+            logger.debug("Erreur suppression chat_model (type/key/os): %s", e)
+        except (
+            Exception
+        ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
             logger.debug("Erreur inattendue suppression chat_model: %s", e)
         try:
             if hasattr(self, "chat_tokenizer") and self.chat_tokenizer is not None:
@@ -1241,7 +1278,15 @@ class BBIAHuggingFace:
                                         del model_last_used[model_key]
                     except (AttributeError, RuntimeError, KeyError) as e:
                         logger.debug("Erreur déchargement auto %s: %s", model_key, e)
-                    except Exception as e:
+                    except (TypeError, IndexError, OSError) as e:
+                        logger.debug(
+                            "Erreur déchargement auto %s (type/index/os): %s",
+                            model_key,
+                            e,
+                        )
+                    except (
+                        Exception
+                    ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
                         logger.debug(
                             "Erreur inattendue déchargement auto %s: %s",
                             model_key,
@@ -1333,10 +1378,19 @@ class BBIAHuggingFace:
             return True
 
         except (AttributeError, RuntimeError, KeyError):
-            logger.exception("❌ Erreur déchargement modèle {model_name}:")
+            logger.exception("❌ Erreur déchargement modèle %s:", model_name)
             return False
-        except Exception:
-            logger.exception("❌ Erreur inattendue déchargement modèle %s:", model_name)
+        except (TypeError, IndexError, OSError) as e:
+            logger.exception(
+                "❌ Erreur déchargement modèle %s (type/index/os): %s", model_name, e
+            )
+            return False
+        except (
+            Exception
+        ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
+            logger.exception(
+                "❌ Erreur inattendue déchargement modèle %s: %s", model_name, e
+            )
             return False
 
     def get_model_info(self) -> dict[str, Any]:
@@ -2101,7 +2155,15 @@ class BBIAHuggingFace:
         except (ImportError, RuntimeError, AttributeError, ValueError) as e:
             logger.debug("ℹ️ Erreur NLP détection (fallback mots-clés): %s", e)
             return None
-        except Exception as e:
+        except (TypeError, IndexError, OSError) as e:
+            logger.debug(
+                "ℹ️ Erreur NLP détection (type/index/os): %s",
+                e,
+            )
+            return None
+        except (
+            Exception
+        ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
             logger.debug(
                 "ℹ️ Erreur inattendue NLP détection (fallback mots-clés): %s",
                 e,
@@ -2248,10 +2310,19 @@ class BBIAHuggingFace:
             return f"⚠️ {error_detail}"
 
         except (AttributeError, RuntimeError, ValueError, KeyError) as e:
-            logger.exception("❌ Erreur exécution outil '{tool_name}':")
+            logger.exception("❌ Erreur exécution outil '%s': %s", tool_name, e)
             return f"❌ Erreur lors de l'exécution: {e}"
-        except Exception as e:
-            logger.exception("❌ Erreur inattendue exécution outil '%s':", tool_name)
+        except (TypeError, IndexError, OSError) as e:
+            logger.exception(
+                "❌ Erreur exécution outil '%s' (type/index/os): %s", tool_name, e
+            )
+            return f"❌ Erreur lors de l'exécution: {e}"
+        except (
+            Exception
+        ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
+            logger.exception(
+                "❌ Erreur inattendue exécution outil '%s': %s", tool_name, e
+            )
             return f"❌ Erreur lors de l'exécution: {e}"
 
     def _extract_angle(self, message: str) -> float | None:
