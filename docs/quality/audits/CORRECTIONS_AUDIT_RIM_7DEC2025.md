@@ -109,7 +109,9 @@
 1. ✅ **Tests module error_handling** : Créés et passent (22 tests) - **FAIT**
 2. ✅ **Amélioration logs** : Erreurs critiques YOLO/MediaPipe passent de WARNING → ERROR - **FAIT**
 3. ✅ **Tests edge cases** : Exécutés et passent - **FAIT**
-4. **Factorisation progressive** : Utiliser `safe_execute()` dans `bbia_vision.py` et autres fichiers (375 occurrences restantes) - **EN COURS**
+4. ✅ **Factorisation débutée** : `robot_factory.py` et `troubleshooting.py` factorisés (2 fichiers) - **FAIT**
+5. ✅ **Tests factorisation** : Créés et passent (5 tests) - **FAIT**
+6. **Factorisation progressive** : Continuer dans autres fichiers (~370 occurrences restantes) - **EN COURS**
 
 ---
 

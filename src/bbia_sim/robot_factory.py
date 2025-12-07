@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING, Any
 from .backends.mujoco_backend import MuJoCoBackend
 from .backends.reachy_backend import ReachyBackend
 from .backends.reachy_mini_backend import ReachyMiniBackend
+from .utils.error_handling import safe_execute
 
 if TYPE_CHECKING:
     from .robot_api import RobotAPI
@@ -62,9 +63,15 @@ class RobotFactory:
             logger.error("Type de backend non supporté: %s", backend_type)
             return None
 
-        except Exception:
-            logger.exception("Erreur création backend %s:", backend_type)
-            return None
+        except Exception:  # noqa: BLE001 - Erreur création backend
+            return safe_execute(
+                lambda: logger.exception("Erreur création backend %s:", backend_type)
+                or None,
+                fallback=None,
+                logger_instance=logger,
+                error_msg=f"Erreur création backend {backend_type}",
+                critical=True,
+            )
 
     @staticmethod
     def get_available_backends() -> list[str]:
