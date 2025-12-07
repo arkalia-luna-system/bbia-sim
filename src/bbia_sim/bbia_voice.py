@@ -434,7 +434,12 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
                                 cleanup_error,
                             )
 
-            except Exception as e:
+            except (TypeError, ValueError, AttributeError) as e:
+                logging.debug("Erreur synthèse SDK (type/value/attr): %s", e)
+                # Fallback pyttsx3
+            except (
+                Exception
+            ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
                 logging.debug("Erreur synthèse SDK (fallback pyttsx3): %s", e)
                 # Fallback pyttsx3
 
@@ -463,7 +468,12 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
         # Pitch non supporté nativement par pyttsx3, dépend du moteur
         engine.say(texte)
         engine.runAndWait()
-    except Exception as e:
+    except (RuntimeError, AttributeError, OSError) as e:
+        # Utiliser error au lieu de warning avec exc_info pour éviter traces complètes dans tests
+        logging.error("Erreur de synthèse vocale (runtime/attr/os): %s", e)
+    except (
+        Exception
+    ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
         # Utiliser error au lieu de warning avec exc_info pour éviter traces complètes dans tests
         logging.error("Erreur de synthèse vocale: %s", e)
         raise
@@ -535,7 +545,14 @@ def reconnaitre_parole(
                     texte = r.recognize_google(audio, language="fr-FR")
                     logging.info("✅ Texte reconnu (SDK 4 microphones) : %s", texte)
                     return str(texte)
-        except Exception as e:
+        except (RuntimeError, AttributeError, OSError) as e:
+            logging.debug(
+                "Erreur reconnaissance SDK (runtime/attr/os): %s",
+                e,
+            )
+        except (
+            Exception
+        ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
             logging.debug(
                 "Erreur reconnaissance SDK (fallback speech_recognition): %s",
                 e,
@@ -555,7 +572,14 @@ def reconnaitre_parole(
             except sr.UnknownValueError:
                 logging.warning("Aucune parole reconnue.")
                 return None
-            except Exception as e:
+            except (RuntimeError, AttributeError, OSError) as e:
+                # Utiliser debug au lieu de error pour réduire bruit dans tests
+                logging.debug(
+                    "Erreur de reconnaissance vocale (runtime/attr/os): %s", e
+                )
+            except (
+                Exception
+            ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
                 # Utiliser debug au lieu de error pour réduire bruit dans tests
                 logging.debug("Erreur de reconnaissance vocale: %s", e)
                 return None
@@ -645,7 +669,14 @@ def _transcribe_thread_worker() -> None:
             task_done_called = True
         except queue.Empty:
             continue
-        except Exception as e:
+        except (RuntimeError, AttributeError, OSError) as e:
+            # Utiliser error au lieu de exception pour éviter traces complètes dans tests
+            logger.error(
+                "Erreur thread transcription asynchrone (runtime/attr/os): %s", e
+            )
+        except (
+            Exception
+        ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
             # Utiliser error au lieu de exception pour éviter traces complètes dans tests
             logger.error("Erreur thread transcription asynchrone: %s", e)
             # Appeler task_done() seulement si la tâche a été récupérée

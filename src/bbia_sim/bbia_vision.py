@@ -403,7 +403,11 @@ class BBIAVision:
                     )
             except (ImportError, RuntimeError, AttributeError) as e:
                 logger.debug("⚠️ DeepFace non disponible: %s", e)
-            except Exception as e:
+            except (TypeError, ValueError, OSError) as e:
+                logger.debug("⚠️ DeepFace non disponible (type/value/os): %s", e)
+            except (
+                Exception
+            ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
                 logger.debug("⚠️ DeepFace non disponible (erreur inattendue): %s", e)
 
         # Module MediaPipe Pose pour détection postures/gestes
@@ -423,7 +427,11 @@ class BBIAVision:
                     )
             except (ImportError, RuntimeError, AttributeError) as e:
                 logger.warning("⚠️ MediaPipe Pose non disponible: %s", e)
-            except Exception as e:
+            except (TypeError, ValueError, OSError) as e:
+                logger.warning("⚠️ MediaPipe Pose non disponible (type/value/os): %s", e)
+            except (
+                Exception
+            ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
                 logger.warning(
                     "⚠️ MediaPipe Pose non disponible (erreur inattendue): %s",
                     e,
