@@ -47,7 +47,7 @@ async def list_presets() -> dict[str, Any]:
                         }
                     )
             except (OSError, json.JSONDecodeError) as e:
-                logger.warning(f"Erreur lecture preset {preset_file}: {e}")
+                logger.warning("Erreur lecture preset %s: %s", preset_file, e)
                 continue
 
         return {"presets": presets, "count": len(presets)}
@@ -81,7 +81,7 @@ async def get_preset(preset_name: str) -> dict[str, Any]:
             data: dict[str, Any] = json.load(f)
             return data
     except (OSError, json.JSONDecodeError) as e:
-        logger.exception(f"Erreur lecture preset {preset_name}")
+        logger.exception("Erreur lecture preset %s", preset_name)
         raise HTTPException(status_code=500, detail=f"Erreur lecture: {e!s}") from e
 
 
@@ -121,14 +121,14 @@ async def create_preset(preset: EmotionPreset) -> dict[str, Any]:
                 ensure_ascii=False,
             )
 
-        logger.info(f"✅ Preset créé: {preset.name}")
+        logger.info("✅ Preset créé: %s", preset.name)
         return {
             "success": True,
             "message": f"Preset '{preset.name}' créé avec succès",
             "filename": preset_file.name,
         }
     except OSError as e:
-        logger.exception(f"Erreur création preset {preset.name}")
+        logger.exception("Erreur création preset %s", preset.name)
         raise HTTPException(status_code=500, detail=f"Erreur écriture: {e!s}") from e
 
 
@@ -190,7 +190,7 @@ async def apply_preset(preset_name: str) -> dict[str, Any]:
                     else:
                         errors.append("Robot ne supporte pas set_emotion")
                 except Exception as e:
-                    logger.warning(f"Erreur application émotion {emotion}: {e}")
+                    logger.warning("Erreur application émotion %s: %s", emotion, e)
                     errors.append(f"Erreur {emotion}: {e!s}")
 
             robot.disconnect()
@@ -215,12 +215,12 @@ async def apply_preset(preset_name: str) -> dict[str, Any]:
         except HTTPException:
             raise
         except Exception as e:
-            logger.exception(f"Erreur application preset {preset_name}")
+            logger.exception("Erreur application preset %s", preset_name)
             raise HTTPException(
                 status_code=500, detail=f"Erreur application: {e!s}"
             ) from e
     except (OSError, json.JSONDecodeError) as e:
-        logger.exception(f"Erreur lecture preset {preset_name}")
+        logger.exception("Erreur lecture preset %s", preset_name)
         raise HTTPException(status_code=500, detail=f"Erreur lecture: {e!s}") from e
 
 
@@ -246,11 +246,11 @@ async def delete_preset(preset_name: str) -> dict[str, Any]:
 
     try:
         preset_file.unlink()
-        logger.info(f"✅ Preset supprimé: {preset_name}")
+        logger.info("✅ Preset supprimé: %s", preset_name)
         return {
             "success": True,
             "message": f"Preset '{preset_name}' supprimé avec succès",
         }
     except OSError as e:
-        logger.exception(f"Erreur suppression preset {preset_name}")
+        logger.exception("Erreur suppression preset %s", preset_name)
         raise HTTPException(status_code=500, detail=f"Erreur suppression: {e!s}") from e

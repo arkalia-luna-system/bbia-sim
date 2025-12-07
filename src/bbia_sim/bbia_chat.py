@@ -346,7 +346,7 @@ class BBIAChat:
             if is_fallback:
                 logger.info("Mode fallback: réponses basiques (sans LLM)")
         else:
-            logger.warning(f"⚠️ Impossible de charger {model_name}: {error}")
+            logger.warning("⚠️ Impossible de charger %s: %s", model_name, error)
             if is_fallback:
                 logger.warning("Mode fallback: réponses basiques (sans LLM)")
 

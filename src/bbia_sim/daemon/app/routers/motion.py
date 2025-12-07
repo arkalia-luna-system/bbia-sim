@@ -347,7 +347,7 @@ async def set_emotion(emotion_request: EmotionRequest) -> dict[str, Any]:
             "message": f"Intensité invalide: {intensity} (doit être entre 0.0 et 1.0)",
             "timestamp": datetime.now().isoformat(),
         }
-    logger.info(f"Définition émotion: {emotion} avec intensité {intensity}")
+    logger.info("Définition émotion: %s avec intensité %s", emotion, intensity)
 
     try:
         from bbia_sim.robot_factory import RobotFactory

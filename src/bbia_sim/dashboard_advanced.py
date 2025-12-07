@@ -3614,7 +3614,7 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                     ) as e:  # noqa: BLE001 - Gestion centralisée via helper
                         # Gérer toutes les exceptions de manière cohérente
                         error_msg = f"Erreur initialisation robot: {e}"
-                        logger.error("❌ %s (critique)", error_msg)
+                        logger.exception("❌ %s (critique)", error_msg)
                         await advanced_websocket_manager.send_log_message(
                             "error",
                             f"❌ {error_msg}",

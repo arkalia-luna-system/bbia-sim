@@ -142,9 +142,9 @@ class BBIAEmotions:
             f"🔄 Transition d'émotion : {old_data['color']} {old_emotion} → "
             f"{new_data['color']} {new_emotion}",
         )
-        logger.info(f"📝 {old_data['description']} → {new_data['description']}")
-        logger.info(f"🎭 Intensité : {self.emotion_intensity:.1f}")
-        logger.info(f"⏰ {datetime.now().strftime('%H:%M:%S')}")
+        logger.info("📝 %s → %s", old_data["description"], new_data["description"])
+        logger.info("🎭 Intensité : %.1f", self.emotion_intensity)
+        logger.info("⏰ %s", datetime.now().strftime("%H:%M:%S"))
 
     def get_current_emotion(self) -> dict[str, Any]:
         """Retourne l'émotion actuelle avec ses détails."""

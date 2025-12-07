@@ -1336,7 +1336,7 @@ class BBIAHuggingFace:
             logger.exception("❌ Erreur déchargement modèle {model_name}:")
             return False
         except Exception:
-            logger.exception(f"❌ Erreur inattendue déchargement modèle {model_name}:")
+            logger.exception("❌ Erreur inattendue déchargement modèle %s:", model_name)
             return False
 
     def get_model_info(self) -> dict[str, Any]:
@@ -1956,8 +1956,10 @@ class BBIAHuggingFace:
                             ValueError,
                             KeyError,
                         ) as e:
-                            logger.error(
-                                f"❌ Erreur exécution outil '{tool_name}' (critique): {e}"
+                            logger.exception(
+                                "❌ Erreur exécution outil '%s' (critique): %s",
+                                tool_name,
+                                e,
                             )
                             result = {
                                 "status": "error",
@@ -1966,8 +1968,10 @@ class BBIAHuggingFace:
                         except (
                             Exception
                         ) as e:  # noqa: BLE001 - Gestion des exceptions non prévues
-                            logger.error(
-                                f"❌ Erreur inattendue exécution outil '{tool_name}' (critique): {e}"
+                            logger.exception(
+                                "❌ Erreur inattendue exécution outil '%s' (critique): %s",
+                                tool_name,
+                                e,
                             )
                             result = {
                                 "status": "error",
