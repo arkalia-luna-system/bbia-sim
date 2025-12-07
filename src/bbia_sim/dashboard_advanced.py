@@ -244,10 +244,12 @@ class BBIAAdvancedWebSocketManager:
                         f"❌ Impossible de créer le robot {self.robot_backend}",
                     )
             except (ValueError, AttributeError, RuntimeError, ImportError) as e:
-                logger.exception("❌ Erreur initialisation robot forcée")
+                logger.error("❌ Erreur initialisation robot forcée (critique): %s", e)
                 await self.send_log_message("error", f"❌ Erreur robot: {e}")
-            except Exception as e:
-                logger.exception("❌ Erreur inattendue initialisation robot forcée")
+            except Exception as e:  # noqa: BLE001 - Gestion des exceptions non prévues
+                logger.error(
+                    "❌ Erreur inattendue initialisation robot forcée (critique): %s", e
+                )
                 await self.send_log_message("error", f"❌ Erreur robot: {e}")
 
         # Vérifier que le robot est vraiment connecté
@@ -3612,7 +3614,7 @@ async def handle_advanced_robot_command(command_data: dict[str, Any]):
                     ) as e:  # noqa: BLE001 - Gestion centralisée via helper
                         # Gérer toutes les exceptions de manière cohérente
                         error_msg = f"Erreur initialisation robot: {e}"
-                        logger.exception("❌ " + error_msg)
+                        logger.error("❌ %s (critique)", error_msg)
                         await advanced_websocket_manager.send_log_message(
                             "error",
                             f"❌ {error_msg}",
