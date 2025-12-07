@@ -24,6 +24,7 @@
 **Fichier créé** : `src/bbia_sim/utils/error_handling.py`
 
 **Fonctions disponibles** :
+
 - `safe_execute(func, fallback, logger, error_msg, critical, reraise)` : Exécute une fonction avec gestion d'erreurs centralisée
 - `safe_import(module_name, logger)` : Importe un module avec gestion d'erreurs
 - `safe_execute_with_exceptions(func, expected_exceptions, ...)` : Exécute en gérant spécifiquement certaines exceptions
@@ -40,6 +41,7 @@
 **Fichier modifié** : `README.md`
 
 **Contenu ajouté** :
+
 - Tableau explicatif des dépendances majeures (PyTorch, transformers, MediaPipe, YOLO, Whisper)
 - Justification de chaque dépendance (rôle, poids, raison)
 - Note sur les dépendances facultatives
@@ -55,6 +57,7 @@
 **Fichier modifié** : `tests/test_edge_cases_error_handling.py`
 
 **Tests ajoutés** :
+
 - ✅ `TestErrorHandlingMediaPipeCrash::test_mediapipe_crash_during_execution` : Test crash MediaPipe pendant l'exécution (pas juste "non disponible")
 - ✅ `TestErrorHandlingMemoryStress::test_memory_saturated_during_model_loading` : Test RAM saturée lors du chargement d'un modèle
 - ✅ `TestErrorHandlingRaceConditions::test_concurrent_emotion_set` : Test race conditions sur accès concurrent à `set_emotion()`
@@ -71,6 +74,7 @@
 **Section ajoutée** : "Factorisation Patterns Try/Except (En cours)"
 
 **Contenu** :
+
 - Statut du module centralisé
 - Fonctions disponibles
 - Progression (module créé, factorisation à faire)
@@ -84,6 +88,7 @@
 ### 5. Vérification Occurrences `except Exception` ✅
 
 **Résultats** :
+
 - **Total** : 383 occurrences de `except Exception`
 - **Sans noqa** : 375 occurrences (à corriger)
 - **Avec noqa: BLE001** : 8 occurrences (justifiées)
@@ -107,23 +112,29 @@
 ### ⏳ Ce qui Reste à Faire (Prochaines Étapes)
 
 1. ✅ **Tests module error_handling** : Créés et passent (22 tests) - **FAIT**
-2. ✅ **Amélioration logs** : Erreurs critiques YOLO/MediaPipe passent de WARNING → ERROR - **FAIT**
+2. ✅ **Amélioration logs** : Erreurs critiques YOLO/MediaPipe/Pose/Unity passent de WARNING → ERROR - **FAIT**
 3. ✅ **Tests edge cases** : Exécutés et passent - **FAIT**
 4. ✅ **Factorisation débutée** : `robot_factory.py` et `troubleshooting.py` factorisés (2 fichiers) - **FAIT**
 5. ✅ **Tests factorisation** : Créés et passent (5 tests) - **FAIT**
-6. **Factorisation progressive** : Continuer dans autres fichiers (~370 occurrences restantes) - **EN COURS**
+6. ✅ **Amélioration logs pose_detection** : Erreurs critiques passent de exception() → ERROR - **FAIT**
+7. ✅ **Amélioration logs unity_controller** : Erreurs critiques passent de exception() → ERROR - **FAIT**
+8. ✅ **Tests pose_detection error_handling** : Créés et passent (5 tests) - **FAIT**
+9. ✅ **Tests unity_controller error_handling** : Créés et passent (4 tests) - **FAIT**
+10. **Factorisation progressive** : Continuer dans autres fichiers (~365 occurrences restantes) - **EN COURS**
 
 ---
 
 ## 🎯 Impact
 
 **Avant** :
+
 - ❌ Pas de module centralisé pour gestion d'erreurs
 - ❌ Pas de justification des dépendances lourdes dans README
 - ❌ Tests edge cases incomplets (manquaient MediaPipe crash, RAM saturée, race conditions, API down)
 - ❌ Pas de documentation sur la factorisation
 
 **Après** :
+
 - ✅ Module centralisé créé et prêt à être utilisé
 - ✅ Section README explicative des dépendances
 - ✅ Tests edge cases complets (tous les cas critiques couverts)
@@ -135,9 +146,10 @@
 
 - **Date** : 7 Décembre 2025
 - **Branche** : `develop`
-- **Commit** : `43a6c16f` - feat: Corrections audit Rim
+- **Dernier commit** : `6d9b56a2` - fix: Retrait import safe_execute inutilisé
 - **Qualité code** : ✅ Black OK, ✅ Ruff OK, ✅ MyPy OK, ✅ Bandit OK
-- **Tests** : Nouveaux tests ajoutés, formatés et lintés
+- **Tests** : 36 tests créés (22 error_handling + 5 factorisation + 5 pose_detection + 4 unity_controller), tous passent
+- **Fichiers améliorés** : `pose_detection.py`, `unity_reachy_controller.py` (logs ERROR au lieu de exception())
 
 ---
 
@@ -148,4 +160,3 @@
 - Tests edge cases : `tests/test_edge_cases_error_handling.py`
 - Documentation : `docs/quality/TACHES_RESTANTES_CONSOLIDEES.md`
 - README : Section "Stack IA : Pourquoi ces Dépendances"
-

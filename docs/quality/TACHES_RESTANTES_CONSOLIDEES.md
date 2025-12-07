@@ -618,9 +618,10 @@ except Exception as e:
 **Progression** :
 - ✅ Module centralisé créé (7 Décembre 2025)
 - ✅ Code formaté (black), linté (ruff), type-checké (mypy)
-- ✅ Tests complets créés (22 tests error_handling, 5 tests factorisation, tous passent)
-- ✅ Amélioration logs : Erreurs critiques YOLO/MediaPipe passent de WARNING → ERROR
+- ✅ Tests complets créés (22 tests error_handling, 5 tests factorisation, 5 tests pose_detection, 4 tests unity_controller - tous passent)
+- ✅ Amélioration logs : Erreurs critiques YOLO/MediaPipe/Pose/Unity passent de WARNING/exception() → ERROR
 - ✅ Factorisation débutée : `robot_factory.py` et `troubleshooting.py` factorisés (2 fichiers)
+- ✅ Amélioration logs : `pose_detection.py` et `unity_reachy_controller.py` (2 fichiers)
 - ⚠️ Factorisation de `bbia_vision.py` : Amélioration logs faite, factorisation code à faire
 - 🔜 Factorisation des routers daemon : À faire (212 blocs dans 13 fichiers)
 
@@ -728,6 +729,77 @@ safe_execute(
 **Priorité** : 🟢 **BASSE** - Pas d'action nécessaire
 
 ---
+
+### 🟢 OPTIMISATIONS TESTS - 7 DÉCEMBRE 2025
+
+#### Optimisations Effectuées ✅
+
+**Tests error_handling optimisés** :
+
+- ✅ `test_unity_controller_error_handling.py` : Tests améliorés pour tester réellement le code (pas juste des mocks inutiles)
+  - `test_unity_controller_input_error_handling` : Teste maintenant réellement `interactive_mode()` avec erreur input()
+  - `test_unity_controller_command_error_handling` : Teste maintenant réellement les erreurs de commande dans `interactive_mode()`
+- ✅ `test_pose_detection_error_handling.py` : Optimisations multiples
+  - Images réduites de 480x640 à 240x320 (4x plus rapide, suffisant pour tests)
+  - Imports déplacés en haut du fichier (évite imports répétés, plus propre)
+  - `test_pose_detection_detect_error_handling` : Image optimisée
+  - `test_pose_detection_detect_with_exception` : Image optimisée
+  - `test_pose_detection_init_with_exception` : Mock amélioré avec patch.dict pour sys.modules
+  - `test_pose_detection_logs_error_level` : Mock amélioré
+- ✅ `test_error_handling_factorization.py` : Test simplifié
+  - `test_troubleshooting_error_handling` : Approche simplifiée pour éviter erreurs de type
+- ✅ `test_performance_benchmarks.py` : Tests améliorés
+  - `test_basic_imports_performance` : Teste maintenant réellement un import au lieu d'un no-op
+  - `setup_method` vide supprimé (inutile)
+- ✅ `test_unity_controller_error_handling.py` : Import manquant corrigé
+  - Ajout de `call` dans les imports pour la liste de compréhension
+
+**Erreurs de lint corrigées** :
+
+- ✅ `CORRECTIONS_AUDIT_RIM_7DEC2025.md` : Tous les blancs autour des listes corrigés (MD032)
+- ✅ Ligne vide multiple supprimée (MD012)
+
+#### Tests Lourds Identifiés (Déjà Optimisés)
+
+Les tests suivants sont marqués `@pytest.mark.heavy` et `@pytest.mark.slow` mais sont déjà optimisés :
+
+- ✅ `test_memory_leaks_long_runs.py` : 100 itérations (réduit de 200)
+- ✅ `test_backend_budget_cpu_ram.py` : 2s au lieu de 3s, 100 itérations au lieu de 300
+- ✅ `test_system_stress_load.py` : 1 thread au lieu de 2, 5 requêtes au lieu de 10
+- ✅ `test_emotions_latency.py` : 50 itérations au lieu de 100
+- ✅ `test_performance_benchmarks.py` : 50 itérations au lieu de 100, 3 threads au lieu de 5
+
+**Note** : Ces tests sont nécessaires pour valider les performances et ne doivent pas être supprimés, seulement exécutés avec `pytest -m "not slow and not heavy"` pour les tests rapides.
+
+#### Recommandations
+
+1. **Tests error_handling** : ✅ Optimisés - Tests maintenant plus réalistes et plus rapides
+2. **Tests lourds** : ✅ Déjà optimisés - Garder les marqueurs `@pytest.mark.slow` et `@pytest.mark.heavy`
+3. **CI/CD** : Utiliser `pytest -m "not slow and not heavy"` pour les tests rapides en CI
+
+#### Opportunités d'Optimisation Identifiées (À Faire)
+
+**Code source - Duplication de gestion d'erreurs** :
+
+- ⚠️ `bbia_chat.py` : Méthode `_load_llm()` a 3 blocs `except` avec code dupliqué (lignes 356-392)
+  - Même logique répétée 3 fois : détection erreur dépendances manquantes + logging
+  - **Optimisation possible** : Factoriser dans une fonction helper `_handle_llm_load_error()`
+  - **Impact** : Réduction ~30 lignes, code plus maintenable
+  - **Risque** : Faible (refactoring interne, pas de changement fonctionnel)
+
+- ⚠️ `bbia_chat.py` : Même duplication dans le fallback TinyLlama (lignes 414-440)
+  - **Optimisation possible** : Réutiliser la même fonction helper
+  - **Impact** : Réduction ~25 lignes supplémentaires
+
+- ⚠️ `bbia_huggingface.py` : Blocs `except Exception` qui pourraient utiliser `safe_execute()` (lignes 1964-1971)
+  - **Optimisation possible** : Utiliser `safe_execute_with_exceptions()` du module error_handling
+  - **Impact** : Code plus cohérent, meilleure traçabilité
+
+- ⚠️ `dashboard_advanced.py` : Blocs `except Exception` multiples (lignes 3610-3627)
+  - **Optimisation possible** : Utiliser `safe_execute_with_exceptions()` pour cohérence
+  - **Impact** : Code plus maintenable
+
+**Note** : Ces optimisations sont optionnelles et peuvent être faites progressivement sans casser le code existant.
 
 ### 🟢 OPTIMISATIONS POSSIBLES
 

@@ -12,22 +12,20 @@ import pytest
 class TestPerformanceBenchmarks:
     """Tests de performance et benchmarks."""
 
-    def setup_method(self):
-        """Configuration avant chaque test."""
-        pass
-
     def test_basic_imports_performance(self):
         """Test performance des imports de base."""
         import time
 
+        # Test réel : mesurer le temps d'import d'un module simple
         start = time.time()
-        # Imports de test
-        _ = True  # Imports already done
-
+        # Import réel pour mesurer la performance
+        import logging  # Module standard, rapide
         elapsed = time.time() - start
 
         # Les imports doivent être rapides (< 0.1s)
         assert elapsed < 0.1, f"Imports trop lents: {elapsed:.3f}s"
+        # Vérifier que le module est bien importé
+        assert logging is not None
 
     def test_global_config_initialization_performance(self):
         """Test performance initialisation GlobalConfig."""
