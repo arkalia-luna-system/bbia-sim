@@ -494,7 +494,7 @@ class TestErrorHandlingAPIDown:
             ):
                 # Doit gérer gracieusement
                 try:
-                    response = client.get("/api/daemon/status")
+                    client.get("/api/daemon/status")
                     # Ne devrait pas arriver ici si API vraiment down
                 except (ConnectionRefusedError, ConnectionError):
                     # Exception attendue, doit être gérée
