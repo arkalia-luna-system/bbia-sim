@@ -6,7 +6,6 @@ Vérifie que les erreurs sont gérées correctement avec les nouveaux logs ERROR
 """
 
 import logging
-import sys
 from unittest.mock import MagicMock, patch
 
 import numpy as np
@@ -41,7 +40,8 @@ class TestPoseDetectionErrorHandling:
         mock_mp = MagicMock()
         mock_mp.solutions.pose.Pose.side_effect = RuntimeError("Erreur initialisation")
 
-        with patch.dict(sys.modules, {"mediapipe": mock_mp}):
+        # Patcher directement bbia_sim.pose_detection.mp car mp est déjà importé
+        with patch("bbia_sim.pose_detection.mp", mock_mp):
             with patch("bbia_sim.pose_detection.MEDIAPIPE_POSE_AVAILABLE", True):
                 detector = BBIAPoseDetection()
                 # Doit initialiser sans crasher
@@ -86,7 +86,8 @@ class TestPoseDetectionErrorHandling:
         mock_mp = MagicMock()
         mock_mp.solutions.pose.Pose.side_effect = RuntimeError("Erreur critique")
 
-        with patch.dict(sys.modules, {"mediapipe": mock_mp}):
+        # Patcher directement bbia_sim.pose_detection.mp car mp est déjà importé
+        with patch("bbia_sim.pose_detection.mp", mock_mp):
             with patch("bbia_sim.pose_detection.logger", mock_logger):
                 with patch("bbia_sim.pose_detection.MEDIAPIPE_POSE_AVAILABLE", True):
                     BBIAPoseDetection()
