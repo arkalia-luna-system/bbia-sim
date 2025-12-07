@@ -618,7 +618,9 @@ except Exception as e:
 **Progression** :
 - ✅ Module centralisé créé (7 Décembre 2025)
 - ✅ Code formaté (black), linté (ruff), type-checké (mypy)
-- ⚠️ Factorisation de `bbia_vision.py` : À faire (49 blocs try/except identifiés)
+- ✅ Tests complets créés (22 tests, tous passent)
+- ✅ Amélioration logs : Erreurs critiques YOLO/MediaPipe passent de WARNING → ERROR
+- ⚠️ Factorisation de `bbia_vision.py` : En cours (amélioration logs faite, factorisation code à faire)
 - 🔜 Factorisation des routers daemon : À faire (212 blocs dans 13 fichiers)
 
 **Justification** :

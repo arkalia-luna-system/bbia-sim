@@ -107,9 +107,9 @@
 ### ⏳ Ce qui Reste à Faire (Prochaines Étapes)
 
 1. ✅ **Tests module error_handling** : Créés et passent (22 tests) - **FAIT**
-2. **Factorisation progressive** : Utiliser `safe_execute()` dans `bbia_vision.py` et autres fichiers (375 occurrences restantes)
+2. ✅ **Amélioration logs** : Erreurs critiques YOLO/MediaPipe passent de WARNING → ERROR - **FAIT**
 3. ✅ **Tests edge cases** : Exécutés et passent - **FAIT**
-4. **Amélioration logs** : Distinguer erreurs critiques (ERROR) vs fallback normal (DEBUG)
+4. **Factorisation progressive** : Utiliser `safe_execute()` dans `bbia_vision.py` et autres fichiers (375 occurrences restantes) - **EN COURS**
 
 ---
 

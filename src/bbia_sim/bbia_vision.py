@@ -326,8 +326,8 @@ class BBIAVision:
                     )
             except (ImportError, RuntimeError, AttributeError) as e:
                 logger.warning("⚠️ YOLO non disponible: %s", e)
-            except Exception as e:
-                logger.warning("⚠️ Erreur inattendue YOLO: %s", e)
+            except Exception as e:  # noqa: BLE001 - Erreur inattendue mais critique
+                logger.error("⚠️ Erreur inattendue YOLO (critique): %s", e)
         else:
             logger.debug(
                 "YOLO non chargé (lazy loading - caméra simulation ou non disponible)",
@@ -385,8 +385,10 @@ class BBIAVision:
                     logger.debug("✅ Détecteur MediaPipe Face initialisé")
             except (ImportError, RuntimeError, AttributeError) as e:
                 logger.warning("⚠️ MediaPipe non disponible: %s", e)
-            except Exception as e:
-                logger.warning("⚠️ MediaPipe non disponible (erreur inattendue): %s", e)
+            except Exception as e:  # noqa: BLE001 - Erreur inattendue mais critique
+                logger.error(
+                    "⚠️ MediaPipe non disponible (erreur inattendue critique): %s", e
+                )
 
         # Module DeepFace pour reconnaissance visage personnalisée + émotions
         self.face_recognition = None
