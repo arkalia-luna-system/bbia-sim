@@ -955,12 +955,12 @@ Les tests suivants sont marqués `@pytest.mark.heavy` et `@pytest.mark.slow` mai
 **Date audit** : 26 Novembre 2025  
 **Objectif** : Vérifier l'exploitation complète de toutes les capacités du projet
 
-### 📊 SCORE GLOBAL D'EXPLOITATION : **100%** ✅
+### 📊 Score Global d'Exploitation
 
 **Détail par catégorie** :
-- ✅ **Modules BBIA Core** : **100%** (16/16 modules avec démos dédiées)
-- ✅ **Comportements Avancés** : **100%** (15/15 comportements avec démos dédiées)
-- ✅ **API Endpoints** : **100%** (11/11 endpoints avec démos dédiées)
+- **Modules BBIA Core** : 16/16 modules avec démos dédiées
+- **Comportements Avancés** : 15/15 comportements avec démos dédiées
+- **API Endpoints** : 11/11 endpoints avec démos dédiées
 - **Exemples Principaux** : Complétés
 
 ### ✅ TOUTES LES CAPACITÉS EXPLOITÉES
