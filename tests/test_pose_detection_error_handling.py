@@ -42,7 +42,7 @@ class TestPoseDetectionErrorHandling:
 
         # Patcher directement bbia_sim.pose_detection.mp car mp est déjà importé
         with patch("bbia_sim.pose_detection.mp", mock_mp):
-            with patch("bbia_sim.pose_detection.MEDIAPIPE_POSE_AVAILABLE", True):
+        with patch("bbia_sim.pose_detection.MEDIAPIPE_POSE_AVAILABLE", True):
                 detector = BBIAPoseDetection()
                 # Doit initialiser sans crasher
                 assert detector is not None
@@ -88,8 +88,8 @@ class TestPoseDetectionErrorHandling:
 
         # Patcher directement bbia_sim.pose_detection.mp car mp est déjà importé
         with patch("bbia_sim.pose_detection.mp", mock_mp):
-            with patch("bbia_sim.pose_detection.logger", mock_logger):
-                with patch("bbia_sim.pose_detection.MEDIAPIPE_POSE_AVAILABLE", True):
+        with patch("bbia_sim.pose_detection.logger", mock_logger):
+            with patch("bbia_sim.pose_detection.MEDIAPIPE_POSE_AVAILABLE", True):
                     BBIAPoseDetection()
                     # Vérifier que logger.error a été appelé
                     mock_logger.error.assert_called()

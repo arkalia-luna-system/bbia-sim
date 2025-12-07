@@ -8,8 +8,9 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="BBIA Robot">
-    <title>{% block title %}Reachy Mini dashboard{% endblock %}</title>
+    <title>{% block title %}BBIA - Reachy Mini Dashboard{% endblock %}</title>
     <link rel="manifest" href="/static/manifest.json">
+    <link rel="icon" type="image/svg+xml" href="/static/logos/identity/bbia-app_icon-512.svg">
     <meta name="theme-color" content="#6366f1">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
@@ -22,7 +23,20 @@
 
 <body class="bg-white"
     style="background-image: url('/static/images/background-blurred.svg'); background-size: cover; background-position: center; background-attachment: fixed; background-blend-mode: overlay;">
-    <header>
+    <header class="bg-white shadow-sm border-b border-gray-200 mb-6">
+        <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center space-x-4">
+                <img src="/static/logos/logos/bbia-horizontal-clean-serenity-512.svg" alt="BBIA Logo"
+                    class="h-10 w-auto" id="bbia-logo">
+                <h1 class="text-xl font-semibold text-gray-800 hidden sm:block">BBIA Robot Control</h1>
+            </div>
+            <div class="text-sm text-gray-600">
+                <span id="connection-status" class="inline-flex items-center">
+                    <span class="w-2 h-2 bg-gray-400 rounded-full mr-2"></span>
+                    <span>Connexion...</span>
+                </span>
+            </div>
+        </div>
     </header>
     <div class="container py-8 px-4 sm:px-8 md:px-8 lg:px-8 xl:px-8 mx-auto w-full md:w-2/3">
         {% block content %}{% endblock %}

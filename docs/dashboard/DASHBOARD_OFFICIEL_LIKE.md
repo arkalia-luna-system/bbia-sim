@@ -260,6 +260,7 @@ python -c "from bbia_sim.daemon.app.main import app; import logging; logging.inf
 - ✅ `static/images/icon-512.png` - Icône PWA 512x512 (24 Nov 2025)
 - ✅ `static/style.css` - Styles Tailwind
 - ✅ `static/js/*.js` - Scripts JavaScript
+- ✅ `static/logos/` - Logos BBIA professionnels (30 logos + 4 assets identity) (7 Déc 2025)
 
 ### API Routers
 - ✅ `routers/presets.py` - API presets (24 Nov 2025)

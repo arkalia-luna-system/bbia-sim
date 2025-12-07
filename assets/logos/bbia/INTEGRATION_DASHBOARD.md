@@ -8,6 +8,7 @@
 ## 📍 Emplacement des Logos
 
 Les logos BBIA sont disponibles dans :
+
 - **Logos** : `assets/logos/bbia/logos/`
 - **Identity** : `assets/logos/bbia/identity/`
 
@@ -25,11 +26,13 @@ ln -s ../../../../../../assets/logos/bbia logos
 ```
 
 **Avantages** :
+
 - ✅ Pas de duplication
 - ✅ Mise à jour automatique si les logos changent
 - ✅ Structure propre
 
 **Usage dans HTML** :
+
 ```html
 <img src="/static/logos/logos/bbia-horizontal-clean-serenity-512.svg" alt="BBIA Logo">
 ```
@@ -46,10 +49,12 @@ cp -r /Volumes/T7/bbia-reachy-sim/assets/logos/bbia/* \
 ```
 
 **Avantages** :
+
 - ✅ Fichiers directement accessibles
 - ✅ Pas de dépendance vers assets/
 
 **Inconvénients** :
+
 - ⚠️ Duplication
 - ⚠️ Nécessite recopie lors des mises à jour
 
@@ -76,6 +81,7 @@ cp -r /Volumes/T7/bbia-reachy-sim/assets/logos/bbia/* \
 Le `manifest.json` nécessite des PNG. Pour utiliser le logo BBIA :
 
 1. Convertir `bbia-app_icon-512.svg` en PNG :
+
    ```bash
    # Avec Inkscape
    inkscape --export-filename=icon-512.png --export-width=512 --export-height=512 \
@@ -88,6 +94,7 @@ Le `manifest.json` nécessite des PNG. Pour utiliser le logo BBIA :
    ```
 
 2. Générer aussi la version 192x192 :
+
    ```bash
    convert -background none -resize 192x192 \
            assets/logos/bbia/identity/bbia-app_icon-512.svg \
@@ -131,4 +138,3 @@ Si les logos sont mis à jour dans `assets/logos/bbia/` :
 ---
 
 **Dernière mise à jour** : 7 Décembre 2025
-

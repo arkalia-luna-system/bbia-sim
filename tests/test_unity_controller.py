@@ -277,11 +277,11 @@ class TestUnityReachyMiniController:
                 with patch(
                     "bbia_sim.unity_reachy_controller.UnityReachyMiniController.move_head",
                     side_effect=RuntimeError("Test error"),
-                ):
-                    with patch(
-                        "bbia_sim.unity_reachy_controller.logger.exception"
-                    ) as mock_logger:
-                        controller.interactive_mode()
+            ):
+                with patch(
+                    "bbia_sim.unity_reachy_controller.logger.exception"
+                ) as mock_logger:
+                    controller.interactive_mode()
             # Vérifier qu'un message d'erreur a été affiché via logger.exception
             mock_logger.assert_called()
             # Vérifier que le message contient "❌ Erreur commande"
