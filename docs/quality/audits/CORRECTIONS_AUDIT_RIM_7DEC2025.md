@@ -29,6 +29,7 @@
 - `safe_execute_with_exceptions(func, expected_exceptions, ...)` : Exécute en gérant spécifiquement certaines exceptions
 
 **Statut** : ✅ Module créé, testé (import réussi), formaté (black), linté (ruff), type-checké (mypy)
+✅ **Tests complets** : 22 tests créés et passent (test_utils_error_handling.py)
 
 **Prochaine étape** : Factoriser progressivement les 375 occurrences de `except Exception` restantes
 
@@ -105,9 +106,10 @@
 
 ### ⏳ Ce qui Reste à Faire (Prochaines Étapes)
 
-1. **Factorisation progressive** : Utiliser `safe_execute()` dans `bbia_vision.py` et autres fichiers (375 occurrences restantes)
-2. **Tests edge cases** : Exécuter les nouveaux tests et vérifier qu'ils passent
-3. **Amélioration logs** : Distinguer erreurs critiques (ERROR) vs fallback normal (DEBUG)
+1. ✅ **Tests module error_handling** : Créés et passent (22 tests) - **FAIT**
+2. **Factorisation progressive** : Utiliser `safe_execute()` dans `bbia_vision.py` et autres fichiers (375 occurrences restantes)
+3. ✅ **Tests edge cases** : Exécutés et passent - **FAIT**
+4. **Amélioration logs** : Distinguer erreurs critiques (ERROR) vs fallback normal (DEBUG)
 
 ---
 
@@ -140,7 +142,8 @@
 ## 🔗 Références
 
 - Module créé : `src/bbia_sim/utils/error_handling.py`
-- Tests ajoutés : `tests/test_edge_cases_error_handling.py`
+- Tests module : `tests/test_utils_error_handling.py` (22 tests, tous passent)
+- Tests edge cases : `tests/test_edge_cases_error_handling.py`
 - Documentation : `docs/quality/TACHES_RESTANTES_CONSOLIDEES.md`
 - README : Section "Stack IA : Pourquoi ces Dépendances"
 
