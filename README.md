@@ -102,6 +102,8 @@
 
 **🎮 [Interface Live Interactive →](http://localhost:8000/bbia-interface)** *(Lancez le dashboard d'abord)*
 
+**🎮 [Interface Live Interactive →](http://localhost:8000/bbia-interface)** *(Lancez le dashboard d'abord)*
+
 </div>
 
 </div>
