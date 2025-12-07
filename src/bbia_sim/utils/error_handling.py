@@ -6,7 +6,8 @@ le debugging.
 """
 
 import logging
-from typing import Any, Callable, Optional, TypeVar
+from collections.abc import Callable
+from typing import Any, TypeVar
 
 T = TypeVar("T")
 
@@ -16,7 +17,7 @@ logger = logging.getLogger(__name__)
 def safe_execute(
     func: Callable[[], T],
     fallback: T | None = None,
-    logger_instance: Optional[logging.Logger] = None,
+    logger_instance: logging.Logger | None = None,
     error_msg: str = "Erreur lors de l'exécution",
     critical: bool = False,
     reraise: bool = False,
@@ -58,8 +59,8 @@ def safe_execute(
 
 def safe_import(
     module_name: str,
-    logger_instance: Optional[logging.Logger] = None,
-) -> Optional[Any]:
+    logger_instance: logging.Logger | None = None,
+) -> Any | None:
     """Importe un module avec gestion d'erreurs.
 
     Args:
@@ -93,7 +94,7 @@ def safe_execute_with_exceptions(
     func: Callable[[], T],
     expected_exceptions: tuple[type[Exception], ...],
     fallback: T | None = None,
-    logger_instance: Optional[logging.Logger] = None,
+    logger_instance: logging.Logger | None = None,
     error_msg: str = "Erreur lors de l'exécution",
     critical: bool = False,
 ) -> T | None:
@@ -133,4 +134,3 @@ def safe_execute_with_exceptions(
         if log:
             log.warning(f"{error_msg} (erreur inattendue {type(e).__name__}): {e}")
         return fallback
-

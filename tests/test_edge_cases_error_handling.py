@@ -477,7 +477,10 @@ class TestErrorHandlingAPIDown:
 
             client = TestClient(app)
             # Simuler API complètement down (ConnectionRefusedError)
-            with patch("fastapi.testclient.TestClient.get", side_effect=ConnectionRefusedError("API down")):
+            with patch(
+                "fastapi.testclient.TestClient.get",
+                side_effect=ConnectionRefusedError("API down"),
+            ):
                 # Doit gérer gracieusement
                 try:
                     response = client.get("/api/daemon/status")

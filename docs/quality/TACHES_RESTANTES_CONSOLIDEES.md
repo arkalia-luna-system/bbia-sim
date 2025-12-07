@@ -617,6 +617,7 @@ except Exception as e:
 
 **Progression** :
 - ✅ Module centralisé créé (7 Décembre 2025)
+- ✅ Code formaté (black), linté (ruff), type-checké (mypy)
 - ⚠️ Factorisation de `bbia_vision.py` : À faire (49 blocs try/except identifiés)
 - 🔜 Factorisation des routers daemon : À faire (212 blocs dans 13 fichiers)
 
