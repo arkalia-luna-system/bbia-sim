@@ -310,7 +310,7 @@ def main():
 
 ## 📊 Métriques de Succès
 
-- ✅ Tous les tests passent (100%)
+- Tous les tests passent
 - ✅ Nombre de tests >= avant consolidation
 - ✅ Coverage >= avant consolidation
 - ✅ Temps d'exécution des tests <= avant (ou légèrement supérieur)

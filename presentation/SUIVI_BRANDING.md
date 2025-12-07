@@ -258,7 +258,7 @@ Créer l'identité visuelle complète de BBIA : logo, palette, bannière univers
 
 **Avantages** :
 
-- ✅ Client contrôle 100% du design
+- Client contrôle total du design
 - ✅ Résultat exactement comme voulu (pas d'interprétation)
 - ✅ Utilisable immédiatement pour tout le projet
 - ✅ Workflow open source respecté (versionnage, documentation, tests)

@@ -531,7 +531,7 @@ python scripts/demo_public_api.py
 
 ### 📡 Endpoints REST Conformes SDK Officiel
 
-> **Note** : La conformité des endpoints REST est validée à 100% pour les méthodes SDK officielles. Les endpoints BBIA étendus sont en plus.
+> **Note** : La conformité des endpoints REST est validée pour les méthodes SDK officielles. Les endpoints BBIA étendus sont en plus.
 
 - **`/api/move/*`** - Mouvements conformes SDK (goto, running, stop, play, set_target, ws/updates)
 - **`/api/motors/*`** - Contrôle moteurs (status, set_mode)
