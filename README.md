@@ -77,7 +77,8 @@
 
 </div>
 
-**🎮 [Interface Live Interactive →](http://localhost:8000/bbia-interface)** *(Lancez le dashboard d'abord)*
+**🎮 [Interface Live Interactive →](http://localhost:8000/bbia-interface)** *(Lancez le dashboard d'abord)*  
+**🎨 [Voir tous les logos BBIA →](http://localhost:8000/test-logos)** *(Lancez le dashboard d'abord)*
 
 </div>
 
@@ -140,6 +141,7 @@ BBIA utilise une stack IA lourde pour permettre des interactions naturelles et u
 - 🎯 **Assets d'interface** : HUD Cyber-HUD, icônes, bannières pour une expérience cohérente
 
 **Utilisation** : Les logos sont intégrés dans le dashboard et disponibles pour personnaliser l'interface selon l'émotion de BBIA.  
+**🎨 [Voir tous les logos →](http://localhost:8000/test-logos)** *(Lancez le dashboard d'abord)*  
 **Documentation** : [`assets/logos/bbia/README.md`](assets/logos/bbia/README.md)
 
 ## 🏆 Qualité Code
