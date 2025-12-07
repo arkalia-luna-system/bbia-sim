@@ -38,6 +38,50 @@
 
 ---
 
+## 🎮 Interface Live BBIA
+
+<div align="center">
+
+### 🤖 BBIA en Action - Interface Interactive
+
+**Interface live avec animations** : Respiration, clignement des yeux, contrôles d'émotions
+
+> 💡 **Lancez le dashboard** puis ouvrez : [`http://localhost:8000/bbia-interface`](http://localhost:8000/bbia-interface)
+
+<details>
+<summary><b>🎯 Voir l'Interface Live BBIA (Cliquez pour ouvrir)</b></summary>
+
+<div align="center">
+
+**Pour voir l'interface interactive avec animations :**
+
+1. **Lancez le dashboard** :
+   ```bash
+   python scripts/bbia_dashboard_server.py
+   # ou
+   python -m uvicorn bbia_sim.daemon.app.main:app --host 127.0.0.1 --port 8000
+   ```
+
+2. **Ouvrez dans votre navigateur** :
+   ```
+   http://localhost:8000/bbia-interface
+   ```
+
+**Fonctionnalités** :
+- ✅ Animations CSS (respiration automatique)
+- ✅ Clignement des yeux aléatoire
+- ✅ Contrôles d'émotions (Neutre, Joyeux, Curieux, Écoute, Veille, Erreur)
+- ✅ HUD graphique rotatif
+- ✅ Contrôle JavaScript : `bbia.setMood('happy')`
+
+</div>
+
+</details>
+
+</div>
+
+---
+
 ## 📋 **EN 30 SECONDES**
 
 <div align="center">
@@ -53,6 +97,10 @@
 <img src="assets/logos/bbia/logos/bbia-mark_only-clean-serenity-512.svg" alt="BBIA Mark" width="150" height="auto" style="margin: 0 20px;">
 
 <img src="assets/logos/bbia/identity/bbia-hud-512.svg" alt="BBIA HUD" width="150" height="auto">
+
+</div>
+
+**🎮 [Interface Live Interactive →](http://localhost:8000/bbia-interface)** *(Lancez le dashboard d'abord)*
 
 </div>
 
