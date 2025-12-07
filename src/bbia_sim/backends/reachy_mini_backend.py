@@ -436,8 +436,14 @@ class ReachyMiniBackend(RobotAPI):
                 logger.exception("Erreur watchdog")
                 # En cas d'erreur, attendre un peu avant retry
                 time.sleep(self._watchdog_interval)
-            except Exception:
-                logger.exception("Erreur inattendue watchdog")
+            except (TypeError, IndexError, KeyError) as e:
+                logger.exception("Erreur watchdog (type/index/key): %s", e)
+                # En cas d'erreur, attendre un peu avant retry
+                time.sleep(self._watchdog_interval)
+            except (
+                Exception
+            ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
+                logger.exception("Erreur inattendue watchdog: %s", e)
                 # En cas d'erreur, attendre un peu avant retry
                 time.sleep(self._watchdog_interval)
 
@@ -586,11 +592,16 @@ class ReachyMiniBackend(RobotAPI):
             logger.warning("Joint %s non trouvé", joint_name)
             return 0.0
 
-        except (AttributeError, RuntimeError, IndexError, ValueError):
-            logger.exception("Erreur lecture joint %s", joint_name)
+        except (AttributeError, RuntimeError, IndexError, ValueError) as e:
+            logger.exception("Erreur lecture joint %s: %s", joint_name, e)
             return 0.0
-        except Exception:
-            logger.exception("Erreur inattendue lecture joint %s", joint_name)
+        except (TypeError, KeyError, OSError) as e:
+            logger.exception("Erreur lecture joint %s (type/key/os): %s", joint_name, e)
+            return 0.0
+        except (
+            Exception
+        ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
+            logger.exception("Erreur inattendue lecture joint %s: %s", joint_name, e)
             return 0.0
 
     def _validate_joint_name(self, joint_name: str) -> bool:
@@ -754,11 +765,18 @@ class ReachyMiniBackend(RobotAPI):
                 joint_name,
             )
             return False
-        except (AttributeError, RuntimeError, ValueError, IndexError):
-            logger.exception("Erreur contrôle joint %s:", joint_name)
+        except (AttributeError, RuntimeError, ValueError, IndexError) as e:
+            logger.exception("Erreur contrôle joint %s: %s", joint_name, e)
             return False
-        except Exception:
-            logger.exception("Erreur inattendue contrôle joint %s:", joint_name)
+        except (TypeError, KeyError, OSError) as e:
+            logger.exception(
+                "Erreur contrôle joint %s (type/key/os): %s", joint_name, e
+            )
+            return False
+        except (
+            Exception
+        ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
+            logger.exception("Erreur inattendue contrôle joint %s: %s", joint_name, e)
             return False
 
     def set_emotion(self, emotion: str, intensity: float = 0.5) -> bool:

@@ -23,30 +23,15 @@ class TestBBIAChatErrorHandling:
     def test_bbia_chat_generate_error_handling(self):
         """Test que generate() gère les erreurs correctement."""
         # Ne pas charger de modèle LLM pour économiser RAM
-        chat = BBIAChat(robot_api=None)
-        # S'assurer que le modèle n'est pas chargé
-        chat.llm_model = None
-        chat.llm_tokenizer = None
+        # Vérifier la structure du code sans l'exécuter
+        import inspect
 
-        # Simuler une erreur lors de la génération (en patchant directement generate)
-        mock_logger = MagicMock(spec=logging.Logger)
-        with patch("bbia_sim.bbia_chat.logger", mock_logger):
-            # Simuler une exception dans generate
-            with patch.object(
-                chat, "generate", side_effect=RuntimeError("Erreur génération")
-            ):
-                # Le code doit gérer l'erreur gracieusement
-                try:
-                    chat.generate("test")
-                except RuntimeError:
-                    # L'erreur doit être loggée en ERROR
-                    pass
-                # Vérifier que logger.error a été appelé (si erreur gérée)
-                # ou vérifier la structure du code
-                import inspect
+        from bbia_sim import bbia_chat
 
-                source = inspect.getsource(chat.generate)
-                assert "except Exception" in source or "logger.error" in source
+        source = inspect.getsource(bbia_chat.BBIAChat.generate)
+        # Vérifier que les erreurs sont gérées avec logger.error
+        assert "except Exception" in source
+        assert "logger.error" in source or "critique" in source.lower()
 
     @pytest.mark.unit
     @pytest.mark.fast
