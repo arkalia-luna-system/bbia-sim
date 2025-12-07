@@ -153,7 +153,7 @@
 
 #### 5. **Optimisations Performance Optionnelles** ⏱️ **4-6h**
 
-**Pourquoi** : Performance déjà excellente, optimisations marginales
+**Pourquoi** : Performance satisfaisante, optimisations marginales
 
 **Actions** :
 

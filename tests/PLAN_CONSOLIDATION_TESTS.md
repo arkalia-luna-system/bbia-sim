@@ -2,7 +2,7 @@
 
 ## ✅ RÉSULTATS DE L'ANALYSE (21 Novembre 2025)
 
-### 🎉 Conclusion Principale
+### Conclusion Principale
 
 **AUCUNE CONSOLIDATION NÉCESSAIRE !**
 

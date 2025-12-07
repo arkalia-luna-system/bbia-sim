@@ -109,5 +109,5 @@
 ✅ **Branche develop à jour avec origin/develop**
 ✅ **Tous les commits poussés**
 
-**Les tests devraient maintenant être stables en CI !** 🎉
+**Les tests devraient maintenant être stables en CI.**
 

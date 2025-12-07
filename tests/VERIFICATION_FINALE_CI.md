@@ -66,5 +66,5 @@ export BBIA_DISABLE_VISION=1  # Optionnel
 4. ✅ Caches vérifient disponibilité avant réutilisation
 5. ✅ Nettoyage automatique des ressources
 
-**Les tests devraient maintenant être stables en CI !** 🎉
+**Les tests devraient maintenant être stables en CI.**
 
