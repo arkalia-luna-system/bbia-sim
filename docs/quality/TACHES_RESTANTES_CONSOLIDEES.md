@@ -910,12 +910,12 @@ Les tests suivants sont marqués `@pytest.mark.heavy` et `@pytest.mark.slow` mai
 
 #### 🟡 PRIORITÉ MOYENNE (2-3 jours)
 
-3. **BLE001 - Exceptions génériques** - ~240 occurrences ⏳ **EN COURS** (~32% fait)
+3. **BLE001 - Exceptions génériques** - ~220 occurrences ⏳ **EN COURS** (~38% fait)
    - Action : Spécifier les exceptions (`ValueError`, `AttributeError`, etc.) au lieu de `Exception`
    - Impact : Meilleure gestion d'erreurs, débogage facilité
-   - Progrès : ~149 occurrences corrigées dans 20 fichiers (32% fait, ~240 restantes)
-   - Fichiers prioritaires : `dashboard_advanced.py` (~20 restantes), `reachy_mini_backend.py` (~20 restantes), `bbia_vision.py` (~9 restantes), `bbia_huggingface.py` (~5 restantes), `bbia_voice.py` (~5 restantes)
-   - **Dernière mise à jour** : 7 Décembre 2025 - `bbia_vision.py`, `bbia_huggingface.py` et `bbia_voice.py` améliorés (30 occurrences)
+   - Progrès : ~179 occurrences corrigées dans 21 fichiers (38% fait, ~220 restantes)
+   - Fichiers prioritaires : `dashboard_advanced.py` (~5 restantes), `reachy_mini_backend.py` (~20 restantes), autres fichiers (~195 restantes)
+   - **Dernière mise à jour** : 7 Décembre 2025 - `dashboard_advanced.py` amélioré (19 occurrences)
 
 4. **Audit doublons** - Vérifier `set_emotion()` et `dire_texte()` dupliqués
    - Action : Analyser si certaines implémentations sont redondantes
