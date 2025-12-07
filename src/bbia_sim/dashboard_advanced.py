@@ -752,6 +752,7 @@ ADVANCED_DASHBOARD_HTML = """
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BBIA Advanced Dashboard</title>
+    <link rel="icon" type="image/svg+xml" href="/static/logos/identity/bbia-app_icon-512.svg">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         * {
@@ -1673,7 +1674,10 @@ ADVANCED_DASHBOARD_HTML = """
 </head>
 <body>
     <div class="header">
-        <h1>BBIA Advanced Dashboard</h1>
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <img src="/static/logos/logos/bbia-horizontal-clean-serenity-512.svg" alt="BBIA Logo" style="height: 40px; width: auto;">
+            <h1>BBIA Advanced Dashboard</h1>
+        </div>
         <div class="subtitle">
             <span id="connection-indicator" class="connection-indicator disconnected"></span>
             <span id="connection-text">Déconnecté</span> |
