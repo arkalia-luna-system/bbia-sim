@@ -406,8 +406,17 @@ class TestErrorHandlingMemoryStress:
 
     @pytest.mark.unit
     @pytest.mark.fast
+    @pytest.mark.skipif(
+        not os.environ.get("TORCH_AVAILABLE", "0") == "1",
+        reason="torch non disponible (test nécessite torch pour simuler MemoryError)",
+    )
     def test_memory_saturated_during_model_loading(self):
         """Test gestion RAM saturée lors du chargement d'un modèle."""
+        try:
+            import torch  # noqa: F401
+        except ImportError:
+            pytest.skip("torch non disponible")
+
         from unittest.mock import patch
 
         # Simuler MemoryError lors du chargement
@@ -433,6 +442,7 @@ class TestErrorHandlingRaceConditions:
     def test_concurrent_emotion_set(self):
         """Test gestion accès concurrent à set_emotion()."""
         import threading
+
         from bbia_sim.bbia_emotions import BBIAEmotions
 
         emotions = BBIAEmotions()
@@ -469,7 +479,8 @@ class TestErrorHandlingAPIDown:
     @pytest.mark.fast
     def test_api_completely_down(self):
         """Test gestion API complètement inaccessible (pas juste timeout)."""
-        from unittest.mock import patch, MagicMock
+        from unittest.mock import patch
+
         from fastapi.testclient import TestClient
 
         try:
