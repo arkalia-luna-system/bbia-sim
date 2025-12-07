@@ -535,8 +535,8 @@ Toutes les démos supportent le backend unifié :
 
 ## 📊 **Métriques**
 
-- **Tests** : 38 tests Reachy-Mini SDK officiel passent (100% conformité)
-- **Coverage** : 100% des fonctionnalités SDK officiel
+- **Tests** : 38 tests Reachy-Mini SDK officiel passent (conformité validée)
+- **Coverage** : Fonctionnalités SDK officiel couvertes
 - **Performance** : <1ms latence en simulation
 - **Conformité** : 21/21 méthodes SDK officiel implémentées
 
