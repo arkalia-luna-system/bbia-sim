@@ -426,7 +426,7 @@ pytest --cov=src/bbia_sim --cov-report=term-missing
 **Version** : 2.0  
 **Date** : 26 Novembre 2025  
 **Tests** : ✅ **1,362 tests collectés** (1,804 fonctions de test identifiées, CI GitHub Actions)  
-**Couverture** : ✅ **68.86%** (excellent)  
+**Couverture** : **68.86%**  
 **Couverture modules critiques** : ✅ **99.45%** vision_yolo, **92.52%** voice_whisper, **76.71%** dashboard_advanced  
 **Qualité** : ✅ Black/Ruff/MyPy compliant
 
