@@ -507,8 +507,8 @@ class BBIAVision:
                 except (ValueError, TypeError, AttributeError) as e:
                     logger.debug("Erreur conversion image: %s", e)
                     return None
-                except (TypeError, IndexError, KeyError) as e:
-                    logger.debug("Erreur conversion image (type/index/key): %s", e)
+                except (IndexError, KeyError) as e:
+                    logger.debug("Erreur conversion image (index/key): %s", e)
                     return None
                 except (
                     Exception

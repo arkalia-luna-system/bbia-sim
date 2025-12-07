@@ -332,7 +332,14 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
                         "Erreur lors de la lecture audio locale (fallback sounddevice): %s",
                         e,
                     )
-                except Exception as e:  # noqa: BLE001 - Erreur inattendue lecture audio
+                except (TypeError, IndexError, KeyError) as e:
+                    logger.debug(
+                        "Erreur lecture audio locale (type/index/key): %s",
+                        e,
+                    )
+                except (
+                    Exception
+                ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
                     logger.debug(
                         "Erreur inattendue lecture audio locale (fallback normal): %s",
                         e,
@@ -396,7 +403,13 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
                         except TypeError:
                             media.play_audio(sdk_audio_bytes)
                         return
-                    except Exception as e:  # noqa: BLE001 - Erreur media.play_audio
+                    except (TypeError, IndexError, KeyError, OSError) as e:
+                        logging.debug(
+                            "media.play_audio a échoué (type/index/key/os): %s", e
+                        )
+                    except (
+                        Exception
+                    ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
                         logging.debug(
                             "media.play_audio a échoué (fallback normal): %s", e
                         )
@@ -408,7 +421,13 @@ def dire_texte(texte: str, robot_api: Any | None = None) -> None:
                         if hasattr(speaker, "play"):
                             speaker.play(sdk_audio_bytes)
                             return
-                    except Exception as e:  # noqa: BLE001 - Erreur speaker.play
+                    except (TypeError, IndexError, KeyError, OSError) as e:
+                        logging.debug(
+                            "speaker.play a échoué (type/index/key/os): %s", e
+                        )
+                    except (
+                        Exception
+                    ) as e:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
                         logging.debug("speaker.play a échoué (fallback normal): %s", e)
                     try:
                         # Créer un fichier temporaire si play_file est préféré
@@ -853,8 +872,16 @@ def _transcribe_audio_sync(
             # Nettoyer fichier temporaire
             try:
                 os.unlink(temp_path)
-            except Exception as cleanup_error:
-                logging.debug(f"Nettoyage fichier Whisper ({cleanup_error})")
+            except (OSError, PermissionError) as cleanup_error:
+                logging.debug(
+                    "Nettoyage fichier Whisper (os/permission): %s", cleanup_error
+                )
+            except (
+                Exception
+            ) as cleanup_error:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
+                logging.debug(
+                    "Nettoyage fichier Whisper (erreur inattendue): %s", cleanup_error
+                )
 
     except ImportError:
         logging.debug("Whisper non disponible (import échoué)")
@@ -938,8 +965,16 @@ def transcribe_audio(
             # Nettoyer fichier temporaire
             try:
                 os.unlink(temp_path)
-            except Exception as cleanup_error:
-                logging.debug(f"Nettoyage fichier Whisper ({cleanup_error})")
+            except (OSError, PermissionError) as cleanup_error:
+                logging.debug(
+                    "Nettoyage fichier Whisper (os/permission): %s", cleanup_error
+                )
+            except (
+                Exception
+            ) as cleanup_error:  # noqa: BLE001 - Fallback final pour erreurs vraiment inattendues
+                logging.debug(
+                    "Nettoyage fichier Whisper (erreur inattendue): %s", cleanup_error
+                )
 
     except ImportError:
         logging.debug("Whisper non disponible (import échoué)")
